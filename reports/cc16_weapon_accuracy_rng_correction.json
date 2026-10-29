@@ -1,0 +1,3609 @@
+{
+  "packet": "codex-weapon-accuracy-rng-correction",
+  "owner": "agent/codex-weapon-accuracy-rng-correction",
+  "date": "2026-10-29",
+  "review_base": "1e10d9de40bda6596ebdb89487a657cdba034d8d",
+  "status": "additive_observer_correction_complete_two_new_exact_frozen_prefix_pairs_passed_current_main_acceptance_separate",
+  "new_original_body_credit": 0,
+  "vendor_body_credit": 0,
+  "main_guard_activation_performed": false,
+  "owned_files": [
+    "docs/CC16_WEAPON_ACCURACY_RNG_CORRECTION.md",
+    "reports/cc16_weapon_accuracy_rng_correction.json"
+  ],
+  "own_048_correction": {
+    "commit": "048da36338fedeaef286d3abe10a05183262a268",
+    "doc_sha256": "1f84f9cbc761f2b44cc7b3d85d2d59bdc4d2fe720d3bd2377af59e7579272b93",
+    "report_sha256": "6ba342e177bba537f2640642f708e19a95efc5b5e77bb751878e0dcaadd7a8a3",
+    "original_verdict_preserved": "recommend_enable_only_independent_native_range_guard_no_unmet_accuracy_evidence_gate_at_audited_main",
+    "verbatim_false_probes": [
+      {
+        "side": "off",
+        "row": "msd",
+        "probe": [
+          "36",
+          "1"
+        ],
+        "log_sha256": "4eafc51af9012c994e5cd316e4f51fe51a2e85be9851a5f2909ec31405d31dff"
+      },
+      {
+        "side": "on",
+        "row": "msd",
+        "probe": [
+          "36",
+          "1"
+        ],
+        "log_sha256": "4964ea360515b7cba9aae777e982ab588df1d70a246bfe302069a7d8dbe2a433"
+      },
+      {
+        "side": "off",
+        "row": "u2",
+        "probe": [
+          "36",
+          "1"
+        ],
+        "log_sha256": "7f563a88c9eedf813043246e4d5c953a6ccecbf97b6fd78084d23a149993fc62"
+      },
+      {
+        "side": "on",
+        "row": "u2",
+        "probe": [
+          "36",
+          "1"
+        ],
+        "log_sha256": "0106e448337092b232c410879703a071c1344e0325aef8c572389e30cca89f83"
+      }
+    ],
+    "explicit_retraction": "The msd/u2 first RNG draw1 claim was false: it matched the lof_expiry_draw feature flag. I copied the inherited substring regex into the independent audit. Withdraw those first-draw claims and the unqualified no-unmet-accuracy-activation-gate recommendation.",
+    "checked_field_correction": "fresh frame36 remains observed; fresh first RNG draw is not established for old msd/u2",
+    "no_blanket_equal_absence_pass": true,
+    "source_calls_canonical_cell_and_FP_fixture_scope": "unchanged qualified scope, not enlarged or invalidated by this observer correction; not independently rerun here",
+    "fixture8c2_limit": "original post-spill window,weight1,directconverter,maskedPC24/PC53,syntheticmode0/1 only; no arbitrary interpolation/fullABI claim"
+  },
+  "observer_provenance": {
+    "frozen_regex": "draw=([-0-9.]+)",
+    "false_identifier": "lof_expiry_draw=1",
+    "actual_source_argument": "kAaLineOfFireExpiryDrawBound ? 1 : 0",
+    "field_means": "feature enabled flag, neither sample nor draw count",
+    "frozen_evaluator_sites": "inputs/evaluate_accuracy.py lines22/23, oldstart_rng gate; own prior audit_receipts.py start_probe lines50..59 duplicated regex",
+    "corrective_field_boundary": "\\bdraw=",
+    "required_source_format": "plane death mode: unit=... t=%.2f draw=%.4f mode=... c10=%.2f (007CA8A0 -> 007BBFA0 -> 007D0B80, packet cc9_plane_death_modes)",
+    "actual_sample_producer": "death_mode_draw_00bd2f10(1,index,0,1) -> Impl::draw(Draw::death_mode,index,0,low,high)",
+    "sentinel": "-1 on bypass is not sampled RNG and never meets presence; keep its diagnostic row in sequence equality",
+    "measurement_streams": "existing BSP_GUNNERY_RNG_STREAMS=1 keys bypurpose/unit/index, unlogged other consumers exist",
+    "source_provenance": [
+      {
+        "commit": "1df71091456bed43bd78b61144ff1474ca571b37",
+        "path": "src/game_hosts_gunnery.cpp",
+        "git_blob": "2f2755d134501d48888ef4b3496db532df4432c3",
+        "sha256": "2145a17eb65ea6de49e0156b0bc6e89486df60f6876cfba55e0152a086d67409",
+        "snippets": [
+          {
+            "marker": "host.log.notef(\"summary mission aa acceptance",
+            "line": 20423,
+            "sha256": "09dd9f6afc98b603afb317856f2bba5dbafd80d54040d8d295cc369183b10f6b"
+          },
+          {
+            "marker": "float GameGunneryHost::death_mode_draw_00bd2f10",
+            "line": 18365,
+            "sha256": "230c082bc3e6235828434563110bb2f3d1252b931ea0f8c467462d06b45365f6"
+          },
+          {
+            "marker": "    float draw(Draw purpose,",
+            "line": 4268,
+            "sha256": "b4780738805ca8af9dd2e173ef98b89cb6755b18e1ff8a11f550a744e0955190"
+          }
+        ]
+      },
+      {
+        "commit": "1df71091456bed43bd78b61144ff1474ca571b37",
+        "path": "src/game_hosts_units.cpp",
+        "git_blob": "d3834be26e182d44b98dba5592144a9273a32662",
+        "sha256": "6946d461ef7ea3acdf01032e3ec444e04e6c423cf7ce0dd31e47736e2d3190ee",
+        "snippets": [
+          {
+            "marker": "din.draw = slot.plane_water_powerlost_raised",
+            "line": 24461,
+            "sha256": "ec32eb589a7678172db81b54be43cbc570d9695f77adfe8b24a1b7b3bd0119c9"
+          },
+          {
+            "marker": "host.log.notef(\"plane death mode:",
+            "line": 24539,
+            "sha256": "4ea8ceba5946efb8a129516315befeb411faac8abeaab8db9855a5ab167119ff"
+          }
+        ]
+      },
+      {
+        "commit": "5c2547156",
+        "path": "src/game_hosts_gunnery.cpp",
+        "git_blob": "2f2755d134501d48888ef4b3496db532df4432c3",
+        "sha256": "2145a17eb65ea6de49e0156b0bc6e89486df60f6876cfba55e0152a086d67409",
+        "snippets": [
+          {
+            "marker": "host.log.notef(\"summary mission aa acceptance",
+            "line": 20423,
+            "sha256": "09dd9f6afc98b603afb317856f2bba5dbafd80d54040d8d295cc369183b10f6b"
+          },
+          {
+            "marker": "float GameGunneryHost::death_mode_draw_00bd2f10",
+            "line": 18365,
+            "sha256": "230c082bc3e6235828434563110bb2f3d1252b931ea0f8c467462d06b45365f6"
+          },
+          {
+            "marker": "    float draw(Draw purpose,",
+            "line": 4268,
+            "sha256": "b4780738805ca8af9dd2e173ef98b89cb6755b18e1ff8a11f550a744e0955190"
+          }
+        ]
+      },
+      {
+        "commit": "5c2547156",
+        "path": "src/game_hosts_units.cpp",
+        "git_blob": "d3834be26e182d44b98dba5592144a9273a32662",
+        "sha256": "6946d461ef7ea3acdf01032e3ec444e04e6c423cf7ce0dd31e47736e2d3190ee",
+        "snippets": [
+          {
+            "marker": "din.draw = slot.plane_water_powerlost_raised",
+            "line": 24461,
+            "sha256": "ec32eb589a7678172db81b54be43cbc570d9695f77adfe8b24a1b7b3bd0119c9"
+          },
+          {
+            "marker": "host.log.notef(\"plane death mode:",
+            "line": 24539,
+            "sha256": "4ea8ceba5946efb8a129516315befeb411faac8abeaab8db9855a5ab167119ff"
+          }
+        ]
+      },
+      {
+        "commit": "c8e521821",
+        "path": "src/game_hosts_gunnery.cpp",
+        "git_blob": "2f2755d134501d48888ef4b3496db532df4432c3",
+        "sha256": "2145a17eb65ea6de49e0156b0bc6e89486df60f6876cfba55e0152a086d67409",
+        "snippets": [
+          {
+            "marker": "host.log.notef(\"summary mission aa acceptance",
+            "line": 20423,
+            "sha256": "09dd9f6afc98b603afb317856f2bba5dbafd80d54040d8d295cc369183b10f6b"
+          },
+          {
+            "marker": "float GameGunneryHost::death_mode_draw_00bd2f10",
+            "line": 18365,
+            "sha256": "230c082bc3e6235828434563110bb2f3d1252b931ea0f8c467462d06b45365f6"
+          },
+          {
+            "marker": "    float draw(Draw purpose,",
+            "line": 4268,
+            "sha256": "b4780738805ca8af9dd2e173ef98b89cb6755b18e1ff8a11f550a744e0955190"
+          }
+        ]
+      },
+      {
+        "commit": "c8e521821",
+        "path": "src/game_hosts_units.cpp",
+        "git_blob": "d3834be26e182d44b98dba5592144a9273a32662",
+        "sha256": "6946d461ef7ea3acdf01032e3ec444e04e6c423cf7ce0dd31e47736e2d3190ee",
+        "snippets": [
+          {
+            "marker": "din.draw = slot.plane_water_powerlost_raised",
+            "line": 24461,
+            "sha256": "ec32eb589a7678172db81b54be43cbc570d9695f77adfe8b24a1b7b3bd0119c9"
+          },
+          {
+            "marker": "host.log.notef(\"plane death mode:",
+            "line": 24539,
+            "sha256": "4ea8ceba5946efb8a129516315befeb411faac8abeaab8db9855a5ab167119ff"
+          }
+        ]
+      }
+    ],
+    "full_source_files_identical_across_relevant_epochs": true,
+    "first_logged_plane_sample_not_global_first": true,
+    "four_decimal_logged_equality_not_bit_or_all_stream_equality": true
+  },
+  "historical_and_current_existing_matrices": [
+    {
+      "group": "acr86",
+      "directory": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86",
+      "freeze_sha256": "a38de04069af267e0a6f15b89b6eb3f1e6fe1b4697e065e8a86eae15dd4d94d6",
+      "frozen_input_matches": 54,
+      "frozen_input_total": 54,
+      "frozen": {
+        "accepted_base": "86d56331f52634550414fcf3314abd5d49731472",
+        "shared_off_commit": "1df71091456bed43bd78b61144ff1474ca571b37",
+        "private_on_commit": "9c63a8874970e6ce0b793ef7e06b2b0e748fb57b",
+        "runtime_host_commit": "899e638facbc79f0987b8a7bb955ebe0b53686e4",
+        "rows": [
+          {
+            "id": "ref",
+            "mission": "USN04",
+            "mission_frames": 4800,
+            "total_frames": 5100,
+            "step": 0.05,
+            "env": {
+              "BSP_DEATH_TABLE": "1",
+              "BSP_GUNNERY_RNG_STREAMS": "1"
+            },
+            "game_args": [
+              "--difficulty",
+              "1",
+              "--window-resolution",
+              "fit",
+              "--present-interval",
+              "immediate",
+              "--window-monitor",
+              "smallest",
+              "--frames",
+              "5100",
+              "--press-start-frame",
+              "30",
+              "--menu-select",
+              "USN04",
+              "--mission-frames",
+              "4800",
+              "--mission-frame-seconds",
+              "0.05"
+            ],
+            "plan": null,
+            "witness_required": false,
+            "bounds": "absent",
+            "acceptance_scope": "startup regression only"
+          },
+          {
+            "id": "msd",
+            "mission": "USN04",
+            "mission_frames": 1600,
+            "total_frames": 1900,
+            "step": 0.05,
+            "env": {
+              "BSP_DEATH_TABLE": "1",
+              "BSP_GUNNERY_RNG_STREAMS": "1",
+              "BSP_NATIVE_MISSION_FRAME": "1",
+              "BSP_NATIVE_MISSION_SHIP": "1",
+              "BSP_NATIVE_MISSION_UNITS": "1"
+            },
+            "game_args": [
+              "--difficulty",
+              "1",
+              "--window-resolution",
+              "fit",
+              "--present-interval",
+              "immediate",
+              "--window-monitor",
+              "smallest",
+              "--frames",
+              "1900",
+              "--press-start-frame",
+              "30",
+              "--menu-select",
+              "USN04",
+              "--mission-frames",
+              "1600",
+              "--mission-frame-seconds",
+              "0.05"
+            ],
+            "plan": null,
+            "witness_required": false,
+            "bounds": "absent",
+            "acceptance_scope": "startup regression only"
+          },
+          {
+            "id": "u2",
+            "mission": "USN02",
+            "mission_frames": 16000,
+            "total_frames": 16200,
+            "step": 0.05,
+            "env": {
+              "BSP_DEATH_TABLE": "1",
+              "BSP_GUNNERY_RNG_STREAMS": "1"
+            },
+            "game_args": [
+              "--difficulty",
+              "1",
+              "--window-resolution",
+              "fit",
+              "--present-interval",
+              "immediate",
+              "--window-monitor",
+              "smallest",
+              "--frames",
+              "16200",
+              "--press-start-frame",
+              "30",
+              "--menu-select",
+              "USN02",
+              "--mission-frames",
+              "16000",
+              "--mission-frame-seconds",
+              "0.05",
+              "--stop-after-end",
+              "40",
+              "--helm-orders",
+              "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acc86\\inputs\\usn02_l72_u2_g4.txt"
+            ],
+            "plan": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acc86\\inputs\\usn02_l72_u2_g4.txt",
+              "size": 711,
+              "sha256": "9cc7b70272f2a243915813e94ebc95ca6e39faba629ab6294ceef810ec83f235"
+            },
+            "witness_required": true,
+            "bounds": "absent",
+            "acceptance_scope": "actual accuracy caller workload"
+          }
+        ],
+        "order": [
+          "off/ref",
+          "on/ref",
+          "off/msd",
+          "on/msd",
+          "off/u2",
+          "on/u2"
+        ],
+        "slots": 8,
+        "priority": "Normal",
+        "watchdog_seconds": 14400,
+        "rng_policy": "existing keyed measurement streams=1; fixed mission step .05; no frame jitter or seed override; fresh within-pair start/draw audit",
+        "binaries": {
+          "off": {
+            "build_commit": "1df71091456bed43bd78b61144ff1474ca571b37",
+            "exe": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acc86\\off\\bin\\bsp_game.exe",
+              "size": 7329792,
+              "sha256": "64101e5a12c85608c812e4f0c5abfb5b02da85d8c00ced11e3468ca9de2bdbbc",
+              "machine": "0x14c",
+              "optional_header_magic": "0x10b"
+            },
+            "core": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acc86\\off\\bin\\bsp_core.lib",
+              "size": 102441796,
+              "sha256": "9bf0196d90f94b4de62f7bccd22dd1a6be9ed8b2e8df59d01cf822238a2d037f"
+            },
+            "caller_object": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acc86\\off\\game_hosts_ship_ai.obj",
+              "size": 1871736,
+              "sha256": "c78040173287581f54bbf5fa6051aa892150b62c51d8bca439788153004853a6"
+            },
+            "core_object": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acc86\\off\\gameplay_settings_tail.obj",
+              "size": 14893,
+              "sha256": "b1df9bb3ccd079b4f002309579c811779482f57427bb9d91016b1adc2f9c6840"
+            }
+          },
+          "on": {
+            "build_commit": "9c63a8874970e6ce0b793ef7e06b2b0e748fb57b",
+            "exe": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acc86\\on\\bin\\bsp_game.exe",
+              "size": 7329792,
+              "sha256": "f3139dbe17fe1f39271bf8d430e72d4d83a52853fe5cdef87542f507e2337694",
+              "machine": "0x14c",
+              "optional_header_magic": "0x10b"
+            },
+            "core": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acc86\\on\\bin\\bsp_core.lib",
+              "size": 102441796,
+              "sha256": "82d2e20ff467935d80e2d895b0b5c08118ccc78df1f47edc247817ae3c8fa766"
+            },
+            "caller_object": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acc86\\on\\game_hosts_ship_ai.obj",
+              "size": 1871984,
+              "sha256": "82a431174d47b649d68f4f191995d1f0d9c98829706928e093a4c974463f052f"
+            },
+            "core_object": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acc86\\on\\gameplay_settings_tail.obj",
+              "size": 14893,
+              "sha256": "fa8b798045e47aff43548eef8f8fd1f5cbfa096c11b9bd5435965cb10e6edc6e"
+            }
+          }
+        },
+        "common_backend": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acc86\\common\\xlive_stub.dll",
+          "size": 32768,
+          "sha256": "f9c96229125148d7c6e6d8b00800fe9f180b921cf1b79092b66dbbaa5f05d0f3",
+          "machine": "0x14c",
+          "optional_header_magic": "0x10b"
+        }
+      },
+      "evaluator": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\inputs\\evaluate_accuracy.py",
+        "sha256": "09cd6b565909f085752f6e9b7e30c096897972da1fe8e9db6ef5639ef02da047",
+        "legacy_regex": "draw=([-0-9.]+)",
+        "lines": [
+          22,
+          23,
+          63
+        ]
+      },
+      "runs": [
+        {
+          "group": "acr86",
+          "row": "ref",
+          "side": "off",
+          "log_records": [
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\run_off_ref.log",
+              "size": 8466923,
+              "sha256": "39a1c49ff1c8c96939ab0ab446046bc2ce98e3e9ed8e7214fd7765bc77c0c539"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\run_off_ref.log.manifest.json",
+              "size": 3380,
+              "sha256": "04f76162e58dc32331ada4f93f151bc8a9b1fa0e1613e8a6d45eb171ca70e84b"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\run_off_ref.log.watchdog.json",
+              "size": 2894,
+              "sha256": "a58f4951eb2653c8d0104b7197202b454c560e667fb9f04af1cd7d9af17f261a"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\audit_off_ref.json",
+              "size": 7326,
+              "sha256": "7567254cd6df219770a6167524903e75e0c40879c626f1ed5ab7129edd8700bc"
+            }
+          ],
+          "mission_start_frame": "36",
+          "mission_start_line": 1185,
+          "legacy_probe": [
+            "36",
+            "0.4143"
+          ],
+          "legacy_match_count": 52,
+          "legacy_first": {
+            "line": 20652,
+            "value": "0.4143",
+            "text": "plane death mode: unit=A6M Zero #1.2|.-II t=93.60 draw=0.4143 mode=powerlost c10=1000.00 (007CA8A0 -> 007BBFA0 -> 007D0B80, packet cc9_plane_death_modes)"
+          },
+          "word_boundary_draw_count": 51,
+          "sample_event_count": 51,
+          "sentinel_or_outside_sample_count": 0,
+          "first_logged_plane_sample": {
+            "line": 20652,
+            "unit": "A6M Zero #1.2|.-II",
+            "time": "93.60",
+            "draw": "0.4143",
+            "mode": "powerlost",
+            "c10": "1000.00",
+            "text": "plane death mode: unit=A6M Zero #1.2|.-II t=93.60 draw=0.4143 mode=powerlost c10=1000.00 (007CA8A0 -> 007BBFA0 -> 007D0B80, packet cc9_plane_death_modes)"
+          },
+          "last_logged_plane_sample": {
+            "line": 46888,
+            "unit": "D3A Val #7.1",
+            "time": "202.26",
+            "draw": "0.1295",
+            "mode": "leftspinning",
+            "c10": "1000.00",
+            "text": "plane death mode: unit=D3A Val #7.1 t=202.26 draw=0.1295 mode=leftspinning c10=1000.00 (007CA8A0 -> 007BBFA0 -> 007D0B80, packet cc9_plane_death_modes)"
+          },
+          "corrected_probe": [
+            "36",
+            "0.4143"
+          ],
+          "nonempty_logged_plane_draw_gate": true,
+          "global_first_or_all_stream_proof": false,
+          "printed_event_sequence_sha256": "d5ae513316623fd7bce41302ab36d021eca1289a1517f0e581ae558e1e8b9000",
+          "witness": {
+            "accuracy_calls": 0,
+            "completed_ratings": 0,
+            "ring_bearings": 0
+          },
+          "outcomes": [
+            "summary mission end: none (Mission.EndMission never true)"
+          ]
+        },
+        {
+          "group": "acr86",
+          "row": "ref",
+          "side": "on",
+          "log_records": [
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\run_on_ref.log",
+              "size": 8466920,
+              "sha256": "383be81f4f4135c110ff213b80e2c0bbcd045433e9a9aa62d97be18196fed01a"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\run_on_ref.log.manifest.json",
+              "size": 3376,
+              "sha256": "4a8ba959ba282144276d55760d257ac17efd04396c5b76e550646f092d782faf"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\run_on_ref.log.watchdog.json",
+              "size": 2886,
+              "sha256": "43775d0ff8160e5f37b538334b1aff6be02355779f70a0b388ed1710a70651db"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\audit_on_ref.json",
+              "size": 7313,
+              "sha256": "dce0e2df4694e5b301cf10d6453414b9f77aa57f6123e10444fef8dc0b08012f"
+            }
+          ],
+          "mission_start_frame": "36",
+          "mission_start_line": 1185,
+          "legacy_probe": [
+            "36",
+            "0.4143"
+          ],
+          "legacy_match_count": 52,
+          "legacy_first": {
+            "line": 20652,
+            "value": "0.4143",
+            "text": "plane death mode: unit=A6M Zero #1.2|.-II t=93.60 draw=0.4143 mode=powerlost c10=1000.00 (007CA8A0 -> 007BBFA0 -> 007D0B80, packet cc9_plane_death_modes)"
+          },
+          "word_boundary_draw_count": 51,
+          "sample_event_count": 51,
+          "sentinel_or_outside_sample_count": 0,
+          "first_logged_plane_sample": {
+            "line": 20652,
+            "unit": "A6M Zero #1.2|.-II",
+            "time": "93.60",
+            "draw": "0.4143",
+            "mode": "powerlost",
+            "c10": "1000.00",
+            "text": "plane death mode: unit=A6M Zero #1.2|.-II t=93.60 draw=0.4143 mode=powerlost c10=1000.00 (007CA8A0 -> 007BBFA0 -> 007D0B80, packet cc9_plane_death_modes)"
+          },
+          "last_logged_plane_sample": {
+            "line": 46888,
+            "unit": "D3A Val #7.1",
+            "time": "202.26",
+            "draw": "0.1295",
+            "mode": "leftspinning",
+            "c10": "1000.00",
+            "text": "plane death mode: unit=D3A Val #7.1 t=202.26 draw=0.1295 mode=leftspinning c10=1000.00 (007CA8A0 -> 007BBFA0 -> 007D0B80, packet cc9_plane_death_modes)"
+          },
+          "corrected_probe": [
+            "36",
+            "0.4143"
+          ],
+          "nonempty_logged_plane_draw_gate": true,
+          "global_first_or_all_stream_proof": false,
+          "printed_event_sequence_sha256": "d5ae513316623fd7bce41302ab36d021eca1289a1517f0e581ae558e1e8b9000",
+          "witness": {
+            "accuracy_calls": 0,
+            "completed_ratings": 0,
+            "ring_bearings": 0
+          },
+          "outcomes": [
+            "summary mission end: none (Mission.EndMission never true)"
+          ]
+        },
+        {
+          "group": "acr86",
+          "row": "msd",
+          "side": "off",
+          "log_records": [
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\run_off_msd.log",
+              "size": 4494343,
+              "sha256": "4eafc51af9012c994e5cd316e4f51fe51a2e85be9851a5f2909ec31405d31dff"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\run_off_msd.log.manifest.json",
+              "size": 3493,
+              "sha256": "a173478c59a0d72e7a455dee48549d4201fc842d073afc69a7a3cf323a0acbb0"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\run_off_msd.log.watchdog.json",
+              "size": 2892,
+              "sha256": "bfb0904718202472b3f8ca2cab79e0c0336dfc7584af5fbb78a194e3b28b7468"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\audit_off_msd.json",
+              "size": 7438,
+              "sha256": "7652e3215065eb17bcb453e24ea3b373fc5c12949b954b31225e1a8531528877"
+            }
+          ],
+          "mission_start_frame": "36",
+          "mission_start_line": 1186,
+          "legacy_probe": [
+            "36",
+            "1"
+          ],
+          "legacy_match_count": 1,
+          "legacy_first": {
+            "line": 26677,
+            "value": "1",
+            "text": "summary mission aa acceptance bound=7 window_rejects=0 armour_rejects=0 min_range_skips=0 armour_rejects_tail=0 tail_bound=1 lof_expiry_draw=1 kind6_gate=1 kind6_gate_rejects=0 artillery_gate=1 artillery_gate_rejects=0 (packet cc9_aa_targeting)"
+          },
+          "word_boundary_draw_count": 0,
+          "sample_event_count": 0,
+          "sentinel_or_outside_sample_count": 0,
+          "first_logged_plane_sample": null,
+          "last_logged_plane_sample": null,
+          "corrected_probe": [
+            "36",
+            null
+          ],
+          "nonempty_logged_plane_draw_gate": false,
+          "global_first_or_all_stream_proof": false,
+          "printed_event_sequence_sha256": null,
+          "witness": {
+            "accuracy_calls": 0,
+            "completed_ratings": 0,
+            "ring_bearings": 0
+          },
+          "outcomes": [
+            "summary mission end: none (Mission.EndMission never true)"
+          ]
+        },
+        {
+          "group": "acr86",
+          "row": "msd",
+          "side": "on",
+          "log_records": [
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\run_on_msd.log",
+              "size": 4494340,
+              "sha256": "4964ea360515b7cba9aae777e982ab588df1d70a246bfe302069a7d8dbe2a433"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\run_on_msd.log.manifest.json",
+              "size": 3489,
+              "sha256": "becdf63bc7b62adadbaf3c3a312c870c1f0779c3e9d0e7b8222a7d12b039d7fd"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\run_on_msd.log.watchdog.json",
+              "size": 2883,
+              "sha256": "2970f7efe572a9ee9e05e4eacf0abb63f221d3d96dfa651d793ba8e921d5b458"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\audit_on_msd.json",
+              "size": 7424,
+              "sha256": "f90d5249ad896166b2c33b4d0bf7b352230eac8c508655a644c082dfdfde7412"
+            }
+          ],
+          "mission_start_frame": "36",
+          "mission_start_line": 1186,
+          "legacy_probe": [
+            "36",
+            "1"
+          ],
+          "legacy_match_count": 1,
+          "legacy_first": {
+            "line": 26677,
+            "value": "1",
+            "text": "summary mission aa acceptance bound=7 window_rejects=0 armour_rejects=0 min_range_skips=0 armour_rejects_tail=0 tail_bound=1 lof_expiry_draw=1 kind6_gate=1 kind6_gate_rejects=0 artillery_gate=1 artillery_gate_rejects=0 (packet cc9_aa_targeting)"
+          },
+          "word_boundary_draw_count": 0,
+          "sample_event_count": 0,
+          "sentinel_or_outside_sample_count": 0,
+          "first_logged_plane_sample": null,
+          "last_logged_plane_sample": null,
+          "corrected_probe": [
+            "36",
+            null
+          ],
+          "nonempty_logged_plane_draw_gate": false,
+          "global_first_or_all_stream_proof": false,
+          "printed_event_sequence_sha256": null,
+          "witness": {
+            "accuracy_calls": 0,
+            "completed_ratings": 0,
+            "ring_bearings": 0
+          },
+          "outcomes": [
+            "summary mission end: none (Mission.EndMission never true)"
+          ]
+        },
+        {
+          "group": "acr86",
+          "row": "u2",
+          "side": "off",
+          "log_records": [
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\run_off_u2.log",
+              "size": 5098792,
+              "sha256": "7f563a88c9eedf813043246e4d5c953a6ccecbf97b6fd78084d23a149993fc62"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\run_off_u2.log.manifest.json",
+              "size": 4216,
+              "sha256": "9082f355c2fcbc3ee7b1e2fd61e49ed98d3779ba00052722fb781081f365c7a4"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\run_off_u2.log.watchdog.json",
+              "size": 3206,
+              "sha256": "13ad756a3960445e51523904bcf146e10cfefc82ef3d4955ac7bbe34bb1da85f"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\audit_off_u2.json",
+              "size": 8579,
+              "sha256": "d662cf9fdd73951fde2f65e1bf9982973ffe5976d2c671a7b0dc315cfe7b9004"
+            }
+          ],
+          "mission_start_frame": "36",
+          "mission_start_line": 1182,
+          "legacy_probe": [
+            "36",
+            "1"
+          ],
+          "legacy_match_count": 1,
+          "legacy_first": {
+            "line": 35260,
+            "value": "1",
+            "text": "summary mission aa acceptance bound=7 window_rejects=0 armour_rejects=0 min_range_skips=0 armour_rejects_tail=0 tail_bound=1 lof_expiry_draw=1 kind6_gate=1 kind6_gate_rejects=1726 artillery_gate=1 artillery_gate_rejects=1867 (packet cc9_aa_targeting)"
+          },
+          "word_boundary_draw_count": 0,
+          "sample_event_count": 0,
+          "sentinel_or_outside_sample_count": 0,
+          "first_logged_plane_sample": null,
+          "last_logged_plane_sample": null,
+          "corrected_probe": [
+            "36",
+            null
+          ],
+          "nonempty_logged_plane_draw_gate": false,
+          "global_first_or_all_stream_proof": false,
+          "printed_event_sequence_sha256": null,
+          "witness": {
+            "accuracy_calls": 1789747,
+            "completed_ratings": 584640,
+            "ring_bearings": 10107
+          },
+          "outcomes": [
+            "summary mission end: failed at 130.05 s (Mission.MissionStatus) text=\"Game Over\" entity=\"Alden\" objectives=5; EndScene 008B01B0 reached at 169.76 s (recorded); Mission.EndMission at 130.05 s"
+          ]
+        },
+        {
+          "group": "acr86",
+          "row": "u2",
+          "side": "on",
+          "log_records": [
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\run_on_u2.log",
+              "size": 5098790,
+              "sha256": "0106e448337092b232c410879703a071c1344e0325aef8c572389e30cca89f83"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\run_on_u2.log.manifest.json",
+              "size": 4212,
+              "sha256": "f6ee4cb7b306f20f4ee049eab4a78a18259ec411ef0a59a12311c06ca08c8b1b"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\run_on_u2.log.watchdog.json",
+              "size": 3197,
+              "sha256": "1875789aa8a1549c9837ee6c2609e1c3be1be946a30223713b80022dcd36dc23"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\audit_on_u2.json",
+              "size": 8565,
+              "sha256": "d6d8bb1e0ba56ade9052ad3f85d41dae06d923213ead5294ab651f6f725e256d"
+            }
+          ],
+          "mission_start_frame": "36",
+          "mission_start_line": 1182,
+          "legacy_probe": [
+            "36",
+            "1"
+          ],
+          "legacy_match_count": 1,
+          "legacy_first": {
+            "line": 35260,
+            "value": "1",
+            "text": "summary mission aa acceptance bound=7 window_rejects=0 armour_rejects=0 min_range_skips=0 armour_rejects_tail=0 tail_bound=1 lof_expiry_draw=1 kind6_gate=1 kind6_gate_rejects=1726 artillery_gate=1 artillery_gate_rejects=1867 (packet cc9_aa_targeting)"
+          },
+          "word_boundary_draw_count": 0,
+          "sample_event_count": 0,
+          "sentinel_or_outside_sample_count": 0,
+          "first_logged_plane_sample": null,
+          "last_logged_plane_sample": null,
+          "corrected_probe": [
+            "36",
+            null
+          ],
+          "nonempty_logged_plane_draw_gate": false,
+          "global_first_or_all_stream_proof": false,
+          "printed_event_sequence_sha256": null,
+          "witness": {
+            "accuracy_calls": 1789747,
+            "completed_ratings": 584640,
+            "ring_bearings": 10107
+          },
+          "outcomes": [
+            "summary mission end: failed at 130.05 s (Mission.MissionStatus) text=\"Game Over\" entity=\"Alden\" objectives=5; EndScene 008B01B0 reached at 169.76 s (recorded); Mission.EndMission at 130.05 s"
+          ]
+        }
+      ],
+      "pairs": [
+        {
+          "row": "ref",
+          "pair_records": [
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\pair_ref.json",
+              "sha256": "643863e7094150384d924c277b661ad55fa6addfc3fce658c82b6535046c1f76"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\evaluation_ref.json",
+              "sha256": "67869fd217ff09224e59b3e0edbed72756c3efe2b0b3e6e6d8b263bbc176b9e1"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\teardown_ref.txt",
+              "sha256": "2264400b692b88e843c1f7ea947414a2af0876ebc25d43700721a4156f8e9c29"
+            }
+          ],
+          "original_evaluator_passed": true,
+          "original_start_rng_check": true,
+          "original_probes": [
+            [
+              "36",
+              "0.4143"
+            ],
+            [
+              "36",
+              "0.4143"
+            ]
+          ],
+          "corrected_probes": [
+            [
+              "36",
+              "0.4143"
+            ],
+            [
+              "36",
+              "0.4143"
+            ]
+          ],
+          "nonempty_logged_plane_draw_gate": true,
+          "equal_absence_is_not_a_witness": false,
+          "event_sequences_match": true,
+          "event_projection_only": true,
+          "ordered_lines": [
+            762,
+            762
+          ],
+          "ordered_diffs": 0,
+          "teardown_lines": [
+            251,
+            251
+          ],
+          "teardown_diffs": 0,
+          "raw_pair_checker_exit": 0,
+          "stored_pair_identical": true
+        },
+        {
+          "row": "msd",
+          "pair_records": [
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\pair_msd.json",
+              "sha256": "aeea13716b0a26761296e4c99e87a54e33cec1c616b74a91916a4a4240827ad7"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\evaluation_msd.json",
+              "sha256": "779dcb685330dec666d5839ce2e9675fac90ae3d04a8e16aa73f140be78b006b"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\teardown_msd.txt",
+              "sha256": "4539b267ddb737ffe32772dc951add4ea6c7936f27fa1a340567f766fd754261"
+            }
+          ],
+          "original_evaluator_passed": true,
+          "original_start_rng_check": true,
+          "original_probes": [
+            [
+              "36",
+              "1"
+            ],
+            [
+              "36",
+              "1"
+            ]
+          ],
+          "corrected_probes": [
+            [
+              "36",
+              null
+            ],
+            [
+              "36",
+              null
+            ]
+          ],
+          "nonempty_logged_plane_draw_gate": false,
+          "equal_absence_is_not_a_witness": true,
+          "event_sequences_match": true,
+          "event_projection_only": true,
+          "ordered_lines": [
+            626,
+            626
+          ],
+          "ordered_diffs": 0,
+          "teardown_lines": [
+            4312,
+            4312
+          ],
+          "teardown_diffs": 0,
+          "raw_pair_checker_exit": 0,
+          "stored_pair_identical": true
+        },
+        {
+          "row": "u2",
+          "pair_records": [
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\pair_u2.json",
+              "sha256": "b9fc0a550fce2f3bb90a6684101133b16542501fa16594dc8f48550c4de2f2ae"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\evaluation_u2.json",
+              "sha256": "dd5cea80dceb1a34fd3c627c53ade0dba034689a019471daa3e6b8c7223037ee"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-gates\\local\\acr86\\teardown_u2.txt",
+              "sha256": "5bf780e7de8a86a243d89c6c566af85b6eb145fbf2403a9581174ff46b5b0e28"
+            }
+          ],
+          "original_evaluator_passed": true,
+          "original_start_rng_check": true,
+          "original_probes": [
+            [
+              "36",
+              "1"
+            ],
+            [
+              "36",
+              "1"
+            ]
+          ],
+          "corrected_probes": [
+            [
+              "36",
+              null
+            ],
+            [
+              "36",
+              null
+            ]
+          ],
+          "nonempty_logged_plane_draw_gate": false,
+          "equal_absence_is_not_a_witness": true,
+          "event_sequences_match": true,
+          "event_projection_only": true,
+          "ordered_lines": [
+            584,
+            584
+          ],
+          "ordered_diffs": 0,
+          "teardown_lines": [
+            226,
+            226
+          ],
+          "teardown_diffs": 0,
+          "raw_pair_checker_exit": 0,
+          "stored_pair_identical": true
+        }
+      ],
+      "all_source_format_event_sequences_equal_within_pairs": true,
+      "old_stored_pass_fields_preserved": true,
+      "unobserved_RNG_cases": [
+        "msd",
+        "u2"
+      ]
+    },
+    {
+      "group": "gacc_now",
+      "directory": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now",
+      "freeze_sha256": "425a7770e191589df8be74dd73f8fa92e3f16fdde6f07774b4502ead0dedbeb1",
+      "frozen_input_matches": 65,
+      "frozen_input_total": 65,
+      "frozen": {
+        "accepted_base": "5c2547156",
+        "shared_off_commit": "5c2547156",
+        "private_on_commit": "c8e521821",
+        "runtime_host_commit": "a94f95e585afb15891062e2fd5dcb1a0c24caf5a",
+        "rows": [
+          {
+            "id": "ref",
+            "mission": "USN04",
+            "mission_frames": 4800,
+            "total_frames": 5100,
+            "step": 0.05,
+            "env": {
+              "BSP_DEATH_TABLE": "1",
+              "BSP_GUNNERY_RNG_STREAMS": "1"
+            },
+            "game_args": [
+              "--difficulty",
+              "1",
+              "--window-resolution",
+              "fit",
+              "--present-interval",
+              "immediate",
+              "--window-monitor",
+              "smallest",
+              "--frames",
+              "5100",
+              "--press-start-frame",
+              "30",
+              "--menu-select",
+              "USN04",
+              "--mission-frames",
+              "4800",
+              "--mission-frame-seconds",
+              "0.05"
+            ],
+            "plan": null,
+            "witness_required": false,
+            "bounds": "absent",
+            "acceptance_scope": "startup regression only"
+          },
+          {
+            "id": "msd",
+            "mission": "USN04",
+            "mission_frames": 1600,
+            "total_frames": 1900,
+            "step": 0.05,
+            "env": {
+              "BSP_DEATH_TABLE": "1",
+              "BSP_GUNNERY_RNG_STREAMS": "1",
+              "BSP_NATIVE_MISSION_FRAME": "1",
+              "BSP_NATIVE_MISSION_SHIP": "1",
+              "BSP_NATIVE_MISSION_UNITS": "1"
+            },
+            "game_args": [
+              "--difficulty",
+              "1",
+              "--window-resolution",
+              "fit",
+              "--present-interval",
+              "immediate",
+              "--window-monitor",
+              "smallest",
+              "--frames",
+              "1900",
+              "--press-start-frame",
+              "30",
+              "--menu-select",
+              "USN04",
+              "--mission-frames",
+              "1600",
+              "--mission-frame-seconds",
+              "0.05"
+            ],
+            "plan": null,
+            "witness_required": false,
+            "bounds": "absent",
+            "acceptance_scope": "startup regression only"
+          },
+          {
+            "id": "u2",
+            "mission": "USN02",
+            "mission_frames": 16000,
+            "total_frames": 16200,
+            "step": 0.05,
+            "env": {
+              "BSP_DEATH_TABLE": "1",
+              "BSP_GUNNERY_RNG_STREAMS": "1"
+            },
+            "game_args": [
+              "--difficulty",
+              "1",
+              "--window-resolution",
+              "fit",
+              "--present-interval",
+              "immediate",
+              "--window-monitor",
+              "smallest",
+              "--frames",
+              "16200",
+              "--press-start-frame",
+              "30",
+              "--menu-select",
+              "USN02",
+              "--mission-frames",
+              "16000",
+              "--mission-frame-seconds",
+              "0.05",
+              "--stop-after-end",
+              "40",
+              "--helm-orders",
+              "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\inputs\\usn02_l72_u2_g4.txt"
+            ],
+            "plan": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\inputs\\usn02_l72_u2_g4.txt",
+              "size": 711,
+              "sha256": "9cc7b70272f2a243915813e94ebc95ca6e39faba629ab6294ceef810ec83f235"
+            },
+            "witness_required": true,
+            "bounds": "absent",
+            "acceptance_scope": "actual accuracy caller workload"
+          }
+        ],
+        "order": [
+          "off/ref",
+          "on/ref",
+          "off/msd",
+          "on/msd",
+          "off/u2",
+          "on/u2"
+        ],
+        "slots": 8,
+        "priority": "Normal",
+        "watchdog_seconds": 14400,
+        "rng_policy": "existing keyed measurement streams=1; fixed mission step .05; no frame jitter or seed override; fresh within-pair start/draw audit",
+        "binaries": {
+          "off": {
+            "build_commit": "5c2547156",
+            "exe": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\off\\bin\\bsp_game.exe",
+              "size": 7442432,
+              "sha256": "1025847f08e71ca2fe4b72306077fb71131cb03552b4180b96456a6624a424f0",
+              "machine": "0x14c",
+              "optional_header_magic": "0x10b"
+            },
+            "core": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\off\\bin\\bsp_core.lib",
+              "size": 102894874,
+              "sha256": "c640f1ad3c387c07661ca0094429d8ad2eef1a4e3f0ca6746897193954274dde"
+            },
+            "caller_object": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\off\\game_hosts_ship_ai.obj",
+              "size": 1871728,
+              "sha256": "954fbbcf6f67b377407c01252b4f27a29b9e227f4986198a0794810ccea14b75"
+            },
+            "core_object": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\off\\gameplay_settings_tail.obj",
+              "size": 14885,
+              "sha256": "7d3627d3d509b415b74b576e3a31629b5438e2ad2c115366fc09c2f7c5aa58eb"
+            }
+          },
+          "on": {
+            "build_commit": "c8e521821",
+            "exe": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\on\\bin\\bsp_game.exe",
+              "size": 7441920,
+              "sha256": "df41385286f2fbba435f14c8f53db9ab615077db531282278878cef3b6dd33ff",
+              "machine": "0x14c",
+              "optional_header_magic": "0x10b"
+            },
+            "core": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\on\\bin\\bsp_core.lib",
+              "size": 102894874,
+              "sha256": "044c0fee04105c817ecdcc144d4b54531818fce00be9a7edfe4fadb1f75e1995"
+            },
+            "caller_object": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\on\\game_hosts_ship_ai.obj",
+              "size": 1871976,
+              "sha256": "edf6de7de7087d4a33d4a0701b97eaad6e4cbda11385d6663bdfc128794b7839"
+            },
+            "core_object": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\on\\gameplay_settings_tail.obj",
+              "size": 14885,
+              "sha256": "89b6b019b1100f51e973df4ebc4e9acddb1811cbe71fc38c6eeaa5eeb667ceaf"
+            }
+          }
+        },
+        "common_backend": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\common\\xlive_stub.dll",
+          "size": 32768,
+          "sha256": "f9c96229125148d7c6e6d8b00800fe9f180b921cf1b79092b66dbbaa5f05d0f3",
+          "machine": "0x14c",
+          "optional_header_magic": "0x10b"
+        }
+      },
+      "evaluator": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\inputs\\evaluate_accuracy.py",
+        "sha256": "09cd6b565909f085752f6e9b7e30c096897972da1fe8e9db6ef5639ef02da047",
+        "legacy_regex": "draw=([-0-9.]+)",
+        "lines": [
+          22,
+          23,
+          63
+        ]
+      },
+      "runs": [
+        {
+          "group": "gacc_now",
+          "row": "ref",
+          "side": "off",
+          "log_records": [
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\run_off_ref.log",
+              "size": 8467200,
+              "sha256": "fb3704f81d4ffb2ceb71460a0f681e98dd23c54b0eb51fadb6a50c8fe988b48f"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\run_off_ref.log.manifest.json",
+              "size": 3356,
+              "sha256": "090e7b496e775b1e5e02fbfdc88c0768f177f3ef6af554dcb14d079a0e4d154f"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\run_off_ref.log.watchdog.json",
+              "size": 2883,
+              "sha256": "e30a1dcd3d6df8c32221e92a37744a4d18a719577d8436fc0fb35632335c5846"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\audit_off_ref.json",
+              "size": 7291,
+              "sha256": "1f5da766dea23734c58c288d5d4a39902c66cf3db3bf06a6d452396a2c7770eb"
+            }
+          ],
+          "mission_start_frame": "36",
+          "mission_start_line": 1186,
+          "legacy_probe": [
+            "36",
+            "0.4143"
+          ],
+          "legacy_match_count": 52,
+          "legacy_first": {
+            "line": 20653,
+            "value": "0.4143",
+            "text": "plane death mode: unit=A6M Zero #1.2|.-II t=93.60 draw=0.4143 mode=powerlost c10=1000.00 (007CA8A0 -> 007BBFA0 -> 007D0B80, packet cc9_plane_death_modes)"
+          },
+          "word_boundary_draw_count": 51,
+          "sample_event_count": 51,
+          "sentinel_or_outside_sample_count": 0,
+          "first_logged_plane_sample": {
+            "line": 20653,
+            "unit": "A6M Zero #1.2|.-II",
+            "time": "93.60",
+            "draw": "0.4143",
+            "mode": "powerlost",
+            "c10": "1000.00",
+            "text": "plane death mode: unit=A6M Zero #1.2|.-II t=93.60 draw=0.4143 mode=powerlost c10=1000.00 (007CA8A0 -> 007BBFA0 -> 007D0B80, packet cc9_plane_death_modes)"
+          },
+          "last_logged_plane_sample": {
+            "line": 46889,
+            "unit": "D3A Val #7.1",
+            "time": "202.26",
+            "draw": "0.1295",
+            "mode": "leftspinning",
+            "c10": "1000.00",
+            "text": "plane death mode: unit=D3A Val #7.1 t=202.26 draw=0.1295 mode=leftspinning c10=1000.00 (007CA8A0 -> 007BBFA0 -> 007D0B80, packet cc9_plane_death_modes)"
+          },
+          "corrected_probe": [
+            "36",
+            "0.4143"
+          ],
+          "nonempty_logged_plane_draw_gate": true,
+          "global_first_or_all_stream_proof": false,
+          "printed_event_sequence_sha256": "d5ae513316623fd7bce41302ab36d021eca1289a1517f0e581ae558e1e8b9000",
+          "witness": {
+            "accuracy_calls": 0,
+            "completed_ratings": 0,
+            "ring_bearings": 0
+          },
+          "outcomes": [
+            "summary mission end: none (Mission.EndMission never true)"
+          ]
+        },
+        {
+          "group": "gacc_now",
+          "row": "ref",
+          "side": "on",
+          "log_records": [
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\run_on_ref.log",
+              "size": 8467199,
+              "sha256": "42b6fe75459be301437ff9a93b720a8841c718169a2372c00c6d2ea307ccd1f5"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\run_on_ref.log.manifest.json",
+              "size": 3352,
+              "sha256": "65e64b8a94b849fb8d2aee22e1a64c9ed1a6056ca7a02892ffffb2cbdaa8ea33"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\run_on_ref.log.watchdog.json",
+              "size": 2872,
+              "sha256": "b5020c41e5c778d69db59be90b742a68d4cb21c00171d07ac1fffb956cff03ff"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\audit_on_ref.json",
+              "size": 7275,
+              "sha256": "8bfda7688d5636253b4d26773e96ba60e60eee4e765d2d3b3ffea361613e215a"
+            }
+          ],
+          "mission_start_frame": "36",
+          "mission_start_line": 1186,
+          "legacy_probe": [
+            "36",
+            "0.4143"
+          ],
+          "legacy_match_count": 52,
+          "legacy_first": {
+            "line": 20653,
+            "value": "0.4143",
+            "text": "plane death mode: unit=A6M Zero #1.2|.-II t=93.60 draw=0.4143 mode=powerlost c10=1000.00 (007CA8A0 -> 007BBFA0 -> 007D0B80, packet cc9_plane_death_modes)"
+          },
+          "word_boundary_draw_count": 51,
+          "sample_event_count": 51,
+          "sentinel_or_outside_sample_count": 0,
+          "first_logged_plane_sample": {
+            "line": 20653,
+            "unit": "A6M Zero #1.2|.-II",
+            "time": "93.60",
+            "draw": "0.4143",
+            "mode": "powerlost",
+            "c10": "1000.00",
+            "text": "plane death mode: unit=A6M Zero #1.2|.-II t=93.60 draw=0.4143 mode=powerlost c10=1000.00 (007CA8A0 -> 007BBFA0 -> 007D0B80, packet cc9_plane_death_modes)"
+          },
+          "last_logged_plane_sample": {
+            "line": 46889,
+            "unit": "D3A Val #7.1",
+            "time": "202.26",
+            "draw": "0.1295",
+            "mode": "leftspinning",
+            "c10": "1000.00",
+            "text": "plane death mode: unit=D3A Val #7.1 t=202.26 draw=0.1295 mode=leftspinning c10=1000.00 (007CA8A0 -> 007BBFA0 -> 007D0B80, packet cc9_plane_death_modes)"
+          },
+          "corrected_probe": [
+            "36",
+            "0.4143"
+          ],
+          "nonempty_logged_plane_draw_gate": true,
+          "global_first_or_all_stream_proof": false,
+          "printed_event_sequence_sha256": "d5ae513316623fd7bce41302ab36d021eca1289a1517f0e581ae558e1e8b9000",
+          "witness": {
+            "accuracy_calls": 0,
+            "completed_ratings": 0,
+            "ring_bearings": 0
+          },
+          "outcomes": [
+            "summary mission end: none (Mission.EndMission never true)"
+          ]
+        },
+        {
+          "group": "gacc_now",
+          "row": "msd",
+          "side": "off",
+          "log_records": [
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\run_off_msd.log",
+              "size": 4494618,
+              "sha256": "df0e55bc9f9bde58ee792cef311f9e58e72a95e354653b2036bf59f4e6a269bc"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\run_off_msd.log.manifest.json",
+              "size": 3469,
+              "sha256": "1678bde6a0b53e15f7679d2e0c8d460aa5174e3505d62646262c90dec16dcade"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\run_off_msd.log.watchdog.json",
+              "size": 2882,
+              "sha256": "acef69cebbd734a7a7e0e892fee8789b407fec5fee111f305e7c1444fb6184e4"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\audit_off_msd.json",
+              "size": 7404,
+              "sha256": "fc91bcb84c6bb5895c39e2ac09310a2048f94621c8183749a783d386bf9c8d80"
+            }
+          ],
+          "mission_start_frame": "36",
+          "mission_start_line": 1187,
+          "legacy_probe": [
+            "36",
+            "1"
+          ],
+          "legacy_match_count": 1,
+          "legacy_first": {
+            "line": 26678,
+            "value": "1",
+            "text": "summary mission aa acceptance bound=7 window_rejects=0 armour_rejects=0 min_range_skips=0 armour_rejects_tail=0 tail_bound=1 lof_expiry_draw=1 kind6_gate=1 kind6_gate_rejects=0 artillery_gate=1 artillery_gate_rejects=0 (packet cc9_aa_targeting)"
+          },
+          "word_boundary_draw_count": 0,
+          "sample_event_count": 0,
+          "sentinel_or_outside_sample_count": 0,
+          "first_logged_plane_sample": null,
+          "last_logged_plane_sample": null,
+          "corrected_probe": [
+            "36",
+            null
+          ],
+          "nonempty_logged_plane_draw_gate": false,
+          "global_first_or_all_stream_proof": false,
+          "printed_event_sequence_sha256": null,
+          "witness": {
+            "accuracy_calls": 0,
+            "completed_ratings": 0,
+            "ring_bearings": 0
+          },
+          "outcomes": [
+            "summary mission end: none (Mission.EndMission never true)"
+          ]
+        },
+        {
+          "group": "gacc_now",
+          "row": "msd",
+          "side": "on",
+          "log_records": [
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\run_on_msd.log",
+              "size": 4494616,
+              "sha256": "baebd89777c013961cc1d9612eca788a298cc25f08ec7fd4ca413ef2b9d3116b"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\run_on_msd.log.manifest.json",
+              "size": 3465,
+              "sha256": "4b4ff9fce129ae1259f7727c777b675ab8221949d00594882347d3cc8a4ce641"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\run_on_msd.log.watchdog.json",
+              "size": 2873,
+              "sha256": "a36662b398ba921c12e041dbfaa6a5822bc56ccaab57f54a19533d3e9f0cc8a1"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\audit_on_msd.json",
+              "size": 7390,
+              "sha256": "b0052cdf475a991c17b1854271f6cf8340132dbb0741ec031c183c02224f87a9"
+            }
+          ],
+          "mission_start_frame": "36",
+          "mission_start_line": 1187,
+          "legacy_probe": [
+            "36",
+            "1"
+          ],
+          "legacy_match_count": 1,
+          "legacy_first": {
+            "line": 26678,
+            "value": "1",
+            "text": "summary mission aa acceptance bound=7 window_rejects=0 armour_rejects=0 min_range_skips=0 armour_rejects_tail=0 tail_bound=1 lof_expiry_draw=1 kind6_gate=1 kind6_gate_rejects=0 artillery_gate=1 artillery_gate_rejects=0 (packet cc9_aa_targeting)"
+          },
+          "word_boundary_draw_count": 0,
+          "sample_event_count": 0,
+          "sentinel_or_outside_sample_count": 0,
+          "first_logged_plane_sample": null,
+          "last_logged_plane_sample": null,
+          "corrected_probe": [
+            "36",
+            null
+          ],
+          "nonempty_logged_plane_draw_gate": false,
+          "global_first_or_all_stream_proof": false,
+          "printed_event_sequence_sha256": null,
+          "witness": {
+            "accuracy_calls": 0,
+            "completed_ratings": 0,
+            "ring_bearings": 0
+          },
+          "outcomes": [
+            "summary mission end: none (Mission.EndMission never true)"
+          ]
+        },
+        {
+          "group": "gacc_now",
+          "row": "u2",
+          "side": "off",
+          "log_records": [
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\run_off_u2.log",
+              "size": 5099070,
+              "sha256": "d8c117fa18aaeb322b632a672d281148b1ec914c154b894d657c6faba993b70c"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\run_off_u2.log.manifest.json",
+              "size": 4188,
+              "sha256": "a1bd349a75c1d6de418501fb552b1649e0677ea3b6ab2c77680cdd25ebc068e1"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\run_off_u2.log.watchdog.json",
+              "size": 3192,
+              "sha256": "8ea53d67d0445715a41f54f7a59c65ba61e73d8ae77e892bb45c93d62817a8e9"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\audit_off_u2.json",
+              "size": 8537,
+              "sha256": "47f5701cb3e54b42794c2bc3ac4bdc47eb4d5e15f4fdf9f4435cda94ba6c7788"
+            }
+          ],
+          "mission_start_frame": "36",
+          "mission_start_line": 1183,
+          "legacy_probe": [
+            "36",
+            "1"
+          ],
+          "legacy_match_count": 1,
+          "legacy_first": {
+            "line": 35261,
+            "value": "1",
+            "text": "summary mission aa acceptance bound=7 window_rejects=0 armour_rejects=0 min_range_skips=0 armour_rejects_tail=0 tail_bound=1 lof_expiry_draw=1 kind6_gate=1 kind6_gate_rejects=1726 artillery_gate=1 artillery_gate_rejects=1867 (packet cc9_aa_targeting)"
+          },
+          "word_boundary_draw_count": 0,
+          "sample_event_count": 0,
+          "sentinel_or_outside_sample_count": 0,
+          "first_logged_plane_sample": null,
+          "last_logged_plane_sample": null,
+          "corrected_probe": [
+            "36",
+            null
+          ],
+          "nonempty_logged_plane_draw_gate": false,
+          "global_first_or_all_stream_proof": false,
+          "printed_event_sequence_sha256": null,
+          "witness": {
+            "accuracy_calls": 1789747,
+            "completed_ratings": 584640,
+            "ring_bearings": 10107
+          },
+          "outcomes": [
+            "summary mission end: failed at 130.05 s (Mission.MissionStatus) text=\"Game Over\" entity=\"Alden\" objectives=5; EndScene 008B01B0 reached at 169.76 s (recorded); Mission.EndMission at 130.05 s"
+          ]
+        },
+        {
+          "group": "gacc_now",
+          "row": "u2",
+          "side": "on",
+          "log_records": [
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\run_on_u2.log",
+              "size": 5099066,
+              "sha256": "3532cd39ca03e945c08d79f28297c93e7a26915479ba4c9c4f5965a5afaad979"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\run_on_u2.log.manifest.json",
+              "size": 4184,
+              "sha256": "f52ed6cd0ca2935804b49e2536eba8a7d922cbcc14dfc3c5dc33c111eaf20385"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\run_on_u2.log.watchdog.json",
+              "size": 3183,
+              "sha256": "b4316eeaf88f36c3d855169c5a63b3f5281666e1335b8e0f647ef70931363298"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\audit_on_u2.json",
+              "size": 8523,
+              "sha256": "5883eb655391dea508197a9d9549e9a70184e8d9463c196176f50a3434dcf132"
+            }
+          ],
+          "mission_start_frame": "36",
+          "mission_start_line": 1183,
+          "legacy_probe": [
+            "36",
+            "1"
+          ],
+          "legacy_match_count": 1,
+          "legacy_first": {
+            "line": 35261,
+            "value": "1",
+            "text": "summary mission aa acceptance bound=7 window_rejects=0 armour_rejects=0 min_range_skips=0 armour_rejects_tail=0 tail_bound=1 lof_expiry_draw=1 kind6_gate=1 kind6_gate_rejects=1726 artillery_gate=1 artillery_gate_rejects=1867 (packet cc9_aa_targeting)"
+          },
+          "word_boundary_draw_count": 0,
+          "sample_event_count": 0,
+          "sentinel_or_outside_sample_count": 0,
+          "first_logged_plane_sample": null,
+          "last_logged_plane_sample": null,
+          "corrected_probe": [
+            "36",
+            null
+          ],
+          "nonempty_logged_plane_draw_gate": false,
+          "global_first_or_all_stream_proof": false,
+          "printed_event_sequence_sha256": null,
+          "witness": {
+            "accuracy_calls": 1789747,
+            "completed_ratings": 584640,
+            "ring_bearings": 10107
+          },
+          "outcomes": [
+            "summary mission end: failed at 130.05 s (Mission.MissionStatus) text=\"Game Over\" entity=\"Alden\" objectives=5; EndScene 008B01B0 reached at 169.76 s (recorded); Mission.EndMission at 130.05 s"
+          ]
+        }
+      ],
+      "pairs": [
+        {
+          "row": "ref",
+          "pair_records": [
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\pair_ref.json",
+              "sha256": "8c54c373264f443f21cdf7045ab8d93d6d6b5b4457e89b0d7ee5a222f57f095a"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\evaluation_ref.json",
+              "sha256": "eb37c6db137ec7f1067e663db01e77b64df441bc92fef37f884124d4e82e0bac"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\teardown_ref.txt",
+              "sha256": "6e6a599ba16400a1d524f7f135700ff60131936a1297c06b5777fe1a800034c1"
+            }
+          ],
+          "original_evaluator_passed": true,
+          "original_start_rng_check": true,
+          "original_probes": [
+            [
+              "36",
+              "0.4143"
+            ],
+            [
+              "36",
+              "0.4143"
+            ]
+          ],
+          "corrected_probes": [
+            [
+              "36",
+              "0.4143"
+            ],
+            [
+              "36",
+              "0.4143"
+            ]
+          ],
+          "nonempty_logged_plane_draw_gate": true,
+          "equal_absence_is_not_a_witness": false,
+          "event_sequences_match": true,
+          "event_projection_only": true,
+          "ordered_lines": [
+            762,
+            762
+          ],
+          "ordered_diffs": 0,
+          "teardown_lines": [
+            253,
+            253
+          ],
+          "teardown_diffs": 0,
+          "raw_pair_checker_exit": 0,
+          "stored_pair_identical": true
+        },
+        {
+          "row": "msd",
+          "pair_records": [
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\pair_msd.json",
+              "sha256": "4176480f197105f27ba6068917f6533055cb7d3bcb2221f6e9070023b1303ff5"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\evaluation_msd.json",
+              "sha256": "b3ad6bc56ead04b1535557a9bd63d1f729d7d9e8f07ef3e795d277aa6109bc2f"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\teardown_msd.txt",
+              "sha256": "8a6008ce0142faba4bc397a7cc7093743cfe0f6db57e232d8c98314b08a91313"
+            }
+          ],
+          "original_evaluator_passed": true,
+          "original_start_rng_check": true,
+          "original_probes": [
+            [
+              "36",
+              "1"
+            ],
+            [
+              "36",
+              "1"
+            ]
+          ],
+          "corrected_probes": [
+            [
+              "36",
+              null
+            ],
+            [
+              "36",
+              null
+            ]
+          ],
+          "nonempty_logged_plane_draw_gate": false,
+          "equal_absence_is_not_a_witness": true,
+          "event_sequences_match": true,
+          "event_projection_only": true,
+          "ordered_lines": [
+            626,
+            626
+          ],
+          "ordered_diffs": 0,
+          "teardown_lines": [
+            4314,
+            4314
+          ],
+          "teardown_diffs": 0,
+          "raw_pair_checker_exit": 0,
+          "stored_pair_identical": true
+        },
+        {
+          "row": "u2",
+          "pair_records": [
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\pair_u2.json",
+              "sha256": "2fcf551e7fed11049fbc9dd318aed76bd628d48aed1599329af8684cc7056323"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\evaluation_u2.json",
+              "sha256": "6b6d9d8e58a7a5aa440cc3c205d9c7c7697487e5f232a00f39902db395784f99"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\teardown_u2.txt",
+              "sha256": "8ec38ea83a5e799700c546cf71dc1d613a4729add2822effbda0b3dae115defb"
+            }
+          ],
+          "original_evaluator_passed": true,
+          "original_start_rng_check": true,
+          "original_probes": [
+            [
+              "36",
+              "1"
+            ],
+            [
+              "36",
+              "1"
+            ]
+          ],
+          "corrected_probes": [
+            [
+              "36",
+              null
+            ],
+            [
+              "36",
+              null
+            ]
+          ],
+          "nonempty_logged_plane_draw_gate": false,
+          "equal_absence_is_not_a_witness": true,
+          "event_sequences_match": true,
+          "event_projection_only": true,
+          "ordered_lines": [
+            584,
+            584
+          ],
+          "ordered_diffs": 0,
+          "teardown_lines": [
+            228,
+            228
+          ],
+          "teardown_diffs": 0,
+          "raw_pair_checker_exit": 0,
+          "stored_pair_identical": true
+        }
+      ],
+      "all_source_format_event_sequences_equal_within_pairs": true,
+      "old_stored_pass_fields_preserved": true,
+      "unobserved_RNG_cases": [
+        "msd",
+        "u2"
+      ]
+    }
+  ],
+  "retained_valid_evidence": {
+    "all119_old_and_current_frozen_file_checks_match": true,
+    "all6_pair_checkers_rerun_read_only_exit0": true,
+    "all_ordered_and_teardown_diffs0": true,
+    "old_results_evaluators_masks_inputs_unchanged": true,
+    "USN02_per_side": {
+      "accuracy_calls": 1789747,
+      "completed_postreturn_ratings": 584640,
+      "ring_bearings": 10107,
+      "outcome": "failed130.05s,Game Over,Alden"
+    },
+    "USN02_RNG_witness": "unobserved, never upgraded by newcases",
+    "MSD1600_RNG_witness": "unobserved, never upgraded by newcases",
+    "reference_samples_per_side": 51,
+    "reference_first_logged_sample": "t93.60 draw0.4143",
+    "reference_scope": "logged plane-mode projection only, not globalfirst"
+  },
+  "natural_hot_workload_source": {
+    "historical_freeze": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\frozen.json",
+      "sha256": "db616b71fb85ca20d3fb6027d90fd88804c5e70c46138f96c5f30c59e40bc7c6",
+      "baseline_commit": "409689e5e813d4aaaeb656abeb827d06a5842016",
+      "candidate_commit": "f49e064d5e393c5ad8d0dfdd54d686b5669b2585"
+    },
+    "cases": [
+      {
+        "case": "ijn18",
+        "historical_context_only": true,
+        "not_a_current_guard_AB_pair": true,
+        "executed_historical_budget": 64000,
+        "not_a_shorter_executed_run": true,
+        "full_source_format_sequences_equal": true,
+        "runs": [
+          {
+            "side": "base",
+            "log": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\run_base_ijn18.log",
+              "size": 36562391,
+              "sha256": "69ff26f5673336cb88d6bf568260ea258d15a2cb79d563f3129e51cb59c2f51d"
+            },
+            "manifest": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\run_base_ijn18.log.manifest.json",
+              "sha256": "62985f54dc753521097f7b64460497ac97f21f6a2058781e2c1111db48c2df9d"
+            },
+            "watchdog": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\run_base_ijn18.log.watchdog.json",
+              "sha256": "ff7b16ed0ed7e66db64599e403161f85befc71ecb1ea5e10a2d167bc11cc06b7"
+            },
+            "original_exe": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\binaries\\base\\bsp_game.exe",
+              "size": 7323136,
+              "mtime_utc": "2026-10-29T03:47:50.3186481Z",
+              "sha256": "b121e96c18f08ac2be198c38761caa4bc2834f973be9f22c88c9b6f68f2f85c3",
+              "build_checkout": {
+                "root": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog",
+                "head": "063c4be212b2e475a706b65d2f4ca067fe2656f0",
+                "dirty": false
+              }
+            },
+            "original_env": {
+              "BSP_DEATH_TABLE": "1",
+              "BSP_GUNNERY_RNG_STREAMS": "1",
+              "BSP_SEARCHER_BOUNDS_INIT": "1"
+            },
+            "original_arguments": [
+              "--difficulty",
+              "1",
+              "--window-resolution",
+              "fit",
+              "--present-interval",
+              "immediate",
+              "--window-monitor",
+              "smallest",
+              "--frames",
+              "64300",
+              "--press-start-frame",
+              "30",
+              "--menu-select",
+              "IJN18",
+              "--mission-frames",
+              "64000",
+              "--mission-frame-seconds",
+              "0.05",
+              "--helm-orders",
+              "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\inputs\\plans\\ijn18_l67_i18_d.txt",
+              "--stop-after-end",
+              "40"
+            ],
+            "original_host": {
+              "root": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog",
+              "head": "063c4be212b2e475a706b65d2f4ca067fe2656f0",
+              "dirty": false
+            },
+            "first_hot": {
+              "line": 5490,
+              "text": "host ShipAiFirepower::hit_accuracy_profile_008386f0 [008386f0] concrete",
+              "previous_native": {
+                "line": 5455,
+                "text": "native frame complete: frame=112 queue=16B63EB8 commands=0 entry_used=0 present=1 hr=00000000 clear_request=0 inhibit=0 unavailable=0"
+              },
+              "previous_mission": null
+            },
+            "first_completed_return": {
+              "line": 5511,
+              "text": "host ShipAiApproach::rate_bearing_0095eb40 [009e5dc4] concrete",
+              "previous_native": {
+                "line": 5455,
+                "text": "native frame complete: frame=112 queue=16B63EB8 commands=0 entry_used=0 present=1 hr=00000000 clear_request=0 inhibit=0 unavailable=0"
+              },
+              "previous_mission": null
+            },
+            "next_mission_after_return": null,
+            "first_sample": {
+              "line": 14964,
+              "text": "plane death mode: unit=Recon2 t=67.05 draw=0.4640 mode=powerlost c10=1000.00 (007CA8A0 -> 007BBFA0 -> 007D0B80, packet cc9_plane_death_modes)",
+              "unit": "Recon2",
+              "time": "67.05",
+              "draw": "0.4640",
+              "mode": "powerlost",
+              "c10": "1000.00",
+              "previous_native": {
+                "line": 14949,
+                "text": "native frame complete: frame=1379 queue=16B63EB8 commands=0 entry_used=0 present=1 hr=00000000 clear_request=0 inhibit=0 unavailable=0"
+              },
+              "previous_mission": null
+            },
+            "first_sample_after_completed_return": {
+              "line": 14964,
+              "text": "plane death mode: unit=Recon2 t=67.05 draw=0.4640 mode=powerlost c10=1000.00 (007CA8A0 -> 007BBFA0 -> 007D0B80, packet cc9_plane_death_modes)",
+              "unit": "Recon2",
+              "time": "67.05",
+              "draw": "0.4640",
+              "mode": "powerlost",
+              "c10": "1000.00",
+              "previous_native": {
+                "line": 14949,
+                "text": "native frame complete: frame=1379 queue=16B63EB8 commands=0 entry_used=0 present=1 hr=00000000 clear_request=0 inhibit=0 unavailable=0"
+              },
+              "previous_mission": null
+            },
+            "sample_count": 1,
+            "sentinel_count": 0,
+            "source_format_count": 1,
+            "accuracy_calls": 3087856,
+            "completed_ratings": 459960,
+            "ring_bearings": 11983,
+            "mission_outcomes": [
+              "summary mission end: none (Mission.EndMission never true)"
+            ],
+            "plan": {
+              "option": "--helm-orders",
+              "arg_index": 29,
+              "value": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\inputs\\plans\\ijn18_l67_i18_d.txt",
+              "source": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\inputs\\plans\\ijn18_l67_i18_d.txt",
+              "archived": "ijn18_l67_i18_d.txt",
+              "sha256": "8324d67e28d82ae234cf4bd00e482605eff7b1bf04c16c401787ca79cae493c8"
+            }
+          },
+          {
+            "side": "candidate",
+            "log": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\run_candidate_ijn18.log",
+              "size": 36562401,
+              "sha256": "d8803ca8e37307295350646d02428ee72f6dcc80eb5d9dbce9f8ae6987e8cf52"
+            },
+            "manifest": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\run_candidate_ijn18.log.manifest.json",
+              "sha256": "f7ddcb1112671a7db31365c313d02a645b25fc14a229794a5816a1a65897c4e8"
+            },
+            "watchdog": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\run_candidate_ijn18.log.watchdog.json",
+              "sha256": "7309763272675b94d5ea7c744c9c0ffd629dace07e3141758c0b292b5a214e23"
+            },
+            "original_exe": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\binaries\\candidate\\bsp_game.exe",
+              "size": 7323136,
+              "mtime_utc": "2026-10-29T03:46:29.6178002Z",
+              "sha256": "00b1d4eb8120171a3adc48aaa9cdceae90379d6e7f748d9dd9ca004a53350d52",
+              "build_checkout": {
+                "root": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog",
+                "head": "063c4be212b2e475a706b65d2f4ca067fe2656f0",
+                "dirty": false
+              }
+            },
+            "original_env": {
+              "BSP_DEATH_TABLE": "1",
+              "BSP_GUNNERY_RNG_STREAMS": "1",
+              "BSP_SEARCHER_BOUNDS_INIT": "1"
+            },
+            "original_arguments": [
+              "--difficulty",
+              "1",
+              "--window-resolution",
+              "fit",
+              "--present-interval",
+              "immediate",
+              "--window-monitor",
+              "smallest",
+              "--frames",
+              "64300",
+              "--press-start-frame",
+              "30",
+              "--menu-select",
+              "IJN18",
+              "--mission-frames",
+              "64000",
+              "--mission-frame-seconds",
+              "0.05",
+              "--helm-orders",
+              "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\inputs\\plans\\ijn18_l67_i18_d.txt",
+              "--stop-after-end",
+              "40"
+            ],
+            "original_host": {
+              "root": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog",
+              "head": "063c4be212b2e475a706b65d2f4ca067fe2656f0",
+              "dirty": false
+            },
+            "first_hot": {
+              "line": 5490,
+              "text": "host ShipAiFirepower::hit_accuracy_profile_008386f0 [008386f0] concrete",
+              "previous_native": {
+                "line": 5455,
+                "text": "native frame complete: frame=112 queue=16B5A318 commands=0 entry_used=0 present=1 hr=00000000 clear_request=0 inhibit=0 unavailable=0"
+              },
+              "previous_mission": null
+            },
+            "first_completed_return": {
+              "line": 5511,
+              "text": "host ShipAiApproach::rate_bearing_0095eb40 [009e5dc4] concrete",
+              "previous_native": {
+                "line": 5455,
+                "text": "native frame complete: frame=112 queue=16B5A318 commands=0 entry_used=0 present=1 hr=00000000 clear_request=0 inhibit=0 unavailable=0"
+              },
+              "previous_mission": null
+            },
+            "next_mission_after_return": null,
+            "first_sample": {
+              "line": 14964,
+              "text": "plane death mode: unit=Recon2 t=67.05 draw=0.4640 mode=powerlost c10=1000.00 (007CA8A0 -> 007BBFA0 -> 007D0B80, packet cc9_plane_death_modes)",
+              "unit": "Recon2",
+              "time": "67.05",
+              "draw": "0.4640",
+              "mode": "powerlost",
+              "c10": "1000.00",
+              "previous_native": {
+                "line": 14949,
+                "text": "native frame complete: frame=1379 queue=16B5A318 commands=0 entry_used=0 present=1 hr=00000000 clear_request=0 inhibit=0 unavailable=0"
+              },
+              "previous_mission": null
+            },
+            "first_sample_after_completed_return": {
+              "line": 14964,
+              "text": "plane death mode: unit=Recon2 t=67.05 draw=0.4640 mode=powerlost c10=1000.00 (007CA8A0 -> 007BBFA0 -> 007D0B80, packet cc9_plane_death_modes)",
+              "unit": "Recon2",
+              "time": "67.05",
+              "draw": "0.4640",
+              "mode": "powerlost",
+              "c10": "1000.00",
+              "previous_native": {
+                "line": 14949,
+                "text": "native frame complete: frame=1379 queue=16B5A318 commands=0 entry_used=0 present=1 hr=00000000 clear_request=0 inhibit=0 unavailable=0"
+              },
+              "previous_mission": null
+            },
+            "sample_count": 1,
+            "sentinel_count": 0,
+            "source_format_count": 1,
+            "accuracy_calls": 3087856,
+            "completed_ratings": 459960,
+            "ring_bearings": 11983,
+            "mission_outcomes": [
+              "summary mission end: none (Mission.EndMission never true)"
+            ],
+            "plan": {
+              "option": "--helm-orders",
+              "arg_index": 29,
+              "value": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\inputs\\plans\\ijn18_l67_i18_d.txt",
+              "source": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\inputs\\plans\\ijn18_l67_i18_d.txt",
+              "archived": "ijn18_l67_i18_d.txt",
+              "sha256": "8324d67e28d82ae234cf4bd00e482605eff7b1bf04c16c401787ca79cae493c8"
+            }
+          }
+        ]
+      },
+      {
+        "case": "usn21",
+        "historical_context_only": true,
+        "not_a_current_guard_AB_pair": true,
+        "executed_historical_budget": 80000,
+        "not_a_shorter_executed_run": true,
+        "full_source_format_sequences_equal": true,
+        "runs": [
+          {
+            "side": "base",
+            "log": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\run_base_usn21.log",
+              "size": 158700198,
+              "sha256": "8390ef4952b37705cdec3076b4cf1dbaa9dc24bd807902a09a42833dc48e7e26"
+            },
+            "manifest": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\run_base_usn21.log.manifest.json",
+              "sha256": "c44b39b52d80c75686fe194b907cfc2b1b5a612a6753f27e94f2ae497e5ad98e"
+            },
+            "watchdog": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\run_base_usn21.log.watchdog.json",
+              "sha256": "c437eba8472f44f35feed1d51065c812bcb3d53dd935f04cc26594bbebc5078b"
+            },
+            "original_exe": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\binaries\\base\\bsp_game.exe",
+              "size": 7323136,
+              "mtime_utc": "2026-10-29T03:47:50.3186481Z",
+              "sha256": "b121e96c18f08ac2be198c38761caa4bc2834f973be9f22c88c9b6f68f2f85c3",
+              "build_checkout": {
+                "root": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog",
+                "head": "063c4be212b2e475a706b65d2f4ca067fe2656f0",
+                "dirty": false
+              }
+            },
+            "original_env": {
+              "BSP_DEATH_TABLE": "1",
+              "BSP_GUNNERY_RNG_STREAMS": "1",
+              "BSP_SEARCHER_BOUNDS_INIT": "1"
+            },
+            "original_arguments": [
+              "--difficulty",
+              "1",
+              "--window-resolution",
+              "fit",
+              "--present-interval",
+              "immediate",
+              "--window-monitor",
+              "smallest",
+              "--frames",
+              "80300",
+              "--press-start-frame",
+              "30",
+              "--menu-select",
+              "USN21",
+              "--mission-frames",
+              "80000",
+              "--mission-frame-seconds",
+              "0.05",
+              "--helm-orders",
+              "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\inputs\\plans\\usn21_nd1_s46_u21_f.txt",
+              "--stop-after-end",
+              "40"
+            ],
+            "original_host": {
+              "root": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog",
+              "head": "063c4be212b2e475a706b65d2f4ca067fe2656f0",
+              "dirty": false
+            },
+            "first_hot": {
+              "line": 382054,
+              "text": "host ShipAiFirepower::hit_accuracy_profile_008386f0 [008386f0] concrete",
+              "previous_native": {
+                "line": 382012,
+                "text": "native frame complete: frame=30004 queue=16B51408 commands=0 entry_used=0 present=1 hr=00000000 clear_request=0 inhibit=0 unavailable=0"
+              },
+              "previous_mission": null
+            },
+            "first_completed_return": {
+              "line": 382073,
+              "text": "host ShipAiApproach::rate_bearing_0095eb40 [009e5dc4] concrete",
+              "previous_native": {
+                "line": 382012,
+                "text": "native frame complete: frame=30004 queue=16B51408 commands=0 entry_used=0 present=1 hr=00000000 clear_request=0 inhibit=0 unavailable=0"
+              },
+              "previous_mission": null
+            },
+            "next_mission_after_return": null,
+            "first_sample": {
+              "line": 87850,
+              "text": "plane death mode: unit=Intrepid_sqn01|.-II t=489.35 draw=0.4819 mode=powerlost c10=1000.00 (007CA8A0 -> 007BBFA0 -> 007D0B80, packet cc9_plane_death_modes)",
+              "unit": "Intrepid_sqn01|.-II",
+              "time": "489.35",
+              "draw": "0.4819",
+              "mode": "powerlost",
+              "c10": "1000.00",
+              "previous_native": {
+                "line": 87847,
+                "text": "native frame complete: frame=9826 queue=16B51408 commands=0 entry_used=0 present=1 hr=00000000 clear_request=0 inhibit=0 unavailable=0"
+              },
+              "previous_mission": null
+            },
+            "first_sample_after_completed_return": {
+              "line": 384909,
+              "text": "plane death mode: unit=Intrepid_sqn85|.-III t=1502.39 draw=0.0493 mode=leftspinning c10=1000.00 (007CA8A0 -> 007BBFA0 -> 007D0B80, packet cc9_plane_death_modes)",
+              "unit": "Intrepid_sqn85|.-III",
+              "time": "1502.39",
+              "draw": "0.0493",
+              "mode": "leftspinning",
+              "c10": "1000.00",
+              "previous_native": {
+                "line": 384905,
+                "text": "native frame complete: frame=30080 queue=16B51408 commands=0 entry_used=0 present=1 hr=00000000 clear_request=0 inhibit=0 unavailable=0"
+              },
+              "previous_mission": null
+            },
+            "sample_count": 441,
+            "sentinel_count": 7,
+            "source_format_count": 448,
+            "accuracy_calls": 8753634,
+            "completed_ratings": 2405880,
+            "ring_bearings": 44459,
+            "mission_outcomes": [
+              "summary mission end: none (Mission.EndMission never true)"
+            ],
+            "plan": {
+              "option": "--helm-orders",
+              "arg_index": 29,
+              "value": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\inputs\\plans\\usn21_nd1_s46_u21_f.txt",
+              "source": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\inputs\\plans\\usn21_nd1_s46_u21_f.txt",
+              "archived": "usn21_nd1_s46_u21_f.txt",
+              "sha256": "d189ab67e44d93f4a45786930b07f3d75e30297c59c4b724c3536b3986dfb00b"
+            }
+          },
+          {
+            "side": "candidate",
+            "log": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\run_candidate_usn21.log",
+              "size": 158700207,
+              "sha256": "8c83171ebb0a92d427f2d828439b627a102b4ffc6bebae0059a14fe77e815e47"
+            },
+            "manifest": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\run_candidate_usn21.log.manifest.json",
+              "sha256": "2bcf0630b316b50186124eceb4ae48a1b14300d9c3cf230dfd03707d7d5b4e69"
+            },
+            "watchdog": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\run_candidate_usn21.log.watchdog.json",
+              "sha256": "92cdd55f7d2ca0d2b8bad8b6b851a3cd0c238a7755fcd94f55721d07e9fc0f04"
+            },
+            "original_exe": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\binaries\\candidate\\bsp_game.exe",
+              "size": 7323136,
+              "mtime_utc": "2026-10-29T03:46:29.6178002Z",
+              "sha256": "00b1d4eb8120171a3adc48aaa9cdceae90379d6e7f748d9dd9ca004a53350d52",
+              "build_checkout": {
+                "root": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog",
+                "head": "063c4be212b2e475a706b65d2f4ca067fe2656f0",
+                "dirty": false
+              }
+            },
+            "original_env": {
+              "BSP_DEATH_TABLE": "1",
+              "BSP_GUNNERY_RNG_STREAMS": "1",
+              "BSP_SEARCHER_BOUNDS_INIT": "1"
+            },
+            "original_arguments": [
+              "--difficulty",
+              "1",
+              "--window-resolution",
+              "fit",
+              "--present-interval",
+              "immediate",
+              "--window-monitor",
+              "smallest",
+              "--frames",
+              "80300",
+              "--press-start-frame",
+              "30",
+              "--menu-select",
+              "USN21",
+              "--mission-frames",
+              "80000",
+              "--mission-frame-seconds",
+              "0.05",
+              "--helm-orders",
+              "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\inputs\\plans\\usn21_nd1_s46_u21_f.txt",
+              "--stop-after-end",
+              "40"
+            ],
+            "original_host": {
+              "root": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog",
+              "head": "063c4be212b2e475a706b65d2f4ca067fe2656f0",
+              "dirty": false
+            },
+            "first_hot": {
+              "line": 382054,
+              "text": "host ShipAiFirepower::hit_accuracy_profile_008386f0 [008386f0] concrete",
+              "previous_native": {
+                "line": 382012,
+                "text": "native frame complete: frame=30004 queue=16D789A8 commands=0 entry_used=0 present=1 hr=00000000 clear_request=0 inhibit=0 unavailable=0"
+              },
+              "previous_mission": null
+            },
+            "first_completed_return": {
+              "line": 382073,
+              "text": "host ShipAiApproach::rate_bearing_0095eb40 [009e5dc4] concrete",
+              "previous_native": {
+                "line": 382012,
+                "text": "native frame complete: frame=30004 queue=16D789A8 commands=0 entry_used=0 present=1 hr=00000000 clear_request=0 inhibit=0 unavailable=0"
+              },
+              "previous_mission": null
+            },
+            "next_mission_after_return": null,
+            "first_sample": {
+              "line": 87850,
+              "text": "plane death mode: unit=Intrepid_sqn01|.-II t=489.35 draw=0.4819 mode=powerlost c10=1000.00 (007CA8A0 -> 007BBFA0 -> 007D0B80, packet cc9_plane_death_modes)",
+              "unit": "Intrepid_sqn01|.-II",
+              "time": "489.35",
+              "draw": "0.4819",
+              "mode": "powerlost",
+              "c10": "1000.00",
+              "previous_native": {
+                "line": 87847,
+                "text": "native frame complete: frame=9826 queue=16D789A8 commands=0 entry_used=0 present=1 hr=00000000 clear_request=0 inhibit=0 unavailable=0"
+              },
+              "previous_mission": null
+            },
+            "first_sample_after_completed_return": {
+              "line": 384909,
+              "text": "plane death mode: unit=Intrepid_sqn85|.-III t=1502.39 draw=0.0493 mode=leftspinning c10=1000.00 (007CA8A0 -> 007BBFA0 -> 007D0B80, packet cc9_plane_death_modes)",
+              "unit": "Intrepid_sqn85|.-III",
+              "time": "1502.39",
+              "draw": "0.0493",
+              "mode": "leftspinning",
+              "c10": "1000.00",
+              "previous_native": {
+                "line": 384905,
+                "text": "native frame complete: frame=30080 queue=16D789A8 commands=0 entry_used=0 present=1 hr=00000000 clear_request=0 inhibit=0 unavailable=0"
+              },
+              "previous_mission": null
+            },
+            "sample_count": 441,
+            "sentinel_count": 7,
+            "source_format_count": 448,
+            "accuracy_calls": 8753634,
+            "completed_ratings": 2405880,
+            "ring_bearings": 44459,
+            "mission_outcomes": [
+              "summary mission end: none (Mission.EndMission never true)"
+            ],
+            "plan": {
+              "option": "--helm-orders",
+              "arg_index": 29,
+              "value": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\inputs\\plans\\usn21_nd1_s46_u21_f.txt",
+              "source": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\off409\\inputs\\plans\\usn21_nd1_s46_u21_f.txt",
+              "archived": "usn21_nd1_s46_u21_f.txt",
+              "sha256": "d189ab67e44d93f4a45786930b07f3d75e30297c59c4b724c3536b3986dfb00b"
+            }
+          }
+        ]
+      }
+    ],
+    "postreturn_source_proof": [
+      {
+        "commit": "409689e5e813d4aaaeb656abeb827d06a5842016",
+        "call_then_completed_counter_snippet": "const bsp::ShipAiFirepowerResult result\n            = bsp::ship_ai_firepower_rating_0095eb40(q, firepower);\n        owner_.done(\"ShipAiApproach::rate_bearing_0095eb40\", 0x009e5dc4u);\n        ++row_.firepower_ratings;\n        ++owner_.summary.firepower_ratings;\n        return result.total;\n    }",
+        "snippet_sha256": "b2e736d01f2d1d8ebe034a3d201a855ac32a6b3287fec2f56b37695726990306",
+        "first_implemented_logging": "void GameHostLog::implemented(const char* method, const char* native_address) {\n    const GameHostMethodRecord& entry = record(method, native_address, true);\n    if (entry.calls == 1ull) notef(\"host %s [%s] concrete\", method, native_address);\n}",
+        "logging_sha256": "77084f80148776ab8bcd596c652bf05ddb9ec2c143bbada63e8fc14bff11ca28"
+      },
+      {
+        "commit": "f49e064d5e393c5ad8d0dfdd54d686b5669b2585",
+        "call_then_completed_counter_snippet": "const bsp::ShipAiFirepowerResult result\n            = bsp::ship_ai_firepower_rating_0095eb40(q, firepower);\n        owner_.done(\"ShipAiApproach::rate_bearing_0095eb40\", 0x009e5dc4u);\n        ++row_.firepower_ratings;\n        ++owner_.summary.firepower_ratings;\n        return result.total;\n    }",
+        "snippet_sha256": "b2e736d01f2d1d8ebe034a3d201a855ac32a6b3287fec2f56b37695726990306",
+        "first_implemented_logging": "void GameHostLog::implemented(const char* method, const char* native_address) {\n    const GameHostMethodRecord& entry = record(method, native_address, true);\n    if (entry.calls == 1ull) notef(\"host %s [%s] concrete\", method, native_address);\n}",
+        "logging_sha256": "77084f80148776ab8bcd596c652bf05ddb9ec2c143bbada63e8fc14bff11ca28"
+      },
+      {
+        "commit": "5c2547156",
+        "call_then_completed_counter_snippet": "const bsp::ShipAiFirepowerResult result\n            = bsp::ship_ai_firepower_rating_0095eb40(q, firepower);\n        owner_.done(\"ShipAiApproach::rate_bearing_0095eb40\", 0x009e5dc4u);\n        ++row_.firepower_ratings;\n        ++owner_.summary.firepower_ratings;\n        return result.total;\n    }",
+        "snippet_sha256": "b2e736d01f2d1d8ebe034a3d201a855ac32a6b3287fec2f56b37695726990306",
+        "first_implemented_logging": "void GameHostLog::implemented(const char* method, const char* native_address) {\n    const GameHostMethodRecord& entry = record(method, native_address, true);\n    if (entry.calls == 1ull) notef(\"host %s [%s] concrete\", method, native_address);\n}",
+        "logging_sha256": "77084f80148776ab8bcd596c652bf05ddb9ec2c143bbada63e8fc14bff11ca28"
+      },
+      {
+        "commit": "c8e521821",
+        "call_then_completed_counter_snippet": "const bsp::ShipAiFirepowerResult result\n            = bsp::ship_ai_firepower_rating_0095eb40(q, firepower);\n        owner_.done(\"ShipAiApproach::rate_bearing_0095eb40\", 0x009e5dc4u);\n        ++row_.firepower_ratings;\n        ++owner_.summary.firepower_ratings;\n        return result.total;\n    }",
+        "snippet_sha256": "b2e736d01f2d1d8ebe034a3d201a855ac32a6b3287fec2f56b37695726990306",
+        "first_implemented_logging": "void GameHostLog::implemented(const char* method, const char* native_address) {\n    const GameHostMethodRecord& entry = record(method, native_address, true);\n    if (entry.calls == 1ull) notef(\"host %s [%s] concrete\", method, native_address);\n}",
+        "logging_sha256": "77084f80148776ab8bcd596c652bf05ddb9ec2c143bbada63e8fc14bff11ca28"
+      }
+    ],
+    "selection": "prefer new IJN18_4800 prefix because historical completed-return marker atmission73..74 precedes natural sampled event67.05; preserve unchanged plan/env",
+    "historical_IJN18_plan_sha256": "8324d67e28d82ae234cf4bd00e482605eff7b1bf04c16c401787ca79cae493c8",
+    "superseded_prelaunch_options": [
+      {
+        "case": "USN21_12000/12300",
+        "reason": "inadequate: firsthot/return only betweenmission29965/29966; withdrawn before games"
+      },
+      {
+        "case": "USN21_32000/32300",
+        "reason": "would cover observed posthot1502.39 event but superseded by earlier natural IJN18 witness before freeze/run"
+      }
+    ],
+    "USN21_prefix_executed": false,
+    "historical_full_runs_not_relabelled_as_new_prefix_proof": true
+  },
+  "new_witness_preparation_and_approval": {
+    "preparation": {
+      "status": "PENDING_ROOT_REVIEW_NO_GAME_RUN",
+      "host_root": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host",
+      "host_head": "0ff658233116db29ce600aea90095dd1f1cd1264",
+      "host_status": "",
+      "host_diff": "",
+      "shared_binary_records": {
+        "off": {
+          "build_commit": "5c2547156",
+          "exe": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\binaries\\off\\bsp_game.exe",
+            "size": 7442432,
+            "sha256": "1025847f08e71ca2fe4b72306077fb71131cb03552b4180b96456a6624a424f0",
+            "machine": "0x14c",
+            "optional_header_magic": "0x10b"
+          },
+          "core": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\off\\bin\\bsp_core.lib",
+            "size": 102894874,
+            "sha256": "c640f1ad3c387c07661ca0094429d8ad2eef1a4e3f0ca6746897193954274dde"
+          },
+          "caller_object": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\off\\game_hosts_ship_ai.obj",
+            "size": 1871728,
+            "sha256": "954fbbcf6f67b377407c01252b4f27a29b9e227f4986198a0794810ccea14b75"
+          },
+          "core_object": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\off\\gameplay_settings_tail.obj",
+            "size": 14885,
+            "sha256": "7d3627d3d509b415b74b576e3a31629b5438e2ad2c115366fc09c2f7c5aa58eb"
+          }
+        },
+        "on": {
+          "build_commit": "c8e521821",
+          "exe": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\binaries\\on\\bsp_game.exe",
+            "size": 7441920,
+            "sha256": "df41385286f2fbba435f14c8f53db9ab615077db531282278878cef3b6dd33ff",
+            "machine": "0x14c",
+            "optional_header_magic": "0x10b"
+          },
+          "core": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\on\\bin\\bsp_core.lib",
+            "size": 102894874,
+            "sha256": "044c0fee04105c817ecdcc144d4b54531818fce00be9a7edfe4fadb1f75e1995"
+          },
+          "caller_object": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\on\\game_hosts_ship_ai.obj",
+            "size": 1871976,
+            "sha256": "edf6de7de7087d4a33d4a0701b97eaad6e4cbda11385d6663bdfc128794b7839"
+          },
+          "core_object": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator\\local\\gacc_now\\on\\gameplay_settings_tail.obj",
+            "size": 14885,
+            "sha256": "89b6b019b1100f51e973df4ebc4e9acddb1811cbe71fc38c6eeaa5eeb667ceaf"
+          }
+        }
+      },
+      "backend": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\binaries\\common\\xlive_stub.dll",
+        "size": 32768,
+        "sha256": "f9c96229125148d7c6e6d8b00800fe9f180b921cf1b79092b66dbbaa5f05d0f3",
+        "machine": "0x14c",
+        "optional_header_magic": "0x10b"
+      },
+      "external_PS7": {
+        "path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+        "sha256": "2a6769a3330dc1084d0154bfde7d164ab750ca7f700f313f9d417c1be78b2233",
+        "version": "7.6.9",
+        "json_date_kind": "String",
+        "no_profile": true
+      },
+      "freezes": [
+        {
+          "case": "native4800",
+          "folder": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800",
+          "frozen": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\frozen.json",
+            "size": 27921,
+            "sha256": "5630cc12308a85bcf286a47056b33476d14179ef036e888572891de07033a41b"
+          },
+          "criteria": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\criteria.json",
+            "size": 1070,
+            "sha256": "5d31402db265b14e9d184682c2ac7dfc9a324349b4ed10106c21209e40d61ca0"
+          },
+          "launch_plan": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\launch_plan.json",
+            "size": 3652,
+            "sha256": "4368f9aae7dbdff96933324dd0ce54b689092f1de7b0b398b51cd78922c2f62b"
+          },
+          "stop": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\STOP",
+            "size": 77,
+            "sha256": "2323e58cb37e553cc0ccc73b765fbbd35c5b1dd24c62a3b47df877b86af9e50f"
+          },
+          "file_count": 81,
+          "controller": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\inputs\\run_accuracy.ps1",
+            "size": 4067,
+            "sha256": "bc7f70c0bbaf23ee5b4fe9d41f2696639de5fa6b6e61ac95b04ef9271d7dd761"
+          },
+          "watchdog": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\inputs\\owned_watchdog.ps1",
+            "size": 7158,
+            "sha256": "354c26677ed99733bb3898606c9fc09490b321fb01e32510a8524d312895f245"
+          },
+          "watchdog_host": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\inputs\\watchdog_host.ps1",
+            "size": 543,
+            "sha256": "d42215cca71d265810883cb3df327bc8b28060a31ba9dfb701b93c227a940e9c"
+          },
+          "evaluator": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\inputs\\evaluate_accuracy.py",
+            "size": 6304,
+            "sha256": "09cd6b565909f085752f6e9b7e30c096897972da1fe8e9db6ef5639ef02da047"
+          },
+          "additional_gate": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\inputs\\check_sampled_rng.py",
+            "size": 4046,
+            "sha256": "a2266ebd13810cace0874c50f02ed49f2d4ba0394fad2d917904f7aecdab11d4"
+          }
+        },
+        {
+          "case": "ijn18_4800",
+          "folder": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800",
+          "frozen": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\frozen.json",
+            "size": 28597,
+            "sha256": "7f20acdc13317f9869cac8e6c71a7c0de1b09229ecdd6dc23fd29a92141fae34"
+          },
+          "criteria": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\criteria.json",
+            "size": 1327,
+            "sha256": "3c713aa522084e9613909c7ad49297da1ba2cdd423ff8a56ec95938f37a51d74"
+          },
+          "launch_plan": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\launch_plan.json",
+            "size": 3918,
+            "sha256": "d1193686d0d6b2e813a07dbdc27a137f7dcdbd495f60f931c2c9c15663574053"
+          },
+          "stop": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\STOP",
+            "size": 77,
+            "sha256": "2323e58cb37e553cc0ccc73b765fbbd35c5b1dd24c62a3b47df877b86af9e50f"
+          },
+          "file_count": 82,
+          "controller": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\inputs\\run_accuracy.ps1",
+            "size": 4067,
+            "sha256": "bc7f70c0bbaf23ee5b4fe9d41f2696639de5fa6b6e61ac95b04ef9271d7dd761"
+          },
+          "watchdog": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\inputs\\owned_watchdog.ps1",
+            "size": 7158,
+            "sha256": "354c26677ed99733bb3898606c9fc09490b321fb01e32510a8524d312895f245"
+          },
+          "watchdog_host": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\inputs\\watchdog_host.ps1",
+            "size": 543,
+            "sha256": "d42215cca71d265810883cb3df327bc8b28060a31ba9dfb701b93c227a940e9c"
+          },
+          "evaluator": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\inputs\\evaluate_accuracy.py",
+            "size": 6304,
+            "sha256": "09cd6b565909f085752f6e9b7e30c096897972da1fe8e9db6ef5639ef02da047"
+          },
+          "additional_gate": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\inputs\\check_sampled_rng.py",
+            "size": 4046,
+            "sha256": "a2266ebd13810cace0874c50f02ed49f2d4ba0394fad2d917904f7aecdab11d4"
+          }
+        }
+      ],
+      "any_game_or_watchdog_or_controller_started": false,
+      "authorized_for_preparation_only": true,
+      "root_execution_authorized": false
+    },
+    "root_review_and_execution_approval": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\root_approval_20261029T185321Z.json",
+      "sha256": "44a10c19c44bec08e4deba280ab254609bace0a1b7e46c99dd2c12097fc9b461",
+      "approval": {
+        "utc": "2026-10-29T18:53:21.118279+00:00",
+        "source_agent": "/root",
+        "source_message": "ROOT REVIEW COMPLETE / EXECUTION AUTHORIZED for exact frozen native4800 SHA5630cc12308a85bcf286a47056b33476d14179ef036e888572891de07033a41b and IJN18_4800 SHA7f20acdc13317f9869cac8e6c71a7c0de1b09229ecdd6dc23fd29a92141fae34; host clean0ff. Keep freezes immutable. Launch native OFF/ON serial; run original and additive gates; only if all pass launch IJN18 OFF/ON serial and both gates. Normal Slots8 maxone own logicalrun, ownedidentity14400s watchdog. Missing witness/mismatch stop; no budget/input/seed/source/forcing/trace/mask changes.",
+        "records": [
+          {
+            "case": "accuracy_rng_native4800",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\frozen.json",
+            "frozen_sha256": "5630cc12308a85bcf286a47056b33476d14179ef036e888572891de07033a41b",
+            "launch_sha256": "4368f9aae7dbdff96933324dd0ce54b689092f1de7b0b398b51cd78922c2f62b",
+            "files_reverified": 81
+          },
+          {
+            "case": "accuracy_rng_ijn18_4800",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\frozen.json",
+            "frozen_sha256": "7f20acdc13317f9869cac8e6c71a7c0de1b09229ecdd6dc23fd29a92141fae34",
+            "launch_sha256": "d1193686d0d6b2e813a07dbdc27a137f7dcdbd495f60f931c2c9c15663574053",
+            "files_reverified": 82
+          }
+        ],
+        "order": [
+          "native4800/off",
+          "native4800/on",
+          "native strictgate",
+          "ijn18_4800/off",
+          "ijn18_4800/on",
+          "ijn18 strictgate"
+        ],
+        "frozen_creation_flags_kept_immutable": true,
+        "gate_criteria": "strict nonempty logged source-format projection; hot case also actual calls/completedreturns and postreturn sampled event; equalabsence neverpass; no globalfirst/allstream claim"
+      }
+    },
+    "new_case_budget": "both4800mission/5100total,step.05; exact unchanged native flags or retained IJN18 plan/env/difficulty/stop40",
+    "original_frozen_pending_creation_flags_remain_immutable": true,
+    "new_phase_receipts_separate_from_freeze": true,
+    "original_evaluator_controller_watchdog_byte_identity_preserved": true,
+    "additional_gate_mandatory": "actual nonempty non-sentinel sample eachside; hotcase actualcalls/completedratings/bearings>0 plus sample AFTER first actual completed-return marker; full normalized source-format sequences including sentinel diagnostics equal; all original/provenance/process/UTCgates also pass",
+    "equal_absence_not_pass": true,
+    "no_posthoc_budget_seed_source_mask_trace_eventforcing_change": true
+  },
+  "new_exact_frozen_runtime_results": {
+    "exact_binary_scope": "copied frozen5c OFF/c8 privateON only, clean0ff runtimehost; NOT currentmain candidate",
+    "host_root": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host",
+    "host_head": "0ff658233116db29ce600aea90095dd1f1cd1264",
+    "host_clean": true,
+    "all_prepared_pins_still_match": true,
+    "source_frozen_creation_flags_unchanged": true,
+    "root_approval": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\root_approval_20261029T185321Z.json",
+      "sha256": "44a10c19c44bec08e4deba280ab254609bace0a1b7e46c99dd2c12097fc9b461",
+      "approval": {
+        "utc": "2026-10-29T18:53:21.118279+00:00",
+        "source_agent": "/root",
+        "source_message": "ROOT REVIEW COMPLETE / EXECUTION AUTHORIZED for exact frozen native4800 SHA5630cc12308a85bcf286a47056b33476d14179ef036e888572891de07033a41b and IJN18_4800 SHA7f20acdc13317f9869cac8e6c71a7c0de1b09229ecdd6dc23fd29a92141fae34; host clean0ff. Keep freezes immutable. Launch native OFF/ON serial; run original and additive gates; only if all pass launch IJN18 OFF/ON serial and both gates. Normal Slots8 maxone own logicalrun, ownedidentity14400s watchdog. Missing witness/mismatch stop; no budget/input/seed/source/forcing/trace/mask changes.",
+        "records": [
+          {
+            "case": "accuracy_rng_native4800",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\frozen.json",
+            "frozen_sha256": "5630cc12308a85bcf286a47056b33476d14179ef036e888572891de07033a41b",
+            "launch_sha256": "4368f9aae7dbdff96933324dd0ce54b689092f1de7b0b398b51cd78922c2f62b",
+            "files_reverified": 81
+          },
+          {
+            "case": "accuracy_rng_ijn18_4800",
+            "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\frozen.json",
+            "frozen_sha256": "7f20acdc13317f9869cac8e6c71a7c0de1b09229ecdd6dc23fd29a92141fae34",
+            "launch_sha256": "d1193686d0d6b2e813a07dbdc27a137f7dcdbd495f60f931c2c9c15663574053",
+            "files_reverified": 82
+          }
+        ],
+        "order": [
+          "native4800/off",
+          "native4800/on",
+          "native strictgate",
+          "ijn18_4800/off",
+          "ijn18_4800/on",
+          "ijn18 strictgate"
+        ],
+        "frozen_creation_flags_kept_immutable": true,
+        "gate_criteria": "strict nonempty logged source-format projection; hot case also actual calls/completedreturns and postreturn sampled event; equalabsence neverpass; no globalfirst/allstream claim"
+      }
+    },
+    "complete": true,
+    "cases": [
+      {
+        "case": "native4800",
+        "status": "passed_original_and_strict_sampled_projection_gates",
+        "freeze": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\frozen.json",
+          "size": 27921,
+          "sha256": "5630cc12308a85bcf286a47056b33476d14179ef036e888572891de07033a41b"
+        },
+        "runs": [
+          {
+            "side": "off",
+            "exe_sha256": "1025847f08e71ca2fe4b72306077fb71131cb03552b4180b96456a6624a424f0",
+            "start": "2026-10-29T18:53:26.3176374Z",
+            "finish": "2026-10-29T18:54:59.8527335Z",
+            "deadline": "2026-10-29T22:53:26.3176374+00:00",
+            "seconds": 93.535096,
+            "slot": 0,
+            "core": 2,
+            "controller_pid": 105300,
+            "captures": [
+              {
+                "pid": 106424,
+                "parent_pid": 76000,
+                "exe": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\binaries\\off\\bsp_game.exe",
+                "command": "\"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\binaries\\off\\bsp_game.exe\" \"--game-root\" \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\" \"--xlive-dll\" \"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\binaries\\common\\xlive_stub.dll\" \"--log\" \"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\run_off_native4800.log\" \"--instance-tag\" \"slot0\" \"--affinity-core\" \"2\" \"--difficulty\" \"1\" \"--window-resolution\" \"fit\" \"--present-interval\" \"immediate\" \"--window-monitor\" \"smallest\" \"--frames\" \"5100\" \"--press-start-frame\" \"30\" \"--menu-select\" \"USN04\" \"--mission-frames\" \"4800\" \"--mission-frame-seconds\" \"0.05\" --bsp-native-data-handoff=00000364",
+                "start_utc": "2026-10-29T18:53:26.6183321Z",
+                "owner": "DESKTOP-OR1S0M8\\sqz269",
+                "priority": "Normal",
+                "is_native_child": true,
+                "captured_process_handle": true
+              },
+              {
+                "pid": 76000,
+                "parent_pid": 105300,
+                "exe": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\binaries\\off\\bsp_game.exe",
+                "command": "\"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\binaries\\off\\bsp_game.exe\" --game-root \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\" --xlive-dll J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\binaries\\common\\xlive_stub.dll --log J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\run_off_native4800.log --instance-tag slot0 --affinity-core 2 --difficulty 1 --window-resolution fit --present-interval immediate --window-monitor smallest --frames 5100 --press-start-frame 30 --menu-select USN04 --mission-frames 4800 --mission-frame-seconds 0.05",
+                "start_utc": "2026-10-29T18:53:26.5807903Z",
+                "owner": "DESKTOP-OR1S0M8\\sqz269",
+                "priority": "Normal",
+                "is_native_child": false,
+                "captured_process_handle": true
+              }
+            ],
+            "watchdog_actions": [],
+            "log_sha256": "10dc35cf08a498948a65de9ed796e2593a197900459f38930f94ca349befd5f0",
+            "sample_count": 51,
+            "source_format_count": 51,
+            "sentinel_count": 0,
+            "first_sample": {
+              "line": 29438,
+              "unit": "A6M Zero #1.2|.-II",
+              "time": "93.60",
+              "draw": "0.4143",
+              "mode": "powerlost",
+              "c10": "1000.00"
+            },
+            "first_hot_line": null,
+            "first_completed_line": null,
+            "first_sample_after_completed_return": null,
+            "accuracy_calls": 0,
+            "completed_ratings": 0,
+            "ring_bearings": 0,
+            "all_original_and_strict_checks_pass": true,
+            "mission_outcomes": [
+              "summary mission end: none (Mission.EndMission never true)"
+            ]
+          },
+          {
+            "side": "on",
+            "exe_sha256": "df41385286f2fbba435f14c8f53db9ab615077db531282278878cef3b6dd33ff",
+            "start": "2026-10-29T18:55:04.4027065Z",
+            "finish": "2026-10-29T18:56:36.2678914Z",
+            "deadline": "2026-10-29T22:55:04.4027065+00:00",
+            "seconds": 91.865185,
+            "slot": 0,
+            "core": 2,
+            "controller_pid": 105300,
+            "captures": [
+              {
+                "pid": 114228,
+                "parent_pid": 68748,
+                "exe": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\binaries\\on\\bsp_game.exe",
+                "command": "\"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\binaries\\on\\bsp_game.exe\" \"--game-root\" \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\" \"--xlive-dll\" \"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\binaries\\common\\xlive_stub.dll\" \"--log\" \"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\run_on_native4800.log\" \"--instance-tag\" \"slot0\" \"--affinity-core\" \"2\" \"--difficulty\" \"1\" \"--window-resolution\" \"fit\" \"--present-interval\" \"immediate\" \"--window-monitor\" \"smallest\" \"--frames\" \"5100\" \"--press-start-frame\" \"30\" \"--menu-select\" \"USN04\" \"--mission-frames\" \"4800\" \"--mission-frame-seconds\" \"0.05\" --bsp-native-data-handoff=00000370",
+                "start_utc": "2026-10-29T18:55:04.6681093Z",
+                "owner": "DESKTOP-OR1S0M8\\sqz269",
+                "priority": "Normal",
+                "is_native_child": true,
+                "captured_process_handle": true
+              },
+              {
+                "pid": 68748,
+                "parent_pid": 105300,
+                "exe": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\binaries\\on\\bsp_game.exe",
+                "command": "\"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\binaries\\on\\bsp_game.exe\" --game-root \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\" --xlive-dll J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\binaries\\common\\xlive_stub.dll --log J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\run_on_native4800.log --instance-tag slot0 --affinity-core 2 --difficulty 1 --window-resolution fit --present-interval immediate --window-monitor smallest --frames 5100 --press-start-frame 30 --menu-select USN04 --mission-frames 4800 --mission-frame-seconds 0.05",
+                "start_utc": "2026-10-29T18:55:04.6308189Z",
+                "owner": "DESKTOP-OR1S0M8\\sqz269",
+                "priority": "Normal",
+                "is_native_child": false,
+                "captured_process_handle": true
+              }
+            ],
+            "watchdog_actions": [],
+            "log_sha256": "546a2a31d7b6e4d65f6c531654ae5c85d3d8750c76a6836bfb41cb66cbbe9776",
+            "sample_count": 51,
+            "source_format_count": 51,
+            "sentinel_count": 0,
+            "first_sample": {
+              "line": 29438,
+              "unit": "A6M Zero #1.2|.-II",
+              "time": "93.60",
+              "draw": "0.4143",
+              "mode": "powerlost",
+              "c10": "1000.00"
+            },
+            "first_hot_line": null,
+            "first_completed_line": null,
+            "first_sample_after_completed_return": null,
+            "accuracy_calls": 0,
+            "completed_ratings": 0,
+            "ring_bearings": 0,
+            "all_original_and_strict_checks_pass": true,
+            "mission_outcomes": [
+              "summary mission end: none (Mission.EndMission never true)"
+            ]
+          }
+        ],
+        "event_sequences_equal": true,
+        "ordered": {
+          "lines": [
+            762,
+            762
+          ],
+          "index_diffs": 0,
+          "masks": "unchanged inherited pointer and worker/render-thread IDs"
+        },
+        "teardown": "teardown lines off=10749 on=10749 index_diffs=0 length_delta=0",
+        "old_evaluator_probes": [
+          [
+            "36",
+            "0.4143"
+          ],
+          [
+            "36",
+            "0.4143"
+          ]
+        ],
+        "first_global_or_all_stream_rng_proof": false,
+        "case_scope": "NEW unexecuted native-mode sampled-plane RNG projection; not a hot-accuracy case"
+      },
+      {
+        "case": "ijn18_4800",
+        "status": "passed_original_and_strict_sampled_projection_gates",
+        "freeze": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\frozen.json",
+          "size": 28597,
+          "sha256": "7f20acdc13317f9869cac8e6c71a7c0de1b09229ecdd6dc23fd29a92141fae34"
+        },
+        "runs": [
+          {
+            "side": "off",
+            "exe_sha256": "1025847f08e71ca2fe4b72306077fb71131cb03552b4180b96456a6624a424f0",
+            "start": "2026-10-29T19:01:25.0345409Z",
+            "finish": "2026-10-29T19:04:22.3985264Z",
+            "deadline": "2026-10-29T23:01:25.0345409+00:00",
+            "seconds": 177.363986,
+            "slot": 0,
+            "core": 2,
+            "controller_pid": 126188,
+            "captures": [
+              {
+                "pid": 128744,
+                "parent_pid": 126188,
+                "exe": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\binaries\\off\\bsp_game.exe",
+                "command": "\"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\binaries\\off\\bsp_game.exe\" --game-root \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\" --xlive-dll J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\binaries\\common\\xlive_stub.dll --log J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\run_off_ijn18_4800.log --instance-tag slot0 --affinity-core 2 --difficulty 1 --window-resolution fit --present-interval immediate --window-monitor smallest --frames 5100 --press-start-frame 30 --menu-select IJN18 --mission-frames 4800 --mission-frame-seconds 0.05 --helm-orders J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\inputs\\ijn18_l67_i18_d.txt --stop-after-end 40",
+                "start_utc": "2026-10-29T19:01:25.7820579Z",
+                "owner": "DESKTOP-OR1S0M8\\sqz269",
+                "priority": "Normal",
+                "is_native_child": false,
+                "captured_process_handle": true
+              },
+              {
+                "pid": 122716,
+                "parent_pid": 128744,
+                "exe": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\binaries\\off\\bsp_game.exe",
+                "command": "\"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\binaries\\off\\bsp_game.exe\" \"--game-root\" \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\" \"--xlive-dll\" \"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\binaries\\common\\xlive_stub.dll\" \"--log\" \"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\run_off_ijn18_4800.log\" \"--instance-tag\" \"slot0\" \"--affinity-core\" \"2\" \"--difficulty\" \"1\" \"--window-resolution\" \"fit\" \"--present-interval\" \"immediate\" \"--window-monitor\" \"smallest\" \"--frames\" \"5100\" \"--press-start-frame\" \"30\" \"--menu-select\" \"IJN18\" \"--mission-frames\" \"4800\" \"--mission-frame-seconds\" \"0.05\" \"--helm-orders\" \"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\inputs\\ijn18_l67_i18_d.txt\" \"--stop-after-end\" \"40\" --bsp-native-data-handoff=00000344",
+                "start_utc": "2026-10-29T19:01:25.8161137Z",
+                "owner": "DESKTOP-OR1S0M8\\sqz269",
+                "priority": "Normal",
+                "is_native_child": true,
+                "captured_process_handle": true
+              }
+            ],
+            "watchdog_actions": [],
+            "log_sha256": "f2cce64a57f969f1d95552b473f6d37ff6f7ddf1bc871469114fe157ef5a729a",
+            "sample_count": 1,
+            "source_format_count": 1,
+            "sentinel_count": 0,
+            "first_sample": {
+              "line": 15375,
+              "unit": "Recon2",
+              "time": "67.05",
+              "draw": "0.4640",
+              "mode": "powerlost",
+              "c10": "1000.00"
+            },
+            "first_hot_line": 5901,
+            "first_completed_line": 5922,
+            "first_sample_after_completed_return": {
+              "line": 15375,
+              "unit": "Recon2",
+              "time": "67.05",
+              "draw": "0.4640",
+              "mode": "powerlost",
+              "c10": "1000.00"
+            },
+            "accuracy_calls": 2843254,
+            "completed_ratings": 432180,
+            "ring_bearings": 10821,
+            "all_original_and_strict_checks_pass": true,
+            "mission_outcomes": [
+              "summary mission end: none (Mission.EndMission never true)"
+            ]
+          },
+          {
+            "side": "on",
+            "exe_sha256": "df41385286f2fbba435f14c8f53db9ab615077db531282278878cef3b6dd33ff",
+            "start": "2026-10-29T19:04:27.6797487Z",
+            "finish": "2026-10-29T19:07:21.2611293Z",
+            "deadline": "2026-10-29T23:04:27.6797487+00:00",
+            "seconds": 173.581381,
+            "slot": 0,
+            "core": 2,
+            "controller_pid": 126188,
+            "captures": [
+              {
+                "pid": 109988,
+                "parent_pid": 110492,
+                "exe": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\binaries\\on\\bsp_game.exe",
+                "command": "\"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\binaries\\on\\bsp_game.exe\" \"--game-root\" \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\" \"--xlive-dll\" \"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\binaries\\common\\xlive_stub.dll\" \"--log\" \"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\run_on_ijn18_4800.log\" \"--instance-tag\" \"slot0\" \"--affinity-core\" \"2\" \"--difficulty\" \"1\" \"--window-resolution\" \"fit\" \"--present-interval\" \"immediate\" \"--window-monitor\" \"smallest\" \"--frames\" \"5100\" \"--press-start-frame\" \"30\" \"--menu-select\" \"IJN18\" \"--mission-frames\" \"4800\" \"--mission-frame-seconds\" \"0.05\" \"--helm-orders\" \"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\inputs\\ijn18_l67_i18_d.txt\" \"--stop-after-end\" \"40\" --bsp-native-data-handoff=00000348",
+                "start_utc": "2026-10-29T19:04:27.9299705Z",
+                "owner": "DESKTOP-OR1S0M8\\sqz269",
+                "priority": "Normal",
+                "is_native_child": true,
+                "captured_process_handle": true
+              },
+              {
+                "pid": 110492,
+                "parent_pid": 126188,
+                "exe": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\binaries\\on\\bsp_game.exe",
+                "command": "\"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\binaries\\on\\bsp_game.exe\" --game-root \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\" --xlive-dll J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\binaries\\common\\xlive_stub.dll --log J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\run_on_ijn18_4800.log --instance-tag slot0 --affinity-core 2 --difficulty 1 --window-resolution fit --present-interval immediate --window-monitor smallest --frames 5100 --press-start-frame 30 --menu-select IJN18 --mission-frames 4800 --mission-frame-seconds 0.05 --helm-orders J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\inputs\\ijn18_l67_i18_d.txt --stop-after-end 40",
+                "start_utc": "2026-10-29T19:04:27.8937798Z",
+                "owner": "DESKTOP-OR1S0M8\\sqz269",
+                "priority": "Normal",
+                "is_native_child": false,
+                "captured_process_handle": true
+              }
+            ],
+            "watchdog_actions": [],
+            "log_sha256": "8920142ab94ada0d5091eaebe81a0314bc66aff7fb30c472d531c5b49cf0ca48",
+            "sample_count": 1,
+            "source_format_count": 1,
+            "sentinel_count": 0,
+            "first_sample": {
+              "line": 15375,
+              "unit": "Recon2",
+              "time": "67.05",
+              "draw": "0.4640",
+              "mode": "powerlost",
+              "c10": "1000.00"
+            },
+            "first_hot_line": 5901,
+            "first_completed_line": 5922,
+            "first_sample_after_completed_return": {
+              "line": 15375,
+              "unit": "Recon2",
+              "time": "67.05",
+              "draw": "0.4640",
+              "mode": "powerlost",
+              "c10": "1000.00"
+            },
+            "accuracy_calls": 2843254,
+            "completed_ratings": 432180,
+            "ring_bearings": 10821,
+            "all_original_and_strict_checks_pass": true,
+            "mission_outcomes": [
+              "summary mission end: none (Mission.EndMission never true)"
+            ]
+          }
+        ],
+        "event_sequences_equal": true,
+        "ordered": {
+          "lines": [
+            636,
+            636
+          ],
+          "index_diffs": 0,
+          "masks": "unchanged inherited pointer and worker/render-thread IDs"
+        },
+        "teardown": "teardown lines off=238 on=238 index_diffs=0 length_delta=0",
+        "old_evaluator_probes": [
+          [
+            "36",
+            "0.4640"
+          ],
+          [
+            "36",
+            "0.4640"
+          ]
+        ],
+        "first_global_or_all_stream_rng_proof": false,
+        "case_scope": "NEW unexecuted hot+post-return sampled-RNG prefix; historical64k workload is not this run"
+      }
+    ],
+    "logical_game_runs": 4,
+    "new_native_fixture_or_probe_runs": 0,
+    "owned_run_concurrency": 1,
+    "configured_slots": 8,
+    "priority": "Normal",
+    "first_global_or_all_stream_rng_proof": false,
+    "no_unrelated_process_actions": true,
+    "artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\run_off_native4800.log.inputs\\xlive_stub.dll",
+        "size": 32768,
+        "sha256": "f9c96229125148d7c6e6d8b00800fe9f180b921cf1b79092b66dbbaa5f05d0f3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\run_off_native4800.log",
+        "size": 11552340,
+        "sha256": "10dc35cf08a498948a65de9ed796e2593a197900459f38930f94ca349befd5f0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\run_off_native4800.log.manifest.json",
+        "size": 3731,
+        "sha256": "0f9b1c6f271286194c9e2a2ac4117511939e7f825bad2f6601cbf2456e66a395"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\run_off_native4800.log.watchdog.json",
+        "size": 3160,
+        "sha256": "1c3025874be790975d2b099a4fc1dea2cd1e3759a08942982a305ffa77fa41c5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\audit_off_native4800.json",
+        "size": 7956,
+        "sha256": "5fa57cbabec9e786a68ba887675b5e91b1a6efaceb575eeafbace1e966cd3ad2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\run_off_native4800.log.controller_done",
+        "size": 30,
+        "sha256": "c896e3fa773413955e4af14a4ee39303c731dfeeaf8fd2e7c9cb6f52aa71ef05"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\run_on_native4800.log.inputs\\xlive_stub.dll",
+        "size": 32768,
+        "sha256": "f9c96229125148d7c6e6d8b00800fe9f180b921cf1b79092b66dbbaa5f05d0f3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\run_on_native4800.log",
+        "size": 11552338,
+        "sha256": "546a2a31d7b6e4d65f6c531654ae5c85d3d8750c76a6836bfb41cb66cbbe9776"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\run_on_native4800.log.manifest.json",
+        "size": 3727,
+        "sha256": "ea18636da1e305ed6b45fedb19c67bfb74a518877dd172dfb9298c65a258263c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\run_on_native4800.log.watchdog.json",
+        "size": 3152,
+        "sha256": "f186a2cac0b34b98a0047b86aeba6d8b6b130f9f788841a79c001a97ca9692e6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\audit_on_native4800.json",
+        "size": 7943,
+        "sha256": "75556c5e2361559bc7e866746f206a980179331f9048109be8cba800ef0c0c33"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\run_on_native4800.log.controller_done",
+        "size": 30,
+        "sha256": "e6d623e46500e4ece0940960384a650d9f5999f25142c8e3951dc65a2f0e7c4d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\evaluation_native4800.json",
+        "size": 855,
+        "sha256": "cd11a733ffa516fe8d919fe098a8681984451f69dcf053feb59f82e8cb8d5932"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\pair_native4800.json",
+        "size": 6985,
+        "sha256": "d7467f6eac3531611964b21ccb39c2195d7c3a7775c0255ce0d6bb9d54d034f2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\pair_native4800.txt",
+        "size": 1949,
+        "sha256": "bc7321fef9cfb994ad52816f3c0d8dd09207a73c5d4d8fb74a17dc15ffd2d37d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\teardown_native4800.txt",
+        "size": 64,
+        "sha256": "227fd58cc55e2e845356bfcacf55119c5b5be0cd9076e7c42301a6cb36291be0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\sampled_rng_gate.json",
+        "size": 26219,
+        "sha256": "a83fe994cd74497129b2038656969fedae1254c2fc4e8d130327c1c4e3429590"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\matrix.done",
+        "size": 8,
+        "sha256": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\controller.stdout",
+        "size": 3861,
+        "sha256": "be31464970545dbf0089cbf9768888d5afec2668e04112d0db8568996dc69818"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\controller.stderr",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\events.jsonl",
+        "size": 510,
+        "sha256": "27318e3e771c7b1188fc345977370106c1d73f1440be7d4072970f88dff2545b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\frozen.json",
+        "size": 27921,
+        "sha256": "5630cc12308a85bcf286a47056b33476d14179ef036e888572891de07033a41b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\criteria.json",
+        "size": 1070,
+        "sha256": "5d31402db265b14e9d184682c2ac7dfc9a324349b4ed10106c21209e40d61ca0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\launch_plan.json",
+        "size": 3652,
+        "sha256": "4368f9aae7dbdff96933324dd0ce54b689092f1de7b0b398b51cd78922c2f62b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\run_off_ijn18_4800.log.inputs\\xlive_stub.dll",
+        "size": 32768,
+        "sha256": "f9c96229125148d7c6e6d8b00800fe9f180b921cf1b79092b66dbbaa5f05d0f3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\run_off_ijn18_4800.log.inputs\\ijn18_l67_i18_d.txt",
+        "size": 446,
+        "sha256": "8324d67e28d82ae234cf4bd00e482605eff7b1bf04c16c401787ca79cae493c8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\run_off_ijn18_4800.log",
+        "size": 7380737,
+        "sha256": "f2cce64a57f969f1d95552b473f6d37ff6f7ddf1bc871469114fe157ef5a729a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\run_off_ijn18_4800.log.manifest.json",
+        "size": 4578,
+        "sha256": "f036a4520421435d6455df2b7c400762862c7fda517cee5d18f712326cd014bd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\run_off_ijn18_4800.log.watchdog.json",
+        "size": 3518,
+        "sha256": "2e4a331e2eadf6fa029dcb1385f236c65404d557d67a50fa0131dec9221f21f8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\audit_off_ijn18_4800.json",
+        "size": 9268,
+        "sha256": "77c2f36ca14e6be1e98ea63e5ea82a55664e5d996aa8888514c398d0e81ffa0e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\run_off_ijn18_4800.log.controller_done",
+        "size": 30,
+        "sha256": "3c2084242240ba5fb1466980ab14791f3ea816f5deb1f447da4bdf40cbcee78e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\run_on_ijn18_4800.log.inputs\\xlive_stub.dll",
+        "size": 32768,
+        "sha256": "f9c96229125148d7c6e6d8b00800fe9f180b921cf1b79092b66dbbaa5f05d0f3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\run_on_ijn18_4800.log.inputs\\ijn18_l67_i18_d.txt",
+        "size": 446,
+        "sha256": "8324d67e28d82ae234cf4bd00e482605eff7b1bf04c16c401787ca79cae493c8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\run_on_ijn18_4800.log",
+        "size": 7380738,
+        "sha256": "8920142ab94ada0d5091eaebe81a0314bc66aff7fb30c472d531c5b49cf0ca48"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\run_on_ijn18_4800.log.manifest.json",
+        "size": 4574,
+        "sha256": "457fd1eb31ae772795ef632392c493c8c64139dd3f7ebaf8dd3408f31cddca6d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\run_on_ijn18_4800.log.watchdog.json",
+        "size": 3510,
+        "sha256": "1c61548605a13f561d21d20d69c8af44ced365686cee78186550d63233219585"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\audit_on_ijn18_4800.json",
+        "size": 9255,
+        "sha256": "c499c4ef38e9bad9af378efd75cb0f88ab0e98ed600e1f3a220f979877169c62"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\run_on_ijn18_4800.log.controller_done",
+        "size": 30,
+        "sha256": "15eeb225ae4f18ed7cccdc9cdf58581fdbceaaaa2eae8878e517bdb797646861"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\evaluation_ijn18_4800.json",
+        "size": 881,
+        "sha256": "7ac4c02895674764345d2dd2ae8e2a3eee01e04e5dc3730dc36da0a4719e847d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\pair_ijn18_4800.json",
+        "size": 6940,
+        "sha256": "b8e0086f0c0de9f5557affd0dc04738ae03ec493284c75f45f8bb52f663b697b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\pair_ijn18_4800.txt",
+        "size": 1923,
+        "sha256": "b7dae5709b669dc9050af28839be05ea8485307328479a7787b55bcdab8adf29"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\teardown_ijn18_4800.txt",
+        "size": 60,
+        "sha256": "237fa60fa9519de6bdb0ffc6ae46954a914cccd87cd619c59011f414ab7ea768"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\sampled_rng_gate.json",
+        "size": 3765,
+        "sha256": "88763c3207f799ef8d8146945deac2aa0906ed10a6b8da24cf38e467b794bd21"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\matrix.done",
+        "size": 8,
+        "sha256": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\controller.stdout",
+        "size": 3823,
+        "sha256": "d64b78ee82344bfd075b0471fe8f1f853e40167ed4b1df3f24acb1479045d190"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\controller.stderr",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\events.jsonl",
+        "size": 510,
+        "sha256": "29fcd1987cd9f03b2a5a71b605e79113c3ff60a98883c6cf8a363f09c7c68bbf"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\frozen.json",
+        "size": 28597,
+        "sha256": "7f20acdc13317f9869cac8e6c71a7c0de1b09229ecdd6dc23fd29a92141fae34"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\criteria.json",
+        "size": 1327,
+        "sha256": "3c713aa522084e9613909c7ad49297da1ba2cdd423ff8a56ec95938f37a51d74"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\launch_plan.json",
+        "size": 3918,
+        "sha256": "d1193686d0d6b2e813a07dbdc27a137f7dcdbd495f60f931c2c9c15663574053"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\root_approval_20261029T185321Z.json",
+        "size": 1864,
+        "sha256": "44a10c19c44bec08e4deba280ab254609bace0a1b7e46c99dd2c12097fc9b461"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\native_pass_before_IJN.json",
+        "size": 5933,
+        "sha256": "d27cbb68258e3c1c658574927e2047b3487c066f3be37af8a9bd9705a1d16ae6"
+      }
+    ],
+    "current_main_ON_acceptance": false,
+    "separate_current_main_source_fingerprint_finalcode_build_and_candidate_review_required": true
+  },
+  "activation_reassessment": {
+    "old_048_unqualified_enable_recommendation_withdrawn": true,
+    "old_per_row_nonempty_RNG_gates": "msd/u2 remain unobserved/unmet; do not rewrite savedtrue fields or relabelthem passed",
+    "new_added_strict_gate_result": "both native4800 and IJN18_4800 passed ONLY for exact copied5c/c8 binaries on clean0ff host",
+    "current_main_ON_recommendation": "WITHHELD_SEPARATE_REVIEW_REQUIRED",
+    "reason": "current main now includes later C320/C5/profile cleanup, live locale and BDD600/MainSection integration; frame/result source changed outside these executable receipts",
+    "required_primary_followup": "qualify private8383 report/name activation drafts; refresh30critical fingerprints, finalactualcode and currentOFF/ON builds; if materialcontext differs preregister same strict prefixes on actualcandidate, never relabelthis run",
+    "no_additional_rerun_authorized_or_started_by_this_report": true,
+    "global_first_all_stream_or_RNG_state_parity_claim": false,
+    "main_guard_at_audited1e10": "OFF",
+    "private_test_guard": "c8ON candidate only",
+    "source_calls_and_FP_proof_scope_unchanged": true
+  },
+  "actions": {
+    "old_frozen_inputs_evaluators_results_masks_rewritten": false,
+    "new_logical_game_runs": 4,
+    "new_native_fixture_probe_or_unit_tests": 0,
+    "source_header_sharedmetadata_or_Ghidra_edits": false,
+    "original_install_save_profile_power_changes_by_agent": false,
+    "unrelated_process_actions": false,
+    "runtime_host_tracked_status": "clean0ff",
+    "review_worktree_only_two_owned_tracked_files": true
+  },
+  "artifact_receipts": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-rng-correction\\local\\rng_correction",
+    "files": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-rng-correction\\local\\rng_correction\\audit.py",
+        "size": 13372,
+        "sha256": "f7393fcffe4f529a72cd244ba74bd93ee968a63b980dfb36eaf249a5a52423b9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-rng-correction\\local\\rng_correction\\audit.json",
+        "size": 115025,
+        "sha256": "d527ca52769b49e5275fc2a6aa31218a6c9fa184703e62bb41aea7b4a9d19f6b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-rng-correction\\local\\rng_correction\\old_review_report.json",
+        "size": 28810,
+        "sha256": "6ba342e177bba537f2640642f708e19a95efc5b5e77bb751878e0dcaadd7a8a3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-rng-correction\\local\\rng_correction\\old_review_document.md",
+        "size": 10683,
+        "sha256": "1f84f9cbc761f2b44cc7b3d85d2d59bdc4d2fe720d3bd2377af59e7579272b93"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-rng-correction\\local\\rng_correction\\source_provenance.json",
+        "size": 16403,
+        "sha256": "9274185fdc2ce22742e65366cdad7b81823a21c24075ca1f0b7f511511100238"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-rng-correction\\local\\rng_correction\\proposed_native4800.json",
+        "size": 5976,
+        "sha256": "327cefbb30d2d157a978c6acbeb2055f8c3b365a9159cc8252d138b22b0c68a9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-rng-correction\\local\\rng_correction\\audit_natural_hot.py",
+        "size": 5618,
+        "sha256": "4fa06473460dc3da08c954cf2d96a4a1c188fde3360161a38de266decb4ffb91"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-rng-correction\\local\\rng_correction\\audit_natural_hot.stdout.json",
+        "size": 1272,
+        "sha256": "3a4a5b782911137d8288b1696d6df62a54f9db0adc44e5e8792e2dcd368ea12b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-rng-correction\\local\\rng_correction\\historical_natural_hot.json",
+        "size": 657393,
+        "sha256": "df63a2e863df37647bbbe9e1acc562bafb15ed7f18eb1a8587bfb3fefb228047"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-rng-correction\\local\\rng_correction\\prepare_witness.py",
+        "size": 8691,
+        "sha256": "95e9252114549daff41d72a7c1ef488656da083d2863c13656ab8181de31e551"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-rng-correction\\local\\rng_correction\\finalize_prelaunch.py",
+        "size": 2223,
+        "sha256": "b53040760a68c42f5a4ce44d3680e403a040eaae6c654307295368dc5b6b4b54"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-rng-correction\\local\\rng_correction\\prelaunch_draft_metadata_history.json",
+        "size": 819,
+        "sha256": "e0d202792f8f6f2b8c285a794836ec246142cc6fb3361b3e0b02e09d54dae862"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-rng-correction\\local\\rng_correction\\check_sampled_rng.py",
+        "size": 4046,
+        "sha256": "a2266ebd13810cace0874c50f02ed49f2d4ba0394fad2d917904f7aecdab11d4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-rng-correction\\local\\rng_correction\\witness_preparation_summary.json",
+        "size": 8958,
+        "sha256": "110e63b3c4878548a5bf425d90bd48d9579353c28f776b2db464e518703bd10c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-rng-correction\\local\\rng_correction\\preparation.stdout.json",
+        "size": 7733,
+        "sha256": "063490a3eab947ca853ac34c09ce691f40a70c130e9ccd78ab93705134ec986e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-rng-correction\\local\\rng_correction\\execution_approval_receipt.json",
+        "size": 2176,
+        "sha256": "381ea66fb047c89c10b889294839303164455a9806d1f5c5684863fe57b54735"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-rng-correction\\local\\rng_correction\\collect_runtime.py",
+        "size": 6884,
+        "sha256": "f90b7a8d0bb339f84f3a72b91508ebd9631dcdf46b7e6eec85b4fa168aecab91"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-rng-correction\\local\\rng_correction\\runtime_results.json",
+        "size": 35875,
+        "sha256": "5c79347cd686be0e380f92de42b41ceeb82543d815645228fbdee403ed5e74a4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-rng-correction\\local\\rng_correction\\write_report.py",
+        "size": 9498,
+        "sha256": "e1d73179ecc5a5d33dd04fcbd62a41c3b21a531ad1e14ebbbd1ac11ab14dff4b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-rng-correction\\local\\rng_correction\\pair_acr86_ref.txt",
+        "size": 1730,
+        "sha256": "00f1a58743fc6aa3ef36765e87086bf14c554f19784201a21f15928b727e33bb"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-rng-correction\\local\\rng_correction\\pair_acr86_msd.txt",
+        "size": 1771,
+        "sha256": "e459f37e180e5a267f70dadffeabdad0599da412bca87ed18fe26b69e0856555"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-rng-correction\\local\\rng_correction\\pair_acr86_u2.txt",
+        "size": 1742,
+        "sha256": "a7167877df0cc65d8a62826e6fd9de18171091e1d8435d1294016cfc939e43e0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-rng-correction\\local\\rng_correction\\pair_gacc_now_ref.txt",
+        "size": 1790,
+        "sha256": "3da15380e350ec11641c42ef268641c637b569b0eff564dddbe88567c5424862"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-rng-correction\\local\\rng_correction\\pair_gacc_now_msd.txt",
+        "size": 1771,
+        "sha256": "804b11c84a07def06954ad8c43bc72e9ace47d57401aa0b3cad1c3775893fd64"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-weapon-accuracy-rng-correction\\local\\rng_correction\\pair_gacc_now_u2.txt",
+        "size": 1802,
+        "sha256": "f7b06186b0ca51e1b55eee89dd90d79542c2a71769e2de9b52c48426c3583ead"
+      }
+    ],
+    "new_runtime_raw_files": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\run_off_native4800.log.inputs\\xlive_stub.dll",
+        "size": 32768,
+        "sha256": "f9c96229125148d7c6e6d8b00800fe9f180b921cf1b79092b66dbbaa5f05d0f3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\run_off_native4800.log",
+        "size": 11552340,
+        "sha256": "10dc35cf08a498948a65de9ed796e2593a197900459f38930f94ca349befd5f0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\run_off_native4800.log.manifest.json",
+        "size": 3731,
+        "sha256": "0f9b1c6f271286194c9e2a2ac4117511939e7f825bad2f6601cbf2456e66a395"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\run_off_native4800.log.watchdog.json",
+        "size": 3160,
+        "sha256": "1c3025874be790975d2b099a4fc1dea2cd1e3759a08942982a305ffa77fa41c5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\audit_off_native4800.json",
+        "size": 7956,
+        "sha256": "5fa57cbabec9e786a68ba887675b5e91b1a6efaceb575eeafbace1e966cd3ad2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\run_off_native4800.log.controller_done",
+        "size": 30,
+        "sha256": "c896e3fa773413955e4af14a4ee39303c731dfeeaf8fd2e7c9cb6f52aa71ef05"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\run_on_native4800.log.inputs\\xlive_stub.dll",
+        "size": 32768,
+        "sha256": "f9c96229125148d7c6e6d8b00800fe9f180b921cf1b79092b66dbbaa5f05d0f3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\run_on_native4800.log",
+        "size": 11552338,
+        "sha256": "546a2a31d7b6e4d65f6c531654ae5c85d3d8750c76a6836bfb41cb66cbbe9776"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\run_on_native4800.log.manifest.json",
+        "size": 3727,
+        "sha256": "ea18636da1e305ed6b45fedb19c67bfb74a518877dd172dfb9298c65a258263c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\run_on_native4800.log.watchdog.json",
+        "size": 3152,
+        "sha256": "f186a2cac0b34b98a0047b86aeba6d8b6b130f9f788841a79c001a97ca9692e6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\audit_on_native4800.json",
+        "size": 7943,
+        "sha256": "75556c5e2361559bc7e866746f206a980179331f9048109be8cba800ef0c0c33"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\run_on_native4800.log.controller_done",
+        "size": 30,
+        "sha256": "e6d623e46500e4ece0940960384a650d9f5999f25142c8e3951dc65a2f0e7c4d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\evaluation_native4800.json",
+        "size": 855,
+        "sha256": "cd11a733ffa516fe8d919fe098a8681984451f69dcf053feb59f82e8cb8d5932"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\pair_native4800.json",
+        "size": 6985,
+        "sha256": "d7467f6eac3531611964b21ccb39c2195d7c3a7775c0255ce0d6bb9d54d034f2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\pair_native4800.txt",
+        "size": 1949,
+        "sha256": "bc7321fef9cfb994ad52816f3c0d8dd09207a73c5d4d8fb74a17dc15ffd2d37d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\teardown_native4800.txt",
+        "size": 64,
+        "sha256": "227fd58cc55e2e845356bfcacf55119c5b5be0cd9076e7c42301a6cb36291be0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\sampled_rng_gate.json",
+        "size": 26219,
+        "sha256": "a83fe994cd74497129b2038656969fedae1254c2fc4e8d130327c1c4e3429590"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\matrix.done",
+        "size": 8,
+        "sha256": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\controller.stdout",
+        "size": 3861,
+        "sha256": "be31464970545dbf0089cbf9768888d5afec2668e04112d0db8568996dc69818"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\controller.stderr",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\events.jsonl",
+        "size": 510,
+        "sha256": "27318e3e771c7b1188fc345977370106c1d73f1440be7d4072970f88dff2545b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\frozen.json",
+        "size": 27921,
+        "sha256": "5630cc12308a85bcf286a47056b33476d14179ef036e888572891de07033a41b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\criteria.json",
+        "size": 1070,
+        "sha256": "5d31402db265b14e9d184682c2ac7dfc9a324349b4ed10106c21209e40d61ca0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_native4800\\launch_plan.json",
+        "size": 3652,
+        "sha256": "4368f9aae7dbdff96933324dd0ce54b689092f1de7b0b398b51cd78922c2f62b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\run_off_ijn18_4800.log.inputs\\xlive_stub.dll",
+        "size": 32768,
+        "sha256": "f9c96229125148d7c6e6d8b00800fe9f180b921cf1b79092b66dbbaa5f05d0f3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\run_off_ijn18_4800.log.inputs\\ijn18_l67_i18_d.txt",
+        "size": 446,
+        "sha256": "8324d67e28d82ae234cf4bd00e482605eff7b1bf04c16c401787ca79cae493c8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\run_off_ijn18_4800.log",
+        "size": 7380737,
+        "sha256": "f2cce64a57f969f1d95552b473f6d37ff6f7ddf1bc871469114fe157ef5a729a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\run_off_ijn18_4800.log.manifest.json",
+        "size": 4578,
+        "sha256": "f036a4520421435d6455df2b7c400762862c7fda517cee5d18f712326cd014bd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\run_off_ijn18_4800.log.watchdog.json",
+        "size": 3518,
+        "sha256": "2e4a331e2eadf6fa029dcb1385f236c65404d557d67a50fa0131dec9221f21f8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\audit_off_ijn18_4800.json",
+        "size": 9268,
+        "sha256": "77c2f36ca14e6be1e98ea63e5ea82a55664e5d996aa8888514c398d0e81ffa0e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\run_off_ijn18_4800.log.controller_done",
+        "size": 30,
+        "sha256": "3c2084242240ba5fb1466980ab14791f3ea816f5deb1f447da4bdf40cbcee78e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\run_on_ijn18_4800.log.inputs\\xlive_stub.dll",
+        "size": 32768,
+        "sha256": "f9c96229125148d7c6e6d8b00800fe9f180b921cf1b79092b66dbbaa5f05d0f3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\run_on_ijn18_4800.log.inputs\\ijn18_l67_i18_d.txt",
+        "size": 446,
+        "sha256": "8324d67e28d82ae234cf4bd00e482605eff7b1bf04c16c401787ca79cae493c8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\run_on_ijn18_4800.log",
+        "size": 7380738,
+        "sha256": "8920142ab94ada0d5091eaebe81a0314bc66aff7fb30c472d531c5b49cf0ca48"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\run_on_ijn18_4800.log.manifest.json",
+        "size": 4574,
+        "sha256": "457fd1eb31ae772795ef632392c493c8c64139dd3f7ebaf8dd3408f31cddca6d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\run_on_ijn18_4800.log.watchdog.json",
+        "size": 3510,
+        "sha256": "1c61548605a13f561d21d20d69c8af44ced365686cee78186550d63233219585"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\audit_on_ijn18_4800.json",
+        "size": 9255,
+        "sha256": "c499c4ef38e9bad9af378efd75cb0f88ab0e98ed600e1f3a220f979877169c62"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\run_on_ijn18_4800.log.controller_done",
+        "size": 30,
+        "sha256": "15eeb225ae4f18ed7cccdc9cdf58581fdbceaaaa2eae8878e517bdb797646861"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\evaluation_ijn18_4800.json",
+        "size": 881,
+        "sha256": "7ac4c02895674764345d2dd2ae8e2a3eee01e04e5dc3730dc36da0a4719e847d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\pair_ijn18_4800.json",
+        "size": 6940,
+        "sha256": "b8e0086f0c0de9f5557affd0dc04738ae03ec493284c75f45f8bb52f663b697b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\pair_ijn18_4800.txt",
+        "size": 1923,
+        "sha256": "b7dae5709b669dc9050af28839be05ea8485307328479a7787b55bcdab8adf29"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\teardown_ijn18_4800.txt",
+        "size": 60,
+        "sha256": "237fa60fa9519de6bdb0ffc6ae46954a914cccd87cd619c59011f414ab7ea768"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\sampled_rng_gate.json",
+        "size": 3765,
+        "sha256": "88763c3207f799ef8d8146945deac2aa0906ed10a6b8da24cf38e467b794bd21"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\matrix.done",
+        "size": 8,
+        "sha256": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\controller.stdout",
+        "size": 3823,
+        "sha256": "d64b78ee82344bfd075b0471fe8f1f853e40167ed4b1df3f24acb1479045d190"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\controller.stderr",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\events.jsonl",
+        "size": 510,
+        "sha256": "29fcd1987cd9f03b2a5a71b605e79113c3ff60a98883c6cf8a363f09c7c68bbf"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\frozen.json",
+        "size": 28597,
+        "sha256": "7f20acdc13317f9869cac8e6c71a7c0de1b09229ecdd6dc23fd29a92141fae34"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\criteria.json",
+        "size": 1327,
+        "sha256": "3c713aa522084e9613909c7ad49297da1ba2cdd423ff8a56ec95938f37a51d74"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_ijn18_4800\\launch_plan.json",
+        "size": 3918,
+        "sha256": "d1193686d0d6b2e813a07dbdc27a137f7dcdbd495f60f931c2c9c15663574053"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\root_approval_20261029T185321Z.json",
+        "size": 1864,
+        "sha256": "44a10c19c44bec08e4deba280ab254609bace0a1b7e46c99dd2c12097fc9b461"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-rng-witness-host\\local\\accuracy_rng_witness\\native_pass_before_IJN.json",
+        "size": 5933,
+        "sha256": "d27cbb68258e3c1c658574927e2047b3487c066f3be37af8a9bd9705a1d16ae6"
+      }
+    ],
+    "document_sha256": "3fecc17235123a573204789f13524443f359a90aefe605da29301fdf0eb33fda"
+  }
+}
