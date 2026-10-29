@@ -1,7 +1,10 @@
 # Private DEFAULT Text widget lifetime binding
 
-Source-only, **UNBUILT** three-file packet. No production caller, build, probe,
-fixture, game, shared-source/CMake/config/ledger or Ghidra change accompanies it.
+**Integrated, source-reviewed and Win32 build-tested preparation.** Frozenb6b016e68
+passed root and independent review; integrateddf7fe8eb0 registers this TU in
+bsp_core. MSVC Win32 Release and both existing CTests pass; receipt:
+`local/codex_default_widget_build.log`. No production caller, lifecycle probe,
+fixture, game or Ghidra change accompanies this acceptance.
 It composes existing bodies and claims no new Native address/body or binary ABI.
 The public API was coordinated with owner plan9c54471c0 and approved by root.
 

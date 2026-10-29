@@ -1,8 +1,10 @@
 # One retained private raw DEFAULT Text owner
 
-Status: **UNBUILT source preparation**. NEW HPP/CPP only, with this evidence
-document. No CMake/host/renderer/config/ledger changes, activation, build, probe,
-game or Ghidra mutation. No new native function/body credit or Original ABI.
+Status: **integrated, built and qualified for ONE genuine DEFAULT lifecycle**.
+Root/independent source reviews pass; root registered the owner and added the
+OFF-gated qualification hooks. The complete-type VFS/cache includes were fixed
+without provider/body changes. MSVC Win32 and both existing CTests pass. The
+qualification route stays OFF in main; no native body credit or Original ABI.
 
 Dependencies are compiled helper snapshot `6c158055f` (e75 raw Text,
 e769/2049 raw Model and ba2 AA1380), private widget provider
@@ -135,3 +137,30 @@ proper manifested real lifecycle qualification. No native GuiDefault/residue,
 failure/flags0/pool-reuse, broader raw child, Page/frontend or repeated-lifetime
 acceptance is claimed. Preserve full opaque extents/transitive disjointness,
 serialization and provider lifetime through every retained outcome.
+
+## One real-provider lifecycle accepted
+
+Frozen candidatec0ef2def1, EXE
+`CE52FCCC1ECF1C20BBD6A64AF8843132D362E404DE931367DEE589930627D9ED`,
+used the same DDF2 DLL and binary for serial GUI_TEXT0/1 on slot4/core10.
+Both runs exit0 and finish599 presents+1 skipped/mission181. ON has exactly
+one preparation, nonnull factory+separate raw122 publication, settled Text/Model
+scalar/pool/late-flags retirement and post-renderer metadata closure. OFF has
+none. Gameplay and full449/449 and mission299/299 ordered traces match, start36
+and first RNG1 match. Raw pair1 contains only the four new owner records.
+
+Raw teardown1402/1404/index97 remains recorded: exactly two inserted retirement/
+closure rows, no prior row changed or moved. Both sides retain exactly the
+unchanged error.dds/profileD61948/ref1 baseline residue with COMdevice1/api1;
+the raw COM-zero failure remains visible. No new comparison mask or allowance.
+Normal is selected by the frozen runner; no independent live-priority sample.
+The blocked earlier scheduler attempt created no game log/manifest and is not
+a lifecycle run. Source, receipts and copied independent review are retained
+under `local/codex_raw_default_qualification_20261028`.
+
+Independent review.json SHA-256:
+`DD45BECF4B635347BDB62EF179CCC1A36F706142BECD50F1BD82141DF23A6617`.
+Root reviewed the predicates and accepts only this bounded fixture. Main's
+route is restored OFF atf1bfc515f and both existing CTests pass again. This does
+not establish content/rendering/Page, failure, flags0, foreign credit, reentry,
+repeated reuse or native ABI behavior.

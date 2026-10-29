@@ -247,4 +247,7 @@ semantic-lifetime storage and equal-valued different cells remain excluded.
 Local node/base/material/effect object-identity checks remain exact. Both views
 and all backing still live through every call/failure/drain. Legacy guards,
 object fields/vtables and native allocation/get/free bodies are unchanged.
-Root and independent source review pass; the focused rebuild follows.
+Root and independent source review pass. Frozenef69872ae MSVC Win32 Release
+and both existing CTests pass (`local/codex_raw_string_domain_build.log`). No
+implementation-mirroring tests were added. Actual owner/lifecycle acceptance
+remains separate; the correction admits real contexts without extending them.

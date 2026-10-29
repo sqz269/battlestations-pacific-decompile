@@ -10,8 +10,12 @@
 // docs/SHIP_AI_STATES.md, docs/UNIT_AUTOPILOT_PAIR.md, docs/BOT_FIRE_TARGET.md
 // and the milestone 2n section of docs/GAME_EXECUTABLE.md.
 
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include "bsp/vehicle_class_lua_load.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
+#include "bsp/game_native_dyn_process.hpp"
 #include "bsp/gun_owner_inferior_operational_cc13.hpp"
 #include "bsp/gun_subobject_repair_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
@@ -5034,6 +5038,15 @@ public:
             bsp::WeaponHitAccuracyProfile profiles[4];
             owner_.weapon_hit_accuracy(profiles);
             owner_.done("ShipAiFirepower::hit_accuracy_profile_008386f0", 0x008386f0u);
+            if constexpr (bsp::kWeaponHitAccuracyNativeRangeBound) {
+                // Borrow the same process-retained mutable cell that main
+                // bound from canonical NativeData. Pass its address through;
+                // BF7420 reads its current value after the native multiply.
+                const auto& actual_conversion = game_native_dyn_process(
+                    application_camera_axes_crt()).crt_conversion_0109eea4();
+                return bsp::weapon_hit_accuracy_008386f0(profiles, function,
+                    target_length, fraction, actual_conversion);
+            }
             return bsp::weapon_hit_accuracy_008386f0(profiles, function, target_length, fraction);
         }
         owner_.record("ShipAiFirepower::hit_accuracy_profile_008386f0", 0x008386f0u);

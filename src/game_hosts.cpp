@@ -8,10 +8,13 @@
 #include "bsp/game_native_lua_globals.hpp"
 #include "bsp/game_native_lua_services.hpp"
 #include "bsp/game_native_renderer_application.hpp"
+#include "bsp/game_native_raw_default_text_owner.hpp"
 #include "bsp/game_native_mission_factories.hpp"
 #include "bsp/native_render_resource_init.hpp"
 #include "bsp/game_native_font_probe.hpp"
 #include "bsp/game_native_gui_text_process.hpp"
+#include "bsp/game_native_gui_icon_process.hpp"
+#include "bsp/native_string_raw_domain.hpp"
 #include "bsp/game_native_gui_text_state.hpp"
 #include "bsp/game_native_type_storage.hpp"
 #include "bsp/native_vfs_owner_services.hpp"
@@ -1916,7 +1919,52 @@ void GameStartupHost::exit_if_native_lua_interrupted() noexcept {
     std::_Exit(1); // no guessed raw-manager rollback or CRT cleanup of partial state
 }
 
+void GameStartupHost::prepare_native_gui_icon_process() {
+    if (!singletons_ || !vfs_ || native_gui_icon_process_ ||
+        singletons_->native_deletion_bindings().gui_icon_delayed_loads)
+        throw std::logic_error("GUI Icon process requires a fresh host and empty deletion arm");
+    auto& process = game_native_gui_icon_process();
+    auto& strings = game_native_string_process().raw_context();
+    if (process.delayed_loads_status() != GameNativeGuiIconProcess::DelayedLoadsStatus::unprepared ||
+        !same_native_string_raw_pool_cells(strings, vfs_->raw_strings()) ||
+        &strings.actual_manager_publication_01090aa0 !=
+            &singletons_->manager_publication_01090aa0())
+        throw std::logic_error("GUI Icon process requires permanent canonical string cells and one host");
+    auto& service = process.prepare_delayed_loads(strings); // C++ metadata only.
+    singletons_->native_deletion_bindings().gui_icon_delayed_loads = &service;
+    native_gui_icon_process_ = &process; // Commit stable borrows before observations/logging.
+    if (process.delayed_loads_status() != GameNativeGuiIconProcess::DelayedLoadsStatus::idle ||
+        process.publication_00f8bd98())
+        throw std::logic_error("GUI Icon metadata preparation entered unexpected native custody");
+    log_.note("native GUI Icon process: metadata_prepared idle=1 publication=null deletion_bound=1");
+}
+
+void GameStartupHost::exit_if_native_gui_icon_interrupted() noexcept {
+    if (!native_gui_icon_process_) return;
+    using Status = GameNativeGuiIconProcess::DelayedLoadsStatus;
+    const auto status = native_gui_icon_process_->delayed_loads_status();
+    if (status == Status::idle || status == Status::registered_owner) return;
+    try {
+        log_.note("native GUI Icon operation interrupted; retaining the entire provider graph until exit");
+        log_.close();
+    } catch (...) { std::fputs("bsp_game: native GUI Icon requires process retention\n", stderr); }
+    std::_Exit(1);
+}
+
+void GameStartupHost::verify_native_gui_icon_after_drain() {
+    if (!native_gui_icon_process_) return;
+    if (!singletons_ ||
+        native_gui_icon_process_->delayed_loads_status() != GameNativeGuiIconProcess::DelayedLoadsStatus::idle ||
+        native_gui_icon_process_->publication_00f8bd98() ||
+        singletons_->manager_publication_01090aa0() ||
+        singletons_->native_deletion_bindings().gui_icon_delayed_loads !=
+            &native_gui_icon_process_->delayed_loads())
+        throw std::logic_error("GUI Icon requires idle/null publication and the SAME deletion service after full drain");
+    log_.note("native GUI Icon process: after_full_drain idle=1 publication=null manager=null deletion_bound=1");
+}
+
 void GameStartupHost::exit_if_native_renderer_incomplete() noexcept {
+    exit_if_native_gui_icon_interrupted();
     const bool factories_incomplete = native_startup_factories_ &&
         (startup_factories_phase_ != StartupFactoriesPhase::live ||
             native_startup_factories_->requires_process_retention());
@@ -1930,16 +1978,18 @@ void GameStartupHost::exit_if_native_renderer_incomplete() noexcept {
 }
 
 void GameStartupHost::drain_native_singletons() {
-    if (!native_startup_factories_) {
-        if (native_renderer_) native_renderer_->drain_singletons();
-        else singletons_->shutdown();
-        return;
-    }
+    exit_if_native_gui_icon_interrupted();
     // Font/GUI borrowers have retired; renderer drain retires its remaining
     // lookup-capable consumers, then the shared factory table, before shutdown.
     // BBC5D0 leaves dangling table bits until parent drain. Never let a later
     // failure unwind VFS/data/strings merely because the facade says retired.
     try {
+        if (!native_startup_factories_) {
+            if (native_renderer_) native_renderer_->drain_singletons();
+            else singletons_->shutdown();
+            verify_native_gui_icon_after_drain();
+            return;
+        }
         if (startup_factories_phase_ != StartupFactoriesPhase::live)
             throw std::logic_error("shared startup factories cannot replay retirement");
         startup_factories_phase_ = StartupFactoriesPhase::retiring;
@@ -1948,6 +1998,7 @@ void GameStartupHost::drain_native_singletons() {
             native_startup_factories_->retire_before_native_drain();
             singletons_->shutdown();
         }
+        verify_native_gui_icon_after_drain();
         startup_factories_phase_ = StartupFactoriesPhase::retired;
         // Renderer closure has returned and detached its borrow, including
         // any prepared-phase return; all provider objects are still alive.
@@ -1956,8 +2007,8 @@ void GameStartupHost::drain_native_singletons() {
         startup_factories_phase_ = StartupFactoriesPhase::closed;
     } catch (...) {
         startup_factories_phase_ = StartupFactoriesPhase::failed;
-        try { log_.note("shared startup factory drain incomplete; retaining the entire provider graph until exit"); log_.close(); }
-        catch (...) { std::fputs("bsp_game: shared startup factory drain requires process exit\n", stderr); }
+        try { log_.note("native singleton/factory drain incomplete; retaining the entire provider graph until exit"); log_.close(); }
+        catch (...) { std::fputs("bsp_game: native singleton/factory drain requires process exit\n", stderr); }
         std::_Exit(1);
     }
 }
@@ -2448,6 +2499,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         std::filesystem::current_path() / "battlestationspacific.exe", options_.hardware_probe_commit);
     VfsStartupState vfs_state;
     vfs_->phase2(vfs_state);
+    prepare_native_gui_icon_process();
 
     if constexpr (kNativeShaderPreloadStartupCc16Bound) {
         // Original73D8CC: real BBCB40 before platform construction and the
@@ -2998,7 +3050,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
             });
         native_renderer_->bind_mission_startup_random(*random_threads_);
     }
-    if (native_gui_render_)
+    if (native_gui_render_ || native_raw_default_text_)
         native_renderer_->register_mission_prepare_callback(this, [](void* owner) {
             static_cast<GameStartupHost*>(owner)->prepare_native_gui_text_resources();
         });

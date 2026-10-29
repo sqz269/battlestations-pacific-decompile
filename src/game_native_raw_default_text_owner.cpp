@@ -1,5 +1,6 @@
 #include "bsp/game_native_raw_default_text_owner.hpp"
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_hosts_vfs.hpp"
 #include "bsp/game_hosts_singletons.hpp"
 #include "bsp/game_native_renderer_application.hpp"
 #include "bsp/game_native_readonly_data.hpp"
@@ -20,6 +21,7 @@
 #include "bsp/native_node_destruction.hpp"
 #include "bsp/native_camera_owner.hpp"
 #include "bsp/native_lua_service_bindings.hpp"
+#include "bsp/native_shader_binary_cache.hpp"
 #include <cstdint>
 #include <exception>
 #include <stdexcept>
@@ -60,7 +62,20 @@ struct GameNativeRawDefaultTextOwner::Impl {
         GameSingletonHost& s, GameNativeReadOnlyData& d, GameNativeGuiSamplerApplicationBindings b)
         : log(l), renderer(r), vfs(v), singletons(s), data(d), sampler_bindings(b) {}
     ~Impl();
-    void fail() noexcept { failure = std::current_exception(); phase = Phase::failed; }
+    void fail() noexcept {
+        failure = std::current_exception();
+        phase = Phase::failed;
+        // Keep the original failure observable before the host's sticky exit.
+        // Logging invokes no native cleanup and cannot replace disposition.
+        try {
+            if (failure) std::rethrow_exception(failure);
+        } catch (const std::exception& error) {
+            try { log.notef("raw DEFAULT Text owner failure: %s", error.what()); } catch (...) {}
+        } catch (...) {
+            try { log.note("raw DEFAULT Text owner failure: nonstandard exception"); } catch (...) {}
+        }
+        observe("failed");
+    }
     bool custody_settled() const noexcept;
     bool retain() const noexcept;
     void observe(const char*) noexcept;
