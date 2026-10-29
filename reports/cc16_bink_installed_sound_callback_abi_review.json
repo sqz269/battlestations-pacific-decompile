@@ -1,0 +1,330 @@
+{
+  "status": "independent_qualified_pass_static_machine_stack_and_return_dataflow_only",
+  "candidate_commit": "a9f6830184934f3ac9f06b976cf97f46c7f7be08",
+  "candidate_source_head_as_recorded": "82c4149e95f3d4cc6d7731802072b8a5aeba30dc",
+  "reviewed_at_utc": "2026-10-29T22:34:08.397248+00:00",
+  "blocking_findings": [],
+  "input_records": {
+    "primary_document": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-bink-installed-sound-callback-abi-review\\docs\\CC16_BINK_INSTALLED_SOUND_CALLBACK_ABI.md",
+      "bytes": 4107,
+      "sha256": "d849df7e8a2e1c7e37959cf556f5fbe99f7caaad979d0a5360eee70a5e2503da"
+    },
+    "primary_report": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-bink-installed-sound-callback-abi-review\\reports\\cc16_bink_installed_sound_callback_abi.json",
+      "bytes": 9162,
+      "sha256": "6f173440a49c135794a185fbb4376826ca2e2427100c225bc556354504b51df2"
+    },
+    "target": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\binkw32.dll",
+      "bytes": 178440,
+      "sha256": "7f22055e8f62e228eb90f09846f9b668e0a0b1d29057af6e3b7bff1e08c0d724",
+      "machine": "014c",
+      "image_base": "0x18000000",
+      "selected": [
+        {
+          "export": "_BinkSetSoundSystem@8",
+          "rva": "0xcea0",
+          "va": "0x1800cea0",
+          "window_bytes": 1072,
+          "window_is_not_a_proven_function_boundary": true,
+          "window_sha256": "5efadc0c54d6f4cf9da5c1cb7a9a75616edc12109f63a082cdc0c3afcb9dd1c4",
+          "listing": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\bink_installed_sound_callback_abi\\BinkSetSoundSystem_8.asm"
+        },
+        {
+          "export": "_BinkOpenDirectSound@4",
+          "rva": "0x11fc0",
+          "va": "0x18011fc0",
+          "window_bytes": 2112,
+          "window_is_not_a_proven_function_boundary": true,
+          "window_sha256": "2e65d89a59653840cd0331c1c0185b121743d34b9d62bbb2ff1b7d15cdd4dfc1",
+          "listing": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\bink_installed_sound_callback_abi\\BinkOpenDirectSound_4.asm"
+        }
+      ],
+      "code_execution": false,
+      "DLL_loading": false
+    },
+    "source_declaration": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\include\\bsp\\bink_runtime_library.hpp",
+      "bytes": 2171,
+      "sha256": "510edc8d0f710009872357e976d6fb62bfb9dca50430eb8100155d9713e66007",
+      "git_blob": "73f927f786ef979edb0199a197e92164078a104b"
+    },
+    "primary_artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\bink_installed_sound_callback_abi\\analyze_callback_abi.py",
+        "bytes": 1797,
+        "sha256": "c2d0aa1580e1fca646342deb7e0c3409d5a22422fe3c63f05dcc6f24d7d766d1"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\bink_installed_sound_callback_abi\\bink_open_reachable.asm",
+        "bytes": 56274,
+        "sha256": "6d040ae2d1953ac2cfce206e516e56ca6394eb9569651e6df5c9cbe4eb9dc7f6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\bink_installed_sound_callback_abi\\BinkOpenDirectSound_4.asm",
+        "bytes": 37577,
+        "sha256": "412473c37d375d913e9a65b2271f7ee820d618cc48699ea28c9c8225dee45ee2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\bink_installed_sound_callback_abi\\BinkSetSoundSystem_8.asm",
+        "bytes": 20104,
+        "sha256": "9c56df849f9374324a0fc101efb32ba308346b12f80877f4fe8f403d1ad0d6dd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\bink_installed_sound_callback_abi\\cfg_contract.json",
+        "bytes": 2711,
+        "sha256": "bb42046b06577afbebb89c35da3542f240bb1b4ff939e1f28084b22445a16735"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\bink_installed_sound_callback_abi\\derive_contract.py",
+        "bytes": 3018,
+        "sha256": "41cd5f78004a0c0c6aee9772bf3d5bf6ea371187bce35e3971c4bcebde75727c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\bink_installed_sound_callback_abi\\open_direct_sound_reachable.asm",
+        "bytes": 3622,
+        "sha256": "a5f1199f4267eda919b2f090ee935cbf05e094dddf881e559f2c87fb95bafa39"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\bink_installed_sound_callback_abi\\pe_info.json",
+        "bytes": 1226,
+        "sha256": "238f9ad69e5c8e55d813787e8a8f7c4f3c71bdb90ce4c7523ad56de4778056e5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\bink_installed_sound_callback_abi\\record_report.py",
+        "bytes": 2993,
+        "sha256": "2c87056b3f40ce04eab2ea2eb8c5fbef35498dc31c3a8e283838af696a8ee563"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\bink_installed_sound_callback_abi\\returned_sound_open_reachable.asm",
+        "bytes": 12081,
+        "sha256": "a18f92a924efdd88e52511ebd2e56eeb7bc67a6a29014bc16758b7680eed5bbc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\bink_installed_sound_callback_abi\\set_sound_system_reachable.asm",
+        "bytes": 1285,
+        "sha256": "3905cb6ac70ff11d5881a4f61f170bc0b6e387acd695eff1140300f7a999be62"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\bink_installed_sound_callback_abi\\stored_callback_call_window.asm",
+        "bytes": 1598,
+        "sha256": "917aa6bc6883a88542de1c1d1f7c6abd46eed8e34c7d095eb56e277476de24bd"
+      }
+    ]
+  },
+  "independent_method": "independent PE parsing and Capstone x86 instruction worklist; normal-return calls only; no helper descent or DLL execution",
+  "independent_pe": {
+    "dll_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\binkw32.dll",
+    "dll_bytes": 178440,
+    "dll_sha256": "7f22055e8f62e228eb90f09846f9b668e0a0b1d29057af6e3b7bff1e08c0d724",
+    "machine": "014c",
+    "optional_magic": "010b",
+    "preferred_base": "0x18000000",
+    "exports_verified": {
+      "_BinkSetSoundSystem@8": "0xcea0",
+      "_BinkOpenDirectSound@4": "0x11fc0",
+      "_BinkOpen@8": "0xd690"
+    },
+    "code_pointer_target_in_executable_section": true
+  },
+  "independent_graphs": {
+    "set_sound_system": {
+      "start_rva": "0xcea0",
+      "upper_bound_rva": "0xcee8",
+      "reachable_instructions": 24,
+      "reachable_instruction_address_bytes_sha256": "50ac654827eedad051d96f00eed7afdfdc934c87d76bdf51a1f34f7af045fa32",
+      "returns": [
+        {
+          "va": "0x1800ceaa",
+          "bytes": "c20800",
+          "pop_bytes": 8
+        },
+        {
+          "va": "0x1800cee5",
+          "bytes": "c20800",
+          "pop_bytes": 8
+        }
+      ],
+      "return_predecessors": {
+        "0x1800ceaa": [
+          "0x1800cea8"
+        ],
+        "0x1800cee5": [
+          "0x1800cee2"
+        ]
+      },
+      "calls_modeled_as_normal_return_only": true,
+      "external_or_indirect_jump_edges": []
+    },
+    "open_direct_sound": {
+      "start_rva": "0x11fc0",
+      "upper_bound_rva": "0x120b3",
+      "reachable_instructions": 66,
+      "reachable_instruction_address_bytes_sha256": "78c846f206ce4a4aa5d12328e3c3acc021e8700e6f2bbd12180496f280b42b44",
+      "returns": [
+        {
+          "va": "0x18012007",
+          "bytes": "c20400",
+          "pop_bytes": 4
+        },
+        {
+          "va": "0x180120b0",
+          "bytes": "c20400",
+          "pop_bytes": 4
+        }
+      ],
+      "return_predecessors": {
+        "0x18012007": [
+          "0x18012005"
+        ],
+        "0x180120b0": [
+          "0x180120ab"
+        ]
+      },
+      "calls_modeled_as_normal_return_only": true,
+      "external_or_indirect_jump_edges": []
+    },
+    "returned_sound_open": {
+      "start_rva": "0x11cd0",
+      "upper_bound_rva": "0x11fc0",
+      "reachable_instructions": 212,
+      "reachable_instruction_address_bytes_sha256": "cf49422468489cc47e25706084c4d46e6578f9475cee1dfb62af7104588a9003",
+      "returns": [
+        {
+          "va": "0x18011d07",
+          "bytes": "c21800",
+          "pop_bytes": 24
+        },
+        {
+          "va": "0x18011ec5",
+          "bytes": "c21800",
+          "pop_bytes": 24
+        },
+        {
+          "va": "0x18011fb2",
+          "bytes": "c21800",
+          "pop_bytes": 24
+        }
+      ],
+      "return_predecessors": {
+        "0x18011d07": [
+          "0x18011d04"
+        ],
+        "0x18011ec5": [
+          "0x18011ec2"
+        ],
+        "0x18011fb2": [
+          "0x18011faf"
+        ]
+      },
+      "calls_modeled_as_normal_return_only": true,
+      "external_or_indirect_jump_edges": []
+    },
+    "bink_open": {
+      "start_rva": "0xd690",
+      "upper_bound_rva": "0xe750",
+      "reachable_instructions": 988,
+      "reachable_instruction_address_bytes_sha256": "863eb242b5949bbb6e416164d88e8070524faa2f08e2b6274cb2ad28ffa248b3",
+      "returns": [
+        {
+          "va": "0x1800e5b3",
+          "bytes": "c20800",
+          "pop_bytes": 8
+        },
+        {
+          "va": "0x1800e5f0",
+          "bytes": "c20800",
+          "pop_bytes": 8
+        }
+      ],
+      "return_predecessors": {
+        "0x1800e5b3": [
+          "0x1800e5b2"
+        ],
+        "0x1800e5f0": [
+          "0x1800e5ef"
+        ]
+      },
+      "calls_modeled_as_normal_return_only": true,
+      "external_or_indirect_jump_edges": []
+    }
+  },
+  "source_type_comparison": {
+    "set_sound_system": {
+      "stack_arguments_bytes": 8,
+      "callee_pop_bytes": 8
+    },
+    "system_opener": {
+      "source": "BinkSoundOpen (__stdcall*)(uint32_t)",
+      "stack_arguments_bytes": 4,
+      "callee_pop_bytes": 4,
+      "return_machine": "EAX zero or literal preferred code address 18011CD0"
+    },
+    "sound_open": {
+      "source": "int32_t (__stdcall*)(BinkSoundState*, uint32_t, int32_t, int32_t, uint32_t, BinkHandle*)",
+      "stack_arguments_bytes": 24,
+      "callee_pop_bytes": 24,
+      "return_machine": "EAX tested by caller",
+      "pointer_and_scalar_width_bytes": 4
+    },
+    "scope": "Win32 observed stack widths, cleanup and return dataflow; signedness, semantic parameter roles and opaque layouts are not established"
+  },
+  "observed_dataflow": {
+    "system_argument_load": "1800CECA reads [ESP+8]",
+    "system_callback_argument_push": "1800CECE",
+    "system_callback_call": "1800CECF CALL EAX",
+    "callback_store": "1800CED5 MOV [1802E59C],EAX only on nonzero EAX",
+    "setter_zero_new_result_skips_store": true,
+    "setter_status": "Tests existing saved callback at 1800CEDC; SETNE AL at 1800CEE2; does not witness fresh opener success",
+    "ordinary_source_factory_result": "Ignored; this review does not add a new success gate",
+    "six_dword_pushes": [
+      "0x1800e243",
+      "0x1800e244",
+      "0x1800e24b",
+      "0x1800e24c",
+      "0x1800e24d",
+      "0x1800e250"
+    ],
+    "callback_consumer": "1800E251 CALL DWORD PTR [1802E59C]",
+    "callback_result_test": "1800E257 TEST EAX,EAX",
+    "caller_cleanup_observation": "No caller stack removal before the post-call stack accesses; corroborated by every reachable returned callback RET 18h"
+  },
+  "local_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-bink-installed-sound-callback-abi-review\\local\\bink-installed-sound-callback-abi-review\\verify_static_contract.py",
+      "bytes": 7073,
+      "sha256": "fd4eccd69d67f757706c49e634bc4733d365e920728fa4f451db7c61ccebb65b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-bink-installed-sound-callback-abi-review\\local\\bink-installed-sound-callback-abi-review\\independent_contract.json",
+      "bytes": 7707,
+      "sha256": "7ffe3c7a30d85a78cf643c1c9521034d8b51e02e7be260c8b33fe73a98d0360c"
+    }
+  ],
+  "review_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-bink-installed-sound-callback-abi-review\\docs\\CC16_BINK_INSTALLED_SOUND_CALLBACK_ABI_REVIEW.md",
+    "bytes": 4976,
+    "sha256": "5f75471ce5016d495c903c90b89479728d78923abdc6ac949865ba627ba771dc"
+  },
+  "primary_artifacts_verified": 12,
+  "primary_module_input_and_artifact_records_preserved": true,
+  "limitations": [
+    "Intraprocedural bounded graph; calls modeled as normal-return fallthrough without helper descent; no dynamic reachability or semantic feasibility claim",
+    "No vendor body reconstruction or translation; no claim of matching SDK identity, all parameter semantics, opaque layouts or full register ABI",
+    "Preferred DLL addresses are neither BSP addresses nor loaded/callable host pointers",
+    "Setter nonzero status can reflect a retained old callback after the new opener returns zero",
+    "Actual loaded identity, decoder/audio success, callback completion, retention and unload quiescence remain unproved",
+    "No original BSP ABI/FH/SEH/fault/nonlocal-exit/concurrency equivalence"
+  ],
+  "source_binding_guard": "OFF",
+  "source_changes": false,
+  "CMake_changes": false,
+  "Ghidra_used_or_mutated": false,
+  "DLL_loaded_or_called": false,
+  "games_or_probes_run": false,
+  "tests_added_or_run": false,
+  "native_body_credit": 0,
+  "vendor_body_credit": 0,
+  "activation_credit": 0
+}
