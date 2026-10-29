@@ -158,6 +158,10 @@ NativeGuiTextMainGeometryStorageFrame::NativeGuiTextMainGeometryStorageFrame(Con
 NativeGuiTextMainGeometryStorageFrame::~NativeGuiTextMainGeometryStorageFrame() noexcept {
     if (phase_ == Phase::entered || phase_ == Phase::failed) std::terminate();
 }
+bool NativeGuiTextMainGeometryStorageFrame::matches(const Context& c, const Acquired& a,
+    Phase expected) const noexcept {
+    return &context_ == &c && acquired_ == &a && phase_ == expected;
+}
 void NativeGuiTextMainGeometryStorageFrame::preflight(NativeGuiTextRawModelReference& reference,
     Acquired& a) {
     require(phase_ == Phase::fresh && !acquired_ && association_.phase() == NativeModelStorageGeometryPhase::fresh &&

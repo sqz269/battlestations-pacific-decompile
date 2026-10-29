@@ -81,6 +81,10 @@ public:
     NativeGuiTextMainGeometryStorageFrame(const NativeGuiTextMainGeometryStorageFrame&) = delete;
     NativeGuiTextMainGeometryStorageFrame& operator=(const NativeGuiTextMainGeometryStorageFrame&) = delete;
     NativeGuiTextMainGeometryStoragePhase phase() const noexcept { return phase_; }
+    // Pure identity/private-phase check; no native credit or payload access.
+    bool matches(const NativeGuiTextMainGeometryStorageContext&,
+        const NativeGuiTextMainGeometryStorageAcquired&,
+        NativeGuiTextMainGeometryStoragePhase) const noexcept;
 private:
     friend void construct_native_gui_text_main_geometry_storage_00ab7700(
         NativeGuiTextRawModelReference&, NativeGuiTextMainGeometryStorageContext&,
