@@ -121,3 +121,26 @@ The pair-reference append `00C37390` and pooled pair allocation/link
 required actual heap custody. Both suites and all nine native call rows
 pass; annotations are saved/exported. Original caller/root activation is
 still open. See `CC16_DYN_STORAGE.md`.
+
+The radix slot-removal `00C40CC0` and RTTI slot1 retirement `00C40D50`
+now have compiled, unwired bodies. Their original unsigned-underflow branch
+and distinct BF65AC object-free binding are retained. Both suites and all
+four native call rows pass; annotations/exports are saved. Genuine object,
+manager, vtable/root and free-provider custody remain open. See
+`CC16_DYN_RADIX_RETIRE.md`.
+
+The reference-erase `00C40E50` and pair-retirement `00C4C5D0` now have
+reviewed, compiled source. The parent directly composes the leaf with the
+same actual raw objects and required CRT custody. Both suites and all four
+native call rows pass; annotations/exports are saved. See
+`CC16_DYN_PAIR_RETIRE.md` for the retained signed searches, underflow arm,
+unconditional missing-pair fault and unlink/recycle epochs.
+
+At this checkpoint, 16 of the original 29 metadata-only missing-body rows
+have compiled, unwired source; 13 remain metadata-only. The remaining original
+addresses are `00C320D0`, `00C40900`, `00C4C550`, `00C4C700`, `00C4CBB0`,
+`00C4CBF0`, `00C4CC90`, `00C4CE60`, `00C54DA0`, `00C55A60`, `00C55DF0`,
+`00C5A850`, `00C5A8B0`. This is the fixed baseline body's census, not a
+completion or activation total. Newly found entries, unreferenced in-house
+code, explicit partials, FP fidelity debt, real provider wiring and gameplay
+acceptance remain separate work. The goal stays active.
