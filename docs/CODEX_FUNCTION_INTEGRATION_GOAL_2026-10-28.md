@@ -96,3 +96,9 @@ metadata-only placeholders, while original game/root activation remains open.
 The separately discovered 39-byte radix constructor is defined and saved in
 Ghidra but remains partial pending genuine vtable custody. No new activation,
 vendor-body or duplicate math-address credit is claimed.
+
+The next integer packet recovers the `00C39040` cyclic triplet comparison
+and its newly defined 40-byte wrapper `00C48140`. The old index attributed
+the wrapper call to preceding `00C48100`; exact boundary/ABI inspection and
+a saved definition correct that evidence. Common build and both suites pass;
+genuine root activation remains unresolved. See `CC16_DYN_TRIPLET.md`.

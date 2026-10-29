@@ -57,6 +57,7 @@ target_sources(bsp_core PRIVATE
   src/cc16_dyn_ring_query.cpp src/cc16_dyn_ring_predicates.cpp
   src/cc16_dyn_ring_bindings.cpp src/cc16_dyn_ambient_math.cpp
   src/cc16_dyn_radix_constructor.cpp)
+target_sources(bsp_core PRIVATE src/cc16_dyn_triplet.cpp)
 target_sources(bsp_core PRIVATE src/native_model_storage_dispatch.cpp)
 target_sources(bsp_core PRIVATE src/oct18_tail_a.cpp)
 target_sources(bsp_core PRIVATE src/shader_reflection.cpp)
