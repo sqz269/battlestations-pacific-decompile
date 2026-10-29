@@ -35,6 +35,7 @@ if os.name != "nt" or struct.calcsize("P") != 8:
 K = C.WinDLL("kernel32", use_last_error=True)
 A = C.WinDLL("advapi32", use_last_error=True)
 S = C.WinDLL("shell32", use_last_error=True)
+N = C.WinDLL("ntdll", use_last_error=True)
 PVOID, SIZE = C.c_void_p, C.c_size_t
 DWORD, HANDLE = W.DWORD, W.HANDLE
 LOW, MEDIUM = 0x1000, 0x2000
@@ -185,6 +186,7 @@ api(K, "K32GetMappedFileNameW", DWORD, HANDLE, PVOID, W.LPWSTR, DWORD)
 api(K, "DuplicateHandle", W.BOOL, HANDLE, HANDLE, HANDLE, C.POINTER(HANDLE), DWORD, W.BOOL, DWORD)
 api(K, "IsWow64Process", W.BOOL, HANDLE, C.POINTER(W.BOOL))
 api(S, "SHGetSpecialFolderPathW", W.BOOL, W.HWND, W.LPWSTR, C.c_int, W.BOOL)
+api(N, "NtQueryInformationProcess", W.LONG, HANDLE, DWORD, PVOID, DWORD, C.POINTER(DWORD))
 
 assert C.sizeof(WOW64_CONTEXT) == 716 and C.sizeof(DEBUG_EVENT) == 176
 
@@ -794,6 +796,24 @@ def hook_bytes(remote, original, document_bytes):
     return bytes(code) + document_bytes + b"\0"
 
 
+def entry_heap_state(process):
+    """Read-only WOW64 PEB observation; never alter debugger/heap settings."""
+    peb, returned = SIZE(), DWORD()
+    status = N.NtQueryInformationProcess(process, 26, C.byref(peb), C.sizeof(peb), C.byref(returned))
+    result = {"query_class": "ProcessWow64Information(26)", "ntstatus": f"{status & 0xFFFFFFFF:08x}",
+              "peb32": peb.value, "nt_global_flag_offset": 0x68}
+    if status < 0 or not 0 < peb.value <= 0xFFFFFFFF:
+        result["diagnostic_error"] = "WOW64 PEB query did not return a valid 32-bit address"
+        return result
+    try:
+        flags = struct.unpack("<I", read_remote(process, peb.value + 0x68, 4))[0]
+        result.update(nt_global_flag=flags, nt_global_flag_hex=f"{flags:08x}",
+                      heap_debug_bits=flags & 0x70, heap_debug_bits_hex=f"{flags & 0x70:02x}")
+    except OSError as exc:
+        result["diagnostic_error"] = str(exc)
+    return result
+
+
 def establish_hook(process, thread_id, state, document_bytes):
     original = struct.unpack("<I", read_remote(process, state["iat"], 4))[0]
     if not original or state["base"] <= original < state["base"] + state["size"]:
@@ -826,6 +846,7 @@ def establish_hook(process, thread_id, state, document_bytes):
     state.update(hooked=True, stub=f"{remote:08x}", original_import=f"{original:08x}",
                  original_import_head=original_head, hook_bytes=content.hex(),
                  entry_restored=True, hook_time_unix=time.time())
+    state["entry_heap"] = entry_heap_state(process)
 
 
 def image_path(process):
@@ -1102,6 +1123,7 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
     data = {"schema": "bsp.original-baseline.guard.launch.v1", "phase": "checking", "guard_pid": os.getpid(), "stage": str(stage),
             "executable": str(executable), "cwd": str(cwd), "documents": str(documents),
             "arguments": list(arguments),
+            "env_NO_DEBUG_HEAP": os.environ.get("_NO_DEBUG_HEAP"),
             "protected_documents": str(protected_documents), "seconds": seconds,
             "sha256": expected_hash, "original_exe": str(original_exe) if original_exe else None,
             "pe": info, "processes": [], "live_launch_allowed": False,
