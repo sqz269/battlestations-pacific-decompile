@@ -106,6 +106,55 @@ There is no image-name/process-tree killing. Original controllers remain
 preserved. A synthetic watchdog startup/retirement check launched no game and
 performed no termination; it is not gameplay or timeout-path proof.
 
-Runtime results of the neutral attempt are pending. No ON, new native-function body, ABI or full
+## Completed neutral OFF gate
+
+All thirteen fresh exact pairs passed. Every pair exited 0/0, pair_diff returned 0,
+ordered dialog/message/Lua and teardown differences are 0, mission-start frame/
+first RNG agree and binary/backend/input/environment/clean-host provenance is
+valid. Runtime host metadata was 063c4be212b2e475a706b65d2f4ca067fe2656f0; C++ source remains
+the frozen f49 merge against common 409. No retry, new mask or source change
+was made within this authorized neutral attempt.
+
+| Row | Exits | Pair diff | Ordered differences | Start/RNG |
+|---|---|---|---|---|
+| esmp08 | 0/0 | 0 | 0 | matched |
+| jm06 | 0/0 | 0 | 0 | matched |
+| usn21 | 0/0 | 0 | 0 | matched |
+| ijn18 | 0/0 | 0 | 0 | matched |
+| bsm01 | 0/0 | 0 | 0 | matched |
+| usn12 | 0/0 | 0 | 0 | matched |
+| lomp10 | 0/0 | 0 | 0 | matched |
+| bsm09 | 0/0 | 0 | 0 | matched |
+| prcp01 | 0/0 | 0 | 0 | matched |
+| usn01 | 0/0 | 0 | 0 | matched |
+| usn02 | 0/0 | 0 | 0 | matched |
+| lomp06 | 0/0 | 0 | 0 | matched |
+| usn04 | 0/0 | 0 | 0 | matched |
+
+All three MoviePlayer subtitle callbacks and the new schedule/text projection
+markers were absent on both sides. This is absence evidence; playback
+reachability and the full native function remain unvalidated. The twenty-eight
+fresh game runs include twenty-six matrix sides and two separate VFS checks.
+Maximum observed concurrency for this worker was three logical runs. All
+captured process priorities were Normal. No watchdog timeout or termination
+action occurred.
+
+The existing VFS CLI opened the installed us_outro.mws and reported a complete
+initialized extent of 97 bytes (exit 0). It rejected the unique missing virtual
+path with resolved=0/opened=0/bytes=-1 and its expected exit 3. The installed
+source hash was rechecked after all runs and remained unchanged. This proves
+provider behaviour through that CLI; MovieBridge reachability and subtitle
+playback remain unvalidated. The returned VFS buffer was not separately hashed.
+
+Full raw receipts, per-run manifests/input archives, hashes, callback counts,
+watchdog identities and event timelines remain under local/off409. The rejected
+earlier layout remains separately preserved and receives no acceptance credit.
+
+No ON, new native-function body, ABI or full
 gameplay-completion credit follows from this OFF gate. Evidence is bounded to
-exact common source409; later main changes require explicit integration review.
+exact common source 409; later main changes require explicit integration review.
+
+The completed neutral artifacts have verified read-only attributes and a
+SHA-256 inventory at local/off409/artifact_inventory.json. The report records
+each log, manifest, comparator report, ordered report and watchdog hash. Every
+archived runtime input was rechecked after completion.
