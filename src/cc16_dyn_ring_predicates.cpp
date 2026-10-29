@@ -1,6 +1,6 @@
 #include "bsp/cc16_dyn_ring_predicates.hpp"
 
-#include "bsp/cc13_dyn1.hpp"
+#include "bsp/cc16_dyn_ambient_math.hpp"
 
 namespace bsp::cc16_dyn_ring_predicates {
 namespace {
@@ -24,8 +24,8 @@ bool counterclockwise(const DynRingPoint2* vertices, std::uint32_t first,
     const DynRingPoint2* const a = at_index(vertices, first);
     const DynRingPoint2* const b = at_index(vertices, second);
     const DynRingPoint2* const c = at_index(vertices, third);
-    return cc13_dyn1::ccw_2d_00c377f0(
-        a->x_00, a->y_04, b->x_00, b->y_04, c->x_00, c->y_04);
+    return cc16_dyn_ambient_math::ccw_2d_ambient_00c377f0(
+        a->x_00, a->y_04, b->x_00, b->y_04, c->x_00, c->y_04) != 0u;
 }
 
 }  // namespace

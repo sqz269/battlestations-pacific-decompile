@@ -63,29 +63,32 @@ after the corresponding predicate returns nonzero.
 ## Floating-point and dependency boundary
 
 Neither predicate contains an x87 or SSE arithmetic instruction. The
-orientation dependency is directly composed with the existing
-`cc13_dyn1::ccw_2d_00c377f0`. That implementation explicitly uses
-`x87_sub24`/`x87_mul24`, including 24-bit significand rounding with the
-extended exponent for its register intermediates. Four coordinate
-differences are narrowed at the original float stores. Its final ordered
-comparison returns false for zero or an unordered cross, matching the
-listing's `FCOMIP` and `JBE` branch.
+orientation dependency now composes
+`cc16_dyn_ambient_math::ccw_2d_ambient_00c377f0`. The vertex order and six
+float arguments above are unchanged. Its wrapper forwards raw argument
+words to the original instruction sequence, retaining the four float
+stores, register-only determinant, and `FCOMIP`/`JBE` behavior under actual
+ambient x87 controls. No precision, rounding or MXCSR setting is inferred
+or forced. Normal return requires the original four free x87 stack entries.
 
-Existing `docs/CC13_FIXTURE_PASS_7.md` records 4000/4000 comparisons at the
-deciding PC24 precision and 3998/4000 at PC53. This is historical fixture
-evidence for the dependency, not a new test run by this packet. These
-wrappers add no new arithmetic approximation or hidden PC24 model. A
-future runtime binding to a PC53 thread would require a separate precision
-decision; this packet establishes no runtime path or FPU-control transport.
+Worker checkpoint `eca693ce55a0da18d349b2b326650766f1c9cf32` used the
+existing fixed-PC24 helper. Historical `docs/CC13_FIXTURE_PASS_7.md`
+recorded 4000/4000 PC24 comparisons and 3998/4000 PC53 comparisons for that
+older model. Those results did not establish generic ambient-CW
+equivalence or prove a caller's FP mode from deadness. This binding revision
+replaces that qualified composition; it does not replace the old helper,
+claim fresh native-body credit, or claim a new native fixture run.
 
-`00C410E0` remains a required typed contract, with EAX/EBX plus four stack
+`00C410E0` remains a typed contract in this interface, with EAX/EBX plus four stack
 arguments retained separately in `DynRingTriangleQuery`. The queried body
 is `00C410E0..00C41187`, returns full EAX and uses `RET 10h`. Inspection
 establishes read-only receiver/edge/vertex use; its barycentric arithmetic
 and walking body are not implemented or credited here. No default result
 or fake downstream body is provided. `00C4D370`, the parent's chain
-preparation operation, is a separate outstanding dependency and is not
-implemented by this packet.
+preparation operation, is owned by a separate packet and is not implemented
+by these predicates. `src/cc16_dyn_ring_bindings.cpp` composes the recovered
+query, preparation and ambient math through actual adapters; its named
+dependencies remain subject to primary review and the common build.
 
 Live xrefs identify only the two parent call sites, `00C4D737` and
 `00C4D63B`, respectively. The parent remains without incoming live/indexed
@@ -95,7 +98,10 @@ owns parent binding, dependency closure, common build, central metadata,
 locked annotations and runtime/deadness evidence.
 
 Validation includes complete instruction review and an MSVC x86 C++17
-object-only compile with `/permissive- /EHsc /W4 /WX`. The live call-report
+object-only compile with `/permissive- /EHsc /fp:strict /O2 /W4 /WX`. The
+ambient binding revision's generated machine-code listing retains raw
+argument-word moves and calls the ambient CCW entry without conversion
+arithmetic. The live call-report
 verifier checked all six rows with zero failures. Common build and
 post-integration checks remain with the primary integrator. No new tests,
 ad hoc executable, game run, fixture result or ABI/runtime compatibility

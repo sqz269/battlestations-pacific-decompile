@@ -37,7 +37,8 @@ struct DynRingPredicateCalls {
 // arguments, plain RET. The original full EAX result is 0 or 1. The source
 // returns uint32 explicitly; it does not expose a bool/AL ABI or a binary
 // adapter. Neither predicate writes native cursor, link, owner or point data.
-// Orientation calls compose the existing explicit PC24 00C377F0 model.
+// Orientation calls compose the exact ambient-x87 00C377F0 variant with the
+// same six float words. No precision/rounding/MXCSR mode is selected here.
 std::uint32_t test_next_00c41190(
     const cc16_dyn_ring_owner::DynRingOwner& owner,
     DynRingPredicateCalls& calls);

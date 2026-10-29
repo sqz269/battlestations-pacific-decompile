@@ -41,22 +41,29 @@
     "verified_by": "bsp.py ghidra client target verification before each live batch"
   },
   "rows": [
-    {"address": "00c411c1", "native": "00c377f0", "function": "00c41190", "kind": "call", "source_binding": "direct existing explicit PC24 ccw model"},
-    {"address": "00c411fb", "native": "00c377f0", "function": "00c41190", "kind": "call", "source_binding": "direct existing explicit PC24 ccw model"},
+    {"address": "00c411c1", "native": "00c377f0", "function": "00c41190", "kind": "call", "source_binding": "direct exact ambient-x87 ccw variant; same six float words"},
+    {"address": "00c411fb", "native": "00c377f0", "function": "00c41190", "kind": "call", "source_binding": "direct exact ambient-x87 ccw variant; same six float words"},
     {"address": "00c4121b", "native": "00c410e0", "function": "00c41190", "kind": "call", "source_binding": "required typed ring triangle query, whole uint32 return"},
-    {"address": "00c41263", "native": "00c377f0", "function": "00c41230", "kind": "call", "source_binding": "direct existing explicit PC24 ccw model"},
-    {"address": "00c4129d", "native": "00c377f0", "function": "00c41230", "kind": "call", "source_binding": "direct existing explicit PC24 ccw model"},
+    {"address": "00c41263", "native": "00c377f0", "function": "00c41230", "kind": "call", "source_binding": "direct exact ambient-x87 ccw variant; same six float words"},
+    {"address": "00c4129d", "native": "00c377f0", "function": "00c41230", "kind": "call", "source_binding": "direct exact ambient-x87 ccw variant; same six float words"},
     {"address": "00c412be", "native": "00c410e0", "function": "00c41230", "kind": "call", "source_binding": "required typed ring triangle query, whole uint32 return"}
   ],
   "precision": {
     "predicate_arithmetic_instructions": false,
-    "orientation_model": "existing cc13_dyn1::ccw_2d_00c377f0 with explicit PC24 helpers",
+    "orientation_model": "cc16_dyn_ambient_math::ccw_2d_ambient_00c377f0; original instructions under actual ambient controls",
     "unordered_orientation": "returns zero via original FCOMIP/JBE behavior",
-    "historical_fixture_source": "docs/CC13_FIXTURE_PASS_7.md",
-    "historical_pc24_results": "4000/4000",
-    "historical_pc53_results": "3998/4000 informational",
+    "precision_or_rounding_mode_selected": false,
+    "native_x87_stack_requirement": "four free entries",
+    "previous_worker_checkpoint": {
+      "commit": "eca693ce55a0da18d349b2b326650766f1c9cf32",
+      "composition": "qualified fixed-PC24 value helper; no generic ambient-CW equivalence",
+      "historical_fixture_source": "docs/CC13_FIXTURE_PASS_7.md",
+      "historical_pc24_results": "4000/4000",
+      "historical_pc53_results": "3998/4000 informational"
+    },
     "new_native_fixture_run": false,
-    "pc53_runtime_binding_validated": false
+    "runtime_binding_validated": false,
+    "fresh_native_body_credit_added": false
   },
   "required_dependency": {
     "start": "00c410e0",
@@ -65,16 +72,18 @@
     "stack_inputs": ["owner", "stop", "triangle0", "triangle1"],
     "return_instruction": "RET 10h",
     "typed_contract": "triangle_ring_clear_00c410e0(owner, query)",
-    "body_supplied": false
+    "body_supplied_by_predicate_packet": false,
+    "binding_adapter": "src/cc16_dyn_ring_bindings.cpp composes the recovered query and ambient barycentric variant"
   },
-  "separate_parent_dependency": "00c4d370; not implemented in this packet",
+  "separate_parent_dependency": "00c4d370; separate candidate dependency composed by bindings, not implemented in predicates",
   "incoming_evidence": [
     {"callee": "00c41190", "site": "00c4d737", "caller": "00c4d5a0"},
     {"callee": "00c41230", "site": "00c4d63b", "caller": "00c4d5a0"}
   ],
   "validation": {
     "assembly_review": "both full bodies; full live byte spans; downstream argument ABI inspected",
-    "source_compile_tested": "MSVC x86 object-only compile: C++17 /permissive- /EHsc /W4 /WX; exit 0",
+    "source_compile_tested": "ambient binding revision: MSVC x86 object-only compile, C++17 /permissive- /EHsc /fp:strict /O2 /W4 /WX; exit 0",
+    "object_argument_proof": "raw MOVSS float-word copies to ambient CCW, no conversion/arithmetic inserted",
     "call_report_verification": "6 call rows checked, 0 failed",
     "build_registered": false,
     "build_tested": false,
