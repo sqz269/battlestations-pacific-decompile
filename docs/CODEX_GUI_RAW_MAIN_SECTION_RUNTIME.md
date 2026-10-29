@@ -73,3 +73,9 @@ sibling-post/destructor cycles. Raw property/localisation/content/buffer/paramet
 glyph/layout/parenting transport and P3b/P3c/P4 remain named work. Full13-row gates,
 strict USN21 alternating4+4 and production/rendering/ABI qualification remain open.
 All six private main switches stay FALSE; the continuing goal remains active.
+
+After the frozen cohort/audits closed, Root merged upstream OFF-only source work
+and ran the merged Win32 build: both existing checks pass16.77s. All six switches
+remain FALSE. That build validates integration, not a replay of the frozen61
+runtime protocol on the newer PE; its separate local post-merge receipt records
+the actual Source/EXE/log hashes.
