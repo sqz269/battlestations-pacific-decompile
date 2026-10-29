@@ -393,3 +393,12 @@ input_runtime_ publication and native backend startup stay at73DD8E. The real
 existing clock/XInput/platform/sound graph supplies the same borrowed core to a
 future sampler. Win32 Release and both existing CTests pass; no input/gameplay
 or shader-loading runtime proof is claimed. See CODEX_A2_INPUT_METADATA.md.
+
+A2 OFF candidate source now binds one early host-owned procedural factory
+domain, retained startup sampler/effect/73BF80 preload and borrowed mission
+views. Independent review found a stale mission borrow after host owner reset;
+both closure paths now detach it. Quiescent retirement precedes native drain,
+full renderer closure precedes host acknowledgment, and entered failures keep
+the whole graph through immediate process exit. Frozen builds/gates follow;
+this source composition does not activate A2. The genuine private Model-only
+router e769 is separately merged/registered, still uncalled and awaiting build.
