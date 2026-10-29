@@ -747,3 +747,17 @@ displaced. A prospectively preregistered partition1 lane7/core16 amendment runs
 the unchanged four missing row definitions separately. Keep both artifact
 directories/manifests and explicit execution-checkout versus frozen-build
 source distinction. No full13-row identity, ON or strict4+4 gate is claimed.
+
+Raw Font setter cf0d2d5f plus a Root canonical-registry interface correction now
+passes Root and independent Source review, all11 preserved-body comparisons,
+and combined Win32/checks2/2 (10.73s). Actual native font-only body/normal header
+publication/exact shared EFFECT-credit consumption are compiled, still uncalled
+and behind the unchanged strict owner/admission gates. The typed staged helper
+API6d0ecb62 is frozen and accepted for implementation; its new CPP is in progress.
+
+All13 exact5b01 reference rows now have completed exit0 manifests (nine original
+Root rows plus four prospectively amended lane7 rows), and all three actual
+controllers returned exit0. Outcomes include natural completion, loss, frame
+bound and result teardown, not a universal win claim. Aggregate input/hash/lane
+audit is in progress; USN02 has no independent live-priority sample. This is a
+current reference corpus only, with no candidate pair/ON/strict4+4 acceptance.
