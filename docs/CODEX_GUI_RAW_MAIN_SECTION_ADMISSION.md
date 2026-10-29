@@ -42,6 +42,14 @@ walker. That walker remains separate from the fixed region array and performs no
 native registry or returned-companion lookup.
 
 Independent actual-diff review accepts the immutable API. Its Win32 build and both
-existing checks pass (15.28s). Coupled implementation build and review remain
-pending. No runtime fixture, production switch, native-body credit or ABI proof
-follows from the API or these source changes.
+existing checks pass (15.28s). The coupled helper/owner/shared guards and disabled
+host build passes both checks (13.04s). Independent full helper and owner Source
+reviews accept their frozen bodies; Root reproduces all29 prior-path Source
+comparisons. One Root Widget local-variable shadowing warning was corrected before
+the successful builds. No new tests were added.
+
+All six private raw qualification switches remain FALSE. The local integration
+receipt and copied independent review are under
+`local/cc16_main_section_integration_20261029/`; the receipt pins actual source,
+build log and EXE hashes. This is Source/build/artifact evidence, not a MainSection
+runtime fixture, production switch, native-body credit or ABI proof.

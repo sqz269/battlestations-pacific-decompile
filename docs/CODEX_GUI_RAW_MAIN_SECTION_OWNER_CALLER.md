@@ -108,3 +108,13 @@ edit is made. Root owns integration, independent review, coupled Win32/existing
 checks and any explicit future qualification. This Source entry supplies no
 ABA8D0 wide content/Font/AB8400 streams/layout/parenting/children/rendering closure,
 Original register/FH3/SEH/FPU ABI equivalence, failed/reused pool proof or activation.
+
+## Root integration addendum
+
+Frozen ownerf63 and helper16d pass independent actual Source review. Root reruns
+the copied source-comparison script against the integrated tree:29/29 pass, exact
+same comparison receipt hashcc8abaa7044bc2f2306a3539d21d6102d90a5082dcff17146d721cd8549010c2.
+The full owner/helper/shared-guard/private-FALSE-host Win32 build passes both
+existing checks13.04s. All six private raw qualification switches stay FALSE.
+Local Root receipts are in `local/cc16_main_section_integration_20261029/`.
+No MainSection runtime, production, rendering or Original ABI credit is added.

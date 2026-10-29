@@ -183,12 +183,12 @@ void NativeGuiWidgetRawModelSlots::require_domain(void* actual) {
     auto& c = context();
     auto& f = c.text.factory_context;
     auto* const font = f.publication.retirement.font_lifetime;
-    const auto* const prefix = f.publication.retirement.primary_prefix;
-    const auto* const main = prefix ? prefix->operation.main_section() : nullptr;
+    const auto* const compound_prefix = f.publication.retirement.primary_prefix;
+    const auto* const main = compound_prefix ? compound_prefix->operation.main_section() : nullptr;
     if (main) {
         using Main = NativeGuiTextMainSectionLifetimeStorageFrame;
-        require(!font && prefix->operation.kind() == NativeGuiTextPrimaryPrefixOperation::Kind::geometry_main_section &&
-            main->phase() == Main::Phase::sealed && &prefix->widget == &c && &prefix->text == &c.text,
+        require(!font && compound_prefix->operation.kind() == NativeGuiTextPrimaryPrefixOperation::Kind::geometry_main_section &&
+            main->phase() == Main::Phase::sealed && &compound_prefix->widget == &c && &compound_prefix->text == &c.text,
             "raw widget MainSection boundary needs its exact sealed compound graph");
         main->require_live(actual, Main::Stage::base, &f.reference_frame.scalar.destruction);
     } else if (font) {

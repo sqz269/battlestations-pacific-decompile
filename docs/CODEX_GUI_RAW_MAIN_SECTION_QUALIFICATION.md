@@ -12,7 +12,8 @@ producer. Generic raw-owner retirement, actual renderer verification and facade
 closure remain in their existing order.
 
 This FALSE source branch supplies composition for later qualification, not a live
-run or production activation. Coupled helper/owner review and Win32 build must
-finish before a separate current-binary runtime preregistration. Older Font,
+run or production activation. Coupled helper/owner Source review and Win32 build
+now pass (both existing checks,13.04s); Root confirms all six switches FALSE.
+A separate current-binary runtime preregistration is still required. Older Font,
 geometry and bounds-aid cohorts do not qualify this new native graph. No MainSection
 runtime, native ABI, rendering or gameplay proof is claimed.
