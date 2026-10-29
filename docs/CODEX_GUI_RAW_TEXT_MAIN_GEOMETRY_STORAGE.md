@@ -5,8 +5,9 @@ worker packet adds only
 `native_gui_text_main_geometry_storage.hpp/.cpp` and this evidence file. It
 implements an uncalled, qualified Source transport for an already reconstructed
 body; no new body/library credit, Original ABI or production activation follows.
-Existing Model/Text/widget files, CMake, metadata, install and test binaries are
-unchanged. Root owns build, integration and later runtime qualification.
+The worker left existing Model/Text/widget files, CMake, metadata, install and
+test binaries unchanged. Root registration and build evidence are recorded below;
+later runtime qualification remains separate.
 
 ## API and actual owner domain
 

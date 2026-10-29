@@ -543,3 +543,11 @@ It supplies no primary creation/publication, main-section/retirement, Font or
 Page activation and no runtime/FP/ABI proof. Concrete primary producer and shader
 credit-receipt linkage are under disjoint bounded audits; all ownership gates
 remain in force.
+
+Reviewed producer plans a281/1719 are integrated and dispatched in disjoint files:
+primary4C allocation/constructor/bind/publication PREFIX with real constructor-
+origin credit, and raw AB8CE0 overload with immutable prebound concrete receipt
+backing. Neither is an ownership-admission/production-caller authorization.
+Baseline widget/shader objects from accepted4ace89234 are retained under
+`local/cc16_raw_transport_baseline_objects/` for focused static comparison of
+the shared-schedule refactors. This adds no runtime or binary ABI evidence.
