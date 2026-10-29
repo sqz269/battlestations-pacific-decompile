@@ -1,0 +1,296 @@
+{
+  "packet": "codex-dyn-endpoint-allocate",
+  "owner": "agent/codex-dyn-endpoint-allocate",
+  "date": "2026-10-28",
+  "base_commit": "e276b0e05",
+  "status": "complete_normal_source_and_real_dependency_reviewed_strict_object_verified_unwired_exception_transport_qualified",
+  "source": "src/cc16_dyn_endpoint_allocate.cpp",
+  "header": "include/bsp/cc16_dyn_endpoint_allocate.hpp",
+  "docs": [
+    "docs/CC16_DYN_ENDPOINT_ALLOCATE.md"
+  ],
+  "new_in_house_normal_body_credit": 1,
+  "reused_dependency_body_credit": 0,
+  "vendor_runtime_body_credit": 0,
+  "function": {
+    "start": "00C55A60",
+    "end_inclusive": "00C55D26",
+    "bytes": 711,
+    "listed_instructions": 207,
+    "normal_calls": 9,
+    "branches": 25,
+    "name_hypothesis": "bsp::cc16_dyn_endpoint_allocate::allocate_endpoint_00c55a60",
+    "original_abi": "ECXmanager; stack token,bounds,third-slot low-byte flag; RET0Ch; EAX capturedendpoint; preserves EBX/EBP/ESI/EDI",
+    "public_abi": "new ordinary cdecl C++ manager/token/bounds/uint8flag/actualCRT interface, void* capturedendpoint result; no private native ABI/EH adapter",
+    "private_helpers_abi": "ordinary C++ cdecl owner/offset/value/CRT parameters; no native entry adapter or copied EH frame",
+    "native_span_sha256": "8f96d8eaf4f36fcb710d8f5bf1c86cf4d6ad36da2f7ecccd5e1ed3a0bcc5ea60",
+    "assembly_manifest_sha256": "00fd2517dea01e3b98afedcf5dd4241f65e098dfc5130345934749449a206ddd"
+  },
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "guard": "bsp.py ghidra Client.verify project/program/language/base before each live query batch",
+    "complete_listing_read": true,
+    "fresh_live_byte_blocks": 2,
+    "fresh_live_bytes": 711,
+    "live_matches_installed_pe": true,
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "ghidra_mutations": false
+  },
+  "rows": [
+    {
+      "address": "00c55aa0",
+      "native": "00bf9f1a",
+      "function": "00c55a60",
+      "kind": "call",
+      "contract": "nonzero-flag pool: actual BF9F1A malloc68000; no null guard before999 links plus tailzero"
+    },
+    {
+      "address": "00c55ae7",
+      "native": "00bf55be",
+      "function": "00c55a60",
+      "kind": "call",
+      "contract": "nonzero-flag page vector: actual BF55BE new(wrapping(2*captured_capacity+2)*4); capacity published before call"
+    },
+    {
+      "address": "00c55b27",
+      "native": "00bf6989",
+      "function": "00c55a60",
+      "kind": "call",
+      "contract": "nonzero-flag page vector: actual BF6989 free freshly loaded nonzero olddata before retainednewdata publication"
+    },
+    {
+      "address": "00c55b9a",
+      "native": "00bf9f1a",
+      "function": "00c55a60",
+      "kind": "call",
+      "contract": "zero-flag pool: separate actual BF9F1A malloc68000 and same1000-slot free-chain schedule"
+    },
+    {
+      "address": "00c55bd9",
+      "native": "00bf55be",
+      "function": "00c55a60",
+      "kind": "call",
+      "contract": "zero-flag page vector: actual BF55BE new with same wrapping growth and live callback-visible fields"
+    },
+    {
+      "address": "00c55c0e",
+      "native": "00bf6989",
+      "function": "00c55a60",
+      "kind": "call",
+      "contract": "zero-flag page vector: actual BF6989 free current olddata before publication"
+    },
+    {
+      "address": "00c55c7f",
+      "native": "00c4ce60",
+      "function": "00c55a60",
+      "kind": "call",
+      "contract": "ECXtoken, DLflag, stack(endpoint,bounds),RET8; direct real initializer(token,flag,endpoint,bounds,sameCRT); retained endpoint return ignored"
+    },
+    {
+      "address": "00c55ca9",
+      "native": "00bf55be",
+      "function": "00c55a60",
+      "kind": "call",
+      "contract": "pending vector: actual BF55BE new with captured-capacity growth, live count/data and capacity-before-callback"
+    },
+    {
+      "address": "00c55ce7",
+      "native": "00bf6989",
+      "function": "00c55a60",
+      "kind": "call",
+      "contract": "pending vector: actual BF6989 free current olddata before retainednewdata publication"
+    }
+  ],
+  "pool_layouts": [
+    {
+      "flag": "nonzero",
+      "free_head": "104h",
+      "pages_data": "F8h",
+      "pages_count": "FCh",
+      "pages_capacity": "100h",
+      "live_count": "190h",
+      "sentinel": "14Ch",
+      "tail": "188h"
+    },
+    {
+      "flag": "zero",
+      "free_head": "68h",
+      "pages_data": "5Ch",
+      "pages_count": "60h",
+      "pages_capacity": "64h",
+      "live_count": "F4h",
+      "sentinel": "B0h",
+      "tail": "ECh"
+    }
+  ],
+  "behavior": {
+    "malloc": "both flag-selected depleted-pool paths make real same-CRT68000-byte malloc; source shares helper with different offsets; no combined/fake pool",
+    "free_chain": "999 links beginning pool+40h store currentlink+4, step44h; final zero atpool+1099Ch; no null-allocation guard",
+    "pool_publication": "capacity/count decision inputs captured before freehead publication; subsequent new/free callbacks after publication",
+    "growth": "capturedcapacity*2+2 wraps; publish capacity before new(capacity*4 wrapping); retain result; live count guard and loop bounds; data reload per copied entry; only zero computed destination suppresses a write",
+    "replace": "current olddata reloaded after copy; conditional actualfree; retained newdata published after callback returns",
+    "page_append": "capture currentcount then data; compute wrapping slot; nonzero computed destination write; count read/increment after write",
+    "take_and_link": "reload freehead and endpoint+40 next; increment livecount; publish nexthead; endpoint+40=sentinel; endpoint+3C=currenttail; reloadtail; oldtail+40=endpoint; publishtail=endpoint",
+    "initialize": "retain endpoint; ifnonnull direct real initializer with actualtoken,lowflag,bounds pointer,sameCRT; no early bounds snapshot; ignore initializer return",
+    "pending": "independent194/198/19C data/count/capacity; fresh equality/growth/read/append sequence; return originally capturedendpoint",
+    "arithmetic": "uint32 wrapping capacity,bytes,count,addresses and indices; unsigned native comparisons retained in source behavior",
+    "guards_added": false,
+    "fallback_or_default_allocator": false,
+    "invented_object_class_or_vtable": false,
+    "outer_rollback_or_catch": false
+  },
+  "native_eh_investigation": {
+    "handler_site": "00CC83DB",
+    "handler_target": "00BF6B43 __CxxFrameHandler3",
+    "funcinfo_site": "00E04290",
+    "magic": "19930522",
+    "max_state": 1,
+    "unwind_map_site": "00E04288",
+    "unwind_map": "state0 -> previous -1, action00CC83CA",
+    "state0_begin": "00C55C67",
+    "state_minus_one_restore": "00C55C84",
+    "covered_operation": "optional actual C4CE60 initialization only; pending processing is state-1",
+    "action": "17 bytes: load establisher-frame-relative -14/-10 words, push both, CALL00401130, ADDESP8,RET",
+    "actual_00401130": "one live and PE byte C3 RET; returns, no meaningful cleanup/no-return hypothesis rejected",
+    "source_translation": "ordinary C++ source with no copied native registration frame or fabricated outer cleanup; real initializer owns its concrete vector cleanup/rethrow",
+    "no_outer_refund": "pool links/livecount/freehead mutations remain on initialization throw; no invented unlink/destructor/poolrefund; pending append skipped",
+    "bytes": {
+      "funcinfo_address": "00E04290",
+      "funcinfo_bytes": "22059319010000008842e000000000000000000000000000000000000000000001000000",
+      "unwindmap_address": "00E04288",
+      "unwindmap_bytes": "ffffffffca83cc00",
+      "action_address": "00CC83CA",
+      "action_bytes": "8b45ec508b4df051e8598d73ff83c408c3",
+      "ret_only_address": "00401130",
+      "ret_only_bytes": "c3"
+    },
+    "original_fh3_seh_exception_fault_frame_equivalence": false
+  },
+  "real_dependency": {
+    "symbol": "bsp::cc16_dyn_endpoint_init::initialize_endpoint_00c4ce60",
+    "signature": "void*(uint32 token,uint8 flag,void*endpoint,const void*bounds,const cc15_dyn_live::DynLiveCrt&)",
+    "root_worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-no-run-integrator",
+    "header": "include/bsp/cc16_dyn_endpoint_init.hpp",
+    "source": "src/cc16_dyn_endpoint_init.cpp",
+    "source_sha256": "a8dea08ef139bb32739f3084ccdd87cc9e1d57bb9996e60193114382a81999dc",
+    "header_sha256": "d9dd910c448bc39d1286f60b6c9638d6629f2a5c4c05d555506cdbb0a6470e42",
+    "copied_or_stubbed_dependency": false,
+    "same_actual_crt_forwarded": true,
+    "independent_review": {
+      "result": "no blocking mismatch for stated normal/C++ cleanup contract",
+      "native_constructor_bytes": 187,
+      "native_constructor_instructions": 66,
+      "native_helper_bytes": 14,
+      "native_helper_instructions": 7,
+      "bounds": "token and byteflag writes first; six interleaved read/store pairs retain alias effects; no aggregate snapshot",
+      "initial_vector": "30/34/38zero before state0; EBX0/EAX10 guard alwaysgrows; cap10 before actualnew40",
+      "callback_epochs": "retained allocation; live count/data; zero computed destination only; currentoldfree before publication",
+      "real_unwind": "FuncInfoE040A0/mapE04098 state0 prev-1/actionCC823A adds30h toactualendpoint and tails real0040A050",
+      "helper": "captures currentdata once; conditional BF6989; no fieldclear",
+      "catch": "calls concrete actualvector cleanup thenrethrows; no retainednewbufferfree/refund/fieldclear; finalflag2C onlynormalcompletion",
+      "limits": "C++ throwing provider operations covered; native state0 also includes finalflag memory store; SEH/fault/FH3 identity and cleanup-that-itself-throws not proved",
+      "root_files_edited_or_new_tests": false
+    }
+  },
+  "validation": {
+    "compiler": "MSVC x86 19.51.36244.0",
+    "flags": "/c /std:c++17 /permissive- /EHsc /fp:strict /O2 /W4 /WX",
+    "compile_exit_code": 0,
+    "include_order": "own include first; real root include second, no copied dependency header",
+    "object_sha256": "d9ba2843242009b8291ab332f4ed14d4636fd029840651ea7c0b07d5901789bc",
+    "source_sha256": "d73c7cb34c1b27a3a1a8bee05ef5a85bc73111a1689a84e28c581a6bfe5fd6e8",
+    "header_sha256": "20c3aaa424c8eeba1b8a975b47079910ef95db4db4db29afce72b0c6a5bd56ba",
+    "doc_sha256": "6c65ff917520f81f0de463ad6f40700c44293c5a242038e181be270b8b28c1c3",
+    "native_cfg_reachable_instructions": 207,
+    "native_branch_sites": 25,
+    "native_branch_targets": 25,
+    "native_listing_gaps": [],
+    "native_stack_joins_return_balanced": true,
+    "native_call_stack_sites": [
+      {
+        "site": "00C55AA0",
+        "target": "00BF9F1A",
+        "esp_from_entry": -40
+      },
+      {
+        "site": "00C55AE7",
+        "target": "00BF55BE",
+        "esp_from_entry": -40
+      },
+      {
+        "site": "00C55B27",
+        "target": "00BF6989",
+        "esp_from_entry": -40
+      },
+      {
+        "site": "00C55B9A",
+        "target": "00BF9F1A",
+        "esp_from_entry": -40
+      },
+      {
+        "site": "00C55BD9",
+        "target": "00BF55BE",
+        "esp_from_entry": -40
+      },
+      {
+        "site": "00C55C0E",
+        "target": "00BF6989",
+        "esp_from_entry": -40
+      },
+      {
+        "site": "00C55C7F",
+        "target": "00C4CE60",
+        "esp_from_entry": -44
+      },
+      {
+        "site": "00C55CA9",
+        "target": "00BF55BE",
+        "esp_from_entry": -40
+      },
+      {
+        "site": "00C55CE7",
+        "target": "00BF6989",
+        "esp_from_entry": -40
+      }
+    ],
+    "native_fp_sse_instructions": 0,
+    "object_fp_sse_instructions": 0,
+    "real_initializer_relocation": {
+      "offset": 136,
+      "instruction": "call 0x8d",
+      "relocation": [
+        "?initialize_endpoint_00c4ce60@cc16_dyn_endpoint_init@bsp@@YAPAXIEPAXPBXABUDynLiveCrt@cc15_dyn_live@2@@Z",
+        20
+      ]
+    },
+    "object_provider_review": "mallocslot+C68000; newslot4 wrappingbytes after capstore; freeslot8 olddata before publish; count/data/duplicate-tail volatile reloads; actualinit fiveargs once; retainedendpointreturn; cdecl helper frames balanced",
+    "instruction_for_instruction_object_equality_claimed": false,
+    "review_method": "all207 native instructions read plus phase/field/callback comparison; complete native CFG/call/stack audit; strict object provider and FP/stack review of ordinary C++ translation",
+    "call_report_verification": "9 call rows checked, 0 failed",
+    "tests_added_or_run": false,
+    "native_differential_or_game_probe_run": false,
+    "full_build_or_link": false,
+    "compiler_generated_infrastructure_body_credit": 0,
+    "ignored_evidence": "local/cc16_dyn_endpoint_allocate/{source.obj,source.asm,live_*.txt,audit.py,audit.json}",
+    "local_artifact_sha256": {
+      "source.obj": "d9ba2843242009b8291ab332f4ed14d4636fd029840651ea7c0b07d5901789bc",
+      "source.asm": "623a129edabe57db10bf147cb348504494170636804bee6d00ee7c4ca022558c",
+      "live_00c55a60.txt": "2a8d134bf52425b68fd8fd3bdf63539a21bc0a10268c41d0acc924605e55a027",
+      "live_00c55be0.txt": "206c1fc6c58a20afa688997e9edbd8b6535a1bff99bd8668983994f3169d7e35",
+      "audit.py": "6121099aa157701360f6d81e42df1aa81d83c2715f7564b6441735c3f96cde4c",
+      "audit.json": "bb8001141f26b207cb49ccbda4e5ef52d0a4cac518b175d33884c08fdff21e75"
+    }
+  },
+  "remaining_root_work": [
+    "register and common Win32 link/build/check with actual initializer; inspect final target object/provider resolution",
+    "genuine rawmanager/nativecaller binding and stable actualCRT custody beforeactivation",
+    "original register ABI/FH3/SEH/frame/fault/exception transport and concurrency remain qualified",
+    "allocation failure execution, native differential and gameplay unproved; no vendor/reusedcallee credit"
+  ],
+  "activated": false,
+  "shared_cmake_ledgers_existing_source_ghidra_install_save_profile_power_process_settings_changed": false
+}
