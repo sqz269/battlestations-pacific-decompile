@@ -1,5 +1,6 @@
 #include "bsp/native_gui_text_retirement.hpp"
 #include "bsp/native_gui_text_primary_prefix_lifetime.hpp"
+#include "bsp/native_gui_text_shader_storage.hpp"
 #include "bsp/native_string_raw_domain.hpp"
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/game_native_gui_text_process.hpp"
@@ -229,17 +230,23 @@ void shadow_returned(NativeGuiTextRawModelRetirementContext& c, NativeGuiTextRet
     else require(!c.model.lifetime.started && !c.model.lifetime.scalar_started,
         "A retained live Model credit cannot conceal an entered incomplete Model destructor");
 }
-template<class Context>
-void release_shader(void* raw, Context& c, NativeGuiTextRetirementAcquired& a) {
+enum class ShaderCreditEvent { captured, decrement_entered, decrement_returned, zero_entered, zero_returned, slot_cleared, complete };
+struct NoShaderCredit {
+    void operator()(ShaderCreditEvent) const noexcept {} // Legacy route: no metadata/native effects.
+};
+template<class Context, class Credit>
+void release_shader(void* raw, Context& c, NativeGuiTextRetirementAcquired& a, Credit& credit) {
     auto& s = a.shader;
     if (!s.identity) return;
     call(a, 0x00ab828du);
     const auto captured_decrement = decrement(c); // CURRENT cell, once at reached site
     s.captured_decrement = captured_decrement;
     s.decrement_entered = true;
+    credit(ShaderCreditEvent::decrement_entered);
     const long result = captured_decrement(reinterpret_cast<volatile long*>(bits(s.identity) + 4u));
     s.result = result;
     s.decremented = true;
+    credit(ShaderCreditEvent::decrement_returned);
     if (result == 0) {
         const Word profile = read(s.identity); // AB8297, AFTER decrement
         s.captured_profile = profile;
@@ -253,13 +260,16 @@ void release_shader(void* raw, Context& c, NativeGuiTextRetirementAcquired& a) {
         require(target == 0x00bd30e0u, "Text shader zero requires genuine current BD30E0 terminal");
         call(a, 0x00ab829du);
         s.zero_entered = true;
+        credit(ShaderCreditEvent::zero_entered);
         // The real existing SAME+04 canonical terminal validates its current
         // profile/scalar route. No additional decrement or new owner.
         dispatch_native_render_actual_owner_zero(geometry(c).actual_owners(), s.identity);
         s.zero_returned = true;
+        credit(ShaderCreditEvent::zero_returned);
     }
     write(raw, 0x1ec, 0); // AB829F, only after the nonnull operation returns
     s.slot_cleared = true;
+    credit(ShaderCreditEvent::slot_cleared);
 }
 template<class Context>
 void return_member(void* raw, Word offset, bool wide, std::size_t index,
@@ -330,8 +340,8 @@ void unwind(void* raw, Context& c, NativeGuiTextRetirementAcquired& a) {
         std::terminate();
     }
 }
-template<class Context>
-void destroy_text(void* raw, Context& c, NativeGuiTextRetirementAcquired& a) {
+template<class Context, class Credit>
+void destroy_text(void* raw, Context& c, NativeGuiTextRetirementAcquired& a, Credit& credit) {
     require(fresh(a), "Text retirement requires fresh persistent diagnostics");
     preflight(raw, 0x1f4, &a, sizeof(a), c);
     const bool selected_prefix = prefix_domain(c); // fixed failure policy before effects
@@ -341,7 +351,8 @@ void destroy_text(void* raw, Context& c, NativeGuiTextRetirementAcquired& a) {
         write(raw, 0, 0x00d5c6c8u);
         a.shader.identity = ptr(read(raw, 0x1ec)); // AB8275 before state6
         a.native_eh_state = 6;
-        release_shader(raw, c, a);
+        credit(ShaderCreditEvent::captured);
+        release_shader(raw, c, a, credit);
         void* const shadow = ptr(read(raw, 0x188)); // CURRENT, after shader callback/clear
         a.captured_shadow = shadow;
         if (shadow) {
@@ -387,6 +398,14 @@ void destroy_text(void* raw, Context& c, NativeGuiTextRetirementAcquired& a) {
         throw;
     }
 }
+void destroy_text(void* raw, NativeGuiTextRetirementContext& c, NativeGuiTextRetirementAcquired& a) {
+    NoShaderCredit credit;
+    destroy_text(raw, c, a, credit);
+}
+void destroy_text(void* raw, NativeGuiTextRawModelRetirementContext& c, NativeGuiTextRetirementAcquired& a) {
+    // Raw scalar entry must use the exact exported friend, never another record.
+    destroy_native_gui_text_storage_00ab8250(raw, c, a);
+}
 template<class Context>
 void* delete_text(void* raw, const volatile Word& flags, Context& c, NativeGuiTextScalarRetirementAcquired& a) {
     require(!a.started && !a.complete && !a.destructor_entered && fresh(a.destruction),
@@ -412,7 +431,39 @@ void destroy_native_gui_text_storage_00ab8250(void* raw,
     NativeGuiTextRetirementContext& c, NativeGuiTextRetirementAcquired& a) { destroy_text(raw, c, a); }
 void destroy_native_gui_text_storage_00ab8250(void* raw,
     NativeGuiTextRawModelRetirementContext& c, NativeGuiTextRetirementAcquired& a) {
-    try { destroy_text(raw, c, a); }
+    try {
+        if (!c.font_shader_frame) {
+            NoShaderCredit credit;
+            destroy_text(raw, c, a, credit);
+            return;
+        }
+        // Constructor is private to this exact entry. It must authenticate the
+        // live canonical122/pinned scalar.destruction.shader before any payload.
+        // Constructor rejection latches its persistent Frame before throwing.
+        NativeGuiTextShaderStorageFrame::CreditConsumer consumer(*c.font_shader_frame, raw, c, a);
+        try {
+            auto credit = [&](ShaderCreditEvent event) {
+                // A Source observer escape is not native-EH origin. On success
+                // restore the original boundary before the real next operation.
+                const auto previous = a.boundary;
+                a.boundary = Boundary::host_metadata;
+                switch (event) {
+                case ShaderCreditEvent::captured: consumer.capture(a.shader.identity); break;
+                case ShaderCreditEvent::decrement_entered: consumer.decrement_entered(a.shader.captured_decrement); break;
+                case ShaderCreditEvent::decrement_returned: consumer.decrement_returned(a.shader.result); break;
+                case ShaderCreditEvent::zero_entered: consumer.zero_entered(); break;
+                case ShaderCreditEvent::zero_returned: consumer.zero_returned(); break;
+                case ShaderCreditEvent::slot_cleared: consumer.slot_cleared(); break;
+                case ShaderCreditEvent::complete: consumer.complete(); break;
+                }
+                a.boundary = previous;
+            };
+            destroy_text(raw, c, a, credit);
+            // Entire118 body returned, including later members/base. This does
+            // not claim later scalar flags/pool/unbind/disposal completion.
+            credit(ShaderCreditEvent::complete);
+        } catch (...) { consumer.fail(); throw; }
+    }
     catch (...) { if (!a.started) a.boundary = Boundary::host_metadata; throw; }
 }
 void* delete_native_gui_text_storage_00ab8ee0(void* raw, const volatile Word& flags,
