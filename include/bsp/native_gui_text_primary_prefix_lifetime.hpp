@@ -2,8 +2,28 @@
 #include "bsp/native_gui_text_primary_model_storage.hpp"
 #include "bsp/native_gui_widget_raw_model_lifetime.hpp"
 #include <cstddef>
+#include <cstdint>
 
 namespace bsp {
+struct NativeGuiTextPrefixGeometryLifetimeContext;
+// One immutable closed choice. Future created-main-section support must extend
+// THIS typed choice and require that compound graph's complete history; it must
+// never add a selectable shortcut back to geometry-only/empty-prefix admission.
+// The choice itself grants no native ownership, scalar or lifetime authority.
+class NativeGuiTextPrimaryPrefixOperation final {
+public:
+    enum class Kind : std::uint8_t { none, geometry_only };
+    constexpr NativeGuiTextPrimaryPrefixOperation() noexcept = default;
+    explicit constexpr NativeGuiTextPrimaryPrefixOperation(
+        const NativeGuiTextPrefixGeometryLifetimeContext& geometry) noexcept
+        : kind_(Kind::geometry_only), geometry_(&geometry) {}
+    Kind kind() const noexcept { return kind_; }
+    const NativeGuiTextPrefixGeometryLifetimeContext* geometry() const noexcept { return geometry_; }
+private:
+    const Kind kind_{Kind::none};
+    const NativeGuiTextPrefixGeometryLifetimeContext* const geometry_{};
+};
+
 // Actual external raw8B input and its independently retained Source progress.
 // Constructor binds addresses only. The owner invokes real41E870/41DD20,
 // arms each entered marker BEFORE the helper, records returned/failed after it.
@@ -43,6 +63,7 @@ struct NativeGuiTextPrimaryPrefixLifetimeContext final {
     NativeGuiWidgetRawModelLifetimeAcquired& widget_acquired;
     const NativeGuiTextPrimaryPrefixCalls primary_calls;
     const NativeGuiTextPrimaryPrefixCalls internal_calls;
+    const NativeGuiTextPrimaryPrefixOperation operation{};
 };
 
 // Metadata-only selection: false ONLY for untouched prepared primary/name;
@@ -50,6 +71,8 @@ struct NativeGuiTextPrimaryPrefixLifetimeContext final {
 // Partial/failed/pending work throws: it is never an empty DEFAULT fallback.
 // May be used after scalar for independent metadata only; not a settled-custody
 // or liveness proof. Noexcept owner guards must inspect their direct markers.
+// An installed operation may still be untouched FRESH here; scalar permission
+// separately requires that chosen graph COMPLETE, never a pending-work fallback.
 bool native_gui_text_primary_prefix_selected(const NativeGuiTextPrimaryPrefixLifetimeContext&);
 
 // Owner entry BEFORE scalar_entered/count1 admission/persistent actual flags.
