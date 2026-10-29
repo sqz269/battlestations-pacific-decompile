@@ -44,7 +44,12 @@
     ],
     "ret_pop_bytes": 12,
     "eax_on_normal_return": "saved allocated object, zero only if null-object helper path returns",
-    "preserved": ["ESI", "EDI", "EBX", "EBP"],
+    "preserved": [
+      "ESI",
+      "EDI",
+      "EBX",
+      "EBP"
+    ],
     "cpp_interface": "explicit arguments and required heap providers; no native ABI adapter"
   },
   "calls": [
@@ -71,7 +76,11 @@
     "leaf": "bsp::cc16_dyn_radix_entries::append_object_00c37180",
     "header": "bsp/cc16_dyn_radix_entries.hpp",
     "storage": "actual manager and actual 0x24-byte object passed unchanged",
-    "providers": ["00bf681b object allocation", "00bf55be entry allocation", "00bf6989 entry free"],
+    "providers": [
+      "00bf681b object allocation",
+      "00bf55be entry allocation",
+      "00bf6989 entry free"
+    ],
     "branch_join": "one common C++ helper call represents the two native branch-specific sites",
     "leaf_contract_report": "reports/cc16_dyn_radix_entries.json"
   },
@@ -112,17 +121,36 @@
     "vtable-only incoming evidence does not itself prove a complete dead chain"
   ],
   "validation": {
+    "build_registered": true,
+    "build_tested": true,
+    "configuration": "MSVC Win32 Release",
+    "build_log": "local/cc16_dyn_radix_owner_build.log",
+    "existing_suites_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "compiled_object": "build/win32/bsp_core.dir/Release/cc16_dyn_radix_owner.obj",
+    "compiled_object_sha256": "72d029c3f9e6b3dfa4ef267323455a69cc599a969b6998fb5f1563d7ac1d6397",
+    "library": "build/win32/Release/bsp_core.lib",
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "tests_added": false,
+    "ghidra_annotation_backup": "local/ghidra-annotations-20261029T024509Z.json",
+    "exports_refreshed": true,
+    "proof_level": "reviewed compiled owner-to-leaf composition; host/native ABI and reachability unresolved"
+  },
+  "integration_obligations": [
+    "genuine manager/object/heap provider and original register/stack ABI custody",
+    "constructor/vtable/root reachability or qualified original dead-chain treatment",
+    "runtime acceptance only for a genuinely reachable activated path"
+  ],
+  "worker_validation": {
     "source_assembly_review": true,
     "callsite_verification": "verify_report_calls.py: 3 JSON call rows and 3 Markdown call claims checked, 0 failed",
     "build": "integrator_owned_not_run_by_worker",
     "new_tests": 0,
     "game_or_probe_launches": 0,
     "native_abi_or_game_validated": false
-  },
-  "integration_obligations": [
-    "register and build both owner and leaf on MSVC Win32 and run relevant existing checks",
-    "replace shared C50000 metadata-only ledger row after review",
-    "perform any Ghidra annotation under the primary write lock",
-    "establish an actual incoming runtime path or accept evidenced dead-chain conclusion before activation claim"
-  ]
+  }
 }

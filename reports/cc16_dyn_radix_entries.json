@@ -34,9 +34,16 @@
   },
   "original_abi": {
     "receiver": "ESI",
-    "stack_arguments": ["object pointer"],
+    "stack_arguments": [
+      "object pointer"
+    ],
     "ret_pop_bytes": 4,
-    "preserved": ["EBX", "EDI", "EBP", "ESI"],
+    "preserved": [
+      "EBX",
+      "EDI",
+      "EBP",
+      "ESI"
+    ],
     "eax_on_normal_return": "supplied object pointer; semantic return unproven",
     "cpp_interface": "explicit void function; no native ABI adapter"
   },
@@ -102,12 +109,25 @@
     "no native exception transport or invalid-memory fault equivalence claim"
   ],
   "validation": {
-    "source_assembly_review": true,
-    "callsite_verification": "verify_report_calls.py: 4 JSON call rows checked, 0 failed; 2 Markdown call claims checked, 0 failed",
-    "build": "integrator_owned_not_run_by_worker",
-    "new_tests": 0,
-    "game_or_probe_launches": 0,
-    "native_abi_or_game_validated": false
+    "build_registered": true,
+    "build_tested": true,
+    "configuration": "MSVC Win32 Release",
+    "build_log": "local/cc16_dyn_batch1_build.log",
+    "existing_suites_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "compiled_object": "build/win32/bsp_core.dir/Release/cc16_dyn_radix_entries.obj",
+    "compiled_object_sha256": "f0a2be05035ab6f92f9d260d14a17d4a8a9a932384542a3f7ec2b5a3bf8f81a2",
+    "library": "build/win32/Release/bsp_core.lib",
+    "function_symbol_present_in_game_map": false,
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "tests_added": false,
+    "ghidra_annotation_backup": "local/ghidra-annotations-20261029T023246Z.json",
+    "exports_refreshed": true,
+    "proof_level": "complete body reviewed and compiled in bsp_core; real host/native ABI wiring remains open"
   },
   "integration_obligations": [
     "integrator registers source, builds MSVC Win32 and runs relevant existing checks",
@@ -121,7 +141,23 @@
     "bytes": 100,
     "last_instruction": "00c55d91",
     "last_instruction_text": "RET 0xc",
-    "direct_callee_set": ["00bf681b", "00c37180"],
+    "direct_callee_set": [
+      "00bf681b",
+      "00c37180"
+    ],
     "status": "metadata_only_no_function_body_verified_oct24; outside current implementation lease"
-  }
+  },
+  "worker_validation": {
+    "source_assembly_review": true,
+    "callsite_verification": "verify_report_calls.py: 4 JSON call rows checked, 0 failed; 2 Markdown call claims checked, 0 failed",
+    "build": "integrator_owned_not_run_by_worker",
+    "new_tests": 0,
+    "game_or_probe_launches": 0,
+    "native_abi_or_game_validated": false
+  },
+  "remaining_integrator_work": [
+    "caller/provider custody and original register-ABI integration",
+    "original root reachability or qualified dead-chain closure",
+    "runtime acceptance only for a genuinely reachable activated path"
+  ]
 }

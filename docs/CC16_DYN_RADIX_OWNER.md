@@ -1,8 +1,17 @@
 # Dyn radix object owner: 00C55D30
 
+Integration checkpoint: this body and its recovered leaf are registered in
+`bsp_core`. The common MSVC Win32 Release build and both existing suites passed
+(`local/cc16_dyn_radix_owner_build.log`). The former metadata-only record is now
+`reconstructed_build_tested_unwired`. The evidence-based hypothesis name is
+`Dyn_SAPRadixBroadPhaseManager_CreateObject_00C55D30`; prior Ghidra name/comments
+were preserved in `local/ghidra-annotations-20261029T024509Z.json`, and the saved
+project and affected export were refreshed. Worker checkpoint evidence below
+is retained. Real provider custody, native ABI and activation remain open.
+
 This packet reconstructs the complete normal body at
 `00C55D30..00C55D93` inclusive, 100 bytes. The last instruction is `RET 0Ch`
-at `00C55D91`. Its current Ghidra name is
+at `00C55D91`. Its worker-checkpoint Ghidra name was
 `Dyn_SAPRadixBroadPhaseManager_vslot0`; its old ledger row is
 `DYN_unreachable_00c55d30`, status
 `metadata_only_no_function_body_verified_oct24`. The new C++ name,
