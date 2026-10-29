@@ -13,6 +13,7 @@ class GameHostLog;
 class GameVfsHost;
 class GameScriptHost;
 class GameNativeRendererApplication;
+class GameNativeRawDefaultTextOwner;
 
 // Application ownership for the font/payload portion of0073bae0. Uses the
 // existing mounted VFS, Lua environment and canonical native renderer/cache.
@@ -55,6 +56,15 @@ public:
     // publication; the existing registry() is only its borrowed host owner.
     NativeFontResourceOwners& native_fonts();
     void bind_text_factory(GuiTextRuntimeFactory&);
+    // Separate combined, exclusive Host/App/raw-owner metadata handshake.
+    // Install the fresh stable owner FIRST, call once before its preparation
+    // or native pool effects. Never bind an unrelated empty legacy factory.
+    // Failed export/admission retains BOTH layers and the exact owner.
+    void bind_raw_text_owner(GameNativeRawDefaultTextOwner&);
+    // Explicit BOTH-layer unlink after owner.after_native_renderer_drain and
+    // BEFORE owner.reset. Keep this host/resources/descriptors/VFS alive until
+    // successful completion. No image/name/header payload is revisited here.
+    void detach_raw_text_owner_after_parent_drain(GameNativeRawDefaultTextOwner&);
     // One successful native retirement; repeated host closure is metadata-only.
     // Never retries a failed load/retirement or retires surviving borrowers.
     void retire_native_fonts();

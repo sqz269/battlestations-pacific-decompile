@@ -5,6 +5,7 @@
 #include "bsp/game_native_renderer_application.hpp"
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/gui_text_runtime_factory.hpp"
+#include "bsp/game_native_raw_default_text_owner.hpp"
 #include "bsp/native_game_grid.hpp"
 #include "bsp/native_string_pool_storage.hpp"
 #include <cstring>
@@ -32,6 +33,7 @@ std::uint32_t image_profile(void* image) noexcept {
 
 struct GameNativeFontApplication::Impl {
     enum class Phase { fresh, loading, ready, retiring, retired, failed };
+    enum class RawBinding { none, bind_entered, bound, detach_entered, detached, failed };
     GameHostLog& log;
     GameNativeRendererApplication& renderer;
     GameVfsHost& vfs;
@@ -42,6 +44,10 @@ struct GameNativeFontApplication::Impl {
     NativeFontResourceOwners fonts;
     std::vector<std::unique_ptr<GameNativeFontLoadOperation>> operations;
     GuiTextRuntimeFactory* text_factory{}; // SAME canonical borrower only.
+    RawBinding raw_binding{RawBinding::none};
+    GameNativeRawDefaultTextOwner* raw_owner{}; // held through explicit post-parent detach
+    const void* raw_registry_image{}; // identity ONLY after actual retirement
+    bool raw_retirement_entered{};
     bool fonts_exported{};
     bool native_images{};
     Phase phase{Phase::fresh};
@@ -220,11 +226,15 @@ void GameNativeFontApplication::load_descriptors_00ac3910(VfsLuaScriptFiles& fil
 }
 NativeFontResourceOwners& GameNativeFontApplication::native_fonts() {
     require(ready(), "Native font association export requires complete production");
+    require(impl_->raw_binding == Impl::RawBinding::none && !impl_->raw_owner,
+        "Native fonts cannot mix legacy export with the exclusive raw owner arm");
     impl_->fonts_exported = true;
     return impl_->fonts;
 }
 void GameNativeFontApplication::bind_text_factory(GuiTextRuntimeFactory& factory) {
     auto& app = *impl_;
+    require(app.raw_binding == Impl::RawBinding::none && !app.raw_owner,
+        "Native fonts cannot mix legacy factory binding with raw owner custody");
     require(ready() && app.fonts_exported && &factory.native_font_resources() == &app.fonts &&
         (app.native_images ? factory.native_font_registry_image() == app.fonts.native_registry_image()
             : factory.native_font_registry() == &app.registry) &&
@@ -232,14 +242,84 @@ void GameNativeFontApplication::bind_text_factory(GuiTextRuntimeFactory& factory
         "Native font borrowers require the same registry, resources and empty canonical Text factory before construction");
     app.text_factory = &factory;
 }
+void GameNativeFontApplication::fail_raw_text_owner_link(GameNativeRawDefaultTextOwner& attempted) noexcept {
+    auto& app = *impl_;
+    if (!app.failed) app.failed = std::current_exception();
+    app.raw_binding = Impl::RawBinding::failed;
+    app.phase = Impl::Phase::failed;
+    if (!app.raw_owner) app.raw_owner = &attempted;
+    app.raw_owner->fail_raw_font_link(*this);
+    if (app.raw_owner != &attempted) attempted.fail_raw_font_link(*this);
+}
+bool GameNativeFontApplication::raw_text_owner_awaits_detach(const GameNativeRawDefaultTextOwner* owner) const noexcept {
+    const auto& app = *impl_;
+    return owner && app.raw_owner == owner && app.phase == Impl::Phase::retired && !app.failed &&
+        app.raw_binding == Impl::RawBinding::bound && app.raw_retirement_entered;
+}
+NativeFontResourceOwners& GameNativeFontApplication::bind_raw_text_owner(GameNativeRawDefaultTextOwner& owner) {
+    auto& app = *impl_;
+    try {
+        require(ready() && !app.failed && !app.fonts_exported && !app.text_factory &&
+            app.raw_binding == Impl::RawBinding::none && !app.raw_owner,
+            "Native raw Font export needs one unexported ready producer, never a rebind or legacy borrower");
+        app.raw_binding = Impl::RawBinding::bind_entered; // BEFORE any export/admission
+        app.raw_owner = &owner;
+        owner.begin_raw_font_link(*this, app.renderer, app.vfs);
+        require(app.native_images && app.fonts.native_registry_image(),
+            "Native raw Font export requires the actual ready image registry, never typed FontData");
+        app.validate_domain();
+        app.fonts_exported = true; // irreversible actual collection export
+        app.raw_registry_image = app.fonts.native_registry_image();
+        owner.complete_raw_font_link(*this, app.fonts, app.raw_registry_image);
+        require(app.raw_binding == Impl::RawBinding::bind_entered && app.raw_owner == &owner &&
+            app.phase == Impl::Phase::ready && !app.failed,
+            "Native raw Font binding cannot resume after a caught nested failure");
+        app.raw_binding = Impl::RawBinding::bound;
+        return app.fonts;
+    } catch (...) { fail_raw_text_owner_link(owner); throw; }
+}
+void GameNativeFontApplication::detach_raw_text_owner_after_parent_drain(GameNativeRawDefaultTextOwner& owner) {
+    auto& app = *impl_;
+    try {
+        require(app.phase == Impl::Phase::retired && !app.failed && app.raw_retirement_entered &&
+            app.raw_binding == Impl::RawBinding::bound && app.raw_owner == &owner &&
+            app.fonts_exported && !app.text_factory && app.raw_registry_image,
+            "Native raw Font detach requires SAME bound owner and completed actual retirement");
+        app.raw_binding = Impl::RawBinding::detach_entered;
+        // No native_registry_image()/Font/header read after retirement.
+        owner.detach_raw_font_link_after_parent_drain(*this, app.fonts, app.raw_registry_image);
+        require(app.raw_binding == Impl::RawBinding::detach_entered && app.raw_owner == &owner &&
+            app.phase == Impl::Phase::retired && !app.failed,
+            "Native raw Font detach cannot resume after a caught nested failure");
+        app.raw_owner = nullptr;
+        app.raw_registry_image = nullptr;
+        app.raw_binding = Impl::RawBinding::detached;
+    } catch (...) { fail_raw_text_owner_link(owner); throw; }
+}
 void GameNativeFontApplication::retire_fonts() {
     auto& app = *impl_;
     require(app.phase == Impl::Phase::fresh || app.phase == Impl::Phase::ready,
         "Native fonts cannot replay incomplete or completed retirement");
-    require((!app.fonts_exported || app.text_factory) &&
-        (!app.text_factory || app.text_factory->retained_allocation_count() == 0),
-        "Native font retirement requires quiescent same-factory Text borrowers");
-    app.validate_domain();
+    const bool raw = app.raw_binding != Impl::RawBinding::none;
+    if (raw) {
+        try {
+            require(app.raw_binding == Impl::RawBinding::bound && app.raw_owner && !app.raw_retirement_entered &&
+                !app.failed && app.fonts_exported && !app.text_factory && app.native_images &&
+                app.raw_registry_image && app.fonts.native_registry_image() == app.raw_registry_image,
+                "Native raw Font retirement needs SAME current ready image/owner and one completed link");
+            app.raw_retirement_entered = true; // BEFORE terminal-owner admission
+            app.raw_owner->require_font_retirement(*this, app.fonts, app.raw_registry_image);
+            app.validate_domain();
+        } catch (...) {
+            if (app.raw_owner) fail_raw_text_owner_link(*app.raw_owner);
+            throw;
+        }
+    } else {
+        require((!app.fonts_exported || app.text_factory) &&
+            (!app.text_factory || app.text_factory->retained_allocation_count() == 0),
+            "Native font retirement requires quiescent same-factory Text borrowers");
+        app.validate_domain();
+    }
     app.phase = Impl::Phase::retiring;
     try {
         if (app.native_images) app.fonts.retire_image_registry_00ac36f0();
@@ -250,10 +330,13 @@ void GameNativeFontApplication::retire_fonts() {
             app.registry.clear_retired_native_binding(*record->descriptor, *record->published);
         }
         if (app.native_images) app.registry.clear_retired_image_lookup(app.fonts);
+        if (raw) require(app.phase == Impl::Phase::retiring && app.raw_binding == Impl::RawBinding::bound && !app.failed,
+            "Native raw Font retirement cannot resume after a caught nested link failure");
         app.phase = Impl::Phase::retired;
     } catch (...) {
-        app.failed = std::current_exception();
+        if (!raw || !app.failed) app.failed = std::current_exception();
         app.phase = Impl::Phase::failed;
+        if (raw && app.raw_owner) fail_raw_text_owner_link(*app.raw_owner);
         throw;
     }
 }
@@ -267,6 +350,9 @@ std::size_t GameNativeFontApplication::produced_fonts() const noexcept {
 }
 bool GameNativeFontApplication::ready() const noexcept { return impl_->phase == Impl::Phase::ready; }
 bool GameNativeFontApplication::requires_process_retention() const noexcept {
+    if (impl_->raw_binding == Impl::RawBinding::bind_entered || impl_->raw_binding == Impl::RawBinding::detach_entered ||
+        impl_->raw_binding == Impl::RawBinding::failed ||
+        (impl_->phase == Impl::Phase::retired && impl_->raw_binding == Impl::RawBinding::bound)) return true;
     return impl_->phase != Impl::Phase::retired &&
         (impl_->phase != Impl::Phase::fresh || !impl_->operations.empty());
 }
