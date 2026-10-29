@@ -5,7 +5,8 @@ the existing Geometry context, Main helper and mutable typed Font helper. The
 pointer itself is fixed; Font admission keeps its existing typed mutation API.
 Old None/GeometryOnly/Main-only constructors preserve their kind/identities and
 leave the Font peer absent. This declaration alone grants no lifetime permission.
-Existing guards reject the new kind until the coupled implementation is reviewed.
+The API-only checkpoint rejected this kind. The coupled guards now require both
+exact lifetime slices and their shared Geometry/reference identities.
 
 Native ABB630 Font selection precedes its conditional ABAED0/ABA8D0 submission;
 ABA8D0 ensures Main then reads the existing Font. New owner work must select Font
@@ -36,6 +37,7 @@ The immutable API passes independent actual-diff review and Win32/both checks
 (13.00s). Helpers plus shared guards pass2/2 (12.55s); the full owner/disabled-host
 build passes2/2 (11.77s). Root reproduces all32 old-path Source comparisons; the
 whole owner CPP matches after explicit new-mode=false/null-pointer projection.
-Final independent combined Source review is pending. No joint runtime, native
+Independent helper, shared-guard, owner and disabled-host Source reviews accept
+the bounded composition. No joint runtime, native
 credit, ABI, renderer or production activation is claimed. All seven private
 switches stay OFF; separate old Font/Main trials do not qualify this joint graph.

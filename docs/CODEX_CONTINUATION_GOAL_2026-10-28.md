@@ -884,3 +884,16 @@ must respect that order, independent slices and fixed pre-pool graph constructio
 raw property/localisation/content/glyph/layout/parenting and Page/P4 remain open.
 Later main/source/PE changes inherit no frozen61 runtime credit. See the dedicated
 MainSection runtime evidence doc and local packet/audits for exact artifact scope.
+
+The fixed Font-before-Main operation, independent lifetime slices, shared guards,
+owner and disabled host route are now coupled. Actual Font selection and input
+return precede Main creation; neither primitive helper traverses its sibling
+during settlement or destruction. Independent Source reviews accept the bounded
+composition. Root reproduces32/32 old-path comparisons, including whole-owner
+projection, and the full Win32 build/existing checks2/2 pass11.77s.
+
+All seven private raw switches remain FALSE. Current joint Font/Main runtime is
+unqualified; the earlier separate Font and FontNULL Main cohorts supply no credit.
+Raw source-equal ABAED0 and empty-unchanged ABA8D0 are the next bounded caller
+dependencies. Localisation, changed/nonempty content, actual properties, layout,
+Page/P4 and Original ABI remain open. The continuation goal remains active.
