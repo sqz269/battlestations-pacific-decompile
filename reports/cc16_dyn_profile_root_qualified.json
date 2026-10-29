@@ -1,0 +1,518 @@
+{
+  "packet": "codex-dyn-profile-root-qualified",
+  "status": "minimal_additive_Root_Cpp_cleanup_interface_strict_compiled; independent_review_common_build_required; NO_activation",
+  "base_main": "5ec9904f55e48f5d3cd871444b510b5cb5e1532b",
+  "created_at_utc": "2026-10-29T21:44:42.745584+00:00",
+  "ownership": {
+    "addresses": [
+      "00C50310"
+    ],
+    "files": [
+      "include/bsp/dyn_engine_runtime.hpp",
+      "src/dyn_engine_runtime.cpp",
+      "docs/CC16_DYN_PROFILE_ROOT_QUALIFIED.md",
+      "reports/cc16_dyn_profile_root_qualified.json"
+    ],
+    "scope_process_caller_CMake_guard_ledger_Ghidra_mutations": false
+  },
+  "inputs": {
+    "readiness": {
+      "commit": "713c8776330c076604279ec18fa4baee982020e9",
+      "path": "docs/CC16_DYN_PROFILE_CLEANUP_BINDING_READINESS.md",
+      "Root_scope": "lines174..207, independently reverified nativeRoot metadata/listing here"
+    },
+    "actual_qualified_dependency": "existing4arg dyn_profile_node_construct_00c44000(node,name,word,context.memory) in base_main; real A900 current-vector cleanup",
+    "no_pending_supplier_merge": "1e69 default-domain supplier/child caller candidate not merged into this tree; no scope/process header cycle introduced"
+  },
+  "new_API": {
+    "name": "dyn_profile_construct_00c50310",
+    "signature": "(DynProfileStorage&,const DynEngineRuntimeContext&,DynProfileRootPartialNodeDelete) ->DynProfileStorage*",
+    "alias": "using DynProfileRootPartialNodeDelete = void (__cdecl*)(void* original_allocation)",
+    "old_API": "existing2arg Root overload unchanged and normal-only",
+    "genuine_inputs": "SAME actual memory/profile cell and original root-name supplier; required matching flat raw-node BF65AC for CAPTURED allocation heap, returning normally; actual memory.release remains distinct BF6989 vector provider",
+    "manual_context_limit": "nonnull provider is not authentication of an arbitrary manual/custom context; no generic free, memory.release cast, global thunk, native code-pointer cast or defaultprovider",
+    "layouts": "DynEngineRuntimeContext fields unchanged(Win32 memory0,enginecellC,profilecell10,rootname14); node48/profile9C/engine14/task358 storage unchanged",
+    "header_cycle": "engine header defines separate flat alias and does not include dyn_profile_scopes.hpp; identical underlying flat signature can be supplied without a native ABI cast"
+  },
+  "source_behavior": {
+    "null_provider": "throwinvalid_argument before callerprofile/context reads or profile allocator invocation",
+    "allocation": "exact48 raw allocation via actual context.memory outside try; exception has no acquired Root cleanup",
+    "capture": "const original allocation, never current publication/head/constructor return reloaded as free identity",
+    "covered_sequence": [
+      "conditional actualqualified4argC44000 with context.memory",
+      "head+0=currentnode",
+      "head+4=currentnode",
+      "word+8=0",
+      "publish incomingprofile to actualcontext.profile_slot_0109e9f8",
+      "existing std::memset(profile.bytes+C,0,90)",
+      "return incomingprofile"
+    ],
+    "constructor_exception": "real qualifiedC44000 first composes its A900 current-vector conditional release/no fieldclear, then rethrows; outer Root catch frees originalrawallocation via requiredflatprovider and rethrows",
+    "later_covered_exception": "catch remains through publication/tail/return sourceextent; reached heads/publication remain, possibly referring to freednode. No clear/rollback/unregister/retry/different-node free.",
+    "null_allocation": "retained branch skips nodeconstructor but publishesincomingprofile with nullhead/current and clears90tail; if a latercoveredCppoperation throws, capturednullptr is passed unchanged to genuineprovider. Not a new returning-null allocator/fallback policy.",
+    "tail_limit": "actual existing std::memset emitted as_memset, not nativeBF79F0 feature-word/fault/SEH proof",
+    "outer_lifetime": "profile9C caller storage and C55EA0/C55F50 raw allocations/enclosingcleanup are not owned/closed here; retain reached state and apply separately admitted failure/lifetime policy before following freednode"
+  },
+  "native_original": {
+    "configured_project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "config target and bsp.py ghidra ensure --status before each analysisbatch; no import/write",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "original_ABI": "C50310 ESI=incomingprofile, EAX=incomingprofile, plainRET; newCppinterface is not a register/stack replacement",
+    "body": "00C50310..00C50382",
+    "handler": "00CC836E MOV EAX,00E041D0; JMP00BF6B43",
+    "FuncInfo": "00E041D0 magic19930522/maxState1/unwindMapE041C8",
+    "map": {
+      "address": "00E041C8",
+      "previous": -1,
+      "action": "00CC8363"
+    },
+    "action": [
+      "MOV EAX,[EBP-10h]",
+      "PUSH EAX",
+      "CALL00BF65AC",
+      "POP ECX",
+      "RET"
+    ],
+    "frame": "entryESP=E; after registration+PUSHECX capture=E-10h,state=E-4; reconstructed funcletEBP=E selects capture. Static originalEH/ABI derivation, not runtime transport witness.",
+    "epochs": [
+      "C50328 allocate48 beforestate",
+      "C50330 capture;C50335 arm0",
+      "C50347 constructor",
+      "C50355/57/60 headstores",
+      "C50367 publishprofile",
+      "C5036D nativeBF79F0 tail",
+      "no state demotion beforeFSrestoreC50378/RET82"
+    ],
+    "export_sha256": {
+      "assembly.txt": "7cde884ccbd654d7799dd4be157358982f32837233fa9f1e096a02753f170085",
+      "decompiled.c": "fd89dbb5b09da21fc090e40fcc4e3afae7069401ca310325dcd6370a56d15325"
+    },
+    "static_PE_spans": [
+      {
+        "name": "Root_body",
+        "address": "00C50310",
+        "bytes": 115,
+        "file_offset": "0x850310",
+        "hex": "6a ff 68 6e 83 cc 00 64 a1 00 00 00 00 50 64 89 25 00 00 00 00 51 6a 48 e8 ee 64 fa ff 83 c4 04 89 04 24 85 c0 c7 44 24 0c 00 00 00 00 74 0f 6a 00 50 ba c8 9d d7 00 e8 b4 3c ff ff eb 02 33 c0 68 90 00 00 00 89 06 89 46 04 8d 46 0c 6a 00 50 c7 46 08 00 00 00 00 89 35 f8 e9 09 01 e8 7e 76 fa ff 8b 4c 24 10 8b c6 64 89 0d 00 00 00 00 83 c4 1c c3",
+        "sha256": "687392e171970a53386eabe254b0216cb9c2dff0d4914d6a034524c72fecdbf3"
+      },
+      {
+        "name": "Root_map",
+        "address": "00E041C8",
+        "bytes": 8,
+        "file_offset": "0xa041c8",
+        "hex": "ff ff ff ff 63 83 cc 00",
+        "sha256": "138903449a0720c698db7f7109ed5b9b4453483b1affa099902265f767fe2ac5"
+      },
+      {
+        "name": "Root_FuncInfo",
+        "address": "00E041D0",
+        "bytes": 36,
+        "file_offset": "0xa041d0",
+        "hex": "22 05 93 19 01 00 00 00 c8 41 e0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00",
+        "sha256": "10514b5c6eed22d03d96745e1ca43fe3447976aea80ffea146692de0d1c88ace"
+      },
+      {
+        "name": "Root_action",
+        "address": "00CC8363",
+        "bytes": 11,
+        "file_offset": "0x8c8363",
+        "hex": "8b 45 f0 50 e8 40 e2 f2 ff 59 c3",
+        "sha256": "57ebfb37b12fc2a7162857870dfe2a5c2cab6d90dfa3cfb7411ab80d8403eed8"
+      },
+      {
+        "name": "Root_handler",
+        "address": "00CC836E",
+        "bytes": 10,
+        "file_offset": "0x8c836e",
+        "hex": "b8 d0 41 e0 00 e9 cb e7 f2 ff",
+        "sha256": "b1838da83df3a37ac296b0093aec1cae5ec2f7dc5f6771b48d5e78fe8981ed0a"
+      }
+    ]
+  },
+  "rows": [
+    {
+      "address": "00C50328",
+      "native": "00BF681B",
+      "function": "00C50310",
+      "phase": "raw48allocationbeforestate0"
+    },
+    {
+      "address": "00C50347",
+      "native": "00C44000",
+      "function": "00C50310",
+      "phase": "guardednodeconstructor"
+    },
+    {
+      "address": "00C5036D",
+      "native": "00BF79F0",
+      "function": "00C50310",
+      "phase": "guardedpostpublicationtail"
+    },
+    {
+      "address": "00CC8367",
+      "native": "00BF65AC",
+      "function": "00CC8363",
+      "phase": "capturedrawunwindaction"
+    }
+  ],
+  "emitted_new_interface": {
+    "object_relative_null_guard": "+2B checksargprovider,JE+AA separate invalid_argumentblock beforectxload+31",
+    "allocation": "callcallback+3B understate-1;saveallocation[EBP-14]+40;armstate0+43",
+    "qualified_constructor": "real4argC44000call+55,16-byte C++argumentcleanup",
+    "head_publication_tail": "headwrites+67/+69/+6C; publication+76; _memsetcall+7C; no statedemotion beforeFSrestore+89",
+    "catch": "saved[EBP-14] only, provider[EBP+10] indirectcall, addESP4 and C++rethrow; cold null-argumentthrowblock adjacent but separately branched",
+    "native_vs_source_slots": "native captured[EBP-10] and C++captured[EBP-14] are deliberately distinguished; not original FH3/frame equivalence",
+    "functions": {
+      "?dyn_profile_construct_00c50310@bsp@@YAPAUDynProfileStorage@1@AAU21@ABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z": {
+        "hex": "558bec6aff680000000064a1000000005083ec14535657a10000000033c5508d45f464a3000000008965f0837d100074798b7d0c6a48ff378b4704ffd083c4088945ecc745fc0000000085c0740f576a00ff771450e80000000083c4108b750868900000006a008906894604c74608000000008b4f1089318d4e0c51e80000000083c40c8bc68b4df464890d00000000595f5e5b8be55dc3",
+        "relocations": [
+          [
+            6,
+            6,
+            "__ehhandler$?dyn_profile_construct_00c50310@bsp@@YAPAUDynProfileStorage@1@AAU21@ABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z"
+          ],
+          [
+            24,
+            6,
+            "___security_cookie"
+          ],
+          [
+            86,
+            20,
+            "?dyn_profile_node_construct_00c44000@bsp@@YAPAUDynProfileNodeStorage@1@AAU21@PBDIABUAvoidZoneDynHullMemory@1@@Z"
+          ],
+          [
+            125,
+            20,
+            "_memset"
+          ]
+        ],
+        "bytes": 152,
+        "listing": [
+          "0000: push ebp",
+          "0001: mov ebp, esp",
+          "0003: push -1",
+          "0005: push 0",
+          "000a: mov eax, dword ptr fs:[0]",
+          "0010: push eax",
+          "0011: sub esp, 0x14",
+          "0014: push ebx",
+          "0015: push esi",
+          "0016: push edi",
+          "0017: mov eax, dword ptr [0]",
+          "001c: xor eax, ebp",
+          "001e: push eax",
+          "001f: lea eax, [ebp - 0xc]",
+          "0022: mov dword ptr fs:[0], eax",
+          "0028: mov dword ptr [ebp - 0x10], esp",
+          "002b: cmp dword ptr [ebp + 0x10], 0",
+          "002f: je 0xaa",
+          "0031: mov edi, dword ptr [ebp + 0xc]",
+          "0034: push 0x48",
+          "0036: push dword ptr [edi]",
+          "0038: mov eax, dword ptr [edi + 4]",
+          "003b: call eax",
+          "003d: add esp, 8",
+          "0040: mov dword ptr [ebp - 0x14], eax",
+          "0043: mov dword ptr [ebp - 4], 0",
+          "004a: test eax, eax",
+          "004c: je 0x5d",
+          "004e: push edi",
+          "004f: push 0",
+          "0051: push dword ptr [edi + 0x14]",
+          "0054: push eax",
+          "0055: call 0x5a",
+          "005a: add esp, 0x10",
+          "005d: mov esi, dword ptr [ebp + 8]",
+          "0060: push 0x90",
+          "0065: push 0",
+          "0067: mov dword ptr [esi], eax",
+          "0069: mov dword ptr [esi + 4], eax",
+          "006c: mov dword ptr [esi + 8], 0",
+          "0073: mov ecx, dword ptr [edi + 0x10]",
+          "0076: mov dword ptr [ecx], esi",
+          "0078: lea ecx, [esi + 0xc]",
+          "007b: push ecx",
+          "007c: call 0x81",
+          "0081: add esp, 0xc",
+          "0084: mov eax, esi",
+          "0086: mov ecx, dword ptr [ebp - 0xc]",
+          "0089: mov dword ptr fs:[0], ecx",
+          "0090: pop ecx",
+          "0091: pop edi",
+          "0092: pop esi",
+          "0093: pop ebx",
+          "0094: mov esp, ebp",
+          "0096: pop ebp",
+          "0097: ret "
+        ]
+      },
+      "__ehhandler$?dyn_profile_construct_00c50310@bsp@@YAPAUDynProfileStorage@1@AAU21@ABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z": {
+        "hex": "90908b5424088d420c8b4adc33c8e800000000b800000000e900000000",
+        "relocations": [
+          [
+            15,
+            20,
+            "@__security_check_cookie@4"
+          ],
+          [
+            20,
+            6,
+            "__ehfuncinfo$?dyn_profile_construct_00c50310@bsp@@YAPAUDynProfileStorage@1@AAU21@ABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z"
+          ],
+          [
+            25,
+            20,
+            "___CxxFrameHandler3"
+          ]
+        ],
+        "bytes": 29,
+        "listing": [
+          "0000: nop ",
+          "0001: nop ",
+          "0002: mov edx, dword ptr [esp + 8]",
+          "0006: lea eax, [edx + 0xc]",
+          "0009: mov ecx, dword ptr [edx - 0x24]",
+          "000c: xor ecx, eax",
+          "000e: call 0x13",
+          "0013: mov eax, 0",
+          "0018: jmp 0x1d"
+        ]
+      },
+      "__catch$?dyn_profile_construct_00c50310@bsp@@YAPAUDynProfileStorage@1@AAU21@ABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z$0": {
+        "hex": "ff75ecff551083c4046a006a00e80000000068000000008d4de0e80000000068000000008d45e050e800000000cccccccccccc",
+        "relocations": [
+          [
+            14,
+            20,
+            "__CxxThrowException@8"
+          ],
+          [
+            19,
+            6,
+            "??_C@_0DO@MNDCGPAP@Dyn?5profile?5Root?5requires?5a?5matc@"
+          ],
+          [
+            27,
+            20,
+            "??0invalid_argument@std@@QAE@PBD@Z"
+          ],
+          [
+            32,
+            6,
+            "__TI3?AVinvalid_argument@std@@"
+          ],
+          [
+            41,
+            20,
+            "__CxxThrowException@8"
+          ]
+        ],
+        "bytes": 51,
+        "listing": [
+          "0000: push dword ptr [ebp - 0x14]",
+          "0003: call dword ptr [ebp + 0x10]",
+          "0006: add esp, 4",
+          "0009: push 0",
+          "000b: push 0",
+          "000d: call 0x12",
+          "0012: push 0",
+          "0017: lea ecx, [ebp - 0x20]",
+          "001a: call 0x1f",
+          "001f: push 0",
+          "0024: lea eax, [ebp - 0x20]",
+          "0027: push eax",
+          "0028: call 0x2d",
+          "002d: int3 ",
+          "002e: int3 ",
+          "002f: int3 ",
+          "0030: int3 ",
+          "0031: int3 ",
+          "0032: int3 "
+        ]
+      }
+    }
+  },
+  "old_emitted_compatibility": {
+    "all_equal": true,
+    "records": 16,
+    "composition": "5oldpublic functions,9source/templatehelpers,2compilerEHrecords",
+    "normal_only_callers": "oldRoot,C55EA0,C55F50 machine bytes and normalized relocationtargets identical; no new overload propagation",
+    "normalization": "anonymous namespace symbolhash only; exact raw functionbytes and relocationoffset/kind/targets",
+    "functions": [
+      {
+        "name": "?dyn_profile_node_construct_00c44000@bsp@@YAPAUDynProfileNodeStorage@1@AAU21@PBDI@Z",
+        "equal": true,
+        "bytes": 34
+      },
+      {
+        "name": "?dyn_profile_node_construct_00c44000@bsp@@YAPAUDynProfileNodeStorage@1@AAU21@PBDIABUAvoidZoneDynHullMemory@1@@Z",
+        "equal": true,
+        "bytes": 105
+      },
+      {
+        "name": "?dyn_profile_construct_00c50310@bsp@@YAPAUDynProfileStorage@1@AAU21@ABUDynEngineRuntimeContext@1@@Z",
+        "equal": true,
+        "bytes": 103
+      },
+      {
+        "name": "?dyn_engine_construct_00c55ea0@bsp@@YAPAUDynEngineStorage@1@AAU21@PBIABUDynEngineRuntimeContext@1@@Z",
+        "equal": true,
+        "bytes": 211
+      },
+      {
+        "name": "?dyn_engine_ensure_00c55f50@bsp@@YAPAUDynEngineStorage@1@PBIABUDynEngineRuntimeContext@1@@Z",
+        "equal": true,
+        "bytes": 232
+      },
+      {
+        "name": "?allocate@?anonymous@bsp@@YAPAXABUDynEngineRuntimeContext@2@I@Z",
+        "equal": true,
+        "bytes": 19
+      },
+      {
+        "name": "?release_profile_vector_storage_0040a900@?anonymous@bsp@@YAXPAXABUAvoidZoneDynHullMemory@2@@Z",
+        "equal": true,
+        "bytes": 26
+      },
+      {
+        "name": "?initialize_profile_node_vector@?anonymous@bsp@@YAXAAUDynProfileNodeStorage@2@@Z",
+        "equal": true,
+        "bytes": 26
+      },
+      {
+        "name": "??$at@I@?anonymous@bsp@@YAAAIPAXI@Z",
+        "equal": true,
+        "bytes": 9
+      },
+      {
+        "name": "?construct_profile_node_payload@?anonymous@bsp@@YAPAUDynProfileNodeStorage@2@AAU32@PBDI@Z",
+        "equal": true,
+        "bytes": 101
+      },
+      {
+        "name": "??$at@UNativeLegacySboStringStorage@bsp@@@?anonymous@bsp@@YAAAUNativeLegacySboStringStorage@1@PAXI@Z",
+        "equal": true,
+        "bytes": 9
+      },
+      {
+        "name": "??$at@PAUDynProfileNodeStorage@bsp@@@?anonymous@bsp@@YAAAPAUDynProfileNodeStorage@1@PAXI@Z",
+        "equal": true,
+        "bytes": 9
+      },
+      {
+        "name": "??$at@PAUDynProfileStorage@bsp@@@?anonymous@bsp@@YAAAPAUDynProfileStorage@1@PAXI@Z",
+        "equal": true,
+        "bytes": 9
+      },
+      {
+        "name": "??$at@PAUDynTaskManagerStorage@bsp@@@?anonymous@bsp@@YAAAPAUDynTaskManagerStorage@1@PAXI@Z",
+        "equal": true,
+        "bytes": 9
+      },
+      {
+        "name": "__ehhandler$?dyn_profile_node_construct_00c44000@bsp@@YAPAUDynProfileNodeStorage@1@AAU21@PBDIABUAvoidZoneDynHullMemory@1@@Z",
+        "equal": true,
+        "bytes": 29
+      },
+      {
+        "name": "__catch$?dyn_profile_node_construct_00c44000@bsp@@YAPAUDynProfileNodeStorage@1@AAU21@PBDIABUAvoidZoneDynHullMemory@1@@Z$0",
+        "equal": true,
+        "bytes": 33
+      }
+    ]
+  },
+  "validation": {
+    "strict_baseline_and_qualified_compile": {
+      "passed": true,
+      "compiler": "MSVCWin32 via installedVS18Community vcvars32",
+      "flags": [
+        "/std:c++17",
+        "/MD",
+        "/O2",
+        "/Gy",
+        "/fp:strict",
+        "/EHsc",
+        "/W4",
+        "/WX",
+        "/c",
+        "/FAs"
+      ],
+      "objects": [
+        {
+          "variant": "baseline",
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-profile-root-qualified\\local\\dyn-profile-root-qualified\\baseline\\dyn_engine_runtime.obj",
+          "machine": "0x014c",
+          "bytes": 8005,
+          "sha256": "ab942f632b1345772fef229b99cb6536b560ee6157ae2167ec5532ba60abdd93",
+          "listing": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-profile-root-qualified\\local\\dyn-profile-root-qualified\\baseline\\dyn_engine_runtime.asm",
+            "sha256": "2b7b8f59e19182dfaea38ce86fe8819ffc727d25bab9fd6aa1b41722a5a9ce35"
+          }
+        },
+        {
+          "variant": "qualified",
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-profile-root-qualified\\local\\dyn-profile-root-qualified\\qualified\\dyn_engine_runtime.obj",
+          "machine": "0x014c",
+          "bytes": 18491,
+          "sha256": "bc3ddc3920c5e635dbcac805fda0926b0583a73fd15747a3d2fab1944ede5ed3",
+          "listing": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-profile-root-qualified\\local\\dyn-profile-root-qualified\\qualified\\dyn_engine_runtime.asm",
+            "sha256": "5014c7bd5ca699dacb86e1d96c39cf52a32e04c6955b96fce0c04f5ef1e2ffe5"
+          }
+        }
+      ],
+      "executables_created_or_run": 0
+    },
+    "object_audit": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-profile-root-qualified\\local\\dyn-profile-root-qualified\\object_audit.json",
+      "sha256": "0d91a568ef3fe83a79148d06721dc57bca7369f8a487945ad153df104d393189"
+    },
+    "fresh_original_call_verifier": {
+      "state": "complete",
+      "command": "python tools/verify_report_calls.py reports/cc16_dyn_profile_root_qualified.json",
+      "passed": true,
+      "checked": 4,
+      "failed": 0,
+      "target_verified": "C:/Users/sqz269/bsp.gpr /battlestationspacific.exe"
+    },
+    "full_build_or_tests": false,
+    "new_tests_fixtures_probes_games_Dll_calls": false,
+    "Ghidra_mutation": false
+  },
+  "source_sha256": {
+    "baseline": {
+      "include/bsp/dyn_engine_runtime.hpp": "2217fde53118820512482ca218e4b73e482801d61e3271bbb81f224b54418393",
+      "src/dyn_engine_runtime.cpp": "eeda95d61df753129db8a480f5bf8229071ab90134dfff81fa92b976ce700e3a"
+    },
+    "qualified": {
+      "include/bsp/dyn_engine_runtime.hpp": "2f40e8f9347e6cb454d6cefc016a9143fdc1178d00269769231192d50cb59dcf",
+      "src/dyn_engine_runtime.cpp": "c8267909406fbe475e6f9ffa0954ce2c03d523e4c8be27bbf53261f9f947d7f2"
+    },
+    "retained_snapshots": {
+      "local\\dyn-profile-root-qualified\\baseline\\include\\bsp\\dyn_engine_runtime.hpp": "2217fde53118820512482ca218e4b73e482801d61e3271bbb81f224b54418393",
+      "local\\dyn-profile-root-qualified\\baseline\\src\\dyn_engine_runtime.cpp": "eeda95d61df753129db8a480f5bf8229071ab90134dfff81fa92b976ce700e3a",
+      "local\\dyn-profile-root-qualified\\qualified\\include\\bsp\\dyn_engine_runtime.hpp": "2f40e8f9347e6cb454d6cefc016a9143fdc1178d00269769231192d50cb59dcf",
+      "local\\dyn-profile-root-qualified\\qualified\\src\\dyn_engine_runtime.cpp": "c8267909406fbe475e6f9ffa0954ce2c03d523e4c8be27bbf53261f9f947d7f2"
+    }
+  },
+  "remaining_limits": [
+    "Root actualcaller and default-domain provider adoption remain separate; no customheap qualification inferred.",
+    "C55EA0/C55F50 longer/enclosing allocation scopes and propagation unchanged; no engine/profile owner lifetime closure.",
+    "No artificial longerRootname, injectedtailcallback, fakefailureprovider, test/probe or natural allocationfailurewitness is supplied.",
+    "Cppcapture/free/rethrow and actual_memset scope do not establish originalFH3/SEH/ABI/fault/secondarycleanup or feature-word behavior.",
+    "No general continuation/drain safety follows after reached publication/headstores refer to freedRootnode; enclosing interrupted-state custody remainsrequired.",
+    "Current math source/guard and frozenruntime evidence unchanged; no activation/gameplay extension."
+  ],
+  "credit": {
+    "new_native_bodies": 0,
+    "vendor_bodies": 0,
+    "binary_ABI": false,
+    "activation": false,
+    "runtime": false,
+    "gameplay": false
+  }
+}
