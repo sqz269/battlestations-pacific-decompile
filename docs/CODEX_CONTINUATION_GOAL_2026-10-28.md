@@ -300,3 +300,34 @@ retained raw Model/frame/reference regions. Existing interfaces fix the legacy
 Model family; casts cannot connect 481. Genuine GuiDefault/cache/Lua readiness
 and general primary4C/Page retirement remain separate prerequisites. API design
 is read-only pending primary review; no Text transport edit is accepted yet.
+
+## Final matched A1 gates and next source batch
+
+The frozen common A1 pair completed all strict four-OFF/four-ON runs. Root read
+`common_strict_evaluation.json`: eight valid manifests, exact serial provenance,
+all seven row contracts/receipts/remainders passing, OFF self-comparisons pair0,
+ON comparisons pair1 only for the exact inventoried A1 records, and ordered0.
+All four OFF runs agree; startup frame36/RNG0.6207 and teardown match. The
+separate no-aid pair also completed successfully on the same binaries, with the
+bounds variable absent and the exact reference trace environment. No failures,
+retries or masks changed. Final receipt/doc review precedes A1 publication; the
+runtime hold is lifted after these scheduled games.
+
+Geometry packet `d403f5411` is frozen above481. Root reviewed all new source and
+the current B75170 assembly: no source blocker, still unbuilt. Its one-shot
+frame borrows the four actual DWORD operands; publication/import epochs,
+callback replacement, late scalar reads, one sentinel sample and the authored
+SSE unordered/store sequence match the qualified Source contract. Compile and
+emitted-code/FP evidence remain pending.
+
+Primary approved the concrete Text raw-Model API and dispatched
+`codex-gui-text-raw-model-transport` across the eight Text files plus a new
+evidence document. It adds explicit raw85/93/118 overloads and a separate typed
+raw122 reference, preserving every legacy interface/caller. Model481 and
+geometryd403 remain named unaccepted prerequisites. Text188 publication stays
+before canonical admission, and host_metadata failure must propagate distinctly
+from native constructor cleanup/slot return. Stable raw Model, argument, frame,
+reference and disposal regions remain retained. No factory, properties,
+nonempty content, Page activation or function-body credit is implied. The
+private default-only Model router must use genuine same-domain providers;
+general shared Page/primary4C routing remains later work.

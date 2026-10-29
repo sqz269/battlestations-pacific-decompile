@@ -16,10 +16,26 @@
   "policy": "Function addresses and disjoint file ownership define work, not wave/segment IDs. Workers read shared dependencies; primary owns Ghidra mutations, shared metadata, common APIs, CMake, builds and integration. Implemented code_ownership and future next_code_ownership are recorded separately. Refill up to three ready worker slots; verify actual concurrency on resume.",
   "packets": [
     {
-      "id": "codex-gui-raw-model-geometry",
-      "state": "qualified_raw_geometry_provider_source_in_progress_A1_build_hold",
-      "worker": "gui_frame_lifetime",
+      "id": "codex-gui-text-raw-model-transport",
+      "state": "api_reviewed_coherent_raw_overloads_source_in_progress_A1_build_hold",
+      "worker": "gui_integration_review",
       "source_ready": true,
+      "depends_on": ["codex-gui-raw-model-storage", "codex-gui-raw-model-geometry", "codex-gui-widget-state"],
+      "function_addresses": ["00ab8530", "00ab9650", "00ab8250", "00ab8ee0"],
+      "output_files": [
+        "include/bsp/native_gui_text_storage_construct.hpp", "src/native_gui_text_storage_construct.cpp",
+        "include/bsp/native_gui_text_default_storage.hpp", "src/native_gui_text_default_storage.cpp",
+        "include/bsp/native_gui_text_retirement.hpp", "src/native_gui_text_retirement.cpp",
+        "include/bsp/native_gui_text_reference.hpp", "src/native_gui_text_reference.cpp",
+        "docs/CODEX_GUI_TEXT_RAW_MODEL_TRANSPORT.md"
+      ],
+      "notes": "Approved explicit rawModel overloads across Text85/93/118 plus separate typed raw122 reference, preserving legacy interfaces/callers with limited private body factoring. Use frozen481 + d403 B75170 concrete retained DWORD frame; no erased callback, ModelOwner cast, dummy scene environment, copied count or fake effect. Mandatory internal188 publication precedes canonical admission; host_metadata failure propagates distinctly from native ctor cleanup/slot return. Real GuiDefault/cache/Lua and genuine same-domain Model-only routing are entry prerequisites; general primary4C/Page/children/nonemptycontent remain later. Named Model prerequisites are prepared but unbuilt, not production-ready. No factory wrapper/activation, CMake/ledger/body credit or build during A1 hold."
+    },
+    {
+      "id": "codex-gui-raw-model-geometry",
+      "state": "static_checkpoint_source_reviewed_unbuilt_A1_hold",
+      "worker": "gui_frame_lifetime",
+      "source_ready": false,
       "depends_on": ["codex-gui-raw-model-storage"],
       "function_addresses": ["00b75170"],
       "output_files": [
