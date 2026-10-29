@@ -39,6 +39,7 @@
 #include "bsp/native_node_scene_attachment.hpp"
 #include "bsp/object_handle_resolvers.hpp"
 #include "bsp/native_physical_file_date.hpp"
+#include "bsp/native_platform_load_messages.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/native_vfs_name_resolution.hpp"
 #include "bsp/native_vfs_owner_services.hpp"
@@ -715,13 +716,13 @@ void GameNativeGuiPageApplication::Impl::read_childless_keys(
         }
         a.phase = NativeGuiWidgetPropertyChildrenAcquired::Phase::complete;
     } catch (...) {
-        const Word failed_site = a.active_call_site;
+        const Word child_failed_site = a.active_call_site;
         a.phase = NativeGuiWidgetPropertyChildrenAcquired::Phase::failed;
         if (a.name_live) {
             try { release_name(); }
             catch (...) { std::terminate(); }
         }
-        f.acquired.active_call_site = failed_site;
+        f.acquired.active_call_site = child_failed_site;
         throw;
     }
 }
