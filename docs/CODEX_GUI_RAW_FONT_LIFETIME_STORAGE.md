@@ -1,6 +1,6 @@
 # Concrete raw Font lifetime storage
 
-UNBUILT, uncalled Source helper; no native address/body credit. Owned files are
+Uncalled Source helper; Root build evidence below, no native address/body credit. Owned files are
 only the new HPP/CPP and this doc. Dependencies: published9d1c73b54 (shader ee11,
 retirement84d, private retirement_started projection), published5f686b664 (real
 setter c073/cf0 and canonical registry fix), and pointer-only4cf9d8a9b. Early
@@ -103,3 +103,16 @@ staged admission, real input callers and CMake and performs actual qualification
 No new tests/build/game/fixture, Original ABI/SEH, rendering/Page or production
 activation proof is supplied. Whitespace review and independent Source review
 are the bounded validation here; runtime proof remains absent.
+
+## Root integration
+
+Final4e6ed742179a2365f6390258e7b8906b736e7961 passed complete Root and
+independent Source review. The final48-entry header and metadata-only late
+handling, acyclic authentication, prepared-unused debt and actual AA9730 scene/
+optional late4c settlement agree with the owner and shared guard composition.
+Eight focused independent consistency checks pass. Root registered the CPP in
+CMake and restored the owner's ordinary pre-scalar prefix predicate/shape route;
+that route delegates only the Font slice to this helper.
+Combined all-five-switches-OFF Win32 and existing checks2/2 pass (11.22s),
+`local/cc16_font_lifetime_owner_staged_off_build.log`. Runtime, private caller
+credit-return qualification, candidate13 identity and production gates remain.

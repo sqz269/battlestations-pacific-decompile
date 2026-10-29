@@ -1,6 +1,6 @@
 # Raw Font work owner caller
 
-**Source preparation, UNBUILT and uncalled.** Base5f686b664, fixed owner API71f189ae4,
+**Source preparation, uncalled; Root build evidence below.** Base5f686b664, fixed owner API71f189ae4,
 frozen lifetime API6d0ecb622 and Root's trailing retirement `font_lifetime`
 pointer4cf9d8a9b. This packet owns
 only the existing raw DEFAULT owner HPP/CPP and this doc. No shared host, renderer,
@@ -92,3 +92,17 @@ owner source is not independently activated. Font/content/glyph/rendering, arbit
 replacement/reuse/failure and whole-FE_initial acceptance remain separate gates.
 No build, game, test or Ghidra mutation ran for this packet; no new native body,
 vendor library body, register ABI or private exception-frame credit is claimed.
+
+## Root integration
+
+Root and independent Source review accept6a180f08 with the Root correction that
+retains require_native_gui_text_primary_prefix_before_scalar for the new path.
+That preserves the original predicate and ordinary Model/shape admission before
+count/scalar work; its Font slice now delegates through the staged prefix guard.
+All22 original-path comparisons pass, and the corrected scalar body recovers the
+original body after its explanatory comment is removed.
+Final helper4e6ed742 supplies the complete implementation and48-entry regions.
+Coupled all-five-private-switches-OFF Win32 and existing checks2/2 pass (11.22s),
+`local/cc16_font_lifetime_owner_staged_off_build.log`. All three real work choices
+remain uncalled. Actual private execution and complete default/production gate
+evidence are required before any broader activation or runtime claim.

@@ -1,4 +1,5 @@
 #include "bsp/native_gui_text_reference.hpp"
+#include "bsp/native_gui_text_font_lifetime_storage.hpp"
 #include "bsp/native_gui_text_shader_storage.hpp"
 #include "bsp/native_gui_text_primary_prefix_lifetime.hpp"
 #include "bsp/native_gui_text_prefix_geometry_lifetime.hpp"
@@ -163,9 +164,19 @@ void known_shader_borrowed(const NativeGuiTextRawModelReferenceContext& c, Check
     check(platform); // No current platform/Font/native resource/header read.
     shader_cache_backing(frame->cache, check);
 }
-void fresh_shader_binding(const NativeGuiTextRawModelReferenceContext& c) {
+void fresh_shader_binding(const NativeGuiTextRawModelReferenceContext& c,
+    const NativeGuiTextReferenceFrame& expected) {
     const auto* const f = c.font_shader_frame;
+    if (c.retirement.font_lifetime) {
+        const auto& font = c.retirement.font_lifetime->prepared_context();
+        require(f == &font.shader && c.retirement.font_shader_frame == f && &font.reference_frame == &expected &&
+            c.retirement.font_lifetime->phase() == NativeGuiTextFontLifetimeStorageFrame::Phase::prepared &&
+            c.retirement.font_lifetime->post_text_quiescent(),
+            "Font raw122 binding requires its exact wholly-unused prepared graph and constructor Frame");
+    }
     if (!f) return;
+    require(!f->prepared_reference_frame() || f->prepared_reference_frame() == &expected,
+        "Credited raw shader preparation must pin this exact raw122 constructor Frame");
     using Frame = NativeGuiTextShaderStorageFrame;
     const auto progress = f->credit_progress();
     require(progress.producer == Frame::RawPhase::fresh && progress.credit == Frame::CreditPhase::none &&
@@ -381,6 +392,21 @@ void known_borrowed(NativeGuiTextRawModelReferenceContext& c,
         require(representable(region), "raw122 prefix metadata requires valid retained backing extents");
         check(region);
     });
+    if (t.font_lifetime) {
+        const auto& font = t.font_lifetime->prepared_context();
+        require(c.font_shader_frame == &font.shader && t.font_shader_frame == &font.shader,
+            "Font reservation requires SAME fixed shader in both raw122 and retirement contexts");
+        const auto regions = t.font_lifetime->metadata_regions();
+        require(regions.count <= regions.entries.size(), "Font metadata region count exceeds its fixed backing");
+        for (std::size_t i = 0; i != regions.count; ++i) {
+            const auto& region = regions.entries[i];
+            require(representable({region.begin, region.bytes}), "Font reservation needs valid retained metadata extents");
+            // This exact constructor Frame is intentionally writable by122 /
+            // scalar entry. The surrounding bind/flags checks already cover it.
+            if (region.begin == &font.reference_frame && region.bytes == sizeof(font.reference_frame)) continue;
+            check(Region{region.begin, region.bytes});
+        }
+    }
     // Abstract/opaque provider implementations, actual pool/slab allocations,
     // effect loader frames and retained creator records have transitive caller
     // extent contracts. A base sizeof above never proves a derived extent.
@@ -457,7 +483,7 @@ Admission preflight(void* companion, void* raw, NativeGuiTextRawModelReferenceCo
         for (const auto region : writes)
             require(disjoint(region, borrowed), "Raw Text binding writes cannot alias the retained producer graph");
     });
-    fresh_shader_binding(c);
+    fresh_shader_binding(c, frame);
     const auto& a = c.construction;
     auto& p = c.construction_context;
     auto& f = c.construction_frame.sections;

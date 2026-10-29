@@ -761,3 +761,19 @@ controllers returned exit0. Outcomes include natural completion, loss, frame
 bound and result teardown, not a universal win claim. Aggregate input/hash/lane
 audit is in progress; USN02 has no independent live-priority sample. This is a
 current reference corpus only, with no candidate pair/ON/strict4+4 acceptance.
+
+The13-row aggregate reference audit now passes17 input/receipt/job/lane/controller
+checks. Root read the full report and copied/hash-verified29 audit artifacts to
+the original packet's evaluation folder. Outcomes:5 completed,5 bounded/no-end,
+1 nil-status result,2 failed; all13processes exit0/injected0. Actual Normal
+samples cover5/13 only; selection is recorded for13, with unsampled rows kept
+explicit. audit.json SHA755594ece00a1ce101f19d258386a0e7c3f30c033178e452566eaa0eedf1a126.
+This accepts the frozen reference dataset, not candidate identity or an ON gate.
+
+Final helper4e6ed742 and closed owner6a180f08 are now composed with Root staged
+guards, CMake and the fifth private host switch (FALSE). Root and independent
+reviews accept the helper/owner with the ordinary before-scalar prefix check
+restored; the helper grants only the Font slice. All five private switches are
+FALSE; coupled Win32/checks2/2 pass11.22s. Actual Font work remains unexecuted.
+Prepare the exact13-row default OFF candidate against the audited5b01 corpus
+before the independently preregistered real-provider Font/MSD private cases.

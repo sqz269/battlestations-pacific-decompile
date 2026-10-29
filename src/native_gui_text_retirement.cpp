@@ -1,6 +1,7 @@
 #include "bsp/native_gui_text_retirement.hpp"
 #include "bsp/native_gui_text_primary_prefix_lifetime.hpp"
 #include "bsp/native_gui_text_shader_storage.hpp"
+#include "bsp/native_gui_text_font_lifetime_storage.hpp"
 #include "bsp/native_string_raw_domain.hpp"
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/game_native_gui_text_process.hpp"
@@ -116,6 +117,10 @@ void preflight(void* raw, std::size_t bytes, void* diagnostics, std::size_t diag
     require(raw && !(bits(raw) & 3u) && read(raw) == 0x00d5c6c8,
         "Raw Text retirement requires SAME completed DEFAULT actual storage");
     const bool prefix = c.primary_prefix && native_gui_text_primary_prefix_selected(*c.primary_prefix);
+    if (c.font_lifetime) {
+        require(prefix && c.font_lifetime->phase() == NativeGuiTextFontLifetimeStorageFrame::Phase::sealed,
+            "Font retirement requires its sealed genuine prefix graph, never DEFAULT fallback");
+    }
     if (prefix) {
         require(&c.primary_prefix->text.factory_context.publication.retirement == &c,
             "prefix raw118 must use its EXACT factory retirement context");
@@ -182,6 +187,25 @@ void preflight(void* raw, std::size_t bytes, void* diagnostics, std::size_t diag
         require(!(bits(flags) & 3u), "Raw Text scalar flags require stable DWORD backing");
         for (const auto region : writes) require(disjoint(region, {flags, sizeof(Word)}),
             "Raw Text scalar flags must be separate from Text and diagnostics");
+    }
+    if (c.font_lifetime) {
+        using Font = NativeGuiTextFontLifetimeStorageFrame;
+        const auto& prepared = c.font_lifetime->prepared_context();
+        const auto& scalar = prepared.reference_frame.scalar;
+        const bool destructor = diagnostics == &scalar.destruction && diagnostic_bytes == sizeof(scalar.destruction);
+        const auto stage = destructor ? Font::Stage::raw118_preentry : Font::Stage::scalar_preentry;
+        const auto regions = c.font_lifetime->live_regions(raw, stage, destructor ? &scalar.destruction : nullptr);
+        require(regions.count <= regions.entries.size(), "Font retirement region count exceeds fixed backing");
+        for (std::size_t i = 0; i != regions.count; ++i) {
+            const auto& b = regions.entries[i];
+            const Region borrowed{b.begin, b.bytes};
+            const bool own_frame = b.begin == &prepared.reference_frame && b.bytes == sizeof(prepared.reference_frame);
+            // Embedded1C8 is not borrowed backing: the helper omits its native
+            // eight-byte extent, including for a borrowed self-name input.
+            require(disjoint(writes[0], borrowed), "Text storage cannot alias Font/provider backing");
+            if (!own_frame) require(disjoint(writes[1], borrowed), "Text diagnostics cannot alias Font/provider backing");
+            if (flags) require(disjoint({flags, sizeof(Word)}, borrowed), "Text flags cannot alias Font/provider backing");
+        }
     }
     if (!prefix) raw_default_admission(raw, c);
 }

@@ -1105,9 +1105,9 @@ void GameNativeRawDefaultTextOwner::retire_before_native_drain() {
     p.phase = Impl::Phase::retiring;
     try {
         NativeLuaServiceBindings::Activation activation(s.lua);
-        if (a.font_work)
-            a.font_work->frame.require_live(a.factory.raw_slot, NativeGuiTextFontLifetimeStorageFrame::Stage::before_scalar);
-        else if (a.primary_prefix) require_native_gui_text_primary_prefix_before_scalar(a.primary_prefix->context);
+        // The prefix guard retains ordinary predicate/Model checks and now
+        // delegates its Font slice to the exact staged helper when selected.
+        if (a.primary_prefix) require_native_gui_text_primary_prefix_before_scalar(a.primary_prefix->context);
         else a.widgets->require_default_before_scalar();
         auto& reference = *a.publication.reference;
         require(reference.reference_count.load(std::memory_order_relaxed) == 1,
