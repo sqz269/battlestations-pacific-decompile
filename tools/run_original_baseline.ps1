@@ -1,7 +1,6 @@
-# Prepare byte copies for an original retail baseline. This revision deliberately
-# cannot start the game: copying its working directory does not redirect the
-# SHGetSpecialFolderPathA(CSIDL_PERSONAL) save/options path (IAT 00CE22F0).
-# A low-integrity guard plus pre-entry Documents redirection must own live launch.
+# Prepare byte copies for an original retail baseline, or invoke the isolation
+# guard for an already prepared tree. Never launch retail directly: the guard
+# owns low-integrity execution, pre-entry Documents redirection and its job.
 # No install/profile ACL, registry setting, junction, hardlink or original file changes.
 [CmdletBinding()]
 param(
@@ -9,12 +8,15 @@ param(
     [string]$StageRoot = '',
     [string]$GuardPath = '',
     [switch]$PrepareOnly,
+    [switch]$RunPrepared,
+    [ValidateRange(1, 7200)][int]$RuntimeSeconds = 900,
     [int]$WaitSeconds = 120,
     [ValidateRange(1, 14)][int]$Slots = 14
 )
 
 $ErrorActionPreference = 'Stop'
-if (-not $PrepareOnly) {
+if ($PrepareOnly -and $RunPrepared) { throw 'Choose either -PrepareOnly or -RunPrepared.' }
+if (-not $PrepareOnly -and -not $RunPrepared) {
     throw 'LIVE LAUNCH BLOCKED: a verified low-integrity guard with pre-entry Documents redirection is required. Use -PrepareOnly to copy a private baseline tree; environment variables alone do not isolate retail saves.'
 }
 $coord = Join-Path $env:USERPROFILE '.bsp'
@@ -55,6 +57,28 @@ function Hash-Record([string]$path, [string]$relative) {
     $item = Get-Item -LiteralPath $path
     [ordered]@{ path = $relative; length = $item.Length; sha256 = (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToLowerInvariant() }
 }
+function Assert-SamePath([string]$recorded, [string]$expected) {
+    if (-not [IO.Path]::IsPathRooted($recorded) -or
+        -not [IO.Path]::GetFullPath($recorded).TrimEnd('\').Equals($expected, [StringComparison]::OrdinalIgnoreCase)) {
+        throw "Receipt path does not match expected location: $expected"
+    }
+}
+function Assert-RecordedHashes($records, [string]$root, [switch]$RootFilesOnly) {
+    $seen = @{}
+    foreach ($record in $records) {
+        $relative = [string]$record.path
+        if (-not $relative -or [IO.Path]::IsPathRooted($relative) -or $seen.ContainsKey($relative) -or
+            ($RootFilesOnly -and ($relative -match '[\\/]')) -or $record.sha256 -notmatch '^[0-9a-fA-F]{64}$') {
+            throw 'Invalid or duplicate hash record in preparation receipt.'
+        }
+        $seen[$relative] = $true
+        $path = [IO.Path]::GetFullPath((Join-Path $root $relative))
+        if (-not (Is-InTree $path $root) -or $path -eq $root) { throw 'Hash record escapes its recorded root.' }
+        Assert-NoReparseAncestor $path
+        $actual = Hash-Record $path $relative
+        if ($actual.sha256 -ne $record.sha256 -or $actual.length -ne $record.length) { throw "Prepared/original file identity changed: $path" }
+    }
+}
 
 Assert-NotDraining
 $source = (Resolve-Path -LiteralPath $GameRoot).Path.TrimEnd('\')
@@ -62,13 +86,15 @@ $personal = [Environment]::GetFolderPath([Environment+SpecialFolder]::MyDocument
 if (-not $personal) { throw 'Unable to resolve the current Documents known folder.' }
 $profileSource = Join-Path $personal 'Battlestations-Pacific'
 if (-not $StageRoot) {
+    if ($RunPrepared) { throw '-RunPrepared requires an explicit existing -StageRoot.' }
     $StageRoot = Join-Path (Join-Path $PSScriptRoot '..\local\original-baseline') ((Get-Date -Format 'yyyyMMdd-HHmmss') + '-' + [Guid]::NewGuid().ToString('N').Substring(0, 8))
 }
 $stage = [IO.Path]::GetFullPath($StageRoot).TrimEnd('\')
 if ((Is-InTree $stage $source) -or (Is-InTree $source $stage) -or (Is-InTree $stage $personal)) {
     throw 'StageRoot must be separate from the installed game and current Documents tree.'
 }
-if (Test-Path -LiteralPath $stage) { throw "StageRoot must be new; refusing to reuse $stage" }
+if ($PrepareOnly -and (Test-Path -LiteralPath $stage)) { throw "StageRoot must be new; refusing to reuse $stage" }
+if ($RunPrepared -and -not (Test-Path -LiteralPath $stage -PathType Container)) { throw "Prepared StageRoot does not exist: $stage" }
 Assert-NoReparseAncestor $stage
 Assert-NoReparseTree $source
 if (Test-Path -LiteralPath $profileSource) { Assert-NoReparseTree $profileSource }
@@ -89,6 +115,34 @@ if (-not $GuardPath) {
     if (Test-Path -LiteralPath $adjacentGuard -PathType Leaf) { $GuardPath = $adjacentGuard }
 }
 if ($GuardPath) { $GuardPath = (Resolve-Path -LiteralPath $GuardPath).Path }
+$prepared = $null
+if ($RunPrepared) {
+    if (-not $GuardPath) { throw 'LIVE LAUNCH BLOCKED: original_baseline_guard.py is required.' }
+    Assert-NoReparseTree $stage
+    $prepared = Get-Content -LiteralPath $receiptPath -Raw | ConvertFrom-Json
+    if ($prepared.schema -ne 'bsp.original-baseline.preparation.v1') { throw 'Unsupported preparation receipt schema.' }
+    Assert-SamePath $prepared.stage_root $stage
+    Assert-SamePath $prepared.source_game $source
+    Assert-SamePath $prepared.source_profile $profileSource
+    Assert-SamePath $prepared.private_game (Join-Path $stage 'game')
+    Assert-SamePath $prepared.private_documents (Join-Path $stage 'Documents')
+    $rootRecords = @($prepared.root_files_sha256)
+    foreach ($name in $required) {
+        if (@($rootRecords | Where-Object { $_.path -ieq $name }).Count -ne 1) { throw "Preparation receipt lacks unique required retail identity: $name" }
+    }
+    Assert-RecordedHashes $rootRecords $source -RootFilesOnly
+    Assert-RecordedHashes $rootRecords $prepared.private_game -RootFilesOnly
+    Assert-RecordedHashes @($prepared.profile_files_sha256) $profileSource
+    Assert-RecordedHashes @($prepared.profile_files_sha256) (Join-Path $prepared.private_documents 'Battlestations-Pacific')
+    # Guard preparation is required independently of this copy receipt. The
+    # guard revalidates actual labels, links and protected originals at launch.
+    $guardPrepared = Get-Content -LiteralPath (Join-Path $stage 'guard-prepare.json') -Raw | ConvertFrom-Json
+    if ($guardPrepared.schema -ne 'bsp.original-baseline.guard.prepare.v1' -or $guardPrepared.phase -ne 'prepared' -or
+        $guardPrepared.label.rid -ne 4096 -or (($guardPrepared.label.policy -band 1) -ne 1) -or $guardPrepared.label.explicit -ne $true) {
+        throw 'LIVE LAUNCH BLOCKED: unsupported/incomplete guard preparation receipt.'
+    }
+    Assert-SamePath $guardPrepared.stage_root $stage
+}
 $owner = if ($env:BSP_AGENT) { $env:BSP_AGENT } else { Split-Path (Get-Location) -Leaf }
 function New-OwnedLock([string]$path) {
     $stream = [IO.File]::Open($path, [IO.FileMode]::CreateNew, [IO.FileAccess]::Write, [IO.FileShare]::Read)
@@ -118,6 +172,17 @@ try {
         }
     }
     Assert-NotDraining
+    if ($RunPrepared) {
+        # The guard monitors DRAIN while running and owns normal-priority child
+        # creation, timeout and job cleanup. Keep BOTH locks until it returns.
+        & python $GuardPath launch --stage $stage --receipt (Join-Path $stage 'launch.json') --seconds $RuntimeSeconds
+        $guardExit = $LASTEXITCODE
+        Assert-RecordedHashes @($prepared.root_files_sha256) $source -RootFilesOnly
+        Assert-RecordedHashes @($prepared.profile_files_sha256) $profileSource
+        if ($guardExit -ne 0) { throw "Guarded baseline ended with exit code $guardExit; see $(Join-Path $stage 'launch.json')" }
+        Write-Output "Guarded baseline completed; original root/profile hashes preserved. Receipt: $(Join-Path $stage 'launch.json')"
+        return
+    }
     New-Item -ItemType Directory -Path $stage | Out-Null
     # Guard prepare accepts only a new empty stage, grants current-user control
     # there and verifies inheritable low integrity before any private copy exists.
