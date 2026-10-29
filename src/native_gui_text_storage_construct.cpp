@@ -1,4 +1,5 @@
 #include "bsp/native_gui_text_storage_construct.hpp"
+#include "bsp/native_string_raw_domain.hpp"
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/native_node_root_propagation.hpp"
 #include "bsp/native_string_pool_storage.hpp"
@@ -171,8 +172,8 @@ void preflight(void* text, NativeGuiTextRawModelSectionStorageFrame& f,
     require(&c.association.storage == &storage && &c.parenting.node == &node &&
         &node.scenes.owners == &owners && &node.trees.owners == &owners &&
         &c.materials.retained_owners == &owners && &c.effects.effects.owners.actual_owners() == &owners &&
-        &node.strings == &c.strings && &c.strings == &c.string_process.raw_context() &&
-        &c.material_strings == &c.string_process.strings() &&
+        &node.strings == &c.strings && same_native_string_raw_pool_cells(c.strings, c.string_process.raw_context()) &&
+        same_native_string_storage_raw_pool_cells(c.material_strings, c.strings) &&
         &c.effects.strings == &c.material_strings && &c.materials.parameter_names == &c.material_strings &&
         &c.effects.effects.construction.strings == &c.material_strings &&
         &node.scenes.decrement_00ce2220 == &decrement(c) && decrement(c) &&

@@ -1,4 +1,5 @@
 #include "bsp/native_gui_text_retirement.hpp"
+#include "bsp/native_string_raw_domain.hpp"
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/game_native_gui_text_process.hpp"
 #include "bsp/native_gui_text_default_storage.hpp"
@@ -118,8 +119,9 @@ void preflight(void* raw, std::size_t bytes, void* diagnostics, std::size_t diag
         &c.base.nodes.require_raw_name_pool() == &r.strings &&
         &node.trees.point_lights == &c.base.nodes.point_lights &&
         &node.strings == &r.strings && &node.scenes.owners == &owners && &node.trees.owners == &owners &&
-        &r.materials.retained_owners == &owners && &r.material_strings == &r.string_process.strings() &&
-        &r.strings == &r.string_process.raw_context() &&
+        &r.materials.retained_owners == &owners &&
+        same_native_string_storage_raw_pool_cells(r.material_strings, r.strings) &&
+        same_native_string_raw_pool_cells(r.strings, r.string_process.raw_context()) &&
         &node.scenes.decrement_00ce2220 == &node.trees.decrement_00ce2220 && node.trees.decrement_00ce2220 &&
         &r.effects.effects.owners.actual_owners() == &owners &&
         &r.effects.effects.owners.string_storage() == &r.material_strings &&

@@ -164,6 +164,13 @@ the complete real GuiDefault/provider owner and raw-compatible widget lifetime
 composition remain required before production entry. These uncalled helpers
 have no actual DEFAULT lifetime/failure/reuse or native ABI execution proof.
 
+The raw factory's process-boundary string checks now admit distinct genuine
+VFS/process wrappers over the exact same pool/disabled/manager CELL addresses.
+Typed storage must be the actual-manager form of the existing final native-pool
+implementation. Local renderer/effect/material identities and all lifetime
+requirements remain exact; no pointee-value equality, fake allocator or semantic
+pool bridge is substituted. See the raw transport's string-cell correction.
+
 ## Validation boundary
 
 This packet is source/ownership preparation only. Compilation, native DEFAULT

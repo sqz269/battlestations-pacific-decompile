@@ -1,4 +1,5 @@
 #include "bsp/native_gui_text_default_factory_storage.hpp"
+#include "bsp/native_string_raw_domain.hpp"
 #include "bsp/game_native_gui_text_process.hpp"
 #include "bsp/game_native_string_process.hpp"
 #include <initializer_list>
@@ -75,8 +76,9 @@ NativeGuiTextPool& prepared_pool(NativeGuiTextDefaultFactoryStorageContext& c) {
         "Raw DEFAULT factory requires the SAME prepared93/122/188/pool/type domains");
     require(ctor.lifetime.nodes.uses_raw_name_pool() &&
         &ctor.lifetime.nodes.require_raw_name_pool() == &sections.strings &&
-        &node.strings == &sections.strings && &sections.strings == &sections.string_process.raw_context() &&
-        &sections.material_strings == &sections.string_process.strings() &&
+        &node.strings == &sections.strings &&
+        same_native_string_raw_pool_cells(sections.strings, sections.string_process.raw_context()) &&
+        same_native_string_storage_raw_pool_cells(sections.material_strings, sections.strings) &&
         &node.trees.point_lights == &ctor.lifetime.nodes.point_lights,
         "Raw DEFAULT factory requires genuine shared raw strings and base/Model point-light identity");
     const auto& model = produced.sections.model;
