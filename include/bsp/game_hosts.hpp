@@ -93,6 +93,7 @@ class GameFontHost;
 // Milestone 2b, defined in bsp/game_hosts_frontend.hpp.
 class GameFrontendHost;
 class GameSingletonHost;
+class GameNativeGuiIconProcess;
 // Milestone 2c, defined in bsp/game_hosts_menu.hpp and
 // bsp/game_hosts_init_tail.hpp.
 class GameMenuHost;
@@ -756,6 +757,9 @@ private:
     void exit_if_particle_manager_failed() noexcept;
     void exit_if_native_lua_interrupted() noexcept;
     void exit_if_native_renderer_incomplete() noexcept;
+    void prepare_native_gui_icon_process();
+    void exit_if_native_gui_icon_interrupted() noexcept;
+    void verify_native_gui_icon_after_drain();
     void drain_native_singletons();
     void exit_if_native_fonts_interrupted() noexcept;
     void retire_native_fonts_before_drain() noexcept;
@@ -848,6 +852,8 @@ private:
     GameFrameProfiler* profiler_{};     // 004c1dd0's counter arrays
     GameMenuHost* menu_{};              // the front-end registry and the main-menu path
     GameSingletonHost* singletons_{};   // survives menu teardown through 008F8449
+    // Permanently retained metadata; the SAME deletion arm survives fallback drain.
+    GameNativeGuiIconProcess* native_gui_icon_process_{};
     GameDecalTable* decals_{};          // phase 9, 00740840
     IDirect3D9* renderer_api_{};
     NativeRendererParametersOwner* renderer_parameters_{};
