@@ -2,8 +2,9 @@
 // Subtitle schedule of the GUI Movie widget: the `.mws` script 00AB0520 loads
 // beside the movie and the per-frame selection 00AADBA0 runs while it plays.
 // These are the bodies behind MoviePlayerHost::prepare_movie_subtitles and
-// update_movie_subtitles in bsp/movie_player.hpp; the host still owns the Lua
-// state, the file probe, the Text widget and the Bink handle.
+// update_movie_subtitles in bsp/movie_player.hpp; the host owns the file probe,
+// Text widget and Bink handle. The optional script helper uses a separate Lua
+// state and covers only the subtitle rows, not the complete native loader.
 //
 // Names are hypotheses, not recovered symbols. Evidence is in
 // docs/CC13_GUI_RENDER.md. Not binary compatible: the native record is a
@@ -37,6 +38,19 @@ struct MovieSubtitle {
     bool always_show{false};    // +10h, shown even with subtitles off
     bool hide_for_english{false}; // +11h, suppressed when the language is "english"
 };
+
+// 00AB06E0..00AB0980: run the script in a Lua state of its own
+// (BSP_LuaStateOwner_Open, RunScriptWithOverrides), then read
+// subtitles[1], subtitles[2], ... until the first nil row. Here the state has
+// no libraries opened; the installed movies/us_outro.mws uses a table constructor.
+// The native state's library set is not established. The native indexed reads
+// use lua_gettable (00B67720), and fields 4/5 require exact booleans or default
+// false (00B662F0). This typed projection does not reproduce the native file
+// probe, widget ownership, extratitles, or malformed-script error propagation.
+// Returns false and fills `error` when the
+// chunk does not load or run; `lines` is then empty.
+bool load_movie_subtitle_script_00ab0520(const std::string& source,
+    std::vector<MovieSubtitle>& lines, std::string& error);
 
 // 00AADBCD..00AADC0A: playback time in seconds from BinkGetRealtime,
 // FrameNum * FrameRateDiv / FrameRate with both dwords loaded unsigned.

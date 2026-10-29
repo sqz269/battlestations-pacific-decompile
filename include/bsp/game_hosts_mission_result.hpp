@@ -35,6 +35,7 @@ namespace bsp::game {
 
 class GameHostLog;
 class GameProfileOwner;
+class GameVfsHost;
 
 // Packet cc13-fix20. Scoring_SetMissionCompleted, the Lua row 008B8AD0
 // (registered at 00E0C380). OFF keeps the row UNIMPLEMENTED. ON runs the
@@ -96,7 +97,10 @@ struct GameMissionExitSummary {
 // and the 24h end-of-mission request at game+7188h.
 class GameMissionResultHost final : public bsp::MissionResultHost {
 public:
-    GameMissionResultHost(GameHostLog& log, bsp::GameFrameControlState& control);
+    // Borrow the frame host's same retained VFS owner; it must outlive this
+    // result and every movie callback. No provider or mount is created here.
+    GameMissionResultHost(GameHostLog& log, bsp::GameFrameControlState& control,
+        GameVfsHost& vfs);
     ~GameMissionResultHost() override;
     GameMissionResultHost(const GameMissionResultHost&) = delete;
     GameMissionResultHost& operator=(const GameMissionResultHost&) = delete;

@@ -2,6 +2,14 @@
 // docs/CC13_GUI_RENDER.md; names are hypotheses.
 #include "bsp/movie_subtitles.hpp"
 
+#include <memory>
+#include <utility>
+
+extern "C" {
+#include "lua.h"
+#include "lauxlib.h"
+}
+
 namespace bsp {
 
 std::string movie_subtitle_script_path_00ab0520(const std::string& movie_path)
@@ -15,6 +23,57 @@ std::string movie_subtitle_script_path_00ab0520(const std::string& movie_path)
 const char* movie_subtitle_text_widget_00ab0520(bool wide_screen) noexcept
 {
     return wide_screen ? "SubtitlesWideScreen_Text" : "SubtitlesNormal_Text";
+}
+
+bool load_movie_subtitle_script_00ab0520(const std::string& source,
+    std::vector<MovieSubtitle>& lines, std::string& error)
+{
+    lines.clear();
+    error.clear();
+    std::unique_ptr<lua_State, decltype(&lua_close)> owner(luaL_newstate(), &lua_close);
+    if (!owner) { error = "Lua state allocation failed"; return false; }
+    lua_State* L = owner.get();
+    // 00B67720 pushes the numeric index then performs lua_gettable, preserving
+    // indexed lookup semantics rather than substituting lua_rawgeti.
+    const auto get_index = [L](int table_index, int index) {
+        const int table = table_index > 0 ? table_index : lua_gettop(L) + table_index + 1;
+        lua_pushnumber(L, static_cast<lua_Number>(index));
+        lua_gettable(L, table);
+    };
+    if (luaL_loadbuffer(L, source.data(), source.size(), "mws") != 0 ||
+        lua_pcall(L, 0, 0, 0) != 0) {
+        error = lua_isstring(L, -1) ? lua_tostring(L, -1) : "script error";
+        return false;
+    }
+    lua_getglobal(L, "subtitles");
+    if (!lua_istable(L, -1)) {
+        return true;
+    }
+    for (int row = 1;; ++row) {
+        get_index(-1, row);
+        if (lua_isnil(L, -1)) {
+            break;
+        }
+        MovieSubtitle line;
+        if (lua_istable(L, -1)) {
+            get_index(-1, 1);
+            if (lua_isstring(L, -1)) line.text = lua_tostring(L, -1);
+            get_index(-2, 2);
+            line.start = static_cast<float>(lua_tonumber(L, -1));
+            get_index(-3, 3);
+            line.end = static_cast<float>(lua_tonumber(L, -1));
+            get_index(-4, 4);
+            // 00AB0935/00AB0969 pass default 0 to 00B662F0, which accepts
+            // only Lua BOOLEAN. Other truthy Lua values do not mean true here.
+            line.always_show = lua_isboolean(L, -1) && lua_toboolean(L, -1) != 0;
+            get_index(-5, 5);
+            line.hide_for_english = lua_isboolean(L, -1) && lua_toboolean(L, -1) != 0;
+            lua_pop(L, 5);
+        }
+        lines.push_back(std::move(line));
+        lua_pop(L, 1);
+    }
+    return true;
 }
 
 float movie_subtitle_time_00aadba0(std::uint32_t frame_num, std::uint32_t frame_rate,
