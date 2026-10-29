@@ -854,6 +854,9 @@ private:
     GameSingletonHost* singletons_{};   // survives menu teardown through 008F8449
     // Permanently retained metadata; the SAME deletion arm survives fallback drain.
     GameNativeGuiIconProcess* native_gui_icon_process_{};
+    // Address-only diagnostic identity; native ownership stays in the manager.
+    void* native_gui_icon_qualification_identity_{};
+    bool native_gui_icon_qualification_retired_{};
     GameDecalTable* decals_{};          // phase 9, 00740840
     IDirect3D9* renderer_api_{};
     NativeRendererParametersOwner* renderer_parameters_{};
