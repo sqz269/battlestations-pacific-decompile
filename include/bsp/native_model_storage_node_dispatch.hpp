@@ -53,6 +53,10 @@ public:
     // One pre-pool bind, with null actual/empty canonical optional and fresh
     // records. Both this provider and e769 bind to the SAME record aliases.
     void bind(NativeModelStorageNodeDispatchContext&);
+    // Pure binding/array identity only; no native access or dispatch permission.
+    bool matches(const NativeModelStorageNodeDispatchContext&,
+        const NativeModelStorageNodeDispatchAcquired&,
+        const NativeModelStorageNodeCall*, std::size_t) const noexcept;
     const volatile std::uint32_t* resolve_profile(std::uint32_t captured_profile) const override;
     std::uint8_t invoke_type_0c(std::uint32_t captured_target, void* actual,
         std::uint32_t captured_token) override;

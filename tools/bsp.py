@@ -1438,6 +1438,15 @@ def msg_cmd(args):
         marked = coordination.mark_read([m['id'] for m in shown if owner not in m.get('read_by', [])], owner)
         if marked:
             print(f"marked read: {' '.join(f'#{i}' for i in marked)}")
+    elif sub == 'read':
+        owner = args.owner or coordination.owner_name()
+        row = next((m for m in coordination.mailbox(owner, include_read=True)
+                    if m['id'] == args.id), None)
+        if row is None:
+            sys.exit(f'message #{args.id} is not in the inbox for {owner}')
+        print(message_header(row))
+        print(row['text'])
+        coordination.mark_read([row['id']], owner)
     elif sub == 'ack':
         owner = args.owner or coordination.owner_name()
         ids = [m['id'] for m in coordination.mailbox(owner)] if args.ids == ['all'] else args.ids
@@ -1563,7 +1572,7 @@ local/output/ and prints the path. --full or BSP_OUTPUT_BUDGET=0 lifts the cap.
   lease claim --packet <id> --from-packet | --addresses A B --files P [--ttl H]
   lease release [--packet <id>] | lease list [-v] | lease check <addr|path> | lease lock-status
   lease queue --packet <id> --files P [--addresses A] [--ttl 24] | lease unqueue --packet <id> | claim --jump 'reason'
-  msg send <owner|prefix-|all> <text>|--file F | msg inbox [--all] | msg ack <id..|all>
+  msg send <owner|prefix-|all> <text>|--file F | msg inbox [--all] | msg read <id> | msg ack <id..|all>
   packets list|ready|done <id>|depend <id> --on <ids>
   worktree add <name> [--packet P] [--base origin/main] | worktree remove <name> [--force] [--delete-branch]
   worktree gc [--apply] [--idle-hours 12] [--merged-only] [--match TEXT] [--delete-merged-branches]
@@ -1724,6 +1733,7 @@ def main():
     q.add_argument('text', nargs='*'); q.add_argument('--file', help='read the message text from a file'); q.add_argument('--from', dest='sender')
     q = ms.add_parser('inbox', help='unread mail for this owner; shown messages are marked read'); q.add_argument('--all', action='store_true', help='include read mail')
     q.add_argument('--limit', type=int, default=10); q.add_argument('--owner')
+    q = ms.add_parser('read', help='read the complete body of one inbox message'); q.add_argument('id', type=int); q.add_argument('--owner')
     q = ms.add_parser('ack'); q.add_argument('ids', nargs='+', metavar='ID|all'); q.add_argument('--owner')
     p.set_defaults(func=msg_cmd)
     p = sub.add_parser('packets', help='work packets from config/parallel_work.json with dependencies and leases'); pk = p.add_subparsers(dest='packets_command', required=True)

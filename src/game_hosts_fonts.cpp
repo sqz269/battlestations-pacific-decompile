@@ -2,6 +2,7 @@
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/game_native_font_application.hpp"
 #include "bsp/game_native_renderer_application.hpp"
+#include "bsp/game_native_raw_default_text_owner.hpp"
 #include "bsp/gui_text_runtime_factory.hpp"
 #include "bsp/native_font_resources.hpp"
 #include "bsp/font_registry_startup.hpp"
@@ -13,7 +14,7 @@
 
 namespace bsp::game {
 struct GameFontHost::Impl {
-    enum class TextBinding { unexported, export_pending, bind_entered, bound };
+    enum class TextBinding { unexported, export_pending, bind_entered, bound, detach_entered, detached };
     GameHostLog& log;
     GameVfsHost& vfs;
     GameScriptHost& scripts;
@@ -24,6 +25,8 @@ struct GameFontHost::Impl {
     bool native_failed{};
     TextBinding text_binding{TextBinding::unexported};
     NativeFontResourceOwners* exported_fonts{};
+    GameNativeRawDefaultTextOwner* raw_owner{}; // exclusive typed alternative, never a legacy stand-in
+    const void* raw_registry_image{}; // saved identity only after actual Font retirement
     FingerprintPayload fingerprint;
     std::size_t opens{};
     bool initialized{};
@@ -163,13 +166,74 @@ void GameFontHost::bind_text_factory(GuiTextRuntimeFactory& factory) {
     }
 }
 
+void GameFontHost::bind_raw_text_owner(GameNativeRawDefaultTextOwner& owner) {
+    auto& host = *impl_;
+    try {
+        if (!host.initialized || !host.native.ready() || host.native_failed ||
+            host.native_retirement_attempted || host.native_retired ||
+            host.text_binding != Impl::TextBinding::unexported || host.raw_owner)
+            throw std::logic_error("Native Font raw binding needs one unexported ready host, never mixed/replayed borrowers");
+        host.text_binding = Impl::TextBinding::bind_entered; // BEFORE producer admission/export
+        host.raw_owner = &owner;
+        host.exported_fonts = &host.native.bind_raw_text_owner(owner);
+        host.raw_registry_image = host.exported_fonts->native_registry_image(); // STILL ready/live, no lookup
+        if (host.native_failed || host.text_binding != Impl::TextBinding::bind_entered ||
+            host.raw_owner != &owner || !host.raw_registry_image)
+            throw std::logic_error("Native Font raw host cannot resume after a caught nested binding failure");
+        host.text_binding = Impl::TextBinding::bound;
+    } catch (...) {
+        host.native_failed = true;
+        host.native.fail_raw_text_owner_link(owner); // BOTH layers and actual/attempted owners remain retained
+        throw;
+    }
+}
+
+void GameFontHost::detach_raw_text_owner_after_parent_drain(GameNativeRawDefaultTextOwner& owner) {
+    auto& host = *impl_;
+    try {
+        if (host.native_failed || !host.native_retired || !host.native_retirement_attempted ||
+            host.text_binding != Impl::TextBinding::bound || host.raw_owner != &owner ||
+            !host.exported_fonts || !host.raw_registry_image)
+            throw std::logic_error("Native Font raw host detach needs SAME owner and completed Font retirement");
+        host.text_binding = Impl::TextBinding::detach_entered;
+        // Producer compares saved identities and calls the typed owner's closed/drained guard.
+        // Do not query a retired image or dereference any Font/name/header payload.
+        host.native.detach_raw_text_owner_after_parent_drain(owner);
+        if (host.native_failed || host.text_binding != Impl::TextBinding::detach_entered || host.raw_owner != &owner)
+            throw std::logic_error("Native Font raw host detach cannot resume after a caught nested failure");
+        host.raw_owner = nullptr;
+        host.raw_registry_image = nullptr;
+        host.exported_fonts = nullptr;
+        host.text_binding = Impl::TextBinding::detached;
+    } catch (...) {
+        host.native_failed = true;
+        host.native.fail_raw_text_owner_link(owner);
+        throw;
+    }
+}
+
 void GameFontHost::retire_native_fonts() {
     auto& host = *impl_;
     if (host.native_retired) return;
-    if (host.native_failed || host.native_retirement_attempted ||
-        host.text_binding == Impl::TextBinding::export_pending ||
-        host.text_binding == Impl::TextBinding::bind_entered)
-        throw std::logic_error("Native font host cannot replay an interrupted operation");
+    if (host.raw_owner) {
+        try {
+            if (host.native_failed || host.native_retirement_attempted ||
+                host.text_binding == Impl::TextBinding::export_pending ||
+                host.text_binding == Impl::TextBinding::bind_entered ||
+                host.text_binding == Impl::TextBinding::detach_entered || host.text_binding == Impl::TextBinding::detached)
+                throw std::logic_error("Native font host cannot replay an interrupted operation");
+        } catch (...) {
+            host.native_failed = true;
+            host.native.fail_raw_text_owner_link(*host.raw_owner);
+            throw;
+        }
+    } else {
+        if (host.native_failed || host.native_retirement_attempted ||
+            host.text_binding == Impl::TextBinding::export_pending ||
+            host.text_binding == Impl::TextBinding::bind_entered ||
+            host.text_binding == Impl::TextBinding::detach_entered || host.text_binding == Impl::TextBinding::detached)
+            throw std::logic_error("Native font host cannot replay an interrupted operation");
+    }
     host.native_retirement_attempted = true; // Before every callee preflight.
     try {
         const auto count = host.native.produced_fonts();
@@ -183,16 +247,20 @@ void GameFontHost::retire_native_fonts() {
             "sprite_borrowers=closed before_device_release=1 before_shared_drain=1", count);
     } catch (...) {
         host.native_failed = true;
+        if (host.raw_owner) host.native.fail_raw_text_owner_link(*host.raw_owner);
         throw;
     }
 }
 bool GameFontHost::native_operation_interrupted() const noexcept {
     const auto& host = *impl_;
+    const bool raw_awaiting_detach = host.native_retired && host.raw_owner &&
+        host.text_binding == Impl::TextBinding::bound && host.native.raw_text_owner_awaits_detach(host.raw_owner);
     return host.native_failed ||
         host.text_binding == Impl::TextBinding::export_pending ||
         host.text_binding == Impl::TextBinding::bind_entered ||
+        host.text_binding == Impl::TextBinding::detach_entered ||
         (host.native_retirement_attempted && !host.native_retired) ||
-        (!host.native.ready() && host.native.requires_process_retention());
+        (!raw_awaiting_detach && !host.native.ready() && host.native.requires_process_retention());
 }
 FontRegistryStartup& GameFontHost::registry() noexcept { return impl_->fonts; }
 const FingerprintPayload& GameFontHost::fingerprint() const noexcept { return impl_->fingerprint; }

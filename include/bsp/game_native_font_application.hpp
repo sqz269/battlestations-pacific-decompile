@@ -15,6 +15,7 @@ namespace bsp::game {
 class GameHostLog;
 class GameVfsHost;
 class GameNativeRendererApplication;
+class GameNativeRawDefaultTextOwner;
 
 enum class GameNativeFontLoadPhase {
     fresh, gfx, alpha, data, decode, adoption, publication, complete, failed
@@ -91,9 +92,19 @@ public:
     // its owner/cell alive and the lookup association valid through retirement.
     NativeFontResourceOwners& native_fonts();
     void bind_text_factory(GuiTextRuntimeFactory&);
-    // Requires zero retained raw Text allocations in the bound factory. Actual
-    // font cleanup runs forward in descriptor/load order, then borrowed registry
-    // bindings are cleared. No implicit reload or failed-operation recovery.
+    // Exclusive alternative to the legacy factory export. The fresh owner is
+    // already held by its caller. Entered state precedes any export; complete
+    // binds this SAME ready actual image registry/collection and renderer/VFS
+    // domain without Font lookup, native acquisition, retain or field writes.
+    // Every admitted failure is sticky in producer AND owner. No replay/rebind.
+    NativeFontResourceOwners& bind_raw_text_owner(GameNativeRawDefaultTextOwner&);
+    // Called through the matching FontHost AFTER owner.after_native_renderer_drain
+    // and BEFORE owner reset. Only saved metadata identities are used after
+    // actual Font retirement; no retired image/name/texture payload is read.
+    void detach_raw_text_owner_after_parent_drain(GameNativeRawDefaultTextOwner&);
+    // Requires the matching legacy factory's zero retained allocations OR the
+    // same raw owner's explicit terminal/full-custody guard. Actual font cleanup
+    // runs forward in load order, then clears registry bindings. No retry/reload.
     void retire_fonts();
     const GameNativeFontLoadOperation& operation(std::size_t index) const;
     std::size_t produced_fonts() const noexcept;
@@ -102,6 +113,10 @@ public:
     const std::exception_ptr& failure() const noexcept;
 
 private:
+    friend class GameFontHost;
+    // Shared Host/App interruption latch; callable only by that typed host.
+    void fail_raw_text_owner_link(GameNativeRawDefaultTextOwner&) noexcept;
+    bool raw_text_owner_awaits_detach(const GameNativeRawDefaultTextOwner*) const noexcept;
     struct Impl;
     std::unique_ptr<Impl> impl_;
 };

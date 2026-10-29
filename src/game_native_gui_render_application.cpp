@@ -42,8 +42,18 @@
 #include <fstream>
 #include <optional>
 #include <stdexcept>
+#include <new>
+#include <new.h>
 #include <string>
 #include <utility>
+
+// Host Win32 import-cell alias only: no storage or replacement function.
+// The SDK's query declaration lacks dllimport, so its named function address
+// identifies an EXE thunk. This alias reads the actual loader-resolved slot.
+extern "C" { extern _PNH (__cdecl * const volatile bsp_cc16_query_new_handler_import)(); }
+#pragma comment(linker, "/alternatename:_bsp_cc16_query_new_handler_import=__imp___query_new_handler")
+extern "C" { extern std::new_handler (__cdecl * const volatile bsp_cc16_std_get_new_handler_import)() noexcept; }
+#pragma comment(linker, "/alternatename:_bsp_cc16_std_get_new_handler_import=__imp_?get_new_handler@std@@YAP6AXXZXZ")
 
 namespace bsp::game {
 namespace {
@@ -52,6 +62,18 @@ namespace {
 // The ON candidate exercises one unpublished DEFAULT lifecycle without a new
 // environment option, scene/overlay, cache owner or public test-only interface.
 constexpr bool kRawDefaultTextQualificationCc16Bound = false;
+// Separate private fixture for the genuine primary Model prefix. Its owner
+// selects the receipt-authorized lifetime route; it adds no content or layout.
+constexpr bool kRawPrimaryPrefixQualificationCc16Bound = false;
+// Explicit AB7700 body fixture after the genuine prefix, with ctor bounds0.
+constexpr bool kRawPrefixGeometryQualificationCc16Bound = false;
+// Genuine Font producer/owner metadata only, over the same empty geometry
+// fixture. FontShader remains FRESH; this does not assign Text108 or call it.
+constexpr bool kRawFontMetadataQualificationCc16Bound = false;
+static_assert(static_cast<unsigned>(kRawDefaultTextQualificationCc16Bound) +
+    static_cast<unsigned>(kRawPrimaryPrefixQualificationCc16Bound) +
+    static_cast<unsigned>(kRawPrefixGeometryQualificationCc16Bound) +
+    static_cast<unsigned>(kRawFontMetadataQualificationCc16Bound) <= 1u);
 using Word = std::uint32_t;
 void require(bool value, const char* message) {
     if (!value) throw std::logic_error(message);
@@ -739,19 +761,33 @@ void GameStartupHost::initialize_native_gui_render() {
         GetEnvironmentVariableA("BSP_NATIVE_MISSION_FRAME", frame_flag, sizeof frame_flag) == 1 &&
         frame_flag[0] == '1',
         "BSP_NATIVE_GUI_TEXT=1 requires BSP_NATIVE_MISSION_SHIP=1 and BSP_NATIVE_MISSION_FRAME=1");
-    if constexpr (kRawDefaultTextQualificationCc16Bound) {
+    if constexpr (kRawDefaultTextQualificationCc16Bound ||
+        kRawPrimaryPrefixQualificationCc16Bound || kRawPrefixGeometryQualificationCc16Bound ||
+        kRawFontMetadataQualificationCc16Bound) {
         require(!GameNativeGuiRenderApplication::nodes_requested(),
-            "raw DEFAULT qualification requires the GUI node overlay disabled");
+            "raw Text qualification requires the GUI node overlay disabled");
         require(!native_gui_render_ && !native_raw_default_text_ && native_renderer_ &&
             vfs_ && singletons_ && native_data_ && input_runtime_,
-            "raw DEFAULT qualification requires the existing ready startup owners");
+            "raw Text qualification requires the existing ready startup owners");
         native_raw_default_text_ = std::make_unique<GameNativeRawDefaultTextOwner>(
             log_, *native_renderer_, *vfs_, *singletons_, *native_data_,
             GameNativeGuiSamplerApplicationBindings{*input_runtime_,
                 native_renderer_->borrow_platform_publication_0109cf04()});
-        // Explicit caller budget for this one DEFAULT graph, not an Original
+        if constexpr (kRawFontMetadataQualificationCc16Bound) {
+            require(fonts_ != nullptr, "raw Font metadata qualification requires the actual startup Font host");
+            // Store the stable owner before the exclusive combined export.
+            // Its typed handshake verifies readiness, image and domain identity.
+            fonts_->bind_raw_text_owner(*native_raw_default_text_);
+            log_.note("raw Font metadata qualification: producer_linked before_prepare=1 shader_fresh=required");
+        }
+        // Explicit caller budget for this one retained graph, not an Original
         // constant or a universal nesting bound. Exhaustion retains failure.
-        native_raw_default_text_->prepare_metadata_in_ready_renderer(64);
+        if constexpr (kRawPrefixGeometryQualificationCc16Bound || kRawFontMetadataQualificationCc16Bound)
+            native_raw_default_text_->prepare_primary_prefix_geometry_metadata_in_ready_renderer(64);
+        else if constexpr (kRawPrimaryPrefixQualificationCc16Bound)
+            native_raw_default_text_->prepare_primary_prefix_metadata_in_ready_renderer(64);
+        else
+            native_raw_default_text_->prepare_metadata_in_ready_renderer(64);
         return;
     }
     require(!native_gui_render_ && native_renderer_ && vfs_ && singletons_ && native_data_ &&
@@ -762,8 +798,48 @@ void GameStartupHost::initialize_native_gui_render() {
 }
 void GameStartupHost::prepare_native_gui_text_resources() {
     if (native_raw_default_text_) {
-        require(native_raw_default_text_->construct_default_in_open_shader_cache(),
-            "raw DEFAULT qualification requires a nonnull native factory result");
+        if constexpr (kRawPrefixGeometryQualificationCc16Bound || kRawFontMetadataQualificationCc16Bound) {
+            HMODULE query_module{}, call_module{}, standard_module{}, query_declaration_module{};
+            constexpr DWORD module_flags = GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
+                GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT;
+            const auto query_target = bsp_cc16_query_new_handler_import;
+            const BOOL declaration_loaded = GetModuleHandleExA(module_flags,
+                reinterpret_cast<LPCSTR>(&_query_new_handler), &query_declaration_module);
+            const BOOL query_loaded = query_target && GetModuleHandleExA(module_flags,
+                reinterpret_cast<LPCSTR>(query_target), &query_module);
+            const BOOL call_loaded = GetModuleHandleExA(module_flags,
+                reinterpret_cast<LPCSTR>(&_callnewh), &call_module);
+            const auto standard_target = bsp_cc16_std_get_new_handler_import;
+            const BOOL standard_loaded = standard_target && GetModuleHandleExA(module_flags,
+                reinterpret_cast<LPCSTR>(standard_target), &standard_module);
+            log_.notef("raw prefix geometry CRT resolved modules: query_ok=%d call_ok=%d standard_ok=%d query=%p call=%p standard=%p",
+                query_loaded ? 1 : 0, call_loaded ? 1 : 0, standard_loaded ? 1 : 0,
+                static_cast<void*>(query_module), static_cast<void*>(call_module), static_cast<void*>(standard_module));
+            require(query_loaded && call_loaded && standard_loaded,
+                "raw prefix-geometry qualification requires live CRT function modules");
+            require(query_module == call_module,
+                "raw prefix-geometry qualification requires the same resolved CRT heap module");
+            char heap_path[MAX_PATH]{}, standard_path[MAX_PATH]{};
+            const DWORD heap_length = GetModuleFileNameA(query_module, heap_path, MAX_PATH);
+            const DWORD standard_length = GetModuleFileNameA(standard_module, standard_path, MAX_PATH);
+            require(heap_length && heap_length < MAX_PATH && standard_length && standard_length < MAX_PATH,
+                "raw prefix-geometry qualification requires complete live CRT module paths");
+            log_.notef("raw prefix geometry CRT modules: heap=%s standard=%s", heap_path, standard_path);
+            log_.notef("raw prefix geometry CRT query import: declaration_in_exe=%d resolved_slot=1",
+                declaration_loaded && query_declaration_module == GetModuleHandleA(nullptr) ? 1 : 0);
+            // Actual host allocation callbacks must be absent in this closed
+            // fixture; query both CRT interfaces without changing either one.
+            require(_query_new_handler() == nullptr && std::get_new_handler() == nullptr,
+                "raw prefix-geometry qualification requires actual null CRT new handlers");
+            log_.note("raw prefix geometry qualification: crt_new_handlers=null");
+            require(native_raw_default_text_->construct_primary_prefix_geometry_in_open_shader_cache(),
+                "raw prefix-geometry qualification requires a nonnull native factory result");
+        } else if constexpr (kRawPrimaryPrefixQualificationCc16Bound)
+            require(native_raw_default_text_->construct_primary_prefix_in_open_shader_cache(),
+                "raw primary-prefix qualification requires a nonnull native factory result");
+        else
+            require(native_raw_default_text_->construct_default_in_open_shader_cache(),
+                "raw DEFAULT qualification requires a nonnull native factory result");
         return;
     }
     if (native_gui_render_) native_gui_render_->prepare_text_in_open_shader_cache();
@@ -803,6 +879,11 @@ void GameStartupHost::close_native_gui_text_after_drain() noexcept {
     try {
         if (native_raw_default_text_) {
             native_raw_default_text_->after_native_renderer_drain();
+            if constexpr (kRawFontMetadataQualificationCc16Bound) {
+                require(fonts_ != nullptr, "raw Font metadata close requires the retained startup Font host");
+                fonts_->detach_raw_text_owner_after_parent_drain(*native_raw_default_text_);
+                log_.note("raw Font metadata qualification: producer_detached after_parent_drain=1 before_owner_reset=1");
+            }
             native_raw_default_text_.reset();
         }
         if (native_gui_render_) {

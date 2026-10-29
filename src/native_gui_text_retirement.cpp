@@ -1,4 +1,6 @@
 #include "bsp/native_gui_text_retirement.hpp"
+#include "bsp/native_gui_text_primary_prefix_lifetime.hpp"
+#include "bsp/native_gui_text_shader_storage.hpp"
 #include "bsp/native_string_raw_domain.hpp"
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/game_native_gui_text_process.hpp"
@@ -42,7 +44,7 @@ bool disjoint(Region left, Region right) noexcept {
 bool fresh(const NativeGuiTextRetirementAcquired& a) noexcept {
     return !a.started && !a.complete && a.native_eh_state == -1 && !a.destination &&
         a.boundary == Boundary::none && !a.shader.decrement_entered &&
-        !a.shadow.started && !a.glyphs.started && !a.unwind_actions_consumed;
+        !a.shadow.started && !a.glyphs.started && !a.unwind_actions_consumed && !a.unwind_actions_returned;
 }
 void preflight(void* raw, std::size_t bytes, void* diagnostics, std::size_t diagnostic_bytes,
     NativeGuiTextRetirementContext& c, const volatile Word* flags = nullptr) {
@@ -113,6 +115,19 @@ void preflight(void* raw, std::size_t bytes, void* diagnostics, std::size_t diag
     auto& owners = r.geometry.actual_owners();
     require(raw && !(bits(raw) & 3u) && read(raw) == 0x00d5c6c8,
         "Raw Text retirement requires SAME completed DEFAULT actual storage");
+    const bool prefix = c.primary_prefix && native_gui_text_primary_prefix_selected(*c.primary_prefix);
+    if (prefix) {
+        require(&c.primary_prefix->text.factory_context.publication.retirement == &c,
+            "prefix raw118 must use its EXACT factory retirement context");
+        auto& scalar = c.primary_prefix->text.factory_context.reference_frame.scalar;
+        require((diagnostics == &scalar && diagnostic_bytes == sizeof(scalar) &&
+                !scalar.started && !scalar.destructor_entered) ||
+            (diagnostics == &scalar.destruction && diagnostic_bytes == sizeof(scalar.destruction) &&
+                scalar.started && scalar.destructor_entered),
+            "prefix raw118 preflights require the two EXACT canonical scalar/destruction tuples");
+        // Genuine current predicate rejection precedes the common first188 read.
+        require_native_gui_text_primary_prefix_retirement(raw, *c.primary_prefix, nullptr);
+    }
     require(&r.association.storage == &storage && &r.parenting.node == &node &&
         &c.glyphs.nodes == &c.base.nodes && &c.glyphs.children == &c.base.bindings &&
         c.base.actual_base_table_00d5c130 && c.base.nodes.uses_raw_name_pool() &&
@@ -168,7 +183,7 @@ void preflight(void* raw, std::size_t bytes, void* diagnostics, std::size_t diag
         for (const auto region : writes) require(disjoint(region, {flags, sizeof(Word)}),
             "Raw Text scalar flags must be separate from Text and diagnostics");
     }
-    raw_default_admission(raw, c);
+    if (!prefix) raw_default_admission(raw, c);
 }
 void call(NativeGuiTextRetirementAcquired& a, Word site, Boundary boundary = Boundary::provider_call) noexcept {
     a.active_call_site = site;
@@ -182,10 +197,25 @@ NativeTextureSurfaceReferenceIncrement const volatile& decrement(NativeGuiTextRe
 NativeTextureSurfaceReferenceIncrement const volatile& decrement(NativeGuiTextRawModelRetirementContext& c) {
     return c.resources.model.storage.node.trees.decrement_00ce2220;
 }
-void default_boundary(void*, NativeGuiTextRetirementContext&, NativeGuiTextRetirementAcquired&) {}
-void default_boundary(void* raw, NativeGuiTextRawModelRetirementContext& c, NativeGuiTextRetirementAcquired& a) {
+void default_boundary(void*, NativeGuiTextRetirementContext&, NativeGuiTextRetirementAcquired&, bool) {}
+void default_boundary(void* raw, NativeGuiTextRawModelRetirementContext& c,
+    NativeGuiTextRetirementAcquired& a, bool selected_prefix) {
     a.boundary = Boundary::host_metadata;
-    raw_default_admission(raw, c); // CURRENT after every preceding callback
+    if (selected_prefix)
+        require_native_gui_text_primary_prefix_retirement(raw, *c.primary_prefix, &a);
+    else raw_default_admission(raw, c); // CURRENT after every preceding callback
+}
+bool prefix_domain(NativeGuiTextRetirementContext&) noexcept { return false; }
+bool prefix_domain(NativeGuiTextRawModelRetirementContext& c) {
+    return c.primary_prefix && native_gui_text_primary_prefix_selected(*c.primary_prefix);
+}
+void base_return(void* raw, NativeGuiTextRetirementContext& c, NativeGuiTextRetirementAcquired&, bool) {
+    destroy_native_gui_widget_base_00aa9730(raw, c.base);
+}
+void base_return(void* raw, NativeGuiTextRawModelRetirementContext& c,
+    NativeGuiTextRetirementAcquired& a, bool selected_prefix) {
+    if (selected_prefix) destroy_native_gui_text_primary_prefix_base(raw, *c.primary_prefix, a);
+    else destroy_native_gui_widget_base_00aa9730(raw, c.base);
 }
 void shadow_returned(NativeGuiTextRetirementContext&, NativeGuiTextRetirementAcquired&) {}
 void shadow_returned(NativeGuiTextRawModelRetirementContext& c, NativeGuiTextRetirementAcquired& a) {
@@ -200,17 +230,23 @@ void shadow_returned(NativeGuiTextRawModelRetirementContext& c, NativeGuiTextRet
     else require(!c.model.lifetime.started && !c.model.lifetime.scalar_started,
         "A retained live Model credit cannot conceal an entered incomplete Model destructor");
 }
-template<class Context>
-void release_shader(void* raw, Context& c, NativeGuiTextRetirementAcquired& a) {
+enum class ShaderCreditEvent { captured, decrement_entered, decrement_returned, zero_entered, zero_returned, slot_cleared, complete };
+struct NoShaderCredit {
+    void operator()(ShaderCreditEvent) const noexcept {} // Legacy route: no metadata/native effects.
+};
+template<class Context, class Credit>
+void release_shader(void* raw, Context& c, NativeGuiTextRetirementAcquired& a, Credit& credit) {
     auto& s = a.shader;
     if (!s.identity) return;
     call(a, 0x00ab828du);
     const auto captured_decrement = decrement(c); // CURRENT cell, once at reached site
     s.captured_decrement = captured_decrement;
     s.decrement_entered = true;
+    credit(ShaderCreditEvent::decrement_entered);
     const long result = captured_decrement(reinterpret_cast<volatile long*>(bits(s.identity) + 4u));
     s.result = result;
     s.decremented = true;
+    credit(ShaderCreditEvent::decrement_returned);
     if (result == 0) {
         const Word profile = read(s.identity); // AB8297, AFTER decrement
         s.captured_profile = profile;
@@ -224,13 +260,16 @@ void release_shader(void* raw, Context& c, NativeGuiTextRetirementAcquired& a) {
         require(target == 0x00bd30e0u, "Text shader zero requires genuine current BD30E0 terminal");
         call(a, 0x00ab829du);
         s.zero_entered = true;
+        credit(ShaderCreditEvent::zero_entered);
         // The real existing SAME+04 canonical terminal validates its current
         // profile/scalar route. No additional decrement or new owner.
         dispatch_native_render_actual_owner_zero(geometry(c).actual_owners(), s.identity);
         s.zero_returned = true;
+        credit(ShaderCreditEvent::zero_returned);
     }
     write(raw, 0x1ec, 0); // AB829F, only after the nonnull operation returns
     s.slot_cleared = true;
+    credit(ShaderCreditEvent::slot_cleared);
 }
 template<class Context>
 void return_member(void* raw, Word offset, bool wide, std::size_t index,
@@ -267,7 +306,7 @@ void unwind(void* raw, Context& c, NativeGuiTextRetirementAcquired& a) {
     try {
         while (a.native_eh_state >= 0) {
             const auto state = a.native_eh_state;
-            if (state == 0) default_boundary(raw, c, a);
+            if (state == 0) default_boundary(raw, c, a, false); // unwind is DEFAULT policy only
             a.native_eh_state = state - 1;
             a.unwind_actions_consumed |= Word{1} << state;
             a.disarmed_cleanup_actions |= Word{1} << state;
@@ -290,6 +329,9 @@ void unwind(void* raw, Context& c, NativeGuiTextRetirementAcquired& a) {
                 a.base_returned = true; break;
             default: std::terminate();
             }
+            // Independent metadata only: consumption precedes the call, but
+            // completion is published only after its actual normal return.
+            a.unwind_actions_returned |= Word{1} << state;
         }
     } catch (...) {
         if constexpr (std::is_same_v<Context, NativeGuiTextRawModelRetirementContext>) {
@@ -298,17 +340,19 @@ void unwind(void* raw, Context& c, NativeGuiTextRetirementAcquired& a) {
         std::terminate();
     }
 }
-template<class Context>
-void destroy_text(void* raw, Context& c, NativeGuiTextRetirementAcquired& a) {
+template<class Context, class Credit>
+void destroy_text(void* raw, Context& c, NativeGuiTextRetirementAcquired& a, Credit& credit) {
     require(fresh(a), "Text retirement requires fresh persistent diagnostics");
     preflight(raw, 0x1f4, &a, sizeof(a), c);
+    const bool selected_prefix = prefix_domain(c); // fixed failure policy before effects
     a.started = true;
     a.destination = raw;
     try {
         write(raw, 0, 0x00d5c6c8u);
         a.shader.identity = ptr(read(raw, 0x1ec)); // AB8275 before state6
         a.native_eh_state = 6;
-        release_shader(raw, c, a);
+        credit(ShaderCreditEvent::captured);
+        release_shader(raw, c, a, credit);
         void* const shadow = ptr(read(raw, 0x188)); // CURRENT, after shader callback/clear
         a.captured_shadow = shadow;
         if (shadow) {
@@ -318,7 +362,7 @@ void destroy_text(void* raw, Context& c, NativeGuiTextRetirementAcquired& a) {
             write(raw, 0x188, 0);
             a.shadow_slot_cleared = true;
         }
-        default_boundary(raw, c, a);
+        default_boundary(raw, c, a, selected_prefix);
         call(a, 0x00ab82bcu);
         clear_native_gui_text_glyph_children_00ab80c0(raw, c.glyphs, a.glyphs);
         return_member(raw, 0x1c8, false, 0, 5, 1u << 6, 6, 0x00ab82ddu, 0x00ab82e4u, c, a);
@@ -334,24 +378,33 @@ void destroy_text(void* raw, Context& c, NativeGuiTextRetirementAcquired& a) {
         a.normal_actions_returned |= 1u << 3;
         return_member(raw, 0xf4, false, 3, 1, (1u << 3) | (1u << 2), 2, 0x00ab837bu, 0x00ab8382u, c, a);
         return_member(raw, 0xec, true, 4, 0, 1u << 1, 1, 0x00ab83a3u, 0x00ab83aau, c, a);
-        default_boundary(raw, c, a);
+        default_boundary(raw, c, a, selected_prefix);
         a.native_eh_state = -1;
         a.disarmed_cleanup_actions |= 1u;
         a.normal_actions_entered |= 1u;
         call(a, 0x00ab83b9u);
         a.base_entered = true;
-        destroy_native_gui_widget_base_00aa9730(raw, c.base);
+        base_return(raw, c, a, selected_prefix);
         a.base_returned = true;
         a.normal_actions_returned |= 1u;
         a.complete = true;
     } catch (...) {
+        if (selected_prefix) throw; // ALL selected-prefix escapes retain; no speculative raw118 unwind
         if constexpr (std::is_same_v<Context, NativeGuiTextRawModelRetirementContext>) {
             if (a.boundary == Boundary::host_metadata) throw;
-            if (a.native_eh_state >= 0) default_boundary(raw, c, a);
+            if (a.native_eh_state >= 0) default_boundary(raw, c, a, false);
         }
         if (a.native_eh_state >= 0) unwind(raw, c, a);
         throw;
     }
+}
+void destroy_text(void* raw, NativeGuiTextRetirementContext& c, NativeGuiTextRetirementAcquired& a) {
+    NoShaderCredit credit;
+    destroy_text(raw, c, a, credit);
+}
+void destroy_text(void* raw, NativeGuiTextRawModelRetirementContext& c, NativeGuiTextRetirementAcquired& a) {
+    // Raw scalar entry must use the exact exported friend, never another record.
+    destroy_native_gui_text_storage_00ab8250(raw, c, a);
 }
 template<class Context>
 void* delete_text(void* raw, const volatile Word& flags, Context& c, NativeGuiTextScalarRetirementAcquired& a) {
@@ -378,7 +431,39 @@ void destroy_native_gui_text_storage_00ab8250(void* raw,
     NativeGuiTextRetirementContext& c, NativeGuiTextRetirementAcquired& a) { destroy_text(raw, c, a); }
 void destroy_native_gui_text_storage_00ab8250(void* raw,
     NativeGuiTextRawModelRetirementContext& c, NativeGuiTextRetirementAcquired& a) {
-    try { destroy_text(raw, c, a); }
+    try {
+        if (!c.font_shader_frame) {
+            NoShaderCredit credit;
+            destroy_text(raw, c, a, credit);
+            return;
+        }
+        // Constructor is private to this exact entry. It must authenticate the
+        // live canonical122/pinned scalar.destruction.shader before any payload.
+        // Constructor rejection latches its persistent Frame before throwing.
+        NativeGuiTextShaderStorageFrame::CreditConsumer consumer(*c.font_shader_frame, raw, c, a);
+        try {
+            auto credit = [&](ShaderCreditEvent event) {
+                // A Source observer escape is not native-EH origin. On success
+                // restore the original boundary before the real next operation.
+                const auto previous = a.boundary;
+                a.boundary = Boundary::host_metadata;
+                switch (event) {
+                case ShaderCreditEvent::captured: consumer.capture(a.shader.identity); break;
+                case ShaderCreditEvent::decrement_entered: consumer.decrement_entered(a.shader.captured_decrement); break;
+                case ShaderCreditEvent::decrement_returned: consumer.decrement_returned(a.shader.result); break;
+                case ShaderCreditEvent::zero_entered: consumer.zero_entered(); break;
+                case ShaderCreditEvent::zero_returned: consumer.zero_returned(); break;
+                case ShaderCreditEvent::slot_cleared: consumer.slot_cleared(); break;
+                case ShaderCreditEvent::complete: consumer.complete(); break;
+                }
+                a.boundary = previous;
+            };
+            destroy_text(raw, c, a, credit);
+            // Entire118 body returned, including later members/base. This does
+            // not claim later scalar flags/pool/unbind/disposal completion.
+            credit(ShaderCreditEvent::complete);
+        } catch (...) { consumer.fail(); throw; }
+    }
     catch (...) { if (!a.started) a.boundary = Boundary::host_metadata; throw; }
 }
 void* delete_native_gui_text_storage_00ab8ee0(void* raw, const volatile Word& flags,

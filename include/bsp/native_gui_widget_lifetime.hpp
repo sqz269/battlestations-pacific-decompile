@@ -3,6 +3,7 @@
 #include <cstdint>
 
 namespace bsp {
+struct NativeGuiWidgetRawModelLifetimeContext; // concrete qualified transport, separate header
 // Required bindings for CURRENT raw widget/entry dispatch and the MSVC list
 // remove specialization. No logical GuiWidgetOwner/GuiLayoutWidget conversion.
 // Lookup is side-effect-free; returned actual tables remain live across calls.
@@ -65,6 +66,11 @@ void release_native_gui_widget_scene_00aa8320(void* actual_widget,
     NativeGuiWidgetLifetimeContext&);
 void destroy_native_gui_widget_base_00aa9730(void* actual_widget,
     NativeGuiWidgetLifetimeContext&);
+// Library-only active raw118 base-prefix alternatives. The concrete transport
+// header specifies custody and excluded scene/TRUE188/parent/child/timed arms.
+void release_native_gui_widget_scene_00aa8320(void*, NativeGuiWidgetRawModelLifetimeContext&);
+void destroy_native_gui_widget_base_00aa9730(void*, NativeGuiWidgetRawModelLifetimeContext&);
+void release_native_gui_text_glyph_00ab73b0(void*, NativeGuiWidgetRawModelLifetimeContext&);
 
 // Fresh raw base and AC6600-prefix cleanup is supported with real containers
 // and same-node owners. Raw child scalar destructors, timed scalar owners,

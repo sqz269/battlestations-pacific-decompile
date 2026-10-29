@@ -1,4 +1,11 @@
 #include "bsp/native_gui_text_reference.hpp"
+#include "bsp/native_gui_text_shader_storage.hpp"
+#include "bsp/native_gui_text_primary_prefix_lifetime.hpp"
+#include "bsp/native_gui_text_prefix_geometry_lifetime.hpp"
+#include "bsp/game_native_resource_pools.hpp"
+#include "bsp/native_material_effect_programs.hpp"
+#include "bsp/native_texture_loading_cache.hpp"
+#include "bsp/native_vfs_name_resolution.hpp"
 #include "bsp/native_string_raw_domain.hpp"
 #include "bsp/game_native_readonly_data.hpp"
 #include "bsp/game_native_string_process.hpp"
@@ -95,7 +102,206 @@ bool fresh(const NativeGuiTextScalarRetirementAcquired& a) noexcept {
         !d.started && !d.complete && !d.exception_cleanup_started && d.native_eh_state == -1 &&
         !d.destination && d.boundary == NativeGuiTextRetirementAcquired::Boundary::none &&
         !d.shader.decrement_entered && !d.shadow.started && !d.glyphs.started &&
-        !d.normal_actions_entered && !d.normal_actions_returned && !d.unwind_actions_consumed;
+        !d.normal_actions_entered && !d.normal_actions_returned && !d.unwind_actions_consumed &&
+        !d.unwind_actions_returned;
+}
+template<class Check>
+void shader_texture_backing(const NativeTextureCacheAcquired& a, Check check) {
+    check(Region{&a, sizeof(a)});
+    // Still-owned C++ objects only. A base extent is not the opaque derived
+    // operation's full extent, which remains the existing caller obligation.
+    if (a.resolution.operation) check(Region{a.resolution.operation.get(), sizeof(*a.resolution.operation)});
+    if (a.fallback_resolution.operation)
+        check(Region{a.fallback_resolution.operation.get(), sizeof(*a.fallback_resolution.operation)});
+    if (a.fallback) shader_texture_backing(*a.fallback, check);
+}
+template<class Check>
+void shader_cache_backing(const NativeMaterialEffectCacheAcquired& a, Check check) {
+    check(Region{&a, sizeof(a)});
+    if (a.key_resolution) {
+        const auto& k = *a.key_resolution;
+        check(Region{&k, sizeof(k)});
+        if (k.changed_resolution.acquired)
+            check(Region{k.changed_resolution.acquired.get(), sizeof(*k.changed_resolution.acquired)});
+        if (k.original_resolution.acquired)
+            check(Region{k.original_resolution.acquired.get(), sizeof(*k.original_resolution.acquired)});
+    }
+    const auto& loader = a.loader;
+    if (loader.name_resolution.acquired)
+        check(Region{loader.name_resolution.acquired.get(), sizeof(*loader.name_resolution.acquired)});
+    if (loader.programs) check(Region{loader.programs.get(), sizeof(*loader.programs)});
+    if (loader.constructor_texture) shader_texture_backing(*loader.constructor_texture, check);
+    if (loader.fallback) shader_cache_backing(*loader.fallback, check);
+}
+void require_shader_quiescent(const NativeGuiTextRawModelReferenceContext& c) {
+    const auto* const frame = c.font_shader_frame;
+    if (!frame) return;
+    require(representable({frame, sizeof(*frame)}) && !(bits(frame) & 3u),
+        "Raw Text shader reservation requires aligned representable retained Frame storage");
+    require(frame->phase == NativeGuiTextShaderStorageFrame::Phase::fresh ||
+        frame->phase == NativeGuiTextShaderStorageFrame::Phase::complete,
+        "Raw Text binding/scalar excludes an entered or failed reserved shader invocation");
+    const auto progress = frame->credit_progress();
+    using Shader = NativeGuiTextShaderStorageFrame;
+    require(!progress.failed && !progress.active &&
+        (progress.producer == Shader::RawPhase::fresh || progress.producer == Shader::RawPhase::complete),
+        "Raw Text reservation excludes privately entered, failed or active shader work");
+}
+template<class Check>
+void known_shader_borrowed(const NativeGuiTextRawModelReferenceContext& c, Check check) {
+    require_shader_quiescent(c);
+    const auto* const frame = c.font_shader_frame;
+    if (!frame) return;
+    check(Region{frame, sizeof(*frame)});
+    const auto* const context = frame->prepared_raw_context();
+    require(context && representable({context, sizeof(*context)}),
+        "Raw Text shader reservation needs its immutable real prepared context");
+    check(Region{context, sizeof(*context)});
+    check(Region{&context->fonts, sizeof(context->fonts)});
+    const Region platform{context->configuration_0109cf04.identity(), sizeof(void*)};
+    require(representable(platform), "Raw Text shader needs its actual retained platform publication CELL");
+    check(platform); // No current platform/Font/native resource/header read.
+    shader_cache_backing(frame->cache, check);
+}
+void fresh_shader_binding(const NativeGuiTextRawModelReferenceContext& c) {
+    const auto* const f = c.font_shader_frame;
+    if (!f) return;
+    using Frame = NativeGuiTextShaderStorageFrame;
+    const auto progress = f->credit_progress();
+    require(progress.producer == Frame::RawPhase::fresh && progress.credit == Frame::CreditPhase::none &&
+        progress.consumer == Frame::Consumer::none && !progress.failed && !progress.active && !progress.retirement_started &&
+        !progress.actual_text && !progress.reference && !progress.reference_context &&
+        !progress.reference_frame && !progress.cache,
+        "Raw Text initial bind excludes any previous private shader producer/consumer history");
+    require(f->prepared_raw_context() && f->phase == Frame::Phase::fresh &&
+        f->boundary == Frame::Boundary::none && f->escaped_boundary == Frame::Boundary::none &&
+        !f->destination && !f->selected_name && !f->captured_configuration && !f->captured_font &&
+        !f->captured_renderer && !f->result && !f->renderer_profile && !f->renderer_target &&
+        !f->active_call_site && !f->escaped_call_site && f->native_eh_state == -1 &&
+        !f->cached && !f->override_selected && !f->height_matches && !f->font_scale_matches &&
+        !f->empty_constructed && !f->empty_compared && !f->empty_returned && !f->default_constructed &&
+        !f->renderer_entered && !f->renderer_returned && !f->shader_published &&
+        !f->cleanup_entered && !f->cleanup_returned && !f->exception_cleanup_started && !f->attempted &&
+        !f->captured_name_data && !f->captured_name_bytes &&
+        f->cache.phase == NativeMaterialEffectCacheAcquired::Phase::not_started &&
+        !f->cache.loaded && !f->cache.result && !f->cache.cache_published && !f->cache.caller_acquired &&
+        !f->cache.key_resolution && f->cache.loader.phase == NativeMaterialEffectLoadPhase::not_started &&
+        !f->cache.loader.raw_slot && !f->cache.loader.creator && !f->cache.loader.companion &&
+        !f->cache.loader.owner_record && !f->cache.loader.constructor_complete &&
+        !f->cache.loader.registered && !f->cache.loader.returned &&
+        !f->cache.loader.name_resolution.acquired && !f->cache.loader.programs &&
+        !f->cache.loader.fallback && !f->cache.loader.constructor_texture,
+        "Raw Text initial DEFAULT bind reserves only a genuinely fresh shader producer Frame");
+    // names[] intentionally has no initialization; inspect no native header.
+}
+template<class Check>
+void live_prefix_mesh_borrowed(const NativeGuiTextPrimaryPrefixLifetimeContext& g,
+    const NativeModelStorageDispatchContext& model, const GuiNativeMeshAcquired& mesh,
+    const void* identity, Check check) {
+    // These independent Model records are tested BEFORE canonical lookup or a
+    // companion cast. No branch follows the self-erased MeshEntry after release.
+    if (!identity || !model.reference || model.reference->retired() || model.lifetime.started ||
+        model.lifetime.pool_returned || !model.construction.complete ||
+        mesh.raw_slot || mesh.creator != identity || !mesh.constructor_complete || !mesh.registered)
+        return;
+    auto* const canonical = g.text.factory_context.publication.owners.find(const_cast<void*>(identity));
+    require(canonical && canonical == mesh.companion,
+        "live prefix Mesh extent requires its SAME canonical producer companion");
+    // The genuine GuiNativeGeometryOwners producer constructs this exact C++
+    // family. This live downcast adjusts a real base pointer; it is never a
+    // native payload projection or an ended-Mesh rediscovery.
+    auto* const reference = static_cast<NativeMeshReference*>(canonical);
+    check(Region{identity, sizeof(NativeMeshStorage)});
+    check(Region{reference, sizeof(*reference)});
+}
+template<class Check>
+void prefix_geometry_borrowed(const NativeGuiTextPrimaryPrefixLifetimeContext& g, Check check) {
+    const auto* const c = g.operation.geometry();
+    if (g.operation.kind() == NativeGuiTextPrimaryPrefixOperation::Kind::none) return;
+    require(c, "chosen prefix geometry graph must be installed before raw122");
+    require_native_gui_text_prefix_geometry_reservation(g);
+    const auto& construction = c->construction;
+    for (const Region r : {Region{c, sizeof(*c)}, {&construction, sizeof(construction)},
+        {&c->frame, sizeof(c->frame)}, {&c->acquired, sizeof(c->acquired)}, {&c->progress, sizeof(c->progress)},
+        {c->arguments, sizeof(c->arguments)}, {c->position, sizeof(c->position)},
+        {&c->transform_scratch, sizeof(c->transform_scratch)}, {&c->bounds_scratch, sizeof(c->bounds_scratch)},
+        {&construction.association, sizeof(construction.association)},
+        {&construction.geometry, sizeof(construction.geometry)}, {&construction.transforms, sizeof(construction.transforms)},
+        {&construction.association.unchanged_00d7a260, sizeof(Word)},
+        {&construction.one_00d7a24c, sizeof(float)}, {&construction.negative_zero_00d7a208, sizeof(float)},
+        {&construction.y_scale_00e12fc4, sizeof(float)}, {&construction.half_00d7a280, sizeof(double)}})
+        check(r);
+    const auto& a = c->acquired;
+    if (c->progress.entered && c->progress.returned && !c->progress.failed &&
+        c->frame.matches(construction, a, NativeGuiTextMainGeometryStoragePhase::complete))
+        live_prefix_mesh_borrowed(g, construction.primary, a.mesh, a.captured_mesh, check);
+    const auto& shadow = g.text.factory_context.publication.construction.sections;
+    if (shadow.complete && shadow.mesh_release.complete && shadow.mesh_release.decremented &&
+        shadow.mesh_release.result > 0 && !shadow.mesh_release.zero_entered)
+        live_prefix_mesh_borrowed(g, construction.internal188, shadow.mesh, shadow.mesh_release.identity, check);
+    // BOTH Model records/providers/flags/call arrays are enumerated by the
+    // enclosing prefix route. Private MeshEntry/Impl/derived/transitive backing
+    // remains the genuine caller extent contract, never a guessed sizeof.
+}
+template<class Check>
+void prefix_route_borrowed(NativeGuiWidgetRawModelRoute& q,
+    NativeModelStorageNodeDispatchContext& nc, Check check) {
+    auto& m = q.record;
+    auto& s = m.model.storage;
+    auto& n = s.node;
+    for (const Region r : {Region{&q, sizeof(q)}, {&m, sizeof(m)}, {&m.model, sizeof(m.model)},
+        {&m.actual, sizeof(m.actual)}, {&m.reference, sizeof(m.reference)},
+        {&m.construction, sizeof(m.construction)}, {&m.lifetime_frame, sizeof(m.lifetime_frame)},
+        {&m.lifetime, sizeof(m.lifetime)}, {&m.release_frame, sizeof(m.release_frame)}, {&m.release, sizeof(m.release)},
+        {&q.tree, sizeof(q.tree)}, {&q.tree_acquired, sizeof(q.tree_acquired)},
+        {&q.node, sizeof(q.node)}, {&q.node_acquired, sizeof(q.node_acquired)}, {&nc, sizeof(nc)},
+        {&nc.parenting, sizeof(nc.parenting)}, {&nc.shared_node, sizeof(nc.shared_node)},
+        {&nc.base_nodes, sizeof(nc.base_nodes)}, {&s, sizeof(s)}, {&s.constants, sizeof(s.constants)},
+        {&s.pool_01090054, sizeof(s.pool_01090054)}, {&s.pool_01090054.storage(), sizeof(s.pool_01090054.storage())},
+        {&n, sizeof(n)}, {&n.strings, sizeof(n.strings)}, {&n.world, sizeof(n.world)},
+        {&n.scenes, sizeof(n.scenes)}, {&n.scenes.gates, sizeof(n.scenes.gates)},
+        {&n.scenes.increment_00ce221c, sizeof(n.scenes.increment_00ce221c)},
+        {&n.scenes.decrement_00ce2220, sizeof(n.scenes.decrement_00ce2220)},
+        {&n.trees, sizeof(n.trees)}, {&n.trees.frames, sizeof(n.trees.frames)},
+        {&n.trees.point_lights, sizeof(n.trees.point_lights)}, {m.model.actual_profile_00d62de8, 0x58}})
+        check(r);
+    if (m.reference) check(Region{&*m.reference, sizeof(*m.reference)}); // C++ companion, including retired metadata
+    // Never rediscover ended native payloads. These addresses are included only
+    // while independent actual lifetime records and retained metadata are live.
+    if (m.actual && m.reference && !m.reference->retired() && !m.lifetime.started && !m.lifetime.pool_returned)
+        check(Region{m.actual, 0x188});
+}
+template<class Check>
+void known_prefix_borrowed(const NativeGuiTextRawModelReferenceContext& c, Check check) {
+    const auto* const g = c.retirement.primary_prefix;
+    if (!g) return;
+    require(representable({g, sizeof(*g)}) && &g->text.factory_context.publication == &c,
+        "raw122 prefix graph must belong to its EXACT immutable factory publication");
+    (void)native_gui_text_primary_prefix_selected(*g); // rejects pending/failed work; no native payload/header read
+    const auto& f = g->text.factory_context;
+    for (const Region r : {Region{g, sizeof(*g)}, {&g->text, sizeof(g->text)},
+        {&g->authentication, sizeof(g->authentication)}, {&g->authentication_acquired, sizeof(g->authentication_acquired)},
+        {&f, sizeof(f)}, {&g->text.factory, sizeof(g->text.factory)},
+        {&g->text.publication, sizeof(g->text.publication)},
+        {&g->producer_context, sizeof(g->producer_context)}, {&g->producer_frame, sizeof(g->producer_frame)},
+        {&g->producer, sizeof(g->producer)}, {&g->producer_context.model_pools, sizeof(g->producer_context.model_pools)},
+        {&g->name, sizeof(g->name)}, {&g->name.strings, sizeof(g->name.strings)}, {g->name.header8, 8},
+        {&g->widget, sizeof(g->widget)}, {&g->widget.slots, sizeof(g->widget.slots)},
+        {&g->widget_acquired, sizeof(g->widget_acquired)}})
+        check(r);
+    prefix_route_borrowed(g->widget.primary, g->producer_context.primary_node_context, check);
+    prefix_route_borrowed(g->widget.internal188, g->internal_node_context, check);
+    for (const auto calls : {g->primary_calls, g->internal_calls}) {
+        const auto bytes = static_cast<std::uint64_t>(calls.count) * sizeof(NativeModelStorageNodeCall);
+        require(calls.data && bytes && bytes <= 0xffffffffu &&
+            static_cast<std::uint64_t>(bits(calls.data)) + bytes <= 0x100000000ull,
+            "prefix flags need actual retained prepared-call array extents");
+        check(Region{calls.data, static_cast<std::size_t>(bytes)});
+    }
+    if (f.disposal.context) check(Region{f.disposal.context, f.disposal.context_bytes});
+    prefix_geometry_borrowed(*g, check);
+    // Header ADDRESS/extent only, even after successful41DD20. Never inspect
+    // its returned data words. Hidden provider arrays/Impl extents are caller proof.
 }
 template<class Check>
 void known_borrowed(NativeGuiTextRawModelReferenceContext& c,
@@ -167,6 +373,14 @@ void known_borrowed(NativeGuiTextRawModelReferenceContext& c,
             check(region);
         }
     }
+    known_shader_borrowed(c, [&](Region region) {
+        require(representable(region), "Raw Text shader borrowed record needs a valid retained extent");
+        check(region);
+    });
+    known_prefix_borrowed(c, [&](Region region) {
+        require(representable(region), "raw122 prefix metadata requires valid retained backing extents");
+        check(region);
+    });
     // Abstract/opaque provider implementations, actual pool/slab allocations,
     // effect loader frames and retained creator records have transitive caller
     // extent contracts. A base sizeof above never proves a derived extent.
@@ -243,6 +457,7 @@ Admission preflight(void* companion, void* raw, NativeGuiTextRawModelReferenceCo
         for (const auto region : writes)
             require(disjoint(region, borrowed), "Raw Text binding writes cannot alias the retained producer graph");
     });
+    fresh_shader_binding(c);
     const auto& a = c.construction;
     auto& p = c.construction_context;
     auto& f = c.construction_frame.sections;
@@ -415,6 +630,10 @@ NativeGuiTextRawModelReference::NativeGuiTextRawModelReference(void* raw,
 NativeGuiTextRawModelReference::~NativeGuiTextRawModelReference() {
     if (phase_ != Phase::retired) std::terminate();
 }
+bool NativeGuiTextRawModelReference::matches_reference_frame(
+    const NativeGuiTextReferenceFrame& frame) const noexcept {
+    return &frame_ == &frame;
+}
 void NativeGuiTextRawModelReference::require_slot(Word profile, unsigned slot, Word target) const {
     if (profile != text_profile || profile_[slot] != target)
         throw std::logic_error("Raw Text lacks its genuine CURRENT scalar/zero selector");
@@ -432,6 +651,7 @@ void NativeGuiTextRawModelReference::delete_vslot04(void* raw, Word captured_pro
         throw std::logic_error("Raw Text zero scalar adapter rejects reentry before raw access");
     if (raw != identity_ || flags != 1)
         throw std::logic_error("Raw Text BD30E0 needs SAME actual identity/literal1");
+    require_shader_quiescent(context_);
     require_slot(captured_profile, 1, scalar_target);
     auto& storage = context_.retirement;
     auto& acquired = frame_.scalar;
@@ -445,6 +665,7 @@ void NativeGuiTextRawModelReference::release_zero_references() noexcept {
     const auto saved = completion();
     phase_ = Phase::zero_dispatch;
     try {
+        require_shader_quiescent(context_);
         if (context_.owners.find(identity_) != this || reference_count.load(std::memory_order_relaxed) != 0)
             throw std::logic_error("Raw Text zero terminal requires SAME canonical observed-zero binding");
         require_slot(read(identity_), 0, zero_target);

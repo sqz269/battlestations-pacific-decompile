@@ -527,3 +527,237 @@ completion. Owned-member/cached-effect admission cannot expand before genuine
 raw acquisition/publication receipts exist. Font borrower plan likewise requires
 all-user terminal custody and explicit post-parent-drain unlink; DEFAULT and
 AB7700 remain Font-independent. Full P4 activation stays OFF.
+
+Cleanup diagnostics276880ca9 now build with both existing suites passing. The
+independent unwind-returned mask is set only after each real helper returns;
+both fresh predicates reject stale new progress. Native consumption/call/EH
+order and every DEFAULT ownership guard stay unchanged. No new runtime proof.
+Widget Model lifetime plana1c2 is dispatched as a disjoint typed shared-schedule
+transport; raw main-geometry379 is frozen for independent source review/build.
+
+Raw main geometry379 now passes both source reviews, Win32 build/tests2/2 and
+emitted-object inspection (0805D283). One x87 sentinel load/FST/FSTP operand
+schedule and SSE zeroXYZ are present; original capture/import/transform epochs
+remain explicit. The entry is absent from the game map and has no caller.
+It supplies no primary creation/publication, main-section/retirement, Font or
+Page activation and no runtime/FP/ABI proof. Concrete primary producer and shader
+credit-receipt linkage are under disjoint bounded audits; all ownership gates
+remain in force.
+
+Reviewed producer plans a281/1719 are integrated and dispatched in disjoint files:
+primary4C allocation/constructor/bind/publication PREFIX with real constructor-
+origin credit, and raw AB8CE0 overload with immutable prebound concrete receipt
+backing. Neither is an ownership-admission/production-caller authorization.
+Baseline widget/shader objects from accepted4ace89234 are retained under
+`local/cc16_raw_transport_baseline_objects/` for focused static comparison of
+the shared-schedule refactors. This adds no runtime or binary ABI evidence.
+
+Raw widget transport2ee now passes two source reviews and corrected Win32
+build/tests2/2. It shares legacy native schedules; concrete new raw routing is
+active-base-only and all raw escapes retain without inferred exception cleanup.
+Compiler noreturn annotations alone were removed after a preserved /WX warning;
+the rejection bodies still throw. One existing empty DEFAULT replay35a4e92f5
+independently validates the shared LEGACY path: gameplay/ordered449+299/start36/
+RNG1 same, exact accepted Icon diagnostics and baseline error.dds/COM1+1 only.
+Private route restoredOFFb95a64a57/build2/2. New raw primary helper remains
+uncalled and gains no runtime/ABI/Page credit. See widget evidence doc.
+
+Shader producer transportd13 now passes both source reviews/all5 comparisons and
+Win32/build2/2. Its immutable prebound Frame/context enables concrete raw receipt
+backing without changing DEFAULT ownership; both ordered SSE helpers are exactly
+39-byte-identical in saved before/after objects (static evidence only). No raw
+caller/Font export/nonempty retirement is enabled. Primary producerdb55 is frozen
+with peer review passed and root review ongoing; all its escapes retain without
+inferred ctor-slot EH. Geometry readiness540 confirms genuine constructor74=0
+permits a future no-content geometry lifecycle, but Text ownership/routing/full
+custody bridges still block it. P4 remains OFF.
+
+Primary producerdb55 now passes both source reviews and Win32/tests2/2. Root
+verified actual canonical allocator thunk and publicationAAADC4/138clearAAADC9,
+recorded precise diagnostic sites and registered the uncalled TU. No caller,
+whole-child/AAA710, runtime or ABI credit follows. Plans eab/540 pin the next
+receipt-authorized prefix-only retirement/owner bridge; they preserve DEFAULT
+construction/binding and require actual settlement for BOTH Models plus Text.
+
+The prefix retirement adapter and owner halves are dispatched with disjoint
+files and an early shared typed-header contract. An independent audit checks the
+real external raw-string name stage; no fabricated header or inferred name/EH
+cleanup is allowed. Existing DEFAULT behavior remains and no host caller/gate is
+added by these source packets. First scope excludes74, Font/content and parenting;
+geometry compatibility540 is preparation for a later separate composition.
+
+Adapter review identified and closed one private-state API gap: producer Frame
+now exposes a pure typed identity/phase match, with Win32/tests2/2 passing. It
+adds no native operation or credit. The agreed adapter header also distinguishes
+owner preentry from both real raw118 preflight stages; an independent audit
+confirmed the existing authentication supports each without a new count gate.
+
+Later main-section plan6ea is reviewed and dispatched in new files. It follows
+the real ABA8EC/AB8530 post-constructor arm and genuine late15Czero continuation;
+no replayed raw85/new188 or fabricated layout. Its required geometry Frame
+affinity view is build-checked. This remains separate from the first prefix-only
+ownership fixture and adds no caller, rendering or runtime credit.
+
+Prefix adapter e52/owner3671 now pass root and independent source reviews and
+Win32 plus existing checks2/2. Root corrected unbuilt packet compatibility:
+C++17 typed const array extents and pure dispatcher context/acquired/array
+identity views replace span/private access; no native body or admission changes.
+Main-section335 plus independently reviewed sticky-failure19999 is compiled but
+uncalled; it still needs future owner reservation/retirement admission. Both
+private host constants remain OFF. The concrete prefix-only lifecycle fixture
+is preregistered; no74/Font/content/parenting/visual/ABI activation is claimed.
+
+The single real-provider prefix fixture b8d4cffa5 now passes independent
+artifact audit53/53: actual Text+both Model settlement, renderer-first closure,
+gameplay/native1427/summary764 unchanged, missionraw299diff0/start36/RNG1.
+Full PTR/SUB449 has one worker-ID diagnostic difference; existing observer
+normalization yields0. Raw pair1 and exact owner-label/Icon teardown edits plus
+known error.dds/COM1+1 cohort remain explicit. Frozen artifacts/reports are
+hashverified; this is historical DEFAULT comparison, not a same-binary pair.
+Private route restored OFFe4c2c0159/build2/2. Geometry/content, hierarchy, failure,
+flags0/reuse, nativeABI and production gates remain outside this acceptance.
+
+Source-only next plans179c/81ca cover explicit379 geometry lifetime and later
+created-section reservation/retirement. Existing native destruction bodies
+already cover these narrow graphs; the gaps are exact typed operation authority,
+pre-raw122 storage, owner custody and metadata-only settlement after self-erasing
+mesh/section/material terminals. Keep operation choice closed: failed later
+work never falls back to an earlier graph. Explicit379 is AB7700 itself, not an
+AAA710 continuation; its real late bounds-zero obligation remains a fixture gate.
+
+Geometry integration preparation adds a pure `matches_backing` view over the
+379 Frame's exact context, argument/position arrays and transform/bounds scratch.
+It is usable before acquisition binds, grants no scalar authority and preserves
+existing COMPLETE affinity. Root plus independent source review and Win32/checks
+2/2 (11.85s) pass. The geometry fixture preregisters two same-binary GUI_TEXT0/1
+cases plus historical prefix comparison; it remains blocked on complete reviewed
+source and the genuine late-bounds-zero audit, with all private routes OFF.
+
+Bounds auditf933 now passes root and independent Source review conditionally.
+The owner follow-up761 authenticates live bound Text and CURRENT74zero after
+both actual null-handler queries, immediately before379. Closed real allocator/
+import/matrix/store analysis preserves that zero through lateAA70E6; constructor
+zero across earlier Lua is not assumed. Host live-module/import receipts and
+complete adapter/owner graph review/build plus real paired fixture remain gates.
+
+Geometry helper64/732 and ownerc448/761 now pass root plus independent Source
+reviews and the combined OFF Win32/checks2/2 (11.41s). Actual consumed Mesh
+producer markers, full fresh-before122 backing and BOTH durable Mesh/Models/Text
+custody are verified at Source level; no low-level native body changes. Private
+host modes stay mutually exclusive/OFF. Same-runtime CRT import/live module
+paths, real null-handler/entry-zero guards and the preregistered two same-binary
+cases remain runtime gates. A separate read-only actual Font export plan is
+in progress; it grants no Font108/cache1EC ownership or shader caller authority.
+
+First geometry candidate afe1: OFFexit0/599+1, ONexit1 before factory/geometry
+because metadata treated mutableE12FC4 as RO. Preserve the complete failed
+artifact set and failure receipt; no379 execution accepted. The actual existing
+raw122.state.widget_y_scale getter supplies that writable Source cell (distinct
+fromE12FD4). Owner plus both379/helper guards are corrected without RO expansion,
+value copies, flag forcing or arithmetic/schedule edits. Independent Source
+review and corrected OFF Win32/checks2/2 (11.57s) pass; corrected paired fixture
+is still required. Private geometry restored OFFe96cb1318 before the correction.
+
+Corrected attempt02 (19e0/FDA1) passes OFF and metadata ON, then stops at the CRT
+module gate before factory/prefix/379. Preserve all artifacts, restore OFF933b.
+SDK/PE/Win32 probe proves query's named address is an EXE import thunk while
+callnewh is a DLL target. The private proof now reads the existing named query
+IAT via a declaration-only linker alias, with no raw parsing/import mutation or
+new storage. Independent Source review and OFF build/checks2/2 (11.15s) pass.
+Actual ON alias/import/module/null/bounds and complete geometry paired fixture
+remain unproven. Font plan9953 is reviewed: genuine data exists; typed linkage,
+raw AB8C30 publication and cached1EC EFFECT-credit retirement remain separate.
+
+Attempt03 (5e4/43E4) now executes and settles the real prefix+geometry lifecycle:
+BOTH cases exit0/599+1, actual both-Mesh/Models/Text closure, native1427/summary764
+and gameplay match. Preserve this as lifecycle evidence, not full qualification:
+the std getter's path still names an EXE thunk, missing planned standard-DLL
+archive proof. Query heap alias/map/live path succeeds. Route restored OFFf561.
+The standard getter now uses the exact named IAT cell too; Win32/MD probe and
+OFF build2/2 pass. Fresh both-alias frozen map/runtime archives and paired audit
+remain gates; no production/ABI/failure/reuse activation is inferred.
+
+Fresh attempt04 (d6d/6F47) passes BOTH cases exit0/599+1 with actual geometry and
+collective closure. Frozen map/PE pin BOTH named IAT aliases; live actual heap
+and MSVCP paths plus Win32-namespace Machine14C archives now exist. Root raw pair
+has only8ON diagnostic rows, gameplay/native1427/summary764 same, rawmission299
+same and full449 differs only workerID under existing normalization. RestoreOFF
+9b08/build2/2 10.81s. Full independent artifact/teardown audit remains pending;
+all prior failure/partial attempts remain preserved and unqualified as recorded.
+
+Full independent attempt04 audit now passes84/84. Root copied/hash-verified all
+eleven report files: exact BOTH-IAT/map and actual x86 runtime archives, real
+Source-enforced custody, same-binary/historical rawpair/ordered/startRNG/teardown
+qualifications and exact known residue cohort. Raw COMzero remainsfalse; no new
+mask/exception. OFF9b08/build2/2 verified. One empty prefix+explicit379 lifecycle
+is accepted within its closed-provider domain; production/UI/AAA710/main-section/
+Font/content/hierarchy/ABI and failure/reuse remain open. Font source halves
+are frozen separately for cross-review and combined build, not activated.
+
+Font owner103/c315 and producer e758 now pass root and independent cross-review.
+A separate4fd fix closes raw retirement-entry caught-rejection latches while
+leaving legacy guards and actual cleanup unchanged. Eleven owner/six original
+producer/eight follow-up comparisons pass. Combined OFF Win32/checks2/2 pass
+(9.78s). Typed real Font export, fresh-only pre122 shader backing, terminal
+retirement guard and explicit post-parent detach are compiled but have no host
+caller yet. RawAB8C30 and cached1EC EFFECT-credit consumption remain execution
+blockers; the next bounded evidence plan is dispatched, with no widening.
+
+Private Font metadata caller is wired behind a fourth mutually exclusive FALSE
+constant. Actual Host/App/raw-owner bind follows stable owner storage and
+precedes preparation; explicit both-layer detach follows owner parent-drain
+closure and precedes reset. OFF Win32/checks2/2 pass (10.99s). Source/lifetime
+review and runtime evidence remain pending. Four separate planned USN04 cases
+cover exact-parent/default reference and same-candidate MSD1600 GUI_TEXT0/1;
+they do not constitute13-row OFF identity, strict4+4 or production activation.
+
+Caller7158974cd passed independent lifetime review. Frozenb697 completed all
+four reference/MSD1600 cases exit0, genuine producer link through actual Font
+retirement and post-parent detach. Native/summary/gameplay pairs agree; ordered
+SUB differs only worker ID before existing normalization. Raw strict full log
+differences and exact existing COM residue remain recorded, not relabeled zero.
+Independent audit accepts only preregistered metadata criteria. All four private
+constants restored FALSE; combined Win32/checks2/2 pass10.23s. Pure MainSection
+Frame.matches9a446f8a is independently reviewed/compiled, still has no caller or
+liveness/retirement authority. Font setter/1EC plan remains the next boundary.
+
+The next three disjoint Source packets are active: raw-font-only AB8C30/header
+provenance, private shader normal-completion/exact-once credit record, and raw118
+consumer integration. No admission/caller widening yet. A small pure canonical
+raw122 matches_reference_frame predicate closes the missing constructor-Frame
+identity check; Root plus independent Source review and Win32/checks2/2 pass
+(10.54s). It grants no credit/liveness and must not be called after the companion
+erases itself. The shared shader consumer API must freeze before both consumers
+complete, including truthful equal-name/no-capture and pre-capture failure paths.
+
+Shader private credit body2632/ee114 and raw118 adapter84d2 now pass Root and
+independent Source review. Actual normal B318 return/publication and one exact
+setter-or-raw118 consumer are recorded privately, with current active identity
+separate from historical spender. A review caught completed null-retirement
+history missing from fresh views; Root projects the private one-shot flag and
+requires none at initial/untouched admission. Corrected combined Win32/checks2/2
+pass11.46s. Existing owner/FRESH/header/108/1EC/native branches remain restricted;
+raw setter body and staged Font lifetime helper continue in disjoint packets.
+
+A fresh exact5b01 thirteen-row REFERENCE matrix is collecting against frozen
+EXE9480008d/DLLddf2; this is baseline only. Root lanes4/6 are live, with ESMP08,
+USN21 and USN12 completed exit0 as last observed. Original lane5 controller
+terminated before any game because its existing slot was busy; no process was
+displaced. A prospectively preregistered partition1 lane7/core16 amendment runs
+the unchanged four missing row definitions separately. Keep both artifact
+directories/manifests and explicit execution-checkout versus frozen-build
+source distinction. No full13-row identity, ON or strict4+4 gate is claimed.
+
+Raw Font setter cf0d2d5f plus a Root canonical-registry interface correction now
+passes Root and independent Source review, all11 preserved-body comparisons,
+and combined Win32/checks2/2 (10.73s). Actual native font-only body/normal header
+publication/exact shared EFFECT-credit consumption are compiled, still uncalled
+and behind the unchanged strict owner/admission gates. The typed staged helper
+API6d0ecb62 is frozen and accepted for implementation; its new CPP is in progress.
+
+All13 exact5b01 reference rows now have completed exit0 manifests (nine original
+Root rows plus four prospectively amended lane7 rows), and all three actual
+controllers returned exit0. Outcomes include natural completion, loss, frame
+bound and result teardown, not a universal win claim. Aggregate input/hash/lane
+audit is in progress; USN02 has no independent live-priority sample. This is a
+current reference corpus only, with no candidate pair/ON/strict4+4 acceptance.

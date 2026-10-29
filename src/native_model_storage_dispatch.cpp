@@ -68,6 +68,10 @@ NativeModelStorageDispatch::~NativeModelStorageDispatch() {
     if (acquired_.poisoned || acquired_.current18.phase == Phase::entered ||
         acquired_.current0.phase == Phase::entered) std::terminate();
 }
+bool NativeModelStorageDispatch::matches(const NativeModelStorageDispatchContext& c,
+    const NativeModelStorageDispatchAcquired& a) const noexcept {
+    return context_ == &c && &acquired_ == &a;
+}
 void NativeModelStorageDispatch::bind(NativeModelStorageDispatchContext& c) {
     auto& s = c.model.storage;
     auto& n = s.node;

@@ -50,6 +50,9 @@ public:
     // Pure one-time metadata binding. No slot, native getter, table/import
     // value read, canonical reference, retain, release or cleanup is required.
     void bind(NativeModelStorageDispatchContext&);
+    // Pure binding identity only; no native access or dispatch permission.
+    bool matches(const NativeModelStorageDispatchContext&,
+        const NativeModelStorageDispatchAcquired&) const noexcept;
     const volatile std::uint32_t* resolve_profile(std::uint32_t) const override;
     void invoke_virtual18(std::uint32_t captured_target, void* actual) override;
     void invoke_virtual0(std::uint32_t captured_target, void* actual,
