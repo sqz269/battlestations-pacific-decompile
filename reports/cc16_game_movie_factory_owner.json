@@ -1,0 +1,351 @@
+{
+  "packet": "codex-game-movie-factory-owner",
+  "status": "staged_source_owner_strict_Win32_object_compiled; root_bindings_and_activation_REQUIRED",
+  "base_main": "2c25911ef30940f93ef3a56c6202198013b59b45",
+  "pre_source_dependency_merge": "86e4bfc10e3fa92865f88061cce5f32e0bca40fa",
+  "reviewed_at_utc": "2026-10-29T19:55:42.195036+00:00",
+  "ownership": {
+    "files": [
+      "include/bsp/game_movie_factory_owner.hpp",
+      "src/game_movie_factory_owner.cpp",
+      "docs/CC16_GAME_MOVIE_FACTORY_OWNER.md",
+      "reports/cc16_game_movie_factory_owner.json"
+    ],
+    "addresses": [],
+    "source_commit_scope": "these four files ONLY; Bink source is an explicitly authorized prior dependency merge",
+    "root_owned_untouched": [
+      "GameSingletonHost",
+      "actualF8AEFC cell",
+      "NativeSingletonDeletionBindings",
+      "Startup",
+      "CMake",
+      "ledgers/names/tags",
+      "private accuracy candidate2c182"
+    ],
+    "ghidra_mutations": false
+  },
+  "primary_review": {
+    "api_and_failure_policy_approved": true,
+    "scope": "construct/diagnostics and captured-receiver scalar entries only; root owns current-publication shutdown finite dispatch",
+    "destructor": "metadata only; no terminate, automatic native/provider cleanup or shutdown call",
+    "exception_policy": "allocation exception outside acquired cleanup; C++ register/sound exception exact captured raw free only, terminal latch/rethrow; normal retirement exception guard/base reset only, no invented extra free/clear/rollback"
+  },
+  "read_only_inputs": [
+    {
+      "commit": "8f14bfd2b64b0f163c997824a0f1d19b4de49ff0",
+      "path": "docs/CC16_MOVIE_FACTORY_OWNER_CONTRACT.md",
+      "sha256_git_blob": "0aa91cafa93ee80bb26254f472684aa3fffe3f00c9e8cad7fd5717046c30893d",
+      "role": "pinned read-only input; not runtime/activation credit"
+    },
+    {
+      "commit": "8f14bfd2b64b0f163c997824a0f1d19b4de49ff0",
+      "path": "reports/cc16_movie_factory_owner_contract.json",
+      "sha256_git_blob": "660ad0d1d4d784b3b3484041283fda28199527cb4dc712e7f5ed2fb963581bb3",
+      "role": "pinned read-only input; not runtime/activation credit"
+    },
+    {
+      "commit": "1214cca8f15a8a733211a390f1e4c5ce153f6c9f",
+      "path": "docs/CC16_MOVIE_FACTORY_STARTUP_EH.md",
+      "sha256_git_blob": "607581e00897072974d6091b39e27f7536f48570bc323a6c18cd8368a698848a",
+      "role": "pinned read-only input; not runtime/activation credit"
+    },
+    {
+      "commit": "1214cca8f15a8a733211a390f1e4c5ce153f6c9f",
+      "path": "reports/cc16_movie_factory_startup_eh.json",
+      "sha256_git_blob": "6d33ca621489d51edf125bf982b19152800080bb39d2bad33df03453ff3fe3c9",
+      "role": "pinned read-only input; not runtime/activation credit"
+    },
+    {
+      "commit": "68ab882bbe7709822936c15b21f6e9804076ffb2",
+      "path": "include/bsp/bink_runtime_library.hpp",
+      "sha256_git_blob": "510edc8d0f710009872357e976d6fb62bfb9dca50430eb8100155d9713e66007",
+      "role": "pinned read-only input; not runtime/activation credit"
+    },
+    {
+      "commit": "68ab882bbe7709822936c15b21f6e9804076ffb2",
+      "path": "src/bink_runtime_library.cpp",
+      "sha256_git_blob": "0e3b46555ea02931a6dc298a1966fa6fcc82739588db438b107a73dd5a94cb94",
+      "role": "pinned read-only input; not runtime/activation credit"
+    },
+    {
+      "commit": "6d3d02dbb1c92237291f42b5ab0730e7e31bb190",
+      "path": "docs/CC16_BINK_RUNTIME_LIBRARY_REVIEW.md",
+      "sha256_git_blob": "cf74da38ff7644a77768bbae4bae99d5eecba4002eb4fc65f9db2257881f0d55",
+      "role": "pinned read-only input; not runtime/activation credit"
+    }
+  ],
+  "inputs": [
+    {
+      "input": "actual_manager_01090aa0",
+      "type": "void* volatile&",
+      "supplier": "GameSingletonHost::manager_publication_01090aa0()",
+      "status": "existing root supplier; root must verify same cell/domain",
+      "enforcement": "SoundLifetimeAccess is constructed with actual-cell overload only; no semantic/private domain"
+    },
+    {
+      "input": "actual_factory_00f8aefc",
+      "type": "void* volatile&",
+      "supplier": "root must add/retain actual original publication cell and same consumer/deletion context",
+      "status": "ABSENT reviewed main; required constructor reference; no substitute supplied"
+    },
+    {
+      "input": "library",
+      "type": "BinkRuntimeLibrary&",
+      "supplier": "same root-retained real module owner68ab882; full thirteen exports resolved before exposure",
+      "status": "dependency source merged only; root admission/lifetime/mapped identity/ABI remain required",
+      "storage": "borrow library.imports() and library.factory_imports() by reference; no copies"
+    },
+    {
+      "input": "original",
+      "type": "GameNativeReadOnlyData&",
+      "supplier": "same validated original-image .rdata owner",
+      "required_spans": [
+        {
+          "address": "00CE3818",
+          "bytes": 4
+        },
+        {
+          "address": "00CFEA60",
+          "bytes": 4
+        },
+        {
+          "address": "00CFEA78",
+          "bytes": 8
+        }
+      ],
+      "status": "root must admit spans and keep mappings through raw users/drain",
+      "token_rule": "memcpy original table WORDS for expected native code identities; only numeric native profile IDs stamped in rawprefix; no callable host casts"
+    },
+    {
+      "input": "allocation",
+      "type": "GameMovieFactoryAllocation& (mandatory abstract matched-heap provider)",
+      "supplier": "root binds existing singleton_lifetime_allocate({SingletonAllocationKind::object,bytes,bytes}) and singleton_lifetime_free",
+      "status": "real allocator exists, actual adapter/root binding REQUIRED; no default implementation",
+      "contract": "exact bytes=4, raw DWORD-aligned storage, matched free00BF65AC boundary noexcept"
+    }
+  ],
+  "public_api": {
+    "class": "bsp::game::GameMovieFactoryOwner",
+    "allocation_provider": "bsp::game::GameMovieFactoryAllocation",
+    "constructor": "(void* volatile& actual_manager01090AA0, void* volatile& actual_factoryF8AEFC, BinkRuntimeLibrary&, GameNativeReadOnlyData&, GameMovieFactoryAllocation&)",
+    "methods": [
+      "construct_in_startup_0073df9b() -> MovieFactoryPrefix*",
+      "delete_factory_00737950(void* actual_captured_receiver,uint32 flags) -> void*",
+      "delete_base_factory_00737030(void* actual_captured_receiver,uint32 flags) -> void*",
+      "observation() const -> const GameMovieFactoryObservation&",
+      "requires_process_retention() const noexcept",
+      "decoder_imports() const -> const SAME BinkImports&"
+    ],
+    "not_supplied": [
+      "currentF8AEFC shutdown reload/null guard/shared dispatch",
+      "foreign owner shim",
+      "default allocator",
+      "publication cell/private domain",
+      "decoder handle/clock/frontend",
+      "new original native ABI body"
+    ]
+  },
+  "construction": {
+    "allocation": "Allocate exact4 raw bytes outside acquired catch; captured returned address is separate from volatile current publication. Placement default-init of trivial MovieFactoryPrefix starts C++ lifetime without zeroing raw bytes.",
+    "null_branch": "Null result records null_result and skips helper/profile/sound. Not ready and not a fabricated default/null-success provider; root real allocation service throws on exhaustion.",
+    "reused_body": "construct_movie_factory_00737710 already present in movie_factory_followup.cpp; no duplicate native body credit",
+    "registration": [
+      "CFEA60 stamp to incoming owner",
+      "CapturedSoundLifetimeSection(SoundLifetimeAccess(actual01090AA0)) captures first manager section and enters/increments it",
+      "publish incoming owner to required actualF8AEFC cell",
+      "completed second manager getter statement, then evaluate volatile current publication argument for register_object",
+      "leave SAME captured section via existing guard; mark full registration return"
+    ],
+    "derived_and_sound": "Existing helper stampsCFEA78 and invokes real BinkFactoryImports.set_sound_system(real open_direct_sound callback,0); signed result intentionally ignored",
+    "native_epoch": "Caller state21 armed73DFAD through register73DFBC/final stamp73DFC7/Bink73DFCD; demotes73DFD4 before next allocation. Source acquired try scope ends after helper return.",
+    "cpp_exception": "Nested registration guard unwinds and state0 CE3818 stamp runs when helper fails; outer acquired catch frees captured raw address only, sets failed and rethrows. Sound failure after registration returned has raw free only. No unregister, clear, current-publication free, sound reset, module unload or fallback success.",
+    "dangling_limit": "Reached publication or manager effects may reference freed capture; observation is identity-only after free. Root terminal retention MUST prevent ordinary raw drain before aggregate/member destruction."
+  },
+  "normal_scalar_delete": {
+    "entry_abi_evidence": "00737950 and00737030 ECX incoming raw owner, one DWORD flags, captured identity EAX, RET4; source methods are not drop-in register/stack replacements",
+    "receiver": "Source provenance requires actual allocation acquired by this owner; DOES NOT compare incoming pointer against currentF8AEFC.",
+    "ordered_effects": [
+      "stamp incomingCFEA60",
+      "capture/enter first manager section using same actual context",
+      "complete second manager getter then reread CURRENT volatileF8AEFC for unregister",
+      "after unregister returns clearF8AEFC unconditionally",
+      "leave SAME captured section",
+      "stamp incomingCE3818",
+      "if flags&1 free CAPTURED incoming allocation via required matched heap; return captured identity"
+    ],
+    "flag0": "storage remains; destroyed_retained phase and process-retention requirement; no extra free or deletion retry offered",
+    "nested_cpp_exception": "73750 state1\u21920 guard release then state0\u2192-1 baseCE3818 reset; latchfailed/rethrow, preserve reached clear/unregister effects and do not add raw free/clear/rollback",
+    "source_preconditions": "One serialized invocation after construction, receiver same capture. Replay/overlap/foreign receiver rejection latches failed before new native effects. Arbitrary native reentrant mutation is not covered.",
+    "root_shutdown": "Root must reload currentF8AEFC at73804F, null guard, PUSH1 at73805D, finite genuine shared dispatch73805F. Replacement publication is not assumed this capture."
+  },
+  "retention": {
+    "destructor": "default metadata-only; no native/provider calls, terminate or automatic shutdown. Caller must satisfy documented explicit flags1 retirement / never-entered / null preconditions.",
+    "requires_process_retention_true": "allocating,constructing,retiring,failed,destroyed_retained; ready false is NOT permission to destroy or release borrowed dependencies",
+    "terminal": "On interrupted work root retains whole installed aggregate, publication/context, manager/section, module/Impl/tables and all real decoder/callback/renderer/native borrowers until OS exit; already freed raw capture is diagnostic identity only.",
+    "host_vs_original": "Root terminal aggregate custody and staged source precondition checks are host policy, not original FH3, arbitrary SEH/foreign exception or cleanup-failure equivalence.",
+    "normal": "Root must quiesce actual callbacks and close handles, retire explicit current factory using real dispatch, complete shared raw drain, then release Bink tables/module last. Factory deletion alone does not close unrelated handles."
+  },
+  "native_evidence": {
+    "configured_project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "config/target defaults and bsp.py ghidra ensure --status before each live batch; read-only bytes/listings",
+    "original_executable": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "original_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "fresh_unregistered_helper_EH": {
+      "handler": "00C85FB0",
+      "FuncInfo": "00DB5424",
+      "magic": "19930522",
+      "maxState": 2,
+      "map": "00DB5414",
+      "state0": {
+        "toState": -1,
+        "action": "00C85FA0",
+        "effect": "incomingCE3818 reset via00412430"
+      },
+      "state1": {
+        "toState": 0,
+        "action": "00C85FA8",
+        "effect": "captured guard00411EE0"
+      }
+    },
+    "static_spans": [
+      {
+        "name": "base_vtable",
+        "address": "00CE3818",
+        "bytes": 4,
+        "file_offset": "0x8e3818",
+        "hex": "40 24 41 00",
+        "sha256": "9b438ce3feae2fd62d0e9bbaf623d6c8501a0d858c6da7d06cc04ccc29ebd57f"
+      },
+      {
+        "name": "register_vtable",
+        "address": "00CFEA60",
+        "bytes": 4,
+        "file_offset": "0x8fea60",
+        "hex": "30 70 73 00",
+        "sha256": "4c65498ecbe32d492ce349174df59c6f3c11d6cd7b84153895025e190bdb3c1e"
+      },
+      {
+        "name": "factory_vtable",
+        "address": "00CFEA78",
+        "bytes": 8,
+        "file_offset": "0x8fea78",
+        "hex": "50 79 73 00 30 77 73 00",
+        "sha256": "6efd5d509727cf77de08a5e2e012e9b78da0f6e7d3d6fb61158baf42a2934268"
+      },
+      {
+        "name": "caller_state21",
+        "address": "00DB61C8",
+        "bytes": 8,
+        "file_offset": "0x9b61c8",
+        "hex": "ff ff ff ff ec 6b c8 00",
+        "sha256": "37aff6ad99be59b0e52050d4a7897e4895869d29653c8fe138d97e1b67f11c56"
+      },
+      {
+        "name": "caller_raw_free",
+        "address": "00C86BEC",
+        "bytes": 14,
+        "file_offset": "0x886bec",
+        "hex": "8b 85 c8 fe ff ff 50 e8 b4 f9 f6 ff 59 c3",
+        "sha256": "143551c387803ea65206110d846b4f98f9cc8559b067e221fba88300bcae5287"
+      },
+      {
+        "name": "unregister_FuncInfo",
+        "address": "00DB5424",
+        "bytes": 36,
+        "file_offset": "0x9b5424",
+        "hex": "22 05 93 19 02 00 00 00 14 54 db 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00",
+        "sha256": "77c9af50fb1fa0d1aa7cece6545296d43bfda8136ce1b7e6f08226d4769a5bb1"
+      },
+      {
+        "name": "unregister_map",
+        "address": "00DB5414",
+        "bytes": 16,
+        "file_offset": "0x9b5414",
+        "hex": "ff ff ff ff a0 5f c8 00 00 00 00 00 a8 5f c8 00",
+        "sha256": "d0d7d719c1ba0d067cd135be1c1ec0f987012df3e2b458fc791fad1dae415726"
+      },
+      {
+        "name": "unregister_actions",
+        "address": "00C85FA0",
+        "bytes": 16,
+        "file_offset": "0x885fa0",
+        "hex": "8b 4d e8 e9 88 c4 78 ff 8d 4d ec e9 30 bf 78 ff",
+        "sha256": "3525c0b8eaf0f2fceaa93c3de30a3289fb4f308da8f4e5e6257bf58f55c060f8"
+      },
+      {
+        "name": "base_scalar_delete",
+        "address": "00737030",
+        "bytes": 30,
+        "file_offset": "0x337030",
+        "hex": "56 8b f1 e8 18 f7 ff ff f6 44 24 08 01 74 09 56 e8 67 f5 4b 00 83 c4 04 8b c6 5e c2 04 00",
+        "sha256": "fed18e065ee548074b23deb98aaff89bd5359e49c1dcd95635cfdb0f563c4e8c"
+      }
+    ]
+  },
+  "validation": {
+    "strict_object_compile": {
+      "passed": true,
+      "source": "src/game_movie_factory_owner.cpp",
+      "compiler": "MSVC Win32 via installed VS18 Community vcvars32.bat",
+      "flags": [
+        "/std:c++17",
+        "/permissive-",
+        "/W4",
+        "/WX",
+        "/fp:strict",
+        "/EHsc",
+        "/O2",
+        "/MD",
+        "/c"
+      ],
+      "object": "J:\\PROG\\battlestations-pacific-decompile-codex-game-movie-factory-owner\\build\\movie-factory-owner\\game_movie_factory_owner.obj",
+      "machine": "0x014c",
+      "bytes": 28841,
+      "sha256": "9c68553ee6f3ce27f6a843d546c343fc7351608ac7b2ddfa6631f4843866091c"
+    },
+    "full_build": false,
+    "CMake_or_tests_added": false,
+    "tests_game_probe_or_Dll_load_run": false,
+    "imported_Bink_call_run": false,
+    "Ghidra_mutation": false,
+    "activation": false,
+    "source_sha256": {
+      "include/bsp/game_movie_factory_owner.hpp": "86016d14b24133bb8c06996e2f8141dd14e42af0774a6558f9710df9044546ff",
+      "src/game_movie_factory_owner.cpp": "39ca1d6d4b7696096326fc8fad51424d62e98b1b1f379f5d44ef1ce455c617db"
+    },
+    "existing_interface_sha256": {
+      "include/bsp/movie_factory_followup.hpp": "4b208a04568c712cf41d4b7d1ef490975bc4813fe8397322d114ac477a55e60f",
+      "src/movie_factory_followup.cpp": "00a8b4866bfa3ba88f537a53d94191cef0efbd56f54f1a41aa1d3fe177f2f8c6",
+      "include/bsp/sound_lifetime_access.hpp": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b",
+      "src/sound_lifetime_access.cpp": "00ace40faa75007eb4e7cf857de0473347d8bdba0d99ed15ce8bc750c09efd29",
+      "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "include/bsp/game_native_readonly_data.hpp": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+    }
+  },
+  "remaining_root_obligations": [
+    "Admit Bink dependency separately and add this source to actual build; no CMake integration supplied here.",
+    "Provide real retained actualF8AEFC cell/accessor/context, verify same canonical manager cell and actual matched heap adapter.",
+    "Bind CFEA60 andCFEA78 genuine deleting profiles BEFORE first registration, with correct actual captured owner provenance.",
+    "Install stable owner/module/readonly/token/provider backing before invoking construction at real Startup order; surrounding terrainF8C218 and010909B0 providers remain required.",
+    "Implement explicit root current-publication shutdown finite dispatch and complete normal callback/handle/drain/module custody.",
+    "Latch terminal Startup/shutdown failure before ordinary aggregate destruction or shared drain can touch dangling registry/publication; retain all borrowed storage, not merely HMODULE.",
+    "Schedule genuine frozen production runtime/ABI/sound/decoder/playback/gameplay validation only after binding/admission."
+  ],
+  "limits": [
+    "No DLL or Bink execution, native code-pointer call, native FH3 register witness, SEH/foreign-EH/cleanup-failure recovery or arbitrary reentrant lifecycle coverage.",
+    "No installed ABI, callback return/result, sound device, decoder handle/triple, clock, playback or gameplay proof.",
+    "No fabricated provider, private global/domain, substituted current-global snapshot or default allocator is supplied.",
+    "No new original/vendor body, ledger, activation or ABI credit. Subtitle guard and private accuracy candidate remain untouched."
+  ],
+  "credit": {
+    "new_original_native_bodies": 0,
+    "vendor_bodies": 0,
+    "binary_ABI": false,
+    "runtime": false,
+    "activation": false,
+    "playback": false,
+    "gameplay": false
+  }
+}
