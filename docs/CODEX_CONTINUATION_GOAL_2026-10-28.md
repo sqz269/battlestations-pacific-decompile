@@ -428,6 +428,12 @@ CODEX_A2_STARTUP_PRELOAD.md and the gate directory's frozen evaluation.
 This does not close full GUI/visual/interaction, raw Text/Icon/Model/Page
 lifecycles, queued-callback failure, allocator/reload or Original ABI proof.
 
-Next accepted source reviews cover private Model node/scene/type provider2049
-and DEFAULT AA1380 helperba2; both await integration/build. The worker owner
-composition proposal will connect these to the real retained renderer graph.
+Private Model node/scene/type provider2049 and DEFAULT AA1380 helperba2 now
+pass root/independent source review and the integratedcb6ba1195 Win32 build,
+including both existing CTests. Both TUs are compiled in bsp_core, with no
+production caller, new native body credit or actual DEFAULT lifecycle proof.
+The next retained-owner composition must connect the real renderer services and
+raw-compatible widget lifetime dispatch; legacy Text-reference dispatch cannot
+stand in for the new raw122 companion. Actual creation belongs after genuine
+Text type startup in a legitimate cache bracket, with retained frames/providers
+through complete renderer drain, failure and surviving Model credits/flags0.

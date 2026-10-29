@@ -16,6 +16,26 @@
   "policy": "Function addresses and disjoint file ownership define work, not wave/segment IDs. Workers read shared dependencies; primary owns Ghidra mutations, shared metadata, common APIs, CMake, builds and integration. Implemented code_ownership and future next_code_ownership are recorded separately. Refill up to three ready worker slots; verify actual concurrency on resume.",
   "packets": [
     {
+      "id": "codex-gui-raw-model-node-dispatch",
+      "state": "integrated_two_source_reviews_win32_build_checked_uncalled",
+      "worker": "gui_frame_lifetime",
+      "source_ready": false,
+      "depends_on": ["codex-gui-raw-model-dispatch", "codex-gui-text-raw-model-transport"],
+      "function_addresses": [],
+      "output_files": ["include/bsp/native_model_storage_node_dispatch.hpp", "src/native_model_storage_node_dispatch.cpp", "docs/CODEX_GUI_RAW_MODEL_NODE_DISPATCH.md", "docs/CODEX_GUI_RAW_MODEL_PROVIDER_WIRING.md"],
+      "notes": "Frozen2049 plus wiringdoce261 integrated/build-tested incb6ba1195; root and independent reviews pass, Win32 both existing CTests pass. Genuine existing Model/node predicates, attachment1C and scene50/54 bodies use exact e769 record aliases, real private gates/contexts, base-runtime point-lights and retained per-call prefix. No getter/init before entry, no second lifetime or false callback; live D62C88 destruction prefix is admitted before payload end, bookkeeping after body is metadata only. No production caller, actual lifetime/failure/reuse/ABI proof or new body credit."
+    },
+    {
+      "id": "codex-gui-raw-text-default-factory",
+      "state": "integrated_two_source_reviews_win32_build_checked_uncalled",
+      "worker": "gameplay_integration_review",
+      "source_ready": false,
+      "depends_on": ["codex-gui-text-raw-model-transport", "codex-gui-raw-model-node-dispatch"],
+      "function_addresses": ["00aa1380"],
+      "output_files": ["include/bsp/native_gui_text_default_factory_storage.hpp", "src/native_gui_text_default_factory_storage.cpp", "docs/CODEX_GUI_RAW_TEXT_DEFAULT_FACTORY_PLAN.md"],
+      "notes": "Frozenba2 cherry-picked narrowly and built incb6ba1195; root/independent reviews and both existing Win32 CTests pass. Qualified DEFAULT-only AA1380 helper installs persistent attempt before one AB79E0, calls raw93 once only for nonnull, retains all failures without inferred cleanup/return/credit and keeps raw122 binding separate. Existing interfaces unchanged, mandatory188 preserved. No actual factory/Model/Text lifecycle or production caller; complete genuine owner/GuiDefault/cache/Lua/provider graph and raw-compatible widget dispatch still required. No whole-body/native ABI credit."
+    },
+    {
       "id": "codex-a2-startup-shader-preload",
       "state": "on_accepted_common_build_smokes_reference_msd_source_qualified_residue",
       "worker": "cc16-progress",
