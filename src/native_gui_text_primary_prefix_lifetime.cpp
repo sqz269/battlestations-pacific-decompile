@@ -1,5 +1,6 @@
 #include "bsp/native_gui_text_primary_prefix_lifetime.hpp"
 #include "bsp/native_gui_text_font_lifetime_storage.hpp"
+#include "bsp/native_gui_text_main_section_lifetime_storage.hpp"
 #include "bsp/native_gui_text_prefix_geometry_lifetime.hpp"
 #include "bsp/game_native_readonly_data.hpp"
 #include "bsp/game_native_gui_text_process.hpp"
@@ -193,8 +194,20 @@ void shape(void* actual, const Context& g, const NativeGuiTextRetirementAcquired
         "prefix Text adds ONLY its genuine primary4C to the empty DEFAULT payload");
     auto& publication = g.text.factory_context.publication;
     auto* const font = publication.retirement.font_lifetime;
+    const auto* const main = g.operation.main_section();
     using Font = NativeGuiTextFontLifetimeStorageFrame;
-    if (font && font->phase() == Font::Phase::sealed) {
+    if (main) {
+        using Main = NativeGuiTextMainSectionLifetimeStorageFrame;
+        require(!font && g.operation.kind() == NativeGuiTextPrimaryPrefixOperation::Kind::geometry_main_section,
+            "first MainSection domain excludes simultaneous Font lifetime permission");
+        const auto& scalar = g.text.factory_context.reference_frame.scalar;
+        const auto main_stage = progress ? (progress->base_entered ? Main::Stage::base : Main::Stage::raw118_body)
+            : scalar.started ? Main::Stage::raw118_preentry
+            : g.text.publication.reference &&
+                g.text.publication.reference->phase() == NativeGuiTextRawModelReference::Phase::retiring
+                ? Main::Stage::scalar_preentry : Main::Stage::before_scalar;
+        main->require_live(actual, main_stage, progress ? progress : scalar.started ? &scalar.destruction : nullptr);
+    } else if (font && font->phase() == Font::Phase::sealed) {
         const auto& scalar = g.text.factory_context.reference_frame.scalar;
         const auto font_stage = progress ? (progress->base_entered ? Font::Stage::base : Font::Stage::raw118_body)
             : scalar.started ? Font::Stage::raw118_preentry

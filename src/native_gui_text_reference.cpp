@@ -1,5 +1,7 @@
 #include "bsp/native_gui_text_reference.hpp"
+#include "native_gui_text_cache_backing.hpp"
 #include "bsp/native_gui_text_font_lifetime_storage.hpp"
+#include "bsp/native_gui_text_main_section_lifetime_storage.hpp"
 #include "bsp/native_gui_text_shader_storage.hpp"
 #include "bsp/native_gui_text_primary_prefix_lifetime.hpp"
 #include "bsp/native_gui_text_prefix_geometry_lifetime.hpp"
@@ -106,34 +108,6 @@ bool fresh(const NativeGuiTextScalarRetirementAcquired& a) noexcept {
         !d.normal_actions_entered && !d.normal_actions_returned && !d.unwind_actions_consumed &&
         !d.unwind_actions_returned;
 }
-template<class Check>
-void shader_texture_backing(const NativeTextureCacheAcquired& a, Check check) {
-    check(Region{&a, sizeof(a)});
-    // Still-owned C++ objects only. A base extent is not the opaque derived
-    // operation's full extent, which remains the existing caller obligation.
-    if (a.resolution.operation) check(Region{a.resolution.operation.get(), sizeof(*a.resolution.operation)});
-    if (a.fallback_resolution.operation)
-        check(Region{a.fallback_resolution.operation.get(), sizeof(*a.fallback_resolution.operation)});
-    if (a.fallback) shader_texture_backing(*a.fallback, check);
-}
-template<class Check>
-void shader_cache_backing(const NativeMaterialEffectCacheAcquired& a, Check check) {
-    check(Region{&a, sizeof(a)});
-    if (a.key_resolution) {
-        const auto& k = *a.key_resolution;
-        check(Region{&k, sizeof(k)});
-        if (k.changed_resolution.acquired)
-            check(Region{k.changed_resolution.acquired.get(), sizeof(*k.changed_resolution.acquired)});
-        if (k.original_resolution.acquired)
-            check(Region{k.original_resolution.acquired.get(), sizeof(*k.original_resolution.acquired)});
-    }
-    const auto& loader = a.loader;
-    if (loader.name_resolution.acquired)
-        check(Region{loader.name_resolution.acquired.get(), sizeof(*loader.name_resolution.acquired)});
-    if (loader.programs) check(Region{loader.programs.get(), sizeof(*loader.programs)});
-    if (loader.constructor_texture) shader_texture_backing(*loader.constructor_texture, check);
-    if (loader.fallback) shader_cache_backing(*loader.fallback, check);
-}
 void require_shader_quiescent(const NativeGuiTextRawModelReferenceContext& c) {
     const auto* const frame = c.font_shader_frame;
     if (!frame) return;
@@ -162,7 +136,7 @@ void known_shader_borrowed(const NativeGuiTextRawModelReferenceContext& c, Check
     const Region platform{context->configuration_0109cf04.identity(), sizeof(void*)};
     require(representable(platform), "Raw Text shader needs its actual retained platform publication CELL");
     check(platform); // No current platform/Font/native resource/header read.
-    shader_cache_backing(frame->cache, check);
+    gui_text_backing_detail::shader_cache_backing<Region>(frame->cache, check);
 }
 void fresh_shader_binding(const NativeGuiTextRawModelReferenceContext& c,
     const NativeGuiTextReferenceFrame& expected) {
@@ -392,6 +366,31 @@ void known_borrowed(NativeGuiTextRawModelReferenceContext& c,
         require(representable(region), "raw122 prefix metadata requires valid retained backing extents");
         check(region);
     });
+    if (t.primary_prefix && t.primary_prefix->operation.main_section()) {
+        using Main = NativeGuiTextMainSectionLifetimeStorageFrame;
+        const auto* const main = t.primary_prefix->operation.main_section();
+        const auto& prepared = main->prepared_context();
+        require(!t.font_lifetime && &prepared.reference_frame == &t.primary_prefix->text.factory_context.reference_frame &&
+            t.primary_prefix->operation.geometry() == &prepared.geometry,
+            "MainSection reservation requires the SAME compound graph and canonical reference Frame");
+        const auto regions = main->phase() == Main::Phase::sealed
+            ? main->live_regions(t.primary_prefix->text.factory.raw_slot,
+                t.primary_prefix->text.publication.scalar_entered ? Main::Stage::scalar_preentry : Main::Stage::bound)
+            : main->metadata_regions();
+        require(regions.count <= regions.entries.size(), "MainSection region count exceeds fixed backing");
+        for (std::size_t i = 0; i != regions.count; ++i) {
+            const auto& region = regions.entries[i];
+            require(representable({region.begin, region.bytes}), "MainSection reservation needs valid retained extents");
+            if (region.begin == &prepared.reference_frame && region.bytes == sizeof(prepared.reference_frame)) continue;
+            check(Region{region.begin, region.bytes});
+        }
+        if (prepared.acquired.section.material.cache)
+            gui_text_backing_detail::shader_cache_backing<Region>(*prepared.acquired.section.material.cache,
+                [&](Region region) {
+                    require(representable(region), "MainSection cache needs valid retained backing extents");
+                    check(region);
+                });
+    }
     if (t.font_lifetime) {
         const auto& font = t.font_lifetime->prepared_context();
         require(c.font_shader_frame == &font.shader && t.font_shader_frame == &font.shader,
