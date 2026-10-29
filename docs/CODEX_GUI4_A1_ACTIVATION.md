@@ -7,7 +7,8 @@ Accepted OFF source: `5ca4639f0b` (same code as `381792703`). ON source:
 The only source change sets `kNativeRendererStartupCc15Bound` true in
 `include/bsp/game_native_renderer_application.hpp`. No other switch changes.
 The domain-only fallback and accepted shutdown correction are the implementation
-exercised here. This baseline matrix is complete; ON publication is still pending.
+exercised here. This baseline matrix remains immutable proof; the final matched
+common-code gates and integrator acceptance are recorded below.
 
 | Executable | SHA-256 |
 | --- | --- |
@@ -206,15 +207,17 @@ The fixed input data/copies are in `common_input_pin.json` and
 `common_pinned_*`; validators are `strict_provenance.py`,
 `strict_step_evaluate.py`, `strict_evaluate.py` and
 `common_noaid_evaluate.py`. `activation_final_summary.json` combines the
-original matrix, common build, current smokes and both final series. Root alone
-reviews and publishes the activation; no worker push was performed.
+original matrix, common build, current smokes and both final series. The
+integrator reviewed the receipts and accepted A1 ON with integrated C++ matching
+the frozen common ON snapshot; no worker push was performed.
 
 ## Scope limits
 
 The provisional 19/18 -> 21/20 values are GUI Text/Element lineage ids. A1
 opens the startup scene domain; it does not establish native GUI page drawing,
 startup shader preload, reload, repeated GUI traversal or late-plane drawing.
-The common completed-frame-prefix reuse is prepared/fixture evidence, without
-live GUI, reload or allocator runtime proof. The Known Limits correction is
+The common completed-frame-prefix reuse is source/build preparation; its
+allocator path is not exercised by the current A1-only gates. Live GUI, reload
+and allocator runtime proof remain open. The Known Limits correction is
 the same independently cherry-pickable change as `2b3194a77` (main
 `261891c4be`) and remains preserved.

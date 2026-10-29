@@ -331,3 +331,11 @@ reference and disposal regions remain retained. No factory, properties,
 nonempty content, Page activation or function-body credit is implied. The
 private default-only Model router must use genuine same-domain providers;
 general shared Page/primary4C routing remains later work.
+
+A1 evidence branch `010be6972` is now accepted by the integrator and merged.
+Root checked the strict aggregate and separate no-aid validator/receipt, found
+no remaining scheduled game, and preserved the GUI Text/Element Known Limits
+correction. Integrated src/include and CMake sources match the tested `6c8016fa7`
+snapshot. The A1 switch is ON; Page construction/drawing, shader preload and
+allocator/reload paths remain outside its accepted scope. The reviewed dormant
+source dependencies now enter their separate Win32 build/inertness batch.
