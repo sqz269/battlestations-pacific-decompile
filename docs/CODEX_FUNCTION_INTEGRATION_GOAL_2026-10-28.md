@@ -175,3 +175,12 @@ earns no acceptance. Neutral `off409` retry uses unchanged binaries, backend,
 plans, flags and evaluator/masks, with a four-hour owned-process failure
 watchdog. Its first JM06 pair passed all unchanged checks. Those receipts
 remain specific to their exact frozen source and executable hashes.
+
+The accuracy fixture `8c2fa31e` is now accepted for its narrow original
+post-spill window and direct conversion scope: eight plus eight paired
+checks pass and the legacy API differs in six of eight cases. Production
+source equivalence to `9434d4a37` was checked through accepted `86d56331f`.
+Synthetic mode cells, endpoint weight1 and masked PC24/PC53 are the tested
+boundary; arbitrary interpolation, full function/startup/CRT and game ON
+remain unqualified. A separate exact86d OFF/ON pair is being prepared; the
+subtitle matrix has released one logical lane after its VFS checks.

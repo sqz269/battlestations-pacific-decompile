@@ -1,6 +1,6 @@
 {
   "packet": "codex-weapon-hit-native-range",
-  "status": "source_handoff_closed_standard_off_build_passed_native_comparison_and_on_gates_pending",
+  "status": "source_integrated_OFF_postspill_fixture_passed_actual_host_gates_pending",
   "base_commit": "90d44021a",
   "new_original_function_body_credit": 0,
   "guard": {
@@ -200,7 +200,7 @@
     "preserve root-owned seeds/draw policy/frame caps/artifacts; timing/WINS decisions remain coordinated by root"
   ],
   "primary_integration": {
-    "status": "reviewed_common_build_tested_OFF_native_fixture_receipt_pending_review",
+    "status": "reviewed_common_build_tested_OFF_narrow_fixture_accepted_game_gates_pending",
     "accepted_base": "c458c4d24",
     "candidate": "9434d4a37f2a3c4528d826968460a982a4213e53",
     "build_log": "local/cc16_sap_accuracy_off_build.log",
@@ -222,9 +222,8 @@
     "game_validated": false,
     "runtime_activated": false,
     "remaining": [
-      "accept independent native post-spill fixture receipt and exact scope",
-      "matched runtime gates and actual caller witness before ON",
-      "no whole-function/interpolation or original-CRT identity claim"
+      "matched actual-host OFF/ON gates and genuine caller witness before ON",
+      "no arbitrary size interpolation, full function, original CRT/startup or ABI claim"
     ],
     "post_main_merge": {
       "accepted_upstream": "c086d1548df089bd96b1ed738866d4abe51935b0",
@@ -242,6 +241,23 @@
       "off_getter_symbol_count": 0,
       "guard": false,
       "executable_sha256": "5756762738d9933efba698c242a517fea388415b3d88c4db03e5053df1e0714e"
+    },
+    "narrow_native_fixture": {
+      "commit": "8c2fa31e37f7125cb2d60c21447b3d8b505a2f6e",
+      "report": "reports/cc16_weapon_hit_native_fixture.json",
+      "scope": "only post8383FE window at endpoint weight1 and direct conversion with synthetic cells",
+      "postspill_pairs_passed": "8/8",
+      "direct_conversion_pairs_passed": "8/8",
+      "legacy_negative_control_differences": "6/8",
+      "native_word_CW": [
+        "007f",
+        "027f"
+      ],
+      "synthetic_mode_values": [
+        0,
+        1
+      ],
+      "game_or_ON_acceptance": false
     }
   }
 }
