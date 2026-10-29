@@ -1,0 +1,132 @@
+{
+  "packet": "codex-dyn-ring-prepare",
+  "status": "complete_normal_body_source_recovered_strict_object_compiled_required_query_unwired",
+  "base_commit_after_origin_merge": "0d732ac894f2d8027b360eac1f7d663aa6b5abd4",
+  "scope": {
+    "routines": [
+      {
+        "address": "00c4d370",
+        "inclusive_end": "00c4d594",
+        "bytes": 549,
+        "coverage": "complete normal body with explicit required query provider",
+        "old_name": "DYN_physics_00c4d370",
+        "old_reconstruction_name": "DYN_unreachable_00c4d370",
+        "source_name": "bsp::cc16_dyn_ring_prepare::prepare_chain_00c4d370",
+        "prior_reconstruction": "metadata_only_no_function_body_verified_oct24"
+      }
+    ],
+    "files": [
+      "include/bsp/cc16_dyn_ring_prepare.hpp",
+      "src/cc16_dyn_ring_prepare.cpp",
+      "docs/CC16_DYN_RING_PREPARE.md",
+      "reports/cc16_dyn_ring_prepare.json"
+    ],
+    "previous_packet_files_changed": false,
+    "shared_metadata_cmake_or_ghidra_mutations": false,
+    "vendor_bodies": false
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "bsp.py ghidra proto verified configured project/program before evidence batches"
+  },
+  "original_abi": {
+    "receiver": "ESI raw owner",
+    "stack_arguments": [],
+    "ret_pop_bytes": 0,
+    "last_instruction": "00c4d594 RET",
+    "preserved": ["EBX", "EBP", "EDI", "ESI"],
+    "eax": "ignored by parent; source returns void",
+    "cpp_transport": "explicit owner/CRT/query provider; no native ABI or exception-transport adapter"
+  },
+  "layout": {
+    "owner_04": "anchor",
+    "owner_08": "points-owner pointer; first dword is points-data pointer",
+    "point_stride": 8,
+    "owner_0c": "next data pointer cached once",
+    "owner_18": "previous data pointer reloaded per candidate and success",
+    "owner_24_28_2c": "scratch data/count/capacity",
+    "owner_30": "next cursor",
+    "owner_34": "previous cursor",
+    "sibling_layout": "read-only 0x50 owner header; not consumed as accepted runtime implementation"
+  },
+  "search_contract": {
+    "orientation": "original ambient x87 instruction sequence; positive ordered determinant required",
+    "float_spills": ["anchor_dx", "anchor_dy", "next_dx", "next_dy"],
+    "determinant": "FMUL/FMUL/FSUBP stays in x87 through FCOMIP against zero",
+    "native_reject_condition": "JBE after FCOMIP/FSTP; source SETA captures complement",
+    "controls": "actual ambient x87/MXCSR, no control changes or fixed precision substitute",
+    "query_eax": "cached_next[cached_next[captured_anchor]]",
+    "query_ebx": "cached_next[captured_anchor]",
+    "query_stack": ["owner", "captured_previous", "captured_previous", "captured_anchor"],
+    "query_result": "whole uint32 tested for zero",
+    "rejection": "owner+04 becomes cached_next[captured_anchor]; no added loop bound"
+  },
+  "publication_contract": {
+    "first": "owner+34 = fresh_previous_data[captured successful anchor]",
+    "second": "owner+30 = cached_next_data[captured successful anchor]",
+    "scratch_append_value_offsets": [52, 4, 48],
+    "value_reload": "after each growth/free and only if append destination is nonzero",
+    "growth": "equality only; uint32 capacity*2+2; byte size*4; capacity before allocation",
+    "copy": "reload count/data per iteration; per-destination null test and uint32 cursor wrap",
+    "free": "current old storage freed if nonzero, before grown storage publication",
+    "count": "wrapping increment even if append destination is zero",
+    "exceptions": "no catch/rollback/cleanup; already-published mutations remain"
+  },
+  "calls": [
+    {"function":"00c4d370","address":"00c4d421","native":"00c410e0","role":"required actual query provider"},
+    {"function":"00c4d370","address":"00c4d467","native":"00bf55be","role":"first scratch growth"},
+    {"function":"00c4d370","address":"00c4d49e","native":"00bf6989","role":"first old scratch free"},
+    {"function":"00c4d370","address":"00c4d4d2","native":"00bf55be","role":"second scratch growth"},
+    {"function":"00c4d370","address":"00c4d503","native":"00bf6989","role":"second old scratch free"},
+    {"function":"00c4d370","address":"00c4d537","native":"00bf55be","role":"third scratch growth"},
+    {"function":"00c4d370","address":"00c4d56e","native":"00bf6989","role":"third old scratch free"}
+  ],
+  "caller_evidence": [
+    {"function":"00c4d5a0","address":"00c4d622","native":"00c4d370","role":"ring owner preparation dependency"}
+  ],
+  "providers": {
+    "crt": "existing cc15_dyn_live::DynLiveCrt, actual shared custody, only BF55BE and BF6989 used",
+    "query": "required QueryProvider::triangle_ring_clear_00c410e0 with exact owner/register/stack values",
+    "ambient_query_requirement": "honor and preserve actual x87 controls/MXCSR and complete barycentric context contract",
+    "fallback_or_hidden_precision_default": false,
+    "sibling_query_source_accepted_as_runtime_capability": false
+  },
+  "edge_cases": [
+    "nonpositive/unordered orientations skip query; malformed/no-success rings may loop indefinitely",
+    "cached next base survives provider field changes; later field values reload in native order",
+    "count greater than capacity does not grow",
+    "capacity/count/scaled-address arithmetic wraps uint32 without rejection",
+    "null allocation is not recovery; per-row/output tests preserve later invalid-store paths",
+    "no guard for invalid owner/point/index/storage/provider inputs"
+  ],
+  "evidence": [
+    "exports/bsp/functions/00c4d370/decompiled.c",
+    "exports/bsp/functions/00c4d370/assembly.txt",
+    "bsp.py ghidra proto 00C4D370 --brief",
+    "bsp.py lookup/callees/callers 00C4D370 with sites",
+    "sibling cc16_dyn_ring_owner.hpp read-only raw layout review",
+    "local/cc16_dyn_ring_prepare.obj",
+    "local/cc16_dyn_ring_prepare_object.txt"
+  ],
+  "validation": {
+    "source_and_original_assembly_review": true,
+    "strict_win32_object_compile": "passed, zero warnings: /std:c++17 /EHsc /W4 /WX /fp:strict /arch:SSE2 /O2 /c",
+    "object_instruction_review": "original ordered x87 sequence/four float spills/unspilled determinant/FCOMIP/FSTP/SETA retained",
+    "callsite_verification": "8 JSON rows and 7 Markdown instruction claims checked, 0 failed; 2 introductory/cross-reference prose sentences unchecked, 0 warnings",
+    "common_build": "primary-owned, not run by worker",
+    "new_tests": 0,
+    "game_or_probe_executables": 0,
+    "native_abi_fp_differential_or_runtime_validated": false
+  },
+  "integration_obligations": [
+    "primary registers source, updates shared C40000 ledger and annotations, and runs common build/checks",
+    "accept and explicitly connect the recovered ring owner preparation hook",
+    "supply accepted real C410E0 query and complete ambient barycentric provider; no fixed precision fallback",
+    "close owner's other predicate dependencies",
+    "establish actual incoming runtime path or accept evidenced original dead-chain treatment before activation"
+  ]
+}
