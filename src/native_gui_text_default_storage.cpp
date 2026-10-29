@@ -1,4 +1,5 @@
 #include "bsp/native_gui_text_default_storage.hpp"
+#include "bsp/native_string_raw_domain.hpp"
 #include "bsp/native_gui_widget_base_storage.hpp"
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/game_native_gui_text_process.hpp"
@@ -169,8 +170,9 @@ void preflight(void* raw, NativeGuiTextRawModelDefaultStorageFrame& f,
         c.lifetime.actual_base_table_00d5c130 && c.lifetime.nodes.uses_raw_name_pool() &&
         &c.lifetime.nodes.require_raw_name_pool() == &s.strings &&
         &node.trees.point_lights == &c.lifetime.nodes.point_lights &&
-        &node.strings == &s.strings && &s.strings == &s.string_process.raw_context() &&
-        &s.material_strings == &s.string_process.strings() && &s.materials.retained_owners == &owners &&
+        &node.strings == &s.strings && same_native_string_raw_pool_cells(s.strings, s.string_process.raw_context()) &&
+        same_native_string_storage_raw_pool_cells(s.material_strings, s.strings) &&
+        &s.materials.retained_owners == &owners &&
         &node.scenes.owners == &owners && &node.trees.owners == &owners &&
         &node.scenes.decrement_00ce2220 == &node.trees.decrement_00ce2220 && node.trees.decrement_00ce2220 &&
         &s.effects.effects.owners.actual_owners() == &owners &&

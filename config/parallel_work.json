@@ -27,13 +27,13 @@
     },
     {
       "id": "codex-gui-raw-default-widget-lifetime",
-      "state": "private_default_widget_api_proposal_in_progress",
+      "state": "integrated_two_source_reviews_win32_build_checked_uncalled",
       "worker": "gui_integration_review",
       "source_ready": false,
       "depends_on": ["codex-gui-text-raw-model-transport", "codex-gui-raw-text-default-factory"],
       "function_addresses": [],
-      "output_files": ["include/bsp/native_gui_text_default_widget_lifetime.hpp", "src/native_gui_text_default_widget_lifetime.cpp"],
-      "notes": "New closed DEFAULT binding required because shared widget dispatch admits legacy NativeGuiTextReference rather than raw122. Genuine actual tables, A9E070/AB83D0 and A9BD50 bodies, exact raw93/raw122 record/lifetime and captured-target semantics; legitimate constructor/base destruction prefixes need precise admission. Excluded child/timed/hierarchy/scene arms must reject honestly with retained failure, no false/no-op or legacy raw188 routing. API proposal precedes edits; no production or runtime proof."
+      "output_files": ["include/bsp/native_gui_text_default_widget_lifetime.hpp", "src/native_gui_text_default_widget_lifetime.cpp", "docs/CODEX_GUI_RAW_DEFAULT_TEXT_WIDGET_LIFETIME.md"],
+      "notes": "Frozenb6b016e68 integrated indf7fe8eb0; root and independent source reviews pass, MSVC Win32 and both existing CTests pass. Private DEFAULT binding uses actual tables, genuine A9E070/AB83D0/A9BD50, exact raw93/raw122 graph and constructor/base-prefix lifetime auth before payload/ref access. Captured-target/result/order and ordinary-zero preserved; canonical TRUE Text branch rejects before legacy188 without any188 read. Unsupported child/timed/scene arms poison/throw; owner preflight and e75 after-callback checks remain mandatory. No legacy cast, fake predicate/no-op or body credit. Still uncalled; owner composition and actual lifecycle/failure/reuse proof remain separate."
     },
     {
       "id": "codex-gui-raw-model-node-dispatch",
