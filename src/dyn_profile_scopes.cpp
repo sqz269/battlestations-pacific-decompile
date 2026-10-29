@@ -22,11 +22,10 @@ std::uint64_t timestamp() noexcept {
 }
 } // namespace
 
-DynProfileNodeStorage* dyn_profile_node_append_child_00c50390(
-    DynProfileNodeStorage& parent, const char* name, std::uint32_t id,
+namespace {
+DynProfileNodeStorage* append_constructed_profile_child(
+    DynProfileNodeStorage& parent,DynProfileNodeStorage* child,
     const AvoidZoneDynHullMemory& memory) {
-    auto* child = static_cast<DynProfileNodeStorage*>(memory.allocate(memory.context, 0x48));
-    if (child) child = dyn_profile_node_construct_00c44000(*child, name, id);
     auto& data = at<DynProfileNodeStorage**>(&parent, 4);
     auto& count = at<std::uint32_t>(&parent, 8);
     auto& capacity = at<std::uint32_t>(&parent, 0xc);
@@ -46,6 +45,37 @@ DynProfileNodeStorage* dyn_profile_node_append_child_00c50390(
     if (destination) *reinterpret_cast<DynProfileNodeStorage**>(destination) = child;
     ++count;
     return data[count - 1u]; //C50458 reloads the appended entry, not just EBX.
+}
+} // namespace
+
+DynProfileNodeStorage* dyn_profile_node_append_child_00c50390(
+    DynProfileNodeStorage& parent, const char* name, std::uint32_t id,
+    const AvoidZoneDynHullMemory& memory) {
+    auto* child = static_cast<DynProfileNodeStorage*>(memory.allocate(memory.context, 0x48));
+    if (child) child = dyn_profile_node_construct_00c44000(*child, name, id);
+    return append_constructed_profile_child(parent,child,memory);
+}
+
+DynProfileNodeStorage* dyn_profile_node_append_child_00c50390(
+    DynProfileNodeStorage& parent, const char* name, std::uint32_t id,
+    const AvoidZoneDynHullMemory& memory,
+    DynProfilePartialNodeDelete delete_partial_00bf65ac) {
+    // Native allocation C503A9 precedes state0 C503B7. Do not catch it.
+    auto* const allocation = static_cast<DynProfileNodeStorage*>(
+        memory.allocate(memory.context,0x48));
+    auto* child = allocation;
+    if (child) {
+        try {
+            child = dyn_profile_node_construct_00c44000(*child,name,id,memory);
+        } catch (...) {
+            // CC8378 / CC837C: captured allocation, distinct BF65AC, rethrow.
+            delete_partial_00bf65ac(allocation);
+            throw;
+        }
+    }
+    // Native state resets at C503D6. A completed orphan is NOT freed if later
+    // parent-vector allocation/copy/release/append fails; no rollback is added.
+    return append_constructed_profile_child(parent,child,memory);
 }
 
 DynProfileScopeStorage* dyn_profile_scope_enter_00c57020(DynProfileScopeStorage& scope,

@@ -16,13 +16,22 @@ template<class T> T& at(void* storage,std::size_t offset) {
 void* allocate(const DynEngineRuntimeContext& context,std::size_t bytes) {
     return context.memory.allocate(context.memory.context,bytes);
 }
-} // namespace
+// 0040A900..0040A90D: EAX actual vector, RET. Capture its CURRENT data once,
+// call the actual BF6989 provider only when nonzero, and leave fields alone.
+void release_profile_vector_storage_0040a900(
+    void* actual_vector, const AvoidZoneDynHullMemory& vector_memory) {
+    void* const data = *reinterpret_cast<void* volatile*>(actual_vector);
+    if (data) vector_memory.release(vector_memory.context,data);
+}
 
-DynProfileNodeStorage* dyn_profile_node_construct_00c44000(
-    DynProfileNodeStorage& node,const char* name,std::uint32_t word_2c) {
+void initialize_profile_node_vector(DynProfileNodeStorage& node) {
     at<std::uint32_t>(&node,4)=0;
     at<std::uint32_t>(&node,8)=0;
     at<std::uint32_t>(&node,0xc)=0;
+}
+
+DynProfileNodeStorage* construct_profile_node_payload(
+    DynProfileNodeStorage& node,const char* name,std::uint32_t word_2c) {
     auto& text=at<NativeLegacySboStringStorage>(&node,0x10);
     text.capacity_18=15;
     text.length_14=0;
@@ -38,6 +47,28 @@ DynProfileNodeStorage* dyn_profile_node_construct_00c44000(
     at<std::uint32_t>(&node,0x30)=0;
     at<std::uint32_t>(&node,0x34)=0;
     return &node;
+}
+} // namespace
+
+DynProfileNodeStorage* dyn_profile_node_construct_00c44000(
+    DynProfileNodeStorage& node,const char* name,std::uint32_t word_2c) {
+    initialize_profile_node_vector(node);
+    return construct_profile_node_payload(node,name,word_2c);
+}
+
+DynProfileNodeStorage* dyn_profile_node_construct_00c44000(
+    DynProfileNodeStorage& node,const char* name,std::uint32_t word_2c,
+    const AvoidZoneDynHullMemory& vector_memory) {
+    initialize_profile_node_vector(node);
+    // E04014/map E0400C: state0 starts at C4402B AFTER vector zeroing.
+    try {
+        return construct_profile_node_payload(node,name,word_2c);
+    } catch (...) {
+        // CC81E7 reads the original node argument, adds4 and tail-jumps A900.
+        release_profile_vector_storage_0040a900(
+            static_cast<unsigned char*>(static_cast<void*>(&node))+4,vector_memory);
+        throw;
+    }
 }
 
 DynProfileStorage* dyn_profile_construct_00c50310(

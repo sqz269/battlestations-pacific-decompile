@@ -24,6 +24,18 @@ struct DynEngineRuntimeContext {
 DynProfileNodeStorage* dyn_profile_node_construct_00c44000(
     DynProfileNodeStorage&, const char* name, std::uint32_t word_2c);
 
+// Additive cleanup-qualified interface; the existing three-argument overload
+// remains normal-only. vector_memory.release is the required genuine BF6989
+// provider for this node's child vector and must return normally. C44000 state0
+// begins after +4/+8/+C
+// zeroing. A C++ exception then composes real0040A900 current-data capture/
+// conditional release with no field clear, before rethrowing. No raw-node free
+// occurs here; C50390's separate BF65AC owner handles that allocation.
+// Original FH3/SEH, fault and frame transport are not supplied by this API.
+DynProfileNodeStorage* dyn_profile_node_construct_00c44000(
+    DynProfileNodeStorage&, const char* name, std::uint32_t word_2c,
+    const AvoidZoneDynHullMemory& vector_memory);
+
 // 00C50310..00C50382. Native ESI=profile, EAX=profile, plain RET.
 // Allocates the actual48h Root node, publishes the profile after its three head
 // words, then clears the90h tail. It does not initialize the engine global.

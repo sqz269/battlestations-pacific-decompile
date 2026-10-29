@@ -1,0 +1,608 @@
+{
+  "packet": "codex-dyn-profile-append-cleanup",
+  "worker": "agent/codex-dyn-profile-append-cleanup",
+  "source_base": "5c2547156c0d8d83d79f7b2600c6f6ea99cd975a",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "language": "x86:LE:32:default",
+  "sources": [
+    "src/dyn_profile_scopes.cpp",
+    "src/dyn_engine_runtime.cpp"
+  ],
+  "headers": [
+    "include/bsp/dyn_profile_scopes.hpp",
+    "include/bsp/dyn_engine_runtime.hpp"
+  ],
+  "documentation": "docs/CC16_DYN_PROFILE_APPEND_CLEANUP.md",
+  "status": "qualified_cpp_nested_cleanup_repair_strict_win32_release_and_optimized_debug_fixture_passed_caller_adoption_pending",
+  "abi_compatible": false,
+  "game_validated": false,
+  "ghidra_worker_read_only": true,
+  "tracked_tests_added": true,
+  "new_test_scope": "One Debug-only block in the existing math fixture for constructor failure and post-constructor parent-vector failure; no framework or new target.",
+  "original_binary": {
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "ranges": [
+      {
+        "name": "append",
+        "address": "00c50390",
+        "end_inclusive": "00c50469",
+        "bytes": 218,
+        "sha256": "a4e2ab72f764cb5f9735596d0eeff40a6c822830a1684f5ead522fb000bdc9ac"
+      },
+      {
+        "name": "constructor",
+        "address": "00c44000",
+        "end_inclusive": "00c44081",
+        "bytes": 130,
+        "sha256": "0840222b5e67436bab655c870cc7e053b2f5a87c78bf3ba4424c5e6be969e33b"
+      },
+      {
+        "name": "vector_cleanup",
+        "address": "0040a900",
+        "end_inclusive": "0040a90d",
+        "bytes": 14,
+        "sha256": "ff8ba6293e5c4012379de01a5bd9539e6845929eeee123f10f4dec5ecd26c4e7",
+        "hex": "8b 00 85 c0 74 07 50 e8 7d c0 7e 00 59 c3"
+      },
+      {
+        "name": "append_action",
+        "address": "00cc8378",
+        "end_inclusive": "00cc8382",
+        "bytes": 11,
+        "sha256": "3bf5a152d01eb34731bf2775904f9556dea5cc51c8bb2be5f407115b79db4b89",
+        "hex": "8b 45 f0 50 e8 2b e2 f2 ff 59 c3"
+      },
+      {
+        "name": "append_handler",
+        "address": "00cc8383",
+        "end_inclusive": "00cc838c",
+        "bytes": 10,
+        "sha256": "2edf9c4136c50e5b41185de69b0b13cde4c02780054062314627c22687092f95",
+        "hex": "b8 fc 41 e0 00 e9 b6 e7 f2 ff"
+      },
+      {
+        "name": "append_unwind_map",
+        "address": "00e041f4",
+        "end_inclusive": "00e041fb",
+        "bytes": 8,
+        "sha256": "e9cc5f520301f55ab3aae51a08fe25320eb98fd3b2318f97203de94935932e17",
+        "hex": "ff ff ff ff 78 83 cc 00"
+      },
+      {
+        "name": "append_funcinfo",
+        "address": "00e041fc",
+        "end_inclusive": "00e0421f",
+        "bytes": 36,
+        "sha256": "1f35b80af77f853c814fa85945a42d7b417de0c3820499d5eb00bc7aca852667",
+        "hex": "22 05 93 19 01 00 00 00 f4 41 e0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00"
+      },
+      {
+        "name": "constructor_action",
+        "address": "00cc81e7",
+        "end_inclusive": "00cc81f1",
+        "bytes": 11,
+        "sha256": "937a0408e95ae1b702a9712f5c9eb0dc35d771861723e00a2a5c99a998aee524",
+        "hex": "8b 45 04 83 c0 04 e9 0e 27 74 ff"
+      },
+      {
+        "name": "constructor_handler",
+        "address": "00cc81f2",
+        "end_inclusive": "00cc81fb",
+        "bytes": 10,
+        "sha256": "4966bd0782d6c4668f4243e9d6b97ef28525482d99d93b95b1f6d5a64745bc8a",
+        "hex": "b8 14 40 e0 00 e9 47 e9 f2 ff"
+      },
+      {
+        "name": "constructor_unwind_map",
+        "address": "00e0400c",
+        "end_inclusive": "00e04013",
+        "bytes": 8,
+        "sha256": "fbe196a429ced6971895fb8c3d31d92c4329f4216242d4154f80c9e0b7507bcb",
+        "hex": "ff ff ff ff e7 81 cc 00"
+      },
+      {
+        "name": "constructor_funcinfo",
+        "address": "00e04014",
+        "end_inclusive": "00e04037",
+        "bytes": 36,
+        "sha256": "1685705efe344fe1260f277a202b268909e4652cedd8f5dd0a98edc4e718ba90",
+        "hex": "22 05 93 19 01 00 00 00 0c 40 e0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00"
+      },
+      {
+        "name": "distinct_delete65",
+        "address": "00bf65ac",
+        "end_inclusive": "00bf65b0",
+        "bytes": 5,
+        "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+        "hex": "e9 17 38 00 00"
+      },
+      {
+        "name": "vector_free68",
+        "address": "00bf6989",
+        "end_inclusive": "00bf698d",
+        "bytes": 5,
+        "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+        "hex": "e9 1e fc ff ff"
+      }
+    ]
+  },
+  "routines": [
+    {
+      "address": "00c50390",
+      "body_end_inclusive": "00c50469",
+      "bytes": 218,
+      "instruction_count": 71,
+      "last_instruction": "00c50467",
+      "last_instruction_length": 3,
+      "original_name": "Dyn_ProfileNode_AppendChild_00C50390",
+      "cpp_symbol": "bsp::dyn_profile_node_append_child_00c50390",
+      "original_abi": "ESI parent48h node; stack name/id; EAX reloaded appended vector entry; RET8",
+      "name_is_hypothesis": true,
+      "existing_body_repaired": true,
+      "coverage": "Additive five-argument C++ exception-cleanup interface; raw allocation outside catch, real qualified ctor inside catch, parent append outside catch; old four-argument API remains normal-only."
+    },
+    {
+      "address": "00c44000",
+      "body_end_inclusive": "00c44081",
+      "bytes": 130,
+      "instruction_count": 46,
+      "last_instruction": "00c4407f",
+      "last_instruction_length": 3,
+      "original_name": "Dyn_ProfileNode_Construct",
+      "cpp_symbol": "bsp::dyn_profile_node_construct_00c44000",
+      "original_abi": "EDX name; stack node pointer/id; EAX node; RET8",
+      "name_is_hypothesis": true,
+      "existing_body_repaired": true,
+      "coverage": "Additive four-argument C++ cleanup interface; actual vector zeroing precedes lexical try; real existing string payload; A900 current-data cleanup then rethrow. Old three-argument API stays normal-only."
+    },
+    {
+      "address": "0040a900",
+      "body_end_inclusive": "0040a90d",
+      "bytes": 14,
+      "instruction_count": 7,
+      "last_instruction": "0040a90d",
+      "last_instruction_length": 1,
+      "original_name": "DYN_Vector_FreeBuffer_0040A900",
+      "cpp_symbol": "bsp::anonymous::release_profile_vector_storage_0040a900",
+      "original_abi": "EAX actual vector; plain RET; no defined result contract",
+      "name_is_hypothesis": true,
+      "existing_body_repaired": false,
+      "coverage": "Previously missing small C++ helper: capture current data once; conditional genuine BF6989; no data/count/capacity writes.",
+      "prior_source_status": "Base lookup has only name/tag and no reconstruction row; address search matches no other existing C++ source body.",
+      "root_ledger_action": "Review as one separate 14-byte in-house helper; do not duplicate credit for C50390/C44000 repairs."
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00c503a9",
+      "native": "00bf681b",
+      "function": "00c50390",
+      "contract": "Allocate48h before state0; captured original allocation at C503B1."
+    },
+    {
+      "address": "00c503cb",
+      "native": "00c44000",
+      "function": "00c50390",
+      "contract": "EDX name; push id then original node; callee RET8; state0 construction scope."
+    },
+    {
+      "address": "00c503f6",
+      "native": "00bf55be",
+      "function": "00c50390",
+      "contract": "Parent-vector allocation after capacity commit and state reset C503D6."
+    },
+    {
+      "address": "00c5042f",
+      "native": "00bf6989",
+      "function": "00c50390",
+      "contract": "Normal old parent-buffer release after copy and before replacement publication."
+    },
+    {
+      "address": "00c44050",
+      "native": "00408720",
+      "function": "00c44000",
+      "contract": "Existing real counted legacy SBO string assignment in constructor state0."
+    },
+    {
+      "address": "0040a907",
+      "native": "00bf6989",
+      "function": "0040a900",
+      "contract": "Release captured current nonnull child-vector data; no field clear."
+    },
+    {
+      "address": "00cc837c",
+      "native": "00bf65ac",
+      "function": "00cc8378",
+      "contract": "Outer unwind action releases captured original raw allocation [EBP-10h]."
+    },
+    {
+      "address": "00cc81ed",
+      "native": "0040a900",
+      "function": "00cc81e7",
+      "contract": "Inner action loads original node argument [EBP+4], adds4, tail-jumps actual vector cleanup.",
+      "kind": "tail_jump"
+    }
+  ],
+  "unwind_contracts": [
+    {
+      "function_address": "00c50390",
+      "handler": "00cc8383",
+      "funcinfo": "00e041fc",
+      "max_state": 1,
+      "unwind_map": "00e041f4",
+      "map_hex": "ff ff ff ff 78 83 cc 00",
+      "action": "00cc8378",
+      "previous_state": -1,
+      "state0_begin": "00c503b7",
+      "state_reset": "00c503d6",
+      "ownership": "Only ctor failure deletes captured original raw allocation. Allocation failure and later parent growth are outside; no orphan delete/parent rollback."
+    },
+    {
+      "function_address": "00c44000",
+      "handler": "00cc81f2",
+      "funcinfo": "00e04014",
+      "max_state": 1,
+      "unwind_map": "00e0400c",
+      "map_hex": "ff ff ff ff e7 81 cc 00",
+      "action": "00cc81e7",
+      "previous_state": -1,
+      "vector_zero_stores": [
+        "00c4401f",
+        "00c44022",
+        "00c44025"
+      ],
+      "state0_begin": "00c4402b",
+      "ownership": "Current vector data at node+4 is captured once by A900 and conditionally released; all three vector fields retained; outer raw delete follows."
+    }
+  ],
+  "required_providers": [
+    {
+      "name": "AvoidZoneDynHullMemory",
+      "unchanged_layout": true,
+      "contract": "Existing actual allocation/copy/release epochs retained. release must genuinely bind BF6989 for vector allocations and return normally; no default/global inferred."
+    },
+    {
+      "name": "DynProfilePartialNodeDelete",
+      "signature": "void (__cdecl*)(void* original_allocation)",
+      "default": null,
+      "contract": "Required flat genuine matching-heap BF65AC provider returning normally; separate from opaque memory.release. No caller binding added."
+    },
+    {
+      "name": "native_legacy_sbo_string_assign_counted_00408720",
+      "contract": "Actual existing constructor dependency and allocator; no fake ctor, fallback name implementation or production injection API."
+    }
+  ],
+  "vendor_thunk_evidence": {
+    "00bf6989": "e9 1e fc ff ff -> 00BF65AC",
+    "00bf65ac": "e9 17 38 00 00 -> 00BF9DC8",
+    "qualification": "Distinct original call entries and additive required source bindings retained despite vendor forwarding. No vendor body reconstructed."
+  },
+  "unchanged_cpp_consumers": [
+    {
+      "path": "src/dyn_profile_scopes.cpp",
+      "symbol": "dyn_profile_scope_enter_00c57020",
+      "qualification": "Old four-argument append remains normal-only."
+    },
+    {
+      "path": "src/native_dyn_collision_pass.cpp",
+      "symbol": "append_bridge",
+      "qualification": "Old four-argument append remains normal-only."
+    },
+    {
+      "path": "src/native_dyn_solver_mode1.cpp",
+      "symbol": "append_bridge",
+      "qualification": "Old four-argument append remains normal-only."
+    },
+    {
+      "path": "src/native_dyn_world_step.cpp",
+      "symbol": "append_bridge",
+      "qualification": "Old four-argument append remains normal-only."
+    },
+    {
+      "path": "src/dyn_engine_runtime.cpp",
+      "symbol": "dyn_profile_construct_00c50310",
+      "qualification": "Old three-argument constructor remains normal-only."
+    }
+  ],
+  "original_append_caller_inventory": [
+    {
+      "function_address": "00c57020",
+      "sites": [
+        "00c5703c"
+      ]
+    },
+    {
+      "function_address": "00c57070",
+      "sites": [
+        "00c570ae",
+        "00c570fe",
+        "00c57494",
+        "00c57535",
+        "00c575d7",
+        "00c5761c"
+      ]
+    },
+    {
+      "function_address": "00c5a8b0",
+      "sites": [
+        "00c5aa59",
+        "00c5acb7",
+        "00c5ad43",
+        "00c5ae69",
+        "00c5af19"
+      ]
+    },
+    {
+      "function_address": "00c5bb30",
+      "sites": [
+        "00c5bb83",
+        "00c5c469",
+        "00c5c4ce"
+      ]
+    },
+    {
+      "function_address": "00c5c540",
+      "sites": [
+        "00c5c5c5"
+      ]
+    },
+    {
+      "function_address": "00c5c710",
+      "sites": [
+        "00c5c72f"
+      ]
+    },
+    {
+      "function_address": "00c5c7a0",
+      "sites": [
+        "00c5c7d3"
+      ]
+    }
+  ],
+  "object_review": {
+    "append": "Allocation before state0; real four-argument ctor within; state reset before shared parent append helper; catch calls flat delete with captured allocation then __CxxThrowException.",
+    "vector_cleanup": "Exactly one current-data load, nonnull branch, contextual release call; no stores.",
+    "constructor_scope_limit": "Optimized /EHsc compiler moves its EH-state write before nonthrowing vector-zero stores despite lexical source try after zeroing. C++ throwing scope retained; original SEH/access-fault transport not established.",
+    "old_public_symbols": "Old three-argument ctor and four-argument append remain emitted alongside additive overloads; ScopeContext fields unchanged."
+  },
+  "validation": {
+    "strict_objects": {
+      "passed": true,
+      "flags": "/std:c++17 /EHsc /fp:strict /O2 /Ob2 /MD /W4 /WX",
+      "log": "local/profile_append_cleanup/compile.log"
+    },
+    "initial_standard_release": {
+      "passed": true,
+      "checks": "2/2 reconstructed_math and tool_tests",
+      "log": "local/profile_append_cleanup/common_release_build.log"
+    },
+    "standard_debug": {
+      "passed": false,
+      "fixture_reached": false,
+      "log": "local/profile_append_cleanup/standard_debug_failed.log",
+      "error_records": 14,
+      "blockers": [
+        "Unrelated native_lua_reader.hpp/native_gui_page_reader_continuation.cpp Debug STL layout assertions",
+        "Unrelated plane_advance_pose.cpp/ship_ai_throttle_ring.cpp /Od unreachable-code /WX diagnostics",
+        "Unrelated hull_terrain_contact.hpp Debug-layout padding C4324 /WX diagnostic"
+      ],
+      "qualification": "Preserved failed standard Debug attempt; no unrelated source/warning changes."
+    },
+    "optimized_debug_fixture": {
+      "passed": true,
+      "pending": false,
+      "flags": "/D_DEBUG /MDd /Zi /O2 /Ob2 /D_ITERATOR_DEBUG_LEVEL=0",
+      "parallelism": {
+        "msbuild": 2,
+        "cl_mp": 2
+      },
+      "build_tree": "build/profile_cleanup_debug",
+      "test": "reconstructed_math",
+      "checks_passed": "1/1",
+      "build_log": "local/profile_append_cleanup/optimized_debug_build.log",
+      "test_log": "local/profile_append_cleanup/optimized_debug_ctest.log",
+      "actual_debug_crt_imports": [
+        "ucrtbased.dll:_CrtSetAllocHook",
+        "ucrtbased.dll:_set_new_handler",
+        "ucrtbased.dll:_callnewh"
+      ],
+      "qualification": "Explicit root-approved private optimized Debug config, not a standard Debug build pass."
+    },
+    "final_standard_release": {
+      "passed": true,
+      "checks_passed": "2/2 reconstructed_math and tool_tests",
+      "build_log": "local/profile_append_cleanup/final_release_build.log",
+      "test_log": "local/profile_append_cleanup/final_release_ctest.log",
+      "conditional_debug_fixture_executed": false
+    },
+    "native_call_rows": {
+      "passed": true,
+      "checked": 8,
+      "failed": 0,
+      "log": "local/profile_append_cleanup/final_verify_calls.log"
+    }
+  },
+  "focused_fixture": {
+    "path": "tests/math_tests.cpp",
+    "guard": "defined(_MSC_VER) && defined(_M_IX86) && defined(_DEBUG)",
+    "constructor_failure": "Real 17-character name/SBO allocate32 then fallback18 rejected only on fixture thread via actual Debug CRT allocation hook; preallocated vector installed after observing constructor zeroing; new-handler second fault rethrown; current-data free68 before original-allocation delete65; no field clear; parent unchanged.",
+    "post_constructor_failure": "Real short-name constructor completes; parent growth allocation16 throws; no vector/raw release and no rollback; old data/count retained, capacity4 committed; fixture alone disposes intentional orphan afterward.",
+    "hook_scope": "Preallocated observation storage; exact rejected size order32,18 asserted; prior allocation hook and new handler restored by RAII and explicitly verified; unrelated allocations forwarded to prior hook.",
+    "qualification": "Host CRT C++ exception fixture only; no original FH/SEH frames, binary ABI, native machine exception or gameplay proof."
+  },
+  "credit": {
+    "repaired_existing_body_credit": 0,
+    "separate_missing_helper_for_root_ledger_review": [
+      "0040a900"
+    ],
+    "vendor_body_credit": 0,
+    "abi_credit": 0,
+    "gameplay_credit": 0
+  },
+  "remaining_obligations": [
+    "Root review/integration, original call verification, ledger and saved Ghidra annotations.",
+    "BigC5 and other callers must explicitly adopt the new overload with genuine BF65AC custody; old APIs stay normal-only.",
+    "Original FH3/SEH/access-fault/frame transport, invalid storage, binary ABI and runtime/game activation remain unproved."
+  ],
+  "source_and_dependency_hashes": [
+    {
+      "path": "src/dyn_profile_scopes.cpp",
+      "bytes": 5349,
+      "sha256": "7177b2f2174174c93dd6dd20e9f8c585d9f54573669fb8a945b747ea0523e7d0"
+    },
+    {
+      "path": "include/bsp/dyn_profile_scopes.hpp",
+      "bytes": 3010,
+      "sha256": "1ce9b126405212887e03e05bbd558d8a035eb252024aa42031cf126a059c5d80"
+    },
+    {
+      "path": "src/dyn_engine_runtime.cpp",
+      "bytes": 4778,
+      "sha256": "eeda95d61df753129db8a480f5bf8229071ab90134dfff81fa92b976ce700e3a"
+    },
+    {
+      "path": "include/bsp/dyn_engine_runtime.hpp",
+      "bytes": 3299,
+      "sha256": "2217fde53118820512482ca218e4b73e482801d61e3271bbb81f224b54418393"
+    },
+    {
+      "path": "tests/math_tests.cpp",
+      "bytes": 219102,
+      "sha256": "d2d370bb24f1399360f19c0f942168e33ba269a1abc4c29b2d42e8d207c3dcd3"
+    },
+    {
+      "path": "src/native_legacy_sbo_string.cpp",
+      "bytes": 7772,
+      "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c"
+    },
+    {
+      "path": "include/bsp/native_legacy_sbo_string.hpp",
+      "bytes": 2115,
+      "sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "include/bsp/avoid_zone_dyn_hull.hpp",
+      "bytes": 5734,
+      "sha256": "3fd5fecb9e29d82393c25315ddcd6046119e3c7666d7d5ab97236c79d8e91c45"
+    },
+    {
+      "path": "reports/dyn_profile_scopes.json",
+      "bytes": 28125,
+      "sha256": "891cef4b7228b29df5ef7047e969062067db66efd6a8e91870b730733a6034cf"
+    },
+    {
+      "path": "reports/dyn_engine_runtime.json",
+      "bytes": 13770,
+      "sha256": "a274f72cbce3ff4975417440f226e5f9138da2b2d4baae642d19b453511a856d"
+    }
+  ],
+  "retained_artifacts": [
+    {
+      "path": "local/profile_append_cleanup/native_evidence.json",
+      "bytes": 3702,
+      "sha256": "e03d5160f3349ed70a0da65df90eca09f2d35c3af10efc251f885fbfb4f588f1"
+    },
+    {
+      "path": "local/profile_append_cleanup/runtime.obj",
+      "bytes": 7981,
+      "sha256": "62e8a1a5295bd0525416fa428cc669b21711399d2df20f5635eb274ff6f27f88"
+    },
+    {
+      "path": "local/profile_append_cleanup/scopes.obj",
+      "bytes": 6962,
+      "sha256": "e520e8546e7fec67626701e976652b6f36f7655f9a6336df116f77a0f80e1151"
+    },
+    {
+      "path": "local/profile_append_cleanup/runtime.asm",
+      "bytes": 35443,
+      "sha256": "88e1df4d3f57019a605b7c6fb922368691d194d5ecd65186444878f5036aa4af"
+    },
+    {
+      "path": "local/profile_append_cleanup/scopes.asm",
+      "bytes": 29117,
+      "sha256": "715470dbbea47eb631b80d7e6dc81477528f8cfc4ae6119ee88ab0361b696358"
+    },
+    {
+      "path": "local/profile_append_cleanup/compile.log",
+      "bytes": 48,
+      "sha256": "31f35ac1c54a5ef65ad94b464b6d66545817536d190c83eab0e92b8e8ab6172c"
+    },
+    {
+      "path": "local/profile_append_cleanup/common_release_build.log",
+      "bytes": 99841,
+      "sha256": "76b85acb9e968ba8855211e4550cc490e0a7eceefe95e1fafc3dda73d0e635a8"
+    },
+    {
+      "path": "local/profile_append_cleanup/standard_debug_failed.log",
+      "bytes": 97782,
+      "sha256": "1cf2fa0bc9089dde5db274296dbe78d899f076c95addf24723232021176994a9"
+    },
+    {
+      "path": "local/profile_append_cleanup/optimized_debug_configure.log",
+      "bytes": 987,
+      "sha256": "49ed9c5bda6aca68ff3a877aaf34576c6ab84b434dfcd83784c14112fbcc6511"
+    },
+    {
+      "path": "local/profile_append_cleanup/optimized_debug_build.log",
+      "bytes": 1156,
+      "sha256": "1dade0179fc44055c85e6164a362451673a0005b3e02973c7d95171f2ff29226"
+    },
+    {
+      "path": "local/profile_append_cleanup/optimized_debug_ctest.log",
+      "bytes": 304,
+      "sha256": "8b2b7e5483ded2ea3b92fe632e7654071eb4b4e30913b5955fe091128016548d"
+    },
+    {
+      "path": "local/profile_append_cleanup/optimized_debug_imports.txt",
+      "bytes": 18671,
+      "sha256": "cb1d65e80fb850bcd63e9ad32ff708859e2222746f3d67fa774b6d2d42060e5f"
+    },
+    {
+      "path": "local/profile_append_cleanup/final_release_build.log",
+      "bytes": 1957,
+      "sha256": "fbe97a8d84dfdd96d4149ddbf4bf348df664cd43c6705f9d087ecb9d6c570983"
+    },
+    {
+      "path": "local/profile_append_cleanup/final_release_ctest.log",
+      "bytes": 383,
+      "sha256": "bb7fa04125f0bbec1d5f0e434804223fe5d4b5823dbc730788eaef65612b2a5b"
+    },
+    {
+      "path": "local/profile_append_cleanup/verify_report_calls.log",
+      "bytes": 77,
+      "sha256": "96a164e5538b91a9b172b9f7f8329ae1b12e53d05fffab45bed197fb2a987c60"
+    },
+    {
+      "path": "local/profile_append_cleanup/final_verify_calls.log",
+      "bytes": 195,
+      "sha256": "a760127f2cb41b8605672eac472397ce2c6dfc9383b4176b163a11b462b37e7e"
+    },
+    {
+      "path": "build/profile_cleanup_debug/bsp_math_tests.vcxproj",
+      "bytes": 115271,
+      "sha256": "f9cda760f6433fe4315f63f3cbd9dfbdcf70f2f8391e74eb58debe154e4fad6d"
+    },
+    {
+      "path": "build/profile_cleanup_debug/Debug/bsp_math_tests.exe",
+      "bytes": 6566400,
+      "sha256": "7e9ae38d5a572e14a57ea50b62dcd72a6c28fc941a5f7c268e0abc6346558fdb"
+    },
+    {
+      "path": "build/profile_cleanup_debug/bsp_math_tests.dir/Debug/math_tests.obj",
+      "bytes": 4830615,
+      "sha256": "0f9471d3ff4ff1fb53ae774da9e448c9f68172ed179e2499bf959d79cbf12852"
+    },
+    {
+      "path": "build/win32/Release/bsp_math_tests.exe",
+      "bytes": 890880,
+      "sha256": "57970d44d7c3f06df39562da5b6a6c33a5f9a51a8ae555f93324dbe8a74b9c5c"
+    }
+  ]
+}

@@ -14,9 +14,26 @@ struct DynProfileScopeContext {
 //00C50390..00C50469: ESI parent48h node; stack name/id; EAX appended child;
 //RET8. Complete normal child allocation/construction/vector append. This is
 //not a destructor, name lookup, scope activation, or profile-global mutation.
+//This existing overload remains normal-only; no cleanup binding is assumed.
 DynProfileNodeStorage* dyn_profile_node_append_child_00c50390(
     DynProfileNodeStorage& parent, const char* name, std::uint32_t id,
     const AvoidZoneDynHullMemory& memory);
+
+// Distinct original BF65AC raw-allocation release, not memory.release/BF6989.
+// Required genuine matching-heap provider; it must return normally. No default.
+using DynProfilePartialNodeDelete = void (__cdecl*)(void* original_allocation);
+
+// Additive cleanup-qualified C++ interface. memory.release must bind the actual
+// BF6989 vector release returning normally; delete_partial_00bf65ac is separate.
+// The real qualified C44000 constructor first performs its own A900 cleanup.
+// Only a constructor exception then releases the captured raw48h allocation
+// and rethrows. Allocation and post-constructor parent growth are outside that
+// catch: no parent rollback or fully constructed orphan cleanup is fabricated.
+// Original FH3/SEH/fault/frame transport and caller adoption remain separate.
+DynProfileNodeStorage* dyn_profile_node_append_child_00c50390(
+    DynProfileNodeStorage& parent, const char* name, std::uint32_t id,
+    const AvoidZoneDynHullMemory& memory,
+    DynProfilePartialNodeDelete delete_partial_00bf65ac);
 
 //00C57020..00C57063: EDI scope, EAX id, stack name; EAX scope; RET4.
 //Cache key is id (valid owner indices0..35), independent of name/parent. On
