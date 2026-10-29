@@ -1,0 +1,279 @@
+{
+  "packet": "codex-dyn-radix-update",
+  "source": "src/cc16_dyn_radix_update.cpp",
+  "header": "include/bsp/cc16_dyn_radix_update.hpp",
+  "accepted_upstream": "c086d1548df089bd96b1ed738866d4abe51935b0",
+  "private_source_dependency": "57f644d5bd31d0f46ad49899c8ec5219fde33786",
+  "in_house_function_credit": 1,
+  "function": {
+    "start": "00c54da0",
+    "body_end_inclusive": "00c55a55",
+    "body_bytes": 3254,
+    "instruction_count": 1001,
+    "call_count": 12,
+    "cpp_name_hypothesis": "bsp::cc16_dyn_radix_update::rebuild_radix_pairs_00c54da0",
+    "original_abi": "ECX manager, no stack arguments, plain RET; EBP/EBX/ESI/EDI preserved",
+    "public_abi": "new explicit C++ manager/CRT/canonical-feature/half-cell interface; private fastcall kernel has one extra stack Context and RET4",
+    "observed_eax": "final RDTSC low32 bits, not asserted as a semantic native timing result",
+    "native_bytes_sha256": "900f716ab90729db83551f097e4f64bce810a45321670a9d6d8be4197f0b4f24",
+    "export_assembly_sha256": "2c1f114d628c7d48523c8645e35ccd8344c4f196479ac7570331cf6999acd59c"
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verified_by": "bsp.py ghidra verifying client before every live batch",
+    "fresh_export_utc": "2026-10-29T05:17:15Z",
+    "native_bytes": "seven bounded live reads, contiguous addresses and full3254-byte length asserted"
+  },
+  "rows": [
+    {
+      "address": "00c54da8",
+      "native": "00bf9410",
+      "function": "00c54da0",
+      "kind": "call",
+      "contract": "compiler fixed-frame probe; EAX1040h; actual target _alloca_probe symbol"
+    },
+    {
+      "address": "00c54dfd",
+      "native": "00c0f700",
+      "function": "00c54da0",
+      "kind": "call",
+      "contract": "compiler16-aligned stack allocation; EAX wraps initial_count*8; first object buffer"
+    },
+    {
+      "address": "00c55037",
+      "native": "00c0f700",
+      "function": "00c54da0",
+      "kind": "call",
+      "contract": "compiler16-aligned stack allocation; same wrapped size; second object buffer"
+    },
+    {
+      "address": "00c5504d",
+      "native": "00bf79f0",
+      "function": "00c54da0",
+      "kind": "call",
+      "contract": "qualified fill_native_crt_bytes; actual feature cell; zero fixed4096B histogram for object radix"
+    },
+    {
+      "address": "00c552fb",
+      "native": "00c40a30",
+      "function": "00c54da0",
+      "kind": "call",
+      "contract": "EDI manager; push ECX candidate then EDX freshly reloaded first; same actual objects/CRT"
+    },
+    {
+      "address": "00c55342",
+      "native": "00c40900",
+      "function": "00c54da0",
+      "kind": "call",
+      "contract": "pending endpoint, axis0, ECX manager, same CRT"
+    },
+    {
+      "address": "00c5534c",
+      "native": "00c40900",
+      "function": "00c54da0",
+      "kind": "call",
+      "contract": "same pending endpoint, axis1, same manager/CRT"
+    },
+    {
+      "address": "00c55356",
+      "native": "00c40900",
+      "function": "00c54da0",
+      "kind": "call",
+      "contract": "same pending endpoint, axis2; final flag store follows return"
+    },
+    {
+      "address": "00c55442",
+      "native": "00c0f700",
+      "function": "00c54da0",
+      "kind": "call",
+      "contract": "compiler16-aligned stack allocation; wrapped captured_axis0_count*8; shared endpoint scratch"
+    },
+    {
+      "address": "00c5545d",
+      "native": "00bf79f0",
+      "function": "00c54da0",
+      "kind": "call",
+      "contract": "qualified zero of histogram before axis0 radix; data pointer captured before call"
+    },
+    {
+      "address": "00c55634",
+      "native": "00bf79f0",
+      "function": "00c54da0",
+      "kind": "call",
+      "contract": "qualified zero of histogram before axis1 radix; data pointer captured before call"
+    },
+    {
+      "address": "00c55808",
+      "native": "00bf79f0",
+      "function": "00c54da0",
+      "kind": "call",
+      "contract": "qualified zero of histogram before axis2 radix; data pointer captured before call"
+    }
+  ],
+  "bindings": {
+    "actual_raw_objects_and_same_crt": true,
+    "required_crt": [
+      "operator_new_00bf55be",
+      "free_00bf6989",
+      "malloc_00bf9f1a"
+    ],
+    "direct_reconstructed_dependencies": [
+      "cc16_dyn_sap_update::append_axis_endpoints_00c40900",
+      "cc16_dyn_storage::add_endpoint_pair_00c40a30"
+    ],
+    "qualified_memset": "bsp::fill_native_crt_bytes_00bf79f0 with borrowed actual canonical0109EEA4 feature cell",
+    "compiler_stack_support": [
+      "actual target MSVC _alloca_probe",
+      "actual target MSVC _alloca_probe_16"
+    ],
+    "borrowed_constant": {
+      "cell": "00d7a280",
+      "live_bytes": "000000000000e03f",
+      "meaning": "double0.5; actual cell reference supplied, no replacement constant/global"
+    },
+    "context": "three borrowed pointers only; private local context outlives kernel and all bridges",
+    "fabricated_class_vtable_global_default_provider_or_returning_stub": false,
+    "heap_scratch_substitution": false,
+    "vendor_compiler_body_credit": 0
+  },
+  "contracts": {
+    "frame": "fixed1040h actual probed frame, two wrapped initial_count*8 aligned stack buffers, then one wrapped captured_axis0_count*8 aligned stack buffer; all retained to native epilogue",
+    "count_selection": "initial pool+F4h/+190h sum wraps; signed CVTSI2SS under ambient MXCSR; collected count controls only initial selected-key fill; initial sum controls object radix/sweep",
+    "collection": "rings+AC/+148 to sentinels+B0/+14C; each ref size+34h zeroed; object pointer captured in8B scratch entry",
+    "floating_point": "unaltered full SSE/x87 operand/spill/compare schedule and ambient controls; variance ties/unordered retain earlier axis; sweep JA treats unordered as continuing",
+    "radix": "fixed interleaved256x4 histogram, ordered per-byte counts/exclusive prefixes, four stable low-to-high byte passes per sort; one object sort plus three endpoint sorts",
+    "pair_reset": "exact native+44h chain traversal/splice/head/tail/count order retained before sweep",
+    "sweep": "cached first+4h bounds base; fresh first pointer for flags/add; selected-axis early exit plus six ordered AABB comparisons; direct real add with same CRT",
+    "pending": "fresh data/live unsigned count; captured endpoint appends0/1/2 then final flag; count cleared only after normal completion",
+    "endpoint_keys": "one captured axis0 count for all axes; data and tag-byte reloads retained; MOVSS preserves raw bits rather than x87 quieting",
+    "index_publication": "data reload each axis; tag byte test before tag dword; truncated16-bit index writes",
+    "bounds_count_tag_ring_guard": false,
+    "allocation_failure_guard": false,
+    "exception_cleanup_or_rollback": false,
+    "semantic_native_return_contract_claimed": false
+  },
+  "incoming_evidence": {
+    "caller": "00c5a850",
+    "source": "live bounded caller query; actual caller wiring outside packet"
+  },
+  "remaining_root_work": [
+    "genuine manager/CRT/canonical-feature/half-cell custody and actual caller binding before activation",
+    "original ABI/FH/SEH/frame/fault qualifications, provider failure paths, native differential and game validation"
+  ],
+  "worker_validation": {
+    "source_sha256": "2ac7341aaaee3499e595baabb71b26ac4ae0cfae063403c3eb52c3ccb28b5792",
+    "header_sha256": "595bd6ee8c3bad0782098bff4aa1d50ead0ec786e9eac834d3b06630719bdfc7",
+    "source_compile_tested": "MSVC x86 C++17 object-only /permissive- /EHsc /fp:strict /O2 /W4 /WX; exit0",
+    "object_sha256": "760b3150ff4e999061029fdb310bb20847e9a69583ce6af53cfef727ed215b77",
+    "object_audit": {
+      "method": "read-only COFF symbol/relocation decode and Capstone instruction comparison against complete live bytes and refreshed listing",
+      "original_listed_instructions_checked": 1001,
+      "compiled_kernel_instructions": 1011,
+      "internal_branch_sites_checked": 97,
+      "unique_branch_targets": 73,
+      "call_relocations_checked": 12,
+      "result": "all unadapted IDs/operands/order and branch targets match; only8 context pushes,2 constant-binding loads, call targets and RET cleanup adapt native schedule",
+      "local_result": "local/cc16_dyn_radix_update_object_audit.json",
+      "local_result_sha256": "246e0a7e03eea063a6e8a9fb2e6e9c235ae9d985747bd93d303533618ab42835"
+    },
+    "bridge_review": "generated public context/fastcall setup, three C++ real dependency bridges and all shim argument/cleanup sequences inspected",
+    "call_report_verification": "12 call rows checked, 0 failed",
+    "build_registered": false,
+    "common_build_tested": false,
+    "fixture_tested": false,
+    "native_differential_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "tests_added_or_run": false,
+    "probe_or_game_executable_launched": false,
+    "ghidra_mutated": false
+  },
+  "integration_status": "reconstructed_build_tested_unwired",
+  "independent_review": {
+    "commit": "52897aeb5fd6fa2b374a76d20a9eee7fcba5ac4f",
+    "report": "reports/cc16_dyn_radix_update_review.json",
+    "blocking_mismatches": 0,
+    "scope": "static complete instruction/CFG/bridge/FP/probe closure"
+  },
+  "validation": {
+    "accepted_base": "308883b75c9e12b7284a1fbb2bc2123af5332f27",
+    "source_candidate": "3ff41faa87bf10653d41c0e79e9685254e22d541",
+    "build_registered": true,
+    "configuration": "MSVC Win32 Release",
+    "build_tested": true,
+    "build_log": "local/cc16_radix_update_main_build.log",
+    "existing_suites_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "existing_suite_seconds": 14.29,
+    "compiled_object_sha256": "78d95f95216fedcce5ebd80f902650877fa7586342866c87c22d42e6b3b5e152",
+    "source_sha256": "2ac7341aaaee3499e595baabb71b26ac4ae0cfae063403c3eb52c3ccb28b5792",
+    "final_object_audit": {
+      "local": "local\\cc16_radix_final_audit\\independent_audit.json",
+      "sha256": "e8a2e73e10b0fb6bfbddf1b9e8343572a3d6644e6e4f9998d899f573ee07b89a",
+      "instructions": 1001,
+      "kernel_instructions": 1011,
+      "branches": 97,
+      "targets": 73,
+      "calls": 12,
+      "reachable": 1001,
+      "maximum_x87_depth": 6,
+      "method": "unchanged independent checker rerun against final common-build object"
+    },
+    "forced_entry_link": {
+      "executable_sha256": "1cdc1e5f3a34d08db94b94c98d8e47b756df1abc04353000281595283f2390bd",
+      "map_sha256": "0e0f1543cc63cb0de6a4e5a8f6720a37474393c3d56ef5347b204f47d9729eb0",
+      "manifest_embedded_by_link_command": true,
+      "executed": false,
+      "forced_entry": "volatile function pointer to real public entry; no dummy manager/providers or stubs",
+      "dependencies": [
+        "real cc16_dyn_sap_update append",
+        "real cc16_dyn_storage add",
+        "qualified native_crt_memset"
+      ],
+      "fixed_probe": {
+        "address": "004024c0",
+        "native_bytes_equal": 43,
+        "sha256": "f8675b4976f7b8efc0bd917aebab734d11ca90222d20bcd2a166ce9914ed2b6e",
+        "archive_member": "MSVCRT:chkstk.obj"
+      },
+      "aligned_probe": {
+        "address": "004024f0",
+        "native_prefix_bytes_equal": 18,
+        "tail_target": "004024c0",
+        "tail_target_is_fixed_probe": true,
+        "archive_member": "MSVCRT:alloca16.obj"
+      },
+      "target_game_map": "build\\win32\\bsp_game.map",
+      "target_game_map_entry_count": 0
+    },
+    "call_rows_checked": 12,
+    "call_rows_failed": 0,
+    "fixture_tested": false,
+    "native_differential_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "runtime_activated": false,
+    "new_tests": false,
+    "probe_or_game_executable_launched": false,
+    "ghidra_annotations": {
+      "saved": true,
+      "backup": "local/ghidra-annotations-20261029T061245Z.json",
+      "scope": "hypothesis name and preserved prior plate comments",
+      "project": "bsp",
+      "program": "/battlestationspacific.exe",
+      "refreshed_export": "exports/bsp/functions/00c54da0/decompiled.c"
+    },
+    "final_common_main": {
+      "accepted_upstream": "c3c30a219",
+      "build_log": "local/cc16_radix_update_common_main_build.log",
+      "existing_suites_passed": 2,
+      "compiled_object_unchanged": true
+    }
+  }
+}
