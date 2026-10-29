@@ -1,4 +1,5 @@
 #include "bsp/native_gui_text_prefix_geometry_lifetime.hpp"
+#include "bsp/native_gui_text_main_section_lifetime_storage.hpp"
 #include "bsp/game_native_readonly_data.hpp"
 #include <atomic>
 #include <cstddef>
@@ -62,12 +63,23 @@ bool aliases(const Prefix& p, const Context& c) noexcept {
 const Context* graph(const Prefix& p) {
     using Kind = NativeGuiTextPrimaryPrefixOperation::Kind;
     const auto* c = p.operation.geometry();
+    const auto* const main = p.operation.main_section();
     if (p.operation.kind() == Kind::none) {
-        require(!c, "no-operation prefix cannot carry a geometry shortcut");
+        require(!c && !main, "no-operation prefix cannot carry a geometry shortcut");
         return nullptr;
     }
-    require(p.operation.kind() == Kind::geometry_only && c && aliases(p, *c),
+    require((p.operation.kind() == Kind::geometry_only || p.operation.kind() == Kind::geometry_main_section) &&
+        c && aliases(p, *c),
         "prefix operation needs the EXACT immutable379 context/backing graph");
+    if (p.operation.kind() == Kind::geometry_only)
+        require(!main, "geometry-only operation cannot carry MainSection permission");
+    else {
+        using Main = NativeGuiTextMainSectionLifetimeStorageFrame;
+        require(main && &main->prepared_context().geometry == c &&
+            &main->prepared_context().reference_frame == &p.text.factory_context.reference_frame &&
+            (main->phase() == Main::Phase::prepared || main->phase() == Main::Phase::sealed),
+            "compound operation needs its SAME prepared or sealed MainSection graph");
+    }
     auto& publication = p.text.factory_context.publication;
     auto& construction = c->construction;
     require(&construction.geometry.actual_owners() == &publication.owners &&
@@ -162,6 +174,11 @@ bool model_mesh_returned(const NativeModelStorageDispatchContext& m, const void*
 void require_native_gui_text_prefix_geometry_reservation(const Prefix& p) {
     const auto* const c = graph(p);
     if (!c) return;
+    if (const auto* const main = p.operation.main_section()) {
+        using Main = NativeGuiTextMainSectionLifetimeStorageFrame;
+        if (main->phase() == Main::Phase::prepared)
+            main->require_live(nullptr, Main::Stage::bound); // Reservation only, before a122 publication exists.
+    }
     if (untouched(c->progress)) {
         require(c->frame.phase() == Phase::fresh && fresh(c->acquired),
             "unentered installed379 graph requires wholly fresh retained records");
@@ -202,9 +219,13 @@ void require_native_gui_text_prefix_geometry_primary(void* geometry, const Prefi
 
 bool native_gui_text_prefix_geometry_meshes_settled(const Prefix& p) noexcept {
     using Kind = NativeGuiTextPrimaryPrefixOperation::Kind;
-    if (p.operation.kind() == Kind::none) return !p.operation.geometry();
+    if (p.operation.kind() == Kind::none) return !p.operation.geometry() && !p.operation.main_section();
     const auto* const c = p.operation.geometry();
-    if (p.operation.kind() != Kind::geometry_only || !c || !complete(p, *c) || !shadow_metadata(p)) return false;
+    const bool main = p.operation.kind() == Kind::geometry_main_section;
+    if ((!main && p.operation.kind() != Kind::geometry_only) || !c || !complete(p, *c) || !shadow_metadata(p)) return false;
+    // Geometry's own destructor also uses this predicate AFTER MainGraph reset.
+    // Compound owner settlement checks Main while both graphs are still alive;
+    // this narrow predicate must never follow the ended helper pointer.
     // Only retained C++ metadata and saved address identities below: MeshEntry,
     // Mesh companion, native header/vptr/count and returned Model slots are gone.
     return model_mesh_returned(c->construction.primary, c->acquired.captured_mesh) &&

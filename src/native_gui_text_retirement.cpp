@@ -1,7 +1,9 @@
 #include "bsp/native_gui_text_retirement.hpp"
+#include "native_gui_text_cache_backing.hpp"
 #include "bsp/native_gui_text_primary_prefix_lifetime.hpp"
 #include "bsp/native_gui_text_shader_storage.hpp"
 #include "bsp/native_gui_text_font_lifetime_storage.hpp"
+#include "bsp/native_gui_text_main_section_lifetime_storage.hpp"
 #include "bsp/native_string_raw_domain.hpp"
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/game_native_gui_text_process.hpp"
@@ -187,6 +189,41 @@ void preflight(void* raw, std::size_t bytes, void* diagnostics, std::size_t diag
         require(!(bits(flags) & 3u), "Raw Text scalar flags require stable DWORD backing");
         for (const auto region : writes) require(disjoint(region, {flags, sizeof(Word)}),
             "Raw Text scalar flags must be separate from Text and diagnostics");
+    }
+    if (c.primary_prefix && c.primary_prefix->operation.main_section()) {
+        using Main = NativeGuiTextMainSectionLifetimeStorageFrame;
+        const auto* const main = c.primary_prefix->operation.main_section();
+        const auto& prepared = main->prepared_context();
+        const auto& scalar = prepared.reference_frame.scalar;
+        require(prefix && !c.font_lifetime && main->phase() == Main::Phase::sealed &&
+            &prepared.reference_frame == &c.primary_prefix->text.factory_context.reference_frame,
+            "MainSection retirement requires its sealed exact compound graph");
+        const bool destructor = diagnostics == &scalar.destruction && diagnostic_bytes == sizeof(scalar.destruction);
+        const auto regions = main->live_regions(raw,
+            destructor ? Main::Stage::raw118_preentry : Main::Stage::scalar_preentry,
+            destructor ? &scalar.destruction : nullptr);
+        require(regions.count <= regions.entries.size(), "MainSection retirement region count exceeds fixed backing");
+        for (std::size_t i = 0; i != regions.count; ++i) {
+            const auto& b = regions.entries[i];
+            const Region borrowed{b.begin, b.bytes};
+            require(b.begin && b.bytes && static_cast<std::uint64_t>(bits(b.begin)) + b.bytes <= 0x100000000ull,
+                "MainSection retirement requires representable retained extents");
+            const bool own_frame = b.begin == &prepared.reference_frame && b.bytes == sizeof(prepared.reference_frame);
+            require(disjoint(writes[0], borrowed), "Text storage cannot alias MainSection/provider backing");
+            if (!own_frame) require(disjoint(writes[1], borrowed), "Text diagnostics cannot alias MainSection/provider backing");
+            if (flags) require(disjoint({flags, sizeof(Word)}, borrowed), "Text flags cannot alias MainSection/provider backing");
+        }
+        if (prepared.acquired.section.material.cache)
+            gui_text_backing_detail::shader_cache_backing<Region>(*prepared.acquired.section.material.cache,
+                [&](Region borrowed) {
+                    require(borrowed.begin && borrowed.size &&
+                        static_cast<std::uint64_t>(bits(borrowed.begin)) + borrowed.size <= 0x100000000ull,
+                        "MainSection cache retirement requires representable retained extents");
+                    for (const auto region : writes)
+                        require(disjoint(region, borrowed), "Text retirement writes cannot alias MainSection cache backing");
+                    if (flags) require(disjoint({flags, sizeof(Word)}, borrowed),
+                        "Text flags cannot alias MainSection cache backing");
+                });
     }
     if (c.font_lifetime) {
         using Font = NativeGuiTextFontLifetimeStorageFrame;
