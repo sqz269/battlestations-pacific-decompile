@@ -101,6 +101,7 @@ void* delete_native_gui_text_storage_00ab8ee0(void* actual_text,
     NativeGuiTextRetirementContext&, NativeGuiTextScalarRetirementAcquired&);
 
 struct NativeGuiTextPrimaryPrefixLifetimeContext;
+struct NativeGuiTextShaderStorageFrame;
 struct NativeGuiTextRawModelRetirementContext {
     NativeGuiTextRawModelSectionStorageContext& resources;
     NativeGuiTextRawModelRecord& model; // SAME independent85 record, not Text slot storage
@@ -109,6 +110,10 @@ struct NativeGuiTextRawModelRetirementContext {
     NativeGuiTextPool& actual_pool_00f8bdf0;
     // Fixed typed optional graph, never enum/receipt-shaped ownership authority.
     const NativeGuiTextPrimaryPrefixLifetimeContext* const primary_prefix{};
+    // Fixed pre-pool reservation: SAME raw122 Frame's scalar.destruction.shader.
+    // Presence grants no admission/credit. Existing callers leave this null;
+    // current FRESH/108/1EC/header/default/prefix guards remain unchanged.
+    NativeGuiTextShaderStorageFrame* const font_shader_frame{};
 };
 // DEFAULT constructor/bind admission stays strict. These overloads additionally
 // admit the optional private-receipt-qualified primary prefix lifetime graph;
