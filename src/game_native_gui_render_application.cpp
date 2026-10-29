@@ -1,4 +1,5 @@
 #include "bsp/game_native_gui_render_application.hpp"
+#include "bsp/game_native_raw_default_text_owner.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_fonts.hpp"
 #include "bsp/game_hosts_singletons.hpp"
@@ -46,6 +47,11 @@
 
 namespace bsp::game {
 namespace {
+// Private qualification route over the existing GUI Text opt-in. Keep OFF in
+// main until broader raw Text content/rendering replaces the legacy consumer.
+// The ON candidate exercises one unpublished DEFAULT lifecycle without a new
+// environment option, scene/overlay, cache owner or public test-only interface.
+constexpr bool kRawDefaultTextQualificationCc16Bound = false;
 using Word = std::uint32_t;
 void require(bool value, const char* message) {
     if (!value) throw std::logic_error(message);
@@ -733,6 +739,21 @@ void GameStartupHost::initialize_native_gui_render() {
         GetEnvironmentVariableA("BSP_NATIVE_MISSION_FRAME", frame_flag, sizeof frame_flag) == 1 &&
         frame_flag[0] == '1',
         "BSP_NATIVE_GUI_TEXT=1 requires BSP_NATIVE_MISSION_SHIP=1 and BSP_NATIVE_MISSION_FRAME=1");
+    if constexpr (kRawDefaultTextQualificationCc16Bound) {
+        require(!GameNativeGuiRenderApplication::nodes_requested(),
+            "raw DEFAULT qualification requires the GUI node overlay disabled");
+        require(!native_gui_render_ && !native_raw_default_text_ && native_renderer_ &&
+            vfs_ && singletons_ && native_data_ && input_runtime_,
+            "raw DEFAULT qualification requires the existing ready startup owners");
+        native_raw_default_text_ = std::make_unique<GameNativeRawDefaultTextOwner>(
+            log_, *native_renderer_, *vfs_, *singletons_, *native_data_,
+            GameNativeGuiSamplerApplicationBindings{*input_runtime_,
+                native_renderer_->borrow_platform_publication_0109cf04()});
+        // Explicit caller budget for this one DEFAULT graph, not an Original
+        // constant or a universal nesting bound. Exhaustion retains failure.
+        native_raw_default_text_->prepare_metadata_in_ready_renderer(64);
+        return;
+    }
     require(!native_gui_render_ && native_renderer_ && vfs_ && singletons_ && native_data_ &&
         input_runtime_ && fonts_ && locale_, "native GUI Text requires the existing ready startup owners");
     native_gui_render_ = std::make_unique<GameNativeGuiRenderApplication>(log_, *native_renderer_,
@@ -740,6 +761,11 @@ void GameStartupHost::initialize_native_gui_render() {
     native_gui_render_->compose_effect_services_in_ready_renderer();
 }
 void GameStartupHost::prepare_native_gui_text_resources() {
+    if (native_raw_default_text_) {
+        require(native_raw_default_text_->construct_default_in_open_shader_cache(),
+            "raw DEFAULT qualification requires a nonnull native factory result");
+        return;
+    }
     if (native_gui_render_) native_gui_render_->prepare_text_in_open_shader_cache();
 }
 void GameStartupHost::draw_native_gui_text_mission_overlay() {
@@ -750,14 +776,22 @@ void GameStartupHost::draw_native_gui_text_mission_overlay() {
     native_gui_render_->submit_mission_frame(queue);
 }
 void GameStartupHost::exit_if_native_gui_text_incomplete() noexcept {
-    if (!native_gui_render_ || !native_gui_render_->requires_process_retention()) return;
+    const bool raw_incomplete = native_raw_default_text_ && native_raw_default_text_->requires_process_retention();
+    if (!raw_incomplete && (!native_gui_render_ || !native_gui_render_->requires_process_retention())) return;
     try { log_.note("native GUI Text interrupted; retaining Text/font/material/node/frame owners"); log_.close(); }
     catch (...) {}
     std::_Exit(1);
 }
 void GameStartupHost::retire_native_gui_text_before_fonts() noexcept {
-    if (!native_gui_render_) return;
-    try { native_gui_render_->retire_before_fonts(); }
+    if (!native_gui_render_ && !native_raw_default_text_) return;
+    try {
+        if (native_raw_default_text_) {
+            native_raw_default_text_->retire_before_native_drain();
+            require(!native_raw_default_text_->requires_process_retention(),
+                "raw DEFAULT Text retains unresolved native custody before parent drain");
+        }
+        if (native_gui_render_) native_gui_render_->retire_before_fonts();
+    }
     catch (...) {
         try { log_.note("native GUI Text retirement failed; retaining all borrowed owners"); log_.close(); }
         catch (...) {}
@@ -765,8 +799,17 @@ void GameStartupHost::retire_native_gui_text_before_fonts() noexcept {
     }
 }
 void GameStartupHost::close_native_gui_text_after_drain() noexcept {
-    if (!native_gui_render_) return;
-    try { native_gui_render_->after_native_renderer_drain(); native_gui_render_.reset(); }
+    if (!native_gui_render_ && !native_raw_default_text_) return;
+    try {
+        if (native_raw_default_text_) {
+            native_raw_default_text_->after_native_renderer_drain();
+            native_raw_default_text_.reset();
+        }
+        if (native_gui_render_) {
+            native_gui_render_->after_native_renderer_drain();
+            native_gui_render_.reset();
+        }
+    }
     catch (...) {
         try { log_.note("native GUI Text metadata close failed after renderer drain"); log_.close(); }
         catch (...) {}

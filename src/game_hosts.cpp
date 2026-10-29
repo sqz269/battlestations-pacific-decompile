@@ -8,6 +8,7 @@
 #include "bsp/game_native_lua_globals.hpp"
 #include "bsp/game_native_lua_services.hpp"
 #include "bsp/game_native_renderer_application.hpp"
+#include "bsp/game_native_raw_default_text_owner.hpp"
 #include "bsp/game_native_mission_factories.hpp"
 #include "bsp/native_render_resource_init.hpp"
 #include "bsp/game_native_font_probe.hpp"
@@ -2998,7 +2999,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
             });
         native_renderer_->bind_mission_startup_random(*random_threads_);
     }
-    if (native_gui_render_)
+    if (native_gui_render_ || native_raw_default_text_)
         native_renderer_->register_mission_prepare_callback(this, [](void* owner) {
             static_cast<GameStartupHost*>(owner)->prepare_native_gui_text_resources();
         });

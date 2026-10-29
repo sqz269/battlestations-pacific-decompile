@@ -87,6 +87,7 @@ class GameNativeMissionFactories;
 class GameNativeShadowTargetApplication;
 class GameNativeGuiEffectProbe;
 class GameNativeGuiRenderApplication;
+class GameNativeRawDefaultTextOwner;
 class GameLocaleHost;
 class GameFontHost;
 // Milestone 2b, defined in bsp/game_hosts_frontend.hpp.
@@ -779,6 +780,7 @@ private:
     std::unique_ptr<GameNativeShadowTargetApplication> native_shadow_;
     std::unique_ptr<GameNativeGuiEffectProbe> native_gui_probe_;
     std::unique_ptr<GameNativeGuiRenderApplication> native_gui_render_;
+    std::unique_ptr<GameNativeRawDefaultTextOwner> native_raw_default_text_;
     // cc15-gui4 P1 (kGuiManagerCc15Bound): released right after the shared drain.
     std::unique_ptr<GameNativeGuiManagerApplication> native_gui_manager_;
     // cc15-gui4 P3a (kNativeGuiPageChainCc15Bound): released before the manager.
