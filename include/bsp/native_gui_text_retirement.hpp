@@ -100,12 +100,15 @@ void* delete_native_gui_text_storage_00ab8ee0(void* actual_text,
     const volatile std::uint32_t& actual_flags_word,
     NativeGuiTextRetirementContext&, NativeGuiTextScalarRetirementAcquired&);
 
+struct NativeGuiTextPrimaryPrefixLifetimeContext;
 struct NativeGuiTextRawModelRetirementContext {
     NativeGuiTextRawModelSectionStorageContext& resources;
     NativeGuiTextRawModelRecord& model; // SAME independent85 record, not Text slot storage
     NativeGuiWidgetLifetimeContext& base;
     NativeGuiTextGlyphChildrenContext& glyphs;
     NativeGuiTextPool& actual_pool_00f8bdf0;
+    // Fixed typed optional graph, never enum/receipt-shaped ownership authority.
+    const NativeGuiTextPrimaryPrefixLifetimeContext* const primary_prefix{};
 };
 // DEFAULT-only overloads. The real base/container helpers are borrowed only
 // in their admitted empty branches, with CURRENT initialized type lineages.
