@@ -39,3 +39,21 @@ existing checks2/2 pass (11.22s), `local/cc16_font_lifetime_owner_staged_off_bui
 All five source switches are FALSE. Source review is acceptance of composition
 only; no Font work has executed yet. A clean frozen OFF candidate and exact
 counterpart to the audited5b01 reference corpus are the next concrete steps.
+
+
+Three clean private candidates were built and frozen before execution:
+
+| Work | Source | EXE SHA256 | Existing checks |
+| --- | --- | --- | --- |
+| shader_then_retirement | e6b5064db3f8caf348c1425a900d161df5b566c6 | a3ac012d5ee5e4d34f2ddd355b3de54d40e8d0586febe3b670c7534708788411 | 2/2, 11.54s |
+| invalidate_shader | 3f105a5c5f94d4b07ac9829304ef310efcdf186e | f6944aea83e59303faf5fe4fafe96de227006fcf592161eddc616ecaf8797b57 | 2/2, 11.43s |
+| equal_name | 56494ee61f707930ce9ea60b1b53c63e5a5baf17 | 53ee8d8dc61c538cee7067b846c0aad5b7a0869f7906a9bf02740be8d631b839 | 2/2, 11.39s |
+
+Each ignored `local/cc16_font_<work>_candidate_20261029/receipt.json` binds
+clean source, exact input tree, executable/map/DLL, build log, configs and runner.
+The shader candidate directory uses `shader_retirement` in its path.
+Restoration4e2716f42 has all five flags FALSE and the host exactly matches
+OFF9356c19f. Win32 and existing checks2/2 pass11.83s; the ignored restoration
+receipt hashes the rebuilt outputs and all three frozen candidate receipts.
+This is compilation/freeze evidence only. No private Font candidate executed;
+the separate frozen OFF9356c19f13-row comparison is still running.
