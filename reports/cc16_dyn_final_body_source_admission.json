@@ -1,0 +1,172 @@
+{
+  "packet": "codex-dyn-final-bodies-source-admission",
+  "status": "reviewed_build_link_tested_unwired",
+  "source_head": "82bfba238ed6335c6d84e77191777b60ea5dc8bb",
+  "source_candidates": {
+    "C320D0": "cc32f14469be8ef3b6280af181bd9a01c7d7ccee",
+    "C5A8B0": "2947ca96010887ce48c5f5e7ef42d006e8730822",
+    "cleanup": "cea9f5af891c878d1994174184a8ffc7ea92fd1f"
+  },
+  "independent_reviews": {
+    "C320D0": "904b3ee79d377c3dd61a3ed31f6d68c170e29da0",
+    "C5A8B0": "86a272f9368d84e2697707e404a149e93b1b49fc"
+  },
+  "fixed_baseline_census": {
+    "previous_published_compiled_unwired": 27,
+    "newly_compiled_unwired": [
+      "00C320D0",
+      "00C5A8B0"
+    ],
+    "compiled_unwired": 29,
+    "remaining_from_preceding_two_entry_list": 0,
+    "does_not_establish_all_goal_functions_or_activation": true
+  },
+  "additional_helper_outside_fixed_census": "0040A900",
+  "existing_repair_body_credit": 0,
+  "vendor_body_credit": 0,
+  "activation_credit": 0,
+  "goal_status": "active",
+  "common_build": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "suites_passed": 2,
+    "suites_total": 2,
+    "seconds": 14.2,
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\source_admission\\publication_build.log",
+      "bytes": 2936,
+      "sha256": "c114b2b251007f223d3f386ca83f7cab8adc9017096c92be00fa31a4ffec59ea"
+    },
+    "cl_MP": 2,
+    "PCH": true,
+    "previous_source_build_seconds": 13.26
+  },
+  "c320_final_object": {
+    "object_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\bsp_core.dir\\Release\\cc16_dyn_profile_report.obj",
+    "object_sha256": "c09b2643b85e86244220527721ce92e6579fe410b50810dd153c60160f88c6e0",
+    "function_bytes": 242,
+    "instructions": 92,
+    "function_sha256": "e6006bd2976a2ae86f702ccfd7e87bb9e8bd06ec961ad615fbc0da675f196413",
+    "identical_to_independent_review_object_function": true,
+    "undefined": [
+      "?format_string_1024_0040cfc0@cc15_dyn_live@bsp@@YAHPADPBDZZ",
+      "__alldiv"
+    ]
+  },
+  "c5_final_object": {
+    "native_bytes": 2246,
+    "native_sha256": "c9fa16f24060e7f21e482b8b32ac02e5ad61c412ff665fbd0e784201cd998b96",
+    "object_sha256": "68864a7e6a8c4e84c8450e09468bdc39ff6005a378915dc3662aea7e8442958a",
+    "instructions": 654,
+    "kernel_instructions": 704,
+    "branches": 52,
+    "branch_targets": 41,
+    "maximum_added_x87_depth": 4,
+    "x87_instruction_count": 101,
+    "fstp_instruction_count": 27
+  },
+  "final_static_audit": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\c5_final_after_cleanup_audit\\audit.json",
+    "bytes": 21338,
+    "sha256": "87e66ecec2b94e8d2974be4ce4d2a0169868d98fcb4d7032b6e070084a0ab2ce"
+  },
+  "call_checks": {
+    "profile_report": 3,
+    "radix_manager_body_and_unwind": 15,
+    "cleanup_body_and_unwind": 8,
+    "failed": 0
+  },
+  "actual_entry_link": {
+    "forced_entries": [
+      "initialize_endpoint_00c4ce60",
+      "release_vector_storage_0040a050",
+      "remove_and_destroy_00c55df0",
+      "allocate_endpoint_00c55a60",
+      "update_broadphase_00c5a850",
+      "report_profile_node_00c320d0",
+      "update_radix_manager_00c5a8b0"
+    ],
+    "forced_qualified_overloads": [
+      "?dyn_profile_node_construct_00c44000@bsp@@YAPAUDynProfileNodeStorage@1@AAU21@PBDIABUAvoidZoneDynHullMemory@1@@Z",
+      "?dyn_profile_node_append_child_00c50390@bsp@@YAPAUDynProfileNodeStorage@1@AAU21@PBDIABUAvoidZoneDynHullMemory@1@P6AXPAX@Z@Z"
+    ],
+    "all_present": true,
+    "all_absent_from_game_map": true,
+    "old_normal_profile_overloads_present_in_game_map": true,
+    "executed": false,
+    "embedded_manifest_requested": true,
+    "real_helpers": [
+      "MSVCRT:lldiv.obj __alldiv",
+      "MSVCRT:chkstk.obj __alloca_probe"
+    ],
+    "files": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\source_admission\\dyn_complete_source_probe.cpp",
+        "bytes": 1775,
+        "sha256": "c0da40c894ea0bdba7b4e937fd78f5f6702e424b5d8916405b3416ad7f39c292"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\source_admission\\dyn_complete_source_probe.cmd",
+        "bytes": 568,
+        "sha256": "b6f61f8d4d9d3c53e27845bf137c0b4ada90aa00e89516f2d87b87fbaf71bb50"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\source_admission\\dyn_complete_source_probe.exe",
+        "bytes": 29184,
+        "sha256": "4683b827376d24a8d727e0518b29ea752f93237e090e0eb4e1974c420808aa22"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\source_admission\\dyn_complete_source_probe.map",
+        "bytes": 57337,
+        "sha256": "f6592153d5c79c3e4a371623cc8e84ba2895044be7afdda4d30404145bb3dc71"
+      }
+    ],
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\source_admission\\final_link_probe.log",
+      "bytes": 31,
+      "sha256": "17f2034dfa1b6eb21ff106de21264aff7e61cbc37dd1b51bb45573a23ddcbb6c"
+    }
+  },
+  "cleanup_dependency_delta": "Four profile module/header files add qualified overloads and refactor old normal payloads. ScopeContext layout and old4/3arg APIs stay intact; C5 still imports old4arg append. No BF65AC caller adoption.",
+  "fixture_scope": "Retained worker optimized Debug1/1 actual constructor/SBO allocator failure and parent-growth boundary; standard Debug failed14 unrelated records and is not a pass.",
+  "movie_dependencies": {
+    "locale_commit": "c30dd1e77e2b0d48338401e3f01d13f343cef4bb",
+    "filename_commit": "07586cee89f70f209e5783a54e091a359b8fa6f5",
+    "activation": false,
+    "readiness_commit": "857d4234e4a65ce623f166aca3894eeb9194a7d4",
+    "historical_RNG_correction": "3a60183d1688fce0b5b7854db9b0d608145b9f27"
+  },
+  "accuracy_guard": false,
+  "subtitle_guard": false,
+  "remaining": [
+    "Genuine Dyn manager/world/vtable/profile/allocator/provider custody and live host adoption",
+    "Newly identified/unreferenced game code and explicit partials",
+    "Original ABI/FH/SEH/fault transport and floating-point fidelity debt",
+    "Required gameplay acceptance and remaining movie/UI producers",
+    "Private accuracy ON RNG witnesses remain separate; no activation imported"
+  ],
+  "ledger_changed_addresses_verified": [
+    "0040a900",
+    "00c320d0",
+    "00c44000",
+    "00c50390",
+    "00c5a8b0"
+  ],
+  "analysis_annotations": {
+    "saved": true,
+    "backup": "local/ghidra-annotations-20261029T190443Z.json",
+    "preserved_previous_comments": true,
+    "exports_refreshed": [
+      "0040a900",
+      "00c320d0",
+      "00c44000",
+      "00c50390",
+      "00c5a8b0"
+    ]
+  },
+  "source_guards_verified_OFF": [
+    "kWeaponHitAccuracyNativeRangeBound",
+    "kMovieSubtitlesBound"
+  ],
+  "private_ON_history_excluded": true
+}

@@ -38,12 +38,14 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_profile_owner.hpp"
 #include "bsp/game_hosts_vfs.hpp"
+#include "bsp/locale_tables.hpp"
 #include "bsp/memory_stream.hpp"
 #include "bsp/movie_subtitles.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/session_context_cc13.hpp"
 
 #include <cstdio>
+#include <cstring>
 #include <limits>
 #include <stdexcept>
 
@@ -80,7 +82,8 @@ void format_address(std::uint32_t value, char (&out)[16]) {
 // ---------------------------------------------------------------------------
 
 struct GameMissionResultHost::MovieBridge final : public bsp::MoviePlayerHost {
-    MovieBridge(GameHostLog& log, GameVfsHost& vfs) : log_(log), vfs_(vfs) {}
+    MovieBridge(GameHostLog& log, GameVfsHost& vfs, const bsp::LocaleTables& locale)
+        : log_(log), vfs_(vfs), locale_(locale) {}
 
     // --- bsp::MovieWidgetHost ---------------------------------------------
     bsp::NativeStringStorage& movie_string_storage() override {
@@ -188,8 +191,12 @@ struct GameMissionResultHost::MovieBridge final : public bsp::MoviePlayerHost {
             }
             const float time = bsp::movie_subtitle_time_00aadba0(realtime_frame_num_,
                 realtime_frame_rate_, realtime_frame_rate_div_);
+            // 00425850's nonnull string case uses the actual CRT _stricmp.
+            // Read the retained table each selection; a locale change is not cached.
+            const bool language_is_english =
+                ::_stricmp(locale_.language().c_str(), "english") == 0;
             const bsp::MovieSubtitleStep step = bsp::movie_subtitle_update_00aadba0(subtitles_,
-                subtitle_cursor_, time, subtitles_enabled_, language_is_english_);
+                subtitle_cursor_, time, subtitles_enabled_, language_is_english);
             if (step.expired_cleared || step.action == bsp::MovieSubtitleText::Clear)
                 set_subtitle_text({});
             if (step.action == bsp::MovieSubtitleText::Show)
@@ -257,6 +264,7 @@ struct GameMissionResultHost::MovieBridge final : public bsp::MoviePlayerHost {
 
     GameHostLog& log_;
     GameVfsHost& vfs_; // borrowed from the enclosing frame, never drained here
+    const bsp::LocaleTables& locale_; // same mission locale owner, never copied or drained
     bsp::MovieWidgetState widget_{};
     // The proved +104h meaning (00AB061A) is file existence, not parse success.
     // MovieWidgetState has no such projected field; no raw-layout alias is made.
@@ -269,9 +277,8 @@ struct GameMissionResultHost::MovieBridge final : public bsp::MoviePlayerHost {
     std::uint32_t realtime_frame_num_{0};
     std::uint32_t realtime_frame_rate_{0};
     std::uint32_t realtime_frame_rate_div_{0};
-    // Native options +14h and language comparison are not bound by this packet.
+    // Native options +14h is still unavailable; this is not a recovered default.
     bool subtitles_enabled_{false};
-    bool language_is_english_{false};
 };
 
 struct GameMissionResultHost::CompletionBridge final : public bsp::GameMovieCompletionHost {
@@ -305,9 +312,9 @@ struct GameMissionResultHost::CompletionBridge final : public bsp::GameMovieComp
 // ---------------------------------------------------------------------------
 
 GameMissionResultHost::GameMissionResultHost(GameHostLog& log,
-    bsp::GameFrameControlState& control, GameVfsHost& vfs)
+    bsp::GameFrameControlState& control, GameVfsHost& vfs, const bsp::LocaleTables& locale)
     : log_(log), control_(control),
-      movie_bridge_(std::make_unique<MovieBridge>(log, vfs)),
+      movie_bridge_(std::make_unique<MovieBridge>(log, vfs, locale)),
       completion_bridge_(std::make_unique<CompletionBridge>(log, control)) {}
 
 GameMissionResultHost::~GameMissionResultHost() = default;

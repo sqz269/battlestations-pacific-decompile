@@ -1,6 +1,6 @@
 {
   "packet": "codex-weapon-hit-native-range",
-  "status": "source_integrated_OFF_postspill_fixture_passed_actual_host_gates_pending",
+  "status": "source_integrated_ON_for_current_GameHost_variant_bounded_runtime_gates_passed",
   "base_commit": "90d44021a",
   "new_original_function_body_credit": 0,
   "guard": {
@@ -259,5 +259,19 @@
       ],
       "game_or_ON_acceptance": false
     }
+  },
+  "historical_pre_activation_status": "source_integrated_OFF_postspill_fixture_passed_actual_host_gates_pending",
+  "current_main_activation": {
+    "status": "current_production_candidate_accepted_ON_for_bounded_GameHost_path",
+    "guard": true,
+    "receipt": "reports/cc16_weapon_accuracy_current_main_activation.json",
+    "source_candidate": "2c182d11caa173b852404e625c680a0979720fcb",
+    "current_matched_pairs": 2,
+    "current_runs": 4,
+    "original_ABI": false,
+    "whole_native_sample_fixture": false,
+    "old_absent_RNG_rows_relabelled": false,
+    "other_public_paths_unchanged": true,
+    "native_body_credit": 0
   }
 }

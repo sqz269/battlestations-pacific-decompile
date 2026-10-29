@@ -67,6 +67,8 @@ target_sources(bsp_core PRIVATE src/cc16_dyn_sap_update.cpp src/cc16_dyn_sap_dis
 target_sources(bsp_core PRIVATE src/cc16_dyn_radix_update.cpp)
 target_sources(bsp_core PRIVATE src/cc16_dyn_endpoint_init.cpp src/cc16_dyn_pointer_retire.cpp)
 target_sources(bsp_core PRIVATE src/cc16_dyn_endpoint_allocate.cpp)
+target_sources(bsp_core PRIVATE src/cc16_dyn_profile_report.cpp)
+target_sources(bsp_core PRIVATE src/cc16_dyn_radix_manager_update.cpp)
 target_sources(bsp_core PRIVATE
   src/sim_damage_seg54_argon.cpp src/powerup_seg58_argon.cpp
   src/warning_string_seg64_argon.cpp src/hardware_options_seg66_argon.cpp)

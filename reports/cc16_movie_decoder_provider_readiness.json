@@ -1,0 +1,292 @@
+{
+  "packet": "codex-movie-decoder-provider-readiness",
+  "status": "static_bink_api_available_full_production_decoder_clock_not_ready",
+  "reviewed_main": "5c2547156c0d8d83d79f7b2600c6f6ea99cd975a",
+  "pending_locale_commit": "c30dd1e77e2b0d48338401e3f01d13f343cef4bb",
+  "pending_locale_receipt_sha256": "393d21c85ae5109e28cf314414511ab7122c8ca84bc40669e488c547dbb8b52e",
+  "reviewed_at_utc": "2026-10-29T17:29:07.021483+00:00",
+  "installed_dll": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\binkw32.dll",
+    "bytes": 178440,
+    "sha256": "7f22055e8f62e228eb90f09846f9b668e0a0b1d29057af6e3b7bff1e08c0d724",
+    "machine": "0x014c x86",
+    "optional_magic": "0x010b PE32",
+    "coff_timestamp": "0x496e3fa5",
+    "named_exports": 72,
+    "required_exports": [
+      {
+        "ordinal": 44,
+        "hint": "2B",
+        "rva": "0x0000d690",
+        "name": "_BinkOpen@8"
+      },
+      {
+        "ordinal": 16,
+        "hint": "F",
+        "rva": "0x0000f850",
+        "name": "_BinkClose@4"
+      },
+      {
+        "ordinal": 65,
+        "hint": "40",
+        "rva": "0x0000d320",
+        "name": "_BinkSetSoundTrack@8"
+      },
+      {
+        "ordinal": 67,
+        "hint": "42",
+        "rva": "0x000101e0",
+        "name": "_BinkSetVolume@12"
+      },
+      {
+        "ordinal": 25,
+        "hint": "18",
+        "rva": "0x0000f340",
+        "name": "_BinkDoFrame@4"
+      },
+      {
+        "ordinal": 20,
+        "hint": "13",
+        "rva": "0x0000e750",
+        "name": "_BinkCopyToBuffer@28"
+      },
+      {
+        "ordinal": 43,
+        "hint": "2A",
+        "rva": "0x0000f3c0",
+        "name": "_BinkNextFrame@4"
+      },
+      {
+        "ordinal": 70,
+        "hint": "45",
+        "rva": "0x0000fac0",
+        "name": "_BinkWait@4"
+      },
+      {
+        "ordinal": 33,
+        "hint": "20",
+        "rva": "0x0000ff30",
+        "name": "_BinkGetRealtime@12"
+      },
+      {
+        "ordinal": 40,
+        "hint": "27",
+        "rva": "0x0000f660",
+        "name": "_BinkGoto@12"
+      },
+      {
+        "ordinal": 49,
+        "hint": "30",
+        "rva": "0x0000fc40",
+        "name": "_BinkPause@8"
+      },
+      {
+        "ordinal": 64,
+        "hint": "3F",
+        "rva": "0x0000cea0",
+        "name": "_BinkSetSoundSystem@8"
+      },
+      {
+        "ordinal": 45,
+        "hint": "2C",
+        "rva": "0x00011fc0",
+        "name": "_BinkOpenDirectSound@4"
+      }
+    ],
+    "all13_match_installed_executable_imports": true
+  },
+  "installed_movie_metadata": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/movies/us_outro.bik",
+    "bytes": 138540804,
+    "scope": "file metadata only; no movie bytes decoded"
+  },
+  "inspection": {
+    "tool": "MSVC dumpbin /headers /exports /imports; static PE metadata only",
+    "metadata_files": [
+      {
+        "path": "local/bink_provider_readiness/bink_headers.txt",
+        "sha256": "8f6e920f2fd80135f82b35de542d911983bc64c992b5a0fe49936f4a013b1bec"
+      },
+      {
+        "path": "local/bink_provider_readiness/bink_exports.txt",
+        "sha256": "0d0293cd2540e1000199231b4a383eb43daa219d9deff365da6410b08099b1f9"
+      },
+      {
+        "path": "local/bink_provider_readiness/original_imports.txt",
+        "sha256": "1484b85617a49083a291f0aaec68960f63edc5ff03b8d6b8e1bc3e2ca6874cf0"
+      },
+      {
+        "path": "local/bink_provider_readiness/required_exports.json",
+        "sha256": "2f63b66e7458b7b86be66f4b239ec4dd2194a79521f1657e8c7c3ba00cb1cb4d"
+      }
+    ],
+    "dll_loaded": false,
+    "dll_executed": false,
+    "vendor_body_inspected": false,
+    "original_files_written": false
+  },
+  "source_sha256": {
+    "include/bsp/movie_decoder.hpp": "9151e8eacc41a208769eab8347539c5b15201a330f329b593585cfe620b3dbd7",
+    "src/movie_decoder.cpp": "75f54deb390ef8d333ba07df4e0579f9efedc22c9bb78e0cae9fec8e6d814908",
+    "include/bsp/movie_factory_followup.hpp": "4b208a04568c712cf41d4b7d1ef490975bc4813fe8397322d114ac477a55e60f",
+    "src/movie_factory_followup.cpp": "00a8b4866bfa3ba88f537a53d94191cef0efbd56f54f1a41aa1d3fe177f2f8c6",
+    "src/movie_player.cpp": "20165a62377e27ae5e4a223844e4b70ec2a432580d10cf321fa4475e2ab1224d",
+    "src/game_hosts_mission_result.cpp": "6caf305e262ae818484c76ae63e434ebdc0e75ca1c35934835ba498106abeb97",
+    "include/bsp/native_vfs_lookup_routes.hpp": "238e323fdd16363e5bf88ab4f7375cebc50bfcd6f02ae35269866e7387d7671e",
+    "src/native_vfs_lookup_routes.cpp": "e50285d46eb3a2eb3d3f21c28ee7d1ef1133c0b4c581152c726a4991bff57a9f",
+    "src/game_native_vfs_runtime.cpp": "6ef792777a53881057f41d3638eca6a7931db3eb5304d7e68754a6e10f332d28",
+    "src/game_hosts_vfs.cpp": "df8cd0f4e723e20a331ce4de87fa6f3e547c6254bb013cafca4ed515d516fc4a",
+    "include/bsp/game_native_render_resource_providers.hpp": "c4ad8a0bc763413891c467d807e1ba99e808a7c2b0ac4fd42a40c000c0aa9f36",
+    "src/game_native_renderer_resources.inc": "b1e8f61979aef28c9e011ae7122dfcdf94bf0e6fd2a900ffe44a18e2271ec39a",
+    "src/game_native_renderer_application.cpp": "3ed5485d8b619dce29caed0c1fa2b810b71504478bbb4ce44ca683c9e398ae7f",
+    "src/game_hosts.cpp": "ac82e24e0f6cdd9d52aad47a9bc45b545d651fbd9d3056aafb2feb4f65033223",
+    "src/fmod_configuration_library.cpp": "dc7c1cd3403ab4aa0439ce9b296326b43cc4dd69393fb4c763befec70fbf3d10",
+    "src/xlive_library.cpp": "b2478f049a7c73c6099f24a05fb9d494a5706dbdd251c06557f8d23f452fab17",
+    "include/bsp/native_window_focus_dispatch.hpp": "fc618b0becfa3e0e513378898191a7b828fd20646f198e43f386b5e9f88ca83a",
+    "include/bsp/pc24_misc_cc13.hpp": "2db355cfc13a5d2a05eca61845789d68c4fea61715be34d5c905b5b8c7a7045d"
+  },
+  "api_readiness": {
+    "eleven_existing_BinkImports_signatures": "existing typed stdcall API; exact decorated exports present",
+    "factory_imports": [
+      "_BinkSetSoundSystem@8",
+      "_BinkOpenDirectSound@4"
+    ],
+    "module_import_owner_present": false,
+    "concrete_MovieDecoderHost_present": false,
+    "GameModule_type_found": false,
+    "native_focus_pause_context_is_not_module_owner": true,
+    "static_import_binding_dependency_ready": true,
+    "full_decoder_clock_ready": false
+  },
+  "factory": {
+    "constructor": "00737710 existing typed body; same-owner registration007366B0, identityCFEA78, BinkSetSoundSystem(BinkOpenDirectSound,0)",
+    "inhouse_startup_site": "0073D410: PUSH4 at0073DF9B; allocator00BF681B at0073DF9D; register007366B0 at0073DFBC; stampCFEA78 at0073DFC7; BinkSetSoundSystem thunk00A4D356 at0073DFCD",
+    "concrete_startup_allocation_bytes": 4,
+    "allocation_scope": "this inspected startup producer only; do not generalize to arbitrary factory subclasses",
+    "publication": "actual same retained00F8AEFC cell and shared singleton manager/section; register must reread current publication after second manager getter",
+    "normal_terminal": "00737950 calls00736750, frees original owner iff flags&1, returns original owner; numeric table/code IDs are not callable host pointers",
+    "missing_producer": "No production Bink module/factory publication/deletion arm found in current startup. Existing semantic/bootstrap helpers are not an actual registered owner binding."
+  },
+  "decoder": {
+    "allocation_bytes": 56,
+    "shared_state_bytes": 40,
+    "shared_offset": 16,
+    "producer": "00737730 returns allocation+10h; NativeMovieDecoder complete flag1 only; widget+F0 is shared state, handle at shared+4",
+    "handle_rule": "BinkOpen allocates vendor handle; never allocate sizeof(BinkHandle) or free it with CRT; retain complete decoder separately from its shared pointer",
+    "open": "00A4CA40 copies path, requires00BDD600 mutable normalize/probe/replace, ignores its Boolean, selects track0, calls BinkOpen(path,0x4000), stores actual handle; ordinary null is false",
+    "replacement": "base open resets time/completed before closing an old handle; close marks completed; do not reset omitted running/loop/volume/cached-frame-duration fields",
+    "close": "00A4CD30 always logs/marks completed, closes nonnull handle then clears it; texture and filename retained until destructor",
+    "destroy": "00A4C860 releases texture, closes handle and releases filename; it does not free the complete allocation",
+    "advancement": "00A4CD70 waits even when stopped; ready/running uses realtime mode1, updates then decodes/advances; completed/loop ordering must be preserved",
+    "subtitles_clock": "00AADBA0 calls _BinkGetRealtime@12(actual widget+F0 shared-state handle+4, output38h,0); raw frame/rate/divisor triple drives existing arithmetic",
+    "prohibited_clock_substitutions": [
+      "mission/render frame counter",
+      "host wall/delta clock",
+      "decoder state.time from mode1",
+      "cached frame duration alone",
+      "fabricated Bink handle/prefix"
+    ],
+    "retry_error_gap": "MovieBridge decoder_open is false and missing_movie_retry_dialog returns0; native Retry/Cancel15h requires result2 cancel, others retry. Cannot activate with this placeholder."
+  },
+  "filename_provider": {
+    "native": "00BDD600 replace_native_vfs_file_name_00bdd600",
+    "existing_kernel": "src/native_vfs_lookup_routes.cpp:281",
+    "actual_context": "GameNativeVfsRuntime::Impl lookup owns same physical strings and D683E8 profile at src/game_native_vfs_runtime.cpp:169,226",
+    "current_wrong_substitution": "GameVfsHost::direct_resolve delegates00BDD6E0, with separate output unchanged on false; it is not00BDD600",
+    "ready_for_scoped_exposure": true
+  },
+  "renderer": {
+    "available": "GameNativeRendererApplication::render_resource_providers(), ready-phase only, borrows SAME runtime_textures/surfaces/texture_surfaces/holders/direct_terminals; no creation by borrowing",
+    "source": "include/bsp/game_native_render_resource_providers.hpp; src/game_native_renderer_resources.inc",
+    "explicit_gap": "Borrowing direct_terminals does NOT install it into render_resources_lifetime().direct_terminals. Native producer/terminal lifetime admission is still required before movie-created holders may escape to GUI/material borrowers.",
+    "host_obligations": [
+      "native create(width,height,1,0x16,1)",
+      "actual surface acquire(0,0), lock, copy(height,0,0,3), finish(0), release",
+      "capture/retain acquired frames and native survivors; no rollback/retry on interrupted native operations"
+    ]
+  },
+  "module_and_retention": {
+    "examples": [
+      "FmodConfigurationLibrary owns actual HMODULE(s), validates load/lookup and releases on normal teardown",
+      "XLiveLibrary uses absolute selected path, retained dependencies and checked GetProcAddress"
+    ],
+    "contract": "A future Bink owner must bind all required exports before publishing factory/decoder consumers, retain exact installed module through every handle/callback/shared drain, and follow existing process-retention policy on interrupted native work. Never early-FreeLibrary or return successful empty/default imports.",
+    "literal_GameModule": "No GameModule implementation exists in this inspected tree; original-image data/table mapping and NativeWindowFocusContext are not a Bink module owner."
+  },
+  "next_ready_dependency": {
+    "packet": "codex-movie-native-filename-provider",
+    "addresses": [
+      "00BDD600"
+    ],
+    "owned_source_files": [
+      "include/bsp/game_native_vfs_runtime.hpp",
+      "src/game_native_vfs_runtime.cpp",
+      "include/bsp/game_hosts_vfs.hpp",
+      "src/game_hosts_vfs.cpp"
+    ],
+    "lease_snapshot": "all four files and00BDD600 were unleased; claim afresh",
+    "implementation": "Expose exact normalize/probe/replace operation through actual GameNativeVfsRuntime/GameVfsHost. Reuse SAME actual manager, lookup context, physical string pool and owned PooledHeader pattern. Call existing BDD600 kernel; publish normalized in/out name on both normal returns. Preserve Boolean and native/provider exceptions plus existing failure custody; no aliases, working-directory resolver or invented empty path.",
+    "intended_caller": "future genuine MovieDecoderHost::resolve_movie_path; original00A4CA40 ignores Boolean and proceeds with resulting filename",
+    "closure_scope": "real decoder-filename provider dependency only; not a ready full decoder/clock or callback path",
+    "future_validation": [
+      "standard Win32 build/existing checks",
+      "root-selected exact provider/native evidence for found and missing normalized mutable names",
+      "do not reuse existing BDD4C0 VFS CLI checks as BDD600-specific proof"
+    ]
+  },
+  "following_implementation": {
+    "packet": "movie-bink-import-and-factory-owner",
+    "static_api_ready": true,
+    "production_activation_ready": false,
+    "proposed_new_files": [
+      "include/bsp/bink_runtime_library.hpp",
+      "src/bink_runtime_library.cpp",
+      "include/bsp/game_movie_factory_owner.hpp",
+      "src/game_movie_factory_owner.cpp"
+    ],
+    "integrator_owned_callers": [
+      "include/bsp/game_hosts.hpp",
+      "src/game_hosts.cpp"
+    ],
+    "prerequisites": "Specify same actual singleton publication/deletion contract at inspected startup site; module retention/error policy; bootstrap call typing; no private fake globals. Only then compose complete decoder host with actual filename and renderer providers.",
+    "exports_only_warning": "An unused import table alone does not close production decoder/clock reachability."
+  },
+  "callback_blockers": [
+    "current MovieBridge page/child lookup null and fallback widget_state; no actual movie widget loaded",
+    "decoder resource creation/open/update/close/bind-textures remain unimplemented; false open-handle predicate",
+    "native Retry/Cancel dialog unbound",
+    "MediaManager+14 settings publication/application not supplied; no settings+09 alias",
+    "Text/localisation/extratitles/Lua/real callback and page ownership remain required; locale c30 is separate source plumbing only"
+  ],
+  "primary_max_effort_handoff": {
+    "no_custom_register_or_x87_recovery_performed": true,
+    "existing_abi": "00A4CA40 concrete ECX=allocation+8 via shared-state adjustor00A4C800, RET0Ch; use established typed wrappers, not original numeric code addresses",
+    "arithmetic": "kPc24MovieCc13Bound is currently true (display-only comment). Existing x87/volume/frame-time behavior remains unchanged and not newly validated.",
+    "actual_flag_gap": "MovieDecoderHost requires original0109EEA4 conversion selector; gui_sse2_conversion caches OS PF_XMMI64 detection, which is not by itself proof of that original mutable CRT cell.",
+    "escalation": "Primary uses max effort for any new raw register/vtable ABI adapter, 0109EEA4/NaN/x87 control-state recovery, arithmetic changes or listing repair; do not solve by a default flag or frame clock."
+  },
+  "native_provenance": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "live_snapshot_count": 77631,
+    "queries": "verified ensure/count; bounded lookup/show/callers and instruction-context; no mutation"
+  },
+  "validation": {
+    "source_edits": 0,
+    "shared_metadata_edits": 0,
+    "ghidra_mutations": 0,
+    "dll_loads": 0,
+    "dll_executions": 0,
+    "games": 0,
+    "runtime_probes": 0,
+    "builds": 0,
+    "tests": 0,
+    "new_production_code": 0,
+    "old_locale_worktree_left_untouched": true
+  },
+  "guard": "kMovieSubtitlesBound remains false",
+  "additional_native_body_credit": 0,
+  "abi_claim": false,
+  "activation": false,
+  "playback_claim": false
+}
