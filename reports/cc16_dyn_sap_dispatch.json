@@ -194,7 +194,20 @@
     "source_cpp_sha256": "e9931c465d4100ed5c22938fdf852ee4a1028720ebfbca05bdd950db4b9fc56e",
     "ghidra_annotation_backup": "local/ghidra-annotations-20261029T052526Z.json",
     "saved": true,
-    "exports_refreshed": true
+    "exports_refreshed": true,
+    "post_main_merge": {
+      "accepted_upstream": "c086d1548df089bd96b1ed738866d4abe51935b0",
+      "source_integration": "70107343f plus independent review5e95f340e",
+      "build_log": "local/cc16_sap_accuracy_off_main_build.log",
+      "existing_suites_passed": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "suite_elapsed_seconds": 13.68,
+      "game_validated": false,
+      "object_unchanged": true,
+      "object_sha256": "d82dd6ed5fb1825b8dc255507dc616f034cf1ab6506a49b1e68af1af5162acea"
+    }
   },
   "remaining_integrator_work": [
     "genuine original game/root reachability or qualified dead-chain closure",

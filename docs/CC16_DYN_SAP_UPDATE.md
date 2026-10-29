@@ -94,3 +94,10 @@ now name compiled/unwired bodies. Locked annotations were saved and exports
 refreshed; previous values are in
 `local/ghidra-annotations-20261029T052526Z.json`. Genuine game/root, caller
 and CRT custody, original register/fault ABI and runtime gates remain open.
+
+The final promotion tree also merges accepted `c086d1548`. Its fresh
+Win32 build and both suites passed (13.68 seconds); receipt:
+`local/cc16_sap_accuracy_off_main_build.log`. The three SAP and accuracy
+core object hashes remain identical to the inspected objects. The fresh
+OFF ship-AI symbol dump still contains zero conversion-getter references.
+These checks add no native-ABI or game-activation acceptance.

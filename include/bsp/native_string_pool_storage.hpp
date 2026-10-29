@@ -44,6 +44,10 @@ public:
         void* volatile& actual_manager_publication_01090aa0) noexcept;
     char* allocate(std::uint32_t size) override;
     void release(char* block, std::uint32_t size) noexcept override;
+    // Pure metadata admission for the ACTUAL manager-cell constructor. A
+    // semantic SingletonLifetimeDomain bridge is a different domain even if
+    // its current publication values happen to agree. No getter/value read.
+    bool uses_raw_pool_cells(const NativeStringRawPoolContext&) const noexcept;
 
 private:
     NativeStringPoolStorage* volatile& publication_;

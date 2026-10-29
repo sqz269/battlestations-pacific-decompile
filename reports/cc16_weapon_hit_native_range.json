@@ -225,6 +225,23 @@
       "accept independent native post-spill fixture receipt and exact scope",
       "matched runtime gates and actual caller witness before ON",
       "no whole-function/interpolation or original-CRT identity claim"
-    ]
+    ],
+    "post_main_merge": {
+      "accepted_upstream": "c086d1548df089bd96b1ed738866d4abe51935b0",
+      "source_integration": "70107343f plus independent review5e95f340e",
+      "build_log": "local/cc16_sap_accuracy_off_main_build.log",
+      "existing_suites_passed": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "suite_elapsed_seconds": 13.68,
+      "game_validated": false,
+      "core_object_unchanged": true,
+      "core_object_sha256": "7d3627d3d509b415b74b576e3a31629b5438e2ad2c115366fc09c2f7c5aa58eb",
+      "off_ship_ai_object_sha256": "b696ca737924c1fca43832f9f080e455145326c87b15df81049311d3f5a2afa3",
+      "off_getter_symbol_count": 0,
+      "guard": false,
+      "executable_sha256": "5756762738d9933efba698c242a517fea388415b3d88c4db03e5053df1e0714e"
+    }
   }
 }

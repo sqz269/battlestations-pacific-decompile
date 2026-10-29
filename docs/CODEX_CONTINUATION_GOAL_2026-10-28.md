@@ -447,3 +447,19 @@ flag is needed. The earlier suspected sampler admission blocker was corrected
 against exact source: its gate is layout-only; full-retention metadata/profile
 borrows still happen early. Implementation and one genuine lifecycle gate remain
 open; A2 stays accepted ON and no full Page/GUI activation follows.
+
+Owner wiring exposed a concrete raw Text admission overconstraint: real VFS
+raw/typed wrappers are different objects over the same three canonical native
+string cells as the permanent process wrappers. A focused raw-only correction
+now checks every cell address and the typed actual-manager mode, retaining
+local object identities, legacy guards and all provider lifetimes. No native
+allocation/get/free body or class layout/vtable changed. Root and independent
+review pass; frozenef69872ae Win32 Release and both existing CTests pass. The
+subsequent genuine owner lifecycle remains separate.
+
+The private DEFAULT widget bindingb6b016e68 now passes root/independent source
+review and integrateddf7fe8eb0 Win32 build with both existing CTests. It uses
+genuine class predicates/list removal and precise constructor/base-prefix custody,
+with explicit rejection of unsupported child/timed/scene paths. No raw188 read,
+legacy cast, new body credit or lifecycle runtime acceptance is introduced.
+Retained-owner0fcd1633 is frozen and undergoing source review before integration.

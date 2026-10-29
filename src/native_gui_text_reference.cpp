@@ -1,4 +1,5 @@
 #include "bsp/native_gui_text_reference.hpp"
+#include "bsp/native_string_raw_domain.hpp"
 #include "bsp/game_native_readonly_data.hpp"
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/game_native_gui_text_process.hpp"
@@ -268,8 +269,8 @@ Admission preflight(void* companion, void* raw, NativeGuiTextRawModelReferenceCo
         &node.trees.owners == &c.owners && &node.trees.point_lights == &t.base.nodes.point_lights &&
         &t.glyphs.nodes == &t.base.nodes && &t.glyphs.children == &t.base.bindings &&
         t.base.nodes.uses_raw_name_pool() && &t.base.nodes.require_raw_name_pool() == &r.strings &&
-        &node.strings == &r.strings && &r.strings == &r.string_process.raw_context() &&
-        &r.material_strings == &r.string_process.strings() &&
+        &node.strings == &r.strings && same_native_string_raw_pool_cells(r.strings, r.string_process.raw_context()) &&
+        same_native_string_storage_raw_pool_cells(r.material_strings, r.strings) &&
         &node.scenes.decrement_00ce2220 == &node.trees.decrement_00ce2220 && node.trees.decrement_00ce2220 &&
         &r.effects.effects.owners.actual_owners() == &c.owners &&
         &r.effects.effects.owners.string_storage() == &r.material_strings &&

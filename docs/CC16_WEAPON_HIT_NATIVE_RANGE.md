@@ -139,3 +139,10 @@ intermediate spill, plus the native unordered branches. Receipt:
 the JSON report. No new original-body, whole-function/interpolation, ABI
 or game-activation credit follows. The independent native-window fixture
 receipt and matched live gates are separate prerequisites before ON.
+
+The final promotion tree also merges accepted `c086d1548`. Its fresh
+Win32 build and both suites passed (13.68 seconds); receipt:
+`local/cc16_sap_accuracy_off_main_build.log`. The three SAP and accuracy
+core object hashes remain identical to the inspected objects. The fresh
+OFF ship-AI symbol dump still contains zero conversion-getter references.
+These checks add no native-ABI or game-activation acceptance.
