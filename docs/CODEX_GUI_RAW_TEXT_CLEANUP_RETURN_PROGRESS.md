@@ -76,3 +76,15 @@ No C++ build, existing CTest, fixture, game or Ghidra mutation was run for this
 packet. Root owns later compilation and existing checks. Nonempty raw members,
 main4C geometry/routing, Font borrowing and recursive glyph/Page activation
 remain separate prerequisites; DEFAULT guards remain strict.
+
+Root inspected the complete cleanup/fresh-state diff and both progress paths.
+Integrated Win32 build and both existing suites pass (16.83 seconds), receipt
+`local/cc16_text_cleanup_progress_build.log`. This is build/source verification;
+no new unwind failure, owned-member or runtime qualification is claimed. The
+same build checks the focused `bsp.py msg read <id>` addition, which exposes a
+complete single coordination body when inbox headers truncate its first line.
+
+The publication tree also merges accepted main `264ed96b4` (unwired radix
+source and accuracy caller compile repair, accuracy guard still OFF). Its
+combined Win32 build and both suites pass (11.99 seconds); receipt:
+`local/cc16_cleanup_common_main_build.log`. No new runtime claim follows.

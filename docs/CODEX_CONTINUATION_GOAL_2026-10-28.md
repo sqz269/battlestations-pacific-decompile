@@ -506,3 +506,40 @@ and ends COM0+0. Detailed receipt/scope:
 No lazy Icon allocation/registration/retirement or Page activation follows.
 Raw Text main geometry and phase-aware nonempty retirement remain the next
 disjoint transport/dependency packets; full rendering and native ABI stay open.
+
+## One genuine delayed-Icon singleton lifecycle qualified
+
+Private frozen8849426fb/601BB7CF fixture passes one60-frame slot4/core10 case:
+AB5700 actual allocation/publication/registration followed by the same actual
+manager-popped D5C4B8/AB57C0 flags1 retirement. Source-enforced independent
+metadata checks precede the two records, without post-free payload reads or
+manual cleanup. Full parent closure and repeated drain checks pass, exit0 and
+COM0+0. Independent receipt/hash/runtime audit accepts this EMPTY singleton
+lifecycle only. Raw comparison to the separate idle smoke preserves slots46→47
+plus two records; it is not paired gameplay/activation evidence. Private route
+restoredOFF677c3024f and Win32/tests2/2 pass. Detailed scope/report hashes:
+`docs/CODEX_GUI_ICON_SINGLETON_LIFECYCLE_QUALIFICATION.md`.
+
+Main geometry AB7700 transport is under disjoint source implementation.
+Independent retirement review tightens the next packet: header cleanup needs
+separate returned progress during unwind; consumed actions alone are not
+completion. Owned-member/cached-effect admission cannot expand before genuine
+raw acquisition/publication receipts exist. Font borrower plan likewise requires
+all-user terminal custody and explicit post-parent-drain unlink; DEFAULT and
+AB7700 remain Font-independent. Full P4 activation stays OFF.
+
+Cleanup diagnostics276880ca9 now build with both existing suites passing. The
+independent unwind-returned mask is set only after each real helper returns;
+both fresh predicates reject stale new progress. Native consumption/call/EH
+order and every DEFAULT ownership guard stay unchanged. No new runtime proof.
+Widget Model lifetime plana1c2 is dispatched as a disjoint typed shared-schedule
+transport; raw main-geometry379 is frozen for independent source review/build.
+
+Raw main geometry379 now passes both source reviews, Win32 build/tests2/2 and
+emitted-object inspection (0805D283). One x87 sentinel load/FST/FSTP operand
+schedule and SSE zeroXYZ are present; original capture/import/transform epochs
+remain explicit. The entry is absent from the game map and has no caller.
+It supplies no primary creation/publication, main-section/retirement, Font or
+Page activation and no runtime/FP/ABI proof. Concrete primary producer and shader
+credit-receipt linkage are under disjoint bounded audits; all ownership gates
+remain in force.

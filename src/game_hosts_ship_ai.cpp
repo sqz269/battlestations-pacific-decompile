@@ -5046,8 +5046,9 @@ public:
                     application_camera_axes_crt()).crt_conversion_0109eea4();
                 return bsp::weapon_hit_accuracy_008386f0(profiles, function,
                     target_length, fraction, actual_conversion);
+            } else {
+                return bsp::weapon_hit_accuracy_008386f0(profiles, function, target_length, fraction);
             }
-            return bsp::weapon_hit_accuracy_008386f0(profiles, function, target_length, fraction);
         }
         owner_.record("ShipAiFirepower::hit_accuracy_profile_008386f0", 0x008386f0u);
         int bucket = static_cast<int>(fraction * 10.0f);
