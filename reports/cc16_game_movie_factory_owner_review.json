@@ -1,0 +1,373 @@
+{
+  "packet": "cc16_game_movie_factory_owner_review",
+  "status": "No blocking static source-admission finding; dormant composition only; activation remains unbound",
+  "review_base": "2c25911ef30940f93ef3a56c6202198013b59b45",
+  "candidate_commit": "6d4c288834c36f5ddc83da629336077389732da7",
+  "candidate_parent": "86e4bfc10e3fa92865f88061cce5f32e0bca40fa",
+  "reviewed_at_utc": "2026-10-29T20:05:49.844339+00:00",
+  "ownership": {
+    "files": [
+      "docs/CC16_GAME_MOVIE_FACTORY_OWNER_REVIEW.md",
+      "reports/cc16_game_movie_factory_owner_review.json"
+    ],
+    "addresses": [],
+    "source_shared_metadata_or_Ghidra_mutations": false
+  },
+  "blocking_findings_for_static_source_admission": [],
+  "source_read": {
+    "header_all_lines": 101,
+    "source_all_lines": 178,
+    "working_source_clean": true,
+    "parent_is_only_Bink_dependency_merge_above_base": true,
+    "dependency_commit": "68ab882bbe7709822936c15b21f6e9804076ffb2",
+    "dependency_review_commit": "6d3d02dbb1c92237291f42b5ab0730e7e31bb190"
+  },
+  "source_pins": [
+    {
+      "path": "include/bsp/game_movie_factory_owner.hpp",
+      "sha256": "86016d14b24133bb8c06996e2f8141dd14e42af0774a6558f9710df9044546ff",
+      "git_blob": "fd57d25d8f0aaafe9ad7f3661881bffa5a5452c3",
+      "candidate_working_blob_matches": true
+    },
+    {
+      "path": "src/game_movie_factory_owner.cpp",
+      "sha256": "39ca1d6d4b7696096326fc8fad51424d62e98b1b1f379f5d44ef1ce455c617db",
+      "git_blob": "6e76beb3c2f7485066067215e04583f7d4878794",
+      "candidate_working_blob_matches": true
+    },
+    {
+      "path": "docs/CC16_GAME_MOVIE_FACTORY_OWNER.md",
+      "sha256": "4a78da1445a025c58b131225b514f715d2c6f47696a168f508152d40d418403a",
+      "git_blob": "424fb4a3d2e186823848fd29dc409faaee8b0f07",
+      "candidate_working_blob_matches": true
+    },
+    {
+      "path": "reports/cc16_game_movie_factory_owner.json",
+      "sha256": "e41333c4661c1035e2a479eb28a06dc4644dde8a449d84112944fbabca541ee6",
+      "git_blob": "783dd627c21afc5132c329f5d1687751f15c9f69",
+      "candidate_working_blob_matches": true
+    }
+  ],
+  "exact_dependencies": [
+    {
+      "path": "include/bsp/bink_runtime_library.hpp",
+      "sha256": "510edc8d0f710009872357e976d6fb62bfb9dca50430eb8100155d9713e66007",
+      "git_blob": "73f927f786ef979edb0199a197e92164078a104b",
+      "candidate_working_blob_matches": true
+    },
+    {
+      "path": "src/bink_runtime_library.cpp",
+      "sha256": "0e3b46555ea02931a6dc298a1966fa6fcc82739588db438b107a73dd5a94cb94",
+      "git_blob": "c35a0b0d583207657d77092c7e790107f542f5e0",
+      "candidate_working_blob_matches": true
+    },
+    {
+      "path": "include/bsp/movie_factory_followup.hpp",
+      "sha256": "4b208a04568c712cf41d4b7d1ef490975bc4813fe8397322d114ac477a55e60f",
+      "git_blob": "3e527edffb003d6ea8fd27ef9720faead8396eac",
+      "candidate_working_blob_matches": true
+    },
+    {
+      "path": "src/movie_factory_followup.cpp",
+      "sha256": "00a8b4866bfa3ba88f537a53d94191cef0efbd56f54f1a41aa1d3fe177f2f8c6",
+      "git_blob": "9718be2e12fa4fb5f74c1261889de60f5808e8e1",
+      "candidate_working_blob_matches": true
+    },
+    {
+      "path": "include/bsp/movie_decoder.hpp",
+      "sha256": "9151e8eacc41a208769eab8347539c5b15201a330f329b593585cfe620b3dbd7",
+      "git_blob": "9066b437ede14505011afcb2bc08523d164b48bf",
+      "candidate_working_blob_matches": true
+    },
+    {
+      "path": "include/bsp/sound_lifetime_access.hpp",
+      "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b",
+      "git_blob": "733525b1563c1641db659681fd812485aa71c7ed",
+      "candidate_working_blob_matches": true
+    },
+    {
+      "path": "src/sound_lifetime_access.cpp",
+      "sha256": "00ace40faa75007eb4e7cf857de0473347d8bdba0d99ed15ce8bc750c09efd29",
+      "git_blob": "3215502c513d22bb0d5c0201dfb110283803b0da",
+      "candidate_working_blob_matches": true
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "candidate_working_blob_matches": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "candidate_working_blob_matches": true
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+      "candidate_working_blob_matches": true
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+      "git_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e",
+      "candidate_working_blob_matches": true
+    }
+  ],
+  "read_only_evidence_inputs": [
+    {
+      "commit": "8f14bfd2b64b0f163c997824a0f1d19b4de49ff0",
+      "path": "docs/CC16_MOVIE_FACTORY_OWNER_CONTRACT.md",
+      "sha256_git_content": "0aa91cafa93ee80bb26254f472684aa3fffe3f00c9e8cad7fd5717046c30893d"
+    },
+    {
+      "commit": "8f14bfd2b64b0f163c997824a0f1d19b4de49ff0",
+      "path": "reports/cc16_movie_factory_owner_contract.json",
+      "sha256_git_content": "660ad0d1d4d784b3b3484041283fda28199527cb4dc712e7f5ed2fb963581bb3"
+    },
+    {
+      "commit": "1214cca8f15a8a733211a390f1e4c5ce153f6c9f",
+      "path": "docs/CC16_MOVIE_FACTORY_STARTUP_EH.md",
+      "sha256_git_content": "607581e00897072974d6091b39e27f7536f48570bc323a6c18cd8368a698848a"
+    },
+    {
+      "commit": "1214cca8f15a8a733211a390f1e4c5ce153f6c9f",
+      "path": "reports/cc16_movie_factory_startup_eh.json",
+      "sha256_git_content": "6d33ca621489d51edf125bf982b19152800080bb39d2bad33df03453ff3fe3c9"
+    },
+    {
+      "commit": "6d3d02dbb1c92237291f42b5ab0730e7e31bb190",
+      "path": "docs/CC16_BINK_RUNTIME_LIBRARY_REVIEW.md",
+      "sha256_git_content": "cf74da38ff7644a77768bbae4bae99d5eecba4002eb4fc65f9db2257881f0d55"
+    },
+    {
+      "commit": "6d3d02dbb1c92237291f42b5ab0730e7e31bb190",
+      "path": "reports/cc16_bink_runtime_library_review.json",
+      "sha256_git_content": "f9c2e001c7e211693da9c0020b46cf426b66cc023a86c816208e776b1289d8c3"
+    }
+  ],
+  "reviewed_behavior": [
+    {
+      "source": "hpp21-29,46-59;cpp24-40,55-83",
+      "finding": "Metadata is separate from the exact four-byte raw MovieFactoryPrefix. Required real publication/manager, original-data, retained-library and matched-heap services have no defaults. Constructor only borrows references and validates original numeric table WORDS. Destructor is metadata only."
+    },
+    {
+      "source": "cpp61-93",
+      "finding": "Allocation exception precedes acquired raw cleanup. Returned null skips registration/profile/sound. Nonnull allocation is captured before placement lifetime start; construction exceptions call only free_00bf65ac(captured_allocation), latch failed and rethrow. No destructor/unregister/clear/reset is invented by caller cleanup."
+    },
+    {
+      "source": "cpp96-120;src/sound_lifetime_access.cpp12-63",
+      "finding": "Incoming CFEA60 stamp precedes first manager access. Actual-storage CapturedSoundLifetimeSection captures first manager+10h, enters/increments and later decrements/leaves the same section. Publish incoming receiver; complete second getter in its own statement; then evaluate volatile current publication for register. Helper exception reset is CE3818 after guard unwind, before outer raw free."
+    },
+    {
+      "source": "src/movie_factory_followup.cpp12-18;cpp122-127;cpp27-28",
+      "finding": "Existing constructor body is reused unchanged: registration, incoming CFEA78 stamp, same retained BinkFactoryImports.set_sound_system(open_direct_sound,0), ignored result. Both import references borrow one fully constructed thirteen-import BinkRuntimeLibrary; no callback invocation, copy, fallback or status translation is added."
+    },
+    {
+      "source": "cpp129-177",
+      "finding": "Both scalar-deleting entries require this owner's captured live receiver without comparing it to current publication. Normal path stamps CFEA60, captures first section, resolves second manager, then unregisters current volatile publication, clears it, leaves captured section, and stamps incoming CE3818. Flags bit0 frees captured incoming storage; return identity is captured incoming, even after free. Flag0 grants no later retry."
+    },
+    {
+      "source": "cpp163-168",
+      "finding": "Interrupted retirement guard unwind precedes incoming CE3818 reset. No extra free, publication clear, unregister retry or sound cleanup is added."
+    },
+    {
+      "source": "cpp15-20,34-37;src/game_native_readonly_data.cpp137-147",
+      "finding": "Original data spans are bounds/mapping checked and memcpy reads their WORD identities. No data_at pointer becomes a native callable pointer or a host C++ vptr."
+    }
+  ],
+  "native_evidence": {
+    "mode": "Fresh installed-PE byte reads plus existing bounded saved assembly exports; no live Ghidra query or mutation",
+    "original_executable": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "original_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "saved_exports_inspected": [
+      "0073D410 assembly765..798",
+      "00737F30 assembly99..118",
+      "007366B0 assembly",
+      "00736750 assembly",
+      "00737950 assembly",
+      "00737030 assembly",
+      "00412430 assembly",
+      "00411EE0 assembly",
+      "00737710 assembly"
+    ],
+    "caller_state21": "Allocate4 at73DF9B/9D; capture at73DFA2/A7 before state21 arm73DFAD; state remains through register73DFBC, CFEA78 store73DFC7 and ignored-result sound call73DFCD; demote73DFD4. DB61C8 maps21 to-1/actionC86BEC: MOV EAX,[EBP-138h], PUSH EAX, CALLBF65AC, POP ECX, RET only.",
+    "registration_EH": "DB53F0/mapDB53E0: state1->0/C85F88 captured guard411EE0; state0->-1/C85F80 incoming reset412430. No publication clear/unregister/free in helper actions.",
+    "retirement_EH": "DB5424/mapDB5414: state1->0/C85FA8 captured guard411EE0; state0->-1/C85FA0 incoming reset412430. No additional clear/free after an exceptional unregister.",
+    "scalar_original_ABI": "737950 and737030 preserve incoming ECX in ESI, call736750, freeESI iff flags bit0, EAX=ESI, RET4. Typed C++ methods are not register/stack ABI replacements.",
+    "explicit_shutdown": "73804F reloads currentF8AEFC and null-tests; PUSH1 at73805D; slot0 call73805F. This owner does not supply that caller or assume foreign current publication belongs to itself.",
+    "static_spans": [
+      {
+        "name": "base_profile",
+        "address": "00CE3818",
+        "bytes": 4,
+        "file_offset": "0x8e3818",
+        "hex": "40 24 41 00",
+        "sha256": "9b438ce3feae2fd62d0e9bbaf623d6c8501a0d858c6da7d06cc04ccc29ebd57f"
+      },
+      {
+        "name": "registration_profile",
+        "address": "00CFEA60",
+        "bytes": 4,
+        "file_offset": "0x8fea60",
+        "hex": "30 70 73 00",
+        "sha256": "4c65498ecbe32d492ce349174df59c6f3c11d6cd7b84153895025e190bdb3c1e"
+      },
+      {
+        "name": "factory_profile",
+        "address": "00CFEA78",
+        "bytes": 8,
+        "file_offset": "0x8fea78",
+        "hex": "50 79 73 00 30 77 73 00",
+        "sha256": "6efd5d509727cf77de08a5e2e012e9b78da0f6e7d3d6fb61158baf42a2934268"
+      },
+      {
+        "name": "caller_funcinfo",
+        "address": "00DB609C",
+        "bytes": 36,
+        "file_offset": "0x9b609c",
+        "hex": "22 05 93 19 31 00 00 00 c0 60 db 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00",
+        "sha256": "14beb8044a80e1663ec517b799fbfc0a724a07100d6554125b0681dcd06ba5f3"
+      },
+      {
+        "name": "caller_state21",
+        "address": "00DB61C8",
+        "bytes": 8,
+        "file_offset": "0x9b61c8",
+        "hex": "ff ff ff ff ec 6b c8 00",
+        "sha256": "37aff6ad99be59b0e52050d4a7897e4895869d29653c8fe138d97e1b67f11c56"
+      },
+      {
+        "name": "caller_raw_free",
+        "address": "00C86BEC",
+        "bytes": 14,
+        "file_offset": "0x886bec",
+        "hex": "8b 85 c8 fe ff ff 50 e8 b4 f9 f6 ff 59 c3",
+        "sha256": "143551c387803ea65206110d846b4f98f9cc8559b067e221fba88300bcae5287"
+      },
+      {
+        "name": "register_funcinfo",
+        "address": "00DB53F0",
+        "bytes": 36,
+        "file_offset": "0x9b53f0",
+        "hex": "22 05 93 19 02 00 00 00 e0 53 db 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00",
+        "sha256": "de6fdd497a860100785ebecb92f6437c05767e48f552c5bcf5e2e177f0d42ac8"
+      },
+      {
+        "name": "register_map",
+        "address": "00DB53E0",
+        "bytes": 16,
+        "file_offset": "0x9b53e0",
+        "hex": "ff ff ff ff 80 5f c8 00 00 00 00 00 88 5f c8 00",
+        "sha256": "22f82256fe1ae39580157ee24a6164f7266da46c6c35bf4f53c63367b9bdcc7d"
+      },
+      {
+        "name": "register_actions",
+        "address": "00C85F80",
+        "bytes": 16,
+        "file_offset": "0x885f80",
+        "hex": "8b 4d e8 e9 a8 c4 78 ff 8d 4d ec e9 50 bf 78 ff",
+        "sha256": "b1e05d0ccc52171762adbe46872d9f32c994df76efa0db91fe935c206f2d7774"
+      },
+      {
+        "name": "retirement_funcinfo",
+        "address": "00DB5424",
+        "bytes": 36,
+        "file_offset": "0x9b5424",
+        "hex": "22 05 93 19 02 00 00 00 14 54 db 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00",
+        "sha256": "77c9af50fb1fa0d1aa7cece6545296d43bfda8136ce1b7e6f08226d4769a5bb1"
+      },
+      {
+        "name": "retirement_map",
+        "address": "00DB5414",
+        "bytes": 16,
+        "file_offset": "0x9b5414",
+        "hex": "ff ff ff ff a0 5f c8 00 00 00 00 00 a8 5f c8 00",
+        "sha256": "d0d7d719c1ba0d067cd135be1c1ec0f987012df3e2b458fc791fad1dae415726"
+      },
+      {
+        "name": "retirement_actions",
+        "address": "00C85FA0",
+        "bytes": 16,
+        "file_offset": "0x885fa0",
+        "hex": "8b 4d e8 e9 88 c4 78 ff 8d 4d ec e9 30 bf 78 ff",
+        "sha256": "3525c0b8eaf0f2fceaa93c3de30a3289fb4f308da8f4e5e6257bf58f55c060f8"
+      }
+    ]
+  },
+  "qualified_findings": [
+    {
+      "id": "terminal_host_custody",
+      "finding": "Raw free can leave a dangling publication/registry residue. Terminal whole-aggregate retention and suppression of ordinary shared drain is deliberate host policy, not FH3 equivalence or repair of the dangling state. Actual root custody remains unbound."
+    },
+    {
+      "id": "serialized_api_precondition",
+      "finding": "Replay/foreign/overlap checks reject at entry before new native effects. They are not locking or arbitrary native reentrancy proof. Under violated preconditions, a callback that suppresses an invalid nested-call exception can allow the already-running outer operation to overwrite failed with ready/retired. Root must enforce serialized once-only nonreentrant use; this review grants no irreversible-latch guarantee outside it."
+    },
+    {
+      "id": "retention_query_scope",
+      "finding": "requires_process_retention() false while ready is not permission to destroy metadata/providers or skip explicit flags1 retirement. Failed, interrupted or flags0 paths require root retention of the whole aggregate; destructor performs no native work."
+    },
+    {
+      "id": "qualified_Bink_types",
+      "finding": "The two sound callback typedefs retain Bink review6d3d02's older-header provenance. Export decoration and source typing do not establish installed callback/result ABI or runtime sound success. No DLL was loaded or called."
+    },
+    {
+      "id": "EH_projection",
+      "finding": "C++ EHsc source behavior and static FH3 maps do not prove arbitrary SEH, foreign exceptions, cleanup-failure continuation, native register witnesses, or runtime recovery."
+    }
+  ],
+  "remaining_root_activation_obligations": [
+    "Actual retained F8AEFC cell/accessor/context is absent in baseline GameSingletonHost; create/admit its real zero/publish/clear provenance and bind every consumer. No private/default cell is supplied here.",
+    "Bind real matched singleton_lifetime_allocate({object,4,4})/singleton_lifetime_free provider and verify same canonical actual01090AA0 manager/domain identity.",
+    "Admit the Bink dependency separately and retain the same full module/Impl/import table owner with original read-only spans and all metadata/providers before borrowers escape.",
+    "Install genuine finite CFEA60 andCFEA78 captured-receiver deletion routes before first registration; root resolves actual current-publication shutdown, including any different genuine owner.",
+    "Add actual build and Startup composition at73DF9B after terrainF8C218 and before010909B0; surrounding real producer and full shutdown dependencies remain required.",
+    "Implement explicit73804F/73805F current-publication retirement and normal real-handle/callback/native-borrower closure, final shared drain, then module/table release.",
+    "Route failure before ordinary aggregate unwind/drain into whole-aggregate terminal custody until OS exit; enforce serialized/nonreentrant lifecycle and keep freed captured addresses identity-only.",
+    "Production frozen startup/shutdown, installed ABI, callback/sound quiescence, decoder/clock/playback and gameplay verification remain separate later gates."
+  ],
+  "validation": {
+    "independent_strict_Win32_object_compile": {
+      "passed": true,
+      "compiler_environment": "VS18 Community vcvars32.bat",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-codex-game-movie-factory-owner\\src\\game_movie_factory_owner.cpp",
+      "include_tree": "J:\\PROG\\battlestations-pacific-decompile-codex-game-movie-factory-owner\\include",
+      "flags": [
+        "/std:c++17",
+        "/permissive-",
+        "/W4",
+        "/WX",
+        "/fp:strict",
+        "/EHsc",
+        "/O2",
+        "/MD",
+        "/c"
+      ],
+      "object": "J:\\PROG\\battlestations-pacific-decompile-codex-game-movie-factory-owner-review\\build\\movie-factory-owner-review\\game_movie_factory_owner.obj",
+      "machine": "0x014c",
+      "bytes": 28857,
+      "sha256": "1488e8f6d4c5116f810a272c6c3f1d59728a2d9c9fcc08a86b2ab1a31fd9687f"
+    },
+    "full_build": false,
+    "new_or_run_tests": false,
+    "probe": false,
+    "game_run": false,
+    "DLL_load_or_Bink_call": false,
+    "Ghidra_mutation": false,
+    "CMake_or_source_edit": false,
+    "scope_check": "Review branch contains only the two leased review artifacts; no private accuracy candidate, Startup, singleton/deletion binding, ledger/name/tag or subtitle guard changes."
+  },
+  "credit": {
+    "new_original_native_bodies": 0,
+    "vendor_bodies": 0,
+    "binary_ABI": false,
+    "activation": false,
+    "runtime": false,
+    "playback": false,
+    "gameplay": false
+  },
+  "guard": "Subtitle guard and private accuracy candidate2c182 remain unchanged."
+}
