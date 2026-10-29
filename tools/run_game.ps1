@@ -38,6 +38,9 @@ param(
     [string]$Lock = "$env:USERPROFILE\.bsp\bsp_game.lock",
     [int]$WaitSeconds = 2400,
     [int]$Slots = 14,
+    # Optional fixed lane for serial comparisons amid independent harnesses.
+    # -1 preserves the existing first-free scan; no occupied lock is replaced.
+    [int]$SlotIndex = -1,
     [int[]]$Cores = @(2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28),
     [Parameter(ValueFromRemainingArguments = $true)]
     [string[]]$GameArgs = @()
@@ -96,6 +99,7 @@ $owner = if ($env:BSP_AGENT) { $env:BSP_AGENT } else { Split-Path (Get-Location)
 $lockDir = Split-Path $Lock -Parent
 if (-not (Test-Path $lockDir)) { New-Item -ItemType Directory -Path $lockDir | Out-Null }
 if ($Slots -lt 1 -or $Cores.Count -lt $Slots) { throw "-Cores must list at least -Slots processors" }
+if ($SlotIndex -lt -1 -or $SlotIndex -ge $Slots) { throw "-SlotIndex must be -1 or an index below -Slots" }
 $logDirEarly = Split-Path $Log -Parent
 if ($logDirEarly -and -not (Test-Path $logDirEarly)) { New-Item -ItemType Directory -Path $logDirEarly | Out-Null }
 $logFull = if ([System.IO.Path]::IsPathRooted($Log)) { [System.IO.Path]::GetFullPath($Log) } else { [System.IO.Path]::GetFullPath((Join-Path (Get-Location).Path $Log)) }
@@ -112,13 +116,15 @@ function Get-TaggedGame([string]$tagName) {
 $deadline = (Get-Date).AddSeconds($WaitSeconds)
 $slot = -1
 $slotFile = $null
+$slotStart = if ($SlotIndex -ge 0) { $SlotIndex } else { 0 }
+$slotEnd = if ($SlotIndex -ge 0) { $SlotIndex + 1 } else { $Slots }
 while ($slot -lt 0) {
     # A drain (the coordinator's ~\.bsp\DRAIN file) stops queued launches here, also while waiting for a slot.
     if ((Test-Path "$env:USERPROFILE\.bsp\DRAIN") -and $env:BSP_IGNORE_DRAIN -ne '1') {
         Write-Error "DRAIN is set ($env:USERPROFILE\.bsp\DRAIN): not starting $logFull. Stop queuing runs; report to your lead." -ErrorAction Continue
         exit 75
     }
-    for ($k = 0; $k -lt $Slots; $k++) {
+    for ($k = $slotStart; $k -lt $slotEnd; $k++) {
         $candidate = Join-Path $lockDir "bsp_game.slot$k.lock"
         if (Test-Path $candidate) {
             $text = (Get-Content $candidate -ErrorAction SilentlyContinue) -join ' '
@@ -143,7 +149,10 @@ while ($slot -lt 0) {
         }
     }
     if ($slot -ge 0) { break }
-    if ((Get-Date) -gt $deadline) { throw "gave up after $WaitSeconds s: all $Slots slots busy" }
+    if ((Get-Date) -gt $deadline) {
+        if ($SlotIndex -ge 0) { throw "gave up after $WaitSeconds s: slot $SlotIndex busy" }
+        throw "gave up after $WaitSeconds s: all $Slots slots busy"
+    }
     Start-Sleep -Seconds 10
 }
 $tag = "slot$slot"

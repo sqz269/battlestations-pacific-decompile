@@ -26,12 +26,19 @@ still requires the legacy application.
 
 After source review/build, freeze ONE qualification-ON executable and the same
 XLive DLL for a serial USN04 pair. Both select Normal process priority, pinned
-difficulty1, the same slot1/core4 and game inputs. Use existing arguments:
+difficulty1, the same slot4/core10 and game inputs. Use existing arguments:
 `--frames 600 --press-start-frame 30 --menu-select USN04 --mission-frames 181
 --mission-frame-seconds 0.05`. Set death/RNG streams1, native mission SHIP/FRAME1,
 GUI_NODES0 and no bounds aid. GUI_TEXT0 is OFF; GUI_TEXT1 is ON. All other BSP
 environment values are cleared. Preserve full manifests, archived inputs,
 hashes, source/runner receipt and raw comparisons; do not overwrite a run.
+
+Before any native execution, the initial slot1 launch was blocked by other
+harnesses and timed out without creating a game log or manifest. Its scheduler
+receipt is preserved. The pair was rescheduled to free slot4/core10 using the
+launcher's optional fixed-lane selection; default first-free selection and all
+atomic lock/tagged-process checks remain unchanged. No other lane is reserved,
+no occupied lock is replaced and no process is stopped.
 
 OFF must not enter the raw owner. ON requires exactly one metadata preparation,
 one nonnull factory/raw93 completion and separate private raw122 publication,
