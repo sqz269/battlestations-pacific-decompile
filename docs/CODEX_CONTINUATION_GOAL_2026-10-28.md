@@ -933,3 +933,11 @@ healthy private leaf and real41DD20 before bound/scalar, with no Font/Main graph
 It remains uncalled by the startup host. New owner layout/Source is not qualified
 by the frozen71 Font/Main run. Seven private flags remain FALSE; dedicated host
 qualification and remaining raw property/content bindings are the next work.
+
+The dedicated DEFAULT source-equal host route is now coupled but FALSE. Exact
+new preparation/construction uses the existing actual cache/Lua callback; it adds
+no Font link/detach or379-specific CRT block. Independent host Source review and
+whole prior-source FALSE projection accept; Win32/existing checks2/2 pass10.09s.
+All eight private choices remain FALSE. Fresh current-artifact preregistration/
+runtime is open; only four new owner diagnostics are prospectively specified.
+Earlier Font/Main71 acceptance does not qualify the changed host/owner layout.

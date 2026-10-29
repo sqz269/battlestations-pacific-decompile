@@ -16,6 +16,21 @@
   "policy": "Function addresses and disjoint file ownership define work, not wave/segment IDs. Workers read shared dependencies; primary owns Ghidra mutations, shared metadata, common APIs, CMake, builds and integration. Implemented code_ownership and future next_code_ownership are recorded separately. Refill up to three ready worker slots; verify actual concurrency on resume.",
   "packets": [
     {
+      "id": "codex-raw-source-equal-host",
+      "state": "source_reviewed_coupled_win32_pass_gate_off",
+      "worker": "cc16-progress",
+      "source_ready": false,
+      "depends_on": [
+        "codex-raw-source-equal-owner"
+      ],
+      "function_addresses": [],
+      "output_files": [
+        "src/game_native_gui_render_application.cpp",
+        "docs/CODEX_GUI_RAW_DEFAULT_SOURCE_EQUAL_QUALIFICATION.md"
+      ],
+      "notes": "Dedicated8thFALSE/exclusive hostchoice usesactualreadyowner/exactSourceEqualprepare+construct inexistingcacheLua callback. NoFontlink/detach/newGeometryCRTblock. WholeoldSourceFALSEprojectionexact; independentactualhostSourceACCEPT; coupledWin32checks2/2 pass10.09s. Fourownerdiagnosticsonly; currentbinary/input/protocol/runtime and13row/USN21/fullPage/ABI/productiongatesOPEN. No priorFontMain71inheritance; all8choicesFALSE."
+    },
+    {
       "id": "codex-raw-source-equal-owner",
       "state": "source_reviewed_coupled_win32_pass_unwired",
       "worker": "gui_integration_review",
