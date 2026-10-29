@@ -432,6 +432,8 @@ def pe_info(path):
                 "iat_rva": imports[0], "entry_byte": pe.get_data(entry, 1).hex(),
                 "image_size": pe.OPTIONAL_HEADER.SizeOfImage,
                 "motion_rva": motion_rva, "controlled_rva": controlled_rva,
+                "directinput_entry_bytes": pe.get_data(0x698340, 2).hex()
+                    if pe.OPTIONAL_HEADER.SizeOfImage > 0x698341 else None,
                 "motion_entry_byte": pe.get_data(motion_rva, 1).hex()
                     if pe.OPTIONAL_HEADER.SizeOfImage > motion_rva else None}
     finally:
@@ -708,9 +710,46 @@ def motion_capture(process, thread_id, state, capture=True):
         close(thread)
 
 
+def arm_directinput_observation(process, state):
+    address = state["base"] + 0x698340
+    if read_remote(process, address, 2) != b"\x8b\x07":
+        raise RuntimeError("DirectInput observation site is not original MOV EAX,[EDI]")
+    replace_remote(process, address, b"\xcc")
+    state.update(directinput_address=address, directinput_armed=True)
+
+
+def directinput_observation(process, thread_id, state, capture=True):
+    thread = K.OpenThread(0x18, False, thread_id)
+    checked(thread, "OpenThread DirectInput observation")
+    try:
+        context = WOW64_CONTEXT()
+        context.flags = 0x10003  # CONTROL | INTEGER
+        checked(K.Wow64GetThreadContext(thread, C.byref(context)), "Wow64GetThreadContext DirectInput")
+        if context.Eip != state["directinput_address"] + 1:
+            raise RuntimeError("Unexpected DirectInput breakpoint EIP")
+        if capture:
+            result = {"unix": time.time(), "pid": state["pid"], "thread_id": thread_id,
+                "address": state["directinput_address"], "eax_hresult": context.Eax,
+                "eax_hresult_hex": f"{context.Eax:08x}", "eax_hresult_signed": C.c_int32(context.Eax).value,
+                "hresult_failed": bool(context.Eax & 0x80000000), "output_slot_edi": context.Edi,
+                "esp": context.Esp, "observed_before": "MOV EAX,[EDI] after DirectInput8Create thunk"}
+            try:
+                output = struct.unpack("<I", read_remote(process, context.Edi, 4))[0]
+                result.update(output_pointer=output, output_pointer_hex=f"{output:08x}", interface_null=not output)
+            except OSError as exc:
+                result["output_read_error"] = str(exc)
+            state["directinput_observation"] = result
+            replace_remote(process, state["directinput_address"], b"\x8b")
+            state.update(directinput_armed=False, directinput_entry_restored=True)
+        context.Eip = state["directinput_address"]
+        checked(K.Wow64SetThreadContext(thread, C.byref(context)), "Wow64SetThreadContext DirectInput")
+    finally:
+        close(thread)
+
+
 def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=None,
               arguments=(), protected_roots=(), probe=False, motion_discovery=True,
-              handle_known_xlive_debug_close=False):
+              handle_known_xlive_debug_close=False, observe_directinput_startup=False):
     drain = Path(os.environ["USERPROFILE"]) / ".bsp/DRAIN"
     def check_drain():
         if drain.exists() and os.environ.get("BSP_IGNORE_DRAIN") != "1":
@@ -729,6 +768,8 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
     for p in (stage / "profile", stage / "profile/AppData/Roaming", stage / "profile/AppData/Local", stage / "Temp"):
         p.mkdir(parents=True, exist_ok=True)
     info, expected_hash = pe_info(executable), sha(executable)
+    if observe_directinput_startup and (probe or info["directinput_entry_bytes"] != "8b07"):
+        raise RuntimeError("DirectInput startup observation requires the verified original MOV EAX,[EDI] site")
     discovery_enabled = motion_discovery and bool(info["motion_entry_byte"])
     protected_documents = folder(5) / "Battlestations-Pacific"
     original_hash = sha(original_exe) if original_exe else expected_hash
@@ -747,6 +788,7 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
             "child_policy": "DEBUG_PROCESS; only byte-identical images under stage; otherwise terminate owned job",
             "motion_discovery": "private discover-motion.request marker arms restored one-shot entry" if discovery_enabled else "disabled",
             "known_xlive_debug_close_policy": "opt-in exact SHA+live return/argument+callsite, first chance before OEP, once" if handle_known_xlive_debug_close else "disabled; exceptions are not swallowed",
+            "directinput_startup_observation": "restored one-shot at original 00A98340" if observe_directinput_startup else "disabled",
             "disk_binary_modified": False, "started_unix": time.time(), "probe": probe}
     write_receipt(receipt, data)
     try:
@@ -889,7 +931,10 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
                     record = exception.record
                     handle, state = owned[event.pid]
                     if record.code in (0x80000003, 0x4000001F):
-                        if record.address == state.get("motion_address"):
+                        if record.address == state.get("directinput_address"):
+                            directinput_observation(handle, event.tid, state, state.get("directinput_armed", False))
+                            write_receipt(receipt, data)
+                        elif record.address == state.get("motion_address"):
                             # More than one thread can already have hit INT3.
                             # Rewind queued duplicates after restoring the byte.
                             motion_capture(handle, event.tid, state, state.get("motion_armed", False))
@@ -898,6 +943,8 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
                             state["motion_break_requested"] = False
                         elif record.address == state["entry"] and not state["hooked"]:
                             establish_hook(handle, event.tid, state, document_bytes)
+                            if observe_directinput_startup:
+                                arm_directinput_observation(handle, state)
                             if all(owned[pid][1]["hooked"] for pid in live):
                                 data.update(phase="running", live_launch_allowed=True)
                             write_receipt(receipt, data)
@@ -946,6 +993,15 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
                 break
         if not all(state["hooked"] for _, state in owned.values()) or not owned:
             raise RuntimeError("Process exited without an established known-folder guard")
+        if exit_seen:
+            nonzero = [{"pid": state["pid"], "exit_code": state["exit_code"],
+                        "exit_code_hex": f"{state['exit_code']:08x}"}
+                       for _, state in owned.values() if state.get("exit_code", 0) != 0]
+            if nonzero:
+                failed = RuntimeError("Owned child exited with a nonzero status: " +
+                    ", ".join(f"PID {p['pid']} 0x{p['exit_code_hex']}" for p in nonzero))
+                data.update(phase="crashed" if any(p["exit_code"] >= 0x80000000 for p in nonzero) else "exit_failed",
+                            error=str(failed), child_exit_failures=nonzero)
     except BaseException as exc:
         failed = exc
         data.update(phase="failed", error=f"{type(exc).__name__}: {exc}")
@@ -1022,6 +1078,7 @@ extern "C" __declspec(allocate(".CRT$XLB")) PIMAGE_TLS_CALLBACK guard_probe_tls_
 #pragma comment(linker, "/INCLUDE:__tls_used")
 #pragma comment(linker, "/INCLUDE:_guard_probe_tls_anchor")
 int main(int argc, char** argv) {
+    if (argc == 2 && !strcmp(argv[1], "--fixture-crash-exit")) ExitProcess(0xC0000005);
     if (argc != 5) return 90;
     const bool generic_invalid_handle_caught = probe_invalid_handle_caught != 0;
     char a[MAX_PATH] = {}, b[MAX_PATH] = {}, c[MAX_PATH] = {}, desktop[MAX_PATH] = {};
@@ -1110,7 +1167,19 @@ def safety_probe(root):
         and not d["known_xlive_debug_close"]["continued"]
         and d.get("registers") and d.get("stack_words") and d.get("eip_module") for d in invalid_handle))
     evidence["generic_invalid_handle_not_swallowed"] = diagnostic_ok
-    evidence["passed"] = evidence["passed"] and motion_ok and diagnostic_ok
+    crash_receipt = root / "probe-crash-exit.json"
+    crash_rejected = False
+    try:
+        run_guard(stage, exe, stage, documents, crash_receipt, 15,
+            arguments=["--fixture-crash-exit"], protected_roots=[medium], probe=True,
+            handle_known_xlive_debug_close=True)
+    except RuntimeError:
+        crashed = json.loads(crash_receipt.read_text(encoding="utf-8"))
+        crash_rejected = (crashed["phase"] == "crashed" and
+            crashed["child_exit_failures"][0]["exit_code"] == 0xC0000005 and
+            crashed["protected_documents_unchanged"] and crashed["disk_executable_unchanged"])
+    evidence["nonzero_child_exit_rejected"] = crash_rejected
+    evidence["passed"] = evidence["passed"] and motion_ok and diagnostic_ok and crash_rejected
     if not evidence.get("passed") or (medium / "must-not-exist.txt").exists():
         raise RuntimeError(f"Isolation probe failed: {evidence}")
     return {"phase": "probe_passed", "root": str(root), "evidence": evidence,
@@ -1134,6 +1203,8 @@ def main():
     launch.add_argument("--no-motion-discovery", action="store_true")
     launch.add_argument("--handle-known-xlivedebugclose", action="store_true",
         help="Opt in to one first-chance invalid-HMODULE CloseHandle exception only with exact loaded xlive hash/call/live stack proof")
+    launch.add_argument("--observe-directinput-startup", action="store_true",
+        help="Record EAX HRESULT and [EDI] once after DirectInput8Create, restore the breakpoint and continue without changing results")
     launch.add_argument("arguments", nargs=argparse.REMAINDER)
     probe = sub.add_parser("probe")
     probe.add_argument("--root", type=Path, required=True)
@@ -1151,7 +1222,8 @@ def main():
                 args.documents or args.stage / "Documents", args.receipt, args.seconds,
                 original_exe=ordinary(args.original_exe), arguments=args.arguments, protected_roots=roots,
                 motion_discovery=not args.no_motion_discovery,
-                handle_known_xlive_debug_close=args.handle_known_xlivedebugclose)
+                handle_known_xlive_debug_close=args.handle_known_xlivedebugclose,
+                observe_directinput_startup=args.observe_directinput_startup)
         print(json.dumps({k: result[k] for k in ("phase", "stage", "root", "root_pid", "receipt", "evidence") if k in result}))
         return 0
     except BaseException as exc:
