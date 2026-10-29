@@ -1,0 +1,486 @@
+{
+  "packet": "codex-dyn-profile-report-review",
+  "owner": "agent/codex-dyn-profile-report-review",
+  "date": "2026-10-29",
+  "review_base": "1e10d9de40bda6596ebdb89487a657cdba034d8d",
+  "candidate_commit": "cc32f14469be8ef3b6280af181bd9a01c7d7ccee",
+  "candidate_base": "5c2547156c0d8d83d79f7b2600c6f6ea99cd975a",
+  "recommendation": "accept_normal_CPP_source_integration_with_existing_unwired_new_ABI_qualifications_and_nonblocking_symbol_receipt_correction",
+  "blocking_findings": 0,
+  "new_in_house_body_credit": 0,
+  "vendor_body_credit": 0,
+  "runtime_or_activation_credit": 0,
+  "reviewed_scope": {
+    "start": "00C320D0",
+    "end_inclusive": "00C321AB",
+    "bytes": 220,
+    "instructions": 74,
+    "native_direct_calls": 3,
+    "native_indirect_sink_calls": 1,
+    "address_lease": false,
+    "source_edits": false,
+    "owned_files": [
+      "docs/CC16_DYN_PROFILE_REPORT_REVIEW.md",
+      "reports/cc16_dyn_profile_report_review.json"
+    ]
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "read-only bsp.py ghidra Client.verify before every live query checks configured project/program/language/base",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "live220_bytes_match_installed": true,
+    "native_body_sha256": "442ca9b5b112ec95c7324c9765ba069196762087ad5a4e5a04843c1ab612bc28",
+    "live170_helper_bytes_match_installed": true,
+    "live_format35_and_scale8_match_PE": true,
+    "ghidra_mutations": false
+  },
+  "findings": [
+    {
+      "id": "N1",
+      "severity": "informational",
+      "blocking": false,
+      "location": "candidate reports/cc16_dyn_profile_report.json validation.only_external_function_dependencies",
+      "finding": "The candidate lists a standard compiler security-cookie dependency, but the strict, Release and fresh review objects expose only the real formatter and __alldiv as undefined symbols. There is no cookie symbol, relocation or check in this function.",
+      "requested_metadata_correction": "Remove the unused security-cookie entry when refreshing the candidate metadata; no source repair is required.",
+      "security_or_native_frame_guarantee_inferred": false
+    }
+  ],
+  "original_and_new_ABI": {
+    "native": "ECX actual48h node; stack(sink,first-word pointer,shared-second pointer), RET0C; EBX/EBP/ESI/EDI saved/restored",
+    "new_public": "ordinary cdecl(node&, genuine fastcall sink, volatile first&,volatile second&, genuine DynProfileScopeContext&, actual D7A220 volatile double&)",
+    "sink": "ECX first rawword, EDX updated shared-second rawword, one stack borrowed-text pointer, genuine callee RET4",
+    "not_native_binary_replacement": true,
+    "original_frame_fault_exception_stack_exhaustion_identity": false
+  },
+  "storage_and_capture_review": {
+    "actual_node_size": "48h",
+    "actual_SBO": "existing1Ch NativeLegacySboStringStorage at node+10h, leading word preserved; buffer+14h/capacity+28h verified",
+    "actual_denominator": "capture *0109E9F8 then owner+10h, actual profile cache slot1, before capacity CMP; later FILD reads denominator-node+38h",
+    "not_substituted_root_or_current": true,
+    "scale": "genuine mandatory D7A220 reference, live bytes0000000000005940 establish double100; no default",
+    "capacity_and_ticks": "unsigned capacity CMP16 before ordered low/high node+38/+3C loads; both raw words captured once for signed FILD and signed64 division",
+    "CF_retained_until_name_selection": true,
+    "name_epoch": "after FDIVP, before sole FSTP, inline address ifCF elseheap pointer; no capacity reread"
+  },
+  "FP_review": {
+    "emitted_sequence": [
+      {
+        "offset": 75,
+        "bytes": "df6de4",
+        "instruction": "fild qword ptr [ebp - 0x1c]"
+      },
+      {
+        "offset": 78,
+        "bytes": "dc0b",
+        "instruction": "fmul qword ptr [ebx]"
+      },
+      {
+        "offset": 80,
+        "bytes": "df6a38",
+        "instruction": "fild qword ptr [edx + 0x38]"
+      },
+      {
+        "offset": 83,
+        "bytes": "def9",
+        "instruction": "fdivp st(1)"
+      },
+      {
+        "offset": 98,
+        "bytes": "dd1c24",
+        "instruction": "fstp qword ptr [esp]"
+      }
+    ],
+    "maximum_added_x87_depth": 2,
+    "all_call_exit_added_depth": 0,
+    "single_spill": "direct FSTP qword[ESP] printf argument, kept through __alldiv without reload",
+    "host_FP_math": false,
+    "extra_FP_or_SSE_state_instructions": false,
+    "forced_PC_RC_masks_MXCSR_or_state_reset": false,
+    "zero_denominator_guard_or_clamp": false,
+    "ambient_status_and_rounding": "literal FILD/FMUL/FILD/FDIVP/FSTP effects retained; original unmasked-fault transport/locations not proved",
+    "native_fixture_or_runtime_FP_proof": false
+  },
+  "integer_runtime_review": {
+    "library": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcrt.lib",
+    "library_sha256": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918",
+    "member": "D:\\a\\_work\\1\\s\\Intermediate\\crt\\vcstartup\\build\\md\\msvcrt_md_kernel32.vcxproj\\objr\\x86\\lldiv.obj",
+    "archive_member_offset": 5007936,
+    "object_bytes": 2752,
+    "object_sha256": "37f7457e82da0a5f5fe2c91eb8533a53567e7d86e27a38ca7ddca27b1a97bba0",
+    "code_bytes": 170,
+    "code_sha256": "8964dcf0d769cb61dd4354feac00491ae8c1b34eb9627a4c5ec2d4350243d395",
+    "section_relocations": 0,
+    "symbol": "__alldiv",
+    "native_start": "00BF7D40",
+    "native_end_inclusive": "00BF7DE9",
+    "native_code_sha256": "8964dcf0d769cb61dd4354feac00491ae8c1b34eb9627a4c5ec2d4350243d395",
+    "live_native_code_byte_identical": true,
+    "actual_divisor": 1000,
+    "signed64": true,
+    "captured_high_low_arguments": true,
+    "callee_RET_bytes": "C21000",
+    "only_quotient_low_EAX_used_as_Time_percent_d": true,
+    "source_vendor_stub_added": false,
+    "ordinary_cdecl_four_argument_CPP_call": false,
+    "author_extracted_runtime_object_independently_reproduced": true
+  },
+  "format_and_sink_review": {
+    "real_callee": "cc15_dyn_live::format_string_1024_0040cfc0 -> existing vsprintf_s(buffer,400h,format,va)",
+    "format_address": "00D79DA4",
+    "format_literal": "%s: Calls:%d Time:%d Perc:%.2f%%%%",
+    "compiled_format_bytes_match_installed": 35,
+    "argument_stack": "8B rawdouble plus5DWORDS =1Ch; retained while shared-second RMW and second/first loads execute; caller ADD1Ch before text push; sink RET4",
+    "position_aliases": "same ADD memory and second-read-before-first order; raw uint32 bits/wrap preserved",
+    "result_or_error_recovery_added": false,
+    "text_lifetime": "uninitialized400h local, formatted once, borrowed through this invocation and descendants",
+    "existing_native_vendor_context_locale_qualification_inherited": true,
+    "real_sink_and_caller_binding_supplied": false
+  },
+  "traversal_review": {
+    "initial_vector_load_order": [
+      "data+4",
+      "count+8"
+    ],
+    "post_child_vector_load_order": [
+      "count+8",
+      "data+4"
+    ],
+    "child_first": "fresh current parent first+20 wrapping local eachiteration, formed before child pointer read",
+    "child_second": "same genuine shared-second reference",
+    "child_context": "same genuine sink/profile context/actual-scale binding; publication value reread perinvocation",
+    "end": "wrapping data+count*4, equality termination, captured oldcursor advances4, never reset to newdata",
+    "initial_object_optimization": "TEST EAX,EAX on wrapped count*4 exactly implements cursor==cursor+count*4 including product-wrap0",
+    "post_child_object_optimization": "cursor advances between volatile count/data loads; read order still count then data; register/fault identity remainsqualified",
+    "extra_guards": false
+  },
+  "independent_compile": {
+    "source_and_header": "exact committed copies in ignored artifact storage; repository/author source unchanged",
+    "compiler": "MSVC x86 19.51.36244.0",
+    "flags": "/std:c++17 /permissive- /EHsc /fp:strict /O2 /Ob2 /MD /W4 /WX",
+    "passed": true,
+    "warnings": 0,
+    "no_Oy_override": true,
+    "EBP_based_local_addressing_retained": true,
+    "review_object_sha256": "775df741643ef6577c65aa01c7a81a2b9d8adf9555bb443a2572c9b731499ae9",
+    "function_bytes": 242,
+    "function_instructions": 92,
+    "function_sha256": "e6006bd2976a2ae86f702ccfd7e87bb9e8bd06ec961ad615fbc0da675f196413",
+    "same_function_bytes_as_author_variants": [
+      {
+        "file": "profile_report.obj",
+        "function_bytes": 242,
+        "function_sha256": "e6006bd2976a2ae86f702ccfd7e87bb9e8bd06ec961ad615fbc0da675f196413",
+        "same_as_fresh_current_origin_compile": true
+      },
+      {
+        "file": "profile_report_release.obj",
+        "function_bytes": 242,
+        "function_sha256": "e6006bd2976a2ae86f702ccfd7e87bb9e8bd06ec961ad615fbc0da675f196413",
+        "same_as_fresh_current_origin_compile": true
+      }
+    ],
+    "manual_stack_and_FP_CFG_joins": true,
+    "helper_RET16_sink_RET4_formatter_1Ch_recursion_18h_checked": true,
+    "external_symbols": [
+      "?format_string_1024_0040cfc0@cc15_dyn_live@bsp@@YAHPADPBDZZ",
+      "__alldiv"
+    ],
+    "relocations": {
+      "111": [
+        "__alldiv",
+        20
+      ],
+      "122": [
+        "?kReportFormat@?A0xc77632cc@cc16_dyn_profile_report@bsp@@3QBDB",
+        6
+      ],
+      "134": [
+        "?format_string_1024_0040cfc0@cc15_dyn_live@bsp@@YAHPADPBDZZ",
+        20
+      ],
+      "212": [
+        "?report_profile_node_00c320d0@cc16_dyn_profile_report@bsp@@YAXAAUDynProfileNodeStorage@2@P6IXIIPBD@ZACI3ABUDynProfileScopeContext@2@ADN@Z",
+        20
+      ]
+    },
+    "security_cookie_reference": false,
+    "native_body_byte_identity_or_runtime_equivalence_claim": false
+  },
+  "actual_call_verification": {
+    "command": "python tools/verify_report_calls.py local/dyn_profile_report_review/candidate_report.json",
+    "checked": 3,
+    "failed": 0,
+    "indirect_sink": "separately inspected original C32157 CALL[ESP+420] and emitted CALL[EBP+C], genuine fastcallRET4 contract",
+    "rows": [
+      {
+        "address": "00C3211F",
+        "native": "00BF7D40",
+        "function": "00C320D0"
+      },
+      {
+        "address": "00C32134",
+        "native": "0040CFC0",
+        "function": "00C320D0"
+      },
+      {
+        "address": "00C3218A",
+        "native": "00C320D0",
+        "function": "00C320D0"
+      }
+    ]
+  },
+  "candidate_files": [
+    {
+      "path": "src/cc16_dyn_profile_report.cpp",
+      "git_blob": "4d08acc6a18aeb694eca8a4067951d1097e3af4b",
+      "sha256": "6bf52ca2f4267920a8b51bec20877746af0fc53d500f39bbfb1504e7e1b63b69"
+    },
+    {
+      "path": "include/bsp/cc16_dyn_profile_report.hpp",
+      "git_blob": "188ad3d401f673aa6d7a79c5eecb029bd3444aeb",
+      "sha256": "bf76d1b560bbdd0a2bbda614e5636b7ada7cfdf7368d2364bc7c3d622f2d57a2"
+    },
+    {
+      "path": "docs/CC16_DYN_PROFILE_REPORT.md",
+      "git_blob": "d9e5a46455afa3827e48be58908f28394ce8b72f",
+      "sha256": "3ac6eea0c2464f075bebdc476a0b92b0785f1a0dd7b300ad15a63e16e97c0f1d"
+    },
+    {
+      "path": "reports/cc16_dyn_profile_report.json",
+      "git_blob": "4b54cfb20407ded3e73976b89f31bca4630e493b",
+      "sha256": "d46ea29c2bf98d2eaebd8f9f56d362282239a12d58ebd170f717e7319062f683"
+    }
+  ],
+  "candidate_author_tree_clean": true,
+  "author_receipts_verified": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-profile-report\\local\\dyn_profile_report\\compile.cmd",
+      "bytes": 379,
+      "sha256": "76628dff282032142b9f58328e9a3ef2cbe5da520e937446309bc29b2474090a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-profile-report\\local\\dyn_profile_report\\compile.log",
+      "bytes": 29,
+      "sha256": "58c6da0d799684d5228d0c0d2a9e4ceab12156327eb85d8ad06635d6a04d7a37"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-profile-report\\local\\dyn_profile_report\\compile_release.cmd",
+      "bytes": 397,
+      "sha256": "b287c31594324deda23745d651b8e1f895ae4176e2fb97912f48c2dc491823ed"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-profile-report\\local\\dyn_profile_report\\compile_release.log",
+      "bytes": 29,
+      "sha256": "58c6da0d799684d5228d0c0d2a9e4ceab12156327eb85d8ad06635d6a04d7a37"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-profile-report\\local\\dyn_profile_report\\profile_report.obj",
+      "bytes": 3322,
+      "sha256": "0a4c5c88b4ae8af29e7d363118770dd1cf7d35f9c490bd89c0bd1da80faabbe6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-profile-report\\local\\dyn_profile_report\\profile_report_release.obj",
+      "bytes": 3658,
+      "sha256": "724cba22a75ceca4f433c2010927003739e4a6851216a71411f15cfdd07feff4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-profile-report\\local\\dyn_profile_report\\object_disasm.txt",
+      "bytes": 8417,
+      "sha256": "ea6ad9647218a6c34332caef9aa719fd023f30f15cc7e61c9cd4e40676a08542"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-profile-report\\local\\dyn_profile_report\\release_object_disasm.txt",
+      "bytes": 8154,
+      "sha256": "6534db82194da49251a997f2e256f549041f16001f12d83bcb9e762fd03a4d40"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-profile-report\\local\\dyn_profile_report\\object_symbols.txt",
+      "bytes": 4170,
+      "sha256": "d53595341f1e079df197ac1462a29d75fe5b31f278e70f61c7fc063fc60fce17"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-profile-report\\local\\dyn_profile_report\\object_relocations.txt",
+      "bytes": 1526,
+      "sha256": "2a155ea2fae3ef8a02e0f89a892d72b68a15c0a3b3f20c4715773f46aa50be31"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-profile-report\\local\\dyn_profile_report\\runtime_binding.json",
+      "bytes": 564,
+      "sha256": "7e3f8124d1c108ca04ad68abb97486f382a37162c9bee1c8a1235dfe4aab2430"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-profile-report\\local\\dyn_profile_report\\alldiv_runtime.obj",
+      "bytes": 2752,
+      "sha256": "37f7457e82da0a5f5fe2c91eb8533a53567e7d86e27a38ca7ddca27b1a97bba0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-profile-report\\local\\dyn_profile_report\\static_evidence.json",
+      "bytes": 1262,
+      "sha256": "95a245e4bf5ccf9a24230f4561889d35a6a842661824b485f9a1bab6971e59a6"
+    }
+  ],
+  "author_source_snapshots_verified": [
+    {
+      "path": "include/bsp/cc16_dyn_profile_report.hpp",
+      "sha256": "bf76d1b560bbdd0a2bbda614e5636b7ada7cfdf7368d2364bc7c3d622f2d57a2"
+    },
+    {
+      "path": "src/cc16_dyn_profile_report.cpp",
+      "sha256": "6bf52ca2f4267920a8b51bec20877746af0fc53d500f39bbfb1504e7e1b63b69"
+    }
+  ],
+  "current_dependency_equivalence": {
+    "review_frozen_origin": "1e10d9de40bda6596ebdb89487a657cdba034d8d",
+    "compared_to_candidate": "all five named actual storage/context/formatter files byte-identical; fresh function bytes also identical to both author variants",
+    "fingerprints": [
+      {
+        "path": "include/bsp/dyn_profile_scopes.hpp",
+        "git_blob": "27ba14d3f56d2b706fc24a28db0eab65ccd80c9a",
+        "committed_sha256": "b2c47f9188c30b96c8768f76aaaee28d64a1aff80355230bbd0fdc2622588773",
+        "candidate_current_identical": true
+      },
+      {
+        "path": "include/bsp/dyn_engine_runtime.hpp",
+        "git_blob": "8723f3bf5c10716be712222b09e199efe75627dc",
+        "committed_sha256": "059c3367a5d71532c076a29895b62394e1d88d71fa6cd828c5a540604359d82a",
+        "candidate_current_identical": true
+      },
+      {
+        "path": "include/bsp/native_legacy_sbo_string.hpp",
+        "git_blob": "1ede441960632c9f604e8ade53c16c9c461d9830",
+        "committed_sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+        "candidate_current_identical": true
+      },
+      {
+        "path": "include/bsp/cc15_dyn_live.hpp",
+        "git_blob": "e6ad5722b18e6355c69af2b69be68b71fbce7eca",
+        "committed_sha256": "a830daec86ecd9f6808301ce05e15d8215548d57d2bbee0471b1d2b6c5b9b294",
+        "candidate_current_identical": true
+      },
+      {
+        "path": "src/cc15_dyn_live.cpp",
+        "git_blob": "2841f2cbf5b79c4e33615f9c02b86bfbb3d3f994",
+        "committed_sha256": "60061aeaca906c349ff1a9acca31aa7a9584860cb7193fed2ed5f3d33adb1bda",
+        "candidate_current_identical": true
+      }
+    ],
+    "pending_C50390_repair_assumed": false,
+    "C50390_called_by_this_body": false
+  },
+  "remaining_limits": [
+    "No incoming caller/native ABI adapter, genuine callable sink or publication/scale-cell runtime binding supplied",
+    "Original frame/fault/FH/SEH/exception/stack-exhaustion identity and concurrency not proved",
+    "Existing formatter native-vendor/context/locale qualification remains; no extra error handling or format runtime proof",
+    "No native fixture, probes, games, runtime activation or gameplay proof",
+    "Review adds no in-house/vendor/runtime credit; normal-source acceptance only"
+  ],
+  "prohibited_actions_performed": {
+    "source_or_header_edits": false,
+    "shared_CMake_or_ledger_edits": false,
+    "ghidra_mutations": false,
+    "new_tests": false,
+    "executable_link": false,
+    "native_probe_game_execution": false,
+    "install_save_profile_power_process_changes": false
+  },
+  "artifact_receipts": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-profile-report-review\\local\\dyn_profile_report_review",
+    "files": [
+      {
+        "file": "audit.py",
+        "bytes": 12287,
+        "sha256": "804991f24bc682ed67557c50a5803e9f778ca8f6adbd175389d2404592f515aa"
+      },
+      {
+        "file": "audit.stdout.jsonl",
+        "bytes": 3127,
+        "sha256": "9439faef942210de1189203ab35518f406715539e94860c53b2943d2ac0b70c4"
+      },
+      {
+        "file": "independent_audit.json",
+        "bytes": 18787,
+        "sha256": "0a92941683a81b8c5502a2fbc7e428d9f98b0cd624b8df4f56d5cc33ef0dbdb5"
+      },
+      {
+        "file": "write_review.py",
+        "bytes": 11593,
+        "sha256": "2ab0344790b937235b83ca8245fca43ee9d47bdf7c5a68f93abe487006807217"
+      },
+      {
+        "file": "candidate/profile_report.cpp",
+        "bytes": 4663,
+        "sha256": "6bf52ca2f4267920a8b51bec20877746af0fc53d500f39bbfb1504e7e1b63b69"
+      },
+      {
+        "file": "candidate/include/bsp/cc16_dyn_profile_report.hpp",
+        "bytes": 2091,
+        "sha256": "bf76d1b560bbdd0a2bbda614e5636b7ada7cfdf7368d2364bc7c3d622f2d57a2"
+      },
+      {
+        "file": "candidate_report.json",
+        "bytes": 12836,
+        "sha256": "d46ea29c2bf98d2eaebd8f9f56d362282239a12d58ebd170f717e7319062f683"
+      },
+      {
+        "file": "review.obj",
+        "bytes": 3654,
+        "sha256": "775df741643ef6577c65aa01c7a81a2b9d8adf9555bb443a2572c9b731499ae9"
+      },
+      {
+        "file": "review.asm",
+        "bytes": 16450,
+        "sha256": "0999265b467f9682450c08976ab7744a95a87800e8dfd9270c5c781dbdf8c618"
+      },
+      {
+        "file": "compile.log",
+        "bytes": 20,
+        "sha256": "d4d974ce18b2d6871dd1c1bc436185d19e519859c7d1fcd23d2ab3bd6b5dd94d"
+      },
+      {
+        "file": "compile_command.txt",
+        "bytes": 468,
+        "sha256": "bb0f9631513b98d31192c45460e0cacc2da684ffd444b12639fce8e4977abccc"
+      },
+      {
+        "file": "live_body.txt",
+        "bytes": 1062,
+        "sha256": "cb0a74a5bd66f1c16541a704e513ac515b77469af6fed008c5ae9a6b12e4c3a0"
+      },
+      {
+        "file": "live_alldiv.txt",
+        "bytes": 823,
+        "sha256": "8e6d4c7890be5b229b72493ae9a43c2ed057668097ec6f1364f95bea5f2e21e1"
+      },
+      {
+        "file": "native_body.bin",
+        "bytes": 220,
+        "sha256": "442ca9b5b112ec95c7324c9765ba069196762087ad5a4e5a04843c1ab612bc28"
+      },
+      {
+        "file": "native_alldiv.bin",
+        "bytes": 170,
+        "sha256": "8964dcf0d769cb61dd4354feac00491ae8c1b34eb9627a4c5ec2d4350243d395"
+      },
+      {
+        "file": "independent_alldiv_runtime.obj",
+        "bytes": 2752,
+        "sha256": "37f7457e82da0a5f5fe2c91eb8533a53567e7d86e27a38ca7ddca27b1a97bba0"
+      },
+      {
+        "file": "dependency_delta.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "file": "call_verification.txt",
+        "bytes": 86,
+        "sha256": "a639298569b3d0b9c80ef9e637c843d7181a292f069835c248a508ca03da65e6"
+      }
+    ],
+    "documentation_sha256": "a164e50731a0f7f7710a09e76387ab97deaf547c10bf061886f75698d0027b4f"
+  }
+}
