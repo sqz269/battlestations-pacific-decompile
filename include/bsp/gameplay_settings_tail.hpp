@@ -112,7 +112,7 @@ void load_weapon_hit_accuracy_profile_00836f80(WeaponHitAccuracyProfile& profile
 
 // Packet cc9_hit_accuracy, docs/WEAPON_HIT_ACCURACY.md.
 // 008383D0, __thiscall(this=profile, float target_length, float t) -> ST0, RET 8,
-// body 008383D0-0083851E read whole. The size weight is
+// body 008383D0-00838526 read whole, including the tail clamp block. The size weight is
 // w = 00419010(x0=+0h, y0=1.0, x1=+4h, y1=0.0, x=target_length), clamped. The
 // range fraction t picks bucket i = clamp(floor(10t) - 1, 0, 8) through
 // _ftol(t * -10.0) (00D0A198) and d = 10t - (i+1) (00CE3DC0 = 10.0), with
@@ -122,12 +122,28 @@ void load_weapon_hit_accuracy_profile_00836f80(WeaponHitAccuracyProfile& profile
 float weapon_hit_accuracy_sample_008383d0(const WeaponHitAccuracyProfile& profile,
                                           float target_length, float t) noexcept;
 
+// Independent native range/blend correction; the accepted PC24 cohort above
+// retains its own setting. OFF preserves all existing public call paths.
+inline constexpr bool kWeaponHitAccuracyNativeRangeBound = false;
+
+// Same already-reconstructed function, zero new body credit. After the proven
+// float spill of the size weight, retain the native x87/SSE compare, multiply,
+// BF7420 conversion and blend stack epochs under actual ambient controls.
+// The required reference is the process-retained mutable0109EEA4 cell, not a
+// cached value or CPU-feature projection; BF7420 reads it at conversion time.
+float weapon_hit_accuracy_sample_008383d0(const WeaponHitAccuracyProfile& profile,
+    float target_length, float t,
+    const volatile std::uint32_t& actual_0109eea4) noexcept;
+
 // 008386F0, __thiscall(this=settings, int function, float target_length, float t),
 // RET 0Ch, read whole: function 2/3/4/6 -> +240h (Artillery), 1/5 -> +298h (AA),
 // 7 -> +2F0h (Torpedo), 8/9 -> +348h (DepthCharge), else FLD1 (1.0f).
 // `profiles` is the four sub-objects in that order.
 float weapon_hit_accuracy_008386f0(const WeaponHitAccuracyProfile profiles[4], int function,
                                    float target_length, float t) noexcept;
+float weapon_hit_accuracy_008386f0(const WeaponHitAccuracyProfile profiles[4], int function,
+    float target_length, float t,
+    const volatile std::uint32_t& actual_0109eea4) noexcept;
 
 // ---------------------------------------------------------------------------
 // The nine string reads of 0083B5E0
