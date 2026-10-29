@@ -7,13 +7,15 @@
 namespace bsp {
 struct NativeGuiTextPrefixGeometryLifetimeContext;
 class NativeGuiTextMainSectionLifetimeStorageFrame;
+class NativeGuiTextFontLifetimeStorageFrame;
 // One immutable closed choice. Future created-main-section support must extend
 // THIS typed choice and require that compound graph's complete history; it must
 // never add a selectable shortcut back to geometry-only/empty-prefix admission.
 // The choice itself grants no native ownership, scalar or lifetime authority.
 class NativeGuiTextPrimaryPrefixOperation final {
 public:
-    enum class Kind : std::uint8_t { none, geometry_only, geometry_main_section };
+    enum class Kind : std::uint8_t { none, geometry_only, geometry_main_section,
+        geometry_main_section_font };
     constexpr NativeGuiTextPrimaryPrefixOperation() noexcept = default;
     explicit constexpr NativeGuiTextPrimaryPrefixOperation(
         const NativeGuiTextPrefixGeometryLifetimeContext& geometry) noexcept
@@ -22,13 +24,21 @@ public:
         const NativeGuiTextPrefixGeometryLifetimeContext& geometry,
         const NativeGuiTextMainSectionLifetimeStorageFrame& main_section) noexcept
         : kind_(Kind::geometry_main_section), geometry_(&geometry), main_section_(&main_section) {}
+    constexpr NativeGuiTextPrimaryPrefixOperation(
+        const NativeGuiTextPrefixGeometryLifetimeContext& geometry,
+        const NativeGuiTextMainSectionLifetimeStorageFrame& main_section,
+        NativeGuiTextFontLifetimeStorageFrame& font_lifetime) noexcept
+        : kind_(Kind::geometry_main_section_font), geometry_(&geometry),
+          main_section_(&main_section), font_lifetime_(&font_lifetime) {}
     Kind kind() const noexcept { return kind_; }
     const NativeGuiTextPrefixGeometryLifetimeContext* geometry() const noexcept { return geometry_; }
     const NativeGuiTextMainSectionLifetimeStorageFrame* main_section() const noexcept { return main_section_; }
+    NativeGuiTextFontLifetimeStorageFrame* font_lifetime() const noexcept { return font_lifetime_; }
 private:
     const Kind kind_{Kind::none};
     const NativeGuiTextPrefixGeometryLifetimeContext* const geometry_{};
     const NativeGuiTextMainSectionLifetimeStorageFrame* const main_section_{};
+    NativeGuiTextFontLifetimeStorageFrame* const font_lifetime_{};
 };
 
 // Actual external raw8B input and its independently retained Source progress.
