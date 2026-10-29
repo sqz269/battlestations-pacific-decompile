@@ -239,3 +239,11 @@ Retained live-locale custody and exact BDD600 filename preparation now have admi
 Accuracy ON stays private. The inherited regex confused lof_expiry_draw=1 with a sampled event; the unqualified acceptance was withdrawn before publication and the analysis comment records the correction. New strict sampled-RNG witnesses use explicitly frozen binaries and cannot be relabelled current-main proof. Main's accuracy guard remains OFF pending current-source admission and gameplay gates.
 
 The full-activation goal remains active for real caller/provider/world/vtable/allocator custody, additional/unreferenced code and explicit partials, floating-point debt, original ABI/fault obligations and required gameplay acceptance.
+
+## Current actual-cell accuracy host activation
+
+The independent native-range guard is accepted ON for the actual FirepowerBinding path after current-source/common-build/final-linked-code checks, independent review0ab612921, and two preregistered current OFF/ON gameplay pairs. OFF was built2b05bd3c5 and is production-equivalent to published2c25911ef through13metadata-only changes; ON was built2c182d11c. Both current builds pass2/2. All30critical OFF source blobs still equal5c; the only production ON difference is the guard.
+
+Current nativeUSN04 has51 genuine logged samples each side. IJN18 has2,843,254 actualaccuracy calls and432,180 completedratings per side, plus one genuine Recon2 sample at67.05/.4640 after the actual completed-return marker. Original and strict comparisons allpass. Four serial exits0, eight actual Normal held-handle captures, exact4h UTCdeadlines/actions[] and52terminal/archive hashes are verified independently. The new commonbackend is f112, not the olderF9.
+
+These are bounded rounded logged-host observations, not global-first/all-stream/raw-RNG or whole-native-function/ABI/FH proof. Old MSD1600/USN02 no-sample rows remain unobserved and the inherited false acceptance is explicitlywithdrawn. The original8c fixture retains its narrow post-spill/direct-conversion scope; otherpublic APIs and the PC24cohort retain their qualifications. See CC16_WEAPON_ACCURACY_CURRENT_MAIN_ACTIVATION.md and its report. The full activation goal remains active for remaining functions/providers/owners/partials/FP and gameplay gates.

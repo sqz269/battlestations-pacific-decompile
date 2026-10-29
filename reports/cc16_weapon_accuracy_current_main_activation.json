@@ -1,0 +1,1085 @@
+{
+  "status": "current_production_candidate_accepted_ON_for_bounded_GameHost_path",
+  "guard": "kWeaponHitAccuracyNativeRangeBound",
+  "guard_value": true,
+  "OFF_actual_build": "2b05bd3c5330aa42f5fd8baf83d77875e5d4cc54",
+  "OFF_published_production_equivalent": "2c25911ef30940f93ef3a56c6202198013b59b45",
+  "ON_actual_build": "2c182d11caa173b852404e625c680a0979720fcb",
+  "independent_review": "0ab6129216b39260adf81773070186c7478d6d1f",
+  "runtime_host": "2c25911ef30940f93ef3a56c6202198013b59b45",
+  "source_refresh": {
+    "off_source": "2c25911ef30940f93ef3a56c6202198013b59b45",
+    "source_count": 30,
+    "records": [
+      {
+        "path": "src/game_hosts_ship_ai.cpp",
+        "blob": "b040b4307a07605a7885812bd160982deb2572d1",
+        "base5c_blob": "b040b4307a07605a7885812bd160982deb2572d1",
+        "unchanged": true,
+        "sha256": "3664fef9b9b6fca9e45993ae0a3e21c7d9a6db2da6fd5b5a8050cecb6707040a"
+      },
+      {
+        "path": "include/bsp/game_hosts_ship_ai.hpp",
+        "blob": "3383c77a9e6f6a0a823e47897c4f26879986b56d",
+        "base5c_blob": "3383c77a9e6f6a0a823e47897c4f26879986b56d",
+        "unchanged": true,
+        "sha256": "52d742a5c6ba411a652eb332c99c74c09ada509cd760c3fd7ab4c818ff0461af"
+      },
+      {
+        "path": "src/gameplay_settings_tail.cpp",
+        "blob": "92a8331f7e4996e96d89d59184092da450d3acd6",
+        "base5c_blob": "92a8331f7e4996e96d89d59184092da450d3acd6",
+        "unchanged": true,
+        "sha256": "ccd11b36b2bfe9693166e318bdcce46b5dc8206ae8cc7f23f0a00e9f9eafe525"
+      },
+      {
+        "path": "include/bsp/gameplay_settings_tail.hpp",
+        "blob": "8ddcf8aafec8a8e78074474f7f3c9c608cae4d4e",
+        "base5c_blob": "8ddcf8aafec8a8e78074474f7f3c9c608cae4d4e",
+        "unchanged": true,
+        "sha256": "c119bf856e423b6b249b397975d5b903cd1341b12449691a82d11ba06960db37"
+      },
+      {
+        "path": "src/game_main.cpp",
+        "blob": "18909178937d4a3fbd4ddf9073819b959f3fa47a",
+        "base5c_blob": "18909178937d4a3fbd4ddf9073819b959f3fa47a",
+        "unchanged": true,
+        "sha256": "50034a37098bc7a1c738c541d5a97d0afb0cb4b1cf84b8e92102db92284df5c7"
+      },
+      {
+        "path": "src/game_native_dyn_process.cpp",
+        "blob": "2340457588570a29286cddb3c153e1af7e264624",
+        "base5c_blob": "2340457588570a29286cddb3c153e1af7e264624",
+        "unchanged": true,
+        "sha256": "6ca1af2006f4462e1807d03821183bcf7925404bb77bbdbb32399ee78d32e4e2"
+      },
+      {
+        "path": "include/bsp/game_native_dyn_process.hpp",
+        "blob": "8bcec5f9e26075a4c706266722701d1c23434366",
+        "base5c_blob": "8bcec5f9e26075a4c706266722701d1c23434366",
+        "unchanged": true,
+        "sha256": "a2fd23518752eb7232a0076a039123202f6be1c2ef50fd17a5c9eaff17bdcee6"
+      },
+      {
+        "path": "src/game_native_mutable_crt_data.cpp",
+        "blob": "2c0d73f8164a8b0d4cbbc499801935d1f28c213a",
+        "base5c_blob": "2c0d73f8164a8b0d4cbbc499801935d1f28c213a",
+        "unchanged": true,
+        "sha256": "d9dabf905fd4acf195f72c14e9ae2c7ef457514f4ff6227efffdcbb1f24a0c39"
+      },
+      {
+        "path": "include/bsp/game_native_mutable_crt_data.hpp",
+        "blob": "ec1a1c9c2a7359031b4b77c2b86ba12cd6f3420e",
+        "base5c_blob": "ec1a1c9c2a7359031b4b77c2b86ba12cd6f3420e",
+        "unchanged": true,
+        "sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1"
+      },
+      {
+        "path": "src/game_native_data_bootstrap.cpp",
+        "blob": "b37fe02f39f358a9f2a9ac48b4dcd367ec95c1d0",
+        "base5c_blob": "b37fe02f39f358a9f2a9ac48b4dcd367ec95c1d0",
+        "unchanged": true,
+        "sha256": "380bf1ebc8ba9691f19fd2ae33ce167cdf5b33e9095f9fc4f5d172489e2f879d"
+      },
+      {
+        "path": "include/bsp/game_native_data_bootstrap.hpp",
+        "blob": "0fff23e432b46cab3978466f0f13f69bbdf4f144",
+        "base5c_blob": "0fff23e432b46cab3978466f0f13f69bbdf4f144",
+        "unchanged": true,
+        "sha256": "13e7a4a85d6096f3f0b4be04fce0d065d5e196c4119d914ae2af268026c7642a"
+      },
+      {
+        "path": "src/game_native_readonly_data.cpp",
+        "blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e",
+        "base5c_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e",
+        "unchanged": true,
+        "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278"
+      },
+      {
+        "path": "include/bsp/game_native_readonly_data.hpp",
+        "blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+        "base5c_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+        "unchanged": true,
+        "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+      },
+      {
+        "path": "src/game_native_physical_pool.cpp",
+        "blob": "8cc7ecafb64180d38c2eb434c51ba91d82e5e9ba",
+        "base5c_blob": "8cc7ecafb64180d38c2eb434c51ba91d82e5e9ba",
+        "unchanged": true,
+        "sha256": "2cacaa43521df1c3698e633ac5d919f2a34d21f7cb3630589cad07aa4b9f9c90"
+      },
+      {
+        "path": "include/bsp/game_native_physical_pool.hpp",
+        "blob": "46f885365c86fc5078b7e4ae12bdbc285352a729",
+        "base5c_blob": "46f885365c86fc5078b7e4ae12bdbc285352a729",
+        "unchanged": true,
+        "sha256": "eb9dd2f1b6cfdcb3950bf7912228f346e513526fd0f7c3d4a2e82dfbc86cef70"
+      },
+      {
+        "path": "src/native_dyn_convex_support.cpp",
+        "blob": "580c064c86a89a6cbb4fe695d50e446a39d3808b",
+        "base5c_blob": "580c064c86a89a6cbb4fe695d50e446a39d3808b",
+        "unchanged": true,
+        "sha256": "6b152077a91851c9006114b9ece00c0921e3930b6bafd234419f304cb2b02047"
+      },
+      {
+        "path": "include/bsp/native_dyn_convex_support.hpp",
+        "blob": "afe194256ebfe6a0067225a5593b1595b94be74b",
+        "base5c_blob": "afe194256ebfe6a0067225a5593b1595b94be74b",
+        "unchanged": true,
+        "sha256": "6a6b3028657c8e8732e9d81b74172be60b78a565082cf102dfb8e48f0093160b"
+      },
+      {
+        "path": "src/native_render_batch_keys.cpp",
+        "blob": "1588784ee8cfb74bd6c44af3368b102d3ebdc60e",
+        "base5c_blob": "1588784ee8cfb74bd6c44af3368b102d3ebdc60e",
+        "unchanged": true,
+        "sha256": "fe3101c51500415607fc9513a7528853b2285a64d1560bc8684e87b2b05e75e1"
+      },
+      {
+        "path": "include/bsp/native_render_batch_keys.hpp",
+        "blob": "f80d8121c33c34979a8bf5fd7646527ba8ad72ad",
+        "base5c_blob": "f80d8121c33c34979a8bf5fd7646527ba8ad72ad",
+        "unchanged": true,
+        "sha256": "a3a1ce7ea3eb18f2483454eb7d6f71a6843a808aed313005cdcc3a29f5b12bf1"
+      },
+      {
+        "path": "src/ship_ai_bearing_rating.cpp",
+        "blob": "11856cbd9e8bdd4f391176886efd7b812ef96b77",
+        "base5c_blob": "11856cbd9e8bdd4f391176886efd7b812ef96b77",
+        "unchanged": true,
+        "sha256": "5660276cdfbdd6e9288d52971929dfb5cda612e9895a03302cde64489ef1f708"
+      },
+      {
+        "path": "include/bsp/ship_ai_bearing_rating.hpp",
+        "blob": "8c51682788316d8a262f3eac1ec4d2b33df1e58f",
+        "base5c_blob": "8c51682788316d8a262f3eac1ec4d2b33df1e58f",
+        "unchanged": true,
+        "sha256": "55fb80b98be4698c14ad08017f78c77ff1292ad52e621d09475993d8100ccb0a"
+      },
+      {
+        "path": "src/dive_bomb_task.cpp",
+        "blob": "a8f89becab61ef8282b16815bc29af8534b61b4b",
+        "base5c_blob": "a8f89becab61ef8282b16815bc29af8534b61b4b",
+        "unchanged": true,
+        "sha256": "d8bd71f95d31e84e7c31eff6ed5c7e7f43d35aadcf8100e1d975a217dab15d72"
+      },
+      {
+        "path": "include/bsp/dive_bomb_task.hpp",
+        "blob": "cf257e0bdc8342d9609bac339aa1b10ff0a82353",
+        "base5c_blob": "cf257e0bdc8342d9609bac339aa1b10ff0a82353",
+        "unchanged": true,
+        "sha256": "a24f6d4513a224df176b8a0a4ecd0bb48fd49996a6c77731c0c088c368fdf831"
+      },
+      {
+        "path": "src/game_hosts_lua.cpp",
+        "blob": "1c604500ed548081120d917b3acaf5a988d4861d",
+        "base5c_blob": "1c604500ed548081120d917b3acaf5a988d4861d",
+        "unchanged": true,
+        "sha256": "163ee47fede8cb004c84d57af9002a73cddca16739ace3e4e0786209c35de880"
+      },
+      {
+        "path": "include/bsp/game_hosts_lua.hpp",
+        "blob": "95cb821059678aa68be10c2cf952c74a2cbf343d",
+        "base5c_blob": "95cb821059678aa68be10c2cf952c74a2cbf343d",
+        "unchanged": true,
+        "sha256": "0d1f52aea6d22c9e806ef8e30e93b057a629b15ebee23d2072682d0f848eac9f"
+      },
+      {
+        "path": "src/game_hosts_units.cpp",
+        "blob": "d3834be26e182d44b98dba5592144a9273a32662",
+        "base5c_blob": "d3834be26e182d44b98dba5592144a9273a32662",
+        "unchanged": true,
+        "sha256": "6946d461ef7ea3acdf01032e3ec444e04e6c423cf7ce0dd31e47736e2d3190ee"
+      },
+      {
+        "path": "tools/xlive_stub/xlive_stub.cpp",
+        "blob": "bcf2dd9f3369b611fe5e1409f545434d80a23070",
+        "base5c_blob": "bcf2dd9f3369b611fe5e1409f545434d80a23070",
+        "unchanged": true,
+        "sha256": "7afdf295756aaebddb0aa3beb7dbd8c9bb49503e969e8d181eb2d537a653c06d"
+      },
+      {
+        "path": "tools/xlive_stub/xlive_stub.def",
+        "blob": "bdb7d5a5be7d6a996c47e998b98506fbe8244c2a",
+        "base5c_blob": "bdb7d5a5be7d6a996c47e998b98506fbe8244c2a",
+        "unchanged": true,
+        "sha256": "ac81961e89b1743d8796b1317a9b95f7dd6b5b8c32e0028a5c114772a46ea011"
+      },
+      {
+        "path": "tools/build_xlive_stub.ps1",
+        "blob": "c02405f3bf302d92f3648a0c9cc7c38d3c3cbe45",
+        "base5c_blob": "c02405f3bf302d92f3648a0c9cc7c38d3c3cbe45",
+        "unchanged": true,
+        "sha256": "921ae05e5492a312ae7d69d2ba49edf37c2031cd2679f6d97bb006ff6777de1f"
+      },
+      {
+        "path": "scripts/build.ps1",
+        "blob": "fc44f226c994e6fdea911757d0fe710e2555db74",
+        "base5c_blob": "fc44f226c994e6fdea911757d0fe710e2555db74",
+        "unchanged": true,
+        "sha256": "592a749882de86e5a4cde58aacf7d868af611a124cb3ca2e69b8998684859b14"
+      }
+    ],
+    "requires_fresh_current_candidate_gate": true,
+    "on_source": "2c182d11caa173b852404e625c680a0979720fcb",
+    "OFF_ON_changed_files": [
+      "include/bsp/gameplay_settings_tail.hpp"
+    ],
+    "on_exe_sha256": "7c22b561ae0f6cc38276d62e1468ceab358827ca043ff634842a8aa0aab9056a",
+    "common_backend_sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3",
+    "source_tree_clean": true,
+    "off_build_commit": "2b05bd3c5",
+    "off_published_source_commit": "2c25911ef30940f93ef3a56c6202198013b59b45",
+    "off_build_to_publication_only_metadata_changes": [
+      "config/names/00400000.jsonl",
+      "config/names/00c30000.jsonl",
+      "config/names/00c40000.jsonl",
+      "config/names/00c50000.jsonl",
+      "config/reconstruction/00400000.jsonl",
+      "config/reconstruction/00c30000.jsonl",
+      "config/reconstruction/00c40000.jsonl",
+      "config/reconstruction/00c50000.jsonl",
+      "docs/CC16_DYN_FINAL_BODY_SOURCE_ADMISSION.md",
+      "docs/CC16_DYN_RADIX_MANAGER_UPDATE_REVIEW.md",
+      "docs/CODEX_FUNCTION_INTEGRATION_GOAL_2026-10-28.md",
+      "reports/cc16_dyn_final_body_source_admission.json",
+      "reports/cc16_dyn_radix_manager_update_review.json"
+    ],
+    "off_production_tree_equivalence_verified": true
+  },
+  "final_code_check": {
+    "core_disassembly_identical": true,
+    "core_difference_offsets": [
+      4,
+      5
+    ],
+    "off_getter_calls": 0,
+    "off_new_dispatcher_calls": 0,
+    "off_legacy_dispatcher_calls": 1,
+    "on_getter_calls": 1,
+    "on_new_dispatcher_calls": 1,
+    "on_legacy_dispatcher_calls": 0,
+    "final_executable_sha256": "7c22b561ae0f6cc38276d62e1468ceab358827ca043ff634842a8aa0aab9056a",
+    "final_functions_masked_coff_match": true,
+    "three_resolved_final_call_targets_match": true,
+    "final_addresses": {
+      "caller": "101e7bf0",
+      "getter": "103066b0",
+      "dispatcher": "1037b080",
+      "converter": "104b5c70"
+    },
+    "caller_offsets": {
+      "getter": "1df",
+      "new_dispatcher": "205"
+    },
+    "live_conversion": [
+      {
+        "offset": "ed",
+        "mnemonic": "fmul",
+        "operands": "st(1)"
+      },
+      {
+        "offset": "ef",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [ebp + 0x18]"
+      },
+      {
+        "offset": "f2",
+        "mnemonic": "call",
+        "operands": "0xf7"
+      }
+    ],
+    "converter_first": "cmp dword ptr [ecx],0",
+    "no_intervening_branch_or_float_spill": true,
+    "execution": false
+  },
+  "current_runtime_receipt": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\runtime_results.json",
+    "bytes": 35735,
+    "sha256": "2f5dfc16cf391d4271d49d950a1cfc880ba781bc3cbb75e037046743e3f49571"
+  },
+  "root_runtime_audit": {
+    "passed": true,
+    "summary_sha256": "2f5dfc16cf391d4271d49d950a1cfc880ba781bc3cbb75e037046743e3f49571",
+    "hashed_artifacts": 52,
+    "actual_Normal_held_handle_captures": 8,
+    "logical_runs": 4,
+    "own_concurrency": 1,
+    "serial_verified": true,
+    "cases": [
+      {
+        "case": "native4800",
+        "original_checks": {
+          "audits": true,
+          "pair_diff": true,
+          "ordered_subsequence": true,
+          "teardown": true,
+          "start_rng": true,
+          "serial": true
+        },
+        "source_format_sequence_equal": true,
+        "sides": [
+          {
+            "side": "off",
+            "genuine_samples": 51,
+            "accuracy_calls": 0,
+            "completed_ratings": 0,
+            "sample": {
+              "line": 29438,
+              "unit": "A6M Zero #1.2|.-II",
+              "time": "93.60",
+              "draw": "0.4143",
+              "mode": "powerlost",
+              "c10": "1000.00"
+            },
+            "actual_parent_child_Normal_handles": true,
+            "deadline_seconds": 14400
+          },
+          {
+            "side": "on",
+            "genuine_samples": 51,
+            "accuracy_calls": 0,
+            "completed_ratings": 0,
+            "sample": {
+              "line": 29438,
+              "unit": "A6M Zero #1.2|.-II",
+              "time": "93.60",
+              "draw": "0.4143",
+              "mode": "powerlost",
+              "c10": "1000.00"
+            },
+            "actual_parent_child_Normal_handles": true,
+            "deadline_seconds": 14400
+          }
+        ],
+        "ordered": {
+          "lines": [
+            762,
+            762
+          ],
+          "index_diffs": 0,
+          "masks": "unchanged inherited pointer and worker/render-thread IDs"
+        },
+        "teardown": "teardown lines off=10749 on=10749 index_diffs=0 length_delta=0"
+      },
+      {
+        "case": "ijn18_4800",
+        "original_checks": {
+          "audits": true,
+          "pair_diff": true,
+          "ordered_subsequence": true,
+          "teardown": true,
+          "start_rng": true,
+          "serial": true
+        },
+        "source_format_sequence_equal": true,
+        "sides": [
+          {
+            "side": "off",
+            "genuine_samples": 1,
+            "accuracy_calls": 2843254,
+            "completed_ratings": 432180,
+            "sample": {
+              "line": 15375,
+              "unit": "Recon2",
+              "time": "67.05",
+              "draw": "0.4640",
+              "mode": "powerlost",
+              "c10": "1000.00"
+            },
+            "actual_parent_child_Normal_handles": true,
+            "deadline_seconds": 14400
+          },
+          {
+            "side": "on",
+            "genuine_samples": 1,
+            "accuracy_calls": 2843254,
+            "completed_ratings": 432180,
+            "sample": {
+              "line": 15375,
+              "unit": "Recon2",
+              "time": "67.05",
+              "draw": "0.4640",
+              "mode": "powerlost",
+              "c10": "1000.00"
+            },
+            "actual_parent_child_Normal_handles": true,
+            "deadline_seconds": 14400
+          }
+        ],
+        "ordered": {
+          "lines": [
+            636,
+            636
+          ],
+          "index_diffs": 0,
+          "masks": "unchanged inherited pointer and worker/render-thread IDs"
+        },
+        "teardown": "teardown lines off=238 on=238 index_diffs=0 length_delta=0"
+      }
+    ],
+    "old_rows_relabelled": false,
+    "global_first_all_stream_or_raw_bit_RNG_proof": false
+  },
+  "current_cases": [
+    {
+      "case": "native4800",
+      "status": "passed_original_and_strict_sampled_projection_gates",
+      "freeze": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\frozen.json",
+        "size": 36555,
+        "sha256": "5d3e5a1db5d6c5cea659f8c7759b8810495942200413853dcfb1117a28c29a05"
+      },
+      "runs": [
+        {
+          "side": "off",
+          "exe_sha256": "8a83cf434cdd6d525696fb4574ce2db760b2c64dbff8781143b850653a1ba049",
+          "start": "2026-10-29T19:33:45.1825300Z",
+          "finish": "2026-10-29T19:35:14.4967334Z",
+          "deadline": "2026-10-29T23:33:45.1825300+00:00",
+          "seconds": 89.314203,
+          "slot": 0,
+          "core": 2,
+          "controller_pid": 48608,
+          "captures": [
+            {
+              "pid": 125512,
+              "parent_pid": 48608,
+              "exe": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\binaries\\off\\bsp_game.exe",
+              "command": "\"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\binaries\\off\\bsp_game.exe\" --game-root \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\" --xlive-dll J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\binaries\\common\\xlive_stub.dll --log J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\run_off_native4800.log --instance-tag slot0 --affinity-core 2 --difficulty 1 --window-resolution fit --present-interval immediate --window-monitor smallest --frames 5100 --press-start-frame 30 --menu-select USN04 --mission-frames 4800 --mission-frame-seconds 0.05",
+              "start_utc": "2026-10-29T19:33:45.4106011Z",
+              "owner": "DESKTOP-OR1S0M8\\sqz269",
+              "priority": "Normal",
+              "is_native_child": false,
+              "captured_process_handle": true
+            },
+            {
+              "pid": 67940,
+              "parent_pid": 125512,
+              "exe": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\binaries\\off\\bsp_game.exe",
+              "command": "\"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\binaries\\off\\bsp_game.exe\" \"--game-root\" \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\" \"--xlive-dll\" \"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\binaries\\common\\xlive_stub.dll\" \"--log\" \"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\run_off_native4800.log\" \"--instance-tag\" \"slot0\" \"--affinity-core\" \"2\" \"--difficulty\" \"1\" \"--window-resolution\" \"fit\" \"--present-interval\" \"immediate\" \"--window-monitor\" \"smallest\" \"--frames\" \"5100\" \"--press-start-frame\" \"30\" \"--menu-select\" \"USN04\" \"--mission-frames\" \"4800\" \"--mission-frame-seconds\" \"0.05\" --bsp-native-data-handoff=00000364",
+              "start_utc": "2026-10-29T19:33:45.4446757Z",
+              "owner": "DESKTOP-OR1S0M8\\sqz269",
+              "priority": "Normal",
+              "is_native_child": true,
+              "captured_process_handle": true
+            }
+          ],
+          "watchdog_actions": [],
+          "log_sha256": "e4eb55ff519c3bc1949a4551d261a222137ed8a21dcb621961a37d02378a0870",
+          "sample_count": 51,
+          "source_format_count": 51,
+          "sentinel_count": 0,
+          "first_sample": {
+            "line": 29438,
+            "unit": "A6M Zero #1.2|.-II",
+            "time": "93.60",
+            "draw": "0.4143",
+            "mode": "powerlost",
+            "c10": "1000.00"
+          },
+          "first_hot_line": null,
+          "first_completed_line": null,
+          "first_sample_after_completed_return": null,
+          "accuracy_calls": 0,
+          "completed_ratings": 0,
+          "ring_bearings": 0,
+          "all_original_and_strict_checks_pass": true,
+          "mission_outcomes": [
+            "summary mission end: none (Mission.EndMission never true)"
+          ]
+        },
+        {
+          "side": "on",
+          "exe_sha256": "7c22b561ae0f6cc38276d62e1468ceab358827ca043ff634842a8aa0aab9056a",
+          "start": "2026-10-29T19:35:18.1218047Z",
+          "finish": "2026-10-29T19:36:47.3323479Z",
+          "deadline": "2026-10-29T23:35:18.1218047+00:00",
+          "seconds": 89.210543,
+          "slot": 0,
+          "core": 2,
+          "controller_pid": 48608,
+          "captures": [
+            {
+              "pid": 102728,
+              "parent_pid": 48608,
+              "exe": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\binaries\\on\\bsp_game.exe",
+              "command": "\"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\binaries\\on\\bsp_game.exe\" --game-root \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\" --xlive-dll J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\binaries\\common\\xlive_stub.dll --log J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\run_on_native4800.log --instance-tag slot0 --affinity-core 2 --difficulty 1 --window-resolution fit --present-interval immediate --window-monitor smallest --frames 5100 --press-start-frame 30 --menu-select USN04 --mission-frames 4800 --mission-frame-seconds 0.05",
+              "start_utc": "2026-10-29T19:35:18.4740313Z",
+              "owner": "DESKTOP-OR1S0M8\\sqz269",
+              "priority": "Normal",
+              "is_native_child": false,
+              "captured_process_handle": true
+            },
+            {
+              "pid": 92428,
+              "parent_pid": 102728,
+              "exe": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\binaries\\on\\bsp_game.exe",
+              "command": "\"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\binaries\\on\\bsp_game.exe\" \"--game-root\" \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\" \"--xlive-dll\" \"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\binaries\\common\\xlive_stub.dll\" \"--log\" \"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\run_on_native4800.log\" \"--instance-tag\" \"slot0\" \"--affinity-core\" \"2\" \"--difficulty\" \"1\" \"--window-resolution\" \"fit\" \"--present-interval\" \"immediate\" \"--window-monitor\" \"smallest\" \"--frames\" \"5100\" \"--press-start-frame\" \"30\" \"--menu-select\" \"USN04\" \"--mission-frames\" \"4800\" \"--mission-frame-seconds\" \"0.05\" --bsp-native-data-handoff=00000368",
+              "start_utc": "2026-10-29T19:35:18.5143030Z",
+              "owner": "DESKTOP-OR1S0M8\\sqz269",
+              "priority": "Normal",
+              "is_native_child": true,
+              "captured_process_handle": true
+            }
+          ],
+          "watchdog_actions": [],
+          "log_sha256": "8abce67e8c460565fd4e2f7f0735c564559122351fd00ab44d599042c2af68c4",
+          "sample_count": 51,
+          "source_format_count": 51,
+          "sentinel_count": 0,
+          "first_sample": {
+            "line": 29438,
+            "unit": "A6M Zero #1.2|.-II",
+            "time": "93.60",
+            "draw": "0.4143",
+            "mode": "powerlost",
+            "c10": "1000.00"
+          },
+          "first_hot_line": null,
+          "first_completed_line": null,
+          "first_sample_after_completed_return": null,
+          "accuracy_calls": 0,
+          "completed_ratings": 0,
+          "ring_bearings": 0,
+          "all_original_and_strict_checks_pass": true,
+          "mission_outcomes": [
+            "summary mission end: none (Mission.EndMission never true)"
+          ]
+        }
+      ],
+      "event_sequences_equal": true,
+      "ordered": {
+        "lines": [
+          762,
+          762
+        ],
+        "index_diffs": 0,
+        "masks": "unchanged inherited pointer and worker/render-thread IDs"
+      },
+      "teardown": "teardown lines off=10749 on=10749 index_diffs=0 length_delta=0",
+      "old_evaluator_probes": [
+        [
+          "36",
+          "0.4143"
+        ],
+        [
+          "36",
+          "0.4143"
+        ]
+      ],
+      "first_global_or_all_stream_rng_proof": false,
+      "case_scope": "NEW unexecuted native-mode sampled-plane RNG projection; not a hot-accuracy case"
+    },
+    {
+      "case": "ijn18_4800",
+      "status": "passed_original_and_strict_sampled_projection_gates",
+      "freeze": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\frozen.json",
+        "size": 37243,
+        "sha256": "c693520e8d6661362766b7f9b22ad8649e3a2efd736f72e0cbe222bf41e7d9ad"
+      },
+      "runs": [
+        {
+          "side": "off",
+          "exe_sha256": "8a83cf434cdd6d525696fb4574ce2db760b2c64dbff8781143b850653a1ba049",
+          "start": "2026-10-29T19:38:49.1643891Z",
+          "finish": "2026-10-29T19:41:38.9613725Z",
+          "deadline": "2026-10-29T23:38:49.1643891+00:00",
+          "seconds": 169.796983,
+          "slot": 0,
+          "core": 2,
+          "controller_pid": 121588,
+          "captures": [
+            {
+              "pid": 92316,
+              "parent_pid": 121052,
+              "exe": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\binaries\\off\\bsp_game.exe",
+              "command": "\"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\binaries\\off\\bsp_game.exe\" \"--game-root\" \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\" \"--xlive-dll\" \"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\binaries\\common\\xlive_stub.dll\" \"--log\" \"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\run_off_ijn18_4800.log\" \"--instance-tag\" \"slot0\" \"--affinity-core\" \"2\" \"--difficulty\" \"1\" \"--window-resolution\" \"fit\" \"--present-interval\" \"immediate\" \"--window-monitor\" \"smallest\" \"--frames\" \"5100\" \"--press-start-frame\" \"30\" \"--menu-select\" \"IJN18\" \"--mission-frames\" \"4800\" \"--mission-frame-seconds\" \"0.05\" \"--helm-orders\" \"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\inputs\\ijn18_l67_i18_d.txt\" \"--stop-after-end\" \"40\" --bsp-native-data-handoff=0000033C",
+              "start_utc": "2026-10-29T19:38:49.3639854Z",
+              "owner": "DESKTOP-OR1S0M8\\sqz269",
+              "priority": "Normal",
+              "is_native_child": true,
+              "captured_process_handle": true
+            },
+            {
+              "pid": 121052,
+              "parent_pid": 121588,
+              "exe": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\binaries\\off\\bsp_game.exe",
+              "command": "\"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\binaries\\off\\bsp_game.exe\" --game-root \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\" --xlive-dll J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\binaries\\common\\xlive_stub.dll --log J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\run_off_ijn18_4800.log --instance-tag slot0 --affinity-core 2 --difficulty 1 --window-resolution fit --present-interval immediate --window-monitor smallest --frames 5100 --press-start-frame 30 --menu-select IJN18 --mission-frames 4800 --mission-frame-seconds 0.05 --helm-orders J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\inputs\\ijn18_l67_i18_d.txt --stop-after-end 40",
+              "start_utc": "2026-10-29T19:38:49.3342613Z",
+              "owner": "DESKTOP-OR1S0M8\\sqz269",
+              "priority": "Normal",
+              "is_native_child": false,
+              "captured_process_handle": true
+            }
+          ],
+          "watchdog_actions": [],
+          "log_sha256": "e6f057e5c7115f0f5b6f79c7644a31a4d658fe48461486d75c267abb0082659a",
+          "sample_count": 1,
+          "source_format_count": 1,
+          "sentinel_count": 0,
+          "first_sample": {
+            "line": 15375,
+            "unit": "Recon2",
+            "time": "67.05",
+            "draw": "0.4640",
+            "mode": "powerlost",
+            "c10": "1000.00"
+          },
+          "first_hot_line": 5901,
+          "first_completed_line": 5922,
+          "first_sample_after_completed_return": {
+            "line": 15375,
+            "unit": "Recon2",
+            "time": "67.05",
+            "draw": "0.4640",
+            "mode": "powerlost",
+            "c10": "1000.00"
+          },
+          "accuracy_calls": 2843254,
+          "completed_ratings": 432180,
+          "ring_bearings": 10821,
+          "all_original_and_strict_checks_pass": true,
+          "mission_outcomes": [
+            "summary mission end: none (Mission.EndMission never true)"
+          ]
+        },
+        {
+          "side": "on",
+          "exe_sha256": "7c22b561ae0f6cc38276d62e1468ceab358827ca043ff634842a8aa0aab9056a",
+          "start": "2026-10-29T19:41:42.7099059Z",
+          "finish": "2026-10-29T19:44:35.2287776Z",
+          "deadline": "2026-10-29T23:41:42.7099059+00:00",
+          "seconds": 172.518872,
+          "slot": 0,
+          "core": 2,
+          "controller_pid": 121588,
+          "captures": [
+            {
+              "pid": 125420,
+              "parent_pid": 3148,
+              "exe": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\binaries\\on\\bsp_game.exe",
+              "command": "\"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\binaries\\on\\bsp_game.exe\" \"--game-root\" \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\" \"--xlive-dll\" \"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\binaries\\common\\xlive_stub.dll\" \"--log\" \"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\run_on_ijn18_4800.log\" \"--instance-tag\" \"slot0\" \"--affinity-core\" \"2\" \"--difficulty\" \"1\" \"--window-resolution\" \"fit\" \"--present-interval\" \"immediate\" \"--window-monitor\" \"smallest\" \"--frames\" \"5100\" \"--press-start-frame\" \"30\" \"--menu-select\" \"IJN18\" \"--mission-frames\" \"4800\" \"--mission-frame-seconds\" \"0.05\" \"--helm-orders\" \"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\inputs\\ijn18_l67_i18_d.txt\" \"--stop-after-end\" \"40\" --bsp-native-data-handoff=00000358",
+              "start_utc": "2026-10-29T19:41:42.9517832Z",
+              "owner": "DESKTOP-OR1S0M8\\sqz269",
+              "priority": "Normal",
+              "is_native_child": true,
+              "captured_process_handle": true
+            },
+            {
+              "pid": 3148,
+              "parent_pid": 121588,
+              "exe": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\binaries\\on\\bsp_game.exe",
+              "command": "\"J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\binaries\\on\\bsp_game.exe\" --game-root \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\" --xlive-dll J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\binaries\\common\\xlive_stub.dll --log J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\run_on_ijn18_4800.log --instance-tag slot0 --affinity-core 2 --difficulty 1 --window-resolution fit --present-interval immediate --window-monitor smallest --frames 5100 --press-start-frame 30 --menu-select IJN18 --mission-frames 4800 --mission-frame-seconds 0.05 --helm-orders J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\inputs\\ijn18_l67_i18_d.txt --stop-after-end 40",
+              "start_utc": "2026-10-29T19:41:42.9052185Z",
+              "owner": "DESKTOP-OR1S0M8\\sqz269",
+              "priority": "Normal",
+              "is_native_child": false,
+              "captured_process_handle": true
+            }
+          ],
+          "watchdog_actions": [],
+          "log_sha256": "33dd3bc13a1fa6c7f8303e700e0c5000b033a90d1f5b0ed30c35cf23f0e81fd7",
+          "sample_count": 1,
+          "source_format_count": 1,
+          "sentinel_count": 0,
+          "first_sample": {
+            "line": 15375,
+            "unit": "Recon2",
+            "time": "67.05",
+            "draw": "0.4640",
+            "mode": "powerlost",
+            "c10": "1000.00"
+          },
+          "first_hot_line": 5901,
+          "first_completed_line": 5922,
+          "first_sample_after_completed_return": {
+            "line": 15375,
+            "unit": "Recon2",
+            "time": "67.05",
+            "draw": "0.4640",
+            "mode": "powerlost",
+            "c10": "1000.00"
+          },
+          "accuracy_calls": 2843254,
+          "completed_ratings": 432180,
+          "ring_bearings": 10821,
+          "all_original_and_strict_checks_pass": true,
+          "mission_outcomes": [
+            "summary mission end: none (Mission.EndMission never true)"
+          ]
+        }
+      ],
+      "event_sequences_equal": true,
+      "ordered": {
+        "lines": [
+          636,
+          636
+        ],
+        "index_diffs": 0,
+        "masks": "unchanged inherited pointer and worker/render-thread IDs"
+      },
+      "teardown": "teardown lines off=238 on=238 index_diffs=0 length_delta=0",
+      "old_evaluator_probes": [
+        [
+          "36",
+          "0.4640"
+        ],
+        [
+          "36",
+          "0.4640"
+        ]
+      ],
+      "first_global_or_all_stream_rng_proof": false,
+      "case_scope": "NEW unexecuted hot+post-return sampled-RNG prefix; historical64k workload is not this run"
+    }
+  ],
+  "retained_runtime_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\run_off_native4800.log.inputs\\xlive_stub.dll",
+      "size": 32768,
+      "sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\run_off_native4800.log",
+      "size": 11552348,
+      "sha256": "e4eb55ff519c3bc1949a4551d261a222137ed8a21dcb621961a37d02378a0870"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\run_off_native4800.log.manifest.json",
+      "size": 3779,
+      "sha256": "3edae246f5809f751ed4d77d4f8b7fa7937c5d381bc968567767a24dc4b8429e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\run_off_native4800.log.watchdog.json",
+      "size": 3199,
+      "sha256": "6cc9f39b1e800154c20033bd13334494b4297b982674580c5f0e1066ecf8f71a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\audit_off_native4800.json",
+      "size": 8043,
+      "sha256": "457edf2f93b67851e621779cb4a4513bf0fe1dbf656c55d729d18627cf3c3bb6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\run_off_native4800.log.controller_done",
+      "size": 30,
+      "sha256": "a86fb2908c387ce3af8d323d4048755ef88ba66da14296842eee1667f37e5f78"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\run_on_native4800.log.inputs\\xlive_stub.dll",
+      "size": 32768,
+      "sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\run_on_native4800.log",
+      "size": 11552345,
+      "sha256": "8abce67e8c460565fd4e2f7f0735c564559122351fd00ab44d599042c2af68c4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\run_on_native4800.log.manifest.json",
+      "size": 3775,
+      "sha256": "bfa106529d2bc5a84840be0e7cb90c6ff3e4338b771ffc71b62d2a3bbf3f16d5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\run_on_native4800.log.watchdog.json",
+      "size": 3191,
+      "sha256": "f81aa81486a4086d534e43bf029fe5d28487b870149b96441d2dee6020c6913a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\audit_on_native4800.json",
+      "size": 8030,
+      "sha256": "11ebccb14f27da0bc36f02d7736d003ea834b6599ef8643b2dee9c48a75d85ad"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\run_on_native4800.log.controller_done",
+      "size": 30,
+      "sha256": "81ede1711948606a7473db24d5ff58fed2b830ea241d2bcec6bd26a6f7bc8ebd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\evaluation_native4800.json",
+      "size": 855,
+      "sha256": "cd11a733ffa516fe8d919fe098a8681984451f69dcf053feb59f82e8cb8d5932"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\pair_native4800.json",
+      "size": 6877,
+      "sha256": "ac20fc5a489d5b8a9299eeb30cf96c446c93b38001f102df6c63bf23046c1c8b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\pair_native4800.txt",
+      "size": 1893,
+      "sha256": "cab75f94514ad4b133f98bd09ca2b7aa38bccc92d9672524bf3fdbdf6ca25e23"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\teardown_native4800.txt",
+      "size": 64,
+      "sha256": "227fd58cc55e2e845356bfcacf55119c5b5be0cd9076e7c42301a6cb36291be0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\sampled_rng_gate.json",
+      "size": 26219,
+      "sha256": "a727eb7eae07959956f0dccd834a69fc543b37620a96f7cdc085663c7e65b35b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\matrix.done",
+      "size": 8,
+      "sha256": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\controller.stdout",
+      "size": 3869,
+      "sha256": "51757e8d49fc77536912ca117f5e6130771cf1b7b701d066111248c88030b0c4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\controller.stderr",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\events.jsonl",
+      "size": 506,
+      "sha256": "151e65b3312c48f32173711bc39ee028f3bf9278fda25c2c8610f4f9f6d3d20d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\frozen.json",
+      "size": 36555,
+      "sha256": "5d3e5a1db5d6c5cea659f8c7759b8810495942200413853dcfb1117a28c29a05"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\criteria.json",
+      "size": 1070,
+      "sha256": "5d31402db265b14e9d184682c2ac7dfc9a324349b4ed10106c21209e40d61ca0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_native4800\\launch_plan.json",
+      "size": 3838,
+      "sha256": "e76730be0111524b82c773829163c6534f6d9cdd2feb914601150b86ee92f1dc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\run_off_ijn18_4800.log.inputs\\xlive_stub.dll",
+      "size": 32768,
+      "sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\run_off_ijn18_4800.log.inputs\\ijn18_l67_i18_d.txt",
+      "size": 446,
+      "sha256": "8324d67e28d82ae234cf4bd00e482605eff7b1bf04c16c401787ca79cae493c8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\run_off_ijn18_4800.log",
+      "size": 7380750,
+      "sha256": "e6f057e5c7115f0f5b6f79c7644a31a4d658fe48461486d75c267abb0082659a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\run_off_ijn18_4800.log.manifest.json",
+      "size": 4642,
+      "sha256": "5696da21ff982172611016ee32282bfc75eb570399244868ffe48328d2a0c507"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\run_off_ijn18_4800.log.watchdog.json",
+      "size": 3565,
+      "sha256": "803bbc750bec51129ab6cb308844e0144ca641235e09449d614974e146693c8e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\audit_off_ijn18_4800.json",
+      "size": 9379,
+      "sha256": "027395c93376cddea77d2d4d7c80ecc200e5babd9f3595b7ca694683408f0980"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\run_off_ijn18_4800.log.controller_done",
+      "size": 30,
+      "sha256": "3281d303d0cb8bf0264e88263df374b39e041a7dac9438f2c750c314c00967fa"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\run_on_ijn18_4800.log.inputs\\xlive_stub.dll",
+      "size": 32768,
+      "sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\run_on_ijn18_4800.log.inputs\\ijn18_l67_i18_d.txt",
+      "size": 446,
+      "sha256": "8324d67e28d82ae234cf4bd00e482605eff7b1bf04c16c401787ca79cae493c8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\run_on_ijn18_4800.log",
+      "size": 7380749,
+      "sha256": "33dd3bc13a1fa6c7f8303e700e0c5000b033a90d1f5b0ed30c35cf23f0e81fd7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\run_on_ijn18_4800.log.manifest.json",
+      "size": 4638,
+      "sha256": "e4393fb9cc2f1e73af36fcdaf573e569c0e5b066e38015e8e70c3acb64f103c0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\run_on_ijn18_4800.log.watchdog.json",
+      "size": 3554,
+      "sha256": "19786db6229af9e7a1bb995cdbe6a06e9c07ca287fd82826f0bf6e5c336b5c17"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\audit_on_ijn18_4800.json",
+      "size": 9363,
+      "sha256": "0823c10d03aa3a518106b6836c1435e9ccce1d9d56b101d3ddf6fad898aca4d8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\run_on_ijn18_4800.log.controller_done",
+      "size": 30,
+      "sha256": "7ed7625e9687e961137327d899d29a985ff72190684122ff00a14821a5abd5b3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\evaluation_ijn18_4800.json",
+      "size": 881,
+      "sha256": "7ac4c02895674764345d2dd2ae8e2a3eee01e04e5dc3730dc36da0a4719e847d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\pair_ijn18_4800.json",
+      "size": 6831,
+      "sha256": "d49cd61e007b805ed4e50cee3209d35d968287370511a3958cd2856cac74267d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\pair_ijn18_4800.txt",
+      "size": 1866,
+      "sha256": "ca486afbdc57829a4da0b72295d8c1ccb8a4448ff46e302b3798350113c1daf3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\teardown_ijn18_4800.txt",
+      "size": 60,
+      "sha256": "237fa60fa9519de6bdb0ffc6ae46954a914cccd87cd619c59011f414ab7ea768"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\sampled_rng_gate.json",
+      "size": 3765,
+      "sha256": "0e228e995f1625fd0349db96a39482089ad288b6e022dad06f2e1f3df941565a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\matrix.done",
+      "size": 8,
+      "sha256": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\controller.stdout",
+      "size": 3831,
+      "sha256": "c1d310a5cb521a9750acc301a1267384ac92d9127dbd8bd6e2384307b1a31c96"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\controller.stderr",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\events.jsonl",
+      "size": 510,
+      "sha256": "19253a79e4390a485ca4c58cf9e0f1f626fa26de77bb784cf320aa2564aac3b3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\frozen.json",
+      "size": 37243,
+      "sha256": "c693520e8d6661362766b7f9b22ad8649e3a2efd736f72e0cbe222bf41e7d9ad"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\criteria.json",
+      "size": 1327,
+      "sha256": "3c713aa522084e9613909c7ad49297da1ba2cdd423ff8a56ec95938f37a51d74"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_ijn18_4800\\launch_plan.json",
+      "size": 4112,
+      "sha256": "35f3ad954d9ff556dc6da889dd425ee1c2e4c94c9421aa6cac67277cf27e2964"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\root_approval_20261029T193341Z.json",
+      "size": 1408,
+      "sha256": "445f42b3fc7407121a24adcf1aa9a1e0ce6f67c18867d3551d064bf01a443ccb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\native_pass_before_IJN.json",
+      "size": 5927,
+      "sha256": "197a8537cc74a4824b018f64d20dc488004b5e9e443cc816f7d66126ba2b6e97"
+    }
+  ],
+  "root_approval": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-accuracy-current-main-runtime\\local\\accuracy_rng_current\\root_approval_20261029T193341Z.json",
+    "sha256": "445f42b3fc7407121a24adcf1aa9a1e0ce6f67c18867d3551d064bf01a443ccb",
+    "approval": {
+      "utc": "2026-10-29T19:33:41.314778+00:00",
+      "source_agent": "/root",
+      "source_message": "ROOT CURRENT EXECUTION REVIEW COMPLETE / AUTHORIZED exact nativefreeze5d3e5a1db5d6c5cea659f8c7759b8810495942200413853dcfb1117a28c29a05 and IJNfreezec693520e8d6661362766b7f9b22ad8649e3a2efd736f72e0cbe222bf41e7d9ad, actualcurrent8a83OFFactualbuild2b05/prodequal2c,7c22ON2c182,freshf112DLL,cleanOFFhost2c. NativeOFF/ON serial first; original+strict gates; only if bothpass IJNOFF/ON. NormalSlots8 maxown1,14400s heldidentitywatchdog. Fourgamesonly, no reruns; missing sample/hot/completed/postreturnevent or mismatch stops; no input/budget/seed/forcing/tracing/mask changes.",
+      "records": [
+        {
+          "case": "accuracy_rng_native4800",
+          "freeze_sha256": "5d3e5a1db5d6c5cea659f8c7759b8810495942200413853dcfb1117a28c29a05",
+          "launch_plan_sha256": "e76730be0111524b82c773829163c6534f6d9cdd2feb914601150b86ee92f1dc",
+          "file_matches": 68
+        },
+        {
+          "case": "accuracy_rng_ijn18_4800",
+          "freeze_sha256": "c693520e8d6661362766b7f9b22ad8649e3a2efd736f72e0cbe222bf41e7d9ad",
+          "launch_plan_sha256": "35f3ad954d9ff556dc6da889dd425ee1c2e4c94c9421aa6cac67277cf27e2964",
+          "file_matches": 69
+        }
+      ],
+      "frozen_creation_flags_kept_immutable": true,
+      "prior_old5c_c8_authorization_not_reused": true,
+      "scope": "actualcurrent2b05OFF/prodequal2c259 and2c182ON withfreshf112 backend only"
+    }
+  },
+  "common_backend": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\accuracy_current_main\\common\\xlive_stub.dll",
+    "bytes": 32768,
+    "sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3"
+  },
+  "builds": {
+    "OFF": {
+      "configuration": "MSVC Win32 Release",
+      "suites_passed": "2/2",
+      "seconds": 14.2,
+      "log": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\accuracy_current_main\\off\\build.log",
+        "bytes": 2936,
+        "sha256": "c114b2b251007f223d3f386ca83f7cab8adc9017096c92be00fa31a4ffec59ea"
+      }
+    },
+    "ON": {
+      "configuration": "MSVC Win32 Release",
+      "suites_passed": "2/2",
+      "seconds": 11.12,
+      "log": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\accuracy_current_main\\on\\build.log",
+        "bytes": 3513,
+        "sha256": "289191d155c2f8029cb5bd9bc61ab557aade896b960b4c37d0986cc27c9bc8b0"
+      }
+    }
+  },
+  "source_and_run_scope": "Exact current OFF2b05/prodequal2c and ON2c182 with commonf112; metadata-only later admission does not change production.",
+  "activation_scope": "FirepowerBinding actual-cell new native-range dispatcher only; existing PC24 cohort and other public APIs unchanged",
+  "native_body_credit": 0,
+  "vendor_body_credit": 0,
+  "abi_compatible": false,
+  "whole_native_function_game_validated": false,
+  "fixture_scope": "Previously accepted8c2 original post-spill/direct-conversion only:8+8 checks, masked-nearest PC24/53, synthetic modes0/1, weight1. No arbitrary interpolation/full-sample proof.",
+  "RNG_scope": "Nonempty source-format rounded logged samples; IJN requires actual accuracy/completed returns and a sample after first completed-return marker. No global-first/all-stream/raw-bit proof.",
+  "old_unobserved_rows_relabelled": false,
+  "inherited_false_acceptance_withdrawal": "199569eef119053d75dec3a4aee14fe93f2f1f96",
+  "logical_runs": 4,
+  "owned_concurrency": 1,
+  "configured_slots": 8,
+  "priority": "Normal",
+  "actual_held_Normal_captures": 8,
+  "watchdog_seconds": 14400,
+  "watchdog_actions": 0,
+  "goal_status": "active",
+  "remaining": [
+    "Other public sample/scale interfaces retain prior qualifications",
+    "Full interpolation/all-input fixture, original ABI/FH/fault and global RNG history remain unproved",
+    "Other function/provider/owner/partial/FP and gameplay integration obligations remain"
+  ],
+  "analysis_annotations": {
+    "saved": true,
+    "backup": "local/ghidra-annotations-20261029T200437Z.json",
+    "previous_comments_preserved": true,
+    "export_refreshed": "008383d0"
+  },
+  "post_candidate_commits_metadata_only": true
+}
