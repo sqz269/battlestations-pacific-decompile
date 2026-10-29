@@ -276,9 +276,10 @@ void produce_native_gui_text_primary_model_00aaad95(Context& c,
         require(c.factory_context.publication.owners.find(raw) == &reference &&
             static_cast<void*>(&reference.reference_count) == at(raw, 4),
             "primary canonical binding must borrow this constructor's existing actual+4");
-        a.boundary = Acquired::Boundary::publication; a.publication_entered = true;
+        a.boundary = Acquired::Boundary::publication; a.active_call_site = 0x00aaadc4;
+        a.publication_entered = true;
         write(text, 0x4c, bits(raw)); a.published = true; // transfers custody; NO retain
-        a.boundary = Acquired::Boundary::flags_clear;
+        a.boundary = Acquired::Boundary::flags_clear; a.active_call_site = 0x00aaadc9;
         write(raw, 0x138, read(raw, 0x138) & 0xfffffffcu); a.flags_cleared = true;
         auto& receipt = a.receipt_;
         receipt.text_ = text; receipt.model_ = raw; receipt.factory_context_ = &c.factory_context;

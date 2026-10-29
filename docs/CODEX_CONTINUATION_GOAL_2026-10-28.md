@@ -571,3 +571,10 @@ with peer review passed and root review ongoing; all its escapes retain without
 inferred ctor-slot EH. Geometry readiness540 confirms genuine constructor74=0
 permits a future no-content geometry lifecycle, but Text ownership/routing/full
 custody bridges still block it. P4 remains OFF.
+
+Primary producerdb55 now passes both source reviews and Win32/tests2/2. Root
+verified actual canonical allocator thunk and publicationAAADC4/138clearAAADC9,
+recorded precise diagnostic sites and registered the uncalled TU. No caller,
+whole-child/AAA710, runtime or ABI credit follows. Plans eab/540 pin the next
+receipt-authorized prefix-only retirement/owner bridge; they preserve DEFAULT
+construction/binding and require actual settlement for BOTH Models plus Text.

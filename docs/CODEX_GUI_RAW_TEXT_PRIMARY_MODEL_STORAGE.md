@@ -1,6 +1,7 @@
 # Raw Text primary Model producer prefix
 
-**UNBUILT, uncalled Source preparation.** Only the new
+**Integrated, source-reviewed and build-checked; still uncalled.** The worker
+prepared only the new
 `native_gui_text_primary_model_storage.hpp/.cpp` and this doc are owned here.
 No existing Model/Text/widget/renderer file, CMake, shared metadata, Ghidra state,
 installation or binary is changed. No new body/library credit or activation.
@@ -72,9 +73,8 @@ Existing evidence is `native_gui_widget_property_children.cpp:39-71,121-129` and
    the SAME actual-owner registry. Host canonical admission adds NO credit.
 5. Store actual Text4C, then clear CURRENT captured Model138 bits0/1. This transfers
    custody of the original creator credit; it adds no second native owner.
-   Publication/flags boundaries are recorded separately. Their exact machine
-   store addresses were not newly recovered; diagnostics use named boundaries,
-   not invented instruction addresses.
+   Publication/flags boundaries are recorded separately. The worker first used
+   named boundaries; root later verified their exact instruction addresses below.
 
 Only after these normal operations can the producer issue its private,
 noncopyable `NativeGuiTextPrimaryModelPublication` inside Acquired. Its getters
@@ -127,3 +127,21 @@ properties18 -> visitor08 -> loaded78. Shared routing, all-Model retirement/raw1
 selection/scalar admission, raw85 main section, Font/property/content/loaded
 providers and actual FE_initial remain separate. Root must close primary/all-Model
 custody and routing before production publication or an AB7700 call.
+
+## Root integration evidence
+
+Root and independent source reviews pass frozen `db55df5a`, including the
+independent constructor-failure audit requiring all new escapes to retain.
+Read-only Ghidra queries were guarded to projectbsp and program
+`/battlestationspacific.exe`; no saved analysis was changed. Actual AAAD95
+calls B74EB0, whose complete body is MOV ECX,01090054 / JMP B74D00. The checked
+already-ready SAME process pool supplies this canonical receiver for the Source
+member call. AAADC4 stores Text4C; AAADC9 performs the DWORD138 & FFFFFFFCh.
+Root set those two diagnostic call-site values; no native operation changed.
+
+The TU is registered in bsp_core through cmake/startup.cmake. Combined MSVC
+Win32 build and both existing suites pass (10.92 seconds), receipt
+`local/cc16_primary_model_producer_build.log`. The game map has zero occurrences
+of the entry and source has no caller. No fixture, game or new test case ran.
+This supplies compiled prefix transport/provenance only; every lifetime,
+name-owner, raw118/owner-custody and later child/content/Page gate remains.
