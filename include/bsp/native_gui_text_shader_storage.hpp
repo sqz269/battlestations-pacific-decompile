@@ -8,6 +8,9 @@
 #endif
 
 namespace bsp {
+struct NativeGuiTextRawFontNameStorageContext;
+class NativeGuiTextRawFontNameStorageFrame;
+struct NativeGuiTextRawFontNameStorageAcquired;
 // Reached unknown current renderer48 targets require a genuine body. Numeric
 // profile/target values are selectors, never callable host addresses. The
 // provider receives retained acquisition backing BEFORE any nested effects.
@@ -61,14 +64,115 @@ struct NativeGuiTextShaderStorageFrame final {
     // Pure immutable raw preparation. No Font export/lookup, native cell/name
     // read or acquisition; the legacy default constructor keeps this null.
     explicit NativeGuiTextShaderStorageFrame(const NativeGuiTextShaderStorageContext&) noexcept;
+    // Credited raw preparation additionally pins the SAME canonical122 frame.
+    // This constructor is pure; only a genuine normal raw AB8CE0 invocation
+    // can issue the private credit. The old constructors issue no authority.
+    NativeGuiTextShaderStorageFrame(const NativeGuiTextShaderStorageContext&,
+        const NativeGuiTextReferenceFrame&) noexcept;
     const NativeGuiTextShaderStorageContext* prepared_raw_context() const noexcept {
         return prepared_raw_context_;
     }
+    const NativeGuiTextReferenceFrame* prepared_reference_frame() const noexcept {
+        return prepared_reference_frame_;
+    }
+
+    enum class RawPhase { fresh, entered, complete, failed };
+    enum class CreditPhase { none, outstanding, reserved, returned };
+    enum class Consumer { none, font_name, retirement };
+    // A value snapshot of private metadata, never an ownership capability.
+    // None of these values may be supplied back to authorize an operation.
+    struct CreditProgress {
+        RawPhase producer{RawPhase::fresh};
+        CreditPhase credit{CreditPhase::none};
+        Consumer consumer{Consumer::none};
+        bool failed{}, active{}, capture_entered{}, decrement_entered{};
+        bool decrement_returned{}, zero_entered{}, zero_returned{}, slot_cleared{};
+        bool consumer_returned{};
+        void* actual_text{};
+        void* effect{}; // diagnostic after terminal; never dereference it
+        const NativeGuiTextRawModelReference* reference{};
+        const NativeGuiTextRawModelReferenceContext* reference_context{};
+        const NativeGuiTextReferenceFrame* reference_frame{};
+        const NativeMaterialEffectCacheAcquired* cache{};
+        const NativeGuiTextRawFontNameStorageContext* font_context{};
+        const NativeGuiTextRawFontNameStorageFrame* font_frame{};
+        const NativeGuiTextRawFontNameStorageAcquired* font_acquired{};
+        const NativeGuiTextRawModelRetirementContext* retirement_context{};
+        const NativeGuiTextRetirementAcquired* retirement_acquired{};
+        const NativeGuiTextRetirementShader* retirement_shader{};
+        NativeTextureSurfaceReferenceIncrement captured_decrement{};
+        long decrement_result{};
+    };
+    CreditProgress credit_progress() const noexcept;
+    bool matches_credit_backing(const NativeGuiTextShaderStorageContext&,
+        const NativeGuiTextReferenceFrame&) const noexcept;
+
+    // Only the two genuine outer bodies below can construct this token. Their
+    // typed private-body policy carries it to Original's reached epochs; no
+    // public entry can construct a token or manufacture issuance/completion.
+    // State is retained IN ShaderFrame. A local token owns no native credit.
+    class CreditConsumer final {
+    public:
+        ~CreditConsumer() noexcept;
+        CreditConsumer(const CreditConsumer&) = delete;
+        CreditConsumer& operator=(const CreditConsumer&) = delete;
+        CreditConsumer(CreditConsumer&&) = delete;
+        CreditConsumer& operator=(CreditConsumer&&) = delete;
+        // AFTER Original CURRENT1EC capture (and raw118's state6 store), before
+        // the reached CURRENT CE2220 sample/call. Null never returns a credit.
+        void capture(void* captured_current_shader);
+        void decrement_entered(NativeTextureSurfaceReferenceIncrement);
+        void decrement_returned(long actual_result);
+        void zero_entered();
+        void zero_returned();
+        void slot_cleared(); // AFTER Original post-callback Text1EC store
+        // ONLY the real equal-name branch may report no capture. It keeps any
+        // outstanding credit. Resize/copy/lookup escapes cannot use this path.
+        void finish_without_capture();
+        // AFTER the entire outer native body returns normally, including all
+        // later raw118 members/base work. Never polls an ended native payload.
+        void complete();
+        void fail() noexcept;
+    private:
+        friend void set_native_gui_text_font_name_storage_00ab8c30(
+            NativeGuiTextRawModelReference&, const void*,
+            NativeGuiTextRawFontNameStorageContext&,
+            NativeGuiTextRawFontNameStorageFrame&,
+            NativeGuiTextRawFontNameStorageAcquired&);
+        friend void destroy_native_gui_text_storage_00ab8250(void*,
+            NativeGuiTextRawModelRetirementContext&, NativeGuiTextRetirementAcquired&);
+        CreditConsumer(NativeGuiTextShaderStorageFrame&,
+            NativeGuiTextRawModelReference&,
+            const NativeGuiTextRawFontNameStorageContext&,
+            const NativeGuiTextRawFontNameStorageFrame&,
+            const NativeGuiTextRawFontNameStorageAcquired&);
+        CreditConsumer(NativeGuiTextShaderStorageFrame&, void* actual_text,
+            NativeGuiTextRawModelRetirementContext&, NativeGuiTextRetirementAcquired&);
+        enum class Stage { opened, no_capture, null_capture, captured,
+            decrement_entered, decremented, zero_entered, zero_returned, cleared, complete, failed };
+        NativeGuiTextShaderStorageFrame& frame_;
+        const Consumer kind_;
+        Stage stage_{Stage::opened};
+        bool active_{};
+        void require_stage(Stage);
+    };
     ~NativeGuiTextShaderStorageFrame() noexcept;
     NativeGuiTextShaderStorageFrame(const NativeGuiTextShaderStorageFrame&) = delete;
     NativeGuiTextShaderStorageFrame& operator=(const NativeGuiTextShaderStorageFrame&) = delete;
 private:
+    friend bool ensure_native_gui_text_font_shader_storage_00ab8ce0(
+        NativeGuiTextRawModelReference&, NativeGuiTextShaderStorageContext&,
+        NativeGuiTextShaderStorageFrame&);
     const NativeGuiTextShaderStorageContext* const prepared_raw_context_{};
+    const NativeGuiTextReferenceFrame* const prepared_reference_frame_{};
+    CreditProgress credit_;
+    // An active no-credit/equal-name invocation is distinct from the single
+    // irreversible nonnull credit consumer recorded in credit_.
+    const CreditConsumer* active_consumer_{};
+    void begin_raw(NativeGuiTextRawModelReference&, NativeGuiTextShaderStorageContext&);
+    void complete_raw(NativeGuiTextRawModelReference&, NativeGuiTextShaderStorageContext&,
+        bool actual_attempted);
+    void fail_raw() noexcept;
 };
 
 // Complete normal AB8CE0..AB8E6C[397B/118 instructions]. Native ECX actual
