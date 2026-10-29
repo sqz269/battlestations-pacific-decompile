@@ -48,5 +48,11 @@ The bind-only correction authenticates exact prefix/widget/text/authentication/
 acquisition identities and requires one full matching view before excluding that
 owned-write role. All other regions, duplicate/partial views and later consumers
 retain their checks. Independent actual-diff review accepts; Win32/existing
-checks2/2 pass12.69s. This repaired Source has no runtime acceptance yet; the
+checks2/2 pass12.69s. That Source checkpoint preceded runtime acceptance; the
 original failed cohort remains FAIL (see CODEX_GUI_RAW_FONT_MAIN_RUNTIME.md).
+
+Fresh repaired71 artifacts subsequently pass the exact private four-case protocol:
+182/182 unchanged evaluator checks independently replayed byte-identically, plus
+39/39 actual artifact/CRT export checks. Natural four-case exits0/drain and both
+independent lifetime slices qualify that frozen Source only. No broad startup,
+whole caller/content, ABI or production activation follows; seven gates stay OFF.
