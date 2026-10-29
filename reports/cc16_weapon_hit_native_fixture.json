@@ -1,0 +1,103 @@
+{
+  "packet":"codex-weapon-hit-native-fixture",
+  "status":"narrow_original_postspill_and_conversion_comparison_passed_guard_remains_off",
+  "source_candidate":"9434d4a37f2a3c4528d826968460a982a4213e53",
+  "new_original_body_or_vendor_body_credit":0,
+  "scope":{
+    "reference":"original00838402..00838526 post-008383fe float-spill window",
+    "source":"new actual-cell public overload at chosen size endpoint100 of100/200, yielding stored weight1",
+    "cells_and_profile":"controlled synthetic relocated cell and synthetic profile; not live canonical NativeData runtime proof",
+    "whole_008383d0_or_pc53_interpolation_proof":false,
+    "original_crt_game_or_activation_claim":false,
+    "guard":"kWeaponHitAccuracyNativeRangeBound remains false",
+    "files":["tests/cc16_weapon_hit_native_fixture.cpp","docs/CC16_WEAPON_HIT_NATIVE_FIXTURE.md","reports/cc16_weapon_hit_native_fixture.json"],
+    "shared_metadata_cmake_ghidra_or_production_source_changes":false
+  },
+  "reference_integrity":{
+    "installed_pe_sha256":"b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans":[
+      {"address":"00838402","inclusive_end":"00838526","bytes":293,"offset":0,"sha256":"17cd647e076158fe5268fa4d01d5d77ce58b06e6907ec79abd4cf17a1778d383"},
+      {"address":"00bf7420","inclusive_end":"00bf743b","bytes":28,"offset":304,"sha256":"ca03c44f225ec07ccb8fd4dbaf388d22ba816472e788e49ecdb1db7b85f11cc6"},
+      {"address":"00bf7456","inclusive_end":"00bf74ca","bytes":117,"offset":336,"sha256":"5333b186c02836974c6f792303aeb2c00d856316b93ccbbe65f51def6ae661b4"}
+    ],
+    "packed_code_bytes":464,
+    "packed_code_sha256":"95684f4f4b5bfbec18a19e78354dbb397d8e48bfe9e24e232f2fd5a72c538c6e",
+    "readonly_bytes":32,
+    "readonly_sha256":"3fef94215ebdf41133b4da57c3fb4f1272eb92bf642a978ccf2538ee26993dfb",
+    "decoded_instructions":135,
+    "internal_direct_branches_unchanged":15,
+    "unaccounted_dependencies":0,
+    "indirect_calls_or_iats":0,
+    "exact_operand_patches":8,
+    "allowed_operand_bytes":29,
+    "code_rx_constants_ro":true,
+    "sealed_patched_code_sha256_this_run":"d2b20dd6096c5417ca94846990a739986d7b160f551f3df6edd847c23498b9ca",
+    "sealed_hash_qualification":"runtime relocation addresses vary; each run seals and verifies its own patched image"
+  },
+  "relocations":[
+    {"offset":8,"bytes":4,"kind":"readonly","original_target":"00d7a24c","private_target":0},
+    {"offset":47,"bytes":4,"kind":"readonly","original_target":"00d7a3a0","private_target":8},
+    {"offset":99,"bytes":4,"kind":"readonly","original_target":"00d0a198","private_target":16},
+    {"offset":106,"bytes":4,"kind":"rel32_code","original_target":"00bf7420","private_target":304},
+    {"offset":133,"bytes":4,"kind":"readonly","original_target":"00ce3dc0","private_target":24},
+    {"offset":276,"bytes":4,"kind":"readonly","original_target":"00d7a24c","private_target":0},
+    {"offset":306,"bytes":4,"kind":"synthetic_mutable_mode","original_target":"0109eea4"},
+    {"offset":312,"bytes":1,"kind":"rel8_code","original_target":"00bf7456","private_target":336}
+  ],
+  "original_control_edges":[
+    {"function":"008383d0","address":"0083846b","native":"00bf7420","role":"only call in the copied window"},
+    {"function":"00bf7420","address":"00bf7427","branch":"JZ","target":"00bf7456","role":"conditional zero-mode branch; not misreported as CALL/JMP"}
+  ],
+  "adapter":{
+    "instructions":["SUB ESP,8","PUSH ESI","MOV ESI,EDX","JMP ECX"],
+    "frame":"savedESI at0; locals4/8; actual return+c; stored weight+10; fraction+14",
+    "return":"original POP ESI; ADD ESP,8; RET8",
+    "returning_stub_or_cpp_oracle":false
+  },
+  "execution":{
+    "compiler":"MSVC Win32 /std:c++17 /EHsc /fp:strict /O2 /Oy- /MD /W4 /WX",
+    "link":"bsp_core.lib bcrypt.lib user32.lib d3d9.lib /MANIFEST:EMBED /OPT:REF /OPT:NOICF /INCREMENTAL:NO",
+    "manifest":"asInvoker, uiAccess=false",
+    "safe_name":"cc16_weapon_hit_fixture.exe",
+    "watchdog_ms":15000,
+    "watchdog_scope":"parent owns only its created hidden child; timeout terminates only that child handle",
+    "probe_runs":1,
+    "child_exit":0,
+    "stderr_bytes":0,
+    "post_window_pairs":8,
+    "direct_conversion_pairs":8,
+    "legacy_negative_control_differences":6,
+    "thread_controls_restored":true,
+    "code_constants_profile_and_mode_unchanged":true,
+    "game_runs_on_flips_wins_or_original_install_changes":0
+  },
+  "observed_rows":[
+    {"cw":"007f","mode":0,"input":"3f333333","native":"3e800000","source":"3e800000","legacy":"3e800000","conversion_eax":"fffffff9","x87_exceptions":32,"top":0,"mxcsr":8064},
+    {"cw":"007f","mode":1,"input":"3f333333","native":"3e800000","source":"3e800000","legacy":"3e800000","conversion_eax":"fffffff9","x87_exceptions":32,"top":0,"mxcsr":8064},
+    {"cw":"007f","mode":0,"input":"7fc12345","native":"7fc12345","source":"7fc12345","legacy":"3e800000","conversion_eax":"00000000","x87_exceptions":1,"top":0,"mxcsr":8065},
+    {"cw":"007f","mode":1,"input":"7fc12345","native":"7fc12345","source":"7fc12345","legacy":"3e800000","conversion_eax":"80000000","x87_exceptions":1,"top":0,"mxcsr":8065},
+    {"cw":"027f","mode":0,"input":"3f333333","native":"3e800002","source":"3e800002","legacy":"3e800000","conversion_eax":"fffffffa","x87_exceptions":32,"top":0,"mxcsr":8064},
+    {"cw":"027f","mode":1,"input":"3f333333","native":"3e800002","source":"3e800002","legacy":"3e800000","conversion_eax":"fffffffa","x87_exceptions":32,"top":0,"mxcsr":8096},
+    {"cw":"027f","mode":0,"input":"7fc12345","native":"7fc12345","source":"7fc12345","legacy":"3e800000","conversion_eax":"00000000","x87_exceptions":1,"top":0,"mxcsr":8065},
+    {"cw":"027f","mode":1,"input":"7fc12345","native":"7fc12345","source":"7fc12345","legacy":"3e800000","conversion_eax":"80000000","x87_exceptions":1,"top":0,"mxcsr":8065}
+  ],
+  "compared_observables":["result bits","conversion low EAX","three retained lower x87 values","x87 CW","x87 exception bits","x87 TOP","complete MXCSR"],
+  "not_qualified":["arbitrary size interpolation or whole008383d0 at PC53","C0/C2/C3 or FIP/FDP","arbitrary GPR/binary ABI","errno/matherr or unmasked exception dispatch","live canonical cell/startup handoff","original CRT or game behavior","runtime ON or WINS acceptance"],
+  "artifact_receipts":{
+    "fixture_exe_sha256":"7cdad8a232973ec2f5097314f14ce154eaaf4ff4f992e29e809550f484bb3ad8",
+    "linked_bsp_core_sha256":"a59e324c039ae0f906ca101c210f5e0f7c695a5e6a0c7b9d3f253f989683b94b",
+    "fixture_cpp_sha256":"41a990fc483660efeb987bc4692e5f214e9bc45be55c764336d2ec09bb92ab6c",
+    "result_json_sha256":"340c44e1c83f3c2c817f72384ad08e036a31a30634ddeffc21c734a480488cef",
+    "directory":"local/weapon_hit_native_fixture/",
+    "dependency_audit":"local/weapon_hit_native_dependency_audit.json"
+  },
+  "validation":{
+    "strict_compile_and_manifest_extraction":"passed",
+    "adapter_object_review":"exact four instructions confirmed",
+    "source_and_reference_postspill_comparisons":"passed8/8",
+    "direct_unspilled_conversion_comparisons":"passed8/8",
+    "callsite_verification":"1 original CALL row and 1 Markdown CALL claim checked live; 0 failures, unchecked claims or warnings",
+    "new_framework_or_returning_stub":false,
+    "shared_registration":"primary-owned, not changed"
+  }
+}
