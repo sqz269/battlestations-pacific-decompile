@@ -1,0 +1,853 @@
+{
+  "schema_version": 1,
+  "packet": "codex-dyn-task-construction-cleanup-review",
+  "status": "independent_qualified_pass_valid_input_Cpp_partial_construction_cleanup_static_proof_only",
+  "candidate_commit": "237e6c51838a56e326b6fe379a3bcaf8826156e2",
+  "base_main": "8faf5e9e4108ae79c647adb7a6a4c11728ad6882",
+  "reviewed_at_utc": "2026-10-29T23:50:02.950119+00:00",
+  "blocking_findings": [],
+  "review_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup-review\\docs\\CC16_DYN_TASK_CONSTRUCTION_CLEANUP_REVIEW.md",
+    "bytes": 6831,
+    "sha256": "0a96c8a2d75b4f28e36e8084bde4bcb38c689f53a9990f26a564858ed47d018c"
+  },
+  "inputs": {
+    "primary_document": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup-review\\docs\\CC16_DYN_TASK_CONSTRUCTION_CLEANUP.md",
+      "bytes": 6360,
+      "sha256": "e5da2fba35fad60d6dd5e2b013249b2af733a60841baaf733768487771c04514"
+    },
+    "primary_report": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup-review\\reports\\cc16_dyn_task_construction_cleanup.json",
+      "bytes": 45223,
+      "sha256": "38da4b2405aea24b06009793edea3b78437fa7549b22cccf7b52358000a8a3ef"
+    },
+    "source_sha256": {
+      "baseline": {
+        "include/bsp/dyn_task_manager.hpp": "3c6736d8c7ee289631f9fdebd02f9c0915688389ec29a782357183ee2f54c147",
+        "src/dyn_task_manager.cpp": "0160749d351494d2ac34a08a0c4d98322a6a4aa54ab5db8c35e23931591d75d0"
+      },
+      "qualified": {
+        "include/bsp/dyn_task_manager.hpp": "fa2af4d66164cc2db0bbc01ea45909d6c324dda70c94075239c0eb2a5e25395a",
+        "src/dyn_task_manager.cpp": "602a1d3ce86abfc57546746533443fa1921618c7a809d76893b69d655d21e1b8"
+      },
+      "retained_baseline_snapshots": {
+        "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\baseline\\include\\bsp\\dyn_task_manager.hpp": "3c6736d8c7ee289631f9fdebd02f9c0915688389ec29a782357183ee2f54c147",
+        "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\baseline\\src\\dyn_task_manager.cpp": "0160749d351494d2ac34a08a0c4d98322a6a4aa54ab5db8c35e23931591d75d0"
+      }
+    },
+    "dependencies": [
+      {
+        "path": "include/bsp/avoid_zone_dyn_hull.hpp",
+        "sha256": "3fd5fecb9e29d82393c25315ddcd6046119e3c7666d7d5ab97236c79d8e91c45",
+        "git_blob": "483e7f06a925322c85ce375dc30acd4e1541457a"
+      },
+      {
+        "path": "include/bsp/world_ocean.hpp",
+        "sha256": "00a1c385e2e46fe0a7372c4dec7d0f8039935823bc02e0a29982c93c5360429b",
+        "git_blob": "7dcd77bdad0d61324476e7acd9cac4f36cf33771"
+      }
+    ],
+    "primary_objects_and_listings": [
+      {
+        "variant": "baseline",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\baseline\\dyn_task_manager.obj",
+        "bytes": 13451,
+        "sha256": "d1d68834b4949cc67175961206df61d6274c0e3dc1fbdc4c81bf7086c932d952",
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\baseline\\dyn_task_manager.asm",
+          "sha256": "acab64d3f703559c9595b4d7abafe98d9dfc15261db363340cd405309c057842"
+        }
+      },
+      {
+        "variant": "qualified",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\qualified\\dyn_task_manager.obj",
+        "bytes": 16263,
+        "sha256": "bdd737ed87cdf0c363ca93dc62980579f9ff0793216be73a858f610b185dd9e4",
+        "listing": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\qualified\\dyn_task_manager.asm",
+          "sha256": "b1f248c209cdab056976aa1d96ce347d529459eacbaf097f81030541512e5f9a"
+        }
+      }
+    ],
+    "primary_retained_artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\prepare.py",
+        "bytes": 2274,
+        "sha256": "ea9dcd26bc4a9c808f836f38222a1bbdbe64d6026d8d9aaf3700b7fe92309ae3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\audit.py",
+        "bytes": 8179,
+        "sha256": "85b02fd12bf02928347a9d55db15e903a2aee6d69f94649330b41b49bed430d8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\native_audit.py",
+        "bytes": 5333,
+        "sha256": "7bafb60094c977b402f1c3f9c11ad81e414a12af2bfd8f163821e11a5d9ffb33"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\write_report.py",
+        "bytes": 10371,
+        "sha256": "6e91dd6fa2aa3650e8adecf65b4a69645e3c26c67141d2501ce85f1055927457"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\baseline_provenance.json",
+        "bytes": 988,
+        "sha256": "44719f0866e99100681d1b5dbd9608526c658f5dd6216f8b389c1fbdea61ccf2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\object_audit.json",
+        "bytes": 19480,
+        "sha256": "45c787ddb42f01a9daa1556061f1403f3c1006f42ce0dbc904ef46d6845fc8fe"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\native_evidence.json",
+        "bytes": 8575,
+        "sha256": "601f18812e872f09da4419771902cb274705f5d94e80307b0f3e59352b55dcd7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\compile_baseline.cmd",
+        "bytes": 911,
+        "sha256": "e58ececaddfd39ef44bff3ebb79f45dd1900f0d89b7bdee7d8f0eb59ace49312"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\compile_qualified.cmd",
+        "bytes": 823,
+        "sha256": "aaa0d70444dd168ec58f39c83cf14ca384d7e7f8b45ceb2f42626c76ee33af25"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\baseline_compile.log",
+        "bytes": 22,
+        "sha256": "1af1800d42a2f0df97271a41451e0f1b1e27a0bb49f9857d949608c946e9f5e7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\qualified_compile.log",
+        "bytes": 22,
+        "sha256": "1af1800d42a2f0df97271a41451e0f1b1e27a0bb49f9857d949608c946e9f5e7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\original_call_rows.json",
+        "bytes": 1014,
+        "sha256": "3dace307eee234f957f59e372488186c9f19ea4c799dfefc73b5ba6c36ec228a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\call_verification.txt",
+        "bytes": 525,
+        "sha256": "a5f9b08f268679528964f87ad8b9fea0a3c4ea7ef106ecbf4374b485fb9c02cd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\live_target.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\live_body.txt",
+        "bytes": 839,
+        "sha256": "1be8515b06b8ca7bca4d3e197d15054efb3586aa061f4e10c4fbc4bd94a30df0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\live_unwind_actions_handler.txt",
+        "bytes": 154,
+        "sha256": "3870b0718c551334d17dbab50ee6ff6ecc6be840dcda83d52e1c6b36152cfa31"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\live_map_FuncInfo.txt",
+        "bytes": 260,
+        "sha256": "44901131f73cd49d4b27c2684bbe849af211e3124c7a4feeb26660f5310e15ab"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\live_queue_helper.txt",
+        "bytes": 69,
+        "sha256": "ee90ef0f0110c44e44385a641c043793667a6882ecea4e3567609e2a9754e7a8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\live_CS_helper.txt",
+        "bytes": 45,
+        "sha256": "4a9c9ab664237a2c20acffd74e76af0c75bd244abdff5024a168b1ea2af3cc3e"
+      }
+    ],
+    "native_exports": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c37740\\assembly.txt",
+        "sha256": "d605b052a656d439dac9197b3b607ba7eb7ad32655e23ac037894f8ab9a3c5dd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c37740\\decompiled.c",
+        "sha256": "3607f9d3956acda7f5440890b07c84776bdb8693179291c5740678ee4675c273"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00408e80\\assembly.txt",
+        "sha256": "d034d14ce0afcf3d3165cb5868f75fe3a72e21a5c565cd46fce5950d01cd3965"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00408e80\\decompiled.c",
+        "sha256": "3658c4bd97d8ada2fc02afedea85e857225a63ed22d7e11a25791ac8b98af9e9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c30930\\assembly.txt",
+        "sha256": "e436a067c28b7f7a4f8c0368c3aa36927e8666f9f67bcda7088c260d83e689c9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c30930\\decompiled.c",
+        "sha256": "215d0d7b72df69fc087ff8fc0b992f546ea9b1e3e35c8663388f54dcc5ca505d"
+      }
+    ],
+    "additional_read_only_inputs": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup-review\\src\\game_native_dyn_process.cpp",
+        "bytes": 9436,
+        "sha256": "54ec1cb0688d099fc46c0e00b79799e19416d3879c5b72258fe4f0b14c21350b",
+        "git_blob": "6b5a81d375fdf645dcc6e4d1831fcbe115728218",
+        "baseline_blob": "6b5a81d375fdf645dcc6e4d1831fcbe115728218",
+        "changed": false
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup-review\\src\\dyn_engine_runtime.cpp",
+        "bytes": 4778,
+        "sha256": "eeda95d61df753129db8a480f5bf8229071ab90134dfff81fa92b976ce700e3a",
+        "git_blob": "2aed397d03a8370f1824f41d6f11f9b276e98167",
+        "baseline_blob": "2aed397d03a8370f1824f41d6f11f9b276e98167",
+        "changed": false
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup-review\\include\\bsp\\avoid_zone_dyn_hull.hpp",
+        "bytes": 5734,
+        "sha256": "3fd5fecb9e29d82393c25315ddcd6046119e3c7666d7d5ab97236c79d8e91c45",
+        "git_blob": "483e7f06a925322c85ce375dc30acd4e1541457a",
+        "baseline_blob": "483e7f06a925322c85ce375dc30acd4e1541457a",
+        "changed": false
+      }
+    ],
+    "sdk_EH_type_definition_pins": [
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\ehdata.h",
+        "sha256": "9b1a482479e67e9918726d803f157f00c41ac54f6eee42fb331752ad994940c3"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\ehdata_values.h",
+        "sha256": "25f8c02e91f817a674808519f31b68106dd0afd5081086b2f8bb480f9235eabb"
+      }
+    ]
+  },
+  "native_evidence": {
+    "configured_project": "C:/Users/sqz269/bsp.gpr",
+    "verified_program": "/battlestationspacific.exe",
+    "original_PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "body": "00C37740..00C377ED",
+    "native_bytes": 174,
+    "native_instruction_starts": 58,
+    "original_abi": "Two stack arguments manager/count; EAX same manager; RET8 at C377EB",
+    "FuncInfo": {
+      "address": "00E03DF8",
+      "maxState": 2,
+      "map": "00E03DE8",
+      "EHflags": 1
+    },
+    "states": [
+      {
+        "state": 0,
+        "previous": -1,
+        "action": "00CC8059",
+        "arm": "00C37771",
+        "operation": "Currentqueue(task+C) conditionalBF6989free"
+      },
+      {
+        "state": 1,
+        "previous": 0,
+        "action": "00CC8064",
+        "arm": "00C37783",
+        "operation": "RealDeleteCriticalSection(task+18), thenstate0"
+      }
+    ],
+    "spans": [
+      {
+        "name": "body",
+        "address": "00C37740",
+        "bytes": 174,
+        "file_offset": "0x837740",
+        "sha256": "9f6c357444f48fb6e48ebc0d1e462623eaa011e035e8a05c0f8efabfb6b9f8ca",
+        "instruction_count": 58,
+        "live_PE_equal": true
+      },
+      {
+        "name": "unwind_actions_handler",
+        "address": "00CC8059",
+        "bytes": 32,
+        "file_offset": "0x8c8059",
+        "sha256": "53e651b9cf30175d13774fa9f161e5b62b5e7b63c6f2bacc9bba9767354256a8",
+        "instruction_count": 8,
+        "live_PE_equal": true
+      },
+      {
+        "name": "map_FuncInfo",
+        "address": "00E03DE8",
+        "bytes": 52,
+        "file_offset": "0xa03de8",
+        "sha256": "ae7d3e330253d0f9e44b8ed33d335ca7919bd3baefe62dbae4c8a7c10777d769",
+        "instruction_count": null,
+        "live_PE_equal": true
+      },
+      {
+        "name": "queue_helper",
+        "address": "00408E80",
+        "bytes": 14,
+        "file_offset": "0x8e80",
+        "sha256": "3ae682d8c02d4d5a5e1e47c3e22ba064518faea6f326cdf97354c239d55cd5cf",
+        "instruction_count": 7,
+        "live_PE_equal": true
+      },
+      {
+        "name": "CS_helper",
+        "address": "00C30930",
+        "bytes": 8,
+        "file_offset": "0x830930",
+        "sha256": "0cf626e44d0923b5d8fb981c203f36757615e07ec1776628f48c3630d2e6adb6",
+        "instruction_count": 3,
+        "live_PE_equal": true
+      }
+    ],
+    "tail_sites": [
+      {
+        "address": "00CC805F",
+        "target": "00408E80",
+        "mnemonic": "JMP"
+      },
+      {
+        "address": "00CC806A",
+        "target": "00C30930",
+        "mnemonic": "JMP"
+      },
+      {
+        "address": "00CC8074",
+        "target": "00BF6B43",
+        "mnemonic": "JMP"
+      }
+    ],
+    "indirect_import_sites": [
+      {
+        "address": "00C37775",
+        "IAT_cell": "00CE2154",
+        "original_import": "KERNEL32.dll!InitializeCriticalSectionAndSpinCount",
+        "instruction": "call dword ptr [0xce2154]",
+        "runtime_target_not_claimed": true
+      },
+      {
+        "address": "00C37788",
+        "IAT_cell": "00CE214C",
+        "original_import": "KERNEL32.dll!CreateSemaphoreA",
+        "instruction": "call dword ptr [0xce214c]",
+        "runtime_target_not_claimed": true
+      },
+      {
+        "address": "00C37799",
+        "IAT_cell": "00CE22B8",
+        "original_import": "KERNEL32.dll!CreateEventA",
+        "instruction": "call dword ptr [0xce22b8]",
+        "runtime_target_not_claimed": true
+      },
+      {
+        "address": "00C377BA",
+        "IAT_cell": "00CE22B8",
+        "original_import": "KERNEL32.dll!CreateEventA",
+        "instruction": "call dword ptr [0xce22b8]",
+        "runtime_target_not_claimed": true
+      },
+      {
+        "address": "00C30931",
+        "IAT_cell": "00CE2214",
+        "original_import": "KERNEL32.dll!DeleteCriticalSection",
+        "instruction": "call dword ptr [0xce2214]",
+        "runtime_target_not_claimed": true
+      }
+    ],
+    "live_comparison": {
+      "target_status": "ghidra: up  /battlestationspacific.exe",
+      "original_PE": {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "bytes": 12223752,
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+      },
+      "spans": [
+        {
+          "name": "body",
+          "address": "00C37740",
+          "bytes": 174,
+          "sha256": "9f6c357444f48fb6e48ebc0d1e462623eaa011e035e8a05c0f8efabfb6b9f8ca",
+          "live_PE_equal": true
+        },
+        {
+          "name": "unwind_actions_handler",
+          "address": "00CC8059",
+          "bytes": 32,
+          "sha256": "53e651b9cf30175d13774fa9f161e5b62b5e7b63c6f2bacc9bba9767354256a8",
+          "live_PE_equal": true
+        },
+        {
+          "name": "map_FuncInfo",
+          "address": "00E03DE8",
+          "bytes": 52,
+          "sha256": "ae7d3e330253d0f9e44b8ed33d335ca7919bd3baefe62dbae4c8a7c10777d769",
+          "live_PE_equal": true
+        },
+        {
+          "name": "queue_helper",
+          "address": "00408E80",
+          "bytes": 14,
+          "sha256": "3ae682d8c02d4d5a5e1e47c3e22ba064518faea6f326cdf97354c239d55cd5cf",
+          "live_PE_equal": true
+        },
+        {
+          "name": "CS_helper",
+          "address": "00C30930",
+          "bytes": 8,
+          "sha256": "0cf626e44d0923b5d8fb981c203f36757615e07ec1776628f48c3630d2e6adb6",
+          "live_PE_equal": true
+        }
+      ]
+    },
+    "verification_scope": "All five native spans re-read through target-checked BSP bytes wrapper and equal original PE; no native execution/import/mutation"
+  },
+  "source_inputs": {
+    "signature": "DynTaskManagerStorage*(DynTaskManagerStorage&,const uint32_t& worker_count,const AvoidZoneDynHullMemory&)",
+    "same_actual_three_inputs": true,
+    "fresh_storage": "Actual aligned358h disjoint raw task backing; count word and matching memory tuple retained through construction/cleanup",
+    "required_release": "Genuine current queue allocation/BF6989 release tuple, normal return required; no authentication of arbitrary manual callbacks/custom heaps",
+    "default_source_pair_observed": "Existing GameNativeDynProcess process_memory uses scalar ::operator new and unsized ::operator delete; not a new binding, foreign-domain guarantee or default fallback",
+    "layout": "DynTaskManagerStorage remains358h/aligned4, actual Win32 CRITICAL_SECTION18h at task+18; no new field/provider/context/global",
+    "no_numeric_original_pointer_call": true
+  },
+  "source_behavior_review": {
+    "count_snapshot": "Actual count value copied once on entry; retained snapshot passed to unchanged worker setup",
+    "source_pretry": "Three queue zeros+C/+10/+14 precede lexical outer try; no new task+0/+8 initialization",
+    "outer_extent": "Before real InitializeCriticalSectionAndSpinCount(task+18,10000)",
+    "inner_extent": "After initialization returns regardless of BOOL, covering actual semaphore/events,100 group counters/events,+4 zero and worker setup",
+    "inner_action": "Real DeleteCriticalSection(task+18), then rethrow",
+    "outer_action": "Compute actual task+C after acquired inner action/rethrow, capture current data exactly once, call actual memory.release(context,captured) iff nonnull, then rethrow",
+    "normal_return": "Neither cleanup action runs",
+    "residue": "No field clear; callback effects and possibly dangling data/count/capacity remain; raw task backing, reached handles and worker effects are not repaired",
+    "count_zero": "Original +0/+8 untouched and later-destruction +0=null precondition unchanged",
+    "old_API_and_worker_body": "Unchanged normal-only API/worker code; actual engine caller still selects dyn_task_manager_construct_00c37740"
+  },
+  "source_EH_review": {
+    "magic": "19930522",
+    "maxState": 4,
+    "EHflags": 1,
+    "unwind_map_predecessors": [
+      -1,
+      0,
+      0,
+      -1
+    ],
+    "unwind_actions": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "tryblocks": [
+      {
+        "tryLow": 1,
+        "tryHigh": 1,
+        "catchHigh": 2
+      },
+      {
+        "tryLow": 0,
+        "tryHigh": 2,
+        "catchHigh": 3
+      }
+    ],
+    "catch_routes": [
+      {
+        "array_suffix": "$4",
+        "handler_suffix": "$0"
+      },
+      {
+        "array_suffix": "$5",
+        "handler_suffix": "$2"
+      }
+    ],
+    "catch_adjectives": "40h/std C++ catch(...)",
+    "inner_rethrow_state2_within_outer_try0_to2": true
+  },
+  "emission_review": {
+    "new_records": [
+      {
+        "name": "?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z",
+        "begin": 0,
+        "end": 220,
+        "bytes": 220,
+        "sha256": "5e31e192b394a46d94eb62d508cb795acecc37a3f9631aec39abe626512995ef",
+        "relocations": [
+          {
+            "offset": 6,
+            "type": 6,
+            "target": "__ehhandler$?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z"
+          },
+          {
+            "offset": 22,
+            "type": 6,
+            "target": "___security_cookie"
+          },
+          {
+            "offset": 91,
+            "type": 6,
+            "target": "__imp__InitializeCriticalSectionAndSpinCount@8"
+          },
+          {
+            "offset": 112,
+            "type": 6,
+            "target": "__imp__CreateSemaphoreA@16"
+          },
+          {
+            "offset": 118,
+            "type": 6,
+            "target": "__imp__CreateEventA@16"
+          },
+          {
+            "offset": 193,
+            "type": 20,
+            "target": "?dyn_task_manager_set_worker_count_00c37690@bsp@@YAXAAUDynTaskManagerStorage@1@ABIABUAvoidZoneDynHullMemory@1@@Z"
+          }
+        ]
+      },
+      {
+        "name": "?release_task_vector_storage_00408e80@?anonymous@bsp@@YAXPAXABUAvoidZoneDynHullMemory@2@@Z",
+        "begin": 0,
+        "end": 26,
+        "bytes": 26,
+        "sha256": "f8f0d045d4210ef07f9ef60fafd123cca93f85bd8919f4bd27b57a509a22aaac",
+        "relocations": []
+      },
+      {
+        "name": "__catch$?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z$0",
+        "begin": 247,
+        "end": 282,
+        "bytes": 35,
+        "sha256": "6a34630c450f097311d4db39837180de8054879d407779c9a8d75abcc39fea46",
+        "relocations": [
+          {
+            "offset": 6,
+            "type": 20,
+            "target": "??$at@U_RTL_CRITICAL_SECTION@@@?anonymous@bsp@@YAAAU_RTL_CRITICAL_SECTION@@PAXI@Z"
+          },
+          {
+            "offset": 16,
+            "type": 6,
+            "target": "__imp__DeleteCriticalSection@4"
+          },
+          {
+            "offset": 25,
+            "type": 20,
+            "target": "__CxxThrowException@8"
+          }
+        ]
+      },
+      {
+        "name": "__catch$?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z$2",
+        "begin": 220,
+        "end": 247,
+        "bytes": 27,
+        "sha256": "45b31677e1c35f33a8b39eba8a32e496fd8cb812269457b664bc0ae2dec3b83a",
+        "relocations": [
+          {
+            "offset": 11,
+            "type": 20,
+            "target": "?release_task_vector_storage_00408e80@?anonymous@bsp@@YAXPAXABUAvoidZoneDynHullMemory@2@@Z"
+          },
+          {
+            "offset": 23,
+            "type": 20,
+            "target": "__CxxThrowException@8"
+          }
+        ]
+      },
+      {
+        "name": "__ehhandler$?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z",
+        "begin": 0,
+        "end": 29,
+        "bytes": 29,
+        "sha256": "793d61246a06b7df03c69a77c80935aa4ddf073a062a1c62fcc7ea2a6688c892",
+        "relocations": [
+          {
+            "offset": 15,
+            "type": 20,
+            "target": "@__security_check_cookie@4"
+          },
+          {
+            "offset": 20,
+            "type": 6,
+            "target": "__ehfuncinfo$?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z"
+          },
+          {
+            "offset": 25,
+            "type": 20,
+            "target": "___CxxFrameHandler3"
+          }
+        ]
+      }
+    ],
+    "normal_calls": 5,
+    "physical_epochs": [
+      {
+        "offset": "34",
+        "instruction": "mov dword ptr [ebp - 4], 0"
+      },
+      {
+        "offset": "3B",
+        "instruction": "mov eax, dword ptr [eax]"
+      },
+      {
+        "offset": "43",
+        "instruction": "mov dword ptr [esi + 0xc], 0"
+      },
+      {
+        "offset": "4A",
+        "instruction": "mov dword ptr [esi + 0x10], 0"
+      },
+      {
+        "offset": "52",
+        "instruction": "mov dword ptr [esi + 0x14], 0"
+      },
+      {
+        "offset": "59",
+        "instruction": "call dword ptr [0]"
+      },
+      {
+        "offset": "6A",
+        "instruction": "mov byte ptr [ebp - 4], 1"
+      },
+      {
+        "offset": "6E",
+        "instruction": "call dword ptr [0]"
+      },
+      {
+        "offset": "88",
+        "instruction": "call ebx"
+      },
+      {
+        "offset": "A2",
+        "instruction": "call ebx"
+      },
+      {
+        "offset": "B7",
+        "instruction": "mov dword ptr [esi + 4], 0"
+      },
+      {
+        "offset": "C0",
+        "instruction": "call 0xc5"
+      },
+      {
+        "offset": "CD",
+        "instruction": "mov dword ptr fs:[0], ecx"
+      }
+    ],
+    "physical_state_writes": [
+      "34",
+      "6A"
+    ],
+    "state0_hoist": {
+      "before_count_value_read": true,
+      "before_queue_zeros": true,
+      "no_Cpp_throwing_call_in_valid_hoisted_prelude": true,
+      "original_initial_store_fault_epochs_equal": false
+    },
+    "BOOL_branch_after_InitCS": false,
+    "state_demoted_before_FS_restore": false,
+    "queue_helper": {
+      "bytes": 26,
+      "one_current_data_load": true,
+      "nonnull_only": true,
+      "actual_context_and_captured_data_to_release": true,
+      "no_field_write": true
+    },
+    "inner_cleanup_source": "Actual stdcall DeleteCriticalSection import with task+18 pointer from unchanged at<CRITICAL_SECTION> arithmetic; no callback substitute",
+    "outer_rethrow_closure": "Inner catch state2 lies within outer try0..2; outer current-queue handler covers its rethrow under C++ EH contract",
+    "native_source_map_identity": false
+  },
+  "compatibility": {
+    "old_records_identical": 23,
+    "normalization": "Only anonymous-namespace hashes; exact code bytes and relocation offsets/types/targets otherwise",
+    "public_bytes": {
+      "?dyn_task_manager_construct_00c37740@": 162,
+      "?dyn_task_manager_set_worker_count_00c37690@": 222,
+      "?dyn_task_manager_run_batch_00c33140@": 416,
+      "?dyn_task_manager_destroy_00c40ff0@": 102
+    },
+    "fresh_baseline_and_qualified_match_primary_records": true,
+    "old_callers_and_layouts_changed": false
+  },
+  "independent_validation": {
+    "strict_baseline_and_qualified_passed": true,
+    "flags": [
+      "/std:c++17",
+      "/MD",
+      "/O2",
+      "/Gy",
+      "/fp:strict",
+      "/EHsc",
+      "/W4",
+      "/WX",
+      "/c",
+      "/FAs"
+    ],
+    "source_variants_verified": 2,
+    "dependency_pins_verified": 2,
+    "native_exports_verified": 6,
+    "retained_artifacts_verified": 19,
+    "both_primary_objects_and_listings_verified": true,
+    "original_direct_calls_checked": 2,
+    "original_direct_call_failures": 0,
+    "original_indirect_rows_skipped_by_checker": 5,
+    "IAT_import_names_and_exact_opcodes_separately_verified": 5,
+    "tail_jump_sites_verified": 3,
+    "runtime_IAT_target_addresses_proven_or_forced": false,
+    "live_PE_spans_verified": 5,
+    "local_artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup-review\\local\\dyn-task-construction-cleanup-review\\audit_cleanup.py",
+        "bytes": 14824,
+        "sha256": "0474519a3320c9de83e6a2044cbb7fc515b7e85ddec7dbe9ebba2359421657ac"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup-review\\local\\dyn-task-construction-cleanup-review\\coff_view.py",
+        "bytes": 2265,
+        "sha256": "9f05aacaa962220e778c9268b39616484e75de9d953e2b7f77f65247036c2acc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup-review\\local\\dyn-task-construction-cleanup-review\\object_audit.json",
+        "bytes": 8265,
+        "sha256": "3549ec69106e83801f6aae0c02a0fc17dec74bc6c1020d44b960c5304d94f362"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup-review\\local\\dyn-task-construction-cleanup-review\\input_pins.json",
+        "bytes": 9281,
+        "sha256": "7171f7e9dcee237ec9e6652dfbdd898114092706922246a7793917d0339f4c32"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup-review\\local\\dyn-task-construction-cleanup-review\\compile.cmd",
+        "bytes": 817,
+        "sha256": "c050ee605c49fcc0ee026987b81011892f325c47f0b51150c86358aa9800897b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup-review\\local\\dyn-task-construction-cleanup-review\\compile.log",
+        "bytes": 44,
+        "sha256": "8dda63a24b8d06c9abae85a010a5f140ab371225de45534897e2235dca847372"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup-review\\local\\dyn-task-construction-cleanup-review\\baseline.obj",
+        "bytes": 13447,
+        "sha256": "032ebf9e1c2cb65b96e67d771934d34cac8d4b2c9393a0efd47855356eb73a03"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup-review\\local\\dyn-task-construction-cleanup-review\\qualified.obj",
+        "bytes": 16263,
+        "sha256": "2b63f9bce18c14ac5555c7a1fb1fe029884239e2bd1a4490188f4aa3d0e5125e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup-review\\local\\dyn-task-construction-cleanup-review\\baseline.asm",
+        "bytes": 47718,
+        "sha256": "d67143124781a806766b71b704e70301f94da6eec5766804749fa6e641a40467"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup-review\\local\\dyn-task-construction-cleanup-review\\qualified.asm",
+        "bytes": 56608,
+        "sha256": "6c03ed3aeda0604014223de2f349dcbde3588d856b0824a42a09b104842aaf7f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup-review\\local\\dyn-task-construction-cleanup-review\\machine_windows.asm",
+        "bytes": 6020,
+        "sha256": "8d39a2198fe443c933660d91aed427aaff7982873526dc3911c4c7298c4b63f0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup-review\\local\\dyn-task-construction-cleanup-review\\original_call_rows.json",
+        "bytes": 1014,
+        "sha256": "3dace307eee234f957f59e372488186c9f19ea4c799dfefc73b5ba6c36ec228a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup-review\\local\\dyn-task-construction-cleanup-review\\call_verification.txt",
+        "bytes": 532,
+        "sha256": "ce1558352fb482f0f9e2995f5bb600e9117ac5f622d50c3216c60778e42431e3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup-review\\local\\dyn-task-construction-cleanup-review\\target_status.txt",
+        "bytes": 40,
+        "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup-review\\local\\dyn-task-construction-cleanup-review\\native_live_comparison.json",
+        "bytes": 1370,
+        "sha256": "0208b1ac8d82b9391041bca01d3b9461460150e4d469ada7bd8870eb760882e8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup-review\\local\\dyn-task-construction-cleanup-review\\live_body.txt",
+        "bytes": 839,
+        "sha256": "1be8515b06b8ca7bca4d3e197d15054efb3586aa061f4e10c4fbc4bd94a30df0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup-review\\local\\dyn-task-construction-cleanup-review\\live_unwind_actions_handler.txt",
+        "bytes": 154,
+        "sha256": "3870b0718c551334d17dbab50ee6ff6ecc6be840dcda83d52e1c6b36152cfa31"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup-review\\local\\dyn-task-construction-cleanup-review\\live_map_FuncInfo.txt",
+        "bytes": 260,
+        "sha256": "44901131f73cd49d4b27c2684bbe849af211e3124c7a4feeb26660f5310e15ab"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup-review\\local\\dyn-task-construction-cleanup-review\\live_queue_helper.txt",
+        "bytes": 69,
+        "sha256": "ee90ef0f0110c44e44385a641c043793667a6882ecea4e3567609e2a9754e7a8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup-review\\local\\dyn-task-construction-cleanup-review\\live_CS_helper.txt",
+        "bytes": 45,
+        "sha256": "4a9c9ab664237a2c20acffd74e76af0c75bd244abdff5024a168b1ea2af3cc3e"
+      }
+    ],
+    "primary_target_stdout_file_empty": true,
+    "independent_status_receipt": "Combined stdout/stderr captures BSP status; no reliance on empty primary target stdout receipt",
+    "later_primary_common_build_or_link_inherited_as_candidate_proof": false,
+    "new_executable_created_or_run": false
+  },
+  "limitations": [
+    "CoveredCpppartialconstruction cleanup only; originalFH3/SEH/Win32externC/hardwarefault/frame/stack/secondarycleanup transport notestablished.",
+    "Compilerhoistsstate0ahead ofsourcepretry countload/queuezeros; no originalinitialstore/fault epochclaim.",
+    "RealCSinitBOOL remainsignored; no new failure/successrepair. ActualWin32normalpreconditions retainoldscope.",
+    "Currentqueuecallbackmustmatchactualallocationdomain andreturnnormally; arbitrarymanualproviderorforeignheapnotqualified.",
+    "Partialhandles/workers/fields retainnativeownershipgap; fulltasklifecycle/zero-countstorage safety unchanged.",
+    "Raw358storagecustody/C55capturedfrees andRoot/engine/Gamecaller propagation areseparate; oldengine/Gamecallers selectnormalentry.",
+    "No runtimefailurefixture or Gameactivation proof; existingtask/accuracy/mathreceiptskeepprior exactscope.",
+    "No duplicateoriginalnativebody or vendorCRT/library reconstruction credit.",
+    "Valid-input C++ partial-construction semantics only. Win32 extern-C/SEH, hardware faults, original frame/FH3/stack/initial-store epochs and secondary-cleanup transport are not established.",
+    "Source FuncInfo maxState4 has user catch/rethrow ranges; original maxState2 has cleanup-only actions. No map/frame/ABI identity claim.",
+    "New state0 is physically hoisted ahead of count value load/queue stores. No EHa, synthetic fault transport or original native FH registration broadens the proof.",
+    "Partial handles/workers, raw storage custody and safe continuation/replay require separate caller/lifetime work. No full task destructor/handle closure/orphan repair is introduced.",
+    "C55EA0/C55F50, complete GameContext/engine/Root adoption, final common build/link and runtime activation are outside this frozen review. Later primary source_batch3 receipts are separate evidence."
+  ],
+  "activity": {
+    "tracked_files_only": "Two new review files",
+    "product_source_or_CMake_or_shared_metadata_changes": false,
+    "Ghidra_writes": false,
+    "read_only_Ghidra_analysis": true,
+    "full_build": false,
+    "new_tests_or_fixtures": false,
+    "native_or_object_execution": false,
+    "games_or_probes": false,
+    "DLL_loads_or_calls": false,
+    "guard_flip": false
+  },
+  "credit": {
+    "native_bodies": 0,
+    "vendor_bodies": 0,
+    "original_ABI": 0,
+    "native_fault_transport": 0,
+    "activation": 0,
+    "runtime": 0,
+    "gameplay": 0
+  }
+}
