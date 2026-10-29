@@ -1,0 +1,472 @@
+{
+  "schema_version": 1,
+  "packet": "codex-movie-factory-root-binding-readiness",
+  "status": "coupled_default_off_root_source_packet_input_ready_actual_consumer_abi_eh_unload_and_activation_open",
+  "baseline": {
+    "private_integration_head": "274590587a6320a73d4e9960b36e2f91f4ee10d9",
+    "origin_main_at_start": "d8cb0f1621c767c8cc76694f26a38aad128b07be",
+    "publication_pending_at_start": true,
+    "tree": "J:/PROG/battlestations-pacific-decompile-codex-movie-factory-root-binding-readiness",
+    "branch": "agent/codex-movie-factory-root-binding-readiness",
+    "scope": "Exact clean private source snapshot, not a claim that it was published main.",
+    "bink_candidate": "68ab882bbe7709822936c15b21f6e9804076ffb2",
+    "factory_owner_candidate": "6d4c288834c36f5ddc83da629336077389732da7",
+    "canonical_cell_candidate": "0009115d8677b120169898f12ebd763f7cd8ba5d",
+    "owner_contract": "8f14bfd2b64b0f163c997824a0f1d19b4de49ff0",
+    "caller_eh_contract": "1214cca8f15a8a733211a390f1e4c5ce153f6c9f"
+  },
+  "ownership": {
+    "file_only": true,
+    "addresses": [],
+    "files": [
+      "docs/CC16_MOVIE_FACTORY_ROOT_BINDING_READINESS.md",
+      "reports/cc16_movie_factory_root_binding_readiness.json"
+    ]
+  },
+  "credit": {
+    "new_native_bodies": 0,
+    "duplicate_native_bodies": 0,
+    "vendor_bodies": 0,
+    "abi": 0,
+    "activation": 0,
+    "source_edits": 0,
+    "builds_run": 0,
+    "tests_run": 0,
+    "probes_run": 0,
+    "games_run": 0,
+    "dll_loads_or_imported_calls": 0,
+    "ghidra_mutations": 0,
+    "shared_metadata_changes": 0,
+    "install_save_profile_changes": 0
+  },
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "Every live query uses the bsp.py ghidra target-verifying client; no inline scripts or mutation."
+  },
+  "available_inputs": [
+    {
+      "role": "BF681B source heap",
+      "supplier": "singleton_lifetime_allocate({SingletonAllocationKind::object,bytes,bytes})",
+      "contract": "Owner requests exactly4. malloc/_callnewh retry, bad_alloc on decline; not a null-success fallback or original CRT ABI proof."
+    },
+    {
+      "role": "BF65AC source release",
+      "supplier": "singleton_lifetime_free(captured)",
+      "contract": "Same std::free domain; noexcept; raw captured primary allocation, never C++ metadata or shared decoder state."
+    },
+    {
+      "role": "manager publication",
+      "supplier": "GameSingletonHost::manager_publication_01090aa0()",
+      "contract": "Same permanently retained GameNativeStringProcess manager cell."
+    },
+    {
+      "role": "factory publication",
+      "supplier": "GameSingletonHost::movie_factory_publication_00f8aefc() -> game_native_string_process().movie_factory_00f8aefc()",
+      "contract": "Same void* volatile& for constructor, unregister, explicit shutdown, decoder consumer and drain. Permanent Source authority, not fixed-address mapping; no copy/reset."
+    },
+    {
+      "role": "raw manager and section calls",
+      "supplier": "SoundLifetimeAccess / CapturedSoundLifetimeSection",
+      "contract": "Capture first section, resolve second manager before evaluating current volatile publication argument, release originally captured section."
+    },
+    {
+      "role": "profile tokens",
+      "supplier": "Same GameNativeReadOnlyData&, CE3818/4, CFEA60/4, CFEA78/8",
+      "contract": "Validate 412440,737030,{737950,737730}; numeric tokens are not host callable tables."
+    },
+    {
+      "role": "module/import tables",
+      "supplier": "BinkRuntimeLibrary",
+      "contract": "Actual selected module, all13 exports before publication, same borrowed BinkImports/BinkFactoryImports storage and retained dependents."
+    },
+    {
+      "role": "path",
+      "supplier": "Required nonempty absolute GameExecutableOptions::game_root + binkw32.dll",
+      "contract": "No CWD fallback, missing options_.bink_dll invention or alternate module name search."
+    }
+  ],
+  "current_missing_edges": [
+    "No BinkRuntimeLibrary or GameMovieFactoryOwner application instance.",
+    "No Startup construct_in_startup_0073df9b invocation.",
+    "No CFEA60/CFEA78 finite deletion bindings or explicit73805F caller hook.",
+    "No source consumer binding to create_movie_decoder_00737730 or actual Bink handle lifecycle.",
+    "No movie aggregate failure guard or normal vendor-quiescence/unload proof."
+  ],
+  "native_epochs": [
+    {
+      "site": "0073DF99",
+      "effect": "Terrain F8C218 slot+0C returns before factory allocation."
+    },
+    {
+      "site": "0073DF9D",
+      "effect": "BF681B request4; capture EAX; arm caller state21 at73DFAD; null branch73DFB8."
+    },
+    {
+      "site": "0073DFBC",
+      "effect": "7366B0 registration on captured raw receiver."
+    },
+    {
+      "site": "0073DFC7",
+      "effect": "Stamp CFEA78, then A4D356 at73DFCD with actual A4D35C callback and argument0; ignore returned status."
+    },
+    {
+      "site": "0073DFD4",
+      "effect": "Demote movie caller state before next010909B0 allocation."
+    },
+    {
+      "site": "00736706",
+      "effect": "Publish incoming factory; second manager getter73670C; current-publication reload736711; register73671A."
+    },
+    {
+      "site": "007367A6",
+      "effect": "Second manager getter before current-publication reload7367AB, unregister7367B4 and clear7367B9."
+    },
+    {
+      "site": "0073804F",
+      "effect": "Capture CURRENT F8AEFC; null guard; CURRENT slot0; flags1 at73805D/call73805F; after010909B0 and beforeF8C218."
+    },
+    {
+      "site": "00AAE794",
+      "effect": "Capture current factory; current slot+4; forward zero-extended widget+F4 byte atAAE7A6; callAAE7A7; store returned shared decoder state at widget+F0 atAAE7AD."
+    },
+    {
+      "site": "00A4B2A1",
+      "effect": "Other cell read only selects a no-op trace argument; not decoder production/deletion or movie activation evidence."
+    }
+  ],
+  "route_contracts": {
+    "737730": {
+      "role": "decoder creation, NOT scalar deletion",
+      "span": "00737730..00737798",
+      "abi": "ECX unused; one ignored DWORD stack slot; RET4 at73777C/737796.",
+      "source": "create_movie_decoder_00737730(std::uint32_t)",
+      "allocation": "38h NativeMovieDecoder through the existing canonical allocator; A4C660 complete-object flag1.",
+      "result": "Shared MovieDecoderState at complete allocation+10h, not the raw allocation/factory/frontend MoviePlayer.",
+      "real_consumer": "GuiMovieLoadedHookHost::movie_player_00f8aefc_4 atAAE7A7 is required, not bound in production."
+    },
+    "737950": {
+      "role": "factory scalar deleting entry",
+      "span": "00737950..0073796D",
+      "abi": "Capture ECX; 736750; free captured primary iff flags&1 viaBF65AC at737960; EAX captured bits, RET4 at73796B.",
+      "source": "GameMovieFactoryOwner::delete_factory_00737950(captured,flags)"
+    },
+    "737030": {
+      "role": "transient base scalar deleting entry",
+      "span": "00737030..0073704D",
+      "abi": "Same unregister/captured free/return, BF65AC at737040, RET4 at73704B.",
+      "source": "GameMovieFactoryOwner::delete_base_factory_00737030(captured,flags)"
+    },
+    "identity": "Incoming captured allocation and callback-replaceable current publication are distinct. Never free current publication as a substitute or force self-dispatch for a foreign receiver."
+  },
+  "source_layering": {
+    "bink_target": "bsp_core via startup.cmake:996",
+    "factory_owner_target": "bsp_game via startup.cmake:2342",
+    "constraint": "Direct core dispatcher calls to application-owned GameMovieFactoryOwner create app-symbol dependencies in core links.",
+    "proposed_bridge": "Append required borrowed context + two captured-receiver/full-flags deletion callbacks to NativeSingletonDeletionBindings. Real stable root thunks call owner.delete_factory737950 / delete_base737030. No returning defaults.",
+    "private_dispatcher": "delete_current_profile is currently private, not an available public dispatch API. A narrow movie-profile bridge actually used by explicit shutdown AND manager arms may live in the same existing files.",
+    "layout": "Append, preserve existing offsets and deliberately update current216-byte binding size assertion. No new source-unit/CMake entry required."
+  },
+  "proposed_source_packet": {
+    "ready_scope": "Coupled default-OFF source binding only; activation is NOT ready.",
+    "files": [
+      "include/bsp/game_hosts.hpp",
+      "src/game_hosts.cpp",
+      "include/bsp/native_singleton_destruction.hpp",
+      "src/native_singleton_destruction.cpp"
+    ],
+    "lease_status_at_check": "All four unleased; refresh against published base before editing.",
+    "caller_fragments": [
+      "0073DF9B..0073DFD4",
+      "0073804F..00738061"
+    ],
+    "aggregate": "Retained nested GameStartupHost movie services: real heap adapter, Bink module, owner and deletion record. Install stable owning member and both bindings BEFORE native registration/sound entry.",
+    "off_contract": "New default-OFF guard instantiates or loads no Bink graph and leaves existing cohorts/guards intact.",
+    "startup_contract": "Use actual canonical cells/data/path/heap and staged owner at genuine factory position; no returning terrain/010909B0 placeholders. Surrounding ordinary parent remains qualified.",
+    "normal_shutdown": "Reload same current publication, null guard, current admitted CFEA78/CFEA60 flags1 route at73805F; keep context/module through later raw drain.",
+    "failure_contract": "Immediate retention/exit before any dangling prefix read, explicit delete or manager drain; repeat guard at shutdown/destructor/drain entry.",
+    "source_credit": 0,
+    "on_flip_authorized_by_this_readiness": false
+  },
+  "failure_and_retention": [
+    "Current owner follows caller state21 raw-free only on constructor/register/sound C++ failure. Publication/manager residue may dangle; retaining metadata does not restore already freed raw storage.",
+    "Do not call construction inside a not-yet-retained aggregate constructor, then let escaped module/tables unwind.",
+    "Ready phase's false requires_process_retention query does not waive explicit retirement. Metadata destructor performs no native cleanup.",
+    "Failed/overlapping/interrupted/flags0-retained paths require whole aggregate/provider retention, not retry, publication repair, unregister replay, sound reset or fallback success.",
+    "Existing root drain catches failure and exits, but is too late to protect a prefix that already dangles. Immediate movie guard is required.",
+    "Later unrelated startup failure needs explicit ready-owner retirement or retention before member/module destruction.",
+    "Original FH3/SEH/foreign-exception and cleanup-failure continuation remain unproved."
+  ],
+  "activation_blockers": [
+    {
+      "id": "consumer",
+      "detail": "GameMissionResultHost::MovieBridge::ensure_movie_resources only recordsAAE770. GuiMovieLoadedHookHost remains required; no real factory slot+4 decoder consumer, VFS/renderer/texture/complete-allocation/handle lifetime or callbacks are bound."
+    },
+    {
+      "id": "abi",
+      "detail": "All13 decorated exports and old public-header callback declaration do not prove installed runtime ABI. BinkSoundSystemOpen returns BinkSoundOpen function pointer; no matching installed SDK or callback-use proof. SetSoundSystem return alone is insufficient."
+    },
+    {
+      "id": "unload",
+      "detail": "Factory retirement/drain closes no unrelated decoder or sound callback. Module destructor calls FreeLibrary; require genuine handle close, borrower/callback quiescence and normal unload qualification, or explicit reviewed process-retention policy."
+    },
+    {
+      "id": "parent_order",
+      "detail": "Current startup skips terrain/010909B0 to particle/locale and shutdown is partial. Do not manufacture neighboring calls or claim whole ordinary parent from isolated factory integration."
+    }
+  ],
+  "future_gates": [
+    "Standard Win32 source/common link plus existing checks; verify actual core/app dependency boundary and OFF exclusion.",
+    "Actual selected/mapped module identity, all13 table bindings and factory registration/sound-call return, without promoting that to complete ABI proof.",
+    "Real AAE7A7 slot+4 decoder production, correct shared-base/complete allocation identity, open/update/frame/close/destruction and renderer/widget/completion/Lua retirement.",
+    "Actual captured flags1 factory retirement, same-cell unregister/clear, raw manager drain and final qualified unload or explicit retained-process disposition.",
+    "Separate original EH/fault and installed callback ABI qualifications; old startup/subtitle/accuracy receipts do not cover the new caller."
+  ],
+  "guards": {
+    "movie_factory_root_guard_exists": false,
+    "kMovieSubtitlesBound": false,
+    "subtitle_guard_changed": false,
+    "cinematic_camera_movie_guards_are_factory_evidence": false
+  },
+  "source_pins": [
+    {
+      "path": "include/bsp/bink_runtime_library.hpp",
+      "git_blob": "73f927f786ef979edb0199a197e92164078a104b",
+      "bytes": 2171,
+      "sha256": "510edc8d0f710009872357e976d6fb62bfb9dca50430eb8100155d9713e66007"
+    },
+    {
+      "path": "src/bink_runtime_library.cpp",
+      "git_blob": "c35a0b0d583207657d77092c7e790107f542f5e0",
+      "bytes": 4198,
+      "sha256": "0e3b46555ea02931a6dc298a1966fa6fcc82739588db438b107a73dd5a94cb94"
+    },
+    {
+      "path": "include/bsp/game_movie_factory_owner.hpp",
+      "git_blob": "fd57d25d8f0aaafe9ad7f3661881bffa5a5452c3",
+      "bytes": 4924,
+      "sha256": "86016d14b24133bb8c06996e2f8141dd14e42af0774a6558f9710df9044546ff"
+    },
+    {
+      "path": "src/game_movie_factory_owner.cpp",
+      "git_blob": "6e76beb3c2f7485066067215e04583f7d4878794",
+      "bytes": 7573,
+      "sha256": "39ca1d6d4b7696096326fc8fad51424d62e98b1b1f379f5d44ef1ce455c617db"
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "git_blob": "aeb12627616969e974915847b1fc1bea83341e23",
+      "bytes": 5509,
+      "sha256": "ec2c6715a64888c87e61f4703073d094a62340f548aaa9a6a668f33787a3a518"
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "git_blob": "03312a4648572edfe0f75867b1ecd917c253b69d",
+      "bytes": 1814,
+      "sha256": "703f35233ccfc376633034f80854b1cfb1ffe621a8018424a324d18535f6612f"
+    },
+    {
+      "path": "include/bsp/game_hosts_singletons.hpp",
+      "git_blob": "1ce17a275af38e991c3e04802cd4d5d5314bcd3b",
+      "bytes": 10262,
+      "sha256": "0bb1cce85717ff94c44e12e6f2a071ea30fac43baa13d99539fe354385821648"
+    },
+    {
+      "path": "src/game_hosts_singletons.cpp",
+      "git_blob": "ab773af78122d6cc35606471f08d6f2e47168a05",
+      "bytes": 9919,
+      "sha256": "cca7ac5b6943b5332b92e4b9c0014c1fdeead64519d0fb81036c4407a67180c7"
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "git_blob": "04f8a795156feeb734856a7747100e7dfbc6f9d5",
+      "bytes": 46822,
+      "sha256": "69af1a3c2359cb9d670f5f423cff65d4acd928590a3f05d55cdfd889ae7eb28a"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "git_blob": "7cfe6f89bb83fb7b61fd3226efc86277ba07ff09",
+      "bytes": 178007,
+      "sha256": "ac82e24e0f6cdd9d52aad47a9bc45b545d651fbd9d3056aafb2feb4f65033223"
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "git_blob": "d5581f5bc287893203cce6018473630cfd71c791",
+      "bytes": 21418,
+      "sha256": "d86fc0e5780408014c503a22e91e337705d7a88b851e7ccc1cc88d4d1166e8b6"
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "git_blob": "cf6a7f491e3a0ca9a36c72959d7b1dd1f0650249",
+      "bytes": 28481,
+      "sha256": "6adcd53136c540495ff1d08c9b3b2dc9fd7ff139ee9d10bcec5f7dbdcbdec1ab"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "include/bsp/sound_lifetime_access.hpp",
+      "git_blob": "733525b1563c1641db659681fd812485aa71c7ed",
+      "bytes": 3039,
+      "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b"
+    },
+    {
+      "path": "src/sound_lifetime_access.cpp",
+      "git_blob": "3215502c513d22bb0d5c0201dfb110283803b0da",
+      "bytes": 2751,
+      "sha256": "00ace40faa75007eb4e7cf857de0473347d8bdba0d99ed15ce8bc750c09efd29"
+    },
+    {
+      "path": "include/bsp/movie_factory_followup.hpp",
+      "git_blob": "3e527edffb003d6ea8fd27ef9720faead8396eac",
+      "bytes": 1804,
+      "sha256": "4b208a04568c712cf41d4b7d1ef490975bc4813fe8397322d114ac477a55e60f"
+    },
+    {
+      "path": "src/movie_factory_followup.cpp",
+      "git_blob": "9718be2e12fa4fb5f74c1261889de60f5808e8e1",
+      "bytes": 1250,
+      "sha256": "00a8b4866bfa3ba88f537a53d94191cef0efbd56f54f1a41aa1d3fe177f2f8c6"
+    },
+    {
+      "path": "include/bsp/movie_decoder.hpp",
+      "git_blob": "9066b437ede14505011afcb2bc08523d164b48bf",
+      "bytes": 7025,
+      "sha256": "9151e8eacc41a208769eab8347539c5b15201a330f329b593585cfe620b3dbd7"
+    },
+    {
+      "path": "src/movie_decoder.cpp",
+      "git_blob": "d7f6a53a58a60e8ed31a1e22930aa9d500cafe8b",
+      "bytes": 11100,
+      "sha256": "75f54deb390ef8d333ba07df4e0579f9efedc22c9bb78e0cae9fec8e6d814908"
+    },
+    {
+      "path": "include/bsp/movie_player.hpp",
+      "git_blob": "03b9d9106c25845c678497285ccbecf1767f5b54",
+      "bytes": 8774,
+      "sha256": "03b1dfd456e1ea97b8cd173e962ae6482982e975875560f35a29108bd61fb12c"
+    },
+    {
+      "path": "src/game_hosts_mission_result.cpp",
+      "git_blob": "4aa1c95d387d5084ce12e742303d6a87772bc77d",
+      "bytes": 34180,
+      "sha256": "f4be4960d0475fb11050987c2b905c4f2839cc1f53dcf190dd9ca3784fa3228c"
+    },
+    {
+      "path": "include/bsp/engine_seg49_64_78_cc13.hpp",
+      "git_blob": "cd8b8303b75c99d6d929aca2df077bdb974d6879",
+      "bytes": 84516,
+      "sha256": "7830c6cae582c047d21923c9ed49f9084a0c18c21d99c092f69c8e133c41921d"
+    },
+    {
+      "path": "src/engine_seg49_64_78_cc13.cpp",
+      "git_blob": "9b71adf3ea032a6bfd7e2ed87ee5dc6d4114cdf7",
+      "bytes": 111051,
+      "sha256": "5888a64b1973289ca1eecadbe8bbb1e8718b8b9143421e4a4c617d40bb27433c"
+    },
+    {
+      "path": "include/bsp/app_shutdown.hpp",
+      "git_blob": "d59d0c891e54886986dbd34c5b09f8bd7511d360",
+      "bytes": 11615,
+      "sha256": "b1d746a79d81408ee9e05fda19fb289fe5c1cd02aaf215eac89580d1512086ce"
+    },
+    {
+      "path": "src/app_shutdown.cpp",
+      "git_blob": "e20732e0c3f128dbc5a3e23fbb5b984fb175c0bc",
+      "bytes": 4509,
+      "sha256": "56223c2bbc99310ca1c3048d50ab777f337930fc9d7e891358b452eed9e0215a"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "git_blob": "50f7aa411be31b042da160543710ef9e1705d585",
+      "bytes": 290057,
+      "sha256": "ee4a7f989ea2ec8ca37a32d396b563a72673d9431c63b9d504adbe6383e8b681"
+    },
+    {
+      "path": "config/target.json",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "docs/CC16_MOVIE_FACTORY_OWNER_CONTRACT.md",
+      "git_blob": "cd1963de231011c17b69b09bbc9104ae160ad4ef",
+      "bytes": 13459,
+      "sha256": "0aa91cafa93ee80bb26254f472684aa3fffe3f00c9e8cad7fd5717046c30893d"
+    },
+    {
+      "path": "docs/CC16_MOVIE_FACTORY_STARTUP_EH.md",
+      "git_blob": "2621a3be17c1ef6363076368995f815268b86672",
+      "bytes": 8904,
+      "sha256": "607581e00897072974d6091b39e27f7536f48570bc323a6c18cd8368a698848a"
+    },
+    {
+      "path": "docs/CC16_GAME_MOVIE_FACTORY_OWNER.md",
+      "git_blob": "424fb4a3d2e186823848fd29dc409faaee8b0f07",
+      "bytes": 8692,
+      "sha256": "4a78da1445a025c58b131225b514f715d2c6f47696a168f508152d40d418403a"
+    },
+    {
+      "path": "docs/CC16_MOVIE_FACTORY_PUBLICATION_CELL.md",
+      "git_blob": "7e5551838bb0e880931dbd972891ffcb4b690865",
+      "bytes": 6182,
+      "sha256": "9bc002fcb42e22a4fa30343600afe973fdb271378a676a7d127c030522fca39d"
+    },
+    {
+      "path": "docs/CC16_BINK_RUNTIME_LIBRARY_REVIEW.md",
+      "git_blob": "748163fd674f6382f24bf439d3266834bba8d7ab",
+      "bytes": 5940,
+      "sha256": "cf74da38ff7644a77768bbae4bae99d5eecba4002eb4fc65f9db2257881f0d55"
+    }
+  ],
+  "candidate_source_equality": {
+    "include/bsp/bink_runtime_library.hpp": {
+      "candidate": "68ab882bbe7709822936c15b21f6e9804076ffb2",
+      "same_git_blob": true
+    },
+    "src/bink_runtime_library.cpp": {
+      "candidate": "68ab882bbe7709822936c15b21f6e9804076ffb2",
+      "same_git_blob": true
+    },
+    "include/bsp/game_movie_factory_owner.hpp": {
+      "candidate": "6d4c288834c36f5ddc83da629336077389732da7",
+      "same_git_blob": true
+    },
+    "src/game_movie_factory_owner.cpp": {
+      "candidate": "6d4c288834c36f5ddc83da629336077389732da7",
+      "same_git_blob": true
+    }
+  },
+  "read_only_installed_artifacts": [
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "coff_machine": "014C",
+      "optional_magic": "010B",
+      "inspection": "File bytes/PE metadata only; no module load or imported call."
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/binkw32.dll",
+      "bytes": 178440,
+      "sha256": "7f22055e8f62e228eb90f09846f9b668e0a0b1d29057af6e3b7bff1e08c0d724",
+      "coff_machine": "014C",
+      "optional_magic": "010B",
+      "inspection": "File bytes/PE metadata only; no module load or imported call."
+    }
+  ],
+  "audit_utc": "2026-10-29T21:44:55.847625+00:00",
+  "abi_compatible": false,
+  "game_validated": false
+}
