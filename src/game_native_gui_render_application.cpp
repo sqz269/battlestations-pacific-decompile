@@ -72,7 +72,7 @@ constexpr bool kRawPrefixGeometryQualificationCc16Bound = false;
 constexpr bool kRawFontMetadataQualificationCc16Bound = false;
 // Closed real Font/credit work fixture. No public option; keep OFF in main.
 constexpr bool kRawFontWorkQualificationCc16Bound = true;
-constexpr auto kRawFontWorkChoiceCc16Bound = GameNativeRawDefaultTextOwner::FontWork::shader_then_retirement;
+constexpr auto kRawFontWorkChoiceCc16Bound = GameNativeRawDefaultTextOwner::FontWork::invalidate_shader;
 static_assert(static_cast<unsigned>(kRawDefaultTextQualificationCc16Bound) +
     static_cast<unsigned>(kRawPrimaryPrefixQualificationCc16Bound) +
     static_cast<unsigned>(kRawPrefixGeometryQualificationCc16Bound) +
