@@ -227,3 +227,15 @@ ready closure is the existing live mission LocaleTables reference; decoder,
 settings, Text/widget/extratitles, Lua and callback activation are still open.
 Accuracy evidence is three OFF/ON pairs (six runs), with twelve owned process
 captures; its independent final-binary/current-source review is separate.
+
+## Final two fixed-list bodies and remaining activation work
+
+C320D0 and C5A8B0 close the two entries remaining at the preceding27-body checkpoint. The fixed original29-body list now has compiled normal source for all29; this is not full goal completion. Both new bodies have primary/independent review, current final-object audits, genuine-helper entry links, all original call checks and a final common Win32 Release2/2 pass (14.20s) after published MainSection61c13da1. The entries remain unwired. See CC16_DYN_FINAL_BODY_SOURCE_ADMISSION.md and its report.
+
+Additive C50390/C44000 cleanup-qualified overloads and the separate14B A900 helper are admitted with exact scope/provider limits. Existing callers still use normal-only APIs; the optimized Debug fixture1/1 is separate from the preserved failed standard Debug build. No native ABI/FH/SEH or game proof is inferred.
+
+Retained live-locale custody and exact BDD600 filename preparation now have admitted dormant source. Subtitle playback remains OFF and production decoder/settings/widget/Lua owners remain required. The additive subtitle OFF RNG correction withdraws three unobserved rows' RNG claims while preserving original artifacts and separately scoped comparison/VFS evidence.
+
+Accuracy ON stays private. The inherited regex confused lof_expiry_draw=1 with a sampled event; the unqualified acceptance was withdrawn before publication and the analysis comment records the correction. New strict sampled-RNG witnesses use explicitly frozen binaries and cannot be relabelled current-main proof. Main's accuracy guard remains OFF pending current-source admission and gameplay gates.
+
+The full-activation goal remains active for real caller/provider/world/vtable/allocator custody, additional/unreferenced code and explicit partials, floating-point debt, original ABI/fault obligations and required gameplay acceptance.
