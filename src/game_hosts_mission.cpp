@@ -2663,8 +2663,9 @@ void GameMissionHost::Impl::finish_scene_load() {
     // Destroy those borrowers before replacing that owner on a later load.
     frame_host.reset();
     lua = std::make_unique<GameMissionLuaHost>(log, vfs);
+    // Forward the retained live table; keep the independent copied language input.
     frame_host = std::make_unique<GameMissionFrameHost>(log, vfs, *lua, participants,
-        profiler, language, hud);
+        locale, profiler, language, hud);
     if (observer_runtime != nullptr) frame_host->bind_observer_runtime(*observer_runtime);
     // cc15 lane L2: the record commit 009205E0 writes [game+6B4h].
     if (GameMissionResultHost* result = lua->mission_result()) result->bind_profile(profile);

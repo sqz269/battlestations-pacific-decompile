@@ -31,6 +31,10 @@
 #include "bsp/mission_result.hpp"
 #include "bsp/movie_player.hpp"
 
+namespace bsp {
+class LocaleTables;
+}
+
 namespace bsp::game {
 
 class GameHostLog;
@@ -97,10 +101,10 @@ struct GameMissionExitSummary {
 // and the 24h end-of-mission request at game+7188h.
 class GameMissionResultHost final : public bsp::MissionResultHost {
 public:
-    // Borrow the frame host's same retained VFS owner; it must outlive this
-    // result and every movie callback. No provider or mount is created here.
+    // Borrow the mission's same VFS and live locale owners; both must outlive
+    // this result and every movie callback. No provider or snapshot is created.
     GameMissionResultHost(GameHostLog& log, bsp::GameFrameControlState& control,
-        GameVfsHost& vfs);
+        GameVfsHost& vfs, const bsp::LocaleTables& locale);
     ~GameMissionResultHost() override;
     GameMissionResultHost(const GameMissionResultHost&) = delete;
     GameMissionResultHost& operator=(const GameMissionResultHost&) = delete;
