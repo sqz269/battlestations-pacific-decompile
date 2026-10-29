@@ -51,7 +51,9 @@ struct NativeGuiTextFontLifetimeRegions final {
 };
 
 // Metadata admission only, no native ownership, count, header or cleanup body.
-// Existing raw122/widget/owner gates remain unchanged until Root composes them.
+// Both geometry-only Font and the explicit Font+Main choice use this SAME slice.
+// The latter authenticates its Main peer by pointer value only; the coordinator
+// independently validates that peer. No live/post/destructor traversal of Main.
 class NativeGuiTextFontLifetimeStorageFrame final {
 public:
     enum class Phase { fresh, prepared, sealed, failed };
