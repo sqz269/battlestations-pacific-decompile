@@ -115,3 +115,9 @@ dynamic compaction reloads, ambient x87 key publication and stable unsigned
 leftward movement. Both suites, all five native caller rows and critical
 final-object FP inspection pass. The bodies remain unwired pending genuine
 parent/root custody; see `CC16_DYN_SAP_ENDPOINTS.md`.
+
+The pair-reference append `00C37390` and pooled pair allocation/link
+`00C40A30` now have reviewed, compiled source with direct composition and
+required actual heap custody. Both suites and all nine native call rows
+pass; annotations are saved/exported. Original caller/root activation is
+still open. See `CC16_DYN_STORAGE.md`.
