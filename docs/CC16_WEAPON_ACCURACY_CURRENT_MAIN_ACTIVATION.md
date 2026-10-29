@@ -60,7 +60,7 @@ Native first logged sample is 93.60s/.4143. IJN18's `Recon2` sample is
 checks pass, including pair, ordered, teardown, start, settings and provenance.
 Equal absence cannot pass the strict sampled-event dimension.
 
-All four logical games exited zero, serially, at Normal priority through
+The launcher reported zero for all four logical games, serially, at Normal priority through
 Slots8. Eight actual held-handle parent/child captures verify executable,
 owner and parent identities. Every deadline is exactly manifest start plus
 14400 seconds; no watchdog action occurred. Root and the independent reviewer
@@ -86,3 +86,9 @@ Exact independent review commit, raw receipts, source/code evidence, scope and
 remaining obligations are in
 [the activation report](../reports/cc16_weapon_accuracy_current_main_activation.json).
 The full function-integration/activation goal remains active.
+
+The later [termination audit](CC16_ACCURACY_TERMINATION_QUALIFIER.md) preserves
+these scoped numerical/event gates and launcher-reported results. It verifies
+that the legacy force-stop branch was not reached. The sealed receipts do not
+independently record all eight OS exit codes or the later `NoForceStop`
+natural-drain flag; neither claim is retrofitted into this cohort.
