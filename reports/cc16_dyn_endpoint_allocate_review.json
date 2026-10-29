@@ -1,0 +1,345 @@
+{
+  "packet": "codex-dyn-endpoint-allocate-review",
+  "owner": "agent/codex-dyn-endpoint-allocate-review",
+  "date": "2026-10-29",
+  "review_base_commit": "5f686b664f86470a064993fbb6b86513c29735d1",
+  "candidate_commit": "28d67fc121620e3c1770f7f1a4463ee838854953",
+  "root_private_source_batch": "77d9e3203",
+  "root_origin_main_at_handoff": "ad524e7dc",
+  "status": "pass_no_blocking_finding_normal_body_and_real_initializer_contract_only",
+  "new_in_house_normal_body_credit": 0,
+  "reused_dependency_body_credit": 0,
+  "vendor_runtime_body_credit": 0,
+  "runtime_activation_credit": 0,
+  "production_source_edits": [],
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "guard": "verified bsp.py ghidra client before live query batches",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "ghidra_mutations": false
+  },
+  "function": {
+    "address": "00c55a60",
+    "end_inclusive": "00c55d26",
+    "bytes": 711,
+    "instructions": 207,
+    "body_sha256": "8f96d8eaf4f36fcb710d8f5bf1c86cf4d6ad36da2f7ecccd5e1ed3a0bcc5ea60",
+    "complete_native_listing_read": true,
+    "live_bytes_equal_installed": true,
+    "native_abi": "ECX manager -> ESI; stack uint32token/bounds pointer/third-slot low-byte flag; EAX captured endpoint; RET0C atC55D24; EBX/EBP/ESI/EDI preserved",
+    "new_interface": "cdecl(manager,token,bounds,uint8flag,same required DynLiveCrt reference); not native register/frame transport",
+    "decision": "pass_no_blocker"
+  },
+  "rows": [
+    {
+      "address": "00c55aa0",
+      "native": "00bf9f1a",
+      "function": "00c55a60",
+      "kind": "call",
+      "contract": "nonzero-flag pool: actual BF9F1A malloc68000; no null guard before999 links plus tailzero"
+    },
+    {
+      "address": "00c55ae7",
+      "native": "00bf55be",
+      "function": "00c55a60",
+      "kind": "call",
+      "contract": "nonzero-flag page vector: actual BF55BE new(wrapping(2*captured_capacity+2)*4); capacity published before call"
+    },
+    {
+      "address": "00c55b27",
+      "native": "00bf6989",
+      "function": "00c55a60",
+      "kind": "call",
+      "contract": "nonzero-flag page vector: actual BF6989 free freshly loaded nonzero olddata before retainednewdata publication"
+    },
+    {
+      "address": "00c55b9a",
+      "native": "00bf9f1a",
+      "function": "00c55a60",
+      "kind": "call",
+      "contract": "zero-flag pool: separate actual BF9F1A malloc68000 and same1000-slot free-chain schedule"
+    },
+    {
+      "address": "00c55bd9",
+      "native": "00bf55be",
+      "function": "00c55a60",
+      "kind": "call",
+      "contract": "zero-flag page vector: actual BF55BE new with same wrapping growth and live callback-visible fields"
+    },
+    {
+      "address": "00c55c0e",
+      "native": "00bf6989",
+      "function": "00c55a60",
+      "kind": "call",
+      "contract": "zero-flag page vector: actual BF6989 free current olddata before publication"
+    },
+    {
+      "address": "00c55c7f",
+      "native": "00c4ce60",
+      "function": "00c55a60",
+      "kind": "call",
+      "contract": "ECXtoken, DLflag, stack(endpoint,bounds),RET8; direct real initializer(token,flag,endpoint,bounds,sameCRT); retained endpoint return ignored"
+    },
+    {
+      "address": "00c55ca9",
+      "native": "00bf55be",
+      "function": "00c55a60",
+      "kind": "call",
+      "contract": "pending vector: actual BF55BE new with captured-capacity growth, live count/data and capacity-before-callback"
+    },
+    {
+      "address": "00c55ce7",
+      "native": "00bf6989",
+      "function": "00c55a60",
+      "kind": "call",
+      "contract": "pending vector: actual BF6989 free current olddata before retainednewdata publication"
+    },
+    {
+      "address": "00c5a864",
+      "native": "00c4cbf0",
+      "function": "00c5a850",
+      "kind": "call",
+      "contract": "actual pending processor before ring-head capture"
+    },
+    {
+      "address": "00c5a884",
+      "native": "00c4c700",
+      "function": "00c5a850",
+      "kind": "call",
+      "contract": "ESI axis0; same captured current endpoint and manager; next+40 reload follows all3"
+    },
+    {
+      "address": "00c5a890",
+      "native": "00c4c700",
+      "function": "00c5a850",
+      "kind": "call",
+      "contract": "ESI axis1; same captured current endpoint and manager; next+40 reload follows all3"
+    },
+    {
+      "address": "00c5a89c",
+      "native": "00c4c700",
+      "function": "00c5a850",
+      "kind": "call",
+      "contract": "ESI axis2; same captured current endpoint and manager; next+40 reload follows all3"
+    },
+    {
+      "address": "00c5a85d",
+      "native": "00c54da0",
+      "function": "00c5a850",
+      "kind": "tail_jump",
+      "contract": "one-shot unsigned pending count>10; real canonical-cell references forwarded by new C++ API"
+    },
+    {
+      "address": "00cc83d2",
+      "native": "00401130",
+      "function": "00cc83ca",
+      "kind": "call",
+      "contract": "outer state0 action invokes actual RET-only body; no invented cleanup"
+    }
+  ],
+  "source_custody": {
+    "candidate_clean_at28d": true,
+    "candidate_and_actual_root_snapshots_match_final77d_git_blobs_after_line_ending_normalization": true,
+    "working_file_sha256": {
+      "include/bsp/cc16_dyn_endpoint_allocate.hpp": "20c3aaa424c8eeba1b8a975b47079910ef95db4db4db29afce72b0c6a5bd56ba",
+      "src/cc16_dyn_endpoint_allocate.cpp": "d73c7cb34c1b27a3a1a8bee05ef5a85bc73111a1689a84e28c581a6bfe5fd6e8",
+      "include/bsp/cc16_dyn_endpoint_init.hpp": "d9dd910c448bc39d1286f60b6c9638d6629f2a5c4c05d555506cdbb0a6470e42",
+      "src/cc16_dyn_endpoint_init.cpp": "a8dea08ef139bb32739f3084ccdd87cc9e1d57bb9996e60193114382a81999dc",
+      "include/bsp/cc16_dyn_sap_dispatch.hpp": "5a4ba2ddf1ef6f594774dd75f52d4bf33e05df9bbbdad4209ec8fb843183406e",
+      "src/cc16_dyn_sap_dispatch.cpp": "1eb029709c3d2612b28d6a2417fec738657f712f1deed35b7ba9c5297cd6ae30"
+    },
+    "crt_header_same_in_review_and_root": "a830daec86ecd9f6808301ce05e15d8215548d57d2bbee0471b1d2b6c5b9b294"
+  },
+  "pool_layouts": [
+    {
+      "flag": "nonzero",
+      "free_head": "104h",
+      "pages_data": "F8h",
+      "pages_count": "FCh",
+      "pages_capacity": "100h",
+      "live_count": "190h",
+      "sentinel": "14Ch",
+      "tail": "188h"
+    },
+    {
+      "flag": "zero",
+      "free_head": "68h",
+      "pages_data": "5Ch",
+      "pages_count": "60h",
+      "pages_capacity": "64h",
+      "live_count": "F4h",
+      "sentinel": "B0h",
+      "tail": "ECh"
+    }
+  ],
+  "normal_body_checks": {
+    "pool_bytes_decimal": 68000,
+    "pool_bytes_hex": "109A0",
+    "slots": 1000,
+    "stride": "44h",
+    "first_links": 999,
+    "last_link_zero_offset": "1099Ch",
+    "null_pool_invalid_stores_preserved": true,
+    "capacity_comparison_before_free_head_publication": true,
+    "free_head_published_before_new_free_callbacks": true,
+    "equality_growth_only": true,
+    "uint32_growth_and_byte_size_wrap_preserved": true,
+    "per_destination_computed_null_check": true,
+    "live_copy_count_and_data_reloads": true,
+    "free_before_new_pointer_publication": true,
+    "append_count_then_data_reloads": true,
+    "count_increment_even_if_zero_destination": true,
+    "free_head_reloaded_after_page_callbacks": true,
+    "live_increment_before_next_head_publication": true,
+    "duplicate_tail_read_sites": [
+      "C55B6E/C55B77",
+      "C55C43/C55C4C"
+    ],
+    "constructor_arg_order": "native ECXtoken/DLflag/stack(endpoint,bounds); actual new C++ (token,uint8flag,endpoint,bounds,same CRT)",
+    "constructor_result_ignored": true,
+    "pending_vector_offsets": [
+      "194h",
+      "198h",
+      "19Ch"
+    ],
+    "pending_fields_read_after_initializer": true,
+    "captured_endpoint_returned": true
+  },
+  "native_eh": {
+    "handler": "00CC83DB",
+    "funcinfo": "00E04290",
+    "max_state": 1,
+    "unwind_map": "00E04288",
+    "map_entry": {
+      "previous": -1,
+      "action": "00CC83CA"
+    },
+    "constructor_only_state0": "C55C67..C55C84",
+    "action_saved_locals": "[EBP-14h] and [EBP-10h]",
+    "action_call": "00CC83D2",
+    "actual_target": "00401130",
+    "actual_target_bytes": "C3",
+    "outer_cleanup_required": false,
+    "outer_cleanup_fabricated": false,
+    "initializer_own_vector_cleanup": "actual root0040A050 cleanup/rethrow remains in initializer",
+    "qualification": "No original FH3/SEH/frame/fault-PC/concurrent transport claim; partial mutations can remain"
+  },
+  "object_check": {
+    "status": "passed_object_only_no_link_or_execution",
+    "flags": "/std:c++17 /EHsc /fp:strict /O2 /Oy- /MD /W4 /WX",
+    "objects": {
+      "allocate": {
+        "sha256": "fae7d58be71a1421547d3ae14071bfed09728c0168c9c1066cbc0cf4b253a822",
+        "size": 4415,
+        "machine": "014C"
+      },
+      "initializer": {
+        "sha256": "1d58f773e378cea829daa89662fbf2dd826eba88c7f03002c0c73709a1ce1176",
+        "size": 5219,
+        "machine": "014C"
+      }
+    },
+    "sole_undefined_in_house_symbol": "?initialize_endpoint_00c4ce60@cc16_dyn_endpoint_init@bsp@@YAPAXIEPAXPBXABUDynLiveCrt@cc15_dyn_live@2@@Z",
+    "actual_initializer_defines_exact_same_decorated_symbol": true,
+    "emitted_constructor_call_preserves_argument_order_and_same_crt": true,
+    "emitted_final_return": "EAX=EDI captured endpoint, not initializer EAX",
+    "fake_constructor_or_default_binding": false,
+    "artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-endpoint-allocate-review\\local\\endpoint_allocate_review\\compile.cmd",
+        "size": 778,
+        "sha256": "a96b639fde045ffbb45f1d0d5978de672255b145e02d89afc0f80b1a7bb0060e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-endpoint-allocate-review\\local\\endpoint_allocate_review\\compile.log",
+        "size": 60,
+        "sha256": "849a56369d37393b85ecd3c4f26d714ddddf88cbcfb2f1b4b8a49a5ee5ecadc1"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-endpoint-allocate-review\\local\\endpoint_allocate_review\\allocate_symbols.txt",
+        "size": 6073,
+        "sha256": "b21f80efe6832275ac8ca01047456e0d301795f64a59880967a7f63c63fb3f52"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-endpoint-allocate-review\\local\\endpoint_allocate_review\\initializer_symbols.txt",
+        "size": 6928,
+        "sha256": "6be2d55e8561cb33051f837c117ffd3aa9445bcfad04f138f815cb88c54501e5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-endpoint-allocate-review\\local\\endpoint_allocate_review\\allocate_disasm.txt",
+        "size": 17482,
+        "sha256": "79bcf071fa90b1d4dfc4fd8db0cc91b0d92322284c0d186dc552c1efac70c477"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-endpoint-allocate-review\\local\\endpoint_allocate_review\\allocate_relocations.txt",
+        "size": 2235,
+        "sha256": "fa3c82881d8c32fbeeab449052f328b17227886937395072ee6d47f989145fc4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-endpoint-allocate-review\\local\\endpoint_allocate_review\\static_inputs.json",
+        "size": 1653,
+        "sha256": "ae42f3161bf9290e8e2a96cb0eff1e4a048b92adbcb67fffe58059b74d44b0e7"
+      }
+    ]
+  },
+  "additional_dispatcher_review": {
+    "start": "00C5A850",
+    "end_inclusive": "00C5A8AC",
+    "bytes": 93,
+    "instructions": 35,
+    "body_sha256": "80dfbd63bfdcdbca3601a6fb3eda31742041ed43587d8a56e539ccbad96009a0",
+    "root_header_sha256": "5a4ba2ddf1ef6f594774dd75f52d4bf33e05df9bbbdad4209ec8fb843183406e",
+    "root_source_sha256": "1eb029709c3d2612b28d6a2417fec738657f712f1deed35b7ba9c5297cd6ae30",
+    "decision": "pass_no_blocking_finding",
+    "complete_pseudocode_and_listing_read": true,
+    "live_bytes_equal_installed": true,
+    "native_abi": "ECX manager, no stack arguments, plain RET atC5A8AC; incidental EAX not promised by new void API",
+    "single_unsigned_pending_count_gt10": true,
+    "tail_jump_site": "00C5A85D",
+    "tail_target": "00C54DA0",
+    "normal_pending_call": "00C5A864",
+    "head_offset": "ACh",
+    "cached_sentinel_offset": "B0h",
+    "actual_axes": [
+      0,
+      1,
+      2
+    ],
+    "next_offset": "40h",
+    "next_reload_site": "00C5A8A1",
+    "next_reload_after_all_three_calls": true,
+    "actual_required_cells": [
+      "0109EEA4 volatile uint32 reference",
+      "00D7A280 volatile double reference"
+    ],
+    "no_default_or_feature_value_snapshot": true,
+    "independent_build_or_runtime_test": false
+  },
+  "primary_validation_context": {
+    "source_batch": "77d9e3203",
+    "root_reported_win32_release_and_two_suites": "passed11.23seconds; primary receipt only",
+    "root_reported_batch_b_link": "forces all5recent entries/dependencies; never executed; game-map entries0",
+    "not_independent_runtime_credit": true
+  },
+  "remaining_root_obligations": [
+    "integrate/register the actual source batch and this review",
+    "complete locked annotations and truthful source-only status",
+    "bind actual incoming manager/endpoint/CRT/canonical-cell custody or document dead-chain evidence",
+    "provide any required original ABI/vtable adapters separately",
+    "obtain actual caller/runtime evidence before activation claims"
+  ],
+  "activated": false,
+  "game_or_probe_launches": 0,
+  "new_tests": 0,
+  "shared_source_cmake_metadata_ghidra_install_save_profile_power_changes": false,
+  "static_call_verification": {
+    "json_call_tail_and_eh_rows": 15,
+    "failed": 0,
+    "log": "local/endpoint_allocate_review/call_verification.log",
+    "read_only": true
+  }
+}

@@ -176,5 +176,5 @@ initializer argument/cleanup contract. The common Win32 Release build and both
 existing suites pass (11.23 seconds). A dedicated manifested link-only artifact forces
 this actual entry and its real initializer/destructor/radix dependencies; no
 fake object/provider or returning stub is supplied and it was never executed.
-The entry is absent from the game map. Independent review is pending before
-publication; native ABI/EH/caller custody and activation remain open.
+The entry is absent from the game map. Independent review9071aa5e8 found no blocking normal-body mismatch.
+Native ABI/EH/caller custody and activation remain open.

@@ -339,12 +339,19 @@
       "existing_suites_passed": 2,
       "suite_seconds": 11.44,
       "object_unchanged": true
-    }
+    },
+    "independent_review_pending": false
   },
   "entry_semantics": {
     "selector": "single unsigned pending-count+198 >10 test; real full radix with actual cell references",
     "incremental": "real pending handler, then actual ring head+AC captured after pending, cached sentinel+B0, axes0/1/2, current next+40 reload only after all3 calls",
     "guards_or_rollback": false,
     "tail_return": "native tail call becomes new public void branch with no incidental RDTSC EAX promise"
+  },
+  "independent_review": {
+    "commit": "9071aa5e8e1a032cd6ac06852552ecd3cd914c9a",
+    "report": "reports/cc16_dyn_endpoint_allocate_review.json",
+    "scope": "complete normal native/source review; actual initializer symbol/argument check; no ABI or runtime credit",
+    "blocking_mismatches": 0
   }
 }

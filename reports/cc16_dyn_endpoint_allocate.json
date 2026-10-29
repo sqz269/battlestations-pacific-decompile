@@ -344,7 +344,7 @@
     "primary_source_listing_review": "complete207 native instructions and all source/header, actual initializer argument/lifetime contract and no-op native outer unwind action",
     "call_rows_checked": 9,
     "call_rows_failed": 0,
-    "independent_review_pending": true,
+    "independent_review_pending": false,
     "ghidra_annotations": {
       "backup": "local/ghidra-annotations-20261029T162016Z.json",
       "saved": true,
@@ -358,5 +358,11 @@
       "suite_seconds": 11.44,
       "object_unchanged": true
     }
+  },
+  "independent_review": {
+    "commit": "9071aa5e8e1a032cd6ac06852552ecd3cd914c9a",
+    "report": "reports/cc16_dyn_endpoint_allocate_review.json",
+    "scope": "complete normal native/source review; actual initializer symbol/argument check; no ABI or runtime credit",
+    "blocking_mismatches": 0
   }
 }
