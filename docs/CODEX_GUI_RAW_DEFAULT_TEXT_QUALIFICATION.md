@@ -56,3 +56,22 @@ return. This is one genuine-provider DEFAULT lifecycle fixture, not Original
 binary ABI, full GUI/Page/content/visual acceptance, exception/flags0/foreign
 credit/reentry or repeated allocator-reuse proof. Main's route stays OFF until
 the broader consumer contract can replace legacy rendering.
+
+## Accepted bounded result
+
+Candidatec0ef2def1 and source-identical harness observer76c6d97c8 completed
+both cases with exit0, same frozen executable/DLL/config/arguments and only
+GUI_TEXT0->1 changed. The independent review copied to the local gate directory
+accepts one real-provider lifecycle. ON stages are exactly metadata624,
+construction/publication3680, settled retirement9510 and closure9634 after
+renderer9633. The same-pointer private native result and actual Text/Model
+pool-return/late-flags evidence are enforced by the owner before those logs.
+All existing gameplay output and ordered449/449 and mission299/299 match;
+start36/RNG1 match. Raw pair1 preserves only four added owner rows. Existing
+teardown index97 is exactly two inserted rows, not hidden by a new mask.
+
+The unchanged exact error.dds residue/COM1+1 baseline qualification is explicit
+on BOTH sides; complete COM-zero is not claimed. The selected Normal runner
+priority has no independent live sample. Main route is restored OFF atf1bfc515f
+and its Win32 build/both CTests pass. Raw Text content/visual consumer, failure,
+flags0/foreign credit/reentry and repeated reuse remain open.
