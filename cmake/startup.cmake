@@ -215,6 +215,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_game_embedd
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_game_embedded_state.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_game_grid.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_game_lifetime.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_game_on_destroy.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_game_lua_globals_lifetime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_game_physics_lifetime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_game_profile_lifetime.cpp)
