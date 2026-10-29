@@ -1,5 +1,6 @@
 #include "bsp/game_native_raw_default_text_owner.hpp"
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_hosts_vfs.hpp"
 #include "bsp/game_hosts_singletons.hpp"
 #include "bsp/game_native_renderer_application.hpp"
 #include "bsp/game_native_readonly_data.hpp"
