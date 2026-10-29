@@ -260,8 +260,22 @@ the single normal decrement epoch, fresh member-unwind epoch, current flags
 after destruction and same real pool/node/import/actual-owner domains. This
 does not publish a child or make the shared Model/tree/scene transport ready.
 
-A separate read-only A2 audit is checking whether the genuine input metadata
-can be prepared before shader preload while leaving actual backend startup at
-73DD8E. The candidate uses the existing null-backend message guard and the same
-input contexts; subconstructor, callback and failure/drain obligations must be
-proved before any host reorder. No A2 source change or live trial is accepted.
+A separate read-only A2 audit source-proved genuine input metadata preparation
+immediately after shadow success, before73DD12. It retains the same input
+contexts and empty SDK trackers, while BOTH the input_runtime_ facade pointer
+and actual backend startup remain at73DD8E. It requires the already-live sound,
+XLive, clock and platform domain, so it cannot move before73D8CC with factories.
+The null-backend cursor guard is genuine; the preceding load pump still runs
+XLive and window message callbacks. Full preload execution/failure containment,
+factory ownership/retirement and resource order remain separate obligations.
+No A2 source change or live trial is accepted.
+
+Raw Model packet `48195196e` is committed in its own
+`agent/codex-gui-raw-model-storage` worktree. Root reviewed all three new files
+and independently compared the four current assembly exports and existing
+state1/state0 unwind evidence. No source blocker was found: normal/member
+decrement epochs, callback replacement reloads, late low-byte flags read, same
+actual+4/canonical registry and live pool provenance match the qualified
+contract. Retired metadata after failure is explicitly not cleanup/pool-return
+proof. The packet remains unbuilt, unmerged and uncalled, with CMake/testing and
+raw child/scene/tree transport still pending. It adds no body credit.
