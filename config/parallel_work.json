@@ -16,6 +16,26 @@
   "policy": "Function addresses and disjoint file ownership define work, not wave/segment IDs. Workers read shared dependencies; primary owns Ghidra mutations, shared metadata, common APIs, CMake, builds and integration. Implemented code_ownership and future next_code_ownership are recorded separately. Refill up to three ready worker slots; verify actual concurrency on resume.",
   "packets": [
     {
+      "id": "codex-gui-raw-text-main-geometry",
+      "state": "in_progress_qualified_uncalled_transport_no_activation",
+      "worker": "gui_frame_lifetime",
+      "source_ready": false,
+      "depends_on": ["codex-gui-text-raw-model-transport", "codex-gui-raw-model-geometry", "codex-gui-raw-model-node-dispatch"],
+      "function_addresses": ["00ab7700"],
+      "output_files": ["include/bsp/native_gui_text_main_geometry_storage.hpp", "src/native_gui_text_main_geometry_storage.cpp", "docs/CODEX_GUI_RAW_TEXT_MAIN_GEOMETRY_STORAGE.md"],
+      "notes": "Reviewed b95 plan: raw current74 transport only, explicit separate canonical primary/internal188 records and genuine mesh/d403/raw transforms. Preserve preallocation4C capture, single x87 D7A260 argument sample versus late setter sample, current creator decrement/terminal and captured-profile/currentreceiver split. New files only; no production caller, primary publication, nonempty retirement, Font/content/Page or extra body credit."
+    },
+    {
+      "id": "codex-gui-raw-text-cleanup-return-progress",
+      "state": "in_progress_cleanup_metadata_default_admission_preserved",
+      "worker": "gui_integration_review",
+      "source_ready": false,
+      "depends_on": ["codex-gui-text-raw-model-transport"],
+      "function_addresses": ["00ab8250", "00ab8ee0"],
+      "output_files": ["include/bsp/native_gui_text_retirement.hpp", "src/native_gui_text_retirement.cpp", "src/native_gui_text_reference.cpp", "docs/CODEX_GUI_RAW_TEXT_CLEANUP_RETURN_PROGRESS.md"],
+      "notes": "Independent 3cb proposal review found no genuine raw owned-header publication receipt. Actual packet adds only separate UNWIND-returned metadata/fresh checks alongside normal progress; consumed-before-call is not completion. Keep all DEFAULT guards/93+122/private owner admission unchanged. No owned_members enum, cached-effect credit, producer substitution, nonempty ownership or body credit."
+    },
+    {
       "id": "codex-gui-raw-default-text-owner",
       "state": "integrated_build_genuine_single_default_lifecycle_qualified_main_route_off",
       "worker": "gui_frame_lifetime",
@@ -121,7 +141,7 @@
     },
     {
       "id": "codex-gui-icon-delayed-custody",
-      "state": "integrated_uncalled_metadata_build_inactive_reference_msd_passed",
+      "state": "integrated_host_metadata_and_single_empty_delayed_lifecycle_qualified_route_off",
       "worker": "gui_integration_review",
       "source_ready": false,
       "depends_on": [],
@@ -129,9 +149,11 @@
       "output_files": [
         "include/bsp/game_native_gui_icon_process.hpp",
         "src/game_native_gui_icon_process.cpp",
-        "docs/CODEX_GUI_ICON_DELAYED_PROCESS.md"
+        "docs/CODEX_GUI_ICON_DELAYED_PROCESS.md",
+        "docs/CODEX_GUI_ICON_PROCESS_HOST_LINK.md",
+        "docs/CODEX_GUI_ICON_SINGLETON_LIFECYCLE_QUALIFICATION.md"
       ],
-      "notes": "Integrated eb18518db in bsp_game: single verified loader-zero F8BD98 Source backing and deferred genuine delayed-service metadata; build2/2 and inactive reference/MSD pairs0. Getter/preparation remain uncalled; host deletion hookup, actual getter/drain/failure proof and raw Icon activation are NOT supplied. Future root caller must bind SAME service before get and retain providers through drain; normal registered retention is distinct from interrupted failure. No body credit."
+      "notes": "Process82 compiled in eb18518db; accepted host hookup c805780d4 binds permanent canonical raw cells and SAME deletion service after VFS phase2, with central guards and both full-drain branches checked. Source review/build2/2 and one idle60-frame smoke pass. Private frozen8849426fb/601B genuine-provider60-frame fixture independently qualifies one EMPTY AB5700 allocation/publication/registration and actual manager-popped D5C4B8/AB57C0 flags1 retirement, exit0/COM0+0; no post-free reads/manual cleanup. Raw diagnostic idle comparison1 preserves slots46to47 plus2fixture rows, no masks or paired activation claim. Route restoredOFF677c3024f/build2/2; production stays metadata-only/lazy. Nonempty queue/string disposal, ordinary raw Icon/Page activation, failures/flags0/reentry/reuse/Original ABI remain open. No body credit."
     },
     {
       "id": "codex_cc9_a1_activation",

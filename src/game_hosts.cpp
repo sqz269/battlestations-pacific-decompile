@@ -14,6 +14,7 @@
 #include "bsp/game_native_font_probe.hpp"
 #include "bsp/game_native_gui_text_process.hpp"
 #include "bsp/game_native_gui_icon_process.hpp"
+#include "bsp/native_gui_icon_delayed_loads.hpp"
 #include "bsp/native_string_raw_domain.hpp"
 #include "bsp/game_native_gui_text_state.hpp"
 #include "bsp/game_native_type_storage.hpp"
@@ -90,6 +91,10 @@
 #include "bsp/legacy_crt_math.hpp"
 
 namespace bsp::game {
+namespace {
+// Private single-lifecycle qualification. Normal host startup stays lazy.
+constexpr bool kGuiIconDelayedLifecycleQualificationCc16Bound = false;
+}
 // Harness only (src/game_hosts_mission.cpp): --stop-after-end has stopped the mission.
 bool harness_stopped_after_end() noexcept;
 namespace {
@@ -1937,6 +1942,28 @@ void GameStartupHost::prepare_native_gui_icon_process() {
         process.publication_00f8bd98())
         throw std::logic_error("GUI Icon metadata preparation entered unexpected native custody");
     log_.note("native GUI Icon process: metadata_prepared idle=1 publication=null deletion_bound=1");
+    if constexpr (kGuiIconDelayedLifecycleQualificationCc16Bound) {
+        try {
+            // Service/dispatcher/providers are stable before this genuine getter.
+            // Never destroy/unregister this borrowed result: actual drain owns it.
+            auto* const actual = service.get_00ab5700();
+            native_gui_icon_qualification_identity_ = actual;
+            const auto* const operation = service.last_operation();
+            if (!actual || process.publication_00f8bd98() != actual ||
+                process.delayed_loads_status() != GameNativeGuiIconProcess::DelayedLoadsStatus::registered_owner ||
+                !operation || operation->kind != NativeGuiIconDelayedLoadsOperation::Kind::getter ||
+                operation->phase != NativeGuiIconDelayedLoadsOperation::Phase::complete ||
+                operation->actual != actual || operation->allocated != actual ||
+                !operation->guard_entered || !operation->guard_cleanup_completed ||
+                !operation->registration_returned)
+                throw std::logic_error("GUI Icon qualification requires one completed actual getter/registration");
+            log_.note("native GUI Icon qualification: actual_getter_registered guard_completed=1 custody=manager");
+        } catch (...) {
+            try { log_.note("native GUI Icon qualification interrupted; retaining the entire provider graph until exit"); log_.close(); }
+            catch (...) { std::fputs("bsp_game: GUI Icon qualification requires process exit\n", stderr); }
+            std::_Exit(1);
+        }
+    }
 }
 
 void GameStartupHost::exit_if_native_gui_icon_interrupted() noexcept {
@@ -1961,6 +1988,18 @@ void GameStartupHost::verify_native_gui_icon_after_drain() {
             &native_gui_icon_process_->delayed_loads())
         throw std::logic_error("GUI Icon requires idle/null publication and the SAME deletion service after full drain");
     log_.note("native GUI Icon process: after_full_drain idle=1 publication=null manager=null deletion_bound=1");
+    if (native_gui_icon_qualification_identity_ && !native_gui_icon_qualification_retired_) {
+        // The operation is independent retained metadata. Compare addresses only;
+        // the popped/freed native owner must never be dereferenced here.
+        const auto* const operation = native_gui_icon_process_->delayed_loads().last_operation();
+        if (!operation || operation->kind != NativeGuiIconDelayedLoadsOperation::Kind::scalar_delete ||
+            operation->phase != NativeGuiIconDelayedLoadsOperation::Phase::complete ||
+            operation->actual != native_gui_icon_qualification_identity_ || operation->flags != 1u ||
+            !operation->backing_free_started || !operation->object_free_started)
+            throw std::logic_error("GUI Icon qualification requires actual popped-owner flags1 retirement");
+        native_gui_icon_qualification_retired_ = true;
+        log_.note("native GUI Icon qualification: retired_by_actual_parent_drain flags=1 backing_free=returned object_free=returned");
+    }
 }
 
 void GameStartupHost::exit_if_native_renderer_incomplete() noexcept {

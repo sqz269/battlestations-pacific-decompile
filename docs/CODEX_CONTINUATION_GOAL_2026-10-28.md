@@ -506,3 +506,24 @@ and ends COM0+0. Detailed receipt/scope:
 No lazy Icon allocation/registration/retirement or Page activation follows.
 Raw Text main geometry and phase-aware nonempty retirement remain the next
 disjoint transport/dependency packets; full rendering and native ABI stay open.
+
+## One genuine delayed-Icon singleton lifecycle qualified
+
+Private frozen8849426fb/601BB7CF fixture passes one60-frame slot4/core10 case:
+AB5700 actual allocation/publication/registration followed by the same actual
+manager-popped D5C4B8/AB57C0 flags1 retirement. Source-enforced independent
+metadata checks precede the two records, without post-free payload reads or
+manual cleanup. Full parent closure and repeated drain checks pass, exit0 and
+COM0+0. Independent receipt/hash/runtime audit accepts this EMPTY singleton
+lifecycle only. Raw comparison to the separate idle smoke preserves slots46→47
+plus two records; it is not paired gameplay/activation evidence. Private route
+restoredOFF677c3024f and Win32/tests2/2 pass. Detailed scope/report hashes:
+`docs/CODEX_GUI_ICON_SINGLETON_LIFECYCLE_QUALIFICATION.md`.
+
+Main geometry AB7700 transport is under disjoint source implementation.
+Independent retirement review tightens the next packet: header cleanup needs
+separate returned progress during unwind; consumed actions alone are not
+completion. Owned-member/cached-effect admission cannot expand before genuine
+raw acquisition/publication receipts exist. Font borrower plan likewise requires
+all-user terminal custody and explicit post-parent-drain unlink; DEFAULT and
+AB7700 remain Font-independent. Full P4 activation stays OFF.
