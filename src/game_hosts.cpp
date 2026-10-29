@@ -7,6 +7,8 @@
 #include "bsp/window_close_transport.hpp"
 #include "bsp/game_native_lua_globals.hpp"
 #include "bsp/game_native_lua_services.hpp"
+#include "bsp/bink_runtime_library.hpp"
+#include "bsp/game_movie_factory_owner.hpp"
 #include "bsp/game_native_renderer_application.hpp"
 #include "bsp/game_native_raw_default_text_owner.hpp"
 #include "bsp/game_native_mission_factories.hpp"
@@ -1547,6 +1549,131 @@ void GameStartupHost::exit_if_particle_manager_failed() noexcept {
     std::_Exit(1);
 }
 
+struct GameStartupHost::MovieFactoryServices {
+    struct Heap final : GameMovieFactoryAllocation {
+        void* allocate_00bf681b(std::size_t bytes) override {
+            return singleton_lifetime_allocate({SingletonAllocationKind::object,bytes,bytes});
+        }
+        void free_00bf65ac(void* captured) noexcept override {
+            singleton_lifetime_free(captured);
+        }
+    } heap;
+    BinkRuntimeLibrary library;
+    void* volatile& publication;
+    GameMovieFactoryOwner owner;
+    NativeMovieFactoryDeletionBindings deletion;
+    bool failed{};
+
+    MovieFactoryServices(const std::wstring& path,void* volatile& manager,
+        void* volatile& factory,GameNativeReadOnlyData& data)
+        :library(path),publication(factory),owner(manager,factory,library,data,heap),
+         deletion{this,&is_live,&delete_factory,&delete_base} {}
+
+    static std::unique_ptr<MovieFactoryServices>& process_owner() {
+        // Deliberately no atexit/C++ destruction: vendor callback/decoder
+        // quiescence and module unload are NOT admitted by prefix retirement.
+        // The aggregate retains only self-owned members and permanent process
+        // cells; it stores no Host or read-only-data reference. Future decoder
+        // consumers must extend custody for their own additional providers.
+        static auto* const retained=new std::unique_ptr<MovieFactoryServices>;
+        return *retained;
+    }
+    static void prepare(MovieFactoryServices*& observer,const std::wstring& path,
+        void* volatile& manager,void* volatile& factory,GameNativeReadOnlyData& data) {
+        auto& retained=process_owner();
+        if(retained) {
+            observer=retained.get();observer->failed=true;
+            throw std::logic_error("process movie factory graph cannot be recreated");
+        }
+        // No native factory call occurs in this constructor. Before a factory
+        // effect can escape, both the process owner and Host observer exist.
+        retained=std::make_unique<MovieFactoryServices>(path,manager,factory,data);
+        observer=retained.get();
+    }
+    static bool is_live(void* context,void* captured) noexcept {
+        const auto& self=*static_cast<MovieFactoryServices*>(context);
+        const auto& observation=self.owner.observation();
+        return !self.failed && captured &&
+            captured==observation.captured_allocation &&
+            observation.phase==GameMovieFactoryObservation::Phase::ready;
+    }
+    static void* delete_factory(void* context,void* captured,std::uint32_t flags) {
+        auto& self=*static_cast<MovieFactoryServices*>(context);
+        try {return self.owner.delete_factory_00737950(captured,flags);}
+        catch(...) {self.failed=true;throw;}
+    }
+    static void* delete_base(void* context,void* captured,std::uint32_t flags) {
+        auto& self=*static_cast<MovieFactoryServices*>(context);
+        try {return self.owner.delete_base_factory_00737030(captured,flags);}
+        catch(...) {self.failed=true;throw;}
+    }
+    bool requires_retention(bool require_retired) const noexcept {
+        return failed || owner.requires_process_retention() ||
+            (require_retired && owner.observation().phase==GameMovieFactoryObservation::Phase::ready);
+    }
+};
+
+void GameStartupHost::exit_if_native_movie_factory_incomplete(bool require_retired) noexcept {
+    if constexpr(kMovieFactoryRootCc16Bound) {
+        if(!movie_factory_||!movie_factory_->requires_retention(require_retired))return;
+        try {
+            const auto& o=movie_factory_->owner.observation();
+            log_.notef("movie factory graph requires terminal retention: phase=%u site=%08x raw_free=%u; preserving provider graph until OS exit",
+                static_cast<unsigned>(o.phase),o.native_site,o.raw_free_returned?1u:0u);
+            log_.close();
+        } catch(...) {std::fputs("bsp_game: movie factory requires process retention\n",stderr);std::fflush(stderr);}
+        std::_Exit(1);
+    }
+}
+
+void GameStartupHost::construct_native_movie_factory() {
+    if constexpr(kMovieFactoryRootCc16Bound) {
+        try {
+            const std::filesystem::path root(options_.game_root);
+            if(options_.game_root.empty()||!root.is_absolute())
+                throw std::invalid_argument("movie factory requires nonempty absolute game_root");
+            if(!native_data_)
+                throw std::logic_error("movie factory requires validated original data");
+            const auto path=(root/L"binkw32.dll").wstring();
+            MovieFactoryServices::prepare(movie_factory_,path,
+                singletons_->manager_publication_01090aa0(),
+                singletons_->movie_factory_publication_00f8aefc(),*native_data_);
+            auto& bindings=singletons_->native_deletion_bindings();
+            if(bindings.movie_factory&&bindings.movie_factory!=&movie_factory_->deletion)
+                throw std::logic_error("movie factory deletion domain is already bound");
+            bindings.movie_factory=&movie_factory_->deletion;
+            (void)movie_factory_->owner.construct_in_startup_0073df9b();
+        } catch(...) {
+            if(movie_factory_)movie_factory_->failed=true;
+            // A constructor failure may already have freed the raw prefix
+            // while leaving publication/manager residue. Read metadata only;
+            // no prefix lookup, repair, ordinary destruction or drain first.
+            exit_if_native_movie_factory_incomplete();
+            throw;
+        }
+    }
+}
+
+void GameStartupHost::retire_native_movie_factory() {
+    if constexpr(kMovieFactoryRootCc16Bound) {
+        exit_if_native_movie_factory_incomplete();
+        if(!movie_factory_)return; // Startup never entered this factory slot.
+        try {
+            void* const captured=movie_factory_->publication;
+            if(captured)
+                (void)delete_native_movie_factory_current_profile(captured,1,movie_factory_->deletion);
+            // Native null guard is preserved. A skipped but still Ready owner
+            // grants no normal-destruction/drain permission or cached fallback.
+            if(movie_factory_->requires_retention(true))
+                throw std::logic_error("movie factory explicit flags1 retirement did not complete");
+        } catch(...) {
+            movie_factory_->failed=true;
+            exit_if_native_movie_factory_incomplete(true);
+            throw;
+        }
+    }
+}
+
 struct GameStartupHost::SoundServices {
     // Shared actual lifecycle publications. Native online construction occurs
     // at73DC7C and input backend construction at73DD8E, after sound/window.
@@ -2017,6 +2144,7 @@ void GameStartupHost::exit_if_native_renderer_incomplete() noexcept {
 }
 
 void GameStartupHost::drain_native_singletons() {
+    exit_if_native_movie_factory_incomplete(true);
     exit_if_native_gui_icon_interrupted();
     // Font/GUI borrowers have retired; renderer drain retires its remaining
     // lookup-capable consumers, then the shared factory table, before shutdown.
@@ -2136,6 +2264,7 @@ void GameStartupHost::exit_if_native_gui_resources_retained() noexcept {
 }
 
 GameStartupHost::~GameStartupHost() {
+    exit_if_native_movie_factory_incomplete(true);
     exit_if_native_gui_resources_retained();
     exit_if_native_fonts_interrupted();
     exit_if_native_platform_incomplete();
@@ -2910,6 +3039,10 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     log_.implemented("Phase 5 input_backend_initialize", "0073dd8e");
     log_.implemented("Phase 5 input_backend_callback_and_reset", "0073dd98");
 
+    // Original73DF9B factory slot, before010909B0/particle/locale. The terrain
+    // and010909B0 surrounding parents stay explicitly unbound; no placeholders.
+    construct_native_movie_factory();
+
     // 0073E005..E02B: raw 34h allocation, caller state 23h, then AF0B10.
     // Prepare the permanent domain before any receiver can register. Neither
     // a null publication nor this host's fresh phase proves prior graph absence.
@@ -3293,6 +3426,7 @@ void GameStartupHost::release_platform_window() noexcept {
 }
 
 void GameStartupHost::application_shutdown() {
+    exit_if_native_movie_factory_incomplete();
     exit_if_native_fonts_interrupted();
     exit_if_native_platform_incomplete();
     exit_if_native_gui_probe_incomplete();
@@ -3399,6 +3533,10 @@ void GameStartupHost::application_shutdown() {
     delete frontend_;
     frontend_ = nullptr;
     retire_native_fonts_before_drain();
+    // Actual Source menu/widget borrowers have retired. Bind original73804F..
+    // 73805F explicit current-publication flags1 route before device/raw drain.
+    // This remains a partial ordinary parent; no decoder consumer is activated.
+    retire_native_movie_factory();
     if (device_ != nullptr) device_->release();
     // Native 0073830F is step 19 of the broader 00737F30 teardown. The other
     // recovered steps remain unbound above, but this explicit owner retirement

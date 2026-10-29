@@ -66,9 +66,28 @@
 #include "bsp/singleton_lifetime.hpp"
 
 #include <cstdlib>
+#include <cstring>
 #include <stdexcept>
 
 namespace bsp {
+__declspec(noinline) void* delete_native_movie_factory_current_profile(void* captured,std::uint32_t flags,
+    const NativeMovieFactoryDeletionBindings& binding) {
+    if(!binding.context||!binding.is_live_receiver||
+       !binding.delete_factory_00737950||!binding.delete_base_factory_00737030)
+        throw std::logic_error("movie factory deletion requires its complete actual bindings");
+    if(!binding.is_live_receiver(binding.context,captured))
+        throw std::logic_error("movie factory deletion requires its live captured receiver");
+    std::uint32_t profile;
+    std::memcpy(&profile,captured,sizeof profile);
+    switch(profile) {
+    case 0x00cfea78:
+        return binding.delete_factory_00737950(binding.context,captured,flags);
+    case 0x00cfea60:
+        return binding.delete_base_factory_00737030(binding.context,captured,flags);
+    default:
+        throw std::logic_error("movie factory deletion requires its current admitted profile");
+    }
+}
 namespace {
 __declspec(naked) void __cdecl current_crt_invalid_parameter() {
     __asm { jmp _invalid_parameter_noinfo }
@@ -89,6 +108,12 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
         return;
     }
     switch (profile) {
+    case 0x00cfea78: case 0x00cfea60:
+        if(bindings.movie_factory) {
+            (void)delete_native_movie_factory_current_profile(owner,flags,*bindings.movie_factory);
+            return;
+        }
+        break;
     case 0x00d5c4b8:
         if (bindings.gui_icon_delayed_loads != nullptr) {
             bindings.gui_icon_delayed_loads->delete_registered_00ab57c0(owner, flags);
