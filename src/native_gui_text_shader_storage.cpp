@@ -404,7 +404,9 @@ bool ensure_shader(void* raw, const ShaderView& c,
 } // namespace
 NativeGuiTextShaderStorageFrame::CreditProgress
 NativeGuiTextShaderStorageFrame::credit_progress() const noexcept {
-    return credit_; // retained metadata only; never follow the local token
+    auto snapshot = credit_; // retained metadata only; never follow the local token
+    snapshot.retirement_started = retirement_started_;
+    return snapshot;
 }
 bool NativeGuiTextShaderStorageFrame::matches_credit_backing(
     const NativeGuiTextShaderStorageContext& context,

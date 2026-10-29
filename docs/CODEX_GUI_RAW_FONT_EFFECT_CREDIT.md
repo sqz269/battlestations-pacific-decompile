@@ -103,3 +103,17 @@ after removing only explicit observer plumbing, the legacy outer tokens, and
 absence of added const casts. All pass. This is not a new runtime test, build,
 Original ABI/SEH/x87-state proof, native exception-origin proof, Font/shader
 fixture, cache-drain proof or production FE_initial/content acceptance.
+
+## Root integration
+
+Root and independent Source review accept body2632 plus final snapshot ee114.
+Both reviewers inspected genuine private producer/consumer authority and actual
+native epochs; ten focused comparisons pass. Root separately added the pure
+retirement_started projection so an initial null/no-producer retirement cannot
+look untouched. See CODEX_GUI_RAW_FONT_CREDIT_FRESH_GUARDS.md.
+Combined shader/raw118/strict-guard Win32 and existing checks2/2 pass (11.46s),
+`local/cc16_raw_font_credit_private_history_corrected_build.log`.
+The raw setter must still authenticate its own exact c073 Frame/context/input/
+acquisition/font identities; this token constructor supplements that check.
+Current owner and raw122/default/prefix/geometry admission remain strict; no
+credited execution/caller, cache-drain, Native ABI or runtime proof is granted.

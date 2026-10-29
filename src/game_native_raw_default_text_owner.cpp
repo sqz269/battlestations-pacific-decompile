@@ -165,6 +165,11 @@ struct GameNativeRawDefaultTextOwner::Impl::FontShader {
     ~FontShader() noexcept { if (!untouched()) std::terminate(); }
     bool untouched() const noexcept {
         using Frame = NativeGuiTextShaderStorageFrame;
+        const auto progress = frame.credit_progress();
+        if (progress.producer != Frame::RawPhase::fresh || progress.credit != Frame::CreditPhase::none ||
+            progress.consumer != Frame::Consumer::none || progress.failed || progress.active || progress.retirement_started ||
+            progress.actual_text || progress.reference || progress.reference_context ||
+            progress.reference_frame || progress.cache) return false;
         const auto& c = frame.cache;
         const auto& l = c.loader;
         return frame.prepared_raw_context() == &context && &context.fonts == owner.font_resources &&

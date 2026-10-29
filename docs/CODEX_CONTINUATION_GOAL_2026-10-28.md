@@ -729,3 +729,21 @@ identity check; Root plus independent Source review and Win32/checks2/2 pass
 (10.54s). It grants no credit/liveness and must not be called after the companion
 erases itself. The shared shader consumer API must freeze before both consumers
 complete, including truthful equal-name/no-capture and pre-capture failure paths.
+
+Shader private credit body2632/ee114 and raw118 adapter84d2 now pass Root and
+independent Source review. Actual normal B318 return/publication and one exact
+setter-or-raw118 consumer are recorded privately, with current active identity
+separate from historical spender. A review caught completed null-retirement
+history missing from fresh views; Root projects the private one-shot flag and
+requires none at initial/untouched admission. Corrected combined Win32/checks2/2
+pass11.46s. Existing owner/FRESH/header/108/1EC/native branches remain restricted;
+raw setter body and staged Font lifetime helper continue in disjoint packets.
+
+A fresh exact5b01 thirteen-row REFERENCE matrix is collecting against frozen
+EXE9480008d/DLLddf2; this is baseline only. Root lanes4/6 are live, with ESMP08,
+USN21 and USN12 completed exit0 as last observed. Original lane5 controller
+terminated before any game because its existing slot was busy; no process was
+displaced. A prospectively preregistered partition1 lane7/core16 amendment runs
+the unchanged four missing row definitions separately. Keep both artifact
+directories/manifests and explicit execution-checkout versus frozen-build
+source distinction. No full13-row identity, ON or strict4+4 gate is claimed.
