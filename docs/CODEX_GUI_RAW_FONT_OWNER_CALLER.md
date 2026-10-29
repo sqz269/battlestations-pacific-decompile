@@ -1,14 +1,16 @@
 # Raw Font work owner caller
 
-**API checkpoint, UNBUILT and uncalled.** Base5f686b664, frozen lifetime API6d0ecb622
-and Root's trailing retirement `font_lifetime` pointer4cf9d8a9b. This packet owns
+**Source preparation, UNBUILT and uncalled.** Base5f686b664, fixed owner API71f189ae4,
+frozen lifetime API6d0ecb622 and Root's trailing retirement `font_lifetime`
+pointer4cf9d8a9b. This packet owns
 only the existing raw DEFAULT owner HPP/CPP and this doc. No shared host, renderer,
 CMake, reference/widget/retirement guard, native body or activation change.
 
 The exact new C++ API is `FontWork { shader_then_retirement, invalidate_shader,
 equal_name }`, `prepare_primary_prefix_geometry_font_work_in_ready_renderer(size_t,
 FontWork)` and `construct_primary_prefix_geometry_font_work_in_open_shader_cache()`.
-Selection is fixed before preparation; existing modes/entry points remain separate.
+Selection is fixed in the Services/FontWorkGraph const fields before preparation;
+existing modes/entry points remain separate and cannot construct this choice.
 The completed SAME actual Font Host/App borrower link is required before preparing
 this mode. No public environment/CLI or default route is added.
 
@@ -47,6 +49,46 @@ retains the entire graph. Font retirement requires terminal helper metadata plus
 the existing physical custody proof; renderer drain precedes final facade closure
 and owner reset. No ended native header/Font/effect/companion payload is read.
 
-Body implementation, exact source comparisons and limitations follow this pinned
-header. Root reviews/builds the combined packets and owns shared staged admission
-and any private fixture. No build, game, test or Ghidra mutation in this packet.
+The actual owner requires initial private normal header publication and a nonnull
+actual Viper19 image. It then requires real AB8CE0 normal B318B0 caller issuance,
+not Text's cached fast return or an attempted null. A genuine material-cache hit
+may supply that credit; loader/new-object/count1 is not assumed. Invalidation must
+produce the distinct actual Arial18 image and private setter credit-return history.
+Equal-name must report the actual private equal branch, issue no new publication,
+and leave the original outstanding effect identity. Header/credit authorization
+comes from the shared private issuers and helper, never these mode labels.
+
+New public preparation/construction validation is inside sticky catch boundaries.
+Source checks owner/producer phase and failure between real input, setter, shader
+and primary/geometry stages and before success; a rejected reentry caught by a
+callback cannot restore a healthy phase. Graph entered is armed before seal; all
+escapes preserve every reached native owner and input without inferred cleanup.
+The native factory-null result remains false with no Font work or fake scalar;
+the untouched prepared Font debt can quiesce while whole Text/Model proof remains
+separate. Old public preparation/construction bodies remain exact.
+
+Destruction resets FontWork BEFORE PrimaryPrefix/geometry and FontShader, while
+ReferenceFrame/scalar/records/contexts/providers are alive. This destroys retained
+C++ metadata only. The helper's terminal predicate and actual BOTH Model/Mesh/Text
+pool/late-flags/disposal proof are mandatory before reset; merely returned Model
+metadata or healthy bound work does not suffice. After native Font retirement,
+detach follows helper metadata only and never a native collection/image getter.
+Original renderer verification still precedes effect/sampler facade closure even
+for prepared/native-empty cases. No Text/Font/effect count is seeded or copied.
+
+Source comparison against5f686b664 records22 checks in ignored
+`local/raw_font_owner_source_comparison.json`: old three prepare/three construct,
+Font link begin/complete/fail, original owner ctor/dtor, disposal-last, exact
+geometry entry, primary construct/unused/retain/settled, metadata Font untouched
+and renderer-close bodies remain exact. Removing only the new helper-permission
+branch recovers the exact original scalar body. Header71f is unchanged and every
+existing declaration remains. Private metadata constructors gain only the closed
+choice/graph and pure credited reference-frame pin. Native geometry scheduling,
+handler/bounds-zero checks and all existing native-body calls remain unchanged.
+
+Root must review/build the combined helper and staged reference/widget/prefix/
+raw118 admission, add CMake registration and any private renderer caller. This
+owner source is not independently activated. Font/content/glyph/rendering, arbitrary
+replacement/reuse/failure and whole-FE_initial acceptance remain separate gates.
+No build, game, test or Ghidra mutation ran for this packet; no new native body,
+vendor library body, register ABI or private exception-frame credit is claimed.
