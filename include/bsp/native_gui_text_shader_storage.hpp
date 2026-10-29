@@ -152,6 +152,11 @@ struct NativeGuiTextShaderStorageFrame final {
             decrement_entered, decremented, zero_entered, zero_returned, cleared, complete, failed };
         NativeGuiTextShaderStorageFrame& frame_;
         const Consumer kind_;
+        const NativeGuiTextRawFontNameStorageContext* font_context_{};
+        const NativeGuiTextRawFontNameStorageFrame* font_frame_{};
+        const NativeGuiTextRawFontNameStorageAcquired* font_acquired_{};
+        NativeGuiTextRawModelRetirementContext* retirement_context_{};
+        NativeGuiTextRetirementAcquired* retirement_acquired_{};
         Stage stage_{Stage::opened};
         bool active_{};
         void require_stage(Stage);
@@ -166,9 +171,18 @@ private:
     const NativeGuiTextShaderStorageContext* const prepared_raw_context_{};
     const NativeGuiTextReferenceFrame* const prepared_reference_frame_{};
     CreditProgress credit_;
+    class RawProducer;
+    struct RawEvidence {
+        void* renderer{};
+        std::uint32_t profile{}, target{};
+        void* result{};
+        bool entered{}, returned{}, published{};
+    } raw_evidence_;
     // An active no-credit/equal-name invocation is distinct from the single
     // irreversible nonnull credit consumer recorded in credit_.
     const CreditConsumer* active_consumer_{};
+    bool retirement_started_{};
+    void authenticate_bound_reference(const NativeGuiTextRawModelReference&);
     void begin_raw(NativeGuiTextRawModelReference&, NativeGuiTextShaderStorageContext&);
     void complete_raw(NativeGuiTextRawModelReference&, NativeGuiTextShaderStorageContext&,
         bool actual_attempted);
