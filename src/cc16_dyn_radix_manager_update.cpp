@@ -4,6 +4,7 @@
 #include "bsp/native_crt_memset.hpp"
 
 #include <cstddef>
+#include <stdexcept>
 #include <type_traits>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -16,6 +17,7 @@ extern "C" void __cdecl _alloca_probe();
 namespace bsp::cc16_dyn_radix_manager_update {
 namespace {
 using U32 = std::uint32_t;
+enum class ProfileAppendQualification : U32 { normal_only, qualified };
 struct Context {
     const cc15_dyn_live::DynLiveCrt* crt;
     const volatile U32* feature_word;
@@ -23,12 +25,16 @@ struct Context {
     void* const* profile_slot;
     const DynProfileScopeContext* profile;
     RadixManagerProfileNames names;
+    ProfileAppendQualification profile_append_qualification;
+    DynProfilePartialNodeDelete delete_partial_00bf65ac;
 };
 static_assert(sizeof(void*) == 4);
-static_assert(std::is_standard_layout_v<Context> && sizeof(Context) == 0x28);
+static_assert(std::is_standard_layout_v<Context> && sizeof(Context) == 0x30);
 static_assert(offsetof(Context, crt) == 0 && offsetof(Context, feature_word) == 4
               && offsetof(Context, half) == 8 && offsetof(Context, profile_slot) == 0xc
               && offsetof(Context, profile) == 0x10 && offsetof(Context, names) == 0x14);
+static_assert(offsetof(Context, profile_append_qualification) == 0x28
+              && offsetof(Context, delete_partial_00bf65ac) == 0x2c);
 static_assert(sizeof(RadixManagerProfileNames) == 0x14);
 static_assert(sizeof(DynProfileScopeStorage) == 0x14);
 
@@ -85,6 +91,9 @@ DynProfileNodeStorage* __cdecl append_bridge(unsigned char* arguments,
     auto* frame = arguments + 8;
     const auto& context = context_from(frame);
     try {
+        if(context.profile_append_qualification==ProfileAppendQualification::qualified)
+            return dyn_profile_node_append_child_00c50390(*parent,name,id,
+                context.profile->memory,context.delete_partial_00bf65ac);
         return dyn_profile_node_append_child_00c50390(*parent, name, id,
                                                      context.profile->memory);
     } catch (...) {
@@ -913,7 +922,23 @@ void update_radix_manager_00c5a8b0(void* manager,
     const volatile double& actual_half_00d7a280,
     const RadixManagerProfileNames& actual_names) {
     const Context context{&crt, &actual_feature_word_0109eea4, &actual_half_00d7a280,
-                          profile.profile_slot_0109e9f8, &profile, actual_names};
+        profile.profile_slot_0109e9f8,&profile,actual_names,
+        ProfileAppendQualification::normal_only,nullptr};
+    kernel(manager, nullptr, &context);
+}
+
+void update_radix_manager_00c5a8b0(void* manager,
+    const cc15_dyn_live::DynLiveCrt& crt,
+    const DynProfileScopeContext& profile,
+    const volatile U32& actual_feature_word_0109eea4,
+    const volatile double& actual_half_00d7a280,
+    const RadixManagerProfileNames& actual_names,
+    DynProfilePartialNodeDelete delete_partial_00bf65ac) {
+    if(!delete_partial_00bf65ac)
+        throw std::invalid_argument("Dyn radix update requires a matching raw-node partial deleter");
+    const Context context{&crt,&actual_feature_word_0109eea4,&actual_half_00d7a280,
+        profile.profile_slot_0109e9f8,&profile,actual_names,
+        ProfileAppendQualification::qualified,delete_partial_00bf65ac};
     kernel(manager, nullptr, &context);
 }
 

@@ -40,4 +40,20 @@ void update_radix_manager_00c5a8b0(
     const volatile double& actual_half_00d7a280,
     const RadixManagerProfileNames& actual_names);
 
+// Additive qualified cold-profile append. Same actual profile memory plus its
+// required matching flat BF65AC; null is rejected before manager/profile access
+// or mutation. The old six-argument entry remains normal-only. The private
+// native-context prefix, instruction kernel and four scope-leave actions stay
+// unchanged; real five-argument C50390 handles its own partial construction.
+// Original naked-frame rethrow/FH3/SEH/fault transport remains unproven.
+// This does not bind a radix owner/vtable, propagate other callers or activate.
+void update_radix_manager_00c5a8b0(
+    void* manager,
+    const cc15_dyn_live::DynLiveCrt& crt,
+    const DynProfileScopeContext& profile,
+    const volatile std::uint32_t& actual_feature_word_0109eea4,
+    const volatile double& actual_half_00d7a280,
+    const RadixManagerProfileNames& actual_names,
+    DynProfilePartialNodeDelete delete_partial_00bf65ac);
+
 } // namespace bsp::cc16_dyn_radix_manager_update

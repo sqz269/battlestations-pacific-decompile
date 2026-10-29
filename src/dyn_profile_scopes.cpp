@@ -1,10 +1,15 @@
 #include "bsp/dyn_profile_scopes.hpp"
 
 #include <intrin.h>
+#include <cstddef>
+#include <stdexcept>
 
 namespace bsp {
 static_assert(sizeof(void*) == 4);
 static_assert(sizeof(DynProfileScopeStorage) == 0x14);
+static_assert(sizeof(DynProfileScopeContext) == 0x10);
+static_assert(offsetof(DynProfileScopeContext, memory) == 0
+    && offsetof(DynProfileScopeContext, profile_slot_0109e9f8) == 0xc);
 namespace {
 template<class T> T& at(void* p, std::uint32_t offset) {
     return *reinterpret_cast<T*>(static_cast<unsigned char*>(p) + offset);
@@ -78,13 +83,21 @@ DynProfileNodeStorage* dyn_profile_node_append_child_00c50390(
     return append_constructed_profile_child(parent,child,memory);
 }
 
-DynProfileScopeStorage* dyn_profile_scope_enter_00c57020(DynProfileScopeStorage& scope,
-    std::uint32_t id, const char* name, const DynProfileScopeContext& context) {
+namespace {
+template<bool Qualified>
+DynProfileScopeStorage* enter_profile_scope(DynProfileScopeStorage& scope,
+    std::uint32_t id, const char* name, const DynProfileScopeContext& context,
+    DynProfilePartialNodeDelete delete_partial_00bf65ac) {
     auto* profile = *context.profile_slot_0109e9f8;
     auto& cached = at<DynProfileNodeStorage*>(profile, 0xc + id * 4u);
     if (!cached) {
         auto* parent = at<DynProfileNodeStorage*>(profile, 4);
-        auto* child = dyn_profile_node_append_child_00c50390(*parent, name, id, context.memory);
+        DynProfileNodeStorage* child;
+        if constexpr(Qualified)
+            child=dyn_profile_node_append_child_00c50390(*parent,name,id,context.memory,
+                                                       delete_partial_00bf65ac);
+        else
+            child=dyn_profile_node_append_child_00c50390(*parent,name,id,context.memory);
         profile = *context.profile_slot_0109e9f8; //C57041, before writing the original cache slot.
         cached = child;
     }
@@ -96,6 +109,20 @@ DynProfileScopeStorage* dyn_profile_scope_enter_00c57020(DynProfileScopeStorage&
     at<std::uint32_t>(&scope, 0) = static_cast<std::uint32_t>(start);
     at<std::uint32_t>(&scope, 4) = static_cast<std::uint32_t>(start >> 32u);
     return &scope;
+}
+} // namespace
+
+DynProfileScopeStorage* dyn_profile_scope_enter_00c57020(DynProfileScopeStorage& scope,
+    std::uint32_t id, const char* name, const DynProfileScopeContext& context) {
+    return enter_profile_scope<false>(scope,id,name,context,nullptr);
+}
+
+DynProfileScopeStorage* dyn_profile_scope_enter_00c57020(DynProfileScopeStorage& scope,
+    std::uint32_t id, const char* name, const DynProfileScopeContext& context,
+    DynProfilePartialNodeDelete delete_partial_00bf65ac) {
+    if(!delete_partial_00bf65ac)
+        throw std::invalid_argument("Dyn profile scope requires a matching raw-node partial deleter");
+    return enter_profile_scope<true>(scope,id,name,context,delete_partial_00bf65ac);
 }
 
 void dyn_profile_scope_leave_00c5bcd7(const DynProfileScopeStorage& scope,

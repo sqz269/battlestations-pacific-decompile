@@ -4,6 +4,7 @@
 #include "bsp/allocator_list.hpp"
 #include "bsp/native_dyn_world_step.hpp"
 #include "bsp/native_game_contact_reports.hpp"
+#include "bsp/dyn_profile_scopes.hpp"
 #include <memory>
 
 namespace bsp::game {
@@ -24,6 +25,12 @@ public:
         const volatile std::uint32_t& actual_0109eea4);
     const DynBodyCreationContext& body_creation();
     const NativeGameDynamicsContext& dynamics();
+    // Matching flat raw-node release for this owner's exact default scalar
+    // new/delete memory tuple only. Requires completed dispatch startup.
+    // Custom/unmatched memory reports missing qualified custody; no BF6989
+    // fallback or captured-context thunk is supplied. Borrow with this same
+    // owner's engine/profile memory. Does not adopt any profiler caller.
+    DynProfilePartialNodeDelete profile_partial_node_delete_00bf65ac() const;
     const NativeDynWorldStepContext& world_step();
     const NativeGameContactReportRuntime& contact_reports();
     const DynDispatchVtables& dispatch_tables();
