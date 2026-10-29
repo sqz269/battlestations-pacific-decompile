@@ -1,0 +1,413 @@
+{
+  "packet": "codex-movie-factory-startup-eh",
+  "status": "read_only_original_caller_EH_recovered; source_failure_retention_contract_only",
+  "reviewed_main": "2c25911ef30940f93ef3a56c6202198013b59b45",
+  "reviewed_at_utc": "2026-10-29T19:35:12.373409+00:00",
+  "ownership": {
+    "files": [
+      "docs/CC16_MOVIE_FACTORY_STARTUP_EH.md",
+      "reports/cc16_movie_factory_startup_eh.json"
+    ],
+    "addresses": [],
+    "read_only_ghidra": true,
+    "source_integration_owner": "primary"
+  },
+  "read_only_inputs": [
+    {
+      "commit": "8f14bfd2b64b0f163c997824a0f1d19b4de49ff0",
+      "path": "docs/CC16_MOVIE_FACTORY_OWNER_CONTRACT.md",
+      "sha256": "0aa91cafa93ee80bb26254f472684aa3fffe3f00c9e8cad7fd5717046c30893d",
+      "role": "read-only dependency; no activation/admission or source mutation"
+    },
+    {
+      "commit": "8f14bfd2b64b0f163c997824a0f1d19b4de49ff0",
+      "path": "reports/cc16_movie_factory_owner_contract.json",
+      "sha256": "660ad0d1d4d784b3b3484041283fda28199527cb4dc712e7f5ed2fb963581bb3",
+      "role": "read-only dependency; no activation/admission or source mutation"
+    },
+    {
+      "commit": "857d4234e4a65ce623f166aca3894eeb9194a7d4",
+      "path": "docs/CC16_MOVIE_DECODER_PROVIDER_READINESS.md",
+      "sha256": "4eb826a24f1330f65171349a96ecf0e0e6b4bfff5425f79719131be63e7beedf",
+      "role": "read-only dependency; no activation/admission or source mutation"
+    },
+    {
+      "commit": "68ab882bbe7709822936c15b21f6e9804076ffb2",
+      "path": "docs/CC16_BINK_RUNTIME_LIBRARY.md",
+      "sha256": "b865e1d4c541947117cad393780c28e557af141591f2b76b0a7e092e0efa78ee",
+      "role": "read-only dependency; no activation/admission or source mutation"
+    },
+    {
+      "commit": "6d3d02dbb1c92237291f42b5ab0730e7e31bb190",
+      "path": "docs/CC16_BINK_RUNTIME_LIBRARY_REVIEW.md",
+      "sha256": "cf74da38ff7644a77768bbae4bae99d5eecba4002eb4fc65f9db2257881f0d55",
+      "role": "read-only dependency; no activation/admission or source mutation"
+    }
+  ],
+  "native_provenance": {
+    "configured_project": "bsp",
+    "configured_project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "config/target.json plus bsp.py ghidra ensure --status before each live batch; count=77631; no imports/mutations",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_bytes": 12223752,
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "evidence_kind": "saved original analysis and original on-disk PE bytes; no running-game observation",
+    "live_disk_agreement": [
+      "00DB609C FuncInfo",
+      "00DB61C8 state21 map entry",
+      "00C86BEC action",
+      "00DB53E0 helper map",
+      "00C85F80/C85F88 helper actions",
+      "00412430 base reset",
+      "00411EE0 captured-section guard"
+    ],
+    "exports_sha256": {
+      "0073d410/assembly.txt": "5fb8af108ad4f7632bdf2f7cb3f967d756cdae9a71f9d054134022696051c88f",
+      "0073d410/decompiled.c": "685abc8ae1a857cc4e9b37f340fbf8b8fe5cdd508c234ab40e4565cad6fa489d",
+      "007366b0/assembly.txt": "122c35eecf40d6a57eb3d73863060de99739e2910a9b472f44fb0c1063485d1d",
+      "007366b0/decompiled.c": "8a7a1086038c330ef6eaec525b10d8cb96f7e8ef3268a117a086117db13add31",
+      "00736750/assembly.txt": "3a9e43f54c63af2b5b39dca2b24e70fb32251cfb3f2ea38abf6f7faf0af9dd2e",
+      "00736750/decompiled.c": "3d1c66ca766fe3602ba99c84a47e81733a98787a59a71186cd5e0becb544d664",
+      "00737710/assembly.txt": "f62431d8f696423e619396df6596d02ed8bce432733a5d3dafd6590c0837d6a6",
+      "00737710/decompiled.c": "cf305de19bbf7529bd7f9cc3d4ce940f66b729e913b25712d41527deb254b513",
+      "00737950/assembly.txt": "a8825f1f359b36bd3ad0deb27abd2ba2dcb4317deabdfc09aa7861aa1fb010d7",
+      "00737950/decompiled.c": "f0c8cd095fa0abaab51bbdcbe5d1ab9d012e4aa3a0bba220f793c2124e2f9652",
+      "00737f30/assembly.txt": "ffe89733bc85d9eb6db0e9cf720a36209fb519cf64e927c537027a3a791ca49d",
+      "00737f30/decompiled.c": "7530dc66e01533f34a55efe5b7304e5613e1d830406e5e62cb0db48fee50302d",
+      "00412430/assembly.txt": "875d29b68889787c757c0e7abf899c254b4e1edf154c808a9a2d82460a4384d6",
+      "00412430/decompiled.c": "c91611d1d4b15fc4ec22faa78df1b27cc2149a65a39f2ddbba68ba6e611290f5",
+      "00411ee0/assembly.txt": "dba7ea7b01e4d82638a2a1e4ac871575e1593ce2bb0805777e2628861076b118",
+      "00411ee0/decompiled.c": "d254054b1403b4079e9914e2d0f904c2d82632def32e63de8e6f47402474ea00"
+    }
+  },
+  "original_abi": {
+    "caller": {
+      "address": "0073D410",
+      "signature": "incoming ECX=application; two 32-bit stack arguments; RET8 at0073E52A",
+      "enclosing_body": "0073D410..0073E52C"
+    },
+    "factory": "00737710 receives owner in ECX, returns captured owner in EAX, plain RET; inlined sequence appears in caller",
+    "register": "007366B0 ECX=incoming raw owner, EAX=incoming owner on normal return, plain RET",
+    "scalar_delete": "00737950 ECX=incoming raw owner; one DWORD flags; returns captured owner in EAX; RET4",
+    "unwind_action": "00C86BEC is a compiler funclet using reconstructed parent-frame EBP; it is not an ordinary host-callable function",
+    "identities": "Original addresses, IAT and vtable words are numeric native evidence identities, not callable host pointers; reconstructed C++ interfaces are not binary replacements"
+  },
+  "caller_frame": {
+    "entry_esp": "E (points at return address)",
+    "prologue": "PUSH -1; PUSH00C86CBA; PUSH previous FS:0; FS:0=E-0xC; SUB ESP,0x12C; PUSH EBX,EBP,ESI,EDI",
+    "steady_esp": "S=E-0x148",
+    "state": "[S+0x144]=[E-4]",
+    "captured_allocation": "[S+0x10]=[E-0x138], stored at0073DFA7",
+    "funclet_frame": "The action slot [EBP-0x138] selects the same parent slot when the EH3 funclet reconstructed EBP is E (registration record +0xC); this is static frame/ABI derivation, not a dynamic register witness.",
+    "register_constants": "EDI=0 at0073D433, no later write before movie; EBX reset to-1 at0073D88D and no later write before movie/demotion; earlier EBX values3/5 do not reach this epoch",
+    "temporary_argument_adjustment": "After PUSH4 at0073DFD2, ESP=S-4, so state remains [ESP+0x148] at0073DFD4"
+  },
+  "caller_eh": {
+    "handler": "00C86CBA: MOV EAX,00DB609C; JMP00BF6B43 (existing ___CxxFrameHandler3 identity; vendor body not reconstructed)",
+    "funcinfo": "00DB609C",
+    "magic": "0x19930522",
+    "max_state": "0x31 (49 states, indexes0..48)",
+    "unwind_map": "00DB60C0",
+    "num_try_blocks": 0,
+    "try_block_map": "00000000",
+    "num_ip_map_entries": 0,
+    "ip_map": "00000000",
+    "es_type_list": "00000000",
+    "eh_flags": "0x1; numeric value recorded without claiming arbitrary SEH/access-violation recovery",
+    "state21": {
+      "entry_address": "00DB61C8 =00DB60C0+0x21*8",
+      "to_state": -1,
+      "action": "00C86BEC",
+      "hex": "ff ff ff ff ec 6b c8 00",
+      "successor_cleanup": "none; predecessor is sentinel-1, not state0x20"
+    },
+    "action_instructions": [
+      "00C86BEC MOV EAX,[EBP-0x138]",
+      "00C86BF2 PUSH EAX",
+      "00C86BF3 CALL00BF65AC (_free boundary)",
+      "00C86BF8 POP ECX",
+      "00C86BF9 RET"
+    ],
+    "action_effect": "Free captured raw allocation as a single pointer argument, balance cdecl argument, return. No virtual call,00736750,00737950,unregister,publication clear,module release or decoder close."
+  },
+  "caller_instruction_epochs": [
+    {
+      "range": "0073DF92..0073DFA6",
+      "state": "-1",
+      "effect": "State demoted before terrain virtual call at73DF99; PUSH4 atDF9B, operator_new callDF9D, ESI=EAX atDFA2, ADD ESP4 atDFA4. An allocating exception occurs before state21 is armed."
+    },
+    {
+      "range": "0073DFA7..0073DFB7",
+      "state": "-1 then0x21 atDFAD",
+      "effect": "Capture raw ESI at[S+10]; compare with EDI=0; MOVstate21 preserves compare flags. JZ atDFB8 skips constructor when null."
+    },
+    {
+      "range": "0073DFBA..0073DFC0",
+      "state": "0x21",
+      "effect": "ECX=ESI; call007366B0 atDFBC. Nested registration EH runs first on an exceptional unwind, then caller raw cleanup."
+    },
+    {
+      "range": "0073DFC1..0073DFD1",
+      "state": "0x21",
+      "effect": "PUSH0, PUSH actual native callback thunk00A4D35C; storeCFEA78 atDFC7; callBinkSetSoundSystem thunk00A4D356 atDFCD. No return-status check."
+    },
+    {
+      "range": "0073DFD2..0073DFD3",
+      "state": "0x21",
+      "effect": "Next producer PUSH4 still precedes demotion; no intervening call."
+    },
+    {
+      "range": "0073DFD4..0073DFEA",
+      "state": "-1",
+      "effect": "WriteEBX=-1 atDFD4; next allocation callDFDB is outside movie guard. Capture is overwritten atDFE5; state22 arms atDFEB. Later startup failure has no state21 movie cleanup."
+    }
+  ],
+  "nested_registration_eh": {
+    "handler": "00C85F90 ->FuncInfo00DB53F0; maxState2; map00DB53E0",
+    "state0": {
+      "entry": "00DB53E0",
+      "to_state": -1,
+      "action": "00C85F80",
+      "instructions": "MOV ECX,[EBP-18h]; JMP00412430; target only MOV[ECX],00CE3818; RET",
+      "meaning": "Reset incoming captured owner profile only; no unregister/publication clear/free."
+    },
+    "state1": {
+      "entry": "00DB53E8",
+      "to_state": 0,
+      "action": "00C85F88",
+      "instructions": "LEA ECX,[EBP-14h]; JMP00411EE0",
+      "meaning": "Guard reads its captured section at+4; when nonnull decrements captured_section+18h and calls IAT00CE2210; then state0 base-profile reset runs."
+    },
+    "epochs": [
+      "007366D0 arms state0 beforeCFEA60 store366D8 and first manager getter366DE",
+      "007366E3 captures first_manager+10h inESI;366F0 stores section in guard;366F7 enters it;366FD increments+18h",
+      "00736701 arms state1; publication storeF8AEFC=EDI at36706; second manager getter3670C completes before publication reload36711 and register3671A",
+      "Normal36723 decrements originally captured section,36728 leaves it; saved handler is restored before RET at36740"
+    ],
+    "residue": "Any stores/registration reached before failure remain. State1 protects captured section, not publication identity or transactional manager state. Constructor unwind may reset incoming profileCE3818, then caller raw-free the captured owner, while F8AEFC or manager still references it. Callback replacement publication is neither selected nor freed by caller action.",
+    "limits": "Guard state1 is armed after enter/increment, not before. No new guarantee is made for OS faults, exceptions in cleanup, partially completed registration, or the internals of the imported lock/vendor routines."
+  },
+  "failure_matrix": [
+    {
+      "event": "operator_new throws at0073DF9D",
+      "original": "caller state-1; movie raw cleanup not active; no movie registration/sound invocation",
+      "source_contract": "Propagate failure; do not invent successful-null/default factory, or free a capture not acquired. Module owner already escaped to other borrowers cannot be auto-unloaded."
+    },
+    {
+      "event": "allocation returns null on its existing original guard branch",
+      "original": "capture0,state21,JZ toDFD2,demotionDFD4; skip registration/profile/sound",
+      "source_contract": "Retain native null branch as evidence; current throwing host allocator is not a returning-null provider or an empty-factory policy."
+    },
+    {
+      "event": "registration throws before publication",
+      "original": "nested reached-state guard/base cleanup, then captured raw free; no full destructor",
+      "source_contract": "No catch-and-continue or guessed registration rollback."
+    },
+    {
+      "event": "registration throws after00736706 publication",
+      "original": "same nested guard/base cleanup then raw free; noF8AEFC clear or unregister; registration residue may survive",
+      "source_contract": "Potential dangling current publication/custodian entry must remain explicit; never drain as though construction completed or retry cleanup blindly."
+    },
+    {
+      "event": "Bink sound call returns any ordinary status",
+      "original": "result ignored; normal progress andDFD4 demotion",
+      "source_contract": "Do not translate a zero/error status into invented native exception cleanup or report sound/runtime success from call return alone."
+    },
+    {
+      "event": "sound call unwinds exceptionally through caller while state21 active",
+      "original": "raw free captured owner only; completed registration remains; no full destructor/base reset from returned registration helper",
+      "source_contract": "Potential dangling publication/manager residue, plus unknown vendor callback/work effects. No native rollback or sound-reset invented."
+    },
+    {
+      "event": "later startup operation fails afterDFD4",
+      "original": "state21 disarmed; no movie cleanup from this entry",
+      "source_contract": "Movie remains an escaped dependency. Whole-graph retention/drain policy owns its custody; stack unwinding alone is not sufficient."
+    }
+  ],
+  "normal_retirement": {
+    "explicit_row": "0073804F loadF8AEFC; null test;0073805D PUSH1;0073805F virtual slot-zero call. Preceded by010909B0, followed byF8C218.",
+    "deleting": "00737950 captures incomingECX inESI, calls00736750; iff flags&1 frees capturedESI with00BF65AC; returns capturedESI inEAX; RET4.",
+    "unregister": "00736750 writesCFEA60 to incoming owner, captures first section, resolves manager again, unregisters CURRENT F8AEFC, unconditionally clearsF8AEFC, leaves captured section, then writesCE3818 to incoming owner.",
+    "difference": "Full normal destructor/unregister path is not present in caller state21 action. Incoming raw identity need not equal current publication. A failed unregister does not establish free/clear completion."
+  },
+  "smallest_source_composition_contract": [
+    "Allocate exact4-byte MovieFactoryPrefix at existing boundary. Keep captured primary allocation distinct from actual retained volatile F8AEFC cell and from callback-replaceable current publication. Bind CFEA60/CFEA78 typed deletion profiles before any registration.",
+    "Reuse existing construct_movie_factory_00737710 with canonical manager and real captured-section operations; resolve second manager in a completed statement before reloading current publication. Use same retained Bink module/tables, real OpenDirectSound callback and argument0; ignore returned sound status.",
+    "If reproducing original caller EH, guard covers capture through sound return and is disarmed before next allocation. Its exceptional action is captured raw free only. That policy can leave dangling publication/registration and must not be presented as recoverable successful startup or safe later drain.",
+    "For production host failure, an explicit terminal whole-aggregate retention policy may retain raw owner instead of executing native raw free, together with publication cell/context, manager/section storage, Bink module/Impl/tables, decoders/callbacks and renderer/native borrowers until OS exit. This deliberately differs from original caller FH3 cleanup; label the difference. Preserve reached effects; do not clear/unregister/free/retry/unload as invented rollback.",
+    "Failure hooks must run before ordinary member/destructor unwinding or fallback shared drain releases any escaped movie dependency. Retain complete storage, not merely HMODULE or a copied import pointer. Stop dependent activation and propagate/report the terminal failure; no returning provider or synthetic success.",
+    "Normal retirement requires real close/callback quiescence and explicit factory row before final manager drain. Release the module/tables only after all borrowers and raw custody are demonstrably drained. Factory deletion alone does not close unrelated decoder handles or reset vendor state."
+  ],
+  "remaining_unknowns": [
+    "No dynamic FH3 register/stack witness, installed Bink ABI/callback result, sound-device success, callback quiescence, decoder clock/playback or game startup/shutdown observation.",
+    "No claim arbitrary SEH/access violations invoke these C++ cleanup entries; nested cleanup failure and process continuation are not qualified.",
+    "Reentrant manager/publication changes and partial register side effects are preserved by exact ordering but not proven transactionally recoverable. Whether a concrete native fault occurs after publication is not observed; the dangling outcome is a static possible path.",
+    "Root must admit module owner and actual publication/deletion/startup-retention hooks, full surrounding terrain/010909B0/shutdown providers and production gameplay witnesses. This report supplies no activation/readiness credit.",
+    "This read-only packet does not alter private accuracy candidate2c182, ledger/name/tag state, body counts or subtitle guard."
+  ],
+  "static_pe_evidence": [
+    {
+      "name": "caller_prologue",
+      "address": "0073D410",
+      "bytes_count": 47,
+      "file_offset": "0x33d410",
+      "hex": "6a ff 68 ba 6c c8 00 64 a1 00 00 00 00 50 64 89 25 00 00 00 00 81 ec 2c 01 00 00 53 55 56 57 8b f1 6a 10 33 ff 6a 10 89 74 24 34 89 7c 24 28",
+      "sha256": "7e96bf1bbb69a7155364b9d04d0077829394f1ec9214436a6f8d8bbb012b2e09"
+    },
+    {
+      "name": "caller_minus_one",
+      "address": "0073D88D",
+      "bytes_count": 3,
+      "file_offset": "0x33d88d",
+      "hex": "83 cb ff",
+      "sha256": "b2573311ea7475d44358defcfc27171a400912fc61738077b570640cb27ec5ec"
+    },
+    {
+      "name": "factory_and_demotion",
+      "address": "0073DF9B",
+      "bytes_count": 69,
+      "file_offset": "0x33df9b",
+      "hex": "6a 04 e8 79 88 4b 00 8b f0 83 c4 04 89 74 24 10 3b f7 c7 84 24 44 01 00 00 21 00 00 00 74 18 8b ce e8 ef 86 ff ff 57 68 5c d3 a4 00 c7 06 78 ea cf 00 e8 84 f3 30 00 6a 04 89 9c 24 48 01 00 00 e8 3b 88 4b 00",
+      "sha256": "f0af282e2b6727ee22dfeb84cdd04a595faa3ffe8e4415d1a713ed7dc0cd45e7"
+    },
+    {
+      "name": "caller_handler",
+      "address": "00C86CBA",
+      "bytes_count": 10,
+      "file_offset": "0x886cba",
+      "hex": "b8 9c 60 db 00 e9 7f fe f6 ff",
+      "sha256": "7dcc60aaf653ef840c139e429219e059b4a4febe03365acc54120d6ca96f2f93"
+    },
+    {
+      "name": "caller_FuncInfo",
+      "address": "00DB609C",
+      "bytes_count": 36,
+      "file_offset": "0x9b609c",
+      "hex": "22 05 93 19 31 00 00 00 c0 60 db 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00",
+      "sha256": "14beb8044a80e1663ec517b799fbfc0a724a07100d6554125b0681dcd06ba5f3"
+    },
+    {
+      "name": "caller_state21_entry",
+      "address": "00DB61C8",
+      "bytes_count": 8,
+      "file_offset": "0x9b61c8",
+      "hex": "ff ff ff ff ec 6b c8 00",
+      "sha256": "37aff6ad99be59b0e52050d4a7897e4895869d29653c8fe138d97e1b67f11c56"
+    },
+    {
+      "name": "caller_state21_action",
+      "address": "00C86BEC",
+      "bytes_count": 14,
+      "file_offset": "0x886bec",
+      "hex": "8b 85 c8 fe ff ff 50 e8 b4 f9 f6 ff 59 c3",
+      "sha256": "143551c387803ea65206110d846b4f98f9cc8559b067e221fba88300bcae5287"
+    },
+    {
+      "name": "register_helper",
+      "address": "007366B0",
+      "bytes_count": 145,
+      "file_offset": "0x3366b0",
+      "hex": "6a ff 68 90 5f c8 00 64 a1 00 00 00 00 50 64 89 25 00 00 00 00 83 ec 0c 56 57 8b f9 89 7c 24 08 c7 44 24 1c 00 00 00 00 c7 07 60 ea cf 00 e8 6d ec cd ff 8b 70 10 85 f6 c7 44 24 0c fc 37 ce 00 89 74 24 10 74 0b 56 ff 15 18 22 ce 00 83 46 18 01 c6 44 24 1c 01 89 3d fc ae f8 00 e8 3f ec cd ff 8b 0d fc ae f8 00 51 8b c8 e8 11 a5 49 00 85 f6 74 0b 83 46 18 ff 56 ff 15 10 22 ce 00 8b 4c 24 14 8b c7 5f 5e 64 89 0d 00 00 00 00 83 c4 18 c3",
+      "sha256": "0bba660a8e00a0082f5df70d68c12c9433737437f056b5b84c2e97f61b164ab3"
+    },
+    {
+      "name": "register_handler",
+      "address": "00C85F90",
+      "bytes_count": 10,
+      "file_offset": "0x885f90",
+      "hex": "b8 f0 53 db 00 e9 a9 0b f7 ff",
+      "sha256": "d8029a97610628668d344efc525484e689bb20ad87875568f39c3217e57409d6"
+    },
+    {
+      "name": "register_unwind_map",
+      "address": "00DB53E0",
+      "bytes_count": 16,
+      "file_offset": "0x9b53e0",
+      "hex": "ff ff ff ff 80 5f c8 00 00 00 00 00 88 5f c8 00",
+      "sha256": "22f82256fe1ae39580157ee24a6164f7266da46c6c35bf4f53c63367b9bdcc7d"
+    },
+    {
+      "name": "register_state0_action",
+      "address": "00C85F80",
+      "bytes_count": 8,
+      "file_offset": "0x885f80",
+      "hex": "8b 4d e8 e9 a8 c4 78 ff",
+      "sha256": "21c468ba8bc0d2fa561719e7f1559c83a3cea5c40dddd62c0b7b4e32d11c0cf5"
+    },
+    {
+      "name": "register_state1_action",
+      "address": "00C85F88",
+      "bytes_count": 8,
+      "file_offset": "0x885f88",
+      "hex": "8d 4d ec e9 50 bf 78 ff",
+      "sha256": "35f6260d495a1b0133275e72de91bc1f9cfa5a68326a9eadb65f92d2e8f13967"
+    },
+    {
+      "name": "base_profile_reset",
+      "address": "00412430",
+      "bytes_count": 7,
+      "file_offset": "0x12430",
+      "hex": "c7 01 18 38 ce 00 c3",
+      "sha256": "197860f577f6cbc985b15e4605cd24b4388d933d89eb449e8ef5d9ca60d86ea1"
+    },
+    {
+      "name": "captured_section_leave",
+      "address": "00411EE0",
+      "bytes_count": 25,
+      "file_offset": "0x11ee0",
+      "hex": "8b 41 04 85 c0 c7 01 fc 37 ce 00 74 0b 83 40 18 ff 50 ff 15 10 22 ce 00 c3",
+      "sha256": "bc62d20fb11c300342533b8e94fc0319bb550dcd5bb5ecd734f2e03c92cc3382"
+    },
+    {
+      "name": "unregister_helper",
+      "address": "00736750",
+      "bytes_count": 153,
+      "file_offset": "0x336750",
+      "hex": "6a ff 68 b0 5f c8 00 64 a1 00 00 00 00 50 64 89 25 00 00 00 00 83 ec 0c 56 57 8b f9 89 7c 24 08 c7 07 60 ea cf 00 c7 44 24 1c 00 00 00 00 e8 cd eb cd ff 8b 70 10 85 f6 c7 44 24 0c fc 37 ce 00 89 74 24 10 74 0b 56 ff 15 18 22 ce 00 83 46 18 01 c6 44 24 1c 01 e8 a5 eb cd ff 8b 0d fc ae f8 00 51 8b c8 e8 e7 94 49 00 c7 05 fc ae f8 00 00 00 00 00 85 f6 74 0b 83 46 18 ff 56 ff 15 10 22 ce 00 8b 4c 24 14 c7 07 18 38 ce 00 5f 5e 64 89 0d 00 00 00 00 83 c4 18 c3",
+      "sha256": "deaec8e4b261e45b6962149426f029b5ca893b700dd7baf75f7a676566098889"
+    },
+    {
+      "name": "scalar_deleting",
+      "address": "00737950",
+      "bytes_count": 30,
+      "file_offset": "0x337950",
+      "hex": "56 8b f1 e8 f8 ed ff ff f6 44 24 08 01 74 09 56 e8 47 ec 4b 00 83 c4 04 8b c6 5e c2 04 00",
+      "sha256": "2eb9ceeeebbae69c40260ca5a3e6d5b01b0e97fe7af84aa69bd16e080fc8deeb"
+    },
+    {
+      "name": "explicit_shutdown_row",
+      "address": "0073804F",
+      "bytes_count": 18,
+      "file_offset": "0x33804f",
+      "hex": "8b 0d fc ae f8 00 3b cb 74 08 8b 11 8b 02 6a 01 ff d0",
+      "sha256": "9b7db99c9de66a0dd4485897601f54860822d036f6b02cd947bed45ca02dd422"
+    },
+    {
+      "name": "Bink_thunks",
+      "address": "00A4D356",
+      "bytes_count": 12,
+      "file_offset": "0x64d356",
+      "hex": "ff 25 d0 23 ce 00 ff 25 d4 23 ce 00",
+      "sha256": "10f5ed6bedd7b496ad92f87ee5de055570fb77abba74b4e7a6d36645e6e03e4b"
+    }
+  ],
+  "validation": {
+    "binary_hash_verified": true,
+    "metadata_and_action_disk_bytes_asserted": true,
+    "original_listings_reviewed": true,
+    "source_changed": false,
+    "ghidra_mutated": false,
+    "game_probe_dll_load_build_test_run": false,
+    "new_tests_needed": false
+  },
+  "credit": {
+    "new_native_bodies": 0,
+    "vendor_bodies": 0,
+    "binary_ABI": false,
+    "runtime": false,
+    "activation": false,
+    "playback": false,
+    "gameplay": false
+  }
+}
