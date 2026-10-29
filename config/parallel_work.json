@@ -16,6 +16,53 @@
   "policy": "Function addresses and disjoint file ownership define work, not wave/segment IDs. Workers read shared dependencies; primary owns Ghidra mutations, shared metadata, common APIs, CMake, builds and integration. Implemented code_ownership and future next_code_ownership are recorded separately. Refill up to three ready worker slots; verify actual concurrency on resume.",
   "packets": [
     {
+      "id": "codex-font-main-slot-role-repair",
+      "state": "source_reviewed_win32_pass_runtime_open",
+      "worker": "cc16-progress",
+      "source_ready": false,
+      "depends_on": [
+        "codex-font-main-owner"
+      ],
+      "function_addresses": [],
+      "output_files": [
+        "src/native_gui_widget_raw_model_lifetime.cpp",
+        "docs/CODEX_GUI_RAW_FONT_MAIN_ADMISSION.md",
+        "docs/CODEX_GUI_RAW_FONT_MAIN_RUNTIME.md"
+      ],
+      "notes": "First joint runtime exposed canonical slotAcq self-overlap before raw Text allocation. Bind-only exact-role/unique-full-view correction; all other/partial/duplicate/later backing checks preserved. Independent Source review; Win32 existing checks2/2 pass12.69s. Seven gates FALSE; repaired runtime unqualified."
+    },
+    {
+      "id": "codex-font-main-private-runtime",
+      "state": "failed_preparation_slot_self_overlap_gates_off",
+      "worker": "cc16-progress",
+      "source_ready": false,
+      "depends_on": [
+        "codex-font-main-owner",
+        "codex-font-main-lifetime-slices"
+      ],
+      "function_addresses": [],
+      "output_files": [
+        "docs/CODEX_GUI_RAW_FONT_MAIN_RUNTIME.md"
+      ],
+      "notes": "Frozen d8cb attempt2: control exits0/0/0, GUI1 parent/launcher1 at slot metadata bind; exact unchanged evaluator FAIL independently replayed.98 sealed files and5995 inputs verified. Natural drain/no force/old5 preserved. GUI1 actual Normal/effective difficulty/CRT exports unobserved. Attempt1 prelaunch Source drift preserved separately. No runtime acceptance/retry/activation."
+    },
+    {
+      "id": "codex-raw-source-equal-library",
+      "state": "implemented_object_compile_pass_review_pending",
+      "worker": "gui_integration_review",
+      "source_ready": false,
+      "depends_on": [],
+      "function_addresses": [
+        "00abaed0"
+      ],
+      "output_files": [
+        "include/bsp/native_gui_text_source_storage.hpp",
+        "src/native_gui_text_source_storage.cpp",
+        "docs/CODEX_GUI_RAW_TEXT_SOURCE_STORAGE.md"
+      ],
+      "notes": "Only native source-equal early return; canonical bound93/122/widget/input/pool proof and constructor-emptyF4/F8, one real00435C40. False poisons/rejects before changed arm. Three new files bab7592; isolatedWin32W4WX object compile pass, independent actual Source review pending. Unwired; no owner/host/changed/localisation/content/ABI/runtime credit."
+    },
+    {
       "id": "codex-font-main-operation-api",
       "state": "source_reviewed_coupled_win32_pass_gates_off",
       "worker": "cc16-progress",

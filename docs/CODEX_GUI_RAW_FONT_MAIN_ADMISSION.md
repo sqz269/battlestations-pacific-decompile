@@ -41,3 +41,12 @@ Independent helper, shared-guard, owner and disabled-host Source reviews accept
 the bounded composition. No joint runtime, native
 credit, ABI, renderer or production activation is claimed. All seven private
 switches stay OFF; separate old Font/Main trials do not qualify this joint graph.
+
+The first joint cohort exposed a pre-allocation slot-bind self-overlap: Font's
+metadata includes the SAME canonical slot acquisition record that bind writes.
+The bind-only correction authenticates exact prefix/widget/text/authentication/
+acquisition identities and requires one full matching view before excluding that
+owned-write role. All other regions, duplicate/partial views and later consumers
+retain their checks. Independent actual-diff review accepts; Win32/existing
+checks2/2 pass12.69s. This repaired Source has no runtime acceptance yet; the
+original failed cohort remains FAIL (see CODEX_GUI_RAW_FONT_MAIN_RUNTIME.md).
