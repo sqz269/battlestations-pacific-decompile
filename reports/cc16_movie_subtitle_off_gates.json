@@ -1,0 +1,243 @@
+{
+  "packet": "codex-movie-subtitle-off-gates",
+  "date": "2026-10-28",
+  "status": "exact409_binaries_inputs_and_common_backend_frozen_runtime_pending",
+  "baseline_source": "409689e5e813d4aaaeb656abeb827d06a5842016",
+  "candidate_source": "f49e064d5e393c5ad8d0dfdd54d686b5669b2585",
+  "source_packets": [
+    "609ef74158b525c1d860bd5351dbfd195ce2689e",
+    "4561c11dc8f3971f8e70ac899942cbaf185eaea4"
+  ],
+  "binaries": {
+    "base": {
+      "bsp_game.exe": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\movie_subtitle_off409\\binaries\\base\\bsp_game.exe",
+        "sha256": "b121e96c18f08ac2be198c38761caa4bc2834f973be9f22c88c9b6f68f2f85c3"
+      },
+      "xlive_stub.dll": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\movie_subtitle_off409\\binaries\\base\\xlive_stub.dll",
+        "sha256": "e41d690635ce050161ee0f6d376e10ba210339ab5c1970f82055a2e67bf1c80d"
+      }
+    },
+    "candidate": {
+      "bsp_game.exe": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\movie_subtitle_off409\\binaries\\candidate\\bsp_game.exe",
+        "sha256": "00b1d4eb8120171a3adc48aaa9cdceae90379d6e7f748d9dd9ca004a53350d52"
+      },
+      "xlive_stub.dll": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\movie_subtitle_off409\\binaries\\candidate\\xlive_stub.dll",
+        "sha256": "7205fbd05b971aca369c78afdfe07f6db1f55cd3935f0758eff5de145ccf053e"
+      }
+    }
+  },
+  "common_backend": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\movie_subtitle_off409\\binaries\\common_backend_409\\xlive_stub.dll",
+    "sha256": "e41d690635ce050161ee0f6d376e10ba210339ab5c1970f82055a2e67bf1c80d",
+    "source": "Exact baseline409 DLL; original per-build DLLs retained separately",
+    "audit": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\movie_subtitle_off409\\xlive_audit.json",
+    "audit_sha256": "173f0c16aa55af5fff5d4a9a066490c6c38fcfe62bbfac1fff268f00099c7b4d"
+  },
+  "build_receipts": {
+    "baseline_build": {
+      "log": "J:\\PROG\\battlestations-pacific-decompile-codex-subtitle-off-base409\\local\\movie_subtitle_base409_build.log",
+      "sha256": "11fd193bebc8ee1e6201c280f08d282e55982a7504ceccf4f051bc5cbd6561d1",
+      "status": "passed",
+      "existing_tests_passed": 2,
+      "test_seconds": 13.72
+    },
+    "candidate_build": {
+      "log": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\movie_subtitle_candidate409_build.log",
+      "sha256": "c1fce0c30e734ddb7948eeb2c80cbfb7104f2dbc12901bd5f0f96b1448d646f7",
+      "status": "passed",
+      "existing_tests_passed": 2,
+      "test_seconds": 19.01
+    }
+  },
+  "matrix_source": "cc15-gui4/local/gui4_a1_jobs.txt, a1base rows only",
+  "matrix_sha256": "9e11e1f2def8d4dd6654d9e9c18df7248c3444915a6b10049fcc67959b176393",
+  "matrix_rows": [
+    {
+      "row": "esmp08",
+      "mission": "ESMP08",
+      "plan": "esmp08_p12_e8_rb.txt",
+      "frames": 140000,
+      "suffix": "_a1",
+      "flags": "",
+      "plan_path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\movie_subtitle_off409\\inputs\\plans\\esmp08_p12_e8_rb.txt",
+      "plan_sha256": "ed04e7be0a3ed297415ef90ea4fadfd2ba1c7546a2af84e2edab8ee71f2485bf"
+    },
+    {
+      "row": "jm06",
+      "mission": "JM06",
+      "plan": "jm06_s45_j6_k.txt",
+      "frames": 120000,
+      "suffix": "_a1",
+      "flags": "bounds",
+      "plan_path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\movie_subtitle_off409\\inputs\\plans\\jm06_s45_j6_k.txt",
+      "plan_sha256": "88bf4c5fb932d71cc78d2583c884543a5a6314f0b62965a5758986b82ade16ba"
+    },
+    {
+      "row": "usn21",
+      "mission": "USN21",
+      "plan": "usn21_nd1_s46_u21_f.txt",
+      "frames": 80000,
+      "suffix": "_a1",
+      "flags": "bounds",
+      "plan_path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\movie_subtitle_off409\\inputs\\plans\\usn21_nd1_s46_u21_f.txt",
+      "plan_sha256": "d189ab67e44d93f4a45786930b07f3d75e30297c59c4b724c3536b3986dfb00b"
+    },
+    {
+      "row": "ijn18",
+      "mission": "IJN18",
+      "plan": "ijn18_l67_i18_d.txt",
+      "frames": 64000,
+      "suffix": "_a1",
+      "flags": "bounds",
+      "plan_path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\movie_subtitle_off409\\inputs\\plans\\ijn18_l67_i18_d.txt",
+      "plan_sha256": "8324d67e28d82ae234cf4bd00e482605eff7b1bf04c16c401787ca79cae493c8"
+    },
+    {
+      "row": "bsm01",
+      "mission": "BSM01",
+      "plan": "bsm01_l69_b1_d.txt",
+      "frames": 40000,
+      "suffix": "_a1",
+      "flags": "",
+      "plan_path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\movie_subtitle_off409\\inputs\\plans\\bsm01_l69_b1_d.txt",
+      "plan_sha256": "a430aa4f89442c507083efa16556e32677995a559a79875637c1fa1b1d0ad3c8"
+    },
+    {
+      "row": "usn12",
+      "mission": "USN12",
+      "plan": "usn12_l68_u12_e8.txt",
+      "frames": 36000,
+      "suffix": "_a1",
+      "flags": "",
+      "plan_path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\movie_subtitle_off409\\inputs\\plans\\usn12_l68_u12_e8.txt",
+      "plan_sha256": "d1d28ee421192e33c17e9c0f2481306c6ac32a4715aa0a54bd91b71910a6bc85"
+    },
+    {
+      "row": "lomp10",
+      "mission": "LOMP10",
+      "plan": "lomp10_p3_l10_b.txt",
+      "frames": 36000,
+      "suffix": "_a1",
+      "flags": "bounds",
+      "plan_path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\movie_subtitle_off409\\inputs\\plans\\lomp10_p3_l10_b.txt",
+      "plan_sha256": "1122968b28045e2158ddc1035046c3ca87fbed662bc2c063a5126b1dc71375d6"
+    },
+    {
+      "row": "bsm09",
+      "mission": "BSM09",
+      "plan": "bsm09_l68_b9_d1.txt",
+      "frames": 36000,
+      "suffix": "_a1",
+      "flags": "",
+      "plan_path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\movie_subtitle_off409\\inputs\\plans\\bsm09_l68_b9_d1.txt",
+      "plan_sha256": "6d8a3e4a2750879209460723b9631aca5efc792f3ca747c02921f2e982411720"
+    },
+    {
+      "row": "prcp01",
+      "mission": "PRCP01",
+      "plan": "prcp01_p9_p01_k.txt",
+      "frames": 30000,
+      "suffix": "_a1",
+      "flags": "",
+      "plan_path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\movie_subtitle_off409\\inputs\\plans\\prcp01_p9_p01_k.txt",
+      "plan_sha256": "afbbecea97fd5bd007c263d5a2413f6741e0849f129942c8195024ecab44c11e"
+    },
+    {
+      "row": "usn01",
+      "mission": "USN01",
+      "plan": "usn01_l69_u1_a.txt",
+      "frames": 26000,
+      "suffix": "_a1",
+      "flags": "",
+      "plan_path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\movie_subtitle_off409\\inputs\\plans\\usn01_l69_u1_a.txt",
+      "plan_sha256": "5c0b5a0b163ec8b0e327dde4c2a136591a9cb303a0db454a49b12ad3da24ac50"
+    },
+    {
+      "row": "usn02",
+      "mission": "USN02",
+      "plan": "usn02_l68_u2_a.txt",
+      "frames": 16000,
+      "suffix": "_a1",
+      "flags": "",
+      "plan_path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\movie_subtitle_off409\\inputs\\plans\\usn02_l68_u2_a.txt",
+      "plan_sha256": "3e2cbbfcb93484afb4e06e67e57661f744f959e04e994a2add1914a2f0e783f1"
+    },
+    {
+      "row": "lomp06",
+      "mission": "LOMP06",
+      "plan": "lomp06_l70_l6_c.txt",
+      "frames": 16000,
+      "suffix": "_a1",
+      "flags": "bounds",
+      "plan_path": "J:\\PROG\\battlestations-pacific-decompile-codex-nongui-backlog\\local\\movie_subtitle_off409\\inputs\\plans\\lomp06_l70_l6_c.txt",
+      "plan_sha256": "8a6f1156adb7957ae315d45ddadecab66a12ec10b8c72c0f3580ef4fc9dc53c9"
+    },
+    {
+      "row": "usn04",
+      "mission": "USN04",
+      "plan": "",
+      "frames": 4800,
+      "suffix": "_a1",
+      "flags": ""
+    }
+  ],
+  "source_sha256": {
+    "include/bsp/game_hosts_mission_result.hpp": "7d409b6eff3781415e45570ca8afaffd204609f9ca9340202738980120368aa0",
+    "include/bsp/movie_subtitles.hpp": "be5df5e08f355ccafba3c519c8bcc135ccee59e26648162001f164911773abbb",
+    "src/game_hosts_mission_frame.cpp": "cc0b4d9cc4ee0863ae2d27791be36051a4d6c37a0b159e5af9c27bf224b7cb60",
+    "src/game_hosts_mission_result.cpp": "6caf305e262ae818484c76ae63e434ebdc0e75ca1c35934835ba498106abeb97",
+    "src/movie_subtitles.cpp": "0d1970eba4abc1a4fb38dca15c528f16da1b99ee6e85dc74643f2dc194b3506f"
+  },
+  "comparison": "Existing pair_diff plus GUI4 ordered dialog/message/Lua, teardown, start-frame and first-RNG checks; no additional masks",
+  "support_sha256": {
+    "gui4_strict.py": "1291796727eaa78a483a6e7571841b2fbbaba3be0d16d04324918952508da36f",
+    "gui4_teardown.py": "4e561fb61bbb2a8448f35307f0d0bac7161ab28de007e862569764245e902e5f",
+    "tools/run_game.ps1": "2bf602e3fd37a1423baa377c1566e3ef863f108052a7913f807a1f111345c453",
+    "tools/pair_diff.py": "accf7fd5dfccfc8b1f0c89fdaa1f78f6064f1549943b0e432b5a886d73b4c101",
+    "config/run_game.json": "b4203d8bde5cbf11762d17980d8c488a35a5de173d930db877056d1561593e47"
+  },
+  "local_script_sha256": {
+    "movie_subtitle_off_run.ps1": "0347b2e1379f098fc810100f08404fc5406273be4d3f1cf93534b73694b33bf6",
+    "movie_subtitle_off_eval.py": "7f9b215fc475ab7ed8c485aa1594e381b8c3a6fc4c700b8f0c626e2da31980cb",
+    "movie_subtitle_off_setup.py": "89080c7266845bf03339fe36a65524b8cd7cd9231b3e192c5f57b0e0c7f1ba23",
+    "movie_subtitle_off_dll_audit.py": "cc68fff3d6ec0309ccbd02084224fecd0bdff5b87c1a19fa4a109f600311fd14"
+  },
+  "environment": {
+    "BSP_DEATH_TABLE": "1",
+    "BSP_GUNNERY_RNG_STREAMS": "1"
+  },
+  "bounds_environment": "BSP_SEARCHER_BOUNDS_INIT=1 only for matrix bounds rows",
+  "max_concurrent_game_runs": 3,
+  "launcher_slots": 8,
+  "process_priority": "Normal",
+  "run_layout": "local/movie_subtitle_off409/run_{base,candidate}_{row}.log, each with manifest and input archive",
+  "partition_layout": "a1base index modulo3, each pair baseline then candidate; separate external PowerShell processes",
+  "coordination_files": "local/movie_subtitle_off409/PAUSE and STOP",
+  "immutable_original_build_dlls_preserved": true,
+  "common_backend_validation": "Both PE32 Win32; identical31 export names/ordinals/RVAs and .text bytes; common baseline409 DLL used on both sides",
+  "old9b_binaries_or_logs_reused": false,
+  "source_frozen_during_runtime": true,
+  "row_results": [],
+  "accepted_pairs": 0,
+  "native_vfs_provider_validation": {
+    "status": "pending",
+    "installed_asset": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\movies\\us_outro.mws",
+      "sha256": "2eafa20bcdc28249c024bf59815158f331ccb471726af788f83e2074798e3881",
+      "bytes": 97
+    },
+    "scope": "Existing CLI provider proof only; no MovieBridge callback reachability, subtitle playback or returned-buffer digest claim"
+  },
+  "switch": {
+    "name": "kMovieSubtitlesBound",
+    "value": false
+  },
+  "additional_native_body_credit": 0,
+  "abi_compatible": false,
+  "on_acceptance": false,
+  "later_main_boundary": "Evidence applies to exact409 common source; later main merges require source-delta review and appropriate revalidation"
+}
