@@ -16,6 +16,26 @@
   "policy": "Function addresses and disjoint file ownership define work, not wave/segment IDs. Workers read shared dependencies; primary owns Ghidra mutations, shared metadata, common APIs, CMake, builds and integration. Implemented code_ownership and future next_code_ownership are recorded separately. Refill up to three ready worker slots; verify actual concurrency on resume.",
   "packets": [
     {
+      "id": "codex-a2-startup-shader-preload",
+      "state": "on_accepted_common_build_smokes_reference_msd_source_qualified_residue",
+      "worker": "cc16-progress",
+      "source_ready": false,
+      "depends_on": ["codex_cc9_a1_activation"],
+      "function_addresses": [],
+      "output_files": ["include/bsp/game_hosts.hpp", "src/game_hosts.cpp", "include/bsp/game_native_renderer_application.hpp", "src/game_native_renderer_application.cpp", "src/game_native_renderer_startup_preload.inc", "src/game_native_mission_ship.inc", "include/bsp/game_native_mission_factories.hpp", "src/game_native_mission_factories.inc", "docs/CODEX_A2_STARTUP_PRELOAD.md"],
+      "notes": "Accepted corrected ON dfa82aafb versus OFF51e6199da, C++/include/CMake diff only A2bool. Both builds2/2; corrected60frame smokes and serial reference4800/MSD1600 all exit0. Gameplay/mission-ordered/start36/RNG match; ref rawpair1 exactly inventoried preload/cleanup rows and Lua teardown counter, MSD rawpair0. Actual MSD shutdown400/400diff0; old rawteardown70 preserves the single preload-row relocation. Existing one-error.dds/profileD61948/refs1/skipped1 residue and COM1/api1 match accepted baseline; raw COMzero failures remain false with a separate exact Source/baseline qualification, no new mask/allowance. One host-owned early factory and one real73BF80 bracket are shared with mission; A2ON and A1ON, PageOFF. No raw Text/Model/Icon/Page lifecycle, full frontend visual/interaction, reload/reuse or Original ABI acceptance."
+    },
+    {
+      "id": "codex-gui-raw-model-dispatch",
+      "state": "integrated_win32_build_checked_uncalled_default_router",
+      "worker": "gui_frame_lifetime",
+      "source_ready": false,
+      "depends_on": ["codex-gui-raw-model-storage", "codex-gui-text-raw-model-transport"],
+      "function_addresses": [],
+      "output_files": ["include/bsp/native_model_storage_dispatch.hpp", "src/native_model_storage_dispatch.cpp", "docs/CODEX_GUI_RAW_MODEL_DISPATCH.md"],
+      "notes": "Source e769 reviewed and integrated in51e6199da; TU registered in bsp_core and compiled in frozen044/dfa/51e Win32 builds with both existing CTests passing. New private metadata adapter routes genuine B6F310/BD30E0/current04 to the SAME canonical481 record, frames and volatile flags cell; no new body credit, duplicate count or legacy layout substitution. No production caller or actual DEFAULT Model/Text lifecycle execution. Genuine private Model node/scene/type/parent providers and GuiDefault/cache/Lua readiness remain explicit prerequisites; e261 documents the same base-runtime point-light identity needed for wiring."
+    },
+    {
       "id": "codex-gui-text-raw-model-transport",
       "state": "integrated_source_reviewed_win32_build_passed_default_runtime_unproven",
       "worker": "gui_integration_review",
