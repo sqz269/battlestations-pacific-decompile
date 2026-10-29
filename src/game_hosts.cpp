@@ -8,9 +8,14 @@
 #include "bsp/game_native_lua_globals.hpp"
 #include "bsp/game_native_lua_services.hpp"
 #include "bsp/game_native_renderer_application.hpp"
+#include "bsp/game_native_raw_default_text_owner.hpp"
+#include "bsp/game_native_mission_factories.hpp"
 #include "bsp/native_render_resource_init.hpp"
 #include "bsp/game_native_font_probe.hpp"
 #include "bsp/game_native_gui_text_process.hpp"
+#include "bsp/game_native_gui_icon_process.hpp"
+#include "bsp/native_gui_icon_delayed_loads.hpp"
+#include "bsp/native_string_raw_domain.hpp"
 #include "bsp/game_native_gui_text_state.hpp"
 #include "bsp/game_native_type_storage.hpp"
 #include "bsp/native_vfs_owner_services.hpp"
@@ -86,6 +91,10 @@
 #include "bsp/legacy_crt_math.hpp"
 
 namespace bsp::game {
+namespace {
+// Private single-lifecycle qualification. Normal host startup stays lazy.
+constexpr bool kGuiIconDelayedLifecycleQualificationCc16Bound = false;
+}
 // Harness only (src/game_hosts_mission.cpp): --stop-after-end has stopped the mission.
 bool harness_stopped_after_end() noexcept;
 namespace {
@@ -1915,13 +1924,132 @@ void GameStartupHost::exit_if_native_lua_interrupted() noexcept {
     std::_Exit(1); // no guessed raw-manager rollback or CRT cleanup of partial state
 }
 
+void GameStartupHost::prepare_native_gui_icon_process() {
+    if (!singletons_ || !vfs_ || native_gui_icon_process_ ||
+        singletons_->native_deletion_bindings().gui_icon_delayed_loads)
+        throw std::logic_error("GUI Icon process requires a fresh host and empty deletion arm");
+    auto& process = game_native_gui_icon_process();
+    auto& strings = game_native_string_process().raw_context();
+    if (process.delayed_loads_status() != GameNativeGuiIconProcess::DelayedLoadsStatus::unprepared ||
+        !same_native_string_raw_pool_cells(strings, vfs_->raw_strings()) ||
+        &strings.actual_manager_publication_01090aa0 !=
+            &singletons_->manager_publication_01090aa0())
+        throw std::logic_error("GUI Icon process requires permanent canonical string cells and one host");
+    auto& service = process.prepare_delayed_loads(strings); // C++ metadata only.
+    singletons_->native_deletion_bindings().gui_icon_delayed_loads = &service;
+    native_gui_icon_process_ = &process; // Commit stable borrows before observations/logging.
+    if (process.delayed_loads_status() != GameNativeGuiIconProcess::DelayedLoadsStatus::idle ||
+        process.publication_00f8bd98())
+        throw std::logic_error("GUI Icon metadata preparation entered unexpected native custody");
+    log_.note("native GUI Icon process: metadata_prepared idle=1 publication=null deletion_bound=1");
+    if constexpr (kGuiIconDelayedLifecycleQualificationCc16Bound) {
+        try {
+            // Service/dispatcher/providers are stable before this genuine getter.
+            // Never destroy/unregister this borrowed result: actual drain owns it.
+            auto* const actual = service.get_00ab5700();
+            native_gui_icon_qualification_identity_ = actual;
+            const auto* const operation = service.last_operation();
+            if (!actual || process.publication_00f8bd98() != actual ||
+                process.delayed_loads_status() != GameNativeGuiIconProcess::DelayedLoadsStatus::registered_owner ||
+                !operation || operation->kind != NativeGuiIconDelayedLoadsOperation::Kind::getter ||
+                operation->phase != NativeGuiIconDelayedLoadsOperation::Phase::complete ||
+                operation->actual != actual || operation->allocated != actual ||
+                !operation->guard_entered || !operation->guard_cleanup_completed ||
+                !operation->registration_returned)
+                throw std::logic_error("GUI Icon qualification requires one completed actual getter/registration");
+            log_.note("native GUI Icon qualification: actual_getter_registered guard_completed=1 custody=manager");
+        } catch (...) {
+            try { log_.note("native GUI Icon qualification interrupted; retaining the entire provider graph until exit"); log_.close(); }
+            catch (...) { std::fputs("bsp_game: GUI Icon qualification requires process exit\n", stderr); }
+            std::_Exit(1);
+        }
+    }
+}
+
+void GameStartupHost::exit_if_native_gui_icon_interrupted() noexcept {
+    if (!native_gui_icon_process_) return;
+    using Status = GameNativeGuiIconProcess::DelayedLoadsStatus;
+    const auto status = native_gui_icon_process_->delayed_loads_status();
+    if (status == Status::idle || status == Status::registered_owner) return;
+    try {
+        log_.note("native GUI Icon operation interrupted; retaining the entire provider graph until exit");
+        log_.close();
+    } catch (...) { std::fputs("bsp_game: native GUI Icon requires process retention\n", stderr); }
+    std::_Exit(1);
+}
+
+void GameStartupHost::verify_native_gui_icon_after_drain() {
+    if (!native_gui_icon_process_) return;
+    if (!singletons_ ||
+        native_gui_icon_process_->delayed_loads_status() != GameNativeGuiIconProcess::DelayedLoadsStatus::idle ||
+        native_gui_icon_process_->publication_00f8bd98() ||
+        singletons_->manager_publication_01090aa0() ||
+        singletons_->native_deletion_bindings().gui_icon_delayed_loads !=
+            &native_gui_icon_process_->delayed_loads())
+        throw std::logic_error("GUI Icon requires idle/null publication and the SAME deletion service after full drain");
+    log_.note("native GUI Icon process: after_full_drain idle=1 publication=null manager=null deletion_bound=1");
+    if (native_gui_icon_qualification_identity_ && !native_gui_icon_qualification_retired_) {
+        // The operation is independent retained metadata. Compare addresses only;
+        // the popped/freed native owner must never be dereferenced here.
+        const auto* const operation = native_gui_icon_process_->delayed_loads().last_operation();
+        if (!operation || operation->kind != NativeGuiIconDelayedLoadsOperation::Kind::scalar_delete ||
+            operation->phase != NativeGuiIconDelayedLoadsOperation::Phase::complete ||
+            operation->actual != native_gui_icon_qualification_identity_ || operation->flags != 1u ||
+            !operation->backing_free_started || !operation->object_free_started)
+            throw std::logic_error("GUI Icon qualification requires actual popped-owner flags1 retirement");
+        native_gui_icon_qualification_retired_ = true;
+        log_.note("native GUI Icon qualification: retired_by_actual_parent_drain flags=1 backing_free=returned object_free=returned");
+    }
+}
+
 void GameStartupHost::exit_if_native_renderer_incomplete() noexcept {
-    if (!native_renderer_ || !native_renderer_->requires_process_retention()) return;
+    exit_if_native_gui_icon_interrupted();
+    const bool factories_incomplete = native_startup_factories_ &&
+        (startup_factories_phase_ != StartupFactoriesPhase::live ||
+            native_startup_factories_->requires_process_retention());
+    if (!factories_incomplete &&
+        (!native_renderer_ || !native_renderer_->requires_process_retention())) return;
     try {
         log_.note("native renderer incomplete; actual destructor requires completed device/default surfaces, retaining native ownership until exit");
         log_.close();
     } catch (...) { std::fputs("bsp_game: incomplete native renderer requires process exit\n", stderr); }
     std::_Exit(1);
+}
+
+void GameStartupHost::drain_native_singletons() {
+    exit_if_native_gui_icon_interrupted();
+    // Font/GUI borrowers have retired; renderer drain retires its remaining
+    // lookup-capable consumers, then the shared factory table, before shutdown.
+    // BBC5D0 leaves dangling table bits until parent drain. Never let a later
+    // failure unwind VFS/data/strings merely because the facade says retired.
+    try {
+        if (!native_startup_factories_) {
+            if (native_renderer_) native_renderer_->drain_singletons();
+            else singletons_->shutdown();
+            verify_native_gui_icon_after_drain();
+            return;
+        }
+        if (startup_factories_phase_ != StartupFactoriesPhase::live)
+            throw std::logic_error("shared startup factories cannot replay retirement");
+        startup_factories_phase_ = StartupFactoriesPhase::retiring;
+        if (native_renderer_) native_renderer_->drain_singletons();
+        else {
+            native_startup_factories_->retire_before_native_drain();
+            singletons_->shutdown();
+        }
+        verify_native_gui_icon_after_drain();
+        startup_factories_phase_ = StartupFactoriesPhase::retired;
+        // Renderer closure has returned and detached its borrow, including
+        // any prepared-phase return; all provider objects are still alive.
+        native_startup_factories_->after_native_drain();
+        native_startup_factories_.reset();
+        startup_factories_phase_ = StartupFactoriesPhase::closed;
+    } catch (...) {
+        startup_factories_phase_ = StartupFactoriesPhase::failed;
+        try { log_.note("native singleton/factory drain incomplete; retaining the entire provider graph until exit"); log_.close(); }
+        catch (...) { std::fputs("bsp_game: native singleton/factory drain requires process exit\n", stderr); }
+        std::_Exit(1);
+    }
 }
 
 void GameStartupHost::exit_if_native_fonts_interrupted() noexcept {
@@ -2061,8 +2189,7 @@ GameStartupHost::~GameStartupHost() {
     // through the actual raw singleton drain, including exceptional startup.
     if (singletons_) {
         prepare_native_platform_drain();
-        if (native_renderer_) native_renderer_->drain_singletons();
-        else singletons_->shutdown();
+        drain_native_singletons();
         if(scripts_)scripts_->input().after_singleton_drain();
         if constexpr (kGuiManagerCc15Bound) {
             if (native_gui_manager_) {
@@ -2411,6 +2538,26 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         std::filesystem::current_path() / "battlestationspacific.exe", options_.hardware_probe_commit);
     VfsStartupState vfs_state;
     vfs_->phase2(vfs_state);
+    prepare_native_gui_icon_process();
+
+    if constexpr (kNativeShaderPreloadStartupCc16Bound) {
+        // Original73D8CC: real BBCB40 before platform construction and the
+        // archive tail. Core/raw VFS and canonical strings/registry exist now.
+        if (startup_factories_phase_ != StartupFactoriesPhase::unattempted)
+            throw std::logic_error("shared startup factories cannot be reconstructed");
+        native_startup_factories_ = std::make_unique<GameNativeMissionFactories>(
+            log_, *vfs_, *singletons_, *native_data_);
+        startup_factories_phase_ = StartupFactoriesPhase::prepared;
+        startup_factories_phase_ = StartupFactoriesPhase::creating;
+        try {
+            native_startup_factories_->create();
+            startup_factories_phase_ = StartupFactoriesPhase::live;
+        } catch (...) {
+            startup_factories_phase_ = StartupFactoriesPhase::failed;
+            exit_if_native_renderer_incomplete();
+            throw;
+        }
+    }
 
     // Phase 3, platform, window and save storage (0073d8c0-0073d988).
     // The native image imports XInputEnable before WinMain. Keep the selected
@@ -2474,6 +2621,8 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     bind_legacy_crt_math_runtime(application_math_runtime);
     native_renderer_ = std::make_unique<GameNativeRendererApplication>(log_, *singletons_,
         *vfs_, *lua_services_, *native_data_, clock_publication_01090ab0_, NativePlatformLoadPublication(native_platform_->publication));
+    if constexpr (kNativeShaderPreloadStartupCc16Bound)
+        native_renderer_->bind_startup_factories(*native_startup_factories_);
     native_renderer_->construct();
     renderer_api_ = &native_renderer_->api();
     renderer_parameters_ = &native_renderer_->parameters();
@@ -2740,14 +2889,22 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     try { native_shadow_->construct(); }
     catch (...) { exit_if_native_shadow_incomplete(); throw; }
     log_.implemented("Phase 7 native shadow target startup", "0073dccb");
+    // Prepare the one input metadata/context graph before 73DD12's load pump.
+    // This constructs no native backend/actions and leaves input_runtime_ null;
+    // the sampler can borrow input_->core without moving native 73DD8E effects.
+    // Sound/XLive, XInput, platform and the frame clock already outlive it.
+    input_ = std::make_unique<InputServices>(*this);
     if constexpr (kNativeRendererStartupCc15Bound) {
         // cc15-gui4 A1: 0073DD12's position (0073BF80). Open the one raw scene
         // domain the mission and GUI page graphs borrow. The image's
         // CD80A0/CD80F0/CD8080 CRT initializers have run by now.
         native_renderer_->open_startup_scene_domain();
     }
+    if constexpr (kNativeShaderPreloadStartupCc16Bound) {
+        try { native_renderer_->preload_startup_shaders(input_->core); }
+        catch (...) { exit_if_native_renderer_incomplete(); throw; }
+    }
     log_.unimplemented("Phase 4 renderer_resources", "00b14a10");
-    input_ = std::make_unique<InputServices>(*this);
     input_runtime_ = &input_->core;
     input_runtime_->startup();
     log_.implemented("Phase 5 input_backend_initialize", "0073dd8e");
@@ -2932,7 +3089,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
             });
         native_renderer_->bind_mission_startup_random(*random_threads_);
     }
-    if (native_gui_render_)
+    if (native_gui_render_ || native_raw_default_text_)
         native_renderer_->register_mission_prepare_callback(this, [](void* owner) {
             static_cast<GameStartupHost*>(owner)->prepare_native_gui_text_resources();
         });
@@ -3285,8 +3442,7 @@ void GameStartupHost::destroy_singleton_lifetime_manager() {
     log_.implemented("StartupHost::destroy_singleton_lifetime_manager", "008f8449");
     retire_native_fonts_before_drain();
     prepare_native_platform_drain();
-    if (native_renderer_) native_renderer_->drain_singletons();
-    else singletons_->shutdown();
+    drain_native_singletons();
     close_native_gui_probe_after_drain();
     close_native_gui_text_after_drain();
     close_native_platform_after_drain();

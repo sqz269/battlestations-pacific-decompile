@@ -1,8 +1,8 @@
 # cc15-gui4 A1: the startup raw scene domain
 
-Switch: `kNativeRendererStartupCc15Bound` (`include/bsp/game_native_renderer_application.hpp`), ON candidate.
+Switch: `kNativeRendererStartupCc15Bound` (`include/bsp/game_native_renderer_application.hpp`), ON.
 Status: source-reviewed; the original baseline at `634258460` and matched-common-code gates
-at `6c8016fa7` pass. Publication awaits integrator review. This activates the raw domain,
+at `6c8016fa7` pass and the integrator accepted the activation. This activates the raw domain,
 without native GUI page drawing.
 
 ## What A1 builds
@@ -180,7 +180,7 @@ Exact executable hashes, row receipts and remaining ON gates are recorded in
 domain-only fallback and shutdown correction; they do not accept the ON flip,
 startup shader preload, repeated GUI traversal, reload or late-plane drawing.
 
-## A1 activation candidate, 2026-10-28
+## A1 activation, 2026-10-28
 
 The switch-only activation candidate `634258460` sets
 `kNativeRendererStartupCc15Bound` ON over accepted OFF source `5ca4639f0b`.
@@ -194,4 +194,5 @@ and provisional GUI Text/Element type-id records. Ordered events, startup frame
 36, first logged draw and teardown agree. Immutable input, DLL, argument,
 difficulty/environment and nonoverlapping serial timestamp audits pass.
 Exact source hashes, receipts and remaining scope limits are in
-`docs/CODEX_GUI4_A1_ACTIVATION.md`. Root review/publication remains separate.
+`docs/CODEX_GUI4_A1_ACTIVATION.md`. Root accepted the ON switch after reviewing
+the final receipts and matching the integrated C++ snapshot to frozen `6c8016fa7`.

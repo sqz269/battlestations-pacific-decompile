@@ -50,8 +50,10 @@ struct MissionShipGraph final {
     std::unique_ptr<GameNativeMissionDevices> devices_visual;
     std::unique_ptr<GameNativeMissionFrameJobs> frame_jobs;
     std::unique_ptr<GameNativeMissionMaterialRefresh> material_refresh;
-    std::unique_ptr<GameNativeMissionFactories> factories;
-    std::unique_ptr<MissionShipShaderPreloadGraph> preload;
+    std::unique_ptr<GameNativeMissionFactories> owned_factories;
+    GameNativeMissionFactories* factories{};
+    std::unique_ptr<MissionShipShaderPreloadGraph> owned_preload;
+    MissionShipShaderPreloadGraph* preload{};
     std::unique_ptr<MissionShipFoliageGraph> foliage;
     std::unique_ptr<MissionShipCameraGraph> camera;
     std::unique_ptr<MissionCommandGraph> commands;
@@ -132,6 +134,7 @@ struct MissionShipGraph final {
         check(stage == Stage::prepared, "mission ship preparation cannot replay");
         check(!layouts.has_live_companions(),
             "mission ship cannot adopt preexisting layout companions");
+        if (factories) factories->require_lookup_ready();
         // Metadata borrows require the ready renderer with no interrupted
         // acquisition. Bind them before opening the native shader bracket.
         model = std::make_unique<GameNativeMissionModel>(log, application, files,
@@ -139,13 +142,19 @@ struct MissionShipGraph final {
         stage = Stage::preparing;
         try {
             log.note("native mission ship: BSP_NATIVE_MISSION_SHIP=1 prepare live unit models");
-            factories = std::make_unique<GameNativeMissionFactories>(log, files,
-                singletons, graph.profiles.data);
-            factories->create();
-            preload = std::make_unique<MissionShipShaderPreloadGraph>(log,
-                singletons.manager_publication_01090aa0(), model->effect_cache(),
-                owners, lua, shader_cache, renderer);
-            preload->create();
+            check((factories != nullptr) == (preload != nullptr),
+                "mission startup factory/preload borrows must share one ready domain");
+            if (!factories) {
+                owned_factories = std::make_unique<GameNativeMissionFactories>(log, files,
+                    singletons, graph.profiles.data);
+                factories = owned_factories.get();
+                factories->create();
+                owned_preload = std::make_unique<MissionShipShaderPreloadGraph>(log,
+                    singletons.manager_publication_01090aa0(), model->effect_cache(),
+                    owners, lua, shader_cache, renderer);
+                preload = owned_preload.get();
+                preload->create();
+            }
             foliage = std::make_unique<MissionShipFoliageGraph>(log,
                 singletons.manager_publication_01090aa0());
             // Explicit diagnostic foliage scalar/normal choices. No foliage
@@ -409,19 +418,24 @@ struct MissionShipGraph final {
     }
     void retire_before_native_drain(GameNativeRendererApplication& application) {
         if (stage == Stage::closed) return;
-        if (stage == Stage::prepared) { stage = Stage::closed; return; }
+        if (stage == Stage::prepared) {
+            if (!owned_factories) factories = nullptr;
+            if (!owned_preload) preload = nullptr;
+            stage = Stage::closed;
+            return;
+        }
         check(stage == Stage::ready && !requires_process_retention(),
             "incomplete mission ship graph cannot be retired");
         stage = Stage::retiring;
         try {
             release_late_model_shader_cache(application);
-            preload->retire_before_native_drain();
+            if (owned_preload) preload->retire_before_native_drain();
             lighting->retire_before_native_drain();
             scene->retire_before_native_drain();
             model->retire_drawables();
             camera->retire_caller_reference();
             foliage->retire_before_native_drain();
-            factories->retire_before_native_drain();
+            if (owned_factories) factories->retire_before_native_drain();
             stage = Stage::retired;
         } catch (...) { stage = Stage::failed; throw; }
     }
@@ -432,10 +446,14 @@ struct MissionShipGraph final {
         resources->after_native_drain();
         scene->after_native_drain();
         camera->after_native_drain();
-        preload->after_native_drain();
-        factories->after_native_drain();
+        if (owned_preload) preload->after_native_drain();
+        if (owned_factories) factories->after_native_drain();
         model->after_native_renderer_drain();
         if (frame_jobs) frame_jobs->after_native_drain();
+        // The host may now acknowledge/drop its shared factory owner. Closed
+        // mission metadata must never inspect either borrowed domain again.
+        if (!owned_factories) factories = nullptr;
+        if (!owned_preload) preload = nullptr;
         stage = Stage::closed;
         log.notef("native mission ship closed: last_mission_frame=%llu camera=retired scene=retired "
             "models=retired foliage=retired resources=retired",

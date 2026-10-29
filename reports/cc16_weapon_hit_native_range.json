@@ -1,0 +1,263 @@
+{
+  "packet": "codex-weapon-hit-native-range",
+  "status": "source_integrated_OFF_postspill_fixture_passed_actual_host_gates_pending",
+  "base_commit": "90d44021a",
+  "new_original_function_body_credit": 0,
+  "guard": {
+    "name": "kWeaponHitAccuracyNativeRangeBound",
+    "default": false,
+    "existing_pc24_cohort_changed": false
+  },
+  "scope": {
+    "addresses": [
+      "008383d0",
+      "008386f0",
+      "006eb060"
+    ],
+    "existing_sample_inclusive_end": "00838526",
+    "existing_sample_bytes": 343,
+    "normal_ret8": "00838509",
+    "corrected_window": "post-008383fe float spill through range/profile blend and final reload",
+    "files": [
+      "include/bsp/gameplay_settings_tail.hpp",
+      "src/gameplay_settings_tail.cpp",
+      "src/game_hosts_ship_ai.cpp",
+      "docs/CC16_WEAPON_HIT_NATIVE_RANGE.md",
+      "reports/cc16_weapon_hit_native_range.json"
+    ],
+    "shared_metadata_cmake_or_ghidra_mutations": false,
+    "vendor_body_changes_or_credit": false
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "bsp.py ghidra wrappers verify current project/program before live evidence batches"
+  },
+  "actual_cell_custody": {
+    "cell": "0109eea4",
+    "producer": "GameNativeCanonicalDataOwner / GameNativeMutableCrtData::feature_word()",
+    "initialization": "verified supported-PE loader state in genuinely owned mutable page; no mode initialized by this packet",
+    "lifetime": "canonical process owner intentionally retained through teardown",
+    "handoff": [
+      "game_main.cpp obtains native_crt_feature from owner.mutable_crt_data().feature_word()",
+      "same reference bound into GameNativeDynProcess convex pool startup before application ship AI",
+      "crt_conversion_0109eea4() checks completed startup and returns retained reference",
+      "guarded006eb060 host caller passes reference through008386f0 to008383d0 overload",
+      "kernel puts address in ECX after FMUL; existing converter CMP [ECX],0 reads current cell"
+    ],
+    "cpu_inference_cached_bool_or_default_mode": false,
+    "mutable_value_read_epoch": "inside existing converter immediately after native FMUL ST1"
+  },
+  "contracts": {
+    "public_compatibility": "old APIs retained; no optional/default mode argument",
+    "profiles": "same four authored profiles, size58h, small array08h, large array30h, identities/order unchanged",
+    "size_weight": "existing interpolation retained; native008383fe proves float spill boundary",
+    "unspilled_input": "FLD double -10; FMUL ST1; pointer load; direct qualified BF7420 call, no C++ value marshalling or extra spill",
+    "conversion": "existing qualified runtime0/nonzero binding, actual mutable cell address, low EAX semantics retained",
+    "unordered": "FCOMIP/JC and COMISS/JC enter conversion path on unordered; later JBE clamps preserved",
+    "integer_policy": "native OR/SUB and signed clamps, no C++ invalid cast",
+    "remaining_spills": "range weight, lower weight, large/small blend and final result float stores/reloads preserve original epochs",
+    "controls": "ambient x87 and MXCSR; no forcing by new kernel",
+    "abi": "original __thiscall profile, two stack floats, RET8, ST0; C++ adapters not binary compatible",
+    "vendor_qualification": "inherited existing BF7420/BF7456 contract only; no broader CRT/error/status proof"
+  },
+  "immutable_constant_bytes": [
+    {
+      "address": "00d7a3a0",
+      "hex": "000000a09999b93f",
+      "role": "exact promoted float0.1 threshold"
+    },
+    {
+      "address": "00d0a198",
+      "hex": "00000000000024c0",
+      "role": "double -10"
+    },
+    {
+      "address": "00ce3dc0",
+      "hex": "0000000000002440",
+      "role": "double +10"
+    }
+  ],
+  "original_call_evidence": [
+    {
+      "function": "008383d0",
+      "address": "008383f9",
+      "native": "00419010",
+      "role": "unchanged size interpolation"
+    },
+    {
+      "function": "008383d0",
+      "address": "0083846b",
+      "native": "00bf7420",
+      "role": "runtime conversion of unspilled ST0"
+    },
+    {
+      "function": "008386f0",
+      "address": "00838720",
+      "native": "008383d0",
+      "role": "profile0"
+    },
+    {
+      "function": "008386f0",
+      "address": "0083874a",
+      "native": "008383d0",
+      "role": "profile1"
+    },
+    {
+      "function": "008386f0",
+      "address": "0083876f",
+      "native": "008383d0",
+      "role": "profile2"
+    },
+    {
+      "function": "008386f0",
+      "address": "00838799",
+      "native": "008383d0",
+      "role": "profile3"
+    },
+    {
+      "function": "006eb060",
+      "address": "006eb099",
+      "native": "00424c40",
+      "role": "existing settings producer"
+    },
+    {
+      "function": "006eb060",
+      "address": "006eb0c2",
+      "native": "00424c40",
+      "role": "existing settings producer"
+    },
+    {
+      "function": "006eb060",
+      "address": "006eb10a",
+      "native": "00424c40",
+      "role": "existing settings producer"
+    },
+    {
+      "function": "006eb060",
+      "address": "006eb12e",
+      "native": "00424c40",
+      "role": "existing settings producer"
+    },
+    {
+      "function": "006eb060",
+      "address": "006eb0b4",
+      "native": "008386f0",
+      "role": "live projectile accuracy caller"
+    },
+    {
+      "function": "006eb060",
+      "address": "006eb0dd",
+      "native": "008386f0",
+      "role": "live projectile accuracy caller"
+    },
+    {
+      "function": "006eb060",
+      "address": "006eb125",
+      "native": "008386f0",
+      "role": "live projectile accuracy caller"
+    },
+    {
+      "function": "006eb060",
+      "address": "006eb149",
+      "native": "008386f0",
+      "role": "live projectile accuracy caller"
+    }
+  ],
+  "validation": {
+    "standard_win32_release": "scripts/build.ps1 passed",
+    "existing_ctests": "reconstructed_math and tool_tests, 2/2 passed",
+    "first_build_issue": "new runtime header exposed Windows min/max macros; source-local NOMINMAX resolved, final build passed",
+    "build_log": "local/weapon_hit_native_range_build_final.log",
+    "object": "local/weapon_hit_native_range_object.txt",
+    "object_critical_epoch": "helper+73 FMUL ST1; +75 address load ECX; +78 converter CALL; no intervening spill",
+    "object_unordered": "FCOMIP/JB and COMISS/JB retained",
+    "off_caller_conversion_getter_symbol_count": 0,
+    "off_caller_symbols": "local/weapon_hit_native_range_off_caller_symbols.txt",
+    "off_game_sha256": "5ea16d4cb249f70f50d5e97c3ce99fd67ddd1ffa2c7120d03e9f071b8c148d16",
+    "callsite_verification": "14 original call rows checked live, 0 failed; Markdown 0 failures/unchecked/warnings",
+    "new_tests": 0,
+    "game_runs_on_flips_wins_or_install_changes": 0,
+    "new_helper_native_runtime_acceptance": false
+  },
+  "smallest_recorded_reusable_check": {
+    "report": "reports/camera_frame_state_audit.json",
+    "recorded_comparisons": 38,
+    "recorded_coverage": "CW007F/027F, both conversion modes, two RGBA cases including negative/large/NaN/infinity channels; original extended multiply/conversion path",
+    "recorded_artifact": "local/camera_scoped_validation.log and old fixture worktree",
+    "availability": "recorded paths absent; not rerun or claimed as current proof",
+    "uncovered": "new accuracy helper's initial unordered gate and exact original-body comparison",
+    "other_recorded_check": "native_ambient_color_audit.json 8 paired cases; recorded fixture worktree also absent"
+  },
+  "gate_plan": [
+    "root accepts strictly closed hash-pinned original-machine helper comparison with minimum finite boundary and initial-unordered inputs, mode0/1 and PC24/PC53",
+    "qualify any synthetic relocated cells/reference; no original-CRT/game claim",
+    "root allocates runtime slots after current subtitle matrix drains",
+    "matched frozen OFF/ON mission gates at exact integrated head; keep existing PC24 cohort fixed and toggle only new guard",
+    "preserve root-owned seeds/draw policy/frame caps/artifacts; timing/WINS decisions remain coordinated by root"
+  ],
+  "primary_integration": {
+    "status": "reviewed_common_build_tested_OFF_narrow_fixture_accepted_game_gates_pending",
+    "accepted_base": "c458c4d24",
+    "candidate": "9434d4a37f2a3c4528d826968460a982a4213e53",
+    "build_log": "local/cc16_sap_accuracy_off_build.log",
+    "existing_suites_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "guard": false,
+    "existing_cohort_changed": false,
+    "original_body_credit": 0,
+    "source_and_provider_review": "actual canonical cell/lifetime startup handoff verified; old APIs remain; source size-interpolation unchanged",
+    "core_object_sha256": "7d3627d3d509b415b74b576e3a31629b5438e2ad2c115366fc09c2f7c5aa58eb",
+    "off_ship_ai_object_sha256": "b696ca737924c1fca43832f9f080e455145326c87b15df81049311d3f5a2afa3",
+    "off_getter_symbol_count": 0,
+    "disassembly": "local/final_weapon_accuracy_object.txt",
+    "symbol_dump": "local/final_ship_ai_symbols.txt",
+    "conversion_epoch": "helper+73 FMUL ST0/ST1; +75 MOV ECX pointer argument; +78 direct qualified converter CALL, no spill",
+    "unordered_gates": "first FCOMIP/JB and COMISS/JB retained",
+    "game_validated": false,
+    "runtime_activated": false,
+    "remaining": [
+      "matched actual-host OFF/ON gates and genuine caller witness before ON",
+      "no arbitrary size interpolation, full function, original CRT/startup or ABI claim"
+    ],
+    "post_main_merge": {
+      "accepted_upstream": "c086d1548df089bd96b1ed738866d4abe51935b0",
+      "source_integration": "70107343f plus independent review5e95f340e",
+      "build_log": "local/cc16_sap_accuracy_off_main_build.log",
+      "existing_suites_passed": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "suite_elapsed_seconds": 13.68,
+      "game_validated": false,
+      "core_object_unchanged": true,
+      "core_object_sha256": "7d3627d3d509b415b74b576e3a31629b5438e2ad2c115366fc09c2f7c5aa58eb",
+      "off_ship_ai_object_sha256": "b696ca737924c1fca43832f9f080e455145326c87b15df81049311d3f5a2afa3",
+      "off_getter_symbol_count": 0,
+      "guard": false,
+      "executable_sha256": "5756762738d9933efba698c242a517fea388415b3d88c4db03e5053df1e0714e"
+    },
+    "narrow_native_fixture": {
+      "commit": "8c2fa31e37f7125cb2d60c21447b3d8b505a2f6e",
+      "report": "reports/cc16_weapon_hit_native_fixture.json",
+      "scope": "only post8383FE window at endpoint weight1 and direct conversion with synthetic cells",
+      "postspill_pairs_passed": "8/8",
+      "direct_conversion_pairs_passed": "8/8",
+      "legacy_negative_control_differences": "6/8",
+      "native_word_CW": [
+        "007f",
+        "027f"
+      ],
+      "synthetic_mode_values": [
+        0,
+        1
+      ],
+      "game_or_ON_acceptance": false
+    }
+  }
+}

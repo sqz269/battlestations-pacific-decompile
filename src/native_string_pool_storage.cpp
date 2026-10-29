@@ -107,6 +107,12 @@ ActualNativeStringPoolStorage::ActualNativeStringPoolStorage(
     : publication_(publication), returns_disabled_(returns_disabled),
       actual_manager_(&actual_manager_publication_01090aa0) {}
 
+bool ActualNativeStringPoolStorage::uses_raw_pool_cells(const NativeStringRawPoolContext& raw) const noexcept {
+    return lifetime_ == nullptr && actual_manager_ == &raw.actual_manager_publication_01090aa0 &&
+        &publication_ == &raw.actual_published_01090aa8 &&
+        &returns_disabled_ == &raw.actual_small_returns_disabled_01090aa4;
+}
+
 NativeStringPoolStorage* ActualNativeStringPoolStorage::get_pool() {
     if (actual_manager_) {
         return native_string_pool_get_or_create_00419cc0(publication_, *actual_manager_);

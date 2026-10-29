@@ -1,14 +1,17 @@
 # Qualified raw DEFAULT Text factory
 
-Status: **UNBUILT new-file Source helper and ownership proposal**. No build,
-probe, game, activation, Ghidra mutation or production caller is supplied. No
+Status: **integrated, source-reviewed and Win32 build-tested helper**. Root and
+independent review passed for ba2; integrated sourcecb6ba1195 builds both helper
+TUs in bsp_core. MSVC Win32 Release and both existing CTests pass; log:
+`local/codex_default_helpers_build.log`. No lifecycle probe, game, activation,
+Ghidra mutation or production caller is supplied. No
 shared source, CMake, configuration, name/body ledger or existing factory is
 edited. Address `00AA1380` is qualified for its DEFAULT normal path only; this
 is neither full-body credit nor Original register/FH3/private-stack ABI proof.
 
 Pinned Text dependency: `e75a17321ea79efcb66e615552b5cb067f104247`, over
 Model lifetime `48195196e5` and geometry `d403f54118`. The private Model tree/
-zero/scalar router is unbuilt `e7690366e326496119516aa82ba9ed836338893e`.
+zero/scalar router `e7690366e326496119516aa82ba9ed836338893e` is build-tested.
 The concrete provider-wiring audit is `e2612187c15388e7656ee9a49f2a11f237c43821`.
 Those source versions are dependencies, not acceptance inherited by this helper.
 They were inspected as pinned Git blobs because cc9's existing branch is not
@@ -150,14 +153,23 @@ release frames/acquisitions. No second Model credit/lifetime is introduced.
 The factory's known point-light/string/record alias checks do not prove opaque
 provider code, transitive extents or slab custody; those remain caller proofs.
 
-The smallest remaining provider surface is the approved frame-worker NEW
+The integrated provider surface is the reviewed frame-worker NEW
 `native_model_storage_node_dispatch.hpp/.cpp`: real Model type0C/006EF860
 (and genuine B6F570 for the still-live base prefix), parenting1C/B6D7B0 and
 child50/54/B6ED80/B6EE10, with caller-prepared retained per-call slots and SAME
 e769/private node/scene/gate identities. It must admit legitimate D62C88
 base-prefix callbacks during B6F440. A table-only or A1 camera-only router does
-not implement those callbacks. That helper plus the complete real GuiDefault
-provider composition must be integrated/reviewed before production entry.
+not implement those callbacks. That helper is separately compiled and reviewed;
+the complete real GuiDefault/provider owner and raw-compatible widget lifetime
+composition remain required before production entry. These uncalled helpers
+have no actual DEFAULT lifetime/failure/reuse or native ABI execution proof.
+
+The raw factory's process-boundary string checks now admit distinct genuine
+VFS/process wrappers over the exact same pool/disabled/manager CELL addresses.
+Typed storage must be the actual-manager form of the existing final native-pool
+implementation. Local renderer/effect/material identities and all lifetime
+requirements remain exact; no pointee-value equality, fake allocator or semantic
+pool bridge is substituted. See the raw transport's string-cell correction.
 
 ## Validation boundary
 

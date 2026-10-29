@@ -50,6 +50,24 @@ include(cmake/zlib.cmake)
 include(cmake/d3dx.cmake)
 add_library(bsp_core STATIC src/math.cpp src/render_sort.cpp src/random.cpp src/random_threads.cpp src/platform_loop.cpp src/win32_event.cpp src/d3d9_startup.cpp src/d3d9_texture.cpp src/texture_atlas.cpp src/texture_atlas_lookup.cpp src/gui_texture.cpp src/gui_geometry.cpp src/shader_source.cpp src/shader_lua.cpp src/material_constants.cpp src/camera_projection.cpp src/camera_inverse.cpp src/camera_multiply.cpp src/camera_affine.cpp src/camera_transform.cpp src/d3d9_states.cpp src/d3d9_resources.cpp src/d3d9_buffers.cpp src/vertex_declaration.cpp src/d3d9_vertex_layout.cpp)
 target_include_directories(bsp_core PUBLIC include)
+target_sources(bsp_core PRIVATE src/cc16_dyn_ring_init.cpp src/cc16_dyn_radix_entries.cpp)
+target_sources(bsp_core PRIVATE src/cc16_dyn_radix_owner.cpp)
+target_sources(bsp_core PRIVATE
+  src/cc16_dyn_ring_owner.cpp src/cc16_dyn_ring_prepare.cpp
+  src/cc16_dyn_ring_query.cpp src/cc16_dyn_ring_predicates.cpp
+  src/cc16_dyn_ring_bindings.cpp src/cc16_dyn_ambient_math.cpp
+  src/cc16_dyn_radix_constructor.cpp)
+target_sources(bsp_core PRIVATE src/cc16_dyn_triplet.cpp)
+target_sources(bsp_core PRIVATE src/cc16_dyn_sap_endpoints.cpp)
+target_sources(bsp_core PRIVATE src/cc16_dyn_storage.cpp)
+target_sources(bsp_core PRIVATE src/cc16_dyn_radix_retire.cpp)
+target_sources(bsp_core PRIVATE src/cc16_dyn_pair_retire.cpp)
+target_sources(bsp_core PRIVATE src/cc16_dyn_sap_retire.cpp)
+target_sources(bsp_core PRIVATE src/cc16_dyn_sap_update.cpp src/cc16_dyn_sap_dispatch.cpp)
+target_sources(bsp_core PRIVATE
+  src/sim_damage_seg54_argon.cpp src/powerup_seg58_argon.cpp
+  src/warning_string_seg64_argon.cpp src/hardware_options_seg66_argon.cpp)
+target_sources(bsp_core PRIVATE src/native_model_storage_dispatch.cpp)
 target_sources(bsp_core PRIVATE src/oct18_tail_a.cpp)
 target_sources(bsp_core PRIVATE src/shader_reflection.cpp)
 target_sources(bsp_core PRIVATE src/material_samplers.cpp)

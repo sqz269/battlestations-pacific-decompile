@@ -1,0 +1,57 @@
+{
+  "packet": "codex-dyn-sap-retire-review",
+  "kind": "independent bounded static source review; no reconstruction credit added",
+  "result": "no source-to-listing discrepancy identified within the reviewed scope",
+  "reviewed_worktree": "J:/PROG/battlestations-pacific-decompile-codex-no-run-integrator",
+  "reviewed_snapshot": "root-authored uncommitted frozen files identified by exact SHA-256",
+  "reviewed_files": [
+    {"path": "src/cc16_dyn_sap_retire.cpp", "sha256": "824effa7ab9cb6281efcaed1c2c062333aed0c1fedebe0b9dcf85eec7c4ad13b"},
+    {"path": "include/bsp/cc16_dyn_sap_retire.hpp", "sha256": "c40c212d0cda946a0f2480e8ff5e2e1bdaacf1b37d5f9d37e4c3f8e8a319f569"}
+  ],
+  "target": {"project_file": "C:/Users/sqz269/bsp.gpr", "project": "bsp", "program_path": "/battlestationspacific.exe",
+             "language": "x86:LE:32:default", "image_base": "00400000",
+             "verified_by": "bsp.py ghidra verifying client before every live batch",
+             "fresh_export_utc": "2026-10-29T05:03:54Z"},
+  "functions": [
+    {"start": "00c4c550", "body_end_inclusive": "00c4c5c6", "body_bytes": 119, "instruction_count": 49,
+     "original_abi": "EBX manager, stack endpoint, RET4; new void C++ interface is not the native ABI",
+     "native_bytes_sha256": "98de1652c1adcd48e160792c53d36e088e5884d5c01165c9bfddb6ad02b14c59",
+     "export_assembly_sha256": "540bd493091cf5d14ee5949e95e34ea9dc64f2aa8e0563bb258b18b451469f44"},
+    {"start": "00c4cc90", "body_end_inclusive": "00c4cd9c", "body_bytes": 269, "instruction_count": 84,
+     "original_abi": "ECX manager, stack endpoint, RET4; RTTI vtable00D7A13C slot1, live DATA xref00D7A140",
+     "native_bytes_sha256": "6681c3173adac635561db6df0816fda7f6aca29f7e96a6c9aed37442e7bb0c50",
+     "export_assembly_sha256": "ee1df23570e4437830b5bb7e407f9a3c392c03d7b24db0ea2df064f325db13ec"}
+  ],
+  "rows": [
+    {"address": "00c4c591", "native": "00c40e50", "function": "00c4c550", "kind": "call", "contract": "ESI other endpoint and stack reference index; same genuine CRT forwarded"},
+    {"address": "00c4cca2", "native": "00c40800", "function": "00c4cc90", "kind": "call", "contract": "EAX endpoint, ECX manager, EDX axis0"},
+    {"address": "00c4ccb0", "native": "00c40800", "function": "00c4cc90", "kind": "call", "contract": "EAX endpoint, ECX manager, EDX axis1"},
+    {"address": "00c4ccbe", "native": "00c40800", "function": "00c4cc90", "kind": "call", "contract": "EAX endpoint, ECX manager, EDX axis2"},
+    {"address": "00c4ccc4", "native": "00c4c550", "function": "00c4cc90", "kind": "call", "contract": "EBX same manager and stack endpoint after all three removals"},
+    {"address": "00c4cd34", "native": "00bf6989", "function": "00c4cc90", "kind": "call", "contract": "nonnull actual reference buffer; nonzero pool selector captured before free"},
+    {"address": "00c4cd6e", "native": "00bf6989", "function": "00c4cc90", "kind": "call", "contract": "nonnull actual reference buffer; zero pool selector captured before free"}
+  ],
+  "review_points": [
+    {"topic": "signed counts", "result": "matches", "evidence": "C4C55A JLE and C4C5BF JL use live own+34h; C4C573 captures other+34h retained through C4C58C JL"},
+    {"topic": "pair links and recycling", "result": "matches", "evidence": "next then previous first loads; previous then next reloads; old free head into pair+0Ch, decrement+58h, index increment, publish+34h"},
+    {"topic": "missing other reference", "result": "native hazard preserved", "evidence": "pair unlinks/recycles after unsuccessful or skipped search; own references not cleared"},
+    {"topic": "active branch", "result": "matches", "evidence": "single +2Ch gate; remove axes0/1/2 then retire pairs with the same actual objects"},
+    {"topic": "pending compaction", "result": "native hazard preserved", "evidence": "fixed initial end search; fresh count/data per shift; reaching end does not suppress shifting; no not-found guard"},
+    {"topic": "pool selector and buffer free", "result": "matches", "evidence": "byte+1Ch captured before reference+30h read and actual free; nonnull-only free; no field reset"},
+    {"topic": "endpoint links and pool fields", "result": "matches", "evidence": "next then previous both load epochs; nonzero head+104h/count+190h, zero head+68h/count+F4h; old head store then count decrement then head publication"},
+    {"topic": "dependency custody", "result": "matches", "evidence": "direct real erase/remove functions and supplied CRT; no fabricated class/global/vtable/default provider or returning stub"}
+  ],
+  "findings": [],
+  "intentional_limits": ["static source/listing comparison of these two complete caller bodies only",
+                         "native not-found/invalid-reference preconditions are retained, not made safe",
+                         "new public C++ interfaces do not claim original register/stack ABI or fault-register identity",
+                         "dependency bodies, vendor CRT, host wiring and runtime behavior are outside this review"],
+  "validation": {"complete_listing_review": true, "complete_live_byte_spans": true,
+                 "call_report_verification": "7 call rows checked, 0 failed", "frozen_hashes_rechecked_at_completion": true,
+                 "source_or_header_modified": false, "compiled_by_reviewer": false, "tests_run": false,
+                 "native_or_game_launched": false, "ghidra_mutated": false,
+                 "common_build_approved": false, "abi_compatible": false, "game_validated": false},
+  "remaining_root_work": ["shared registration and Ghidra annotation/save/export refresh after address release",
+                          "common Win32 build/checks, genuine host/CRT bindings and required ABI adapters",
+                          "fixture/native differential/game validation and activation decisions"]
+}

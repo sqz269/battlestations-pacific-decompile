@@ -16,8 +16,148 @@
   "policy": "Function addresses and disjoint file ownership define work, not wave/segment IDs. Workers read shared dependencies; primary owns Ghidra mutations, shared metadata, common APIs, CMake, builds and integration. Implemented code_ownership and future next_code_ownership are recorded separately. Refill up to three ready worker slots; verify actual concurrency on resume.",
   "packets": [
     {
+      "id": "codex-gui-raw-text-main-geometry",
+      "state": "in_progress_qualified_uncalled_transport_no_activation",
+      "worker": "gui_frame_lifetime",
+      "source_ready": false,
+      "depends_on": ["codex-gui-text-raw-model-transport", "codex-gui-raw-model-geometry", "codex-gui-raw-model-node-dispatch"],
+      "function_addresses": ["00ab7700"],
+      "output_files": ["include/bsp/native_gui_text_main_geometry_storage.hpp", "src/native_gui_text_main_geometry_storage.cpp", "docs/CODEX_GUI_RAW_TEXT_MAIN_GEOMETRY_STORAGE.md"],
+      "notes": "Reviewed b95 plan: raw current74 transport only, explicit separate canonical primary/internal188 records and genuine mesh/d403/raw transforms. Preserve preallocation4C capture, single x87 D7A260 argument sample versus late setter sample, current creator decrement/terminal and captured-profile/currentreceiver split. New files only; no production caller, primary publication, nonempty retirement, Font/content/Page or extra body credit."
+    },
+    {
+      "id": "codex-gui-raw-text-cleanup-return-progress",
+      "state": "in_progress_cleanup_metadata_default_admission_preserved",
+      "worker": "gui_integration_review",
+      "source_ready": false,
+      "depends_on": ["codex-gui-text-raw-model-transport"],
+      "function_addresses": ["00ab8250", "00ab8ee0"],
+      "output_files": ["include/bsp/native_gui_text_retirement.hpp", "src/native_gui_text_retirement.cpp", "src/native_gui_text_reference.cpp", "docs/CODEX_GUI_RAW_TEXT_CLEANUP_RETURN_PROGRESS.md"],
+      "notes": "Independent 3cb proposal review found no genuine raw owned-header publication receipt. Actual packet adds only separate UNWIND-returned metadata/fresh checks alongside normal progress; consumed-before-call is not completion. Keep all DEFAULT guards/93+122/private owner admission unchanged. No owned_members enum, cached-effect credit, producer substitution, nonempty ownership or body credit."
+    },
+    {
+      "id": "codex-gui-raw-default-text-owner",
+      "state": "integrated_build_genuine_single_default_lifecycle_qualified_main_route_off",
+      "worker": "gui_frame_lifetime",
+      "source_ready": false,
+      "depends_on": ["codex-gui-raw-text-default-factory", "codex-gui-raw-model-node-dispatch", "codex-gui-raw-default-widget-lifetime"],
+      "function_addresses": [],
+      "output_files": ["include/bsp/game_native_raw_default_text_owner.hpp", "src/game_native_raw_default_text_owner.cpp", "docs/CODEX_GUI_RAW_DEFAULT_TEXT_OWNER_PLAN.md", "docs/CODEX_GUI_RAW_DEFAULT_TEXT_OWNER.md", "docs/CODEX_GUI_RAW_DEFAULT_TEXT_QUALIFICATION.md"],
+      "notes": "Owner0fcd source reviewed twice; concrete VFS/cache headers fixed, CMake/qualification hooks built2/2. Frozenc0ef2def1 same binary GUI_TEXT0/1 pair passed exit0 and one real DEFAULT create/raw122 bind/settled Text+Model scalar+pool retirement/renderer-first close; four expected owner rows only. Gameplay/full449+mission299 ordered/start36/RNG1 match. Actual VFS raw/typed string-cell correction applied; no fake provider/new cache/extra credit. Raw teardown97 is exactly two inserted rows; COMzero failure remains visible with unchanged exact one-error.dds baseline qualification. Main route restoredOFFf1bfc515f/build2/2, preserving legacy rendering. No raw content/visual/Page, failure/flags0/foreign-credit/reentry/reuse/ABI claim."
+    },
+    {
+      "id": "codex-gui-raw-default-widget-lifetime",
+      "state": "integrated_two_source_reviews_win32_build_checked_uncalled",
+      "worker": "gui_integration_review",
+      "source_ready": false,
+      "depends_on": ["codex-gui-text-raw-model-transport", "codex-gui-raw-text-default-factory"],
+      "function_addresses": [],
+      "output_files": ["include/bsp/native_gui_text_default_widget_lifetime.hpp", "src/native_gui_text_default_widget_lifetime.cpp", "docs/CODEX_GUI_RAW_DEFAULT_TEXT_WIDGET_LIFETIME.md"],
+      "notes": "Frozenb6b016e68 integrated indf7fe8eb0; root and independent source reviews pass, MSVC Win32 and both existing CTests pass. Private DEFAULT binding uses actual tables, genuine A9E070/AB83D0/A9BD50, exact raw93/raw122 graph and constructor/base-prefix lifetime auth before payload/ref access. Captured-target/result/order and ordinary-zero preserved; canonical TRUE Text branch rejects before legacy188 without any188 read. Unsupported child/timed/scene arms poison/throw; owner preflight and e75 after-callback checks remain mandatory. No legacy cast, fake predicate/no-op or body credit. Still uncalled; owner composition and actual lifecycle/failure/reuse proof remain separate."
+    },
+    {
+      "id": "codex-gui-raw-model-node-dispatch",
+      "state": "integrated_two_source_reviews_win32_build_checked_uncalled",
+      "worker": "gui_frame_lifetime",
+      "source_ready": false,
+      "depends_on": ["codex-gui-raw-model-dispatch", "codex-gui-text-raw-model-transport"],
+      "function_addresses": [],
+      "output_files": ["include/bsp/native_model_storage_node_dispatch.hpp", "src/native_model_storage_node_dispatch.cpp", "docs/CODEX_GUI_RAW_MODEL_NODE_DISPATCH.md", "docs/CODEX_GUI_RAW_MODEL_PROVIDER_WIRING.md"],
+      "notes": "Frozen2049 plus wiringdoce261 integrated/build-tested incb6ba1195; root and independent reviews pass, Win32 both existing CTests pass. Genuine existing Model/node predicates, attachment1C and scene50/54 bodies use exact e769 record aliases, real private gates/contexts, base-runtime point-lights and retained per-call prefix. No getter/init before entry, no second lifetime or false callback; live D62C88 destruction prefix is admitted before payload end, bookkeeping after body is metadata only. No production caller, actual lifetime/failure/reuse/ABI proof or new body credit."
+    },
+    {
+      "id": "codex-gui-raw-text-default-factory",
+      "state": "integrated_two_source_reviews_win32_build_checked_uncalled",
+      "worker": "gameplay_integration_review",
+      "source_ready": false,
+      "depends_on": ["codex-gui-text-raw-model-transport", "codex-gui-raw-model-node-dispatch"],
+      "function_addresses": ["00aa1380"],
+      "output_files": ["include/bsp/native_gui_text_default_factory_storage.hpp", "src/native_gui_text_default_factory_storage.cpp", "docs/CODEX_GUI_RAW_TEXT_DEFAULT_FACTORY_PLAN.md"],
+      "notes": "Frozenba2 cherry-picked narrowly and built incb6ba1195; root/independent reviews and both existing Win32 CTests pass. Qualified DEFAULT-only AA1380 helper installs persistent attempt before one AB79E0, calls raw93 once only for nonnull, retains all failures without inferred cleanup/return/credit and keeps raw122 binding separate. Existing interfaces unchanged, mandatory188 preserved. No actual factory/Model/Text lifecycle or production caller; complete genuine owner/GuiDefault/cache/Lua/provider graph and raw-compatible widget dispatch still required. No whole-body/native ABI credit."
+    },
+    {
+      "id": "codex-a2-startup-shader-preload",
+      "state": "on_accepted_common_build_smokes_reference_msd_source_qualified_residue",
+      "worker": "cc16-progress",
+      "source_ready": false,
+      "depends_on": ["codex_cc9_a1_activation"],
+      "function_addresses": [],
+      "output_files": ["include/bsp/game_hosts.hpp", "src/game_hosts.cpp", "include/bsp/game_native_renderer_application.hpp", "src/game_native_renderer_application.cpp", "src/game_native_renderer_startup_preload.inc", "src/game_native_mission_ship.inc", "include/bsp/game_native_mission_factories.hpp", "src/game_native_mission_factories.inc", "docs/CODEX_A2_STARTUP_PRELOAD.md"],
+      "notes": "Accepted corrected ON dfa82aafb versus OFF51e6199da, C++/include/CMake diff only A2bool. Both builds2/2; corrected60frame smokes and serial reference4800/MSD1600 all exit0. Gameplay/mission-ordered/start36/RNG match; ref rawpair1 exactly inventoried preload/cleanup rows and Lua teardown counter, MSD rawpair0. Actual MSD shutdown400/400diff0; old rawteardown70 preserves the single preload-row relocation. Existing one-error.dds/profileD61948/refs1/skipped1 residue and COM1/api1 match accepted baseline; raw COMzero failures remain false with a separate exact Source/baseline qualification, no new mask/allowance. One host-owned early factory and one real73BF80 bracket are shared with mission; A2ON and A1ON, PageOFF. No raw Text/Model/Icon/Page lifecycle, full frontend visual/interaction, reload/reuse or Original ABI acceptance."
+    },
+    {
+      "id": "codex-gui-raw-model-dispatch",
+      "state": "integrated_win32_build_checked_uncalled_default_router",
+      "worker": "gui_frame_lifetime",
+      "source_ready": false,
+      "depends_on": ["codex-gui-raw-model-storage", "codex-gui-text-raw-model-transport"],
+      "function_addresses": [],
+      "output_files": ["include/bsp/native_model_storage_dispatch.hpp", "src/native_model_storage_dispatch.cpp", "docs/CODEX_GUI_RAW_MODEL_DISPATCH.md"],
+      "notes": "Source e769 reviewed and integrated in51e6199da; TU registered in bsp_core and compiled in frozen044/dfa/51e Win32 builds with both existing CTests passing. New private metadata adapter routes genuine B6F310/BD30E0/current04 to the SAME canonical481 record, frames and volatile flags cell; no new body credit, duplicate count or legacy layout substitution. No production caller or actual DEFAULT Model/Text lifecycle execution. Genuine private Model node/scene/type/parent providers and GuiDefault/cache/Lua readiness remain explicit prerequisites; e261 documents the same base-runtime point-light identity needed for wiring."
+    },
+    {
+      "id": "codex-gui-text-raw-model-transport",
+      "state": "integrated_source_reviewed_win32_build_passed_default_runtime_unproven",
+      "worker": "gui_integration_review",
+      "source_ready": false,
+      "depends_on": ["codex-gui-raw-model-storage", "codex-gui-raw-model-geometry", "codex-gui-widget-state"],
+      "function_addresses": ["00ab8530", "00ab9650", "00ab8250", "00ab8ee0"],
+      "output_files": [
+        "include/bsp/native_gui_text_storage_construct.hpp", "src/native_gui_text_storage_construct.cpp",
+        "include/bsp/native_gui_text_default_storage.hpp", "src/native_gui_text_default_storage.cpp",
+        "include/bsp/native_gui_text_retirement.hpp", "src/native_gui_text_retirement.cpp",
+        "include/bsp/native_gui_text_reference.hpp", "src/native_gui_text_reference.cpp",
+        "docs/CODEX_GUI_TEXT_RAW_MODEL_TRANSPORT.md"
+      ],
+      "notes": "Frozen e75 integrated at93a52f36d after root constructor and independent ownership review; MSVC Win32 Release and both existing CTests pass. Explicit rawModel overloads85/93/118 plus separate typed raw122 preserve legacy interfaces/callers. Uses accepted481+d403 concrete retained DWORD frame. Mandatory188 publication precedes canonical admission; host_metadata failure stays distinct from native constructor cleanup/slot return. Genuine same-domain Model-only router and GuiDefault/cache/Lua readiness remain entry requirements, with DEFAULT factory binding still pending. No actual raw lifecycle/exception/reuse, FP/ABI or production-caller proof, no Page/children/nonemptycontent activation and no new body credit."
+    },
+    {
+      "id": "codex-gui-raw-model-geometry",
+      "state": "integrated_build_object_sse_checked_inactive_reference_msd_passed",
+      "worker": "gui_frame_lifetime",
+      "source_ready": false,
+      "depends_on": ["codex-gui-raw-model-storage"],
+      "function_addresses": ["00b75170"],
+      "output_files": [
+        "include/bsp/native_model_storage_geometry.hpp",
+        "src/native_model_storage_geometry.cpp",
+        "docs/CODEX_RAW_MODEL_STORAGE_GEOMETRY.md"
+      ],
+      "notes": "Integrated eb18518db: MSVC Win32 build2/2, emitted scalar SSE sequence inspected, inactive reference4800/MSD1600 pairs0 against A1 ON799. Raw B75170 uses genuine481 context/current imports/actual-owner current0; captured geometry, preserved replacements, late DWORD cells and one sentinel. No direct alias/FP/callback/lifecycle execution or Original ABI proof and no activation/body credit. Text transport and shared Model/Group/Page routing remain separate work."
+    },
+    {
+      "id": "codex-gui-raw-model-storage",
+      "state": "integrated_build_checked_inactive_reference_msd_passed",
+      "worker": "gui_frame_lifetime",
+      "source_ready": false,
+      "depends_on": [],
+      "function_addresses": ["00b75030", "00b750c0", "00b75290", "00b74f20"],
+      "output_files": [
+        "include/bsp/native_model_storage_lifetime.hpp",
+        "src/native_model_storage_lifetime.cpp",
+        "docs/CODEX_RAW_MODEL_STORAGE_LIFETIME.md"
+      ],
+      "notes": "Integrated eb18518db: qualified raw188h constructor/member/destructor/scalar/canonical actual+4 reference registered in bsp_core; MSVC Win32 build2/2 and inactive reference/MSD pairs0. Normal captured decrement epoch, fresh unwind epoch and late flags preserved. Four fragments only, no whole-body credit or direct lifecycle/exception/reuse/ABI proof. Semantic Model files unchanged; genuine shared raw child/type/scene/tree routing remains separate."
+    },
+    {
+      "id": "codex-gui-icon-delayed-custody",
+      "state": "integrated_host_metadata_and_single_empty_delayed_lifecycle_qualified_route_off",
+      "worker": "gui_integration_review",
+      "source_ready": false,
+      "depends_on": [],
+      "function_addresses": ["00ab5700", "00ab50e0", "00ab5560", "00ab57c0"],
+      "output_files": [
+        "include/bsp/game_native_gui_icon_process.hpp",
+        "src/game_native_gui_icon_process.cpp",
+        "docs/CODEX_GUI_ICON_DELAYED_PROCESS.md",
+        "docs/CODEX_GUI_ICON_PROCESS_HOST_LINK.md",
+        "docs/CODEX_GUI_ICON_SINGLETON_LIFECYCLE_QUALIFICATION.md"
+      ],
+      "notes": "Process82 compiled in eb18518db; accepted host hookup c805780d4 binds permanent canonical raw cells and SAME deletion service after VFS phase2, with central guards and both full-drain branches checked. Source review/build2/2 and one idle60-frame smoke pass. Private frozen8849426fb/601B genuine-provider60-frame fixture independently qualifies one EMPTY AB5700 allocation/publication/registration and actual manager-popped D5C4B8/AB57C0 flags1 retirement, exit0/COM0+0; no post-free reads/manual cleanup. Raw diagnostic idle comparison1 preserves slots46to47 plus2fixture rows, no masks or paired activation claim. Route restoredOFF677c3024f/build2/2; production stays metadata-only/lazy. Nonempty queue/string disposal, ordinary raw Icon/Page activation, failures/flags0/reentry/reuse/Original ABI remain open. No body credit."
+    },
+    {
       "id": "codex_cc9_a1_activation",
-      "state": "on_candidate_runtime_gates_in_progress",
+      "state": "on_integrated_common_build_smokes_strict4plus4_and_noaid_gated",
       "worker": "gameplay_integration_review",
       "source_ready": false,
       "function_addresses": [],
@@ -27,11 +167,12 @@
         "docs/CC15_GUI4_A1.md",
         "docs/CODEX_GUI4_A1_ACTIVATION.md"
       ],
-      "notes": "OFF implementation accepted on main5ca4639f0. Switch-only ON candidate634258460; reference USN04 and milestone-D1600 exit0. Await13-row ON comparison, serial alternating USN21 four OFF/four ON, no-aid pair and integrator acceptance. Expected A1 diagnostic/type-id deltas are inventoried exactly; no global noise-mask change. No new body credit."
+      "notes": "Accepted A1 ON from010be6972 after final review. FrozencommonOFF621 SHA5461327d...fc926 and ON6c8016fa7 SHA799f5fd8...f3972 differ only at A1flag; commonbuild2/2, currentreference/MSD, strictserial4OFF/4ON and separatereferencenoaidpair pass. AllOFFselfpairs0, ONrawpair1 only exactstartup-domain andGUIText/Element records; remainder/ordered/startRNG/teardown/input/time provenance pass, no retries or maskchange. Integrated C++ matches tested6c. No nativePage drawing/startupshaderpreload/allocator-runtime or newbodycredit claim."
     },
     {
       "id": "codex_aimfreeze_off_4d0350e9e",
-      "state": "off_candidate_identity_matrix_in_progress",
+      "state": "off_packet_integrated_reviewed_build_and_13_row_identity_checked",
+      "done": true,
       "worker": "aimfreeze_off_gate",
       "source_ready": false,
       "function_addresses": [
@@ -44,7 +185,7 @@
         "src/game_hosts_units.cpp",
         "docs/CODEX_AIMFREEZE_OFF_GATE_2026-10-28.md"
       ],
-      "notes": "Pending source4d0350e9e merged with main5ca4639f0 in worker candidate93b9a5517. Default and all prerequisite freeze switches remain OFF. Fresh Win32 build/three existing suites and PC24 lint passed;13-row OFF identity pending. No ON/runtime freeze-behavior acceptance."
+      "notes": "Source4d0350e9e integrated after clean93b9a5517 passed all13 OFF identity rows, ordered events, teardown, startup36/firstRNG and manifest/provider checks. Fresh Win32 build/three existing suites and PC24 lint passed. XLive differs only in its two timestamp fields. All new/base freeze switches remain OFF; no ON/runtime freeze-behavior acceptance."
     },
     {
       "id": "codex-gui-page-lifetime",
@@ -75,7 +216,8 @@
     },
     {
       "id": "codex-gui-raw-field-resolver",
-      "state": "qualified_native_abi_adapter_recovery_and_implementation",
+      "state": "qualified_source_abi_adapter_integrated_build_and_fixture_checked",
+      "done": true,
       "worker": "gui_integration_review",
       "source_ready": false,
       "function_addresses": ["006ad080", "00888aa0"],
@@ -84,11 +226,42 @@
       "notes": "Bridge the canonical CURRENT explicit-context source resolvers to real ECX/EAX fastcall cells for raw Lua field input. Number keeps full32bits; table uses actual NativeLuaObject B67800/userdata/B67700 and only the admitted canonical source target. Nested scoped activation borrows live table aliases and caller-retained frames. No signature reinterpret cast, evaluated Lua-handle projection, OriginalVA publication or new raw-body credit."
     },
     {
-      "id": "codex-gui-p3a2",
-      "state": "source_blocked_on_real_raw_field_resolver",
+      "id": "codex-gui-page-source-borrows",
+      "state": "inert_constructor_borrows_integrated_build_checked",
+      "done": true,
       "worker": "gui_integration_review",
       "source_ready": false,
-      "depends_on": ["codex_cc9_a1_activation", "codex-gui-page-lifetime", "codex-gui-widget-state", "codex-gui-raw-field-resolver"],
+      "function_addresses": [],
+      "output_files": ["include/bsp/game_native_gui_page_application.hpp", "src/game_native_gui_page_application.cpp", "src/game_hosts.cpp"],
+      "notes": "Append canonical CURRENT installed resolver slots and stable startup-owned Source GUI capability reference to the page constructor; root passes existing accessors. No provider activation or Original selector alias. Page chain remains OFF."
+    },
+    {
+      "id": "codex-gui-frame-reuse",
+      "state": "unreached_provider_fix_integrated_source_and_build_checked",
+      "done": true,
+      "worker": "gui_frame_lifetime",
+      "source_ready": false,
+      "function_addresses": ["00b6f310", "00b6d850", "00b6ed80", "00b7c020"],
+      "output_files": ["src/game_native_renderer_gui_scene.inc", "docs/CODEX_GUI_SCENE_FRAME_REUSE.md"],
+      "notes": "Reuse only outer-completed frames in existing256-slot prepared prefix; reset frame/Acquired before handoff. Retain incomplete/not-entered reservations. Source ownership/completion proof and integrated build pass; currentA1-only path never enters these providers. No direct allocator/GUI/reload runtime proof or new raw-body credit."
+    },
+    {
+      "id": "codex-gui-widget-empty",
+      "state": "readable_zero_seed_view_integrated_build_checked",
+      "done": true,
+      "worker": "primary",
+      "source_ready": false,
+      "function_addresses": [],
+      "data_addresses": ["00f8bc60"],
+      "output_files": ["include/bsp/game_native_gui_text_state.hpp"],
+      "notes": "Distinct one-byte readable loader-zero view for AA2490 and camera-store null-header fallbacks. Nine bounded DATA/address refs, no observed initializer/store; no Original extent/VA/mutable-alias claim."
+    },
+    {
+      "id": "codex-gui-p3a2",
+      "state": "integrated_page_off_build_inactive_reference_msd_passed",
+      "worker": "gui_integration_review",
+      "source_ready": false,
+      "depends_on": ["codex_cc9_a1_activation", "codex-gui-page-lifetime", "codex-gui-widget-state", "codex-gui-raw-field-resolver", "codex-gui-page-source-borrows", "codex-gui-frame-reuse", "codex-gui-widget-empty"],
       "function_addresses": [
         "00aa3140", "00aa31f0", "00aaa710", "00aaacd4", "00ac4c50",
         "00ac59a0", "00ac6600", "00ac6714", "00ac67cc", "00ac6806"
@@ -98,7 +271,7 @@
         "src/game_native_gui_page_application.cpp",
         "docs/CC15_GUI4_P3A2.md"
       ],
-      "notes": "Screen/root-only real AC4C50 and warm AC59A0 provider composition over borrowed A1 domain. AAACD4 is a child-suffix contract, not added whole-function reconstruction credit. Widget state and manager delegate dependencies are prepared; raw field resolver and complete production provider closure remain. Renderer grid-context graphics supply real geometry/stream providers for a page-owned Model companion domain. Keep properties_composed=false until closure; reject unsupported children and preserve native retained-frame lifetime. Packet stays OFF."
+      "notes": "Integrated eb18518db: c559/9f8 childless AC4C50/AC59A0/AAA710 type0-key composition, doc066 count correction and complete platform-header include fix. MSVC Win32 build2/2, inactive reference4800/MSD1600 pairs0 against accepted A1 ON799. Page chain remains OFF; actual childless lifecycle, shared-owner/reentry/reuse and GUI proof remain open. Real FE_initial needs Text/Icon and common raw Model/Group routing plus joint P4 bridge transfer. No fake enumerator/provider or whole-function credit."
     },
     {
       "id": "archive_inflate_stream",
