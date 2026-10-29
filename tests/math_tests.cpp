@@ -1,3 +1,12 @@
+#if defined(_MSC_VER) && defined(_M_IX86) && defined(_DEBUG)
+#include <crtdbg.h>
+#include <cstdlib>
+#include <new.h>
+#include <new>
+#include "bsp/dyn_profile_scopes.hpp"
+#include "bsp/native_legacy_sbo_string.hpp"
+#endif
+
 #include "bsp/ship_ai_approach_curves.hpp"
 #include "bsp/mmod_hull_convex_box.hpp"
 #include "bsp/ai_planner_tails.hpp"
@@ -236,6 +245,184 @@ private:
 }
 
 int main() {
+#if defined(_MSC_VER) && defined(_M_IX86) && defined(_DEBUG)
+    {
+        // One source-only fixture for the two C50390 exception boundaries.
+        // The actual C44000/SBO allocator runs; no original FH frame executes.
+        struct ConstructorFault { int sequence; };
+        struct ParentVectorFault {};
+        struct State {
+            DWORD thread = GetCurrentThreadId();
+            _CRT_ALLOC_HOOK previous_hook = nullptr;
+            _PNH previous_handler = nullptr;
+            bsp::DynProfileNodeStorage* raw = nullptr;
+            void* nested = nullptr;
+            void* nested_original = nullptr;
+            void* parent_buffer = nullptr;
+            int allocations = 0, rejected = 0, handlers = 0;
+            std::size_t rejected_bytes[2]{};
+            int frees68 = 0, frees65 = 0, event_count = 0, events[4]{};
+            bool constructor_fault = true, armed = false;
+            bool vector_zeroed = false, current_data = false, no_field_clear = false;
+            bool original_allocation = true, growth_request = false;
+        } state;
+        static State* active = nullptr; // Fixture observations, not a native global.
+        const auto hook = +[](int kind, void* data, std::size_t bytes, int block,
+                              long request, const unsigned char* file, int line) -> int {
+            State* const s = active;
+            if (s && s->previous_hook
+                    && !s->previous_hook(kind,data,bytes,block,request,file,line)) return FALSE;
+            // The real 17-character name requests 32, then fallback 18 bytes.
+            if (s && s->thread == GetCurrentThreadId() && s->armed
+                    && kind == _HOOK_ALLOC && block == _NORMAL_BLOCK
+                    && (bytes == 32 || bytes == 18)) {
+                auto* const words = reinterpret_cast<std::uint32_t*>(s->raw->bytes);
+                if (s->rejected == 0) {
+                    s->vector_zeroed = words[1] == 0 && words[2] == 0 && words[3] == 0;
+                    words[1] = reinterpret_cast<std::uint32_t>(s->nested);
+                    words[2] = 7; words[3] = 9; // Real preallocated 9-slot storage.
+                }
+                s->rejected_bytes[s->rejected] = bytes;
+                ++s->rejected;
+                if (s->rejected == 2) s->armed = false;
+                return FALSE;
+            }
+            return TRUE;
+        };
+        const auto no_retry = +[](std::size_t) -> int {
+            throw ConstructorFault{++active->handlers};
+        };
+        const bsp::AvoidZoneDynHullMemory memory{&state,
+            [](void* context, std::size_t bytes) -> void* {
+                auto& s = *static_cast<State*>(context);
+                if (++s.allocations == 2 && !s.constructor_fault) {
+                    s.growth_request = bytes == 16;
+                    throw ParentVectorFault{};
+                }
+                void* const p = std::malloc(bytes);
+                if (!p) throw std::bad_alloc();
+                if (s.allocations == 1) {
+                    s.raw = static_cast<bsp::DynProfileNodeStorage*>(p);
+                    s.armed = s.constructor_fault;
+                } else s.parent_buffer = p;
+                return p;
+            },
+            [](void* context, void* p) {
+                auto& s = *static_cast<State*>(context);
+                ++s.frees68;
+                if (s.event_count < 4) s.events[s.event_count] = 68;
+                ++s.event_count;
+                if (p == s.nested_original && s.raw) {
+                    auto* const words = reinterpret_cast<std::uint32_t*>(s.raw->bytes);
+                    s.current_data = words[1] == reinterpret_cast<std::uint32_t>(p)
+                        && words[2] == 7 && words[3] == 9;
+                }
+                if (p == s.nested) s.nested = nullptr;
+                if (p == s.raw) s.raw = nullptr;
+                if (p == s.parent_buffer) s.parent_buffer = nullptr;
+                std::free(p);
+            }};
+        const bsp::DynProfilePartialNodeDelete delete65 = +[](void* p) {
+            auto& s = *active;
+            ++s.frees65;
+            if (s.event_count < 4) s.events[s.event_count] = 65;
+            ++s.event_count;
+            s.original_allocation = s.original_allocation && p == s.raw;
+            auto* const words = reinterpret_cast<std::uint32_t*>(p);
+            s.no_field_clear = words[1] == reinterpret_cast<std::uint32_t>(s.nested_original)
+                && words[2] == 7 && words[3] == 9;
+            if (p == s.raw) s.raw = nullptr;
+            std::free(p);
+        };
+        struct RestoreHooks {
+            _CRT_ALLOC_HOOK hook;
+            _PNH handler;
+            State* observations;
+            ~RestoreHooks() {
+                _CrtSetAllocHook(hook);
+                _set_new_handler(handler);
+                active = observations;
+            }
+        };
+
+        bsp::DynProfileNodeStorage parent{};
+        bsp::dyn_profile_node_construct_00c44000(parent,"Parent",0);
+        alignas(4) unsigned char before[sizeof(parent)];
+        std::memcpy(before,parent.bytes,sizeof(parent));
+        state.nested = std::calloc(9,4);
+        state.nested_original = state.nested;
+        check(state.nested != nullptr,"profile unwind fixture owns nested vector storage");
+        if (!state.nested) throw std::bad_alloc();
+        bool constructor_threw = false;
+        int caught_sequence = 0;
+        {
+            State* const previous_observations = active;
+            active = &state;
+            RestoreHooks restore{
+                _CrtSetAllocHook(hook),_set_new_handler(no_retry),previous_observations};
+            state.previous_hook = restore.hook;
+            state.previous_handler = restore.handler;
+            try {
+                bsp::dyn_profile_node_append_child_00c50390(
+                    parent,"abcdefghijklmnopq",0x71,memory,delete65);
+            } catch (const ConstructorFault& failure) {
+                constructor_threw = true; caught_sequence = failure.sequence;
+            }
+        }
+        const bool hook_restored = _CrtSetAllocHook(state.previous_hook) == state.previous_hook;
+        const bool handler_restored = _set_new_handler(state.previous_handler) == state.previous_handler;
+        check(constructor_threw && caught_sequence == 2 && state.rejected == 2
+                && state.rejected_bytes[0] == 32 && state.rejected_bytes[1] == 18
+                && state.vector_zeroed && state.current_data && state.no_field_clear
+                && state.frees68 == 1 && state.frees65 == 1 && state.event_count == 2
+                && state.events[0] == 68 && state.events[1] == 65
+                && state.original_allocation && state.raw == nullptr && state.nested == nullptr
+                && hook_restored && handler_restored && active == nullptr
+                && std::memcmp(before,parent.bytes,sizeof(parent)) == 0,
+            "real profile ctor failure cleans current child vector68 then raw allocation65 and rethrows");
+        // Failure cleanup for a regression, after restoring all CRT hooks.
+        if (state.raw) {
+            bsp::native_legacy_sbo_string_destroy_004072d0(
+                *reinterpret_cast<bsp::NativeLegacySboStringStorage*>(state.raw->bytes+0x10));
+            std::free(state.raw);
+        }
+        std::free(state.nested);
+        std::free(state.parent_buffer);
+
+        state = State{};
+        state.constructor_fault = false;
+        bsp::DynProfileNodeStorage prior{};
+        bsp::dyn_profile_node_construct_00c44000(prior,"Prior",0);
+        state.parent_buffer = std::malloc(4);
+        check(state.parent_buffer != nullptr,"profile vector boundary fixture owns parent storage");
+        if (!state.parent_buffer) throw std::bad_alloc();
+        *static_cast<bsp::DynProfileNodeStorage**>(state.parent_buffer) = &prior;
+        auto* const parent_words = reinterpret_cast<std::uint32_t*>(parent.bytes);
+        parent_words[1] = reinterpret_cast<std::uint32_t>(state.parent_buffer);
+        parent_words[2] = 1; parent_words[3] = 1;
+        std::memcpy(before,parent.bytes,sizeof(parent));
+        reinterpret_cast<std::uint32_t*>(before)[3] = 4; // Native committed capacity.
+        bool vector_threw = false;
+        active = &state;
+        try {
+            bsp::dyn_profile_node_append_child_00c50390(parent,"Child",0x72,memory,delete65);
+        } catch (const ParentVectorFault&) { vector_threw = true; }
+        active = nullptr;
+        const bool constructed = state.raw
+            && *reinterpret_cast<std::uint32_t*>(state.raw->bytes+0x2c) == 0x72;
+        check(vector_threw && state.growth_request && constructed
+                && state.frees65 == 0 && state.frees68 == 0
+                && std::memcmp(before,parent.bytes,sizeof(parent)) == 0,
+            "post-ctor parent growth failure retains completed orphan and committed capacity");
+        // The fixture owns this intentional native orphan; production does not free it.
+        if (state.raw) {
+            bsp::native_legacy_sbo_string_destroy_004072d0(
+                *reinterpret_cast<bsp::NativeLegacySboStringStorage*>(state.raw->bytes+0x10));
+            std::free(state.raw);
+        }
+        std::free(state.parent_buffer);
+    }
+#endif
     {
         // 00441780 publishes before registering, but normal manager drain must
         // still recognize CE44DC, pop the owner, and clear the same E17BF4 cell.
