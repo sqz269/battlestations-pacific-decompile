@@ -3,12 +3,14 @@
 #include <cstddef>
 #include <memory>
 
+namespace bsp { class NativeFontResourceOwners; }
 namespace bsp::game {
 class GameHostLog;
 class GameNativeRendererApplication;
 class GameVfsHost;
 class GameSingletonHost;
 class GameNativeReadOnlyData;
+class GameNativeFontApplication;
 
 // Retained owner of ONE unpublished private DEFAULT Text lifecycle, with an
 // explicit optional primary-prefix and private geometry Source paths. No raw Text
@@ -22,6 +24,28 @@ public:
     ~GameNativeRawDefaultTextOwner() noexcept;
     GameNativeRawDefaultTextOwner(const GameNativeRawDefaultTextOwner&) = delete;
     GameNativeRawDefaultTextOwner& operator=(const GameNativeRawDefaultTextOwner&) = delete;
+
+    // Combined Font Host/App metadata handshake only. Begin on this fresh,
+    // stably installed owner BEFORE the producer's irreversible export;
+    // complete with its SAME ready actual collection/image before preparation.
+    // No Font lookup/retain, native string, shader or pool effect is performed.
+    void begin_raw_font_link(const GameNativeFontApplication& producer,
+        GameNativeRendererApplication&, GameVfsHost&);
+    void complete_raw_font_link(const GameNativeFontApplication& producer,
+        NativeFontResourceOwners&, const void* admitted_registry_image);
+    // Latches even an admitted producer rejection before begin. Never replaces
+    // a different existing producer or permits cancellation/rebind/replay.
+    void fail_raw_font_link(const GameNativeFontApplication& producer) noexcept;
+    // Called directly by the SAME producer BEFORE native Font retirement.
+    // Requires terminal retired owner and all actual custody/invocations;
+    // !requires_process_retention() while bound grants no permission.
+    void require_font_retirement(const GameNativeFontApplication& producer,
+        const NativeFontResourceOwners&, const void* admitted_registry_image) const;
+    // Explicit BOTH-layer unlink AFTER after_native_renderer_drain and BEFORE
+    // resetting this owner. Saved image is identity-only after Font retirement;
+    // this operation never follows retired Font/header/list/texture payloads.
+    void detach_raw_font_link_after_parent_drain(const GameNativeFontApplication& producer,
+        const NativeFontResourceOwners&, const void* admitted_registry_image);
 
     // Install this owner before calling. Requires completed canonical Text type
     // startup and the ready/open renderer scene domain, BEFORE mission/cache
