@@ -1,0 +1,49 @@
+{
+  "packet": "codex-dyn-pair-retire",
+  "source": "src/cc16_dyn_pair_retire.cpp",
+  "header": "include/bsp/cc16_dyn_pair_retire.hpp",
+  "accepted_upstream": "893cf58e6",
+  "functions": [
+    {"start": "00c40e50", "body_end_inclusive": "00c40ee2", "body_bytes": 147,
+     "cpp_name_hypothesis": "bsp::cc16_dyn_pair_retire::erase_pair_reference_00c40e50",
+     "receiver": "ESI", "stack_arguments": ["index"], "return_instruction": "RET 4",
+     "observed_eax": "copied last-reference bits normally; final resize/loop value on unsigned-underflow path"},
+    {"start": "00c4c5d0", "body_end_inclusive": "00c4c67d", "body_bytes": 174,
+     "cpp_name_hypothesis": "bsp::cc16_dyn_pair_retire::retire_endpoint_pair_00c4c5d0",
+     "receiver": "EAX first endpoint", "stack_arguments": ["storage", "other endpoint"],
+     "return_instruction": "RET 8", "observed_eax": "old next link reloaded after first neighbor write"}
+  ],
+  "target": {"project_file": "C:/Users/sqz269/bsp.gpr", "project": "bsp", "program_path": "/battlestationspacific.exe",
+             "language": "x86:LE:32:default", "image_base": "00400000", "verified_by": "provided client before live batches"},
+  "rows": [
+    {"address": "00c40e80", "native": "00bf55be", "function": "00c40e50", "kind": "call", "contract": "required actual CRT new; desired capacity stored first"},
+    {"address": "00c40eb2", "native": "00bf6989", "function": "00c40e50", "kind": "call", "contract": "nonnull old reference buffer before replacement"},
+    {"address": "00c4c62e", "native": "00c40e50", "function": "00c4c5d0", "kind": "call", "contract": "direct first-endpoint identity removal"},
+    {"address": "00c4c653", "native": "00c40e50", "function": "00c4c5d0", "kind": "call", "contract": "direct other-endpoint identity removal after fresh size/data reads"}
+  ],
+  "incoming_evidence": [
+    {"callee": "00c40e50", "site": "00c4c591", "caller": "00c4c550", "source": "live xrefs/context"},
+    {"callee": "00c40e50", "site": "00c40f11", "caller": "00c40ef0", "caller_end_inclusive": "00c40f17", "source": "disk bytes; Ghidra-undefined caller, no body/definition credit"},
+    {"callee": "00c4c5d0", "site": "00c4c83c", "caller": "00c4c700", "source": "live xrefs/context"},
+    {"callee": "00c4c5d0", "site": "00c4cb55", "caller": "00c4c700", "source": "live xrefs/context"},
+    {"callee": "00c4c5d0", "site": "00c4c6e1", "caller": "00c4c680", "caller_end_inclusive": "00c4c6f5", "source": "earlier bounded disk bytes; undefined caller, not attributed to neighboring body"}
+  ],
+  "contracts": {
+    "actual_raw_objects_and_same_crt": true,
+    "required_crt": ["operator_new_00bf55be", "free_00bf6989"],
+    "remove": "swap last first; reload size; uint32 decrement; retain unusual unsigned resize path and per-slot null checks",
+    "search": "signed-positive/JL loops; initial first count retained, second count fresh after first leaf",
+    "retire": "unconditional unlink with link reloads; decrement live count and push node on free head",
+    "missing_pair_or_allocation_guard": false,
+    "exception_rollback": false,
+    "fabricated_class_global_default_provider_or_stub": false,
+    "semantic_native_return_contract_claimed": false
+  },
+  "validation": {"assembly_review": "both full bodies, live byte spans and bounded defined/undefined caller evidence",
+                 "source_compile_tested": "MSVC x86 C++17 object-only: /permissive- /EHsc /fp:strict /O2 /W4 /WX; exit 0",
+                 "call_report_verification": "4 call rows checked, 0 failed",
+                 "build_registered": false, "build_tested": false, "fixture_tested": false,
+                 "abi_compatible": false, "game_validated": false, "tests_added": false, "ghidra_mutated": false},
+  "remaining_integrator_work": ["registration/shared metadata/annotations and common Win32 build",
+                               "genuine caller wiring and host validation before activation"]
+}
