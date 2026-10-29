@@ -124,7 +124,7 @@ float weapon_hit_accuracy_sample_008383d0(const WeaponHitAccuracyProfile& profil
 
 // Independent native range/blend correction; the accepted PC24 cohort above
 // retains its own setting. OFF preserves all existing public call paths.
-inline constexpr bool kWeaponHitAccuracyNativeRangeBound = false;
+inline constexpr bool kWeaponHitAccuracyNativeRangeBound = true;
 
 // Same already-reconstructed function, zero new body credit. After the proven
 // float spill of the size weight, retain the native x87/SSE compare, multiply,
