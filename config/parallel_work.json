@@ -16,6 +16,23 @@
   "policy": "Function addresses and disjoint file ownership define work, not wave/segment IDs. Workers read shared dependencies; primary owns Ghidra mutations, shared metadata, common APIs, CMake, builds and integration. Implemented code_ownership and future next_code_ownership are recorded separately. Refill up to three ready worker slots; verify actual concurrency on resume.",
   "packets": [
     {
+      "id": "codex-raw-font-host-qualification",
+      "state": "in_progress_private_off_caller_build_pass_source_review_pending",
+      "worker": "cc16-progress",
+      "source_ready": false,
+      "depends_on": [
+        "codex-gui-raw-font-owner-link",
+        "codex-gui-raw-font-producer-link",
+        "codex-gui-raw-prefix-geometry-owner"
+      ],
+      "function_addresses": [],
+      "output_files": [
+        "src/game_native_gui_render_application.cpp",
+        "docs/CODEX_GUI_RAW_FONT_METADATA_QUALIFICATION.md"
+      ],
+      "notes": "Separate FALSE private Font metadata mode; exclusive combined producer link after stable owner storage before preparation, existing geometry route, actual Font retirement guard and post-parent both-layer detach before owner reset. All four source gates OFF. Win32/checks2/2 10.99s pass. Independent caller/lifetime review and preregistered default identity plus MSD USN04 >=1500 exit0 remain gates. No FontShader/setter/108/1EC execution or UI/ABI activation."
+    },
+    {
       "id": "codex-gui-raw-font-setter-credit-plan",
       "state": "in_progress_read_only_raw_font_setter_and_effect_credit_contract",
       "worker": "gui_integration_review",

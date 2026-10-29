@@ -67,9 +67,13 @@ constexpr bool kRawDefaultTextQualificationCc16Bound = false;
 constexpr bool kRawPrimaryPrefixQualificationCc16Bound = false;
 // Explicit AB7700 body fixture after the genuine prefix, with ctor bounds0.
 constexpr bool kRawPrefixGeometryQualificationCc16Bound = false;
+// Genuine Font producer/owner metadata only, over the same empty geometry
+// fixture. FontShader remains FRESH; this does not assign Text108 or call it.
+constexpr bool kRawFontMetadataQualificationCc16Bound = false;
 static_assert(static_cast<unsigned>(kRawDefaultTextQualificationCc16Bound) +
     static_cast<unsigned>(kRawPrimaryPrefixQualificationCc16Bound) +
-    static_cast<unsigned>(kRawPrefixGeometryQualificationCc16Bound) <= 1u);
+    static_cast<unsigned>(kRawPrefixGeometryQualificationCc16Bound) +
+    static_cast<unsigned>(kRawFontMetadataQualificationCc16Bound) <= 1u);
 using Word = std::uint32_t;
 void require(bool value, const char* message) {
     if (!value) throw std::logic_error(message);
@@ -758,7 +762,8 @@ void GameStartupHost::initialize_native_gui_render() {
         frame_flag[0] == '1',
         "BSP_NATIVE_GUI_TEXT=1 requires BSP_NATIVE_MISSION_SHIP=1 and BSP_NATIVE_MISSION_FRAME=1");
     if constexpr (kRawDefaultTextQualificationCc16Bound ||
-        kRawPrimaryPrefixQualificationCc16Bound || kRawPrefixGeometryQualificationCc16Bound) {
+        kRawPrimaryPrefixQualificationCc16Bound || kRawPrefixGeometryQualificationCc16Bound ||
+        kRawFontMetadataQualificationCc16Bound) {
         require(!GameNativeGuiRenderApplication::nodes_requested(),
             "raw Text qualification requires the GUI node overlay disabled");
         require(!native_gui_render_ && !native_raw_default_text_ && native_renderer_ &&
@@ -768,9 +773,16 @@ void GameStartupHost::initialize_native_gui_render() {
             log_, *native_renderer_, *vfs_, *singletons_, *native_data_,
             GameNativeGuiSamplerApplicationBindings{*input_runtime_,
                 native_renderer_->borrow_platform_publication_0109cf04()});
+        if constexpr (kRawFontMetadataQualificationCc16Bound) {
+            require(fonts_ != nullptr, "raw Font metadata qualification requires the actual startup Font host");
+            // Store the stable owner before the exclusive combined export.
+            // Its typed handshake verifies readiness, image and domain identity.
+            fonts_->bind_raw_text_owner(*native_raw_default_text_);
+            log_.note("raw Font metadata qualification: producer_linked before_prepare=1 shader_fresh=required");
+        }
         // Explicit caller budget for this one retained graph, not an Original
         // constant or a universal nesting bound. Exhaustion retains failure.
-        if constexpr (kRawPrefixGeometryQualificationCc16Bound)
+        if constexpr (kRawPrefixGeometryQualificationCc16Bound || kRawFontMetadataQualificationCc16Bound)
             native_raw_default_text_->prepare_primary_prefix_geometry_metadata_in_ready_renderer(64);
         else if constexpr (kRawPrimaryPrefixQualificationCc16Bound)
             native_raw_default_text_->prepare_primary_prefix_metadata_in_ready_renderer(64);
@@ -786,7 +798,7 @@ void GameStartupHost::initialize_native_gui_render() {
 }
 void GameStartupHost::prepare_native_gui_text_resources() {
     if (native_raw_default_text_) {
-        if constexpr (kRawPrefixGeometryQualificationCc16Bound) {
+        if constexpr (kRawPrefixGeometryQualificationCc16Bound || kRawFontMetadataQualificationCc16Bound) {
             HMODULE query_module{}, call_module{}, standard_module{}, query_declaration_module{};
             constexpr DWORD module_flags = GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
                 GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT;
@@ -867,6 +879,11 @@ void GameStartupHost::close_native_gui_text_after_drain() noexcept {
     try {
         if (native_raw_default_text_) {
             native_raw_default_text_->after_native_renderer_drain();
+            if constexpr (kRawFontMetadataQualificationCc16Bound) {
+                require(fonts_ != nullptr, "raw Font metadata close requires the retained startup Font host");
+                fonts_->detach_raw_text_owner_after_parent_drain(*native_raw_default_text_);
+                log_.note("raw Font metadata qualification: producer_detached after_parent_drain=1 before_owner_reset=1");
+            }
             native_raw_default_text_.reset();
         }
         if (native_gui_render_) {

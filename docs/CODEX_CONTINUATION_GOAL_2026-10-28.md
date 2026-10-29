@@ -702,3 +702,11 @@ producer/eight follow-up comparisons pass. Combined OFF Win32/checks2/2 pass
 retirement guard and explicit post-parent detach are compiled but have no host
 caller yet. RawAB8C30 and cached1EC EFFECT-credit consumption remain execution
 blockers; the next bounded evidence plan is dispatched, with no widening.
+
+Private Font metadata caller is wired behind a fourth mutually exclusive FALSE
+constant. Actual Host/App/raw-owner bind follows stable owner storage and
+precedes preparation; explicit both-layer detach follows owner parent-drain
+closure and precedes reset. OFF Win32/checks2/2 pass (10.99s). Source/lifetime
+review and runtime evidence remain pending. Four separate planned USN04 cases
+cover exact-parent/default reference and same-candidate MSD1600 GUI_TEXT0/1;
+they do not constitute13-row OFF identity, strict4+4 or production activation.
