@@ -287,7 +287,7 @@ struct GameMissionFrameHost::Impl {
         // Both take references to members declared below, which are already
         // default constructed when this body runs.
         fixed_step = std::make_unique<GameFixedStepHost>(log, dynamics);
-        result = std::make_unique<GameMissionResultHost>(log, control);
+        result = std::make_unique<GameMissionResultHost>(log, control, vfs);
         // Milestone 2m: the six fan-out rows whose reconstructions are on main.
         step_subsystems = std::make_unique<GameStepSubsystemsHost>(log);
         fixed_step->attach_subsystems(step_subsystems.get());
