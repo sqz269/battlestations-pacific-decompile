@@ -1,4 +1,5 @@
 #include "bsp/native_gui_text_primary_prefix_lifetime.hpp"
+#include "bsp/native_gui_text_prefix_geometry_lifetime.hpp"
 #include "bsp/game_native_readonly_data.hpp"
 #include "bsp/game_native_gui_text_process.hpp"
 #include "bsp/native_string_raw_domain.hpp"
@@ -171,8 +172,11 @@ void primary_shape(const Context& g) {
         !*reinterpret_cast<const volatile unsigned char*>(bits(m.actual) + 0x44u) &&
         !read(m.actual, 0xa0) && !read(m.actual, 0xa4) && !read(m.actual, 0x130) &&
         !(read(m.actual, 0x138) & 3u) && !read(m.actual, 0x164) && !read(m.actual, 0x168) &&
-        !read(m.actual, 0x16c) && !read(m.actual, 0x170) && !read(m.actual, 0x174) && !read(m.actual, 0x180),
+        !read(m.actual, 0x16c) && !read(m.actual, 0x170) && !read(m.actual, 0x174) &&
+        (g.operation.kind() != NativeGuiTextPrimaryPrefixOperation::Kind::none || !read(m.actual, 0x180)),
         "prefix primary excludes hierarchy/scene/retained/point-light/geometry/74 state");
+    if (g.operation.kind() != NativeGuiTextPrimaryPrefixOperation::Kind::none)
+        require_native_gui_text_prefix_geometry_primary(ptr(read(m.actual, 0x180)), g);
 }
 void shape(void* actual, const Context& g, const NativeGuiTextRetirementAcquired* progress) {
     // Must follow the genuine false descriptor predicate. No dead188 Model
@@ -206,6 +210,7 @@ void shape(void* actual, const Context& g, const NativeGuiTextRetirementAcquired
 
 bool native_gui_text_primary_prefix_selected(const Context& g) {
     aliases(g);
+    require_native_gui_text_prefix_geometry_reservation(g);
     const auto* const r = g.producer.publication();
     if (!r) { untouched_primary(g); return false; }
     const auto& a = g.producer;

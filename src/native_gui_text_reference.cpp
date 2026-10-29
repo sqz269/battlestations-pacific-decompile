@@ -1,6 +1,7 @@
 #include "bsp/native_gui_text_reference.hpp"
 #include "bsp/native_gui_text_shader_storage.hpp"
 #include "bsp/native_gui_text_primary_prefix_lifetime.hpp"
+#include "bsp/native_gui_text_prefix_geometry_lifetime.hpp"
 #include "bsp/game_native_resource_pools.hpp"
 #include "bsp/native_material_effect_programs.hpp"
 #include "bsp/native_texture_loading_cache.hpp"
@@ -183,6 +184,55 @@ void fresh_shader_binding(const NativeGuiTextRawModelReferenceContext& c) {
     // names[] intentionally has no initialization; inspect no native header.
 }
 template<class Check>
+void live_prefix_mesh_borrowed(const NativeGuiTextPrimaryPrefixLifetimeContext& g,
+    const NativeModelStorageDispatchContext& model, const GuiNativeMeshAcquired& mesh,
+    const void* identity, Check check) {
+    // These independent Model records are tested BEFORE canonical lookup or a
+    // companion cast. No branch follows the self-erased MeshEntry after release.
+    if (!identity || !model.reference || model.reference->retired() || model.lifetime.started ||
+        model.lifetime.pool_returned || !model.construction.complete ||
+        mesh.raw_slot || mesh.creator != identity || !mesh.constructor_complete || !mesh.registered)
+        return;
+    auto* const canonical = g.text.factory_context.publication.owners.find(const_cast<void*>(identity));
+    require(canonical && canonical == mesh.companion,
+        "live prefix Mesh extent requires its SAME canonical producer companion");
+    // The genuine GuiNativeGeometryOwners producer constructs this exact C++
+    // family. This live downcast adjusts a real base pointer; it is never a
+    // native payload projection or an ended-Mesh rediscovery.
+    auto* const reference = static_cast<NativeMeshReference*>(canonical);
+    check(Region{identity, sizeof(NativeMeshStorage)});
+    check(Region{reference, sizeof(*reference)});
+}
+template<class Check>
+void prefix_geometry_borrowed(const NativeGuiTextPrimaryPrefixLifetimeContext& g, Check check) {
+    const auto* const c = g.operation.geometry();
+    if (g.operation.kind() == NativeGuiTextPrimaryPrefixOperation::Kind::none) return;
+    require(c, "chosen prefix geometry graph must be installed before raw122");
+    require_native_gui_text_prefix_geometry_reservation(g);
+    const auto& construction = c->construction;
+    for (const Region r : {Region{c, sizeof(*c)}, {&construction, sizeof(construction)},
+        {&c->frame, sizeof(c->frame)}, {&c->acquired, sizeof(c->acquired)}, {&c->progress, sizeof(c->progress)},
+        {c->arguments, sizeof(c->arguments)}, {c->position, sizeof(c->position)},
+        {&c->transform_scratch, sizeof(c->transform_scratch)}, {&c->bounds_scratch, sizeof(c->bounds_scratch)},
+        {&construction.association, sizeof(construction.association)},
+        {&construction.geometry, sizeof(construction.geometry)}, {&construction.transforms, sizeof(construction.transforms)},
+        {&construction.association.unchanged_00d7a260, sizeof(Word)},
+        {&construction.one_00d7a24c, sizeof(float)}, {&construction.negative_zero_00d7a208, sizeof(float)},
+        {&construction.y_scale_00e12fc4, sizeof(float)}, {&construction.half_00d7a280, sizeof(double)}})
+        check(r);
+    const auto& a = c->acquired;
+    if (c->progress.entered && c->progress.returned && !c->progress.failed &&
+        c->frame.matches(construction, a, NativeGuiTextMainGeometryStoragePhase::complete))
+        live_prefix_mesh_borrowed(g, construction.primary, a.mesh, a.captured_mesh, check);
+    const auto& shadow = g.text.factory_context.publication.construction.sections;
+    if (shadow.complete && shadow.mesh_release.complete && shadow.mesh_release.decremented &&
+        shadow.mesh_release.result > 0 && !shadow.mesh_release.zero_entered)
+        live_prefix_mesh_borrowed(g, construction.internal188, shadow.mesh, shadow.mesh_release.identity, check);
+    // BOTH Model records/providers/flags/call arrays are enumerated by the
+    // enclosing prefix route. Private MeshEntry/Impl/derived/transitive backing
+    // remains the genuine caller extent contract, never a guessed sizeof.
+}
+template<class Check>
 void prefix_route_borrowed(NativeGuiWidgetRawModelRoute& q,
     NativeModelStorageNodeDispatchContext& nc, Check check) {
     auto& m = q.record;
@@ -238,6 +288,7 @@ void known_prefix_borrowed(const NativeGuiTextRawModelReferenceContext& c, Check
         check(Region{calls.data, static_cast<std::size_t>(bytes)});
     }
     if (f.disposal.context) check(Region{f.disposal.context, f.disposal.context_bytes});
+    prefix_geometry_borrowed(*g, check);
     // Header ADDRESS/extent only, even after successful41DD20. Never inspect
     // its returned data words. Hidden provider arrays/Impl extents are caller proof.
 }
