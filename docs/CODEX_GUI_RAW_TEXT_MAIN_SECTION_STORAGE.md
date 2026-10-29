@@ -88,6 +88,9 @@ name/base/container cleanup, returns a raw slot, retries, or releases an acquire
 creator implicitly. A failed/entered Frame destructor terminates. Wrong object
 identity or overlapping/expired storage violates the explicit caller contract.
 Normal state5 diagnostics do not authorize FH3/SEH or Native cleanup equivalence.
+Failure is sticky: if a provider catches a recursive-entry exception and returns,
+the outer invocation still rejects completion. Its first failure diagnostics stay
+retained; no successful resumption, cleanup or replay is inferred.
 
 Caller serializes publications and excludes Text/Model/operative mesh retirement
 through remaining native reads/callbacks. Keep all actual objects, companions,

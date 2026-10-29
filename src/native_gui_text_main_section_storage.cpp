@@ -376,10 +376,15 @@ void ensure_native_gui_text_post_constructor_sections_storage_00ab8530(
         location(a, 0x00ab87b4, Acquired::Boundary::root); a.root_entered = true;
         propagate_native_node_root_storage_00b6d890(a.root_receiver, nullptr, r.parenting.node.scenes.children);
         a.root_returned = true;
+        require(f.phase_ == Phase::entered && a.phase == Phase::entered && !a.failure,
+            "main section cannot complete after caught reentry or an escaped invocation");
         a.phase = f.phase_ = Phase::complete;
     } catch (...) {
-        a.escaped_boundary = a.boundary; a.escaped_call_site = a.active_call_site;
-        a.failure = std::current_exception(); a.phase = f.phase_ = Phase::failed;
+        if (!a.failure) {
+            a.escaped_boundary = a.boundary; a.escaped_call_site = a.active_call_site;
+            a.failure = std::current_exception();
+        }
+        a.phase = f.phase_ = Phase::failed;
         throw; // ALL escapes retain: no inferred native EH, name cleanup, pool rollback or retry.
     }
 }

@@ -94,6 +94,7 @@ private:
 // ALL escapes retain/rethrow; no name/pool/base cleanup, retry or inferred native
 // exception origin. Normal name return leaves stale bytes; never rediscover its
 // data afterward. Complete/skipped is not another credit or settled custody.
+// A provider catching recursive entry cannot resume this failed Frame to success.
 // New C++ library, not original thiscall/private-stack/FH3/SEH/FP ABI, not called
 // by ABA8D0/content/prefix owner, and no raw retirement admission or body credit.
 void ensure_native_gui_text_post_constructor_sections_storage_00ab8530(
