@@ -1,5 +1,7 @@
 #include "bsp/native_gui_text_reference.hpp"
 #include "bsp/native_gui_text_shader_storage.hpp"
+#include "bsp/native_gui_text_primary_prefix_lifetime.hpp"
+#include "bsp/game_native_resource_pools.hpp"
 #include "bsp/native_material_effect_programs.hpp"
 #include "bsp/native_texture_loading_cache.hpp"
 #include "bsp/native_vfs_name_resolution.hpp"
@@ -181,6 +183,65 @@ void fresh_shader_binding(const NativeGuiTextRawModelReferenceContext& c) {
     // names[] intentionally has no initialization; inspect no native header.
 }
 template<class Check>
+void prefix_route_borrowed(NativeGuiWidgetRawModelRoute& q, Check check) {
+    auto& m = q.record;
+    auto& s = m.model.storage;
+    auto& n = s.node;
+    auto& nc = q.node.context();
+    for (const Region r : {Region{&q, sizeof(q)}, {&m, sizeof(m)}, {&m.model, sizeof(m.model)},
+        {&m.actual, sizeof(m.actual)}, {&m.reference, sizeof(m.reference)},
+        {&m.construction, sizeof(m.construction)}, {&m.lifetime_frame, sizeof(m.lifetime_frame)},
+        {&m.lifetime, sizeof(m.lifetime)}, {&m.release_frame, sizeof(m.release_frame)}, {&m.release, sizeof(m.release)},
+        {&q.tree, sizeof(q.tree)}, {&q.tree_acquired, sizeof(q.tree_acquired)},
+        {&q.node, sizeof(q.node)}, {&q.node_acquired, sizeof(q.node_acquired)}, {&nc, sizeof(nc)},
+        {&nc.parenting, sizeof(nc.parenting)}, {&nc.shared_node, sizeof(nc.shared_node)},
+        {&nc.base_nodes, sizeof(nc.base_nodes)}, {&s, sizeof(s)}, {&s.constants, sizeof(s.constants)},
+        {&s.pool_01090054, sizeof(s.pool_01090054)}, {&s.pool_01090054.storage(), sizeof(s.pool_01090054.storage())},
+        {&n, sizeof(n)}, {&n.strings, sizeof(n.strings)}, {&n.world, sizeof(n.world)},
+        {&n.scenes, sizeof(n.scenes)}, {&n.scenes.gates, sizeof(n.scenes.gates)},
+        {&n.scenes.increment_00ce221c, sizeof(n.scenes.increment_00ce221c)},
+        {&n.scenes.decrement_00ce2220, sizeof(n.scenes.decrement_00ce2220)},
+        {&n.trees, sizeof(n.trees)}, {&n.trees.frames, sizeof(n.trees.frames)},
+        {&n.trees.point_lights, sizeof(n.trees.point_lights)}, {m.model.actual_profile_00d62de8, 0x58}})
+        check(r);
+    if (m.reference) check(Region{&*m.reference, sizeof(*m.reference)}); // C++ companion, including retired metadata
+    // Never rediscover ended native payloads. These addresses are included only
+    // while independent actual lifetime records and retained metadata are live.
+    if (m.actual && m.reference && !m.reference->retired() && !m.lifetime.started && !m.lifetime.pool_returned)
+        check(Region{m.actual, 0x188});
+}
+template<class Check>
+void known_prefix_borrowed(const NativeGuiTextRawModelReferenceContext& c, Check check) {
+    const auto* const g = c.retirement.primary_prefix;
+    if (!g) return;
+    require(representable({g, sizeof(*g)}) && &g->text.factory_context.publication == &c,
+        "raw122 prefix graph must belong to its EXACT immutable factory publication");
+    (void)native_gui_text_primary_prefix_selected(*g); // rejects pending/failed work; no native payload/header read
+    const auto& f = g->text.factory_context;
+    for (const Region r : {Region{g, sizeof(*g)}, {&g->text, sizeof(g->text)},
+        {&g->authentication, sizeof(g->authentication)}, {&g->authentication_acquired, sizeof(g->authentication_acquired)},
+        {&f, sizeof(f)}, {&g->text.factory, sizeof(g->text.factory)},
+        {&g->text.publication, sizeof(g->text.publication)},
+        {&g->producer_context, sizeof(g->producer_context)}, {&g->producer_frame, sizeof(g->producer_frame)},
+        {&g->producer, sizeof(g->producer)}, {&g->producer_context.model_pools, sizeof(g->producer_context.model_pools)},
+        {&g->name, sizeof(g->name)}, {&g->name.strings, sizeof(g->name.strings)}, {g->name.header8, 8},
+        {&g->widget, sizeof(g->widget)}, {&g->widget.slots, sizeof(g->widget.slots)},
+        {&g->widget_acquired, sizeof(g->widget_acquired)}})
+        check(r);
+    prefix_route_borrowed(g->widget.primary, check);
+    prefix_route_borrowed(g->widget.internal188, check);
+    for (const auto calls : {g->primary_calls, g->internal_calls}) {
+        const auto bytes = static_cast<std::uint64_t>(calls.size()) * sizeof(NativeModelStorageNodeCall);
+        require(calls.data() && bytes && bytes <= 0xffffffffu &&
+            static_cast<std::uint64_t>(bits(calls.data())) + bytes <= 0x100000000ull,
+            "prefix flags need actual retained prepared-call array extents");
+        check(Region{calls.data(), static_cast<std::size_t>(bytes)});
+    }
+    if (f.disposal.context) check(Region{f.disposal.context, f.disposal.context_bytes});
+    // Header ADDRESS/extent only, even after successful41DD20. Never inspect
+    // its returned data words. Hidden provider arrays/Impl extents are caller proof.
+}
+template<class Check>
 void known_borrowed(NativeGuiTextRawModelReferenceContext& c,
     const volatile Word* profile, NativeGuiTextRawModelReferenceDisposal disposal, Check check) {
     auto& p = c.construction_context;
@@ -252,6 +313,10 @@ void known_borrowed(NativeGuiTextRawModelReferenceContext& c,
     }
     known_shader_borrowed(c, [&](Region region) {
         require(representable(region), "Raw Text shader borrowed record needs a valid retained extent");
+        check(region);
+    });
+    known_prefix_borrowed(c, [&](Region region) {
+        require(representable(region), "raw122 prefix metadata requires valid retained backing extents");
         check(region);
     });
     // Abstract/opaque provider implementations, actual pool/slab allocations,

@@ -110,8 +110,10 @@ struct NativeGuiTextRawModelRetirementContext {
     // Fixed typed optional graph, never enum/receipt-shaped ownership authority.
     const NativeGuiTextPrimaryPrefixLifetimeContext* const primary_prefix{};
 };
-// DEFAULT-only overloads. The real base/container helpers are borrowed only
-// in their admitted empty branches, with CURRENT initialized type lineages.
+// DEFAULT constructor/bind admission stays strict. These overloads additionally
+// admit the optional private-receipt-qualified primary prefix lifetime graph;
+// presence alone authorizes nothing. Base/container helpers stay within their
+// explicitly admitted branches and CURRENT initialized type lineages.
 // Raw188 uses the caller's genuine Model-only raw tree/481 terminal domain.
 // Keep its independent model record after Text pool return until actual full
 // Model cleanup/pool return and quiescence; retired metadata alone proves neither.
