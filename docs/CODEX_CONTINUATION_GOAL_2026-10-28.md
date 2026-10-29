@@ -551,3 +551,13 @@ backing. Neither is an ownership-admission/production-caller authorization.
 Baseline widget/shader objects from accepted4ace89234 are retained under
 `local/cc16_raw_transport_baseline_objects/` for focused static comparison of
 the shared-schedule refactors. This adds no runtime or binary ABI evidence.
+
+Raw widget transport2ee now passes two source reviews and corrected Win32
+build/tests2/2. It shares legacy native schedules; concrete new raw routing is
+active-base-only and all raw escapes retain without inferred exception cleanup.
+Compiler noreturn annotations alone were removed after a preserved /WX warning;
+the rejection bodies still throw. One existing empty DEFAULT replay35a4e92f5
+independently validates the shared LEGACY path: gameplay/ordered449+299/start36/
+RNG1 same, exact accepted Icon diagnostics and baseline error.dds/COM1+1 only.
+Private route restoredOFFb95a64a57/build2/2. New raw primary helper remains
+uncalled and gains no runtime/ABI/Page credit. See widget evidence doc.

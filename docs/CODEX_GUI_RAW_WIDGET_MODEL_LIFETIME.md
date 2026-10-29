@@ -1,6 +1,7 @@
 # Qualified raw widget Model lifetime
 
-Status: **UNBUILT, uncalled Source library preparation** against root
+Status: **integrated and build-checked; new raw API remains uncalled**. The
+worker's Source library preparation is against root
 `c3c30a2197b90803c2d455eff76aad7f3d7a86a2`, merged into cc9 at28437acec while
 preserving the a1c2 plan. Seven explicitly owned files only; no CMake, host,
 initial93/122, raw118, owner, Font, AB7700, ledger or Ghidra changes. No probe,
@@ -101,3 +102,46 @@ Worker validation: whitespace checks passed. Read-only normalized source-token
 comparisons against pinned c3c30a219 matched legacy scene/base native schedules
 after expanding their typed primitives; the legacy unwind_base body matched
 unchanged. This is Source review, not a compiler, emitted-code or runtime check.
+
+## Root integration and bounded regression
+
+Root and independent frozen2ee source reviews pass. The new TU is registered
+in bsp_core. Initial build receipt `local/cc16_raw_widget_model_build.log`
+preserves /WX C4702: [[noreturn]] qualification hooks made shared raw branches
+unreachable to the compiler. Root removed those annotations only; concrete
+implementations still unconditionally throw. No warning suppression, native
+schedule change or successful unsupported branch was introduced. Corrected
+build `local/cc16_raw_widget_model_build2.log` passes both suites (11.95 seconds).
+The copied source-token script/result hashes are verified under
+`local/cc16_raw_widget_model_review/`; all three checks rerun true.
+
+One existing genuine EMPTY DEFAULT regression was then frozen at `35a4e92f5`;
+its Win32 build/tests2/2 pass (13.70 seconds). Immutable EXE SHA256:
+`347DD0909E15F16D4DD5F86C8E2DE8593B020049E3D35726DDCCDE66AC4ABA65`.
+Artifacts/preregistration/manifest are in
+`local/cc16_widget_default_regression_20261028/`. One600-total/181-mission run
+on slot4/core10 exits0,599 presents+1 skipped. Normal is runner-selected only.
+This exercises the shared LEGACY context through real raw118; the new primary/
+raw widget overload is NOT selected by the existing owner.
+
+Independent audit accepts that empty regression against c0ef2def1: gameplay21,
+native1427 and summaries764 match, full449/mission299 ordered SUB rows diff0,
+start36/RNG1 same. Raw pair exit1 stays visible: three previously accepted Icon
+idle rows only in OTHER, plus existing pretranslate3→4 noise recorded without
+new masks. Raw teardown1404/1406 reports indexdiff9/delta2; exact edits are only
+two Icon idle inserts. One Text construct/bind/retire/close remains; Text9511
+retires before Font9512, renderer9634→Icon9635→owner closure9636.
+
+The exact ONE error.dds/D61948/ref1/B32370-event5 skipped-release residue and
+final COM1+1 match baseline; no generic residue allowance or COM-zero claim.
+Copied independent reports under evaluation/ have verified SHA256:
+review.json `102EA51DBCF24A5C3862F17C8435296FCAC00737205B24FA218ADD751F7472F0`,
+review.md `B3B9E0203EE142FC37650A7A05204F3E406434F798DE07D29F8E8BEDDA20ACAD`.
+The evaluator's initial EOF mission window and corrected loop-end window are
+preserved; no game was rerun. Private route restored OFF atb95a64a57 and both
+suites pass (11.47 seconds), receipt
+`local/cc16_widget_default_regression_restored_off_build.log`.
+
+No new test case/framework was added. Raw primary/Model release runtime,
+nonempty/hierarchy/child/timed/TRUE188, failure/flags0/reuse, visual/Page and
+Original ABI remain unproved; the remaining integration gates above still apply.
