@@ -1,0 +1,404 @@
+{
+  "packet": "codex-movie-factory-owner-contract",
+  "status": "read_only_concrete_coupled_source_contract_with_explicit_missing_producers_and_max_review_handoff",
+  "reviewed_main": "61c13da1218bb93a3f952d4aa0fc831c86af3f33",
+  "reviewed_at_utc": "2026-10-29T19:23:02.660224+00:00",
+  "read_only_inputs": [
+    {
+      "commit": "857d4234e4a65ce623f166aca3894eeb9194a7d4",
+      "scope": "accepted decoder/module/factory readiness routing and original register ABI"
+    },
+    {
+      "commit": "68ab882bbe7709822936c15b21f6e9804076ffb2",
+      "scope": "authored module owner read-only dependency; this is not an independent review of own68ab source",
+      "in_reviewed_main": false
+    }
+  ],
+  "ownership": {
+    "leased_files": [
+      "docs/CC16_MOVIE_FACTORY_OWNER_CONTRACT.md",
+      "reports/cc16_movie_factory_owner_contract.json"
+    ],
+    "address_leases": [],
+    "source_edits": false,
+    "shared_metadata_edits": false,
+    "ghidra_mutations": false
+  },
+  "native_provenance": {
+    "configured_project_file": "C:/Users/sqz269/bsp.gpr",
+    "configured_project": "bsp",
+    "live_program": "/battlestationspacific.exe",
+    "live_count": 77631,
+    "verification": "bsp.py ghidra ensure --status and count; config/target.json target; bounded lookup/show/bytes/xrefs only",
+    "installed_executable": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "static_image_data": [
+      {
+        "address": "00F8AEFC",
+        "section": ".data",
+        "section_delta": "0x182efc",
+        "raw_size": "0x10000",
+        "zero_filled": true,
+        "bytes": "00 00 00 00"
+      },
+      {
+        "address": "00CFEA78",
+        "section": ".rdata",
+        "section_delta": "0x1ca78",
+        "raw_size": "0x126000",
+        "zero_filled": false,
+        "bytes": "50 79 73 00 30 77 73 00"
+      },
+      {
+        "address": "00CFEA60",
+        "section": ".rdata",
+        "section_delta": "0x1ca60",
+        "raw_size": "0x126000",
+        "zero_filled": false,
+        "bytes": "30 70 73 00"
+      }
+    ],
+    "native_export_sha256": {
+      "0073d410/assembly.txt": "5fb8af108ad4f7632bdf2f7cb3f967d756cdae9a71f9d054134022696051c88f",
+      "0073d410/decompiled.c": "685abc8ae1a857cc4e9b37f340fbf8b8fe5cdd508c234ab40e4565cad6fa489d",
+      "007366b0/assembly.txt": "122c35eecf40d6a57eb3d73863060de99739e2910a9b472f44fb0c1063485d1d",
+      "007366b0/decompiled.c": "8a7a1086038c330ef6eaec525b10d8cb96f7e8ef3268a117a086117db13add31",
+      "00736750/assembly.txt": "3a9e43f54c63af2b5b39dca2b24e70fb32251cfb3f2ea38abf6f7faf0af9dd2e",
+      "00736750/decompiled.c": "3d1c66ca766fe3602ba99c84a47e81733a98787a59a71186cd5e0becb544d664",
+      "00737710/assembly.txt": "f62431d8f696423e619396df6596d02ed8bce432733a5d3dafd6590c0837d6a6",
+      "00737710/decompiled.c": "cf305de19bbf7529bd7f9cc3d4ce940f66b729e913b25712d41527deb254b513",
+      "00737730/assembly.txt": "1046b48821925306e7d42707876450940f087d6bb277e0d76cdc9533dd3ad927",
+      "00737730/decompiled.c": "e4645653b6c6a53458c94b5bac2ada10f59da250a0b6ac5a61175c67757a474a",
+      "00737950/assembly.txt": "a8825f1f359b36bd3ad0deb27abd2ba2dcb4317deabdfc09aa7861aa1fb010d7",
+      "00737950/decompiled.c": "f0c8cd095fa0abaab51bbdcbe5d1ab9d012e4aa3a0bba220f793c2124e2f9652",
+      "00737030/assembly.txt": "1aaadc960cda1548344d66cd91128f2f5a693fb63cbff3102e4e77875033eaf1",
+      "00737030/decompiled.c": "de2977848e4e2f22dbed4e844f89a54091b7b2cb5fbe5f5ab59732f9659c4996",
+      "00737f30/assembly.txt": "ffe89733bc85d9eb6db0e9cf720a36209fb519cf64e927c537027a3a791ca49d",
+      "00737f30/decompiled.c": "7530dc66e01533f34a55efe5b7304e5613e1d830406e5e62cb0db48fee50302d",
+      "00a4b2a0/assembly.txt": "87fece432999af76a2cdf776f82058a5221f3cca9026e9200fdbce76555a26ab",
+      "00a4b2a0/decompiled.c": "14d3facdff3cd35db5e7eef65bd328c0f050246b98489a297fda62ad8821bafc"
+    },
+    "qualified_scope": "Saved analysis/static PE bytes and exported original listings, not live process state or runtime custody."
+  },
+  "native_factory": {
+    "concrete_receiver_native_bytes": 4,
+    "size_proof": "0073DF9B PUSH4;0073DF9D allocator00BF681B; no inference from prefix size alone",
+    "startup_sites": [
+      "0073DF87 loadF8C218",
+      "0073DF99 call its slot+C",
+      "0073DF9B PUSH4",
+      "0073DF9D allocator00BF681B",
+      "0073DFAD caller state0x21",
+      "0073DFB8 null skip to0073DFD2",
+      "0073DFBC register007366B0",
+      "0073DFC7 writeCFEA78",
+      "0073DFCD BinkSetSoundSystem thunk00A4D356",
+      "0073DFD2 following4B010909B0 producer",
+      "0073E005 next34h particle allocation"
+    ],
+    "constructor": "00737710 existing typed body, same owner registration/stamp/Bink call, returns owner",
+    "normal_shutdown": "0073804F readsF8AEFC;0073805D PUSH1;0073805F calls slot0; between010909B0 andF8C218 rows",
+    "delete": "00737950 capturesESI=ECX; calls00736750; freesESI iff low bit; EAX=ESI; RET4",
+    "table_tokens": {
+      "00CFEA78": [
+        "00737950",
+        "00737730"
+      ],
+      "00CFEA60": [
+        "00737030"
+      ]
+    },
+    "contracts": {
+      "register_007366b0": [
+        "Write incoming owner DWORD=CFEA60 before manager access.",
+        "Resolve first manager from SAME raw01090AA0; capture its+10 section; enter/increment section+18 if nonnull.",
+        "Publish incoming owner to SAME volatileF8AEFC.",
+        "Resolve manager again in a separate full statement, THEN reread currentF8AEFC and register it through that second manager. Do not substitute captured incoming owner.",
+        "Leave/decrement the originally captured section, including the established C++ exception-unwind contract; no invented publication/registration rollback."
+      ],
+      "construct_00737710": [
+        "Reuse existing typed constructor body; production bootstrap callback implements exact raw registration contract.",
+        "After registration returns, writeCFEA78 to same4B incoming receiver.",
+        "Call actual retained BinkSetSoundSystem(BinkOpenDirectSound,0); ignore signed return. Do not invoke OpenDirectSound directly or convert a return value to a new success/failure policy."
+      ],
+      "unregister_00736750": [
+        "Write incoming owner DWORD=CFEA60.",
+        "Capture first manager/section and enter/increment as above.",
+        "Resolve manager again, THEN reread currentF8AEFC and unregister that value; do not impose incoming==publication identity.",
+        "Clear currentF8AEFC unconditionally, release the SAME captured section, THEN write incoming owner DWORD=CE3818.",
+        "If unregister throws, preserve reached source stores/registrations and release only established captured guard; do not retry or synthesize cleanup success."
+      ],
+      "delete_00737950": [
+        "Capture incoming owner address before unregister.",
+        "Run00736750 with same retained context.",
+        "Only after normal return, if(flags&1), free captured incoming address via matching existing free boundary.",
+        "Return captured incoming address value even after free; never return/free a reloaded publication instead.",
+        "CFEA60 transient base profile uses00737030 with the same body contract, not a call through original image addresses."
+      ],
+      "vtable_handling": [
+        "Native4B receiver holds numeric identity DWORD, not a C++ vptr.",
+        "CFEA78 slot0 is00737950 and slot+4 is00737730; CFEA60 slot0 is00737030.",
+        "Use explicit finite typed dispatch/profile admission. Never call0xCFEA78,0x737950 or other original code addresses in the reconstructed host.",
+        "Future create slot uses existing create_movie_decoder_00737730, returning allocated38h object+10h, not a fake BinkHandle or a clock. Real GUI caller/decoder host remains a separate dependency."
+      ]
+    }
+  },
+  "provider_matrix": [
+    {
+      "input": "actual_manager_publication_01090aa0",
+      "type": "void* volatile&",
+      "supplier": "GameSingletonHost::manager_publication_01090aa0(), backed by game_native_string_process().manager_01090aa0()",
+      "state": "existing genuine canonical raw manager cell",
+      "anchors": [
+        "src/game_hosts_singletons.cpp:18",
+        "include/bsp/game_hosts_singletons.hpp:88"
+      ]
+    },
+    {
+      "input": "registration/deletion section and second manager",
+      "type": "SoundLifetimeAccess + CapturedSoundLifetimeSection; SoundLifetimeManagerView",
+      "supplier": "GameSingletonHost::sound_lifetime(); actual-storage path only",
+      "state": "existing genuine capture/enter/depth/leave and raw registration/removal provider",
+      "anchors": [
+        "include/bsp/sound_lifetime_access.hpp:10",
+        "src/sound_lifetime_access.cpp:13"
+      ]
+    },
+    {
+      "input": "actual_factory_publication_00f8aefc",
+      "type": "void* volatile&",
+      "supplier": null,
+      "state": "MISSING in reviewed main. Root must admit one retained cell/accessor in the existing application singleton owner, grounded in the original loader-zero DWORD and sole native publish/clear contract; do not create separate private copies in consumers. The cell/context must survive explicit retirement and raw drain.",
+      "native_evidence": [
+        "installed PE .data zero-fill at00F8AEFC",
+        "00736706 writes owner;00736711 rereads after second getter;007367B9 clears",
+        "00AAE794 and0073804F read same cell"
+      ]
+    },
+    {
+      "input": "module and import lifetime",
+      "type": "BinkRuntimeLibrary&; const BinkImports&; const BinkFactoryImports&",
+      "supplier": "68ab882 library owner, instantiated by root-owned Startup composition",
+      "state": "implemented and strict-object-compiled dependency; not merged into audit main and no instance/caller exists here",
+      "anchors": [
+        "68ab882:include/bsp/bink_runtime_library.hpp",
+        "68ab882:src/bink_runtime_library.cpp"
+      ]
+    },
+    {
+      "input": "installed DLL selection",
+      "type": "const std::wstring& absolute_bink_dll_path",
+      "supplier": "Root-owned GameStartupHost composition from explicit nonempty absolute GameExecutableOptions::game_root plus literal binkw32.dll, or another explicitly supplied audited absolute DLL path",
+      "state": "existing user-supplied installed root input exists; concrete Bink path/composition hook is missing. Reject empty/relative root; do not use selected_library_path fallback or invent a default. Freeze the actual DLL hash.",
+      "anchors": [
+        "include/bsp/game_hosts.hpp:170",
+        "src/game_hosts.cpp:117"
+      ]
+    },
+    {
+      "input": "native receiver storage",
+      "type": "MovieFactoryPrefix*; sizeof(MovieFactoryPrefix)==4 on Win32",
+      "supplier": "existing singleton_lifetime_allocate({SingletonAllocationKind::object,4,sizeof(MovieFactoryPrefix)}) at the real root producer",
+      "state": "existing matching CRT allocation boundary; production4B caller is missing",
+      "anchors": [
+        "src/singleton_lifetime.cpp:51",
+        "src/movie_factory_followup.cpp:12",
+        "0073DF9B..0073DFB8"
+      ]
+    },
+    {
+      "input": "matching free",
+      "type": "singleton_lifetime_free(void*) noexcept",
+      "supplier": "existing host CRT family corresponding to the native free call; called only for captured incoming receiver when flags&1 after normal unregister",
+      "state": "existing genuine matching allocator/free boundary; do not use default delete on a wrapper address",
+      "anchors": [
+        "src/singleton_lifetime.cpp:65",
+        "00737950..0073796B"
+      ]
+    },
+    {
+      "input": "constructor body and bootstrap interface",
+      "type": "construct_movie_factory_00737710(MovieFactoryPrefix&,MovieFactoryBootstrapHost&)",
+      "supplier": "existing movie_factory_followup.cpp body; root must supply a real concrete implementation of its two required callbacks",
+      "state": "existing body; production bootstrap adapter missing",
+      "anchors": [
+        "include/bsp/movie_factory_followup.hpp:15",
+        "src/movie_factory_followup.cpp:12"
+      ]
+    },
+    {
+      "input": "sound-system callback",
+      "type": "BinkFactoryImports::set_sound_system(BinkFactoryImports::open_direct_sound,uint32_t(0)) -> int32_t ignored",
+      "supplier": "same retained68ab module factory_imports(); all13 exports already bound before publication",
+      "state": "typed import API available as read-only pending source dependency; no call performed and no fallback callback",
+      "anchors": [
+        "0073DFC1..0073DFCD",
+        "68ab882:include/bsp/bink_runtime_library.hpp"
+      ]
+    },
+    {
+      "input": "registered-owner deletion routing",
+      "type": "NativeSingletonDeletionBindings& plus a borrowed native movie lifetime context",
+      "supplier": "GameSingletonHost::native_deletion_bindings() and existing raw dispatcher",
+      "state": "existing genuine dispatch owner; CFEA78 and transient CFEA60 arms/context are MISSING and must bind before first registration",
+      "anchors": [
+        "include/bsp/native_singleton_destruction.hpp:94",
+        "src/native_singleton_destruction.cpp:610",
+        "src/game_hosts_singletons.cpp:163"
+      ]
+    },
+    {
+      "input": "normal shutdown caller",
+      "type": "current F8AEFC -> typed scalar delete(flags=1), with null guard",
+      "supplier": "root-owned GameStartupHost::application_shutdown / ApplicationShutdownHost source-order composition",
+      "state": "MISSING concrete movie row at0073804F..0073805F; current full42-action driver is not bound. Raw drain alone is not original explicit retirement order.",
+      "anchors": [
+        "include/bsp/app_shutdown.hpp:132",
+        "src/game_hosts.cpp:3295",
+        "0073804F..00738061"
+      ]
+    }
+  ],
+  "generic_cc13_boundary": {
+    "existing_body": "cc13_seg41::singleton_register/unregister with void*& and SingletonLifetimeHost",
+    "production_limitation": "Generic helper evaluates global argument before entering register/unregister host callback; a callback that obtains second manager internally would reload publication too early. It also does not accept actual volatile cell directly. Reuse source meaning through actual raw adapter with explicit second getter full-statement ordering; do not merely cast away volatile or invent a semantic/private manager domain.",
+    "existing_genuine_tools": [
+      "SoundLifetimeAccess actual-storage path",
+      "CapturedSoundLifetimeSection captures first raw section",
+      "SoundLifetimeManagerView register/unregister operate on already resolved raw manager"
+    ]
+  },
+  "bink_custody": {
+    "source_commit": "68ab882bbe7709822936c15b21f6e9804076ffb2",
+    "required_export_names": [
+      "_BinkOpen@8",
+      "_BinkClose@4",
+      "_BinkSetSoundTrack@8",
+      "_BinkSetVolume@12",
+      "_BinkDoFrame@4",
+      "_BinkCopyToBuffer@28",
+      "_BinkNextFrame@4",
+      "_BinkWait@4",
+      "_BinkGetRealtime@12",
+      "_BinkGoto@12",
+      "_BinkPause@8",
+      "_BinkSetSoundSystem@8",
+      "_BinkOpenDirectSound@4"
+    ],
+    "installed_dll": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\binkw32.dll",
+      "bytes": 178440,
+      "sha256": "7f22055e8f62e228eb90f09846f9b668e0a0b1d29057af6e3b7bff1e08c0d724",
+      "machine": "0x014c x86",
+      "optional_magic": "0x010b PE32"
+    },
+    "all13_before_publication": true,
+    "factory_table": "same module factory_imports() stable const storage; actual BinkSetSoundSystem receives actual BinkOpenDirectSound callback and zero",
+    "normal": "Close real decoders and all callback/native owners, explicit factory retirement, complete raw drain, then release library last. Registered factory deletion itself does not close unrelated handles or unload the module.",
+    "interrupted": "Retain complete root aggregate, module/Impl/table storage and all real borrowers until OS exit; do not free only wrapper state, unload DLL, replace callbacks or report success.",
+    "static_typing_qualification": "The public header is an older declaration reference for the two sound callback types only, not the installed SDK or evidence for the eleven newer decoder signatures. Installed exact @8/@4 decorations corroborate Win32 widths; no dynamic call/ABI result is claimed.",
+    "no_dll_call_in_this_packet": true
+  },
+  "startup_and_shutdown_gaps": {
+    "concrete_factory_publication_missing": true,
+    "concrete_bootstrap_adapter_missing": true,
+    "factory_profile_dispatch_missing": true,
+    "module_and_path_startup_hook_missing": true,
+    "explicit_movie_shutdown_row_missing": true,
+    "full_shutdown_driver_unbound": "GameStartupHost::application_shutdown currently logs unbound full singleton sequence;00737F80 is the system-array slice, not the F8AEFC row.",
+    "predecessor": "F8C218 terrain owner setup/virtual+C at0073DF99 remains outside current concrete movie closure; docs/APP_INIT_WORLD_EFFECTS and00AD9D00/9DA0 identify its genuine owner. Do not synthesize a returning provider.",
+    "following": "010909B0/CFEAC8 producer follows at0073DFD2 before current bound particle/locale phases; source order remains partial when these owners are unbound.",
+    "additional_alias_read": "00A4B2A1 loadsF8AEFC and passes pointer to debug log004254B0 (or empty fallbackF8AC02); not a factory method/provider and not a justification for a fabricated query-name string global. No online implementation is added."
+  },
+  "smallest_next_source_packet": {
+    "name": "coupled retained movie factory publication/lifetime/actual Startup producer",
+    "state": "Normal ownership source contract is implementable, but no isolated wrapper is production-ready; root-owned missing cell, dispatch and callers must be part of the coupled closure. Full caller failure semantics require max review before activation.",
+    "worker_owned_candidate_files": [
+      "include/bsp/native_movie_factory_lifetime.hpp",
+      "src/native_movie_factory_lifetime.cpp",
+      "docs/CC16_MOVIE_FACTORY_LIFETIME_BINDING.md",
+      "reports/cc16_movie_factory_lifetime_binding.json"
+    ],
+    "minimal_api": {
+      "context": "NativeMovieFactoryLifetimeContext { void* volatile& actual_manager_publication_01090aa0; void* volatile& actual_factory_publication_00f8aefc; }; explicit borrowed services only, not a recovered native class layout",
+      "register": "void register_native_movie_factory_007366b0(MovieFactoryPrefix&, NativeMovieFactoryLifetimeContext&);",
+      "unregister": "void unregister_native_movie_factory_00736750(MovieFactoryPrefix&, NativeMovieFactoryLifetimeContext&);",
+      "delete": "void* delete_native_movie_factory_00737950(void* captured_primary,uint32_t flags,NativeMovieFactoryLifetimeContext&); plus exact transient00737030 dispatch",
+      "bootstrap": "Reuse existing MovieFactoryBootstrapHost interface; root concrete adapter borrows the lifetime context and constBinkFactoryImports& from the same retained BinkRuntimeLibrary. No guessed new native class or global."
+    },
+    "root_owned_coupled_files": [
+      "include/bsp/game_hosts_singletons.hpp",
+      "src/game_hosts_singletons.cpp",
+      "include/bsp/native_singleton_destruction.hpp",
+      "src/native_singleton_destruction.cpp",
+      "include/bsp/game_hosts.hpp",
+      "src/game_hosts.cpp",
+      "cmake/startup.cmake"
+    ],
+    "root_hooks": [
+      "Admit68ab module source and one explicit installed-path selection; no cwd selected_library_path fallback.",
+      "Admit ONE originalF8AEFC state cell/accessor into existing retained application owner and bind its lifetime context/deletion arms before any registration.",
+      "Install CFEA60->00737030 and CFEA78->00737950 typed profile arms with SAME borrowed context; retain it until all drains finish.",
+      "Prepare one retained module and actual bootstrap adapter before source producer; allocate4 at logical0073DF9B and reuse00737710 body on nonnull receiver.",
+      "Place movie producer after actualF8C218 virtual+C call0073DF99 and before following010909B0 construction0073DFD2..0073DFFF, particle0073E005/E02B and locale0073E057. Missing predecessor/adjacent owners remain explicit, never mocked.",
+      "Bind explicit movie retirement at original0073804F/5F row position after010909B0 and beforeF8C218; current full shutdown plan remains partial until other real rows are supplied.",
+      "Keep module, table storage, publication/context, raw manager and actual future decoder/widget/renderer borrowers alive through explicit retirement and raw-manager drain. Release module last only on proved normal closure.",
+      "Before destructor/fallback drain, route any interrupted factory/native operation to existing whole-graph process-retention policy; do not retry, repair a dangling publication or unwind provider storage. Root must review caller state0x21 before selecting cleanup/free semantics."
+    ]
+  },
+  "primary_max_effort_handoff": {
+    "required_before_full_caller_failure_claim": true,
+    "address": "0073D410 caller state0x21 at0073DFAD, EH handler00C86CBA",
+    "known": "Captured4B receiver stored at stack+10; state0x21 armed before registration and Bink setup. Registration helper only establishes captured-section unwind; publication/manager effects may already escape.",
+    "not_recovered_here": "Exact caller cleanup target/action and exception-state transitions for0x21. Do not infer free/unregister/clear/rollback from state number alone.",
+    "request": "Primary max review should pin cleanup/free identity and residue/retention boundary before implementing actual failure rollback or claiming native caller unwind. Terminal host process-retention policy, if selected, must be explicit and not mislabeled original FH3/ABI equivalence.",
+    "no_new_abi_recovery": true
+  },
+  "future_gate_plan": [
+    "Root admission: owned-source review, exact CMake source listing and standard Win32 build/existing checks; no new test framework by default.",
+    "Static/source review:4B receiver provenance, all13 imports before publication, actual cell identity, first captured section/second-manager-before-current-read order, both deletion profiles and incoming free identity, explicit shutdown row position.",
+    "Root centrally schedules exact frozen normal production witness only after required providers/caller policy are admitted: selected installed DLL hash/path, actual factory construction/registration/Bink call return and flags1 deletion observed; no fake handle/callback/provider.",
+    "Normal custody witness must show same module/context alive through all callbacks/handle close/explicit retirement/raw drain, no double free or implicit failed-path retry. Interrupted state must preserve failure evidence and entire owner graph; no game/failure injection is performed here.",
+    "Old subtitle409 OFF receipts and module object compile do not validate this new factory caller. Keep subtitle guard OFF; actual decoder clock/settings-selector, GUI widget/Text/localisation/extratitles and Lua/callback reachability remain separate requirements."
+  ],
+  "source_sha256": {
+    "include/bsp/movie_factory_followup.hpp": "4b208a04568c712cf41d4b7d1ef490975bc4813fe8397322d114ac477a55e60f",
+    "src/movie_factory_followup.cpp": "00a8b4866bfa3ba88f537a53d94191cef0efbd56f54f1a41aa1d3fe177f2f8c6",
+    "include/bsp/cc13_seg41.hpp": "bd57179d914aaea0658b7ac201a000a16008b3e4b52d42e33c04ec92b110ee65",
+    "src/cc13_seg41_misc.cpp": "5031d41084a255ebdd1b0f49fbc66f52d14285601a41025cc72e67ec91e170b5",
+    "include/bsp/sound_lifetime_access.hpp": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b",
+    "src/sound_lifetime_access.cpp": "00ace40faa75007eb4e7cf857de0473347d8bdba0d99ed15ce8bc750c09efd29",
+    "include/bsp/game_hosts_singletons.hpp": "53a2669d7357deae08a586aa8117d69fa4bd3bfd5500ea1838655aaa24653d30",
+    "src/game_hosts_singletons.cpp": "ecddae131891b13a8909aed3a2e4fea7841a19c17672ce6f79d9351e87d2bd9d",
+    "include/bsp/native_singleton_destruction.hpp": "d86fc0e5780408014c503a22e91e337705d7a88b851e7ccc1cc88d4d1166e8b6",
+    "src/native_singleton_destruction.cpp": "6adcd53136c540495ff1d08c9b3b2dc9fd7ff139ee9d10bcec5f7dbdcbdec1ab",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "include/bsp/game_hosts.hpp": "69af1a3c2359cb9d670f5f423cff65d4acd928590a3f05d55cdfd889ae7eb28a",
+    "src/game_hosts.cpp": "ac82e24e0f6cdd9d52aad47a9bc45b545d651fbd9d3056aafb2feb4f65033223",
+    "include/bsp/app_shutdown.hpp": "b1d746a79d81408ee9e05fda19fb289fe5c1cd02aaf215eac89580d1512086ce",
+    "src/app_shutdown.cpp": "56223c2bbc99310ca1c3048d50ab777f337930fc9d7e891358b452eed9e0215a",
+    "include/bsp/movie_decoder.hpp": "9151e8eacc41a208769eab8347539c5b15201a330f329b593585cfe620b3dbd7",
+    "docs/OCT15_MOVIE_FACTORY.md": "591ec9265495bd564cead57f598e642d28bf8f81b2a9bc07a2134c12bb66df79",
+    "docs/APP_INIT_WORLD_EFFECTS.md": "b70f1b003cda3f3537882d5963216c0d1948fe95794b1d93c0c1b3ce058f8feb"
+  },
+  "validation": {
+    "kind": "read-only source/native metadata contract only",
+    "builds": 0,
+    "tests": 0,
+    "games": 0,
+    "probes": 0,
+    "dll_calls": 0,
+    "vendor_body_inspection": false
+  },
+  "credit": {
+    "new_native_body": 0,
+    "duplicate_body": 0,
+    "vendor_body": 0,
+    "original_abi": false,
+    "decoder_clock_ready": false,
+    "playback": false,
+    "activation": false
+  },
+  "guard": "No guard/source edit; kMovieSubtitlesBound remains OFF."
+}
