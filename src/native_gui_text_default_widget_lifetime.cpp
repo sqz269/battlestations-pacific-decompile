@@ -266,6 +266,18 @@ void NativeGuiTextDefaultWidgetLifetime::require_default_before_scalar() {
         finish();
     } catch (...) { fail(); throw; }
 }
+void NativeGuiTextDefaultWidgetLifetime::require_raw_model_transport_receiver(
+    void* actual, NativeGuiTextDefaultWidgetLifetimeRecord& expected_record) {
+    Call call; call.operation = Op::raw_model_authentication; call.receiver = actual;
+    begin(call);
+    try {
+        require(&record() == &expected_record,
+            "Raw Model transport requires this EXACT bound widget lifetime record");
+        const auto admission = authenticate(actual);
+        (void)active_profile(actual, admission); // admission only; NEVER a selector snapshot
+        finish();
+    } catch (...) { fail(); throw; }
+}
 const volatile Word* NativeGuiTextDefaultWidgetLifetime::current_table(void* actual, Word profile) {
     Call call; call.operation = Op::table; call.receiver = actual; call.profile = profile;
     begin(call);
