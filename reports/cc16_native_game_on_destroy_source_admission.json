@@ -1,0 +1,188 @@
+{
+  "source_build_head": "f14e0f370",
+  "admitted_head": "daeb071964956fc75f95a5d11c88f6e4d0b4ffec",
+  "baseline_published_main": "5ec9904f55e48f5d3cd871444b510b5cb5e1532b",
+  "build": {
+    "command": "./scripts/build.ps1",
+    "target": "MSVC Win32 Release",
+    "cl_MP": 2,
+    "PCH": true,
+    "existing_suites": "2/2",
+    "seconds": 14.24,
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\qualified_dyn_destroy_admission\\build.log",
+      "bytes": 3001,
+      "sha256": "84846bda4f90cb5cf06a6ac7711ad7fa477b2d340a6cf35661aa1107c6b8b72a"
+    }
+  },
+  "link_only": {
+    "executed": false,
+    "all_entries_resolved": true,
+    "entries": [
+      "?profile_partial_node_delete_00bf65ac@GameNativeDynProcess@game@bsp@@QBEP6AXPAX@ZXZ",
+      "?dyn_profile_scope_enter_00c57020@bsp@@YAPAUDynProfileScopeStorage@1@AAU21@IPBDABUDynProfileScopeContext@1@P6AXPAX@Z@Z",
+      "?update_radix_manager_00c5a8b0@cc16_dyn_radix_manager_update@bsp@@YAXPAXABUDynLiveCrt@cc15_dyn_live@2@ABUDynProfileScopeContext@2@ADIADNABURadixManagerProfileNames@12@P6AX0@Z@Z",
+      "?on_destroy_native_game_004dc5c0@bsp@@YAXAAUNativeGameStorage@1@AAUNativeGameOnDestroyContext@1@AAUNativeGameOnDestroyOperation@1@@Z"
+    ],
+    "machine": "014C",
+    "manifest_embedded": true,
+    "fabricated_providers": false,
+    "actual_dependencies": [
+      "bsp_core.lib",
+      "bsp_lua511.lib",
+      "bsp_zlib121.lib",
+      "Windows SDK advapi32/user32/powrprof/d3d9/shell32"
+    ],
+    "artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\qualified_dyn_destroy_admission\\source_entries_probe.cpp",
+        "bytes": 1244,
+        "sha256": "f0f5fefe1bb6da86d25588c409f1905003f1ebeb5ef8cba2c37df5d4104608ca"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\qualified_dyn_destroy_admission\\source_entries_probe.cmd",
+        "bytes": 741,
+        "sha256": "f60a174ed249644fb694e0173c488097f08c319ea1a47c3b0fcba98ac7326529"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\qualified_dyn_destroy_admission\\source_entries_probe.obj",
+        "bytes": 3222,
+        "sha256": "04860f80b1fd208bf45c855875ae7114d3c98ab1482fce3f332d076668d3dbf2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\qualified_dyn_destroy_admission\\source_entries_probe.exe",
+        "bytes": 222208,
+        "sha256": "47496fcc189c709825e0cad09236881ffa8b188075ff4bb634b3988bebb4b737"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\qualified_dyn_destroy_admission\\source_entries_probe.map",
+        "bytes": 322164,
+        "sha256": "6bc4be48330a2869ebca99061479b4f100151be69f48e8d8bec4b85fefc864aa"
+      }
+    ],
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\qualified_dyn_destroy_admission\\link.log",
+      "bytes": 26,
+      "sha256": "e6f7f60e16a5a14f960ac4c0717f2470daaa49c368f895a18afa382b5196eecf"
+    }
+  },
+  "actual_target_objects": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\bsp_core.dir\\Release\\game_native_dyn_process.obj",
+      "bytes": 83664,
+      "sha256": "e1650af33ad7715a3b77581c27d4661a3ee1e5ce7dfbbe7ba8cc0a3195fae203"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\bsp_core.dir\\Release\\dyn_profile_scopes.obj",
+      "bytes": 14821,
+      "sha256": "5885ebeb4db5767a6cf980d71cd396a075ef5468fa2b14d9ad2be0dbd3f7840c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\bsp_core.dir\\Release\\cc16_dyn_radix_manager_update.obj",
+      "bytes": 20335,
+      "sha256": "506b5e8ac78b2192cf797554e0a3b72b53e486f6cfab9cbdc8b34df058b18549"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\bsp_core.dir\\Release\\native_game_on_destroy.obj",
+      "bytes": 11494,
+      "sha256": "5096d78c579c2ad5edeb388cdcfaac6c10967026e6e2520b1defb40f822746ec"
+    }
+  ],
+  "original_calls": {
+    "dyn": 15,
+    "on_destroy": 8,
+    "failed": 0,
+    "logs": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\qualified_dyn_destroy_admission\\dyn_call_verification.log",
+        "bytes": 81,
+        "sha256": "d0e2adbfd683a398072348fd84f0bac77125c19693ab79825791a3fc92c5a590"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\qualified_dyn_destroy_admission\\destroy_call_verification.log",
+        "bytes": 73,
+        "sha256": "5c7ed6a4af818c106162ed983254e6a5bed323aa4a930e7765a631b299a20b4c"
+      }
+    ]
+  },
+  "source_activation": false,
+  "game_or_probe_execution": false,
+  "new_tests": false,
+  "original_ABI_credit": 0,
+  "new_native_body_credit": 0,
+  "vendor_body_credit": 0,
+  "accuracy_guard_preserved_ON": true,
+  "subtitle_guard_preserved_OFF": true,
+  "full_goal_status": "active",
+  "status": "primary_and_independent_complete_normal_parent_source_review_build_link_passed_six_providers_unbound",
+  "candidate": "231bcaaf5627f7a8e7c5abc9072e3d547c4b4038",
+  "independent_review": "5e55d152f6065d54afe8f625bb987766f863cd61",
+  "unchanged_dependency_pins": [
+    "include/bsp/native_game_construction.hpp",
+    "include/bsp/native_game_lifetime.hpp",
+    "src/native_game_lifetime.cpp",
+    "include/bsp/native_game_class_cleanup.hpp",
+    "src/native_game_class_cleanup.cpp",
+    "include/bsp/native_lua_objects.hpp",
+    "src/native_lua_objects.cpp",
+    "include/bsp/native_game_current_virtual_calls.hpp",
+    "src/native_game_current_virtual_calls.cpp",
+    "include/bsp/mission_lobby_settings.hpp",
+    "src/mission_lobby_settings.cpp",
+    "include/bsp/main_menu_path.hpp",
+    "src/main_menu_path.cpp",
+    "include/bsp/frontend_managers.hpp",
+    "src/frontend_managers.cpp",
+    "include/bsp/engine_seg11_35_66_cc13.hpp",
+    "src/engine_seg11_35_66_cc13.cpp",
+    "include/bsp/landscape_lua_seg55_argon.hpp",
+    "src/landscape_lua_seg55_argon.cpp",
+    "include/bsp/seg6_cc13.hpp",
+    "src/seg6_cc13.cpp",
+    "src/game_hosts_scene_contents.cpp",
+    "config/target.json",
+    "tools/bsp.py",
+    "tools/ghidra_export.py",
+    "tools/verify_report_calls.py"
+  ],
+  "source_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\include\\bsp\\native_game_on_destroy.hpp",
+      "bytes": 3654,
+      "sha256": "96a100da9a58bbd9632f8a25d7f442e1a291e2f98f9dde3beb6c113ae40759f4",
+      "git_blob": "e0b4b7e246b1d219cdf23fc45dcfb9650105dd43"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\src\\native_game_on_destroy.cpp",
+      "bytes": 4976,
+      "sha256": "90862d3277029dbb7b74e0d3d19ac1e8f9b7601d43700abd3daaa485723c0670",
+      "git_blob": "514563564cfb3cd28a41e5d32200bcef24c144a5"
+    }
+  ],
+  "retained_old_api": "mission_lua_teardown_004dc5c0 remains its three-step Lua projection with unchanged callers",
+  "required_genuine_bindings": [
+    "whole46F3E0",
+    "whole4DA780",
+    "whole4DA650",
+    "captured current online slot8",
+    "992AC0 current publications",
+    "whole raw8844F0"
+  ],
+  "limitations": [
+    "Actual71A0 Game and SAME lifetime/publication/class/string/heap services required",
+    "New void C++ API; no original tail/register/FH3/SEH/fault ABI proof",
+    "No Startup/runtime attachment or full shutdown activation from this source admission"
+  ],
+  "analysis_annotation": {
+    "prior_values": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\ghidra-annotations-20261029T214007Z.json",
+      "bytes": 1976,
+      "sha256": "0cbfbe274266e441de8d2994583817ab866508c68db866f7d9424ff437093241"
+    },
+    "tool": "ghidra_annotate.py --apply --addresses004DC5C0; verified project/program, held write lock, saved program",
+    "existing_name_preserved": "BSP_Game_OnDestroy",
+    "earlier_comments_preserved": true,
+    "affected_export_refreshed": true,
+    "ledger": "Supersedes old partial function label; partial source/API retained explicitly; function count and new body credit unchanged"
+  }
+}
