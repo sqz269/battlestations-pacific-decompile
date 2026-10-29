@@ -1,8 +1,9 @@
 # cc15-gui4 A1: the startup raw scene domain
 
-Switch: `kNativeRendererStartupCc15Bound` (`include/bsp/game_native_renderer_application.hpp`), OFF.
-Status: reconstructed and source-reviewed, OFF. Prior build/run artifacts exist; the exact
-integration build and run gates are pending. It is not game-validated.
+Switch: `kNativeRendererStartupCc15Bound` (`include/bsp/game_native_renderer_application.hpp`), ON candidate.
+Status: source-reviewed; the original baseline at `634258460` and matched-common-code gates
+at `6c8016fa7` pass. Publication awaits integrator review. This activates the raw domain,
+without native GUI page drawing.
 
 ## What A1 builds
 
@@ -178,3 +179,19 @@ Exact executable hashes, row receipts and remaining ON gates are recorded in
 `docs/CODEX_CC16_INTEGRATION_2026-10-28.md`. These receipts validate the current
 domain-only fallback and shutdown correction; they do not accept the ON flip,
 startup shader preload, repeated GUI traversal, reload or late-plane drawing.
+
+## A1 activation candidate, 2026-10-28
+
+The switch-only activation candidate `634258460` sets
+`kNativeRendererStartupCc15Bound` ON over accepted OFF source `5ca4639f0b`.
+No other switch changes. Its lifecycle and all 13 original baseline row
+contracts pass. Matched-common-code ON source `6c8016fa7` differs from OFF
+`6216ea1af` only in this header flag and passes the build, current reference/MSD
+smokes, serial alternating USN21 4+4, and separate reference USN21 no-aid pair.
+All four strict OFF runs agree (raw pair exit 0); all four ON comparisons and
+the no-aid pair retain raw exit 1 for only the exact startup-domain diagnostic
+and provisional GUI Text/Element type-id records. Ordered events, startup frame
+36, first logged draw and teardown agree. Immutable input, DLL, argument,
+difficulty/environment and nonoverlapping serial timestamp audits pass.
+Exact source hashes, receipts and remaining scope limits are in
+`docs/CODEX_GUI4_A1_ACTIVATION.md`. Root review/publication remains separate.
