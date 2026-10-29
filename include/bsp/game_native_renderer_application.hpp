@@ -76,7 +76,7 @@ class GameNativeMissionFactories;
 inline constexpr bool kNativeRendererStartupCc15Bound = true;
 // A2 candidate: early shared procedural factories and the real73BF80 cache/
 // preload bracket. Keep OFF until the integrated owner graph passes its gates.
-inline constexpr bool kNativeShaderPreloadStartupCc16Bound = true;
+inline constexpr bool kNativeShaderPreloadStartupCc16Bound = false;
 // Borrowed views of that domain, valid from open_startup_scene_domain() until
 // the renderer is destroyed. Every member shares one owner registry, string
 // domain, import cells and live one cell, as AC59A0's admission requires.
