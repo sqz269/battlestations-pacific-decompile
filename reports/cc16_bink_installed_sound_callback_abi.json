@@ -1,5 +1,5 @@
 {
-  "status": "primary_static_installed_machine_calling_shape_verified_independent_review_and_runtime_pending",
+  "status": "primary_and_independent_static_installed_machine_calling_shape_verified_runtime_pending",
   "source_head": "82c4149e95f3d4cc6d7731802072b8a5aeba30dc",
   "target": {
     "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\binkw32.dll",
@@ -210,5 +210,7 @@
   "Ghidra_mutation": false,
   "native_body_credit": 0,
   "vendor_body_credit": 0,
-  "activation_credit": 0
+  "activation_credit": 0,
+  "independent_review": "722fda9519480175442cfbff192139125e83fd4a",
+  "independent_review_scope": "Machine stack widths, cleanup and code-pointer return/consumption only; semantic roles/SDK/layout/runtime/quiescence not admitted."
 }

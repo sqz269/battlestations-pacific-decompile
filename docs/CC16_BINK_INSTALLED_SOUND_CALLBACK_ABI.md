@@ -3,9 +3,10 @@
 The installed `binkw32.dll` with SHA256
 `7f22055e8f62e228eb90f09846f9b668e0a0b1d29057af6e3b7bff1e08c0d724`
 supports the declared two-level callback's **Win32 machine calling shape**.
-This is a primary static inspection of that actual file, beyond the earlier
-export-decoration and older-header evidence. Independent review and real
-decoder/audio execution remain pending. No Bink DLL was loaded or called.
+Primary and independent static inspection of that actual file goes beyond the
+earlier export-decoration and older-header evidence. Review722fda951 accepts
+only the machine contract; real decoder/audio execution remains pending.
+No Bink DLL was loaded or called.
 
 The PE is x86 PE32 with preferred base `18000000`. All addresses below are
 preferred image addresses, not current loaded pointers or BSP-program addresses.
