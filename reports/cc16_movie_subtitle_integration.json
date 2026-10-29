@@ -5,9 +5,15 @@
   "recovered_source_commit": "52f52c74321b698805b788816bc9f813110a29a5",
   "excluded_on_commit": "d98cadc27ef0a59c569c7c897a253449ecb9e5c8",
   "status": "source_reviewed_default_off_win32_build_existing_tests_passed_runtime_pending",
-  "switch": { "name": "kMovieSubtitlesBound", "value": false },
+  "switch": {
+    "name": "kMovieSubtitlesBound",
+    "value": false
+  },
   "native_address": "00AB0520",
-  "original_body": ["00AB0520", "00AB0EA2"],
+  "original_body": [
+    "00AB0520",
+    "00AB0EA2"
+  ],
   "original_abi": "ECX=movie; stack NativeString path; RET 4; evidence: 00AB053E, 00AB057F, 00AB0EA0",
   "live_signature_uncertainty": "Ghidra auto-signature has zero parameters; assembly and saved evidence control this contract",
   "new_interface_abi_compatible": false,
@@ -62,7 +68,15 @@
       "log": "local/codex_movie_subtitle_build_20261028_attempt1.log",
       "log_sha256": "F1A218EE1052EF575288476FDD0F021795AFB6B8EF58F23881A6F9B1F703ADE0"
     },
-    "existing_tests": { "passed": 2, "failed": 0, "seconds": 20.77, "names": ["reconstructed_math", "tool_tests"] },
+    "existing_tests": {
+      "passed": 2,
+      "failed": 0,
+      "seconds": 20.77,
+      "names": [
+        "reconstructed_math",
+        "tool_tests"
+      ]
+    },
     "artifacts": {
       "build/win32/Release/bsp_game.exe": "94A9CC6DBF376D55CFB6B94AB242D40FAE19365589E7225DFE74802C55AF070B",
       "build/win32/Release/xlive_stub.dll": "7205FBD05B971ACA369C78AFDFE07F6DB1F55CD3935F0758EFF5DE145CCF053E",
@@ -74,5 +88,27 @@
   "new_tests_added": 0,
   "ghidra_mutations": 0,
   "ledger_changes": 0,
-  "install_save_profile_changes": 0
+  "install_save_profile_changes": 0,
+  "primary_integration": {
+    "status": "current_main_static_review_build_tested_OFF",
+    "accepted_base": "ad524e7dc",
+    "finalized_worker_branch": "1e7078eafa460a5a3f00ff67703f8ab050b33895",
+    "source_delta_review": "85d548e2b57540ec6f767ee39e58e989fa4f0e11",
+    "build_log": "local/cc16_sap_subtitle_common_build.log",
+    "existing_suites_passed": 2,
+    "suite_seconds": 11.44,
+    "guard": false,
+    "native_body_credit": 0,
+    "current_main_runtime_validated": false,
+    "retained_runtime_scope": "13OFF pairs and2VFS checks remain exact409 source/binary receipts",
+    "primary_review": "complete cumulative five-file source patch; retained native VFS owner/reference-only constructors, no active parser/global initializer or changedOFFcallbacks",
+    "historical_evidence_embedded_path_hash_checks": 8,
+    "remaining": [
+      "real decoder clock",
+      "live locale and actual settings custody",
+      "native Text/widget ownership and extratitles",
+      "native Lua contract and callback reachability",
+      "separately frozen current-main activation gates"
+    ]
+  }
 }

@@ -90,3 +90,16 @@ Root supplied the saved accepted `d0a2656fe` baseline executable hash
 No game or ad hoc probe is launched by this packet. Root owns later baseline
 identity, callback reachability, decoder/widget/settings dependency work and
 matched Normal gameplay/playback gates. Keep OFF until those obligations close.
+
+## Current-main integration checkpoint
+
+This original source checkpoint records609. Its working-directory probe was
+replaced by456; see CODEX_MOVIE_SUBTITLE_VFS.md and the finalized OFF gates.
+The complete finalized worker history1e7078eaf is now integrated with main
+ad524e7dc plus reviewed Dyn source. Source-delta review85d548e2b approves the
+dormant integration; the combined Win32 build and both suites pass11.44s.
+The primary reviewed the complete five-file patch and eight embedded path/hash
+records. The13OFF pairs and two VFS checks retain their exact409 scope, not
+current-main runtime credit. The guard remainsfalse with no native-body/ABI/
+playback credit. Real decoder, locale/settings, widget/extratitles, Lua contract
+and callback reachability remain before activation.

@@ -219,3 +219,11 @@ Dedicated retained batch-b link artifacts force all five recent entries and
 resolve actual dependencies without execution or fake providers. Separate
 partials, unreferenced in-house code, FP debt, genuine caller/provider/ABI
 wiring and gameplay activation remain beyond that census. The goal is active.
+
+The finalized subtitle source/VFS branch is admitted OFF after full source-
+delta review and a combined Win32 build with both suites passing11.44s. Its
+13OFF pairs and two VFS checks remain historical exact409 evidence. The next
+ready closure is the existing live mission LocaleTables reference; decoder,
+settings, Text/widget/extratitles, Lua and callback activation are still open.
+Accuracy evidence is three OFF/ON pairs (six runs), with twelve owned process
+captures; its independent final-binary/current-source review is separate.
