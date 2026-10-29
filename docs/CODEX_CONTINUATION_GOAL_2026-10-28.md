@@ -489,3 +489,20 @@ is one real-provider DEFAULT lifecycle fixture; raw content/rendering/Page,
 failure, flags0, external credits, reentry, repeated reuse and native ABI remain
 open. Next Text transport surface is being audited; Icon host process binding
 plan9ce9320 is reviewed as the next independent shared-host hookup.
+
+## Icon process metadata linked
+
+The accepted DEFAULT batch and combined main build are published atf26a111d0.
+Icon host candidatec805780d4 then connects the existing permanent process
+service after VFS phase2, validates every canonical string/manager cell alias,
+and installs only the same existing deletion arm. Central failure guards and
+both full-drain branches retain providers on incomplete work; idle/null checks
+precede factory facade release and retain binding through fallback destruction.
+Independent source review and Win32 build/tests2/2 pass. One frozen60-frame
+slot4/core10 idle smoke exits0, validates initial and repeated drain closure,
+and ends COM0+0. Detailed receipt/scope:
+`docs/CODEX_GUI_ICON_PROCESS_HOST_LINK.md`.
+
+No lazy Icon allocation/registration/retirement or Page activation follows.
+Raw Text main geometry and phase-aware nonempty retirement remain the next
+disjoint transport/dependency packets; full rendering and native ABI stay open.

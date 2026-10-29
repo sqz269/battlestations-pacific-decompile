@@ -35,9 +35,22 @@ permanent service. The binding and process borrow survive the singleton host's
 fallback destructor, which precedes VFS deletion.
 
 The Win32 build and both existing suites passed (13.68 seconds), receipt
-`local/cc16_icon_process_host_build.log`. Independent final diff review and a
-frozen short startup/teardown smoke remain pending. A passing idle smoke will
-establish metadata binding and idle/null closure only. It cannot establish
+`local/cc16_icon_process_host_build.log`. Independent final diff review passed;
+no existing deletion arms or process/native bodies changed.
+
+The frozen `c805780d4` candidate passed one 60-frame idle startup/full-drain
+smoke on slot4/core10, exit0 with59 presents and1 skipped. Artifacts are
+`local/cc16_icon_host_smoke_20261028/`; its receipt distinguishes the precommit
+build basis from the final source identity and records code/config hashes.
+Executable SHA256:
+`7536503F6B02AED4BA4425C67DC14833C8FD1CCE86F9C9F0A4465E0554BDFD1C`.
+Log69 records idle/null metadata and the installed deletion arm; full renderer
+closure817 precedes the idle/null manager check818. The later destructor's
+repeated successful drain observation1006 also passes; final COM release1011
+is device0/api0. No native Icon operation was requested. The runner selected
+Normal priority; an independent live priority sample was not taken.
+
+This establishes metadata binding and idle/null closure only. It cannot establish
 AB5700 allocation/publication/registration, popped-owner AB57C0 retirement,
 delayed file delivery, raw Icon Model transport, rehosting, full UI, visual or
 Original ABI behavior. No new test cases or test framework were added.
