@@ -1,0 +1,61 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00c37210",
+    "end_address": "00c37237"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00c37210",
+    "end_address": "00c37236",
+    "bytes_disassembled": 39,
+    "message": "Successfully disassembled 39 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00c37210",
+    "disassemble_first": false,
+    "name": "BSP_DynRadixManager_Construct_00C37210"
+   },
+   "result": {
+    "success": true,
+    "address": "00c37210",
+    "function_name": "BSP_DynRadixManager_Construct_00C37210",
+    "entry_point": "00c37210",
+    "body_size": 39,
+    "message": "Function created successfully at 00c37210",
+    "warnings": [
+     "Function name 'BSP_DynRadixManager_Construct_00C37210' \u2014 main part 'DynRadixManager_Construct_00C37210' is not PascalCase. Expected: DynradixmanagerConstruct00c37210",
+     "Function name 'BSP_DynRadixManager_Construct_00C37210' \u2014 main part 'DynRadixManager_Construct_00C37210' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_DynRadixManager_Construct_00C37210' does not start with a recognized verb. First word 'Dyn' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00c37210",
+   "end": "00c37237",
+   "name": "BSP_DynRadixManager_Construct_00C37210",
+   "after": "Function: BSP_DynRadixManager_Construct_00C37210 at 00c37210\nSignature: undefined BSP_DynRadixManager_Construct_00C37210(void)\nEntry: 00c37210\nBody: 00c37210 - 00c37236"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

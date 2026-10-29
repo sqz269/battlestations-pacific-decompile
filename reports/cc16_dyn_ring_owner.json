@@ -1,0 +1,286 @@
+{
+  "packet": "codex-dyn-ring-owner",
+  "function": "00c4d5a0",
+  "body_start": "00c4d5a0",
+  "body_end_inclusive": "00c4d971",
+  "body_bytes": 978,
+  "source": "src/cc16_dyn_ring_owner.cpp",
+  "header": "include/bsp/cc16_dyn_ring_owner.hpp",
+  "cpp_name_hypothesis": "bsp::cc16_dyn_ring_owner::construct_dyn_ring_owner_00c4d5a0",
+  "original_abi": {
+    "entry_stack_04": "destination pointer",
+    "entry_stack_08": "input owner pointer",
+    "stack_argument_bytes": 8,
+    "return_instruction": "RET 8 at 00c4d96f",
+    "return_eax": "destination pointer",
+    "saved_restored": [
+      "EBX",
+      "EBP",
+      "ESI",
+      "EDI"
+    ],
+    "folded_or_unreachable_tail_in_span": false
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verified_by": "bsp.py ghidra client target verification before each live batch"
+  },
+  "rows": [
+    {
+      "address": "00c4d605",
+      "native": "00c33510",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "source_binding": "direct ring initializer composition with same CRT"
+    },
+    {
+      "address": "00c4d622",
+      "native": "00c4d370",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "source_binding": "required typed prepare_chain_00c4d370 contract"
+    },
+    {
+      "address": "00c4d63b",
+      "native": "00c41230",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "source_binding": "required typed test_previous_00c41230 contract"
+    },
+    {
+      "address": "00c4d67a",
+      "native": "00bf55be",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "contract": "scratch front-insert growth; wrapping (capacity*2+1)*4"
+    },
+    {
+      "address": "00c4d6df",
+      "native": "00bf6989",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "contract": "free old scratch after front-insert copy"
+    },
+    {
+      "address": "00c4d737",
+      "native": "00c41190",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "source_binding": "required typed test_next_00c41190 contract"
+    },
+    {
+      "address": "00c4d763",
+      "native": "00bf55be",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "contract": "scratch append growth; wrapping (capacity*2+2)*4"
+    },
+    {
+      "address": "00c4d793",
+      "native": "00bf6989",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "contract": "free old scratch after append copy"
+    },
+    {
+      "address": "00c4d7df",
+      "native": "00bf55be",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "contract": "pair growth; wrapping (capacity*2+2)*8"
+    },
+    {
+      "address": "00c4d818",
+      "native": "00bf6989",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "contract": "free old pair allocation after copy"
+    },
+    {
+      "address": "00c4d878",
+      "native": "00bf55be",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "contract": "outer-chain growth; wrapping (capacity*2+2)*12"
+    },
+    {
+      "address": "00c4d8b6",
+      "native": "0040d7b0",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "source_binding": "direct cc15_dyn_live vector4 copy composition"
+    },
+    {
+      "address": "00c4d8d6",
+      "native": "00bf6989",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "contract": "free old child immediately after copying it; do not clear old pointer"
+    },
+    {
+      "address": "00c4d8f5",
+      "native": "00bf6989",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "contract": "free old outer-chain allocation after child loop"
+    },
+    {
+      "address": "00c4d921",
+      "native": "0040d7b0",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "source_binding": "direct cc15_dyn_live scratch-vector copy composition"
+    }
+  ],
+  "unwind_rows": [
+    {
+      "address": "00cc8277",
+      "native": "0040d100",
+      "function": "00cc8271",
+      "kind": "tail_jump",
+      "state": 0,
+      "member_offset": "0c"
+    },
+    {
+      "address": "00cc8282",
+      "native": "0040d100",
+      "function": "00cc827c",
+      "kind": "tail_jump",
+      "state": 1,
+      "member_offset": "18"
+    },
+    {
+      "address": "00cc828d",
+      "native": "00407280",
+      "function": "00cc8287",
+      "kind": "tail_jump",
+      "state": 2,
+      "member_offset": "24"
+    },
+    {
+      "address": "00cc8298",
+      "native": "0040d360",
+      "function": "00cc8292",
+      "kind": "tail_jump",
+      "state": 3,
+      "member_offset": "38"
+    },
+    {
+      "address": "00cc82a3",
+      "native": "0040d530",
+      "function": "00cc829d",
+      "kind": "tail_jump",
+      "state": 4,
+      "member_offset": "44"
+    },
+    {
+      "address": "00cc82b6",
+      "native": "00401130",
+      "function": "00cc82a8",
+      "kind": "call",
+      "state": 5,
+      "effect": "verified RET-only placement cleanup"
+    },
+    {
+      "address": "00cc82d2",
+      "native": "00401130",
+      "function": "00cc82bf",
+      "kind": "call",
+      "state": 6,
+      "effect": "verified RET-only placement cleanup"
+    }
+  ],
+  "exception_evidence": {
+    "handler": "00cc82db",
+    "func_info": "00e04138",
+    "unwind_map": "00e04100",
+    "max_state": 7,
+    "member_unwind_order": [
+      "44",
+      "38",
+      "24",
+      "18",
+      "0c"
+    ],
+    "private_growth_rollback": "none; states5 and6 invoke RET-only00401130",
+    "helper_credit_added": false,
+    "binary_fh3_transport_supplied": false
+  },
+  "required_in_house_dependencies": [
+    {
+      "start": "00c4d370",
+      "body_end_inclusive": "00c4d594",
+      "original_receiver": "ESI",
+      "return_use": "ignored",
+      "typed_contract": "prepare_chain_00c4d370(owner, same CRT)"
+    },
+    {
+      "start": "00c41230",
+      "body_end_inclusive": "00c412cd",
+      "original_receiver": "ECX",
+      "return_use": "full EAX zero/nonzero",
+      "typed_contract": "test_previous_00c41230(owner)"
+    },
+    {
+      "start": "00c41190",
+      "body_end_inclusive": "00c4122a",
+      "original_receiver": "ECX",
+      "return_use": "full EAX zero/nonzero",
+      "typed_contract": "test_next_00c41190(owner)"
+    }
+  ],
+  "reachability": {
+    "live_incoming_xrefs": 0,
+    "indexed_incoming_sites": 0,
+    "complete_dead_chain_proof": false,
+    "runtime_reachable": "not established"
+  },
+  "validation": {
+    "build_registered": true,
+    "build_tested": true,
+    "configuration": "MSVC Win32 Release",
+    "build_log": "local/cc16_dyn_ring_family_build.log",
+    "existing_suites_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "compiled_object": "build/win32/bsp_core.dir/Release/cc16_dyn_ring_owner.obj",
+    "compiled_object_sha256": "1577a0436cf91d4e032bb7206c22eb346dfba99591d64fa9fc29fc007fc72f96",
+    "source_candidate": "2f76638f6d2d0dfaa3caac8bb85ad7fa7b776cb3",
+    "accepted_base": "51e6199dab817a68b022aa1ca9438ad3798bda82",
+    "fixture_tested": true,
+    "fixture_scope": "One fixed concave-five normal-path composition, masked PC24/PC53 RN; synthetic-normal-contract heap. No original CRT/EH/failure/public ABI or game/root proof.",
+    "fixture_report": "reports/cc16_dyn_ring_native_fixture.json",
+    "abi_compatible": false,
+    "game_validated": false,
+    "runtime_activated": false,
+    "ghidra_annotation_backup": "local/ghidra-annotations-20261029T041856Z.json",
+    "exports_refreshed": true,
+    "integration_document": "docs/CC16_DYN_RING_FAMILY_INTEGRATION.md"
+  },
+  "remaining_integrator_work": [
+    "post-integration call-report checks",
+    "Win32 build registration and common scripts/build.ps1",
+    "centralized metadata and locked Ghidra annotations",
+    "recover and bind required in-house dependencies before geometry execution claims",
+    "runtime reference or complete dead-chain closure"
+  ],
+  "worker_validation": {
+    "assembly_review": "complete 00c4d5a0..00c4d971 plus observed unwind action listings",
+    "parent_contains_x87": false,
+    "source_compile_tested": "MSVC x86 object-only compile: C++17 /permissive- /EHsc /W4 /WX; exit 0",
+    "call_report_verification": "22 call rows checked, 0 failed: 15 body sites and 7 unwind sites",
+    "build_registered": false,
+    "build_tested": false,
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "ghidra_mutated": false,
+    "tests_added": false
+  },
+  "integration_status": "source_integrated_build_and_focused_fixture_tested_unwired"
+}

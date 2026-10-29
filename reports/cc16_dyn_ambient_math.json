@@ -1,0 +1,500 @@
+{
+  "packet": "codex-dyn-ambient-math",
+  "date": "2026-10-28",
+  "owner": "agent/codex-dyn-ambient-math",
+  "branch": "agent/codex-dyn-ambient-math",
+  "base_commit": "9b99bca7b",
+  "status": "ambient_variants_compile_and_exact_object_verified_unintegrated",
+  "native_body_credit": 0,
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "program_language": "x86:LE:32:default",
+  "image_base": "00400000",
+  "target_verification": "bsp.py live Client.verify before every batch checks project bsp, program path, language and base against config/target.json",
+  "ghidra_mutations": false,
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "files": {
+    "include/bsp/cc16_dyn_ambient_math.hpp": "98cd01a48893e08d9f3ebd9b2aab9e2af1402cb28135d8fd1c4b357e20d9855f",
+    "src/cc16_dyn_ambient_math.cpp": "00beeddbc7960dd2655bda995d38f871a7a90ba6edef1066cfa3ecb235094e7e",
+    "docs/CC16_DYN_AMBIENT_MATH.md": "e6513bd87deace4ec028c1f7ade94a8f8c91c48f3aace745cf7e90c14bb7dc2e"
+  },
+  "public_namespace": "bsp::cc16_dyn_ambient_math",
+  "bodies": [
+    {
+      "address": "00C377F0",
+      "end_inclusive": "00C37857",
+      "size": 104,
+      "instructions": 35,
+      "public_function": "ccw_2d_ambient_00c377f0",
+      "native_abi": "six stack floats x0,y0,x1,y1,x2,y2; full EAX=0/1; RET 18h; SUB/ADD ESP,8",
+      "public_abi": "ordinary cdecl C++, uint32_t return; bit-preserving argument pushes to private raw helper",
+      "maximum_added_x87_depth": 4,
+      "balanced_on_normal_return": true,
+      "span_sha256": "a76903724f146a68fc4815a7b131b3cea18247e7aef33fb9a3b1b5f6e5d83450",
+      "decision": "unspilled by*ax-ay*bx; FCOMIP cross,zero; JBE false includes unordered if masked invalid continues",
+      "stores": [
+        {
+          "address": "00C37801",
+          "operation": "FSTP32",
+          "destination": "ESP+00",
+          "value": "ax"
+        },
+        {
+          "address": "00C37812",
+          "operation": "FSTP32",
+          "destination": "ESP+04",
+          "value": "ay"
+        },
+        {
+          "address": "00C3781E",
+          "operation": "FSTP32",
+          "destination": "ESP+14",
+          "value": "bx; overwrites x1 argument"
+        },
+        {
+          "address": "00C37826",
+          "operation": "FSTP32",
+          "destination": "ESP+18",
+          "value": "by; overwrites y1 argument"
+        },
+        {
+          "address": "00C37841",
+          "operation": "FSTP ST(0)",
+          "destination": "x87 pop",
+          "value": "retained zero after FCOMIP"
+        }
+      ]
+    },
+    {
+      "address": "00C37860",
+      "end_inclusive": "00C37984",
+      "size": 293,
+      "instructions": 111,
+      "public_function": "barycentric_2d_ambient_00c37860",
+      "native_abi": "EAX=u_out, ECX=v_out, EDX=w_out; eight stack floats x0,y0,x1,y1,x2,y2,px,py; RET 20h; SUB/ADD ESP,10h",
+      "public_abi": "ordinary cdecl C++, void; three pointer arguments then eight float arguments; private raw-helper argument frame",
+      "maximum_added_x87_depth": 7,
+      "balanced_on_normal_return": true,
+      "span_sha256": "a1b1f99bfff1b431e96c393b5035896b0c51414ca59c4492c390835f701ac92c",
+      "labels": "a=triangle1-triangle0, b=triangle2-triangle0, d=point-triangle0; stored A=a.a B=b.a C=b.b P=a.d Q=b.d",
+      "unspilled_arithmetic": "native-directed products and subtraction form each numerator; native FDIVP forms quotient; no numerator or extra quotient spill; w=(1-u)-v has no intermediate float spill",
+      "stores": [
+        {
+          "address": "00C37871",
+          "operation": "FSTP32",
+          "destination": "ESP+00",
+          "value": "ax"
+        },
+        {
+          "address": "00C37882",
+          "operation": "FSTP32",
+          "destination": "ESP+04",
+          "value": "ay"
+        },
+        {
+          "address": "00C3788C",
+          "operation": "FSTP32",
+          "destination": "ESP+1C",
+          "value": "bx; overwrites x1"
+        },
+        {
+          "address": "00C37896",
+          "operation": "FSTP32",
+          "destination": "ESP+20",
+          "value": "by; overwrites y1"
+        },
+        {
+          "address": "00C378A2",
+          "operation": "FSTP32",
+          "destination": "ESP+08",
+          "value": "dx"
+        },
+        {
+          "address": "00C378AA",
+          "operation": "FSTP32",
+          "destination": "ESP+0C",
+          "value": "dy"
+        },
+        {
+          "address": "00C378C3",
+          "operation": "FSTP32",
+          "destination": "ESP+24",
+          "value": "A; overwrites x2"
+        },
+        {
+          "address": "00C378DB",
+          "operation": "FSTP32",
+          "destination": "ESP+1C",
+          "value": "B; overwrites bx"
+        },
+        {
+          "address": "00C378EB",
+          "operation": "FSTP32",
+          "destination": "ESP+14",
+          "value": "C; overwrites x0"
+        },
+        {
+          "address": "00C37905",
+          "operation": "FSTP32",
+          "destination": "ESP+2C",
+          "value": "P; overwrites px"
+        },
+        {
+          "address": "00C37913",
+          "operation": "FSTP32",
+          "destination": "ESP+00",
+          "value": "Q; overwrites ax"
+        },
+        {
+          "address": "00C37934",
+          "operation": "FSTP32",
+          "destination": "ESP+1C",
+          "value": "D=C*A-B*B; overwrites B"
+        },
+        {
+          "address": "00C37953",
+          "operation": "FSTP32",
+          "destination": "ESP+1C",
+          "value": "u=(C*P-Q*B)/D; overwrites D"
+        },
+        {
+          "address": "00C3795B",
+          "operation": "FST32 nonpopping",
+          "destination": "EAX",
+          "value": "reload u; retain x87 value"
+        },
+        {
+          "address": "00C3796D",
+          "operation": "FSTP32",
+          "destination": "ESP+1C",
+          "value": "v=(A*Q-B*P)/D; overwrites u"
+        },
+        {
+          "address": "00C37975",
+          "operation": "FST32 nonpopping",
+          "destination": "ECX",
+          "value": "reload v; retain x87 value"
+        },
+        {
+          "address": "00C3797D",
+          "operation": "FSTP32",
+          "destination": "EDX",
+          "value": "w=(1-u)-v"
+        }
+      ]
+    }
+  ],
+  "floating_point_contract": {
+    "precision_and_rounding": "actual ambient x87 CW; all arithmetic and float storage epochs retain native instructions and encodings, including reserved-setting hardware behavior",
+    "control_state": "no CW or MXCSR changes; no state initialization/save/restore or status clearing",
+    "status_and_exceptions": "native instruction order accumulates status and pending/masked/unmasked exceptions; normal return balances x87 stack; exceptional interruption has native schedule at relocated addresses",
+    "nan_denormal_signed_zero": "actual hardware FLD/arithmetic/FST[P]/FCOMIP behavior; no sanitization, alternate comparisons or software conversion",
+    "zero_denominator": "no guard; original two divisions and all output arithmetic/stores remain",
+    "mxcsr": "no SSE or MXCSR instructions in raw bodies or inspected wrappers; MXCSR unchanged; x87 operations do not use SSE DAZ/FTZ",
+    "output_aliases": "writable outputs may overlap; ordered u,v,w stores; w consumes retained u/v rather than pointer reloads; private native argument/scratch addresses not exposed by public C++ wrapper",
+    "relocated_state_limit": "x87 last instruction/data pointers and hardware trap frames identify relocated code/stack, not original addresses; binary ABI adapter and exception transport not supplied"
+  },
+  "verification": {
+    "compiler": "MSVC 19.51.36244.0 x86",
+    "common_flags": "/c /std:c++17 /EHsc /W4 /WX /fp:strict /Iinclude /FAs",
+    "configurations": {
+      "release": {
+        "flags": "/O2 /Ob2",
+        "compile_exit_code": 0,
+        "object_sha256": "039042f8d10ae963a3d6ff983f10e9d59f1f2f9a8ee01cb47bb77cb87eda5814",
+        "exact_body_bytes": [
+          {
+            "address": "00C377F0",
+            "size": 104,
+            "instructions": 35,
+            "exact": true,
+            "differences": [],
+            "relocations": []
+          },
+          {
+            "address": "00C37860",
+            "size": 293,
+            "instructions": 111,
+            "exact": true,
+            "differences": [],
+            "relocations": []
+          }
+        ],
+        "wrappers": [
+          {
+            "symbol": "?ccw_2d_ambient_00c377f0@cc16_dyn_ambient_math@bsp@@YAIMMMMMM@Z",
+            "instructions": 15,
+            "calls": 1,
+            "call_targets": [
+              "?ccw_native_body_00c377f0@?A0xecb336b2@cc16_dyn_ambient_math@bsp@@YAXXZ"
+            ],
+            "fp_or_sse_instructions": [],
+            "assembly": [
+              "push ebp",
+              "mov ebp, esp",
+              "push ecx",
+              "push dword ptr [ebp + 0x1c]",
+              "push dword ptr [ebp + 0x18]",
+              "push dword ptr [ebp + 0x14]",
+              "push dword ptr [ebp + 0x10]",
+              "push dword ptr [ebp + 0xc]",
+              "push dword ptr [ebp + 8]",
+              "call 0x1b",
+              "mov dword ptr [ebp - 4], eax",
+              "mov eax, dword ptr [ebp - 4]",
+              "mov esp, ebp",
+              "pop ebp",
+              "ret"
+            ]
+          },
+          {
+            "symbol": "?barycentric_2d_ambient_00c37860@cc16_dyn_ambient_math@bsp@@YAXPAM00MMMMMMMM@Z",
+            "instructions": 16,
+            "calls": 1,
+            "call_targets": [
+              "?barycentric_native_body_00c37860@?A0xecb336b2@cc16_dyn_ambient_math@bsp@@YAXXZ"
+            ],
+            "fp_or_sse_instructions": [],
+            "assembly": [
+              "push ebp",
+              "mov ebp, esp",
+              "push dword ptr [ebp + 0x30]",
+              "push dword ptr [ebp + 0x2c]",
+              "push dword ptr [ebp + 0x28]",
+              "push dword ptr [ebp + 0x24]",
+              "push dword ptr [ebp + 0x20]",
+              "push dword ptr [ebp + 0x1c]",
+              "push dword ptr [ebp + 0x18]",
+              "push dword ptr [ebp + 0x14]",
+              "mov eax, dword ptr [ebp + 8]",
+              "mov ecx, dword ptr [ebp + 0xc]",
+              "mov edx, dword ptr [ebp + 0x10]",
+              "call 0x29",
+              "pop ebp",
+              "ret"
+            ]
+          }
+        ]
+      },
+      "debug": {
+        "flags": "/Od /RTC1",
+        "compile_exit_code": 0,
+        "object_sha256": "7230e4d5990fd7e51134fe8c9269e0614950119cad7ea069b8bc8fdeefaf8ae2",
+        "exact_body_bytes": [
+          {
+            "address": "00C377F0",
+            "size": 104,
+            "instructions": 35,
+            "exact": true,
+            "differences": [],
+            "relocations": []
+          },
+          {
+            "address": "00C37860",
+            "size": 293,
+            "instructions": 111,
+            "exact": true,
+            "differences": [],
+            "relocations": []
+          }
+        ],
+        "wrappers": [
+          {
+            "symbol": "?ccw_2d_ambient_00c377f0@cc16_dyn_ambient_math@bsp@@YAIMMMMMM@Z",
+            "instructions": 15,
+            "calls": 1,
+            "call_targets": [
+              "?ccw_native_body_00c377f0@?A0xecb336b2@cc16_dyn_ambient_math@bsp@@YAXXZ"
+            ],
+            "fp_or_sse_instructions": [],
+            "assembly": [
+              "push ebp",
+              "mov ebp, esp",
+              "push ecx",
+              "push dword ptr [ebp + 0x1c]",
+              "push dword ptr [ebp + 0x18]",
+              "push dword ptr [ebp + 0x14]",
+              "push dword ptr [ebp + 0x10]",
+              "push dword ptr [ebp + 0xc]",
+              "push dword ptr [ebp + 8]",
+              "call 0x1b",
+              "mov dword ptr [ebp - 4], eax",
+              "mov eax, dword ptr [ebp - 4]",
+              "mov esp, ebp",
+              "pop ebp",
+              "ret"
+            ]
+          },
+          {
+            "symbol": "?barycentric_2d_ambient_00c37860@cc16_dyn_ambient_math@bsp@@YAXPAM00MMMMMMMM@Z",
+            "instructions": 16,
+            "calls": 1,
+            "call_targets": [
+              "?barycentric_native_body_00c37860@?A0xecb336b2@cc16_dyn_ambient_math@bsp@@YAXXZ"
+            ],
+            "fp_or_sse_instructions": [],
+            "assembly": [
+              "push ebp",
+              "mov ebp, esp",
+              "push dword ptr [ebp + 0x30]",
+              "push dword ptr [ebp + 0x2c]",
+              "push dword ptr [ebp + 0x28]",
+              "push dword ptr [ebp + 0x24]",
+              "push dword ptr [ebp + 0x20]",
+              "push dword ptr [ebp + 0x1c]",
+              "push dword ptr [ebp + 0x18]",
+              "push dword ptr [ebp + 0x14]",
+              "mov eax, dword ptr [ebp + 8]",
+              "mov ecx, dword ptr [ebp + 0xc]",
+              "mov edx, dword ptr [ebp + 0x10]",
+              "call 0x59",
+              "pop ebp",
+              "ret"
+            ]
+          }
+        ]
+      }
+    },
+    "inspection_artifacts": "ignored local/cc16_dyn_ambient_math/{release,debug}.{obj,asm,inspection.json}; inspect_object.py is read-only COFF/PE parsing and Capstone disassembly",
+    "new_tests": 0,
+    "executables_linked_or_run": 0,
+    "native_differential_fixture_run": false,
+    "game_run": false,
+    "project_full_build_run": false
+  },
+  "dependencies": {
+    "external_calls": [],
+    "external_data": [],
+    "existing_fixed_precision_source_modified": false,
+    "intended_consumers": [
+      "ring predicates currently composing cc13_dyn1::ccw_2d_00c377f0",
+      "DynRingQueryCalls::barycentric_00c37860"
+    ],
+    "sibling_ring_source_status": "read-only interface evidence; no acceptance, integration or activation credit supplied",
+    "source_registered": false,
+    "runtime_provider_bound": false
+  },
+  "remaining_work": [
+    "integrator registers source and binds ring providers",
+    "integrator inspects final target object and builds integrated Win32 tree",
+    "integrator updates shared ledgers/Ghidra annotations if appropriate",
+    "binary admission, original-address exception transport, and gameplay remain outside this packet"
+  ],
+  "preserved": [
+    "all existing source/callers and shared CMake/ledgers",
+    "Ghidra annotations",
+    "original game installation",
+    "saves/profile",
+    "machine power/process settings"
+  ],
+  "validation": {
+    "build_registered": true,
+    "build_tested": true,
+    "configuration": "MSVC Win32 Release",
+    "build_log": "local/cc16_dyn_ring_family_build.log",
+    "existing_suites_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "compiled_object": "build/win32/bsp_core.dir/Release/cc16_dyn_ambient_math.obj",
+    "compiled_object_sha256": "597398dde08a0956e6348c2c9e5ae42339363acc48d9b1409c5b404bc8a37ab1",
+    "source_candidate": "2f76638f6d2d0dfaa3caac8bb85ad7fa7b776cb3",
+    "accepted_base": "51e6199dab817a68b022aa1ca9438ad3798bda82",
+    "fixture_tested": true,
+    "fixture_scope": "One fixed concave-five normal-path composition, masked PC24/PC53 RN; synthetic-normal-contract heap. No original CRT/EH/failure/public ABI or game/root proof.",
+    "fixture_report": "reports/cc16_dyn_ring_native_fixture.json",
+    "abi_compatible": false,
+    "game_validated": false,
+    "runtime_activated": false,
+    "ghidra_annotation_backup": "local/ghidra-annotations-20261029T041856Z.json",
+    "exports_refreshed": true,
+    "integration_document": "docs/CC16_DYN_RING_FAMILY_INTEGRATION.md"
+  },
+  "integration_status": "source_integrated_build_and_focused_fixture_tested_unwired",
+  "integrator_object_verification": {
+    "object": "build\\win32\\bsp_core.dir\\Release\\cc16_dyn_ambient_math.obj",
+    "object_sha256": "597398dde08a0956e6348c2c9e5ae42339363acc48d9b1409c5b404bc8a37ab1",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "machine": "x86",
+    "bodies": [
+      {
+        "native_address": "00C377F0",
+        "length": 104,
+        "instructions": 35,
+        "exact_bytes": true,
+        "differing_offsets": [],
+        "relocations": [],
+        "sha256": "a76903724f146a68fc4815a7b131b3cea18247e7aef33fb9a3b1b5f6e5d83450",
+        "symbol": "?ccw_native_body_00c377f0@?A0x4aecd560@cc16_dyn_ambient_math@bsp@@YAXXZ"
+      },
+      {
+        "native_address": "00C37860",
+        "length": 293,
+        "instructions": 111,
+        "exact_bytes": true,
+        "differing_offsets": [],
+        "relocations": [],
+        "sha256": "a1b1f99bfff1b431e96c393b5035896b0c51414ca59c4492c390835f701ac92c",
+        "symbol": "?barycentric_native_body_00c37860@?A0x4aecd560@cc16_dyn_ambient_math@bsp@@YAXXZ"
+      }
+    ],
+    "wrappers": [
+      {
+        "symbol": "?ccw_2d_ambient_00c377f0@cc16_dyn_ambient_math@bsp@@YAIMMMMMM@Z",
+        "instructions": 15,
+        "calls": 1,
+        "call_targets": [
+          "?ccw_native_body_00c377f0@?A0x4aecd560@cc16_dyn_ambient_math@bsp@@YAXXZ"
+        ],
+        "fp_or_sse_instructions": [],
+        "assembly": [
+          "push ebp",
+          "mov ebp, esp",
+          "push ecx",
+          "push dword ptr [ebp + 0x1c]",
+          "push dword ptr [ebp + 0x18]",
+          "push dword ptr [ebp + 0x14]",
+          "push dword ptr [ebp + 0x10]",
+          "push dword ptr [ebp + 0xc]",
+          "push dword ptr [ebp + 8]",
+          "call 0x1b",
+          "mov dword ptr [ebp - 4], eax",
+          "mov eax, dword ptr [ebp - 4]",
+          "mov esp, ebp",
+          "pop ebp",
+          "ret"
+        ]
+      },
+      {
+        "symbol": "?barycentric_2d_ambient_00c37860@cc16_dyn_ambient_math@bsp@@YAXPAM00MMMMMMMM@Z",
+        "instructions": 16,
+        "calls": 1,
+        "call_targets": [
+          "?barycentric_native_body_00c37860@?A0x4aecd560@cc16_dyn_ambient_math@bsp@@YAXXZ"
+        ],
+        "fp_or_sse_instructions": [],
+        "assembly": [
+          "push ebp",
+          "mov ebp, esp",
+          "push dword ptr [ebp + 0x30]",
+          "push dword ptr [ebp + 0x2c]",
+          "push dword ptr [ebp + 0x28]",
+          "push dword ptr [ebp + 0x24]",
+          "push dword ptr [ebp + 0x20]",
+          "push dword ptr [ebp + 0x1c]",
+          "push dword ptr [ebp + 0x18]",
+          "push dword ptr [ebp + 0x14]",
+          "mov eax, dword ptr [ebp + 8]",
+          "mov ecx, dword ptr [ebp + 0xc]",
+          "mov edx, dword ptr [ebp + 0x10]",
+          "call 0x29",
+          "pop ebp",
+          "ret"
+        ]
+      }
+    ],
+    "execution_performed": false
+  }
+}

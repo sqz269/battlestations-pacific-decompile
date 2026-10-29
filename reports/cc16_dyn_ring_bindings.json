@@ -1,0 +1,181 @@
+{
+  "packet": "codex-dyn-ring-bindings",
+  "source": "src/cc16_dyn_ring_bindings.cpp",
+  "header": "include/bsp/cc16_dyn_ring_bindings.hpp",
+  "public_entry": "bsp::cc16_dyn_ring_bindings::construct_dyn_ring_owner_bound_00c4d5a0",
+  "private_candidate": {
+    "origin_main_import": "409689e5e813d4aaaeb656abeb827d06a5842016",
+    "named_unaccepted_dependencies": [
+      "d03ef0004dd5a7dadd11f6825f342195b8b851bb",
+      "f460b42b4bfedbb6f13dc3efd1828eef06bd788e"
+    ],
+    "dependency_acceptance": "primary review and common build required; no promotion by private merge",
+    "fresh_native_body_or_activation_credit": false
+  },
+  "rows": [
+    {
+      "address": "00c4d605",
+      "native": "00c33510",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "binding": "existing direct initializer with same CRT"
+    },
+    {
+      "address": "00c4d622",
+      "native": "00c4d370",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "binding": "OwnerCalls forwards identical owner address and CRT to recovered preparation"
+    },
+    {
+      "address": "00c4d63b",
+      "native": "00c41230",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "binding": "OwnerCalls invokes recovered previous predicate"
+    },
+    {
+      "address": "00c4d737",
+      "native": "00c41190",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "binding": "OwnerCalls invokes recovered next predicate"
+    },
+    {
+      "address": "00c4d8b6",
+      "native": "0040d7b0",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "binding": "existing vector copy retains same CRT"
+    },
+    {
+      "address": "00c4d921",
+      "native": "0040d7b0",
+      "function": "00c4d5a0",
+      "kind": "call",
+      "binding": "existing vector copy retains same CRT"
+    },
+    {
+      "address": "00c4d421",
+      "native": "00c410e0",
+      "function": "00c4d370",
+      "kind": "call",
+      "binding": "stateless raw preparation callback copies query fields without recomputation"
+    },
+    {
+      "address": "00c411c1",
+      "native": "00c377f0",
+      "function": "00c41190",
+      "kind": "call",
+      "binding": "exact ambient CCW; unchanged P(n),n,N(n) arguments"
+    },
+    {
+      "address": "00c411fb",
+      "native": "00c377f0",
+      "function": "00c41190",
+      "kind": "call",
+      "binding": "exact ambient CCW; unchanged N(n),p,N(p) arguments"
+    },
+    {
+      "address": "00c4121b",
+      "native": "00c410e0",
+      "function": "00c41190",
+      "kind": "call",
+      "binding": "recovered query; same owner and query record"
+    },
+    {
+      "address": "00c41263",
+      "native": "00c377f0",
+      "function": "00c41230",
+      "kind": "call",
+      "binding": "exact ambient CCW; unchanged P(p),p,N(p) arguments"
+    },
+    {
+      "address": "00c4129d",
+      "native": "00c377f0",
+      "function": "00c41230",
+      "kind": "call",
+      "binding": "exact ambient CCW; unchanged P(n),n,P(p) arguments"
+    },
+    {
+      "address": "00c412be",
+      "native": "00c410e0",
+      "function": "00c41230",
+      "kind": "call",
+      "binding": "recovered query; same owner and query record"
+    },
+    {
+      "address": "00c41134",
+      "native": "00c37860",
+      "function": "00c410e0",
+      "kind": "call",
+      "binding": "ambient barycentric with u/v/w pointers and eight ordered float words"
+    }
+  ],
+  "custody": {
+    "actual_destination_and_input_owner": true,
+    "owner_or_geometry_snapshot_added": false,
+    "same_crt_reference": true,
+    "default_allocator_or_fake_service": false,
+    "adapter_state": "stateless and stack-scoped; preparation context intentionally unused",
+    "global_mutable_invocation_frame": false,
+    "query_fields": "walk start, triangle2, stop, triangle0, triangle1 copied field-for-field",
+    "missing_query_or_math_fallback": false
+  },
+  "floating_point": {
+    "predicate_ccw": "cc16_dyn_ambient_math::ccw_2d_ambient_00c377f0, unchanged six float argument order",
+    "query_barycentric": "cc16_dyn_ambient_math::barycentric_2d_ambient_00c37860, distinct u/v/w outputs then x0,y0,x1,y1,x2,y2,px,py",
+    "native_output_alias_correspondence": "native query outputs are distinct caller-frame slots outside callee private arguments, like adapter weights",
+    "forced_or_inferred_fp_controls": false,
+    "native_free_x87_entries": {
+      "ccw": 4,
+      "barycentric": 7
+    },
+    "previous_pc24_checkpoint_preserved": "eca693ce55a0da18d349b2b326650766f1c9cf32",
+    "old_pc53_source_modified": false,
+    "new_native_fixture_run": false
+  },
+  "validation": {
+    "build_registered": true,
+    "build_tested": true,
+    "configuration": "MSVC Win32 Release",
+    "build_log": "local/cc16_dyn_ring_family_build.log",
+    "existing_suites_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "compiled_object": "build/win32/bsp_core.dir/Release/cc16_dyn_ring_bindings.obj",
+    "compiled_object_sha256": "312ebd3295552fe8b6a4c3500859cdd7dc9759eeb9b078adef1381d7fb841042",
+    "source_candidate": "2f76638f6d2d0dfaa3caac8bb85ad7fa7b776cb3",
+    "accepted_base": "51e6199dab817a68b022aa1ca9438ad3798bda82",
+    "fixture_tested": true,
+    "fixture_scope": "One fixed concave-five normal-path composition, masked PC24/PC53 RN; synthetic-normal-contract heap. No original CRT/EH/failure/public ABI or game/root proof.",
+    "fixture_report": "reports/cc16_dyn_ring_native_fixture.json",
+    "abi_compatible": false,
+    "game_validated": false,
+    "runtime_activated": false,
+    "ghidra_annotation_backup": "local/ghidra-annotations-20261029T041856Z.json",
+    "exports_refreshed": false,
+    "integration_document": "docs/CC16_DYN_RING_FAMILY_INTEGRATION.md"
+  },
+  "remaining_integrator_work": [
+    "accept named dependencies and binding overlay after common build/review",
+    "central metadata/annotations and public entry registration",
+    "original caller reachability or full dead-chain proof",
+    "actual game/root activation and runtime evidence"
+  ],
+  "worker_validation": {
+    "source_contract_review": true,
+    "source_compile_tested": "bindings and revised predicates: MSVC x86 C++17 /permissive- /EHsc /fp:strict /O2 /W4 /WX object-only; exit 0",
+    "object_argument_proof": "CCW and barycentric use raw MOVSS argument-word copies; barycentric output pointers are distinct offsets 0,4,8; no conversion/arithmetic inserted",
+    "call_report_verification": "14 binding rows plus 6 predicate rows checked, 0 failed",
+    "build_registered": false,
+    "build_tested": false,
+    "fixture_tested": false,
+    "native_public_abi_equivalent": false,
+    "game_validated": false,
+    "ghidra_mutated": false,
+    "tests_added": false
+  },
+  "integration_status": "source_integrated_build_and_focused_fixture_tested_unwired"
+}

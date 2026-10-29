@@ -1,0 +1,148 @@
+{
+  "packet": "codex-dyn-ring-query",
+  "function": "00c410e0",
+  "body_start": "00c410e0",
+  "body_end_inclusive": "00c41187",
+  "body_bytes": 168,
+  "source": "src/cc16_dyn_ring_query.cpp",
+  "header": "include/bsp/cc16_dyn_ring_query.hpp",
+  "cpp_name_hypothesis": "bsp::cc16_dyn_ring_query::triangle_ring_clear_00c410e0",
+  "original_abi": {
+    "eax_input": "walk start",
+    "ebx_input": "triangle2; read unchanged",
+    "stack_arguments": [
+      "owner",
+      "stop",
+      "triangle0",
+      "triangle1"
+    ],
+    "stack_argument_bytes": 16,
+    "returns": [
+      "RET 10h at 00c4117a",
+      "RET 10h at 00c41185"
+    ],
+    "return_eax": "whole uint32 0 or 1",
+    "saved_restored": [
+      "EBP",
+      "ESI",
+      "EDI"
+    ],
+    "scratch_observed": [
+      "EAX",
+      "ECX",
+      "EDX",
+      "XMM0",
+      "XMM1"
+    ],
+    "private_stack_arg4_reuse": "triangle1 index captured in EBP; its by-value slot is then u_out"
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verified_by": "bsp.py ghidra client target verification before each live batch"
+  },
+  "rows": [
+    {
+      "address": "00c41134",
+      "native": "00c37860",
+      "function": "00c410e0",
+      "kind": "call",
+      "source_binding": "required ambient barycentric/FP-context contract; no default PC53 composition"
+    }
+  ],
+  "walk": {
+    "empty": "start==stop returns 1 before native storage/FP access",
+    "vertex_base": "input owner first dword; cached for nonempty walk; stride 8",
+    "triangle_order": [
+      "triangle0",
+      "triangle1",
+      "triangle2",
+      "current point"
+    ],
+    "next_array": "owner receiver+0c; reloaded on every advance",
+    "owner_cursor_edge_point_writes": false,
+    "bounds_or_cycle_guard_added": false,
+    "address_arithmetic": "wrapping Win32 uint32"
+  },
+  "floating_point": {
+    "source_sequence": "literal MSVC Win32 COMISS/JC twice, x87 FADD/FCOMIP/JNC",
+    "u_v_gate": "carry rejects negative or unordered values",
+    "sum_gate": "one ordered>=un-stored ambient x87 sum includes the point",
+    "precision_selected_by_source": false,
+    "ambient_controls": [
+      "x87 precision",
+      "x87 rounding",
+      "x87 exception masks",
+      "MXCSR denormal and exception controls"
+    ],
+    "existing_pc53_barycentric_composed": false,
+    "inherited_pc24_inferred_from_deadness": false,
+    "binary_fp_register_exception_transport_supplied": false
+  },
+  "required_dependency": {
+    "start": "00c37860",
+    "body_end_inclusive": "00c37984",
+    "original_output_registers": [
+      "EAX=u_out",
+      "ECX=v_out",
+      "EDX=w_out"
+    ],
+    "stack_inputs": "eight float words; triangle0,triangle1,triangle2,point",
+    "return_instruction": "RET 20h",
+    "typed_contract": "DynRingQueryCalls::barycentric_00c37860 returning u,v,w under actual ambient FP controls",
+    "default_body_supplied": false,
+    "alternative_body_credit_claimed": false
+  },
+  "qualification_followup": [
+    "separate qualified barycentric variant with exact ambient/control-specific contract and original store epochs; do not replace existing PC53 source or claim fresh native-body credit",
+    "qualify existing predicate PC24 composition; ambient exact CCW variant or explicit matching FP provider required for generic binding"
+  ],
+  "validation": {
+    "build_registered": true,
+    "build_tested": true,
+    "configuration": "MSVC Win32 Release",
+    "build_log": "local/cc16_dyn_ring_family_build.log",
+    "existing_suites_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "compiled_object": "build/win32/bsp_core.dir/Release/cc16_dyn_ring_query.obj",
+    "compiled_object_sha256": "1fcafcdd78431b79a7d03551f57c20e74e8d323eae15ebb2701fb5ac15de0e55",
+    "source_candidate": "2f76638f6d2d0dfaa3caac8bb85ad7fa7b776cb3",
+    "accepted_base": "51e6199dab817a68b022aa1ca9438ad3798bda82",
+    "fixture_tested": true,
+    "fixture_scope": "One fixed concave-five normal-path composition, masked PC24/PC53 RN; synthetic-normal-contract heap. No original CRT/EH/failure/public ABI or game/root proof.",
+    "fixture_report": "reports/cc16_dyn_ring_native_fixture.json",
+    "abi_compatible": false,
+    "game_validated": false,
+    "runtime_activated": false,
+    "ghidra_annotation_backup": "local/ghidra-annotations-20261029T041856Z.json",
+    "exports_refreshed": true,
+    "integration_document": "docs/CC16_DYN_RING_FAMILY_INTEGRATION.md"
+  },
+  "remaining_integrator_work": [
+    "post-integration call-report checks",
+    "required barycentric/provider FP-context closure and predicate qualification",
+    "parent/predicate binding and separate 00c4d370 preparation body",
+    "common Win32 registration/build and central metadata/annotations",
+    "runtime reference or complete dead-chain closure"
+  ],
+  "worker_validation": {
+    "assembly_review": "complete query body, branch flags and input/output stack reuse",
+    "live_full_byte_span_read": true,
+    "source_compile_tested": "MSVC x86 object-only compile: C++17 /permissive- /EHsc /fp:strict /W4 /WX; exit 0",
+    "object_disassembly": "confirmed COMISS/JC twice and un-stored x87 FADD/FCOMIP/JNC",
+    "call_report_verification": "1 call row checked, 0 failed",
+    "build_registered": false,
+    "build_tested": false,
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "ghidra_mutated": false,
+    "tests_added": false
+  },
+  "integration_status": "source_integrated_build_and_focused_fixture_tested_unwired"
+}

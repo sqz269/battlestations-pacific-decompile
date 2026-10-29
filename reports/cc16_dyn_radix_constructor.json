@@ -1,0 +1,232 @@
+{
+  "packet": "codex-dyn-radix-constructor",
+  "status": "original_39_byte_body_recovered_source_provisional_pending_boundary_acceptance_and_genuine_vtable_provider",
+  "base_owner_commit": "bb14cb9cc8d700d76d2de6d55bea7fa0a8644acc",
+  "scope": {
+    "address": "00c37210",
+    "inclusive_end": "00c37236",
+    "exclusive_end": "00c37237",
+    "bytes": 39,
+    "ghidra_function_defined": false,
+    "source_name": "bsp::cc16_dyn_radix_constructor::construct_manager_00c37210",
+    "body_credit": "provisional until primary accepts boundary and genuine vtable-provider custody",
+    "files": [
+      "include/bsp/cc16_dyn_radix_constructor.hpp",
+      "src/cc16_dyn_radix_constructor.cpp",
+      "docs/CC16_DYN_RADIX_CONSTRUCTOR.md",
+      "reports/cc16_dyn_radix_constructor.json"
+    ],
+    "previous_leaf_or_owner_files_changed": false,
+    "shared_ledger_cmake_config_or_ghidra_mutations": false
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "language": "x86:LE:32:default",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "live_verification": "bsp.py ghidra wrappers verify configured project/program before their batches"
+  },
+  "body": {
+    "hex": "33c9c70018a1d70089480489480889480c89481089481489481889481c894820894824894828c3",
+    "sha256": "3ef730a6dfaf25c93827c89028a4d6e7ffb539eed403857651c2f45b4ec70a35",
+    "live_and_disk_byte_review": "bounded live window and disk disassembly agree",
+    "vtable_instruction": {
+      "address": "00c37212",
+      "bytes": "c70018a1d700",
+      "operation": "MOV dword ptr [EAX],00D7A118",
+      "immediate_operand_address": "00c37214",
+      "immediate_operand_inclusive_end": "00c37217"
+    },
+    "zero_store_instruction_starts": [
+      "00c37218",
+      "00c3721b",
+      "00c3721e",
+      "00c37221",
+      "00c37224",
+      "00c37227",
+      "00c3722a",
+      "00c3722d",
+      "00c37230",
+      "00c37233"
+    ],
+    "zero_store_offsets": [
+      4,
+      8,
+      12,
+      16,
+      20,
+      24,
+      28,
+      32,
+      36,
+      40
+    ],
+    "last_instruction": {
+      "address": "00c37236",
+      "bytes": "c3",
+      "text": "RET"
+    },
+    "direct_callees": [],
+    "calls": []
+  },
+  "boundary_evidence": {
+    "defined_before": {
+      "address": "00c37180",
+      "inclusive_end": "00c37202"
+    },
+    "padding_before": {
+      "address": "00c37203",
+      "inclusive_end": "00c3720f",
+      "bytes": 13,
+      "value": "cc"
+    },
+    "padding_after": {
+      "address": "00c37237",
+      "inclusive_end": "00c3723f",
+      "bytes": 9,
+      "value": "cc"
+    },
+    "neighboring_undefined_sequence": {
+      "address": "00c37240",
+      "inclusive_end": "00c37242",
+      "text": "MOV EAX,[ECX]; RET"
+    },
+    "next_defined": {
+      "address": "00c37290",
+      "inclusive_end": "00c372fc"
+    },
+    "lookup_undefined_chunk": "00c37210-00c37237, 39 bytes, exclusive end"
+  },
+  "original_abi": {
+    "receiver": "EAX",
+    "result": "EAX remains the manager pointer",
+    "stack_arguments": [],
+    "ret_pop_bytes": 0,
+    "ecx": "zeroed by XOR at00c37210",
+    "other_gprs": "unchanged",
+    "source_adapter": "explicit C++ manager and required vtable binding; no register/flags adapter"
+  },
+  "provider": {
+    "original_image_identity": "00d7a118",
+    "binding_type": "bsp::cc16_dyn_radix_constructor::VtableBinding",
+    "requirement": "genuine table corresponding to original identity, supplied explicitly with proven custody",
+    "callable_provider_supplied": false,
+    "default_or_fabricated_table_supplied": false,
+    "raw_36_byte_window_words": [
+      "00c55d30",
+      "00c40d50",
+      "00403c40",
+      "00c5a8b0",
+      "00c32c30",
+      "00c40d70",
+      "00c32c20",
+      "004041f0",
+      "00d7c814"
+    ],
+    "window_qualification": "raw words only; ninth word at00d7a138 does not establish a ninth callable slot",
+    "untouched_fields": "no stores beyond manager+2b; roles of ten zero fields unassigned"
+  },
+  "incoming_reference_audit": {
+    "constructor_absolute_dword_candidates": 0,
+    "constructor_text_e8_e9_rel32_candidates": 0,
+    "coverage": "every complete dword position in all file-backed PE sections; every complete E8/E9 rel32 position in .text, including final positions",
+    "limitations": "does not prove absence of runtime-computed/indirect references, short branches or other encodings",
+    "original_dead_chain_acceptance": "primary-owned; not claimed by this packet",
+    "audit_artifact": "local/cc16_dyn_radix_constructor_audit.json",
+    "raw_absolute_positive_controls": [
+      {
+        "address": "00c37214",
+        "target": "00d7a118",
+        "kind": "instruction immediate operand, not instruction start"
+      },
+      {
+        "address": "00d7a118",
+        "target": "00c55d30",
+        "kind": "data slot"
+      }
+    ]
+  },
+  "positive_control_calls": [
+    {
+      "function": "00c55d30",
+      "address": "00c55d79",
+      "native": "00c37180",
+      "role": "raw-scan positive control; not a constructor call"
+    },
+    {
+      "function": "00c55d30",
+      "address": "00c55d88",
+      "native": "00c37180",
+      "role": "raw-scan positive control; not a constructor call"
+    }
+  ],
+  "safe_function_definition_request": {
+    "action": "primary may define only after evidence review and under Ghidra write lock",
+    "entry": "00c37210",
+    "inclusive_end": "00c37236",
+    "body_sha256": "3ef730a6dfaf25c93827c89028a4d6e7ffb539eed403857651c2f45b4ec70a35",
+    "suggested_hypothesis_name": "BSP_DynRadixManager_Construct_00C37210",
+    "receiver_abi": "EAX, not ECX thiscall",
+    "normal_return": true,
+    "flow_overrides_requested": false,
+    "exclude": [
+      "00c37203..00c3720f padding",
+      "00c37237..00c3723f padding",
+      "00c37240 neighboring undefined sequence"
+    ],
+    "preconditions": [
+      "verify current project/program and exact bytes",
+      "verify no overlapping function body",
+      "preserve comments and record prior values"
+    ]
+  },
+  "evidence_commands": [
+    "bsp.py ghidra proto 00C37180 00C37210 00C37240 --brief",
+    "bsp.py disasm-raw 00C37200 --length 80",
+    "bsp.py ghidra bytes 00C37200 --length 80",
+    "bsp.py ghidra bytes 00D7A118 --length 36",
+    "bsp.py ghidra proto 00C37290 --brief",
+    "bsp.py range 00C37180 00C372B0 --limit 8",
+    "bsp.py lookup 00C37210",
+    "image_ref_scan.py 00C37210 00D7A118 00C55D30 00C37180",
+    "endpoint-inclusive read-only PE audit recorded in local artifact"
+  ],
+  "validation": {
+    "build_registered": true,
+    "build_tested": true,
+    "configuration": "MSVC Win32 Release",
+    "build_log": "local/cc16_dyn_ring_family_build.log",
+    "existing_suites_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "compiled_object": "build/win32/bsp_core.dir/Release/cc16_dyn_radix_constructor.obj",
+    "compiled_object_sha256": "58dafbeee00140056dfaf8079941138c46ac71faff6c19f3dfd4554577898760",
+    "source_candidate": "2f76638f6d2d0dfaa3caac8bb85ad7fa7b776cb3",
+    "accepted_base": "51e6199dab817a68b022aa1ca9438ad3798bda82",
+    "fixture_tested": false,
+    "fixture_scope": "Not included in the ring-family fixture; genuine vtable binding missing.",
+    "fixture_report": null,
+    "abi_compatible": false,
+    "game_validated": false,
+    "runtime_activated": false,
+    "ghidra_annotation_backup": "local/ghidra-annotations-20261029T041856Z.json",
+    "exports_refreshed": true,
+    "integration_document": "docs/CC16_DYN_RING_FAMILY_INTEGRATION.md"
+  },
+  "worker_validation": {
+    "original_bytes_and_source_review": true,
+    "callsite_verification": "2 positive-control owner call rows checked, 0 failed; constructor has no calls",
+    "markdown_verification": "0 call claims, 0 failures, 6 expected warnings for undefined body/operand/store ranges and padding; no Ghidra function proof claimed",
+    "build": "primary_owned_not_run_by_worker",
+    "new_tests": 0,
+    "compiler_game_or_probe_launches": 0,
+    "native_abi_or_runtime_validated": false
+  },
+  "integration_status": "partial_genuine_vtable_binding_missing",
+  "ghidra_definition_receipt": "reports/cc16_dyn_radix_constructor_definition.json",
+  "activation_or_unique_body_credit": false
+}
