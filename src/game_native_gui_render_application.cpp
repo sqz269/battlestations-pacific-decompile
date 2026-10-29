@@ -62,6 +62,8 @@ namespace {
 // The ON candidate exercises one unpublished DEFAULT lifecycle without a new
 // environment option, scene/overlay, cache owner or public test-only interface.
 constexpr bool kRawDefaultTextQualificationCc16Bound = false;
+// Genuine DEFAULT input/source-equal/return fragment; no properties or content.
+constexpr bool kRawDefaultSourceEqualQualificationCc16Bound = false;
 // Separate private fixture for the genuine primary Model prefix. Its owner
 // selects the receipt-authorized lifetime route; it adds no content or layout.
 constexpr bool kRawPrimaryPrefixQualificationCc16Bound = false;
@@ -79,6 +81,7 @@ constexpr bool kRawFontMetadataQualificationCc16Bound = false;
 constexpr bool kRawFontWorkQualificationCc16Bound = false;
 constexpr auto kRawFontWorkChoiceCc16Bound = GameNativeRawDefaultTextOwner::FontWork::shader_then_retirement;
 static_assert(static_cast<unsigned>(kRawDefaultTextQualificationCc16Bound) +
+    static_cast<unsigned>(kRawDefaultSourceEqualQualificationCc16Bound) +
     static_cast<unsigned>(kRawPrimaryPrefixQualificationCc16Bound) +
     static_cast<unsigned>(kRawPrefixGeometryQualificationCc16Bound) +
     static_cast<unsigned>(kRawMainSectionQualificationCc16Bound) +
@@ -772,7 +775,7 @@ void GameStartupHost::initialize_native_gui_render() {
         GetEnvironmentVariableA("BSP_NATIVE_MISSION_FRAME", frame_flag, sizeof frame_flag) == 1 &&
         frame_flag[0] == '1',
         "BSP_NATIVE_GUI_TEXT=1 requires BSP_NATIVE_MISSION_SHIP=1 and BSP_NATIVE_MISSION_FRAME=1");
-    if constexpr (kRawDefaultTextQualificationCc16Bound ||
+    if constexpr (kRawDefaultTextQualificationCc16Bound || kRawDefaultSourceEqualQualificationCc16Bound ||
         kRawPrimaryPrefixQualificationCc16Bound || kRawPrefixGeometryQualificationCc16Bound ||
         kRawMainSectionQualificationCc16Bound || kRawFontMainQualificationCc16Bound ||
         kRawFontMetadataQualificationCc16Bound || kRawFontWorkQualificationCc16Bound) {
@@ -795,7 +798,9 @@ void GameStartupHost::initialize_native_gui_render() {
         }
         // Explicit caller budget for this one retained graph, not an Original
         // constant or a universal nesting bound. Exhaustion retains failure.
-        if constexpr (kRawFontMainQualificationCc16Bound)
+        if constexpr (kRawDefaultSourceEqualQualificationCc16Bound)
+            native_raw_default_text_->prepare_default_source_equal_metadata_in_ready_renderer(64);
+        else if constexpr (kRawFontMainQualificationCc16Bound)
             native_raw_default_text_->prepare_primary_prefix_geometry_font_main_section_in_ready_renderer(64);
         else if constexpr (kRawMainSectionQualificationCc16Bound)
             native_raw_default_text_->prepare_primary_prefix_geometry_main_section_metadata_in_ready_renderer(64);
@@ -817,7 +822,10 @@ void GameStartupHost::initialize_native_gui_render() {
 }
 void GameStartupHost::prepare_native_gui_text_resources() {
     if (native_raw_default_text_) {
-        if constexpr (kRawPrefixGeometryQualificationCc16Bound || kRawFontMetadataQualificationCc16Bound ||
+        if constexpr (kRawDefaultSourceEqualQualificationCc16Bound)
+            require(native_raw_default_text_->construct_default_source_equal_in_open_shader_cache(),
+                "raw DEFAULT source-equal qualification requires a nonnull native factory result");
+        else if constexpr (kRawPrefixGeometryQualificationCc16Bound || kRawFontMetadataQualificationCc16Bound ||
             kRawFontWorkQualificationCc16Bound || kRawMainSectionQualificationCc16Bound ||
             kRawFontMainQualificationCc16Bound) {
             HMODULE query_module{}, call_module{}, standard_module{}, query_declaration_module{};

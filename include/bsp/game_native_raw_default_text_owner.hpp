@@ -56,6 +56,10 @@ public:
     // A partial export/failure poisons the owner; no cleanup/retry is inferred.
     // Capacity is an explicit finite prepared call budget, never recycled.
     void prepare_metadata_in_ready_renderer(std::size_t model_call_capacity);
+    // Separate closed DEFAULT source-equal fragment. No Font link or optional
+    // primary/Main/geometry graph; all actual input/Source backing is fixed
+    // before pool effects. Preparation performs no native input operation.
+    void prepare_default_source_equal_metadata_in_ready_renderer(std::size_t model_call_capacity);
     // Separate uncalled Source fixture: install an immutable primary-prefix
     // graph before factory effects. Existing preparation remains DEFAULT.
     // No Model authority is granted until the real producer issues its receipt.
@@ -85,6 +89,10 @@ public:
     // covers ba2 AA1380 and SEPARATE raw122 publication. False is native null
     // allocation, not a failed constructor. No private cache/warm substitute.
     bool construct_default_in_open_shader_cache();
+    // SAME default factory93/separate122/mandatory188, then genuine empty input
+    // construction, one unchanged-source leaf and normal input return BEFORE
+    // owner-bound/scalar. No changed/localised/content/Font/Main or ABI credit.
+    bool construct_default_source_equal_in_open_shader_cache();
     // Same real AA1380/raw93/separate122 first, then genuine raw pooled input
     // name, primary producer prefix and name return. No74/properties/loaded,
     // content, Font, parenting, rendering or whole-AAA710 completion is supplied.

@@ -3,6 +3,7 @@
 #include "bsp/native_legacy_sbo_string.hpp"
 
 #include <cstring>
+#include <stdexcept>
 
 namespace bsp {
 static_assert(sizeof(DynProfileNodeStorage)==0x48);
@@ -81,6 +82,32 @@ DynProfileStorage* dyn_profile_construct_00c50310(
     *context.profile_slot_0109e9f8=&profile;
     std::memset(profile.bytes+0xc,0,0x90);
     return &profile;
+}
+
+DynProfileStorage* dyn_profile_construct_00c50310(
+    DynProfileStorage& profile,const DynEngineRuntimeContext& context,
+    DynProfileRootPartialNodeDelete delete_partial_00bf65ac) {
+    if (!delete_partial_00bf65ac)
+        throw std::invalid_argument("Dyn profile Root requires a matching raw-node partial deleter");
+    // Native C50328 allocation precedes state0 C50335. Never catch it here.
+    auto* const allocation=static_cast<DynProfileNodeStorage*>(
+        allocate(context,sizeof(DynProfileNodeStorage)));
+    try {
+        auto* node=allocation;
+        if (node) node=dyn_profile_node_construct_00c44000(
+            *node,context.root_name_00d79dc8,0,context.memory);
+        at<DynProfileNodeStorage*>(&profile,0)=node;
+        at<DynProfileNodeStorage*>(&profile,4)=node;
+        at<std::uint32_t>(&profile,8)=0;
+        *context.profile_slot_0109e9f8=&profile;
+        std::memset(profile.bytes+0xc,0,0x90);
+        return &profile;
+    } catch (...) {
+        // E041C8 ->CC8363: free captured[EBP-10] only. Root's state spans the
+        // publication/tail too; unlike C50390 it has no earlier state reset.
+        delete_partial_00bf65ac(allocation);
+        throw;
+    }
 }
 
 DynEngineStorage* dyn_engine_construct_00c55ea0(DynEngineStorage& engine,

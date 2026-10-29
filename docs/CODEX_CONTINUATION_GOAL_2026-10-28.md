@@ -915,3 +915,49 @@ library passes independent full Source review and coupled Win32/existing checks2
 (10.58s). It is registered in bsp_core and only as an early-equal ledger fragment;
 native owner/host invocation and runtime remain open. The separate closed owner
 contract is being prepared without broadening property/localisation/content scope.
+
+Fresh repaired71 Font-before-Main artifacts now PASS the registered private cohort:
+four natural parent/launcher/controller/outer exits0,182/182 unchanged evaluator
+checks independently replayed byte-identically,39/39 direct artifact/actual CRT
+export checks,111 sealed files/6001 inputs.120 actual Normal samples cover eight
+drained trial PIDs; old5 remain. Exact10 diagnostics/3 teardown insertions preserve
+native1641/summary874 and full762/mission589 order. Raw MSDpair1/rawstrict1 and369
+raw teardown index differences remain recorded; projected acceptance is distinct.
+Actual Font-before-Main/header/Model/renderer/detach is guard-backed fragment proof,
+not native payload/ABI/visual/full13/USN21/Page/P4 or later-Source acceptance.
+
+The closed DEFAULT source-equal owner97ae passes independent actual Source review,
+Root35/35 old-path comparisons (29rawsame/wholeCPP projection) and coupled Win32/
+existing checks2/2 (9.98s). It calls real93/separate122/188, realempty41E870, one
+healthy private leaf and real41DD20 before bound/scalar, with no Font/Main graph.
+It remains uncalled by the startup host. New owner layout/Source is not qualified
+by the frozen71 Font/Main run. Seven private flags remain FALSE; dedicated host
+qualification and remaining raw property/content bindings are the next work.
+
+The dedicated DEFAULT source-equal host route is now coupled but FALSE. Exact
+new preparation/construction uses the existing actual cache/Lua callback; it adds
+no Font link/detach or379-specific CRT block. Independent host Source review and
+whole prior-source FALSE projection accept; Win32/existing checks2/2 pass10.09s.
+All eight private choices remain FALSE. Fresh current-artifact preregistration/
+runtime is open; only four new owner diagnostics are prospectively specified.
+Earlier Font/Main71 acceptance does not qualify the changed host/owner layout.
+
+Fresh fixed dc2c DEFAULT source-equal caller qualification now PASSES181/181,
+independently replayed byte-identically plus34/34 current artifact checks. Fresh
+mapped pair/restore checks2/2 pass10.77s/11.27s/12.15s; static linkage56/56 and final
+payload41/41 pass.111 sealed files/6004 inputs verify,106 actual Normal samples
+cover eight drained trial PIDs, old5 remain, and all parent/launcher/controller/
+outer exits are naturally0 with effective difficulty1 and no timeout/forced stop.
+Exact4 owner diagnostics/2 teardown insertions preserve native1641/summary874,
+full762/mission589 ordering and genuine first LOGGED plane record93.60/.4143.
+Raw MSDpair1/rawstrict1/rawteardown368 remain distinct from projected acceptance.
+No379 CRT interval, live module affinity, full13/USN21/fullcaller/content/Page/P4,
+visual/Original ABI or production credit follows. All eight choices remain FALSE.
+
+The next raw ABA8D0 EMPTY-UNCHANGED route retains the original private Main-created
+authority and uses distinct fresh Ensure invocation records, followed by real wide
+copy/late CURRENT Font108+48/current empty EC and captured cleanup. Existing raw
+getter/BD1510 can express cleanup without a new generic free API. Typed leaf
+reservation/regions, pending-input/temp retirement custody and spare callback
+budget still need reviewed integration; PREPARED Main admits no generic content
+permission. No forced flags, fake prior nonempty state or new readiness is claimed.

@@ -14,6 +14,7 @@
 #include "bsp/game_native_gui_text_state.hpp"
 #include "bsp/game_native_font_application.hpp"
 #include "bsp/native_gui_text_default_widget_lifetime.hpp"
+#include "bsp/native_gui_text_source_storage.hpp"
 #include "bsp/native_gui_text_shader_storage.hpp"
 #include "bsp/native_gui_text_font_lifetime_storage.hpp"
 #include "bsp/native_gui_text_primary_prefix_lifetime.hpp"
@@ -58,7 +59,7 @@ struct GameNativeRawDefaultTextOwner::Impl {
     enum class Phase { fresh, preparing, prepared, creating, empty, bound, retiring, retired, closing, closed, failed };
     enum class Mode { default_lifecycle, primary_prefix, primary_prefix_geometry,
         primary_prefix_geometry_font, primary_prefix_geometry_main_section,
-        primary_prefix_geometry_font_main_section };
+        primary_prefix_geometry_font_main_section, default_source_equal };
     enum class FontLink { none, entered, bound, detached, failed };
     struct Services;
     struct Attempt;
@@ -68,6 +69,7 @@ struct GameNativeRawDefaultTextOwner::Impl {
     struct FontShader;
     struct FontWorkGraph;
     struct FontMainSelection;
+    struct SourceEqualGraph;
     GameHostLog& log;
     GameNativeRendererApplication& renderer;
     GameVfsHost& vfs;
@@ -113,6 +115,11 @@ struct GameNativeRawDefaultTextOwner::Impl {
     void require_main_section_creating() const {
         require(phase == Phase::creating && !failure,
             "caught raw main-section owner failure cannot resume its creating operation");
+    }
+    void require_source_equal_creating() const {
+        require(phase == Phase::creating && !failure && font_link == FontLink::none &&
+            !font_producer && !font_resources && !font_registry_image,
+            "caught DEFAULT source-equal failure or foreign Font link cannot resume construction");
     }
     bool custody_settled() const noexcept;
     static bool attempt_settled(const Attempt&) noexcept;
@@ -258,6 +265,7 @@ struct GameNativeRawDefaultTextOwner::Impl::Attempt {
     NativeGuiTextRawModelSectionStorageFrame section_frame;
     NativeGuiTextRawModelDefaultStorageContext default_context;
     NativeGuiTextRawModelDefaultStorageFrame default_frame;
+    std::unique_ptr<SourceEqualGraph> source_equal;
     // Only the new mode needs this address BEFORE immutable Prefix construction.
     // The credited ctor stores the already-live reference_frame identity only.
     std::unique_ptr<FontShader> font_main_shader;
@@ -286,6 +294,87 @@ struct GameNativeRawDefaultTextOwner::Impl::Attempt {
         reference.~NativeGuiTextRawModelReference();
         p.disposed = true; // reference pointer is now diagnostic ONLY
         // LAST disposal never erases Attempt, Model record, frames or providers.
+    }
+};
+
+struct GameNativeRawDefaultTextOwner::Impl::SourceEqualGraph {
+    Services& services;
+    const NativeGuiTextReferenceFrame& reference_frame;
+    alignas(4) std::byte input[8]; // uninitialized until genuine41E870
+    NativeGuiTextSourceInputProgress input_progress;
+    NativeGuiTextSourceStorageContext context; // reference bindings cannot retarget; Frame pins this object
+    NativeGuiTextSourceStorageAcquired acquired;
+    NativeGuiTextSourceStorageFrame frame;
+    bool entered{}, returned{}, failed{};
+
+    SourceEqualGraph(Attempt& a, Services& s)
+        : services(s), reference_frame(a.reference_frame), input_progress(input, s.owner.vfs.raw_strings()),
+          context{a.widget_record, *a.widgets, s.owner.vfs.raw_strings()},
+          frame(context, input, input_progress, a.reference_frame, acquired) {
+        // Forward widget/factory/publication references are ADDRESSES only.
+        // Frame construction follows no context and reads no input header.
+    }
+    ~SourceEqualGraph() noexcept { if (!unused() && !settled()) std::terminate(); }
+    bool unused() const noexcept {
+        const auto& d = acquired.diagnostics;
+        using B = NativeGuiTextSourceStorageAcquired::Boundary;
+        return !entered && !returned && !failed &&
+            !input_progress.construct_entered && !input_progress.construct_returned && !input_progress.construct_failed &&
+            !input_progress.return_entered && !input_progress.returned && !input_progress.return_failed &&
+            frame.matches(context, input, input_progress, reference_frame, acquired,
+                NativeGuiTextSourceStorageFrame::Phase::fresh) &&
+            !frame.entered() && !frame.comparison_entered() && !frame.comparison_returned() &&
+            !frame.normal_unchanged_returned() && !frame.requires_process_retention() && !frame.failure() &&
+            !acquired.bound_frame_identity() && !acquired.requires_process_retention() &&
+            !acquired.failed() && !acquired.normal_unchanged_returned() &&
+            d.boundary == B::none && d.escaped_boundary == B::none && !d.started && !d.comparison_entered &&
+            !d.comparison_returned && !d.equal && !d.complete && !d.text && !d.input && !d.native_site && !d.failure;
+    }
+    bool retain() const noexcept {
+        if (failed || frame.requires_process_retention() || frame.failure() || acquired.requires_process_retention() ||
+            acquired.failed() || input_progress.construct_failed || input_progress.return_failed) return true;
+        if (!entered) return !unused();
+        return !returned || !input_progress.construct_entered || !input_progress.construct_returned ||
+            !input_progress.return_entered || !input_progress.returned ||
+            !frame.matches(context, input, input_progress, reference_frame, acquired,
+                NativeGuiTextSourceStorageFrame::Phase::unchanged) ||
+            !frame.entered() || !frame.comparison_entered() || !frame.comparison_returned() ||
+            !frame.normal_unchanged_returned() || !acquired.normal_unchanged_returned() ||
+            acquired.bound_frame_identity() != &frame;
+    }
+    bool settled() const noexcept { return unused() || !retain(); } // C++ metadata ONLY after native retirement
+    void construct(NativeGuiTextRawModelReference& reference) {
+        const bool was_unused = unused();
+        entered = true; // selected operation BEFORE validation/input effects
+        try {
+            require(was_unused, "DEFAULT source-equal input/Frame graph cannot replay or resume");
+            services.owner.require_source_equal_creating();
+            input_progress.construct_entered = true;
+            try {
+                construct_native_string_header_0041e870(input, input_progress.strings, "");
+                input_progress.construct_returned = true;
+            } catch (...) { input_progress.construct_failed = true; throw; }
+            services.owner.require_source_equal_creating();
+            const auto result = submit_native_gui_text_source_unchanged_storage_00abaed0(reference,
+                context, frame, acquired);
+            services.owner.require_source_equal_creating();
+            require(result == NativeGuiTextSourceStorageResult::unchanged &&
+                frame.matches(context, input, input_progress, reference_frame, acquired,
+                    NativeGuiTextSourceStorageFrame::Phase::unchanged) &&
+                frame.normal_unchanged_returned() && frame.comparison_returned() &&
+                !frame.requires_process_retention() && !frame.failure() &&
+                acquired.bound_frame_identity() == &frame && acquired.normal_unchanged_returned() &&
+                !acquired.requires_process_retention() && !acquired.failed(),
+                "DEFAULT source-equal needs actual healthy private unchanged completion before input return");
+            input_progress.return_entered = true;
+            try {
+                destroy_native_string_header_0041dd20(input, input_progress.strings);
+                input_progress.returned = true;
+            } catch (...) { input_progress.return_failed = true; throw; }
+            // Header/data are identity/extent only after actual return.
+            services.owner.require_source_equal_creating();
+            returned = true;
+        } catch (...) { failed = true; throw; } // retain reached input/Text/provider graph; no cleanup or retry
     }
 };
 
@@ -872,9 +961,11 @@ GameNativeRawDefaultTextOwner::Impl::Attempt::Attempt(Services& s, std::size_t c
       default_context{sections, widgets->context(), s.text_state, cell(s.owner.data, 0x00d5c5c0),
           cell(s.owner.data, 0x00ce3e18), cell(s.owner.data, 0x00d7a24c), cell(s.owner.data, 0x00ce3800)},
       default_frame{section_frame},
+      source_equal(s.mode == Mode::default_source_equal ? std::make_unique<SourceEqualGraph>(*this, s) : nullptr),
       font_main_shader(s.mode == Mode::primary_prefix_geometry_font_main_section ?
           std::make_unique<FontShader>(s, reference_frame) : nullptr),
-      primary_prefix(s.mode != Mode::default_lifecycle ? std::make_unique<PrimaryPrefix>(*this, s, capacity) : nullptr),
+      primary_prefix(s.mode == Mode::default_source_equal ? nullptr :
+          s.mode != Mode::default_lifecycle ? std::make_unique<PrimaryPrefix>(*this, s, capacity) : nullptr),
       font_shader(s.mode == Mode::primary_prefix_geometry_font_main_section ? nullptr :
           s.owner.font_link == FontLink::bound ? std::make_unique<FontShader>(s, reference_frame) : nullptr),
       font_work(s.mode == Mode::primary_prefix_geometry_font ? std::make_unique<FontWorkGraph>(*this, s) : nullptr),
@@ -893,6 +984,7 @@ GameNativeRawDefaultTextOwner::Impl::Attempt::~Attempt() {
     if (!Impl::attempt_settled(*this) || (publication.bind_complete && !publication.disposed)) std::terminate();
     // No native cleanup. Reset dependent metadata while both Model records,
     // all acquisitions and private widget history are STILL alive.
+    source_equal.reset(); // settled input/Frame metadata, BEFORE widget/Model/reference/provider backing ends
     font_work.reset(); // while helper/selector records, ShaderFrame, geometry and BOTH Model providers remain alive
     primary_prefix.reset();
     font_shader.reset(); // while collection/producer C++ metadata and real cache/provider contexts remain alive
@@ -918,6 +1010,11 @@ void GameNativeRawDefaultTextOwner::Impl::Services::prepare(std::size_t capacity
     effect_cache = &effects->native_effect_cache(); // capture once BEFORE native/cache entry
     attempt = std::make_unique<Attempt>(*this, capacity);
     attempt->bind(); // installed before all remaining pure admission
+    if (mode == Mode::default_source_equal)
+        require(attempt->source_equal && attempt->source_equal->unused() && !attempt->primary_prefix &&
+            !attempt->font_shader && !attempt->font_main_shader && !attempt->font_work &&
+            owner.font_link == FontLink::none && owner.phase == Phase::preparing && !owner.failure,
+            "DEFAULT source-equal must reserve its exact fresh Source/input graph before pools, without Font/Main");
     if (mode == Mode::primary_prefix_geometry_font)
         require(attempt->font_work && attempt->font_work->unused() &&
             attempt->font_work->frame.phase() == NativeGuiTextFontLifetimeStorageFrame::Phase::prepared,
@@ -938,6 +1035,7 @@ bool GameNativeRawDefaultTextOwner::Impl::custody_settled() const noexcept {
     return attempt_settled(*services->attempt);
 }
 bool GameNativeRawDefaultTextOwner::Impl::attempt_settled(const Attempt& a) noexcept {
+    if (a.source_equal && !a.source_equal->settled()) return false;
     if (a.font_main_shader && (a.font_main_shader->retain() || !a.primary_prefix ||
         !a.primary_prefix->font_main_selection || !a.primary_prefix->font_main_selection->settled())) return false;
     if (a.font_work) {
@@ -977,6 +1075,7 @@ bool GameNativeRawDefaultTextOwner::Impl::retain() const noexcept {
             (services->effects && services->effects->requires_process_retention())) return true;
         if (services->attempt) {
             const auto& a = *services->attempt;
+            if (a.source_equal && a.source_equal->retain()) return true;
             if (a.font_main_shader && a.font_main_shader->retain()) return true;
             if (a.font_work) {
                 if (a.font_work->retain()) return true;
@@ -994,6 +1093,12 @@ bool GameNativeRawDefaultTextOwner::Impl::retain() const noexcept {
     return phase == Phase::retired && !custody_settled();
 }
 void GameNativeRawDefaultTextOwner::Impl::observe(const char* event) noexcept {
+    if (services && services->mode == Mode::default_source_equal) {
+        try { log.notef("raw DEFAULT SOURCE EQUAL Text owner: %s phase=%u custody_settled=%d",
+            event, static_cast<unsigned>(phase), custody_settled() ? 1 : 0); }
+        catch (...) {}
+        return;
+    }
     if (services && services->mode == Mode::primary_prefix_geometry_font_main_section) {
         try { log.notef("raw FONT MAIN SECTION Text owner: %s phase=%u custody_settled=%d",
             event, static_cast<unsigned>(phase), custody_settled() ? 1 : 0); }
@@ -1157,6 +1262,25 @@ void GameNativeRawDefaultTextOwner::prepare_metadata_in_ready_renderer(std::size
         p.observe("metadata_prepared");
     } catch (...) { p.fail(); throw; }
 }
+void GameNativeRawDefaultTextOwner::prepare_default_source_equal_metadata_in_ready_renderer(std::size_t capacity) {
+    auto& p = *impl_;
+    try {
+        require(p.phase == Impl::Phase::fresh && capacity &&
+            static_cast<std::uint64_t>(capacity) * sizeof(NativeModelStorageNodeCall) <= 0xffffffffu &&
+            p.font_link == Impl::FontLink::none && !p.font_producer && !p.font_resources && !p.font_registry_image && !p.failure,
+            "DEFAULT source-equal metadata needs a fresh unlinked owner and explicit prepared call budget");
+        p.phase = Impl::Phase::preparing;
+        p.services = std::make_unique<Impl::Services>(p, Impl::Mode::default_source_equal);
+        p.services->prepare(capacity);
+        const auto& a = *p.services->attempt;
+        require(p.phase == Impl::Phase::preparing && !p.failure && p.font_link == Impl::FontLink::none &&
+            a.source_equal && a.source_equal->unused() && !a.primary_prefix &&
+            !a.font_shader && !a.font_main_shader && !a.font_work,
+            "DEFAULT source-equal must fix its unused Source/input records before pool entry without optional graphs");
+        p.phase = Impl::Phase::prepared;
+        p.observe("metadata_prepared");
+    } catch (...) { p.fail(); throw; }
+}
 void GameNativeRawDefaultTextOwner::prepare_primary_prefix_metadata_in_ready_renderer(std::size_t capacity) {
     auto& p = *impl_;
     require(p.phase == Impl::Phase::fresh && capacity &&
@@ -1274,6 +1398,42 @@ bool GameNativeRawDefaultTextOwner::construct_default_in_open_shader_cache() {
         } catch (...) { a.publication.bind_failed = true; throw; }
         p.phase = Impl::Phase::bound;
         p.observe("constructed_and_published_private");
+        return true;
+    } catch (...) { p.fail(); throw; }
+}
+bool GameNativeRawDefaultTextOwner::construct_default_source_equal_in_open_shader_cache() {
+    auto& p = *impl_;
+    try {
+        require(p.phase == Impl::Phase::prepared && p.services && p.services->attempt &&
+            p.services->mode == Impl::Mode::default_source_equal && p.services->attempt->source_equal &&
+            !p.services->attempt->primary_prefix && !p.services->attempt->font_shader &&
+            !p.services->attempt->font_main_shader && !p.services->attempt->font_work &&
+            p.font_link == Impl::FontLink::none,
+            "DEFAULT source-equal construction requires its once-prepared exclusive graph");
+        auto& s = *p.services;
+        auto& a = *s.attempt;
+        p.phase = Impl::Phase::creating;
+        require(s.shader_cache.actual_cache_0108d6ec && !s.samplers->requires_process_retention() &&
+            !s.effects->requires_process_retention(),
+            "DEFAULT source-equal needs the real caller-owned open shader cache and ready facades");
+        NativeLuaServiceBindings::Activation activation(s.lua);
+        void* const result = make_native_gui_text_default_factory_storage_00aa1380(a.factory_context, a.factory);
+        p.require_source_equal_creating();
+        if (!result) { p.phase = Impl::Phase::empty; p.observe("native_empty"); return false; }
+        a.publication.bind_entered = true; // SAME separate raw122 publication after genuine factory93
+        try {
+            auto& reference = bind_native_gui_text_raw_model_reference(a.companion, result, a.reference_context,
+                a.reference_frame, a.factory_context.disposal);
+            a.publication.reference = &reference;
+            a.publication.bind_complete = true;
+        } catch (...) { a.publication.bind_failed = true; throw; }
+        p.require_source_equal_creating();
+        a.source_equal->construct(*a.publication.reference);
+        p.require_source_equal_creating();
+        require(a.source_equal->settled() && !a.source_equal->retain(),
+            "DEFAULT source-equal cannot become bound before private unchanged completion AND actual input return");
+        p.phase = Impl::Phase::bound;
+        p.observe("constructed_and_published_private_default_source_equal");
         return true;
     } catch (...) { p.fail(); throw; }
 }

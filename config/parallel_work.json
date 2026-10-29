@@ -16,8 +16,39 @@
   "policy": "Function addresses and disjoint file ownership define work, not wave/segment IDs. Workers read shared dependencies; primary owns Ghidra mutations, shared metadata, common APIs, CMake, builds and integration. Implemented code_ownership and future next_code_ownership are recorded separately. Refill up to three ready worker slots; verify actual concurrency on resume.",
   "packets": [
     {
+      "id": "codex-raw-source-equal-host",
+      "state": "dc2c_private_four_case_runtime_pass_gate_off",
+      "worker": "cc16-progress",
+      "source_ready": false,
+      "depends_on": [
+        "codex-raw-source-equal-owner"
+      ],
+      "function_addresses": [],
+      "output_files": [
+        "src/game_native_gui_render_application.cpp",
+        "docs/CODEX_GUI_RAW_DEFAULT_SOURCE_EQUAL_QUALIFICATION.md"
+      ],
+      "notes": "Freshfixeddc2DEFAULTsourceEqual4case protocolPASS181/181 independentlybyte-identical plus34/34artifactchecks.111sealedfiles/6004inputs,106actualNormal samples8PIDsgone/old5, allnatural0/effectiveDiff1. Exact4ownerrecords/2teardowninsertions only; rawMSDpair1/rawstrict1/rawteardown368 retained. No379CRTinterval/moduleaffinityclaim. All8FALSE; full13/USN21/fullcaller/ABI/PageP4/productionopen; newerSourceinheritsnothing."
+    },
+    {
+      "id": "codex-raw-source-equal-owner",
+      "state": "integrated_dc2c_private_runtime_pass_gate_off",
+      "worker": "gui_integration_review",
+      "source_ready": false,
+      "depends_on": [
+        "codex-raw-source-equal-library"
+      ],
+      "function_addresses": [],
+      "output_files": [
+        "include/bsp/game_native_raw_default_text_owner.hpp",
+        "src/game_native_raw_default_text_owner.cpp",
+        "docs/CODEX_GUI_RAW_DEFAULT_SOURCE_EQUAL_OWNER.md"
+      ],
+      "notes": "ClosedDEFAULT/noFontLink/primaryNULL real93/122/188\u219241E870empty\u2192oneprivateunchangedleaf\u219241DD20return\u2192bound/scalar. FullSourceACCEPT+Root35/35comparisons29rawsame/wholeCPPprojection;Win32checks2/2 9.98s. Freshdc2cprivate181/181+34/34passes; no changed/localise/fullcaller/ABI/Page/productioncredit;all8FALSE."
+    },
+    {
       "id": "codex-font-main-slot-role-repair",
-      "state": "source_reviewed_win32_pass_runtime_open",
+      "state": "integrated_repaired71_private_runtime_pass_gates_off",
       "worker": "cc16-progress",
       "source_ready": false,
       "depends_on": [
@@ -29,11 +60,11 @@
         "docs/CODEX_GUI_RAW_FONT_MAIN_ADMISSION.md",
         "docs/CODEX_GUI_RAW_FONT_MAIN_RUNTIME.md"
       ],
-      "notes": "First joint runtime exposed canonical slotAcq self-overlap before raw Text allocation. Bind-only exact-role/unique-full-view correction; all other/partial/duplicate/later backing checks preserved. Independent Source review; Win32 existing checks2/2 pass12.69s. Seven gates FALSE; repaired runtime unqualified."
+      "notes": "Bind-only canonical own-Acq/unique full view correction; all foreign/partial/duplicate/later checks preserved. Independent Source review +Win32checks2/2 12.69s. Fresh repaired71 privateRuntime182/182+39/39 passes. No laterSource/production activation credit; seven gates OFF."
     },
     {
       "id": "codex-font-main-private-runtime",
-      "state": "failed_preparation_slot_self_overlap_gates_off",
+      "state": "repaired71_private_four_case_runtime_pass_gates_off",
       "worker": "cc16-progress",
       "source_ready": false,
       "depends_on": [
@@ -44,11 +75,11 @@
       "output_files": [
         "docs/CODEX_GUI_RAW_FONT_MAIN_RUNTIME.md"
       ],
-      "notes": "Frozen d8cb attempt2: control exits0/0/0, GUI1 parent/launcher1 at slot metadata bind; exact unchanged evaluator FAIL independently replayed.98 sealed files and5995 inputs verified. Natural drain/no force/old5 preserved. GUI1 actual Normal/effective difficulty/CRT exports unobserved. Attempt1 prelaunch Source drift preserved separately. No runtime acceptance/retry/activation."
+      "notes": "Fresh repaired71 four-case private protocol PASS182/182 independently replayed byte-identical plus39/39 actual artifact/CRT export checks.111 sealed files/6001 inputs,120Normal samples8PIDs drained/old5 preserved, natural all0. Exact10 Source diagnostics/3 teardown insertions only; raw strict1 andMSDpair1 retained. Oldfailed d8/prelaunch packets preserved. No newerSource/wholecaller/ABI/Page/P4/production credit; seven gates OFF."
     },
     {
       "id": "codex-raw-source-equal-library",
-      "state": "source_reviewed_coupled_win32_pass_unwired",
+      "state": "integrated_dc2c_private_caller_runtime_pass_gate_off",
       "worker": "gui_integration_review",
       "source_ready": false,
       "depends_on": [],
@@ -60,7 +91,7 @@
         "src/native_gui_text_source_storage.cpp",
         "docs/CODEX_GUI_RAW_TEXT_SOURCE_STORAGE.md"
       ],
-      "notes": "Native source-equal early return only: canonical bound93/122/widget/input/pool, constructor-emptyF4/F8, one real00435C40. False rejects beforechangedarm. Full3file independentSource review accepted; bsp_core registered; coupledWin32 existing checks2/2 pass10.58s. Fragment ledger only; Source_ready remainsfalse. No nativeowner/host caller, changed/localisation/content/ABI/runtime or vendor-body credit; caller backing/input/flags obligations open."
+      "notes": "OnlyactualABAED0earlyequal: constructorzeroF4/F8, one00435C40, trueprivatecompletion; unsupportedchangedrejectsbeforeAF07. FullSourceACCEPT/Win32checks2/2 10.58s; closedowner+hostfreshdc2c privatecaller181/181+34/34passes. OriginalABI/fullABAED0/changed/localisation/content/vendorbodies/productionremainunqualified;all8FALSE."
     },
     {
       "id": "codex-font-main-operation-api",

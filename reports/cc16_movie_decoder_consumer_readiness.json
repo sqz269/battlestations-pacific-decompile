@@ -1,0 +1,829 @@
+{
+  "schema_version": 1,
+  "packet": "codex-movie-decoder-consumer-readiness",
+  "base": "38e16c60111b0f0914f0a2f529e3324cd8845a1b",
+  "status": "not_ready_for_coherent_production_consumer_first_raw_default_constructor_prerequisite_identified",
+  "documentation": "docs/CC16_MOVIE_DECODER_CONSUMER_READINESS.md",
+  "ownership": {
+    "addresses": "read-only, no address lease or mutation",
+    "files": [
+      "docs/CC16_MOVIE_DECODER_CONSUMER_READINESS.md",
+      "reports/cc16_movie_decoder_consumer_readiness.json"
+    ]
+  },
+  "target": {
+    "configured_project_file": "C:/Users/sqz269/bsp.gpr",
+    "verified_project": "bsp",
+    "verified_program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "live_function_count": 77631,
+    "snapshot_function_count": 77631,
+    "verification": "bsp.py ghidra client verifies project/program/language/image before live batches; configured existing project, no reimport or mutations."
+  },
+  "guards": {
+    "kMovieFactoryRootCc16Bound": false,
+    "kMovieSubtitlesBound": false,
+    "kNativeGuiPageChainCc15Bound": false,
+    "kLuaPlayBinkMovieBound": true,
+    "kPc24MovieCc13Bound": true,
+    "old_off_comments": "Historical prose is not current guard truth.",
+    "guard_changes": 0
+  },
+  "actual_caller": {
+    "files": [
+      "src/game_hosts_mission_frame.cpp",
+      "src/game_hosts_lua.cpp",
+      "src/game_hosts_mission_result.cpp"
+    ],
+    "chain": [
+      "GameMissionFrameHost::Impl retains result and attaches it to mission Lua",
+      "actual0089A480 row -> lua_play_bink_movie_0089a480",
+      "play_named_movie_0089a390 prefixes movies/ ->004CD390 request"
+    ],
+    "MovieBridge_inputs": [
+      "GameHostLog&",
+      "GameVfsHost&",
+      "const LocaleTables&"
+    ],
+    "no_actual_provider": [
+      "raw Movie/page/child",
+      "root factory creation bridge",
+      "MovieDecoderHost",
+      "MovieBaseHost",
+      "GuiMovieLoadedHookHost",
+      "actual decoder/renderer/Text/clock/completion custody"
+    ],
+    "current_placeholders": {
+      "ensure_resources": "logs only",
+      "load_page": "null",
+      "find_child": "null",
+      "widget_state": "semantic fallback member",
+      "decoder_open": false,
+      "decoder_completed": true,
+      "decoder_handle_present": false,
+      "missing_movie_dialog": 0
+    },
+    "retry_risk": "Native start retries every result except dialog2; do not wire open around current false/zero placeholders.",
+    "completion": "run_movie_completion_004f89d0 directly invokes callback because no clip plays; not a decoder/post-frame witness."
+  },
+  "native_creation_epochs": [
+    {
+      "site": "00aae78f",
+      "operation": "AA7170 callback over same raw widget"
+    },
+    {
+      "site": "00aae794",
+      "operation": "read CURRENT F8AEFC"
+    },
+    {
+      "site": "00aae79a",
+      "operation": "read CURRENT raw F4 byte after AA7170"
+    },
+    {
+      "site": "00aae7a1/00aae7a3",
+      "operation": "read current factory prefix and slot+4"
+    },
+    {
+      "site": "00aae7a6/00aae7a7",
+      "operation": "zero-extended F4 stack slot, indirect create"
+    },
+    {
+      "site": "00aae7a9",
+      "operation": "read current widget byte74 after creation returns"
+    },
+    {
+      "site": "00aae7ad",
+      "operation": "store returned shared decoder at actual raw F0"
+    },
+    {
+      "site": "00aae7bd/00aae7c0",
+      "operation": "conditional current decoder slot44 without invented null guard"
+    },
+    {
+      "site": "00aaeb2b..00aaeb3f",
+      "operation": "CURRENT FC length after geometry/provider callbacks; AAE320(loop1) iff nonzero"
+    }
+  ],
+  "factory_bridge": {
+    "current_source": "No root-to-MovieBridge create/borrow API; root services private. GameMovieFactoryOwner exposes its same borrowed decoder_imports().",
+    "required_domain": "Same retained Ready owner/captured allocation and current CFEA78 profile; current+4 word737730. Preserve F4 byte/full stacked DWORD; real737730 ignores it.",
+    "table_evidence": {
+      "00cfea78": "00737950",
+      "00cfea7c": "00737730"
+    },
+    "base_limit": "CFEA60 proven for base deletion only. Adjacent data are not evidence of a base creation interface.",
+    "numeric_PE_calls": false,
+    "arbitrary_subclasses_or_overrides": false
+  },
+  "raw_widget": {
+    "object_bytes": 304,
+    "pool_slot_bytes": 308,
+    "pool": "Existing GuiMoviePoolTraits / F8BD4C / AAD990->AAD6D0; trailing slab-index DWORD is not widget payload.",
+    "actual_factory": "AA6560 tail@AA65B4 ->AA1770; null sourceAAFE20, copyAAFFF0; same matching pool cleanup on constructor failure.",
+    "missing": "Genuine complete raw default/copy/lifetime/property/loaded-hook compositions and their production Page factory/calls, not a reinterpretation of semantic fields.",
+    "semantic_types": [
+      "GuiMovieFields has std::string/std::vector",
+      "MovieWidgetState explicitly projection, layout does not match rawF0/F4/F8/FC"
+    ],
+    "default_ctor": {
+      "entry": "00aafe20",
+      "inclusive_end": "00aafead",
+      "bytes": 142,
+      "ops": 32,
+      "abi": "ECX destination, EAX same destination, plain RET",
+      "direct_normal_call": "00aa9390(type10)",
+      "dword_zero_offsets": [
+        "ec",
+        "f0",
+        "f8",
+        "fc",
+        "100",
+        "108",
+        "110",
+        "114",
+        "118",
+        "124",
+        "128",
+        "12c"
+      ],
+      "byte_zero_offsets": [
+        "104",
+        "105"
+      ],
+      "untouched_derived_examples": [
+        "f4",
+        "f5..f7",
+        "106..107",
+        "10c",
+        "11c",
+        "120"
+      ],
+      "semantic_limit": "GuiMovieFields{} clears F4 and creates logical containers; historical comment is not raw native evidence."
+    },
+    "properties": "AAD560 runs AAA710/property callback first, reads CURRENT size20/24 and actual D7A24C via ordered UCOMISS/LAHF/TEST/JP, then writes F4; unordered is false.",
+    "copy": "AAFFF0 needs existing realAA9520 Model clone context and real native string pool; leaves F4 and105 unwritten; semantic reset does not.",
+    "destruction": "AAFEF0 stampD5C270; actualF0 slot8(flags1), clearF0 only after return; destroy/free native24h/14h records, release filename sized-pool header, realAA9730 base. No semantic clear/shrink_to_fit substitute.",
+    "page_stop": "Current default-OFF GameNativeGuiPageApplication childless key visitor rejects any mapped type atAAAD89 beforeAA6560; generic child context requires real factory/current18/74/78/model/list/parenting suppliers."
+  },
+  "decoder_existing_source": [
+    {
+      "addresses": [
+        "00737730",
+        "00a4c660",
+        "00a4cee0"
+      ],
+      "contract": "Actual singleton malloc/newhandler38h allocation A; completeflag1; sharedS=A+10h; native factory ignored stackDWORD RET4; retain A separately."
+    },
+    {
+      "addresses": [
+        "00a4ca40",
+        "00a4cfb0",
+        "00a4c800"
+      ],
+      "contract": "Open concreteECX=A+8,RET0C; base reset/old close/copy/log; BDD600 Boolean ignored; track0/BinkOpen4000h; actual handle/null; no added state resets."
+    },
+    {
+      "addresses": [
+        "00a4d140",
+        "00a4d1b0"
+      ],
+      "contract": "Real texture(width,height,1,16h,1), release/recreate, actual surface/lock/upload/finish/release and native frame ordering; Bink owns its full handle."
+    },
+    {
+      "addresses": [
+        "00a4cd70",
+        "00a4cc10"
+      ],
+      "contract": "Actual Wait/GetRealtime(mode1), cached duration, sentinel/stores/loop/completion; existing arithmetic qualifications remain."
+    },
+    {
+      "addresses": [
+        "00a4cd30",
+        "00a4cf30"
+      ],
+      "contract": "Log/complete/close nonnull/clear handle; state destroy releases native filename without clearing header; close alone retains texture/filename."
+    },
+    {
+      "addresses": [
+        "00a4c860",
+        "00a4c770"
+      ],
+      "contract": "A-based complete destroy ->shared base chain/state, no operator free."
+    },
+    {
+      "addresses": [
+        "00a4c820",
+        "00a4c880"
+      ],
+      "contract": "Shared scalar capturedA=S-10h; bases/state; BF65AC(A) iff flags&1; returnsA,RET4; matching real source malloc/free, not CRT-free(S) or Bink handle."
+    }
+  ],
+  "providers": [
+    {
+      "name": "Bink module/table/factory",
+      "available": "Frozen root complete process keeper, actual canonical manager/F8AEFC cells and matched heap, same owner.decoder_imports().",
+      "missing": "Root private consumer borrow/create bridge and actual Ready/profile admission; root packet review remains separate; guardOFF."
+    },
+    {
+      "name": "VFS/native string",
+      "available": "Exact GameVfsHost::probe_and_replace_file_name ->same GameNativeVfsRuntime/BDD600/D683E8/native string pool; normalized copyout both normal exits.",
+      "missing": "Concrete MovieDecoderHost binding and complete retained native header/pool/runtime custody; no BDD6E0/CWD/fabricated header fallback."
+    },
+    {
+      "name": "Renderer",
+      "available": "Ready-only runtime textures/surfaces/texture-level getters/holders/direct terminals borrowed view.",
+      "missing": "Actual movie create/acquire/lock/finish/release and direct-terminal admission plus real loaded-hook mesh/material/vertex/index/draw-section/widget50/58/format contexts; AAC820 per-slot current raw reloads."
+    },
+    {
+      "name": "Locale",
+      "available": "Same retained current LocaleTables reaches MovieBridge, actual _stricmp per selection.",
+      "missing": "Actual native Text/extratitle/clock/widget composition, not locale data itself."
+    },
+    {
+      "name": "Settings/media",
+      "available": "Raw settings+09 load/read view; real18h A4C5A0/4C1710 media producer exists.",
+      "missing": "Actual settings application ->CURRENT media+14; A4C5A0 leaves14 unwritten, current quick-settings callback logs missing. Projected false/subtitle09 is not media14."
+    },
+    {
+      "name": "Lua/subtitles/completion",
+      "available": "Mission Lua caller attachment and existing partial subtitle-row parser; generic raw children/clone/Text bodies.",
+      "missing": "Whole rawAB0520/AB00C0/AADBA0 Lua ownership/library/override/error,14h/24h native records, Text, extratitle clone/delete/page lifetime; actual frame callback replaces synthetic direct completion; post-close CURRENT F8 reload."
+    },
+    {
+      "name": "Actual CRT/ambient FP",
+      "available": "Permanent mutable CRT feature_word() at0109EEA4; existing qualified decoder arithmetic.",
+      "missing": "Concrete actual-cell input at conversion epoch and exact ambient ST0/FMUL/FTOL proof or honest bounded caller domain; no captured/default CPU mode, no forced precision; current PC24/value-model limitations remain."
+    }
+  ],
+  "lifetime": {
+    "root_keeps": [
+      "module",
+      "Impl/import tables",
+      "factory owner",
+      "heap",
+      "deletion context",
+      "permanent manager/F8AEFC references"
+    ],
+    "root_does_not_automatically_keep": [
+      "future renderer/provider owners",
+      "VFS/string pool",
+      "Lua/state/mission/result",
+      "page/raw widget",
+      "decoder allocation/handle",
+      "material/texture/surface",
+      "completion borrowers"
+    ],
+    "required_order": "Own all consumer contexts before escape; close/destroy actual decoders/texture/strings and retire page/Lua/completion borrowers before provider/factory/root drain. Entered failure retains whole reached graph and stops ordinary cleanup before dangling prefix/profile reads.",
+    "normal_FreeLibrary_admission": false,
+    "raw_prefix_retirement_is_quiescence": false,
+    "setupstatus_is_freshopen_witness": false,
+    "primary_sound_audit": "Parent-reported later installed-file machine-shape audit only, not independently repeated here: new sound callback NULL can leave old saved callback/status. Semantic SDK/runtime ABI and actual audio/video remain open."
+  },
+  "proposed_next_packet": {
+    "id": "codex-native-gui-movie-default-storage",
+    "addresses": [
+      "00AAFE20"
+    ],
+    "files": [
+      "include/bsp/native_gui_movie_default_storage.hpp",
+      "src/native_gui_movie_default_storage.cpp",
+      "docs/CC16_NATIVE_GUI_MOVIE_DEFAULT_STORAGE.md",
+      "reports/cc16_native_gui_movie_default_storage.json"
+    ],
+    "required_api": "Actual fresh DWORD-aligned raw130h storage +required const volatile uint32_t& actual_one_00d7a24c; return same storage. Compose existing AA9390(raw,type10,actual_one), exact derived stores, preserve untouched bytes.",
+    "existing_real_producer": "AA1770/AAD990 matching Movie pool; not a new heap or value-initialized logical object.",
+    "scope": "Raw default constructor prerequisite source repair only. Keep semantic APIs/callers/root guards unchanged; zero duplicate-body credit.",
+    "stop_conditions": [
+      "Missing actual base/one-cell custody",
+      "Any demand to initialize F4/padding/allocator words by default",
+      "Raw factory/copy/destructor, Page admission or loaded hook not yet closed",
+      "Any consumer adoption without full geometry/decoder/FP/settings/Lua/lifetime dependencies"
+    ],
+    "consumer_ready": false,
+    "new_lease_required": true,
+    "no_unused_decoder_wrapper_recommended": true
+  },
+  "validation": {
+    "read_only_source_and_native_evidence": true,
+    "source_edits": 0,
+    "cmake_or_shared_metadata_edits": 0,
+    "ghidra_mutations": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "games": 0,
+    "module_loads": 0,
+    "imported_Bink_calls": 0,
+    "installed_or_save_writes": 0,
+    "frozen_peer_operations": 0,
+    "fresh_full_decoder_or_subtitle_instruction_audit": false
+  },
+  "credit": {
+    "new_native_bodies": 0,
+    "duplicate_native_bodies": 0,
+    "vendor_bodies": 0,
+    "binary_abi": 0,
+    "playback": 0,
+    "activation": 0
+  },
+  "abi_compatible": false,
+  "game_validated": false,
+  "future_gate_requirements": [
+    "Reviewed/root-admitted coherent source and exact frozen OFF/ON matrix",
+    "Actual nonnull BinkOpen and accepted sound/callback contract/use",
+    "Actual decoded/uploaded/presented frames and genuine mode0 subtitle realtime if enabled",
+    "Completion/skip, close/destroy and provider-retirement witnesses",
+    "Actual interrupted-operation retention and no premature module/dependency drain"
+  ],
+  "installed_inventory": {
+    "bik_path_count": 136,
+    "scope": "Read-only path/size/hash candidates; no decoding or execution.",
+    "files": [
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "bytes": 12223752,
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "evidence": "Read-only bytes/metadata; never loaded, called or decoded."
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\binkw32.dll",
+        "bytes": 178440,
+        "sha256": "7f22055e8f62e228eb90f09846f9b668e0a0b1d29057af6e3b7bff1e08c0d724",
+        "evidence": "Read-only bytes/metadata; never loaded, called or decoded."
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\movies\\legalpceu.bik",
+        "bytes": 109516,
+        "sha256": "6b4d6bc218dd979344d8f8e620a61f47cb9020c0cd8aaaf1bbbafbbfbf444b6f",
+        "evidence": "Read-only bytes/metadata; never loaded, called or decoded."
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\movies\\legalpcjap.bik",
+        "bytes": 109516,
+        "sha256": "6b4d6bc218dd979344d8f8e620a61f47cb9020c0cd8aaaf1bbbafbbfbf444b6f",
+        "evidence": "Read-only bytes/metadata; never loaded, called or decoded."
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\movies\\fe_eidos.bik",
+        "bytes": 1388924,
+        "sha256": "a4fb60063d18dc97ce6e8867ddbdaee3505cd70a5ff9394162e7be528e21f6ee",
+        "evidence": "Read-only bytes/metadata; never loaded, called or decoded."
+      },
+      {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\movies\\us_outro.bik",
+        "bytes": 138540804,
+        "sha256": "54c2b861f1ebf444962146dc55c46cde4fd404ada98e11d20483a148a1d22e50",
+        "evidence": "Read-only bytes/metadata; never loaded, called or decoded."
+      }
+    ]
+  },
+  "native_listings": [
+    {
+      "entry": "00aa1770",
+      "inclusive_body_end": "00aa17f3",
+      "body_bytes": 132,
+      "listing_rows": 40,
+      "last_instruction_start": "00aa17f3",
+      "coverage": "full assembly",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aa1770\\assembly.txt",
+      "sha256": "b63828dc29d0b9528debb8df0e728ca2f01d9cb75e3ad1f697a6eb0b047a4cbc"
+    },
+    {
+      "entry": "00aafe20",
+      "inclusive_body_end": "00aafead",
+      "body_bytes": 142,
+      "listing_rows": 32,
+      "last_instruction_start": "00aafead",
+      "coverage": "full pseudocode, all32 assembly rows and142 live bytes",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aafe20\\assembly.txt",
+      "sha256": "9d181a53a58642c7f6e19a26a6ffcccc7666dd279a74a5678bb3b3d5e3fb4c96"
+    },
+    {
+      "entry": "00aafff0",
+      "inclusive_body_end": "00ab00b8",
+      "body_bytes": 201,
+      "listing_rows": 59,
+      "last_instruction_start": "00ab00b6",
+      "coverage": "full assembly",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aafff0\\assembly.txt",
+      "sha256": "a72f85737017d68ac45c0219ab21e526cb0ab6d488cf43c8e75c683571199802"
+    },
+    {
+      "entry": "00aafef0",
+      "inclusive_body_end": "00aaffef",
+      "body_bytes": 256,
+      "listing_rows": 78,
+      "last_instruction_start": "00aaffef",
+      "coverage": "full pseudocode; raw lifetime requirements, not a fresh complete instruction audit",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aafef0\\assembly.txt",
+      "sha256": "7335a979b6203263bf51f02be8c3bd4c6d2903ec5b0a03648583757dd8e1fd76"
+    },
+    {
+      "entry": "00aad560",
+      "inclusive_body_end": "00aad5ef",
+      "body_bytes": 144,
+      "listing_rows": 44,
+      "last_instruction_start": "00aad5ed",
+      "coverage": "full assembly",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aad560\\assembly.txt",
+      "sha256": "68186db5217662a8701c52eb5e288c0454f85dbc5afaf9fbe1272562a2ba78b5"
+    },
+    {
+      "entry": "00aae770",
+      "inclusive_body_end": "00aaeb53",
+      "body_bytes": 996,
+      "listing_rows": 328,
+      "last_instruction_start": "00aaeb53",
+      "coverage": "creation prefix and final current-FC/source tail; existing whole Source/interface read",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aae770\\assembly.txt",
+      "sha256": "3edcc1aab070dbe36b2e5814cf1dce953b8f479db3c3f9d4c679cf55281768c8"
+    },
+    {
+      "entry": "00737730",
+      "inclusive_body_end": "00737798",
+      "body_bytes": 105,
+      "listing_rows": 31,
+      "last_instruction_start": "00737796",
+      "coverage": "full assembly",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00737730\\assembly.txt",
+      "sha256": "1046b48821925306e7d42707876450940f087d6bb277e0d76cdc9533dd3ad927"
+    },
+    {
+      "entry": "00a4c860",
+      "inclusive_body_end": "00a4c872",
+      "body_bytes": 19,
+      "listing_rows": 7,
+      "last_instruction_start": "00a4c86e",
+      "coverage": "full assembly",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00a4c860\\assembly.txt",
+      "sha256": "fab8645f6d9c3ea0c0dc556b71c5955e108b4aa68347ea2627e55cac5ace0cc9"
+    },
+    {
+      "entry": "00a4c880",
+      "inclusive_body_end": "00a4c8ac",
+      "body_bytes": 45,
+      "listing_rows": 17,
+      "last_instruction_start": "00a4c8aa",
+      "coverage": "full assembly",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00a4c880\\assembly.txt",
+      "sha256": "0a3b90771ce277648acf72bc45752071c832d1d2d61463031d6f316a0a450276"
+    },
+    {
+      "entry": "00a4cf30",
+      "inclusive_body_end": "00a4cf8a",
+      "body_bytes": 91,
+      "listing_rows": 31,
+      "last_instruction_start": "00a4cf8a",
+      "coverage": "full assembly",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00a4cf30\\assembly.txt",
+      "sha256": "3704d3fa8c11f86d1077464d5f83178da9039ef54143b868a17bac39f7007777"
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "bytes": 47507,
+      "git_blob": "867d8b7032fc7531bfaa4f2c43c649988b8e0710",
+      "sha256": "67a5164b1b20061f0f1353783c12cfcb92cc7392b37e04ec87371577425f7f58",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "bytes": 185132,
+      "git_blob": "d138983e92e5f93339e529655990f924f1c06be8",
+      "sha256": "6915e364d7c2eb73ebba01d7d1c521ca7fdc94ab78ad7f0302288fc281cad9f4",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "bytes": 22967,
+      "git_blob": "fb3bf4cb9eab83d2f31fd956e9a0074ab1a81ccb",
+      "sha256": "92c2c26b6d4f69a7926e4bbf3d2c327fcc18dc03b9cb5e60a61a6b2e06d2fbf2",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "bytes": 29691,
+      "git_blob": "2a879d538151867200cda15069d6733ded335cff",
+      "sha256": "bb6b0556d30f4eac3c112f5acb72802cf3339247729863d8a4dbf3410a188808",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "include/bsp/game_movie_factory_owner.hpp",
+      "bytes": 4924,
+      "git_blob": "fd57d25d8f0aaafe9ad7f3661881bffa5a5452c3",
+      "sha256": "86016d14b24133bb8c06996e2f8141dd14e42af0774a6558f9710df9044546ff",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "src/game_movie_factory_owner.cpp",
+      "bytes": 7573,
+      "git_blob": "6e76beb3c2f7485066067215e04583f7d4878794",
+      "sha256": "39ca1d6d4b7696096326fc8fad51424d62e98b1b1f379f5d44ef1ce455c617db",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "include/bsp/bink_runtime_library.hpp",
+      "bytes": 2171,
+      "git_blob": "73f927f786ef979edb0199a197e92164078a104b",
+      "sha256": "510edc8d0f710009872357e976d6fb62bfb9dca50430eb8100155d9713e66007",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "src/bink_runtime_library.cpp",
+      "bytes": 4198,
+      "git_blob": "c35a0b0d583207657d77092c7e790107f542f5e0",
+      "sha256": "0e3b46555ea02931a6dc298a1966fa6fcc82739588db438b107a73dd5a94cb94",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "include/bsp/movie_factory_followup.hpp",
+      "bytes": 1804,
+      "git_blob": "3e527edffb003d6ea8fd27ef9720faead8396eac",
+      "sha256": "4b208a04568c712cf41d4b7d1ef490975bc4813fe8397322d114ac477a55e60f",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "src/movie_factory_followup.cpp",
+      "bytes": 1250,
+      "git_blob": "9718be2e12fa4fb5f74c1261889de60f5808e8e1",
+      "sha256": "00a8b4866bfa3ba88f537a53d94191cef0efbd56f54f1a41aa1d3fe177f2f8c6",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "include/bsp/movie_decoder.hpp",
+      "bytes": 7025,
+      "git_blob": "9066b437ede14505011afcb2bc08523d164b48bf",
+      "sha256": "9151e8eacc41a208769eab8347539c5b15201a330f329b593585cfe620b3dbd7",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "src/movie_decoder.cpp",
+      "bytes": 11100,
+      "git_blob": "d7f6a53a58a60e8ed31a1e22930aa9d500cafe8b",
+      "sha256": "75f54deb390ef8d333ba07df4e0579f9efedc22c9bb78e0cae9fec8e6d814908",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "include/bsp/movie_bases_cc13.hpp",
+      "bytes": 7301,
+      "git_blob": "b0e09afacd9ec6fc45bb4e8537ea8cdf393d1d69",
+      "sha256": "fa3bf6abbda0931db27b8da8a0aeb435aae5bcd18a0230c4b1c88178e973c55d",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "src/movie_bases_cc13.cpp",
+      "bytes": 9686,
+      "git_blob": "00c4db395f1e156a0769ce1ba6d6dfe78d9944c3",
+      "sha256": "f84e6defc9a82e5b9a4df2d83ec1e75409d5dcd529c2d012279b2f48877e33a0",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "include/bsp/movie_player.hpp",
+      "bytes": 8774,
+      "git_blob": "03b9d9106c25845c678497285ccbecf1767f5b54",
+      "sha256": "03b1dfd456e1ea97b8cd173e962ae6482982e975875560f35a29108bd61fb12c",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "src/movie_player.cpp",
+      "bytes": 9545,
+      "git_blob": "94ff89d32e3d933a361599f3a75abfce1781e71c",
+      "sha256": "20165a62377e27ae5e4a223844e4b70ec2a432580d10cf321fa4475e2ab1224d",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "include/bsp/engine_seg49_64_78_cc13.hpp",
+      "bytes": 84516,
+      "git_blob": "cd8b8303b75c99d6d929aca2df077bdb974d6879",
+      "sha256": "7830c6cae582c047d21923c9ed49f9084a0c18c21d99c092f69c8e133c41921d",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "src/engine_seg49_64_78_cc13.cpp",
+      "bytes": 111051,
+      "git_blob": "9b71adf3ea032a6bfd7e2ed87ee5dc6d4114cdf7",
+      "sha256": "5888a64b1973289ca1eecadbe8bbb1e8718b8b9143421e4a4c617d40bb27433c",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "include/bsp/gui_widgets_cc13.hpp",
+      "bytes": 92980,
+      "git_blob": "a69f853d6015aa99b2efaaa0bb71f497052c8292",
+      "sha256": "2a889c7f79cdfa87e99283c4b0286eed4911845410425a38918cb39aeecb63b7",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "src/gui_widgets_cc13.cpp",
+      "bytes": 75116,
+      "git_blob": "4511ee034957d5d2322c36deae1ee9618ac847bb",
+      "sha256": "20312bdde0d2a577300c6431ea53a54aaaaf6c05c3c6670dc655c20864bb74da",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "include/bsp/native_gui_widget_base_storage.hpp",
+      "bytes": 1081,
+      "git_blob": "61c72c99fab59f5c86da392495d7bae5381607cf",
+      "sha256": "35748704f96ed477f2f55f01edf5a8e598f1995955f847343f94327dc495faab",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "src/native_gui_widget_base_storage.cpp",
+      "bytes": 3008,
+      "git_blob": "997a33c5ac7bbf7b57e133feb53b91163e7308b5",
+      "sha256": "4ddd5ab1ad4a2b8174d80caf70dba76afa648479e4e8637a56884f2b9db6354d",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "include/bsp/native_gui_widget_pools_cc13.hpp",
+      "bytes": 12674,
+      "git_blob": "759fba46de564d4d09549b0f3950bf2bbfc4f718",
+      "sha256": "fd2be32f59443f79787b5006a628b9d0f78597b4d4dff62d09dbc65831c1fed3",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "src/native_gui_widget_pools_cc13.cpp",
+      "bytes": 3180,
+      "git_blob": "18a2efa93a00c8e48d79003e8af0ed4fbc5f80b3",
+      "sha256": "e9fa3a2f4e8d0f644d601aa974bab567f8cd36e5c9ea958ae06aacaca4b5e925",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "include/bsp/native_gui_widget_property_children.hpp",
+      "bytes": 4544,
+      "git_blob": "f782122e08e2bf78a7e41028a4735976136dc646",
+      "sha256": "b9699af0b44d20a05fd4b09ec8cf5668f1bf000b9554387aea73796f9c20e70e",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "src/native_gui_widget_property_children.cpp",
+      "bytes": 11148,
+      "git_blob": "ed66ee7c010662ad5a60008d9a218ca988a4cdc0",
+      "sha256": "2649822b64027d0b30421dd499aaecaf71f9f2484e2880b9c1f5c75817b77efc",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "include/bsp/game_native_gui_page_application.hpp",
+      "bytes": 3811,
+      "git_blob": "3900c1e90fb9dd685f1c1375079b6fd13252cff9",
+      "sha256": "8a21c044261937a47938887584b94650d1d04ab1584d3c447af276a6c04cebcb",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "src/game_native_gui_page_application.cpp",
+      "bytes": 54018,
+      "git_blob": "0e1e95e2a1372504cce0dda0a00a6c4476f8a367",
+      "sha256": "6931fc7c1dced9222a47ec072ca143b00d1789b5a344b85c7bfc639b15314711",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "include/bsp/game_hosts_mission_result.hpp",
+      "bytes": 12646,
+      "git_blob": "1bcb860287c7f2c032ec78c1f873f3a50687b6ac",
+      "sha256": "9854bddaa6be72410f295508bbd64a10a9878e6512c59dfe4038f4f75f1fb5d7",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "src/game_hosts_mission_result.cpp",
+      "bytes": 34180,
+      "git_blob": "4aa1c95d387d5084ce12e742303d6a87772bc77d",
+      "sha256": "f4be4960d0475fb11050987c2b905c4f2839cc1f53dcf190dd9ca3784fa3228c",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "src/game_hosts_mission_frame.cpp",
+      "bytes": 316563,
+      "git_blob": "2257b8333afc3e71fa2bfcd2f8686d7e510efb54",
+      "sha256": "63069582a2a2d193e51dea7085185f28f6b2b580098735966748909df9a0a796",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "src/game_hosts_lua.cpp",
+      "bytes": 679506,
+      "git_blob": "1c604500ed548081120d917b3acaf5a988d4861d",
+      "sha256": "163ee47fede8cb004c84d57af9002a73cddca16739ace3e4e0786209c35de880",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "include/bsp/game_native_vfs_runtime.hpp",
+      "bytes": 9863,
+      "git_blob": "97fa588dece2f718a2a1648ef5a72b5d616cfb17",
+      "sha256": "57c378aabe457270e7d71e64f581aa8a2a31249976d8405e6dd51eb932e57ab1",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "src/game_native_vfs_runtime.cpp",
+      "bytes": 36828,
+      "git_blob": "b39375f444852c7c14fb8e2c705a359ca86f3c64",
+      "sha256": "f231e017c239f774d37bf3fa06718f9aa16c34d64547c9b41704a5d607c84a2e",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "include/bsp/game_hosts_vfs.hpp",
+      "bytes": 12974,
+      "git_blob": "00d36ad12ab70f56c72886fc750163115162d645",
+      "sha256": "1e3878ed0f752e14946c132fdee509a76f07c95cd52676bc00fafdbeb7ad0326",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "src/game_hosts_vfs.cpp",
+      "bytes": 22223,
+      "git_blob": "e5a1882aba8b93ee30a928646c412359214f40f8",
+      "sha256": "7394248062dc8b98f55e06ea172e93fb3da3243a897f9e04dcb652a70750e087",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "include/bsp/game_native_settings_application.hpp",
+      "bytes": 2280,
+      "git_blob": "313bab85fb4df16ea6cee3ff537d4fbb76026191",
+      "sha256": "27dcda3ae4e6c975b5692790915575079dd28e9014e01bac5e430becd9298760",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "src/game_native_settings_application.cpp",
+      "bytes": 11474,
+      "git_blob": "c7798be90dd59ad8c59f556e18ecb7025bda8bd7",
+      "sha256": "4e442e6362764777f48eed986d0666e9b65fde269200eefaa6c0aef03e6d94a5",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "src/game_profile_load.cpp",
+      "bytes": 35439,
+      "git_blob": "a159c366c7c73e4ee75abc38da9d5fa4b1d688d8",
+      "sha256": "34f1a2aa7e4be96e4b4acd4d611b9391863a563b1090559fd44dd5594cedaaaf",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "include/bsp/game_profile_load.hpp",
+      "bytes": 3835,
+      "git_blob": "a61fac1c385d9c7f2efbc0f682d8e8c7138a6da8",
+      "sha256": "1df2c8b6065610b23c517cb8dc40891b37708e7ab4a09c27cf773fd9b751bda1",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "include/bsp/game_native_mutable_crt_data.hpp",
+      "bytes": 3200,
+      "git_blob": "ec1a1c9c2a7359031b4b77c2b86ba12cd6f3420e",
+      "sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "src/game_native_mutable_crt_data.cpp",
+      "bytes": 10114,
+      "git_blob": "2c0d73f8164a8b0d4cbbc499801935d1f28c213a",
+      "sha256": "d9dabf905fd4acf195f72c14e9ae2c7ef457514f4ff6227efffdcbb1f24a0c39",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "include/bsp/pc24_misc_cc13.hpp",
+      "bytes": 1593,
+      "git_blob": "59906d7eaafd9796f31b7490c6698bfea38e1ee4",
+      "sha256": "2db355cfc13a5d2a05eca61845789d68c4fea61715be34d5c905b5b8c7a7045d",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "src/movie_subtitles.cpp",
+      "bytes": 4215,
+      "git_blob": "323623afa5ce5a6d7e67d9802f6ed54a037975a9",
+      "sha256": "0d1970eba4abc1a4fb38dca15c528f16da1b99ee6e85dc74643f2dc194b3506f",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "include/bsp/game_native_render_resource_providers.hpp",
+      "bytes": 1258,
+      "git_blob": "52d1355d759cf5530dd1bb589754aa74c0026cf3",
+      "sha256": "c4ad8a0bc763413891c467d807e1ba99e808a7c2b0ac4fd42a40c000c0aa9f36",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "bytes": 80060,
+      "git_blob": "5baacc9a3bb8b4856951e8780485dea44502e951",
+      "sha256": "3ed5485d8b619dce29caed0c1fa2b810b71504478bbb4ce44ca683c9e398ae7f",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "include/bsp/native_platform_focus_owners.hpp",
+      "bytes": 4708,
+      "git_blob": "5d8de2a99377eca1b22b24ccd0f016f1b5441cf4",
+      "sha256": "0738ee83b33d44ee79852f115e79515a85d653452d70fc920ab63e3675c51865",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "src/native_platform_focus_owners.cpp",
+      "bytes": 10371,
+      "git_blob": "451ff6e886f73c7e15e4b30366a59ed1c2054a0b",
+      "sha256": "efff43cee498b710d53d4b2380e4ae89791dc578371d35b2be29327b0fedfe73",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "include/bsp/native_gui_widget_copy_storage.hpp",
+      "bytes": 1724,
+      "git_blob": "8867180c85381dcbd78e63dfb510ca5ba74a8ef2",
+      "sha256": "dd3d8b700a9dda51037bf2722a893402ebd2ae3d3358ad83fd3358325f57d307",
+      "unchanged_from_base": true
+    }
+  ],
+  "review_utc": "2026-10-29T22:47:48.374017+00:00"
+}
