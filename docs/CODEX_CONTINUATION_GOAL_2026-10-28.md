@@ -639,3 +639,12 @@ both actual null-handler queries, immediately before379. Closed real allocator/
 import/matrix/store analysis preserves that zero through lateAA70E6; constructor
 zero across earlier Lua is not assumed. Host live-module/import receipts and
 complete adapter/owner graph review/build plus real paired fixture remain gates.
+
+Geometry helper64/732 and ownerc448/761 now pass root plus independent Source
+reviews and the combined OFF Win32/checks2/2 (11.41s). Actual consumed Mesh
+producer markers, full fresh-before122 backing and BOTH durable Mesh/Models/Text
+custody are verified at Source level; no low-level native body changes. Private
+host modes stay mutually exclusive/OFF. Same-runtime CRT import/live module
+paths, real null-handler/entry-zero guards and the preregistered two same-binary
+cases remain runtime gates. A separate read-only actual Font export plan is
+in progress; it grants no Font108/cache1EC ownership or shader caller authority.

@@ -1,6 +1,7 @@
 # Qualified raw prefix geometry lifetime transport
 
-**UNBUILT, uncalled library source preparation.** Base4a1b3613a, reviewed plan179c
+**Integrated Win32 build-tested; private host fixture remains OFF.** Frozen
+source packet732b2ae6 was unbuilt and uncalled at handoff. Base4a1b3613a, reviewed plan179c
 plus its closed-choice clarification, API64b775d2a and pure backing dependency
 52ef8c004. This packet owns only the new prefix_geometry_lifetime HPP/CPP/doc,
 existing primary_prefix_lifetime HPP/CPP and reference.cpp. Root owns linking,
@@ -126,7 +127,9 @@ this. Extra Model/Mesh credits, nonzero geometry release, flags0 or failure reta
 the WHOLE graph; a later foreign Mesh release has no persistent terminal receipt
 here and cannot silently make this owner reusable.
 
-Validation: bounded source/ABI/alias/stage/extent inspection and whitespace only.
-Root must review/build the combined owner/helper, run existing suites and the
-preregistered real-provider fixture. Failure/reuse/ABI/content/rendering/FE_initial
-and every unsupported branch remain open. No build, probe or game was run here.
+Validation: root Source review and integrated Win32 build pass, with both existing
+checks2/2 (11.41s), `local/cc16_prefix_geometry_integrated_off_build.log`.
+Independent final helper Source review also passes, including actual B73B60
+outputs and both durable Mesh histories. The preregistered real-provider fixture
+remains open. Failure/reuse/ABI/content/rendering/FE_initial
+and every unsupported branch remain open. No geometry probe or game has run.

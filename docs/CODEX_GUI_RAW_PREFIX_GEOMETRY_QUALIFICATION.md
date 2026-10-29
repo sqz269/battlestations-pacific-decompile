@@ -19,6 +19,16 @@ with no flag forcing, layout, section creation, Font, content or parenting.
 - Close the independent late-bounds audit. AA70E0 observes the actual Text+74
   byte late; outer before/after zero snapshots cannot prove that branch. Any
   unresolved reachable mutation or unsupported callback blocks execution.
+- The private host branch queries actual `_query_new_handler()` and
+  `std::get_new_handler()` before factory/prefix/geometry effects, requiring
+  both null without changing them. Audit the no-writer/serialized closed-domain
+  assumption separately; a before/after observation cannot exclude a foreign
+  concurrent setter. Confirm the ON binary's query and `_callnewh` imports use
+  the same actual UCRT heap interface, and preserve the null-handler log row.
+  The private branch also resolves each actual function address to its loaded
+  module without changing module reference counts. Query and `_callnewh` must
+  resolve to the same module; complete heap and standard-runtime paths are
+  logged. Archive and hash those actual module files with the import receipt.
 - Prove actual primary and internal mesh settlement from independently retained
   Model captured-geometry/decrement/zero-terminal/clear records and real scalar/
   flags1/pool returns. Mesh entries and companions erase themselves at terminal;
@@ -55,6 +65,12 @@ prove custody. Obtain independent artifact/source audit, restore OFF and rebuild
 
 ## Current status
 
-Geometry lifetime/owner source and independent late-bounds audit are in progress.
-The host constant/API wiring is pending the frozen owner header. No runtime,
-production, AAA710, content/rendering, failure/reuse or native ABI credit claimed.
+Geometry lifetime732/ownerc448+761 are merged and the integrated OFF Win32
+build passes existing checks2/2 (11.41s),
+`local/cc16_prefix_geometry_integrated_off_build.log`. Owner and host Source
+reviews pass; final independent helper review also passes. Bounds auditf933 has
+conditional Source acceptance; actual ON CRT/import/guard receipts remain open.
+Private `kRawPrefixGeometryQualificationCc16Bound` wiring is prepared false,
+with all three fixture constants mutually exclusive. Its owner preparation and
+ready-cache construction methods are compiled. No runtime, production, AAA710, content/rendering,
+failure/reuse or native ABI credit claimed.

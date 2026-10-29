@@ -42,6 +42,8 @@
 #include <fstream>
 #include <optional>
 #include <stdexcept>
+#include <new>
+#include <new.h>
 #include <string>
 #include <utility>
 
@@ -55,8 +57,11 @@ constexpr bool kRawDefaultTextQualificationCc16Bound = false;
 // Separate private fixture for the genuine primary Model prefix. Its owner
 // selects the receipt-authorized lifetime route; it adds no content or layout.
 constexpr bool kRawPrimaryPrefixQualificationCc16Bound = false;
-static_assert(!(kRawDefaultTextQualificationCc16Bound &&
-    kRawPrimaryPrefixQualificationCc16Bound));
+// Explicit AB7700 body fixture after the genuine prefix, with ctor bounds0.
+constexpr bool kRawPrefixGeometryQualificationCc16Bound = false;
+static_assert(static_cast<unsigned>(kRawDefaultTextQualificationCc16Bound) +
+    static_cast<unsigned>(kRawPrimaryPrefixQualificationCc16Bound) +
+    static_cast<unsigned>(kRawPrefixGeometryQualificationCc16Bound) <= 1u);
 using Word = std::uint32_t;
 void require(bool value, const char* message) {
     if (!value) throw std::logic_error(message);
@@ -745,7 +750,7 @@ void GameStartupHost::initialize_native_gui_render() {
         frame_flag[0] == '1',
         "BSP_NATIVE_GUI_TEXT=1 requires BSP_NATIVE_MISSION_SHIP=1 and BSP_NATIVE_MISSION_FRAME=1");
     if constexpr (kRawDefaultTextQualificationCc16Bound ||
-        kRawPrimaryPrefixQualificationCc16Bound) {
+        kRawPrimaryPrefixQualificationCc16Bound || kRawPrefixGeometryQualificationCc16Bound) {
         require(!GameNativeGuiRenderApplication::nodes_requested(),
             "raw Text qualification requires the GUI node overlay disabled");
         require(!native_gui_render_ && !native_raw_default_text_ && native_renderer_ &&
@@ -757,7 +762,9 @@ void GameStartupHost::initialize_native_gui_render() {
                 native_renderer_->borrow_platform_publication_0109cf04()});
         // Explicit caller budget for this one retained graph, not an Original
         // constant or a universal nesting bound. Exhaustion retains failure.
-        if constexpr (kRawPrimaryPrefixQualificationCc16Bound)
+        if constexpr (kRawPrefixGeometryQualificationCc16Bound)
+            native_raw_default_text_->prepare_primary_prefix_geometry_metadata_in_ready_renderer(64);
+        else if constexpr (kRawPrimaryPrefixQualificationCc16Bound)
             native_raw_default_text_->prepare_primary_prefix_metadata_in_ready_renderer(64);
         else
             native_raw_default_text_->prepare_metadata_in_ready_renderer(64);
@@ -771,7 +778,29 @@ void GameStartupHost::initialize_native_gui_render() {
 }
 void GameStartupHost::prepare_native_gui_text_resources() {
     if (native_raw_default_text_) {
-        if constexpr (kRawPrimaryPrefixQualificationCc16Bound)
+        if constexpr (kRawPrefixGeometryQualificationCc16Bound) {
+            HMODULE query_module{}, call_module{}, standard_module{};
+            constexpr DWORD module_flags = GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
+                GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT;
+            require(GetModuleHandleExA(module_flags, reinterpret_cast<LPCSTR>(&_query_new_handler), &query_module) &&
+                GetModuleHandleExA(module_flags, reinterpret_cast<LPCSTR>(&_callnewh), &call_module) &&
+                GetModuleHandleExA(module_flags, reinterpret_cast<LPCSTR>(&std::get_new_handler), &standard_module) &&
+                query_module == call_module,
+                "raw prefix-geometry qualification requires the same live CRT heap module");
+            char heap_path[MAX_PATH]{}, standard_path[MAX_PATH]{};
+            const DWORD heap_length = GetModuleFileNameA(query_module, heap_path, MAX_PATH);
+            const DWORD standard_length = GetModuleFileNameA(standard_module, standard_path, MAX_PATH);
+            require(heap_length && heap_length < MAX_PATH && standard_length && standard_length < MAX_PATH,
+                "raw prefix-geometry qualification requires complete live CRT module paths");
+            log_.notef("raw prefix geometry CRT modules: heap=%s standard=%s", heap_path, standard_path);
+            // Actual host allocation callbacks must be absent in this closed
+            // fixture; query both CRT interfaces without changing either one.
+            require(_query_new_handler() == nullptr && std::get_new_handler() == nullptr,
+                "raw prefix-geometry qualification requires actual null CRT new handlers");
+            log_.note("raw prefix geometry qualification: crt_new_handlers=null");
+            require(native_raw_default_text_->construct_primary_prefix_geometry_in_open_shader_cache(),
+                "raw prefix-geometry qualification requires a nonnull native factory result");
+        } else if constexpr (kRawPrimaryPrefixQualificationCc16Bound)
             require(native_raw_default_text_->construct_primary_prefix_in_open_shader_cache(),
                 "raw primary-prefix qualification requires a nonnull native factory result");
         else

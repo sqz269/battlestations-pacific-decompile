@@ -1,6 +1,7 @@
 # Retained private prefix geometry owner
 
-**UNBUILT, uncalled owner source packet.** Owns only the existing
+**Integrated Win32 build-tested; private host fixture remains OFF.** Frozen
+source packet c448+761 was unbuilt/uncalled at handoff. It owns only the existing
 `game_native_raw_default_text_owner.hpp/.cpp` and this new doc. No host gate,
 CMake/config/ledger/Ghidra, tests, build, probe, game or native-body credit.
 Base is `4a1b3613a0fe67b2e0886d5ade07efd81458f7b2`.
@@ -131,5 +132,9 @@ Read-only `local/codex_raw_prefix_geometry_owner_source_review.py` compares eigh
 existing bodies against4a1: DEFAULT/prefix prepare and construct, real name/
 producer/return, full native scalar schedule, companion disposal, renderer-FIRST
 closure. All eight match; `git diff --check` passes. No new tests were added.
+Root and independent owner Source review pass. The integrated OFF Win32 build
+and existing checks2/2 pass (11.41s),
+`local/cc16_prefix_geometry_integrated_off_build.log`. These checks do not prove
+the actual ON CRT imports/module mapping or geometry execution.
 These are Source checks, not emitted FP, original register/FH3/SEH/ABI, allocator,
 exception/reuse, native UI or game proof. Root owns build and later fixture gates.
