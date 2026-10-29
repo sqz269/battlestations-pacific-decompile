@@ -105,6 +105,11 @@ public:
     ~NativeGuiTextPrimaryModelStorageFrame() noexcept;
     NativeGuiTextPrimaryModelStorageFrame(const NativeGuiTextPrimaryModelStorageFrame&) = delete;
     NativeGuiTextPrimaryModelStorageFrame& operator=(const NativeGuiTextPrimaryModelStorageFrame&) = delete;
+    // Pure identity/private-phase view for a separately authenticated lifetime
+    // adapter. This grants no native credit, payload liveness or cleanup right.
+    bool matches(const NativeGuiTextPrimaryModelStorageContext&,
+        const NativeGuiTextPrimaryModelStorageAcquired&,
+        NativeGuiTextPrimaryModelStoragePhase) const noexcept;
     void prepare_before_text_allocation();
 private:
     friend void produce_native_gui_text_primary_model_00aaad95(NativeGuiTextPrimaryModelStorageContext&,

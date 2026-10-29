@@ -178,6 +178,10 @@ void* bound_text(Context& c) {
 
 NativeGuiTextPrimaryModelStorageFrame::NativeGuiTextPrimaryModelStorageFrame(Context& c, Acquired& a) noexcept
     : context_(c), acquired_(a) {}
+bool NativeGuiTextPrimaryModelStorageFrame::matches(const Context& c, const Acquired& a,
+    Phase expected) const noexcept {
+    return &context_ == &c && &acquired_ == &a && phase_ == expected;
+}
 NativeGuiTextPrimaryModelStorageFrame::~NativeGuiTextPrimaryModelStorageFrame() noexcept {
     if (phase_ == Phase::preparing || phase_ == Phase::entered || phase_ == Phase::failed) std::terminate();
 }
