@@ -87,11 +87,13 @@ class GameNativeMissionFactories;
 class GameNativeShadowTargetApplication;
 class GameNativeGuiEffectProbe;
 class GameNativeGuiRenderApplication;
+class GameNativeRawDefaultTextOwner;
 class GameLocaleHost;
 class GameFontHost;
 // Milestone 2b, defined in bsp/game_hosts_frontend.hpp.
 class GameFrontendHost;
 class GameSingletonHost;
+class GameNativeGuiIconProcess;
 // Milestone 2c, defined in bsp/game_hosts_menu.hpp and
 // bsp/game_hosts_init_tail.hpp.
 class GameMenuHost;
@@ -755,6 +757,9 @@ private:
     void exit_if_particle_manager_failed() noexcept;
     void exit_if_native_lua_interrupted() noexcept;
     void exit_if_native_renderer_incomplete() noexcept;
+    void prepare_native_gui_icon_process();
+    void exit_if_native_gui_icon_interrupted() noexcept;
+    void verify_native_gui_icon_after_drain();
     void drain_native_singletons();
     void exit_if_native_fonts_interrupted() noexcept;
     void retire_native_fonts_before_drain() noexcept;
@@ -779,6 +784,7 @@ private:
     std::unique_ptr<GameNativeShadowTargetApplication> native_shadow_;
     std::unique_ptr<GameNativeGuiEffectProbe> native_gui_probe_;
     std::unique_ptr<GameNativeGuiRenderApplication> native_gui_render_;
+    std::unique_ptr<GameNativeRawDefaultTextOwner> native_raw_default_text_;
     // cc15-gui4 P1 (kGuiManagerCc15Bound): released right after the shared drain.
     std::unique_ptr<GameNativeGuiManagerApplication> native_gui_manager_;
     // cc15-gui4 P3a (kNativeGuiPageChainCc15Bound): released before the manager.
@@ -846,6 +852,11 @@ private:
     GameFrameProfiler* profiler_{};     // 004c1dd0's counter arrays
     GameMenuHost* menu_{};              // the front-end registry and the main-menu path
     GameSingletonHost* singletons_{};   // survives menu teardown through 008F8449
+    // Permanently retained metadata; the SAME deletion arm survives fallback drain.
+    GameNativeGuiIconProcess* native_gui_icon_process_{};
+    // Address-only diagnostic identity; native ownership stays in the manager.
+    void* native_gui_icon_qualification_identity_{};
+    bool native_gui_icon_qualification_retired_{};
     GameDecalTable* decals_{};          // phase 9, 00740840
     IDirect3D9* renderer_api_{};
     NativeRendererParametersOwner* renderer_parameters_{};

@@ -6,6 +6,7 @@
 #include "bsp/dive_bomb_task.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_gunnery_cc13.hpp"
+#include "bsp/native_render_batch_keys.hpp"
 
 namespace bsp {
 
@@ -131,6 +132,129 @@ float repair_damage_divisor(int task_priority, int step_priority, float settings
 }
 
 
+namespace {
+static_assert(sizeof(WeaponHitAccuracyProfile) == 0x58);
+static_assert(offsetof(WeaponHitAccuracyProfile, small_target_accuracy) == 0x08);
+static_assert(offsetof(WeaponHitAccuracyProfile, large_target_accuracy) == 0x30);
+
+// Immutable image constants, checked as original bytes. These are values,
+// not replacement mutable runtime cells or new CRT state.
+constexpr float accuracy_one_00d7a24c = 1.0f;
+constexpr double accuracy_threshold_00d7a3a0 = 0.100000001490116119384765625;
+constexpr double accuracy_negative_ten_00d0a198 = -10.0;
+constexpr double accuracy_ten_00ce3dc0 = 10.0;
+
+float native_accuracy_range_blend(const WeaponHitAccuracyProfile* profile,
+    float size_weight, float fraction,
+    const volatile std::uint32_t* actual_0109eea4) noexcept {
+#if defined(_MSC_VER) && defined(_M_IX86)
+    float lower_weight, upper_weight, inverse_size, scratch;
+    float result = 0.0f;
+    std::int32_t integer_weight;
+    __asm {
+        mov esi, profile
+        fld dword ptr size_weight // 00838402; 008383FE already spilled float
+        movss xmm0, accuracy_one_00d7a24c
+        xorps xmm1, xmm1
+        fld st(0)
+        fld1
+        movss lower_weight, xmm0
+        fld st(0)
+        movss upper_weight, xmm1
+        fsubrp st(2), st(0)
+        fxch st(1)
+        fstp dword ptr inverse_size
+        fld dword ptr fraction
+        fld qword ptr accuracy_threshold_00d7a3a0
+        fcomip st(0), st(1)
+        jc accuracy_above_threshold // unordered follows JC, as 00838437
+        fstp st(0)
+        xor ecx, ecx
+        fstp st(0)
+        jmp accuracy_blend
+    accuracy_above_threshold:
+        movss xmm2, fraction
+        comiss xmm2, xmm0
+        jc accuracy_middle // unordered follows JC, as 0083844A
+        fstp st(0)
+        mov ecx, 8
+        fstp st(0)
+        movss lower_weight, xmm1
+        movss upper_weight, xmm0
+        jmp accuracy_blend
+    accuracy_middle:
+        fld qword ptr accuracy_negative_ten_00d0a198
+        fmul st(0), st(1) // 00838469: unspilled extended ST0, ambient control
+        mov ecx, actual_0109eea4 // address only; converter reads the cell now
+        call native_crt_truncate_st0_00bf7420
+        or ecx, 0ffffffffh
+        sub ecx, eax
+        jns accuracy_nonnegative_index
+        xor ecx, ecx
+        jmp accuracy_fraction
+    accuracy_nonnegative_index:
+        cmp ecx, 8
+        jle accuracy_fraction
+        mov ecx, 8
+    accuracy_fraction:
+        fmul qword ptr accuracy_ten_00ce3dc0
+        lea eax, [ecx + 1]
+        mov integer_weight, eax
+        fisub dword ptr integer_weight
+        fstp dword ptr fraction
+        fld dword ptr fraction
+        fldz
+        fcomip st(0), st(1)
+        fstp st(0)
+        jbe accuracy_nonnegative_fraction
+        xorps xmm0, xmm0
+        jmp accuracy_store_upper
+    accuracy_nonnegative_fraction:
+        movss xmm0, fraction
+        movss xmm1, accuracy_one_00d7a24c
+        comiss xmm0, xmm1
+        jbe accuracy_store_upper
+        movss upper_weight, xmm1
+        jmp accuracy_lower
+    accuracy_store_upper:
+        movss upper_weight, xmm0
+    accuracy_lower:
+        fsub dword ptr upper_weight
+        fstp dword ptr lower_weight
+    accuracy_blend:
+        fld dword ptr [esi + ecx * 4 + 34h]
+        fld dword ptr upper_weight
+        fld st(0)
+        fmulp st(2), st(0)
+        fld dword ptr [esi + ecx * 4 + 30h]
+        fld dword ptr lower_weight
+        fld st(0)
+        fmulp st(2), st(0)
+        fxch st(3)
+        faddp st(1), st(0)
+        fstp dword ptr scratch
+        fld dword ptr scratch
+        fmul dword ptr inverse_size
+        fld dword ptr [esi + ecx * 4 + 0ch]
+        fmulp st(2), st(0)
+        fld dword ptr [esi + ecx * 4 + 08h]
+        fmulp st(3), st(0)
+        fxch st(1)
+        faddp st(2), st(0)
+        fxch st(1)
+        fstp dword ptr scratch
+        fld dword ptr scratch
+        fmulp st(2), st(0)
+        faddp st(1), st(0)
+        fstp dword ptr result
+    }
+    return result; // original final float reload/return, not an earlier spill
+#else
+#error The native accuracy range correction requires MSVC Win32.
+#endif
+}
+} // namespace
+
 float weapon_hit_accuracy_sample_008383d0(const WeaponHitAccuracyProfile& profile,
                                           float target_length, float t) noexcept {
     // 008383F9: the size weight, 1.0 at the small reference size, 0.0 at the large.
@@ -180,6 +304,16 @@ float weapon_hit_accuracy_sample_008383d0(const WeaponHitAccuracyProfile& profil
     return small * w + large * (1.0f - w);
 }
 
+float weapon_hit_accuracy_sample_008383d0(const WeaponHitAccuracyProfile& profile,
+    float target_length, float t,
+    const volatile std::uint32_t& actual_0109eea4) noexcept {
+    // Retain the existing size interpolation. The native immediately FSTPs its
+    // result at 008383FE, so the explicit float boundary is proven here.
+    const float w = dive_bomb_interpolate_clamped_00419010(profile.small_target_size, 1.0f,
+        profile.large_target_size, 0.0f, target_length);
+    return native_accuracy_range_blend(&profile, w, t, &actual_0109eea4);
+}
+
 float weapon_hit_accuracy_008386f0(const WeaponHitAccuracyProfile profiles[4], int function,
                                    float target_length, float t) noexcept {
     int slot = -1;
@@ -191,6 +325,21 @@ float weapon_hit_accuracy_008386f0(const WeaponHitAccuracyProfile profiles[4], i
     default: return 1.0f;                              // 008387A1 FLD1
     }
     return weapon_hit_accuracy_sample_008383d0(profiles[slot], target_length, t);
+}
+
+float weapon_hit_accuracy_008386f0(const WeaponHitAccuracyProfile profiles[4], int function,
+    float target_length, float t,
+    const volatile std::uint32_t& actual_0109eea4) noexcept {
+    int slot = -1;
+    switch (function) {
+    case 2: case 3: case 4: case 6: slot = 0; break;
+    case 1: case 5: slot = 1; break;
+    case 7: slot = 2; break;
+    case 8: case 9: slot = 3; break;
+    default: return 1.0f;
+    }
+    return weapon_hit_accuracy_sample_008383d0(profiles[slot], target_length, t,
+        actual_0109eea4);
 }
 
 }  // namespace bsp

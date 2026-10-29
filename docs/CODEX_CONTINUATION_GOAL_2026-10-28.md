@@ -437,3 +437,72 @@ raw-compatible widget lifetime dispatch; legacy Text-reference dispatch cannot
 stand in for the new raw122 companion. Actual creation belongs after genuine
 Text type startup in a legitimate cache bracket, with retained frames/providers
 through complete renderer drain, failure and surviving Model credits/flags0.
+
+Owner plan9c54471 is reviewed and integrated as a plan. The frame worker owns
+new retained-owner files, and the GUI worker owns the separate private DEFAULT
+widget-dispatch API. Shared hook review identifies the existing GUI Text opt-in,
+early idle metadata preparation, later genuine mission cache callback, retirement
+before Font drain and renderer-first metadata closure. No new public test-only
+flag is needed. The earlier suspected sampler admission blocker was corrected
+against exact source: its gate is layout-only; full-retention metadata/profile
+borrows still happen early. Implementation and one genuine lifecycle gate remain
+open; A2 stays accepted ON and no full Page/GUI activation follows.
+
+Owner wiring exposed a concrete raw Text admission overconstraint: real VFS
+raw/typed wrappers are different objects over the same three canonical native
+string cells as the permanent process wrappers. A focused raw-only correction
+now checks every cell address and the typed actual-manager mode, retaining
+local object identities, legacy guards and all provider lifetimes. No native
+allocation/get/free body or class layout/vtable changed. Root and independent
+review pass; frozenef69872ae Win32 Release and both existing CTests pass. The
+subsequent genuine owner lifecycle remains separate.
+
+The private DEFAULT widget bindingb6b016e68 now passes root/independent source
+review and integrateddf7fe8eb0 Win32 build with both existing CTests. It uses
+genuine class predicates/list removal and precise constructor/base-prefix custody,
+with explicit rejection of unsupported child/timed/scene paths. No raw188 read,
+legacy cast, new body credit or lifecycle runtime acceptance is introduced.
+Retained-owner0fcd1633 is frozen and undergoing source review before integration.
+
+## One genuine raw DEFAULT lifecycle accepted
+
+Owner0fcd1633 passes both source reviews and Win32 build after adding two
+complete-type headers. Shared hooks prepare pure metadata after Text type
+startup, create inside the existing real cache callback, retire before Font/
+parent drain and verify renderer closure before dropping facade metadata.
+The private qualification route uses existing GUI_TEXT and stays OFF in main.
+
+Frozenc0ef2def1/CE52 same-binary GUI_TEXT0/1 pair passes on slot4/core10;
+both exit0, requested mission181 and599+1 frames. ON has exactly one nonnull
+factory/raw93 completion+raw122 bind, settled actual Text/Model scalar/pool/
+late-flags retirement and post-renderer owner closure. Gameplay and ordered
+full449/mission299 rows match, start36/RNG1 same. Raw pair1 has only four added
+owner-stage rows; raw teardown97 is exactly two inserts, no prior row changed.
+Exact existing error.dds/profileD61948/ref1 and COM1+1 remain baseline-qualified
+on both sides, with raw failures visible and no new masks. The initial busy-lane
+attempt launched no game; the revised fixed-lane harness preserves all lock/
+tagged-process/duplicate-log checks and does not stop other processes.
+
+Root reviewed the independent predicates and copied report hashes to the local
+gate directory. Route restored OFF atf1bfc515f and existing tests2/2 pass. This
+is one real-provider DEFAULT lifecycle fixture; raw content/rendering/Page,
+failure, flags0, external credits, reentry, repeated reuse and native ABI remain
+open. Next Text transport surface is being audited; Icon host process binding
+plan9ce9320 is reviewed as the next independent shared-host hookup.
+
+## Icon process metadata linked
+
+The accepted DEFAULT batch and combined main build are published atf26a111d0.
+Icon host candidatec805780d4 then connects the existing permanent process
+service after VFS phase2, validates every canonical string/manager cell alias,
+and installs only the same existing deletion arm. Central failure guards and
+both full-drain branches retain providers on incomplete work; idle/null checks
+precede factory facade release and retain binding through fallback destruction.
+Independent source review and Win32 build/tests2/2 pass. One frozen60-frame
+slot4/core10 idle smoke exits0, validates initial and repeated drain closure,
+and ends COM0+0. Detailed receipt/scope:
+`docs/CODEX_GUI_ICON_PROCESS_HOST_LINK.md`.
+
+No lazy Icon allocation/registration/retirement or Page activation follows.
+Raw Text main geometry and phase-aware nonempty retirement remain the next
+disjoint transport/dependency packets; full rendering and native ABI stay open.

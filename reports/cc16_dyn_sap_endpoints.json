@@ -1,0 +1,334 @@
+{
+  "packet": "codex-dyn-storage-queries",
+  "integration_status": "reconstructed_build_tested_unwired",
+  "target": {
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "functions": [
+    {
+      "address": "00c40800",
+      "end": "00c408fb",
+      "length": 252,
+      "name": "remove_endpoints_00c40800",
+      "ghidra_name": "BSP_DynSap_RemoveEndpoints_00C40800",
+      "abi": "EAX object, ECX axis-array storage, EDX axis, RET0; EBX/ESI/EDI saved, EBP preserved; no semantic EAX return established",
+      "behavior": "two tagged-index decrement passes followed by upper/lower stable forward compaction with dynamic count/base reloads",
+      "sha256": "d07db80c4ab6e3dd7fcaae36d1339c08c161575162834ba8ce8043d6f045818e",
+      "original_call_count": 0
+    },
+    {
+      "address": "00c40b30",
+      "end": "00c40cb9",
+      "length": 394,
+      "name": "update_keys_move_left_00c40b30",
+      "ghidra_name": "BSP_DynSap_UpdateKeysMoveLeft_00C40B30",
+      "abi": "EAX axis, ECX object, EDX axis-array storage, RET0; EBX/EBP/ESI/EDI saved; no semantic EAX return established",
+      "behavior": "exact ambient x87 lower/upper float-key publication followed by two stable unsigned-key leftward passes",
+      "sha256": "d87e437612919dde724f0c94e2aaff285d4403aeb77e282e2aee14604ede89b7",
+      "original_call_count": 0
+    }
+  ],
+  "rows": [
+    {
+      "address": "00c4cca2",
+      "native": "00c40800",
+      "function": "00c4cc90",
+      "kind": "call"
+    },
+    {
+      "address": "00c4ccb0",
+      "native": "00c40800",
+      "function": "00c4cc90",
+      "kind": "call"
+    },
+    {
+      "address": "00c4ccbe",
+      "native": "00c40800",
+      "function": "00c4cc90",
+      "kind": "call"
+    },
+    {
+      "address": "00c4cc3d",
+      "native": "00c40b30",
+      "function": "00c4cbf0",
+      "kind": "call"
+    },
+    {
+      "address": "00c4cc4b",
+      "native": "00c40b30",
+      "function": "00c4cbf0",
+      "kind": "call"
+    }
+  ],
+  "listing_gap": {
+    "address": "00c40bba",
+    "length": 6,
+    "bytes": "8d9b00000000",
+    "interpretation": "LEA EBX,[EBX], unreachable alignment after unconditional JMP; not body truncation"
+  },
+  "validation": {
+    "build_registered": true,
+    "build_tested": true,
+    "accepted_base": "88a2c8c9f",
+    "configuration": "MSVC Win32 Release",
+    "build_log": "local/cc16_dyn_sap_endpoints_build.log",
+    "existing_suites_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "new_tests": false,
+    "compiled_object_sha256": "6569985291c7a5f1b5ce433a9511f7b64e6dfc2d916fc3fcb87d41128632a681",
+    "key_publisher_object": {
+      "symbol": "?publish_keys@?A0x84e58489@cc16_dyn_sap_endpoints@bsp@@YAXPAX0I@Z",
+      "instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "offset": 1,
+          "mnemonic": "mov",
+          "operands": "ebp, esp"
+        },
+        {
+          "offset": 3,
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "offset": 4,
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "offset": 5,
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "offset": 6,
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [ebp + 8]"
+        },
+        {
+          "offset": 9,
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebp + 0x10]"
+        },
+        {
+          "offset": 12,
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ebp + 0xc]"
+        },
+        {
+          "offset": 15,
+          "mnemonic": "fld",
+          "operands": "dword ptr [esi + eax*4 + 4]"
+        },
+        {
+          "offset": 19,
+          "mnemonic": "lea",
+          "operands": "ecx, [eax + eax*2]"
+        },
+        {
+          "offset": 22,
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [edx + ecx*4 + 4]"
+        },
+        {
+          "offset": 26,
+          "mnemonic": "lea",
+          "operands": "ecx, [edx + ecx*4 + 4]"
+        },
+        {
+          "offset": 30,
+          "mnemonic": "movzx",
+          "operands": "edx, word ptr [esi + eax*2 + 0x20]"
+        },
+        {
+          "offset": 35,
+          "mnemonic": "fstp",
+          "operands": "dword ptr [edi + edx*8]"
+        },
+        {
+          "offset": 38,
+          "mnemonic": "lea",
+          "operands": "edx, [edi + edx*8]"
+        },
+        {
+          "offset": 41,
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [edx]"
+        },
+        {
+          "offset": 43,
+          "mnemonic": "mov",
+          "operands": "ebx, edi"
+        },
+        {
+          "offset": 45,
+          "mnemonic": "shr",
+          "operands": "ebx, 0x1f"
+        },
+        {
+          "offset": 48,
+          "mnemonic": "not",
+          "operands": "ebx"
+        },
+        {
+          "offset": 50,
+          "mnemonic": "add",
+          "operands": "ebx, 1"
+        },
+        {
+          "offset": 53,
+          "mnemonic": "or",
+          "operands": "ebx, 0x80000000"
+        },
+        {
+          "offset": 59,
+          "mnemonic": "xor",
+          "operands": "ebx, edi"
+        },
+        {
+          "offset": 61,
+          "mnemonic": "mov",
+          "operands": "dword ptr [edx], ebx"
+        },
+        {
+          "offset": 63,
+          "mnemonic": "movzx",
+          "operands": "edx, word ptr [esi + eax*2 + 0x26]"
+        },
+        {
+          "offset": 68,
+          "mnemonic": "fld",
+          "operands": "dword ptr [esi + eax*4 + 0x10]"
+        },
+        {
+          "offset": 72,
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [ecx]"
+        },
+        {
+          "offset": 74,
+          "mnemonic": "lea",
+          "operands": "edx, [edi + edx*8]"
+        },
+        {
+          "offset": 77,
+          "mnemonic": "fstp",
+          "operands": "dword ptr [edx]"
+        },
+        {
+          "offset": 79,
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [edx]"
+        },
+        {
+          "offset": 81,
+          "mnemonic": "mov",
+          "operands": "ebx, edi"
+        },
+        {
+          "offset": 83,
+          "mnemonic": "shr",
+          "operands": "ebx, 0x1f"
+        },
+        {
+          "offset": 86,
+          "mnemonic": "not",
+          "operands": "ebx"
+        },
+        {
+          "offset": 88,
+          "mnemonic": "add",
+          "operands": "ebx, 1"
+        },
+        {
+          "offset": 91,
+          "mnemonic": "or",
+          "operands": "ebx, 0x80000000"
+        },
+        {
+          "offset": 97,
+          "mnemonic": "xor",
+          "operands": "ebx, edi"
+        },
+        {
+          "offset": 99,
+          "mnemonic": "mov",
+          "operands": "dword ptr [edx], ebx"
+        },
+        {
+          "offset": 101,
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "offset": 102,
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "offset": 103,
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "offset": 104,
+          "mnemonic": "pop",
+          "operands": "ebp"
+        },
+        {
+          "offset": 105,
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "fp_sequence": [
+        {
+          "offset": 15,
+          "mnemonic": "fld",
+          "operands": "dword ptr [esi + eax*4 + 4]"
+        },
+        {
+          "offset": 35,
+          "mnemonic": "fstp",
+          "operands": "dword ptr [edi + edx*8]"
+        },
+        {
+          "offset": 68,
+          "mnemonic": "fld",
+          "operands": "dword ptr [esi + eax*4 + 0x10]"
+        },
+        {
+          "offset": 77,
+          "mnemonic": "fstp",
+          "operands": "dword ptr [edx]"
+        }
+      ],
+      "implicit_fp_mode_changes": false,
+      "calls": false,
+      "sse": false
+    },
+    "callsite_verification": "five original incoming call rows, zero failures",
+    "ghidra_annotation_backup": "local/ghidra-annotations-20261029T043333Z.json",
+    "saved": true,
+    "exports_refreshed": true
+  },
+  "limits": [
+    "no original register-ABI adapter or exact fault/exception identity",
+    "no invented class/storage/vtable/default provider",
+    "full original caller/root reachability and active game host remain unresolved",
+    "no added bounds or malformed-record repair",
+    "no native differential fixture/game-validation credit"
+  ]
+}
