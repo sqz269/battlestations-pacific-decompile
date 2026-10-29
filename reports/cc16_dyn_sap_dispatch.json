@@ -45,6 +45,15 @@
       ],
       "native_bytes_sha256": "ce166c3efcdcd31171920932ec472740986a654f2b974032b1445ece552133e1",
       "export_assembly_sha256": "384f0c141eb694939807652d96f98ad70cc9823615f6d60c5c4495d68684c60f"
+    },
+    {
+      "address": "00c5a850",
+      "name_hypothesis": "update_broadphase_00c5a850",
+      "bytes": 93,
+      "instructions": 35,
+      "native_bytes_sha256": "80dfbd63bfdcdbca3601a6fb3eda31742041ed43587d8a56e539ccbad96009a0",
+      "original_abi": "ECX manager, no stack arguments, RET; radix branch tail JMP C54DA0; no public semantic EAX contract",
+      "public_abi": "new explicit C++ actual manager/required CRT/actual canonical feature-word/actual half-cell references"
     }
   ],
   "target": {
@@ -120,6 +129,36 @@
       "function": "00c4cbf0",
       "kind": "call",
       "contract": "ESI axis2, stack(manager,endpoint); flag publication follows return"
+    },
+    {
+      "address": "00c5a85d",
+      "native": "00c54da0",
+      "function": "00c5a850",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c5a864",
+      "native": "00c4cbf0",
+      "function": "00c5a850",
+      "kind": "call"
+    },
+    {
+      "address": "00c5a884",
+      "native": "00c4c700",
+      "function": "00c5a850",
+      "kind": "call"
+    },
+    {
+      "address": "00c5a890",
+      "native": "00c4c700",
+      "function": "00c5a850",
+      "kind": "call"
+    },
+    {
+      "address": "00c5a89c",
+      "native": "00c4c700",
+      "function": "00c5a850",
+      "kind": "call"
     }
   ],
   "contracts": {
@@ -169,7 +208,28 @@
       "source": "live unconditional-call xref; caller outside packet"
     }
   ],
-  "validation": {
+  "remaining_integrator_work": [
+    "genuine original game/root reachability or qualified dead-chain closure",
+    "real caller/object/CRT custody and native ABI transport where needed",
+    "required runtime gates before reachable activation"
+  ],
+  "worker_validation": {
+    "assembly_review": "complete refreshed 23/48-instruction listings plus complete contiguous live bytes",
+    "source_compile_tested": "MSVC x86 C++17 object-only /permissive- /EHsc /fp:strict /O2 /W4 /WX; exit 0",
+    "object_sha256": "7048bbcb2915b02e771f584045b700bacc48b66eb45f1fb47cc21c1800f8afa6",
+    "generated_assembly": "nine direct dependency calls, exact axis/argument order, single flag gate, post-call flag publication and live unsigned pending count/data reads reviewed",
+    "call_report_verification": "9 call rows checked, 0 failed",
+    "build_registered": false,
+    "build_tested": false,
+    "fixture_tested": false,
+    "native_differential_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "tests_added": false,
+    "ghidra_mutated": false
+  },
+  "integration_status": "reconstructed_build_tested_unwired",
+  "pre_entry_validation": {
     "build_registered": true,
     "build_tested": true,
     "configuration": "MSVC Win32 Release",
@@ -209,25 +269,76 @@
       "object_sha256": "d82dd6ed5fb1825b8dc255507dc616f034cf1ab6506a49b1e68af1af5162acea"
     }
   },
-  "remaining_integrator_work": [
-    "genuine original game/root reachability or qualified dead-chain closure",
-    "real caller/object/CRT custody and native ABI transport where needed",
-    "required runtime gates before reachable activation"
-  ],
-  "worker_validation": {
-    "assembly_review": "complete refreshed 23/48-instruction listings plus complete contiguous live bytes",
-    "source_compile_tested": "MSVC x86 C++17 object-only /permissive- /EHsc /fp:strict /O2 /W4 /WX; exit 0",
-    "object_sha256": "7048bbcb2915b02e771f584045b700bacc48b66eb45f1fb47cc21c1800f8afa6",
-    "generated_assembly": "nine direct dependency calls, exact axis/argument order, single flag gate, post-call flag publication and live unsigned pending count/data reads reviewed",
-    "call_report_verification": "9 call rows checked, 0 failed",
-    "build_registered": false,
-    "build_tested": false,
+  "validation": {
+    "accepted_base": "ad524e7dc",
+    "configuration": "MSVC Win32 Release",
+    "build_registered": true,
+    "build_tested": true,
+    "build_log": "local/cc16_sap_entry_allocate_main_build.log",
+    "existing_suites_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "suite_seconds": 11.23,
+    "forced_entry_link": {
+      "executable": "local/cc16_dyn_batch_link_probe_b.exe",
+      "executable_sha256": "71860e295651d61311f4ae9537c1a724d286db5a87d803ad0bb66388ea08e484",
+      "map": "local/cc16_dyn_batch_link_probe_b.map",
+      "map_sha256": "d3432897b7e98c40ec085c5d1460322a081073dc65b06f9aad186925c161b4d1",
+      "source_sha256": "567b547328bf4ebcd6a8e2d29e6239792e86d8c5dbff7520be70614bddd959c3",
+      "command_sha256": "180224fa95b7cfc2f72bc73627827eb0eedc965d4aa4de0e6a5c28de80e6c945",
+      "forced_entries": [
+        "initialize_endpoint_00c4ce60",
+        "release_vector_storage_0040a050",
+        "remove_and_destroy_00c55df0",
+        "allocate_endpoint_00c55a60",
+        "update_broadphase_00c5a850"
+      ],
+      "resolved_real_dependencies": [
+        "destroy_native_dyn_world_00c4dc60",
+        "rebuild_radix_pairs_00c54da0",
+        "MSVCRT stack probes"
+      ],
+      "manifest_embedded_by_command": true,
+      "executed": false,
+      "dummy_objects_or_providers": false,
+      "game_map_entries": 0,
+      "artifact_policy": "dedicated final batch-b filenames retained without reuse"
+    },
     "fixture_tested": false,
     "native_differential_tested": false,
     "abi_compatible": false,
     "game_validated": false,
-    "tests_added": false,
-    "ghidra_mutated": false
+    "runtime_activated": false,
+    "new_tests": false,
+    "probe_or_game_executable_launched": false,
+    "source_sha256": "1eb029709c3d2612b28d6a2417fec738657f712f1deed35b7ba9c5297cd6ae30",
+    "header_sha256": "5a4ba2ddf1ef6f594774dd75f52d4bf33e05df9bbbdad4209ec8fb843183406e",
+    "compiled_object_sha256": "ae3224d36dd54a6722a453c64322ef3c5405a11830c0f72d2ee61537cfc71c71",
+    "new_entry_object_review": {
+      "disassembly": "local/cc16_sap_entry_object.txt",
+      "native_instruction_identity_claimed": false,
+      "inline_real_pending_body": true,
+      "real_radix_relocation": 1,
+      "inline_append_relocations": 3,
+      "inline_key_left_relocations": 2,
+      "axis_update_relocations": 4,
+      "no_fp_sse_or_control_operations": true,
+      "canonical_cell_addresses_forwarded_without_value_read": true
+    },
+    "old_body_source_changed": false,
+    "ghidra_annotations": {
+      "backup": "local/ghidra-annotations-20261029T162016Z.json",
+      "saved": true,
+      "refreshed_exports": true,
+      "prior_comments_preserved": true,
+      "target": "bsp /battlestationspacific.exe"
+    }
   },
-  "integration_status": "reconstructed_build_tested_unwired"
+  "entry_semantics": {
+    "selector": "single unsigned pending-count+198 >10 test; real full radix with actual cell references",
+    "incremental": "real pending handler, then actual ring head+AC captured after pending, cached sentinel+B0, axes0/1/2, current next+40 reload only after all3 calls",
+    "guards_or_rollback": false,
+    "tail_return": "native tail call becomes new public void branch with no incidental RDTSC EAX promise"
+  }
 }

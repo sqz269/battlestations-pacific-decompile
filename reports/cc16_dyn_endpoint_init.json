@@ -114,20 +114,29 @@
     ],
     "suite_seconds": 12.61,
     "forced_entry_link": {
-      "executable": "local/cc16_dyn_link_probe.exe",
-      "executable_sha256": "8aa7069ea7667d1bde5df02d9001ad5c4f5aa269c5e1643b29d70d72f3982e79",
-      "map": "local/cc16_dyn_link_probe.map",
-      "map_sha256": "3f85c4463b232b35129eb4665a8f5a5bb24c81735e872a146540b18f98c668c3",
+      "executable": "local/cc16_dyn_batch_link_probe_b.exe",
+      "executable_sha256": "71860e295651d61311f4ae9537c1a724d286db5a87d803ad0bb66388ea08e484",
+      "map": "local/cc16_dyn_batch_link_probe_b.map",
+      "map_sha256": "d3432897b7e98c40ec085c5d1460322a081073dc65b06f9aad186925c161b4d1",
+      "source_sha256": "567b547328bf4ebcd6a8e2d29e6239792e86d8c5dbff7520be70614bddd959c3",
+      "command_sha256": "180224fa95b7cfc2f72bc73627827eb0eedc965d4aa4de0e6a5c28de80e6c945",
       "forced_entries": [
         "initialize_endpoint_00c4ce60",
         "release_vector_storage_0040a050",
-        "remove_and_destroy_00c55df0"
+        "remove_and_destroy_00c55df0",
+        "allocate_endpoint_00c55a60",
+        "update_broadphase_00c5a850"
       ],
-      "resolved_real_destructor": "destroy_native_dyn_world_00c4dc60",
-      "manifest_embedded_by_link_command": true,
+      "resolved_real_dependencies": [
+        "destroy_native_dyn_world_00c4dc60",
+        "rebuild_radix_pairs_00c54da0",
+        "MSVCRT stack probes"
+      ],
+      "manifest_embedded_by_command": true,
       "executed": false,
-      "stub_or_dummy_provider": false,
-      "game_map_entries": 0
+      "dummy_objects_or_providers": false,
+      "game_map_entries": 0,
+      "artifact_policy": "dedicated final batch-b filenames retained without reuse"
     },
     "fixture_tested": false,
     "native_differential_tested": false,
@@ -153,6 +162,29 @@
       "suite_seconds": 10.29,
       "compiled_object_unchanged": true,
       "game_map_entries": 0
+    },
+    "historical_link_observation": {
+      "executable": "local/cc16_dyn_link_probe.exe",
+      "executable_sha256": "8aa7069ea7667d1bde5df02d9001ad5c4f5aa269c5e1643b29d70d72f3982e79",
+      "map": "local/cc16_dyn_link_probe.map",
+      "map_sha256": "3f85c4463b232b35129eb4665a8f5a5bb24c81735e872a146540b18f98c668c3",
+      "forced_entries": [
+        "initialize_endpoint_00c4ce60",
+        "release_vector_storage_0040a050",
+        "remove_and_destroy_00c55df0"
+      ],
+      "resolved_real_destructor": "destroy_native_dyn_world_00c4dc60",
+      "manifest_embedded_by_link_command": true,
+      "executed": false,
+      "stub_or_dummy_provider": false,
+      "game_map_entries": 0,
+      "artifact_note": "temporary path was reused during later static checks; historical observed hash only, use current forced_entry_link for retained artifact"
+    },
+    "later_combined_build": {
+      "build_log": "local/cc16_sap_entry_allocate_main_build.log",
+      "existing_suites_passed": 2,
+      "suite_seconds": 11.23,
+      "compiled_object_unchanged": true
     }
   },
   "credit": {

@@ -23,6 +23,17 @@ void update_flagged_endpoint_00c4cbb0(
 void process_pending_endpoints_00c4cbf0(
     void* manager, const cc15_dyn_live::DynLiveCrt& crt);
 
+// 00C5A850..00C5A8AC: RTTI SAPBroadPhaseManager slot3; ECX manager, RET.
+// A single unsigned pending-count >10 test selects the real full radix rebuild.
+// Otherwise process pending endpoints, then walk actual ring+AC to sentinel+B0
+// and update axes0/1/2 before reloading each current endpoint's next+40.
+// The two volatile cells must be the actual canonical0109EEA4/D7A280 bindings
+// required by that rebuild. No default or early value snapshot is supplied.
+void update_broadphase_00c5a850(
+    void* manager, const cc15_dyn_live::DynLiveCrt& crt,
+    const volatile std::uint32_t& actual_feature_word_0109eea4,
+    const volatile double& actual_half_00d7a280);
+
 // The same actual manager/endpoint/CRT is passed directly to the recovered
 // leaves. Required CRT new/free/malloc custody is mandatory; no allocation
 // guard, rollback, exception translation or original register-ABI adapter

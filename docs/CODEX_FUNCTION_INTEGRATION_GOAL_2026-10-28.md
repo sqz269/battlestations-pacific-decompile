@@ -208,3 +208,14 @@ separately outside that original census; reused destructor/vendor/unwind bodies
 earn no duplicate credit. Complete source/listing review, final pointer-body
 object audit, actual entry/dependency link and common build2/2 pass. Native
 caller/context/ABI/exception custody and full activation remain open.
+
+The real pool allocator C55A60 and SAP update entry C5A850 add two more
+compiled, link-tested and unwired bodies. The original 29-body census is now
+27; only C320D0 and C5A8B0 remain metadata-only in that fixed list. Both complete
+normal bodies passed primary and independent source/listing review, the
+combined Win32 build and both suites (11.23 seconds), and original-call checks
+(9 allocator rows; 14 dispatch rows including the previous two entries).
+Dedicated retained batch-b link artifacts force all five recent entries and
+resolve actual dependencies without execution or fake providers. Separate
+partials, unreferenced in-house code, FP debt, genuine caller/provider/ABI
+wiring and gameplay activation remain beyond that census. The goal is active.

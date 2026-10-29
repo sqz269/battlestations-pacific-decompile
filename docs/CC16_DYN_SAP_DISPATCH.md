@@ -89,3 +89,30 @@ Win32 build and both suites passed (13.68 seconds); receipt:
 core object hashes remain identical to the inspected objects. The fresh
 OFF ship-AI symbol dump still contains zero conversion-getter references.
 These checks add no native-ABI or game-activation acceptance.
+
+## Complete SAP update entry C5A850
+
+The complete 93-byte, 35-instruction RTTI slot3 entry now directly composes the
+real accepted bodies. Native ECX is the manager and return is plain RET. One
+unsigned pending-count+198 comparison against10 selects the C54DA0 tail jump;
+the new C++ void API forwards the actual manager/CRT/canonical feature/half-cell
+addresses without reading their values and makes no incidental EAX promise.
+Otherwise the real C4CBF0 pending handler completes first, then the actual head
+at+AC is captured and walked to sentinel+B0. Each current endpoint updates
+axes0/1/2 before its live next+40 is read. No second ring, guard, object/provider
+substitute, synchronization, repair or rollback is introduced.
+
+All 35 original instructions, register/stack call contracts and93 live bytes
+were inspected. Final MSVC object inspection shows the one genuine radix call
+and a compiler-inlined copy of the actual pending handler, including its three
+append/two move-left/one axis-update calls, followed by the ring's three real
+axis updates. It adds no FP/SSE arithmetic or FP-control operation. This is
+ordinary C++ source/semantic review, not native opcode or register-ABI identity.
+The existing two source bodies are unchanged.
+
+The combined Win32 Release build and both existing suites pass (11.23 seconds).
+A dedicated manifested link-only artifact forces all five new Dyn entries and
+resolves the real radix/destructor/compiler-probe dependencies. It was never
+executed; hashes/retained batch-b paths are in the report. All five are absent
+from the game map. Genuine caller/object/CRT/canonical-cell custody, original
+ABI/FH/SEH/fault transport and gameplay remain open.
