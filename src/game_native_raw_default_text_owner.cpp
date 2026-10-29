@@ -62,7 +62,20 @@ struct GameNativeRawDefaultTextOwner::Impl {
         GameSingletonHost& s, GameNativeReadOnlyData& d, GameNativeGuiSamplerApplicationBindings b)
         : log(l), renderer(r), vfs(v), singletons(s), data(d), sampler_bindings(b) {}
     ~Impl();
-    void fail() noexcept { failure = std::current_exception(); phase = Phase::failed; }
+    void fail() noexcept {
+        failure = std::current_exception();
+        phase = Phase::failed;
+        // Keep the original failure observable before the host's sticky exit.
+        // Logging invokes no native cleanup and cannot replace disposition.
+        try {
+            if (failure) std::rethrow_exception(failure);
+        } catch (const std::exception& error) {
+            try { log.notef("raw DEFAULT Text owner failure: %s", error.what()); } catch (...) {}
+        } catch (...) {
+            try { log.note("raw DEFAULT Text owner failure: nonstandard exception"); } catch (...) {}
+        }
+        observe("failed");
+    }
     bool custody_settled() const noexcept;
     bool retain() const noexcept;
     void observe(const char*) noexcept;

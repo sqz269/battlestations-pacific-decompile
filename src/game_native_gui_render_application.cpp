@@ -51,7 +51,7 @@ namespace {
 // main until broader raw Text content/rendering replaces the legacy consumer.
 // The ON candidate exercises one unpublished DEFAULT lifecycle without a new
 // environment option, scene/overlay, cache owner or public test-only interface.
-constexpr bool kRawDefaultTextQualificationCc16Bound = false;
+constexpr bool kRawDefaultTextQualificationCc16Bound = true;
 using Word = std::uint32_t;
 void require(bool value, const char* message) {
     if (!value) throw std::logic_error(message);
