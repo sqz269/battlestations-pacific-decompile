@@ -1,0 +1,733 @@
+{
+  "packet": "codex-accuracy-current-candidate-review",
+  "owner": "agent/codex-accuracy-current-candidate-review",
+  "documentation": "docs/CC16_WEAPON_ACCURACY_CURRENT_CANDIDATE_REVIEW.md",
+  "status": "independent_current_static_and_four_preregistered_terminal_gates_passed_qualified_activation_recommended",
+  "recommendation": "Admit exact current candidate for this reviewed activation cohort; root owns guard/publication. No all-input, original ABI/FH or global RNG claim.",
+  "blocking_findings": [],
+  "OFF_published_source": "2c25911ef30940f93ef3a56c6202198013b59b45",
+  "OFF_actual_build": "2b05bd3c5330aa42f5fd8baf83d77875e5d4cc54",
+  "ON_build_source": "2c182d11caa173b852404e625c680a0979720fcb",
+  "OFF_build_to_publication_metadata_paths": [
+    "config/names/00400000.jsonl",
+    "config/names/00c30000.jsonl",
+    "config/names/00c40000.jsonl",
+    "config/names/00c50000.jsonl",
+    "config/reconstruction/00400000.jsonl",
+    "config/reconstruction/00c30000.jsonl",
+    "config/reconstruction/00c40000.jsonl",
+    "config/reconstruction/00c50000.jsonl",
+    "docs/CC16_DYN_FINAL_BODY_SOURCE_ADMISSION.md",
+    "docs/CC16_DYN_RADIX_MANAGER_UPDATE_REVIEW.md",
+    "docs/CODEX_FUNCTION_INTEGRATION_GOAL_2026-10-28.md",
+    "reports/cc16_dyn_final_body_source_admission.json",
+    "reports/cc16_dyn_radix_manager_update_review.json"
+  ],
+  "production_equivalence_verified": true,
+  "critical_blobs_equal_5c_OFF": 30,
+  "only_OFF_ON_change": "kWeaponHitAccuracyNativeRangeBound false->true in include/bsp/gameplay_settings_tail.hpp",
+  "staging_5ce4_changes": [
+    "docs/CC16_WEAPON_ACCURACY_RNG_CORRECTION.md",
+    "reports/cc16_weapon_accuracy_rng_correction.json"
+  ],
+  "frozen_binaries": [
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-function-source-integration/local/accuracy_current_main/off/bin/bsp_game.exe",
+      "bytes": 7475712,
+      "sha256": "8a83cf434cdd6d525696fb4574ce2db760b2c64dbff8781143b850653a1ba049"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-function-source-integration/local/accuracy_current_main/on/bin/bsp_game.exe",
+      "bytes": 7475712,
+      "sha256": "7c22b561ae0f6cc38276d62e1468ceab358827ca043ff634842a8aa0aab9056a"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-function-source-integration/local/accuracy_current_main/common/xlive_stub.dll",
+      "bytes": 32768,
+      "sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3"
+    }
+  ],
+  "retained_build_checks": {
+    "OFF": "2/2,14.20s",
+    "ON": "2/2,11.12s",
+    "review_ran_tests": false
+  },
+  "actual_PE_code_audit": {
+    "core_disassembly_identical": true,
+    "core_difference_offsets": [
+      4,
+      5
+    ],
+    "off_getter_calls": 0,
+    "off_new_dispatcher_calls": 0,
+    "off_legacy_dispatcher_calls": 1,
+    "on_getter_calls": 1,
+    "on_new_dispatcher_calls": 1,
+    "on_legacy_dispatcher_calls": 0,
+    "final_executable_sha256": "7c22b561ae0f6cc38276d62e1468ceab358827ca043ff634842a8aa0aab9056a",
+    "final_functions_masked_coff_match": true,
+    "three_resolved_final_call_targets_match": true,
+    "final_addresses": {
+      "caller": "101e7bf0",
+      "getter": "103066b0",
+      "dispatcher": "1037b080",
+      "converter": "104b5c70"
+    },
+    "caller_offsets": {
+      "getter": "1df",
+      "new_dispatcher": "205"
+    },
+    "live_conversion": [
+      {
+        "offset": "ed",
+        "mnemonic": "fmul",
+        "operands": "st(1)"
+      },
+      {
+        "offset": "ef",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [ebp + 0x18]"
+      },
+      {
+        "offset": "f2",
+        "mnemonic": "call",
+        "operands": "0xf7"
+      }
+    ],
+    "converter_first": "cmp dword ptr [ecx],0",
+    "no_intervening_branch_or_float_spill": true,
+    "execution": false
+  },
+  "additional_link_closure": {
+    "four_function_relocation_inventory": [
+      {
+        "function": "on",
+        "code_bytes": 543,
+        "relocations": 17,
+        "relocation_kinds": [
+          6,
+          20
+        ]
+      },
+      {
+        "function": "getter",
+        "code_bytes": 188,
+        "relocations": 11,
+        "relocation_kinds": [
+          6,
+          20
+        ]
+      },
+      {
+        "function": "dispatch",
+        "code_bytes": 464,
+        "relocations": 17,
+        "relocation_kinds": [
+          6,
+          20
+        ]
+      },
+      {
+        "function": "converter",
+        "code_bytes": 29,
+        "relocations": 1,
+        "relocation_kinds": [
+          20
+        ]
+      }
+    ],
+    "all_masks_are_DIR32_or_REL32_in_function": true,
+    "fallback_address": "104b5ce0",
+    "fallback_masked_COFF_PE_match": true,
+    "converter_tail_site": "104b5c88",
+    "converter_tail_resolves_actual_fallback": true,
+    "execution": false
+  },
+  "dispatcher_relocations": {
+    "dispatcher_relocations_accounted": 17,
+    "direct_calls": 2,
+    "local_switch_or_table_targets": 10,
+    "immutable_constant_operands": 5,
+    "unaccounted_dispatcher_relocations": 0,
+    "rows": [
+      {
+        "offset": 23,
+        "kind": 6,
+        "symbol": "$LN22",
+        "proof": "resolved local switch/table target",
+        "actual": "1037b22c"
+      },
+      {
+        "offset": 109,
+        "kind": 20,
+        "symbol": "?dive_bomb_interpolate_clamped_00419010@bsp@@YAMMMMMM@Z",
+        "proof": "resolved direct call",
+        "actual": "103282e0"
+      },
+      {
+        "offset": 146,
+        "kind": 6,
+        "symbol": "?accuracy_one_00d7a24c@?A0x31dacb80@bsp@@3MB",
+        "proof": "resolved immutable constant bytes",
+        "actual": "10641da4",
+        "bytes": "0000803f"
+      },
+      {
+        "offset": 181,
+        "kind": 6,
+        "symbol": "?accuracy_threshold_00d7a3a0@?A0x31dacb80@bsp@@3NB",
+        "proof": "resolved immutable constant bytes",
+        "actual": "10641da8",
+        "bytes": "000000a09999b93f"
+      },
+      {
+        "offset": 233,
+        "kind": 6,
+        "symbol": "?accuracy_negative_ten_00d0a198@?A0x31dacb80@bsp@@3NB",
+        "proof": "resolved immutable constant bytes",
+        "actual": "10641db0",
+        "bytes": "00000000000024c0"
+      },
+      {
+        "offset": 243,
+        "kind": 20,
+        "symbol": "?native_crt_truncate_st0_00bf7420@bsp@@YIHPDI@Z",
+        "proof": "resolved direct call",
+        "actual": "104b5c70"
+      },
+      {
+        "offset": 270,
+        "kind": 6,
+        "symbol": "?accuracy_ten_00ce3dc0@?A0x31dacb80@bsp@@3NB",
+        "proof": "resolved immutable constant bytes",
+        "actual": "10641db8",
+        "bytes": "0000000000002440"
+      },
+      {
+        "offset": 311,
+        "kind": 6,
+        "symbol": "?accuracy_one_00d7a24c@?A0x31dacb80@bsp@@3MB",
+        "proof": "resolved immutable constant bytes",
+        "actual": "10641da4",
+        "bytes": "0000803f"
+      },
+      {
+        "offset": 428,
+        "kind": 6,
+        "symbol": "$LN8",
+        "proof": "resolved local switch/table target",
+        "actual": "1037b09f"
+      },
+      {
+        "offset": 432,
+        "kind": 6,
+        "symbol": "$LN4",
+        "proof": "resolved local switch/table target",
+        "actual": "1037b09b"
+      },
+      {
+        "offset": 436,
+        "kind": 6,
+        "symbol": "$LN4",
+        "proof": "resolved local switch/table target",
+        "actual": "1037b09b"
+      },
+      {
+        "offset": 440,
+        "kind": 6,
+        "symbol": "$LN4",
+        "proof": "resolved local switch/table target",
+        "actual": "1037b09b"
+      },
+      {
+        "offset": 444,
+        "kind": 6,
+        "symbol": "$LN8",
+        "proof": "resolved local switch/table target",
+        "actual": "1037b09f"
+      },
+      {
+        "offset": 448,
+        "kind": 6,
+        "symbol": "$LN4",
+        "proof": "resolved local switch/table target",
+        "actual": "1037b09b"
+      },
+      {
+        "offset": 452,
+        "kind": 6,
+        "symbol": "$LN10",
+        "proof": "resolved local switch/table target",
+        "actual": "1037b0a6"
+      },
+      {
+        "offset": 456,
+        "kind": 6,
+        "symbol": "$LN11",
+        "proof": "resolved local switch/table target",
+        "actual": "1037b0ad"
+      },
+      {
+        "offset": 460,
+        "kind": 6,
+        "symbol": "$LN11",
+        "proof": "resolved local switch/table target",
+        "actual": "1037b0ad"
+      }
+    ],
+    "execution": false
+  },
+  "canonical_cell_custody": {
+    "address": "0109eea4",
+    "producer": "Supported original PE hash and loader-zero-filled canonical page, permanent checked handoff owner after ACK.",
+    "binding": "Main passes actual volatile reference to ConvexBinding; startup/rebind checks; getter returns bound address, not value.",
+    "read_epoch": "FMUL+ED; MOV ECX,[EBP+18]+EF; CALL+F2; converter first CMP[ECX],0.",
+    "mode_snapshot_CPU_inference_or_default": false,
+    "forced_FP_controls": false,
+    "lifetime": "Canonical pages retained through process/CRT/atexit; no fabricated word/storage."
+  },
+  "prior_evidence_scope": {
+    "valid_reuse": "048da363 static/source subset only; 8c2fa31 retained8postspill+8direct converter comparisons.",
+    "core_source_blob": "92a8331f7e4996e96d89d59184092da450d3acd6",
+    "source_blob_equal_at": [
+      "9434d4a37",
+      "8c2fa31",
+      "2c182d11c"
+    ],
+    "fixture_domain": "Stored weight1, synthetic relocated mode0/1, masked nearest PC24/PC53, finite0.7 and initial quietNaN only.",
+    "not_proved": [
+      "arbitrary size interpolation",
+      "whole008383D0 at PC53",
+      "all inputs/branches",
+      "original ABI/FH/fault transport",
+      "original CRT startup/cell behavior"
+    ],
+    "withdrawal": "199569eef withdraws copied substring RNG claims and unqualified old recommendation. Old absent-event MSD1600/USN02 rows remain RNG-unobserved.",
+    "old_5c_c8_game_receipts_used_as_current_proof": false,
+    "old_F9_backend_used": false
+  },
+  "current_terminal_review": {
+    "passed": true,
+    "method": "Inspected root receipt audit replayed locally; independently split full source-format raw records and verified complete event lists, counts, post-return order and actual plan/manifest args/env.",
+    "hashed_terminal_artifacts": 52,
+    "cases": [
+      {
+        "case": "native4800",
+        "sides": [
+          {
+            "side": "off",
+            "source_records": 51,
+            "samples": 51,
+            "sentinels": 0,
+            "first_sample": {
+              "line": 29438,
+              "unit": "A6M Zero #1.2|.-II",
+              "time": "93.60",
+              "draw": "0.4143",
+              "mode": "powerlost",
+              "c10": "1000.00"
+            },
+            "first_hot_line": null,
+            "first_completed_line": null,
+            "first_after_completed_return": null,
+            "accuracy_calls": 0,
+            "completed_ratings": 0,
+            "ring_bearings": 0,
+            "ignored_feature_flag_rows": 1,
+            "manifest_matches_plan": true,
+            "profile_dimension_endpoint_rows": [
+              "weapon hit accuracy Artillery sizes=100/250 small=1.00..0.30 large=1.00..0.50",
+              "weapon hit accuracy AA sizes=80/200 small=1.00..0.30 large=1.00..0.50",
+              "weapon hit accuracy Torpedo sizes=100/300 small=0.60..0.02 large=0.80..0.05",
+              "weapon hit accuracy DepthCharge sizes=100/200 small=1.00..0.40 large=1.00..0.40"
+            ]
+          },
+          {
+            "side": "on",
+            "source_records": 51,
+            "samples": 51,
+            "sentinels": 0,
+            "first_sample": {
+              "line": 29438,
+              "unit": "A6M Zero #1.2|.-II",
+              "time": "93.60",
+              "draw": "0.4143",
+              "mode": "powerlost",
+              "c10": "1000.00"
+            },
+            "first_hot_line": null,
+            "first_completed_line": null,
+            "first_after_completed_return": null,
+            "accuracy_calls": 0,
+            "completed_ratings": 0,
+            "ring_bearings": 0,
+            "ignored_feature_flag_rows": 1,
+            "manifest_matches_plan": true,
+            "profile_dimension_endpoint_rows": [
+              "weapon hit accuracy Artillery sizes=100/250 small=1.00..0.30 large=1.00..0.50",
+              "weapon hit accuracy AA sizes=80/200 small=1.00..0.30 large=1.00..0.50",
+              "weapon hit accuracy Torpedo sizes=100/300 small=0.60..0.02 large=0.80..0.05",
+              "weapon hit accuracy DepthCharge sizes=100/200 small=1.00..0.40 large=1.00..0.40"
+            ]
+          }
+        ],
+        "full_rounded_source_sequence_equal": true,
+        "freeze_sha256": "5d3e5a1db5d6c5cea659f8c7759b8810495942200413853dcfb1117a28c29a05",
+        "launch_plan_sha256": "e76730be0111524b82c773829163c6534f6d9cdd2feb914601150b86ee92f1dc",
+        "criteria_sha256": "5d31402db265b14e9d184682c2ac7dfc9a324349b4ed10106c21209e40d61ca0",
+        "unchanged_input_files": 68
+      },
+      {
+        "case": "ijn18_4800",
+        "sides": [
+          {
+            "side": "off",
+            "source_records": 1,
+            "samples": 1,
+            "sentinels": 0,
+            "first_sample": {
+              "line": 15375,
+              "unit": "Recon2",
+              "time": "67.05",
+              "draw": "0.4640",
+              "mode": "powerlost",
+              "c10": "1000.00"
+            },
+            "first_hot_line": 5901,
+            "first_completed_line": 5922,
+            "first_after_completed_return": {
+              "line": 15375,
+              "unit": "Recon2",
+              "time": "67.05",
+              "draw": "0.4640",
+              "mode": "powerlost",
+              "c10": "1000.00"
+            },
+            "accuracy_calls": 2843254,
+            "completed_ratings": 432180,
+            "ring_bearings": 10821,
+            "ignored_feature_flag_rows": 1,
+            "manifest_matches_plan": true,
+            "profile_dimension_endpoint_rows": [
+              "weapon hit accuracy Artillery sizes=100/250 small=1.00..0.30 large=1.00..0.50",
+              "weapon hit accuracy AA sizes=80/200 small=1.00..0.30 large=1.00..0.50",
+              "weapon hit accuracy Torpedo sizes=100/300 small=0.60..0.02 large=0.80..0.05",
+              "weapon hit accuracy DepthCharge sizes=100/200 small=1.00..0.40 large=1.00..0.40"
+            ]
+          },
+          {
+            "side": "on",
+            "source_records": 1,
+            "samples": 1,
+            "sentinels": 0,
+            "first_sample": {
+              "line": 15375,
+              "unit": "Recon2",
+              "time": "67.05",
+              "draw": "0.4640",
+              "mode": "powerlost",
+              "c10": "1000.00"
+            },
+            "first_hot_line": 5901,
+            "first_completed_line": 5922,
+            "first_after_completed_return": {
+              "line": 15375,
+              "unit": "Recon2",
+              "time": "67.05",
+              "draw": "0.4640",
+              "mode": "powerlost",
+              "c10": "1000.00"
+            },
+            "accuracy_calls": 2843254,
+            "completed_ratings": 432180,
+            "ring_bearings": 10821,
+            "ignored_feature_flag_rows": 1,
+            "manifest_matches_plan": true,
+            "profile_dimension_endpoint_rows": [
+              "weapon hit accuracy Artillery sizes=100/250 small=1.00..0.30 large=1.00..0.50",
+              "weapon hit accuracy AA sizes=80/200 small=1.00..0.30 large=1.00..0.50",
+              "weapon hit accuracy Torpedo sizes=100/300 small=0.60..0.02 large=0.80..0.05",
+              "weapon hit accuracy DepthCharge sizes=100/200 small=1.00..0.40 large=1.00..0.40"
+            ]
+          }
+        ],
+        "full_rounded_source_sequence_equal": true,
+        "freeze_sha256": "c693520e8d6661362766b7f9b22ad8649e3a2efd736f72e0cbe222bf41e7d9ad",
+        "launch_plan_sha256": "35f3ad954d9ff556dc6da889dd425ee1c2e4c94c9421aa6cac67277cf27e2964",
+        "criteria_sha256": "3c713aa522084e9613909c7ad49297da1ba2cdd423ff8a56ec95938f37a51d74",
+        "unchanged_input_files": 69
+      }
+    ],
+    "new_games_probes_or_tests": 0,
+    "raw_RNG_bits_or_global_first_all_stream_proof": false,
+    "old_rows_relabelled": false
+  },
+  "process_receipt_replay": {
+    "passed": true,
+    "summary_sha256": "2f5dfc16cf391d4271d49d950a1cfc880ba781bc3cbb75e037046743e3f49571",
+    "hashed_artifacts": 52,
+    "actual_Normal_held_handle_captures": 8,
+    "logical_runs": 4,
+    "own_concurrency": 1,
+    "serial_verified": true,
+    "cases": [
+      {
+        "case": "native4800",
+        "original_checks": {
+          "audits": true,
+          "pair_diff": true,
+          "ordered_subsequence": true,
+          "teardown": true,
+          "start_rng": true,
+          "serial": true
+        },
+        "source_format_sequence_equal": true,
+        "sides": [
+          {
+            "side": "off",
+            "genuine_samples": 51,
+            "accuracy_calls": 0,
+            "completed_ratings": 0,
+            "sample": {
+              "line": 29438,
+              "unit": "A6M Zero #1.2|.-II",
+              "time": "93.60",
+              "draw": "0.4143",
+              "mode": "powerlost",
+              "c10": "1000.00"
+            },
+            "actual_parent_child_Normal_handles": true,
+            "deadline_seconds": 14400
+          },
+          {
+            "side": "on",
+            "genuine_samples": 51,
+            "accuracy_calls": 0,
+            "completed_ratings": 0,
+            "sample": {
+              "line": 29438,
+              "unit": "A6M Zero #1.2|.-II",
+              "time": "93.60",
+              "draw": "0.4143",
+              "mode": "powerlost",
+              "c10": "1000.00"
+            },
+            "actual_parent_child_Normal_handles": true,
+            "deadline_seconds": 14400
+          }
+        ],
+        "ordered": {
+          "lines": [
+            762,
+            762
+          ],
+          "index_diffs": 0,
+          "masks": "unchanged inherited pointer and worker/render-thread IDs"
+        },
+        "teardown": "teardown lines off=10749 on=10749 index_diffs=0 length_delta=0"
+      },
+      {
+        "case": "ijn18_4800",
+        "original_checks": {
+          "audits": true,
+          "pair_diff": true,
+          "ordered_subsequence": true,
+          "teardown": true,
+          "start_rng": true,
+          "serial": true
+        },
+        "source_format_sequence_equal": true,
+        "sides": [
+          {
+            "side": "off",
+            "genuine_samples": 1,
+            "accuracy_calls": 2843254,
+            "completed_ratings": 432180,
+            "sample": {
+              "line": 15375,
+              "unit": "Recon2",
+              "time": "67.05",
+              "draw": "0.4640",
+              "mode": "powerlost",
+              "c10": "1000.00"
+            },
+            "actual_parent_child_Normal_handles": true,
+            "deadline_seconds": 14400
+          },
+          {
+            "side": "on",
+            "genuine_samples": 1,
+            "accuracy_calls": 2843254,
+            "completed_ratings": 432180,
+            "sample": {
+              "line": 15375,
+              "unit": "Recon2",
+              "time": "67.05",
+              "draw": "0.4640",
+              "mode": "powerlost",
+              "c10": "1000.00"
+            },
+            "actual_parent_child_Normal_handles": true,
+            "deadline_seconds": 14400
+          }
+        ],
+        "ordered": {
+          "lines": [
+            636,
+            636
+          ],
+          "index_diffs": 0,
+          "masks": "unchanged inherited pointer and worker/render-thread IDs"
+        },
+        "teardown": "teardown lines off=238 on=238 index_diffs=0 length_delta=0"
+      }
+    ],
+    "old_rows_relabelled": false,
+    "global_first_all_stream_or_raw_bit_RNG_proof": false
+  },
+  "runtime_summary": {
+    "path": "J:/PROG/battlestations-pacific-decompile-codex-accuracy-current-main-runtime/local/accuracy_rng_current/runtime_results.json",
+    "bytes": 35735,
+    "sha256": "2f5dfc16cf391d4271d49d950a1cfc880ba781bc3cbb75e037046743e3f49571"
+  },
+  "terminal_package": {
+    "path": "J:/PROG/battlestations-pacific-decompile-codex-accuracy-current-main-runtime/local/accuracy_rng_current/terminal_package.json",
+    "bytes": 17885,
+    "sha256": "01d5d30747344df473fe8fe06e998820287a6a3a9676449e1ae551c87ea09b6e"
+  },
+  "current_freezes": [
+    {
+      "case": "native4800",
+      "frozen": {
+        "path": "J:/PROG/battlestations-pacific-decompile-codex-accuracy-current-main-runtime/local/accuracy_rng_native4800/frozen.json",
+        "bytes": 36555,
+        "sha256": "5d3e5a1db5d6c5cea659f8c7759b8810495942200413853dcfb1117a28c29a05"
+      },
+      "launch_plan": {
+        "path": "J:/PROG/battlestations-pacific-decompile-codex-accuracy-current-main-runtime/local/accuracy_rng_native4800/launch_plan.json",
+        "bytes": 3838,
+        "sha256": "e76730be0111524b82c773829163c6534f6d9cdd2feb914601150b86ee92f1dc"
+      },
+      "criteria": {
+        "path": "J:/PROG/battlestations-pacific-decompile-codex-accuracy-current-main-runtime/local/accuracy_rng_native4800/criteria.json",
+        "bytes": 1070,
+        "sha256": "5d31402db265b14e9d184682c2ac7dfc9a324349b4ed10106c21209e40d61ca0"
+      },
+      "original_evaluation": {
+        "path": "J:/PROG/battlestations-pacific-decompile-codex-accuracy-current-main-runtime/local/accuracy_rng_native4800/evaluation_native4800.json",
+        "bytes": 855,
+        "sha256": "cd11a733ffa516fe8d919fe098a8681984451f69dcf053feb59f82e8cb8d5932"
+      },
+      "strict_gate": {
+        "path": "J:/PROG/battlestations-pacific-decompile-codex-accuracy-current-main-runtime/local/accuracy_rng_native4800/sampled_rng_gate.json",
+        "bytes": 26219,
+        "sha256": "a727eb7eae07959956f0dccd834a69fc543b37620a96f7cdc085663c7e65b35b"
+      }
+    },
+    {
+      "case": "ijn18_4800",
+      "frozen": {
+        "path": "J:/PROG/battlestations-pacific-decompile-codex-accuracy-current-main-runtime/local/accuracy_rng_ijn18_4800/frozen.json",
+        "bytes": 37243,
+        "sha256": "c693520e8d6661362766b7f9b22ad8649e3a2efd736f72e0cbe222bf41e7d9ad"
+      },
+      "launch_plan": {
+        "path": "J:/PROG/battlestations-pacific-decompile-codex-accuracy-current-main-runtime/local/accuracy_rng_ijn18_4800/launch_plan.json",
+        "bytes": 4112,
+        "sha256": "35f3ad954d9ff556dc6da889dd425ee1c2e4c94c9421aa6cac67277cf27e2964"
+      },
+      "criteria": {
+        "path": "J:/PROG/battlestations-pacific-decompile-codex-accuracy-current-main-runtime/local/accuracy_rng_ijn18_4800/criteria.json",
+        "bytes": 1327,
+        "sha256": "3c713aa522084e9613909c7ad49297da1ba2cdd423ff8a56ec95938f37a51d74"
+      },
+      "original_evaluation": {
+        "path": "J:/PROG/battlestations-pacific-decompile-codex-accuracy-current-main-runtime/local/accuracy_rng_ijn18_4800/evaluation_ijn18_4800.json",
+        "bytes": 881,
+        "sha256": "7ac4c02895674764345d2dd2ae8e2a3eee01e04e5dc3730dc36da0a4719e847d"
+      },
+      "strict_gate": {
+        "path": "J:/PROG/battlestations-pacific-decompile-codex-accuracy-current-main-runtime/local/accuracy_rng_ijn18_4800/sampled_rng_gate.json",
+        "bytes": 3765,
+        "sha256": "0e228e995f1625fd0349db96a39482089ad288b6e022dad06f2e1f3df941565a"
+      }
+    }
+  ],
+  "claim_limits": [
+    "Only exact current2b05-OFF/prodequal2c259 and2c182-ON with freshf112 backend; current four runs only.",
+    "Raw producer-format event sequences compare rounded unit/time/draw/mode/c10 fields, including sentinels. No global first/all-stream/raw-bit RNG parity.",
+    "Post-return rating marker follows actual0095EB40 return; actual accuracy-call plus completed-rating witness, not a knob alone.",
+    "Profile observations cover dimensions/endpoints, not full table/parameter or arbitrary-input proof.",
+    "No new source/body/vendor/ABI credit; no original binary ABI/FH or broader gameplay acceptance."
+  ],
+  "review_actions": {
+    "source_shared_metadata_Ghidra_edits": false,
+    "games": 0,
+    "probes": 0,
+    "tests": 0,
+    "WINS_retime": false,
+    "extra_runs": false
+  },
+  "artifacts": [
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-accuracy-current-candidate-review/local/accuracy_current_candidate_review/source_and_binary_audit.json",
+      "bytes": 16587,
+      "sha256": "acbc33393f54f7a82a6cd5cbaa8fba953968e3d838734df851e8de4b378f1693"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-accuracy-current-candidate-review/local/accuracy_current_candidate_review/recomputed_object_evidence.json",
+      "bytes": 1152,
+      "sha256": "49cfe8d351d382bea61741cf59ebc5302e8c88b7e9fe77992d2775d3652ea018"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-accuracy-current-candidate-review/local/accuracy_current_candidate_review/linked_detail.json",
+      "bytes": 12857,
+      "sha256": "290ac18407ab3593d33f755deecc7afacbdf7ba6006f30797d434d01b7c0c6bd"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-accuracy-current-candidate-review/local/accuracy_current_candidate_review/dispatcher_relocation_evidence.json",
+      "bytes": 3431,
+      "sha256": "4fed5410e93115713a29a0692e2dc2a388082b0696757acee487423efb5b2bfa"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-accuracy-current-candidate-review/local/accuracy_current_candidate_review/independent_runtime_receipt_audit.json",
+      "bytes": 6124,
+      "sha256": "351b46239fce7c2ea5933a1c74659d4a72791625c4ccb02d8d5a8e9b9ccd624a"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-accuracy-current-candidate-review/local/accuracy_current_candidate_review/replayed_runtime_audit.json",
+      "bytes": 3469,
+      "sha256": "965c251f3bfffa465235d592068dd85b2ac4cedb7c7855f19247d35adc1ec4c4"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-accuracy-current-candidate-review/local/accuracy_current_candidate_review/prepare_static.py",
+      "bytes": 4067,
+      "sha256": "b906491ce2c83e7e034b5366edeb575f53ef83067fcd07a31d7d98e5a9c6d34d"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-accuracy-current-candidate-review/local/accuracy_current_candidate_review/final_code_audit.py",
+      "bytes": 6014,
+      "sha256": "9c485f1ca90232c4a5493834d3f70d3fc5f5599202be9e2fa4ea7d87f79853aa"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-accuracy-current-candidate-review/local/accuracy_current_candidate_review/inspect_linked.py",
+      "bytes": 2275,
+      "sha256": "241dec1aa55e8df650942e9241fbb877f0191b1ae48e8e9c31350e8f9a109522"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-accuracy-current-candidate-review/local/accuracy_current_candidate_review/resolve_dispatch.py",
+      "bytes": 2612,
+      "sha256": "cc08c53d2ec3993e3253fea7c4c6b699e0ef0a4b4040c5026c0b365dd350f4a3"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-accuracy-current-candidate-review/local/accuracy_current_candidate_review/review_receipts.py",
+      "bytes": 7365,
+      "sha256": "761bdd9a41223f80ce3a747202f75ebaeca3047e0122fe367c274fa2b58b5f1f"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-codex-accuracy-current-candidate-review/local/accuracy_current_candidate_review/audit_current_receipts.py",
+      "bytes": 5917,
+      "sha256": "dbc792c31476ebc9e1a6156f3f29cbd94efcdf16851775caf282c4cdb8a8e44a"
+    }
+  ]
+}
