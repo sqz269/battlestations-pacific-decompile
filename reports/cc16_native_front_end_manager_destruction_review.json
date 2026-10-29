@@ -1,0 +1,626 @@
+{
+  "packet": "codex-native-front-end-manager-destruction-review",
+  "created_at_utc": "2026-10-29T22:24:52.027578+00:00",
+  "candidate_commit": "0481897503d8380d2ea3a14c345cc5ca9c65e77e",
+  "candidate_parent": "e64249b004a989f162a1b7b9cda3493606535e88",
+  "status": "PASS_complete_raw_normal_parent_schedule_with_required_providers_unclosed; no_blocking_mismatch; NO_activation",
+  "ownership": {
+    "addresses": [],
+    "files": [
+      "docs/CC16_NATIVE_FRONT_END_MANAGER_DESTRUCTION_REVIEW.md",
+      "reports/cc16_native_front_end_manager_destruction_review.json"
+    ],
+    "file_only_lease": true
+  },
+  "full_header_source_author_document_and_report_reviewed": true,
+  "blocking_findings": [],
+  "recommendation": "Accept bounded normal parent source. Do not mark whole pause, raw cell/owner/table/heap suppliers, original ABI/exception transport or root activation completed.",
+  "candidate_files": [
+    {
+      "path": "include/bsp/native_front_end_manager_destruction.hpp",
+      "bytes": 2190,
+      "sha256": "82cd89a5ce6dab66de8b96284b1eb185b1d2d959d3deebd3d2e0fefa8067839c",
+      "git_blob": "8520215c120b94fc8eb90cdcfdae66ac77fa4830"
+    },
+    {
+      "path": "src/native_front_end_manager_destruction.cpp",
+      "bytes": 886,
+      "sha256": "4139ddadcca01ae630b4e9a00a93b5d5d2b1418042a015abd2c7ed459860fac5",
+      "git_blob": "ed5ed729674349aa50cbdbcf2addc081fe063eaf"
+    },
+    {
+      "path": "docs/CC16_NATIVE_FRONT_END_MANAGER_DESTRUCTION.md",
+      "bytes": 5766,
+      "sha256": "9e841d8f91a382874a83876ea8396cb92703e92df2e4a3c002b66cc658c2499d",
+      "git_blob": "96e16f3d6c1b60b74d82b0f598707fd6318dc880"
+    },
+    {
+      "path": "reports/cc16_native_front_end_manager_destruction.json",
+      "bytes": 21266,
+      "sha256": "e20a16f585793fe834c2a4066e5bd465eaf6d34a3e89938aa568352f6472ef70",
+      "git_blob": "bfceb2b2c8cb467d35c577d919c6c2442b32860f"
+    }
+  ],
+  "only_candidate_changes": [
+    "docs/CC16_NATIVE_FRONT_END_MANAGER_DESTRUCTION.md",
+    "include/bsp/native_front_end_manager_destruction.hpp",
+    "reports/cc16_native_front_end_manager_destruction.json",
+    "src/native_front_end_manager_destruction.cpp"
+  ],
+  "native_evidence": {
+    "configured_project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Configured BSP wrappers, explicit ghidra ensure --status before each live batch; no project import or mutation.",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "body": {
+      "bytes": 107,
+      "instructions": 38,
+      "sha256": "de86dcf6b8c97dce481c962b085cefd813f36b124f81bc03fc449c5e563d6070",
+      "live_PE_export_equal": true,
+      "direct_call": {
+        "address": "004DA654",
+        "target": "004D95F0"
+      },
+      "indirect_rows": [
+        {
+          "cell": "00E198AC",
+          "capture": "004DA659",
+          "indirect_site": "004DA669",
+          "clear": "004DA66B",
+          "native_indirect_target_not_claimed": true
+        },
+        {
+          "cell": "00E198B4",
+          "capture": "004DA671",
+          "indirect_site": "004DA681",
+          "clear": "004DA683",
+          "native_indirect_target_not_claimed": true
+        },
+        {
+          "cell": "00E198B8",
+          "capture": "004DA689",
+          "indirect_site": "004DA699",
+          "clear": "004DA69B",
+          "native_indirect_target_not_claimed": true
+        },
+        {
+          "cell": "00E198C4",
+          "capture": "004DA6A1",
+          "indirect_site": "004DA6B1",
+          "clear": "004DA6B3",
+          "native_indirect_target_not_claimed": true
+        }
+      ],
+      "pause_abi": {
+        "whole_child_instructions": 140,
+        "body_bytes": 569,
+        "body_sha256": "431f945fcd6f9814a34f67a9924289497c28d35f569ccad01964d4d6f758f6c3",
+        "hidden_incoming_ECX_unchanged": true,
+        "callee_captures_ECX_at": "004D960D",
+        "actual_Game_reads": [
+          "+61F",
+          "+620",
+          "+1FE4"
+        ],
+        "stacked_zero_consumed_by": "RET4 at004D9826",
+        "whole_child_binding_not_supplied": true
+      }
+    },
+    "corrected_instruction_count": "107B/38instructions, not preliminary39.",
+    "original_ABI": "IncomingECX=actualGame; no parent stack inputs; preservesESI; plainRET. EAX return semantics are not adopted by the new void C++ API.",
+    "hidden_receiver_proof": [
+      "PUSHESI/XORESI,ESI/PUSHESI leavesECX unchanged before4DA654",
+      "4D960D MOVESI,ECX in child",
+      "actualGame+61F/+620/+1FE4 reads",
+      "4D9826 RET4 consumes original stackedzero"
+    ],
+    "child_review_limit": "Counted full original140instructions/569B and inspected the relevant receiver prefix and RET4. Whole child implementation/dependency closure is not supplied or reviewed as reconstructed code.",
+    "original_call_verifier": {
+      "direct_checked": 1,
+      "direct_failed": 0,
+      "indirect_not_statically_checked": 4,
+      "transfer_sites_independently_verified": true,
+      "indirect_targets_forced_or_invented": false,
+      "command": "python tools/verify_report_calls.py reports/cc16_native_front_end_manager_destruction.json"
+    }
+  },
+  "source_review": {
+    "required_pause": "Pure virtual whole call_004d95f0(actualGame,0), first parent action. No default, no projected GamePauseState and no reset-interface-stack stand-in.",
+    "Game_storage": "Existing actual NativeGameStorage71A0; same rawOnDestroy Game forwarded by requiredcall_004da650 at004DC5E9. No fabricated type or native-code-pointer cast.",
+    "cells": [
+      "actualE198AC",
+      "actualE198B4",
+      "actualE198B8",
+      "actualE198C4"
+    ],
+    "cell_contract": "Four borrowed volatile references to SAME actual publications, alive through callbacks; no private globals, copied pointer snapshots or semantic-manager fields.",
+    "service_contract": "SAME actual NativeGameLifetimeContext::calls instance used by Game lifetime/OnDestroy, genuine current receiver tables and matching deletion heaps; typed references do not authenticate arbitrary substitutes.",
+    "capture": "One volatile pointer value read per row. Null skips both call and clear. Capturednonnull passed only as receiver argument, never dereferenced again by parent after callback.",
+    "scalar_arguments": {
+      "payload_vtable_byte_offset": 0,
+      "flags": 1
+    },
+    "publication": "Unconditional CURRENTsamecell=null only after normal scalar return, including callback replacements. No equality check, replacement loop or early later-row snapshots.",
+    "exception_behavior": "No new catch/finalizer/operation state/rollback/replay. Pause C++throw stops before manager reads. Scalar C++throw skips own clear and later rows, preserving reached effects.",
+    "ownership": "Borrowed Game/cells/providers/tables/heaps retained; serialized stablecontext and no arbitrary concurrent/reentrant parent use.",
+    "original_exception_limit": "New typed normal C++ behavior; native FH/SEH, invalid-storage hardwarefault, frame and unwind transport remain unproven."
+  },
+  "old_semantic_boundary": {
+    "unchanged_inputs": [
+      {
+        "path": "include/bsp/frontend_managers.hpp",
+        "sha256": "db1fb36906e6bef0b70717ae2d9b7907d61cc014bb60555512382a46719f189a",
+        "unchanged_from_base": true
+      },
+      {
+        "path": "src/frontend_managers.cpp",
+        "sha256": "dd1545809b0689ce18818bac951c7cc31ae0e9e8dc75b9c2f10dc4c47acb5461",
+        "unchanged_from_base": true
+      },
+      {
+        "path": "include/bsp/native_game_on_destroy.hpp",
+        "sha256": "96a100da9a58bbd9632f8a25d7f442e1a291e2f98f9dde3beb6c113ae40759f4",
+        "unchanged_from_base": true
+      },
+      {
+        "path": "src/native_game_on_destroy.cpp",
+        "sha256": "90862d3277029dbb7b74e0d3d19ac1e8f9b7601d43700abd3daaa485723c0670",
+        "unchanged_from_base": true
+      },
+      {
+        "path": "include/bsp/native_game_lifetime.hpp",
+        "sha256": "5f780de4ea8a8f7f67a68cc5d72f4940921b40703027891edc14671ecfca6136",
+        "unchanged_from_base": true
+      },
+      {
+        "path": "src/native_game_lifetime.cpp",
+        "sha256": "4535650c8dcd06db58f4fed96260c0b1c1eac410255fb14603bedfecdce59c90",
+        "unchanged_from_base": true
+      },
+      {
+        "path": "include/bsp/native_game_construction.hpp",
+        "sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e",
+        "unchanged_from_base": true
+      }
+    ],
+    "additional_inspected_semantic_files": [
+      {
+        "path": "include/bsp/gui_screens_3.hpp",
+        "sha256": "5b29b98b16bc9a3578604618056449aaa6cfb9bb40b82b59cefe644eb5827249",
+        "git_blob": "dd8adf7b23a5a98d7366bf47d0d6c304f7fd7ce3",
+        "unchanged_from_base": true
+      },
+      {
+        "path": "src/gui_screens_3.cpp",
+        "sha256": "f71140d227086a31e63174c93ff7987c3095a8092d4b6a932866977adc412fd5",
+        "git_blob": "bde195f5d7f36a197ed98785bb619b2cca9bf619",
+        "unchanged_from_base": true
+      },
+      {
+        "path": "src/game_hosts_menu.cpp",
+        "sha256": "f0c936fa3f0f1ca9b739b1c66428d2f4b5af2b1f15081ea2a36c5346ad4bb052",
+        "git_blob": "53bd558c0b9511967eadaec0d014626f20c44ae2",
+        "unchanged_from_base": true
+      }
+    ],
+    "frontend_projection": "Existing normal semantic main/multi/options calls preserved; in_mission only cleared and still lacks deletion in that projection.",
+    "pause_projection": "GamePauseState has separate bool/integer fields; helper builds std::vector kept-screens and uses projected GamePauseHost. It is not actual71A0 raw storage/provider.",
+    "actual_existing_host": "game_hosts_menu.cpp reset_interface_stack still logs unimplemented at004D95F0. No newly promoted successful child or projection binding."
+  },
+  "provenance_review": {
+    "author_pins_checked": 18,
+    "all_passed": true,
+    "pins": [
+      {
+        "label": "candidate source",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction-review\\include\\bsp\\native_front_end_manager_destruction.hpp",
+        "sha256": "82cd89a5ce6dab66de8b96284b1eb185b1d2d959d3deebd3d2e0fefa8067839c",
+        "expected": "82cd89a5ce6dab66de8b96284b1eb185b1d2d959d3deebd3d2e0fefa8067839c",
+        "passed": true
+      },
+      {
+        "label": "candidate source",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction-review\\src\\native_front_end_manager_destruction.cpp",
+        "sha256": "4139ddadcca01ae630b4e9a00a93b5d5d2b1418042a015abd2c7ed459860fac5",
+        "expected": "4139ddadcca01ae630b4e9a00a93b5d5d2b1418042a015abd2c7ed459860fac5",
+        "passed": true
+      },
+      {
+        "label": "preserved dependency/projection",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction-review\\include\\bsp\\frontend_managers.hpp",
+        "sha256": "db1fb36906e6bef0b70717ae2d9b7907d61cc014bb60555512382a46719f189a",
+        "expected": "db1fb36906e6bef0b70717ae2d9b7907d61cc014bb60555512382a46719f189a",
+        "passed": true
+      },
+      {
+        "label": "preserved dependency/projection",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction-review\\src\\frontend_managers.cpp",
+        "sha256": "dd1545809b0689ce18818bac951c7cc31ae0e9e8dc75b9c2f10dc4c47acb5461",
+        "expected": "dd1545809b0689ce18818bac951c7cc31ae0e9e8dc75b9c2f10dc4c47acb5461",
+        "passed": true
+      },
+      {
+        "label": "preserved dependency/projection",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction-review\\include\\bsp\\native_game_on_destroy.hpp",
+        "sha256": "96a100da9a58bbd9632f8a25d7f442e1a291e2f98f9dde3beb6c113ae40759f4",
+        "expected": "96a100da9a58bbd9632f8a25d7f442e1a291e2f98f9dde3beb6c113ae40759f4",
+        "passed": true
+      },
+      {
+        "label": "preserved dependency/projection",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction-review\\src\\native_game_on_destroy.cpp",
+        "sha256": "90862d3277029dbb7b74e0d3d19ac1e8f9b7601d43700abd3daaa485723c0670",
+        "expected": "90862d3277029dbb7b74e0d3d19ac1e8f9b7601d43700abd3daaa485723c0670",
+        "passed": true
+      },
+      {
+        "label": "preserved dependency/projection",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction-review\\include\\bsp\\native_game_lifetime.hpp",
+        "sha256": "5f780de4ea8a8f7f67a68cc5d72f4940921b40703027891edc14671ecfca6136",
+        "expected": "5f780de4ea8a8f7f67a68cc5d72f4940921b40703027891edc14671ecfca6136",
+        "passed": true
+      },
+      {
+        "label": "preserved dependency/projection",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction-review\\src\\native_game_lifetime.cpp",
+        "sha256": "4535650c8dcd06db58f4fed96260c0b1c1eac410255fb14603bedfecdce59c90",
+        "expected": "4535650c8dcd06db58f4fed96260c0b1c1eac410255fb14603bedfecdce59c90",
+        "passed": true
+      },
+      {
+        "label": "preserved dependency/projection",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction-review\\include\\bsp\\native_game_construction.hpp",
+        "sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e",
+        "expected": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e",
+        "passed": true
+      },
+      {
+        "label": "original export",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004da650\\assembly.txt",
+        "sha256": "47d4ed05928229ba1f3ba7049b37aa4650bc62ebb675043f055c5344c262f0f9",
+        "expected": "47d4ed05928229ba1f3ba7049b37aa4650bc62ebb675043f055c5344c262f0f9",
+        "passed": true
+      },
+      {
+        "label": "original export",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004da650\\decompiled.c",
+        "sha256": "b3a2ad98fe6dfb9a8a224516c53b6e69cc2591cbb22a4ee246f87fce2b0de79c",
+        "expected": "b3a2ad98fe6dfb9a8a224516c53b6e69cc2591cbb22a4ee246f87fce2b0de79c",
+        "passed": true
+      },
+      {
+        "label": "original export",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004d95f0\\assembly.txt",
+        "sha256": "75add013d0a2ba0d6f4a23b847882b95f4a9a3e2cdeb0b3d0bd89a09559fc3bc",
+        "expected": "75add013d0a2ba0d6f4a23b847882b95f4a9a3e2cdeb0b3d0bd89a09559fc3bc",
+        "passed": true
+      },
+      {
+        "label": "original export",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004d95f0\\decompiled.c",
+        "sha256": "eafd764f12611545a8776fa533505a72c289210344b6bf67638c3d4c16f94ccf",
+        "expected": "eafd764f12611545a8776fa533505a72c289210344b6bf67638c3d4c16f94ccf",
+        "passed": true
+      },
+      {
+        "label": "original PE",
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "expected": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "passed": true
+      },
+      {
+        "label": "author live sites",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction\\local\\native-front-end-manager-destruction\\native_sites.json",
+        "sha256": "0fb71e0d347a91330763394394fdbbfa4db63511b74872976071647220dfa48f",
+        "expected": "0fb71e0d347a91330763394394fdbbfa4db63511b74872976071647220dfa48f",
+        "passed": true
+      },
+      {
+        "label": "retained strict object",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction\\local\\native-front-end-manager-destruction\\native_front_end_manager_destruction.obj",
+        "sha256": "dc876074046b3118b24b81b06159fc467b5510a589dbc0050756f59ec9ce7e5e",
+        "expected": "dc876074046b3118b24b81b06159fc467b5510a589dbc0050756f59ec9ce7e5e",
+        "passed": true
+      },
+      {
+        "label": "retained strict listing",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction\\local\\native-front-end-manager-destruction\\native_front_end_manager_destruction.asm",
+        "sha256": "3a475167b8a584bcbd35c83291f0da9fe145f6a45cc514ad6883112f77aae93e",
+        "expected": "3a475167b8a584bcbd35c83291f0da9fe145f6a45cc514ad6883112f77aae93e",
+        "passed": true
+      },
+      {
+        "label": "retained object audit",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction\\local\\native-front-end-manager-destruction\\object_audit.json",
+        "sha256": "8acd82d3372109dd492e5e54cf24390be122f73ec2919298543ed41febdce4c5",
+        "expected": "8acd82d3372109dd492e5e54cf24390be122f73ec2919298543ed41febdce4c5",
+        "passed": true
+      }
+    ],
+    "actual_provider_source_pins": [
+      {
+        "path": "include/bsp/native_game_current_virtual_calls.hpp",
+        "sha256": "dbef0b32a1bee0d2dd0e19881c3caf6955f86a04e4c7b05422dc1281a68b3c46",
+        "git_blob": "8de8416376a3ec486f1bb3a6a81a8118cf041fe9",
+        "unchanged_from_base": true
+      },
+      {
+        "path": "src/native_game_current_virtual_calls.cpp",
+        "sha256": "4de2e297c9dcfbcb37a79644ad9c10ebab011b52f8654866fa3bbff80316c80f",
+        "git_blob": "2bca11481b05e0cc04777e766f2652d6b3b2bd5f",
+        "unchanged_from_base": true
+      },
+      {
+        "path": "include/bsp/native_game_physics_lifetime.hpp",
+        "sha256": "829ef5aded5279e62aed7e91b974db4275a90535d6b2ffa41a85bb38410e4d8e",
+        "git_blob": "1afc7f6aef423a3fedb65beeea64830069856437",
+        "unchanged_from_base": true
+      },
+      {
+        "path": "src/native_game_physics_lifetime.cpp",
+        "sha256": "8be35f8b307a3b5143b6271ee94ba693f4a7243397f5b2cc90f0bfebed642ec4",
+        "git_blob": "5fb98e8e73cd280c681e0e67e8d5f625e97dc1d5",
+        "unchanged_from_base": true
+      }
+    ]
+  },
+  "fresh_strict_compile": {
+    "passed": true,
+    "compiler": "MSVC19.51.36244.0 Win32/VS18Community",
+    "warnings": 0,
+    "flags": [
+      "/c",
+      "/std:c++17",
+      "/MD",
+      "/O2",
+      "/Gy",
+      "/fp:strict",
+      "/EHsc",
+      "/W4",
+      "/WX",
+      "/FAs"
+    ],
+    "sources": [
+      "src/native_front_end_manager_destruction.cpp",
+      "src/native_game_current_virtual_calls.cpp",
+      "src/native_game_physics_lifetime.cpp"
+    ],
+    "executable_creation_or_execution": false,
+    "objects_and_listings": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction-review\\local\\front_end_manager_destruction_review\\native_front_end_manager_destruction.obj",
+        "bytes": 1961,
+        "sha256": "b4a643af8ab380898ffa63c67b0917162003e9f06f473a4767eaeb988b9bc526"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction-review\\local\\front_end_manager_destruction_review\\native_front_end_manager_destruction.asm",
+        "bytes": 5269,
+        "sha256": "5cebbe5747b4ecd77a87b3d406e0ce87bd1784c7af6ba4d6cead1568e965d744"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction-review\\local\\front_end_manager_destruction_review\\native_game_current_virtual_calls.obj",
+        "bytes": 2695,
+        "sha256": "031f236b46f8093fe2fe7c9f9438ca520f1c085d30cd1df93706a5b7eef8fe90"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction-review\\local\\front_end_manager_destruction_review\\native_game_current_virtual_calls.asm",
+        "bytes": 6381,
+        "sha256": "f1f27b703d519815a7213a5606b16189db844ca471f73c47682addb715d6fa10"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction-review\\local\\front_end_manager_destruction_review\\native_game_physics_lifetime.obj",
+        "bytes": 29104,
+        "sha256": "e993ade8967bb7b3bf8f7ad7ac3107d5e78d42e356cdb5674a2271c02d4faa48"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction-review\\local\\front_end_manager_destruction_review\\native_game_physics_lifetime.asm",
+        "bytes": 139425,
+        "sha256": "91d39c5c39f315d04e7ef225b054a82d35614a6b8adb094d0580e31c8bd1ea5c"
+      }
+    ]
+  },
+  "independent_COFF_review": {
+    "fresh_retained_functions": [
+      {
+        "name": "?destroy_native_front_end_managers_004da650@bsp@@YAXAAUNativeGameStorage@1@AAUNativeFrontEndManagerDestructionContext@1@@Z",
+        "bytes": 146,
+        "sha256": "e6927eeebd341933b78e7880b819f1c7be6a2f7027e1b03846715e4acaf78fbb",
+        "retained_code_and_normalized_relocations_equal": true,
+        "relocations": []
+      },
+      {
+        "name": "?delete_current@?A0x99f275b3@bsp@@YAXACRAXAAUNativeGameLifetimeCalls@2@@Z",
+        "bytes": 36,
+        "sha256": "b62916226725f434b5987b6bac73f82ff05624f91db029536f85c38fef220ac6",
+        "retained_code_and_normalized_relocations_equal": true,
+        "relocations": []
+      }
+    ],
+    "normalization": "Only anonymous-namespace hashes normalized. Raw code, relocation offset/type/target compared.",
+    "parent": {
+      "bytes": 146,
+      "calls": [
+        {
+          "offset": 17,
+          "operand": "dword ptr [eax + 4]"
+        },
+        {
+          "offset": 41,
+          "operand": "dword ptr [eax + 0x14]"
+        },
+        {
+          "offset": 72,
+          "operand": "dword ptr [eax + 0x14]"
+        },
+        {
+          "offset": 103,
+          "operand": "dword ptr [eax + 0x14]"
+        },
+        {
+          "offset": 134,
+          "operand": "dword ptr [eax + 0x14]"
+        }
+      ],
+      "clear_offsets": [
+        44,
+        75,
+        106,
+        137
+      ],
+      "null_branch_offsets": [
+        29,
+        60,
+        91,
+        122
+      ],
+      "service_this_adjustment": 4,
+      "service_host_vtable_byte_slot": 20,
+      "payload_byte_slot_argument": 0,
+      "payload_flags_argument": 1,
+      "no_catch_records": true,
+      "no_x87": true
+    },
+    "stack": "Public C++ pause service takesGame&+DWORD0; four C++scalar services takecapture+slot0+flags1. Host thiscall callee cleanup is separate from original parent/child stack ABI.",
+    "actual_provider_method_objects": [
+      {
+        "name": "?virtual_scalar@NativeGameCurrentVirtualCalls@bsp@@UAEXPAXII@Z",
+        "section": 10,
+        "begin": 0,
+        "end": 8,
+        "bytes": 8,
+        "hex": "83c118e900000000",
+        "relocations": [
+          [
+            4,
+            20,
+            "?physics_virtual_scalar@NativeGamePhysicsLifetimeCalls@bsp@@UAEXPAXII@Z"
+          ]
+        ],
+        "listing": [
+          "0000: add ecx, 0x18",
+          "0003: jmp 8"
+        ],
+        "sha256": "a20427e40577a2cc7a0512429a0a6831c3ac8970bab393d01d00905fcc001906"
+      },
+      {
+        "name": "?physics_virtual_scalar@NativeGamePhysicsLifetimeCalls@bsp@@UAEXPAXII@Z",
+        "section": 80,
+        "begin": 0,
+        "end": 22,
+        "bytes": 22,
+        "hex": "8b4c24048b442408ff74240c8b118b0402ffd0c20c00",
+        "relocations": [],
+        "listing": [
+          "0000: mov ecx, dword ptr [esp + 4]",
+          "0004: mov eax, dword ptr [esp + 8]",
+          "0008: push dword ptr [esp + 0xc]",
+          "000c: mov edx, dword ptr [ecx]",
+          "000e: mov eax, dword ptr [edx + eax]",
+          "0011: call eax",
+          "0013: ret 0xc"
+        ],
+        "sha256": "079db75e0fbf42fb6bbff9b7fd6974e5d25b11188a2d3ae53fc1101157bed29c"
+      }
+    ],
+    "provider_route": "Real finalNativeGameCurrentVirtualCalls scalar bridge qualified-calls physics method; physics reads captured currenttable/currentbyteoffset and calls target withECX=captured+flags. No new stub or numericOriginaltable conversion.",
+    "service_vs_payload": "Service C++baseadjust+4/hostvftbyte14 is distinct from payloadbyteoffset0; current-provider bridge has independentthis+18 serviceadjustment. Actual complete source service/table/heap construction still belongs to root."
+  },
+  "remaining_obligations": [
+    "Supply whole actual raw004D95F0 binding with actualGame fields and all genuine dependencies; projected semantic helper and reset-stack host remain insufficient.",
+    "Supply SAME canonicalE198AC/B4/B8/C4 writable cells from actual owners and SAME actual lifetime calls instance, valid through callbacks.",
+    "Produce genuine callable child tables/scalar bodies and matched heaps; native numeric vtable tokens alone are not source callable pointers.",
+    "Bind raw NativeGameOnDestroyCalls::call_004da650 to this new parent and compose actualroot only after independent/common admission; no hook is added by candidate or review.",
+    "Qualify interrupted/reentrant/enclosing lifecycle, original register/stack ABI, FH/SEH/fault and runtime/gameplay separately.",
+    "Preserve old semantic paths and their incomplete pause/in-mission projection status; no completed-callee or activation promotion from interface existence."
+  ],
+  "retained_review_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction-review\\local\\front_end_manager_destruction_review\\prepare.py",
+      "bytes": 3335,
+      "sha256": "fcd07c423d6f6a3268127803e98ef22b72ece92cbe40cef9ba8216c53adc08d8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction-review\\local\\front_end_manager_destruction_review\\audit.py",
+      "bytes": 9023,
+      "sha256": "1578897ee80a211c9e52edacf94354fc498e093f147873f27a91cb376c83af1e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction-review\\local\\front_end_manager_destruction_review\\write_report.py",
+      "bytes": 10426,
+      "sha256": "a73eb8bb9ba320edf9829da5af7bbe991d698cc6ef7cbb7b34279fe327958977"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction-review\\local\\front_end_manager_destruction_review\\compile.cmd",
+      "bytes": 2241,
+      "sha256": "80a5950cb6c1169d1553fa0e25d610a579030008ecad2ef725315d97b4b469dd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction-review\\local\\front_end_manager_destruction_review\\compile.log",
+      "bytes": 115,
+      "sha256": "c7f6867a2840b91df90162d7d089b10b32ef0d756590290672ab3115b3944812"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction-review\\local\\front_end_manager_destruction_review\\provenance.json",
+      "bytes": 8344,
+      "sha256": "c1243ba698a8ae34273a7435bc0fc398bb1255d853847b15e77ebb56432f5d89"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction-review\\local\\front_end_manager_destruction_review\\object_native_audit.json",
+      "bytes": 6515,
+      "sha256": "4dc89abf62e8e7c0006056706cbf6e57d3d206214c88a9d50406c00b52299524"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction-review\\local\\front_end_manager_destruction_review\\live_target.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction-review\\local\\front_end_manager_destruction_review\\live_body.txt",
+      "bytes": 519,
+      "sha256": "b07c6b55c1f40c40a524816dea50472a60ef8cf82cb4e3f0575f2a41734e6ab9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction-review\\local\\front_end_manager_destruction_review\\live_pause_prefix.txt",
+      "bytes": 616,
+      "sha256": "dda9790ec0dcdb7e0351a99d11e395fc87312e8eb6c1155641592122a74d8f28"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction-review\\local\\front_end_manager_destruction_review\\live_pause_return.txt",
+      "bytes": 25,
+      "sha256": "7c0366df72b1a6eac13f5b3fd417841786693c68484d9eafb452ba71702a1f8c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-manager-destruction-review\\local\\front_end_manager_destruction_review\\calls.txt",
+      "bytes": 367,
+      "sha256": "3cb0a470b2dcd36da8e2275a9be3fa4d157468aeed2c9bf3114974a30781cb11"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-profile-root-qualified-review\\local\\root_qualified_review\\audit.py",
+      "sha256": "421923f4b8191b6661109b75fd3a635f3cab1add86115b7cbb455bcef82db040",
+      "role": "Only generic Object class text is reused by audit.py; no previous task top-level code is executed."
+    }
+  ],
+  "activity": {
+    "source_edits": false,
+    "shared_metadata_edits": false,
+    "Ghidra_mutation": false,
+    "full_build": false,
+    "tests": false,
+    "new_tests": false,
+    "probes_or_fixtures": false,
+    "games": false,
+    "DLL_calls": false,
+    "push": false
+  },
+  "credit": {
+    "normal_parent_review_pass": true,
+    "new_native_bodies": 0,
+    "vendor_bodies": 0,
+    "original_ABI": false,
+    "native_exception_transport": false,
+    "activation": 0,
+    "runtime": 0,
+    "gameplay": 0
+  }
+}
