@@ -81,3 +81,9 @@ placeholders as `reconstructed_build_tested_unwired`. The two math variants
 add no unique-address credit. Original names/comments were backed up before
 locked annotation, the program saved, and all eight affected exports refreshed.
 Backup: `local/ghidra-annotations-20261029T041856Z.json`.
+
+The final promotion tree also merges accepted `origin/main` `6c158055f1b7f76a3b7cc47f2d91f5d84374ae9b`
+with source integration `d27df3911` and fixture merge `a64b3a76c`. Its fresh
+Win32 build and both existing suites passed (12.23 seconds). Receipt:
+`local/cc16_dyn_ring_family_main_build.log`. No source edit followed this
+combined build; this additional build does not extend gameplay evidence.

@@ -215,7 +215,18 @@
     "runtime_activated": false,
     "ghidra_annotation_backup": "local/ghidra-annotations-20261029T041856Z.json",
     "exports_refreshed": true,
-    "integration_document": "docs/CC16_DYN_RING_FAMILY_INTEGRATION.md"
+    "integration_document": "docs/CC16_DYN_RING_FAMILY_INTEGRATION.md",
+    "post_main_merge": {
+      "accepted_main": "6c158055f1b7f76a3b7cc47f2d91f5d84374ae9b",
+      "integrated_source": "d27df3911 plus focused fixture a64b3a76c",
+      "build_log": "local/cc16_dyn_ring_family_main_build.log",
+      "existing_suites_passed": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "compiled_object_sha256": "58dafbeee00140056dfaf8079941138c46ac71faff6c19f3dfd4554577898760",
+      "game_validated": false
+    }
   },
   "worker_validation": {
     "original_bytes_and_source_review": true,

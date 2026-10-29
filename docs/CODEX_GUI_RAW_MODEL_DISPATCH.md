@@ -114,4 +114,9 @@ reference/scalar APIs. Cached `00b6f310/assembly.txt` shows fresh CE2220 at
 B6F3A7 and current0 tail at B6F3BA. `00bd30e0/assembly.txt` shows profile capture,
 current04 load, PUSH1/CALL and RET; `00b75290/assembly.txt` shows B750C0 BEFORE
 late flags byte, conditional B74750 and SAME EAX/RET4. No live Ghidra query or
-mutation was needed. Root owns subsequent Win32 build and acceptance checks.
+mutation was needed. Root source review passed, registered this TU in bsp_core,
+and integrated it in51e6199da. Frozen044/dfa/51e MSVC Win32 Release builds and
+both existing CTests pass. It remains uncalled: A2 startup smokes/reference/
+milestone games do not exercise this private Model provider or DEFAULT Text.
+No lifecycle, exception/reentry/reuse, flags0 execution or native ABI proof is
+inferred from compilation or unrelated gameplay parity.
