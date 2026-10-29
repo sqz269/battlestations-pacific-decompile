@@ -69,14 +69,21 @@ def protected_files(roots: list[Path]) -> dict:
     result = {}
     for root in roots:
         key = str(root)
-        if not root.exists():
+        try:
+            root_info = root.lstat()
+        except FileNotFoundError:
             result[key] = {"exists": False, "files": {}}
             continue
+        if root_info.st_file_attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT:
+            raise ValueError(f"unexpected protected-root reparse point: {root}")
         paths = []
         if root.is_file():
             paths = [root]
         else:
-            for folder, directories, files in os.walk(root, followlinks=False):
+            def refuse_unreadable(error):
+                raise error
+            for folder, directories, files in os.walk(root, followlinks=False,
+                                                      onerror=refuse_unreadable):
                 for name in directories + files:
                     entry = Path(folder) / name
                     if entry.lstat().st_file_attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT:
@@ -152,6 +159,64 @@ def event(args: argparse.Namespace) -> int:
     return 0
 
 
+def native_options(args: argparse.Namespace) -> int:
+    """Normalize only the private copy for the original text-mode reader."""
+    stage = evidence_path(args.stage).resolve(strict=True)
+    preparation = json.loads((stage / "preparation.json").read_text(encoding="utf-8-sig"))
+    if Path(preparation["stage_root"]).resolve() != stage:
+        raise ValueError("preparation stage does not match")
+    expected = stage / "Documents" / "Battlestations-Pacific" / "options.txt"
+    target = expected.resolve(strict=True)
+    if target != expected or target.stat().st_nlink != 1:
+        raise ValueError("private options must be an independent ordinary copy")
+    matches = [r for r in preparation["profile_files_sha256"] if r["path"].lower() == "options.txt"]
+    if len(matches) != 1:
+        raise ValueError("preparation must contain one original options identity")
+    baseline = matches[0]
+    source = Path(preparation["source_profile"]) / "options.txt"
+    original = source.read_bytes()
+    if hashlib.sha256(original).hexdigest() != baseline["sha256"] or len(original) != baseline["length"]:
+        raise ValueError("original options identity changed; take a fresh inventory")
+    receipt_path = stage / "native-options.json"
+    if receipt_path.exists():
+        receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+        if (receipt["source_record"] != baseline or
+                file_record(target)["sha256"] != receipt["private_record"]["sha256"]):
+            raise ValueError("existing native-options receipt does not match")
+        print(json.dumps({"output": str(receipt_path), "status": "already_normalized"}))
+        return 0
+    if target.read_bytes() != original:
+        raise ValueError("private options differ from the recorded source before normalization")
+    lines, omitted = [], []
+    for line in original.decode("ascii").splitlines():
+        key = line.split(maxsplit=1)[0] if line.split() else ""
+        if key in {"SoundEnabled", "HardwareReported"}:
+            omitted.append(line)
+        else:
+            lines.append(line)
+    normalized = ("\n".join(lines) + "\n").encode("ascii")
+    if b"\0" in normalized or b"\r" in normalized:
+        raise ValueError("native options must be LF-only with no NUL")
+    backup = stage / "options-before-native-normalization.txt"
+    with backup.open("xb") as stream:
+        stream.write(original)
+    target.write_bytes(normalized)
+    receipt = {"schema": "bsp.original-baseline.native-options.v1", "recorded_at": stamp(),
+               "stage_root": str(stage), "source_path": str(source), "private_path": str(target),
+               "source_record": baseline,
+               "private_record": {"path": "options.txt", "length": len(normalized),
+                                  "sha256": hashlib.sha256(normalized).hexdigest()},
+               "omitted_lines": omitted, "encoding": "ASCII", "line_endings": "LF", "nul_terminated": False,
+               "evidence": "008D8190 uses physical ftell size with text fread and ignores its count; reader ignores the two native-writer fields",
+               "original_unchanged": source.read_bytes() == original}
+    write_json(receipt_path, receipt)
+    if not receipt["original_unchanged"]:
+        raise RuntimeError("original options changed during private normalization")
+    print(json.dumps({"output": str(receipt_path), "private_bytes": len(normalized),
+                      "source_bytes": len(original), "original_unchanged": True}))
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
@@ -170,6 +235,9 @@ def main() -> int:
     command.add_argument("--details", default="")
     command.add_argument("--output", default="local/original-baseline/events.jsonl")
     command.set_defaults(run=event)
+    command = commands.add_parser("native-options")
+    command.add_argument("--stage", required=True)
+    command.set_defaults(run=native_options)
     args = parser.parse_args()
     return args.run(args)
 

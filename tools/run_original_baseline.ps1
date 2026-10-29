@@ -1,6 +1,6 @@
 # Prepare byte copies for an original retail baseline, or invoke the isolation
 # guard for an already prepared tree. Never launch retail directly: the guard
-# owns low-integrity execution, pre-entry Documents redirection and its job.
+# owns restricted-token execution, pre-entry Documents redirection and its job.
 # No install/profile ACL, registry setting, junction, hardlink or original file changes.
 [CmdletBinding()]
 param(
@@ -9,6 +9,9 @@ param(
     [string]$GuardPath = '',
     [switch]$PrepareOnly,
     [switch]$RunPrepared,
+    [switch]$HandleKnownXLiveDebugClose,
+    [ValidateSet('low', 'medium-restricted')][string]$TokenMode = 'low',
+    [string[]]$GameArguments = @(),
     [ValidateRange(1, 7200)][int]$RuntimeSeconds = 900,
     [int]$WaitSeconds = 120,
     [ValidateRange(1, 14)][int]$Slots = 14
@@ -17,7 +20,7 @@ param(
 $ErrorActionPreference = 'Stop'
 if ($PrepareOnly -and $RunPrepared) { throw 'Choose either -PrepareOnly or -RunPrepared.' }
 if (-not $PrepareOnly -and -not $RunPrepared) {
-    throw 'LIVE LAUNCH BLOCKED: a verified low-integrity guard with pre-entry Documents redirection is required. Use -PrepareOnly to copy a private baseline tree; environment variables alone do not isolate retail saves.'
+    throw 'LIVE LAUNCH BLOCKED: choose -PrepareOnly or -RunPrepared with a verified restricted-token guard and pre-entry Documents redirection. Environment variables alone do not isolate retail saves.'
 }
 $coord = Join-Path $env:USERPROFILE '.bsp'
 $drain = Join-Path $coord 'DRAIN'
@@ -133,7 +136,27 @@ if ($RunPrepared) {
     Assert-RecordedHashes $rootRecords $source -RootFilesOnly
     Assert-RecordedHashes $rootRecords $prepared.private_game -RootFilesOnly
     Assert-RecordedHashes @($prepared.profile_files_sha256) $profileSource
-    Assert-RecordedHashes @($prepared.profile_files_sha256) (Join-Path $prepared.private_documents 'Battlestations-Pacific')
+    $privateProfileRoot = Join-Path $prepared.private_documents 'Battlestations-Pacific'
+    $privateProfileRecords = @($prepared.profile_files_sha256)
+    $nativeOptionsPath = Join-Path $stage 'native-options.json'
+    if (Test-Path -LiteralPath $nativeOptionsPath) {
+        Assert-NoReparseAncestor $nativeOptionsPath
+        $nativeOptions = Get-Content -LiteralPath $nativeOptionsPath -Raw | ConvertFrom-Json
+        if ($nativeOptions.schema -ne 'bsp.original-baseline.native-options.v1' -or
+            $nativeOptions.original_unchanged -ne $true -or
+            $nativeOptions.source_record.path -ne 'options.txt' -or
+            $nativeOptions.private_record.path -ne 'options.txt') { throw 'Invalid private native-options receipt.' }
+        Assert-SamePath $nativeOptions.stage_root $stage
+        Assert-SamePath $nativeOptions.source_path (Join-Path $profileSource 'options.txt')
+        Assert-SamePath $nativeOptions.private_path (Join-Path $privateProfileRoot 'options.txt')
+        $sourceOptions = @($privateProfileRecords | Where-Object { $_.path -ieq 'options.txt' })
+        if ($sourceOptions.Count -ne 1 -or
+            $sourceOptions[0].sha256 -ne $nativeOptions.source_record.sha256 -or
+            $sourceOptions[0].length -ne $nativeOptions.source_record.length) { throw 'Private options source identity mismatch.' }
+        $privateProfileRecords = @($privateProfileRecords | Where-Object { $_.path -ine 'options.txt' }) +
+                                 @($nativeOptions.private_record)
+    }
+    Assert-RecordedHashes $privateProfileRecords $privateProfileRoot
     # Guard preparation is required independently of this copy receipt. The
     # guard revalidates actual labels, links and protected originals at launch.
     $guardPrepared = Get-Content -LiteralPath (Join-Path $stage 'guard-prepare.json') -Raw | ConvertFrom-Json
@@ -175,7 +198,12 @@ try {
     if ($RunPrepared) {
         # The guard monitors DRAIN while running and owns normal-priority child
         # creation, timeout and job cleanup. Keep BOTH locks until it returns.
-        & python $GuardPath launch --stage $stage --receipt (Join-Path $stage 'launch.json') --seconds $RuntimeSeconds
+        $guardArguments = @($GuardPath, 'launch', '--stage', $stage, '--receipt',
+                            (Join-Path $stage 'launch.json'), '--seconds', [string]$RuntimeSeconds,
+                            '--token-mode', $TokenMode)
+        if ($HandleKnownXLiveDebugClose) { $guardArguments += '--handle-known-xlivedebugclose' }
+        foreach ($gameArgument in $GameArguments) { $guardArguments += "--arg=$gameArgument" }
+        & python @guardArguments
         $guardExit = $LASTEXITCODE
         Assert-RecordedHashes @($prepared.root_files_sha256) $source -RootFilesOnly
         Assert-RecordedHashes @($prepared.profile_files_sha256) $profileSource
