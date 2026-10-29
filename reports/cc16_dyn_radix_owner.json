@@ -1,0 +1,128 @@
+{
+  "packet": "codex-dyn-radix-owner",
+  "status": "complete_normal_body_composed_with_recovered_leaf_unbuilt_unwired",
+  "base_leaf_commit": "814db0b3cc3eaa37cee3566d4ce793f6ae85833a",
+  "scope": {
+    "routines": [
+      {
+        "address": "00c55d30",
+        "inclusive_end": "00c55d93",
+        "last_instruction": "00c55d91",
+        "last_instruction_text": "RET 0xc",
+        "bytes": 100,
+        "coverage": "complete normal body",
+        "old_name": "Dyn_SAPRadixBroadPhaseManager_vslot0",
+        "old_reconstruction_name": "DYN_unreachable_00c55d30",
+        "source_name": "bsp::cc16_dyn_radix_owner::create_object_00c55d30",
+        "prior_reconstruction": "metadata_only_no_function_body_verified_oct24"
+      }
+    ],
+    "files": [
+      "include/bsp/cc16_dyn_radix_owner.hpp",
+      "src/cc16_dyn_radix_owner.cpp",
+      "docs/CC16_DYN_RADIX_OWNER.md",
+      "reports/cc16_dyn_radix_owner.json"
+    ],
+    "leaf_files_changed": false,
+    "shared_ledger_cmake_and_ghidra_mutations": false,
+    "vendor_bodies": false
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "bsp.py live ghidra wrappers verify the configured project/program"
+  },
+  "original_abi": {
+    "receiver": "ECX copied to ESI at 00c55d34",
+    "stack_arguments": [
+      "uint32 object word at entry ESP+4",
+      "pointer to six dwords at entry ESP+8",
+      "low byte of third slot at entry ESP+0xc"
+    ],
+    "ret_pop_bytes": 12,
+    "eax_on_normal_return": "saved allocated object, zero only if null-object helper path returns",
+    "preserved": ["ESI", "EDI", "EBX", "EBP"],
+    "cpp_interface": "explicit arguments and required heap providers; no native ABI adapter"
+  },
+  "calls": [
+    {
+      "function": "00c55d30",
+      "address": "00c55d36",
+      "native": "00bf681b",
+      "role": "required operator new provider, exactly 0x24 bytes"
+    },
+    {
+      "function": "00c55d30",
+      "address": "00c55d79",
+      "native": "00c37180",
+      "role": "compose recovered append helper with actual manager and allocated object"
+    },
+    {
+      "function": "00c55d30",
+      "address": "00c55d88",
+      "native": "00c37180",
+      "role": "same helper with null object after failed allocation; no invented early return"
+    }
+  ],
+  "source_composition": {
+    "leaf": "bsp::cc16_dyn_radix_entries::append_object_00c37180",
+    "header": "bsp/cc16_dyn_radix_entries.hpp",
+    "storage": "actual manager and actual 0x24-byte object passed unchanged",
+    "providers": ["00bf681b object allocation", "00bf55be entry allocation", "00bf6989 entry free"],
+    "branch_join": "one common C++ helper call represents the two native branch-specific sites",
+    "leaf_contract_report": "reports/cc16_dyn_radix_entries.json"
+  },
+  "contracts": [
+    "object allocation precedes all object/source accesses",
+    "nonzero object path stores word00, byte1c, then six ordered dwords at04..18",
+    "owner leaves 1d..23 untouched before leaf; leaf writes only20..21",
+    "source words are read sequentially after preceding object stores, preserving alias ordering",
+    "failed object allocation still passes null to recovered helper",
+    "source returns the saved object if helper returns",
+    "no guessed object class, default provider, unresolved-call stub or null guard"
+  ],
+  "incoming_evidence": {
+    "indexed_direct_callers": 0,
+    "indexed_data_and_vslot_site": "00d7a118",
+    "live_xrefs_owner": "From 00d7a118 [DATA]",
+    "live_xrefs_00c37210": "No references found to address: 00c37210",
+    "live_xrefs_vtable": "No references found to address: 00d7a118",
+    "disk_constructor_evidence": "00c37212 writes 00d7a118; RET at00c37236, proving live vtable-xref absence is incomplete",
+    "prior_census": "docs/CC13_DYN1.md reports constructor00c37210 unreferenced and class unused",
+    "qualification": "prior exhaustive census not freshly revalidated; no new runtime path or accepted dead-chain conclusion claimed"
+  },
+  "evidence": [
+    "exports/bsp/functions/00c55d30/decompiled.c",
+    "exports/bsp/functions/00c55d30/assembly.txt",
+    "bsp.py ghidra proto 00C55D30 00C37180 --brief",
+    "bsp.py lookup 00C55D30",
+    "bsp.py callers 00C55D30 --sites --limit 12",
+    "bsp.py ghidra xrefs 00C55D30",
+    "bsp.py ghidra xrefs 00C37210",
+    "bsp.py ghidra xrefs 00D7A118",
+    "bsp.py disasm-raw 00C37210 --length 52"
+  ],
+  "uncertainty": [
+    "function and field role names are descriptive hypotheses",
+    "object word00, six copied words and flag domain meanings are unassigned",
+    "no native register/stack adapter, exception transport or invalid-memory fault equivalence claim",
+    "vtable-only incoming evidence does not itself prove a complete dead chain"
+  ],
+  "validation": {
+    "source_assembly_review": true,
+    "callsite_verification": "verify_report_calls.py: 3 JSON call rows and 3 Markdown call claims checked, 0 failed",
+    "build": "integrator_owned_not_run_by_worker",
+    "new_tests": 0,
+    "game_or_probe_launches": 0,
+    "native_abi_or_game_validated": false
+  },
+  "integration_obligations": [
+    "register and build both owner and leaf on MSVC Win32 and run relevant existing checks",
+    "replace shared C50000 metadata-only ledger row after review",
+    "perform any Ghidra annotation under the primary write lock",
+    "establish an actual incoming runtime path or accept evidenced dead-chain conclusion before activation claim"
+  ]
+}
