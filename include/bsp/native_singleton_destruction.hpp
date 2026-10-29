@@ -56,6 +56,27 @@ class NativeGuiIconDelayedLoads;
 struct NativeObserverDispatchOwner;
 namespace game { class GameSoundRuntime; }
 
+// Borrowed Source bridge, not a native vtable or application-owned core symbol.
+// All callbacks/context are required. is_live_receiver must only inspect stable
+// ownership metadata, must not read the raw prefix, and must not mutate it.
+// Keep the whole binding/owner/module graph alive through explicit retirement
+// and the shared drain. Callers serialize operations; no reentrant deletion.
+struct NativeMovieFactoryDeletionBindings {
+    void* context;
+    bool (*is_live_receiver)(void*,void*) noexcept;
+    void* (*delete_factory_00737950)(void*,void*,std::uint32_t);
+    void* (*delete_base_factory_00737030)(void*,void*,std::uint32_t);
+};
+static_assert(sizeof(NativeMovieFactoryDeletionBindings)==16);
+
+// Same narrow current-profile bridge for actual shutdown and manager dispatch.
+// Reject foreign/dead receivers BEFORE reading their prefix; admit only CFEA78
+// and CFEA60, then invoke the real captured-receiver/full-flags callback. Returned
+// bits can identify already freed storage; never dereference them after return.
+// This is Source glue, not an original binary entry or arbitrary vcall adapter.
+void* delete_native_movie_factory_current_profile(void* captured,std::uint32_t flags,
+    const NativeMovieFactoryDeletionBindings&);
+
 // Stable borrowed source bindings. The renderer bindings admit D5E5A4/D5E5A8,
 // D5F0A4, D621EC/D62260 and D626F4/D62A3C. The renderer requires initialized
 // device and surface storage through its complete destruction schedule.
@@ -269,6 +290,9 @@ struct NativeSingletonDeletionBindings {
     // D5C4B8 -> AB57C0 over the SAME actual F8BD98 producer/manager domain.
     // Bind before any AB5700 getter and retain this service through full drain.
     NativeGuiIconDelayedLoads* gui_icon_delayed_loads{};
+    // CFEA78 ->737950 / CFEA60 ->737030. Root-owned real callbacks avoid
+    // bsp_core depending directly on application-only factory-owner symbols.
+    const NativeMovieFactoryDeletionBindings* movie_factory{};
 };
 static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
 static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);
@@ -301,7 +325,8 @@ static_assert(offsetof(NativeSingletonDeletionBindings, fixed_step_jobs) == 196)
 static_assert(offsetof(NativeSingletonDeletionBindings, platform) == 200);
 static_assert(offsetof(NativeSingletonDeletionBindings, avoid_manager) == 204);
 static_assert(offsetof(NativeSingletonDeletionBindings, actual_loading_queue_publication_00e18d4c) == 208);
-static_assert(sizeof(NativeSingletonDeletionBindings) == 216);
+static_assert(offsetof(NativeSingletonDeletionBindings, movie_factory) == 216);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 220);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting

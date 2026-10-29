@@ -674,6 +674,9 @@ struct GameRunSummary {
 // 00737970 (BEA970/BEA810 register it and publish E1AE90); 008F8444 retires it
 // through 007379A0 before the 008F8449 manager drain.
 inline constexpr bool kApplicationCc15Bound = true;
+// Coupled factory-only Source lane. Decoder consumers, installed callback ABI,
+// original unwind and ordinary-parent/runtime admission remain open.
+inline constexpr bool kMovieFactoryRootCc16Bound = false;
 
 class GameStartupHost final : public StartupHost {
 public:
@@ -746,6 +749,9 @@ private:
     // their reverse-order member destruction. Disengaged has no exposed value.
     mutable std::optional<bool> gui_sse2_conversion_;
     void run_initialize_phases(const char* mode);
+    void construct_native_movie_factory();
+    void retire_native_movie_factory();
+    void exit_if_native_movie_factory_incomplete(bool require_retired=false) noexcept;
     void release_platform_window() noexcept;
     void exit_if_native_platform_incomplete() noexcept;
     void prepare_native_platform_drain() noexcept;
@@ -792,6 +798,11 @@ private:
     std::unique_ptr<GameNativeLuaServices> lua_services_;
     struct SoundServices;
     std::unique_ptr<SoundServices> sound_;
+    struct MovieFactoryServices;
+    // Observer of an intentionally non-destructed process owner. The entire
+    // module/table/owner/heap/deletion aggregate survives even normal retirement;
+    // no unqualified FreeLibrary occurs when this Host is destroyed.
+    MovieFactoryServices* movie_factory_{};
     // The same selected SDK serves early window activation and later devices.
     // Retain it until both input retirement and final window cleanup finish.
     std::unique_ptr<XInputLibrary> xinput_library_;

@@ -1,0 +1,466 @@
+{
+  "schema_version": 1,
+  "packet": "codex-movie-factory-root-binding",
+  "base": "e64249b004a989f162a1b7b9cda3493606535e88",
+  "status": "coupled_root_source_default_off_strict_objects_and_existing_common_checks_passed_runtime_admission_open",
+  "sources": [
+    "src/game_hosts.cpp",
+    "src/native_singleton_destruction.cpp"
+  ],
+  "headers": [
+    "include/bsp/game_hosts.hpp",
+    "include/bsp/native_singleton_destruction.hpp"
+  ],
+  "documentation": "docs/CC16_MOVIE_FACTORY_ROOT_BINDING.md",
+  "guard": {
+    "name": "kMovieFactoryRootCc16Bound",
+    "default": false,
+    "tracked_on_flip": false,
+    "off_constructs_or_loads_graph": false
+  },
+  "contracts": {
+    "heap": "Existing singleton_lifetime_allocate({object,bytes,bytes}) / singleton_lifetime_free, actual source malloc/new-handler/free domain; owner requests4. No original CRT ABI or successful-null fallback.",
+    "manager": "Same GameSingletonHost::manager_publication_01090aa0() process cell.",
+    "publication": "Same permanent GameSingletonHost::movie_factory_publication_00f8aefc() reference; no private authority/reset/fixed-address mapping.",
+    "path": "Required nonempty absolute options_.game_root plus binkw32.dll, no CWD fallback.",
+    "module": "Actual BinkRuntimeLibrary and same borrowed import tables; existing owner validates original numeric profile words.",
+    "startup": "Known73DF9B slot between input era and particle/locale; no fake terrain/010909B0 neighbors or whole-parent claim.",
+    "prepare_order": "Process keeper owns aggregate -> Host observer -> both bindings installed -> actual owner.construct_in_startup_0073df9b.",
+    "shutdown": "After current Source menu/widget/Font borrowers retire, capture current publication, native null guard, current CFEA78/CFEA60 flags1 bridge before device/raw drain. Never cached receiver fallback.",
+    "decoder_route": "737730 is creation, not deletion; actual GUI/decoder consumer remains unbound."
+  },
+  "deletion_bridge": {
+    "name": "delete_native_movie_factory_current_profile",
+    "scope": "New non-inlined Source bridge, not original binary ABI or arbitrary vcall adapter.",
+    "record": "NativeMovieFactoryDeletionBindings: required context/live-receiver/factory737950/base737030 callbacks,16 bytes.",
+    "owner_check": "Genuine root observational noexcept predicate checks failure/Ready phase/captured pointer identity without reading prefix.",
+    "prefix_check": "Reject foreign/dead receivers before prefix read; accept only current CFEA78/CFEA60 before real owner callback.",
+    "callers": [
+      "GameStartupHost::retire_native_movie_factory",
+      "CFEA78/CFEA60 manager arms in delete_current_profile"
+    ],
+    "real_targets": [
+      "GameMovieFactoryOwner::delete_factory_00737950",
+      "GameMovieFactoryOwner::delete_base_factory_00737030"
+    ],
+    "source_layering": "Core knows required callback record only; real owner methods remain application-side.",
+    "layout": {
+      "record_bytes": 16,
+      "new_binding_pointer_offset": 216,
+      "old_binding_bytes": 216,
+      "new_binding_bytes": 220,
+      "existing_offsets_preserved": true
+    },
+    "serialized_contract": true,
+    "arbitrary_reentrancy_or_concurrency_claim": false
+  },
+  "process_custody": {
+    "policy": "Intentionally non-destructed process-owned unique_ptr keeper retains complete MovieFactoryServices through OS exit, INCLUDING normal flags1 retirement.",
+    "host_member": "Raw observer only; Host does not own/delete the aggregate.",
+    "retained": [
+      "Bink module/Impl/import tables",
+      "real heap adapter",
+      "GameMovieFactoryOwner",
+      "actual deletion record/context",
+      "references to permanent manager/factory publication cells"
+    ],
+    "not_retained_as_borrowed": [
+      "Host",
+      "log",
+      "renderer",
+      "NativeData"
+    ],
+    "native_data_use": "Metadata-constructor validation only; no reference stored in aggregate/owner afterward.",
+    "normal_module_unload_qualified": false,
+    "implicit_module_destructor_after_prefix_retire": false,
+    "unescaped_preparation_failure_raii": "Permitted before native factory effects/table borrowers escape.",
+    "recreation": "Rejected while retaining/observing existing process aggregate; no reset/replacement/retry.",
+    "future_decoder_rule": "Actual future consumers must retain/retire additional providers; this packet creates no decoder or extra borrower."
+  },
+  "failure_guards": {
+    "immediate_constructor_catch": "Mark failure; metadata-only log/_Exit before dangling prefix read, ordinary deletion or shared drain.",
+    "immediate_delete_catch": "Real thunk marks aggregate failed; explicit caller or existing drain catch enters terminal retention without retry.",
+    "repeat_entries": [
+      "application_shutdown",
+      "GameStartupHost destructor",
+      "drain_native_singletons"
+    ],
+    "retired_required_at": [
+      "destructor",
+      "drain_native_singletons"
+    ],
+    "ready_is_not_destructor_permission": true,
+    "flags0_is_not_destructor_permission": true,
+    "raw_free_residue": "Existing owner may already have freed captured raw prefix on constructor exception; retained metadata/providers do not restore that allocation.",
+    "invented_repair_or_rollback": false,
+    "original_fh3_seh_fault_transport": false
+  },
+  "validation": {
+    "strict_object_flags": "/c /std:c++17 /O2 /Ob2 /DNDEBUG /MD /EHsc /W4 /WX /fp:strict",
+    "strict_core_object": true,
+    "strict_off_object": true,
+    "strict_private_on_object": true,
+    "private_on_scope": "Local header overlay only, exactly one guard false->true; no tracked ON change, link, executable or run.",
+    "off_movie_graph_symbol_references": 0,
+    "core_app_owner_or_bink_symbol_dependencies": 0,
+    "real_private_on_callback_symbols": true,
+    "core_bridge_machine_epochs": {
+      "live_predicate_call": "+28",
+      "reject_false_before_prefix": "+2F",
+      "first_prefix_read": "+31",
+      "factory_callback": "+49",
+      "base_callback": "+5E",
+      "manager_shared_bridge_call": "+411"
+    },
+    "standard_release": {
+      "passed": true,
+      "command": "scripts/build.ps1 -Configuration Release",
+      "checks_passed": 2,
+      "checks_total": 2,
+      "names": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "total_test_seconds": 11.64,
+      "private_cached_BSP_CL_MP": 2,
+      "tracked_guard": false,
+      "receipt": "local/movie_factory_root_binding/standard_release_final.log"
+    },
+    "new_tests": 0,
+    "games": 0,
+    "probes": 0,
+    "bink_loads_or_imported_calls": 0,
+    "private_on_execution": false,
+    "one_guard_private_header": {
+      "exact_bytes_except_guard": true,
+      "off_sha256": "67a5164b1b20061f0f1353783c12cfcb92cc7392b37e04ec87371577425f7f58",
+      "private_on_sha256": "bde6a014b7b36259c0f9348eb717f48e4e7fa30becfeb02afbd20572c9f80049"
+    },
+    "physical_callback_relocations": {
+      "factory_target": "GameMovieFactoryOwner::delete_factory_00737950",
+      "base_target": "GameMovieFactoryOwner::delete_base_factory_00737030",
+      "manager_bridge_target": "delete_native_movie_factory_current_profile",
+      "keeper_atexit_registration_relocations": 0
+    },
+    "common_off_movie_graph_symbol_references": 0,
+    "initial_standard_release": {
+      "passed": true,
+      "checks": "2/2",
+      "test_seconds": 12.74,
+      "scope": "Before non-inlining the shared bridge; final incremental common receipt supersedes it."
+    },
+    "off_full_game_map_movie_graph_entries": 0
+  },
+  "primary_callback_followup": {
+    "source": "Primary reports forthcoming CC16_BINK_INSTALLED_SOUND_CALLBACK_ABI file-only audit; not independently reaudited by this packet.",
+    "qualification": "Installed machine shapes corroborated by primary; semantic SDK/runtime/callback-use/quiescence remain open.",
+    "ordinary_setup_result": "New callback may return null and leave old saved callback; ordinary returned setup status or sound_returned does not prove fresh installation.",
+    "source_api_change": false,
+    "result_still_ignored": true
+  },
+  "credit": {
+    "new_native_bodies": 0,
+    "duplicate_native_bodies": 0,
+    "vendor_bodies": 0,
+    "original_abi": 0,
+    "activation": 0
+  },
+  "unchanged_scope": [
+    "CMake/registrations",
+    "old feature guards/cohort",
+    "old factory/Bink/typed-cell implementations",
+    "decoder consumer",
+    "ledgers/Ghidra",
+    "frozen peer worktrees",
+    "install/save/profile",
+    "hardware/power/process priority"
+  ],
+  "remaining": [
+    "Independent source admission/common review",
+    "actual decoder/renderer/widget/Lua borrower closure",
+    "installed semantic/runtime ABI",
+    "original FH3/SEH/foreign error transport",
+    "vendor quiescence",
+    "actual gameplay/runtime acceptance; guard remains false"
+  ],
+  "source_pins": [
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "bytes": 47507,
+      "sha256": "67a5164b1b20061f0f1353783c12cfcb92cc7392b37e04ec87371577425f7f58",
+      "git_blob": "867d8b7032fc7531bfaa4f2c43c649988b8e0710",
+      "baseline_blob": "04f8a795156feeb734856a7747100e7dfbc6f9d5",
+      "changed": true
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "bytes": 185132,
+      "sha256": "6915e364d7c2eb73ebba01d7d1c521ca7fdc94ab78ad7f0302288fc281cad9f4",
+      "git_blob": "d138983e92e5f93339e529655990f924f1c06be8",
+      "baseline_blob": "7cfe6f89bb83fb7b61fd3226efc86277ba07ff09",
+      "changed": true
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "bytes": 22967,
+      "sha256": "92c2c26b6d4f69a7926e4bbf3d2c327fcc18dc03b9cb5e60a61a6b2e06d2fbf2",
+      "git_blob": "fb3bf4cb9eab83d2f31fd956e9a0074ab1a81ccb",
+      "baseline_blob": "d5581f5bc287893203cce6018473630cfd71c791",
+      "changed": true
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "bytes": 29691,
+      "sha256": "bb6b0556d30f4eac3c112f5acb72802cf3339247729863d8a4dbf3410a188808",
+      "git_blob": "2a879d538151867200cda15069d6733ded335cff",
+      "baseline_blob": "cf6a7f491e3a0ca9a36c72959d7b1dd1f0650249",
+      "changed": true
+    },
+    {
+      "path": "include/bsp/game_movie_factory_owner.hpp",
+      "bytes": 4924,
+      "sha256": "86016d14b24133bb8c06996e2f8141dd14e42af0774a6558f9710df9044546ff",
+      "git_blob": "fd57d25d8f0aaafe9ad7f3661881bffa5a5452c3",
+      "baseline_blob": "fd57d25d8f0aaafe9ad7f3661881bffa5a5452c3",
+      "changed": false
+    },
+    {
+      "path": "src/game_movie_factory_owner.cpp",
+      "bytes": 7573,
+      "sha256": "39ca1d6d4b7696096326fc8fad51424d62e98b1b1f379f5d44ef1ce455c617db",
+      "git_blob": "6e76beb3c2f7485066067215e04583f7d4878794",
+      "baseline_blob": "6e76beb3c2f7485066067215e04583f7d4878794",
+      "changed": false
+    },
+    {
+      "path": "include/bsp/bink_runtime_library.hpp",
+      "bytes": 2171,
+      "sha256": "510edc8d0f710009872357e976d6fb62bfb9dca50430eb8100155d9713e66007",
+      "git_blob": "73f927f786ef979edb0199a197e92164078a104b",
+      "baseline_blob": "73f927f786ef979edb0199a197e92164078a104b",
+      "changed": false
+    },
+    {
+      "path": "src/bink_runtime_library.cpp",
+      "bytes": 4198,
+      "sha256": "0e3b46555ea02931a6dc298a1966fa6fcc82739588db438b107a73dd5a94cb94",
+      "git_blob": "c35a0b0d583207657d77092c7e790107f542f5e0",
+      "baseline_blob": "c35a0b0d583207657d77092c7e790107f542f5e0",
+      "changed": false
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "baseline_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "changed": false
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "baseline_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "changed": false
+    },
+    {
+      "path": "include/bsp/sound_lifetime_access.hpp",
+      "bytes": 3039,
+      "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b",
+      "git_blob": "733525b1563c1641db659681fd812485aa71c7ed",
+      "baseline_blob": "733525b1563c1641db659681fd812485aa71c7ed",
+      "changed": false
+    },
+    {
+      "path": "src/sound_lifetime_access.cpp",
+      "bytes": 2751,
+      "sha256": "00ace40faa75007eb4e7cf857de0473347d8bdba0d99ed15ce8bc750c09efd29",
+      "git_blob": "3215502c513d22bb0d5c0201dfb110283803b0da",
+      "baseline_blob": "3215502c513d22bb0d5c0201dfb110283803b0da",
+      "changed": false
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "bytes": 5509,
+      "sha256": "ec2c6715a64888c87e61f4703073d094a62340f548aaa9a6a668f33787a3a518",
+      "git_blob": "aeb12627616969e974915847b1fc1bea83341e23",
+      "baseline_blob": "aeb12627616969e974915847b1fc1bea83341e23",
+      "changed": false
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "bytes": 1814,
+      "sha256": "703f35233ccfc376633034f80854b1cfb1ffe621a8018424a324d18535f6612f",
+      "git_blob": "03312a4648572edfe0f75867b1ecd917c253b69d",
+      "baseline_blob": "03312a4648572edfe0f75867b1ecd917c253b69d",
+      "changed": false
+    },
+    {
+      "path": "include/bsp/game_hosts_singletons.hpp",
+      "bytes": 10262,
+      "sha256": "0bb1cce85717ff94c44e12e6f2a071ea30fac43baa13d99539fe354385821648",
+      "git_blob": "1ce17a275af38e991c3e04802cd4d5d5314bcd3b",
+      "baseline_blob": "1ce17a275af38e991c3e04802cd4d5d5314bcd3b",
+      "changed": false
+    },
+    {
+      "path": "src/game_hosts_singletons.cpp",
+      "bytes": 9919,
+      "sha256": "cca7ac5b6943b5332b92e4b9c0014c1fdeead64519d0fb81036c4407a67180c7",
+      "git_blob": "ab773af78122d6cc35606471f08d6f2e47168a05",
+      "baseline_blob": "ab773af78122d6cc35606471f08d6f2e47168a05",
+      "changed": false
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "bytes": 2713,
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+      "baseline_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+      "changed": false
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "bytes": 7167,
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+      "git_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e",
+      "baseline_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e",
+      "changed": false
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 290147,
+      "sha256": "de4f854ae60dffcef55bb00880cdf077e09a6f451ab946230adc397156b53032",
+      "git_blob": "da7b765b08ff76b1756badd32716ec7d3a15f232",
+      "baseline_blob": "da7b765b08ff76b1756badd32716ec7d3a15f232",
+      "changed": false
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 26464,
+      "sha256": "f8ba57bcf733dff041e995e97d0acfe7b01106b07e4cb0b2e64081dfae519dd6",
+      "git_blob": "77f08796a11ff8a8538e72e6e07019a3b19bb4ff",
+      "baseline_blob": "77f08796a11ff8a8538e72e6e07019a3b19bb4ff",
+      "changed": false
+    },
+    {
+      "path": "scripts/build.ps1",
+      "bytes": 3103,
+      "sha256": "592a749882de86e5a4cde58aacf7d868af611a124cb3ca2e69b8998684859b14",
+      "git_blob": "fc44f226c994e6fdea911757d0fe710e2555db74",
+      "baseline_blob": "fc44f226c994e6fdea911757d0fe710e2555db74",
+      "changed": false
+    }
+  ],
+  "artifact_pins": [
+    {
+      "path": "local/movie_factory_root_binding/compile_objects.cmd",
+      "bytes": 1148,
+      "sha256": "3acb0df7785c7604e2d80521972374c14f828a336685f4d352f298e78e2135eb"
+    },
+    {
+      "path": "local/movie_factory_root_binding/compile_objects.log",
+      "bytes": 66,
+      "sha256": "80076d5716cde2c1b7b860b4ac4da451adfdaf36866771fd41e6f8a9475ebb3e"
+    },
+    {
+      "path": "local/movie_factory_root_binding/compile_final_core.cmd",
+      "bytes": 733,
+      "sha256": "f9b09dfbb48ffcda8a08700b7b9cb2912933cdcae3546a9f2c7814c70b296149"
+    },
+    {
+      "path": "local/movie_factory_root_binding/compile_final_core.log",
+      "bytes": 34,
+      "sha256": "3608d2b3a09e672a412101a1fc83263ec6bce3da21489d77d6d7cf61939c91c1"
+    },
+    {
+      "path": "local/movie_factory_root_binding/game_hosts_off.obj",
+      "bytes": 1276119,
+      "sha256": "5b17960249de640e450828568c7a5f80c3824cf218412cfd913c5c5aea690c04"
+    },
+    {
+      "path": "local/movie_factory_root_binding/game_hosts_on.obj",
+      "bytes": 1314942,
+      "sha256": "5994d262e3782eb9419cc77cfbcd4672dd17d6876934c2727003601aa8380665"
+    },
+    {
+      "path": "local/movie_factory_root_binding/native_singleton_destruction.obj",
+      "bytes": 30182,
+      "sha256": "4d22454c9a235e7c482d74d5ed50a5dc23557b842d6308de0a914f5f7dd79a9b"
+    },
+    {
+      "path": "local/movie_factory_root_binding/game_hosts_off.symbols.txt",
+      "bytes": 2103180,
+      "sha256": "6c75e768adb3e5bad921718a81a0b4c445bea5fa9d8793cba53efb509364da72"
+    },
+    {
+      "path": "local/movie_factory_root_binding/game_hosts_on.symbols.txt",
+      "bytes": 2159746,
+      "sha256": "339135440cfae372afa8b789852d49bc44b0ed94c4563a5ce5337b1e64c09539"
+    },
+    {
+      "path": "local/movie_factory_root_binding/native_singleton_destruction.symbols.txt",
+      "bytes": 49039,
+      "sha256": "eb6c044e0e3027caa9b55046a8a6dfb9dea4e04812a0b47a07b87cc076ffc670"
+    },
+    {
+      "path": "local/movie_factory_root_binding/game_hosts_off.assembly.txt",
+      "bytes": 4001646,
+      "sha256": "cc6e03a06c90f2d283dfa5e004a9e30c5a66ce670ec1d557d214524dabaedef3"
+    },
+    {
+      "path": "local/movie_factory_root_binding/game_hosts_on.assembly.txt",
+      "bytes": 4107662,
+      "sha256": "948117c7c5578a40490f0d7dd8c350895dd24511d83510cb18bfa1526e08ab66"
+    },
+    {
+      "path": "local/movie_factory_root_binding/native_singleton_destruction.assembly.txt",
+      "bytes": 95647,
+      "sha256": "9db5a70c9576f669ca83388a9f7792b1313838a97bd50d48c7ea0a17be76d80a"
+    },
+    {
+      "path": "local/movie_factory_root_binding/common_game_hosts.symbols.txt",
+      "bytes": 1898838,
+      "sha256": "384c3d74377c54988e7ec2c03d8f49494ce1ba4f073e7240eeab7e8817f80674"
+    },
+    {
+      "path": "local/movie_factory_root_binding/configure.log",
+      "bytes": 971,
+      "sha256": "cbeb6b8be0e554a25c230ba4ba1873a1fd1c1c1bd1c254737c20a80653d873dc"
+    },
+    {
+      "path": "local/movie_factory_root_binding/standard_release_build.log",
+      "bytes": 99382,
+      "sha256": "fc4aa6ae61a9c2f42c6acfc97e1289865932bf3f176844a050dd2cb059a13ebd"
+    },
+    {
+      "path": "local/movie_factory_root_binding/standard_release_final.log",
+      "bytes": 2614,
+      "sha256": "b5148621130d94576def5ca7d43e2159da4c9b2332f4c9c960c11f71d922072a"
+    },
+    {
+      "path": "build/win32/bsp_game.dir/Release/game_hosts.obj",
+      "bytes": 1154480,
+      "sha256": "668ca806fae14f3f3b4cf3875f1d67032fede81a03057665c9b069b630ba6c69"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj",
+      "bytes": 28074,
+      "sha256": "505e92e5093ddb1debc8981d73ada88cb62a391c920593f7347b5b8fc7083783"
+    },
+    {
+      "path": "build/win32/Release/bsp_game.exe",
+      "bytes": 7481344,
+      "sha256": "6f1d9288d671b7c7720c38240f3ed5329e1ed581cccdca9b1a5d17447458f3db"
+    },
+    {
+      "path": "build/win32/bsp_game.map",
+      "bytes": 11318234,
+      "sha256": "90c20515c90c1abf0e203c348cd2576d5cb3bd816383f285311ff1765102147c"
+    }
+  ],
+  "audit_utc": "2026-10-29T22:24:42.006975+00:00",
+  "abi_compatible": false,
+  "game_validated": false
+}
