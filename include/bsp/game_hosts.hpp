@@ -83,6 +83,7 @@ class GameNativeSettingsProcess;
 class GameScriptHost;
 class GameNativeLuaServices;
 class GameNativeRendererApplication;
+class GameNativeMissionFactories;
 class GameNativeShadowTargetApplication;
 class GameNativeGuiEffectProbe;
 class GameNativeGuiRenderApplication;
@@ -754,6 +755,7 @@ private:
     void exit_if_particle_manager_failed() noexcept;
     void exit_if_native_lua_interrupted() noexcept;
     void exit_if_native_renderer_incomplete() noexcept;
+    void drain_native_singletons();
     void exit_if_native_fonts_interrupted() noexcept;
     void retire_native_fonts_before_drain() noexcept;
     void exit_if_native_shadow_incomplete() noexcept;
@@ -770,6 +772,10 @@ private:
     void close_native_gui_text_after_drain() noexcept;
     void close_native_shadow_after_drain() noexcept;
     std::unique_ptr<GameNativeRendererApplication> native_renderer_;
+    enum class StartupFactoriesPhase { unattempted, prepared, creating, live,
+        retiring, retired, closed, failed };
+    StartupFactoriesPhase startup_factories_phase_{StartupFactoriesPhase::unattempted};
+    std::unique_ptr<GameNativeMissionFactories> native_startup_factories_;
     std::unique_ptr<GameNativeShadowTargetApplication> native_shadow_;
     std::unique_ptr<GameNativeGuiEffectProbe> native_gui_probe_;
     std::unique_ptr<GameNativeGuiRenderApplication> native_gui_render_;

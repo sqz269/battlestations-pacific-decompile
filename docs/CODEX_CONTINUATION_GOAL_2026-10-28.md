@@ -393,3 +393,47 @@ input_runtime_ publication and native backend startup stay at73DD8E. The real
 existing clock/XInput/platform/sound graph supplies the same borrowed core to a
 future sampler. Win32 Release and both existing CTests pass; no input/gameplay
 or shader-loading runtime proof is claimed. See CODEX_A2_INPUT_METADATA.md.
+
+A2 OFF candidate source now binds one early host-owned procedural factory
+domain, retained startup sampler/effect/73BF80 preload and borrowed mission
+views. Independent review found a stale mission borrow after host owner reset;
+both closure paths now detach it. Quiescent retirement precedes native drain,
+full renderer closure precedes host acknowledgment, and entered failures keep
+the whole graph through immediate process exit. Frozen builds/gates follow;
+this source composition does not activate A2. The genuine private Model-only
+router e769 is separately merged/registered and Win32 build-tested, still
+uncalled with actual DEFAULT lifecycle proof pending.
+
+## A2 startup activation accepted
+
+Corrected ONdfa82aafb and OFF51e6199da differ only in the A2 bool across all
+C++/include/CMake sources. Both builds pass the two existing CTests. Corrected
+smokes and all four serial reference4800/native-MSD1600 runs exit0; gameplay,
+mission ordered traces, startup36 and first RNG match. Root reviewed the frozen
+independent predicates, every raw-difference category and ordered edit inventory.
+The original failed334 smoke and its distinct artifact remain preserved.
+
+A2 now runs the genuine early BBCB40 factory setup and real73BF80 preload/cache
+bracket once, borrowing the canonical Application rows and sharing the same
+owners with mission rendering. The switch is ON. Native Page stays OFF. Ref
+rawpair1 has only the inventoried startup/cleanup rows and Lua getter diagnostic;
+MSD rawpair0 and actual shutdown400/400diff0. The old rawteardown70 is preserved
+and explained by one preload row moving to startup.
+
+MSD retains exactly the unchanged accepted error.dds/profileD61948/ref1 residue
+with one skipped release/one entry and final COMdevice1/api1. The generic raw
+COM-zero failure remains visible; a separate exact Source/baseline qualification
+supports this bounded activation. Reference/smoke COM0/0. See
+CODEX_A2_STARTUP_PRELOAD.md and the gate directory's frozen evaluation.
+This does not close full GUI/visual/interaction, raw Text/Icon/Model/Page
+lifecycles, queued-callback failure, allocator/reload or Original ABI proof.
+
+Private Model node/scene/type provider2049 and DEFAULT AA1380 helperba2 now
+pass root/independent source review and the integratedcb6ba1195 Win32 build,
+including both existing CTests. Both TUs are compiled in bsp_core, with no
+production caller, new native body credit or actual DEFAULT lifecycle proof.
+The next retained-owner composition must connect the real renderer services and
+raw-compatible widget lifetime dispatch; legacy Text-reference dispatch cannot
+stand in for the new raw122 companion. Actual creation belongs after genuine
+Text type startup in a legitimate cache bracket, with retained frames/providers
+through complete renderer drain, failure and surviving Model credits/flags0.

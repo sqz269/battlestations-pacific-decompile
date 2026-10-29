@@ -20,6 +20,10 @@ public:
     GameNativeMissionFactories& operator=(const GameNativeMissionFactories&) = delete;
 
     void create();
+    // Borrow admission only: recheck the genuine live table/parent/registry
+    // identities without setup, registration or ownership transfer. A failed
+    // live validation latches failure and requires whole-graph retention.
+    void require_lookup_ready();
     bool requires_process_retention() const noexcept;
     // Caller guarantees no later factory lookup, setup or asset acquisition.
     // Run after mission consumers retire and before the raw singleton drain.
