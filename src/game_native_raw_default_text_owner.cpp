@@ -12,7 +12,9 @@
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/game_native_gui_text_process.hpp"
 #include "bsp/game_native_gui_text_state.hpp"
+#include "bsp/game_native_font_application.hpp"
 #include "bsp/native_gui_text_default_widget_lifetime.hpp"
+#include "bsp/native_gui_text_shader_storage.hpp"
 #include "bsp/native_gui_text_primary_prefix_lifetime.hpp"
 #include "bsp/native_gui_text_prefix_geometry_lifetime.hpp"
 #include "bsp/native_model_storage_node_dispatch.hpp"
@@ -53,10 +55,12 @@ const volatile Word* table(GameNativeReadOnlyData& data, Word address, std::size
 struct GameNativeRawDefaultTextOwner::Impl {
     enum class Phase { fresh, preparing, prepared, creating, empty, bound, retiring, retired, closing, closed, failed };
     enum class Mode { default_lifecycle, primary_prefix, primary_prefix_geometry };
+    enum class FontLink { none, entered, bound, detached, failed };
     struct Services;
     struct Attempt;
     struct PrimaryPrefix;
     struct Geometry;
+    struct FontShader;
     GameHostLog& log;
     GameNativeRendererApplication& renderer;
     GameVfsHost& vfs;
@@ -65,6 +69,10 @@ struct GameNativeRawDefaultTextOwner::Impl {
     GameNativeGuiSamplerApplicationBindings sampler_bindings;
     Phase phase{Phase::fresh};
     std::exception_ptr failure;
+    FontLink font_link{FontLink::none};
+    const GameNativeFontApplication* font_producer{};
+    NativeFontResourceOwners* font_resources{};
+    const void* font_registry_image{}; // identity only after native Font retirement
     std::unique_ptr<Services> services;
     Impl(GameHostLog& l, GameNativeRendererApplication& r, GameVfsHost& v,
         GameSingletonHost& s, GameNativeReadOnlyData& d, GameNativeGuiSamplerApplicationBindings b)
@@ -83,6 +91,11 @@ struct GameNativeRawDefaultTextOwner::Impl {
             try { log.note("raw DEFAULT Text owner failure: nonstandard exception"); } catch (...) {}
         }
         observe("failed");
+    }
+    void fail_font_link(const GameNativeFontApplication& producer) noexcept {
+        if (!font_producer) font_producer = &producer; // never replace a different admitted producer
+        font_link = FontLink::failed;
+        fail();
     }
     bool custody_settled() const noexcept;
     static bool attempt_settled(const Attempt&) noexcept;
@@ -142,6 +155,40 @@ struct GameNativeRawDefaultTextOwner::Impl::Services {
     void prepare(std::size_t);
 };
 
+struct GameNativeRawDefaultTextOwner::Impl::FontShader {
+    Impl& owner;
+    NativeGuiTextShaderStorageContext context;
+    NativeGuiTextShaderStorageFrame frame;
+    explicit FontShader(Services& s)
+        : owner(s.owner), context{*s.owner.font_resources,
+              s.owner.sampler_bindings.actual_platform_0109cf04, nullptr}, frame(context) {}
+    ~FontShader() noexcept { if (!untouched()) std::terminate(); }
+    bool untouched() const noexcept {
+        using Frame = NativeGuiTextShaderStorageFrame;
+        const auto& c = frame.cache;
+        const auto& l = c.loader;
+        return frame.prepared_raw_context() == &context && &context.fonts == owner.font_resources &&
+            context.configuration_0109cf04.identity() == owner.sampler_bindings.actual_platform_0109cf04.identity() &&
+            !context.unknown_renderer48 && frame.phase == Frame::Phase::fresh &&
+            frame.boundary == Frame::Boundary::none && frame.escaped_boundary == Frame::Boundary::none &&
+            !frame.destination && !frame.selected_name && !frame.captured_configuration && !frame.captured_font &&
+            !frame.captured_renderer && !frame.result && !frame.renderer_profile && !frame.renderer_target &&
+            !frame.active_call_site && !frame.escaped_call_site && frame.native_eh_state == -1 &&
+            !frame.cached && !frame.override_selected && !frame.height_matches && !frame.font_scale_matches &&
+            !frame.empty_constructed && !frame.empty_compared && !frame.empty_returned && !frame.default_constructed &&
+            !frame.renderer_entered && !frame.renderer_returned && !frame.shader_published &&
+            !frame.cleanup_entered && !frame.cleanup_returned && !frame.exception_cleanup_started && !frame.attempted &&
+            !frame.captured_name_data && !frame.captured_name_bytes &&
+            c.phase == NativeMaterialEffectCacheAcquired::Phase::not_started && !c.loaded && !c.result &&
+            !c.cache_published && !c.caller_acquired && !c.key_resolution &&
+            l.phase == NativeMaterialEffectLoadPhase::not_started && !l.raw_slot && !l.creator && !l.companion &&
+            !l.owner_record && !l.constructor_complete && !l.registered && !l.returned &&
+            !l.name_resolution.acquired && !l.programs && !l.fallback && !l.constructor_texture;
+        // names[] remain uninitialized. No native Font/image/header is read.
+        // This metadata-only packet admits NO completed shader operation.
+    }
+};
+
 struct GameNativeRawDefaultTextOwner::Impl::Attempt {
     struct Disposal { Impl* owner; Attempt* attempt; };
     Services& services;
@@ -175,6 +222,7 @@ struct GameNativeRawDefaultTextOwner::Impl::Attempt {
     NativeGuiTextRawModelDefaultStorageContext default_context;
     NativeGuiTextRawModelDefaultStorageFrame default_frame;
     std::unique_ptr<PrimaryPrefix> primary_prefix;
+    std::unique_ptr<FontShader> font_shader;
     NativeGuiTextRawModelRetirementContext retirement;
     NativeGuiTextRawModelReferenceContext reference_context;
     alignas(NativeGuiTextRawModelReference) std::byte companion[sizeof(NativeGuiTextRawModelReference)];
@@ -466,9 +514,11 @@ GameNativeRawDefaultTextOwner::Impl::Attempt::Attempt(Services& s, std::size_t c
           cell(s.owner.data, 0x00ce3e18), cell(s.owner.data, 0x00d7a24c), cell(s.owner.data, 0x00ce3800)},
       default_frame{section_frame},
       primary_prefix(s.mode != Mode::default_lifecycle ? std::make_unique<PrimaryPrefix>(*this, s, capacity) : nullptr),
+      font_shader(s.owner.font_link == FontLink::bound ? std::make_unique<FontShader>(s) : nullptr),
       retirement{sections, construction.sections.model, widgets->context(), glyphs, s.process.pool_00f8bdf0(),
           primary_prefix ? &primary_prefix->context : nullptr},
-      reference_context{s.owner.renderer.actual_owners(), s.owner.data, default_context, default_frame, construction, retirement},
+      reference_context{s.owner.renderer.actual_owners(), s.owner.data, default_context, default_frame, construction, retirement,
+          font_shader ? &font_shader->frame : nullptr},
       disposal{&s.owner, this},
       factory_context{s.process, reference_context, construction, reference_frame, companion, sizeof(companion),
           {&disposal, sizeof(disposal), &Attempt::dispose}},
@@ -478,6 +528,7 @@ GameNativeRawDefaultTextOwner::Impl::Attempt::~Attempt() {
     // No native cleanup. Reset dependent metadata while both Model records,
     // all acquisitions and private widget history are STILL alive.
     primary_prefix.reset();
+    font_shader.reset(); // while collection/producer C++ metadata and real cache/provider contexts remain alive
     widgets.reset();
     construction.sections.model.reference.reset();
 }
@@ -498,12 +549,18 @@ void GameNativeRawDefaultTextOwner::Impl::Services::prepare(std::size_t capacity
     effect_cache = &effects->native_effect_cache(); // capture once BEFORE native/cache entry
     attempt = std::make_unique<Attempt>(*this, capacity);
     attempt->bind(); // installed before all remaining pure admission
+    if (owner.font_link != FontLink::none)
+        require(owner.font_link == FontLink::bound && owner.font_producer && owner.font_resources &&
+            owner.phase == Phase::preparing && !owner.failure && !owner.font_producer->failure() &&
+            attempt->font_shader && attempt->font_shader->untouched(),
+            "raw Font metadata preparation cannot resume a failed or reentrant link");
 }
 bool GameNativeRawDefaultTextOwner::Impl::custody_settled() const noexcept {
     if (!services || !services->attempt) return true;
     return attempt_settled(*services->attempt);
 }
 bool GameNativeRawDefaultTextOwner::Impl::attempt_settled(const Attempt& a) noexcept {
+    if (a.font_shader && !a.font_shader->untouched()) return false;
     const bool prefix_unused = !a.primary_prefix || a.primary_prefix->unused();
     if (!a.factory.started) return prefix_unused;
     if (a.factory.phase == NativeGuiTextDefaultFactoryStorageAcquired::Phase::empty)
@@ -529,6 +586,8 @@ bool GameNativeRawDefaultTextOwner::Impl::attempt_settled(const Attempt& a) noex
         a.tree_acquired.current04_entered && a.tree_acquired.current04_returned;
 }
 bool GameNativeRawDefaultTextOwner::Impl::retain() const noexcept {
+    if (font_link == FontLink::entered || font_link == FontLink::failed ||
+        (font_link == FontLink::bound && (!font_producer || font_producer->failure()))) return true;
     if (failure || phase == Phase::preparing || phase == Phase::creating || phase == Phase::retiring ||
         phase == Phase::closing || phase == Phase::failed) return true;
     if (services) {
@@ -536,6 +595,7 @@ bool GameNativeRawDefaultTextOwner::Impl::retain() const noexcept {
             (services->effects && services->effects->requires_process_retention())) return true;
         if (services->attempt) {
             const auto& a = *services->attempt;
+            if (a.font_shader && !a.font_shader->untouched()) return true;
             if (a.primary_prefix && a.primary_prefix->retain()) return true;
             using CallPhase = NativeModelStorageDispatchCallAcquired::Phase;
             if (a.widget_acquired.active || a.widget_acquired.poisoned || a.tree_acquired.poisoned ||
@@ -563,7 +623,88 @@ GameNativeRawDefaultTextOwner::GameNativeRawDefaultTextOwner(GameHostLog& log,
     GameNativeReadOnlyData& data, GameNativeGuiSamplerApplicationBindings bindings)
     : impl_(std::make_unique<Impl>(log, renderer, vfs, singletons, data, bindings)) {}
 GameNativeRawDefaultTextOwner::~GameNativeRawDefaultTextOwner() noexcept {
-    if (impl_->phase != Impl::Phase::fresh && impl_->phase != Impl::Phase::closed) std::terminate();
+    if ((impl_->phase != Impl::Phase::fresh && impl_->phase != Impl::Phase::closed) ||
+        (impl_->font_link != Impl::FontLink::none && impl_->font_link != Impl::FontLink::detached)) std::terminate();
+}
+void GameNativeRawDefaultTextOwner::begin_raw_font_link(const GameNativeFontApplication& producer,
+    GameNativeRendererApplication& renderer, GameVfsHost& vfs) {
+    auto& p = *impl_;
+    try {
+        require(p.font_link == Impl::FontLink::none && !p.font_producer && !p.font_resources &&
+            !p.font_registry_image && p.phase == Impl::Phase::fresh && !p.services && !p.failure,
+            "raw Font link begins once on its SAME fresh stable unprepared owner");
+        p.font_producer = &producer;
+        p.font_link = Impl::FontLink::entered; // BEFORE domain/producer admission and irreversible export.
+        require(&renderer == &p.renderer && &vfs == &p.vfs && producer.ready() && !producer.failure(),
+            "raw Font link requires the existing SAME ready producer/renderer/VFS domains");
+        require(p.font_link == Impl::FontLink::entered && p.font_producer == &producer &&
+            p.phase == Impl::Phase::fresh && !p.failure,
+            "caught raw Font link failure cannot resume its entered handshake");
+    } catch (...) { p.fail_font_link(producer); throw; }
+}
+void GameNativeRawDefaultTextOwner::complete_raw_font_link(const GameNativeFontApplication& producer,
+    NativeFontResourceOwners& resources, const void* image) {
+    auto& p = *impl_;
+    try {
+        require(p.font_link == Impl::FontLink::entered && p.font_producer == &producer &&
+            p.phase == Impl::Phase::fresh && !p.services && !p.failure &&
+            !p.font_resources && !p.font_registry_image && producer.ready() && !producer.failure(),
+            "raw Font completion requires its SAME unfailed pre-export owner handshake");
+        require(image && resources.native_registry_image() == image,
+            "raw Font completion requires the producer's SAME actual ready native image collection");
+        p.font_resources = &resources;
+        p.font_registry_image = image;
+        require(p.font_link == Impl::FontLink::entered && p.font_producer == &producer &&
+            p.phase == Impl::Phase::fresh && !p.failure && !producer.failure(),
+            "caught raw Font completion failure cannot publish a bound borrower");
+        p.font_link = Impl::FontLink::bound;
+    } catch (...) { p.fail_font_link(producer); throw; }
+}
+void GameNativeRawDefaultTextOwner::fail_raw_font_link(const GameNativeFontApplication& producer) noexcept {
+    impl_->fail_font_link(producer);
+}
+void GameNativeRawDefaultTextOwner::require_font_retirement(const GameNativeFontApplication& producer,
+    const NativeFontResourceOwners& resources, const void* image) const {
+    auto& p = *impl_;
+    try {
+        require(p.font_link == Impl::FontLink::bound && p.font_producer == &producer &&
+            p.font_resources == &resources && p.font_registry_image && p.font_registry_image == image &&
+            p.phase == Impl::Phase::retired && !p.failure && !p.retain() && p.custody_settled(),
+            "Font retirement needs this SAME terminal retired raw owner and all actual custody settled");
+        require(producer.ready() && !producer.failure() && resources.native_registry_image() == image,
+            "Font retirement must precede native destruction of the SAME ready producer image");
+        if (p.services && p.services->attempt) {
+            const auto& a = *p.services->attempt;
+            require(a.font_shader && a.font_shader->untouched() &&
+                a.reference_context.font_shader_frame == &a.font_shader->frame,
+                "Font retirement requires the exact reserved untouched shader/provider graph");
+        }
+    } catch (...) { p.fail_font_link(producer); throw; }
+}
+void GameNativeRawDefaultTextOwner::detach_raw_font_link_after_parent_drain(const GameNativeFontApplication& producer,
+    const NativeFontResourceOwners& resources, const void* image) {
+    auto& p = *impl_;
+    try {
+        require(p.font_link == Impl::FontLink::bound && p.font_producer == &producer &&
+            p.font_resources == &resources && p.font_registry_image && p.font_registry_image == image &&
+            p.phase == Impl::Phase::closed && !p.failure && !p.retain() && p.custody_settled(),
+            "raw Font detach follows this SAME owner's actual parent-drain closure and settled custody");
+        // Producer half proves its RETIRED phase. Its normal bound-retired
+        // retention remains true until BOTH layers detach; do not deadlock on it.
+        require(!producer.ready() && !producer.failure(),
+            "raw Font detach requires the producer's completed native retirement");
+        if (p.services && p.services->attempt) {
+            const auto& a = *p.services->attempt;
+            require(a.font_shader && a.font_shader->untouched() &&
+                a.reference_context.font_shader_frame == &a.font_shader->frame,
+                "raw Font detach keeps its SAME quiescent prepared metadata until owner reset");
+        }
+        require(p.font_link == Impl::FontLink::bound && p.phase == Impl::Phase::closed && !p.failure,
+            "caught raw Font detach failure cannot be overwritten by completion");
+        p.font_link = Impl::FontLink::detached;
+        // Stored producer/resources/image are now diagnostic identities only.
+        // No retired Font/header/list/texture, image getter or native slot read.
+    } catch (...) { p.fail_font_link(producer); throw; }
 }
 void GameNativeRawDefaultTextOwner::prepare_metadata_in_ready_renderer(std::size_t capacity) {
     auto& p = *impl_;

@@ -1,6 +1,6 @@
 # Raw Font owner metadata link
 
-**API-only checkpoint; implementation not yet supplied or built.** Base is
+**UNBUILT metadata-only owner implementation; no caller.** Base is
 `f7f6dd79d0658a8c40b0a60b0f58547857086ed6`, reviewed plan9953. This packet
 owns only raw-default Text owner HPP/CPP and this doc; producer worker owns
 the combined Font Host/App half. No source activation, native-body credit,
@@ -53,3 +53,68 @@ Existing DEFAULT/prefix/geometry behavior stays unchanged for an unlinked owner.
 Raw AB8C30 and owned cached1EC EFFECT credit/retirement are separate blockers.
 This interface exports no raw Text/Font pointer or new shader execution path.
 Root owns combined source review/build, later preregistered gates and integration.
+
+## Implemented owner half and exact backing
+
+The exact header/API checkpoint is `103def30aac1862924f87e0343f1c96e45ef04e0`.
+Producer worker's combined Host/App code is the ONLY admitted caller of this
+handshake: it proves its private actual collection/native-image association,
+then passes that collection and image to complete. Owner begin additionally
+checks the SAME constructor renderer/VFS references, fresh owner and ready
+unfailed producer. Complete checks that the actual collection's ready image is
+the admitted nonnull identity, with no Font lookup or native image payload read.
+Producer/collection origins are not inferred from a pointer/profile/count token.
+
+Entered, bound, failed and detached are independent metadata link states. Every
+handshake/guard/detach exception latches failed and the owner failure phase.
+`fail_raw_font_link` records a previously absent producer even on a pre-begin
+rejection, but never replaces another recorded producer. Completion/detach have
+sticky final checks; caught failure cannot overwrite them with success. A bound
+fresh or closed owner cannot be destroyed before explicit detach. A producer
+failure also retains a still-bound owner.
+
+When linked, Attempt constructs ONE FontShader metadata object before raw122:
+real ShaderContext.fonts is the saved collection; configuration is the SAME
+sampler/renderer actual0109CF04 cell already authenticated by Services. The raw
+known-B318B0 path uses the existing real reference effects/cache/program/VFS/
+Lua/string/sampler services. The unknown-target pointer is null because d13's
+raw entry explicitly rejects unknown targets; no fake callable is installed.
+Frame(context) immutably prepares the SAME context; names[4] stay uninitialized.
+Raw122's trailing font_shader_frame names this exact stable Frame, so its real
+concrete frame/context/platform/cache-backing checks apply before binding/flags.
+
+For this packet, FontShader must remain wholly untouched: exact prepared context/
+collection/configuration identity, FRESH phase, no boundary/result/name/renderer/
+cleanup/attempt markers and no entered cache/loader/owned-reference state. Native
+name bytes are never inspected. COMPLETE is deliberately not accepted: shader
+execution and effect-credit retirement are separate unfinished work. This guard
+extends settlement/retention, rather than reusing DEFAULT-only settlement.
+
+Before Font retirement, require_font_retirement checks exact saved producer/
+collection/image, owner RETIRED, all Text/Models/operation custody settled, ready
+unfailed producer and SAME still-ready collection image. Prepared raw122/Frame
+identity must match and be untouched. An owner retired without preparing Text
+has no native Font user and no required shader allocation. Bound readiness or
+healthy !retention is never substituted for that terminal proof.
+
+After owner renderer-FIRST closure, detach requires the SAME saved identities,
+CLOSED owner and all custody/untouched backing, plus unfailed non-ready producer.
+The producer half MUST prove its private RETIRED phase before calling detach;
+the owner does not infer it from !ready alone. Its normal bound-retired retention
+can remain true until BOTH layers detach, so owner detach does not deadlock on
+that expected producer retention. It never calls the retired collection's image
+getter. Saved link pointers become diagnostic identities; collection/producer
+C++ objects and all referenced providers still outlive owner reset. Native Font
+images/names/trees/textures may already have ended and are never followed.
+
+Attempt resets FontShader while its real collection/provider C++ backing remains
+alive, before the remaining contexts disappear. Last Text companion disposal
+still never erases Attempt or Font metadata. Services preparation has a final
+sticky link/Frame check after full Attempt binding, before old prepare returns.
+
+Read-only `local/codex_raw_font_owner_source_review.py` compares ELEVEN existing
+bodies against exactf7: all three DEFAULT/prefix/geometry prepare and construct
+paths, real name/db55/return, real379 entry, native scalar schedule, companion
+disposal and renderer-FIRST closure. All match; diff checks pass. No compiler,
+tests, probe, game or Ghidra run occurred. Root must review both owner/producer
+bodies, build, and keep future Font field/effect/retirement gates separate.
