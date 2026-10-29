@@ -84,3 +84,14 @@ No tests, game execution, fixture result, binary ABI compatibility or
 activation is claimed. Genuine caller wiring and host validation remain
 outstanding. The primary owns registration, shared metadata, annotations
 and common build; this packet makes no Ghidra or ledger mutation.
+
+## Primary integration
+
+The primary reviewed both full source/assembly bodies, registered the module
+in `bsp_core` and verified all four call rows. The common Win32 Release build
+on accepted `74074cc65` plus candidate `9a2ece4c` and both existing suites
+passed (11.32 seconds). Receipt: `local/cc16_dyn_pair_retire_build.log`.
+Both metadata-only records now name compiled/unwired source. Locked Ghidra
+annotations were saved and exports refreshed; prior values remain in
+`local/ghidra-annotations-20261029T044659Z.json`. No new fixture, original
+ABI, root reachability or game activation is claimed.
