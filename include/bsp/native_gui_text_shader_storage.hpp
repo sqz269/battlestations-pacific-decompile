@@ -58,9 +58,17 @@ struct NativeGuiTextShaderStorageFrame final {
     std::uint32_t captured_name_bytes{};
 
     NativeGuiTextShaderStorageFrame() noexcept = default;
+    // Pure immutable raw preparation. No Font export/lookup, native cell/name
+    // read or acquisition; the legacy default constructor keeps this null.
+    explicit NativeGuiTextShaderStorageFrame(const NativeGuiTextShaderStorageContext&) noexcept;
+    const NativeGuiTextShaderStorageContext* prepared_raw_context() const noexcept {
+        return prepared_raw_context_;
+    }
     ~NativeGuiTextShaderStorageFrame() noexcept;
     NativeGuiTextShaderStorageFrame(const NativeGuiTextShaderStorageFrame&) = delete;
     NativeGuiTextShaderStorageFrame& operator=(const NativeGuiTextShaderStorageFrame&) = delete;
+private:
+    const NativeGuiTextShaderStorageContext* const prepared_raw_context_{};
 };
 
 // Complete normal AB8CE0..AB8E6C[397B/118 instructions]. Native ECX actual
@@ -94,5 +102,13 @@ struct NativeGuiTextShaderStorageFrame final {
 // A failed/entered frame destructor terminates rather than abandoning it.
 // No raw content/glyph/property/factory admission or host activation is added.
 bool ensure_native_gui_text_font_shader_storage_00ab8ce0(NativeGuiTextReference&,
+    NativeGuiTextShaderStorageContext&, NativeGuiTextShaderStorageFrame&);
+// Qualified raw-Model93/122 transport over the SAME body. Reserve this exact
+// immutably prepared Frame/context in raw122 BEFORE binding. CURRENT48 must be
+// genuine B318B0; an unknown reached target fails after prior effects.
+// A cached fast return or attempted-null is NOT a new Text effect credit.
+// Preserve this frame/real Font/cache/Lua/platform/provider graph through any
+// failure. No raw Font export, cached1EC retirement or production admission.
+bool ensure_native_gui_text_font_shader_storage_00ab8ce0(NativeGuiTextRawModelReference&,
     NativeGuiTextShaderStorageContext&, NativeGuiTextShaderStorageFrame&);
 } // namespace bsp
