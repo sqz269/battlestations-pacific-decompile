@@ -585,3 +585,9 @@ real external raw-string name stage; no fabricated header or inferred name/EH
 cleanup is allowed. Existing DEFAULT behavior remains and no host caller/gate is
 added by these source packets. First scope excludes74, Font/content and parenting;
 geometry compatibility540 is preparation for a later separate composition.
+
+Adapter review identified and closed one private-state API gap: producer Frame
+now exposes a pure typed identity/phase match, with Win32/tests2/2 passing. It
+adds no native operation or credit. The agreed adapter header also distinguishes
+owner preentry from both real raw118 preflight stages; an independent audit
+confirmed the existing authentication supports each without a new count gate.

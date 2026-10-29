@@ -145,3 +145,11 @@ Win32 build and both existing suites pass (10.92 seconds), receipt
 of the entry and source has no caller. No fixture, game or new test case ran.
 This supplies compiled prefix transport/provenance only; every lifetime,
 name-owner, raw118/owner-custody and later child/content/Page gate remains.
+
+The prefix adapter required a pure private-state dependency:
+`Frame::matches(Context, Acquired, Phase) const noexcept` compares only the
+stored reference addresses and private phase. It reads no native field and
+grants no ownership or cleanup permission. This prevents treating public
+Acquired markers as proof of actual Frame preparation/completion. Source
+`17c5dddfb` and both existing suites pass (10.30 seconds), receipt
+`local/cc16_primary_frame_metadata_view_build.log`.
