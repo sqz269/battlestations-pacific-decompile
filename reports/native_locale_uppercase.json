@@ -1,0 +1,112 @@
+{
+  "packet": "codex-raw-locale-uppercase",
+  "base": "e00b43c07",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "names_are_hypotheses": true,
+  "sources": [
+    "src/native_locale_uppercase.cpp"
+  ],
+  "header": "include/bsp/native_locale_uppercase.hpp",
+  "documentation": "docs/NATIVE_LOCALE_UPPERCASE.md",
+  "entries": [
+    {
+      "address": "00a9eba0",
+      "end": "00a9ec2c",
+      "kind": "qualified_raw_source_transport",
+      "cpp_symbol": "bsp::uppercase_native_locale_code_unit_00a9eba0",
+      "source": "src/native_locale_uppercase.cpp",
+      "native_abi": "ECX raw manager; stack DWORD; AX result; RET4",
+      "source_abi": "ordinary C++ API, zero-extended WORD input domain only",
+      "evidence": "EBB0 captured lower; unsigned index against wrapped SUB/SAR1 extent; EBD2 current end recheck; EBDA actual returning Source invalid-parameter entry; EBDF current lower reload; EBF0 upper guard and EC0D current upper reload; first matching WORD; EC1E miss-only qualified CRT fallback"
+    },
+    {
+      "address": "00a9ec30",
+      "end": "00a9ec63",
+      "kind": "qualified_raw_source_transport",
+      "cpp_symbol": "bsp::uppercase_native_locale_wide_header_00a9ec30",
+      "source": "src/native_locale_uppercase.cpp",
+      "native_abi": "ECX raw manager; stack raw8 header; RET4",
+      "source_abi": "ordinary C++ API; raw address/WORD/header representation",
+      "evidence": "EC39 zero-length skip; EC40 current data; EC43 WORD read; EC47 saved destination; EC4D mapping; EC52 wrapping index increment; EC55 captured-destination AX store; EC58 current length compare"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00a9ebda",
+      "native": "00bf6713",
+      "source": "existing invoke_native_invalid_parameter_00bf6713; actual current SDK handler policy, normal return possible"
+    },
+    {
+      "address": "00a9ec08",
+      "native": "00bf6713",
+      "source": "same genuine Source entry; no invented range exception or noreturn"
+    },
+    {
+      "address": "00a9ec1e",
+      "native": "00c0391c",
+      "source": "selected std::towupper current CRT/locale/PTD; Original vendor equivalence unproved"
+    },
+    {
+      "address": "00a9ec4d",
+      "native": "00a9eba0",
+      "source": "new raw WORD-domain mapping API"
+    }
+  ],
+  "validation": {
+    "source_review": "Root read complete HPP/CPP/doc; no Source change requested; final integration review remains Root-owned",
+    "worker_compile": "PASS CMake OBJECT-only MSVC19.51 Win32 Release /O2 /W4 /WX; no target executable/test/probe",
+    "native_callsite_check": "PASS verify_report_calls.py: 4 rows checked, 0 failed",
+    "compile_log": "local/raw_locale_uppercase_validation_20261029/compile.log",
+    "callsite_log": "local/raw_locale_uppercase_validation_20261029/report_calls.log",
+    "Root_build": "pending Root-owned registration and Win32 checks",
+    "tests_or_probes_added": false,
+    "game_run": false,
+    "native_differential": false,
+    "abi_compatible": false,
+    "source_ready": false,
+    "startup_activation": false,
+    "new_native_body_credit": false
+  },
+  "boundaries": [
+    "Caller supplies actual loaded raw0x4040 manager and real raw8 header/backing; no LocaleTables or host string cast",
+    "Manager loading/publication/lifetime and actual caller binding remain unbound",
+    "Compiler-fenced byte memcpy accesses preserve Source epochs, not concurrent atomicity or original fault behavior",
+    "Captured destination must remain writable across mapping/provider calls; header and all current table/data addresses retain caller proofs",
+    "Ordinary API does not preserve arbitrary Native stack DWORD high bits, ECX/RET4 ABI, flags, stack slots or return addresses",
+    "Actual SDK invalid-parameter and std::towupper bindings are Source-qualified; Original handler/CRT/locale/PTD equivalence remains open",
+    "No semantic API behavior, startup code, global/cache, manager allocation or native field is changed",
+    "ac60 Font48/Viper19 runtime source-admission HOLD is not released"
+  ],
+  "evidence": {
+    "original_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "assembly_files": [
+      "exports/bsp/functions/00a9eba0/assembly.txt",
+      "exports/bsp/functions/00a9ec30/assembly.txt"
+    ],
+    "unreached_gap": {
+      "start": "00a9ebad",
+      "end_exclusive": "00a9ebb0",
+      "bytes": "8d4900",
+      "interpretation": "LEA ECX,[ECX], skipped by EBAB JMP"
+    },
+    "Ghidra_mutations": false,
+    "ledger_mutations": false,
+    "native_spans": {
+      "00a9eba0": {
+        "end_exclusive": "00a9ec2c",
+        "bytes": 140,
+        "sha256": "3c27403db935d93d5ec17d19c555eb9a5ca01cf5a730ad738c3605be94342894"
+      },
+      "00a9ec30": {
+        "end_exclusive": "00a9ec63",
+        "bytes": 51,
+        "sha256": "b44208a831618093f557f5eb7e6c213eacc124999bfe7f1e27d887e9ecde5e8c"
+      }
+    },
+    "saved_assembly_sha256": {
+      "00a9eba0": "c93e8ebe5709a2d5b8fa924260a1893d803986a0793d0fa2c7c33c395f935dc1",
+      "00a9ec30": "d901151781b9cc28e028c4cb7a8491e2a50f65576de9530fa2c534de9b4e430e"
+    }
+  }
+}
