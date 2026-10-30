@@ -1,0 +1,595 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-mesh-section-layout-independent-review",
+  "classification": "independent bounded whole raw DrawSection layout Source review",
+  "reviewed_commit": "611d95b43051f3d72fbf31c8a336358688609ef2",
+  "prior_published_Main_batch27": "6f786fd071665b17554e6e60748192d80601bad8",
+  "utc": "2026-10-30T18:33:23.570107+00:00",
+  "owned_files": [
+    "docs/CC16_NATIVE_MESH_SECTION_LAYOUT_INDEPENDENT_REVIEW.md",
+    "reports/cc16_native_mesh_section_layout_independent_review.json"
+  ],
+  "verdict": {
+    "blocking_Source_findings": 0,
+    "findings": [],
+    "ready_for_Root_integration_common_build_assessment": true,
+    "compiled_by_reviewer": false,
+    "actual_retained_SingleLine_adapter_bound": false,
+    "full_frontend_ready": false,
+    "activation": false
+  },
+  "scope": {
+    "full_two_production_files_and_document_read": true,
+    "targeted_report_sections_read": true,
+    "whole_Native_listings_read": [
+      "B865A0 64ops/175B",
+      "B86550 36ops/79B"
+    ],
+    "new_Source_or_address_write": false,
+    "no_additional_helper_recovery": true,
+    "x87_or_local_Native_SEH_frame": false,
+    "Source611_excluded_from_prior_batch27_build": true
+  },
+  "target_Source_input_pins_21": [
+    {
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "path": "include/bsp/native_mesh_section_layout_storage.hpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "9875909104d429eb1144a83d7c2947fc49c6e383",
+      "sha256": "19245d00005b8d543fdcd5b85e71dba091ca158063e38fd86010cfb8e72c8939",
+      "bytes": 6385
+    },
+    {
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "path": "src/native_mesh_section_layout_storage.cpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "3e473a56ff11e6f1f1b24713e6306f763c78e313",
+      "sha256": "d6f0378634d82d4287cf698dd529e24f3a53b4f1b6b0398647d33c4f956c4115",
+      "bytes": 5775
+    },
+    {
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "path": "docs/CC16_NATIVE_MESH_SECTION_LAYOUT_STORAGE.md",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "76088842ebf07edcc9b86b4144d064ecefa57ba2",
+      "sha256": "a50cc363c8c5a5d1afe47d0fe9c4859169f3569752f9340840f0f7a99e5abbb0",
+      "bytes": 12004
+    },
+    {
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "path": "include/bsp/native_mesh_section.hpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "376c7d40d6b124f2b42d333604676ebe2834eac6",
+      "sha256": "c99901d53b195ab67c0da51c7b39657f42b7b60ba1f5509eec200b6ff29f3e2e",
+      "bytes": 9555
+    },
+    {
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "path": "src/native_mesh_section.cpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "58454f0dde681da13d714fc6909f74f2290fcf63",
+      "sha256": "8f09c61b3ba5ef47c403de9769d24d9d9e6a79c1bb8668430e53fc33587ed876",
+      "bytes": 23109
+    },
+    {
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "path": "include/bsp/native_mesh_remaining_fields.hpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "9c9bf7c0117e1bcc46eb5c0732c6f6e5e3a91be8",
+      "sha256": "ad9802edc73b3e59b31420f8e0bf7e4bd789c520d774f0c0837b28d8150766ae",
+      "bytes": 4059
+    },
+    {
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "path": "src/native_mesh_remaining_fields.cpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "ff7808a460b5d8e122e1c5266b3409b570e602f9",
+      "sha256": "8510d38e2a8e24d9d35156cf0274c3dc4590a49b6250d23221cbe0302712fa99",
+      "bytes": 5969
+    },
+    {
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "path": "include/bsp/native_renderer_binding_getters.hpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "13a45c5741d28527bb27b2137cbbb704451b2e2b",
+      "sha256": "ff3fc49ab959b57abfb6287f4d1653d8f86937abfa55ca44012ca97a9a427704",
+      "bytes": 2180
+    },
+    {
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "path": "src/native_renderer_binding_getters.cpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "0dee59a17e9ee8668947a89851ba88097b2e81fb",
+      "sha256": "b8db34694ca9c340e55587acd1a4e95c9aceb46b501b437f177fdb690c505328",
+      "bytes": 1759
+    },
+    {
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "path": "include/bsp/native_ref_counted.hpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "5ee0a9b036a0acd04fe5a89e3faa8cd22552f200",
+      "sha256": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82",
+      "bytes": 1226
+    },
+    {
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "path": "src/native_ref_counted.cpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "bb26a9f52a9b694165a4b832db8a9dac735d1c52",
+      "sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9",
+      "bytes": 822
+    },
+    {
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "path": "include/bsp/native_hardware_layout_factory.hpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "846a368f139d929a674a3e58bd566bd9ef017526",
+      "sha256": "9349fc0e2e88249243f1af07b063397d6b220b4a815ac26e19b0a185f00133d3",
+      "bytes": 1755
+    },
+    {
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "path": "src/native_hardware_layout_factory.cpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "276e00d5309f2ebeb158d64f82104f622947d237",
+      "sha256": "782408551d90456e8908c506ea8d53ad4f44ffe8f7840da255e0b35906d956fe",
+      "bytes": 3995
+    },
+    {
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "path": "include/bsp/native_hardware_layout_construct.hpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "3c79439915fed6a1e08db973c990b556753e89ba",
+      "sha256": "63f4780ba2106fee5ac6ea2737ee546c48ddd82fa7c2fa89eb34dff6d03df798",
+      "bytes": 2237
+    },
+    {
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "path": "src/native_hardware_layout_construct.cpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "88fbd6a1da29f92ede10ce4b0f02b90bbd7189ff",
+      "sha256": "eb91a58f817ab65da5e70aba21502f5459ccc92693055b2ca28642a8c13646a9",
+      "bytes": 8272
+    },
+    {
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "path": "include/bsp/native_hardware_layout_owner.hpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "e66c1d5f100a8e99851c680661d3ef79f1094b7b",
+      "sha256": "57c6e2ad4a2b612969901001efc4c6b8bb8ec3702bcafe180ebc3926cdde5870",
+      "bytes": 3993
+    },
+    {
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "path": "src/native_hardware_layout_owner.cpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "b7453a5820799c42bd1bd66d23c517b9497d999d",
+      "sha256": "dc06e0a774ccd6efa5fa456cd24d124c509aa704c7c9fb85da0ef930419c9eda",
+      "bytes": 9277
+    },
+    {
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "path": "include/bsp/native_logical_vertex_owner.hpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "f2c5a72e46f030f049f370eda07de9594a5f3816",
+      "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c",
+      "bytes": 7242
+    },
+    {
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "path": "src/native_logical_vertex_owner.cpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "be3c28943b8b96b9c2e6829fb93546654271de62",
+      "sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba",
+      "bytes": 25341
+    },
+    {
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "48d89e15a71561637b64b56bb350f8012a094e06",
+      "sha256": "cb3ceeadbdf6ee0de0403247a825c9c4ec2947062449ef31549a1ea4a3e25ea2",
+      "bytes": 8362
+    },
+    {
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "path": "src/native_gui_text_single_line_storage.cpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "33ed0eaa0f7b25d0dfaed106a787f3e0ac2a34e7",
+      "sha256": "bf28c40e92462d515327e90bbecca4336144ee8d7b40ca60e87535d3d8320c6d",
+      "bytes": 16669
+    }
+  ],
+  "producer_report_pin": {
+    "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+    "path": "reports/cc16_native_mesh_section_layout_storage.json",
+    "hash_format": "immutable Git LF blob content",
+    "git_blob": "7d9f3e950b3fdea27eb7973298e9de5fabaed3b0",
+    "sha256": "11f6144d7de2e18c674a5a51471079d9a4240725e2a5f14211bf79a447698a05",
+    "bytes": 21782
+  },
+  "current_identical_target_pin_paths_19": [
+    "include/bsp/native_mesh_section.hpp",
+    "src/native_mesh_section.cpp",
+    "include/bsp/native_mesh_remaining_fields.hpp",
+    "src/native_mesh_remaining_fields.cpp",
+    "include/bsp/native_renderer_binding_getters.hpp",
+    "src/native_renderer_binding_getters.cpp",
+    "include/bsp/native_ref_counted.hpp",
+    "src/native_ref_counted.cpp",
+    "include/bsp/native_hardware_layout_factory.hpp",
+    "src/native_hardware_layout_factory.cpp",
+    "include/bsp/native_hardware_layout_construct.hpp",
+    "src/native_hardware_layout_construct.cpp",
+    "include/bsp/native_hardware_layout_owner.hpp",
+    "src/native_hardware_layout_owner.cpp",
+    "include/bsp/native_logical_vertex_owner.hpp",
+    "src/native_logical_vertex_owner.cpp",
+    "include/bsp/native_mesh_section_layout_storage.hpp",
+    "src/native_mesh_section_layout_storage.cpp",
+    "docs/CC16_NATIVE_MESH_SECTION_LAYOUT_STORAGE.md"
+  ],
+  "historical_SingleLine_caller_pins_2": [
+    {
+      "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+      "target_receipt_pin": {
+        "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+        "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "48d89e15a71561637b64b56bb350f8012a094e06",
+        "sha256": "cb3ceeadbdf6ee0de0403247a825c9c4ec2947062449ef31549a1ea4a3e25ea2",
+        "bytes": 8362
+      },
+      "published_Main27_pin": {
+        "revision": "6f786fd071665b17554e6e60748192d80601bad8",
+        "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "85cb7b172426fb3fd9d82c9fdefac54d8a596652",
+        "sha256": "4c29abfcfa41c929d8d4c584239e4cbadb5f5847c91a59becc3262274ed72394",
+        "bytes": 8272
+      },
+      "qualification": "Existing SingleLine model/caller integration is separately published;611did not change or connect it. Historical caller pin is not a claim of current-byte equality."
+    },
+    {
+      "path": "src/native_gui_text_single_line_storage.cpp",
+      "target_receipt_pin": {
+        "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+        "path": "src/native_gui_text_single_line_storage.cpp",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "33ed0eaa0f7b25d0dfaed106a787f3e0ac2a34e7",
+        "sha256": "bf28c40e92462d515327e90bbecca4336144ee8d7b40ca60e87535d3d8320c6d",
+        "bytes": 16669
+      },
+      "published_Main27_pin": {
+        "revision": "6f786fd071665b17554e6e60748192d80601bad8",
+        "path": "src/native_gui_text_single_line_storage.cpp",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "3ee333ef7714dbfc051e0878b4ad5956770469b4",
+        "sha256": "c67aeabe843cbf8799713a9077075100a532b5ff4ab067a19ef2f96564f7d62c",
+        "bytes": 16679
+      },
+      "qualification": "Existing SingleLine model/caller integration is separately published;611did not change or connect it. Historical caller pin is not a claim of current-byte equality."
+    }
+  ],
+  "raw_export_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b865a0\\assembly.txt",
+      "bytes": 1963,
+      "sha256": "8e0972542222311cff0a9107b03831d99eed2b5b9776a567ef9a54d17dddb357",
+      "hash_format": "raw_saved_export_file_bytes"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b865a0\\decompiled.c",
+      "bytes": 4024,
+      "sha256": "82235efad6b2217cc4295dab4136de9cef39d743271ec78fef8cce04711b3889",
+      "hash_format": "raw_saved_export_file_bytes"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b86550\\assembly.txt",
+      "bytes": 939,
+      "sha256": "f54138542c6ff397368aa4c31ac686f09d1bf972d735cdb1d2b04e29862c2155",
+      "hash_format": "raw_saved_export_file_bytes"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b86550\\decompiled.c",
+      "bytes": 1620,
+      "sha256": "2daa2c1c1fb6309e8824867ccbd8096d0daf0ddb3e6fd1942259661d3deeb9df",
+      "hash_format": "raw_saved_export_file_bytes"
+    }
+  ],
+  "independent_PE_import_profile_call_audit": {
+    "PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "functions": [
+      {
+        "entry": "00B865A0",
+        "inclusive_end": "00B8664E",
+        "bytes": 175,
+        "decoded_instructions": 64,
+        "sha256": "2bea4cdbde496711878d8baa0b57860646c0fd5f31e70ff142b833070f446f60"
+      },
+      {
+        "entry": "00B86550",
+        "inclusive_end": "00B8659E",
+        "bytes": 79,
+        "decoded_instructions": 36,
+        "sha256": "b6ab5966ea8e3efed1f312889159258d0d75b2509e97aacb22719f0726efdfc1"
+      }
+    ],
+    "decoded_ops": {
+      "00B865A0": 64,
+      "00B86550": 36
+    },
+    "call_receipts_verified": [
+      {
+        "caller": "00B865A0",
+        "site": "00B865AF",
+        "instruction": "0x00b86550",
+        "bytes": 5,
+        "hex": "e89cffffff",
+        "target": "00B86550"
+      },
+      {
+        "caller": "00B865A0",
+        "site": "00B865BF",
+        "instruction": "dword ptr [0x00ce2220]",
+        "bytes": 6,
+        "hex": "ff152022ce00",
+        "import_home": "00CE2220"
+      },
+      {
+        "caller": "00B865A0",
+        "site": "00B865CF",
+        "instruction": "EAX",
+        "bytes": 2,
+        "hex": "ffd0"
+      },
+      {
+        "caller": "00B865A0",
+        "site": "00B865E3",
+        "instruction": "0x00b73260",
+        "bytes": 5,
+        "hex": "e878ccfeff",
+        "target": "00B73260"
+      },
+      {
+        "caller": "00B865A0",
+        "site": "00B865EE",
+        "instruction": "dword ptr [0x00ce221c]",
+        "bytes": 6,
+        "hex": "ff151c22ce00",
+        "import_home": "00CE221C"
+      },
+      {
+        "caller": "00B865A0",
+        "site": "00B86617",
+        "instruction": "EDX",
+        "bytes": 2,
+        "hex": "ffd2"
+      },
+      {
+        "caller": "00B865A0",
+        "site": "00B86641",
+        "instruction": "EDX",
+        "bytes": 2,
+        "hex": "ffd2"
+      },
+      {
+        "caller": "00B86550",
+        "site": "00B8656A",
+        "instruction": "dword ptr [0x00ce2220]",
+        "bytes": 6,
+        "hex": "ff152022ce00",
+        "import_home": "00CE2220"
+      },
+      {
+        "caller": "00B86550",
+        "site": "00B8657A",
+        "instruction": "EAX",
+        "bytes": 2,
+        "hex": "ffd0"
+      }
+    ],
+    "imports_independently_parsed": [
+      {
+        "native_import_home": "00CE221C",
+        "dll": "KERNEL32.dll",
+        "name": "InterlockedIncrement",
+        "disk_IAT_preimage": "00a056d0",
+        "runtime_callable_identity_proved": false
+      },
+      {
+        "native_import_home": "00CE2220",
+        "dll": "KERNEL32.dll",
+        "name": "InterlockedDecrement",
+        "disk_IAT_preimage": "00a056e8",
+        "runtime_callable_identity_proved": false
+      }
+    ],
+    "profile_spans_verified": [
+      {
+        "address": "00D61D90",
+        "role": "D61D6C+24 stream descriptor target",
+        "bytes": 4,
+        "hex": "e08cb400",
+        "sha256": "c2024f81685402b967b0d9fbbfa5b52b2250695315fee75aa88aee2d019b485f"
+      },
+      {
+        "address": "00D5F0E8",
+        "role": "D5F0A8+40 renderer layout target",
+        "bytes": 4,
+        "hex": "10f7b200",
+        "sha256": "16073868b2391a9ca000d76f163189c23036f900c027ce6c19cd5bad044d24f3"
+      },
+      {
+        "address": "00D61D6C",
+        "role": "known logical vertex current00/current04",
+        "bytes": 8,
+        "hex": "e030bd0010bfb400",
+        "sha256": "0ff32d5c6515055196e4c89d3d8e68bb2aa756070e991e08610b5f42db6381d7",
+        "targets": [
+          "00BD30E0",
+          "00B4BF10"
+        ]
+      },
+      {
+        "address": "00D62AF4",
+        "role": "known hardware layout current00/current04",
+        "bytes": 8,
+        "hex": "e030bd007007b600",
+        "sha256": "22b7c729f31369c6714abc3492f15e0c4a38dfebf2876592c310c8d2d2f26a94",
+        "targets": [
+          "00BD30E0",
+          "00B60770"
+        ]
+      }
+    ],
+    "padding_verified": {
+      "address": "00B8660D",
+      "bytes": 3,
+      "hex": "8d4900",
+      "sha256": "53e090edb4fca0626d458dbefa0ae1bcbffc511ed159f1a70641610ad0d9a200"
+    },
+    "no_x87_or_local_SEH_frame": true,
+    "Source_epoch_and_alias_static_checks": "passed",
+    "Original_ABI_runtime_fault_private_alias_proved": false
+  },
+  "clear_review": {
+    "signed_current_count_initial_and_after_each_row_including_null": true,
+    "independent_wrapping_row_and_slot": true,
+    "capture_nonnull_probe_then_live_CE2220_each_release": true,
+    "zero_result_then_fresh_current_profile_00": true,
+    "known_BD30E0_then_fresh_profile_current04_flag1_via_existing_scalar_provider": true,
+    "SAME_slot_clear_only_after_return_including_callback_replacement": true,
+    "null_probe_skips_release_and_slot_clear": true,
+    "final_count_zero_only_after_normal_completion_or_initial_nonpositive": true,
+    "throw_skips_failed_slot_clear_and_final_count_reset": true
+  },
+  "rebuild_review": {
+    "existing_layout_probe_then_whole_clear": true,
+    "fresh_layout_capture_after_clear_then_release_SAMEfield_clear_after_return_and_recheck": true,
+    "mesh_DWORD_home_read_only_countzero_after_prior_releases": true,
+    "whole_raw_B73260_stream0_then_live_CE221C_no_added_null_gate": true,
+    "current_section_count_read_AFTER_increment_for_append": true,
+    "append_store_then_fresh_count_reload_for_wrapping_increment": true,
+    "append_destination_can_alias_section_count_preserved": true,
+    "signed_count_CMP_before_keycount_zero_retained_branch_result": true,
+    "descriptor_current_stream_profile_24_at_each_row": true,
+    "current_keycount_after_descriptor_callback": true,
+    "descriptor_store_then_fresh_count_read_increment": true,
+    "descriptor_index4_aliases_count_at_plus10": true,
+    "raw_addressable_backing_not_CPP_fixed_array_OOB": true,
+    "no_new_four_stream_cap_zero_key_or_count_snapshot": true,
+    "current_section_count_read_after_every_descriptor_and_both_key_writes": true,
+    "renderer_home_profile_40_captured_only_after_loop": true,
+    "known_B48CE0_actual_stream_plus68_getter": true,
+    "known_B2F710_whole_real_context_renderer_ECX_unused": true,
+    "SAME_raw_key_and_existing_optional_acquisition_output": true,
+    "returned_layout_store_after_call_overwrites_current50_even_null_or_replacement": true
+  },
+  "concrete_providers": {
+    "direct_reuse": [
+      {
+        "entry": "00B73260",
+        "symbol": "native_mesh_vertex_stream_unchecked_00b73260",
+        "source": "src/native_mesh_remaining_fields.cpp",
+        "role": "Exactrawmeshstream0uncheckedWordload."
+      },
+      {
+        "entry": "00B48CE0",
+        "symbol": "native_logical_vertex_stream_get_declaration_00b48ce0",
+        "source": "src/native_renderer_binding_getters.cpp",
+        "role": "Exactcapturedstream+68pointergetter; notCOMdeclaration."
+      },
+      {
+        "entry": "00BD30E0",
+        "symbol": "invoke_native_ref_counted_delete_00bd30e0",
+        "source": "src/native_ref_counted.cpp",
+        "role": "Freshcurrentprofile/current04flags1; no extradecrement."
+      },
+      {
+        "entry": "00B2F710",
+        "symbol": "get_or_create_native_hardware_layout_00b2f710",
+        "source": "src/native_hardware_layout_factory.cpp",
+        "role": "Existingrawkey/tree/pool/constructor/stringdomain; rendererECXunused; optionalactualpre-insertionacquisitionobservation."
+      }
+    ],
+    "required_transport": [
+      {
+        "method": "current_table(receiver,captured_profile)",
+        "contract": "Sideeffectfree/noallocation/noreentry; SAME live table; targetreadatnativeepoch."
+      },
+      {
+        "method": "other_reference_current00(receiver,profile,target)",
+        "contract": "Only nonBD30E0 reachedtargets; realwholeSource, throwingtransportunchanged, nofallback."
+      },
+      {
+        "method": "other_stream_descriptor_current24(receiver,profile,target)",
+        "contract": "Only nonB48CE0 reachedtargets; actualwholeSource on capturedstream."
+      },
+      {
+        "method": "other_renderer_layout_current40(renderer,profile,target,key,acquiredOutput)",
+        "contract": "Only nonB2F710 reachedtargets; actualwholeSource oncapturedrenderer/SAMEkey; realpreparedacquisitioncustody."
+      },
+      {
+        "method": "existing scalar_delete.delete_vslot04(receiver,current_profile,1)",
+        "contract": "BD30E0freshcurrent04genuineactualscalar; knownlogicalB4BF10/hardwareB60770reuseexistingrawbodiesandSAMEcontexts; noforcednoexceptterminal."
+      }
+    ],
+    "table_resolver": "Pure/noNativeeffect/noallocation/noreentry metadata; SAME live captured-profile table; no numeric data-to-callable cast.",
+    "reference_imports": "Independently parsed KERNEL32 import identities only. Source context borrows genuine callable homes; each release/increment reloads its reached home. DiskIAT words are not hostcallables.",
+    "same_scalar_logical_vertex_hardware_factory_tree_pool_string_domains_required": true,
+    "all_actual_transport_bindings_closed": false
+  },
+  "inherited_provider_qualification": {
+    "path": "src/native_hardware_layout_factory.cpp",
+    "existing_behavior": "RawSlotCleanup/unwind_raw_slot has a pre-existing noexcept C++ secondary-cleanup termination filter.611does not add or alter it.",
+    "review_scope": "Preserve this existing provider policy/exception qualification; do not infer Original FH3/SEH secondary identity or certify that policy from these no-local-EH bodies.",
+    "hardware_creator_domain": "Existing genuine key/element/private-scratch and acquisition-output preconditions remain; new loops add no cap and do not weaken the callee.",
+    "local611_catch_noexcept_cleanup_retry_rollback_terminal_policy_added": false
+  },
+  "lifetime_and_domain_gates": [
+    "CompleteNativeoperation requires SAMEactualsection/mesh/key/slotwords/currenttables/streams/layouts/renderer/imports andprovider/tree/pool/stringdomain backing through reached accesses.",
+    "Caller supplies every reached validrawkeyword/residue and adjacent backing; no unusedwordzeroing or fixed4streamcap is added.",
+    "B2F710 and its real hardwarecreator retain their existing reachedinput/element/private-scratch preconditions; no new countgate or weakenedcalleecontract is installed.",
+    "Nonnull acquiredBeforeInsertion starts empty perexistingfactorycontract; its metadata remainsretainedonfailure and addsnoNative retain/cleanup/owner.",
+    "Othercurrenttargets require genuinelyrecoveredSource and retainedactualcontexts, neverCOM/defaultbuffer/noop/fabricatedgraph.",
+    "Root actualSingleLineadapter and currentscalar/genuineimport/table/lifetimebinding remainopen; no sharedapplication change is partofthispacket.",
+    "No local Native unwind action; completedpartial releases/slot/count/key effects and unresolvedacquisitions remainforexplicitdisposition, noautomaticreplay."
+  ],
+  "validation": {
+    "whole_Source_100ops_and_current_operand_alias_review": true,
+    "target_GitLF_pins": 21,
+    "raw_export_pins": 4,
+    "PE_bodyhashes": 2,
+    "call_encodings": 9,
+    "import_descriptor_names": 2,
+    "known_profile_spans": 4,
+    "jumped_padding_spans": 1,
+    "Ghidra_read_only_identity": "bsp.py ghidra count ->Client.verify configuredbsp.gpr/projectbsp/program;77632matches snapshot",
+    "Source_CMake_sharedapp_ledger_Ghidra_edits": false,
+    "build_tests_probe_game_or_process_actions": false,
+    "new_tests": 0,
+    "prior_passed_batch27_validates_new_Source611": false,
+    "staged_diff_check": "git diff --cached --check passed; exactly2owned review paths;21immutabletarget pins with explicit2historical caller qualification verified."
+  },
+  "remaining_gates": [
+    "Root joined Win32 build of exact611Source, separately from prior batch27",
+    "Retained actual SingleLine/rawsection adapter, same live mesh/key backing/residue and optional acquisition custody",
+    "Genuine current table/scalar/other-target/import/renderer factory/tree/pool/string bindings and lifetimes",
+    "Original ABI/private stack/alias/fault/FH3/SEH/provider runtime/gameplay and fullfrontend activation remain unproved"
+  ],
+  "new_credit": {
+    "Original": 0,
+    "helper": 0,
+    "vendor": 0,
+    "duplicate_body": 0,
+    "ABI": 0,
+    "runtime": 0,
+    "gameplay": 0,
+    "activation": 0
+  }
+}
