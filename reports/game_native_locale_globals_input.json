@@ -1,0 +1,74 @@
+{
+  "status": "source_reviewed_strict_object_pass_game_registration_link_and_startup_pending",
+  "base": "6a745da7df7c162f90f3ec0f24b61cd618867995",
+  "fragment": "0073e0ba..0073e129; selected00c86c2f",
+  "ordinary_source_api": "bsp::game::register_native_locale_globals_input_0073e0ba(Context const&,Frame&)",
+  "original_abi": "caller raw8 at original EBP-138; real callees retain own Native ABI; not reproduced by this ordinary interface",
+  "source_hashes": {
+    "include/bsp/game_native_locale_globals_input.hpp": "c7917aa6c76ad21c60485c02c27e8492570f38a6f085cd4879fc725d36a8a2f9",
+    "src/game_native_locale_globals_input.cpp": "74daeccd102fdea5086d6b1c69be27ee783a68891fc935c80f3e437cddd1b9e3",
+    "docs/GAME_NATIVE_LOCALE_GLOBALS_INPUT.md": "d7e4b6b447f26620f155d79be861a8f815b5821fdc86b6a390b3c7de25a0442f"
+  },
+  "saved_assembly": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0073d410\\assembly.txt",
+    "sha256": "5fb8af108ad4f7632bdf2f7cb3f967d756cdae9a71f9d054134022696051c88f"
+  },
+  "native_state": {
+    "state_hex": "0x26",
+    "predecessor": -1,
+    "unwind_map": "00db60c0",
+    "row": "00db61f0",
+    "action": "00c86c2f",
+    "action_body": "LEA ECX,[EBP-138]; JMP0041DD20"
+  },
+  "normal_order": [
+    "zero_length",
+    "zero_data",
+    "actual_resize7_preserve1",
+    "CURRENT_data",
+    "nonnull_CURRENT_length_plus1_copy_actualCF7774",
+    "arm26_before_healthy",
+    "borrowed_owner_register",
+    "capture_return_before_healthy",
+    "EARLY_data",
+    "consume_edge",
+    "nonnull_CURRENT_length_plus1",
+    "actual_getter",
+    "healthy_fence",
+    "actual_return_currentAA4"
+  ],
+  "selected_order": [
+    "owned_armed_invocation_only",
+    "consume_before_action",
+    "CURRENT_header_41DD20",
+    "secondary_throw_terminate"
+  ],
+  "late_status_dtor": "own_metadata_only_no_native_cleanup",
+  "private_completion": true,
+  "provider_proof": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\game_native_locale_globals_input_frame_20261030\\provider_proof.json",
+    "sha256": "9805831bebf223fea7ae78223f966775fd3bb227efb4eb203efd18d8e6b7103d",
+    "old_tracked_source_diff_empty": true,
+    "unchanged_provider_count": 12
+  },
+  "strict_object": {
+    "compile_count": 1,
+    "exit_code": 0,
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\game_native_locale_globals_input_frame_20261030\\object_build\\locale_globals_input_object.dir\\Release\\game_native_locale_globals_input.obj",
+    "sha256": "fcd7cd4ca9d6aeecdb64e2a64a4c04fd8c791c3dad422b042d3a73055ac6d300",
+    "machine": "014C",
+    "bytes": 18498,
+    "receipt": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\game_native_locale_globals_input_frame_20261030\\compile_receipt.json",
+    "receipt_sha256": "7d4854d6aaf5a3cfb975eae920589ebb919105395c476361a6b9f632f3e8abef"
+  },
+  "independent_code_reviews": [
+    "Root complete primary c7917/74dae accepted",
+    "Gameplay complete independent c7917/74dae accepted",
+    "Gui complete independent c7917/74dae accepted"
+  ],
+  "no_new_native_vendor_body_credit": true,
+  "source_ready": false,
+  "startup": false,
+  "runtime": false,
+  "new_tests": 0
+}
