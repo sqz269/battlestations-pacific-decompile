@@ -832,7 +832,7 @@
   },
   "failure_and_abi_qualification": {
     "source_parent": "No new catch, rollback, clear, allocator, or exception adapter. A child failure leaves the already written child home and all actual completed child effects observable",
-    "child": "Retains existing real Push/One/N failure and length-error cleanup contracts. Safe C++ exception propagation across the existing private naked helper frames is not proved by this packet",
+    "child": "Real Push/One/N Source bodies are ordinary C++. Their failure, owning length-error and partial-effect contracts remain qualified. The reached invoke_native_invalid_parameter_00bf6713 diagnostic bridge is naked and calls the actual SDK; safe C++ transport through that bridge and original private-frame/FH3/SEH identity are not proved here.",
     "native": "New public C++ ABI, not original register/stack ABI or drop-in replacement. Original FH3, SEH, asynchronous faults, arbitrary private-stack aliasing, and invalid-pointer behavior are not established",
     "fp": "The parent emits no x87 or SSE instruction; this creates no new claim about transitive ambient FP, fault, or exception equivalence"
   },
@@ -1016,5 +1016,11 @@
     "original_abi_credit": 0,
     "activation_credit": 0,
     "admission": "Independent primary review, common build/link and all genuine whole-caller/provider and gameplay gates remain outstanding"
+  },
+  "primary_evidence_text_correction": {
+    "candidate": "70f1c6cef32575c5e93b58ef4a566e301e891b63",
+    "old_child_description": "Retains existing real Push/One/N failure and length-error cleanup contracts. Safe C++ exception propagation across the existing private naked helper frames is not proved by this packet",
+    "production_source_changed": false,
+    "reason": "Do not describe ordinary C++ vector children as naked; distinguish the actual naked diagnostic bridge."
   }
 }
