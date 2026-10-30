@@ -1,0 +1,145 @@
+{
+  "status": "integrated_source_only_lifetime_primitive_primary_plus_two_independent_reviews_strict_object_retained_and_canonical_win32_checked_producer_unbound",
+  "source_ready": false,
+  "activation": false,
+  "new_tests": 0,
+  "new_native_body_credit": 0,
+  "new_entry_or_game_invoked": false,
+  "scope": "Source-only five-live-word20B lifetime primitive, no Native address/function body",
+  "design_sha256": "dff1e14c083a47f12369a99dcb70b84ed363f50e341f7757d8aff6e839a65f97",
+  "source_pins": {
+    "include/bsp/native_lua_variant_record_storage.hpp": {
+      "sha256": "4fc512334233a12060ba1d4488499e29b116f3ccfa732a1630686e233877b59f",
+      "lines": 28
+    },
+    "src/native_lua_variant_record_storage.cpp": {
+      "sha256": "64f050b32085e00eb0f0f3fd3d455106827e40a72b3219b6ad69561426ddba2e",
+      "lines": 32
+    }
+  },
+  "same_object": {
+    "machine": "014C",
+    "sha256": "6071bda0d0a72615f2f42eedf714d2ff0ea91622619ad5c81dce7a56784c1864",
+    "bytes": 1275,
+    "compile_count": 1,
+    "exit_code": 0,
+    "entry_disassembly": "mov eax,[esp+4]; ret",
+    "receiver_loads_or_stores": false,
+    "calls": false,
+    "undefined_externals": []
+  },
+  "existing_provider_preservation_and_common_build": "all9priorpaths byte-identical after oneCoreline inverse; both standardWin32/alltargets suites passed",
+  "producer_commit": "d1f115b3cc180fa0e501551cd18dac4ed1a726bc",
+  "core_registration_commit": "8281fe2dc264f6cebacbc96af4f5e763a01466dc",
+  "joined_peer_main": "9bf2949406254e3a037b322a9c6a8fef5d1ae1ae",
+  "producer_receipt_sha256": "c97da0bb2093e60ae74905bc7196d9df065284b887f298087fd2217b03cfbc2c",
+  "producer_receipt": {
+    "schema": "bsp-native-lua-variant-record-storage-final-v1",
+    "commit": "d1f115b3cc180fa0e501551cd18dac4ed1a726bc",
+    "base": "ff1278fff7afd34e3cbad3a2196f065b4af79ab8",
+    "exactly_four_new_files": [
+      "A\tdocs/NATIVE_LUA_VARIANT_RECORD_STORAGE.md",
+      "A\tinclude/bsp/native_lua_variant_record_storage.hpp",
+      "A\treports/native_lua_variant_record_storage.json",
+      "A\tsrc/native_lua_variant_record_storage.cpp"
+    ],
+    "files": {
+      "include/bsp/native_lua_variant_record_storage.hpp": {
+        "physical_sha256": "4fc512334233a12060ba1d4488499e29b116f3ccfa732a1630686e233877b59f",
+        "git_sha256": "4fc512334233a12060ba1d4488499e29b116f3ccfa732a1630686e233877b59f",
+        "physical_equals_git": true
+      },
+      "src/native_lua_variant_record_storage.cpp": {
+        "physical_sha256": "64f050b32085e00eb0f0f3fd3d455106827e40a72b3219b6ad69561426ddba2e",
+        "git_sha256": "64f050b32085e00eb0f0f3fd3d455106827e40a72b3219b6ad69561426ddba2e",
+        "physical_equals_git": true
+      },
+      "docs/NATIVE_LUA_VARIANT_RECORD_STORAGE.md": {
+        "physical_sha256": "b80e8554ee39c48701f244fa6ca3a9f1b00432cd624fd63873382edfc264e961",
+        "git_sha256": "b80e8554ee39c48701f244fa6ca3a9f1b00432cd624fd63873382edfc264e961",
+        "physical_equals_git": true
+      },
+      "reports/native_lua_variant_record_storage.json": {
+        "physical_sha256": "b16333db5b47437787d2fe00b963d881b836dc2f8780b4b6f569f9d12517f322",
+        "git_sha256": "b16333db5b47437787d2fe00b963d881b836dc2f8780b4b6f569f9d12517f322",
+        "physical_equals_git": true
+      }
+    },
+    "compile_count": 1,
+    "exit_code": 0,
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_lua_variant_record_storage_gui_20261030\\record_storage.obj",
+      "sha256": "6071bda0d0a72615f2f42eedf714d2ff0ea91622619ad5c81dce7a56784c1864",
+      "coff_machine": "014C",
+      "bytes": 1275
+    },
+    "compile_receipt_sha256": "d5fea2ca584685bc8a0b2b038d741f09afdacb9bde6b4f854d2ca958fe913a8a",
+    "actual_symbols_sha256": "d156c5a0d0d5c89ec892926b80e411754c9dfd311f678521e1c3fb58655ca57a",
+    "same_object_inspection_sha256": "748a39be27eef78b9fae7eafa8d2ca21bb359b449c236d3136906842d5043254",
+    "disassembly_sha256": "4a0adf9da7f22c54264cbaa9628ac30d868c306c01846d1f82f71ea12e444daf",
+    "provider_preservation_sha256": "0f69e5b44cbec6dc81152ea908ae149d372e6651b0b8ab130e2290a87e1b9275",
+    "all_prior_tracked_files_unchanged": true,
+    "selected_provider_count": 4,
+    "code_reviews": [
+      "Root exact4fc51233/64f050b3 accepted",
+      "Frame exact4fc51233/64f050b3 accepted"
+    ],
+    "working_tree_clean": true,
+    "source_ready": false,
+    "native_entry_or_body_credit": false,
+    "runtime_validated": false,
+    "tests_executables_probes_game_or_ghidra_mutation": false,
+    "limits": "No caller placement/vector/nested-object/provenance/ABI/startup admission; fresh actual storage and all retained allocation/resource debts remain caller obligations."
+  },
+  "retained": {
+    "suite": "existing2/2 12.12s",
+    "entry_row": "0001:0000f7f0       ?begin_native_lua_variant_record_lifetime_20@bsp@@YAPAUNativeLuaVariantRecordStorage20@1@PAX@Z 100107f0 f i bsp_core:native_lua_variant_record_storage.obj",
+    "entry_invoked": false,
+    "map_sha256": "8912437bcdcf9e3b307b73aba150bcf6c1c5f1c14d245ed876498f5e165396a7",
+    "overlay_sha256": "2ae546b36d752de0577a1a4c0736e29188276503511eb1cfc3ec75fb2525624a"
+  },
+  "canonical": {
+    "suite": "existing2/2 11.77s",
+    "entry_absent_from_project_and_map": true,
+    "overlay_cache_and_project_removed": true,
+    "map_sha256": "e7e71996ea91a98c2da32cb1132eb563c26673718191aef3ac5b2d033a182821",
+    "nine_prior_paths_preserved_with_one_core_inverse": {
+      "CMakeLists.txt": "36e11adcc1b5d0080b8e9a73089d0b02f1ae73642ef7a9587e2259fc2f93d1ba",
+      "cmake/startup.cmake": "91d1de5e0df99d75ab2133869f154c0560d969f8ed3b60c999a495ba097f416b",
+      "include/bsp/native_lua_variant_retirement.hpp": "14258135096189f2892e4d896af417ed0c8fb616d5f1659bbc1d9d032f68a7db",
+      "src/native_lua_variant_retirement.cpp": "5db41574abcb3a94fdb9c6f5c8f96f2b7b0c1f0c2a7f438fe64d622980c065ca",
+      "include/bsp/native_mission_lua_variant_initializer.hpp": "b648ca0d15c70d6a78a4006e23798b6187bba70a63f70bc8c5f86c54d615c494",
+      "src/native_mission_lua_variant_initializer.cpp": "3d8c5e4e5e04a4408e3d0ae8135c56cc03c4a05b3bdf4f1a1cf0e80e371f5c28",
+      "include/bsp/native_lua_variant_slot0.hpp": "d07608ad7eced7695383120269922b31ed694010be1be628f8c42bf8bc861e02",
+      "src/native_lua_variant_slot0.cpp": "9bca14979276e2753fe275b4800f7f1a37ad3c2de4d3091a0d7d8e0eb763ce22",
+      "src/game_native_gui_render_application.cpp": "2132e6bf7222381755f375f333d01a68187acff8daddc2d92e5a0788632aec31"
+    },
+    "nine_text_flags": {
+      "kRawDefaultTextQualificationCc16Bound": "false",
+      "kRawDefaultSourceEqualQualificationCc16Bound": "false",
+      "kRawPrimaryPrefixQualificationCc16Bound": "false",
+      "kRawPrefixGeometryQualificationCc16Bound": "false",
+      "kRawMainSectionQualificationCc16Bound": "false",
+      "kRawFontMainQualificationCc16Bound": "false",
+      "kRawEmptyUnchangedQualificationCc16Bound": "false",
+      "kRawFontMetadataQualificationCc16Bound": "false",
+      "kRawFontWorkQualificationCc16Bound": "false"
+    },
+    "entry_invoked": false
+  },
+  "independent_reviews": {
+    "frame": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_lua_variant_record_storage_review_frame_20261030\\REVIEW.md",
+      "sha256": "c50ce21c685a95d4c791a1dc12638fe54eb4afb0516fcd5870ce6cea4b5f7dc6",
+      "verdict": "ACCEPT_SOURCE_ONLY"
+    },
+    "game": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc9\\local\\native_lua_variant_record_storage_review_cc9_20261030\\REVIEW.md",
+      "sha256": "d3957d339757984380b395c957e3757fcebfb4bbb63df4585fdf7577feaa0caa",
+      "verdict": "ACCEPT_SOURCE_ONLY"
+    }
+  },
+  "primary_review": "local\\lua_variant_record_storage_integration_cc16_20261030\\PRIMARY_REVIEW.md",
+  "original_entry": null,
+  "address_ledger_entry_added": false
+}

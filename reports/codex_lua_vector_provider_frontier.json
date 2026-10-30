@@ -27,6 +27,12 @@
     "chunk": {
       "path": "local/raw_mission_lua_chunk_readiness_cc16_20261030/CONTRACT.md",
       "sha256": "85d981c630ad65bec6451f6602ee4f2cbfc1bb4764605ce6c1724fb80c2be927"
+    },
+    "result_push": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc9\\local\\raw_lua_result_push_readiness_cc9_20261030\\READINESS.md",
+      "sha256": "154fd3fe9c6a6ac78b3e791540970be9916a4e08a77e23cb7d18cad899c3c814",
+      "status": "NOT_PROVIDER_CLOSED",
+      "normal_instruction_count": 35
     }
   },
   "native_instruction_counts": {
@@ -38,7 +44,8 @@
     "006b89c0": 16,
     "006b89f0": 81,
     "006b8ad0": 24,
-    "0074fb30": 6
+    "0074fb30": 6,
+    "006edf00": 35
   },
   "available_bodies": [
     "008849b0 initializer",
@@ -50,7 +57,8 @@
     "matched singleton allocation/free",
     "0041e350 actual raw C-string assignment",
     "qualified6B8960 current-slot flags0 to existing scalar (callsite fragment)",
-    "qualified0074FB30 tag6 using actual clear completion"
+    "qualified0074FB30 tag6 using actual clear completion",
+    "Source-only Record20 lifetime primitive (no Original entry)"
   ],
   "unclosed": [
     "00781f20 matching vendor map assignment (006ee960/00781890)",
@@ -81,7 +89,8 @@
     "actual_raw_vector_producer_binding_present": false,
     "shared_provider_rewrite_requested": false,
     "record_birth_source_review_accepted": true,
-    "record_birth_object_and_integration_pending": true
+    "record_birth_object_and_integration_pending": false,
+    "record_birth_integration": "reports/codex_lua_variant_record_storage_integration.json"
   },
   "slot0_integration": {
     "producer": "fae424f3c07162284f1200e200ca3ac082c6664f",
@@ -91,5 +100,13 @@
     "canonical_checks": "2/2 16.07s",
     "source_ready": false
   },
-  "tag6_integration": "reports/codex_lua_variant_tag6_integration.json"
+  "tag6_integration": "reports/codex_lua_variant_tag6_integration.json",
+  "record_birth_integration": {
+    "producer": "d1f115b3cc180fa0e501551cd18dac4ed1a726bc",
+    "receipt": "reports/codex_lua_variant_record_storage_integration.json",
+    "source_only": true,
+    "retained_checks": "2/2 12.12s",
+    "canonical_checks": "2/2 11.77s",
+    "source_ready": false
+  }
 }
