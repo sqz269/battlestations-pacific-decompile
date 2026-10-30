@@ -1,0 +1,523 @@
+{
+  "schema": "bsp.cc16.native_game_grid_domain_readiness.v1",
+  "baseline_published_main": "9e360e71494881f48b7944862b7777f69ef5ac9d",
+  "status": "actual_release_capabilities_narrowed_context_equivalence_conditional_full_current_producer_domain_gate_open",
+  "source_ready_for_full_selection": false,
+  "CPP_approved_or_edited": false,
+  "original_three_membership_necessary": false,
+  "original_three_membership_sufficient_authentication": false,
+  "arbitrary_genuine_renderer_contexts_interchangeable_proven": false,
+  "new_registry_table_patch_wrapper_provider_allocation_or_policy": false,
+  "compile_test_exe_game_DLL_Ghidra_CMake_ledger_guard_peer_actions": false,
+  "native_vendor_ABI_activation_credit": 0,
+  "source_pins": [
+    {
+      "path": "include/bsp/native_game_grid.hpp",
+      "bytes": 5796,
+      "sha256": "22389375b044ac8a3e75fc43d18db5b70ee37983e92cb1947d8e599246bda13a",
+      "git_blob": "4a44fea8e79a5af1b60cf4ee17823656d7809997"
+    },
+    {
+      "path": "src/native_game_grid.cpp",
+      "bytes": 22715,
+      "sha256": "27c9d4e2844de811d8b62e6660d08f39dbcec89eabd2df30c93138409c1eede3",
+      "git_blob": "7244837f706e627ae678486f3b17f960c051a3dc"
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "bytes": 10071,
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+      "git_blob": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "bytes": 11471,
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+      "git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c"
+    },
+    {
+      "path": "include/bsp/native_logical_vertex_owner.hpp",
+      "bytes": 7242,
+      "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c",
+      "git_blob": "f2c5a72e46f030f049f370eda07de9594a5f3816"
+    },
+    {
+      "path": "src/native_logical_vertex_owner.cpp",
+      "bytes": 25341,
+      "sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba",
+      "git_blob": "be3c28943b8b96b9c2e6829fb93546654271de62"
+    },
+    {
+      "path": "src/native_logical_vertex_pool_return.cpp",
+      "bytes": 2509,
+      "sha256": "acf5b39e00f791c7fe37155e2412cfab0c93556f490aa6c684ad2f070a16f50b",
+      "git_blob": "9674bbdb11160d970296214b1bf321e18fcbd910"
+    },
+    {
+      "path": "include/bsp/native_logical_index_owner.hpp",
+      "bytes": 6804,
+      "sha256": "c0ae53059fba249f589990b7d41d1986a2134cd86b99cd5d6db7ab2c849b38cb",
+      "git_blob": "11d29b13d925881300e58513113e3baeb14b74f1"
+    },
+    {
+      "path": "src/native_logical_index_owner.cpp",
+      "bytes": 20415,
+      "sha256": "d2de40f465f482dc1ad6511ed2a848e587718279bc47958c07b9763bc788a2a8",
+      "git_blob": "b121f65bc4986b04c0958d2ababb1c7a6f00ad08"
+    },
+    {
+      "path": "include/bsp/native_physical_buffer_owner.hpp",
+      "bytes": 4248,
+      "sha256": "1277b747e0963be41fdee456092ea42b3c191d7aa165eeeec772de3cad354e56",
+      "git_blob": "cfa69334575509847c01d968f3804b92ab5674a1"
+    },
+    {
+      "path": "src/native_physical_buffer_owner.cpp",
+      "bytes": 10263,
+      "sha256": "58990828f8fed7e38a4f58ca07ff58a844ba4e65d3d1ffe42da4edd38587f59d",
+      "git_blob": "1dfaf6b8d0c712191087a24c8aa188416ce4e6dc"
+    },
+    {
+      "path": "src/native_vertex_declaration_loading.cpp",
+      "bytes": 20538,
+      "sha256": "518cfecb27a27a43815377c02ce638878d3a8eb2ddeaead30377dc7cb460ef3d",
+      "git_blob": "dd7270a16890be20e8646fe43b861b80efa547d8"
+    },
+    {
+      "path": "src/native_vertex_declaration_owner.cpp",
+      "bytes": 9979,
+      "sha256": "b30df0e9f2a1f0cdb49164f62ac412815a2963b7732beea1c99a867bc2791879",
+      "git_blob": "aa1bd318d236decb4209decdece13197aa50e6a8"
+    },
+    {
+      "path": "include/bsp/gui_text_native_renderer.hpp",
+      "bytes": 2743,
+      "sha256": "9ee3aeaa194ebf677efd3e96817b057d7093bf08bed72702fd44f45edee4a572",
+      "git_blob": "45aff1d95bc11528ebff9dba43c5b8b402747f61"
+    },
+    {
+      "path": "src/gui_native_geometry.cpp",
+      "bytes": 30316,
+      "sha256": "1b957f0aa970eec806bd09389aaa4f21157a64013a3a5c721a0065a0a7e5f0bf",
+      "git_blob": "b60d0c7fd032e7f146980d91c6fb578690517b43"
+    },
+    {
+      "path": "src/game_native_renderer_grid.inc",
+      "bytes": 1778,
+      "sha256": "d5d84bdca33ec50491228d0ae5cccc03c05c02ce2d18d1a69586d423681afcbb",
+      "git_blob": "90385738716bc7337bf9b5b77a0256c861bb528d"
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "bytes": 80060,
+      "sha256": "3ed5485d8b619dce29caed0c1fa2b810b71504478bbb4ce44ca683c9e398ae7f",
+      "git_blob": "5baacc9a3bb8b4856951e8780485dea44502e951"
+    },
+    {
+      "path": "src/native_game_construction.cpp",
+      "bytes": 14665,
+      "sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e",
+      "git_blob": "ad55eb59309369dff06d596cbdf3efd1e4c7037a"
+    },
+    {
+      "path": "include/bsp/native_game_construction.hpp",
+      "bytes": 7095,
+      "sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e",
+      "git_blob": "e83a2b3736edfb4d6fa699526a003861d3805977"
+    },
+    {
+      "path": "src/native_game_lifetime.cpp",
+      "bytes": 21717,
+      "sha256": "4535650c8dcd06db58f4fed96260c0b1c1eac410255fb14603bedfecdce59c90",
+      "git_blob": "bca722876e5b4cfd4033c20b2be6adec7e2b3f6f"
+    },
+    {
+      "path": "include/bsp/native_game_lifetime.hpp",
+      "bytes": 9440,
+      "sha256": "5f780de4ea8a8f7f67a68cc5d72f4940921b40703027891edc14671ecfca6136",
+      "git_blob": "0f2f50a4b1ad95e354e352354a210d43e227c9ba"
+    },
+    {
+      "path": "src/game_native_game_runtime.cpp",
+      "bytes": 4780,
+      "sha256": "1e205d8375994a80cbc5d15a5270b9281f2e9c073a039c3b614535933c068bca",
+      "git_blob": "ad9f8b3518827f1b1117ea55c92a2b1de23fa78d"
+    },
+    {
+      "path": "src/native_game_array_elements.cpp",
+      "bytes": 6467,
+      "sha256": "95747768f853969303dc9a03c2b4e733328307cb0253583d3c00871f7d4033f9",
+      "git_blob": "54cda181da6a9e76e7f2f961f03b0f4f6927e4b3"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+    },
+    {
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+    }
+  ],
+  "prior_evidence_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-application-binding-readiness\\reports\\cc16_native_game_application_binding_readiness.json",
+      "bytes": 67319,
+      "sha256": "ba42904acbe4f36f620ee38d055c83e3f469860a8acce06e940518e36261b377"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-grid-retirement-plan\\reports\\cc16_native_game_grid_retirement_plan.json",
+      "bytes": 19896,
+      "sha256": "7b67bb09cd932cb97da4baa0c4b86b049c329b47bb5a2cc852fada8cff4b7d46"
+    }
+  ],
+  "owned_files": [
+    "docs/CC16_NATIVE_GAME_GRID_DOMAIN_READINESS.md",
+    "reports/cc16_native_game_grid_domain_readiness.json"
+  ],
+  "observed_utc": "2026-10-30T03:24:58.429764+00:00",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-grid-domain-readiness",
+  "answer": {
+    "canonical_default_CPU_and_outer_CRT_frees": true,
+    "whole_retirement_is_only_CRT_and_COM": false,
+    "whole_NativeGameGridContext_pointer_identity_required_by_body": false,
+    "compatible_release_capabilities_can_retire_valid_new_or_reused_address_grid": true,
+    "full_receiver_producer_domain_closure_proven": false
+  },
+  "top_level_body_proof": {
+    "helper": "delete_native_game_grid_0070b280",
+    "calls": "destroy_native_game_grid_0070b220 then conditional outer free; returns historical owner bits",
+    "only_context_capabilities": [
+      "cpu.free_00bf6989 for six current nonnull CPU pointers08/0C/10/14/18/1C",
+      "graphics.streams.geometry.actual_owners() for nonnull78/7C stream decrements and zero terminals",
+      "cpu.free_00bf65ac for outer owner when low flags byte bit0"
+    ],
+    "context_members_not_directly_read": [
+      "strings",
+      "constants",
+      "declarations",
+      "mapping/device creation",
+      "vertex construction context",
+      "index construction context"
+    ],
+    "constructor_operation_or_original_owner_membership_read_by_helper": false,
+    "descriptor_preimage_read_by_retirement": false,
+    "CPU_free_zero_order": "all six frees precede final six-word zero pass",
+    "stream_order": "CURRENT vertex then CURRENT index, capture each pointer and clear field after normal release"
+  },
+  "default_heap_proof": {
+    "outer_producer": "NativeGameArrayCalls::allocate_00bf681b -> singleton_lifetime_allocate(object84h)",
+    "CPU_producer": "NativeGameGridCpuCalls::allocate_00bf55be -> singleton_lifetime_allocate",
+    "canonical_allocation": "std::malloc, real _callnewh retry/bad_alloc boundary",
+    "CPU_free": "NativeGameGridCpuCalls::free_00bf6989 -> std::free",
+    "outer_free": "NativeGameGridCpuCalls::free_00bf65ac -> singleton_lifetime_free -> std::free",
+    "default_heap_free_uses_renderer_or_device": false,
+    "custom_overrides_automatically_compatible": false,
+    "raw_constructor_authenticates_outer_heap": false,
+    "scope": "current canonical Source CRT only; not original private heap/CRT body equivalence"
+  },
+  "stream_release_proof": {
+    "first_action": "actual+4 atomic fetch_sub; terminal resolver only when previous_count==1",
+    "resolver": "real NativeRenderActualOwners service, current application concrete NativeRenderActualOwnerRegistry",
+    "registry_storage": "private unordered_map identity->canonical RenderCommandReference* per registry",
+    "actual_validation": "resolved reference borrows SAME actual+4 atomic; bind requires aligned live positive-count identity and no duplicate live key",
+    "not_automatic_arbitrary_object_authentication": true,
+    "missing_identity": "resolve_actual throws after atomic already decremented",
+    "terminal_provider": "canonical companion executes its stored producing context, not newly supplied grid context vertex/index members",
+    "registration_producer": "GuiNativeGeometryOwners registers real stream creator, constructs NativeLogicalVertexReference/NativeLogicalIndexReference with actual contexts and exact disposal",
+    "retirement": "actual disposal unbinds registry identity/companion then erases entry; all services remain live",
+    "caller_resource_synchronization_still_required": true
+  },
+  "reached_terminal_actions": [
+    {
+      "owner": "logical vertex D61D6C",
+      "provider": "NativeLogicalVertexReference::release_zero_references -> delete_native_logical_vertex_stream_00b4bf10(actual,1,context_)",
+      "actions": [
+        "optional actual renderer/synchronization guard",
+        "dynamic physical-list unregister through captured physical and CURRENT renderer",
+        "renderer logical-list unregister",
+        "release current declaration+68 via canonical actual owners",
+        "release physical+58; private scalar free or pooled physical-slot return if zero",
+        "base retained+4C release and base+50 canonical CPU free if present",
+        "return logical slot via actual0108FE18 pool and native slab index+74"
+      ],
+      "context_captured_in_companion": true
+    },
+    {
+      "owner": "logical index D61DE0",
+      "provider": "NativeLogicalIndexReference::release_zero_references -> delete_native_pooled_logical_index_stream_00b4c1f0(actual,1,context_.lifetime)",
+      "actions": [
+        "actual optional renderer/sync guard",
+        "dynamic physical-list unregister when flags select it",
+        "renderer logical-index unregister",
+        "release CURRENT physical+8; supported private/pooled profile terminal",
+        "return logical slot via actual0108FE50 pool and native slab index+24"
+      ],
+      "context_captured_in_companion": true
+    },
+    {
+      "owner": "vertex declaration if final reference reached",
+      "provider": "NativeVertexDeclarationReference -> delete_native_vertex_declaration_00b48ca0(storage,1,pool_,type_sizes_)",
+      "actions": [
+        "clear native element vectors with actual type sizes",
+        "destroy/free15 usage arrays then native element array through canonical free",
+        "return declaration slot through retained pool and native slab index+D0"
+      ],
+      "context_captured_in_companion": true
+    },
+    {
+      "owner": "private physical index/vertex if zero reached",
+      "provider": "delete_native_private_index_buffer_00b4bb20 / vertex00b4bb40 with actual_physical context",
+      "actions": [
+        "real resource_support_singleton_00b3e730 with actual support/lifetime domain",
+        "CURRENT stored COM+28 Release slot+8, then field clear",
+        "destroy native pointer-array backing through canonical free",
+        "canonical outer physical free"
+      ],
+      "COM_Release_takes_separate_device_argument": false
+    },
+    {
+      "owner": "pooled physical index/vertex if zero reached",
+      "provider": "delete_native_pooled_index_buffer_00b4c210 / vertex00b4c230 with actual_physical context",
+      "actions": [
+        "same support/current COM/native-array lifecycle",
+        "return slot through actual0108FDA8/0108FDE0 pool and native slab index+2C"
+      ],
+      "is_plain_CRT_free": false
+    }
+  ],
+  "natural_grid_producer": {
+    "vertex": "real current5C factory, flags1000, dynamic logical stream sharing renderer+1974 physical owner",
+    "index": "real current60 factory, flags1/format65, logical stream with private physical index buffer",
+    "registration": "same GameGridGraph geometry actual-owner registry; companions keep actual creating contexts",
+    "constructor_Context_full_domain_checks": "grid_begin verifies strings, renderer publication references, geometry/owner/mapping/synchronization/physical/profiles relationships"
+  },
+  "context_equivalence": {
+    "sufficient_conditional_capabilities": [
+      "CPU free services match six actual allocations",
+      "outer free matches actual owner allocation when flags requests it",
+      "resolver reaches SAME correct canonical companion for every reached zero terminal",
+      "all stored companion/renderer/pool/support/string/context lifetimes and source synchronization remain valid"
+    ],
+    "exact_grid_Context_object_identity_necessary": false,
+    "same_companion_domain_views_can_differ_in_other_grid_context_members": true,
+    "arbitrary_different_registry_equivalence_proven": false,
+    "current_concrete_graph": "GameNativeRendererApplication::Impl owns NativeRenderActualOwnerRegistry owners; geometry.actual_owners returns its retained registration.owners",
+    "same_device_or_CRT_or_profile_implies_registry_equivalence": false,
+    "branch_cases": [
+      {
+        "state": "both stream fields null",
+        "dependency": "no stream resolver/terminal used"
+      },
+      {
+        "state": "nonnull streams decrement to nonzero",
+        "dependency": "actual atomics changed; no terminal lookup/COM call on those releases"
+      },
+      {
+        "state": "stream reaches zero",
+        "dependency": "correct canonical resolver/companion with stored real lifecycle context required"
+      }
+    ],
+    "COM_action": "Release uses its actual COM object; surrounding lifecycle remains context dependent",
+    "do_not_probe_or_retry_wrong_context": "CPU frees and atomic decrement precede a possible lookup failure; repeated release would repeat irreversible effects"
+  },
+  "publisher_inventory": {
+    "scope": "bounded current src/include literal and named field searches; reuses prior native proof, no new Ghidra/native scan",
+    "explicit_CFD484_writers": [
+      "construct_native_game_grid_0070bd70",
+      "destroy_native_game_grid_0070b220"
+    ],
+    "explicit_grid_cell_producer": "construct_native_game_004ddb90 publishes returned values E19B0C/08/04 after real default calls4DDFF0/4DE029/4DE062",
+    "explicit_grid_cell_clears": [
+      "4DD151 E19B0C",
+      "4DD169 E19B08",
+      "4DD181 E19B04"
+    ],
+    "other_matches": [
+      "runtime reference identity checks",
+      "context declarations",
+      "cc13_large62 global_u32 readers",
+      "objectives_seg57_argon global_u32 readers"
+    ],
+    "native_required_order": [
+      "captureCURRENT C before clearing E188A8",
+      "captured nonnull calls slot0 flags1, clearCURRENT cell after return",
+      "reloadCURRENT08 then04 at their actual turns",
+      "null capture skips both call and clear"
+    ],
+    "all_callback_future_or_native_replacements_excluded": false,
+    "canonical_application_owner_of_all_grid_cells_composed": false,
+    "every_current_replacement_same_renderer_registry_proven": false
+  },
+  "address_reuse_refinement": {
+    "original_records": "observations of three original completed calls, not a current live-generation credential",
+    "membership_necessary": false,
+    "membership_sufficient": false,
+    "old_consumed_address_can_veto_new_genuine_generation": false,
+    "existing_registry_reuse": "real companion disposal unbinds key; later real producer may bind a new live companion at reused identity under serialized lifetime/synchronization",
+    "outer_allocation_reuse": "a matching new84h allocation can occupy old pointer bits and be valid under same real release capabilities",
+    "no_permanent_address_ban_or_new_registry_policy": true
+  },
+  "remaining_gate": {
+    "exact_fact": "for every CURRENT captured scalar receiver, establish genuine live storage generation, requested outer-free domain, six current CPU allocation domains and all reached stream-zero canonical companion/lifecycle domains",
+    "need_automatic_outer_registry_authentication": false,
+    "need_genuine_caller_matching_domain_precondition": true,
+    "need_actual_canonical_release_provider": true,
+    "CFD484_or_ctor_operation_proves_these": false,
+    "provider_for_known_default_successful_constructor_domain_exists": true,
+    "full_current_receiver_producer_domain_closure": false,
+    "CPP_approval": false,
+    "no_generic_numeric_table_execution_or_silent_replacement_ban": true
+  },
+  "prior86_source_blob_recheck": {
+    "compared": 86,
+    "matched": 85,
+    "drift": [
+      {
+        "path": "include/bsp/dyn_engine_runtime.hpp",
+        "old_git_blob": "8d84bc29f6aeb0bba575ed649708eb06a7b19c42",
+        "current_git_blob": "3ebafb25dc442e94b5dae47eecbda4e6294627de"
+      }
+    ],
+    "no_broad_new_body_scan": true
+  },
+  "reused_saved_native_proof": {
+    "prior_plan_commit": "62d6078163175b3a8a7a3ddc99370b1541e17af6",
+    "addresses": [
+      "0070b220",
+      "0070b280",
+      "004dcf90"
+    ],
+    "kind": "prior frozen saved export triples only",
+    "new_native_scan": false,
+    "new_Ghidra_query": false,
+    "pins": [
+      {
+        "address": "0070b220",
+        "project": "bsp",
+        "program": "/battlestationspacific.exe",
+        "saved_utc": "2026-10-13T02:10:01.091560+00:00",
+        "files": [
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0070b220\\metadata.json",
+            "bytes": 267,
+            "sha256": "ed22a1d462471e9dccc5c43b0d10df84e5589e434a06796244492c2e11f185b8"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0070b220\\assembly.txt",
+            "bytes": 998,
+            "sha256": "46aaf378ddd3e245a9e4dd725b59c40fd25249b455313339dd2b1a63f7d22cfe"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0070b220\\decompiled.c",
+            "bytes": 4020,
+            "sha256": "aed658da150d798e115c4dea0fd43f06727a486ec8db04a043a470dd5228bfde"
+          }
+        ]
+      },
+      {
+        "address": "0070b280",
+        "project": "bsp",
+        "program": "/battlestationspacific.exe",
+        "saved_utc": "2026-10-13T02:10:01.399775+00:00",
+        "files": [
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0070b280\\metadata.json",
+            "bytes": 272,
+            "sha256": "69a48955c9f2ee54eda6ed9097cf8bce7b564444f26ccf6852e3c330fc2722d3"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0070b280\\assembly.txt",
+            "bytes": 267,
+            "sha256": "6d1d05b38dd600a7a6c288df34ad5ac797240177dda16e850a04c507ecd64d74"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0070b280\\decompiled.c",
+            "bytes": 3437,
+            "sha256": "839ff0a331596b9e0efab5bf9d90eedb4b3253ed430e4193a65b2f852a6a11c1"
+          }
+        ]
+      },
+      {
+        "address": "004dcf90",
+        "project": "bsp",
+        "program": "/battlestationspacific.exe",
+        "saved_utc": "2026-10-13T01:13:36.265828+00:00",
+        "files": [
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004dcf90\\metadata.json",
+            "bytes": 276,
+            "sha256": "da67281feac9fed811e63be85ead3a7ac5b5843b856467359db948f69ceecad2"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004dcf90\\assembly.txt",
+            "bytes": 13674,
+            "sha256": "90f4fb95dfead417cb3095842d52fae1fcbc1cc36eeec90e68b9575dc1bdcc66"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004dcf90\\decompiled.c",
+            "bytes": 115378,
+            "sha256": "22f0344466758603749d62402031b27ba3e8a508c6de7e1a9e2d9357668a3fa5"
+          }
+        ]
+      }
+    ],
+    "current_known_file_hash_rechecks": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0070b220\\metadata.json",
+        "sha256_match": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0070b220\\assembly.txt",
+        "sha256_match": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0070b220\\decompiled.c",
+        "sha256_match": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0070b280\\metadata.json",
+        "sha256_match": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0070b280\\assembly.txt",
+        "sha256_match": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0070b280\\decompiled.c",
+        "sha256_match": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004dcf90\\metadata.json",
+        "sha256_match": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004dcf90\\assembly.txt",
+        "sha256_match": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004dcf90\\decompiled.c",
+        "sha256_match": true
+      }
+    ]
+  },
+  "historical_grid_receipt": {
+    "path": "reports/native_game_grid_services_r156.json",
+    "sha256": "8df68beb5531882e771e3ce95cd75da8f42f4a712f9b14e0f6232f6c96bde170",
+    "scope": "historical source/build/device-context validation, not new heap authentication/full application proof"
+  },
+  "document_pin": {
+    "path": "docs\\CC16_NATIVE_GAME_GRID_DOMAIN_READINESS.md",
+    "sha256": "dd6700b13c4897c5d346e5ac7457da17ad187387d5e2be67b8e51626b0af291c"
+  },
+  "validation": {
+    "25_source_pins_and_2_prior_reports_match": true,
+    "9_reused_known_export_files_match": true,
+    "document_hash_matches": true,
+    "tracked_Source_unchanged": true,
+    "no_compilation_test_or_runtime_claim": true
+  }
+}
