@@ -2,6 +2,8 @@
 #include "bsp/native_model_pool.hpp"
 #include "bsp/native_node_destruction.hpp"
 #include "bsp/native_render_context.hpp"
+#include "bsp/native_model_storage_lifetime.hpp"
+#include <exception>
 
 namespace bsp {
 class ModelTypeBootstrap;
@@ -53,6 +55,21 @@ struct NativeModelEnvironment {
     const NativeModelRawNameServices* raw_name_services = nullptr;
 };
 
+// HOST diagnostics/extent state, not a native field, reference or retry token.
+// The sole stable Model record retains this with its actual raw frames through
+// every callback, failure disposition and any flags0 physical-slot obligation.
+struct NativeModelRawHostLifetime {
+    bool typed_storage_ended{}, failed{};
+    std::uint32_t stopped_site{};
+    std::exception_ptr exception;
+};
+struct NativeModelRawLifetimeBinding {
+    NativeModelStorageContext& storage;
+    NativeModelStorageLifetimeFrame& terminal_frame;
+    NativeModelStorageLifetimeAcquired& terminal;
+    NativeModelRawHostLifetime& host;
+};
+
 class NativeModelOwner final {
 public:
     // Prepare stable typed views over one unused actual pool slot and register
@@ -60,6 +77,11 @@ public:
     // run before inspecting fields or acquiring references. No second native
     // transform, count, scene pointer, name or point-light array is created.
     NativeModelOwner(void* actual_slot, std::size_t slot_bytes, NativeModelEnvironment&);
+    // Required immutable raw LIFETIME selection, separate from raw name mode.
+    // Same renderer/VFS raw scene/tree/world/point-light/string providers and
+    // fresh disjoint persistent terminal backing must precede construction.
+    NativeModelOwner(void* actual_slot, std::size_t slot_bytes, NativeModelEnvironment&,
+        NativeModelRawLifetimeBinding&);
     // Only an abandoned prepared owner is cleaned up implicitly. A live owner
     // must complete explicit native destruction before its companion is removed.
     ~NativeModelOwner();
@@ -70,6 +92,9 @@ public:
     NativeModelEnvironment& environment;
     NativeNodeBinding node;
     Phase phase{Phase::prepared}; // host lifetime bookkeeping, not a native word
+    NativeModelRawLifetimeBinding* const raw_lifetime;
+private:
+    NativeModelOwner(void*, std::size_t, NativeModelEnvironment&, NativeModelRawLifetimeBinding*);
 };
 
 // Original ECX raw slot, stack NativeString*, EAX same slot, RET4. Calls full
@@ -100,6 +125,11 @@ void destroy_native_model_00b750c0(NativeModelOwner&);
 // Original ECX=model, stack flags, EAX original address even after return,
 // RET4. Return the actual188h slot to canonical pool01090054 iff flags&1.
 void* delete_native_model_00b75290(NativeModelOwner&, std::uint32_t flags);
+// Used by the SAME canonical raw current04 transport. The actual argument home
+// is re-read AFTER raw destruction/typed extent completion, before pool return.
+// On failure preserve its record/frames; flags0 keeps original slot custody.
+void* delete_native_model_raw_00b75290(NativeModelOwner&,
+    const volatile std::uint32_t& actual_flags_argument);
 // Original ECX=model; stack unused DWORD, raw geometry, float178, float17C;
 // RET10h. Publish/retain incoming before releasing captured old. Read sentinel
 // once after callbacks; SSE unordered inputs are stored. No rollback on throw.
@@ -109,8 +139,10 @@ void set_native_model_geometry_00b75170(NativeModelOwner&, std::uint32_t unused,
 class NativeModelReference;
 struct NativeModelCompanionDisposal {
     void* context;
-    // Runs after actual destruction, pool return and lifetime unbinding. May
-    // dispose the reference and owner companions; no access follows callback.
+    // Runs after actual destruction, flags-selected pool return and lifetime
+    // unbinding. Raw flags0 must retain its original physical-slot receipt in
+    // the same retired record; failures never call this disposal. May dispose
+    // the reference/owner companions; no access follows callback.
     void (*retire)(void*, NativeModelReference&) noexcept;
 };
 // One canonical companion per live native model. It borrows actual+04 without
@@ -130,8 +162,15 @@ public:
     void remove_scene_virtual54(SceneResource*, bool recurse) noexcept override;
     void release_model_virtual18_00b6f310() noexcept override;
     void release_zero_references() noexcept override;
+    // Normal Page raw calls deliberately bypass the legacy noexcept virtuals.
+    // Each caller owns fresh disjoint persistent invocation/frame backing;
+    // callbacks may retire this reference, so no post-body self access occurs.
+    void release_raw_virtual18_00b6f310(std::uint32_t captured_target,
+        NativeNodeTreeRetirementFrame&, NativeNodeTreeRetirementAcquired&);
+    void remove_raw_scene_virtual54_00b6ee10(std::uint32_t captured_target,
+        NativeNodeSceneAttachmentFrame&, NativeNodeSceneAttachmentAcquired&);
 private:
-    enum class Phase { bound, destroying, retired };
+    enum class Phase { bound, destroying, retired, failed };
     NativeModelOwner& owner_;
     GeneratedModelLifetimeRuntime& runtime_;
     NativeModelCompanionDisposal disposal_;
@@ -139,5 +178,7 @@ private:
     static std::uint32_t light_count(void*) noexcept;
     static void remove_light_backlink(void*, std::uint32_t, CameraTransform&) noexcept;
     static void shrink_lights(void*) noexcept;
+    class RawDeleteCalls;
+    void delete_raw_scalar_00b75290(const volatile std::uint32_t&);
 };
 } // namespace bsp
