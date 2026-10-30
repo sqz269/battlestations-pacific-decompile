@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "classification": "Evidence-only admission; implementation and Native cleanup authority remain gated",
+  "baseline_Main": "e71c9ddaf87e57f1c6e974306d48df7fddfc214f",
+  "evidence_head": "46477bb4e8ac0cc3926e2dd89078303dbd40695b",
+  "exact_cherry_picks": [
+    {
+      "original": "97ced874aeaae30e98aa28fcfb972a70fb4b0a10",
+      "admitted": "570c0628a50488c1d1c33cf1ed1c8658a9ba5817"
+    },
+    {
+      "original": "b81152aeeeda77a11470576326c2924d5daacc96",
+      "admitted": "9bc044e0e19af5ba483fa7aa248aede1af99b322"
+    },
+    {
+      "original": "423fd389c41bffe8e353f677bf56c41db31a9f7b",
+      "admitted": "8b0b424ec1112f4daa647f0d46813f9fbb48aa95"
+    },
+    {
+      "original": "874532868f9316c6c98df11f08cfbf8d94180b7b",
+      "admitted": "cf895ba5e02924f34cd2ef180eebc74107f423d5"
+    },
+    {
+      "original": "71ab93e7d4377ae1fdf663704bde68270481451c",
+      "admitted": "f7715c42265af0dd629aafd628f4e3e870de1b6d"
+    },
+    {
+      "original": "2fb19a13aae546e56785413e374ff9f4c3c2ba1e",
+      "admitted": "46477bb4e8ac0cc3926e2dd89078303dbd40695b"
+    }
+  ],
+  "Git_LF_pins": [
+    {
+      "path": "docs/CC16_GLYPH_CHILD_PRODUCER_BIRTH_AUDIT.md",
+      "bytes": 19343,
+      "sha256": "df477c98a4d14bf534ed0c573d5d96831233ec73aec3ab45b879c8bf3a264cdd",
+      "git_blob": "2eda70a578e787fa40242c9ca17c59116590f831"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_TEXT_CHANGED_FAILURE_ORIGIN_DESIGN.md",
+      "bytes": 25460,
+      "sha256": "03d7ad861c5c1e175663854763723e422decc513553124ce11dbcbc7813586cf",
+      "git_blob": "6120ba10d4e6698dcfc160fb554565013fc93888"
+    },
+    {
+      "path": "docs/CC16_SOURCE_ACTIVE_CAUSE_IDENTITY_PROBE.md",
+      "bytes": 4012,
+      "sha256": "741af0502dc68b5265772add0b5e6eac83c22a838c2b6bd614add7e4ff22e6b1",
+      "git_blob": "96ed262bed0b56cc6fbf3d80d5245859e9740fd5"
+    },
+    {
+      "path": "docs/CC16_SOURCE_ACTIVE_CAUSE_MD_PROBE.md",
+      "bytes": 4014,
+      "sha256": "ccf6d4a2bb3fd7a044ecea31efed2891ccb9d65d4182dec2125ec638546938cb",
+      "git_blob": "060665bad4bd2a1d977e93fd3f718b9234e4f422"
+    },
+    {
+      "path": "docs/CC16_SOURCE_ACTIVE_CAUSE_MD_PROBE_INDEPENDENT_REVIEW.md",
+      "bytes": 4317,
+      "sha256": "eaca87934c5a7ccc616e1c0b5609234a0f2c5f79edd6f4f6ef65b12fcfde3cca",
+      "git_blob": "4b73b72082fa863af4330fe6b742c476e677176c"
+    },
+    {
+      "path": "docs/CC16_TEXT_FAILURE_ORIGIN_DESIGN_INDEPENDENT_REVIEW.md",
+      "bytes": 5728,
+      "sha256": "6c2a9a4c83a376dc932e0b720248ae36dc756a5a040b23ad623ff5af3803d4a3",
+      "git_blob": "1454a3b366b21b2b5cb39b2fe4008ce5460835dd"
+    },
+    {
+      "path": "reports/cc16_glyph_child_producer_birth_audit.json",
+      "bytes": 33774,
+      "sha256": "5b907c3babba150d35fc9526bd57d07b0e4f29f0ed684eb3886b75131842c5a8",
+      "git_blob": "715efcc2d00a9abfe8fee4433a20657ee0250571"
+    },
+    {
+      "path": "reports/cc16_native_gui_text_changed_failure_origin_design.json",
+      "bytes": 36494,
+      "sha256": "b37b514d81c4efd55ff29ab503781b5084c585f227c4ecfcf875cb1146f5cf7b",
+      "git_blob": "82c22aee98b6573e5dfff486cc4c5ca6be3c67e2"
+    },
+    {
+      "path": "reports/cc16_source_active_cause_identity_probe.json",
+      "bytes": 17886,
+      "sha256": "df25715c8eec59e973f8b01f99fbe4b19430803fb395a05e73261bc3afa34429",
+      "git_blob": "3b5ef5c842c26c9329f922c5d42fb3c6e3098a97"
+    },
+    {
+      "path": "reports/cc16_source_active_cause_md_probe.json",
+      "bytes": 24809,
+      "sha256": "0d64c71e7c0891719221e09ac6a54fa298c5e8abd3c0f0cc1fa2c6ebeb9fa1f8",
+      "git_blob": "242ab0b770c7718c3a1d60a1e96323d6ba038f0f"
+    },
+    {
+      "path": "reports/cc16_source_active_cause_md_probe_independent_review.json",
+      "bytes": 37258,
+      "sha256": "6f3cf1d58e4d55aff3af255ea9a07aecfc2d98728f8d18bc987a7292deb5afbd",
+      "git_blob": "2709d10a590d9e46aafc64ea81f69ec83ccc8c88"
+    },
+    {
+      "path": "reports/cc16_text_failure_origin_design_independent_review.json",
+      "bytes": 47733,
+      "sha256": "4ee2bbe25a5720cb12d99ff7b22b8f80efca14ab7c0bd0153749016e148296da",
+      "git_blob": "806a9c4d2365a4050d42e566a3e07785830ebde1"
+    }
+  ],
+  "primary_review": {
+    "full_design_MT_MD_probe_and_both_review_documents_read": true,
+    "full_child_birth_audit_previously_read": true,
+    "artifact_input_checks": {
+      "checks": [
+        {
+          "report": "reports/cc16_native_gui_text_changed_failure_origin_design.json",
+          "pins": 29,
+          "document_pin": true
+        },
+        {
+          "report": "reports/cc16_source_active_cause_identity_probe.json",
+          "pins": 28,
+          "document_pin": true
+        },
+        {
+          "report": "reports/cc16_source_active_cause_md_probe.json",
+          "pins": 36,
+          "document_pin": true
+        }
+      ],
+      "physical_x86_runtime_files": 3,
+      "probe_replayed": false
+    },
+    "probe_replayed": false
+  },
+  "independent_reviews": {
+    "design_MT": "71ab93e7d4377ae1fdf663704bde68270481451c",
+    "MD": "2fb19a13aae546e56785413e374ff9f4c3c2ba1e",
+    "actionable_findings": 0,
+    "mandatory_design_clarification": "Fresh unset state differs from committed host OR unknown denial; committed denial cannot promote for the same cause and call edge."
+  },
+  "observations": {
+    "MT_one_compile_and_run": true,
+    "MD_one_compile_and_run": true,
+    "checks_each": 15,
+    "SDK_reads_each": 7,
+    "exact_reader_and_check_sequence_unchanged": true,
+    "MD_runtime_reader_throw_FH3_same_VCRUNTIME140": true,
+    "physical_x86_runtime_hashes_verified": 3,
+    "production_application_runtime_measured": false
+  },
+  "validation": {
+    "production_CMake_or_Source_changed": false,
+    "build_not_repeated_for_evidence_only": true,
+    "last_published_Source_build": "983ccb67a928eaa65a9f31f67b1dca98423063a3",
+    "last_build_report": "reports/cc16_reserved_reference_common_build.json",
+    "new_test_cases": 0,
+    "Root_executable_or_game_runs": 0,
+    "ledger_Ghidra_or_activation_changed": false
+  },
+  "readiness": {
+    "production_cause_reader": false,
+    "private_origin_transport": false,
+    "genuine_Native_leaf_issuer": false,
+    "changed96_admitted": false,
+    "actual_Glyph_producer_bound": false,
+    "ABI_gameCRT_FH3_SEH_proof": false,
+    "runtime_gameplay_validated": false,
+    "activated": false
+  },
+  "credit": {
+    "new_Original_vendor_CG_helper_trivial_duplicate_body_ABI_runtime_gameplay": 0
+  },
+  "next": "Implement and independently review first coupled AB8530/changed-Text host-origin slice and complete whole wrapped ABA270; retain unknown Native paths until genuine issuers and actual provider graph exist."
+}
