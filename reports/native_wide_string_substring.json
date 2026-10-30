@@ -1,0 +1,84 @@
+{
+  "address": "00770e50",
+  "name": "substring_native_wide_string_header_00770e50",
+  "classification": "reconstructed ordinary C++ Source interface; not Original ABI replacement",
+  "source_ready": false,
+  "startup_activated": false,
+  "native_abi": {
+    "receiver": "ECX source raw8",
+    "stack_arguments": [
+      "output raw8",
+      "position signed DWORD bits",
+      "count DWORD bits"
+    ],
+    "return": "actual output address",
+    "stack_pop_bytes": 12
+  },
+  "evidence": {
+    "saved_assembly_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00770e50\\assembly.txt",
+    "saved_assembly_sha256": "1d6d195331193519a54e84f1f8f1fc9654ce9b0a4e0b2d7268287cce8574fd31",
+    "instruction_count": 90,
+    "own_eh": {
+      "handler": "00c89461",
+      "func_info": "00db939c",
+      "magic": "19930522",
+      "max_state": 2,
+      "unwind_map": "00db938c",
+      "map_bytes": "ffffffff4894c800000000004094c800",
+      "state1_action": "00c89440 CURRENT temporary -> 00436430",
+      "state0_action": "00c89448 consume bit1 before CURRENT output -> 00436430"
+    },
+    "accepted_contract_sha256": "b20b7f5f75a30712fa44c2537a1b26ccb05a7aff147ad89e10c42b40ece2b776",
+    "description_correction": "negative position adds its DWORD bits into count then position=0; no from-end interpretation"
+  },
+  "source_sha256": {
+    "include/bsp/native_wide_string_substring.hpp": "b490ca3d8e5594c91d52f6f661cc0fd229330e7ab9c9d4b14a9e684a6973e417",
+    "src/native_wide_string_substring.cpp": "7efca53de6b01857c7f4854b9620939f8f3e8c3a2a3502ec1174633f2b5ce742"
+  },
+  "normal_schedule": [
+    "zero temporary LENGTH then DATA; temporary selected state1",
+    "negative position wraps count+=position and position=0 without initial length; nonnegative position clamps with initial length",
+    "capture source DATA before later CURRENT length/nonempty bounds and wrapping end/count clamp",
+    "capture source slice before genuine raw resize; capture CURRENT temp DATA unconditionally after resize",
+    "nonzero count calls actual raw CRT BFAEEF WORD-count copy and padding under its pinned supported domain",
+    "both nonempty and empty call genuine raw4C8DD0 output constructor; capture its actual normal return/private output obligation before any added healthy fence",
+    "nonempty consumes TEMP/native state1->0 before healthy/footer; EARLY temp DATA and nonnull CURRENT length after output constructor -> wrapped bytes -> real getter -> healthy -> real BD1510",
+    "healthy normal completion transfers actual output without destruction"
+  ],
+  "failure_policy": {
+    "entry_rejection": "poison outside new invocation cleanup try; rejected inner invocation cannot clean active outer state",
+    "constructor_escape": "temporary owned; failed/partial output remains unowned",
+    "selected_order": "consume temporary before CURRENT raw436430, then consume constructed output before CURRENT raw436430; secondary true-unwind exception terminates",
+    "consumed_footer": "output cleanup only; never retry temporary footer",
+    "empty_source_fence": "explicit private actual-constructor completion authority; distinct from Native physical bit0 and hardware/private-stack fault semantics",
+    "sticky": "provider return facts captured before healthy checks; caught reentry/failure cannot produce private healthy result",
+    "late_status_dtor": "own metadata only; no cleanup or ended payload/peer reads"
+  },
+  "supported_domain": [
+    "genuine caller raw8 headers/backing and SAME real AA8/AA4/AA0 graph with retained serialized lifetimes",
+    "existing raw CRT DF0/equal flat DS-ES, real WORD/padding footprints and legal nonwrapping terminal advances; no vendor-body credit",
+    "private Frame/temp/control/provider storage disjoint; no private-stack alias, invalidating concurrent writer, hardware-fault or MMIO equivalence claim",
+    "no generic guard, adapter, NUL/self/null shortcut, rollback, owner or lifecycle introduced"
+  ],
+  "validation": {
+    "primary_and_two_independent_code_reviews": "accepted exact Source and Native normal/EH evidence",
+    "compile_receipt": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_wide_string_substring_frame_20261030\\compile_receipt.json",
+    "compile_receipt_sha256": "e9c46d81423b0e2859f15806c35297acba7b477f45591e00936e372e7718ea2b",
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_wide_string_substring_frame_20261030\\object_build\\raw_wide_substring_object.dir\\Release\\native_wide_string_substring.obj",
+      "bytes": 14326,
+      "sha256": "fd60bc47e2c45c4dc06c7c9ef2e9743411ddda88c5cf0ead802b81071b4b0700",
+      "machine": "0x14c"
+    },
+    "symbol_receipt_sha256": "dc1c0703acef3de1acaa981ee309390231a2a652466b6bb65a8590faf52ee2a0",
+    "provider_proof_sha256": "0bd1657c1bff006741064f225ee34ab957cafc1e38bd96edb802237d5aab9547",
+    "old_tracked_source_diff_empty": true,
+    "tests_added": 0,
+    "link_native_execution_probe_or_game": false
+  },
+  "remaining_limits": [
+    "Root Core registration/common build separate",
+    "no whole resolver, Lua/raw16, reload, GUI, loading or startup permission",
+    "no Native ABI/runtime/game or additional Native/vendor-body reconstruction credit"
+  ]
+}
