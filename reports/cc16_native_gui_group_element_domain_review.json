@@ -1,0 +1,530 @@
+{
+  "schema": "cc16_native_gui_group_element_domain_review_v1",
+  "status": "bounded_static_readiness_no_separate_element_completion_metadata_required_under_closed_domain",
+  "baseline_commit": "a299cdfc6e73814528b007f524d317dce02df0f8",
+  "created_utc": "2026-10-30T10:19:34.716975+00:00",
+  "owned_files": [
+    "docs/CC16_NATIVE_GUI_GROUP_ELEMENT_DOMAIN_REVIEW.md",
+    "reports/cc16_native_gui_group_element_domain_review.json"
+  ],
+  "scope": "Independent Source/provider failure-domain review for proposed shared Group/Text Element owner. Not a Group Native-body recovery or Source edit.",
+  "analysis_target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "source_config_verified": true,
+    "fresh_live_analysis_batch": false,
+    "ghidra_mutation": false
+  },
+  "source_pins": [
+    {
+      "path": "config/target.json",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "git_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "worktree_bytes": 455,
+      "worktree_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "worktree_matches_frozen_git_after_line_endings": true
+    },
+    {
+      "path": "src/game_native_gui_text_process.cpp",
+      "git_blob": "66234fe46a716dab05525201c260eea39da426f4",
+      "git_sha256": "84fe56b3b40589a831dfbdf57d289d9f85dc91ef41bb5a239b81e43d462c8f2f",
+      "worktree_bytes": 8246,
+      "worktree_sha256": "84fe56b3b40589a831dfbdf57d289d9f85dc91ef41bb5a239b81e43d462c8f2f",
+      "worktree_matches_frozen_git_after_line_endings": true
+    },
+    {
+      "path": "include/bsp/game_native_gui_text_process.hpp",
+      "git_blob": "2f85c4faead42a7a295d2f4ba5d6345334759244",
+      "git_sha256": "215be8dcc255664c7f50a75ea9287012d1b8090ba860f111d341983819419e47",
+      "worktree_bytes": 5524,
+      "worktree_sha256": "215be8dcc255664c7f50a75ea9287012d1b8090ba860f111d341983819419e47",
+      "worktree_matches_frozen_git_after_line_endings": true
+    },
+    {
+      "path": "src/light_type_bootstrap.cpp",
+      "git_blob": "0c1fdc4e2aa3f27f2c56bb518b99ccf2597db2d9",
+      "git_sha256": "6384bd3d557e9c9378e9ea54994d3defcccf2814d9918f371fd461cbeed0e6ef",
+      "worktree_bytes": 5880,
+      "worktree_sha256": "6384bd3d557e9c9378e9ea54994d3defcccf2814d9918f371fd461cbeed0e6ef",
+      "worktree_matches_frozen_git_after_line_endings": true
+    },
+    {
+      "path": "include/bsp/light_type_bootstrap.hpp",
+      "git_blob": "c97724bb24247b8a9d4543050d2caf45f15ec197",
+      "git_sha256": "7856c5bbb320d6d5e1dd0df2f4969314cd2d7365134741702e187a901456333f",
+      "worktree_bytes": 3214,
+      "worktree_sha256": "7856c5bbb320d6d5e1dd0df2f4969314cd2d7365134741702e187a901456333f",
+      "worktree_matches_frozen_git_after_line_endings": true
+    },
+    {
+      "path": "include/bsp/gui_widgets_cc13.hpp",
+      "git_blob": "a69f853d6015aa99b2efaaa0bb71f497052c8292",
+      "git_sha256": "2a889c7f79cdfa87e99283c4b0286eed4911845410425a38918cb39aeecb63b7",
+      "worktree_bytes": 92980,
+      "worktree_sha256": "2a889c7f79cdfa87e99283c4b0286eed4911845410425a38918cb39aeecb63b7",
+      "worktree_matches_frozen_git_after_line_endings": true
+    },
+    {
+      "path": "src/sound_lifetime_access.cpp",
+      "git_blob": "3215502c513d22bb0d5c0201dfb110283803b0da",
+      "git_sha256": "00ace40faa75007eb4e7cf857de0473347d8bdba0d99ed15ce8bc750c09efd29",
+      "worktree_bytes": 2751,
+      "worktree_sha256": "00ace40faa75007eb4e7cf857de0473347d8bdba0d99ed15ce8bc750c09efd29",
+      "worktree_matches_frozen_git_after_line_endings": true
+    },
+    {
+      "path": "include/bsp/sound_lifetime_access.hpp",
+      "git_blob": "733525b1563c1641db659681fd812485aa71c7ed",
+      "git_sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b",
+      "worktree_bytes": 3039,
+      "worktree_sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b",
+      "worktree_matches_frozen_git_after_line_endings": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "git_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "worktree_bytes": 13257,
+      "worktree_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "worktree_matches_frozen_git_after_line_endings": true
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "git_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "worktree_bytes": 4372,
+      "worktree_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "worktree_matches_frozen_git_after_line_endings": true
+    },
+    {
+      "path": "src/native_vfs_owner_services.cpp",
+      "git_blob": "62fe8b31d3d38ae8f352549b091282e839807415",
+      "git_sha256": "1df19acedaa8505b0bc1d0fd4279a514a73f4a1db5cf63300c53f89e9cb1ed6c",
+      "worktree_bytes": 1236,
+      "worktree_sha256": "1df19acedaa8505b0bc1d0fd4279a514a73f4a1db5cf63300c53f89e9cb1ed6c",
+      "worktree_matches_frozen_git_after_line_endings": true
+    },
+    {
+      "path": "include/bsp/native_vfs_owner_services.hpp",
+      "git_blob": "4c8bdae5e23b4af895d0b3ab2eb6b45c0f393333",
+      "git_sha256": "2df162f0937d2c9b34c790609d92c3e41ef8cc6ae49977ec0fcd6e07b699a128",
+      "worktree_bytes": 3548,
+      "worktree_sha256": "2df162f0937d2c9b34c790609d92c3e41ef8cc6ae49977ec0fcd6e07b699a128",
+      "worktree_matches_frozen_git_after_line_endings": true
+    },
+    {
+      "path": "src/game_native_vfs_application.cpp",
+      "git_blob": "32a441a593a381b649ccd89b71a6e4277e91401d",
+      "git_sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+      "worktree_bytes": 8470,
+      "worktree_sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+      "worktree_matches_frozen_git_after_line_endings": true
+    },
+    {
+      "path": "include/bsp/game_native_vfs_application.hpp",
+      "git_blob": "a9d2ecefb12f656e5b43a56026234abefd34c670",
+      "git_sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f",
+      "worktree_bytes": 3022,
+      "worktree_sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f",
+      "worktree_matches_frozen_git_after_line_endings": true
+    },
+    {
+      "path": "src/game_native_type_storage.cpp",
+      "git_blob": "106fa3ce980394494b62512c35e6d46c3167c78d",
+      "git_sha256": "87958d36dc6c7480e73992698c3c9dac86bc153f7033fc0e55a9833fd2ea5b4b",
+      "worktree_bytes": 5640,
+      "worktree_sha256": "87958d36dc6c7480e73992698c3c9dac86bc153f7033fc0e55a9833fd2ea5b4b",
+      "worktree_matches_frozen_git_after_line_endings": true
+    },
+    {
+      "path": "include/bsp/game_native_type_storage.hpp",
+      "git_blob": "52d2a009f0404a611feba2abcc41dab751204af6",
+      "git_sha256": "fc659c2705ef9899c150106ce1bfb7291fc23046f689528f6ec379d48d4d7337",
+      "worktree_bytes": 7900,
+      "worktree_sha256": "fc659c2705ef9899c150106ce1bfb7291fc23046f689528f6ec379d48d4d7337",
+      "worktree_matches_frozen_git_after_line_endings": true
+    },
+    {
+      "path": "src/game_hosts_vfs.cpp",
+      "git_blob": "e5a1882aba8b93ee30a928646c412359214f40f8",
+      "git_sha256": "7394248062dc8b98f55e06ea172e93fb3da3243a897f9e04dcb652a70750e087",
+      "worktree_bytes": 22223,
+      "worktree_sha256": "7394248062dc8b98f55e06ea172e93fb3da3243a897f9e04dcb652a70750e087",
+      "worktree_matches_frozen_git_after_line_endings": true
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "git_blob": "d138983e92e5f93339e529655990f924f1c06be8",
+      "git_sha256": "6915e364d7c2eb73ebba01d7d1c521ca7fdc94ab78ad7f0302288fc281cad9f4",
+      "worktree_bytes": 185132,
+      "worktree_sha256": "6915e364d7c2eb73ebba01d7d1c521ca7fdc94ab78ad7f0302288fc281cad9f4",
+      "worktree_matches_frozen_git_after_line_endings": true
+    },
+    {
+      "path": "src/game_main.cpp",
+      "git_blob": "18909178937d4a3fbd4ddf9073819b959f3fa47a",
+      "git_sha256": "50034a37098bc7a1c738c541d5a97d0afb0cb4b1cf84b8e92102db92284df5c7",
+      "worktree_bytes": 80404,
+      "worktree_sha256": "50034a37098bc7a1c738c541d5a97d0afb0cb4b1cf84b8e92102db92284df5c7",
+      "worktree_matches_frozen_git_after_line_endings": true
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "git_blob": "0c9759b7d908e778dbdc44d8785d8fae226ea75b",
+      "git_sha256": "98a476d0aa3d76fa3b79793a6c10dca5ce621b89f9a290eecef23866a483831a",
+      "worktree_bytes": 29984,
+      "worktree_sha256": "98a476d0aa3d76fa3b79793a6c10dca5ce621b89f9a290eecef23866a483831a",
+      "worktree_matches_frozen_git_after_line_endings": true
+    }
+  ],
+  "bounded_source_proofs": [
+    {
+      "path": "src/game_native_gui_text_process.cpp",
+      "line_start": 22,
+      "line_end": 42,
+      "purpose": "Closed final CounterHost and private AA8200 adapter",
+      "excerpt_sha256": "44d50384fca7f4803d607ebc2870c0046b967f9eb2fed9f14e68902f141798f2",
+      "excerpt": "struct CounterHost final : GuiTypeCounterHost {\n    TypeIdCounterLifetime& lifetime;\n    explicit CounterHost(TypeIdCounterLifetime& owner) noexcept : lifetime(owner) {}\n    TypeIdCounterStorage& counter() override { return *lifetime.get_006fac20(); }\n};\n\n// Canonical adapter for the ALREADY reconstructed AA8200 generic initializer.\n// Only the one root ID is staged after its real bootstrap returns; no second\n// descriptor/root owner is created. The helper preserves guard/name/parent/\n// counter/own-ID order (AA8237 then AA823A). No register ABI is reproduced.\nvoid initialize_element_00aa8200(GuiTypeDescriptor<2>& target, std::uint8_t& guard,\n    LightTypeBootstrap& common, GuiTypeCounterHost& host) {\n    std::uint32_t parent_id[1]; // Written by the real parent callback before helper reads it.\n    gui_widgets_cc13::gui_type_initialize<2>(target, guard,\n        gui_widgets_cc13::kGuiElementTypeName, parent_id,\n        [&] {\n            const auto storage = common.storage();\n            common.initialize_root_00bea780(storage.root_0109db84);\n            parent_id[0] = storage.root_0109db84.own_id;\n        }, host);\n}\n"
+    },
+    {
+      "path": "src/game_native_gui_text_process.cpp",
+      "line_start": 75,
+      "line_end": 103,
+      "purpose": "Text pool gate, overwrite risk, entered and returned states, exact generic call",
+      "excerpt_sha256": "7e7494ec98d577476b06de31a18f969e891ecd9c16998912cd37151b19dafa82",
+      "excerpt": "void GameNativeGuiTextProcess::initialize_types_once_00cd7210(\n    TypeIdCounterLifetime& counter, LightTypeBootstrapStorage canonical_common_types) {\n    // Pure admission before native guard/name/counter effects. No nested lock\n    // spans the root/counter callbacks: callers externally serialize this API.\n    if (pool_state_ != State::returned)\n        throw std::logic_error(\"GUI Text types require completed CD71F0 pool startup\");\n    if (type_state_ == State::returned) {\n        if (counter_ != &counter || root_ != &canonical_common_types.root_0109db84 ||\n            root_guard_ != &canonical_common_types.root_guard_0109db80)\n            throw std::logic_error(\"GUI Text types cannot retarget their canonical root/counter domain\");\n        return;\n    }\n    if (type_state_ != State::unattempted)\n        throw std::logic_error(\"GUI Text type startup cannot replay an entered initialization\");\n    counter_ = &counter;\n    root_ = &canonical_common_types.root_0109db84;\n    root_guard_ = &canonical_common_types.root_guard_0109db80;\n    type_state_ = State::threw;\n    CounterHost host(counter);\n    LightTypeBootstrap common(counter, canonical_common_types);\n    // CD7210: guard F8BDEC, name F8BE34, parent AA8200, two CURRENT parent\n    // words, then 6FAC20. The helper's post-increment is sequenced before the\n    // own-ID assignment: CD7255 counter store precedes CD7258 publication.\n    gui_widgets_cc13::gui_type_initialize<3>(text_00f8be28_, text_guard_00f8bdec_,\n        0x00d5c5dc, element_00f8bc88_.ids,\n        [&] { initialize_element_00aa8200(element_00f8bc88_, element_guard_00f8bc80_, common, host); },\n        host);\n    type_state_ = State::returned;\n}\n"
+    },
+    {
+      "path": "src/game_native_gui_text_process.cpp",
+      "line_start": 105,
+      "line_end": 139,
+      "purpose": "Layer keeps completed Text prerequisite and same domain",
+      "excerpt_sha256": "082b4cd58e726b40868680bdec3618b4e7bda0e70322bb1270fe7342719afaaa",
+      "excerpt": "void GameNativeGuiTextProcess::initialize_layer_type_once_00cd73f0(\n    TypeIdCounterLifetime& counter, LightTypeBootstrapStorage canonical_common_types) {\n    // Pure Source admission before native guard/name/parent/counter effects.\n    if (pool_state_ != State::returned || type_state_ != State::returned)\n        throw std::logic_error(\"GUI Layer type requires completed pool and Text type startup\");\n    if (counter_ != &counter || root_ != &canonical_common_types.root_0109db84 ||\n        root_guard_ != &canonical_common_types.root_guard_0109db80)\n        throw std::logic_error(\"GUI Layer type cannot retarget its canonical root/counter domain\");\n    if (layer_type_state_ == State::returned) return;\n    if (layer_type_state_ != State::unattempted)\n        throw std::logic_error(\"GUI Layer type startup cannot replay an entered initialization\");\n    layer_type_state_ = State::threw;\n    CounterHost host(counter);\n    LightTypeBootstrap common(counter, canonical_common_types);\n    volatile auto& guard = layer_guard_00f8bf48_;\n    if (guard != 0) {\n        // Native simply returns on this guard. Within this Source owner's\n        // private loader-zero invariant, only returned metadata admits success.\n        throw std::logic_error(\"GUI Layer guard does not establish completed Source startup\");\n    }\n    guard = 1;\n    volatile auto& layer = layer_00f8bf88_;\n    layer.native_name_address = 0x00d5cb0c;\n    initialize_element_00aa8200(element_00f8bc88_, element_guard_00f8bc80_, common, host);\n    const volatile auto& element = element_00f8bc88_;\n    // CD7414/CD7419 capture BOTH current words before CD741F/CD7424 stores.\n    const auto element_id = element.ids[0];\n    const auto root_id = element.ids[1];\n    layer.ids[1] = element_id;\n    layer.ids[2] = root_id;\n    volatile auto& actual_counter = host.counter();\n    const auto next_id = actual_counter.next_id_04;\n    actual_counter.next_id_04 = next_id + 1u;\n    layer.ids[0] = next_id; // CD7435 counter store precedes CD7438 publication.\n    layer_type_state_ = State::returned;\n"
+    },
+    {
+      "path": "src/game_native_gui_text_process.cpp",
+      "line_start": 149,
+      "line_end": 170,
+      "purpose": "Unchanged getter gates and interrupted predicate",
+      "excerpt_sha256": "a0880dff344241c9bf6f158783d4092b06f20fe6f42c12ac166f2d8a3c819981",
+      "excerpt": "const volatile std::uint32_t (&GameNativeGuiTextProcess::element_lineage_00f8bc88() const)[2] {\n    if (type_state_ != State::returned)\n        throw std::logic_error(\"GUI Element lineage requires complete same-domain Text type startup\");\n    return element_00f8bc88_.ids;\n}\n\nconst volatile std::uint32_t (&GameNativeGuiTextProcess::text_lineage_00f8be28() const)[3] {\n    if (type_state_ != State::returned)\n        throw std::logic_error(\"GUI Text lineage requires complete CD7210 startup\");\n    return text_00f8be28_.ids;\n}\n\nconst volatile std::uint32_t (&GameNativeGuiTextProcess::layer_lineage_00f8bf88() const)[3] {\n    if (layer_type_state_ != State::returned)\n        throw std::logic_error(\"GUI Layer lineage requires complete same-domain CD73F0 startup\");\n    return layer_00f8bf88_.ids;\n}\n\nbool GameNativeGuiTextProcess::native_operation_interrupted() const noexcept {\n    return pool_state_ == State::threw || pool_state_ == State::retiring ||\n        type_state_ == State::threw || layer_type_state_ == State::threw;\n}\n"
+    },
+    {
+      "path": "include/bsp/game_native_gui_text_process.hpp",
+      "line_start": 25,
+      "line_end": 48,
+      "purpose": "Borrowed lifetime and external serialization contract",
+      "excerpt_sha256": "7fdd5319d0041051e719093a8c9827ae4e538da488068dcf7a79be93300888b3",
+      "excerpt": "    // CD7210 and its AA8200 prerequisite. Borrow the canonical VFS type-counter\n    // lifetime and its SAME root guard/descriptor view. A temporary bootstrap\n    // over those cells guarantees that both initializers use this counter.\n    // No fixed IDs, zero lineage substitute, or second root owner is supplied.\n    // The counter/publications/root storage must survive this call and all\n    // callbacks. The returned lineage cells remain process-owned afterward.\n    // External serialization is required; entered reentry/failure is rejected\n    // by Source metadata, while native guard/name/partial stores stay sticky.\n    // Pool startup must already have returned, matching CE3470 then CE3474.\n    void initialize_types_once_00cd7210(TypeIdCounterLifetime&,\n        LightTypeBootstrapStorage canonical_common_types);\n\n    // Explicit Source CD73F0 role, admitted only after completed pool/Text\n    // startup in the SAME counter/root/root-guard domain. No normal host call,\n    // second counter/root, absolute CRT timing or fixed numeric ID is supplied.\n    // Keep that entire borrowed domain alive through callbacks, consumers and\n    // shared shutdown; storing its identity here does not retain it. Externally\n    // serialize initialization, reentry, lineage use and domain retirement.\n    // Entered failure cannot replay or expose partial cells. A native guard\n    // alone never establishes Source completion; unexplained nonzero guard\n    // state outside the private loader-zero invariant is sticky and rejected.\n    void initialize_layer_type_once_00cd73f0(TypeIdCounterLifetime&,\n        LightTypeBootstrapStorage canonical_common_types);\n\n"
+    },
+    {
+      "path": "include/bsp/game_native_gui_text_process.hpp",
+      "line_start": 79,
+      "line_end": 98,
+      "purpose": "Private loader-zero Element/Text/Layer metadata",
+      "excerpt_sha256": "845be51570549b88e03c02a7d9b03ea306280f4367136f258f5a9e0b6edd82b8",
+      "excerpt": "    // these uninitialized words as a successful runtime type descriptor.\n    std::uint8_t element_guard_00f8bc80_{};\n    gui_widgets_cc13::GuiTypeDescriptor<2> element_00f8bc88_{};\n    std::uint8_t text_guard_00f8bdec_{};\n    gui_widgets_cc13::GuiTypeDescriptor<3> text_00f8be28_{};\n    State type_state_{State::unattempted};\n    TypeIdCounterLifetime* counter_{};\n    const volatile RootTypeDescriptor* root_{};\n    const volatile std::uint8_t* root_guard_{};\n\n    // The sole Source Layer role, appended without moving the existing cells.\n    // Zero is its loader preimage, never a successful fallback descriptor.\n    std::uint8_t layer_guard_00f8bf48_{};\n    gui_widgets_cc13::GuiTypeDescriptor<3> layer_00f8bf88_{};\n    State layer_type_state_{State::unattempted};\n};\n\n// Construct the common E188B4 owner and this process BEFORE CD71F0 registers\n// CE0A80. Reverse CRT order keeps pool storage/trim dispatch/list alive through\n// that callback. All Text factories, queued uses and failed operations must be\n"
+    },
+    {
+      "path": "src/light_type_bootstrap.cpp",
+      "line_start": 18,
+      "line_end": 45,
+      "purpose": "Actual counter getter: warm no-call arm and cold allocation/publication/registration",
+      "excerpt_sha256": "0cc45962b4ffe9d69469a5204c5ffceba41b071c5faf3596df335be38d6626a2",
+      "excerpt": "TypeIdCounterLifetime::TypeIdCounterLifetime(SoundLifetimeAccess lifetime,\n    TypeIdCounterStorage* volatile& actual_global) noexcept\n    : lifetime_(lifetime), global_0109db7c_(actual_global) {}\n\nTypeIdCounterStorage* TypeIdCounterLifetime::get_006fac20() {\n    auto* existing = global_0109db7c_;\n    if (existing) return existing; // Fast path returns its first global load.\n    {\n        CapturedSoundLifetimeSection guard(lifetime_);\n        if (!global_0109db7c_) {\n            void* raw = singleton_lifetime_allocate(\n                {SingletonAllocationKind::object, 8, sizeof(TypeIdCounterStorage)});\n            auto* allocated = raw ? ::new (raw) TypeIdCounterStorage : nullptr;\n            if (allocated) {\n                volatile auto* initialized = allocated;\n                initialized->native_vtable_00 = 0x00cfb6c4u;\n                initialized->next_id_04 = 0;\n            }\n            global_0109db7c_ = allocated;\n            // Native calls the manager getter a second time, then reloads the\n            // published slot for registration, even if allocation returned null.\n            auto registration_manager = lifetime_.get_manager_00415350();\n            registration_manager->register_object(global_0109db7c_);\n        }\n    } // Release the originally captured section before the final slot reload.\n    return global_0109db7c_;\n}\n\n"
+    },
+    {
+      "path": "src/light_type_bootstrap.cpp",
+      "line_start": 47,
+      "line_end": 74,
+      "purpose": "Counter retirement and exact root initializer",
+      "excerpt_sha256": "a01570ba5ebe9bd458c88e59e83749b62170d14b89c6f084f047bc9096d8dc67",
+      "excerpt": "    TypeIdCounterStorage* owner, std::uint32_t flags) noexcept {\n    auto* original_address = owner;\n    global_0109db7c_ = nullptr;\n    static_cast<volatile TypeIdCounterStorage*>(owner)->native_vtable_00 = 0x00ce3818u;\n    if ((flags & 1u) != 0) {\n        owner->~TypeIdCounterStorage();\n        singleton_lifetime_free(owner);\n    }\n    return original_address;\n}\n\nLightTypeBootstrap::LightTypeBootstrap(TypeIdCounterLifetime& counter,\n    LightTypeBootstrapStorage storage) noexcept : counter_(counter), storage_(storage) {}\n\nstd::uint32_t LightTypeBootstrap::consume_type_id() {\n    volatile auto* owner = counter_.get_006fac20();\n    const auto result = owner->next_id_04;\n    owner->next_id_04 = result + 1u;\n    return result;\n}\n\nvoid LightTypeBootstrap::initialize_root_00bea780(volatile RootTypeDescriptor& target) {\n    if (storage_.root_guard_0109db80 == 0) {\n        storage_.root_guard_0109db80 = 1;\n        target.own_id = consume_type_id();\n        target.native_name_address = 0x00d68bbcu;\n    }\n}\n"
+    },
+    {
+      "path": "include/bsp/light_type_bootstrap.hpp",
+      "line_start": 18,
+      "line_end": 31,
+      "purpose": "Final nonvirtual counter lifetime",
+      "excerpt_sha256": "d6036e397c5c288a5c8f21538e242e1d69fd7d43f9e93a2a7483dc1ab28bd7dd",
+      "excerpt": "class TypeIdCounterLifetime final {\npublic:\n    TypeIdCounterLifetime(SoundLifetimeAccess,\n        TypeIdCounterStorage* volatile& actual_global_0109db7c) noexcept;\n    TypeIdCounterStorage* get_006fac20();\n    // Dispatch this from the shared lifetime manager for vtable 00CFB6C4.\n    // Clears the global unconditionally; does not unregister or reset guards.\n    TypeIdCounterStorage* deleting_destructor_006fad40(\n        TypeIdCounterStorage*, std::uint32_t flags) noexcept;\n\nprivate:\n    SoundLifetimeAccess lifetime_;\n    TypeIdCounterStorage* volatile& global_0109db7c_;\n};\n"
+    },
+    {
+      "path": "include/bsp/gui_widgets_cc13.hpp",
+      "line_start": 98,
+      "line_end": 115,
+      "purpose": "Actual template suffix after parent completion",
+      "excerpt_sha256": "584dbdbabd94d352ccf65096d5f7e9cdeeda8dc75a34847de10e7ae11191152c",
+      "excerpt": "struct GuiTypeCounterHost {\n    virtual ~GuiTypeCounterHost() = default;\n    // 006FAC20 BSP_TypeId_GetCounterSingleton.\n    virtual TypeIdCounterStorage& counter() = 0;\n};\n\ntemplate <std::size_t Depth, class ParentInit>\nvoid gui_type_initialize(GuiTypeDescriptor<Depth>& target, std::uint8_t& guard,\n    std::uint32_t native_name_address, const std::uint32_t (&parent_ids)[Depth - 1],\n    ParentInit&& initialize_parent, GuiTypeCounterHost& host) {\n    if (guard != 0) return;\n    guard = 1;\n    target.native_name_address = native_name_address;\n    initialize_parent();\n    for (std::size_t i = 0; i + 1 < Depth; ++i) target.ids[i + 1] = parent_ids[i];\n    auto& counter = host.counter();\n    target.ids[0] = counter.next_id_04++;\n}\n"
+    },
+    {
+      "path": "src/sound_lifetime_access.cpp",
+      "line_start": 12,
+      "line_end": 14,
+      "purpose": "Actual-versus-semantic manager dispatch only on cold getter path",
+      "excerpt_sha256": "a92b28007b1a0f50f22074a11d92acec0d66cfede03ad97c85d2392032e98463",
+      "excerpt": "SoundLifetimeManagerView SoundLifetimeAccess::get_manager_00415350() const {\n    if (actual_) return {nullptr, get_native_singleton_manager_00415350(*actual_)};\n    return {semantic_->get_manager_00415350(), nullptr};\n"
+    },
+    {
+      "path": "src/sound_lifetime_access.cpp",
+      "line_start": 25,
+      "line_end": 27,
+      "purpose": "Actual raw registration wrapper",
+      "excerpt_sha256": "093a5014bb73f7dd36c3e243ab0d546b9a348b78c61306dc3ae4d4f7f92fa8a8",
+      "excerpt": "void SoundLifetimeManagerView::register_object(void* object) {\n    if (semantic_) semantic_->register_object(object);\n    else register_native_singleton_object_00bd0c30(actual_, nullptr, object);\n"
+    },
+    {
+      "path": "src/sound_lifetime_access.cpp",
+      "line_start": 37,
+      "line_end": 64,
+      "purpose": "Captured actual manager section and release",
+      "excerpt_sha256": "60ea05c426e5b176b416cfd6d34bb71e74f56d8182f40b65ca34181d55ec07cb",
+      "excerpt": "CapturedSoundLifetimeSection::CapturedSoundLifetimeSection(SoundLifetimeAccess access) {\n    const auto manager = access.get_manager_00415350();\n    if (manager.semantic_) {\n        semantic_ = manager.semantic_->system_owner().section_10;\n        if (semantic_) {\n            singleton_enter_critical_section(*semantic_);\n            ++semantic_->recursion_18;\n        }\n    } else {\n        std::memcpy(&actual_, static_cast<const std::byte*>(manager.actual_) + 0x10, sizeof actual_);\n        if (actual_) {\n            EnterCriticalSection(static_cast<CRITICAL_SECTION*>(actual_));\n            auto& depth = *reinterpret_cast<volatile std::uint32_t*>(static_cast<std::byte*>(actual_) + 0x18);\n            depth = depth + 1u;\n        }\n    }\n}\nCapturedSoundLifetimeSection::~CapturedSoundLifetimeSection() {\n    if (semantic_) {\n        --semantic_->recursion_18;\n        singleton_leave_critical_section(*semantic_);\n    } else if (actual_) {\n        auto& depth = *reinterpret_cast<volatile std::uint32_t*>(static_cast<std::byte*>(actual_) + 0x18);\n        depth = depth - 1u;\n        LeaveCriticalSection(static_cast<CRITICAL_SECTION*>(actual_));\n    }\n}\n} // namespace bsp\n"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "line_start": 51,
+      "line_end": 64,
+      "purpose": "Real ordinary bad_alloc escape before parent completion",
+      "excerpt_sha256": "70d892afa1d26731d5a9065ccc749009d6672337c487d15461518dbd97c293ce",
+      "excerpt": "void* singleton_lifetime_allocate(const SingletonAllocationRequest& request) {\n    // 00BF681B: malloc, call the CRT new handler with the allocation size on\n    // failure, retry if it returns nonzero, otherwise throw bad_alloc. Host\n    // layout requires host_bytes; native_bytes retains the explicit ABI boundary.\n    for (;;) {\n        if (void* result = std::malloc(request.host_bytes)) {\n            return result;\n        }\n        if (_callnewh(request.host_bytes) == 0) {\n            throw std::bad_alloc();\n        }\n    }\n}\n\n"
+    },
+    {
+      "path": "src/native_vfs_owner_services.cpp",
+      "line_start": 5,
+      "line_end": 26,
+      "purpose": "Same actual publication domain and deletion binding",
+      "excerpt_sha256": "137bafda56f0382e4be7ebf12b8be0c29d6a5b87b93550431710b7d9448532ba",
+      "excerpt": "NativeVfsOwnerServices::NativeVfsOwnerServices(\n    NativeVfsPublicationCells cells,\n    const volatile std::uint32_t* actual_batch_table_00d5e5ac,\n    const SingletonLifetimeCallbacks& invalid_parameters)\n    : cells_(cells),\n      lifetime_(cells_.manager_01090aa0),\n      strings_(cells_.string_pool_01090aa8, cells_.string_returns_disabled_01090aa4,\n          cells_.manager_01090aa0),\n      physical_{cells_.vfs_0109ceec, strings_, invalid_parameters},\n      batches_(lifetime_, cells_.batch_pool_0108fe8c, cells_.batch_lock_0109dbbc,\n          actual_batch_table_00d5e5ac),\n      streams_{physical_, cells_.stream_pool_0109dc28, lifetime_, batches_},\n      types_(lifetime_, cells_.type_counter_0109db7c) {}\n\nvoid NativeVfsOwnerServices::bind_deletion(\n    NativeSingletonDeletionBindings& bindings) noexcept {\n    bindings.actual_string_pool_publication_01090aa8 = &cells_.string_pool_01090aa8;\n    bindings.actual_string_returns_disabled_01090aa4 =\n        &cells_.string_returns_disabled_01090aa4;\n    bindings.physical_stream_pool = &streams_;\n    bindings.render_batch_lifetime = &batches_;\n    bindings.type_id_counter_lifetime = &types_;\n"
+    },
+    {
+      "path": "include/bsp/native_vfs_owner_services.hpp",
+      "line_start": 14,
+      "line_end": 25,
+      "purpose": "Borrowed publication identity through drain",
+      "excerpt_sha256": "23c11bc777aa295f4d28178add1a4094d4f70d96517a42ea9c68f6afa2bd4b1c",
+      "excerpt": "// All cells refer to the application's existing source publications. This\n// bundle does not create aliases or shadow the host's cells. The caller keeps\n// them stable through manager drain; each mutable value may change normally.\nstruct NativeVfsPublicationCells {\n    void* volatile& manager_01090aa0;\n    void* volatile& vfs_0109ceec;\n    void* volatile& stream_pool_0109dc28;\n    NativeRenderBatchPoolStorage* volatile& batch_pool_0108fe8c;\n    NativeRenderBatchLockOwner* volatile& batch_lock_0109dbbc;\n    NativeStringPoolStorage* volatile& string_pool_01090aa8;\n    volatile std::uint32_t& string_returns_disabled_01090aa4;\n    TypeIdCounterStorage* volatile& type_counter_0109db7c;\n"
+    },
+    {
+      "path": "include/bsp/native_vfs_owner_services.hpp",
+      "line_start": 44,
+      "line_end": 49,
+      "purpose": "Same concrete counter owner getter",
+      "excerpt_sha256": "cfebf5c109163c022de3dd41d55ac3158e661e3802deaa96686349a44aefc171",
+      "excerpt": "    SoundLifetimeAccess lifetime() const noexcept { return lifetime_; }\n    ActualNativeStringPoolStorage& strings() noexcept { return strings_; }\n    NativePhysicalFileDateContext& physical() noexcept { return physical_; }\n    NativeRenderBatchLifetime& batches() noexcept { return batches_; }\n    NativePhysicalStreamOpenContext& streams() noexcept { return streams_; }\n    TypeIdCounterLifetime& types() noexcept { return types_; }\n"
+    },
+    {
+      "path": "src/game_native_vfs_application.cpp",
+      "line_start": 51,
+      "line_end": 59,
+      "purpose": "Retained actual counter cell and type/root storage",
+      "excerpt_sha256": "76bbbab027fbca7225c5aeecb1a41793e3849761311e1e1b3b80193038ba77ae",
+      "excerpt": "    volatile std::uint32_t& string_returns_disabled_01090aa4{\n        game_native_string_process().returns_disabled_01090aa4()};\n    TypeIdCounterStorage* volatile type_counter_0109db7c{};\n    NativeVfsPublicationCells cells;\n    SingletonLifetimeCallbacks validation{nullptr, nullptr, &reject_native_vfs_parameter};\n    NativeVfsOwnerServices owner_services;\n    NativeStringRawPoolContext raw_strings;\n    GameNativeTypeStorage type_storage;\n    LightTypeBootstrap common_types;\n"
+    },
+    {
+      "path": "src/game_native_vfs_application.cpp",
+      "line_start": 78,
+      "line_end": 90,
+      "purpose": "Application binds actual counter and canonical root view",
+      "excerpt_sha256": "6c742510162f850b55833fbf25aa5ad97a5e0b69b3cfab8041560064b8822ea5",
+      "excerpt": "        : singleton_host(host), data(mapped), constants(original_executable),\n          cells{host.manager_publication_01090aa0(), vfs_0109ceec,\n              stream_pool_0109dc28, batch_pool_0108fe8c, batch_lock_0109dbbc,\n              string_pool_01090aa8, string_returns_disabled_01090aa4,\n              type_counter_0109db7c},\n          owner_services(cells,\n              static_cast<const volatile std::uint32_t*>(\n                  mapped.data_at(0x00d5e5ac, sizeof(std::uint32_t))),\n              validation),\n          raw_strings{owner_services.string_pool_publication_01090aa8(),\n              owner_services.string_returns_disabled_01090aa4(),\n              host.manager_publication_01090aa0()},\n          common_types(owner_services.types(), type_storage.light_types()),\n"
+    },
+    {
+      "path": "include/bsp/game_native_vfs_application.hpp",
+      "line_start": 20,
+      "line_end": 23,
+      "purpose": "Retain bundle through shared drain",
+      "excerpt_sha256": "a8634d1486351e66d7edc9e86e779f0745d13c2e3f923cc48f009520a3a3bdf2",
+      "excerpt": "// Retained source owner for one application's raw VFS graph. Borrow the same\n// GameSingletonHost and mapped data throughout startup and the shared drain.\n// The caller must invoke singleton_host.shutdown() before destroying this\n// bundle, including when initialize_core() throws after a getter/register call.\n"
+    },
+    {
+      "path": "src/game_native_type_storage.cpp",
+      "line_start": 8,
+      "line_end": 12,
+      "purpose": "Canonical root references",
+      "excerpt_sha256": "89736389ce537bb32682604d044bb57c107c097e77c0df5d2726f8ddfe243cf8",
+      "excerpt": "GameNativeTypeStorage::GameNativeTypeStorage() noexcept\n    : light_types_{root_guard_0109db80_, root_0109db84_,\n          node_guard_0108ff54_, node_0108ff90_,\n          light_guard_0109010d_, light_0109018c_,\n          directional_guard_0109010e_, directional_0109019c_},\n"
+    },
+    {
+      "path": "include/bsp/game_native_type_storage.hpp",
+      "line_start": 79,
+      "line_end": 87,
+      "purpose": "Private loader-zero canonical root cells",
+      "excerpt_sha256": "f18d0d2ee31606ff6f8fe0f3ef002a5187c8492060cb7bbe56ea0f5cfd0f89d1",
+      "excerpt": "private:\n    void require_common_bootstrap(const LightTypeBootstrap&) const;\n\n    volatile std::uint8_t root_guard_0109db80_{};\n    volatile RootTypeDescriptor root_0109db84_{};\n    volatile std::uint8_t node_guard_0108ff54_{};\n    volatile NodeTypeDescriptor node_0108ff90_{};\n    volatile std::uint8_t light_guard_0109010d_{};\n    volatile LightTypeDescriptor light_0109018c_{};\n"
+    },
+    {
+      "path": "src/game_hosts_vfs.cpp",
+      "line_start": 141,
+      "line_end": 142,
+      "purpose": "Host returns retained actual counter/type owners",
+      "excerpt_sha256": "a80958b0501051e517b6e0caeb250eabf0c10cdf87a32d032ade00cff9247d75",
+      "excerpt": "NativeVfsOwnerServices& GameVfsHost::native_owners() noexcept { return native_->owners(); }\nGameNativeTypeStorage& GameVfsHost::native_types() noexcept { return native_->types(); }\n"
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "line_start": 510,
+      "line_end": 516,
+      "purpose": "Actual CFB6C4 shared-drain dispatch",
+      "excerpt_sha256": "bbe58c354a7de2f2d5530cfa3e454975d2a2f6e58500397d590e4c1f1757bc45",
+      "excerpt": "    case 0x00cfb6c4:\n        if (bindings.type_id_counter_lifetime != nullptr) {\n            bindings.type_id_counter_lifetime->deleting_destructor_006fad40(\n                static_cast<TypeIdCounterStorage*>(owner), flags);\n            return;\n        }\n        break;\n"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "line_start": 3115,
+      "line_end": 3134,
+      "purpose": "Text startup catch and _Exit retention boundary",
+      "excerpt_sha256": "0e498b7eda431767a169d24bdabb071079f5f263a5f036e1e2894125009743a0",
+      "excerpt": "    // has its canonical VFS counter/common-type domain here, before GUI users;\n    // it does not claim Original absolute CRT timing or numeric type-ID order.\n    auto& gui_text_process = game_native_gui_text_process();\n    try {\n        gui_text_process.initialize_types_once_00cd7210(\n            vfs_->native_owners().types(), vfs_->native_types().light_types());\n    } catch (...) {\n        if (gui_text_process.native_operation_interrupted()) {\n            try {\n                log_.note(\"interrupted GUI Text type startup; retaining sticky lineage/counter/VFS/renderer graph\");\n                log_.close();\n            } catch (...) { std::fputs(\"bsp_game: GUI Text startup requires process retention\\n\", stderr); }\n            std::_Exit(1);\n        }\n        throw;\n    }\n    const auto& text_lineage = gui_text_process.text_lineage_00f8be28();\n    const auto& element_lineage = gui_text_process.element_lineage_00f8bc88();\n    log_.notef(\"native GUI Text lineage ready: text=%u element=%u root=%u \"\n        \"parent_match=%d counter=canonical_vfs source_bootstrap=late before_fonts=1\",\n"
+    },
+    {
+      "path": "src/game_main.cpp",
+      "line_start": 1230,
+      "line_end": 1252,
+      "purpose": "Existing outer startup failure retention queries",
+      "excerpt_sha256": "a64047ee8e42d4db48dd77308001ec6c2daa9f85ee00149a56252246f5f35bf8",
+      "excerpt": "    } catch (const std::exception& failure) {\n        if (text_pool_process && text_pool_process->native_operation_interrupted()) {\n            try {\n                log.notef(\"native pool startup failed: %s\", failure.what());\n                log.note(\"interrupted GUI Text pool startup; retaining raw pool/list state without CRT cleanup\");\n                log.close();\n            } catch (...) { std::fputs(\"bsp_game: GUI Text pool requires process retention\\n\", stderr); }\n            std::_Exit(2);\n        }\n        std::fprintf(stderr, \"bsp_game: native pool startup failed: %s\\n\", failure.what());\n        log.notef(\"native pool startup failed: %s\", failure.what());\n        log.close();\n        return 1;\n    } catch (...) {\n        if (text_pool_process && text_pool_process->native_operation_interrupted()) {\n            try {\n                log.note(\"unknown interrupted GUI Text pool startup; retaining raw pool/list state without CRT cleanup\");\n                log.close();\n            } catch (...) { std::fputs(\"bsp_game: GUI Text pool requires process retention\\n\", stderr); }\n            std::_Exit(2);\n        }\n        std::terminate(); // Preserve WinMain's existing nothrow unknown-failure boundary.\n    }\n"
+    }
+  ],
+  "verdict": {
+    "separate_element_completion_cell_required_for_exact_proposed_closed_source": false,
+    "qualification": "Conditional on all explicit domain/admission/closed-suffix conditions; this is not a generic noexcept claim for arbitrary GuiTypeCounterHost, Native exceptions or future providers. Group Native suffix remains separately recovered/reviewed by lineage worker.",
+    "same_element_owner_required": true,
+    "no_new_native_policy_or_fixed_ids": true,
+    "source_completed_metadata_only_after_success": true,
+    "source_implementation_edited_or_admitted": false,
+    "ordinary_cpp_escape_after_successful_element": "Unreachable for exact supported closed Source suffix under stated conditions; no general noexcept, SEH/fault or future-provider claim."
+  },
+  "proof": [
+    {
+      "step": 1,
+      "statement": "The actual private adapter constructs CounterHost final with TypeIdCounterLifetime final; its counter override calls only that same nonvirtual get_006fac20. ParentInit is a reference-only direct lambda, not a user callback or std::function. LightTypeBootstrap construction/storage access are noexcept metadata operations."
+    },
+    {
+      "step": 2,
+      "statement": "Cold Element sets its private guard/name, runs actual root initialization, copies current root ID, obtains the actual counter, and increments/stores its own ID. Real C++ escapes from cold get allocation/manager/registration occur before this complete return. Partial guard, name, root, publication and counter state remain sticky."
+    },
+    {
+      "step": 3,
+      "statement": "After a genuine normally completed cold Element, the counter getter returned a valid actual owner; its published cell is nonnull. Serialized retained-domain lifetime forbids clearing/replacing/freeing it between that return and later role work."
+    },
+    {
+      "step": 4,
+      "statement": "The exact get_006fac20 nonnull arm is one current global load, null test and return of that first load. It does not enter SoundLifetimeAccess, manager getter/registration, allocator, lock, callback or destructor. The actual post-Element provider can therefore produce no ordinary C++ escape."
+    },
+    {
+      "step": 5,
+      "statement": "Actual Text suffix is only two plain parent-ID copies, that exact warm counter getter and uint32 postincrement/publication. Trivial local cleanup and enum returned assignment add no throw. Proposed recovered Group suffix must likewise remain two current parent loads/copies, same warm get, current +4 read, increment and ordered stores, then returned metadata."
+    },
+    {
+      "step": 6,
+      "statement": "Thus supported ordinary C++ failure after successful Element but before the owning Text/Group role becomes returned is unreachable. Between externally serialized entries, a completed Element implies a completed role; a role entered/threw without a completed role cannot be used as Element completion."
+    },
+    {
+      "step": 7,
+      "statement": "Base case is private loader-zero Element cells. Only cold Text or Group may first enter them. Cold cross-entry rejects the other role entered/threw before native effects, including reentry during cold manager/registration callbacks. Layer still requires completed Text. This preserves the induction for the hot Element guard arm."
+    },
+    {
+      "step": 8,
+      "statement": "A nonzero Element guard or nonnull counter alone never proves Element completion: cold getter failure can leave either sticky before Element finishes. Only returned role metadata plus the closed-domain proof admits reuse."
+    }
+  ],
+  "required_implementation_conditions": [
+    "Bind counter_/root_/root_guard_ once, or check all three pointer identities. Text must not overwrite an already bound Group-first domain; no reading/copying type IDs or native guard to validate this metadata admission.",
+    "Keep the exact actual counter lifetime, publication cell and published object plus canonical root/guard alive without drain, reset, replacement or concurrent mutation through every role initialization and consumer/shared shutdown. Equal owner addresses alone do not authorize a retired/reused lifetime.",
+    "Preserve current Text completed-pool prerequisite. Group type initialization has no Text-completion or Group/Text payload-pool prerequisite and may be first; it creates no pool startup.",
+    "Own returned entry checks same domain and keeps its old prerequisites, then returns before any unrelated other-role failure veto. Own entered/failed state cannot replay. Cold Text rejects Group entered/threw; cold Group rejects Text entered/threw, all before native guard/name/counter effects.",
+    "Mark the target role entered/threw before the first native guard/name effect; set returned only after the last successful native ID publication. Preserve all partial guards/name/parent/counter/ID stores on throw, with no rollback, reset or retry.",
+    "Only Text/Group may first enter the private Element adapter; keep Layer completion and same-domain checks unchanged. Group-completed is not a substitute for completed Text at Layer admission.",
+    "Retain old Element/Text/Layer getter gates. Do not introduce a global interrupted-state veto that hides already completed role lineage; a new Group getter uses only completed Group state.",
+    "Extend native_operation_interrupted() with group_type_state_==State::threw, retaining all existing pool/type/Layer terms and no callbacks/native reads. This feeds game_hosts.cpp3122 and existing game_main startup catch retention boundaries.",
+    "Do not add any fallible validation, allocation, provider/callback, logging, lock acquisition, registration, generic host substitution or other ordinary C++ escape after Element return and before role returned metadata."
+  ],
+  "state_cases": [
+    {
+      "entry": "cold Text",
+      "other": "Group unattempted",
+      "decision": "Admit after existing Text pool check and monotonic domain binding; mark Text entered before native effects."
+    },
+    {
+      "entry": "cold Group",
+      "other": "Text unattempted",
+      "decision": "Admit same actual domain without Text/payload-pool gate; mark Group entered before native effects."
+    },
+    {
+      "entry": "cold Text",
+      "other": "Group returned",
+      "decision": "Admit same bound domain after original Text pool prerequisite; no rebinding."
+    },
+    {
+      "entry": "cold Group",
+      "other": "Text returned",
+      "decision": "Admit same bound domain; no payload pool prerequisite."
+    },
+    {
+      "entry": "cold Text",
+      "other": "Group entered/threw",
+      "decision": "Reject before native effects; Group failure remains interruption/retention evidence."
+    },
+    {
+      "entry": "cold Group",
+      "other": "Text entered/threw",
+      "decision": "Reject before native effects; Text failure remains interruption/retention evidence."
+    },
+    {
+      "entry": "returned own role",
+      "other": "any state",
+      "decision": "Preserve same-domain checks, old prerequisites and own completed access; no unrelated failed-role veto."
+    },
+    {
+      "entry": "entered/threw own role",
+      "other": "any state",
+      "decision": "Reject replay; preserve sticky native state."
+    },
+    {
+      "entry": "Layer",
+      "other": "only Group returned",
+      "decision": "Reject: existing completed Text prerequisite remains mandatory."
+    }
+  ],
+  "retention_risk": "Without the new Group-threw predicate term, Group-first failure followed by rejected cold Text can leave Text and Layer unattempted with pool returned. Existing predicate would be false and game_hosts startup catch could rethrow through the sticky VFS/counter/root graph instead of its established _Exit retention boundary.",
+  "future_invalidation": {
+    "conditions": [
+      "A new fallible operation/callback/provider/check is inserted after Element success.",
+      "A generic foreign GuiTypeCounterHost replaces the exact closed CounterHost.",
+      "Another cold Element entry becomes reachable without this cross-role metadata admission.",
+      "Counter publication/object can retire, clear, retarget or reset between Element and later role work."
+    ],
+    "required_response": "Re-review. If actual post-parent C++ escape becomes reachable, add private Source Element-completion metadata and an owned helper that marks completion immediately after genuine AA8200 normally returns, before later role work can throw. Do not infer it from the native guard, reset native cells, replay failed roles or add Native error/fallback policy."
+  },
+  "group_readiness_dependency": {
+    "worker": "/root/dyn_ambient_math",
+    "status": "separate_packet_not_sealed_at_initial_report_creation",
+    "supplied_order": "CD7460: guard/name before AA8200; both current parent loads CD7484/CD7489 before stores CD748F/CD7494; 6FAC20 CD749A; one counter+4 read CD749F; counter store CD74A5 before Group own-ID CD74A8.",
+    "independent_group_native_recovery_in_this_review": false
+  },
+  "not_performed": [
+    "Source/CMake/shared metadata edits",
+    "Ghidra analysis batch or mutation",
+    "compilation",
+    "linking",
+    "tests or new tests",
+    "probes or target execution",
+    "installation",
+    "activation"
+  ],
+  "credit": {
+    "new_native_game_functions": 0,
+    "new_native_game_bytes": 0,
+    "new_native_game_instructions": 0,
+    "vendor": 0,
+    "duplicate": 0,
+    "original_abi_fh3_seh_fault": 0,
+    "runtime": 0,
+    "activation": 0
+  },
+  "findings": [],
+  "review_completed_utc": "2026-10-30T10:22:32.054616+00:00",
+  "excerpt_hash_encoding": "UTF-8 normalized LF, including final newline"
+}
