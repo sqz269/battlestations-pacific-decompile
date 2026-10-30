@@ -220,7 +220,7 @@ void build_native_gui_text_single_line_storage_00ab9fd0(
         acquired.model = pointer(load(text, 0x4c)); // BEFORE Text+110 store
         store(text, 0x110, 0);
         location(acquired, Acquired::Boundary::model_geometry, 0x00ab9fe5);
-        void* const mesh = context.bindings.model_geometry_00b74640(acquired.model, 0);
+        void* const mesh = pointer(load(acquired.model, 0x180)); // whole B74640; stacked0 unused
         acquired.mesh = mesh;
         location(acquired, Acquired::Boundary::vertex_stream, 0x00ab9ff3);
         void* const vertex = native_mesh_vertex_stream_unchecked_00b73260(mesh, 0);
