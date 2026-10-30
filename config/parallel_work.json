@@ -44600,6 +44600,34 @@
         "reports/codex_vfs_raw_fallback_borrow.json"
       ],
       "notes": "b03a955 appends exactalreadyvalidated retained0109CEF0 inputpointer toRawServices; distinctE17654, no newstorage/getter/provider/I/O/startup. IndependentSource/commonWin32checks2/2 pass11.47s. Runtime/inputbacking must outlive consumers/failures. RawBDEF90 caller unbound."
+    },
+    {
+      "id": "codex-raw-string-header-field-corrections",
+      "state": "source_reviewed_coupled_win32_pass",
+      "worker": "gui_integration_review",
+      "source_ready": false,
+      "function_addresses": ["004bcb80", "00425f40", "004261a0"],
+      "output_files": [
+        "src/native_lua_script_overrides.cpp",
+        "src/native_physical_file_date.cpp",
+        "docs/CODEX_RAW_STRING_FIELD_CORRECTIONS.md",
+        "reports/codex_raw_string_field_corrections.json"
+      ],
+      "notes": "Published2c851 contains exact0265/276857 raw-only fencedbytefield corrections. Read/store/self/cleanup order unchanged; sharedhelpers/typed/allotherbodies inverse-exact. Primary/independentSource/strictobjects/commonWin32checks2/2 pass14.10s. No lowerprovider transitiveABI/fault/runtime closure."
+    },
+    {
+      "id": "codex-raw-lua-overrides-binding",
+      "state": "source_reviewed_strict_object_pass_registration_pending",
+      "worker": "gameplay_integration_review",
+      "source_ready": false,
+      "function_addresses": ["00bdef90"],
+      "output_files": [
+        "include/bsp/native_lua_script_overrides_raw.hpp",
+        "src/native_lua_script_overrides_raw.cpp",
+        "docs/NATIVE_LUA_SCRIPT_OVERRIDES_RAW.md",
+        "reports/native_lua_script_overrides_raw.json"
+      ],
+      "notes": "f73a9 actualpath8/output0C with retainedGameVFS/rawcells/literals/0109CEF0, realcurrentexists andrawvector. Full887Bepochs/private10states, normalcaptureddata-before-disarm/currentlen-after, underscoreearlycaptures, no failedcalleeoutputcleanup. Primary/independentSource+strictWin32objectpass; oldtyped2/all19providers unchanged. bsp_game CMake registrationqueuedbehindpeerheldfile; combinedlink/build NOTdone. Raw16/parser/loading/startup/runtime/ABI unbound."
     }
   ],
   "snapshot_after_analysis": {

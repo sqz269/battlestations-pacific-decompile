@@ -1092,3 +1092,11 @@ and cleanupbehavior inverse-exact. Primary/independentSource/strictobject and
 combinedReleaseWin32checks2/2 pass14.10s. BDEF90newbody remains separatepending
 registration/review/build; no raw16/parser/loading/startup/runtime/ABI authority.
 See CODEX_RAW_STRING_FIELD_CORRECTIONS.md; all9off/ac60hold remain.
+
+RawBDEF90 f73a9ecbd now supplies qualified fullactualpath8/output0C transport
+through realVFS app/rawcells/constants/fallback, currentexists target and vector.
+Primary/independentSource read and strictWin32objectpass; oldtyped2files/all19
+providerblobs unchanged. CMakebsp_game registration is queuedbehindpeerheldfile,
+so newbodylink/commonbuild remainPENDING. Existingproviderfixbuild2/2 isseparate.
+No raw16/parser/loadedlocale/startup/runtime/ABI activation follows; all9offhold.
+See CODEX_RAW_LUA_OVERRIDES_INTEGRATION.md; continue registration/build next.
