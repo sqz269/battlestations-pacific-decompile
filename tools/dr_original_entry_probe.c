@@ -20,6 +20,7 @@ static byte *stub;
 static byte entry_fp[DR_FPSTATE_BUF_SIZE];
 static bool fp_verified;
 static bool call_verified;
+static volatile int av_event_count;
 
 static bool same_x87(const byte *left, const byte *right) {
     size_t i;
@@ -94,6 +95,45 @@ static void put32(byte *where, uint value) { memcpy(where, &value, 4); }
 static void client_exit(void) {
     record(intentional_stop ? "admission_client_exit intentional_stop=1" :
                              "admission_client_exit intentional_stop=0");
+}
+/* Application AV observations can be handled by the application. This logger
+ * never labels them fatal, changes either context, or consumes the exception.
+ * drmgr provides the SDK exception event while sharing its callback dispatcher. */
+static bool application_exception(void *context, dr_exception_t *exception) {
+    byte fp_storage[DR_FPSTATE_BUF_SIZE + DR_FPSTATE_ALIGN];
+    byte *fp = (byte *)(((ptr_uint_t)fp_storage + DR_FPSTATE_ALIGN - 1) & ~(DR_FPSTATE_ALIGN - 1));
+    module_data_t *module = NULL; app_pc pc = NULL, sp = NULL, access_address = NULL;
+    file_t file; int sequence; uint access_type = 0, access_valid = 0;
+    proc_save_fpstate(fp); /* First call: preserve x87/MXCSR while observing. */
+    if (!exception || !exception->record || exception->record->ExceptionCode != 0xc0000005U)
+        goto finished;
+    sequence = dr_atomic_add32_return_sum(&av_event_count, 1);
+    if (sequence > 32) {
+        dr_atomic_add32_return_sum(&av_event_count, -1); goto finished;
+    }
+    if (exception->mcontext) {
+        pc = exception->mcontext->pc; sp = (app_pc)(ptr_uint_t)exception->mcontext->xsp;
+    }
+    if (exception->record->NumberParameters >= 2) {
+        access_valid = 1; access_type = (uint)exception->record->ExceptionInformation[0];
+        access_address = (app_pc)exception->record->ExceptionInformation[1];
+    }
+    if (pc) module = dr_lookup_module(pc);
+    file = dr_open_file(log_path, DR_FILE_WRITE_APPEND);
+    if (file != INVALID_FILE) {
+        dr_fprintf(file, "application_av seq=%d code=%08x pc=" PFX " module_known=%u module=\"%s\""
+            " module_base=" PFX " rva=0x%08x tid=%u sp=" PFX
+            " access_valid=%u access_type=%u access_address=" PFX " forwarded=1\n",
+            sequence, (uint)exception->record->ExceptionCode, pc, module != NULL,
+            module && module->full_path ? module->full_path : "<unknown>",
+            module ? module->start : NULL, module ? (uint)(pc - module->start) : 0,
+            (uint)dr_get_thread_id(context), sp, access_valid, access_type, access_address);
+        dr_close_file(file);
+    }
+    if (module) dr_free_module_data(module);
+finished:
+    proc_restore_fpstate(fp); /* Final call; deliver the original exception. */
+    return true;
 }
 static void stop_nudge(void *context, uint64 argument) {
     file_t file; (void)context;
@@ -291,6 +331,7 @@ DR_EXPORT void dr_client_main(client_id_t id, int argc, const char *argv[]) {
     gate_lock = dr_mutex_create(); check(gate_lock != NULL, "gate_lock");
     check(drmgr_init() && drmgr_register_bb_app2app_event(entry_app2app, NULL) &&
         drmgr_register_bb_instrumentation_event(NULL, bb, NULL), "bb_callback_registration");
+    check(drmgr_register_exception_event(application_exception), "exception_callback_registration");
     if (stop_enabled) {
         check(drmgr_register_exit_event(client_exit), "exit_callback_registration");
         dr_register_nudge_event(stop_nudge, id);
