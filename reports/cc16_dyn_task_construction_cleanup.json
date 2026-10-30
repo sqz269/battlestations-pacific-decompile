@@ -1,0 +1,1122 @@
+{
+  "packet": "codex-dyn-task-construction-cleanup",
+  "created_at_utc": "2026-10-29T23:19:09.150533+00:00",
+  "base_main": "8faf5e9e4108ae79c647adb7a6a4c11728ad6882",
+  "status": "additive_Cpp_partial_construction_cleanup_strict_compiled_old23records_equal; independent_review_common_build_link_required; NO_native_fault_ABI_or_activation_admission",
+  "ownership": {
+    "addresses": [
+      "00C37740"
+    ],
+    "files": [
+      "include/bsp/dyn_task_manager.hpp",
+      "src/dyn_task_manager.cpp",
+      "docs/CC16_DYN_TASK_CONSTRUCTION_CLEANUP.md",
+      "reports/cc16_dyn_task_construction_cleanup.json"
+    ],
+    "C55_engine_Game_CMake_shared_ledger_Ghidra_guard_changes": false
+  },
+  "approved_input": {
+    "readiness": "21448e7f11e067728ff8e7fd6a14cf32a8e623fd",
+    "scope": "Onlyqualifiedtaskconstructor prerequisite; no privateRoot dependency, rawprovider/domain supplier change or caller propagation."
+  },
+  "source_interface": {
+    "name": "dyn_task_manager_construct_qualified_00c37740",
+    "signature": "DynTaskManagerStorage*(DynTaskManagerStorage&,const uint32_t& worker_count,const AvoidZoneDynHullMemory&)",
+    "actual_inputs": "Sameactualfresh358hWin32storage,countwordandgenuineallocator/vectorreleasecontext as existingnormalAPI; retainedthroughcall/cleanup.",
+    "old_API": "dyn_task_manager_construct_00c37740 unchangednormalonly; allotheroldpublic/worker/template/compilercode recordsunchanged",
+    "ownership": "Borrowsactualstorage/services; no dummy tag, newcontextfield/global/defaultcallback/fallback/rawstoragefree.",
+    "ABI": "NewCppcdecl3argumentreference/service interface, notOriginal2stackargumentRET8 or register/FH/SEH replacement."
+  },
+  "native_evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "ConfiguredBSPwrapperensurestatus beforeeachanalysisbatch; originalPE/live/exportreadonly; no import/mutation",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "body": "00C37740..00C377ED",
+    "bytes": 174,
+    "instructions": 58,
+    "ABI": "Stackmanager*,countDWORD; EAXmanager; RET8atC377EB.",
+    "handler": "CC806F selectsE03DF8 thenjumpsBF6B43",
+    "FuncInfo": {
+      "address": "00E03DF8",
+      "maxState": 2,
+      "map": "00E03DE8",
+      "EHflags": 1
+    },
+    "states": [
+      {
+        "state": 0,
+        "previous": -1,
+        "action": "00CC8059",
+        "arm": "00C37771",
+        "operation": "Currentqueue(task+C) conditionalBF6989free"
+      },
+      {
+        "state": 1,
+        "previous": 0,
+        "action": "00CC8064",
+        "arm": "00C37783",
+        "operation": "RealDeleteCriticalSection(task+18), thenstate0"
+      }
+    ],
+    "original_state0_epoch": "Queue+C/+10/+14zeroC3775F/62/65, thenstate0C37771 beforeInitCScallC37775",
+    "original_state1_epoch": "C37783afterInitCSreturns regardlessBOOL, beforeCreateSemaphoreC37788; retainedthroughreturn",
+    "action0": "CC8059 reloads originaltask[EBP+4], addsC, tail408E80 capturesCURRENTdata once/conditionalBF6989/no clear",
+    "action1": "CC8064 reloads originaltask[EBP+4], adds18, tailC30930 actualDeleteCriticalSection thenstate0",
+    "spans": [
+      {
+        "name": "body",
+        "address": "00C37740",
+        "bytes": 174,
+        "file_offset": "0x837740",
+        "sha256": "9f6c357444f48fb6e48ebc0d1e462623eaa011e035e8a05c0f8efabfb6b9f8ca",
+        "hex": "64a1000000006aff686f80cc0050648925000000005355568b74241c33db57895e0c895e10895e148d4618681027000050895c2420ff155421ce005368e80300005353c644242801ff154c21ce0053536a0153898650030000ff15b822ce008986540300008dbec00100008d6b648bff53535353899f70feffffff15b822ce00890783c70483ed0175e68b44242450895e04e8b9feffff8b4c24105f8bc65e5d64890d000000005b83c40cc20800",
+        "instruction_count": 58,
+        "live_PE_equal": true,
+        "listing": [
+          "00C37740: mov eax, dword ptr fs:[0]",
+          "00C37746: push -1",
+          "00C37748: push 0xcc806f",
+          "00C3774D: push eax",
+          "00C3774E: mov dword ptr fs:[0], esp",
+          "00C37755: push ebx",
+          "00C37756: push ebp",
+          "00C37757: push esi",
+          "00C37758: mov esi, dword ptr [esp + 0x1c]",
+          "00C3775C: xor ebx, ebx",
+          "00C3775E: push edi",
+          "00C3775F: mov dword ptr [esi + 0xc], ebx",
+          "00C37762: mov dword ptr [esi + 0x10], ebx",
+          "00C37765: mov dword ptr [esi + 0x14], ebx",
+          "00C37768: lea eax, [esi + 0x18]",
+          "00C3776B: push 0x2710",
+          "00C37770: push eax",
+          "00C37771: mov dword ptr [esp + 0x20], ebx",
+          "00C37775: call dword ptr [0xce2154]",
+          "00C3777B: push ebx",
+          "00C3777C: push 0x3e8",
+          "00C37781: push ebx",
+          "00C37782: push ebx",
+          "00C37783: mov byte ptr [esp + 0x28], 1",
+          "00C37788: call dword ptr [0xce214c]",
+          "00C3778E: push ebx",
+          "00C3778F: push ebx",
+          "00C37790: push 1",
+          "00C37792: push ebx",
+          "00C37793: mov dword ptr [esi + 0x350], eax",
+          "00C37799: call dword ptr [0xce22b8]",
+          "00C3779F: mov dword ptr [esi + 0x354], eax",
+          "00C377A5: lea edi, [esi + 0x1c0]",
+          "00C377AB: lea ebp, [ebx + 0x64]",
+          "00C377AE: mov edi, edi",
+          "00C377B0: push ebx",
+          "00C377B1: push ebx",
+          "00C377B2: push ebx",
+          "00C377B3: push ebx",
+          "00C377B4: mov dword ptr [edi - 0x190], ebx",
+          "00C377BA: call dword ptr [0xce22b8]",
+          "00C377C0: mov dword ptr [edi], eax",
+          "00C377C2: add edi, 4",
+          "00C377C5: sub ebp, 1",
+          "00C377C8: jne 0xc377b0",
+          "00C377CA: mov eax, dword ptr [esp + 0x24]",
+          "00C377CE: push eax",
+          "00C377CF: mov dword ptr [esi + 4], ebx",
+          "00C377D2: call 0xc37690",
+          "00C377D7: mov ecx, dword ptr [esp + 0x10]",
+          "00C377DB: pop edi",
+          "00C377DC: mov eax, esi",
+          "00C377DE: pop esi",
+          "00C377DF: pop ebp",
+          "00C377E0: mov dword ptr fs:[0], ecx",
+          "00C377E7: pop ebx",
+          "00C377E8: add esp, 0xc",
+          "00C377EB: ret 8"
+        ]
+      },
+      {
+        "name": "unwind_actions_handler",
+        "address": "00CC8059",
+        "bytes": 32,
+        "file_offset": "0x8c8059",
+        "sha256": "53e651b9cf30175d13774fa9f161e5b62b5e7b63c6f2bacc9bba9767354256a8",
+        "hex": "8b450483c00ce91c0e74ff8b450483c018e9c188f6ffb8f83de000e9caeaf2ff",
+        "instruction_count": 8,
+        "live_PE_equal": true,
+        "listing": [
+          "00CC8059: mov eax, dword ptr [ebp + 4]",
+          "00CC805C: add eax, 0xc",
+          "00CC805F: jmp 0x408e80",
+          "00CC8064: mov eax, dword ptr [ebp + 4]",
+          "00CC8067: add eax, 0x18",
+          "00CC806A: jmp 0xc30930",
+          "00CC806F: mov eax, 0xe03df8",
+          "00CC8074: jmp 0xbf6b43"
+        ]
+      },
+      {
+        "name": "map_FuncInfo",
+        "address": "00E03DE8",
+        "bytes": 52,
+        "file_offset": "0xa03de8",
+        "sha256": "ae7d3e330253d0f9e44b8ed33d335ca7919bd3baefe62dbae4c8a7c10777d769",
+        "hex": "ffffffff5980cc00000000006480cc002205931902000000e83de000000000000000000000000000000000000000000001000000",
+        "instruction_count": null,
+        "live_PE_equal": true,
+        "listing": []
+      },
+      {
+        "name": "queue_helper",
+        "address": "00408E80",
+        "bytes": 14,
+        "file_offset": "0x8e80",
+        "sha256": "3ae682d8c02d4d5a5e1e47c3e22ba064518faea6f326cdf97354c239d55cd5cf",
+        "hex": "8b0085c0740750e8fdda7e0059c3",
+        "instruction_count": 7,
+        "live_PE_equal": true,
+        "listing": [
+          "00408E80: mov eax, dword ptr [eax]",
+          "00408E82: test eax, eax",
+          "00408E84: je 0x408e8d",
+          "00408E86: push eax",
+          "00408E87: call 0xbf6989",
+          "00408E8C: pop ecx",
+          "00408E8D: ret "
+        ]
+      },
+      {
+        "name": "CS_helper",
+        "address": "00C30930",
+        "bytes": 8,
+        "file_offset": "0x830930",
+        "sha256": "0cf626e44d0923b5d8fb981c203f36757615e07ec1776628f48c3630d2e6adb6",
+        "hex": "50ff151422ce00c3",
+        "instruction_count": 3,
+        "live_PE_equal": true,
+        "listing": [
+          "00C30930: push eax",
+          "00C30931: call dword ptr [0xce2214]",
+          "00C30937: ret "
+        ]
+      }
+    ],
+    "exports": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c37740\\assembly.txt",
+        "sha256": "d605b052a656d439dac9197b3b607ba7eb7ad32655e23ac037894f8ab9a3c5dd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c37740\\decompiled.c",
+        "sha256": "3607f9d3956acda7f5440890b07c84776bdb8693179291c5740678ee4675c273"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00408e80\\assembly.txt",
+        "sha256": "d034d14ce0afcf3d3165cb5868f75fe3a72e21a5c565cd46fce5950d01cd3965"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00408e80\\decompiled.c",
+        "sha256": "3658c4bd97d8ada2fc02afedea85e857225a63ed22d7e11a25791ac8b98af9e9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c30930\\assembly.txt",
+        "sha256": "e436a067c28b7f7a4f8c0368c3aa36927e8666f9f67bcda7088c260d83e689c9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c30930\\decompiled.c",
+        "sha256": "215d0d7b72df69fc087ff8fc0b992f546ea9b1e3e35c8663388f54dcc5ca505d"
+      }
+    ],
+    "tail_sites": [
+      {
+        "address": "00CC805F",
+        "target": "00408E80",
+        "mnemonic": "JMP"
+      },
+      {
+        "address": "00CC806A",
+        "target": "00C30930",
+        "mnemonic": "JMP"
+      },
+      {
+        "address": "00CC8074",
+        "target": "00BF6B43",
+        "mnemonic": "JMP"
+      }
+    ],
+    "indirect_import_sites": [
+      {
+        "address": "00C37775",
+        "IAT_cell": "00CE2154",
+        "original_import": "KERNEL32.dll!InitializeCriticalSectionAndSpinCount",
+        "instruction": "call dword ptr [0xce2154]",
+        "runtime_target_not_claimed": true
+      },
+      {
+        "address": "00C37788",
+        "IAT_cell": "00CE214C",
+        "original_import": "KERNEL32.dll!CreateSemaphoreA",
+        "instruction": "call dword ptr [0xce214c]",
+        "runtime_target_not_claimed": true
+      },
+      {
+        "address": "00C37799",
+        "IAT_cell": "00CE22B8",
+        "original_import": "KERNEL32.dll!CreateEventA",
+        "instruction": "call dword ptr [0xce22b8]",
+        "runtime_target_not_claimed": true
+      },
+      {
+        "address": "00C377BA",
+        "IAT_cell": "00CE22B8",
+        "original_import": "KERNEL32.dll!CreateEventA",
+        "instruction": "call dword ptr [0xce22b8]",
+        "runtime_target_not_claimed": true
+      },
+      {
+        "address": "00C30931",
+        "IAT_cell": "00CE2214",
+        "original_import": "KERNEL32.dll!DeleteCriticalSection",
+        "instruction": "call dword ptr [0xce2214]",
+        "runtime_target_not_claimed": true
+      }
+    ]
+  },
+  "rows": [
+    {
+      "address": "00C377D2",
+      "native": "00C37690",
+      "function": "00C37740"
+    },
+    {
+      "address": "00408E87",
+      "native": "00BF6989",
+      "function": "00408E80"
+    },
+    {
+      "address": "00C37775",
+      "native": "00CE2154(IAT_InitializeCriticalSectionAndSpinCount)",
+      "kind": "indirect",
+      "function": "00C37740"
+    },
+    {
+      "address": "00C37788",
+      "native": "00CE214C(IAT_CreateSemaphoreA)",
+      "kind": "indirect",
+      "function": "00C37740"
+    },
+    {
+      "address": "00C37799",
+      "native": "00CE22B8(IAT_CreateEventA)",
+      "kind": "indirect",
+      "function": "00C37740"
+    },
+    {
+      "address": "00C377BA",
+      "native": "00CE22B8(IAT_CreateEventA)",
+      "kind": "indirect",
+      "function": "00C37740"
+    },
+    {
+      "address": "00C30931",
+      "native": "00CE2214(IAT_DeleteCriticalSection)",
+      "kind": "indirect",
+      "function": "00C30930"
+    }
+  ],
+  "source_behavior": {
+    "count": "Snapshotexistingcountreference onentrybeforetaskstores/OSactions; fixedvaluepassed toactualunchangedworker_count method.",
+    "pre_guard": "Actualqueue+C/+10/+14zeroing precedesSOURCEoutertry; no new+0/+8 initialization.",
+    "outer": "Queuecleanupcatch lexicalextent beginsBEFORE realInitializeCriticalSectionAndSpinCount(actualtask+18,10000).",
+    "inner": "CSaction becomesacquired onlyAFTERinitcallreturns; BOOLignoredexactly. Innertry coverssameCreateSemaphore/CreateEvent100groupcounter/eventsequence,+4zero,actualC37690/return.",
+    "inner_failure": "CallactualWin32DeleteCriticalSection onactualtask+18, thenCpprethrow.",
+    "outer_failure": "Afteranyacquiredinneraction/rethrow, computetask+C, captureCURRENTdata once; ifnonnullactualmemory.release(memory.context,captured); no furtherdatareload/fieldwrite; Cpprethrow.",
+    "pre_CS_return_failure": "Onlysourcequeuecatchacquired; no inventedCSsuccessflag/BOOLtest. ActualexternC/SEHcoverageisnotinferred.",
+    "normal": "No cleanup onnormalreturn; actualCS/OSfields andexistingworker setup sequence retained.",
+    "retained": "No queuefield clear; callbackeffects andpossiblyfreeddataword/count/capacityremain. Callerraw358storage isnotfreed. Originalsem/event/workerresourcegap remains.",
+    "zero_count": "Task+0/+8 untouchedforcount0; oldnormaldestructionprecondition(+0nullwhendestroyed) retained.",
+    "service_preconditions": "Actualmatchingqueueallocation/BF6989release, validbacking/Win32services andserializedownerlifetime; release mustreturnnormally. Noauthenticationofarbitrarymanualcallback/customheap.",
+    "forbidden_added_operations": [
+      "rawtaskfree",
+      "fullC40FF0destructor",
+      "workerjoin/stop",
+      "semaphore/event/workerhandleclosure",
+      "fieldclear/rollback/retry/replay",
+      "fakeCc13Dyn1Calls/provider",
+      "numericOriginalcodepointercall"
+    ]
+  },
+  "emitted_inspection": {
+    "normal_entry_bytes": 220,
+    "current_vector_helper_bytes": 26,
+    "handler_bytes": 29,
+    "outercatch_region_bytes": 27,
+    "innercatch_padding_region_bytes": 35,
+    "new_functions": {
+      "?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z": {
+        "name": "?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z",
+        "begin": 0,
+        "end": 220,
+        "bytes": 220,
+        "hex": "558bec6aff680000000064a1000000005051535657a10000000033c5508d45f464a3000000008965f08b75088b450c6810270000c745fc000000008b0089450c8d4618c7460c00000000c746100000000050c7461400000000ff15000000006a0068e80300006a006a00c645fc01ff15000000008b1d000000006a006a006a016a00898650030000ffd389865403000033ff6a006a006a006a00c744be3000000000ffd38984bec00100004783ff6472e1ff75108d450cc74604000000005056e80000000083c40c8bc68b4df464890d00000000595f5e5b8be55dc3",
+        "sha256": "5e31e192b394a46d94eb62d508cb795acecc37a3f9631aec39abe626512995ef",
+        "relocations": [
+          [
+            6,
+            6,
+            "__ehhandler$?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z"
+          ],
+          [
+            22,
+            6,
+            "___security_cookie"
+          ],
+          [
+            91,
+            6,
+            "__imp__InitializeCriticalSectionAndSpinCount@8"
+          ],
+          [
+            112,
+            6,
+            "__imp__CreateSemaphoreA@16"
+          ],
+          [
+            118,
+            6,
+            "__imp__CreateEventA@16"
+          ],
+          [
+            193,
+            20,
+            "?dyn_task_manager_set_worker_count_00c37690@bsp@@YAXAAUDynTaskManagerStorage@1@ABIABUAvoidZoneDynHullMemory@1@@Z"
+          ]
+        ],
+        "listing": [
+          "0000: push ebp",
+          "0001: mov ebp, esp",
+          "0003: push -1",
+          "0005: push 0",
+          "000a: mov eax, dword ptr fs:[0]",
+          "0010: push eax",
+          "0011: push ecx",
+          "0012: push ebx",
+          "0013: push esi",
+          "0014: push edi",
+          "0015: mov eax, dword ptr [0]",
+          "001a: xor eax, ebp",
+          "001c: push eax",
+          "001d: lea eax, [ebp - 0xc]",
+          "0020: mov dword ptr fs:[0], eax",
+          "0026: mov dword ptr [ebp - 0x10], esp",
+          "0029: mov esi, dword ptr [ebp + 8]",
+          "002c: mov eax, dword ptr [ebp + 0xc]",
+          "002f: push 0x2710",
+          "0034: mov dword ptr [ebp - 4], 0",
+          "003b: mov eax, dword ptr [eax]",
+          "003d: mov dword ptr [ebp + 0xc], eax",
+          "0040: lea eax, [esi + 0x18]",
+          "0043: mov dword ptr [esi + 0xc], 0",
+          "004a: mov dword ptr [esi + 0x10], 0",
+          "0051: push eax",
+          "0052: mov dword ptr [esi + 0x14], 0",
+          "0059: call dword ptr [0]",
+          "005f: push 0",
+          "0061: push 0x3e8",
+          "0066: push 0",
+          "0068: push 0",
+          "006a: mov byte ptr [ebp - 4], 1",
+          "006e: call dword ptr [0]",
+          "0074: mov ebx, dword ptr [0]",
+          "007a: push 0",
+          "007c: push 0",
+          "007e: push 1",
+          "0080: push 0",
+          "0082: mov dword ptr [esi + 0x350], eax",
+          "0088: call ebx",
+          "008a: mov dword ptr [esi + 0x354], eax",
+          "0090: xor edi, edi",
+          "0092: push 0",
+          "0094: push 0",
+          "0096: push 0",
+          "0098: push 0",
+          "009a: mov dword ptr [esi + edi*4 + 0x30], 0",
+          "00a2: call ebx",
+          "00a4: mov dword ptr [esi + edi*4 + 0x1c0], eax",
+          "00ab: inc edi",
+          "00ac: cmp edi, 0x64",
+          "00af: jb 0x92",
+          "00b1: push dword ptr [ebp + 0x10]",
+          "00b4: lea eax, [ebp + 0xc]",
+          "00b7: mov dword ptr [esi + 4], 0",
+          "00be: push eax",
+          "00bf: push esi",
+          "00c0: call 0xc5",
+          "00c5: add esp, 0xc",
+          "00c8: mov eax, esi",
+          "00ca: mov ecx, dword ptr [ebp - 0xc]",
+          "00cd: mov dword ptr fs:[0], ecx",
+          "00d4: pop ecx",
+          "00d5: pop edi",
+          "00d6: pop esi",
+          "00d7: pop ebx",
+          "00d8: mov esp, ebp",
+          "00da: pop ebp",
+          "00db: ret "
+        ]
+      },
+      "?release_task_vector_storage_00408e80@?anonymous@bsp@@YAXPAXABUAvoidZoneDynHullMemory@2@@Z": {
+        "name": "?release_task_vector_storage_00408e80@?anonymous@bsp@@YAXPAXABUAvoidZoneDynHullMemory@2@@Z",
+        "begin": 0,
+        "end": 26,
+        "bytes": 26,
+        "hex": "8b4424048b0085c0740f508b44240cff308b4008ffd083c408c3",
+        "sha256": "f8f0d045d4210ef07f9ef60fafd123cca93f85bd8919f4bd27b57a509a22aaac",
+        "relocations": [],
+        "listing": [
+          "0000: mov eax, dword ptr [esp + 4]",
+          "0004: mov eax, dword ptr [eax]",
+          "0006: test eax, eax",
+          "0008: je 0x19",
+          "000a: push eax",
+          "000b: mov eax, dword ptr [esp + 0xc]",
+          "000f: push dword ptr [eax]",
+          "0011: mov eax, dword ptr [eax + 8]",
+          "0014: call eax",
+          "0016: add esp, 8",
+          "0019: ret "
+        ]
+      },
+      "__ehhandler$?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z": {
+        "name": "__ehhandler$?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z",
+        "begin": 0,
+        "end": 29,
+        "bytes": 29,
+        "hex": "90908b5424088d420c8b4aec33c8e800000000b800000000e900000000",
+        "sha256": "793d61246a06b7df03c69a77c80935aa4ddf073a062a1c62fcc7ea2a6688c892",
+        "relocations": [
+          [
+            15,
+            20,
+            "@__security_check_cookie@4"
+          ],
+          [
+            20,
+            6,
+            "__ehfuncinfo$?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z"
+          ],
+          [
+            25,
+            20,
+            "___CxxFrameHandler3"
+          ]
+        ],
+        "listing": [
+          "0000: nop ",
+          "0001: nop ",
+          "0002: mov edx, dword ptr [esp + 8]",
+          "0006: lea eax, [edx + 0xc]",
+          "0009: mov ecx, dword ptr [edx - 0x14]",
+          "000c: xor ecx, eax",
+          "000e: call 0x13",
+          "0013: mov eax, 0",
+          "0018: jmp 0x1d"
+        ]
+      },
+      "__catch$?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z$2": {
+        "name": "__catch$?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z$2",
+        "begin": 220,
+        "end": 247,
+        "bytes": 27,
+        "hex": "8b4508ff751083c00c50e80000000083c4086a006a00e800000000",
+        "sha256": "45b31677e1c35f33a8b39eba8a32e496fd8cb812269457b664bc0ae2dec3b83a",
+        "relocations": [
+          [
+            11,
+            20,
+            "?release_task_vector_storage_00408e80@?anonymous@bsp@@YAXPAXABUAvoidZoneDynHullMemory@2@@Z"
+          ],
+          [
+            23,
+            20,
+            "__CxxThrowException@8"
+          ]
+        ],
+        "listing": [
+          "00dc: mov eax, dword ptr [ebp + 8]",
+          "00df: push dword ptr [ebp + 0x10]",
+          "00e2: add eax, 0xc",
+          "00e5: push eax",
+          "00e6: call 0xeb",
+          "00eb: add esp, 8",
+          "00ee: push 0",
+          "00f0: push 0",
+          "00f2: call 0xf7"
+        ]
+      },
+      "__catch$?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z$0": {
+        "name": "__catch$?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z$0",
+        "begin": 247,
+        "end": 282,
+        "bytes": 35,
+        "hex": "6a18ff7508e80000000083c40850ff15000000006a006a00e800000000cccccccccccc",
+        "sha256": "6a34630c450f097311d4db39837180de8054879d407779c9a8d75abcc39fea46",
+        "relocations": [
+          [
+            6,
+            20,
+            "??$at@U_RTL_CRITICAL_SECTION@@@?anonymous@bsp@@YAAAU_RTL_CRITICAL_SECTION@@PAXI@Z"
+          ],
+          [
+            16,
+            6,
+            "__imp__DeleteCriticalSection@4"
+          ],
+          [
+            25,
+            20,
+            "__CxxThrowException@8"
+          ]
+        ],
+        "listing": [
+          "00f7: push 0x18",
+          "00f9: push dword ptr [ebp + 8]",
+          "00fc: call 0x101",
+          "0101: add esp, 8",
+          "0104: push eax",
+          "0105: call dword ptr [0]",
+          "010b: push 0",
+          "010d: push 0",
+          "010f: call 0x114",
+          "0114: int3 ",
+          "0115: int3 ",
+          "0116: int3 ",
+          "0117: int3 ",
+          "0118: int3 ",
+          "0119: int3 "
+        ]
+      }
+    },
+    "metadata": [
+      {
+        "name": "__unwindtable$?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z",
+        "begin": 32,
+        "end": 64,
+        "bytes": 32,
+        "hex": "ffffffff0000000000000000000000000000000000000000ffffffff00000000",
+        "sha256": "ca7c958d5931e68b27e4c7138317b13ee12be8830bf6696f110d231ca19a67b9",
+        "relocations": []
+      },
+      {
+        "name": "__ehfuncinfo$?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z",
+        "begin": 64,
+        "end": 100,
+        "bytes": 36,
+        "hex": "220593190400000000000000020000000000000000000000000000000000000001000000",
+        "sha256": "74da42bb5886b40e43d3b2c199ae140d0904ef55afe92dea086eeed68a2c314a",
+        "relocations": [
+          [
+            8,
+            6,
+            "__unwindtable$?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z"
+          ],
+          [
+            16,
+            6,
+            "__tryblocktable$?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z"
+          ]
+        ]
+      },
+      {
+        "name": "__tryblocktable$?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z",
+        "begin": 100,
+        "end": 140,
+        "bytes": 40,
+        "hex": "01000000010000000200000001000000000000000000000002000000030000000100000000000000",
+        "sha256": "d9d584c49596374ebfe801fbca42e08c8c5f85cf28581f8cc24d8672f2894e1a",
+        "relocations": [
+          [
+            16,
+            6,
+            "__catchsym$?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z$4"
+          ],
+          [
+            36,
+            6,
+            "__catchsym$?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z$5"
+          ]
+        ]
+      },
+      {
+        "name": "__catchsym$?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z$4",
+        "begin": 16,
+        "end": 32,
+        "bytes": 16,
+        "hex": "40000000000000000000000000000000",
+        "sha256": "02c75b9703b2bba7438368af386588470281f02e7d07a75b95f94826f3e7d184",
+        "relocations": [
+          [
+            12,
+            6,
+            "__catch$?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z$0"
+          ]
+        ]
+      },
+      {
+        "name": "__catchsym$?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z$5",
+        "begin": 0,
+        "end": 16,
+        "bytes": 16,
+        "hex": "40000000000000000000000000000000",
+        "sha256": "02c75b9703b2bba7438368af386588470281f02e7d07a75b95f94826f3e7d184",
+        "relocations": [
+          [
+            12,
+            6,
+            "__catch$?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z$2"
+          ]
+        ]
+      }
+    ],
+    "CppEH": {
+      "maxState": 4,
+      "tryblocks": [
+        {
+          "tryLow": 1,
+          "tryHigh": 1,
+          "catchHigh": 2,
+          "action": "realDeleteCS thenCpprethrow"
+        },
+        {
+          "tryLow": 0,
+          "tryHigh": 2,
+          "catchHigh": 3,
+          "action": "CURRENTqueue conditionalBF6989 thenCpprethrow"
+        }
+      ]
+    },
+    "offsets": [
+      {
+        "offset": "34",
+        "instruction": "mov dword ptr [ebp - 4], 0"
+      },
+      {
+        "offset": "3B",
+        "instruction": "mov eax, dword ptr [eax]"
+      },
+      {
+        "offset": "43",
+        "instruction": "mov dword ptr [esi + 0xc], 0"
+      },
+      {
+        "offset": "4A",
+        "instruction": "mov dword ptr [esi + 0x10], 0"
+      },
+      {
+        "offset": "52",
+        "instruction": "mov dword ptr [esi + 0x14], 0"
+      },
+      {
+        "offset": "59",
+        "instruction": "call dword ptr [0]"
+      },
+      {
+        "offset": "6A",
+        "instruction": "mov byte ptr [ebp - 4], 1"
+      },
+      {
+        "offset": "6E",
+        "instruction": "call dword ptr [0]"
+      },
+      {
+        "offset": "88",
+        "instruction": "call ebx"
+      },
+      {
+        "offset": "A2",
+        "instruction": "call ebx"
+      },
+      {
+        "offset": "B7",
+        "instruction": "mov dword ptr [esi + 4], 0"
+      },
+      {
+        "offset": "C0",
+        "instruction": "call 0xc5"
+      },
+      {
+        "offset": "CD",
+        "instruction": "mov dword ptr fs:[0], ecx"
+      }
+    ],
+    "normal_call_sites": 5,
+    "no_BOOL_result_branch": true,
+    "no_x87_in_normal_entry": true,
+    "catch_order": "InnertryLow1/high1/catchHigh2 performsrealDeleteCS/rethrow; outertryLow0/high2/catchHigh3 coversinnercatch rethrow thenCURRENTqueue/rethrow.",
+    "current_vector": "Helper26B: onevolatiledata load, nonnulltest, passcaptured dataandactualcontexttoactualrelease, no fieldclear.",
+    "exact_hoist": "Compilerwritesstate0+34BEFOREcountload+3B andqueuezero+43/+4A/+52 despite sourcezerosbeforetry. NoCppthrowingcall in validprelude. InitCS+59; state1+6A afterreturn, beforeSemaphore+6E; eventcalls+88/+A2; actualworkerCppcall+C0; FSrestore+CD withoutstatedemotion.",
+    "limitation": "CppmaxState4catch/rethrow differsfrom originalmaxState2cleanup-onlymap. Hoistedinitialstore/countfault epochs andWin32externC/SEH/hardwarefault/nativeFH3/frame/stack/secondarycleanup equivalence areUNPROVEN. NoEHa ororiginalregistration used."
+  },
+  "old_emitted_compatibility": {
+    "all_equal": true,
+    "records": 23,
+    "functions": [
+      {
+        "name": "??0exception@std@@QAE@QBDH@Z",
+        "bytes": 26,
+        "equal": true,
+        "sha256": "cd1306f383f0b637fab6e217a38305bb8d6ad7ee8f4c63cd43a4429cd516a74e"
+      },
+      {
+        "name": "??0exception@std@@QAE@ABV01@@Z",
+        "bytes": 42,
+        "equal": true,
+        "sha256": "a6264ac33112ff068052e8f514caf6c34e51b63ed6a5d270abfb022a047b827d"
+      },
+      {
+        "name": "??1exception@std@@UAE@XZ",
+        "bytes": 17,
+        "equal": true,
+        "sha256": "4840907fb9e214468448deb04e9f6b1b865859cf3ab6452a0189fc34de430f4a"
+      },
+      {
+        "name": "?what@exception@std@@UBEPBDXZ",
+        "bytes": 14,
+        "equal": true,
+        "sha256": "44e04f22a2a47722d20defcf30f1ba1a68b0b1ef00df8ffc0127ba27229129fc"
+      },
+      {
+        "name": "??_Gexception@std@@UAEPAXI@Z",
+        "bytes": 45,
+        "equal": true,
+        "sha256": "374df53371833a00d4cdea95e535fbc5ef338e64e9473fe7cb29a22371ce2add"
+      },
+      {
+        "name": "??0bad_alloc@std@@QAE@XZ",
+        "bytes": 24,
+        "equal": true,
+        "sha256": "bcb2d1b3d2cebf6741f8d55f87eef5e9932093f70ad64886f50f1bfdd0e16b35"
+      },
+      {
+        "name": "??1bad_alloc@std@@UAE@XZ",
+        "bytes": 17,
+        "equal": true,
+        "sha256": "4840907fb9e214468448deb04e9f6b1b865859cf3ab6452a0189fc34de430f4a"
+      },
+      {
+        "name": "??0bad_alloc@std@@QAE@ABV01@@Z",
+        "bytes": 48,
+        "equal": true,
+        "sha256": "4c3dcf7ab12d68dd553c467679a9294836077cb45e5195080e1c6e20f5516a90"
+      },
+      {
+        "name": "??_Gbad_alloc@std@@UAEPAXI@Z",
+        "bytes": 45,
+        "equal": true,
+        "sha256": "374df53371833a00d4cdea95e535fbc5ef338e64e9473fe7cb29a22371ce2add"
+      },
+      {
+        "name": "?dyn_task_manager_construct_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z",
+        "bytes": 162,
+        "equal": true,
+        "sha256": "a0f98779d94d39cbc901ade574a4eeeb52a53f542ee35dd2937db0351f94cc2a"
+      },
+      {
+        "name": "?dyn_task_manager_set_worker_count_00c37690@bsp@@YAXAAUDynTaskManagerStorage@1@ABIABUAvoidZoneDynHullMemory@1@@Z",
+        "bytes": 222,
+        "equal": true,
+        "sha256": "f191c7512c1f52b30819190d8ad77c23762793a1e68fd8312b994e70ea1441a8"
+      },
+      {
+        "name": "?dyn_task_manager_run_batch_00c33140@bsp@@YAXAAUDynTaskManagerStorage@1@PBQAXHABUAvoidZoneDynHullMemory@1@@Z",
+        "bytes": 416,
+        "equal": true,
+        "sha256": "249618848f480256e4f6e07ad6c4598031665cc1c947f4f2fcc5808ecfb8623a"
+      },
+      {
+        "name": "?dyn_task_manager_destroy_00c40ff0@bsp@@YAXAAUDynTaskManagerStorage@1@ABUAvoidZoneDynHullMemory@1@@Z",
+        "bytes": 102,
+        "equal": true,
+        "sha256": "d1a5a9a30ca7697284ca3f0c178c7f6e8d884f695820e7972944d3c1e3628d28"
+      },
+      {
+        "name": "?allocate@?anonymous@bsp@@YAPAXABUAvoidZoneDynHullMemory@2@I@Z",
+        "bytes": 53,
+        "equal": true,
+        "sha256": "ea5c7146c6f6b380f0a688b9cee319e72158b60d63f7b1812ed480606262d013"
+      },
+      {
+        "name": "?worker_loop_00c375f0@?anonymous@bsp@@YAXAAUDynTaskManagerStorage@2@@Z",
+        "bytes": 183,
+        "equal": true,
+        "sha256": "a6ee61262f1e1dfa095fbd126b14b3940b6bc1090fded233fd356a263cfa37eb"
+      },
+      {
+        "name": "??$at@PAX@?anonymous@bsp@@YAAAPAXPAXI@Z",
+        "bytes": 9,
+        "equal": true,
+        "sha256": "6d1e1d30f2068501de61e0022c4352fda2a7650f29eb96f01ad04fa160305e21"
+      },
+      {
+        "name": "??$at@U_RTL_CRITICAL_SECTION@@@?anonymous@bsp@@YAAAU_RTL_CRITICAL_SECTION@@PAXI@Z",
+        "bytes": 9,
+        "equal": true,
+        "sha256": "6d1e1d30f2068501de61e0022c4352fda2a7650f29eb96f01ad04fa160305e21"
+      },
+      {
+        "name": "??$at@I@?anonymous@bsp@@YAAAIPAXI@Z",
+        "bytes": 9,
+        "equal": true,
+        "sha256": "6d1e1d30f2068501de61e0022c4352fda2a7650f29eb96f01ad04fa160305e21"
+      },
+      {
+        "name": "??$at@PAPAX@?anonymous@bsp@@YAAAPAPAXPAXI@Z",
+        "bytes": 9,
+        "equal": true,
+        "sha256": "6d1e1d30f2068501de61e0022c4352fda2a7650f29eb96f01ad04fa160305e21"
+      },
+      {
+        "name": "??$at@PAP6EXPAX@Z@?anonymous@bsp@@YAAAPAP6EXPAX@Z0I@Z",
+        "bytes": 9,
+        "equal": true,
+        "sha256": "6d1e1d30f2068501de61e0022c4352fda2a7650f29eb96f01ad04fa160305e21"
+      },
+      {
+        "name": "??$at@$$CCJ@?anonymous@bsp@@YAACJPAXI@Z",
+        "bytes": 9,
+        "equal": true,
+        "sha256": "6d1e1d30f2068501de61e0022c4352fda2a7650f29eb96f01ad04fa160305e21"
+      },
+      {
+        "name": "?worker_entry_00c37680@?anonymous@bsp@@YGIPAX@Z",
+        "bytes": 187,
+        "equal": true,
+        "sha256": "5131a1f6837eb883e869763fb7ae829df18288d781f35449d676f782a84a1e62"
+      },
+      {
+        "name": "??$at@J@?anonymous@bsp@@YAAAJPAXI@Z",
+        "bytes": 9,
+        "equal": true,
+        "sha256": "6d1e1d30f2068501de61e0022c4352fda2a7650f29eb96f01ad04fa160305e21"
+      }
+    ],
+    "normalization": "Onlyanonymousnamespacehash normalized; exactrawcode andrelocationoffset/kind/target otherwise.",
+    "old_public_bytes": {
+      "constructor": 162,
+      "set_worker_count": 222,
+      "run_batch": 416,
+      "destroy": 102
+    }
+  },
+  "validation": {
+    "strict_baseline_and_changed_compile": {
+      "passed": true,
+      "compiler": "MSVC19.51.36244.0Win32/VS18Community",
+      "flags": [
+        "/std:c++17",
+        "/MD",
+        "/O2",
+        "/Gy",
+        "/fp:strict",
+        "/EHsc",
+        "/W4",
+        "/WX",
+        "/c",
+        "/FAs"
+      ],
+      "warnings": 0,
+      "objects": [
+        {
+          "variant": "baseline",
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\baseline\\dyn_task_manager.obj",
+          "bytes": 13451,
+          "sha256": "d1d68834b4949cc67175961206df61d6274c0e3dc1fbdc4c81bf7086c932d952",
+          "listing": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\baseline\\dyn_task_manager.asm",
+            "sha256": "acab64d3f703559c9595b4d7abafe98d9dfc15261db363340cd405309c057842"
+          }
+        },
+        {
+          "variant": "qualified",
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\qualified\\dyn_task_manager.obj",
+          "bytes": 16263,
+          "sha256": "bdd737ed87cdf0c363ca93dc62980579f9ff0793216be73a858f610b185dd9e4",
+          "listing": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\qualified\\dyn_task_manager.asm",
+            "sha256": "b1f248c209cdab056976aa1d96ce347d529459eacbaf097f81030541512e5f9a"
+          }
+        }
+      ],
+      "executables_created_or_run": 0
+    },
+    "original_call_verification": {
+      "passed": true,
+      "direct_checked": 2,
+      "direct_failed": 0,
+      "indirect_not_statically_checked": 5,
+      "command": "python tools/verify_report_calls.py local/dyn_task_construction_cleanup/original_call_rows.json",
+      "all_indirect_sites_import_names_and_exactinstructions_separately_PE_live_checked": true,
+      "limit": "PEimportidentity andindirectopcode arestatic; no runtimecalleeaddress forced."
+    },
+    "native_full_listing_live_PE_equal": true,
+    "new_source_tests_probes_fixtures_games_DLL_calls": false,
+    "full_build": false,
+    "primary_owns": "Independentreview, commonbuild/link andseparateC55/Gameadoption.",
+    "Ghidra_mutation": false
+  },
+  "source_sha256": {
+    "baseline": {
+      "include/bsp/dyn_task_manager.hpp": "3c6736d8c7ee289631f9fdebd02f9c0915688389ec29a782357183ee2f54c147",
+      "src/dyn_task_manager.cpp": "0160749d351494d2ac34a08a0c4d98322a6a4aa54ab5db8c35e23931591d75d0"
+    },
+    "qualified": {
+      "include/bsp/dyn_task_manager.hpp": "fa2af4d66164cc2db0bbc01ea45909d6c324dda70c94075239c0eb2a5e25395a",
+      "src/dyn_task_manager.cpp": "602a1d3ce86abfc57546746533443fa1921618c7a809d76893b69d655d21e1b8"
+    },
+    "retained_baseline_snapshots": {
+      "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\baseline\\include\\bsp\\dyn_task_manager.hpp": "3c6736d8c7ee289631f9fdebd02f9c0915688389ec29a782357183ee2f54c147",
+      "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\baseline\\src\\dyn_task_manager.cpp": "0160749d351494d2ac34a08a0c4d98322a6a4aa54ab5db8c35e23931591d75d0"
+    }
+  },
+  "dependencies": [
+    {
+      "path": "include/bsp/avoid_zone_dyn_hull.hpp",
+      "sha256": "3fd5fecb9e29d82393c25315ddcd6046119e3c7666d7d5ab97236c79d8e91c45",
+      "git_blob": "483e7f06a925322c85ce375dc30acd4e1541457a"
+    },
+    {
+      "path": "include/bsp/world_ocean.hpp",
+      "sha256": "00a1c385e2e46fe0a7372c4dec7d0f8039935823bc02e0a29982c93c5360429b",
+      "git_blob": "7dcd77bdad0d61324476e7acd9cac4f36cf33771"
+    }
+  ],
+  "remaining_limits": [
+    "CoveredCpppartialconstruction cleanup only; originalFH3/SEH/Win32externC/hardwarefault/frame/stack/secondarycleanup transport notestablished.",
+    "Compilerhoistsstate0ahead ofsourcepretry countload/queuezeros; no originalinitialstore/fault epochclaim.",
+    "RealCSinitBOOL remainsignored; no new failure/successrepair. ActualWin32normalpreconditions retainoldscope.",
+    "Currentqueuecallbackmustmatchactualallocationdomain andreturnnormally; arbitrarymanualproviderorforeignheapnotqualified.",
+    "Partialhandles/workers/fields retainnativeownershipgap; fulltasklifecycle/zero-countstorage safety unchanged.",
+    "Raw358storagecustody/C55capturedfrees andRoot/engine/Gamecaller propagation areseparate; oldengine/Gamecallers selectnormalentry.",
+    "No runtimefailurefixture or Gameactivation proof; existingtask/accuracy/mathreceiptskeepprior exactscope.",
+    "No duplicateoriginalnativebody or vendorCRT/library reconstruction credit."
+  ],
+  "retained_local_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\prepare.py",
+      "bytes": 2274,
+      "sha256": "ea9dcd26bc4a9c808f836f38222a1bbdbe64d6026d8d9aaf3700b7fe92309ae3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\audit.py",
+      "bytes": 8179,
+      "sha256": "85b02fd12bf02928347a9d55db15e903a2aee6d69f94649330b41b49bed430d8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\native_audit.py",
+      "bytes": 5333,
+      "sha256": "7bafb60094c977b402f1c3f9c11ad81e414a12af2bfd8f163821e11a5d9ffb33"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\write_report.py",
+      "bytes": 10371,
+      "sha256": "6e91dd6fa2aa3650e8adecf65b4a69645e3c26c67141d2501ce85f1055927457"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\baseline_provenance.json",
+      "bytes": 988,
+      "sha256": "44719f0866e99100681d1b5dbd9608526c658f5dd6216f8b389c1fbdea61ccf2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\object_audit.json",
+      "bytes": 19480,
+      "sha256": "45c787ddb42f01a9daa1556061f1403f3c1006f42ce0dbc904ef46d6845fc8fe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\native_evidence.json",
+      "bytes": 8575,
+      "sha256": "601f18812e872f09da4419771902cb274705f5d94e80307b0f3e59352b55dcd7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\compile_baseline.cmd",
+      "bytes": 911,
+      "sha256": "e58ececaddfd39ef44bff3ebb79f45dd1900f0d89b7bdee7d8f0eb59ace49312"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\compile_qualified.cmd",
+      "bytes": 823,
+      "sha256": "aaa0d70444dd168ec58f39c83cf14ca384d7e7f8b45ceb2f42626c76ee33af25"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\baseline_compile.log",
+      "bytes": 22,
+      "sha256": "1af1800d42a2f0df97271a41451e0f1b1e27a0bb49f9857d949608c946e9f5e7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\qualified_compile.log",
+      "bytes": 22,
+      "sha256": "1af1800d42a2f0df97271a41451e0f1b1e27a0bb49f9857d949608c946e9f5e7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\original_call_rows.json",
+      "bytes": 1014,
+      "sha256": "3dace307eee234f957f59e372488186c9f19ea4c799dfefc73b5ba6c36ec228a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\call_verification.txt",
+      "bytes": 525,
+      "sha256": "a5f9b08f268679528964f87ad8b9fea0a3c4ea7ef106ecbf4374b485fb9c02cd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\live_target.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\live_body.txt",
+      "bytes": 839,
+      "sha256": "1be8515b06b8ca7bca4d3e197d15054efb3586aa061f4e10c4fbc4bd94a30df0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\live_unwind_actions_handler.txt",
+      "bytes": 154,
+      "sha256": "3870b0718c551334d17dbab50ee6ff6ecc6be840dcda83d52e1c6b36152cfa31"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\live_map_FuncInfo.txt",
+      "bytes": 260,
+      "sha256": "44901131f73cd49d4b27c2684bbe849af211e3124c7a4feeb26660f5310e15ab"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\live_queue_helper.txt",
+      "bytes": 69,
+      "sha256": "ee90ef0f0110c44e44385a641c043793667a6882ecea4e3567609e2a9754e7a8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup\\local\\dyn_task_construction_cleanup\\live_CS_helper.txt",
+      "bytes": 45,
+      "sha256": "4a9c9ab664237a2c20acffd74e76af0c75bd244abdff5024a168b1ea2af3cc3e"
+    }
+  ],
+  "activity": {
+    "C55_engine_Game_edits": false,
+    "CMake_shared_metadata_changes": false,
+    "Ghidra_writes": false,
+    "tests": false,
+    "new_tests": false,
+    "full_build": false,
+    "probes_or_fixtures": false,
+    "games": false,
+    "DLL_calls": false,
+    "frozenFontd8_changes": false,
+    "push": false
+  },
+  "credit": {
+    "new_native_bodies": 0,
+    "vendor_bodies": 0,
+    "binary_ABI": false,
+    "native_fault_exception_transport": false,
+    "activation": 0,
+    "runtime": 0,
+    "gameplay": 0
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "original_executable_behavior_baseline",
+  "mission": "USN04",
+  "status": "capture_pending_after_startup_failures",
+  "data_origin": "installed files, matching reconstruction data; explicitly selected by user",
+  "executable": {
+    "name": "battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "size": 12223752,
+    "architecture": "x86",
+    "preferred_image_base": "00400000"
+  },
+  "runtime_scope": "Installed data includes Kantai Kessen references and replacement xlive/dxgi DLLs; this is not a clean vanilla baseline.",
+  "run": null,
+  "startup_attempts": [
+    {"attempt": 1, "pid": 43732, "result": "C0000008 before entry; installed emulator CloseHandle misuse"},
+    {"attempt": 2, "pid": 96968, "result": "C0000005 at 00A98342; low integrity DirectInput failure"},
+    {"attempt": 3, "pid": 15144, "result": "C0000005 at 00A855EC; full restricted mode also impairs FMOD init"},
+    {"attempt": 4, "pid": 85096, "result": "same sound-cache crash with normal heap; heap setting is not sufficient"}
+  ],
+  "private_options": {
+    "source_bytes": 226,
+    "normalized_bytes": 177,
+    "source_unchanged": true,
+    "transform": "LF-only ASCII; omit two native-writer fields not applied by native text reader"
+  },
+  "preservation": {
+    "protected_files_in_initial_inventory": 4,
+    "initial_unchanged_verification": true
+  },
+  "limitations": [
+    "Preparation and synthetic checks do not establish original-game execution.",
+    "Motion sampling uses wall time and non-atomic remote reads, not engine ticks.",
+    "Behavioral parity with the reconstruction has not been measured."
+  ]
+}
