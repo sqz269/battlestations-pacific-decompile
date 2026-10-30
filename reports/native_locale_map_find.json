@@ -1,0 +1,38 @@
+{
+  "status": "source_reviewed_strict_object_and_canonical_win32_pass_consumer_unbound",
+  "independent_review_sha256": "dbf7f031bcc66bf72e21a439cb671f097f312d1a92ba8fe3e33a7816a25e1f3d",
+  "second_independent_review": "gui_frame_lifetime_ACCEPT_SOURCE_CODE_exact_264aa60b_074731dc_full_65_line_ASM",
+  "source_hashes": {
+    "include/bsp/native_locale_map_find.hpp": "264aa60b873e375f7ff36b066f1510c0b0ac6002ab4af5c59baec77dc29239b5",
+    "src/native_locale_map_find.cpp": "074731dca8c44f9882d56e6663702d623d6d65ff63f4809cae8246ae63005c83"
+  },
+  "strict_object": {"exit_code": 0, "machine": "014C", "sha256": "dded454893881c17025043fa5db9732c3d097120f03976c4c527b449a2b207c5"},
+  "canonical_build": {
+    "base_head": "2e5f561a85210064a5fa6fb3ef42afbe3fa071c6",
+    "tree": "pinned_new_lookup_source_and_single_Core_registration",
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "existing_checks_passed": 2,
+    "existing_checks_total": 2,
+    "ctest_seconds": 13.29,
+    "log": "local/native_locale_map_find_readiness_cc16_20261030/build.log"
+  },
+  "address": "00a9ec70",
+  "source": "src/native_locale_map_find.cpp",
+  "original_abi": "ECX actual map4004; stacked borrowed key8 pointer; EAX node or null; RET4",
+  "source_abi": "ordinary_cpp_two_borrowed_void_pointers_return_borrowed_node",
+  "evidence": "complete_saved_00a9ec70_00a9ed02_assembly",
+  "assembly_sha256": "886e37d4c5924bcd3618b6941c1d384a0f82a0e384442eaacae13674901e24b2",
+  "hash": "captured_length_and_nonzero_data_ascii_fold_signed_byte_wrap131_mask4095",
+  "candidate_reads": "node_length_then_current_key_length; current_key_data_then_node_data",
+  "zero_length_hit_reads_data": false,
+  "next_read": "current_node_plus14_only_after_mismatch_or_comparator_return",
+  "provider": "existing_current_Source_CRT_stricmp_node_then_key",
+  "new_owner_or_cleanup": false,
+  "semantic_lookup_changed": false,
+  "new_native_body_credit": false,
+  "new_tests": 0,
+  "source_ready": false,
+  "runtime": false,
+  "loaded_consumer_permission": false
+}

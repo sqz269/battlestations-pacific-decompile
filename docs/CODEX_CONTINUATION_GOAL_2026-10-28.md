@@ -1210,3 +1210,20 @@ No newentry/game invocation/newbodycredit; all9Textoff/ac60hold unchanged.
 Actualstartupcaller construction/language/reload/fulloption0/raw16/loadedconsumer/
 Font48/activation/ABI/runtime gates remain. See
 CODEX_CANONICAL_TABLE_REGISTRATION_INTEGRATION.md.
+
+RawA9EC70 Corelookup nowreads actualmap/key with exactcapturedhash/current
+chain/compareoperand epochs, returningborrowednode/null. Primary+independent
+completeSource/65lineASMreview, strict014C, Corecountonce andcanonicalWin32
+checks2/2 pass13.29s. Priorsemantic/insertion/uppercase/resolver unchanged;
+ledgerrecordsqualifiedrawinterfacewithzeroduplicateNativebodycredit.
+Loadedconsumer/realapplicationcaller/fullresolver/loading/raw16/startup remain
+unbound; all9Textoff/ac60hold unchanged. See CODEX_LOCALE_MAP_FIND_INTEGRATION.md.
+
+Raw16fidelity079052: earlyscalarcapture/headerreload/puborder/guard differences
+areclassifiable underexistingvalidserializedWORDdomain; no blanketSDKrejection
+fromthosealone. Overflowstillunresolved: OriginalLAAtrue andconditionallegal
+largeallocationtrace reachesNativefallback/reject versusSDKsaturation/allocate.
+No newsizecap/privatepolicy/prereserve/model admitted. Genuineversionmatched
+callablevendor+heap/EH/ownership binding orvalidcomplete-domain proof remains
+required; read-onlyOriginalimage isnotexecutableprovider. Game-ownedstartup
+language/name/consumerbindings continue independently; fulloption0staysunbound.
