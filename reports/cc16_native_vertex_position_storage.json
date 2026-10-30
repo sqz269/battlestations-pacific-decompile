@@ -1,0 +1,2738 @@
+{
+  "schema": "cc16-native-vertex-position-storage-v1",
+  "packet": "codex-native-vertex-position-storage",
+  "status": "whole_raw_source_implemented_static_only_actual_bindings_qualified",
+  "base_commit": "7bb7203c1a135b660eda011a4a22056861d035e9",
+  "owned_addresses": [
+    "004768d0"
+  ],
+  "owned_files": [
+    "include/bsp/native_vertex_position_storage.hpp",
+    "src/native_vertex_position_storage.cpp",
+    "docs/CC16_NATIVE_VERTEX_POSITION_STORAGE.md",
+    "reports/cc16_native_vertex_position_storage.json"
+  ],
+  "integration": "Root cherry-picks ONLY packet commit; held96 ancestry excluded; no caller/provider edit here",
+  "native": {
+    "first": "004768d0",
+    "last_byte": "00476b40",
+    "bytes": 625,
+    "instructions": 178,
+    "x87_forms": 53,
+    "sse_conversions": 4,
+    "calls": 2,
+    "abi": "ECX actual logical stream; output/index DWORD homes; captured EAX output; RET8",
+    "scratch": "S+4..F after SUB0Ch/PUSH ESI: ordinary12-byte decode image",
+    "local_eh": "none",
+    "prototype": "Ghidra undefined(void) omits both arguments",
+    "relative_x87_max_depth": 2
+  },
+  "target_verification": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "route": "existing bsp.py client verifies project/program/language/image_base before every batch",
+    "function_count": 77632,
+    "database_mutation": false
+  },
+  "public_api": "void* read_native_vertex_position_storage_004768d0(void*, volatile uint32_t(&)[2], NativeVertexPositionStorageScratch&, const NativeVertexPositionStorageContext&, NativeVertexPositionStorageAcquired&);",
+  "pe": {
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "body_first": "004768d0",
+    "body_last": "00476b40",
+    "body_bytes": 625,
+    "body_sha256": "460dd72cf9ae570f80a6934db04bffe34b2d9aa8bd8277772cedbe14f87772d4",
+    "live_equals_PE": true,
+    "dispatch": {
+      "address": "00476b44",
+      "bytes": 51,
+      "hex": "fd68470030694700b46947005b694700f66947005f6a470091694700ab6a4700c66a4700000008010802030804080506080807",
+      "sha256": "582d069aa1e446c00577fedaa6857173d6cf9a15fa30d44faa6e1de381d3e892",
+      "targets": [
+        "004768fd",
+        "00476930",
+        "004769b4",
+        "0047695b",
+        "004769f6",
+        "00476a5f",
+        "00476991",
+        "00476aab",
+        "00476ac6"
+      ],
+      "cases": [
+        {
+          "format": 2,
+          "selector": 0,
+          "target": "004768fd"
+        },
+        {
+          "format": 3,
+          "selector": 0,
+          "target": "004768fd"
+        },
+        {
+          "format": 4,
+          "selector": 8,
+          "target": "00476ac6"
+        },
+        {
+          "format": 5,
+          "selector": 1,
+          "target": "00476930"
+        },
+        {
+          "format": 6,
+          "selector": 8,
+          "target": "00476ac6"
+        },
+        {
+          "format": 7,
+          "selector": 2,
+          "target": "004769b4"
+        },
+        {
+          "format": 8,
+          "selector": 3,
+          "target": "0047695b"
+        },
+        {
+          "format": 9,
+          "selector": 8,
+          "target": "00476ac6"
+        },
+        {
+          "format": 10,
+          "selector": 4,
+          "target": "004769f6"
+        },
+        {
+          "format": 11,
+          "selector": 8,
+          "target": "00476ac6"
+        },
+        {
+          "format": 12,
+          "selector": 5,
+          "target": "00476a5f"
+        },
+        {
+          "format": 13,
+          "selector": 6,
+          "target": "00476991"
+        },
+        {
+          "format": 14,
+          "selector": 8,
+          "target": "00476ac6"
+        },
+        {
+          "format": 15,
+          "selector": 8,
+          "target": "00476ac6"
+        },
+        {
+          "format": 16,
+          "selector": 7,
+          "target": "00476aab"
+        }
+      ],
+      "outside_unsigned_type_minus2_range": "all other DWORDs go directly476AC6 without decode",
+      "source_translation": "immutable control graph compiled as exact switch labels, no new4M data authority or numeric-code callable"
+    },
+    "constants": [
+      {
+        "address": "00ce4b48",
+        "hex": "0000000000e06f40",
+        "double": 255.0
+      },
+      {
+        "address": "00ce5f98",
+        "hex": "00000000c0ffdf40",
+        "double": 32767.0
+      },
+      {
+        "address": "00ce5f90",
+        "hex": "00000000e0ffef40",
+        "double": 65535.0
+      }
+    ]
+  },
+  "frozen_native_exports": [
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/004768d0/assembly.txt",
+      "bytes": 6183,
+      "raw_sha256": "67b3ae444c184dc7aa4fc0b24f929db3c8f2a39b4da2613bce444fa677208530"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/004768d0/decompiled.c",
+      "bytes": 5871,
+      "raw_sha256": "0458f925f1352b2a81097d015e818fe1becb3b32da62d512163aa326392e437b"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/004768d0/metadata.json",
+      "bytes": 283,
+      "raw_sha256": "2d3bca084277ff63ede56d2724a8665e1ba7c29f5ca7f0de57329a2cd76d1964"
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "include/bsp/native_vertex_position_storage.hpp",
+      "revision": "packet_owned_new_file",
+      "git_lf_bytes": 4624,
+      "git_lf_sha256": "7892cc370775459739ea422b89afd9e13f734f4c1fae771e764090961ba2d637"
+    },
+    {
+      "path": "src/native_vertex_position_storage.cpp",
+      "revision": "packet_owned_new_file",
+      "git_lf_bytes": 11263,
+      "git_lf_sha256": "9b38d191d41575c275620145f891f5b8f948fee2b8839c35e1b0516d67cebe2b"
+    }
+  ],
+  "supplier_source_pins": [
+    {
+      "path": "include/bsp/native_vertex_position_read.hpp",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "git_lf_bytes": 3810,
+      "git_lf_sha256": "5e5933b441f3806ab97fef05c8e409c967ad8925a451e99ef77dd19c35e6ef10"
+    },
+    {
+      "path": "src/native_vertex_position_read.cpp",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "git_lf_bytes": 13361,
+      "git_lf_sha256": "17238c8326d7c223740e5b229cbc721641504c91fe5c48f9c8b2ef3bcf14b450"
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "git_lf_bytes": 2713,
+      "git_lf_sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "git_lf_bytes": 7167,
+      "git_lf_sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278"
+    }
+  ],
+  "frozen_artifacts": [
+    {
+      "path": "include/bsp/native_gui_text_wrapped_storage.hpp",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "git_lf_sha256": "f785044a529250140974d61d41b2d1cfc24a79626ed47a5965783a86463a5cb7",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_gui_text_wrapped_storage.cpp",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "git_lf_sha256": "65c3b12ccea1e59d35866570c351837e89e057e0fc09e12a359bbd1a562afa48",
+      "unchanged": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_TEXT_WRAPPED_STORAGE.md",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "git_lf_sha256": "b6a6999987ce0da6bf6af91945b1cb6468627691a366fc760750d6781f012989",
+      "unchanged": true
+    },
+    {
+      "path": "reports/cc16_native_gui_text_wrapped_storage.json",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "git_lf_sha256": "62a70c3897339846240780e50a59f83b43928b1d88e753e7c237b796b7def206",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_gui_text_reference.hpp",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "git_lf_sha256": "62224192a6d0fb5043ed68a3f34374ce1bc3584ee1f3bb031c1041b33fdd1827",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_gui_text_reference.cpp",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "git_lf_sha256": "0fb188e79dbc014db098d01e3afff14a5e07f1671a33db063d2e126e5af4257e",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_model_storage_lifetime.hpp",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "git_lf_sha256": "7754b1a3df10ccf79a83899513b48ab4616df9b9f9a5da54400ed7d4fe51ea1f",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_model_storage_lifetime.cpp",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "git_lf_sha256": "d9ea114fa0e88f42f5a692adf96014827c32cd5d856a8e228e1ccd0550dd99b0",
+      "unchanged": true
+    },
+    {
+      "path": "docs/CC16_RESERVED_TEXT_MODEL_REFERENCE_BIRTH.md",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "git_lf_sha256": "0b6baa062db3f00024b2010cd65c0056eea42838b76afa0ace32f92dfcf68b5a",
+      "unchanged": true
+    },
+    {
+      "path": "reports/cc16_reserved_text_model_reference_birth.json",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "git_lf_sha256": "c6362b49b11ec568b371d4d5953a18cd143ede3042dc3510cc2ea41d605d88c9",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_lifetime.hpp",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "git_lf_sha256": "a21b38daad89af7b6fc968273dece3fba3789ab22476299ea66cf88c4002b4d2",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_front_end_frame_lifetime.cpp",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "git_lf_sha256": "50eae08b6ca3a7561b8ec1a1bfaeb7b2b717cb9c16f46ab4470f1befe0dcf4f8",
+      "unchanged": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_FRONT_END_FRAME_LIFETIME.md",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "git_lf_sha256": "3409aa99fb04a5e98aa05994563b6522ebb78dad506ec80db0c8aa85de7810ea",
+      "unchanged": true
+    },
+    {
+      "path": "reports/cc16_native_front_end_frame_lifetime.json",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "git_lf_sha256": "f3c4b17cf1e49dafd606735cd4977cecc659edab841417cb007c5fd1eb50bea0",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_mesh_section_layout_storage.hpp",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "git_lf_sha256": "19245d00005b8d543fdcd5b85e71dba091ca158063e38fd86010cfb8e72c8939",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_mesh_section_layout_storage.cpp",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "git_lf_sha256": "d6f0378634d82d4287cf698dd529e24f3a53b4f1b6b0398647d33c4f956c4115",
+      "unchanged": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_MESH_SECTION_LAYOUT_STORAGE.md",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "git_lf_sha256": "a50cc363c8c5a5d1afe47d0fe9c4859169f3569752f9340840f0f7a99e5abbb0",
+      "unchanged": true
+    },
+    {
+      "path": "reports/cc16_native_mesh_section_layout_storage.json",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "git_lf_sha256": "11f6144d7de2e18c674a5a51471079d9a4240725e2a5f14211bf79a447698a05",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_gui_text_changed_storage.hpp",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "git_lf_sha256": "13cc02308c28bf3ba443adfe1334627dffae05231a0c05e7bff6cbd634da5cc8",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_gui_text_changed_storage.cpp",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "git_lf_sha256": "721a3bff0f346ae3506deda59f5a7e892e7ca46eefb8fcaa4d57d04a9c1753a1",
+      "unchanged": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_TEXT_CHANGED_STORAGE.md",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "git_lf_sha256": "722dbb1c6f8a3304f95a6cba1b6bd9cf4cd0921f12776ff7da17cb6aecb408b8",
+      "unchanged": true
+    },
+    {
+      "path": "reports/cc16_native_gui_text_changed_storage.json",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "git_lf_sha256": "e95b6ce8a228b676cb4c8c42ccabda4826064453be0b5fc18741985062595ca3",
+      "unchanged": true
+    },
+    {
+      "path": "docs/CC16_GLYPH_CHILD_PRODUCER_BIRTH_AUDIT.md",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "git_lf_sha256": "df477c98a4d14bf534ed0c573d5d96831233ec73aec3ab45b879c8bf3a264cdd",
+      "unchanged": true
+    },
+    {
+      "path": "reports/cc16_glyph_child_producer_birth_audit.json",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "git_lf_sha256": "5b907c3babba150d35fc9526bd57d07b0e4f29f0ed684eb3886b75131842c5a8",
+      "unchanged": true
+    }
+  ],
+  "document": {
+    "path": "docs/CC16_NATIVE_VERTEX_POSITION_STORAGE.md",
+    "git_lf_bytes": 9499,
+    "git_lf_sha256": "6940ee768cc2ca52e2f867e9c69c5fc9bd6ff5d4e10da5271f03bc5af88a198d"
+  },
+  "argument_and_alias_map": [
+    {
+      "native": "output pointer home S+14",
+      "source": "actual_output_index_homes[0] volatile DWORD",
+      "zero_branch_read": "476B23 BEFORE current mapping+08",
+      "scaled_branch_read": "476AF7 AFTER third FADD BEFORE third decode spill",
+      "return": "captured identity, no reload after sequential output writes",
+      "write": "not explicitly assigned by body, actual valid output aliases may overwrite it"
+    },
+    {
+      "native": "index home S+18",
+      "source": "actual_output_index_homes[1] volatile DWORD",
+      "input_reads": "each decoder/current+50==0 reads actual home at its Native address epoch",
+      "other_use": "types8/10/12 write component integer bits here for FILD; no restoration",
+      "input_value_snapshot": false
+    },
+    {
+      "native": "decode S+4/8/C; after POP ESI same physical storage at ESP/4/8",
+      "source": "ordinary scratch.decoded float[3]",
+      "preimage": "caller authentic12 bytes, never initialized/zeroed/validated by this body",
+      "undefined_formats": "NO decode; actual prior bytes go through CURRENT scale/bias/output",
+      "ordinary_helper_outputs": "existing unpack and authentic half import use SAME float objects",
+      "normal_reuse": "only after normal return with authentic preimage continuity; history is identity only"
+    },
+    {
+      "native": "actual stream/input/output/record overlaps",
+      "source": "raw asm representation accesses and ordinary float helper objects",
+      "schedule": "preserve input staging, live stream reads, local spill and sequential output store order; do not add memcpy/snapshots",
+      "disjoint_regions": "private image and incoming homes mutually separate, passive metadata/context separate from raw reached writes",
+      "lifetime": "all backing/import/module/current records/mapping valid through callbacks/failure/disposition"
+    }
+  ],
+  "instruction_regions": [
+    {
+      "first": "004768d0",
+      "last": "004768d4",
+      "name": "entry",
+      "source_line": 247,
+      "mapping": "qualified ordinary Source ABI"
+    },
+    {
+      "first": "004768d6",
+      "last": "004768f6",
+      "name": "dispatch",
+      "source_line": 259,
+      "mapping": "current50 then current14 and exact immutable jump graph translated to switch"
+    },
+    {
+      "first": "004768fd",
+      "last": "0047692b",
+      "name": "float3",
+      "source_line": 31,
+      "mapping": "ordered stride/index/offset/base, sequential bit moves"
+    },
+    {
+      "first": "00476930",
+      "last": "00476956",
+      "name": "byte3",
+      "source_line": 50,
+      "mapping": "ordered current address and unsigned byte SSE loop"
+    },
+    {
+      "first": "0047695b",
+      "last": "0047698c",
+      "name": "normalized_byte3",
+      "source_line": 71,
+      "mapping": "load stride THEN FLD divisor THEN current index/offset/base; index-home FILD loop"
+    },
+    {
+      "first": "00476991",
+      "last": "004769af",
+      "name": "packed",
+      "source_line": 275,
+      "mapping": "base+4*(stride*CURRENT index+offset), direct genuine475F80"
+    },
+    {
+      "first": "004769b4",
+      "last": "004769f1",
+      "name": "short3",
+      "source_line": 98,
+      "mapping": "stage both DWORDs, sign-extend/SSE/store in Native order"
+    },
+    {
+      "first": "004769f6",
+      "last": "00476a5d",
+      "name": "normalized_signed_short3",
+      "source_line": 125,
+      "mapping": "sign-extension prefix and shared x87 normalization tail"
+    },
+    {
+      "first": "00476a5f",
+      "last": "00476aa9",
+      "name": "normalized_unsigned_short3",
+      "source_line": 169,
+      "mapping": "zero-extension prefix and backward jump to SAME shared normalization tail"
+    },
+    {
+      "first": "00476aab",
+      "last": "00476ac1",
+      "name": "half_import",
+      "source_line": 287,
+      "mapping": "ordered current address then direct authentic existing named import"
+    },
+    {
+      "first": "00476ac6",
+      "last": "00476b0f",
+      "name": "scale_output",
+      "source_line": 189,
+      "mapping": "current18 then50, exact scale-first x87/spills/late home0/sequential output"
+    },
+    {
+      "first": "00476b12",
+      "last": "00476b15",
+      "name": "scale_return",
+      "source_line": 307,
+      "mapping": "ordinary Source return of captured identity, qualified physical stack ABI"
+    },
+    {
+      "first": "00476b18",
+      "last": "00476b38",
+      "name": "direct_output",
+      "source_line": 224,
+      "mapping": "no type/scratch/record read; CURRENT output before mapping08; sequential FLD/FSTP"
+    },
+    {
+      "first": "00476b3b",
+      "last": "00476b3e",
+      "name": "direct_return",
+      "source_line": 307,
+      "mapping": "ordinary Source return of captured identity, qualified physical stack ABI"
+    }
+  ],
+  "instruction_map": [
+    {
+      "native_address": "004768d0",
+      "opcode": "SUB",
+      "operand": "ESP,0xc ",
+      "region": "entry",
+      "source_line": 247,
+      "mapping": "qualified ordinary Source ABI"
+    },
+    {
+      "native_address": "004768d3",
+      "opcode": "PUSH",
+      "operand": "ESI ",
+      "region": "entry",
+      "source_line": 247,
+      "mapping": "qualified ordinary Source ABI"
+    },
+    {
+      "native_address": "004768d4",
+      "opcode": "MOV",
+      "operand": "ESI,ECX ",
+      "region": "entry",
+      "source_line": 247,
+      "mapping": "qualified ordinary Source ABI"
+    },
+    {
+      "native_address": "004768d6",
+      "opcode": "CMP",
+      "operand": "dword ptr [ESI + 0x50],0x0 ",
+      "region": "dispatch",
+      "source_line": 259,
+      "mapping": "current50 then current14 and exact immutable jump graph translated to switch"
+    },
+    {
+      "native_address": "004768da",
+      "opcode": "JZ",
+      "operand": "0x00476b18 ",
+      "region": "dispatch",
+      "source_line": 259,
+      "mapping": "current50 then current14 and exact immutable jump graph translated to switch"
+    },
+    {
+      "native_address": "004768e0",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [ESI + 0x14] ",
+      "region": "dispatch",
+      "source_line": 259,
+      "mapping": "current50 then current14 and exact immutable jump graph translated to switch"
+    },
+    {
+      "native_address": "004768e3",
+      "opcode": "ADD",
+      "operand": "EAX,-0x2 ",
+      "region": "dispatch",
+      "source_line": 259,
+      "mapping": "current50 then current14 and exact immutable jump graph translated to switch"
+    },
+    {
+      "native_address": "004768e6",
+      "opcode": "CMP",
+      "operand": "EAX,0xe ",
+      "region": "dispatch",
+      "source_line": 259,
+      "mapping": "current50 then current14 and exact immutable jump graph translated to switch"
+    },
+    {
+      "native_address": "004768e9",
+      "opcode": "JA",
+      "operand": "0x00476ac6 ",
+      "region": "dispatch",
+      "source_line": 259,
+      "mapping": "current50 then current14 and exact immutable jump graph translated to switch"
+    },
+    {
+      "native_address": "004768ef",
+      "opcode": "MOVZX",
+      "operand": "EAX,byte ptr [EAX + 0x476b68] ",
+      "region": "dispatch",
+      "source_line": 259,
+      "mapping": "current50 then current14 and exact immutable jump graph translated to switch"
+    },
+    {
+      "native_address": "004768f6",
+      "opcode": "JMP",
+      "operand": "dword ptr [EAX*0x4 + 0x476b44] ",
+      "region": "dispatch",
+      "source_line": 259,
+      "mapping": "current50 then current14 and exact immutable jump graph translated to switch"
+    },
+    {
+      "native_address": "004768fd",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [ESI + 0xc] ",
+      "region": "float3",
+      "source_line": 31,
+      "mapping": "ordered stride/index/offset/base, sequential bit moves"
+    },
+    {
+      "native_address": "00476900",
+      "opcode": "IMUL",
+      "operand": "EAX,dword ptr [ESP + 0x18] ",
+      "region": "float3",
+      "source_line": 31,
+      "mapping": "ordered stride/index/offset/base, sequential bit moves"
+    },
+    {
+      "native_address": "00476905",
+      "opcode": "ADD",
+      "operand": "EAX,dword ptr [ESI + 0x10] ",
+      "region": "float3",
+      "source_line": 31,
+      "mapping": "ordered stride/index/offset/base, sequential bit moves"
+    },
+    {
+      "native_address": "00476908",
+      "opcode": "ADD",
+      "operand": "EAX,dword ptr [ESI + 0x8] ",
+      "region": "float3",
+      "source_line": 31,
+      "mapping": "ordered stride/index/offset/base, sequential bit moves"
+    },
+    {
+      "native_address": "0047690b",
+      "opcode": "MOVSS",
+      "operand": "XMM0,dword ptr [EAX] ",
+      "region": "float3",
+      "source_line": 31,
+      "mapping": "ordered stride/index/offset/base, sequential bit moves"
+    },
+    {
+      "native_address": "0047690f",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [ESP + 0x4],XMM0 ",
+      "region": "float3",
+      "source_line": 31,
+      "mapping": "ordered stride/index/offset/base, sequential bit moves"
+    },
+    {
+      "native_address": "00476915",
+      "opcode": "MOVSS",
+      "operand": "XMM0,dword ptr [EAX + 0x4] ",
+      "region": "float3",
+      "source_line": 31,
+      "mapping": "ordered stride/index/offset/base, sequential bit moves"
+    },
+    {
+      "native_address": "0047691a",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [ESP + 0x8],XMM0 ",
+      "region": "float3",
+      "source_line": 31,
+      "mapping": "ordered stride/index/offset/base, sequential bit moves"
+    },
+    {
+      "native_address": "00476920",
+      "opcode": "MOVSS",
+      "operand": "XMM0,dword ptr [EAX + 0x8] ",
+      "region": "float3",
+      "source_line": 31,
+      "mapping": "ordered stride/index/offset/base, sequential bit moves"
+    },
+    {
+      "native_address": "00476925",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [ESP + 0xc],XMM0 ",
+      "region": "float3",
+      "source_line": 31,
+      "mapping": "ordered stride/index/offset/base, sequential bit moves"
+    },
+    {
+      "native_address": "0047692b",
+      "opcode": "JMP",
+      "operand": "0x00476ac6 ",
+      "region": "float3",
+      "source_line": 31,
+      "mapping": "ordered stride/index/offset/base, sequential bit moves"
+    },
+    {
+      "native_address": "00476930",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [ESI + 0xc] ",
+      "region": "byte3",
+      "source_line": 50,
+      "mapping": "ordered current address and unsigned byte SSE loop"
+    },
+    {
+      "native_address": "00476933",
+      "opcode": "IMUL",
+      "operand": "ECX,dword ptr [ESP + 0x18] ",
+      "region": "byte3",
+      "source_line": 50,
+      "mapping": "ordered current address and unsigned byte SSE loop"
+    },
+    {
+      "native_address": "00476938",
+      "opcode": "ADD",
+      "operand": "ECX,dword ptr [ESI + 0x10] ",
+      "region": "byte3",
+      "source_line": 50,
+      "mapping": "ordered current address and unsigned byte SSE loop"
+    },
+    {
+      "native_address": "0047693b",
+      "opcode": "ADD",
+      "operand": "ECX,dword ptr [ESI + 0x8] ",
+      "region": "byte3",
+      "source_line": 50,
+      "mapping": "ordered current address and unsigned byte SSE loop"
+    },
+    {
+      "native_address": "0047693e",
+      "opcode": "XOR",
+      "operand": "EAX,EAX ",
+      "region": "byte3",
+      "source_line": 50,
+      "mapping": "ordered current address and unsigned byte SSE loop"
+    },
+    {
+      "native_address": "00476940",
+      "opcode": "MOVZX",
+      "operand": "EDX,byte ptr [EAX + ECX*0x1] ",
+      "region": "byte3",
+      "source_line": 50,
+      "mapping": "ordered current address and unsigned byte SSE loop"
+    },
+    {
+      "native_address": "00476944",
+      "opcode": "CVTSI2SS",
+      "operand": "XMM0,EDX ",
+      "region": "byte3",
+      "source_line": 50,
+      "mapping": "ordered current address and unsigned byte SSE loop"
+    },
+    {
+      "native_address": "00476948",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [ESP + EAX*0x4 + 0x4],XMM0 ",
+      "region": "byte3",
+      "source_line": 50,
+      "mapping": "ordered current address and unsigned byte SSE loop"
+    },
+    {
+      "native_address": "0047694e",
+      "opcode": "ADD",
+      "operand": "EAX,0x1 ",
+      "region": "byte3",
+      "source_line": 50,
+      "mapping": "ordered current address and unsigned byte SSE loop"
+    },
+    {
+      "native_address": "00476951",
+      "opcode": "CMP",
+      "operand": "EAX,0x3 ",
+      "region": "byte3",
+      "source_line": 50,
+      "mapping": "ordered current address and unsigned byte SSE loop"
+    },
+    {
+      "native_address": "00476954",
+      "opcode": "JC",
+      "operand": "0x00476940 ",
+      "region": "byte3",
+      "source_line": 50,
+      "mapping": "ordered current address and unsigned byte SSE loop"
+    },
+    {
+      "native_address": "00476956",
+      "opcode": "JMP",
+      "operand": "0x00476ac6 ",
+      "region": "byte3",
+      "source_line": 50,
+      "mapping": "ordered current address and unsigned byte SSE loop"
+    },
+    {
+      "native_address": "0047695b",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [ESI + 0xc] ",
+      "region": "normalized_byte3",
+      "source_line": 71,
+      "mapping": "load stride THEN FLD divisor THEN current index/offset/base; index-home FILD loop"
+    },
+    {
+      "native_address": "0047695e",
+      "opcode": "FLD",
+      "operand": "double ptr [0x00ce4b48] ",
+      "region": "normalized_byte3",
+      "source_line": 81,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "qword ptr [eax] // Native BEFORE current index/offset/mapping reads",
+      "canonical_operand": "qwordptr[va:00ce4b48]"
+    },
+    {
+      "native_address": "00476964",
+      "opcode": "IMUL",
+      "operand": "ECX,dword ptr [ESP + 0x18] ",
+      "region": "normalized_byte3",
+      "source_line": 71,
+      "mapping": "load stride THEN FLD divisor THEN current index/offset/base; index-home FILD loop"
+    },
+    {
+      "native_address": "00476969",
+      "opcode": "ADD",
+      "operand": "ECX,dword ptr [ESI + 0x10] ",
+      "region": "normalized_byte3",
+      "source_line": 71,
+      "mapping": "load stride THEN FLD divisor THEN current index/offset/base; index-home FILD loop"
+    },
+    {
+      "native_address": "0047696c",
+      "opcode": "ADD",
+      "operand": "ECX,dword ptr [ESI + 0x8] ",
+      "region": "normalized_byte3",
+      "source_line": 71,
+      "mapping": "load stride THEN FLD divisor THEN current index/offset/base; index-home FILD loop"
+    },
+    {
+      "native_address": "0047696f",
+      "opcode": "XOR",
+      "operand": "EAX,EAX ",
+      "region": "normalized_byte3",
+      "source_line": 71,
+      "mapping": "load stride THEN FLD divisor THEN current index/offset/base; index-home FILD loop"
+    },
+    {
+      "native_address": "00476971",
+      "opcode": "MOVZX",
+      "operand": "EDX,byte ptr [EAX + ECX*0x1] ",
+      "region": "normalized_byte3",
+      "source_line": 71,
+      "mapping": "load stride THEN FLD divisor THEN current index/offset/base; index-home FILD loop"
+    },
+    {
+      "native_address": "00476975",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x18],EDX ",
+      "region": "normalized_byte3",
+      "source_line": 71,
+      "mapping": "load stride THEN FLD divisor THEN current index/offset/base; index-home FILD loop"
+    },
+    {
+      "native_address": "00476979",
+      "opcode": "ADD",
+      "operand": "EAX,0x1 ",
+      "region": "normalized_byte3",
+      "source_line": 71,
+      "mapping": "load stride THEN FLD divisor THEN current index/offset/base; index-home FILD loop"
+    },
+    {
+      "native_address": "0047697c",
+      "opcode": "CMP",
+      "operand": "EAX,0x3 ",
+      "region": "normalized_byte3",
+      "source_line": 71,
+      "mapping": "load stride THEN FLD divisor THEN current index/offset/base; index-home FILD loop"
+    },
+    {
+      "native_address": "0047697f",
+      "opcode": "FILD",
+      "operand": "dword ptr [ESP + 0x18] ",
+      "region": "normalized_byte3",
+      "source_line": 91,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [edx + 4]",
+      "canonical_operand": "dwordptr[s:18]"
+    },
+    {
+      "native_address": "00476983",
+      "opcode": "FDIV",
+      "operand": "ST0,ST1 ",
+      "region": "normalized_byte3",
+      "source_line": 92,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "st(0), st(1)",
+      "canonical_operand": "st(0),st(1)"
+    },
+    {
+      "native_address": "00476985",
+      "opcode": "FSTP",
+      "operand": "float ptr [ESP + EAX*0x4] ",
+      "region": "normalized_byte3",
+      "source_line": 93,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [edi + eax*4 - 4]",
+      "canonical_operand": "dwordptr[s:04+lane]"
+    },
+    {
+      "native_address": "00476988",
+      "opcode": "JC",
+      "operand": "0x00476971 ",
+      "region": "normalized_byte3",
+      "source_line": 71,
+      "mapping": "load stride THEN FLD divisor THEN current index/offset/base; index-home FILD loop"
+    },
+    {
+      "native_address": "0047698a",
+      "opcode": "FSTP",
+      "operand": "ST0 ",
+      "region": "normalized_byte3",
+      "source_line": 95,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "st(0)",
+      "canonical_operand": "st(0)"
+    },
+    {
+      "native_address": "0047698c",
+      "opcode": "JMP",
+      "operand": "0x00476ac6 ",
+      "region": "normalized_byte3",
+      "source_line": 71,
+      "mapping": "load stride THEN FLD divisor THEN current index/offset/base; index-home FILD loop"
+    },
+    {
+      "native_address": "00476991",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [ESI + 0xc] ",
+      "region": "packed",
+      "source_line": 275,
+      "mapping": "base+4*(stride*CURRENT index+offset), direct genuine475F80"
+    },
+    {
+      "native_address": "00476994",
+      "opcode": "IMUL",
+      "operand": "ECX,dword ptr [ESP + 0x18] ",
+      "region": "packed",
+      "source_line": 275,
+      "mapping": "base+4*(stride*CURRENT index+offset), direct genuine475F80"
+    },
+    {
+      "native_address": "00476999",
+      "opcode": "ADD",
+      "operand": "ECX,dword ptr [ESI + 0x10] ",
+      "region": "packed",
+      "source_line": 275,
+      "mapping": "base+4*(stride*CURRENT index+offset), direct genuine475F80"
+    },
+    {
+      "native_address": "0047699c",
+      "opcode": "MOV",
+      "operand": "EDX,dword ptr [ESI + 0x8] ",
+      "region": "packed",
+      "source_line": 275,
+      "mapping": "base+4*(stride*CURRENT index+offset), direct genuine475F80"
+    },
+    {
+      "native_address": "0047699f",
+      "opcode": "LEA",
+      "operand": "EAX,[ESP + 0x4] ",
+      "region": "packed",
+      "source_line": 275,
+      "mapping": "base+4*(stride*CURRENT index+offset), direct genuine475F80"
+    },
+    {
+      "native_address": "004769a3",
+      "opcode": "PUSH",
+      "operand": "EAX ",
+      "region": "packed",
+      "source_line": 275,
+      "mapping": "base+4*(stride*CURRENT index+offset), direct genuine475F80"
+    },
+    {
+      "native_address": "004769a4",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [EDX + ECX*0x4] ",
+      "region": "packed",
+      "source_line": 275,
+      "mapping": "base+4*(stride*CURRENT index+offset), direct genuine475F80"
+    },
+    {
+      "native_address": "004769a7",
+      "opcode": "PUSH",
+      "operand": "EAX ",
+      "region": "packed",
+      "source_line": 275,
+      "mapping": "base+4*(stride*CURRENT index+offset), direct genuine475F80"
+    },
+    {
+      "native_address": "004769a8",
+      "opcode": "MOV",
+      "operand": "ECX,ESI ",
+      "region": "packed",
+      "source_line": 275,
+      "mapping": "base+4*(stride*CURRENT index+offset), direct genuine475F80"
+    },
+    {
+      "native_address": "004769aa",
+      "opcode": "CALL",
+      "operand": "0x00475f80 ",
+      "region": "packed",
+      "source_line": 275,
+      "mapping": "base+4*(stride*CURRENT index+offset), direct genuine475F80"
+    },
+    {
+      "native_address": "004769af",
+      "opcode": "JMP",
+      "operand": "0x00476ac6 ",
+      "region": "packed",
+      "source_line": 275,
+      "mapping": "base+4*(stride*CURRENT index+offset), direct genuine475F80"
+    },
+    {
+      "native_address": "004769b4",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [ESI + 0xc] ",
+      "region": "short3",
+      "source_line": 98,
+      "mapping": "stage both DWORDs, sign-extend/SSE/store in Native order"
+    },
+    {
+      "native_address": "004769b7",
+      "opcode": "IMUL",
+      "operand": "EAX,dword ptr [ESP + 0x18] ",
+      "region": "short3",
+      "source_line": 98,
+      "mapping": "stage both DWORDs, sign-extend/SSE/store in Native order"
+    },
+    {
+      "native_address": "004769bc",
+      "opcode": "ADD",
+      "operand": "EAX,dword ptr [ESI + 0x10] ",
+      "region": "short3",
+      "source_line": 98,
+      "mapping": "stage both DWORDs, sign-extend/SSE/store in Native order"
+    },
+    {
+      "native_address": "004769bf",
+      "opcode": "ADD",
+      "operand": "EAX,dword ptr [ESI + 0x8] ",
+      "region": "short3",
+      "source_line": 98,
+      "mapping": "stage both DWORDs, sign-extend/SSE/store in Native order"
+    },
+    {
+      "native_address": "004769c2",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [EAX] ",
+      "region": "short3",
+      "source_line": 98,
+      "mapping": "stage both DWORDs, sign-extend/SSE/store in Native order"
+    },
+    {
+      "native_address": "004769c4",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [EAX + 0x4] ",
+      "region": "short3",
+      "source_line": 98,
+      "mapping": "stage both DWORDs, sign-extend/SSE/store in Native order"
+    },
+    {
+      "native_address": "004769c7",
+      "opcode": "MOVSX",
+      "operand": "EDX,CX ",
+      "region": "short3",
+      "source_line": 98,
+      "mapping": "stage both DWORDs, sign-extend/SSE/store in Native order"
+    },
+    {
+      "native_address": "004769ca",
+      "opcode": "SHR",
+      "operand": "ECX,0x10 ",
+      "region": "short3",
+      "source_line": 98,
+      "mapping": "stage both DWORDs, sign-extend/SSE/store in Native order"
+    },
+    {
+      "native_address": "004769cd",
+      "opcode": "CVTSI2SS",
+      "operand": "XMM0,EDX ",
+      "region": "short3",
+      "source_line": 98,
+      "mapping": "stage both DWORDs, sign-extend/SSE/store in Native order"
+    },
+    {
+      "native_address": "004769d1",
+      "opcode": "MOVSX",
+      "operand": "ECX,CX ",
+      "region": "short3",
+      "source_line": 98,
+      "mapping": "stage both DWORDs, sign-extend/SSE/store in Native order"
+    },
+    {
+      "native_address": "004769d4",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [ESP + 0x4],XMM0 ",
+      "region": "short3",
+      "source_line": 98,
+      "mapping": "stage both DWORDs, sign-extend/SSE/store in Native order"
+    },
+    {
+      "native_address": "004769da",
+      "opcode": "MOVSX",
+      "operand": "EDX,AX ",
+      "region": "short3",
+      "source_line": 98,
+      "mapping": "stage both DWORDs, sign-extend/SSE/store in Native order"
+    },
+    {
+      "native_address": "004769dd",
+      "opcode": "CVTSI2SS",
+      "operand": "XMM0,ECX ",
+      "region": "short3",
+      "source_line": 98,
+      "mapping": "stage both DWORDs, sign-extend/SSE/store in Native order"
+    },
+    {
+      "native_address": "004769e1",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [ESP + 0x8],XMM0 ",
+      "region": "short3",
+      "source_line": 98,
+      "mapping": "stage both DWORDs, sign-extend/SSE/store in Native order"
+    },
+    {
+      "native_address": "004769e7",
+      "opcode": "CVTSI2SS",
+      "operand": "XMM0,EDX ",
+      "region": "short3",
+      "source_line": 98,
+      "mapping": "stage both DWORDs, sign-extend/SSE/store in Native order"
+    },
+    {
+      "native_address": "004769eb",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [ESP + 0xc],XMM0 ",
+      "region": "short3",
+      "source_line": 98,
+      "mapping": "stage both DWORDs, sign-extend/SSE/store in Native order"
+    },
+    {
+      "native_address": "004769f1",
+      "opcode": "JMP",
+      "operand": "0x00476ac6 ",
+      "region": "short3",
+      "source_line": 98,
+      "mapping": "stage both DWORDs, sign-extend/SSE/store in Native order"
+    },
+    {
+      "native_address": "004769f6",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [ESI + 0xc] ",
+      "region": "normalized_signed_short3",
+      "source_line": 125,
+      "mapping": "sign-extension prefix and shared x87 normalization tail"
+    },
+    {
+      "native_address": "004769f9",
+      "opcode": "IMUL",
+      "operand": "EAX,dword ptr [ESP + 0x18] ",
+      "region": "normalized_signed_short3",
+      "source_line": 125,
+      "mapping": "sign-extension prefix and shared x87 normalization tail"
+    },
+    {
+      "native_address": "004769fe",
+      "opcode": "ADD",
+      "operand": "EAX,dword ptr [ESI + 0x10] ",
+      "region": "normalized_signed_short3",
+      "source_line": 125,
+      "mapping": "sign-extension prefix and shared x87 normalization tail"
+    },
+    {
+      "native_address": "00476a01",
+      "opcode": "ADD",
+      "operand": "EAX,dword ptr [ESI + 0x8] ",
+      "region": "normalized_signed_short3",
+      "source_line": 125,
+      "mapping": "sign-extension prefix and shared x87 normalization tail"
+    },
+    {
+      "native_address": "00476a04",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [EAX] ",
+      "region": "normalized_signed_short3",
+      "source_line": 125,
+      "mapping": "sign-extension prefix and shared x87 normalization tail"
+    },
+    {
+      "native_address": "00476a06",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [EAX + 0x4] ",
+      "region": "normalized_signed_short3",
+      "source_line": 125,
+      "mapping": "sign-extension prefix and shared x87 normalization tail"
+    },
+    {
+      "native_address": "00476a09",
+      "opcode": "MOVSX",
+      "operand": "EDX,CX ",
+      "region": "normalized_signed_short3",
+      "source_line": 125,
+      "mapping": "sign-extension prefix and shared x87 normalization tail"
+    },
+    {
+      "native_address": "00476a0c",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x18],EDX ",
+      "region": "normalized_signed_short3",
+      "source_line": 125,
+      "mapping": "sign-extension prefix and shared x87 normalization tail"
+    },
+    {
+      "native_address": "00476a10",
+      "opcode": "SHR",
+      "operand": "ECX,0x10 ",
+      "region": "normalized_signed_short3",
+      "source_line": 125,
+      "mapping": "sign-extension prefix and shared x87 normalization tail"
+    },
+    {
+      "native_address": "00476a13",
+      "opcode": "MOVSX",
+      "operand": "ECX,CX ",
+      "region": "normalized_signed_short3",
+      "source_line": 125,
+      "mapping": "sign-extension prefix and shared x87 normalization tail"
+    },
+    {
+      "native_address": "00476a16",
+      "opcode": "FILD",
+      "operand": "dword ptr [ESP + 0x18] ",
+      "region": "normalized_signed_short3",
+      "source_line": 147,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [ebx + 4]",
+      "canonical_operand": "dwordptr[s:18]"
+    },
+    {
+      "native_address": "00476a1a",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x18],ECX ",
+      "region": "normalized_signed_short3",
+      "source_line": 125,
+      "mapping": "sign-extension prefix and shared x87 normalization tail"
+    },
+    {
+      "native_address": "00476a1e",
+      "opcode": "FSTP",
+      "operand": "float ptr [ESP + 0x4] ",
+      "region": "normalized_signed_short3",
+      "source_line": 149,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [edi]",
+      "canonical_operand": "dwordptr[s:04]"
+    },
+    {
+      "native_address": "00476a22",
+      "opcode": "MOVSX",
+      "operand": "EDX,AX ",
+      "region": "normalized_signed_short3",
+      "source_line": 125,
+      "mapping": "sign-extension prefix and shared x87 normalization tail"
+    },
+    {
+      "native_address": "00476a25",
+      "opcode": "FILD",
+      "operand": "dword ptr [ESP + 0x18] ",
+      "region": "normalized_signed_short3",
+      "source_line": 151,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [ebx + 4]",
+      "canonical_operand": "dwordptr[s:18]"
+    },
+    {
+      "native_address": "00476a29",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x18],EDX ",
+      "region": "normalized_signed_short3",
+      "source_line": 125,
+      "mapping": "sign-extension prefix and shared x87 normalization tail"
+    },
+    {
+      "native_address": "00476a2d",
+      "opcode": "FSTP",
+      "operand": "float ptr [ESP + 0x8] ",
+      "region": "normalized_signed_short3",
+      "source_line": 153,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [edi + 4]",
+      "canonical_operand": "dwordptr[s:08]"
+    },
+    {
+      "native_address": "00476a31",
+      "opcode": "FILD",
+      "operand": "dword ptr [ESP + 0x18] ",
+      "region": "normalized_signed_short3",
+      "source_line": 154,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [ebx + 4]",
+      "canonical_operand": "dwordptr[s:18]"
+    },
+    {
+      "native_address": "00476a35",
+      "opcode": "FSTP",
+      "operand": "float ptr [ESP + 0xc] ",
+      "region": "normalized_signed_short3",
+      "source_line": 155,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [edi + 8]",
+      "canonical_operand": "dwordptr[s:0c]"
+    },
+    {
+      "native_address": "00476a39",
+      "opcode": "FLD",
+      "operand": "float ptr [ESP + 0x4] ",
+      "region": "normalized_signed_short3",
+      "source_line": 156,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [edi]",
+      "canonical_operand": "dwordptr[s:04]"
+    },
+    {
+      "native_address": "00476a3d",
+      "opcode": "FLD",
+      "operand": "double ptr [0x00ce5f98] ",
+      "region": "normalized_signed_short3",
+      "source_line": 158,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "qword ptr [eax]",
+      "canonical_operand": "qwordptr[va:00ce5f98]"
+    },
+    {
+      "native_address": "00476a43",
+      "opcode": "FDIV",
+      "operand": "ST1,ST0 ",
+      "region": "normalized_signed_short3",
+      "source_line": 160,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "st(1), st(0)",
+      "canonical_operand": "st(1),st(0)"
+    },
+    {
+      "native_address": "00476a45",
+      "opcode": "FXCH",
+      "operand": "",
+      "region": "normalized_signed_short3",
+      "source_line": 161,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "st(1)",
+      "canonical_operand": "st(1)"
+    },
+    {
+      "native_address": "00476a47",
+      "opcode": "FSTP",
+      "operand": "float ptr [ESP + 0x4] ",
+      "region": "normalized_signed_short3",
+      "source_line": 162,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [edi]",
+      "canonical_operand": "dwordptr[s:04]"
+    },
+    {
+      "native_address": "00476a4b",
+      "opcode": "FLD",
+      "operand": "float ptr [ESP + 0x8] ",
+      "region": "normalized_signed_short3",
+      "source_line": 163,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [edi + 4]",
+      "canonical_operand": "dwordptr[s:08]"
+    },
+    {
+      "native_address": "00476a4f",
+      "opcode": "FDIV",
+      "operand": "ST0,ST1 ",
+      "region": "normalized_signed_short3",
+      "source_line": 164,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "st(0), st(1)",
+      "canonical_operand": "st(0),st(1)"
+    },
+    {
+      "native_address": "00476a51",
+      "opcode": "FSTP",
+      "operand": "float ptr [ESP + 0x8] ",
+      "region": "normalized_signed_short3",
+      "source_line": 165,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [edi + 4]",
+      "canonical_operand": "dwordptr[s:08]"
+    },
+    {
+      "native_address": "00476a55",
+      "opcode": "FDIVR",
+      "operand": "float ptr [ESP + 0xc] ",
+      "region": "normalized_signed_short3",
+      "source_line": 166,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [edi + 8]",
+      "canonical_operand": "dwordptr[s:0c]"
+    },
+    {
+      "native_address": "00476a59",
+      "opcode": "FSTP",
+      "operand": "float ptr [ESP + 0xc] ",
+      "region": "normalized_signed_short3",
+      "source_line": 167,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [edi + 8]",
+      "canonical_operand": "dwordptr[s:0c]"
+    },
+    {
+      "native_address": "00476a5d",
+      "opcode": "JMP",
+      "operand": "0x00476ac6 ",
+      "region": "normalized_signed_short3",
+      "source_line": 125,
+      "mapping": "sign-extension prefix and shared x87 normalization tail"
+    },
+    {
+      "native_address": "00476a5f",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [ESI + 0xc] ",
+      "region": "normalized_unsigned_short3",
+      "source_line": 169,
+      "mapping": "zero-extension prefix and backward jump to SAME shared normalization tail"
+    },
+    {
+      "native_address": "00476a62",
+      "opcode": "IMUL",
+      "operand": "EAX,dword ptr [ESP + 0x18] ",
+      "region": "normalized_unsigned_short3",
+      "source_line": 169,
+      "mapping": "zero-extension prefix and backward jump to SAME shared normalization tail"
+    },
+    {
+      "native_address": "00476a67",
+      "opcode": "ADD",
+      "operand": "EAX,dword ptr [ESI + 0x10] ",
+      "region": "normalized_unsigned_short3",
+      "source_line": 169,
+      "mapping": "zero-extension prefix and backward jump to SAME shared normalization tail"
+    },
+    {
+      "native_address": "00476a6a",
+      "opcode": "ADD",
+      "operand": "EAX,dword ptr [ESI + 0x8] ",
+      "region": "normalized_unsigned_short3",
+      "source_line": 169,
+      "mapping": "zero-extension prefix and backward jump to SAME shared normalization tail"
+    },
+    {
+      "native_address": "00476a6d",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [EAX] ",
+      "region": "normalized_unsigned_short3",
+      "source_line": 169,
+      "mapping": "zero-extension prefix and backward jump to SAME shared normalization tail"
+    },
+    {
+      "native_address": "00476a6f",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [EAX + 0x4] ",
+      "region": "normalized_unsigned_short3",
+      "source_line": 169,
+      "mapping": "zero-extension prefix and backward jump to SAME shared normalization tail"
+    },
+    {
+      "native_address": "00476a72",
+      "opcode": "MOVZX",
+      "operand": "EDX,CX ",
+      "region": "normalized_unsigned_short3",
+      "source_line": 169,
+      "mapping": "zero-extension prefix and backward jump to SAME shared normalization tail"
+    },
+    {
+      "native_address": "00476a75",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x18],EDX ",
+      "region": "normalized_unsigned_short3",
+      "source_line": 169,
+      "mapping": "zero-extension prefix and backward jump to SAME shared normalization tail"
+    },
+    {
+      "native_address": "00476a79",
+      "opcode": "SHR",
+      "operand": "ECX,0x10 ",
+      "region": "normalized_unsigned_short3",
+      "source_line": 169,
+      "mapping": "zero-extension prefix and backward jump to SAME shared normalization tail"
+    },
+    {
+      "native_address": "00476a7c",
+      "opcode": "MOVZX",
+      "operand": "EAX,AX ",
+      "region": "normalized_unsigned_short3",
+      "source_line": 169,
+      "mapping": "zero-extension prefix and backward jump to SAME shared normalization tail"
+    },
+    {
+      "native_address": "00476a7f",
+      "opcode": "FILD",
+      "operand": "dword ptr [ESP + 0x18] ",
+      "region": "normalized_unsigned_short3",
+      "source_line": 174,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [ebx + 4]",
+      "canonical_operand": "dwordptr[s:18]"
+    },
+    {
+      "native_address": "00476a83",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x18],ECX ",
+      "region": "normalized_unsigned_short3",
+      "source_line": 169,
+      "mapping": "zero-extension prefix and backward jump to SAME shared normalization tail"
+    },
+    {
+      "native_address": "00476a87",
+      "opcode": "FSTP",
+      "operand": "float ptr [ESP + 0x4] ",
+      "region": "normalized_unsigned_short3",
+      "source_line": 176,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [edi]",
+      "canonical_operand": "dwordptr[s:04]"
+    },
+    {
+      "native_address": "00476a8b",
+      "opcode": "FILD",
+      "operand": "dword ptr [ESP + 0x18] ",
+      "region": "normalized_unsigned_short3",
+      "source_line": 177,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [ebx + 4]",
+      "canonical_operand": "dwordptr[s:18]"
+    },
+    {
+      "native_address": "00476a8f",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x18],EAX ",
+      "region": "normalized_unsigned_short3",
+      "source_line": 169,
+      "mapping": "zero-extension prefix and backward jump to SAME shared normalization tail"
+    },
+    {
+      "native_address": "00476a93",
+      "opcode": "FSTP",
+      "operand": "float ptr [ESP + 0x8] ",
+      "region": "normalized_unsigned_short3",
+      "source_line": 179,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [edi + 4]",
+      "canonical_operand": "dwordptr[s:08]"
+    },
+    {
+      "native_address": "00476a97",
+      "opcode": "FILD",
+      "operand": "dword ptr [ESP + 0x18] ",
+      "region": "normalized_unsigned_short3",
+      "source_line": 180,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [ebx + 4]",
+      "canonical_operand": "dwordptr[s:18]"
+    },
+    {
+      "native_address": "00476a9b",
+      "opcode": "FSTP",
+      "operand": "float ptr [ESP + 0xc] ",
+      "region": "normalized_unsigned_short3",
+      "source_line": 181,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [edi + 8]",
+      "canonical_operand": "dwordptr[s:0c]"
+    },
+    {
+      "native_address": "00476a9f",
+      "opcode": "FLD",
+      "operand": "float ptr [ESP + 0x4] ",
+      "region": "normalized_unsigned_short3",
+      "source_line": 182,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [edi]",
+      "canonical_operand": "dwordptr[s:04]"
+    },
+    {
+      "native_address": "00476aa3",
+      "opcode": "FLD",
+      "operand": "double ptr [0x00ce5f90] ",
+      "region": "normalized_unsigned_short3",
+      "source_line": 184,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "qword ptr [eax]",
+      "canonical_operand": "qwordptr[va:00ce5f90]"
+    },
+    {
+      "native_address": "00476aa9",
+      "opcode": "JMP",
+      "operand": "0x00476a43 ",
+      "region": "normalized_unsigned_short3",
+      "source_line": 169,
+      "mapping": "zero-extension prefix and backward jump to SAME shared normalization tail"
+    },
+    {
+      "native_address": "00476aab",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [ESI + 0xc] ",
+      "region": "half_import",
+      "source_line": 287,
+      "mapping": "ordered current address then direct authentic existing named import"
+    },
+    {
+      "native_address": "00476aae",
+      "opcode": "IMUL",
+      "operand": "ECX,dword ptr [ESP + 0x18] ",
+      "region": "half_import",
+      "source_line": 287,
+      "mapping": "ordered current address then direct authentic existing named import"
+    },
+    {
+      "native_address": "00476ab3",
+      "opcode": "ADD",
+      "operand": "ECX,dword ptr [ESI + 0x10] ",
+      "region": "half_import",
+      "source_line": 287,
+      "mapping": "ordered current address then direct authentic existing named import"
+    },
+    {
+      "native_address": "00476ab6",
+      "opcode": "PUSH",
+      "operand": "0x3 ",
+      "region": "half_import",
+      "source_line": 287,
+      "mapping": "ordered current address then direct authentic existing named import"
+    },
+    {
+      "native_address": "00476ab8",
+      "opcode": "ADD",
+      "operand": "ECX,dword ptr [ESI + 0x8] ",
+      "region": "half_import",
+      "source_line": 287,
+      "mapping": "ordered current address then direct authentic existing named import"
+    },
+    {
+      "native_address": "00476abb",
+      "opcode": "LEA",
+      "operand": "EDX,[ESP + 0x8] ",
+      "region": "half_import",
+      "source_line": 287,
+      "mapping": "ordered current address then direct authentic existing named import"
+    },
+    {
+      "native_address": "00476abf",
+      "opcode": "PUSH",
+      "operand": "ECX ",
+      "region": "half_import",
+      "source_line": 287,
+      "mapping": "ordered current address then direct authentic existing named import"
+    },
+    {
+      "native_address": "00476ac0",
+      "opcode": "PUSH",
+      "operand": "EDX ",
+      "region": "half_import",
+      "source_line": 287,
+      "mapping": "ordered current address then direct authentic existing named import"
+    },
+    {
+      "native_address": "00476ac1",
+      "opcode": "CALL",
+      "operand": "0x00a4c2ae ",
+      "region": "half_import",
+      "source_line": 287,
+      "mapping": "ordered current address then direct authentic existing named import"
+    },
+    {
+      "native_address": "00476ac6",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [ESI + 0x18] ",
+      "region": "scale_output",
+      "source_line": 189,
+      "mapping": "current18 then50, exact scale-first x87/spills/late home0/sequential output"
+    },
+    {
+      "native_address": "00476ac9",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [ESI + 0x50] ",
+      "region": "scale_output",
+      "source_line": 189,
+      "mapping": "current18 then50, exact scale-first x87/spills/late home0/sequential output"
+    },
+    {
+      "native_address": "00476acc",
+      "opcode": "SHL",
+      "operand": "EAX,0x5 ",
+      "region": "scale_output",
+      "source_line": 189,
+      "mapping": "current18 then50, exact scale-first x87/spills/late home0/sequential output"
+    },
+    {
+      "native_address": "00476acf",
+      "opcode": "FLD",
+      "operand": "float ptr [EAX + ECX*0x1] ",
+      "region": "scale_output",
+      "source_line": 200,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [eax + ecx]",
+      "canonical_operand": "dwordptr[record:0]"
+    },
+    {
+      "native_address": "00476ad2",
+      "opcode": "ADD",
+      "operand": "EAX,ECX ",
+      "region": "scale_output",
+      "source_line": 189,
+      "mapping": "current18 then50, exact scale-first x87/spills/late home0/sequential output"
+    },
+    {
+      "native_address": "00476ad4",
+      "opcode": "FMUL",
+      "operand": "float ptr [ESP + 0x4] ",
+      "region": "scale_output",
+      "source_line": 202,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [edi]",
+      "canonical_operand": "dwordptr[s:04]"
+    },
+    {
+      "native_address": "00476ad8",
+      "opcode": "POP",
+      "operand": "ESI ",
+      "region": "scale_output",
+      "source_line": 189,
+      "mapping": "current18 then50, exact scale-first x87/spills/late home0/sequential output"
+    },
+    {
+      "native_address": "00476ad9",
+      "opcode": "FADD",
+      "operand": "float ptr [EAX + 0x10] ",
+      "region": "scale_output",
+      "source_line": 203,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [eax + 0x10]",
+      "canonical_operand": "dwordptr[record:10]"
+    },
+    {
+      "native_address": "00476adc",
+      "opcode": "FSTP",
+      "operand": "float ptr [ESP] ",
+      "region": "scale_output",
+      "source_line": 204,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [edi]",
+      "canonical_operand": "dwordptr[s:04]"
+    },
+    {
+      "native_address": "00476adf",
+      "opcode": "FLD",
+      "operand": "float ptr [EAX + 0x4] ",
+      "region": "scale_output",
+      "source_line": 205,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [eax + 4]",
+      "canonical_operand": "dwordptr[record:4]"
+    },
+    {
+      "native_address": "00476ae2",
+      "opcode": "FMUL",
+      "operand": "float ptr [ESP + 0x4] ",
+      "region": "scale_output",
+      "source_line": 206,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [edi + 4]",
+      "canonical_operand": "dwordptr[s:08]"
+    },
+    {
+      "native_address": "00476ae6",
+      "opcode": "FADD",
+      "operand": "float ptr [EAX + 0x14] ",
+      "region": "scale_output",
+      "source_line": 207,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [eax + 0x14]",
+      "canonical_operand": "dwordptr[record:14]"
+    },
+    {
+      "native_address": "00476ae9",
+      "opcode": "FSTP",
+      "operand": "float ptr [ESP + 0x4] ",
+      "region": "scale_output",
+      "source_line": 208,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [edi + 4]",
+      "canonical_operand": "dwordptr[s:08]"
+    },
+    {
+      "native_address": "00476aed",
+      "opcode": "FLD",
+      "operand": "float ptr [EAX + 0x8] ",
+      "region": "scale_output",
+      "source_line": 209,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [eax + 8]",
+      "canonical_operand": "dwordptr[record:8]"
+    },
+    {
+      "native_address": "00476af0",
+      "opcode": "FMUL",
+      "operand": "float ptr [ESP + 0x8] ",
+      "region": "scale_output",
+      "source_line": 210,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [edi + 8]",
+      "canonical_operand": "dwordptr[s:0c]"
+    },
+    {
+      "native_address": "00476af4",
+      "opcode": "FADD",
+      "operand": "float ptr [EAX + 0x18] ",
+      "region": "scale_output",
+      "source_line": 211,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [eax + 0x18]",
+      "canonical_operand": "dwordptr[record:18]"
+    },
+    {
+      "native_address": "00476af7",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [ESP + 0x10] ",
+      "region": "scale_output",
+      "source_line": 189,
+      "mapping": "current18 then50, exact scale-first x87/spills/late home0/sequential output"
+    },
+    {
+      "native_address": "00476afb",
+      "opcode": "FSTP",
+      "operand": "float ptr [ESP + 0x8] ",
+      "region": "scale_output",
+      "source_line": 213,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [edi + 8]",
+      "canonical_operand": "dwordptr[s:0c]"
+    },
+    {
+      "native_address": "00476aff",
+      "opcode": "FLD",
+      "operand": "float ptr [ESP] ",
+      "region": "scale_output",
+      "source_line": 214,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [edi]",
+      "canonical_operand": "dwordptr[s:04]"
+    },
+    {
+      "native_address": "00476b02",
+      "opcode": "FSTP",
+      "operand": "float ptr [EAX] ",
+      "region": "scale_output",
+      "source_line": 215,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [eax]",
+      "canonical_operand": "dwordptr[dest:0]"
+    },
+    {
+      "native_address": "00476b04",
+      "opcode": "FLD",
+      "operand": "float ptr [ESP + 0x4] ",
+      "region": "scale_output",
+      "source_line": 216,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [edi + 4]",
+      "canonical_operand": "dwordptr[s:08]"
+    },
+    {
+      "native_address": "00476b08",
+      "opcode": "FSTP",
+      "operand": "float ptr [EAX + 0x4] ",
+      "region": "scale_output",
+      "source_line": 217,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [eax + 4]",
+      "canonical_operand": "dwordptr[dest:4]"
+    },
+    {
+      "native_address": "00476b0b",
+      "opcode": "FLD",
+      "operand": "float ptr [ESP + 0x8] ",
+      "region": "scale_output",
+      "source_line": 218,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [edi + 8]",
+      "canonical_operand": "dwordptr[s:0c]"
+    },
+    {
+      "native_address": "00476b0f",
+      "opcode": "FSTP",
+      "operand": "float ptr [EAX + 0x8] ",
+      "region": "scale_output",
+      "source_line": 219,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [eax + 8]",
+      "canonical_operand": "dwordptr[dest:8]"
+    },
+    {
+      "native_address": "00476b12",
+      "opcode": "ADD",
+      "operand": "ESP,0xc ",
+      "region": "scale_return",
+      "source_line": 307,
+      "mapping": "ordinary Source return of captured identity, qualified physical stack ABI"
+    },
+    {
+      "native_address": "00476b15",
+      "opcode": "RET",
+      "operand": "0x8 ",
+      "region": "scale_return",
+      "source_line": 307,
+      "mapping": "ordinary Source return of captured identity, qualified physical stack ABI"
+    },
+    {
+      "native_address": "00476b18",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [ESI + 0xc] ",
+      "region": "direct_output",
+      "source_line": 224,
+      "mapping": "no type/scratch/record read; CURRENT output before mapping08; sequential FLD/FSTP"
+    },
+    {
+      "native_address": "00476b1b",
+      "opcode": "IMUL",
+      "operand": "ECX,dword ptr [ESP + 0x18] ",
+      "region": "direct_output",
+      "source_line": 224,
+      "mapping": "no type/scratch/record read; CURRENT output before mapping08; sequential FLD/FSTP"
+    },
+    {
+      "native_address": "00476b20",
+      "opcode": "ADD",
+      "operand": "ECX,dword ptr [ESI + 0x10] ",
+      "region": "direct_output",
+      "source_line": 224,
+      "mapping": "no type/scratch/record read; CURRENT output before mapping08; sequential FLD/FSTP"
+    },
+    {
+      "native_address": "00476b23",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [ESP + 0x14] ",
+      "region": "direct_output",
+      "source_line": 224,
+      "mapping": "no type/scratch/record read; CURRENT output before mapping08; sequential FLD/FSTP"
+    },
+    {
+      "native_address": "00476b27",
+      "opcode": "ADD",
+      "operand": "ECX,dword ptr [ESI + 0x8] ",
+      "region": "direct_output",
+      "source_line": 224,
+      "mapping": "no type/scratch/record read; CURRENT output before mapping08; sequential FLD/FSTP"
+    },
+    {
+      "native_address": "00476b2a",
+      "opcode": "POP",
+      "operand": "ESI ",
+      "region": "direct_output",
+      "source_line": 224,
+      "mapping": "no type/scratch/record read; CURRENT output before mapping08; sequential FLD/FSTP"
+    },
+    {
+      "native_address": "00476b2b",
+      "opcode": "FLD",
+      "operand": "float ptr [ECX] ",
+      "region": "direct_output",
+      "source_line": 235,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [ecx]",
+      "canonical_operand": "dwordptr[input:0]"
+    },
+    {
+      "native_address": "00476b2d",
+      "opcode": "FSTP",
+      "operand": "float ptr [EAX] ",
+      "region": "direct_output",
+      "source_line": 236,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [eax]",
+      "canonical_operand": "dwordptr[dest:0]"
+    },
+    {
+      "native_address": "00476b2f",
+      "opcode": "FLD",
+      "operand": "float ptr [ECX + 0x4] ",
+      "region": "direct_output",
+      "source_line": 237,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [ecx + 4]",
+      "canonical_operand": "dwordptr[input:4]"
+    },
+    {
+      "native_address": "00476b32",
+      "opcode": "FSTP",
+      "operand": "float ptr [EAX + 0x4] ",
+      "region": "direct_output",
+      "source_line": 238,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [eax + 4]",
+      "canonical_operand": "dwordptr[dest:4]"
+    },
+    {
+      "native_address": "00476b35",
+      "opcode": "FLD",
+      "operand": "float ptr [ECX + 0x8] ",
+      "region": "direct_output",
+      "source_line": 239,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [ecx + 8]",
+      "canonical_operand": "dwordptr[input:8]"
+    },
+    {
+      "native_address": "00476b38",
+      "opcode": "FSTP",
+      "operand": "float ptr [EAX + 0x8] ",
+      "region": "direct_output",
+      "source_line": 240,
+      "mapping": "exact x87 width/alias/operand/stack order",
+      "source_operand": "dword ptr [eax + 8]",
+      "canonical_operand": "dwordptr[dest:8]"
+    },
+    {
+      "native_address": "00476b3b",
+      "opcode": "ADD",
+      "operand": "ESP,0xc ",
+      "region": "direct_return",
+      "source_line": 307,
+      "mapping": "ordinary Source return of captured identity, qualified physical stack ABI"
+    },
+    {
+      "native_address": "00476b3e",
+      "opcode": "RET",
+      "operand": "0x8 ",
+      "region": "direct_return",
+      "source_line": 307,
+      "mapping": "ordinary Source return of captured identity, qualified physical stack ABI"
+    }
+  ],
+  "x87_operand_map": [
+    {
+      "native_address": "0047695e",
+      "native_opcode": "FLD",
+      "native_operand": "double ptr [0x00ce4b48] ",
+      "source_function": "decode_normalized_byte3",
+      "source_line": 81,
+      "source_opcode": "FLD",
+      "source_operand": "qword ptr [eax] // Native BEFORE current index/offset/mapping reads",
+      "canonical_operand": "qwordptr[va:00ce4b48]",
+      "operand_match": true
+    },
+    {
+      "native_address": "0047697f",
+      "native_opcode": "FILD",
+      "native_operand": "dword ptr [ESP + 0x18] ",
+      "source_function": "decode_normalized_byte3",
+      "source_line": 91,
+      "source_opcode": "FILD",
+      "source_operand": "dword ptr [edx + 4]",
+      "canonical_operand": "dwordptr[s:18]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476983",
+      "native_opcode": "FDIV",
+      "native_operand": "ST0,ST1 ",
+      "source_function": "decode_normalized_byte3",
+      "source_line": 92,
+      "source_opcode": "FDIV",
+      "source_operand": "st(0), st(1)",
+      "canonical_operand": "st(0),st(1)",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476985",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [ESP + EAX*0x4] ",
+      "source_function": "decode_normalized_byte3",
+      "source_line": 93,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [edi + eax*4 - 4]",
+      "canonical_operand": "dwordptr[s:04+lane]",
+      "operand_match": true
+    },
+    {
+      "native_address": "0047698a",
+      "native_opcode": "FSTP",
+      "native_operand": "ST0 ",
+      "source_function": "decode_normalized_byte3",
+      "source_line": 95,
+      "source_opcode": "FSTP",
+      "source_operand": "st(0)",
+      "canonical_operand": "st(0)",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476a16",
+      "native_opcode": "FILD",
+      "native_operand": "dword ptr [ESP + 0x18] ",
+      "source_function": "decode_normalized_short3",
+      "source_line": 147,
+      "source_opcode": "FILD",
+      "source_operand": "dword ptr [ebx + 4]",
+      "canonical_operand": "dwordptr[s:18]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476a1e",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [ESP + 0x4] ",
+      "source_function": "decode_normalized_short3",
+      "source_line": 149,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [edi]",
+      "canonical_operand": "dwordptr[s:04]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476a25",
+      "native_opcode": "FILD",
+      "native_operand": "dword ptr [ESP + 0x18] ",
+      "source_function": "decode_normalized_short3",
+      "source_line": 151,
+      "source_opcode": "FILD",
+      "source_operand": "dword ptr [ebx + 4]",
+      "canonical_operand": "dwordptr[s:18]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476a2d",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [ESP + 0x8] ",
+      "source_function": "decode_normalized_short3",
+      "source_line": 153,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [edi + 4]",
+      "canonical_operand": "dwordptr[s:08]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476a31",
+      "native_opcode": "FILD",
+      "native_operand": "dword ptr [ESP + 0x18] ",
+      "source_function": "decode_normalized_short3",
+      "source_line": 154,
+      "source_opcode": "FILD",
+      "source_operand": "dword ptr [ebx + 4]",
+      "canonical_operand": "dwordptr[s:18]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476a35",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [ESP + 0xc] ",
+      "source_function": "decode_normalized_short3",
+      "source_line": 155,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [edi + 8]",
+      "canonical_operand": "dwordptr[s:0c]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476a39",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [ESP + 0x4] ",
+      "source_function": "decode_normalized_short3",
+      "source_line": 156,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [edi]",
+      "canonical_operand": "dwordptr[s:04]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476a3d",
+      "native_opcode": "FLD",
+      "native_operand": "double ptr [0x00ce5f98] ",
+      "source_function": "decode_normalized_short3",
+      "source_line": 158,
+      "source_opcode": "FLD",
+      "source_operand": "qword ptr [eax]",
+      "canonical_operand": "qwordptr[va:00ce5f98]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476a43",
+      "native_opcode": "FDIV",
+      "native_operand": "ST1,ST0 ",
+      "source_function": "decode_normalized_short3",
+      "source_line": 160,
+      "source_opcode": "FDIV",
+      "source_operand": "st(1), st(0)",
+      "canonical_operand": "st(1),st(0)",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476a45",
+      "native_opcode": "FXCH",
+      "native_operand": "",
+      "source_function": "decode_normalized_short3",
+      "source_line": 161,
+      "source_opcode": "FXCH",
+      "source_operand": "st(1)",
+      "canonical_operand": "st(1)",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476a47",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [ESP + 0x4] ",
+      "source_function": "decode_normalized_short3",
+      "source_line": 162,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [edi]",
+      "canonical_operand": "dwordptr[s:04]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476a4b",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [ESP + 0x8] ",
+      "source_function": "decode_normalized_short3",
+      "source_line": 163,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [edi + 4]",
+      "canonical_operand": "dwordptr[s:08]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476a4f",
+      "native_opcode": "FDIV",
+      "native_operand": "ST0,ST1 ",
+      "source_function": "decode_normalized_short3",
+      "source_line": 164,
+      "source_opcode": "FDIV",
+      "source_operand": "st(0), st(1)",
+      "canonical_operand": "st(0),st(1)",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476a51",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [ESP + 0x8] ",
+      "source_function": "decode_normalized_short3",
+      "source_line": 165,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [edi + 4]",
+      "canonical_operand": "dwordptr[s:08]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476a55",
+      "native_opcode": "FDIVR",
+      "native_operand": "float ptr [ESP + 0xc] ",
+      "source_function": "decode_normalized_short3",
+      "source_line": 166,
+      "source_opcode": "FDIVR",
+      "source_operand": "dword ptr [edi + 8]",
+      "canonical_operand": "dwordptr[s:0c]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476a59",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [ESP + 0xc] ",
+      "source_function": "decode_normalized_short3",
+      "source_line": 167,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [edi + 8]",
+      "canonical_operand": "dwordptr[s:0c]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476a7f",
+      "native_opcode": "FILD",
+      "native_operand": "dword ptr [ESP + 0x18] ",
+      "source_function": "decode_normalized_short3",
+      "source_line": 174,
+      "source_opcode": "FILD",
+      "source_operand": "dword ptr [ebx + 4]",
+      "canonical_operand": "dwordptr[s:18]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476a87",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [ESP + 0x4] ",
+      "source_function": "decode_normalized_short3",
+      "source_line": 176,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [edi]",
+      "canonical_operand": "dwordptr[s:04]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476a8b",
+      "native_opcode": "FILD",
+      "native_operand": "dword ptr [ESP + 0x18] ",
+      "source_function": "decode_normalized_short3",
+      "source_line": 177,
+      "source_opcode": "FILD",
+      "source_operand": "dword ptr [ebx + 4]",
+      "canonical_operand": "dwordptr[s:18]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476a93",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [ESP + 0x8] ",
+      "source_function": "decode_normalized_short3",
+      "source_line": 179,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [edi + 4]",
+      "canonical_operand": "dwordptr[s:08]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476a97",
+      "native_opcode": "FILD",
+      "native_operand": "dword ptr [ESP + 0x18] ",
+      "source_function": "decode_normalized_short3",
+      "source_line": 180,
+      "source_opcode": "FILD",
+      "source_operand": "dword ptr [ebx + 4]",
+      "canonical_operand": "dwordptr[s:18]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476a9b",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [ESP + 0xc] ",
+      "source_function": "decode_normalized_short3",
+      "source_line": 181,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [edi + 8]",
+      "canonical_operand": "dwordptr[s:0c]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476a9f",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [ESP + 0x4] ",
+      "source_function": "decode_normalized_short3",
+      "source_line": 182,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [edi]",
+      "canonical_operand": "dwordptr[s:04]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476aa3",
+      "native_opcode": "FLD",
+      "native_operand": "double ptr [0x00ce5f90] ",
+      "source_function": "decode_normalized_short3",
+      "source_line": 184,
+      "source_opcode": "FLD",
+      "source_operand": "qword ptr [eax]",
+      "canonical_operand": "qwordptr[va:00ce5f90]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476acf",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [EAX + ECX*0x1] ",
+      "source_function": "scaled_output",
+      "source_line": 200,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [eax + ecx]",
+      "canonical_operand": "dwordptr[record:0]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476ad4",
+      "native_opcode": "FMUL",
+      "native_operand": "float ptr [ESP + 0x4] ",
+      "source_function": "scaled_output",
+      "source_line": 202,
+      "source_opcode": "FMUL",
+      "source_operand": "dword ptr [edi]",
+      "canonical_operand": "dwordptr[s:04]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476ad9",
+      "native_opcode": "FADD",
+      "native_operand": "float ptr [EAX + 0x10] ",
+      "source_function": "scaled_output",
+      "source_line": 203,
+      "source_opcode": "FADD",
+      "source_operand": "dword ptr [eax + 0x10]",
+      "canonical_operand": "dwordptr[record:10]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476adc",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [ESP] ",
+      "source_function": "scaled_output",
+      "source_line": 204,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [edi]",
+      "canonical_operand": "dwordptr[s:04]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476adf",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [EAX + 0x4] ",
+      "source_function": "scaled_output",
+      "source_line": 205,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [eax + 4]",
+      "canonical_operand": "dwordptr[record:4]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476ae2",
+      "native_opcode": "FMUL",
+      "native_operand": "float ptr [ESP + 0x4] ",
+      "source_function": "scaled_output",
+      "source_line": 206,
+      "source_opcode": "FMUL",
+      "source_operand": "dword ptr [edi + 4]",
+      "canonical_operand": "dwordptr[s:08]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476ae6",
+      "native_opcode": "FADD",
+      "native_operand": "float ptr [EAX + 0x14] ",
+      "source_function": "scaled_output",
+      "source_line": 207,
+      "source_opcode": "FADD",
+      "source_operand": "dword ptr [eax + 0x14]",
+      "canonical_operand": "dwordptr[record:14]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476ae9",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [ESP + 0x4] ",
+      "source_function": "scaled_output",
+      "source_line": 208,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [edi + 4]",
+      "canonical_operand": "dwordptr[s:08]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476aed",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [EAX + 0x8] ",
+      "source_function": "scaled_output",
+      "source_line": 209,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [eax + 8]",
+      "canonical_operand": "dwordptr[record:8]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476af0",
+      "native_opcode": "FMUL",
+      "native_operand": "float ptr [ESP + 0x8] ",
+      "source_function": "scaled_output",
+      "source_line": 210,
+      "source_opcode": "FMUL",
+      "source_operand": "dword ptr [edi + 8]",
+      "canonical_operand": "dwordptr[s:0c]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476af4",
+      "native_opcode": "FADD",
+      "native_operand": "float ptr [EAX + 0x18] ",
+      "source_function": "scaled_output",
+      "source_line": 211,
+      "source_opcode": "FADD",
+      "source_operand": "dword ptr [eax + 0x18]",
+      "canonical_operand": "dwordptr[record:18]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476afb",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [ESP + 0x8] ",
+      "source_function": "scaled_output",
+      "source_line": 213,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [edi + 8]",
+      "canonical_operand": "dwordptr[s:0c]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476aff",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [ESP] ",
+      "source_function": "scaled_output",
+      "source_line": 214,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [edi]",
+      "canonical_operand": "dwordptr[s:04]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476b02",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [EAX] ",
+      "source_function": "scaled_output",
+      "source_line": 215,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [eax]",
+      "canonical_operand": "dwordptr[dest:0]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476b04",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [ESP + 0x4] ",
+      "source_function": "scaled_output",
+      "source_line": 216,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [edi + 4]",
+      "canonical_operand": "dwordptr[s:08]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476b08",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [EAX + 0x4] ",
+      "source_function": "scaled_output",
+      "source_line": 217,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [eax + 4]",
+      "canonical_operand": "dwordptr[dest:4]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476b0b",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [ESP + 0x8] ",
+      "source_function": "scaled_output",
+      "source_line": 218,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [edi + 8]",
+      "canonical_operand": "dwordptr[s:0c]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476b0f",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [EAX + 0x8] ",
+      "source_function": "scaled_output",
+      "source_line": 219,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [eax + 8]",
+      "canonical_operand": "dwordptr[dest:8]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476b2b",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [ECX] ",
+      "source_function": "direct_output",
+      "source_line": 235,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [ecx]",
+      "canonical_operand": "dwordptr[input:0]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476b2d",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [EAX] ",
+      "source_function": "direct_output",
+      "source_line": 236,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [eax]",
+      "canonical_operand": "dwordptr[dest:0]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476b2f",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [ECX + 0x4] ",
+      "source_function": "direct_output",
+      "source_line": 237,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [ecx + 4]",
+      "canonical_operand": "dwordptr[input:4]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476b32",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [EAX + 0x4] ",
+      "source_function": "direct_output",
+      "source_line": 238,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [eax + 4]",
+      "canonical_operand": "dwordptr[dest:4]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476b35",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [ECX + 0x8] ",
+      "source_function": "direct_output",
+      "source_line": 239,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [ecx + 8]",
+      "canonical_operand": "dwordptr[input:8]",
+      "operand_match": true
+    },
+    {
+      "native_address": "00476b38",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [EAX + 0x8] ",
+      "source_function": "direct_output",
+      "source_line": 240,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [eax + 8]",
+      "canonical_operand": "dwordptr[dest:8]",
+      "operand_match": true
+    }
+  ],
+  "sse_conversion_map": [
+    {
+      "native_address": "00476944",
+      "source_line": 64,
+      "source_instruction": "cvtsi2ss xmm0, edx"
+    },
+    {
+      "native_address": "004769cd",
+      "source_line": 113,
+      "source_instruction": "cvtsi2ss xmm0, edx"
+    },
+    {
+      "native_address": "004769dd",
+      "source_line": 117,
+      "source_instruction": "cvtsi2ss xmm0, ecx"
+    },
+    {
+      "native_address": "004769e7",
+      "source_line": 119,
+      "source_instruction": "cvtsi2ss xmm0, edx"
+    }
+  ],
+  "native_call_map": [
+    {
+      "native_site": "004769aa",
+      "target": "00475f80",
+      "source_line": 283,
+      "supplier": "existing genuine unpack, unchanged raw helper body; ECX unused",
+      "relative_x87_depth": [
+        0
+      ]
+    },
+    {
+      "native_site": "00476ac1",
+      "target": "00a4c2ae D3DXFloat16To32Array import thunk",
+      "source_line": 295,
+      "supplier": "existing actual named d3dx9_40 import, caller retains module; count3",
+      "relative_x87_depth": [
+        0
+      ]
+    }
+  ],
+  "context_contract": {
+    "imports": "borrow genuine existing NativeD3dx9Float16Import/actual retained d3dx9_40 module; no alternate conversion/new loader",
+    "RO_refs": [
+      "byte_divisor_00ce4b48",
+      "signed_short_divisor_00ce5f98",
+      "unsigned_short_divisor_00ce5f90"
+    ],
+    "RO_authority": "authenticated existing GameNativeReadOnlyData supplier, no copies/new allocation",
+    "dispatch": "immutable original control graph compiled into Source labels; no new4M canonical authority/numeric function pointers",
+    "unclosed_operation_providers": 0
+  },
+  "failure_contract": {
+    "fresh_record": "distinct retained acquired per entered call; misuse host guard BEFORE Native entry",
+    "native_origin_permission": false,
+    "catch": "exact current exception_ptr/boundary/site/failed phase then rethrow only",
+    "retention": "whole actual graph/import/homes/scratch/output/metadata through explicit disposition",
+    "no_added_effects": [
+      "cleanup",
+      "unmap",
+      "retry",
+      "rollback",
+      "retain",
+      "free",
+      "terminal policy",
+      "Native input-domain guard",
+      "zero/default output",
+      "false-return boundary",
+      "Native EH/fault equivalence"
+    ],
+    "fault_qualification": "ordinary Source transport only; original private stack/FH3/SEH/unmasked FP/secondary-failure identity not supplied"
+  },
+  "static_checks": {
+    "all178_instructions_mapped": true,
+    "all53_x87_opcode_operand_width_alias_ST_order_match": true,
+    "all4_SSE_sites_mapped": true,
+    "both_calls_relative_depth0": true,
+    "all15_dispatch_entries_and_outside_range_match": true,
+    "all4_supplier_files_unchanged": true,
+    "all24_frozen_files_unchanged": true,
+    "all3_native_exports_unchanged": true,
+    "no_Cpp_FP_or_FP_reset": true,
+    "git_diff_check": "passed"
+  },
+  "performed": {
+    "readonly_ghidra": true,
+    "ghidra_mutation": false,
+    "existing_source_edit": false,
+    "cmake_edit": false,
+    "application_edit": false,
+    "ledger_edit": false,
+    "build": false,
+    "tests": false,
+    "probe": false,
+    "game": false,
+    "process_actions": false,
+    "caller_binding": false,
+    "activation": false
+  },
+  "remaining_gates": [
+    "Root independent review/common build and packet-only cherry-pick",
+    "genuine ordinary scratch preimage/alias/stream/mapping/record/RO lifetimes and actual named module/import binding",
+    "preprepared caller two-home/scratch/acquired selection and full ownership/custody",
+    "private passive Native-vs-host cause composition; changed96 hold unchanged",
+    "Original private stack/FH3/SEH/fault/secondary-failure/import ABI/runtime/game validation"
+  ],
+  "whole_frontend_source_ready": false,
+  "whole_frontend_activation": false,
+  "changed96_still_held": true,
+  "credit_delta": {
+    "Original": 0,
+    "helper": 0,
+    "vendor": 0,
+    "compiler_generated": 0,
+    "duplicate_body": 0,
+    "ABI": 0,
+    "runtime": 0,
+    "activation": 0
+  },
+  "existing_credit_unchanged": true
+}
