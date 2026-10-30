@@ -1,0 +1,59 @@
+{
+  "packet": "codex-native-lua-value-string",
+  "base": "a08d221c0fdc5b61696570137cd3c705c89c0a6e",
+  "address": "00b69130",
+  "status": "source_reviewed_single_strict_win32_object_and_numeric_static_evidence_pass_root_coupling_pending",
+  "source_ready": false,
+  "original_abi": "ECX actual14 object, hidden fresh8 result stack, EAX same result, RET4",
+  "api": "construct_native_lua_value_string_00b69130(const NativeLuaObjectStorage&, void*, const NativeLuaValueStringContext&)",
+  "context": "immutable same raw cells + owned TypeName/RawInt contexts + actual current uint32 word reference + verified RO role metadata",
+  "numeric_order": "direct linked lua_tonumber ST0 -> immediate FLOAT32 spill; integer reload -> ECX actual current-word ADDRESS -> real BF7420 -> raw4260B0; float32 reload/return -> raw43BDF0",
+  "branch_order": [
+    "kind2 nil",
+    "boolean",
+    "integer number",
+    "number",
+    "string",
+    "table",
+    "lightuserdata",
+    "function",
+    "late actual type-name"
+  ],
+  "local_native_eh_or_cleanup": false,
+  "output_failure": "retain partial/unpublished output and provider debt; no local destroy/rollback/retry",
+  "no_frame_callback_game_dyn_owner_or_semantic_string": true,
+  "no_existing_provider_host_semantic_edits": true,
+  "no_tests_probe_game_native_entry_ghidra_activation": true,
+  "strict_object": {
+    "compile_count": 1,
+    "compile_exit": 0,
+    "coff_machine": "014c",
+    "object_sha256": "bb36a150777a5443da9036cc67e63091999c423d45ac3d5e87d216141b62dc17",
+    "source_reviews": "Root and Gui full actual Code accepted exact4fbddac3/2f56b4a9 before this compile",
+    "artifact_hashes": {
+      "objects/compile.cmd": "226b920c1bb6da0d9fdd80b68810d36a2803c2bc547a8b61186310273f49f19c",
+      "objects/compile.log": "5327358a335925dfd40f9b8a12ca4dfb6e15b4c3f8b4c6b9a4c25a672f9d35ba",
+      "objects/compile_exit.txt": "9aca8dfce962538fb8131d73f84cada05e4dc79f5a0d3612c511b1150f3e33e2",
+      "objects/disasm.txt": "7ac02d45997f79338f89fa306658ee5192f1a14aa7daa0b9fecd8ad7fbcdab26",
+      "objects/inspect.cmd": "24e030f102a100d83efcba77df118991f0f12b70363e8885813fc5afc5ab10aa",
+      "objects/symbols.txt": "526290a8520a689c82ff1b4499c26593bee536556baad46f67648023209f0a22",
+      "objects/value_string.obj": "bb36a150777a5443da9036cc67e63091999c423d45ac3d5e87d216141b62dc17"
+    },
+    "numeric_evidence_sha256": "3836a4b5c4ab0297db0bf46a4cf4408913463431593891ab10fea55df41ef4a3",
+    "no_link_execution_tests_probe_game_ghidra": true
+  },
+  "limits": [
+    "actual role/mapping/current-word and reached Lua/output/cell/provider lifetime proof remains caller-owned",
+    "current CRT/FP/Lua nonlocal/C++/FH3/SEH/hardware qualifications",
+    "no B68D70/B692C0/current E1 route/resolver/loading/startup/ABI/runtime or vendor-body credit"
+  ],
+  "provider_preservation_sha256": "90f4289f67d54bb52b2b4c2370e26404c14266ee6dcdf816978bea409cc4cbf7",
+  "numeric_bridge_evidence_sha256": "3836a4b5c4ab0297db0bf46a4cf4408913463431593891ab10fea55df41ef4a3",
+  "actual_symbols_sha256": "8ace98470a92e207ea1ff19de4c1ff263ab74deed1497c38c68054cf443c595e",
+  "source_hashes": {
+    "include/bsp/native_lua_value_string.hpp": "4fbddac3209f00fdaa286126c5d469a8b51642f5a77094fe2193c611f8b3d251",
+    "src/native_lua_value_string.cpp": "2f56b4a90bee384062e7529ab372fdce90404878f147e9de6a47a8c0074d76b2",
+    "docs/NATIVE_LUA_VALUE_STRING.md": "5a11ed425850f265f088e5d47337fb854ce99573b32ce791a52acbf1fa054d79"
+  },
+  "design_sha256": "536fa53baea7459bce7574b91b98b97030a571dff237b97a800e177d42fb620c"
+}
