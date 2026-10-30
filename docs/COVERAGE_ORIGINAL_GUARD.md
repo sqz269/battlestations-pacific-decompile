@@ -603,3 +603,23 @@ The full USN04 argument and observer invocation are selected automatically.
 Breakpoint timing overhead, text inspection and alternate/interior function
 entries remain material limitations. Fixture success is not retail startup,
 mission-window or uninstrumented timing proof.
+
+
+## Primary retail result, 2026-10-30
+
+The primary subsequently ran the classic entry fallback on the private b6 image:
+root612, native GameTime0.0500000007 to240.050979614, fixed-step endpoint4800,
+7097 unique game-function starts,2639 queued duplicates and0 skipped points.
+Real ordered USN04 LoadingScene/SceneInit evidence qualified the one clock epoch.
+The owned forced window stop was E0000002; observer exit0 and job[0] preceded
+parent source-lock release. Independent inventories and review found all17
+installed runtime files and4 real profile files unchanged. This is entry reach,
+not basic-block coverage or call counts; all unhit entries remain unknown.
+Native mission difficulty0 differs from the BSP reference1.
+
+Two earlier guarded DR attempts admitted entry but exited C0000005 before a
+mission clock. The diagnostic retry observed an AV in nvd3dum.dll at RVA1B0285,
+reading40; the initiating cause remains unresolved. Their complete startup BB
+files are not treated as mission coverage. The qualified classic trace SHA is
+36044442b9b05bc93ac30e57f3a5d09660bd75f826dcf1f4829887ec755764c3.
+See CODEX_COVERAGE_CENSUS.md for hashes, comparison, candidate frontier and limits.
