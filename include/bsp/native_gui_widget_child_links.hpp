@@ -1,6 +1,7 @@
 #pragma once
 #include "bsp/native_live_effect_manager.hpp"
 #include "bsp/native_node_destruction.hpp"
+#include "bsp/native_node_base_destruction.hpp"
 #include "bsp/native_string.hpp"
 #include <array>
 
@@ -82,4 +83,7 @@ void remove_native_gui_widget_list_value_00a9bd50(
 void detach_native_gui_widget_child_00aa83a0(void* actual_parent,
     void* actual_child, NativeNodeDestructionRuntime&);
 
+// Same AA83A0 effect schedule over a genuine raw scene/tree domain.
+void detach_native_gui_widget_child_00aa83a0(void* actual_parent, void* actual_child,
+    NativeNodeParentNullFrame&, NativeNodeBaseDestructionContext&, NativeNodeParentNullAcquired&);
 } // namespace bsp

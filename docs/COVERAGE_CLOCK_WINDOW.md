@@ -60,11 +60,28 @@ rejected: native startup may truncate an existing stream, so file size alone
 cannot establish a fresh marker. This prevents a copied stale `LoadingScene`
 line from admitting a window.
 
-The observer reads the fresh stream for the full scene path (case/slash
-normalized). It tracks observed file replacement/truncation epochs and clears
-the marker when detected. An in-place truncate/regrow between polls is not
+The observer requires an engine `Loading scene <full scene path>` line followed
+by a later engine `GGame::SceneInit()` line in the same observed file epoch
+(case/slash normalized). An `Arguments:` echo is never a scene-load event.
+Any later engine `Loading scene ...` line clears both markers/readiness,
+including a different scene between the expected load and SceneInit. It tracks
+observed file replacement/truncation/deletion epochs and clears both markers
+when detected. An in-place truncate/regrow between polls is not
 generally detectable; the required prelaunch fresh-zero contract is the
-initial-stream guarantee. The scene marker must match `direct_scene_path`.
+initial-stream guarantee. The scene path must match `direct_scene_path`.
+The rolling parser reads at most 1 MiB per poll and retains at most 64 KiB of an
+incomplete line; oversized lines are discarded. Complete-line processing works
+across chunk boundaries. It preserves load/path/init byte offsets and epoch
+numbers, plus at most eight recent reset summaries, in `scene_gate`.
+
+This condition comes from the preserved successful native baseline log
+`stage-sampler-gaps-20261029/game/bsp_debug.log`: line 2 echoed Arguments at
+20:40:20.376, line 154 logged engine Loading scene for USN04 at 20:40:25.267,
+and line 760 logged engine GGame::SceneInit at 20:42:53.350. The load-begin
+message alone preceded SceneInit by approximately 148 seconds. Live01 exposed
+the earlier path-only bug: it selected the Arguments echo at byte 124. That run
+still admitted no clock window (zero clean reads, 127 null-game-pointer failures) and
+made no target stop request; it is not mission evidence.
 
 Every sample reads the native clock, reads and rechecks context, then reads the
 clock again. It retries immediately once if any clock/context field changed or
@@ -73,7 +90,7 @@ cannot admit a window or satisfy the target. Failed/torn/retried reads are
 counted separately. Equal brackets remain external observations, not an atomic
 engine-tick snapshot.
 
-The first mission epoch is admitted only after the fresh marker, a valid native
+The first mission epoch is admitted only after that fresh ordered engine pair, a valid native
 game pointer, positive `fixed_step_count`, and positive native
 GameTime. Earlier clean clock reads are retained separately as
 `first_clean_clock_read`, without treating a menu/uninitialized clock as the
@@ -166,7 +183,9 @@ python tools/original_coverage_clock.py --pid 1234 `
 Python compilation passed. Six focused fake-reader/clock checks covered one
 retry/final-torn exclusion, scene/step admission, absolute target/reset
 isolation, timeout/DRAIN, nonce/FILETIME/PID/fresh-log/path rejection, log
-truncation, initial null/unreadable clock recovery, and end-to-end exclusive
+truncation, the concrete Arguments echo at byte 124, engine load-only rejection,
+later SceneInit acceptance, intervening/later other-scene invalidation,
+seven-byte read chunk boundaries, initial null/unreadable clock recovery, and end-to-end exclusive
 atomic JSON publication. The fixture lives
 only in ignored `local/coverage-clock-fixture/`; no new test framework or game
 process was used. This is synthetic validation, not a live original/DR clock

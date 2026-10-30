@@ -1,0 +1,772 @@
+{
+  "schema": "cc16_native_gui_page_raw_parenting_design_v1",
+  "status": "bounded_readonly_normal_raw_parenting_contract_specified_supplier_not_yet_Source_ready",
+  "baseline_commit": "5dc9e9a018c8cb59b606fe904fca95ed7f9c574a",
+  "created_utc": "2026-10-30T12:26:55.292509+00:00",
+  "owned_files": [
+    "docs/CC16_NATIVE_GUI_PAGE_RAW_PARENTING_DESIGN.md",
+    "reports/cc16_native_gui_page_raw_parenting_design.json"
+  ],
+  "address_ownership": [],
+  "file_only_lease": true,
+  "decision": {
+    "normal_body_and_target_contract_specified": true,
+    "standalone_connected_Source_ready": false,
+    "new_Native_body_needed": false,
+    "reason": "Real raw Model owner/service and canonical Model raw-scene/current54/zero-terminal closure remain pending; Page lacks concrete raw target/frame/scene binding. Do not implement an unused adapter or claim whole Type2 readiness.",
+    "coherent_next_packet": "After genuine Model lifetime/service closure, connect the actual Page-owned provider and AAACD4 raw-context overload/use in the existing4files below."
+  },
+  "immutable_inputs": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-type2-adoption-readiness\\docs\\CC16_NATIVE_GUI_GROUP_TYPE2_ADOPTION_READINESS.md",
+      "bytes": 11437,
+      "sha256": "9ddbaad753f65ad2fbb1570678fd583215355e1c85ca616ea7d7ef58d2acc29e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-type2-adoption-readiness\\reports\\cc16_native_gui_group_type2_adoption_readiness.json",
+      "bytes": 82004,
+      "sha256": "5f8082536c6cc74cf1b9962ef4f2badc72ecc6a70ff52a0fbd36ef03054d2063"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-type2-adoption-readiness\\local\\native_gui_group_type2_adoption_readiness\\audit.json",
+      "bytes": 147013,
+      "sha256": "05a5da76f567d2af63f522ad048308a4570c51d133948db0a762790cbb547ae9"
+    }
+  ],
+  "peer_Model_owner_design": [
+    {
+      "commit": "8eea91c3a8dfe9a47c33c8eeb9f8147155a31447",
+      "repository_path": "docs/CC16_NATIVE_FRONTEND_WIDGET_MODEL_DOMAIN.md",
+      "bytes": 21495,
+      "sha256": "ad0e5a2baabb4e862a7e2c6afb2ddc89fbb180cc807b16a592f5678b41c4575e",
+      "qualification": "Immutable independent design; proposal not accepted Source supplier, no duplicate review claim."
+    },
+    {
+      "commit": "8eea91c3a8dfe9a47c33c8eeb9f8147155a31447",
+      "repository_path": "reports/cc16_native_frontend_widget_model_domain.json",
+      "bytes": 55893,
+      "sha256": "69a664165a0565fc9f20ea135a4a3501da3f4325b5b11c6676b0f4f69fef9064",
+      "qualification": "Immutable independent design; proposal not accepted Source supplier, no duplicate review claim."
+    }
+  ],
+  "analysis_target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "live_analysis_batch": false,
+    "qualification": "Relevant static Source first, retained Native reports and bounded installed-image byte/table verification only; no live Ghidra queries/mutations."
+  },
+  "original_image": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "retained_parent_bodies": [
+    {
+      "address": "00b6e680",
+      "byte_span": 204,
+      "instruction_count": 75,
+      "end_exclusive": "00b6e74c",
+      "end_inclusive": "00b6e74b",
+      "final_instruction": "00b6e749",
+      "final_instruction_length": 3,
+      "cpp_symbol": "bsp::set_native_raw_parent_00b6e680",
+      "original_abi": "ECX node, stacked parent; RET4",
+      "coverage": "complete normal body in actual-storage valid array/provider domain"
+    },
+    {
+      "address": "00b6e010",
+      "byte_span": 134,
+      "instruction_count": 46,
+      "end_exclusive": "00b6e096",
+      "end_inclusive": "00b6e095",
+      "final_instruction": "00b6e093",
+      "final_instruction_length": 3,
+      "cpp_symbol": "bsp::prepend_native_raw_child_00b6e010",
+      "original_abi": "ECX parent, stacked child; RET4",
+      "coverage": "complete normal body in actual-storage valid array/provider domain"
+    },
+    {
+      "address": "00b6d7b0",
+      "byte_span": 71,
+      "instruction_count": 29,
+      "end_exclusive": "00b6d7f7",
+      "end_inclusive": "00b6d7f6",
+      "final_instruction": "00b6d7f4",
+      "final_instruction_length": 3,
+      "cpp_symbol": "bsp::set_native_node_attachment_00b6d7b0",
+      "original_abi": "ECX node, stacked attachment; RET4",
+      "coverage": "complete normal body in actual-storage valid array/provider domain"
+    },
+    {
+      "address": "00b8f4f0",
+      "byte_span": 73,
+      "instruction_count": 23,
+      "end_exclusive": "00b8f539",
+      "end_inclusive": "00b8f538",
+      "final_instruction": "00b8f536",
+      "final_instruction_length": 3,
+      "cpp_symbol": "bsp::set_native_group_attachment_00b8f4f0",
+      "original_abi": "ECX group, stacked attachment; RET4",
+      "coverage": "complete normal body in actual-storage valid array/provider domain"
+    }
+  ],
+  "installed_ranges_equal_retained": [
+    {
+      "address": "00b6e680",
+      "bytes": 204,
+      "sha256": "0ace75572038ce59733daa0a78d7f17a990fcc4a1bd8094caf55dc21e7436aa1",
+      "source": "native_node_parenting_storage_cc10"
+    },
+    {
+      "address": "00b6e010",
+      "bytes": 134,
+      "sha256": "d24906ca4c007736ae32a792ea4d62e229b5660fb255c1c9064826fc1fd7e4c9",
+      "source": "native_node_parenting_storage_cc10"
+    },
+    {
+      "address": "00b6d7b0",
+      "bytes": 71,
+      "sha256": "598f624b227081fd490e8c5a82ef20e01a4aa11d825f4a22fe6f71218271f054",
+      "source": "native_node_parenting_storage_cc10"
+    },
+    {
+      "address": "00b8f4f0",
+      "bytes": 73,
+      "sha256": "7df342027caecee78d82115d8f69ba9a0168e7b7ac5bad74efa76e9ab604d62b",
+      "source": "native_node_parenting_storage_cc10"
+    },
+    {
+      "address": "00b8f460",
+      "bytes": 87,
+      "sha256": "4dad3ac0b7279718f5eb6fe5ee8aab8ea046fa1b709fea96c7e0933b2dee1213",
+      "source": "native_node_parenting_storage_cc10"
+    },
+    {
+      "address": "0059e5e0",
+      "bytes": 95,
+      "sha256": "0063f4cc0b96bc438afd94e99aa22bf329ed3f43ab73f3c984671fca85f62ab4",
+      "source": "native_node_parenting_storage_cc10"
+    },
+    {
+      "address": "00b7b390",
+      "bytes": 95,
+      "sha256": "f380ed67e3e98eabdc42af111b96857d41b4299c14f06aea33d012c210238cbf",
+      "source": "native_node_parenting_storage_cc10"
+    },
+    {
+      "address": "00b7bed0",
+      "bytes": 103,
+      "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+      "source": "native_node_parenting_storage_cc10"
+    },
+    {
+      "address": "00b7b620",
+      "bytes": 103,
+      "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+      "source": "native_node_parenting_storage_cc10"
+    },
+    {
+      "address": "00b8e600",
+      "bytes": 6,
+      "sha256": "828bce419428d5b8c7ff23a15f4424c79ac140b66125392f05244d5d1dcf5763",
+      "source": "native_node_parenting_storage_cc10"
+    },
+    {
+      "address": "00b6ed80",
+      "bytes": 140,
+      "sha256": "017e7433a6d5d7d2deafe5a855fa99a1981665f3c5da173eac53379f46413bf0",
+      "source": "native_node_scene_attachment_cc10"
+    },
+    {
+      "address": "00b6ee10",
+      "bytes": 110,
+      "sha256": "7105bc906c7dbf1064ef60172db96cccb0e80947bee66707ad26cc9eff276c03",
+      "source": "native_node_scene_attachment_cc10"
+    }
+  ],
+  "actual_current_profile_slots": [
+    {
+      "address": "00D634F8",
+      "bytes": 88,
+      "sha256": "f59b0caec65eb336d74bd451a0fce1696b1e4a0c2d1ffd1db44dbb2e39ba2721",
+      "slots": {
+        "0C": "00B8F650",
+        "1C": "00B8F4F0",
+        "3C": "00B6DBC0",
+        "40": "00B8E6B0",
+        "50": "00B6ED80",
+        "54": "00B6EE10"
+      }
+    },
+    {
+      "address": "00D62DE8",
+      "bytes": 92,
+      "sha256": "ece91d2dedd6ea5409f0b8066798defc6c40999d2034d4a38dce0c67951851ed",
+      "slots": {
+        "0C": "006EF860",
+        "1C": "00B6D7B0",
+        "3C": "00B6DBC0",
+        "40": "00B6DBE0",
+        "50": "00B6ED80",
+        "54": "00B6EE10"
+      }
+    },
+    {
+      "address": "00D62C88",
+      "bytes": 88,
+      "sha256": "abf911873a8d5a0f1016b627e3be77a3aa83dc97542846f011e901aefaf1c0a9",
+      "slots": {
+        "0C": "00B6F570",
+        "1C": "00B6D7B0",
+        "3C": "00B6DBC0",
+        "40": "00B6DBE0",
+        "50": "00B6ED80",
+        "54": "00B6EE10"
+      }
+    }
+  ],
+  "existing_owners": {
+    "UI_GuiGroup": "EC/F0/F8BFA0/D5CB80; not a renderer node",
+    "child_Model": "188/01090054/D62DE8, SAME canonical NativeModelReference already binds GeneratedModelNodeLifetime attachments",
+    "Page_renderer_root": "188object/18Cslot/010902F4/D634F8, real B8F5E0 and NativeGroupStorageReference; no legacy node binding",
+    "actual_authority": "Same renderer actual_owners registry, same VFS raw names, actual scene registration/gates/imports and canonical type cells. No second owner registry/NodeBinding/global."
+  },
+  "proposed_raw_input": {
+    "existing_API": false,
+    "name": "NativeGuiWidgetPropertyChildrenRawContext",
+    "fields": [
+      "NativeStringRawPoolContext& strings",
+      "const NativeGuiWidgetTypeKeyContext& types",
+      "NativeInstanceGeometryAccess& models",
+      "const NativeNodeRawConstants& model_constants",
+      "NativeGuiWidgetPropertyChildrenCalls& calls",
+      "NativeNodeParentingContext& parenting",
+      "NativeNodeParentingFrame& parent_frame",
+      "NativeNodeSetParentAcquired& parent_acquired"
+    ],
+    "overloads": "Same existing AAACD4 suffix and whole AAA710 Source entry names with new context type; share actual effect body, preserve legacy overload/context/acquisition layouts. No dummy old runtime or standalone address wrapper.",
+    "owner": "Page property invocation retains context/outer frame/acquired. Recursive Group read has another invocation. Model service supplies raw view/types/nodes/canonical owner; never shared scratch.",
+    "caller_epoch": "After existing list callbacks: CURRENT parent widget4C load BEFORE CURRENT child widget4C. Write frame.parent_argument, invoke whole set_native_raw_parent directly on actual child. No resolve_key/CameraTransform/semantic cast.",
+    "preflight": "Actual raw name/null actual_names, same registry and string/import identities; no legacy runtime-object equality as raw proof."
+  },
+  "Page_concrete_provider": {
+    "type_and_attachment": "Extend concrete Page SceneTypes with existing NativeNodeParentingDispatch as well as NativeSceneRegistrationDerivedTypes, consuming actual Model view/env.types and existing Page group_types.",
+    "pure_resolution": "Resolve captured actual profile from SAME authenticated non-executable GameNativeReadOnlyData table; no new vptr read, initialization, native mutation, copied table or fallback.",
+    "type0C": {
+      "006EF860": "actual raw.models.types.is_type_006ef860(token)",
+      "00B8F650": "actual Page group_types.is_type_00b8f650(token)",
+      "00B6F570": "genuine same-domain node predicate for reached admitted base-node profile",
+      "group_token": "SAME group_types.storage().group_0109032c.own_id via actual B8E600 getter; no UI lineage/enum2/literal answer/nonzero gate/implicit bootstrap"
+    },
+    "attachment1C": {
+      "00B6D7B0": "whole raw Model node attachment with prepared NativeNodeAttachmentFrame/acquired; unregister before late input-home read, publishA0, real registration, current child/current successor recursion",
+      "00B8F4F0": "whole renderer Group override; actual-self key/first-equal erase, no child recursion, real registration equality guard"
+    },
+    "world40_and3C": "Reuse existing scene_domain.node.world with real B6DBE0/B8E6B0/B6DBC0, actual mapped profiles and current A0/3C chain. No GuiNativeScene notifier/cast/new default callback.",
+    "scene50": "Extend actual Page Roots for SAME canonical child Models, B6ED80 recursion0/1 with own prepared NativeNodeSceneAttachmentFrame/acquired. Preserve old rootB6ED80/recurse0/two constructor frames.",
+    "scene54": "When reached by actual scene callbacks, require whole B6EE10 with separate frames/context; success at50 is not54. This direct helper binding does not repair canonical ModelReference retirement route.",
+    "scene_gates": "Same registry/import/source world/string context; derived current type binding includes real Model6EF860 and renderer GroupB8F650 when actual light gate queries. No fabricated false result.",
+    "actual_identity_checks": "Use existing canonical registry and retained Model/root records, metadata phases/actual identity; frame keys/arrays are not provenance or another owner map."
+  },
+  "exact_parenting_epochs": [
+    "whole B6E680 reads old parent before incoming capture; equal-parent no effect",
+    "old nonnull parent raw unlink, captured currentA0 unregister; old null parent real root propagation with null request",
+    "requested parent profile captured BEFORE real group token getter; CURRENT0C from captured table AFTER getter",
+    "captured selected attachment survives prepend callback effects",
+    "B6E010 publishes child30 before root propagation/current50; reloads current head/count/flags and performs its own current40",
+    "fresh current child profile/1C after prepend; actual attachment or whole recursive unregister",
+    "incoming-null path clears30/A4/A0 in observed order, real root propagation and unregister",
+    "final invalidation and second reached world40 call; no callback removal or algebraic replacement"
+  ],
+  "frame_and_lifetime_contract": {
+    "outer": "One address-stable outer ParentFrame/acquired per Page property invocation. Sequential reuse only after completion; reset completed Source diagnostics only and preserve frame homes/preimages. Failed/active never reset.",
+    "recursive_attachment": "Distinct prepared NativeNodeAttachmentFrame/NativeNodeParentingAcquired for each active attachment call; no Model-service shared scratch.",
+    "recursive_scene": "Distinct prepared NativeNodeSceneAttachmentFrame/acquired for each active current50/54 call; store real input homes and retain through all import/type/terminal callbacks.",
+    "recursive_unregister": "Page-owned concrete NativeNodeTreeRetirementFrames supplies pure prepared frame/acquired for whole B6D850. No allocation/callback during acquisition; use same actual tree owners/decrement/dispatch.",
+    "capacity": "Backing sized/prepared for actual admitted producer graph before associated effect entry. Do not infer total250 from a key block or assume existing startup256 slots suffice. No forced childless/fixed-depth success policy.",
+    "no_new_authority": "Frame arena is Source scratch metadata only, not actual count, class, owner, field mirror or lifetime certificate.",
+    "context_identity": "Same actual NodeSceneAttachmentContext/gates, owners, CE221C/CE2220 import refs, VFS raw strings, point-light/tree providers and raw world; own private views preserve referent identity, no globals/second domain."
+  },
+  "allocation_domain": {
+    "existing_helpers": "reserve_system_ambient_backlinks_B7B390/first-equalB7B620 reused by observed B8F460/B8F4C0 aliases; preserve current count/capacity/begin and actual-self/late-home effects",
+    "actual_supplier": "singleton_lifetime_allocate malloc/_callnewh retry; singleton_lifetime_free free. Opaque pointer keys only; no semantic SceneResource access, invented heap or vendor reconstruction."
+  },
+  "failure_contract": {
+    "native_effects": "No rollback/repair of30/34/A0/A4/170 or GUI cells, no completed Model slot return, no protective count/duplicate owner. Existing whole raw helpers retain actual callback/read ordering.",
+    "Source_frames": "Preparation/admission occurs before associated effect sequence. Entered failure retains frame/acquired/actual owners/scene/descriptor backing; use existing Page fail disposition, no new recovery/terminal policy.",
+    "transport": "New C++ Source interfaces/frames and ordinary EH are not original register/privateFH3/SEH/fault/unmaskedFP/exception transport proof; canonical noexcept terminals retain their own qualification."
+  },
+  "smallest_connected_Source_packet": {
+    "ready_now": false,
+    "prerequisite": "Genuine renderer-owned shared raw Model view AND canonical raw-scene/current54/zero terminal closure (peer8eea remains design only). Preserve SAME NativeModelReference.",
+    "files": [
+      "include/bsp/native_gui_widget_property_children.hpp",
+      "src/native_gui_widget_property_children.cpp",
+      "include/bsp/game_native_gui_page_application.hpp",
+      "src/game_native_gui_page_application.cpp"
+    ],
+    "changes": [
+      "Add mandatory raw context +raw overload/common actual effect path; old APIs unchanged",
+      "Retained Page-owned concrete type/attachment/scene/outer/recursive frame backing over existing domains",
+      "Use whole raw parent call at actual AAACD4 parenting site after original CURRENT reads; no legacy resolve_key",
+      "Actual producer consumes provider; never only unused getter/wrapper/shim"
+    ],
+    "no_body_or_activation": "Existing whole Native operations reused; no duplicate/vendor/new Native body credit and no guard flip."
+  },
+  "outside_and_unmet": [
+    "AA8320 main4C/late4C and AA9730 parent/timed/widget lifetime bridge are later, not closed here",
+    "Canonical ModelReference current54/zero still takes legacy scene cleanup on frozen Main; direct helper dispatch is not that repair",
+    "Populated scene current18/54 and raw3C lifecycle custody still require reader/lifetime/Model-domain closure",
+    "Recursive Group reader and current74/18/78, all Page/Frame/raw95/current-vptr producers/ownership, whole frontend/Game remain separate",
+    "No started Group pool inferred from677 or type initialization; no new pool gate added to type startup",
+    "No fixture/gameplay evidence or relabeling Source/static checks as runtime"
+  ],
+  "guards": {
+    "kNativeGuiPageChainCc15Bound": false,
+    "all_other_guards_unchanged": true
+  },
+  "verification": {
+    "current_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\include\\bsp\\native_node_parenting_storage.hpp",
+        "bytes": 5253,
+        "sha256": "099017858da7cd62e7b5260aaac8f53a2451b063469266a1e6119e7ce3cdc3b0",
+        "repository_path": "include/bsp/native_node_parenting_storage.hpp",
+        "git_blob": "9fc250c04a032769217e67a5aea308bdf6babcae"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\src\\native_node_parenting_storage.cpp",
+        "bytes": 10339,
+        "sha256": "035ccf45f17b12b553fcc3e451894b67c928de4ae583c7e511a1a99269c113d1",
+        "repository_path": "src/native_node_parenting_storage.cpp",
+        "git_blob": "a5a82c3d274d1af7f86efeb59a3939856212bb81"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\include\\bsp\\native_node_base_destruction.hpp",
+        "bytes": 4834,
+        "sha256": "cd1f22aafdc481b9e54c23dda5634171ac654b570d8ad8757f843bca76883226",
+        "repository_path": "include/bsp/native_node_base_destruction.hpp",
+        "git_blob": "1f8f3069c602b970a74d2d921c34dc5e864dc22b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\src\\native_node_base_destruction.cpp",
+        "bytes": 10425,
+        "sha256": "21bb87a236d4888ba5ef0102f3747f4cc53d28462d587dfaa94c1e731a0f055e",
+        "repository_path": "src/native_node_base_destruction.cpp",
+        "git_blob": "79cf2d8bb81f8044074d4c70d592ee473a763312"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\include\\bsp\\native_node_root_propagation.hpp",
+        "bytes": 1454,
+        "sha256": "0fed8a0255b3068472bb0a72e2d41352ce1d10ee7ace03520254ae6d9dfde5d4",
+        "repository_path": "include/bsp/native_node_root_propagation.hpp",
+        "git_blob": "e8c16028e1344d467fa95bba08c27cf0d230c0ed"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\src\\native_node_root_propagation.cpp",
+        "bytes": 3130,
+        "sha256": "302f09b2f12d426abd9266fd265532e44bb104827b00d3894744f6a37012d48b",
+        "repository_path": "src/native_node_root_propagation.cpp",
+        "git_blob": "88a1dfe8382a55a6049069da336356273ffda02f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\include\\bsp\\native_node_scene_attachment.hpp",
+        "bytes": 5335,
+        "sha256": "8b2f6d276fbe92b00c190fadcda44e71e8547c5890bd224ee2de895310658edf",
+        "repository_path": "include/bsp/native_node_scene_attachment.hpp",
+        "git_blob": "b236a5d8ff992022ff795fa6a8c4236e51cad31c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\src\\native_node_scene_attachment.cpp",
+        "bytes": 9245,
+        "sha256": "baaeb437926eb685257868ab3ad4c428aa012ca71dc9378aac9a28245d4dfd6f",
+        "repository_path": "src/native_node_scene_attachment.cpp",
+        "git_blob": "ab47729989378bd1f4e15e888b7ec2064485bf41"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\include\\bsp\\native_node_tree_retirement.hpp",
+        "bytes": 4571,
+        "sha256": "7826147682ef91780670172a270214c5f164ba92696f76c06ecc4d3e8387f07f",
+        "repository_path": "include/bsp/native_node_tree_retirement.hpp",
+        "git_blob": "a95108130a5c2e16ba8eef2a320fb900473cf9d1"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\src\\native_node_tree_retirement.cpp",
+        "bytes": 7016,
+        "sha256": "f58325714135577e4a2baefdefea81b45fd1d5bfaa912d83b02d38637466fbf5",
+        "repository_path": "src/native_node_tree_retirement.cpp",
+        "git_blob": "b3d2053bd6b0ee6016e4dac2a41004ef780b273a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\include\\bsp\\native_scene_registration_gates.hpp",
+        "bytes": 3763,
+        "sha256": "d67c85506e15ba63e1618207f6351bae0019aa104c9fedd5b34bfcfb4528b366",
+        "repository_path": "include/bsp/native_scene_registration_gates.hpp",
+        "git_blob": "6168d2f31c9bdd12825b47757603b560605f7c8f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\src\\native_scene_registration_gates.cpp",
+        "bytes": 3909,
+        "sha256": "67bb3b8f531b8123c41715cde8e154bfc681d2a764b9be7b750a94e4bbbba5c7",
+        "repository_path": "src/native_scene_registration_gates.cpp",
+        "git_blob": "96ca222e600a5230835ef8c51fba86fe32f32434"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\include\\bsp\\native_node_raw_transform.hpp",
+        "bytes": 2139,
+        "sha256": "99460e5aa96bac3ef0255146992d7e002e2ec5adf07ab71788221ad10c75d4de",
+        "repository_path": "include/bsp/native_node_raw_transform.hpp",
+        "git_blob": "fe8ca945cbddcf071e37b5ee7ade2080942490e2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\src\\native_node_raw_transform.cpp",
+        "bytes": 5316,
+        "sha256": "092fa6a47756bf5a8a3a18dfbbaecf468898b3c91bc5ee5235bba5a7f078e16c",
+        "repository_path": "src/native_node_raw_transform.cpp",
+        "git_blob": "cb27dc6bebf4e551e72d003868e57211b2615d40"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\include\\bsp\\native_gui_widget_property_children.hpp",
+        "bytes": 4544,
+        "sha256": "b9699af0b44d20a05fd4b09ec8cf5668f1bf000b9554387aea73796f9c20e70e",
+        "repository_path": "include/bsp/native_gui_widget_property_children.hpp",
+        "git_blob": "f782122e08e2bf78a7e41028a4735976136dc646"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\src\\native_gui_widget_property_children.cpp",
+        "bytes": 11148,
+        "sha256": "2649822b64027d0b30421dd499aaecaf71f9f2484e2880b9c1f5c75817b77efc",
+        "repository_path": "src/native_gui_widget_property_children.cpp",
+        "git_blob": "ed66ee7c010662ad5a60008d9a218ca988a4cdc0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\include\\bsp\\game_native_gui_page_application.hpp",
+        "bytes": 3811,
+        "sha256": "8a21c044261937a47938887584b94650d1d04ab1584d3c447af276a6c04cebcb",
+        "repository_path": "include/bsp/game_native_gui_page_application.hpp",
+        "git_blob": "3900c1e90fb9dd685f1c1375079b6fd13252cff9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\src\\game_native_gui_page_application.cpp",
+        "bytes": 54018,
+        "sha256": "6931fc7c1dced9222a47ec072ca143b00d1789b5a344b85c7bfc639b15314711",
+        "repository_path": "src/game_native_gui_page_application.cpp",
+        "git_blob": "0e1e95e2a1372504cce0dda0a00a6c4476f8a367"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\include\\bsp\\model_type_bootstrap.hpp",
+        "bytes": 1537,
+        "sha256": "49052b9738eb7e5b0b20b9bea44ccee682534ed884d20c30ee1e6975ac874155",
+        "repository_path": "include/bsp/model_type_bootstrap.hpp",
+        "git_blob": "5bd83d0455c3b27b84cc531a444c051405cd0bf8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\src\\model_type_bootstrap.cpp",
+        "bytes": 2635,
+        "sha256": "4abe8eb0bf3ea2bdc3efe202c31f583f637167134108d8cf3d0b7e6e4d794b80",
+        "repository_path": "src/model_type_bootstrap.cpp",
+        "git_blob": "9eef98d7c3db555a9d37cec2194a409e5e098262"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\include\\bsp\\native_group_owner.hpp",
+        "bytes": 7065,
+        "sha256": "44116d4d08388eb0be2f7499f9b7cbdcd42918fd2ab586f869ab9a6c0e5130b1",
+        "repository_path": "include/bsp/native_group_owner.hpp",
+        "git_blob": "36c18d3249b1d9adcf70f438aefeaa122c801568"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\src\\native_group_owner.cpp",
+        "bytes": 19416,
+        "sha256": "78995f383203e1f795cc9a9a44f8ab67ec9f942cf30e746e00a97118b0665e1c",
+        "repository_path": "src/native_group_owner.cpp",
+        "git_blob": "0ac26fa2d4de01a4153260d3a08cf022ac220767"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\include\\bsp\\native_group_storage_lifetime.hpp",
+        "bytes": 5985,
+        "sha256": "e76050ec022410905806e8ca1bcb172d6f8ad6a752d67c14b9834d626c7593cd",
+        "repository_path": "include/bsp/native_group_storage_lifetime.hpp",
+        "git_blob": "258d927f6f33cce80ff143ed752b46c314523f3f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\src\\native_group_storage_lifetime.cpp",
+        "bytes": 10100,
+        "sha256": "8da07fea5a190da43214a880d8be19fd81250ff736570c4112e8412e91de0a5d",
+        "repository_path": "src/native_group_storage_lifetime.cpp",
+        "git_blob": "01b9e2d917a75f695d415d2db5b4b38f4781027e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\include\\bsp\\native_model_owner.hpp",
+        "bytes": 7520,
+        "sha256": "55369e419a173e978adcaf5577133e09def52310bcbaa6f4f0f7fdc1b1870e5a",
+        "repository_path": "include/bsp/native_model_owner.hpp",
+        "git_blob": "78cad0248ffd29125e85ab1423e64f5cae58caf8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\src\\native_model_owner.cpp",
+        "bytes": 17137,
+        "sha256": "d34c0b37ed8c5036cb9d6401886177795e6f4c110acaffe86e92921ad0e06132",
+        "repository_path": "src/native_model_owner.cpp",
+        "git_blob": "ad547ce8c715b2f83392d172ad71580ff40832d6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\include\\bsp\\game_native_renderer_application.hpp",
+        "bytes": 20443,
+        "sha256": "2ce5d69fe894fb0a730234f15dc236d6d6d869e53e29387a962ac0e6d99e42be",
+        "repository_path": "include/bsp/game_native_renderer_application.hpp",
+        "git_blob": "427d7f7b5762081595c7d34c460c46d173e874c4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\src\\game_native_renderer_application.cpp",
+        "bytes": 80060,
+        "sha256": "3ed5485d8b619dce29caed0c1fa2b810b71504478bbb4ce44ca683c9e398ae7f",
+        "repository_path": "src/game_native_renderer_application.cpp",
+        "git_blob": "5baacc9a3bb8b4856951e8780485dea44502e951"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\src\\game_native_renderer_gui_scene.inc",
+        "bytes": 14757,
+        "sha256": "b3c4c2270facfe38f2ed85dbe672e1771bcd37cf23dd034e4906a184c3440a4e",
+        "repository_path": "src/game_native_renderer_gui_scene.inc",
+        "git_blob": "9b682e14a021562855a7e9398228e11cd06dadd9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\src\\game_native_renderer_lifetime.inc",
+        "bytes": 7101,
+        "sha256": "6800ec7f71449d264d49082a08696aa76900f926a8dadeee5402755930e54fdc",
+        "repository_path": "src/game_native_renderer_lifetime.inc",
+        "git_blob": "d065c64ff475766b2ddb4958c12ed5372c26a6b3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\src\\game_native_renderer_camera.inc",
+        "bytes": 2825,
+        "sha256": "77781cd84f49383f516f5f242f08a731392459a822f87ea84499960338b3e2c2",
+        "repository_path": "src/game_native_renderer_camera.inc",
+        "git_blob": "c60795b5c9adf5000f66b555c981ca15fb92077b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\src\\game_native_mission_model.inc",
+        "bytes": 59874,
+        "sha256": "ac92c7dbb1e4f9a9735453dac0c753dd243e6fd81baa7824bac75b28658bfa93",
+        "repository_path": "src/game_native_mission_model.inc",
+        "git_blob": "d2dcd90466acccd1f6a696741c9e1bfc13cb02e2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\include\\bsp\\game_native_mission_model.hpp",
+        "bytes": 5471,
+        "sha256": "8ff6600b25078b35ce8a2a201de5dc92bb7d0537f9d4bf6bb7b37cfa3443cd30",
+        "repository_path": "include/bsp/game_native_mission_model.hpp",
+        "git_blob": "e137e61f47cf3857e0afa4b5e0f019f92419e822"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\src\\system_lighting_owners.cpp",
+        "bytes": 10604,
+        "sha256": "ad40b749b5ff2e83eb9d0ab80126b04bbc38293f4d446dd171d51f818772eaae",
+        "repository_path": "src/system_lighting_owners.cpp",
+        "git_blob": "570022fe34556c6f864f165c0b63310933a7c650"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\src\\singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "repository_path": "src/singleton_lifetime.cpp",
+        "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\src\\gui_native_scene.cpp",
+        "bytes": 10788,
+        "sha256": "a25da72f297049c07f3fc315aab5ef6a9add925d5c3950b46b7f092f1d005de4",
+        "repository_path": "src/gui_native_scene.cpp",
+        "git_blob": "4f8599d532819d4f209d282dc75bc2981fa4b49b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\reports\\native_node_parenting_storage_cc10.json",
+        "bytes": 23061,
+        "sha256": "f8cea2a8dcfd7b98d249dc74f06e502fc7120c389cd4225fe0895e73f1a62397",
+        "repository_path": "reports/native_node_parenting_storage_cc10.json",
+        "git_blob": "4c99258dd5c0a493cd96347c5b28be90af2b0175"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\reports\\native_node_scene_attachment_cc10.json",
+        "bytes": 23430,
+        "sha256": "ccd94010a4013280f52da2b1738a80dc7ea035d70ea85162ca633c03740bea14",
+        "repository_path": "reports/native_node_scene_attachment_cc10.json",
+        "git_blob": "3aeb6b8c899b159de7cc2e268650205bfce255c4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\reports\\native_group_storage_lifetime_cc10.json",
+        "bytes": 19700,
+        "sha256": "6c3f59961eb1f71d4ba7ef069eadb11101a2bab10e2cfed012265805a12a5819",
+        "repository_path": "reports/native_group_storage_lifetime_cc10.json",
+        "git_blob": "6b436d8f351af021bb9eed9dce527f048d49b801"
+      }
+    ],
+    "Source_report_pin_count": 39,
+    "bounded_LF_excerpts": [
+      {
+        "path": "src/native_node_parenting_storage.cpp",
+        "line_start": 25,
+        "line_end": 51,
+        "purpose": "Actual domain, freshness and current world notification",
+        "LF_sha256": "8a4db61e8a3c0be59889bac1600ce3e9e0f7325af40fef0b62bfea05ffcd2491"
+      },
+      {
+        "path": "src/native_node_parenting_storage.cpp",
+        "line_start": 60,
+        "line_end": 133,
+        "purpose": "Complete pointer-array/node/group attachment effects",
+        "LF_sha256": "595b004ade743dad68e595cb5688f4e5361d02585acfaf9fabff811791550689"
+      },
+      {
+        "path": "src/native_node_parenting_storage.cpp",
+        "line_start": 136,
+        "line_end": 167,
+        "purpose": "Whole prepend ordering/current scene/world callbacks",
+        "LF_sha256": "9e9f4c230ceaee15474581cc488c956b3894c445e7d533499822779d4c71ba9e"
+      },
+      {
+        "path": "src/native_node_parenting_storage.cpp",
+        "line_start": 169,
+        "line_end": 228,
+        "purpose": "Whole raw parent entry including null and recursive unregister",
+        "LF_sha256": "f75f58293e82935fcf6455daad734b2e10fe7813cd9fe4a2e274665b8e74237a"
+      },
+      {
+        "path": "src/native_node_root_propagation.cpp",
+        "line_start": 33,
+        "line_end": 65,
+        "purpose": "Actual root propagation/current50/current successors",
+        "LF_sha256": "a59f7137c3fd285f9f02a48e89bc2c4de751e6139eb15c6e6b29436cda7b77db"
+      },
+      {
+        "path": "src/native_node_scene_attachment.cpp",
+        "line_start": 51,
+        "line_end": 94,
+        "purpose": "Real scene publish/import/type gates/recursive current50",
+        "LF_sha256": "ca97aea9f9543d1114e2bb6a0c337a6041361d8bcb4db03b6c3124e41f95547d"
+      },
+      {
+        "path": "src/native_node_tree_retirement.cpp",
+        "line_start": 134,
+        "line_end": 155,
+        "purpose": "Real recursive unregister and pure prepared frame acquisition",
+        "LF_sha256": "449ecc06cdd04f40c9d003df10eb74ca1cb69740d275c9a93c1a38764bc300dd"
+      },
+      {
+        "path": "src/game_native_gui_page_application.cpp",
+        "line_start": 126,
+        "line_end": 139,
+        "purpose": "Existing canonical raw root dispatch",
+        "LF_sha256": "26da14730464a5b90f0b1759dccfc4104d94ab6fd14cbd366f59f1bf0b220acd"
+      },
+      {
+        "path": "src/game_native_gui_page_application.cpp",
+        "line_start": 198,
+        "line_end": 224,
+        "purpose": "Current roots dispatcher only supports root/recurse0",
+        "LF_sha256": "60bff84750bb1dc59aec1bac94fddd6c6ae8cf0ca550e8d8cc47435262ccb148"
+      },
+      {
+        "path": "src/game_native_gui_page_application.cpp",
+        "line_start": 299,
+        "line_end": 315,
+        "purpose": "Genuine renderer Group type provider",
+        "LF_sha256": "448a5bf6e0cdf4b508a285a4e0d0988ac4858e98ddc0981f0e3ac8cb364d8c2e"
+      },
+      {
+        "path": "src/game_native_gui_page_application.cpp",
+        "line_start": 471,
+        "line_end": 486,
+        "purpose": "Existing same-owner contexts/imports/strings/world",
+        "LF_sha256": "2b72ae67f6792e3be0175ffe965b89ba2159b3e0693bcffb77688461d4b79004"
+      },
+      {
+        "path": "src/game_native_renderer_gui_scene.inc",
+        "line_start": 44,
+        "line_end": 98,
+        "purpose": "Actual current profiles and world40/3C implementations",
+        "LF_sha256": "18d7ccf627b6cfcfca9deccac25d4530a067bbf88cfa6b3a629bf77f512fd164"
+      },
+      {
+        "path": "src/game_native_renderer_gui_scene.inc",
+        "line_start": 147,
+        "line_end": 187,
+        "purpose": "Existing scene dispatch delegates missing Model route",
+        "LF_sha256": "090831b669345e79fa398f21db245a056eebd8a41531f317cf98d6fe8b0659ac"
+      },
+      {
+        "path": "src/native_gui_widget_property_children.cpp",
+        "line_start": 145,
+        "line_end": 158,
+        "purpose": "Exact caller epoch and legacy resolution seam",
+        "LF_sha256": "4dbeee599d2f534041cd9e62667ed9960b906f1b50b35df17916687e2debacf0"
+      },
+      {
+        "path": "src/native_model_owner.cpp",
+        "line_start": 295,
+        "line_end": 304,
+        "purpose": "Child Model canonical reference already binds actual legacy attachment",
+        "LF_sha256": "20b7e8dbb071f3aed3685edb103e07b26ce19a804d8b93765b39552e8790c578"
+      },
+      {
+        "path": "src/native_group_storage_lifetime.cpp",
+        "line_start": 171,
+        "line_end": 183,
+        "purpose": "Raw Page root admits owner without legacy node binding",
+        "LF_sha256": "83de6f8be0a7f3e07c69bc78e7a642599df808bbd0ab29ffd701036d4b2792cf"
+      },
+      {
+        "path": "src/system_lighting_owners.cpp",
+        "line_start": 29,
+        "line_end": 53,
+        "purpose": "Actual shared allocation/free and first-equal erase",
+        "LF_sha256": "c524cf93057dba349450a674d33e7d3cc9336583e0a68c76a83da26c28ded498"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "line_start": 51,
+        "line_end": 66,
+        "purpose": "Actual malloc/new-handler/free source domain",
+        "LF_sha256": "609d7d90bc923f721bf1e20cd70ebcd40a1363d2564d3a44bdf3d5a80a2047ec"
+      }
+    ],
+    "excerpt_count": 18,
+    "prior56Sourcepins_verified": true,
+    "audit": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\local\\native_gui_page_raw_parenting_design\\audit.json",
+      "bytes": 55814,
+      "sha256": "9ec83d10d83626977dff1a8269c3ad2e695cdc1410e05ca0c69bcd6813381e51"
+    },
+    "audit_script": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\local\\native_gui_page_raw_parenting_design\\audit.py",
+      "bytes": 7762,
+      "sha256": "6e4f073099043525ede9fb9484d7ed8fbbf4f121cf163761c324e1bd27566789"
+    },
+    "audit_run": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\local\\native_gui_page_raw_parenting_design\\audit_run.txt",
+      "bytes": 1409,
+      "sha256": "cdb7bc0ce0bd6b813b6074a6f8190975f510be8d1c1adbffb93d027e6c15b318"
+    }
+  },
+  "not_performed": [
+    "Source/header/CMake/shared metadata/ledger/Ghidra write",
+    "compile/build/link/test/probe/Game/executable/DLL/body execution",
+    "live Ghidra analysis/export batch",
+    "old frozen artifact change",
+    "new owner registry/NodeBinding/global/table/unused adapter/default callback"
+  ],
+  "credit": {
+    "Native_bodies": 0,
+    "recovered_bodies": 0,
+    "duplicate_bodies": 0,
+    "vendor_bodies": 0,
+    "ABI": 0,
+    "runtime": 0,
+    "activation": 0
+  },
+  "owned_doc": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-page-raw-parenting-design\\docs\\CC16_NATIVE_GUI_PAGE_RAW_PARENTING_DESIGN.md",
+    "bytes": 10958,
+    "sha256": "d992fec3dde091ca4553811c0eff3c1f24b95eda9bdbe923f056e2f186dcb4e1"
+  }
+}

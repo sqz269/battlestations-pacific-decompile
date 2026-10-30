@@ -11,9 +11,10 @@
 // exists. Names are hypotheses, not recovered symbols. Reconstructed and
 // build-tested only; nothing is wired, fixture- or game-validated.
 //
-// SEH: the image's unwind states only release the NativeString temporaries when
-// a callee throws. The hooks are not expected to throw; no unwind path is
-// reproduced. That is the one simplification shared by every routine here.
+// Most older routines here do not project their NativeString unwind states.
+// The timed-entry producer additionally projects AD3A80's captured-allocation
+// constructor cleanup through a mandatory matching free hook. Ordinary C++ EH
+// does not reconstruct native FH3/SEH, faults or private stack homes.
 
 #include <cstdint>
 
@@ -165,7 +166,24 @@ void* gui_manager_load_page_00aa5840(GuiLoadPageHost& host, void* manager,
 // ---------------------------------------------------------------------------
 // Widget base, segments 76/77
 // ---------------------------------------------------------------------------
-struct GuiWidgetHooks : NativeListHooks {
+// Narrow real timed-entry producer operations. These are Source interfaces,
+// not native vtables. Callbacks borrow one retained invocation; allocation and
+// constructor failure keep the original captured block/slot epochs. Both host
+// transitions below require prepared metadata and cannot allocate or throw.
+struct GuiTimedEntryHooks {
+    virtual ~GuiTimedEntryHooks() = default;
+    virtual void timed_entry_array_resize_00aa77b0(void* actual_header, std::int32_t count) = 0;
+    virtual void* operator_new_00bf681b(std::uint32_t bytes) = 0;
+    virtual void* timed_entry_construct_00ac2ed0(void* actual_block, void* actual_widget) = 0;
+    // AD3A80 states0/1: BF65AC on the nonnull allocation captured BEFORE ctor.
+    virtual void free_failed_constructor_00bf65ac(void* captured_block) noexcept = 0;
+    // Called once after a successful ctor/inline construction and BEFORE the
+    // original slot publication. Null allocation/unknown index never calls it.
+    // Metadata only: no native retain, ownership transfer, callback or cleanup.
+    virtual void timed_entry_construction_returned(void* actual_entry) noexcept = 0;
+};
+
+struct GuiWidgetHooks : NativeListHooks, GuiTimedEntryHooks {
     // 004C12B0 BSP_GuiManager_GetOrCreate (result unused by every routine here;
     // get_native_gui_manager_004c12b0 in src/native_platform_focus_owners.cpp).
     virtual void* gui_manager_get_or_create_004c12b0() = 0;
@@ -198,12 +216,12 @@ struct GuiWidgetHooks : NativeListHooks {
     virtual void widget_vslot74(void* widget) = 0;
     // 00AA77B0 BSP_GuiTimedEntryArray_Resize, __thiscall(array at widget+88h;
     // count) RET 4.
-    virtual void timed_entry_array_resize_00aa77b0(void* array, std::int32_t count) = 0;
+    void timed_entry_array_resize_00aa77b0(void* array, std::int32_t count) override = 0;
     // 00BF681B operator new (cdecl, size) -> block or 0.
-    virtual void* operator_new_00bf681b(std::uint32_t size) = 0;
+    void* operator_new_00bf681b(std::uint32_t size) override = 0;
     // 00AC2ED0, __thiscall(block; widget) RET 4 -> entry: the timed-entry
     // constructor for indices 0 and 1.
-    virtual void* timed_entry_construct_00ac2ed0(void* block, void* widget) = 0;
+    void* timed_entry_construct_00ac2ed0(void* block, void* widget) override = 0;
 };
 
 // 00AA6560 BSP_GuiLayout_CreateWidgetOfType, __fastcall(ECX = type tag, EDX =
@@ -212,6 +230,8 @@ void* gui_layout_create_widget_of_type_00aa6560(GuiWidgetHooks& host, std::uint3
 // 00AD3A80 BSP_GuiTimedEntry_CreateByIndex, __fastcall(ECX = index, EDX =
 // widget) RET -> entry or 0.
 void* gui_timed_entry_create_by_index_00ad3a80(GuiWidgetHooks& host, std::int32_t index, void* widget);
+// Same complete body with the narrow operations, including constructor EH.
+void* gui_timed_entry_create_by_index_00ad3a80(GuiTimedEntryHooks& host, std::int32_t index, void* widget);
 
 // 00AAB4C0, __thiscall(ECX = widget; parent_clone) RET 4 -> clone.
 void* gui_widget_clone_subtree_00aab4c0(GuiWidgetHooks& host, void* widget, void* parent_clone);
@@ -228,6 +248,7 @@ void gui_widget_attach_child_00aaa5a0(GuiWidgetHooks& host, void* parent, void* 
     const NativeListIterator* where);
 // 00AA8B00, __thiscall(ECX = widget; int index) RET 4 -> entry.
 void* gui_timed_entry_get_or_create_00aa8b00(GuiWidgetHooks& host, void* widget, std::int32_t index);
+void* gui_timed_entry_get_or_create_00aa8b00(GuiTimedEntryHooks& host, void* widget, std::int32_t index);
 // 00AA6640, __fastcall(ECX = type tag, EDX = const NativeString* node_name;
 // ctor_arg) RET 4 -> widget.
 void* gui_widget_create_with_scene_node_00aa6640(GuiWidgetHooks& host, std::uint32_t type_tag,

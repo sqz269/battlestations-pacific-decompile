@@ -1,0 +1,604 @@
+{
+  "schema": "bsp.cc16.canonical_model_raw_lifetime_bridge_implementation.v1",
+  "status": "component_implemented_build_checked_pending_primary_and_coupled_consumer_review",
+  "created_utc": "2026-10-30T13:19:11.153720+00:00",
+  "baseline_commit": "40acabef63ed84dec8deb4d54530ef13a4d4da8d",
+  "worktree_parent_commit": "007248c608ff5909a7e2bd73bb699ac781dab7f2",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain",
+  "branch": "agent/codex-frontend-widget-model-domain",
+  "owned_addresses": [
+    "00B750C0",
+    "00B75290"
+  ],
+  "owned_files": [
+    "include/bsp/native_model_owner.hpp",
+    "src/native_model_owner.cpp",
+    "include/bsp/native_model_storage_lifetime.hpp",
+    "src/native_model_storage_lifetime.cpp",
+    "docs/CC16_CANONICAL_MODEL_RAW_LIFETIME_BRIDGE_IMPLEMENTATION.md",
+    "reports/cc16_canonical_model_raw_lifetime_bridge_implementation.json"
+  ],
+  "frozen_contract_inputs": [
+    {
+      "repository_path": "docs/CC16_CANONICAL_MODEL_RAW_LIFETIME_BRIDGE.md",
+      "bytes": 19956,
+      "sha256": "3b1476e2f06b04a6b4933de734cd294638f73cde0b16cf9bb829d0a78239c1a6",
+      "commit": "c0f735c3af934905a3f6681b24261bfab493e4e6",
+      "git_blob": "5e96e31a4ea483b3883a5923696654bc9626877b"
+    },
+    {
+      "repository_path": "reports/cc16_canonical_model_raw_lifetime_bridge.json",
+      "bytes": 51080,
+      "sha256": "dfcd6ef5b0676269c3c0b49c1ea1e2faecaf12418f314ee76feea39b075bbb4e",
+      "commit": "c0f735c3af934905a3f6681b24261bfab493e4e6",
+      "git_blob": "b9aa15fac079352f42d23e1c20783363eeddd8cb"
+    }
+  ],
+  "decision": {
+    "component_implemented": true,
+    "component_build_and_existing_checks_passed": true,
+    "primary_review_complete": false,
+    "actual_coupled_consumers_present_in_this_build": false,
+    "Main_admitted": false,
+    "activation": false,
+    "new_native_body_credit": 0,
+    "constraint": "Component only; do not publish unused bridge to Main. Join actual Model client/Page suppliers and required combined checks first."
+  },
+  "actual_interfaces": {
+    "host": "NativeModelRawHostLifetime{typed_storage_ended,failed,stopped_site,exception}",
+    "binding": "NativeModelRawLifetimeBinding{NativeModelStorageContext& storage, NativeModelStorageLifetimeFrame& terminal_frame, NativeModelStorageLifetimeAcquired& terminal, NativeModelRawHostLifetime& host}",
+    "raw_prepare": "NativeModelOwner(void*, size_t, NativeModelEnvironment&, NativeModelRawLifetimeBinding&)",
+    "legacy_prepare": "existing3arg NativeModelOwner(...), delegates with immutable null raw_lifetime",
+    "immutable_selection": "owner.raw_lifetime is const pointer; references bind actual retained record/client before construction; no switch inferred from raw name mode",
+    "normal18": "NativeModelReference::release_raw_virtual18_00b6f310(uint32_t target, NativeNodeTreeRetirementFrame&, NativeNodeTreeRetirementAcquired&)",
+    "normal54": "NativeModelReference::remove_raw_scene_virtual54_00b6ee10(uint32_t target, NativeNodeSceneAttachmentFrame&, NativeNodeSceneAttachmentAcquired&)",
+    "borrowed_scalar": "delete_native_model_raw_00b75290(NativeModelOwner&, const volatile uint32_t& flags)",
+    "completion": "NativeModelStorageHostCompletion{void* context, void(*end_typed_storage)(void*) noexcept}; used destructor/scalar overloads on existing raw primitives"
+  },
+  "preparation_checks": {
+    "implemented": [
+      "same Model pool",
+      "exact persistent raw name context",
+      "same env/rawscene/rawtree canonical registry",
+      "same point-light runtime",
+      "same scene/tree decrement cell",
+      "same bound and negative-zero cells",
+      "fresh stopped-free terminal/host state",
+      "known metadata/actual188h and mutable terminal backing disjointness"
+    ],
+    "no_unconstructed_native_slot_reads": true,
+    "client_obligations_not_available_in_ModelEnvironment": [
+      "same renderer one/increment/geometry identities",
+      "same actual node constants used by construction",
+      "complete current-profile/type/scene/tree/world/family providers",
+      "stable recursive frame backing and quiescence"
+    ]
+  },
+  "changed_body_review": [
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void require_raw_terminal_fresh(",
+      "line_start": 67,
+      "line_end": 74,
+      "LF_sha256": "6d7102c7a724a03e929274431f8c20c4721f8e4da5f7e00347e97073549005b5"
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void validate_raw_binding(",
+      "line_start": 81,
+      "line_end": 110,
+      "LF_sha256": "819628f457fa6e593bc79d6249d5e82f440aa0487178f5f44658ca851ea09382"
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "NativeModelStorageView prepare_bound_storage(",
+      "line_start": 111,
+      "line_end": 115,
+      "LF_sha256": "d5adaa1e6bd2884af02cd5c223e1e048a01d123dac70b6c257bf26b5a62a297b"
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void require_legacy_transport(",
+      "line_start": 116,
+      "line_end": 119,
+      "LF_sha256": "519300a7759e6b468afb1df6e51f4a1bac0da4610fdd31f46487bd0b54603ffe"
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void require_legacy_virtual(",
+      "line_start": 120,
+      "line_end": 128,
+      "LF_sha256": "2f7489fc5ede06cf9fa3711efb3b47c401605a85c82cc0f6a54b96d24e61c51f"
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void end_raw_typed_storage(",
+      "line_start": 171,
+      "line_end": 180,
+      "LF_sha256": "0ea71ae75121a3d469dd0b22dece44aaf82c3496b8a148a19545778d4cc5b6d9"
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void record_raw_failure(",
+      "line_start": 181,
+      "line_end": 186,
+      "LF_sha256": "ed83cddcb8525c8bac1626c181df5a2c179414cee9ccd64764413027e5bcd709"
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void destroy_native_model_00b750c0(",
+      "line_start": 343,
+      "line_end": 370,
+      "LF_sha256": "e2a76dafcb9cf4afbba8c1d3f4ca707a5fb40d61d5957dac217b618073700b5d"
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void* delete_native_model_00b75290(",
+      "line_start": 371,
+      "line_end": 382,
+      "LF_sha256": "3272ec17f4bc34de2b504ed10dcb9b0106d4f07617117cd40d7c9c2f4dc71b70"
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void* delete_native_model_raw_00b75290(",
+      "line_start": 383,
+      "line_end": 392,
+      "LF_sha256": "9f4770d15fd62f6acf91bf264941ac90c9db4cfe86cf05ab97243013bc93fcad"
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "NativeModelRawLifetimeBinding& require_raw_reference(",
+      "line_start": 460,
+      "line_end": 471,
+      "LF_sha256": "56a4e1247248fb5b1e1c4d1cf1370a6b97d2aeb47112fd6128fa010171ddad3b"
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void require_call_regions(",
+      "line_start": 472,
+      "line_end": 481,
+      "LF_sha256": "fb06e3447b4e5817f5a51b43c19b931c5e2d3982f921d4819efebdd453fed50a"
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void NativeModelReference::release_raw_virtual18_00b6f310(",
+      "line_start": 484,
+      "line_end": 496,
+      "LF_sha256": "cca83a23e5c784f5e39223e787f1812097b1fc2b694694c790ed1d9111b529bd"
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void NativeModelReference::remove_raw_scene_virtual54_00b6ee10(",
+      "line_start": 497,
+      "line_end": 509,
+      "LF_sha256": "a86f4403062eed0446ce70cb893950dcba03eb8aee6a421f6e243dd19d86de9d"
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "class NativeModelReference::RawDeleteCalls",
+      "line_start": 511,
+      "line_end": 526,
+      "LF_sha256": "08deeb70c5602872a16c5885b4fe6c7b6ed2482b4379e9c654b0248f74fb7968"
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void NativeModelReference::delete_raw_scalar_00b75290(",
+      "line_start": 528,
+      "line_end": 543,
+      "LF_sha256": "b07436965d8d84620ee5ca38615fade7c352b5210414c973934df2746ae3985d"
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void NativeModelReference::release_zero_references()",
+      "line_start": 544,
+      "line_end": 573,
+      "LF_sha256": "7957cf15219f38985406b92071847d878a9b158ab8362d3015bf39a27fdd7b25"
+    },
+    {
+      "path": "src/native_model_storage_lifetime.cpp",
+      "body": "void require_completion(",
+      "line_start": 252,
+      "line_end": 255,
+      "LF_sha256": "7b0354775bb680279ff42baf5ce217c2186dddd3f751be8eb99a643bcdff269e"
+    },
+    {
+      "path": "src/native_model_storage_lifetime.cpp",
+      "body": "void destroy_model_completed(",
+      "line_start": 256,
+      "line_end": 267,
+      "LF_sha256": "3d53c93fdeb16cbfb38b14a46c0d269833fc3eff5f24ea936962db254929b855"
+    },
+    {
+      "path": "src/native_model_storage_lifetime.cpp",
+      "body": "void* delete_model(",
+      "line_start": 268,
+      "line_end": 289,
+      "LF_sha256": "513f3f48f907ea1ebd4b06f3bf727a346b20a085788dd87b0d9a48b3a9dd48be"
+    }
+  ],
+  "conserved_body_review": [
+    {
+      "path": "src/native_model_storage_lifetime.cpp",
+      "body": "void destroy_model(",
+      "line_start": 122,
+      "line_end": 187,
+      "unchanged_from_baseline": true,
+      "LF_sha256": "247f367d840ec267be4bb8460e2a7a22a1407d6544994ab297c14f1731c36540"
+    },
+    {
+      "path": "src/native_model_storage_lifetime.cpp",
+      "body": "void* construct_native_model_storage_00b75030(",
+      "line_start": 190,
+      "line_end": 220,
+      "unchanged_from_baseline": true,
+      "LF_sha256": "38025b70e7f73342347c18a7e107d52dbc8e24d90ce26a6ca792575bd42a2719"
+    },
+    {
+      "path": "src/native_model_storage_lifetime.cpp",
+      "body": "void destroy_native_model_geometry_storage_00b74f20(",
+      "line_start": 222,
+      "line_end": 249,
+      "unchanged_from_baseline": true,
+      "LF_sha256": "30edd538f93cb8096f9ad0a5ad29f980b7e9aac44cb3bbb39cb00fc228f411f8"
+    },
+    {
+      "path": "src/native_model_storage_lifetime.cpp",
+      "body": "void NativeModelStorageReference::release_zero_references()",
+      "line_start": 345,
+      "line_end": 353,
+      "unchanged_from_baseline": true,
+      "LF_sha256": "5666fe9a0a1f48c2e2ce0587d900240afadaee08f107ad17e964e47951159d85"
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void* construct_native_model_00b75030(NativeModelOwner& owner, const void*",
+      "line_start": 303,
+      "line_end": 338,
+      "unchanged_from_baseline": true,
+      "LF_sha256": "8dd1494cd7c83e8b479a069dd586d0ac57c2fc4fd6ccb76dca005022d05d1ba4"
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void finish_node(",
+      "line_start": 187,
+      "line_end": 202,
+      "unchanged_from_baseline": true,
+      "LF_sha256": "7c8cf89b39107f97b85b70c47e52c2de0a3418ccb2a2f425a8c7dfe721d77c5d"
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void set_native_model_geometry_00b75170(",
+      "line_start": 393,
+      "line_end": 409,
+      "unchanged_from_baseline": true,
+      "LF_sha256": "6e17f435c74df81f93755edd9a02e64e31c2f5f833aac4cd40d20bbd14ed6af9"
+    }
+  ],
+  "raw_scalar_order": [
+    "existing full raw B750C0/raw B6F440 once",
+    "trivial existing typed NativeNodeStorage extent end",
+    "existing tail extent +external scene metadata forget +owner.dead",
+    "CURRENT flags LOW BYTE reload",
+    "same pool return only if bit0",
+    "generated lifetime metadata unbind",
+    "reference retired",
+    "existing sole canonical registry/record disposal"
+  ],
+  "normal_call_behavior": {
+    "exception_spec": "throwing",
+    "same_reference_and_actual_count": true,
+    "genuine_targets": [
+      "B6F310",
+      "B6EE10"
+    ],
+    "normal_profile_domain": "actual mapped D62DE8 and live D62C88 base prefix before typed extent end",
+    "frame_policy": "fresh disjoint caller frame/acquired, distinct from record terminal scratch; same-context reentry uses distinct invocations",
+    "post_body_self_access": false,
+    "per_model_normal_catch": false,
+    "failure_owner": "actual Page provider/client retains diagnostics and graph"
+  },
+  "exception_boundaries": [
+    {
+      "path": "explicit normal raw18/raw54",
+      "policy": "C++ throws propagate to caller; no new noexcept/terminate wrapper"
+    },
+    {
+      "path": "completion wrapper",
+      "policy": "after raw base entry end host extents once on escaping exception, then rethrow; no native cleanup replay"
+    },
+    {
+      "path": "canonical observed-zero current0",
+      "policy": "same existing noexcept fatal boundary only; record stopped terminal/exception, mark failed, no failed-path unbind/disposal"
+    },
+    {
+      "path": "legacy normal interface with raw binding",
+      "policy": "wrong Source transport diagnosed before legacy operations; noexcept virtual violation marks failed/site and terminates, never an admitted normal raw failure route"
+    },
+    {
+      "path": "recovered second-exception cleanup, native fault/unmaskedFP, existing nonthrowing metadata mutex boundaries",
+      "policy": "original separate Source qualifications unchanged; no FH3/SEH or hardware fault recovery claim"
+    }
+  ],
+  "flags0_and_failure_custody": {
+    "flags0": "raw scalar deliberately does not return physical slot; same canonical disposal callback must retain sole dead/retired record slot receipt. Coordinated actual shared-domain author supplies this record disposition; not present in this isolated component build.",
+    "failed_scalar": "keep owner/reference/frame/canonical associations and exception; do not dispose/erase/drain or retry. Canonical wrapper preserves existing fatal boundary.",
+    "stopped_site": "last modeled raw Model call-site boundary, not actual hardware fault PC",
+    "constructor_failure": "existing prepared/dead/no-reference callback and physical slot custody unchanged; raw binding is not a new native reference"
+  },
+  "legacy_conservation": {
+    "existing3arg_path": "same preparation/native lifetime behavior with null raw_lifetime",
+    "Mission_raw_name_environment": "remains genuinely legacy by constructor, not retargeted",
+    "full_bodies_unchanged": 7,
+    "base_interfaces": "RenderCommandReference/RenderCommandModelLifetime/GeneratedModelNodeLifetime files unchanged",
+    "separate_storage_companion": "not substituted/instantiated by component"
+  },
+  "build": {
+    "slot": "Root explicitly granted exclusive slot before configure/compile",
+    "receipt": {
+      "started_utc": "2026-10-30T13:10:01.0267803Z",
+      "ended_utc": "2026-10-30T13:16:19.5207961Z",
+      "success": true,
+      "configuration": "Release",
+      "architecture": "Win32",
+      "BSP_CL_MP": 2,
+      "BSP_PCH": "ON",
+      "BSP_COVERAGE_PDB": "OFF",
+      "entry": "scripts/build.ps1"
+    },
+    "entry": "scripts/build.ps1 -Configuration Release",
+    "settings": {
+      "MSVC": "Win32",
+      "BSP_CL_MP": 2,
+      "BSP_PCH": "ON",
+      "BSP_COVERAGE_PDB": "OFF"
+    },
+    "compile_and_link": "all targets passed",
+    "top_level_checks": [
+      {
+        "name": "reconstructed_math",
+        "passed": true,
+        "seconds": 0.25
+      },
+      {
+        "name": "tool_tests",
+        "passed": true,
+        "seconds": 11.05
+      }
+    ],
+    "CTest_total_seconds": 11.37,
+    "new_tests_added": 0,
+    "log_receipts": [
+      {
+        "repository_path": "local/canonical_model_raw_lifetime_bridge_implementation/configure.txt",
+        "bytes": 973,
+        "sha256": "ae931aef21f925b5b898a12c778167376a5814147ce3360ad4d4ed673cd1b5f2"
+      },
+      {
+        "repository_path": "local/canonical_model_raw_lifetime_bridge_implementation/build.txt",
+        "bytes": 100573,
+        "sha256": "a0f3e3e0430d4eebdde45d538e8047d28da329e5404391c9bf4d987ebe054d98"
+      },
+      {
+        "repository_path": "local/canonical_model_raw_lifetime_bridge_implementation/completion.json",
+        "bytes": 284,
+        "sha256": "d58cba1f7d633d2128261fbede9113df1be54f009d299c0441d44f919812ff07"
+      },
+      {
+        "repository_path": "build/win32/CMakeCache.txt",
+        "bytes": 19951,
+        "sha256": "95c7b10875cce92bd4cf63a76380bb64c6f64ee8f434cd5f7e360068838d3dc7"
+      },
+      {
+        "repository_path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 1661,
+        "sha256": "602098b02f89132fa542a13f8c0e17e00b681da92d7afc233053f94fafe33926"
+      }
+    ],
+    "artifact_receipts": [
+      {
+        "repository_path": "build/win32/Release/bsp_core.lib",
+        "bytes": 103758360,
+        "sha256": "450bed76d9086ae9c687db750e5433b3b7e9d124e3caadb7d519109c2c92a8d8"
+      },
+      {
+        "repository_path": "build/win32/Release/bsp_game.exe",
+        "bytes": 7509504,
+        "sha256": "8a16bd2ecb7672e02a8890af83aa4b7d808f9616a74d1feaed0677805be1af57"
+      }
+    ]
+  },
+  "verification": {
+    "owned_source_pins": [
+      {
+        "repository_path": "include/bsp/native_model_owner.hpp",
+        "bytes": 9870,
+        "sha256": "d1cfa9b664075d836d9818ed57f4d9c89858b0c0c507c8ca3dce75f727a52a2a",
+        "baseline_git_blob": "78cad0248ffd29125e85ab1423e64f5cae58caf8",
+        "current_filtered_git_blob": "1ef6610b9534c327e4e58412eb6a0cd5f8a9409e"
+      },
+      {
+        "repository_path": "src/native_model_owner.cpp",
+        "bytes": 29717,
+        "sha256": "6e774d73c4a5bbd0109e19c271e2ff05a613e389c50ec72bd888c4c49f5ddd2d",
+        "baseline_git_blob": "ad547ce8c715b2f83392d172ad71580ff40832d6",
+        "current_filtered_git_blob": "7c764a3abcd1ffeb713dad482807965574aadb74"
+      },
+      {
+        "repository_path": "include/bsp/native_model_storage_lifetime.hpp",
+        "bytes": 8247,
+        "sha256": "0764b927078091103c21e6c2d6215ccb7a403c2b3eed832943dfae632a55ec3e",
+        "baseline_git_blob": "9c67998ced674cdc692f94759a2281b86c522b1e",
+        "current_filtered_git_blob": "d00d1110e199b05a65c948d42017593a8f102661"
+      },
+      {
+        "repository_path": "src/native_model_storage_lifetime.cpp",
+        "bytes": 17033,
+        "sha256": "1ded6a8042e2ce26bdcd9852dae2c14b16cee1efdba0227ed479d0c9491cddd8",
+        "baseline_git_blob": "402da841d287e0e8f8b9149daad52eeacddaa563",
+        "current_filtered_git_blob": "9aa0259d0d2deebd85f14805b9bd9eaae6b76587"
+      }
+    ],
+    "unchanged_provider_pins": [
+      {
+        "repository_path": "include/bsp/render_command_queue.hpp",
+        "bytes": 10656,
+        "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+        "baseline_git_blob": "4f0f5ca5a87b59f7d05349a36619a4459e874e8d",
+        "parent_git_blob": "4f0f5ca5a87b59f7d05349a36619a4459e874e8d"
+      },
+      {
+        "repository_path": "include/bsp/generated_model_lifetime.hpp",
+        "bytes": 12600,
+        "sha256": "bb6171641666552aea3fcaa9757d13074f229e79d5793a3b044b980f4a3d3ef9",
+        "baseline_git_blob": "c314469d47cdb65e654789b22704f26f3ca9e76d",
+        "parent_git_blob": "c314469d47cdb65e654789b22704f26f3ca9e76d"
+      },
+      {
+        "repository_path": "include/bsp/native_node_tree_retirement.hpp",
+        "bytes": 4571,
+        "sha256": "7826147682ef91780670172a270214c5f164ba92696f76c06ecc4d3e8387f07f",
+        "baseline_git_blob": "a95108130a5c2e16ba8eef2a320fb900473cf9d1",
+        "parent_git_blob": "a95108130a5c2e16ba8eef2a320fb900473cf9d1"
+      },
+      {
+        "repository_path": "src/native_node_tree_retirement.cpp",
+        "bytes": 7016,
+        "sha256": "f58325714135577e4a2baefdefea81b45fd1d5bfaa912d83b02d38637466fbf5",
+        "baseline_git_blob": "b3d2053bd6b0ee6016e4dac2a41004ef780b273a",
+        "parent_git_blob": "b3d2053bd6b0ee6016e4dac2a41004ef780b273a"
+      },
+      {
+        "repository_path": "include/bsp/native_node_scene_attachment.hpp",
+        "bytes": 5335,
+        "sha256": "8b2f6d276fbe92b00c190fadcda44e71e8547c5890bd224ee2de895310658edf",
+        "baseline_git_blob": "b236a5d8ff992022ff795fa6a8c4236e51cad31c",
+        "parent_git_blob": "b236a5d8ff992022ff795fa6a8c4236e51cad31c"
+      },
+      {
+        "repository_path": "src/native_node_scene_attachment.cpp",
+        "bytes": 9245,
+        "sha256": "baaeb437926eb685257868ab3ad4c428aa012ca71dc9378aac9a28245d4dfd6f",
+        "baseline_git_blob": "ab47729989378bd1f4e15e888b7ec2064485bf41",
+        "parent_git_blob": "ab47729989378bd1f4e15e888b7ec2064485bf41"
+      },
+      {
+        "repository_path": "include/bsp/native_node_base_destruction.hpp",
+        "bytes": 4834,
+        "sha256": "cd1f22aafdc481b9e54c23dda5634171ac654b570d8ad8757f843bca76883226",
+        "baseline_git_blob": "1f8f3069c602b970a74d2d921c34dc5e864dc22b",
+        "parent_git_blob": "1f8f3069c602b970a74d2d921c34dc5e864dc22b"
+      },
+      {
+        "repository_path": "src/native_node_base_destruction.cpp",
+        "bytes": 10425,
+        "sha256": "21bb87a236d4888ba5ef0102f3747f4cc53d28462d587dfaa94c1e731a0f055e",
+        "baseline_git_blob": "79cf2d8bb81f8044074d4c70d592ee473a763312",
+        "parent_git_blob": "79cf2d8bb81f8044074d4c70d592ee473a763312"
+      },
+      {
+        "repository_path": "src/native_ref_counted.cpp",
+        "bytes": 822,
+        "sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9",
+        "baseline_git_blob": "bb26a9f52a9b694165a4b832db8a9dac735d1c52",
+        "parent_git_blob": "bb26a9f52a9b694165a4b832db8a9dac735d1c52"
+      },
+      {
+        "repository_path": "src/native_node_destruction.cpp",
+        "bytes": 14506,
+        "sha256": "2ee6ba84e759958a8f160cb25ad210076203931d4ae4f2e9265529bff5c57269",
+        "baseline_git_blob": "471b67cac72f5a45fb6a4789f82d7533fd72f6c9",
+        "parent_git_blob": "471b67cac72f5a45fb6a4789f82d7533fd72f6c9"
+      },
+      {
+        "repository_path": "src/native_node_construction.cpp",
+        "bytes": 14664,
+        "sha256": "87a73019511d3575aa0887a4964a2a8703a5248106fdcff2eddfbb424918dd35",
+        "baseline_git_blob": "6a0e74c4cb62f82ec0b1909a807f36b0297f72ab",
+        "parent_git_blob": "6a0e74c4cb62f82ec0b1909a807f36b0297f72ab"
+      },
+      {
+        "repository_path": "src/native_gui_widget_base_storage.cpp",
+        "bytes": 3008,
+        "sha256": "4ddd5ab1ad4a2b8174d80caf70dba76afa648479e4e8637a56884f2b9db6354d",
+        "baseline_git_blob": "997a33c5ac7bbf7b57e133feb53b91163e7308b5",
+        "parent_git_blob": "997a33c5ac7bbf7b57e133feb53b91163e7308b5"
+      },
+      {
+        "repository_path": "src/generated_model_lifetime.cpp",
+        "bytes": 15899,
+        "sha256": "5dbceb02880773799cab052f2c3e154e0d36add2b01d611501be2dd1b01e8d0d",
+        "baseline_git_blob": "297ae8b38490a70378d5d0a420617e0d586b9659",
+        "parent_git_blob": "297ae8b38490a70378d5d0a420617e0d586b9659"
+      },
+      {
+        "repository_path": "src/scene_attachment.cpp",
+        "bytes": 18556,
+        "sha256": "58fa851ddc57a0910f4903da4d08fa74cf56b41af352b8d9b8ba8f4ff7715719",
+        "baseline_git_blob": "8314de226b2eb269438f200bad0dfce7a185131f",
+        "parent_git_blob": "8314de226b2eb269438f200bad0dfce7a185131f"
+      },
+      {
+        "repository_path": "src/native_render_context.cpp",
+        "bytes": 11471,
+        "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+        "baseline_git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c",
+        "parent_git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c"
+      },
+      {
+        "repository_path": "src/native_model_pool.cpp",
+        "bytes": 11199,
+        "sha256": "38a6363a3fa090b2c939f8a65e02433f4090671bd0d42b4b66dd35d4e1ddc020",
+        "baseline_git_blob": "8b28493c09c6809a05f4267cbb5f9cc6af760778",
+        "parent_git_blob": "8b28493c09c6809a05f4267cbb5f9cc6af760778"
+      }
+    ],
+    "Source_diff_sha256": "c10bf1101930466273179deedb009def4cbc76e5cae8d832c8078b79a4413a07",
+    "Source_diff_bytes": 30635,
+    "owned_doc": {
+      "repository_path": "docs/CC16_CANONICAL_MODEL_RAW_LIFETIME_BRIDGE_IMPLEMENTATION.md",
+      "bytes": 10124,
+      "sha256": "943e8d530e55a10ee688a36a512496a4a90b0e3166f7b9ba8d5504b2af577921"
+    },
+    "only_owned_dirty_paths": [
+      "docs/CC16_CANONICAL_MODEL_RAW_LIFETIME_BRIDGE_IMPLEMENTATION.md",
+      "include/bsp/native_model_owner.hpp",
+      "include/bsp/native_model_storage_lifetime.hpp",
+      "src/native_model_owner.cpp",
+      "src/native_model_storage_lifetime.cpp"
+    ],
+    "diff_check": "passed"
+  },
+  "required_next_gates": [
+    "Root primary body/exception/failure-custody review",
+    "join real shared Model client prepare and flags0/failure record custody",
+    "join actual Page current4C/raw tree/scene/read/widget/timed callers",
+    "combined consumer build/fixture checks on exact joined Source",
+    "separately authorized activation/runtime/gameplay gates"
+  ],
+  "not_performed": [
+    "Main integration/push",
+    "ledger/shared metadata/Ghidra mutation",
+    "new Native recovery/credit",
+    "new routine tests",
+    "manual/ad hoc probe or Game run",
+    "installation/guard flip/activation",
+    "frozen input edits"
+  ],
+  "proof_limits": [
+    "build and existing checks do not exercise new real raw Page/client consumers in this component tree",
+    "no populated/reentrant/exception/flags0 live runtime proof",
+    "no original binary ABI/private-stack/FH3/SEH equivalence",
+    "no gameplay or activation credit"
+  ],
+  "credit": {
+    "new_native_body": 0,
+    "recovered": 0,
+    "vendor": 0,
+    "component_Source_implemented": true,
+    "ABI": 0,
+    "FH3_SEH": 0,
+    "runtime": 0,
+    "gameplay": 0,
+    "activation": 0
+  }
+}

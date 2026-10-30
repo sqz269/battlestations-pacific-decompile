@@ -79,16 +79,14 @@ void GameNativeGuiTextProcess::initialize_types_once_00cd7210(
     if (pool_state_ != State::returned)
         throw std::logic_error("GUI Text types require completed CD71F0 pool startup");
     if (type_state_ == State::returned) {
-        if (counter_ != &counter || root_ != &canonical_common_types.root_0109db84 ||
-            root_guard_ != &canonical_common_types.root_guard_0109db80)
-            throw std::logic_error("GUI Text types cannot retarget their canonical root/counter domain");
+        bind_or_check_type_domain(counter, canonical_common_types);
         return;
     }
     if (type_state_ != State::unattempted)
         throw std::logic_error("GUI Text type startup cannot replay an entered initialization");
-    counter_ = &counter;
-    root_ = &canonical_common_types.root_0109db84;
-    root_guard_ = &canonical_common_types.root_guard_0109db80;
+    if (group_type_state_ == State::threw)
+        throw std::logic_error("GUI Text type startup cannot enter after interrupted Group initialization");
+    bind_or_check_type_domain(counter, canonical_common_types);
     type_state_ = State::threw;
     CounterHost host(counter);
     LightTypeBootstrap common(counter, canonical_common_types);
@@ -100,6 +98,20 @@ void GameNativeGuiTextProcess::initialize_types_once_00cd7210(
         [&] { initialize_element_00aa8200(element_00f8bc88_, element_guard_00f8bc80_, common, host); },
         host);
     type_state_ = State::returned;
+}
+
+void GameNativeGuiTextProcess::bind_or_check_type_domain(
+    TypeIdCounterLifetime& counter, LightTypeBootstrapStorage canonical_common_types) {
+    // Metadata only: no getter, Native guard/name/ID access, callback or pool.
+    if (!counter_ && !root_ && !root_guard_) {
+        counter_ = &counter;
+        root_ = &canonical_common_types.root_0109db84;
+        root_guard_ = &canonical_common_types.root_guard_0109db80;
+        return;
+    }
+    if (counter_ != &counter || root_ != &canonical_common_types.root_0109db84 ||
+        root_guard_ != &canonical_common_types.root_guard_0109db80)
+        throw std::logic_error("GUI type startup cannot retarget its canonical root/counter domain");
 }
 
 void GameNativeGuiTextProcess::initialize_layer_type_once_00cd73f0(
@@ -139,6 +151,43 @@ void GameNativeGuiTextProcess::initialize_layer_type_once_00cd73f0(
     layer_type_state_ = State::returned;
 }
 
+void GameNativeGuiTextProcess::initialize_group_type_once_00cd7460(
+    TypeIdCounterLifetime& counter, LightTypeBootstrapStorage canonical_common_types) {
+    // Preserve completed-role access before checking a different failed role.
+    if (group_type_state_ == State::returned) {
+        bind_or_check_type_domain(counter, canonical_common_types);
+        return;
+    }
+    if (group_type_state_ != State::unattempted)
+        throw std::logic_error("GUI Group type startup cannot replay an entered initialization");
+    if (type_state_ == State::threw)
+        throw std::logic_error("GUI Group type startup cannot enter after interrupted Text initialization");
+    bind_or_check_type_domain(counter, canonical_common_types);
+    group_type_state_ = State::threw;
+    CounterHost host(counter);
+    LightTypeBootstrap common(counter, canonical_common_types);
+    volatile auto& guard = group_guard_00f8bf9c_;
+    if (guard != 0)
+        throw std::logic_error("GUI Group guard does not establish completed Source startup");
+    guard = 1;
+    volatile auto& group = group_00f8bfd8_;
+    group.native_name_address = 0x00d5cc00;
+    initialize_element_00aa8200(element_00f8bc88_, element_guard_00f8bc80_, common, host);
+    const volatile auto& element = element_00f8bc88_;
+    const auto element_id = element.ids[0];
+    const auto root_id = element.ids[1];
+    group.ids[1] = element_id;
+    group.ids[2] = root_id;
+    // The concrete same-counter getter is warm after completed Element. Keep
+    // this suffix free of other fallible work; retained serialized publication
+    // and the existing cold cross-role checks are required by that Source proof.
+    volatile auto& actual_counter = host.counter();
+    const auto next_id = actual_counter.next_id_04;
+    actual_counter.next_id_04 = next_id + 1u;
+    group.ids[0] = next_id;
+    group_type_state_ = State::returned;
+}
+
 NativeGuiTextPool& GameNativeGuiTextProcess::pool_00f8bdf0() {
     std::lock_guard lock(pool_startup_mutex_);
     if (pool_state_ != State::returned)
@@ -164,8 +213,15 @@ const volatile std::uint32_t (&GameNativeGuiTextProcess::layer_lineage_00f8bf88(
     return layer_00f8bf88_.ids;
 }
 
+const volatile std::uint32_t (&GameNativeGuiTextProcess::group_lineage_00f8bfd8() const)[3] {
+    if (group_type_state_ != State::returned)
+        throw std::logic_error("GUI Group lineage requires complete same-domain CD7460 startup");
+    return group_00f8bfd8_.ids;
+}
+
 bool GameNativeGuiTextProcess::native_operation_interrupted() const noexcept {
     return pool_state_ == State::threw || pool_state_ == State::retiring ||
-        type_state_ == State::threw || layer_type_state_ == State::threw;
+        type_state_ == State::threw || layer_type_state_ == State::threw ||
+        group_type_state_ == State::threw;
 }
 } // namespace bsp::game

@@ -1,9 +1,11 @@
 #include "bsp/native_model_owner.hpp"
 #include "bsp/model_type_bootstrap.hpp"
+#include "bsp/native_ref_counted.hpp"
 #include <cstring>
 #include <exception>
 #include <new>
 #include <stdexcept>
+#include <type_traits>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native model ownership requires MSVC Win32.
@@ -12,6 +14,8 @@
 namespace bsp {
 static_assert(sizeof(NativeNodeStorage) == 0x174);
 static_assert(sizeof(NativeModelTailStorage) == 0x10);
+static_assert(std::is_trivially_destructible_v<NativeNodeStorage>);
+static_assert(std::is_trivially_destructible_v<NativeModelTailStorage>);
 static_assert(offsetof(NativeModelTailStorage, retained_174) == 0);
 static_assert(offsetof(NativeModelTailStorage, scalar_178) == 4);
 static_assert(offsetof(NativeModelTailStorage, scalar_17c) == 8);
@@ -60,6 +64,68 @@ NativeModelStorageView prepare_storage(void* slot, std::size_t bytes,
     std::memcpy(slot, preimage.data(), preimage.size());
     return {node, tail};
 }
+void require_raw_terminal_fresh(const NativeModelRawLifetimeBinding& raw) {
+    const auto& a = raw.terminal;
+    if (raw.host.typed_storage_ended || raw.host.failed || raw.host.stopped_site || raw.host.exception ||
+        a.started || a.complete || a.scalar_started || a.scalar_complete ||
+        a.flags_read || a.pool_returned || a.node.started || a.node.complete ||
+        a.node.base_cleanup_completed || a.geometry_unwind.started || a.geometry_unwind.complete)
+        throw std::logic_error("canonical raw Model requires fresh retained terminal backing");
+}
+struct Region { const void* pointer; std::size_t bytes; };
+bool disjoint(Region left, Region right) noexcept {
+    const auto l = static_cast<std::uint64_t>(reinterpret_cast<std::uintptr_t>(left.pointer));
+    const auto r = static_cast<std::uint64_t>(reinterpret_cast<std::uintptr_t>(right.pointer));
+    return l + left.bytes <= r || r + right.bytes <= l;
+}
+void validate_raw_binding(void* slot, NativeModelEnvironment& env,
+    NativeModelRawLifetimeBinding& raw) {
+    auto& c = raw.storage;
+    if (env.actual_names || !env.nodes.uses_raw_name_pool() ||
+        &env.nodes.require_raw_name_pool() != &c.node.strings ||
+        &env.pool_01090054 != &c.pool_01090054 ||
+        &env.retained_owners != static_cast<NativeRenderActualOwners*>(&c.node.scenes.owners) ||
+        &env.retained_owners != &c.node.trees.owners ||
+        &env.nodes.point_lights != &c.node.trees.point_lights ||
+        &c.node.scenes.decrement_00ce2220 != &c.node.trees.decrement_00ce2220 ||
+        &env.constants.minimum_00ce4adc != &c.constants.negative_bound_00ce4adc ||
+        &env.constants.maximum_00ce4970 != &c.constants.positive_bound_00ce4970 ||
+        &env.constants.negative_zero_00d7a208 != &c.negative_zero_00d7a208)
+        throw std::invalid_argument("canonical raw Model requires SAME pool/node/string/owner/import/constant providers");
+    require_raw_terminal_fresh(raw);
+    const Region payload{slot, NativeModelPool::slot_bytes};
+    const Region records[] = {{&raw, sizeof(raw)}, {&c, sizeof(c)},
+        {&c.node, sizeof(c.node)}, {&c.node.scenes, sizeof(c.node.scenes)},
+        {&c.node.trees, sizeof(c.node.trees)}, {&raw.terminal_frame, sizeof(raw.terminal_frame)},
+        {&raw.terminal, sizeof(raw.terminal)}, {&raw.host, sizeof(raw.host)}};
+    for (const auto& record : records)
+        if (!disjoint(payload, record))
+            throw std::invalid_argument("canonical raw Model payload must be disjoint from retained lifetime metadata");
+    const Region mutable_records[] = {{&raw.terminal_frame, sizeof(raw.terminal_frame)},
+        {&raw.terminal, sizeof(raw.terminal)}, {&raw.host, sizeof(raw.host)}};
+    for (std::size_t i = 0; i != 3; ++i)
+        for (std::size_t j = i + 1; j != 3; ++j)
+            if (!disjoint(mutable_records[i], mutable_records[j]))
+                throw std::invalid_argument("canonical raw Model terminal frames and diagnostics must be disjoint");
+}
+NativeModelStorageView prepare_bound_storage(void* slot, std::size_t bytes,
+    NativeModelEnvironment& env, NativeModelRawLifetimeBinding* raw) {
+    if (raw) validate_raw_binding(slot, env, *raw);
+    return prepare_storage(slot, bytes, env);
+}
+void require_legacy_transport(const NativeModelOwner& owner) {
+    if (owner.raw_lifetime)
+        throw std::logic_error("raw Model normal calls require explicit throwing raw transport");
+}
+void require_legacy_virtual(const NativeModelOwner& owner, std::uint32_t site) noexcept {
+    if (auto* raw = owner.raw_lifetime) {
+        // Wrong C++ transport is an integration violation, not a newly admitted
+        // raw Native failure route. Actual Page normal calls use throwing APIs.
+        raw->host.failed = true;
+        raw->host.stopped_site = site;
+        std::terminate();
+    }
+}
 bool model_is_type(SceneAttachmentRuntime& runtime, SceneNodeAttachment& binding,
     std::uint32_t token) {
     auto& owner = *static_cast<NativeModelOwner*>(binding.context);
@@ -73,17 +139,20 @@ bool model_is_type(SceneAttachmentRuntime& runtime, SceneNodeAttachment& binding
 void model_attach_scene(SceneAttachmentRuntime& runtime, SceneNodeAttachment& binding,
     SceneResource* scene, bool recurse) {
     auto& owner = *static_cast<NativeModelOwner*>(binding.context);
+    require_legacy_transport(owner);
     require_slot(owner, 0x50, 0x00b6ed80u, true);
     set_node_scene_00b6ed80(runtime, binding, scene, recurse);
 }
 void model_remove_scene(SceneAttachmentRuntime& runtime, SceneNodeAttachment& binding,
     SceneResource* scene, bool recurse) {
     auto& owner = *static_cast<NativeModelOwner*>(binding.context);
+    require_legacy_transport(owner);
     require_slot(owner, 0x54, 0x00b6ee10u, true);
     remove_native_node_scene_00b6ee10(runtime, binding, scene, recurse);
 }
 void model_world_changed(SceneAttachmentRuntime& runtime, SceneNodeAttachment& binding) {
     auto& owner = *static_cast<NativeModelOwner*>(binding.context);
+    require_legacy_transport(owner);
     require_slot(owner, 0x40, 0x00b6dbe0u, true);
     native_node_world_changed_00b6dbe0(runtime, binding);
 }
@@ -98,6 +167,22 @@ void end_tail(NativeModelOwner& owner) noexcept {
     owner.storage.model.~NativeModelTailStorage();
     owner.environment.nodes.scenes.forget_destroyed_binding(owner.node.scene_attachment);
     owner.phase = NativeModelOwner::Phase::dead;
+}
+void end_raw_typed_storage(void* context) noexcept {
+    auto& owner = *static_cast<NativeModelOwner*>(context);
+    auto& raw = *owner.raw_lifetime;
+    if (raw.host.typed_storage_ended) std::terminate();
+    // Full raw B6F440 already performed all Native cleanup/profile stores.
+    // These existing typed extents/association end without further Native work.
+    owner.storage.node.~NativeNodeStorage();
+    end_tail(owner);
+    raw.host.typed_storage_ended = true;
+}
+void record_raw_failure(NativeModelOwner& owner) noexcept {
+    auto& raw = *owner.raw_lifetime;
+    raw.host.failed = true;
+    raw.host.stopped_site = raw.terminal.active_call_site;
+    raw.host.exception = std::current_exception();
 }
 void finish_node(NativeModelOwner& owner) {
     try {
@@ -148,8 +233,15 @@ bool different_scalar(float value, std::uint32_t sentinel) noexcept {
 } // namespace
 
 NativeModelOwner::NativeModelOwner(void* slot, std::size_t bytes, NativeModelEnvironment& access)
-    : storage(prepare_storage(slot, bytes, access)), environment(access),
-      node(storage.node, NativeNodePreconstructionBinding{}, model_is_type, model_attach_scene, this) {
+    : NativeModelOwner(slot, bytes, access, static_cast<NativeModelRawLifetimeBinding*>(nullptr)) {}
+NativeModelOwner::NativeModelOwner(void* slot, std::size_t bytes, NativeModelEnvironment& access,
+    NativeModelRawLifetimeBinding& raw)
+    : NativeModelOwner(slot, bytes, access, &raw) {}
+NativeModelOwner::NativeModelOwner(void* slot, std::size_t bytes, NativeModelEnvironment& access,
+    NativeModelRawLifetimeBinding* raw)
+    : storage(prepare_bound_storage(slot, bytes, access, raw)), environment(access),
+      node(storage.node, NativeNodePreconstructionBinding{}, model_is_type, model_attach_scene, this),
+      raw_lifetime(raw) {
     node.scene_attachment.world_changed = model_world_changed;
     node.scene_attachment.remove_scene = model_remove_scene;
     try {
@@ -250,6 +342,14 @@ void destroy_native_model_geometry_member_00b74f20(
 }
 void destroy_native_model_00b750c0(NativeModelOwner& owner) {
     require_live(owner);
+    if (auto* raw = owner.raw_lifetime) {
+        require_raw_terminal_fresh(*raw);
+        try {
+            destroy_native_model_storage_00b750c0(&owner.storage.node, raw->terminal_frame,
+                raw->storage, raw->terminal, {&owner, end_raw_typed_storage});
+        } catch (...) { record_raw_failure(owner); throw; }
+        return;
+    }
     publish_model_phase(owner);
     unsigned unwind_state = 1;
     try {
@@ -269,10 +369,26 @@ void destroy_native_model_00b750c0(NativeModelOwner& owner) {
     finish_node(owner); // Native state-1: no second base call if this throws.
 }
 void* delete_native_model_00b75290(NativeModelOwner& owner, std::uint32_t flags) {
+    if (auto* raw = owner.raw_lifetime) {
+        require_live(owner);
+        require_raw_terminal_fresh(*raw);
+        raw->terminal_frame.scalar_flags_argument = flags;
+        return delete_native_model_raw_00b75290(owner, raw->terminal_frame.scalar_flags_argument);
+    }
     void* const slot = &owner.storage.node;
     destroy_native_model_00b750c0(owner);
     if (flags & 1u) owner.environment.pool_01090054.return_raw_slot_00b74750(slot);
     return slot;
+}
+void* delete_native_model_raw_00b75290(NativeModelOwner& owner, const volatile std::uint32_t& flags) {
+    require_live(owner);
+    auto* raw = owner.raw_lifetime;
+    if (!raw) throw std::logic_error("raw Model scalar requires its immutable raw lifetime binding");
+    require_raw_terminal_fresh(*raw);
+    try {
+        return delete_native_model_storage_00b75290(&owner.storage.node, flags, raw->terminal_frame,
+            raw->storage, raw->terminal, {&owner, end_raw_typed_storage});
+    } catch (...) { record_raw_failure(owner); throw; }
 }
 void set_native_model_geometry_00b75170(NativeModelOwner& owner, std::uint32_t unused,
     void* geometry, float scalar_178, float scalar_17c) {
@@ -323,6 +439,7 @@ void NativeModelReference::shrink_lights(void* context) noexcept {
     shrink_native_node_point_lights_to_zero_00b6ec70(array);
 }
 void NativeModelReference::release_model_virtual18_00b6f310() noexcept {
+    require_legacy_virtual(owner_, 0x00b6f310);
     if (phase_ != Phase::bound || owner_.phase != NativeModelOwner::Phase::live)
         std::terminate();
     require_terminal_slot(owner_, 0x18, 0x00b6f310u);
@@ -331,13 +448,117 @@ void NativeModelReference::release_model_virtual18_00b6f310() noexcept {
         {this, light_count, remove_light_backlink, shrink_lights}});
 }
 void NativeModelReference::remove_scene_virtual54(SceneResource* scene, bool recurse) noexcept {
+    require_legacy_virtual(owner_, 0x00b6ee10);
     if (phase_ == Phase::retired || owner_.phase == NativeModelOwner::Phase::dead)
         std::terminate();
     require_terminal_slot(owner_, 0x54, 0x00b6ee10u, true);
     remove_native_node_scene_00b6ee10(owner_.environment.nodes.scenes,
         owner_.node.scene_attachment, scene, recurse);
 }
+
+namespace {
+NativeModelRawLifetimeBinding& require_raw_reference(NativeModelReference& reference) {
+    auto& owner = reference.model_owner();
+    auto* raw = owner.raw_lifetime;
+    if (!raw || owner.phase != NativeModelOwner::Phase::live ||
+        raw->host.failed || raw->host.typed_storage_ended || raw->terminal.node.base_cleanup_completed)
+        throw std::logic_error("raw Model normal call requires its SAME still-live canonical owner");
+    if (owner.environment.actual_names ||
+        raw->storage.node.scenes.owners.find(&owner.storage.node) != &reference ||
+        static_cast<void*>(&reference.reference_count) != static_cast<void*>(&owner.storage.node.references_04))
+        throw std::logic_error("raw Model normal call lost its SAME canonical actual+04 binding");
+    return *raw;
+}
+void require_call_regions(void* actual, Region frame, Region acquired,
+    const NativeModelRawLifetimeBinding& raw) {
+    const Region payload{actual, NativeModelPool::slot_bytes};
+    if (!disjoint(payload, frame) || !disjoint(payload, acquired) || !disjoint(frame, acquired))
+        throw std::invalid_argument("raw Model normal call requires disjoint persistent invocation backing");
+    for (const Region terminal : {Region{&raw.terminal_frame, sizeof(raw.terminal_frame)},
+        Region{&raw.terminal, sizeof(raw.terminal)}, Region{&raw.host, sizeof(raw.host)}})
+        if (!disjoint(frame, terminal) || !disjoint(acquired, terminal))
+            throw std::invalid_argument("raw Model normal invocation cannot borrow its terminal scratch");
+}
+} // namespace
+
+void NativeModelReference::release_raw_virtual18_00b6f310(std::uint32_t captured_target,
+    NativeNodeTreeRetirementFrame& frame, NativeNodeTreeRetirementAcquired& acquired) {
+    if ((phase_ != Phase::bound && phase_ != Phase::destroying) || acquired.started || acquired.complete)
+        throw std::logic_error("raw Model current18 requires a fresh retained invocation");
+    auto& raw = require_raw_reference(*this);
+    if (captured_target != 0x00b6f310) throw std::logic_error("raw Model current18 target is not genuine B6F310");
+    require_slot(owner_, 0x18, captured_target, true);
+    void* const actual = &owner_.storage.node;
+    auto& trees = raw.storage.node.trees;
+    require_call_regions(actual, {&frame, sizeof(frame)}, {&acquired, sizeof(acquired)}, raw);
+    release_native_node_tree_00b6f310(actual, frame, trees, acquired);
+    // No self/binding access: the terminal callback may have disposed this.
+}
+void NativeModelReference::remove_raw_scene_virtual54_00b6ee10(std::uint32_t captured_target,
+    NativeNodeSceneAttachmentFrame& frame, NativeNodeSceneAttachmentAcquired& acquired) {
+    if ((phase_ != Phase::bound && phase_ != Phase::destroying) || acquired.started || acquired.complete)
+        throw std::logic_error("raw Model current54 requires a fresh retained invocation");
+    auto& raw = require_raw_reference(*this);
+    if (captured_target != 0x00b6ee10) throw std::logic_error("raw Model current54 target is not genuine B6EE10");
+    require_slot(owner_, 0x54, captured_target, true);
+    void* const actual = &owner_.storage.node;
+    auto& scenes = raw.storage.node.scenes;
+    require_call_regions(actual, {&frame, sizeof(frame)}, {&acquired, sizeof(acquired)}, raw);
+    remove_native_node_scene_storage_00b6ee10(actual, frame, scenes, acquired);
+    // The Page-owned frame/provider records an escaping normal exception.
+}
+
+class NativeModelReference::RawDeleteCalls final : public NativeRefCountedDeleteCalls {
+public:
+    explicit RawDeleteCalls(NativeModelReference& reference) noexcept : reference_(reference) {}
+    void delete_vslot04(void* actual, std::uint32_t profile, std::uint32_t flags) override {
+        auto& owner = reference_.owner_;
+        if (actual != &owner.storage.node || profile != model_table || flags != 1)
+            throw std::logic_error("canonical raw Model terminal requires SAME actual/current profile/flags1 call");
+        require_slot(owner, 4, 0x00b75290);
+        auto& raw = *owner.raw_lifetime;
+        require_raw_terminal_fresh(raw);
+        raw.terminal_frame.scalar_flags_argument = flags;
+        reference_.delete_raw_scalar_00b75290(raw.terminal_frame.scalar_flags_argument);
+    }
+private:
+    NativeModelReference& reference_;
+};
+
+void NativeModelReference::delete_raw_scalar_00b75290(const volatile std::uint32_t& flags) {
+    if (phase_ != Phase::bound || !owner_.raw_lifetime || owner_.phase != NativeModelOwner::Phase::live)
+        throw std::logic_error("canonical raw Model scalar requires its same live bound reference");
+    auto& runtime = runtime_;
+    const auto disposal = disposal_;
+    phase_ = Phase::destroying;
+    try { delete_native_model_raw_00b75290(owner_, flags); }
+    catch (...) {
+        phase_ = Phase::failed;
+        record_raw_failure(owner_);
+        throw; // No failed-path lifetime/registry unbind or record disposal.
+    }
+    runtime.unbind(*this); // identity metadata only, after possible physical return
+    phase_ = Phase::retired;
+    disposal.retire(disposal.context, *this); // flags0 callback retains original physical-slot receipt
+}
 void NativeModelReference::release_zero_references() noexcept {
+    if (owner_.raw_lifetime) {
+        try {
+            auto& raw = require_raw_reference(*this);
+            if (phase_ != Phase::bound || reference_count.load(std::memory_order_relaxed) != 0)
+                throw std::logic_error("canonical raw Model terminal requires SAME observed-zero count");
+            require_raw_terminal_fresh(raw);
+            require_slot(owner_, 0, 0x00bd30e0);
+            RawDeleteCalls calls(*this);
+            invoke_native_ref_counted_delete_00bd30e0(&owner_.storage.node, calls);
+        } catch (...) {
+            record_raw_failure(owner_);
+            // Existing canonical terminal boundary only. Normal raw18/54 do
+            // not enter this catch and preserve their throwing Page transport.
+            std::terminate();
+        }
+        return; // this may have been disposed; no further self/actual access
+    }
     if (phase_ != Phase::bound || owner_.phase != NativeModelOwner::Phase::live)
         std::terminate();
     require_terminal_slot(owner_, 0, 0x00bd30e0u);

@@ -120,15 +120,54 @@ def receipt_identity(receipt: dict, args, expected: Path) -> int:
 
 
 class SceneMarker:
-    """Read only the guard-declared fresh stream; never reset a game log."""
-    def __init__(self, receipt: dict, marker: str):
+    """Require engine load + later SceneInit lines; never accept an argv echo."""
+    def __init__(self, receipt: dict, marker: str, read_chunk=1024 * 1024):
         self.path = Path(receipt["scene_log_path"])
         self.marker = marker.replace("\\", "/").lower().encode("ascii")
+        if not 1 <= read_chunk <= 1024 * 1024:
+            raise ValueError("scene-log read chunk must be bounded to 1 MiB")
+        self.read_chunk = read_chunk
         self.offset = 0
-        self.tail = b""
+        self.pending = b""
+        self.discarding = False
+        self.oversize_lines = 0
         self.identity = None
         self.found = None
+        self.loading_scene = self.scene_init = None
         self.epochs = 0
+        self.epoch_history = []
+
+    def reset(self, reason):
+        self.epoch_history.append({"file_epoch": self.epochs, "reset_reason": reason,
+                                   "loading_scene": self.loading_scene, "scene_init": self.scene_init})
+        self.epoch_history = self.epoch_history[-8:]
+        self.offset, self.pending, self.discarding = 0, b"", False
+        self.loading_scene = self.scene_init = self.found = None
+        self.epochs += 1
+
+    def line(self, data: bytes, offset: int):
+        normalized = data.rstrip(b"\r\n").replace(b"\\", b"/").lower()
+        prefix = b" [engine] "
+        position = normalized.find(prefix)
+        if position < 0:
+            return
+        raw_payload = normalized[position + len(prefix):]
+        payload = raw_payload.strip(b" \t")
+        payload_offset = offset + position + len(prefix) + len(raw_payload) - len(raw_payload.lstrip(b" \t"))
+        if payload.startswith(b"loading scene "):
+            self.loading_scene = self.scene_init = self.found = None
+            if payload == b"loading scene " + self.marker:
+                self.loading_scene = {"line_byte_offset": offset, "byte_offset": payload_offset,
+                                      "scene_path_byte_offset": payload_offset + len(b"loading scene "),
+                                      "file_epoch": self.epochs, "observed_utc": utc_now()}
+        elif (payload == b"ggame::sceneinit()" and self.loading_scene
+              and offset > self.loading_scene["line_byte_offset"]):
+            self.scene_init = {"line_byte_offset": offset, "byte_offset": payload_offset,
+                               "file_epoch": self.epochs, "observed_utc": utc_now()}
+            self.found = {"path": str(self.path), "marker": self.marker.decode(),
+                          "byte_offset": self.loading_scene["scene_path_byte_offset"],
+                          "loading_scene": self.loading_scene, "scene_init": self.scene_init,
+                          "observed_utc": utc_now(), "file_epoch": self.epochs}
 
     def poll(self):
         try:
@@ -136,26 +175,44 @@ class SceneMarker:
             info = self.path.stat()
             identity = (info.st_dev, info.st_ino)
             if self.identity is not None and (identity != self.identity or info.st_size < self.offset):
-                self.offset, self.tail, self.found = 0, b"", None
-                self.epochs += 1
+                self.reset("replaced" if identity != self.identity else "truncated")
             self.identity = identity
             with self.path.open("rb") as stream:
                 stream.seek(self.offset)
-                data = stream.read(1024 * 1024)
-            start = self.offset
+                data = stream.read(self.read_chunk)
+            start = self.offset - len(self.pending)
             self.offset += len(data)
-            combined = self.tail + data
-            index = combined.replace(b"\\", b"/").lower().find(self.marker)
-            if self.found is None and index >= 0:
-                self.found = {"path": str(self.path), "marker": self.marker.decode(),
-                              "byte_offset": start - len(self.tail) + index,
-                              "observed_utc": utc_now(), "file_epoch": self.epochs}
-            self.tail = combined[-max(len(self.marker) - 1, 0):]
+            combined, self.pending = self.pending + data, b""
+            parts = combined.split(b"\n")
+            for index, content in enumerate(parts):
+                if index == len(parts) - 1:
+                    part = content
+                    if self.discarding or len(part) > 65536:
+                        if not self.discarding:
+                            self.oversize_lines += 1
+                        self.discarding = True
+                    else:
+                        self.pending = part
+                    break
+                part = content + b"\n"
+                if self.discarding:
+                    self.discarding = False
+                elif len(part) <= 65536:
+                    self.line(part, start)
+                else:
+                    self.oversize_lines += 1
+                start += len(part)
         except FileNotFoundError:
             if self.identity is not None:
-                self.offset, self.tail, self.found, self.identity = 0, b"", None, None
-                self.epochs += 1
+                self.reset("missing")
+                self.identity = None
         return self.found
+
+    def report(self):
+        return {"file_epoch": self.epochs, "loading_scene": self.loading_scene,
+                "scene_init": self.scene_init, "bytes_read": self.offset,
+                "oversize_lines_discarded": self.oversize_lines,
+                "recent_reset_epochs": self.epoch_history}
 
 
 def read_context(reader, game: int) -> dict:
@@ -315,7 +372,8 @@ def run(args):
                                                ("scene_log_path", "scene_log_start_size", "scene_log_reset_before_launch")})
         marker = SceneMarker(receipt, args.scene_marker)
         reason = monitor(args, reader, marker, window, started)
-        report.update(reason=reason, scene_marker=marker.found, scene_log_epochs=marker.epochs)
+        report.update(reason=reason, scene_marker=marker.found, scene_log_epochs=marker.epochs,
+                      scene_gate=marker.report())
         if reason in ("game_time_target", "clock_reset", "timeout", "drain"):
             same_identity(reader.identity(args.expect_sha256), expected, args.expect_sha256, created)
             report["identity_verified_before_request"] = True

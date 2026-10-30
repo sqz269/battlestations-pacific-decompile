@@ -2,9 +2,9 @@
 
 The reconstruction reference run reached **1,740 identified mapped game-function
 addresses**, including **342 observed only through inline sites**. It completed
-4,800 mission frames and exited 0. Original-game coverage is still unknown:
-the guarded tracer's independent entry-admission path is being tested on private
-fixtures. A short native motion capture and its thread histogram are separate
+4,800 mission frames and exited 0. Original mission coverage remains unknown
+after two guarded DynamoRIO startup failures. The brief's function-entry
+breakpoint fallback is being implemented. A short native motion capture and its thread histogram are separate
 evidence and are not substituted for an original basic-block trace.
 
 `config/coverage_census_summary.json` supplies the board's `bsp_live=1740` and
@@ -138,21 +138,44 @@ other audit buckets and are not reconstruction-body execution credit.
 
 ## Original side and wiring frontier
 
-Original startup is planned through the same native direct USN04 scene path as
-the earlier baseline. It differs from the reconstruction menu path; equivalence
-remains deferred. Matching game-time endpoints will be recorded if guarded
-original tracing passes admission.
+Both original attempts used the native direct USN04 scene argument from the
+earlier baseline. This differs from the reconstruction menu path; equivalence
+remains deferred. Neither attempt reached a valid mission clock or SceneInit.
 
-Stock drrun does not preserve the current restricted-root creation and explicit
-handle-list contract. Suspended attach failed the private pre-entry fixture;
-PIN's official download returned 403; stock TinyInst needs a custom entry
-adapter. A private SDK CREATE/import-shim fixture subsequently passed token,
-handle/job and mutation-denial checks. The full admission fixture also passed
-Documents/tracer readiness, a fail-closed entry barrier and preserved floating-
-point state. Production integration and authenticated trace-stop flushing are
-still being tested on private fixtures. No original was
-traced outside the guard. See `COVERAGE_ORIGINAL_GUARD.md` for exact evidence,
-the rejected topology, later bounded work and remaining conditions.
+The pinned SDK CREATE/import-shim backend passed private token, explicit-handle,
+job, mutation-denial, Documents, floating-point, CALL5 and authenticated-stop
+fixtures. Both real attempts passed the 69,700-object access audit, inherited
+69,700 protected handles and admitted entry at base `00400000`; neither used a
+debugger. The original CALL and continuation executed under DR while native
+entry memory retained the disclosed `EBFE` barrier. All owned jobs were empty
+before parent lock release. Both inventories verified all 17 installed runtime
+files and four protected options/save files unchanged.
+
+| Original attempt | PID | Result |
+| --- | ---: | --- |
+| live01 | 98252 | Startup exit `C0000005`; complete 328,332-row BB file, no mission clock. |
+| live02 | 99608 | Same exit; bounded pass-through logger observed an AV in `nvd3dum.dll` at RVA `001B0285`, reading `00000040`; no mission clock. |
+
+The observed NVIDIA module is version `32.0.16.1742`, SHA-256
+`617c9af288fb28023f29cca57963c219aa117647df0fea75c144765efc048fe1`.
+The observation does not establish a driver defect or the initiating cause.
+The final missing `causticstexturesource` warning also occurs in the successful
+native baseline. DR's kernel child-process limits differ from classic locked
+mode's debug-event child rejection, which remains a compatibility confound.
+
+Excluding the GPU DLL from instrumentation can miss callbacks into game code.
+The pinned Windows retakeover hook is unimplemented, so such an exclusion
+cannot justify negative execution claims. See the [pinned hook implementation](https://github.com/DynamoRIO/dynamorio/blob/cronbuild-11.91.20749/core/win32/native_pe.c#L52-L62)
+and [native-call coverage issue](https://github.com/DynamoRIO/dynamorio/issues/978).
+No driver, asset or power setting was changed.
+
+Stock drrun lacked the guard's restricted creation/handle contract; suspended
+attach failed before entry, PIN's official download returned 403, and stock
+TinyInst requires a pre-entry adapter. The remaining documented fallback uses
+the already established classic guarded debugger to record one first hit per
+frozen game-function entry. It will preserve unknowns for unhit functions and
+leave dynamic BB/call counts unavailable. No original was traced outside the
+guard. `COVERAGE_ORIGINAL_GUARD.md` contains the backend and fixture evidence.
 
 With no attributable original BB trace, all original execution cells remain
 null. The original-yes/rebuilt-no wiring frontier, original-no/rebuilt-yes and

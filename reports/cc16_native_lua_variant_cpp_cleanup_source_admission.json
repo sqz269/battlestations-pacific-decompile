@@ -1,0 +1,687 @@
+{
+  "candidate": "a4774a47499cf3ad0f38af058a53fef1e71cea61",
+  "review": "b5d3e2c957ca22cb8f29ca0816f6e2aec87d5e73",
+  "source_build_head": "1102d21f508a6c1a5b517cd0a869c39ef4259df2",
+  "proof_sealed_at": "dff35386811f5d37044e18e7825f44439bc52a8b",
+  "common_build": {
+    "MSVC": "Win32 Release",
+    "MP": 2,
+    "PCH": true,
+    "coverage_PDB": false,
+    "existing_suites": "2/2",
+    "seconds": 11.4
+  },
+  "code_sections": 36,
+  "common_code_bytes": 5395,
+  "strict_exact_code_sections": 13,
+  "ten_support_bodies_match_prior_common": true,
+  "all6_kernels_and_compiler_EH_entries_strict_exact": true,
+  "all6_whole_EH_tables632B_strict_exact": true,
+  "common_SafeSEH_names": [
+    "__ehhandler$??$clear_kernel@$0A@@?A0x524a1db5@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+    "__ehhandler$??$destruct_kernel@$0A@@?A0x524a1db5@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+    "__ehhandler$??$subtree_kernel@$0A@@?A0x524a1db5@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+    "__ehhandler$??$clear_kernel@$00@?A0x524a1db5@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+    "__ehhandler$??$destruct_kernel@$00@?A0x524a1db5@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+    "__ehhandler$??$subtree_kernel@$00@?A0x524a1db5@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z"
+  ],
+  "all6_handlers_in_actual_PE_SafeSEH_table": true,
+  "public_entries": {
+    "?clear_native_lua_variant_00886920@": {
+      "symbol": "?clear_native_lua_variant_00886920@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+      "address": 4203008,
+      "object": "bsp_core:native_lua_variant_retirement.obj",
+      "section_bytes": 24
+    },
+    "?destruct_native_lua_variant_00884af0@": {
+      "symbol": "?destruct_native_lua_variant_00884af0@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+      "address": 4203152,
+      "object": "bsp_core:native_lua_variant_retirement.obj",
+      "section_bytes": 24
+    },
+    "?destroy_native_lua_variant_subtree_006ee890@": {
+      "symbol": "?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+      "address": 4203104,
+      "object": "bsp_core:native_lua_variant_retirement.obj",
+      "section_bytes": 27
+    },
+    "?clear_native_lua_variant_00886920_cpp_cleanup@": {
+      "symbol": "?clear_native_lua_variant_00886920_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "address": 4203040,
+      "object": "bsp_core:native_lua_variant_retirement.obj",
+      "section_bytes": 9
+    },
+    "?destruct_native_lua_variant_00884af0_cpp_cleanup@": {
+      "symbol": "?destruct_native_lua_variant_00884af0_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "address": 4203184,
+      "object": "bsp_core:native_lua_variant_retirement.obj",
+      "section_bytes": 9
+    },
+    "?destroy_native_lua_variant_subtree_006ee890_cpp_cleanup@": {
+      "symbol": "?destroy_native_lua_variant_subtree_006ee890_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "address": 4203136,
+      "object": "bsp_core:native_lua_variant_retirement.obj",
+      "section_bytes": 9
+    }
+  },
+  "actual_providers": {
+    "?native_string_pool_get_or_create_00419cc0": {
+      "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+      "address": 4204384,
+      "object": "bsp_core:native_string_pool_owner.obj"
+    },
+    "?return_native_string_pool_00bd1510": {
+      "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+      "address": 4204704,
+      "object": "bsp_core:native_string_pool_storage.obj"
+    },
+    "?singleton_lifetime_free": {
+      "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+      "address": 4204224,
+      "object": "bsp_core:singleton_lifetime.obj"
+    }
+  },
+  "PE_complete_live_code_sections": [
+    {
+      "symbols": [
+        "??$clear_kernel@$00@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "__catch$??$clear_kernel@$00@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0"
+      ],
+      "common_section": 3,
+      "address": 4198512,
+      "bytes": 973,
+      "relocations": 15,
+      "sha256": "a6d5d8857acab485e93d6ba7f91ec3c60ce6296996ca6d95f6ca1edb62c478e6"
+    },
+    {
+      "symbols": [
+        "__ehhandler$??$clear_kernel@$00@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z"
+      ],
+      "common_section": 4,
+      "address": 4324320,
+      "bytes": 29,
+      "relocations": 3,
+      "sha256": "1cee2d161668f627767dfe3aced646883a50ff235eef5f5d6be6e0043e27b91f"
+    },
+    {
+      "symbols": [
+        "??$clear_kernel@$0A@@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "__catch$??$clear_kernel@$0A@@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0"
+      ],
+      "common_section": 5,
+      "address": 4199488,
+      "bytes": 852,
+      "relocations": 13,
+      "sha256": "25b3a920127929b2f9f0e674ba9fdf3ccbace82850aba796ca7d2ed407ff3fde"
+    },
+    {
+      "symbols": [
+        "__ehhandler$??$clear_kernel@$0A@@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z"
+      ],
+      "common_section": 6,
+      "address": 4324352,
+      "bytes": 29,
+      "relocations": 3,
+      "sha256": "b0b08f6f430d7e619c5ebf5bbfb8a6936ab751d0d7dfdb87a2aa0a4d868893cd"
+    },
+    {
+      "symbols": [
+        "??$destruct_kernel@$00@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "__catch$??$destruct_kernel@$00@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0",
+        "__catch$??$destruct_kernel@$00@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$1"
+      ],
+      "common_section": 7,
+      "address": 4200352,
+      "bytes": 493,
+      "relocations": 10,
+      "sha256": "8edbc69bafc0af55098b85564dd06aec1ee747d8c7ac61d238618939f563362b"
+    },
+    {
+      "symbols": [
+        "__ehhandler$??$destruct_kernel@$00@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z"
+      ],
+      "common_section": 8,
+      "address": 4324384,
+      "bytes": 29,
+      "relocations": 3,
+      "sha256": "25955f14a786e3c9c4cc96aa3a54da1e7fc83559910cb29be0ac797748bdbdb9"
+    },
+    {
+      "symbols": [
+        "??$destruct_kernel@$0A@@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "__catch$??$destruct_kernel@$0A@@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0"
+      ],
+      "common_section": 9,
+      "address": 4200848,
+      "bytes": 359,
+      "relocations": 8,
+      "sha256": "5d0a784e8cab3e0182ac2747ff592661390dd90a471a022bc3b33866ab8b3ce0"
+    },
+    {
+      "symbols": [
+        "__ehhandler$??$destruct_kernel@$0A@@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z"
+      ],
+      "common_section": 10,
+      "address": 4324416,
+      "bytes": 29,
+      "relocations": 3,
+      "sha256": "922ae91912ed40d91eb13d7092acd0ef5c41678fe15a2ec21bdeac32d73e8fa6"
+    },
+    {
+      "symbols": [
+        "??$enter_mode@$00@?A0xed5f7190@bsp@@YAPAUNativeLuaVariantRetirementFrame@1@AAUNativeLuaVariantRetirementOperation@1@AAUNativeStringRawPoolContext@1@W4NativeLuaVariantRetirementBody@1@PAX3PBUNativeLuaVariantCppCleanupBacking@1@@Z"
+      ],
+      "common_section": 11,
+      "address": 4201216,
+      "bytes": 276,
+      "relocations": 1,
+      "sha256": "5fb48dd97162b3fac4e87e426d8b076b460913b57dcafe241fe76a33945a7672"
+    },
+    {
+      "symbols": [
+        "??$observe_incoming@$00@?A0xed5f7190@bsp@@YAXPAUNativeLuaVariantCppCleanupRecord@1@ABUNativeLuaVariantRetirementFrame@1@_NPAX@Z"
+      ],
+      "common_section": 13,
+      "address": 4201504,
+      "bytes": 39,
+      "relocations": 0,
+      "sha256": "cfc3c372a44c0bf31776265a9a5dfa7adcffd5249fbdb72aa411d75dedeb8861"
+    },
+    {
+      "symbols": [
+        "??$run_action@$00@?A0xed5f7190@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@1@AAUNativeStringRawPoolContext@1@PAX@Z"
+      ],
+      "common_section": 17,
+      "address": 4201552,
+      "bytes": 158,
+      "relocations": 2,
+      "sha256": "eb7a2cc780f8971a01d140fd5b7d2bbea566c4aa589611c99703d5f54e8bb04e"
+    },
+    {
+      "symbols": [
+        "??$run_action@$01@?A0xed5f7190@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@1@AAUNativeStringRawPoolContext@1@PAX@Z"
+      ],
+      "common_section": 18,
+      "address": 4201712,
+      "bytes": 159,
+      "relocations": 2,
+      "sha256": "8615b053375fcb0f31661fdfaa320ab5cbffb4b2e2ab8b5dc3714793f9788c55"
+    },
+    {
+      "symbols": [
+        "??$subtree_kernel@$00@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "__catch$??$subtree_kernel@$00@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0",
+        "__catch$??$subtree_kernel@$00@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$1"
+      ],
+      "common_section": 19,
+      "address": 4201872,
+      "bytes": 630,
+      "relocations": 12,
+      "sha256": "7ced65b8e43acbf98ca8fcfafcb9e0d71f8f62014ff86a448bbfe01d77e2e050"
+    },
+    {
+      "symbols": [
+        "__ehhandler$??$subtree_kernel@$00@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z"
+      ],
+      "common_section": 20,
+      "address": 4324448,
+      "bytes": 29,
+      "relocations": 3,
+      "sha256": "d32baff055f52c63d3cffcdcefaba6e7e645f21e39866f1c24833ddd638a0f11"
+    },
+    {
+      "symbols": [
+        "??$subtree_kernel@$0A@@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "__catch$??$subtree_kernel@$0A@@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0"
+      ],
+      "common_section": 21,
+      "address": 4202512,
+      "bytes": 484,
+      "relocations": 10,
+      "sha256": "d720cb9daa4cc6693df401177ce7ace27c122a33d879aa3a0a9eda7eb6f13b37"
+    },
+    {
+      "symbols": [
+        "__ehhandler$??$subtree_kernel@$0A@@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z"
+      ],
+      "common_section": 22,
+      "address": 4324480,
+      "bytes": 29,
+      "relocations": 3,
+      "sha256": "97ca7c3cbc8403a15312b55eb6f81eb036f676ae1c60cb20c31eb1307382c5c6"
+    },
+    {
+      "symbols": [
+        "?clear_native_lua_variant_00886920@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z"
+      ],
+      "common_section": 25,
+      "address": 4203008,
+      "bytes": 24,
+      "relocations": 1,
+      "sha256": "70905b9a813b27ec52ed7081a6b560c752018fb8b1b3ebd3d66cae55a0bb81e9"
+    },
+    {
+      "symbols": [
+        "?clear_native_lua_variant_00886920_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z"
+      ],
+      "common_section": 26,
+      "address": 4203040,
+      "bytes": 9,
+      "relocations": 1,
+      "sha256": "3d59308ad8c7f9424f8cade2ac9d1a14e7e48e757487bbaa3a264130a4f84279"
+    },
+    {
+      "symbols": [
+        "?complete@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@@Z"
+      ],
+      "common_section": 27,
+      "address": 4203056,
+      "bytes": 37,
+      "relocations": 0,
+      "sha256": "119ce9fed780eda607372e676683c0ce22ac78d6b05a1e8743fb7f98ab060929"
+    },
+    {
+      "symbols": [
+        "?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z"
+      ],
+      "common_section": 28,
+      "address": 4203104,
+      "bytes": 27,
+      "relocations": 1,
+      "sha256": "1ffcda34dec69c8fe0194de90615983f2e2d97e6e928a54b6b12668af1399fc6"
+    },
+    {
+      "symbols": [
+        "?destroy_native_lua_variant_subtree_006ee890_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z"
+      ],
+      "common_section": 29,
+      "address": 4203136,
+      "bytes": 9,
+      "relocations": 1,
+      "sha256": "7c34f84bec1ada1c727ddc2d646bff8417673384e7fdfaff64d103b56f926a8e"
+    },
+    {
+      "symbols": [
+        "?destruct_native_lua_variant_00884af0@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z"
+      ],
+      "common_section": 30,
+      "address": 4203152,
+      "bytes": 24,
+      "relocations": 1,
+      "sha256": "5ff9f0f52e3dee99fef19b3761e567be40d0acbf90d99a0810ec913e6dd74987"
+    },
+    {
+      "symbols": [
+        "?destruct_native_lua_variant_00884af0_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z"
+      ],
+      "common_section": 31,
+      "address": 4203184,
+      "bytes": 9,
+      "relocations": 1,
+      "sha256": "55161f647dd89241f3dda4f0c8f66507c679d72d1e1e0d14693506629e58ba4d"
+    },
+    {
+      "symbols": [
+        "?enter@?A0xed5f7190@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z"
+      ],
+      "common_section": 32,
+      "address": 4203200,
+      "bytes": 351,
+      "relocations": 0,
+      "sha256": "17186d24dbcf5591e9aeaba250f0769330145ec91456882986cb50b828cd5a29"
+    },
+    {
+      "symbols": [
+        "?retain_cpp_failure@?A0xed5f7190@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z"
+      ],
+      "common_section": 36,
+      "address": 4203552,
+      "bytes": 76,
+      "relocations": 0,
+      "sha256": "523908463c943278c50db3a68f3a83edb4b3140cc37b288ff612dd378fcdfd2c"
+    },
+    {
+      "symbols": [
+        "?return_buffer@?A0xed5f7190@bsp@@YAXAAUNativeStringRawPoolContext@2@AAUNativeLuaVariantRetirementFrame@2@PAXIII@Z"
+      ],
+      "common_section": 37,
+      "address": 4203632,
+      "bytes": 58,
+      "relocations": 2,
+      "sha256": "ad040e897bcd36b931f8d499a768f432251b5ae92b9c08719c3ff59fd6937be0"
+    }
+  ],
+  "defining_object_only_code_sections": [
+    {
+      "symbols": [
+        "??$enter_mode@$0A@@?A0xed5f7190@bsp@@YAPAUNativeLuaVariantRetirementFrame@1@AAUNativeLuaVariantRetirementOperation@1@AAUNativeStringRawPoolContext@1@W4NativeLuaVariantRetirementBody@1@PAX3PBUNativeLuaVariantCppCleanupBacking@1@@Z"
+      ],
+      "bytes": 28,
+      "qualification": "Retained defining-object code; no named entry in this /OPT:REF link"
+    },
+    {
+      "symbols": [
+        "??$record_for@$00@?A0xed5f7190@bsp@@YAPAUNativeLuaVariantCppCleanupRecord@1@PBUNativeLuaVariantCppCleanupBacking@1@I@Z"
+      ],
+      "bytes": 25,
+      "qualification": "Retained defining-object code; no named entry in this /OPT:REF link"
+    },
+    {
+      "symbols": [
+        "??$record_for@$0A@@?A0xed5f7190@bsp@@YAPAUNativeLuaVariantCppCleanupRecord@1@PBUNativeLuaVariantCppCleanupBacking@1@I@Z"
+      ],
+      "bytes": 3,
+      "qualification": "Retained defining-object code; no named entry in this /OPT:REF link"
+    },
+    {
+      "symbols": [
+        "?arm_action@?A0xed5f7190@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@2@PAX@Z"
+      ],
+      "bytes": 21,
+      "qualification": "Retained defining-object code; no named entry in this /OPT:REF link"
+    },
+    {
+      "symbols": [
+        "?at@?A0xed5f7190@bsp@@YAPAXPAXI@Z"
+      ],
+      "bytes": 11,
+      "qualification": "Retained defining-object code; no named entry in this /OPT:REF link"
+    },
+    {
+      "symbols": [
+        "?read_byte@?A0xed5f7190@bsp@@YAEPAXI@Z"
+      ],
+      "bytes": 14,
+      "qualification": "Retained defining-object code; no named entry in this /OPT:REF link"
+    },
+    {
+      "symbols": [
+        "?read_pointer@?A0xed5f7190@bsp@@YAPAXPAXI@Z"
+      ],
+      "bytes": 14,
+      "qualification": "Retained defining-object code; no named entry in this /OPT:REF link"
+    },
+    {
+      "symbols": [
+        "?read_word@?A0xed5f7190@bsp@@YAIPAXI@Z"
+      ],
+      "bytes": 14,
+      "qualification": "Retained defining-object code; no named entry in this /OPT:REF link"
+    },
+    {
+      "symbols": [
+        "?stop@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@W432@@Z"
+      ],
+      "bytes": 27,
+      "qualification": "Retained defining-object code; no named entry in this /OPT:REF link"
+    },
+    {
+      "symbols": [
+        "?write_word@?A0xed5f7190@bsp@@YAXPAXII@Z"
+      ],
+      "bytes": 17,
+      "qualification": "Retained defining-object code; no named entry in this /OPT:REF link"
+    }
+  ],
+  "PE_complete_EH_tables": [
+    {
+      "symbol": "__ehfuncinfo$??$clear_kernel@$0A@@?A0x524a1db5@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "address": 4404904,
+      "bytes": 88,
+      "relocations": 4,
+      "sha256": "6c2d331741807a4bb9423b2e321c5e6b6b7cb7a0ddb00d14e03ab718ac502f46"
+    },
+    {
+      "symbol": "__ehfuncinfo$??$destruct_kernel@$0A@@?A0x524a1db5@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "address": 4404992,
+      "bytes": 88,
+      "relocations": 4,
+      "sha256": "44643631974bdb2eefb9a0c1fb480bf3b26cf6ea6e7bff6eb1dc9ae8c854e997"
+    },
+    {
+      "symbol": "__ehfuncinfo$??$subtree_kernel@$0A@@?A0x524a1db5@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "address": 4405080,
+      "bytes": 88,
+      "relocations": 4,
+      "sha256": "6dd1e180cce0c21fcbc8c33ffdf7dc0ae306180de756aa61ac862bfab9f66c57"
+    },
+    {
+      "symbol": "__ehfuncinfo$??$clear_kernel@$00@?A0x524a1db5@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "address": 4405168,
+      "bytes": 88,
+      "relocations": 4,
+      "sha256": "97e8ad529e8f27e11c0d023bdc35df1601184b4c9d18d859d12c2607e185bebd"
+    },
+    {
+      "symbol": "__ehfuncinfo$??$destruct_kernel@$00@?A0x524a1db5@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "address": 4405256,
+      "bytes": 140,
+      "relocations": 6,
+      "sha256": "0839835a32a3afee11821645e818ecc64277481c4b7db9e60e5c0fd79ca9aeb5"
+    },
+    {
+      "symbol": "__ehfuncinfo$??$subtree_kernel@$00@?A0x524a1db5@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "address": 4405396,
+      "bytes": 140,
+      "relocations": 6,
+      "sha256": "0d4b5b73d0bf16882af2e92b9406d9ac6552345c7aa8d25b3afdf4adb0f3788f"
+    }
+  ],
+  "manifest_embedded": true,
+  "link_client_executed": false,
+  "artifacts": [
+    {
+      "path": "local/function_source_batch12/artifacts/native_lua_variant_retirement.obj",
+      "bytes": 26809,
+      "sha256": "23573ec775b279306cfb27ff830a1c58c1f45d98bc19d84f94291fe43f2dd566",
+      "copied_from": "build/win32/bsp_core.dir/Release/native_lua_variant_retirement.obj"
+    },
+    {
+      "path": "local/function_source_batch12/artifacts/native_string_pool_owner.obj",
+      "bytes": 15595,
+      "sha256": "6b8d709e064a23e75ea5ff7255c985280d0efb89e9ca8f353b83b903cb42a891",
+      "copied_from": "build/win32/bsp_core.dir/Release/native_string_pool_owner.obj"
+    },
+    {
+      "path": "local/function_source_batch12/artifacts/native_string_pool_storage.obj",
+      "bytes": 9441,
+      "sha256": "bbc0339374e3a681e633f2d14ef90f94ade4cf7921f3231ff5115a6315913ee2",
+      "copied_from": "build/win32/bsp_core.dir/Release/native_string_pool_storage.obj"
+    },
+    {
+      "path": "local/function_source_batch12/artifacts/singleton_lifetime.obj",
+      "bytes": 33008,
+      "sha256": "386824ba4b5224ce24dfa43d84dd09b6c8b1fc64e02011998109d91cdc72171f",
+      "copied_from": "build/win32/bsp_core.dir/Release/singleton_lifetime.obj"
+    },
+    {
+      "path": "local/function_source_batch12/artifacts/bsp_game.exe",
+      "bytes": 7503360,
+      "sha256": "a7023838d1f927f8b5895ae611717eddc0886767a323f702c479b59aa6f48ad3",
+      "copied_from": "build/win32/Release/bsp_game.exe"
+    },
+    {
+      "path": "local/function_source_batch12/artifacts/entries_probe.cpp",
+      "bytes": 677,
+      "sha256": "7e3d62ab541333e4ad10ca0ee5eefe2a3ef8d02c0c9b2acb98f70dd1501be4d6",
+      "copied_from": "local/function_source_batch12/entries_probe.cpp"
+    },
+    {
+      "path": "local/function_source_batch12/artifacts/entries_probe.cmd",
+      "bytes": 874,
+      "sha256": "a4b83fb7c15f7638599c97a2ae0d74b8e6a39db938a23d677bb7cfc9af99b7f3",
+      "copied_from": "local/function_source_batch12/entries_probe.cmd"
+    },
+    {
+      "path": "local/function_source_batch12/artifacts/entries_probe.obj",
+      "bytes": 2687,
+      "sha256": "7dbd5661224ba854b4f8be4ce87e68892d6bfa64a4d057a7037a193419a774e4",
+      "copied_from": "local/function_source_batch12/entries_probe.obj"
+    },
+    {
+      "path": "local/function_source_batch12/artifacts/entries_probe.exe",
+      "bytes": 221696,
+      "sha256": "2695e6d7919831bed0ad6efcd9e5e88bb06115ee6566655b653362c27d4e623c",
+      "copied_from": "local/function_source_batch12/entries_probe.exe"
+    },
+    {
+      "path": "local/function_source_batch12/artifacts/entries_probe.map",
+      "bytes": 319932,
+      "sha256": "835b16b84ec1734e769fd737e2573803edf737f92d32c2ff17f4a290e31ece21",
+      "copied_from": "local/function_source_batch12/entries_probe.map"
+    },
+    {
+      "path": "local/function_source_batch12/artifacts/build.log",
+      "bytes": 2630,
+      "sha256": "22a927893b6c95eb3c86a57f849987b464b7045763896c10047cfce651eac91b",
+      "copied_from": "local/function_source_batch12/build.log"
+    },
+    {
+      "path": "local/function_source_batch12/artifacts/link.log",
+      "bytes": 19,
+      "sha256": "48d974da562e4793f8ff5dad5377207422c2b5093bd7c730baf580da948db910",
+      "copied_from": "local/function_source_batch12/link.log"
+    },
+    {
+      "path": "local/function_source_batch12/artifacts/retirement_common.txt",
+      "bytes": 201983,
+      "sha256": "72a9fa4e91ded7aab908208d15b23f2e3b94434f2aaafe26e1f97bf7d9ad6774",
+      "copied_from": "local/function_source_batch12/retirement_common.txt"
+    },
+    {
+      "path": "local/function_source_batch12/artifacts/candidate_checks.json",
+      "bytes": 35897,
+      "sha256": "567d0ef59ae0ff3f38fdce2451de69f6da4efe9c2f3797cab35ffd3a733fd082",
+      "copied_from": "local/function_source_batch12/candidate_checks.json"
+    },
+    {
+      "path": "local/function_source_batch12/artifacts/common_inspection.json",
+      "bytes": 123290,
+      "sha256": "e2955a88d0827c5005dc5f1cdfcd51bffcf2111a890b09d2ee993ac433f94e27",
+      "copied_from": "local/function_source_batch12/common_inspection.json"
+    },
+    {
+      "path": "local/function_source_batch12/artifacts/prior_common_support_reuse.json",
+      "bytes": 2183,
+      "sha256": "ba85120304ebc54a25f6db779a70e86534a18ee38d034f2f82d1ddfe6db46e35",
+      "copied_from": "local/function_source_batch12/prior_common_support_reuse.json"
+    },
+    {
+      "path": "local/function_source_batch12/artifacts/review_pin_checks.json",
+      "bytes": 12667,
+      "sha256": "5dd18497677aceb88b9a57819708bc37cb07eceaf4f65889a569b0f038838b54",
+      "copied_from": "local/function_source_batch12/review_pin_checks.json"
+    }
+  ],
+  "status": "qualified_Source_CPP_effects_reviewed_common_built_entry_linked_unactivated",
+  "additional_frozen_artifacts": [
+    {
+      "path": "local/function_source_batch12/artifacts/immutable_author_report.json",
+      "bytes": 171611,
+      "sha256": "9670177711f416451dccf5b9e86b17bbd9d01f9eef086f4152966a94c16eeb7d",
+      "source": "a4774a47499cf3ad0f38af058a53fef1e71cea61:reports/cc16_native_lua_variant_cpp_cleanup.json"
+    },
+    {
+      "path": "local/function_source_batch12/artifacts/immutable_review_report.json",
+      "bytes": 162534,
+      "sha256": "2e62e204bcf69c54d354a578797851cb80dc18cea5b03da4bcd79d20b4c988a2",
+      "source": "b5d3e2c957ca22cb8f29ca0816f6e2aec87d5e73:reports/cc16_native_lua_variant_cpp_cleanup_review.json"
+    },
+    {
+      "path": "local/function_source_batch12/artifacts/original_00886920_assembly.txt",
+      "bytes": 1587,
+      "sha256": "b8ff76e02eb054d12ce3f622bf84231f22f3fe06fe272b33acaaf39789cc4040",
+      "source": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00886920\\assembly.txt"
+    },
+    {
+      "path": "local/function_source_batch12/artifacts/original_00886920_decompiled.c",
+      "bytes": 1160,
+      "sha256": "3a02bcc93df391c4dda089e31ecd8334237763cdef3147a257bd08d0d61f4d11",
+      "source": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00886920\\decompiled.c"
+    },
+    {
+      "path": "local/function_source_batch12/artifacts/original_00884af0_assembly.txt",
+      "bytes": 823,
+      "sha256": "4f3a25cf2f4fb2f4f39fe5522019968c52414069936230e00c0cb28a613bfd21",
+      "source": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00884af0\\assembly.txt"
+    },
+    {
+      "path": "local/function_source_batch12/artifacts/original_00884af0_decompiled.c",
+      "bytes": 608,
+      "sha256": "64373f8ba108952124dda9ab89ee3b68d5347f7f00850f16a90efe45432f9fb4",
+      "source": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00884af0\\decompiled.c"
+    },
+    {
+      "path": "local/function_source_batch12/artifacts/original_006ee890_assembly.txt",
+      "bytes": 1384,
+      "sha256": "ee3c73fd7858bebe650453d1ab1f1409dc21fb99d307a948728557491859f21f",
+      "source": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\006ee890\\assembly.txt"
+    },
+    {
+      "path": "local/function_source_batch12/artifacts/original_006ee890_decompiled.c",
+      "bytes": 1240,
+      "sha256": "70732824bd461fb31808c464571c3409db7985c99ee317559bb83aeab83cd198",
+      "source": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\006ee890\\decompiled.c"
+    }
+  ],
+  "primary_complete_reads": {
+    "header_lines": 231,
+    "CPP_lines": 548,
+    "author_doc_lines": 169,
+    "independent_review_doc_lines": 165,
+    "full_all36_code_and_EH_checks": true,
+    "changed_common_helpers_full_decode_and_ten_prior_common_support_reuse": true
+  },
+  "checks": {
+    "author_retained_Git_receipts": 49,
+    "current_dependency_pins": 21,
+    "independent_review_retained_Git_receipts": 42,
+    "strict_code_sections": 36,
+    "strict_code_bytes": 5428,
+    "strict_operations": 1631,
+    "strict_calls": 73,
+    "strict_EH_bytes": 656,
+    "Native_spans": 11,
+    "Native_span_bytes": 751,
+    "old_normal_header_prefix_and_layouts_preserved": true
+  },
+  "failure_effects": {
+    "normal_mode": "retains/rethrows only; no new action reachability",
+    "qualified_mode": "exact local name C970D0->41DD20 and key C830A0->6EE020 contract composition; exceptional demotion before CURRENT action fields; all four internal edges qualified",
+    "positive_claim": "genuine CPP delivery across Source scopes and all invoked actions returning normally preserves incoming bare rethrow",
+    "secondary": "actual escaping secondary recorded/rethrown without retry, exception-object retention or Original terminal equivalence",
+    "no_extra_effects": "no node/map/descriptor/object free, header clear, normal suffix, rollback or automatic cleanup destructor"
+  },
+  "metadata": {
+    "Frame": 120,
+    "Operation": 24,
+    "Incoming": 16,
+    "ActionRecord": 36,
+    "Record": 56,
+    "Backing": 8,
+    "trivially_destructible": true,
+    "actual_active_chain_backing_required": true,
+    "metadata_stops_action_free": true,
+    "own_lexical_slot_not_failed_active_depth_minus1": true
+  },
+  "old_normal_emission": "Old17b77 whole public849/356/478 becomes selectors23/23/27 +full normal kernels852/359/484 in strict. Added backing arguments/stack schedules and relocated branches/EH identities are reviewed. Ten support bodies exact; normal EH raw88B tables/handler bodies match but relocation identities change. Whole object unchanged is not claimed.",
+  "common_drift": "13/36 code sections exact: all6 full kernels,all6 compilerEHentries,one support.23 changed helper/public shapes fully inspected;10 existing common support bodies/normalizedrelocations equal previously primary-reviewed frozen17 common. New actions158/159B preserve actual capture/getter/return epochs; ordinary selectors24/24/27,qualified9/9/9 use same actual mode targets.",
+  "remaining": [
+    "Actual host/queue/payload/vector/reserve/copy/scalar/CF-D0 provider/caller and genuine raw-object/context adoption",
+    "Runtime failure delivery through actual naked/register/provider boundaries and existing noexcept/CRT/OS/nonlocal limits",
+    "Source K VALUE custody supplies no mutable Original private-home alias/replacement",
+    "Compiler eligibility hoists/dead local disarm across nonthrowing accesses supply no Native fault/SEH/private-frame/FP epoch identity",
+    "Original ABI/FH3/SEH/secondary terminal equivalence and required runtime/gameplay activation gates"
+  ],
+  "new_native_vendor_duplicate_body_credit": 0,
+  "runtime_credit": 0,
+  "game_activated": false,
+  "ghidra": {
+    "prior_annotations": "local/ghidra-annotations-20261030T083631Z.json",
+    "existing_names_comments_preserved": true,
+    "project_saved": true,
+    "affected_exports_refreshed": true,
+    "index_rebuilt": true,
+    "old_semantic_records_and_normal_emission_evidence_preserved": true
+  }
+}

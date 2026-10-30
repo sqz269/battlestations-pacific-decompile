@@ -38,6 +38,7 @@
 #include "bsp/native_system_constant_gather.hpp"
 #include "bsp/native_particle_preparation.hpp"
 #include "bsp/game_native_mission_model.hpp"
+#include "bsp/game_native_model_domain.hpp"
 #include "bsp/game_native_mission_frame.hpp"
 #include "bsp/game_native_mission_devices.hpp"
 #include "bsp/game_native_mission_frame_jobs.hpp"
@@ -523,6 +524,9 @@ struct GameNativeRendererApplication::Impl {
     std::unique_ptr<NativeInstanceGeneratorContext> instance_generator_context;
     // A1: declared before every borrower so it outlives them.
     std::unique_ptr<StartupSceneDomain> startup_domain;
+    // The one shared companion domain outlives its Page/Mission clients and
+    // follows every renderer/VFS/geometry/node provider it borrows.
+    std::unique_ptr<GameNativeModelDomain> model_domain;
     GameNativeMissionFactories* startup_factories{};
     bool startup_factories_retired{};
     std::unique_ptr<StartupShaderPreload> startup_preload;
@@ -775,6 +779,14 @@ NativePlatformLoadPublication GameNativeRendererApplication::borrow_platform_pub
 }
 NativeRenderActualOwnerRegistry& GameNativeRendererApplication::actual_owners() noexcept {
     return impl_->owners;
+}
+GameNativeModelDomain& GameNativeRendererApplication::model_domain() {
+    auto& p=*impl_;
+    check(p.phase==Impl::Phase::ready && !requires_process_retention(),
+        "shared Model domain requires a ready renderer with completed acquisitions");
+    if (!p.model_domain)
+        p.model_domain.reset(new GameNativeModelDomain(*this,p.mesh_field_vfs,p.profiles.data));
+    return *p.model_domain;
 }
 NativeGameGridContext& GameNativeRendererApplication::game_grid_context() noexcept {
     return impl_->game_grids.context;
@@ -1288,6 +1300,7 @@ bool GameNativeRendererApplication::requires_process_retention() const noexcept 
     return (phase!=Impl::Phase::prepared && phase!=Impl::Phase::ready && phase!=Impl::Phase::drained)
         || (!impl_->shaders.quiescent() && !mission_cache) || !impl_->shadow.quiescent()
         || impl_->section_layout_acquisition_pending()
+        || (impl_->model_domain && impl_->model_domain->requires_process_retention())
         || (impl_->mission_ship && impl_->mission_ship->requires_process_retention())
         || (impl_->startup_preload && impl_->startup_preload->requires_process_retention())
         || (impl_->section_layouts.has_live_companions() &&
@@ -1331,10 +1344,12 @@ void GameNativeRendererApplication::after_native_drain() {
     // before entering its closure so that reentry observes that same fact.
     if (p.mission_ship) p.mission_ship->after_native_drain();
     if (p.startup_preload) p.startup_preload->after_native_drain();
+    if (p.model_domain) p.model_domain->after_native_renderer_drain();
     if (p.mission_ship)
         observe_mission_texture_owners(p.log, p.texture_loading.owners, "after_drain");
     p.log.note("native renderer after raw drain: owner=null lua=null definitions=null system=null entry_cache=null queue=null worker=joined");
 }
 } // namespace bsp::game
+#include "game_native_model_domain.inc"
 #include "game_native_mission_model.inc"
 #include "game_native_mission_factories.inc"

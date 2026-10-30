@@ -46,6 +46,21 @@ public:
     void initialize_layer_type_once_00cd73f0(TypeIdCounterLifetime&,
         LightTypeBootstrapStorage canonical_common_types);
 
+    // Complete CD7460 Source role over the SAME Element/counter/root domain.
+    // Group may initialize before Text: neither payload pool, Text descriptor
+    // nor Layer completion is an input. The first Text/Group call binds the
+    // existing domain identities; later calls cannot retarget them. Keep the
+    // publication/object live and unchanged during serialized initialization
+    // and consumers; retain its owning counter/root graph through shared drain.
+    // Actual retirement may clear that publication and destroy its storage.
+    // No counter reset/retirement or reentry during initialization/consumers.
+    // Guard/name precede AA8200; BOTH current parent IDs precede either Group
+    // store; the current counter is incremented BEFORE publishing Group's ID.
+    // Entered failure stays sticky and is visible in native_operation_interrupted.
+    // New C++ interface, not Native register/private-frame/FH3/SEH/fault parity.
+    void initialize_group_type_once_00cd7460(TypeIdCounterLifetime&,
+        LightTypeBootstrapStorage canonical_common_types);
+
     // Only after the corresponding complete explicit startup. Borrowers must
     // finish all Text payloads/slots and list/trim use before CE0A80 runs.
     // Do not initialize/destroy this borrowed pool through its low-level API.
@@ -55,6 +70,9 @@ public:
     // SAME Layer member, only after its complete explicit startup; no ID copy
     // or descriptor/default construction. Usable by the packet108 live query.
     const volatile std::uint32_t (&layer_lineage_00f8bf88() const)[3];
+    // Same Group IDs, only after complete CD7460. No Text/pool/other-role gate,
+    // copied IDs or default chain; AC6F70 consumes these CURRENT words in order.
+    const volatile std::uint32_t (&group_lineage_00f8bfd8() const)[3];
 
     // Metadata only: inspect BEFORE unwinding host/manager/CRT ownership.
     // True for an entered pool/type failure or interrupted pool retirement.
@@ -68,6 +86,8 @@ private:
     ~GameNativeGuiTextProcess() = default; // Registered CE0A80 owns pool teardown.
     static void destroy_pool_00ce0a80();
     enum class State { unattempted, returned, threw, retiring, retired };
+    void bind_or_check_type_domain(TypeIdCounterLifetime&,
+        LightTypeBootstrapStorage canonical_common_types);
 
     NativeGuiTextPoolStorage pool_storage_00f8bdf0_{};
     NativeGuiTextPool pool_;
@@ -91,6 +111,12 @@ private:
     std::uint8_t layer_guard_00f8bf48_{};
     gui_widgets_cc13::GuiTypeDescriptor<3> layer_00f8bf88_{};
     State layer_type_state_{State::unattempted};
+
+    // Appended Group role only. The existing Element and domain identities are
+    // shared; these zero loader preimages never imply completed initialization.
+    std::uint8_t group_guard_00f8bf9c_{};
+    gui_widgets_cc13::GuiTypeDescriptor<3> group_00f8bfd8_{};
+    State group_type_state_{State::unattempted};
 };
 
 // Construct the common E188B4 owner and this process BEFORE CD71F0 registers

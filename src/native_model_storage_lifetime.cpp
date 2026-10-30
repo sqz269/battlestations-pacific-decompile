@@ -248,22 +248,33 @@ void destroy_native_model_geometry_storage_00b74f20(void* member,
     a.complete = true;
 }
 
-void destroy_native_model_storage_00b750c0(void* owner,
-    NativeModelStorageLifetimeFrame& frame, NativeModelStorageContext& c,
-    NativeModelStorageLifetimeAcquired& a) {
-    if (a.scalar_started)
-        throw std::invalid_argument("raw Model direct destruction cannot resume scalar deletion");
-    destroy_model(owner, frame, c, a);
+namespace {
+void require_completion(const NativeModelStorageHostCompletion& completion) {
+    if (!completion.context || !completion.end_typed_storage)
+        throw std::invalid_argument("raw Model host completion requires its retained typed owner");
 }
-
-void* delete_native_model_storage_00b75290(void* owner, const volatile Word& flags,
+void destroy_model_completed(void* owner, NativeModelStorageLifetimeFrame& frame,
+    NativeModelStorageContext& c, NativeModelStorageLifetimeAcquired& a,
+    const NativeModelStorageHostCompletion& completion) {
+    try { destroy_model(owner, frame, c, a); }
+    catch (...) {
+        // The existing raw body has consumed its normal/unwind cleanup states.
+        // End only caller-owned C++ extents; never repeat native base cleanup.
+        if (a.node.started) completion.end_typed_storage(completion.context);
+        throw;
+    }
+    completion.end_typed_storage(completion.context);
+}
+void* delete_model(void* owner, const volatile Word& flags,
     NativeModelStorageLifetimeFrame& frame, NativeModelStorageContext& c,
-    NativeModelStorageLifetimeAcquired& a) {
+    NativeModelStorageLifetimeAcquired& a,
+    const NativeModelStorageHostCompletion* completion) {
     require_fresh(a);
     if (a.scalar_started || a.scalar_complete)
         throw std::invalid_argument("raw Model scalar deletion requires fresh persistent diagnostics");
     a.scalar_started = true;
-    destroy_model(owner, frame, c, a);
+    if (completion) destroy_model_completed(owner, frame, c, a, *completion);
+    else destroy_model(owner, frame, c, a);
     a.active_call_site = 0x00b75298;
     const auto low_flags = *reinterpret_cast<const volatile unsigned char*>(&flags);
     a.flags_low_byte = low_flags;
@@ -275,6 +286,34 @@ void* delete_native_model_storage_00b75290(void* owner, const volatile Word& fla
     }
     a.scalar_complete = true;
     return owner; // numeric identity only after possible pool return.
+}
+} // namespace
+
+void destroy_native_model_storage_00b750c0(void* owner,
+    NativeModelStorageLifetimeFrame& frame, NativeModelStorageContext& c,
+    NativeModelStorageLifetimeAcquired& a) {
+    if (a.scalar_started)
+        throw std::invalid_argument("raw Model direct destruction cannot resume scalar deletion");
+    destroy_model(owner, frame, c, a);
+}
+void destroy_native_model_storage_00b750c0(void* owner,
+    NativeModelStorageLifetimeFrame& frame, NativeModelStorageContext& c,
+    NativeModelStorageLifetimeAcquired& a, const NativeModelStorageHostCompletion& completion) {
+    if (a.scalar_started)
+        throw std::invalid_argument("raw Model direct destruction cannot resume scalar deletion");
+    require_completion(completion);
+    destroy_model_completed(owner, frame, c, a, completion);
+}
+void* delete_native_model_storage_00b75290(void* owner, const volatile Word& flags,
+    NativeModelStorageLifetimeFrame& frame, NativeModelStorageContext& c,
+    NativeModelStorageLifetimeAcquired& a) {
+    return delete_model(owner, flags, frame, c, a, nullptr);
+}
+void* delete_native_model_storage_00b75290(void* owner, const volatile Word& flags,
+    NativeModelStorageLifetimeFrame& frame, NativeModelStorageContext& c,
+    NativeModelStorageLifetimeAcquired& a, const NativeModelStorageHostCompletion& completion) {
+    require_completion(completion);
+    return delete_model(owner, flags, frame, c, a, &completion);
 }
 
 NativeModelStorageReference::NativeModelStorageReference(void* owner,

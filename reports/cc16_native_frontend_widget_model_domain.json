@@ -1,0 +1,1251 @@
+{
+  "schema": "bsp.cc16.native_frontend_widget_model_domain.v1",
+  "status": "frontend_Model_owner_selected_raw_terminal_supplier_unresolved_not_Source_ready",
+  "created_utc": "2026-10-30T12:18:36.415706+00:00",
+  "baseline_commit": "5dc9e9a018c8cb59b606fe904fca95ed7f9c574a",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain",
+  "branch": "agent/codex-frontend-widget-model-domain",
+  "owned_files": [
+    "docs/CC16_NATIVE_FRONTEND_WIDGET_MODEL_DOMAIN.md",
+    "reports/cc16_native_frontend_widget_model_domain.json"
+  ],
+  "address_ownership": "none; file leases only",
+  "decision": {
+    "selected": "one renderer-retained common Model-companion domain extracted from existing Mission ownership, with stable Page and Mission clients",
+    "implementation_contract_ready": false,
+    "actual_frontend_provider_exists": false,
+    "Source_adoption_ready": false,
+    "exact_current_blocker": "Mission raw environment/standalone callbacks remain private and no shared retained owner/Page raw consumer exists. Additionally canonical NativeModelReference current54 and zero-terminal still use legacy SceneAttachmentRuntime, so raw Page scene destruction is not composed.",
+    "no_unused_accessor_packet": "Common ownership/client migration and actual Page consumer must be implemented and reviewed together.",
+    "retention_root_reason": "GameFrontendHost is deleted before native singleton drain; renderer and Page provider graph survive through that drain.",
+    "ownership_migration_contract_ready": true,
+    "complete_raw_Model_provider_contract_ready": false
+  },
+  "sealed_input": {
+    "commit": "911d59186e23f760a908e70648db26ec364e63f7",
+    "baseline_commit": "5dc9e9a018c8cb59b606fe904fca95ed7f9c574a",
+    "document_lines": 38,
+    "files": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-type2-adoption-readiness\\docs\\CC16_NATIVE_GUI_GROUP_TYPE2_ADOPTION_READINESS.md",
+        "bytes": 11437,
+        "sha256": "9ddbaad753f65ad2fbb1570678fd583215355e1c85ca616ea7d7ef58d2acc29e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-type2-adoption-readiness\\reports\\cc16_native_gui_group_type2_adoption_readiness.json",
+        "bytes": 82004,
+        "sha256": "5f8082536c6cc74cf1b9962ef4f2badc72ecc6a70ff52a0fbd36ef03054d2063"
+      }
+    ],
+    "current_source_receipts_checked": 56,
+    "all_match": true,
+    "checks": [
+      "file bytes",
+      "file SHA256",
+      "baseline Git blob"
+    ],
+    "failures": []
+  },
+  "ancestry": {
+    "default_factory": {
+      "commit": "476d3408a74ba5651d434dc49d50e926fb987883",
+      "ancestor_of_frozen_main": true,
+      "subject": "Correct raw GuiGroup factory branch inputs"
+    },
+    "same_domain_lineage": {
+      "commit": "972969f2269a5343efc0d83d07c2df7fa29aa1a9",
+      "ancestor_of_frozen_main": true,
+      "subject": "Add qualified same-domain GUI Group lineage startup"
+    },
+    "pool_startup_candidate": {
+      "commit": "6772843657c3ab62f7bb4f9ae613adbac0770c80",
+      "ancestor_of_frozen_main": false,
+      "subject": "Prepare real GuiGroup pool startup and same-owner exit custody"
+    },
+    "pool_startup_review": {
+      "commit": "41106def0cae436ea117b563ce5470bb96f4c161",
+      "ancestor_of_frozen_main": false,
+      "subject": "Review sealed GuiGroup pool backing and Main startup candidate"
+    }
+  },
+  "object_identities": {
+    "ui_GuiGroup": {
+      "object_bytes": "0xEC",
+      "slot_bytes": "0xF0",
+      "pool": "0x00F8BFA0",
+      "profile": "0x00D5CB80",
+      "lineage": "0x00F8BFD8"
+    },
+    "Page_renderer_ModelGroup": {
+      "object_bytes": "0x188",
+      "slot_bytes": "0x18C",
+      "pool": "0x010902F4",
+      "profile": "0x00D634F8",
+      "descriptor": "0x0109032C"
+    },
+    "child_Model": {
+      "object_bytes": "0x188",
+      "pool": "0x01090054",
+      "profile": "0x00D62DE8"
+    },
+    "pool_startup_runtime_inference": "none; F8BFA0 startup candidate/review are not ancestors of baseline"
+  },
+  "existing_owner_options": [
+    {
+      "owner": "Mission Impl",
+      "genuine_raw_environment": true,
+      "standalone_lifecycle_callbacks": true,
+      "frontend_retained": false,
+      "rejection": "Current owner is mission_ship.prepare; constructor additionally binds samplers/effects. Do not create an unrelated Mission graph for Page."
+    },
+    {
+      "owner": "GameNativeGuiNodeApplication / GuiWidgetOwnerRuntime",
+      "genuine_raw_environment": true,
+      "independent_raw_callback_API": false,
+      "rejection": "Private whole widget/layout Model custody, legacy GuiNativeScene, Text-only Mission-gated diagnostic caller. A models() getter or fake layout cannot supply a raw Page lifecycle."
+    },
+    {
+      "owner": "GameFrontendHost",
+      "rejection": "Deleted before native singleton drain; too short-lived."
+    },
+    {
+      "owner": "GameNativeRendererApplication",
+      "selected": true,
+      "reason": "Already retains same VFS/node/camera/geometry/canonical registry through native drain; can retain moved common lifecycle without new Native resources."
+    }
+  ],
+  "selected_domain": {
+    "proposed_new_header": "include/bsp/game_native_model_domain.hpp",
+    "proposed_new_implementation": "src/game_native_model_domain.inc",
+    "compilation": "Include in already compiled game_native_renderer_application.cpp before game_native_mission_model.inc; no separate CMake source is needed.",
+    "owner": "one address-stable noncopyable renderer Impl unique_ptr, after providers and before client-owning optional graphs in member lifetime",
+    "initialize": "once on ready quiescent renderer after existing pool/type startup, before Page/Mission native acquisition; independent of Mission diagnostic flags",
+    "move_from_mission": [
+      "LightTypeBootstrap/ModelTypeBootstrap wrappers over existing storage/counter",
+      "raw_models",
+      "instance_models",
+      "materials",
+      "ModelRecord list",
+      "StreamRecord list",
+      "Model and stream prepare/bind/retire callbacks"
+    ],
+    "borrow_only": [
+      "existing process01090054 Model pool",
+      "renderer camera_environment().nodes",
+      "same VFS raw name context and NativeStringStorage",
+      "existing VFS type storage/counter",
+      "renderer actual_owners canonical registry",
+      "game_grid graphics geometry/vertices",
+      "existing F8D3E4/F8D3AC material pools",
+      "live mapped constants/tables and ready-borrowed D5E520"
+    ],
+    "client_context": "stable noncopyable Page/Mission host context tags each common record, owns immutable access views and optional nonowning Mission retirement notification; adds no Native references/counts",
+    "views": {
+      "Page": "raw NativeInstanceGeometryAccess, models.actual_names==nullptr for full lifetime",
+      "Mission_instance": "typed NativeInstanceGeometryAccess, models.actual_names==&raw.strings unchanged",
+      "Mission_raw_load": "same common raw environment with exact raw-name/node/constant identities"
+    },
+    "registry_rule": "One existing canonical renderer registry, one companion per actual slot, borrowing actual+04; no duplicate Model registry/counter/native tree.",
+    "actual_shared_accessor": "NEW GameNativeRendererApplication::model_domain(), used by Mission construction and the actual Page startup caller; no unused raw getter packet"
+  },
+  "callback_contracts": [
+    {
+      "name": "prepare_model",
+      "source": "src/game_native_mission_model.inc:298-306",
+      "contract": "Accept only client common raw/typed env; add stable sole record over same unused188h slot, preserve Native bytes/count; erase abandoned metadata if preparation throws."
+    },
+    {
+      "name": "retire_failed_model",
+      "source": "src/game_native_mission_model.inc:308-315",
+      "contract": "Only own prepared/dead owner with no reference; erase host metadata before caller pool return; never destroy a completed live Model."
+    },
+    {
+      "name": "bind_completed_model",
+      "source": "src/game_native_mission_model.inc:330-340",
+      "contract": "One actual NativeModelReference, same canonical registry; mark registered after successful bind. Any failure preserves completed creator and already-bound reference without replay or slot return."
+    },
+    {
+      "name": "terminal_disposal",
+      "source": "src/game_native_mission_model.inc:317-328; src/native_model_owner.cpp:340-351",
+      "contract": "Native destructor/pool return/lifetime unbind precede callback. Validate optional Mission drawable notification, canonical unbind exactly once, erase sole record; preserve noexcept boundary.",
+      "qualification": "Disposal after native destruction is real; the preceding current54/zero-terminal raw-scene supplier is still unresolved and must not be inferred from this callback."
+    },
+    {
+      "name": "stream_bind_and_disposal",
+      "source": "src/game_native_mission_model.inc:422-441",
+      "contract": "Move genuine canonical vertex-domain registration/terminal ownership too; retain real callback in complete raw access, though AAACD4 does not acquire streams."
+    }
+  ],
+  "mission_migration": {
+    "caller_sites": [
+      "raw drawable acquisition638-658",
+      "Model resolver443-445",
+      "matrix base/types478-485",
+      "constructor/destructor683-695",
+      "material/raw/instance accessors698-704",
+      "retention984-998",
+      "after-drain1022-1033"
+    ],
+    "record_identity": "Replace models.back() with exact owner-and-client stable record lookup. Preserve caller_name/live custody used by existing raw loading.",
+    "drawable_notification": "Preserve drawable_index as nonowning record data with retained Mission client noexcept observer; validate existing actual/reference and set creator_consumed/retired before canonical unbind. No second ownership map.",
+    "scope_isolation": "Filter common Model/Stream checks and resolutions by client; Mission cannot adopt, retire or wait on another client healthy records. Shared raw/types remain borrowed by derived matrix owners until existing retirement.",
+    "unchanged_ownership_scope": [
+      "unit and asset state",
+      "bone/matrix and plain nodes",
+      "samplers/effects/generators",
+      "mesh/subset loading and commands"
+    ]
+  },
+  "actual_Page_consumer": {
+    "constructor": "game_native_gui_page_application.hpp/.cpp add required shared-domain input and retained client; bind real raw access before provider publication",
+    "startup_caller": "game_hosts.cpp3166-3172 passes native_renderer shared domain at actual Page startup site, independent of Mission flags",
+    "entry": "Properties::call_page_properties_18 -> Impl::read_properties actual AC4C50",
+    "replacement_site": "game_native_gui_page_application.cpp644-649; preserve prefix and replace childless scanner with real AAACD4 continuation using same f.widget820h scratch",
+    "new_raw_children_inputs": [
+      "same Page strings/key types",
+      "same common raw models access",
+      "renderer actual node constants",
+      "real current-child call provider",
+      "NativeNodeParentingContext&",
+      "NativeNodeParentingFrame&",
+      "NativeNodeSetParentAcquired&"
+    ],
+    "frames": "Every recursive Group invocation has distinct retained scratch/acquired/reader/transform/parenting state and separate recursive node/scene-attachment backing. Sequential parent-frame reuse only after complete prior call; never reset active/failed state.",
+    "parenting_contract": "docs/CC16_NATIVE_GUI_PAGE_RAW_PARENTING_DESIGN.md",
+    "reader_lifetime_contract": "docs/CC16_NATIVE_GUI_PAGE_POPULATED_READER_LIFETIME.md",
+    "Model_service_scratch": "none; no shared static parenting/reader frames",
+    "schedule": "Existing B74D00->prepare->raw B75030->bind->child+4C/mask138->actual list/link/parent->CURRENT74/18/78 reload schedule is retained."
+  },
+  "failure_and_retirement": {
+    "constructor_failure": "Existing helper44-62 retires prepared/dead metadata then returns same raw slot; name cleanup is separate.",
+    "post_constructor_bind_failure": "constructor_returned has ended constructor-only slot-return custody. Preserve completed Model/any companion even before child publication.",
+    "post_widget_Model_failure": "Retain independent widget creator, Model creator, list/parent effects and invocation; do not add credits, erase list cells or retry.",
+    "native_ownership_after_publication": "Child+4C and actual native reference graph own the Model creator; shared service supplies canonical terminal, never blanket-releases records on client destruction.",
+    "incomplete_domain": "Any unfinished acquisition/bind/caller-name/retirement/failed client retains clients/common owner/renderer/VFS/mapped data/callbacks/frames; existing Page process-exit disposition must occur before normal drain.",
+    "healthy_shutdown": "Keep shared domain and clients through native singleton shutdown and actual child/root closure; client records empty before client release, common records empty after native drain, then Page binding reset and service/provider destruction.",
+    "remaining_actual_lifetime_blocker": "Current Page scalar/scene/timed routes are absent; even the existing canonical child Model terminal uses legacy scene destruction. Preserve SAME NativeModelReference while composing genuine raw terminal/current54 providers; no substitute storage companion."
+  },
+  "source_packet_requirements": [
+    "Move actual shared ownership and callbacks; no unused raw getter commit",
+    "Migrate every Mission common-record caller and client-specific closure/retirement coupling",
+    "Wire actual Page constructor/startup call and child continuation with same identities",
+    "Resolve SAME canonical NativeModelReference raw current54/logical release/zero-terminal composition before declaring complete raw Model provider or populated Page readiness",
+    "Compose with raw parenting and complete populated reader/lifetime contracts",
+    "Review actual Source, then perform separately authorized build/fixture/runtime gates before admission"
+  ],
+  "verification": {
+    "current_source_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\include\\bsp\\game_native_renderer_application.hpp",
+        "bytes": 20443,
+        "sha256": "2ce5d69fe894fb0a730234f15dc236d6d6d869e53e29387a962ac0e6d99e42be",
+        "repository_path": "include/bsp/game_native_renderer_application.hpp",
+        "git_blob": "427d7f7b5762081595c7d34c460c46d173e874c4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\include\\bsp\\game_native_mission_model.hpp",
+        "bytes": 5471,
+        "sha256": "8ff6600b25078b35ce8a2a201de5dc92bb7d0537f9d4bf6bb7b37cfa3443cd30",
+        "repository_path": "include/bsp/game_native_mission_model.hpp",
+        "git_blob": "e137e61f47cf3857e0afa4b5e0f019f92419e822"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\include\\bsp\\game_native_gui_page_application.hpp",
+        "bytes": 3811,
+        "sha256": "8a21c044261937a47938887584b94650d1d04ab1584d3c447af276a6c04cebcb",
+        "repository_path": "include/bsp/game_native_gui_page_application.hpp",
+        "git_blob": "3900c1e90fb9dd685f1c1375079b6fd13252cff9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\src\\game_native_renderer_application.cpp",
+        "bytes": 80060,
+        "sha256": "3ed5485d8b619dce29caed0c1fa2b810b71504478bbb4ce44ca683c9e398ae7f",
+        "repository_path": "src/game_native_renderer_application.cpp",
+        "git_blob": "5baacc9a3bb8b4856951e8780485dea44502e951"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\src\\game_native_renderer_lifetime.inc",
+        "bytes": 7101,
+        "sha256": "6800ec7f71449d264d49082a08696aa76900f926a8dadeee5402755930e54fdc",
+        "repository_path": "src/game_native_renderer_lifetime.inc",
+        "git_blob": "d065c64ff475766b2ddb4958c12ed5372c26a6b3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\src\\game_native_renderer_camera.inc",
+        "bytes": 2825,
+        "sha256": "77781cd84f49383f516f5f242f08a731392459a822f87ea84499960338b3e2c2",
+        "repository_path": "src/game_native_renderer_camera.inc",
+        "git_blob": "c60795b5c9adf5000f66b555c981ca15fb92077b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\src\\game_native_renderer_grid.inc",
+        "bytes": 1778,
+        "sha256": "d5d84bdca33ec50491228d0ae5cccc03c05c02ce2d18d1a69586d423681afcbb",
+        "repository_path": "src/game_native_renderer_grid.inc",
+        "git_blob": "90385738716bc7337bf9b5b77a0256c861bb528d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\src\\game_native_mission_model.inc",
+        "bytes": 59874,
+        "sha256": "ac92c7dbb1e4f9a9735453dac0c753dd243e6fd81baa7824bac75b28658bfa93",
+        "repository_path": "src/game_native_mission_model.inc",
+        "git_blob": "d2dcd90466acccd1f6a696741c9e1bfc13cb02e2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\src\\game_native_mission_ship.inc",
+        "bytes": 27588,
+        "sha256": "35ec295f861ebc44af0abdd3169d18789d8411565680c34a04596213e7174d13",
+        "repository_path": "src/game_native_mission_ship.inc",
+        "git_blob": "3d9f8c7a3c4a3f5adbb2d6681a93c38aec939453"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\src\\game_native_gui_page_application.cpp",
+        "bytes": 54018,
+        "sha256": "6931fc7c1dced9222a47ec072ca143b00d1789b5a344b85c7bfc639b15314711",
+        "repository_path": "src/game_native_gui_page_application.cpp",
+        "git_blob": "0e1e95e2a1372504cce0dda0a00a6c4476f8a367"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\include\\bsp\\native_instance_geometry.hpp",
+        "bytes": 3560,
+        "sha256": "d636744a916ce5acad921606f43f76e9edbe8cb855d4580e936afca162b3cb03",
+        "repository_path": "include/bsp/native_instance_geometry.hpp",
+        "git_blob": "6d0527a7db3b093c91bfe52573cbb5388df58157"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\include\\bsp\\native_gui_widget_property_children.hpp",
+        "bytes": 4544,
+        "sha256": "b9699af0b44d20a05fd4b09ec8cf5668f1bf000b9554387aea73796f9c20e70e",
+        "repository_path": "include/bsp/native_gui_widget_property_children.hpp",
+        "git_blob": "f782122e08e2bf78a7e41028a4735976136dc646"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\src\\native_gui_widget_property_children.cpp",
+        "bytes": 11148,
+        "sha256": "2649822b64027d0b30421dd499aaecaf71f9f2484e2880b9c1f5c75817b77efc",
+        "repository_path": "src/native_gui_widget_property_children.cpp",
+        "git_blob": "ed66ee7c010662ad5a60008d9a218ca988a4cdc0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\include\\bsp\\native_model_owner.hpp",
+        "bytes": 7520,
+        "sha256": "55369e419a173e978adcaf5577133e09def52310bcbaa6f4f0f7fdc1b1870e5a",
+        "repository_path": "include/bsp/native_model_owner.hpp",
+        "git_blob": "78cad0248ffd29125e85ab1423e64f5cae58caf8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\src\\native_model_owner.cpp",
+        "bytes": 17137,
+        "sha256": "d34c0b37ed8c5036cb9d6401886177795e6f4c110acaffe86e92921ad0e06132",
+        "repository_path": "src/native_model_owner.cpp",
+        "git_blob": "ad547ce8c715b2f83392d172ad71580ff40832d6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\src\\native_node_destruction.cpp",
+        "bytes": 14506,
+        "sha256": "2ee6ba84e759958a8f160cb25ad210076203931d4ae4f2e9265529bff5c57269",
+        "repository_path": "src/native_node_destruction.cpp",
+        "git_blob": "471b67cac72f5a45fb6a4789f82d7533fd72f6c9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\src\\game_native_gui_node_application.cpp",
+        "bytes": 10814,
+        "sha256": "a72ce5878e3c9f2220fff2baadee84f3484aa76511768223185f6d40f91f583a",
+        "repository_path": "src/game_native_gui_node_application.cpp",
+        "git_blob": "048130d19a50ed0e64003d80f3044fa34bd3787d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\include\\bsp\\game_native_gui_node_application.hpp",
+        "bytes": 3837,
+        "sha256": "5bc7e195c61f56f367d4dfe2c735a46daabd8a7f6db638ec2934d655e791ee39",
+        "repository_path": "include/bsp/game_native_gui_node_application.hpp",
+        "git_blob": "98e3b4d95f63b440cfee9ab0fb5ae211315c1b92"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\src\\gui_widget_owner.cpp",
+        "bytes": 42079,
+        "sha256": "405c324270bd194614898b6c7f7934ab526c30d366fb0dd64933e33db81f2762",
+        "repository_path": "src/gui_widget_owner.cpp",
+        "git_blob": "cc31262d504966fbaba9e546f710f44904a6cff5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\include\\bsp\\gui_widget_owner.hpp",
+        "bytes": 17870,
+        "sha256": "55bb0101eaee6369f886c6fb6956fad0cd2dea60fcca01db182fdc4cd7ae7add",
+        "repository_path": "include/bsp/gui_widget_owner.hpp",
+        "git_blob": "ffc873f839f207fec8de12d53b0bbbb0b915befc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\src\\game_native_gui_render_application.cpp",
+        "bytes": 59357,
+        "sha256": "a5b6be17c269f9486a210716143c17b2375c62e4401139d4d7adf66a39ca00cd",
+        "repository_path": "src/game_native_gui_render_application.cpp",
+        "git_blob": "eef54bf0e2ef8a5a457756d864b8cb50222d1539"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\src\\game_hosts_frontend.cpp",
+        "bytes": 61227,
+        "sha256": "8d71c2602c0280045756b37e21ac619d642186df09412ab7b05b8fc46bdab575",
+        "repository_path": "src/game_hosts_frontend.cpp",
+        "git_blob": "383e5062ace70c854c549103f5d1bf5b207ef470"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\src\\game_hosts.cpp",
+        "bytes": 185132,
+        "sha256": "6915e364d7c2eb73ebba01d7d1c521ca7fdc94ab78ad7f0302288fc281cad9f4",
+        "repository_path": "src/game_hosts.cpp",
+        "git_blob": "d138983e92e5f93339e529655990f924f1c06be8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\src\\game_main.cpp",
+        "bytes": 80404,
+        "sha256": "50034a37098bc7a1c738c541d5a97d0afb0cb4b1cf84b8e92102db92284df5c7",
+        "repository_path": "src/game_main.cpp",
+        "git_blob": "18909178937d4a3fbd4ddf9073819b959f3fa47a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\src\\game_native_resource_pools.cpp",
+        "bytes": 10657,
+        "sha256": "ffb01415f1d849c8111fe32fab58f3e406dbe512c0d44330547d2d5b20d8cf97",
+        "repository_path": "src/game_native_resource_pools.cpp",
+        "git_blob": "1d6397153606f48b03b151c3fb42633ce20e6260"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\include\\bsp\\game_native_resource_pools.hpp",
+        "bytes": 5540,
+        "sha256": "56bdc1c58abeefe43d5f7a420b706a98d3409755972b0252340e00d5b6b2179e",
+        "repository_path": "include/bsp/game_native_resource_pools.hpp",
+        "git_blob": "cdfe43926c2bc175abe9c78f622c4e3f38d2ae22"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\src\\game_native_type_storage.cpp",
+        "bytes": 5640,
+        "sha256": "87958d36dc6c7480e73992698c3c9dac86bc153f7033fc0e55a9833fd2ea5b4b",
+        "repository_path": "src/game_native_type_storage.cpp",
+        "git_blob": "106fa3ce980394494b62512c35e6d46c3167c78d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\src\\model_type_bootstrap.cpp",
+        "bytes": 2635,
+        "sha256": "4abe8eb0bf3ea2bdc3efe202c31f583f637167134108d8cf3d0b7e6e4d794b80",
+        "repository_path": "src/model_type_bootstrap.cpp",
+        "git_blob": "9eef98d7c3db555a9d37cec2194a409e5e098262"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\include\\bsp\\model_type_bootstrap.hpp",
+        "bytes": 1537,
+        "sha256": "49052b9738eb7e5b0b20b9bea44ccee682534ed884d20c30ee1e6975ac874155",
+        "repository_path": "include/bsp/model_type_bootstrap.hpp",
+        "git_blob": "5bd83d0455c3b27b84cc531a444c051405cd0bf8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\src\\game_native_vfs_application.cpp",
+        "bytes": 8470,
+        "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+        "repository_path": "src/game_native_vfs_application.cpp",
+        "git_blob": "32a441a593a381b649ccd89b71a6e4277e91401d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\include\\bsp\\native_render_context.hpp",
+        "bytes": 10071,
+        "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+        "repository_path": "include/bsp/native_render_context.hpp",
+        "git_blob": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\src\\native_render_context.cpp",
+        "bytes": 11471,
+        "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+        "repository_path": "src/native_render_context.cpp",
+        "git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\src\\native_model_storage_dispatch.cpp",
+        "repository_path": "src/native_model_storage_dispatch.cpp",
+        "bytes": 12599,
+        "sha256": "7e77fc6d29bee3e8f177213a2f40bb8c29b0da05e12acd5c138a9dff1ffe45d8",
+        "git_blob": "f9d249b369064ef13a511592b81cd19cae151ae6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\src\\native_model_storage_lifetime.cpp",
+        "repository_path": "src/native_model_storage_lifetime.cpp",
+        "bytes": 14981,
+        "sha256": "27d2765863c4c130b2dcb95f4274ed5d833a087ed25b2f56709b74f0fe17122c",
+        "git_blob": "402da841d287e0e8f8b9149daad52eeacddaa563"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\include\\bsp\\native_model_storage_lifetime.hpp",
+        "repository_path": "include/bsp/native_model_storage_lifetime.hpp",
+        "bytes": 6971,
+        "sha256": "709cd10f04104fac3d5d4215f9856933259ebf9f535987522dfa3e912ab74ea1",
+        "git_blob": "9c67998ced674cdc692f94759a2281b86c522b1e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\src\\native_model_storage_node_dispatch.cpp",
+        "repository_path": "src/native_model_storage_node_dispatch.cpp",
+        "bytes": 16044,
+        "sha256": "76418809bb56a11118f64f1ba28ee6d068677b0a8314c0dd5a54b9d96d583d08",
+        "git_blob": "af2e73d169989f69455dbf23e116140bbc33018f"
+      }
+    ],
+    "source_pin_count": 36,
+    "excerpts": [
+      {
+        "path": "src/game_native_mission_model.inc",
+        "line_start": 109,
+        "line_end": 153,
+        "purpose": "Original common environments and sole Model companion records",
+        "LF_sha256": "bb31c5403297974edb44fe21334a984904375a6e52511c0dd2ec3fbbeb13b4ac"
+      },
+      {
+        "path": "src/game_native_mission_model.inc",
+        "line_start": 257,
+        "line_end": 287,
+        "purpose": "Concrete same-renderer/VFS raw and typed environment composition",
+        "LF_sha256": "18052a3164c7281c125bcf91c54ba357dfd2cb7d4e6e0f39fdaa7c98375f9241"
+      },
+      {
+        "path": "src/game_native_mission_model.inc",
+        "line_start": 298,
+        "line_end": 340,
+        "purpose": "Real prepare/failure-retire/bind/terminal callbacks and drawable coupling",
+        "LF_sha256": "9c134fcc0998134b2178b94b977734b7ff86c4abc6526c0aa6bfb9982be71201"
+      },
+      {
+        "path": "src/game_native_mission_model.inc",
+        "line_start": 422,
+        "line_end": 445,
+        "purpose": "Actual stream callback custody and Model resolution",
+        "LF_sha256": "3694378e5f14b06e4d97ec840bd655b41297ce3572843cb1a24d51fb08135f00"
+      },
+      {
+        "path": "src/game_native_mission_model.inc",
+        "line_start": 478,
+        "line_end": 485,
+        "purpose": "Derived matrix environment borrows same raw base/types",
+        "LF_sha256": "8d969832fd3417a0437f7c3d13afd4522bd7a3209a2739cc25a85b78884256d5"
+      },
+      {
+        "path": "src/game_native_mission_model.inc",
+        "line_start": 637,
+        "line_end": 658,
+        "purpose": "Raw drawable acquisition, caller-name lifetime and stable retirement association",
+        "LF_sha256": "7fec4dc3b8486fdd575fe16734ee3da621e5dc988c97d9eaa419862e95d427dc"
+      },
+      {
+        "path": "src/game_native_mission_model.inc",
+        "line_start": 683,
+        "line_end": 705,
+        "purpose": "Mission constructor effect obligations and exposed typed/raw interfaces",
+        "LF_sha256": "6a61ebe98cbc734b082a83dcba9ac1c0ef56d6ba5e159c5658446ff33f190b65"
+      },
+      {
+        "path": "src/game_native_mission_model.inc",
+        "line_start": 984,
+        "line_end": 1033,
+        "purpose": "Mission retention and closure checks requiring client filtering",
+        "LF_sha256": "850ed5dfe4faba5bcc686ea82d0f2202904c928263030dcbcd83879a72cae778"
+      },
+      {
+        "path": "src/game_native_mission_ship.inc",
+        "line_start": 133,
+        "line_end": 141,
+        "purpose": "Only actual retained Mission Model construction site",
+        "LF_sha256": "803eaedf950584905dc8bf009da2a46be29aad878eaa8fe2e021ab82ffd7d6e2"
+      },
+      {
+        "path": "src/game_native_renderer_application.cpp",
+        "line_start": 490,
+        "line_end": 529,
+        "purpose": "Renderer provider/borrower lifetime and required owner insertion",
+        "LF_sha256": "e9539261bf0dad0c529e437f9644bf1f00c0119bea56aa1b013da91dad6cf92f"
+      },
+      {
+        "path": "src/game_native_renderer_application.cpp",
+        "line_start": 533,
+        "line_end": 565,
+        "purpose": "Renderer original VFS/context/provider composition",
+        "LF_sha256": "595a9946e346066497b819a3f889be72bd3fce575a19ec7c3a38b0821ce1fae3"
+      },
+      {
+        "path": "src/game_native_renderer_application.cpp",
+        "line_start": 733,
+        "line_end": 737,
+        "purpose": "Canonical camera-node and constant accessors",
+        "LF_sha256": "1c07708832ff7da4b7901e67c7d07f8e3419e16152031d6917a73390718c4960"
+      },
+      {
+        "path": "src/game_native_renderer_application.cpp",
+        "line_start": 776,
+        "line_end": 797,
+        "purpose": "Canonical registry, graphics and mapped material-profile identities",
+        "LF_sha256": "c7025cff0e62253fca0bf58315ee49700a74b95c1b944b6e9c0d15d6edbbc098"
+      },
+      {
+        "path": "src/game_native_renderer_application.cpp",
+        "line_start": 1281,
+        "line_end": 1335,
+        "purpose": "Retention, actual native drain and after-drain closure insertion sites",
+        "LF_sha256": "d83f4e90e09c7349d7192d6a3b646564d3706957da7a91ccad67ac94348b8712"
+      },
+      {
+        "path": "src/game_native_renderer_lifetime.inc",
+        "line_start": 58,
+        "line_end": 65,
+        "purpose": "Raw node runtime borrows exact VFS raw context",
+        "LF_sha256": "dc428a6401a6413fc1cab3219a12f00482e37613602b51a27d10a8f1295530f6"
+      },
+      {
+        "path": "src/game_native_renderer_camera.inc",
+        "line_start": 35,
+        "line_end": 45,
+        "purpose": "Camera environment borrows same renderer graph nodes",
+        "LF_sha256": "7043eff6684f772c66393a3da6d7b77731d1731f3d251933bf4ad4c81fdf35db"
+      },
+      {
+        "path": "src/game_native_renderer_grid.inc",
+        "line_start": 12,
+        "line_end": 29,
+        "purpose": "Geometry/vertex/string graph shares canonical owners",
+        "LF_sha256": "b5c5e83065e3ffc4a2e77636542d6494dca5ceb6f34b93a0527e6d756833ec1c"
+      },
+      {
+        "path": "src/native_node_destruction.cpp",
+        "line_start": 68,
+        "line_end": 84,
+        "purpose": "Persistent raw name mode stores the exact context pointer",
+        "LF_sha256": "c64e597e20410dc040300b0432e3a0de0f9a911ef56a1b5c3b8f5f31b9665925"
+      },
+      {
+        "path": "include/bsp/native_instance_geometry.hpp",
+        "line_start": 12,
+        "line_end": 34,
+        "purpose": "Exact complete borrowed access and callback contracts",
+        "LF_sha256": "791ff8e8b4741a048ee6866ef517dc38d9d828766708b22d1c61e7ac8995313b"
+      },
+      {
+        "path": "include/bsp/native_model_owner.hpp",
+        "line_start": 36,
+        "line_end": 72,
+        "purpose": "Environment immutability, owner alias and phase contracts",
+        "LF_sha256": "3abcc45d7654b6cd0b5a29efcd95fba360f13572cd7d7029de921eaada7f7296"
+      },
+      {
+        "path": "src/native_model_owner.cpp",
+        "line_start": 211,
+        "line_end": 245,
+        "purpose": "Existing raw B75030 exact bound-cell and raw-cleanup requirements",
+        "LF_sha256": "54307f518015b8ec990bb56f1a1f0a18087265ff40b4ab19c9544ad802d054e2"
+      },
+      {
+        "path": "src/native_model_owner.cpp",
+        "line_start": 295,
+        "line_end": 306,
+        "purpose": "Canonical reference aliases actual+04 and binds real lifetime runtime",
+        "LF_sha256": "616aab72c0695a256e45ff72b31a33411be69a0efd0eee5059ba7117e813618e"
+      },
+      {
+        "path": "src/native_model_owner.cpp",
+        "line_start": 340,
+        "line_end": 351,
+        "purpose": "Actual zero terminal destroys/returns slot/unbinds then disposes companion",
+        "LF_sha256": "85d6f8f71f426a10ff9a62863b1f5b0da5ea6d93c71ad5b32c8bac4ebb9ad430"
+      },
+      {
+        "path": "src/native_gui_widget_property_children.cpp",
+        "line_start": 29,
+        "line_end": 72,
+        "purpose": "Raw same-domain preflight and split constructor/binding failure custody",
+        "LF_sha256": "89a8b9b285d7bb7a542dfa6081c691711b94930731ead48b058761451d9b7bc8"
+      },
+      {
+        "path": "src/native_gui_widget_property_children.cpp",
+        "line_start": 118,
+        "line_end": 156,
+        "purpose": "Actual Model publication, list linking and current parenting schedule",
+        "LF_sha256": "a82a3544603fb538c2bbabd5c6e16e2e44d078c734e91375eee777cfab10631d"
+      },
+      {
+        "path": "src/game_native_gui_page_application.cpp",
+        "line_start": 255,
+        "line_end": 287,
+        "purpose": "Current persistent invocation and raw renderer-root backing",
+        "LF_sha256": "304334516ed41f44d7225186e08a8e016be5d1d0c6100aedafe96d9ce5c6cbfa"
+      },
+      {
+        "path": "src/game_native_gui_page_application.cpp",
+        "line_start": 400,
+        "line_end": 469,
+        "purpose": "Actual Page retained providers and constructor without Model input",
+        "LF_sha256": "5f355a83f932a3ceeea4d47e4a5b9f6794347e18515fe6e14a4b63750adf2359"
+      },
+      {
+        "path": "src/game_native_gui_page_application.cpp",
+        "line_start": 564,
+        "line_end": 571,
+        "purpose": "Actual renderer ModelGroup creation/reference family",
+        "LF_sha256": "f9829c11eb045710ea6276cea16eaeab4f274d5071f54db575d46f437919b4b1"
+      },
+      {
+        "path": "src/game_native_gui_page_application.cpp",
+        "line_start": 596,
+        "line_end": 605,
+        "purpose": "Current single Page property invocation",
+        "LF_sha256": "f6be7b20e7434e61ed8238033f2798744f5b733b03d8e200152dbbc0edf4698b"
+      },
+      {
+        "path": "src/game_native_gui_page_application.cpp",
+        "line_start": 631,
+        "line_end": 657,
+        "purpose": "Real Page prefix and exact child suffix consumer replacement",
+        "LF_sha256": "dd4fd8b1b382f724c0877155ec7e856a5faf6e9ed1f3a39574a24e23c1ef80af"
+      },
+      {
+        "path": "src/game_native_gui_page_application.cpp",
+        "line_start": 661,
+        "line_end": 708,
+        "purpose": "Current childless suffix rejects real mapped widget keys",
+        "LF_sha256": "9ffc85245bb8774ea63e8c38b74fe502ffe2ee71559677def81aa5c3b418889c"
+      },
+      {
+        "path": "src/game_native_gui_page_application.cpp",
+        "line_start": 804,
+        "line_end": 852,
+        "purpose": "Provider publication, destruction and failure retention",
+        "LF_sha256": "f587c699d3f724cde6a37fcadbaf9e72b3eea60094e2e300d06a5296b2fa313e"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "line_start": 2284,
+        "line_end": 2299,
+        "purpose": "Established Page/renderer interrupted-graph exit boundary",
+        "LF_sha256": "e51ed6d19e5eca0a1788c17d648969899d02025f949dd1c8956a70f50a630c14"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "line_start": 2313,
+        "line_end": 2338,
+        "purpose": "Frontend deleted before native drain and Page retained afterward",
+        "LF_sha256": "4f41715e68b7755a4c99a56be110cf8f881371a97763064ff27b0489ca243b21"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "line_start": 3166,
+        "line_end": 3174,
+        "purpose": "Actual Page constructor call must consume shared Model service",
+        "LF_sha256": "39afdeae0f0b1f7b54a01b521a01d52222f72223ce4557b3368ba877e33e3182"
+      },
+      {
+        "path": "src/game_native_gui_node_application.cpp",
+        "line_start": 69,
+        "line_end": 96,
+        "purpose": "Existing raw frontend bridge environment lacks independent lifecycle API",
+        "LF_sha256": "d90ab3e7eb4d3a2c89dc313400f50d5a8e276f57b448ea6b72e7699e3820cb37"
+      },
+      {
+        "path": "src/gui_widget_owner.cpp",
+        "line_start": 425,
+        "line_end": 487,
+        "purpose": "Legacy widget bridge whole allocation/name/publication custody",
+        "LF_sha256": "b9c54319efe398e2926cc9e9b51fa927c7bbab48b4570d91ac7fac39e1b7603f"
+      },
+      {
+        "path": "src/game_native_gui_render_application.cpp",
+        "line_start": 406,
+        "line_end": 437,
+        "purpose": "Text-only diagnostic node owner and borrowed material domain",
+        "LF_sha256": "50ffcf2065b215ee7c35c1c156dd93cde1d1508ce0dd6bd6bb3051be02e59275"
+      },
+      {
+        "path": "src/game_native_gui_render_application.cpp",
+        "line_start": 776,
+        "line_end": 783,
+        "purpose": "Diagnostic GUI node owner is Mission-gated",
+        "LF_sha256": "36c2ee43e191d0fd9f7d6b081eedd280b2d7652c177007cfbbc24a97961fb022"
+      },
+      {
+        "path": "src/game_native_resource_pools.cpp",
+        "line_start": 129,
+        "line_end": 158,
+        "purpose": "Existing explicit Model pool startup and ready-only accessor",
+        "LF_sha256": "0ae9025458f20169ee7ec8a94489b88e7a3af50311545d350c0c6dedb92114de"
+      },
+      {
+        "path": "src/game_main.cpp",
+        "line_start": 1198,
+        "line_end": 1203,
+        "purpose": "Current process composition calls real Model pool startup",
+        "LF_sha256": "3b606be16db79b26ff6e15d09245baf6bcd824475a49f26e2e98fbccaa8c14cf"
+      },
+      {
+        "path": "src/game_native_vfs_application.cpp",
+        "line_start": 103,
+        "line_end": 109,
+        "purpose": "Actual VFS resource-type initialization",
+        "LF_sha256": "86db832f6148d6c354eca49dcad93f9da32c93d5ba0438f0eedcc0a225196cae"
+      },
+      {
+        "path": "src/game_native_type_storage.cpp",
+        "line_start": 74,
+        "line_end": 88,
+        "purpose": "Model type uses existing common root/counter/storage",
+        "LF_sha256": "bf7ea9de777074e75f48e8cf044241f96858a04708f7d253e499736ac82d1814"
+      },
+      {
+        "path": "include/bsp/native_render_context.hpp",
+        "line_start": 80,
+        "line_end": 95,
+        "purpose": "Only actual canonical registry; exact binding/retirement contracts",
+        "LF_sha256": "8331d477f5732f4875deae4f7621c230bedfaa73697ae507bd5c5b69ff66bf6e"
+      },
+      {
+        "path": "src/native_model_owner.cpp",
+        "line_start": 102,
+        "line_end": 116,
+        "purpose": "Raw name selection still calls legacy node destruction",
+        "LF_sha256": "c6996655919856bba839223a18e3d0f0ca6c2402fef6c05d8506626b3c84fe09"
+      },
+      {
+        "path": "src/native_model_owner.cpp",
+        "line_start": 251,
+        "line_end": 275,
+        "purpose": "Canonical scalar terminal reaches finish_node through B750C0",
+        "LF_sha256": "2f42aff91d56787c6d3c2784701399df1332afb3466905fa8215fbde02c0c083"
+      },
+      {
+        "path": "src/native_model_owner.cpp",
+        "line_start": 333,
+        "line_end": 351,
+        "purpose": "Existing SAME canonical companion current54 and zero terminal use legacy route",
+        "LF_sha256": "986b14c16bac2c8fb9356a7ced112a8b1bd167cecf53613a82e7f06539c22f7b"
+      },
+      {
+        "path": "src/native_node_destruction.cpp",
+        "line_start": 252,
+        "line_end": 258,
+        "purpose": "Legacy node terminal consumes SceneResource pointer and legacy B6EE10",
+        "LF_sha256": "a12e1c54f95e8b78c446b4a1c6de6830ea0148f8213c943a56e4c58add72b671"
+      },
+      {
+        "path": "src/native_model_storage_dispatch.cpp",
+        "line_start": 56,
+        "line_end": 61,
+        "purpose": "DEFAULT private raw Model dispatch rejects populated hierarchy/scene state",
+        "LF_sha256": "00dec2894911f3b0c27f3e05dc1090d006c028e95a0ff3b2fe70918312b51c5c"
+      },
+      {
+        "path": "include/bsp/native_model_storage_lifetime.hpp",
+        "line_start": 93,
+        "line_end": 105,
+        "purpose": "Storage reference is a distinct RenderCommandReference family",
+        "LF_sha256": "83b3aa476270073c5537d09b11c3dddceedc9544cec762316327771f3f1e008b"
+      }
+    ],
+    "excerpt_count": 50,
+    "owned_doc": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain\\docs\\CC16_NATIVE_FRONTEND_WIDGET_MODEL_DOMAIN.md",
+      "bytes": 21495,
+      "sha256": "ad0e5a2baabb4e862a7e2c6afb2ddc89fbb180cc807b16a592f5678b41c4575e"
+    },
+    "retained_source_pin_results": [
+      {
+        "path": "include/bsp/game_native_gui_page_application.hpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "src/game_native_gui_page_application.cpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "include/bsp/native_gui_widget_property_children.hpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "src/native_gui_widget_property_children.cpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "include/bsp/native_gui_group_factory.hpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "src/native_gui_group_factory.cpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "include/bsp/native_gui_group_default.hpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "src/native_gui_group_default.cpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "include/bsp/native_gui_group_storage.hpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "src/native_gui_group_storage.cpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "include/bsp/game_native_gui_text_process.hpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "src/game_native_gui_text_process.cpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "include/bsp/native_gui_group_identity.hpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "src/native_gui_group_identity.cpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "include/bsp/native_model_owner.hpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "src/native_model_owner.cpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "include/bsp/game_native_mission_model.hpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "src/game_native_mission_model.inc",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "src/game_native_mission_ship.inc",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "include/bsp/native_instance_geometry.hpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "include/bsp/native_node_parenting.hpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "src/native_node_parenting.cpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "include/bsp/native_node_parenting_storage.hpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "src/native_node_parenting_storage.cpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "include/bsp/gui_native_scene.hpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "src/gui_native_scene.cpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "include/bsp/native_group_storage_lifetime.hpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "src/native_group_storage_lifetime.cpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "include/bsp/native_gui_widget_lifetime_dispatch.hpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "src/native_gui_widget_lifetime_dispatch.cpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "include/bsp/native_gui_widget_load_hooks.hpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "src/native_gui_widget_load_hooks.cpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "include/bsp/native_gui_widget_visibility.hpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "src/native_gui_widget_visibility.cpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "include/bsp/native_gui_widget_raw_model_lifetime.hpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "include/bsp/native_gui_widget_transform.hpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "include/bsp/native_lua_reader.hpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "src/native_lua_reader.cpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "include/bsp/native_gui_page_properties_continuation.hpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "src/native_gui_page_properties_continuation.cpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "include/bsp/game_native_vfs_runtime.hpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "src/game_native_vfs_runtime.cpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "src/game_native_vfs_application.cpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "src/game_hosts_vfs.cpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "include/bsp/game_native_renderer_application.hpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "src/game_native_renderer_application.cpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "src/game_native_gui_node_application.cpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "include/bsp/game_native_readonly_data.hpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "include/bsp/native_node_raw_transform.hpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "include/bsp/native_group_pool.hpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "include/bsp/native_model_pool.hpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "include/bsp/native_node_destruction.hpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "src/native_node_destruction.cpp",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "src/game_native_renderer_lifetime.inc",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      },
+      {
+        "path": "src/game_native_renderer_camera.inc",
+        "bytes_match": true,
+        "sha256_match": true,
+        "git_blob_match": true
+      }
+    ]
+  },
+  "not_performed": [
+    "Source/header/CMake/shared metadata/ledger edits",
+    "Ghidra/live analysis batch or mutation",
+    "compile/link/build/test/probe",
+    "executable/DLL/Game run or process control",
+    "guard flip or activation",
+    "frozen-input mutation",
+    "push"
+  ],
+  "credit": {
+    "new_native_body": 0,
+    "recovered": 0,
+    "vendor": 0,
+    "Source_implemented": 0,
+    "ABI": 0,
+    "runtime": 0,
+    "gameplay": 0,
+    "activation": 0
+  },
+  "current_origin_main_check": {
+    "commit": "c889198e6609e03fb2ed5f4593ce19b7d4a64523",
+    "source_pins_checked": 36,
+    "changed_source_blobs_from_frozen_baseline": [],
+    "baseline_remains_frozen": true
+  },
+  "source_packet_minimal_changed_files": [
+    "include/bsp/game_native_model_domain.hpp",
+    "src/game_native_model_domain.inc",
+    "include/bsp/game_native_renderer_application.hpp",
+    "src/game_native_renderer_application.cpp",
+    "src/game_native_mission_model.inc",
+    "include/bsp/game_native_gui_page_application.hpp",
+    "src/game_native_gui_page_application.cpp",
+    "src/game_hosts.cpp"
+  ],
+  "source_packet_excludes": [
+    "Mission public header change",
+    "legacy GUI-node bridge migration",
+    "CMake change",
+    "new Native body/recovery",
+    "Page guard flip"
+  ],
+  "source_packet_minimal_changed_files_scope": "Eight-file ownership extraction plus actual consumer lower bound only; not a complete independently admissible populated packet.",
+  "source_packet_additional_blocked_terminal_files": [
+    "include/bsp/native_model_owner.hpp",
+    "src/native_model_owner.cpp",
+    "actual Page raw-scene/node/tree/point-light/string lifetime-provider composition from reader/lifetime packet"
+  ],
+  "raw_terminal_blocker": {
+    "canonical_identity_to_preserve": "SAME NativeModelReference and actual+04; never add/substitute another canonical companion",
+    "current54": "src/native_model_owner.cpp333-338 uses legacy SceneAttachmentRuntime remove_native_node_scene_00b6ee10",
+    "zero_terminal_chain": [
+      "NativeModelReference::release_zero_references340-351",
+      "delete_native_model_00b75290 / destroy_native_model_00b750c0 at251-275",
+      "finish_node102-116",
+      "legacy destroy_native_node_00b6f440 reads node+170 as SceneResource* and legacy B6EE10 at native_node_destruction.cpp252-254"
+    ],
+    "reason_raw_name_mode_is_insufficient": "Raw pool selection affects name construction/cleanup but does not supply actual3Ch raw scene/current54/terminal dispatch.",
+    "needed_supplier": "Genuine raw scene/node/tree/point-light/string providers and stable destruction frames on the SAME canonical Model reference, preserving current dispatch and logical/zero-terminal schedule; exact adapter binding remains unresolved.",
+    "existing_raw_body_reuse": "Complete raw Model storage/node dispatch bodies may be reused only through a reviewed same-canonical-reference lifetime composition; no new Native recovery is requested.",
+    "forbidden_shortcut": "NativeModelStorageReference is a different RenderCommandReference family; its DEFAULT private dispatcher56-61 excludes hierarchy/scene/retained/point-light state. It cannot silently replace the required NativeModelReference or impose an empty-only domain."
+  }
+}

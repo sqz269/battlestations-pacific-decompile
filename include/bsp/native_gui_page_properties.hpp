@@ -12,6 +12,13 @@ struct NativeGuiPageReadPropertiesContext {
     NativeGuiWidgetPropertyChildrenContext& children;
     const volatile double& half_00d7a280;
 };
+struct NativeGuiPageReadPropertiesRawContext {
+    game::GameNativeReadOnlyData& data;
+    NativeGuiSceneAcquisitionContext& scene;
+    NativeGuiWidgetPropertyInteractionContext& widget;
+    NativeGuiWidgetPropertyChildrenRawContext& children;
+    const volatile double& half_00d7a280;
+};
 struct NativeGuiPageReadPropertiesFrame {
     // Initialized, caller-retained native preimage. S is ESP after AC4C54:
     // bytes represent [S-18,S+18), with pairs0/8/10, unwritten saved-register
@@ -52,5 +59,8 @@ struct NativeGuiPageReadPropertiesAcquired {
 // FH3/SEH, private-stack coincidence and binary/game equivalence are unproved.
 void read_native_gui_page_properties_00ac4c50(void* actual_page, void* actual_reader,
     NativeGuiPageReadPropertiesFrame&, NativeGuiPageReadPropertiesContext&,
+    NativeGuiPageReadPropertiesAcquired&);
+void read_native_gui_page_properties_00ac4c50(void*, void*,
+    NativeGuiPageReadPropertiesFrame&, NativeGuiPageReadPropertiesRawContext&,
     NativeGuiPageReadPropertiesAcquired&);
 } // namespace bsp

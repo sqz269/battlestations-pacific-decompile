@@ -1,18 +1,37 @@
 {
   "schema_version": 1,
   "mission": "USN04",
-  "status": "bsp_measured_original_pending_guard_admission",
+  "status": "bsp_measured_original_debugger_entry_fallback_in_progress",
   "orig_live": null,
   "bsp_live": 1740,
   "count_semantics": "PDB source/qualified-identifier verified reconstruction-body mappings in supplied observations; candidate/host reaches alone are excluded",
   "scope": "Bootstrap plus game handoff, including startup/menu; not per-BB mission-time filtered.",
   "runs": {
     "original": {
-      "id": null,
-      "status": "not_traced",
+      "id": "USN04-original-drcov-live02-startup",
+      "status": "startup_failed_no_mission_clock",
       "planned_start": "native direct USN04 scene argument",
       "planned_game_seconds": 240,
-      "guard_status": "Private admission, authenticated stop, strict trace-flush and integrated backend fixtures passed; original runtime is next."
+      "guard_status": "Both original DR entries admitted safely; startup exitedC0000005. Classic function-entry fallback in progress.",
+      "attempts": [
+        {
+          "id": "live01",
+          "pid": 98252,
+          "exit_code": 3221225477,
+          "mission_clock_observed": false,
+          "source_unchanged": true
+        },
+        {
+          "id": "live02",
+          "pid": 99608,
+          "exit_code": 3221225477,
+          "observed_av_module": "nvd3dum.dll",
+          "observed_av_rva": "001b0285",
+          "observed_access_address": "00000040",
+          "mission_clock_observed": false,
+          "source_unchanged": true
+        }
+      ]
     },
     "bsp": {
       "id": "USN04-reference-4800-20261030",

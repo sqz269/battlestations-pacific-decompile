@@ -1,0 +1,467 @@
+{
+  "base": "feb4586baf3a521f137f9d10cb35014da61a1ada",
+  "generated_utc": "2026-10-30T06:59:45.626247+00:00",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "coherent_packet": "two constructor bodies plus one Frame publication getter; eight new files only",
+  "compiler": {
+    "version": "Microsoft C/C++19.51.36244.0 x86",
+    "flags": "/c /std:c++17 /MD /O2 /Gy /fp:strict /EHsc /W4 /WX /FAs",
+    "result": "PASS no warnings; existing retained objects, no recompilation after Source edits because Source remained unchanged"
+  },
+  "native_call_verification": {
+    "checked": 6,
+    "failed": 0,
+    "rows": [
+      {
+        "address": "00517D13",
+        "native": "004F7180",
+        "function": "00517D10",
+        "phase": "whole raw frame"
+      },
+      {
+        "address": "004C1AE6",
+        "native": "00415350",
+        "function": "004C1AC0",
+        "phase": "whole raw getter"
+      },
+      {
+        "address": "004C1B1F",
+        "native": "00BF681B",
+        "function": "004C1AC0",
+        "phase": "whole raw getter"
+      },
+      {
+        "address": "004C1B36",
+        "native": "00517D10",
+        "function": "004C1AC0",
+        "phase": "whole raw getter"
+      },
+      {
+        "address": "004C1B5A",
+        "native": "00415350",
+        "function": "004C1AC0",
+        "phase": "whole raw getter"
+      },
+      {
+        "address": "004C1B61",
+        "native": "00BD0C30",
+        "function": "004C1AC0",
+        "phase": "whole raw getter"
+      }
+    ],
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\call_verification.txt",
+      "bytes": 98,
+      "sha256": "459381770bdcb7e316d82bb9684efd1ddcd7e3cf91b9bb38b25730a7c0186625"
+    }
+  },
+  "evidence": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\compile.cmd",
+      "bytes": 578,
+      "sha256": "deb18121629255babc6be1a9558ae4ff7e36c237551e5cb75c3e6541814cdd56"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\compile.log",
+      "bytes": 41,
+      "sha256": "ab6cf8b030d1aa70e57acb7d5231e9cc4c9de9a5047cf7d66f3465389b0662f3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\vcvars.log",
+      "bytes": 297,
+      "sha256": "1a4df196337e03bcdb59d67050d46e47764dfc64fa184608219d7e229cd9cb3c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\compile_publication.cmd",
+      "bytes": 599,
+      "sha256": "7b4d2fa09ebb1479b5d9eea59310859501db75252d920c61a94ec1ea9cda2977"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\publication_compile.log",
+      "bytes": 40,
+      "sha256": "0ad2db7d59a14eac9c83d02782b0e9989b01b838b56efd131fbd0768cb87d54e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\publication_vcvars.log",
+      "bytes": 297,
+      "sha256": "1a4df196337e03bcdb59d67050d46e47764dfc64fa184608219d7e229cd9cb3c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\native_front_end_frame_construction.obj",
+      "bytes": 1217,
+      "sha256": "dab254e91a8c7ca2bdaa4035495acb6d0c0a3b6972401b9d315a8c70f87397db"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\native_front_end_frame_construction.asm",
+      "bytes": 2944,
+      "sha256": "50108083bc4327566dcb03416cb464a0def3da1e423a60a802d48bd1025a1577"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\native_front_end_frame_publication.obj",
+      "bytes": 3841,
+      "sha256": "2d96825b9d057f965162b8177061c2b0b99ac309f84a4b23731a5f7ebb874ba6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\native_front_end_frame_publication.asm",
+      "bytes": 10909,
+      "sha256": "a9b3a91d82db8452916e7087bd1b4a9c59be62dd95e67bea70b8dc67fe326b08"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\evidence.py",
+      "bytes": 9836,
+      "sha256": "2f49e1d761c8ead7b03dd827b43aaf0439a0a7a39118753c4e42468f7581924b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\evidence.json",
+      "bytes": 52833,
+      "sha256": "ff0a40a8cbffe924600867f735846080ec7ed2885e66db426d65a7fede8cf2b5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\evidence_run.txt",
+      "bytes": 2432,
+      "sha256": "fb1526d81801f1bd1ab01c4663ba711ba48b3ce29caebbc87696cd2b2ce6500d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\write_reports.py",
+      "bytes": 10576,
+      "sha256": "f6c334cb05bc137b58f50c5ab0fb336082563269598c728329a5ce0bf6c3926c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\original_call_rows.json",
+      "bytes": 822,
+      "sha256": "429dc4c26284ea0d8993b6cfe510042934c9303f4e51d6c2d335264e5d3c1448"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\call_verification.txt",
+      "bytes": 98,
+      "sha256": "459381770bdcb7e316d82bb9684efd1ddcd7e3cf91b9bb38b25730a7c0186625"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\target_status.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\target_status_calls.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\live_base.txt",
+      "bytes": 94,
+      "sha256": "857d32ffe020ecf1fd84a79cd0b60b9b31aa6d24dee0a62b353b467629ceb905"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\live_frame.txt",
+      "bytes": 154,
+      "sha256": "d6ce1f183de9932c45d803fd14ef04c16f83bfb84b73f3e0cdc07eeff7a2be59"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\live_getter.txt",
+      "bytes": 977,
+      "sha256": "7e8b8614a3aadfb149d554717c385aacd60df5c3c532d36dbdb7e5ec6cafcc3b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\live_EH_map_info.txt",
+      "bytes": 260,
+      "sha256": "7e664a959c431816663ef7f50f76eadde0dd2673f8f919963927e0e57917558c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\live_EH_actions.txt",
+      "bytes": 142,
+      "sha256": "9f21af902c424e148b3c05072e846ae090919629ed549e9ca5257c4afbbcba8b"
+    }
+  ],
+  "actions": {
+    "strict_object_compile": true,
+    "full_build": false,
+    "link": false,
+    "executable": false,
+    "new_tests": false,
+    "probe": false,
+    "DLL": false,
+    "game": false,
+    "body_execution": false,
+    "CMake": false,
+    "shared_metadata": false,
+    "Ghidra_mutation": false,
+    "guard": false,
+    "caller_activation": false,
+    "semantic_files_changed": false,
+    "peer_changes": false
+  },
+  "credit": {
+    "new_native_body": 0,
+    "duplicate": 0,
+    "vendor": 0,
+    "runtime": 0,
+    "activation": 0
+  },
+  "packet": "cc16-native-front-end-frame-construction",
+  "status": "complete raw normal constructor Source, unwired",
+  "owned_addresses": [
+    "004F7180",
+    "00517D10"
+  ],
+  "owned_files": [
+    "include/bsp/native_front_end_frame_construction.hpp",
+    "src/native_front_end_frame_construction.cpp",
+    "docs/CC16_NATIVE_FRONT_END_FRAME_CONSTRUCTION.md",
+    "reports/cc16_native_front_end_frame_construction.json"
+  ],
+  "complete_native_bodies": [
+    {
+      "address": "004F7180",
+      "bytes": 17,
+      "instructions": 6,
+      "hex": "8bc132c9c70054aece00884804884805c3",
+      "sha256": "98fa0eef8873f4b92055b82aa15b994816a4242c888ba87fae0d2a308a2d6e19",
+      "listing": [
+        "4F7180 mov eax, ecx",
+        "4F7182 xor cl, cl",
+        "4F7184 mov dword ptr [eax], 0xceae54",
+        "4F718A mov byte ptr [eax + 4], cl",
+        "4F718D mov byte ptr [eax + 5], cl",
+        "4F7190 ret"
+      ],
+      "exports": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004f7180\\assembly.txt",
+          "bytes": 177,
+          "sha256": "4bcbacf3f49c97ac74cc26e8bd731a236b16c9440ea2a2e90569c9a9485f0f07"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004f7180\\decompiled.c",
+          "bytes": 790,
+          "sha256": "3b2d0918574d3750806cef9aeabba421f0b260576c086b302862e49976bc1b7f"
+        }
+      ]
+    },
+    {
+      "address": "00517D10",
+      "bytes": 32,
+      "instructions": 9,
+      "hex": "568bf1e868f4fdffc7460888c3ce00c7069cc3ce00c7460898c3ce008bc65ec3",
+      "sha256": "288d034e1f7bb57a63c0eabdbdbb80ab8f1844df3d1340b4c292e997255c8d29",
+      "listing": [
+        "517D10 push esi",
+        "517D11 mov esi, ecx",
+        "517D13 call 0x4f7180",
+        "517D18 mov dword ptr [esi + 8], 0xcec388",
+        "517D1F mov dword ptr [esi], 0xcec39c",
+        "517D25 mov dword ptr [esi + 8], 0xcec398",
+        "517D2C mov eax, esi",
+        "517D2E pop esi",
+        "517D2F ret"
+      ],
+      "exports": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00517d10\\assembly.txt",
+          "bytes": 259,
+          "sha256": "c6289e4c7b706d0334aa5b595512c3a013c0d6642c14500d191533ff3288473b"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00517d10\\decompiled.c",
+          "bytes": 565,
+          "sha256": "14339261a5891730b8c343cbaf24b91b28b13935ff765ef2a60a82d1e0c25902"
+        }
+      ]
+    }
+  ],
+  "public_signatures": [
+    "void* bsp::construct_native_front_end_screen_004f7180(void*)",
+    "void* bsp::construct_native_front_end_frame_00517d10(void*)"
+  ],
+  "native_ABI": "Both ECX actual receiver, EAX captured receiver, plainRET; Source uses explicit one-pointer C++/cdecl ABI",
+  "memory_schedule": {
+    "base": [
+      "capture actual receiver",
+      "DWORD+0=CEAE54",
+      "BYTE+4=0",
+      "BYTE+5=0",
+      "returncapture"
+    ],
+    "frame": [
+      "capture actual receiver",
+      "direct REAL new base Source call",
+      "DWORD+8=CEC388",
+      "DWORD+0=CEC39C",
+      "DWORD+8=CEC398",
+      "returncapture"
+    ]
+  },
+  "storage": "Genuine caller-owned appropriately aligned writable construction storage; six accessed prefix bytes for base, twelve within actual164hFrame. No semantic two-bool class cast or receiver authentication.",
+  "untouched": "No+C..160 writes/reads, Page arrays/current-set/selector allocation/initialization, registration, allocator, refcount or destructor",
+  "profiles": "Authentic original image DWORD identities only; no callable host table fabricated or numeric native code call",
+  "interface_qualifications": [
+    "Sequential volatile access order preserves intermediate profile/separate byte stores and supported raw-storage overlap effects",
+    "Public/private source/native stack identity, unrestricted asynchronous aliases, register/flags/fault/FH3/SEH equivalence are not proved",
+    "Completed stores remain on fault; no invented guard/rollback. SourceFrame setsEAX before lastfieldstore whereasnative setsEAX after; normal return correct, fault register identity unproved"
+  ],
+  "strict_objects": {
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\native_front_end_frame_construction.obj",
+      "bytes": 1217,
+      "sha256": "dab254e91a8c7ca2bdaa4035495acb6d0c0a3b6972401b9d315a8c70f87397db"
+    },
+    "MD_directive": true,
+    "functions": [
+      {
+        "name": "?construct_native_front_end_screen_004f7180@bsp@@YAPAXPAX@Z",
+        "bytes": 19,
+        "instructions": 5,
+        "section": 5
+      },
+      {
+        "name": "?construct_native_front_end_frame_00517d10@bsp@@YAPAXPAX@Z",
+        "bytes": 38,
+        "instructions": 11,
+        "section": 3
+      }
+    ],
+    "code_sections": [
+      {
+        "index": 3,
+        "name": ".text$mn",
+        "bytes": 38,
+        "flags": "60501020",
+        "hex": "568b74240856e80000000083c404c7460888c3ce00c7069cc3ce008bc6c7460898c3ce005ec3",
+        "sha256": "5d6e30ebd5e61c95baef40e9f50163ef6ba318c53105042f5c70c6a2ae8b68b4",
+        "relocations": [
+          {
+            "offset": 7,
+            "target": "?construct_native_front_end_screen_004f7180@bsp@@YAPAXPAX@Z",
+            "kind": 20
+          }
+        ],
+        "listing": [
+          {
+            "offset": "0000",
+            "instruction": "push esi",
+            "relocations": []
+          },
+          {
+            "offset": "0001",
+            "instruction": "mov esi, dword ptr [esp + 8]",
+            "relocations": []
+          },
+          {
+            "offset": "0005",
+            "instruction": "push esi",
+            "relocations": []
+          },
+          {
+            "offset": "0006",
+            "instruction": "call 0xb",
+            "relocations": [
+              {
+                "offset": 7,
+                "target": "?construct_native_front_end_screen_004f7180@bsp@@YAPAXPAX@Z",
+                "kind": 20
+              }
+            ]
+          },
+          {
+            "offset": "000B",
+            "instruction": "add esp, 4",
+            "relocations": []
+          },
+          {
+            "offset": "000E",
+            "instruction": "mov dword ptr [esi + 8], 0xcec388",
+            "relocations": []
+          },
+          {
+            "offset": "0015",
+            "instruction": "mov dword ptr [esi], 0xcec39c",
+            "relocations": []
+          },
+          {
+            "offset": "001B",
+            "instruction": "mov eax, esi",
+            "relocations": []
+          },
+          {
+            "offset": "001D",
+            "instruction": "mov dword ptr [esi + 8], 0xcec398",
+            "relocations": []
+          },
+          {
+            "offset": "0024",
+            "instruction": "pop esi",
+            "relocations": []
+          },
+          {
+            "offset": "0025",
+            "instruction": "ret",
+            "relocations": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "name": ".text$mn",
+        "bytes": 19,
+        "flags": "60501020",
+        "hex": "8b442404c70054aece00c6400400c6400500c3",
+        "sha256": "5552b7615ae2ee998d002b8fa6823fb43f0e6134632a152d47c0e80d0e4d1be5",
+        "relocations": [],
+        "listing": [
+          {
+            "offset": "0000",
+            "instruction": "mov eax, dword ptr [esp + 4]",
+            "relocations": []
+          },
+          {
+            "offset": "0004",
+            "instruction": "mov dword ptr [eax], 0xceae54",
+            "relocations": []
+          },
+          {
+            "offset": "000A",
+            "instruction": "mov byte ptr [eax + 4], 0",
+            "relocations": []
+          },
+          {
+            "offset": "000E",
+            "instruction": "mov byte ptr [eax + 5], 0",
+            "relocations": []
+          },
+          {
+            "offset": "0012",
+            "instruction": "ret",
+            "relocations": []
+          }
+        ]
+      }
+    ],
+    "inspection": "All19B/5ops and38B/11ops, one actual base rel32, three required Frame DWORDstores, separate base BYTEstores, receiver/stack/nonvolatile return; no FP/SSE/unrelatedcallee; noinline keeps real base call visible"
+  },
+  "source_receipts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\include\\bsp\\native_front_end_frame_construction.hpp",
+      "bytes": 1622,
+      "sha256": "cd96bfd81f06f903c973593cde3daddff837d7a75f4649eb007ae4a14a7deb61"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\src\\native_front_end_frame_construction.cpp",
+      "bytes": 976,
+      "sha256": "f90858ce1f08c8124d18a53bb51cfc43c46ced96fc8e64636c613a08a037cd9f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\docs\\CC16_NATIVE_FRONT_END_FRAME_CONSTRUCTION.md",
+      "bytes": 3973,
+      "sha256": "5bcd42c9aa2381e5314a928342388a6415314986d32e5ddc824cdb32c8fc4730"
+    }
+  ],
+  "remaining": [
+    "Root independent review/common build/link",
+    "actualFramepublication/register/Page/currentset/selector/95registry/lifetime/caller/wholeGame adoption and required fixture/gameplay gates"
+  ]
+}

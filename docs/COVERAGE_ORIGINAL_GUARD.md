@@ -1,10 +1,10 @@
 # Original coverage guard: feasibility and safety gates
 
-Status: the private CREATE/import-shim, Documents, independent entry-admission
-and drcov fixture passed, including missing-client negatives and 69,700 source
-handles. No production coverage mode is enabled and no original was launched
-by this packet. The ordinary guarded baseline/histogram path remains unchanged.
-The rejected attach and flush/redirect candidates are recorded below.
+Status: an explicit `-Drcov`/`--drcov` integration is implemented after the
+private CREATE, Documents, independent entry, 69,700-handle and authenticated
+stop fixtures passed. It has not been exercised against retail by this worker;
+primary review remains required before that first run. Classic launches remain
+unchanged. Rejected attach/redirect candidates and fixture evidence are below.
 
 ## Tool provenance checked locally
 
@@ -434,3 +434,97 @@ is observable to code inspecting its own text and requires production review.
 This is still private-fixture proof, not retail startup, gameplay, coverage or
 FP parity validation. Actual-source audits/lock acquisition, retail DBI startup
 and original Documents/asset immutability remain production gates.
+
+## Opt-in integration and first-run handoff
+
+`original_baseline_guard.py launch --drcov --dr-root <root>` dispatches to
+`tools/original_drcov_guard.py`. The PS1 wrapper exposes `-Drcov
+-DynamoRioRoot <root>`. Both paths require `medium-write-locked`; the wrapper
+holds the existing retail/shared-slot locks for the full backend lifetime.
+Classic launches retain their existing debugger and behavior. DR rejects
+debugger-specific exception/startup observations and never falls back to native
+execution or a different token.
+
+The production selector requires the exact original/private EXE SHA256
+`b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6`,
+xlive SHA256
+`71b50b3e91b5e17603f1d8fd44f1fc1da53c305f191dd126fb5059e5d3c841b2`,
+the fixed PE/entry/IAT layout and original 16 bytes recorded above, and eight
+pinned DR components. It verifies the preparation/private-options inventories,
+real source root and profile hashes, medium preparation, complete private
+label/link/reparse scan, actual restricted-token AccessCheck audit and protected
+read handles before starting the helper. The native helper also pins retail
+identity and accepts only the full USN04 scene argument. The actual token,
+source-handle count, explicit sink identity and helper/root jobs are recorded.
+
+Every run creates new empty config/trace/control directories under the same
+repo's private stage. Only the two declared **private** generated logs,
+`bsp_debug.log` and `xlive_debug.log`, are archived and reset before launch.
+Source-install logs are untouched. The receipt binds the scene log to offset 0
+and `scene_log_reset_before_launch=true`, avoiding a stale copied scene marker
+or native logger truncation ambiguity.
+
+The backend binds the real root PID, creation FILETIME, private path, hash and
+token before reporting admission. It automatically starts the integrated
+read-only `original_coverage_clock.py` after hook/tracer/FP/CALL verification.
+The observer binds that identity and fresh full-scene marker, polls native
+GameTime/fixed-step state, and publishes a stop request at absolute native
+GameTime >= 240. It never kills or mutates the game. No unproved state `0D` condition
+or difficulty coercion is added.
+
+The stop request uses schema `bsp.original-coverage.stop.v1`, exact integer
+PID/FILETIME, private executable path, a random nonzero 16-hex nonce and reason.
+The backend validates it before publishing the private native command. The
+helper rechecks real creation time and uses only public `dr_nudge_pid(pid,0,
+nonce,timeout)`. Admission client 0 ignores a wrong nonce/PID or a not-ready
+request. A valid request logs `controlled_trace_stop`, exits with code 0 through
+`dr_exit_process`, and logs its intentional exit callback; stock drcov's exit
+callback flushes its table. No name-based/global nudge is used.
+
+Success requires reason `game_time_target`, admission, the matching stop/exit
+markers, root/helper exit 0, a strictly complete trace and all preservation
+checks. The shared census parser verifies every declared BB row, the one exact
+root-PID filename, module path, base `400000`, PE timestamp/size and entry CALL5.
+A dropped-final-row copy was explicitly rejected. Natural exit 0 before the
+target, game crash, timeout, DRAIN, observer failure and failed admission all
+return nonzero; a gracefully flushed partial trace is not called completion.
+Both jobs must be empty before independent parent source handles are released.
+Verification errors still produce cleanup and final receipt evidence.
+
+The focused authenticated-stop proof is
+`local/dr-production-nudge-probe-05/result.json`: wrong payload ignored while
+the root remained alive/in its leaf job with native EBFE, followed by correct
+nonce exit 0, both client callbacks and 16,004/16,004 complete BB records. Both jobs
+were zero **before cleanup**. The deliberate failed child-creation probe left
+retained association counts 2/4; pre/post counts and PID sets were identical.
+The comparison therefore checks the observed baseline plus actual membership,
+liveness/identity and child-before-entry denial, not an invalid assumption that
+accounting must be 1. Extra PID observations are preserved as observed
+STILL_ACTIVE/non-signaled, without claiming they were dead. All owned jobs
+drained to 0. Primary Microsoft
+[job accounting documentation](https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-jobobject_basic_accounting_information)
+describes temporary accounting effects from failed limit associations.
+
+`probe-drcov` is a separate, explicit isolated test path. It builds only dummy
+targets, confirms production rejects their SHA, compiles but never executes
+the real selector, and exercises the backend using a separately compiled test
+selector. `local/dr-backend-production-selftest-01/backend-launch.json` passed
+the whole stop/publication/strict-trace/preservation path (root PID 34604). Its
+synthetic clock payload is labeled non-mission evidence. The final path-query
+and receipt additions were checked again in selftest02 (root PID 87140). No original/install
+handles or original execution are involved in either probe.
+
+After primary review, from the integrated primary coverage worktree, the exact
+first-run recipe is:
+
+```powershell
+pwsh -NoProfile -File tools/run_original_baseline.ps1 -RunPrepared -Drcov -TokenMode medium-write-locked -DynamoRioRoot J:/PROG/battlestations-pacific-decompile-codex-coverage/local/tools/dynamorio/DynamoRIO-Windows-11.91.20749 -StageRoot J:/PROG/battlestations-pacific-decompile-codex-coverage/local/original-coverage/stage-usn04 -RuntimeSeconds 3600
+```
+
+The exact full USN04 argument is selected automatically. Do not add debugger
+flags. `stage-usn04/launch.json` reports real helper/root/observer PIDs,
+admission, nonce/stop path, fresh log epoch, private run directory, trace rows,
+exit classification and source preservation. The observer is supervised
+automatically. Native EBFE text visibility, real retail startup under DBI,
+runtime timing/FP behavior and a successful mission-clock capture remain live
+validation risks; these fixture results do not resolve them.

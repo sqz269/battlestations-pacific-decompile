@@ -1,0 +1,5066 @@
+{
+  "schema": "bsp.cc16.native_lua_variant_scalar_delete.v1",
+  "packet": "cc16-native-lua-variant-scalar-delete",
+  "utc": "2026-10-30T09:28:43.536815+00:00",
+  "base_commit": "879f5d855aa43e099fb349ea7b18d58c7f2d1a40",
+  "branch": "agent/codex-native-lua-variant-scalar-delete",
+  "status": "complete_bounded_qualified_Source_scalar_strict_static_candidate_awaiting_Root_independent_common_admission",
+  "ownership": {
+    "addresses": [
+      "00884FA0"
+    ],
+    "files": [
+      "include/bsp/native_lua_variant_retirement.hpp",
+      "src/native_lua_variant_retirement.cpp",
+      "docs/CC16_NATIVE_LUA_VARIANT_SCALAR_DELETE.md",
+      "reports/cc16_native_lua_variant_scalar_delete.json"
+    ],
+    "CMake_ledger_guard_Ghidra_caller_table_global_peer_install_changes": false
+  },
+  "immutable_inputs": [
+    {
+      "commit": "a4774a47499cf3ad0f38af058a53fef1e71cea61",
+      "path": "reports/cc16_native_lua_variant_cpp_cleanup.json",
+      "bytes": 171611,
+      "sha256": "9670177711f416451dccf5b9e86b17bbd9d01f9eef086f4152966a94c16eeb7d",
+      "git_blob": "6a0b2325f1dac65336d12372c14812bf048eb2c7"
+    },
+    {
+      "commit": "b5d3e2c957ca22cb8f29ca0816f6e2aec87d5e73",
+      "path": "reports/cc16_native_lua_variant_cpp_cleanup_review.json",
+      "bytes": 162534,
+      "sha256": "2e62e204bcf69c54d354a578797851cb80dc18cea5b03da4bcd79d20b4c988a2",
+      "git_blob": "179db73773af8fbc7fb4592fd8355af0a3c43ada"
+    },
+    {
+      "commit": "5ef322e05be0fa3197cc9ee6d952dcbe5c9dd142",
+      "path": "docs/CC16_NATIVE_LUA_VARIANT_SCALAR_DELETE_READINESS.md",
+      "bytes": 10337,
+      "sha256": "e04a1bb5a12a6e7ce0aac4d0c4e6b72b213d4254c722be8c97bdf7035f543a62",
+      "git_blob": "ceaf957ecf6874d6b87e5378febaea2022c232e0"
+    },
+    {
+      "commit": "5ef322e05be0fa3197cc9ee6d952dcbe5c9dd142",
+      "path": "reports/cc16_native_lua_variant_scalar_delete_readiness.json",
+      "bytes": 34809,
+      "sha256": "58ebba71c39ef0b5c71c894f5b177e95f2e6ae58e285b65c07a4715d7ee8589a",
+      "git_blob": "1530fc166be9ac1c2907a87735e6f09838635d2c"
+    },
+    {
+      "commit": "879f5d855aa43e099fb349ea7b18d58c7f2d1a40",
+      "path": "docs/CC16_NATIVE_LUA_VARIANT_CPP_CLEANUP_SOURCE_ADMISSION.md",
+      "bytes": 5655,
+      "sha256": "03d99151929ad7cfeb601bf54e246da9b50ba95a625bc81d3f27427715ad0ae5",
+      "git_blob": "9a725592006d98ad2b423d30470bba7502f1aca2"
+    },
+    {
+      "commit": "879f5d855aa43e099fb349ea7b18d58c7f2d1a40",
+      "path": "reports/cc16_native_lua_variant_cpp_cleanup_source_admission.json",
+      "bytes": 33441,
+      "sha256": "e12a8884c035a08ac6ee86a49d172bce03f58a29bb34dbe3cedae02a55b3435d",
+      "git_blob": "7414a61feab8cac70f768bf0cfbf0ce7aa282c66"
+    }
+  ],
+  "final_Source_pins": [
+    {
+      "path": "include/bsp/native_lua_variant_retirement.hpp",
+      "bytes": 13881,
+      "sha256": "14258135096189f2892e4d896af417ed0c8fb616d5f1659bbc1d9d032f68a7db",
+      "LF_only": true,
+      "baseline_commit": "a4774a47499cf3ad0f38af058a53fef1e71cea61",
+      "baseline_git_blob": "184feb7f6d20e57780c93aaf7c02ad00556d079c",
+      "git_blob": "d4babed549ceff1536f80413fc0f8e4716e78f53",
+      "lines": 271
+    },
+    {
+      "path": "src/native_lua_variant_retirement.cpp",
+      "bytes": 24076,
+      "sha256": "5db41574abcb3a94fdb9c6f5c8f96f2b7b0c1f0c2a7f438fe64d622980c065ca",
+      "LF_only": true,
+      "baseline_commit": "a4774a47499cf3ad0f38af058a53fef1e71cea61",
+      "baseline_git_blob": "06bb6a314cc77bea59c63d1a76f0fba1f9e9b447",
+      "git_blob": "7b51801d0ade27ee9818fe92ff9cddaa1b19cab7",
+      "lines": 570
+    }
+  ],
+  "old_Source_prefixes_exactly_preserved": true,
+  "unchanged_dependency_pins": [
+    {
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "LF_only": true,
+      "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "src/native_string.cpp",
+      "bytes": 9121,
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "LF_only": true,
+      "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "bytes": 5893,
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "LF_only": true,
+      "git_blob": "4a2569e19b6f25c308cba1c3cdb2b2989db2cddd",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "bytes": 8443,
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "LF_only": true,
+      "git_blob": "de3c69b53e00840fab31b41e2195bdc1789b6baf",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "bytes": 3113,
+      "sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+      "LF_only": true,
+      "git_blob": "60b3f627150fa058fac7b8c4c74537cb3aee0a68",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "bytes": 5450,
+      "sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+      "LF_only": true,
+      "git_blob": "103d6fe4d772bb3078c48fe8bcf3f929a385fdda",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "LF_only": true,
+      "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "LF_only": true,
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "src/native_game_container_lifetime.cpp",
+      "bytes": 7370,
+      "sha256": "026006b90be17b7b8a2527bee98828a9a80ba0bdbbc96053fae5d244585a4a9c",
+      "LF_only": true,
+      "git_blob": "04959dc2f18535f1f3c656bca22bd53996dac45d",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "include/bsp/native_lua_variant_link_record_allocation.hpp",
+      "bytes": 1395,
+      "sha256": "7981f4745307349729690d0c2e1e2a0b8526a0829e3778d1c1b55f91c832f52d",
+      "LF_only": true,
+      "git_blob": "0c7ec0eeeaa26327bdb68db0428777c22002fddc",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "src/native_lua_variant_link_record_allocation.cpp",
+      "bytes": 1101,
+      "sha256": "6724c0bc953776268b22b310341b3e847495b94a247a37918af3f7b9590d01e9",
+      "LF_only": true,
+      "git_blob": "f7e89244438d07e0ae9bb3624f648e59bb81885f",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "include/bsp/native_lua_variant_header_initializer.hpp",
+      "bytes": 1998,
+      "sha256": "de307db13063f3a5b775c9c2ee775b8a11f475944705bdda7860ef8a0af2a596",
+      "LF_only": true,
+      "git_blob": "b2a658d0ce6b4b210c727e12b8b640c7b318735e",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "src/native_lua_variant_header_initializer.cpp",
+      "bytes": 1351,
+      "sha256": "113c184fca2a7c20e1da61cf310913eec074d03835f767ef4f07d6b9deab1f96",
+      "LF_only": true,
+      "git_blob": "9db6cff3a1f8291375a1bf2df6e498c9f70ace75",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "include/bsp/cc13_left55.hpp",
+      "bytes": 32394,
+      "sha256": "5a71656a1194f5838743ba5b2b5ea7b6f94a8a4ed8cc65ffd3714c18b8de4dfb",
+      "LF_only": true,
+      "git_blob": "837cbc3ce7b9ead900f52ef505293f6fa378fd7f",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "src/cc13_left55_seg55.cpp",
+      "bytes": 49527,
+      "sha256": "5d33b376fb3f98f9b05a438165207ec346de4a8400e8e6c94e726e8ca1ffbf4c",
+      "LF_only": true,
+      "git_blob": "da88eab79d03eeb7b5b7b84fcb645d9cb7ca2de4",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "include/bsp/cc13_seg33b.hpp",
+      "bytes": 53766,
+      "sha256": "3cbe6be635f637ffc0d10ab50246d5cb4ad0ca5b509e35325f122c4f28de48d3",
+      "LF_only": true,
+      "git_blob": "6114ab19972bc4519b8ceba9192eb17ca86832af",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "src/cc13_seg33b_misc.cpp",
+      "bytes": 67079,
+      "sha256": "b7097473cbe468dfa0a7737ee15da61b4d53f7eb0aa7e1b93dbe7c60c0b74a68",
+      "LF_only": true,
+      "git_blob": "99bbb11a9447d0e51d0485b0de44b3c82ee195f4",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "include/bsp/native_lua_variant_string_fields_cleanup.hpp",
+      "bytes": 1698,
+      "sha256": "ae929f84634f6a83d4a6cc22c6264b7a9e6a1ce8e23f993658c50b56eb08fdd9",
+      "LF_only": true,
+      "git_blob": "4641600a6913109803278e3675d8aa5c615fff38",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "src/native_lua_variant_string_fields_cleanup.cpp",
+      "bytes": 1226,
+      "sha256": "b31d80cd54faaba97c7a83a2e2994915ebb18003e17500614f04bc1f68e54921",
+      "LF_only": true,
+      "git_blob": "f7ab40687b6b3ff421096b6d5537de9347786d22",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "bytes": 2373,
+      "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "LF_only": true,
+      "git_blob": "9379a2a6cd97f13fabc2554b0b539363b85a5da2",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "src/native_singleton_vector_registration_wrappers.cpp",
+      "bytes": 4283,
+      "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "LF_only": true,
+      "git_blob": "4096dfcf1c693f3c509c8db5f1cfb621e523b0d0",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    }
+  ],
+  "baseline_a477_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-cpp-cleanup\\local\\native_lua_variant_cpp_cleanup\\compile.cmd",
+      "bytes": 473,
+      "sha256": "c40ee65612e53349c78b9fba322f2449477157d46c7983a8e4466b9b4d986359",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\baseline_artifacts\\compile.cmd",
+      "exact_a477_artifact": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-cpp-cleanup\\local\\native_lua_variant_cpp_cleanup\\compile.log",
+      "bytes": 35,
+      "sha256": "5e744182c7f07a68b0f2f9dd498d144f6591c53565c55416703f7aaa0072a22e",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\baseline_artifacts\\compile.log",
+      "exact_a477_artifact": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-cpp-cleanup\\local\\native_lua_variant_cpp_cleanup\\retirement.obj",
+      "bytes": 29327,
+      "sha256": "387096d30eda207e5c0873fe66e2805ac2179dd4a46e5070db77b62a9dd43594",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\baseline_artifacts\\retirement.obj",
+      "exact_a477_artifact": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-cpp-cleanup\\local\\native_lua_variant_cpp_cleanup\\retirement.asm",
+      "bytes": 157032,
+      "sha256": "1757cd7e6d3339912d9dd5ef6aa6fd78324f768d2aed2d33e5c47fddbb19b5ef",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\baseline_artifacts\\retirement.asm",
+      "exact_a477_artifact": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-cpp-cleanup\\local\\native_lua_variant_cpp_cleanup\\emitted.json",
+      "bytes": 458071,
+      "sha256": "5243b25ce3898c10c6e4bae945f5120be8acea6757852caab010eba56e1898b1",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\baseline_artifacts\\emitted.json",
+      "exact_a477_artifact": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-cpp-cleanup\\local\\native_lua_variant_cpp_cleanup\\EH.json",
+      "bytes": 19120,
+      "sha256": "49d822392a935a6489b186f9519b82f07262b03c9cadb6a8ec9d0f746b60ae02",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\baseline_artifacts\\EH.json",
+      "exact_a477_artifact": true
+    }
+  ],
+  "native_proof": {
+    "image": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "image_bytes": 12223752,
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "id": "scalar_00884fa0",
+        "address": "00884fa0",
+        "length": 30,
+        "file_offset": 4738976,
+        "sha256": "1e12378e15ffd6846e22c5321444c71e85ca37f9f502a575667414cc12a7f02b",
+        "hex": "568bf1e848fbfffff644240801740956e8f715370083c4048bc65ec20400",
+        "instructions": [
+          {
+            "address": "00884fa0",
+            "bytes": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "address": "00884fa1",
+            "bytes": "8bf1",
+            "mnemonic": "mov",
+            "operands": "esi, ecx"
+          },
+          {
+            "address": "00884fa3",
+            "bytes": "e848fbffff",
+            "mnemonic": "call",
+            "operands": "0x884af0"
+          },
+          {
+            "address": "00884fa8",
+            "bytes": "f644240801",
+            "mnemonic": "test",
+            "operands": "byte ptr [esp + 8], 1"
+          },
+          {
+            "address": "00884fad",
+            "bytes": "7409",
+            "mnemonic": "je",
+            "operands": "0x884fb8"
+          },
+          {
+            "address": "00884faf",
+            "bytes": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "address": "00884fb0",
+            "bytes": "e8f7153700",
+            "mnemonic": "call",
+            "operands": "0xbf65ac"
+          },
+          {
+            "address": "00884fb5",
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "address": "00884fb8",
+            "bytes": "8bc6",
+            "mnemonic": "mov",
+            "operands": "eax, esi"
+          },
+          {
+            "address": "00884fba",
+            "bytes": "5e",
+            "mnemonic": "pop",
+            "operands": "esi"
+          },
+          {
+            "address": "00884fbb",
+            "bytes": "c20400",
+            "mnemonic": "ret",
+            "operands": "4"
+          }
+        ],
+        "current_PE_exact": true
+      },
+      {
+        "id": "profile_00d0e6f4",
+        "address": "00d0e6f4",
+        "length": 4,
+        "file_offset": 9496308,
+        "sha256": "75f6591c4e50361ede510f9fc914fd98e0a12d4d8d0de16cdc7a292fa4bceb47",
+        "hex": "a04f8800",
+        "current_PE_exact": true
+      },
+      {
+        "id": "child_00884af0",
+        "address": "00884af0",
+        "length": 101,
+        "file_offset": 4737776,
+        "sha256": "40a084311f56d31bed50c8487a75be912da83ec178507028bab016b5775db2c3",
+        "hex": "6aff68db70c90064a100000000506489250000000051568bf189742404c706f4e6d000c744241000000000e8001e00008b461085c0c7442410ffffffff74168b760c6a0183c6015650e88251b9ff8bc8e8cbc934008b4c24085e64890d0000000083c410c3",
+        "instructions": [
+          {
+            "address": "00884af0",
+            "bytes": "6aff",
+            "mnemonic": "push",
+            "operands": "-1"
+          },
+          {
+            "address": "00884af2",
+            "bytes": "68db70c900",
+            "mnemonic": "push",
+            "operands": "0xc970db"
+          },
+          {
+            "address": "00884af7",
+            "bytes": "64a100000000",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr fs:[0]"
+          },
+          {
+            "address": "00884afd",
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "address": "00884afe",
+            "bytes": "64892500000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr fs:[0], esp"
+          },
+          {
+            "address": "00884b05",
+            "bytes": "51",
+            "mnemonic": "push",
+            "operands": "ecx"
+          },
+          {
+            "address": "00884b06",
+            "bytes": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "address": "00884b07",
+            "bytes": "8bf1",
+            "mnemonic": "mov",
+            "operands": "esi, ecx"
+          },
+          {
+            "address": "00884b09",
+            "bytes": "89742404",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esp + 4], esi"
+          },
+          {
+            "address": "00884b0d",
+            "bytes": "c706f4e6d000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi], 0xd0e6f4"
+          },
+          {
+            "address": "00884b13",
+            "bytes": "c744241000000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esp + 0x10], 0"
+          },
+          {
+            "address": "00884b1b",
+            "bytes": "e8001e0000",
+            "mnemonic": "call",
+            "operands": "0x886920"
+          },
+          {
+            "address": "00884b20",
+            "bytes": "8b4610",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esi + 0x10]"
+          },
+          {
+            "address": "00884b23",
+            "bytes": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax"
+          },
+          {
+            "address": "00884b25",
+            "bytes": "c7442410ffffffff",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esp + 0x10], 0xffffffff"
+          },
+          {
+            "address": "00884b2d",
+            "bytes": "7416",
+            "mnemonic": "je",
+            "operands": "0x884b45"
+          },
+          {
+            "address": "00884b2f",
+            "bytes": "8b760c",
+            "mnemonic": "mov",
+            "operands": "esi, dword ptr [esi + 0xc]"
+          },
+          {
+            "address": "00884b32",
+            "bytes": "6a01",
+            "mnemonic": "push",
+            "operands": "1"
+          },
+          {
+            "address": "00884b34",
+            "bytes": "83c601",
+            "mnemonic": "add",
+            "operands": "esi, 1"
+          },
+          {
+            "address": "00884b37",
+            "bytes": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "address": "00884b38",
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "address": "00884b39",
+            "bytes": "e88251b9ff",
+            "mnemonic": "call",
+            "operands": "0x419cc0"
+          },
+          {
+            "address": "00884b3e",
+            "bytes": "8bc8",
+            "mnemonic": "mov",
+            "operands": "ecx, eax"
+          },
+          {
+            "address": "00884b40",
+            "bytes": "e8cbc93400",
+            "mnemonic": "call",
+            "operands": "0xbd1510"
+          },
+          {
+            "address": "00884b45",
+            "bytes": "8b4c2408",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [esp + 8]"
+          },
+          {
+            "address": "00884b49",
+            "bytes": "5e",
+            "mnemonic": "pop",
+            "operands": "esi"
+          },
+          {
+            "address": "00884b4a",
+            "bytes": "64890d00000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr fs:[0], ecx"
+          },
+          {
+            "address": "00884b51",
+            "bytes": "83c410",
+            "mnemonic": "add",
+            "operands": "esp, 0x10"
+          },
+          {
+            "address": "00884b54",
+            "bytes": "c3",
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ],
+        "current_PE_exact": true
+      }
+    ],
+    "bytes": 135,
+    "new_Ghidra_query": false,
+    "project_program_identity": "C:/Users/sqz269/bsp.gpr /battlestationspacific.exe inherited verified input; no fresh live claim"
+  },
+  "Native_full_body": {
+    "start": "00884fa0",
+    "end_inclusive": "00884fbd",
+    "bytes": 30,
+    "instructions": 11,
+    "old28_extent_rejected": "RET4 at884FBB is3B;28B truncates it",
+    "callee_sites": [
+      {
+        "site": "00884fa3",
+        "target": "00884af0"
+      },
+      {
+        "site": "00884fb0",
+        "target": "00bf65ac"
+      }
+    ],
+    "saved_receiver": "captureECX in preservedESI beforechild",
+    "flags": "CURRENT incoming-home LOWBYTE mask01 only AFTERchildreturn",
+    "free": "capturedESI toBF65AC iffset",
+    "normal_return": "EAX=capturedreceiver eveniffreed;restoreESI;RET4",
+    "local_Native_EH_frame": false,
+    "D0E6F4_points_at_scalar": true
+  },
+  "new_Source_API": {
+    "name": "scalar_delete_native_lua_variant_00884fa0_cpp_cleanup",
+    "ordinary_CPP_not_Original_ABI": true,
+    "parameters": [
+      "void* actual_variant",
+      "const volatile std::uint32_t& actual_flags_home",
+      "NativeStringRawPoolContext& strings",
+      "NativeLuaVariantRetirementOperation& operation",
+      "const NativeLuaVariantCppCleanupBacking& cleanup"
+    ],
+    "result": {
+      "name": "NativeLuaVariantScalarDeleteResult",
+      "fields": [
+        "NativeLuaVariantRetirementResult completion",
+        "std::uintptr_t captured_receiver_bits"
+      ],
+      "bytes": 8,
+      "bits_offset": 4,
+      "aggregate_and_trivially_copyable_compile_assertions": true,
+      "default_fields_or_implicit_conversion": false,
+      "noncompletion_identity_is_diagnostic_not_success": true,
+      "completed_identity_may_be_dangling": true
+    },
+    "same_actual_context_operation_sidecars_forwarded": true,
+    "actual_qualified_destructor_return_used_not_operation_result": true,
+    "capture_receiver_and_bits_before_child": true,
+    "late_flags_read": "exactlyone CURRENT volatile unsigned-char alias atactualDWORDHOME+0 onlyafter completedchild",
+    "returned_noncompletion": "returnactualchildstatus+diagnosticbits immediately beforeflags/free",
+    "set_mask01": "actual singleton_lifetime_free(capturedV)",
+    "clear_mask01": "skipfree",
+    "Cpp_escape": "no ordinary returnedResult,flagsread,free or scalar-local action; actual escaping child exception propagates subject toexistingtransport limits",
+    "new_catch_guard_metadataframe_callback_global_table_default_null_profile_retry_policy": false
+  },
+  "actual_domain": {
+    "receiver": "genuine live20Bvariant satisfying all qualified884AF0 payload/name/map/poolprovider preconditions",
+    "late_free": "iff LATEbit0 set,capturedV is exact canonicalmalloc/free rootallocationbase;entryflags/profile/tag/size are no authentication",
+    "flagsHOME": "live/readable through its actuallatebyte read; supportedraw-home/receiver aliases retain read-before-scalarfree order; no blanket disjoint-from-all-rawbacking rule",
+    "metadata_custody": "context,operation/sidecars andSource resultmetadata independentlylive/disjoint frommutablehomes andrawpayload throughlastuse/failure disposition; genuine available aliases maymutateflagsHOME,active metadata cannotbe externallymutated; reentry independentbacking",
+    "child_backing_capacity": "actual child/nested-map chain,no fixed/count/history limit",
+    "providers": "same actualAA8/AA0/AA4,matching manager/deletion/section/ring/storage andheap;canonical Sourcefree directlystd::free,existingnoexcept unchanged",
+    "Native_private_HOME_async_alias_limit": "explicit SourceHOME doesnot reproduceOriginalprivateargumentstackslot,arbitraryprivatealiasreplacement,async/fault/atomic/ABI identity"
+  },
+  "strict_compile": {
+    "command": "cmd /d /c local\\native_lua_variant_scalar_delete\\compile.cmd",
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete",
+    "exit_code": 0,
+    "compile_iterations": 1,
+    "compiler": "MSVC19.51.36244.0 Win32",
+    "flags": "/nologo /c /std:c++17 /O2 /Ob2 /DNDEBUG /MD /EHsc /W4 /WX /fp:strict /Iinclude /FAs",
+    "warnings": 0,
+    "target_execution": false,
+    "new_test_or_link": false,
+    "compile_input_Source": [
+      {
+        "path": "include/bsp/native_lua_variant_retirement.hpp",
+        "bytes": 13752,
+        "sha256": "df5d0402be719517ff4704794e723b0dd5b8235731449bf8256edf8640603a9a",
+        "LF_only": true,
+        "baseline_commit": "a4774a47499cf3ad0f38af058a53fef1e71cea61",
+        "baseline_git_blob": "184feb7f6d20e57780c93aaf7c02ad00556d079c"
+      },
+      {
+        "path": "src/native_lua_variant_retirement.cpp",
+        "bytes": 24076,
+        "sha256": "5db41574abcb3a94fdb9c6f5c8f96f2b7b0c1f0c2a7f438fe64d622980c065ca",
+        "LF_only": true,
+        "baseline_commit": "a4774a47499cf3ad0f38af058a53fef1e71cea61",
+        "baseline_git_blob": "06bb6a314cc77bea59c63d1a76f0fba1f9e9b447"
+      }
+    ],
+    "final_Source": [
+      {
+        "path": "include/bsp/native_lua_variant_retirement.hpp",
+        "bytes": 13881,
+        "sha256": "14258135096189f2892e4d896af417ed0c8fb616d5f1659bbc1d9d032f68a7db",
+        "LF_only": true,
+        "baseline_commit": "a4774a47499cf3ad0f38af058a53fef1e71cea61",
+        "baseline_git_blob": "184feb7f6d20e57780c93aaf7c02ad00556d079c"
+      },
+      {
+        "path": "src/native_lua_variant_retirement.cpp",
+        "bytes": 24076,
+        "sha256": "5db41574abcb3a94fdb9c6f5c8f96f2b7b0c1f0c2a7f438fe64d622980c065ca",
+        "LF_only": true,
+        "baseline_commit": "a4774a47499cf3ad0f38af058a53fef1e71cea61",
+        "baseline_git_blob": "06bb6a314cc77bea59c63d1a76f0fba1f9e9b447"
+      }
+    ],
+    "post_compile_comment_only_correction": {
+      "header_only": true,
+      "Root_requested": "allow supported flagsHOME/rawreceiver aliases; separate flags lifetime from context/metadata/result disjointness",
+      "noncomment_tokens_and_whitespace_normalized_identical": true,
+      "recompile_required": false,
+      "CPP_unchanged": true
+    },
+    "complete_object": {
+      "bytes": 29841,
+      "sha256": "bcf718e1da6a3616432f6ce4ca1a1975b04413611437c73dae9626af73710bdd",
+      "machine": 332
+    },
+    "code_sections": 37,
+    "code_bytes": 5483,
+    "operations": 1652,
+    "direct_calls": 75,
+    "old_sections_compared": 36,
+    "old_code_bytes": 5428,
+    "old_operations": 1631,
+    "new_scalar_bytes": 55,
+    "new_scalar_operations": 21,
+    "no_common_build_or_link_attestation": true
+  },
+  "complete_new_scalar_section": {
+    "number": 60,
+    "name": ".text$mn",
+    "declared_bytes": 55,
+    "raw_pointer": 10529,
+    "bytes": 55,
+    "hex": "56ff7424188b74240cff742418ff74241856e80000000083c41085c075158b44240c8a00a801740956e80000000083c40433c08bd65ec3",
+    "sha256": "84f6f4ac1a573b15c5a7e00dcf41bba47e44001742aa94c4629475a2027b2008",
+    "characteristics": "60501020",
+    "symbols": [
+      {
+        "index": 121,
+        "name": ".text$mn",
+        "value": 0,
+        "section": 60,
+        "type": 0,
+        "storage": 3,
+        "aux": 1
+      },
+      {
+        "index": 139,
+        "name": "?scalar_delete_native_lua_variant_00884fa0_cpp_cleanup@bsp@@YA?AUNativeLuaVariantScalarDeleteResult@1@PAXADIAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "value": 0,
+        "section": 60,
+        "type": 32,
+        "storage": 2,
+        "aux": 0
+      }
+    ],
+    "relocations": [
+      {
+        "offset": 19,
+        "type": 20,
+        "symbol": "??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "symbol_index": 158,
+        "target_section": 8,
+        "target_value": 0
+      },
+      {
+        "offset": 42,
+        "type": 20,
+        "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "symbol_index": 140,
+        "target_section": 0,
+        "target_value": 0
+      }
+    ],
+    "instructions": [
+      {
+        "offset": 0,
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": "esi",
+        "relocations": []
+      },
+      {
+        "offset": 1,
+        "bytes": "ff742418",
+        "mnemonic": "push",
+        "operands": "dword ptr [esp + 0x18]",
+        "relocations": []
+      },
+      {
+        "offset": 5,
+        "bytes": "8b74240c",
+        "mnemonic": "mov",
+        "operands": "esi, dword ptr [esp + 0xc]",
+        "relocations": []
+      },
+      {
+        "offset": 9,
+        "bytes": "ff742418",
+        "mnemonic": "push",
+        "operands": "dword ptr [esp + 0x18]",
+        "relocations": []
+      },
+      {
+        "offset": 13,
+        "bytes": "ff742418",
+        "mnemonic": "push",
+        "operands": "dword ptr [esp + 0x18]",
+        "relocations": []
+      },
+      {
+        "offset": 17,
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": "esi",
+        "relocations": []
+      },
+      {
+        "offset": 18,
+        "bytes": "e800000000",
+        "mnemonic": "call",
+        "operands": "0x17",
+        "relocations": [
+          {
+            "offset": 19,
+            "type": 20,
+            "symbol": "??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+            "symbol_index": 158,
+            "target_section": 8,
+            "target_value": 0
+          }
+        ]
+      },
+      {
+        "offset": 23,
+        "bytes": "83c410",
+        "mnemonic": "add",
+        "operands": "esp, 0x10",
+        "relocations": []
+      },
+      {
+        "offset": 26,
+        "bytes": "85c0",
+        "mnemonic": "test",
+        "operands": "eax, eax",
+        "relocations": []
+      },
+      {
+        "offset": 28,
+        "bytes": "7515",
+        "mnemonic": "jne",
+        "operands": "0x33",
+        "relocations": []
+      },
+      {
+        "offset": 30,
+        "bytes": "8b44240c",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esp + 0xc]",
+        "relocations": []
+      },
+      {
+        "offset": 34,
+        "bytes": "8a00",
+        "mnemonic": "mov",
+        "operands": "al, byte ptr [eax]",
+        "relocations": []
+      },
+      {
+        "offset": 36,
+        "bytes": "a801",
+        "mnemonic": "test",
+        "operands": "al, 1",
+        "relocations": []
+      },
+      {
+        "offset": 38,
+        "bytes": "7409",
+        "mnemonic": "je",
+        "operands": "0x31",
+        "relocations": []
+      },
+      {
+        "offset": 40,
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": "esi",
+        "relocations": []
+      },
+      {
+        "offset": 41,
+        "bytes": "e800000000",
+        "mnemonic": "call",
+        "operands": "0x2e",
+        "relocations": [
+          {
+            "offset": 42,
+            "type": 20,
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "symbol_index": 140,
+            "target_section": 0,
+            "target_value": 0
+          }
+        ]
+      },
+      {
+        "offset": 46,
+        "bytes": "83c404",
+        "mnemonic": "add",
+        "operands": "esp, 4",
+        "relocations": []
+      },
+      {
+        "offset": 49,
+        "bytes": "33c0",
+        "mnemonic": "xor",
+        "operands": "eax, eax",
+        "relocations": []
+      },
+      {
+        "offset": 51,
+        "bytes": "8bd6",
+        "mnemonic": "mov",
+        "operands": "edx, esi",
+        "relocations": []
+      },
+      {
+        "offset": 53,
+        "bytes": "5e",
+        "mnemonic": "pop",
+        "operands": "esi",
+        "relocations": []
+      },
+      {
+        "offset": 54,
+        "bytes": "c3",
+        "mnemonic": "ret",
+        "operands": "",
+        "relocations": []
+      }
+    ]
+  },
+  "new_scalar_control_flow": {
+    "capture_ESI_offset": "05",
+    "qualified_child_call_offset": "12",
+    "qualified_child_target": {
+      "offset": 19,
+      "type": 20,
+      "symbol": "??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "symbol_index": 158,
+      "target_section": 8,
+      "target_value": 0
+    },
+    "child_status_test_offset": "1a",
+    "noncompletion_jne_offset": "1c",
+    "noncompletion_target": "33",
+    "noncompletion_skips_flags_and_free": true,
+    "late_HOME_pointer_load": "1e",
+    "sole_byte_read_offset": "22",
+    "sole_byte_read_bytes": "8a00",
+    "mask_test_offset": "24",
+    "mask": 1,
+    "clearbit_branch_offset": "26",
+    "clearbit_target": "31",
+    "captured_receiver_push_offset": "28",
+    "actual_free_call_offset": "29",
+    "free_target": {
+      "offset": 42,
+      "type": 20,
+      "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+      "symbol_index": 140,
+      "target_section": 0,
+      "target_value": 0
+    },
+    "normal_completed_EAX_zero_offset": "31",
+    "captured_bits_EDX_offset": "33",
+    "plainRET_offset": "36",
+    "Result_failure_keeps_child_EAX": true,
+    "Cpp_escape_no_ordinary_return_path": true,
+    "no_scalar_local_EH": true
+  },
+  "strict_CPP_return_qualification": {
+    "observed": "8Baggregate returnedEAX=completion,EDX=capturedreceiverbits;fiveordinaryDWORDparameters;plainRET",
+    "no_hidden_return_buffer_in_observed_strict_function": true,
+    "no_result_memory_stores_in_scalar": true,
+    "FPO": {
+      "offset_word": 0,
+      "procedure_bytes": 55,
+      "locals_DWORDs": 0,
+      "parameter_DWORDs": 5,
+      "prolog_bytes": 1,
+      "saved_register_count": 1,
+      "has_SEH_flag": 0,
+      "uses_EBP_flag": 0,
+      "frame_type": 0
+    },
+    "not_Original_EAX_receiver_RET4": true,
+    "no_general_caller_storage_private_ABI_untouched_claim": true,
+    "common_emission_requires_fresh_Root_check": true
+  },
+  "all_old_code_comparisons": [
+    {
+      "symbol": "??$clear_kernel@$00@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "old_section": 4,
+      "new_section": 4,
+      "bytes": 973,
+      "operations": 300,
+      "sha256": "72501339fb6e1777687cc8c74725c7fd8a3b2771b746ce2bcc2ea03b5448a568",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "__ehhandler$??$clear_kernel@$00@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "old_section": 5,
+      "new_section": 5,
+      "bytes": 29,
+      "operations": 9,
+      "sha256": "ab63087fa35fef0ab5a7f3eefb94c7b4748e88f12c1a2e37ec76aba8455b65f9",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "??$clear_kernel@$0A@@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "old_section": 6,
+      "new_section": 6,
+      "bytes": 852,
+      "operations": 261,
+      "sha256": "b3ad33c3b031375da8390e1ab597002c48b611e4624864dec060a7934b98b271",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "__ehhandler$??$clear_kernel@$0A@@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "old_section": 7,
+      "new_section": 7,
+      "bytes": 29,
+      "operations": 9,
+      "sha256": "8afea02d98ad0c01a97364d71172448b65489b675b09649b09075195de9cdd27",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "??$destruct_kernel@$00@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "old_section": 8,
+      "new_section": 8,
+      "bytes": 493,
+      "operations": 160,
+      "sha256": "5104d3d2c57c1a2917de78f81f45bd2c7fb119488b0cf8034ec0396cc5d21e32",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "__ehhandler$??$destruct_kernel@$00@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "old_section": 9,
+      "new_section": 9,
+      "bytes": 29,
+      "operations": 9,
+      "sha256": "ab63087fa35fef0ab5a7f3eefb94c7b4748e88f12c1a2e37ec76aba8455b65f9",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "??$destruct_kernel@$0A@@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "old_section": 10,
+      "new_section": 10,
+      "bytes": 359,
+      "operations": 121,
+      "sha256": "2c945bd729616d6dfed9809d91a78e5b6b8e03c459d05662ae75c379d2f91c9e",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "__ehhandler$??$destruct_kernel@$0A@@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "old_section": 11,
+      "new_section": 11,
+      "bytes": 29,
+      "operations": 9,
+      "sha256": "8afea02d98ad0c01a97364d71172448b65489b675b09649b09075195de9cdd27",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "??$enter_mode@$00@?A0xed5f7190@bsp@@YAPAUNativeLuaVariantRetirementFrame@1@AAUNativeLuaVariantRetirementOperation@1@AAUNativeStringRawPoolContext@1@W4NativeLuaVariantRetirementBody@1@PAX3PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "old_section": 12,
+      "new_section": 12,
+      "bytes": 300,
+      "operations": 74,
+      "sha256": "fd576a17a0541024b4983d9527d54b2f80687dc6f489b609cbeea59048775be7",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "??$enter_mode@$0A@@?A0xed5f7190@bsp@@YAPAUNativeLuaVariantRetirementFrame@1@AAUNativeLuaVariantRetirementOperation@1@AAUNativeStringRawPoolContext@1@W4NativeLuaVariantRetirementBody@1@PAX3PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "old_section": 14,
+      "new_section": 14,
+      "bytes": 29,
+      "operations": 8,
+      "sha256": "81d96b6fd9b91d122c17451b442d74ad2366642a8f8c8f7bf8518bfc9cd0560e",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "??$observe_incoming@$00@?A0xed5f7190@bsp@@YAXPAUNativeLuaVariantCppCleanupRecord@1@ABUNativeLuaVariantRetirementFrame@1@_NPAX@Z",
+      "old_section": 16,
+      "new_section": 16,
+      "bytes": 39,
+      "operations": 12,
+      "sha256": "cb5f93c03c69fe73b9512977d63be0f6fca258fe94636a9b72acc89895cc93f1",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "??$record_for@$00@?A0xed5f7190@bsp@@YAPAUNativeLuaVariantCppCleanupRecord@1@PBUNativeLuaVariantCppCleanupBacking@1@I@Z",
+      "old_section": 18,
+      "new_section": 18,
+      "bytes": 23,
+      "operations": 7,
+      "sha256": "022ba7751546c7d4e6249e5d5e154c5d28568b06025fcbcee37e897afd0a8fd9",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "??$record_for@$0A@@?A0xed5f7190@bsp@@YAPAUNativeLuaVariantCppCleanupRecord@1@PBUNativeLuaVariantCppCleanupBacking@1@I@Z",
+      "old_section": 20,
+      "new_section": 20,
+      "bytes": 3,
+      "operations": 2,
+      "sha256": "4bc724f3b1d0caf4fe369c18cba3102e6c4ea057f63fe1587e3973134a7f755e",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "??$run_action@$00@?A0xed5f7190@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@1@AAUNativeStringRawPoolContext@1@PAX@Z",
+      "old_section": 22,
+      "new_section": 22,
+      "bytes": 154,
+      "operations": 43,
+      "sha256": "7c18a816c16175704e857cca2580a5c2f4d96488deb5e3d143e1a5172ca696ff",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "??$run_action@$01@?A0xed5f7190@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@1@AAUNativeStringRawPoolContext@1@PAX@Z",
+      "old_section": 24,
+      "new_section": 24,
+      "bytes": 155,
+      "operations": 43,
+      "sha256": "e59d675b29fa83bce65ff788b06c658689bb618b1786c3fa9e2c16182293b028",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "??$subtree_kernel@$00@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "old_section": 26,
+      "new_section": 26,
+      "bytes": 630,
+      "operations": 198,
+      "sha256": "5665838e52bf05825ee7d0de4cdffb6478928be34391df326a352349c4164118",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "__ehhandler$??$subtree_kernel@$00@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "old_section": 27,
+      "new_section": 27,
+      "bytes": 29,
+      "operations": 9,
+      "sha256": "348e25ba25bf5bad095cdda32d0b75cb2ae7a7dfa64bd14569fd3dbbb8d5ca1b",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "??$subtree_kernel@$0A@@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "old_section": 28,
+      "new_section": 28,
+      "bytes": 484,
+      "operations": 157,
+      "sha256": "14ac1f118ec8aac75ba6cb89de7c6a48a22a7622769d6f92cf0028fa9609d79d",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "__ehhandler$??$subtree_kernel@$0A@@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "old_section": 29,
+      "new_section": 29,
+      "bytes": 29,
+      "operations": 9,
+      "sha256": "de50d5cf7b34573d5321c7f14cae5853d1153ecc9e75bd47e1e242bd17cb630f",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "?arm_action@?A0xed5f7190@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@2@PAX@Z",
+      "old_section": 30,
+      "new_section": 30,
+      "bytes": 19,
+      "operations": 5,
+      "sha256": "f091b083a6ba7ee6ed043e21a1a79d3cd50933287fec20b87ffdaa9ae44acc0e",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "?at@?A0xed5f7190@bsp@@YAPAXPAXI@Z",
+      "old_section": 32,
+      "new_section": 32,
+      "bytes": 9,
+      "operations": 3,
+      "sha256": "6d1e1d30f2068501de61e0022c4352fda2a7650f29eb96f01ad04fa160305e21",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "?clear_native_lua_variant_00886920@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+      "old_section": 34,
+      "new_section": 34,
+      "bytes": 23,
+      "operations": 7,
+      "sha256": "01cc0863c03520883efa0eae860bfe29ba9436b257a1f973e43d185abd24b404",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "?clear_native_lua_variant_00886920_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "old_section": 36,
+      "new_section": 36,
+      "bytes": 5,
+      "operations": 1,
+      "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "?complete@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@@Z",
+      "old_section": 38,
+      "new_section": 38,
+      "bytes": 35,
+      "operations": 8,
+      "sha256": "27dab23c88a0380197acac2bd56b87701bbaeb479ac408c2c41fefc1a135368a",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+      "old_section": 40,
+      "new_section": 40,
+      "bytes": 27,
+      "operations": 8,
+      "sha256": "b25714e5cd530f9fa885920a1bae80f157578359d1471429003b01a29ec64871",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "?destroy_native_lua_variant_subtree_006ee890_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "old_section": 42,
+      "new_section": 42,
+      "bytes": 5,
+      "operations": 1,
+      "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "?destruct_native_lua_variant_00884af0@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+      "old_section": 44,
+      "new_section": 44,
+      "bytes": 23,
+      "operations": 7,
+      "sha256": "01cc0863c03520883efa0eae860bfe29ba9436b257a1f973e43d185abd24b404",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "?destruct_native_lua_variant_00884af0_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "old_section": 46,
+      "new_section": 46,
+      "bytes": 5,
+      "operations": 1,
+      "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "?enter@?A0xed5f7190@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z",
+      "old_section": 48,
+      "new_section": 48,
+      "bytes": 396,
+      "operations": 80,
+      "sha256": "11e62136994cb17bdf9d096da67378c61f56c6063d439aaeb1f192392fd43a72",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "?read_byte@?A0xed5f7190@bsp@@YAEPAXI@Z",
+      "old_section": 50,
+      "new_section": 50,
+      "bytes": 12,
+      "operations": 4,
+      "sha256": "70f382ed286514895a32913b02b0f76dace67c0ab00f7fa65c76b13712200bc8",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "?read_pointer@?A0xed5f7190@bsp@@YAPAXPAXI@Z",
+      "old_section": 52,
+      "new_section": 52,
+      "bytes": 12,
+      "operations": 4,
+      "sha256": "141fe36521c0146c800983701f3780f1e87872eba06924b50770fb794107644c",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "?read_word@?A0xed5f7190@bsp@@YAIPAXI@Z",
+      "old_section": 54,
+      "new_section": 54,
+      "bytes": 12,
+      "operations": 4,
+      "sha256": "141fe36521c0146c800983701f3780f1e87872eba06924b50770fb794107644c",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "?retain_cpp_failure@?A0xed5f7190@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z",
+      "old_section": 56,
+      "new_section": 56,
+      "bytes": 75,
+      "operations": 25,
+      "sha256": "36fe0e3a64cc2e13c497f9e4a3eea880c56077af66f774bf4dcaea7bbde1a533",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "?return_buffer@?A0xed5f7190@bsp@@YAXAAUNativeStringRawPoolContext@2@AAUNativeLuaVariantRetirementFrame@2@PAXIII@Z",
+      "old_section": 58,
+      "new_section": 58,
+      "bytes": 60,
+      "operations": 21,
+      "sha256": "369979cde4503a4fbe2fefbfa3df954b0a832996de1d91960fd1c7105b64a599",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "?stop@?A0xed5f7190@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@W432@@Z",
+      "old_section": 60,
+      "new_section": 62,
+      "bytes": 26,
+      "operations": 7,
+      "sha256": "4566e135fa48eb18764218ecca73f2b37ba9bbec73c4d05bacb35b7e37c99b17",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    },
+    {
+      "symbol": "?write_word@?A0xed5f7190@bsp@@YAXPAXII@Z",
+      "old_section": 62,
+      "new_section": 64,
+      "bytes": 16,
+      "operations": 5,
+      "sha256": "76bbadc14dccdb9d6227d26bf221f5ac30a809741438df8ba9a77bc568a30b0b",
+      "raw_code_equal": true,
+      "normalized_relocations_equal": true
+    }
+  ],
+  "all_old_code_raw_bytes_and_normalized_relocations_equal_a477": true,
+  "old_API_Frame_Operation_sidecar_Host_contracts_preserved": true,
+  "whole_EH": {
+    "total_bytes": 656,
+    "xdata_bytes": 632,
+    "tables": [
+      {
+        "section": 67,
+        "old_section": 65,
+        "bytes": 88,
+        "sha256": "c2e16d96e581f4eeaef2204b948f670cbdf33619feb218b80a4ef4b636374ea1",
+        "hex": "40000000000000000000000000000000ffffffff00000000ffffffff000000000000000000000000010000000100000000000000220593190200000000000000010000000000000000000000000000000000000001000000",
+        "funcinfo": {
+          "index": 194,
+          "name": "__ehfuncinfo$??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "value": 52,
+          "section": 67,
+          "type": 0,
+          "storage": 3,
+          "aux": 0
+        },
+        "max_state": 2,
+        "unwind": [
+          {
+            "source": 0,
+            "target": -1,
+            "action": 0
+          },
+          {
+            "source": 1,
+            "target": -1,
+            "action": 0
+          }
+        ],
+        "tries": [
+          {
+            "low": 0,
+            "high": 0,
+            "catch_high": 1,
+            "handler_section": 6,
+            "handler_offset": 823,
+            "symbol": "__catch$??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0"
+          }
+        ],
+        "relocations": [
+          {
+            "offset": 12,
+            "type": 6,
+            "symbol": "__catch$??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0",
+            "symbol_index": 173,
+            "target_section": 6,
+            "target_value": 823
+          },
+          {
+            "offset": 48,
+            "type": 6,
+            "symbol": "__catchsym$??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$2",
+            "symbol_index": 197,
+            "target_section": 67,
+            "target_value": 0
+          },
+          {
+            "offset": 60,
+            "type": 6,
+            "symbol": "__unwindtable$??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+            "symbol_index": 195,
+            "target_section": 67,
+            "target_value": 16
+          },
+          {
+            "offset": 68,
+            "type": 6,
+            "symbol": "__tryblocktable$??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+            "symbol_index": 196,
+            "target_section": 67,
+            "target_value": 32
+          }
+        ],
+        "raw_payload_and_normalized_relocations_equal_a477": true,
+        "every_byte_structurally_accounted": true
+      },
+      {
+        "section": 68,
+        "old_section": 66,
+        "bytes": 88,
+        "sha256": "c2e16d96e581f4eeaef2204b948f670cbdf33619feb218b80a4ef4b636374ea1",
+        "hex": "40000000000000000000000000000000ffffffff00000000ffffffff000000000000000000000000010000000100000000000000220593190200000000000000010000000000000000000000000000000000000001000000",
+        "funcinfo": {
+          "index": 200,
+          "name": "__ehfuncinfo$??$destruct_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "value": 52,
+          "section": 68,
+          "type": 0,
+          "storage": 3,
+          "aux": 0
+        },
+        "max_state": 2,
+        "unwind": [
+          {
+            "source": 0,
+            "target": -1,
+            "action": 0
+          },
+          {
+            "source": 1,
+            "target": -1,
+            "action": 0
+          }
+        ],
+        "tries": [
+          {
+            "low": 0,
+            "high": 0,
+            "catch_high": 1,
+            "handler_section": 10,
+            "handler_offset": 330,
+            "symbol": "__catch$??$destruct_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0"
+          }
+        ],
+        "relocations": [
+          {
+            "offset": 12,
+            "type": 6,
+            "symbol": "__catch$??$destruct_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0",
+            "symbol_index": 176,
+            "target_section": 10,
+            "target_value": 330
+          },
+          {
+            "offset": 48,
+            "type": 6,
+            "symbol": "__catchsym$??$destruct_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$2",
+            "symbol_index": 203,
+            "target_section": 68,
+            "target_value": 0
+          },
+          {
+            "offset": 60,
+            "type": 6,
+            "symbol": "__unwindtable$??$destruct_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+            "symbol_index": 201,
+            "target_section": 68,
+            "target_value": 16
+          },
+          {
+            "offset": 68,
+            "type": 6,
+            "symbol": "__tryblocktable$??$destruct_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+            "symbol_index": 202,
+            "target_section": 68,
+            "target_value": 32
+          }
+        ],
+        "raw_payload_and_normalized_relocations_equal_a477": true,
+        "every_byte_structurally_accounted": true
+      },
+      {
+        "section": 69,
+        "old_section": 67,
+        "bytes": 88,
+        "sha256": "c2e16d96e581f4eeaef2204b948f670cbdf33619feb218b80a4ef4b636374ea1",
+        "hex": "40000000000000000000000000000000ffffffff00000000ffffffff000000000000000000000000010000000100000000000000220593190200000000000000010000000000000000000000000000000000000001000000",
+        "funcinfo": {
+          "index": 206,
+          "name": "__ehfuncinfo$??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "value": 52,
+          "section": 69,
+          "type": 0,
+          "storage": 3,
+          "aux": 0
+        },
+        "max_state": 2,
+        "unwind": [
+          {
+            "source": 0,
+            "target": -1,
+            "action": 0
+          },
+          {
+            "source": 1,
+            "target": -1,
+            "action": 0
+          }
+        ],
+        "tries": [
+          {
+            "low": 0,
+            "high": 0,
+            "catch_high": 1,
+            "handler_section": 28,
+            "handler_offset": 455,
+            "symbol": "__catch$??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0"
+          }
+        ],
+        "relocations": [
+          {
+            "offset": 12,
+            "type": 6,
+            "symbol": "__catch$??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0",
+            "symbol_index": 179,
+            "target_section": 28,
+            "target_value": 455
+          },
+          {
+            "offset": 48,
+            "type": 6,
+            "symbol": "__catchsym$??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$2",
+            "symbol_index": 209,
+            "target_section": 69,
+            "target_value": 0
+          },
+          {
+            "offset": 60,
+            "type": 6,
+            "symbol": "__unwindtable$??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+            "symbol_index": 207,
+            "target_section": 69,
+            "target_value": 16
+          },
+          {
+            "offset": 68,
+            "type": 6,
+            "symbol": "__tryblocktable$??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+            "symbol_index": 208,
+            "target_section": 69,
+            "target_value": 32
+          }
+        ],
+        "raw_payload_and_normalized_relocations_equal_a477": true,
+        "every_byte_structurally_accounted": true
+      },
+      {
+        "section": 70,
+        "old_section": 68,
+        "bytes": 88,
+        "sha256": "c2e16d96e581f4eeaef2204b948f670cbdf33619feb218b80a4ef4b636374ea1",
+        "hex": "40000000000000000000000000000000ffffffff00000000ffffffff000000000000000000000000010000000100000000000000220593190200000000000000010000000000000000000000000000000000000001000000",
+        "funcinfo": {
+          "index": 212,
+          "name": "__ehfuncinfo$??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "value": 52,
+          "section": 70,
+          "type": 0,
+          "storage": 3,
+          "aux": 0
+        },
+        "max_state": 2,
+        "unwind": [
+          {
+            "source": 0,
+            "target": -1,
+            "action": 0
+          },
+          {
+            "source": 1,
+            "target": -1,
+            "action": 0
+          }
+        ],
+        "tries": [
+          {
+            "low": 0,
+            "high": 0,
+            "catch_high": 1,
+            "handler_section": 4,
+            "handler_offset": 900,
+            "symbol": "__catch$??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0"
+          }
+        ],
+        "relocations": [
+          {
+            "offset": 12,
+            "type": 6,
+            "symbol": "__catch$??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0",
+            "symbol_index": 182,
+            "target_section": 4,
+            "target_value": 900
+          },
+          {
+            "offset": 48,
+            "type": 6,
+            "symbol": "__catchsym$??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$2",
+            "symbol_index": 215,
+            "target_section": 70,
+            "target_value": 0
+          },
+          {
+            "offset": 60,
+            "type": 6,
+            "symbol": "__unwindtable$??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+            "symbol_index": 213,
+            "target_section": 70,
+            "target_value": 16
+          },
+          {
+            "offset": 68,
+            "type": 6,
+            "symbol": "__tryblocktable$??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+            "symbol_index": 214,
+            "target_section": 70,
+            "target_value": 32
+          }
+        ],
+        "raw_payload_and_normalized_relocations_equal_a477": true,
+        "every_byte_structurally_accounted": true
+      },
+      {
+        "section": 71,
+        "old_section": 69,
+        "bytes": 140,
+        "sha256": "f4a332840ecf3dee2c5c18b7f8b44eb04dcdbd35dfefd380e32c2cfd86a26941",
+        "hex": "4000000000000000000000000000000040000000000000000000000000000000ffffffff00000000ffffffff000000000100000000000000010000000000000022059319040000000000000002000000000000000000000000000000000000000100000002000000020000000300000001000000000000000000000000000000030000000100000000000000",
+        "funcinfo": {
+          "index": 218,
+          "name": "__ehfuncinfo$??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "value": 64,
+          "section": 71,
+          "type": 0,
+          "storage": 3,
+          "aux": 0
+        },
+        "max_state": 4,
+        "unwind": [
+          {
+            "source": 0,
+            "target": -1,
+            "action": 0
+          },
+          {
+            "source": 1,
+            "target": -1,
+            "action": 0
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "action": 0
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "action": 0
+          }
+        ],
+        "tries": [
+          {
+            "low": 2,
+            "high": 2,
+            "catch_high": 3,
+            "handler_section": 8,
+            "handler_offset": 471,
+            "symbol": "__catch$??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$1"
+          },
+          {
+            "low": 0,
+            "high": 0,
+            "catch_high": 3,
+            "handler_section": 8,
+            "handler_offset": 388,
+            "symbol": "__catch$??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0"
+          }
+        ],
+        "relocations": [
+          {
+            "offset": 12,
+            "type": 6,
+            "symbol": "__catch$??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0",
+            "symbol_index": 185,
+            "target_section": 8,
+            "target_value": 388
+          },
+          {
+            "offset": 28,
+            "type": 6,
+            "symbol": "__catch$??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$1",
+            "symbol_index": 186,
+            "target_section": 8,
+            "target_value": 471
+          },
+          {
+            "offset": 72,
+            "type": 6,
+            "symbol": "__unwindtable$??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+            "symbol_index": 219,
+            "target_section": 71,
+            "target_value": 32
+          },
+          {
+            "offset": 80,
+            "type": 6,
+            "symbol": "__tryblocktable$??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+            "symbol_index": 220,
+            "target_section": 71,
+            "target_value": 100
+          },
+          {
+            "offset": 116,
+            "type": 6,
+            "symbol": "__catchsym$??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$4",
+            "symbol_index": 221,
+            "target_section": 71,
+            "target_value": 16
+          },
+          {
+            "offset": 136,
+            "type": 6,
+            "symbol": "__catchsym$??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$5",
+            "symbol_index": 222,
+            "target_section": 71,
+            "target_value": 0
+          }
+        ],
+        "raw_payload_and_normalized_relocations_equal_a477": true,
+        "every_byte_structurally_accounted": true
+      },
+      {
+        "section": 72,
+        "old_section": 70,
+        "bytes": 140,
+        "sha256": "f4a332840ecf3dee2c5c18b7f8b44eb04dcdbd35dfefd380e32c2cfd86a26941",
+        "hex": "4000000000000000000000000000000040000000000000000000000000000000ffffffff00000000ffffffff000000000100000000000000010000000000000022059319040000000000000002000000000000000000000000000000000000000100000002000000020000000300000001000000000000000000000000000000030000000100000000000000",
+        "funcinfo": {
+          "index": 225,
+          "name": "__ehfuncinfo$??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "value": 64,
+          "section": 72,
+          "type": 0,
+          "storage": 3,
+          "aux": 0
+        },
+        "max_state": 4,
+        "unwind": [
+          {
+            "source": 0,
+            "target": -1,
+            "action": 0
+          },
+          {
+            "source": 1,
+            "target": -1,
+            "action": 0
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "action": 0
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "action": 0
+          }
+        ],
+        "tries": [
+          {
+            "low": 2,
+            "high": 2,
+            "catch_high": 3,
+            "handler_section": 26,
+            "handler_offset": 608,
+            "symbol": "__catch$??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$1"
+          },
+          {
+            "low": 0,
+            "high": 0,
+            "catch_high": 3,
+            "handler_section": 26,
+            "handler_offset": 525,
+            "symbol": "__catch$??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0"
+          }
+        ],
+        "relocations": [
+          {
+            "offset": 12,
+            "type": 6,
+            "symbol": "__catch$??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0",
+            "symbol_index": 189,
+            "target_section": 26,
+            "target_value": 525
+          },
+          {
+            "offset": 28,
+            "type": 6,
+            "symbol": "__catch$??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$1",
+            "symbol_index": 190,
+            "target_section": 26,
+            "target_value": 608
+          },
+          {
+            "offset": 72,
+            "type": 6,
+            "symbol": "__unwindtable$??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+            "symbol_index": 226,
+            "target_section": 72,
+            "target_value": 32
+          },
+          {
+            "offset": 80,
+            "type": 6,
+            "symbol": "__tryblocktable$??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+            "symbol_index": 227,
+            "target_section": 72,
+            "target_value": 100
+          },
+          {
+            "offset": 116,
+            "type": 6,
+            "symbol": "__catchsym$??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$4",
+            "symbol_index": 228,
+            "target_section": 72,
+            "target_value": 16
+          },
+          {
+            "offset": 136,
+            "type": 6,
+            "symbol": "__catchsym$??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$5",
+            "symbol_index": 229,
+            "target_section": 72,
+            "target_value": 0
+          }
+        ],
+        "raw_payload_and_normalized_relocations_equal_a477": true,
+        "every_byte_structurally_accounted": true
+      }
+    ],
+    "SafeSEH": {
+      "section": {
+        "number": 66,
+        "name": ".sxdata",
+        "declared_bytes": 24,
+        "raw_pointer": 10724,
+        "bytes": 24,
+        "hex": "aa000000af000000b2000000b5000000b8000000bc000000",
+        "sha256": "58c1b42a94815b97680067970d27bdf396f474599ec9c4fb5ab5be33176c90ab",
+        "characteristics": "00300200",
+        "symbols": [
+          {
+            "index": 171,
+            "name": ".sxdata",
+            "value": 0,
+            "section": 66,
+            "type": 0,
+            "storage": 3,
+            "aux": 1
+          }
+        ],
+        "relocations": [],
+        "instructions": []
+      },
+      "handlers": [
+        {
+          "index": 170,
+          "name": "__ehhandler$??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "value": 0,
+          "section": 7,
+          "type": 32,
+          "storage": 3,
+          "aux": 0
+        },
+        {
+          "index": 175,
+          "name": "__ehhandler$??$destruct_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "value": 0,
+          "section": 11,
+          "type": 32,
+          "storage": 3,
+          "aux": 0
+        },
+        {
+          "index": 178,
+          "name": "__ehhandler$??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "value": 0,
+          "section": 29,
+          "type": 32,
+          "storage": 3,
+          "aux": 0
+        },
+        {
+          "index": 181,
+          "name": "__ehhandler$??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "value": 0,
+          "section": 5,
+          "type": 32,
+          "storage": 3,
+          "aux": 0
+        },
+        {
+          "index": 184,
+          "name": "__ehhandler$??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "value": 0,
+          "section": 9,
+          "type": 32,
+          "storage": 3,
+          "aux": 0
+        },
+        {
+          "index": 188,
+          "name": "__ehhandler$??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "value": 0,
+          "section": 27,
+          "type": 32,
+          "storage": 3,
+          "aux": 0
+        }
+      ],
+      "old_section": {
+        "number": 64,
+        "name": ".sxdata",
+        "declared_bytes": 24,
+        "raw_pointer": 10539,
+        "bytes": 24,
+        "hex": "a5000000aa000000ad000000b0000000b3000000b7000000",
+        "sha256": "e7226cfb92cabd34693015ab2bb711d984d763c5e87d4a96ca9d05f25f8016d5",
+        "characteristics": "00300200",
+        "symbols": [
+          {
+            "index": 166,
+            "name": ".sxdata",
+            "value": 0,
+            "section": 64,
+            "type": 0,
+            "storage": 3,
+            "aux": 1
+          }
+        ],
+        "relocations": [],
+        "instructions": []
+      },
+      "same_six_normalized_handler_identities": true,
+      "raw_symbol_index_words_changed": true
+    },
+    "all_old_raw_tables_and_normalized_relocations_equal_a477": true,
+    "same_six_handler_identities": true,
+    "every_EH_byte_structurally_reviewed": true,
+    "every_catch_target_decoded_instruction_start": true,
+    "scalar_local_EH_or_new_action_added": false
+  },
+  "old_FPO_records_exact_with_normalized_relocations": [
+    {
+      "old_section": 13,
+      "new_section": 13,
+      "bytes": 16,
+      "exact_payload_and_normalized_relocations": true
+    },
+    {
+      "old_section": 15,
+      "new_section": 15,
+      "bytes": 16,
+      "exact_payload_and_normalized_relocations": true
+    },
+    {
+      "old_section": 17,
+      "new_section": 17,
+      "bytes": 16,
+      "exact_payload_and_normalized_relocations": true
+    },
+    {
+      "old_section": 19,
+      "new_section": 19,
+      "bytes": 16,
+      "exact_payload_and_normalized_relocations": true
+    },
+    {
+      "old_section": 21,
+      "new_section": 21,
+      "bytes": 16,
+      "exact_payload_and_normalized_relocations": true
+    },
+    {
+      "old_section": 23,
+      "new_section": 23,
+      "bytes": 16,
+      "exact_payload_and_normalized_relocations": true
+    },
+    {
+      "old_section": 25,
+      "new_section": 25,
+      "bytes": 16,
+      "exact_payload_and_normalized_relocations": true
+    },
+    {
+      "old_section": 31,
+      "new_section": 31,
+      "bytes": 16,
+      "exact_payload_and_normalized_relocations": true
+    },
+    {
+      "old_section": 33,
+      "new_section": 33,
+      "bytes": 16,
+      "exact_payload_and_normalized_relocations": true
+    },
+    {
+      "old_section": 35,
+      "new_section": 35,
+      "bytes": 16,
+      "exact_payload_and_normalized_relocations": true
+    },
+    {
+      "old_section": 37,
+      "new_section": 37,
+      "bytes": 16,
+      "exact_payload_and_normalized_relocations": true
+    },
+    {
+      "old_section": 39,
+      "new_section": 39,
+      "bytes": 16,
+      "exact_payload_and_normalized_relocations": true
+    },
+    {
+      "old_section": 41,
+      "new_section": 41,
+      "bytes": 16,
+      "exact_payload_and_normalized_relocations": true
+    },
+    {
+      "old_section": 43,
+      "new_section": 43,
+      "bytes": 16,
+      "exact_payload_and_normalized_relocations": true
+    },
+    {
+      "old_section": 45,
+      "new_section": 45,
+      "bytes": 16,
+      "exact_payload_and_normalized_relocations": true
+    },
+    {
+      "old_section": 47,
+      "new_section": 47,
+      "bytes": 16,
+      "exact_payload_and_normalized_relocations": true
+    },
+    {
+      "old_section": 49,
+      "new_section": 49,
+      "bytes": 16,
+      "exact_payload_and_normalized_relocations": true
+    },
+    {
+      "old_section": 51,
+      "new_section": 51,
+      "bytes": 16,
+      "exact_payload_and_normalized_relocations": true
+    },
+    {
+      "old_section": 53,
+      "new_section": 53,
+      "bytes": 16,
+      "exact_payload_and_normalized_relocations": true
+    },
+    {
+      "old_section": 55,
+      "new_section": 55,
+      "bytes": 16,
+      "exact_payload_and_normalized_relocations": true
+    },
+    {
+      "old_section": 57,
+      "new_section": 57,
+      "bytes": 16,
+      "exact_payload_and_normalized_relocations": true
+    },
+    {
+      "old_section": 59,
+      "new_section": 59,
+      "bytes": 16,
+      "exact_payload_and_normalized_relocations": true
+    },
+    {
+      "old_section": 61,
+      "new_section": 63,
+      "bytes": 16,
+      "exact_payload_and_normalized_relocations": true
+    },
+    {
+      "old_section": 63,
+      "new_section": 65,
+      "bytes": 16,
+      "exact_payload_and_normalized_relocations": true
+    }
+  ],
+  "metadata_emitted_drift": {
+    "scalar_FPO": {
+      "number": 61,
+      "name": ".debug$F",
+      "declared_bytes": 16,
+      "raw_pointer": 10604,
+      "bytes": 16,
+      "hex": "00000000370000000000000005000101",
+      "sha256": "af9cbb3b1489d002f63282f88141e77eebdff1ca7a87ccdd46edc8b748b6e29e",
+      "characteristics": "42101040",
+      "symbols": [
+        {
+          "index": 123,
+          "name": ".debug$F",
+          "value": 0,
+          "section": 61,
+          "type": 0,
+          "storage": 3,
+          "aux": 1
+        }
+      ],
+      "relocations": [
+        {
+          "offset": 0,
+          "type": 7,
+          "symbol": "?scalar_delete_native_lua_variant_00884fa0_cpp_cleanup@bsp@@YA?AUNativeLuaVariantScalarDeleteResult@1@PAXADIAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 139,
+          "target_section": 60,
+          "target_value": 0
+        }
+      ],
+      "instructions": []
+    },
+    "scalar_FPO_decoded": {
+      "offset_word": 0,
+      "procedure_bytes": 55,
+      "locals_DWORDs": 0,
+      "parameter_DWORDs": 5,
+      "prolog_bytes": 1,
+      "saved_register_count": 1,
+      "has_SEH_flag": 0,
+      "uses_EBP_flag": 0,
+      "frame_type": 0
+    },
+    "debugS_strings": [
+      "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\retirement.obj",
+      "Microsoft (R) Optimizing Compiler"
+    ],
+    "debugS_drift": "object output path is different (212\u2192216B), compiler record remains MSVC19.51.36244.0",
+    "chks64_drift": "section-checksum payload extends568\u2192584B for71\u219273 sections; whole-object equality not claimed",
+    "BSS": "existing4B __Avx2WmemEnabledWeakValue has PointerToRawData0 and ZERO file-payload bytes; logical uninitialized storage only",
+    "no_new_Source_global": true,
+    "section_comparisons": [
+      {
+        "name": ".drectve",
+        "old_declared_bytes": 415,
+        "new_declared_bytes": 415,
+        "old_file_payload_bytes": 415,
+        "new_file_payload_bytes": 415,
+        "old_sha256": "eaac67e3e61b0e9dd4d78c698584c8f9f55156596cfe04a31b3cdda55694b59f",
+        "new_sha256": "eaac67e3e61b0e9dd4d78c698584c8f9f55156596cfe04a31b3cdda55694b59f",
+        "payload_equal": true,
+        "old_symbols": [
+          {
+            "index": 2,
+            "name": ".drectve",
+            "value": 0,
+            "section": 1,
+            "type": 0,
+            "storage": 3,
+            "aux": 1
+          }
+        ],
+        "new_symbols": [
+          {
+            "index": 2,
+            "name": ".drectve",
+            "value": 0,
+            "section": 1,
+            "type": 0,
+            "storage": 3,
+            "aux": 1
+          }
+        ]
+      },
+      {
+        "name": ".debug$S",
+        "old_declared_bytes": 212,
+        "new_declared_bytes": 216,
+        "old_file_payload_bytes": 212,
+        "new_file_payload_bytes": 216,
+        "old_sha256": "96c389ce813521a965e031a05318aac32ee0d4c38fc610e91a0486456eb43a10",
+        "new_sha256": "e064045bac6aa0f342b66601f5c853bd086eacc59cefb81d3fb25cfda5d8d77e",
+        "payload_equal": false,
+        "old_symbols": [
+          {
+            "index": 4,
+            "name": ".debug$S",
+            "value": 0,
+            "section": 2,
+            "type": 0,
+            "storage": 3,
+            "aux": 1
+          }
+        ],
+        "new_symbols": [
+          {
+            "index": 4,
+            "name": ".debug$S",
+            "value": 0,
+            "section": 2,
+            "type": 0,
+            "storage": 3,
+            "aux": 1
+          }
+        ]
+      },
+      {
+        "name": ".bss",
+        "old_declared_bytes": 4,
+        "new_declared_bytes": 4,
+        "old_file_payload_bytes": 0,
+        "new_file_payload_bytes": 0,
+        "old_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "new_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "payload_equal": true,
+        "old_symbols": [
+          {
+            "index": 6,
+            "name": ".bss",
+            "value": 0,
+            "section": 3,
+            "type": 0,
+            "storage": 3,
+            "aux": 1
+          },
+          {
+            "index": 8,
+            "name": "__Avx2WmemEnabledWeakValue",
+            "value": 0,
+            "section": 3,
+            "type": 0,
+            "storage": 2,
+            "aux": 0
+          }
+        ],
+        "new_symbols": [
+          {
+            "index": 6,
+            "name": ".bss",
+            "value": 0,
+            "section": 3,
+            "type": 0,
+            "storage": 3,
+            "aux": 1
+          },
+          {
+            "index": 8,
+            "name": "__Avx2WmemEnabledWeakValue",
+            "value": 0,
+            "section": 3,
+            "type": 0,
+            "storage": 2,
+            "aux": 0
+          }
+        ]
+      },
+      {
+        "name": ".chks64",
+        "old_declared_bytes": 568,
+        "new_declared_bytes": 584,
+        "old_file_payload_bytes": 568,
+        "new_file_payload_bytes": 584,
+        "old_sha256": "5f53f79218233ef17d4dd8dcb8cd5cbbc4f3252769fa1abff8f9ce7c4cd8fc9f",
+        "new_sha256": "1671f39656bc5dd1a4c68a29cc63227f8bf0aead136285ab80db412d98bc30b7",
+        "payload_equal": false,
+        "old_symbols": [
+          {
+            "index": 226,
+            "name": ".chks64",
+            "value": 0,
+            "section": 71,
+            "type": 0,
+            "storage": 3,
+            "aux": 1
+          }
+        ],
+        "new_symbols": [
+          {
+            "index": 231,
+            "name": ".chks64",
+            "value": 0,
+            "section": 73,
+            "type": 0,
+            "storage": 3,
+            "aux": 1
+          }
+        ]
+      }
+    ],
+    "SafeSEH_index_words_renumbered": true,
+    "old_code_EH_normalized_identity_claim_only": true,
+    "whole_object_equality_claim": false
+  },
+  "defined_imports": {
+    "sole_new_external_definition": [
+      "?scalar_delete_native_lua_variant_00884fa0_cpp_cleanup@bsp@@YA?AUNativeLuaVariantScalarDeleteResult@1@PAXADIAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z"
+    ],
+    "undefined": [
+      {
+        "index": 140,
+        "name": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "value": 0,
+        "section": 0,
+        "type": 32,
+        "storage": 2,
+        "aux": 0
+      },
+      {
+        "index": 141,
+        "name": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+        "value": 0,
+        "section": 0,
+        "type": 32,
+        "storage": 2,
+        "aux": 0
+      },
+      {
+        "index": 142,
+        "name": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+        "value": 0,
+        "section": 0,
+        "type": 32,
+        "storage": 2,
+        "aux": 0
+      },
+      {
+        "index": 167,
+        "name": "@__security_check_cookie@4",
+        "value": 0,
+        "section": 0,
+        "type": 32,
+        "storage": 2,
+        "aux": 0
+      },
+      {
+        "index": 168,
+        "name": "__CxxThrowException@8",
+        "value": 0,
+        "section": 0,
+        "type": 32,
+        "storage": 2,
+        "aux": 0
+      },
+      {
+        "index": 169,
+        "name": "___CxxFrameHandler3",
+        "value": 0,
+        "section": 0,
+        "type": 32,
+        "storage": 2,
+        "aux": 0
+      },
+      {
+        "index": 230,
+        "name": "___security_cookie",
+        "value": 0,
+        "section": 0,
+        "type": 0,
+        "storage": 2,
+        "aux": 0
+      }
+    ],
+    "same_seven_undefined_imports_as_a477": true,
+    "new_allocator_callback_exception_policy_or_termination_import": false,
+    "real_provider_Source_pins_verified": true,
+    "public_qualified_destructor_wrapper_inlined_to_same_complete_qualified_kernel": true,
+    "no_normal_kernel_substitution": true
+  },
+  "code_inventory": [
+    {
+      "section": 4,
+      "bytes": 973,
+      "sha256": "72501339fb6e1777687cc8c74725c7fd8a3b2771b746ce2bcc2ea03b5448a568",
+      "operations": 300,
+      "symbols": [
+        "??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "__catch$??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0"
+      ],
+      "relocations": [
+        {
+          "offset": 6,
+          "type": 6,
+          "symbol": "__ehhandler$??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 181,
+          "target_section": 5,
+          "target_value": 0
+        },
+        {
+          "offset": 24,
+          "type": 6,
+          "symbol": "___security_cookie",
+          "symbol_index": 230,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 69,
+          "type": 20,
+          "symbol": "??$enter_mode@$00@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@1@AAUNativeLuaVariantRetirementOperation@1@AAUNativeStringRawPoolContext@1@W4NativeLuaVariantRetirementBody@1@PAX3PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 162,
+          "target_section": 12,
+          "target_value": 0
+        },
+        {
+          "offset": 212,
+          "type": 20,
+          "symbol": "??$enter_mode@$00@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@1@AAUNativeLuaVariantRetirementOperation@1@AAUNativeStringRawPoolContext@1@W4NativeLuaVariantRetirementBody@1@PAX3PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 162,
+          "target_section": 12,
+          "target_value": 0
+        },
+        {
+          "offset": 468,
+          "type": 20,
+          "symbol": "??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 159,
+          "target_section": 26,
+          "target_value": 0
+        },
+        {
+          "offset": 604,
+          "type": 20,
+          "symbol": "?complete@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@@Z",
+          "symbol_index": 149,
+          "target_section": 38,
+          "target_value": 0
+        },
+        {
+          "offset": 630,
+          "type": 20,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "symbol_index": 140,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 667,
+          "type": 20,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "symbol_index": 140,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 705,
+          "type": 20,
+          "symbol": "?complete@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@@Z",
+          "symbol_index": 149,
+          "target_section": 38,
+          "target_value": 0
+        },
+        {
+          "offset": 802,
+          "type": 20,
+          "symbol": "?return_buffer@?A0x32cdb250@bsp@@YAXAAUNativeStringRawPoolContext@2@AAUNativeLuaVariantRetirementFrame@2@PAXIII@Z",
+          "symbol_index": 152,
+          "target_section": 58,
+          "target_value": 0
+        },
+        {
+          "offset": 821,
+          "type": 20,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "symbol_index": 140,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 907,
+          "type": 20,
+          "symbol": "?retain_cpp_failure@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z",
+          "symbol_index": 151,
+          "target_section": 56,
+          "target_value": 0
+        },
+        {
+          "offset": 922,
+          "type": 20,
+          "symbol": "??$observe_incoming@$00@?A0x32cdb250@bsp@@YAXPAUNativeLuaVariantCppCleanupRecord@1@ABUNativeLuaVariantRetirementFrame@1@_NPAX@Z",
+          "symbol_index": 164,
+          "target_section": 16,
+          "target_value": 0
+        },
+        {
+          "offset": 951,
+          "type": 20,
+          "symbol": "??$observe_incoming@$00@?A0x32cdb250@bsp@@YAXPAUNativeLuaVariantCppCleanupRecord@1@ABUNativeLuaVariantRetirementFrame@1@_NPAX@Z",
+          "symbol_index": 164,
+          "target_section": 16,
+          "target_value": 0
+        },
+        {
+          "offset": 963,
+          "type": 20,
+          "symbol": "__CxxThrowException@8",
+          "symbol_index": 168,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 5,
+      "bytes": 29,
+      "sha256": "ab63087fa35fef0ab5a7f3eefb94c7b4748e88f12c1a2e37ec76aba8455b65f9",
+      "operations": 9,
+      "symbols": [
+        "__ehhandler$??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z"
+      ],
+      "relocations": [
+        {
+          "offset": 15,
+          "type": 20,
+          "symbol": "@__security_check_cookie@4",
+          "symbol_index": 167,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 20,
+          "type": 6,
+          "symbol": "__ehfuncinfo$??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 212,
+          "target_section": 70,
+          "target_value": 52
+        },
+        {
+          "offset": 25,
+          "type": 20,
+          "symbol": "___CxxFrameHandler3",
+          "symbol_index": 169,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 6,
+      "bytes": 852,
+      "sha256": "b3ad33c3b031375da8390e1ab597002c48b611e4624864dec060a7934b98b271",
+      "operations": 261,
+      "symbols": [
+        "??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "__catch$??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0"
+      ],
+      "relocations": [
+        {
+          "offset": 6,
+          "type": 6,
+          "symbol": "__ehhandler$??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 170,
+          "target_section": 7,
+          "target_value": 0
+        },
+        {
+          "offset": 24,
+          "type": 6,
+          "symbol": "___security_cookie",
+          "symbol_index": 230,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 65,
+          "type": 20,
+          "symbol": "?enter@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z",
+          "symbol_index": 148,
+          "target_section": 48,
+          "target_value": 0
+        },
+        {
+          "offset": 161,
+          "type": 20,
+          "symbol": "?enter@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z",
+          "symbol_index": 148,
+          "target_section": 48,
+          "target_value": 0
+        },
+        {
+          "offset": 391,
+          "type": 20,
+          "symbol": "??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 156,
+          "target_section": 28,
+          "target_value": 0
+        },
+        {
+          "offset": 527,
+          "type": 20,
+          "symbol": "?complete@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@@Z",
+          "symbol_index": 149,
+          "target_section": 38,
+          "target_value": 0
+        },
+        {
+          "offset": 553,
+          "type": 20,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "symbol_index": 140,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 590,
+          "type": 20,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "symbol_index": 140,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 628,
+          "type": 20,
+          "symbol": "?complete@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@@Z",
+          "symbol_index": 149,
+          "target_section": 38,
+          "target_value": 0
+        },
+        {
+          "offset": 725,
+          "type": 20,
+          "symbol": "?return_buffer@?A0x32cdb250@bsp@@YAXAAUNativeStringRawPoolContext@2@AAUNativeLuaVariantRetirementFrame@2@PAXIII@Z",
+          "symbol_index": 152,
+          "target_section": 58,
+          "target_value": 0
+        },
+        {
+          "offset": 744,
+          "type": 20,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "symbol_index": 140,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 830,
+          "type": 20,
+          "symbol": "?retain_cpp_failure@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z",
+          "symbol_index": 151,
+          "target_section": 56,
+          "target_value": 0
+        },
+        {
+          "offset": 842,
+          "type": 20,
+          "symbol": "__CxxThrowException@8",
+          "symbol_index": 168,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 7,
+      "bytes": 29,
+      "sha256": "8afea02d98ad0c01a97364d71172448b65489b675b09649b09075195de9cdd27",
+      "operations": 9,
+      "symbols": [
+        "__ehhandler$??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z"
+      ],
+      "relocations": [
+        {
+          "offset": 15,
+          "type": 20,
+          "symbol": "@__security_check_cookie@4",
+          "symbol_index": 167,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 20,
+          "type": 6,
+          "symbol": "__ehfuncinfo$??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 194,
+          "target_section": 67,
+          "target_value": 52
+        },
+        {
+          "offset": 25,
+          "type": 20,
+          "symbol": "___CxxFrameHandler3",
+          "symbol_index": 169,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 8,
+      "bytes": 493,
+      "sha256": "5104d3d2c57c1a2917de78f81f45bd2c7fb119488b0cf8034ec0396cc5d21e32",
+      "operations": 160,
+      "symbols": [
+        "??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "__catch$??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0",
+        "__catch$??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$1"
+      ],
+      "relocations": [
+        {
+          "offset": 6,
+          "type": 6,
+          "symbol": "__ehhandler$??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 184,
+          "target_section": 9,
+          "target_value": 0
+        },
+        {
+          "offset": 24,
+          "type": 6,
+          "symbol": "___security_cookie",
+          "symbol_index": 230,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 68,
+          "type": 20,
+          "symbol": "??$enter_mode@$00@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@1@AAUNativeLuaVariantRetirementOperation@1@AAUNativeStringRawPoolContext@1@W4NativeLuaVariantRetirementBody@1@PAX3PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 162,
+          "target_section": 12,
+          "target_value": 0
+        },
+        {
+          "offset": 192,
+          "type": 20,
+          "symbol": "??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 157,
+          "target_section": 4,
+          "target_value": 0
+        },
+        {
+          "offset": 307,
+          "type": 20,
+          "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+          "symbol_index": 141,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 337,
+          "type": 20,
+          "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+          "symbol_index": 142,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 398,
+          "type": 20,
+          "symbol": "?retain_cpp_failure@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z",
+          "symbol_index": 151,
+          "target_section": 56,
+          "target_value": 0
+        },
+        {
+          "offset": 418,
+          "type": 20,
+          "symbol": "??$observe_incoming@$00@?A0x32cdb250@bsp@@YAXPAUNativeLuaVariantCppCleanupRecord@1@ABUNativeLuaVariantRetirementFrame@1@_NPAX@Z",
+          "symbol_index": 164,
+          "target_section": 16,
+          "target_value": 0
+        },
+        {
+          "offset": 455,
+          "type": 20,
+          "symbol": "??$run_action@$00@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@1@AAUNativeStringRawPoolContext@1@PAX@Z",
+          "symbol_index": 165,
+          "target_section": 22,
+          "target_value": 0
+        },
+        {
+          "offset": 483,
+          "type": 20,
+          "symbol": "__CxxThrowException@8",
+          "symbol_index": 168,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 9,
+      "bytes": 29,
+      "sha256": "ab63087fa35fef0ab5a7f3eefb94c7b4748e88f12c1a2e37ec76aba8455b65f9",
+      "operations": 9,
+      "symbols": [
+        "__ehhandler$??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z"
+      ],
+      "relocations": [
+        {
+          "offset": 15,
+          "type": 20,
+          "symbol": "@__security_check_cookie@4",
+          "symbol_index": 167,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 20,
+          "type": 6,
+          "symbol": "__ehfuncinfo$??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 218,
+          "target_section": 71,
+          "target_value": 64
+        },
+        {
+          "offset": 25,
+          "type": 20,
+          "symbol": "___CxxFrameHandler3",
+          "symbol_index": 169,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 10,
+      "bytes": 359,
+      "sha256": "2c945bd729616d6dfed9809d91a78e5b6b8e03c459d05662ae75c379d2f91c9e",
+      "operations": 121,
+      "symbols": [
+        "??$destruct_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "__catch$??$destruct_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0"
+      ],
+      "relocations": [
+        {
+          "offset": 6,
+          "type": 6,
+          "symbol": "__ehhandler$??$destruct_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 175,
+          "target_section": 11,
+          "target_value": 0
+        },
+        {
+          "offset": 24,
+          "type": 6,
+          "symbol": "___security_cookie",
+          "symbol_index": 230,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 65,
+          "type": 20,
+          "symbol": "?enter@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z",
+          "symbol_index": 148,
+          "target_section": 48,
+          "target_value": 0
+        },
+        {
+          "offset": 148,
+          "type": 20,
+          "symbol": "??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 154,
+          "target_section": 6,
+          "target_value": 0
+        },
+        {
+          "offset": 249,
+          "type": 20,
+          "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+          "symbol_index": 141,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 279,
+          "type": 20,
+          "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+          "symbol_index": 142,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 337,
+          "type": 20,
+          "symbol": "?retain_cpp_failure@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z",
+          "symbol_index": 151,
+          "target_section": 56,
+          "target_value": 0
+        },
+        {
+          "offset": 349,
+          "type": 20,
+          "symbol": "__CxxThrowException@8",
+          "symbol_index": 168,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 11,
+      "bytes": 29,
+      "sha256": "8afea02d98ad0c01a97364d71172448b65489b675b09649b09075195de9cdd27",
+      "operations": 9,
+      "symbols": [
+        "__ehhandler$??$destruct_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z"
+      ],
+      "relocations": [
+        {
+          "offset": 15,
+          "type": 20,
+          "symbol": "@__security_check_cookie@4",
+          "symbol_index": 167,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 20,
+          "type": 6,
+          "symbol": "__ehfuncinfo$??$destruct_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 200,
+          "target_section": 68,
+          "target_value": 52
+        },
+        {
+          "offset": 25,
+          "type": 20,
+          "symbol": "___CxxFrameHandler3",
+          "symbol_index": 169,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 12,
+      "bytes": 300,
+      "sha256": "fd576a17a0541024b4983d9527d54b2f80687dc6f489b609cbeea59048775be7",
+      "operations": 74,
+      "symbols": [
+        "??$enter_mode@$00@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@1@AAUNativeLuaVariantRetirementOperation@1@AAUNativeStringRawPoolContext@1@W4NativeLuaVariantRetirementBody@1@PAX3PBUNativeLuaVariantCppCleanupBacking@1@@Z"
+      ],
+      "relocations": [
+        {
+          "offset": 62,
+          "type": 20,
+          "symbol": "?enter@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z",
+          "symbol_index": 148,
+          "target_section": 48,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 14,
+      "bytes": 29,
+      "sha256": "81d96b6fd9b91d122c17451b442d74ad2366642a8f8c8f7bf8518bfc9cd0560e",
+      "operations": 8,
+      "symbols": [
+        "??$enter_mode@$0A@@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@1@AAUNativeLuaVariantRetirementOperation@1@AAUNativeStringRawPoolContext@1@W4NativeLuaVariantRetirementBody@1@PAX3PBUNativeLuaVariantCppCleanupBacking@1@@Z"
+      ],
+      "relocations": [
+        {
+          "offset": 21,
+          "type": 20,
+          "symbol": "?enter@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z",
+          "symbol_index": 148,
+          "target_section": 48,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 16,
+      "bytes": 39,
+      "sha256": "cb5f93c03c69fe73b9512977d63be0f6fca258fe94636a9b72acc89895cc93f1",
+      "operations": 12,
+      "symbols": [
+        "??$observe_incoming@$00@?A0x32cdb250@bsp@@YAXPAUNativeLuaVariantCppCleanupRecord@1@ABUNativeLuaVariantRetirementFrame@1@_NPAX@Z"
+      ],
+      "relocations": []
+    },
+    {
+      "section": 18,
+      "bytes": 23,
+      "sha256": "022ba7751546c7d4e6249e5d5e154c5d28568b06025fcbcee37e897afd0a8fd9",
+      "operations": 7,
+      "symbols": [
+        "??$record_for@$00@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantCppCleanupRecord@1@PBUNativeLuaVariantCppCleanupBacking@1@I@Z"
+      ],
+      "relocations": []
+    },
+    {
+      "section": 20,
+      "bytes": 3,
+      "sha256": "4bc724f3b1d0caf4fe369c18cba3102e6c4ea057f63fe1587e3973134a7f755e",
+      "operations": 2,
+      "symbols": [
+        "??$record_for@$0A@@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantCppCleanupRecord@1@PBUNativeLuaVariantCppCleanupBacking@1@I@Z"
+      ],
+      "relocations": []
+    },
+    {
+      "section": 22,
+      "bytes": 154,
+      "sha256": "7c18a816c16175704e857cca2580a5c2f4d96488deb5e3d143e1a5172ca696ff",
+      "operations": 43,
+      "symbols": [
+        "??$run_action@$00@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@1@AAUNativeStringRawPoolContext@1@PAX@Z"
+      ],
+      "relocations": [
+        {
+          "offset": 96,
+          "type": 20,
+          "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+          "symbol_index": 141,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 131,
+          "type": 20,
+          "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+          "symbol_index": 142,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 24,
+      "bytes": 155,
+      "sha256": "e59d675b29fa83bce65ff788b06c658689bb618b1786c3fa9e2c16182293b028",
+      "operations": 43,
+      "symbols": [
+        "??$run_action@$01@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@1@AAUNativeStringRawPoolContext@1@PAX@Z"
+      ],
+      "relocations": [
+        {
+          "offset": 97,
+          "type": 20,
+          "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+          "symbol_index": 141,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 132,
+          "type": 20,
+          "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+          "symbol_index": 142,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 26,
+      "bytes": 630,
+      "sha256": "5665838e52bf05825ee7d0de4cdffb6478928be34391df326a352349c4164118",
+      "operations": 198,
+      "symbols": [
+        "??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "__catch$??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0",
+        "__catch$??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$1"
+      ],
+      "relocations": [
+        {
+          "offset": 6,
+          "type": 6,
+          "symbol": "__ehhandler$??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 188,
+          "target_section": 27,
+          "target_value": 0
+        },
+        {
+          "offset": 24,
+          "type": 6,
+          "symbol": "___security_cookie",
+          "symbol_index": 230,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 69,
+          "type": 20,
+          "symbol": "??$enter_mode@$00@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@1@AAUNativeLuaVariantRetirementOperation@1@AAUNativeStringRawPoolContext@1@W4NativeLuaVariantRetirementBody@1@PAX3PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 162,
+          "target_section": 12,
+          "target_value": 0
+        },
+        {
+          "offset": 201,
+          "type": 20,
+          "symbol": "??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 159,
+          "target_section": 26,
+          "target_value": 0
+        },
+        {
+          "offset": 313,
+          "type": 20,
+          "symbol": "??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 158,
+          "target_section": 8,
+          "target_value": 0
+        },
+        {
+          "offset": 397,
+          "type": 20,
+          "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+          "symbol_index": 141,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 427,
+          "type": 20,
+          "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+          "symbol_index": 142,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 445,
+          "type": 20,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "symbol_index": 140,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 535,
+          "type": 20,
+          "symbol": "?retain_cpp_failure@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z",
+          "symbol_index": 151,
+          "target_section": 56,
+          "target_value": 0
+        },
+        {
+          "offset": 555,
+          "type": 20,
+          "symbol": "??$observe_incoming@$00@?A0x32cdb250@bsp@@YAXPAUNativeLuaVariantCppCleanupRecord@1@ABUNativeLuaVariantRetirementFrame@1@_NPAX@Z",
+          "symbol_index": 164,
+          "target_section": 16,
+          "target_value": 0
+        },
+        {
+          "offset": 592,
+          "type": 20,
+          "symbol": "??$run_action@$01@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@1@AAUNativeStringRawPoolContext@1@PAX@Z",
+          "symbol_index": 166,
+          "target_section": 24,
+          "target_value": 0
+        },
+        {
+          "offset": 620,
+          "type": 20,
+          "symbol": "__CxxThrowException@8",
+          "symbol_index": 168,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 27,
+      "bytes": 29,
+      "sha256": "348e25ba25bf5bad095cdda32d0b75cb2ae7a7dfa64bd14569fd3dbbb8d5ca1b",
+      "operations": 9,
+      "symbols": [
+        "__ehhandler$??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z"
+      ],
+      "relocations": [
+        {
+          "offset": 15,
+          "type": 20,
+          "symbol": "@__security_check_cookie@4",
+          "symbol_index": 167,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 20,
+          "type": 6,
+          "symbol": "__ehfuncinfo$??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 225,
+          "target_section": 72,
+          "target_value": 64
+        },
+        {
+          "offset": 25,
+          "type": 20,
+          "symbol": "___CxxFrameHandler3",
+          "symbol_index": 169,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 28,
+      "bytes": 484,
+      "sha256": "14ac1f118ec8aac75ba6cb89de7c6a48a22a7622769d6f92cf0028fa9609d79d",
+      "operations": 157,
+      "symbols": [
+        "??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "__catch$??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0"
+      ],
+      "relocations": [
+        {
+          "offset": 6,
+          "type": 6,
+          "symbol": "__ehhandler$??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 178,
+          "target_section": 29,
+          "target_value": 0
+        },
+        {
+          "offset": 24,
+          "type": 6,
+          "symbol": "___security_cookie",
+          "symbol_index": 230,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 66,
+          "type": 20,
+          "symbol": "?enter@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z",
+          "symbol_index": 148,
+          "target_section": 48,
+          "target_value": 0
+        },
+        {
+          "offset": 168,
+          "type": 20,
+          "symbol": "??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 156,
+          "target_section": 28,
+          "target_value": 0
+        },
+        {
+          "offset": 260,
+          "type": 20,
+          "symbol": "??$destruct_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 155,
+          "target_section": 10,
+          "target_value": 0
+        },
+        {
+          "offset": 330,
+          "type": 20,
+          "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+          "symbol_index": 141,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 365,
+          "type": 20,
+          "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+          "symbol_index": 142,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 381,
+          "type": 20,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "symbol_index": 140,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 462,
+          "type": 20,
+          "symbol": "?retain_cpp_failure@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z",
+          "symbol_index": 151,
+          "target_section": 56,
+          "target_value": 0
+        },
+        {
+          "offset": 474,
+          "type": 20,
+          "symbol": "__CxxThrowException@8",
+          "symbol_index": 168,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 29,
+      "bytes": 29,
+      "sha256": "de50d5cf7b34573d5321c7f14cae5853d1153ecc9e75bd47e1e242bd17cb630f",
+      "operations": 9,
+      "symbols": [
+        "__ehhandler$??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z"
+      ],
+      "relocations": [
+        {
+          "offset": 15,
+          "type": 20,
+          "symbol": "@__security_check_cookie@4",
+          "symbol_index": 167,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 20,
+          "type": 6,
+          "symbol": "__ehfuncinfo$??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 206,
+          "target_section": 69,
+          "target_value": 52
+        },
+        {
+          "offset": 25,
+          "type": 20,
+          "symbol": "___CxxFrameHandler3",
+          "symbol_index": 169,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 30,
+      "bytes": 19,
+      "sha256": "f091b083a6ba7ee6ed043e21a1a79d3cd50933287fec20b87ffdaa9ae44acc0e",
+      "operations": 5,
+      "symbols": [
+        "?arm_action@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@2@PAX@Z"
+      ],
+      "relocations": []
+    },
+    {
+      "section": 32,
+      "bytes": 9,
+      "sha256": "6d1e1d30f2068501de61e0022c4352fda2a7650f29eb96f01ad04fa160305e21",
+      "operations": 3,
+      "symbols": [
+        "?at@?A0x32cdb250@bsp@@YAPAXPAXI@Z"
+      ],
+      "relocations": []
+    },
+    {
+      "section": 34,
+      "bytes": 23,
+      "sha256": "01cc0863c03520883efa0eae860bfe29ba9436b257a1f973e43d185abd24b404",
+      "operations": 7,
+      "symbols": [
+        "?clear_native_lua_variant_00886920@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z"
+      ],
+      "relocations": [
+        {
+          "offset": 15,
+          "type": 20,
+          "symbol": "??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 154,
+          "target_section": 6,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 36,
+      "bytes": 5,
+      "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449",
+      "operations": 1,
+      "symbols": [
+        "?clear_native_lua_variant_00886920_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z"
+      ],
+      "relocations": [
+        {
+          "offset": 1,
+          "type": 20,
+          "symbol": "??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 157,
+          "target_section": 4,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 38,
+      "bytes": 35,
+      "sha256": "27dab23c88a0380197acac2bd56b87701bbaeb479ac408c2c41fefc1a135368a",
+      "operations": 8,
+      "symbols": [
+        "?complete@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@@Z"
+      ],
+      "relocations": []
+    },
+    {
+      "section": 40,
+      "bytes": 27,
+      "sha256": "b25714e5cd530f9fa885920a1bae80f157578359d1471429003b01a29ec64871",
+      "operations": 8,
+      "symbols": [
+        "?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z"
+      ],
+      "relocations": [
+        {
+          "offset": 19,
+          "type": 20,
+          "symbol": "??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 156,
+          "target_section": 28,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 42,
+      "bytes": 5,
+      "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449",
+      "operations": 1,
+      "symbols": [
+        "?destroy_native_lua_variant_subtree_006ee890_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z"
+      ],
+      "relocations": [
+        {
+          "offset": 1,
+          "type": 20,
+          "symbol": "??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 159,
+          "target_section": 26,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 44,
+      "bytes": 23,
+      "sha256": "01cc0863c03520883efa0eae860bfe29ba9436b257a1f973e43d185abd24b404",
+      "operations": 7,
+      "symbols": [
+        "?destruct_native_lua_variant_00884af0@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z"
+      ],
+      "relocations": [
+        {
+          "offset": 15,
+          "type": 20,
+          "symbol": "??$destruct_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 155,
+          "target_section": 10,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 46,
+      "bytes": 5,
+      "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449",
+      "operations": 1,
+      "symbols": [
+        "?destruct_native_lua_variant_00884af0_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z"
+      ],
+      "relocations": [
+        {
+          "offset": 1,
+          "type": 20,
+          "symbol": "??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 158,
+          "target_section": 8,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 48,
+      "bytes": 396,
+      "sha256": "11e62136994cb17bdf9d096da67378c61f56c6063d439aaeb1f192392fd43a72",
+      "operations": 80,
+      "symbols": [
+        "?enter@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z"
+      ],
+      "relocations": []
+    },
+    {
+      "section": 50,
+      "bytes": 12,
+      "sha256": "70f382ed286514895a32913b02b0f76dace67c0ab00f7fa65c76b13712200bc8",
+      "operations": 4,
+      "symbols": [
+        "?read_byte@?A0x32cdb250@bsp@@YAEPAXI@Z"
+      ],
+      "relocations": []
+    },
+    {
+      "section": 52,
+      "bytes": 12,
+      "sha256": "141fe36521c0146c800983701f3780f1e87872eba06924b50770fb794107644c",
+      "operations": 4,
+      "symbols": [
+        "?read_pointer@?A0x32cdb250@bsp@@YAPAXPAXI@Z"
+      ],
+      "relocations": []
+    },
+    {
+      "section": 54,
+      "bytes": 12,
+      "sha256": "141fe36521c0146c800983701f3780f1e87872eba06924b50770fb794107644c",
+      "operations": 4,
+      "symbols": [
+        "?read_word@?A0x32cdb250@bsp@@YAIPAXI@Z"
+      ],
+      "relocations": []
+    },
+    {
+      "section": 56,
+      "bytes": 75,
+      "sha256": "36fe0e3a64cc2e13c497f9e4a3eea880c56077af66f774bf4dcaea7bbde1a533",
+      "operations": 25,
+      "symbols": [
+        "?retain_cpp_failure@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z"
+      ],
+      "relocations": []
+    },
+    {
+      "section": 58,
+      "bytes": 60,
+      "sha256": "369979cde4503a4fbe2fefbfa3df954b0a832996de1d91960fd1c7105b64a599",
+      "operations": 21,
+      "symbols": [
+        "?return_buffer@?A0x32cdb250@bsp@@YAXAAUNativeStringRawPoolContext@2@AAUNativeLuaVariantRetirementFrame@2@PAXIII@Z"
+      ],
+      "relocations": [
+        {
+          "offset": 23,
+          "type": 20,
+          "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+          "symbol_index": 141,
+          "target_section": 0,
+          "target_value": 0
+        },
+        {
+          "offset": 50,
+          "type": 20,
+          "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+          "symbol_index": 142,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 60,
+      "bytes": 55,
+      "sha256": "84f6f4ac1a573b15c5a7e00dcf41bba47e44001742aa94c4629475a2027b2008",
+      "operations": 21,
+      "symbols": [
+        "?scalar_delete_native_lua_variant_00884fa0_cpp_cleanup@bsp@@YA?AUNativeLuaVariantScalarDeleteResult@1@PAXADIAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z"
+      ],
+      "relocations": [
+        {
+          "offset": 19,
+          "type": 20,
+          "symbol": "??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 158,
+          "target_section": 8,
+          "target_value": 0
+        },
+        {
+          "offset": 42,
+          "type": 20,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "symbol_index": 140,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 62,
+      "bytes": 26,
+      "sha256": "4566e135fa48eb18764218ecca73f2b37ba9bbec73c4d05bacb35b7e37c99b17",
+      "operations": 7,
+      "symbols": [
+        "?stop@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@W432@@Z"
+      ],
+      "relocations": []
+    },
+    {
+      "section": 64,
+      "bytes": 16,
+      "sha256": "76bbadc14dccdb9d6227d26bf221f5ac30a809741438df8ba9a77bc568a30b0b",
+      "operations": 5,
+      "symbols": [
+        "?write_word@?A0x32cdb250@bsp@@YAXPAXII@Z"
+      ],
+      "relocations": []
+    }
+  ],
+  "all_direct_calls": [
+    {
+      "section": 4,
+      "offset": 68,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x49",
+      "relocations": [
+        {
+          "offset": 69,
+          "type": 20,
+          "symbol": "??$enter_mode@$00@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@1@AAUNativeLuaVariantRetirementOperation@1@AAUNativeStringRawPoolContext@1@W4NativeLuaVariantRetirementBody@1@PAX3PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 162,
+          "target_section": 12,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 4,
+      "offset": 211,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0xd8",
+      "relocations": [
+        {
+          "offset": 212,
+          "type": 20,
+          "symbol": "??$enter_mode@$00@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@1@AAUNativeLuaVariantRetirementOperation@1@AAUNativeStringRawPoolContext@1@W4NativeLuaVariantRetirementBody@1@PAX3PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 162,
+          "target_section": 12,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 4,
+      "offset": 467,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x1d8",
+      "relocations": [
+        {
+          "offset": 468,
+          "type": 20,
+          "symbol": "??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 159,
+          "target_section": 26,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 4,
+      "offset": 603,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x260",
+      "relocations": [
+        {
+          "offset": 604,
+          "type": 20,
+          "symbol": "?complete@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@@Z",
+          "symbol_index": 149,
+          "target_section": 38,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 4,
+      "offset": 629,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x27a",
+      "relocations": [
+        {
+          "offset": 630,
+          "type": 20,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "symbol_index": 140,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 4,
+      "offset": 666,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x29f",
+      "relocations": [
+        {
+          "offset": 667,
+          "type": 20,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "symbol_index": 140,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 4,
+      "offset": 704,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x2c5",
+      "relocations": [
+        {
+          "offset": 705,
+          "type": 20,
+          "symbol": "?complete@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@@Z",
+          "symbol_index": 149,
+          "target_section": 38,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 4,
+      "offset": 801,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x326",
+      "relocations": [
+        {
+          "offset": 802,
+          "type": 20,
+          "symbol": "?return_buffer@?A0x32cdb250@bsp@@YAXAAUNativeStringRawPoolContext@2@AAUNativeLuaVariantRetirementFrame@2@PAXIII@Z",
+          "symbol_index": 152,
+          "target_section": 58,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 4,
+      "offset": 820,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x339",
+      "relocations": [
+        {
+          "offset": 821,
+          "type": 20,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "symbol_index": 140,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 4,
+      "offset": 906,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x38f",
+      "relocations": [
+        {
+          "offset": 907,
+          "type": 20,
+          "symbol": "?retain_cpp_failure@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z",
+          "symbol_index": 151,
+          "target_section": 56,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 4,
+      "offset": 921,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x39e",
+      "relocations": [
+        {
+          "offset": 922,
+          "type": 20,
+          "symbol": "??$observe_incoming@$00@?A0x32cdb250@bsp@@YAXPAUNativeLuaVariantCppCleanupRecord@1@ABUNativeLuaVariantRetirementFrame@1@_NPAX@Z",
+          "symbol_index": 164,
+          "target_section": 16,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 4,
+      "offset": 950,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x3bb",
+      "relocations": [
+        {
+          "offset": 951,
+          "type": 20,
+          "symbol": "??$observe_incoming@$00@?A0x32cdb250@bsp@@YAXPAUNativeLuaVariantCppCleanupRecord@1@ABUNativeLuaVariantRetirementFrame@1@_NPAX@Z",
+          "symbol_index": 164,
+          "target_section": 16,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 4,
+      "offset": 962,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x3c7",
+      "relocations": [
+        {
+          "offset": 963,
+          "type": 20,
+          "symbol": "__CxxThrowException@8",
+          "symbol_index": 168,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 5,
+      "offset": 14,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x13",
+      "relocations": [
+        {
+          "offset": 15,
+          "type": 20,
+          "symbol": "@__security_check_cookie@4",
+          "symbol_index": 167,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 6,
+      "offset": 64,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x45",
+      "relocations": [
+        {
+          "offset": 65,
+          "type": 20,
+          "symbol": "?enter@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z",
+          "symbol_index": 148,
+          "target_section": 48,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 6,
+      "offset": 160,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0xa5",
+      "relocations": [
+        {
+          "offset": 161,
+          "type": 20,
+          "symbol": "?enter@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z",
+          "symbol_index": 148,
+          "target_section": 48,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 6,
+      "offset": 390,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x18b",
+      "relocations": [
+        {
+          "offset": 391,
+          "type": 20,
+          "symbol": "??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 156,
+          "target_section": 28,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 6,
+      "offset": 526,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x213",
+      "relocations": [
+        {
+          "offset": 527,
+          "type": 20,
+          "symbol": "?complete@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@@Z",
+          "symbol_index": 149,
+          "target_section": 38,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 6,
+      "offset": 552,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x22d",
+      "relocations": [
+        {
+          "offset": 553,
+          "type": 20,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "symbol_index": 140,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 6,
+      "offset": 589,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x252",
+      "relocations": [
+        {
+          "offset": 590,
+          "type": 20,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "symbol_index": 140,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 6,
+      "offset": 627,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x278",
+      "relocations": [
+        {
+          "offset": 628,
+          "type": 20,
+          "symbol": "?complete@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@@Z",
+          "symbol_index": 149,
+          "target_section": 38,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 6,
+      "offset": 724,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x2d9",
+      "relocations": [
+        {
+          "offset": 725,
+          "type": 20,
+          "symbol": "?return_buffer@?A0x32cdb250@bsp@@YAXAAUNativeStringRawPoolContext@2@AAUNativeLuaVariantRetirementFrame@2@PAXIII@Z",
+          "symbol_index": 152,
+          "target_section": 58,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 6,
+      "offset": 743,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x2ec",
+      "relocations": [
+        {
+          "offset": 744,
+          "type": 20,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "symbol_index": 140,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 6,
+      "offset": 829,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x342",
+      "relocations": [
+        {
+          "offset": 830,
+          "type": 20,
+          "symbol": "?retain_cpp_failure@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z",
+          "symbol_index": 151,
+          "target_section": 56,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 6,
+      "offset": 841,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x34e",
+      "relocations": [
+        {
+          "offset": 842,
+          "type": 20,
+          "symbol": "__CxxThrowException@8",
+          "symbol_index": 168,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 7,
+      "offset": 14,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x13",
+      "relocations": [
+        {
+          "offset": 15,
+          "type": 20,
+          "symbol": "@__security_check_cookie@4",
+          "symbol_index": 167,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 8,
+      "offset": 67,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x48",
+      "relocations": [
+        {
+          "offset": 68,
+          "type": 20,
+          "symbol": "??$enter_mode@$00@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@1@AAUNativeLuaVariantRetirementOperation@1@AAUNativeStringRawPoolContext@1@W4NativeLuaVariantRetirementBody@1@PAX3PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 162,
+          "target_section": 12,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 8,
+      "offset": 191,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0xc4",
+      "relocations": [
+        {
+          "offset": 192,
+          "type": 20,
+          "symbol": "??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 157,
+          "target_section": 4,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 8,
+      "offset": 306,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x137",
+      "relocations": [
+        {
+          "offset": 307,
+          "type": 20,
+          "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+          "symbol_index": 141,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 8,
+      "offset": 336,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x155",
+      "relocations": [
+        {
+          "offset": 337,
+          "type": 20,
+          "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+          "symbol_index": 142,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 8,
+      "offset": 397,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x192",
+      "relocations": [
+        {
+          "offset": 398,
+          "type": 20,
+          "symbol": "?retain_cpp_failure@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z",
+          "symbol_index": 151,
+          "target_section": 56,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 8,
+      "offset": 417,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x1a6",
+      "relocations": [
+        {
+          "offset": 418,
+          "type": 20,
+          "symbol": "??$observe_incoming@$00@?A0x32cdb250@bsp@@YAXPAUNativeLuaVariantCppCleanupRecord@1@ABUNativeLuaVariantRetirementFrame@1@_NPAX@Z",
+          "symbol_index": 164,
+          "target_section": 16,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 8,
+      "offset": 454,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x1cb",
+      "relocations": [
+        {
+          "offset": 455,
+          "type": 20,
+          "symbol": "??$run_action@$00@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@1@AAUNativeStringRawPoolContext@1@PAX@Z",
+          "symbol_index": 165,
+          "target_section": 22,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 8,
+      "offset": 482,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x1e7",
+      "relocations": [
+        {
+          "offset": 483,
+          "type": 20,
+          "symbol": "__CxxThrowException@8",
+          "symbol_index": 168,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 9,
+      "offset": 14,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x13",
+      "relocations": [
+        {
+          "offset": 15,
+          "type": 20,
+          "symbol": "@__security_check_cookie@4",
+          "symbol_index": 167,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 10,
+      "offset": 64,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x45",
+      "relocations": [
+        {
+          "offset": 65,
+          "type": 20,
+          "symbol": "?enter@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z",
+          "symbol_index": 148,
+          "target_section": 48,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 10,
+      "offset": 147,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x98",
+      "relocations": [
+        {
+          "offset": 148,
+          "type": 20,
+          "symbol": "??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 154,
+          "target_section": 6,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 10,
+      "offset": 248,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0xfd",
+      "relocations": [
+        {
+          "offset": 249,
+          "type": 20,
+          "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+          "symbol_index": 141,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 10,
+      "offset": 278,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x11b",
+      "relocations": [
+        {
+          "offset": 279,
+          "type": 20,
+          "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+          "symbol_index": 142,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 10,
+      "offset": 336,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x155",
+      "relocations": [
+        {
+          "offset": 337,
+          "type": 20,
+          "symbol": "?retain_cpp_failure@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z",
+          "symbol_index": 151,
+          "target_section": 56,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 10,
+      "offset": 348,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x161",
+      "relocations": [
+        {
+          "offset": 349,
+          "type": 20,
+          "symbol": "__CxxThrowException@8",
+          "symbol_index": 168,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 11,
+      "offset": 14,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x13",
+      "relocations": [
+        {
+          "offset": 15,
+          "type": 20,
+          "symbol": "@__security_check_cookie@4",
+          "symbol_index": 167,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 12,
+      "offset": 61,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x42",
+      "relocations": [
+        {
+          "offset": 62,
+          "type": 20,
+          "symbol": "?enter@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z",
+          "symbol_index": 148,
+          "target_section": 48,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 14,
+      "offset": 20,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x19",
+      "relocations": [
+        {
+          "offset": 21,
+          "type": 20,
+          "symbol": "?enter@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z",
+          "symbol_index": 148,
+          "target_section": 48,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 22,
+      "offset": 95,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x64",
+      "relocations": [
+        {
+          "offset": 96,
+          "type": 20,
+          "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+          "symbol_index": 141,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 22,
+      "offset": 130,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x87",
+      "relocations": [
+        {
+          "offset": 131,
+          "type": 20,
+          "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+          "symbol_index": 142,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 24,
+      "offset": 96,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x65",
+      "relocations": [
+        {
+          "offset": 97,
+          "type": 20,
+          "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+          "symbol_index": 141,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 24,
+      "offset": 131,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x88",
+      "relocations": [
+        {
+          "offset": 132,
+          "type": 20,
+          "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+          "symbol_index": 142,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 26,
+      "offset": 68,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x49",
+      "relocations": [
+        {
+          "offset": 69,
+          "type": 20,
+          "symbol": "??$enter_mode@$00@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@1@AAUNativeLuaVariantRetirementOperation@1@AAUNativeStringRawPoolContext@1@W4NativeLuaVariantRetirementBody@1@PAX3PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 162,
+          "target_section": 12,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 26,
+      "offset": 200,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0xcd",
+      "relocations": [
+        {
+          "offset": 201,
+          "type": 20,
+          "symbol": "??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 159,
+          "target_section": 26,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 26,
+      "offset": 312,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x13d",
+      "relocations": [
+        {
+          "offset": 313,
+          "type": 20,
+          "symbol": "??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 158,
+          "target_section": 8,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 26,
+      "offset": 396,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x191",
+      "relocations": [
+        {
+          "offset": 397,
+          "type": 20,
+          "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+          "symbol_index": 141,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 26,
+      "offset": 426,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x1af",
+      "relocations": [
+        {
+          "offset": 427,
+          "type": 20,
+          "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+          "symbol_index": 142,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 26,
+      "offset": 444,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x1c1",
+      "relocations": [
+        {
+          "offset": 445,
+          "type": 20,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "symbol_index": 140,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 26,
+      "offset": 534,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x21b",
+      "relocations": [
+        {
+          "offset": 535,
+          "type": 20,
+          "symbol": "?retain_cpp_failure@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z",
+          "symbol_index": 151,
+          "target_section": 56,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 26,
+      "offset": 554,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x22f",
+      "relocations": [
+        {
+          "offset": 555,
+          "type": 20,
+          "symbol": "??$observe_incoming@$00@?A0x32cdb250@bsp@@YAXPAUNativeLuaVariantCppCleanupRecord@1@ABUNativeLuaVariantRetirementFrame@1@_NPAX@Z",
+          "symbol_index": 164,
+          "target_section": 16,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 26,
+      "offset": 591,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x254",
+      "relocations": [
+        {
+          "offset": 592,
+          "type": 20,
+          "symbol": "??$run_action@$01@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@1@AAUNativeStringRawPoolContext@1@PAX@Z",
+          "symbol_index": 166,
+          "target_section": 24,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 26,
+      "offset": 619,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x270",
+      "relocations": [
+        {
+          "offset": 620,
+          "type": 20,
+          "symbol": "__CxxThrowException@8",
+          "symbol_index": 168,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 27,
+      "offset": 14,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x13",
+      "relocations": [
+        {
+          "offset": 15,
+          "type": 20,
+          "symbol": "@__security_check_cookie@4",
+          "symbol_index": 167,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 28,
+      "offset": 65,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x46",
+      "relocations": [
+        {
+          "offset": 66,
+          "type": 20,
+          "symbol": "?enter@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z",
+          "symbol_index": 148,
+          "target_section": 48,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 28,
+      "offset": 167,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0xac",
+      "relocations": [
+        {
+          "offset": 168,
+          "type": 20,
+          "symbol": "??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 156,
+          "target_section": 28,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 28,
+      "offset": 259,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x108",
+      "relocations": [
+        {
+          "offset": 260,
+          "type": 20,
+          "symbol": "??$destruct_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 155,
+          "target_section": 10,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 28,
+      "offset": 329,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x14e",
+      "relocations": [
+        {
+          "offset": 330,
+          "type": 20,
+          "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+          "symbol_index": 141,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 28,
+      "offset": 364,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x171",
+      "relocations": [
+        {
+          "offset": 365,
+          "type": 20,
+          "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+          "symbol_index": 142,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 28,
+      "offset": 380,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x181",
+      "relocations": [
+        {
+          "offset": 381,
+          "type": 20,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "symbol_index": 140,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 28,
+      "offset": 461,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x1d2",
+      "relocations": [
+        {
+          "offset": 462,
+          "type": 20,
+          "symbol": "?retain_cpp_failure@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z",
+          "symbol_index": 151,
+          "target_section": 56,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 28,
+      "offset": 473,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x1de",
+      "relocations": [
+        {
+          "offset": 474,
+          "type": 20,
+          "symbol": "__CxxThrowException@8",
+          "symbol_index": 168,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 29,
+      "offset": 14,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x13",
+      "relocations": [
+        {
+          "offset": 15,
+          "type": 20,
+          "symbol": "@__security_check_cookie@4",
+          "symbol_index": 167,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 34,
+      "offset": 14,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x13",
+      "relocations": [
+        {
+          "offset": 15,
+          "type": 20,
+          "symbol": "??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 154,
+          "target_section": 6,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 40,
+      "offset": 18,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x17",
+      "relocations": [
+        {
+          "offset": 19,
+          "type": 20,
+          "symbol": "??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 156,
+          "target_section": 28,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 44,
+      "offset": 14,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x13",
+      "relocations": [
+        {
+          "offset": 15,
+          "type": 20,
+          "symbol": "??$destruct_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 155,
+          "target_section": 10,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 58,
+      "offset": 22,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x1b",
+      "relocations": [
+        {
+          "offset": 23,
+          "type": 20,
+          "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+          "symbol_index": 141,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 58,
+      "offset": 49,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x36",
+      "relocations": [
+        {
+          "offset": 50,
+          "type": 20,
+          "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+          "symbol_index": 142,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 60,
+      "offset": 18,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x17",
+      "relocations": [
+        {
+          "offset": 19,
+          "type": 20,
+          "symbol": "??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "symbol_index": 158,
+          "target_section": 8,
+          "target_value": 0
+        }
+      ]
+    },
+    {
+      "section": 60,
+      "offset": 41,
+      "bytes": "e800000000",
+      "mnemonic": "call",
+      "operands": "0x2e",
+      "relocations": [
+        {
+          "offset": 42,
+          "type": 20,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "symbol_index": 140,
+          "target_section": 0,
+          "target_value": 0
+        }
+      ]
+    }
+  ],
+  "post_compile_header_comment_correction": {
+    "header_only": true,
+    "Root_requested": "allow supported flagsHOME/rawreceiver aliases; separate flags lifetime from context/metadata/result disjointness",
+    "noncomment_tokens_and_whitespace_normalized_identical": true,
+    "recompile_required": false,
+    "CPP_unchanged": true,
+    "compiled_header_sha256": "df5d0402be719517ff4704794e723b0dd5b8235731449bf8256edf8640603a9a",
+    "final_header_sha256": "14258135096189f2892e4d896af417ed0c8fb616d5f1659bbc1d9d032f68a7db",
+    "compiled_header_retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\compile_inputs\\include\\bsp\\native_lua_variant_retirement.hpp"
+  },
+  "CFFD0_and_activation": {
+    "numeric_D0E6F4_word_retained": true,
+    "Source_callable_table_installed_or_authenticated": false,
+    "existing_normal_callers_implicitly_upgraded": false,
+    "newscalar_has_any_genuine_host_current_slot_table_caller_adoption": false,
+    "newglobal_or_dispatch_created": false,
+    "real_objects_metadata_tables_providers_created_or_run": false
+  },
+  "remaining_admission": [
+    "Root immutable Source/COFF/EH independentreview andfreshstrict/commoncompile/build/link",
+    "actual naked/register/provider C++exceptiondelivery;ordinaryparentcatch/symbolalone notproof",
+    "OriginalECX/RET4/register/FH3/SEH/fault/unmaskedFP/privatehome orasyncalias identity",
+    "existingnoexcept/CRT/OS/nonlocal/processfailure limits",
+    "primary/secondaryexceptionobjectretention andOriginalsecondaryterminalbehavior",
+    "genuine20Breceiver,mallocroot,pool/context/HOME/metadata ownership andlifetime adoption",
+    "CF/D0callabletable/object/current-slot/fullhost/queue/payload/vector/reserve/copy/producer/caller adoption",
+    "runtime/gameplay/activation"
+  ],
+  "performed": {
+    "new_qualified_Source_interfaces": 1,
+    "new_scalar_aggregate_types": 1,
+    "strict_TU_compile_iterations": 1,
+    "new_repository_tests": 0,
+    "tests_run": 0,
+    "full_builds": 0,
+    "links": 0,
+    "target_body_probe_executable_DLL_game_runs": 0,
+    "Ghidra_analysis_queries": 0,
+    "Ghidra_mutations": 0,
+    "CMake_shared_ledger_guard_caller_table_global_peer_install_edits": 0
+  },
+  "credit": {
+    "new_unique_Original_bodies": 0,
+    "new_unique_Original_bytes": 0,
+    "vendor": 0,
+    "duplicate": 0,
+    "Original_ABI_FH3_SEH": 0,
+    "runtime": 0,
+    "activation": 0,
+    "host_caller_adoption": 0
+  },
+  "artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\compile.cmd",
+      "bytes": 479,
+      "sha256": "97ab4ba790745b4b73898b4ef254640306ed0efc44fcdcb20e880b24d5e50953"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\compile.log",
+      "bytes": 35,
+      "sha256": "5e744182c7f07a68b0f2f9dd498d144f6591c53565c55416703f7aaa0072a22e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\compile_receipt.json",
+      "bytes": 2243,
+      "sha256": "18a6da9e49814065459504891e3571c6715f42bcc8a3463e14b5abfc843074a3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\retirement.obj",
+      "bytes": 29841,
+      "sha256": "bcf718e1da6a3616432f6ce4ca1a1975b04413611437c73dae9626af73710bdd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\retirement.asm",
+      "bytes": 160544,
+      "sha256": "4e73f461faf55cbf8042268c4540f9ffd3d6eef665d0474593f45a9ff65bf79f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\coff_parser.py",
+      "bytes": 6094,
+      "sha256": "881421504c9ca78a9baf2bccbed0d46e57ea0a203fccdf3ebe6f7c77bd5ea8f4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\audit_scalar.py",
+      "bytes": 9708,
+      "sha256": "e707e1b7ee12a44e0b587194567739c69e2a5902e86ed622d4769d7a8486ac99"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\emitted.json",
+      "bytes": 507898,
+      "sha256": "04b5039b3c2e11443196e35b3549b2dd7f4aa1a8f3d3f79bb98a8c3763e56ccc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\audit.json",
+      "bytes": 91420,
+      "sha256": "d808981a5fd586387a6a1d4ae5cea8db2cfd1836f86c023c0505ec920052d2e3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\scalar_listing.txt",
+      "bytes": 614,
+      "sha256": "4db0c905c1492af6513515eab397ba20b02b0bed9211d956d118735e192089c8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\metadata.json",
+      "bytes": 1851,
+      "sha256": "77b1f4aa3733cc270acd71195009d3896ca1454c1a41c0796c46237d06380b13"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\input_pins.json",
+      "bytes": 11143,
+      "sha256": "1ea5f43070dfac0c8ade40a41ad41522d445e3048d21f3d70ae00ce9d6398236"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\native_verified.json",
+      "bytes": 7731,
+      "sha256": "773b3c89b74c12435f5838b0f62b3406fa2ed5f801935c27fe83a02335958411"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\compile_inputs\\include\\bsp\\native_lua_variant_retirement.hpp",
+      "bytes": 13752,
+      "sha256": "df5d0402be719517ff4704794e723b0dd5b8235731449bf8256edf8640603a9a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\compile_inputs\\src\\native_lua_variant_retirement.cpp",
+      "bytes": 24076,
+      "sha256": "5db41574abcb3a94fdb9c6f5c8f96f2b7b0c1f0c2a7f438fe64d622980c065ca"
+    }
+  ],
+  "document_pin": {
+    "path": "docs\\CC16_NATIVE_LUA_VARIANT_SCALAR_DELETE.md",
+    "bytes": 9884,
+    "sha256": "6bff0b47e3ce9ec5f83087bb274c2827a9cd7c8f701cbbfa870780b5dbdd4b51",
+    "lines": 154,
+    "LF_only": true
+  }
+}

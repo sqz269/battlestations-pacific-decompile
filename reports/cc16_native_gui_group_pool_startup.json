@@ -1,0 +1,1569 @@
+{
+  "schema": "cc16_native_gui_group_pool_startup_source_v1",
+  "status": "approved_three_file_source_candidate_strict_objects_verified_pending_independent_common_current_host_admission",
+  "baseline_commit": "376a6e6c84ba24e4ed8246c5eead59094b8dcd8a",
+  "owned_files": [
+    "include/bsp/native_gui_group_storage.hpp",
+    "src/native_gui_group_storage.cpp",
+    "src/game_main.cpp",
+    "docs/CC16_NATIVE_GUI_GROUP_POOL_STARTUP.md",
+    "reports/cc16_native_gui_group_pool_startup.json"
+  ],
+  "retained_readiness": {
+    "commit": "26b944d87556b055be37aa0079e4d801ed80a21c",
+    "report_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup-readiness\\reports\\cc16_native_gui_group_pool_startup_readiness.json",
+      "bytes": 52145,
+      "sha256": "532558ad80bfcbaa6ec8c4d5b1a1b882806e7b0e86f6d99c2fd05195b2cd3e05"
+    },
+    "baseline_source_blobs_matched": 33,
+    "unchanged_current_provider_inputs": 30,
+    "new_live_ghidra_batch": false,
+    "qualification": "Frozen readiness contains independently verified bsp.gpr/program, CD7440/CE0AE0, pool providers and actual CRT order. No live analysis/mutation needed for this Source packet."
+  },
+  "production_changes": {
+    "files": [
+      "include/bsp/native_gui_group_storage.hpp",
+      "src/native_gui_group_storage.cpp",
+      "src/game_main.cpp"
+    ],
+    "single_process": "Same GameNativeGuiGroupPoolProcess, same F8BFA0 storage, actual physical E188B4 domain and D5CBFC/AC74F0 profile. Getter now retains its existing owner using static auto* const new, matching same-domain locale precedent.",
+    "no_cpp_exit_unbind": true,
+    "native_order": "initialize_00ac7410 then actual std::atexit(destroy_00ce0ae0), preserve/cache ANY result.",
+    "nonzero_status": "Completed initialized/linked pool, no native callback registered; permanent Source backing remains. No status-as-error, _Exit/status branch, rollback, manual cleanup, retry or fallback.",
+    "state_values": {
+      "unattempted": 0,
+      "returned": 1,
+      "threw": 2,
+      "retiring": 3,
+      "retired": 4
+    },
+    "state_behavior": "Returned caches actual result; every other entered/retired state rejects replay. Readonly noexcept query only threw||retiring. Callback retiring before actual destroy, retired only after return; old noexcept boundary preserved.",
+    "serialized_control_contract": true,
+    "main": "Actual process pointer assigned before initialize between Text startup log and particle getter. Real status logged. Both existing catch predicates OR genuine Group interruption, preserving existing _Exit2 only for entered/interrupted custody; typed return1 and unknown terminate fallthrough unchanged.",
+    "no_dependency_or_payload_activation": "No Text/GroupType dependency inside CD7440, implicit factory call, fake context/capsule, duplicate owner/domain/global callback, childless-only policy or GuiGroup payload activation."
+  },
+  "expanded_source_boundary": {
+    "new_source_allocation_count": 1,
+    "observed_host_process_bytes": 120,
+    "observed_host_process_bytes_hex": "78",
+    "native_pool_storage_bytes": 56,
+    "epoch": "Source allocation, thread guard, actual map-binding/constructor complete before process pointer publication; Native CD7440 initialization is a later explicit call.",
+    "failure_custody": "New-expression sized delete and static guard abort cover Source constructor failure. No pointer publication or entered Native attempt exists at that boundary. Existing initialization mutex failure before state2 remains noninterrupted.",
+    "qualification": "Actual C++ operator new/constructor/new-handler/CRT contracts are expanded Source failure/heap/ABI domains, not original static storage or Native heap/ABI/runtime parity. Compiler new-expression branches are not a newly authored Native fallback.",
+    "native_failure_custody": "State2 sticks after actual initialization entry failure; existing provider owns declared cleanup, Main retains actual shared owners via established caller policy.",
+    "physical_lifetime": "Same shared root remains function-static. Its registration precedes dependent callbacks; permanent Group raw link/profile context stays alive through their suffix, including nonzero status. Root map destruction invokes no native link traversal/context; later Group root reference is dormant, with no Group C++ destructor to access it. Current entire Host/other owners/late-callback custody still requires runtime admission."
+  },
+  "strict_compilation": {
+    "compiler": "MSVC x86 19.51.36244.0",
+    "machine": "014C",
+    "flags": [
+      "/MD",
+      "/O2",
+      "/EHsc",
+      "/fp:strict",
+      "/std:c++17",
+      "/W4",
+      "/WX",
+      "/c",
+      "/Y-",
+      "/showIncludes"
+    ],
+    "actual_defines": [
+      "WIN32",
+      "_WINDOWS",
+      "NDEBUG",
+      "_CRT_SECURE_NO_WARNINGS=",
+      "CMAKE_INTDIR=\"Release\""
+    ],
+    "jobs": [
+      {
+        "unit": "storage",
+        "target": "bsp_core",
+        "version": "current",
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\src\\native_gui_group_storage.cpp",
+        "response": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\current_storage.rsp",
+          "bytes": 784,
+          "sha256": "5148bc21e53c31d796959bf619ecb285861dd86b9dda4cae147c98ad609c6e35"
+        },
+        "exit_code": 0
+      },
+      {
+        "unit": "storage",
+        "target": "bsp_core",
+        "version": "baseline",
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\baseline\\src\\native_gui_group_storage.cpp",
+        "response": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\baseline_storage.rsp",
+          "bytes": 960,
+          "sha256": "7b28c702725234b06564dc2f5cb79e7b3e0f8c357dceda2716b9805f54eec48c"
+        },
+        "exit_code": 0
+      },
+      {
+        "unit": "main",
+        "target": "bsp_game",
+        "version": "current",
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\src\\game_main.cpp",
+        "response": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\current_main.rsp",
+          "bytes": 761,
+          "sha256": "0ada785e95b439f39c7c462f9c74bfd866430f26f974ca01aa53a748eecd5d20"
+        },
+        "exit_code": 0
+      },
+      {
+        "unit": "main",
+        "target": "bsp_game",
+        "version": "baseline",
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\baseline\\src\\game_main.cpp",
+        "response": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\baseline_main.rsp",
+          "bytes": 942,
+          "sha256": "8fa79216c55f05bcc72f3efb8862d566fbd288b998f2f07d45426aaf7d14b865"
+        },
+        "exit_code": 0
+      }
+    ],
+    "pch_and_forced_include": "Root actual project config has PCH/forced include; neither is borrowed. Own Source headers, actual Root read-only Lua/DXSDK dirs, no substitute config/CMake.",
+    "actual_input_snapshots": [
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch17\\root_game_compile_settings.json",
+          "bytes": 1062,
+          "sha256": "37bc3806390cc0348ed7eccb3c65f891fdfb83f8da412d50607b4a1b5397188e"
+        },
+        "snapshot": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\root_input_snapshots\\root_game_compile_settings.json",
+          "bytes": 1062,
+          "sha256": "37bc3806390cc0348ed7eccb3c65f891fdfb83f8da412d50607b4a1b5397188e"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\bsp_core.vcxproj",
+          "bytes": 3407259,
+          "sha256": "57b758e752d848405cd718da41814d65020a7c9bcafbf237b557827c2f3075d4"
+        },
+        "snapshot": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\root_input_snapshots\\bsp_core.vcxproj",
+          "bytes": 3407259,
+          "sha256": "57b758e752d848405cd718da41814d65020a7c9bcafbf237b557827c2f3075d4"
+        }
+      },
+      {
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\bsp_game.vcxproj",
+          "bytes": 270124,
+          "sha256": "0a809f262a8ac415c9588aed34cbd170dd308e0199697ffc75110f8b222fc9ea"
+        },
+        "snapshot": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\root_input_snapshots\\bsp_game.vcxproj",
+          "bytes": 270124,
+          "sha256": "0a809f262a8ac415c9588aed34cbd170dd308e0199697ffc75110f8b222fc9ea"
+        }
+      }
+    ],
+    "resolved_unique_header_count": 529,
+    "consumed_root_source_or_pch_headers": false,
+    "all_current_code_bytes_decoded": 87221,
+    "changed_current_code_bytes": 7813,
+    "changed_current_instructions_including_padding": 2068,
+    "changed_code": {
+      "storage": [
+        {
+          "index": 42,
+          "section": ".text$mn",
+          "bytes": 85,
+          "instructions": 30,
+          "sha256": "cbda6f9c0569a591eda5343f652f07de65b70ecfd0fa08a4467f050eeaedcccb",
+          "functions": [
+            "?destroy_00ce0ae0@GameNativeGuiGroupPoolProcess@game@bsp@@CAXXZ"
+          ],
+          "relocation_count": 4
+        },
+        {
+          "index": 43,
+          "section": ".text$x",
+          "bytes": 29,
+          "instructions": 9,
+          "sha256": "9a5dc141b1c216b6acc9ef2e462c99300221fc5a2de03b963c6abbf76ceaa355",
+          "functions": [
+            "__ehhandler$?destroy_00ce0ae0@GameNativeGuiGroupPoolProcess@game@bsp@@CAXXZ"
+          ],
+          "relocation_count": 3
+        },
+        {
+          "index": 44,
+          "section": ".text$mn",
+          "bytes": 266,
+          "instructions": 71,
+          "sha256": "67baba9cfe271b87910fddbb300501768b3377d4d9ad28f5d4cc23005ed78509",
+          "functions": [
+            "?game_native_gui_group_pool_process@game@bsp@@YAAAVGameNativeGuiGroupPoolProcess@12@XZ"
+          ],
+          "relocation_count": 17
+        },
+        {
+          "index": 45,
+          "section": ".text$x",
+          "bytes": 61,
+          "instructions": 24,
+          "sha256": "04eb356aa70e93ab47a47ce7756f49dd046d4711cf4c3689acf85a0e0b16f693",
+          "functions": [
+            "__unwindfunclet$?game_native_gui_group_pool_process@game@bsp@@YAAAVGameNativeGuiGroupPoolProcess@12@XZ$0"
+          ],
+          "relocation_count": 6
+        },
+        {
+          "index": 46,
+          "section": ".text$mn",
+          "bytes": 234,
+          "instructions": 81,
+          "sha256": "11ad81c58c4df620d0912cdfcdd7ee843d916369ec7a07dbe88fae48d3b9ef4c",
+          "functions": [
+            "?initialize_once_00cd7440@GameNativeGuiGroupPoolProcess@game@bsp@@QAEHXZ"
+          ],
+          "relocation_count": 14
+        },
+        {
+          "index": 50,
+          "section": ".text$mn",
+          "bytes": 19,
+          "instructions": 9,
+          "sha256": "45e02ca04a9d2f5f91cfb72df088e41a9996e2dab494e97c1228df37d835d06a",
+          "functions": [
+            "?native_operation_interrupted@GameNativeGuiGroupPoolProcess@game@bsp@@QBE_NXZ"
+          ],
+          "relocation_count": 0
+        }
+      ],
+      "main": [
+        {
+          "index": 1887,
+          "section": ".text$mn",
+          "bytes": 6853,
+          "instructions": 1781,
+          "sha256": "f48103d6e90a80039387c3810b9ae3241fd10748268e1ce2359b22bd5a12cb91",
+          "functions": [
+            "_WinMain@16"
+          ],
+          "relocation_count": 317
+        },
+        {
+          "index": 1888,
+          "section": ".text$x",
+          "bytes": 266,
+          "instructions": 63,
+          "sha256": "d62affe377fc3e646628bb7f9570af908293758e6298641ae24b4a9aff190807",
+          "functions": [
+            "__unwindfunclet$_WinMain@16$17"
+          ],
+          "relocation_count": 23
+        }
+      ]
+    },
+    "linked": false,
+    "manifest_rule_reached": false
+  },
+  "emission_review": {
+    "getter": "266B/71ops: new78h at+74, actual physical domain getter/binding +96/+A3, full constructor stores then process publication+F7. Guard cleanup61B includes sized Source delete and Init_thread_abort. No C++ Group dtor registration.",
+    "removed_cpp_exit_helpers": [
+      {
+        "key": ".text$mn|??1GameNativeGuiGroupPoolProcess@game@bsp@@QAE@XZ",
+        "baseline_index": 24,
+        "bytes": 8,
+        "sha256": "7018d14760e8f70efac5b19627ad388d8f704b20efd6e33045f4735c0be12ae8",
+        "relocations": 1
+      },
+      {
+        "key": ".text$yd|??__Fprocess@?1??game_native_gui_group_pool_process@game@bsp@@YAAAVGameNativeGuiGroupPoolProcess@12@XZ@YAXXZ",
+        "baseline_index": 36,
+        "bytes": 10,
+        "sha256": "407a8d07b0ce2a513a1774146fbb84addd79c01ab2e6797853f9c2822b7762f7",
+        "relocations": 2
+      }
+    ],
+    "sole_current_atexit_relocation": [
+      {
+        "offset": 143,
+        "type": 20,
+        "symbol": "_atexit"
+      }
+    ],
+    "initialization": "234B/81ops: state2+7D, actual AC7410+84, atexit+8E; EDI carries any actual status to cache/return. Cached returned branch does not test result value.",
+    "callback": "85B/30ops plus29B handler: state3+2D, actual destroy+34, state4+39. No host lock around native body.",
+    "query": "19B/9ops: only compare state2/state3, boolean return, no calls/locks/status/native reads.",
+    "Main": "6853B/1781ops plus266B/63op unwind section: Group ptr store+DD3 before init+DD9; raw EAX/size38h log, particle getter+DF5. Group query+189A/+1980 in actual typed/unknown catch handlers.",
+    "Main_control_flow": {
+      "full_difference_hunks": 100,
+      "exact_symbolic_instruction_alignments": 1652,
+      "checked_aligned_branch_edges": 178,
+      "two_intentional_changed_edges": [
+        {
+          "baseline_site": 6229,
+          "current_site": 6277,
+          "baseline_target": 6342,
+          "current_target": 6288,
+          "same_aligned_target": false
+        },
+        {
+          "baseline_site": 6440,
+          "current_site": 6507,
+          "baseline_target": 6494,
+          "current_target": 6518,
+          "same_aligned_target": false
+        }
+      ],
+      "meaning": "Text noninterruption now reaches Group OR operand. Other matched edges retain aligned destinations using recorded frame-slot point correspondences. Full hunks also account for frame allocation/store scheduling/strings; no blanket byte-identity/dataflow claim for WinMain."
+    }
+  },
+  "exception_metadata": {
+    "storage_funcinfos": 4,
+    "Main_funcinfos": 67,
+    "safe_seh_associations_equal": true,
+    "all_xdata_fields_throw_metadata_and_padding_accounted": true,
+    "changed_storage": [
+      {
+        "symbol": "__ehfuncinfo$?initialize_once_00cd7440@GameNativeGuiGroupPoolProcess@game@bsp@@QAEHXZ",
+        "section_index": 61,
+        "offset": 8,
+        "raw_fields": [
+          429065506,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "max_state": 1,
+        "num_try_blocks": 0,
+        "flags": 1,
+        "unwind": [
+          {
+            "state": 0,
+            "previous": -1,
+            "action": {
+              "symbol": "__unwindfunclet$?initialize_once_00cd7440@GameNativeGuiGroupPoolProcess@game@bsp@@QAEHXZ$0",
+              "relocation_type": 6,
+              "raw_addend": 0,
+              "section_index": 47,
+              "offset": 0
+            }
+          }
+        ],
+        "try_blocks": [],
+        "unwind_target": {
+          "symbol": "__unwindtable$?initialize_once_00cd7440@GameNativeGuiGroupPoolProcess@game@bsp@@QAEHXZ",
+          "relocation_type": 6,
+          "raw_addend": 0,
+          "section_index": 61,
+          "offset": 0
+        },
+        "try_target": null
+      },
+      {
+        "symbol": "__ehfuncinfo$?game_native_gui_group_pool_process@game@bsp@@YAAAVGameNativeGuiGroupPoolProcess@12@XZ",
+        "section_index": 63,
+        "offset": 16,
+        "raw_fields": [
+          429065506,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "max_state": 2,
+        "num_try_blocks": 0,
+        "flags": 1,
+        "unwind": [
+          {
+            "state": 0,
+            "previous": -1,
+            "action": {
+              "symbol": "__unwindfunclet$?game_native_gui_group_pool_process@game@bsp@@YAAAVGameNativeGuiGroupPoolProcess@12@XZ$0",
+              "relocation_type": 6,
+              "raw_addend": 0,
+              "section_index": 45,
+              "offset": 0
+            }
+          },
+          {
+            "state": 1,
+            "previous": 0,
+            "action": {
+              "symbol": "__unwindfunclet$?game_native_gui_group_pool_process@game@bsp@@YAAAVGameNativeGuiGroupPoolProcess@12@XZ$1",
+              "relocation_type": 6,
+              "raw_addend": 0,
+              "section_index": 45,
+              "offset": 12
+            }
+          }
+        ],
+        "try_blocks": [],
+        "unwind_target": {
+          "symbol": "__unwindtable$?game_native_gui_group_pool_process@game@bsp@@YAAAVGameNativeGuiGroupPoolProcess@12@XZ",
+          "relocation_type": 6,
+          "raw_addend": 0,
+          "section_index": 63,
+          "offset": 0
+        },
+        "try_target": null
+      },
+      {
+        "symbol": "__ehfuncinfo$?destroy_00ce0ae0@GameNativeGuiGroupPoolProcess@game@bsp@@CAXXZ",
+        "section_index": 64,
+        "offset": 0,
+        "raw_fields": [
+          429065506,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          5
+        ],
+        "max_state": 0,
+        "num_try_blocks": 0,
+        "flags": 5,
+        "unwind": [],
+        "try_blocks": [],
+        "unwind_target": null,
+        "try_target": null
+      }
+    ],
+    "Main_info": {
+      "symbol": "__ehfuncinfo$_WinMain@16",
+      "max_state": 35,
+      "try_blocks": 8,
+      "flags": 1,
+      "complete_eh_section_bytes": 620,
+      "complete_eh_section_sha256": "c9b06980955a35a20a5cae7943085b5d96a5bcec7cbf33cf971be71ea352ed8d",
+      "relocations": 44
+    },
+    "symbolic_comparisons": {
+      "count": 71,
+      "equal": 70,
+      "intentional_source_allocation_guard_change": 1,
+      "details": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\symbolic_eh_comparisons.json",
+        "bytes": 20226,
+        "sha256": "020b37edf588958db9df7ba7451e7f1af672dfb56bf525518956c9730d407e1c"
+      }
+    },
+    "qualification": "Only getter adds Source pre-Native allocation/guard state. All other symbolic FuncInfo semantics match baseline; callback flags5/maxState0 retains noexcept, init maxState1 mutex unlock unchanged, Main maxState35/eight try blocks unchanged. No Native FH3/SEH/private-stack/fault equivalence inferred."
+  },
+  "unaffected_comparisons": {
+    "storage_equal_sections": 60,
+    "Main_equal_sections": 2366,
+    "method": "Exact payload bytes and symbolic relocation targets, including explicit compiler-generated namespace/lambda identity mapping only. Full lists in coff_audit.json.",
+    "preserved_storage_methods": [
+      "constructor",
+      "guarded pool accessor",
+      "allocation selector AC76D0",
+      "failed-slot selector AC73D0",
+      "existing initialization/accessor unwind actions"
+    ],
+    "compiler_lambda_identity_mapping": {
+      "bijection": {
+        "532b274ec7ec693e2ba947c6f40e1102": "532b274ec7ec693e2ba947c6f40e1102",
+        "6cbe8d4ec7bee05bafa352b684d8c6ef": "00225a61e30160e14f3000904f24da28",
+        "3e486cd31ac62da4f52a435779f46417": "34607b71b992859af6000786174271a0",
+        "4d5ec0550c6a574cff3e54d4d3a851e9": "3eab677b3a1fe7d6078862f4b2a0453f",
+        "a9bd3a59b3871b9d5d7628d164e8bc3b": "a9bd3a59b3871b9d5d7628d164e8bc3b",
+        "4595b5d501f63a453f7d9811651d1e47": "4595b5d501f63a453f7d9811651d1e47",
+        "04a9abf265c063a34a2a9e3de3887abf": "04a9abf265c063a34a2a9e3de3887abf",
+        "32598084c7a056f6f38da7d77fb5ce26": "32598084c7a056f6f38da7d77fb5ce26",
+        "3e4fc609f9b91e517cc5f751e1fcfcc4": "3e4fc609f9b91e517cc5f751e1fcfcc4",
+        "8a4f9c1de68c0ff1287e35b1c9074968": "8a4f9c1de68c0ff1287e35b1c9074968",
+        "a0f4b7f46110a3b52a109cbe5e483a1f": "a0f4b7f46110a3b52a109cbe5e483a1f",
+        "a6a1b7d7bf4748c274e1f8e35ef9c5c7": "a6a1b7d7bf4748c274e1f8e35ef9c5c7",
+        "b0b9ccbddd05134641fde4670c90290d": "b0b9ccbddd05134641fde4670c90290d",
+        "c6fdf25c2f251b575e66762aff0c8f1e": "c6fdf25c2f251b575e66762aff0c8f1e",
+        "08b351448d63fa136453c4cf833656f1": "08b351448d63fa136453c4cf833656f1",
+        "04f73e8e7ded209cc4d6df745f546b66": "5c1e42db93a5b8a0ca76ca34d43e16ef",
+        "e5581dff1e2c2733e0d056af1bd7da7d": "ff6c2e1adfeca1d7728d72dd1ef0c95a",
+        "4b40f64d4cb9b0f344cdc2e531b5c63f": "3d97b068b965063970317e1eb0af1a78",
+        "25aa7cd0ed8c782945016a141ec637b9": "d6a53c87da238c67e0ead5a035c4da82",
+        "fea9c10aeb6ded0c5f229128b2ea833c": "02a2629c2dcb40d7aa5eec5d3fd088c6",
+        "d3e0139b024bb2e0d0add4e75ee2c139": "b53c05a8c32c2263d60ef968ee438c82",
+        "95bd3d78f8c69f931a28d87d91864838": "1ad766d3dd8b9dc3dfc23db626188db8"
+      },
+      "unique_equal_code_and_rough_relocation_evidence": [
+        {
+          "baseline_index": 115,
+          "current_index": 115,
+          "code_sha256": "4bc6d5475ea16d64ce15223a20974a075aa0d7ccdfc9ac7e30e0dbd87f0ecbbb",
+          "bytes": 241,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 121,
+          "current_index": 121,
+          "code_sha256": "e814fe4d3effd38e2f30490b9dfd70a7a0836bdb9669a03f62c543aafbb32bed",
+          "bytes": 435,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 123,
+          "current_index": 123,
+          "code_sha256": "b77e83fcff0b02d2b622d731638905f2f6a107e908ef6456f13104a695c9262e",
+          "bytes": 460,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 125,
+          "current_index": 125,
+          "code_sha256": "65393579b6b3e47f95ea3f8e3433dbec7ed623df25656973bdaea4b92a57084b",
+          "bytes": 449,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 157,
+          "current_index": 157,
+          "code_sha256": "d4d283efb26c3efb0723e65545945de80634ed7f964fcf2b5abe6dab80986ccd",
+          "bytes": 97,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 351,
+          "current_index": 351,
+          "code_sha256": "2ee71756d8a28940275236ad1f58dda2dd44b7c8d209c71e4747a138301bbb77",
+          "bytes": 205,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 353,
+          "current_index": 353,
+          "code_sha256": "4144063c6ec4718061e08246c3368cd574d98efd9081919ebe6481fa0896e1b8",
+          "bytes": 234,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 365,
+          "current_index": 365,
+          "code_sha256": "fde1136b08650eba4b99e460a1baba54e7867c0725dbdad051ba3fb77b0ee63c",
+          "bytes": 198,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 367,
+          "current_index": 367,
+          "code_sha256": "497dd991efbf6210f3ef63cd134be29205d2c0435b2ca0d5306ac22068282345",
+          "bytes": 219,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 369,
+          "current_index": 369,
+          "code_sha256": "3c74e2295ddeb9adbf8036550667f6e64bff43aaaaaa2d0ba9dee35ac265bc36",
+          "bytes": 227,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 371,
+          "current_index": 371,
+          "code_sha256": "fcd13c833cc357a9dd0b052bea0fdc4002e8ad8953cdb07c9320378b476e1b84",
+          "bytes": 343,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 373,
+          "current_index": 373,
+          "code_sha256": "fffdaf589eabe1a81459da411899e7baafaeb6717327ec08d0780ec699b56388",
+          "bytes": 322,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 375,
+          "current_index": 375,
+          "code_sha256": "5bed584ddc46e99558f96f2df32831d2ea1fff367b79aadb99b053fb2d7dfa90",
+          "bytes": 279,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 377,
+          "current_index": 377,
+          "code_sha256": "6bd9bf14996f6291dae06dee38a5c8c1a2aa4d8d1d49a212b29860d90e0ec588",
+          "bytes": 298,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 379,
+          "current_index": 379,
+          "code_sha256": "f35c83be0931b0b20bef3c415ed59fa454800932168ecee2962193766ea76b2c",
+          "bytes": 252,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 381,
+          "current_index": 381,
+          "code_sha256": "d65d62767255b9091bb9eb1cf1b800105fac47a41af3ada15acb74f49b1fcae6",
+          "bytes": 300,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 383,
+          "current_index": 383,
+          "code_sha256": "496784d16acc04bfc014139fc05b0a32b41e5387c2328edada2263e04c579d1c",
+          "bytes": 242,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 385,
+          "current_index": 385,
+          "code_sha256": "4f4ec975562cd694a8ef452f61b145f17ae1cdbb87a9671bafbd7a351cc4f174",
+          "bytes": 287,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 387,
+          "current_index": 387,
+          "code_sha256": "b9c84291c8a90b28af436ff05d112b9a754f491ec155f26a0b7c9059489e1614",
+          "bytes": 325,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 597,
+          "current_index": 597,
+          "code_sha256": "21aec8ecac5e5a510a6a9080d3b51af7f54b1830cdb92a7a16cf3062d2009345",
+          "bytes": 245,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 613,
+          "current_index": 613,
+          "code_sha256": "6d072d11a5144359746b0e9d2eaf5a06531a0162b9f7d07a44dd01f51006e142",
+          "bytes": 5,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 633,
+          "current_index": 645,
+          "code_sha256": "5cb4184b1020c61a2fb4edea9ddb79faec3d559abe76735ee46b3c898832f177",
+          "bytes": 53,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 635,
+          "current_index": 637,
+          "code_sha256": "a67576e8d0fe9aa3d8b98c4466b62469ef87fc3e622eb13896e285b34dccc6bf",
+          "bytes": 49,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 641,
+          "current_index": 643,
+          "code_sha256": "99ac9f2ad73a367ded73a85987e1550922a67a871f42d536efa78aefbcdde53d",
+          "bytes": 81,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 643,
+          "current_index": 633,
+          "code_sha256": "674ecb04dbc735606f8c46454378125685f838e38f8aedaa45ceed5238ebecef",
+          "bytes": 46,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 645,
+          "current_index": 635,
+          "code_sha256": "920eae3056a800f377f30ea76a26fb39126314e60e9f4ac20320e6d319c9e84f",
+          "bytes": 67,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 1051,
+          "current_index": 1051,
+          "code_sha256": "4b0b68723c1853e5b94865638039ee26e6269332e7f8611c5f913259da020e72",
+          "bytes": 356,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 1053,
+          "current_index": 1055,
+          "code_sha256": "f0857d597bb14e4db230ed5c91d34efeaa1cd8d73e9156578658c9bf63f7255e",
+          "bytes": 36,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 1055,
+          "current_index": 1073,
+          "code_sha256": "f235881d57adf0064df6524b56b461b5b9dc777782ac39179eca294d29919d69",
+          "bytes": 279,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 1057,
+          "current_index": 1057,
+          "code_sha256": "b896e5effed19cbac428784bd7bc19c10ae0c22193b75caa755a860f888a0928",
+          "bytes": 75,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 1061,
+          "current_index": 1061,
+          "code_sha256": "aa9d7496cfae5d60840922f027f40acc99d8e49613312a85b598486cbbc8c36d",
+          "bytes": 9,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 1063,
+          "current_index": 1063,
+          "code_sha256": "7b299bfb44511f35a1d73c27bee77ab915821513e6708f8781682d9467fd1e32",
+          "bytes": 490,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 1064,
+          "current_index": 1064,
+          "code_sha256": "fb9509cf547991c0a7760726de1a72a3fb72d2af0ee0c74219cbbd95a63a7e79",
+          "bytes": 60,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 1065,
+          "current_index": 1067,
+          "code_sha256": "2ffa68eab4511b7b6e24a4fef28041a5a64f833421c0da524ff612f931a9bae8",
+          "bytes": 20,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 1067,
+          "current_index": 1069,
+          "code_sha256": "5be02a9ddb220a855d04250a0417de26a2a50e6de905841433e4ef7af1dc4405",
+          "bytes": 89,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 1069,
+          "current_index": 1065,
+          "code_sha256": "109ba96b808f1cce7fe9a8708da863ee7ef0a60b114dac76afb5e22a136f7471",
+          "bytes": 505,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 1070,
+          "current_index": 1066,
+          "code_sha256": "fdc8161dd6def89df97b3c26b4f6b087e1b22ea59223751d27ebf6fd38560921",
+          "bytes": 60,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 1071,
+          "current_index": 1071,
+          "code_sha256": "2ea1481231574baabb1bfc68de63bd53df73baf7245cf90f7e7140ce1f72c629",
+          "bytes": 71,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 1073,
+          "current_index": 1075,
+          "code_sha256": "f46cfaef97cf53ea87f9ffbcbb04a9f7d82e42bd5774abff0d779f25c2269859",
+          "bytes": 46,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 1077,
+          "current_index": 1077,
+          "code_sha256": "177f23a4fa816d6c7714a190cbed38262c6bbe7b92e2015699fd3955c9e5a11d",
+          "bytes": 50,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 1079,
+          "current_index": 1079,
+          "code_sha256": "d8ea444d9515afba8644848a3e774ad70e7d821a01efd8083615fefadefc2e1d",
+          "bytes": 39,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 1081,
+          "current_index": 1081,
+          "code_sha256": "6df52c585ec4784500170f5416a3212f629fd819112e2e135dbb687a55f4be92",
+          "bytes": 68,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 1083,
+          "current_index": 1083,
+          "code_sha256": "9c74aa5a143accf1d5fecdacad3230d6ce307c4238c97c6e59ce9afdca45ab8c",
+          "bytes": 86,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 1085,
+          "current_index": 1087,
+          "code_sha256": "26ef28fb4cd6dda69b958417a43cde8865ccb965a4f394997f3b1c2d91ca42d7",
+          "bytes": 48,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 1091,
+          "current_index": 1053,
+          "code_sha256": "c568bdd091ee567c528520a17fbc7fe192deff84a43c7af3062158567f643754",
+          "bytes": 726,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 1204,
+          "current_index": 1204,
+          "code_sha256": "26cc8e8197ed77dccb8d266c599401e573164224010f594104802743ab071ccb",
+          "bytes": 877,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 1510,
+          "current_index": 1510,
+          "code_sha256": "fd8052ec638090d71bb6fa4b1ad89c9b90efae85a394fa90b7cca3b8ea84b837",
+          "bytes": 335,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 1682,
+          "current_index": 1682,
+          "code_sha256": "4d5be04212c0af09a568fee2d928ff7d15e844c384de3cf3eb2432d12f77781f",
+          "bytes": 222,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 1758,
+          "current_index": 1758,
+          "code_sha256": "9d5ca615e232142b1db7b8b07b1fa1477e1154bd0eae8dd81d97db86cbf1609e",
+          "bytes": 2974,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 1760,
+          "current_index": 1760,
+          "code_sha256": "2d07907d6020b184d5035b21dbebde1fdd2d02403d23ddaa409dea32e96d8faa",
+          "bytes": 6606,
+          "pass": 0,
+          "uniqueness": "all code"
+        },
+        {
+          "baseline_index": 1075,
+          "current_index": 1059,
+          "code_sha256": "950a8dd8714bef0e8c012145b94dc05ad0568d6d7481abe4ff94c9b8239c4be3",
+          "bytes": 14,
+          "pass": 1,
+          "uniqueness": "remaining unmapped identities after proved bijection"
+        }
+      ],
+      "qualification": "Each compiler lambda GUID has an explicit consistent one-to-one mapping established by unique equal machine-code/relocation/signature matches; final comparisons use that bijection, never collapse distinct lambdas."
+    },
+    "no_lambdas_collapsed": true,
+    "factory_copy_scalar_type_shared_engine": "Source provider blobs/hashes unchanged; no authored changes in those bodies."
+  },
+  "owned_source_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\include\\bsp\\native_gui_group_storage.hpp",
+      "bytes": 3543,
+      "sha256": "8f57c8e86d31c72583fd692d9f34cbeccd615c8c274de849e0f36e0d8802159b",
+      "relative_path": "include/bsp/native_gui_group_storage.hpp",
+      "git_blob": "1b5faa0c0dc8bb6f85a81357063304bebe89a8fb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\src\\native_gui_group_storage.cpp",
+      "bytes": 2382,
+      "sha256": "1713d147e754aba3d0ba6cbcf7bd5faffe4a4644ccec082fc66faa534bf69e46",
+      "relative_path": "src/native_gui_group_storage.cpp",
+      "git_blob": "7d0fd3c6d9e0f40ad4bc91d9dcf20f46bb3a8678"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\src\\game_main.cpp",
+      "bytes": 81290,
+      "sha256": "761ca1dfc2e54c2daa129a25811b86a8bb3f4771b5a18a26498ce11a8d94dc7b",
+      "relative_path": "src/game_main.cpp",
+      "git_blob": "4371f58bb28daa984bccea95ed0147f923ac59ff"
+    }
+  ],
+  "source_preimage_pins": [
+    {
+      "path": "include/bsp/native_gui_group_storage.hpp",
+      "baseline_git_blob": "922b1596a57bb51fef5bd68d308b27937a0b8b6c",
+      "readiness_sha256": "3bd8555c54d685ce14ce23f9d0f23168fa49b33e948577f59fdcdc14f15b0f3b",
+      "current_sha256": "8f57c8e86d31c72583fd692d9f34cbeccd615c8c274de849e0f36e0d8802159b",
+      "owned_source_change": true
+    },
+    {
+      "path": "src/native_gui_group_storage.cpp",
+      "baseline_git_blob": "8e67b3168018e9973124c13996f037e96e676e7c",
+      "readiness_sha256": "4c4729f66671693189cadd2cc5e27310f6e09a9a86aee6d50b1c7570b4cd4ad2",
+      "current_sha256": "1713d147e754aba3d0ba6cbcf7bd5faffe4a4644ccec082fc66faa534bf69e46",
+      "owned_source_change": true
+    },
+    {
+      "path": "src/game_main.cpp",
+      "baseline_git_blob": "18909178937d4a3fbd4ddf9073819b959f3fa47a",
+      "readiness_sha256": "50034a37098bc7a1c738c541d5a97d0afb0cb4b1cf84b8e92102db92284df5c7",
+      "current_sha256": "761ca1dfc2e54c2daa129a25811b86a8bb3f4771b5a18a26498ce11a8d94dc7b",
+      "owned_source_change": true
+    }
+  ],
+  "actual_unchanged_provider_pins": [
+    {
+      "path": "config/target.json",
+      "baseline_git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "readiness_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "current_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\config\\target.json",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      }
+    },
+    {
+      "path": "include/bsp/native_material_pools.hpp",
+      "baseline_git_blob": "ab0dc45412b6892081f630d376d1fd9df035e527",
+      "readiness_sha256": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715",
+      "current_sha256": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\include\\bsp\\native_material_pools.hpp",
+        "bytes": 10219,
+        "sha256": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715"
+      }
+    },
+    {
+      "path": "src/native_material_pools.cpp",
+      "baseline_git_blob": "b488015a211952463ac5c1fb78e1f42a9aeca917",
+      "readiness_sha256": "52c0de304c861907c1799517e038e8383ca62829e12176eb1b48f406d163c95a",
+      "current_sha256": "52c0de304c861907c1799517e038e8383ca62829e12176eb1b48f406d163c95a",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\src\\native_material_pools.cpp",
+        "bytes": 24320,
+        "sha256": "52c0de304c861907c1799517e038e8383ca62829e12176eb1b48f406d163c95a"
+      }
+    },
+    {
+      "path": "include/bsp/allocator_list.hpp",
+      "baseline_git_blob": "e3cfca6ec4c44d5aa20ee8e6870a5c4f02cd784a",
+      "readiness_sha256": "5344cbd4fe4ea86a4206c24f08e2407eea3055f03947f677c46b3a635d4f1570",
+      "current_sha256": "5344cbd4fe4ea86a4206c24f08e2407eea3055f03947f677c46b3a635d4f1570",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\include\\bsp\\allocator_list.hpp",
+        "bytes": 2192,
+        "sha256": "5344cbd4fe4ea86a4206c24f08e2407eea3055f03947f677c46b3a635d4f1570"
+      }
+    },
+    {
+      "path": "src/allocator_list.cpp",
+      "baseline_git_blob": "185d612496c4d9deb3b8233e565b1bc82a6f0e70",
+      "readiness_sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732",
+      "current_sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\src\\allocator_list.cpp",
+        "bytes": 2682,
+        "sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732"
+      }
+    },
+    {
+      "path": "include/bsp/game_native_physical_pool.hpp",
+      "baseline_git_blob": "46f885365c86fc5078b7e4ae12bdbc285352a729",
+      "readiness_sha256": "eb9dd2f1b6cfdcb3950bf7912228f346e513526fd0f7c3d4a2e82dfbc86cef70",
+      "current_sha256": "eb9dd2f1b6cfdcb3950bf7912228f346e513526fd0f7c3d4a2e82dfbc86cef70",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\include\\bsp\\game_native_physical_pool.hpp",
+        "bytes": 6954,
+        "sha256": "eb9dd2f1b6cfdcb3950bf7912228f346e513526fd0f7c3d4a2e82dfbc86cef70"
+      }
+    },
+    {
+      "path": "src/game_native_physical_pool.cpp",
+      "baseline_git_blob": "8cc7ecafb64180d38c2eb434c51ba91d82e5e9ba",
+      "readiness_sha256": "2cacaa43521df1c3698e633ac5d919f2a34d21f7cb3630589cad07aa4b9f9c90",
+      "current_sha256": "2cacaa43521df1c3698e633ac5d919f2a34d21f7cb3630589cad07aa4b9f9c90",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\src\\game_native_physical_pool.cpp",
+        "bytes": 6623,
+        "sha256": "2cacaa43521df1c3698e633ac5d919f2a34d21f7cb3630589cad07aa4b9f9c90"
+      }
+    },
+    {
+      "path": "include/bsp/game_native_gui_text_process.hpp",
+      "baseline_git_blob": "2f85c4faead42a7a295d2f4ba5d6345334759244",
+      "readiness_sha256": "215be8dcc255664c7f50a75ea9287012d1b8090ba860f111d341983819419e47",
+      "current_sha256": "215be8dcc255664c7f50a75ea9287012d1b8090ba860f111d341983819419e47",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\include\\bsp\\game_native_gui_text_process.hpp",
+        "bytes": 5524,
+        "sha256": "215be8dcc255664c7f50a75ea9287012d1b8090ba860f111d341983819419e47"
+      }
+    },
+    {
+      "path": "src/game_native_gui_text_process.cpp",
+      "baseline_git_blob": "66234fe46a716dab05525201c260eea39da426f4",
+      "readiness_sha256": "84fe56b3b40589a831dfbdf57d289d9f85dc91ef41bb5a239b81e43d462c8f2f",
+      "current_sha256": "84fe56b3b40589a831dfbdf57d289d9f85dc91ef41bb5a239b81e43d462c8f2f",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\src\\game_native_gui_text_process.cpp",
+        "bytes": 8246,
+        "sha256": "84fe56b3b40589a831dfbdf57d289d9f85dc91ef41bb5a239b81e43d462c8f2f"
+      }
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "baseline_git_blob": "867d8b7032fc7531bfaa4f2c43c649988b8e0710",
+      "readiness_sha256": "67a5164b1b20061f0f1353783c12cfcb92cc7392b37e04ec87371577425f7f58",
+      "current_sha256": "67a5164b1b20061f0f1353783c12cfcb92cc7392b37e04ec87371577425f7f58",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\include\\bsp\\game_hosts.hpp",
+        "bytes": 47507,
+        "sha256": "67a5164b1b20061f0f1353783c12cfcb92cc7392b37e04ec87371577425f7f58"
+      }
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "baseline_git_blob": "d138983e92e5f93339e529655990f924f1c06be8",
+      "readiness_sha256": "6915e364d7c2eb73ebba01d7d1c521ca7fdc94ab78ad7f0302288fc281cad9f4",
+      "current_sha256": "6915e364d7c2eb73ebba01d7d1c521ca7fdc94ab78ad7f0302288fc281cad9f4",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\src\\game_hosts.cpp",
+        "bytes": 185132,
+        "sha256": "6915e364d7c2eb73ebba01d7d1c521ca7fdc94ab78ad7f0302288fc281cad9f4"
+      }
+    },
+    {
+      "path": "src/game_native_gui_render_application.cpp",
+      "baseline_git_blob": "eef54bf0e2ef8a5a457756d864b8cb50222d1539",
+      "readiness_sha256": "a5b6be17c269f9486a210716143c17b2375c62e4401139d4d7adf66a39ca00cd",
+      "current_sha256": "a5b6be17c269f9486a210716143c17b2375c62e4401139d4d7adf66a39ca00cd",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\src\\game_native_gui_render_application.cpp",
+        "bytes": 59357,
+        "sha256": "a5b6be17c269f9486a210716143c17b2375c62e4401139d4d7adf66a39ca00cd"
+      }
+    },
+    {
+      "path": "include/bsp/native_gui_group_factory.hpp",
+      "baseline_git_blob": "1bc8d7ca5bf9becac0a53aaf242f963dddb41681",
+      "readiness_sha256": "824bb49ed0a651ef8df2fdc169fa56b99601ed084b253f7b763e0b8fa1b33f43",
+      "current_sha256": "824bb49ed0a651ef8df2fdc169fa56b99601ed084b253f7b763e0b8fa1b33f43",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\include\\bsp\\native_gui_group_factory.hpp",
+        "bytes": 4054,
+        "sha256": "824bb49ed0a651ef8df2fdc169fa56b99601ed084b253f7b763e0b8fa1b33f43"
+      }
+    },
+    {
+      "path": "src/native_gui_group_factory.cpp",
+      "baseline_git_blob": "73777a41968ce1e4ffa3c0560943d33ca162074e",
+      "readiness_sha256": "16f91c2a6607f7593910be66cc616eefbd32945f7dec910055c3665dbabdb61c",
+      "current_sha256": "16f91c2a6607f7593910be66cc616eefbd32945f7dec910055c3665dbabdb61c",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\src\\native_gui_group_factory.cpp",
+        "bytes": 2385,
+        "sha256": "16f91c2a6607f7593910be66cc616eefbd32945f7dec910055c3665dbabdb61c"
+      }
+    },
+    {
+      "path": "scripts/run.ps1",
+      "baseline_git_blob": "c7c4d511fad9086e0f345be08650c6f1f6404704",
+      "readiness_sha256": "7f940db8939c31dc179908273f7fc836f4c7c6edd28d4dee2552e0feb817be71",
+      "current_sha256": "7f940db8939c31dc179908273f7fc836f4c7c6edd28d4dee2552e0feb817be71",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\scripts\\run.ps1",
+        "bytes": 3500,
+        "sha256": "7f940db8939c31dc179908273f7fc836f4c7c6edd28d4dee2552e0feb817be71"
+      }
+    },
+    {
+      "path": "tools/prepare_xlive_runtime.py",
+      "baseline_git_blob": "810508c36ef10c60cb87bf5545edf2af4735a42e",
+      "readiness_sha256": "69fa8b31b72b088eb2dcdf67e9c0491a7400a00f4943773337081b065340c86d",
+      "current_sha256": "69fa8b31b72b088eb2dcdf67e9c0491a7400a00f4943773337081b065340c86d",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\tools\\prepare_xlive_runtime.py",
+        "bytes": 5265,
+        "sha256": "69fa8b31b72b088eb2dcdf67e9c0491a7400a00f4943773337081b065340c86d"
+      }
+    },
+    {
+      "path": "docs/NATIVE_GUI_GROUP_POOL_CC10.md",
+      "baseline_git_blob": "ad760c890f8b8054d4cbd62c848881b8d363edea",
+      "readiness_sha256": "149857c6ec5e071376e07749b8e60e22a03804dd3c4ccafe478cf4ee918a4036",
+      "current_sha256": "149857c6ec5e071376e07749b8e60e22a03804dd3c4ccafe478cf4ee918a4036",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\docs\\NATIVE_GUI_GROUP_POOL_CC10.md",
+        "bytes": 7854,
+        "sha256": "149857c6ec5e071376e07749b8e60e22a03804dd3c4ccafe478cf4ee918a4036"
+      }
+    },
+    {
+      "path": "reports/native_gui_group_pool_cc10.json",
+      "baseline_git_blob": "21eafc12c357820e56230feb99c10cb8a6aad5b6",
+      "readiness_sha256": "e643af4945c51172a77ea39d95e25a28a864f3d151467f72a089fbfaf539694f",
+      "current_sha256": "e643af4945c51172a77ea39d95e25a28a864f3d151467f72a089fbfaf539694f",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\reports\\native_gui_group_pool_cc10.json",
+        "bytes": 28741,
+        "sha256": "e643af4945c51172a77ea39d95e25a28a864f3d151467f72a089fbfaf539694f"
+      }
+    },
+    {
+      "path": "docs/GAME_NATIVE_PHYSICAL_POOL_BI.md",
+      "baseline_git_blob": "b813793a51b747debcc3c942d7d7dc04a9ae990f",
+      "readiness_sha256": "d6e2746f201aa049d59a2b62d87c0299aeaf2b4a6c5062457b53342cf0dab531",
+      "current_sha256": "d6e2746f201aa049d59a2b62d87c0299aeaf2b4a6c5062457b53342cf0dab531",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\docs\\GAME_NATIVE_PHYSICAL_POOL_BI.md",
+        "bytes": 3929,
+        "sha256": "d6e2746f201aa049d59a2b62d87c0299aeaf2b4a6c5062457b53342cf0dab531"
+      }
+    },
+    {
+      "path": "reports/game_native_physical_pool_bi.json",
+      "baseline_git_blob": "7003455daa672eceac9a7fe2e7cd8b1e7df09697",
+      "readiness_sha256": "7e8d6908a91a380f50c383c7d1c355425869705355cfbe071ce316bf984ebaaa",
+      "current_sha256": "7e8d6908a91a380f50c383c7d1c355425869705355cfbe071ce316bf984ebaaa",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\reports\\game_native_physical_pool_bi.json",
+        "bytes": 3585,
+        "sha256": "7e8d6908a91a380f50c383c7d1c355425869705355cfbe071ce316bf984ebaaa"
+      }
+    },
+    {
+      "path": "docs/CODEX_GUI_RAW_DEFAULT_SOURCE_EQUAL_RUNTIME.md",
+      "baseline_git_blob": "9322522a0c94ceb908471c8cf0044aeeaf796489",
+      "readiness_sha256": "f28f45a457157a400869422b3b4117d770f5584d442ae1347c93bccb8c5a1528",
+      "current_sha256": "f28f45a457157a400869422b3b4117d770f5584d442ae1347c93bccb8c5a1528",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\docs\\CODEX_GUI_RAW_DEFAULT_SOURCE_EQUAL_RUNTIME.md",
+        "bytes": 2656,
+        "sha256": "f28f45a457157a400869422b3b4117d770f5584d442ae1347c93bccb8c5a1528"
+      }
+    },
+    {
+      "path": "docs/CODEX_GUI_RAW_EMPTY_UNCHANGED_RUNTIME_PREPARATION.md",
+      "baseline_git_blob": "a64a8e17676f60cac8896087f5b7e9513f84cb81",
+      "readiness_sha256": "40f03c99fd3eef4975341cb09e7e270eedab4e96989bc56b4340be90909836a9",
+      "current_sha256": "40f03c99fd3eef4975341cb09e7e270eedab4e96989bc56b4340be90909836a9",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\docs\\CODEX_GUI_RAW_EMPTY_UNCHANGED_RUNTIME_PREPARATION.md",
+        "bytes": 6064,
+        "sha256": "40f03c99fd3eef4975341cb09e7e270eedab4e96989bc56b4340be90909836a9"
+      }
+    },
+    {
+      "path": "include/bsp/game_native_locale_pool.hpp",
+      "baseline_git_blob": "e4536a56a7ab139d2b43b1b28222975047154d68",
+      "readiness_sha256": "969db5c9f80ab1e4b6e5098f43ef1515d0e726fe2aa9e119dfb777cccc989911",
+      "current_sha256": "969db5c9f80ab1e4b6e5098f43ef1515d0e726fe2aa9e119dfb777cccc989911",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\include\\bsp\\game_native_locale_pool.hpp",
+        "bytes": 1919,
+        "sha256": "969db5c9f80ab1e4b6e5098f43ef1515d0e726fe2aa9e119dfb777cccc989911"
+      }
+    },
+    {
+      "path": "src/game_native_locale_pool.cpp",
+      "baseline_git_blob": "07dadaa2f2bac2f9ca79d380d5d6f793e6c73288",
+      "readiness_sha256": "ef01a5c56a1c61617274c5bcc6021d6785947305e333f4048094f5946aaf73de",
+      "current_sha256": "ef01a5c56a1c61617274c5bcc6021d6785947305e333f4048094f5946aaf73de",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\src\\game_native_locale_pool.cpp",
+        "bytes": 5830,
+        "sha256": "ef01a5c56a1c61617274c5bcc6021d6785947305e333f4048094f5946aaf73de"
+      }
+    },
+    {
+      "path": "include/bsp/game_native_gui_icon_process.hpp",
+      "baseline_git_blob": "edad517eacdc50d3effee7655d58e26545a8bb45",
+      "readiness_sha256": "be7972224e23dd7f4871ae5359c585227c5c31f4028b99d9c3e2e4d4e8b77ae1",
+      "current_sha256": "be7972224e23dd7f4871ae5359c585227c5c31f4028b99d9c3e2e4d4e8b77ae1",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\include\\bsp\\game_native_gui_icon_process.hpp",
+        "bytes": 3257,
+        "sha256": "be7972224e23dd7f4871ae5359c585227c5c31f4028b99d9c3e2e4d4e8b77ae1"
+      }
+    },
+    {
+      "path": "src/game_native_gui_icon_process.cpp",
+      "baseline_git_blob": "de4e8cb628c4dd2f16dfdcbd2fb9c7fc2ab3eb35",
+      "readiness_sha256": "cc1d80e034d36fa28899a91473a863807b3c1be29f8c0825d87d35266665316e",
+      "current_sha256": "cc1d80e034d36fa28899a91473a863807b3c1be29f8c0825d87d35266665316e",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\src\\game_native_gui_icon_process.cpp",
+        "bytes": 3064,
+        "sha256": "cc1d80e034d36fa28899a91473a863807b3c1be29f8c0825d87d35266665316e"
+      }
+    },
+    {
+      "path": "src/game_native_gui_text_state.cpp",
+      "baseline_git_blob": "4aeb220bed382de390912a2320ad1ca4adb4bf65",
+      "readiness_sha256": "ff10c4e60079ea23117223b10dc9b64bb61715930fa2c1d1b7fff0b81396dd5f",
+      "current_sha256": "ff10c4e60079ea23117223b10dc9b64bb61715930fa2c1d1b7fff0b81396dd5f",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\src\\game_native_gui_text_state.cpp",
+        "bytes": 1821,
+        "sha256": "ff10c4e60079ea23117223b10dc9b64bb61715930fa2c1d1b7fff0b81396dd5f"
+      }
+    },
+    {
+      "path": "src/game_native_vfs_application.cpp",
+      "baseline_git_blob": "32a441a593a381b649ccd89b71a6e4277e91401d",
+      "readiness_sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+      "current_sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\src\\game_native_vfs_application.cpp",
+        "bytes": 8470,
+        "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148"
+      }
+    },
+    {
+      "path": "include/bsp/native_physical_provider_pool_lifecycle.hpp",
+      "baseline_git_blob": "1aa0e2d76ca7bd559e44cb28ba58fcb1445dfa57",
+      "readiness_sha256": "04175010f383b41ebaa628a2044af2cb408ed85636cb049bd7913c4f50c57e53",
+      "current_sha256": "04175010f383b41ebaa628a2044af2cb408ed85636cb049bd7913c4f50c57e53",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\include\\bsp\\native_physical_provider_pool_lifecycle.hpp",
+        "bytes": 2892,
+        "sha256": "04175010f383b41ebaa628a2044af2cb408ed85636cb049bd7913c4f50c57e53"
+      }
+    },
+    {
+      "path": "src/native_physical_provider_pool_lifecycle.cpp",
+      "baseline_git_blob": "9dfc0e48b8c373f5f5062c8bca3865aa0ce2ef5b",
+      "readiness_sha256": "6da8617044b9bedb8762aa325f9041e38ded869aaf455f21c95e2a14b6aba9d7",
+      "current_sha256": "6da8617044b9bedb8762aa325f9041e38ded869aaf455f21c95e2a14b6aba9d7",
+      "owned_source_change": false,
+      "current_file_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\src\\native_physical_provider_pool_lifecycle.cpp",
+        "bytes": 6639,
+        "sha256": "6da8617044b9bedb8762aa325f9041e38ded869aaf455f21c95e2a14b6aba9d7"
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\prepare.py",
+      "bytes": 5965,
+      "sha256": "e012c3a48133e8391d1af4f1a82df11f72da59a1fdf48da2b6c820bb9d7065f1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\compile_inputs.json",
+      "bytes": 23164,
+      "sha256": "e491f8477681f53013e2c4c8a6cfa6d3336f19cb6970e8b24a65b9503ef883ed"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\actual_project_settings.json",
+      "bytes": 5185,
+      "sha256": "aafb456b89325227cd66fcfc4dc881cf5baf4c62e2ef89747fcb23adf7ed572d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\compile.cmd",
+      "bytes": 2815,
+      "sha256": "e739f6dae1cbb3cf24b463e54ed85bed3da8809a24cf8b75b490ed6cde9fdf8d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\audit_coff.py",
+      "bytes": 10563,
+      "sha256": "a0e0e7805bc29e188f8c7c574cdf35a79ce0a7bbee7a6c8b95b98a62f3e38d07"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\coff_audit.json",
+      "bytes": 19708706,
+      "sha256": "fb4d603d6272b1990a69179f8f03fb772769a908b5c45202d34df430cce74643"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\audit_eh.py",
+      "bytes": 9608,
+      "sha256": "4c355d11d42f0c3428b1aeb62252954d42fd8ef6ae918d2d240ba71872b05df5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\eh_audit.json",
+      "bytes": 624949,
+      "sha256": "8fa64acb28e236978cca9a2f8d4f6666318ca5a593dd77a0eba1bca3cc63d1ae"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\compile_header_pins.json",
+      "bytes": 544527,
+      "sha256": "cbd7ddbef1de98c79f8a524a64e418593ae54ec07f0370d2cfde359cb6a90a50"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\audit_changed_flow.py",
+      "bytes": 5299,
+      "sha256": "6188e2a6558341b463a40c8cfa90f36918a777e3f899fc26de67cb1de2210292"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\main_flow_audit.json",
+      "bytes": 113177,
+      "sha256": "f2e2edf0824036093e7427d4626f8a12c14037e70152e21069f1c54faa82b576"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\main_flow_diff.txt",
+      "bytes": 13538,
+      "sha256": "579f062fd5ecbfe134f8d9099612363eb13a22e8de34f7c2c41f2f77f0b05c98"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\main_unwind_flow_diff.txt",
+      "bytes": 940,
+      "sha256": "9aaa5532e61dad86a679c62c60cbef4c899bb20b9d1528190a8b1be993bad04c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\project_input_snapshots.json",
+      "bytes": 1797,
+      "sha256": "340cbde06bef1357a1110e38953657cb82bf9885328904d75ea50fb6c4ddd539"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\symbolic_eh_comparisons.json",
+      "bytes": 20226,
+      "sha256": "020b37edf588958db9df7ba7451e7f1af672dfb56bf525518956c9730d407e1c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\write_report.py",
+      "bytes": 15494,
+      "sha256": "a045e76a6ad3e6419695435af21f4593c598fef773296fd97b346ea842032e7e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\current_storage.rsp",
+      "bytes": 784,
+      "sha256": "5148bc21e53c31d796959bf619ecb285861dd86b9dda4cae147c98ad609c6e35"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\current_storage.obj",
+      "bytes": 19133,
+      "sha256": "c748fe0f39943ab2f791a230c7e52ad6b6bdbf74d46e61c4f7557657a6861535"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\current_storage_compile.txt",
+      "bytes": 36968,
+      "sha256": "d8dd9363caced64b536957dc93df76ce0bc87c5c0ebf6047cd85eee09d3af517"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\current_storage_dumpbin.txt",
+      "bytes": 141500,
+      "sha256": "6bc49ae3cdf5d9784fb0d0b173252c1e64e05837040643c9380b111bd9588bfd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\current_storage_decoded.txt",
+      "bytes": 17509,
+      "sha256": "17970dff3edd76271c06f9159d360c7cd61144dddc0cd5d8e5021b99a409bafc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\current_storage_changed_decoded.txt",
+      "bytes": 6554,
+      "sha256": "2d6fe3887ea9f280e30fbb69657aeea8a436d2ec2c4985da5b615dda09d74bde"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\baseline_storage.rsp",
+      "bytes": 960,
+      "sha256": "7b28c702725234b06564dc2f5cb79e7b3e0f8c357dceda2716b9805f54eec48c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\baseline_storage.obj",
+      "bytes": 19371,
+      "sha256": "139a19bc51bf7a1d8ce90c1120bc90acf8ae40acb33db8dbb5f1ccd20e8aa0d5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\baseline_storage_compile.txt",
+      "bytes": 35913,
+      "sha256": "7863565eef0dbfb891d1439b6e15a61f8af4775172531bbb8281ce169f051364"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\baseline_storage_dumpbin.txt",
+      "bytes": 148619,
+      "sha256": "6e834f46ed92de5d9eddde9ef2a1b7c87bd175d5a8a678523236519fa5181baf"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\baseline_storage_decoded.txt",
+      "bytes": 16831,
+      "sha256": "c4cc013f70ca5d3eb55b0bf4d19e33b6e6d656f8ed93d2924d1f8c9a7d0a200f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\baseline_storage_changed_decoded.txt",
+      "bytes": 5876,
+      "sha256": "ad67eba90289491b9a8a7abcd6a975a01fa7103f58119673cb21f895ed5961c1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\current_main.rsp",
+      "bytes": 761,
+      "sha256": "0ada785e95b439f39c7c462f9c74bfd866430f26f974ca01aa53a748eecd5d20"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\current_main.obj",
+      "bytes": 596793,
+      "sha256": "9c751311be8f448fe67897812d7937657d4d94522cb22870b592a1140d6500a4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\current_main_compile.txt",
+      "bytes": 71303,
+      "sha256": "2dc459bdb4118906e7ffa64d3d6dafddd5b183189e492dc55abb29a307d9ff3d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\current_main_dumpbin.txt",
+      "bytes": 4588335,
+      "sha256": "2c38fe80e5821e47c5b9d6d8e653c89f79dfa98422daaf1ff65699042f56e0c4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\current_main_decoded.txt",
+      "bytes": 803418,
+      "sha256": "98f63a1380c0f7f1ba08da7f8fe56a8704261d68f6e82bfdf9b7d83cc38e506e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\current_main_changed_decoded.txt",
+      "bytes": 50953,
+      "sha256": "8489283b1513ec1399e6eb04a9d39fbde70bddcaff40c4965eebfb1f7ce82aca"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\baseline_main.rsp",
+      "bytes": 942,
+      "sha256": "8fa79216c55f05bcc72f3efb8862d566fbd288b998f2f07d45426aaf7d14b865"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\baseline_main.obj",
+      "bytes": 596090,
+      "sha256": "d3e9d77a606ac21c1fd0cb36b4e31417fafea002485905a9f5c76edbc414af5b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\baseline_main_compile.txt",
+      "bytes": 71162,
+      "sha256": "023a148badfe7bae7bd4e6d01c3afc5a6096cd953364303565a060d645e343e2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\baseline_main_dumpbin.txt",
+      "bytes": 4584471,
+      "sha256": "440a2555fade838167144ec1290394b98a5f355f6a639be92b8de1c108474db2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\baseline_main_decoded.txt",
+      "bytes": 802746,
+      "sha256": "35ba3e1a5efb08469d7b7636891959251db0e1437eb4a8490ec2b5bd4a413068"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\baseline_main_changed_decoded.txt",
+      "bytes": 50281,
+      "sha256": "8cf0611c7d82c1115aa6283add9442cc011b92dd966722e242faa76f41163521"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\root_input_snapshots\\root_game_compile_settings.json",
+      "bytes": 1062,
+      "sha256": "37bc3806390cc0348ed7eccb3c65f891fdfb83f8da412d50607b4a1b5397188e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\root_input_snapshots\\bsp_core.vcxproj",
+      "bytes": 3407259,
+      "sha256": "57b758e752d848405cd718da41814d65020a7c9bcafbf237b557827c2f3075d4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\root_input_snapshots\\bsp_game.vcxproj",
+      "bytes": 270124,
+      "sha256": "0a809f262a8ac415c9588aed34cbd170dd308e0199697ffc75110f8b222fc9ea"
+    }
+  ],
+  "admission": {
+    "Main_integration_or_activation_authorized_by_this_packet": false,
+    "required": [
+      "Independent exact-candidate review.",
+      "Common build/link and exact Source/current PE admission.",
+      "Current Host/cohort proof of actual zero/nonzero status/constructor boundary/sticky query/catches/retirement/callback suffix and all real payload owner custody."
+    ],
+    "runtime": "Root and agent/cc16-progress own current authoritative PID/session/cohort window; NoForceStop, re-poll actual handle on timeout, no timeout restart. No absent lease implies stopped processes. User permits required gameplay; this packet performs none.",
+    "historical_cohorts": "Sourceequal-dc2/font-main-d8/empty-d58 remain frozen; no rerun, mutation or inherited result.",
+    "payloads": "Pool teardown frees slabs without destroying successful payloads; actual UI Group graph must retire beforehand. Existing ModelGroup010902F4 is not that graph."
+  },
+  "not_performed": [
+    "Ghidra mutation or new live batch",
+    "CMake/configuration/ledger/shared metadata edits",
+    "tests/new tests/failure-injection framework",
+    "link/common build",
+    "probe/Original/game/target execution",
+    "runtime process query/control/launch",
+    "old frozen artifact/cohort mutation"
+  ],
+  "credit": {
+    "new_native_bodies": 0,
+    "vendor": 0,
+    "duplicate_bodies": 0,
+    "runtime": 0,
+    "activation": 0
+  }
+}

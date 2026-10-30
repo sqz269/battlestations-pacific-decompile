@@ -12,18 +12,17 @@ void* construct_native_gui_group_copy_00ac6fa0(void* destination,
     return destination;
 }
 
-void* create_native_gui_group_00aa12f0(const void* source,
-    const volatile std::uint32_t& one, NativeGuiWidgetCopyContext& context,
-    NativeGuiWidgetCopyAcquired& acquired) {
+void* create_native_gui_group_00aa12f0(NativeGuiGroupFactoryInputs inputs) {
     // Source is captured before AC76D0; no source payload read precedes it.
-    const void* const captured_source = source;
+    const void* const captured_source = inputs.captured_source_;
     void* const slot = allocate_native_gui_group_slot_00ac76d0();
     if (!slot) return nullptr;
     try {
         if (captured_source)
             return construct_native_gui_group_copy_00ac6fa0(
-                slot, captured_source, context, acquired);
-        return construct_native_gui_group_default_00ac6f50(slot, one);
+                slot, captured_source, inputs.copy_.context, inputs.copy_.acquired);
+        return construct_native_gui_group_default_00ac6f50(
+            slot, inputs.default_.actual_one_00d7a24c);
     } catch (...) {
         // Both native unwind states return the captured slot. They do not
         // erase the caller's model-clone diagnostics or destroy the payload.
@@ -31,6 +30,15 @@ void* create_native_gui_group_00aa12f0(const void* source,
         catch (...) { std::terminate(); }
         throw;
     }
+}
+
+void* create_native_gui_group_00aa12f0(const void* source,
+    const volatile std::uint32_t& one, NativeGuiWidgetCopyContext& context,
+    NativeGuiWidgetCopyAcquired& acquired) {
+    if (source)
+        return create_native_gui_group_00aa12f0(NativeGuiGroupCopyInputs{
+            *static_cast<const unsigned char*>(source), context, acquired});
+    return create_native_gui_group_00aa12f0(NativeGuiGroupDefaultInputs{one});
 }
 
 void* delete_native_gui_group_00ac73e0(void* group,

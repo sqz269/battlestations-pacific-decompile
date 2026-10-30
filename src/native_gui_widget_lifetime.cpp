@@ -9,6 +9,8 @@
 #include <cstdlib>
 #include <exception>
 #include <stdexcept>
+#include <new>
+#include <cstring>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native GUI widget lifetime requires MSVC Win32.
@@ -50,9 +52,43 @@ void release_node_slot(void* owner, Word offset, NativeGuiWidgetLifetimeContext&
         word(owner, offset) = 0;
     }
 }
-void finish_timed_backing(void* header) {
+class CrtTimedStorage final : public NativeGuiTimedStorageCalls {
+public:
+    void* allocate_timed_pointer_slots_00bf681b(void*, Word bytes) override {
+        return singleton_lifetime_allocate({SingletonAllocationKind::pointer_slots, bytes, bytes});
+    }
+    void free_timed_pointer_slots_00bf65ac(void*, void* backing) override {
+        singleton_lifetime_free(backing);
+    }
+};
+void reserve_timed(void* header, Word requested, NativeGuiTimedStorageCalls& calls) {
+    if (static_cast<std::int32_t>(requested) < 1) requested = 1;
+    if (signed_word(header, 8) >= static_cast<std::int32_t>(requested)) return;
+    const Word bytes = requested * 4u;
+    void* const replacement = calls.allocate_timed_pointer_slots_00bf681b(header, bytes);
+    void* destination = replacement;
+    for (Word index = 0; static_cast<std::int32_t>(index) < signed_word(header, 4); ++index) {
+        if (destination) word(destination) = word(pointer(header), index * 4u);
+        destination = at(destination, 4);
+    }
+    calls.free_timed_pointer_slots_00bf65ac(header, pointer(header));
+    word(header) = reinterpret_cast<Word>(replacement);
+    word(header, 8) = requested;
+}
+void resize_timed(void* header, std::int32_t requested, NativeGuiTimedStorageCalls& calls) {
+    if (requested > signed_word(header, 8)) reserve_timed(header, static_cast<Word>(requested), calls);
+    Word index = word(header, 4);
+    while (static_cast<std::int32_t>(index) < requested) {
+        const Word destination = word(header) + index * 4u;
+        if (destination) word(reinterpret_cast<void*>(destination)) = 0;
+        ++index;
+    }
+    while (requested < signed_word(header, 4)) word(header, 4) = word(header, 4) - 1u;
+    word(header, 4) = static_cast<Word>(requested);
+}
+void finish_timed_backing(void* header, NativeGuiTimedStorageCalls& calls) {
     if (signed_word(header, 8) < 0)
-        reserve_native_gui_timed_pointers_00aa6f30(header, 1);
+        reserve_native_gui_timed_pointers_00aa6f30(header, 1, calls);
     if (signed_word(header, 4) < 0) {
         // AA9906..AA991F tests the SIGN of the wrapping byte offset after
         // increment. This inline branch differs from AA77B0's element-index
@@ -67,25 +103,70 @@ void finish_timed_backing(void* header) {
     while (signed_word(header, 4) > 0) word(header, 4) = word(header, 4) - 1u;
     void* const captured_data = pointer(header);
     word(header, 4) = 0;
-    singleton_lifetime_free(captured_data);
+    calls.free_timed_pointer_slots_00bf65ac(header, captured_data);
 }
-void unwind_base(void* owner, int state) noexcept {
+void unwind_base(void* owner, int state, NativeGuiTimedStorageCalls& calls) noexcept {
     try {
-        if (state >= 2) destroy_native_gui_timed_pointers_00aa7f50(at(owner, 0x88));
+        if (state >= 2) destroy_native_gui_timed_pointers_00aa7f50(at(owner, 0x88), calls);
         if (state >= 1) destroy_native_gui_widget_list_thunk_00a9bce0(at(owner, 0x64));
         if (state >= 0) destroy_native_gui_ref_base_00aa6e10(owner);
     } catch (...) { std::terminate(); }
 }
 } // namespace
 
-void reserve_native_gui_timed_pointers_00aa6f30(void* header, std::int32_t requested) {
-    reserve_native_renderer_pointer_array_00b22d10(header, static_cast<Word>(requested));
+void reserve_native_gui_timed_pointers_00aa6f30(void* h, std::int32_t n, NativeGuiTimedStorageCalls& c) {
+    reserve_timed(h, static_cast<Word>(n), c);
 }
-void resize_native_gui_timed_pointers_00aa77b0(void* header, std::int32_t requested) {
-    resize_native_renderer_query_pointers_00b22cc0(header, 0, requested);
+void resize_native_gui_timed_pointers_00aa77b0(void* h, std::int32_t n, NativeGuiTimedStorageCalls& c) {
+    resize_timed(h, n, c);
 }
-void destroy_native_gui_timed_pointers_00aa7f50(void* header) {
-    destroy_native_renderer_query_pointers_00b27f50(header);
+void destroy_native_gui_timed_pointers_00aa7f50(void* h, NativeGuiTimedStorageCalls& c) {
+    resize_timed(h, 0, c); c.free_timed_pointer_slots_00bf65ac(h, pointer(h));
+}
+void reserve_native_gui_timed_pointers_00aa6f30(void* h, std::int32_t n) {
+    CrtTimedStorage c; reserve_native_gui_timed_pointers_00aa6f30(h, n, c);
+}
+void resize_native_gui_timed_pointers_00aa77b0(void* h, std::int32_t n) {
+    CrtTimedStorage c; resize_native_gui_timed_pointers_00aa77b0(h, n, c);
+}
+void destroy_native_gui_timed_pointers_00aa7f50(void* h) {
+    CrtTimedStorage c; destroy_native_gui_timed_pointers_00aa7f50(h, c);
+}
+void* construct_native_gui_timed_entry_base_00ad3970(void* block, void* widget) noexcept {
+    auto* const entry = ::new (block) NativeGuiTimedEntryStorage;
+    entry->profile_00 = 0x00d5d204u;
+    entry->remaining_04 = 0.0f;
+    entry->actual_widget_08 = widget;
+    return block;
+}
+void* construct_native_gui_timed_entry_alpha_00ac2ed0(void* block, void* widget,
+    const volatile float& one) noexcept {
+    construct_native_gui_timed_entry_base_00ad3970(block, widget);
+    const Word captured_one = *reinterpret_cast<const volatile Word*>(&one);
+    word(block) = 0x00d5ca74u;
+    word(block, 0xc) = captured_one;
+    word(block, 0x10) = captured_one;
+    return block;
+}
+void reset_native_gui_timed_entry_base_00ad3990(void* entry) noexcept { word(entry) = 0x00d5d204u; }
+void* scalar_delete_native_gui_timed_entry_alpha_00ac2fe0(void* entry, Word flags,
+    void* context, NativeGuiTimedEntryFree free_entry) {
+    if (!free_entry) throw std::invalid_argument("raw timed scalar requires SAME-allocation free");
+    reset_native_gui_timed_entry_base_00ad3990(entry);
+    if ((flags & 1u) != 0) free_entry(context, entry);
+    return entry;
+}
+void* scalar_delete_native_gui_timed_entry_section_00ad3a40(void* entry, Word flags,
+    void* context, NativeGuiTimedEntryFree free_entry) {
+    if (!free_entry) throw std::invalid_argument("raw timed scalar requires SAME-allocation free");
+    const bool destroy_allocation = (flags & 1u) != 0;
+    word(entry) = 0x00d5d204u;
+    if (destroy_allocation) free_entry(context, entry);
+    return entry;
+}
+void* scalar_delete_native_gui_timed_entry_base_00ad3a60(void* entry, Word flags,
+    void* context, NativeGuiTimedEntryFree free_entry) {
+    return scalar_delete_native_gui_timed_entry_section_00ad3a40(entry, flags, context, free_entry);
 }
 void destroy_native_gui_widget_list_00a9b740(void* header) noexcept {
     // Physical layout alias established by A9B720/A4C4A0/4C3200 producers.
@@ -111,16 +192,35 @@ void release_native_gui_text_glyph_00ab73b0(void* text, NativeGuiWidgetLifetimeC
 namespace {
 struct LegacySchedule {
     NativeGuiWidgetLifetimeContext& widget;
-    void begin_scene(void*) {}
-    void finish_scene() {}
+    CrtTimedStorage crt;
+    NativeGuiWidgetRawNodeLifetimeBindings* raw;
+    NativeGuiTimedStorageCalls* timed_storage;
+    NativeGuiTimedStorageCalls& timed;
+    explicit LegacySchedule(NativeGuiWidgetLifetimeContext& c)
+        : widget(c), raw(dynamic_cast<NativeGuiWidgetRawNodeLifetimeBindings*>(&c.bindings)),
+          timed_storage(dynamic_cast<NativeGuiTimedStorageCalls*>(&c.bindings)),
+          timed(timed_storage ? *timed_storage : crt) {
+        if (raw && !timed_storage)
+            throw std::logic_error("raw GUI lifetime requires its SAME timed backing custody service");
+    }
+    void begin_scene(void* owner) { if (raw) raw->begin_raw_widget_scene(owner); }
+    void finish_scene() { if (raw) raw->finish_raw_widget_scene(); }
     void boundary(void*) {}
     void child_scene() {}
     void child_delete() {}
     void timed_delete() {}
     void query(Word, Word, bool) {}
-    void glyph(void* owner) { release_native_gui_text_glyph_00ab73b0(owner, widget); }
-    void primary(void* owner, bool) { release_node_slot(owner, 0x4c, widget); }
+    void release_slot(void* owner, Word offset, bool late) {
+        if (!raw) { release_node_slot(owner, offset, widget); return; }
+        if (void* const captured = pointer(owner, offset)) {
+            raw->release_raw_widget_node(captured, late);
+            word(owner, offset) = 0;
+        }
+    }
+    void glyph(void* owner) { release_slot(owner, 0x188, false); }
+    void primary(void* owner, bool late) { release_slot(owner, 0x4c, late); }
     void parent(void* owner, void* parent) {
+        if (raw) { raw->detach_raw_widget_parent(owner, parent); return; }
         auto& c = widget;
         void* captured_owner = owner;
         if (pointer(owner, 0x4c)) {
@@ -135,7 +235,12 @@ struct LegacySchedule {
         c.bindings.remove_all_00a9bd50(at(parent, 0x64), &captured_owner);
         word(owner, 0x70) = 0;
     }
-    void unwind(void* owner, int state) { unwind_base(owner, state); }
+    void resize(void* header, std::int32_t count) { resize_timed(header, count, timed); }
+    void finish_backing(void* header) { finish_timed_backing(header, timed); }
+    void unwind(void* owner, int state) {
+        if (raw) raw->raw_widget_lifetime_failed();
+        else unwind_base(owner, state, timed);
+    }
 };
 struct RawSchedule {
     NativeGuiWidgetRawModelLifetimeContext& raw;
@@ -158,6 +263,8 @@ struct RawSchedule {
         }
     }
     void parent(void*, void*) { raw.slots.reject("raw widget parent arm has no admitted hierarchy transport"); }
+    void resize(void* header, std::int32_t count) { resize_native_gui_timed_pointers_00aa77b0(header, count); }
+    void finish_backing(void* header) { CrtTimedStorage calls; finish_timed_backing(header, calls); }
     void unwind(void*, int) { raw.slots.fail(); } // ALL raw escapes retain; no invented native origin
 };
 template<class Schedule> void release_scene(void* owner, Schedule& schedule) {
@@ -218,8 +325,7 @@ template<class Schedule> void destroy_base(void* owner, Schedule& schedule) {
             Word next_count = 1;
             do {
                 if (static_cast<std::int32_t>(index) >= signed_word(owner, 0x8c))
-                    resize_native_gui_timed_pointers_00aa77b0(at(owner, 0x88),
-                        static_cast<std::int32_t>(next_count));
+                    schedule.resize(at(owner, 0x88), static_cast<std::int32_t>(next_count));
                 void* const captured_slot = at(pointer(owner, 0x88), index * 4u);
                 if (void* entry = pointer(captured_slot)) {
                     const Word target = table(entry, c)[0];
@@ -231,7 +337,7 @@ template<class Schedule> void destroy_base(void* owner, Schedule& schedule) {
             } while (static_cast<std::int32_t>(index) < signed_word(owner, 0x8c));
         }
         unwind_state = 1; // AA9895, before resize0 may allocate.
-        finish_timed_backing(at(owner, 0x88));
+        schedule.finish_backing(at(owner, 0x88));
         destroy_native_gui_widget_list_00a9b740(at(owner, 0x64));
         unwind_state = -1;
         word(owner) = 0x00d5c104u;
