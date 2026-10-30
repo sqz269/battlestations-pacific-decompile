@@ -521,8 +521,10 @@ void shift_position(void* vertex, Scratch& s, volatile Word (&homes)[2], Word& i
 } // namespace
 
 NativeGuiTextWrappedStorageFrame::NativeGuiTextWrappedStorageFrame(void* text,
-    volatile Word (&homes)[2], Scratch& scratch, Context& context, Acquired& acquired) noexcept
-    : text_(text), homes_(homes), scratch_(scratch), context_(context), acquired_(acquired) {}
+    volatile Word (&homes)[2], Scratch& scratch, Context& context, Acquired& acquired,
+    NativeVertexPositionStorageScratch& position_scratch) noexcept
+    : text_(text), homes_(homes), scratch_(scratch), context_(context), acquired_(acquired),
+      position_scratch_(position_scratch) {}
 
 void build_native_gui_text_wrapped_storage_00aba270(NativeGuiTextWrappedStorageFrame& f) {
     using Phase = NativeGuiTextWrappedStorageFrame::Phase;
@@ -751,8 +753,14 @@ void build_native_gui_text_wrapped_storage_00aba270(NativeGuiTextWrappedStorageF
         if (vertices != 0) {
             do {
                 a.position_index = f.ebx_;
+                f.position_homes_[1] = f.ebx_; // ABA860: independent Native PUSH-copy
+                f.position_homes_[0] = bits(s.conversion_and_position_54); // ABA865: SAME S54
+                location(a, Boundary::position_record, 0x00aba868);
+                auto& position_record = c.bindings.prepared_position_record(a);
+                a.selected_position = &position_record;
                 location(a, Boundary::position, 0x00aba868);
-                c.bindings.position_004768d0(pointer(f.esi_), f.ebx_, s.conversion_and_position_54, a);
+                (void)read_native_vertex_position_storage_004768d0(pointer(f.esi_),
+                    f.position_homes_, f.position_scratch_, c.position, position_record);
                 location(a, Boundary::position_store, 0x00aba86d);
                 shift_position(pointer(f.esi_), s, f.homes_, f.ebx_);
             } while (f.ebx_ < load(pointer(f.ebp_), 0x10)); // unsigned CURRENT count
