@@ -1,0 +1,426 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-gui-text-host-inverse-erratum",
+  "classification": "evidence_only_encoding_and_reproduction_erratum",
+  "utc": "2026-10-30T21:56:15.574699+00:00",
+  "frozen_packet": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+  "frozen_report_SHA256": "e026a4078eb566cfd7e8ba6c9c65d3d9cb5e060e4168ce275aca5e48b71cb9fa",
+  "cause": "PowerShell Set-Content raw script retained LF body plus appended terminalCRLF; Python read_text universal-newline embedding normalized that one terminalCRLF; original report omitted separate embedded representation hash/recipe",
+  "representations": [
+    {
+      "index": 0,
+      "old_local_path": "local/output/verify_failure_origin_changed_inverse.py",
+      "raw_bytes": 3587,
+      "raw_sha256": "db4298b289c32f1d42513658264f8432617d8859517ce3a7909eec36c331e9d2",
+      "declared_raw_sha256": "db4298b289c32f1d42513658264f8432617d8859517ce3a7909eec36c331e9d2",
+      "embedded_bytes": 3587,
+      "embedded_UTF8_LF_sha256": "db4298b289c32f1d42513658264f8432617d8859517ce3a7909eec36c331e9d2",
+      "raw_matches_declared": true,
+      "CRLF": 0,
+      "CR": 0,
+      "LF": 28,
+      "BOM": false
+    },
+    {
+      "index": 1,
+      "old_local_path": "local/output/verify_failure_origin_main_inverse.py",
+      "raw_bytes": 3032,
+      "raw_sha256": "b178b35990d86e940da5335cf749ad612ea62968483ed984eb24ec6250686e15",
+      "declared_raw_sha256": "b178b35990d86e940da5335cf749ad612ea62968483ed984eb24ec6250686e15",
+      "embedded_bytes": 3032,
+      "embedded_UTF8_LF_sha256": "b178b35990d86e940da5335cf749ad612ea62968483ed984eb24ec6250686e15",
+      "raw_matches_declared": true,
+      "CRLF": 0,
+      "CR": 0,
+      "LF": 54,
+      "BOM": false
+    },
+    {
+      "index": 2,
+      "old_local_path": "local/output/verify_failure_origin_header_inverse.py",
+      "raw_bytes": 2702,
+      "raw_sha256": "7a505ddd9683f4e2ca71e13937ea23982d7edd65e8d39a6509fa01a5232fe188",
+      "declared_raw_sha256": "7a505ddd9683f4e2ca71e13937ea23982d7edd65e8d39a6509fa01a5232fe188",
+      "embedded_bytes": 2701,
+      "embedded_UTF8_LF_sha256": "c3d0cfd466eb0d39c48c870965091f6b4dbee8d0224daad2f5b16ae4c02d729b",
+      "raw_matches_declared": true,
+      "CRLF": 1,
+      "CR": 1,
+      "LF": 14,
+      "BOM": false
+    }
+  ],
+  "exact_header_transform": {
+    "forward": "raw[:-2] + LF",
+    "reverse": "embedded[:-1] + CRLF",
+    "only_terminal_CRLF": true,
+    "no_BOM": true,
+    "old_raw_matches_declared": true
+  },
+  "isolated_verification": {
+    "frozen_commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+    "frozen_report_path": "reports/cc16_native_gui_text_failure_origin_host_slice.json",
+    "frozen_report_raw_sha256": "e026a4078eb566cfd7e8ba6c9c65d3d9cb5e060e4168ce275aca5e48b71cb9fa",
+    "snapshot_root": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030",
+    "scripts": [
+      {
+        "index": 0,
+        "old_local_path": "local/output/verify_failure_origin_changed_inverse.py",
+        "raw_bytes": 3587,
+        "raw_sha256": "db4298b289c32f1d42513658264f8432617d8859517ce3a7909eec36c331e9d2",
+        "declared_raw_sha256": "db4298b289c32f1d42513658264f8432617d8859517ce3a7909eec36c331e9d2",
+        "embedded_bytes": 3587,
+        "embedded_UTF8_LF_sha256": "db4298b289c32f1d42513658264f8432617d8859517ce3a7909eec36c331e9d2",
+        "raw_matches_declared": true,
+        "CRLF": 0,
+        "CR": 0,
+        "LF": 28,
+        "BOM": false
+      },
+      {
+        "index": 1,
+        "old_local_path": "local/output/verify_failure_origin_main_inverse.py",
+        "raw_bytes": 3032,
+        "raw_sha256": "b178b35990d86e940da5335cf749ad612ea62968483ed984eb24ec6250686e15",
+        "declared_raw_sha256": "b178b35990d86e940da5335cf749ad612ea62968483ed984eb24ec6250686e15",
+        "embedded_bytes": 3032,
+        "embedded_UTF8_LF_sha256": "b178b35990d86e940da5335cf749ad612ea62968483ed984eb24ec6250686e15",
+        "raw_matches_declared": true,
+        "CRLF": 0,
+        "CR": 0,
+        "LF": 54,
+        "BOM": false
+      },
+      {
+        "index": 2,
+        "old_local_path": "local/output/verify_failure_origin_header_inverse.py",
+        "raw_bytes": 2702,
+        "raw_sha256": "7a505ddd9683f4e2ca71e13937ea23982d7edd65e8d39a6509fa01a5232fe188",
+        "declared_raw_sha256": "7a505ddd9683f4e2ca71e13937ea23982d7edd65e8d39a6509fa01a5232fe188",
+        "embedded_bytes": 2701,
+        "embedded_UTF8_LF_sha256": "c3d0cfd466eb0d39c48c870965091f6b4dbee8d0224daad2f5b16ae4c02d729b",
+        "raw_matches_declared": true,
+        "CRLF": 1,
+        "CR": 1,
+        "LF": 14,
+        "BOM": false
+      }
+    ],
+    "terminal_transform": "raw_header_script[:-2] + LF == embedded_UTF8_LF; onlyterminalCRLFdiffers",
+    "all_old_raw_files_unchanged": true,
+    "current4_source_pins": [
+      {
+        "path": "include/bsp/native_gui_text_changed_storage.hpp",
+        "sha256": "75a9ebed1b5b9f505ffa2593899d92108c9a687ffdbcc81339f5be888f095b63"
+      },
+      {
+        "path": "src/native_gui_text_changed_storage.cpp",
+        "sha256": "632288ebfe99bef41e3dcdd2aa3448a0abefa48860b690e2ee5aba2d4acc2517"
+      },
+      {
+        "path": "include/bsp/native_gui_text_main_section_storage.hpp",
+        "sha256": "1c7554fc16cf2432f27f6eef83c8a16bbaaff4531268ee79dfdb52f5efd7104a"
+      },
+      {
+        "path": "src/native_gui_text_main_section_storage.cpp",
+        "sha256": "e89c24237751ff554bf57f74223ce44756d1b3b068b4997e03b712f163e348a9"
+      }
+    ],
+    "runs": [
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030\\inverse_0_embedded_lf.py"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030",
+        "exit": 0,
+        "text_inverse_only_not_probe": true
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030\\inverse_1_embedded_lf.py"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030",
+        "exit": 0,
+        "text_inverse_only_not_probe": true
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030\\inverse_2_embedded_lf.py"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030",
+        "exit": 0,
+        "text_inverse_only_not_probe": true
+      }
+    ],
+    "four_inverse_results": {
+      "changed": {
+        "changed_cpp_full_inverse_exact": true,
+        "baseline_sha256": "721a3bff0f346ae3506deda59f5a7e892e7ca46eefb8fcaa4d57d04a9c1753a1",
+        "inverse_sha256": "721a3bff0f346ae3506deda59f5a7e892e7ca46eefb8fcaa4d57d04a9c1753a1",
+        "2asmblocks_byte_identical": true,
+        "seam_replacements": 55
+      },
+      "main": {
+        "main_cpp_full_inverse_exact": true,
+        "baseline_sha256": "9cea2fa635091c01ad61fabad16a406843709a1d267d830a2aedfc97ebd2b7a1",
+        "inverse_sha256": "9cea2fa635091c01ad61fabad16a406843709a1d267d830a2aedfc97ebd2b7a1"
+      },
+      "headers": {
+        "include/bsp/native_gui_text_changed_storage.hpp": {
+          "inverse_exact": true,
+          "sha256": "13cc02308c28bf3ba443adfe1334627dffae05231a0c05e7bff6cbd634da5cc8"
+        },
+        "include/bsp/native_gui_text_main_section_storage.hpp": {
+          "inverse_exact": true,
+          "sha256": "2fffebb5ba867421eacc9bec461648004238f870d671337544ebdf3989bccc72"
+        },
+        "raw_prefix": {
+          "declarations_exact": true,
+          "content_offsets_asserted_on_Root_compile": [
+            0,
+            28,
+            36,
+            44,
+            48
+          ],
+          "outer_offsets_asserted_on_Root_compile": [
+            0,
+            16,
+            20
+          ],
+          "assertions_compiled_by_worker": false
+        }
+      }
+    }
+  },
+  "reproduction_recipe": {
+    "language": "Python3 text-only",
+    "run": "python <recipe.py> <NEW ignored snapshot directory>, from repository sharing8f9",
+    "source": "from pathlib import Path\nimport json,subprocess,sys,hashlib\n# Run from a repository sharing commit8f9; choose a NEW ignored directory.\nrepo=Path.cwd();out=Path(sys.argv[1]).resolve();assert not out.exists();out.mkdir(parents=True);(out/'local/output').mkdir(parents=True)\ncommit='8f9f9942bfc3bd8f23d385f6269d01375b72511b'\nr=json.loads(subprocess.check_output(['git','show',commit+':reports/cc16_native_gui_text_failure_origin_host_slice.json']))\nbaseline={}\nfor p in r['mechanical_inverse']['baseline_GitLF_inputs']:\n b=subprocess.check_output(['git','cat-file','blob',p['git_blob_oid']]);assert hashlib.sha256(b).hexdigest()==p['sha256'];baseline[p['path']]={'content':b.decode(),'sha256':p['sha256'],'git_blob':p['git_blob_oid']}\n q=out/p['path'];q.parent.mkdir(parents=True,exist_ok=True);q.write_bytes(subprocess.check_output(['git','show',commit+':'+p['path']]))\n(out/'local/output/failure_origin_host_slice_baseline.json').write_text(json.dumps(baseline))\n(out/'local/output/failure_origin_changed_seams.json').write_text(json.dumps(r['mechanical_inverse']['changed_seam_data']))\n(out/'local/output/failure_origin_prefix_assertions.txt').write_text(r['prefix_assertions'])\nfor i,s in enumerate(r['mechanical_inverse']['scripts']):\n p=out/('embedded_'+str(i)+'.py');p.write_bytes(s['source'].encode('utf-8'));subprocess.run([sys.executable,str(p)],cwd=out,check=True,timeout=10)\n",
+    "UTF8_LF_sha256": "a83ecb600f2a5e36bbb56561065e5c1b077a3f882643699a3bbab5716f72d878",
+    "does_not_depend_on_old_local_scripts": true
+  },
+  "preserved_snapshot_artifact_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030\\erratum_verification.json",
+      "hash_format": "raw_ignored_snapshot_bytes",
+      "bytes": 5798,
+      "sha256": "e8212b12450e4fb511627a309db6343d1ac31c6356dcb974d9fe4dddf653760a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030\\include\\bsp\\native_gui_text_changed_storage.hpp",
+      "hash_format": "raw_ignored_snapshot_bytes",
+      "bytes": 11813,
+      "sha256": "75a9ebed1b5b9f505ffa2593899d92108c9a687ffdbcc81339f5be888f095b63"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030\\include\\bsp\\native_gui_text_main_section_storage.hpp",
+      "hash_format": "raw_ignored_snapshot_bytes",
+      "bytes": 7926,
+      "sha256": "1c7554fc16cf2432f27f6eef83c8a16bbaaff4531268ee79dfdb52f5efd7104a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030\\independent_reproduction_recipe.py",
+      "hash_format": "raw_ignored_snapshot_bytes",
+      "bytes": 1384,
+      "sha256": "a83ecb600f2a5e36bbb56561065e5c1b077a3f882643699a3bbab5716f72d878"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030\\inverse_0_embedded_lf.py",
+      "hash_format": "raw_ignored_snapshot_bytes",
+      "bytes": 3587,
+      "sha256": "db4298b289c32f1d42513658264f8432617d8859517ce3a7909eec36c331e9d2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030\\inverse_0_execution.log",
+      "hash_format": "raw_ignored_snapshot_bytes",
+      "bytes": 275,
+      "sha256": "acf06d6c13603fae08444ed59fbe4959bbafcc216b1ca5fff08cdb2b24567ff8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030\\inverse_0_old_raw.py",
+      "hash_format": "raw_ignored_snapshot_bytes",
+      "bytes": 3587,
+      "sha256": "db4298b289c32f1d42513658264f8432617d8859517ce3a7909eec36c331e9d2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030\\inverse_1_embedded_lf.py",
+      "hash_format": "raw_ignored_snapshot_bytes",
+      "bytes": 3032,
+      "sha256": "b178b35990d86e940da5335cf749ad612ea62968483ed984eb24ec6250686e15"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030\\inverse_1_execution.log",
+      "hash_format": "raw_ignored_snapshot_bytes",
+      "bytes": 212,
+      "sha256": "c83c507abe30663b062a8f0677f60d224a5f2344f199070a7a1a62ee49b7113d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030\\inverse_1_old_raw.py",
+      "hash_format": "raw_ignored_snapshot_bytes",
+      "bytes": 3032,
+      "sha256": "b178b35990d86e940da5335cf749ad612ea62968483ed984eb24ec6250686e15"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030\\inverse_2_embedded_lf.py",
+      "hash_format": "raw_ignored_snapshot_bytes",
+      "bytes": 2701,
+      "sha256": "c3d0cfd466eb0d39c48c870965091f6b4dbee8d0224daad2f5b16ae4c02d729b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030\\inverse_2_execution.log",
+      "hash_format": "raw_ignored_snapshot_bytes",
+      "bytes": 519,
+      "sha256": "f908065f14dbb4b268add81f7797c7b552b7ad0fbfbd658a97b18fb759d0ac7d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030\\inverse_2_old_raw.py",
+      "hash_format": "raw_ignored_snapshot_bytes",
+      "bytes": 2702,
+      "sha256": "7a505ddd9683f4e2ca71e13937ea23982d7edd65e8d39a6509fa01a5232fe188"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030\\local\\output\\failure_origin_changed_cpp_inverse.txt",
+      "hash_format": "raw_ignored_snapshot_bytes",
+      "bytes": 18599,
+      "sha256": "fb5a2b0ee32a7368696c4cdcb8a871e0c0a303d2bac3e87fcc61411904173683"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030\\local\\output\\failure_origin_changed_inverse_receipt.json",
+      "hash_format": "raw_ignored_snapshot_bytes",
+      "bytes": 293,
+      "sha256": "fb26b8cd57bd3c9a325160f99a0384385033874feb61ba6ccc96e272cdef20ac"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030\\local\\output\\failure_origin_changed_seams.json",
+      "hash_format": "raw_ignored_snapshot_bytes",
+      "bytes": 22880,
+      "sha256": "344b5432940094e3d616542ec2a242e9f081c76d98626b4afd17a15107da0d52"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030\\local\\output\\failure_origin_header_inverse_receipt.json",
+      "hash_format": "raw_ignored_snapshot_bytes",
+      "bytes": 656,
+      "sha256": "5b902f87fea97af5282968db543b34885b96c7b0759d72d393dfc2524eb5f0f0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030\\local\\output\\failure_origin_host_slice_baseline.json",
+      "hash_format": "raw_ignored_snapshot_bytes",
+      "bytes": 67120,
+      "sha256": "6dc3cd31acd9e01cbfe83347b620a94a4a4641715f66832fa4a3d6e0bc33660e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030\\local\\output\\failure_origin_main_cpp_inverse.txt",
+      "hash_format": "raw_ignored_snapshot_bytes",
+      "bytes": 30119,
+      "sha256": "6b849b677aee6dadad6d3ff9106e695632052ec8d2f0aa6a2e84793259cd833b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030\\local\\output\\failure_origin_main_inverse_receipt.json",
+      "hash_format": "raw_ignored_snapshot_bytes",
+      "bytes": 224,
+      "sha256": "b1ab2ca4eebc552d6bb68fc6fe6be7c244e8cedcc19d76f6995bd0be30ac3653"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030\\local\\output\\failure_origin_prefix_assertions.txt",
+      "hash_format": "raw_ignored_snapshot_bytes",
+      "bytes": 745,
+      "sha256": "31acec92e89a9017c2655f323b1601d835250dbfcdac91f4128c851da1b15eda"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030\\src\\native_gui_text_changed_storage.cpp",
+      "hash_format": "raw_ignored_snapshot_bytes",
+      "bytes": 30553,
+      "sha256": "632288ebfe99bef41e3dcdd2aa3448a0abefa48860b690e2ee5aba2d4acc2517"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\8f9_inverse_erratum_20261030\\src\\native_gui_text_main_section_storage.cpp",
+      "hash_format": "raw_ignored_snapshot_bytes",
+      "bytes": 32909,
+      "sha256": "e89c24237751ff554bf57f74223ce44756d1b3b068b4997e03b712f163e348a9"
+    }
+  ],
+  "frozen8f9_unchanged_pins": [
+    {
+      "path": "include/bsp/native_gui_text_changed_storage.hpp",
+      "hash_format": "Git_LF_content",
+      "bytes": 11813,
+      "sha256": "75a9ebed1b5b9f505ffa2593899d92108c9a687ffdbcc81339f5be888f095b63"
+    },
+    {
+      "path": "src/native_gui_text_changed_storage.cpp",
+      "hash_format": "Git_LF_content",
+      "bytes": 30553,
+      "sha256": "632288ebfe99bef41e3dcdd2aa3448a0abefa48860b690e2ee5aba2d4acc2517"
+    },
+    {
+      "path": "include/bsp/native_gui_text_main_section_storage.hpp",
+      "hash_format": "Git_LF_content",
+      "bytes": 7926,
+      "sha256": "1c7554fc16cf2432f27f6eef83c8a16bbaaff4531268ee79dfdb52f5efd7104a"
+    },
+    {
+      "path": "src/native_gui_text_main_section_storage.cpp",
+      "hash_format": "Git_LF_content",
+      "bytes": 32909,
+      "sha256": "e89c24237751ff554bf57f74223ce44756d1b3b068b4997e03b712f163e348a9"
+    },
+    {
+      "path": "include/bsp/native_gui_text_failure_origin.hpp",
+      "hash_format": "Git_LF_content",
+      "bytes": 7602,
+      "sha256": "6a60e18b87eb88f502d664423186c555f7545736f6fd4eac40e80d8249d0aa4d"
+    },
+    {
+      "path": "src/native_gui_text_failure_origin.cpp",
+      "hash_format": "Git_LF_content",
+      "bytes": 5461,
+      "sha256": "ef98173370f4bcd4e47855ddcbb9b3ffd4457368da0ab8e4f35130b14bfc006b"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_TEXT_FAILURE_ORIGIN_HOST_SLICE.md",
+      "hash_format": "Git_LF_content",
+      "bytes": 10377,
+      "sha256": "ea450188bbc964dcd582ea4b735a6f082f6b7cd59382bb5c965116099a471ea0"
+    },
+    {
+      "path": "reports/cc16_native_gui_text_failure_origin_host_slice.json",
+      "hash_format": "Git_LF_content",
+      "bytes": 51611,
+      "sha256": "e026a4078eb566cfd7e8ba6c9c65d3d9cb5e060e4168ce275aca5e48b71cb9fa"
+    }
+  ],
+  "document_pin": {
+    "path": "docs/CC16_NATIVE_GUI_TEXT_HOST_INVERSE_ERRATUM.md",
+    "hash_format": "UTF8_LF_content",
+    "bytes": 2589,
+    "sha256": "db7ca7002cd6c162cb3696960103cd02ad78c793131c63f9e01fa32e1f03e246"
+  },
+  "validation": {
+    "three_embedded_text_scripts_exit0": true,
+    "four_wholefile_inverses_exact": true,
+    "old_local_raw_scripts_unchanged": true,
+    "eightSource_evidence_files_frozen": true,
+    "only_two_new_evidence_files": true,
+    "new_Source_or_behavioral_build_probe_game_Ghidra_CMake_ledger": false
+  },
+  "admission": {
+    "behavior_source_review_not_replaced": true,
+    "common_build_proved": false,
+    "positive_Native_origin": false,
+    "Text96_full_admission": false,
+    "ABI_runtime_activation": false
+  },
+  "credit": {
+    "newOriginal": 0,
+    "newVendor": 0,
+    "newHelper": 0,
+    "duplicateBody": 0,
+    "ABI": 0,
+    "runtime": 0,
+    "activation": 0
+  }
+}
