@@ -1,0 +1,125 @@
+{
+  "packet": "codex-native-singleton-raw-cleanup-access",
+  "status": "bounded existing-entry raw-access revision; isolated Win32 object compile passed",
+  "base_commit": "b7f934b42056325c4d79a5f4b868847cd358b963",
+  "source_ready": false,
+  "startup_bound": false,
+  "new_native_body_credit": false,
+  "target": "MSVC Win32; uint32_t and pointer representations are four bytes",
+  "functions": [
+    {
+      "address": "0x00411ee0",
+      "name": "destroy_native_singleton_guard_00411ee0",
+      "original_abi": "ECX actual eight-byte guard; plain RET",
+      "api_exception_spec": "unchanged, potentially throwing",
+      "native_schedule": [
+        "capture raw DWORD guard+4",
+        "stamp guard+0 = 0x00ce37fc",
+        "if captured nonnull: load CURRENT section+0x18 DWORD, unsigned subtract one, store",
+        "actual LeaveCriticalSection(captured)"
+      ],
+      "call_evidence": {
+        "instruction_address": "0x00411ef2",
+        "instruction": "CALL dword ptr [0x00ce2210]",
+        "current_provider": "Win32 SDK LeaveCriticalSection"
+      },
+      "source_change": "In-function four-byte memcpy accesses with compiler barriers; captured uint32 pointer bits decoded for nonnull branch; no tracked_counter lvalue used by this entry."
+    },
+    {
+      "address": "0x00412430",
+      "name": "destroy_native_generic_singleton_base_00412430",
+      "original_abi": "ECX actual receiver; plain RET",
+      "api_exception_spec": "unchanged noexcept",
+      "native_schedule": [
+        "stamp receiver+0 = 0x00ce3818"
+      ],
+      "call_evidence": null,
+      "source_change": "One in-function fenced four-byte memcpy profile store; no typed field lvalue."
+    }
+  ],
+  "unchanged": {
+    "all_other_function_bodies": true,
+    "shared_depth_and_tracked_counter_helpers": true,
+    "all_signatures_and_exception_specs": true,
+    "providers_globals_policy_eh_cleanup_order": true
+  },
+  "caller_obligations": [
+    "Valid actual eight-byte guard, writable first DWORD, captured actual initialized Win32 section and valid readable/writable raw counter at +0x18.",
+    "Valid writable first four receiver bytes for 00412430.",
+    "Stable backing, serialized access, correct critical-section balance and existing failure retention. Compiler barriers add no hardware synchronization."
+  ],
+  "remaining_limits": [
+    "No Original register-ABI, FH3/SEH/fault, SDK provider or vendor-body equivalence is established.",
+    "No canonical locale manager, publication, raw loader, allocator ownership, lifetime or startup binding is supplied.",
+    "Only the d5c116833d55eeb91ccd84756792dd8f473bbeb3 constructor cleanup raw-field prerequisites are addressed; no whole dependency closure is claimed."
+  ],
+  "evidence": {
+    "directory": "local/native_singleton_raw_cleanup_validation_20261030",
+    "baseline_receipt_sha256": "e52328d98f6500596c0a534f115ddade35dd6709f1542fa78529822378282773",
+    "source_projection_sha256": "00a2d6b5f432f75c97888081b733f3472f438cd2e1652030a6159183812f8d07",
+    "compile_receipt_sha256": "4ddc7eb8ad57774c5aa4adf64ee7ead706d5183724507e2ec67062061f1137c5",
+    "saved_assembly": {
+      "00411ee0": {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00411ee0\\assembly.txt",
+        "copy": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_singleton_raw_cleanup_validation_20261030\\assembly\\00411ee0.txt",
+        "sha256": "dba7ea7b01e4d82638a2a1e4ac871575e1593ce2bb0805777e2628861076b118"
+      },
+      "00412430": {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00412430\\assembly.txt",
+        "copy": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_singleton_raw_cleanup_validation_20261030\\assembly\\00412430.txt",
+        "sha256": "875d29b68889787c757c0e7abf899c254b4e1edf154c808a9a2d82460a4384d6"
+      }
+    },
+    "code_and_header_projections": [
+      {
+        "file": "src/native_diagnostic_sink_lifetime.cpp",
+        "baseline_sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+        "current_sha256": "7ef822175d062d799683312c6a8f9618c1771ec013e7424b48eedd66c7968499",
+        "inverse_sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+        "whole_file_inverse_exact": true,
+        "only_replaced_function": "destroy_native_singleton_guard_00411ee0",
+        "signature_exact": true
+      },
+      {
+        "file": "src/native_render_service_base.cpp",
+        "baseline_sha256": "dd001e140d8799f99aba2d593c90bfa1592051ee780b62e14c2f265d80567f1e",
+        "current_sha256": "5ad0e48f648cdaf3305fd52b58ef068873cf6f1c242683b77053cb1e06206420",
+        "inverse_sha256": "dd001e140d8799f99aba2d593c90bfa1592051ee780b62e14c2f265d80567f1e",
+        "whole_file_inverse_exact": true,
+        "only_replaced_function": "destroy_native_generic_singleton_base_00412430",
+        "signature_exact": true
+      },
+      {
+        "file": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+        "baseline_sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+        "current_sha256": "935960697b2f517ff8f5e0f14899a182182e37d8a10c6ed4f221f34dd9c0c868",
+        "inverse_sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+        "whole_file_inverse_exact": true,
+        "comments_only": true
+      },
+      {
+        "file": "include/bsp/native_render_service_base.hpp",
+        "baseline_sha256": "2ca92c2900f4cd03fb2e768a33ac44e54578dab09a2ec20be54dd4b40dfb59be",
+        "current_sha256": "a8de78cb4dec57c69f5206fd66a63705e3c587a278910a80758fea100c3cbcd0",
+        "inverse_sha256": "2ca92c2900f4cd03fb2e768a33ac44e54578dab09a2ec20be54dd4b40dfb59be",
+        "whole_file_inverse_exact": true,
+        "comments_only": true
+      }
+    ],
+    "objects": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_singleton_raw_cleanup_validation_20261030\\object_build\\native_singleton_raw_cleanup_objects.dir\\Release\\native_diagnostic_sink_lifetime.obj",
+        "bytes": 12334,
+        "machine": "0x014c",
+        "sha256": "b43d2d94ff28bb433de839666bf43affe3d96376196f25f134860b04d47bdc97"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_singleton_raw_cleanup_validation_20261030\\object_build\\native_singleton_raw_cleanup_objects.dir\\Release\\native_render_service_base.obj",
+        "bytes": 20136,
+        "machine": "0x014c",
+        "sha256": "8cf02f88fbce895879442d23c21a72c5d9dd4714f14236d27a45d56731684a7c"
+      }
+    ],
+    "validation": "One fresh CMake OBJECT target compile per affected TU; C++17 /O2 /W4 /WX /EHsc /MD; COFF I386 0x014c. No full build, test, probe, game or authored executable target."
+  }
+}

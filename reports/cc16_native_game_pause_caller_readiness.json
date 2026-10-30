@@ -1,0 +1,1888 @@
+{
+  "packet": "codex-native-game-pause-caller-readiness",
+  "generated_utc": "2026-10-30T04:33:15.458880+00:00",
+  "base": "3d861b9ac16576a155de34441993ea68fe393e18",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness",
+  "branch": "agent/codex-native-game-pause-caller-readiness",
+  "owned_addresses": [],
+  "owned_files": [
+    "docs/CC16_NATIVE_GAME_PAUSE_CALLER_READINESS.md",
+    "reports/cc16_native_game_pause_caller_readiness.json"
+  ],
+  "status": "caller_vector_and_cleanup_composition_ready; whole_pause_not_ready; exact_game_leaf54E370_ready",
+  "whole_004D95F0_Source_ready": false,
+  "next_body_Source_ready": "0054E370",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_before_live_batches": true,
+    "image": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "Ghidra_writes": false
+  },
+  "prior_evidence": {
+    "pause": "6326a9e11f65a800d9129bfcf1c3ed0e6ceb122e",
+    "vector_reuse": "44fda50c5e907c37f39a9b50c066dabc9c4c13ce",
+    "retained44_report": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-pause-dword-vector-readiness\\reports\\cc16_native_pause_dword_vector_readiness.json",
+      "bytes": 66169,
+      "sha256": "dd324f031e75c0d8f53417914f8afa073aa4217e5e658923c653c3d96d96ee19"
+    },
+    "all26_dependency_pins_unchanged": true
+  },
+  "native_bodies": [
+    {
+      "address": "004D95F0",
+      "bytes": 569,
+      "instructions": 140,
+      "hex": "64a1000000006aff68a865c600508a4424106489250000000083ec14568bf138861f0600000f84fc0100005333db3ac388861f0600007418389e200600007410a1c498e1008b88a8000000e8004e0700399ee41f0000743c389e1f0600007534a1c498e1003bc3742b3998e800000074238b88e80000003859047418e88f55feffc7402001000000e88355feff8bc8e89c995b00895c2410895c2414895c24188d542408528d4c2410895c2428c744240c0d000000e8e68af6ff8d442408508d4c2410c744240c0e000000e8d08af6ff8d4c2408518d4c2410c744240c0f000000e8ba8af6ff8d542408528d4c2410c744240c28000000e8a48af6ff8d442408508d4c2410c744240c3c000000e88e8af6ff8d4c2408518d4c2410c744240c3d000000e8788af6ff8d542408528d4c2410c744240c53000000e8628af6ff8d442408508d4c2410c744240c55000000e84c8af6ff8d4c2408518d4c2410c744240c57000000e8368af6ff8d542408528d4c2410c744240c58000000e8208af6ff8d442408508d4c2410c744240c59000000e80a8af6ff8d4c2408518d4c2410c744240c5c000000e8f489f6ff8d542408528d4c2410c744240c5d000000e8de89f6ff8d442408508d4c2410c744240c19000000e8c889f6ff8d4c2408518d4c2410c744240c5e000000e8b289f6ffc74424080c0000008d542408528d4c2410e89c89f6ff8b44242c508d4c2410518bcee87bccffff8b4424103bc35b740950e898cd710083c4048b4c24185e64890d0000000083c420c20400",
+      "sha256": "431f945fcd6f9814a34f67a9924289497c28d35f569ccad01964d4d6f758f6c3",
+      "saved_export": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004d95f0\\assembly.txt",
+      "saved_export_sha256": "75add013d0a2ba0d6f4a23b847882b95f4a9a3e2cdeb0b3d0bd89a09559fc3bc"
+    },
+    {
+      "address": "004D6480",
+      "bytes": 707,
+      "instructions": 218,
+      "hex": "64a1000000006aff68b861c600506489250000000083ec48535556578b7c246833db33ed8bcf885c246833f6e89feff3ff85c076338b4f043bcb740c8b47082bc1c1f8023bf07205e8460272008b47043b2cb07505c6442468018bcf83c601e86ceff3ff3bf072cd8b0cad608be1003bcb0f842b020000895c244c895c2450895c24548b118b52248d44244850895c2464ffd28b4c24508b44244c33f68d49003bc30f84d90100008bd12bd0c1fa023bf20f83ca010000391cb00f84b9010000385c246c0f84d7000000385c24680f85cd0000003bc3740b8bd12bd0c1fa023bf2720de8ab0172008b4c24508b44244c8b14b0389a210100000f857a0100003bc374092bc8c1f9023bf17209e8820172008b44244c8b04b0c68021010000018b4c244c3bcb740d8b4424502bc1c1f8023bf07209e85a0172008b4c244c8b0cb18d54243052e886015d00d94004d9ee8b4c244c3bcbdcc1d9c9d95c2410d84008d95c2414d900dc25a047ce00d95c2418d9442410d95c241cd9442414d95c2420740d8b4424502bc1c1f8023bf07209e8ff0072008b4c244c8d442418e9c70000003bc3740b8bd12bd0c1fa023bf2720de8de0072008b4c24508b44244c8b14b0389a210100000f84ad0000003bc374092bc8c1f9023bf17209e8b50072008b44244c8b04b08898210100008b4c244c3bcb740d8b4424502bc1c1f8023bf07209e88e0072008b4c244c8b0cb18d54243c52e8ba005d00d94004d9ee8b4c244c3bcbdcc1d9c9d95c2414d84008d95c2410d900dc05a047ce00d95c2424d9442414d95c2428d9442410d95c242c740d8b4424502bc1c1f8023bf07209e8330072008b4c244c8d4424248b0cb150e84f1b5d008b44244c8b4c245083c601e91ffeffff3bc3c7442460ffffffff740950e899fe710083c404895c244c895c2450895c245483c50183fd5f0f8c76fdffff8b4c24585f5e5d5b64890d0000000083c454c20800",
+      "sha256": "f9a1f6143c2bca94214ac720ea5d9730b797521f2e3459d33c0778b8f70816f2",
+      "saved_export": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004d6480\\assembly.txt",
+      "saved_export_sha256": "83826c73b078ae672b7462666f18d8e06055772665d01c7cd3a9730f158c96d8"
+    },
+    {
+      "address": "0054E440",
+      "bytes": 461,
+      "instructions": 141,
+      "hex": "6aff6810d4c60064a100000000506489250000000083ec1053568bf18b4e2033db885e08885e098b018b503453ffd28b0da888e10053e875b0f8ff0f57c0f30f114654e87807f7ff8b480481c1d02f0000e88a395400e86507f7ff8b480481c1e00d0000e8773954006a01538d4c2410895c2410895c2414e883f8ecff8b44240c3bc374168b4c240883c10151680c3ace0050e8a8916a0083c40c895c2420e8bc37f9ff8d542410528bc8e8c00014008b4424143bc3c644242001744068c0e3ce0050e8b79a6a0083c40885c00f94c03ac37429536a0b8d4c2410e820f8ecff8b44240c3bc374678b4c24085168b4e3ce0050e848916a0083c40ceb5268b4e3ce008d4c2414e80573edff84c0740768a8e3ce00eb30689ce3ce008d4c2414e8ec72edff84c074076890e3ce00eb176884e3ce008d4c2414e8d372edff84c0740e6878e3ce008d4c240ce8c1fdecffe80c37f9ff8bc8e885fe1300395c24087412538d54240c52e8f436f9ff8bc8e81d2a14008b4c24143bcb885c242074178b4424106a0183c0015051e8f1b6ecff8bc8e83a2f68008b4c240c5e3bcbc744241cffffffff5b74168b04246a0183c0015051e8c9b6ecff8bc8e8122f68008b4c241064890d0000000083c41cc3",
+      "sha256": "3205e81031f62de89d6a5f51e1441cd720b9bfe7b8100a657891901102dc9e21",
+      "saved_export": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0054e440\\assembly.txt",
+      "saved_export_sha256": "9be72dc660a0450aa13c84de73851444e28f1a71d4d6c277eb5c4d9be5d6bdd9"
+    },
+    {
+      "address": "0054E370",
+      "bytes": 16,
+      "instructions": 5,
+      "hex": "83c11c518b4c2408e81384f8ffc20400",
+      "sha256": "dda027ca96f98fa217c398fcc3f3de9d091b74973e1cff08f269b167df96d0a1",
+      "saved_export": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0054e370\\assembly.txt",
+      "saved_export_sha256": "ecfd77c98504579f290f67790f99db404ae06d1c02d6a6a21a247604a1f8e1f7"
+    },
+    {
+      "address": "00415450",
+      "bytes": 19,
+      "instructions": 9,
+      "hex": "8b510485d2750333c0c38b41082bc2c1f802c3",
+      "sha256": "ae43e511423ed41f29d85edaf2f02b5a752e32ebbe45dd99456242b3c196c50d",
+      "saved_export": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00415450\\assembly.txt",
+      "saved_export_sha256": "d45696aeb6761d47913da49452f562c77a07cba715668754e43a89a4cb4c8504"
+    },
+    {
+      "address": "0041CB90",
+      "bytes": 42,
+      "instructions": 13,
+      "hex": "568bf18b460485c0740950e80c9a7d0083c404c7460400000000c7460800000000c7460c000000005ec3",
+      "sha256": "f3eb7dbfd39c63d5fd70890e8925a777ad11a9196af2d18bcc9856c889374227",
+      "saved_export": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0041cb90\\assembly.txt",
+      "saved_export_sha256": "9e640f666b239affa3dac3e81df040bdb13407accc8ca21e0e6aea6c588307af"
+    },
+    {
+      "address": "004C8020",
+      "bytes": 42,
+      "instructions": 13,
+      "hex": "568bf18b460485c0740950e87ce5720083c404c7460400000000c7460800000000c7460c000000005ec3",
+      "sha256": "07a104985ea3b2ae4c533aaa62b43bf238e5e4df4c531817abbd6ace06664d6d",
+      "saved_export": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004c8020\\assembly.txt",
+      "saved_export_sha256": "b593cf8d67c65b5aa01858f2b10953720b19aaf5dce869ab41031e6b109361d8"
+    },
+    {
+      "address": "004F7180",
+      "bytes": 17,
+      "instructions": 6,
+      "hex": "8bc132c9c70054aece00884804884805c3",
+      "sha256": "98fa0eef8873f4b92055b82aa15b994816a4242c888ba87fae0d2a308a2d6e19",
+      "saved_export": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004f7180\\assembly.txt",
+      "saved_export_sha256": "4bcbacf3f49c97ac74cc26e8bd731a236b16c9440ea2a2e90569c9a9485f0f07"
+    },
+    {
+      "address": "004F75D0",
+      "bytes": 3,
+      "instructions": 1,
+      "hex": "c20400",
+      "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+      "saved_export": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004f75d0\\assembly.txt",
+      "saved_export_sha256": "2d54e344c49e8c96693c90270c9226c1db31a4fe2382da6a10e51048a661f0c8"
+    }
+  ],
+  "pause_ABI": {
+    "native": "ECX actual71A0h Game / stacked DWORD initially consumed as low byte / RET4",
+    "initial_argument_load": "004D95FE byte only",
+    "late_argument_load": "004D97F4 full CURRENT DWORD",
+    "noncanonical_bytes": "Store verbatim; equality byte-for-byte; no bool normalization.",
+    "early_return": "Equal byte: vector fields not initialized and cleanup not armed.",
+    "native_direct_calls": 22,
+    "Source_native_argument_stack_identity": false
+  },
+  "changed_state_prefix": [
+    "Store input byte atGame+61F before true-hint branch.",
+    "On nonzero input with currentGame+620, read CURRENT E198C4/+A8 without null guard, call whole54E440.",
+    "After return reread actualGame+1FE4 and CURRENT+61F, not the initial argument snapshot.",
+    "Unpause HUD arm captures CURRENT E198C4; nullable mission/+E8, separate +E8 reload and selected object+4 byte.",
+    "Call4BEC00, set first returned owner+20=1, call4BEC00 AGAIN, refresh second result throughA93020."
+  ],
+  "all16_append_sites": [
+    {
+      "call": "004D96A5",
+      "item_store": "004D969D",
+      "pointer_home_write": "004D9694",
+      "id": "0D",
+      "item_relative_E": -32,
+      "header_relative_E": -28,
+      "push_entry_relative_E": -48,
+      "pointer_home_relative_E": -44,
+      "private_output8_relative_E": -56,
+      "scope_state": 0,
+      "item_store_after_pointer_home": true
+    },
+    {
+      "call": "004D96BB",
+      "item_store": "004D96B3",
+      "pointer_home_write": "004D96AE",
+      "id": "0E",
+      "item_relative_E": -32,
+      "header_relative_E": -28,
+      "push_entry_relative_E": -48,
+      "pointer_home_relative_E": -44,
+      "private_output8_relative_E": -56,
+      "scope_state": 0,
+      "item_store_after_pointer_home": true
+    },
+    {
+      "call": "004D96D1",
+      "item_store": "004D96C9",
+      "pointer_home_write": "004D96C4",
+      "id": "0F",
+      "item_relative_E": -32,
+      "header_relative_E": -28,
+      "push_entry_relative_E": -48,
+      "pointer_home_relative_E": -44,
+      "private_output8_relative_E": -56,
+      "scope_state": 0,
+      "item_store_after_pointer_home": true
+    },
+    {
+      "call": "004D96E7",
+      "item_store": "004D96DF",
+      "pointer_home_write": "004D96DA",
+      "id": "28",
+      "item_relative_E": -32,
+      "header_relative_E": -28,
+      "push_entry_relative_E": -48,
+      "pointer_home_relative_E": -44,
+      "private_output8_relative_E": -56,
+      "scope_state": 0,
+      "item_store_after_pointer_home": true
+    },
+    {
+      "call": "004D96FD",
+      "item_store": "004D96F5",
+      "pointer_home_write": "004D96F0",
+      "id": "3C",
+      "item_relative_E": -32,
+      "header_relative_E": -28,
+      "push_entry_relative_E": -48,
+      "pointer_home_relative_E": -44,
+      "private_output8_relative_E": -56,
+      "scope_state": 0,
+      "item_store_after_pointer_home": true
+    },
+    {
+      "call": "004D9713",
+      "item_store": "004D970B",
+      "pointer_home_write": "004D9706",
+      "id": "3D",
+      "item_relative_E": -32,
+      "header_relative_E": -28,
+      "push_entry_relative_E": -48,
+      "pointer_home_relative_E": -44,
+      "private_output8_relative_E": -56,
+      "scope_state": 0,
+      "item_store_after_pointer_home": true
+    },
+    {
+      "call": "004D9729",
+      "item_store": "004D9721",
+      "pointer_home_write": "004D971C",
+      "id": "53",
+      "item_relative_E": -32,
+      "header_relative_E": -28,
+      "push_entry_relative_E": -48,
+      "pointer_home_relative_E": -44,
+      "private_output8_relative_E": -56,
+      "scope_state": 0,
+      "item_store_after_pointer_home": true
+    },
+    {
+      "call": "004D973F",
+      "item_store": "004D9737",
+      "pointer_home_write": "004D9732",
+      "id": "55",
+      "item_relative_E": -32,
+      "header_relative_E": -28,
+      "push_entry_relative_E": -48,
+      "pointer_home_relative_E": -44,
+      "private_output8_relative_E": -56,
+      "scope_state": 0,
+      "item_store_after_pointer_home": true
+    },
+    {
+      "call": "004D9755",
+      "item_store": "004D974D",
+      "pointer_home_write": "004D9748",
+      "id": "57",
+      "item_relative_E": -32,
+      "header_relative_E": -28,
+      "push_entry_relative_E": -48,
+      "pointer_home_relative_E": -44,
+      "private_output8_relative_E": -56,
+      "scope_state": 0,
+      "item_store_after_pointer_home": true
+    },
+    {
+      "call": "004D976B",
+      "item_store": "004D9763",
+      "pointer_home_write": "004D975E",
+      "id": "58",
+      "item_relative_E": -32,
+      "header_relative_E": -28,
+      "push_entry_relative_E": -48,
+      "pointer_home_relative_E": -44,
+      "private_output8_relative_E": -56,
+      "scope_state": 0,
+      "item_store_after_pointer_home": true
+    },
+    {
+      "call": "004D9781",
+      "item_store": "004D9779",
+      "pointer_home_write": "004D9774",
+      "id": "59",
+      "item_relative_E": -32,
+      "header_relative_E": -28,
+      "push_entry_relative_E": -48,
+      "pointer_home_relative_E": -44,
+      "private_output8_relative_E": -56,
+      "scope_state": 0,
+      "item_store_after_pointer_home": true
+    },
+    {
+      "call": "004D9797",
+      "item_store": "004D978F",
+      "pointer_home_write": "004D978A",
+      "id": "5C",
+      "item_relative_E": -32,
+      "header_relative_E": -28,
+      "push_entry_relative_E": -48,
+      "pointer_home_relative_E": -44,
+      "private_output8_relative_E": -56,
+      "scope_state": 0,
+      "item_store_after_pointer_home": true
+    },
+    {
+      "call": "004D97AD",
+      "item_store": "004D97A5",
+      "pointer_home_write": "004D97A0",
+      "id": "5D",
+      "item_relative_E": -32,
+      "header_relative_E": -28,
+      "push_entry_relative_E": -48,
+      "pointer_home_relative_E": -44,
+      "private_output8_relative_E": -56,
+      "scope_state": 0,
+      "item_store_after_pointer_home": true
+    },
+    {
+      "call": "004D97C3",
+      "item_store": "004D97BB",
+      "pointer_home_write": "004D97B6",
+      "id": "19",
+      "item_relative_E": -32,
+      "header_relative_E": -28,
+      "push_entry_relative_E": -48,
+      "pointer_home_relative_E": -44,
+      "private_output8_relative_E": -56,
+      "scope_state": 0,
+      "item_store_after_pointer_home": true
+    },
+    {
+      "call": "004D97D9",
+      "item_store": "004D97D1",
+      "pointer_home_write": "004D97CC",
+      "id": "5E",
+      "item_relative_E": -32,
+      "header_relative_E": -28,
+      "push_entry_relative_E": -48,
+      "pointer_home_relative_E": -44,
+      "private_output8_relative_E": -56,
+      "scope_state": 0,
+      "item_store_after_pointer_home": true
+    },
+    {
+      "call": "004D97EF",
+      "item_store": "004D97DE",
+      "pointer_home_write": "004D97EA",
+      "id": "0C",
+      "item_relative_E": -32,
+      "header_relative_E": -28,
+      "push_entry_relative_E": -48,
+      "pointer_home_relative_E": -44,
+      "private_output8_relative_E": -56,
+      "scope_state": 0,
+      "item_store_after_pointer_home": false
+    }
+  ],
+  "shared_original_coordinates": {
+    "pause_entry": "E",
+    "changed_phase_ESP": "-28h",
+    "item": "-20h",
+    "vector_opaque": "-1Ch",
+    "begin": "-18h",
+    "end": "-14h",
+    "capacity_end": "-10h",
+    "state": "-4h",
+    "each_Push_pointer_home": "-2Ch",
+    "each_Push_entry": "-30h",
+    "each_private_output8": [
+      "-38h",
+      "-34h"
+    ],
+    "One_N": {
+      "Push_entry": -48,
+      "One_entry": -84,
+      "One_homes": [
+        -80,
+        -76,
+        -72,
+        -68
+      ],
+      "One_unused_word": -88,
+      "N_entry": -124,
+      "N_homes": [
+        -120,
+        -116,
+        -112,
+        -108
+      ],
+      "Push_private_output8": [
+        -56,
+        -52
+      ]
+    }
+  },
+  "frame_composition": {
+    "reuse": "Actual NativeSceneDwordVectorPushBackFrame/InsertOneFrame/InsertNFrame APIs, with real readable/writable homes/output backing and stable disjoint metadata.",
+    "pointer_home": "Rewrite to item ADDRESS at EVERY site, not once. First15 home-write precedes item store; last0C item store precedes home-write.",
+    "opaque": "No direct write to header+0; zeros only+4/+8/+C after hint/input work.",
+    "private_outputs": "Needed on fallback despite dead logical result. Initial empty append reaches fallback.",
+    "One": "Live output/owner/position/value-pointer homes and nested N metadata; unused native entry-4 word needs no Source backing.",
+    "N": "Live owner/position/count/value-pointer homes; child replaces last home with pointed value, scales count on in-place arm.",
+    "Source_EAX": "Push EAX not consumed by staging; Source void contract sufficient for these sites.",
+    "not_a_physical_ABI_claim": "Original coordinates identify epochs; Source frames/argument homes/aliases do not automatically coincide."
+  },
+  "scope_arm": {
+    "instruction": "004D9699",
+    "relative_to_entry_ESP": -4,
+    "value": [
+      "constant",
+      0
+    ]
+  },
+  "scope_actions": [
+    {
+      "action": "00C665A0",
+      "handler": "00C665A8",
+      "map": "00D8F428",
+      "FuncInfo": "00D8F430",
+      "max_states": 1,
+      "previous": -1,
+      "receiver": "EBP-1Ch",
+      "target": "0041CB90",
+      "registration_dispatch": "00BF6B43",
+      "raw_action_handler": "8d4de4e9e8657bffb830f4d800e99105f9ff",
+      "raw_map_info": "ffffffffa065c600220593190100000028f4d800000000000000000000000000000000000000000001000000"
+    },
+    {
+      "action": "00C661B0",
+      "handler": "00C661B8",
+      "map": "00D8EFE8",
+      "FuncInfo": "00D8EFF0",
+      "max_states": 1,
+      "previous": -1,
+      "receiver": "EBP-1Ch",
+      "target": "004C8020",
+      "registration_dispatch": "00BF6B43",
+      "raw_action_handler": "8d4de4e9681e86ffb8f0efd800e98109f9ff",
+      "raw_map_info": "ffffffffb061c6002205931901000000e8efd800000000000000000000000000000000000000000001000000"
+    }
+  ],
+  "normal_free": {
+    "capture": "004D9805 CURRENT kept begin",
+    "call": "004D980F",
+    "state": 0,
+    "header_clears": false,
+    "explicit_state_minus1_before_free": false,
+    "scope_exit": "FS old registration restored004D981C; no explicit dearm state store"
+  },
+  "exceptional_cleanup_reuse": {
+    "native": "00C665A0 ->0041CB90",
+    "complete_clone": "0041CB90 ==004C8020 for all42B/13ops after same common free target/branch relocation",
+    "actual_Source": "bsp::destroy_native_gui_page_vector_004c8020(void*) noexcept",
+    "files": [
+      "include/bsp/native_platform_focus_owners.hpp",
+      "src/native_platform_focus_owners.cpp"
+    ],
+    "effects": "Capture CURRENT begin once, conditional SAME-domain free, then clear CURRENT+4/+8/+C in order; opaque+0 unchanged.",
+    "source_composition": "Arm ordinary C++ try/guard after zeros/first home write, before first item store; cover pushes/wholepark/normal conditional free. On C++ failure call real tidy; successful normal path does not tidy/clear.",
+    "no_new_wrapper_needed": true,
+    "normal_free_not_tidy": true,
+    "Native_EH_transport_proven": false,
+    "Native_scope_base": "Action receiver EBP-1Ch matches recovered E-relative local; vendor dispatcher establisher/EBP execution remains qualified."
+  },
+  "park_call": {
+    "call": "004D9800",
+    "entry_relative_E": -52,
+    "kept_pointer_home_relative_E": -48,
+    "park_DWORD_home_relative_E": -44,
+    "scope_state": 0,
+    "ECX": "same saved actual Game, unused by park body",
+    "parameter": "Full original incoming DWORD reloaded at004D97F4"
+  },
+  "park_distinct_frame_contract": {
+    "argument_home": {
+      "capture": "004D649C kept pointer into EDI",
+      "low_byte_reuse": "004D64A6 reset /004D64D5 set first input home as isKept",
+      "park_flag": "CURRENT second home low byte reread per widget",
+      "qualification": "Explicit raw home/preimage required, not semantic bool/vector"
+    },
+    "normal_free": {
+      "state_minus1": "004D6703 before free004D670E",
+      "header_clears": true,
+      "qualification": "Do not copy this extent onto pause normal free."
+    },
+    "native": "707B/218ops, two live stacked homes, RET8, ECX unused.",
+    "registry": "Read CURRENT slot then captured screen/vptr/24; Source dispatcher must use actual captured target/receiver, not fresh semantic slot lookup.",
+    "FP": "Original FADD/FSUB double offset, FLDZ, single spill/reload and flags across intervening x87 operations need physical proof. No ordinary double/current-field-retest shortcut.",
+    "temporary": "Actual raw collected-vector header and full required scratch/home preimage; state0 before collector, disarm before normal free and clear descriptor."
+  },
+  "screen_bank_preimage": {
+    "address": "00E18B60",
+    "bytes": 380,
+    "kind": "loader zero-fill preimage",
+    "sha256": "08c3e5bbea4fba57201a69d4bf70a0d255df921fdef4924c22da087f9338c2bc",
+    "all_zero": true,
+    "meaning": "Analysis-image/loader preimage only, not current Source published raw screen/owner supplier"
+  },
+  "park_offset": {
+    "address": "00CE47A0",
+    "hex": "0000000000408f40",
+    "binding": "borrow actual GameNativeReadOnlyData::data_at(...,8), not literal value"
+  },
+  "collector_profile_table": {
+    "profile": "00CEE290",
+    "slot24": "00CEE2B4",
+    "target": "0054E370",
+    "hex": "70e35400"
+  },
+  "remaining_provider_inventory": [
+    {
+      "native": "004BEC00 /00A93020",
+      "status": "real raw source and actual application context suppliers exist",
+      "Source": [
+        "get_native_input_action_owner_004bec00",
+        "refresh_native_input_action_contexts_00a93020"
+      ],
+      "suppliers": [
+        "GameInputRuntime::action_context()",
+        "GameInputActions::configuration_context()"
+      ],
+      "required": "Borrow SAME existing owner/publication/lifetime/records/devices/listeners/timing/callback services; do not construct another runtime or cache the two getter results."
+    },
+    {
+      "native": "00AA6750 /00AA8240",
+      "status": "actual raw normal Source exists with explicit provider/scratch domains",
+      "required": "Real authenticated data, SAME GUI process state, mapped concrete transform dispatch/profiles and retained graph/scratch. Setter naked-frame error transport remains unproven."
+    },
+    {
+      "native": "004D6480",
+      "status": "full raw provider not selected/closed",
+      "required": "Live95 raw registry/current collector dispatch, actual>=122h collected page/widget storage, exact home/preimage/FP/diagnostic/cleanup epochs, actual CE47A0 alias."
+    },
+    {
+      "native": "0054E440",
+      "status": "461B/141ops raw body not supplied by HudHintsState/std::string host projection",
+      "required": "Genuine7Ch hint owner +20 current virtual34 widget service, currentE188A8/whole4D94F0, separate input getter/reset calls, actual NativeString pools/temporaries and full award/hint services."
+    },
+    {
+      "native": "004D94F0",
+      "status": "raw Game/frame/park dependency of whole hint advance",
+      "required": "No identity/branch shortcut from callerGame to CURRENT E188A8; full raw method/provider contract remains separate."
+    },
+    {
+      "native": "004E1CA0 /0068E5B0 /0068E420 /00690FD0 and string helpers",
+      "status": "named pieces/models exist; no whole raw54E440 composition established here",
+      "required": "Actual current award owner/name headers/pool domain/virtual widgets and two temporary unwind scopes, including real nonempty TriggerHint tail."
+    },
+    {
+      "native": "00E18B60 +screen virtual24",
+      "status": "actual warm raw registry/creator/target closure not provided by static preimage or semantic FrontEndScreenTable",
+      "required": "Same mutable publication bank and genuine full concrete screen creators. Base4F75D0 RET4 is valid only at exact captured target; other cases4F8F00/509DA0/518E00 remain independent."
+    },
+    {
+      "native": "actualGame /00E198C4 roots",
+      "status": "whole Source owner/caller binding still required",
+      "required": "Same actual71A0h Game and current mission/HUD/hints roots/heaps/lifetimes, not GamePauseState/defaultzero or readonly-image data. Existing raw frontend parent requires whole call_004d95f0."
+    }
+  ],
+  "existing_projection_gap": {
+    "file": "src/game_hosts_menu.cpp",
+    "line": 1332,
+    "actual": "FrontEndManager::reset_interface_stack [004d95f0] logs unimplemented",
+    "meaning": "Does not implement raw required frontend pause provider."
+  },
+  "collector_transitive_reuse": {
+    "comparisons": [
+      {
+        "role": "PushBack",
+        "left": "004D6790",
+        "right": "0046C450",
+        "bytes_each": 105,
+        "instructions_each": 44,
+        "all_instructions_match": true,
+        "register_width_direction_stack_operands_equal": true,
+        "branch_indices_equal": true,
+        "call_rows": [
+          {
+            "left_site": "004D67D9",
+            "left_target": "00BF6713",
+            "right_site": "0046C499",
+            "right_target": "00BF6713",
+            "different": false
+          },
+          {
+            "left_site": "004D67EC",
+            "left_target": "004D3B70",
+            "right_site": "0046C4AC",
+            "right_target": "0046B4A0",
+            "different": true
+          }
+        ],
+        "different_call_sites": 1,
+        "allowed_data_relocations": [],
+        "raw_bytes_identical": false
+      },
+      {
+        "role": "InsertOne",
+        "left": "004D3B70",
+        "right": "0046B4A0",
+        "bytes_each": 137,
+        "instructions_each": 56,
+        "all_instructions_match": true,
+        "register_width_direction_stack_operands_equal": true,
+        "branch_indices_equal": true,
+        "call_rows": [
+          {
+            "left_site": "004D3B96",
+            "left_target": "00BF6713",
+            "right_site": "0046B4C6",
+            "right_target": "00BF6713",
+            "different": false
+          },
+          {
+            "left_site": "004D3BA3",
+            "left_target": "00BF6713",
+            "right_site": "0046B4D3",
+            "right_target": "00BF6713",
+            "different": false
+          },
+          {
+            "left_site": "004D3BC0",
+            "left_target": "004D1B20",
+            "right_site": "0046B4F0",
+            "right_target": "0046AFB0",
+            "different": true
+          },
+          {
+            "left_site": "004D3BCD",
+            "left_target": "00BF6713",
+            "right_site": "0046B4FD",
+            "right_target": "00BF6713",
+            "different": false
+          },
+          {
+            "left_site": "004D3BE3",
+            "left_target": "00BF6713",
+            "right_site": "0046B513",
+            "right_target": "00BF6713",
+            "different": false
+          }
+        ],
+        "different_call_sites": 1,
+        "allowed_data_relocations": [],
+        "raw_bytes_identical": false
+      },
+      {
+        "role": "InsertN",
+        "left": "004D1B20",
+        "right": "0046AFB0",
+        "bytes_each": 436,
+        "instructions_each": 181,
+        "all_instructions_match": true,
+        "register_width_direction_stack_operands_equal": true,
+        "branch_indices_equal": true,
+        "call_rows": [
+          {
+            "left_site": "004D1B69",
+            "left_target": "004CEDC0",
+            "right_site": "0046AFF9",
+            "right_target": "0046A400",
+            "different": true
+          },
+          {
+            "left_site": "004D1BCB",
+            "left_target": "004B85F0",
+            "right_site": "0046B05B",
+            "right_target": "00466CE0",
+            "different": true
+          },
+          {
+            "left_site": "004D1BDE",
+            "left_target": "004C8D20",
+            "right_site": "0046B06E",
+            "right_target": "00468F60",
+            "different": true
+          },
+          {
+            "left_site": "004D1BEC",
+            "left_target": "004CB100",
+            "right_site": "0046B07C",
+            "right_target": "00469950",
+            "different": true
+          },
+          {
+            "left_site": "004D1BFD",
+            "left_target": "004C8D20",
+            "right_site": "0046B08D",
+            "right_target": "00468F60",
+            "different": true
+          },
+          {
+            "left_site": "004D1C1C",
+            "left_target": "00BF65AC",
+            "right_site": "0046B0AC",
+            "right_target": "00BF65AC",
+            "different": false
+          },
+          {
+            "left_site": "004D1C60",
+            "left_target": "004C8D20",
+            "right_site": "0046B0F0",
+            "right_target": "00468F60",
+            "different": true
+          },
+          {
+            "left_site": "004D1C7A",
+            "left_target": "004CB100",
+            "right_site": "0046B10A",
+            "right_target": "00469950",
+            "different": true
+          },
+          {
+            "left_site": "004D1C92",
+            "left_target": "004C2F30",
+            "right_site": "0046B122",
+            "right_target": "00468440",
+            "different": true
+          },
+          {
+            "left_site": "004D1CA8",
+            "left_target": "004C8D20",
+            "right_site": "0046B138",
+            "right_target": "00468F60",
+            "different": true
+          },
+          {
+            "left_site": "004D1CB3",
+            "left_target": "004C2F50",
+            "right_site": "0046B143",
+            "right_target": "00468460",
+            "different": true
+          },
+          {
+            "left_site": "004D1CC5",
+            "left_target": "004C2F30",
+            "right_site": "0046B155",
+            "right_target": "00468440",
+            "different": true
+          }
+        ],
+        "different_call_sites": 11,
+        "allowed_data_relocations": [],
+        "raw_bytes_identical": false
+      },
+      {
+        "role": "Length",
+        "left": "004CEDC0",
+        "right": "0046A400",
+        "bytes_each": 105,
+        "instructions_each": 23,
+        "all_instructions_match": true,
+        "register_width_direction_stack_operands_equal": true,
+        "branch_indices_equal": true,
+        "call_rows": [
+          {
+            "left_site": "004CEDF8",
+            "left_target": "00408720",
+            "right_site": "0046A438",
+            "right_target": "00408720",
+            "different": false
+          },
+          {
+            "left_site": "004CEE0D",
+            "left_target": "00411700",
+            "right_site": "0046A44D",
+            "right_target": "00411700",
+            "different": false
+          },
+          {
+            "left_site": "004CEE24",
+            "left_target": "00BF6885",
+            "right_site": "0046A464",
+            "right_target": "00BF6885",
+            "different": false
+          }
+        ],
+        "different_call_sites": 0,
+        "allowed_data_relocations": [
+          {
+            "index": 1,
+            "role": "equivalent EH handler token, separately decoded",
+            "left": "00C65B28",
+            "right": "00C61C58"
+          }
+        ],
+        "raw_bytes_identical": false
+      },
+      {
+        "role": "Allocate",
+        "left": "004B85F0",
+        "right": "00466CE0",
+        "bytes_each": 85,
+        "instructions_each": 25,
+        "all_instructions_match": true,
+        "register_width_direction_stack_operands_equal": true,
+        "branch_indices_equal": true,
+        "call_rows": [
+          {
+            "left_site": "004B8601",
+            "left_target": "00BF681B",
+            "right_site": "00466CF1",
+            "right_target": "00BF681B",
+            "different": false
+          },
+          {
+            "left_site": "004B8629",
+            "left_target": "00BF6340",
+            "right_site": "00466D19",
+            "right_target": "00BF6340",
+            "different": false
+          },
+          {
+            "left_site": "004B8640",
+            "left_target": "00BF6885",
+            "right_site": "00466D30",
+            "right_target": "00BF6885",
+            "different": false
+          }
+        ],
+        "different_call_sites": 0,
+        "allowed_data_relocations": [],
+        "raw_bytes_identical": false
+      },
+      {
+        "role": "MoveNonzero",
+        "left": "004C8D20",
+        "right": "00468F60",
+        "bytes_each": 48,
+        "instructions_each": 18,
+        "all_instructions_match": true,
+        "register_width_direction_stack_operands_equal": true,
+        "branch_indices_equal": true,
+        "call_rows": [
+          {
+            "left_site": "004C8D42",
+            "left_target": "00BF67A7",
+            "right_site": "00468F82",
+            "right_target": "00BF67A7",
+            "different": false
+          }
+        ],
+        "different_call_sites": 0,
+        "allowed_data_relocations": [],
+        "raw_bytes_identical": false
+      },
+      {
+        "role": "FillCount",
+        "left": "004CB100",
+        "right": "00469950",
+        "bytes_each": 46,
+        "instructions_each": 21,
+        "all_instructions_match": true,
+        "register_width_direction_stack_operands_equal": true,
+        "branch_indices_equal": true,
+        "call_rows": [],
+        "different_call_sites": 0,
+        "allowed_data_relocations": [],
+        "raw_bytes_identical": true
+      },
+      {
+        "role": "FillRange",
+        "left": "004C2F30",
+        "right": "00468440",
+        "bytes_each": 30,
+        "instructions_each": 13,
+        "all_instructions_match": true,
+        "register_width_direction_stack_operands_equal": true,
+        "branch_indices_equal": true,
+        "call_rows": [],
+        "different_call_sites": 0,
+        "allowed_data_relocations": [],
+        "raw_bytes_identical": true
+      },
+      {
+        "role": "CopyBackward",
+        "left": "004C2F50",
+        "right": "00468460",
+        "bytes_each": 47,
+        "instructions_each": 19,
+        "all_instructions_match": true,
+        "register_width_direction_stack_operands_equal": true,
+        "branch_indices_equal": true,
+        "call_rows": [
+          {
+            "left_site": "004C2F73",
+            "left_target": "00BF67A7",
+            "right_site": "00468483",
+            "right_target": "00BF67A7",
+            "different": false
+          }
+        ],
+        "different_call_sites": 0,
+        "allowed_data_relocations": [],
+        "raw_bytes_identical": false
+      },
+      {
+        "role": "Scene allocation versus canonical real provider",
+        "left": "00BCFEB0",
+        "right": "00466CE0",
+        "bytes_each": 85,
+        "instructions_each": 25,
+        "all_instructions_match": true,
+        "register_width_direction_stack_operands_equal": true,
+        "branch_indices_equal": true,
+        "call_rows": [
+          {
+            "left_site": "00BCFEC1",
+            "left_target": "00BF681B",
+            "right_site": "00466CF1",
+            "right_target": "00BF681B",
+            "different": false
+          },
+          {
+            "left_site": "00BCFEE9",
+            "left_target": "00BF6340",
+            "right_site": "00466D19",
+            "right_target": "00BF6340",
+            "different": false
+          },
+          {
+            "left_site": "00BCFF00",
+            "left_target": "00BF6885",
+            "right_site": "00466D30",
+            "right_target": "00BF6885",
+            "different": false
+          }
+        ],
+        "different_call_sites": 0,
+        "allowed_data_relocations": [],
+        "raw_bytes_identical": false
+      },
+      {
+        "role": "Scene length versus canonical real provider",
+        "left": "00BD0590",
+        "right": "0046A400",
+        "bytes_each": 105,
+        "instructions_each": 23,
+        "all_instructions_match": true,
+        "register_width_direction_stack_operands_equal": true,
+        "branch_indices_equal": true,
+        "call_rows": [
+          {
+            "left_site": "00BD05C8",
+            "left_target": "00408720",
+            "right_site": "0046A438",
+            "right_target": "00408720",
+            "different": false
+          },
+          {
+            "left_site": "00BD05DD",
+            "left_target": "00411700",
+            "right_site": "0046A44D",
+            "right_target": "00411700",
+            "different": false
+          },
+          {
+            "left_site": "00BD05F4",
+            "left_target": "00BF6885",
+            "right_site": "0046A464",
+            "right_target": "00BF6885",
+            "different": false
+          }
+        ],
+        "different_call_sites": 0,
+        "allowed_data_relocations": [
+          {
+            "index": 1,
+            "role": "equivalent EH handler token, separately decoded",
+            "left": "00CC5478",
+            "right": "00C61C58"
+          }
+        ],
+        "raw_bytes_identical": false
+      }
+    ],
+    "EH": [
+      {
+        "action": "00C65B20",
+        "handler": "00C65B28",
+        "FuncInfo": "00D8E4E0",
+        "unwind_map": "00D8E4D8",
+        "previous_state": -1,
+        "maximum_states": 1,
+        "action_receiver": "ECX=EBP-50h",
+        "action_target": "004072D0",
+        "handler_target": "00BF6B43",
+        "FuncInfo_words": [
+          "19930522",
+          "00000001",
+          "00D8E4D8",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000001"
+        ],
+        "normalized_FuncInfo": [
+          429065506,
+          1,
+          "own unwind map",
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "action_and_handler_hex": "8d4db0e9a8177affb8e0e4d800e91110f9ff",
+        "map_and_info_hex": "ffffffff205bc6002205931901000000d8e4d800000000000000000000000000000000000000000001000000"
+      },
+      {
+        "action": "00C61C50",
+        "handler": "00C61C58",
+        "FuncInfo": "00D89358",
+        "unwind_map": "00D89350",
+        "previous_state": -1,
+        "maximum_states": 1,
+        "action_receiver": "ECX=EBP-50h",
+        "action_target": "004072D0",
+        "handler_target": "00BF6B43",
+        "FuncInfo_words": [
+          "19930522",
+          "00000001",
+          "00D89350",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000001"
+        ],
+        "normalized_FuncInfo": [
+          429065506,
+          1,
+          "own unwind map",
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "action_and_handler_hex": "8d4db0e978567affb85893d800e9e14ef9ff",
+        "map_and_info_hex": "ffffffff501cc60022059319010000005093d800000000000000000000000000000000000000000001000000"
+      },
+      {
+        "action": "00CC5470",
+        "handler": "00CC5478",
+        "FuncInfo": "00DFF4BC",
+        "unwind_map": "00DFF4B4",
+        "previous_state": -1,
+        "maximum_states": 1,
+        "action_receiver": "ECX=EBP-50h",
+        "action_target": "004072D0",
+        "handler_target": "00BF6B43",
+        "FuncInfo_words": [
+          "19930522",
+          "00000001",
+          "00DFF4B4",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000001"
+        ],
+        "normalized_FuncInfo": [
+          429065506,
+          1,
+          "own unwind map",
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "action_and_handler_hex": "8d4db0e9581e74ffb8bcf4df00e9c116f3ff",
+        "map_and_info_hex": "ffffffff7054cc002205931901000000b4f4df00000000000000000000000000000000000000000001000000"
+      }
+    ],
+    "full_bodies": 20,
+    "instructions": 848,
+    "source_contract_pins": [
+      {
+        "path": "include/bsp/native_scene_dword_vector_push_back.hpp",
+        "bytes": 1933,
+        "sha256": "f625398a8a8fdcf9db57aa37ed18090813ca530c2e03d2cc1083034e04f72a32",
+        "git_blob": "16bb88003124d8caeaefe04a100d14911b5f3e2f"
+      },
+      {
+        "path": "src/native_scene_dword_vector_push_back.cpp",
+        "bytes": 2119,
+        "sha256": "e52eddf87ab208c36b4d0efea6cdcedea784c31ae43acccae381931e88b3b1ec",
+        "git_blob": "f0d16d4a16b180e27671fd09c61b27bb9a36d443"
+      },
+      {
+        "path": "include/bsp/native_scene_dword_vector_insert.hpp",
+        "bytes": 2447,
+        "sha256": "6cfce807c25821ae9d65d8b76b990c34793df31b0b9920caa320366d8462952d",
+        "git_blob": "831f3e32e500ad99eb6acde7454aed8fabd3ac4d"
+      },
+      {
+        "path": "src/native_scene_dword_vector_insert.cpp",
+        "bytes": 6473,
+        "sha256": "ffd200811897d4626ae5b13fc4f6cb74daaebef43c99702df99befd13157479a",
+        "git_blob": "c68430e65b67724de4706d1372827022af6842f5"
+      },
+      {
+        "path": "include/bsp/native_scene_dword_vector_allocation.hpp",
+        "bytes": 1871,
+        "sha256": "4d1db8661952a7eec9a8944a5a07fce5df32071bee7b519d3e7f1b81695d454d",
+        "git_blob": "6321968ede441af722bf18114c473509d50a7bb7"
+      },
+      {
+        "path": "src/native_scene_dword_vector_allocation.cpp",
+        "bytes": 820,
+        "sha256": "b6435b655c5f7cf6391d2b4ff68a729112382607661bbd148dcd3837e8949c9a",
+        "git_blob": "3b5a8a2861fcb5a000108693e186ff3c6aa6f744"
+      },
+      {
+        "path": "include/bsp/native_scene_dword_move_nonzero.hpp",
+        "bytes": 1311,
+        "sha256": "b6c522fddc880ddeb9b0ad78dfbf001e951fb678b1488666bba05833981f0419",
+        "git_blob": "37a720ffdaee9ce84ab6536328d4c6e9aa2db87d"
+      },
+      {
+        "path": "src/native_scene_dword_move_nonzero.cpp",
+        "bytes": 996,
+        "sha256": "b7cb4a0d41a6c2c1715f13a1d45f69a02d6026308d5d3a3f582770fb058f323f",
+        "git_blob": "b65c8d7cd0c47c6c8395caaef506d05eb4d854c9"
+      },
+      {
+        "path": "include/bsp/native_scene_dword_vector_ranges.hpp",
+        "bytes": 2090,
+        "sha256": "445c8c1c56b3f6172602411f46c9524d69099d3b54199b68aaf8adbda5f14442",
+        "git_blob": "15c35eeb7b5030e30f81c65f0083dd59cf28b427"
+      },
+      {
+        "path": "src/native_scene_dword_vector_ranges.cpp",
+        "bytes": 1215,
+        "sha256": "1396e216684fde725c976a35d84102c7a74886698ca9192a8bd94ef00a793072",
+        "git_blob": "68c96c67fc9c0b23c8967d3cb009768e54f3cb7b"
+      },
+      {
+        "path": "include/bsp/native_scene_dword_fill_alias.hpp",
+        "bytes": 1361,
+        "sha256": "f9371b7d36c772157f381f72bf04877281f40e7ed23c9a4dddd8fd6c80cfe7f4",
+        "git_blob": "f53b88a690f9c6ed553ee22f9068483517f6c39b"
+      },
+      {
+        "path": "src/native_scene_dword_fill_alias.cpp",
+        "bytes": 317,
+        "sha256": "2c7843c82c7fef4016b816225f075d4d2baccffbb2115d0530fcfa23d0751866",
+        "git_blob": "8c63bb78d7e7ed925b5b8cb3ab4019f66bc9cd3f"
+      },
+      {
+        "path": "include/bsp/native_dword_fill_ranges.hpp",
+        "bytes": 1622,
+        "sha256": "2aa80307d15cff371497456d97161b00b706de89a979d3398e2b8fe857919c5f",
+        "git_blob": "e268823c57a07a8a479198400328f42c2b3c2d99"
+      },
+      {
+        "path": "src/native_dword_fill_ranges.cpp",
+        "bytes": 1743,
+        "sha256": "613cb9e7d485fd7a52d25acf726a2c4dc9ad03cdb8009a6238de50439d09e412",
+        "git_blob": "f099b147bbfac9d51fe547060d8871034e72bc03"
+      },
+      {
+        "path": "include/bsp/native_singleton_vector_allocation.hpp",
+        "bytes": 2149,
+        "sha256": "2910d0e12e3ecce6820cc1a083a3bfba9c5478fbbea9cdf9dc4c2926bdb0296a",
+        "git_blob": "182ba31dcb54f78b0aae4d42c69ce8e5a7ee4414"
+      },
+      {
+        "path": "src/native_singleton_vector_allocation.cpp",
+        "bytes": 1966,
+        "sha256": "4771197c3f1ead7dd635637c849c60f8f525c4d482dcc4a33c8617922362e09e",
+        "git_blob": "3d4ea10f5e6a8e0a9fe75db0b96ceffd3bdb73c7"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+      },
+      {
+        "path": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+        "bytes": 1471,
+        "sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+        "git_blob": "4984c27fa603fe05a308d701c54dafba6110de7e"
+      },
+      {
+        "path": "src/native_invalid_parameter_noinfo_call.cpp",
+        "bytes": 1089,
+        "sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+        "git_blob": "bf2a25c5f28d9eb10d37f7099faf9adaabb0a97d"
+      },
+      {
+        "path": "include/bsp/native_legacy_sbo_string.hpp",
+        "bytes": 2115,
+        "sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+        "git_blob": "1ede441960632c9f604e8ade53c16c9c461d9830"
+      },
+      {
+        "path": "src/native_legacy_sbo_string.cpp",
+        "bytes": 7772,
+        "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+        "git_blob": "f8c0f47406710a7e078d7cf09c0529e3838665c5"
+      },
+      {
+        "path": "include/bsp/native_legacy_exception_owner.hpp",
+        "bytes": 3232,
+        "sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+        "git_blob": "574905ddb640b9cd3edf3cfa70feef903c165b42"
+      },
+      {
+        "path": "src/native_legacy_exception_owner.cpp",
+        "bytes": 4352,
+        "sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33",
+        "git_blob": "a0c7fc145166c2c668930f64bb79f07c06ccda13"
+      },
+      {
+        "path": "docs/CC16_NATIVE_GAME_PAUSE_READINESS.md",
+        "bytes": 10655,
+        "sha256": "b60f4cd4f1039cf1e98dacb738733b3930a4e39db0a04495870e287705ecf6a0",
+        "git_blob": "0691a5c2398944a8e6a46ef449f46b1c12e8a59d"
+      },
+      {
+        "path": "src/game_hosts_scene_contents.cpp",
+        "bytes": 322630,
+        "sha256": "7d297cdb1ab3d4994b17ba28a6790decf653f5b243ce6003092cf17100616038",
+        "git_blob": "180e8831f1a2259077593f50f1425925edebf22f"
+      }
+    ]
+  },
+  "exact_next_Source_packet": {
+    "address_ownership": [
+      "0054E370"
+    ],
+    "native_bytes": 16,
+    "native_instructions": 5,
+    "new_files": [
+      "include/bsp/native_hud_hints_collect.hpp",
+      "src/native_hud_hints_collect.cpp",
+      "docs/CC16_NATIVE_HUD_HINTS_COLLECT.md",
+      "reports/cc16_native_hud_hints_collect.json"
+    ],
+    "public_entry_proposal": "void collect_native_hud_hints_children_0054e370(void* actual_hints, const NativeHudHintsCollectFrame&)",
+    "frame_fields": [
+      "readable original destination-pointer parameter4 home",
+      "writable child Push parameter4 home",
+      "actual child output8",
+      "actual InsertOne/N metadata and live backing"
+    ],
+    "body": "Write child home with u32(actual_hints)+1Ch ADDRESS; then load CURRENT destination from original home; call actual RawScenePushBack with stable metadata and supplied backing.",
+    "semantics": "Never snapshot page value or skip null; actual late child dereference/callback/allowed valid home-payload aliases preserved. No refcount or object disposal.",
+    "genuine_inputs": "Live genuine7Ch hint receiver/actual page field, actual vector and SAME free/provider domain/provenance retained by caller; no automatic authentication or fabricated object.",
+    "reuse": "Direct push_back_native_scene_dword_vector_0046c450 after full4D6790/4D3B70/4D1B20/all-children/EH equivalence; no new vector alias wrapper.",
+    "old_semantic_API": "unchanged hud_hints_collect_0054e370/HudHintsHost model",
+    "future_checks": "Strict Win32 compile/COFF/native PE/table/call evidence, actual stack/home ordering and real child relocations. No Native ABI/FH3/SEH/runtime claim.",
+    "implementation_in_this_packet": false,
+    "whole_pause_or_registry_closed_by_leaf": false
+  },
+  "failure_and_activation_limits": [
+    "Ordinary C++ cleanup composition is qualified; original FH3/SEH/hardware faults, private stack/home identity and actual native exception timing remain unproven.",
+    "Before9699 no vector cleanup; afterarm exactCURRENTbegin tidy on failure; normalfree inside original scope without clears. Do not import park disarm timing.",
+    "Current CRT/source malloc/free and actual installed handlers/lifetimes required. No new guard, fallback, terminal or rollback/replay policy.",
+    "Only an approved concrete body may be implemented next; no Source, guards, caller binding or shared metadata added by readiness.",
+    "Whole raw pause/park/hint/screens/Game binding and all normal/exception/common/runtime activation gates remain separate."
+  ],
+  "native_call_verification": {
+    "checked": 124,
+    "failed": 0,
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\call_verification.txt",
+      "bytes": 99,
+      "sha256": "5c6f8f9be785c3e98c8b1e78c7b69c18a7ba59693a771e0f35909b36d3713841"
+    },
+    "command": "python tools/verify_report_calls.py local/native_game_pause_caller_readiness/original_call_rows.json",
+    "qualification": "Direct original rows only. Dynamic park virtual24 is not forced to a target by this checker."
+  },
+  "unchanged_source_pins": [
+    {
+      "path": "include/bsp/native_platform_focus_owners.hpp",
+      "bytes": 4708,
+      "sha256": "0738ee83b33d44ee79852f115e79515a85d653452d70fc920ab63e3675c51865",
+      "git_blob": "5d8de2a99377eca1b22b24ccd0f016f1b5441cf4"
+    },
+    {
+      "path": "src/native_platform_focus_owners.cpp",
+      "bytes": 10371,
+      "sha256": "efff43cee498b710d53d4b2380e4ae89791dc578371d35b2be29327b0fedfe73",
+      "git_blob": "451ff6e886f73c7e15e4b30366a59ed1c2054a0b"
+    },
+    {
+      "path": "include/bsp/native_front_end_manager_destruction.hpp",
+      "bytes": 2190,
+      "sha256": "82cd89a5ce6dab66de8b96284b1eb185b1d2d959d3deebd3d2e0fefa8067839c",
+      "git_blob": "8520215c120b94fc8eb90cdcfdae66ac77fa4830"
+    },
+    {
+      "path": "src/native_front_end_manager_destruction.cpp",
+      "bytes": 886,
+      "sha256": "4139ddadcca01ae630b4e9a00a93b5d5d2b1418042a015abd2c7ed459860fac5",
+      "git_blob": "ed5ed729674349aa50cbdbcf2addc081fe063eaf"
+    },
+    {
+      "path": "include/bsp/native_input_action_owner.hpp",
+      "bytes": 3733,
+      "sha256": "897cf59eefbad78b8ad7d004fdf454c053eb6820fc1aacc8996bc020e387a0c7",
+      "git_blob": "91ea4e880201290db634ea421bc451943aa15b57"
+    },
+    {
+      "path": "src/native_input_action_owner.cpp",
+      "bytes": 4438,
+      "sha256": "9d97b7ddbd61e1364c8918a7c2b784231ddce4d64e1d345b1be84105886b719c",
+      "git_blob": "9a867dbefc119066901c3c9dd4d5c9b96ba4d0ff"
+    },
+    {
+      "path": "include/bsp/native_input_action_contexts.hpp",
+      "bytes": 1164,
+      "sha256": "b55403ce44c216e8bbc740f4277baa0989a1eeaca165175277459f912e2bbd08",
+      "git_blob": "417c0156555956903335642f22a152016a59fe01"
+    },
+    {
+      "path": "src/native_input_action_contexts.cpp",
+      "bytes": 2127,
+      "sha256": "a9d7019dedce0339197890c338e2afe8447faef2581bd3cfbaa16db78eb476ce",
+      "git_blob": "ed2a149a501c2d0a81969246050c51a9ea160941"
+    },
+    {
+      "path": "include/bsp/native_input_action_configuration.hpp",
+      "bytes": 2406,
+      "sha256": "9ba35a070301398afd827c27e8d80b131f880aa25498d49c0a48b578ca43fb94",
+      "git_blob": "6a7e5c439135e60fca625bd3f6ff0ae0fd2cb36f"
+    },
+    {
+      "path": "include/bsp/game_input_runtime.hpp",
+      "bytes": 3456,
+      "sha256": "b9c2f1f29cb861d7075f8f641aff0956b2d8d9016e38e5759cdad2d925aee2b1",
+      "git_blob": "b9074e6d0d1bc3bb4d53d1ba17c942aa39083883"
+    },
+    {
+      "path": "src/game_input_runtime.cpp",
+      "bytes": 8777,
+      "sha256": "a251c8c1e8dd6cdb8e853e55c5a94550be0fd0d45c86b612d23d9219d62909b0",
+      "git_blob": "5d2fee57209f176bca11e51ad4a387760aa1be88"
+    },
+    {
+      "path": "include/bsp/game_input_actions.hpp",
+      "bytes": 3534,
+      "sha256": "b7167ea53785ef2c507929151520c00566df4b3827fda9ab09e7198b5720fd8b",
+      "git_blob": "61c17689f4728f3ceecbc9f9b583f3f9d499af24"
+    },
+    {
+      "path": "src/game_input_actions.cpp",
+      "bytes": 3774,
+      "sha256": "d22cf3b502ca0a898a7b2e092a9d927959f682af2e26b78c449501f8c6570ce8",
+      "git_blob": "a09f1c234e3cd81c293659c1f366c7c5629c32e4"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_resolved_position.hpp",
+      "bytes": 2378,
+      "sha256": "17672fb9b31bbfec5faea2568e62edc0b2fe88a431348a5abab3980eb3a601ca",
+      "git_blob": "f6b05430f5846c6cd09d1c242a6fe2e34d388c8c"
+    },
+    {
+      "path": "src/native_gui_widget_resolved_position.cpp",
+      "bytes": 2784,
+      "sha256": "385c4fd6a50d75e7734cce7442923d5cf6dfc1830a444d49257d9cae2fc04457",
+      "git_blob": "bf65a9da0a9264cf39b80ecc092c4cb48d01fe12"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_resolved_setter.hpp",
+      "bytes": 2905,
+      "sha256": "f2b163215c4cb2db3154f983a64f0b96b56b73958d201dde6b12053cc48cfd7a",
+      "git_blob": "5ee5d91929ce399f7500e0232f8f76b1ff4cf19d"
+    },
+    {
+      "path": "src/native_gui_widget_resolved_setter.cpp",
+      "bytes": 5064,
+      "sha256": "305c47a4d41426775a134e1517a3eef62d2248d4e05c04046eedebd39aaab937",
+      "git_blob": "649a8651b68909f94293109ff2fa7a1c9bfcf5be"
+    },
+    {
+      "path": "include/bsp/gui_screens_3.hpp",
+      "bytes": 37616,
+      "sha256": "5b29b98b16bc9a3578604618056449aaa6cfb9bb40b82b59cefe644eb5827249",
+      "git_blob": "dd8adf7b23a5a98d7366bf47d0d6c304f7fd7ce3"
+    },
+    {
+      "path": "src/gui_screens_3.cpp",
+      "bytes": 53068,
+      "sha256": "f71140d227086a31e63174c93ff7987c3095a8092d4b6a932866977adc412fd5",
+      "git_blob": "bde195f5d7f36a197ed98785bb619b2cca9bf619"
+    },
+    {
+      "path": "include/bsp/frontend_states.hpp",
+      "bytes": 8366,
+      "sha256": "3e246376a1571ab4a158cdeccacdd570c7bc51211dc4418d5dc0512e01f46afa",
+      "git_blob": "fe3d4e4fae9839902e923793ad615492f8a348f8"
+    },
+    {
+      "path": "include/bsp/frontend_state_machine.hpp",
+      "bytes": 12017,
+      "sha256": "2a6558ee41078b0b97183ef7038870623d35fc7854ddf34de2a16ab46055f2ac",
+      "git_blob": "889a1abb8d110b74fc2885eb44bb4bf1e57b7350"
+    },
+    {
+      "path": "src/frontend_state_machine.cpp",
+      "bytes": 6010,
+      "sha256": "3a4b1fd9c62fa0427be56b61fafecc609d21747ca65c38c5b9e6bf6945de9519",
+      "git_blob": "9e05c6f1e9dc7064e5d06ed2e1d75ff413abe8f4"
+    },
+    {
+      "path": "include/bsp/frontend_screen_sets.hpp",
+      "bytes": 9569,
+      "sha256": "93cf8cde5bea502059a34c97e3e30c8e6bfaa589d7ab23babe2c7cbd6be62b10",
+      "git_blob": "86b838f3b14258fa4f803152ed9eb755f164e5b8"
+    },
+    {
+      "path": "src/frontend_screen_sets.cpp",
+      "bytes": 9515,
+      "sha256": "9ee1c8e167246d10ca0d01e17969df6d175357c8adb4dbb2ac66e851e6469ea3",
+      "git_blob": "f89225afa7fa86f1bbb35b129488ef7f8a7f26f8"
+    },
+    {
+      "path": "include/bsp/native_gui_page_registry.hpp",
+      "bytes": 3607,
+      "sha256": "92f55df728ad8ec45fab8182e60c5ac8c7752883edd76eded997364fa984e6cc",
+      "git_blob": "35d7b05ee0805000b9f47b79a961735e443f9391"
+    },
+    {
+      "path": "src/native_gui_page_registry.cpp",
+      "bytes": 6769,
+      "sha256": "df890ebe7e74d5dddb5b014ca9491a874cef905fb4fa86f4003200a05625b89d",
+      "git_blob": "2629526c4774763cb755120a6c966c2c0e9af791"
+    },
+    {
+      "path": "src/game_hosts_menu.cpp",
+      "bytes": 113822,
+      "sha256": "f0c936fa3f0f1ca9b739b1c66428d2f4b5af2b1f15081ea2a36c5346ad4bb052",
+      "git_blob": "53bd558c0b9511967eadaec0d014626f20c44ae2"
+    }
+  ],
+  "vector_source_pins_unchanged_from9e": [
+    {
+      "path": "include/bsp/native_scene_dword_vector_push_back.hpp",
+      "bytes": 1933,
+      "sha256": "f625398a8a8fdcf9db57aa37ed18090813ca530c2e03d2cc1083034e04f72a32",
+      "git_blob": "16bb88003124d8caeaefe04a100d14911b5f3e2f"
+    },
+    {
+      "path": "src/native_scene_dword_vector_push_back.cpp",
+      "bytes": 2119,
+      "sha256": "e52eddf87ab208c36b4d0efea6cdcedea784c31ae43acccae381931e88b3b1ec",
+      "git_blob": "f0d16d4a16b180e27671fd09c61b27bb9a36d443"
+    },
+    {
+      "path": "include/bsp/native_scene_dword_vector_insert.hpp",
+      "bytes": 2447,
+      "sha256": "6cfce807c25821ae9d65d8b76b990c34793df31b0b9920caa320366d8462952d",
+      "git_blob": "831f3e32e500ad99eb6acde7454aed8fabd3ac4d"
+    },
+    {
+      "path": "src/native_scene_dword_vector_insert.cpp",
+      "bytes": 6473,
+      "sha256": "ffd200811897d4626ae5b13fc4f6cb74daaebef43c99702df99befd13157479a",
+      "git_blob": "c68430e65b67724de4706d1372827022af6842f5"
+    },
+    {
+      "path": "include/bsp/native_scene_dword_vector_allocation.hpp",
+      "bytes": 1871,
+      "sha256": "4d1db8661952a7eec9a8944a5a07fce5df32071bee7b519d3e7f1b81695d454d",
+      "git_blob": "6321968ede441af722bf18114c473509d50a7bb7"
+    },
+    {
+      "path": "src/native_scene_dword_vector_allocation.cpp",
+      "bytes": 820,
+      "sha256": "b6435b655c5f7cf6391d2b4ff68a729112382607661bbd148dcd3837e8949c9a",
+      "git_blob": "3b5a8a2861fcb5a000108693e186ff3c6aa6f744"
+    },
+    {
+      "path": "include/bsp/native_scene_dword_move_nonzero.hpp",
+      "bytes": 1311,
+      "sha256": "b6c522fddc880ddeb9b0ad78dfbf001e951fb678b1488666bba05833981f0419",
+      "git_blob": "37a720ffdaee9ce84ab6536328d4c6e9aa2db87d"
+    },
+    {
+      "path": "src/native_scene_dword_move_nonzero.cpp",
+      "bytes": 996,
+      "sha256": "b7cb4a0d41a6c2c1715f13a1d45f69a02d6026308d5d3a3f582770fb058f323f",
+      "git_blob": "b65c8d7cd0c47c6c8395caaef506d05eb4d854c9"
+    },
+    {
+      "path": "include/bsp/native_scene_dword_vector_ranges.hpp",
+      "bytes": 2090,
+      "sha256": "445c8c1c56b3f6172602411f46c9524d69099d3b54199b68aaf8adbda5f14442",
+      "git_blob": "15c35eeb7b5030e30f81c65f0083dd59cf28b427"
+    },
+    {
+      "path": "src/native_scene_dword_vector_ranges.cpp",
+      "bytes": 1215,
+      "sha256": "1396e216684fde725c976a35d84102c7a74886698ca9192a8bd94ef00a793072",
+      "git_blob": "68c96c67fc9c0b23c8967d3cb009768e54f3cb7b"
+    },
+    {
+      "path": "include/bsp/native_scene_dword_fill_alias.hpp",
+      "bytes": 1361,
+      "sha256": "f9371b7d36c772157f381f72bf04877281f40e7ed23c9a4dddd8fd6c80cfe7f4",
+      "git_blob": "f53b88a690f9c6ed553ee22f9068483517f6c39b"
+    },
+    {
+      "path": "src/native_scene_dword_fill_alias.cpp",
+      "bytes": 317,
+      "sha256": "2c7843c82c7fef4016b816225f075d4d2baccffbb2115d0530fcfa23d0751866",
+      "git_blob": "8c63bb78d7e7ed925b5b8cb3ab4019f66bc9cd3f"
+    },
+    {
+      "path": "include/bsp/native_dword_fill_ranges.hpp",
+      "bytes": 1622,
+      "sha256": "2aa80307d15cff371497456d97161b00b706de89a979d3398e2b8fe857919c5f",
+      "git_blob": "e268823c57a07a8a479198400328f42c2b3c2d99"
+    },
+    {
+      "path": "src/native_dword_fill_ranges.cpp",
+      "bytes": 1743,
+      "sha256": "613cb9e7d485fd7a52d25acf726a2c4dc9ad03cdb8009a6238de50439d09e412",
+      "git_blob": "f099b147bbfac9d51fe547060d8871034e72bc03"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_allocation.hpp",
+      "bytes": 2149,
+      "sha256": "2910d0e12e3ecce6820cc1a083a3bfba9c5478fbbea9cdf9dc4c2926bdb0296a",
+      "git_blob": "182ba31dcb54f78b0aae4d42c69ce8e5a7ee4414"
+    },
+    {
+      "path": "src/native_singleton_vector_allocation.cpp",
+      "bytes": 1966,
+      "sha256": "4771197c3f1ead7dd635637c849c60f8f525c4d482dcc4a33c8617922362e09e",
+      "git_blob": "3d4ea10f5e6a8e0a9fe75db0b96ceffd3bdb73c7"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+    },
+    {
+      "path": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+      "bytes": 1471,
+      "sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+      "git_blob": "4984c27fa603fe05a308d701c54dafba6110de7e"
+    },
+    {
+      "path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "bytes": 1089,
+      "sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+      "git_blob": "bf2a25c5f28d9eb10d37f7099faf9adaabb0a97d"
+    },
+    {
+      "path": "include/bsp/native_legacy_sbo_string.hpp",
+      "bytes": 2115,
+      "sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+      "git_blob": "1ede441960632c9f604e8ade53c16c9c461d9830"
+    },
+    {
+      "path": "src/native_legacy_sbo_string.cpp",
+      "bytes": 7772,
+      "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+      "git_blob": "f8c0f47406710a7e078d7cf09c0529e3838665c5"
+    },
+    {
+      "path": "include/bsp/native_legacy_exception_owner.hpp",
+      "bytes": 3232,
+      "sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "git_blob": "574905ddb640b9cd3edf3cfa70feef903c165b42"
+    },
+    {
+      "path": "src/native_legacy_exception_owner.cpp",
+      "bytes": 4352,
+      "sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33",
+      "git_blob": "a0c7fc145166c2c668930f64bb79f07c06ccda13"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GAME_PAUSE_READINESS.md",
+      "bytes": 10655,
+      "sha256": "b60f4cd4f1039cf1e98dacb738733b3930a4e39db0a04495870e287705ecf6a0",
+      "git_blob": "0691a5c2398944a8e6a46ef449f46b1c12e8a59d"
+    },
+    {
+      "path": "src/game_hosts_scene_contents.cpp",
+      "bytes": 322630,
+      "sha256": "7d297cdb1ab3d4994b17ba28a6790decf653f5b243ce6003092cf17100616038",
+      "git_blob": "180e8831f1a2259077593f50f1425925edebf22f"
+    }
+  ],
+  "local_evidence": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\target_status.txt",
+      "bytes": 40,
+      "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\audit.py",
+      "bytes": 13014,
+      "sha256": "8022b7dab3b6dd99ae9a0dd664925a48fab766181954a23427d65e922fa03ccb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\audit.json",
+      "bytes": 84291,
+      "sha256": "de3e98ce2c522b65cf4bb8c5345cb5e3cb800c7b9e99b46578e3cff8a5f5f1e7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\original_call_rows.json",
+      "bytes": 20003,
+      "sha256": "ef1e7dd422c6eaa16a145a0c0b6691dcf584f98d829d7fd791b148caf23ca880"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\call_verification.txt",
+      "bytes": 99,
+      "sha256": "5c6f8f9be785c3e98c8b1e78c7b69c18a7ba59693a771e0f35909b36d3713841"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\write_report.py",
+      "bytes": 15970,
+      "sha256": "1118d647141664388067ff26c444df1f1ca87f4f4d42fd3d1126e6cae262fc53"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\audit.py",
+      "bytes": 11531,
+      "sha256": "07e544a3b130042ea7434d9f0fb71e082e7f035795231d0214ef6f61aeb3d269"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\audit.json",
+      "bytes": 76712,
+      "sha256": "93e77abef5aba5e054446a7b2cb23bf7e9ed28787c39150a1cc93853f15a1c47"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\original_call_rows.json",
+      "bytes": 9443,
+      "sha256": "5ee731642c3b75828ac06ddffaa25c02d5523b1e740ff203367152fbcc13c0b9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\live_00415450.txt",
+      "bytes": 102,
+      "sha256": "dc6f4cde15410778588ee5f620c08333a515206c447c8a3b974d43e16cfde1a9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\live_0041cb90.txt",
+      "bytes": 207,
+      "sha256": "95216fd2fcd0b77fcab49fab0afa65ec8789994cf5e489b448ee05e043e0475f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\live_004c8020.txt",
+      "bytes": 207,
+      "sha256": "fffc751decd51ef84782c21b35c639b01004e3a4ea6ec3b4e93236b5403366e1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\live_004d6480.txt",
+      "bytes": 3413,
+      "sha256": "63211fceec5fbecea748fb69c51868b514234796c093671a1b75271de8d1f724"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\live_004d95f0.txt",
+      "bytes": 2744,
+      "sha256": "346c49defafa9b0ec16cd6b9ed1f70f1cddc093ee60f7d85d4b99ec540c704cf"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\live_004f7180.txt",
+      "bytes": 94,
+      "sha256": "857d32ffe020ecf1fd84a79cd0b60b9b31aa6d24dee0a62b353b467629ceb905"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\live_004f75d0.txt",
+      "bytes": 25,
+      "sha256": "e6075eb490af681d0f9d30eaaafe87dde950e7dc849a1a9253c38774438b4340"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\live_0054e370.txt",
+      "bytes": 77,
+      "sha256": "148e4d2036c81b7b63b072d0a502a06cd7537a8a786266092855ea6c15ea2c59"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\live_0054e440.txt",
+      "bytes": 2221,
+      "sha256": "30bacf57972981eab104b5a74cfac891a7fbac6b4b19f78162ade172c6490493"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\live_00c661b0.txt",
+      "bytes": 98,
+      "sha256": "df53115554afb5b1ded97bda112e272097f3ec3799a184252e06c4a3652b5d19"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\live_00c665a0.txt",
+      "bytes": 98,
+      "sha256": "fbea5d86289686961ce288f2fd564e2150b4e4c2212a8d3248cf296110bfba59"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\live_00ce47a0.txt",
+      "bytes": 45,
+      "sha256": "5705982f7ffb1f32a1924b5a0b5d55b0af47e7b1039ee5683494bc7e7034df77"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\live_00cee2b4.txt",
+      "bytes": 29,
+      "sha256": "046eed51a08ee9421af7b5952f5ede4c549066f46079cd6f40f20af8eded714f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\live_00d8efe8.txt",
+      "bytes": 215,
+      "sha256": "8ea9b2f5e455f9a5514deb1956bfbe85db1d225ce2926e816d3025d1fdbf4313"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\live_00d8f428.txt",
+      "bytes": 215,
+      "sha256": "6fae8f412a919b26a657dd9dbe7145b6b41bc2151d07090967b4c51ea0926eae"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\live_00e18b60.txt",
+      "bytes": 1832,
+      "sha256": "50065f1d8bf991f42443366a65d0744ab90b93a7ff25ce5395bad8a34ef7534f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\live_0041cb90.txt",
+      "bytes": 207,
+      "sha256": "95216fd2fcd0b77fcab49fab0afa65ec8789994cf5e489b448ee05e043e0475f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\live_00466ce0.txt",
+      "bytes": 418,
+      "sha256": "66c51a778be7607f32a60e6769291131d90551e1b5c06e844f1f3d7014f72203"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\live_00468440.txt",
+      "bytes": 146,
+      "sha256": "89a457fc5e87b3ce88dcbcf6c6f500c1fedc7cfca6954087358bd22b2c183eaa"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\live_00468460.txt",
+      "bytes": 227,
+      "sha256": "b8a918eeda53379d3c4536255dd91ee914f96ff4b7dbee337bbe39bb48819834"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\live_00468f60.txt",
+      "bytes": 231,
+      "sha256": "c41a029eba89eb54f4adace6afa266a263535c51c2217c9d778de81a6a528a3e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\live_00469950.txt",
+      "bytes": 223,
+      "sha256": "45a95550a555536659ca8dcf3f28df5489fc07ad17e880d2889e4dfea9b647d2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\live_0046a400.txt",
+      "bytes": 511,
+      "sha256": "bbb7e441c69e2ecdccde8eed4d7f30b1a9e26545236f8564bb7ff6eb13280004"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\live_0046afb0.txt",
+      "bytes": 2108,
+      "sha256": "4a49365d27d3135da98244303f13c865e313cd0dead90af3b9f713748220b048"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\live_0046b4a0.txt",
+      "bytes": 665,
+      "sha256": "37b6719a4e911203b01d6fc25496491b04fa4ebf2356f85db97772fb191eec0b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\live_0046c450.txt",
+      "bytes": 511,
+      "sha256": "ffcf79fd53cea753944d702002c55bf184f9c440347af1c5be192ab2da930720"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\live_004b85f0.txt",
+      "bytes": 418,
+      "sha256": "32046a9f57930943583f7f24027058ff89111a78d02179d600c7ff96b99638c3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\live_004c2f30.txt",
+      "bytes": 146,
+      "sha256": "2091e6ab2009758bbba5db835816c352ada3c2ef60bb3637681d425d3d2b40ea"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\live_004c2f50.txt",
+      "bytes": 227,
+      "sha256": "608495bd1a4d097be99f03309e430b2c347797fcfc7875e37bf3fff70d7fb8ba"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\live_004c8d20.txt",
+      "bytes": 231,
+      "sha256": "c511b3f57e954838d34d7f9ed2e616e86e5556512148355328c2cfb2c61b6de3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\live_004cb100.txt",
+      "bytes": 223,
+      "sha256": "cd4726eabdc676174ad29ddc02c40184276124ad056775f0dd8d49af8f8aff0c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\live_004cedc0.txt",
+      "bytes": 511,
+      "sha256": "ee206e7a1068bf0dbf483e435ae64eb0dfcdd2b7fb7ff60d7114db5676b14689"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\live_004d1b20.txt",
+      "bytes": 2108,
+      "sha256": "95fecbc7df08223bff20207d28d9a18bea1ddf89dbc2e1b12b031f8221d46c19"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\live_004d3b70.txt",
+      "bytes": 665,
+      "sha256": "6857d3d6aa94665e25ea079135de6351d4619ee5ca31928bc1e529661d7410e5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\live_004d6790.txt",
+      "bytes": 511,
+      "sha256": "ef290b6741ee83ed5f1cebf2e2cc06aaff58cfcefc8f3c65c1db78f7147af165"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\live_00bcfeb0.txt",
+      "bytes": 418,
+      "sha256": "8c660c4156e67b9d9373e281e37275d08fc77cae3d20a0e08debb50915a0cf73"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\live_00bd0590.txt",
+      "bytes": 511,
+      "sha256": "b6e0dbb166f0b9b3625fbcbcd991f817b650e28405ac071fd2ec470d275e158c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\live_00c61c50.txt",
+      "bytes": 98,
+      "sha256": "4dd121655bfc599eb05ba8c5179c6395cfc0b2c5c7496396348d7f016e970e00"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\live_00c65b20.txt",
+      "bytes": 98,
+      "sha256": "de16d66d94c0d702008a0f18ea490426f315f8ed3e7f33ec746b2e1360c66291"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\live_00cc5470.txt",
+      "bytes": 98,
+      "sha256": "776dd3fc945ae263bcf3f358cb80142be95cb960a85db52129d38cb4d4d81f8f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\live_00ce37e0.txt",
+      "bytes": 98,
+      "sha256": "a6ebeb5fbf4c7ac51529f600a3d1fb38c57b0437174250d725cf9a5bc552b588"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\live_00d89350.txt",
+      "bytes": 215,
+      "sha256": "ce80a64cd5e8b1f4ea961c2b83a7b851decce75a2298e49929d8ca306aa21d9d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\live_00d8e4d8.txt",
+      "bytes": 215,
+      "sha256": "2a4d0bbb706e15e054fd78c05ecb6bfc1226227b5ff86dbd8ac91ba51ff2c6fd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\local\\native_game_pause_caller_readiness\\collector_family\\live_00dff4b4.txt",
+      "bytes": 215,
+      "sha256": "c275a24311521b76d1dd7c607dfbb8ecb7849760117a32d6418a809f9bf6f375"
+    }
+  ],
+  "document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-pause-caller-readiness\\docs\\CC16_NATIVE_GAME_PAUSE_CALLER_READINESS.md",
+    "bytes": 13970,
+    "sha256": "3e898b8321636ff8e85ab9b1d5b7ac420e2d84a9bb1193a052ac834722647049"
+  },
+  "actions": {
+    "CPP_edits": 0,
+    "builds": 0,
+    "tests": 0,
+    "executables": 0,
+    "probes": 0,
+    "games": 0,
+    "DLL_changes": 0,
+    "Ghidra_writes": 0,
+    "shared_or_guard_edits": 0
+  },
+  "credit": {
+    "new_native_body": 0,
+    "duplicate": 0,
+    "vendor": 0,
+    "ABI": 0,
+    "activation": 0,
+    "runtime": 0
+  }
+}
