@@ -744,5 +744,46 @@
     "project_saved": true,
     "affected_exports_refreshed": true,
     "index_rebuilt": true
+  },
+  "post_merge_common_refresh": {
+    "source_head": "3836c32967d7709393ad71bb3ee910c8cc5cae9f",
+    "reason": "Merged optional coverage-PDB CMake setting and launcher/documentation changes after initial source build.",
+    "MSVC_Win32_MP2_PCH": "PASS",
+    "existing_suites": "2/2",
+    "seconds": 12.46,
+    "BSP_COVERAGE_PDB": false,
+    "three_whole_objects_equal_frozen_initial_entry_link_inputs": [
+      {
+        "file": "native_mission_lua_machine_storage.obj",
+        "whole_object_sha256": "68a0a4cf980920bea21e078631eaefb80fe80c35e350c15f00da5c25fe116a41",
+        "equal_prior_frozen_actual_entry_link_input": true
+      },
+      {
+        "file": "settings_seg29_cc13.obj",
+        "whole_object_sha256": "01015c1e8e2144a6615908c76ba560d8a3e68df49f33775e8610f3f972fc06f9",
+        "equal_prior_frozen_actual_entry_link_input": true
+      },
+      {
+        "file": "singleton_lifetime.obj",
+        "whole_object_sha256": "386824ba4b5224ce24dfa43d84dd09b6c8b1fc64e02011998109d91cdc72171f",
+        "equal_prior_frozen_actual_entry_link_input": true
+      }
+    ],
+    "entry_link_qualification": "Prior unexecuted actual21-entry link retained; the three Core defining objects are byte-identical. No new link/body execution is claimed.",
+    "artifacts": [
+      {
+        "path": "local/function_source_batch8_refresh/artifacts/bsp_game.exe",
+        "bytes": 7497216,
+        "sha256": "20c2d4c770203e7658dc8c399f2b2b9cc3b550e3676e974cbf7b4930fbc6e790",
+        "copied_from": "build/win32/Release/bsp_game.exe"
+      },
+      {
+        "path": "local/function_source_batch8_refresh/artifacts/build.log",
+        "bytes": 2593,
+        "sha256": "eae4da8eef7026426316cc2b871d88efd8b00751816862e8ad13a96a9e663240",
+        "copied_from": "local/function_source_batch8_refresh/build.log"
+      }
+    ],
+    "runtime_activation_credit": 0
   }
 }
