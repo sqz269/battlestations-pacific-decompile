@@ -1241,3 +1241,8 @@ own+populate realrawBCh/settings andraw32-row catalog via8D8190/8D7BC0. Next
 binding is ready-phase actual8D4870 CStringborrow andgenuinecallerinput, notnew
 catalog/semantic.c_str. Nativeaccessor hasno bounds/Englishfallback. See
 CODEX_INITIAL_LANGUAGE_INTEGRATION.md.
+
+Initial-language joined peer Main3cef38659 at af1656af1: canonical Release
+Win32 checks2/2 passed14.14s, exact locale pins unchanged, no forced overlay
+or entry/game execution. Raw settings ready-borrow contracts accepted; actual
+8D4870 Core/App binding advances independently with valid-row/lifetime gates.

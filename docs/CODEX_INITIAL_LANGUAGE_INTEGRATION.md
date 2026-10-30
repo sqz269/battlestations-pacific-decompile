@@ -44,3 +44,8 @@ removal, the restored canonical Win32 build passed both existing checks12.71s;
 cache/project have no forced symbols and the unbound owner entry is discarded.
 The reconstruction ledger records a fragment, not a complete AA09D0 body or
 additional Native body credit.
+
+After joining peer Main `3cef38659`, canonical Release Win32 at
+`af1656af1a51c46febba59e6afda2f0abcf42941` passed both existing checks
+(14.14s). Exact locale Source/provider pins remain unchanged; no forced overlay
+or entry/game execution was used for this joined build.

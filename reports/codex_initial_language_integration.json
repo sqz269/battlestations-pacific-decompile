@@ -15,15 +15,27 @@
   "independent_retirement_review": "gui_frame_lifetime_ACCEPT_SOURCE_CODE_exact_four_pins",
   "independent_source_review_sha256": "3f64a391c30b797b8e1ef04c8790f83244af80d726438a8e59e80e0128e9facf",
   "independent_retirement_review_sha256": "e31f9fb9f79b437772f357f24ea1f1fb0de5ab291568c2e4aea92b2ee14d14e9",
-  "preservation": {"whole_prior_owner_projection_rules": 9, "old_public_methods": 8, "unchanged_providers": 8},
+  "preservation": {
+    "whole_prior_owner_projection_rules": 9,
+    "old_public_methods": 8,
+    "unchanged_providers": 8
+  },
   "strict_objects": {
     "count": 2,
-    "exit_codes": [0, 0],
+    "exit_codes": [
+      0,
+      0
+    ],
     "machine": "014C",
     "core_sha256": "fb22d21fecf4f4eac991ff2d2dfd7f1b2ed4e110bb21000983e2cb6de7f41349",
     "owner_sha256": "6e2f595cb08fab4137562079b568426705e12df2e4f97261147f657c16cccb7f"
   },
-  "canonical_registration": {"commit": "11c4fe246b226127724114a3035b2b08f23adaf0", "target": "bsp_core", "occurrences": 1, "startup_cmake_changed": false},
+  "canonical_registration": {
+    "commit": "11c4fe246b226127724114a3035b2b08f23adaf0",
+    "target": "bsp_core",
+    "occurrences": 1,
+    "startup_cmake_changed": false
+  },
   "retained_link": {
     "head": "11c4fe246b226127724114a3035b2b08f23adaf0",
     "command": "./scripts/build.ps1",
@@ -59,5 +71,17 @@
   "new_tests": 0,
   "source_ready": false,
   "runtime": false,
-  "full_setter_reload_gui": false
+  "full_setter_reload_gui": false,
+  "latest_joined_build": {
+    "head": "af1656af1a51c46febba59e6afda2f0abcf42941",
+    "joined_main": "3cef38659",
+    "command": "./scripts/build.ps1",
+    "configuration": "Release Win32",
+    "exit_code": 0,
+    "existing_checks": "2/2",
+    "ctest_seconds": 14.14,
+    "forced_overlay": false,
+    "log": "local/initial_language_integration_cc16_20261030/joined_main_build.log",
+    "new_entry_or_game_invoked": false
+  }
 }
