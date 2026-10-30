@@ -1168,3 +1168,19 @@ restored, canonicalWin32checks2/2 pass10.46s. Unboundentry normallydiscarded;
 no newentry/gameinvocation. FullAA/option0/raw16/loading/publication/consumer/
 startup/runtime/ABI gates remain; all9Textoff/ac60hold unchanged.
 See CODEX_LOCALE_TEXTUAL_PARSER_INTEGRATION.md.
+
+Canonical textual-operation476ba17c nowlinks actualownerallocation/pool to
+realoption1parser with exactVFSstoredhost/data and3cellidentity proof. Stable
+Context-before-Frame history/privatecompletion, stickyfailure/no drain/retry,
+conservativederiveddebt/CFF140-onlyretirement preserveactualflags/lateflags0.
+Primary+2independentSource/2strict014C/4wholeinverse/6oldmethods+VFS and10helper
+pins pass. JoinedMain081 retainedowner→textual→scanner/record+EH link/checks2/2
+9.24s; overlayremoved/cache+projectrestored, canonicalWin32checks2/2 10.48s.
+No newentry/game invocation. Fullloading/option0/raw16/consumer/Font48/startup/
+runtime/ABI gates remain; all9Textoff/ac60hold unchanged.
+SeparateSDKfrontier93d762: defaultvector >=4096B interioraligneddata conflicts
+withrawdirectfree. Real4Ballocator/ownedSDKroute remains UNPROVEN, requiring
+genuine birth/publicmutators/destruction atNativeepochs and externallyproved
+Nativecapacity/overflow/allocation/publication/escape contracts. No rawvector
+adoption/pointertransplant/vendorbodyrewrite or replacementmodel admitted.
+See CODEX_CANONICAL_TEXTUAL_OPERATION_INTEGRATION.md.

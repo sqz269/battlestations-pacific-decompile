@@ -1,0 +1,262 @@
+{
+  "schema": "bsp.canonical-locale-textual-operation.v1",
+  "utc": "2026-10-30T17:55:06.643134+00:00",
+  "base": "de92fcc96cc06490eeb9d9598a86ce712489f683",
+  "source_ready": false,
+  "runtime": false,
+  "status": "dormant canonical Game-owner composition; two strict Win32 objects passed",
+  "files": {
+    "include/bsp/game_native_locale_manager.hpp": "aababa647cd4c11765528881dbc04c47eb3779d5433079186e299597e801f532",
+    "src/game_native_locale_manager.cpp": "09bc7442c647b9d65e531908d16c6598396d17d60bbf4bf1177d4cd19dd6e074",
+    "include/bsp/game_native_vfs_application.hpp": "afb93e571b81b23ae9f1a422ace53908b785ff3ee3c859348cfacc018663780b",
+    "src/game_native_vfs_application.cpp": "d5f170374607496e31022eae8c33a62d12f458b16b7000e72b45d6da035aaddc"
+  },
+  "doc_sha256": "23a9a2bab7203603415c72fd8aaae4b20cb56b7d620b8dc8532affb95d12a905",
+  "contract_sha256": "55f488831db25d5e0ebd4c429a5f96972ee7221dc494b25bba4bc63cd68a620f",
+  "literal_inverse_projection": {
+    "include/bsp/game_native_locale_manager.hpp": {
+      "base_sha256": "29df6eb2858bebce81bebf4e650c2c6f09d002601bc14ab8eb13bab9b84cae04",
+      "current_blob_sha256": "aababa647cd4c11765528881dbc04c47eb3779d5433079186e299597e801f532",
+      "old_literal_projection_exact": true,
+      "inserted_blocks": [
+        {
+          "line": 4,
+          "lines": 1,
+          "sha256": "64a72da0fdb37815c350dfc2bc1d04124b4189337565e64d14a2e9231eefb882"
+        },
+        {
+          "line": 9,
+          "lines": 2,
+          "sha256": "23ad8dd322471dacf10fd5f41c45bc295daef60de6fe2dd6e60c80ac1a684509"
+        },
+        {
+          "line": 31,
+          "lines": 10,
+          "sha256": "06065582c82d5b7298017d298ae7c4f1653a98ee02efe762dc50d0e5fd2a6928"
+        }
+      ],
+      "enum_restored": false
+    },
+    "src/game_native_locale_manager.cpp": {
+      "base_sha256": "236044fc8a912d66d7ff6e20fe738ba114fa9a49dce1adaccf33ab4e9ff82928",
+      "current_blob_sha256": "09bc7442c647b9d65e531908d16c6598396d17d60bbf4bf1177d4cd19dd6e074",
+      "old_literal_projection_exact": true,
+      "inserted_blocks": [
+        {
+          "line": 5,
+          "lines": 1,
+          "sha256": "ab6be346d0ccbf7ab27b12eb26fea0e8f6bd77fe6abc4e25af3316a8e6068d1e"
+        },
+        {
+          "line": 9,
+          "lines": 1,
+          "sha256": "06dfe7f2c4a1cf9db19a087d1d866bccc76f2acc82bf42d42cffeefc51811235"
+        },
+        {
+          "line": 41,
+          "lines": 12,
+          "sha256": "56bca664e4008820c86c875a432ecb509907bca11effb7848e2806888d99c3b0"
+        },
+        {
+          "line": 90,
+          "lines": 6,
+          "sha256": "06bc291677a4e9183c2d5cbf942c952b54e212e5ec5345e7b8ba21e2691b0ee4"
+        },
+        {
+          "line": 101,
+          "lines": 8,
+          "sha256": "46cdbe81227245fe294957332714477e1d6d0101b826fbf3190dce3c2a969c94"
+        },
+        {
+          "line": 157,
+          "lines": 24,
+          "sha256": "8d5a0c4a191a1eb7927e568dfe1239036e55708f998ce30e3aa505a226de4421"
+        },
+        {
+          "line": 214,
+          "lines": 1,
+          "sha256": "d5078f15176afb767c7b8338d8c05d93717694b8748df58c22ade43b61892627"
+        },
+        {
+          "line": 241,
+          "lines": 1,
+          "sha256": "d5078f15176afb767c7b8338d8c05d93717694b8748df58c22ade43b61892627"
+        },
+        {
+          "line": 283,
+          "lines": 54,
+          "sha256": "6b4847ee27323547fd10f3ef2b860393e3cf4c368f7e2360b92e93cfa79bd9d9"
+        },
+        {
+          "line": 344,
+          "lines": 1,
+          "sha256": "9e2c0ace4cff2be6d948c5778c4821ed196d4ead75471386d5fdcb1a59dbf6ef"
+        },
+        {
+          "line": 359,
+          "lines": 1,
+          "sha256": "9e2c0ace4cff2be6d948c5778c4821ed196d4ead75471386d5fdcb1a59dbf6ef"
+        },
+        {
+          "line": 381,
+          "lines": 1,
+          "sha256": "9e2c0ace4cff2be6d948c5778c4821ed196d4ead75471386d5fdcb1a59dbf6ef"
+        },
+        {
+          "line": 388,
+          "lines": 2,
+          "sha256": "79ffb238c38df459db028479cbf2ceb1a54c55db19a425c78ae26b04babe5ec8"
+        },
+        {
+          "line": 402,
+          "lines": 1,
+          "sha256": "9e2c0ace4cff2be6d948c5778c4821ed196d4ead75471386d5fdcb1a59dbf6ef"
+        },
+        {
+          "line": 426,
+          "lines": 1,
+          "sha256": "9e2c0ace4cff2be6d948c5778c4821ed196d4ead75471386d5fdcb1a59dbf6ef"
+        }
+      ],
+      "enum_restored": true
+    },
+    "include/bsp/game_native_vfs_application.hpp": {
+      "base_sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f",
+      "current_blob_sha256": "afb93e571b81b23ae9f1a422ace53908b785ff3ee3c859348cfacc018663780b",
+      "old_literal_projection_exact": true,
+      "inserted_blocks": [
+        {
+          "line": 55,
+          "lines": 4,
+          "sha256": "f1652fd3b5ac2907f6454262632b95e2de9723b563b8eaedc08136dc48e82727"
+        }
+      ],
+      "enum_restored": false
+    },
+    "src/game_native_vfs_application.cpp": {
+      "base_sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+      "current_blob_sha256": "d5f170374607496e31022eae8c33a62d12f458b16b7000e72b45d6da035aaddc",
+      "old_literal_projection_exact": true,
+      "inserted_blocks": [
+        {
+          "line": 174,
+          "lines": 5,
+          "sha256": "b8bcd43cc303284f9ea69e77c6e2f2e72627dfc7a61eca72296d1c7cdaa28941"
+        }
+      ],
+      "enum_restored": false
+    }
+  },
+  "six_old_method_projection": {
+    "bind_once": {
+      "prior_sha256": "28f41905edd69b1721f1f4d0f12b0d7fe4d093206229358f8e5462ccc3750344",
+      "inverse_exact": true
+    },
+    "initialize_once": {
+      "prior_sha256": "620f4fb591418555384f2ea3638cf3bf199ab97124687de46002ecc4baa24ebe",
+      "inverse_exact": true
+    },
+    "initialized_receiver": {
+      "prior_sha256": "7295a59d57121e4e70302cdbb70b4e11358a078637d9e8fe21611544200059e0",
+      "inverse_exact": true
+    },
+    "before_shared_drain": {
+      "prior_sha256": "89c3ea9620705863079f6418412eee3c92e05fad1e2e596372bc8d316d6a4302",
+      "inverse_exact": true
+    },
+    "delete_registered_current_profile": {
+      "prior_sha256": "1d9faacf18de51f266c23e10cd278aafabe7118a956d72fc19ff9e58248c7efd",
+      "inverse_exact": true
+    },
+    "after_shared_drain": {
+      "prior_sha256": "04b0803fafe736f6279082ada0622adfe02e16df210798d0c2727e9f44c9f099",
+      "inverse_exact": true
+    }
+  },
+  "outside_owned_tracked_changes": [],
+  "unchanged_provider_native_core_host_cmake": {
+    "src/native_locale_textual_parser_storage.cpp": "ce6eb230fcc28644d4d1d3e0180c52ec95ff0dca9e6596357c85d2d6eb1e5c6a",
+    "include/bsp/native_locale_textual_parser_storage.hpp": "d7c24dff54c96ca152f767a7c711d22d475ada0046102b9380881f1db92606b7",
+    "src/native_locale_parser_file_storage.cpp": "d6a6bf6fdb202e7c5085ef09b6f8ccc921f3c1f59c4d0fb4ba1ed0ed8356966f",
+    "src/native_locale_parser_record_storage.cpp": "bd9e2fa264c47cbecdd86b15019f9b68e823e04c2f375b46f37ffea1540eb33b",
+    "src/native_locale_manager_retirement.cpp": "5812c7eed5d4dd10f3df8dff884faf82a776fd1b190525210dbbd4f1e2d59715",
+    "src/native_locale_manager_base_scalar.cpp": "4a9be77a355fbefe17dc2bba56aae69303e24cbb20bd87e147768e03c708d906",
+    "src/native_locale_manager_constructor.cpp": "49fbe8d8a02f37dd2fda4790264d2fc92d42d3925294f41ebea9d745e6acb353",
+    "src/native_singleton_destruction.cpp": "98a476d0aa3d76fa3b79793a6c10dca5ce621b89f9a290eecef23866a483831a",
+    "src/game_hosts_singletons.cpp": "be179a72d97447dcd59620d05a791ac48cea74ab4ccf2468b0445d10c961b38e",
+    "CMakeLists.txt": "a146ace14439f122413d28e776e887cc36f85a015a0bc0e3e1e4735f3133df80"
+  },
+  "strict_objects": {
+    "game_native_locale_manager": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\build\\game_native_locale_textual_operation_object\\game_native_locale_manager.obj",
+      "sha256": "cc14f081fa602d7c3798908cd349b295c792a67f7c11e2e4459a32430c195c6c",
+      "machine": "0x014c",
+      "command": "call \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\Tools\\VsDevCmd.bat\" -arch=x86 -host_arch=x64 -no_logo && cl.exe /nologo /std:c++17 /permissive- /W4 /WX /EHsc /MD /O2 /Ob2 /fp:strict /DNDEBUG /DWIN32 /D_WINDOWS /DNOMINMAX /DWIN32_LEAN_AND_MEAN /I include /c src\\game_native_locale_manager.cpp /Fo\"build\\game_native_locale_textual_operation_object\\game_native_locale_manager.obj\"",
+      "exit_code": 0,
+      "log_sha256": "f3821627fe31ed46773c814857f48a732b52b35f3a650edb9d4bf7299e86ce9b",
+      "selected_external_symbols": [
+        {
+          "symbol": "?parse_textual_option1@GameNativeLocaleManagerProcess@game@bsp@@QAEXPAXIAAVGameNativeVfsApplication@23@ABVGameNativeReadOnlyData@23@ADS6GJPCJ@Z@Z",
+          "section": 136,
+          "defined": true
+        },
+        {
+          "symbol": "?borrows_graph@GameNativeVfsApplication@game@bsp@@QBE_NABVGameSingletonHost@23@ABVGameNativeReadOnlyData@23@@Z",
+          "section": 0,
+          "defined": false
+        },
+        {
+          "symbol": "?parse_native_locale_textual_option1_00aa0020@bsp@@YAXABVNativeLocaleTextualParserContext@1@AAVNativeLocaleTextualParserFrame@1@@Z",
+          "section": 0,
+          "defined": false
+        }
+      ]
+    },
+    "game_native_vfs_application": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\build\\game_native_locale_textual_operation_object\\game_native_vfs_application.obj",
+      "sha256": "2fe377b5a51ba959f853f95230a05d3d768fc31df1336b8d6ba5fc7756869c16",
+      "machine": "0x014c",
+      "command": "call \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\Tools\\VsDevCmd.bat\" -arch=x86 -host_arch=x64 -no_logo && cl.exe /nologo /std:c++17 /permissive- /W4 /WX /EHsc /MD /O2 /Ob2 /fp:strict /DNDEBUG /DWIN32 /D_WINDOWS /DNOMINMAX /DWIN32_LEAN_AND_MEAN /I include /c src\\game_native_vfs_application.cpp /Fo\"build\\game_native_locale_textual_operation_object\\game_native_vfs_application.obj\"",
+      "exit_code": 0,
+      "log_sha256": "396d9e68fee2bef968679f27788434af07057b6ab8c918af3cd7ad9726e04fc3",
+      "selected_external_symbols": [
+        {
+          "symbol": "?borrows_graph@GameNativeVfsApplication@game@bsp@@QBE_NABVGameSingletonHost@23@ABVGameNativeReadOnlyData@23@@Z",
+          "section": 152,
+          "defined": true
+        }
+      ]
+    }
+  },
+  "defined_method_symbol_receipt": {
+    "object_sha256": "cc14f081fa602d7c3798908cd349b295c792a67f7c11e2e4459a32430c195c6c",
+    "tool": "dumpbin /nologo /symbols on existing object only",
+    "symbol": "?parse_textual_option1@GameNativeLocaleManagerProcess@game@bsp@@QAEXPAXIAAVGameNativeVfsApplication@23@ABVGameNativeReadOnlyData@23@ADS6GJPCJ@Z@Z",
+    "actual_defined_external_row": "18B 00000000 SECT88 notype ()    External     | ?parse_textual_option1@GameNativeLocaleManagerProcess@game@bsp@@QAEXPAXIAAVGameNativeVfsApplication@23@ABVGameNativeReadOnlyData@23@ADS6GJPCJ@Z@Z (public: void __thiscall bsp::game::GameNativeLocaleManagerProcess::parse_textual_option1(void *,unsigned int,class bsp::game::GameNativeVfsApplication &,class bsp::game::GameNativeReadOnlyData const &,long (__stdcall*const volatile &)(long volatile *)))",
+    "dump_sha256": "3c418e975e1b0108681d8f21bb015aed375cc7741e406da6634481566e1e390f",
+    "no_link_or_entry_execution": true
+  },
+  "private_authority": [
+    "canonical owner allocation/pool only; exact VFS stored host/data identity and SAME raw-cell addresses",
+    "preparing/active phase before bookkeeping; nonmoving Context-before-Frame nodes captured/linked before healthy fences",
+    "input transfer only actual parser admission; preparation failure remains caller-owned and poisons owner",
+    "private normal receipts and all prior append-only history before repeat/borrow/drain/delete/postdrain",
+    "conservative textual derived debt requires captured CFF140 before target; no base fallback or profile/count inference",
+    "unchanged live actual flags reference/late lowbyte/matched saved free/flags0 ended allocation debt"
+  ],
+  "caller_limits": [
+    "independent completed owning raw8 and valid serialized disjoint backing are required; no semantic casts or fake empty input",
+    "exact graph getter does not prove input/alias/import provenance; caller supplies genuine existing retained renderer cell",
+    "retain all failed operation/file/record/provider/map/pool/rawcell/data/renderer/code debt; no retry/automatic cleanup/rollback",
+    "ended input/name/key/stream/scratch identities are historical only; no late payload reads",
+    "initialized_receiver remains initialized-only; no option0/raw16/full loading/ready flag/startup/ABI/vendor/runtime grant"
+  ],
+  "validation": {
+    "new_tests": false,
+    "probe_executable": false,
+    "link_or_game": false,
+    "full_build": false,
+    "ghidra_ledger_changes": false,
+    "canonical_build": "Root pending"
+  }
+}
