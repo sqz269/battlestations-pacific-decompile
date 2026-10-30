@@ -1120,3 +1120,18 @@ rootCMakeLists deferredGame pattern. Peerleasedstartup registry untouched and
 oldqueuecanceled. Independentregistrationreview confirms exactlyone; standard
 Win32build/checks2/2 pass11.46s with NOlocaloverlay. Rawbody remains caller-unbound;
 stream/raw16/fullparser/loading/startup/runtime/ABI gates remain open.
+
+Completed-record fragmentdf498923 [AA0130,AA0257) is source-reviewed and canonically
+registeredGame once atbb7d2a7a1. Realmap/wide/rawstring calls, caller-retained frame,
+key-before-state2 unowned effects, earlynormalkeyreturn vsCURRENTselectedcleanup
+and metadata-failure retention matchacceptedcontract. Strictobject and standard
+Win32checks2/2 pass12.81s. Actualupstreamscanner/input custody, streamcomposition,
+raw16/fullAA0020/loading/runtime gates remain unbound; no fullparser/bodycredit.
+See CODEX_LOCALE_RECORD_STORAGE_INTEGRATION.md.
+
+Raw numbered-name4260B0 providerb8aa50ce is now Core-registered once, with real
+mappedformat3B/rawcells, lateCURRENT-temp selectedcleanup and earlycapturednormal
+pair. Consume-before-cleanup correction is in finalstrictobject; oldtypedfiles
+unchanged. Exactprimary/independentSourceaccept. JoinedMain87c709+record/formatter
+canonicalWin32build/checks2/2 pass12.77s atedfa5a068. No parser/loader caller or
+runtime/ABI admission; raw16/fullstream/scanner/GUI/ownerloading gates remain.
