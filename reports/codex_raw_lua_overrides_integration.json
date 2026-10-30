@@ -1,0 +1,73 @@
+{
+  "status": "reviewed_source_local_retained_link_pass_canonical_registration_pending",
+  "contract_sha256": "82c7c42c2194d1d897b61b52e80d6d01b1d1302115c6374a7921f29b71b3c172",
+  "baseline_main": "1b5dead2c",
+  "reverse_find": {
+    "commit": "0265ee8ad37631faf01d6641e275b1b936912f0e",
+    "cpp_sha256": "074cd71ecfa23c7ef952c923fddfc54faf7c3d95ad59dd95dbcc6b3ecac48656",
+    "strict_object_exit": 0,
+    "independent_review": "gui_frame_lifetime_ACCEPT_SOURCE_CODE_ONLY"
+  },
+  "raw_assign_concat": {
+    "commit": "276857287701261059cd2376f1bd36a9f64ebe33",
+    "primary_review": "complete_diff_no_issue",
+    "independent_review": "gui_frame_lifetime_ACCEPT_SOURCE_CODE_ONLY_actual_diff",
+    "strict_object": {
+      "exit_code": 0,
+      "machine": "14C",
+      "cpp_sha256": "14a03f9de4eb9ff466dec9323f331192adb6089c3c5c70db8ac61f9829b0c43d",
+      "old_unrelated_cpp_inverse_exact": true
+    }
+  },
+  "override_body": {
+    "status": "reviewed_source_local_retained_link_pass_canonical_registration_pending",
+    "independent_review": "gui_frame_lifetime_ACCEPT_SOURCE_CODE_ONLY_exact_f73a9_hashes",
+    "strict_object_exit": 0,
+    "machine": "14C",
+    "object_sha256": "2cda8daacd8be2c8dce703b12237cc3a4dcd22e0e44e9baa0baf74e2e40b3c2f",
+    "receipt_sha256": "e1dcf518a94045c65bf748c94d1e18b9dc6b0d5f4054c6acdc6ecb023ef8c969",
+    "registration": "queued_behind_existing_peer_lease",
+    "commit": "f73a9ecbd7c19cdf4973cb72b8b3c82cf6dd7689",
+    "cpp_sha256": "6a85a2c876df5f325f250f75665b4d96eca1bdef84693519410536734b61b62c",
+    "header_sha256": "c276238af5019cdf3dc0a9119cec4ce28b24fa936135879f516b26ce3b5d0632"
+  },
+  "combined_build": "local_overlay_standard_build_pass_canonical_registration_pending",
+  "source_ready": false,
+  "runtime": false,
+  "raw16_provider": "unbound",
+  "parser_loaded_locale": "unbound",
+  "raw_text_gates": "all_nine_false",
+  "prerequisite_build": {
+    "head": "bfd79c206d3a35ec5bea1c3a42bc3ee513e51cac",
+    "exit_code": 0,
+    "command": "./scripts/build.ps1",
+    "target": "MSVC Win32 Release",
+    "existing_checks_passed": 2,
+    "existing_checks_total": 2,
+    "ctest_seconds": 14.1,
+    "includes_new_override_body": false,
+    "log": "local/raw_lua_overrides_integration_cc16_20261030/prerequisite_build.log"
+  },
+  "local_link_check": {
+    "head": "87f85d78df45a08254c8c8d3b2b4e4a52ffba428",
+    "command": "./scripts/build.ps1",
+    "overlay": "local/raw_lua_overrides_local_link_cc16_20261030/overlay.cmake",
+    "source_registrations": 1,
+    "retained_public_symbols": 2,
+    "retained_addresses": [
+      "103009a0",
+      "10300b00"
+    ],
+    "exit_code": 0,
+    "existing_checks_passed": 2,
+    "existing_checks_total": 2,
+    "ctest_seconds": 11.21,
+    "executable_sha256": "fa12b5782ff6f10788689f5e7cc9181ef8b9ffcb62999fbbdf67ca32e3b23504",
+    "receipt": "local/raw_lua_overrides_local_link_cc16_20261030/receipt.json",
+    "canonical_startup_changed": false,
+    "overlay_cache_removed": true,
+    "canonical_source_registrations_after_restore": 0,
+    "new_game_executed": false,
+    "semantic_loading_runtime_or_ABI_proof": false
+  }
+}
