@@ -1,0 +1,627 @@
+{
+  "schema": "cc16_native_gui_group_runtime_readiness_v1",
+  "status": "readonly_runtime_window_not_ready_access_denied_controller_agreement_and_current_host_execution_pending",
+  "baseline_commit": "5dc9e9a018c8cb59b606fe904fca95ed7f9c574a",
+  "owned_files": [
+    "docs/CC16_NATIVE_GUI_GROUP_RUNTIME_READINESS.md",
+    "reports/cc16_native_gui_group_runtime_readiness.json"
+  ],
+  "decision": {
+    "runtime_window_ready": false,
+    "launch_clearance_established": false,
+    "current_owner_controller_identified": false,
+    "existing_PID_handle_identity_verified": false,
+    "genuine_bounded_Host_command_identified": true,
+    "command_executed": false,
+    "reason": "PID40812 denies all allowed opens, no creation-bound terminal/loaded-image state. Earlier bare mailbox route did not match canonical owner; Root corrected1103 but no current controller/window agreement is inferred. Current exact common/Host admission and execution remain Root gates."
+  },
+  "frozen_source_candidate": {
+    "candidate": "6772843657c3ab62f7bb4f9ae613adbac0770c80",
+    "independent_static_review": "41106def0cae436ea117b563ce5470bb96f4c161",
+    "qualification": "These remain immutable. Current typed Source and final loaded PE need fresh Root common/current Host provenance; preserved interfaces alone inherit no runtime result."
+  },
+  "existing_process_observation": {
+    "schema": "cc16_group_runtime_readonly_process_observation_v1",
+    "expected_bsp_creation_utc": "2026-10-19T03:00:25.092670+00:00",
+    "expected_bsp_creation_filetime_at_CIM_microsecond": 134368524250926700,
+    "CIM_precision_qualification": "Compare creation at CIM microsecond precision; retain exact Win32 FILETIME separately for future handle/PID identity checks.",
+    "records": [
+      {
+        "pid": 40812,
+        "started_utc": "2026-10-30T11:40:30.579115+00:00",
+        "expected_creation_filetime": 134368524250926700,
+        "attempts": [
+          {
+            "access": "0x101000",
+            "inherit": false,
+            "observed_utc": "2026-10-30T11:40:30.579156+00:00",
+            "open_succeeded": false,
+            "open_error": {
+              "win32_error": 5,
+              "message": "Access is denied."
+            }
+          },
+          {
+            "access": "0x1000",
+            "inherit": false,
+            "observed_utc": "2026-10-30T11:40:30.579172+00:00",
+            "open_succeeded": false,
+            "open_error": {
+              "win32_error": 5,
+              "message": "Access is denied."
+            }
+          },
+          {
+            "access": "0x100000",
+            "inherit": false,
+            "observed_utc": "2026-10-30T11:40:30.579179+00:00",
+            "open_succeeded": false,
+            "open_error": {
+              "win32_error": 5,
+              "message": "Access is denied."
+            }
+          }
+        ],
+        "ended_utc": "2026-10-30T11:40:30.579183+00:00"
+      },
+      {
+        "pid": 31836,
+        "started_utc": "2026-10-30T11:40:30.579185+00:00",
+        "expected_creation_filetime": null,
+        "attempts": [
+          {
+            "access": "0x101000",
+            "inherit": false,
+            "observed_utc": "2026-10-30T11:40:30.579187+00:00",
+            "open_succeeded": false,
+            "open_error": {
+              "win32_error": 87,
+              "message": "The parameter is incorrect."
+            }
+          },
+          {
+            "access": "0x1000",
+            "inherit": false,
+            "observed_utc": "2026-10-30T11:40:30.579194+00:00",
+            "open_succeeded": false,
+            "open_error": {
+              "win32_error": 87,
+              "message": "The parameter is incorrect."
+            }
+          },
+          {
+            "access": "0x100000",
+            "inherit": false,
+            "observed_utc": "2026-10-30T11:40:30.579198+00:00",
+            "open_succeeded": false,
+            "open_error": {
+              "win32_error": 87,
+              "message": "The parameter is incorrect."
+            }
+          }
+        ],
+        "ended_utc": "2026-10-30T11:40:30.579200+00:00"
+      }
+    ],
+    "permission_scope": "Open query-limited/synchronize handles only; GetProcessTimes/GetExitCode/Wait0/path/GetProcessId; close only owned query handles. No elevation/privilege changes, process input/control, launch/stop/restart.",
+    "terminal_inference": "Open/access/API failure is not exit. Even successful queries require matched creation identity; STILL_ACTIVE alone is not proof of unsignaled/nonterminal. Observation describes only its timestamp."
+  },
+  "fresh_CIM": {
+    "observed_utc": "2026-10-30T12:01:22.672666+00:00",
+    "value": {
+      "Name": "bsp_game.exe",
+      "ProcessId": 40812,
+      "ParentProcessId": 31836,
+      "CreationUtc": "2026-10-19T03:00:25.0926700Z",
+      "ExecutablePath": null,
+      "CommandLine": null,
+      "SessionId": 1,
+      "HandleCount": 0,
+      "ThreadCount": 0
+    },
+    "qualification": "CIM creation metadata matches historical timestamp, but no handle-bound creation, wait, exit code or loaded image was obtained. Zero threads/handles and absent parent row are not terminal proof."
+  },
+  "coordinator_and_owner_records": {
+    "observed_utc": "2026-10-30T12:01:22.672666+00:00",
+    "coordinator": "agent/cc16-progress",
+    "selected_messages": [
+      {
+        "id": 1053,
+        "from": "agent/cc16-progress",
+        "to": "agent/codex-sampler-gaps",
+        "text": "CC16 preparing fresh private EMPTY qualification from frozen d58; no games launched yet. Current01:25Z CIM: only old5PIDs40812,15240,125708,115880,49148 (4Normal+1unknown countedNormal), console1Active. Will preserveall5, serialfresh trials and max8Normal/unknown total. Please coordinate any new sampler game jobs before overlap; Root will re-audit immediately before execution. No power/affinity/forcecleanup.",
+        "sent": "2026-10-30T01:25:40+00:00",
+        "read_by": [
+          "agent/codex-sampler-gaps"
+        ]
+      },
+      {
+        "id": 1088,
+        "from": "agent/cc16-progress",
+        "to": "all",
+        "text": "Published main74cfd9e5c: direct canonical locale slot allocator2c5a +coupledE970 narrowrawbytefix +actualCFEA5C base737010 scalar. Primary/peer Source acceptance, inverseSweepC projection andstrictobjects; commonWin32checks2/2 12.98s. Retained escapedframe/slab/table/lock custody, no cleanup/retry/safeexit inferred; slotnotpayload/map authority. All9rawTextchoicesfalse/ac60Sourcehold; no startup/loadedlocale/ABI/runtime/nativebodycredit. Ghidracomments saved,exports/index refreshed. RootCMake/ledger/Sourceleasesreleased. CanonicalF8 owner/typeddispatch andmapinsert nextboundedwork; no games.",
+        "sent": "2026-10-30T06:14:00+00:00",
+        "read_by": [
+          "agent/codex-raw-locale-constructor",
+          "agent/codex-function-source-integration",
+          "agent/codex-coverage",
+          "agent/codex-native-gui-group-lineage-review"
+        ]
+      },
+      {
+        "id": 1092,
+        "from": "agent/cc16-progress",
+        "to": "agent/codex-function-source-integration",
+        "text": "Current locale batch published6824; next raw-wide overload modifies existing native_wide_string TU only, no CMake need. Your queued Frame registration turn is free. We preserve all rawText gates/sourcehold; no locale/game runtime authorized by our Source batch.",
+        "sent": "2026-10-30T07:02:08+00:00",
+        "read_by": [
+          "agent/codex-function-source-integration"
+        ]
+      },
+      {
+        "id": 1101,
+        "from": "agent/codex-function-source-integration",
+        "to": "cc16-progress",
+        "text": "Planning the next real Group pool/type startup adoption after current readonly proofs. Please identify current exclusive runtime cohort procedure, live PID/session handles and ownership before any future launch. User selected fully activated and allows required gameplay. No new launch requested now; NoForceStop and no restart on observation timeout remain required. Root has maina299cdfc6 clean with GroupLineage/Elementdomain/GroupPoolstartup readiness workers active.",
+        "sent": "2026-10-30T10:18:27+00:00",
+        "read_by": []
+      },
+      {
+        "id": 1102,
+        "from": "agent/codex-function-source-integration",
+        "to": "cc16-progress",
+        "text": "Current read-only runtime preparation observed bsp_game.exe PID40812 parent31836 creation2026-10-18T20:00:25.09267-07:00; CIM path unavailable. Please identify ownership and current cohort/session handle before any new launch. Root will preserve it and will not force-stop or restart. Observation saved local/function_source_batch17/current_runtime_process_observation.json in Root staging tree.",
+        "sent": "2026-10-30T10:58:44+00:00",
+        "read_by": []
+      },
+      {
+        "id": 1103,
+        "from": "agent/codex-function-source-integration",
+        "to": "agent/cc16-progress",
+        "text": "Runtime coordination request from agent/codex-function-source-integration. Earlier messages1099-1102 used bare cc16-progress; addressed_to does not route that to your canonical agent/cc16-progress owner. This corrects the route and supplies no automatic run clearance.\n\nPublished Main is5dc9e9a018c8cb59b606fe904fca95ed7f9c574a: Group lineage candidate972969f2 + independent051f9273 + Win32 MP2/PCH2/2(12.56s), full linked-byte proof, Source only/unwired. Root staging now contains pool startup candidate6772843657c3ab62f7bb4f9ae613adbac0770c80 and independent41106def0cae436ea117b563ce5470bb96f4c161. Common MP2/PCH2/2 passed12.81s. All8changed whole code sections7813B match strict and actual built bsp_game.exe after every relocation;73retained exception sections4212B/47SafeSEH associations checked. No new runtime. Changed default Main startup has NOT been pushed or activated pending current Host/runtime custody.\n\nThe user explicitly selected Fully activated; allow required gameplay runs. The earlier no-new-game-runs constraint was explicitly changed for this goal. Existing NoForceStop/preservation constraints remain.\n\nReadonly current process evidence: bsp_game.exe PID40812, parent31836, CIM creation2026-10-18T20:00:25.09267-07:00. All OpenProcess QueryLimited/Synchronize combinations return access denied5; path/commandline/.NET exit status unavailable. It is NOT classified terminal. Historical message1053 explicitly preserved40812 among5old PIDs. No process was stopped, restarted, reconfigured or launched. Empty lock inventory does not prove drained.\n\nPlease identify the current cohort/controller ownership and agree an exclusive runtime window and exact current Host command/protocol for the staged pool startup. We will preserve all old PIDs/frozen dc2,d8,d58 trees and re-poll actual handles without restart on observation timeout. Readonly runtime-readiness worker is locating existing normal Main coverage; early VFS qualification modes bypass the added pool call and cannot validate it. Root proof paths are local/function_source_batch17/{build-head.txt,common_inspection.json,common_pe.json,common_changed_strict_checks.json} in J:/PROG/battlestations-pacific-decompile-codex-function-source-integration.",
+        "sent": "2026-10-30T11:54:27+00:00",
+        "read_by": []
+      }
+    ],
+    "routing": [
+      {
+        "id": 1101,
+        "to": "cc16-progress",
+        "matches_canonical_agent_owner": false,
+        "matches_bare_owner": true
+      },
+      {
+        "id": 1102,
+        "to": "cc16-progress",
+        "matches_canonical_agent_owner": false,
+        "matches_bare_owner": true
+      },
+      {
+        "id": 1103,
+        "to": "agent/cc16-progress",
+        "matches_canonical_agent_owner": true,
+        "matches_bare_owner": false
+      }
+    ],
+    "coordinator_reply_since_requests_found": false,
+    "named_lock_records": [],
+    "DRAIN_present": false,
+    "limits": [
+      "No locks is not process drain.",
+      "Message1053 is historical preservation of40812 among old PIDs, not a present controller/window or reusable capacity permission.",
+      "Messages1088/1092 are Source-only/no-games records.",
+      "Bare1101/1102 do not address canonical agent owner; Root1103 corrects routing, not clearance.",
+      "No mailbox send/read acknowledgement, coordinator/runtime lease change or impersonation in this packet."
+    ]
+  },
+  "current_harness": {
+    "entry": "tools/run_game.ps1",
+    "secondary_wrapper": "scripts/run.ps1",
+    "NoForceStop_required": true,
+    "existing_protocol": [
+      "Atomic numbered slot, instance tag, owner and core.",
+      "Unique log, manifest with actual PE hash/cwd/checkout/env/argv/input snapshots.",
+      "Bootstrap/child tag query through CIM command line.",
+      "NoForceStop retains surviving tagged processes and reports natural-drain failure, not force cleanup."
+    ],
+    "limits": [
+      "Null CommandLine cannot attribute40812 to a cohort.",
+      "Finally removes slot lock even after retained survivors.",
+      "Manifest write failure is only a warning.",
+      "Launcher pipe/return, tag query or natural_completed flag alone is not authoritative handle terminal proof.",
+      "Default helper path can force-stop survivors; it is excluded.",
+      "Current controller/observer command and handle custody remain coordinator inputs; this report introduces none."
+    ],
+    "on_observation_timeout": "Re-poll SAME actual handle/creation identity; never restart on timeout.",
+    "no_stale_authority": "Do not delete locks, bypass DRAIN, impersonate coordinator or infer authority from stale/no leases."
+  },
+  "Root_staged_input_observation": {
+    "observed_utc": "2026-10-30T11:51:08.657773+00:00",
+    "stage": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration",
+    "stage_git_head": "d3ebd58ba5e26d65bbd7139bb6f3cab0be5e1956",
+    "files": [
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\bsp_game.exe",
+        "exists": true,
+        "bytes": 7505408,
+        "sha256": "3e978e1458d38707442b97abd0c658f5d1a324ee3afd5bc4794eaad609f35ba0",
+        "snapshot_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-runtime-readiness\\local\\native_gui_group_runtime_readiness\\root_input_snapshots\\stage_game.exe.bin",
+        "original_last_write_utc": "2026-10-30T11:38:32.888207+00:00",
+        "contains_new_Main_status_literal": true
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\bsp_game.map",
+        "exists": true,
+        "bytes": 11350752,
+        "sha256": "cf71f08d97212453bc00ecc3e51234cc67cf0c84f79045addfd6123d09546100",
+        "snapshot_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-runtime-readiness\\local\\native_gui_group_runtime_readiness\\root_input_snapshots\\stage_game.map.txt",
+        "original_last_write_utc": "2026-10-30T11:38:32.892714+00:00",
+        "selected_symbol_rows": [
+          " 0001:0000c480       _WinMain@16                1000d480 f   game_main.obj",
+          " 0001:002ff910       ?destroy_00ce0ae0@GameNativeGuiGroupPoolProcess@game@bsp@@CAXXZ 10300910 f   bsp_core:native_gui_group_storage.obj",
+          " 0001:002ff970       ?game_native_gui_group_pool_process@game@bsp@@YAAAVGameNativeGuiGroupPoolProcess@12@XZ 10300970 f   bsp_core:native_gui_group_storage.obj",
+          " 0001:002ffa80       ?initialize_once_00cd7440@GameNativeGuiGroupPoolProcess@game@bsp@@QAEHXZ 10300a80 f   bsp_core:native_gui_group_storage.obj",
+          " 0001:002ffb70       ?native_operation_interrupted@GameNativeGuiGroupPoolProcess@game@bsp@@QBE_NXZ 10300b70 f   bsp_core:native_gui_group_storage.obj",
+          " 0001:0000ca3c       __catch$_WinMain@16$0      1000da3c f   game_main.obj",
+          " 0001:0000d9b8       __catch$_WinMain@16$15     1000e9b8 f   game_main.obj",
+          " 0001:0000dc3f       __catch$_WinMain@16$13     1000ec3f f   game_main.obj",
+          " 0001:0000dcfa       __catch$_WinMain@16$6      1000ecfa f   game_main.obj",
+          " 0001:0000dd6c       __catch$_WinMain@16$7      1000ed6c f   game_main.obj",
+          " 0001:0000dde0       __catch$_WinMain@16$9      1000ede0 f   game_main.obj",
+          " 0001:0000de17       __catch$_WinMain@16$10     1000ee17 f   game_main.obj",
+          " 0001:0000de3a       __catch$_WinMain@16$4      1000ee3a f   game_main.obj",
+          " 0001:0000df0e       __catch$_WinMain@16$2      1000ef0e f   game_main.obj",
+          " 0001:0056c8f0       __ehhandler$?destroy_00ce0ae0@GameNativeGuiGroupPoolProcess@game@bsp@@CAXXZ 1056d8f0 f   bsp_core:native_gui_group_storage.obj",
+          " 0001:0056d190       __unwindfunclet$_WinMain@16$17 1056e190 f   game_main.obj",
+          " 0001:0056d19b       __unwindfunclet$_WinMain@16$18 1056e19b f   game_main.obj",
+          " 0001:0056d1a6       __unwindfunclet$_WinMain@16$19 1056e1a6 f   game_main.obj",
+          " 0001:0056d1ae       __unwindfunclet$_WinMain@16$20 1056e1ae f   game_main.obj",
+          " 0001:0056d1b6       __unwindfunclet$_WinMain@16$39 1056e1b6 f   game_main.obj",
+          " 0001:0056d1c1       __unwindfunclet$_WinMain@16$43 1056e1c1 f   game_main.obj",
+          " 0001:0056d1cf       __unwindfunclet$_WinMain@16$44 1056e1cf f   game_main.obj",
+          " 0001:0056d1dd       __unwindfunclet$_WinMain@16$40 1056e1dd f   game_main.obj",
+          " 0001:0056d1e8       __unwindfunclet$_WinMain@16$46 1056e1e8 f   game_main.obj",
+          " 0001:0056d1f6       __unwindfunclet$_WinMain@16$47 1056e1f6 f   game_main.obj",
+          " 0001:0056d204       __unwindfunclet$_WinMain@16$22 1056e204 f   game_main.obj",
+          " 0001:0056d20f       __unwindfunclet$_WinMain@16$23 1056e20f f   game_main.obj",
+          " 0001:0056d21a       __unwindfunclet$_WinMain@16$24 1056e21a f   game_main.obj",
+          " 0001:0056d222       __unwindfunclet$_WinMain@16$25 1056e222 f   game_main.obj",
+          " 0001:0056d22d       __unwindfunclet$_WinMain@16$26 1056e22d f   game_main.obj",
+          " 0001:0056d238       __unwindfunclet$_WinMain@16$27 1056e238 f   game_main.obj",
+          " 0001:0056d240       __unwindfunclet$_WinMain@16$28 1056e240 f   game_main.obj",
+          " 0001:0056d24b       __unwindfunclet$_WinMain@16$61 1056e24b f   game_main.obj",
+          " 0001:0056d260       __unwindfunclet$_WinMain@16$30 1056e260 f   game_main.obj",
+          " 0001:0056d270       __ehhandler$_WinMain@16    1056e270 f   game_main.obj",
+          " 0001:00582f30       __unwindfunclet$?initialize_once_00cd7440@GameNativeGuiGroupPoolProcess@game@bsp@@QAEHXZ$0 10583f30 f   bsp_core:native_gui_group_storage.obj",
+          " 0001:00582f3d       __ehhandler$?initialize_once_00cd7440@GameNativeGuiGroupPoolProcess@game@bsp@@QAEHXZ 10583f3d f   bsp_core:native_gui_group_storage.obj",
+          " 0001:005871a0       __unwindfunclet$?game_native_gui_group_pool_process@game@bsp@@YAAAVGameNativeGuiGroupPoolProcess@12@XZ$0 105881a0 f   bsp_core:native_gui_group_storage.obj",
+          " 0001:005871ac       __unwindfunclet$?game_native_gui_group_pool_process@game@bsp@@YAAAVGameNativeGuiGroupPoolProcess@12@XZ$1 105881ac f   bsp_core:native_gui_group_storage.obj",
+          " 0001:005871c0       __ehhandler$?game_native_gui_group_pool_process@game@bsp@@YAAAVGameNativeGuiGroupPoolProcess@12@XZ 105881c0 f   bsp_core:native_gui_group_storage.obj",
+          " 0002:0010e000       __catchsym$_WinMain@16$86  106ad000     game_main.obj",
+          " 0002:0010e010       __catchsym$_WinMain@16$85  106ad010     game_main.obj",
+          " 0002:0010e020       __catchsym$_WinMain@16$83  106ad020     game_main.obj",
+          " 0002:0010e030       __catchsym$_WinMain@16$82  106ad030     game_main.obj",
+          " 0002:0010e040       __catchsym$_WinMain@16$81  106ad040     game_main.obj",
+          " 0002:0010e050       __catchsym$_WinMain@16$80  106ad050     game_main.obj",
+          " 0002:0010e060       __catchsym$_WinMain@16$79  106ad060     game_main.obj",
+          " 0002:0010e070       __catchsym$_WinMain@16$84  106ad070     game_main.obj",
+          " 0002:0010e090       __ehfuncinfo$_WinMain@16   106ad090     game_main.obj",
+          " 0002:0010e0b4       __tryblocktable$_WinMain@16 106ad0b4     game_main.obj",
+          " 0002:0010e154       __unwindtable$_WinMain@16  106ad154     game_main.obj",
+          " 0002:0010e308       __ehfuncinfo$?destroy_00ce0ae0@GameNativeGuiGroupPoolProcess@game@bsp@@CAXXZ 106ad308     bsp_core:native_gui_group_storage.obj",
+          " 0002:00120328       __unwindtable$?initialize_once_00cd7440@GameNativeGuiGroupPoolProcess@game@bsp@@QAEHXZ 106bf328     bsp_core:native_gui_group_storage.obj",
+          " 0002:00120330       __ehfuncinfo$?initialize_once_00cd7440@GameNativeGuiGroupPoolProcess@game@bsp@@QAEHXZ 106bf330     bsp_core:native_gui_group_storage.obj",
+          " 0002:00124c04       __unwindtable$?game_native_gui_group_pool_process@game@bsp@@YAAAVGameNativeGuiGroupPoolProcess@12@XZ 106c3c04     bsp_core:native_gui_group_storage.obj",
+          " 0002:00124c14       __ehfuncinfo$?game_native_gui_group_pool_process@game@bsp@@YAAAVGameNativeGuiGroupPoolProcess@12@XZ 106c3c14     bsp_core:native_gui_group_storage.obj",
+          " 0003:00018c80       ?process@?1??game_native_gui_group_pool_process@game@bsp@@YAAAVGameNativeGuiGroupPoolProcess@23@XZ@4QAV423@A 106fcc80     bsp_core:native_gui_group_storage.obj",
+          " 0003:00018c84       ?$TSS0@?1??game_native_gui_group_pool_process@game@bsp@@YAAAVGameNativeGuiGroupPoolProcess@23@XZ@4HA 106fcc84     bsp_core:native_gui_group_storage.obj"
+        ]
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\xlive_stub.dll",
+        "exists": true,
+        "bytes": 32768,
+        "sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3",
+        "snapshot_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-runtime-readiness\\local\\native_gui_group_runtime_readiness\\root_input_snapshots\\stage_xlive_stub.dll.bin",
+        "original_last_write_utc": "2026-10-29T18:37:36.400228+00:00"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\src\\game_main.cpp",
+        "exists": true,
+        "bytes": 81290,
+        "sha256": "761ca1dfc2e54c2daa129a25811b86a8bb3f4771b5a18a26498ce11a8d94dc7b",
+        "snapshot_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-runtime-readiness\\local\\native_gui_group_runtime_readiness\\root_input_snapshots\\stage_main.cpp.txt",
+        "original_last_write_utc": "2026-10-30T11:38:14.517545+00:00"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\src\\native_gui_group_storage.cpp",
+        "exists": true,
+        "bytes": 2382,
+        "sha256": "1713d147e754aba3d0ba6cbcf7bd5faffe4a4644ccec082fc66faa534bf69e46",
+        "snapshot_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-runtime-readiness\\local\\native_gui_group_runtime_readiness\\root_input_snapshots\\stage_pool.cpp.txt",
+        "original_last_write_utc": "2026-10-30T11:38:14.518051+00:00"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\include\\bsp\\native_gui_group_storage.hpp",
+        "exists": true,
+        "bytes": 3543,
+        "sha256": "8f57c8e86d31c72583fd692d9f34cbeccd615c8c274de849e0f36e0d8802159b",
+        "snapshot_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-runtime-readiness\\local\\native_gui_group_runtime_readiness\\root_input_snapshots\\stage_pool.hpp.txt",
+        "original_last_write_utc": "2026-10-30T11:38:14.516545+00:00"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\include\\bsp\\game_native_gui_text_process.hpp",
+        "exists": true,
+        "bytes": 7271,
+        "sha256": "dbadef0978a9bfca2fb48533ea3d0f4f309ab38a679f348843744348ac633f52",
+        "snapshot_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-runtime-readiness\\local\\native_gui_group_runtime_readiness\\root_input_snapshots\\stage_text_process.hpp.txt",
+        "original_last_write_utc": "2026-10-30T11:01:30.583297+00:00"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\src\\game_native_gui_text_process.cpp",
+        "exists": true,
+        "bytes": 11028,
+        "sha256": "01ce505d584e1fdd98165e4fe17459d1c8af78bf1f0ce10262bd45591302f5f0",
+        "snapshot_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-runtime-readiness\\local\\native_gui_group_runtime_readiness\\root_input_snapshots\\stage_text_process.cpp.txt",
+        "original_last_write_utc": "2026-10-30T11:01:30.584802+00:00"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch17\\current_runtime_process_observation.json",
+        "exists": true,
+        "bytes": 237,
+        "sha256": "763e51afd3f23e19306bead3c0724c3d55efdbdd9d92e2d9de21becf93eed0d0",
+        "snapshot_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-runtime-readiness\\local\\native_gui_group_runtime_readiness\\root_input_snapshots\\root_cim_observation.json",
+        "original_last_write_utc": "2026-10-30T10:57:45.956814+00:00"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch17\\runtime_pid40812_status.json",
+        "exists": true,
+        "bytes": 222,
+        "sha256": "ed9f6dbb80b4be3c6fdd8f9eb876442a393fdee2ac3a5a3f26810281b3eda72b",
+        "snapshot_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-runtime-readiness\\local\\native_gui_group_runtime_readiness\\root_input_snapshots\\root_dotnet_status.json",
+        "original_last_write_utc": "2026-10-30T10:59:18.300833+00:00"
+      }
+    ],
+    "qualification": "Read-only copied snapshots, not a build/loaded-image/activation/run proof. Parent common-admission receipt and exact final PE/MAP/current Source must be rechecked before launch; live Root files may change after observation."
+  },
+  "proposed_existing_helper_invocation": {
+    "launcher": "J:/PROG/battlestations-pacific-decompile-codex-function-source-integration/tools/run_game.ps1",
+    "working_directory": "J:/PROG/battlestations-pacific-decompile-codex-function-source-integration",
+    "arguments": [
+      "-Exe",
+      "J:/PROG/battlestations-pacific-decompile-codex-function-source-integration/build/win32/Release/bsp_game.exe",
+      "-GameRoot",
+      "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+      "-XLiveDll",
+      "J:/PROG/battlestations-pacific-decompile-codex-function-source-integration/build/win32/Release/xlive_stub.dll",
+      "-Log",
+      "J:/PROG/battlestations-pacific-decompile-codex-function-source-integration/local/function_source_batch17/group_pool_host_current.log",
+      "-NoForceStop",
+      "-Slots",
+      "14",
+      "-SlotIndex",
+      "<ApprovedSlot supplied by current coordinator>",
+      "-WaitSeconds",
+      "0",
+      "-GameArgs"
+    ],
+    "GameArgs": [
+      "--frames",
+      "1",
+      "--difficulty",
+      "1",
+      "--settings-personal-root",
+      "J:/PROG/battlestations-pacific-decompile-codex-function-source-integration/local/function_source_batch17/group_pool_host_personal",
+      "--window-monitor",
+      "smallest",
+      "--window-resolution",
+      "fit",
+      "--present-interval",
+      "immediate"
+    ],
+    "executed": false,
+    "preconditions": [
+      "Root final exact common/current Source/PE/MAP admission matches target after any rebuild.",
+      "Canonical agent/cc16-progress supplies exclusive current window/controller/slot and agrees actual handle custody.",
+      "Existing PID40812 ownership/creation-bound state handled authoritatively, no inference from denied opens/zero CIM counts/no lock.",
+      "Fresh unique log/private inputs, DRAIN respected, actual owner identity recorded without impersonation.",
+      "Existing current controller holds bootstrap and resumed-child handles/creation identities; helper alone is not a controller/terminal proof."
+    ]
+  },
+  "Host_path_and_early_modes": {
+    "normal": "--frames1 follows actual run_win_main construct/initialize/platform/shutdown/destruct/singleton drain/random-thread shutdown and normal Main host reset/log close/return.",
+    "excluded_early_modes": [
+      "--qualify-vfs-physical-read-owner",
+      "--qualify-vfs-failure-owner"
+    ],
+    "why_excluded": "Both return before Main pool CRT subset.",
+    "other_non_success_paths": [
+      "parser/data/Host failure",
+      "single-instance early return",
+      "process-retention _Exit",
+      "unknown terminate"
+    ],
+    "qualification": "A bounded Source Host run, not UI Group payload/Original shutdown/GFWL/gameplay equivalence. Current Source still labels native singleton-shutdown portion unimplemented."
+  },
+  "required_log_and_handle_evidence": [
+    "Same admitted current PE/Source and actual loaded bootstrap/child PID+creation+handle identities.",
+    "Ordered TextCD71F0 -> native GUI Group pool CRT CD7440: atexit=0 storage_bytes=56 before_particle_pool=1 -> particle startup.",
+    "frame limit1 reached, requesting loop exit.",
+    "summary window_created=1 device_created=1, frames_presented+presents_skipped>=1, loop_finished=1 exit_code=0.",
+    "Concrete calls for StartupHost::application_initialize, platform_run_loop_dispatch, application_shutdown, application_destruct, destroy_singleton_lifetime_manager and random_threads_shutdown.",
+    "Normal actual child/launcher terminal observations and zero exits, complete manifest/inputs, no retained/startup-failure/forced-stop path.",
+    "Root existing authoritative controller corroborates handles; no tag/lock/pipe-only proof."
+  ],
+  "proof_boundaries": {
+    "normal_registration0_run_would_prove": "Actual current Main startup/registration0 and bounded actual Source Host lifecycle with current handle/source/loaded-image evidence. None executed here.",
+    "callback_observability": "No dedicated Group callback log exists. Normal CRT discharge follows admitted code/normal-return contract; direct execution of callback instructions is not claimed from status line alone.",
+    "normal_run_would_not_prove": [
+      "nonzero atexit branch",
+      "Source allocation/constructor interruption",
+      "arbitrary fault/native ABI/SEH transport",
+      "UI Group payload/reference lifetime graph",
+      "Original/GFWL/gameplay parity"
+    ],
+    "nonzero_static_proof": "Same permanent Source owner/profile/backing, initialized returned state/status, no automatic C++ unbind and no registered CE0AE0 on nonzero; shared root bookkeeping retires after dependent callbacks without native list traversal. Static ownership proof is separate from unexecuted runtime branch.",
+    "no_injection_framework": true
+  },
+  "source_pins": [
+    {
+      "path": "tools/run_game.ps1",
+      "bytes": 20037,
+      "sha256": "022bbd455f5605d75c7421837f0f25d1beaff7bc5695c598885a8af0a6568d81",
+      "git_blob": "8c53664f56e04df1c7d80f35c085054167f9083e"
+    },
+    {
+      "path": "scripts/run.ps1",
+      "bytes": 3500,
+      "sha256": "7f940db8939c31dc179908273f7fc836f4c7c6edd28d4dee2552e0feb817be71",
+      "git_blob": "c7c4d511fad9086e0f345be08650c6f1f6404704"
+    },
+    {
+      "path": "config/run_game.json",
+      "bytes": 100,
+      "sha256": "b4203d8bde5cbf11762d17980d8c488a35a5de173d930db877056d1561593e47",
+      "git_blob": "cdf1929e3395b580d8b473f271559d85a49aa492"
+    },
+    {
+      "path": "src/game_main.cpp",
+      "bytes": 80404,
+      "sha256": "50034a37098bc7a1c738c541d5a97d0afb0cb4b1cf84b8e92102db92284df5c7",
+      "git_blob": "18909178937d4a3fbd4ddf9073819b959f3fa47a"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "bytes": 185132,
+      "sha256": "6915e364d7c2eb73ebba01d7d1c521ca7fdc94ab78ad7f0302288fc281cad9f4",
+      "git_blob": "d138983e92e5f93339e529655990f924f1c06be8"
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "bytes": 47507,
+      "sha256": "67a5164b1b20061f0f1353783c12cfcb92cc7392b37e04ec87371577425f7f58",
+      "git_blob": "867d8b7032fc7531bfaa4f2c43c649988b8e0710"
+    },
+    {
+      "path": "src/winmain_startup.cpp",
+      "bytes": 10209,
+      "sha256": "521a73023c5d196bdb15b0acf864c4e15cb46e801a58bda1a90d8f6c94de7113",
+      "git_blob": "4dc6dd149ab3e4a76c5b5ff1633d83e3fe12f38a"
+    },
+    {
+      "path": "tools/coordination.py",
+      "bytes": 27244,
+      "sha256": "14f416730a18e9d40a9775f2de7c05e9c951c54ebb7f3cbdbc039fb42a74e7f4",
+      "git_blob": "445a66f09097756c18beb3340866073a34bc3b30"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-runtime-readiness\\local\\native_gui_group_runtime_readiness\\observe.py",
+      "bytes": 5151,
+      "sha256": "b218011ce76334e723aa1022a5969a17294c305494cda41bd881071a43d36ca1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-runtime-readiness\\local\\native_gui_group_runtime_readiness\\process_observation.json",
+      "bytes": 3137,
+      "sha256": "3fdc2a15659ea163026c5dd6948603bf1e06ce2263f738cba465f50c7d3accbe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-runtime-readiness\\local\\native_gui_group_runtime_readiness\\collect_protocol.py",
+      "bytes": 3174,
+      "sha256": "75376758fae7fe4974cd43199b5fd70018a631ab7824d403b2a94834526a7120"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-runtime-readiness\\local\\native_gui_group_runtime_readiness\\protocol_observation.json",
+      "bytes": 8678,
+      "sha256": "57e58340809093833049fa0831dc0edbea18bc5b2cff5bcdc26be493a453775f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-runtime-readiness\\local\\native_gui_group_runtime_readiness\\current_cim.json",
+      "bytes": 273,
+      "sha256": "5627d892a853e8b7fedb8620898bde7dee2d548bfb5cae2de5ed75467d8503f2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-runtime-readiness\\local\\native_gui_group_runtime_readiness\\snapshot_root.py",
+      "bytes": 2718,
+      "sha256": "af9ba53dbc7fd9f04deb71c2e0114e95fd0ae9448ea9f286dc0d5a09d683b246"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-runtime-readiness\\local\\native_gui_group_runtime_readiness\\root_candidate_observation.json",
+      "bytes": 12778,
+      "sha256": "d5d2bb4d759b74b2d6ab91a81e81e3a35c829323863c0bed2222dc2395aef97d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-runtime-readiness\\local\\native_gui_group_runtime_readiness\\write_report.py",
+      "bytes": 9402,
+      "sha256": "5c8ac214963ff79f8d3bd0924a811306e0e9a16748dbf7f2b731e773439e0f2b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-runtime-readiness\\local\\native_gui_group_runtime_readiness\\root_input_snapshots\\stage_game.exe.bin",
+      "bytes": 7505408,
+      "sha256": "3e978e1458d38707442b97abd0c658f5d1a324ee3afd5bc4794eaad609f35ba0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-runtime-readiness\\local\\native_gui_group_runtime_readiness\\root_input_snapshots\\stage_game.map.txt",
+      "bytes": 11350752,
+      "sha256": "cf71f08d97212453bc00ecc3e51234cc67cf0c84f79045addfd6123d09546100"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-runtime-readiness\\local\\native_gui_group_runtime_readiness\\root_input_snapshots\\stage_xlive_stub.dll.bin",
+      "bytes": 32768,
+      "sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-runtime-readiness\\local\\native_gui_group_runtime_readiness\\root_input_snapshots\\stage_main.cpp.txt",
+      "bytes": 81290,
+      "sha256": "761ca1dfc2e54c2daa129a25811b86a8bb3f4771b5a18a26498ce11a8d94dc7b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-runtime-readiness\\local\\native_gui_group_runtime_readiness\\root_input_snapshots\\stage_pool.cpp.txt",
+      "bytes": 2382,
+      "sha256": "1713d147e754aba3d0ba6cbcf7bd5faffe4a4644ccec082fc66faa534bf69e46"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-runtime-readiness\\local\\native_gui_group_runtime_readiness\\root_input_snapshots\\stage_pool.hpp.txt",
+      "bytes": 3543,
+      "sha256": "8f57c8e86d31c72583fd692d9f34cbeccd615c8c274de849e0f36e0d8802159b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-runtime-readiness\\local\\native_gui_group_runtime_readiness\\root_input_snapshots\\stage_text_process.hpp.txt",
+      "bytes": 7271,
+      "sha256": "dbadef0978a9bfca2fb48533ea3d0f4f309ab38a679f348843744348ac633f52"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-runtime-readiness\\local\\native_gui_group_runtime_readiness\\root_input_snapshots\\stage_text_process.cpp.txt",
+      "bytes": 11028,
+      "sha256": "01ce505d584e1fdd98165e4fe17459d1c8af78bf1f0ce10262bd45591302f5f0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-runtime-readiness\\local\\native_gui_group_runtime_readiness\\root_input_snapshots\\root_cim_observation.json",
+      "bytes": 237,
+      "sha256": "763e51afd3f23e19306bead3c0724c3d55efdbdd9d92e2d9de21becf93eed0d0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-runtime-readiness\\local\\native_gui_group_runtime_readiness\\root_input_snapshots\\root_dotnet_status.json",
+      "bytes": 222,
+      "sha256": "ed9f6dbb80b4be3c6fdd8f9eb876442a393fdee2ac3a5a3f26810281b3eda72b"
+    }
+  ],
+  "not_performed": [
+    "launch/stop/restart/input/affinity/power/process or privilege change",
+    "elevation request",
+    "Source/CMake/shared/Ghidra edits",
+    "compilation/link/test/game/Original execution",
+    "new status/atexit injection framework",
+    "old dc2/d8/d58 execution or mutation",
+    "coordinator/runtime lock mutation or permission inheritance"
+  ],
+  "user_authorization": "Full activation and required gameplay are allowed; this packet remains read-only and grants no runtime window.",
+  "credit": {
+    "runtime_execution": 0,
+    "activation": 0,
+    "new_native_bodies": 0,
+    "vendor": 0,
+    "duplicate_bodies": 0
+  }
+}
