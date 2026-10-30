@@ -1,0 +1,64 @@
+{
+  "status": "source_reviewed_strict_object_pass_consumer_unbound",
+  "base": "1d81c7f20fd71aa0daea6ddbe3762f97866132cc",
+  "address": "005cf570",
+  "native_extent": "44instructions;132bytes;005cf570..005cf5f3",
+  "original_abi": "ECX left;stack(hiddenoutput,right);EAX capturedoutput;RET8",
+  "source_abi": "ordinary Context const& and one-shot Frame& returning actual output",
+  "source_hashes": {
+    "include/bsp/native_wide_string_concat.hpp": "2bba86010a06861ca6ba1dd7f1d8f36beba1c5d59020c321ae98917a8923d0b3",
+    "src/native_wide_string_concat.cpp": "1ae1b7734cda4982bfa9f427d1bd620d93d047048eb33051a13b7adc49d54005",
+    "docs/NATIVE_WIDE_STRING_CONCAT.md": "77cc5e2ee5347bf3c8f860280ffd8912b89b4dda5fde126eb444d81b062c3f88"
+  },
+  "assembly_sha256": "06d11030209eb9687c85f6c7dea7aaa9ac7f0cc951ec67c95952bf6e021a0d54",
+  "accepted_design_sha256": "302e5770ce86df729a72abe27eac48544779695afa191d702a551a03e50ac441",
+  "source_constructed_authority": "actual_RAWcopy_return_recorded_and_output_owed_true_before_first_added_ownmetadata_healthy_fence",
+  "native_physical_flag": "right_length_load_precedes_bit1_store;not_claimed_identical_private_stack_hardware_epoch",
+  "normal_epochs": [
+    "RAWcopy",
+    "private_copy_return_and_output_authority",
+    "ownmetadata_healthy",
+    "CURRENT_right_length",
+    "nonzero_old_output_length",
+    "RAWresize_wrapped_sum_preserve1",
+    "capture_resize_return_before_healthy",
+    "CURRENT_right_data_FIRST",
+    "CURRENT_output_data",
+    "saved_DWORD_length_copy_and_offset",
+    "healthy_normal_transfer_without_destroy"
+  ],
+  "selected_epochs": [
+    "rejected_inner_outside_try",
+    "constructor_escape_unowned",
+    "armed_escape_consume_before_CURRENT_RAW436430",
+    "secondary_true_unwind_throw_terminate"
+  ],
+  "late_history_dtor": "own_metadata_only_no_native_lookup_or_RAII",
+  "005cf090_called": false,
+  "NUL_null_self_count_guard_or_adapter": false,
+  "provider_proof": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_wide_string_concat_frame_20261030\\provider_proof.json",
+    "sha256": "0fcf7a0d5ede2666592d6246e5e5678b2f3300917061871174819cdf05a961b7",
+    "all_old_source_unchanged": true
+  },
+  "strict_object": {
+    "compile_count": 1,
+    "exit_code": 0,
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_wide_string_concat_frame_20261030\\object_build\\raw_wide_concat_object.dir\\Release\\native_wide_string_concat.obj",
+    "sha256": "057cce93ef5b9b0a504ab725ba1a046121a3d9260aba23593c9d1e6bb57e22fe",
+    "machine": "014C",
+    "bytes": 12725,
+    "compile_receipt_sha256": "bed99b634e91bc0eabee1a3f1c4465fe7b7ad25f0bcc29c28e15c939c9c18463",
+    "symbol_receipt_sha256": "e453901239e4f68b20e1e788989b48451d267cbecdc531270dc98c16350e1cd8"
+  },
+  "code_reviews_before_compile": [
+    "Root complete79HPP/127CPP",
+    "Gameplay independent completeCode/NativeEH"
+  ],
+  "native_EH_hardware_current_CRT_identity": false,
+  "new_native_vendor_body_credit": false,
+  "source_ready": false,
+  "startup": false,
+  "runtime": false,
+  "new_tests": 0
+}

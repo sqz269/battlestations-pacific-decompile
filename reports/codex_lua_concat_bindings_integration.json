@@ -1,0 +1,129 @@
+{
+  "status": "type_name_concat_source_reviewed_strict_objects_retained_link_restored_canonical_win32_pass_unbound",
+  "type_name": {
+    "header_sha256": "de12641ba24d17260050420ae4391d407b539b88d73d7a35f7113b4bbb7e9c0e",
+    "cpp_sha256": "04bbfdfe7fd03e9c6d1b457275c91872de5c414ec8d486f0a7efd3906e24c8f1",
+    "contract_sha256": "05091413a88d765f39bb533fff5857b345f047fd5925824bf79bcd2aa9d9c0bd",
+    "primary_review": "completeHPP_CPP_all115NativeinstructionStarts_actual_fixed_mapper_verified",
+    "actual_boolean_literal": "bool",
+    "commit": "b556c7d7dbd5a859b6880cea39e425798a9bdeec",
+    "four_source_hashes": {
+      "include/bsp/native_lua_type_name.hpp": "de12641ba24d17260050420ae4391d407b539b88d73d7a35f7113b4bbb7e9c0e",
+      "src/native_lua_type_name.cpp": "04bbfdfe7fd03e9c6d1b457275c91872de5c414ec8d486f0a7efd3906e24c8f1",
+      "docs/NATIVE_LUA_TYPE_NAME.md": "d3019f1216c8344c9c5acb6840dec172cb1bf8d42c9a285c32611cde3669de1d",
+      "reports/native_lua_type_name.json": "fa4931613e8e779b201bacd361d1bceaefbc9dd8757759e8f5f22b0aba7a43f7"
+    },
+    "strict_object": {
+      "compile_count": 1,
+      "exit_code": 0,
+      "coff_machine": "014C",
+      "sha256": "aa4024b3b7bd24973ed24dc921db56d1313086253b2e558a74f44a094c4325bd"
+    },
+    "producer_receipt_sha256": "ff2f3ceef8295234a3475077dfbe5ece90e0ab84478a7101f1f8107d6bc9eb72",
+    "actual_symbols": [
+      "?construct_native_lua_type_name_00b68460@bsp@@YAPAXPAXHABVNativeLuaTypeNameContext@1@@Z",
+      "?construct_native_lua_object_type_name_00b68550@bsp@@YAPAXABUNativeLuaObjectStorage@1@PAXABVNativeLuaTypeNameContext@1@@Z"
+    ],
+    "registration": "633c764626be46950a7fdbb4d2eeecfbe2981324",
+    "independent_gameplay_review_sha256": "9da9d59ec988ed106bdffb52401271149100074f9ded1af9e3545e37bd25be0e",
+    "independent_reviews": {
+      "gameplay": "9da9d59ec988ed106bdffb52401271149100074f9ded1af9e3545e37bd25be0e",
+      "frame": "5241782f90fc8f8bedc0395573dc6cfe166fac65fc5c88dc609d2825be909b92"
+    }
+  },
+  "concat": {
+    "header_sha256": "2bba86010a06861ca6ba1dd7f1d8f36beba1c5d59020c321ae98917a8923d0b3",
+    "cpp_sha256": "1ae1b7734cda4982bfa9f427d1bd620d93d047048eb33051a13b7adc49d54005",
+    "contract_sha256": "2672d42a15e1d190c892d2e40b4c593951d3a675cbc9b9088b85c4886d813b43",
+    "source_api_design_sha256": "302e5770ce86df729a72abe27eac48544779695afa191d702a551a03e50ac441",
+    "primary_review": "complete79lineHPP_127lineCPP_all44NativeInstructions_Sourceconstructedauthority_distinguished",
+    "commit": "229f01ca2f6f7d4fa422ae68bddb25582e07bacb",
+    "four_source_hashes": {
+      "include/bsp/native_wide_string_concat.hpp": "2bba86010a06861ca6ba1dd7f1d8f36beba1c5d59020c321ae98917a8923d0b3",
+      "src/native_wide_string_concat.cpp": "1ae1b7734cda4982bfa9f427d1bd620d93d047048eb33051a13b7adc49d54005",
+      "docs/NATIVE_WIDE_STRING_CONCAT.md": "77cc5e2ee5347bf3c8f860280ffd8912b89b4dda5fde126eb444d81b062c3f88",
+      "reports/native_wide_string_concat.json": "bd32524773dcace1a906ce9e2c7f2d7b734c686ded61137bbe85516fcd78791a"
+    },
+    "strict_object": {
+      "compile_count": 1,
+      "exit_code": 0,
+      "coff_machine": "014C",
+      "sha256": "057cce93ef5b9b0a504ab725ba1a046121a3d9260aba23593c9d1e6bb57e22fe"
+    },
+    "producer_receipt_sha256": "d3a29d154ff30a7a58d04eba67a432c79b7c26285efb4491cc51e9a78e17685b",
+    "actual_symbols": [
+      "?concatenate_native_wide_string_header_005cf570@bsp@@YAPAXABVNativeWideStringConcatContext@1@AAVNativeWideStringConcatFrame@1@@Z"
+    ],
+    "registration": "8aab4bc438e04be73cd07f73bc20f34147cdfe89",
+    "independent_gameplay_review_sha256": "03f3734c8e6294d6296848a23df151ee070c1caab7a50397f42096d227598c26",
+    "independent_reviews": {
+      "gameplay": "03f3734c8e6294d6296848a23df151ee070c1caab7a50397f42096d227598c26",
+      "gui": "12994b6092b4bd986dce71a2cc3364d2847fb1e7977a310cfbc70315c20d8eea"
+    }
+  },
+  "source_ready": false,
+  "activation": false,
+  "new_native_body_credit": 0,
+  "new_tests": 0,
+  "joined_peer_main": "e71c9ddaf87e57f1c6e974306d48df7fddfc214f",
+  "provider_preservation_count": 37,
+  "Core_registration_count_each": 1,
+  "new_entry_or_game_execution": false,
+  "retained_link": {
+    "head": "5ab8879ebc7b0fa4fa1a3d7c9a18fe19d39a0a66",
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "existing_checks": "2/2",
+    "ctest_seconds": 11.49,
+    "entry_addresses": {
+      "type_name": [
+        "10300c40",
+        "10300be0"
+      ],
+      "concat": [
+        "10300ce0"
+      ]
+    },
+    "concat_cpp_handler_and_unwind_tables": true,
+    "map_sha256": "e4d6f5a0392785ef45e9d67db7c8c419e4501838c6393038210c2bdf0e7cb22a",
+    "overlay_sha256": "99da8180142f1e3e293c188fca1a27ccc9c1cb64bedb9f1d3e7871e5a6be4d01",
+    "executable_sha256": "c33d429cc10b4bdeec4daa03fec3d6ee897948ff55dafd44cb0b623989c0a809",
+    "new_entry_or_game_invoked": false
+  },
+  "each_primary_plus_two_independent_source_reviews": true,
+  "restored_canonical_build": {
+    "head": "5ab8879ebc7b0fa4fa1a3d7c9a18fe19d39a0a66",
+    "command": "./scripts/build.ps1",
+    "configuration": "Release Win32",
+    "exit_code": 0,
+    "existing_checks": "2/2",
+    "ctest_seconds": 10.85,
+    "include_before_cache_entry_absent": true,
+    "forced_symbols_absent": true,
+    "all_three_unbound_entries_absent_from_map": true,
+    "log": "local/lua_concat_integration_cc16_20261030/build.log"
+  },
+  "all_nine_raw_text_flags_off": true,
+  "ghidra_annotations": {
+    "addresses": [
+      "00b68460",
+      "00b68550"
+    ],
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "lock": "ghidra_annotate --apply",
+    "existing_names_preserved": true,
+    "old_comments_preserved": true,
+    "prior_values_log": "local\\ghidra-annotations-20261030T204045Z.json",
+    "prior_values_log_sha256": "ca319eb556e938cce333754137cbe45a4c8fa7629ccfb608347d0fdf1088a08b",
+    "project_saved": true,
+    "both_affected_exports_refreshed_force": true,
+    "correction": "actualD62C2Cbool_notsemanticboolean_and_raw_hidden_output_ABI"
+  },
+  "metadata_only_main_join": {
+    "main": "063d52a136679f627ce9a36de4bb6aa12296d89f",
+    "joined_head": "02e5dcbd462033c605f1d6a05d783f8a55414f3f",
+    "source_cmake_scripts_target_config_changed": false,
+    "rebuild_required": false
+  }
+}
