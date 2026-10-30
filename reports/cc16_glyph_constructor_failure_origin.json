@@ -1,0 +1,491 @@
+{
+  "schema_version": 1,
+  "packet": "codex-glyph-constructor-failure-origin-analysis",
+  "classification": "bounded_actual_site_and_API_cut_only_no_Source_change",
+  "utc": "2026-10-30T21:50:46.990116+00:00",
+  "baseline": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+  "decision": "postconstructor5arg cannot be reused in raw93; distinct constructor-phase and slot/envelope cut needs Root authorization",
+  "Source_pins": [
+    {
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+      "hash_format": "immutable_Git_LF_content",
+      "git_blob_oid": "acec6947cf7777181a97335456dc5142a1149cae",
+      "bytes": 8477,
+      "sha256": "6a8e8ff45a4415fbdbb81992726f2e9e4fc17c0819fde21c279ac4c3d354b245"
+    },
+    {
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+      "hash_format": "immutable_Git_LF_content",
+      "git_blob_oid": "5505123a0d02398d4d4c16873ef87f4f856fb790",
+      "bytes": 19830,
+      "sha256": "f05676b34f28b95194810e4f325cbec759b0ece70b9cb41b38b64efc89d7a96e"
+    },
+    {
+      "path": "include/bsp/native_gui_text_default_storage.hpp",
+      "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+      "hash_format": "immutable_Git_LF_content",
+      "git_blob_oid": "51d97889adc254306247f4ecbdab4361b41533bf",
+      "bytes": 5404,
+      "sha256": "411848bea4eb0f79635bfca06493782d40c0b27cb92f713728d52b48648e119f"
+    },
+    {
+      "path": "src/native_gui_text_default_storage.cpp",
+      "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+      "hash_format": "immutable_Git_LF_content",
+      "git_blob_oid": "766918f8f8e48160ec322045b363b2d9361ae7e4",
+      "bytes": 22565,
+      "sha256": "757647269fba2238edce3723fb7aa870cc4d75c71610d621177a0c581d5a85cf"
+    },
+    {
+      "path": "include/bsp/native_gui_text_storage_construct.hpp",
+      "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+      "hash_format": "immutable_Git_LF_content",
+      "git_blob_oid": "4a426546480d657390ff04d2adbc1f8fe738ec3f",
+      "bytes": 8628,
+      "sha256": "6f142a031781e0c9e5a703abed07967790b4ff8669494330bfffb1bdea9b3876"
+    },
+    {
+      "path": "src/native_gui_text_storage_construct.cpp",
+      "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+      "hash_format": "immutable_Git_LF_content",
+      "git_blob_oid": "702cae62590b20313d953ceb885df8d4a5aed076",
+      "bytes": 32680,
+      "sha256": "d3ae2db948ce9109fea392b6766a6f31b397fcf773256141098c6c49a663d156"
+    },
+    {
+      "path": "include/bsp/native_gui_text_main_section_storage.hpp",
+      "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+      "hash_format": "immutable_Git_LF_content",
+      "git_blob_oid": "b5e51a7e4275d4db0b7fc338e818e7aa9f3f2b3f",
+      "bytes": 7926,
+      "sha256": "1c7554fc16cf2432f27f6eef83c8a16bbaaff4531268ee79dfdb52f5efd7104a"
+    },
+    {
+      "path": "src/native_gui_text_main_section_storage.cpp",
+      "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+      "hash_format": "immutable_Git_LF_content",
+      "git_blob_oid": "58368eba7e3f5f0513c69956e7d3d75e720899a5",
+      "bytes": 32909,
+      "sha256": "e89c24237751ff554bf57f74223ce44756d1b3b068b4997e03b712f163e348a9"
+    },
+    {
+      "path": "include/bsp/native_gui_text_failure_origin.hpp",
+      "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+      "hash_format": "immutable_Git_LF_content",
+      "git_blob_oid": "486e60f0d718fd2db3952ccf1834b4606a4624eb",
+      "bytes": 7602,
+      "sha256": "6a60e18b87eb88f502d664423186c555f7545736f6fd4eac40e80d8249d0aa4d"
+    },
+    {
+      "path": "src/native_gui_text_failure_origin.cpp",
+      "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+      "hash_format": "immutable_Git_LF_content",
+      "git_blob_oid": "eb0bdc789f0b75ddc829dcae5ad4d16017898278",
+      "bytes": 5461,
+      "sha256": "ef98173370f4bcd4e47855ddcbb9b3ffd4457368da0ab8e4f35130b14bfc006b"
+    }
+  ],
+  "frozen8f9_additional_pins": [
+    {
+      "path": "include/bsp/native_gui_text_changed_storage.hpp",
+      "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+      "hash_format": "immutable_Git_LF_content",
+      "git_blob_oid": "a7531deb87f433cc115f6a48765622ef109237fe",
+      "bytes": 11813,
+      "sha256": "75a9ebed1b5b9f505ffa2593899d92108c9a687ffdbcc81339f5be888f095b63"
+    },
+    {
+      "path": "src/native_gui_text_changed_storage.cpp",
+      "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+      "hash_format": "immutable_Git_LF_content",
+      "git_blob_oid": "87afebe9613ca5cde74452f875afd72202d98083",
+      "bytes": 30553,
+      "sha256": "632288ebfe99bef41e3dcdd2aa3448a0abefa48860b690e2ee5aba2d4acc2517"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_TEXT_FAILURE_ORIGIN_HOST_SLICE.md",
+      "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+      "hash_format": "immutable_Git_LF_content",
+      "git_blob_oid": "d853e97e2ea9f07c41945b983cbadb9d4724a6de",
+      "bytes": 10377,
+      "sha256": "ea450188bbc964dcd582ea4b735a6f082f6b7cd59382bb5c965116099a471ea0"
+    },
+    {
+      "path": "reports/cc16_native_gui_text_failure_origin_host_slice.json",
+      "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+      "hash_format": "immutable_Git_LF_content",
+      "git_blob_oid": "14e77b70ae25adde54c60f783eb749fb3fef2a41",
+      "bytes": 51611,
+      "sha256": "e026a4078eb566cfd7e8ba6c9c65d3d9cb5e060e4168ce275aca5e48b71cb9fa"
+    }
+  ],
+  "actual_chain": [
+    {
+      "caller": "Glyph071",
+      "site": "00AB9D4F",
+      "Source": "native_gui_text_glyph_quad_storage.cpp:418",
+      "API": "NativeGuiTextGlyphQuadStorageCalls::construct_00ab9650"
+    },
+    {
+      "caller": "raw93AB9650",
+      "site": "00AB98D8",
+      "Source": "native_gui_text_default_storage.cpp:371",
+      "API": "ensure_native_gui_text_sections_storage_00ab8530 rawModel constructor-phase overload"
+    },
+    {
+      "caller": "laterGlyphchild",
+      "site": "00AB9D93",
+      "Source": "native_gui_text_glyph_quad_storage.cpp:433",
+      "API": "Calls::sections_00ab8530 separate postconstructor epoch; strict affinity unproved"
+    }
+  ],
+  "actual_Calls_symbol_search": [
+    "include/bsp\\native_gui_text_glyph_quad_storage.hpp:24:class NativeGuiTextGlyphQuadStorageCalls {",
+    "include/bsp\\native_gui_text_glyph_quad_storage.hpp:26:    virtual ~NativeGuiTextGlyphQuadStorageCalls() = default;",
+    "include/bsp\\native_gui_text_glyph_quad_storage.hpp:72:    NativeGuiTextGlyphQuadStorageCalls& calls;"
+  ],
+  "derived_raw_provider_found": false,
+  "wrong_reuse_reason": "8f9 postconstructor API requires completedraw93/boundraw122/current188 reference, unavailable during raw93 constructor",
+  "HeaderArm_is_constructor_slot_permission": false,
+  "Native_schedule": [
+    "00ab9d33: MOV ECX,0xf8bdf0 ",
+    "00ab9d38: CALL 0x00ab78a0 ",
+    "00ab9d3d: MOV dword ptr [ESP + 0x78],EAX ",
+    "00ab9d41: TEST EAX,EAX ",
+    "00ab9d43: MOV dword ptr [ESP + 0x54],0x0 ",
+    "00ab9d4b: JZ 0x00ab9d58 ",
+    "00ab9d4d: MOV ECX,EAX ",
+    "00ab9d4f: CALL 0x00ab9650 ",
+    "00ab9d54: MOV ESI,EAX ",
+    "00ab9d56: JMP 0x00ab9d5a ",
+    "00ab9d58: XOR ESI,ESI ",
+    "00ab9d5a: LEA EAX,[ESP + 0x78] ",
+    "00ab9d5e: OR EBP,0xffffffff ",
+    "00ab9d61: PUSH EAX ",
+    "00ab9d62: LEA ECX,[EDI + 0x194] ",
+    "00ab9d68: MOV dword ptr [ESP + 0x58],EBP ",
+    "00ab9d6c: MOV dword ptr [ESP + 0x7c],ESI ",
+    "00ab9d70: CALL 0x005dad40 "
+  ],
+  "Glyph_cleanup_static_evidence": {
+    "handler": "00cb80c8 -> DEEEFC",
+    "func_info": "00deeefc",
+    "func_info_hex": "2205931903000000e4eede00000000000000000000000000000000000000000001000000",
+    "func_info_sha256": "0d28587e7799bec05a77638df0c853f23d838f16b734dc26364f1dd93a8e7d07",
+    "map": "00deeee4",
+    "map_hex": "ffffffffb080cb00ffffffffb880cb00ffffffffc080cb00",
+    "map_sha256": "65d0a3f7149eae76b82869d7537a60e122dbed34cfd4819907036f4f6c5659d3",
+    "states": [
+      {
+        "state": 0,
+        "parent": -1,
+        "action": "00cb80b0",
+        "action_bytes": "8b4d20e938f6dfff"
+      },
+      {
+        "state": 1,
+        "parent": -1,
+        "action": "00cb80b8",
+        "action_bytes": "8d4dcce9605c76ff"
+      },
+      {
+        "state": 2,
+        "parent": -1,
+        "action": "00cb80c0",
+        "action_bytes": "8d4dcce968e377ff"
+      }
+    ],
+    "effects": [
+      "state0:CURRENTlivehome7->[CB80B3]AB76F0, notcapturedallocationsnapshot",
+      "state1:SAMEactualF24header->genuine41DD20",
+      "state2:SAMEactualF24header->genuine436430"
+    ],
+    "native_epoch_schedule": [
+      "0afterhome7allocationstore/beforeAB9650",
+      "-1beforehome7childstore/005DAD40",
+      "1after41E870return/beforeAB8E70",
+      "-1afterbuffercapture/beforenormalpoolreturn",
+      "2afterAB81C0return/beforeABA8D0, remainsactivecurrent50",
+      "-1afterbuffercapture/beforenormalwidereturn"
+    ],
+    "source_transport": "C++catch advancesparent-1 beforeaction; capturesfailure/phasebeforecleanup; secondaryfailure retained/qualified, no recoverytraversal/replay",
+    "no_inferred_raw_slot_return_on_laterfailure": true,
+    "no_vertex_index_publication_rollback": true
+  },
+  "supported_PE": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "length": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "verified_native_spans": [
+    {
+      "entry": "00ab98f0",
+      "end": "00ab9fc2",
+      "physical_span_bytes": 1747,
+      "native_instruction_count": 485,
+      "native_blocks": 37,
+      "native_direct_ordinary_calls": 19,
+      "native_captured_target_calls": 4,
+      "native_body_sha256": "795b76de15e3a52d032bfca739ca1cffe9714a83d7d619fd6aae9302aa13d236",
+      "original_abi": "ECX actualText; ten actual mutableDWORDcallee homes; RET28; incomingEDXunconsumed; observedcallers ignore incidentalreturnregisters",
+      "new_source_symbol": "write_native_gui_text_glyph_quad_storage_00ab98f0",
+      "new_source_signature": "void(void*,volatile uint32_t(&homes)[10],NativeGuiTextGlyphQuadStorageContext&,NativeGuiTextGlyphQuadStorageAcquired&)",
+      "source_coverage": "whole prefix/allordinarybranches/requiredrawchildschedule andthree cleanupactions; valid actualstorage/providers required; OriginalABI/privateframes/fault/FH3/SEH/secondarytransport andconcretebinding unproved"
+    },
+    {
+      "entry": "00AB78A0",
+      "inclusive_end": "00AB79DB",
+      "bytes": 316,
+      "decoded_instructions": 109,
+      "sha256": "cbc275ed2c139a3143c6342fd5b888b08e5789c3c81a87ed8358a67feeadbc89"
+    },
+    {
+      "entry": "00AB9650",
+      "inclusive_end": "00AB98EE",
+      "bytes": 671,
+      "decoded_instructions": 123,
+      "sha256": "36224703ecd780748bfbb4a21ccb90ee39ab4287c17fbc673f50e8d68ca41af5"
+    },
+    {
+      "entry": "00AB76F0",
+      "inclusive_end": "00AB76FB",
+      "bytes": 12,
+      "decoded_instructions": 4,
+      "sha256": "e604d4cdf787833fd18aedeae1de2cb1f7486e956d0150939b76170b13af8693"
+    }
+  ],
+  "raw93_ctor_EH_existing_static_evidence": {
+    "handler": {
+      "address": "00CB809C",
+      "bytes": 10,
+      "sha256": "0f06d3e5c4e5a0e30a275d0055683fdd787996a16d2b1465c0a5f7429f905a7c",
+      "hex": "b888eede00e99deaf3ff"
+    },
+    "funcinfo": {
+      "address": "00DEEE88",
+      "bytes": 36,
+      "sha256": "9ace887ca5a2cf28196bc0c664f2530f6cb8ab041b5a347322f87e0b0669f461",
+      "hex": "2205931907000000aceede00000000000000000000000000000000000000000001000000"
+    },
+    "unwind_map": {
+      "address": "00DEEEAC",
+      "bytes": 56,
+      "sha256": "b5753697d45152294309f0804b37988ac659db4a578d9c915826cb70a82f83cb",
+      "hex": "ffffffff4080cb00000000004880cb00010000005680cb00020000006480cb00030000007280cb00040000008080cb00050000008e80cb00"
+    },
+    "states": 7,
+    "actions": [
+      {
+        "address": "00CB8040",
+        "bytes": 8,
+        "sha256": "d3b40179e7c11ec2fd5fa1aa1ddfa4107f55ff2f88b1b5fb591fe0776688f4cf",
+        "hex": "8b4de0e9e816dfff",
+        "state": 0,
+        "parent": -1
+      },
+      {
+        "address": "00CB8048",
+        "bytes": 14,
+        "sha256": "7f55fee91a4515da5f3351ce84db2ce4dca8c39ada7035ebdee55bac42df6f00",
+        "hex": "8b4de081c1ec000000e9dae377ff",
+        "state": 1,
+        "parent": 0
+      },
+      {
+        "address": "00CB8056",
+        "bytes": 14,
+        "sha256": "de57c7f3ad68a2631d273cc31db637b580687e5b6818344d532a07901b6f4b3a",
+        "hex": "8b4de081c1f4000000e9bc5c76ff",
+        "state": 2,
+        "parent": 1
+      },
+      {
+        "address": "00CB8064",
+        "bytes": 14,
+        "sha256": "fcbc4f165f2ea0124c520adb2c0d46bb1009bdb3f13bc7fa88d6bdc77bdf0dd6",
+        "hex": "8b4de081c194010000e97eec91ff",
+        "state": 3,
+        "parent": 2
+      },
+      {
+        "address": "00CB8072",
+        "bytes": 14,
+        "sha256": "966f48c65477fc36222cfe5ee87deadb65cb243330fd56cec8da57d9d83aed3d",
+        "hex": "8b4de081c1a4010000e9b0e377ff",
+        "state": 4,
+        "parent": 3
+      },
+      {
+        "address": "00CB8080",
+        "bytes": 14,
+        "sha256": "8301aeaf7a0df1b52dfafeee903edfa3206a16a8a8199e7c85a6bfcde61f4a1c",
+        "hex": "8b4de081c1c0010000e9925c76ff",
+        "state": 5,
+        "parent": 4
+      },
+      {
+        "address": "00CB808E",
+        "bytes": 14,
+        "sha256": "70fc9a08f32139b4645a573d3a56e8dc7d35578e49969846bad8cd5972e4aa89",
+        "hex": "8b4de081c1c8010000e9845c76ff",
+        "state": 6,
+        "parent": 5
+      }
+    ]
+  },
+  "new_Ghidra_or_Native_body_credit": false,
+  "added_host_sites": [
+    {
+      "file": "src/native_gui_text_default_storage.cpp",
+      "lines": [
+        107,
+        124,
+        126,
+        199,
+        202,
+        206,
+        264,
+        273
+      ],
+      "operations": "actual raw93 preflight/base/domain/completion admission"
+    },
+    {
+      "file": "src/native_gui_text_storage_construct.cpp",
+      "lines": [
+        375,
+        378,
+        440,
+        454,
+        512,
+        515
+      ],
+      "operations": "material admission/registration, real Model reference.emplace bind, shadow-ready/default branches"
+    }
+  ],
+  "upstream_cleanup_origin_cut": [
+    {
+      "file": "src/native_gui_text_storage_construct.cpp",
+      "lines": [
+        573,
+        576
+      ],
+      "current_gate": "publichost_metadata versuscleanup, no private origin"
+    },
+    {
+      "file": "src/native_gui_text_default_storage.cpp",
+      "lines": [
+        278,
+        290
+      ],
+      "current_gate": "publicFailure versusunwind, no private origin"
+    },
+    {
+      "file": "src/native_gui_text_glyph_quad_storage.cpp",
+      "lines": [
+        482,
+        505
+      ],
+      "current_gate": "all Cpp escapes usepublicstate, snapshotbeforeaction, CURRENT home7 return"
+    }
+  ],
+  "private_body_return_boundary": {
+    "where": "raw93 immediatelyafter ctorphase85normalreturn/defaultCPP371 BEFOREcompleted()264..273/laterbind",
+    "negative_only": true,
+    "must_not_grant_Sourcecompletion_raw122_owner_Nativeorigin": true,
+    "existing_a_complete_is_later_extra_admission": true
+  },
+  "proposed_API_not_implemented": {
+    "distinct_slot_arm": "NativeGuiTextFailureConstructorSlotArm",
+    "bind": [
+      "ownGlyphinvocation",
+      "actualhome7ADDRESS",
+      "capturedconstructorreceiver",
+      "expectedactualcalleeSourceOrigin/entryAB9650",
+      "calleredge/siteAB9D4F",
+      "exactSDKcause",
+      "ordinaryprimary/stage",
+      "once/armed/bodyreturned/disarmed state"
+    ],
+    "reads_home_value_in_predicate": false,
+    "action_argument_when_genuinely_authorized": "CURRENTactualhome7 only, nevercapturedallocation",
+    "new_envelope": "NativeGuiTextFailureConstructorCall, Glyphcreated noncopyable, SAME runtime/slotarm/home/callee; private raw93 body_returned revokes only",
+    "candidate_overloads": [
+      "Calls::construct_00ab9650(void*,GlyphAcquired&,ConstructorCall&)",
+      "construct_native_gui_text_default_storage_00ab9650(void*,RawDefaultFrame&,RawDefaultContext&,RawDefaultAcquired&,ConstructorCall&)",
+      "ensure_native_gui_text_sections_storage_00ab8530(void*,RawSectionFrame&,RawSectionContext&,RawSectionAcquired&,constRuntime&)"
+    ],
+    "Nativeissuer_exists": false,
+    "positive_permit_mintable": false,
+    "old_APIs_not_upgraded_by_design": true
+  },
+  "future_Source_file_ownership_needs_Root_approval": [
+    "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+    "src/native_gui_text_glyph_quad_storage.cpp",
+    "include/bsp/native_gui_text_default_storage.hpp",
+    "src/native_gui_text_default_storage.cpp",
+    "include/bsp/native_gui_text_storage_construct.hpp",
+    "src/native_gui_text_storage_construct.cpp",
+    "include/bsp/native_gui_text_failure_origin.hpp",
+    "src/native_gui_text_failure_origin.cpp"
+  ],
+  "future_Native_addresses": [
+    "00AB98F0",
+    "00AB9650",
+    "constructorphase00AB8530"
+  ],
+  "proposed_inverse_plan": {
+    "not_performed_no_Source_patch": true,
+    "Glyph": "onlyconstructor-envelope/state0/pre-diagnostic seams; preserve22asm/78x87/10homes/current7/normaldisarm/latercalls",
+    "raw93": "onlyprivatecause/bodyreturn/cleanup/calleeusedoverload seams; all Native stores FC1/constants/base/ctor85/ownership unchanged",
+    "ctor85": "onlyactualhost capture/private forwarding/qualified cleanup; preserveactual model/name/mesh/material/publication calls",
+    "protocol": "distinct slot-home arm/envelope, no header masquerade/publicNativeflag/issuer"
+  },
+  "Glyph_22asm_bodies_sha256": "fc5975b3c80f3db93f7feb2b04e44d10272d738c6848c82e0499e7b6307c45ab",
+  "Glyph_x87_evidence_reused": {
+    "native_lexical_instruction_count": 78,
+    "source_instruction_count": 78,
+    "source_nonempty_asm_block_counts": [
+      40,
+      2,
+      13,
+      9,
+      14
+    ],
+    "whole_mnemonic_order_matches": true
+  },
+  "validation": {
+    "PEbody_and_cleanup_data_reverified": true,
+    "Source_and_frozen8f9_unchanged": true,
+    "actual_class_symbol_checked": true,
+    "Source_changed": false,
+    "new_only_docs_reports": 2,
+    "build_test_probe_game_Ghidra_CMake_ledger_processcontrol": false
+  },
+  "readiness": {
+    "corrected_constructor_protocol_implemented": false,
+    "actual_raw_Glyph_provider_bound": false,
+    "positive_Native_origin_closed": false,
+    "Raw85_Raw93_unknown_unwind_admitted": false,
+    "GlyphCtorSlotReturn_admitted": false,
+    "changed96_admitted": false,
+    "whole_frontend_ready": false,
+    "Original_ABI_runtime_activation": false
+  },
+  "credit": {
+    "newOriginal": 0,
+    "newVendor": 0,
+    "newHelper": 0,
+    "duplicateBody": 0,
+    "ABI": 0,
+    "runtime": 0,
+    "activation": 0
+  },
+  "document_pin": {
+    "path": "docs/CC16_GLYPH_CONSTRUCTOR_FAILURE_ORIGIN.md",
+    "hash_format": "UTF8_LF_content",
+    "bytes": 9991,
+    "sha256": "f2b9231a5231ee8ef6306426e062a52c0abe5aa07729651ced69b675c8ca24a1"
+  }
+}
