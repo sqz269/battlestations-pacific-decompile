@@ -11,6 +11,7 @@
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/game_hosts_singletons.hpp"
 #include "bsp/vfs_locale_runtime.hpp"
+#include "bsp/native_settings_language_name.hpp"
 #include <cstring>
 #include <stdexcept>
 
@@ -137,6 +138,23 @@ std::uint32_t GameNativeSettingsApplication::failure_site() const noexcept{retur
 void GameNativeSettingsApplication::copy_read_view(GameSettingsBlock& view) const{
     if(impl_->phase!=Impl::Phase::ready)throw std::logic_error("native settings read view requires completed load");
     copy_native_game_settings_read_view(impl_->process.settings(),impl_->languages,view);
+}
+const char* GameNativeSettingsApplication::raw_language_name_008d4870() const {
+    const auto& p=*impl_;
+    if(p.phase!=Impl::Phase::ready)
+        throw std::logic_error("raw language borrow requires completed settings load");
+    // The existing retained factory checks its exact stored data mapping.
+    // A legitimate process already exists here; no Native initializer runs.
+    if(&game_native_settings_process(p.data)!=&p.process)
+        throw std::logic_error("raw language borrow requires its SAME process/data graph");
+    auto& settings=p.process.settings();
+    if(p.operation.phase!=NativeSettingsLoaderOperation::Phase::complete ||
+        p.operation.owner!=&settings || !p.operation.catalog ||
+        p.operation.catalog->phase!=NativeLanguageCatalogProducerOperation::Phase::complete ||
+        p.catalog.actual_catalog_00f88974!=p.process.catalog_header())
+        throw std::logic_error("raw language borrow lacks its actual loader/catalog history");
+    return native_settings_language_name_008d4870(&settings,
+        p.process.catalog_data(),p.process.empty_00f88a3c());
 }
 const volatile float& GameNativeSettingsApplication::fov_divisor_00f889b4() const{
     return impl_->process.settings().fov_divisor_34;

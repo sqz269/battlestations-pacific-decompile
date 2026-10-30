@@ -1,0 +1,100 @@
+{
+  "packet": "codex-native-settings-language-name",
+  "base": "6a745da7df7c162f90f3ec0f24b61cd618867995",
+  "status": "source_reviewed_two_isolated_win32_objects_compiled_root_integration_pending",
+  "source_ready": false,
+  "address": "008d4870",
+  "original_abi": "ECX actualBCh, EAX borrowedCString, RET",
+  "core_api": "native_settings_language_name_008d4870(const void*, void* const volatile&, const char*) noexcept",
+  "application_api": "GameNativeSettingsApplication::raw_language_name_008d4870() const",
+  "native_epochs": [
+    "current settings+4 DWORD",
+    "wrapped SHL5",
+    "current catalog pointer CELL",
+    "wrapped addition",
+    "reached raw32 row+4",
+    "NULL-only actual F88A3C fallback"
+  ],
+  "ownership": "borrow only; no Native string/header/temp owner or cleanup",
+  "admission": "private ready + actual loader/catalog complete + owner/header + existing factory SAMEprocess/data identity",
+  "caller_obligations": [
+    "addressable selected raw row and narrow/NUL backing",
+    "no invalidating writer or hook",
+    "synchronous use before catalog/world/pool/CRT cleanup",
+    "permanent existing process/cells/providers/code/data through callbacks"
+  ],
+  "source_hashes": {
+    "include/bsp/native_settings_language_name.hpp": "339cfabe493d80e0b22d6304a06e9c5553ee4b5ce24be0cf280ba2ce903397f1",
+    "src/native_settings_language_name.cpp": "488d9bdbb8e1408defc2a10f5537086120b3cc847bb202f1a06aba997af43b73",
+    "include/bsp/game_native_settings_application.hpp": "9b336a5e45c735c7a75cde6216476cfd4994e3a95f1fddc187af9f39d347b86f",
+    "src/game_native_settings_application.cpp": "d37fc9362dcc1685cbac6872cabaa90655f10c865bf1c442cbdbc64292a07a69"
+  },
+  "source_projection_sha256": "4617e6ee4926a3063b7fc06f5e450fead7d9781bbf78d6f3e1161e2b73383d86",
+  "providers_unchanged": {
+    "include/bsp/game_native_settings_process.hpp": "c39242f443a95a5a4d5f910279123a90fb09e8e0fa63d0036632cd597c26ccb6",
+    "src/game_native_settings_process.cpp": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b",
+    "include/bsp/native_settings_loader.hpp": "29373ba8100bd4491bab50cb1ca0088626c740c83fbb63d5c087583b138ec84b",
+    "src/native_settings_loader.cpp": "92cf2e1b496be7d88c6f3f38f548c6ee852c2468fceac0fdf8df1106f25efef0",
+    "include/bsp/native_language_catalog_producer.hpp": "bfe9484952c2db9bced05e086bfe388638a384f4f7e6fa86cffb01621c5337c1",
+    "src/native_language_catalog_producer.cpp": "38004c68e8aef2bd61a6468dd9ea6b9ef4bb566152dad53d1235586f44d8ec7b",
+    "include/bsp/native_language_catalog_lifetime.hpp": "183c438d2b781196cc916b09aaabf4868466f2a0f188f751680d31c4383d4d92",
+    "src/native_language_catalog_lifetime.cpp": "38b774b3503e72d0817743bc6e127657bda716ff96858b520a355b0ea9c46802",
+    "include/bsp/native_settings_choices.hpp": "38a9a2d68ac64054cd1beb01126384011f6a364e49f7773be9142cd5feab0348",
+    "src/native_settings_choices.cpp": "7f005f432e2461dd471a4d5fb911640cc74e0b3220a37db21b53603b2898b781",
+    "include/bsp/locale_tables.hpp": "8a71acfda63ce30feb69b93005d0ffc0ff86e71b9622950c64a7b5089faa5abf",
+    "src/locale_tables.cpp": "d18e6056f48e8c8b2a7cd5db980dc998a840e27b16c28b87b6a315cb4997f17c"
+  },
+  "contract_pins": {
+    "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\raw_settings_catalog_ready_borrow_contract_gui_20261030\\CONTRACT.md": "c8c195ff0e8b9f2c8a2d5a690fe78be45f084d32757c49c05cedb75bb58d4a73",
+    "J:\\PROG\\battlestations-pacific-decompile-cc9\\local\\raw_language_name_accessor_contract_cc9_20261030\\CONTRACT.md": "7a4511e7d5fa4d4a1800f16110094899178b8573f0150db3685f301861351259"
+  },
+  "saved_assembly_sha256": "61036e6b67b2d0d6abd39d830a14ee7f50ea1eb45e19546b748813047c3e7b4c",
+  "no_startup_redirect_or_loaded_abi_runtime_vendor_claim": true,
+  "no_tests_probe_game_ghidra_sharedmetadata": true,
+  "strict_objects": {
+    "core": {
+      "compile_count": 1,
+      "compile_exit": 0,
+      "coff_machine": "014c",
+      "object_sha256": "a94deb64cd7fe699f40e4240ceacd01a67fadc325f2ae51ef50e7c2821c0e860",
+      "artifact_hashes": {
+        "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_settings_language_name_validation_gui_20261030\\objects\\core.obj": "a94deb64cd7fe699f40e4240ceacd01a67fadc325f2ae51ef50e7c2821c0e860",
+        "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_settings_language_name_validation_gui_20261030\\objects\\core_compile.cmd": "8a3849b2736578eb63d5ff9bf8bbdf33479f7328a2043a2d8a2bb5ddcb447574",
+        "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_settings_language_name_validation_gui_20261030\\objects\\core_compile.log": "395c382d5bce9996012c7409770b040ef44d9b62cfbc260b453e716a512300c0",
+        "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_settings_language_name_validation_gui_20261030\\objects\\core_compile_command.txt": "aa695744df6ccaf5909fdf5b8f8f7534d60023cc86202aae3704656a9e75e8b6",
+        "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_settings_language_name_validation_gui_20261030\\objects\\core_compile_exit.txt": "9aca8dfce962538fb8131d73f84cada05e4dc79f5a0d3612c511b1150f3e33e2",
+        "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_settings_language_name_validation_gui_20261030\\objects\\core_symbols.cmd": "9d4a7954734f93137f9afe82d9045c57b158703c47ef6d8a7feab5a68598fc8c",
+        "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_settings_language_name_validation_gui_20261030\\objects\\core_symbols.txt": "2e189b535ac02fdaf474425914903298f9c4a69874e9965c4ca67a55c0ddc15a"
+      }
+    },
+    "application": {
+      "compile_count": 1,
+      "compile_exit": 0,
+      "coff_machine": "014c",
+      "object_sha256": "c9262c28ada43e2e31b8d678214e0cb6516f22f9d847e56e7830be3615efd23a",
+      "artifact_hashes": {
+        "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_settings_language_name_validation_gui_20261030\\objects\\application.obj": "c9262c28ada43e2e31b8d678214e0cb6516f22f9d847e56e7830be3615efd23a",
+        "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_settings_language_name_validation_gui_20261030\\objects\\application_compile.cmd": "2b2b828ecefb624fdd597bad9a732ca3b289cd856be19c850ee0b0cd6fd83599",
+        "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_settings_language_name_validation_gui_20261030\\objects\\application_compile.log": "761091666a4ec1b541636a03d8396ae4a31af36b854329ef9ac45a0cbb2a13f4",
+        "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_settings_language_name_validation_gui_20261030\\objects\\application_compile_command.txt": "95b6590a085938e79c3c4e9c6e4e0f903f302d7f796b70981fa612977d43f19c",
+        "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_settings_language_name_validation_gui_20261030\\objects\\application_compile_exit.txt": "9aca8dfce962538fb8131d73f84cada05e4dc79f5a0d3612c511b1150f3e33e2",
+        "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_settings_language_name_validation_gui_20261030\\objects\\application_symbols.cmd": "afac44aa48463e38da849b5d7cbf9770c9939d0b71533581e9c29a1a3fe96da2",
+        "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_settings_language_name_validation_gui_20261030\\objects\\application_symbols.txt": "b5e8f84b90dedbfdb6a61247d530102e158a1cca60450a21a711f716be8bd707"
+      }
+    }
+  },
+  "actual_defined_symbols": {
+    "core": {
+      "actual_defined_external_row": "00E 00000000 SECT3  notype ()    External     | ?native_settings_language_name_008d4870@bsp@@YAPBDPBXADSAXPBD@Z (char const * __cdecl bsp::native_settings_language_name_008d4870(void const *,void * const volatile &,char const *))",
+      "decorated_symbol": "?native_settings_language_name_008d4870@bsp@@YAPBDPBXADSAXPBD@Z",
+      "object_sha256": "a94deb64cd7fe699f40e4240ceacd01a67fadc325f2ae51ef50e7c2821c0e860"
+    },
+    "application": {
+      "actual_defined_external_row": "57F 00000000 SECT24C notype ()    External    | ?raw_language_name_008d4870@GameNativeSettingsApplication@game@bsp@@QBEPBDXZ (public: char const * __thiscall bsp::game::GameNativeSettingsApplication::raw_language_name_008d4870(void)const )",
+      "decorated_symbol": "?raw_language_name_008d4870@GameNativeSettingsApplication@game@bsp@@QBEPBDXZ",
+      "object_sha256": "c9262c28ada43e2e31b8d678214e0cb6516f22f9d847e56e7830be3615efd23a"
+    }
+  },
+  "defined_symbols_sha256": "5cfac30f7c1827d273730b43273d9578f1a4808f697c363a2c3d5e0d5eab44f1",
+  "source_reviews_at_freeze": "Root and Gameplay full Source accepted exact339c/488d/9b33/d37f; independent final frozen seals separate"
+}
