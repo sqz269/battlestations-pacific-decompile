@@ -4,6 +4,14 @@
 #include "bsp/game_native_gui_manager_application.hpp"
 #include "bsp/game_native_readonly_data.hpp"
 #include "bsp/game_native_renderer_application.hpp"
+#include "bsp/game_native_model_domain.hpp"
+#include "bsp/model_type_bootstrap.hpp"
+#include "bsp/native_gui_group_factory.hpp"
+#include "bsp/native_gui_group_identity.hpp"
+#include "bsp/native_gui_widget_load_hooks.hpp"
+#include "bsp/native_node_parenting_storage.hpp"
+#include "bsp/cc13_gui1.hpp"
+#include "bsp/singleton_lifetime.hpp"
 #include "bsp/game_native_renderer_scalars.hpp"
 #include "bsp/game_native_dyn_process.hpp"
 #include "bsp/game_native_entity_registry_process.hpp"
@@ -51,6 +59,10 @@
 #include <stdexcept>
 #include <utility>
 #include <vector>
+#include <deque>
+#include <list>
+#include <limits>
+#include <optional>
 
 namespace bsp::game {
 namespace {
@@ -83,7 +95,7 @@ void* pointer(Word value) noexcept { return reinterpret_cast<void*>(value); }
 Word bits(const void* p) noexcept { return reinterpret_cast<Word>(p); }
 [[noreturn]] void reject(const char* slot, Word target) {
     char message[160];
-    std::snprintf(message, sizeof message, "childless GUI Page does not admit %s target/type %08x", slot, target);
+    std::snprintf(message, sizeof message, "native GUI Page has no supplied %s target/type %08x", slot, target);
     throw std::logic_error(message);
 }
 } // namespace
@@ -103,7 +115,7 @@ struct GameNativeGuiPageApplication::Impl {
         }
     };
     // AC6806's CURRENT Page+18 and reader+08. The admitted Page+18 path is
-    // the exact childless AC4C50 composition, not a generic child factory.
+    // the whole AC4C50 composition with the same per-invocation raw child context.
     struct Properties final : NativeGuiPagePropertiesBindings {
         Impl& app;
         explicit Properties(Impl& value) : app(value) {}
@@ -120,77 +132,101 @@ struct GameNativeGuiPageApplication::Impl {
             app.read_properties(page, reader);
         }
     };
+    struct TreeCall {
+        NativeNodeTreeRetirementFrame frame{};
+        NativeNodeTreeRetirementAcquired acquired;
+        NativeGroupStorageReleaseAcquired group;
+        void* actual{};
+        Word target{};
+        std::exception_ptr exception;
+        bool late_primary{};
+    };
+    struct SceneCall {
+        NativeNodeSceneAttachmentFrame frame{}; NativeNodeSceneAttachmentAcquired acquired;
+        void* actual{}; Word target{}; std::exception_ptr exception;
+    };
+    struct AttachmentCall {
+        NativeNodeAttachmentFrame frame{}; NativeNodeParentingAcquired acquired;
+        void* actual{}; Word target{}; std::exception_ptr exception;
+    };
+    struct ParentNullCall { NativeNodeParentNullFrame frame{}; NativeNodeParentNullAcquired acquired; };
+    struct ScalarCall { volatile Word flags{}; bool entered{}, complete{}; };
+    struct NativeCalls {
+        std::deque<TreeCall> trees;
+        std::deque<SceneCall> scenes;
+        std::deque<AttachmentCall> attachments;
+        std::deque<ParentNullCall> parents;
+        std::deque<ScalarCall> scalars;
+        std::size_t tree_used{}, scene_used{}, attachment_used{}, parent_used{}, scalar_used{};
+        bool failed{};
+        void prepare(std::size_t nodes) {
+            // This Source graph's callback edges are the finite default-Group
+            // producer, postorder AA8320, raw tree/scene walkers and scalars.
+            // Each node has separate call homes, including cleanup/repeated
+            // scene passes. Capacity grows with actual producer records.
+            require(nodes <= (std::numeric_limits<std::size_t>::max() - 8) / 8,
+                "Page call graph metadata extent overflow");
+            const auto target = nodes * 8 + 8;
+            while (trees.size() < target) trees.emplace_back();
+            while (scenes.size() < target) scenes.emplace_back();
+            while (attachments.size() < target) attachments.emplace_back();
+            while (parents.size() < target) parents.emplace_back();
+            while (scalars.size() < target) scalars.emplace_back();
+        }
+        template<class T> T& take(std::deque<T>& slots, std::size_t& used) {
+            require(used < slots.size(), "Page native call lacks prepared graph backing");
+            return slots[used++]; // monotonic; completed/failed frames are never reset
+        }
+        TreeCall& tree() { return take(trees, tree_used); }
+        SceneCall& scene() { return take(scenes, scene_used); }
+        AttachmentCall& attachment() { return take(attachments, attachment_used); }
+        ParentNullCall& parent() { return take(parents, parent_used); }
+        ScalarCall& scalar() { return take(scalars, scalar_used); }
+    };
     // The raw Group's distinct current18 is B8EEC0. Its canonical zero terminal
     // may still hold an actual3Ch scene resource; its genuine raw destructor
     // closes that field. Never route it through a legacy SceneResource* owner.
-    struct GroupTrees final : NativeNodeTreeRetirementDispatch {
+    struct GroupTrees final : NativeNodeTreeRetirementDispatch, NativeNodeTreeRetirementFrames {
         Impl& app;
         explicit GroupTrees(Impl& value) : app(value) {}
         const volatile Word* resolve_profile(Word profile) const override {
-            if (profile == kGroupProfile) return table(app.data, profile, 0x58);
-            return app.scene_domain.node.trees.dispatch.resolve_profile(profile);
+            return app.roots.resolve_profile(profile);
+        }
+        NativeNodeTreeRetirementInvocation recursive_unregister(void* actual) override {
+            app.authenticate_node(actual);
+            auto& call = app.calls().tree(); call.actual = actual; call.target = 0x00b6d850;
+            return {call.frame, call.acquired};
         }
         void invoke_virtual18(Word target, void* actual) override {
-            for (auto& page : app.pages) {
-                if (page->group_slot == actual && page->reference && !page->reference->retired()) {
-                    require(target == 0x00b8eec0 &&
-                        app.renderer.actual_owners().find(actual) == page->reference.get(),
-                        "raw GUI Group release requires its genuine current18 and same canonical owner");
-                    release_native_group_storage_00b8eec0(actual, page->group_release_frame,
-                        app.group_trees, page->group_release);
+            app.authenticate_node(actual);
+            auto& call = app.calls().tree(); call.actual = actual; call.target = target;
+            try {
+                if (auto* model = app.find_model(actual)) {
+                    model->release_raw_virtual18_00b6f310(target, call.frame, call.acquired);
+                    return; // companion may have died; only retained diagnostics survive
+                }
+                if (app.find_root(actual)) {
+                    require(target == 0x00b8eec0, "raw Page root requires genuine current18 B8EEC0");
+                    release_native_group_storage_00b8eec0(actual, call.frame, app.group_trees, call.group);
                     return;
                 }
-                if (!page->properties) continue;
-                auto& scene = page->properties->acquired.scene;
-                auto& frames = page->properties->scenes;
-                if (scene.camera_result == actual && scene.camera_reference && !scene.camera_reference->retired()) {
-                    require(target == 0x00b6f310 &&
-                        app.renderer.actual_owners().find(actual) == &*scene.camera_reference,
-                        "GUI camera release requires its genuine current18 and same canonical owner");
-                    release_native_node_tree_00b6f310(actual, frames.camera_release_frame,
-                        app.group_trees, frames.camera_release);
-                    return;
-                }
-                if (scene.directional_result == actual && scene.directional_reference &&
-                    !scene.directional_reference->retired()) {
-                    require(target == 0x00b6f310 &&
-                        app.renderer.actual_owners().find(actual) == &*scene.directional_reference,
-                        "GUI sun release requires its genuine current18 and same canonical owner");
-                    release_native_node_tree_00b6f310(actual, frames.directional_release_frame,
-                        app.group_trees, frames.directional_release);
-                    return;
-                }
+                require(target == 0x00b6f310, "Page camera/light requires genuine current18 B6F310");
+                release_native_node_tree_00b6f310(actual, call.frame, app.group_trees, call.acquired);
+            } catch (...) {
+                call.exception = std::current_exception(); app.calls().failed = true;
+                const auto stopped = call.group.started ? call.group.active_call_site : call.acquired.active_call_site;
+                app.fail(stopped ? stopped : call.target);
+                throw;
             }
-            reject("Page tree current18 outside its admitted live families", target);
         }
         void invoke_virtual0(Word target, void* actual, RenderCommandReference& reference) override {
-            auto release = [&](auto* expected) {
-                require(target == 0x00bd30e0 && expected == &reference &&
-                    static_cast<void*>(&reference.reference_count) == static_cast<unsigned char*>(actual) + 4 &&
-                    reference.reference_count.load(std::memory_order_relaxed) == 0 &&
-                    app.renderer.actual_owners().find(actual) == &reference,
-                    "Page tree terminal requires its same current zero-count canonical family owner");
-                // The family's genuine CURRENT04 removes its actual scene.
-                // In particular, do not preclear170 or impose A1's null guard.
-                reference.release_zero_references();
-            };
-            for (auto& page : app.pages) {
-                if (page->group_slot == actual && page->reference && !page->reference->retired()) {
-                    release(page->reference.get()); return;
-                }
-                if (!page->properties) continue;
-                auto& scene = page->properties->acquired.scene;
-                if (scene.camera_result == actual && scene.camera_reference && !scene.camera_reference->retired()) {
-                    release(&*scene.camera_reference); return;
-                }
-                if (scene.directional_result == actual && scene.directional_reference &&
-                    !scene.directional_reference->retired()) {
-                    release(&*scene.directional_reference); return;
-                }
-            }
-            // In particular, retained130 may be a NON-node family. Never apply
-            // A1's node170-null admission to an unknown retained owner.
-            reject("raw Group current0 outside its admitted family", target);
+            app.authenticate_node(actual);
+            require(target == 0x00bd30e0 &&
+                app.renderer.actual_owners().find(actual) == &reference &&
+                static_cast<void*>(&reference.reference_count) == at(actual, 4) &&
+                reference.reference_count.load(std::memory_order_relaxed) == 0,
+                "Page tree terminal requires SAME observed-zero canonical actual+04 owner");
+            reference.release_zero_references();
         }
     };
     // B6D890 from AC4C50 and AC6806 on the SAME raw page-root Group. Each
@@ -199,26 +235,47 @@ struct GameNativeGuiPageApplication::Impl {
         Impl& app;
         explicit Roots(Impl& value) : app(value) {}
         const volatile Word* resolve_profile(Word profile) const override {
-            require(profile == kGroupProfile, "native GUI page root admits only its raw Group profile");
-            return app.group_identity.actual_profile_00d634f8;
+            if (profile == kGroupProfile) return app.group_identity.actual_profile_00d634f8;
+            if (profile == 0x00d62de8) return app.models->raw_access().models.vtable_00d62de8;
+            if (profile == 0x00d62c88) return app.models->raw_access().models.vtable_00d62c88;
+            if (profile == 0x00d62cf0 || profile == 0x00d62fb0 || profile == 0x00d62f58)
+                return table(app.data, profile, 0x58);
+            reject("raw Page node profile", profile);
         }
         void invoke_child(Word target, void* actual, Word requested, Word recursion) override {
-            require(target == 0x00b6ed80 && !recursion,
-                "native GUI page root requires its genuine B6ED80 attachment with recurse0");
-            for (auto& page : app.pages) {
-                if (!page->reference || page->group_slot != actual || page->reference->retired()) continue;
-                require(app.renderer.actual_owners().find(actual) == page->reference.get(),
-                    "native GUI page root lost its same canonical raw Group");
-                require(page->attachment_count < page->attachments.size(),
-                    "raw GUI page root exceeded its two prepared constructor attachments");
-                auto& invocation = page->attachments[page->attachment_count++];
-                invocation.frame.scene_argument = requested;
-                invocation.frame.recursion_argument = recursion;
-                set_native_node_scene_storage_00b6ed80(actual, invocation.frame,
-                    app.group_scenes, invocation.acquired);
-                return;
+            app.authenticate_node(actual);
+            auto& call = app.calls().scene(); call.actual = actual; call.target = target;
+            call.frame.scene_argument = requested;
+            call.frame.recursion_argument = recursion;
+            try {
+                if (auto* model = app.find_model(actual)) {
+                    if (target == 0x00b6ee10) {
+                        model->remove_raw_scene_virtual54_00b6ee10(target, call.frame, call.acquired);
+                        return;
+                    }
+                    require(target == 0x00b6ed80, "Page Model requires genuine current50 B6ED80");
+                    set_native_node_scene_storage_00b6ed80(actual, call.frame, app.group_scenes, call.acquired);
+                    return;
+                }
+                const auto profile = read(actual);
+                if (profile == kGroupProfile || profile == 0x00d62c88 || profile == 0x00d62cf0) {
+                    if (target == 0x00b6ed80)
+                        set_native_node_scene_storage_00b6ed80(actual, call.frame, app.group_scenes, call.acquired);
+                    else if (target == 0x00b6ee10)
+                        remove_native_node_scene_storage_00b6ee10(actual, call.frame, app.group_scenes, call.acquired);
+                    else reject("Page node current50/54", target);
+                    return;
+                }
+                if (target == 0x00b7c020)
+                    attach_native_light_scene_storage_00b7c020(actual, call.frame, app.group_scenes, call.acquired);
+                else if (target == 0x00b7bd60)
+                    remove_native_light_scene_storage_00b7bd60(actual, call.frame, app.group_scenes, call.acquired);
+                else reject("Page light current50/54", target);
+            } catch (...) {
+                call.exception = std::current_exception(); app.calls().failed = true;
+                app.fail(call.acquired.active_call_site ? call.acquired.active_call_site : call.target);
+                throw;
             }
-            throw std::logic_error("native GUI page root has no child below its Group before P3b/P3c");
         }
     };
     struct SceneFrames {
@@ -229,8 +286,15 @@ struct GameNativeGuiPageApplication::Impl {
         NativeGuiCameraStoreFindScratch find{};
         NativeGuiCameraStoreCreateFrame create{};
         NativeGuiSceneConstructFrame outer_construct{};
-        std::array<NativeNodeTreeRetirementAcquired, 256> root_calls{};
-        NativeGuiSceneDestroyFrame outer_destroy{root_calls.data(), 256, 0};
+        std::vector<NativeNodeTreeRetirementAcquired> root_calls;
+        NativeGuiSceneDestroyFrame outer_destroy{};
+        void prepare(std::size_t nodes) {
+            require(!outer_destroy.used && nodes <= std::numeric_limits<Word>::max(),
+                "Page scene root-call preparation must precede destruction");
+            if (root_calls.size() < nodes) root_calls.resize(nodes);
+            outer_destroy.root_calls = root_calls.data();
+            outer_destroy.capacity = static_cast<Word>(root_calls.size());
+        }
         std::array<volatile Word, 6> camera_locals{};
         std::array<volatile Word, 2> camera_arguments{};
         std::array<volatile Word, 39> pose_locals{};
@@ -241,12 +305,8 @@ struct GameNativeGuiPageApplication::Impl {
             {pose_locals.data(), {look_at_locals.data(), look_at_arguments.data()},
                 &look_at_arguments[3], &look_at_arguments[3]}, camera_cleanup};
         NativeCameraStorageDestroyFrame camera_destroy{};
-        NativeNodeTreeRetirementFrame camera_release_frame{};
-        NativeNodeTreeRetirementAcquired camera_release;
         NativeSceneResourceConstructFrame resource_construct{};
         NativeLightLifetimeFrame directional_destroy{};
-        NativeNodeTreeRetirementFrame directional_release_frame{};
-        NativeNodeTreeRetirementAcquired directional_release;
         std::array<volatile Word, 32> directional_world{};
         NativeGuiSceneAcquisitionFrame frame{locals.data(), arguments.data(), find, create,
             outer_construct, outer_destroy, camera_construct, camera_destroy, resource_construct,
@@ -254,20 +314,27 @@ struct GameNativeGuiPageApplication::Impl {
     };
     struct PropertyInvocation {
         SceneFrames scenes;
-        alignas(4) std::byte locals[0x30]{};
         NativeGuiWidgetPropertyScratch widget{};
         NativeGuiWidgetTransformScratch transform{};
         GuiWidgetBounds bounds;
         NativeLuaReaderFieldScratch field{};
         NativeLuaFieldResolverFrame resolver;
         NativeLuaReaderQueryScratch keys{};
+        NativeGuiPageReadPropertiesFrame page_frame{{}, scenes.frame, widget, bounds};
         NativeGuiPageReadPropertiesAcquired acquired;
-        NativeLuaReaderStorage* reader{}; // borrowed only through the synchronous call
-        Word rejected_widget_type{};
-    };
-    struct RootAttachment {
-        NativeNodeSceneAttachmentFrame frame{};
-        NativeNodeSceneAttachmentAcquired acquired{};
+        NativeLuaObjectStorage enter{};
+        NativeNodeParentingFrame parent_frame{};
+        NativeNodeSetParentAcquired parent_acquired;
+        NativeNodeParentNullFrame detach_frame{};
+        NativeNodeParentNullAcquired detach_acquired;
+        NativeCalls native_calls;
+        std::optional<NativeGuiWidgetPropertyInteractionContext> interaction_context;
+        std::optional<NativeGuiWidgetPropertyChildrenRawContext> children_context;
+        std::optional<NativeGuiPageReadPropertiesRawContext> page_context;
+        NativeCalls* suspended_calls{};
+        NativeLuaReaderStorage* reader{};
+        PropertyInvocation* suspended{};
+        void* actual_widget{};
     };
     // The page's raw Group is owned through page+4C. All raw lifetime and
     // attachment backing survives until its native owner has actually retired.
@@ -278,13 +345,17 @@ struct GameNativeGuiPageApplication::Impl {
         NativeGroupStorageLifetimeAcquired group_lifetime;
         std::unique_ptr<PropertyInvocation> properties;
         std::unique_ptr<NativeGroupStorageReference> reference;
-        NativeNodeTreeRetirementFrame group_release_frame{};
-        NativeGroupStorageReleaseAcquired group_release;
-        NativeNodeTreeRetirementAcquired group_unlink;
-        std::array<RootAttachment, 2> attachments{};
-        std::size_t attachment_count{};
+        NativeCalls construction_calls;
+        std::vector<std::unique_ptr<NativeCalls>> lifetime_calls;
         void* page{};
         bool scene_released{}, native_retired{};
+    };
+    struct WidgetRecord {
+        void* actual{};
+        bool constructor_returned{}, native_retired{};
+        std::unique_ptr<NativeGuiGroupReference> reference;
+        std::unique_ptr<PropertyInvocation> properties;
+        GuiWidgetBounds loaded_bounds;
     };
     struct Construction {
         NativeString suffix, path;
@@ -296,21 +367,34 @@ struct GameNativeGuiPageApplication::Impl {
         NativeGuiPagePropertiesContinuation properties;
     };
 
-    struct SceneTypes final : NativeSceneRegistrationDerivedTypes {
+    struct SceneTypes final : NativeSceneRegistrationDerivedTypes, NativeNodeParentingDispatch {
         Impl& app;
         explicit SceneTypes(Impl& value) : app(value) {}
-        const volatile Word* resolve_profile(Word profile) const override {
-            if (profile != kGroupProfile) reject("scene type profile", profile);
-            return app.group_identity.actual_profile_00d634f8;
-        }
+        const volatile Word* resolve_profile(Word profile) const override { return app.roots.resolve_profile(profile); }
         std::uint8_t invoke_type_0c(Word target, void* actual, Word token) override {
-            if (target != 0x00b8f650) reject("scene type+0C", target);
-            bool found = false;
-            for (auto& page : app.pages)
-                if (page->group_slot == actual && page->reference && !page->reference->retired() &&
-                    app.renderer.actual_owners().find(actual) == page->reference.get()) found = true;
-            require(found, "scene Group predicate requires its same live canonical raw root");
-            return static_cast<std::uint8_t>(app.group_types.is_type_00b8f650(token));
+            app.authenticate_node(actual);
+            if (target == 0x00b8f650 && app.find_root(actual))
+                return static_cast<std::uint8_t>(app.group_types.is_type_00b8f650(token));
+            if (target == 0x006ef860 && app.find_model(actual))
+                return static_cast<std::uint8_t>(app.models->raw_access().models.types.is_type_006ef860(token));
+            if (target == 0x00b6f570 && read(actual) == 0x00d62c88)
+                return static_cast<std::uint8_t>(app.node_types.node_is_type_00b6f570(token));
+            reject("raw Page node type+0C", target);
+        }
+        void invoke_attachment_1c(Word target, void* actual, Word requested) override {
+            app.authenticate_node(actual);
+            auto& call = app.calls().attachment(); call.actual = actual; call.target = target;
+            call.frame.attachment_argument = requested;
+            try {
+                if (target == 0x00b6d7b0 && app.find_model(actual))
+                    set_native_node_attachment_00b6d7b0(actual, call.frame, *this, call.acquired);
+                else if (target == 0x00b8f4f0 && app.find_root(actual))
+                    set_native_group_attachment_00b8f4f0(actual, call.frame, call.acquired);
+                else reject("raw Page node attachment+1C", target);
+            } catch (...) {
+                call.exception = std::current_exception(); app.calls().failed = true;
+                app.fail(call.acquired.active_call_site ? call.acquired.active_call_site : call.target); throw;
+            }
         }
     };
     struct Fields final : NativeGuiWidgetPropertyDispatch {
@@ -326,16 +410,194 @@ struct GameNativeGuiPageApplication::Impl {
                 field, fallback, invocation->field, app.field_values);
         }
     };
-    // The admitted page has no children/timed entries/parent. Unsupported
-    // families reject; no successful child deletion, type answer or list
-    // progress is fabricated. Preflight those branches before scalar teardown.
+    struct ChildCalls final : NativeGuiWidgetPropertyChildrenCalls, NativeGuiWidgetLoadedDispatch {
+        Impl& app;
+        explicit ChildCalls(Impl& value) : app(value) {}
+        void enumerate_keys_18(void* visitor, Word target, void* block) override {
+            if (target != 0x00bd5f50) reject("reader key enumeration+18", target);
+            auto& f = app.reader_invocation(visitor);
+            auto* output = ::new (block) NativeLuaReaderKeys;
+            native_lua_reader_enumerate_keys_00bd5f50(*f.reader, *output, f.keys, app.crt_sse2_conversion);
+        }
+        void* create_widget_00aa6560(Word type, const void* source) override {
+            require(app.current_properties, "Group factory requires its retained parent reader");
+            if (type != 2 || source) reject("AA6560 factory outside default GuiGroup", type);
+            // The record exists before AA12F0; constructor-return custody is
+            // recorded before canonical allocation/bind can fail.
+            app.widget_records.push_back(std::make_unique<WidgetRecord>());
+            auto& record = *app.widget_records.back();
+            record.actual = create_native_gui_group_00aa12f0(NativeGuiGroupDefaultInputs{
+                app.renderer.node_constants().one_00d7a24c});
+            if (!record.actual) return nullptr;
+            record.constructor_returned = true;
+            record.reference = std::make_unique<NativeGuiGroupReference>(record.actual, app.widget_identity);
+            for (auto* f = app.current_properties; f; f = f->suspended) {
+                app.prepare_calls(f->native_calls);
+                if (f->suspended_calls) app.prepare_calls(*f->suspended_calls);
+            }
+            return record.actual;
+        }
+        void widget_created_74(void* widget, Word target) override {
+            (void)app.live_widget(widget);
+            if (target != 0x00a9ac00) reject("Group current74", target);
+            native_gui_widget_base_post_construct_00a9ac00(widget, nullptr);
+        }
+        void enter_key_04(void* visitor, Word target, Word tag, Word payload) override {
+            if (target != 0x00bd8e20) reject("reader enter+04", target);
+            auto& f = app.reader_invocation(visitor);
+            f.reader->enter_key_00bd8e20(f.enter, tag, payload);
+        }
+        void read_widget_18(void* widget, Word target, void* visitor) override {
+            if (target != 0x00ac6fd0) reject("Group current18", target);
+            (void)app.reader_invocation(visitor);
+            app.read_group_properties(widget, *static_cast<NativeLuaReaderStorage*>(visitor));
+        }
+        void leave_key_08(void* visitor, Word target) override {
+            if (target != 0x00bd7a20) reject("reader leave+08", target);
+            app.reader_invocation(visitor).reader->pop_back_00bd7130();
+        }
+        void widget_loaded_78(void* widget, Word target) override {
+            auto& record = app.live_widget(widget);
+            if (target != 0x00aa7170) reject("Group current78", target);
+            native_gui_widget_loaded_00aa7170(widget, *this, record.loaded_bounds,
+                scalar<double>(app.data, 0x00d7a280));
+        }
+        void call_active_60(Word target, void*, std::uint8_t) override { reject("Group current60", target); }
+    };
+    struct RawTimedEntries {
+        Impl& app;
+        enum class Phase { allocated, alpha, section, base, destroying, consumed, failed };
+        struct Entry { void* widget{}; void* actual{}; Phase phase{Phase::allocated}; };
+        struct Backing { void* header{}; void* actual{}; bool acquired{}, consumed{}; };
+        std::list<Entry> entries;
+        std::list<Backing> backing;
+        struct Invocation final : cc13_gui1::GuiTimedEntryHooks {
+            RawTimedEntries& service;
+            void* const widget;
+            const std::int32_t index;
+            Entry* pending{};
+            bool entered{}, complete{}, failed{};
+            Invocation(RawTimedEntries& s, void* w, std::int32_t i) : service(s), widget(w), index(i) {}
+            void timed_entry_array_resize_00aa77b0(void* header, std::int32_t count) override {
+                require(header == at(widget, 0x88), "timed producer requires SAME actual widget header");
+                resize_native_gui_timed_pointers_00aa77b0(header, count, service.app.widgets);
+            }
+            void* operator_new_00bf681b(Word bytes) override {
+                require(bytes == 0x14 && !pending, "timed producer requires one exact14h allocation");
+                service.entries.emplace_back();
+                pending = &service.entries.back(); pending->widget = widget;
+                pending->actual = singleton_lifetime_allocate({SingletonAllocationKind::object, bytes, bytes});
+                if (pending->actual) ::new (pending->actual) NativeGuiTimedEntryStorage;
+                return pending->actual;
+            }
+            void* timed_entry_construct_00ac2ed0(void* block, void* actual_widget) override {
+                require(pending && pending->actual == block && actual_widget == widget,
+                    "timed constructor requires its SAME captured allocation/widget");
+                return construct_native_gui_timed_entry_alpha_00ac2ed0(block, actual_widget,
+                    scalar<float>(service.app.data, 0x00d7a24c));
+            }
+            void free_failed_constructor_00bf65ac(void* captured) noexcept override {
+                if (!pending || pending->actual != captured || pending->phase != Phase::allocated)
+                    std::terminate();
+                pending->phase = Phase::consumed;
+                singleton_lifetime_free(captured);
+            }
+            void timed_entry_construction_returned(void* actual) noexcept override {
+                if (!pending || pending->actual != actual || pending->phase != Phase::allocated)
+                    std::terminate();
+                pending->phase = index == 2 ? Phase::section : Phase::alpha;
+            }
+        };
+        std::list<Invocation> invocations;
+        explicit RawTimedEntries(Impl& value) : app(value) {}
+        Entry* find(void* actual) noexcept {
+            for (auto& entry : entries)
+                if (entry.actual == actual && entry.phase != Phase::consumed) return &entry;
+            return nullptr;
+        }
+        const volatile Word* current_table(void* actual, Word profile) {
+            auto* entry = find(actual);
+            if (!entry) return nullptr;
+            app.authenticate_widget(entry->widget);
+            const Word expected = entry->phase == Phase::alpha ? 0x00d5ca74 :
+                entry->phase == Phase::section ? 0x00d5d210 : entry->phase == Phase::base ? 0x00d5d204 : 0;
+            require(expected && profile == expected, "raw timed lookup requires its captured genuine live family");
+            return table(app.data, profile, 4);
+        }
+        static void free_entry(void* context, void* actual) noexcept {
+            auto& entry = *static_cast<Entry*>(context);
+            if (entry.actual != actual || entry.phase != Phase::destroying) std::terminate();
+            entry.phase = Phase::consumed; // consume provenance immediately BEFORE actual free
+            singleton_lifetime_free(actual);
+        }
+        void scalar_delete(void* actual, Word target, Word flags) {
+            auto* entry = find(actual);
+            require(entry != nullptr, "timed scalar requires independent SAME-allocation custody");
+            app.authenticate_widget(entry->widget);
+            const Phase family = entry->phase;
+            require((family == Phase::alpha && target == 0x00ac2fe0) ||
+                (family == Phase::section && target == 0x00ad3a40) ||
+                (family == Phase::base && target == 0x00ad3a60), "raw timed scalar target/family mismatch");
+            entry->phase = Phase::destroying;
+            try {
+                if (family == Phase::alpha)
+                    scalar_delete_native_gui_timed_entry_alpha_00ac2fe0(actual, flags, entry, &free_entry);
+                else if (family == Phase::section)
+                    scalar_delete_native_gui_timed_entry_section_00ad3a40(actual, flags, entry, &free_entry);
+                else scalar_delete_native_gui_timed_entry_base_00ad3a60(actual, flags, entry, &free_entry);
+                if (entry->phase != Phase::consumed) entry->phase = Phase::base;
+            } catch (...) { entry->phase = Phase::failed; app.fail(target); throw; }
+        }
+        void* allocate_backing(void* header, Word bytes) {
+            app.authenticate_widget(static_cast<unsigned char*>(header) - 0x88);
+            backing.emplace_back();
+            auto& record = backing.back(); record.header = header;
+            record.actual = singleton_lifetime_allocate({SingletonAllocationKind::pointer_slots, bytes, bytes});
+            record.acquired = true;
+            return record.actual;
+        }
+        void free_backing(void* header, void* actual) {
+            app.authenticate_widget(static_cast<unsigned char*>(header) - 0x88);
+            if (!actual) { singleton_lifetime_free(nullptr); return; }
+            for (auto& record : backing) {
+                if (record.header == header && record.actual == actual && record.acquired && !record.consumed) {
+                    record.consumed = true;
+                    singleton_lifetime_free(actual);
+                    return;
+                }
+            }
+            throw std::logic_error("raw timed backing free lacks SAME-header/allocation custody");
+        }
+        void* get_or_create(void* widget, std::int32_t index) {
+            app.authenticate_widget(widget);
+            invocations.emplace_back(*this, widget, index);
+            auto& invocation = invocations.back(); invocation.entered = true;
+            try {
+                void* result = cc13_gui1::gui_timed_entry_get_or_create_00aa8b00(invocation, widget, index);
+                invocation.complete = true; return result;
+            } catch (...) { invocation.failed = true; app.fail(0x00aa8b00); throw; }
+        }
+        bool empty() const noexcept {
+            for (const auto& entry : entries) if (entry.actual && entry.phase != Phase::consumed) return false;
+            for (const auto& record : backing) if (record.acquired && record.actual && !record.consumed) return false;
+            for (const auto& invocation : invocations) if (invocation.failed || (invocation.entered && !invocation.complete)) return false;
+            return true;
+        }
+    };
+    // Concrete Page and default GuiGroup families share whole native lifetime
+    // schedules. Raw nodes and timed allocations retain separate real custody;
+    // neither becomes another counted widget/model companion.
     struct Widgets final : NativeGuiWidgetLifetimeBindings, NativeGuiWidgetVisibilityBindings,
-        NativeGuiWidgetPropertyWidgetDispatch, NativeGuiWidgetTransformDispatch {
+        NativeGuiWidgetPropertyWidgetDispatch, NativeGuiWidgetTransformDispatch,
+        NativeGuiWidgetRawNodeLifetimeBindings, NativeGuiTimedStorageCalls {
         Impl& app;
         explicit Widgets(Impl& value) : app(value) {}
         const volatile Word* current_table(void* actual, Word profile) override {
-            (void)app.live_page(actual);
-            if (profile != kPageProfile && profile != 0x00d5c130) reject("widget profile", profile);
+            if (const auto* timed = app.timed.current_table(actual, profile)) return timed;
+            app.authenticate_widget(actual);
+            if (app.is_page_widget(actual)) {
+                if (profile != kPageProfile && profile != 0x00d5c130) reject("Page widget profile", profile);
+            } else if (profile != 0x00d5cb80 && profile != 0x00d5c130) reject("Group widget profile", profile);
             return table(app.data, profile, 0x80);
         }
         Word call_type_5c(Word target, void* actual) override {
@@ -356,24 +618,62 @@ struct GameNativeGuiPageApplication::Impl {
         }
         void call_virtual38(Word target, void* actual, const void* matrix) override {
             if (target != 0x00b6db10) reject("root transform+38", target);
-            bool found = false;
-            for (auto& page : app.pages)
-                if (page->group_slot == actual && page->reference && !page->reference->retired() &&
-                    app.renderer.actual_owners().find(actual) == page->reference.get()) found = true;
-            require(found, "Page transform requires its same actual raw Group root");
+            app.authenticate_node(actual);
+            require(app.find_root(actual) || app.find_model(actual),
+                "widget transform requires its SAME raw renderer root or canonical Model");
             set_raw_local_matrix_00b6db10(actual, app.transform_profiles, matrix);
         }
         bool call_class_query_0c(void* actual, Word target, Word descriptor) override {
-            (void)app.live_page(actual);
-            if (target != 0x00aa38b0) reject("Layer class+0C", target);
-            return gui_widgets_cc13::native_gui_layer_is_kind_of_00aa38b0(
-                game_native_gui_text_process().layer_lineage_00f8bf88(), descriptor);
+            app.authenticate_widget(actual);
+            if (app.is_page_widget(actual) && target == 0x00aa38b0)
+                return gui_widgets_cc13::native_gui_layer_is_kind_of_00aa38b0(
+                    game_native_gui_text_process().layer_lineage_00f8bf88(), descriptor);
+            if (!app.is_page_widget(actual) && target == 0x00ac6f70)
+                return native_gui_group_is_kind_of_00ac6f70(descriptor,
+                    game_native_gui_text_process().group_lineage_00f8bfd8());
+            reject("Page/Group class+0C", target);
         }
         void call_child_scene_20(void*, Word target) override { reject("child scene+20", target); }
-        void call_child_delete_04(void*, Word target, Word) override { reject("child delete+04", target); }
-        void call_timed_delete_00(void*, Word target, Word) override { reject("timed delete+00", target); }
-        void remove_all_00a9bd50(void*, const void*) override {
-            reject("parent-list removal outside childless/null-parent admission", 0x00a9bd50);
+        void call_child_delete_04(void* actual, Word target, Word flags) override {
+            auto& record = app.live_widget(actual);
+            if (target != 0x00ac73e0) reject("Group child delete+04", target);
+            auto& call = app.calls().scalar(); call.flags = flags; call.entered = true;
+            record.reference->delete_scalar_00ac73e0(call.flags);
+            call.complete = true;
+            record.native_retired = true; // no read of returned native slot
+        }
+        void call_timed_delete_00(void* actual, Word target, Word flags) override {
+            app.timed.scalar_delete(actual, target, flags);
+        }
+        void remove_all_00a9bd50(void* actual_list, const void* cell) override {
+            remove_native_gui_widget_list_value_00a9bd50(
+                *static_cast<NativeEffectDeletionListStorage*>(actual_list), cell);
+        }
+        void begin_raw_widget_scene(void* actual) override {
+            app.authenticate_widget(actual); (void)app.calls();
+        }
+        void finish_raw_widget_scene() override {}
+        void release_raw_widget_node(void* actual, bool late) override {
+            app.authenticate_node(actual);
+            auto& call = app.calls().tree(); call.late_primary = late;
+            call.actual = actual; call.target = 0x00b6dfa0;
+            try { unlink_native_node_tree_00b6dfa0(actual, app.group_trees, call.acquired); }
+            catch (...) { call.exception = std::current_exception(); throw; }
+        }
+        void detach_raw_widget_parent(void* actual, void* parent) override {
+            app.authenticate_widget(actual); app.authenticate_widget(parent);
+            auto& call = app.calls().parent();
+            detach_native_gui_widget_child_00aa83a0(parent, actual, call.frame, app.group_node, call.acquired);
+        }
+        void raw_widget_lifetime_failed() noexcept override {
+            if (app.current_calls) app.current_calls->failed = true;
+            app.fail(0x00aa9730);
+        }
+        void* allocate_timed_pointer_slots_00bf681b(void* header, Word bytes) override {
+            return app.timed.allocate_backing(header, bytes);
+        }
+        void free_timed_pointer_slots_00bf65ac(void* header, void* backing) override {
+            app.timed.free_backing(header, backing);
         }
     };
     struct Layers final : NativeGuiLayerLifetimeBindings {
@@ -408,6 +708,7 @@ struct GameNativeGuiPageApplication::Impl {
     GameNativeRendererSceneDomain scene_domain;
     LightTypeBootstrap node_types;
     NativeGroupTypes group_types;
+    Roots roots;
     SceneTypes scene_types;
     NativeSceneRegistrationGateContext group_gates;
     NativeNodeSceneAttachmentContext group_scenes;
@@ -415,6 +716,9 @@ struct GameNativeGuiPageApplication::Impl {
     NativeNodeTreeRetirementContext group_trees;
     NativeNodeBaseDestructionContext group_node;
     NativeGroupStorageIdentityContext group_identity;
+    NativeNodeParentingContext parenting;
+    NativeModelStorageContext model_storage;
+    std::unique_ptr<GameNativeModelClient> models;
     NativeGuiSceneStorageContext outer_storage;
     NativeGuiSceneIdentityContext outer_identity;
     NativeCameraStorageLifetimeContext camera_lifetime;
@@ -432,6 +736,8 @@ struct GameNativeGuiPageApplication::Impl {
     NativeGuiWidgetTypeLiteralViews class_literals;
     NativeGuiWidgetTypeKeyContext key_types;
     Fields fields;
+    ChildCalls child_calls;
+    RawTimedEntries timed;
     Widgets widgets;
     NativeGuiWidgetPropertyBindings widget_properties;
     NativeGuiWidgetVisibilityContext visibility;
@@ -443,44 +749,50 @@ struct GameNativeGuiPageApplication::Impl {
     PageLifetime page_lifetime;
     Lookup lookup;
     Properties properties;
-    Roots roots;
     NativeGuiScriptPathContext paths;
-    // Published only after every admitted childless provider is prepared.
+    // Published only after the actual raw caller/provider domain is prepared.
     bool properties_composed{};
     int layer_atexit{};
     // Every page record, including one an entered failure retains.
     std::vector<std::unique_ptr<Page>> pages;
+    std::vector<std::unique_ptr<WidgetRecord>> widget_records;
+    NativeGuiGroupIdentityContext widget_identity;
     // Entered failures: retained, never destroyed (the host _Exits first).
     std::vector<std::unique_ptr<Construction>> retained_frames;
     std::unique_ptr<GameNativeGuiManagerApplication::PageLifetimeBinding> manager_binding;
     PropertyInvocation* current_properties{};
+    NativeCalls* current_calls{};
     bool scene_hooks_bound{}, retiring_page{};
     bool active{};
     std::uint32_t failed_site{};
     std::exception_ptr failed;
 
     Impl(GameHostLog& output, GameNativeGuiManagerApplication& gui, GameNativeRendererApplication& app,
-        GameVfsHost& vfs, GameNativeReadOnlyData& mapped,
+        GameNativeModelDomain& model_domain, GameVfsHost& vfs, GameNativeReadOnlyData& mapped,
         const ObjectHandleResolverSlots& slots, const bool& sse2_conversion)
         : log(output), manager(gui), renderer(app), data(mapped),
           installed_resolvers(slots), crt_sse2_conversion(sse2_conversion), raw(vfs.borrow_raw_services()),
           strings(vfs.raw_strings()), scene_domain(app.startup_scene_domain()),
           node_types(vfs.native_owners().types(), vfs.native_types().light_types()),
           group_types(vfs.native_owners().types(), node_types, vfs.native_types().group_types()),
-          scene_types(*this),
+          roots(*this), scene_types(*this),
           group_gates{scene_domain.node.scenes.gates.registry, scene_domain.node.scenes.gates.light_types,
               scene_domain.node.scenes.gates.camera_types, scene_domain.node.scenes.gates.actual_node_profile_00d62c88,
               scene_domain.node.scenes.gates.actual_camera_profile_00d62cf0,
               scene_domain.node.scenes.gates.actual_light_profile_00d62f58,
               scene_domain.node.scenes.gates.actual_directional_profile_00d62fb0, &scene_types},
           group_scenes{group_gates, app.actual_owners(), scene_domain.node.scenes.increment_00ce221c,
-              scene_domain.node.scenes.decrement_00ce2220, scene_domain.node.scenes.children},
+              scene_domain.node.scenes.decrement_00ce2220, roots},
           group_dispatch(*this),
-          group_trees{scene_domain.node.trees.point_lights, app.actual_owners(),
-              scene_domain.node.trees.decrement_00ce2220, group_dispatch, scene_domain.node.trees.frames},
+          group_trees{app.camera_environment().nodes.point_lights, app.actual_owners(),
+              scene_domain.node.trees.decrement_00ce2220, group_dispatch, group_dispatch},
           group_node{group_scenes, group_trees, strings, scene_domain.node.world},
           group_identity{group_node, app.actual_owners(),
               game_native_resource_pool_process().group_pool_010902f4(), table(mapped, kGroupProfile, 0x58)},
+          parenting{group_node, scene_types, group_types.storage().group_0109032c.own_id},
+          model_storage{group_node, game_native_resource_pool_process().model_pool_01090054(),
+              app.node_constants(), word(mapped, 0x00d7a208)},
+          models(model_domain.make_page_client(model_storage)),
           outer_storage{scene_domain.outer.storage.weak, strings, app.actual_owners(),
               scene_domain.outer.storage.decrement_00ce2220, scene_domain.outer.storage.actual_one_00d7a24c,
               &group_trees},
@@ -521,7 +833,7 @@ struct GameNativeGuiPageApplication::Impl {
               literal(mapped, 0x00d5bdc4, 6), literal(mapped, 0x00cea3fc, 6), literal(mapped, 0x00d5bdbc, 7),
               literal(mapped, 0x00d5bdb4, 8), literal(mapped, 0x00d5bdac, 8), literal(mapped, 0x00d5bda0, 9)},
           key_types{globals.widget_empty_00f8bc60(), literal(mapped, 0x00ce7890, 2), class_literals, &_stricmp},
-          fields(*this), widgets(*this),
+          fields(*this), child_calls(*this), timed(*this), widgets(*this),
           widget_properties{property_literals, scalar<float>(mapped, 0x00d7a24c),
               globals.widget_white_guard_00f8bcf0(), globals.widget_white_color_00f8bce0(),
               globals.widget_black_guard_00f8bcdc(), globals.widget_black_color_00f8bccc(),
@@ -536,8 +848,9 @@ struct GameNativeGuiPageApplication::Impl {
           remove_literals{literal(mapped, 0x00d5bf80, 1), literal(mapped, 0x00d5bf54, 1),
               globals.widget_empty_00f8bc60()}, layers(*this),
           layer_lifetime{widget_lifetime, strings, layers, scene_domain.node.scenes.decrement_00ce2220},
-          page_lifetime(*this), lookup(mapped), properties(*this), roots(*this),
-          paths{vfs.raw_strings(), literal(mapped, 0x00d5cb18, 11), literal(mapped, 0x00cfd2c8, 5)} {
+          page_lifetime(*this), lookup(mapped), properties(*this),
+          paths{vfs.raw_strings(), literal(mapped, 0x00d5cb18, 11), literal(mapped, 0x00cfd2c8, 5)},
+          widget_identity{app.actual_owners(), widget_lifetime, table(mapped, 0x00d5cb80, 0x80)} {
         auto& node_names = scene_domain.node.strings;
         require(&node_names.actual_published_01090aa8 == &strings.actual_published_01090aa8 &&
             &node_names.actual_manager_publication_01090aa0 == &strings.actual_manager_publication_01090aa0 &&
@@ -548,6 +861,10 @@ struct GameNativeGuiPageApplication::Impl {
         // This distinct CRT lineage was not installed by the P3a1 prefix.
         // The existing owner rejects uninitialized aliases and retargeting.
         game_native_gui_text_process().initialize_layer_type_once_00cd73f0(
+            vfs.native_owners().types(), vfs.native_types().light_types());
+        // Same public process role API and exact VFS provider identities as
+        // CD7210/Layer; never a copied lineage or Page-local counter wrapper.
+        game_native_gui_text_process().initialize_group_type_once_00cd7460(
             vfs.native_owners().types(), vfs.native_types().light_types());
     }
     void require_entry() const {
@@ -573,7 +890,18 @@ struct GameNativeGuiPageApplication::Impl {
     Page& live_page(void*);
     void* warm_manager();
     void read_properties(void*, NativeLuaReaderStorage&);
-    void read_childless_keys(PropertyInvocation&, void*, NativeLuaReaderStorage&);
+    void read_group_properties(void*, NativeLuaReaderStorage&);
+    NativeCalls& calls() { require(current_calls != nullptr, "Page raw call has no retained invocation backing"); return *current_calls; }
+    void prepare_calls(NativeCalls&);
+    Page* find_root(void*);
+    WidgetRecord& live_widget(void*);
+    NativeModelReference* find_model(void*);
+    void authenticate_node(void*);
+    bool is_page_widget(void*) const noexcept;
+    void authenticate_widget(void*);
+    PropertyInvocation& reader_invocation(void*);
+    NativeGuiWidgetPropertyInteractionContext interaction(PropertyInvocation&);
+    NativeGuiWidgetPropertyChildrenRawContext children(PropertyInvocation&);
     void retire_scene(void*, Word);
     void release_page_scene(void*);
     void delete_page(void*, Word);
@@ -593,136 +921,124 @@ void* GameNativeGuiPageApplication::Impl::warm_manager() {
     return manager.get_004c12b0();
 }
 
+bool GameNativeGuiPageApplication::Impl::is_page_widget(void* actual) const noexcept {
+    for (const auto& page : pages) if (page->page == actual && !page->native_retired) return true;
+    return false;
+}
+GameNativeGuiPageApplication::Impl::WidgetRecord& GameNativeGuiPageApplication::Impl::live_widget(void* actual) {
+    for (auto& record : widget_records) {
+        if (record->actual != actual || !record->constructor_returned || record->native_retired) continue;
+        require(record->reference && !record->reference->retired() &&
+            renderer.actual_owners().find(actual) == record->reference.get(),
+            "GuiGroup requires its SAME canonical live actual+04 owner");
+        return *record;
+    }
+    throw std::logic_error("raw GuiGroup has no same retained completed allocation");
+}
+void GameNativeGuiPageApplication::Impl::authenticate_widget(void* actual) {
+    if (is_page_widget(actual)) return;
+    (void)live_widget(actual);
+}
+GameNativeGuiPageApplication::Impl::Page* GameNativeGuiPageApplication::Impl::find_root(void* actual) {
+    for (auto& page : pages)
+        if (page->group_slot == actual && page->reference && !page->reference->retired() &&
+            renderer.actual_owners().find(actual) == page->reference.get()) return page.get();
+    return nullptr;
+}
+NativeModelReference* GameNativeGuiPageApplication::Impl::find_model(void* actual) {
+    auto* reference = dynamic_cast<NativeModelReference*>(renderer.actual_owners().find(actual));
+    if (!reference) return nullptr;
+    auto& owner = reference->model_owner();
+    require(&owner.storage.node == actual && &owner.environment == &models->raw_access().models &&
+        owner.raw_lifetime && &owner.raw_lifetime->storage == &model_storage &&
+        !owner.raw_lifetime->host.typed_storage_ended,
+        "Page raw Model requires the SAME client/immutable lifetime/canonical owner");
+    return reference;
+}
+void GameNativeGuiPageApplication::Impl::authenticate_node(void* actual) {
+    if (find_root(actual) || find_model(actual)) return;
+    for (auto& page : pages) {
+        if (!page->properties) continue;
+        auto& scene = page->properties->acquired.scene;
+        auto admitted = [&](void* identity, auto& reference) {
+            return identity == actual && reference && !reference->retired() &&
+                renderer.actual_owners().find(actual) == &*reference;
+        };
+        if (admitted(scene.camera_result, scene.camera_reference) ||
+            admitted(scene.directional_result, scene.directional_reference)) return;
+    }
+    throw std::logic_error("raw Page node has no authenticated reached family/extent");
+}
+void GameNativeGuiPageApplication::Impl::prepare_calls(NativeCalls& backing) {
+    require(pages.size() <= (std::numeric_limits<std::size_t>::max() - widget_records.size() - 1) / 4,
+        "Page producer graph extent overflow");
+    backing.prepare(pages.size() * 4 + widget_records.size() + 1);
+}
+GameNativeGuiPageApplication::Impl::PropertyInvocation&
+GameNativeGuiPageApplication::Impl::reader_invocation(void* visitor) {
+    require(current_properties && current_properties->reader == visitor &&
+        current_calls == &current_properties->native_calls && read(visitor) == kReaderProfile,
+        "raw reader callback requires its SAME active retained recursion record");
+    return *current_properties;
+}
+NativeGuiWidgetPropertyInteractionContext GameNativeGuiPageApplication::Impl::interaction(PropertyInvocation& f) {
+    return {widget_properties, literal(data, 0x00d5c1e4, 8), literal(data, 0x00d5c1d8, 11),
+        literal(data, 0x00d5c1cc, 9), widgets, visibility, f.transform, transform};
+}
+NativeGuiWidgetPropertyChildrenRawContext GameNativeGuiPageApplication::Impl::children(PropertyInvocation& f) {
+    return {strings, key_types, models->raw_access(), renderer.node_constants(), parenting,
+        f.parent_frame, f.parent_acquired, f.detach_frame, f.detach_acquired, child_calls};
+}
 void GameNativeGuiPageApplication::Impl::read_properties(void* actual, NativeLuaReaderStorage& reader) {
     auto& page = live_page(actual);
     require(properties_composed && !current_properties && !page.properties && read(actual, 0x60) == 1,
-        "childless AC4C50 requires a fresh actual type1 Page and retained invocation");
+        "AC4C50 requires a fresh actual type1 Page and retained invocation");
     page.properties = std::make_unique<PropertyInvocation>();
     auto& f = *page.properties;
-    auto& a = f.acquired;
-    f.reader = &reader;
-    current_properties = &f;
-    a.phase = NativeGuiPageReadPropertiesAcquired::Phase::entered;
-    auto* const base = f.locals;
-    auto* const field = at(base, 8);
-    auto* const fallback = at(base, 0x10);
+    prepare_calls(f.native_calls);
+    f.scenes.prepare(pages.size() * 4 + widget_records.size() + 1);
+    f.interaction_context.emplace(interaction(f));
+    f.children_context.emplace(children(f));
+    f.page_context.emplace(NativeGuiPageReadPropertiesRawContext{data, scenes,
+        *f.interaction_context, *f.children_context, scalar<double>(data, 0x00d7a280)});
+    f.reader = &reader; f.actual_widget = actual; f.suspended_calls = current_calls;
+    current_properties = &f; current_calls = &f.native_calls;
     try {
-        // Exact recovered AC4C50 ordering and live pair addresses. This
-        // application specializes only the later child suffix, not these calls.
-        write(fallback, 4, 0); write(fallback, 0, 1);
-        write(field, 4, bits(at(base, 0x20)));
-        write(base, 4, bits(literal(data, 0x00d5cb00, 9))); write(field, 0, 1);
-        const Word priority_target = table(data, read(&reader), 0x10)[3]; // BEFORE key-tag store.
-        write(base, 0, 0);
-        a.active_call_site = 0x00ac4c8b;
-        fields.call_virtual0c(priority_target, &reader, base, field, fallback);
-        const Word priority = read(base, 0x20);
-        write(actual, 0xfc, priority); write(actual, 0x118, priority); a.priority_published = true;
-        write(fallback, 0, 2); write(fallback, 4, 0);
-        write(field, 0, 2); write(field, 4, bits(at(actual, 0x11c)));
-        write(base, 0, 0); write(base, 4, bits(literal(data, 0x00d5caf4, 12)));
-        a.active_call_site = 0x00ac4cdd;
-        fields.call_virtual0c(table(data, read(&reader), 0x10)[3], &reader, base, field, fallback);
-        a.render_order_read = true;
-        a.loaded_profile = read(actual);
-        a.loaded_target = table(data, a.loaded_profile, 0x7c)[0x78 / 4];
-        if (a.loaded_target != 0x00ac59a0) reject("Page scene+78", a.loaded_target);
-        a.active_call_site = 0x00ac4ce6;
-        acquire_native_gui_scene_storage_warm_manager_00ac59a0(actual, f.scenes.frame, scenes, a.scene);
-        a.scene_returned = true;
-        a.requested_scene = pointer(read(actual, 0xec)); // AFTER current78, BEFORE current4C.
-        a.root_node = pointer(read(actual, 0x4c));
-        a.active_call_site = 0x00ac4cf2;
-        propagate_native_node_root_storage_00b6d890(a.root_node, a.requested_scene,
-            scene_domain.node.scenes.children);
-        a.root_returned = true;
-        write(base, 0x24, 0); write(base, 0x28, 0); write(base, 0x2c, 0);
-        a.active_call_site = 0x00ac4d13;
-        set_native_gui_widget_local_position_00aa7dc0(actual, at(base, 0x24),
-            f.transform, transform, f.bounds, scalar<double>(data, 0x00d7a280));
-        a.position_returned = true;
-        NativeGuiWidgetPropertyInteractionContext interaction{widget_properties,
-            literal(data, 0x00d5c1e4, 8), literal(data, 0x00d5c1d8, 11), literal(data, 0x00d5c1cc, 9),
-            widgets, visibility, f.transform, transform};
-        a.active_call_site = 0x00ac4d1b;
-        read_native_gui_widget_properties_through_transform_00aaa710(actual, &reader, f.widget, interaction);
-        read_childless_keys(f, actual, reader);
-        a.properties_returned = true;
-        a.phase = NativeGuiPageReadPropertiesAcquired::Phase::complete;
+        read_native_gui_page_properties_00ac4c50(actual, &reader, f.page_frame, *f.page_context, f.acquired);
         f.reader = nullptr;
-        current_properties = nullptr;
+        current_properties = nullptr; current_calls = f.suspended_calls;
     } catch (...) {
-        a.phase = NativeGuiPageReadPropertiesAcquired::Phase::failed;
-        fail(a.active_call_site);
-        throw; // Current invocation and all reached native owners remain retained.
+        f.native_calls.failed = true;
+        fail(f.acquired.children.phase == NativeGuiWidgetPropertyChildrenAcquired::Phase::failed ?
+            f.acquired.children.active_call_site : f.acquired.active_call_site);
+        throw;
     }
 }
-
-void GameNativeGuiPageApplication::Impl::read_childless_keys(
-    PropertyInvocation& f, void* actual, NativeLuaReaderStorage& reader) {
-    (void)actual; // No admitted child branch reaches AA6560 or a Model factory.
-    auto& a = f.acquired.children;
-    require(a.phase == NativeGuiWidgetPropertyChildrenAcquired::Phase::fresh,
-        "childless AAACD4 requires fresh persistent diagnostics");
-    a.phase = NativeGuiWidgetPropertyChildrenAcquired::Phase::entered;
-    auto* const base = f.widget.bytes;
-    auto* const block = at(base, 0x4c);
-    auto* const count = at(base, 0x81c);
-    auto* const name = at(base, 0x38);
-    auto site = [&](Word value) { a.active_call_site = value; f.acquired.active_call_site = value; };
-    auto release_name = [&] {
-        a.name_live = false; a.name_cleanup_entered = true;
-        site(0x00aaae85);
-        destroy_native_string_header_0041dd20(name, strings);
-    };
+void GameNativeGuiPageApplication::Impl::read_group_properties(void* actual, NativeLuaReaderStorage& reader) {
+    auto& record = live_widget(actual);
+    require(properties_composed && current_properties && current_properties->reader == &reader &&
+        !record.properties && read(actual) == 0x00d5cb80,
+        "AC6FD0 requires a fresh retained GuiGroup invocation on SAME suspended reader");
+    record.properties = std::make_unique<PropertyInvocation>();
+    auto& f = *record.properties;
+    prepare_calls(f.native_calls);
+    f.interaction_context.emplace(interaction(f)); f.children_context.emplace(children(f));
+    f.reader = &reader; f.actual_widget = actual;
+    f.suspended = current_properties; f.suspended_calls = current_calls;
+    current_properties = &f; current_calls = &f.native_calls;
+    f.acquired.phase = NativeGuiPageReadPropertiesAcquired::Phase::entered;
+    f.acquired.active_call_site = 0x00ac6fd0;
     try {
-        for (Word index = 0; index != 250; ++index) write(block, index * 8, 0xffffffffu);
-        const Word target = table(data, read(&reader), 0x1c)[0x18 / 4]; // BEFORE count store.
-        write(count, 0, 0);
-        site(0x00aaad01);
-        if (target != 0x00bd5f50) reject("reader key enumeration+18", target);
-        // Begin the trivial borrowed output view without clearing its native
-        // preimages. Actual BD5F50 enumerates the real reader in native order.
-        auto* const output = ::new (block) NativeLuaReaderKeys;
-        native_lua_reader_enumerate_keys_00bd5f50(reader, *output, f.keys, crt_sse2_conversion);
-        write(base, 0x2c, 0);
-        if (static_cast<std::int32_t>(read(count)) > 0) {
-            write(base, 0x34, bits(block));
-            do {
-                void* const entry = pointer(read(base, 0x34));
-                if (read(entry) == 0) {
-                    const char* const source = static_cast<const char*>(pointer(read(entry, 4)));
-                    write(name, 0, 0); write(name, 4, 0);
-                    Word length = 0;
-                    while (source[length] != '\0') ++length;
-                    site(0x00aaad4a);
-                    resize_native_string_header_0041dd40(name, strings, length, true);
-                    if (void* destination = pointer(read(name, 4)))
-                        std::memcpy(destination, source, static_cast<std::size_t>(read(name) + 1u));
-                    a.name_live = true; a.name_cleanup_entered = false;
-                    site(0x00aaad78);
-                    const Word type = native_gui_widget_type_for_key_00aa2490(name, key_types);
-                    if (type) {
-                        f.rejected_widget_type = type;
-                        site(0x00aaad89);
-                        reject("AA6560 widget in childless Page", type);
-                    }
-                    release_name(); // Exact type0 skip still constructs/maps/returns the name.
-                }
-                const Word next_index = read(base, 0x2c) + 1u;
-                const Word next_entry = read(base, 0x34) + 8u;
-                write(base, 0x2c, next_index); write(base, 0x34, next_entry);
-            } while (static_cast<std::int32_t>(read(base, 0x2c)) < static_cast<std::int32_t>(read(count)));
-        }
-        a.phase = NativeGuiWidgetPropertyChildrenAcquired::Phase::complete;
+        read_native_gui_widget_properties_and_children_00aaa710(actual, &reader, f.widget,
+            *f.interaction_context, *f.children_context, f.acquired.children);
+        f.acquired.properties_returned = true;
+        f.acquired.phase = NativeGuiPageReadPropertiesAcquired::Phase::complete;
+        f.reader = nullptr;
+        current_properties = f.suspended; current_calls = f.suspended_calls;
     } catch (...) {
-        const Word child_failed_site = a.active_call_site;
-        a.phase = NativeGuiWidgetPropertyChildrenAcquired::Phase::failed;
-        if (a.name_live) {
-            try { release_name(); }
-            catch (...) { std::terminate(); }
-        }
-        f.acquired.active_call_site = child_failed_site;
+        f.acquired.phase = NativeGuiPageReadPropertiesAcquired::Phase::failed;
+        f.native_calls.failed = true;
+        fail(f.acquired.children.active_call_site ? f.acquired.children.active_call_site : f.acquired.active_call_site);
         throw;
     }
 }
@@ -746,65 +1062,59 @@ void GameNativeGuiPageApplication::Impl::retire_scene(void* actual, Word target)
 
 void GameNativeGuiPageApplication::Impl::release_page_scene(void* actual) {
     require_entry();
+    NativeCalls* backing{};
     retiring_page = true;
     try {
         auto& page = live_page(actual);
+        page.lifetime_calls.push_back(std::make_unique<NativeCalls>());
+        backing = page.lifetime_calls.back().get();
+        prepare_calls(*backing);
+        if (page.properties) page.properties->scenes.prepare(pages.size() * 4 + widget_records.size() + 1);
+        current_calls = backing;
         require(read(actual) == kPageProfile && table(data, kPageProfile, 0x24)[8] == 0x00aa8320,
-            "Page retirement requires its genuine current20 AA8320");
-        const Word head = read(actual, 0x68);
-        require(head && read(actual, 0x6c) == 0 && read(pointer(head)) == head && read(pointer(head), 4) == head,
-            "Page scene retirement admits only the actual empty child ring");
-        // Child walk is genuinely empty, then the CURRENT class-cell address
-        // is captured BEFORE the descriptor getter, exactly as AA8320 does.
-        const auto* const class_cell = table(data, read(actual), 0x10) + 3;
-        const Word descriptor = native_gui_text_descriptor_00ab6a30(
-            game_native_gui_text_process().text_lineage_00f8be28()[0]);
-        const Word target = *class_cell;
-        const bool is_text = widgets.call_class_query_0c(actual, target, descriptor);
-        if (is_text) reject("Text glyph family/extent outside actual124h Layer", 0x00ab73b0);
-        if (void* const root = pointer(read(actual, 0x4c))) {
-            require(root == page.group_slot && page.reference && !page.reference->retired() &&
-                renderer.actual_owners().find(root) == page.reference.get() && read(root, 0x130) == 0,
-                "childless Page release requires its same raw root and admits no retained130 family");
-            // B6DFA0/B8EEC0/B6F310 own the SINGLE creator release. The Group
-            // terminal may run INSIDE this call while page+4C is still set.
-            unlink_native_node_tree_00b6dfa0(root, group_trees, page.group_unlink);
-            write(actual, 0x4c, 0);
-        }
+            "Page retirement requires genuine current20 AA8320");
+        release_native_gui_widget_scene_00aa8320(actual, widget_lifetime);
         page.scene_released = true;
-        retiring_page = false;
-    } catch (...) { fail(0x00aa8320); throw; }
+        current_calls = nullptr; retiring_page = false;
+    } catch (...) {
+        if (backing) backing->failed = true;
+        fail(0x00aa8320); throw;
+    }
 }
-
 void GameNativeGuiPageApplication::Impl::delete_page(void* actual, Word flags) {
     require_entry();
+    NativeCalls* backing{};
     retiring_page = true;
     try {
         auto& page = live_page(actual);
-        // The manager/AA31F0 calls are flags1. The raw Group's +04 has no such
-        // page-field guard; only this later PAGE operation requires +4C cleared.
-        const Word head = read(actual, 0x68);
-        require(flags == 1 && page.scene_released && read(actual, 0x4c) == 0 &&
-            head && read(actual, 0x6c) == 0 && read(pointer(head)) == head && read(pointer(head), 4) == head &&
-            read(actual, 0x70) == 0 && read(actual, 0x88) == 0 && read(actual, 0x8c) == 0 && read(actual, 0x90) == 0,
-            "Page deleting04 requires released scene, empty children/timed storage and null parent");
+        page.lifetime_calls.push_back(std::make_unique<NativeCalls>());
+        backing = page.lifetime_calls.back().get();
+        prepare_calls(*backing);
+        if (page.properties) page.properties->scenes.prepare(pages.size() * 4 + widget_records.size() + 1);
+        auto& scalar = backing->scalar(); scalar.flags = flags;
+        current_calls = backing;
         require(read(actual) == kPageProfile && table(data, kPageProfile, 8)[1] == 0x00aa38f0,
-            "Page deletion requires its genuine current04 AA38F0");
-        // AA9730 stamps the base profile before its second AA8320. A real Text
-        // match would enter an unadmitted glyph extent; never replace it with false.
-        const Word text = native_gui_text_descriptor_00ab6a30(game_native_gui_text_process().text_lineage_00f8be28()[0]);
-        if (native_gui_widget_is_kind_of_00a9e070(text, game_native_gui_text_process().element_lineage_00f8bc88()))
-            reject("base Text glyph family/extent outside actual124h Layer", 0x00ab73b0);
-        (void)scalar_delete_native_gui_layer_00aa38f0(actual, flags, layer_lifetime);
-        page.native_retired = true; // Metadata only; never reread returned pool storage.
-        retiring_page = false;
-    } catch (...) { fail(0x00aa38f0); throw; }
+            "Page scalar requires genuine current04 AA38F0");
+        scalar.entered = true;
+        scalar_delete_native_gui_layer_00aa38f0(actual, scalar.flags, layer_lifetime);
+        scalar.complete = true;
+        page.native_retired = true; // metadata only after possible pool return
+        current_calls = nullptr; retiring_page = false;
+    } catch (...) {
+        if (backing) backing->failed = true;
+        fail(0x00aa38f0); throw;
+    }
 }
 
 void GameNativeGuiPageApplication::Impl::bind_providers() {
     require(!properties_composed && !scene_hooks_bound && !manager_binding && pages.empty(),
-        "childless Page providers bind once before a native page exists");
+        "Page providers bind once before a native page exists");
     (void)warm_manager();
+    require(dynamic_cast<NativeGuiWidgetRawNodeLifetimeBindings*>(&widget_lifetime.bindings) ==
+        static_cast<NativeGuiWidgetRawNodeLifetimeBindings*>(&widgets) &&
+        dynamic_cast<NativeGuiTimedStorageCalls*>(&widget_lifetime.bindings) ==
+        static_cast<NativeGuiTimedStorageCalls*>(&widgets),
+        "raw Page admission requires its SAME node and timed custody service");
     renderer.bind_startup_scene_child_delegate(&roots); // Throws before publication on conflict.
     scene_hooks_bound = true;
     // The unique_ptr-owned complete Impl restores the child metadata hook if
@@ -815,8 +1125,11 @@ void GameNativeGuiPageApplication::Impl::bind_providers() {
 }
 
 GameNativeGuiPageApplication::Impl::~Impl() noexcept {
-    if (active || failed || retiring_page || current_properties || resolvers.requires_process_retention())
-        std::terminate();
+    if (active || failed || retiring_page || current_properties || current_calls ||
+        resolvers.requires_process_retention() || !timed.empty() || !models->empty()) std::terminate();
+    for (const auto& widget : widget_records)
+        if (widget->actual && (!widget->native_retired || !widget->reference || !widget->reference->retired()))
+            std::terminate();
     for (const auto& page : pages) {
         if (!page->native_retired || (page->reference && !page->reference->retired())) std::terminate();
         if (page->properties) {
@@ -835,11 +1148,11 @@ GameNativeGuiPageApplication::Impl::~Impl() noexcept {
 
 GameNativeGuiPageApplication::GameNativeGuiPageApplication(GameHostLog& log,
     GameNativeGuiManagerApplication& manager, GameNativeRendererApplication& renderer,
-    GameVfsHost& files, GameNativeReadOnlyData& data,
+    GameNativeModelDomain& models, GameVfsHost& files, GameNativeReadOnlyData& data,
     const ObjectHandleResolverSlots& resolvers, const bool& sse2_conversion)
-    : impl_(std::make_unique<Impl>(log, manager, renderer, files, data, resolvers, sse2_conversion)) {
-    log.notef("native GUI childless Page chain prepared: layer_pool=00f8bf50 atexit=%d group_pool=010902f4 "
-        "properties=ac4c50-childless", impl_->layer_atexit);
+    : impl_(std::make_unique<Impl>(log, manager, renderer, models, files, data, resolvers, sse2_conversion)) {
+    log.notef("native GUI Page chain prepared: layer_pool=00f8bf50 atexit=%d group_pool=010902f4 "
+        "properties=ac4c50 raw_type2=default-group guard=off", impl_->layer_atexit);
     impl_->bind_providers(); // Last throwing step: complete Impl owns rollback/retention.
 }
 
@@ -849,9 +1162,21 @@ GameNativeGuiPageApplication::~GameNativeGuiPageApplication() noexcept {
 
 bool GameNativeGuiPageApplication::requires_process_retention() const noexcept {
     return impl_->failed != nullptr || impl_->active || impl_->retiring_page ||
-        impl_->current_properties || impl_->resolvers.requires_process_retention();
+        impl_->current_properties || impl_->current_calls || impl_->resolvers.requires_process_retention() ||
+        impl_->models->requires_process_retention();
 }
 std::uint32_t GameNativeGuiPageApplication::failure_site() const noexcept { return impl_->failed_site; }
+void GameNativeGuiPageApplication::after_native_renderer_drain() {
+    require(!requires_process_retention() && impl_->timed.empty(),
+        "Page raw graph retains entered failures or independent timed custody after drain");
+    for (const auto& page : impl_->pages)
+        require(page->native_retired && (!page->reference || page->reference->retired()),
+            "Page raw Page/root ownership survived native drain");
+    for (const auto& widget : impl_->widget_records)
+        require(!widget->actual || (widget->native_retired && widget->reference && widget->reference->retired()),
+            "Page raw GuiGroup ownership survived native drain");
+    impl_->models->after_native_renderer_drain();
+}
 
 void* GameNativeGuiPageApplication::load_page_00aa5840(void* actual_manager,
     const void* name, std::int32_t screen_flag, std::uint8_t add_reference) {
@@ -898,6 +1223,8 @@ void* GameNativeGuiPageApplication::load_page_00aa5840(void* actual_manager,
         p.pages.push_back(std::make_unique<Impl::Page>());
         record = p.pages.back().get();
         record->app = &p;
+        p.prepare_calls(record->construction_calls);
+        p.current_calls = &record->construction_calls;
         p.create_group(*record, name);
         site = 0x00aa5929;
         record->page = allocate_native_gui_layer_slot_00ac51a0();
@@ -926,6 +1253,7 @@ void* GameNativeGuiPageApplication::load_page_00aa5840(void* actual_manager,
         site = 0x00aa595c;
         p.release(f.path, f.path_live);
         retained.reset();
+        p.current_calls = nullptr;
         p.active = false;
         p.log.notef("native GUI page loaded: page=%p group=%p manager=%p flag=%d",
             page, record->group_slot, actual_manager, screen_flag);

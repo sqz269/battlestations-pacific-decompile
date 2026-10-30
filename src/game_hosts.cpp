@@ -2332,7 +2332,17 @@ GameStartupHost::~GameStartupHost() {
                 }
             }
         }
-        if constexpr (kNativeGuiPageChainCc15Bound) native_gui_pages_.reset();
+        if constexpr (kNativeGuiPageChainCc15Bound) {
+            if (native_gui_pages_) {
+                try { native_gui_pages_->after_native_renderer_drain(); }
+                catch (const std::exception& error) {
+                    try { log_.notef("native GUI Page drain incomplete: %s", error.what()); log_.close(); }
+                    catch (...) {}
+                    std::_Exit(1);
+                }
+            }
+            native_gui_pages_.reset();
+        }
         // Page bindings are gone; the singleton host is deleted below, so
         // the manager's deletion binding and publication cells go first.
         if constexpr (kGuiManagerCc15Bound) native_gui_manager_.reset();
@@ -3166,10 +3176,21 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     if constexpr (kNativeGuiPageChainCc15Bound) {
         // cc15-gui4 P3a: the AA5840 page chain on that manager. No page loads
         // until the joint FE_initial flip.
-        if (!native_gui_pages_ && native_gui_manager_ && native_data_ && native_renderer_)
-            native_gui_pages_ = std::make_unique<GameNativeGuiPageApplication>(log_,
-                *native_gui_manager_, *native_renderer_, *vfs_, *native_data_,
-                object_handle_resolvers(), gui_sse2_conversion());
+        try {
+            if (!native_gui_pages_ && native_gui_manager_ && native_data_ && native_renderer_)
+                native_gui_pages_ = std::make_unique<GameNativeGuiPageApplication>(log_,
+                    *native_gui_manager_, *native_renderer_, native_renderer_->model_domain(), *vfs_, *native_data_,
+                    object_handle_resolvers(), gui_sse2_conversion());
+        } catch (...) {
+            if (game_native_gui_text_process().native_operation_interrupted()) {
+                try {
+                    log_.note("interrupted GUI Page Layer/Group type startup; retaining canonical VFS counter graph");
+                    log_.close();
+                } catch (...) { std::fputs("bsp_game: GUI Page type startup requires process retention\n", stderr); }
+                std::_Exit(1);
+            }
+            throw;
+        }
     }
     frontend_->run_font_and_gui_startup_0073bae0(language_font_path_008d4890(
         settings_host_->language_catalog(), settings_view_.gameplay.language_index_04));

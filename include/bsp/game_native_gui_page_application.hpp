@@ -9,26 +9,13 @@ class GameHostLog;
 class GameNativeGuiManagerApplication;
 class GameNativeReadOnlyData;
 class GameNativeRendererApplication;
+class GameNativeModelDomain;
 class GameVfsHost;
 
-// cc15-gui4 P3a, GUI Step 4: the native page chain of 00AA5840 on the warm
-// 88h manager. Default OFF. Nothing calls load_page_00aa5840 until the joint
-// page-chain/P4 flip on FE_initial, which also retires the bridge for that page;
-// there is never a second native owner of a page.
-//
-// P3a1 composes the AA5840 schedule over existing native
-// bodies: AA3140 lookup, ".mmod" (00D0E67C) concatenation and BDF4C0 probe, the
-// raw Group root (B8F450 + B8F5E0 with the caller's name), the AC51A0 slot from
-// F8BF50 (CD73D0 runs in the constructor), AC6600 as its prefix, AC6714 script,
-// AC67CC reader and AC6806 tail stages, then AA52A0 and the path release.
-// P3a2 admits a childless type1 Screen/root: real AC4C50, warm AC59A0,
-// AAA710 properties/interaction and actual AAACD4 key enumeration/type0 skips.
-// A mapped widget key rejects BEFORE AA6560/Model construction, retaining
-// the already-entered graph. Real FE_initial widgets remain P3b/P3c/P4; this
-// childless admission is neither general children nor whole-function credit.
-// The .mmod model route (004C1400 / B80D70 / factory+8) remains uncomposed:
-// a probe hit rejects after releasing both name headers.
-// Evidence: Ghidra 00AA5840 (SEH CB71F0) and src/cc13_gui1.cpp's whole-body model.
+// Existing AA5840 Page chain, with the actual raw default-Type2 GuiGroup
+// reader/Model/lifetime service. Keep OFF until joint full-frontend authority,
+// current95/Frame/Game and all required integration/runtime gates close.
+// This component uses existing bodies and supplies no new Native-body credit.
 inline constexpr bool kNativeGuiPageChainCc15Bound = false;
 
 class GameNativeGuiPageApplication final {
@@ -43,7 +30,7 @@ public:
     // its stable GUI conversion capability bool through shared native drain.
     // Neither argument is an Original-VA publication or the live0109EEA4 word.
     GameNativeGuiPageApplication(GameHostLog&, GameNativeGuiManagerApplication&,
-        GameNativeRendererApplication&, GameVfsHost&, GameNativeReadOnlyData&,
+        GameNativeRendererApplication&, GameNativeModelDomain&, GameVfsHost&, GameNativeReadOnlyData&,
         const ObjectHandleResolverSlots&, const bool& crt_sse2_conversion);
     ~GameNativeGuiPageApplication() noexcept;
     GameNativeGuiPageApplication(const GameNativeGuiPageApplication&) = delete;
@@ -53,15 +40,16 @@ public:
     // screen_flag, char add_reference) RET 0Ch -> page. actual_manager must be
     // the published 00F8BC5C manager. A hit takes CE221C on page+4 when
     // add_reference is nonzero. Serialized with every GUI entry; no reentry.
-    // Misses admit only the real childless/type0-key route described above,
-    // including the native <=250-supported-key reader domain. Timed entries,
-    // nonnull parents and glyph extents are outside retirement admission.
+    // Misses compose actual raw Page/default-Type2 GuiGroups recursively,
+    // retaining each <=250-supported-key invocation separately. Other widget
+    // factories and the .mmod Model-page route remain outside this component.
     void* load_page_00aa5840(void* actual_manager, const void* actual_name_header,
         std::int32_t screen_flag, std::uint8_t add_reference);
 
     // An entered failure retains its frames, Group, slot and Lua state; the
     // host must _Exit before the singleton drain.
     bool requires_process_retention() const noexcept;
+    void after_native_renderer_drain();
     std::uint32_t failure_site() const noexcept;
 private:
     struct Impl;

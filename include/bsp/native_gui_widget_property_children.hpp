@@ -3,6 +3,7 @@
 #include "bsp/native_gui_widget_property_interaction.hpp"
 #include "bsp/native_instance_geometry.hpp"
 #include "bsp/native_node_parenting.hpp"
+#include "bsp/native_node_parenting_storage.hpp"
 #include <deque>
 
 namespace bsp {
@@ -28,6 +29,21 @@ struct NativeGuiWidgetPropertyChildrenContext {
     NativeInstanceGeometryAccess& models; // existing SAME Model companion lifecycle
     const NativeNodeRawConstants& model_constants;
     NativeNodeParentingRuntime& parenting;
+    NativeGuiWidgetPropertyChildrenCalls& calls;
+};
+// Mandatory raw counterpart; all fields borrow the same retained invocation.
+// Nested readers use distinct backing. Completed sequential calls may reset
+// diagnostics only; their initialized argument homes retain native preimages.
+struct NativeGuiWidgetPropertyChildrenRawContext {
+    NativeStringRawPoolContext& strings;
+    const NativeGuiWidgetTypeKeyContext& types;
+    NativeInstanceGeometryAccess& models;
+    const NativeNodeRawConstants& model_constants;
+    NativeNodeParentingContext& parenting;
+    NativeNodeParentingFrame& parent_frame;
+    NativeNodeSetParentAcquired& parent_acquired;
+    NativeNodeParentNullFrame& detach_frame;
+    NativeNodeParentNullAcquired& detach_acquired;
     NativeGuiWidgetPropertyChildrenCalls& calls;
 };
 // Diagnostics only. Each child preserves its independently acquired native
@@ -79,4 +95,10 @@ void read_native_gui_widget_properties_and_children_00aaa710(void* actual_widget
     void* actual_visitor, NativeGuiWidgetPropertyScratch&,
     NativeGuiWidgetPropertyInteractionContext&, NativeGuiWidgetPropertyChildrenContext&,
     NativeGuiWidgetPropertyChildrenAcquired&);
+void continue_native_gui_widget_property_children_00aaacd4(void*, void*,
+    NativeGuiWidgetPropertyScratch&, NativeGuiWidgetPropertyChildrenRawContext&,
+    NativeGuiWidgetPropertyChildrenAcquired&);
+void read_native_gui_widget_properties_and_children_00aaa710(void*, void*,
+    NativeGuiWidgetPropertyScratch&, NativeGuiWidgetPropertyInteractionContext&,
+    NativeGuiWidgetPropertyChildrenRawContext&, NativeGuiWidgetPropertyChildrenAcquired&);
 } // namespace bsp
