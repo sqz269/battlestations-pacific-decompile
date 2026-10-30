@@ -1,0 +1,571 @@
+{
+  "schema_version": 1,
+  "packet": "codex-dyn-engine-qualified-propagation-review",
+  "created_at_utc": "2026-10-30T01:02:40.702733+00:00",
+  "status": "qualified_source_review_pass",
+  "candidate_commit": "5c320a1f5b508a59862db6d8d055c2878c0a643a",
+  "candidate_parent": "02a78bd1fc85cd7e2ff06450d1aa7edeae15ae94",
+  "review_worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation-review",
+  "ownership": {
+    "files": [
+      "docs/CC16_DYN_ENGINE_QUALIFIED_PROPAGATION_REVIEW.md",
+      "reports/cc16_dyn_engine_qualified_propagation_review.json"
+    ],
+    "addresses": []
+  },
+  "blocking_findings": [],
+  "qualification": "Valid-input source C++ normal/covered exception contract with genuine same-domain providers and normal-return cleanup; original native fault/ABI/application adoption not established.",
+  "candidate_files": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation-review\\include\\bsp\\dyn_engine_runtime.hpp",
+      "bytes": 7203,
+      "sha256": "a09651ed5813e1ef6ed2c79c1e648e0af5741b65787b80893bb2be813aecc800"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation-review\\src\\dyn_engine_runtime.cpp",
+      "bytes": 9562,
+      "sha256": "1a1484921ed59ef9c9334a65bb4f9fbcb43ef27e74ca502703516e6ffefd7c67"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation-review\\docs\\CC16_DYN_ENGINE_QUALIFIED_PROPAGATION.md",
+      "bytes": 9035,
+      "sha256": "dad76b06f2f0c4b15650456bcd8de4950a1993d6e0d50fa0c16d3dd405b0a940"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation-review\\reports\\cc16_dyn_engine_qualified_propagation.json",
+      "bytes": 56981,
+      "sha256": "23a314dae8b7cb5ea99aac6600eddad1383093016e0740aade571f5a4b96767a"
+    }
+  ],
+  "pin_audit": {
+    "fresh_baseline_code_equals_author": {
+      "equal": true,
+      "records": 32
+    },
+    "fresh_baseline_EH_metadata_equals_author": {
+      "equal": true,
+      "records": 8
+    },
+    "fresh_qualified_code_equals_author": {
+      "equal": true,
+      "records": 40
+    },
+    "fresh_qualified_EH_metadata_equals_author": {
+      "equal": true,
+      "records": 18
+    },
+    "author_report_pin_checks": 85,
+    "readiness_git64_source_pins": 18,
+    "baseline_git02_source_pins": 2,
+    "normalization": "Only anonymous C++ namespace hash; all code/EH bytes and relocation offsets/types/targets compared",
+    "failures": [],
+    "future_common_or_runtime_proof": false
+  },
+  "readiness": {
+    "commit": "21448e7f11e067728ff8e7fd6a14cf32a8e623fd",
+    "own_snapshot": "64cd1530ec223a889d8fb88fa32a0c880ab72c6c",
+    "source_pins_against_own_snapshot": 18,
+    "snapshot_not_current_task_proof": true
+  },
+  "admitted_dependencies": {
+    "task_source": "237e6c51838a56e326b6fe379a3bcaf8826156e2",
+    "task_review": "e0b04478c60c9c923e0b29f38ab5c1ea98438e07",
+    "Root_source": "90e4fc72fb8e4c8aec0ea87d4a62e52eb96a6773",
+    "Root_review": "cb53aed5b73fc20b343b6cf72e271d79c5025b38",
+    "current_task_exact237": true,
+    "current_dependency_pins_unchanged_from_parent": true,
+    "future_common_build_or_runtime_inherited": false
+  },
+  "source_contract": {
+    "genuine_supplier": "Same initialized GameNativeDynProcess dynamics().engine plus authenticated profile_partial_node_delete_00bf65ac(); private scalar operator-new memory tuple and actual unsized scalar operator-delete",
+    "nonnull_does_not_authenticate_custom_callbacks": true,
+    "raw_and_vector_routes_distinct": true,
+    "constructor": {
+      "missing_raw_provider": "Rejected before caller data/initial stores; no legacy fallback",
+      "initialization": "Only engine+0/+4/+8 zeros before source outer vector try; +C/+10 remain until respective native stores",
+      "state0_extent": "Outer current-vector catch begins before9C allocation and includes both allocations, child construction, stores/return",
+      "profile_capture": "Const original9C allocation; allocation itself under vector catch only; profile catch only around genuine qualified3arg Root; ends lexically before engine+C store",
+      "profile_then_task": "Store Root child result to engine+C BEFORE358 allocator callback; no profile guard for later task allocation/failure",
+      "task_capture": "Const original358 allocation; catch includes one volatile descriptor DWORD read only when nonnull, real qualified task child, engine+10 store and return",
+      "null_task": "Skips descriptor/child; stores null+10 and returns under acquired task source scope",
+      "raw_free": "Unconditionally apply required actual raw deleter to original captures; never returned child pointer/current publication",
+      "vector_free": "After acquired raw action/rethrow, pass actual original engine to unchanged A900 operation, capture CURRENT data once and release iff nonnull",
+      "real_targets": {
+        "Root": "?dyn_profile_construct_00c50310@bsp@@YAPAUDynProfileStorage@1@AAU21@ABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z",
+        "Task": "?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z"
+      }
+    },
+    "ensure": {
+      "first_capture": "One volatile actual engine publication read; nonnull returns before provider validation, descriptor or allocator access",
+      "cold_validation": "Null raw provider rejected before14 allocation; no fallback/default",
+      "raw14_allocation": "Outside captured catch, so allocator exceptions do not acquire its raw free",
+      "guard_extent": "Conditional qualified constructor, actual current publication including null, and return stay inside original capture catch",
+      "publication": "No post-callback fast-path recheck or equality repair; final store overwrites callback publication as native",
+      "failure": "Only original captured14 free/rethrow; no child/vector destructor or current-publication free/clear"
+    },
+    "old_APIs_callers_layouts_unchanged": true,
+    "current_native_game_construction_still_old_ensure": true,
+    "application_adoption": false,
+    "no_publication_orphan_worker_handle_rollback": true
+  },
+  "native": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "writes_or_reimports": false,
+    "PE": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "engine": {
+      "start": "00C55EA0",
+      "end_inclusive": "00C55F4E",
+      "bytes": 175,
+      "instructions": 57,
+      "ABI": "stack engine,descriptor; EAX engine; RET8"
+    },
+    "ensure": {
+      "start": "00C55F50",
+      "end_inclusive": "00C55FBE",
+      "bytes": 111,
+      "instructions": 34,
+      "ABI": "ECX descriptor; EAX existing/new/null; plain RET"
+    },
+    "engine_original_states": 3,
+    "ensure_original_states": 1,
+    "native_raw_capture_calls": [
+      "00CC83F1",
+      "00CC83FC",
+      "00CC8411"
+    ],
+    "native_tail_sites": [
+      {
+        "site": "00CC83E8",
+        "target": "00409B10"
+      },
+      {
+        "site": "00CC8408",
+        "target": "00BF6B43"
+      },
+      {
+        "site": "00CC841D",
+        "target": "00BF6B43"
+      }
+    ],
+    "A900_409B10_relation": "Same normal current-storage capture/conditional BF6989 release/no-clear effects; private ABI/fault equivalence unclaimed"
+  },
+  "original_call_rows": [
+    {
+      "function": "00c55ea0",
+      "address": "00c55ecf",
+      "native": "00bf681b"
+    },
+    {
+      "function": "00c55ea0",
+      "address": "00c55ee7",
+      "native": "00c50310"
+    },
+    {
+      "function": "00c55ea0",
+      "address": "00c55efd",
+      "native": "00bf681b"
+    },
+    {
+      "function": "00c55ea0",
+      "address": "00c55f1a",
+      "native": "00c37740"
+    },
+    {
+      "function": "00c55f50",
+      "address": "00c55f74",
+      "native": "00bf681b"
+    },
+    {
+      "function": "00c55f50",
+      "address": "00c55f8e",
+      "native": "00c55ea0"
+    },
+    {
+      "function": "00409b10",
+      "address": "00409b17",
+      "native": "00bf6989"
+    }
+  ],
+  "strict_compile": {
+    "units": [
+      "exact parent02a78 dyn_engine_runtime.cpp",
+      "candidate5c320 dyn_engine_runtime.cpp",
+      "unchanged admitted237 dyn_task_manager.cpp"
+    ],
+    "target": "MSVC Win32",
+    "flags": "/std:c++17 /MD /O2 /Gy /fp:strict /EHsc /W4 /WX /c /FAs",
+    "exit_code": 0,
+    "warnings": 0,
+    "EHa": false,
+    "common_build_link": false
+  },
+  "emitted": {
+    "old_code_records_equal": 32,
+    "old_EH_records_equal": 8,
+    "current_code_records": 40,
+    "current_EH_records": 18,
+    "new_code_records": 8,
+    "qualified_constructor_bytes": 210,
+    "qualified_ensure_bytes": 125,
+    "constructor_EH": {
+      "magic": "19930522",
+      "maxState": 6,
+      "EHflags": 1,
+      "tryblocks": [
+        {
+          "tryLow": 1,
+          "tryHigh": 1,
+          "catchHigh": 2,
+          "handler": "__catch$?dyn_engine_construct_qualified_00c55ea0@bsp@@YAPAUDynEngineStorage@1@AAU21@PDIABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z$0"
+        },
+        {
+          "tryLow": 3,
+          "tryHigh": 3,
+          "catchHigh": 4,
+          "handler": "__catch$?dyn_engine_construct_qualified_00c55ea0@bsp@@YAPAUDynEngineStorage@1@AAU21@PDIABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z$2"
+        },
+        {
+          "tryLow": 0,
+          "tryHigh": 4,
+          "catchHigh": 5,
+          "handler": "__catch$?dyn_engine_construct_qualified_00c55ea0@bsp@@YAPAUDynEngineStorage@1@AAU21@PDIABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z$4"
+        }
+      ],
+      "unwind_map": "ffffffff000000000000000000000000000000000000000000000000000000000000000000000000ffffffff00000000"
+    },
+    "ensure_EH": {
+      "magic": "19930522",
+      "maxState": 2,
+      "EHflags": 1,
+      "tryblocks": [
+        {
+          "tryLow": 0,
+          "tryHigh": 0,
+          "catchHigh": 1,
+          "handler": "__catch$?dyn_engine_ensure_qualified_00c55f50@bsp@@YAPAUDynEngineStorage@1@PDIABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z$0"
+        }
+      ],
+      "unwind_map": "ffffffff00000000ffffffff00000000"
+    },
+    "constructor_epochs": [
+      {
+        "offset": "2B",
+        "instruction": "cmp dword ptr [ebp + 0x14], 0"
+      },
+      {
+        "offset": "2F",
+        "instruction": "je 0xe9"
+      },
+      {
+        "offset": "40",
+        "instruction": "mov dword ptr [ebp - 4], 0"
+      },
+      {
+        "offset": "47",
+        "instruction": "mov dword ptr [esi], 0"
+      },
+      {
+        "offset": "4D",
+        "instruction": "mov dword ptr [esi + 4], 0"
+      },
+      {
+        "offset": "54",
+        "instruction": "mov dword ptr [esi + 8], 0"
+      },
+      {
+        "offset": "60",
+        "instruction": "call eax"
+      },
+      {
+        "offset": "65",
+        "instruction": "mov dword ptr [ebp - 0x14], eax"
+      },
+      {
+        "offset": "68",
+        "instruction": "mov byte ptr [ebp - 4], 1"
+      },
+      {
+        "offset": "75",
+        "instruction": "call 0x7a"
+      },
+      {
+        "offset": "7D",
+        "instruction": "mov dword ptr [esi + 0xc], eax"
+      },
+      {
+        "offset": "8A",
+        "instruction": "mov dword ptr [ebp - 4], 0"
+      },
+      {
+        "offset": "91",
+        "instruction": "call eax"
+      },
+      {
+        "offset": "95",
+        "instruction": "mov byte ptr [ebp - 4], 3"
+      },
+      {
+        "offset": "9C",
+        "instruction": "mov dword ptr [ebp - 0x18], ecx"
+      },
+      {
+        "offset": "9F",
+        "instruction": "test ecx, ecx"
+      },
+      {
+        "offset": "A1",
+        "instruction": "je 0xbb"
+      },
+      {
+        "offset": "A7",
+        "instruction": "mov eax, dword ptr [eax]"
+      },
+      {
+        "offset": "B1",
+        "instruction": "call 0xb6"
+      },
+      {
+        "offset": "BB",
+        "instruction": "mov dword ptr [esi + 0x10], ecx"
+      },
+      {
+        "offset": "C3",
+        "instruction": "mov dword ptr fs:[0], ecx"
+      }
+    ],
+    "ensure_epochs": [
+      {
+        "offset": "31",
+        "instruction": "mov eax, dword ptr [eax]"
+      },
+      {
+        "offset": "35",
+        "instruction": "jne 0x6b"
+      },
+      {
+        "offset": "37",
+        "instruction": "cmp dword ptr [ebp + 0x10], eax"
+      },
+      {
+        "offset": "3A",
+        "instruction": "je 0x8f"
+      },
+      {
+        "offset": "43",
+        "instruction": "call eax"
+      },
+      {
+        "offset": "48",
+        "instruction": "mov dword ptr [ebp + 0xc], eax"
+      },
+      {
+        "offset": "4B",
+        "instruction": "mov dword ptr [ebp - 4], 0"
+      },
+      {
+        "offset": "54",
+        "instruction": "je 0x66"
+      },
+      {
+        "offset": "5E",
+        "instruction": "call 0x63"
+      },
+      {
+        "offset": "69",
+        "instruction": "mov dword ptr [ecx], eax"
+      },
+      {
+        "offset": "6E",
+        "instruction": "mov dword ptr fs:[0], ecx"
+      }
+    ],
+    "real_qualified_Root_target": "?dyn_profile_construct_00c50310@bsp@@YAPAUDynProfileStorage@1@AAU21@ABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z",
+    "real_qualified_task_target": "?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z",
+    "fresh_task_defines_real_target": true,
+    "physical_qualification": "state0+40 precedes initial zero stores47/4D/54; profile+C store7D precedes demotion8A; no C++ throwing call in either interval. Task allocator91/state3 95/capture9C/null9F-A1/sole volatile descriptorA7. Valid-input C++ scopes only; native store faults/FH3/SEH not equivalent."
+  },
+  "failure_custody": [
+    {
+      "epoch": "constructor missing provider",
+      "actions": "Source invalid_argument before caller data or initial stores; no native captured cleanup acquired",
+      "qualification": "New API validation boundary, not original invalid-input ABI"
+    },
+    {
+      "epoch": "ensure first publication nonnull",
+      "actions": "Return first captured engine before provider validation/descriptor/allocator; no graph requalification",
+      "qualification": "Caller-side argument evaluation remains outside callee contract"
+    },
+    {
+      "epoch": "cold14 allocation C++ throw",
+      "actions": "No captured14 free; allocator callback/publication effects remain"
+    },
+    {
+      "epoch": "9C allocation C++ throw",
+      "actions": "Current engine-vector conditional release; enclosing ensure captured14 free if called from it"
+    },
+    {
+      "epoch": "qualified Root C++ failure",
+      "actions": "Only acquired child Root/node actions, then original9C raw free, current engine-vector release, enclosing14 raw free",
+      "residue": "Reached profile publication may remain stale; no clear/rollback"
+    },
+    {
+      "epoch": "358 allocation C++ throw",
+      "actions": "Current engine-vector release, enclosing14 raw free; no profile capture remains acquired",
+      "residue": "Completed9C/48h Root remain orphaned/published"
+    },
+    {
+      "epoch": "late descriptor load/store faults",
+      "actions": "Native guarded extent recorded; Source /EHsc hardware/SEH transport is unproved",
+      "qualification": "No original fault/initial-store/profile-store/private-frame identity"
+    },
+    {
+      "epoch": "qualified task C++ failure",
+      "actions": "Admitted task acquired DeleteCS/current queue actions, then original358 raw free, current engine-vector release, enclosing14 raw free",
+      "residue": "Completed profile/Root and partial task handles/worker effects not repaired"
+    },
+    {
+      "epoch": "ensure publication/return extent after child completion",
+      "actions": "Ensure lexical catch frees only original14; no child destructor/current-publication free or clear",
+      "qualification": "Pure stores under valid input do not add a C++ fault bridge; reached callback/native stale effects are not rolled back"
+    }
+  ],
+  "remaining_limits": [
+    "Actual production/Game call-service/context owner must select and authenticate the same real supplier and handle partial failure; current callers remain normal APIs",
+    "No GameNativeGameRuntime/physics attachment, decoder/renderer/world lifetime, gameplay or guard activation is inferred from library propagation",
+    "Current state0 hoist and delayed profile demotion do not match original initial/profile-store fault epochs; native descriptor/SEH/Win32 externC/FH3/frame/stack and secondary-cleanup transport are unproved",
+    "Completed profile/Root can remain orphaned, reached publication can remain stale/dangling; no repair/retry/automatic destruction or safe continuation license",
+    "Admitted task count0/BOOL/partial-handle/worker ownership gaps and existing Root std::memset/native BF79F0 limitations remain",
+    "Nonnull raw provider does not authenticate arbitrary manual callback/custom-heap custody; genuine matching raw/vector providers must return normally",
+    "No vendor CRT body reconstruction or original binary ABI credit"
+  ],
+  "fresh_static_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation-review\\local\\dyn_engine_qualified_propagation_review\\compile.cmd",
+      "bytes": 1021,
+      "sha256": "ba2777aadebf9a927fdf847b5f2dd13d0ce7a22f28e08e7e9833af91cb1e97ab"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation-review\\local\\dyn_engine_qualified_propagation_review\\compile.log",
+      "bytes": 70,
+      "sha256": "7df5ca6a89344de7d0a7248436d850e9373ea33fae6aec5d40a25322d9f0ff00"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation-review\\local\\dyn_engine_qualified_propagation_review\\baseline.obj",
+      "bytes": 18499,
+      "sha256": "13af36357de552700d4bc65ca263333b27cc45b19665ea1fa0ac15259368693f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation-review\\local\\dyn_engine_qualified_propagation_review\\qualified.obj",
+      "bytes": 23461,
+      "sha256": "c21c23d6f525973de74764f65bfb07d4fb63fd0c8f1d2b62faac3fb9dcb6e648"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation-review\\local\\dyn_engine_qualified_propagation_review\\task.obj",
+      "bytes": 16263,
+      "sha256": "9ee4d979e7cfc7ba4888598dc36cd5d6968c6d8d62ac75a33e8b4bb55a7892f7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation-review\\local\\dyn_engine_qualified_propagation_review\\audit.py",
+      "bytes": 13034,
+      "sha256": "8335cdb49acb0ed51d408f71a290316f82a4cbd51f8f8bb3494513267cb86105"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation-review\\local\\dyn_engine_qualified_propagation_review\\coff_view.py",
+      "bytes": 2265,
+      "sha256": "9f05aacaa962220e778c9268b39616484e75de9d953e2b7f77f65247036c2acc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation-review\\local\\dyn_engine_qualified_propagation_review\\audit.log",
+      "bytes": 274,
+      "sha256": "40922a0150242359775a811f03fe0289a1a2f0fb01e67819a793cc808dd7f3b3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation-review\\local\\dyn_engine_qualified_propagation_review\\object_audit.json",
+      "bytes": 13089,
+      "sha256": "72c594ef07647ccad6002d6184ae47bf36d2ee722662fff6bd71ebdad5bbd157"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation-review\\local\\dyn_engine_qualified_propagation_review\\original_call_rows.json",
+      "bytes": 751,
+      "sha256": "915160b106b781d74b7618cfee1565edab3658cb9b251debd28b2f1a8d628713"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation-review\\local\\dyn_engine_qualified_propagation_review\\machine_windows.asm",
+      "bytes": 10202,
+      "sha256": "59ad4009dcc0f28ae97f16fa83de0d849e469e255422ec160ec9bbadb018a7d5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation-review\\local\\dyn_engine_qualified_propagation_review\\compare_pins.py",
+      "bytes": 3782,
+      "sha256": "caf15bd1b484f917bc37ead9a8ddf7ebfa7ab3b4f567b32f78c3ebf00e6b6ee1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation-review\\local\\dyn_engine_qualified_propagation_review\\independent_comparison.json",
+      "bytes": 31035,
+      "sha256": "53af342652775d0dd43c0f8ccbecea28058975260fcd2f248d18cc904d1a6ca5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation-review\\local\\dyn_engine_qualified_propagation_review\\verify_calls.log",
+      "bytes": 83,
+      "sha256": "ad45f2203c8b8c4f6f986235d3310f84aec4976d5a9fa3f55108243d09a35b76"
+    }
+  ],
+  "retained_author_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\local\\dyn-engine-qualified-propagation\\audit.py",
+      "bytes": 12962,
+      "sha256": "57fc461a5ecf22da2c68adc61382c2ec2240e192425147e78ccef29f1d45eea3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\local\\dyn-engine-qualified-propagation\\object_audit.json",
+      "bytes": 13088,
+      "sha256": "3cf81ff640912df8f7ce01b36d4ff3b0772ba35cefb8c7abbc2fa1014274b7dc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\local\\dyn-engine-qualified-propagation\\native_evidence.json",
+      "bytes": 15092,
+      "sha256": "61d0acb222db1eea98347a5eaa9dce2b55c1d5b23d1987f3287cda61d6e6bebb"
+    }
+  ],
+  "activity": {
+    "tracked_changes": "Only two owned review files",
+    "source_or_address_mutations": false,
+    "Ghidra_writes": false,
+    "CMake_ledger_guard_changes": false,
+    "tests_executables_probes_games_DLL_calls": false,
+    "allocation_execution": false,
+    "common_build_link": false,
+    "peer_runtime_trees_touched": false
+  },
+  "credit": {
+    "new_native_bodies": 0,
+    "vendor_bodies": 0,
+    "original_ABI": false,
+    "native_FH3_SEH_fault_transport": false,
+    "gameplay_activation": false
+  },
+  "documentation": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation-review\\docs\\CC16_DYN_ENGINE_QUALIFIED_PROPAGATION_REVIEW.md",
+    "bytes": 10256,
+    "sha256": "d5368da210ef34d9bcb26c6f22c1509d76e39b11b41b00f52f4d2036f80b59ec"
+  },
+  "validation": {
+    "author_report_existing_call_checker": {
+      "rows": 7,
+      "failed": 0,
+      "exit_code": 0
+    },
+    "review_report_existing_call_checker": {
+      "rows": 7,
+      "failed": 0,
+      "exit_code": 0
+    },
+    "review_self_check": "PASS candidate/parent pins; 21 evidence file pins plus documentation; 85 author pins; seven direct/three raw-free/three tail rows; EH maxState6/2",
+    "new_tests_added_or_executed": false
+  }
+}
