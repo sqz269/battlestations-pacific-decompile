@@ -1,0 +1,231 @@
+{
+  "schema": 1,
+  "component": "renderer_retained_shared_model_domain",
+  "created_utc": "2026-10-30T13:11:10.511651+00:00",
+  "baseline": "40acabef63ed84dec8deb4d54530ef13a4d4da8d",
+  "canonical_bridge_contract": "c0f735c3af934905a3f6681b24261bfab493e4e6",
+  "canonical_bridge_implementation": null,
+  "status": "source_component_written_pending_dependent_build_and_coupled_page_admission",
+  "owned_production_files": [
+    "include/bsp/game_native_model_domain.hpp",
+    "src/game_native_model_domain.inc",
+    "include/bsp/game_native_renderer_application.hpp",
+    "src/game_native_renderer_application.cpp",
+    "src/game_native_mission_model.inc"
+  ],
+  "outputs": [
+    {
+      "path": "include/bsp/game_native_model_domain.hpp",
+      "bytes": 3144,
+      "sha256": "6feef900ac2a2093856da5a88e8ec7eadd6923d7d9eaa5cb8353a13be323e128",
+      "git_blob": "5d8bc4a64c104cbeee4a0d6280719f6209bbb182"
+    },
+    {
+      "path": "src/game_native_model_domain.inc",
+      "bytes": 15824,
+      "sha256": "ff8788d41c4e4b34b302910cc3c52d3593b232fc409d229a3b4999cbaef242ed",
+      "git_blob": "000f2395134b994791d4284d279ffead14c9d317"
+    },
+    {
+      "path": "include/bsp/game_native_renderer_application.hpp",
+      "bytes": 20750,
+      "sha256": "35d3649c491e263cb0c6752bf637d70af3135a9bae12e375ed9d12bbecd26bd5",
+      "git_blob": "dc90eb7264b1a84b06d9658d359864b96cc60a2c"
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "bytes": 80905,
+      "sha256": "ca5482dcb5566b9ccf14aebd2ec0b78f1e547bf5ab4e5268e2922fb207277d3e",
+      "git_blob": "c7ac9206b53f7fdf8e5c4e53a17cf3b3f6e4231f"
+    },
+    {
+      "path": "src/game_native_mission_model.inc",
+      "bytes": 54516,
+      "sha256": "ed4f91ff37398cc690c5657e9160e1d8aae36f4bf8361dd90ef253ee2733fb87",
+      "git_blob": "bba02b361321fd41e4173b557650c8c6e55d14e0"
+    }
+  ],
+  "frozen_inputs": [
+    {
+      "path": "include/bsp/game_native_renderer_application.hpp",
+      "bytes": 20443,
+      "sha256": "2ce5d69fe894fb0a730234f15dc236d6d6d869e53e29387a962ac0e6d99e42be",
+      "git_blob": "427d7f7b5762081595c7d34c460c46d173e874c4",
+      "revision": "40acabef63ed84dec8deb4d54530ef13a4d4da8d"
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "bytes": 80060,
+      "sha256": "3ed5485d8b619dce29caed0c1fa2b810b71504478bbb4ce44ca683c9e398ae7f",
+      "git_blob": "5baacc9a3bb8b4856951e8780485dea44502e951",
+      "revision": "40acabef63ed84dec8deb4d54530ef13a4d4da8d"
+    },
+    {
+      "path": "src/game_native_mission_model.inc",
+      "bytes": 59874,
+      "sha256": "ac92c7dbb1e4f9a9735453dac0c753dd243e6fd81baa7824bac75b28658bfa93",
+      "git_blob": "d2dcd90466acccd1f6a696741c9e1bfc13cb02e2",
+      "revision": "40acabef63ed84dec8deb4d54530ef13a4d4da8d"
+    },
+    {
+      "path": "docs/CC16_NATIVE_FRONTEND_WIDGET_MODEL_DOMAIN.md",
+      "bytes": 21495,
+      "sha256": "ad0e5a2baabb4e862a7e2c6afb2ddc89fbb180cc807b16a592f5678b41c4575e",
+      "git_blob": "29e9b8931368e6b3363ac760631ee86fae133cdc",
+      "revision": "40acabef63ed84dec8deb4d54530ef13a4d4da8d"
+    },
+    {
+      "path": "include/bsp/native_instance_geometry.hpp",
+      "bytes": 3560,
+      "sha256": "d636744a916ce5acad921606f43f76e9edbe8cb855d4580e936afca162b3cb03",
+      "git_blob": "6d0527a7db3b093c91bfe52573cbb5388df58157",
+      "revision": "40acabef63ed84dec8deb4d54530ef13a4d4da8d"
+    },
+    {
+      "path": "src/native_instance_geometry.cpp",
+      "bytes": 7006,
+      "sha256": "c05ed78becb2703712b05c16af76798c2bc1f44cdc7681cd9d912c7625165290",
+      "git_blob": "0a541b60b5d13029f565c1f47bd630e3d6ce6dcd",
+      "revision": "40acabef63ed84dec8deb4d54530ef13a4d4da8d"
+    },
+    {
+      "path": "include/bsp/native_model_owner.hpp",
+      "bytes": 7520,
+      "sha256": "55369e419a173e978adcaf5577133e09def52310bcbaa6f4f0f7fdc1b1870e5a",
+      "git_blob": "78cad0248ffd29125e85ab1423e64f5cae58caf8",
+      "revision": "40acabef63ed84dec8deb4d54530ef13a4d4da8d"
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "bytes": 17137,
+      "sha256": "d34c0b37ed8c5036cb9d6401886177795e6f4c110acaffe86e92921ad0e06132",
+      "git_blob": "ad547ce8c715b2f83392d172ad71580ff40832d6",
+      "revision": "40acabef63ed84dec8deb4d54530ef13a4d4da8d"
+    },
+    {
+      "path": "include/bsp/native_model_storage_lifetime.hpp",
+      "bytes": 6971,
+      "sha256": "709cd10f04104fac3d5d4215f9856933259ebf9f535987522dfa3e912ab74ea1",
+      "git_blob": "9c67998ced674cdc692f94759a2281b86c522b1e",
+      "revision": "40acabef63ed84dec8deb4d54530ef13a4d4da8d"
+    },
+    {
+      "path": "src/native_model_storage_lifetime.cpp",
+      "bytes": 14981,
+      "sha256": "27d2765863c4c130b2dcb95f4274ed5d833a087ed25b2f56709b74f0fe17122c",
+      "git_blob": "402da841d287e0e8f8b9149daad52eeacddaa563",
+      "revision": "40acabef63ed84dec8deb4d54530ef13a4d4da8d"
+    },
+    {
+      "path": "include/bsp/native_node_base_destruction.hpp",
+      "bytes": 4834,
+      "sha256": "cd1f22aafdc481b9e54c23dda5634171ac654b570d8ad8757f843bca76883226",
+      "git_blob": "1f8f3069c602b970a74d2d921c34dc5e864dc22b",
+      "revision": "40acabef63ed84dec8deb4d54530ef13a4d4da8d"
+    },
+    {
+      "path": "include/bsp/native_node_scene_attachment.hpp",
+      "bytes": 5335,
+      "sha256": "8b2f6d276fbe92b00c190fadcda44e71e8547c5890bd224ee2de895310658edf",
+      "git_blob": "b236a5d8ff992022ff795fa6a8c4236e51cad31c",
+      "revision": "40acabef63ed84dec8deb4d54530ef13a4d4da8d"
+    },
+    {
+      "path": "include/bsp/native_node_tree_retirement.hpp",
+      "bytes": 4571,
+      "sha256": "7826147682ef91780670172a270214c5f164ba92696f76c06ecc4d3e8387f07f",
+      "git_blob": "a95108130a5c2e16ba8eef2a320fb900473cf9d1",
+      "revision": "40acabef63ed84dec8deb4d54530ef13a4d4da8d"
+    },
+    {
+      "path": "include/bsp/model_type_bootstrap.hpp",
+      "bytes": 1537,
+      "sha256": "49052b9738eb7e5b0b20b9bea44ccee682534ed884d20c30ee1e6975ac874155",
+      "git_blob": "5bd83d0455c3b27b84cc531a444c051405cd0bf8",
+      "revision": "40acabef63ed84dec8deb4d54530ef13a4d4da8d"
+    },
+    {
+      "path": "src/game_native_type_storage.cpp",
+      "bytes": 5640,
+      "sha256": "87958d36dc6c7480e73992698c3c9dac86bc153f7033fc0e55a9833fd2ea5b4b",
+      "git_blob": "106fa3ce980394494b62512c35e6d46c3167c78d",
+      "revision": "40acabef63ed84dec8deb4d54530ef13a4d4da8d"
+    },
+    {
+      "path": "docs/CC16_CANONICAL_MODEL_RAW_LIFETIME_BRIDGE.md",
+      "bytes": 19956,
+      "sha256": "3b1476e2f06b04a6b4933de734cd294638f73cde0b16cf9bb829d0a78239c1a6",
+      "git_blob": "5e96e31a4ea483b3883a5923696654bc9626877b",
+      "revision": "c0f735c3af934905a3f6681b24261bfab493e4e6"
+    }
+  ],
+  "api": {
+    "renderer": "GameNativeRendererApplication::model_domain()",
+    "page_client": "GameNativeModelDomain::make_page_client(NativeModelStorageContext&)",
+    "mission_client": "GameNativeModelDomain::make_mission_client(GameNativeModelRetirementObserver)",
+    "raw_view": "GameNativeModelClient::raw_access()",
+    "mission_view": "GameNativeModelClient::instance_access()",
+    "client_checks": [
+      "requires_process_retention()",
+      "empty()",
+      "after_native_renderer_drain()"
+    ]
+  },
+  "identities": {
+    "pool": "process model_pool_01090054",
+    "nodes": "renderer.camera_environment().nodes",
+    "registry": "renderer.actual_owners() only",
+    "types": "existing VFS Model/light storage and counter",
+    "strings": "same persistent files.raw_strings() object; typed actual_names=&raw.strings",
+    "materials": [
+      "F8D3E4",
+      "F8D3AC"
+    ],
+    "constants": [
+      "CE4ADC",
+      "CE4970",
+      "D7A208",
+      "D7A260"
+    ],
+    "profiles": [
+      "D62DE8",
+      "D62C88",
+      "D5E520"
+    ],
+    "native_count": "same NativeModelReference actual+04 alias"
+  },
+  "retirement": {
+    "mission_selection": "3arg legacy including raw names",
+    "page_selection": "required4arg same canonical owner; record-owned raw terminal frame/acquired/host/binding",
+    "mission_drawable": "existing nonowning observer before canonical unbind",
+    "acquisition_lookup": "exact owner and acquiring client",
+    "client_isolation": true,
+    "bind_failure": "completed owner/reference retained; registration set only after bind returns",
+    "flags0": "canonical unbound once; same dead record/slot receipt retained; no invented physical return",
+    "global_empty_check": "renderer post-full-native-singleton-drain boundary"
+  },
+  "validation": {
+    "diff_check": "passed",
+    "build": "pending canonical implementation commit and Root build slot",
+    "new_tests": 0,
+    "game_or_probe_runs": 0,
+    "process_control": 0,
+    "ghidra_queries": 0,
+    "ghidra_mutations": 0
+  },
+  "admission": {
+    "standalone_main_admissible": false,
+    "actual_page_consumer_in_this_component": false,
+    "page_guard_changed": false,
+    "new_native_body_credit": 0,
+    "abi_credit": false,
+    "gameplay_credit": false,
+    "required_coupled_paths": [
+      "include/bsp/game_native_gui_page_application.hpp",
+      "src/game_native_gui_page_application.cpp",
+      "src/game_hosts.cpp",
+      "Page child/parent/reader/lifetime supplier files",
+      "canonical Model raw lifetime bridge files"
+    ]
+  }
+}

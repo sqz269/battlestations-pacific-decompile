@@ -67,6 +67,7 @@ class GameSingletonHost;
 class GameVfsHost;
 class GameNativeReadOnlyData;
 class GameNativeLuaServices;
+class GameNativeModelDomain;
 class GameHostLog;
 class GameInputRuntime;
 class GameNativeMissionFactories;
@@ -179,6 +180,10 @@ public:
     // explicitly projected focus cell and gains no actual184h-owner admission.
     NativePlatformLoadPublication borrow_platform_publication_0109cf04() const noexcept;
     NativeRenderActualOwnerRegistry& actual_owners() noexcept;
+    // Ready-only, retained shared Model/stream owner. Page and Mission create
+    // stable clients before their first acquisition; composing it runs no
+    // Native constructor or type initializer. Retain through full native drain.
+    GameNativeModelDomain& model_domain();
     // Borrowed until renderer teardown. Callers retain their actual grid
     // storage, operation records and explicit descriptor preimages, and must
     // release grids before draining this renderer. Uses the same VFS strings,
