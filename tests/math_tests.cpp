@@ -36,6 +36,7 @@
 #include "bsp/gun_bot_remainder.hpp"
 #include "bsp/gun_bot_ticks.hpp"
 #include "bsp/game_tuning_singleton.hpp"
+#include "bsp/cc13_gui1.hpp"
 #include "bsp/gui_icon.hpp"
 #include "bsp/gui_layer.hpp"
 #include "bsp/gui_layout_loader.hpp"
@@ -127,6 +128,8 @@
 #include "bsp/torpedo_aim_tick.hpp"
 #include "bsp/torpedo_issue_timing.hpp"
 #include <algorithm>
+#include <cstdlib>
+#include <new>
 #include <cmath>
 #include <memory>
 #include <cstring>
@@ -245,6 +248,57 @@ private:
 }
 
 int main() {
+    {
+        // One Source-only regression for AD3A80's missing captured-block
+        // constructor cleanup. The callback replaces CURRENT backing before
+        // throwing; neither the old nor replacement slot may be published.
+        struct TimedConstructorFault {};
+        struct TimedConstructorHooks final : bsp::cc13_gui1::GuiTimedEntryHooks {
+            void* widget;
+            void** replacement;
+            void* block = nullptr;
+            int resizes = 0, frees = 0, returned = 0;
+            bool correct_constructor = false, wrong_free = false;
+            TimedConstructorHooks(void* w, void** r) : widget(w), replacement(r) {}
+            ~TimedConstructorHooks() override { std::free(block); }
+            void timed_entry_array_resize_00aa77b0(void*, std::int32_t) override { ++resizes; }
+            void* operator_new_00bf681b(std::uint32_t bytes) override {
+                check(bytes == 0x14, "timed constructor allocates actual 14h block");
+                block = std::malloc(bytes);
+                if (!block) throw std::bad_alloc();
+                return block;
+            }
+            void* timed_entry_construct_00ac2ed0(void* b, void* w) override {
+                correct_constructor = b == block && w == widget;
+                std::memcpy(static_cast<unsigned char*>(w) + 0x88,
+                    &replacement, sizeof(replacement));
+                throw TimedConstructorFault{};
+            }
+            void free_failed_constructor_00bf65ac(void* b) noexcept override {
+                ++frees;
+                if (b == block) { std::free(block); block = nullptr; }
+                else wrong_free = true;
+            }
+            void timed_entry_construction_returned(void*) noexcept override { ++returned; }
+        };
+        alignas(void*) unsigned char widget[0xec]{};
+        void* original[1]{};
+        void* replacement[1]{};
+        void** current = original;
+        const std::int32_t one = 1;
+        std::memcpy(widget + 0x88, &current, sizeof(current));
+        std::memcpy(widget + 0x8c, &one, sizeof(one));
+        std::memcpy(widget + 0x90, &one, sizeof(one));
+        TimedConstructorHooks hooks(widget, replacement);
+        bool escaped = false;
+        try { bsp::cc13_gui1::gui_timed_entry_get_or_create_00aa8b00(hooks, widget, 0); }
+        catch (const TimedConstructorFault&) { escaped = true; }
+        std::memcpy(&current, widget + 0x88, sizeof(current));
+        check(escaped && hooks.correct_constructor && hooks.frees == 1 && !hooks.wrong_free
+            && hooks.block == nullptr && hooks.returned == 0 && hooks.resizes == 0
+            && current == replacement && original[0] == nullptr && replacement[0] == nullptr,
+            "timed ctor escape frees captured block once, propagates and publishes neither slot");
+    }
 #if defined(_MSC_VER) && defined(_M_IX86) && defined(_DEBUG)
     {
         // One source-only fixture for the two C50390 exception boundaries.
