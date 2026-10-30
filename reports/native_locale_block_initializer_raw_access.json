@@ -1,0 +1,41 @@
+{
+  "packet": "codex-locale-block-init-raw-access",
+  "address": "00a9e970",
+  "source": "src/cc13_sweepC.cpp",
+  "header": "include/bsp/cc13_sweepC.hpp",
+  "documentation": "docs/NATIVE_LOCALE_BLOCK_INITIALIZER_RAW_ACCESS.md",
+  "scope": "one existing function raw-store refinement; no allocator or broad-host change",
+  "schedule": [
+    "WORDcount7800=400",
+    "for1024: WORDstack7000+2i=3FF-i before DWORDnode18+1Ci=slabindex"
+  ],
+  "unchanged": [
+    "public API",
+    "shared at<> helper",
+    "all unrelated functions",
+    "payload/header/link/padding bytes"
+  ],
+  "validation": {
+    "source_review": "pending independent review",
+    "common_build": "Win32 Release passed; existing checks2/2, 12.98s",
+    "tests_added": false,
+    "runtime_claim": false,
+    "strict_objects": "MSVC Win32 /W4 /WX /permissive- /O2 /fp:strict object-only exit0",
+    "object_receipt": "local/raw_locale_pool_owner_frontier_cc16_20261030/root_raw_access_object_receipt.json",
+    "other_function_projection": {
+      "cpp_exact": true,
+      "header_exact": true,
+      "old_cpp_sha256": "fe43cb6d2f3e282bf6cb360dc8dbf914d2812aa3c64d7dec9bd6bd2eccdbcebb",
+      "old_header_sha256": "e100d5d72c8049fbd04907f451ae363bd7e7dc1ba7ea399a3136c37954994a5e",
+      "changed_function_only": "00a9e970"
+    }
+  },
+  "source_ready": false,
+  "abi_compatible": false,
+  "new_native_body_credit": false,
+  "limits": [
+    "actual7804 backing and provider lifetime required",
+    "fences add no synchronization",
+    "allocation/slot/payload/loaded-manager/startup separate"
+  ]
+}
