@@ -865,5 +865,59 @@
     "all5_exports_refreshed": true,
     "index_rebuilt": true,
     "old_semantic_broad_Host_records_preserved": true
+  },
+  "merged_Main_refresh": {
+    "head": "147b671e6b4f494225ec69e11839f0cf175475f0",
+    "peer_Main": "74cfd9e5c",
+    "existing_suites": "2/2",
+    "seconds": 11.74,
+    "objects": [
+      {
+        "path": "build\\win32\\bsp_core.dir\\Release\\native_hud_hints_collect.obj",
+        "sha256": "3c760d4c77d167a7c2751fbfe31c4fd8c0467e9ccfca8bef672a8b253b161026",
+        "identical_to_frozen_common_object": true
+      },
+      {
+        "path": "build\\win32\\bsp_core.dir\\Release\\native_tactical_library_collect.obj",
+        "sha256": "36c804db13f94b8868a8289bd3b32b98d3fa335d190f5bf3fdaeefb223f4dc0d",
+        "identical_to_frozen_common_object": true
+      },
+      {
+        "path": "build\\win32\\bsp_core.dir\\Release\\native_lua_variant_retirement.obj",
+        "sha256": "7d19c2bb15e910cb418785dd86d19191176cd36082d10481ef13d20c9d6c263f",
+        "identical_to_frozen_common_object": true
+      },
+      {
+        "path": "build\\win32\\bsp_core.dir\\Release\\native_scene_dword_vector_push_back.obj",
+        "sha256": "55274176ab67c57117e4b4052a4127935da5cb525c15e277b549c37c406a828f",
+        "identical_to_frozen_common_object": true
+      },
+      {
+        "path": "build\\win32\\bsp_core.dir\\Release\\native_scene_dword_vector_insert.obj",
+        "sha256": "23caf622dfdfee65428dbe7eb4f05d3bb5b0284fde46b063e0f88889f62425df",
+        "identical_to_frozen_common_object": true
+      },
+      {
+        "path": "build\\win32\\bsp_core.dir\\Release\\native_string_pool_owner.obj",
+        "sha256": "6b8d709e064a23e75ea5ff7255c985280d0efb89e9ca8f353b83b903cb42a891",
+        "identical_to_frozen_common_object": true
+      },
+      {
+        "path": "build\\win32\\bsp_core.dir\\Release\\native_string_pool_storage.obj",
+        "sha256": "bbc0339374e3a681e633f2d14ef90f94ade4cf7921f3231ff5115a6315913ee2",
+        "identical_to_frozen_common_object": true
+      },
+      {
+        "path": "build\\win32\\bsp_core.dir\\Release\\singleton_lifetime.obj",
+        "sha256": "386824ba4b5224ce24dfa43d84dd09b6c8b1fc64e02011998109d91cdc72171f",
+        "identical_to_frozen_common_object": true
+      }
+    ],
+    "build_log": {
+      "path": "local\\function_source_batch10\\artifacts\\merged-main-build.log",
+      "sha256": "a6c92e95ed3d611a6ef2681c7c7c40bb66b80699e17a9191d426eba67be20522"
+    },
+    "original_common_PE_link_receipt_preserved": true,
+    "new_gameplay_or_new_body_execution": false
   }
 }

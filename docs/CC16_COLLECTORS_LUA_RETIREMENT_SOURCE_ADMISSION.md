@@ -41,3 +41,5 @@ Both collectors still need genuine screen/Page/creator/vector/provider lifetime 
 Old semantic/broad-host records and names are preserved with additional normal raw interfaces/evidence. Ghidra names/comments are preserved and extended, project saved, exports refreshed and index rebuilt before publication. New Original/vendor/duplicate-body, ABI, new-body runtime and activation credit are zero. Full activation with authorized required gameplay checks remains the continuing goal.
 
 Machine-readable evidence: `reports/cc16_collectors_lua_retirement_source_admission.json`.
+
+Publication refresh merged peer Main74cfd9e5c and passes the same two suites (11.74s). All eight defining new-body/provider objects are byte-identical to the frozen common objects; the earlier actual entry-link/PE receipt stays immutable. The new build log is separately retained. No additional body or gameplay execution occurred.
