@@ -2,7 +2,7 @@
   "schema_version": 1,
   "packet": "codex-populated-page-review",
   "created_utc": "2026-10-30T14:00:08.317493+00:00",
-  "status": "independent_source_review_complete_no_open_blocking_findings_after_sealed_fixes",
+  "status": "independent_source_review_complete_sealed_common_identifier_rename_same_effect_confirmed",
   "documentation": "docs/CC16_POPULATED_PAGE_INDEPENDENT_REVIEW.md",
   "frozen_main": "40acabef63ed84dec8deb4d54530ef13a4d4da8d",
   "reviewed_page_head": "a09e26c57374bd454c20d1b3f8227525f5707792",
@@ -27,7 +27,7 @@
     "push": false
   },
   "recommendation": {
-    "bounded_source": "recommend primary integration after primary review and required joined warm build/checks pass",
+    "bounded_source": "No open blocking Source finding; recommend bounded integration after primary saved-receipt validation and actual current SourceHost regression. Root reports joined all-target build and2existing checks passed12.28s.",
     "open_blocking_findings": 0,
     "guard": {
       "name": "kNativeGuiPageChainCc15Bound",
@@ -401,7 +401,7 @@
     "git_diff_check": "passed on immutable joined Page diff",
     "reviewer_build_test_run_count": 0,
     "root_component_build": "Primary separately reported Win32 MP2/PCH ON, coverage-PDB OFF,2/2 passed12.58s including new case; reviewer did not rerun or promote this to joined evidence.",
-    "joined_build_and_actual_consumer_validation": "Pending primary integration; not claimed by this review."
+    "joined_build_and_actual_consumer_validation": "Primary reported common5092 all-target build and2existing checks PASS12.28s. Reviewer observed that report only; saved-receipt validation and actual current SourceHost regression remain primary obligations."
   },
   "verified_bounded_body_receipts": [
     {
@@ -758,7 +758,7 @@
     }
   ],
   "remaining_gates": [
-    "primary review and required joined warm scripts/build.ps1/checks",
+    "primary saved-receipt validation and actual current SourceHost regression; joined build/check PASS was reported by Root separately",
     "actual populated reader/retirement evidence",
     "full raw95/current-vptr/Frame/Game authority",
     "other widget factories",
@@ -771,5 +771,240 @@
     "FH3_SEH_fault_private_frame": 0,
     "runtime_gameplay": 0,
     "activation": 0
-  }
+  },
+  "reviewed_common_head": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+  "scoped_common_followup": {
+    "created_utc": "2026-10-30T14:41:48.400345+00:00",
+    "previous_review_artifact_commit": "1c26fc57a45089b386d39121c795a30ed6b81a0b",
+    "full_review_head": "a09e26c57374bd454c20d1b3f8227525f5707792",
+    "final_common_head": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+    "build_fix_parent": "61eb824318b4ba15aeb8b1c1aae37edef677e33c",
+    "scope": "Exact immutable Source delta and23blob equality only; no full re-review, build, test, run, Ghidra or Source edit.",
+    "production_file_count": 22,
+    "test_file_count": 1,
+    "final_path_set_equals_reviewed": true,
+    "byte_identical_blob_count": 22,
+    "different_paths": [
+      "src/game_native_gui_page_application.cpp"
+    ],
+    "exact_source_delta": {
+      "path": "src/game_native_gui_page_application.cpp",
+      "line": 596,
+      "before": "            if (const auto* timed = app.timed.current_table(actual, profile)) return timed;",
+      "after": "            if (const auto* timed_table = app.timed.current_table(actual, profile)) return timed_table;",
+      "old_line_occurs_once": true,
+      "one_line_replacement_reproduces_final_bytes": true
+    },
+    "static_same_effect_confirmation": "Same single app.timed.current_table(actual,profile) call, same null test, same returned pointer. Only local identifier changes; no order, target, custody, frame or exception change.",
+    "compiler_issue": "Primary reported C4458/WX: local timed hid Impl::timed; Root renamed only that local.",
+    "page_pin_before": {
+      "path": "src/game_native_gui_page_application.cpp",
+      "commit": "a09e26c57374bd454c20d1b3f8227525f5707792",
+      "git_blob": "3245d427cb1ce9c41cf7b36a01fa151c138f9f2c",
+      "lf_bytes": 72361,
+      "lf_sha256": "f0680d24d134ab1c0a3be454a3e56f482d8b32bbdb66ab15e921041020a8a49a"
+    },
+    "page_pin_after": {
+      "path": "src/game_native_gui_page_application.cpp",
+      "commit": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+      "git_blob": "996fbbdec1f9160540da07b0842295920734eead",
+      "lf_bytes": 72373,
+      "lf_sha256": "0f770bd8713656eeb56b77a97109eb7168e1be5d53d96305e4105edbe44b1668"
+    },
+    "original_receipt_interpretation": {
+      "full_review_source_receipt_count": 52,
+      "common_byte_equal_source_receipts": 51,
+      "changed_source_receipt_paths": [
+        "src/game_native_gui_page_application.cpp"
+      ],
+      "full_review_bounded_body_count": 27,
+      "common_equal_bounded_body_count": 26,
+      "changed_bounded_body_markers": [
+        "struct Widgets final"
+      ],
+      "new_Widget_brace_body_lf_sha256": "13c20b1289b4c0f39fe87bc90e0bafd0dafd189cce10970f09bde7cdc7794349",
+      "note": "Original52Source/27body pins remain valid for a09e; only Page file/Widgets body change in final common, exactly as the explicit local rename."
+    },
+    "primary_common_build_observation": {
+      "source": "Primary Root message in this follow-up",
+      "source_commit": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+      "all_targets": "PASS as reported by primary",
+      "existing_checks": "2 PASS as reported by primary",
+      "elapsed_seconds": 12.28,
+      "first_failed_log": "Primary reports initial C4458/WX log preserved",
+      "reviewer_executed_build_or_checks": false,
+      "reviewer_independently_validated_saved_receipt": false,
+      "pending_primary_validation": [
+        "saved-receipt validation",
+        "actual current SourceHost regression before Main Source admission"
+      ]
+    },
+    "guard_unchanged_false": true,
+    "new_blocking_findings": 0,
+    "recommendation_unchanged": true,
+    "additional_runtime_activation_ABI_EH_private_frame_credit": 0
+  },
+  "final_common_changed_source_pins": [
+    {
+      "path": "include/bsp/cc13_gui1.hpp",
+      "commit": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+      "git_blob": "7fd9819d04c9dc9a13c761e0176480ed6f588446",
+      "lf_bytes": 21485,
+      "lf_sha256": "649ac778ac9b6c1600ab1322e81d83dda1f259b67545bf942f62f7958adddff8"
+    },
+    {
+      "path": "include/bsp/game_native_gui_page_application.hpp",
+      "commit": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+      "git_blob": "4abf6219f61e37b4e6c9ceb2777bd69aa7f7d8df",
+      "lf_bytes": 2945,
+      "lf_sha256": "7ad6d366ec92695ede58d8f44deeee6b6874f8c344788f626aab286495d83221"
+    },
+    {
+      "path": "include/bsp/game_native_model_domain.hpp",
+      "commit": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+      "git_blob": "5d8bc4a64c104cbeee4a0d6280719f6209bbb182",
+      "lf_bytes": 3144,
+      "lf_sha256": "6feef900ac2a2093856da5a88e8ec7eadd6923d7d9eaa5cb8353a13be323e128"
+    },
+    {
+      "path": "include/bsp/game_native_renderer_application.hpp",
+      "commit": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+      "git_blob": "dc90eb7264b1a84b06d9658d359864b96cc60a2c",
+      "lf_bytes": 20750,
+      "lf_sha256": "35d3649c491e263cb0c6752bf637d70af3135a9bae12e375ed9d12bbecd26bd5"
+    },
+    {
+      "path": "include/bsp/native_gui_page_properties.hpp",
+      "commit": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+      "git_blob": "abab42af993b749a79f5dcdd3a13d3e7e298de79",
+      "lf_bytes": 3525,
+      "lf_sha256": "ef5e212e46b6c14e1b64702b0cf71e0412b648729ded260814f69d35be7a44b0"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_child_links.hpp",
+      "commit": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+      "git_blob": "0fe77896b7eb14b888e01a68a39dce34d1d182cb",
+      "lf_bytes": 5058,
+      "lf_sha256": "00b86ac36f6860c22b9b6154aba306aaaa424d77eb60f4deb4755358698277a9"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_lifetime.hpp",
+      "commit": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+      "git_blob": "3dfab3f1b6a42f2a37f8c84e1d813e4d7201ec20",
+      "lf_bytes": 7899,
+      "lf_sha256": "c9155c508f98bb913ebe8ae71cd6c98e050d86ce25a746a5c8f4909f37242d1a"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_property_children.hpp",
+      "commit": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+      "git_blob": "91aeee519f1a47441d2f1c7648244c171daa1b2a",
+      "lf_bytes": 5793,
+      "lf_sha256": "531c63dcf73098a5a6dc09e21b84126d89ad6172145f2f2c6735e31aff931874"
+    },
+    {
+      "path": "include/bsp/native_model_owner.hpp",
+      "commit": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+      "git_blob": "1ef6610b9534c327e4e58412eb6a0cd5f8a9409e",
+      "lf_bytes": 9870,
+      "lf_sha256": "d1cfa9b664075d836d9818ed57f4d9c89858b0c0c507c8ca3dce75f727a52a2a"
+    },
+    {
+      "path": "include/bsp/native_model_storage_lifetime.hpp",
+      "commit": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+      "git_blob": "d00d1110e199b05a65c948d42017593a8f102661",
+      "lf_bytes": 8247,
+      "lf_sha256": "0764b927078091103c21e6c2d6215ccb7a403c2b3eed832943dfae632a55ec3e"
+    },
+    {
+      "path": "src/cc13_gui1.cpp",
+      "commit": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+      "git_blob": "7f0ee9d08b5f0b90350d956f0bd2b5b79d714291",
+      "lf_bytes": 35349,
+      "lf_sha256": "3b60069c4991f51ac3a8ed5076cffb9c0abf5af97dd9c171773c2e99952b8798"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "commit": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+      "git_blob": "f0ddd36fa94585e7be5ec76fe894e6d90d4951eb",
+      "lf_bytes": 186067,
+      "lf_sha256": "6403dacc40b04fe9df818e5fa1e175609b876d54a51dbeae9a7e2ef69856cff6"
+    },
+    {
+      "path": "src/game_native_gui_page_application.cpp",
+      "commit": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+      "git_blob": "996fbbdec1f9160540da07b0842295920734eead",
+      "lf_bytes": 72373,
+      "lf_sha256": "0f770bd8713656eeb56b77a97109eb7168e1be5d53d96305e4105edbe44b1668"
+    },
+    {
+      "path": "src/game_native_mission_model.inc",
+      "commit": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+      "git_blob": "bba02b361321fd41e4173b557650c8c6e55d14e0",
+      "lf_bytes": 54516,
+      "lf_sha256": "ed4f91ff37398cc690c5657e9160e1d8aae36f4bf8361dd90ef253ee2733fb87"
+    },
+    {
+      "path": "src/game_native_model_domain.inc",
+      "commit": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+      "git_blob": "000f2395134b994791d4284d279ffead14c9d317",
+      "lf_bytes": 15824,
+      "lf_sha256": "ff8788d41c4e4b34b302910cc3c52d3593b232fc409d229a3b4999cbaef242ed"
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "commit": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+      "git_blob": "c7ac9206b53f7fdf8e5c4e53a17cf3b3f6e4231f",
+      "lf_bytes": 80905,
+      "lf_sha256": "ca5482dcb5566b9ccf14aebd2ec0b78f1e547bf5ab4e5268e2922fb207277d3e"
+    },
+    {
+      "path": "src/native_gui_page_properties.cpp",
+      "commit": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+      "git_blob": "94cb2bea918059fda155b44a6c6b0b2f244645b9",
+      "lf_bytes": 5329,
+      "lf_sha256": "acd659fac018b6742223dc4eb02bdda7d7b3e8e1c0a00c9720957206887ff379"
+    },
+    {
+      "path": "src/native_gui_widget_child_links.cpp",
+      "commit": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+      "git_blob": "1628e0a950e5f0addc58705f7504f6ac4387def0",
+      "lf_bytes": 7146,
+      "lf_sha256": "fbaf30b0a635a7030981a9e95fd34aab97f9b52979c2409598f5779a829a0a0b"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "commit": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+      "git_blob": "9c8b06d3a4071d57ab1a539eaacdfb2fb810cbd3",
+      "lf_bytes": 17866,
+      "lf_sha256": "e8a53199f409248cc89b6d64c326a0b037970703e3b34ca628162a730907df68"
+    },
+    {
+      "path": "src/native_gui_widget_property_children.cpp",
+      "commit": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+      "git_blob": "c2d74159ed5486a1fc2b9b6248d06ee02ecb2154",
+      "lf_bytes": 14060,
+      "lf_sha256": "28da89eae3bccc34b58dbb9255865b762d7477630c0822203c11604b38633ec4"
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "commit": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+      "git_blob": "7c764a3abcd1ffeb713dad482807965574aadb74",
+      "lf_bytes": 29717,
+      "lf_sha256": "6e774d73c4a5bbd0109e19c271e2ff05a613e389c50ec72bd888c4c49f5ddd2d"
+    },
+    {
+      "path": "src/native_model_storage_lifetime.cpp",
+      "commit": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+      "git_blob": "9aa0259d0d2deebd85f14805b9bd9eaae6b76587",
+      "lf_bytes": 17033,
+      "lf_sha256": "1ded6a8042e2ce26bdcd9852dae2c14b16cee1efdba0227ed479d0c9491cddd8"
+    },
+    {
+      "path": "tests/math_tests.cpp",
+      "commit": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+      "git_blob": "1689744ed46b0d03c38a0e74a63bc1d25c7b9265",
+      "lf_bytes": 221977,
+      "lf_sha256": "50ac2afd8f9c611365d8ed39c2d2bc77fbb6110a44a4f472d01bf62cd1f86e1c"
+    }
+  ]
 }
