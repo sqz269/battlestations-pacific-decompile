@@ -1,0 +1,542 @@
+{
+  "schema": "cc16-native-gui-text-wrapped-position-composition-v1",
+  "packet": "codex-native-gui-text-wrapped-position-composition",
+  "status": "direct_whole_source_composition_static_only_actual_bindings_qualified",
+  "address": "00aba270",
+  "base_commit": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+  "published_Source33": "1d2a1ca6150e72dddd3c594fcf70e08cec9e72f1",
+  "integration": "Root cherry-picks ONLY packet commit, excluding held96 ancestry",
+  "owned_files": [
+    "include/bsp/native_gui_text_wrapped_storage.hpp",
+    "src/native_gui_text_wrapped_storage.cpp",
+    "docs/CC16_NATIVE_GUI_TEXT_WRAPPED_POSITION_COMPOSITION.md",
+    "reports/cc16_native_gui_text_wrapped_position_composition.json"
+  ],
+  "authorization_order": [
+    "brief and queue while Root held ABA270",
+    "wait for Root Source33 release/publication notice",
+    "claim exact address/four files after release",
+    "merge published baseline preserving all28 files",
+    "edit only owned caller API/record/constructor/call seams"
+  ],
+  "source_pins": [
+    {
+      "path": "include/bsp/native_gui_text_wrapped_storage.hpp",
+      "revision": "packet_current",
+      "git_lf_bytes": 10525,
+      "git_lf_sha256": "197ded43a11ce27f3d24ae3fdd0a375f565ebaa7c5a97ab9df219d6dfb922170"
+    },
+    {
+      "path": "src/native_gui_text_wrapped_storage.cpp",
+      "revision": "packet_current",
+      "git_lf_bytes": 31992,
+      "git_lf_sha256": "f60c97736444be3c30e0eba45373988630a5e90f997384a4298e19b2da072614"
+    }
+  ],
+  "mechanical_inverse": {
+    "algorithm": "For each file, starting from current Git-LF bytes, apply listed substitutions AFTER->BEFORE in reverse order, asserting each AFTER is unique, then compare entire restored bytes with BOTH base_commit:path and published_Source33:path.",
+    "entire_Source33_files_restore": true,
+    "files": {
+      "include/bsp/native_gui_text_wrapped_storage.hpp": {
+        "baseline_commit": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+        "baseline_git_lf_sha256": "f785044a529250140974d61d41b2d1cfc24a79626ed47a5965783a86463a5cb7",
+        "baseline_bytes": 9676,
+        "current_git_lf_sha256": "197ded43a11ce27f3d24ae3fdd0a375f565ebaa7c5a97ab9df219d6dfb922170",
+        "current_bytes": 10525,
+        "inverse_entire_file_byte_identical": true,
+        "changes": [
+          {
+            "seam": "whole_position_include",
+            "before": "#include \"bsp/native_render_context.hpp\"\n",
+            "after": "#include \"bsp/native_render_context.hpp\"\n#include \"bsp/native_vertex_position_storage.hpp\"\n",
+            "before_sha256": "dfa605b1c360a854c086b390a0c254bc82e1734e7288951c7362c67b590ac4a7",
+            "after_sha256": "55e48dec6cf1635202c80c8bd3fce5c3a91f1d04173f15a367b8ddf79b4b98b4"
+          },
+          {
+            "seam": "remove_opaque_operation_add_pure_record_selector",
+            "before": "    // WHOLE genuine4768D0, actual stream/out/index. Reuse the existing raw\n    // read_native_vertex_position_004768d0 for its initialized cases using the\n    // real retained half import. Its false result is an explicit boundary,\n    // NEVER a successful no-op/default output or permission to rerun the body.\n    // Other cases need the authentic callee private scratch/FP operation, not\n    // a format gate, invented output or typed stream owner. No preliminary\n    // classification read may replace the getter's own current read epochs.\n    // The SAME ordinary caller float3 at S+54 is passed, with its prior bits.\n    virtual void position_004768d0(void* captured_stream, std::uint32_t captured_index,\n        float (&actual_output)[3], NativeGuiTextWrappedStorageAcquired& parent) = 0;\n",
+            "after": "    // Pure metadata selection ONLY, like the Glyph record selector above.\n    // Distinct fresh already-prepared retained record for EVERY reached whole\n    // position call. No Native operands/operation, allocation, reentry, FP,\n    // record reset/reuse or shortage/default/capacity policy. Callee scratch is\n    // an explicit separate caller borrow, not selected/replaced here.\n    virtual NativeVertexPositionStorageAcquired& prepared_position_record(\n        NativeGuiTextWrappedStorageAcquired& parent) = 0;\n",
+            "before_sha256": "cc06359d7629344813e71cd25d5b27e2b0d66406609a00fc112a9591e6b7b319",
+            "after_sha256": "b2e7ff0e24ccff8f8c3a8f1486473d4f03a45f9bba685da55643c6053777a78c"
+          },
+          {
+            "seam": "append_actual_position_context",
+            "before": "    // from glyph_quad, so parent and child use the SAME references/backing.\n",
+            "after": "    // from glyph_quad, so parent and child use the SAME references/backing.\n    const NativeVertexPositionStorageContext& position; // genuine shared import/RO domain\n",
+            "before_sha256": "d8f5c411120d9b560bb5ca264b21b2e4d8be4705d1b0e73782e27f3a554470ec",
+            "after_sha256": "76ed617c3e3acd7b5ccdb0dde37f2f2703a90d794c41e2fe034d5a1a69872a2b"
+          },
+          {
+            "seam": "append_record_boundary",
+            "before": "        position, position_store, index_unmap, vertex_unmap\n",
+            "after": "        position, position_store, index_unmap, vertex_unmap, position_record\n",
+            "before_sha256": "6e6d216007e9b1e43fa552d973ff26cb0adb0b8ff6a6e8bb862b63140c4977b2",
+            "after_sha256": "fc2afa34bb153d78abf8d5b18dc2be110de42e03b38560b2c165f6dc4df75e7c"
+          },
+          {
+            "seam": "append_passive_record_identity",
+            "before": "    std::exception_ptr failure;\n",
+            "after": "    std::exception_ptr failure;\n    NativeVertexPositionStorageAcquired* selected_position{}; // history identity only\n",
+            "before_sha256": "a5cabb1904e0336f19faaeb2214e2776ee312280458e5906ef2638eab188d75a",
+            "after_sha256": "2c4b5af5b1dd9e339a20324ac34df7d051f1b988c2ab45466e12ef9e6a67d93b"
+          },
+          {
+            "seam": "constructor_explicit_callee_preimage",
+            "before": "        NativeGuiTextWrappedStorageContext&, NativeGuiTextWrappedStorageAcquired&) noexcept;\n",
+            "after": "        NativeGuiTextWrappedStorageContext&, NativeGuiTextWrappedStorageAcquired&,\n        NativeVertexPositionStorageScratch& actual_position_decode_image) noexcept;\n",
+            "before_sha256": "04e9cb07c0f51dc2f688d975ac1c6e21b18609c8ca726098dc2fd23540c2b74d",
+            "after_sha256": "a899f5293fd1bdd5c19295a804134efec10cc6874faabd80d016cae9ba0a3843"
+          },
+          {
+            "seam": "append_position_frame_storage",
+            "before": "    Phase phase_{Phase::fresh};\n",
+            "after": "    Phase phase_{Phase::fresh};\n    // Separate genuine callee12B image. Retain/reuse actual prior bits only\n    // after normal return; disjoint from parent100B/S54 and argument homes.\n    NativeVertexPositionStorageScratch& position_scratch_;\n    // Native PUSH index, PUSH output. The callee overwrites home1; NEVER alias\n    // it with the independent parent loop index. No initializer/restoration.\n    volatile std::uint32_t position_homes_[2];\n",
+            "before_sha256": "9bc4a034e5ee9dbcc58e0953aefe331044e806ae1db2f68949dead4868c19d3e",
+            "after_sha256": "f9949bf808a0fcbb4ea70fe1f2336bc58d2119695a88b4df5c26d97aee653840"
+          },
+          {
+            "seam": "update_whole_position_contract",
+            "before": "// Actual caller binding, undefined getter/private-scratch proof, FH3/SEH/fault/\n",
+            "after": "// Position calls directly reuse the whole raw getter with real Context and\n// separate callee preimage; SAME callerS54 is its output. Physical two homes\n// refill indexFIRST/outputSECOND at each call, only after prior normal return.\n// No return-pointer check, snapshot, reset, extra FP or parent-index copyback.\n// Fresh position records are caller-prepared history; unknown-origin rules\n// above still apply. Actual caller binding/preimage/private-stack, FH3/SEH/fault/\n",
+            "before_sha256": "255d802c48d46759bc899a475470cce8212b098751253a518e09528ad6022277",
+            "after_sha256": "8efb08a391474d66aa3d0fec881e2b788f89b52a06e1e39df26e0e44fcf0d1cf"
+          }
+        ]
+      },
+      "src/native_gui_text_wrapped_storage.cpp": {
+        "baseline_commit": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+        "baseline_git_lf_sha256": "65c3b12ccea1e59d35866570c351837e89e057e0fc09e12a359bbd1a562afa48",
+        "baseline_bytes": 31435,
+        "current_git_lf_sha256": "f60c97736444be3c30e0eba45373988630a5e90f997384a4298e19b2da072614",
+        "current_bytes": 31992,
+        "inverse_entire_file_byte_identical": true,
+        "changes": [
+          {
+            "seam": "constructor_callee_scratch_borrow_only",
+            "before": "    volatile Word (&homes)[2], Scratch& scratch, Context& context, Acquired& acquired) noexcept\n    : text_(text), homes_(homes), scratch_(scratch), context_(context), acquired_(acquired) {}\n",
+            "after": "    volatile Word (&homes)[2], Scratch& scratch, Context& context, Acquired& acquired,\n    NativeVertexPositionStorageScratch& position_scratch) noexcept\n    : text_(text), homes_(homes), scratch_(scratch), context_(context), acquired_(acquired),\n      position_scratch_(position_scratch) {}\n",
+            "before_sha256": "fa8c6458d71827c7dc9c2f976300af93f28ebdfa9dfa3e8eccb11f7ba29f386c",
+            "after_sha256": "fad14a5bced019082e60fbeaf9a8917bcabe5f2bc0bb7f6d07114fa08c2e5bfc"
+          },
+          {
+            "seam": "physical_push_homes_fresh_record_and_direct_whole_call",
+            "before": "                location(a, Boundary::position, 0x00aba868);\n                c.bindings.position_004768d0(pointer(f.esi_), f.ebx_, s.conversion_and_position_54, a);\n",
+            "after": "                f.position_homes_[1] = f.ebx_; // ABA860: independent Native PUSH-copy\n                f.position_homes_[0] = bits(s.conversion_and_position_54); // ABA865: SAME S54\n                location(a, Boundary::position_record, 0x00aba868);\n                auto& position_record = c.bindings.prepared_position_record(a);\n                a.selected_position = &position_record;\n                location(a, Boundary::position, 0x00aba868);\n                (void)read_native_vertex_position_storage_004768d0(pointer(f.esi_),\n                    f.position_homes_, f.position_scratch_, c.position, position_record);\n",
+            "before_sha256": "907d3fee55237eb4f08a227bf83f21c1d024e5bb9a2997f4489f6d43999ab36e",
+            "after_sha256": "2ceb6084b64d0a175bc648f8689b33f775cc5b645db7934463e494dc1babfc03"
+          }
+        ]
+      }
+    }
+  },
+  "asm_block_pins": [
+    {
+      "index": 0,
+      "git_lf_bytes": 88,
+      "sha256": "595688b7e6e1a2f49118a72f57e97a9d463917818e86b2871e17a68225fe1aae",
+      "byte_identical": true
+    },
+    {
+      "index": 1,
+      "git_lf_bytes": 89,
+      "sha256": "0b0d63a0155fdc70d65760d331e15bef2aa4bb7c66bbfeb9d6633c6abe8ebf86",
+      "byte_identical": true
+    },
+    {
+      "index": 2,
+      "git_lf_bytes": 89,
+      "sha256": "a8de31b85cfd58afdcc15f32e7d68c52ec210e9d5f8fe9cadd10ad9cb4bb2417",
+      "byte_identical": true
+    },
+    {
+      "index": 3,
+      "git_lf_bytes": 89,
+      "sha256": "7c8bd69eca087491b0dd967027f603c971c0704f58f379d5665657266fca71fa",
+      "byte_identical": true
+    },
+    {
+      "index": 4,
+      "git_lf_bytes": 88,
+      "sha256": "67e409ffbc14613b6bda315540634af27dae4781c54344145653f2bce1024d5b",
+      "byte_identical": true
+    },
+    {
+      "index": 5,
+      "git_lf_bytes": 86,
+      "sha256": "8fd45d0cae31d8e42087ea53706fe1f4931e78344ec4acc4df49d6eb3e86232f",
+      "byte_identical": true
+    },
+    {
+      "index": 6,
+      "git_lf_bytes": 86,
+      "sha256": "97d1d87a8a38f33b30d58504419b4b1161d7e1081907ee37e5fb6334311a1fcd",
+      "byte_identical": true
+    },
+    {
+      "index": 7,
+      "git_lf_bytes": 225,
+      "sha256": "7f996db673ac3a19e800b42886ea99652389aafc0de8d6b08db28632b7dee4fa",
+      "byte_identical": true
+    },
+    {
+      "index": 8,
+      "git_lf_bytes": 93,
+      "sha256": "f2e65ad4f8c574f3731061f14fb2982b8de77cdca20d6f479475c12698950bb5",
+      "byte_identical": true
+    },
+    {
+      "index": 9,
+      "git_lf_bytes": 683,
+      "sha256": "4275342285e6fadf30094be21d498e35176289e0ac1dd251ac0b816fe154d098",
+      "byte_identical": true
+    },
+    {
+      "index": 10,
+      "git_lf_bytes": 1573,
+      "sha256": "b291f5e48bb2819d4ed0a127c1ba98b92128ee96a560aaeb5bf07aadc188b493",
+      "byte_identical": true
+    },
+    {
+      "index": 11,
+      "git_lf_bytes": 102,
+      "sha256": "5d78699a011e27fd9a961885f7d5576eae5bbfb027a35a5547426bd2e90e818a",
+      "byte_identical": true
+    },
+    {
+      "index": 12,
+      "git_lf_bytes": 2911,
+      "sha256": "eec730a97e458a18bd8b2e02521529404b7a28b24c7710d77407cadcde75893a",
+      "byte_identical": true
+    },
+    {
+      "index": 13,
+      "git_lf_bytes": 392,
+      "sha256": "8587bb89d88974874cddd1ca88621ed788e762af005a97d6a6a9882de164875e",
+      "byte_identical": true
+    },
+    {
+      "index": 14,
+      "git_lf_bytes": 570,
+      "sha256": "8624cff2eba2a9ba6ea4a712f4d872136c572d6d7c50e608db7230022c5fcd31",
+      "byte_identical": true
+    },
+    {
+      "index": 15,
+      "git_lf_bytes": 877,
+      "sha256": "ca4ed7c68573d3d5e5ac24e0d978194f9dbeb0b43fc95402162ec4541661e700",
+      "byte_identical": true
+    },
+    {
+      "index": 16,
+      "git_lf_bytes": 719,
+      "sha256": "1ea56789942a29864a7279fdc4ea3e559e5977dc2d5e40bd61152cb57e44621b",
+      "byte_identical": true
+    },
+    {
+      "index": 17,
+      "git_lf_bytes": 1074,
+      "sha256": "5b1132c5dcd0dcf35ce1932f7154ebd82cbf2116dda591e88e25f82e09d3a3de",
+      "byte_identical": true
+    },
+    {
+      "index": 18,
+      "git_lf_bytes": 711,
+      "sha256": "21b779133c3441bd722688be158665a29c7cdcc59b9b68be4d1fe4ece32a8b53",
+      "byte_identical": true
+    }
+  ],
+  "all19_asm_combined_sha256": "17992adbde7aec670413f44b637a07f2c9ea4f31e3265897cbe4469bbc56110f",
+  "scratch100_definition_sha256": "faccf1cdcbd8d2bc399dc02aefad21fef873a8987256a0c164886d242c6175ff",
+  "scratch100_definition_byte_identical": true,
+  "native_caller_schedule_unchanged": {
+    "body": "whole457ops/84x87/6SSE except genuine replacement of required position-operation transport by concrete whole supplier",
+    "FP_and_integer_helpers": "all19 blocks byte-identical; no body/private home changed",
+    "parent_homes": "same2 mutable homes, no snapshot/restore",
+    "Glyph_homes": "same10 mutable homes/float3 aliases/captured glyph/stream/height",
+    "position_post_tail": "old shift/count/unmap body bytes unchanged",
+    "new_B865A0_or_FP": false
+  },
+  "call_composition": {
+    "native_site": "00aba868",
+    "callee": "read_native_vertex_position_storage_004768d0",
+    "physical_homes": "frame.position_homes_[2], volatile DWORDs appended to existing Frame prefix",
+    "first_store": "home1=independent parent f.ebx_, Native ABA860 PUSH-copy",
+    "second_store": "home0=bits(SAME parent scratch.conversion_and_position_54), Native ABA865 PUSH",
+    "selection": "pure prepared_position_record(parent), fresh distinct already-prepared stable record per entered getter call",
+    "call_inputs": "captured f.esi_ vertex + actual two homes + explicit separate borrowed12-byte image + genuine Context + selected record",
+    "return": "ignored as Native ABA270 does; no pointer/success check",
+    "parent_counter": "NEVER aliases callee home1; no copyback/restore; old shift increments only after normal whole return",
+    "native_input_reads": "none added; whole getter performs its own format/+50/index/current-record/output epochs"
+  },
+  "preimage_contract": {
+    "caller_image": "original100B private image/S54 unchanged",
+    "callee_image": "explicit NativeVertexPositionStorageScratch& constructor borrow; ordinary12 B separate from parent/output/homes/metadata",
+    "initial_preimage": "authentic caller proof, never default/zero/initialize/force format",
+    "normal_continuity": "same callee image reused only after whole normal return; retains actual prior scaled/decoded or untouched bytes",
+    "failure": "retain two homes,12 B image,parent100B/output,records and entire graph; no refill/advance/retry/restore",
+    "history": "each fresh acquired retained; after normal reuse pointers are identity only, not current-value permission"
+  },
+  "API_cut": {
+    "removed": "opaque virtual position_004768d0 operation",
+    "added": "pure prepared_position_record selector; actual Context const& appended; explicit separate scratch constructor ref; two physical volatile homes appended; passive selected_position/boundary appended",
+    "remaining_bindings": {
+      "pure_metadata": 3,
+      "genuine_other_stream_operations": 4,
+      "opaque_position_operations": 0
+    },
+    "concrete_implementers_found": 0,
+    "search_scope": "exact WrappedStorageBindings and Frame identifiers in include/src/tests, declaration/dtor/context/ref/function only",
+    "no_new_count_or_shortage_policy": true
+  },
+  "callee_pins": [
+    {
+      "path": "include/bsp/native_vertex_position_storage.hpp",
+      "revision": "f7738fe7c757781a3ac15997c80f1930380b8881",
+      "git_lf_bytes": 4624,
+      "git_lf_sha256": "7892cc370775459739ea422b89afd9e13f734f4c1fae771e764090961ba2d637"
+    },
+    {
+      "path": "src/native_vertex_position_storage.cpp",
+      "revision": "f7738fe7c757781a3ac15997c80f1930380b8881",
+      "git_lf_bytes": 11263,
+      "git_lf_sha256": "9b38d191d41575c275620145f891f5b8f948fee2b8839c35e1b0516d67cebe2b"
+    },
+    {
+      "path": "docs/CC16_NATIVE_VERTEX_POSITION_STORAGE.md",
+      "revision": "f7738fe7c757781a3ac15997c80f1930380b8881",
+      "git_lf_bytes": 9499,
+      "git_lf_sha256": "6940ee768cc2ca52e2f867e9c69c5fc9bd6ff5d4e10da5271f03bc5af88a198d"
+    },
+    {
+      "path": "reports/cc16_native_vertex_position_storage.json",
+      "revision": "f7738fe7c757781a3ac15997c80f1930380b8881",
+      "git_lf_bytes": 89938,
+      "git_lf_sha256": "7d2fa0a4d1e2548c297b020ce93ac0eb6192d7c8802b3d22b739aaa765bc45e9"
+    }
+  ],
+  "callee_independent_review": {
+    "commit": "26b06c4ed5b3902fa71e4f16aab8c766f74faebb",
+    "actionable_findings": 0,
+    "verification": "peer whole178ops/53x87/4SSE/2call/table/divisor/real IAT/helper/source/input/frozen/export audit passed; no Source edit requested"
+  },
+  "frozen_artifacts": [
+    {
+      "path": "include/bsp/native_vertex_position_storage.hpp",
+      "revision": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+      "git_lf_sha256": "7892cc370775459739ea422b89afd9e13f734f4c1fae771e764090961ba2d637",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_vertex_position_storage.cpp",
+      "revision": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+      "git_lf_sha256": "9b38d191d41575c275620145f891f5b8f948fee2b8839c35e1b0516d67cebe2b",
+      "unchanged": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_VERTEX_POSITION_STORAGE.md",
+      "revision": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+      "git_lf_sha256": "6940ee768cc2ca52e2f867e9c69c5fc9bd6ff5d4e10da5271f03bc5af88a198d",
+      "unchanged": true
+    },
+    {
+      "path": "reports/cc16_native_vertex_position_storage.json",
+      "revision": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+      "git_lf_sha256": "7d2fa0a4d1e2548c297b020ce93ac0eb6192d7c8802b3d22b739aaa765bc45e9",
+      "unchanged": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_TEXT_WRAPPED_STORAGE.md",
+      "revision": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+      "git_lf_sha256": "b6a6999987ce0da6bf6af91945b1cb6468627691a366fc760750d6781f012989",
+      "unchanged": true
+    },
+    {
+      "path": "reports/cc16_native_gui_text_wrapped_storage.json",
+      "revision": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+      "git_lf_sha256": "62a70c3897339846240780e50a59f83b43928b1d88e753e7c237b796b7def206",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_gui_text_reference.hpp",
+      "revision": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+      "git_lf_sha256": "62224192a6d0fb5043ed68a3f34374ce1bc3584ee1f3bb031c1041b33fdd1827",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_gui_text_reference.cpp",
+      "revision": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+      "git_lf_sha256": "0fb188e79dbc014db098d01e3afff14a5e07f1671a33db063d2e126e5af4257e",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_model_storage_lifetime.hpp",
+      "revision": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+      "git_lf_sha256": "7754b1a3df10ccf79a83899513b48ab4616df9b9f9a5da54400ed7d4fe51ea1f",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_model_storage_lifetime.cpp",
+      "revision": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+      "git_lf_sha256": "d9ea114fa0e88f42f5a692adf96014827c32cd5d856a8e228e1ccd0550dd99b0",
+      "unchanged": true
+    },
+    {
+      "path": "docs/CC16_RESERVED_TEXT_MODEL_REFERENCE_BIRTH.md",
+      "revision": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+      "git_lf_sha256": "0b6baa062db3f00024b2010cd65c0056eea42838b76afa0ace32f92dfcf68b5a",
+      "unchanged": true
+    },
+    {
+      "path": "reports/cc16_reserved_text_model_reference_birth.json",
+      "revision": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+      "git_lf_sha256": "c6362b49b11ec568b371d4d5953a18cd143ede3042dc3510cc2ea41d605d88c9",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_lifetime.hpp",
+      "revision": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+      "git_lf_sha256": "a21b38daad89af7b6fc968273dece3fba3789ab22476299ea66cf88c4002b4d2",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_front_end_frame_lifetime.cpp",
+      "revision": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+      "git_lf_sha256": "50eae08b6ca3a7561b8ec1a1bfaeb7b2b717cb9c16f46ab4470f1befe0dcf4f8",
+      "unchanged": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_FRONT_END_FRAME_LIFETIME.md",
+      "revision": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+      "git_lf_sha256": "3409aa99fb04a5e98aa05994563b6522ebb78dad506ec80db0c8aa85de7810ea",
+      "unchanged": true
+    },
+    {
+      "path": "reports/cc16_native_front_end_frame_lifetime.json",
+      "revision": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+      "git_lf_sha256": "f3c4b17cf1e49dafd606735cd4977cecc659edab841417cb007c5fd1eb50bea0",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_mesh_section_layout_storage.hpp",
+      "revision": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+      "git_lf_sha256": "19245d00005b8d543fdcd5b85e71dba091ca158063e38fd86010cfb8e72c8939",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_mesh_section_layout_storage.cpp",
+      "revision": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+      "git_lf_sha256": "d6f0378634d82d4287cf698dd529e24f3a53b4f1b6b0398647d33c4f956c4115",
+      "unchanged": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_MESH_SECTION_LAYOUT_STORAGE.md",
+      "revision": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+      "git_lf_sha256": "a50cc363c8c5a5d1afe47d0fe9c4859169f3569752f9340840f0f7a99e5abbb0",
+      "unchanged": true
+    },
+    {
+      "path": "reports/cc16_native_mesh_section_layout_storage.json",
+      "revision": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+      "git_lf_sha256": "11f6144d7de2e18c674a5a51471079d9a4240725e2a5f14211bf79a447698a05",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_gui_text_changed_storage.hpp",
+      "revision": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+      "git_lf_sha256": "13cc02308c28bf3ba443adfe1334627dffae05231a0c05e7bff6cbd634da5cc8",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_gui_text_changed_storage.cpp",
+      "revision": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+      "git_lf_sha256": "721a3bff0f346ae3506deda59f5a7e892e7ca46eefb8fcaa4d57d04a9c1753a1",
+      "unchanged": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_TEXT_CHANGED_STORAGE.md",
+      "revision": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+      "git_lf_sha256": "722dbb1c6f8a3304f95a6cba1b6bd9cf4cd0921f12776ff7da17cb6aecb408b8",
+      "unchanged": true
+    },
+    {
+      "path": "reports/cc16_native_gui_text_changed_storage.json",
+      "revision": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+      "git_lf_sha256": "e95b6ce8a228b676cb4c8c42ccabda4826064453be0b5fc18741985062595ca3",
+      "unchanged": true
+    },
+    {
+      "path": "docs/CC16_GLYPH_CHILD_PRODUCER_BIRTH_AUDIT.md",
+      "revision": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+      "git_lf_sha256": "df477c98a4d14bf534ed0c573d5d96831233ec73aec3ab45b879c8bf3a264cdd",
+      "unchanged": true
+    },
+    {
+      "path": "reports/cc16_glyph_child_producer_birth_audit.json",
+      "revision": "5eca8f0f5fdcbae2b0d8f9a690aa317fab3d79be",
+      "git_lf_sha256": "5b907c3babba150d35fc9526bd57d07b0e4f29f0ed684eb3886b75131842c5a8",
+      "unchanged": true
+    }
+  ],
+  "document": {
+    "path": "docs/CC16_NATIVE_GUI_TEXT_WRAPPED_POSITION_COMPOSITION.md",
+    "git_lf_bytes": 8313,
+    "git_lf_sha256": "1a77bb42a4340ea04f28dda9b74d6b13b6e8fe59422358f5883a6f48e8f55287"
+  },
+  "failure_origin": {
+    "public_Native_flag_added": false,
+    "new_cause_port": false,
+    "classification": "unknown/unclassified absent separate genuine private cause evidence; phase/provider_call/exception_ptr snapshot not permission",
+    "new_selector_errors": "added host metadata failures cannot masquerade as Native getter escape",
+    "existing_parent_catch": "passive failed-phase/boundary/exception_ptr retention and rethrow only",
+    "changed96_still_held": true,
+    "cleanup_retry_rollback_unmap_retirement_added": false
+  },
+  "static_checks": {
+    "complete_two_file_inverse": true,
+    "all19_asm_blocks_byte_identical": true,
+    "scratch100_prefix_byte_identical": true,
+    "physical_home_fill_order": true,
+    "parent_index_separate": true,
+    "old_position_operation_removed": true,
+    "one_direct_whole_call": true,
+    "frozen26_unchanged": true,
+    "callee4_unchanged": true,
+    "git_diff_check": "passed"
+  },
+  "performed": {
+    "Source_composition": true,
+    "Native_recovery": false,
+    "Ghidra_queries": false,
+    "Ghidra_mutation": false,
+    "CMake_edit": false,
+    "application_edit": false,
+    "ledger_edit": false,
+    "build": false,
+    "tests": false,
+    "probe": false,
+    "game": false,
+    "process_actions": false,
+    "activation": false,
+    "other_provider_implementation_edit": false
+  },
+  "remaining_gates": [
+    "Root independent review/common build/retained entry link and packet-only integration",
+    "genuine four OTHER stream target bindings and pure metadata record/table preparation",
+    "actual Context/import/RO/stream/owner/recursive record graph and authentic initial/preimage continuity",
+    "separate private host-vs-Native cause composition and changed96 hold",
+    "Original private stack/FH3/SEH/fault/secondary-failure/ABI/runtime/game validation"
+  ],
+  "whole_frontend_source_ready": false,
+  "whole_frontend_activation": false,
+  "credit_delta": {
+    "Original": 0,
+    "helper": 0,
+    "vendor": 0,
+    "compiler_generated": 0,
+    "duplicate_body": 0,
+    "ABI": 0,
+    "runtime": 0,
+    "activation": 0
+  },
+  "existing_credit_unchanged": true
+}

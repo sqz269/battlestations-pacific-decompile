@@ -4,6 +4,7 @@
 #include "bsp/native_gui_text_glyph_quad_storage.hpp"
 #include "bsp/native_logical_buffer_mapping.hpp"
 #include "bsp/native_render_context.hpp"
+#include "bsp/native_vertex_position_storage.hpp"
 #include <cstdint>
 #include <exception>
 
@@ -49,16 +50,13 @@ struct NativeGuiTextWrappedStorageBindings {
     // effect, reset/reuse, shortage/default/capacity or fallback policy.
     virtual NativeGuiTextGlyphQuadStorageAcquired& prepared_glyph_quad_record(
         NativeGuiTextWrappedStorageAcquired& parent) = 0;
-    // WHOLE genuine4768D0, actual stream/out/index. Reuse the existing raw
-    // read_native_vertex_position_004768d0 for its initialized cases using the
-    // real retained half import. Its false result is an explicit boundary,
-    // NEVER a successful no-op/default output or permission to rerun the body.
-    // Other cases need the authentic callee private scratch/FP operation, not
-    // a format gate, invented output or typed stream owner. No preliminary
-    // classification read may replace the getter's own current read epochs.
-    // The SAME ordinary caller float3 at S+54 is passed, with its prior bits.
-    virtual void position_004768d0(void* captured_stream, std::uint32_t captured_index,
-        float (&actual_output)[3], NativeGuiTextWrappedStorageAcquired& parent) = 0;
+    // Pure metadata selection ONLY, like the Glyph record selector above.
+    // Distinct fresh already-prepared retained record for EVERY reached whole
+    // position call. No Native operands/operation, allocation, reentry, FP,
+    // record reset/reuse or shortage/default/capacity policy. Callee scratch is
+    // an explicit separate caller borrow, not selected/replaced here.
+    virtual NativeVertexPositionStorageAcquired& prepared_position_record(
+        NativeGuiTextWrappedStorageAcquired& parent) = 0;
 };
 struct NativeGuiTextWrappedStorageContext final {
     NativeGuiTextWrappedStorageBindings& bindings;
@@ -75,6 +73,7 @@ struct NativeGuiTextWrappedStorageContext final {
     const volatile double& line_spacing_00ce6618;
     // Raw strings/widthCEC380/heightCEF1B8/currentE12FD4/actualF8BE50 borrow DIRECTLY
     // from glyph_quad, so parent and child use the SAME references/backing.
+    const NativeVertexPositionStorageContext& position; // genuine shared import/RO domain
 };
 
 struct NativeGuiTextWrappedStorageAcquired final {
@@ -84,7 +83,7 @@ struct NativeGuiTextWrappedStorageAcquired final {
         vertex_map, index_map, width, space_glyph, scan_glyph, scan,
         alignment, emit_glyph, texture0, texture1, glyph_record,
         glyph_quad, advance, line_metrics, vertical_metrics,
-        position, position_store, index_unmap, vertex_unmap
+        position, position_store, index_unmap, vertex_unmap, position_record
     };
     Phase phase{Phase::fresh};
     Boundary boundary{Boundary::none}, escaped_boundary{Boundary::none};
@@ -104,6 +103,7 @@ struct NativeGuiTextWrappedStorageAcquired final {
     NativeGuiTextGlyphChildrenAcquired clear;
     NativeGuiTextGlyphQuadStorageAcquired* selected_quad{};
     std::exception_ptr failure;
+    NativeVertexPositionStorageAcquired* selected_position{}; // history identity only
     NativeGuiTextWrappedStorageAcquired() = default;
     NativeGuiTextWrappedStorageAcquired(const NativeGuiTextWrappedStorageAcquired&) = delete;
     NativeGuiTextWrappedStorageAcquired& operator=(const NativeGuiTextWrappedStorageAcquired&) = delete;
@@ -115,7 +115,8 @@ public:
     // image. Preserve their authentic bytes and addresses until disposition.
     NativeGuiTextWrappedStorageFrame(void* captured_actual_text,
         volatile std::uint32_t (&actual_homes)[2], NativeGuiTextWrappedStorageScratch&,
-        NativeGuiTextWrappedStorageContext&, NativeGuiTextWrappedStorageAcquired&) noexcept;
+        NativeGuiTextWrappedStorageContext&, NativeGuiTextWrappedStorageAcquired&,
+        NativeVertexPositionStorageScratch& actual_position_decode_image) noexcept;
     ~NativeGuiTextWrappedStorageFrame() noexcept = default;
     NativeGuiTextWrappedStorageFrame(const NativeGuiTextWrappedStorageFrame&) = delete;
     NativeGuiTextWrappedStorageFrame& operator=(const NativeGuiTextWrappedStorageFrame&) = delete;
@@ -139,6 +140,12 @@ private:
     // that register; separate from diagnostic records and physical arguments.
     std::uint32_t ebx_, esi_, ebp_, code_, glyph_;
     Phase phase_{Phase::fresh};
+    // Separate genuine callee12B image. Retain/reuse actual prior bits only
+    // after normal return; disjoint from parent100B/S54 and argument homes.
+    NativeVertexPositionStorageScratch& position_scratch_;
+    // Native PUSH index, PUSH output. The callee overwrites home1; NEVER alias
+    // it with the independent parent loop index. No initializer/restoration.
+    volatile std::uint32_t position_homes_[2];
 };
 
 // WHOLE ABA270..ABA8C6[1623B/457ops/84x87], ECX actual Text, two DWORD homes,
@@ -160,7 +167,12 @@ private:
 // gate, cleanup/unmap on escape, retry, rollback, retain or new terminal policy.
 // Any escape retains entered graph/maps/homes/frame; phase/exception_ptr is
 // retention metadata ONLY, not Native-vs-host origin or cleanup permission.
-// Actual caller binding, undefined getter/private-scratch proof, FH3/SEH/fault/
+// Position calls directly reuse the whole raw getter with real Context and
+// separate callee preimage; SAME callerS54 is its output. Physical two homes
+// refill indexFIRST/outputSECOND at each call, only after prior normal return.
+// No return-pointer check, snapshot, reset, extra FP or parent-index copyback.
+// Fresh position records are caller-prepared history; unknown-origin rules
+// above still apply. Actual caller binding/preimage/private-stack, FH3/SEH/fault/
 // secondary failure, ABI/runtime and activation remain explicit gates.
 void build_native_gui_text_wrapped_storage_00aba270(NativeGuiTextWrappedStorageFrame&);
 } // namespace bsp
