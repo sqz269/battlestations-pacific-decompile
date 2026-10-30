@@ -12,6 +12,8 @@ def main():
          "source": "src/frontend_menus.cpp", "state": "wired"},
         {"address": "0064d610", "name": "GameHudHost::update_ship_view_screen_0064d610",
          "source": "src/game_hosts_hud.cpp", "state": "wired"},
+        {"address": "01020304", "ident": ["bsp::Body::shared"],
+         "source": "src/body.cpp", "state": "wired"},
     ]})
     host_source = r"J:\frozen\src\game_hosts_hud.cpp"
     adapter = "bsp::game::ShipScreenApplyUnitAdapter::unit_hud_icon_index_0059cb90"
@@ -23,6 +25,9 @@ def main():
     assert resolver.resolve(body) == set()  # A suffix without body evidence stays unknown.
     assert resolver.resolve("bsp::game::GameHudHost::update_ship_view_screen_0064d610",
                             host_source) == {0x0064D610}
+    assert resolver.resolve("bsp::Body::shared") == {0x01020304}
+    assert resolver.resolve("bsp::Body<int>::shared") == set()
+    assert resolver.resolve("bsp::Body::shared", host_source) == set()
     print("coverage census body identity regression: PASS")
 
 

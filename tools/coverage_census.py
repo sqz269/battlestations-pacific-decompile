@@ -354,7 +354,7 @@ class Resolver:
             suffix = re.search(r"_([0-9a-fA-F]{8})$", ident)
             if suffix and int(suffix.group(1), 16) in self.rows:
                 candidates.add(int(suffix.group(1), 16))
-        qualified = re.sub(r"<.*>", "", name.split("(", 1)[0].strip())
+        qualified = name.split("(", 1)[0].strip()
         normalized = source.replace("\\", "/").casefold() if source else None
         evidence = {}
         for address in candidates:
