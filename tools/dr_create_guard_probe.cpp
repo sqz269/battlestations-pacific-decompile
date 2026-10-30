@@ -14,6 +14,7 @@
 #include <algorithm>
 #include <cstdio>
 #include <cstdlib>
+#include <share.h>
 #include <string>
 #include <vector>
 #pragma comment(lib, "advapi32.lib")
@@ -343,6 +344,9 @@ static int helper() {
         }
         require(config_count == 1, "sdk_config_count"); event("sdk_options_serialization_verified");
         require(inject_process(data, true, library.c_str()), "sdk_injection_failed"); event("sdk_injected");
+        JOBOBJECT_BASIC_ACCOUNTING_INFORMATION before_run_account = {};
+        require(QueryInformationJobObject(root_job, JobObjectBasicAccountingInformation, &before_run_account, sizeof(before_run_account), nullptr), "root_job_before_run_query");
+        event("root_job_active_before_run", before_run_account.ActiveProcesses);
         require(GetFileAttributesW((stage + L"\\root-entry.txt").c_str()) == INVALID_FILE_ATTRIBUTES, "premature_root_entry");
         require(run(data), "sdk_run_failed"); event("sdk_run_only_resume");
         DWORD wait;
@@ -351,7 +355,7 @@ static int helper() {
             std::wstring control = env(L"BSP_HELPER_CONTROL"), prior;
             unsigned seconds = 40; auto duration = optional_env(L"BSP_RUNTIME_SECONDS");
             if (!duration.empty()) seconds = wcstoul(duration.c_str(), nullptr, 10);
-            require(seconds >= 5 && seconds <= 3600, "runtime_seconds");
+            require(seconds >= 5 && seconds <= 3615, "runtime_seconds");
             ULONGLONG until = GetTickCount64() + seconds * 1000ULL; bool sent = false;
             while ((wait = WaitForSingleObject(get_process(data), 100)) == WAIT_TIMEOUT && GetTickCount64() < until) {
                 FILE *command; if (_wfopen_s(&command, control.c_str(), L"rb")) continue;
@@ -372,6 +376,10 @@ static int helper() {
                 if (!strcmp(reason, "fixture_wrong_nonce") && optional_env(L"BSP_PROBE_WAIT_FOR_NUDGE") == L"1") {
                     auto wrong_status = nudge(pid, 0, _strtoui64(nonce, nullptr, 16) ^ 1ULL, 1000);
                     event("fixture_wrong_nonce_status", wrong_status); require(wrong_status == DR_SUCCESS, "fixture_wrong_nonce_dispatch");
+                    JOBOBJECT_BASIC_ACCOUNTING_INFORMATION account = {}; BOOL member = FALSE;
+                    require(QueryInformationJobObject(root_job, JobObjectBasicAccountingInformation, &account, sizeof(account), nullptr) &&
+                        IsProcessInJob(get_process(data), root_job, &member), "fixture_wrong_nonce_job_query");
+                    event("root_job_active_after_wrong_nonce", account.ActiveProcesses); event("root_job_member_after_wrong_nonce", member);
                     continue;
                 }
 #endif
@@ -475,7 +483,8 @@ int wmain(int argc, wchar_t **argv) {
     if (!GetEnvironmentVariableW(L"BSP_STAGE", path, 32768)) return 3; location = path;
     if (!wcscmp(argv[1], L"child")) { HANDLE f = CreateFileW((location + L"\\child-entry.txt").c_str(), GENERIC_WRITE, 3, nullptr, CREATE_NEW, 0, nullptr); if (f != INVALID_HANDLE_VALUE) CloseHandle(f); return 0; }
     bool is_helper = !wcscmp(argv[1], L"helper"); if (!is_helper && wcscmp(argv[1], L"root")) return 4;
-    if (_wfopen_s(&journal, (location + (is_helper ? L"\\helper.log" : L"\\root.log")).c_str(), L"w")) return 5;
+    journal = _wfsopen((location + (is_helper ? L"\\helper.log" : L"\\root.log")).c_str(), L"w", _SH_DENYWR);
+    if (!journal) return 5;
     fprintf(stdout, "%s-private-stdio-entry\n", is_helper ? "helper" : "root"); fflush(stdout);
     int code = is_helper ? helper() : root(); fclose(journal); return code;
 }
