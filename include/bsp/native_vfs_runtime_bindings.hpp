@@ -57,6 +57,9 @@ public:
     // Consume already captured entries without re-reading the owner's table.
     void* open_manager_entry(std::uintptr_t entry,void* manager,
         const void* actual_name,std::uint32_t flags);
+    // SAME captured-entry transport for actual8B names; only BDD440 is admitted.
+    std::uint8_t exists_manager_entry(std::uintptr_t entry,void* manager,
+        const void* actual_name);
     // BDF432 consumes the captured manager+90 word. Admit only the Original
     // startup identity or qualified exact raw Source symbol; never execute an
     // identity or an arbitrary supplied pointer as code.

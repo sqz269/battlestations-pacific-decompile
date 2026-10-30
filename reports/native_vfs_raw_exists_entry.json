@@ -1,0 +1,94 @@
+{
+  "packet": "codex-native-vfs-raw-exists-entry",
+  "state": "bounded_source_transport_object_compiled",
+  "source_ready": false,
+  "created_utc": "2026-10-30T07:20:14.109392+00:00",
+  "base_commit": "cf1a6d2a2ed76a41ef72ed14fbccca440275925a",
+  "owned_files": [
+    "include/bsp/native_vfs_runtime_bindings.hpp",
+    "src/native_vfs_runtime_bindings.cpp",
+    "docs/NATIVE_VFS_RAW_EXISTS_ENTRY.md",
+    "reports/native_vfs_raw_exists_entry.json"
+  ],
+  "source_hashes": {
+    "include/bsp/native_vfs_runtime_bindings.hpp": "3c83fb5bed4b54624ff84c65dafc6f48679aefc4bfa5cf0e8f9a6b25669452a8",
+    "src/native_vfs_runtime_bindings.cpp": "46f5f6f39218f781ddcfc58d0d82b0c2c0aa1ae04b4c966b5f72dbc209f5062a",
+    "docs/NATIVE_VFS_RAW_EXISTS_ENTRY.md": "d8ec4b21bb35493d0ec0e507d07e2c765283d7ac2cf9f5674b8d581d04e34206"
+  },
+  "interface": "std::uint8_t NativeVfsRuntimeBindings::exists_manager_entry(std::uintptr_t captured_entry, void* captured_manager, const void* actual_header8)",
+  "route": {
+    "admitted_entry": "00bdd440 ONLY",
+    "actual_target": "exists_native_vfs_file_00bdd440(manager,name,lookup_)",
+    "context": "SAME retained private lookup_",
+    "unknown_entry": "existing unsupported() throw before manager/header/table access",
+    "Source_function_pointer_identity_admitted": false,
+    "table_reread": false,
+    "NativeString_cast_or_fake_header": false,
+    "new_resolver_callback_provider": false,
+    "raw_AL_not_bool_normalized": true
+  },
+  "baseline_preservation": {
+    "include/bsp/native_vfs_runtime_bindings.hpp": {
+      "baseline_sha256": "05e6f26c575e02312cf15596c30c4a98b21c6040591b431c7c77c7ba11530fe7",
+      "final_sha256": "3c83fb5bed4b54624ff84c65dafc6f48679aefc4bfa5cf0e8f9a6b25669452a8",
+      "inverse_sha256": "05e6f26c575e02312cf15596c30c4a98b21c6040591b431c7c77c7ba11530fe7",
+      "complete_inverse_byte_exact": true,
+      "inserted_bytes": 190
+    },
+    "src/native_vfs_runtime_bindings.cpp": {
+      "baseline_sha256": "e69777aaf6eba33658f9cb2d38aa0dba4995df07165cbf215bcd8e54becfd7a9",
+      "final_sha256": "46f5f6f39218f781ddcfc58d0d82b0c2c0aa1ae04b4c966b5f72dbc209f5062a",
+      "inverse_sha256": "e69777aaf6eba33658f9cb2d38aa0dba4995df07165cbf215bcd8e54becfd7a9",
+      "complete_inverse_byte_exact": true,
+      "inserted_bytes": 228
+    }
+  },
+  "existing_open_pattern": "only numeric00bdf310; existing typed exists and every other body literal byte-preserved by inverse",
+  "verification": {
+    "isolated_compile": {
+      "command": "$taskObjectDir=Join-Path (Get-Location).Path 'build/native_vfs_raw_exists_entry_object'; New-Item -ItemType Directory -Path $taskObjectDir -Force | Out-Null; $taskCompileCommand='call \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\Tools\\VsDevCmd.bat\" -arch=x86 -host_arch=x64 -no_logo && cl.exe /nologo /std:c++17 /permissive- /W4 /WX /EHsc /MD /O2 /Ob2 /fp:strict /DNDEBUG /DWIN32 /D_WINDOWS /DNOMINMAX /DWIN32_LEAN_AND_MEAN /I include /c src\\native_vfs_runtime_bindings.cpp /Fo\"build\\native_vfs_raw_exists_entry_object\\native_vfs_runtime_bindings.obj\"'; & $env:ComSpec /d /s /c $taskCompileCommand; exit $LASTEXITCODE",
+      "exit_code": 0,
+      "stdout": "native_vfs_runtime_bindings.cpp\r\n",
+      "wall_time_seconds": 6.2276509,
+      "attempts": 1,
+      "policy": "strict existingWin32 C++17 release/runtime/EH/fp flags, /c only"
+    },
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\build\\native_vfs_raw_exists_entry_object\\native_vfs_runtime_bindings.obj",
+      "sha256": "af9276f3f65bcb60946a4e690bd1ea25b8ca40f443f6354ac68ec52d7242e35f",
+      "bytes": 45950,
+      "machine": "0x14c",
+      "defined_new_entry": "?exists_manager_entry@NativeVfsRuntimeBindings@bsp@@QAEEIPAXPBX@Z",
+      "genuine_callee_reference": "?exists_native_vfs_file_00bdd440@bsp@@YAEPAXPBXAAUNativeVfsLookupRouteContext@1@@Z",
+      "compile_only": true,
+      "linked_or_executed": false
+    },
+    "full_build": false,
+    "new_tests": 0,
+    "tests_run": 0,
+    "probe_executable": false,
+    "game": false,
+    "Ghidra_analysis_or_mutation": false
+  },
+  "prerequisite_hashes": {
+    "include/bsp/native_vfs_lookup_routes.hpp": "238e323fdd16363e5bf88ab4f7375cebc50bfcd6f02ae35269866e7387d7671e",
+    "src/native_vfs_lookup_routes.cpp": "e50285d46eb3a2eb3d3f21c28ee7d1ef1133c0b4c581152c726a4991bff57a9f",
+    "include/bsp/native_lua_vfs_dispatch.hpp": "da795f3a43a6acf1664d6ac00474a170d7196bf4383ca1695960ab685c67bfb2",
+    "src/native_lua_vfs_dispatch.cpp": "f9950170205ffe503f729b3ae4ec86434f19e9625fea5da4f54a4e61a114f86a"
+  },
+  "qualification": [
+    "caller captures actual target at nativecall epoch; no vcallABI/dropin claim",
+    "actual8B header/backing and full manager/table/lookup/provider/code graph remain valid onallpaths",
+    "existing lookup ActualNativeStringPoolStorage/noexcept release/EH/fault/unsupportedtarget limits unchanged",
+    "new method itselfcreates no header/copy/lifetime or exception recovery"
+  ],
+  "excluded": [
+    "raw0C vector transport",
+    "reversefind qualification",
+    "0109CEF0 exposure",
+    "rawBDEF90/AA0020 caller",
+    "newOriginal/vendorbodycredit",
+    "CMake/ledger/shared activation",
+    "startup/loadedlocale/runtime/ABI readiness"
+  ]
+}
