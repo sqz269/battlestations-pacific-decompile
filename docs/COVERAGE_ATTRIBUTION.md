@@ -35,14 +35,15 @@ have already been found.
 
 ## Drcov observations
 
-The reader supports drcov file version 2, module tables 2 through 5, and binary
+The reader supports drcov file versions 2/3, module tables 2 through 5, and binary
 or text basic-block tables. The declared column names drive module parsing;
 module zero is not assumed to be the executable. Paths containing commas are
 preserved. Custom module fields and older/unknown layouts fail explicitly.
 
 The binary record is eight little-endian bytes: a uint32 offset, uint16 size,
-and uint16 module/segment ID. RVA normalization uses the module record and its
-containing module. Bounds, absent module IDs, zero-sized blocks, and truncated
+and uint16 module/segment ID. Version 2 offsets use the containing module's
+base; version 3 offsets use the named segment's base. RVA normalization
+preserves that distinction. Bounds, absent module IDs, zero-sized blocks, and truncated
 or extra table bytes are checked. Unknown-module records and other-module
 records remain counted in input receipts. Distinct selected `(RVA,size)`
 observations are deduplicated across supplied logs.
@@ -131,6 +132,13 @@ heuristic mapping remains a mapping approximation, not an ABI proof. A source
 use behind an OFF switch remains source wiring; it establishes no execution.
 Unresolved names and multiple candidate identifiers stay separate.
 
+Legacy wire files omit `ident`/`ident_via` for ordinary address-suffix rows.
+Only their `unknown_no_identifier` state establishes an unresolved source
+identifier; a missing optional field alone does not. The census distinguishes
+that state count from missing explicit fields and includes all source-resolved
+rows when checking absent PDB records. Executed PDB symbol/site-record counts
+also remain separate from unique C++ names and original-address counts.
+
 Different PDB function records sharing an RVA make the logical caller
 ambiguous. Observing that code does not credit every possible alias. Likewise,
 a wire function with no matching outer symbol or inline record is reported as
@@ -173,6 +181,11 @@ checked table versions 2/5, nonzero module IDs, comma paths, duplicate blocks,
 truncation rejection, EH/undefined/unattributed separation, and missing-side
 nulls. The end-to-end synthetic census is labelled `SYNTHETIC` and is not a
 mission observation.
+
+The first real BSP smoke used file version 3 with module-table version 5.
+Its strict eight-byte tables were accepted after checking the installed
+release header's v2 module-relative/v3 segment-relative distinction. A focused
+two-segment fixture checks that both versions normalize to the same image RVA.
 
 Two small optimized x86 `/Zi /Zo /DEBUG:FULL` probes were compiled under
 ignored `local/coverage-probe/` with `/MANIFEST:EMBED`; neither executable was
