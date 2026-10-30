@@ -1,0 +1,118 @@
+{
+  "status": "implemented_qualified_source_strict_object_compile_pass_uncalled",
+  "source_ready": false,
+  "runtime": false,
+  "native_body_credit": false,
+  "vendor_body_credit": false,
+  "source_base": "c1e76db253095e5217f71f18cfcca19a47e79e27",
+  "addresses": [
+    {
+      "address": "00a9f0b0",
+      "role": "normalized direct binding of existing game-owned slot allocator",
+      "original_abi": "ECX=actual pool; EAX=node; plain RET"
+    },
+    {
+      "address": "00a9e970",
+      "role": "reuse existing host-free Source initializer, normalize SAME-block return",
+      "original_abi": "ECX=actual7804 block; stack DWORD slab index; EAX=SAME block; RET4"
+    }
+  ],
+  "api": "bsp::allocate_native_locale_node_00a9f0b0(GameNativeLocalePoolProcess&, NativeLocaleNodeAllocationFrame&)",
+  "contract": {
+    "path": "local/raw_locale_slot_allocation_contract_cc9_20261030/CONTRACT.md",
+    "sha256": "418cd0e15cb135df8ef8149b76d766910d408f77fd084872926d51decb33ee08"
+  },
+  "dependencies": [
+    {
+      "path": "include/bsp/game_native_locale_pool.hpp",
+      "sha256": "969db5c9f80ab1e4b6e5098f43ef1515d0e726fe2aa9e119dfb777cccc989911"
+    },
+    {
+      "path": "src/game_native_locale_pool.cpp",
+      "sha256": "ef01a5c56a1c61617274c5bcc6021d6785947305e333f4048094f5946aaf73de"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "include/bsp/cc13_sweepC.hpp",
+      "sha256": "e100d5d72c8049fbd04907f451ae363bd7e7dc1ba7ea399a3136c37954994a5e"
+    },
+    {
+      "path": "src/cc13_sweepC.cpp",
+      "sha256": "fe43cb6d2f3e282bf6cb360dc8dbf914d2812aa3c64d7dec9bd6bd2eccdbcebb"
+    },
+    {
+      "path": "include/bsp/cc13_sweepC2.hpp",
+      "sha256": "2b7796d6d10b199c72b8e3fa7885b3215d60196e3c105c7df9cc78b08eca030c"
+    },
+    {
+      "path": "src/cc13_sweepC2.cpp",
+      "sha256": "c910a90d21c8e2a53148b86fa61b5732bf7b1f3ae19f421b95113a5e757b2096"
+    }
+  ],
+  "saved_assembly": [
+    {
+      "address": "00a9f0b0",
+      "path": "exports/bsp/functions/00a9f0b0/assembly.txt",
+      "sha256": "5270fbe5bf339b2afd2a08552a4de59563b5220a2686bd677346c4123b7a5ace"
+    },
+    {
+      "address": "00a9e970",
+      "path": "exports/bsp/functions/00a9e970/assembly.txt",
+      "sha256": "39d653ad4830bb2b6228d6958c782b43a94beff6d962d8bfe8990d78959e8143"
+    }
+  ],
+  "schedule": [
+    "healthy SAME canonical owner borrow before native effects",
+    "real Enter then DWORD depth RMW",
+    "firstfree publication before slab allocation; returned allocation immediately retained",
+    "nonnull E970 CURRENT index after allocator; genuine void initializer normalized SAME block",
+    "capacity load then CURRENT count; wrapping capacity publication before table allocation",
+    "captured new destination cursor / CURRENT source table and count per copy; conditional computed-address store",
+    "capture CURRENT old table, real free, then new table publication; CURRENT append/count",
+    "CURRENT block; WORD RMW then actual WORD freecount reload; captured index/node",
+    "initial scan count comparison before firstfree=-1; captured table cursor vs CURRENT continuation count",
+    "normal depth decrement and real Leave; private sticky normal-return receipt afterward"
+  ],
+  "failure_policy": "metadata-only catch/rethrow; never unlock/free/repair/rollback/retry; retain all partial pool/section/backing/provider custody; owner startup health is not allocation quiescence; future caller must block unsafe reuse/trim/exit claims",
+  "limitations": [
+    "ordinary qualified Source ABI, not native register/EH/SEH/fault equivalence",
+    "current malloc/_callnewh/throw/free bindings not Original static CRT or handler equivalence",
+    "native NULL slab continuation is not graceful NULL failure",
+    "frame diagnostics cannot issue receipts; rejected/caught reentry prevents healthy completion",
+    "disjoint backing/external common-list pool serialization and no unsupported callback lifetime/teardown/private aliases/import replacement",
+    "normal slot is storage only: payload/key/wide/next/map ownership unconstructed",
+    "no old body/owner changes, startup caller, loading, slab retirement integration, runtime or production admission",
+    "reused host-free E970 at<T>& WORD/DWORD stores retain existing MSVC raw-storage/lifetime qualification; no new standard-C++ object-lifetime proof or old-helper change"
+  ],
+  "validation": {
+    "strict_object_only": {
+      "exit_code": 0,
+      "COFF_machine": "0x14c",
+      "receipt_path": "local/native_locale_node_allocation_compile_cc9_20261030/compile_receipt.json",
+      "receipt_sha256": "9a4c6e0fbf53744e282368037a7faa168304eda564fdc53bbcf37a04e6a33bd5",
+      "object_sha256": "ec607cc696d6247a482660454fd73ca8e1c5f7cee7a90582d7b18768ac893ae5",
+      "flags": "/std:c++17 /permissive- /W4 /WX /EHsc /MD /O2 /fp:strict"
+    },
+    "new_tests": false,
+    "link": false,
+    "probe": false,
+    "game": false,
+    "Ghidra_mutation": false
+  },
+  "coupled_prerequisites": [
+    {
+      "name": "codex-locale-block-init-raw-access",
+      "owner": "Root",
+      "status": "pending_at_allocator_freeze",
+      "scope": "ONLY existing E970 typed stores to fenced byte writes; old shared at/all other functions unchanged",
+      "raw_access_closure_claimed_here": false
+    }
+  ]
+}
