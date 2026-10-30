@@ -1,0 +1,468 @@
+{
+  "schema": "cc16-reserved-text-model-reference-birth-v1",
+  "packet": "codex-reserved-text-model-reference-birth",
+  "status": "source_metadata_overloads_implemented_static_only",
+  "source_base_commit": "1465a08827a97a50ee81e1eda850e59300097492",
+  "requested_main_commit": "6a745da7df7c162f90f3ec0f24b61cd618867995",
+  "owned_files": [
+    "include/bsp/native_gui_text_reference.hpp",
+    "src/native_gui_text_reference.cpp",
+    "include/bsp/native_model_storage_lifetime.hpp",
+    "src/native_model_storage_lifetime.cpp",
+    "docs/CC16_RESERVED_TEXT_MODEL_REFERENCE_BIRTH.md",
+    "reports/cc16_reserved_text_model_reference_birth.json"
+  ],
+  "native_addresses": [],
+  "public_api": [
+    {
+      "path": "include/bsp/native_gui_text_reference.hpp",
+      "line": 211,
+      "signature": "NativeGuiTextRawModelReference& bind_native_gui_text_raw_model_reference_reserved(void*, void*, NativeGuiTextRawModelReferenceContext&, NativeGuiTextReferenceFrame&, NativeGuiTextRawModelReferenceDisposal, NativeRenderActualOwnerRegistry::BindingAdmission&);",
+      "scope": "existing RawModel DEFAULT Text binding only",
+      "validation": "exact unchanged RawModel preflight",
+      "publication": "context_.owners.publish(std::move(reservation), *this)",
+      "caller_token": "persistent authentic nonconst lvalue, same registry and actual identity"
+    },
+    {
+      "path": "include/bsp/native_model_storage_lifetime.hpp",
+      "line": 130,
+      "signature": "NativeModelStorageReference(void*, NativeModelStorageIdentityContext&, NativeModelStorageConstructAcquired&, NativeModelStorageLifetimeFrame&, NativeModelStorageLifetimeAcquired&, NativeRenderActualOwnerRegistry::BindingAdmission&);",
+      "scope": "postconstruction raw Model canonical reference birth",
+      "validation": "exact unchanged bind_count in base initializer",
+      "publication": "c.storage.node.scenes.owners.publish(std::move(reservation), *this)",
+      "postpublication": "construction.metadata_bound = true",
+      "caller_token": "persistent authentic nonconst lvalue, same registry and actual identity"
+    }
+  ],
+  "reservation_contract": {
+    "existing_prepare_binding": "same registry, same actual aligned identity, before genuine Native constructor; may allocate/throw; null mapped entry stays unavailable",
+    "same_native_credit": true,
+    "count_alias": "existing actual+04, no second count, retain, initialization or release",
+    "preflight_treats_prepared_entry": "find returns nullptr; authentic publish capability still required",
+    "token_transport": "lvalue -> std::move reference cast -> existing publish rvalue reference; no token move construction, copying, destruction or cancel",
+    "token_lifetime": "caller persistent token object and registry survive operation/failure disposition; serialized ownership; stable token backing separate from native object, companion and reached writes",
+    "transitive_lifetime": "all existing context/frame/provider/disposal/native backing and quiescence proofs unchanged",
+    "publication_removes_only": [
+      "entry insertion",
+      "rehash"
+    ],
+    "remaining_host_failures": [
+      "unchanged admission validation exceptions",
+      "existing registry lock exceptions"
+    ],
+    "inherited_terminal_contract": [
+      "invalid registry/capability/entry",
+      "count alias mismatch",
+      "nonpositive count"
+    ],
+    "cpp_failure": "no complete companion; completed raw object/custody and persistent caller reservation remain; Model metadata_bound stays false; no Native cleanup/disposal/retirement/failed-ctor-return/retry",
+    "normal_result": "same reserved entry points to companion and token consumed; Model metadata_bound set only then",
+    "token_destructor_cancellation": "existing behavior unchanged, not invoked or scheduled by these paths; caller must preserve record to retain reservation after error",
+    "no_new_policy": [
+      "noexcept",
+      "termination",
+      "rollback",
+      "retry",
+      "automatic cancellation",
+      "forced admission",
+      "Native exception classification"
+    ]
+  },
+  "source_pins": [
+    {
+      "path": "include/bsp/native_gui_text_reference.hpp",
+      "baseline_revision": "1465a08827a97a50ee81e1eda850e59300097492",
+      "baseline_git_lf_sha256": "e270e6f39bcf6014b18bb04d6f3d5eacf24ee09596dca809b99ca778bb1c3eb1",
+      "baseline_git_lf_bytes": 10891,
+      "current_git_lf_sha256": "62224192a6d0fb5043ed68a3f34374ce1bc3584ee1f3bb031c1041b33fdd1827",
+      "current_git_lf_bytes": 12718,
+      "inserted_ranges": [
+        {
+          "first_line": 162,
+          "last_line": 164,
+          "lines": 3,
+          "git_lf_bytes": 286,
+          "git_lf_sha256": "2825d73dea6268a34760f86ce4081b1d3ab6148397c8880f1e7454bd1ff19fd1"
+        },
+        {
+          "first_line": 168,
+          "last_line": 171,
+          "lines": 4,
+          "git_lf_bytes": 288,
+          "git_lf_sha256": "75efaa4561e38afe4173ba2445259300487b2a66cc41881b3b054e2650edc2f3"
+        },
+        {
+          "first_line": 199,
+          "last_line": 214,
+          "lines": 16,
+          "git_lf_bytes": 1253,
+          "git_lf_sha256": "15a90e45cba5ae600b99682ad9fafa0bc15874f6075d6645998d1097745bd071"
+        }
+      ],
+      "restored_git_lf_sha256": "e270e6f39bcf6014b18bb04d6f3d5eacf24ee09596dca809b99ca778bb1c3eb1",
+      "inverse_restores_entire_baseline_byte_identical": true
+    },
+    {
+      "path": "src/native_gui_text_reference.cpp",
+      "baseline_revision": "1465a08827a97a50ee81e1eda850e59300097492",
+      "baseline_git_lf_sha256": "e4e363507f24729369a69dc92c825b08b08524dd1a368cca40883f177b3d14d9",
+      "baseline_git_lf_bytes": 57192,
+      "current_git_lf_sha256": "0fb188e79dbc014db098d01e3afff14a5e07f1671a33db063d2e126e5af4257e",
+      "current_git_lf_bytes": 58312,
+      "inserted_ranges": [
+        {
+          "first_line": 24,
+          "last_line": 24,
+          "lines": 1,
+          "git_lf_bytes": 19,
+          "git_lf_sha256": "ff110192bdb4c9ba99a3352b17cf8bfe10b6d565b274414a657cb0db5ad0e541"
+        },
+        {
+          "first_line": 792,
+          "last_line": 808,
+          "lines": 17,
+          "git_lf_bytes": 1101,
+          "git_lf_sha256": "9b53297798134a9794823e48f1e1f4f05f6e43e6f2fc2dedfea4b34e93fbc36b"
+        }
+      ],
+      "restored_git_lf_sha256": "e4e363507f24729369a69dc92c825b08b08524dd1a368cca40883f177b3d14d9",
+      "inverse_restores_entire_baseline_byte_identical": true
+    },
+    {
+      "path": "include/bsp/native_model_storage_lifetime.hpp",
+      "baseline_revision": "1465a08827a97a50ee81e1eda850e59300097492",
+      "baseline_git_lf_sha256": "0764b927078091103c21e6c2d6215ccb7a403c2b3eed832943dfae632a55ec3e",
+      "baseline_git_lf_bytes": 8247,
+      "current_git_lf_sha256": "7754b1a3df10ccf79a83899513b48ab4616df9b9f9a5da54400ed7d4fe51ea1f",
+      "current_git_lf_bytes": 9363,
+      "inserted_ranges": [
+        {
+          "first_line": 4,
+          "last_line": 4,
+          "lines": 1,
+          "git_lf_bytes": 41,
+          "git_lf_sha256": "dfa605b1c360a854c086b390a0c254bc82e1734e7288951c7362c67b590ac4a7"
+        },
+        {
+          "first_line": 120,
+          "last_line": 133,
+          "lines": 14,
+          "git_lf_bytes": 1075,
+          "git_lf_sha256": "06dd7ea5dd55636d71fffbd3f52731ace295ad82d04ea61279b2f69dd343ebfa"
+        }
+      ],
+      "restored_git_lf_sha256": "0764b927078091103c21e6c2d6215ccb7a403c2b3eed832943dfae632a55ec3e",
+      "inverse_restores_entire_baseline_byte_identical": true
+    },
+    {
+      "path": "src/native_model_storage_lifetime.cpp",
+      "baseline_revision": "1465a08827a97a50ee81e1eda850e59300097492",
+      "baseline_git_lf_sha256": "1ded6a8042e2ce26bdcd9852dae2c14b16cee1efdba0227ed479d0c9491cddd8",
+      "baseline_git_lf_bytes": 17033,
+      "current_git_lf_sha256": "d9ea114fa0e88f42f5a692adf96014827c32cd5d856a8e228e1ccd0550dd99b0",
+      "current_git_lf_bytes": 17638,
+      "inserted_ranges": [
+        {
+          "first_line": 8,
+          "last_line": 8,
+          "lines": 1,
+          "git_lf_bytes": 19,
+          "git_lf_sha256": "ff110192bdb4c9ba99a3352b17cf8bfe10b6d565b274414a657cb0db5ad0e541"
+        },
+        {
+          "first_line": 328,
+          "last_line": 336,
+          "lines": 9,
+          "git_lf_bytes": 586,
+          "git_lf_sha256": "d3e62610c503213df2cfe979cbe0f9f17f098cdfa793724674e817df2d61d35d"
+        }
+      ],
+      "restored_git_lf_sha256": "1ded6a8042e2ce26bdcd9852dae2c14b16cee1efdba0227ed479d0c9491cddd8",
+      "inverse_restores_entire_baseline_byte_identical": true
+    }
+  ],
+  "inverse_proof": {
+    "algorithm": "For each current LF file, verify each inserted line-range hash, delete ranges in descending first_line order, compare every restored byte to git show source_base_commit:path.",
+    "all_four_complete_baselines_restored": true,
+    "inserted_lines": 66,
+    "deleted_lines": 0,
+    "replacement_lines": 0,
+    "all_old_methods_byte_identical": true,
+    "class_data_and_virtual_operations_unchanged": true
+  },
+  "unchanged_selected_functions": [
+    {
+      "name": "raw_model_text_preflight",
+      "path": "src/native_gui_text_reference.cpp",
+      "baseline_first_line": 601,
+      "baseline_last_line": 680,
+      "current_first_line": 602,
+      "current_last_line": 681,
+      "git_lf_bytes": 6366,
+      "git_lf_sha256": "5d0a4aa530f4642c398b82cc8370851215f087173cff12ff3ddd67a5017e5363",
+      "byte_identical": true
+    },
+    {
+      "name": "ordinary_raw_model_text_binder",
+      "path": "src/native_gui_text_reference.cpp",
+      "baseline_first_line": 776,
+      "baseline_last_line": 782,
+      "current_first_line": 777,
+      "current_last_line": 783,
+      "git_lf_bytes": 463,
+      "git_lf_sha256": "52fd81ab0e55c6332974976fcbd726e19f95c597e472482ed43b80b786eb30ea",
+      "byte_identical": true
+    },
+    {
+      "name": "ordinary_raw_model_text_constructor",
+      "path": "src/native_gui_text_reference.cpp",
+      "baseline_first_line": 783,
+      "baseline_last_line": 790,
+      "current_first_line": 784,
+      "current_last_line": 791,
+      "git_lf_bytes": 505,
+      "git_lf_sha256": "021db5bb5528ccdbf7250df8f073c6c1ae20d91908730d1ba56b41267d795b5c",
+      "byte_identical": true
+    },
+    {
+      "name": "model_bind_count",
+      "path": "src/native_model_storage_lifetime.cpp",
+      "baseline_first_line": 86,
+      "baseline_last_line": 103,
+      "current_first_line": 87,
+      "current_last_line": 104,
+      "git_lf_bytes": 1082,
+      "git_lf_sha256": "2fffb970bd72d342d1769b1aafe27519e253ea40b1f4ff7ad3956be516444dc3",
+      "byte_identical": true
+    },
+    {
+      "name": "ordinary_model_reference_constructor",
+      "path": "src/native_model_storage_lifetime.cpp",
+      "baseline_first_line": 319,
+      "baseline_last_line": 326,
+      "current_first_line": 320,
+      "current_last_line": 327,
+      "git_lf_bytes": 498,
+      "git_lf_sha256": "d8a5e4dd0ff9218b9b367b14951c191ba9de9216982248ce3a251b62e4d8ca4c",
+      "byte_identical": true
+    },
+    {
+      "name": "existing_registry_prepare_binding",
+      "path": "src/native_render_context.cpp",
+      "baseline_first_line": 101,
+      "baseline_last_line": 109,
+      "current_first_line": 101,
+      "current_last_line": 109,
+      "git_lf_bytes": 610,
+      "git_lf_sha256": "dd535243fe123bf5f760965a45409dc6a482c8d12a371c02d3e650e3be717e1f",
+      "byte_identical": true
+    },
+    {
+      "name": "existing_registry_publish",
+      "path": "src/native_render_context.cpp",
+      "baseline_first_line": 111,
+      "baseline_last_line": 130,
+      "current_first_line": 111,
+      "current_last_line": 130,
+      "git_lf_bytes": 1002,
+      "git_lf_sha256": "c695a44836b4b6c71232bed4e9d63a52e2ee6ce7110c3c717066d690865fc496",
+      "byte_identical": true
+    },
+    {
+      "name": "existing_registry_find",
+      "path": "src/native_render_context.cpp",
+      "baseline_first_line": 141,
+      "baseline_last_line": 145,
+      "current_first_line": 141,
+      "current_last_line": 145,
+      "git_lf_bytes": 262,
+      "git_lf_sha256": "4221ed5d53beca3adb573b5be87398d9236e7c1acc761361eebf29eedcd93e1a",
+      "byte_identical": true
+    }
+  ],
+  "new_source_functions": [
+    {
+      "name": "reserved_raw_model_text_binder",
+      "path": "src/native_gui_text_reference.cpp",
+      "first_line": 792,
+      "last_line": 799,
+      "git_lf_bytes": 554,
+      "git_lf_sha256": "b33ec55cc500144c1041b36fc55c2e2563f08cd47ff102fc2c92c30cf8570cb0"
+    },
+    {
+      "name": "reserved_raw_model_text_constructor",
+      "path": "src/native_gui_text_reference.cpp",
+      "first_line": 800,
+      "last_line": 808,
+      "git_lf_bytes": 547,
+      "git_lf_sha256": "16ee3266914d22877773b2aab847478a4d94ec1a28b9f671861d063106e79970"
+    },
+    {
+      "name": "reserved_model_reference_constructor",
+      "path": "src/native_model_storage_lifetime.cpp",
+      "first_line": 328,
+      "last_line": 336,
+      "git_lf_bytes": 586,
+      "git_lf_sha256": "d3e62610c503213df2cfe979cbe0f9f17f098cdfa793724674e817df2d61d35d"
+    }
+  ],
+  "unchanged_dependencies": [
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "revision": "1465a08827a97a50ee81e1eda850e59300097492",
+      "git_lf_bytes": 10071,
+      "git_lf_sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "revision": "1465a08827a97a50ee81e1eda850e59300097492",
+      "git_lf_bytes": 11471,
+      "git_lf_sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/render_command_queue.hpp",
+      "revision": "1465a08827a97a50ee81e1eda850e59300097492",
+      "git_lf_bytes": 10656,
+      "git_lf_sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+      "unchanged": true
+    }
+  ],
+  "frozen_artifacts": [
+    {
+      "path": "include/bsp/native_front_end_frame_lifetime.hpp",
+      "revision": "d4e6aa48d20e55b6667a11d37a462c50ab2ee6e2",
+      "git_lf_sha256": "a21b38daad89af7b6fc968273dece3fba3789ab22476299ea66cf88c4002b4d2",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_front_end_frame_lifetime.cpp",
+      "revision": "d4e6aa48d20e55b6667a11d37a462c50ab2ee6e2",
+      "git_lf_sha256": "50eae08b6ca3a7561b8ec1a1bfaeb7b2b717cb9c16f46ab4470f1befe0dcf4f8",
+      "unchanged": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_FRONT_END_FRAME_LIFETIME.md",
+      "revision": "d4e6aa48d20e55b6667a11d37a462c50ab2ee6e2",
+      "git_lf_sha256": "3409aa99fb04a5e98aa05994563b6522ebb78dad506ec80db0c8aa85de7810ea",
+      "unchanged": true
+    },
+    {
+      "path": "reports/cc16_native_front_end_frame_lifetime.json",
+      "revision": "d4e6aa48d20e55b6667a11d37a462c50ab2ee6e2",
+      "git_lf_sha256": "f3c4b17cf1e49dafd606735cd4977cecc659edab841417cb007c5fd1eb50bea0",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_mesh_section_layout_storage.hpp",
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "git_lf_sha256": "19245d00005b8d543fdcd5b85e71dba091ca158063e38fd86010cfb8e72c8939",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_mesh_section_layout_storage.cpp",
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "git_lf_sha256": "d6f0378634d82d4287cf698dd529e24f3a53b4f1b6b0398647d33c4f956c4115",
+      "unchanged": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_MESH_SECTION_LAYOUT_STORAGE.md",
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "git_lf_sha256": "a50cc363c8c5a5d1afe47d0fe9c4859169f3569752f9340840f0f7a99e5abbb0",
+      "unchanged": true
+    },
+    {
+      "path": "reports/cc16_native_mesh_section_layout_storage.json",
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "git_lf_sha256": "11f6144d7de2e18c674a5a51471079d9a4240725e2a5f14211bf79a447698a05",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_gui_text_changed_storage.hpp",
+      "revision": "96dd22fd0f8b0cbc6ce97b6ed7f69af399993d33",
+      "git_lf_sha256": "13cc02308c28bf3ba443adfe1334627dffae05231a0c05e7bff6cbd634da5cc8",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_gui_text_changed_storage.cpp",
+      "revision": "96dd22fd0f8b0cbc6ce97b6ed7f69af399993d33",
+      "git_lf_sha256": "721a3bff0f346ae3506deda59f5a7e892e7ca46eefb8fcaa4d57d04a9c1753a1",
+      "unchanged": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_TEXT_CHANGED_STORAGE.md",
+      "revision": "96dd22fd0f8b0cbc6ce97b6ed7f69af399993d33",
+      "git_lf_sha256": "722dbb1c6f8a3304f95a6cba1b6bd9cf4cd0921f12776ff7da17cb6aecb408b8",
+      "unchanged": true
+    },
+    {
+      "path": "reports/cc16_native_gui_text_changed_storage.json",
+      "revision": "96dd22fd0f8b0cbc6ce97b6ed7f69af399993d33",
+      "git_lf_sha256": "e95b6ce8a228b676cb4c8c42ccabda4826064453be0b5fc18741985062595ca3",
+      "unchanged": true
+    },
+    {
+      "path": "docs/CC16_GLYPH_CHILD_PRODUCER_BIRTH_AUDIT.md",
+      "revision": "97ced874aeaae30e98aa28fcfb972a70fb4b0a10",
+      "git_lf_sha256": "df477c98a4d14bf534ed0c573d5d96831233ec73aec3ab45b879c8bf3a264cdd",
+      "unchanged": true
+    },
+    {
+      "path": "reports/cc16_glyph_child_producer_birth_audit.json",
+      "revision": "97ced874aeaae30e98aa28fcfb972a70fb4b0a10",
+      "git_lf_sha256": "5b907c3babba150d35fc9526bd57d07b0e4f29f0ed684eb3886b75131842c5a8",
+      "unchanged": true
+    }
+  ],
+  "document": {
+    "path": "docs/CC16_RESERVED_TEXT_MODEL_REFERENCE_BIRTH.md",
+    "git_lf_bytes": 8413,
+    "git_lf_sha256": "0b6baa062db3f00024b2010cd65c0056eea42838b76afa0ace32f92dfcf68b5a"
+  },
+  "static_validation": {
+    "inverse_entire_file_proof": true,
+    "eight_selected_existing_bodies_identical": true,
+    "registry_and_borrowed_base_unchanged": true,
+    "fourteen_frozen_artifacts_unchanged": true,
+    "git_diff_check": "passed"
+  },
+  "performed": {
+    "source_and_metadata_edits": true,
+    "build": false,
+    "tests": false,
+    "probe": false,
+    "runtime": false,
+    "game": false,
+    "ghidra_queries": false,
+    "ghidra_mutation": false,
+    "process_actions": false,
+    "shared_registry_edit": false,
+    "cmake_edit": false,
+    "ledger_edit": false,
+    "consumer_binding": false,
+    "activation": false
+  },
+  "qualification": "MSVC Win32 ordinary Source API; valid backing/lifetimes/synchronization remain caller proof; no private Native FH3/SEH/fault/secondary-failure or binary ABI equivalence claimed",
+  "remaining_gates": [
+    "Genuine Glyph child caller must stage authentic Text/internal Model reservations at proven identity epochs; actual provider binding unchanged.",
+    "Keep complete independent internal188 Model graph, companions and all reached providers through unresolved credits/failures/flags0 slot custody and retirement.",
+    "FC1/wrapped child content remains genuine; no forced mode/flag/count.",
+    "Passive private Native-vs-host/unclassified cause composition remains required across Glyph071 and changed96 EH; entered/provider_call does not authorize Native cleanup.",
+    "Changed96 remains unadmitted; no AB76F0 for added metadata bind failures and no wide cleanup for unclassified host escape.",
+    "Root owns compilation/integration; no ABI/runtime/game/activation proof."
+  ],
+  "whole_frontend_source_ready": false,
+  "changed96_admitted": false,
+  "credit_delta": {
+    "Original": 0,
+    "helper": 0,
+    "vendor": 0,
+    "compiler_generated": 0,
+    "duplicate_body": 0,
+    "ABI": 0,
+    "runtime": 0,
+    "activation": 0
+  },
+  "existing_native_credit_unchanged": true
+}

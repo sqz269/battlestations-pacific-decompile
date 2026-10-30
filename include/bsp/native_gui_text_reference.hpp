@@ -159,9 +159,16 @@ private:
     friend NativeGuiTextRawModelReference& bind_native_gui_text_raw_model_reference(void*, void*,
         NativeGuiTextRawModelReferenceContext&, NativeGuiTextReferenceFrame&,
         NativeGuiTextRawModelReferenceDisposal);
+    friend NativeGuiTextRawModelReference& bind_native_gui_text_raw_model_reference_reserved(void*, void*,
+        NativeGuiTextRawModelReferenceContext&, NativeGuiTextReferenceFrame&,
+        NativeGuiTextRawModelReferenceDisposal, NativeRenderActualOwnerRegistry::BindingAdmission&);
     NativeGuiTextRawModelReference(void*, NativeGuiTextRawModelReferenceContext&,
         NativeGuiTextReferenceFrame&, NativeGuiTextRawModelReferenceDisposal,
         const volatile std::uint32_t*, std::atomic<std::int32_t>&);
+    NativeGuiTextRawModelReference(void*, NativeGuiTextRawModelReferenceContext&,
+        NativeGuiTextReferenceFrame&, NativeGuiTextRawModelReferenceDisposal,
+        const volatile std::uint32_t*, std::atomic<std::int32_t>&,
+        NativeRenderActualOwnerRegistry::BindingAdmission&);
     void delete_vslot04(void*, std::uint32_t captured_profile, std::uint32_t flags) override;
     void require_slot(std::uint32_t, unsigned, std::uint32_t) const;
     struct Completion {
@@ -189,4 +196,20 @@ private:
 NativeGuiTextRawModelReference& bind_native_gui_text_raw_model_reference(void* companion_storage,
     void* actual_text, NativeGuiTextRawModelReferenceContext&, NativeGuiTextReferenceFrame&,
     NativeGuiTextRawModelReferenceDisposal);
+// RESERVED birth for this same RawModel/DEFAULT path only. Reserve the SAME
+// actual Text identity in context.owners before Native construction; all
+// existing postconstruction preflight/current-profile/count checks still run.
+// The authentic caller-owned token stays an lvalue: publish consumes it only
+// on success, without insertion/rehash, retain or Native cleanup. Locking may
+// throw; invalid capabilities/aliases/counts retain publish's terminal contract.
+// Keep the token/registry alive and serialized, with stable token backing
+// separate from the actual Text, companion and every reached writable region.
+// A C++ escape leaves the completed raw object, producer graph and reservation
+// with the caller for explicit disposition; no companion disposal or Native
+// failed-constructor return is implied. All ordinary lifetime contracts above
+// still apply. This does not classify any escape as a Native exception.
+NativeGuiTextRawModelReference& bind_native_gui_text_raw_model_reference_reserved(
+    void* companion_storage, void* actual_text, NativeGuiTextRawModelReferenceContext&,
+    NativeGuiTextReferenceFrame&, NativeGuiTextRawModelReferenceDisposal,
+    NativeRenderActualOwnerRegistry::BindingAdmission& caller_reservation);
 } // namespace bsp
