@@ -1,0 +1,2940 @@
+{
+  "schema": "bsp.cc16.native_lua_variant_scalar_delete_review.v1",
+  "packet": "cc16-native-lua-variant-scalar-delete-review",
+  "utc": "2026-10-30T09:41:37.315067+00:00",
+  "review_base": "33d4b470b7ec752da670c1d2807a41389cd76dab",
+  "remote_Main_rechecked_equal_review_base": true,
+  "candidate_commit": "65d9e8f90e0c2794ddd503ee4acfab443ec5a5fc",
+  "candidate_base": "879f5d855aa43e099fb349ea7b18d58c7f2d1a40",
+  "normal_and_qualified_comparison": "a4774a47499cf3ad0f38af058a53fef1e71cea61",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review",
+  "ownership": {
+    "addresses": [],
+    "files": [
+      "docs/CC16_NATIVE_LUA_VARIANT_SCALAR_DELETE_REVIEW.md",
+      "reports/cc16_native_lua_variant_scalar_delete_review.json"
+    ],
+    "Source_files": []
+  },
+  "result": "PASS_bounded_qualified_Source_native_COFF_EH_static_review_no_blocking_findings_Root_common_build_link_PE_and_runtime_gates_remain",
+  "blocking_findings": [],
+  "required_corrections": [],
+  "Source_static_review_passed": true,
+  "common_build_link_admitted_by_this_review": false,
+  "complete_inputs_reviewed": {
+    "candidate_header_lines": 271,
+    "candidate_CPP_lines": 570,
+    "candidate_document_lines": 154,
+    "candidate_structured_report_lines": 5066,
+    "readiness_document_lines": 162,
+    "readiness_structured_report_fully_parsed": true,
+    "prior_cleanup_independent_review_document_lines": 165,
+    "prior_cleanup_admission_document_complete": true,
+    "all_report_binary_inventories_crosschecked": true
+  },
+  "candidate_pins": [
+    {
+      "path": "include/bsp/native_lua_variant_retirement.hpp",
+      "bytes": 13881,
+      "lines": 271,
+      "sha256": "14258135096189f2892e4d896af417ed0c8fb616d5f1659bbc1d9d032f68a7db",
+      "git_blob": "d4babed549ceff1536f80413fc0f8e4716e78f53"
+    },
+    {
+      "path": "src/native_lua_variant_retirement.cpp",
+      "bytes": 24076,
+      "lines": 570,
+      "sha256": "5db41574abcb3a94fdb9c6f5c8f96f2b7b0c1f0c2a7f438fe64d622980c065ca",
+      "git_blob": "7b51801d0ade27ee9818fe92ff9cddaa1b19cab7"
+    },
+    {
+      "path": "docs/CC16_NATIVE_LUA_VARIANT_SCALAR_DELETE.md",
+      "bytes": 9884,
+      "lines": 154,
+      "sha256": "6bff0b47e3ce9ec5f83087bb274c2827a9cd7c8f701cbbfa870780b5dbdd4b51",
+      "git_blob": "b0c084483e3532169b8de0346ec4015af01c6377"
+    },
+    {
+      "path": "reports/cc16_native_lua_variant_scalar_delete.json",
+      "bytes": 177134,
+      "lines": 5066,
+      "sha256": "3c8dae8e3044fb5d5132e7c6a52b6219eba0ab777e16ab5dc339bcc8fc88498b",
+      "git_blob": "b76e63af2f984a223e72539843841584d67e0023"
+    }
+  ],
+  "immutable_inputs": [
+    {
+      "commit": "a4774a47499cf3ad0f38af058a53fef1e71cea61",
+      "path": "reports/cc16_native_lua_variant_cpp_cleanup.json",
+      "bytes": 171611,
+      "sha256": "9670177711f416451dccf5b9e86b17bbd9d01f9eef086f4152966a94c16eeb7d",
+      "git_blob": "6a0b2325f1dac65336d12372c14812bf048eb2c7"
+    },
+    {
+      "commit": "b5d3e2c957ca22cb8f29ca0816f6e2aec87d5e73",
+      "path": "reports/cc16_native_lua_variant_cpp_cleanup_review.json",
+      "bytes": 162534,
+      "sha256": "2e62e204bcf69c54d354a578797851cb80dc18cea5b03da4bcd79d20b4c988a2",
+      "git_blob": "179db73773af8fbc7fb4592fd8355af0a3c43ada"
+    },
+    {
+      "commit": "5ef322e05be0fa3197cc9ee6d952dcbe5c9dd142",
+      "path": "docs/CC16_NATIVE_LUA_VARIANT_SCALAR_DELETE_READINESS.md",
+      "bytes": 10337,
+      "sha256": "e04a1bb5a12a6e7ce0aac4d0c4e6b72b213d4254c722be8c97bdf7035f543a62",
+      "git_blob": "ceaf957ecf6874d6b87e5378febaea2022c232e0"
+    },
+    {
+      "commit": "5ef322e05be0fa3197cc9ee6d952dcbe5c9dd142",
+      "path": "reports/cc16_native_lua_variant_scalar_delete_readiness.json",
+      "bytes": 34809,
+      "sha256": "58ebba71c39ef0b5c71c894f5b177e95f2e6ae58e285b65c07a4715d7ee8589a",
+      "git_blob": "1530fc166be9ac1c2907a87735e6f09838635d2c"
+    },
+    {
+      "commit": "879f5d855aa43e099fb349ea7b18d58c7f2d1a40",
+      "path": "docs/CC16_NATIVE_LUA_VARIANT_CPP_CLEANUP_SOURCE_ADMISSION.md",
+      "bytes": 5655,
+      "sha256": "03d99151929ad7cfeb601bf54e246da9b50ba95a625bc81d3f27427715ad0ae5",
+      "git_blob": "9a725592006d98ad2b423d30470bba7502f1aca2"
+    },
+    {
+      "commit": "879f5d855aa43e099fb349ea7b18d58c7f2d1a40",
+      "path": "reports/cc16_native_lua_variant_cpp_cleanup_source_admission.json",
+      "bytes": 33441,
+      "sha256": "e12a8884c035a08ac6ee86a49d172bce03f58a29bb34dbe3cedae02a55b3435d",
+      "git_blob": "7414a61feab8cac70f768bf0cfbf0ce7aa282c66"
+    }
+  ],
+  "unchanged_dependency_pins": [
+    {
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "LF_only": true,
+      "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "src/native_string.cpp",
+      "bytes": 9121,
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "LF_only": true,
+      "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "bytes": 5893,
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "LF_only": true,
+      "git_blob": "4a2569e19b6f25c308cba1c3cdb2b2989db2cddd",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "bytes": 8443,
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "LF_only": true,
+      "git_blob": "de3c69b53e00840fab31b41e2195bdc1789b6baf",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "bytes": 3113,
+      "sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+      "LF_only": true,
+      "git_blob": "60b3f627150fa058fac7b8c4c74537cb3aee0a68",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "bytes": 5450,
+      "sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+      "LF_only": true,
+      "git_blob": "103d6fe4d772bb3078c48fe8bcf3f929a385fdda",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "LF_only": true,
+      "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "LF_only": true,
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "src/native_game_container_lifetime.cpp",
+      "bytes": 7370,
+      "sha256": "026006b90be17b7b8a2527bee98828a9a80ba0bdbbc96053fae5d244585a4a9c",
+      "LF_only": true,
+      "git_blob": "04959dc2f18535f1f3c656bca22bd53996dac45d",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "include/bsp/native_lua_variant_link_record_allocation.hpp",
+      "bytes": 1395,
+      "sha256": "7981f4745307349729690d0c2e1e2a0b8526a0829e3778d1c1b55f91c832f52d",
+      "LF_only": true,
+      "git_blob": "0c7ec0eeeaa26327bdb68db0428777c22002fddc",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "src/native_lua_variant_link_record_allocation.cpp",
+      "bytes": 1101,
+      "sha256": "6724c0bc953776268b22b310341b3e847495b94a247a37918af3f7b9590d01e9",
+      "LF_only": true,
+      "git_blob": "f7e89244438d07e0ae9bb3624f648e59bb81885f",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "include/bsp/native_lua_variant_header_initializer.hpp",
+      "bytes": 1998,
+      "sha256": "de307db13063f3a5b775c9c2ee775b8a11f475944705bdda7860ef8a0af2a596",
+      "LF_only": true,
+      "git_blob": "b2a658d0ce6b4b210c727e12b8b640c7b318735e",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "src/native_lua_variant_header_initializer.cpp",
+      "bytes": 1351,
+      "sha256": "113c184fca2a7c20e1da61cf310913eec074d03835f767ef4f07d6b9deab1f96",
+      "LF_only": true,
+      "git_blob": "9db6cff3a1f8291375a1bf2df6e498c9f70ace75",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "include/bsp/cc13_left55.hpp",
+      "bytes": 32394,
+      "sha256": "5a71656a1194f5838743ba5b2b5ea7b6f94a8a4ed8cc65ffd3714c18b8de4dfb",
+      "LF_only": true,
+      "git_blob": "837cbc3ce7b9ead900f52ef505293f6fa378fd7f",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "src/cc13_left55_seg55.cpp",
+      "bytes": 49527,
+      "sha256": "5d33b376fb3f98f9b05a438165207ec346de4a8400e8e6c94e726e8ca1ffbf4c",
+      "LF_only": true,
+      "git_blob": "da88eab79d03eeb7b5b7b84fcb645d9cb7ca2de4",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "include/bsp/cc13_seg33b.hpp",
+      "bytes": 53766,
+      "sha256": "3cbe6be635f637ffc0d10ab50246d5cb4ad0ca5b509e35325f122c4f28de48d3",
+      "LF_only": true,
+      "git_blob": "6114ab19972bc4519b8ceba9192eb17ca86832af",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "src/cc13_seg33b_misc.cpp",
+      "bytes": 67079,
+      "sha256": "b7097473cbe468dfa0a7737ee15da61b4d53f7eb0aa7e1b93dbe7c60c0b74a68",
+      "LF_only": true,
+      "git_blob": "99bbb11a9447d0e51d0485b0de44b3c82ee195f4",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "include/bsp/native_lua_variant_string_fields_cleanup.hpp",
+      "bytes": 1698,
+      "sha256": "ae929f84634f6a83d4a6cc22c6264b7a9e6a1ce8e23f993658c50b56eb08fdd9",
+      "LF_only": true,
+      "git_blob": "4641600a6913109803278e3675d8aa5c615fff38",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "src/native_lua_variant_string_fields_cleanup.cpp",
+      "bytes": 1226,
+      "sha256": "b31d80cd54faaba97c7a83a2e2994915ebb18003e17500614f04bc1f68e54921",
+      "LF_only": true,
+      "git_blob": "f7ab40687b6b3ff421096b6d5537de9347786d22",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "bytes": 2373,
+      "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "LF_only": true,
+      "git_blob": "9379a2a6cd97f13fabc2554b0b539363b85a5da2",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    },
+    {
+      "path": "src/native_singleton_vector_registration_wrappers.cpp",
+      "bytes": 4283,
+      "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "LF_only": true,
+      "git_blob": "4096dfcf1c693f3c509c8db5f1cfb621e523b0d0",
+      "matches_design_and_base": true,
+      "verified_base_equal_a477": true
+    }
+  ],
+  "verified_artifact_and_Git_receipts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\compile.cmd",
+      "retained": "local\\variant_scalar_review\\author_artifacts\\compile.cmd",
+      "bytes": 479,
+      "sha256": "97ab4ba790745b4b73898b4ef254640306ed0efc44fcdcb20e880b24d5e50953"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\compile.log",
+      "retained": "local\\variant_scalar_review\\author_artifacts\\compile.log",
+      "bytes": 35,
+      "sha256": "5e744182c7f07a68b0f2f9dd498d144f6591c53565c55416703f7aaa0072a22e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\compile_receipt.json",
+      "retained": "local\\variant_scalar_review\\author_artifacts\\compile_receipt.json",
+      "bytes": 2243,
+      "sha256": "18a6da9e49814065459504891e3571c6715f42bcc8a3463e14b5abfc843074a3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\retirement.obj",
+      "retained": "local\\variant_scalar_review\\author_artifacts\\retirement.obj",
+      "bytes": 29841,
+      "sha256": "bcf718e1da6a3616432f6ce4ca1a1975b04413611437c73dae9626af73710bdd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\retirement.asm",
+      "retained": "local\\variant_scalar_review\\author_artifacts\\retirement.asm",
+      "bytes": 160544,
+      "sha256": "4e73f461faf55cbf8042268c4540f9ffd3d6eef665d0474593f45a9ff65bf79f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\coff_parser.py",
+      "retained": "local\\variant_scalar_review\\author_artifacts\\coff_parser.py",
+      "bytes": 6094,
+      "sha256": "881421504c9ca78a9baf2bccbed0d46e57ea0a203fccdf3ebe6f7c77bd5ea8f4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\audit_scalar.py",
+      "retained": "local\\variant_scalar_review\\author_artifacts\\audit_scalar.py",
+      "bytes": 9708,
+      "sha256": "e707e1b7ee12a44e0b587194567739c69e2a5902e86ed622d4769d7a8486ac99"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\emitted.json",
+      "retained": "local\\variant_scalar_review\\author_artifacts\\emitted.json",
+      "bytes": 507898,
+      "sha256": "04b5039b3c2e11443196e35b3549b2dd7f4aa1a8f3d3f79bb98a8c3763e56ccc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\audit.json",
+      "retained": "local\\variant_scalar_review\\author_artifacts\\audit.json",
+      "bytes": 91420,
+      "sha256": "d808981a5fd586387a6a1d4ae5cea8db2cfd1836f86c023c0505ec920052d2e3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\scalar_listing.txt",
+      "retained": "local\\variant_scalar_review\\author_artifacts\\scalar_listing.txt",
+      "bytes": 614,
+      "sha256": "4db0c905c1492af6513515eab397ba20b02b0bed9211d956d118735e192089c8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\metadata.json",
+      "retained": "local\\variant_scalar_review\\author_artifacts\\metadata.json",
+      "bytes": 1851,
+      "sha256": "77b1f4aa3733cc270acd71195009d3896ca1454c1a41c0796c46237d06380b13"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\input_pins.json",
+      "retained": "local\\variant_scalar_review\\author_artifacts\\input_pins.json",
+      "bytes": 11143,
+      "sha256": "1ea5f43070dfac0c8ade40a41ad41522d445e3048d21f3d70ae00ce9d6398236"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\native_verified.json",
+      "retained": "local\\variant_scalar_review\\author_artifacts\\native_verified.json",
+      "bytes": 7731,
+      "sha256": "773b3c89b74c12435f5838b0f62b3406fa2ed5f801935c27fe83a02335958411"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\compile_inputs\\include\\bsp\\native_lua_variant_retirement.hpp",
+      "retained": "local\\variant_scalar_review\\author_artifacts\\compile_inputs\\include\\bsp\\native_lua_variant_retirement.hpp",
+      "bytes": 13752,
+      "sha256": "df5d0402be719517ff4704794e723b0dd5b8235731449bf8256edf8640603a9a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\compile_inputs\\src\\native_lua_variant_retirement.cpp",
+      "retained": "local\\variant_scalar_review\\author_artifacts\\compile_inputs\\src\\native_lua_variant_retirement.cpp",
+      "bytes": 24076,
+      "sha256": "5db41574abcb3a94fdb9c6f5c8f96f2b7b0c1f0c2a7f438fe64d622980c065ca"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\baseline_artifacts\\compile.cmd",
+      "retained": "local\\variant_scalar_review\\baseline_artifacts\\compile.cmd",
+      "bytes": 473,
+      "sha256": "c40ee65612e53349c78b9fba322f2449477157d46c7983a8e4466b9b4d986359"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\baseline_artifacts\\compile.log",
+      "retained": "local\\variant_scalar_review\\baseline_artifacts\\compile.log",
+      "bytes": 35,
+      "sha256": "5e744182c7f07a68b0f2f9dd498d144f6591c53565c55416703f7aaa0072a22e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\baseline_artifacts\\retirement.obj",
+      "retained": "local\\variant_scalar_review\\baseline_artifacts\\retirement.obj",
+      "bytes": 29327,
+      "sha256": "387096d30eda207e5c0873fe66e2805ac2179dd4a46e5070db77b62a9dd43594"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\baseline_artifacts\\retirement.asm",
+      "retained": "local\\variant_scalar_review\\baseline_artifacts\\retirement.asm",
+      "bytes": 157032,
+      "sha256": "1757cd7e6d3339912d9dd5ef6aa6fd78324f768d2aed2d33e5c47fddbb19b5ef"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\baseline_artifacts\\emitted.json",
+      "retained": "local\\variant_scalar_review\\baseline_artifacts\\emitted.json",
+      "bytes": 458071,
+      "sha256": "5243b25ce3898c10c6e4bae945f5120be8acea6757852caab010eba56e1898b1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\baseline_artifacts\\EH.json",
+      "retained": "local\\variant_scalar_review\\baseline_artifacts\\EH.json",
+      "bytes": 19120,
+      "sha256": "49d822392a935a6489b186f9519b82f07262b03c9cadb6a8ec9d0f746b60ae02"
+    },
+    {
+      "path": "a4774a47499cf3ad0f38af058a53fef1e71cea61:reports/cc16_native_lua_variant_cpp_cleanup.json",
+      "retained": "local\\variant_scalar_review\\immutable_inputs\\a4774a47499cf3ad0f38af058a53fef1e71cea61\\reports\\cc16_native_lua_variant_cpp_cleanup.json",
+      "bytes": 171611,
+      "sha256": "9670177711f416451dccf5b9e86b17bbd9d01f9eef086f4152966a94c16eeb7d"
+    },
+    {
+      "path": "b5d3e2c957ca22cb8f29ca0816f6e2aec87d5e73:reports/cc16_native_lua_variant_cpp_cleanup_review.json",
+      "retained": "local\\variant_scalar_review\\immutable_inputs\\b5d3e2c957ca22cb8f29ca0816f6e2aec87d5e73\\reports\\cc16_native_lua_variant_cpp_cleanup_review.json",
+      "bytes": 162534,
+      "sha256": "2e62e204bcf69c54d354a578797851cb80dc18cea5b03da4bcd79d20b4c988a2"
+    },
+    {
+      "path": "5ef322e05be0fa3197cc9ee6d952dcbe5c9dd142:docs/CC16_NATIVE_LUA_VARIANT_SCALAR_DELETE_READINESS.md",
+      "retained": "local\\variant_scalar_review\\immutable_inputs\\5ef322e05be0fa3197cc9ee6d952dcbe5c9dd142\\docs\\CC16_NATIVE_LUA_VARIANT_SCALAR_DELETE_READINESS.md",
+      "bytes": 10337,
+      "sha256": "e04a1bb5a12a6e7ce0aac4d0c4e6b72b213d4254c722be8c97bdf7035f543a62"
+    },
+    {
+      "path": "5ef322e05be0fa3197cc9ee6d952dcbe5c9dd142:reports/cc16_native_lua_variant_scalar_delete_readiness.json",
+      "retained": "local\\variant_scalar_review\\immutable_inputs\\5ef322e05be0fa3197cc9ee6d952dcbe5c9dd142\\reports\\cc16_native_lua_variant_scalar_delete_readiness.json",
+      "bytes": 34809,
+      "sha256": "58ebba71c39ef0b5c71c894f5b177e95f2e6ae58e285b65c07a4715d7ee8589a"
+    },
+    {
+      "path": "879f5d855aa43e099fb349ea7b18d58c7f2d1a40:docs/CC16_NATIVE_LUA_VARIANT_CPP_CLEANUP_SOURCE_ADMISSION.md",
+      "retained": "local\\variant_scalar_review\\immutable_inputs\\879f5d855aa43e099fb349ea7b18d58c7f2d1a40\\docs\\CC16_NATIVE_LUA_VARIANT_CPP_CLEANUP_SOURCE_ADMISSION.md",
+      "bytes": 5655,
+      "sha256": "03d99151929ad7cfeb601bf54e246da9b50ba95a625bc81d3f27427715ad0ae5"
+    },
+    {
+      "path": "879f5d855aa43e099fb349ea7b18d58c7f2d1a40:reports/cc16_native_lua_variant_cpp_cleanup_source_admission.json",
+      "retained": "local\\variant_scalar_review\\immutable_inputs\\879f5d855aa43e099fb349ea7b18d58c7f2d1a40\\reports\\cc16_native_lua_variant_cpp_cleanup_source_admission.json",
+      "bytes": 33441,
+      "sha256": "e12a8884c035a08ac6ee86a49d172bce03f58a29bb34dbe3cedae02a55b3435d"
+    },
+    {
+      "dependency": "include/bsp/native_string.hpp",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "verified_current_and_candidate": true
+    },
+    {
+      "dependency": "src/native_string.cpp",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "verified_current_and_candidate": true
+    },
+    {
+      "dependency": "include/bsp/native_string_pool_owner.hpp",
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "verified_current_and_candidate": true
+    },
+    {
+      "dependency": "src/native_string_pool_owner.cpp",
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "verified_current_and_candidate": true
+    },
+    {
+      "dependency": "include/bsp/native_string_pool_storage.hpp",
+      "sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+      "verified_current_and_candidate": true
+    },
+    {
+      "dependency": "src/native_string_pool_storage.cpp",
+      "sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+      "verified_current_and_candidate": true
+    },
+    {
+      "dependency": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "verified_current_and_candidate": true
+    },
+    {
+      "dependency": "src/singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "verified_current_and_candidate": true
+    },
+    {
+      "dependency": "src/native_game_container_lifetime.cpp",
+      "sha256": "026006b90be17b7b8a2527bee98828a9a80ba0bdbbc96053fae5d244585a4a9c",
+      "verified_current_and_candidate": true
+    },
+    {
+      "dependency": "include/bsp/native_lua_variant_link_record_allocation.hpp",
+      "sha256": "7981f4745307349729690d0c2e1e2a0b8526a0829e3778d1c1b55f91c832f52d",
+      "verified_current_and_candidate": true
+    },
+    {
+      "dependency": "src/native_lua_variant_link_record_allocation.cpp",
+      "sha256": "6724c0bc953776268b22b310341b3e847495b94a247a37918af3f7b9590d01e9",
+      "verified_current_and_candidate": true
+    },
+    {
+      "dependency": "include/bsp/native_lua_variant_header_initializer.hpp",
+      "sha256": "de307db13063f3a5b775c9c2ee775b8a11f475944705bdda7860ef8a0af2a596",
+      "verified_current_and_candidate": true
+    },
+    {
+      "dependency": "src/native_lua_variant_header_initializer.cpp",
+      "sha256": "113c184fca2a7c20e1da61cf310913eec074d03835f767ef4f07d6b9deab1f96",
+      "verified_current_and_candidate": true
+    },
+    {
+      "dependency": "include/bsp/cc13_left55.hpp",
+      "sha256": "5a71656a1194f5838743ba5b2b5ea7b6f94a8a4ed8cc65ffd3714c18b8de4dfb",
+      "verified_current_and_candidate": true
+    },
+    {
+      "dependency": "src/cc13_left55_seg55.cpp",
+      "sha256": "5d33b376fb3f98f9b05a438165207ec346de4a8400e8e6c94e726e8ca1ffbf4c",
+      "verified_current_and_candidate": true
+    },
+    {
+      "dependency": "include/bsp/cc13_seg33b.hpp",
+      "sha256": "3cbe6be635f637ffc0d10ab50246d5cb4ad0ca5b509e35325f122c4f28de48d3",
+      "verified_current_and_candidate": true
+    },
+    {
+      "dependency": "src/cc13_seg33b_misc.cpp",
+      "sha256": "b7097473cbe468dfa0a7737ee15da61b4d53f7eb0aa7e1b93dbe7c60c0b74a68",
+      "verified_current_and_candidate": true
+    },
+    {
+      "dependency": "include/bsp/native_lua_variant_string_fields_cleanup.hpp",
+      "sha256": "ae929f84634f6a83d4a6cc22c6264b7a9e6a1ce8e23f993658c50b56eb08fdd9",
+      "verified_current_and_candidate": true
+    },
+    {
+      "dependency": "src/native_lua_variant_string_fields_cleanup.cpp",
+      "sha256": "b31d80cd54faaba97c7a83a2e2994915ebb18003e17500614f04bc1f68e54921",
+      "verified_current_and_candidate": true
+    },
+    {
+      "dependency": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "verified_current_and_candidate": true
+    },
+    {
+      "dependency": "src/native_singleton_vector_registration_wrappers.cpp",
+      "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "verified_current_and_candidate": true
+    }
+  ],
+  "old_Source_and_layout": {
+    "two_old_Source_prefixes_exact": true,
+    "Frame_bytes": 120,
+    "Operation_bytes": 24,
+    "sidecar_bytes": 56,
+    "old_APIs_and_broad_Hosts_exact": true,
+    "same_actual_strings_operation_sidecars_forwarded": true,
+    "new_scalar_aggregate": {
+      "name": "NativeLuaVariantScalarDeleteResult",
+      "fields": [
+        "NativeLuaVariantRetirementResult completion",
+        "std::uintptr_t captured_receiver_bits"
+      ],
+      "bytes": 8,
+      "bits_offset": 4,
+      "aggregate_and_trivially_copyable_compile_assertions": true,
+      "default_fields_or_implicit_conversion": false,
+      "noncompletion_identity_is_diagnostic_not_success": true,
+      "completed_identity_may_be_dangling": true
+    },
+    "no_caller_CMake_metadata_or_table_change": true
+  },
+  "source_control_review": {
+    "capture": "captureV and uintptr bits before actual qualified child",
+    "child": "destruct_native_lua_variant_00884af0_cpp_cleanup with SAME context/operation/cleanup",
+    "completion": "use returned childResult, never operation.result as scalar completion",
+    "noncompletion": "immediate actual status plus diagnostic captured bits before flags/free, preserving stopped child records",
+    "late_HOME": "one CURRENT volatile unsigned-char alias read at borrowed actualDWORD HOME offset0 after completed child",
+    "free": "mask01 iff set invokes actual singleton_lifetime_free on capturedV",
+    "normal_return": "completed plus captured bits, even after free",
+    "CPP_escape": "no ordinary returned result, flags read, free, scalar catch/action/frame/guard or replacement exception"
+  },
+  "image": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "native_spans": [
+    {
+      "id": "scalar_00884fa0",
+      "address": "00884fa0",
+      "bytes": 30,
+      "sha256": "1e12378e15ffd6846e22c5321444c71e85ca37f9f502a575667414cc12a7f02b",
+      "hex": "568bf1e848fbfffff644240801740956e8f715370083c4048bc65ec20400",
+      "instructions": [
+        {
+          "address": "00884fa0",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "00884fa1",
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "00884fa3",
+          "bytes": "e848fbffff",
+          "mnemonic": "call",
+          "operands": "0x884af0"
+        },
+        {
+          "address": "00884fa8",
+          "bytes": "f644240801",
+          "mnemonic": "test",
+          "operands": "byte ptr [esp + 8], 1"
+        },
+        {
+          "address": "00884fad",
+          "bytes": "7409",
+          "mnemonic": "je",
+          "operands": "0x884fb8"
+        },
+        {
+          "address": "00884faf",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "00884fb0",
+          "bytes": "e8f7153700",
+          "mnemonic": "call",
+          "operands": "0xbf65ac"
+        },
+        {
+          "address": "00884fb5",
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "address": "00884fb8",
+          "bytes": "8bc6",
+          "mnemonic": "mov",
+          "operands": "eax, esi"
+        },
+        {
+          "address": "00884fba",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "00884fbb",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ]
+    },
+    {
+      "id": "profile_00d0e6f4",
+      "address": "00d0e6f4",
+      "bytes": 4,
+      "sha256": "75f6591c4e50361ede510f9fc914fd98e0a12d4d8d0de16cdc7a292fa4bceb47",
+      "hex": "a04f8800",
+      "instructions": []
+    },
+    {
+      "id": "child_00884af0",
+      "address": "00884af0",
+      "bytes": 101,
+      "sha256": "40a084311f56d31bed50c8487a75be912da83ec178507028bab016b5775db2c3",
+      "hex": "6aff68db70c90064a100000000506489250000000051568bf189742404c706f4e6d000c744241000000000e8001e00008b461085c0c7442410ffffffff74168b760c6a0183c6015650e88251b9ff8bc8e8cbc934008b4c24085e64890d0000000083c410c3",
+      "instructions": [
+        {
+          "address": "00884af0",
+          "bytes": "6aff",
+          "mnemonic": "push",
+          "operands": "-1"
+        },
+        {
+          "address": "00884af2",
+          "bytes": "68db70c900",
+          "mnemonic": "push",
+          "operands": "0xc970db"
+        },
+        {
+          "address": "00884af7",
+          "bytes": "64a100000000",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr fs:[0]"
+        },
+        {
+          "address": "00884afd",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00884afe",
+          "bytes": "64892500000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], esp"
+        },
+        {
+          "address": "00884b05",
+          "bytes": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "00884b06",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "00884b07",
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "00884b09",
+          "bytes": "89742404",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 4], esi"
+        },
+        {
+          "address": "00884b0d",
+          "bytes": "c706f4e6d000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi], 0xd0e6f4"
+        },
+        {
+          "address": "00884b13",
+          "bytes": "c744241000000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x10], 0"
+        },
+        {
+          "address": "00884b1b",
+          "bytes": "e8001e0000",
+          "mnemonic": "call",
+          "operands": "0x886920"
+        },
+        {
+          "address": "00884b20",
+          "bytes": "8b4610",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 0x10]"
+        },
+        {
+          "address": "00884b23",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00884b25",
+          "bytes": "c7442410ffffffff",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x10], 0xffffffff"
+        },
+        {
+          "address": "00884b2d",
+          "bytes": "7416",
+          "mnemonic": "je",
+          "operands": "0x884b45"
+        },
+        {
+          "address": "00884b2f",
+          "bytes": "8b760c",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [esi + 0xc]"
+        },
+        {
+          "address": "00884b32",
+          "bytes": "6a01",
+          "mnemonic": "push",
+          "operands": "1"
+        },
+        {
+          "address": "00884b34",
+          "bytes": "83c601",
+          "mnemonic": "add",
+          "operands": "esi, 1"
+        },
+        {
+          "address": "00884b37",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "00884b38",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00884b39",
+          "bytes": "e88251b9ff",
+          "mnemonic": "call",
+          "operands": "0x419cc0"
+        },
+        {
+          "address": "00884b3e",
+          "bytes": "8bc8",
+          "mnemonic": "mov",
+          "operands": "ecx, eax"
+        },
+        {
+          "address": "00884b40",
+          "bytes": "e8cbc93400",
+          "mnemonic": "call",
+          "operands": "0xbd1510"
+        },
+        {
+          "address": "00884b45",
+          "bytes": "8b4c2408",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 8]"
+        },
+        {
+          "address": "00884b49",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "00884b4a",
+          "bytes": "64890d00000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], ecx"
+        },
+        {
+          "address": "00884b51",
+          "bytes": "83c410",
+          "mnemonic": "add",
+          "operands": "esp, 0x10"
+        },
+        {
+          "address": "00884b54",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    }
+  ],
+  "native_summary": {
+    "complete_scalar_bytes": 30,
+    "complete_scalar_instructions": 11,
+    "end_inclusive": "00884fbd",
+    "RET4_address": "00884fbb",
+    "RET4_bytes": 3,
+    "child_bytes": 101,
+    "profile_word_bytes": 4,
+    "all_spans_bytes": 135,
+    "code_instructions": 40,
+    "current_native_D0E6F4_points_to_scalar": true,
+    "indexed_direct_callers": 0,
+    "indexed_data_ptr_sites": [
+      "00d0e6f4"
+    ],
+    "indirect_runtime_caller_graph_not_proved": true
+  },
+  "strict_compile_receipt": {
+    "command": "cmd /d /c local\\native_lua_variant_scalar_delete\\compile.cmd",
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete",
+    "exit_code": 0,
+    "compile_iterations": 1,
+    "compiler": "MSVC19.51.36244.0 Win32",
+    "flags": "/nologo /c /std:c++17 /O2 /Ob2 /DNDEBUG /MD /EHsc /W4 /WX /fp:strict /Iinclude /FAs",
+    "warnings": 0,
+    "target_execution": false,
+    "new_test_or_link": false,
+    "compile_input_Source": [
+      {
+        "path": "include/bsp/native_lua_variant_retirement.hpp",
+        "bytes": 13752,
+        "sha256": "df5d0402be719517ff4704794e723b0dd5b8235731449bf8256edf8640603a9a",
+        "LF_only": true,
+        "baseline_commit": "a4774a47499cf3ad0f38af058a53fef1e71cea61",
+        "baseline_git_blob": "184feb7f6d20e57780c93aaf7c02ad00556d079c"
+      },
+      {
+        "path": "src/native_lua_variant_retirement.cpp",
+        "bytes": 24076,
+        "sha256": "5db41574abcb3a94fdb9c6f5c8f96f2b7b0c1f0c2a7f438fe64d622980c065ca",
+        "LF_only": true,
+        "baseline_commit": "a4774a47499cf3ad0f38af058a53fef1e71cea61",
+        "baseline_git_blob": "06bb6a314cc77bea59c63d1a76f0fba1f9e9b447"
+      }
+    ],
+    "final_Source": [
+      {
+        "path": "include/bsp/native_lua_variant_retirement.hpp",
+        "bytes": 13881,
+        "sha256": "14258135096189f2892e4d896af417ed0c8fb616d5f1659bbc1d9d032f68a7db",
+        "LF_only": true,
+        "baseline_commit": "a4774a47499cf3ad0f38af058a53fef1e71cea61",
+        "baseline_git_blob": "184feb7f6d20e57780c93aaf7c02ad00556d079c"
+      },
+      {
+        "path": "src/native_lua_variant_retirement.cpp",
+        "bytes": 24076,
+        "sha256": "5db41574abcb3a94fdb9c6f5c8f96f2b7b0c1f0c2a7f438fe64d622980c065ca",
+        "LF_only": true,
+        "baseline_commit": "a4774a47499cf3ad0f38af058a53fef1e71cea61",
+        "baseline_git_blob": "06bb6a314cc77bea59c63d1a76f0fba1f9e9b447"
+      }
+    ],
+    "post_compile_comment_only_correction": {
+      "header_only": true,
+      "Root_requested": "allow supported flagsHOME/rawreceiver aliases; separate flags lifetime from context/metadata/result disjointness",
+      "noncomment_tokens_and_whitespace_normalized_identical": true,
+      "recompile_required": false,
+      "CPP_unchanged": true
+    },
+    "complete_object": {
+      "bytes": 29841,
+      "sha256": "bcf718e1da6a3616432f6ce4ca1a1975b04413611437c73dae9626af73710bdd",
+      "machine": 332
+    },
+    "code_sections": 37,
+    "code_bytes": 5483,
+    "operations": 1652,
+    "direct_calls": 75,
+    "old_sections_compared": 36,
+    "old_code_bytes": 5428,
+    "old_operations": 1631,
+    "new_scalar_bytes": 55,
+    "new_scalar_operations": 21,
+    "no_common_build_or_link_attestation": true
+  },
+  "strict_receipt_independently_rerun": false,
+  "strict_artifact_inputs_verified": true,
+  "independent_COFF": {
+    "machine": 332,
+    "all_sections": 73,
+    "object_bytes": 29841,
+    "object_sha256": "bcf718e1da6a3616432f6ce4ca1a1975b04413611437c73dae9626af73710bdd",
+    "code_sections": 37,
+    "code_bytes": 5483,
+    "decoded_operations": 1652,
+    "direct_calls": 75,
+    "all73_payloads_symbols_relocations_and1652_ops_agree_author": true,
+    "all37_code_inventory_rows_and75_call_receipts_agree_author": true,
+    "relocation_normalization": "Only replace source-path-derived ?A0xHEX@ anonymous-namespace identity token with ?ANON@; retain offset,type,target name and target value; section-number renumbering is represented by target identity"
+  },
+  "all_old_code_comparisons": [
+    {
+      "identity": "??$clear_kernel@$00@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "bytes": 973,
+      "instructions": 300,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "72501339fb6e1777687cc8c74725c7fd8a3b2771b746ce2bcc2ea03b5448a568"
+    },
+    {
+      "identity": "__ehhandler$??$clear_kernel@$00@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "bytes": 29,
+      "instructions": 9,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "ab63087fa35fef0ab5a7f3eefb94c7b4748e88f12c1a2e37ec76aba8455b65f9"
+    },
+    {
+      "identity": "??$clear_kernel@$0A@@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "bytes": 852,
+      "instructions": 261,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "b3ad33c3b031375da8390e1ab597002c48b611e4624864dec060a7934b98b271"
+    },
+    {
+      "identity": "__ehhandler$??$clear_kernel@$0A@@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "bytes": 29,
+      "instructions": 9,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "8afea02d98ad0c01a97364d71172448b65489b675b09649b09075195de9cdd27"
+    },
+    {
+      "identity": "??$destruct_kernel@$00@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "bytes": 493,
+      "instructions": 160,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "5104d3d2c57c1a2917de78f81f45bd2c7fb119488b0cf8034ec0396cc5d21e32"
+    },
+    {
+      "identity": "__ehhandler$??$destruct_kernel@$00@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "bytes": 29,
+      "instructions": 9,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "ab63087fa35fef0ab5a7f3eefb94c7b4748e88f12c1a2e37ec76aba8455b65f9"
+    },
+    {
+      "identity": "??$destruct_kernel@$0A@@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "bytes": 359,
+      "instructions": 121,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "2c945bd729616d6dfed9809d91a78e5b6b8e03c459d05662ae75c379d2f91c9e"
+    },
+    {
+      "identity": "__ehhandler$??$destruct_kernel@$0A@@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "bytes": 29,
+      "instructions": 9,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "8afea02d98ad0c01a97364d71172448b65489b675b09649b09075195de9cdd27"
+    },
+    {
+      "identity": "??$enter_mode@$00@?ANON@bsp@@YAPAUNativeLuaVariantRetirementFrame@1@AAUNativeLuaVariantRetirementOperation@1@AAUNativeStringRawPoolContext@1@W4NativeLuaVariantRetirementBody@1@PAX3PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "bytes": 300,
+      "instructions": 74,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "fd576a17a0541024b4983d9527d54b2f80687dc6f489b609cbeea59048775be7"
+    },
+    {
+      "identity": "??$enter_mode@$0A@@?ANON@bsp@@YAPAUNativeLuaVariantRetirementFrame@1@AAUNativeLuaVariantRetirementOperation@1@AAUNativeStringRawPoolContext@1@W4NativeLuaVariantRetirementBody@1@PAX3PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "bytes": 29,
+      "instructions": 8,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "81d96b6fd9b91d122c17451b442d74ad2366642a8f8c8f7bf8518bfc9cd0560e"
+    },
+    {
+      "identity": "??$observe_incoming@$00@?ANON@bsp@@YAXPAUNativeLuaVariantCppCleanupRecord@1@ABUNativeLuaVariantRetirementFrame@1@_NPAX@Z",
+      "bytes": 39,
+      "instructions": 12,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "cb5f93c03c69fe73b9512977d63be0f6fca258fe94636a9b72acc89895cc93f1"
+    },
+    {
+      "identity": "??$record_for@$00@?ANON@bsp@@YAPAUNativeLuaVariantCppCleanupRecord@1@PBUNativeLuaVariantCppCleanupBacking@1@I@Z",
+      "bytes": 23,
+      "instructions": 7,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "022ba7751546c7d4e6249e5d5e154c5d28568b06025fcbcee37e897afd0a8fd9"
+    },
+    {
+      "identity": "??$record_for@$0A@@?ANON@bsp@@YAPAUNativeLuaVariantCppCleanupRecord@1@PBUNativeLuaVariantCppCleanupBacking@1@I@Z",
+      "bytes": 3,
+      "instructions": 2,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "4bc724f3b1d0caf4fe369c18cba3102e6c4ea057f63fe1587e3973134a7f755e"
+    },
+    {
+      "identity": "??$run_action@$00@?ANON@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@1@AAUNativeStringRawPoolContext@1@PAX@Z",
+      "bytes": 154,
+      "instructions": 43,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "7c18a816c16175704e857cca2580a5c2f4d96488deb5e3d143e1a5172ca696ff"
+    },
+    {
+      "identity": "??$run_action@$01@?ANON@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@1@AAUNativeStringRawPoolContext@1@PAX@Z",
+      "bytes": 155,
+      "instructions": 43,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "e59d675b29fa83bce65ff788b06c658689bb618b1786c3fa9e2c16182293b028"
+    },
+    {
+      "identity": "??$subtree_kernel@$00@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "bytes": 630,
+      "instructions": 198,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "5665838e52bf05825ee7d0de4cdffb6478928be34391df326a352349c4164118"
+    },
+    {
+      "identity": "__ehhandler$??$subtree_kernel@$00@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "bytes": 29,
+      "instructions": 9,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "348e25ba25bf5bad095cdda32d0b75cb2ae7a7dfa64bd14569fd3dbbb8d5ca1b"
+    },
+    {
+      "identity": "??$subtree_kernel@$0A@@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "bytes": 484,
+      "instructions": 157,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "14ac1f118ec8aac75ba6cb89de7c6a48a22a7622769d6f92cf0028fa9609d79d"
+    },
+    {
+      "identity": "__ehhandler$??$subtree_kernel@$0A@@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "bytes": 29,
+      "instructions": 9,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "de50d5cf7b34573d5321c7f14cae5853d1153ecc9e75bd47e1e242bd17cb630f"
+    },
+    {
+      "identity": "?arm_action@?ANON@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@2@PAX@Z",
+      "bytes": 19,
+      "instructions": 5,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "f091b083a6ba7ee6ed043e21a1a79d3cd50933287fec20b87ffdaa9ae44acc0e"
+    },
+    {
+      "identity": "?at@?ANON@bsp@@YAPAXPAXI@Z",
+      "bytes": 9,
+      "instructions": 3,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "6d1e1d30f2068501de61e0022c4352fda2a7650f29eb96f01ad04fa160305e21"
+    },
+    {
+      "identity": "?clear_native_lua_variant_00886920@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+      "bytes": 23,
+      "instructions": 7,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "01cc0863c03520883efa0eae860bfe29ba9436b257a1f973e43d185abd24b404"
+    },
+    {
+      "identity": "?clear_native_lua_variant_00886920_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "bytes": 5,
+      "instructions": 1,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449"
+    },
+    {
+      "identity": "?complete@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@@Z",
+      "bytes": 35,
+      "instructions": 8,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "27dab23c88a0380197acac2bd56b87701bbaeb479ac408c2c41fefc1a135368a"
+    },
+    {
+      "identity": "?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+      "bytes": 27,
+      "instructions": 8,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "b25714e5cd530f9fa885920a1bae80f157578359d1471429003b01a29ec64871"
+    },
+    {
+      "identity": "?destroy_native_lua_variant_subtree_006ee890_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "bytes": 5,
+      "instructions": 1,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449"
+    },
+    {
+      "identity": "?destruct_native_lua_variant_00884af0@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+      "bytes": 23,
+      "instructions": 7,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "01cc0863c03520883efa0eae860bfe29ba9436b257a1f973e43d185abd24b404"
+    },
+    {
+      "identity": "?destruct_native_lua_variant_00884af0_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "bytes": 5,
+      "instructions": 1,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449"
+    },
+    {
+      "identity": "?enter@?ANON@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z",
+      "bytes": 396,
+      "instructions": 80,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "11e62136994cb17bdf9d096da67378c61f56c6063d439aaeb1f192392fd43a72"
+    },
+    {
+      "identity": "?read_byte@?ANON@bsp@@YAEPAXI@Z",
+      "bytes": 12,
+      "instructions": 4,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "70f382ed286514895a32913b02b0f76dace67c0ab00f7fa65c76b13712200bc8"
+    },
+    {
+      "identity": "?read_pointer@?ANON@bsp@@YAPAXPAXI@Z",
+      "bytes": 12,
+      "instructions": 4,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "141fe36521c0146c800983701f3780f1e87872eba06924b50770fb794107644c"
+    },
+    {
+      "identity": "?read_word@?ANON@bsp@@YAIPAXI@Z",
+      "bytes": 12,
+      "instructions": 4,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "141fe36521c0146c800983701f3780f1e87872eba06924b50770fb794107644c"
+    },
+    {
+      "identity": "?retain_cpp_failure@?ANON@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z",
+      "bytes": 75,
+      "instructions": 25,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "36fe0e3a64cc2e13c497f9e4a3eea880c56077af66f774bf4dcaea7bbde1a533"
+    },
+    {
+      "identity": "?return_buffer@?ANON@bsp@@YAXAAUNativeStringRawPoolContext@2@AAUNativeLuaVariantRetirementFrame@2@PAXIII@Z",
+      "bytes": 60,
+      "instructions": 21,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "369979cde4503a4fbe2fefbfa3df954b0a832996de1d91960fd1c7105b64a599"
+    },
+    {
+      "identity": "?stop@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@W432@@Z",
+      "bytes": 26,
+      "instructions": 7,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "4566e135fa48eb18764218ecca73f2b37ba9bbec73c4d05bacb35b7e37c99b17"
+    },
+    {
+      "identity": "?write_word@?ANON@bsp@@YAXPAXII@Z",
+      "bytes": 16,
+      "instructions": 5,
+      "raw_and_normalized_relocations_equal": true,
+      "sha256": "76bbadc14dccdb9d6227d26bf221f5ac30a809741438df8ba9a77bc568a30b0b"
+    }
+  ],
+  "all36_old_code_raw_bytes_and_normalized_relocations_exact_a477": true,
+  "old_code_bytes": 5428,
+  "old_code_operations": 1631,
+  "complete_new_scalar_section": {
+    "number": 60,
+    "name": ".text$mn",
+    "identity": "?scalar_delete_native_lua_variant_00884fa0_cpp_cleanup@bsp@@YA?AUNativeLuaVariantScalarDeleteResult@1@PAXADIAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z",
+    "declared_bytes": 55,
+    "raw_pointer": 10529,
+    "payload_bytes": 55,
+    "sha256": "84f6f4ac1a573b15c5a7e00dcf41bba47e44001742aa94c4629475a2027b2008",
+    "hex": "56ff7424188b74240cff742418ff74241856e80000000083c41085c075158b44240c8a00a801740956e80000000083c40433c08bd65ec3",
+    "chars": 1615859744,
+    "symbols": [
+      {
+        "index": 121,
+        "name": ".text$mn",
+        "value": 0,
+        "section": 60,
+        "type": 0,
+        "storage": 3,
+        "aux": 1
+      },
+      {
+        "index": 139,
+        "name": "?scalar_delete_native_lua_variant_00884fa0_cpp_cleanup@bsp@@YA?AUNativeLuaVariantScalarDeleteResult@1@PAXADIAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "value": 0,
+        "section": 60,
+        "type": 32,
+        "storage": 2,
+        "aux": 0
+      }
+    ],
+    "relocations": [
+      {
+        "offset": 19,
+        "type": 20,
+        "target": "??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "target_value": 0,
+        "target_section": 8
+      },
+      {
+        "offset": 42,
+        "type": 20,
+        "target": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "target_value": 0,
+        "target_section": 0
+      }
+    ],
+    "instructions": [
+      {
+        "offset": 0,
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "offset": 1,
+        "bytes": "ff742418",
+        "mnemonic": "push",
+        "operands": "dword ptr [esp + 0x18]"
+      },
+      {
+        "offset": 5,
+        "bytes": "8b74240c",
+        "mnemonic": "mov",
+        "operands": "esi, dword ptr [esp + 0xc]"
+      },
+      {
+        "offset": 9,
+        "bytes": "ff742418",
+        "mnemonic": "push",
+        "operands": "dword ptr [esp + 0x18]"
+      },
+      {
+        "offset": 13,
+        "bytes": "ff742418",
+        "mnemonic": "push",
+        "operands": "dword ptr [esp + 0x18]"
+      },
+      {
+        "offset": 17,
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "offset": 18,
+        "bytes": "e800000000",
+        "mnemonic": "call",
+        "operands": "0x17"
+      },
+      {
+        "offset": 23,
+        "bytes": "83c410",
+        "mnemonic": "add",
+        "operands": "esp, 0x10"
+      },
+      {
+        "offset": 26,
+        "bytes": "85c0",
+        "mnemonic": "test",
+        "operands": "eax, eax"
+      },
+      {
+        "offset": 28,
+        "bytes": "7515",
+        "mnemonic": "jne",
+        "operands": "0x33"
+      },
+      {
+        "offset": 30,
+        "bytes": "8b44240c",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esp + 0xc]"
+      },
+      {
+        "offset": 34,
+        "bytes": "8a00",
+        "mnemonic": "mov",
+        "operands": "al, byte ptr [eax]"
+      },
+      {
+        "offset": 36,
+        "bytes": "a801",
+        "mnemonic": "test",
+        "operands": "al, 1"
+      },
+      {
+        "offset": 38,
+        "bytes": "7409",
+        "mnemonic": "je",
+        "operands": "0x31"
+      },
+      {
+        "offset": 40,
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "offset": 41,
+        "bytes": "e800000000",
+        "mnemonic": "call",
+        "operands": "0x2e"
+      },
+      {
+        "offset": 46,
+        "bytes": "83c404",
+        "mnemonic": "add",
+        "operands": "esp, 4"
+      },
+      {
+        "offset": 49,
+        "bytes": "33c0",
+        "mnemonic": "xor",
+        "operands": "eax, eax"
+      },
+      {
+        "offset": 51,
+        "bytes": "8bd6",
+        "mnemonic": "mov",
+        "operands": "edx, esi"
+      },
+      {
+        "offset": 53,
+        "bytes": "5e",
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "offset": 54,
+        "bytes": "c3",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ]
+  },
+  "new_scalar_control_flow": {
+    "capture_ESI_offset": "05",
+    "qualified_child_call_offset": "12",
+    "qualified_child_target": {
+      "offset": 19,
+      "type": 20,
+      "symbol": "??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "symbol_index": 158,
+      "target_section": 8,
+      "target_value": 0
+    },
+    "child_status_test_offset": "1a",
+    "noncompletion_jne_offset": "1c",
+    "noncompletion_target": "33",
+    "noncompletion_skips_flags_and_free": true,
+    "late_HOME_pointer_load": "1e",
+    "sole_byte_read_offset": "22",
+    "sole_byte_read_bytes": "8a00",
+    "mask_test_offset": "24",
+    "mask": 1,
+    "clearbit_branch_offset": "26",
+    "clearbit_target": "31",
+    "captured_receiver_push_offset": "28",
+    "actual_free_call_offset": "29",
+    "free_target": {
+      "offset": 42,
+      "type": 20,
+      "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+      "symbol_index": 140,
+      "target_section": 0,
+      "target_value": 0
+    },
+    "normal_completed_EAX_zero_offset": "31",
+    "captured_bits_EDX_offset": "33",
+    "plainRET_offset": "36",
+    "Result_failure_keeps_child_EAX": true,
+    "Cpp_escape_no_ordinary_return_path": true,
+    "no_scalar_local_EH": true
+  },
+  "strict_CPP_return_qualification": {
+    "observed": "8Baggregate returnedEAX=completion,EDX=capturedreceiverbits;fiveordinaryDWORDparameters;plainRET",
+    "no_hidden_return_buffer_in_observed_strict_function": true,
+    "no_result_memory_stores_in_scalar": true,
+    "FPO": {
+      "offset_word": 0,
+      "procedure_bytes": 55,
+      "locals_DWORDs": 0,
+      "parameter_DWORDs": 5,
+      "prolog_bytes": 1,
+      "saved_register_count": 1,
+      "has_SEH_flag": 0,
+      "uses_EBP_flag": 0,
+      "frame_type": 0
+    },
+    "not_Original_EAX_receiver_RET4": true,
+    "no_general_caller_storage_private_ABI_untouched_claim": true,
+    "common_emission_requires_fresh_Root_check": true
+  },
+  "all_direct_calls": [
+    {
+      "section": "??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 68,
+      "target": "??$enter_mode@$00@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@1@AAUNativeLuaVariantRetirementOperation@1@AAUNativeStringRawPoolContext@1@W4NativeLuaVariantRetirementBody@1@PAX3PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "type": 20
+    },
+    {
+      "section": "??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 211,
+      "target": "??$enter_mode@$00@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@1@AAUNativeLuaVariantRetirementOperation@1@AAUNativeStringRawPoolContext@1@W4NativeLuaVariantRetirementBody@1@PAX3PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "type": 20
+    },
+    {
+      "section": "??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 467,
+      "target": "??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "type": 20
+    },
+    {
+      "section": "??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 603,
+      "target": "?complete@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@@Z",
+      "type": 20
+    },
+    {
+      "section": "??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 629,
+      "target": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+      "type": 20
+    },
+    {
+      "section": "??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 666,
+      "target": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+      "type": 20
+    },
+    {
+      "section": "??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 704,
+      "target": "?complete@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@@Z",
+      "type": 20
+    },
+    {
+      "section": "??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 801,
+      "target": "?return_buffer@?A0x32cdb250@bsp@@YAXAAUNativeStringRawPoolContext@2@AAUNativeLuaVariantRetirementFrame@2@PAXIII@Z",
+      "type": 20
+    },
+    {
+      "section": "??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 820,
+      "target": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+      "type": 20
+    },
+    {
+      "section": "??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 906,
+      "target": "?retain_cpp_failure@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z",
+      "type": 20
+    },
+    {
+      "section": "??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 921,
+      "target": "??$observe_incoming@$00@?A0x32cdb250@bsp@@YAXPAUNativeLuaVariantCppCleanupRecord@1@ABUNativeLuaVariantRetirementFrame@1@_NPAX@Z",
+      "type": 20
+    },
+    {
+      "section": "??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 950,
+      "target": "??$observe_incoming@$00@?A0x32cdb250@bsp@@YAXPAUNativeLuaVariantCppCleanupRecord@1@ABUNativeLuaVariantRetirementFrame@1@_NPAX@Z",
+      "type": 20
+    },
+    {
+      "section": "??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 962,
+      "target": "__CxxThrowException@8",
+      "type": 20
+    },
+    {
+      "section": "__ehhandler$??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 14,
+      "target": "@__security_check_cookie@4",
+      "type": 20
+    },
+    {
+      "section": "??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 64,
+      "target": "?enter@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z",
+      "type": 20
+    },
+    {
+      "section": "??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 160,
+      "target": "?enter@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z",
+      "type": 20
+    },
+    {
+      "section": "??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 390,
+      "target": "??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "type": 20
+    },
+    {
+      "section": "??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 526,
+      "target": "?complete@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@@Z",
+      "type": 20
+    },
+    {
+      "section": "??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 552,
+      "target": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+      "type": 20
+    },
+    {
+      "section": "??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 589,
+      "target": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+      "type": 20
+    },
+    {
+      "section": "??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 627,
+      "target": "?complete@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@@Z",
+      "type": 20
+    },
+    {
+      "section": "??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 724,
+      "target": "?return_buffer@?A0x32cdb250@bsp@@YAXAAUNativeStringRawPoolContext@2@AAUNativeLuaVariantRetirementFrame@2@PAXIII@Z",
+      "type": 20
+    },
+    {
+      "section": "??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 743,
+      "target": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+      "type": 20
+    },
+    {
+      "section": "??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 829,
+      "target": "?retain_cpp_failure@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z",
+      "type": 20
+    },
+    {
+      "section": "??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 841,
+      "target": "__CxxThrowException@8",
+      "type": 20
+    },
+    {
+      "section": "__ehhandler$??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 14,
+      "target": "@__security_check_cookie@4",
+      "type": 20
+    },
+    {
+      "section": "??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 67,
+      "target": "??$enter_mode@$00@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@1@AAUNativeLuaVariantRetirementOperation@1@AAUNativeStringRawPoolContext@1@W4NativeLuaVariantRetirementBody@1@PAX3PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "type": 20
+    },
+    {
+      "section": "??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 191,
+      "target": "??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "type": 20
+    },
+    {
+      "section": "??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 306,
+      "target": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+      "type": 20
+    },
+    {
+      "section": "??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 336,
+      "target": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+      "type": 20
+    },
+    {
+      "section": "??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 397,
+      "target": "?retain_cpp_failure@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z",
+      "type": 20
+    },
+    {
+      "section": "??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 417,
+      "target": "??$observe_incoming@$00@?A0x32cdb250@bsp@@YAXPAUNativeLuaVariantCppCleanupRecord@1@ABUNativeLuaVariantRetirementFrame@1@_NPAX@Z",
+      "type": 20
+    },
+    {
+      "section": "??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 454,
+      "target": "??$run_action@$00@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@1@AAUNativeStringRawPoolContext@1@PAX@Z",
+      "type": 20
+    },
+    {
+      "section": "??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 482,
+      "target": "__CxxThrowException@8",
+      "type": 20
+    },
+    {
+      "section": "__ehhandler$??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 14,
+      "target": "@__security_check_cookie@4",
+      "type": 20
+    },
+    {
+      "section": "??$destruct_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 64,
+      "target": "?enter@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z",
+      "type": 20
+    },
+    {
+      "section": "??$destruct_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 147,
+      "target": "??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "type": 20
+    },
+    {
+      "section": "??$destruct_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 248,
+      "target": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+      "type": 20
+    },
+    {
+      "section": "??$destruct_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 278,
+      "target": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+      "type": 20
+    },
+    {
+      "section": "??$destruct_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 336,
+      "target": "?retain_cpp_failure@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z",
+      "type": 20
+    },
+    {
+      "section": "??$destruct_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 348,
+      "target": "__CxxThrowException@8",
+      "type": 20
+    },
+    {
+      "section": "__ehhandler$??$destruct_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 14,
+      "target": "@__security_check_cookie@4",
+      "type": 20
+    },
+    {
+      "section": "??$enter_mode@$00@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@1@AAUNativeLuaVariantRetirementOperation@1@AAUNativeStringRawPoolContext@1@W4NativeLuaVariantRetirementBody@1@PAX3PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 61,
+      "target": "?enter@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z",
+      "type": 20
+    },
+    {
+      "section": "??$enter_mode@$0A@@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@1@AAUNativeLuaVariantRetirementOperation@1@AAUNativeStringRawPoolContext@1@W4NativeLuaVariantRetirementBody@1@PAX3PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 20,
+      "target": "?enter@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z",
+      "type": 20
+    },
+    {
+      "section": "??$run_action@$00@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@1@AAUNativeStringRawPoolContext@1@PAX@Z",
+      "offset": 95,
+      "target": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+      "type": 20
+    },
+    {
+      "section": "??$run_action@$00@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@1@AAUNativeStringRawPoolContext@1@PAX@Z",
+      "offset": 130,
+      "target": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+      "type": 20
+    },
+    {
+      "section": "??$run_action@$01@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@1@AAUNativeStringRawPoolContext@1@PAX@Z",
+      "offset": 96,
+      "target": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+      "type": 20
+    },
+    {
+      "section": "??$run_action@$01@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@1@AAUNativeStringRawPoolContext@1@PAX@Z",
+      "offset": 131,
+      "target": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+      "type": 20
+    },
+    {
+      "section": "??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 68,
+      "target": "??$enter_mode@$00@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@1@AAUNativeLuaVariantRetirementOperation@1@AAUNativeStringRawPoolContext@1@W4NativeLuaVariantRetirementBody@1@PAX3PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "type": 20
+    },
+    {
+      "section": "??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 200,
+      "target": "??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "type": 20
+    },
+    {
+      "section": "??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 312,
+      "target": "??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "type": 20
+    },
+    {
+      "section": "??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 396,
+      "target": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+      "type": 20
+    },
+    {
+      "section": "??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 426,
+      "target": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+      "type": 20
+    },
+    {
+      "section": "??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 444,
+      "target": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+      "type": 20
+    },
+    {
+      "section": "??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 534,
+      "target": "?retain_cpp_failure@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z",
+      "type": 20
+    },
+    {
+      "section": "??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 554,
+      "target": "??$observe_incoming@$00@?A0x32cdb250@bsp@@YAXPAUNativeLuaVariantCppCleanupRecord@1@ABUNativeLuaVariantRetirementFrame@1@_NPAX@Z",
+      "type": 20
+    },
+    {
+      "section": "??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 591,
+      "target": "??$run_action@$01@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@1@AAUNativeStringRawPoolContext@1@PAX@Z",
+      "type": 20
+    },
+    {
+      "section": "??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 619,
+      "target": "__CxxThrowException@8",
+      "type": 20
+    },
+    {
+      "section": "__ehhandler$??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 14,
+      "target": "@__security_check_cookie@4",
+      "type": 20
+    },
+    {
+      "section": "??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 65,
+      "target": "?enter@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z",
+      "type": 20
+    },
+    {
+      "section": "??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 167,
+      "target": "??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "type": 20
+    },
+    {
+      "section": "??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 259,
+      "target": "??$destruct_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "type": 20
+    },
+    {
+      "section": "??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 329,
+      "target": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+      "type": 20
+    },
+    {
+      "section": "??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 364,
+      "target": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+      "type": 20
+    },
+    {
+      "section": "??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 380,
+      "target": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+      "type": 20
+    },
+    {
+      "section": "??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 461,
+      "target": "?retain_cpp_failure@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z",
+      "type": 20
+    },
+    {
+      "section": "??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 473,
+      "target": "__CxxThrowException@8",
+      "type": 20
+    },
+    {
+      "section": "__ehhandler$??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 14,
+      "target": "@__security_check_cookie@4",
+      "type": 20
+    },
+    {
+      "section": "?clear_native_lua_variant_00886920@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+      "offset": 14,
+      "target": "??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "type": 20
+    },
+    {
+      "section": "?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+      "offset": 18,
+      "target": "??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "type": 20
+    },
+    {
+      "section": "?destruct_native_lua_variant_00884af0@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+      "offset": 14,
+      "target": "??$destruct_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "type": 20
+    },
+    {
+      "section": "?return_buffer@?A0x32cdb250@bsp@@YAXAAUNativeStringRawPoolContext@2@AAUNativeLuaVariantRetirementFrame@2@PAXIII@Z",
+      "offset": 22,
+      "target": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+      "type": 20
+    },
+    {
+      "section": "?return_buffer@?A0x32cdb250@bsp@@YAXAAUNativeStringRawPoolContext@2@AAUNativeLuaVariantRetirementFrame@2@PAXIII@Z",
+      "offset": 49,
+      "target": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+      "type": 20
+    },
+    {
+      "section": "?scalar_delete_native_lua_variant_00884fa0_cpp_cleanup@bsp@@YA?AUNativeLuaVariantScalarDeleteResult@1@PAXADIAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 18,
+      "target": "??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "type": 20
+    },
+    {
+      "section": "?scalar_delete_native_lua_variant_00884fa0_cpp_cleanup@bsp@@YA?AUNativeLuaVariantScalarDeleteResult@1@PAXADIAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "offset": 41,
+      "target": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+      "type": 20
+    }
+  ],
+  "whole_EH": {
+    "tables": [
+      {
+        "identity": "__ehfuncinfo$??$clear_kernel@$0A@@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "bytes": 88,
+        "max_state": 2,
+        "unwind": [
+          {
+            "source": 0,
+            "target": -1,
+            "action": 0
+          },
+          {
+            "source": 1,
+            "target": -1,
+            "action": 0
+          }
+        ],
+        "tries": [
+          {
+            "low": 0,
+            "high": 0,
+            "catch_high": 1,
+            "handlers": [
+              {
+                "adjectives": 64,
+                "type": 0,
+                "displacement": 0,
+                "target": "__catch$??$clear_kernel@$0A@@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0",
+                "target_offset": 823
+              }
+            ]
+          }
+        ],
+        "ehflags": 1,
+        "every_byte_accounted": true
+      },
+      {
+        "identity": "__ehfuncinfo$??$destruct_kernel@$0A@@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "bytes": 88,
+        "max_state": 2,
+        "unwind": [
+          {
+            "source": 0,
+            "target": -1,
+            "action": 0
+          },
+          {
+            "source": 1,
+            "target": -1,
+            "action": 0
+          }
+        ],
+        "tries": [
+          {
+            "low": 0,
+            "high": 0,
+            "catch_high": 1,
+            "handlers": [
+              {
+                "adjectives": 64,
+                "type": 0,
+                "displacement": 0,
+                "target": "__catch$??$destruct_kernel@$0A@@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0",
+                "target_offset": 330
+              }
+            ]
+          }
+        ],
+        "ehflags": 1,
+        "every_byte_accounted": true
+      },
+      {
+        "identity": "__ehfuncinfo$??$subtree_kernel@$0A@@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "bytes": 88,
+        "max_state": 2,
+        "unwind": [
+          {
+            "source": 0,
+            "target": -1,
+            "action": 0
+          },
+          {
+            "source": 1,
+            "target": -1,
+            "action": 0
+          }
+        ],
+        "tries": [
+          {
+            "low": 0,
+            "high": 0,
+            "catch_high": 1,
+            "handlers": [
+              {
+                "adjectives": 64,
+                "type": 0,
+                "displacement": 0,
+                "target": "__catch$??$subtree_kernel@$0A@@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0",
+                "target_offset": 455
+              }
+            ]
+          }
+        ],
+        "ehflags": 1,
+        "every_byte_accounted": true
+      },
+      {
+        "identity": "__ehfuncinfo$??$clear_kernel@$00@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "bytes": 88,
+        "max_state": 2,
+        "unwind": [
+          {
+            "source": 0,
+            "target": -1,
+            "action": 0
+          },
+          {
+            "source": 1,
+            "target": -1,
+            "action": 0
+          }
+        ],
+        "tries": [
+          {
+            "low": 0,
+            "high": 0,
+            "catch_high": 1,
+            "handlers": [
+              {
+                "adjectives": 64,
+                "type": 0,
+                "displacement": 0,
+                "target": "__catch$??$clear_kernel@$00@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0",
+                "target_offset": 900
+              }
+            ]
+          }
+        ],
+        "ehflags": 1,
+        "every_byte_accounted": true
+      },
+      {
+        "identity": "__ehfuncinfo$??$destruct_kernel@$00@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "bytes": 140,
+        "max_state": 4,
+        "unwind": [
+          {
+            "source": 0,
+            "target": -1,
+            "action": 0
+          },
+          {
+            "source": 1,
+            "target": -1,
+            "action": 0
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "action": 0
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "action": 0
+          }
+        ],
+        "tries": [
+          {
+            "low": 2,
+            "high": 2,
+            "catch_high": 3,
+            "handlers": [
+              {
+                "adjectives": 64,
+                "type": 0,
+                "displacement": 0,
+                "target": "__catch$??$destruct_kernel@$00@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$1",
+                "target_offset": 471
+              }
+            ]
+          },
+          {
+            "low": 0,
+            "high": 0,
+            "catch_high": 3,
+            "handlers": [
+              {
+                "adjectives": 64,
+                "type": 0,
+                "displacement": 0,
+                "target": "__catch$??$destruct_kernel@$00@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0",
+                "target_offset": 388
+              }
+            ]
+          }
+        ],
+        "ehflags": 1,
+        "every_byte_accounted": true
+      },
+      {
+        "identity": "__ehfuncinfo$??$subtree_kernel@$00@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "bytes": 140,
+        "max_state": 4,
+        "unwind": [
+          {
+            "source": 0,
+            "target": -1,
+            "action": 0
+          },
+          {
+            "source": 1,
+            "target": -1,
+            "action": 0
+          },
+          {
+            "source": 2,
+            "target": 1,
+            "action": 0
+          },
+          {
+            "source": 3,
+            "target": 1,
+            "action": 0
+          }
+        ],
+        "tries": [
+          {
+            "low": 2,
+            "high": 2,
+            "catch_high": 3,
+            "handlers": [
+              {
+                "adjectives": 64,
+                "type": 0,
+                "displacement": 0,
+                "target": "__catch$??$subtree_kernel@$00@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$1",
+                "target_offset": 608
+              }
+            ]
+          },
+          {
+            "low": 0,
+            "high": 0,
+            "catch_high": 3,
+            "handlers": [
+              {
+                "adjectives": 64,
+                "type": 0,
+                "displacement": 0,
+                "target": "__catch$??$subtree_kernel@$00@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0",
+                "target_offset": 525
+              }
+            ]
+          }
+        ],
+        "ehflags": 1,
+        "every_byte_accounted": true
+      }
+    ],
+    "xdata_bytes": 632,
+    "SafeSEH_names": [
+      "__ehhandler$??$clear_kernel@$0A@@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "__ehhandler$??$destruct_kernel@$0A@@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "__ehhandler$??$subtree_kernel@$0A@@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "__ehhandler$??$clear_kernel@$00@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "__ehhandler$??$destruct_kernel@$00@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "__ehhandler$??$subtree_kernel@$00@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z"
+    ],
+    "SafeSEH_bytes": 24
+  },
+  "whole_EH_comparison": {
+    "all6_whole_xdata632B_raw_and_normalized_relocations_exact_a477": true,
+    "all656_EH_bytes_accounted_including24B_SafeSEH": true,
+    "all_catch_targets_decoded_instruction_starts": true,
+    "same6_SafeSEH_handler_identities": true,
+    "raw_SafeSEH_symbol_indices_renumbered": true,
+    "no_scalar_local_EH_or_new_action_table": true
+  },
+  "all_old_FPO_records": {
+    "??$enter_mode@$00@?ANON@bsp@@YAPAUNativeLuaVariantRetirementFrame@1@AAUNativeLuaVariantRetirementOperation@1@AAUNativeStringRawPoolContext@1@W4NativeLuaVariantRetirementBody@1@PAX3PBUNativeLuaVariantCppCleanupBacking@1@@Z": {
+      "raw": "000000002c0100000e00000006000902",
+      "relocs": [
+        [
+          0,
+          7,
+          "??$enter_mode@$00@?ANON@bsp@@YAPAUNativeLuaVariantRetirementFrame@1@AAUNativeLuaVariantRetirementOperation@1@AAUNativeStringRawPoolContext@1@W4NativeLuaVariantRetirementBody@1@PAX3PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          0
+        ]
+      ],
+      "procedure_bytes": 300,
+      "locals_DWORDs": 14,
+      "parameter_DWORDs": 6,
+      "prolog_bytes": 9,
+      "saved_register_count": 2,
+      "has_SEH": 0,
+      "uses_EBP": 0,
+      "frame_type": 0
+    },
+    "??$enter_mode@$0A@@?ANON@bsp@@YAPAUNativeLuaVariantRetirementFrame@1@AAUNativeLuaVariantRetirementOperation@1@AAUNativeStringRawPoolContext@1@W4NativeLuaVariantRetirementBody@1@PAX3PBUNativeLuaVariantCppCleanupBacking@1@@Z": {
+      "raw": "000000001d0000000000000006000000",
+      "relocs": [
+        [
+          0,
+          7,
+          "??$enter_mode@$0A@@?ANON@bsp@@YAPAUNativeLuaVariantRetirementFrame@1@AAUNativeLuaVariantRetirementOperation@1@AAUNativeStringRawPoolContext@1@W4NativeLuaVariantRetirementBody@1@PAX3PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          0
+        ]
+      ],
+      "procedure_bytes": 29,
+      "locals_DWORDs": 0,
+      "parameter_DWORDs": 6,
+      "prolog_bytes": 0,
+      "saved_register_count": 0,
+      "has_SEH": 0,
+      "uses_EBP": 0,
+      "frame_type": 0
+    },
+    "??$observe_incoming@$00@?ANON@bsp@@YAXPAUNativeLuaVariantCppCleanupRecord@1@ABUNativeLuaVariantRetirementFrame@1@_NPAX@Z": {
+      "raw": "00000000270000000000000004000000",
+      "relocs": [
+        [
+          0,
+          7,
+          "??$observe_incoming@$00@?ANON@bsp@@YAXPAUNativeLuaVariantCppCleanupRecord@1@ABUNativeLuaVariantRetirementFrame@1@_NPAX@Z",
+          0
+        ]
+      ],
+      "procedure_bytes": 39,
+      "locals_DWORDs": 0,
+      "parameter_DWORDs": 4,
+      "prolog_bytes": 0,
+      "saved_register_count": 0,
+      "has_SEH": 0,
+      "uses_EBP": 0,
+      "frame_type": 0
+    },
+    "??$record_for@$00@?ANON@bsp@@YAPAUNativeLuaVariantCppCleanupRecord@1@PBUNativeLuaVariantCppCleanupBacking@1@I@Z": {
+      "raw": "00000000170000000000000002000000",
+      "relocs": [
+        [
+          0,
+          7,
+          "??$record_for@$00@?ANON@bsp@@YAPAUNativeLuaVariantCppCleanupRecord@1@PBUNativeLuaVariantCppCleanupBacking@1@I@Z",
+          0
+        ]
+      ],
+      "procedure_bytes": 23,
+      "locals_DWORDs": 0,
+      "parameter_DWORDs": 2,
+      "prolog_bytes": 0,
+      "saved_register_count": 0,
+      "has_SEH": 0,
+      "uses_EBP": 0,
+      "frame_type": 0
+    },
+    "??$record_for@$0A@@?ANON@bsp@@YAPAUNativeLuaVariantCppCleanupRecord@1@PBUNativeLuaVariantCppCleanupBacking@1@I@Z": {
+      "raw": "00000000030000000000000002000000",
+      "relocs": [
+        [
+          0,
+          7,
+          "??$record_for@$0A@@?ANON@bsp@@YAPAUNativeLuaVariantCppCleanupRecord@1@PBUNativeLuaVariantCppCleanupBacking@1@I@Z",
+          0
+        ]
+      ],
+      "procedure_bytes": 3,
+      "locals_DWORDs": 0,
+      "parameter_DWORDs": 2,
+      "prolog_bytes": 0,
+      "saved_register_count": 0,
+      "has_SEH": 0,
+      "uses_EBP": 0,
+      "frame_type": 0
+    },
+    "??$run_action@$00@?ANON@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@1@AAUNativeStringRawPoolContext@1@PAX@Z": {
+      "raw": "000000009a0000000000000003000a12",
+      "relocs": [
+        [
+          0,
+          7,
+          "??$run_action@$00@?ANON@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@1@AAUNativeStringRawPoolContext@1@PAX@Z",
+          0
+        ]
+      ],
+      "procedure_bytes": 154,
+      "locals_DWORDs": 0,
+      "parameter_DWORDs": 3,
+      "prolog_bytes": 10,
+      "saved_register_count": 2,
+      "has_SEH": 0,
+      "uses_EBP": 1,
+      "frame_type": 0
+    },
+    "??$run_action@$01@?ANON@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@1@AAUNativeStringRawPoolContext@1@PAX@Z": {
+      "raw": "000000009b0000000000000003000a12",
+      "relocs": [
+        [
+          0,
+          7,
+          "??$run_action@$01@?ANON@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@1@AAUNativeStringRawPoolContext@1@PAX@Z",
+          0
+        ]
+      ],
+      "procedure_bytes": 155,
+      "locals_DWORDs": 0,
+      "parameter_DWORDs": 3,
+      "prolog_bytes": 10,
+      "saved_register_count": 2,
+      "has_SEH": 0,
+      "uses_EBP": 1,
+      "frame_type": 0
+    },
+    "?arm_action@?ANON@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@2@PAX@Z": {
+      "raw": "00000000130000000000000002000000",
+      "relocs": [
+        [
+          0,
+          7,
+          "?arm_action@?ANON@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@2@PAX@Z",
+          0
+        ]
+      ],
+      "procedure_bytes": 19,
+      "locals_DWORDs": 0,
+      "parameter_DWORDs": 2,
+      "prolog_bytes": 0,
+      "saved_register_count": 0,
+      "has_SEH": 0,
+      "uses_EBP": 0,
+      "frame_type": 0
+    },
+    "?at@?ANON@bsp@@YAPAXPAXI@Z": {
+      "raw": "00000000090000000000000002000000",
+      "relocs": [
+        [
+          0,
+          7,
+          "?at@?ANON@bsp@@YAPAXPAXI@Z",
+          0
+        ]
+      ],
+      "procedure_bytes": 9,
+      "locals_DWORDs": 0,
+      "parameter_DWORDs": 2,
+      "prolog_bytes": 0,
+      "saved_register_count": 0,
+      "has_SEH": 0,
+      "uses_EBP": 0,
+      "frame_type": 0
+    },
+    "?clear_native_lua_variant_00886920@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z": {
+      "raw": "00000000170000000000000003000000",
+      "relocs": [
+        [
+          0,
+          7,
+          "?clear_native_lua_variant_00886920@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+          0
+        ]
+      ],
+      "procedure_bytes": 23,
+      "locals_DWORDs": 0,
+      "parameter_DWORDs": 3,
+      "prolog_bytes": 0,
+      "saved_register_count": 0,
+      "has_SEH": 0,
+      "uses_EBP": 0,
+      "frame_type": 0
+    },
+    "?clear_native_lua_variant_00886920_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z": {
+      "raw": "00000000050000000000000004000000",
+      "relocs": [
+        [
+          0,
+          7,
+          "?clear_native_lua_variant_00886920_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z",
+          0
+        ]
+      ],
+      "procedure_bytes": 5,
+      "locals_DWORDs": 0,
+      "parameter_DWORDs": 4,
+      "prolog_bytes": 0,
+      "saved_register_count": 0,
+      "has_SEH": 0,
+      "uses_EBP": 0,
+      "frame_type": 0
+    },
+    "?complete@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@@Z": {
+      "raw": "00000000230000000000000002000000",
+      "relocs": [
+        [
+          0,
+          7,
+          "?complete@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@@Z",
+          0
+        ]
+      ],
+      "procedure_bytes": 35,
+      "locals_DWORDs": 0,
+      "parameter_DWORDs": 2,
+      "prolog_bytes": 0,
+      "saved_register_count": 0,
+      "has_SEH": 0,
+      "uses_EBP": 0,
+      "frame_type": 0
+    },
+    "?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z": {
+      "raw": "000000001b0000000000000004000000",
+      "relocs": [
+        [
+          0,
+          7,
+          "?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+          0
+        ]
+      ],
+      "procedure_bytes": 27,
+      "locals_DWORDs": 0,
+      "parameter_DWORDs": 4,
+      "prolog_bytes": 0,
+      "saved_register_count": 0,
+      "has_SEH": 0,
+      "uses_EBP": 0,
+      "frame_type": 0
+    },
+    "?destroy_native_lua_variant_subtree_006ee890_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z": {
+      "raw": "00000000050000000000000005000000",
+      "relocs": [
+        [
+          0,
+          7,
+          "?destroy_native_lua_variant_subtree_006ee890_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z",
+          0
+        ]
+      ],
+      "procedure_bytes": 5,
+      "locals_DWORDs": 0,
+      "parameter_DWORDs": 5,
+      "prolog_bytes": 0,
+      "saved_register_count": 0,
+      "has_SEH": 0,
+      "uses_EBP": 0,
+      "frame_type": 0
+    },
+    "?destruct_native_lua_variant_00884af0@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z": {
+      "raw": "00000000170000000000000003000000",
+      "relocs": [
+        [
+          0,
+          7,
+          "?destruct_native_lua_variant_00884af0@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+          0
+        ]
+      ],
+      "procedure_bytes": 23,
+      "locals_DWORDs": 0,
+      "parameter_DWORDs": 3,
+      "prolog_bytes": 0,
+      "saved_register_count": 0,
+      "has_SEH": 0,
+      "uses_EBP": 0,
+      "frame_type": 0
+    },
+    "?destruct_native_lua_variant_00884af0_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z": {
+      "raw": "00000000050000000000000004000000",
+      "relocs": [
+        [
+          0,
+          7,
+          "?destruct_native_lua_variant_00884af0_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z",
+          0
+        ]
+      ],
+      "procedure_bytes": 5,
+      "locals_DWORDs": 0,
+      "parameter_DWORDs": 4,
+      "prolog_bytes": 0,
+      "saved_register_count": 0,
+      "has_SEH": 0,
+      "uses_EBP": 0,
+      "frame_type": 0
+    },
+    "?enter@?ANON@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z": {
+      "raw": "000000008c0100001e00000005000801",
+      "relocs": [
+        [
+          0,
+          7,
+          "?enter@?ANON@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z",
+          0
+        ]
+      ],
+      "procedure_bytes": 396,
+      "locals_DWORDs": 30,
+      "parameter_DWORDs": 5,
+      "prolog_bytes": 8,
+      "saved_register_count": 1,
+      "has_SEH": 0,
+      "uses_EBP": 0,
+      "frame_type": 0
+    },
+    "?read_byte@?ANON@bsp@@YAEPAXI@Z": {
+      "raw": "000000000c0000000000000002000000",
+      "relocs": [
+        [
+          0,
+          7,
+          "?read_byte@?ANON@bsp@@YAEPAXI@Z",
+          0
+        ]
+      ],
+      "procedure_bytes": 12,
+      "locals_DWORDs": 0,
+      "parameter_DWORDs": 2,
+      "prolog_bytes": 0,
+      "saved_register_count": 0,
+      "has_SEH": 0,
+      "uses_EBP": 0,
+      "frame_type": 0
+    },
+    "?read_pointer@?ANON@bsp@@YAPAXPAXI@Z": {
+      "raw": "000000000c0000000000000002000000",
+      "relocs": [
+        [
+          0,
+          7,
+          "?read_pointer@?ANON@bsp@@YAPAXPAXI@Z",
+          0
+        ]
+      ],
+      "procedure_bytes": 12,
+      "locals_DWORDs": 0,
+      "parameter_DWORDs": 2,
+      "prolog_bytes": 0,
+      "saved_register_count": 0,
+      "has_SEH": 0,
+      "uses_EBP": 0,
+      "frame_type": 0
+    },
+    "?read_word@?ANON@bsp@@YAIPAXI@Z": {
+      "raw": "000000000c0000000000000002000000",
+      "relocs": [
+        [
+          0,
+          7,
+          "?read_word@?ANON@bsp@@YAIPAXI@Z",
+          0
+        ]
+      ],
+      "procedure_bytes": 12,
+      "locals_DWORDs": 0,
+      "parameter_DWORDs": 2,
+      "prolog_bytes": 0,
+      "saved_register_count": 0,
+      "has_SEH": 0,
+      "uses_EBP": 0,
+      "frame_type": 0
+    },
+    "?retain_cpp_failure@?ANON@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z": {
+      "raw": "000000004b0000000000000002000501",
+      "relocs": [
+        [
+          0,
+          7,
+          "?retain_cpp_failure@?ANON@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z",
+          0
+        ]
+      ],
+      "procedure_bytes": 75,
+      "locals_DWORDs": 0,
+      "parameter_DWORDs": 2,
+      "prolog_bytes": 5,
+      "saved_register_count": 1,
+      "has_SEH": 0,
+      "uses_EBP": 0,
+      "frame_type": 0
+    },
+    "?return_buffer@?ANON@bsp@@YAXAAUNativeStringRawPoolContext@2@AAUNativeLuaVariantRetirementFrame@2@PAXIII@Z": {
+      "raw": "000000003c0000000000000006000a02",
+      "relocs": [
+        [
+          0,
+          7,
+          "?return_buffer@?ANON@bsp@@YAXAAUNativeStringRawPoolContext@2@AAUNativeLuaVariantRetirementFrame@2@PAXIII@Z",
+          0
+        ]
+      ],
+      "procedure_bytes": 60,
+      "locals_DWORDs": 0,
+      "parameter_DWORDs": 6,
+      "prolog_bytes": 10,
+      "saved_register_count": 2,
+      "has_SEH": 0,
+      "uses_EBP": 0,
+      "frame_type": 0
+    },
+    "?stop@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@W432@@Z": {
+      "raw": "000000001a0000000000000003000000",
+      "relocs": [
+        [
+          0,
+          7,
+          "?stop@?ANON@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@W432@@Z",
+          0
+        ]
+      ],
+      "procedure_bytes": 26,
+      "locals_DWORDs": 0,
+      "parameter_DWORDs": 3,
+      "prolog_bytes": 0,
+      "saved_register_count": 0,
+      "has_SEH": 0,
+      "uses_EBP": 0,
+      "frame_type": 0
+    },
+    "?write_word@?ANON@bsp@@YAXPAXII@Z": {
+      "raw": "00000000100000000000000003000000",
+      "relocs": [
+        [
+          0,
+          7,
+          "?write_word@?ANON@bsp@@YAXPAXII@Z",
+          0
+        ]
+      ],
+      "procedure_bytes": 16,
+      "locals_DWORDs": 0,
+      "parameter_DWORDs": 3,
+      "prolog_bytes": 0,
+      "saved_register_count": 0,
+      "has_SEH": 0,
+      "uses_EBP": 0,
+      "frame_type": 0
+    }
+  },
+  "all24_old_FPO_raw_and_normalized_relocations_exact": true,
+  "new_scalar_FPO": {
+    "raw": "00000000370000000000000005000101",
+    "relocs": [
+      [
+        0,
+        7,
+        "?scalar_delete_native_lua_variant_00884fa0_cpp_cleanup@bsp@@YA?AUNativeLuaVariantScalarDeleteResult@1@PAXADIAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z",
+        0
+      ]
+    ],
+    "procedure_bytes": 55,
+    "locals_DWORDs": 0,
+    "parameter_DWORDs": 5,
+    "prolog_bytes": 1,
+    "saved_register_count": 1,
+    "has_SEH": 0,
+    "uses_EBP": 0,
+    "frame_type": 0
+  },
+  "metadata": [
+    {
+      "name": ".drectve",
+      "bytes": 415,
+      "declared_bytes": 415,
+      "raw_pointer": 2940,
+      "sha256": "eaac67e3e61b0e9dd4d78c698584c8f9f55156596cfe04a31b3cdda55694b59f"
+    },
+    {
+      "name": ".debug$S",
+      "bytes": 216,
+      "declared_bytes": 216,
+      "raw_pointer": 3355,
+      "sha256": "e064045bac6aa0f342b66601f5c853bd086eacc59cefb81d3fb25cfda5d8d77e"
+    },
+    {
+      "name": ".bss",
+      "bytes": 0,
+      "declared_bytes": 4,
+      "raw_pointer": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": ".chks64",
+      "bytes": 584,
+      "declared_bytes": 584,
+      "raw_pointer": 11660,
+      "sha256": "1671f39656bc5dd1a4c68a29cc63227f8bf0aead136285ab80db412d98bc30b7"
+    }
+  ],
+  "metadata_supplement": {
+    "CodeView_subsection_padding_zero": true,
+    "CodeView_record_types": [
+      "0x1101",
+      "0x113c"
+    ],
+    "CodeView_compiler_record_exact": true,
+    "CodeView_object_paths": [
+      "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-cpp-cleanup\\local\\native_lua_variant_cpp_cleanup\\retirement.obj",
+      "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\retirement.obj"
+    ],
+    "only_new_external_definition": [
+      "?scalar_delete_native_lua_variant_00884fa0_cpp_cleanup@bsp@@YA?AUNativeLuaVariantScalarDeleteResult@1@PAXADIAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z"
+    ]
+  },
+  "metadata_drift": {
+    "debugS_bytes": [
+      212,
+      216
+    ],
+    "object_path_record_changes": true,
+    "entire_compiler_record_exact": true,
+    "chks64_bytes": [
+      568,
+      584
+    ],
+    "section_counts": [
+      71,
+      73
+    ],
+    "BSS_logical_bytes": 4,
+    "BSS_file_payload_bytes": 0,
+    "BSS_raw_pointer": 0,
+    "whole_object_equality_claim": false
+  },
+  "imports": [
+    "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+    "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+    "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+    "@__security_check_cookie@4",
+    "__CxxThrowException@8",
+    "___CxxFrameHandler3",
+    "___security_cookie"
+  ],
+  "provider_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\bsp_core.lib",
+    "bytes": 103720662,
+    "sha256": "f8244bd2e0933e14d1ddec225939ca71ba61a0d4e4cf5ed59d4bd757179895c2",
+    "current_snapshot_only_not_whole_new_source_attestation": true,
+    "providers": [
+      {
+        "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+        "positive_first_linker_index": true,
+        "member_offset": 40165414,
+        "bytes": 15595,
+        "sha256": "6b8d709e064a23e75ea5ff7255c985280d0efb89e9ca8f353b83b903cb42a891",
+        "definition_targets": [
+          "?construct_native_string_pool_00bd1480@bsp@@YAPAUNativeStringPoolStorage@1@PAX@Z",
+          "?get_native_singleton_manager_00415350@bsp@@YAPAXACRAX@Z",
+          "?register_native_singleton_object_00bd0c30@bsp@@YIXPAX00@Z",
+          "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+          "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "@__security_check_cookie@4",
+          "___security_cookie",
+          "__except_handler4",
+          "__imp__EnterCriticalSection@4",
+          "__imp__LeaveCriticalSection@4",
+          "__sehtable$?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z"
+        ]
+      },
+      {
+        "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+        "positive_first_linker_index": true,
+        "member_offset": 40155912,
+        "bytes": 9441,
+        "sha256": "bbc0339374e3a681e633f2d14ef90f94ade4cf7921f3231ff5115a6315913ee2",
+        "definition_targets": [
+          "__imp__EnterCriticalSection@4",
+          "__imp__LeaveCriticalSection@4",
+          "__imp__free"
+        ]
+      },
+      {
+        "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "positive_first_linker_index": true,
+        "member_offset": 97480766,
+        "bytes": 33008,
+        "sha256": "386824ba4b5224ce24dfa43d84dd09b6c8b1fc64e02011998109d91cdc72171f",
+        "definition_targets": [
+          "__imp__free"
+        ]
+      }
+    ]
+  },
+  "provider_source_and_delivery": {
+    "real_free": "singleton_lifetime_free is noexcept and directly std::free",
+    "same_actual_getter_return_cells": [
+      "01090aa8",
+      "01090aa0",
+      "01090aa4"
+    ],
+    "canonical_free_provider_member_only_target": "__imp__free",
+    "real_provider_Source_pins_exact": true,
+    "current_archive_snapshot_is_not_new_common_build_link_attestation": true,
+    "naked_register_provider_CPP_delivery_proved": false,
+    "existing_noexcept_CRT_OS_nonlocal_boundaries_retained": true
+  },
+  "post_compile_header_comment_correction": {
+    "header_only": true,
+    "Root_requested": "allow supported flagsHOME/rawreceiver aliases; separate flags lifetime from context/metadata/result disjointness",
+    "noncomment_tokens_and_whitespace_normalized_identical": true,
+    "recompile_required": false,
+    "CPP_unchanged": true,
+    "compiled_header_sha256": "df5d0402be719517ff4704794e723b0dd5b8235731449bf8256edf8640603a9a",
+    "final_header_sha256": "14258135096189f2892e4d896af417ed0c8fb616d5f1659bbc1d9d032f68a7db",
+    "compiled_header_retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete\\local\\native_lua_variant_scalar_delete\\compile_inputs\\include\\bsp\\native_lua_variant_retirement.hpp"
+  },
+  "compiled_vs_final_header_noncomment_tokens_independently_equal": true,
+  "CPP_unchanged_after_compile": true,
+  "actual_domain": {
+    "receiver": "genuine live20Bvariant satisfying all qualified884AF0 payload/name/map/poolprovider preconditions",
+    "late_free": "iff LATEbit0 set,capturedV is exact canonicalmalloc/free rootallocationbase;entryflags/profile/tag/size are no authentication",
+    "flagsHOME": "live/readable through its actuallatebyte read; supportedraw-home/receiver aliases retain read-before-scalarfree order; no blanket disjoint-from-all-rawbacking rule",
+    "metadata_custody": "context,operation/sidecars andSource resultmetadata independentlylive/disjoint frommutablehomes andrawpayload throughlastuse/failure disposition; genuine available aliases maymutateflagsHOME,active metadata cannotbe externallymutated; reentry independentbacking",
+    "child_backing_capacity": "actual child/nested-map chain,no fixed/count/history limit",
+    "providers": "same actualAA8/AA0/AA4,matching manager/deletion/section/ring/storage andheap;canonical Sourcefree directlystd::free,existingnoexcept unchanged",
+    "Native_private_HOME_async_alias_limit": "explicit SourceHOME doesnot reproduceOriginalprivateargumentstackslot,arbitraryprivatealiasreplacement,async/fault/atomic/ABI identity"
+  },
+  "domain_clarification": {
+    "flags_HOME_lifetime": "live/readable only through actual late read, before scalar receiver free",
+    "allowed_aliases": "supported actual raw-HOME/receiver aliases may change flags during child; no blanket raw-backing-disjoint restriction",
+    "child_freed_HOME": "outside domain because not live at required late read",
+    "free_domain": "actual latebit01 requires exact compatible canonicalmalloc root, not entry flags/profile/tag/size",
+    "metadata": "context,typed operation/sidecars and result metadata independently live/disjoint from mutable homes/raw payload through last use/failure disposition",
+    "reentry": "independent operation/backing; active records cannot be externally mutated"
+  },
+  "CFFD0_and_activation": {
+    "numeric_D0E6F4_word_retained": true,
+    "Source_callable_table_installed_or_authenticated": false,
+    "existing_normal_callers_implicitly_upgraded": false,
+    "newscalar_has_any_genuine_host_current_slot_table_caller_adoption": false,
+    "newglobal_or_dispatch_created": false,
+    "real_objects_metadata_tables_providers_created_or_run": false
+  },
+  "remaining_gates": [
+    "Root immutable candidate common compile/build, actual entry/provider link and relocated PE/SafeSEH proof",
+    "actual naked/register/provider C++ exception delivery and existing noexcept/CRT/OS/nonlocal exits",
+    "Original ECX/EAX/RET4/register/FH3/SEH/fault/unmaskedFP/privateHOME/async alias identity",
+    "primary/secondary exception-object retention and Original secondary-terminal policy",
+    "genuine receiver/canonicalmallocroot/HOME/metadata/context/pool-manager-section-ring-storage ownership and lifetime adoption",
+    "full CF/D0 callable table/object/current-slot/host/queue/payload/vector/reserve/copy/producer/caller transport",
+    "required runtime/gameplay and activation"
+  ],
+  "performed": {
+    "Source_edits": 0,
+    "object_edits": 0,
+    "compiles": 0,
+    "builds": 0,
+    "tests": 0,
+    "links": 0,
+    "target_body_probe_executable_DLL_game_runs": 0,
+    "Ghidra_mutations": 0,
+    "Ghidra_read_only_wrapper_queries": [
+      "ghidra count",
+      "ghidra bytes 00884AF0 --length101"
+    ],
+    "configured_Ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "configured_Ghidra_program": "/battlestationspacific.exe",
+    "Native_acceptance_from_current_installed_PE_static_parser": true,
+    "CMake_ledger_caller_table_global_peer_install_edits": 0,
+    "two_new_review_files_only": true
+  },
+  "credit": {
+    "new_unique_Original_bodies": 0,
+    "new_unique_Original_bytes": 0,
+    "vendor": 0,
+    "duplicate": 0,
+    "Original_ABI_FH3_SEH": 0,
+    "runtime": 0,
+    "activation": 0,
+    "host_caller_adoption": 0
+  },
+  "local_review_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\candidate_pins.json",
+      "bytes": 1027,
+      "sha256": "be96bce5e0ed64b921c303b6711c72a4b39144e57a31129a5e24bc8b9f6bfd53"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\verified_receipts.json",
+      "bytes": 14267,
+      "sha256": "899f22ff1d51f1f69f01060993c330f807240e9a5d46e188532e3cf5111e5de8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\independent_static.py",
+      "bytes": 10972,
+      "sha256": "c883f4baa8597f3b3b1ca6496e1ad352fea3afc3e96bff713eb91c204977ee27"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\independent_old_coff.json",
+      "bytes": 418962,
+      "sha256": "57002434c3c504ff8301aa3c72eb075e3fbea531ed03baff4ebfadc1cb6a89af"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\independent_new_coff.json",
+      "bytes": 425593,
+      "sha256": "bdc506ec4292ecb3b84c1146db0a6b9e550dbbf4c1f9db2d900af3b9bc5caf18"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\independent_analysis.json",
+      "bytes": 56961,
+      "sha256": "e5759afa3ffe411394d4046e0f5487ad9a13b3e555eda8a123af61b6d2a5e94b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\crosschecks.py",
+      "bytes": 6924,
+      "sha256": "5efce4028bd8004ef421887d62f6fa4088546936ecd4a95b919a4c0d67fa5d5a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\independent_crosschecks.json",
+      "bytes": 9916,
+      "sha256": "e2394b606c1bac874a838c762ba6d55aa80760060d036f0eedf04a7442232cf2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\metadata_supplement.json",
+      "bytes": 756,
+      "sha256": "d29cd8667983ad217c67e4a0e8eb86c1d72474664ac2174fff61961315105b8a"
+    }
+  ],
+  "review_document": {
+    "path": "docs/CC16_NATIVE_LUA_VARIANT_SCALAR_DELETE_REVIEW.md",
+    "bytes": 9238,
+    "lines": 142,
+    "sha256": "7f7b961bc02edacf469514cedb6fb03f24a483951bdd8261ff825bc9ad64f552"
+  }
+}
