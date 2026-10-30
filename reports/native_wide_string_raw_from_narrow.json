@@ -1,0 +1,39 @@
+{
+  "address": "004c5e60",
+  "status": "qualified_raw_source_root_and_independent_reviewed_strict_win32_object_pass",
+  "source": "src/native_wide_string_raw_from_narrow.cpp",
+  "header": "include/bsp/native_wide_string_raw_from_narrow.hpp",
+  "documentation": "docs/NATIVE_WIDE_STRING_RAW_FROM_NARROW.md",
+  "normal_instructions": 32,
+  "original_bytes": 87,
+  "original_abi": "ECX raw8 destination; stack borrowed nonnull bytes; EAX same; RET4; ordinary Source only",
+  "evidence": {
+    "saved_asm_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004c5e60\\assembly.txt",
+    "saved_asm_sha256": "c51f5ce358b3153de67915ec7a5ac52c3052f5f399562206e5e1120bc6accd71",
+    "accepted_design_sha256": "5fcdb43fb8ee38d260f95ef48f50606874006edc16b5405449150c649302eebd"
+  },
+  "provider_signature": "resize_native_wide_string_header_004c53e0(void*, NativeStringRawPoolContext&, uint32_t, bool)",
+  "provider_preservation": {
+    "baseline": "adf48124c9fabb68e48a98e4a539bd634d468e74",
+    "all_eight_files_byte_identical": true,
+    "receipt_sha256": "7dc1d7847fab63decedeb823e6de6698fc799fdcd38453c4239c03f042856f07"
+  },
+  "native_own_EH_or_local_cleanup": false,
+  "new_output_frame_or_adapter": false,
+  "strict_object": {
+    "compile_count": 1,
+    "exit_code": 0,
+    "coff_machine": "014c",
+    "sha256": "6898cee82ccdb57d455d7206d6a7131ccfbffb9971272898fe55a3d8ca876651",
+    "receipt_sha256": "7a2bff649782d4f8cb48bf34ca3af0c7de96cfbce0f4d5e4d0270b1d7e65cd2f",
+    "actual_symbols_sha256": "7fdc96d98ae80be126c172002a631cc45253d94f2ed8194e15065de319cc73f9"
+  },
+  "source_ready": false,
+  "abi_compatible": false,
+  "game_validated": false,
+  "new_native_body_credit": false,
+  "vendor_body_credit": false,
+  "new_tests": 0,
+  "strict_object_compile_invoked": true,
+  "linked_build_or_entry_invoked": false
+}
