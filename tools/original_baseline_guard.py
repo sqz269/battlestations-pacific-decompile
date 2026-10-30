@@ -8,6 +8,11 @@ Default low mode uses the kernel's mandatory-integrity write barrier. Optional
 medium-restricted mode uses full restricting SIDs and a fresh, exhaustive source
 DACL denial audit, including parent DELETE_CHILD and ACL/owner rights. Both
 barriers apply before entry (including loader/TLS execution).
+The optional medium-write-locked mode retains normal reads and audits all
+mutation rights except directory DELETE_CHILD. Independent parent read/list
+opens without delete sharing cover that gap for every protected object and
+ancestor; protected inherited copies back up their lifetime for this unchanged
+trusted retail. That mode rejects every additional executable process.
 
 prepare must run on an EMPTY private local/ directory before ordinary copying.
 launch never detaches: it services debug events until exit or the bounded
@@ -25,6 +30,7 @@ import math
 import os
 from pathlib import Path
 import struct
+import stat
 import subprocess
 import sys
 import time
@@ -60,6 +66,22 @@ class STARTUPINFO(C.Structure):
                 ("dwFlags", DWORD), ("wShowWindow", W.WORD),
                 ("cbReserved2", W.WORD), ("lpReserved2", PVOID),
                 ("hStdInput", HANDLE), ("hStdOutput", HANDLE), ("hStdError", HANDLE)]
+
+
+class STARTUPINFOEX(C.Structure):
+    _fields_ = [("startup", STARTUPINFO), ("attributes", PVOID)]
+
+
+class FILE_INFORMATION(C.Structure):
+    _fields_ = [("attributes", DWORD), ("created", W.FILETIME), ("accessed", W.FILETIME),
+        ("written", W.FILETIME), ("volume", DWORD), ("size_high", DWORD), ("size_low", DWORD),
+        ("links", DWORD), ("index_high", DWORD), ("index_low", DWORD)]
+
+
+class JOB_ACCOUNTING(C.Structure):
+    _fields_ = [("user", C.c_longlong), ("kernel", C.c_longlong), ("period_user", C.c_longlong),
+        ("period_kernel", C.c_longlong), ("faults", DWORD), ("total", DWORD),
+        ("active", DWORD), ("terminated", DWORD)]
 
 
 class PROCESS_INFORMATION(C.Structure):
@@ -162,6 +184,7 @@ api(A, "CreateProcessAsUserW", W.BOOL, HANDLE, W.LPCWSTR, W.LPWSTR, PVOID, PVOID
     W.BOOL, DWORD, PVOID, W.LPCWSTR, C.POINTER(STARTUPINFO), C.POINTER(PROCESS_INFORMATION))
 api(K, "CreateJobObjectW", HANDLE, PVOID, W.LPCWSTR)
 api(K, "SetInformationJobObject", W.BOOL, HANDLE, C.c_int, PVOID, DWORD)
+api(K, "QueryInformationJobObject", W.BOOL, HANDLE, C.c_int, PVOID, DWORD, C.POINTER(DWORD))
 api(K, "AssignProcessToJobObject", W.BOOL, HANDLE, HANDLE)
 api(K, "TerminateJobObject", W.BOOL, HANDLE, W.UINT)
 api(K, "TerminateProcess", W.BOOL, HANDLE, W.UINT)
@@ -185,6 +208,14 @@ api(K, "GetFinalPathNameByHandleW", DWORD, HANDLE, W.LPWSTR, DWORD, DWORD)
 api(K, "K32GetMappedFileNameW", DWORD, HANDLE, PVOID, W.LPWSTR, DWORD)
 api(K, "DuplicateHandle", W.BOOL, HANDLE, HANDLE, HANDLE, C.POINTER(HANDLE), DWORD, W.BOOL, DWORD)
 api(K, "IsWow64Process", W.BOOL, HANDLE, C.POINTER(W.BOOL))
+api(K, "CreateFileW", HANDLE, W.LPCWSTR, DWORD, DWORD, PVOID, DWORD, DWORD, HANDLE)
+api(K, "GetFileInformationByHandle", W.BOOL, HANDLE, C.POINTER(FILE_INFORMATION))
+api(K, "SetHandleInformation", W.BOOL, HANDLE, DWORD, DWORD)
+api(K, "GetHandleInformation", W.BOOL, HANDLE, C.POINTER(DWORD))
+api(K, "GetProcessHandleCount", W.BOOL, HANDLE, C.POINTER(DWORD))
+api(K, "InitializeProcThreadAttributeList", W.BOOL, PVOID, DWORD, DWORD, C.POINTER(SIZE))
+api(K, "UpdateProcThreadAttribute", W.BOOL, PVOID, DWORD, SIZE, PVOID, SIZE, PVOID, C.POINTER(SIZE))
+api(K, "DeleteProcThreadAttributeList", None, PVOID)
 api(S, "SHGetSpecialFolderPathW", W.BOOL, W.HWND, W.LPWSTR, C.c_int, W.BOOL)
 api(N, "NtQueryInformationProcess", W.LONG, HANDLE, DWORD, PVOID, DWORD, C.POINTER(DWORD))
 
@@ -273,7 +304,7 @@ def verify_token(token, mode="low"):
     if mode == "low":
         return verify_low(token)
     info = token_summary(token)
-    if (mode != "medium-restricted" or info["integrity_rid"] != MEDIUM
+    if (mode not in ("medium-restricted", "medium-write-locked") or info["integrity_rid"] != MEDIUM
             or not info["mandatory_policy"] & 1 or info["token_type"] != 1
             or info["ui_access"] or not info["has_restrictions"]
             or sorted(info["restricting_sids"]) != sorted(expected_restricting_sids())):
@@ -348,7 +379,7 @@ def restricted_token(mode="low"):
     checked(A.OpenProcessToken(K.GetCurrentProcess(), TOKEN_ALL_ACCESS, C.byref(current)), "OpenProcessToken")
     try:
         restrict = None
-        if mode == "medium-restricted":
+        if mode in ("medium-restricted", "medium-write-locked"):
             entries = []
             for value in expected_restricting_sids():
                 pointer = PVOID()
@@ -359,9 +390,9 @@ def restricted_token(mode="low"):
         elif mode != "low":
             raise RuntimeError(f"Unknown token mode: {mode}")
         # Strip privileges; no foreign token, credential, or elevation fallback.
-        # Full restrictions, including DELETE_CHILD. WRITE_RESTRICTED is unsafe
-        # here: Windows permits directory DELETE_CHILD through that variant.
-        checked(A.CreateRestrictedToken(current, 1,
+        # WRITE_RESTRICTED is allowed only by the source-lock launch contract.
+        # Its DELETE_CHILD gap must be covered by every object's no-delete open.
+        checked(A.CreateRestrictedToken(current, 9 if mode == "medium-write-locked" else 1,
                                         0, None, 0, None, len(restrict) if restrict is not None else 0, restrict,
                                         C.byref(result)), "CreateRestrictedToken")
         checked(A.ConvertStringSidToSidW("S-1-16-8192" if restrict is not None else "S-1-16-4096", C.byref(sid)), "ConvertStringSidToSidW")
@@ -370,7 +401,7 @@ def restricted_token(mode="low"):
                                      C.sizeof(label) + A.GetLengthSid(sid)), "SetTokenInformation integrity level")
         # Changing TokenMandatoryPolicy requires SeTcbPrivilege on this host.
         # Inherit it from the caller and require NO_WRITE_UP; never elevate.
-        if mode == "medium-restricted":
+        if mode in ("medium-restricted", "medium-write-locked"):
             configure_token_default_dacl(result)
         verify_token(result, mode)
         return result
@@ -427,23 +458,53 @@ def access_write_rights(path, impersonation, cache=None):
         K.LocalFree(descriptor)
 
 
-def audit_source_writes(token, roots, receipt=None):
+def protected_paths(roots):
+    seen = set()
+    for root in roots:
+        root = ordinary(root, False)
+        candidates = list(reversed(root.parents))
+        if root.exists():
+            candidates.append(root)
+        for path in candidates:
+            if path not in seen:
+                seen.add(path)
+                # ordinary(root) already checked this complete ancestor chain.
+                yield path
+        if root.is_dir():
+            for base, dirs, files in os.walk(root, followlinks=False, onerror=walk_error):
+                dirs.sort()
+                for name in sorted([*dirs, *files]):
+                    path = Path(base) / name
+                    if path.lstat().st_file_attributes & 0x400:
+                        raise RuntimeError(f"Protected reparse point refused: {path}")
+                    if path not in seen:
+                        seen.add(path)
+                        yield path
+
+
+def path_digest_update(digest, path):
+    digest.update((json.dumps(str(path).casefold(), ensure_ascii=True) + "\n").encode("utf-8"))
+
+
+def audit_source_writes(token, roots, receipt=None, token_mode="medium-restricted"):
     """No original file opens for writing; evaluate the actual token's rights."""
     impersonation = HANDLE()
     checked(A.DuplicateTokenEx(token, TOKEN_QUERY, None, 2, 2, C.byref(impersonation)), "DuplicateTokenEx audit impersonation")
-    cache, seen, violations = {}, set(), []
+    cache, violations, paths_digest = {}, [], hashlib.sha256()
     result = {"method": "AccessCheck actual restricted token duplicated at SecurityImpersonation",
-        "token": verify_token(token, "medium-restricted"),
+        "token": verify_token(token, token_mode),
         "rights_checked_individually": WRITE_RIGHTS, "roots": [str(r) for r in roots],
         "objects_checked": 0, "unique_descriptors": 0, "violations": violations,
-        "complete": False, "passed": False}
+        "complete": False, "passed": False, "delete_child_requires_no_delete_handles": token_mode == "medium-write-locked",
+        "delete_child_allowed_directories": 0}
     def inspect(path):
-        path = ordinary(path)
-        if path in seen:
-            return
-        seen.add(path)
+        # protected_paths checked ancestors once and each descendant itself.
+        path_digest_update(paths_digest, path)
         descriptor_hash, allowed = access_write_rights(path, impersonation, cache)
         result["objects_checked"] += 1
+        if token_mode == "medium-write-locked" and "delete_child" in allowed:
+            result["delete_child_allowed_directories"] += 1
+            allowed = [a for a in allowed if a != "delete_child"]
         if allowed:
             if len(violations) < 32:
                 violations.append({"path": str(path), "allowed": allowed, "descriptor_sha256": descriptor_hash})
@@ -451,26 +512,103 @@ def audit_source_writes(token, roots, receipt=None):
         if result["objects_checked"] > 200000:
             raise RuntimeError("Source effective-access audit limit exceeded")
     try:
-        for root in roots:
-            root = ordinary(root, False)
-            for parent in reversed(root.parents):
-                inspect(parent)
-            if not root.exists():
-                continue
-            if root.is_file():
-                inspect(root)
-                continue
-            for base, dirs, files in os.walk(root, followlinks=False, onerror=walk_error):
-                inspect(Path(base))
-                for name in [*dirs, *files]:
-                    inspect(Path(base) / name)
-        result.update(complete=True, passed=not violations, unique_descriptors=len(cache))
+        for path in protected_paths(roots):
+            inspect(path)
+        result.update(complete=True, passed=not violations, unique_descriptors=len(cache),
+                      paths_sha256=paths_digest.hexdigest())
         return result
     finally:
         close(impersonation)
         result["unique_descriptors"] = len(cache)
         if receipt:
             write_receipt(receipt, result)
+
+
+class SourceReadLocks:
+    """Independent parent handles plus protected inherited lifetime backups."""
+    def __init__(self, roots, audit, manifest, check_cancel=None):
+        self.handles, self.attributes, self.handle_array = [], None, None
+        self.attributes_initialized = False
+        self.receipt = {"desired_access": "FILE_READ_DATA / FILE_LIST_DIRECTORY (0x1)",
+            "share_mode": "FILE_SHARE_READ | FILE_SHARE_WRITE (3); no FILE_SHARE_DELETE",
+            "parent_keeps_independent_handles_until_job_exit": True,
+            "child_can_explicitly_clear_own_protect_flag": True, "scope": "unchanged trusted retail",
+            "manifest": str(private(manifest, exists=False)), "complete": False}
+        digest, paths_digest = hashlib.sha256(), hashlib.sha256()
+        try:
+            with open(manifest, "x", encoding="utf-8") as output:
+                for path in protected_paths(roots):
+                    if check_cancel and len(self.handles) % 256 == 0:
+                        check_cancel()
+                    before = path.stat()
+                    handle = K.CreateFileW("\\\\?\\" + str(path), 1, 3, None, 3, 0x02200000, None)
+                    if handle == PVOID(-1).value:
+                        checked(False, f"Source no-delete read/list open {path}")
+                    self.handles.append(handle)
+                    if not handle or handle > 0xFFFFFFFF or handle == 0x400000:
+                        raise RuntimeError(f"Unsafe source handle value: {handle}")
+                    info = FILE_INFORMATION()
+                    checked(K.GetFileInformationByHandle(handle, C.byref(info)), "Source handle identity")
+                    canonical = C.create_unicode_buffer(32768)
+                    length = K.GetFinalPathNameByHandleW(handle, canonical, len(canonical), 0)
+                    if not length or length >= len(canonical):
+                        raise RuntimeError(f"Cannot resolve source handle canonical path: {path}")
+                    resolved = Path(canonical.value[4:] if canonical.value.startswith("\\\\?\\") else canonical.value)
+                    after = path.stat()
+                    file_index = (info.index_high << 32) | info.index_low
+                    if (resolved != path or info.attributes & 0x400 or before.st_ino != file_index
+                            or after.st_ino != file_index or before.st_dev != after.st_dev
+                            or bool(info.attributes & 0x10) != stat.S_ISDIR(before.st_mode)):
+                        raise RuntimeError(f"Source path/reparse/identity mismatch: {path}")
+                    checked(K.SetHandleInformation(handle, 3, 3), "Source inherit/protect flags")
+                    flags = DWORD()
+                    checked(K.GetHandleInformation(handle, C.byref(flags)), "Verify source handle flags")
+                    if flags.value != 3:
+                        raise RuntimeError("Source handle did not retain inherit/protect flags")
+                    record = {"path": str(path), "handle": handle, "flags": flags.value,
+                        "volume": info.volume, "file_index": file_index, "directory": bool(info.attributes & 0x10)}
+                    line = json.dumps(record, ensure_ascii=True, sort_keys=True) + "\n"
+                    output.write(line)
+                    digest.update(line.encode("utf-8"))
+                    path_digest_update(paths_digest, path)
+                    if len(self.handles) > 200000:
+                        raise RuntimeError("Source handle limit exceeded")
+            if len(self.handles) != audit["objects_checked"] or paths_digest.hexdigest() != audit["paths_sha256"]:
+                raise RuntimeError("Audited source paths and acquired source-lock paths differ")
+            self.receipt.update(complete=True, handles=len(self.handles), manifest_sha256=digest.hexdigest(),
+                paths_sha256=paths_digest.hexdigest(), inherited_flags=3, main_module_handle_collision=False)
+        except BaseException:
+            self.close()
+            raise
+
+    def startup(self):
+        size = SIZE()
+        K.InitializeProcThreadAttributeList(None, 1, 0, C.byref(size))
+        if not size.value:
+            checked(False, "Inherited attribute list size")
+        self.attributes = C.create_string_buffer(size.value)
+        checked(K.InitializeProcThreadAttributeList(self.attributes, 1, 0, C.byref(size)), "Inherited attribute list init")
+        self.attributes_initialized = True
+        self.handle_array = (HANDLE * len(self.handles))(*self.handles)
+        checked(K.UpdateProcThreadAttribute(self.attributes, 0, 0x20002, self.handle_array,
+            C.sizeof(self.handle_array), None, None), "Explicit source handle list")
+        startup = STARTUPINFOEX()
+        startup.startup.cb = C.sizeof(startup)
+        startup.startup.lpDesktop = "winsta0\\default"
+        startup.attributes = C.addressof(self.attributes)
+        self.receipt["explicit_handle_list_bytes"] = C.sizeof(self.handle_array)
+        return startup
+
+    def close(self):
+        if self.attributes_initialized:
+            K.DeleteProcThreadAttributeList(self.attributes)
+            self.attributes = None
+            self.attributes_initialized = False
+        for handle in self.handles:
+            checked(K.SetHandleInformation(handle, 3, 0), "Clear own source handle flags after job exit")
+            close(handle)
+        self.handles = []
+        self.receipt["parent_handles_closed_unix"] = time.time()
 
 
 def label(path):
@@ -744,6 +882,8 @@ def pe_info(path):
         return {"image_base": pe.OPTIONAL_HEADER.ImageBase, "entry_rva": entry,
                 "iat_rva": imports[0], "entry_byte": pe.get_data(entry, 1).hex(),
                 "image_size": pe.OPTIONAL_HEADER.SizeOfImage,
+                "imports_set_handle_information": any(i.name == b"SetHandleInformation"
+                    for d in pe.DIRECTORY_ENTRY_IMPORT for i in d.imports),
                 "motion_rva": motion_rva, "controlled_rva": controlled_rva,
                 "directinput_entry_bytes": pe.get_data(0x698340, 2).hex()
                     if pe.OPTIONAL_HEADER.SizeOfImage > 0x698341 else None,
@@ -1090,9 +1230,10 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
     check_drain()
     stage = private(stage)
     executable, cwd, documents = [private(p, stage) for p in (executable, cwd, documents)]
-    if token_mode not in ("low", "medium-restricted"):
-        raise RuntimeError("Unsupported token mode; WRITE_RESTRICTED is forbidden")
-    if token_mode == "medium-restricted":
+    if token_mode not in ("low", "medium-restricted", "medium-write-locked"):
+        raise RuntimeError("Unsupported token mode")
+    locked_mode = token_mode == "medium-write-locked"
+    if token_mode != "low":
         marker = private(stage / ".guard-medium.json", stage)
         prepared = json.loads(marker.read_text(encoding="utf-8"))
         if (prepared.get("schema") != "bsp.original-baseline.guard.medium.prepare.v1"
@@ -1127,10 +1268,10 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
             "protected_documents": str(protected_documents), "seconds": seconds,
             "sha256": expected_hash, "original_exe": str(original_exe) if original_exe else None,
             "pe": info, "processes": [], "live_launch_allowed": False,
-            "token_mode": token_mode, "creation_flags": 1,
-            "isolation": "full restricted Users+LOGON+World token, fresh source DACL denial audit, owned kill-on-close job" if token_mode == "medium-restricted" else "restricted primary token, low mandatory IL/no-write-up, owned kill-on-close job",
+            "token_mode": token_mode, "creation_flags": 9 if locked_mode else 1,
+            "isolation": "write-restricted token with exhaustive source rights audit plus independent parent/protected inherited no-delete read handles" if locked_mode else "full restricted Users+LOGON+World token, fresh source DACL denial audit, owned kill-on-close job" if token_mode == "medium-restricted" else "restricted primary token, low mandatory IL/no-write-up, owned kill-on-close job",
             "known_folder": "entry-time SHGetSpecialFolderPathA IAT hook; CSIDL_PERSONAL flags masked",
-            "child_policy": "DEBUG_PROCESS; only byte-identical images under stage; otherwise terminate owned job",
+            "child_policy": "DEBUG_PROCESS; root process only; reject every additional executable before continuation" if locked_mode else "DEBUG_PROCESS; only byte-identical images under stage; otherwise terminate owned job",
             "motion_discovery": "private discover-motion.request marker arms restored one-shot entry" if discovery_enabled else "disabled",
             "known_xlive_debug_close_policy": "opt-in exact SHA+live return/argument+callsite, first chance before OEP, once" if handle_known_xlive_debug_close else "disabled; exceptions are not swallowed",
             "directinput_startup_observation": "restored one-shot at original 00A98340" if observe_directinput_startup else "disabled",
@@ -1138,7 +1279,7 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
     write_receipt(receipt, data)
     try:
         data["sandbox_scan"] = scan_tree(stage, True,
-            medium_executable=executable if token_mode == "medium-restricted" else None)
+            medium_executable=executable if token_mode != "low" else None)
         data["protected_scans"] = [scan_tree(r, False) for r in protected_roots] if token_mode == "low" else []
         before = documents_snapshot(protected_documents)
     except BaseException as exc:
@@ -1146,19 +1287,24 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
         write_receipt(receipt, data)
         raise
     data["protected_documents_before"] = before
-    token, job, pi = None, None, PROCESS_INFORMATION()
+    token, job, pi, source_locks = None, None, PROCESS_INFORMATION(), None
     owned, live = {}, set()
     failed, exit_seen, suspended_created = None, False, False
     try:
         token = restricted_token(token_mode)
         data["token"] = verify_token(token, token_mode)
-        if token_mode == "medium-restricted":
+        if token_mode != "low":
             if not protected_roots:
                 raise RuntimeError("Medium mode requires protected source audit roots")
-            data["source_write_audit"] = audit_source_writes(token, protected_roots)
+            data["source_write_audit"] = audit_source_writes(token, protected_roots, token_mode=token_mode)
             write_receipt(receipt, data)
             if not data["source_write_audit"]["complete"] or not data["source_write_audit"]["passed"]:
                 raise RuntimeError("Original source permits restricted-token mutation; launch refused")
+        if locked_mode:
+            manifest = receipt.with_name(f"{receipt.stem}-source-locks-{os.getpid()}-{time.time_ns()}.jsonl")
+            source_locks = SourceReadLocks(protected_roots, data["source_write_audit"], manifest, check_cancel=check_drain)
+            data["source_locks"] = source_locks.receipt
+            write_receipt(receipt, data)
         job = K.CreateJobObjectW(None, None)
         checked(job, "CreateJobObjectW")
         limits = JOB_EXTENDED()
@@ -1171,16 +1317,21 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
                    TMP=str(stage / "Temp"), HOMEDRIVE=profile.drive,
                    HOMEPATH=str(profile)[len(profile.drive):], __COMPAT_LAYER="RunAsInvoker")
         env_block = C.create_unicode_buffer("\0".join(f"{k}={v}" for k, v in sorted(env.items(), key=lambda kv: kv[0].upper())) + "\0\0")
-        si = STARTUPINFO()
-        si.cb = C.sizeof(si)
-        si.lpDesktop = "winsta0\\default"
+        if source_locks:
+            si = source_locks.startup()
+            startup_pointer = C.cast(C.byref(si), C.POINTER(STARTUPINFO))
+        else:
+            si = STARTUPINFO()
+            si.cb = C.sizeof(si)
+            si.lpDesktop = "winsta0\\default"
+            startup_pointer = C.byref(si)
         command = C.create_unicode_buffer(subprocess.list2cmdline([str(executable), *arguments]))
         # CREATE_SUSPENDED | DEBUG_PROCESS | CREATE_UNICODE_ENVIRONMENT |
         # NORMAL_PRIORITY_CLASS. Never retry with an unrestricted token.
         check_drain()
-        checked(A.CreateProcessAsUserW(token, str(executable), command, None, None, False,
-                                      0x4 | 0x1 | 0x400 | 0x20, env_block, str(cwd),
-                                      C.byref(si), C.byref(pi)), "CreateProcessAsUserW restricted suspended")
+        checked(A.CreateProcessAsUserW(token, str(executable), command, None, None, bool(source_locks),
+                                      0x4 | 0x1 | 0x400 | 0x20 | (0x80000 if source_locks else 0), env_block, str(cwd),
+                                      startup_pointer, C.byref(pi)), "CreateProcessAsUserW restricted suspended")
         suspended_created = True
         data["root_pid"] = pi.dwProcessId
         process_token_info(pi.hProcess, token_mode)
@@ -1240,6 +1391,8 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
                 if event.code == 3:  # CREATE_PROCESS_DEBUG_EVENT, before execution.
                     creation = event.u.create
                     try:
+                        if locked_mode and event.pid != pi.dwProcessId:
+                            raise RuntimeError("Additional executable forbidden by root-only source-lock policy")
                         path = image_path(creation.hProcess)
                         private(path, stage)
                         if sha(path) != expected_hash:
@@ -1296,6 +1449,12 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
                             state["motion_break_requested"] = False
                         elif record.address == state["entry"] and not state["hooked"]:
                             establish_hook(handle, event.tid, state, document_bytes)
+                            if source_locks:
+                                count = DWORD()
+                                checked(K.GetProcessHandleCount(handle, C.byref(count)), "Inherited source handle count at entry")
+                                if count.value < len(source_locks.handles):
+                                    raise RuntimeError("Owned child handle count is below inherited source-lock count")
+                                state["source_lock_handles_at_entry"] = count.value
                             if observe_directinput_startup:
                                 arm_directinput_observation(handle, state)
                             if all(owned[pid][1]["hooked"] for pid in live):
@@ -1389,10 +1548,36 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
             if K.GetExitCodeProcess(handle, C.byref(code)):
                 state["final_exit_code"] = code.value
             close(handle)
+        if source_locks and pi.hProcess:
+            # Keep every independent parent lock while servicing termination.
+            # The execution deadline is bounded; safe lock release additionally
+            # requires the owned job to be empty. Child copies are lifetime
+            # backups if the guard process itself is terminated.
+            last_report = time.monotonic()
+            while True:
+                accounting, returned = JOB_ACCOUNTING(), DWORD()
+                checked(K.QueryInformationJobObject(job, 1, C.byref(accounting), C.sizeof(accounting), C.byref(returned)), "Owned job exit before source-lock release")
+                if accounting.active == 0 and K.WaitForSingleObject(pi.hProcess, 0) == 0:
+                    data["source_locks"]["owned_job_exited_before_parent_release"] = True
+                    break
+                K.TerminateJobObject(job, 0xE0000001)
+                event = DEBUG_EVENT()
+                if K.WaitForDebugEvent(C.byref(event), 200):
+                    if event.code == 3:
+                        close(event.u.create.hFile)
+                    elif event.code == 6:
+                        close(event.u.dll.hFile)
+                    checked(K.ContinueDebugEvent(event.pid, event.tid, 0x10002), "Drain owned job before source-lock release")
+                if time.monotonic() - last_report >= 10:
+                    data["source_locks"]["cleanup_waiting_for_job_exit"] = True
+                    write_receipt(receipt, data)
+                    last_report = time.monotonic()
         close(pi.hThread)
         close(pi.hProcess)
         close(job)
         close(token)
+        if source_locks:
+            source_locks.close()
         data["ended_unix"] = time.time()
         data["live_launch_allowed"] = False
         data["protected_documents_after"] = documents_snapshot(protected_documents)
@@ -1434,7 +1619,20 @@ extern "C" __declspec(allocate(".CRT$XLB")) PIMAGE_TLS_CALLBACK guard_probe_tls_
 #pragma comment(linker, "/INCLUDE:_guard_probe_tls_anchor")
 int main(int argc, char** argv) {
     if (argc == 2 && !strcmp(argv[1], "--fixture-crash-exit")) ExitProcess(0xC0000005);
-    if (argc != 5) return 90;
+    if (argc == 3 && !strcmp(argv[1], "--fixture-marker-child")) {
+        HANDLE mark = CreateFileA(argv[2], GENERIC_WRITE, 0, NULL, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL);
+        if (mark != INVALID_HANDLE_VALUE) { DWORD n; WriteFile(mark, "child-ran", 9, &n, NULL); CloseHandle(mark); }
+        return 0;
+    }
+    if (argc == 3 && !strcmp(argv[1], "--fixture-extra-process")) {
+        char self[MAX_PATH], command[MAX_PATH * 2 + 80]; GetModuleFileNameA(NULL, self, MAX_PATH);
+        sprintf_s(command, "\"%s\" --fixture-marker-child \"%s\"", self, argv[2]);
+        STARTUPINFOA startup = {}; startup.cb = sizeof(startup); PROCESS_INFORMATION child = {};
+        if (!CreateProcessA(NULL, command, NULL, NULL, FALSE, 0, NULL, NULL, &startup, &child)) return 94;
+        Sleep(10000); CloseHandle(child.hThread); CloseHandle(child.hProcess); return 95;
+    }
+    if (argc != 6) return 90;
+    const bool locked_mode = !strcmp(argv[5], "medium-write-locked");
     const bool generic_invalid_handle_caught = probe_invalid_handle_caught != 0;
     char a[MAX_PATH] = {}, b[MAX_PATH] = {}, c[MAX_PATH] = {}, desktop[MAX_PATH] = {};
     const bool personal = SHGetSpecialFolderPathA(NULL, a, CSIDL_PERSONAL, FALSE) && !_stricmp(a, argv[1]);
@@ -1463,17 +1661,18 @@ int main(int argc, char** argv) {
         NULL, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, NULL);
     const DWORD delete_child_error = GetLastError();
     const bool delete_child_denied = f == INVALID_HANDLE_VALUE && delete_child_error == ERROR_ACCESS_DENIED;
+    const bool delete_child_open_allowed = f != INVALID_HANDLE_VALUE;
     if (f != INVALID_HANDLE_VALUE) CloseHandle(f);
     const BOOL deleted = DeleteFileA(protected_child); const DWORD delete_error = GetLastError();
-    const bool protected_delete_denied = !deleted && delete_error == ERROR_ACCESS_DENIED;
+    const bool protected_delete_denied = !deleted && delete_error == (locked_mode ? ERROR_SHARING_VIOLATION : ERROR_ACCESS_DENIED);
     const bool passed = personal && flags && fallback && allowed && denied && generic_invalid_handle_caught
-        && delete_child_denied && protected_delete_denied;
+        && (locked_mode ? delete_child_open_allowed : delete_child_denied) && protected_delete_denied;
     FILE* report = NULL;
     if (fopen_s(&report, argv[4], "w") || !report) return 91;
     for (char* p = desktop; *p; ++p) if (*p == '\\') *p = '/';
     for (char* p = argv[2]; *p; ++p) if (*p == '\\') *p = '/';
-    fprintf(report, "{\"personal_redirect\":%s,\"csidl_flags\":%s,\"fallback\":%s,\"fallback_return\":%d,\"fallback_error\":%lu,\"other_folder\":\"%s\",\"expected_other_folder\":\"%s\",\"private_write\":%s,\"medium_write_denied\":%s,\"denial_error\":%lu,\"generic_invalid_handle_caught\":%s,\"delete_child_denied\":%s,\"protected_delete_denied\":%s,\"directinput_hresult\":%lu,\"directinput_ok\":%s,\"passed\":%s}\n",
-        personal?"true":"false", flags?"true":"false", fallback?"true":"false", fallback_return, fallback_error, desktop, argv[2], allowed?"true":"false", denied?"true":"false", denial, generic_invalid_handle_caught?"true":"false", delete_child_denied?"true":"false", protected_delete_denied?"true":"false", (unsigned long)directinput_hr, directinput_ok?"true":"false", passed?"true":"false");
+    fprintf(report, "{\"personal_redirect\":%s,\"csidl_flags\":%s,\"fallback\":%s,\"fallback_return\":%d,\"fallback_error\":%lu,\"other_folder\":\"%s\",\"expected_other_folder\":\"%s\",\"private_write\":%s,\"medium_write_denied\":%s,\"denial_error\":%lu,\"generic_invalid_handle_caught\":%s,\"delete_child_denied\":%s,\"delete_child_open_allowed\":%s,\"protected_delete_denied\":%s,\"protected_delete_error\":%lu,\"directinput_hresult\":%lu,\"directinput_ok\":%s,\"passed\":%s}\n",
+        personal?"true":"false", flags?"true":"false", fallback?"true":"false", fallback_return, fallback_error, desktop, argv[2], allowed?"true":"false", denied?"true":"false", denial, generic_invalid_handle_caught?"true":"false", delete_child_denied?"true":"false", delete_child_open_allowed?"true":"false", protected_delete_denied?"true":"false", delete_error, (unsigned long)directinput_hr, directinput_ok?"true":"false", passed?"true":"false");
     fclose(report);
     const DWORD begin = GetTickCount();
     while (GetTickCount() - begin < 1500) {
@@ -1496,6 +1695,10 @@ def safety_probe(root, token_mode="low"):
     stage, medium = root / "stage", root / "medium"
     stage.mkdir()
     medium.mkdir()
+    grant = subprocess.run(["icacls.exe", str(medium), "/grant:r", f"*{current_user_sid()}:(OI)(CI)F"],
+                           capture_output=True, text=True)
+    if grant.returncode:
+        raise RuntimeError("Cannot prepare user-owned protected directory fixture")
     protected_child = medium / "protected-child.txt"
     protected_child.write_text("protected-kernel-fixture\n", encoding="utf-8")
     protected_hash = sha(protected_child)
@@ -1523,12 +1726,12 @@ def safety_probe(root, token_mode="low"):
     if done.returncode:
         raise RuntimeError(f"Probe compile failed ({done.returncode}): {root / 'compile.log'}")
     result = stage / "probe-result.json"
-    if token_mode == "medium-restricted":
+    if token_mode != "low":
         prepare_medium(stage, root / "probe-medium-prepare.json", executable=exe,
             original_exe=exe, protected_roots=[medium], probe=True)
     (stage / "discover-motion.request").write_text("safety-probe\n", encoding="utf-8")
     data = run_guard(stage, exe, stage, documents, root / "probe-launch.json", 30,
-        arguments=[str(documents), str(folder(0x24)), str(medium / "must-not-exist.txt"), str(result)],
+        arguments=[str(documents), str(folder(0x24)), str(medium / "must-not-exist.txt"), str(result), token_mode],
         protected_roots=[medium], probe=True, handle_known_xlive_debug_close=True, token_mode=token_mode)
     if not result.exists():
         raise RuntimeError(f"Probe did not produce a result; receipt: {root / 'probe-launch.json'}")
@@ -1557,6 +1760,19 @@ def safety_probe(root, token_mode="low"):
             crashed["child_exit_failures"][0]["exit_code"] == 0xC0000005 and
             crashed["protected_documents_unchanged"] and crashed["disk_executable_unchanged"])
     evidence["nonzero_child_exit_rejected"] = crash_rejected
+    if token_mode == "medium-write-locked":
+        child_marker, extra_receipt = stage / "Documents/child-must-not-run.txt", root / "probe-extra-process.json"
+        rejected = False
+        try:
+            run_guard(stage, exe, stage, documents, extra_receipt, 15,
+                arguments=["--fixture-extra-process", str(child_marker)], protected_roots=[medium],
+                probe=True, handle_known_xlive_debug_close=True, token_mode=token_mode)
+        except RuntimeError:
+            extra = json.loads(extra_receipt.read_text(encoding="utf-8"))
+            rejected = (extra["phase"] == "failed" and "Additional executable forbidden" in extra.get("error", "")
+                and extra["source_locks"].get("owned_job_exited_before_parent_release") and not child_marker.exists())
+        evidence["extra_process_rejected_before_execution"] = rejected
+        evidence["passed"] = evidence["passed"] and rejected
     evidence["protected_child_unchanged"] = protected_child.exists() and sha(protected_child) == protected_hash
     evidence["passed"] = (evidence["passed"] and motion_ok and diagnostic_ok and crash_rejected
         and evidence["protected_child_unchanged"] and (token_mode == "low" or evidence["directinput_ok"]))
@@ -1585,7 +1801,7 @@ def main():
     launch.add_argument("--documents", type=Path)
     launch.add_argument("--original-exe", type=Path, default=RETAIL)
     launch.add_argument("--seconds", "--timeout", type=int, default=900)
-    launch.add_argument("--token-mode", choices=("low", "medium-restricted"), default="low")
+    launch.add_argument("--token-mode", choices=("low", "medium-restricted", "medium-write-locked"), default="low")
     launch.add_argument("--no-motion-discovery", action="store_true")
     launch.add_argument("--handle-known-xlivedebugclose", action="store_true",
         help="Opt in to one first-chance invalid-HMODULE CloseHandle exception only with exact loaded xlive hash/call/live stack proof")
@@ -1596,7 +1812,7 @@ def main():
     launch.add_argument("arguments", nargs=argparse.REMAINDER)
     probe = sub.add_parser("probe")
     probe.add_argument("--root", type=Path, required=True)
-    probe.add_argument("--token-mode", choices=("low", "medium-restricted"), default="low")
+    probe.add_argument("--token-mode", choices=("low", "medium-restricted", "medium-write-locked"), default="low")
     args = parser.parse_args()
     try:
         if args.mode == "prepare":
