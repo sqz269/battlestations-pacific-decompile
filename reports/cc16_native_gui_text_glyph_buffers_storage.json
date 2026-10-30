@@ -64,7 +64,7 @@
     "entry": "void create_native_gui_text_glyph_buffers_storage_00ab8400(NativeGuiTextGlyphBuffersStorageFrame&)",
     "frame_constructor": "(Context&, volatile uint32_t (&actual_argument_homes)[2], Acquired&) noexcept",
     "constructor_effects": "Store references only; no argument/native cell reads, name initialization, allocation, retain or native call.",
-    "one_shot": "Private phase and nonmoving frame. Entered/failed frame destruction terminates; no destructor cleanup or retry. Distinct stable frame/acquisition per invocation.",
+    "one_shot": "Private phase and nonmoving frame; failure remains sticky and not resumable. Default/no-op destructor performs no cleanup, retry or termination. requires_process_retention() remains mandatory caller graph/record retention contract; distinct stable frame/acquisition per invocation.",
     "arguments": [
       {
         "word": 0,
@@ -186,7 +186,8 @@
     "Publication returns before dropping creator. Creator metadata is consumed before its captured decrement; entered/decremented/zero/returned status preserves diagnostics without automatic cleanup or retry. Do not treat consumed metadata as proof that a throwing terminal completed.",
     "All actual registry, cache/pools/renderer/device/physical/synchronization/string/import services, raw Mesh/streams/declaration and operation records remain alive through reached callbacks/failure disposition. No extra protective retain or count is added.",
     "On a terminal return, raw identities are diagnostic only; never rediscover freed storage. Canonical resource entries retire through their existing genuine lifetime path.",
-    "Existing null-result/profile support and canonical terminal noexcept policies remain Source qualification limits. No arbitrary unknown-target fallback, Original hardware-fault/FH3/SEH/private-stack/register/async-alias equivalence is claimed."
+    "Existing null-result/profile support and canonical terminal noexcept policies remain Source qualification limits. No arbitrary unknown-target fallback, Original hardware-fault/FH3/SEH/private-stack/register/async-alias equivalence is claimed.",
+    "Correction of historical93cb: metadata destruction is now default/no-op. Explicit requires_process_retention()/caller retention obligations remain; no new terminal process policy, cleanup, retry or acknowledgment is introduced."
   ],
   "consumer_boundary": {
     "actual_supplier_closes": "Raw nonempty ABA8D0 glyph-buffer creation call after real Text/clear/assign work can use this actual mesh/renderer supplier. No unused owner or authority is constructed.",
@@ -206,21 +207,19 @@
     "new_tests": 0,
     "CMake_ledger_or_extra_Source_edits": false,
     "static_evidence_check": {
-      "status": "passed",
-      "utc": "2026-10-30T15:41:45.388435+00:00",
+      "status": "passed corrected Source",
+      "utc": "2026-10-30T15:46:19.397156+00:00",
       "scope": [
-        "JSON parsed; exact base and4 owned paths",
-        "35 unchanged Source/tool/evidence LF/Git blob pins",
-        "2 shared-export byte/hash pins",
-        "one late capacity read,two current Mesh reads,three renderer reads,one decrement-cell read",
-        "listing phase order including vertex/declaration returns before index factory",
-        "wrapping unsigned4*n/6*n products",
-        "no NativeMeshStorage/NativeString pointer cast"
+        "CPP differs from93cb ONLY by removal of four-line destructor definition",
+        "Header defaults destructor; unchanged requires_process_retention() query",
+        "2 current Source pins,35 unchanged input pins and2 preserved93cb Source pins",
+        "Listing/body/call/cleanup schedule unchanged; raw home/global read counts unchanged",
+        "4 owned paths only; no build/tests/process/Ghidra changes"
       ],
-      "limitation": "Static checks are not compilation, body execution or Native/runtime parity. Root common build pending."
+      "limitation": "Static inspection only; common build and independent review remain with Root."
     },
     "Root_common_MSVC_Win32_build": "pending; worker explicitly forbidden to build",
-    "staged_diff_check": "git diff --cached --check passed; four owned files only"
+    "staged_diff_check": "Correction git diff --cached --check passed; four owned files; CPP only destructor removal"
   },
   "new_credit": {
     "Original": 0,
@@ -234,15 +233,15 @@
   "new_Source_pins": [
     {
       "path": "include/bsp/native_gui_text_glyph_buffers_storage.hpp",
-      "Git_LF_sha256": "1865c9150c0185e302273f92c0733f85eda3ef55a63b60f11b3d3b8351f84471",
-      "Git_LF_bytes": 6640,
-      "git_blob": "30a9a3b9f559c058804328d864705787e818b22c"
+      "Git_LF_sha256": "d80b39a0dab6f1297098fc185cd833de0f928799b2903c8bacdce2384bd4444f",
+      "Git_LF_bytes": 6701,
+      "git_blob": "2d49499a1552b69728ad41939266dcdc5b07b2ba"
     },
     {
       "path": "src/native_gui_text_glyph_buffers_storage.cpp",
-      "Git_LF_sha256": "e22b83dacefebf19066feece8b62bc9d05f56fa4ac90b509d83d38c3f3c63459",
-      "Git_LF_bytes": 10247,
-      "git_blob": "393b17f9967b40d7d0efb589b085349087b3426f"
+      "Git_LF_sha256": "729018eaa935d606d6ea233a856b6b2e598183bdfabb83974a0ee75b565a6c94",
+      "Git_LF_bytes": 10097,
+      "git_blob": "647cab67621d63b9801a383346edf413db4dada6"
     }
   ],
   "unchanged_supplier_and_evidence_pins": [
@@ -456,5 +455,34 @@
       "Git_LF_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
       "Git_LF_bytes": 455
     }
-  ]
+  ],
+  "historical_Source_versions": [
+    {
+      "commit": "93cbff9705e248dacca0edb2978f580fb98b3dba",
+      "status": "historical Source before destructor policy correction; retained unchanged for audit",
+      "new_Source_pins": [
+        {
+          "path": "include/bsp/native_gui_text_glyph_buffers_storage.hpp",
+          "Git_LF_sha256": "1865c9150c0185e302273f92c0733f85eda3ef55a63b60f11b3d3b8351f84471",
+          "Git_LF_bytes": 6640,
+          "git_blob": "30a9a3b9f559c058804328d864705787e818b22c"
+        },
+        {
+          "path": "src/native_gui_text_glyph_buffers_storage.cpp",
+          "Git_LF_sha256": "e22b83dacefebf19066feece8b62bc9d05f56fa4ac90b509d83d38c3f3c63459",
+          "Git_LF_bytes": 10247,
+          "git_blob": "393b17f9967b40d7d0efb589b085349087b3426f"
+        }
+      ],
+      "superseded_API_one_shot": "Private phase and nonmoving frame. Entered/failed frame destruction terminates; no destructor cleanup or retry. Distinct stable frame/acquisition per invocation."
+    }
+  ],
+  "policy_correction": {
+    "parent_commit": "93cbff9705e248dacca0edb2978f580fb98b3dba",
+    "utc": "2026-10-30T15:46:02.181530+00:00",
+    "scope": "Remove ONLY automatic std::terminate from borrowed AB8400 metadata frame destructor; default/no-op destructor. No body schedule, cleanup, retry, acknowledgment or new failure policy.",
+    "reason": "Existing genuine resource owner contracts do not require this borrowed frame to impose a new process terminal policy.",
+    "caller_contract": "requires_process_retention() is unchanged. Actual caller MUST retain unresolved graph, frame/acquisition/homes/providers and diagnose/dispose them under its existing genuine owner policy; metadata destruction supplies no resolution.",
+    "cleanup_secondary_exception_transport": "Existing explicit cleanup behavior retained and honestly qualified; independent review pending. No termination was invented to imitate unproved Native FH3."
+  }
 }

@@ -85,7 +85,7 @@ public:
     NativeGuiTextGlyphBuffersStorageFrame(NativeGuiTextGlyphBuffersStorageContext&,
         volatile std::uint32_t (&arguments)[2],
         NativeGuiTextGlyphBuffersStorageAcquired&) noexcept;
-    ~NativeGuiTextGlyphBuffersStorageFrame() noexcept;
+    ~NativeGuiTextGlyphBuffersStorageFrame() noexcept = default;
     NativeGuiTextGlyphBuffersStorageFrame(const NativeGuiTextGlyphBuffersStorageFrame&) = delete;
     NativeGuiTextGlyphBuffersStorageFrame& operator=(const NativeGuiTextGlyphBuffersStorageFrame&) = delete;
     NativeGuiTextGlyphBuffersStorageFrame(NativeGuiTextGlyphBuffersStorageFrame&&) = delete;
@@ -115,9 +115,10 @@ private:
 //
 // Name EH covers only current38, like native state0; resize/copy and explicit
 // return are outside it. Other exceptions preserve partial creator/publication
-// effects. Frame failure is sticky and not resumable; destructor terminates on
-// entered/failed custody rather than cleaning/retrying. Resolve and retain the
-// actual graph independently. Existing factory null/unsupported-profile and
+// effects. Frame failure is sticky and not resumable. Default destruction does
+// no work: caller MUST retain unresolved graph/records and obey the explicit
+// requires_process_retention() contract; no cleanup/retry/termination is added.
+// Existing factory null/unsupported-profile and
 // canonical terminal noexcept policies remain, not Native FH3/SEH/fault/private
 // stack or calling-convention parity. Semantic/equal-only Text APIs are unchanged;
 // this supplier alone does not close changed Text/layout/frontend admission.
