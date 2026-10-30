@@ -593,7 +593,7 @@ struct GameNativeGuiPageApplication::Impl {
         Impl& app;
         explicit Widgets(Impl& value) : app(value) {}
         const volatile Word* current_table(void* actual, Word profile) override {
-            if (const auto* timed = app.timed.current_table(actual, profile)) return timed;
+            if (const auto* timed_table = app.timed.current_table(actual, profile)) return timed_table;
             app.authenticate_widget(actual);
             if (app.is_page_widget(actual)) {
                 if (profile != kPageProfile && profile != 0x00d5c130) reject("Page widget profile", profile);
