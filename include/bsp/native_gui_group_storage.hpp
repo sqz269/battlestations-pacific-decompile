@@ -41,18 +41,22 @@ void free_native_gui_group_pool_table_00ac70d0(void* actual_header) noexcept;
 namespace game {
 // Process storage binding only. Explicit CD7440 first performs AC7410, then
 // CRT atexit(CE0AE0). Nonzero registration result retains initialized storage.
-// Construction/startup is NOT implicitly installed into the application.
+// The same Source backing survives process exit without a C++ profile unbind;
+// constructing that binding does not implicitly perform native startup.
 class GameNativeGuiGroupPoolProcess final {
 public:
     GameNativeGuiGroupPoolProcess(const GameNativeGuiGroupPoolProcess&)=delete;
     GameNativeGuiGroupPoolProcess& operator=(const GameNativeGuiGroupPoolProcess&)=delete;
     int initialize_once_00cd7440();
     NativeGuiGroupPool& pool_00f8bfa0();
+    // Serialized startup/exit control observation only. Nonzero atexit status
+    // is completed initialization, not an interrupted native operation.
+    bool native_operation_interrupted() const noexcept;
 private:
     friend GameNativeGuiGroupPoolProcess& game_native_gui_group_pool_process();
     GameNativeGuiGroupPoolProcess();
     static void destroy_00ce0ae0() noexcept;
-    enum class State { unattempted,returned,threw };
+    enum class State { unattempted,returned,threw,retiring,retired };
     NativeGuiGroupPoolStorage storage_00f8bfa0_{};
     NativeGuiGroupPool pool_;
     std::mutex startup_mutex_;
