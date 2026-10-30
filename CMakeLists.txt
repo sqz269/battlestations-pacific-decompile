@@ -467,3 +467,6 @@ target_sources(bsp_core PRIVATE src/oct18_tail_d.cpp)
 target_sources(bsp_core PRIVATE src/oct18b_nc_high.cpp)
 target_sources(bsp_core PRIVATE src/oct18b_nc_mid.cpp)
 target_sources(bsp_core PRIVATE src/oct18b_nc_low.cpp)
+
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/game_native_locale_language_input.cpp)
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/game_native_locale_globals_input.cpp)
