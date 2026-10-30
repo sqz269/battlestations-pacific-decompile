@@ -87,6 +87,7 @@
 #include "bsp/main_menu_screen.hpp"
 #include "bsp/input_tick.hpp"
 #include "bsp/press_start_screen.hpp"
+#include "bsp/native_gui_text_failure_origin.hpp"
 #include "bsp/profile_unlock.hpp"
 #include "bsp/session_message_dispatch.hpp"
 #include "bsp/session_polls.hpp"
@@ -248,6 +249,41 @@ private:
 }
 
 int main() {
+    {
+        // Passive metadata fixture only: this ordinary header is never passed
+        // to a Native provider, pool or destructor. The host exception is real.
+        using Origin = bsp::NativeGuiTextFailureOrigin;
+        using Runtime = bsp::NativeGuiTextFailureOriginRuntime;
+        Runtime runtime{Runtime::Contract::qualified_own_msvc_14_51_source_catch};
+        Origin origin;
+        bsp::NativeGuiTextFailureHeaderArm arm;
+        std::uint32_t passive_header[2]{};
+        origin.begin(runtime, &origin, 0);
+        check(!origin.committed() && origin.verdict() == Origin::Verdict::unset,
+            "origin metadata starts unset, without a committed denial");
+        arm.arm(origin, passive_header, 0);
+        struct HostMetadataFault {};
+        bool caught = false;
+        try {
+            origin.host(runtime, {0, 1}, &origin, [] { throw HostMetadataFault{}; });
+        } catch (const HostMetadataFault&) {
+            caught = true;
+            const auto cause = runtime.read_current_catch();
+            check(cause.valid(), "origin fixture reads the real active Source catch key");
+            check(origin.committed() && origin.verdict() == Origin::Verdict::host
+                && origin.requires_retention(),
+                "host escape with an armed header commits host metadata and retention");
+            check(!arm.consume_proven_primary(origin, cause, passive_header, 0),
+                "host escape cannot authorize Native header cleanup");
+            origin.retain_current(runtime);
+            check(origin.committed() && origin.verdict() == Origin::Verdict::host
+                && origin.requires_retention(),
+                "unknown retention fallback preserves the committed host denial");
+            check(!arm.consume_proven_primary(origin, cause, passive_header, 0),
+                "retention fallback cannot promote host metadata to Native cleanup");
+        }
+        check(caught, "origin fixture propagates the real host exception");
+    }
     {
         // One Source-only regression for AD3A80's missing captured-block
         // constructor cleanup. The callback replaces CURRENT backing before
