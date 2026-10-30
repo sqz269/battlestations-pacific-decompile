@@ -1,0 +1,286 @@
+{
+  "packet": "codex-raw-locale-manager-retirement",
+  "state": "dormant_source_object_compiled",
+  "source_ready": false,
+  "created_utc": "2026-10-30T05:34:59.903906+00:00",
+  "base_commit": "6eb392dd4de0b56941c78dadcbe4ada79deb793c",
+  "accepted_dependency_merge": "7d75a1f19f7cb5d77357dbd9338d60e0d303c2e0",
+  "owned_files": [
+    "include/bsp/native_locale_manager_retirement.hpp",
+    "src/native_locale_manager_retirement.cpp",
+    "docs/NATIVE_LOCALE_MANAGER_RETIREMENT.md",
+    "reports/native_locale_manager_retirement.json"
+  ],
+  "addresses": [
+    "0073c9f0",
+    "0073caf0"
+  ],
+  "evidence": {
+    "contract_path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\raw_locale_manager_retirement_contract_gui_20261030\\CONTRACT.md",
+    "contract_sha256": "635b7715fd9b5b069d93285da4102e384691a088dd8d805d556f06660d1c8113",
+    "contract_pins_sha256": "0ee4546db5a3ed02eace1c7dda553c959a7f97d26492660f46325802bebbd7b7",
+    "original_pe": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "machine": "0x14c"
+    },
+    "native_primary_bundle": [
+      {
+        "role": "full_destructor",
+        "start": "0073c9f0",
+        "end_inclusive": "0073caea",
+        "length": 251,
+        "sha256": "efd90fecdcd71c5329f30d7282367adec30387c91f58b3c4245fc0614488fe10",
+        "hex": "6aff686e69c80064a10000000050648925000000005153568bf1578974240cc70640f1cf008b863440000033db3bc3c744241802000000740950e87d9b4b0083c404899e34400000899e38400000899e3c4000008b86244000003bc3740950e8589b4b0083c404899e24400000899e28400000899e2c4000008b861c4000003bc374198b8e184000006a0183c1015150e83bd2cdff8bc8e8844a49008d4e14c644241801e8a7f7ffff8b4e083bcb8d7e04885c2418741a8b44240c8b57085057e89b55cfff8b470450e8ee9a4b0083c4048bce895f04895f08895f0cc7442418ffffffffe8079bffff8b4c24105f5e5b64890d0000000083c410c3",
+        "matches_live_query": true
+      },
+      {
+        "role": "full_scalar",
+        "start": "0073caf0",
+        "end_inclusive": "0073cb0d",
+        "length": 30,
+        "sha256": "90fc1e4906b02e1cddf92b0dc4ffdc322c6aa7609fd4067952698b2cccea26ab",
+        "hex": "568bf1e8f8fefffff644240801740956e8a79a4b0083c4048bc65ec20400",
+        "matches_live_query": true
+      },
+      {
+        "role": "map_thunk",
+        "start": "0073c330",
+        "end_inclusive": "0073c334",
+        "length": 5,
+        "sha256": "93ebcf39841c9d0138f238540df73573dcd227bac1d74f5c3d20df4515d5d0b5",
+        "hex": "e90bffffff",
+        "matches_live_query": true
+      },
+      {
+        "role": "selected_handler_selector",
+        "start": "00c8696e",
+        "end_inclusive": "00c86977",
+        "length": 10,
+        "sha256": "7fd930f0010389c245b1c1d2b5c8756b60dfc39c0b24a0ae5acf07a4d758c0a0",
+        "hex": "b8b05fdb00e9cb01f7ff",
+        "matches_live_query": true
+      },
+      {
+        "role": "selected_FuncInfo",
+        "start": "00db5fb0",
+        "end_inclusive": "00db5fd3",
+        "length": 36,
+        "sha256": "718301cd1ca8310250859835fa2fdf70b91e5c9865cc054d2922c535bbff3687",
+        "hex": "2205931903000000985fdb00000000000000000000000000000000000000000001000000",
+        "matches_live_query": true
+      },
+      {
+        "role": "selected_unwind_map",
+        "start": "00db5f98",
+        "end_inclusive": "00db5faf",
+        "length": 24,
+        "sha256": "86af03dc11e04eaf5432dfa89709f73a250e50c88762e77b5a09ab1e59ea6b9a",
+        "hex": "ffffffff5069c800000000005869c800010000006369c800",
+        "matches_live_query": true
+      },
+      {
+        "role": "selected_cleanup_actions",
+        "start": "00c86950",
+        "end_inclusive": "00c8696d",
+        "length": 30,
+        "sha256": "d118a69d0e538aa66f5b5e528e7365046652e5ef6e3b07c9c63e5a636152080c",
+        "hex": "8b4df0e988fcaaff8b4df083c104e93dbb7aff8b4df083c114e9c259abff",
+        "matches_live_query": true
+      }
+    ],
+    "total_primary_native_bytes": 386,
+    "selected_eh": {
+      "selector": "00c8696e",
+      "FuncInfo": "00db5fb0",
+      "maxState": 3,
+      "unwind_map": "00db5f98",
+      "state0": {
+        "previous": -1,
+        "action": "00c86950",
+        "callee": "007365e0",
+        "receiver": "saved original [EBP-10]"
+      },
+      "state1": {
+        "previous": 0,
+        "action": "00c86958",
+        "callee": "004324a0",
+        "receiver": "original+4"
+      },
+      "state2": {
+        "previous": 1,
+        "action": "00c86963",
+        "callee": "0073c330 exact JMP0073c240",
+        "receiver": "original+14"
+      },
+      "normal_state_changes": [
+        "state2 after initial CURRENT+4034 capture",
+        "state1 BEFORE map normal call",
+        "state0 AFTER CURRENT+8 begin capture, BEFORE range end/read/call",
+        "state-1 BEFORE base normal call"
+      ],
+      "no_word_sidecar_cleanup_in_selected_map": true
+    },
+    "new_live_query_or_Ghidra_mutation": false,
+    "owned_source_hashes": {
+      "include/bsp/native_locale_manager_retirement.hpp": "fb4fe4198ce00f35f9fd9f907d200e89477cf0fb31f97089f03437b48ef4bfda",
+      "src/native_locale_manager_retirement.cpp": "5812c7eed5d4dd10f3df8dff884faf82a776fd1b190525210dbbd4f1e2d59715",
+      "docs/NATIVE_LOCALE_MANAGER_RETIREMENT.md": "ec57e0937f46222af1997c8be21f839339da06f0ae207191d2cbf0f31b37b2dc"
+    },
+    "actual_prerequisite_source_hashes": {
+      "include/bsp/native_locale_map_clear.hpp": "0c09f57232da819c7575bc316dbdafc0e2b68866865dd5dc4ab837488dd76059",
+      "src/native_locale_map_clear.cpp": "9b8e6db0ca2c4f8b98a263f7bdd2ba161577d6ba36a50703a1b850f2800cfac1",
+      "src/native_diagnostic_sink_lifetime.cpp": "7ef822175d062d799683312c6a8f9618c1771ec013e7424b48eedd66c7968499",
+      "src/native_render_service_base.cpp": "5ad0e48f648cdaf3305fd52b58ef068873cf6f1c242683b77053cb1e06206420",
+      "include/bsp/native_render_service_vector_cleanup.hpp": "34035e6bef6840298913a0d50a25991a1567546dd576578dc5857d9e69174c80",
+      "src/native_render_service_vector_cleanup.cpp": "fd7c581522967ab66036064404d62838eba860ae93677314e4594c9628dd3d41",
+      "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "include/bsp/native_string_pool_owner.hpp": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "src/native_string_pool_owner.cpp": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "include/bsp/native_string_pool_storage.hpp": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+      "src/native_string_pool_storage.cpp": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+      "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    }
+  },
+  "api": {
+    "context": "immutable borrow of const SAME NativeLocaleManagerConstructorContext&, SAME NativeStringRawPoolContext&, actual initialized stable E1768C pool pointer; no copied cells/owners",
+    "destructor": "ordinary void; native ECX and plain RET, no result",
+    "scalar": "ordinary saved address return; actual live caller DWORD const-volatile ref; only LOWBYTE read AFTER destructor, bit0 optional matched free; no postfree receiver access",
+    "original_binary_entry_replacement": false
+  },
+  "native_order": {
+    "destructor_source_epochs": [
+      "store_word(actual_receiver, 0, 0x00cff140u);",
+      "const Word first_sidecar = load_word(actual_receiver, 0x4034);",
+      "const bool first_nonnull = first_sidecar != 0;",
+      "RetirementCleanup cleanup{actual_receiver, context};",
+      "singleton_lifetime_free(pointer(first_sidecar));",
+      "store_word(actual_receiver, 0x4034, 0);",
+      "store_word(actual_receiver, 0x4038, 0);",
+      "store_word(actual_receiver, 0x403c, 0);",
+      "const Word second_sidecar = load_word(actual_receiver, 0x4024);",
+      "singleton_lifetime_free(pointer(second_sidecar));",
+      "store_word(actual_receiver, 0x4024, 0);",
+      "store_word(actual_receiver, 0x4028, 0);",
+      "store_word(actual_receiver, 0x402c, 0);",
+      "const Word language_data = load_word(actual_receiver, 0x401c);",
+      "const Word language_size = load_word(actual_receiver, 0x4018) + 1u;",
+      "native_string_pool_get_or_create_00419cc0(",
+      "return_native_string_pool_00bd1510(pool, pointer(language_data),",
+      "cleanup.state = 1;",
+      "clear_native_locale_map_0073c240(",
+      "const Word names_begin = load_word(actual_receiver, 8);",
+      "cleanup.state = 0;",
+      "const Word names_end = load_word(actual_receiver, 0xc);",
+      "destroy_native_string_header_range_00432050(",
+      "const Word current_names_begin = load_word(actual_receiver, 8);",
+      "singleton_lifetime_free(pointer(current_names_begin));",
+      "store_word(actual_receiver, 8, 0);",
+      "store_word(actual_receiver, 0xc, 0);",
+      "store_word(actual_receiver, 0x10, 0);",
+      "cleanup.state = -1;",
+      "destroy_native_locale_manager_base_007365e0("
+    ],
+    "scalar_source_epochs": [
+      "void* const original_receiver = actual_receiver;",
+      "destroy_native_locale_manager_0073c9f0(original_receiver, context);",
+      "const unsigned char low_flags =",
+      "*reinterpret_cast<const volatile unsigned char*>(&actual_flags);",
+      "if ((low_flags & 1u) != 0) singleton_lifetime_free(original_receiver);",
+      "return original_receiver;"
+    ],
+    "cleanup_progress": "state decremented BEFORE each selected action2/map1/names0/base; disarm each normal action before its call",
+    "no_language_header_clear_or_post_return_read": true,
+    "normal_names_initial_begin_before_state0": true,
+    "current_names_begin_reloaded_after_range": true,
+    "no_word_sidecar_EH_cleanup_invented": true,
+    "no_737c10_vendor_api_or_body": true
+  },
+  "exception_contract": {
+    "state2": "map then names then base",
+    "state1": "names then base; no map retry",
+    "state0": "base only; no range retry",
+    "state_minus1": "base own selected cleanup only; no outer base retry",
+    "cleanup_cpp_fail_stop": "0xe06d7363 secondary C++ escape terminates; other SEH continues search",
+    "inherited_noexcept_contracts_unchanged": true,
+    "native_FH3_hardware_private_spill_throw_identity_double_failure_parity": false,
+    "rollback_recovery_or_speculative_free": false
+  },
+  "verification": {
+    "isolated_compile": {
+      "command": "$taskObjectDir=Join-Path (Get-Location).Path 'build/locale_manager_retirement_object'; New-Item -ItemType Directory -Path $taskObjectDir -Force | Out-Null; $taskCompileCommand='call \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\Tools\\VsDevCmd.bat\" -arch=x86 -host_arch=x64 -no_logo && cl.exe /nologo /std:c++17 /permissive- /W4 /WX /EHsc /MD /O2 /Ob2 /DNDEBUG /DWIN32 /D_WINDOWS /DNOMINMAX /DWIN32_LEAN_AND_MEAN /I include /c src\\native_locale_manager_retirement.cpp /Fo\"build\\locale_manager_retirement_object\\native_locale_manager_retirement.obj\"'; & $env:ComSpec /d /s /c $taskCompileCommand; exit $LASTEXITCODE",
+      "exit_code": 0,
+      "stdout": "native_locale_manager_retirement.cpp\r\n",
+      "wall_time_seconds": 6.1391953,
+      "attempts": 1,
+      "policy": "existing strict MSVC Win32 C++17 Release/EH/runtime/warning flags; /c only"
+    },
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\build\\locale_manager_retirement_object\\native_locale_manager_retirement.obj",
+      "sha256": "e52e59a7c211928e89056f1e84e2b3ab54df32b66aa780c780a3b44bdca2dcea",
+      "bytes": 6364,
+      "machine": "0x14c",
+      "defined_entries": [
+        "?destroy_native_locale_manager_0073c9f0@bsp@@YAXPAXABUNativeLocaleManagerRetirementContext@1@@Z",
+        "?delete_native_locale_manager_0073caf0@bsp@@YAPAXPAXADIABUNativeLocaleManagerRetirementContext@1@@Z"
+      ],
+      "genuine_provider_references": [
+        "?clear_native_locale_map_0073c240@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@0@Z",
+        "?destroy_native_locale_manager_base_007365e0@bsp@@YAXPAXABUNativeLocaleManagerConstructorContext@1@@Z",
+        "?destroy_native_string_header_vector_004324a0@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+        "?destroy_native_string_header_range_00432050@bsp@@YAXPAX0AAUNativeStringRawPoolContext@1@@Z",
+        "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+        "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+        "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+      ],
+      "compile_only": true,
+      "linked_or_executed": false
+    },
+    "source_epoch_order": {
+      "destructor_markers": 30,
+      "scalar_markers": 6,
+      "progress_advance_before_unwind": true
+    },
+    "frozen_aa56_d5c_eight_unchanged": {
+      "include/bsp/native_locale_manager_constructor.hpp": "043639699cb7855ab0ee4ba244cdf060a09191dea73e267514ef359adf8bf674",
+      "src/native_locale_manager_constructor.cpp": "49fbe8d8a02f37dd2fda4790264d2fc92d42d3925294f41ebea9d745e6acb353",
+      "docs/NATIVE_LOCALE_MANAGER_CONSTRUCTOR.md": "241d76091762dbcb134f8499301e35d72a8b0b82abf175014e5dc881b92cfdae",
+      "reports/native_locale_manager_constructor.json": "8a0e41211d34e611c00aeca609fb318c05285076bb69a7f93c6412ded3644921",
+      "include/bsp/native_locale_manager_base_retirement.hpp": "3332d5e49dd229d4a24a90d09e72539db0e616f7bce307e0c947e6c8c722159b",
+      "src/native_locale_manager_base_retirement.cpp": "6debd92e67eba61695a5fc2bd384176bde5181c0841f3b30944fb25250f74e7b",
+      "docs/NATIVE_LOCALE_MANAGER_BASE_RETIREMENT.md": "81d71bf9c8b00846c6dbb977b59767c53464777510890af15b1a2ee42bcdefba",
+      "reports/native_locale_manager_base_retirement.json": "25869433af8dfc1e127ecfd8fb91f069b3a1fb07c7a3d545e6f9c337e959c0b3"
+    },
+    "full_build": false,
+    "new_tests": 0,
+    "tests_run": 0,
+    "probe_executable": false,
+    "game": false
+  },
+  "coupled_dependencies": {
+    "base": "aa56020033e2ff98be0efe1ba87b4759b4626f79",
+    "raw_cleanup": "f411f273717aa1f24c1973a89dcc8490cfdd93f0",
+    "map_clear": "550488c70c37dbca0d93d7289d827ae5bb6d0a9f",
+    "root_review_common_link_and_publication": "separate from this packet"
+  },
+  "caller_obligations": [
+    "same actual AA0 identity between constructor context and raw AA8/AA4/AA0 context; stable genuine initialized E1768C authority",
+    "actual aligned/addressable4040 receiver and live disjoint context/cells/flags/provider backing",
+    "matching actual CRT allocation provenance of sidecars, CURRENT names begin, and scalar receiver",
+    "nonoverlapping genuine string/map/header/node ownership and valid raw8B ranges",
+    "retain every captured/affected native graph on every escape, including base publication changes/clear",
+    "no conflicting writers, retargeting, invalidation or arbitrary reentrant lifecycle mutation",
+    "caller flags remain live actual DWORD object until late low-byte read; returned pointer bits confer no liveness"
+  ],
+  "excluded": [
+    "vendor/STL/runtime body reconstruction credit",
+    "semantic container projection",
+    "new owner/global/provider/callback",
+    "canonical cell/profile/lifetime/host activation",
+    "loading/parser/growth/startup",
+    "uppercase/Text readiness",
+    "full common link/build/runtime/game/ABI proof"
+  ],
+  "activation": false
+}

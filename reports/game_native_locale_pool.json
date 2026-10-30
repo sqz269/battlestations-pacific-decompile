@@ -1,0 +1,139 @@
+{
+  "addresses": [
+    "00cc8d30",
+    "00cd9410"
+  ],
+  "source_class": "bsp::game::GameNativeLocalePoolProcess",
+  "status": "dormant_canonical_source_owner_and_bookend_adapter_object_compiled",
+  "source_ready": false,
+  "runtime": false,
+  "base_revision": "e89356810f13edcd933c8992081c1ca9255cdadf",
+  "source_plan": {
+    "path": "local\\raw_locale_pool_canonical_binding_cc9_20261030\\CONTRACT.md",
+    "sha256": "5476e1bb51eb11214a73930b5f9a9b09e02927ceb1bdf0266037fea0dc84de9e",
+    "parent_native_frontier": "local\\raw_locale_pool_canonical_binding_cc9_20261030\\parent_frontier\\CONTRACT.md",
+    "parent_frontier_sha256": "5e842c34880988a47a4eaa7acf258fb2ad6709f6d76bf91259055d5b482f826e",
+    "scope": "Parent-verified22Binitializer real436230\u2192atexit(CD9410),10Bsameownerexit\u2192435A50; no newlivequery or OriginalCRTtableexecution claim"
+  },
+  "canonical_graph": {
+    "factory_only": true,
+    "owner_instances": 1,
+    "actual_storage": "ONE NodePool1CStorage38h member, used by constructor/trim/destructor and raw accessor",
+    "common_list": "SAME GameNativePhysicalPoolProcess::allocator_list_domain_00e188b4; no secondhead/domain or unrelatedphysicalpoolstartup",
+    "profile": "bind SAME actualpool.allocator_00 CE4120\u21924360E0 with retainedImplcontext BEFORE constructor publication; callback directly invokes realtrim without statepermission/no-op",
+    "host": "realmatched singleton_lifetime_allocate({object,bytes,bytes}) and singleton_lifetime_free for BOTH free methods; currenthostheap/newhandler/exceptionqualification",
+    "retained_bookkeeping": "factory retains new-allocated process/Impl/host/storage; private C++ destructor is never automatically registered/called"
+  },
+  "startup_policy": {
+    "effects": [
+      "consume initializingstate before profilebind",
+      "realexisting node_pool_1c_construct_00436230",
+      "capture private constructor_returned immediately",
+      "actual std::atexit(private same-owner callback)",
+      "capture actual status and registration_returned immediately",
+      "healthfences before marking returned"
+    ],
+    "nonzero_status": "cached and returned unchanged; initializedpool/profile remain, no callback/rollback/retry",
+    "throw_or_caught_reentry": "permanentfailedmetadata retained; no reconstruct/registration retry/extra pooldestructor",
+    "borrow": "only actualconstructor+registrationreturned, healthy startup and exitnotentered; statechecked before exposing SAMEcell",
+    "factory_metadata_reentrancy": "unsupported; external shared-list serialization/concurrent teardown constraints explicit"
+  },
+  "exit_policy": {
+    "context": "alreadyinstalled canonical pointer; no lazy getter",
+    "entry": "require actualconstructorreturned/realregistrationreturned0 and unenteredexit; closeborrows BEFORE native destructor",
+    "body": "real node_pool_1c_destroy_00435a50 SAMEpool/list/host once",
+    "registered_after_metadata_failure": "actual registered normalconstructor obligation is still honored; startupfailure never becomes healthy",
+    "finish": "only normalreturn plus stickyexit fence records exitreturned",
+    "failure": "existing project stderr/fflush/_Exit(1) failstop for unexpected escape/reentry; inheritednoexceptfree/nativefault limits remain",
+    "no_public_manual_destroy": true
+  },
+  "lifetime_window": {
+    "proof": "physicalC++static construction/destructorregistration precedes returnedlistborrow; locale registrationlater\u2192currentCRTLIFO locale callbackfirst",
+    "registration_failure": "no newcallback; retained inertpool is not actual lateuse proof",
+    "supported_scope": "allactualpayload/node/map/listborrows retire beforepoolcallback/commonPhysicalbookkeeping destruction; no arbitrarypostwindow permission",
+    "physical_getter_or_destructor_changed": false,
+    "OriginalCRT_table_dispatch_or_fixed_address_claim": false
+  },
+  "existing_lifecycle_dependencies": [
+    {
+      "path": "include/bsp/pool_pool16_cc13.hpp",
+      "revision": "e89356810f13edcd933c8992081c1ca9255cdadf",
+      "git_blob_sha256": "d978f4ad6166942062db06d7f495a9dab96743a2d41c69ebf5c9f8a5d95795a0"
+    },
+    {
+      "path": "src/pool_pool16_cc13.cpp",
+      "revision": "e89356810f13edcd933c8992081c1ca9255cdadf",
+      "git_blob_sha256": "76a2fc5d1ad2e32c3773a86da635b1c766018f85d9a332f10015842bcddf93c8"
+    },
+    {
+      "path": "include/bsp/game_native_physical_pool.hpp",
+      "revision": "e89356810f13edcd933c8992081c1ca9255cdadf",
+      "git_blob_sha256": "eb9dd2f1b6cfdcb3950bf7912228f346e513526fd0f7c3d4a2e82dfbc86cef70"
+    },
+    {
+      "path": "src/game_native_physical_pool.cpp",
+      "revision": "e89356810f13edcd933c8992081c1ca9255cdadf",
+      "git_blob_sha256": "2cacaa43521df1c3698e633ac5d919f2a34d21f7cb3630589cad07aa4b9f9c90"
+    },
+    {
+      "path": "include/bsp/allocator_list.hpp",
+      "revision": "e89356810f13edcd933c8992081c1ca9255cdadf",
+      "git_blob_sha256": "5344cbd4fe4ea86a4206c24f08e2407eea3055f03947f677c46b3a635d4f1570"
+    },
+    {
+      "path": "src/allocator_list.cpp",
+      "revision": "e89356810f13edcd933c8992081c1ca9255cdadf",
+      "git_blob_sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "revision": "e89356810f13edcd933c8992081c1ca9255cdadf",
+      "git_blob_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "revision": "e89356810f13edcd933c8992081c1ca9255cdadf",
+      "git_blob_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "src/native_enum_node_pool.cpp",
+      "revision": "e89356810f13edcd933c8992081c1ca9255cdadf",
+      "git_blob_sha256": "9d57e323795d7a1061f11138d09fd2ceb8a2d1fd26e52affaeceeafa32ec867b"
+    },
+    {
+      "path": "src/game_native_settings_process.cpp",
+      "revision": "e89356810f13edcd933c8992081c1ca9255cdadf",
+      "git_blob_sha256": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b"
+    }
+  ],
+  "validation": {
+    "scope": "one isolated strict existing-MSVC Win32 TU /c only",
+    "exit_code": 0,
+    "coff_machine": "0x14c",
+    "flags": "/std:c++17 /permissive- /W4 /WX /EHsc /MD /O2 /fp:strict",
+    "compile_receipt": "local\\game_native_locale_pool_compile_cc9_20261030\\compile_receipt.json",
+    "compile_receipt_sha256": "d5038167c4bf61af9ac486f58cef946e826aed8b292bcd9963b70cd4890e0c17",
+    "cpp_sha256_at_compile": "ef01a5c56a1c61617274c5bcc6021d6785947305e333f4048094f5946aaf73de",
+    "hpp_sha256_at_compile": "969db5c9f80ab1e4b6e5098f43ef1515d0e726fe2aa9e119dfb777cccc989911",
+    "object_sha256": "2bf1d751fa1751e4ad526a20df232832c4170abfca47dc69f9ddc9f98ac5aace",
+    "log_sha256": "7943458b7b4db1f47d8e3fd7a030dedd47d5d217d815118dbbd4db577280c748",
+    "outer_tool_terminal_exit": 0,
+    "new_tests_probes_executables_games": 0,
+    "full_build": false,
+    "Ghidra_mutations": 0
+  },
+  "source_files_sha256": {
+    "include/bsp/game_native_locale_pool.hpp": "969db5c9f80ab1e4b6e5098f43ef1515d0e726fe2aa9e119dfb777cccc989911",
+    "src/game_native_locale_pool.cpp": "ef01a5c56a1c61617274c5bcc6021d6785947305e333f4048094f5946aaf73de",
+    "docs/GAME_NATIVE_LOCALE_POOL.md": "114e77e07dcdb80ade6b85699cbe25d76469696232073a6053ffda7b8f6ef7a5"
+  },
+  "unbound": [
+    "applicationstartup/actualOriginalCRTtableexecution",
+    "genuine slab creation and allocatednode/payload provenance",
+    "rawlocale managerloading/F8BC4C/consumeradmission",
+    "fullruntime/ABI/Page/P4/productionproof"
+  ],
+  "vendor_body_reconstruction_credit": false,
+  "new_native_credit": false,
+  "integration_owner": "Root targetbsp_game CMake/ledger/sharedmetadata/coupledbuild; oldlifecycle and rawprovidercleanupfix untouched"
+}

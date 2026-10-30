@@ -1021,3 +1021,33 @@ Canonical publication/load/lifetime and startup admission remain unbound,
 all nine choices stay FALSE, and frozen ac60 remains held. A separate dormant
 raw constructor/base packet is next; no semantic object or zero-loaded manager
 is a substitute. See CODEX_RAW_LOCALE_BINDING_INTEGRATION.md.
+
+Dormant raw736540/full73C960 construction and raw73C240 map-clear composition
+are Source-reviewed and registered. Corrected d5c replaces held37ce raw-field
+object assumptions with fenced byte copies; independent inverse projection
+retains controls/EH/capture/order. Map clear550488 uses existing real payload
+and slot-return services with stable-import qualification. Combined Win32
+Release build including the f411 shared411EE0/412430 raw-access refinement and
+existing checks2/2 pass19.29s. The earlier13.12s evidence is retained. No startup caller, canonical
+owner, actual loaded manager or new body/game execution follows. Node-pool
+ownership and raw unregistration/retirement are the next bounded bindings;
+full loading and all9off/frozenac60hold remain. Exact limits and evidence:
+CODEX_RAW_LOCALE_CONSTRUCTION_INTEGRATION.md.
+
+Canonical Source E1768C owner c1e76db25 and raw7365E0 base retirement aa5602003
+are Source-reviewed and registered. The pool reuses real lifecycle/heap/profile
+services on the SAME shared allocator list; actual atexit status, failure
+retention and current-CRT lifetime window are explicit. It constructs a table,
+not slabs or loaded locale. Base retirement preserves current-publication and
+its own selected EH ordering. Combined Win32 Release build/checks2/2 pass14.69s.
+No application startup, callback execution, new body/game or Original ABI proof
+follows. All9off/ac60hold remain; full destruction and slab/allocation/loading
+are the next bounded dependencies. See CODEX_RAW_LOCALE_POOL_RETIREMENT_INTEGRATION.md.
+
+Full raw73C9F0 destructor/scalar73CAF0 packet2bab is Source-reviewed and
+registered with aa56/f411/550 and real range/pool/heap providers. Own selected
+EH and normal disarm epochs, names-begin/current-free and lateactualflags are
+retained. Common Win32 Release build/checks2/2 pass14.24s; no body/game execution,
+canonical F8 owner/profile/startup or Original ABI proof follows. Slab/slot
+allocation and raw loading remain separate; all9off/ac60hold unchanged.
+See CODEX_FULL_RAW_LOCALE_RETIREMENT_INTEGRATION.md.

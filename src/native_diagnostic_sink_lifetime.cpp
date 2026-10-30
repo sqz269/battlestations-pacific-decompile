@@ -7,6 +7,7 @@
 
 #include <cstddef>
 #include <cstring>
+#include <intrin.h>
 #include <new>
 #include <stdexcept>
 
@@ -31,12 +32,26 @@ std::uint32_t& tracked_counter(CRITICAL_SECTION* section) noexcept {
 } // namespace
 
 void destroy_native_singleton_guard_00411ee0(void* actual_8byte_guard) {
-    CRITICAL_SECTION* captured;
-    std::memcpy(&captured, static_cast<std::byte*>(actual_8byte_guard) + 4, 4);
+    std::uint32_t captured_bits;
+    _ReadWriteBarrier();
+    std::memcpy(&captured_bits, static_cast<std::byte*>(actual_8byte_guard) + 4, 4);
+    _ReadWriteBarrier();
     const std::uint32_t profile = 0x00ce37fcu;
+    _ReadWriteBarrier();
     std::memcpy(actual_8byte_guard, &profile, 4);
-    if (captured) {
-        --tracked_counter(captured);
+    _ReadWriteBarrier();
+    if (captured_bits != 0) {
+        auto* const captured = reinterpret_cast<CRITICAL_SECTION*>(
+            static_cast<std::uintptr_t>(captured_bits));
+        auto* const counter_bytes = reinterpret_cast<std::byte*>(captured) + 0x18;
+        std::uint32_t counter;
+        _ReadWriteBarrier();
+        std::memcpy(&counter, counter_bytes, 4);
+        _ReadWriteBarrier();
+        counter -= 1u;
+        _ReadWriteBarrier();
+        std::memcpy(counter_bytes, &counter, 4);
+        _ReadWriteBarrier();
         LeaveCriticalSection(captured);
     }
 }
