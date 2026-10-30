@@ -229,9 +229,19 @@ def main():
     def accounting(handle):
         data = g.JOB_ACCOUNTING(); count = g.DWORD()
         g.checked(g.K.QueryInformationJobObject(handle, 1, C.byref(data), C.sizeof(data), C.byref(count)), "fixture job accounting")
+        width, capacity = C.sizeof(C.c_size_t), 64
+        process_ids = C.create_string_buffer(8 + width * capacity); returned = g.DWORD()
+        g.checked(g.K.QueryInformationJobObject(handle, 3, process_ids, C.sizeof(process_ids), C.byref(returned)), "fixture job PID list")
+        assigned, listed = struct.unpack_from("<II", process_ids.raw)
+        if listed > capacity:
+            raise RuntimeError("Fixture job PID list exceeded its bounded buffer")
+        pids = [int.from_bytes(process_ids.raw[8 + index * width:8 + (index + 1) * width], "little")
+                for index in range(listed)]
         return {**{name: getattr(data, name) for name, _ in data._fields_},
                 "returned_bytes": count.value, "buffer_bytes": C.sizeof(data),
-                "raw_hex": C.string_at(C.byref(data), C.sizeof(data)).hex()}
+                "raw_hex": C.string_at(C.byref(data), C.sizeof(data)).hex(),
+                "pid_list": {"assigned": assigned, "listed": listed, "pids": pids,
+                             "host_pointer_bytes": width, "returned_bytes": returned.value}}
 
     def active(handle):
         return accounting(handle)["active"]
@@ -344,6 +354,7 @@ def main():
                         if not 0 < root_pid <= 0xffffffff or not 0 < root_created <= 0xffffffffffffffff:
                             raise RuntimeError("Invalid native helper PID/FILETIME")
                         verify_waiting_root(root_pid, root_created, target, pe["image_base"] + pe["entry_rva"], entry_bytes, root_job)
+                        report["pre_wrong_nonce_job_accounting"] = [accounting(handle) for handle in jobs]
                         readiness = dict(schema="bsp.dr.fixture-ready.v1", pid=root_pid,
                             process_created_filetime=str(root_created), nonce=stop_nonce, expected_exe=str(target),
                             fixture_only=True, filetime_source="native GetProcessTimes, independently read by parent")
