@@ -1,0 +1,815 @@
+{
+  "schema": 1,
+  "created_utc": "2026-10-30T13:48:10.114637+00:00",
+  "status": "nine_file_component_source_checked_no_actionable_findings_pending_final_joined_admission",
+  "reviewer": "agent/codex-raw-model-domain-review",
+  "baseline_commit": "40acabef63ed84dec8deb4d54530ef13a4d4da8d",
+  "frozen_commits": {
+    "canonical_bridge": "07e4a6b4658501ffb33413f61df894761234ffc2",
+    "shared_domain": "123c726602f7236717b0bb9af8c62c45b667d031",
+    "standalone_domain_source_candidate": "d0d609dbc0c77c74001cadf2648154245da5aa8a",
+    "tested_merged_source": "be0806fe95bcb92c61f03a97057597c6ab805f3d",
+    "supplementary_page_seam": "39cae2bbef4519f416840b5de0dd99f99edeefde",
+    "page_followup_equality": "c9435299371683e2a5ea21d40ac1422c522cdfe4"
+  },
+  "owned_outputs": [
+    "docs/CC16_RAW_MODEL_DOMAIN_INDEPENDENT_REVIEW.md",
+    "reports/cc16_raw_model_domain_independent_review.json"
+  ],
+  "review_input_policy": "Immutable Git objects/diffs only for production Source; mutable author artifacts were read solely to verify existing build/test receipts",
+  "findings": [],
+  "actionable_findings": 0,
+  "highest_severity": "none",
+  "approval_scope": "Source qualification of exactly nine production files; no standalone unused-component or final joined-consumer/Main admission",
+  "production_pins": [
+    {
+      "path": "include/bsp/native_model_owner.hpp",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 9870,
+      "sha256": "d1cfa9b664075d836d9818ed57f4d9c89858b0c0c507c8ca3dce75f727a52a2a",
+      "git_blob": "1ef6610b9534c327e4e58412eb6a0cd5f8a9409e"
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 29717,
+      "sha256": "6e774d73c4a5bbd0109e19c271e2ff05a613e389c50ec72bd888c4c49f5ddd2d",
+      "git_blob": "7c764a3abcd1ffeb713dad482807965574aadb74"
+    },
+    {
+      "path": "include/bsp/native_model_storage_lifetime.hpp",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 8247,
+      "sha256": "0764b927078091103c21e6c2d6215ccb7a403c2b3eed832943dfae632a55ec3e",
+      "git_blob": "d00d1110e199b05a65c948d42017593a8f102661"
+    },
+    {
+      "path": "src/native_model_storage_lifetime.cpp",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 17033,
+      "sha256": "1ded6a8042e2ce26bdcd9852dae2c14b16cee1efdba0227ed479d0c9491cddd8",
+      "git_blob": "9aa0259d0d2deebd85f14805b9bd9eaae6b76587"
+    },
+    {
+      "path": "include/bsp/game_native_model_domain.hpp",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 3144,
+      "sha256": "6feef900ac2a2093856da5a88e8ec7eadd6923d7d9eaa5cb8353a13be323e128",
+      "git_blob": "5d8bc4a64c104cbeee4a0d6280719f6209bbb182"
+    },
+    {
+      "path": "src/game_native_model_domain.inc",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 15824,
+      "sha256": "ff8788d41c4e4b34b302910cc3c52d3593b232fc409d229a3b4999cbaef242ed",
+      "git_blob": "000f2395134b994791d4284d279ffead14c9d317"
+    },
+    {
+      "path": "include/bsp/game_native_renderer_application.hpp",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 20750,
+      "sha256": "35d3649c491e263cb0c6752bf637d70af3135a9bae12e375ed9d12bbecd26bd5",
+      "git_blob": "dc90eb7264b1a84b06d9658d359864b96cc60a2c"
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 80905,
+      "sha256": "ca5482dcb5566b9ccf14aebd2ec0b78f1e547bf5ab4e5268e2922fb207277d3e",
+      "git_blob": "c7ac9206b53f7fdf8e5c4e53a17cf3b3f6e4231f"
+    },
+    {
+      "path": "src/game_native_mission_model.inc",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 54516,
+      "sha256": "ed4f91ff37398cc690c5657e9160e1d8aae36f4bf8361dd90ef253ee2733fb87",
+      "git_blob": "bba02b361321fd41e4173b557650c8c6e55d14e0"
+    }
+  ],
+  "contract_inputs": [
+    {
+      "path": "docs/CC16_NATIVE_FRONTEND_WIDGET_MODEL_DOMAIN.md",
+      "revision": "40acabef63ed84dec8deb4d54530ef13a4d4da8d",
+      "bytes": 21495,
+      "sha256": "ad0e5a2baabb4e862a7e2c6afb2ddc89fbb180cc807b16a592f5678b41c4575e",
+      "git_blob": "29e9b8931368e6b3363ac760631ee86fae133cdc"
+    },
+    {
+      "path": "docs/CC16_CANONICAL_MODEL_RAW_LIFETIME_BRIDGE.md",
+      "revision": "c0f735c3af934905a3f6681b24261bfab493e4e6",
+      "bytes": 19956,
+      "sha256": "3b1476e2f06b04a6b4933de734cd294638f73cde0b16cf9bb829d0a78239c1a6",
+      "git_blob": "5e96e31a4ea483b3883a5923696654bc9626877b"
+    }
+  ],
+  "pin_verification": {
+    "bridge_output_pins": {
+      "checked": 4,
+      "mismatches": 0
+    },
+    "bridge_unchanged_provider_pins": {
+      "checked": 16,
+      "mismatches": 0
+    },
+    "domain_output_pins": {
+      "checked": 5,
+      "mismatches": 0
+    },
+    "domain_frozen_inputs": {
+      "checked": 17,
+      "mismatches": 0
+    },
+    "domain_coupled_dependency_pins": {
+      "checked": 5,
+      "mismatches": 0
+    },
+    "nine_file_equality": {
+      "tested_merge": true,
+      "page_initial_seam": true,
+      "page_followup": true
+    },
+    "standalone_domain_candidate_difference": "Only the four bridge files differ before their dependent merge; standalone d0 is not the tested joined tree"
+  },
+  "complete_changed_body_coverage": {
+    "include/bsp/native_model_owner.hpp": [
+      "All changed declarations: raw host/binding types, four-argument constructor and const selection, borrowed-flags scalar helper, explicit raw normal methods, reference phases/adapter"
+    ],
+    "src/native_model_owner.cpp": [
+      "All 20 listed changed-body hashes that belong to this file, plus Region/disjoint helper, three constructor bodies/delegation, attach/remove/world legacy guards and legacy normal virtual guards; full reached bodies and unchanged raw constructor/legacy cleanup/geometry setter inspected"
+    ],
+    "include/bsp/native_model_storage_lifetime.hpp": [
+      "All completion types and four declarations/overloads, alongside retained frames/acquired storage"
+    ],
+    "src/native_model_storage_lifetime.cpp": [
+      "require_completion, destroy_model_completed, delete_model, both destructor overloads, both scalar overloads; full reused destroy_model and geometry member/unwind schedule"
+    ],
+    "include/bsp/game_native_model_domain.hpp": [
+      "Entire 73-line new client/domain interface and acquisition/observer contracts"
+    ],
+    "src/game_native_model_domain.inc": [
+      "Entire 271-line file: require/cell/table, all record constructors and fields, domain Impl constructor/preflight/empty/retains, client Impl constructor, prepare/retire_failed/retire/bind Model callbacks, bind/retire stream callbacks, client constructor/destructor/accessors/acquisition/resolve/retention/empty/drain, domain constructor/destructor/client factories/retention/empty/drain"
+    ],
+    "include/bsp/game_native_renderer_application.hpp": [
+      "Forward declaration and new domain accessor/lifetime contract"
+    ],
+    "src/game_native_renderer_application.cpp": [
+      "All changed include/member sites, full model_domain(), requires_process_retention() and after_native_drain(); provider and borrower member order"
+    ],
+    "src/game_native_mission_model.inc": [
+      "All changed field/initializer sites, full Impl constructor, retire_model_drawable, resolve_actual_model, resolve_actual_model_node, materialize_drawables, facade constructor/destructor, requires_process_retention and after_native_renderer_drain; actual MissionShip caller timing and matrix environment borrow inspected"
+    ]
+  },
+  "changed_body_hashes_rechecked": [
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void require_raw_terminal_fresh(",
+      "line_start": 67,
+      "line_end": 74,
+      "LF_sha256": "6d7102c7a724a03e929274431f8c20c4721f8e4da5f7e00347e97073549005b5",
+      "reviewer_hash_verified": true
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void validate_raw_binding(",
+      "line_start": 81,
+      "line_end": 110,
+      "LF_sha256": "819628f457fa6e593bc79d6249d5e82f440aa0487178f5f44658ca851ea09382",
+      "reviewer_hash_verified": true
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "NativeModelStorageView prepare_bound_storage(",
+      "line_start": 111,
+      "line_end": 115,
+      "LF_sha256": "d5adaa1e6bd2884af02cd5c223e1e048a01d123dac70b6c257bf26b5a62a297b",
+      "reviewer_hash_verified": true
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void require_legacy_transport(",
+      "line_start": 116,
+      "line_end": 119,
+      "LF_sha256": "519300a7759e6b468afb1df6e51f4a1bac0da4610fdd31f46487bd0b54603ffe",
+      "reviewer_hash_verified": true
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void require_legacy_virtual(",
+      "line_start": 120,
+      "line_end": 128,
+      "LF_sha256": "2f7489fc5ede06cf9fa3711efb3b47c401605a85c82cc0f6a54b96d24e61c51f",
+      "reviewer_hash_verified": true
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void end_raw_typed_storage(",
+      "line_start": 171,
+      "line_end": 180,
+      "LF_sha256": "0ea71ae75121a3d469dd0b22dece44aaf82c3496b8a148a19545778d4cc5b6d9",
+      "reviewer_hash_verified": true
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void record_raw_failure(",
+      "line_start": 181,
+      "line_end": 186,
+      "LF_sha256": "ed83cddcb8525c8bac1626c181df5a2c179414cee9ccd64764413027e5bcd709",
+      "reviewer_hash_verified": true
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void destroy_native_model_00b750c0(",
+      "line_start": 343,
+      "line_end": 370,
+      "LF_sha256": "e2a76dafcb9cf4afbba8c1d3f4ca707a5fb40d61d5957dac217b618073700b5d",
+      "reviewer_hash_verified": true
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void* delete_native_model_00b75290(",
+      "line_start": 371,
+      "line_end": 382,
+      "LF_sha256": "3272ec17f4bc34de2b504ed10dcb9b0106d4f07617117cd40d7c9c2f4dc71b70",
+      "reviewer_hash_verified": true
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void* delete_native_model_raw_00b75290(",
+      "line_start": 383,
+      "line_end": 392,
+      "LF_sha256": "9f4770d15fd62f6acf91bf264941ac90c9db4cfe86cf05ab97243013bc93fcad",
+      "reviewer_hash_verified": true
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "NativeModelRawLifetimeBinding& require_raw_reference(",
+      "line_start": 460,
+      "line_end": 471,
+      "LF_sha256": "56a4e1247248fb5b1e1c4d1cf1370a6b97d2aeb47112fd6128fa010171ddad3b",
+      "reviewer_hash_verified": true
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void require_call_regions(",
+      "line_start": 472,
+      "line_end": 481,
+      "LF_sha256": "fb06e3447b4e5817f5a51b43c19b931c5e2d3982f921d4819efebdd453fed50a",
+      "reviewer_hash_verified": true
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void NativeModelReference::release_raw_virtual18_00b6f310(",
+      "line_start": 484,
+      "line_end": 496,
+      "LF_sha256": "cca83a23e5c784f5e39223e787f1812097b1fc2b694694c790ed1d9111b529bd",
+      "reviewer_hash_verified": true
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void NativeModelReference::remove_raw_scene_virtual54_00b6ee10(",
+      "line_start": 497,
+      "line_end": 509,
+      "LF_sha256": "a86f4403062eed0446ce70cb893950dcba03eb8aee6a421f6e243dd19d86de9d",
+      "reviewer_hash_verified": true
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "class NativeModelReference::RawDeleteCalls",
+      "line_start": 511,
+      "line_end": 526,
+      "LF_sha256": "08deeb70c5602872a16c5885b4fe6c7b6ed2482b4379e9c654b0248f74fb7968",
+      "extraction_note": "Brace-delimited class body excludes trailing semicolon",
+      "reviewer_hash_verified": true
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void NativeModelReference::delete_raw_scalar_00b75290(",
+      "line_start": 528,
+      "line_end": 543,
+      "LF_sha256": "b07436965d8d84620ee5ca38615fade7c352b5210414c973934df2746ae3985d",
+      "reviewer_hash_verified": true
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void NativeModelReference::release_zero_references()",
+      "line_start": 544,
+      "line_end": 573,
+      "LF_sha256": "7957cf15219f38985406b92071847d878a9b158ab8362d3015bf39a27fdd7b25",
+      "reviewer_hash_verified": true
+    },
+    {
+      "path": "src/native_model_storage_lifetime.cpp",
+      "body": "void require_completion(",
+      "line_start": 252,
+      "line_end": 255,
+      "LF_sha256": "7b0354775bb680279ff42baf5ce217c2186dddd3f751be8eb99a643bcdff269e",
+      "reviewer_hash_verified": true
+    },
+    {
+      "path": "src/native_model_storage_lifetime.cpp",
+      "body": "void destroy_model_completed(",
+      "line_start": 256,
+      "line_end": 267,
+      "LF_sha256": "3d53c93fdeb16cbfb38b14a46c0d269833fc3eff5f24ea936962db254929b855",
+      "reviewer_hash_verified": true
+    },
+    {
+      "path": "src/native_model_storage_lifetime.cpp",
+      "body": "void* delete_model(",
+      "line_start": 268,
+      "line_end": 289,
+      "LF_sha256": "513f3f48f907ea1ebd4b06f3bf727a346b20a085788dd87b0d9a48b3a9dd48be",
+      "reviewer_hash_verified": true
+    }
+  ],
+  "conserved_body_hashes_rechecked": [
+    {
+      "path": "src/native_model_storage_lifetime.cpp",
+      "body": "void destroy_model(",
+      "line_start": 122,
+      "line_end": 187,
+      "unchanged_from_baseline": true,
+      "LF_sha256": "247f367d840ec267be4bb8460e2a7a22a1407d6544994ab297c14f1731c36540",
+      "reviewer_hash_verified": true,
+      "reviewer_unchanged_in_main": true
+    },
+    {
+      "path": "src/native_model_storage_lifetime.cpp",
+      "body": "void* construct_native_model_storage_00b75030(",
+      "line_start": 190,
+      "line_end": 220,
+      "unchanged_from_baseline": true,
+      "LF_sha256": "38025b70e7f73342347c18a7e107d52dbc8e24d90ce26a6ca792575bd42a2719",
+      "reviewer_hash_verified": true,
+      "reviewer_unchanged_in_main": true
+    },
+    {
+      "path": "src/native_model_storage_lifetime.cpp",
+      "body": "void destroy_native_model_geometry_storage_00b74f20(",
+      "line_start": 222,
+      "line_end": 249,
+      "unchanged_from_baseline": true,
+      "LF_sha256": "30edd538f93cb8096f9ad0a5ad29f980b7e9aac44cb3bbb39cb00fc228f411f8",
+      "reviewer_hash_verified": true,
+      "reviewer_unchanged_in_main": true
+    },
+    {
+      "path": "src/native_model_storage_lifetime.cpp",
+      "body": "void NativeModelStorageReference::release_zero_references()",
+      "line_start": 345,
+      "line_end": 353,
+      "unchanged_from_baseline": true,
+      "LF_sha256": "5666fe9a0a1f48c2e2ce0587d900240afadaee08f107ad17e964e47951159d85",
+      "reviewer_hash_verified": true,
+      "reviewer_unchanged_in_main": true
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void* construct_native_model_00b75030(NativeModelOwner& owner, const void*",
+      "line_start": 303,
+      "line_end": 338,
+      "unchanged_from_baseline": true,
+      "LF_sha256": "8dd1494cd7c83e8b479a069dd586d0ac57c2fc4fd6ccb76dca005022d05d1ba4",
+      "reviewer_hash_verified": true,
+      "reviewer_unchanged_in_main": true
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void finish_node(",
+      "line_start": 187,
+      "line_end": 202,
+      "unchanged_from_baseline": true,
+      "LF_sha256": "7c8cf89b39107f97b85b70c47e52c2de0a3418ccb2a2f425a8c7dfe721d77c5d",
+      "reviewer_hash_verified": true,
+      "reviewer_unchanged_in_main": true
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "body": "void set_native_model_geometry_00b75170(",
+      "line_start": 393,
+      "line_end": 409,
+      "unchanged_from_baseline": true,
+      "LF_sha256": "6e17f435c74df81f93755edd9a02e64e31c2f5f833aac4cd40d20bbd14ed6af9",
+      "reviewer_hash_verified": true,
+      "reviewer_unchanged_in_main": true
+    }
+  ],
+  "invariant_checks": [
+    {
+      "subject": "same_canonical_owner_and_actual04",
+      "result": "source_checked",
+      "evidence": "NativeModelReference keeps RenderCommandReference(owner.storage.node.references_04); raw entry authenticates same registry reference/count; no separate storage reference is constructed",
+      "source_locations": "src/native_model_owner.cpp:410-423,461-473,552-572"
+    },
+    {
+      "subject": "immutable_raw_vs_legacy_selection",
+      "result": "source_checked",
+      "evidence": "Const raw_lifetime pointer is prepared before native construction. Three-argument path binds null even for Mission born-raw names; typed instance environment remains separate",
+      "source_locations": "src/native_model_owner.cpp:235-254; src/game_native_model_domain.inc:144-164"
+    },
+    {
+      "subject": "provider_identity",
+      "result": "source_checked",
+      "evidence": "Same initialized process Model pool, renderer camera node runtime, canonical owners, persistent raw string object, point-light runtime, mapped constants and current import cells; actual Page supplies these exact objects",
+      "source_locations": "src/native_model_owner.cpp:82-127; src/game_native_model_domain.inc:69-112; src/game_native_gui_page_application.cpp:783-795 at Page input"
+    },
+    {
+      "subject": "normal_throwing_calls",
+      "result": "source_checked",
+      "evidence": "Explicit raw18/raw54 call whole raw bodies directly; no terminating catch/noexcept and no companion/owner access after the body; live base prefix is admitted",
+      "source_locations": "src/native_model_owner.cpp:482-508"
+    },
+    {
+      "subject": "legacy_transport_guard",
+      "result": "source_checked",
+      "evidence": "Raw-bound owner rejects legacy scene callbacks before effects; legacy noexcept virtuals terminate only for wrong transport; genuine unbound Mission path remains unchanged",
+      "source_locations": "src/native_model_owner.cpp:117-129,139-156,443-459"
+    },
+    {
+      "subject": "current0_current04",
+      "result": "source_checked",
+      "evidence": "Same observed zero and current0 BD30E0 feed the existing refcount helper; adapter validates current04 B75290, actual identity/profile and incoming flags1 home",
+      "source_locations": "src/native_model_owner.cpp:511-572; src/native_ref_counted.cpp:4-10"
+    },
+    {
+      "subject": "raw_destructor_reuse",
+      "result": "source_checked",
+      "evidence": "Existing full B750C0, raw B6F440, geometry member/unwind bodies are reused, not rewritten or repeated; retained/current geometry/import epoch schedule remains unchanged",
+      "source_locations": "src/native_model_storage_lifetime.cpp:122-187; conserved_body_review"
+    },
+    {
+      "subject": "host_extent_completion_before_pool_return",
+      "result": "source_checked",
+      "evidence": "Trivial typed node/tail extent and external scene metadata end after raw base entry/cleanup, once; completion runs before current flags LOW BYTE and B74750. Escaping cleanup rethrows without replay",
+      "source_locations": "src/native_model_owner.cpp:166-185,343-395; src/native_model_storage_lifetime.cpp:251-316"
+    },
+    {
+      "subject": "post_return_identity_only",
+      "result": "source_checked",
+      "evidence": "Captured runtime/disposal do identity-only unbind and record removal; no returned actual storage reads. Companion may be destroyed by disposal",
+      "source_locations": "src/native_model_owner.cpp:529-549; src/generated_model_lifetime.cpp:117-121; src/native_render_context.cpp:132-139; src/scene_attachment.cpp:342-349"
+    },
+    {
+      "subject": "flags0_physical_custody",
+      "result": "source_checked",
+      "evidence": "Actual current flags0 ends payload and canonical binding while retaining same dead record/slot receipt; unregistered record requires process retention",
+      "source_locations": "src/game_native_model_domain.inc:117-126,172-190"
+    },
+    {
+      "subject": "terminal_failure_reentry",
+      "result": "source_checked",
+      "evidence": "Fresh retained terminal diagnostics cannot be replayed; failure captures exception/site, retains record and terminates at canonical zero. Fresh normal frames may reenter live base prefix; repeated zero while destroying is rejected",
+      "source_locations": "src/native_model_owner.cpp:67-74,461-549,550-572"
+    },
+    {
+      "subject": "client_scoped_ownership",
+      "result": "source_checked",
+      "evidence": "Records carry exact client/actual; duplicate slot/stream guarded; Mission preparation, resolve, retention and empty checks select only its client",
+      "source_locations": "src/game_native_model_domain.inc:43-68,113-126,144-271; src/game_native_mission_model.inc:347-361,889-937"
+    },
+    {
+      "subject": "mission_name_notification",
+      "result": "source_checked",
+      "evidence": "Same record holds caller-name/live flag and exact drawable index; nonowning observer validates same reference/actual before canonical unbind. No global last-record selection",
+      "source_locations": "src/game_native_mission_model.inc:258-266,531-581; src/game_native_model_domain.inc:172-190,237-245"
+    },
+    {
+      "subject": "mission_constructor_timing",
+      "result": "source_checked",
+      "evidence": "Model client metadata precedes sampler/effect/native bracket; MissionShip constructs before Stage::preparing. Outer Mission Impl survives an entered bind_effects failure",
+      "source_locations": "src/game_native_mission_model.inc:231-255,590-601; src/game_native_mission_ship.inc:133-147"
+    },
+    {
+      "subject": "renderer_service_lifetime",
+      "result": "source_checked",
+      "evidence": "Domain is after all borrowed providers and before Mission borrowers; retention includes incomplete domain records and global empty check follows native drain",
+      "source_locations": "src/game_native_renderer_application.cpp:490-535,784-792,1294-1349"
+    },
+    {
+      "subject": "composition_no_native_acquisition",
+      "result": "source_checked",
+      "evidence": "Domain/client construction only composes borrowed wrappers/views and host metadata; original process getters demand completed startup; no type initializer or Model/stream acquisition is invoked",
+      "source_locations": "src/game_native_model_domain.inc:69-112,128-142,252-271; src/model_type_bootstrap.cpp:17-19; src/light_type_bootstrap.cpp:58-60"
+    },
+    {
+      "subject": "actual_page_seam",
+      "result": "source_checked",
+      "evidence": "Actual host supplies same renderer domain; Page constructs model_storage before client/provider publication and uses camera.nodes.point_lights; canonical Model normal routes use explicit raw entries",
+      "source_locations": "src/game_hosts.cpp:3180-3182; src/game_native_gui_page_application.cpp:190-221,239-277,783-795,944-952 at Page input"
+    },
+    {
+      "subject": "normal_failure_outer_retention",
+      "result": "source_checked",
+      "evidence": "Page records normal-call exceptions and first failure outside disposable companion. Its retention query and Host process-exit check run before native drain; Page drops only after its post-drain closure",
+      "source_locations": "src/game_native_gui_page_application.cpp:215-220,274-278,866-873,1149-1166; src/game_hosts.cpp:2285-2289,2334-2346 at Page input"
+    }
+  ],
+  "additional_provider_pins": [
+    {
+      "path": "src/game_native_resource_pools.cpp",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 10657,
+      "sha256": "ffb01415f1d849c8111fe32fab58f3e406dbe512c0d44330547d2d5b20d8cf97",
+      "git_blob": "1d6397153606f48b03b151c3fb42633ce20e6260"
+    },
+    {
+      "path": "src/game_native_type_storage.cpp",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 5640,
+      "sha256": "87958d36dc6c7480e73992698c3c9dac86bc153f7033fc0e55a9833fd2ea5b4b",
+      "git_blob": "106fa3ce980394494b62512c35e6d46c3167c78d"
+    },
+    {
+      "path": "src/game_native_vfs_application.cpp",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 8470,
+      "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+      "git_blob": "32a441a593a381b649ccd89b71a6e4277e91401d"
+    },
+    {
+      "path": "src/game_native_renderer_camera.inc",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 2825,
+      "sha256": "77781cd84f49383f516f5f242f08a731392459a822f87ea84499960338b3e2c2",
+      "git_blob": "c60795b5c9adf5000f66b555c981ca15fb92077b"
+    },
+    {
+      "path": "src/game_native_renderer_lifetime.inc",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 7101,
+      "sha256": "6800ec7f71449d264d49082a08696aa76900f926a8dadeee5402755930e54fdc",
+      "git_blob": "d065c64ff475766b2ddb4958c12ed5372c26a6b3"
+    },
+    {
+      "path": "src/model_type_bootstrap.cpp",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 2635,
+      "sha256": "4abe8eb0bf3ea2bdc3efe202c31f583f637167134108d8cf3d0b7e6e4d794b80",
+      "git_blob": "9eef98d7c3db555a9d37cec2194a409e5e098262"
+    },
+    {
+      "path": "src/light_type_bootstrap.cpp",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 5880,
+      "sha256": "6384bd3d557e9c9378e9ea54994d3defcccf2814d9918f371fd461cbeed0e6ef",
+      "git_blob": "0c1fdc4e2aa3f27f2c56bb518b99ccf2597db2d9"
+    },
+    {
+      "path": "src/generated_model_lifetime.cpp",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 15899,
+      "sha256": "5dbceb02880773799cab052f2c3e154e0d36add2b01d611501be2dd1b01e8d0d",
+      "git_blob": "297ae8b38490a70378d5d0a420617e0d586b9659"
+    },
+    {
+      "path": "src/scene_attachment.cpp",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 18556,
+      "sha256": "58fa851ddc57a0910f4903da4d08fa74cf56b41af352b8d9b8ba8f4ff7715719",
+      "git_blob": "8314de226b2eb269438f200bad0dfce7a185131f"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 11471,
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+      "git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c"
+    },
+    {
+      "path": "src/native_ref_counted.cpp",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 822,
+      "sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9",
+      "git_blob": "bb26a9f52a9b694165a4b832db8a9dac735d1c52"
+    },
+    {
+      "path": "src/native_node_destruction.cpp",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 14506,
+      "sha256": "2ee6ba84e759958a8f160cb25ad210076203931d4ae4f2e9265529bff5c57269",
+      "git_blob": "471b67cac72f5a45fb6a4789f82d7533fd72f6c9"
+    },
+    {
+      "path": "src/native_node_base_destruction.cpp",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 10425,
+      "sha256": "21bb87a236d4888ba5ef0102f3747f4cc53d28462d587dfaa94c1e731a0f055e",
+      "git_blob": "79cf2d8bb81f8044074d4c70d592ee473a763312"
+    },
+    {
+      "path": "include/bsp/native_point_light_links.hpp",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 4633,
+      "sha256": "e106191d74ea6960befb5f36e74e89076efb5fec4122a5b3d87482823dc07ba7",
+      "git_blob": "6210c4f083e303758ca992544e05bf1465d8acef"
+    },
+    {
+      "path": "include/bsp/native_node_base_destruction.hpp",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 4834,
+      "sha256": "cd1f22aafdc481b9e54c23dda5634171ac654b570d8ad8757f843bca76883226",
+      "git_blob": "1f8f3069c602b970a74d2d921c34dc5e864dc22b"
+    },
+    {
+      "path": "include/bsp/native_node_tree_retirement.hpp",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 4571,
+      "sha256": "7826147682ef91780670172a270214c5f164ba92696f76c06ecc4d3e8387f07f",
+      "git_blob": "a95108130a5c2e16ba8eef2a320fb900473cf9d1"
+    },
+    {
+      "path": "include/bsp/native_node_scene_attachment.hpp",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 5335,
+      "sha256": "8b2f6d276fbe92b00c190fadcda44e71e8547c5890bd224ee2de895310658edf",
+      "git_blob": "b236a5d8ff992022ff795fa6a8c4236e51cad31c"
+    },
+    {
+      "path": "src/game_native_mission_ship.inc",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 27588,
+      "sha256": "35ec295f861ebc44af0abdd3169d18789d8411565680c34a04596213e7174d13",
+      "git_blob": "3d9f8c7a3c4a3f5adbb2d6681a93c38aec939453"
+    },
+    {
+      "path": "include/bsp/game_native_vfs_runtime.hpp",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 10066,
+      "sha256": "9aac7e73eb21744bf0951ba60c78454ef90c4d2884830a32d35a3d15d886f38b",
+      "git_blob": "ad324163ac7e8e1267b9d4220208423a42e72061"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "revision": "123c726602f7236717b0bb9af8c62c45b667d031",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97"
+    }
+  ],
+  "supplementary_page_seam": {
+    "revision": "c9435299371683e2a5ea21d40ac1422c522cdfe4",
+    "production_nine_identical": true,
+    "scope": "Actual constructor supply, provider identities, normal dispatch/failure retention and post-drain client lifetime; entire Page implementation not independently approved",
+    "point_light_identity": "Page group_trees uses renderer.camera_environment().nodes.point_lights, same runtime/allocation provenance as common raw_models.nodes.point_lights",
+    "failure_boundary": "Normal raw failures live in retained Page/client invocation state and Host disposition, not companion terminal failure diagnostics; domain record-only query alone is not sufficient external-failure proof"
+  },
+  "author_build_evidence": {
+    "reviewer_runs": 0,
+    "canonical_bridge": {
+      "configuration": "Release",
+      "architecture": "Win32",
+      "BSP_CL_MP": 2,
+      "BSP_PCH": "ON",
+      "BSP_COVERAGE_PDB": "OFF",
+      "existing_suites_passed": 2,
+      "existing_suites_failed": 0
+    },
+    "shared_domain": {
+      "tested_commit": "be0806fe95bcb92c61f03a97057597c6ab805f3d",
+      "configuration": "Release",
+      "architecture": "Win32",
+      "BSP_CL_MP": 2,
+      "BSP_PCH": "ON",
+      "BSP_COVERAGE_PDB": "OFF",
+      "existing_suites_passed": 2,
+      "existing_suites_failed": 0
+    },
+    "artifact_hash_receipts": [
+      {
+        "author": "canonical_bridge",
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain",
+        "path": "local/canonical_model_raw_lifetime_bridge_implementation/configure.txt",
+        "bytes": 973,
+        "sha256": "ae931aef21f925b5b898a12c778167376a5814147ce3360ad4d4ed673cd1b5f2",
+        "reviewer_read_hash_match": true
+      },
+      {
+        "author": "canonical_bridge",
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain",
+        "path": "local/canonical_model_raw_lifetime_bridge_implementation/build.txt",
+        "bytes": 100573,
+        "sha256": "a0f3e3e0430d4eebdde45d538e8047d28da329e5404391c9bf4d987ebe054d98",
+        "reviewer_read_hash_match": true
+      },
+      {
+        "author": "canonical_bridge",
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain",
+        "path": "local/canonical_model_raw_lifetime_bridge_implementation/completion.json",
+        "bytes": 284,
+        "sha256": "d58cba1f7d633d2128261fbede9113df1be54f009d299c0441d44f919812ff07",
+        "reviewer_read_hash_match": true
+      },
+      {
+        "author": "canonical_bridge",
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain",
+        "path": "build/win32/CMakeCache.txt",
+        "bytes": 19951,
+        "sha256": "95c7b10875cce92bd4cf63a76380bb64c6f64ee8f434cd5f7e360068838d3dc7",
+        "reviewer_read_hash_match": true
+      },
+      {
+        "author": "canonical_bridge",
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain",
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 1661,
+        "sha256": "602098b02f89132fa542a13f8c0e17e00b681da92d7afc233053f94fafe33926",
+        "reviewer_read_hash_match": true
+      },
+      {
+        "author": "canonical_bridge",
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain",
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 103758360,
+        "sha256": "450bed76d9086ae9c687db750e5433b3b7e9d124e3caadb7d519109c2c92a8d8",
+        "reviewer_read_hash_match": true
+      },
+      {
+        "author": "canonical_bridge",
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-widget-model-domain",
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 7509504,
+        "sha256": "8a16bd2ecb7672e02a8890af83aa4b7d808f9616a74d1feaed0677805be1af57",
+        "reviewer_read_hash_match": true
+      },
+      {
+        "author": "shared_domain",
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-model-domain-implementation",
+        "path": "local/cc16-model-domain-configure.log",
+        "bytes": 981,
+        "sha256": "2aa663d8a5c3b7acc687fbd984c2f676206fba3ccc1d43d34437499d806c12fd",
+        "reviewer_read_hash_match": true
+      },
+      {
+        "author": "shared_domain",
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-model-domain-implementation",
+        "path": "local/cc16-model-domain-build.log",
+        "bytes": 100821,
+        "sha256": "5af78cf2415f555c2952c3b9ff74b59691aaa4b59d93ab1a43fe000387c90bd7",
+        "reviewer_read_hash_match": true
+      },
+      {
+        "author": "shared_domain",
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-model-domain-implementation",
+        "path": "local/cc16-model-domain-build-receipt.json",
+        "bytes": 294,
+        "sha256": "7978974248eeb84f270d58b8b889bcd5d2262fa6f499275c3379570007af738f",
+        "reviewer_read_hash_match": true
+      },
+      {
+        "author": "shared_domain",
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-model-domain-implementation",
+        "path": "build/win32/CMakeCache.txt",
+        "bytes": 20015,
+        "sha256": "78a6ec6cc41a3c5307e5276bba3eabb2e44695a203092b86d09e7cecb10b1cda",
+        "reviewer_read_hash_match": true
+      },
+      {
+        "author": "shared_domain",
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-model-domain-implementation",
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 1685,
+        "sha256": "21952b7b705b874f8c6243f9fb60a4e075bf1983b75497a93ba15f36ba60a752",
+        "reviewer_read_hash_match": true
+      },
+      {
+        "author": "shared_domain",
+        "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-model-domain-implementation",
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 7512064,
+        "sha256": "207873cb20e6c690a17050ecf3e0eaa85967f385439bf9328b74eaa957d22958",
+        "reviewer_read_hash_match": true
+      }
+    ],
+    "qualification": "Existing compile/link and math/tool-fixture proof only; existing tests do not exercise new client isolation or populated raw Page route"
+  },
+  "required_root_admission_work": [
+    "Join and review all final actual Page/host/raw-parent/reader/timed/lifetime consumers with these nine exact production blobs",
+    "Keep the normal-failure Page/host process-retention path and all callback captures/backing alive; no shared-domain-only drain claim",
+    "Run proportionate final joined-tree build/checks under Root coordination; this review did not run them",
+    "Keep Page gate decisions separate; no full raw95/other widget/ABI/runtime/gameplay admission from this component review"
+  ],
+  "credit": {
+    "new_native_bodies": 0,
+    "new_native_exports": 0,
+    "abi_equivalence": 0,
+    "fh3_seh_equivalence": 0,
+    "new_route_runtime": 0,
+    "activation": 0,
+    "gameplay": 0,
+    "guard_flips": 0
+  },
+  "not_performed": [
+    "Production/header/CMake/ledger/export edits",
+    "Ghidra queries/mutations",
+    "Build/compile/link/test/probe/Game execution",
+    "Process inspection/control",
+    "Native acquisition",
+    "Memory writes",
+    "Push"
+  ],
+  "document": {
+    "path": "docs/CC16_RAW_MODEL_DOMAIN_INDEPENDENT_REVIEW.md",
+    "bytes": 10216,
+    "sha256": "ecab4567bbd02b6879fb953aaeef53bd4cd0cc0737437896bfc77fdfa35473d9"
+  }
+}
