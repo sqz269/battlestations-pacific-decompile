@@ -8,8 +8,10 @@ injects code, nor writes process memory.
 It opens only PROCESS_QUERY_LIMITED_INFORMATION | PROCESS_VM_READ.
 
 The CSV is accepted by tools/motion_trace_compare.py, but is NOT a tick trace:
-dt and engine_dt are empty, sample_dt is a wall-clock interval, and t uses a
-monotonic clock. Remote reads are not atomic and repeated engine states are
+dt stays empty, engine_dt is the stored scaled OnMove frame delta, sample_dt is
+a wall-clock interval, and sample_game_dt is a consecutive sample clock delta.
+Schema 3 adds native game_time/game_frame brackets; see docs/ORIGINAL_GAME_CLOCK.md.
+Remote reads are not atomic and repeated engine states are
 possible. Pointer checks reject some torn reads; they cannot prove consistency
 within an engine tick or detect every reuse of the supplied unit address.
 
@@ -25,6 +27,10 @@ For a one-shot validated read of the controlled-unit global (no debugger):
     python tools/original_motion_capture.py --pid 1234 --discover-controlled
 Discovery prints JSON, or writes a new JSON file when --output is supplied.
 It does not start a capture or follow later selection changes.
+
+For several fixed units, replace --unit with --units-file PATH. Its JSON is
+{"units": [{"unit_address": "0x1234AB00", "label": "USS Lexington"}, ...]}.
+The same wall deadline samples each unit; unit_id remains its supplied address.
 """
 
 from __future__ import annotations
@@ -47,6 +53,9 @@ import time
 
 IMAGE_BASE = 0x00400000
 CONTROLLED_GLOBAL = 0x00E188D8  # include/bsp/controlled_unit.hpp; store at 004C0893
+GAME_GLOBAL = 0x00E188A8
+MISSION_CLOCK_BLOCK = 0x00F876A0
+FIXED_STEP_DT_GLOBAL = 0x00D0DE84
 PROCESS_VM_READ = 0x0010
 PROCESS_QUERY_LIMITED_INFORMATION = 0x1000
 STILL_ACTIVE = 259
@@ -61,6 +70,12 @@ FIELDS = (
     "up_x", "up_y", "up_z",
     "vel_x", "vel_y", "vel_z", "angvel_x", "angvel_y", "angvel_z",
     "controlled_global_before", "controlled_global_after", "controlled_relationship",
+    "unit_label", "game_ptr", "game_time", "game_frame", "fixed_step_count", "fixed_step_dt",
+    "sample_game_dt", "game_clock_epoch", "clock_torn", "clock_retry_count", "clock_torn_reason",
+    "game_time_before", "game_time_after", "game_frame_before", "game_frame_after",
+    "engine_dt_before", "engine_dt_after", "fixed_step_count_before", "fixed_step_count_after",
+    "fixed_step_active_before", "fixed_step_active_after", "game_elapsed_before", "game_elapsed_after",
+    "fixed_remainder_before", "fixed_remainder_after",
 )
 
 
@@ -199,6 +214,85 @@ def finite_range(values, bound: float, label: str):
         raise SampleError(f"nonfinite/out-of-range {label} (absolute bound {bound:g})")
 
 
+def read_game_clock(reader: ProcessReader) -> dict:
+    """Borrow actual native clock cells; this is not a reconstructed C++ layout."""
+    game = reader.u32(GAME_GLOBAL)
+    pointer(game, 0x21F4)
+    frame, elapsed = struct.unpack("<If", reader.read(game + 0x648, 8))
+    unscaled_dt, engine_dt = struct.unpack("<2f", reader.read(game + 0x21EC, 8))
+    raw = reader.read(MISSION_CLOCK_BLOCK, 0x18)
+    game_time, accumulated, remainder, steps, interpolation = struct.unpack_from("<3fIf", raw, 4)
+    fixed_dt, = struct.unpack("<f", reader.read(FIXED_STEP_DT_GLOBAL, 4))
+    if reader.u32(GAME_GLOBAL) != game:
+        raise SampleError("game singleton changed during clock read")
+    finite_range((elapsed, game_time, accumulated), 1e9, "game clock")
+    finite_range((unscaled_dt, engine_dt, fixed_dt, remainder, interpolation), 1e4, "game clock intervals")
+    if engine_dt < 0 or fixed_dt <= 0 or raw[1] not in (0, 1):
+        raise SampleError("invalid native clock delta/phase")
+    return {"game_ptr": game, "game_time": game_time, "game_frame": frame,
+            "engine_dt": engine_dt, "fixed_step_dt": fixed_dt, "fixed_step_count": steps,
+            "fixed_step_active": raw[1], "game_elapsed": elapsed, "unscaled_dt": unscaled_dt,
+            "accumulated": accumulated, "fixed_remainder": remainder, "interpolation": interpolation}
+
+
+def clocked_motion_sample(reader: ProcessReader, unit: int) -> tuple[dict, tuple[int, int, int, int]]:
+    """Bracket the pose and retry one changed/active clock observation."""
+    for attempt in range(2):
+        before = read_game_clock(reader)
+        sample, identity = motion_sample(reader, unit)
+        after = read_game_clock(reader)
+        reasons = []
+        if before != after:
+            reasons.append("clock_changed:" + ",".join(field for field in before if before[field] != after[field]))
+        if before["fixed_step_active"] or after["fixed_step_active"]:
+            reasons.append("fixed_step_active")
+        if not reasons or attempt == 1:
+            break
+    for field in ("game_time", "game_frame", "engine_dt", "fixed_step_count", "fixed_step_active",
+                  "game_elapsed", "fixed_remainder"):
+        sample[f"{field}_before"] = before[field]
+        sample[f"{field}_after"] = after[field]
+    sample.update(game_ptr=f"0x{after['game_ptr']:08X}", clock_torn=int(bool(reasons)),
+                  clock_retry_count=attempt, clock_torn_reason=";".join(reasons))
+    # Blank canonical clocks on the final torn attempt; diagnostic brackets remain.
+    for field in ("game_time", "game_frame", "engine_dt", "fixed_step_count", "fixed_step_dt"):
+        sample[field] = "" if reasons else after[field]
+    return sample, identity
+
+
+def record_game_clock(series: dict, sample: dict, midpoint: int):
+    """Keep per-unit epochs; a reset must not become a negative sample interval."""
+    series["retry_samples"] += sample["clock_retry_count"]
+    sample["sample_game_dt"] = ""
+    sample["game_clock_epoch"] = ""
+    if sample["clock_torn"]:
+        series["torn_samples"] += 1
+        return
+    series["clean_samples"] += 1
+    epochs = series["epochs"]
+    now = sample["game_time"]
+    if (not epochs or sample["game_ptr"] != epochs[-1]["game_ptr"]
+            or now < epochs[-1]["last_game_time"]
+            or sample["game_frame"] < epochs[-1]["last_game_frame"]):
+        epochs.append({"game_ptr": sample["game_ptr"], "first_game_time": now,
+                       "first_monotonic_ns": midpoint})
+    else:
+        sample["sample_game_dt"] = now - epochs[-1]["last_game_time"]
+    sample["game_clock_epoch"] = len(epochs) - 1
+    epochs[-1].update(last_game_time=now, last_monotonic_ns=midpoint,
+                      last_game_frame=sample["game_frame"])
+
+
+def finish_game_clock(series: dict):
+    for epoch in series["epochs"]:
+        wall = (epoch["last_monotonic_ns"] - epoch["first_monotonic_ns"]) / 1e9
+        simulated = epoch["last_game_time"] - epoch["first_game_time"]
+        epoch.update(wall_seconds=wall, game_seconds=simulated,
+                     game_to_wall_ratio=simulated / wall if wall > 0 else None)
+    epochs = series["epochs"]
+    series["game_to_wall_ratio"] = epochs[0]["game_to_wall_ratio"] if len(epochs) == 1 else None
+
+
 def motion_sample(reader: ProcessReader, unit: int) -> tuple[dict, tuple[int, int, int, int]]:
     """Read native unit/controller/body/motion state, then recheck the chain."""
     raw = reader.read(unit + UNIT_START, UNIT_END - UNIT_START)
@@ -290,17 +384,18 @@ def discover_controlled(args) -> int:
         before_time = time.perf_counter_ns()
         before, before_error = read_controlled(reader)
         unit = args.unit if args.unit is not None else (before or 0)
-        report = {"schema_version": 2, "kind": "original_game_controlled_unit_discovery",
+        report = {"schema_version": 3, "kind": "original_game_controlled_unit_discovery",
                   "pid": args.pid, "recorded_utc": utc_now(), "executable": identity,
                   "status": "no_valid_ship_state", "unit_address": f"0x{unit:08X}",
                   "read_rights": ["PROCESS_QUERY_LIMITED_INFORMATION", "PROCESS_VM_READ"],
-                  "offset_evidence": "docs/ORIGINAL_MOTION_ABI.md; docs/MOTION_DIFFERENTIAL.md section 3",
+                  "offset_evidence": "docs/ORIGINAL_MOTION_ABI.md; docs/ORIGINAL_GAME_CLOCK.md",
                   "limitations": ["Unsuspended reads are not atomic or a motion-tick trace.",
                                   "A different pointer leaves any driven-sub-unit relationship unverified.",
                                   "A valid ship snapshot does not establish the mission or visible state."]}
         try:
             pointer(unit, UNIT_END)
-            sample, _ = motion_sample(reader, unit)
+            sample, _ = clocked_motion_sample(reader, unit)
+            sample.update(unit_label=args.unit_label, sample_game_dt="", game_clock_epoch="")
         except SampleError as error:
             report["sample_error"] = str(error)
         else:
@@ -323,11 +418,40 @@ def discover_controlled(args) -> int:
         reader.close()
 
 
+def load_fixed_units(path: Path) -> list[dict]:
+    data = json.loads(path.read_text(encoding="utf-8-sig"))
+    records = data.get("units") if isinstance(data, dict) else data
+    if not isinstance(records, list) or not records:
+        raise CaptureError("--units-file must contain a nonempty units array")
+    units = []
+    seen = set()
+    for item in records:
+        if not isinstance(item, dict):
+            raise CaptureError("each fixed unit must be an object with unit_address and label")
+        value = item.get("unit_address")
+        try:
+            address = value if type(value) is int else int(value, 16)
+        except (TypeError, ValueError):
+            raise CaptureError("unit_address must be a hexadecimal string or JSON integer") from None
+        pointer(address, UNIT_END)
+        label = item.get("label")
+        if not isinstance(label, str) or not label.strip():
+            raise CaptureError("each fixed unit needs a nonempty label")
+        if address in seen:
+            raise CaptureError(f"duplicate fixed unit address 0x{address:08X}")
+        seen.add(address)
+        units.append({"unit_address": address, "label": label})
+    return units
+
+
 def parse_args(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--pid", required=True, type=int)
-    parser.add_argument("--unit", type=lambda value: int(value, 16),
-                        help="hexadecimal unit base, ECX - 310h at 00825F20 entry")
+    selection = parser.add_mutually_exclusive_group()
+    selection.add_argument("--unit", type=lambda value: int(value, 16),
+                           help="hexadecimal unit base, ECX - 310h at 00825F20 entry")
+    selection.add_argument("--units-file", type=Path, help="JSON units array of fixed unit_address/label objects")
+    parser.add_argument("--unit-label", default="", help="supplied label for --unit or controlled discovery")
     parser.add_argument("--discover-controlled", action="store_true",
                         help="one-shot read/validation of global 00E188D8; --unit optionally checks a candidate")
     parser.add_argument("--seconds", type=float, default=20, help="wall duration, >0 and <=300 (default 20)")
@@ -339,8 +463,10 @@ def parse_args(argv=None):
     args = parser.parse_args(argv)
     if not 1 <= args.pid <= 0xFFFFFFFF:
         parser.error("--pid must be a positive DWORD")
-    if args.unit is None and not args.discover_controlled:
-        parser.error("--unit is required unless --discover-controlled is supplied")
+    if args.unit is None and args.units_file is None and not args.discover_controlled:
+        parser.error("--unit or --units-file is required unless --discover-controlled is supplied")
+    if args.units_file and (args.discover_controlled or args.unit_label):
+        parser.error("--units-file supplies its own labels and applies only to capture")
     if args.unit is not None:
         try:
             pointer(args.unit, UNIT_END)
@@ -348,6 +474,11 @@ def parse_args(argv=None):
             parser.error(str(error))
     if args.discover_controlled and args.manifest:
         parser.error("--manifest applies only to captures; discovery uses --output for its JSON report")
+    try:
+        args.units = (load_fixed_units(args.units_file) if args.units_file else
+                      [] if args.unit is None else [{"unit_address": args.unit, "label": args.unit_label}])
+    except (CaptureError, OSError, ValueError) as error:
+        parser.error(str(error))
     if not math.isfinite(args.seconds) or not 0 < args.seconds <= 300:
         parser.error("--seconds must be finite, >0 and <=300")
     if not math.isfinite(args.hz) or not 1 <= args.hz <= 100:
@@ -379,27 +510,44 @@ def capture(args) -> int:
                 raise CaptureError(f"refusing to overwrite existing output: {path}")
             path.parent.mkdir(parents=True, exist_ok=True)
         metadata = {
-            "schema_version": 2, "kind": "original_game_external_read_only_motion",
+            "schema_version": 3, "kind": "original_game_external_read_only_motion",
             "status": "capturing", "started_utc": utc_now(), "pid": args.pid,
-            "unit_address": f"0x{args.unit:08X}", "unit_id_semantics": "supplied address, not a recovered game ID",
+            "unit_address": f"0x{args.units[0]['unit_address']:08X}" if len(args.units) == 1 else None,
+            "units": [{"unit_address": f"0x{item['unit_address']:08X}", "label": item["label"]}
+                      for item in args.units],
+            "unit_id_semantics": "supplied fixed address, not a recovered game ID; unit_label is supplied text",
             "executable": identity, "csv": str(args.output), "requested_seconds": args.seconds,
             "requested_hz": args.hz, "read_rights": ["PROCESS_QUERY_LIMITED_INFORMATION", "PROCESS_VM_READ"],
-            "offset_evidence": "docs/ORIGINAL_MOTION_ABI.md; docs/MOTION_DIFFERENTIAL.md section 3",
+            "rate_semantics": "Hz per fixed unit; units are read sequentially on each wall deadline",
+            "offset_evidence": "docs/ORIGINAL_MOTION_ABI.md; docs/ORIGINAL_GAME_CLOCK.md",
             "native_motion_layout": {"body": "B=[controller+0x2C]", "motion_state": "M=[B+0x04]",
                                      "linear_velocity": "M+0x00, 3 float32, world space",
                                      "angular_velocity": "M+0x0C, 3 float32, world space",
                                      "fwd_speed": "dot(linear_velocity, pose row 2)",
                                      "yaw_rate": "dot(angular_velocity, pose row 1)"},
             "timing": {"clock": "time.perf_counter_ns", "t": "seconds from first valid sample midpoint",
-                       "dt": "empty: engine frame delta not observed", "engine_dt": "empty: unavailable",
-                       "sample_dt": "seconds between valid sample midpoints; first row empty",
+                       "dt": "empty: external rows are not individual engine ticks",
+                       "engine_dt": "float32 [[00E188A8]+21F0], scaled OnMove frame delta; not fixed motion dt",
+                       "fixed_step_dt": "float32 [00D0DE84], native fixed simulation step",
+                       "game_time": "float32 [00F876A4], native Lua GameTime including remainder outside fixed steps",
+                       "game_frame": "uint32 [[00E188A8]+648], OnMove frame counter, not fixed-step count",
+                       "fixed_step_count": "uint32 [00F876B0], fixed simulation-step count",
+                       "sample_game_dt": "difference from previous clean same-unit game_time in this clock epoch",
+                       "sample_dt": "wall seconds between valid same-unit sample midpoints; first row empty",
                        "sample_span": "seconds spent reading/validating sample",
                        "monotonic_ns": "absolute local monotonic sample midpoint"},
+            "clock_policy": {"bracketing": "clock before, unit/controller/body/motion state, clock after",
+                             "retry_limit": 1, "torn": "changed clock cells or active fixed-step phase",
+                             "final_torn": "retain pose and brackets; blank canonical clocks and sample_game_dt",
+                             "epoch": "increment on game pointer change or clean time/frame regression; never bridge reset",
+                             "summary": "per-unit game/wall endpoint ratio within each clean clock epoch"},
             "limitations": ["External wall-clock sampling is not per-engine-tick or deterministic evidence.",
                             "Reads do not suspend the game; pose/body/orders may span engine updates.",
                             "Pointer-chain rechecks detect some changes, not atomicity or all unit-address reuse.",
                             "Repeated states can mean pause, idle motion, or sampling the same engine tick.",
                             "Motion-state velocity excludes the pseudo-velocity added by position integration.",
+                            "Equal clock brackets do not prove pose atomicity; interpolation jobs run after the fixed-step flag clears.",
+                            "Clock resets and pause must be interpreted in their native lifecycle, not as process uptime.",
                             "Read-only capture does not prove visual behavior or reconstruction parity."],
             "range_checks": {"position_abs_max": 1e8, "linear_velocity_abs_max": 1e5,
                              "angular_velocity_abs_max": 1e4, "order_abs_max": 8,
@@ -422,14 +570,17 @@ def capture(args) -> int:
             start = time.perf_counter_ns()
             deadline = start + round(args.seconds * 1e9)
             interval = round(1e9 / args.hz)
-            next_due, previous, origin, stable_identity = start, None, None, None
+            next_due, previous, origin, stable_identity = start, {}, None, {}
+            unit_index = 0
+            clock_series = {item["unit_address"]: {"clean_samples": 0, "torn_samples": 0,
+                                                 "retry_samples": 0, "epochs": []} for item in args.units}
             failures = Counter()
             relationships = Counter()
-            consecutive = 0
+            consecutive = Counter()
             result_code = 0
             try:
                 while time.perf_counter_ns() < deadline:
-                    remaining = next_due - time.perf_counter_ns()
+                    remaining = next_due - time.perf_counter_ns() if unit_index == 0 else 0
                     if remaining > 0:
                         time.sleep(max(0, min(remaining, deadline - time.perf_counter_ns())) / 1e9)
                     if time.perf_counter_ns() >= deadline:
@@ -440,27 +591,30 @@ def capture(args) -> int:
                         result_code = 2
                         break
                     metadata["attempted_samples"] += 1
+                    unit_spec = args.units[unit_index]
+                    unit = unit_spec["unit_address"]
                     before = time.perf_counter_ns()
                     controlled_before, controlled_before_error = read_controlled(reader)
                     try:
-                        sample, current_identity = motion_sample(reader, args.unit)
-                        if stable_identity is not None and current_identity != stable_identity:
+                        sample, current_identity = clocked_motion_sample(reader, unit)
+                        if unit in stable_identity and current_identity != stable_identity[unit]:
                             raise IdentityChanged("class/controller/body/motion-state identity changed from first valid sample")
-                        stable_identity = current_identity
+                        stable_identity[unit] = current_identity
                     except SampleError as error:
-                        consecutive += 1
+                        consecutive[unit] += 1
                         metadata["failed_samples"] += 1
                         failures[str(error)] += 1
                         if len(metadata["failure_examples"]) < 10:
                             metadata["failure_examples"].append({"t_from_start": (time.perf_counter_ns() - start) / 1e9,
+                                                                 "unit_address": f"0x{unit:08X}",
                                                                  "error": str(error)})
-                        if isinstance(error, IdentityChanged) or consecutive >= args.max_failures:
+                        if isinstance(error, IdentityChanged) or consecutive[unit] >= args.max_failures:
                             metadata["status"] = "identity_changed" if isinstance(error, IdentityChanged) else "failed_sample_limit"
                             result_code = 2
                             break
                     else:
                         controlled_after, controlled_after_error = read_controlled(reader)
-                        observation = controlled_observation(args.unit, controlled_before, controlled_after,
+                        observation = controlled_observation(unit, controlled_before, controlled_after,
                                                              (controlled_before_error, controlled_after_error))
                         relationship = observation["relationship"]
                         relationships[relationship] += 1
@@ -475,19 +629,22 @@ def capture(args) -> int:
                         midpoint = (before + after) // 2
                         if origin is None:
                             origin = midpoint
-                        sample.update(t=(midpoint - origin) / 1e9, dt="", engine_dt="",
-                                      sample_dt="" if previous is None else (midpoint - previous) / 1e9,
+                        record_game_clock(clock_series[unit], sample, midpoint)
+                        sample.update(t=(midpoint - origin) / 1e9, dt="", unit_label=unit_spec["label"],
+                                      sample_dt="" if unit not in previous else (midpoint - previous[unit]) / 1e9,
                                       monotonic_ns=midpoint, wall_utc=utc_now(), sample_span=(after - before) / 1e9)
                         writer.writerow(sample)
                         csv_stream.flush()
-                        previous, consecutive = midpoint, 0
+                        previous[unit], consecutive[unit] = midpoint, 0
                         metadata["successful_samples"] += 1
-                    next_due += interval
-                    now = time.perf_counter_ns()
-                    if next_due < now:
-                        skipped = (now - next_due) // interval + 1
-                        next_due += skipped * interval
-                        metadata["skipped_deadlines"] += skipped
+                    unit_index = (unit_index + 1) % len(args.units)
+                    if unit_index == 0:
+                        next_due += interval
+                        now = time.perf_counter_ns()
+                        if next_due < now:
+                            skipped = (now - next_due) // interval + 1
+                            next_due += skipped * interval
+                            metadata["skipped_deadlines"] += skipped
                 if metadata["status"] == "capturing":
                     metadata["status"] = "completed" if metadata["successful_samples"] else "no_valid_samples"
                     result_code = 0 if metadata["successful_samples"] else 2
@@ -500,6 +657,9 @@ def capture(args) -> int:
                 metadata.update(ended_utc=utc_now(), elapsed_wall_seconds=(time.perf_counter_ns() - start) / 1e9,
                                 failure_counts=dict(failures))
                 metadata["controlled_global"]["relationship_counts"] = dict(relationships)
+                for series in clock_series.values():
+                    finish_game_clock(series)
+                metadata["game_clock_summary"] = {f"0x{unit:08X}": series for unit, series in clock_series.items()}
                 # We own this exclusively-created sidecar; preserve incomplete status
                 # if an external termination prevents reaching this final update.
                 with args.manifest.open("w", encoding="utf-8") as stream:
