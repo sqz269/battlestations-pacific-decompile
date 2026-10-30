@@ -42,8 +42,7 @@ public:
     virtual void sections_00ab8530(void* actual_child, NativeGuiTextGlyphQuadStorageAcquired&) = 0;
     virtual void child_current34(void* actual_child, std::uint32_t captured_profile,
         std::uint32_t captured_target, std::uint32_t value, NativeGuiTextGlyphQuadStorageAcquired&) = 0;
-    virtual void listeners_00aa6bc0(void* actual_child, void* actual_listener,
-        std::uint32_t flag, NativeGuiTextGlyphQuadStorageAcquired&) = 0;
+    // AA6BC0 listener fields use the existing raw leaf directly.
     virtual void font_00ab8c30(void* actual_child, const void* actual_name_header8,
         NativeGuiTextGlyphQuadStorageAcquired&) = 0;
     virtual void shadow_00ab6c30(void* actual_child, std::uint32_t enabled,
