@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/native_gui_text_failure_origin.hpp"
 #include "bsp/native_instance_geometry.hpp"
 #include "bsp/native_material_effect_cache.hpp"
 #include "bsp/native_node_parenting_storage.hpp"
@@ -148,6 +149,14 @@ struct NativeGuiTextRawModelSectionStorageAcquired {
     NativeTextureSurfaceReferenceIncrement shadow_pair_decrement{}, main_pair_decrement{};
     NativeGuiTextSectionStorageRelease mesh_release;
     NativeNodeSetParentAcquired parenting;
+    const NativeGuiTextFailureOrigin& failure_origin() const noexcept { return failure_origin_; }
+private:
+    friend struct NativeGuiTextRawModelSectionFailureAccess;
+    friend void ensure_native_gui_text_sections_storage_00ab8530(void*,
+        NativeGuiTextRawModelSectionStorageFrame&, NativeGuiTextRawModelSectionStorageContext&,
+        NativeGuiTextRawModelSectionStorageAcquired&, const NativeGuiTextFailureOriginRuntime&);
+    const NativeGuiTextFailureOriginRuntime* failure_runtime_{};
+    NativeGuiTextFailureOrigin failure_origin_;
 };
 
 // DEFAULT-only admission: no primary4C/parent/children/timed/glyph/cursor/
@@ -158,4 +167,9 @@ struct NativeGuiTextRawModelSectionStorageAcquired {
 void ensure_native_gui_text_sections_storage_00ab8530(void* actual_text,
     NativeGuiTextRawModelSectionStorageFrame&, NativeGuiTextRawModelSectionStorageContext&,
     NativeGuiTextRawModelSectionStorageAcquired&);
+// In-flight constructor85 route ONLY, distinct from the completed-object POST
+// API. Private HOST/UNKNOWN receipts withhold this entry's own nested cleanup.
+void ensure_native_gui_text_sections_storage_00ab8530(void* actual_text,
+    NativeGuiTextRawModelSectionStorageFrame&, NativeGuiTextRawModelSectionStorageContext&,
+    NativeGuiTextRawModelSectionStorageAcquired&, const NativeGuiTextFailureOriginRuntime&);
 } // namespace bsp

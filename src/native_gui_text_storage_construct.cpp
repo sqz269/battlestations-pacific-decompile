@@ -14,7 +14,32 @@
 #endif
 
 namespace bsp {
+// TU-local use of private retained negative metadata; no public setter/issuer.
+struct NativeGuiTextRawModelSectionFailureAccess final {
+    static const NativeGuiTextFailureOriginRuntime* runtime(NativeGuiTextRawModelSectionStorageAcquired& a) noexcept { return a.failure_runtime_; }
+    static NativeGuiTextFailureOrigin& origin(NativeGuiTextRawModelSectionStorageAcquired& a) noexcept { return a.failure_origin_; }
+};
 namespace {
+struct FailureTransport {
+    const NativeGuiTextFailureOriginRuntime* runtime{};
+    NativeGuiTextFailureOrigin* origin{};
+    const void* supplier{};
+};
+FailureTransport failure_transport(NativeGuiTextSectionStorageAcquired&) noexcept { return {}; }
+FailureTransport failure_transport(NativeGuiTextRawModelSectionStorageAcquired& a) noexcept {
+    return {NativeGuiTextRawModelSectionFailureAccess::runtime(a), &NativeGuiTextRawModelSectionFailureAccess::origin(a), &a};
+}
+template<class Acquired, class F> decltype(auto) source_host(Acquired& a, std::uint32_t source, F&& f) {
+    const auto t = failure_transport(a);
+    if (t.runtime) return t.origin->host(*t.runtime, {0, source}, t.supplier, std::forward<F>(f));
+    return std::forward<F>(f)();
+}
+template<class Acquired, class F> decltype(auto) source_unknown(Acquired& a, std::uint32_t site,
+    std::uint32_t source, F&& f) {
+    const auto t = failure_transport(a);
+    if (t.runtime) return t.origin->unknown(*t.runtime, {site, source}, t.supplier, std::forward<F>(f));
+    return std::forward<F>(f)();
+}
 using Word = std::uint32_t;
 void require(bool condition, const char* message) {
     if (!condition) throw std::invalid_argument(message);
@@ -314,13 +339,14 @@ void cleanup(Frame& f, Context& c, Acquired& a) noexcept {
     } catch (...) { std::terminate(); }
 }
 
-template<class Resource, class Context>
+template<class Resource, class Context, class Acquired>
 void release(Resource*& creator, NativeTextureSurfaceReferenceIncrement decrement,
-    NativeGuiTextSectionStorageRelease& progress, Context& c) {
+    NativeGuiTextSectionStorageRelease& progress, Context& c, Acquired& a) {
     // Actual function was captured by the caller at its ORIGINAL import-read
     // site. Never use generic release's atomic or reload CE2220 here.
     void* const raw = std::exchange(creator, nullptr);
-    require(raw && decrement && !progress.entered, "Text creator release requires one actual reference");
+    source_host(a, __COUNTER__, [&] {
+        require(raw && decrement && !progress.entered, "Text creator release requires one actual reference"); });
     progress.identity = raw;
     progress.captured_decrement = decrement;
     progress.entered = true;
@@ -346,22 +372,27 @@ template<class Frame, class Context, class Acquired>
 void section(NativeMeshStorage& mesh, bool shadow, Frame& f, Context& c,
     Acquired& a, NativeGuiTextSectionStorageSection& part) {
     call(a, shadow ? 0x00ab862b : 0x00ab86fe);
-    try { part.section_creator = geometry(c).create_native_section_00533fa0(part.section); }
+    try { part.section_creator = source_unknown(a, shadow ? 0x00ab862bu : 0x00ab86feu, __COUNTER__, [&] {
+        return geometry(c).create_native_section_00533fa0(part.section); }); }
     catch (...) {
         if (part.section.creator)
             a.failure = NativeGuiTextSectionStorageAcquired::Failure::host_metadata;
         throw;
     }
-    require(part.section_creator, "Native null section's later access is outside supported normal storage");
+    source_host(a, __COUNTER__, [&] {
+        require(part.section_creator, "Native null section's later access is outside supported normal storage"); });
     call(a, shadow ? 0x00ab8635 : 0x00ab8708);
-    append_native_mesh_draw_section_00b73c60(mesh, part.section_creator);
+    source_unknown(a, shadow ? 0x00ab8635u : 0x00ab8708u, __COUNTER__, [&] {
+        append_native_mesh_draw_section_00b73c60(mesh, part.section_creator); });
     part.appended = true;
     call(a, shadow ? 0x00ab8643 : 0x00ab8716);
-    construct_native_string_header_0041e870(name_header(f), c.strings, c.guidefault_00d5c25c);
+    source_unknown(a, shadow ? 0x00ab8643u : 0x00ab8716u, __COUNTER__, [&] {
+        construct_native_string_header_0041e870(name_header(f), c.strings, c.guidefault_00d5c25c); });
     a.native_eh_state = shadow ? 4 : 5;
     call(a, shadow ? 0x00ab8654 : 0x00ab8727);
-    try { part.material_creator = create_native_material_from_effect_cache_00535320(name_header(f),
-        materials(c).material_slots, geometry(c).actual_owners(), c.effects, part.material); }
+    try { part.material_creator = source_unknown(a, shadow ? 0x00ab8654u : 0x00ab8727u, __COUNTER__, [&] {
+        return create_native_material_from_effect_cache_00535320(name_header(f),
+            materials(c).material_slots, geometry(c).actual_owners(), c.effects, part.material); }); }
     catch (...) {
         if constexpr (std::is_same_v<Acquired, NativeGuiTextRawModelSectionStorageAcquired>) {
             if (part.material.phase == NativeMaterialFactoryAcquired::Phase::empty ||
@@ -373,32 +404,36 @@ void section(NativeMeshStorage& mesh, bool shadow, Frame& f, Context& c,
     // Native factory has returned; Source admission is not covered by its
     // caller's native name-unwind. Keep every creator/header on admission error.
     a.failure = NativeGuiTextSectionStorageAcquired::Failure::host_metadata;
-    material_ready(c, part);
-    if (part.material_creator)
-        geometry(c).register_native_material_creator(part.material, materials(c), material_table(c));
+    source_host(a, __COUNTER__, [&] {
+        material_ready(c, part);
+        if (part.material_creator)
+            geometry(c).register_native_material_creator(part.material, materials(c), material_table(c));
+    });
     void* const captured_name_data = reinterpret_cast<void*>(f.locals[3]); // AB865B/872E
     a.native_eh_state = -1; // AB8661/8734, BEFORE nonnull current-length read
     call(a, shadow ? 0x00ab867d : 0x00ab8750);
-    return_captured_material_name(captured_name_data, f, c, a);
+    source_unknown(a, shadow ? 0x00ab867du : 0x00ab8750u, __COUNTER__, [&] {
+        return_captured_material_name(captured_name_data, f, c, a); });
     call(a, shadow ? 0x00ab8685 : 0x00ab8758);
-    set_native_mesh_section_material_00b864c0(*part.section_creator,
-        geometry(c).actual_owners(), part.material_creator);
+    source_unknown(a, shadow ? 0x00ab8685u : 0x00ab8758u, __COUNTER__, [&] {
+        set_native_mesh_section_material_00b864c0(*part.section_creator,
+            geometry(c).actual_owners(), part.material_creator); });
     part.material_published = true;
     if (shadow) {
         call(a, 0x00ab868e);
         const auto first = decrement(c);
-        release(part.section_creator, first, part.section_release, c);
+        source_unknown(a, 0x00ab868eu, __COUNTER__, [&] { release(part.section_creator, first, part.section_release, c, a); });
         // AB86A0 captures AFTER the section terminal has returned.
         a.shadow_pair_decrement = decrement(c);
         call(a, 0x00ab86aa);
-        release(part.material_creator, a.shadow_pair_decrement, part.material_release, c);
+        source_unknown(a, 0x00ab86aau, __COUNTER__, [&] { release(part.material_creator, a.shadow_pair_decrement, part.material_release, c, a); });
     } else {
         // AB875D: SAME captured target for both section and material.
         a.main_pair_decrement = decrement(c);
         call(a, 0x00ab8767);
-        release(part.section_creator, a.main_pair_decrement, part.section_release, c);
+        source_unknown(a, 0x00ab8767u, __COUNTER__, [&] { release(part.section_creator, a.main_pair_decrement, part.section_release, c, a); });
         call(a, 0x00ab8779);
-        release(part.material_creator, a.main_pair_decrement, part.material_release, c);
+        source_unknown(a, 0x00ab8779u, __COUNTER__, [&] { release(part.material_creator, a.main_pair_decrement, part.material_release, c, a); });
     }
 }
 void* allocate_model(NativeGuiTextSectionStorageContext& c) {
@@ -425,7 +460,8 @@ void* construct_model(void*, void* name, NativeGuiTextSectionStorageContext& c,
 }
 void* construct_model(void* raw, void* name, NativeGuiTextRawModelSectionStorageContext& c,
     NativeGuiTextRawModelSectionStorageAcquired& a) {
-    try { return construct_native_model_storage_00b75030(raw, name, c.model.storage, a.model.construction); }
+    try { return source_unknown(a, 0x00ab859bu, __COUNTER__, [&] {
+        return construct_native_model_storage_00b75030(raw, name, c.model.storage, a.model.construction); }); }
     catch (...) {
         if (!a.model.construction.started || a.model.construction.complete)
             a.failure = decltype(a.failure)::host_metadata;
@@ -462,18 +498,19 @@ void associate(NativeGuiTextSectionStorageFrame& f, NativeGuiTextSectionStorageC
 void associate(NativeGuiTextRawModelSectionStorageFrame& f, NativeGuiTextRawModelSectionStorageContext& c,
     NativeGuiTextRawModelSectionStorageAcquired& a) {
     a.failure = decltype(a.failure)::host_metadata;
-    require(a.model.reference && a.model.actual == a.captured_shadow_receiver &&
+    source_host(a, __COUNTER__, [&] { require(a.model.reference && a.model.actual == a.captured_shadow_receiver &&
         !a.model.reference->retired() && a.model.construction.complete &&
         a.model.construction.metadata_bound && a.model.construction.context == &c.model.storage &&
         !a.model.lifetime.started && !a.model.lifetime.scalar_started && !a.model.release.started &&
         a.model.reference->reference_count.load(std::memory_order_relaxed) > 0 &&
         &c.geometry.actual_owners().resolve_actual(a.captured_shadow_receiver) == &*a.model.reference,
-        "Text B75170 receiver must be its SAME completed canonical raw Model");
+        "Text B75170 receiver must be its SAME completed canonical raw Model"); });
     f.arguments[1] = reinterpret_cast<Word>(a.mesh_creator); // AB8623 PUSH EBX
     f.arguments[0] = 0; // AB8624 PUSH 0
     call(a, 0x00ab8626);
-    try { set_native_model_geometry_storage_00b75170(a.captured_shadow_receiver,
-        f.association, c.association, a.model.association); }
+    try { source_unknown(a, 0x00ab8626u, __COUNTER__, [&] {
+        set_native_model_geometry_storage_00b75170(a.captured_shadow_receiver,
+            f.association, c.association, a.model.association); }); }
     catch (...) {
         if (f.association.phase() == NativeModelStorageGeometryPhase::fresh)
             a.failure = decltype(a.failure)::host_metadata;
@@ -515,20 +552,21 @@ void main_sections(void* text, NativeGuiTextRawModelSectionStorageFrame&,
 }
 template<class Frame, class Context, class Acquired>
 void sections_body(void* text, Frame& f, Context& c, Acquired& a) {
-    preflight(text, f, c, a);
+    source_host(a, __COUNTER__, [&] { preflight(text, f, c, a); });
     a.started = true;
     f.locals[0] = 0; // AB854F; preserve raw allocation and header preimages
     try {
         if (!pointer(text, 0x188)) {
             call(a, 0x00ab8565);
-            void* raw = allocate_model(c);
+            void* raw = source_unknown(a, 0x00ab8565u, __COUNTER__, [&] { return allocate_model(c); });
             f.locals[1] = reinterpret_cast<Word>(raw);
             a.native_eh_state = 0;
             if (raw) {
                 a.failure = NativeGuiTextSectionStorageAcquired::Failure::host_metadata;
-                prepare_model(raw, c, a);
+                source_host(a, __COUNTER__, [&] { prepare_model(raw, c, a); });
                 call(a, 0x00ab8581);
-                construct_native_string_header_0041e870(name_header(f), c.strings, c.shadow_00d15ec4);
+                source_unknown(a, 0x00ab8581u, __COUNTER__, [&] {
+                    construct_native_string_header_0041e870(name_header(f), c.strings, c.shadow_00d15ec4); });
                 f.locals[0] = 1; // armed only AFTER native name construction returns
                 a.native_eh_state = 1;
                 call(a, 0x00ab859b);
@@ -540,18 +578,19 @@ void sections_body(void* text, Frame& f, Context& c, Acquired& a) {
             a.native_eh_state = -1;
             if (a.model_constructed) {
                 a.failure = NativeGuiTextSectionStorageAcquired::Failure::host_metadata;
-                bind_model(c, a);
+                source_host(a, __COUNTER__, [&] { bind_model(c, a); });
                 a.model_registered = true;
             }
             if (f.locals[0] & 1u) {
                 call(a, 0x00ab85d0);
-                return_name(f, c, a);
+                source_unknown(a, 0x00ab85d0u, __COUNTER__, [&] { return_name(f, c, a); });
             }
-            shadow_ready(text, c, a);
+            source_host(a, __COUNTER__, [&] { shadow_ready(text, c, a); });
             call(a, 0x00ab85db);
             word(pointer(text, 0x188), 0x138) &= ~Word{3};
             call(a, 0x00ab85e7);
-            try { a.mesh_creator = geometry(c).create_native_mesh_00b73b60(a.mesh); }
+            try { a.mesh_creator = source_unknown(a, 0x00ab85e7u, __COUNTER__, [&] {
+                return geometry(c).create_native_mesh_00b73b60(a.mesh); }); }
             catch (...) {
                 if (a.mesh.native_site == 0 || a.mesh.constructor_complete)
                     a.failure = NativeGuiTextSectionStorageAcquired::Failure::host_metadata;
@@ -562,17 +601,23 @@ void sections_body(void* text, Frame& f, Context& c, Acquired& a) {
             a.captured_shadow_receiver = geometry_arguments(text, unchanged(c),
                 f, a.native_eh_state);
             associate(f, c, a);
-            require(a.mesh_creator, "Native null mesh's later access is outside supported normal storage");
+            source_host(a, __COUNTER__, [&] {
+                require(a.mesh_creator, "Native null mesh's later access is outside supported normal storage"); });
             section(*a.mesh_creator, true, f, c, a, a.shadow_section);
             call(a, 0x00ab86bd);
-            release(a.mesh_creator, a.shadow_pair_decrement, a.mesh_release, c);
+            source_unknown(a, 0x00ab86bdu, __COUNTER__, [&] { release(a.mesh_creator, a.shadow_pair_decrement, a.mesh_release, c, a); });
         }
-        main_sections(text, f, c, a);
+        if constexpr (std::is_same_v<Acquired, NativeGuiTextRawModelSectionStorageAcquired>)
+            source_host(a, __COUNTER__, [&] { main_sections(text, f, c, a); });
+        else main_sections(text, f, c, a);
         a.complete = true;
         a.failure = NativeGuiTextSectionStorageAcquired::Failure::none;
     } catch (...) {
-        if (a.failure != NativeGuiTextSectionStorageAcquired::Failure::host_metadata)
-            cleanup(f, c, a);
+        const auto t = failure_transport(a);
+        if (t.runtime)
+            t.origin->retain_current(*t.runtime); // private HOST/UNKNOWN before legacy diagnostics
+        else if (a.failure != NativeGuiTextSectionStorageAcquired::Failure::host_metadata)
+            cleanup(f, c, a); // historical noexcept/secondary projection ONLY on legacy route
         throw;
     }
 }
@@ -586,6 +631,21 @@ void ensure_native_gui_text_sections_storage_00ab8530(void* text,
     NativeGuiTextRawModelSectionStorageAcquired& a) {
     try { sections_body(text, f, c, a); }
     catch (...) {
+        if (!a.started) a.failure = decltype(a.failure)::host_metadata;
+        throw;
+    }
+}
+void ensure_native_gui_text_sections_storage_00ab8530(void* text,
+    NativeGuiTextRawModelSectionStorageFrame& f, NativeGuiTextRawModelSectionStorageContext& c,
+    NativeGuiTextRawModelSectionStorageAcquired& a, const NativeGuiTextFailureOriginRuntime& runtime) {
+    if (!a.failure_runtime_) a.failure_runtime_ = &runtime; // never replace a retained service
+    const auto& retained_runtime = *a.failure_runtime_;
+    a.failure_origin_.begin(runtime, &a, 0x00ab8530u);
+    try {
+        sections_body(text, f, c, a);
+        a.failure_origin_.complete();
+    } catch (...) {
+        a.failure_origin_.retain_current(retained_runtime); // exact current cause; sticky denial retained
         if (!a.started) a.failure = decltype(a.failure)::host_metadata;
         throw;
     }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "bsp/native_gui_text_failure_origin.hpp"
 #include <cstdint>
 #include <exception>
 
@@ -26,6 +27,10 @@ public:
     virtual ~NativeGuiTextGlyphQuadStorageCalls() = default;
     virtual void* allocate_00ab78a0(void* actual_pool, NativeGuiTextGlyphQuadStorageAcquired&) = 0;
     virtual void* construct_00ab9650(void* actual_allocation, NativeGuiTextGlyphQuadStorageAcquired&) = 0;
+    // Qualified used route MUST forward this SAME retained envelope to actual raw93.
+    // No adapter/default implementation or Native-origin capability is supplied.
+    virtual void* construct_00ab9650(void* actual_allocation, NativeGuiTextGlyphQuadStorageAcquired&,
+        NativeGuiTextFailureConstructorCall&) = 0;
     virtual void return_failed_00ab76f0(void* current_slot, NativeGuiTextGlyphQuadStorageAcquired&) = 0;
     virtual void append_005dad40(void* actual_vector, volatile std::uint32_t* actual_child_home,
         NativeGuiTextGlyphQuadStorageAcquired&) = 0;
@@ -84,6 +89,9 @@ struct NativeGuiTextGlyphQuadStorageContext {
     const volatile double& y_subtract_00d5c7a8;
     const volatile double& z_subtract_00d7a220;
     const volatile double& input_x_bias_00d06880;
+    // Optional qualified own Source-runtime borrow; null preserves the legacy API.
+    // Preparation only, not binding proof, Native permission or a catch-domain query.
+    const NativeGuiTextFailureOriginRuntime* failure_runtime{};
 };
 
 // Fixed, caller-prepared per-invocation scratch/diagnostics, not an owner.
@@ -113,6 +121,13 @@ struct NativeGuiTextGlyphQuadStorageAcquired final {
     NativeGuiTextGlyphQuadStorageAcquired() noexcept = default;
     NativeGuiTextGlyphQuadStorageAcquired(const NativeGuiTextGlyphQuadStorageAcquired&) = delete;
     NativeGuiTextGlyphQuadStorageAcquired& operator=(const NativeGuiTextGlyphQuadStorageAcquired&) = delete;
+private:
+    friend void write_native_gui_text_glyph_quad_storage_00ab98f0(void*,
+        volatile std::uint32_t (&)[10], NativeGuiTextGlyphQuadStorageContext&,
+        NativeGuiTextGlyphQuadStorageAcquired&);
+    NativeGuiTextFailureOrigin failure_origin_;
+    NativeGuiTextFailureConstructorSlotArm constructor_slot_;
+    NativeGuiTextFailureConstructorCall constructor_call_;
 };
 
 // Whole AB98F0..AB9FC2 [1747B/485ops]. Original ECX actual Text; ten physical

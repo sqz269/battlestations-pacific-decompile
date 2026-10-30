@@ -90,4 +90,90 @@ bool NativeGuiTextFailureHeaderArm::consume_proven_primary(const NativeGuiTextFa
     if (allowed) phase_ = Phase::unwind_return;
     return allowed; // always withheld in this slice: no genuine Native issuer exists
 }
+void NativeGuiTextFailureConstructorSlotArm::arm(NativeGuiTextFailureOrigin& invocation,
+    const NativeGuiTextFailureOriginRuntime& runtime, volatile std::uint32_t* home,
+    void* receiver, const void* provider, NativeGuiTextFailureOrigin::Site edge,
+    NativeGuiTextFailureConstructorCall& call) noexcept {
+    if (phase_ != Phase::fresh || call.phase_ != NativeGuiTextFailureConstructorCall::Phase::fresh) {
+        phase_ = Phase::denied; call.valid_ = false; return;
+    }
+    invocation_ = &invocation; runtime_ = &runtime; home_ = home;
+    receiver_ = receiver; provider_ = provider; caller_edge_ = edge; phase_ = Phase::armed;
+    call.invocation_ = &invocation; call.slot_ = this; call.runtime_ = &runtime;
+    call.home_ = home; call.receiver_ = receiver; call.provider_ = provider;
+    call.caller_edge_ = edge; call.phase_ = NativeGuiTextFailureConstructorCall::Phase::prepared;
+}
+void NativeGuiTextFailureConstructorSlotArm::normal_disarm(NativeGuiTextFailureConstructorCall& call) noexcept {
+    if (phase_ == Phase::armed && call.slot_ == this) {
+        phase_ = Phase::disarmed; call.phase_ = NativeGuiTextFailureConstructorCall::Phase::disarmed;
+    } else { phase_ = Phase::denied; call.valid_ = false; }
+}
+bool NativeGuiTextFailureConstructorCall::bind_once(void* receiver,
+    NativeGuiTextFailureOrigin& origin, const void* record) noexcept {
+    if (!valid_ || phase_ != Phase::calling || bound_ || !record || receiver != receiver_ ||
+        !invocation_ || !runtime_ || !slot_ || !home_ || callee_record_ ||
+        slot_->phase_ != NativeGuiTextFailureConstructorSlotArm::Phase::armed ||
+        slot_->invocation_ != invocation_ || slot_->runtime_ != runtime_ || slot_->home_ != home_ ||
+        slot_->receiver_ != receiver_ || slot_->provider_ != provider_ ||
+        invocation_->runtime_ != runtime_ || invocation_->active_.supplier != provider_ ||
+        invocation_->active_.site.native != caller_edge_.native ||
+        invocation_->active_.site.source != caller_edge_.source ||
+        invocation_->active_.stage != NativeGuiTextFailureOrigin::Stage::ordinary) {
+        valid_ = false; return false; // no reset, replacement or admission policy
+    }
+    bound_ = true; callee_record_ = record; callee_origin_ = &origin; callee_entry_ = 0x00ab9650u;
+    invocation_->enter({caller_edge_, record, NativeGuiTextFailureOrigin::Stage::ordinary});
+    return true;
+}
+void NativeGuiTextFailureConstructorCall::body_returned(
+    const NativeGuiTextFailureOrigin& origin, const void* record) noexcept {
+    if (!valid_ || !bound_ || phase_ != Phase::calling || native_body_returned_ ||
+        callee_origin_ != &origin || callee_record_ != record || origin.runtime_ != runtime_ ||
+        origin.supplier_ != record || origin.entry_ != 0x00ab9650u) valid_ = false;
+    native_body_returned_ = true; // PRIVATE negative frontier; never completes an Origin
+}
+void NativeGuiTextFailureConstructorCall::failed() {
+    const auto current = runtime_->read_current_catch(); // before any diagnostic exception_ptr
+    if (!failure_committed_) { escaped_cause_ = current; failure_committed_ = true; }
+    if (bound_ && callee_origin_)
+        invocation_->adopt(escaped_cause_, *callee_origin_, callee_record_, 0x00ab9650u);
+    else invocation_->commit(NativeGuiTextFailureOrigin::Verdict::unclassified, escaped_cause_);
+    phase_ = Phase::failed;
+}
+bool NativeGuiTextFailureConstructorSlotArm::consume_proven_primary(
+    const NativeGuiTextFailureOrigin& invocation, const NativeGuiTextFailureOriginRuntime& runtime,
+    const NativeGuiTextFailureConstructorCall& call, volatile std::uint32_t* actual_home) {
+    const auto current = runtime.read_current_catch();
+    if (phase_ != Phase::armed) return false; // preserve the first denial/consumption history
+    escaped_cause_ = current;
+    const bool allowed = phase_ == Phase::armed && invocation_ == &invocation && runtime_ == &runtime &&
+        home_ && home_ == actual_home && call.home_ == home_ && call.slot_ == this &&
+        call.invocation_ == &invocation && call.runtime_ == runtime_ && call.receiver_ == receiver_ &&
+        call.provider_ == provider_ && call.valid_ && call.bound_ && !call.native_body_returned_ &&
+        call.phase_ == NativeGuiTextFailureConstructorCall::Phase::failed &&
+        call.callee_record_ && call.callee_origin_ && call.callee_entry_ == 0x00ab9650u &&
+        call.failure_committed_ && call.callee_origin_->valid_ &&
+        call.callee_origin_->runtime_ == runtime_ && call.callee_origin_->supplier_ == call.callee_record_ &&
+        call.callee_origin_->entry_ == 0x00ab9650u &&
+        call.callee_origin_->phase_ == NativeGuiTextFailureOrigin::Phase::failed &&
+        !call.callee_origin_->secondary_committed_ && call.callee_origin_->cause_.same(escaped_cause_) &&
+        caller_edge_.native == 0x00ab9d4fu && call.caller_edge_.native == caller_edge_.native &&
+        call.caller_edge_.source == caller_edge_.source && invocation.entry_ == 0x00ab98f0u &&
+        invocation.valid_ && invocation.runtime_ == runtime_ &&
+        invocation.phase_ == NativeGuiTextFailureOrigin::Phase::failed &&
+        invocation.verdict_ == NativeGuiTextFailureOrigin::Verdict::proven_native &&
+        invocation.native_issuer_ && !invocation.secondary_committed_ &&
+        invocation.cause_.same(escaped_cause_) && call.escaped_cause_.same(escaped_cause_) &&
+        invocation.forwarded_child_ == call.callee_origin_ &&
+        invocation.escaped_.supplier == call.callee_record_ &&
+        invocation.escaped_.site.native == caller_edge_.native &&
+        invocation.escaped_.site.source == caller_edge_.source &&
+        invocation.escaped_.parent_supplier == provider_ &&
+        invocation.escaped_.parent_site.native == caller_edge_.native &&
+        invocation.escaped_.parent_site.source == caller_edge_.source &&
+        invocation.escaped_.stage == NativeGuiTextFailureOrigin::Stage::ordinary &&
+        invocation.forwarded_child_edge_.stage == NativeGuiTextFailureOrigin::Stage::ordinary;
+    phase_ = allowed ? Phase::consumed : Phase::denied;
+    return allowed; // withheld: Origin has NO Native issuer, including this route
+}
 } // namespace bsp

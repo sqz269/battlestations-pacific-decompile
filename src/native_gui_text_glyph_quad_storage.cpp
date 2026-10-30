@@ -379,7 +379,14 @@ void prepare_position(Word text, volatile Word* h,
 __declspec(noinline) void write_native_gui_text_glyph_quad_storage_00ab98f0(
     void* actual_text, volatile Word (&homes)[10], NativeGuiTextGlyphQuadStorageContext& c,
     NativeGuiTextGlyphQuadStorageAcquired& a) {
-    if (a.phase != Acquired::Phase::fresh)
+    const auto* const failure_runtime = c.failure_runtime;
+    if (failure_runtime) {
+        a.failure_origin_.begin(*failure_runtime, &a, 0x00ab98f0u);
+        a.failure_origin_.host(*failure_runtime, {0, __COUNTER__}, &a, [&] {
+            if (a.phase != Acquired::Phase::fresh)
+                throw std::logic_error("Glyph quad requires a fresh retained invocation record");
+        });
+    } else if (a.phase != Acquired::Phase::fresh)
         throw std::logic_error("Glyph quad requires a fresh retained invocation record");
     a.actual_text = actual_text;
     a.home_identity = homes;
@@ -390,17 +397,24 @@ __declspec(noinline) void write_native_gui_text_glyph_quad_storage_00ab98f0(
         prefix(actual_text, homes, c, a);
         if (word(text, 0x1b0) == 0 || word(text, 0x1ac) == 0 ||
             word(text, 0xdc) != 0 || word(text, 0x1a4) == 0) {
+            if (failure_runtime) a.failure_origin_.complete();
             a.phase = Acquired::Phase::complete; return;
         }
         Word codes = word(text, 0x1a8);
         if (codes == 0) codes = bits(c.actual_empty_utf16_00f8be50);
         Word code = half(codes, 0);
-        if (code == 0) { a.phase = Acquired::Phase::complete; return; }
+        if (code == 0) {
+            if (failure_runtime) a.failure_origin_.complete();
+            a.phase = Acquired::Phase::complete; return;
+        }
         for (;;) {
             if (half(bits(homes), 36) == code) break;
             code = half(codes, 2);
             codes += 2u;
-            if (code == 0) { a.phase = Acquired::Phase::complete; return; }
+            if (code == 0) {
+                if (failure_runtime) a.failure_origin_.complete();
+                a.phase = Acquired::Phase::complete; return;
+            }
         }
         clear_uv(a.captured_stream, a.captured_first_vertex);
         clear_uv_home(a.captured_stream, &homes[0]);
@@ -412,13 +426,21 @@ __declspec(noinline) void write_native_gui_text_glyph_quad_storage_00ab98f0(
         a.captured_allocation = allocation;
         homes[7] = bits(allocation);
         a.native_eh_state = 0;
+        if (failure_runtime)
+            a.constructor_slot_.arm(a.failure_origin_, *failure_runtime, &homes[7], allocation,
+                &c.calls, {0x00ab9d4fu, __COUNTER__}, a.constructor_call_);
         void* child = nullptr;
         if (allocation) {
             boundary(a, 0x00ab9d4f, allocation);
-            child = c.calls.construct_00ab9650(allocation, a);
+            if (failure_runtime)
+                child = a.constructor_call_.invoke([&] {
+                    return c.calls.construct_00ab9650(allocation, a, a.constructor_call_);
+                });
+            else child = c.calls.construct_00ab9650(allocation, a);
         }
         a.captured_child = child;
         a.native_eh_state = -1;
+        if (failure_runtime) a.constructor_slot_.normal_disarm(a.constructor_call_);
         homes[7] = bits(child);
         a.child_append_entered = true;
         boundary(a, 0x00ab9d70, pointer(text + 0x194));
@@ -478,21 +500,35 @@ __declspec(noinline) void write_native_gui_text_glyph_quad_storage_00ab98f0(
         volatile Word* target;
         prepare_position(text, homes, c, a, target);
         boundary(a, 0x00ab9fa9, child); c.calls.position_00aa8240(child, target, a);
+        if (failure_runtime) a.failure_origin_.complete();
         a.phase = Acquired::Phase::complete;
     } catch (...) {
+        bool constructor_permit = false;
+        if (failure_runtime) {
+            a.failure_origin_.retain_current(*failure_runtime);
+            if (a.native_eh_state == 0)
+                constructor_permit = a.constructor_slot_.consume_proven_primary(
+                    a.failure_origin_, *failure_runtime, a.constructor_call_, &homes[7]);
+        }
         a.escaped_call_site = a.active_call_site;
         a.escaped_eh_state = a.native_eh_state;
         a.failure = std::current_exception();
         a.phase = Acquired::Phase::failed;
         const int state = a.native_eh_state;
         a.native_eh_state = -1;
-        if (state >= 0) {
+        // Qualified state0 cannot reach cleanup for HOST/UNKNOWN or body-returned.
+        // Legacy states1/2 retain their historical, separately gated projection.
+        if (state >= 0 && (state != 0 || !failure_runtime || constructor_permit)) {
             a.cleanup_entered = true;
             try {
                 if (state == 0) {
                     void* const current_slot = pointer(homes[7]);
                     boundary(a, 0x00cb80b3, current_slot);
-                    c.calls.return_failed_00ab76f0(current_slot, a);
+                    if (failure_runtime)
+                        a.failure_origin_.unknown(*failure_runtime, {0x00cb80b3u, __COUNTER__}, &c.calls,
+                            [&] { c.calls.return_failed_00ab76f0(current_slot, a); },
+                            NativeGuiTextFailureOrigin::Stage::cleanup_secondary);
+                    else c.calls.return_failed_00ab76f0(current_slot, a);
                 } else if (state == 1) {
                     boundary(a, 0x00cb80bb, a.locals + 4);
                     destroy_native_string_header_0041dd20(a.locals + 4, c.strings);

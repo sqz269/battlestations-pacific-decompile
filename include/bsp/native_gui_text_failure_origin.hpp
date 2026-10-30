@@ -12,6 +12,13 @@ namespace bsp {
 class NativeGuiTextFailureOrigin;
 class NativeGuiTextFailureOriginRuntime;
 class NativeGuiTextFailureHeaderArm;
+class NativeGuiTextFailureConstructorSlotArm;
+class NativeGuiTextFailureConstructorCall;
+struct NativeGuiTextGlyphQuadStorageContext;
+struct NativeGuiTextGlyphQuadStorageAcquired;
+struct NativeGuiTextRawModelDefaultStorageFrame;
+struct NativeGuiTextRawModelDefaultStorageContext;
+struct NativeGuiTextRawModelDefaultStorageAcquired;
 
 // Identity only. No exception_ptr capture/copy, payload ownership or Native credit.
 // Default invalid is not an authenticated current cause.
@@ -23,6 +30,8 @@ private:
     friend class NativeGuiTextFailureOriginRuntime;
     friend class NativeGuiTextFailureOrigin;
     friend class NativeGuiTextFailureHeaderArm;
+    friend class NativeGuiTextFailureConstructorSlotArm;
+    friend class NativeGuiTextFailureConstructorCall;
     const NativeGuiTextFailureOriginRuntime* runtime_{};
     const void* object_{};
     const void* descriptor_{};
@@ -110,6 +119,8 @@ public:
     }
 private:
     friend class NativeGuiTextFailureHeaderArm;
+    friend class NativeGuiTextFailureConstructorSlotArm;
+    friend class NativeGuiTextFailureConstructorCall;
     enum class Phase : std::uint8_t { fresh, entered, complete, failed };
     Phase phase_{Phase::fresh};
     Verdict verdict_{Verdict::unset}; // fresh unset differs from committed unknown
@@ -153,5 +164,82 @@ private:
     const NativeGuiTextFailureOrigin* invocation_{};
     const void* header_{};
     std::uint32_t state_{};
+};
+// DISTINCT from the eight-byte HeaderArm. This retained metadata binds the
+// address of Glyph home7; it never captures a replacement cleanup operand.
+// All operations are private to the actual Glyph entry. There is no issuer.
+class NativeGuiTextFailureConstructorSlotArm final {
+public:
+    NativeGuiTextFailureConstructorSlotArm() noexcept = default;
+    NativeGuiTextFailureConstructorSlotArm(const NativeGuiTextFailureConstructorSlotArm&) = delete;
+    NativeGuiTextFailureConstructorSlotArm& operator=(const NativeGuiTextFailureConstructorSlotArm&) = delete;
+private:
+    friend class NativeGuiTextFailureConstructorCall;
+    friend void write_native_gui_text_glyph_quad_storage_00ab98f0(void*,
+        volatile std::uint32_t (&)[10], NativeGuiTextGlyphQuadStorageContext&,
+        NativeGuiTextGlyphQuadStorageAcquired&);
+    enum class Phase : std::uint8_t { fresh, armed, disarmed, consumed, denied };
+    Phase phase_{Phase::fresh};
+    const NativeGuiTextFailureOrigin* invocation_{};
+    const NativeGuiTextFailureOriginRuntime* runtime_{};
+    volatile std::uint32_t* home_{};
+    void* receiver_{};
+    const void* provider_{};
+    NativeGuiTextFailureOrigin::Site caller_edge_{};
+    NativeGuiTextFailureCause escaped_cause_;
+    void arm(NativeGuiTextFailureOrigin&, const NativeGuiTextFailureOriginRuntime&,
+        volatile std::uint32_t*, void*, const void*, NativeGuiTextFailureOrigin::Site,
+        NativeGuiTextFailureConstructorCall&) noexcept;
+    void normal_disarm(NativeGuiTextFailureConstructorCall&) noexcept;
+    bool consume_proven_primary(const NativeGuiTextFailureOrigin&,
+        const NativeGuiTextFailureOriginRuntime&, const NativeGuiTextFailureConstructorCall&,
+        volatile std::uint32_t* actual_home);
+};
+
+// Caller-retained noncopyable envelope, NEVER an escaping automatic local.
+// Genuine raw93 privately binds its actual record once at entry. This is
+// callee-entry binding, not proof that the caller preselected that record.
+class NativeGuiTextFailureConstructorCall final {
+public:
+    NativeGuiTextFailureConstructorCall() noexcept = default;
+    NativeGuiTextFailureConstructorCall(const NativeGuiTextFailureConstructorCall&) = delete;
+    NativeGuiTextFailureConstructorCall& operator=(const NativeGuiTextFailureConstructorCall&) = delete;
+private:
+    friend class NativeGuiTextFailureConstructorSlotArm;
+    friend void write_native_gui_text_glyph_quad_storage_00ab98f0(void*,
+        volatile std::uint32_t (&)[10], NativeGuiTextGlyphQuadStorageContext&,
+        NativeGuiTextGlyphQuadStorageAcquired&);
+    friend void* construct_native_gui_text_default_storage_00ab9650(void*,
+        NativeGuiTextRawModelDefaultStorageFrame&, NativeGuiTextRawModelDefaultStorageContext&,
+        NativeGuiTextRawModelDefaultStorageAcquired&, NativeGuiTextFailureConstructorCall&);
+    enum class Phase : std::uint8_t { fresh, prepared, calling, failed, returned, disarmed };
+    Phase phase_{Phase::fresh};
+    bool valid_{true}, bound_{}, native_body_returned_{}, failure_committed_{};
+    NativeGuiTextFailureOrigin* invocation_{};
+    NativeGuiTextFailureConstructorSlotArm* slot_{};
+    const NativeGuiTextFailureOriginRuntime* runtime_{};
+    volatile std::uint32_t* home_{};
+    void* receiver_{};
+    const void* provider_{};
+    const void* callee_record_{};
+    NativeGuiTextFailureOrigin* callee_origin_{};
+    std::uint32_t callee_entry_{};
+    NativeGuiTextFailureOrigin::Site caller_edge_{};
+    NativeGuiTextFailureCause escaped_cause_;
+    bool bind_once(void*, NativeGuiTextFailureOrigin&, const void*) noexcept;
+    void body_returned(const NativeGuiTextFailureOrigin&, const void*) noexcept;
+    void failed();
+    template<class F> void* invoke(F&& f) {
+        if (phase_ != Phase::prepared) valid_ = false;
+        else phase_ = Phase::calling; // never reset a failed/reentered envelope
+        const auto previous = invocation_->enter({caller_edge_, provider_,
+            NativeGuiTextFailureOrigin::Stage::ordinary});
+        try {
+            void* const result = std::forward<F>(f)();
+            invocation_->leave(previous);
+            phase_ = Phase::returned; // Source provider return ONLY; no Native credit
+            return result;
+        } catch (...) { failed(); throw; }
+    }
 };
 } // namespace bsp

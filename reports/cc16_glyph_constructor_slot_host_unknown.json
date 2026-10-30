@@ -1,0 +1,1436 @@
+{
+  "schema_version": 1,
+  "packet": "codex-glyph-constructor-slot-host-unknown",
+  "classification": "bounded Source HOST/UNKNOWN instrumentation; ALL positive Native permits withheld",
+  "utc": "2026-10-30T22:19:18.805404+00:00",
+  "source_base": "dc7ebb51175452ad580eace50b1ce19eb7ea8e11",
+  "integration_baseline_reference": "d5d29e7db967cf9bfdd682af3d6d8d5c036fa064",
+  "root_exact_host_seed": "d06ed4da53365bb65e86d240dc1f2c3ea7f56e7f",
+  "source_scope": [
+    "include/bsp/native_gui_text_failure_origin.hpp",
+    "src/native_gui_text_failure_origin.cpp",
+    "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+    "src/native_gui_text_glyph_quad_storage.cpp",
+    "include/bsp/native_gui_text_default_storage.hpp",
+    "include/bsp/native_gui_text_storage_construct.hpp",
+    "src/native_gui_text_default_storage.cpp",
+    "src/native_gui_text_storage_construct.cpp"
+  ],
+  "source_pins": [
+    {
+      "path": "include/bsp/native_gui_text_failure_origin.hpp",
+      "format": "Git-compatible UTF-8 LF bytes; no BOM/no normalization",
+      "before_git_sha1": "486e60f0d718fd2db3952ccf1834b4606a4624eb",
+      "after_git_sha1": "1863acded67119b6e16ab9e26b72b06475742067",
+      "bytes": 12422,
+      "sha256": "05244d307d0cbdb80b83f59c1b188acbed3f9422204e22c10ec56a36b6934704",
+      "before_bytes": 7602,
+      "before_sha256": "6a60e18b87eb88f502d664423186c555f7545736f6fd4eac40e80d8249d0aa4d"
+    },
+    {
+      "path": "src/native_gui_text_failure_origin.cpp",
+      "format": "Git-compatible UTF-8 LF bytes; no BOM/no normalization",
+      "before_git_sha1": "eb0bdc789f0b75ddc829dcae5ad4d16017898278",
+      "after_git_sha1": "6226f079539631f02df8b9665e1ec4a213d91455",
+      "bytes": 11627,
+      "sha256": "aacd70ec3d609de1b8a544884fd4d844d51b684a96194a0f95a62b9c843fc8c1",
+      "before_bytes": 5461,
+      "before_sha256": "ef98173370f4bcd4e47855ddcbb9b3ffd4457368da0ab8e4f35130b14bfc006b"
+    },
+    {
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "format": "Git-compatible UTF-8 LF bytes; no BOM/no normalization",
+      "before_git_sha1": "acec6947cf7777181a97335456dc5142a1149cae",
+      "after_git_sha1": "a18bd35fc56ce26196c90a783cd97b1b6be54c13",
+      "bytes": 9462,
+      "sha256": "da98a4e498a5394c6dc3c36949a9c7bb1022b2702e85783c2d3fa53413cd2e23",
+      "before_bytes": 8477,
+      "before_sha256": "6a8e8ff45a4415fbdbb81992726f2e9e4fc17c0819fde21c279ac4c3d354b245"
+    },
+    {
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "format": "Git-compatible UTF-8 LF bytes; no BOM/no normalization",
+      "before_git_sha1": "5505123a0d02398d4d4c16873ef87f4f856fb790",
+      "after_git_sha1": "bbb8e2db8399ccd3dda8efab6db47900caba661e",
+      "bytes": 21923,
+      "sha256": "1dfd76f3a69ff451faf54ffac707fc5c746b137ab91956f1c046f5494bbd3a06",
+      "before_bytes": 19830,
+      "before_sha256": "f05676b34f28b95194810e4f325cbec759b0ece70b9cb41b38b64efc89d7a96e"
+    },
+    {
+      "path": "include/bsp/native_gui_text_default_storage.hpp",
+      "format": "Git-compatible UTF-8 LF bytes; no BOM/no normalization",
+      "before_git_sha1": "51d97889adc254306247f4ecbdab4361b41533bf",
+      "after_git_sha1": "2eb5db69eff0b68c093a5006e13eb2d490e821b7",
+      "bytes": 6352,
+      "sha256": "7a23774d66bb90e59712407d58fd3356640da3f77f1c087bf766b77d3748141a",
+      "before_bytes": 5404,
+      "before_sha256": "411848bea4eb0f79635bfca06493782d40c0b27cb92f713728d52b48648e119f"
+    },
+    {
+      "path": "include/bsp/native_gui_text_storage_construct.hpp",
+      "format": "Git-compatible UTF-8 LF bytes; no BOM/no normalization",
+      "before_git_sha1": "4a426546480d657390ff04d2adbc1f8fe738ec3f",
+      "after_git_sha1": "736c02913b09a1de5f606362747305a2a4a36318",
+      "bytes": 9641,
+      "sha256": "681a44709442353f716f2ead0377804df61cbc659ec7fc7dcc3a7a05c56ec5b2",
+      "before_bytes": 8628,
+      "before_sha256": "6f142a031781e0c9e5a703abed07967790b4ff8669494330bfffb1bdea9b3876"
+    },
+    {
+      "path": "src/native_gui_text_default_storage.cpp",
+      "format": "Git-compatible UTF-8 LF bytes; no BOM/no normalization",
+      "before_git_sha1": "766918f8f8e48160ec322045b363b2d9361ae7e4",
+      "after_git_sha1": "47f32c0fb30dc7ebfaeb83ce2480ec88f59d3039",
+      "bytes": 26698,
+      "sha256": "6ed36cf3cad97ef089be15302827995d3bc6f303f5df3a3eb122b970dde67d09",
+      "before_bytes": 22565,
+      "before_sha256": "757647269fba2238edce3723fb7aa870cc4d75c71610d621177a0c581d5a85cf"
+    },
+    {
+      "path": "src/native_gui_text_storage_construct.cpp",
+      "format": "Git-compatible UTF-8 LF bytes; no BOM/no normalization",
+      "before_git_sha1": "702cae62590b20313d953ceb885df8d4a5aed076",
+      "after_git_sha1": "88fa09e70019fa61d59652c5434666b8db4931b2",
+      "bytes": 37007,
+      "sha256": "a4c2c5e06dfa78d0dba7769900cb7a8302f7567c70f77707262246088326db60",
+      "before_bytes": 32680,
+      "before_sha256": "d3ae2db948ce9109fea392b6766a6f31b397fcf773256141098c6c49a663d156"
+    }
+  ],
+  "immutable_inputs": [
+    {
+      "commit": "698cb08ade0b41d9b6cd89aa740999e619bc329b",
+      "path": "docs/CC16_GLYPH_CONSTRUCTOR_FAILURE_ORIGIN.md",
+      "format": "immutable Git blob bytes; UTF-8 LF",
+      "bytes": 9991,
+      "sha256": "f2b9231a5231ee8ef6306426e062a52c0abe5aa07729651ced69b675c8ca24a1"
+    },
+    {
+      "commit": "698cb08ade0b41d9b6cd89aa740999e619bc329b",
+      "path": "reports/cc16_glyph_constructor_failure_origin.json",
+      "format": "immutable Git blob bytes; UTF-8 LF",
+      "bytes": 18897,
+      "sha256": "781f985c6487e508e21c22aad6fba8310ba710dda7b1e8dc28d3a98c1aba0eab"
+    },
+    {
+      "commit": "42143ae2e0e854d8d87d9ae7e0065d7bfba8a0c9",
+      "path": "docs/CC16_GLYPH_CONSTRUCTOR_SLOT_ORIGIN_AUDIT.md",
+      "format": "immutable Git blob bytes; UTF-8 LF",
+      "bytes": 9590,
+      "sha256": "b87d0b6867b7ce84220b24c3e6f127b0997c31296a457cb99860c56f93d6c0db"
+    },
+    {
+      "commit": "42143ae2e0e854d8d87d9ae7e0065d7bfba8a0c9",
+      "path": "reports/cc16_glyph_constructor_slot_origin_audit.json",
+      "format": "immutable Git blob bytes; UTF-8 LF",
+      "bytes": 24489,
+      "sha256": "22c17ba09caf7b2191112d5904d39fb9db3053449993662c1ffc56940c5d3dfe"
+    },
+    {
+      "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+      "path": "docs/CC16_NATIVE_GUI_TEXT_FAILURE_ORIGIN_HOST_SLICE.md",
+      "format": "immutable Git blob bytes; UTF-8 LF",
+      "bytes": 10377,
+      "sha256": "ea450188bbc964dcd582ea4b735a6f082f6b7cd59382bb5c965116099a471ea0"
+    },
+    {
+      "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+      "path": "reports/cc16_native_gui_text_failure_origin_host_slice.json",
+      "format": "immutable Git blob bytes; UTF-8 LF",
+      "bytes": 51611,
+      "sha256": "e026a4078eb566cfd7e8ba6c9c65d3d9cb5e060e4168ce275aca5e48b71cb9fa"
+    },
+    {
+      "commit": "dc7ebb51175452ad580eace50b1ce19eb7ea8e11",
+      "path": "docs/CC16_NATIVE_GUI_TEXT_HOST_INVERSE_ERRATUM.md",
+      "format": "immutable Git blob bytes; UTF-8 LF",
+      "bytes": 2589,
+      "sha256": "db7ca7002cd6c162cb3696960103cd02ad78c793131c63f9e01fa32e1f03e246"
+    },
+    {
+      "commit": "dc7ebb51175452ad580eace50b1ce19eb7ea8e11",
+      "path": "reports/cc16_native_gui_text_host_inverse_erratum.json",
+      "format": "immutable Git blob bytes; UTF-8 LF",
+      "bytes": 21130,
+      "sha256": "e145e24a521d3517d29ff494d727b9619088d1769c1f22c96b08645b415d1c2e"
+    },
+    {
+      "commit": "b1feb25dc5e7c84366e1ff6c9004dd7b710de02a",
+      "path": "docs/CC16_NATIVE_GUI_TEXT_FAILURE_ORIGIN_HOST_SLICE_INDEPENDENT_REVIEW.md",
+      "format": "immutable Git blob bytes; UTF-8 LF",
+      "bytes": 7978,
+      "sha256": "474c2ed5f8e55a8dc8c2c9db3276ecf48a5739a9daa4d9374157f546dc6b5589"
+    },
+    {
+      "commit": "b1feb25dc5e7c84366e1ff6c9004dd7b710de02a",
+      "path": "reports/cc16_native_gui_text_failure_origin_host_slice_independent_review.json",
+      "format": "immutable Git blob bytes; UTF-8 LF",
+      "bytes": 32578,
+      "sha256": "7e35ff6bfd6e7c1e52c97a5827e2df867164458ac52cfec830871ac3f27187eb"
+    }
+  ],
+  "protocol": {
+    "constructor_slot_is_distinct_from_header_arm": true,
+    "retained_envelope_location": "private appended GlyphAcquired metadata",
+    "envelope_noncopyable": true,
+    "bind_once_authority": "ONLY friend genuine new raw93 entry; prior to any Source preflight/Native body",
+    "binding_is_pre_call_record_proof": false,
+    "binding_is_authenticated_callee_entry_only": true,
+    "record_replacement_or_promotion": false,
+    "runtime_borrow": "SAME stable qualified own MSVC14.51 Source runtime, captured before callbacks; constructor is a precondition, not runtime verification",
+    "identity": "actual current SDK exception OBJECT + throw descriptor + SAME runtime; never exception_ptr/record address/type/message",
+    "slot_identity": "owning Glyph Origin + SAME runtime + actual volatile home7 ADDRESS + captured receiver + concrete Calls supplier + static AB9D4F Source edge + bound raw93 record/callee + ordinary current cause",
+    "cleanup_operand": "CURRENT homes[7], read only after private one-shot permit; no receiver/value equality or allocation substitution",
+    "arm_epoch": "after AB9D3D allocation home and AB9D43 state0; before optional AB9D4F constructor",
+    "normal_disarm_epoch": "AB9D68, including nullable allocation skip; BEFORE AB9D6C home-child store and AB9D70 append ADDRESS",
+    "body_return_frontier": "raw93 invokes private body_returned immediately following actual in-flight constructor85 normal return and before completed()/later bind; private Origin edge restoration is pure intervening metadata",
+    "body_return_frontier_credit": "revokes constructor-failure eligibility ONLY; no Source return/completion, ownership, reference, raw122 birth, Native origin or normal-return credit",
+    "mixed_provider_origin": "UNKNOWN unless actual private child HOST receipt; no Native issuer exists",
+    "private_denial": "fresh unset differs from committed sticky HOST/UNKNOWN; reentry/mismatch/replacement/secondary cannot promote",
+    "nested_cleanup_guard": "new raw85 and raw93 routes retain exact current cause and bypass OWN native cleanup/unwind before legacy public flag heuristics",
+    "secondary": "guarded state0 return action would be recorded cleanup_secondary after consume; primary retained, no inherited permit/replay; still unreachable here",
+    "legacy_paths": "all old signatures retained; null Glyph runtime/fresh old raw APIs preserve historical Source cleanup/noexcept/termination qualifications, not Native/FH3 origin proof",
+    "later_Glyph_AB9D93": "unchanged separate postconstructor phase; no POST5arg substitution in raw93",
+    "new_public_native_flag": false,
+    "new_native_issuer": false,
+    "new_native_origin_producer": false,
+    "new_termination_retry_disposal_cancel_rollback_or_forced_admission_policy": false,
+    "all_positive_native_permits_withheld": true
+  },
+  "known_host_scopes": [
+    "raw93 preflight before base; raw_base_admission in completed and historical before_base; actual completed Model graph checks",
+    "ctor85 preflight DEFAULT/provenance/disjoint graph admission before native effects",
+    "material readiness and actual creator registration, after real factory returns",
+    "actual Model reference.emplace inside bind_model AFTER actual188 publication and state disarm",
+    "shadow_ready and raw DEFAULT main-sections validation; actual association validation before geometry operation",
+    "section/mesh null-access and release-reference metadata guards; mixed surrounding operations UNKNOWN"
+  ],
+  "source_static_checks": {
+    "all_four_header_source_pairs_full_inverse_exact": true,
+    "asm": [
+      {
+        "path": "src/native_gui_text_failure_origin.cpp",
+        "blocks": 0,
+        "x87_instructions": 0,
+        "byte_identical": true,
+        "ordered_block_sha256": []
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "blocks": 22,
+        "x87_instructions": 78,
+        "byte_identical": true,
+        "ordered_block_sha256": [
+          "73661f71c743cc3fb79313192f7f92fff69a3108fd9f3c87ee2868f11e4621bc",
+          "5408819a1be75a39eb20fda0077db6eaf19317ae7cee9c6801a6e02fbabb6ce0",
+          "403d37335f94cb7f2eb0cc07d699f75501a793dc9249c734eb504210b67a9c05",
+          "4cfca19d58417feaa9619815e356ab03d50f9ef92030f5dd6cbb8dc3dcf4423d",
+          "73661f71c743cc3fb79313192f7f92fff69a3108fd9f3c87ee2868f11e4621bc",
+          "5408819a1be75a39eb20fda0077db6eaf19317ae7cee9c6801a6e02fbabb6ce0",
+          "e2103adfae893eadfa492aeb23e46505f9862ba955ee724a2845562982535b33",
+          "1c57b99fd173dfa20b8ec347aa19e0e64b6098e88efd3431fca8d40e18a17b81",
+          "73661f71c743cc3fb79313192f7f92fff69a3108fd9f3c87ee2868f11e4621bc",
+          "5408819a1be75a39eb20fda0077db6eaf19317ae7cee9c6801a6e02fbabb6ce0",
+          "16cd8a59c773d2321e28ee6aac64e967503ff9b685ebeebe2ab576282535726d",
+          "4cfca19d58417feaa9619815e356ab03d50f9ef92030f5dd6cbb8dc3dcf4423d",
+          "73661f71c743cc3fb79313192f7f92fff69a3108fd9f3c87ee2868f11e4621bc",
+          "5408819a1be75a39eb20fda0077db6eaf19317ae7cee9c6801a6e02fbabb6ce0",
+          "e2103adfae893eadfa492aeb23e46505f9862ba955ee724a2845562982535b33",
+          "27995ae30f627d47c1cd5a065d0f53127e545275171fd002f44340de754f5730",
+          "714fdcfc5f68cedd436b0e9fdf83d396dc0d4e715db23c176357d2969610b00d",
+          "9ce18789320aa3bf9909b48cc1b08a1895119219cd1daa4f8636537be51032c0",
+          "35fa85271991a7200c040d5b96b2be6810b948e10b5a4e278dc53ecae2cb4f17",
+          "dbb48da7ca320520556f1179c85980425ed9ae72be39633e0dd06167841a0a59",
+          "c70abbdfd02e8a8bfd0a5b2fd154f7ce70feab152774807bed80664bb75da1f1",
+          "30e0c6bbdb860f8a0a66220d67a28ebc627012f5ba6856178ed9b3789daec1b6"
+        ]
+      },
+      {
+        "path": "src/native_gui_text_default_storage.cpp",
+        "blocks": 1,
+        "x87_instructions": 0,
+        "byte_identical": true,
+        "ordered_block_sha256": [
+          "d516716ccb3e17efd252df44a06cba483d0b06f6360e0ea40c7087ffa61f1a70"
+        ]
+      },
+      {
+        "path": "src/native_gui_text_storage_construct.cpp",
+        "blocks": 2,
+        "x87_instructions": 6,
+        "byte_identical": true,
+        "ordered_block_sha256": [
+          "442b366fde3b7f7b4b75a2d1c6678c51e424af3b48140ea805d2ddc4a84212d9",
+          "442b366fde3b7f7b4b75a2d1c6678c51e424af3b48140ea805d2ddc4a84212d9"
+        ]
+      }
+    ],
+    "Glyph_all_22_asm_blocks_78_x87_instructions_byte_identical": true,
+    "old_origin_reader_and_header_arm_CPP_prefix_byte_identical": true,
+    "home_schedule_current_operand_disarm_order_exact": true,
+    "actual188_publication_state_disarm_before_reference_bind_preserved": true,
+    "FC_remains_one": true,
+    "all_old_bodies_outside_listed_seams_restore_exactly": true,
+    "sizeof_disjoint_checks_include_appended_metadata": "existing source checks use extended caller-retained record extents; no compiled layout/Original ABI proof",
+    "Cxx_build_or_behavior_result": null
+  },
+  "mechanical_inverse": {
+    "format": "Git blob bytes, UTF-8 LF, no newline normalization",
+    "offset_unit": "decoded UTF-8 Unicode code point offsets, with every intermediate state SHA256 and final exact UTF-8 blob comparison",
+    "files": [
+      {
+        "path": "include/bsp/native_gui_text_failure_origin.hpp",
+        "before_bytes": 7602,
+        "before_sha256": "6a60e18b87eb88f502d664423186c555f7545736f6fd4eac40e80d8249d0aa4d",
+        "after_bytes": 12422,
+        "after_sha256": "05244d307d0cbdb80b83f59c1b188acbed3f9422204e22c10ec56a36b6934704",
+        "seams": [
+          {
+            "before": "class NativeGuiTextFailureOriginRuntime;\nclass NativeGuiTextFailureHeaderArm;\n",
+            "after": "class NativeGuiTextFailureOriginRuntime;\nclass NativeGuiTextFailureHeaderArm;\nclass NativeGuiTextFailureConstructorSlotArm;\nclass NativeGuiTextFailureConstructorCall;\nstruct NativeGuiTextGlyphQuadStorageContext;\nstruct NativeGuiTextGlyphQuadStorageAcquired;\nstruct NativeGuiTextRawModelDefaultStorageFrame;\nstruct NativeGuiTextRawModelDefaultStorageContext;\nstruct NativeGuiTextRawModelDefaultStorageAcquired;\n",
+            "count": 1,
+            "after_character_offsets": [
+              283
+            ],
+            "state_before_sha256": "6a60e18b87eb88f502d664423186c555f7545736f6fd4eac40e80d8249d0aa4d",
+            "state_after_sha256": "fbb2592e4cc0a094532eebc86ef206d78653a99578e904c008b73c41034ff57b"
+          },
+          {
+            "before": "    friend class NativeGuiTextFailureHeaderArm;\n",
+            "after": "    friend class NativeGuiTextFailureHeaderArm;\n    friend class NativeGuiTextFailureConstructorSlotArm;\n    friend class NativeGuiTextFailureConstructorCall;\n",
+            "count": 2,
+            "after_character_offsets": [
+              1122,
+              5905
+            ],
+            "state_before_sha256": "fbb2592e4cc0a094532eebc86ef206d78653a99578e904c008b73c41034ff57b",
+            "state_after_sha256": "6ce00df5e92e52fdc0a5680ca0ec8678c1b56831c17c873a696d1cc9e623ae2d"
+          },
+          {
+            "before": "} // namespace bsp\n",
+            "after": "// DISTINCT from the eight-byte HeaderArm. This retained metadata binds the\n// address of Glyph home7; it never captures a replacement cleanup operand.\n// All operations are private to the actual Glyph entry. There is no issuer.\nclass NativeGuiTextFailureConstructorSlotArm final {\npublic:\n    NativeGuiTextFailureConstructorSlotArm() noexcept = default;\n    NativeGuiTextFailureConstructorSlotArm(const NativeGuiTextFailureConstructorSlotArm&) = delete;\n    NativeGuiTextFailureConstructorSlotArm& operator=(const NativeGuiTextFailureConstructorSlotArm&) = delete;\nprivate:\n    friend class NativeGuiTextFailureConstructorCall;\n    friend void write_native_gui_text_glyph_quad_storage_00ab98f0(void*,\n        volatile std::uint32_t (&)[10], NativeGuiTextGlyphQuadStorageContext&,\n        NativeGuiTextGlyphQuadStorageAcquired&);\n    enum class Phase : std::uint8_t { fresh, armed, disarmed, consumed, denied };\n    Phase phase_{Phase::fresh};\n    const NativeGuiTextFailureOrigin* invocation_{};\n    const NativeGuiTextFailureOriginRuntime* runtime_{};\n    volatile std::uint32_t* home_{};\n    void* receiver_{};\n    const void* provider_{};\n    NativeGuiTextFailureOrigin::Site caller_edge_{};\n    NativeGuiTextFailureCause escaped_cause_;\n    void arm(NativeGuiTextFailureOrigin&, const NativeGuiTextFailureOriginRuntime&,\n        volatile std::uint32_t*, void*, const void*, NativeGuiTextFailureOrigin::Site,\n        NativeGuiTextFailureConstructorCall&) noexcept;\n    void normal_disarm(NativeGuiTextFailureConstructorCall&) noexcept;\n    bool consume_proven_primary(const NativeGuiTextFailureOrigin&,\n        const NativeGuiTextFailureOriginRuntime&, const NativeGuiTextFailureConstructorCall&,\n        volatile std::uint32_t* actual_home);\n};\n\n// Caller-retained noncopyable envelope, NEVER an escaping automatic local.\n// Genuine raw93 privately binds its actual record once at entry. This is\n// callee-entry binding, not proof that the caller preselected that record.\nclass NativeGuiTextFailureConstructorCall final {\npublic:\n    NativeGuiTextFailureConstructorCall() noexcept = default;\n    NativeGuiTextFailureConstructorCall(const NativeGuiTextFailureConstructorCall&) = delete;\n    NativeGuiTextFailureConstructorCall& operator=(const NativeGuiTextFailureConstructorCall&) = delete;\nprivate:\n    friend class NativeGuiTextFailureConstructorSlotArm;\n    friend void write_native_gui_text_glyph_quad_storage_00ab98f0(void*,\n        volatile std::uint32_t (&)[10], NativeGuiTextGlyphQuadStorageContext&,\n        NativeGuiTextGlyphQuadStorageAcquired&);\n    friend void* construct_native_gui_text_default_storage_00ab9650(void*,\n        NativeGuiTextRawModelDefaultStorageFrame&, NativeGuiTextRawModelDefaultStorageContext&,\n        NativeGuiTextRawModelDefaultStorageAcquired&, NativeGuiTextFailureConstructorCall&);\n    enum class Phase : std::uint8_t { fresh, prepared, calling, failed, returned, disarmed };\n    Phase phase_{Phase::fresh};\n    bool valid_{true}, bound_{}, native_body_returned_{};\n    NativeGuiTextFailureOrigin* invocation_{};\n    NativeGuiTextFailureConstructorSlotArm* slot_{};\n    const NativeGuiTextFailureOriginRuntime* runtime_{};\n    volatile std::uint32_t* home_{};\n    void* receiver_{};\n    const void* provider_{};\n    const void* callee_record_{};\n    NativeGuiTextFailureOrigin* callee_origin_{};\n    std::uint32_t callee_entry_{};\n    NativeGuiTextFailureOrigin::Site caller_edge_{};\n    NativeGuiTextFailureCause escaped_cause_;\n    bool bind_once(void*, NativeGuiTextFailureOrigin&, const void*) noexcept;\n    void body_returned(const NativeGuiTextFailureOrigin&, const void*) noexcept;\n    void failed();\n    template<class F> void* invoke(F&& f) {\n        if (phase_ != Phase::prepared) valid_ = false;\n        phase_ = Phase::calling;\n        const auto previous = invocation_->enter({caller_edge_, provider_,\n            NativeGuiTextFailureOrigin::Stage::ordinary});\n        try {\n            void* const result = std::forward<F>(f)();\n            invocation_->leave(previous);\n            phase_ = Phase::returned; // Source provider return ONLY; no Native credit\n            return result;\n        } catch (...) { failed(); throw; }\n    }\n};\n} // namespace bsp\n",
+            "count": 1,
+            "after_character_offsets": [
+              8137
+            ],
+            "state_before_sha256": "6ce00df5e92e52fdc0a5680ca0ec8678c1b56831c17c873a696d1cc9e623ae2d",
+            "state_after_sha256": "fd8b1cd2238ff97eb8a1d746dec9d37415420cb8fb4699919784fdcf708d4942"
+          },
+          {
+            "before": "    bool valid_{true}, bound_{}, native_body_returned_{};",
+            "after": "    bool valid_{true}, bound_{}, native_body_returned_{}, failure_committed_{};",
+            "count": 1,
+            "after_character_offsets": [
+              11090
+            ],
+            "state_before_sha256": "fd8b1cd2238ff97eb8a1d746dec9d37415420cb8fb4699919784fdcf708d4942",
+            "state_after_sha256": "0ffc0e26242cf92d0dc38e1bed0deaa72f59813752eb03108c08d7c7cc9d3be7"
+          },
+          {
+            "before": "        if (phase_ != Phase::prepared) valid_ = false;\n        phase_ = Phase::calling;",
+            "after": "        if (phase_ != Phase::prepared) valid_ = false;\n        else phase_ = Phase::calling; // never reset a failed/reentered envelope",
+            "count": 1,
+            "after_character_offsets": [
+              11856
+            ],
+            "state_before_sha256": "0ffc0e26242cf92d0dc38e1bed0deaa72f59813752eb03108c08d7c7cc9d3be7",
+            "state_after_sha256": "05244d307d0cbdb80b83f59c1b188acbed3f9422204e22c10ec56a36b6934704"
+          }
+        ]
+      },
+      {
+        "path": "src/native_gui_text_failure_origin.cpp",
+        "before_bytes": 5461,
+        "before_sha256": "ef98173370f4bcd4e47855ddcbb9b3ffd4457368da0ab8e4f35130b14bfc006b",
+        "after_bytes": 11627,
+        "after_sha256": "aacd70ec3d609de1b8a544884fd4d844d51b684a96194a0f95a62b9c843fc8c1",
+        "seams": [
+          {
+            "before": "} // namespace bsp\n",
+            "after": "void NativeGuiTextFailureConstructorSlotArm::arm(NativeGuiTextFailureOrigin& invocation,\n    const NativeGuiTextFailureOriginRuntime& runtime, volatile std::uint32_t* home,\n    void* receiver, const void* provider, NativeGuiTextFailureOrigin::Site edge,\n    NativeGuiTextFailureConstructorCall& call) noexcept {\n    if (phase_ != Phase::fresh || call.phase_ != NativeGuiTextFailureConstructorCall::Phase::fresh) {\n        phase_ = Phase::denied; call.valid_ = false; return;\n    }\n    invocation_ = &invocation; runtime_ = &runtime; home_ = home;\n    receiver_ = receiver; provider_ = provider; caller_edge_ = edge; phase_ = Phase::armed;\n    call.invocation_ = &invocation; call.slot_ = this; call.runtime_ = &runtime;\n    call.home_ = home; call.receiver_ = receiver; call.provider_ = provider;\n    call.caller_edge_ = edge; call.phase_ = NativeGuiTextFailureConstructorCall::Phase::prepared;\n}\nvoid NativeGuiTextFailureConstructorSlotArm::normal_disarm(NativeGuiTextFailureConstructorCall& call) noexcept {\n    if (phase_ == Phase::armed && call.slot_ == this) {\n        phase_ = Phase::disarmed; call.phase_ = NativeGuiTextFailureConstructorCall::Phase::disarmed;\n    } else { phase_ = Phase::denied; call.valid_ = false; }\n}\nbool NativeGuiTextFailureConstructorCall::bind_once(void* receiver,\n    NativeGuiTextFailureOrigin& origin, const void* record) noexcept {\n    if (!valid_ || phase_ != Phase::calling || bound_ || !record || receiver != receiver_ ||\n        !invocation_ || !runtime_ || !slot_ || !home_ || callee_record_ ||\n        invocation_->runtime_ != runtime_ || invocation_->active_.supplier != provider_ ||\n        invocation_->active_.site.native != caller_edge_.native ||\n        invocation_->active_.site.source != caller_edge_.source ||\n        invocation_->active_.stage != NativeGuiTextFailureOrigin::Stage::ordinary) {\n        valid_ = false; return false; // no reset, replacement or admission policy\n    }\n    bound_ = true; callee_record_ = record; callee_origin_ = &origin; callee_entry_ = 0x00ab9650u;\n    invocation_->enter({caller_edge_, record, NativeGuiTextFailureOrigin::Stage::ordinary});\n    return true;\n}\nvoid NativeGuiTextFailureConstructorCall::body_returned(\n    const NativeGuiTextFailureOrigin& origin, const void* record) noexcept {\n    if (!valid_ || !bound_ || phase_ != Phase::calling || native_body_returned_ ||\n        callee_origin_ != &origin || callee_record_ != record || origin.runtime_ != runtime_ ||\n        origin.supplier_ != record || origin.entry_ != 0x00ab9650u) valid_ = false;\n    native_body_returned_ = true; // PRIVATE negative frontier; never completes an Origin\n}\nvoid NativeGuiTextFailureConstructorCall::failed() {\n    escaped_cause_ = runtime_->read_current_catch(); // before any diagnostic exception_ptr\n    if (bound_ && callee_origin_)\n        invocation_->adopt(escaped_cause_, *callee_origin_, callee_record_, 0x00ab9650u);\n    else invocation_->commit(NativeGuiTextFailureOrigin::Verdict::unclassified, escaped_cause_);\n    phase_ = Phase::failed;\n}\nbool NativeGuiTextFailureConstructorSlotArm::consume_proven_primary(\n    const NativeGuiTextFailureOrigin& invocation, const NativeGuiTextFailureOriginRuntime& runtime,\n    const NativeGuiTextFailureConstructorCall& call, volatile std::uint32_t* actual_home) {\n    escaped_cause_ = runtime.read_current_catch();\n    const bool allowed = phase_ == Phase::armed && invocation_ == &invocation && runtime_ == &runtime &&\n        home_ && home_ == actual_home && call.home_ == home_ && call.slot_ == this &&\n        call.invocation_ == &invocation && call.runtime_ == runtime_ && call.receiver_ == receiver_ &&\n        call.provider_ == provider_ && call.valid_ && call.bound_ && !call.native_body_returned_ &&\n        call.phase_ == NativeGuiTextFailureConstructorCall::Phase::failed &&\n        call.callee_record_ && call.callee_origin_ && call.callee_entry_ == 0x00ab9650u &&\n        caller_edge_.native == 0x00ab9d4fu && call.caller_edge_.native == caller_edge_.native &&\n        call.caller_edge_.source == caller_edge_.source && invocation.entry_ == 0x00ab98f0u &&\n        invocation.valid_ && invocation.runtime_ == runtime_ &&\n        invocation.phase_ == NativeGuiTextFailureOrigin::Phase::failed &&\n        invocation.verdict_ == NativeGuiTextFailureOrigin::Verdict::proven_native &&\n        invocation.native_issuer_ && !invocation.secondary_committed_ &&\n        invocation.cause_.same(escaped_cause_) && call.escaped_cause_.same(escaped_cause_) &&\n        invocation.forwarded_child_ == call.callee_origin_ &&\n        invocation.escaped_.supplier == call.callee_record_ &&\n        invocation.escaped_.site.native == caller_edge_.native &&\n        invocation.escaped_.site.source == caller_edge_.source &&\n        invocation.escaped_.parent_supplier == provider_ &&\n        invocation.escaped_.parent_site.native == caller_edge_.native &&\n        invocation.escaped_.parent_site.source == caller_edge_.source &&\n        invocation.escaped_.stage == NativeGuiTextFailureOrigin::Stage::ordinary &&\n        invocation.forwarded_child_edge_.stage == NativeGuiTextFailureOrigin::Stage::ordinary;\n    phase_ = allowed ? Phase::consumed : Phase::denied;\n    return allowed; // withheld: Origin has NO Native issuer, including this route\n}\n} // namespace bsp\n",
+            "count": 1,
+            "after_character_offsets": [
+              5442
+            ],
+            "state_before_sha256": "ef98173370f4bcd4e47855ddcbb9b3ffd4457368da0ab8e4f35130b14bfc006b",
+            "state_after_sha256": "40f097afb62763c8a3e25004f2d11f56d2395a12b46cab64363456909fb09eff"
+          },
+          {
+            "before": "    escaped_cause_ = runtime_->read_current_catch(); // before any diagnostic exception_ptr\n    if (bound_",
+            "after": "    const auto current = runtime_->read_current_catch(); // before any diagnostic exception_ptr\n    if (!failure_committed_) { escaped_cause_ = current; failure_committed_ = true; }\n    if (bound_",
+            "count": 1,
+            "after_character_offsets": [
+              8131
+            ],
+            "state_before_sha256": "40f097afb62763c8a3e25004f2d11f56d2395a12b46cab64363456909fb09eff",
+            "state_after_sha256": "7834166716b260a1e7a881352c6cec7aa99b4299cfba0a6b67b393d665d97844"
+          },
+          {
+            "before": "        call.callee_record_ && call.callee_origin_ && call.callee_entry_ == 0x00ab9650u &&",
+            "after": "        call.callee_record_ && call.callee_origin_ && call.callee_entry_ == 0x00ab9650u &&\n        call.failure_committed_ && call.callee_origin_->valid_ &&\n        call.callee_origin_->runtime_ == runtime_ && call.callee_origin_->supplier_ == call.callee_record_ &&\n        call.callee_origin_->entry_ == 0x00ab9650u &&\n        call.callee_origin_->phase_ == NativeGuiTextFailureOrigin::Phase::failed &&\n        !call.callee_origin_->secondary_committed_ && call.callee_origin_->cause_.same(escaped_cause_) &&",
+            "count": 1,
+            "after_character_offsets": [
+              9347
+            ],
+            "state_before_sha256": "7834166716b260a1e7a881352c6cec7aa99b4299cfba0a6b67b393d665d97844",
+            "state_after_sha256": "361cd058449a5cf2978ae600ccaddc244b47ae8458c81c38ca9748890a1ab27f"
+          },
+          {
+            "before": "        !invocation_ || !runtime_ || !slot_ || !home_ || callee_record_ ||",
+            "after": "        !invocation_ || !runtime_ || !slot_ || !home_ || callee_record_ ||\n        slot_->phase_ != NativeGuiTextFailureConstructorSlotArm::Phase::armed ||\n        slot_->invocation_ != invocation_ || slot_->runtime_ != runtime_ || slot_->home_ != home_ ||\n        slot_->receiver_ != receiver_ || slot_->provider_ != provider_ ||",
+            "count": 1,
+            "after_character_offsets": [
+              6904
+            ],
+            "state_before_sha256": "361cd058449a5cf2978ae600ccaddc244b47ae8458c81c38ca9748890a1ab27f",
+            "state_after_sha256": "391b7b249b6451c62f90b3af873d38cb3378ba6feaa370ab6fac8233e16191bb"
+          },
+          {
+            "before": "    escaped_cause_ = runtime.read_current_catch();\n    const bool allowed",
+            "after": "    const auto current = runtime.read_current_catch();\n    if (phase_ != Phase::armed) return false; // preserve the first denial/consumption history\n    escaped_cause_ = current;\n    const bool allowed",
+            "count": 1,
+            "after_character_offsets": [
+              9081
+            ],
+            "state_before_sha256": "391b7b249b6451c62f90b3af873d38cb3378ba6feaa370ab6fac8233e16191bb",
+            "state_after_sha256": "aacd70ec3d609de1b8a544884fd4d844d51b684a96194a0f95a62b9c843fc8c1"
+          }
+        ]
+      },
+      {
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "before_bytes": 8477,
+        "before_sha256": "6a8e8ff45a4415fbdbb81992726f2e9e4fc17c0819fde21c279ac4c3d354b245",
+        "after_bytes": 9462,
+        "after_sha256": "da98a4e498a5394c6dc3c36949a9c7bb1022b2702e85783c2d3fa53413cd2e23",
+        "seams": [
+          {
+            "before": "#include <cstdint>",
+            "after": "#include \"bsp/native_gui_text_failure_origin.hpp\"\n#include <cstdint>",
+            "count": 1,
+            "after_character_offsets": [
+              14
+            ],
+            "state_before_sha256": "6a8e8ff45a4415fbdbb81992726f2e9e4fc17c0819fde21c279ac4c3d354b245",
+            "state_after_sha256": "c73b32509ea15c56a40f0163533e2cfe963d5ee6476a8aa1232b471519296f48"
+          },
+          {
+            "before": "    virtual void* construct_00ab9650(void* actual_allocation, NativeGuiTextGlyphQuadStorageAcquired&) = 0;",
+            "after": "    virtual void* construct_00ab9650(void* actual_allocation, NativeGuiTextGlyphQuadStorageAcquired&) = 0;\n    // Qualified used route MUST forward this SAME retained envelope to actual raw93.\n    // No adapter/default implementation or Native-origin capability is supplied.\n    virtual void* construct_00ab9650(void* actual_allocation, NativeGuiTextGlyphQuadStorageAcquired&,\n        NativeGuiTextFailureConstructorCall&) = 0;",
+            "count": 1,
+            "after_character_offsets": [
+              1293
+            ],
+            "state_before_sha256": "c73b32509ea15c56a40f0163533e2cfe963d5ee6476a8aa1232b471519296f48",
+            "state_after_sha256": "7337d7a8cbdff6eb428d6bdb99f12ea8328fd2407f41b2d64b9a38529756968b"
+          },
+          {
+            "before": "    const volatile double& input_x_bias_00d06880;",
+            "after": "    const volatile double& input_x_bias_00d06880;\n    // Optional qualified own Source-runtime borrow; null preserves the legacy API.\n    // Preparation only, not binding proof, Native permission or a catch-domain query.\n    const NativeGuiTextFailureOriginRuntime* failure_runtime{};",
+            "count": 1,
+            "after_character_offsets": [
+              5450
+            ],
+            "state_before_sha256": "7337d7a8cbdff6eb428d6bdb99f12ea8328fd2407f41b2d64b9a38529756968b",
+            "state_after_sha256": "c5fc648e7b06d737282357f42059316b1c3ef7a9683e851d9ef6dfbb6ec000e2"
+          },
+          {
+            "before": "    NativeGuiTextGlyphQuadStorageAcquired& operator=(const NativeGuiTextGlyphQuadStorageAcquired&) = delete;\n",
+            "after": "    NativeGuiTextGlyphQuadStorageAcquired& operator=(const NativeGuiTextGlyphQuadStorageAcquired&) = delete;\nprivate:\n    friend void write_native_gui_text_glyph_quad_storage_00ab98f0(void*,\n        volatile std::uint32_t (&)[10], NativeGuiTextGlyphQuadStorageContext&,\n        NativeGuiTextGlyphQuadStorageAcquired&);\n    NativeGuiTextFailureOrigin failure_origin_;\n    NativeGuiTextFailureConstructorSlotArm constructor_slot_;\n    NativeGuiTextFailureConstructorCall constructor_call_;\n",
+            "count": 1,
+            "after_character_offsets": [
+              7325
+            ],
+            "state_before_sha256": "c5fc648e7b06d737282357f42059316b1c3ef7a9683e851d9ef6dfbb6ec000e2",
+            "state_after_sha256": "da98a4e498a5394c6dc3c36949a9c7bb1022b2702e85783c2d3fa53413cd2e23"
+          }
+        ]
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "before_bytes": 19830,
+        "before_sha256": "f05676b34f28b95194810e4f325cbec759b0ece70b9cb41b38b64efc89d7a96e",
+        "after_bytes": 21923,
+        "after_sha256": "1dfd76f3a69ff451faf54ffac707fc5c746b137ab91956f1c046f5494bbd3a06",
+        "seams": [
+          {
+            "before": "    if (a.phase != Acquired::Phase::fresh)\n        throw std::logic_error(\"Glyph quad requires a fresh retained invocation record\");",
+            "after": "    if (c.failure_runtime) {\n        a.failure_origin_.begin(*c.failure_runtime, &a, 0x00ab98f0u);\n        a.failure_origin_.host(*c.failure_runtime, {0, __COUNTER__}, &a, [&] {\n            if (a.phase != Acquired::Phase::fresh)\n                throw std::logic_error(\"Glyph quad requires a fresh retained invocation record\");\n        });\n    } else if (a.phase != Acquired::Phase::fresh)\n        throw std::logic_error(\"Glyph quad requires a fresh retained invocation record\");",
+            "count": 1,
+            "after_character_offsets": [
+              13501
+            ],
+            "state_before_sha256": "f05676b34f28b95194810e4f325cbec759b0ece70b9cb41b38b64efc89d7a96e",
+            "state_after_sha256": "449c71bc6c702e9ccac6d8b833700790b2a5241f640f19f6a53fead0bbe9b0db"
+          },
+          {
+            "before": "a.phase = Acquired::Phase::complete; return;",
+            "after": "if (c.failure_runtime) a.failure_origin_.complete();\n            a.phase = Acquired::Phase::complete; return;",
+            "count": 3,
+            "after_character_offsets": [
+              14355,
+              14645,
+              14919
+            ],
+            "state_before_sha256": "449c71bc6c702e9ccac6d8b833700790b2a5241f640f19f6a53fead0bbe9b0db",
+            "state_after_sha256": "11d0a9757563ff62efa95ca7e2b9b7edebe7d6e31ed96b4310859768e463763e"
+          },
+          {
+            "before": "        a.native_eh_state = 0;\n        void* child = nullptr;",
+            "after": "        a.native_eh_state = 0;\n        if (c.failure_runtime)\n            a.constructor_slot_.arm(a.failure_origin_, *c.failure_runtime, &homes[7], allocation,\n                &c.calls, {0x00ab9d4fu, __COUNTER__}, a.constructor_call_);\n        void* child = nullptr;",
+            "count": 1,
+            "after_character_offsets": [
+              15508
+            ],
+            "state_before_sha256": "11d0a9757563ff62efa95ca7e2b9b7edebe7d6e31ed96b4310859768e463763e",
+            "state_after_sha256": "c71bd9fb8cdc3e4f262712053c2bb989951b7531eb2a63245cd9bd33555d0535"
+          },
+          {
+            "before": "            child = c.calls.construct_00ab9650(allocation, a);",
+            "after": "            if (c.failure_runtime)\n                child = a.constructor_call_.invoke([&] {\n                    return c.calls.construct_00ab9650(allocation, a, a.constructor_call_);\n                });\n            else child = c.calls.construct_00ab9650(allocation, a);",
+            "count": 1,
+            "after_character_offsets": [
+              15850
+            ],
+            "state_before_sha256": "c71bd9fb8cdc3e4f262712053c2bb989951b7531eb2a63245cd9bd33555d0535",
+            "state_after_sha256": "3c37cc5c78b6e6ce6544e5a203ebfefa37a5956afaa07aaee46f8019434d9d8c"
+          },
+          {
+            "before": "        a.native_eh_state = -1;\n        homes[7] = bits(child);",
+            "after": "        a.native_eh_state = -1;\n        if (c.failure_runtime) a.constructor_slot_.normal_disarm(a.constructor_call_);\n        homes[7] = bits(child);",
+            "count": 1,
+            "after_character_offsets": [
+              16165
+            ],
+            "state_before_sha256": "3c37cc5c78b6e6ce6544e5a203ebfefa37a5956afaa07aaee46f8019434d9d8c",
+            "state_after_sha256": "cf04352f91d4075f0fb97bae0ccf01f0f2bb5a713bfa880b0231d584f712cf27"
+          },
+          {
+            "before": "        a.phase = Acquired::Phase::complete;\n    } catch (...) {\n        a.escaped_call_site",
+            "after": "        if (c.failure_runtime) a.failure_origin_.complete();\n        a.phase = Acquired::Phase::complete;\n    } catch (...) {\n        bool constructor_permit = false;\n        if (c.failure_runtime) {\n            a.failure_origin_.retain_current(*c.failure_runtime);\n            if (a.native_eh_state == 0)\n                constructor_permit = a.constructor_slot_.consume_proven_primary(\n                    a.failure_origin_, *c.failure_runtime, a.constructor_call_, &homes[7]);\n        }\n        a.escaped_call_site",
+            "count": 1,
+            "after_character_offsets": [
+              19700
+            ],
+            "state_before_sha256": "cf04352f91d4075f0fb97bae0ccf01f0f2bb5a713bfa880b0231d584f712cf27",
+            "state_after_sha256": "11a4e93c98bbd9cacc5e7d2bf812013afedde7cccbb48b537e0dcc6e7798ff2b"
+          },
+          {
+            "before": "        if (state >= 0) {",
+            "after": "        // Qualified state0 cannot reach cleanup for HOST/UNKNOWN or body-returned.\n        // Legacy states1/2 retain their historical, separately gated projection.\n        if (state >= 0 && (state != 0 || !c.failure_runtime || constructor_permit)) {",
+            "count": 1,
+            "after_character_offsets": [
+              20453
+            ],
+            "state_before_sha256": "11a4e93c98bbd9cacc5e7d2bf812013afedde7cccbb48b537e0dcc6e7798ff2b",
+            "state_after_sha256": "e2133a7f922a8bf7f0cd5d47ac589e278b6f4a6c71c3ded98978ee66200b791c"
+          },
+          {
+            "before": "    if (c.failure_runtime) {\n        a.failure_origin_.begin",
+            "after": "    const auto* const failure_runtime = c.failure_runtime;\n    if (failure_runtime) {\n        a.failure_origin_.begin",
+            "count": 1,
+            "after_character_offsets": [
+              13501
+            ],
+            "state_before_sha256": "e2133a7f922a8bf7f0cd5d47ac589e278b6f4a6c71c3ded98978ee66200b791c",
+            "state_after_sha256": "a3c1bd8c2883a68c4ccb68d9a50ecdd452c07141d5cfc753844d95d94370adf4"
+          },
+          {
+            "before": "*c.failure_runtime",
+            "after": "*failure_runtime",
+            "count": 5,
+            "after_character_offsets": [
+              13619,
+              13686,
+              15678,
+              19996,
+              20175
+            ],
+            "state_before_sha256": "a3c1bd8c2883a68c4ccb68d9a50ecdd452c07141d5cfc753844d95d94370adf4",
+            "state_after_sha256": "36a707ef55576b5b8ea7f86152bfe2455e9f5ba839d9274af3154f3b68913f21"
+          },
+          {
+            "before": "if (c.failure_runtime)",
+            "after": "if (failure_runtime)",
+            "count": 8,
+            "after_character_offsets": [
+              14408,
+              14696,
+              14968,
+              15594,
+              15905,
+              16246,
+              19747,
+              19912
+            ],
+            "state_before_sha256": "36a707ef55576b5b8ea7f86152bfe2455e9f5ba839d9274af3154f3b68913f21",
+            "state_after_sha256": "47f530c9ba8d051632c96ca6dfbf8cf24f157ff1c515966446d1b85fa8c3c411"
+          },
+          {
+            "before": "!c.failure_runtime",
+            "after": "!failure_runtime",
+            "count": 1,
+            "after_character_offsets": [
+              20691
+            ],
+            "state_before_sha256": "47f530c9ba8d051632c96ca6dfbf8cf24f157ff1c515966446d1b85fa8c3c411",
+            "state_after_sha256": "c6be029f4ee7af4f87d98dc5a97d55069dab8e946bb6a724612e4e09b70f2fd3"
+          },
+          {
+            "before": "\n        if (code == 0) { if (failure_runtime) a.failure_origin_.complete();\n            a.phase = Acquired::Phase::complete; return; }",
+            "after": "\n        if (code == 0) {\n            if (failure_runtime) a.failure_origin_.complete();\n            a.phase = Acquired::Phase::complete; return;\n        }",
+            "count": 1,
+            "after_character_offsets": [
+              14670
+            ],
+            "state_before_sha256": "c6be029f4ee7af4f87d98dc5a97d55069dab8e946bb6a724612e4e09b70f2fd3",
+            "state_after_sha256": "5731f5ee028ab08ddcd052a6008ac1b96c1d1a6e711c3aa89d3e75937a3396dc"
+          },
+          {
+            "before": "\n            if (code == 0) { if (failure_runtime) a.failure_origin_.complete();\n            a.phase = Acquired::Phase::complete; return; }",
+            "after": "\n            if (code == 0) {\n                if (failure_runtime) a.failure_origin_.complete();\n                a.phase = Acquired::Phase::complete; return;\n            }",
+            "count": 1,
+            "after_character_offsets": [
+              14958
+            ],
+            "state_before_sha256": "5731f5ee028ab08ddcd052a6008ac1b96c1d1a6e711c3aa89d3e75937a3396dc",
+            "state_after_sha256": "0fd591f917efbacae6776920f74359b22809d7db5c061b23de23bf1b134f0f40"
+          },
+          {
+            "before": "                    c.calls.return_failed_00ab76f0(current_slot, a);",
+            "after": "                    if (failure_runtime)\n                        a.failure_origin_.unknown(*failure_runtime, {0x00cb80b3u, __COUNTER__}, &c.calls,\n                            [&] { c.calls.return_failed_00ab76f0(current_slot, a); },\n                            NativeGuiTextFailureOrigin::Stage::cleanup_secondary);\n                    else c.calls.return_failed_00ab76f0(current_slot, a);",
+            "count": 1,
+            "after_character_offsets": [
+              21001
+            ],
+            "state_before_sha256": "0fd591f917efbacae6776920f74359b22809d7db5c061b23de23bf1b134f0f40",
+            "state_after_sha256": "1dfd76f3a69ff451faf54ffac707fc5c746b137ab91956f1c046f5494bbd3a06"
+          }
+        ]
+      },
+      {
+        "path": "include/bsp/native_gui_text_default_storage.hpp",
+        "before_bytes": 5404,
+        "before_sha256": "411848bea4eb0f79635bfca06493782d40c0b27cb92f713728d52b48648e119f",
+        "after_bytes": 6352,
+        "after_sha256": "7a23774d66bb90e59712407d58fd3356640da3f77f1c087bf766b77d3748141a",
+        "seams": [
+          {
+            "before": "    NativeGuiTextRawModelSectionStorageAcquired sections;\n};",
+            "after": "    NativeGuiTextRawModelSectionStorageAcquired sections;\nprivate:\n    friend struct NativeGuiTextRawModelDefaultFailureAccess;\n    friend void* construct_native_gui_text_default_storage_00ab9650(void*,\n        NativeGuiTextRawModelDefaultStorageFrame&, NativeGuiTextRawModelDefaultStorageContext&,\n        NativeGuiTextRawModelDefaultStorageAcquired&, NativeGuiTextFailureConstructorCall&);\n    const NativeGuiTextFailureOriginRuntime* failure_runtime_{};\n    NativeGuiTextFailureOrigin failure_origin_;\n};",
+            "count": 1,
+            "after_character_offsets": [
+              4322
+            ],
+            "state_before_sha256": "411848bea4eb0f79635bfca06493782d40c0b27cb92f713728d52b48648e119f",
+            "state_after_sha256": "861d5e7c9001f42eb8ea182efa4c9fafadf7d5ba8bec027273fcd39079e34ba1"
+          },
+          {
+            "before": "} // namespace bsp\n",
+            "after": "// Constructor-slot qualified negative route. SAME retained envelope/runtime;\n// HOST and UNKNOWN retain Text, Model188, reservations, slots and nested backing.\n// No Native cleanup/slot permission, body/ref/normal-return or ABI credit.\nvoid* construct_native_gui_text_default_storage_00ab9650(void* actual_destination,\n    NativeGuiTextRawModelDefaultStorageFrame&, NativeGuiTextRawModelDefaultStorageContext&,\n    NativeGuiTextRawModelDefaultStorageAcquired&, NativeGuiTextFailureConstructorCall&);\n} // namespace bsp\n",
+            "count": 1,
+            "after_character_offsets": [
+              5832
+            ],
+            "state_before_sha256": "861d5e7c9001f42eb8ea182efa4c9fafadf7d5ba8bec027273fcd39079e34ba1",
+            "state_after_sha256": "7a23774d66bb90e59712407d58fd3356640da3f77f1c087bf766b77d3748141a"
+          }
+        ]
+      },
+      {
+        "path": "include/bsp/native_gui_text_storage_construct.hpp",
+        "before_bytes": 8628,
+        "before_sha256": "6f142a031781e0c9e5a703abed07967790b4ff8669494330bfffb1bdea9b3876",
+        "after_bytes": 9641,
+        "after_sha256": "681a44709442353f716f2ead0377804df61cbc659ec7fc7dcc3a7a05c56ec5b2",
+        "seams": [
+          {
+            "before": "#include \"bsp/native_instance_geometry.hpp\"",
+            "after": "#include \"bsp/native_gui_text_failure_origin.hpp\"\n#include \"bsp/native_instance_geometry.hpp\"",
+            "count": 1,
+            "after_character_offsets": [
+              13
+            ],
+            "state_before_sha256": "6f142a031781e0c9e5a703abed07967790b4ff8669494330bfffb1bdea9b3876",
+            "state_after_sha256": "43c67002788df4c5a66fb55d23d9ffd7f3aafc3a23f6831cb7b2fff4e00c0c89"
+          },
+          {
+            "before": "    NativeNodeSetParentAcquired parenting;\n};\n\n// DEFAULT-only",
+            "after": "    NativeNodeSetParentAcquired parenting;\n    const NativeGuiTextFailureOrigin& failure_origin() const noexcept { return failure_origin_; }\nprivate:\n    friend struct NativeGuiTextRawModelSectionFailureAccess;\n    friend void ensure_native_gui_text_sections_storage_00ab8530(void*,\n        NativeGuiTextRawModelSectionStorageFrame&, NativeGuiTextRawModelSectionStorageContext&,\n        NativeGuiTextRawModelSectionStorageAcquired&, const NativeGuiTextFailureOriginRuntime&);\n    const NativeGuiTextFailureOriginRuntime* failure_runtime_{};\n    NativeGuiTextFailureOrigin failure_origin_;\n};\n\n// DEFAULT-only",
+            "count": 1,
+            "after_character_offsets": [
+              8014
+            ],
+            "state_before_sha256": "43c67002788df4c5a66fb55d23d9ffd7f3aafc3a23f6831cb7b2fff4e00c0c89",
+            "state_after_sha256": "1c026a2f08d0fc344c0863a13aa436ab10b57e61ee441fbc9ac3d7b4f5c973fc"
+          },
+          {
+            "before": "} // namespace bsp\n",
+            "after": "// In-flight constructor85 route ONLY, distinct from the completed-object POST\n// API. Private HOST/UNKNOWN receipts withhold this entry's own nested cleanup.\nvoid ensure_native_gui_text_sections_storage_00ab8530(void* actual_text,\n    NativeGuiTextRawModelSectionStorageFrame&, NativeGuiTextRawModelSectionStorageContext&,\n    NativeGuiTextRawModelSectionStorageAcquired&, const NativeGuiTextFailureOriginRuntime&);\n} // namespace bsp\n",
+            "count": 1,
+            "after_character_offsets": [
+              9205
+            ],
+            "state_before_sha256": "1c026a2f08d0fc344c0863a13aa436ab10b57e61ee441fbc9ac3d7b4f5c973fc",
+            "state_after_sha256": "681a44709442353f716f2ead0377804df61cbc659ec7fc7dcc3a7a05c56ec5b2"
+          }
+        ]
+      },
+      {
+        "path": "src/native_gui_text_default_storage.cpp",
+        "before_bytes": 22565,
+        "before_sha256": "757647269fba2238edce3723fb7aa870cc4d75c71610d621177a0c581d5a85cf",
+        "after_bytes": 26698,
+        "after_sha256": "6ed36cf3cad97ef089be15302827995d3bc6f303f5df3a3eb122b970dde67d09",
+        "seams": [
+          {
+            "before": "namespace bsp {\nnamespace {\n",
+            "after": "namespace bsp {\n// TU-local use of private retained negative metadata; no public setter/issuer.\nstruct NativeGuiTextRawModelDefaultFailureAccess final {\n    static const NativeGuiTextFailureOriginRuntime* runtime(NativeGuiTextRawModelDefaultStorageAcquired& a) noexcept { return a.failure_runtime_; }\n    static NativeGuiTextFailureOrigin& origin(NativeGuiTextRawModelDefaultStorageAcquired& a) noexcept { return a.failure_origin_; }\n};\nnamespace {\nstruct FailureTransport {\n    const NativeGuiTextFailureOriginRuntime* runtime{};\n    NativeGuiTextFailureOrigin* origin{};\n    const void* supplier{};\n};\nFailureTransport failure_transport(NativeGuiTextDefaultStorageAcquired&) noexcept { return {}; }\nFailureTransport failure_transport(NativeGuiTextRawModelDefaultStorageAcquired& a) noexcept {\n    return {NativeGuiTextRawModelDefaultFailureAccess::runtime(a), &NativeGuiTextRawModelDefaultFailureAccess::origin(a), &a};\n}\ntemplate<class Acquired, class F> decltype(auto) source_host(Acquired& a, std::uint32_t source, F&& f) {\n    const auto t = failure_transport(a);\n    if (t.runtime) return t.origin->host(*t.runtime, {0, source}, t.supplier, std::forward<F>(f));\n    return std::forward<F>(f)();\n}\ntemplate<class Acquired, class F> decltype(auto) source_unknown(Acquired& a, std::uint32_t site,\n    std::uint32_t source, F&& f) {\n    const auto t = failure_transport(a);\n    if (t.runtime) return t.origin->unknown(*t.runtime, {site, source}, t.supplier, std::forward<F>(f));\n    return std::forward<F>(f)();\n}\n",
+            "count": 1,
+            "after_character_offsets": [
+              500
+            ],
+            "state_before_sha256": "757647269fba2238edce3723fb7aa870cc4d75c71610d621177a0c581d5a85cf",
+            "state_after_sha256": "6262cbd63f1b4b0d286bd8da05a3cafd960b0f2b3264b7f816e19e56c2c069d8"
+          },
+          {
+            "before": "#include <type_traits>",
+            "after": "#include <type_traits>\n#include <utility>",
+            "count": 1,
+            "after_character_offsets": [
+              366
+            ],
+            "state_before_sha256": "6262cbd63f1b4b0d286bd8da05a3cafd960b0f2b3264b7f816e19e56c2c069d8",
+            "state_after_sha256": "acb0578d179c7e964d868fd4df26c35109c3e86bc8019f955c80242dc02859db"
+          },
+          {
+            "before": "    raw_base_admission(raw, c); // reauthenticate AFTER preceding cleanup callbacks",
+            "after": "    source_host(a, __COUNTER__, [&] { raw_base_admission(raw, c); }); // AFTER preceding callbacks",
+            "count": 1,
+            "after_character_offsets": [
+              15494
+            ],
+            "state_before_sha256": "acb0578d179c7e964d868fd4df26c35109c3e86bc8019f955c80242dc02859db",
+            "state_after_sha256": "e9be816b6b21d0808578ba03f755c926cbcd0d24261b2b3706d5f1797f3e7739"
+          },
+          {
+            "before": "    raw_base_admission(raw, c);\n    require(word(raw)",
+            "after": "    source_host(a, __COUNTER__, [&] { raw_base_admission(raw, c); });\n    source_host(a, __COUNTER__, [&] { require(word(raw)",
+            "count": 1,
+            "after_character_offsets": [
+              18673
+            ],
+            "state_before_sha256": "e9be816b6b21d0808578ba03f755c926cbcd0d24261b2b3706d5f1797f3e7739",
+            "state_after_sha256": "da78024b92be11e8081f3237fba4cd0b08ee18504b66e506c331e821b1b057fa"
+          },
+          {
+            "before": "        \"Raw Text DEFAULT completion requires its genuine completed internal Model graph\");",
+            "after": "        \"Raw Text DEFAULT completion requires its genuine completed internal Model graph\"); });",
+            "count": 1,
+            "after_character_offsets": [
+              19087
+            ],
+            "state_before_sha256": "da78024b92be11e8081f3237fba4cd0b08ee18504b66e506c331e821b1b057fa",
+            "state_after_sha256": "3b5335d7c69205d8a01cbadae5a4978f9741e22ee27c43cbda11c19315cf1bec"
+          },
+          {
+            "before": "    if (a.failure == decltype(a.failure)::host_metadata ||\n        a.sections.failure",
+            "after": "    const auto t = failure_transport(a);\n    if (t.runtime) {\n        t.origin->retain_current(*t.runtime); // exact private cause BEFORE public diagnostics\n        return; // no Native issuer: deny ALL nested outer unwind on this used route\n    }\n    if (a.failure == decltype(a.failure)::host_metadata ||\n        a.sections.failure",
+            "count": 1,
+            "after_character_offsets": [
+              19509
+            ],
+            "state_before_sha256": "3b5335d7c69205d8a01cbadae5a4978f9741e22ee27c43cbda11c19315cf1bec",
+            "state_after_sha256": "0e414772d5b12ec410662323e381a9e4ceba8d62831a58055f89c84b36f7cff8"
+          },
+          {
+            "before": "template<class Frame, class Context, class Acquired>\nvoid* construct_default(void* raw, Frame& f, Context& c, Acquired& a) {\n    preflight(raw, f, c, a);",
+            "after": "struct NoBodyReturn { void operator()() const {} };\ntemplate<class Frame, class Context, class Acquired, class BodyReturned = NoBodyReturn>\nvoid* construct_default(void* raw, Frame& f, Context& c, Acquired& a, BodyReturned body_returned = {}) {\n    source_host(a, __COUNTER__, [&] { preflight(raw, f, c, a); });",
+            "count": 1,
+            "after_character_offsets": [
+              20247
+            ],
+            "state_before_sha256": "0e414772d5b12ec410662323e381a9e4ceba8d62831a58055f89c84b36f7cff8",
+            "state_after_sha256": "fbb9c50b679c9d2f49ee5f086b93106ded37b64ef52880a27d5f5797ffcf11df"
+          },
+          {
+            "before": "        construct_native_gui_widget_base_00aa9390(raw, 3, c.one_00d7a24c);",
+            "after": "        source_unknown(a, 0x00ab9671u, __COUNTER__, [&] {\n            construct_native_gui_widget_base_00aa9390(raw, 3, c.one_00d7a24c);\n        });",
+            "count": 1,
+            "after_character_offsets": [
+              20678
+            ],
+            "state_before_sha256": "fbb9c50b679c9d2f49ee5f086b93106ded37b64ef52880a27d5f5797ffcf11df",
+            "state_after_sha256": "ec394ee9b8d8931d272e47e721daf2f6ee008babda886e88b4cd72dc73355348"
+          },
+          {
+            "before": "        ensure_native_gui_text_sections_storage_00ab8530(raw, f.sections, c.sections, a.sections);\n        completed(raw, c, a);",
+            "after": "        if constexpr (std::is_same_v<Acquired, NativeGuiTextRawModelDefaultStorageAcquired>) {\n            const auto t = failure_transport(a);\n            if (t.runtime)\n                t.origin->child(*t.runtime, {0x00ab98d8u, __COUNTER__}, &a.sections,\n                    0x00ab8530u, a.sections.failure_origin(), [&] {\n                        ensure_native_gui_text_sections_storage_00ab8530(\n                            raw, f.sections, c.sections, a.sections, *t.runtime);\n                    });\n            else ensure_native_gui_text_sections_storage_00ab8530(raw, f.sections, c.sections, a.sections);\n        } else ensure_native_gui_text_sections_storage_00ab8530(raw, f.sections, c.sections, a.sections);\n        body_returned(); // PRIVATE negative frontier IMMEDIATELY after actual ctor85 normal return\n        source_host(a, __COUNTER__, [&] { completed(raw, c, a); });",
+            "count": 1,
+            "after_character_offsets": [
+              23506
+            ],
+            "state_before_sha256": "ec394ee9b8d8931d272e47e721daf2f6ee008babda886e88b4cd72dc73355348",
+            "state_after_sha256": "d513d06ad1afd22775d09e5237e92df8f6294478e23139ea464ee068accfec67"
+          },
+          {
+            "before": "} // namespace bsp\n",
+            "after": "void* construct_native_gui_text_default_storage_00ab9650(void* raw,\n    NativeGuiTextRawModelDefaultStorageFrame& f, NativeGuiTextRawModelDefaultStorageContext& c,\n    NativeGuiTextRawModelDefaultStorageAcquired& a, NativeGuiTextFailureConstructorCall& call) {\n    // Unprepared envelopes have no qualified catch service. Never query a CRT\n    // to discover that domain, nor run any cleanup on this pre-entry rejection.\n    if (!call.runtime_) throw std::invalid_argument(\"Constructor envelope requires its SAME qualified Source runtime\");\n    call.bind_once(raw, a.failure_origin_, &a); // before Source preflight/Native work; invalidation is sticky\n    a.failure_runtime_ = call.runtime_;\n    a.failure_origin_.begin(*a.failure_runtime_, &a, 0x00ab9650u);\n    try {\n        void* const result = construct_default(raw, f, c, a, [&] {\n            call.body_returned(a.failure_origin_, &a); // not whole Source completion or raw122 birth\n        });\n        a.failure_origin_.complete();\n        return result;\n    } catch (...) {\n        a.failure_origin_.retain_current(*a.failure_runtime_); // sticky HOST/UNKNOWN, before diagnostic flag\n        if (!a.started) a.failure = decltype(a.failure)::host_metadata;\n        throw;\n    }\n}\n} // namespace bsp\n",
+            "count": 1,
+            "after_character_offsets": [
+              25382
+            ],
+            "state_before_sha256": "d513d06ad1afd22775d09e5237e92df8f6294478e23139ea464ee068accfec67",
+            "state_after_sha256": "9eb409526de8da6b99e4215d304aa1dd0050bc94ae00d62cf77e488a54d2da7c"
+          },
+          {
+            "before": "    a.failure_runtime_ = call.runtime_;\n    a.failure_origin_.begin",
+            "after": "    if (!a.failure_runtime_) a.failure_runtime_ = call.runtime_; // never replace a retained service\n    a.failure_origin_.begin",
+            "count": 1,
+            "after_character_offsets": [
+              26034
+            ],
+            "state_before_sha256": "9eb409526de8da6b99e4215d304aa1dd0050bc94ae00d62cf77e488a54d2da7c",
+            "state_after_sha256": "6ed36cf3cad97ef089be15302827995d3bc6f303f5df3a3eb122b970dde67d09"
+          }
+        ]
+      },
+      {
+        "path": "src/native_gui_text_storage_construct.cpp",
+        "before_bytes": 32680,
+        "before_sha256": "d3ae2db948ce9109fea392b6766a6f31b397fcf773256141098c6c49a663d156",
+        "after_bytes": 37007,
+        "after_sha256": "a4c2c5e06dfa78d0dba7769900cb7a8302f7567c70f77707262246088326db60",
+        "seams": [
+          {
+            "before": "namespace bsp {\nnamespace {\n",
+            "after": "namespace bsp {\n// TU-local use of private retained negative metadata; no public setter/issuer.\nstruct NativeGuiTextRawModelSectionFailureAccess final {\n    static const NativeGuiTextFailureOriginRuntime* runtime(NativeGuiTextRawModelSectionStorageAcquired& a) noexcept { return a.failure_runtime_; }\n    static NativeGuiTextFailureOrigin& origin(NativeGuiTextRawModelSectionStorageAcquired& a) noexcept { return a.failure_origin_; }\n};\nnamespace {\nstruct FailureTransport {\n    const NativeGuiTextFailureOriginRuntime* runtime{};\n    NativeGuiTextFailureOrigin* origin{};\n    const void* supplier{};\n};\nFailureTransport failure_transport(NativeGuiTextSectionStorageAcquired&) noexcept { return {}; }\nFailureTransport failure_transport(NativeGuiTextRawModelSectionStorageAcquired& a) noexcept {\n    return {NativeGuiTextRawModelSectionFailureAccess::runtime(a), &NativeGuiTextRawModelSectionFailureAccess::origin(a), &a};\n}\ntemplate<class Acquired, class F> decltype(auto) source_host(Acquired& a, std::uint32_t source, F&& f) {\n    const auto t = failure_transport(a);\n    if (t.runtime) return t.origin->host(*t.runtime, {0, source}, t.supplier, std::forward<F>(f));\n    return std::forward<F>(f)();\n}\ntemplate<class Acquired, class F> decltype(auto) source_unknown(Acquired& a, std::uint32_t site,\n    std::uint32_t source, F&& f) {\n    const auto t = failure_transport(a);\n    if (t.runtime) return t.origin->unknown(*t.runtime, {site, source}, t.supplier, std::forward<F>(f));\n    return std::forward<F>(f)();\n}\n",
+            "count": 1,
+            "after_character_offsets": [
+              447
+            ],
+            "state_before_sha256": "d3ae2db948ce9109fea392b6766a6f31b397fcf773256141098c6c49a663d156",
+            "state_after_sha256": "1593b7c9c93315302facc7d5836cc8827116a1cb1b26141dad1bd70977a321d7"
+          },
+          {
+            "before": "    try { part.section_creator = geometry(c).create_native_section_00533fa0(part.section); }",
+            "after": "    try { part.section_creator = source_unknown(a, shadow ? 0x00ab862bu : 0x00ab86feu, __COUNTER__, [&] {\n        return geometry(c).create_native_section_00533fa0(part.section); }); }",
+            "count": 1,
+            "after_character_offsets": [
+              21283
+            ],
+            "state_before_sha256": "1593b7c9c93315302facc7d5836cc8827116a1cb1b26141dad1bd70977a321d7",
+            "state_after_sha256": "1f70ebbf9d22a782fa38ad256c871c8f4dbf2c8e687841f6d6eedfffd48e17b3"
+          },
+          {
+            "before": "    require(part.section_creator, \"Native null section's later access is outside supported normal storage\");",
+            "after": "    source_host(a, __COUNTER__, [&] {\n        require(part.section_creator, \"Native null section's later access is outside supported normal storage\"); });",
+            "count": 1,
+            "after_character_offsets": [
+              21626
+            ],
+            "state_before_sha256": "1f70ebbf9d22a782fa38ad256c871c8f4dbf2c8e687841f6d6eedfffd48e17b3",
+            "state_after_sha256": "d56adcd9e178d265a0e3a59f76fb0170cc083411b3cd0d203c34db00333d8aac"
+          },
+          {
+            "before": "    append_native_mesh_draw_section_00b73c60(mesh, part.section_creator);",
+            "after": "    source_unknown(a, shadow ? 0x00ab8635u : 0x00ab8708u, __COUNTER__, [&] {\n        append_native_mesh_draw_section_00b73c60(mesh, part.section_creator); });",
+            "count": 1,
+            "after_character_offsets": [
+              21828
+            ],
+            "state_before_sha256": "d56adcd9e178d265a0e3a59f76fb0170cc083411b3cd0d203c34db00333d8aac",
+            "state_after_sha256": "eead61ddc3b3adc25e40404112fa84ced1591d8a825dc73b2848860a02ece699"
+          },
+          {
+            "before": "    construct_native_string_header_0041e870(name_header(f), c.strings, c.guidefault_00d5c25c);",
+            "after": "    source_unknown(a, shadow ? 0x00ab8643u : 0x00ab8716u, __COUNTER__, [&] {\n        construct_native_string_header_0041e870(name_header(f), c.strings, c.guidefault_00d5c25c); });",
+            "count": 1,
+            "after_character_offsets": [
+              22060
+            ],
+            "state_before_sha256": "eead61ddc3b3adc25e40404112fa84ced1591d8a825dc73b2848860a02ece699",
+            "state_after_sha256": "c7d493ab997768b2e8ea7a327f29602bef6125eb5c3d82847c43718e507d8dba"
+          },
+          {
+            "before": "    try { part.material_creator = create_native_material_from_effect_cache_00535320(name_header(f),\n        materials(c).material_slots, geometry(c).actual_owners(), c.effects, part.material); }",
+            "after": "    try { part.material_creator = source_unknown(a, shadow ? 0x00ab8654u : 0x00ab8727u, __COUNTER__, [&] {\n        return create_native_material_from_effect_cache_00535320(name_header(f),\n            materials(c).material_slots, geometry(c).actual_owners(), c.effects, part.material); }); }",
+            "count": 1,
+            "after_character_offsets": [
+              22327
+            ],
+            "state_before_sha256": "c7d493ab997768b2e8ea7a327f29602bef6125eb5c3d82847c43718e507d8dba",
+            "state_after_sha256": "9c549a77a84b8ddab408718457e5c8c2b3d7d97dc271fcfafdbe79df4ea96816"
+          },
+          {
+            "before": "    material_ready(c, part);\n    if (part.material_creator)\n        geometry(c).register_native_material_creator(part.material, materials(c), material_table(c));",
+            "after": "    source_host(a, __COUNTER__, [&] {\n        material_ready(c, part);\n        if (part.material_creator)\n            geometry(c).register_native_material_creator(part.material, materials(c), material_table(c));\n    });",
+            "count": 1,
+            "after_character_offsets": [
+              23233
+            ],
+            "state_before_sha256": "9c549a77a84b8ddab408718457e5c8c2b3d7d97dc271fcfafdbe79df4ea96816",
+            "state_after_sha256": "1ebbdd5f28ea0e6834750491262faf25becd1f6e4fe47a03f1452a5a1e251357"
+          },
+          {
+            "before": "    return_captured_material_name(captured_name_data, f, c, a);",
+            "after": "    source_unknown(a, shadow ? 0x00ab867du : 0x00ab8750u, __COUNTER__, [&] {\n        return_captured_material_name(captured_name_data, f, c, a); });",
+            "count": 1,
+            "after_character_offsets": [
+              23669
+            ],
+            "state_before_sha256": "1ebbdd5f28ea0e6834750491262faf25becd1f6e4fe47a03f1452a5a1e251357",
+            "state_after_sha256": "cdba230a8f0e40067a108c9bc9719964422f81b07c706a3e540a7d5e75a8dcb1"
+          },
+          {
+            "before": "    set_native_mesh_section_material_00b864c0(*part.section_creator,\n        geometry(c).actual_owners(), part.material_creator);",
+            "after": "    source_unknown(a, shadow ? 0x00ab8685u : 0x00ab8758u, __COUNTER__, [&] {\n        set_native_mesh_section_material_00b864c0(*part.section_creator,\n            geometry(c).actual_owners(), part.material_creator); });",
+            "count": 1,
+            "after_character_offsets": [
+              23865
+            ],
+            "state_before_sha256": "cdba230a8f0e40067a108c9bc9719964422f81b07c706a3e540a7d5e75a8dcb1",
+            "state_after_sha256": "fae80523215d10b74b06ce259a33a5d9da1032e421f0156927529d1de78e0bff"
+          },
+          {
+            "before": "template<class Resource, class Context>\nvoid release(Resource*& creator, NativeTextureSurfaceReferenceIncrement decrement,\n    NativeGuiTextSectionStorageRelease& progress, Context& c) {",
+            "after": "template<class Resource, class Context, class Acquired>\nvoid release(Resource*& creator, NativeTextureSurfaceReferenceIncrement decrement,\n    NativeGuiTextSectionStorageRelease& progress, Context& c, Acquired& a) {",
+            "count": 1,
+            "after_character_offsets": [
+              19449
+            ],
+            "state_before_sha256": "fae80523215d10b74b06ce259a33a5d9da1032e421f0156927529d1de78e0bff",
+            "state_after_sha256": "02c45cf943a37b4514c083972bcb940d0eac402664437ca90974e6e0357dbaf1"
+          },
+          {
+            "before": "    require(raw && decrement && !progress.entered, \"Text creator release requires one actual reference\");",
+            "after": "    source_host(a, __COUNTER__, [&] {\n        require(raw && decrement && !progress.entered, \"Text creator release requires one actual reference\"); });",
+            "count": 1,
+            "after_character_offsets": [
+              19869
+            ],
+            "state_before_sha256": "02c45cf943a37b4514c083972bcb940d0eac402664437ca90974e6e0357dbaf1",
+            "state_after_sha256": "c435b69c7743de5d055f6a5901e5da14a31a6238bb8dfbc9f087368ef529ab67"
+          },
+          {
+            "before": "release(part.section_creator, first, part.section_release, c);",
+            "after": "source_unknown(a, 0x00ab868eu, __COUNTER__, [&] { release(part.section_creator, first, part.section_release, c, a); });",
+            "count": 1,
+            "after_character_offsets": [
+              24291
+            ],
+            "state_before_sha256": "c435b69c7743de5d055f6a5901e5da14a31a6238bb8dfbc9f087368ef529ab67",
+            "state_after_sha256": "89c35eac7a8a9a4ac22aaeec34f096dbb7fa3fdc6f919824b8485b3a5f505c6f"
+          },
+          {
+            "before": "release(part.material_creator, a.shadow_pair_decrement, part.material_release, c);",
+            "after": "source_unknown(a, 0x00ab86aau, __COUNTER__, [&] { release(part.material_creator, a.shadow_pair_decrement, part.material_release, c, a); });",
+            "count": 1,
+            "after_character_offsets": [
+              24564
+            ],
+            "state_before_sha256": "89c35eac7a8a9a4ac22aaeec34f096dbb7fa3fdc6f919824b8485b3a5f505c6f",
+            "state_after_sha256": "7b83edadc8ea0249820cceb94ddc66f46b066881169a3087b0b81aaf780c3e95"
+          },
+          {
+            "before": "release(part.section_creator, a.main_pair_decrement, part.section_release, c);",
+            "after": "source_unknown(a, 0x00ab8767u, __COUNTER__, [&] { release(part.section_creator, a.main_pair_decrement, part.section_release, c, a); });",
+            "count": 1,
+            "after_character_offsets": [
+              24871
+            ],
+            "state_before_sha256": "7b83edadc8ea0249820cceb94ddc66f46b066881169a3087b0b81aaf780c3e95",
+            "state_after_sha256": "6355f9985c3963489dbee802b5e6c985af9d10aa5d7f4b0d1c82902d54ad5143"
+          },
+          {
+            "before": "release(part.material_creator, a.main_pair_decrement, part.material_release, c);",
+            "after": "source_unknown(a, 0x00ab8779u, __COUNTER__, [&] { release(part.material_creator, a.main_pair_decrement, part.material_release, c, a); });",
+            "count": 1,
+            "after_character_offsets": [
+              25044
+            ],
+            "state_before_sha256": "6355f9985c3963489dbee802b5e6c985af9d10aa5d7f4b0d1c82902d54ad5143",
+            "state_after_sha256": "f7c2fd647efff0e2b4aadc4d066d628bfd160b80a99b96f214213babbb4ad494"
+          },
+          {
+            "before": "release(a.mesh_creator, a.shadow_pair_decrement, a.mesh_release, c);",
+            "after": "source_unknown(a, 0x00ab86bdu, __COUNTER__, [&] { release(a.mesh_creator, a.shadow_pair_decrement, a.mesh_release, c, a); });",
+            "count": 1,
+            "after_character_offsets": [
+              34103
+            ],
+            "state_before_sha256": "f7c2fd647efff0e2b4aadc4d066d628bfd160b80a99b96f214213babbb4ad494",
+            "state_after_sha256": "4aacbb4883ca5b2b9db85f6314ce9882ee5772c7c726fdf276d3f38eb65f21a0"
+          },
+          {
+            "before": "    try { return construct_native_model_storage_00b75030(raw, name, c.model.storage, a.model.construction); }",
+            "after": "    try { return source_unknown(a, 0x00ab859bu, __COUNTER__, [&] {\n        return construct_native_model_storage_00b75030(raw, name, c.model.storage, a.model.construction); }); }",
+            "count": 1,
+            "after_character_offsets": [
+              26521
+            ],
+            "state_before_sha256": "4aacbb4883ca5b2b9db85f6314ce9882ee5772c7c726fdf276d3f38eb65f21a0",
+            "state_after_sha256": "4eea9f4f992fd8f0e07ce8d748f05ef4d0540d7abf544ce14910172439f2528b"
+          },
+          {
+            "before": "    require(a.model.reference && a.model.actual == a.captured_shadow_receiver &&",
+            "after": "    source_host(a, __COUNTER__, [&] { require(a.model.reference && a.model.actual == a.captured_shadow_receiver &&",
+            "count": 1,
+            "after_character_offsets": [
+              28891
+            ],
+            "state_before_sha256": "4eea9f4f992fd8f0e07ce8d748f05ef4d0540d7abf544ce14910172439f2528b",
+            "state_after_sha256": "aac9307ce02085ef87f41a8287d0cfbb3640c236f5e288a6d34b3de5b14ad8cc"
+          },
+          {
+            "before": "        \"Text B75170 receiver must be its SAME completed canonical raw Model\");",
+            "after": "        \"Text B75170 receiver must be its SAME completed canonical raw Model\"); });",
+            "count": 1,
+            "after_character_offsets": [
+              29465
+            ],
+            "state_before_sha256": "aac9307ce02085ef87f41a8287d0cfbb3640c236f5e288a6d34b3de5b14ad8cc",
+            "state_after_sha256": "f5d60798b9d1673855e5fa1b8e9aa26947eb8a32ff6f12882e4c5a20d214fa57"
+          },
+          {
+            "before": "    try { set_native_model_geometry_storage_00b75170(a.captured_shadow_receiver,\n        f.association, c.association, a.model.association); }",
+            "after": "    try { source_unknown(a, 0x00ab8626u, __COUNTER__, [&] {\n        set_native_model_geometry_storage_00b75170(a.captured_shadow_receiver,\n            f.association, c.association, a.model.association); }); }",
+            "count": 1,
+            "after_character_offsets": [
+              29695
+            ],
+            "state_before_sha256": "f5d60798b9d1673855e5fa1b8e9aa26947eb8a32ff6f12882e4c5a20d214fa57",
+            "state_after_sha256": "2fbf1ef7dfb7afc88cd61178e172d478a3a496b1465b6548e86f057bd1ca3a57"
+          },
+          {
+            "before": "    preflight(text, f, c, a);\n    a.started",
+            "after": "    source_host(a, __COUNTER__, [&] { preflight(text, f, c, a); });\n    a.started",
+            "count": 1,
+            "after_character_offsets": [
+              31887
+            ],
+            "state_before_sha256": "2fbf1ef7dfb7afc88cd61178e172d478a3a496b1465b6548e86f057bd1ca3a57",
+            "state_after_sha256": "86186cb0c74b5e54076b6825748a86e21eb9e72c2dd150e48a009db7abc54bd0"
+          },
+          {
+            "before": "            void* raw = allocate_model(c);",
+            "after": "            void* raw = source_unknown(a, 0x00ab8565u, __COUNTER__, [&] { return allocate_model(c); });",
+            "count": 1,
+            "after_character_offsets": [
+              32134
+            ],
+            "state_before_sha256": "86186cb0c74b5e54076b6825748a86e21eb9e72c2dd150e48a009db7abc54bd0",
+            "state_after_sha256": "f4902086dc482484dda650f85d5586d11c26c88092ab5f56ca00a8c291ad9e21"
+          },
+          {
+            "before": "                prepare_model(raw, c, a);",
+            "after": "                source_host(a, __COUNTER__, [&] { prepare_model(raw, c, a); });",
+            "count": 1,
+            "after_character_offsets": [
+              32440
+            ],
+            "state_before_sha256": "f4902086dc482484dda650f85d5586d11c26c88092ab5f56ca00a8c291ad9e21",
+            "state_after_sha256": "aa8ff3acfc4cb6601aa5bdf1ac63e0a028af534d1d4482d5c38605b16dd6c515"
+          },
+          {
+            "before": "                construct_native_string_header_0041e870(name_header(f), c.strings, c.shadow_00d15ec4);",
+            "after": "                source_unknown(a, 0x00ab8581u, __COUNTER__, [&] {\n                    construct_native_string_header_0041e870(name_header(f), c.strings, c.shadow_00d15ec4); });",
+            "count": 1,
+            "after_character_offsets": [
+              32557
+            ],
+            "state_before_sha256": "aa8ff3acfc4cb6601aa5bdf1ac63e0a028af534d1d4482d5c38605b16dd6c515",
+            "state_after_sha256": "93a6b41fd1e1da989463bfa67f6f2816836c34173e61495800e971c32af49311"
+          },
+          {
+            "before": "                bind_model(c, a);",
+            "after": "                source_host(a, __COUNTER__, [&] { bind_model(c, a); });",
+            "count": 1,
+            "after_character_offsets": [
+              33314
+            ],
+            "state_before_sha256": "93a6b41fd1e1da989463bfa67f6f2816836c34173e61495800e971c32af49311",
+            "state_after_sha256": "51e5cca1959b29845a35ed06010781f67ddbf4927b2f9d7100691b083b1edb3e"
+          },
+          {
+            "before": "                call(a, 0x00ab85d0);\n                return_name(f, c, a);",
+            "after": "                call(a, 0x00ab85d0);\n                source_unknown(a, 0x00ab85d0u, __COUNTER__, [&] { return_name(f, c, a); });",
+            "count": 1,
+            "after_character_offsets": [
+              33479
+            ],
+            "state_before_sha256": "51e5cca1959b29845a35ed06010781f67ddbf4927b2f9d7100691b083b1edb3e",
+            "state_after_sha256": "08572e3690c6c31707b2ca95dc9e564a47813f55e8081ac81040eb09e6952368"
+          },
+          {
+            "before": "            shadow_ready(text, c, a);",
+            "after": "            source_host(a, __COUNTER__, [&] { shadow_ready(text, c, a); });",
+            "count": 1,
+            "after_character_offsets": [
+              33622
+            ],
+            "state_before_sha256": "08572e3690c6c31707b2ca95dc9e564a47813f55e8081ac81040eb09e6952368",
+            "state_after_sha256": "a1b05dfb9f9d6939dddb9164b012a30b32f7996aa495083e10a4ac8aabcaaed4"
+          },
+          {
+            "before": "            try { a.mesh_creator = geometry(c).create_native_mesh_00b73b60(a.mesh); }",
+            "after": "            try { a.mesh_creator = source_unknown(a, 0x00ab85e7u, __COUNTER__, [&] {\n                return geometry(c).create_native_mesh_00b73b60(a.mesh); }); }",
+            "count": 1,
+            "after_character_offsets": [
+              33823
+            ],
+            "state_before_sha256": "a1b05dfb9f9d6939dddb9164b012a30b32f7996aa495083e10a4ac8aabcaaed4",
+            "state_after_sha256": "88132a1e96c60596868ab25f6ce3f56a1b84e1314b54a4b22ed5d1a4e9faf7b2"
+          },
+          {
+            "before": "            require(a.mesh_creator, \"Native null mesh's later access is outside supported normal storage\");",
+            "after": "            source_host(a, __COUNTER__, [&] {\n                require(a.mesh_creator, \"Native null mesh's later access is outside supported normal storage\"); });",
+            "count": 1,
+            "after_character_offsets": [
+              34470
+            ],
+            "state_before_sha256": "88132a1e96c60596868ab25f6ce3f56a1b84e1314b54a4b22ed5d1a4e9faf7b2",
+            "state_after_sha256": "66e3a7980a76c2018751abc3563aa7e2e53fd4389f184c80613c6f1e2f63dd89"
+          },
+          {
+            "before": "        main_sections(text, f, c, a);",
+            "after": "        if constexpr (std::is_same_v<Acquired, NativeGuiTextRawModelSectionStorageAcquired>)\n            source_host(a, __COUNTER__, [&] { main_sections(text, f, c, a); });\n        else main_sections(text, f, c, a);",
+            "count": 1,
+            "after_character_offsets": [
+              34884
+            ],
+            "state_before_sha256": "66e3a7980a76c2018751abc3563aa7e2e53fd4389f184c80613c6f1e2f63dd89",
+            "state_after_sha256": "f7e236ce7f013e37cdaf3d2f893dd6a3ad6c8c3e10e2e7d414888ba9bbce3f0c"
+          },
+          {
+            "before": "    } catch (...) {\n        if (a.failure != NativeGuiTextSectionStorageAcquired::Failure::host_metadata)\n            cleanup(f, c, a);",
+            "after": "    } catch (...) {\n        const auto t = failure_transport(a);\n        if (t.runtime)\n            t.origin->retain_current(*t.runtime); // private HOST/UNKNOWN before legacy diagnostics\n        else if (a.failure != NativeGuiTextSectionStorageAcquired::Failure::host_metadata)\n            cleanup(f, c, a); // historical noexcept/secondary projection ONLY on legacy route",
+            "count": 1,
+            "after_character_offsets": [
+              35199
+            ],
+            "state_before_sha256": "f7e236ce7f013e37cdaf3d2f893dd6a3ad6c8c3e10e2e7d414888ba9bbce3f0c",
+            "state_after_sha256": "c865c7030cc737a66d97a7306564e9c8c844808010c866f585da8b64dc33b5d9"
+          },
+          {
+            "before": "} // namespace bsp\n",
+            "after": "void ensure_native_gui_text_sections_storage_00ab8530(void* text,\n    NativeGuiTextRawModelSectionStorageFrame& f, NativeGuiTextRawModelSectionStorageContext& c,\n    NativeGuiTextRawModelSectionStorageAcquired& a, const NativeGuiTextFailureOriginRuntime& runtime) {\n    a.failure_runtime_ = &runtime;\n    a.failure_origin_.begin(runtime, &a, 0x00ab8530u);\n    try {\n        sections_body(text, f, c, a);\n        a.failure_origin_.complete();\n    } catch (...) {\n        a.failure_origin_.retain_current(runtime); // exact current cause; sticky denial retained\n        if (!a.started) a.failure = decltype(a.failure)::host_metadata;\n        throw;\n    }\n}\n} // namespace bsp\n",
+            "count": 1,
+            "after_character_offsets": [
+              36207
+            ],
+            "state_before_sha256": "c865c7030cc737a66d97a7306564e9c8c844808010c866f585da8b64dc33b5d9",
+            "state_after_sha256": "b6e178d98d03d0d833af0f5a22c04d8e9cbb61f1d5501bd37c98b4ff5964ecd1"
+          },
+          {
+            "before": "    a.failure_runtime_ = &runtime;\n    a.failure_origin_.begin(runtime, &a, 0x00ab8530u);",
+            "after": "    if (!a.failure_runtime_) a.failure_runtime_ = &runtime; // never replace a retained service\n    const auto& retained_runtime = *a.failure_runtime_;\n    a.failure_origin_.begin(runtime, &a, 0x00ab8530u);",
+            "count": 1,
+            "after_character_offsets": [
+              36473
+            ],
+            "state_before_sha256": "b6e178d98d03d0d833af0f5a22c04d8e9cbb61f1d5501bd37c98b4ff5964ecd1",
+            "state_after_sha256": "46bd1622095a7c66debcdfffa5ea2ee10c0ccddf0d72300cb3df23e5de2c2e0e"
+          },
+          {
+            "before": "        a.failure_origin_.retain_current(runtime); // exact current cause; sticky denial retained",
+            "after": "        a.failure_origin_.retain_current(retained_runtime); // exact current cause; sticky denial retained",
+            "count": 1,
+            "after_character_offsets": [
+              36786
+            ],
+            "state_before_sha256": "46bd1622095a7c66debcdfffa5ea2ee10c0ccddf0d72300cb3df23e5de2c2e0e",
+            "state_after_sha256": "a4c2c5e06dfa78d0dba7769900cb7a8302f7567c70f77707262246088326db60"
+          }
+        ]
+      }
+    ],
+    "results": [
+      {
+        "path": "include/bsp/native_gui_text_failure_origin.hpp",
+        "exact_whole_file": true,
+        "restored_bytes": 7602,
+        "restored_sha256": "6a60e18b87eb88f502d664423186c555f7545736f6fd4eac40e80d8249d0aa4d",
+        "frozen_preimage": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-constructor-host\\local\\output\\constructor_slot_host_unknown_20261030\\preimage_include__bsp__native_gui_text_failure_origin.hpp",
+        "frozen_preimage_sha256": "6a60e18b87eb88f502d664423186c555f7545736f6fd4eac40e80d8249d0aa4d"
+      },
+      {
+        "path": "src/native_gui_text_failure_origin.cpp",
+        "exact_whole_file": true,
+        "restored_bytes": 5461,
+        "restored_sha256": "ef98173370f4bcd4e47855ddcbb9b3ffd4457368da0ab8e4f35130b14bfc006b",
+        "frozen_preimage": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-constructor-host\\local\\output\\constructor_slot_host_unknown_20261030\\preimage_src__native_gui_text_failure_origin.cpp",
+        "frozen_preimage_sha256": "ef98173370f4bcd4e47855ddcbb9b3ffd4457368da0ab8e4f35130b14bfc006b"
+      },
+      {
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "exact_whole_file": true,
+        "restored_bytes": 8477,
+        "restored_sha256": "6a8e8ff45a4415fbdbb81992726f2e9e4fc17c0819fde21c279ac4c3d354b245",
+        "frozen_preimage": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-constructor-host\\local\\output\\constructor_slot_host_unknown_20261030\\preimage_include__bsp__native_gui_text_glyph_quad_storage.hpp",
+        "frozen_preimage_sha256": "6a8e8ff45a4415fbdbb81992726f2e9e4fc17c0819fde21c279ac4c3d354b245"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "exact_whole_file": true,
+        "restored_bytes": 19830,
+        "restored_sha256": "f05676b34f28b95194810e4f325cbec759b0ece70b9cb41b38b64efc89d7a96e",
+        "frozen_preimage": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-constructor-host\\local\\output\\constructor_slot_host_unknown_20261030\\preimage_src__native_gui_text_glyph_quad_storage.cpp",
+        "frozen_preimage_sha256": "f05676b34f28b95194810e4f325cbec759b0ece70b9cb41b38b64efc89d7a96e"
+      },
+      {
+        "path": "include/bsp/native_gui_text_default_storage.hpp",
+        "exact_whole_file": true,
+        "restored_bytes": 5404,
+        "restored_sha256": "411848bea4eb0f79635bfca06493782d40c0b27cb92f713728d52b48648e119f",
+        "frozen_preimage": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-constructor-host\\local\\output\\constructor_slot_host_unknown_20261030\\preimage_include__bsp__native_gui_text_default_storage.hpp",
+        "frozen_preimage_sha256": "411848bea4eb0f79635bfca06493782d40c0b27cb92f713728d52b48648e119f"
+      },
+      {
+        "path": "include/bsp/native_gui_text_storage_construct.hpp",
+        "exact_whole_file": true,
+        "restored_bytes": 8628,
+        "restored_sha256": "6f142a031781e0c9e5a703abed07967790b4ff8669494330bfffb1bdea9b3876",
+        "frozen_preimage": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-constructor-host\\local\\output\\constructor_slot_host_unknown_20261030\\preimage_include__bsp__native_gui_text_storage_construct.hpp",
+        "frozen_preimage_sha256": "6f142a031781e0c9e5a703abed07967790b4ff8669494330bfffb1bdea9b3876"
+      },
+      {
+        "path": "src/native_gui_text_default_storage.cpp",
+        "exact_whole_file": true,
+        "restored_bytes": 22565,
+        "restored_sha256": "757647269fba2238edce3723fb7aa870cc4d75c71610d621177a0c581d5a85cf",
+        "frozen_preimage": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-constructor-host\\local\\output\\constructor_slot_host_unknown_20261030\\preimage_src__native_gui_text_default_storage.cpp",
+        "frozen_preimage_sha256": "757647269fba2238edce3723fb7aa870cc4d75c71610d621177a0c581d5a85cf"
+      },
+      {
+        "path": "src/native_gui_text_storage_construct.cpp",
+        "exact_whole_file": true,
+        "restored_bytes": 32680,
+        "restored_sha256": "d3ae2db948ce9109fea392b6766a6f31b397fcf773256141098c6c49a663d156",
+        "frozen_preimage": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-constructor-host\\local\\output\\constructor_slot_host_unknown_20261030\\preimage_src__native_gui_text_storage_construct.cpp",
+        "frozen_preimage_sha256": "d3ae2db948ce9109fea392b6766a6f31b397fcf773256141098c6c49a663d156"
+      }
+    ],
+    "script": "from pathlib import Path\nimport sys, json, hashlib, subprocess\nreceipt = json.loads(Path(sys.argv[1]).read_bytes())\nsource_ref = sys.argv[2] # exact packet commit; WORKTREE only before sealing\ndef digest(text): return hashlib.sha256(text.encode(\"utf-8\")).hexdigest()\nfor f in receipt[\"mechanical_inverse\"][\"files\"]:\n    raw = (Path(f[\"path\"]).read_bytes() if source_ref == \"WORKTREE\" else\n        subprocess.check_output([\"git\", \"show\", source_ref + \":\" + f[\"path\"]]))\n    assert len(raw) == f[\"after_bytes\"] and hashlib.sha256(raw).hexdigest() == f[\"after_sha256\"]\n    text = raw.decode(\"utf-8\") # NO newline normalization\n    for seam in reversed(f[\"seams\"]):\n        assert digest(text) == seam[\"state_after_sha256\"]\n        for at in reversed(seam[\"after_character_offsets\"]):\n            assert text[at:at+len(seam[\"after\"])] == seam[\"after\"]\n            text = text[:at] + seam[\"before\"] + text[at+len(seam[\"after\"]):]\n        assert digest(text) == seam[\"state_before_sha256\"]\n    restored = text.encode(\"utf-8\")\n    base = subprocess.check_output([\"git\", \"show\", receipt[\"source_base\"] + \":\" + f[\"path\"]])\n    assert restored == base and len(restored) == f[\"before_bytes\"]\n    assert hashlib.sha256(restored).hexdigest() == f[\"before_sha256\"]\n    print(f[\"path\"] + \" EXACT \" + f[\"before_sha256\"])\n",
+    "script_raw_and_embedded_utf8_bytes_identical": true,
+    "script_bytes": 1305,
+    "script_sha256": "4c64a934ad4f745d7918febef218249e91da8ecfcb9f1ead1321149a82396e91",
+    "raw_script_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-constructor-host\\local\\output\\constructor_slot_host_unknown_20261030\\inverse.py",
+    "command": "python <materialized inverse.py> reports/cc16_glyph_constructor_slot_host_unknown.json <exact packet commit>",
+    "WORKTREE_allowed_only_for_preseal_validation": true,
+    "embedded_script_materialized_and_run_separately_preseal": true,
+    "embedded_script_exit_code": 0,
+    "four_pairs_eight_whole_file_results_identical_to_immutable_git_and_frozen_preimages": true,
+    "no_production_or_frozen_evidence_write_by_inverse_script": true
+  },
+  "historical_native_evidence": {
+    "source": "immutable42143 audit, reread here; no new live Ghidra/PE analysis claimed",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "original_pe": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "format": "installed PE file; no execution",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "matches_immutable_Glyph_baseline": true
+    },
+    "native_ranges": [
+      {
+        "name": "Glyph state0 action",
+        "va": "00cb80b0",
+        "bytes": 8,
+        "sha256": "bc0d1fdba725ced26204885cbe4f6fbf69b164676eda79417fe6fcf87a656ad5",
+        "hex": "8b4d20e938f6dfff"
+      },
+      {
+        "name": "Glyph FuncInfo",
+        "va": "00deeefc",
+        "bytes": 36,
+        "sha256": "0d28587e7799bec05a77638df0c853f23d838f16b734dc26364f1dd93a8e7d07",
+        "hex": "2205931903000000e4eede00000000000000000000000000000000000000000001000000"
+      },
+      {
+        "name": "Glyph unwind map",
+        "va": "00deeee4",
+        "bytes": 24,
+        "sha256": "65d0a3f7149eae76b82869d7537a60e122dbed34cfd4819907036f4f6c5659d3",
+        "hex": "ffffffffb080cb00ffffffffb880cb00ffffffffc080cb00"
+      },
+      {
+        "name": "raw93 FuncInfo/map",
+        "va": "00deee88",
+        "bytes": 92,
+        "sha256": "ffda5d6eae48640feffda394be4e2eee904e21c8edc2accd6d1120075dc84843",
+        "hex": "2205931907000000aceede00000000000000000000000000000000000000000001000000ffffffff4080cb00000000004880cb00010000005680cb00020000006480cb00030000007280cb00040000008080cb00050000008e80cb00"
+      },
+      {
+        "name": "raw93 actions/handler",
+        "va": "00cb8040",
+        "bytes": 102,
+        "sha256": "c2590964b41df7e59bc8f533ef45286298e9175e36014ce74f36d4231b447c9d",
+        "hex": "8b4de0e9e816dfff8b4de081c1ec000000e9dae377ff8b4de081c1f4000000e9bc5c76ff8b4de081c194010000e97eec91ff8b4de081c1a4010000e9b0e377ff8b4de081c1c0010000e9925c76ff8b4de081c1c8010000e9845c76ffb888eede00e99deaf3ff"
+      },
+      {
+        "name": "ctor85 FuncInfo/map",
+        "va": "00deed34",
+        "bytes": 84,
+        "sha256": "0f018a269c614af1d2603728d34dea61d6ea88a3889f3ed3f4f4aff39b9930d2",
+        "hex": "220593190600000058edde00000000000000000000000000000000000000000001000000ffffffff207fcb0000000000287fcb00ffffffff287fcb00ffffffff417fcb00ffffffff497fcb00ffffffff517fcb00"
+      },
+      {
+        "name": "ctor85 actions/handler",
+        "va": "00cb7f20",
+        "bytes": 67,
+        "sha256": "22e6f8d993377ad08ff285d732766fce4aa3e108d3721acef5b1b18558abe9c6",
+        "hex": "8b4de8e998c9ebff8b45e483e0010f840c0000008365e4fe8d4dece9e05d76ffc38b4de8e927b0ebff8d4dece9cf5d76ff8d4dece9c75d76ffb834edde00e9e0ebf3ff"
+      }
+    ],
+    "native_maps": {
+      "Glyph": [
+        {
+          "state": 0,
+          "parent": -1,
+          "action": "00cb80b0"
+        },
+        {
+          "state": 1,
+          "parent": -1,
+          "action": "00cb80b8"
+        },
+        {
+          "state": 2,
+          "parent": -1,
+          "action": "00cb80c0"
+        }
+      ],
+      "raw93": [
+        {
+          "state": 0,
+          "parent": -1,
+          "action": "00cb8040"
+        },
+        {
+          "state": 1,
+          "parent": 0,
+          "action": "00cb8048"
+        },
+        {
+          "state": 2,
+          "parent": 1,
+          "action": "00cb8056"
+        },
+        {
+          "state": 3,
+          "parent": 2,
+          "action": "00cb8064"
+        },
+        {
+          "state": 4,
+          "parent": 3,
+          "action": "00cb8072"
+        },
+        {
+          "state": 5,
+          "parent": 4,
+          "action": "00cb8080"
+        },
+        {
+          "state": 6,
+          "parent": 5,
+          "action": "00cb808e"
+        }
+      ],
+      "constructor85": [
+        {
+          "state": 0,
+          "parent": -1,
+          "action": "00cb7f20"
+        },
+        {
+          "state": 1,
+          "parent": 0,
+          "action": "00cb7f28"
+        },
+        {
+          "state": 2,
+          "parent": -1,
+          "action": "00cb7f28"
+        },
+        {
+          "state": 3,
+          "parent": -1,
+          "action": "00cb7f41"
+        },
+        {
+          "state": 4,
+          "parent": -1,
+          "action": "00cb7f49"
+        },
+        {
+          "state": 5,
+          "parent": -1,
+          "action": "00cb7f51"
+        }
+      ]
+    },
+    "Native_AB98F0": "1747B/485ops; actual ten homes;22 Source asm/78x87 preserved",
+    "Native_AB9650": "671B/123ops/no x87, per saved immutable birth/constructor audit",
+    "Native_AB8530": "in-flight constructor phase, not completed-object POST5arg",
+    "prior_host_review_result": "b1feb25: zero actionable negative-slice Source findings; dc7 raw/embedded terminal-newline mismatch independently resolved without rewriting8f9"
+  },
+  "remaining": [
+    "No concrete actual Glyph Calls producer exists in the scoped Source search; genuine caller/provider/retention graph and exact new-overload forwarding still required",
+    "Own active Source catch/PTD/runtime/module/toolchain/SDK binding integration remains a Root gate; runtime Contract is preparation only, no foreign query or general NoThrow proof",
+    "No genuine Native-origin issuer/leaf; every Native cleanup/slot permit remains false",
+    "Glyph states1/2 and later AB9D93 are unchanged separately unadmitted origin/affinity gates",
+    "Nested providers retain their prior Source cleanup/termination qualifications; this packet guards only raw93/raw85 OWN cleanup and Glyph state0, not deeper provider origins or FH3 secondary semantics",
+    "Complete failed Text/Model/mesh/material/reservation/raw slots/providers/nested frames/homes backing must remain stable beyond failure or ended legacy widget lifetime; no disposal policy supplied",
+    "Raw122/Text binding, whole changed96/frontend admission, Original ABI/SEH/private alias/generated FP/runtime/gameplay and activation remain unproved"
+  ],
+  "validation": {
+    "Source_edits": 8,
+    "new_evidence_files": 2,
+    "mechanical_text_inverses": 8,
+    "builds": 0,
+    "behavioral_tests": 0,
+    "new_test_cases": 0,
+    "probes": 0,
+    "game_runs": 0,
+    "replays": 0,
+    "CMake_edits": 0,
+    "ledger_edits": 0,
+    "Ghidra_reads_or_writes": 0,
+    "process_actions": 0,
+    "original_install_saved_analysis_and_old_evidence_modified": false
+  },
+  "credit": {
+    "Native": false,
+    "Original": false,
+    "new_body": false,
+    "helper": false,
+    "vendor": false,
+    "CG": false,
+    "duplicate_body": false,
+    "ABI": false,
+    "runtime": false,
+    "activation": false,
+    "gameplay": false
+  },
+  "readiness": {
+    "bounded_Source_slice_implemented": true,
+    "build_tested": false,
+    "fixture_tested": false,
+    "Native_positive": false,
+    "whole_Text96_admitted": false,
+    "production_ready": false,
+    "whole_frontend_ready": false,
+    "fully_activated": false
+  },
+  "document_pin": {
+    "path": "docs/CC16_GLYPH_CONSTRUCTOR_SLOT_HOST_UNKNOWN.md",
+    "format": "UTF-8 LF bytes, no BOM",
+    "bytes": 9132,
+    "sha256": "296f77be8573742ed042698c61a470b704c0ab4941bf50341f67a1f7e2f95a90"
+  }
+}

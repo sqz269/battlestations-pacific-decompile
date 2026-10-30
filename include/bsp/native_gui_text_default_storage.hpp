@@ -79,6 +79,13 @@ struct NativeGuiTextRawModelDefaultStorageAcquired {
     void* destination{};
     Failure failure{Failure::none};
     NativeGuiTextRawModelSectionStorageAcquired sections;
+private:
+    friend struct NativeGuiTextRawModelDefaultFailureAccess;
+    friend void* construct_native_gui_text_default_storage_00ab9650(void*,
+        NativeGuiTextRawModelDefaultStorageFrame&, NativeGuiTextRawModelDefaultStorageContext&,
+        NativeGuiTextRawModelDefaultStorageAcquired&, NativeGuiTextFailureConstructorCall&);
+    const NativeGuiTextFailureOriginRuntime* failure_runtime_{};
+    NativeGuiTextFailureOrigin failure_origin_;
 };
 // Same default stores/native schedule, qualified raw internal188 transport.
 // Extra85 host_metadata failure propagates WITHOUT outer Native unwind; retain
@@ -93,4 +100,10 @@ struct NativeGuiTextRawModelDefaultStorageAcquired {
 void* construct_native_gui_text_default_storage_00ab9650(void* actual_destination,
     NativeGuiTextRawModelDefaultStorageFrame&, NativeGuiTextRawModelDefaultStorageContext&,
     NativeGuiTextRawModelDefaultStorageAcquired&);
+// Constructor-slot qualified negative route. SAME retained envelope/runtime;
+// HOST and UNKNOWN retain Text, Model188, reservations, slots and nested backing.
+// No Native cleanup/slot permission, body/ref/normal-return or ABI credit.
+void* construct_native_gui_text_default_storage_00ab9650(void* actual_destination,
+    NativeGuiTextRawModelDefaultStorageFrame&, NativeGuiTextRawModelDefaultStorageContext&,
+    NativeGuiTextRawModelDefaultStorageAcquired&, NativeGuiTextFailureConstructorCall&);
 } // namespace bsp

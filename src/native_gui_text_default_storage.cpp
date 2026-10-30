@@ -9,13 +9,39 @@
 #include <initializer_list>
 #include <stdexcept>
 #include <type_traits>
+#include <utility>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Raw Text default construction requires MSVC Win32.
 #endif
 
 namespace bsp {
+// TU-local use of private retained negative metadata; no public setter/issuer.
+struct NativeGuiTextRawModelDefaultFailureAccess final {
+    static const NativeGuiTextFailureOriginRuntime* runtime(NativeGuiTextRawModelDefaultStorageAcquired& a) noexcept { return a.failure_runtime_; }
+    static NativeGuiTextFailureOrigin& origin(NativeGuiTextRawModelDefaultStorageAcquired& a) noexcept { return a.failure_origin_; }
+};
 namespace {
+struct FailureTransport {
+    const NativeGuiTextFailureOriginRuntime* runtime{};
+    NativeGuiTextFailureOrigin* origin{};
+    const void* supplier{};
+};
+FailureTransport failure_transport(NativeGuiTextDefaultStorageAcquired&) noexcept { return {}; }
+FailureTransport failure_transport(NativeGuiTextRawModelDefaultStorageAcquired& a) noexcept {
+    return {NativeGuiTextRawModelDefaultFailureAccess::runtime(a), &NativeGuiTextRawModelDefaultFailureAccess::origin(a), &a};
+}
+template<class Acquired, class F> decltype(auto) source_host(Acquired& a, std::uint32_t source, F&& f) {
+    const auto t = failure_transport(a);
+    if (t.runtime) return t.origin->host(*t.runtime, {0, source}, t.supplier, std::forward<F>(f));
+    return std::forward<F>(f)();
+}
+template<class Acquired, class F> decltype(auto) source_unknown(Acquired& a, std::uint32_t site,
+    std::uint32_t source, F&& f) {
+    const auto t = failure_transport(a);
+    if (t.runtime) return t.origin->unknown(*t.runtime, {site, source}, t.supplier, std::forward<F>(f));
+    return std::forward<F>(f)();
+}
 using Word = std::uint32_t;
 void require(bool condition, const char* message) {
     if (!condition) throw std::invalid_argument(message);
@@ -202,7 +228,7 @@ void before_base(void*, NativeGuiTextDefaultStorageContext&, NativeGuiTextDefaul
 void before_base(void* raw, NativeGuiTextRawModelDefaultStorageContext& c,
     NativeGuiTextRawModelDefaultStorageAcquired& a) {
     a.failure = decltype(a.failure)::host_metadata;
-    raw_base_admission(raw, c); // reauthenticate AFTER preceding cleanup callbacks
+    source_host(a, __COUNTER__, [&] { raw_base_admission(raw, c); }); // AFTER preceding callbacks
     a.failure = decltype(a.failure)::provider_call;
 }
 template<class Context, class Acquired>
@@ -264,12 +290,12 @@ void completed(void*, NativeGuiTextDefaultStorageContext&, NativeGuiTextDefaultS
 void completed(void* raw, NativeGuiTextRawModelDefaultStorageContext& c,
     NativeGuiTextRawModelDefaultStorageAcquired& a) {
     a.failure = decltype(a.failure)::host_metadata;
-    raw_base_admission(raw, c);
-    require(word(raw) == 0x00d5c6c8 && a.sections.complete &&
+    source_host(a, __COUNTER__, [&] { raw_base_admission(raw, c); });
+    source_host(a, __COUNTER__, [&] { require(word(raw) == 0x00d5c6c8 && a.sections.complete &&
         a.sections.model.reference && a.sections.model.construction.complete &&
         a.sections.model.association.phase == NativeModelStorageGeometryPhase::complete &&
         word(raw, 0x188) == reinterpret_cast<Word>(a.sections.model.actual),
-        "Raw Text DEFAULT completion requires its genuine completed internal Model graph");
+        "Raw Text DEFAULT completion requires its genuine completed internal Model graph"); });
     a.failure = decltype(a.failure)::none;
 }
 void failed(void* raw, NativeGuiTextDefaultStorageContext& c, NativeGuiTextDefaultStorageAcquired& a) {
@@ -277,6 +303,11 @@ void failed(void* raw, NativeGuiTextDefaultStorageContext& c, NativeGuiTextDefau
 }
 void failed(void* raw, NativeGuiTextRawModelDefaultStorageContext& c,
     NativeGuiTextRawModelDefaultStorageAcquired& a) {
+    const auto t = failure_transport(a);
+    if (t.runtime) {
+        t.origin->retain_current(*t.runtime); // exact private cause BEFORE public diagnostics
+        return; // no Native issuer: deny ALL nested outer unwind on this used route
+    }
     if (a.failure == decltype(a.failure)::host_metadata ||
         a.sections.failure == decltype(a.failure)::host_metadata) {
         a.failure = decltype(a.failure)::host_metadata;
@@ -289,15 +320,18 @@ void failed(void* raw, NativeGuiTextRawModelDefaultStorageContext& c,
         unwind(raw, c, a);
     }
 }
-template<class Frame, class Context, class Acquired>
-void* construct_default(void* raw, Frame& f, Context& c, Acquired& a) {
-    preflight(raw, f, c, a);
+struct NoBodyReturn { void operator()() const {} };
+template<class Frame, class Context, class Acquired, class BodyReturned = NoBodyReturn>
+void* construct_default(void* raw, Frame& f, Context& c, Acquired& a, BodyReturned body_returned = {}) {
+    source_host(a, __COUNTER__, [&] { preflight(raw, f, c, a); });
     a.started = true;
     a.destination = raw;
     try {
         provider(a);
         a.active_call_site = 0x00ab9671;
-        construct_native_gui_widget_base_00aa9390(raw, 3, c.one_00d7a24c);
+        source_unknown(a, 0x00ab9671u, __COUNTER__, [&] {
+            construct_native_gui_widget_base_00aa9390(raw, 3, c.one_00d7a24c);
+        });
         a.base_complete = true;
         word(raw) = 0x00d5c6c8; // AB9678
         a.native_eh_state = 0; // AB967E, AFTER the derived stamp
@@ -368,8 +402,18 @@ void* construct_default(void* raw, Frame& f, Context& c, Acquired& a) {
         a.derived_complete = true;
         a.sections_entered = true;
         a.active_call_site = 0x00ab98d8;
-        ensure_native_gui_text_sections_storage_00ab8530(raw, f.sections, c.sections, a.sections);
-        completed(raw, c, a);
+        if constexpr (std::is_same_v<Acquired, NativeGuiTextRawModelDefaultStorageAcquired>) {
+            const auto t = failure_transport(a);
+            if (t.runtime)
+                t.origin->child(*t.runtime, {0x00ab98d8u, __COUNTER__}, &a.sections,
+                    0x00ab8530u, a.sections.failure_origin(), [&] {
+                        ensure_native_gui_text_sections_storage_00ab8530(
+                            raw, f.sections, c.sections, a.sections, *t.runtime);
+                    });
+            else ensure_native_gui_text_sections_storage_00ab8530(raw, f.sections, c.sections, a.sections);
+        } else ensure_native_gui_text_sections_storage_00ab8530(raw, f.sections, c.sections, a.sections);
+        body_returned(); // PRIVATE negative frontier IMMEDIATELY after actual ctor85 normal return
+        source_host(a, __COUNTER__, [&] { completed(raw, c, a); });
         a.complete = true;
         return raw;
     } catch (...) {
@@ -389,6 +433,27 @@ void* construct_native_gui_text_default_storage_00ab9650(void* raw,
     NativeGuiTextRawModelDefaultStorageAcquired& a) {
     try { return construct_default(raw, f, c, a); }
     catch (...) {
+        if (!a.started) a.failure = decltype(a.failure)::host_metadata;
+        throw;
+    }
+}
+void* construct_native_gui_text_default_storage_00ab9650(void* raw,
+    NativeGuiTextRawModelDefaultStorageFrame& f, NativeGuiTextRawModelDefaultStorageContext& c,
+    NativeGuiTextRawModelDefaultStorageAcquired& a, NativeGuiTextFailureConstructorCall& call) {
+    // Unprepared envelopes have no qualified catch service. Never query a CRT
+    // to discover that domain, nor run any cleanup on this pre-entry rejection.
+    if (!call.runtime_) throw std::invalid_argument("Constructor envelope requires its SAME qualified Source runtime");
+    call.bind_once(raw, a.failure_origin_, &a); // before Source preflight/Native work; invalidation is sticky
+    if (!a.failure_runtime_) a.failure_runtime_ = call.runtime_; // never replace a retained service
+    a.failure_origin_.begin(*a.failure_runtime_, &a, 0x00ab9650u);
+    try {
+        void* const result = construct_default(raw, f, c, a, [&] {
+            call.body_returned(a.failure_origin_, &a); // not whole Source completion or raw122 birth
+        });
+        a.failure_origin_.complete();
+        return result;
+    } catch (...) {
+        a.failure_origin_.retain_current(*a.failure_runtime_); // sticky HOST/UNKNOWN, before diagnostic flag
         if (!a.started) a.failure = decltype(a.failure)::host_metadata;
         throw;
     }
