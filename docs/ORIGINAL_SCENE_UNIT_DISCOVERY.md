@@ -29,3 +29,8 @@ Discovery is bounded and unsuspended; link/name changes, address reuse and an
 incomplete walk are explicit limits. Numeric layout validation alone does not
 classify a ship or establish visual identity. Live getter forms and selected
 names must be retained with the run receipt.
+
+The snapshot also records `game+1FE4h` and `game+6ACh`. Live saved-program
+instructions `008AE113..008AE130` show the Lua `GetDifficulty` rule: a nonzero
+`1FE4h` returns literal 2, otherwise it returns `6ACh`. This records effective
+script difficulty independently of the menu/setup path.

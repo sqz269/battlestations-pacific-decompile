@@ -97,10 +97,16 @@ def snapshot(reader, identity, patterns, maximum):
         entity = next_entity
     if reader.u32(GAME_GLOBAL) != game or reader.u32(game + 0x19CC) != registry:
         raise SampleError('game or registry changed during snapshot')
+    mode = reader.u32(game + 0x1FE4)
+    effective_difficulty = reader.u32(game + 0x6AC)
     return {'schema_version': 1, 'kind': 'original_game_named_unit_discovery',
             'recorded_utc': utc_now(), 'executable': identity,
             'game_address': f'0x{game:08X}', 'registry_address': f'0x{registry:08X}',
             'controlled_address': f'0x{controlled:08X}', 'entities_visited': len(seen),
+            'mission_context': {'non_campaign_flag': mode,
+                                'effective_difficulty_6ac': effective_difficulty,
+                                'lua_GetDifficulty': 2 if mode else effective_difficulty,
+                                'evidence': '008AE113..008AE130'},
             'complete_link_walk': entity == 0, 'match_patterns': patterns,
             'units': units, 'entities': entities, 'errors_head': errors,
             'getters': getters,
