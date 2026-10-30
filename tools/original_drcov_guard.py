@@ -220,6 +220,19 @@ def trace_receipts(directory, executable, entry_rva, pid):
     return result
 
 
+def observer_exit_failure(data, primary_failure, returncode):
+    """An observer following a dead root must not replace the root diagnosis."""
+    message = f"Clock observer did not exit successfully (exit_code={returncode})"
+    data["observer_error"] = message
+    if primary_failure is not None:
+        data.setdefault("secondary_errors", []).append({"component": "clock_observer",
+            "exit_code": returncode, "error": message})
+        return primary_failure
+    failure = RuntimeError(message)
+    data.update(phase="failed", error=str(failure))
+    return failure
+
+
 def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe, arguments, token_mode, dr_root,
               *, isolated=None):
     if token_mode != "medium-write-locked":
@@ -511,7 +524,7 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe,
             except BaseException as exc:
                 data["observer_cleanup_error"] = f"{type(exc).__name__}: {exc}"
             if observer.returncode != 0:
-                failure = RuntimeError("Clock observer did not exit successfully"); data.update(phase="failed", error=str(failure))
+                failure = observer_exit_failure(data, failure, observer.returncode)
         if observer_output:
             observer_output.close()
         verification_errors = []
