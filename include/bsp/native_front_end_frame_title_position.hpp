@@ -8,6 +8,10 @@
 namespace bsp::game { class GameNativeReadOnlyData; }
 namespace bsp {
 struct NativeStringRawPoolContext;
+struct NativeGuiWidgetTransformScratch;
+struct NativeGuiWidgetTransformBindings;
+struct GuiWidgetBounds;
+struct NativeFrontEndFramePositionScratch;
 
 // Preentry borrowed capability for the SAME authenticated original-VA RO owner.
 // This view holds pointer metadata, never a replacement literal/constant bank.
@@ -39,6 +43,20 @@ private:
 NativeFrontEndFrameTitlePositionData borrow_native_front_end_frame_title_position_data(
     const game::GameNativeReadOnlyData&);
 
+// Preprepared nonowning call metadata, not a transform/widget/default owner.
+// Borrow the SAME genuine raw AA7DC0 callee domain. Transform scratch has its
+// initialized 1DCh preimage, including unwritten holes; bounds scratch is
+// distinct. Bindings borrow real one/negative-zero/E12FC4 and actual captured-
+// target/current-receiver dispatch; half borrows authenticated D7A280.
+// All scratch/metadata are disjoint from XYZ/widget/transitive provider backing.
+// Enabled bounds require the CURRENT real model/geometry/element graph.
+struct NativeFrontEndFrameLocalPositionCall {
+    NativeGuiWidgetTransformScratch& transform_scratch;
+    NativeGuiWidgetTransformBindings& transform_bindings;
+    GuiWidgetBounds& bounds_scratch;
+    const volatile double& actual_half_00d7a280;
+};
+
 // Genuine required operations, still unbound to the actual retained application.
 // A captured receiver may differ from the CURRENT publication. No fallback or
 // typed widget/Mesh substitution is supplied. A numeric target is DATA only.
@@ -47,9 +65,13 @@ struct NativeFrontEndFrameTitlePositionBindings {
     virtual void* frame_004c1ac0() = 0;
     virtual void text_source_00abaed0(void* captured_text,
         const void* captured_native_header8, std::uint32_t one) = 0;
-    virtual const void* widget_size_00aa6740(void* captured_widget) = 0;
-    virtual void set_local_position_00aa7dc0(void* captured_widget,
-        const void* captured_xyz) = 0;
+    // Pure metadata: select/consume a distinct stable already-prepared call
+    // record by parent identity only. No Native operand read/work, allocation,
+    // reentry, construction/reset/reuse, FP effect, default/capacity/shortage
+    // policy. Caller retains ALL selections, scratch, genuine nested contexts
+    // and actual graph through return/failure; this is not a setter body.
+    virtual NativeFrontEndFrameLocalPositionCall& prepared_local_position_call(
+        NativeFrontEndFramePositionScratch& parent) = 0;
     virtual void call_widget_virtual58(void* captured_widget,
         std::uint32_t captured_profile, std::uint32_t captured_target,
         void* actual_float2) = 0;

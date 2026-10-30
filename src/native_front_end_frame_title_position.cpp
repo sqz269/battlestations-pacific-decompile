@@ -1,5 +1,6 @@
 #include "bsp/native_front_end_frame_title_position.hpp"
 #include "bsp/native_gui_widget_child_lookup_storage.hpp"
+#include "bsp/native_gui_widget_position.hpp"
 
 #include "bsp/cc13_gui1.hpp"
 #include "bsp/game_native_readonly_data.hpp"
@@ -24,6 +25,11 @@ Word address(const volatile void* p) noexcept {
 }
 void* pointer(Word value) noexcept {
     return reinterpret_cast<void*>(static_cast<std::uintptr_t>(value));
+}
+// Whole AA6740 LEA EAX,[ECX+20h]; RET. Address only, at each reached call
+// site; no FP callback, size snapshot, typed widget or extra helper credit.
+const void* widget_size_address_00aa6740(void* captured_widget) {
+    return pointer(address(captured_widget) + 0x20u);
 }
 Word load(const volatile void* p, Word offset = 0) noexcept {
     return *reinterpret_cast<const volatile Word*>(
@@ -159,7 +165,7 @@ __declspec(noinline) void set_native_front_end_frame_title_005189b0(
     const auto* const game_bytes = static_cast<const volatile unsigned char*>(captured_game);
     Word* actual_size;
     if (game_bytes[0x61f] != 0 || game_bytes[0x634] != 0) {
-        const void* const captured_size = c.bindings.widget_size_00aa6740(captured_box);
+        const void* const captured_size = widget_size_address_00aa6740(captured_box);
         actual_size = scratch.plus_or_fixed_size_float_bits;
         constant_width_size(captured_size, c.data.fixed_width_00ce3e18(), actual_size);
     } else {
@@ -191,7 +197,7 @@ __declspec(noinline) void set_native_front_end_frame_title_005189b0(
             mov minimum_arm, 1
         title_comparison_done:
         }
-        const void* const captured_size = c.bindings.widget_size_00aa6740(captured_box);
+        const void* const captured_size = widget_size_address_00aa6740(captured_box);
         if (minimum_arm) {
             actual_size = scratch.minimum_size_float_bits;
             constant_width_size(captured_size, c.data.minimum_width_00cec3e4(), actual_size);
@@ -226,8 +232,14 @@ __declspec(noinline) void set_native_front_end_frame_title_position_005186b0(
     void* const captured_text = find_and_return_name(scratch.title_text_name_header, c, true);
     construct_position_name(scratch.frame_box_name_header, c.data.frame_box_name_00cec3c4(), 17, c);
     void* const captured_box = find_and_return_name(scratch.frame_box_name_header, c, true);
-    c.bindings.set_local_position_00aa7dc0(captured_box, captured_box_xyz);
-    c.bindings.set_local_position_00aa7dc0(captured_text, captured_title_xyz);
+    auto& box_call = c.bindings.prepared_local_position_call(scratch);
+    set_native_gui_widget_local_position_00aa7dc0(captured_box, captured_box_xyz,
+        box_call.transform_scratch, box_call.transform_bindings,
+        box_call.bounds_scratch, box_call.actual_half_00d7a280);
+    auto& title_call = c.bindings.prepared_local_position_call(scratch);
+    set_native_gui_widget_local_position_00aa7dc0(captured_text, captured_title_xyz,
+        title_call.transform_scratch, title_call.transform_bindings,
+        title_call.bounds_scratch, title_call.actual_half_00d7a280);
 }
 
 __declspec(noinline) void get_native_front_end_frame_title_position_00518820(
