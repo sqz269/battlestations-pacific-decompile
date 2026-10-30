@@ -1,0 +1,67 @@
+{
+  "address": "0088bec0",
+  "name": "execute_native_lua_log_0088bec0",
+  "status": "source_reviewed_single_strict_object_pass",
+  "source": "src/native_lua_log_raw.cpp",
+  "header": "include/bsp/native_lua_log_raw.hpp",
+  "documentation": "docs/NATIVE_LUA_LOG_RAW.md",
+  "source_ready": false,
+  "callback_registered": false,
+  "startup_activated": false,
+  "original_body_contract": "31instructions; no Lua state/argument read; actual temporary effects before EAX0/plainRET; ordinary new Context/Frame interface, not Lua C callback or Original ABI",
+  "source_sha256": {
+    "include/bsp/native_lua_log_raw.hpp": "741067ea87ad950a06fd79827b15bd1e064759a7d6e0fd88588b21981bf38a42",
+    "src/native_lua_log_raw.cpp": "557f86901efe2db9dfa2eb367ca4ae2406ad2bb5767aa2f48fe7db659d2f2bbb"
+  },
+  "evidence": {
+    "asm_sha256": "51968c511717ddc7152f120ca777e97e0cc05f4c5411418ad60f89cbe10f00ce",
+    "design_sha256": "f208b7fdecb4a3edaa85ed5eb31731402a4d6729e73c7633520d0ed6d317de94",
+    "literal_address": "00d112d4",
+    "literal_bytes": 18,
+    "literal_hex": "6c75614d575f4c6f67206661696c65643a00"
+  },
+  "epochs": [
+    "uninitialized private scratch receives LENGTH0 thenDATA0",
+    "genuine RAW41DD40 length17 preserve1 actual normal return",
+    "CURRENT DATA/null gate then nonNULL onceCURRENTlen+1 DWORDwrap BEFORE Sourcehealthy",
+    "always genuineBF7680(capturedptr,actualprefix,capturedcount,SAMEactualfeatureRef), evenwrapped0; actualreturn captured BEFOREhealthy",
+    "fresh actual419CC0 aftercopy; capturedpool BEFOREhealthy\u2192BD",
+    "genuineBD1510 SAMEearlierDATA/count and currentAA4; actualnormaldisposition BEFOREposthealthy",
+    "privatehealthy normal completion/return0; no late header read"
+  ],
+  "failure_policy": {
+    "entry": "privatepoison beforethrow outside rejected effects scope",
+    "admitted_cpp_escape": "latch/rethrow only; NO native cleanup on any edge",
+    "returned_buffer": "actualnormalBD marked beforepostfence; ended pointers are history, never cleanup/retry permit",
+    "late_status_dtor": "own metadata only; caller retains Frame/partial raw/provider debt",
+    "source_fences": "explicit Source policy, not Native physical-stack/FH3/hardware equivalence"
+  },
+  "validation": {
+    "primary_and_independent_code_reviews": "Root+Game exact741067ea/557f8690 beforecompile",
+    "compile_count": 1,
+    "compile_receipt_sha256": "7a730173bbb95e60052cdbf45d7637756d6848130f7b648147ff10a2c6cf6122",
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_lua_log_raw_frame_20261030\\object_build\\raw_lua_log_object.dir\\Release\\native_lua_log_raw.obj",
+      "bytes": 14372,
+      "sha256": "5d97e79e60fafbd85e55fb9d40028920a6a21a99f5473cb5cbe04705e761373a",
+      "machine": "0x14c"
+    },
+    "symbol_receipt_sha256": "becf9e827e2000a29d13d6bd251860b803d611fff9003ed3c7abfdd33b2822e1",
+    "actual_symbols": {
+      "entry": "049 00000000 SECT18 notype ()    External     | ?execute_native_lua_log_0088bec0@bsp@@YAHABVNativeLuaLogRawContext@1@AAVNativeLuaLogRawFrame@1@@Z (int __cdecl bsp::execute_native_lua_log_0088bec0(class bsp::NativeLuaLogRawContext const &,class bsp::NativeLuaLogRawFrame &))",
+      "context_ctor": "048 00000000 SECT4  notype ()    External     | ??0NativeLuaLogRawContext@bsp@@QAE@AAUNativeStringRawPoolContext@1@ADIPBXI@Z (public: __thiscall bsp::NativeLuaLogRawContext::NativeLuaLogRawContext(struct bsp::NativeStringRawPoolContext &,unsigned int const volatile &,void const *,unsigned int))",
+      "frame_ctor": "04A 00000000 SECT5  notype ()    External     | ??0NativeLuaLogRawFrame@bsp@@QAE@ABVNativeLuaLogRawContext@1@@Z (public: __thiscall bsp::NativeLuaLogRawFrame::NativeLuaLogRawFrame(class bsp::NativeLuaLogRawContext const &))"
+    },
+    "provider_proof_sha256": "11998bbbcc6daf7d507c7bec61cacd06893d952df2d16e4282f0a8b6e2b87641",
+    "old_tracked_source_diff_empty": true,
+    "old_provider_legacy_count": 10
+  },
+  "no_new_vendor_copy_or_host_payload_copy": true,
+  "no_callback_tls_vm_table_adoption": true,
+  "local_native_cleanup": false,
+  "abi_compatible": false,
+  "game_validated": false,
+  "new_native_body_credit": false,
+  "new_tests": 0,
+  "new_entry_or_game_invoked": false
+}

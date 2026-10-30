@@ -1,0 +1,39 @@
+{
+  "address": "0041e350",
+  "status": "qualified_raw_source_primary_independent_reviewed_single_strict_object_pass",
+  "source": "src/native_string_raw_assign_cstring.cpp",
+  "header": "include/bsp/native_string_raw_assign_cstring.hpp",
+  "documentation": "docs/NATIVE_STRING_RAW_ASSIGN_CSTRING.md",
+  "base": "ca3cce39c7715d38e9d0c23a7bd9025ceb9e9f87",
+  "original_abi": "ECX destination8; nullable source stack; EAX same; RET4; ordinary Source only",
+  "normal_instructions": 32,
+  "last_native_RET4": "0041e392",
+  "saved_asm_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0041e350\\assembly.txt",
+  "saved_asm_sha256": "7f77d22fcbe8a1cf09f28fbf9f53aed3406826aee1654dfa6261cae22f42b13e",
+  "accepted_design_sha256": "262668ec9b506133d14b4c0f216a908f0f5632eaf60400b6813c937f477c72e5",
+  "epochs": [
+    "original nullable source/no destination clear",
+    "wrapped BYTE scan orrequest0",
+    "real SAME-cell raw41DD40 preservefalse",
+    "CURRENT DATA first/nullskip",
+    "CURRENT length -> genuine BF7680 even0 with ORIGINALsource/SAMEfeatureRef"
+  ],
+  "no_local_Frame_cleanup_adapter_or_error_repair": true,
+  "provider_preservation_sha256": "6ca52c04c4e8666f0dddadb3060680cbf374f058725ebf685969541d6e74b8ad",
+  "strict_object": {
+    "compile_count": 1,
+    "compile_exit": 0,
+    "coff_machine": "014c",
+    "sha256": "28e6687cbc2582fea6716584e6ee54bf7d8eeb9183b457e87e6eec078ef91744",
+    "receipt_sha256": "cb597ed08e2441fe982360886a4b13405012db632ec51ca84f7478fc70a74c4c",
+    "actual_symbols_sha256": "594db86ac6c968a9b97a9a4f2f7a8bcc8701c053c58ed9d228bf10920a5e707b"
+  },
+  "source_ready": false,
+  "abi_compatible": false,
+  "game_validated": false,
+  "new_native_body_credit": false,
+  "vendor_body_credit": false,
+  "new_tests": 0,
+  "strict_object_compile_invoked": true,
+  "linked_build_or_entry_invoked": false
+}
