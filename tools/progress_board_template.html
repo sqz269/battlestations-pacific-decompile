@@ -299,7 +299,10 @@ tr.hidden { display: none; }
   const reachValue = (n) => Number.isFinite(n) ? fmt(n) : 'Not measured';
   const reachRun = (side) => {
     const run = D.coverage?.runs?.[side];
-    return `${esc(D.coverage?.mission || 'No mission')} · ${esc(run?.id || 'no trace')} · execution reach only`;
+    const evidence = run?.method === 'classic_debugger_first_entry'
+      ? 'first-entry reach; unhit unknown'
+      : side === 'bsp' ? 'verified body reach' : 'execution reach only';
+    return `${esc(D.coverage?.mission || 'No mission')} · ${esc(run?.id || 'no trace')} · ${esc(evidence)}`;
   };
   $('#kpis').innerHTML = [
     ['Game code reconstructed', fmt(K.game_done), `<b>+${fmt(K.game_rate24)}</b> in the last 24 h; ${fmt(K.functions)} including libraries; ${fmt(K.pc24_debt)} carry PC24 precision debt`],

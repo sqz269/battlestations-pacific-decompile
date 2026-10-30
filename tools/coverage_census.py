@@ -13,6 +13,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -85,6 +86,14 @@ class Observation:
             raise CensusError("invalid normalized observation span")
         if self.entry_count is not None and (type(self.entry_count) is not int or self.entry_count <= 0):
             raise CensusError("entry-count providers must omit zero observations and reject negative counts")
+
+
+@dataclass(frozen=True)
+class EntryHit:
+    """An exact function-start observation, with no span or call count."""
+    address: int
+    thread_id: int
+    sequence: int
 
 
 class RangeIndex:
@@ -321,6 +330,104 @@ def attribute_original(observations, catalog):
                 counts["entry_count_records_without_exact_function_start"] += 1
     return {"hits": hits, "undefined_hits": undefined_hits, "unattributed_ranges": merged_ranges(unknown),
             "unattributed_block_count": len(unknown_blocks), "entry_counts": entries, "counts": dict(counts)}
+
+
+def read_original_entries(path, manifest_path, manifest_pin, index_path, wire_path, image, catalog):
+    """Validate a qualified one-shot trace; unhit starts never become negatives."""
+    def require(condition, message):
+        if not condition:
+            raise CensusError("entry trace: " + message)
+
+    def integer(value, minimum=1, maximum=0xffffffff):
+        return type(value) is int and minimum <= value <= maximum
+
+    def address(value):
+        require(isinstance(value, str) and re.fullmatch(r"[0-9a-fA-F]{8}", value), "address must be eight hex digits")
+        return int(value, 16)
+
+    manifest_path, path = Path(manifest_path), Path(path)
+    manifest_hash = sha256(manifest_path)
+    require(isinstance(manifest_pin, str) and re.fullmatch(r"[0-9a-fA-F]{64}", manifest_pin)
+            and manifest_hash == manifest_pin.lower(), "manifest differs from explicit SHA256 pin")
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
+    require(isinstance(manifest, dict) and manifest.get("schema") == "bsp.original-entry.targets.v1", "unsupported target manifest")
+    require(image and image["machine"] == 0x14c and image["image_base"] == 0x400000, "fixed-base Win32 original image required")
+    pins = {"image_sha256": image["sha256"], "image_base": image["image_base"], "image_size": image["image_size"],
+            "index_sha256": sha256(index_path), "wire_sha256": sha256(wire_path)}
+    for key, expected in pins.items():
+        require(type(manifest.get(key)) is type(expected) and manifest[key] == expected, "manifest pin mismatch: " + key)
+    raw = Path(image["path"]).read_bytes()
+    require(hashlib.sha256(raw).hexdigest() == image["sha256"], "image changed while validating manifest")
+    points = {}
+    require(isinstance(manifest.get("points"), list), "manifest points must be a list")
+    for point in manifest["points"]:
+        require(isinstance(point, dict), "invalid target point")
+        start = address(point.get("address"))
+        require(start not in points and integer(point.get("expected_byte"), 0, 255)
+                and type(point.get("board_target")) is bool, "duplicate/invalid target point")
+        rva = start - image["image_base"]
+        section = next((s for s in image["sections"] if s["rva"] <= rva < s["rva"] + s["file_size"]), None)
+        require(0 <= rva < image["image_size"] and section and section["flags"] & 0x20000000,
+                "target is not in a file-backed executable section")
+        offset = section["file_offset"] + rva - section["rva"]
+        require(offset < len(raw) and raw[offset] == point["expected_byte"] != 0xcc, "target byte differs or is already INT3")
+        points[start] = point
+    game_starts = {a for a, row in catalog.functions.items() if row["board_game"]}
+    require(points.keys() == game_starts, "manifest must retain the complete frozen game-start cohort")
+    hits, header, terminal = {}, None, None
+    with path.open(encoding="utf-8-sig") as stream:
+        for line_number in range(len(points) + 3):
+            line = stream.readline(65537)
+            if not line:
+                break
+            require(len(line) <= 65536 and terminal is None, "oversize line or records after terminal")
+            row = json.loads(line)
+            require(isinstance(row, dict), "JSONL records must be objects")
+            if header is None:
+                require(row.get("schema") == "bsp.original-entry.trace.v1" and row.get("kind") == "header", "missing trace header")
+                require(isinstance(row.get("run_id"), str) and 0 < len(row["run_id"]) <= 200
+                        and integer(row.get("pid")) and integer(row.get("process_created_filetime"), maximum=0xffffffffffffffff), "invalid root/run identity")
+                require(row.get("bb_counts") is None and row.get("call_counts") is None, "first-hit source cannot supply BB/call counts")
+                for key, expected in {**pins, "manifest_sha256": manifest_hash}.items():
+                    require(type(row.get(key)) is type(expected) and row[key] == expected, "header pin mismatch: " + key)
+                header = row
+            elif row.get("kind") == "entry_hit":
+                start = address(row.get("address"))
+                require(start in points and start not in hits, "hit is not a unique exact manifest start")
+                require(type(row.get("pid")) is int and row["pid"] == header["pid"]
+                        and integer(row.get("thread_id")) and integer(row.get("sequence"))
+                        and row["sequence"] == len(hits) + 1, "invalid hit PID/thread/sequence")
+                hits[start] = EntryHit(start, row["thread_id"], row["sequence"])
+            else:
+                require(row.get("kind") == "terminal" and row.get("schema") == "bsp.original-entry.trace.v1", "unknown record kind")
+                for key in ("run_id", "pid", "process_created_filetime"):
+                    require(type(row.get(key)) is type(header[key]) and row[key] == header[key], "terminal identity mismatch: " + key)
+                terminal = row
+        else:
+            raise CensusError("entry trace: too many records")
+    require(header is not None and terminal is not None, "missing header/terminal")
+    require(type(terminal.get("hit_count")) is int and terminal["hit_count"] == len(hits), "terminal hit count mismatch")
+    require(all(terminal.get(key) is True for key in ("admitted", "source_preservation_verified", "same_scene_verified", "complete_window"))
+            and terminal.get("reason") == "game_time_target" and terminal.get("stop_classification") == "forced_window_stop",
+            "window is not a qualified source-preserved forced target stop")
+    jobs, clock = terminal.get("final_job_active"), terminal.get("clock")
+    require(isinstance(jobs, list) and jobs and all(type(n) is int and n == 0 for n in jobs), "owned jobs are not confirmed empty")
+    require(integer(terminal.get("root_exit_code"), 0), "missing forced root exit status")
+    require(isinstance(clock, dict) and type(clock.get("game_time")) in (int, float)
+            and math.isfinite(clock["game_time"]) and clock["game_time"] >= 240
+            and integer(clock.get("fixed_step_count")) and not clock.get("clock_torn")
+            and not clock.get("fixed_step_active"), "terminal lacks a clean native 240-second clock")
+    metadata = {"method": "function_entry_first_hit", "trace": str(path.resolve()), "sha256": sha256(path),
+                "manifest": str(manifest_path.resolve()), "manifest_sha256": manifest_hash,
+                "pins": pins, "run_id": header["run_id"], "pid": header["pid"],
+                "process_created_filetime": header["process_created_filetime"], "qualified_window": True,
+                "frozen_game_starts": len(points), "board_target_starts": sum(p["board_target"] for p in points.values()),
+                "outside_board_target_starts": sum(not p["board_target"] for p in points.values()),
+                "first_entry_hits": len(hits), "bb_records": None, "distinct_selected_blocks": None,
+                "call_counts": None, "all_unhit_unknown": True, "terminal": terminal,
+                "entry_boundary_evidence": manifest.get("entry_boundary_evidence")}
+    return {"method": "function_entry_first_hit", "hits": hits, "targets": points,
+            "entry_counts": {}, "metadata": metadata}, metadata
 
 
 def identifier(name):
@@ -740,10 +847,16 @@ def host_mentions(catalog):
 
 def report(catalog, resolver, original, bsp, originals, bsps):
     mentions = host_mentions(catalog)
+    cached_mentions = {a: set(row["stand_in_hosts"]) for a, row in resolver.rows.items() if "stand_in_hosts" in row}
+    mentions.update(cached_mentions)
+    entries = original is not None and original.get("method") == "function_entry_first_hit"
+    entry_targets = original["targets"] if entries else {}
     rows = []
     for address, function in sorted(catalog.functions.items()):
         wire = resolver.rows.get(address, {})
         orig_hit = address in original["hits"] if original is not None else None
+        if entries and not orig_hit:
+            orig_hit = None
         if original is not None and address not in catalog.range_starts and not orig_hit:
             orig_hit = None
         bsp_hit = None
@@ -761,15 +874,19 @@ def report(catalog, resolver, original, bsp, originals, bsps):
                      "has_function_ledger": function["recon_kind"] == "function",
                      "reconstruction_status": function["recon_status"],
                      "orig_executed": orig_hit, "bsp_executed": bsp_hit,
-                     "orig_distinct_blocks": len(original["hits"].get(address, ())) if original is not None else None,
+                     "orig_distinct_blocks": len(original["hits"].get(address, ())) if original is not None and not entries else None,
                      "bsp_distinct_blocks": len(bsp["hits"].get(address, ())) if bsp is not None else None,
                      "orig_entry_count": original["entry_counts"].get(address) if original is not None else None,
                      "bsp_entry_count": bsp["entry_counts"].get(address) if bsp is not None else None,
                      "original_caller_count": catalog.callers.get(address, 0),
+                     "orig_entry_targeted": address in entry_targets if entries else None,
+                     "orig_board_target": entry_targets[address]["board_target"] if address in entry_targets else None,
+                     "orig_first_entry_sequence": original["hits"][address].sequence if entries and orig_hit else None,
                      "wire_state": wire.get("state"), "ident": wire.get("ident"),
                      "ident_via": wire.get("ident_via"), "source": wire.get("source", function["recon_source"]),
                      "implementation_source": wire.get("implementation_source"),
-                     "stand_in_hosts": sorted(mentions.get(address, ()))})
+                     "stand_in_hosts": sorted(mentions.get(address, ())),
+                     "stand_in_hosts_source": "frozen_wire_cache" if address in cached_mentions else "current_worktree_source"})
 
     def cross_key(row):
         return f"orig_{'unknown' if row['orig_executed'] is None else 'yes' if row['orig_executed'] else 'no'}_bsp_{'unknown' if row['bsp_executed'] is None else 'yes' if row['bsp_executed'] else 'no'}"
@@ -777,7 +894,7 @@ def report(catalog, resolver, original, bsp, originals, bsps):
     game_rows = [row for row in rows if row["board_game"]]
     cross = Counter(cross_key(row) for row in game_rows)
     frontier = sorted((row for row in game_rows if row["orig_executed"] is True and row["bsp_executed"] is False),
-                      key=lambda row: (-row["orig_distinct_blocks"], -row["original_caller_count"], row["address"]))
+                      key=lambda row: ((0 if entries else -row["orig_distinct_blocks"]), -row["original_caller_count"], row["address"]))
     frontier_category, frontier_host = defaultdict(list), defaultdict(list)
     for row in frontier:
         frontier_category[row["category"]].append(row["address"])
@@ -790,7 +907,7 @@ def report(catalog, resolver, original, bsp, originals, bsps):
         scopes = defaultdict(Counter)
         for row in executed:
             scopes[row["scope"]][row["category"]] += 1
-        return {"status": "attributed" if side == "orig" or data["complete"] else "attribution_incomplete",
+        summary = {"status": "attributed" if side == "orig" or data["complete"] else "attribution_incomplete",
                 "board_game_functions_executed": sum(row["board_game"] for row in executed),
                 "board_game_with_function_ledger_executed": sum(row["board_game"] and row["has_function_ledger"] for row in executed),
                 "all_identified_functions_executed": len(executed),
@@ -805,8 +922,27 @@ def report(catalog, resolver, original, bsp, originals, bsps):
                 "count_semantics": ("PDB source/qualified-identifier verified reconstruction-body mappings in supplied observations; candidate/host reaches alone are excluded"
                                     if side == "bsp" else "identified mapped reach in supplied observations; unknown/ambiguous mappings remain outside this count"),
                 "inputs": sources}
+        if side == "orig" and entries:
+            target_hits = sum(row["orig_board_target"] is True for row in executed)
+            summary.update(method="function_entry_first_hit", orig_live=target_hits,
+                board_target_functions_executed=target_hits,
+                all_game_functions_executed=sum(row["board_game"] for row in executed),
+                outside_board_target_functions_executed=sum(row["orig_board_target"] is False for row in executed),
+                board_target_starts=sum(p["board_target"] for p in entry_targets.values()),
+                all_game_starts=len(entry_targets),
+                eh_funclets_executed=None, vendor_functions_executed=None,
+                count_scope="orig_live/board_target fields use the pinned board target; board_game/all_game fields retain the full game cohort",
+                count_semantics="unique first observed exact function entries; lower bound on function reach, never BB or call counts",
+                unhit_semantics="unknown, including unselected/undefined/EH/vendor code",
+                frontier_rank_basis="static original caller count descending, then address; first-hit sequence is audit only")
+        return summary
     original_details = None
-    if original is not None:
+    if entries:
+        original_details = {**original["metadata"], "undefined_code": None, "undefined_chunks_executed": None,
+            "distinct_blocks_with_undefined_overlap": None, "unattributed_ranges": None,
+            "unattributed_bytes": None, "distinct_blocks_with_unattributed_bytes": None,
+            "distinct_blocks_with_eh_overlap": None, "other_counts": None}
+    elif original is not None:
         original_details = {"undefined_code": [{"address": f"{a:08x}", "distinct_blocks": len(blocks)}
                                                for a, blocks in sorted(original["undefined_hits"].items())],
                             "undefined_chunks_executed": len(original["undefined_hits"]),
@@ -831,6 +967,11 @@ def report(catalog, resolver, original, bsp, originals, bsps):
                                           "scope": "unknown_no_index_function"}
                                          for address, wire in sorted(resolver.rows.items()) if address not in catalog.functions],
             "per_original_address": rows, "wiring_frontier": [row["address"] for row in frontier],
+            "frontier_rank_basis": "static_original_caller_count_desc_address" if entries else "distinct_original_blocks_desc_callers_desc_address",
+            "host_grouping": {"frozen_wire_cached_rows": len(cached_mentions), "fallback": "current_worktree_source",
+                "current_source_head": None, "current_source_files": [
+                    {"path": path.relative_to(ROOT).as_posix(), "sha256": sha256(path)} for path in sorted((ROOT / "src").glob("game_hosts*.cpp"))],
+                "caveat": "cached host mentions use frozen wire rows where available; fallback source grouping is not the frozen BSP build"},
             "frontier_by_category": dict(frontier_category), "frontier_by_stand_in_host": dict(frontier_host),
             "orig_yes_bsp_unknown": [row["address"] for row in game_rows if row["orig_executed"] is True and row["bsp_executed"] is None],
             "orig_no_bsp_yes": [row["address"] for row in game_rows if row["orig_executed"] is False and row["bsp_executed"] is True],
@@ -838,6 +979,7 @@ def report(catalog, resolver, original, bsp, originals, bsps):
             "limits": ["Coverage establishes reach in supplied logs, not correctness, parity, or call frequency.",
                        "No supplied trace or unavailable attribution yields unknown cells, not no-execution.",
                        "Distinct drcov block records are deduplicated; multiplicity is never an entry/call count.",
+                       "First-entry traces attribute exact starts only; every unhit/unselected address is unknown and all BB/call counts are null.",
                        "Original ranges are the index's contiguous swept ranges, not arbitrary Ghidra body unions.",
                        "EH/undefined overlap counts are not additive partitions of block counts.",
                        "Board categories reuse current rules; the historical/reference target gate is a separate denominator.",
@@ -850,7 +992,11 @@ def report(catalog, resolver, original, bsp, originals, bsps):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--original-log", type=Path, action="append", default=[])
+    original_inputs = parser.add_mutually_exclusive_group()
+    original_inputs.add_argument("--original-log", type=Path, action="append", default=[])
+    original_inputs.add_argument("--original-entry-log", type=Path)
+    parser.add_argument("--original-entry-manifest", type=Path)
+    parser.add_argument("--original-entry-manifest-sha256", type=str.lower)
     parser.add_argument("--bsp-log", type=Path, action="append", default=[])
     parser.add_argument("--original-module", default="battlestationspacific.exe")
     parser.add_argument("--bsp-module", default="bsp_game.exe")
@@ -866,6 +1012,11 @@ def main(argv=None):
     args = parser.parse_args(argv)
     if args.max_pdb_addresses <= 0:
         parser.error("--max-pdb-addresses must be positive")
+    if args.original_entry_log:
+        if not (args.original_entry_manifest and args.original_entry_manifest_sha256 and args.original_image):
+            parser.error("--original-entry-log requires --original-entry-manifest, --original-entry-manifest-sha256 and --original-image")
+    elif args.original_entry_manifest or args.original_entry_manifest_sha256:
+        parser.error("entry manifest options require --original-entry-log")
     try:
         if args.output.exists():
             raise CensusError(f"refusing to overwrite output: {args.output}")
@@ -884,6 +1035,10 @@ def main(argv=None):
                 observations[side].update(found)
                 sources[side].append(receipt)
         original = attribute_original(observations["original"], catalog) if args.original_log else None
+        if args.original_entry_log:
+            original, entry_receipt = read_original_entries(args.original_entry_log, args.original_entry_manifest,
+                args.original_entry_manifest_sha256, args.index, args.wire, images["original"], catalog)
+            sources["original"].append(entry_receipt)
         bsp, bsp_error = None, None
         if args.bsp_log:
             if not args.bsp_image or not args.pdb:
@@ -912,6 +1067,7 @@ def main(argv=None):
                                 "wire_sha256": sha256(args.wire) if args.wire.exists() else None,
                                 "wire_inputs": wire.get("inputs"), "images": images,
                                 "tool_sha256": sha256(__file__), "board_tool_sha256": sha256(board.__file__)}
+        result["host_grouping"]["current_source_head"] = result["provenance"]["head"]
         args.output.parent.mkdir(parents=True, exist_ok=True)
         with args.output.open("x", encoding="utf-8") as stream:
             json.dump(result, stream, indent=1)
