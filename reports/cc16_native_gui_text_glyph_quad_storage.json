@@ -961,7 +961,8 @@
       "noFPreset/CWstatusrestore",
       "homes4/5untouched andsinglelatequadindexread",
       "Nativeoperand/home/spill/reload/effectmanualreview",
-      "Source/providerpaths/hashes/whitespace"
+      "Source/providerpaths/hashes/whitespace",
+      "private backing correction: exact permitted Source transform, 22 unchanged asm blocks, 78 unchanged x87 forms, same call/boundary sequences, exact corrected Git LF pins"
     ],
     "not_run": [
       "compiler",
@@ -979,15 +980,24 @@
   "owned_file_pins": [
     {
       "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
-      "sha256": "579b0f21d5f5af10f9cd968b3eef6d59a666f750ece936a6b88d1a044021d10f"
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "acec6947cf7777181a97335456dc5142a1149cae",
+      "bytes": 8477,
+      "sha256": "6a8e8ff45a4415fbdbb81992726f2e9e4fc17c0819fde21c279ac4c3d354b245"
     },
     {
       "path": "src/native_gui_text_glyph_quad_storage.cpp",
-      "sha256": "ad5f656ddbccebc3c5d2b243f5d3fe0e01c71b12eeea97e3ef29033aa01e84f3"
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "5505123a0d02398d4d4c16873ef87f4f856fb790",
+      "bytes": 19830,
+      "sha256": "f05676b34f28b95194810e4f325cbec759b0ece70b9cb41b38b64efc89d7a96e"
     },
     {
       "path": "docs/CC16_NATIVE_GUI_TEXT_GLYPH_QUAD_STORAGE.md",
-      "sha256": "3acd83823d5cabdb0c00ada85956ce649a7c0bec3fdcbb9e5515ef1e141ac802"
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "ba9fd195d0680450c4d97008bfd6009d4c45c0a1",
+      "bytes": 14000,
+      "sha256": "75bbc760c32aa8bc5b2d037c4f57372f6e4bea7c678acce476fb19197f7d80b1"
     }
   ],
   "provider_pins": [
@@ -1104,5 +1114,179 @@
       "sha256": "cf9454f0b8e09ccd1fc9eeb7250daca7cccab0ad6b25969fd511b09968018081"
     }
   ],
-  "document": "docs/CC16_NATIVE_GUI_TEXT_GLYPH_QUAD_STORAGE.md"
+  "document": "docs/CC16_NATIVE_GUI_TEXT_GLYPH_QUAD_STORAGE.md",
+  "private_backing_correction": {
+    "packet": "codex-native-glyph-quad-private-backing-correction",
+    "utc": "2026-10-30T17:39:09.640694+00:00",
+    "sealed_recovery_commit": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+    "followup_base": "41e908e99a515e3ab28c75d4e9bf34f801f332ff",
+    "issue": "Volatile private DWORD objects were passed through qualifier-stripping casts to raw helpers using ordinary/memcpy accesses; that qualification behavior had no established guarantee.",
+    "representation": "Ordinary uint32_t locals[14] actual backing; explicit volatile views at every reached native local access; raw header helpers receive the same ordinary objects directly.",
+    "historical_reported_owned_file_pins_preserved_verbatim": [
+      {
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "sha256": "579b0f21d5f5af10f9cd968b3eef6d59a666f750ece936a6b88d1a044021d10f"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "sha256": "ad5f656ddbccebc3c5d2b243f5d3fe0e01c71b12eeea97e3ef29033aa01e84f3"
+      },
+      {
+        "path": "docs/CC16_NATIVE_GUI_TEXT_GLYPH_QUAD_STORAGE.md",
+        "sha256": "3acd83823d5cabdb0c00ada85956ce649a7c0bec3fdcbb9e5515ef1e141ac802"
+      }
+    ],
+    "historical_immutable_git_pins": [
+      {
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "hash_format": "immutable_git_blob_content_lf",
+        "git_blob_oid": "724c0c6c5e0b43d87e8247df183d542e4f0ad22b",
+        "bytes": 8331,
+        "sha256": "579b0f21d5f5af10f9cd968b3eef6d59a666f750ece936a6b88d1a044021d10f"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "hash_format": "immutable_git_blob_content_lf",
+        "git_blob_oid": "e7209ec08855da07c2b3c20fe960ef16c2d63024",
+        "bytes": 19837,
+        "sha256": "ad5f656ddbccebc3c5d2b243f5d3fe0e01c71b12eeea97e3ef29033aa01e84f3"
+      },
+      {
+        "path": "docs/CC16_NATIVE_GUI_TEXT_GLYPH_QUAD_STORAGE.md",
+        "hash_format": "immutable_git_blob_content_lf",
+        "git_blob_oid": "74c9cecc2f2aa49a47c0f308511b318591912cc6",
+        "bytes": 11749,
+        "sha256": "3acd83823d5cabdb0c00ada85956ce649a7c0bec3fdcbb9e5515ef1e141ac802"
+      },
+      {
+        "path": "reports/cc16_native_gui_text_glyph_quad_storage.json",
+        "hash_format": "immutable_git_blob_content_lf",
+        "git_blob_oid": "6d8346f15616b7a7cec2cd14776432e8db9fb304",
+        "bytes": 35220,
+        "sha256": "7b017b771faead636bfe834da913ef178155588bab2ebd80861c6cc550a25f95"
+      }
+    ],
+    "corrected_source_pins": [
+      {
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "hash_format": "immutable_git_blob_content_lf",
+        "git_blob_oid": "acec6947cf7777181a97335456dc5142a1149cae",
+        "bytes": 8477,
+        "sha256": "6a8e8ff45a4415fbdbb81992726f2e9e4fc17c0819fde21c279ac4c3d354b245"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "hash_format": "immutable_git_blob_content_lf",
+        "git_blob_oid": "5505123a0d02398d4d4c16873ef87f4f856fb790",
+        "bytes": 19830,
+        "sha256": "f05676b34f28b95194810e4f325cbec759b0ece70b9cb41b38b64efc89d7a96e"
+      }
+    ],
+    "allowed_cpp_replacements": [
+      {
+        "old": "const Word data = a.locals[5];",
+        "new": "const Word data = static_cast<volatile Word*>(a.locals)[5];",
+        "count": 1
+      },
+      {
+        "old": "const Word length = a.locals[4];",
+        "new": "const Word length = static_cast<volatile Word*>(a.locals)[4];",
+        "count": 1
+      },
+      {
+        "old": "const_cast<Word*>(a.locals + 4)",
+        "new": "a.locals + 4",
+        "count": 8
+      },
+      {
+        "old": "shadow_offset, a.locals + 7, a);",
+        "new": "shadow_offset, static_cast<volatile Word*>(a.locals) + 7, a);",
+        "count": 1
+      },
+      {
+        "old": "a.captured_target, a.locals + 4, a);",
+        "new": "a.captured_target, static_cast<volatile Word*>(a.locals) + 4, a);",
+        "count": 1
+      },
+      {
+        "old": "position_00aa6750(reference, a.locals + 1, a);",
+        "new": "position_00aa6750(reference, static_cast<volatile Word*>(a.locals) + 1, a);",
+        "count": 1
+      }
+    ],
+    "allowed_header_changes": [
+      "Remove volatile from locals[14] backing declaration only.",
+      "Add two explanatory comment lines; all other header bytes unchanged."
+    ],
+    "mechanical_proof": {
+      "exact_whole_cpp_equals_sealed_source_after_only_allowed_replacements": true,
+      "exact_whole_hpp_equals_sealed_header_after_only_allowed_changes": true,
+      "unchanged_asm_block_count": 22,
+      "unchanged_asm_block_bodies_joined_lf_sha256": "fc5975b3c80f3db93f7feb2b04e44d10272d738c6848c82e0499e7b6307c45ab",
+      "unchanged_x87_forms": 78,
+      "unchanged_nonempty_x87_group_counts": [
+        40,
+        2,
+        13,
+        9,
+        14
+      ],
+      "existing_volatile_asm_pointer_views_unchanged": 4,
+      "normal_return_private_reads_explicit_volatile": 2,
+      "provider_pointer_arguments_explicit_volatile": 3,
+      "private_header_qualifier_stripping_casts_removed": 8,
+      "same_required_method_sequence": [
+        "allocate_00ab78a0",
+        "construct_00ab9650",
+        "append_005dad40",
+        "node_current10",
+        "scene_node_00aa6720",
+        "sections_00ab8530",
+        "child_current34",
+        "listeners_00aa6bc0",
+        "font_00ab8c30",
+        "shadow_00ab6c30",
+        "shader_00ab8e70",
+        "code_unit_00ab81c0",
+        "content_00aba8d0",
+        "child_current50",
+        "attach_00aaa5a0",
+        "child_current30",
+        "position_00aa6750",
+        "position_00aa8240",
+        "return_failed_00ab76f0"
+      ],
+      "same_literal_boundary_sequence": [
+        "0x00ab9d38",
+        "0x00ab9d4f",
+        "0x00ab9d70",
+        "0x00ab9d87",
+        "0x00ab9d8c",
+        "0x00ab9d93",
+        "0x00ab9da5",
+        "0x00ab9db2",
+        "0x00ab9dc9",
+        "0x00ab9e05",
+        "0x00ab9e13",
+        "0x00ab9e1f",
+        "0x00ab9e51",
+        "0x00ab9e61",
+        "0x00ab9e71",
+        "0x00ab9e9b",
+        "0x00ab9ec0",
+        "0x00ab9ecd",
+        "0x00ab9fa9",
+        "0x00cb80b3",
+        "0x00cb80bb",
+        "0x00cb80c3"
+      ],
+      "source_effects_outside_representation_and_views_changed": false,
+      "external_ten_volatile_homes_changed": false,
+      "home7_EH_F24_F28_aliases_spill_reload_order_changed": false,
+      "same_header_object_addresses_no_copies": true,
+      "array_extent_member_order_size_alignment_changed": false,
+      "new_fp_provider_owner_policy_or_credit": false,
+      "compiled_or_runtime_equivalence_proved": false
+    }
+  }
 }

@@ -268,10 +268,10 @@ void current(Acquired& a, Word receiver, Word slot) noexcept {
 }
 void normal_string_return(Acquired& a, NativeStringRawPoolContext& strings,
     Word getter_site, Word return_site, bool wide) {
-    const Word data = a.locals[5]; // F28, capture before getter.
+    const Word data = static_cast<volatile Word*>(a.locals)[5]; // F28, capture before getter.
     a.native_eh_state = -1; // Native TEST data, then disarm before length/getter.
     if (data == 0) return;
-    const Word length = a.locals[4];
+    const Word length = static_cast<volatile Word*>(a.locals)[4];
     const Word bytes = wide ? length * 2u + 2u : length + 1u;
     boundary(a, getter_site, nullptr);
     auto* const pool = native_string_pool_get_or_create_00419cc0(
@@ -443,16 +443,16 @@ __declspec(noinline) void write_native_gui_text_glyph_quad_storage_00ab98f0(
         Word shadow_offset;
         prepare_shadow(c, a, shadow_offset);
         boundary(a, 0x00ab9e05, child);
-        c.calls.shadow_00ab6c30(child, 1, 0, shadow_offset, a.locals + 7, a);
-        boundary(a, 0x00ab9e13, const_cast<Word*>(a.locals + 4));
+        c.calls.shadow_00ab6c30(child, 1, 0, shadow_offset, static_cast<volatile Word*>(a.locals) + 7, a);
+        boundary(a, 0x00ab9e13, a.locals + 4);
         void* const shader_argument = construct_native_string_header_0041e870(
-            const_cast<Word*>(a.locals + 4), c.strings, c.shader_name_00cefd78);
+            a.locals + 4, c.strings, c.shader_name_00cefd78);
         a.native_eh_state = 1;
         boundary(a, 0x00ab9e1f, child); c.calls.shader_00ab8e70(child, shader_argument, a);
         normal_string_return(a, c.strings, 0x00ab9e39, 0x00ab9e40, false);
         const Word current_code_unit = homes[9];
-        boundary(a, 0x00ab9e51, const_cast<Word*>(a.locals + 4));
-        void* const content_argument = c.calls.code_unit_00ab81c0(const_cast<Word*>(a.locals + 4), current_code_unit, a);
+        boundary(a, 0x00ab9e51, a.locals + 4);
+        void* const content_argument = c.calls.code_unit_00ab81c0(a.locals + 4, current_code_unit, a);
         a.native_eh_state = 2;
         boundary(a, 0x00ab9e61, child); c.calls.content_00aba8d0(child, content_argument, a);
         current(a, bits(child), 0x50);
@@ -471,10 +471,10 @@ __declspec(noinline) void write_native_gui_text_glyph_quad_storage_00ab98f0(
         }
         current(a, bits(child), 0x30);
         boundary(a, 0x00ab9ec0, child);
-        c.calls.child_current30(child, a.captured_profile, a.captured_target, a.locals + 4, a);
+        c.calls.child_current30(child, a.captured_profile, a.captured_target, static_cast<volatile Word*>(a.locals) + 4, a);
         void* const reference = pointer(word(text, 0x1b0));
         boundary(a, 0x00ab9ecd, reference);
-        c.calls.position_00aa6750(reference, a.locals + 1, a);
+        c.calls.position_00aa6750(reference, static_cast<volatile Word*>(a.locals) + 1, a);
         volatile Word* target;
         prepare_position(text, homes, c, a, target);
         boundary(a, 0x00ab9fa9, child); c.calls.position_00aa8240(child, target, a);
@@ -494,11 +494,11 @@ __declspec(noinline) void write_native_gui_text_glyph_quad_storage_00ab98f0(
                     boundary(a, 0x00cb80b3, current_slot);
                     c.calls.return_failed_00ab76f0(current_slot, a);
                 } else if (state == 1) {
-                    boundary(a, 0x00cb80bb, const_cast<Word*>(a.locals + 4));
-                    destroy_native_string_header_0041dd20(const_cast<Word*>(a.locals + 4), c.strings);
+                    boundary(a, 0x00cb80bb, a.locals + 4);
+                    destroy_native_string_header_0041dd20(a.locals + 4, c.strings);
                 } else {
-                    boundary(a, 0x00cb80c3, const_cast<Word*>(a.locals + 4));
-                    destroy_native_wide_string_header_00436430(const_cast<Word*>(a.locals + 4), c.strings);
+                    boundary(a, 0x00cb80c3, a.locals + 4);
+                    destroy_native_wide_string_header_00436430(a.locals + 4, c.strings);
                 }
                 a.cleanup_returned = true;
             } catch (...) { a.cleanup_failed = true; throw; }
