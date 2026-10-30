@@ -1,0 +1,300 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-frame-child-lookup-independent-review",
+  "classification": "independent bounded Root caller-composition review; supplier Native body not re-reviewed by its author",
+  "reviewed_commit": "2a673dbf58a1a58f954ae3cf3acfb0d5d59ac523",
+  "baseline": "83c7f6b1af1cfbb794f827390612331a13b6fd94",
+  "supplier_commit": "ab484553b268d9b3787f52fb987fa1661e3fafc9",
+  "utc": "2026-10-30T18:20:50.834022+00:00",
+  "owned_files": [
+    "docs/CC16_NATIVE_FRAME_CHILD_LOOKUP_INDEPENDENT_REVIEW.md",
+    "reports/cc16_native_frame_child_lookup_independent_review.json"
+  ],
+  "verdict": {
+    "blocking_Source_findings": 0,
+    "findings": [],
+    "ready_for_Root_common_build_assessment": true,
+    "reviewer_compiled": false,
+    "actual_app_or_graph_bound": false,
+    "whole_frontend_ready": false,
+    "activation": false
+  },
+  "scope": {
+    "Root_authored_commit_changes_exactly_six_paths": true,
+    "four_production_file_deltas_and_relevant_complete_helper_cleanup_paths_read": true,
+    "Root_composition_doc_and_report_read": true,
+    "no_Native_body_recovery_or_new_analysis": true,
+    "ab484_supplier_was_authored_here_and_primary_reviewed_separately_by_Root": true,
+    "review_focus": "Only Root2a new call phases, actual homes, same header/Page identities, lifetime/cleanup and exact outside-delta identity."
+  },
+  "current_Source_pins": [
+    {
+      "revision": "2a673dbf58a1a58f954ae3cf3acfb0d5d59ac523",
+      "path": "include/bsp/native_front_end_frame_operations.hpp",
+      "hash_format": "immutable Git LF blob bytes",
+      "git_blob": "578677291d2b7df25a8859f4334b51f858fb3f17",
+      "sha256": "021bda07c3c9cdf1d8e591f8ba293bc974ccbfc87b2752fbefc9460f8e0d4fa0",
+      "bytes": 5436
+    },
+    {
+      "revision": "2a673dbf58a1a58f954ae3cf3acfb0d5d59ac523",
+      "path": "src/native_front_end_frame_operations.cpp",
+      "hash_format": "immutable Git LF blob bytes",
+      "git_blob": "7be5257ef58dd0b3bba686ffcf37798ed116e8d5",
+      "sha256": "efca4b447abbb067a40b8ac05708eb0daf41761d59a8ee0325fd505a816d5ae1",
+      "bytes": 8111
+    },
+    {
+      "revision": "2a673dbf58a1a58f954ae3cf3acfb0d5d59ac523",
+      "path": "include/bsp/native_front_end_frame_title_position.hpp",
+      "hash_format": "immutable Git LF blob bytes",
+      "git_blob": "e55b76d9c18fd30a66d7c3151bb69c0d37e175aa",
+      "sha256": "6f9b78effaa284af936071159a859bd2e37d43b2e4bf4d9284f03e2174857555",
+      "bytes": 6715
+    },
+    {
+      "revision": "2a673dbf58a1a58f954ae3cf3acfb0d5d59ac523",
+      "path": "src/native_front_end_frame_title_position.cpp",
+      "hash_format": "immutable Git LF blob bytes",
+      "git_blob": "b6baf39de6ff5806ce1e66be3bc5ff2045a377f3",
+      "sha256": "3cd170af1be5889cba4251409fbe04f8237084ee14807167bf832b1b58018c41",
+      "bytes": 13271
+    }
+  ],
+  "baseline_Source_pins": [
+    {
+      "revision": "83c7f6b1af1cfbb794f827390612331a13b6fd94",
+      "path": "include/bsp/native_front_end_frame_operations.hpp",
+      "hash_format": "immutable Git LF blob bytes",
+      "git_blob": "6cfec6d5b479d18c3e899dfa7df34d0e8b6aa21a",
+      "sha256": "076f002fc017d984c9a211f734b6693d7e283dc1a757e9764d6d7bf660247340",
+      "bytes": 5560
+    },
+    {
+      "revision": "83c7f6b1af1cfbb794f827390612331a13b6fd94",
+      "path": "src/native_front_end_frame_operations.cpp",
+      "hash_format": "immutable Git LF blob bytes",
+      "git_blob": "00db12bcb036da666349d4bc06e2f206a0c877a0",
+      "sha256": "a5e8a64e96bda0cf0dbbd5ee820300dde36d97fb449a433814675623c9a908f7",
+      "bytes": 7871
+    },
+    {
+      "revision": "83c7f6b1af1cfbb794f827390612331a13b6fd94",
+      "path": "include/bsp/native_front_end_frame_title_position.hpp",
+      "hash_format": "immutable Git LF blob bytes",
+      "git_blob": "49b090b2fd5c06dbe9814633f8edc67ebf14dae2",
+      "sha256": "87dacd5b92bb9389185c808de3a4015283fc9cf0be7d7e944c81a8ef3c148244",
+      "bytes": 6839
+    },
+    {
+      "revision": "83c7f6b1af1cfbb794f827390612331a13b6fd94",
+      "path": "src/native_front_end_frame_title_position.cpp",
+      "hash_format": "immutable Git LF blob bytes",
+      "git_blob": "9208c5988d9561406d0e818f6c836da20d00ee0d",
+      "sha256": "5706ecadb6403943e5175075f647cf5e74003a8431f69566fb1eeaf3bc04507c",
+      "bytes": 13031
+    }
+  ],
+  "supplier_pins": [
+    {
+      "revision": "ab484553b268d9b3787f52fb987fa1661e3fafc9",
+      "path": "include/bsp/native_gui_widget_child_lookup_storage.hpp",
+      "hash_format": "immutable Git LF blob bytes",
+      "git_blob": "100bc4383af9c31c5a47d3407a2df92ae13e363e",
+      "sha256": "e408dd88cf17ae875e0342cff65a8115244eb0b6002d3ab19040413bd9a84b1a",
+      "bytes": 2332
+    },
+    {
+      "revision": "ab484553b268d9b3787f52fb987fa1661e3fafc9",
+      "path": "src/native_gui_widget_child_lookup_storage.cpp",
+      "hash_format": "immutable Git LF blob bytes",
+      "git_blob": "275d1132cf00150308bfd4ff296029eb1474c75f",
+      "sha256": "c3d83ca8f2e8baf4ec5d4e4ec9dbbfab6b2c43f8732d29066dd367534124403f",
+      "bytes": 3558
+    },
+    {
+      "revision": "ab484553b268d9b3787f52fb987fa1661e3fafc9",
+      "path": "docs/CC16_NATIVE_GUI_WIDGET_CHILD_LOOKUP_STORAGE.md",
+      "hash_format": "immutable Git LF blob bytes",
+      "git_blob": "0c5bb9a9496c3d1b39d021fb595a9da581207df7",
+      "sha256": "3af22346a514d09d70d3b53f258be26cc0639ec8d6b0d041e780330b55683e92",
+      "bytes": 7243
+    },
+    {
+      "revision": "ab484553b268d9b3787f52fb987fa1661e3fafc9",
+      "path": "reports/cc16_native_gui_widget_child_lookup_storage.json",
+      "hash_format": "immutable Git LF blob bytes",
+      "git_blob": "30dba1d5c746582b141142e40785f88a1f8c4bb5",
+      "sha256": "9837928cfd26f0f5704f0781c74b966f402408cf38ca6aaa20a969b99e11390c",
+      "bytes": 24010
+    }
+  ],
+  "Root_receipt_pins": [
+    {
+      "revision": "2a673dbf58a1a58f954ae3cf3acfb0d5d59ac523",
+      "path": "docs/CC16_NATIVE_FRAME_CHILD_LOOKUP_COMPOSITION.md",
+      "hash_format": "immutable Git LF blob bytes",
+      "git_blob": "49110c8e020b6c756cbf208815460e4f06a9f3ab",
+      "sha256": "ee0b41f029d34aaa3c0e0b86baa6bc55ac4459c59461686b35ce1c141ae2d7ce",
+      "bytes": 3057
+    },
+    {
+      "revision": "2a673dbf58a1a58f954ae3cf3acfb0d5d59ac523",
+      "path": "reports/cc16_native_frame_child_lookup_composition.json",
+      "hash_format": "immutable Git LF blob bytes",
+      "git_blob": "c59de3d781d37706ae003ca67a3f6d6ea980ebef",
+      "sha256": "d487cdecd49c4b9402ce130ef0308d947221c167a5413f6fe396ab0df77c4f65",
+      "bytes": 4850
+    }
+  ],
+  "all_current_supplier_files_byte_identical": true,
+  "strict_independent_wholefile_comparison": [
+    {
+      "path": "include/bsp/native_front_end_frame_operations.hpp",
+      "whole_file_equals_only_expected_replacements": true,
+      "baseline_sha256": "076f002fc017d984c9a211f734b6693d7e283dc1a757e9764d6d7bf660247340",
+      "current_sha256": "021bda07c3c9cdf1d8e591f8ba293bc974ccbfc87b2752fbefc9460f8e0d4fa0",
+      "all_asm_blocks_identical": true,
+      "asm_blocks": 0
+    },
+    {
+      "path": "src/native_front_end_frame_operations.cpp",
+      "whole_file_equals_only_expected_replacements": true,
+      "baseline_sha256": "a5e8a64e96bda0cf0dbbd5ee820300dde36d97fb449a433814675623c9a908f7",
+      "current_sha256": "efca4b447abbb067a40b8ac05708eb0daf41761d59a8ee0325fd505a816d5ae1",
+      "all_asm_blocks_identical": true,
+      "asm_blocks": 1
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_title_position.hpp",
+      "whole_file_equals_only_expected_replacements": true,
+      "baseline_sha256": "87dacd5b92bb9389185c808de3a4015283fc9cf0be7d7e944c81a8ef3c148244",
+      "current_sha256": "6f9b78effaa284af936071159a859bd2e37d43b2e4bf4d9284f03e2174857555",
+      "all_asm_blocks_identical": true,
+      "asm_blocks": 0
+    },
+    {
+      "path": "src/native_front_end_frame_title_position.cpp",
+      "whole_file_equals_only_expected_replacements": true,
+      "baseline_sha256": "5706ecadb6403943e5175075f647cf5e74003a8431f69566fb1eeaf3bc04507c",
+      "current_sha256": "3cd170af1be5889cba4251409fbe04f8237084ee14807167bf832b1b58018c41",
+      "all_asm_blocks_identical": true,
+      "asm_blocks": 4
+    }
+  ],
+  "changed_surface": {
+    "unused_virtual_declarations_removed": 2,
+    "one_include_per_CPP": 2,
+    "call_blocks_replaced": 2,
+    "only_production_edits": true,
+    "all_other_header_and_CPP_bytes_identical": true,
+    "all_five_asm_blocks_identical": true,
+    "existing_scratch_layouts_and_authenticated_refs_identical": true,
+    "new_Source_owner_context_record_or_provider": false
+  },
+  "seven_site_review": {
+    "00518B90": {
+      "lookups": 1,
+      "actual_query": "scratch.name_header",
+      "captured_page": "Existing separate Frame getters/current panel/own slot resolution unchanged.",
+      "header_cleanup": "Actual41E870 completed before existing try. Whole rawlookup and later current88 inside same try; header destroyed once on exception or after normal path, unchanged."
+    },
+    "005189B0": {
+      "lookups": 2,
+      "actual_queries": [
+        "scratch.title_text_name_header",
+        "scratch.frame_box_name_header"
+      ],
+      "selector_order_arguments": [
+        false,
+        true
+      ]
+    },
+    "005186B0": {
+      "lookups": 2,
+      "actual_queries": [
+        "scratch.title_text_name_header",
+        "scratch.frame_box_name_header"
+      ],
+      "selector_order_arguments": [
+        true,
+        true
+      ]
+    },
+    "00518820": {
+      "lookups": 2,
+      "actual_queries": [
+        "scratch.title_text_name_header",
+        "scratch.frame_box_name_header"
+      ],
+      "selector_order_arguments": [
+        true,
+        true
+      ]
+    },
+    "shared_helper": "Each actual query header passed to same find_and_return_name helper. current_title_page returns captured Page before home writes. Existing helper cleanup catches wholelookup failure, then normalheader return remains outside catch. No re-resolution/copy/preflight or new cleanup.",
+    "total": 7
+  },
+  "argument_home_lifetime": {
+    "actual_type": "volatile uint32_t child_homes[2], no initializer",
+    "write_order": [
+      "home1=literal1",
+      "home0=address of SAME actual header8"
+    ],
+    "callee_entry_phase": "Existing captured Page and homearray forwarded directly; whole AA7E00 reads rawroot+68 before capturing home0, ignores home1.",
+    "lifetime": "Automatic two-word backing is alive throughout synchronous callee return/escape. Callee retains no pointer/reference into it after return/unwind; only its active query pointer capture uses header address. Trivial home destruction adds no Native effect.",
+    "header_and_graph": "Existing query/header/data/captured Page/WidgetChildren/current sibling/node backing requirements remain unchanged and alive at reached reads/callbacks. Returned child remains unretained borrow.",
+    "private_alias_register_stack_fault_runtime_identity_proved": false
+  },
+  "unchanged_semantics": {
+    "header_construction_and_cleanup_intervals": true,
+    "normal_pool_returns": true,
+    "captured_receiver_generations": true,
+    "selector_getter_order_and_postlookup_flag_read": true,
+    "quotient_header_alias_and_all_FP_spills": true,
+    "position_component_copy_schedule": true,
+    "current_widget_dispatch": true,
+    "no_new_retain_catch_retry_rollback_termination_FP_or_count_loop_policy": true
+  },
+  "interface_search": {
+    "roots": [
+      "include/bsp",
+      "src"
+    ],
+    "method": "exact interface identifiers and removed method searches",
+    "actual_derived_binding_implementations_found": 0,
+    "ordinary_Source_vtable_layout_changed_only_unbound_interfaces": true,
+    "Original_binary_compatibility_claim": false
+  },
+  "validation": {
+    "exact_transform_and_Source_pins": "passed",
+    "four_supplier_file_identity": "passed",
+    "reviewer_Source_CMake_ledger_sharedapp_Ghidra_edits": false,
+    "new_tests": 0,
+    "build_run_probe_game_process_actions": false,
+    "Ghidra_reads_or_exports": false,
+    "new_Native_or_PE_reanalysis": false,
+    "prior_batch26_validates_new_composition": false,
+    "Root_batch27_common_build_receipt_attached": false,
+    "staged_diff_check": "git diff --cached --check passed; exactly two owned review paths; all4current Source and4unchanged supplier pins verified."
+  },
+  "remaining_gates": [
+    "Root common Win32 build",
+    "real Frame getter/current dispatch",
+    "genuine actual Page/WidgetChildren production and lifetime",
+    "changed Text/title/position/vector bindings",
+    "actual Startup frontend application and canonical process/retirement binding",
+    "required runtime/gameplay gates"
+  ],
+  "new_credit": {
+    "Original": 0,
+    "vendor": 0,
+    "CG": 0,
+    "helper": 0,
+    "duplicate_body": 0,
+    "ABI": 0,
+    "runtime": 0,
+    "gameplay": 0,
+    "activation": 0
+  }
+}

@@ -1,0 +1,19 @@
+# Independent Frame child-lookup composition review
+
+Reviewed Root's `2a673dbf58a1a58f954ae3cf3acfb0d5d59ac523` against published `83c7f6b1af1cfbb794f827390612331a13b6fd94`. **No blocking Source findings. Ready for Root common-build assessment.** This review covers only Root's new caller composition. Supplierab484 was authored by this worker and primary-reviewed separately by Root; its Native body is not independently re-certified here.
+
+The target changes six files: four Frame operation/title-position production files plus its two evidence files. Independent whole-file reconstruction permits exactly two unused virtual removals, one include in each CPP and two direct-call block replacements. Every other header/CPP byte matches the baseline. All five asm blocks (flag1/title-position4), existing scratch layouts, authenticated references, FP operations/spills and prior cleanup paths are byte-identical. All four supplier files remain byte-identical toab484. Exact baseline/current/supplier/receipt Git-LF pins are recorded in the matching report.
+
+## Reached callers and homes
+
+Flag518B90 contributes one lookup. Shared `find_and_return_name` contributes two each in title5189B0, position-set5186B0 and position-get518820, seven actual sites total. Existing Frame getter/selector ordering yields the SAME captured Page before either replacement block. Each block creates real uninitialized volatile DWORD[2] backing, writes unused literal1 first, then the address of the SAME actual native name header, and directly calls whole rawAA7E00. No header/string copy, preflight, alternate receiver, new context/provider/owner or typed Widget/Node conversion appears.
+
+The callee reads actual parent+68 before capturing home0 and never reads home1. The two-word automatic backing remains live throughout normal return or escape; the callee stores no retained reference to it. Trivial destruction of that array adds no Native effect. Query header/data and real Page/WidgetChildren/node backing keep their existing reached-read/callback lifetime requirements. The result remains the actual unretained raw child borrow. Original stack/public-alias/register/fault identity is not proved by this Source lifetime review.
+
+## Cleanup and unchanged effects
+
+Flag name construction returns before its existing try. Raw lookup and following current88 dispatch remain inside that same interval; the existing actual header destructor runs once on failure or normal return. The helper similarly catches lookup/getter failure only for the SAME caller header; its normal header return stays outside the catch. Local homes have no resource destructor or Native cleanup. The new callee propagates existing SDK failures without an added caller catch or policy.
+
+Existing header/pool-return phases, captured receiver generations, title getter selector order, postlookup CURRENT flag lowWORD, quotient/header alias, position-component copies and current widget dispatch are unchanged. No Native retain, reset, count/iteration bound, retry, rollback, termination or FP environment policy is added. A scoped exact interface search found no actual derived binding implementations requiring migration. The two removed virtuals belong to ordinary unbound Source interfaces; no Original binary ABI compatibility is claimed.
+
+The review made no production/CMake/shared-app/ledger/Ghidra edits, Native/PE reanalysis, build, tests, probe, game/process action or new test. Batch26 validates its older exact Source; it does not validate this connection. Root's separate common-build receipt remains required. Actual Frame getter/current dispatch, real Page/WidgetChildren production/lifetime, changed Text/title/position/vector services, retained Startup/canonical/retirement binding and runtime/gameplay gates remain open. Additional Original/vendor/CG/helper/duplicate-body, ABI, runtime, gameplay and activation credit are zero.
