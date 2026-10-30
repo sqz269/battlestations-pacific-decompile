@@ -1,0 +1,1431 @@
+{
+  "schema": "cc16_native_frame_page_retirement_readiness_v1",
+  "status": "bounded_readonly_provider_readiness_missing_concrete_all_row_owner",
+  "baseline_commit": "dab547a5a6cd1866b6f359dfc10455d9ab2d846b",
+  "immutable_inputs": {
+    "registration_readiness": "0c5e889ffef0daf1457a0b4ec7ca0e484385189d",
+    "frame_construction_publication": "ed72f3b3c5492dd695249607e8d008243e0791f4",
+    "frame_identity": "6fca16e1e97e790f23d64b5e23eaf358a61e19f4",
+    "qualification": "No future Source/dependency/build/runtime proof is inherited into frozen dab547."
+  },
+  "decision": {
+    "source_ready": false,
+    "meaning": "A new complete all-row raw Page zero-count/provider adoption packet is not closed.",
+    "missing_native_parent_body": false,
+    "existing_complete_raw_source": [
+      "AA38F0",
+      "AC5480",
+      "AC4C40",
+      "AC47F0",
+      "B72250",
+      "AA9730",
+      "AA8320",
+      "AA4B30",
+      "BD30E0",
+      "AA31F0"
+    ],
+    "blocker": "Real Page/Group/child/timed producer and same-domain current scalar/lifetime ownership are not coherently bound.",
+    "do_not_add": [
+      "another address-only AA38F0 or BD30E0 wrapper",
+      "manager +20 on decremented-to-zero path",
+      "default scalar/table/import callback",
+      "childless or row4-null policy presented as all-row closure"
+    ]
+  },
+  "analysis_target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "verified": "config/target.json and bsp.py ghidra ensure --status before live bytes/proto/listing/call batches",
+    "ghidra_mutations": false
+  },
+  "original_image": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "native_bodies": [
+    {
+      "address": "00AA38F0",
+      "end_inclusive": "00AA390B",
+      "bytes": 28,
+      "hex": "568bf1e8881b0200f64424080174078bcee83a1302008bc65ec20400",
+      "sha256": "287cd92828b3058c11d6633da53027c024884758a3e0853f76625099b768b103",
+      "linear_decoded_instructions": 10,
+      "cached_listed_instructions": 10,
+      "cached_listing_receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\cached_00aa38f0_asm.txt",
+        "bytes": 247,
+        "sha256": "f138c240241c1c93c92c8c7c8007c0233e8f267b590b5c3d7cf62f20653d8e6a"
+      },
+      "live_bytes_receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_00aa38f0_bytes.txt",
+        "bytes": 138,
+        "sha256": "47e6a55cc08c41cff7cb15ac25ec9f1423a766d91f0938bed6dcc8d2bc07c3f9"
+      }
+    },
+    {
+      "address": "00AC5480",
+      "end_inclusive": "00AC5554",
+      "bytes": 213,
+      "hex": "6aff683688cb0064a100000000506489250000000051568bf189742404c70638bed50080bef400000000c744241001000000742ee8f7bd9fff8b8ef0000000518bc8e869f6fdff8b8eec00000085c9743de87acd0a00c786ec00000000000000eb2c578bbeec00000085ff74208d570452ff152022ce0085c075088b078b108bcfffd2c786ec000000000000005f8b860401000085c0c64424100074198b8e000100006a0183c1015150e8914795ff8bc8e8dabf10008bcec7442410ffffffffe8eb41feff8b4c24085e64890d0000000083c410c3",
+      "sha256": "2cb0bad65eab265c6073b983ed4dd6ddbae9b949fa33981a8d9721a5515eb7f4",
+      "linear_decoded_instructions": 59,
+      "cached_listed_instructions": 59,
+      "cached_listing_receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\cached_00ac5480_asm.txt",
+        "bytes": 1706,
+        "sha256": "ef2aa2eaf0f5e4333d460121cb11ff8624593990321b473f5a00375d3348a718"
+      },
+      "live_bytes_receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_00ac5480_bytes.txt",
+        "bytes": 1034,
+        "sha256": "9693ffc593ee091ed51aeec9155c0e24ce44b8badb3219aa467840935ba5ef28"
+      }
+    },
+    {
+      "address": "00AC4C40",
+      "end_inclusive": "00AC4C4B",
+      "bytes": 12,
+      "hex": "51b950bff800e8a5fbffffc3",
+      "sha256": "c768015a71b885ecf46db75403c4d26164e4b3cea6abd374d0cdde6df9b1ed43",
+      "linear_decoded_instructions": 4,
+      "cached_listed_instructions": 4,
+      "cached_listing_receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\cached_00ac4c40_asm.txt",
+        "bytes": 90,
+        "sha256": "1f0e0c82776be5a52b794ffe110f05db2b9216cceb86228c13c80fe70d0c19d7"
+      },
+      "live_bytes_receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_00ac4c40_bytes.txt",
+        "bytes": 61,
+        "sha256": "abfd00d52340bc92b96e1d117cb57bf11daeed067e1eda3f7208a41fc504b556"
+      }
+    },
+    {
+      "address": "00BD30E0",
+      "end_inclusive": "00BD30ED",
+      "bytes": 14,
+      "hex": "85c974098b018b50046a01ffd2c3",
+      "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "linear_decoded_instructions": 7,
+      "cached_listed_instructions": 7,
+      "cached_listing_receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\cached_00bd30e0_asm.txt",
+        "bytes": 180,
+        "sha256": "53fc03d47ff635d7d7ab8e625692a0ac42fdca6060d3fcb5e5bc1599c3fe5563"
+      },
+      "live_bytes_receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_00bd30e0_bytes.txt",
+        "bytes": 69,
+        "sha256": "1d70d9d639234f376753c69e736b613bbef917a14ca52c5d82dc737141237953"
+      }
+    },
+    {
+      "address": "00AA31F0",
+      "end_inclusive": "00AA327E",
+      "bytes": 143,
+      "hex": "5355568d7114578b7e043b7e087605e80f3515008b6c24148b5e08395e047605e8fe3415003bf67405e8f53415003bfb74563b7e087205e8e7341500392f740f3b7e087205e8d934150083c704ebc98b46088d4f042bc1c1f80285c07e1003c003c050515057e84c35150083c410834608fc8b45008b50208bcdffd28b45008b50046a018bcdffd25f5e5d5bc20400",
+      "sha256": "ec6f1e811abf5997c43c2b04f6488de03b022017fdc7ff1e98da315c5e7ebb42",
+      "linear_decoded_instructions": 58,
+      "cached_listed_instructions": 58,
+      "cached_listing_receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\cached_00aa31f0_asm.txt",
+        "bytes": 1583,
+        "sha256": "6040a8ce173fa8cd08a2171002ccd3b1f4d4bc4306dbbc0204f16a0a89fd2840"
+      },
+      "live_bytes_receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_00aa31f0_bytes.txt",
+        "bytes": 689,
+        "sha256": "e840b6b8cb5a928f0c7316e535b8d0593281c8d6f9e590c09435b3fb5bccac02"
+      }
+    },
+    {
+      "address": "00AA9730",
+      "end_inclusive": "00AA99B8",
+      "bytes": 649,
+      "hex": "6aff682174cb0064a100000000506489250000000083ec085355568bf15789742414c70630c1d500c744242002000000e8bbebffff8b46688b288b466c8d7e6433db3bc3742f3bfb7505e894cf14003b6f047505e88acf14008b4d083bcb74098b018b50046a01ffd2395e6c8b47048b008be875d18b7e703bfb743b395e4c8974241074228b4e4c53e8c24e0c008b4e4c53e8c9400c008b4f4c3bcb74098b464c50e869410c008d442410508d4f64e86c25ffff895e708b4e4c3bcb7408e8ad470c00895e4c8b868c0000003bc30f8e890000008dbe88000000895c2410bd010000008b47048d4dff3bc87c3f3b6f087e08558bcfe806d7ffff8b47043bc57d128b178d0c823bcb7402891983c0013bc57cee3b6f047d11eb068d9b00000000834704ff3b6f047cf7896f048b1f035c24108b0b85c9740e8b018b106a01ffd2c703000000008b868c000000834424100483c5018d4dff33db3bc87c868b86900000003bc3c6442420017d6083f8017d5b6a04e816bd14008bf883c40433c0399e8c0000007e268bcf8da424000000003bcb740b8b96880000008b1482891183c00183c1043b868c0000007ce38b868800000050e8a0d0140083c40489be88000000c78690000000010000008b868c0000003bc37d1b8d0c85000000008d49008b868800000003c17402891883c10478ef399e8c0000007e168da4240000000083868c000000ff399e8c0000007ff18b868800000050899e8c000000e838d014008b4e688b0189098b4e6889490483c4043b4668895e6c74198da424000000008b3850e834cc140083c4043b7e688bc775ee8b466850e821cc1400895e6883c4048bcec7442420ffffffffc70604c1d500e84a9712008b4c24185f5e5d5b64890d0000000083c414c3",
+      "sha256": "1c898155d152bf421f0a0890a6db8ae9191a6c96387bded7a20c552f75caec49",
+      "linear_decoded_instructions": 204,
+      "cached_listed_instructions": 204,
+      "cached_listing_receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\cached_00aa9730_asm.txt",
+        "bytes": 6170,
+        "sha256": "7863776d237bd06744ad3eb28121cbe0e9670ad8d4ccf93abea907f2ddfb269f"
+      },
+      "live_bytes_receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_00aa9730_bytes.txt",
+        "bytes": 3129,
+        "sha256": "2c985e17b961144fd7f29e622f06a2decdd4a1671221ed52ff10302f41b0ab95"
+      }
+    },
+    {
+      "address": "00AA8320",
+      "end_inclusive": "00AA8396",
+      "bytes": 119,
+      "hex": "5556578be98b45688b308d7d64538bff3bff8b5f047405e8d7e314003bf374223b77047505e8c9e314008b4e088b118b4220ffd03b77047505e8b5e314008b36ebce8b750083c60ce8c3e600008b16508bcdffd284c05b74078bcde830f000008b4d4c85c9740ce8145c0c00c7454c000000005f5e5dc3",
+      "sha256": "2cda1520a47eba334ad9d13e2e4af62874fb7600ec0cdc15fd14fcdc200d1b76",
+      "linear_decoded_instructions": 48,
+      "cached_listed_instructions": 48,
+      "cached_listing_receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\cached_00aa8320_asm.txt",
+        "bytes": 1317,
+        "sha256": "32295a6afcfd513dddfded702e0a942280f109b98b6f784448fb50e6cc8e598e"
+      },
+      "live_bytes_receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_00aa8320_bytes.txt",
+        "bytes": 580,
+        "sha256": "7342a5522955995a0088b7208c6b59b493e82e6fd450ec98526f5680d780d98e"
+      }
+    },
+    {
+      "address": "00AC47F0",
+      "end_inclusive": "00AC485B",
+      "bytes": 108,
+      "hex": "535556578bf18d7e0c57ff151822ce00834718018b4424148b98240100008b4e288b0c992bc18be8b8a7c867ddf7ed03d5c1fa088bc2c1e81f03c20fb79140250000668984510025000066838140250000013b5e347303895e34834718ff57ff151022ce005f5e5d5bc20400",
+      "sha256": "56511a3923bfd7e90bf00341e821748b0c1f86259eec9a37f64702bda2b7324b",
+      "linear_decoded_instructions": 36,
+      "cached_listed_instructions": 36,
+      "cached_listing_receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\cached_00ac47f0_asm.txt",
+        "bytes": 1066,
+        "sha256": "5773f31f71fbfbc2140837b7fd141d9984a635c76464c468bda791ecce715cdd"
+      },
+      "live_bytes_receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_00ac47f0_bytes.txt",
+        "bytes": 523,
+        "sha256": "a1acdd0db4923c1f8bb3a98d6c5735bb13848b1235426dc51836a9f87c15f93a"
+      }
+    },
+    {
+      "address": "00B72250",
+      "end_inclusive": "00B7226B",
+      "bytes": 28,
+      "hex": "568bf18d460450ff152022ce0085c075098b168b028bce5effe05ec3",
+      "sha256": "1f665fbb8e540be92480153e4cea8ecb980ddd9a505d43e3783604e482d00db7",
+      "linear_decoded_instructions": 14,
+      "cached_listed_instructions": 14,
+      "cached_listing_receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\cached_00b72250_asm.txt",
+        "bytes": 348,
+        "sha256": "7ee80aaee706e1cb73c590d5f82189035e982e742d634ff35ba9dcac1b4c10f5"
+      },
+      "live_bytes_receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_00b72250_bytes.txt",
+        "bytes": 138,
+        "sha256": "2bc84b6770d81d7822e3711faea299645b514a87a673deb1ca985c422378a0fd"
+      }
+    },
+    {
+      "address": "00AA4B30",
+      "end_inclusive": "00AA4C1C",
+      "bytes": 237,
+      "hex": "83ec1053558b6c241c5657556880bfd5008bf1e8680998ff8b460c8d5e088bc88b318bfb83c4088944241c897c24108974241485ff74043bfb7405e8a31b15003b74241c0f849900000085ff7505e8901b15003b77047505e8861b1500396e1074138d4c2410e8d58ea1ff8b7424148b7c2410ebbe3b77047505e8641b15008b56108b4a18e8468c0c008b400485c08be87505bd60bcf8003b77047505e8411b15008b461055506854bfd500e8cf0898ff83c40c3b77047505e8251b15008b461085c0741050e8b119150083c404c746100000000056578d4c2420518bcbe89dfaffff5f5e5d5b83c410c20400",
+      "sha256": "225015b168fc419a580bb64eea3f0b881aaefbe282bb18ecfa029f4429fa371b",
+      "linear_decoded_instructions": 81,
+      "cached_listed_instructions": 81,
+      "cached_listing_receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\cached_00aa4b30_asm.txt",
+        "bytes": 2297,
+        "sha256": "0f8a92f76aa6a391d7a93d5cf4a6d06efda34e3e176c28371e28c46b4adce0ed"
+      },
+      "live_bytes_receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_00aa4b30_bytes.txt",
+        "bytes": 1143,
+        "sha256": "9616a2e504a986c10431fe7eed28c59b20abda706550ef82b38dd4d51cc4a946"
+      }
+    }
+  ],
+  "native_profile": {
+    "address": "00D5BE38",
+    "hex": "e030bd00f038aa00803fac00b038aa00209d6f00903fac00504cac00304dac002083aa00",
+    "dwords": [
+      "00BD30E0",
+      "00AA38F0",
+      "00AC3F80",
+      "00AA38B0",
+      "006F9D20",
+      "00AC3F90",
+      "00AC4C50",
+      "00AC4D30",
+      "00AA8320"
+    ]
+  },
+  "native_eh": [
+    {
+      "address": "00CB8836",
+      "hex": "b8dcf7de00e903e3f3ff",
+      "funcinfo_address": "00DEF7DC",
+      "funcinfo_hex": "2205931902000000ccf7de00000000000000000000000000000000000000000001000000",
+      "max_state": 2,
+      "unwind_map_address": "00DEF7CC",
+      "unwind_map_hex": "ffffffff2088cb00000000002888cb00",
+      "actions": [
+        {
+          "state": 0,
+          "previous_state": -1,
+          "action": "00CB8820",
+          "hex": "8b4df0e9080fdfff",
+          "decoded": [
+            "00CB8820: mov ecx, dword ptr [ebp - 0x10]",
+            "00CB8823: jmp 0xaa9730"
+          ],
+          "tail_target": "00AA9730"
+        },
+        {
+          "state": 1,
+          "previous_state": 0,
+          "action": "00CB8828",
+          "hex": "8b4df081c100010000e9ea5476ff",
+          "decoded": [
+            "00CB8828: mov ecx, dword ptr [ebp - 0x10]",
+            "00CB882B: add ecx, 0x100",
+            "00CB8831: jmp 0x41dd20"
+          ],
+          "tail_target": "0041DD20"
+        }
+      ]
+    },
+    {
+      "address": "00CB7421",
+      "hex": "b8a0dcde00e918f7f3ff",
+      "funcinfo_address": "00DEDCA0",
+      "funcinfo_hex": "220593190300000088dcde00000000000000000000000000000000000000000001000000",
+      "max_state": 3,
+      "unwind_map_address": "00DEDC88",
+      "unwind_map_hex": "ffffffff0074cb00000000000874cb00010000001374cb00",
+      "actions": [
+        {
+          "state": 0,
+          "previous_state": -1,
+          "action": "00CB7400",
+          "hex": "8b4df0e908fadeff",
+          "decoded": [
+            "00CB7400: mov ecx, dword ptr [ebp - 0x10]",
+            "00CB7403: jmp 0xaa6e10"
+          ],
+          "tail_target": "00AA6E10"
+        },
+        {
+          "state": 1,
+          "previous_state": 0,
+          "action": "00CB7408",
+          "hex": "8b4df083c164e9cd48deff",
+          "decoded": [
+            "00CB7408: mov ecx, dword ptr [ebp - 0x10]",
+            "00CB740B: add ecx, 0x64",
+            "00CB740E: jmp 0xa9bce0"
+          ],
+          "tail_target": "00A9BCE0"
+        },
+        {
+          "state": 2,
+          "previous_state": 1,
+          "action": "00CB7413",
+          "hex": "8b4df081c188000000e92f0bdfff",
+          "decoded": [
+            "00CB7413: mov ecx, dword ptr [ebp - 0x10]",
+            "00CB7416: add ecx, 0x88",
+            "00CB741C: jmp 0xaa7f50"
+          ],
+          "tail_target": "00AA7F50"
+        }
+      ]
+    }
+  ],
+  "native_operations": {
+    "AA38F0": {
+      "native_abi": "ECX receiver; one flags DWORD at original entry ESP+4; EAX captured receiver; RET4",
+      "capture": "PUSH ESI; MOV ESI,ECX; real CALL AC5480",
+      "flag_epoch": "TEST LOW BYTE [ESP+8],1 only AFTER AC5480 returns",
+      "pool_return": "AC4C40 only if late flags bit0; original identity returned even after pool return",
+      "absent_operations": [
+        "null guard",
+        "Page reference decrement/count gate",
+        "manager removal",
+        "extra +20",
+        "protective reference"
+      ],
+      "real_source": "src/native_gui_layer_lifetime.cpp:98",
+      "source_api": "void* scalar_delete_native_gui_layer_00aa38f0(void*, const volatile uint32_t&, NativeGuiLayerLifetimeContext&)"
+    },
+    "AC5480": {
+      "native_abi": "ECX actual124h Page; no stack arguments; RET",
+      "ordering": [
+        "stamp D5BE38",
+        "read ownership byte F4 BEFORE state1",
+        "owned: manager getter then CURRENT F0, remove camera store, then CURRENT EC",
+        "owned: real B72250 on nonnull captured scene; clear CURRENT EC only after return",
+        "shared: capture EC once; CURRENT CE2220(scene+4); at zero current captured-scene profile/table0",
+        "shared: post-callback CURRENT EC clear, including replacement; no scene read after terminal return",
+        "capture name data104 BEFORE state0; then CURRENT length100+1 and actual419CC0/BD1510",
+        "normal name return leaves header fields uncleared",
+        "set state-1 BEFORE real AA9730"
+      ],
+      "failure": "Layer Source C++ state1 destroys name header then base; state0 only base; state-1 no repeated cleanup. No slot return on escaped destructor failure."
+    },
+    "AA8320": {
+      "schedule": [
+        "CURRENT child ring traversal and CURRENT child20",
+        "capture class-slot ADDRESS before AB6A30; read target afterward",
+        "conditional real Text glyph188 release",
+        "CURRENT main4C release then post-callback clear"
+      ],
+      "no_shortcut": "No fake false class answer or semantic node cast."
+    },
+    "AA9730": {
+      "native_abi": "ECX raw widget base; no stack arguments; real final RET AA99B8",
+      "schedule": [
+        "stamp D5C130",
+        "whole AA8320",
+        "fresh first-child/head/count loop with CURRENT child04(flags1)",
+        "child self-detaches; no fabricated list progress",
+        "capture parent70 once with current node fields and actual A9BD50 captured-self home",
+        "late replacement main4C release",
+        "CURRENT timed count/data; captured slot clear only after CURRENT entry0(flags1) returns",
+        "timed backing cleanup, list/sentinel cleanup, D5C104 then real BD30F0/CEB130"
+      ],
+      "state_cleanup": [
+        "state2 AA7F50 timed BACKING only",
+        "state1 A9BCE0 list BACKING only",
+        "state0 AA6E10 base"
+      ],
+      "children_not_cleaned_by_unwind_actions": true
+    },
+    "BD30E0": {
+      "real_source": "src/native_ref_counted.cpp:4",
+      "schedule": "null skip, capture CURRENT profile, resolve CURRENT +04 with flags1; no count/decrement/+20",
+      "required_provider": "NativeRefCountedDeleteCalls::delete_vslot04 for actual captured profile and real matching scalar owner",
+      "no_new_wrapper_needed": true
+    },
+    "AA31F0": {
+      "real_source": "src/native_gui_page_registry.cpp:150",
+      "schedule": "search actual manager+14 pointer vector; remove first equal pointer BEFORE CURRENT +20; fresh CURRENT +04(flags1) AFTER return",
+      "absent_page": "no page virtual calls",
+      "exception": "completed vector change remains; later calls skipped on throw",
+      "no_reference_decrement": true
+    },
+    "frame_518250": {
+      "source_scope": "readiness input0c5e only; no Frame caller body implemented here",
+      "count_one": "manager getter may change slot; its subsequent CURRENT slot is reloaded for real AA31F0",
+      "other_count": "capture Page for CE2220(Page+4); zero calls captured Page CURRENT slot0; real BD30E0 only where selected",
+      "return": "clear original current slot after returned retirement, including replacement; throw skips clear/later work",
+      "forbidden_change": "Do not add +20 or substitute AA31F0 in the zero arm."
+    }
+  },
+  "existing_real_suppliers": [
+    {
+      "service": "Layer pool return",
+      "owner": "GameNativeGuiLayerPoolProcess F8BF50",
+      "input_types": [
+        "NativeGuiLayerLifetimeContext",
+        "actual Page allocation and hidden slab index124"
+      ],
+      "source": [
+        "include/bsp/native_gui_layer_storage.hpp",
+        "src/native_gui_layer_storage.cpp",
+        "src/native_material_pools.cpp"
+      ],
+      "custody": "same startup-initialized CD73D0 pool; payload124h/slot128h, same E188B4 allocator-list domain",
+      "limits": "No scalar delete/string/timed/list free substitution; no new/default process owner."
+    },
+    {
+      "service": "Native name headers/pool",
+      "owner": "VFS NativeStringRawPoolContext",
+      "custody": "SAME actual01090AA8/01090AA4/01090AA0 and raw419CC0/BD1510/41DD20; borrowed contexts survive cleanup"
+    },
+    {
+      "service": "manager and store removal",
+      "owner": "PageApplication Layers/warm manager",
+      "source": [
+        "src/native_gui_camera_store_map.cpp",
+        "src/game_native_gui_page_application.cpp"
+      ],
+      "custody": "actual manager/store/name/tree and same CRT matching payload free; real current read epochs; Source boundary qualifications retained"
+    },
+    {
+      "service": "CE2220 decrement",
+      "owner": "CameraGraph::decrement",
+      "source": [
+        "src/game_native_renderer_camera.inc:29",
+        "src/game_native_renderer_gui_scene.inc:249",
+        "src/game_native_gui_page_application.cpp:538"
+      ],
+      "actual_supplier": "GetProcAddress(GetModuleHandleW(L\"kernel32.dll\"),\"InterlockedDecrement\") once; same retained const callable cell",
+      "public_borrow": "GameNativeRendererApplication::startup_scene_domain().node.scenes.decrement_00ce2220",
+      "scope": "only while the genuine open startup domain/renderer lives; no numeric native IAT invocation",
+      "scalar_process_has_ce2220_accessor": false
+    },
+    {
+      "service": "outer-scene zero terminal",
+      "owner": "same canonical NativeGuiSceneReference in Page acquired scene record",
+      "source": [
+        "src/game_native_gui_page_application.cpp:727",
+        "src/native_gui_scene_storage.cpp:286"
+      ],
+      "custody": "require SAME live observed-zero reference/current profile; existing BD30E0 to actual scalar owner; no extra reference or access after terminal"
+    },
+    {
+      "service": "actual data/type phase",
+      "owner": "GameNativeReadOnlyData and GameNativeGuiTextProcess",
+      "custody": "borrow real immutable profile views and initialized current lineage/descriptor cells; identities select Source bodies, never host-code pointers"
+    }
+  ],
+  "current_page_application_limits": {
+    "guard": "kNativeGuiPageChainCc15Bound=false",
+    "producer": "childless/type0-key path only; mapped widget type rejected before real AA6560 creation; .mmod route uncomposed",
+    "delete_page_preconditions": [
+      "flags1",
+      "scene_released metadata",
+      "main4C zero",
+      "genuine empty child ring/count0",
+      "timed88/8C/90 zero",
+      "parent70 zero",
+      "actual CURRENT AA38F0"
+    ],
+    "callbacks_that_reject": [
+      "child20",
+      "child04",
+      "timed0",
+      "parent A9BD50 removal"
+    ],
+    "actual_prior_scene_release": "manual real raw Group/tree B6DFA0 then main4C clear and scene_released after completion",
+    "actual_root_record": "NativeGroupStorageReference plus matching raw Group tree/retirement contexts",
+    "scalar_base_context": "NativeGuiWidgetLifetimeContext with camera_environment().nodes; legacy GeneratedModelNodeLifetime lookup",
+    "unclosed_route": "No genuine direct scalar-time Page raw Group/replacement main4C route is composed into that legacy widget context.",
+    "removing_preflight_only_is_not_closure": true,
+    "failure_custody": "Current Page application records entered failure/retiring state and requires retained process graph; no retry or fabricated rollback."
+  },
+  "available_child_transport_and_gaps": {
+    "NativeGuiWidgetLifetimeDispatch": {
+      "existing": "canonical raw Group/ClipBox; optional fully constructed canonical Text/Icon; same registry/context; actual self-detaching scalar calls and A9BD50 remove-all",
+      "required_external": [
+        "current genuine class query",
+        "actual timed table",
+        "same timed allocation scalar0/matching free"
+      ],
+      "not_supplied": [
+        "arbitrary/all18 class owners",
+        "FrameBox route",
+        "Page producer/admission",
+        "type startup by table installation"
+      ]
+    },
+    "NativeGuiFrameBoxReference": {
+      "existing": "real current BD30E0/AD29B0 scalar with SAME completed construction/matching pool and prepared125/119/111 contexts",
+      "limits": "separate registry/lifetime admission; no FrameBox Page factory/child dispatch follows from interface existence; zero terminal retains its existing noexcept qualification"
+    },
+    "NativeGuiWidgetRawModelLifetimeContext": {
+      "existing": "qualified genuine active raw118 base entry and retained Model routes",
+      "limits": "rejects child/parent/timed routes; not a general Layer/Page/Group transport"
+    },
+    "required_producer": "NativeGuiWidgetPropertyChildrenCalls::create_widget_00aa6560 over real raw per-type creators and same Model/child identities",
+    "legacy_switch": "cc13_gui1::gui_layout_create_widget_of_type_00aa6560 has complete18-case mapping but delegates to required GuiWidgetHooks::widget_type_creator",
+    "not_proof": [
+      "semantic GuiWidgetOwner",
+      "copied profile table",
+      "forced childless/no-timed/null-parent domain",
+      "initial row4 names all null",
+      "unadopted helper/overload existence"
+    ]
+  },
+  "next_coherent_binding": {
+    "source_ready": false,
+    "new_complete_native_body_packet_available": false,
+    "smallest_missing_work": "Actual Page producer and its same graph lifetime/provider composition; not another native scalar/destructor wrapper.",
+    "steps": [
+      "Determine reached real layout/type/timed preimages under current producer contract; do not force row4 or empty inputs.",
+      "Compose genuine AA6560 per-type allocation/construction/identity providers for those actual children and retain their matching Model/node/parent/timed resources.",
+      "Retain Page/Group/scene/child/timed metadata in the same PageApplication::Impl::Page and registry; no duplicate owner or protective credit.",
+      "Couple CURRENT profile04/20 dispatch to real existing scalar bodies and a base main4C route using the SAME raw Group/Model/node owners, including replacements and parent/self-detach.",
+      "At zero, dispatch CURRENT slot0; where BD30E0 is selected reuse it with actual current04/Layer context, with no prior +20 requirement.",
+      "Preserve manager path, flags late home, current-slot captures/clears and existing entered-failure custody; no unused API or default callbacks."
+    ],
+    "expected_binding_files": [
+      "include/bsp/game_native_gui_page_application.hpp",
+      "src/game_native_gui_page_application.cpp",
+      "include/bsp/native_gui_widget_lifetime.hpp",
+      "src/native_gui_widget_lifetime.cpp",
+      "include/bsp/native_gui_widget_lifetime_dispatch.hpp",
+      "src/native_gui_widget_lifetime_dispatch.cpp",
+      "the actual reached per-type factory/identity contexts"
+    ],
+    "pending_caller_gates": [
+      "genuine raw95 bank/current vptr dispatch",
+      "writable name/selector authority",
+      "complete Frame register/set producers",
+      "all creators/lifetimes",
+      "whole Game/pause adoption",
+      "mandatory fixture and gameplay admission"
+    ]
+  },
+  "verification": {
+    "native_body_bytes": 1551,
+    "full_span_instructions": 521,
+    "normal_direct_calls": 48,
+    "unwind_tail_rows": 5,
+    "live_checked_rows": 53,
+    "failed_rows": 0,
+    "indirect_sites_unforced": [
+      {
+        "address": "00AC54F1",
+        "function": "00AC5480",
+        "operand": "dword ptr [0xce2220]",
+        "phase": "indirect current table/import; target not forced"
+      },
+      {
+        "address": "00AC5501",
+        "function": "00AC5480",
+        "operand": "edx",
+        "phase": "indirect current table/import; target not forced"
+      },
+      {
+        "address": "00BD30EB",
+        "function": "00BD30E0",
+        "operand": "edx",
+        "phase": "indirect current table/import; target not forced"
+      },
+      {
+        "address": "00AA326A",
+        "function": "00AA31F0",
+        "operand": "edx",
+        "phase": "indirect current table/import; target not forced"
+      },
+      {
+        "address": "00AA3276",
+        "function": "00AA31F0",
+        "operand": "edx",
+        "phase": "indirect current table/import; target not forced"
+      },
+      {
+        "address": "00AA9797",
+        "function": "00AA9730",
+        "operand": "edx",
+        "phase": "indirect current table/import; target not forced"
+      },
+      {
+        "address": "00AA986E",
+        "function": "00AA9730",
+        "operand": "edx",
+        "phase": "indirect current table/import; target not forced"
+      },
+      {
+        "address": "00AA8352",
+        "function": "00AA8320",
+        "operand": "eax",
+        "phase": "indirect current table/import; target not forced"
+      },
+      {
+        "address": "00AA8372",
+        "function": "00AA8320",
+        "operand": "edx",
+        "phase": "indirect current table/import; target not forced"
+      },
+      {
+        "address": "00AC47FA",
+        "function": "00AC47F0",
+        "operand": "dword ptr [0xce2218]",
+        "phase": "indirect current table/import; target not forced"
+      },
+      {
+        "address": "00AC484F",
+        "function": "00AC47F0",
+        "operand": "dword ptr [0xce2210]",
+        "phase": "indirect current table/import; target not forced"
+      },
+      {
+        "address": "00B72257",
+        "function": "00B72250",
+        "operand": "dword ptr [0xce2220]",
+        "phase": "indirect current table/import; target not forced"
+      },
+      {
+        "address": "00B72268",
+        "function": "00B72250",
+        "operand": "eax",
+        "phase": "indirect tail dispatch; target not forced"
+      }
+    ],
+    "widget_listing_metadata": {
+      "cached_and_live_listing_starts": {
+        "cached_instruction_starts": 204,
+        "live_instruction_starts": 204,
+        "cached_only": [],
+        "live_only": []
+      },
+      "proto_metrics_instruction_count": 203,
+      "whole_span_linear_decode": 204,
+      "qualification": "Full fresh listing, cached listing and original-byte decode agree on all204 starts; proto metrics203 retained as discrepancy, no listing mutation or missing-op inference."
+    },
+    "source_pin_count": 40,
+    "source_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\config\\target.json",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\include\\bsp\\native_gui_layer_lifetime.hpp",
+        "bytes": 4093,
+        "sha256": "dbf0d44346d847bd4c2daa86b73cdb6ec175e2553ad113ef8bbeffc444f631dd",
+        "git_blob": "2477f2e27bb3d0fa2c59042d91f0b41a2a9be73a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\src\\native_gui_layer_lifetime.cpp",
+        "bytes": 4457,
+        "sha256": "d6d789179cd68cbd1bf66a6ebf2b1aeb4c2c29fc03155b3be335ebfdb22cf7d0",
+        "git_blob": "5ceefd2a5021f3d9df7ce50bc5c78722be5a2b15"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\include\\bsp\\native_gui_widget_lifetime.hpp",
+        "bytes": 5052,
+        "sha256": "030522bae83f9f7cd9e80d91ddcb5d4e841e64d983bb8be80a3b99597689aa70",
+        "git_blob": "ff4ba8bdf16ea7cf5e76a2ffb92c0729799884bc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\src\\native_gui_widget_lifetime.cpp",
+        "bytes": 12286,
+        "sha256": "401a97f5c736a8d30896172c2acd5956550c1c17263b545dcf4bf60a2943f797",
+        "git_blob": "7d29b66582bef1929170abde259697b7ac7e2d53"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\include\\bsp\\native_gui_widget_raw_model_lifetime.hpp",
+        "bytes": 4599,
+        "sha256": "bc8dd7b7fb8e22be5436857a8a27ed123afafe7543c592e327643d5294eaf988",
+        "git_blob": "dbffd3f17f0952c4d3ff8c0659ab0f617221eac7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\src\\native_gui_widget_raw_model_lifetime.cpp",
+        "bytes": 28955,
+        "sha256": "8761415408f767dfa34dbcdf986be942e94f07b42d3f63536a77ce987cbec146",
+        "git_blob": "4d0e75a0986557607258a53264c06bac084c0a7f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\include\\bsp\\native_gui_widget_lifetime_dispatch.hpp",
+        "bytes": 6288,
+        "sha256": "9d2c05097f3880a57bc79a5cd095bee33858a3b0300ed77af887f90fec3e291c",
+        "git_blob": "bd1b560ee54acf5c4189ecc2a130a406a70049d4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\src\\native_gui_widget_lifetime_dispatch.cpp",
+        "bytes": 9192,
+        "sha256": "f850db8bbd894bf91a96f730b8783cc7b66cb595c3c2a07973e33d33d9ad4803",
+        "git_blob": "b68e27db072d9cf5f549d7ed8806faf36474b530"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\include\\bsp\\native_gui_layer_storage.hpp",
+        "bytes": 2878,
+        "sha256": "ac8aeee4c4c6b3a6d6fa014531e0de748ec56055ee4784247487f150189329f7",
+        "git_blob": "99cb0ca271607fbb7e205daada7a52a623118a22"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\src\\native_gui_layer_storage.cpp",
+        "bytes": 1816,
+        "sha256": "e7a11307686aff9dede6987f9036bbcc60dd02aac37e7c8f1a83ef256ef79258",
+        "git_blob": "b4f518f975b7c9ded13f67cf5002daf02aef25c1"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\src\\native_material_pools.cpp",
+        "bytes": 24320,
+        "sha256": "52c0de304c861907c1799517e038e8383ca62829e12176eb1b48f406d163c95a",
+        "git_blob": "b488015a211952463ac5c1fb78e1f42a9aeca917"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\include\\bsp\\native_ref_counted.hpp",
+        "bytes": 1226,
+        "sha256": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82",
+        "git_blob": "5ee0a9b036a0acd04fe5a89e3faa8cd22552f200"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\src\\native_ref_counted.cpp",
+        "bytes": 822,
+        "sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9",
+        "git_blob": "bb26a9f52a9b694165a4b832db8a9dac735d1c52"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\include\\bsp\\native_gui_page_registry.hpp",
+        "bytes": 3607,
+        "sha256": "92f55df728ad8ec45fab8182e60c5ac8c7752883edd76eded997364fa984e6cc",
+        "git_blob": "35d7b05ee0805000b9f47b79a961735e443f9391"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\src\\native_gui_page_registry.cpp",
+        "bytes": 6769,
+        "sha256": "df890ebe7e74d5dddb5b014ca9491a874cef905fb4fa86f4003200a05625b89d",
+        "git_blob": "2629526c4774763cb755120a6c966c2c0e9af791"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\include\\bsp\\native_gui_media_focus_lifetime.hpp",
+        "bytes": 3213,
+        "sha256": "fed651ac9f3e7f0853c4754dd180dc68b1e6432afc9fe64a327caa59e8b81412",
+        "git_blob": "889f22292bd5b039b0a18f46856a61a3804f7e58"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\include\\bsp\\game_native_gui_page_application.hpp",
+        "bytes": 3811,
+        "sha256": "8a21c044261937a47938887584b94650d1d04ab1584d3c447af276a6c04cebcb",
+        "git_blob": "3900c1e90fb9dd685f1c1375079b6fd13252cff9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\src\\game_native_gui_page_application.cpp",
+        "bytes": 54018,
+        "sha256": "6931fc7c1dced9222a47ec072ca143b00d1789b5a344b85c7bfc639b15314711",
+        "git_blob": "0e1e95e2a1372504cce0dda0a00a6c4476f8a367"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\include\\bsp\\game_native_renderer_scalars.hpp",
+        "bytes": 4533,
+        "sha256": "cea576fc132bcf03eb26132dbe1b6e0cca743bffcc768446a908be516acee897",
+        "git_blob": "638421ba3977d185a19ca7672bf19418e8b4dcd8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\src\\game_native_renderer_scalars.cpp",
+        "bytes": 3435,
+        "sha256": "53477f4e9013c3013cdbd0a923e9349a27bed0ff13ff182705cbe70d335ff787",
+        "git_blob": "1b723d3673721e41a6641bd96720d63cd1fb605f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\include\\bsp\\game_native_renderer_application.hpp",
+        "bytes": 20443,
+        "sha256": "2ce5d69fe894fb0a730234f15dc236d6d6d869e53e29387a962ac0e6d99e42be",
+        "git_blob": "427d7f7b5762081595c7d34c460c46d173e874c4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\src\\game_native_renderer_camera.inc",
+        "bytes": 2825,
+        "sha256": "77781cd84f49383f516f5f242f08a731392459a822f87ea84499960338b3e2c2",
+        "git_blob": "c60795b5c9adf5000f66b555c981ca15fb92077b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\src\\game_native_renderer_gui_scene.inc",
+        "bytes": 14757,
+        "sha256": "b3c4c2270facfe38f2ed85dbe672e1771bcd37cf23dd034e4906a184c3440a4e",
+        "git_blob": "9b682e14a021562855a7e9398228e11cd06dadd9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\include\\bsp\\native_node_destruction.hpp",
+        "bytes": 5997,
+        "sha256": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833",
+        "git_blob": "d84edd297c4dfb43cb0b5aa630676fb1b245eedc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\include\\bsp\\native_gui_widget_property_children.hpp",
+        "bytes": 4544,
+        "sha256": "b9699af0b44d20a05fd4b09ec8cf5668f1bf000b9554387aea73796f9c20e70e",
+        "git_blob": "f782122e08e2bf78a7e41028a4735976136dc646"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\src\\native_gui_widget_property_children.cpp",
+        "bytes": 11148,
+        "sha256": "2649822b64027d0b30421dd499aaecaf71f9f2484e2880b9c1f5c75817b77efc",
+        "git_blob": "ed66ee7c010662ad5a60008d9a218ca988a4cdc0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\include\\bsp\\native_gui_frame_box_factory.hpp",
+        "bytes": 2939,
+        "sha256": "51c9ecc3f14973a9f21cc1de52a05b9d34c0f522f7fbba3cbb77eb187e773853",
+        "git_blob": "854035e884f4d4417ad9889ac40ed92a7d77e5d0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\src\\native_gui_frame_box_factory.cpp",
+        "bytes": 3221,
+        "sha256": "46124772e8af548dbd39ddf60800fa5dbb2a78efd18052c10bf85a0588a17532",
+        "git_blob": "c69ff3ef7d612a3d42840e5dab5d755301ea870d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\include\\bsp\\native_gui_frame_box_identity.hpp",
+        "bytes": 6582,
+        "sha256": "3dcfc3e05964f5dc3b1637eb7340eafe103010c6d9fda06c462879cc2f57e079",
+        "git_blob": "c74e5f510d16a1c81cccb8ba601b36bb17b9781b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\src\\native_gui_frame_box_identity.cpp",
+        "bytes": 6912,
+        "sha256": "ed2f4cd928a2b36ab3b31204db7b30b1fd45d65d57b21dc25e7d33e2302e1566",
+        "git_blob": "ef9302b3cabf759b6a9203ccdee88da108e0376b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\include\\bsp\\native_gui_scene_storage.hpp",
+        "bytes": 6885,
+        "sha256": "d816b2f0bcf0e0b47b895c3d999335b6f8253a66f1ae63055563578b6544407b",
+        "git_blob": "a913e4429abdbd9a7e6a01d292786785f213322a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\src\\native_gui_scene_storage.cpp",
+        "bytes": 13498,
+        "sha256": "c291544fa92b127f2e94c28b6072dc5a0ee6325e1e315e934e7b4567734e2935",
+        "git_blob": "77e02c53640386c7958de575b029548be76b31b5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\include\\bsp\\cc13_gui1.hpp",
+        "bytes": 19960,
+        "sha256": "9a00758ce9f7bdb218ce37b98963920bfecfc64de3743ba14a096852aa841f15",
+        "git_blob": "a262fef720e9d5149213284f361390b7d7445175"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\src\\cc13_gui1.cpp",
+        "bytes": 34424,
+        "sha256": "7dfe47d4f105cf2556058954e1b493c683f458073674a8bf310adfa378db6b62",
+        "git_blob": "40dc47c12558bb85e3db366f94d4b0c5c7a5e9ea"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\include\\bsp\\native_gui_camera_store_map.hpp",
+        "bytes": 7932,
+        "sha256": "3682a1f8dcd0a195f2c3f0840207d52e353fd7f03f98790e37a57ad73b4b8340",
+        "git_blob": "0fac7479cc9b8f767f02d059d7c8da59bbd8bc0e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\src\\native_gui_camera_store_map.cpp",
+        "bytes": 11486,
+        "sha256": "99228166520cfa04a782500d5de7b272f9545bc4cfc8f8110bb813d1b0afe39d",
+        "git_blob": "c0284067e27b5e72591573c8515e820f02d25b50"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\include\\bsp\\native_gui_widget_child_links.hpp",
+        "bytes": 4756,
+        "sha256": "579b74e93e3c3fd6ac576f155e45b35e1038f844b6792071ae42c31557992f71",
+        "git_blob": "846e35758de5bdbb11b4ea54cd59431829ef97c1"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\src\\native_gui_widget_child_links.cpp",
+        "bytes": 5895,
+        "sha256": "dad7a2905b5b273bfdb5e9559c2360f4b2404204489088c8fc9a2f89894cac9f",
+        "git_blob": "b261a0156cdf86ce5983cad4fc45638007e3385f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\include\\bsp\\game_native_readonly_data.hpp",
+        "bytes": 2713,
+        "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+        "git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3"
+      }
+    ],
+    "call_rows": [
+      {
+        "address": "00AA38F3",
+        "function": "00AA38F0",
+        "native": "00AC5480",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA3901",
+        "function": "00AA38F0",
+        "native": "00AC4C40",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AC54B4",
+        "function": "00AC5480",
+        "native": "004C12B0",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AC54C2",
+        "function": "00AC5480",
+        "native": "00AA4B30",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AC54D1",
+        "function": "00AC5480",
+        "native": "00B72250",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AC552A",
+        "function": "00AC5480",
+        "native": "00419CC0",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AC5531",
+        "function": "00AC5480",
+        "native": "00BD1510",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AC5540",
+        "function": "00AC5480",
+        "native": "00AA9730",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AC4C46",
+        "function": "00AC4C40",
+        "native": "00AC47F0",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA31FF",
+        "function": "00AA31F0",
+        "native": "00BF6713",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA3210",
+        "function": "00AA31F0",
+        "native": "00BF6713",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA3219",
+        "function": "00AA31F0",
+        "native": "00BF6713",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA3227",
+        "function": "00AA31F0",
+        "native": "00BF6713",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA3235",
+        "function": "00AA31F0",
+        "native": "00BF6713",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA3256",
+        "function": "00AA31F0",
+        "native": "00BF67A7",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA9760",
+        "function": "00AA9730",
+        "native": "00AA8320",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA977A",
+        "function": "00AA9730",
+        "native": "00BF6713",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA9784",
+        "function": "00AA9730",
+        "native": "00BF6713",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA97B9",
+        "function": "00AA9730",
+        "native": "00B6E680",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA97C2",
+        "function": "00AA9730",
+        "native": "00B6D890",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA97D2",
+        "function": "00AA9730",
+        "native": "00B6D940",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA97DF",
+        "function": "00AA9730",
+        "native": "00A9BD50",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA97EE",
+        "function": "00AA9730",
+        "native": "00B6DFA0",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA9825",
+        "function": "00AA9730",
+        "native": "00AA6F30",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA98A3",
+        "function": "00AA9730",
+        "native": "00BF55BE",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA98E4",
+        "function": "00AA9730",
+        "native": "00BF6989",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA994C",
+        "function": "00AA9730",
+        "native": "00BF6989",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA9973",
+        "function": "00AA9730",
+        "native": "00BF65AC",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA9986",
+        "function": "00AA9730",
+        "native": "00BF65AC",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA99A1",
+        "function": "00AA9730",
+        "native": "00BD30F0",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA8337",
+        "function": "00AA8320",
+        "native": "00BF6713",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA8345",
+        "function": "00AA8320",
+        "native": "00BF6713",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA8359",
+        "function": "00AA8320",
+        "native": "00BF6713",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA8368",
+        "function": "00AA8320",
+        "native": "00AB6A30",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA837B",
+        "function": "00AA8320",
+        "native": "00AB73B0",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA8387",
+        "function": "00AA8320",
+        "native": "00B6DFA0",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA4B43",
+        "function": "00AA4B30",
+        "native": "004254B0",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA4B6B",
+        "function": "00AA4B30",
+        "native": "00BF6713",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA4B7E",
+        "function": "00AA4B30",
+        "native": "00BF6713",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA4B88",
+        "function": "00AA4B30",
+        "native": "00BF6713",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA4B96",
+        "function": "00AA4B30",
+        "native": "004BDA70",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA4BAA",
+        "function": "00AA4B30",
+        "native": "00BF6713",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA4BB5",
+        "function": "00AA4B30",
+        "native": "00B6D800",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA4BCD",
+        "function": "00AA4B30",
+        "native": "00BF6713",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA4BDC",
+        "function": "00AA4B30",
+        "native": "004254B0",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA4BE9",
+        "function": "00AA4B30",
+        "native": "00BF6713",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA4BF6",
+        "function": "00AA4B30",
+        "native": "00BF65AC",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00AA4C0E",
+        "function": "00AA4B30",
+        "native": "00AA46B0",
+        "phase": "complete native body direct call"
+      },
+      {
+        "address": "00CB8823",
+        "native": "00AA9730",
+        "function": "00CB8820",
+        "kind": "tail_jump",
+        "phase": "native unwind action"
+      },
+      {
+        "address": "00CB8831",
+        "native": "0041DD20",
+        "function": "00CB8828",
+        "kind": "tail_jump",
+        "phase": "native unwind action"
+      },
+      {
+        "address": "00CB7403",
+        "native": "00AA6E10",
+        "function": "00CB7400",
+        "kind": "tail_jump",
+        "phase": "native unwind action"
+      },
+      {
+        "address": "00CB740E",
+        "native": "00A9BCE0",
+        "function": "00CB7408",
+        "kind": "tail_jump",
+        "phase": "native unwind action"
+      },
+      {
+        "address": "00CB741C",
+        "native": "00AA7F50",
+        "function": "00CB7413",
+        "kind": "tail_jump",
+        "phase": "native unwind action"
+      }
+    ],
+    "audit": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\audit.json",
+      "bytes": 172023,
+      "sha256": "65e2c41204d735051283df8ede95e7c9a8e194d84de902aaf2c02c14c1546a6b"
+    },
+    "audit_run": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\audit_run.txt",
+      "bytes": 762,
+      "sha256": "67980f3f3ab95d5dbb96a3693fc8f07362fe4749aefa1f9fbd241fb5553b1bcc"
+    },
+    "call_verification": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\call_verification.txt",
+      "bytes": 102,
+      "sha256": "37e4c83172ba942c8ed32fb0f708b54bd27a44822bd01fc08a532182ec007f24"
+    },
+    "artifact_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_00aa31f0_bytes.txt",
+        "bytes": 689,
+        "sha256": "e840b6b8cb5a928f0c7316e535b8d0593281c8d6f9e590c09435b3fb5bccac02"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_00aa38f0_bytes.txt",
+        "bytes": 138,
+        "sha256": "47e6a55cc08c41cff7cb15ac25ec9f1423a766d91f0938bed6dcc8d2bc07c3f9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_00aa38f0_proto.txt",
+        "bytes": 922,
+        "sha256": "e086cbcc3cdc519390b173ce15dd1f2a35a79867abf73456d717423e3931f97f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_00aa4b30_bytes.txt",
+        "bytes": 1143,
+        "sha256": "9616a2e504a986c10431fe7eed28c59b20abda706550ef82b38dd4d51cc4a946"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_00aa8320_bytes.txt",
+        "bytes": 580,
+        "sha256": "7342a5522955995a0088b7208c6b59b493e82e6fd450ec98526f5680d780d98e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_00aa9730_bytes.txt",
+        "bytes": 3129,
+        "sha256": "2c985e17b961144fd7f29e622f06a2decdd4a1671221ed52ff10302f41b0ab95"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_00aa9730_proto.txt",
+        "bytes": 4606,
+        "sha256": "410410f2b225f0473d9417d0273184e53e234b7707a30c32886313ad29cdf1bc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_00ac47f0_bytes.txt",
+        "bytes": 523,
+        "sha256": "a1acdd0db4923c1f8bb3a98d6c5735bb13848b1235426dc51836a9f87c15f93a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_00ac4c40_bytes.txt",
+        "bytes": 61,
+        "sha256": "abfd00d52340bc92b96e1d117cb57bf11daeed067e1eda3f7208a41fc504b556"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_00ac5480_bytes.txt",
+        "bytes": 1034,
+        "sha256": "9693ffc593ee091ed51aeec9155c0e24ce44b8badb3219aa467840935ba5ef28"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_00ac5480_proto.txt",
+        "bytes": 1605,
+        "sha256": "3781d6c788e2406cbaeb2876c9dd9b876255d6ae44a99df35429928368dbd3b6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_00b72250_bytes.txt",
+        "bytes": 138,
+        "sha256": "2bc84b6770d81d7822e3711faea299645b514a87a673deb1ca985c422378a0fd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_00bd30e0_bytes.txt",
+        "bytes": 69,
+        "sha256": "1d70d9d639234f376753c69e736b613bbef917a14ca52c5d82dc737141237953"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_layer_actions.txt",
+        "bytes": 114,
+        "sha256": "eb7fdc81a4571baaa31f73551ccbd2f61ffe6ab158e5d18433b2d008eef43d80"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_layer_funcinfo.txt",
+        "bytes": 183,
+        "sha256": "d94265e73d7b847834936e2d177d6d12f7f8a478624643e39c12c84b9c57c2a2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_layer_handler.txt",
+        "bytes": 57,
+        "sha256": "0aafa0e6e711182279fc7d496aa4fce161c78f088d73d86599e9b8b913646125"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_layer_unwind_map.txt",
+        "bytes": 77,
+        "sha256": "78cbcce1a3ff7b6883d6be2b6f298752e7ee385497485a1df56715f431182398"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_main_protos.txt",
+        "bytes": 2224,
+        "sha256": "75983c3dc626b2734d02e31a2ad14bd7fffb0420d7839c5c7c0c88e72fe96124"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_page_profile.txt",
+        "bytes": 183,
+        "sha256": "b08d9bc59a358ac6767174ee203398a258dd61b1554e3bcaf4f1d5a69128eac7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_widget_actions.txt",
+        "bytes": 171,
+        "sha256": "1877a509375773b75bb9d5c801528fddd3a9b60ecc66924308170ebda533f029"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_widget_funcinfo.txt",
+        "bytes": 183,
+        "sha256": "7baae1898353fa2223a935be10c11f02c2f4cfc344fc3a24e43584ecf58d619e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_widget_handler.txt",
+        "bytes": 57,
+        "sha256": "cd877b52201ec6e201a7c60baffa107a61db865a92440de52aa1ad3f1c574ad8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_widget_listing_capture.txt",
+        "bytes": 6374,
+        "sha256": "2f44695e1206cd3f061377c82d043013e154318badf8f7aadd412e84404cabe5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_widget_unwind_map.txt",
+        "bytes": 122,
+        "sha256": "95bef84e92834509acba1d5e714fe216c68372917c70577a39597c022a26c09e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\target_status.txt",
+        "bytes": 40,
+        "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\target_status_calls.txt",
+        "bytes": 40,
+        "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\target_status_verifier.txt",
+        "bytes": 40,
+        "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\target_status_listing.txt",
+        "bytes": 40,
+        "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\live_alignment_context.json",
+        "bytes": 157,
+        "sha256": "04bff676342dbf0ffae3645c379064bf1a84046e17fd62cf26b00b905e543947"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\widget_listing_difference.json",
+        "bytes": 113,
+        "sha256": "86150ed889ebd82c5374b032ba8325f523a1cb39ade2cef2b4b40f5c87317f96"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\call_verification.txt",
+        "bytes": 102,
+        "sha256": "37e4c83172ba942c8ed32fb0f708b54bd27a44822bd01fc08a532182ec007f24"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\original_call_rows.json",
+        "bytes": 8044,
+        "sha256": "33620644da1c2a4cbc1f5354ad732df5f2938c31fd60f575ba33527ede7780a7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\local\\native_frame_page_retirement_readiness\\audit.py",
+        "bytes": 10007,
+        "sha256": "4d625ca614828cc379d2e142088b89f9f8b6de936dc079e460a3844d77af80d6"
+      }
+    ]
+  },
+  "qualifications": [
+    "Complete raw body/source availability is distinct from concrete provider/all-row/caller readiness.",
+    "New Source C++ interfaces and cleanup scopes do not establish original register/private-stack/FH3/SEH/fault/FP or arbitrary callback exception transport.",
+    "Original Native pool/header/list/node lifetimes and alias/reload epochs remain genuine caller obligations; no invalid-storage or heap interchange proof.",
+    "No Source/header/CMake/shared ledger/guard/caller/table/Ghidra changes; existing frozen inputs not modified by this packet.",
+    "No compile, link, new tests, executable creation, probe, native body, DLL or gameplay execution. Static byte decoding and existing read-only call verifier only."
+  ],
+  "credit": {
+    "native_bodies": 0,
+    "recovered_bodies": 0,
+    "vendor_bodies": 0,
+    "duplicate_bodies": 0,
+    "runtime": 0,
+    "activation": 0
+  },
+  "owned_doc": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-frame-page-retirement-readiness\\docs\\CC16_NATIVE_FRAME_PAGE_RETIREMENT_READINESS.md",
+    "bytes": 11618,
+    "sha256": "4117cb20159e7e4d61416b36676aa041a7bb2f788a4195c49db8e0d9ca717fa6"
+  }
+}
