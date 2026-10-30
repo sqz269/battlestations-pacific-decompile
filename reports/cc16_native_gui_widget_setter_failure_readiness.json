@@ -1,0 +1,658 @@
+{
+  "packet": "codex-native-gui-widget-setter-failure-readiness",
+  "generated_utc": "2026-10-30T02:50:03.160072+00:00",
+  "base": "8b6084617b20fa082eb085a8edbd3321dcf8ba1e",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-setter-failure-readiness",
+  "branch": "agent/codex-native-gui-widget-setter-failure-readiness",
+  "status": "conditional_valid_domain_no_explicit_CPP_throw_or_heap_path; naked_unwind_unproven",
+  "ownership": {
+    "files": [
+      "docs/CC16_NATIVE_GUI_WIDGET_SETTER_FAILURE_READINESS.md",
+      "reports/cc16_native_gui_widget_setter_failure_readiness.json"
+    ],
+    "addresses": [],
+    "source_edits": false,
+    "old_contract_unchanged": true
+  },
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "checked_before_live_batch": true,
+    "status": "ghidra: up  /battlestationspacific.exe",
+    "image": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "analysis_mutations": false
+  },
+  "domain_conclusion": {
+    "scope": "Successfully formed real bindings, valid supported retained serialized storage/profile/graph, existing actual provider contracts.",
+    "explicit_CPP_throw_reachable_under_those_preconditions": false,
+    "heap_allocation_or_arbitrary_user_callback_on_that_hot_path": false,
+    "noexcept_declaration_or_general_guarantee": false,
+    "actual_Game_graph_proven": false,
+    "genuine_producer_alone_sufficient": false,
+    "required_remaining_proof": "Each reached actual current A0 route lies within held Node/Model/Group+B6DBC0 closure (or is absent); complete storage/owner/serialization custody, including after partial flags change.",
+    "legacy_pointer_profile_resolver_or_semantic_Hooks_included": false
+  },
+  "selected_chain": [
+    {
+      "entry": "AA8240/raw AA6750",
+      "mechanism": "Raw assembly + integer source wrappers; getter binding validation is pre-entry.",
+      "hot_CPP_throw": "none",
+      "heap_or_callback": "none; recursive source only"
+    },
+    {
+      "entry": "AA7220",
+      "mechanism": "Existing raw matrix setup and actual providers; placement-new std::array<float,16> in explicit scratch.",
+      "hot_CPP_throw": "none before actual dispatch",
+      "heap_or_callback": "placement lifetime only, not heap; compiler dispatch reaches required real final class"
+    },
+    {
+      "entry": "B64780",
+      "mechanism": "Four-argument actual-global overload, native_particle_axial_loading.cpp:155-200; FSIN/FCOS/SSE/loads/stores.",
+      "hot_CPP_throw": "none",
+      "heap_or_callback": "none; not the unrelated two-argument semantic overload"
+    },
+    {
+      "entry": "413920/4134F0",
+      "mechanism": "Actual naked inline-assembly matrix multiply/copy bodies.",
+      "hot_CPP_throw": "no C++ call/throw in bodies",
+      "heap_or_callback": "none; FP/access/stack faults separately qualified"
+    },
+    {
+      "entry": "Concrete final dispatch",
+      "mechanism": "call_virtual38 requires actual captured B6DB10 then calls real reference-profile setter.",
+      "hot_CPP_throw": "invalid_argument only on unsupported captured target",
+      "heap_or_callback": "rejection diagnostic/exception may allocate; not valid-domain path"
+    },
+    {
+      "entry": "Mapped B6DB10/B6DBC0",
+      "mechanism": "Concrete source current-profile/current3C checks and raw matrix/flag/tail operations.",
+      "hot_CPP_throw": "invalid_argument only for unsupported current profile/3C",
+      "heap_or_callback": "no allocation/foreign callback on valid mapped domain"
+    },
+    {
+      "entry": "B6DA30",
+      "mechanism": "Concrete raw descendant recursion/current sibling reload.",
+      "hot_CPP_throw": "none",
+      "heap_or_callback": "none; invalid/dead/cyclic graph outside contract"
+    },
+    {
+      "entry": "AA70E0/B74640/B732C0/B855B0",
+      "mechanism": "Current gate/model/dimensions, raw accessor/memcpy/x87 bounds stores; noexcept source functions.",
+      "hot_CPP_throw": "none explicit",
+      "heap_or_callback": "none; valid storage and FP/fault qualifications required"
+    }
+  ],
+  "construction_time_failures": [
+    {
+      "where": "GameNativeReadOnlyData::data_at",
+      "failure": "out_of_range for unavailable/range-invalid alias",
+      "when": "Binding/profile formation outside setter; before setter XYZ effects"
+    },
+    {
+      "where": "NativeNodeMappedRawTransformProfiles constructor",
+      "failure": "invalid_argument if data aliases are not the required Original table addresses",
+      "when": "Outside setter, before completed required context; actual data_at returns Original VA"
+    }
+  ],
+  "failure_allocation_and_reentry": {
+    "rejection": "std::invalid_argument diagnostic/exception construction may allocate; diagnostic allocation failure/new-handler/runtime behavior not exhaustively proved.",
+    "normal": "No explicit heap/new-handler/logging/lock/external callback path. Concrete traversal is not arbitrary reentry.",
+    "serialization": "Required actual GUI graph/process-state serialization supplied by real caller; no lock is added.",
+    "vendor_scope": "CRT/exception-allocation bodies and Native exception origins are not reconstructed or credited."
+  },
+  "canonical_tables": [
+    {
+      "profile": "00D62C88",
+      "slice_address": "00D62CC0",
+      "slot38": "00B6DB10",
+      "slot3C": "00B6DBC0",
+      "hex": "10dbb600c0dbb600",
+      "file_offset": "0x962cc0",
+      "sha256": "8c83bbb1b6c3c3a138e464ce691e8224c22369f8eabc29eb1211a13bb260fe50"
+    },
+    {
+      "profile": "00D62DE8",
+      "slice_address": "00D62E20",
+      "slot38": "00B6DB10",
+      "slot3C": "00B6DBC0",
+      "hex": "10dbb600c0dbb600",
+      "file_offset": "0x962e20",
+      "sha256": "8c83bbb1b6c3c3a138e464ce691e8224c22369f8eabc29eb1211a13bb260fe50"
+    },
+    {
+      "profile": "00D634F8",
+      "slice_address": "00D63530",
+      "slot38": "00B6DB10",
+      "slot3C": "00B6DBC0",
+      "hex": "10dbb600c0dbb600",
+      "file_offset": "0x963530",
+      "sha256": "8c83bbb1b6c3c3a138e464ce691e8224c22369f8eabc29eb1211a13bb260fe50"
+    }
+  ],
+  "native_partial_effect_actions": [
+    {
+      "address": "00B6DB10",
+      "bytes": 73,
+      "instructions": 22,
+      "hex": "8b442404568bf1508d8eb0000000e8cd598afff6465c0a742c8b8ea000000083a638010000cf85c9c7465c0000000074078b118b423cffd0837e340074078bcee8dbfeffff5ec20400",
+      "sha256": "4bf57ceafa88c53f385239ba006d90f7d65ca239ef51f4c3c9a8ea114d07d276",
+      "file_offset": "0x76db10",
+      "listing": [
+        "00B6DB10 mov eax, dword ptr [esp + 4]",
+        "00B6DB14 push esi",
+        "00B6DB15 mov esi, ecx",
+        "00B6DB17 push eax",
+        "00B6DB18 lea ecx, [esi + 0xb0]",
+        "00B6DB1E call 0x4134f0",
+        "00B6DB23 test byte ptr [esi + 0x5c], 0xa",
+        "00B6DB27 je 0xb6db55",
+        "00B6DB29 mov ecx, dword ptr [esi + 0xa0]",
+        "00B6DB2F and dword ptr [esi + 0x138], 0xffffffcf",
+        "00B6DB36 test ecx, ecx",
+        "00B6DB38 mov dword ptr [esi + 0x5c], 0",
+        "00B6DB3F je 0xb6db48",
+        "00B6DB41 mov edx, dword ptr [ecx]",
+        "00B6DB43 mov eax, dword ptr [edx + 0x3c]",
+        "00B6DB46 call eax",
+        "00B6DB48 cmp dword ptr [esi + 0x34], 0",
+        "00B6DB4C je 0xb6db55",
+        "00B6DB4E mov ecx, esi",
+        "00B6DB50 call 0xb6da30",
+        "00B6DB55 pop esi",
+        "00B6DB56 ret 4"
+      ],
+      "saved_export": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b6db10\\assembly.txt",
+        "bytes": 665,
+        "sha256": "368c27b67810cb8bb04ddf504f277e8652cbdbd9572380e30d43333d4320e345"
+      }
+    },
+    {
+      "address": "00B6DBC0",
+      "bytes": 25,
+      "instructions": 8,
+      "hex": "83a138010000c38b89a000000085c974078b018b503cffe2c3",
+      "sha256": "ff03f5e2a5c5c4450e8385ba9b6c671844c50e3c6de7f712550e6988134727f7",
+      "file_offset": "0x76dbc0",
+      "listing": [
+        "00B6DBC0 and dword ptr [ecx + 0x138], 0xffffffc3",
+        "00B6DBC7 mov ecx, dword ptr [ecx + 0xa0]",
+        "00B6DBCD test ecx, ecx",
+        "00B6DBCF je 0xb6dbd8",
+        "00B6DBD1 mov eax, dword ptr [ecx]",
+        "00B6DBD3 mov edx, dword ptr [eax + 0x3c]",
+        "00B6DBD6 jmp edx",
+        "00B6DBD8 ret "
+      ],
+      "saved_export": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b6dbc0\\assembly.txt",
+        "bytes": 252,
+        "sha256": "3b314e16a28910913cca6e37011c28e0614da93574af1536bc0e8e82d67a70a6"
+      }
+    }
+  ],
+  "failure_epochs": [
+    {
+      "site": "Pre-entry binding/profile construction",
+      "already": "metadata formation only",
+      "not_reached": "all setter XYZ/matrix/flags/bounds"
+    },
+    {
+      "site": "AA7220 final captured38 rejection",
+      "already": "own XYZ and all supplied transform scratch/matrix work",
+      "not_reached": "B6DB10 receiver matrix/flags and AA70E0"
+    },
+    {
+      "site": "First captured A0 profile/3C rejection in B6DB10",
+      "already": "XYZ, transform scratch, full receiver+B0 matrix copy, receiver+138 &= FFFFFFCF and +5C=0",
+      "not_reached": "rejected attachment own flag mask, current child test/walk and AA70E0"
+    },
+    {
+      "site": "Later A0 rejection in B6DBC0 tail",
+      "already": "above and prior accepted notification receiver +138 &= FFFFFFC3",
+      "not_reached": "rejected next receiver own mask, remainder of tail/child/bounds"
+    },
+    {
+      "site": "Storage/FP/stack fault",
+      "already": "instruction-dependent effects",
+      "not_reached": "outside C++ transport proof; no recovery asserted"
+    }
+  ],
+  "caller_custody": [
+    "Hold authenticated data, SAME GUI process state, concrete dispatch/profiles and all actual graph creators/pools/registry records before entry and through any required failure lifetime.",
+    "Hold initialized explicit transform preimage/bounds scratch and independent owner records; do not rediscover ended/partial objects through changed raw fields.",
+    "Prove transitive current profile/target closure, not merely equal numeric vptr or a constructed root.",
+    "No transaction, invented destructor, automatic replay/retry or compensating rollback is supplied.",
+    "Retaining owners is necessary but cannot establish naked-frame unwind mechanics."
+  ],
+  "retained_source_object_inspection": {
+    "fresh_build_in_this_packet": false,
+    "objects_hash_matched_to_frozen_source_receipt": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter\\local\\native_gui_widget_resolved_setter\\native_gui_widget_resolved_setter.obj",
+        "bytes": 8189,
+        "sha256": "53569750d60ae0833b88238b35a876a971031b3d50dab4ca467b6f39f983e58b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter\\local\\native_gui_widget_resolved_setter\\getter_dependency.obj",
+        "bytes": 4828,
+        "sha256": "0ea199a5928b25f5f5ce154433a4879f76404c184f192fcfdd9d3706d227edbf"
+      }
+    ],
+    "helper_bytes": 227,
+    "helper_first_instructions": [
+      "0000 push ebp",
+      "0001 mov ebp, edx"
+    ],
+    "helper_relocations": [
+      [
+        50,
+        20,
+        "?resolved_getter_bridge@?anonymous@bsp@@YIPAXPAXPBUSetterCall@12@0@Z"
+      ],
+      [
+        149,
+        20,
+        "?resolved_transform_bridge@?anonymous@bsp@@YIXPAXPBUSetterCall@12@@Z"
+      ],
+      [
+        158,
+        20,
+        "?resolved_bounds_bridge@?anonymous@bsp@@YIXPAXPBUSetterCall@12@@Z"
+      ],
+      [
+        206,
+        20,
+        "?resolved_transform_bridge@?anonymous@bsp@@YIXPAXPBUSetterCall@12@@Z"
+      ],
+      [
+        215,
+        20,
+        "?resolved_bounds_bridge@?anonymous@bsp@@YIXPAXPBUSetterCall@12@@Z"
+      ]
+    ],
+    "FS_registration_in_helper_listing": false,
+    "meaning": "Normal code/bridge/stack evidence only. No proof of catch context, nonvolatile restoration, destructor order or stack during C++ unwind."
+  },
+  "historical_fixture": {
+    "report": "reports/native_node_raw_transform_main_r40.json",
+    "reported_scope": [
+      "relocated original raw copies of B6DB10, B6DA30, B6DBC0 and 4134F0",
+      "all 64 local matrix bytes and all seven nodes' +5C/+138 results agree",
+      "invalid child skips its subtree",
+      "two current A0 bounds tail dispatches",
+      "unsupported current profile target preserves matrix and prior local writes while skipping notification and child walk"
+    ],
+    "reported_original_ABI": false,
+    "reported_gameplay": false,
+    "exact_paths_checked": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\output\\r40_node_raw_transform_probe.cpp",
+        "exists": false
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\evidence-r40\\node-raw-transform-r40-final.zip",
+        "exists": false
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\output\\r40_node_raw_transform_probe.cpp",
+        "exists": false
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\evidence-r40\\node-raw-transform-r40-final.zip",
+        "exists": false
+      }
+    ],
+    "raw_source_or_archive_recovered_here": false,
+    "dedicated_current_test_search": "No matching mapped-profile/final-dispatch/raw-setter fixture identified by exact-symbol search in tests.",
+    "supplies_genuine_AA8240_producer_or_unwind_proof": false,
+    "reuse_boundary": "Recorded /MD, manifest and artifact receipt conventions only; no historical execution reclassified as this transport check."
+  },
+  "one_proposed_check": {
+    "status": "DESIGN_ONLY_UNEXECUTED_NOT_LAUNCH_READY",
+    "name": "aa8240_provider_unwind_probe.exe",
+    "kind": "One SOURCE-only invalid-metadata actual-provider unwind case",
+    "missing_setup": "Successful current genuine Page/Group producer/custody receipt, not raw arrays or a numeric-profile match.",
+    "actual_producer": {
+      "entry": "GameNativeGuiPageApplication::load_page_00aa5840 normal return",
+      "inputs": [
+        "actual published warm manager",
+        "same A1 GameNativeRendererApplication/actual owner registry",
+        "GameVfsHost",
+        "authenticated GameNativeReadOnlyData",
+        "current ObjectHandleResolverSlots",
+        "actual held CRT conversion capability",
+        "real supported childless Page input/name header"
+      ],
+      "captures": "Returned actual Page; current +4C Group; exact retained producer/registry creator owners and original Group profile, all outside try/catch.",
+      "frozen_guard": "kNativeGuiPageChainCc15Bound=false at base; no successful runtime producer capture in this audit.",
+      "if_unavailable": "Remain unready; do not fabricate owner/fields, force producer success or execute a partial producer."
+    },
+    "real_bindings": "Same data/process state, NativeNodeMappedRawTransformProfiles and final concrete dispatch; genuine separate initialized-preimage transform/bounds scratch.",
+    "input": {
+      "parent": "constructor-established natural null parent of the supported childless Page, not forced",
+      "XYZ_raw_words": [
+        "3F800000",
+        "40000000",
+        "40400000"
+      ],
+      "meaning": "fixed finite fixture positions, not replacement global constants"
+    },
+    "single_invalidation": {
+      "owned_word": "Produced Group+00 only",
+      "temporary_alias": "authenticated D5C130",
+      "actual_slot38": "00A9E0D0",
+      "slot_hex": "d0e0a900",
+      "file_offset": "0x95c168",
+      "classification": "Deliberately wrong-family metadata. No fake table/callback, canonical table/image write or normal Group admission."
+    },
+    "expected_actual_throw": "Real final dispatch invalid_argument after XYZ/scratch, before B6DB10 matrix/flags and AA70E0.",
+    "observations": [
+      "Catch outside actual public entry, one independent fixture RAII marker destroyed exactly once.",
+      "Freeze emitted client proof for meaningful stack/nonvolatile-register/canary liveness and comparable epochs.",
+      "Exact real rejection type/message, held owner identities, input XYZ stores, unchanged Group matrix/flags and bounds scratch.",
+      "Inspect only supplied live transform scratch; never ended private stack."
+    ],
+    "cleanup": "Restore independently captured Group profile before SAME real owner teardown. Owners remain outside marker try scope. No XYZ reset, setter retry or production rollback policy.",
+    "FPU": "Record ambient state and preserve/restore FPU/MXCSR; do not force precision or claim unmasked transport.",
+    "build_and_process": "Separately authorized future MSVC Win32 /MD /O2 /fp:strict /EHsc, /MANIFEST:EMBED, pinned real code/core/backend/inputs/tools; one owned child/identity watchdog.",
+    "failure": "Absent catch/marker/owner, wrong exception, crash, timeout or unexpected effects = fail/inconclusive; no substitute passing workload.",
+    "proves_if_passed": "Only exact source/helper/provider/input/compiler C++ unwind case.",
+    "does_not_prove": [
+      "normal provider domain",
+      "A0/child/bounds/parent-getter paths",
+      "Native ABI/exception origin",
+      "general rejection recovery",
+      "unmasked FP/SEH/faults",
+      "gameplay/activation"
+    ],
+    "probe_source_executable_or_manifest_created": false
+  },
+  "next_minimal_check": "Obtain/freeze actual successful Page/Group producer and independent same-owner custody at the normal-return hook, then separately review the one proposed transport case. No execution authorized by this report.",
+  "activation_implications": [
+    "Normal-domain source admission remains qualified; no explicit CPP allocation/throw/callback on that exact valid supported closure.",
+    "Actual future root must supply/prove complete retained transitive supported graph and real bindings; genuine creation alone is insufficient.",
+    "If caller relies on catching source rejection outside public entry, require direct transport evidence and caller failure-lifetime review; no current safe-unwind claim.",
+    "Whole park/hint/rawpause/screens/Game adoption, common/runtime gates, original ABI and FP/SEH/fault debts remain separate and unchanged.",
+    "No new guard, terminal action, selected-subsequence or generic recovery policy is introduced."
+  ],
+  "unchanged_pins": [
+    {
+      "path": "include/bsp/native_gui_widget_resolved_setter.hpp",
+      "bytes": 2905,
+      "sha256": "f2b163215c4cb2db3154f983a64f0b96b56b73958d201dde6b12053cc48cfd7a",
+      "git_blob": "5ee5d91929ce399f7500e0232f8f76b1ff4cf19d"
+    },
+    {
+      "path": "src/native_gui_widget_resolved_setter.cpp",
+      "bytes": 5064,
+      "sha256": "305c47a4d41426775a134e1517a3eef62d2248d4e05c04046eedebd39aaab937",
+      "git_blob": "649a8651b68909f94293109ff2fa7a1c9bfcf5be"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_resolved_position.hpp",
+      "bytes": 2378,
+      "sha256": "17672fb9b31bbfec5faea2568e62edc0b2fe88a431348a5abab3980eb3a601ca",
+      "git_blob": "f6b05430f5846c6cd09d1c242a6fe2e34d388c8c"
+    },
+    {
+      "path": "src/native_gui_widget_resolved_position.cpp",
+      "bytes": 2784,
+      "sha256": "385c4fd6a50d75e7734cce7442923d5cf6dfc1830a444d49257d9cae2fc04457",
+      "git_blob": "bf65a9da0a9264cf39b80ecc092c4cb48d01fe12"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_transform.hpp",
+      "bytes": 1688,
+      "sha256": "7ce3ccf33392eeff3e603aa43edd941a94d5cdb23d655d70a722bdb60773354d",
+      "git_blob": "2c5c6575ee34f29be8585b680b8085799e67bce7"
+    },
+    {
+      "path": "src/native_gui_widget_transform.cpp",
+      "bytes": 5290,
+      "sha256": "8f2bbaa84a9b44d90ce4ae89ccdc616118b7a358fb3be90220573ac3ef7eafad",
+      "git_blob": "22580dc3ab8ec1a633b15794fe8bc7750d98cd26"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_bounds.hpp",
+      "bytes": 1535,
+      "sha256": "d7d8349042c5b76045a4472d790793ab63f1711506cc2996aba65af5f978d9b5",
+      "git_blob": "35d4c30bdbe7da31f5510f6cb093bcb799ace244"
+    },
+    {
+      "path": "src/native_gui_widget_bounds.cpp",
+      "bytes": 2007,
+      "sha256": "547b9d6965797e0a29640449452b84f8ad78c6112d02a4e1af66be2bfd9cbc1f",
+      "git_blob": "6b3b651987b72f4f79d5fc7129031de582bdc293"
+    },
+    {
+      "path": "include/bsp/native_gui_frame_box_constructed_storage.hpp",
+      "bytes": 6263,
+      "sha256": "3dc47a86b2249ccbf0d499fe8144307c1efad42f9a7ecae5c2fbc3e9c0a7fec8",
+      "git_blob": "a795e1271a0d206ff033794ca79c5d25ee7c3f15"
+    },
+    {
+      "path": "src/native_gui_frame_box_constructed_storage.cpp",
+      "bytes": 12490,
+      "sha256": "6747e90c88152960cc80961eaa4c4c90999a08e51e0d771674f00a7e646eb6d9",
+      "git_blob": "9280b269b6ecf9114b6ed1f0fe42e4cfed4bc3c2"
+    },
+    {
+      "path": "include/bsp/native_node_raw_transform.hpp",
+      "bytes": 2139,
+      "sha256": "99460e5aa96bac3ef0255146992d7e002e2ec5adf07ab71788221ad10c75d4de",
+      "git_blob": "fe8ca945cbddcf071e37b5ee7ade2080942490e2"
+    },
+    {
+      "path": "src/native_node_raw_transform.cpp",
+      "bytes": 5316,
+      "sha256": "092fa6a47756bf5a8a3a18dfbbaecf468898b3c91bc5ee5235bba5a7f078e16c",
+      "git_blob": "cb27dc6bebf4e551e72d003868e57211b2615d40"
+    },
+    {
+      "path": "include/bsp/native_particle_axial_loading.hpp",
+      "bytes": 2796,
+      "sha256": "32bc421933d557541a5676f4a569ffd261763bde4ff404745e3953c724a1e497",
+      "git_blob": "2bb917a4ed52cad537c37c6f349ad6c802a7e856"
+    },
+    {
+      "path": "src/native_particle_axial_loading.cpp",
+      "bytes": 14024,
+      "sha256": "d90b8b4f6f760f376f7308a0aab722158074bc27c4befdf3873182a008cdeb5d",
+      "git_blob": "73fc528e2bc96020f256ee1e22e832831d9947a6"
+    },
+    {
+      "path": "include/bsp/native_camera_matrix_math.hpp",
+      "bytes": 1803,
+      "sha256": "1a3d64ca2fb309bc24aaa36278b2f7be38e086c4faef36ad674a5c888cc93f1d",
+      "git_blob": "f275ed7c75903f61a87f4a7226406c817bffaebc"
+    },
+    {
+      "path": "src/native_camera_matrix_math.cpp",
+      "bytes": 23218,
+      "sha256": "ca793757d2bb262ae48cf09a29be44462714da585b430db68c5b3e9262277fa0",
+      "git_blob": "48414ad27eb574e1377594aaceca2baa96c1df55"
+    },
+    {
+      "path": "include/bsp/native_camera_matrix_copy.hpp",
+      "bytes": 606,
+      "sha256": "70e741350edb66be14fc9d1b981181fe5ecf8c536f33eab47221469d8d3f1a7a",
+      "git_blob": "4cee0aa171c5abcebc575b159710a76c643c5d42"
+    },
+    {
+      "path": "src/native_camera_matrix_copy.cpp",
+      "bytes": 1626,
+      "sha256": "31840777adef31ac0717e7bc4cb148ecd9aa45be8e5d2d52eb79f3c8a00a708d",
+      "git_blob": "d0e2c74f342f4efabaa540e9da9ad7f048e6a816"
+    },
+    {
+      "path": "include/bsp/camera_projection.hpp",
+      "bytes": 2413,
+      "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4",
+      "git_blob": "d76b7d0ab89e90164c04d3a994c32469884acc0d"
+    },
+    {
+      "path": "include/bsp/gui_widget_owner.hpp",
+      "bytes": 17870,
+      "sha256": "55bb0101eaee6369f886c6fb6956fad0cd2dea60fcca01db182fdc4cd7ae7add",
+      "git_blob": "ffc873f839f207fec8de12d53b0bbbb0b915befc"
+    },
+    {
+      "path": "src/gui_widget_owner.cpp",
+      "bytes": 42079,
+      "sha256": "405c324270bd194614898b6c7f7934ab526c30d366fb0dd64933e33db81f2762",
+      "git_blob": "cc31262d504966fbaba9e546f710f44904a6cff5"
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "bytes": 2713,
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3"
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "bytes": 7167,
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+      "git_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e"
+    },
+    {
+      "path": "include/bsp/game_native_gui_text_state.hpp",
+      "bytes": 3899,
+      "sha256": "7b544feaa7da8a1a4bab5b5f01546d8e4d8b5621d8da37c6b22e4dfbc9d964e0",
+      "git_blob": "c2f420b227592ab4ac84c680467f5142bf9e026a"
+    },
+    {
+      "path": "src/game_native_gui_text_state.cpp",
+      "bytes": 1821,
+      "sha256": "ff10c4e60079ea23117223b10dc9b64bb61715930fa2c1d1b7fff0b81396dd5f",
+      "git_blob": "4aeb220bed382de390912a2320ad1ca4adb4bf65"
+    },
+    {
+      "path": "include/bsp/game_native_gui_page_application.hpp",
+      "bytes": 3811,
+      "sha256": "8a21c044261937a47938887584b94650d1d04ab1584d3c447af276a6c04cebcb",
+      "git_blob": "3900c1e90fb9dd685f1c1375079b6fd13252cff9"
+    },
+    {
+      "path": "src/game_native_gui_page_application.cpp",
+      "bytes": 54018,
+      "sha256": "6931fc7c1dced9222a47ec072ca143b00d1789b5a344b85c7bfc639b15314711",
+      "git_blob": "0e1e95e2a1372504cce0dda0a00a6c4476f8a367"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_base_storage.hpp",
+      "bytes": 1081,
+      "sha256": "35748704f96ed477f2f55f01edf5a8e598f1995955f847343f94327dc495faab",
+      "git_blob": "61c72c99fab59f5c86da392495d7bae5381607cf"
+    },
+    {
+      "path": "src/native_gui_widget_base_storage.cpp",
+      "bytes": 3008,
+      "sha256": "4ddd5ab1ad4a2b8174d80caf70dba76afa648479e4e8637a56884f2b9db6354d",
+      "git_blob": "997a33c5ac7bbf7b57e133feb53b91163e7308b5"
+    },
+    {
+      "path": "include/bsp/native_node_construction.hpp",
+      "bytes": 6451,
+      "sha256": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098",
+      "git_blob": "888b44f3f32e67b930c840740cdabdea10283f1a"
+    },
+    {
+      "path": "include/bsp/native_node_pool_allocation.hpp",
+      "bytes": 2226,
+      "sha256": "ff3bdbc1203c0401f857077ba6b88ccf921682abce593ba4fdc0801b02f94c12",
+      "git_blob": "c22c6b2961b89d8539353de9d0f55fc15e816871"
+    },
+    {
+      "path": "docs/CC12_NATIVE_NODE_MAPPED_RAW_TRANSFORM_132.md",
+      "bytes": 8531,
+      "sha256": "6a066363feedbfc46250e7725a74335bc38e123b1c56310079193099d2546eeb",
+      "git_blob": "a9200b197fc129d4eb3e69caff61a495e702800f"
+    },
+    {
+      "path": "docs/NATIVE_NODE_RAW_TRANSFORM.md",
+      "bytes": 3038,
+      "sha256": "33d6191fc57cbae506caaa77a2f1d8d3cda16bd3c8524ac02fe51de43ed7ff9d",
+      "git_blob": "d3b55af7d70b372151c6cfe4180d40c2acf8c341"
+    },
+    {
+      "path": "reports/native_node_raw_transform_main_r40.json",
+      "bytes": 27445,
+      "sha256": "0bf63ed5e5e4e633f1d7fb775261276bf0c52e175905e0bfc71950eec20f9fb4",
+      "git_blob": "6a6580ff5b9910b0833ebd2933f9890aa0f09077"
+    },
+    {
+      "path": "reports/cc16_native_gui_widget_resolved_setter.json",
+      "bytes": 61366,
+      "sha256": "342d26344c541bddb436989518742125b1df5ecb85fa9c39044d8f7ce25ab145",
+      "git_blob": "a4cc5222a558c8d53731d75912d5acbea6b3dcaa"
+    }
+  ],
+  "local_evidence": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-setter-failure-readiness\\local\\native_gui_widget_setter_failure_readiness\\target_status.txt",
+      "bytes": 40,
+      "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-setter-failure-readiness\\local\\native_gui_widget_setter_failure_readiness\\node_slots_38_3c.txt",
+      "bytes": 45,
+      "sha256": "630c79917b45f4242576f0f4cadc70a29e781aff0aa8da1ec3289ad62b93ba9a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-setter-failure-readiness\\local\\native_gui_widget_setter_failure_readiness\\model_slots_38_3c.txt",
+      "bytes": 45,
+      "sha256": "5fb76317bb7d0424685f2bb4b640ed471a4bf64cf47172149d4e7b31aff15a4e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-setter-failure-readiness\\local\\native_gui_widget_setter_failure_readiness\\group_slots_38_3c.txt",
+      "bytes": 45,
+      "sha256": "a815a4d0c0b81f06ae448982988d8eae7058d28776f0152cbb2ea9a4de13910b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-setter-failure-readiness\\local\\native_gui_widget_setter_failure_readiness\\authentic_widget_slot38.txt",
+      "bytes": 29,
+      "sha256": "c6a9a5882be9d2216088b18255563e9c356c81790b30bfede199755970affb1a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-setter-failure-readiness\\local\\native_gui_widget_setter_failure_readiness\\node_setter_listing.txt",
+      "bytes": 740,
+      "sha256": "4c024471c60b65bc51e26e64f5fc61437c52558bbc716dbe30939bdbd49e1eaf"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-setter-failure-readiness\\local\\native_gui_widget_setter_failure_readiness\\notification_listing.txt",
+      "bytes": 313,
+      "sha256": "a94a9a8d2232d1b399db26d9ec67fe3c89a70cd1d8bdf922cff0a095f4587162"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-setter-failure-readiness\\local\\native_gui_widget_setter_failure_readiness\\write_report.py",
+      "bytes": 20893,
+      "sha256": "86a001f81fe954429e2f93493af92ae36203bec057daba08ec02789dc34072cb"
+    }
+  ],
+  "document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-setter-failure-readiness\\docs\\CC16_NATIVE_GUI_WIDGET_SETTER_FAILURE_READINESS.md",
+    "bytes": 12236,
+    "sha256": "4ba940736587014a78d9be72482bc8ce45c6db7b141c52a166db6deb511f05c2"
+  },
+  "actions": {
+    "source_edits": 0,
+    "builds": 0,
+    "new_tests": 0,
+    "new_executables": 0,
+    "probes_run": 0,
+    "games": 0,
+    "DLL_changes": 0,
+    "Ghidra_writes": 0,
+    "shared_metadata_changes": 0
+  },
+  "credit": {
+    "new_body": 0,
+    "duplicate": 0,
+    "vendor": 0,
+    "ABI": 0,
+    "activation": 0,
+    "runtime": 0
+  }
+}
