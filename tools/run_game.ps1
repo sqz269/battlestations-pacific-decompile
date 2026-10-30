@@ -29,6 +29,10 @@
 # Each run also writes <log>.manifest.json (arguments, BSP_* environment, exe hash and build
 # commit) and copies its file-valued arguments to <log>.inputs\; tools/run_replay.py <manifest>
 # prints or launches the same run from those copies.
+# Optional tracer prefix: -TraceExecutable <drrun.exe> -TraceArguments
+# @('-follow_children','-t','drcov','-logdir',<private-log-directory>).
+# The wrapper appends -- <bsp_game.exe> <normal game arguments>; it keeps the
+# same slot, instance tag, bootstrap child handling and DRAIN checks.
 [CmdletBinding(PositionalBinding=$false)]
 param(
     [string]$Exe = 'build\win32\Release\bsp_game.exe',
@@ -42,6 +46,8 @@ param(
     # -1 preserves the existing first-free scan; no occupied lock is replaced.
     [int]$SlotIndex = -1,
     [switch]$NoForceStop,
+    [string]$TraceExecutable = '',
+    [string[]]$TraceArguments = @(),
     [int[]]$Cores = @(2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28),
     [Parameter(ValueFromRemainingArguments = $true)]
     [string[]]$GameArgs = @()
@@ -51,6 +57,14 @@ $ErrorActionPreference = 'Stop'
 if (-not (Test-Path $Exe)) { throw "bsp_game.exe not found at $Exe (run from the worktree root after a build)" }
 if ($XLiveDll -eq '') { $XLiveDll = Join-Path (Split-Path $Exe -Parent) 'xlive_stub.dll' }
 if (-not (Test-Path $XLiveDll)) { throw "XLive stand-in not found at $XLiveDll" }
+if ($TraceExecutable) {
+    if (-not (Test-Path -LiteralPath $TraceExecutable -PathType Leaf)) {
+        throw "Tracer executable not found: $TraceExecutable"
+    }
+    $TraceExecutable = (Resolve-Path -LiteralPath $TraceExecutable).Path
+} elseif ($TraceArguments.Count) {
+    throw '-TraceArguments requires -TraceExecutable'
+}
 $GameArgs = @($GameArgs | Where-Object { $_ -ne '--' })
 # Default window placement (harness only): config/run_game.json's "window_monitor" is forwarded
 # as --window-monitor unless the caller passed --window-monitor or --window-origin, or set
@@ -215,7 +229,7 @@ function New-RunManifest([string[]]$runArgs) {
     }
     $envBsp = [ordered]@{}
     Get-ChildItem env: | Where-Object { $_.Name -like 'BSP_*' } | Sort-Object Name | ForEach-Object { $envBsp[$_.Name] = $_.Value }
-    [ordered]@{
+    $record = [ordered]@{
         started_utc = (Get-Date).ToUniversalTime().ToString('o')
         cwd = (Get-Location).Path
         owner = $owner; slot = $slot; instance_tag = $tag; affinity_core = $core
@@ -233,6 +247,16 @@ function New-RunManifest([string[]]$runArgs) {
         inputs = @($inputs)
         exit_code = $null; finished_utc = $null; launcher_exit_code = $null; drain = $null
     }
+    if ($TraceExecutable) {
+        $record['tracer'] = [ordered]@{
+            executable = $TraceExecutable
+            sha256 = (Get-FileHash -LiteralPath $TraceExecutable -Algorithm SHA256).Hash.ToLower()
+            arguments = @($TraceArguments)
+            launch_argv = @($TraceExecutable) + @($TraceArguments) + @('--', $Exe) + @($runArgs)
+            exit_code_source = 'tracer root; verify game/bootstrap child logs separately'
+        }
+    }
+    $record
 }
 try {
     $logDir = Split-Path $Log -Parent
@@ -240,7 +264,11 @@ try {
     $arguments = @('--game-root', $GameRoot, '--xlive-dll', $XLiveDll, '--log', $Log, '--instance-tag', $tag, '--affinity-core', "$core") + $GameArgs
     try { $manifest = New-RunManifest $arguments; Write-RunManifest $manifest }
     catch { Write-Warning "run manifest not written: $_" }
-    & $Exe @arguments 2>&1 | Select-Object -Last 1
+    if ($TraceExecutable) {
+        & $TraceExecutable @TraceArguments -- $Exe @arguments 2>&1 | Select-Object -Last 1
+    } else {
+        & $Exe @arguments 2>&1 | Select-Object -Last 1
+    }
     $code = $LASTEXITCODE
     "EXITCODE=$code"
     if ($manifest) {

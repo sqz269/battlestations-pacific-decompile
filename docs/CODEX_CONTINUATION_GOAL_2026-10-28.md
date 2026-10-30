@@ -1001,3 +1001,12 @@ check rejects correctly, without invoking a target. All published choices
 remain FALSE. Genuine loaded rawlocale-manager binding is also still missing
 for uppercase; a stale cdecl note is contradicted by savedECXmanager/RET4 ASM.
 Proof scopes and open gates: CODEX_GUI_RAW_EMPTY_UNCHANGED_RUNTIME_PREPARATION.md.
+
+The frozen ac60 EMPTY candidate is on Source-admission HOLD. Installed Viper19
+sets uppercase_only=true, while the leaf requires CURRENT Font+0x48==0.
+The Source descriptor-to-constructor chain preserves that flag; exact effective
+VFS resolution is not runtime-proven. No game was launched and no asset, flag,
+font choice or frozen artifact was changed. Prospective v5 evaluator Source
+review is complete; operator permission cannot waive this separate domain
+conflict. Work now advances the genuine raw locale-manager publication/load
+contract required by A9EC30, with semantic LocaleTables substitution excluded.

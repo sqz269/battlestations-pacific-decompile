@@ -1,9 +1,12 @@
 # Private EMPTY runtime preparation
 
 Build/static preparation is complete; no fresh EMPTY game, controller,
-evaluator or observer has run. Execution remains unapproved pending the final
-operator-bound payload and genuine coordination/context. All nine choices in
-published main remain FALSE. This record does not promote SourceReady.
+evaluator or observer has run. The frozen candidate is now on a separate
+Source-admission HOLD: its required Font48==0 domain conflicts with the
+installed Viper19 descriptor's uppercase flag unless effective VFS resolution
+establishes otherwise. Operator coordination cannot waive this contract.
+All nine choices in published main remain FALSE. This record does not promote
+SourceReady.
 
 The dedicated fixed checkout is
 `battlestations-pacific-decompile-codex-empty-runtime-d58`, anchored at
@@ -46,7 +49,9 @@ v5 controller/launcher/guard adds synchronous checks after slot acquisition,
 requires Root-bound genuine coordination/context, counts each PID rather than
 deduplicating parent/child families, and keeps NoForceStop/no stale cleanup.
 Source review of checkpoint3 accepted the guard and its actual CIM creation
-timestamp field. Final v5 evaluator/payload binding remains open.
+timestamp field. The final prospective v5 evaluator review accepted the
+failed-audit and complete sample/drain/controller window checks. This is a
+Source-only machinery review; metadata assembly grants no execution permission.
 
 One isolated missing-context negative check ran only a copied guard with a
 nonexistent target: exit1, admission false, target not invoked. No real
@@ -72,5 +77,22 @@ A separate read-only uppercase readiness audit found that A9EC30 uses ECX
 for the locale manager plus a stack raw8 header/RET4, contrary to a stale
 cdecl ledger note. Existing Source bodies do not supply the raw owner's
 loaded F8BC4C manager identity. That genuine manager/publication dependency
-remains open; semantic locale tables are not silently substituted. It does
-not change this frozen Font48==0 candidate or its qualification rules.
+remains open; semantic locale tables are not silently substituted.
+
+Installed `fonts/fonts.lua` SHA256
+`26ebc6c0905f3aff36e95f40195c0fe8693d9f17474d2fcd3e51bcc7091fdd93`
+declares Viper19 `uppercase_only=true` at lines41–48. The owner selects Viper19
+at `game_native_raw_default_text_owner.cpp:592`; `font_registry.cpp:73` reads
+that Boolean, `native_font_resources.cpp:135` converts it into the constructor
+argument, and native font storage publishes it at Font+0x48. The descriptor
+loader executes `Fonts/Fonts.lua` through `VfsLuaScriptFiles`, including VFS
+override discovery. The exact effective runtime descriptor/provider has not
+been observed; the loose installed file alone is not a runtime resolution
+receipt. Its known unsupported value is sufficient to withhold admission.
+
+Preserve ac60 and every archived build/protocol unchanged. Do not launch it,
+select another font, clear the flag, edit assets, invent prior content, or
+silently bypass uppercase to obtain a pass. Genuine current raw locale-manager
+publication/loading and the uppercase branch need their own reviewed binding
+and qualification before a new candidate can be proposed. No failing game run
+or outcome-dependent retry was performed.
