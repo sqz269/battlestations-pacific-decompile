@@ -1033,3 +1033,13 @@ owner, actual loaded manager or new body/game execution follows. Node-pool
 ownership and raw unregistration/retirement are the next bounded bindings;
 full loading and all9off/frozenac60hold remain. Exact limits and evidence:
 CODEX_RAW_LOCALE_CONSTRUCTION_INTEGRATION.md.
+
+Canonical Source E1768C owner c1e76db25 and raw7365E0 base retirement aa5602003
+are Source-reviewed and registered. The pool reuses real lifecycle/heap/profile
+services on the SAME shared allocator list; actual atexit status, failure
+retention and current-CRT lifetime window are explicit. It constructs a table,
+not slabs or loaded locale. Base retirement preserves current-publication and
+its own selected EH ordering. Combined Win32 Release build/checks2/2 pass14.69s.
+No application startup, callback execution, new body/game or Original ABI proof
+follows. All9off/ac60hold remain; full destruction and slab/allocation/loading
+are the next bounded dependencies. See CODEX_RAW_LOCALE_POOL_RETIREMENT_INTEGRATION.md.
