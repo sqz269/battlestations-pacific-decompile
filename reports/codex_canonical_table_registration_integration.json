@@ -1,0 +1,73 @@
+{
+  "status": "canonical_registration_source_reviewed_retained_link_restored_win32_pass_caller_unbound",
+  "commit": "48f9cae122962e3a2cc62d62a813a0f1ec6e0156",
+  "contract_sha256": "04afca644d50792f18e09bcae278df2c75798b67958fc1e5992a5aae9a0b1431",
+  "provider_contract_sha256": "cabcd5921ea169d796c3f689999003233a4beef838052984b2755640976e4350",
+  "source_hashes": {
+    "include/bsp/game_native_locale_manager.hpp": "b2dd6c0c805a6f9ea8a8a1012c8e964912ee32255b2a16fc76423e1bde401cb0",
+    "src/game_native_locale_manager.cpp": "66e7c00b389d0614e2caf0e808e704441d1564276bfb654caa3572a8afbf9fb2"
+  },
+  "primary_review": "complete_actual_two_source_file_delta_and_affected_existing_owner_gates",
+  "independent_retirement_review": "gui_frame_lifetime_ACCEPT_SOURCE_CODE_b2dd6c0c_66e7c00b",
+  "independent_retirement_review_sha256": "e7546305a246af5439cc43d6272b922aa61035a48892669ca4123cd0b35dca13",
+  "independent_final_retirement_source_review_sha256": "34f02bebe04761bf21681c53fa32015ee2a217e46a55a8a94899daa880b1c080",
+  "independent_final_full_source_review_sha256": "0bde809149bcdcb46e042522bcde89839d818db7ab15e47f1b59a9d3ccaa2113",
+  "preservation": {
+    "old_methods_inverse_exact": 7,
+    "old_textual_history_tail_inverse_exact": true,
+    "old_history_call_sites_generalized": 9,
+    "new_method_history_calls": 2,
+    "independent_projection_sha256": "b64207b32004177ed78ecc25b0f86776bffe6f634ae65a356d324dd914f9a7aa"
+  },
+  "strict_object": {
+    "count": 1,
+    "exit_code": 0,
+    "machine": "014C",
+    "sha256": "7504eaba325a4da3042149ff3a23e041522befd1dac97667a56fec0111344aa4"
+  },
+  "root_preservation_verification": {"source_pins": 2, "unchanged_provider_native_core_host_vfs_cmake_pins": 14},
+  "local_retained_link": {
+    "head": "48f9cae122962e3a2cc62d62a813a0f1ec6e0156",
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "existing_checks_passed": 2,
+    "existing_checks_total": 2,
+    "ctest_seconds": 11.56,
+    "owner_method_address": "10028790",
+    "actual_adapter_address": "1032a7a0",
+    "checked_append_address": "104babc0",
+    "checked_insert_one_address": "1052a330",
+    "checked_insert_count_address": "105412d0",
+    "cpp_unwind_entries_present": true,
+    "map": "local/canonical_table_registration_integration_cc16_20261030/retained.map",
+    "map_sha256": "56946164d7b96bac5db7178df9f556eb1dafeec2716dfbaaa6c3508eeba4a29a",
+    "overlay_sha256": "71e7696ea7e90c8aae30d3d7a76074b4b2cde2d2aa447f60b209a6bef82c92ea",
+    "retained_executable_sha256": "12a48cc256d8081524463433f6442351418542220a7ac90bc75a7ccf12ef8f76",
+    "new_entry_or_game_invoked": false
+  },
+  "canonical_build_after_restoration": {
+    "head": "48f9cae122962e3a2cc62d62a813a0f1ec6e0156",
+    "command": "./scripts/build.ps1",
+    "configuration": "Release Win32",
+    "exit_code": 0,
+    "existing_checks_passed": 2,
+    "existing_checks_total": 2,
+    "ctest_seconds": 12.46,
+    "include_before_cache_entry_absent": true,
+    "forced_symbols_absent": true,
+    "unbound_registration_entry_absent_from_canonical_map": true,
+    "log": "local/canonical_table_registration_integration_cc16_20261030/build.log"
+  },
+  "operation": "GameNativeLocaleManagerProcess_register_table_name",
+  "actual_adapter": "00aa0d30_manager_plus4_to_checked10h_append450540",
+  "input": "borrowed_completed_actual_raw8_not_consumed",
+  "authority": "actual_void_return_and_private_owner_healthy_history",
+  "new_native_owner_or_provider": false,
+  "new_input_cleanup": false,
+  "new_loaded_permission": false,
+  "source_ready": false,
+  "runtime": false,
+  "vendor_or_original_body_credit": 0,
+  "new_tests": 0,
+  "cmake_changed": false
+}
