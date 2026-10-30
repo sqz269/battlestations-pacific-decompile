@@ -1,0 +1,260 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-menu-prompt-independent-review",
+  "classification": "independent_bounded_source_listing_provider_and_pin_review",
+  "reviewed_commit": "16991d87c0f5b77b0a0284b44a77b65bd67ca7b8",
+  "owned_files": [
+    "docs/CC16_NATIVE_MENU_PROMPT_INDEPENDENT_REVIEW.md",
+    "reports/cc16_native_menu_prompt_independent_review.json"
+  ],
+  "verdict": {
+    "blocking_findings": 0,
+    "findings": [],
+    "ready_for_primary_common_build_assessment": true,
+    "compiled_by_reviewer": false,
+    "caller_admitted": false,
+    "adjusted_lifetime_binding_ready": false,
+    "whole_frontend_ready": false,
+    "activation": false
+  },
+  "scope": {
+    "production_files": 4,
+    "constructor": {
+      "address": "00533120",
+      "end": "0053378D",
+      "bytes": 1646,
+      "instructions": 513,
+      "direct_calls": 74,
+      "ABI": "ECX genuine290h raw receiver; EAX same; bareRET"
+    },
+    "getter": {
+      "address": "00425D10",
+      "end": "00425DD9",
+      "bytes": 202,
+      "instructions": 56,
+      "ABI": "No native inputs; EAX publication; plainRET"
+    },
+    "all_production_source_reviewed": true,
+    "both_full_saved_assembly_listings_reviewed": true,
+    "private_helpers": "Only exact member/cleanup contracts needed for these bodies; no new helper/CG/vendor credit."
+  },
+  "constructor_checks": [
+    "Real4F7180 then exact ordered base/derived profiles, byte3C, two vector headers, seven raw48h records, third vector and genuine50h self-linked head.",
+    "Opaque vector/list words and record34 remain untouched; no stores to receiver DWORD fields258/25C/260/264; final284=-1 and288byte0 only.",
+    "Fourteen authenticated original-VA literal pointers; exact lengths/content/NUL/FNV/SHA verified against installed PE.",
+    "Seventy label direct calls match actual native sites; all74 constructor calls accounted.",
+    "Normal temporary return uses captured resulting data pointer but CURRENT length+1 before pool getter; exception cleanup uses CURRENT header.",
+    "State6 during resize/copy/normal return; temp states7..20 only at append; no invented early temporary cleanup.",
+    "Raw BF7680 receives the SAME current0109EEA4 DWORD reference, not a bool/feature snapshot/stdmemcpy substitute.",
+    "Fixed2/7 constructors are genuine existing nonthrowing raw store bodies; no Source exception path is invented for private CRT/hardware behavior."
+  ],
+  "cleanup_checks": {
+    "constructor_states": [
+      0,
+      2,
+      3,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "temporary_parents": "7..20 ->6",
+    "completed_member_order": "List+278 -> vector+268 -> seven records reverse -> two vectors reverse -> singleton+C clear/base -> +8 profile -> primaryCEAE54/full95match scan.",
+    "list": "Capture first/next before callback; preserve current-head reloads; current-head free then zero.",
+    "record": "Actual raw+38/+10/+0 headers, two-state parent cleanup.",
+    "vector": "Existing captured begin/end traversal and fresh backing reload after callbacks.",
+    "metadata": "Receiver/node/next/record state/array progress captured before calls; already-freed identities diagnostic only.",
+    "no_new_policy": [
+      "No automatic termination",
+      "No destructor native effects",
+      "No retry",
+      "No rollback",
+      "No acknowledgment policy",
+      "No compensating count/retain"
+    ],
+    "original_FH3_SEH_private_frame_secondary_transport_proved": false
+  },
+  "getter_checks": [
+    "Fast return uses first captured E18E6C.",
+    "SAME manager via strings; captured section+10; CE37FC guard; enter/increment physical+18 before state0.",
+    "Recheck then captured actual290h allocation before constructor/state1.",
+    "Constructor cleanup precedes free of captured allocation; no free of callback-replaced publication.",
+    "Publish constructed return before actual singleton registration.",
+    "Capture CURRENT publication+C/null before second manager getter and realBD0C30.",
+    "Registration failure retains publication/allocation and runs captured guard; normal section release precedes final CURRENT publication read.",
+    "No raw95/current10 registration is implicit, no reset/replay/compare-and-clear rollback."
+  ],
+  "identities": {
+    "prompt_publication": "Borrowed SAME E18E6C, notE1930C",
+    "bank": "Exactly95 DWORDsE18B60, sentinel excluded",
+    "strings": "SAME AA8/AA4/AA0 publication/control refs",
+    "feature": "Actual volatile DWORD0109EEA4 reference, read by reached genuine BF7680 semantics",
+    "literal_owner": "Existing authenticated GameNativeReadOnlyData; no copied/default bank",
+    "root_or_runtime_binding": "Caller obligation; no actual caller/activation supplied here"
+  },
+  "missing_actual_provider": {
+    "secondary_profile": "00CED3AC",
+    "target": "00532340",
+    "adjustment": "minus0C",
+    "derived_scalar": "00532A00",
+    "full_existing_member_destructor": "005321F0",
+    "requirement": "SAME retained actual application/member/Page/list/record/string graph, finite singleton deletion binding before getter registration activation",
+    "still_missing": true,
+    "source_scope_only": true
+  },
+  "pin_audit": {
+    "owned_source_and_document": {
+      "count": 5,
+      "format": "immutable Git blob LF content matches declared SHA; disk bytes match",
+      "mismatches": []
+    },
+    "providers_and_config": {
+      "count": 30,
+      "format": "immutable Git blob LF content matches declared SHA; disk bytes match",
+      "mismatches": [],
+      "exact_rows": "Pinned producer report dependency_pins"
+    },
+    "literal_specs_and_receipts": {
+      "count": 14,
+      "PE_bytes_FNV_and_SHA_match": true
+    },
+    "per_label_native_calls": {
+      "count": 70,
+      "all_sites_targets_match": true
+    },
+    "total_constructor_calls": 74,
+    "native_instruction_rows": 513,
+    "native_function_byte_hashes": {
+      "count": 2,
+      "match": true
+    },
+    "EH_maps": {
+      "count": 3,
+      "raw_info_and_map_SHA_and_all_parent_action_entries_match": true
+    },
+    "installed_PE": {
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "match": true
+    }
+  },
+  "production_and_document_pins": [
+    {
+      "path": "include/bsp/native_menu_prompt_construction.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "a5997aa5e2d990e7398322050ec279e3daec630e",
+      "sha256": "9aa4ae61cde44ea344417c604e99ad9005871187f8a0f4e05d39b920298d3ec5",
+      "bytes": 4513
+    },
+    {
+      "path": "src/native_menu_prompt_construction.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "97944af169584aace324659e8457b4c2c6cc30c8",
+      "sha256": "e9b8e42198ae4ab028aa7d5211459730b4995eb02f2baede80cb8e3cb69c4c88",
+      "bytes": 13305
+    },
+    {
+      "path": "include/bsp/native_menu_prompt_publication.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "b8ee480902ea5efc9bbb052bf7af7329b934415b",
+      "sha256": "6fb7c234e37aefd4cff6d84186b838d4b4a8fc92be09ad6e1d4f5393de24267a",
+      "bytes": 2455
+    },
+    {
+      "path": "src/native_menu_prompt_publication.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "3d8f01fd369fc64d723c9e9c9d5ec6ddb9d1d4d0",
+      "sha256": "759a3b3e2e3e565afc97dc8c3c70911cfb13d8498448ef71c6898b83c99e58fd",
+      "bytes": 4594
+    },
+    {
+      "path": "docs/CC16_NATIVE_MENU_PROMPT_CONSTRUCTION_PUBLICATION.md",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "674f9b02e9c8965bd7a9f1228e45deb577cf130d",
+      "sha256": "ea45d21bd999f56a676d04c4a7ced77039036ed70b56d3346a19b70cb6d2a541",
+      "bytes": 11106
+    }
+  ],
+  "producer_report_pin": {
+    "path": "reports/cc16_native_menu_prompt_construction_publication.json",
+    "hash_format": "immutable_git_blob_content_lf",
+    "git_blob_oid": "a8d32e5e250605d611260b92979f2857e9afbbf9",
+    "sha256": "7cffc066556df5e12ad9eaa4bb57ffac4de552f08191740fe28aeeb5bcf0014d",
+    "bytes": 40597
+  },
+  "saved_export_pins": [
+    {
+      "path": "exports/bsp/functions/00533120/assembly.txt",
+      "hash_format": "raw_saved_export_file_bytes",
+      "sha256": "d6b233a03d33a1eeb52c1e256a58fe51fc7d1ce84a5f525ef8c776ba1450cc0f",
+      "bytes": 14415
+    },
+    {
+      "path": "exports/bsp/functions/00533120/decompiled.c",
+      "hash_format": "raw_saved_export_file_bytes",
+      "sha256": "ade13370990dedd81adbf0d394ae50cbb6c1caf6f4c59f0fb184fef1f64c81c0",
+      "bytes": 10426
+    },
+    {
+      "path": "exports/bsp/functions/00425d10/assembly.txt",
+      "hash_format": "raw_saved_export_file_bytes",
+      "sha256": "951191417fbe424bdbc6144c0b3cbb56f4c5dcd49fb792a92de48e1c3435395b",
+      "bytes": 1618
+    },
+    {
+      "path": "exports/bsp/functions/00425d10/decompiled.c",
+      "hash_format": "raw_saved_export_file_bytes",
+      "sha256": "5a00d87201c23e7b4508abb050e50b25804ce8094c6eecc024246dad368c30a8",
+      "bytes": 2501
+    }
+  ],
+  "validation": {
+    "static_full_source_and_listing_review": true,
+    "exact_PE_and_Git_file_audit": true,
+    "json_parsed": true,
+    "staged_diff_check": true,
+    "owned_review_files_only": true,
+    "source_edits": false,
+    "cmake_edits": false,
+    "ledger_edits": false,
+    "ghidra_reads": false,
+    "ghidra_writes": false,
+    "build": false,
+    "test": false,
+    "probe": false,
+    "original_or_reconstructed_execution": false,
+    "process_actions": false,
+    "gameplay": false
+  },
+  "remaining_gates": [
+    "Primary joined build/existing checks",
+    "Actual CED3AC/532340/532A00/5321F0 lifetime binding",
+    "InitOnce5311C0/current10 raw95/canonical caller graph",
+    "Whole Frame/Page/Text/other frontend supplier gates",
+    "Original ABI/FH3/SEH/private-frame/fault/runtime/gameplay proof"
+  ],
+  "new_credit": {
+    "original": 0,
+    "vendor": 0,
+    "duplicate_body": 0,
+    "compiler_generated": 0,
+    "abi": 0,
+    "runtime": 0,
+    "gameplay": 0,
+    "activation": 0
+  },
+  "utc": "2026-10-30T16:04:59.683831+00:00",
+  "review_worktree_head_before_commit": "7ccd56ac661b0e2188a48ed7261103e1609cb65a"
+}
