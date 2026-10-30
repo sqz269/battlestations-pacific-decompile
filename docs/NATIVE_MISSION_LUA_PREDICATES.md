@@ -1,0 +1,11 @@
+# Strict raw mission Lua predicates
+
+The three ordinary Core APIs cover the complete normal bodies at006B7EE0/006B7F00/006B7F60. Each captures its by-value index and calls the genuine `type_native_mission_lua_006b7ec0` exactly once with the SAME actual machine and captured index. That existing child supplies the one CURRENT machine+4 read and real linked Lua type query. The predicate adds only equality to0/5/4 and returns explicit full int32 1/0.
+
+All three Native results define the full EAX value. Nil's NEG/SBB/ADD sequence is normalized to equality rather than signed C++ negation, including for negative/nonzero type results. Table and string explicitly clear ECX before SETZ CL and transfer the complete result to EAX. String means strictly type4: `lua_isstring` would also accept number3 and is not used. An actual absent -1 result is false for all three; no synthetic nil or partial case is introduced.
+
+The wrappers add no raw field read or second type query, model cast, Context/Frame, validation/default, owner creation, callback, allocation, cleanup, pcall, restoration, catch or retry. Actual child errors/nonlocal behavior remain inherited, with no generic noexcept promise or post-call payload read. The extra ordinary C++ child composition is not a claim about Original call frames, ECX/EDX/RET4, physical argument aliases or binary/private interpreter ABI.
+
+Caller-retained actual machine backing and the reached genuine linked-Source Lua state/stack/code/index graph must satisfy the child's lifetime, provenance and synchronization domain. Numerical Original VM images, semantic models and pointer equality do not establish that graph. No parent886E00, VM/factory/adoption, loading or startup route is issued; parent source readiness and runtime validation remain false.
+
+One authorized strict MSVC Win32 object compile passed once, exit0/machine014C. The SAME object defines all three actual Source entries and has the sole undefined reference to the genuine existing raw type child. Every prior tracked file and five scoped provider files are unchanged. Exact Source, provider, object and symbol evidence is in `local/native_mission_lua_predicates_gui_20261030/`. No link, executable, test, probe, Lua/Native/game entry, Ghidra mutation or vendor-body reconstruction was performed.
