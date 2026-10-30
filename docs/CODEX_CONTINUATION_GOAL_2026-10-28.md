@@ -1021,3 +1021,15 @@ Canonical publication/load/lifetime and startup admission remain unbound,
 all nine choices stay FALSE, and frozen ac60 remains held. A separate dormant
 raw constructor/base packet is next; no semantic object or zero-loaded manager
 is a substitute. See CODEX_RAW_LOCALE_BINDING_INTEGRATION.md.
+
+Dormant raw736540/full73C960 construction and raw73C240 map-clear composition
+are Source-reviewed and registered. Corrected d5c replaces held37ce raw-field
+object assumptions with fenced byte copies; independent inverse projection
+retains controls/EH/capture/order. Map clear550488 uses existing real payload
+and slot-return services with stable-import qualification. Combined Win32
+Release build including the f411 shared411EE0/412430 raw-access refinement and
+existing checks2/2 pass19.29s. The earlier13.12s evidence is retained. No startup caller, canonical
+owner, actual loaded manager or new body/game execution follows. Node-pool
+ownership and raw unregistration/retirement are the next bounded bindings;
+full loading and all9off/frozenac60hold remain. Exact limits and evidence:
+CODEX_RAW_LOCALE_CONSTRUCTION_INTEGRATION.md.

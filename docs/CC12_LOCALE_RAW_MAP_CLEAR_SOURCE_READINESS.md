@@ -1,5 +1,12 @@
 # Raw locale map-clear Source readiness
 
+Current integration update: the historical absence census below predates the
+accepted raw736090 slot-return service. A separate normalized raw73C240
+composition is now Source-reviewed and Win32 build-tested, existing checks2/2
+19.29s; see CODEX_RAW_LOCALE_CONSTRUCTION_INTEGRATION.md. The original frozen
+record is retained below. Canonical initialized pool ownership, lifetime and
+application activation remain unbound; no old GO is retroactively changed.
+
 `0073C240` has a bounded composition design, but **C++ implementation GO remains
 false**. The accepted dormant `00737CE0` payload helper is ready. The distinct
 node-slot return service and its actual initialized owner are still missing from
