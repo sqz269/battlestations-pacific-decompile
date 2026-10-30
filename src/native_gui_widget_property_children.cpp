@@ -26,18 +26,61 @@ Word target(void* raw, Word offset) noexcept { return read(pointer(read(raw)), o
 void require(bool value, const char* message) {
     if (!value) throw std::logic_error(message);
 }
-void preflight(NativeGuiWidgetPropertyChildrenContext& c, Acquired& a) {
+template<class Context> void common_preflight(Context& c, Acquired& a) {
     auto& access = c.models;
     require(a.phase == Acquired::Phase::fresh && a.children.empty() && !a.name_live,
         "GUI children require a fresh retained acquisition frame");
     require(!access.models.actual_names && access.models.nodes.uses_raw_name_pool() &&
         &access.models.nodes.require_raw_name_pool() == &c.strings &&
-        &access.models.nodes == &c.parenting.nodes && access.prepare_model &&
+        access.prepare_model &&
         access.retire_failed_model && access.bind_completed_model &&
         &access.models.retained_owners == &access.geometry.actual_owners(),
         "GUI children require SAME raw name, Model, scene and canonical owner domains");
 }
-void* create_model(void* name, NativeGuiWidgetPropertyChildrenContext& c,
+void preflight(NativeGuiWidgetPropertyChildrenContext& c, Acquired& a) {
+    common_preflight(c, a);
+    require(&c.models.models.nodes == &c.parenting.nodes,
+        "GUI children require their SAME legacy parenting runtime");
+}
+void preflight(NativeGuiWidgetPropertyChildrenRawContext& c, Acquired& a) {
+    common_preflight(c, a);
+    auto& node = c.parenting.node;
+    require(&node.strings == &c.strings &&
+        &node.scenes.owners == &c.models.models.retained_owners &&
+        &node.trees.owners == &node.scenes.owners &&
+        &node.trees.decrement_00ce2220 == &node.scenes.decrement_00ce2220 &&
+        &node.trees.point_lights == &c.models.models.nodes.point_lights &&
+        &c.models.models.constants.minimum_00ce4adc == &c.model_constants.negative_bound_00ce4adc &&
+        &c.models.models.constants.maximum_00ce4970 == &c.model_constants.positive_bound_00ce4970 &&
+        c.models.models.raw_name_services &&
+        &c.models.models.raw_name_services->constants == &c.model_constants,
+        "GUI raw children require SAME raw scene/tree/import/string/constant identities");
+}
+void detach_previous(void* parent, void* child, NativeGuiWidgetPropertyChildrenContext& c) {
+    detach_native_gui_widget_child_00aa83a0(parent, child, c.parenting.nodes);
+}
+void detach_previous(void* parent, void* child, NativeGuiWidgetPropertyChildrenRawContext& c) {
+    if (c.detach_acquired.started) {
+        require(c.detach_acquired.complete, "GUI raw detach cannot replay an active/failed invocation");
+        c.detach_acquired = {};
+    }
+    detach_native_gui_widget_child_00aa83a0(parent, child, c.detach_frame,
+        c.parenting.node, c.detach_acquired);
+}
+void parent_child(Word parent, Word child, NativeGuiWidgetPropertyChildrenContext& c) {
+    auto& transform = c.parenting.nodes.scenes.resolve_key(child).transform;
+    auto* requested = parent ? &c.parenting.nodes.scenes.resolve_key(parent).transform : nullptr;
+    set_native_node_parent_00b6e680(c.parenting, transform, requested);
+}
+void parent_child(Word parent, Word child, NativeGuiWidgetPropertyChildrenRawContext& c) {
+    if (c.parent_acquired.started) {
+        require(c.parent_acquired.complete, "GUI raw parenting cannot replay an active/failed invocation");
+        c.parent_acquired = {};
+    }
+    c.parent_frame.parent_argument = parent;
+    set_native_raw_parent_00b6e680(pointer(child), c.parent_frame, c.parenting, c.parent_acquired);
+}
+template<class Context> void* create_model(void* name, Context& c,
     NativeGuiWidgetPropertyChildAcquired& child, Acquired& a) {
     auto& access = c.models;
     a.active_call_site = 0x00aaad95;
@@ -72,22 +115,24 @@ void* create_model(void* name, NativeGuiWidgetPropertyChildrenContext& c,
     child.model_bound = true;
     return raw;
 }
-void release_name(void* name, NativeGuiWidgetPropertyChildrenContext& c, Acquired& a) {
+template<class Context> void release_name(void* name, Context& c, Acquired& a) {
     a.name_live = false; // Native state-1 BEFORE the possibly throwing return.
     a.name_cleanup_entered = true;
     a.active_call_site = 0x00aaae85;
     destroy_native_string_header_0041dd20(name, c.strings);
 }
-void failed(NativeGuiWidgetPropertyScratch& scratch,
-    NativeGuiWidgetPropertyChildrenContext& c, Acquired& a) noexcept {
+template<class Context> void failed(NativeGuiWidgetPropertyScratch& scratch,
+    Context& c, Acquired& a) noexcept {
+    const Word stopped_site = a.active_call_site;
     a.phase = Acquired::Phase::failed;
     if (a.name_live) {
         try { release_name(at(scratch.bytes, 0x38), c, a); }
         catch (...) { std::terminate(); }
     }
+    a.active_call_site = stopped_site;
 }
-void body(void* widget, void* visitor, NativeGuiWidgetPropertyScratch& scratch,
-    NativeGuiWidgetPropertyChildrenContext& c, Acquired& a) {
+template<class Context> void body(void* widget, void* visitor, NativeGuiWidgetPropertyScratch& scratch,
+    Context& c, Acquired& a) {
     void* const base = scratch.bytes;
     void* const block = at(base, 0x4c); // Native S+34; scratch begins S-18.
     void* const count = at(base, 0x81c); // Native S+804, after250 pairs.
@@ -128,7 +173,7 @@ void body(void* widget, void* visitor, NativeGuiWidgetPropertyScratch& scratch,
                 write(base, 0x28, bits(child.widget)); // Native S+10 pointer cell.
                 if (previous_parent) {
                     a.active_call_site = 0x00aaaddd;
-                    detach_native_gui_widget_child_00aa83a0(pointer(previous_parent), child.widget, c.parenting.nodes);
+                    detach_previous(pointer(previous_parent), child.widget, c);
                 }
                 void* const captured_head = pointer(read(widget, 0x68));
                 void* const captured_previous = pointer(read(captured_head, 4));
@@ -148,10 +193,8 @@ void body(void* widget, void* visitor, NativeGuiWidgetPropertyScratch& scratch,
                 // Native loads parent+4C BEFORE child+4C after list callbacks.
                 const Word parent_model = read(widget, 0x4c);
                 const Word current_child_model = read(child.widget, 0x4c);
-                auto& transform = c.parenting.nodes.scenes.resolve_key(current_child_model).transform;
-                auto* parent = parent_model ? &c.parenting.nodes.scenes.resolve_key(parent_model).transform : nullptr;
                 a.active_call_site = 0x00aaae24;
-                set_native_node_parent_00b6e680(c.parenting, transform, parent);
+                parent_child(parent_model, current_child_model, c);
                 a.active_call_site = 0x00aaae31;
                 c.calls.widget_created_74(child.widget, target(child.widget, 0x74));
                 void* const current_entry = pointer(read(base, 0x34));
@@ -179,15 +222,15 @@ void body(void* widget, void* visitor, NativeGuiWidgetPropertyScratch& scratch,
 NativeGuiWidgetPropertyChildrenAcquired::~NativeGuiWidgetPropertyChildrenAcquired() noexcept {
     if (phase == Phase::entered || phase == Phase::failed) std::terminate();
 }
-void continue_native_gui_widget_property_children_00aaacd4(void* widget, void* visitor,
-    NativeGuiWidgetPropertyScratch& scratch, NativeGuiWidgetPropertyChildrenContext& c, Acquired& a) {
+template<class Context> void continue_children(void* widget, void* visitor,
+    NativeGuiWidgetPropertyScratch& scratch, Context& c, Acquired& a) {
     preflight(c, a); a.phase = Acquired::Phase::entered;
     try { body(widget, visitor, scratch, c, a); a.phase = Acquired::Phase::complete; }
     catch (...) { failed(scratch, c, a); throw; }
 }
-void read_native_gui_widget_properties_and_children_00aaa710(void* widget, void* visitor,
+template<class Context> void read_children(void* widget, void* visitor,
     NativeGuiWidgetPropertyScratch& scratch, NativeGuiWidgetPropertyInteractionContext& properties,
-    NativeGuiWidgetPropertyChildrenContext& children, Acquired& a) {
+    Context& children, Acquired& a) {
     preflight(children, a);
     require(&properties.properties.strings == &children.strings,
         "whole GUI properties require the SAME actual string domain in every stage");
@@ -198,4 +241,18 @@ void read_native_gui_widget_properties_and_children_00aaa710(void* widget, void*
         a.phase = Acquired::Phase::complete;
     } catch (...) { failed(scratch, children, a); throw; }
 }
+void continue_native_gui_widget_property_children_00aaacd4(void* w, void* v,
+    NativeGuiWidgetPropertyScratch& s, NativeGuiWidgetPropertyChildrenContext& c, Acquired& a) {
+    continue_children(w, v, s, c, a);
+}
+void continue_native_gui_widget_property_children_00aaacd4(void* w, void* v,
+    NativeGuiWidgetPropertyScratch& s, NativeGuiWidgetPropertyChildrenRawContext& c, Acquired& a) {
+    continue_children(w, v, s, c, a);
+}
+void read_native_gui_widget_properties_and_children_00aaa710(void* w, void* v,
+    NativeGuiWidgetPropertyScratch& s, NativeGuiWidgetPropertyInteractionContext& p,
+    NativeGuiWidgetPropertyChildrenContext& c, Acquired& a) { read_children(w, v, s, p, c, a); }
+void read_native_gui_widget_properties_and_children_00aaa710(void* w, void* v,
+    NativeGuiWidgetPropertyScratch& s, NativeGuiWidgetPropertyInteractionContext& p,
+    NativeGuiWidgetPropertyChildrenRawContext& c, Acquired& a) { read_children(w, v, s, p, c, a); }
 } // namespace bsp

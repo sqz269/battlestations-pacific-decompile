@@ -1,6 +1,7 @@
 #pragma once
 #include "bsp/native_node_destruction.hpp"
 #include <cstdint>
+#include <cstddef>
 
 namespace bsp {
 struct NativeGuiWidgetRawModelLifetimeContext; // concrete qualified transport, separate header
@@ -32,6 +33,50 @@ public:
     virtual void remove_all_00a9bd50(void* actual_list, const void* pointer_cell) = 0;
 };
 
+// Cross-interface carried by the SAME lifetime.bindings for populated raw
+// Page/Group graphs. This never replaces canonical node/widget companions.
+// Preparation occurs before entry; callbacks only consume persistent frames.
+class NativeGuiWidgetRawNodeLifetimeBindings {
+public:
+    virtual ~NativeGuiWidgetRawNodeLifetimeBindings() = default;
+    virtual void begin_raw_widget_scene(void* actual_widget) = 0;
+    virtual void finish_raw_widget_scene() = 0;
+    virtual void release_raw_widget_node(void* captured_actual_node, bool late_primary) = 0;
+    virtual void detach_raw_widget_parent(void* actual_widget, void* actual_parent) = 0;
+    virtual void raw_widget_lifetime_failed() noexcept = 0;
+};
+class NativeGuiTimedStorageCalls {
+public:
+    virtual ~NativeGuiTimedStorageCalls() = default;
+    virtual void* allocate_timed_pointer_slots_00bf681b(void* actual_header, std::uint32_t bytes) = 0;
+    virtual void free_timed_pointer_slots_00bf65ac(void* actual_header, void* actual_backing) = 0;
+};
+struct NativeGuiTimedEntryStorage {
+    std::uint32_t profile_00;
+    float remaining_04;
+    void* actual_widget_08;
+    float target_0c;
+    float rate_10;
+};
+static_assert(sizeof(NativeGuiTimedEntryStorage) == 0x14);
+static_assert(offsetof(NativeGuiTimedEntryStorage, remaining_04) == 4);
+static_assert(offsetof(NativeGuiTimedEntryStorage, actual_widget_08) == 8);
+static_assert(offsetof(NativeGuiTimedEntryStorage, target_0c) == 0xc);
+static_assert(offsetof(NativeGuiTimedEntryStorage, rate_10) == 0x10);
+// Existing complete raw14h schedules; ECX block/stack actual-widget, RET4.
+// AD3970 preserves C/10; AC2ED0 reads SAME live one DWORD once. No widget cast.
+void* construct_native_gui_timed_entry_base_00ad3970(void*, void*) noexcept;
+void* construct_native_gui_timed_entry_alpha_00ac2ed0(void*, void*, const volatile float&) noexcept;
+void reset_native_gui_timed_entry_base_00ad3990(void*) noexcept;
+using NativeGuiTimedEntryFree = void (*)(void*, void*) noexcept;
+// Existing scalar schedules: ECX entry/stack flags, RET4; reset D5D204,
+// conditional SAME-allocation free, original numeric identity result. New
+// Source callback ABI only; no FH3/SEH/fault/private-frame equivalence.
+
+void* scalar_delete_native_gui_timed_entry_alpha_00ac2fe0(void*, std::uint32_t, void*, NativeGuiTimedEntryFree);
+void* scalar_delete_native_gui_timed_entry_section_00ad3a40(void*, std::uint32_t, void*, NativeGuiTimedEntryFree);
+void* scalar_delete_native_gui_timed_entry_base_00ad3a60(void*, std::uint32_t, void*, NativeGuiTimedEntryFree);
+
 struct NativeGuiWidgetLifetimeContext {
     NativeNodeDestructionRuntime& nodes; // existing ACTUAL node companions only
     const volatile std::uint32_t* actual_base_table_00d5c130; // at least9 DWORDs
@@ -45,6 +90,9 @@ struct NativeGuiWidgetLifetimeContext {
 void reserve_native_gui_timed_pointers_00aa6f30(void*, std::int32_t);
 void resize_native_gui_timed_pointers_00aa77b0(void*, std::int32_t);
 void destroy_native_gui_timed_pointers_00aa7f50(void*);
+void reserve_native_gui_timed_pointers_00aa6f30(void*, std::int32_t, NativeGuiTimedStorageCalls&);
+void resize_native_gui_timed_pointers_00aa77b0(void*, std::int32_t, NativeGuiTimedStorageCalls&);
+void destroy_native_gui_timed_pointers_00aa7f50(void*, NativeGuiTimedStorageCalls&);
 // A9B740 full72B; A9BCE0 tail alias. Same physical 0Ch list as its producer
 // A9B720 and existing NativeEffectDeletionListStorage. Never deletes payloads.
 void destroy_native_gui_widget_list_00a9b740(void*) noexcept;

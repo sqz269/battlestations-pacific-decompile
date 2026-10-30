@@ -1,0 +1,1123 @@
+{
+  "schema_version": 1,
+  "packet": "codex-gui-populated-page-implementation",
+  "created_utc": "2026-10-30T13:37:15.316896+00:00",
+  "status": "connected_source_candidate_primary_review_and_joined_warm_build_pending",
+  "documentation": "docs/CC16_POPULATED_PAGE_IMPLEMENTATION.md",
+  "frozen_base": "40acabef63ed84dec8deb4d54530ef13a4d4da8d",
+  "joined_parent_head": "f377ba8e51b666030a18649a3e29b0fe52661b9a",
+  "source_ready_for_review": true,
+  "source_admitted_main": false,
+  "guard": {
+    "name": "kNativeGuiPageChainCc15Bound",
+    "value": false
+  },
+  "owned_changed_source": [
+    "include/bsp/game_native_gui_page_application.hpp",
+    "src/game_native_gui_page_application.cpp",
+    "src/game_hosts.cpp",
+    "include/bsp/native_gui_widget_property_children.hpp",
+    "src/native_gui_widget_property_children.cpp",
+    "include/bsp/native_gui_widget_lifetime.hpp",
+    "src/native_gui_widget_lifetime.cpp",
+    "include/bsp/native_gui_page_properties.hpp",
+    "src/native_gui_page_properties.cpp",
+    "include/bsp/native_gui_widget_child_links.hpp",
+    "src/native_gui_widget_child_links.cpp"
+  ],
+  "authorized_unchanged_lifetime_carriers": [
+    "include/bsp/native_gui_group_identity.hpp",
+    "src/native_gui_group_identity.cpp",
+    "include/bsp/native_gui_group_factory.hpp",
+    "src/native_gui_group_factory.cpp",
+    "include/bsp/native_gui_layer_lifetime.hpp",
+    "src/native_gui_layer_lifetime.cpp"
+  ],
+  "joined_component_commits": {
+    "model_domain": "d0d609dbc0c77c74001cadf2648154245da5aa8a",
+    "canonical_Model_bridge": "07e4a6b4658501ffb33413f61df894761234ffc2",
+    "real_timed_producer": "44ee1b9ba4aaa88aae3f6937e2f0c452ba098c3a"
+  },
+  "contracts": [
+    {
+      "commit": "40acabef63ed84dec8deb4d54530ef13a4d4da8d",
+      "path": "docs/CC16_NATIVE_FRONTEND_WIDGET_MODEL_DOMAIN.md",
+      "bytes": 21495,
+      "sha256": "ad0e5a2baabb4e862a7e2c6afb2ddc89fbb180cc807b16a592f5678b41c4575e"
+    },
+    {
+      "commit": "40acabef63ed84dec8deb4d54530ef13a4d4da8d",
+      "path": "docs/CC16_NATIVE_GUI_PAGE_RAW_PARENTING_DESIGN.md",
+      "bytes": 10958,
+      "sha256": "d992fec3dde091ca4553811c0eff3c1f24b95eda9bdbe923f056e2f186dcb4e1"
+    },
+    {
+      "commit": "a36e3fa3bb8f7607ec14f4315c07b992d30ca61a",
+      "path": "docs/CC16_NATIVE_GUI_PAGE_POPULATED_READER_LIFETIME.md",
+      "bytes": 19308,
+      "sha256": "2c50006603761380a4203ff2eae1b5dda46594de56753e2fdcbf61f46e7a4b9e"
+    },
+    {
+      "commit": "a36e3fa3bb8f7607ec14f4315c07b992d30ca61a",
+      "path": "reports/cc16_native_gui_page_populated_reader_lifetime.json",
+      "bytes": 75060,
+      "sha256": "d7ddca4922816f47ca90c7b95192ef50347cb4640663e5c18ea6505cfa8ac941"
+    },
+    {
+      "commit": "c0f735c3af934905a3f6681b24261bfab493e4e6",
+      "path": "docs/CC16_CANONICAL_MODEL_RAW_LIFETIME_BRIDGE.md",
+      "bytes": 19956,
+      "sha256": "3b1476e2f06b04a6b4933de734cd294638f73cde0b16cf9bb829d0a78239c1a6"
+    },
+    {
+      "commit": "f23d66e500fbfa80da93e7b6f05670d9520464e9",
+      "path": "docs/CC16_NATIVE_GUI_RAW_TIMED_ENTRY_OWNER.md",
+      "bytes": 17506,
+      "sha256": "961bf92e515c45095196672a5a13e691ee03f6a663abec4d5eccc871243877de"
+    },
+    {
+      "commit": "f23d66e500fbfa80da93e7b6f05670d9520464e9",
+      "path": "reports/cc16_native_gui_raw_timed_entry_owner.json",
+      "bytes": 27371,
+      "sha256": "dc5738f7465d222db97ee3421784fd702e442059396bedbae46d859cdea07815"
+    }
+  ],
+  "source_receipts": [
+    {
+      "path": "include/bsp/game_native_gui_page_application.hpp",
+      "bytes": 3003,
+      "sha256": "65fecd10b8a3dfd089d7f5952f01294cdde2a03904d8382cc0feeeb394d2da47",
+      "lf_bytes": 2945,
+      "lf_sha256": "7ad6d366ec92695ede58d8f44deeee6b6874f8c344788f626aab286495d83221",
+      "git_blob": "4abf6219f61e37b4e6c9ceb2777bd69aa7f7d8df",
+      "role": "component_changed"
+    },
+    {
+      "path": "src/game_native_gui_page_application.cpp",
+      "bytes": 73124,
+      "sha256": "8a19f239b0968775b33191c8b377e18cf70917dc5fdc9efa1e2e55c2401ff3c6",
+      "lf_bytes": 71870,
+      "lf_sha256": "8e01c77618f4f4cc62e13517e74ed8b591581e9a2d62364eb88ad450b5b7b840",
+      "git_blob": "375befea735f237530c840a351b67e234d6c570a",
+      "role": "component_changed"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "bytes": 189179,
+      "sha256": "74cdefd20de293edbc2c256e072a8ca28fc867bfe6c2c0a9745de709110d673f",
+      "lf_bytes": 185565,
+      "lf_sha256": "2b4f594039fbd7b20056cd34c59cd6b4571a23a2269dc98db2210ab6c8a179e2",
+      "git_blob": "05df16b3b7dae726a02cd243ded6ffa469d94beb",
+      "role": "component_changed"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_property_children.hpp",
+      "bytes": 5897,
+      "sha256": "2f98ea99dbd41a8fb89cc218475f1be2356c477c48918ca61d0039cb688b7fed",
+      "lf_bytes": 5793,
+      "lf_sha256": "531c63dcf73098a5a6dc09e21b84126d89ad6172145f2f2c6735e31aff931874",
+      "git_blob": "91aeee519f1a47441d2f1c7648244c171daa1b2a",
+      "role": "component_changed"
+    },
+    {
+      "path": "src/native_gui_widget_property_children.cpp",
+      "bytes": 14442,
+      "sha256": "3b52509a9cb10abcc4566579622b4248e5f95a0e12dc3f77364132a258b42878",
+      "lf_bytes": 14184,
+      "lf_sha256": "9979019cc7297faae7fa5ffdabe799a4cda730e99029364e365647e6051ec4b2",
+      "git_blob": "b75a3cf15c070bcf4e84d7696eba7f451d4a8327",
+      "role": "component_changed"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_lifetime.hpp",
+      "bytes": 8030,
+      "sha256": "e2f3ff1e9b348cf39fdde972bc2938bad026dc67cf278e1d3be981ec16b22621",
+      "lf_bytes": 7899,
+      "lf_sha256": "c9155c508f98bb913ebe8ae71cd6c98e050d86ce25a746a5c8f4909f37242d1a",
+      "git_blob": "3dfab3f1b6a42f2a37f8c84e1d813e4d7201ec20",
+      "role": "component_changed"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "bytes": 18238,
+      "sha256": "3554f8b5910e9e847616613d290c4acda0d8b828f6def91a0065aa5f03b41baa",
+      "lf_bytes": 17866,
+      "lf_sha256": "e8a53199f409248cc89b6d64c326a0b037970703e3b34ca628162a730907df68",
+      "git_blob": "9c8b06d3a4071d57ab1a539eaacdfb2fb810cbd3",
+      "role": "component_changed"
+    },
+    {
+      "path": "include/bsp/native_gui_page_properties.hpp",
+      "bytes": 3591,
+      "sha256": "4a5190c9073768b1c3524382a9f07997515099575a7a80fa01bbfbaf25f53c95",
+      "lf_bytes": 3525,
+      "lf_sha256": "ef5e212e46b6c14e1b64702b0cf71e0412b648729ded260814f69d35be7a44b0",
+      "git_blob": "abab42af993b749a79f5dcdd3a13d3e7e298de79",
+      "role": "component_changed"
+    },
+    {
+      "path": "src/native_gui_page_properties.cpp",
+      "bytes": 5434,
+      "sha256": "33c7625da2ade534a1d6093d78f92188daa2bee8c9a34541e9c6c698f1aac169",
+      "lf_bytes": 5329,
+      "lf_sha256": "acd659fac018b6742223dc4eb02bdda7d7b3e8e1c0a00c9720957206887ff379",
+      "git_blob": "94cb2bea918059fda155b44a6c6b0b2f244645b9",
+      "role": "component_changed"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_child_links.hpp",
+      "bytes": 5147,
+      "sha256": "4e55266986e15e5708c50cf16950e98fe264d43ff6435276ab4ef881792ea955",
+      "lf_bytes": 5058,
+      "lf_sha256": "00b86ac36f6860c22b9b6154aba306aaaa424d77eb60f4deb4755358698277a9",
+      "git_blob": "0fe77896b7eb14b888e01a68a39dce34d1d182cb",
+      "role": "component_changed"
+    },
+    {
+      "path": "src/native_gui_widget_child_links.cpp",
+      "bytes": 7316,
+      "sha256": "45b812e4c41e5d1fc2adf25245241be6ad473d605d4827aae1bbff14aba9a2d3",
+      "lf_bytes": 7146,
+      "lf_sha256": "fbaf30b0a635a7030981a9e95fd34aab97f9b52979c2409598f5779a829a0a0b",
+      "git_blob": "1628e0a950e5f0addc58705f7504f6ac4387def0",
+      "role": "component_changed"
+    },
+    {
+      "path": "include/bsp/native_gui_group_identity.hpp",
+      "bytes": 3927,
+      "sha256": "6e251cf75959a850d2a763840cbd798be33d8d7c14a4979e73287378645ff527",
+      "lf_bytes": 3927,
+      "lf_sha256": "6e251cf75959a850d2a763840cbd798be33d8d7c14a4979e73287378645ff527",
+      "git_blob": "78935045d86006ff11adc7ef949f417443e8a981",
+      "role": "unchanged_real_lifetime_carrier"
+    },
+    {
+      "path": "src/native_gui_group_identity.cpp",
+      "bytes": 4261,
+      "sha256": "7c562ecc89b706df3ed39a05c444a921d737a67f5db3ca3cffb179859d4d744c",
+      "lf_bytes": 4261,
+      "lf_sha256": "7c562ecc89b706df3ed39a05c444a921d737a67f5db3ca3cffb179859d4d744c",
+      "git_blob": "94763c5fb3279fb3841a968ebcabc287a3b9f1ca",
+      "role": "unchanged_real_lifetime_carrier"
+    },
+    {
+      "path": "include/bsp/native_gui_group_factory.hpp",
+      "bytes": 4054,
+      "sha256": "824bb49ed0a651ef8df2fdc169fa56b99601ed084b253f7b763e0b8fa1b33f43",
+      "lf_bytes": 4054,
+      "lf_sha256": "824bb49ed0a651ef8df2fdc169fa56b99601ed084b253f7b763e0b8fa1b33f43",
+      "git_blob": "1bc8d7ca5bf9becac0a53aaf242f963dddb41681",
+      "role": "unchanged_real_lifetime_carrier"
+    },
+    {
+      "path": "src/native_gui_group_factory.cpp",
+      "bytes": 2385,
+      "sha256": "16f91c2a6607f7593910be66cc616eefbd32945f7dec910055c3665dbabdb61c",
+      "lf_bytes": 2385,
+      "lf_sha256": "16f91c2a6607f7593910be66cc616eefbd32945f7dec910055c3665dbabdb61c",
+      "git_blob": "73777a41968ce1e4ffa3c0560943d33ca162074e",
+      "role": "unchanged_real_lifetime_carrier"
+    },
+    {
+      "path": "include/bsp/native_gui_layer_lifetime.hpp",
+      "bytes": 4093,
+      "sha256": "dbf0d44346d847bd4c2daa86b73cdb6ec175e2553ad113ef8bbeffc444f631dd",
+      "lf_bytes": 4093,
+      "lf_sha256": "dbf0d44346d847bd4c2daa86b73cdb6ec175e2553ad113ef8bbeffc444f631dd",
+      "git_blob": "2477f2e27bb3d0fa2c59042d91f0b41a2a9be73a",
+      "role": "unchanged_real_lifetime_carrier"
+    },
+    {
+      "path": "src/native_gui_layer_lifetime.cpp",
+      "bytes": 4457,
+      "sha256": "d6d789179cd68cbd1bf66a6ebf2b1aeb4c2c29fc03155b3be335ebfdb22cf7d0",
+      "lf_bytes": 4457,
+      "lf_sha256": "d6d789179cd68cbd1bf66a6ebf2b1aeb4c2c29fc03155b3be335ebfdb22cf7d0",
+      "git_blob": "5ceefd2a5021f3d9df7ce50bc5c78722be5a2b15",
+      "role": "unchanged_real_lifetime_carrier"
+    },
+    {
+      "path": "include/bsp/game_native_model_domain.hpp",
+      "bytes": 3144,
+      "sha256": "6feef900ac2a2093856da5a88e8ec7eadd6923d7d9eaa5cb8353a13be323e128",
+      "lf_bytes": 3144,
+      "lf_sha256": "6feef900ac2a2093856da5a88e8ec7eadd6923d7d9eaa5cb8353a13be323e128",
+      "git_blob": "5d8bc4a64c104cbeee4a0d6280719f6209bbb182",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "src/game_native_model_domain.inc",
+      "bytes": 15824,
+      "sha256": "ff8788d41c4e4b34b302910cc3c52d3593b232fc409d229a3b4999cbaef242ed",
+      "lf_bytes": 15824,
+      "lf_sha256": "ff8788d41c4e4b34b302910cc3c52d3593b232fc409d229a3b4999cbaef242ed",
+      "git_blob": "000f2395134b994791d4284d279ffead14c9d317",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "include/bsp/game_native_renderer_application.hpp",
+      "bytes": 20750,
+      "sha256": "35d3649c491e263cb0c6752bf637d70af3135a9bae12e375ed9d12bbecd26bd5",
+      "lf_bytes": 20750,
+      "lf_sha256": "35d3649c491e263cb0c6752bf637d70af3135a9bae12e375ed9d12bbecd26bd5",
+      "git_blob": "dc90eb7264b1a84b06d9658d359864b96cc60a2c",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "bytes": 80905,
+      "sha256": "ca5482dcb5566b9ccf14aebd2ec0b78f1e547bf5ab4e5268e2922fb207277d3e",
+      "lf_bytes": 80905,
+      "lf_sha256": "ca5482dcb5566b9ccf14aebd2ec0b78f1e547bf5ab4e5268e2922fb207277d3e",
+      "git_blob": "c7ac9206b53f7fdf8e5c4e53a17cf3b3f6e4231f",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "src/game_native_mission_model.inc",
+      "bytes": 54516,
+      "sha256": "ed4f91ff37398cc690c5657e9160e1d8aae36f4bf8361dd90ef253ee2733fb87",
+      "lf_bytes": 54516,
+      "lf_sha256": "ed4f91ff37398cc690c5657e9160e1d8aae36f4bf8361dd90ef253ee2733fb87",
+      "git_blob": "bba02b361321fd41e4173b557650c8c6e55d14e0",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "include/bsp/native_model_owner.hpp",
+      "bytes": 9870,
+      "sha256": "d1cfa9b664075d836d9818ed57f4d9c89858b0c0c507c8ca3dce75f727a52a2a",
+      "lf_bytes": 9870,
+      "lf_sha256": "d1cfa9b664075d836d9818ed57f4d9c89858b0c0c507c8ca3dce75f727a52a2a",
+      "git_blob": "1ef6610b9534c327e4e58412eb6a0cd5f8a9409e",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "bytes": 29717,
+      "sha256": "6e774d73c4a5bbd0109e19c271e2ff05a613e389c50ec72bd888c4c49f5ddd2d",
+      "lf_bytes": 29717,
+      "lf_sha256": "6e774d73c4a5bbd0109e19c271e2ff05a613e389c50ec72bd888c4c49f5ddd2d",
+      "git_blob": "7c764a3abcd1ffeb713dad482807965574aadb74",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "include/bsp/native_model_storage_lifetime.hpp",
+      "bytes": 8247,
+      "sha256": "0764b927078091103c21e6c2d6215ccb7a403c2b3eed832943dfae632a55ec3e",
+      "lf_bytes": 8247,
+      "lf_sha256": "0764b927078091103c21e6c2d6215ccb7a403c2b3eed832943dfae632a55ec3e",
+      "git_blob": "d00d1110e199b05a65c948d42017593a8f102661",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "src/native_model_storage_lifetime.cpp",
+      "bytes": 17033,
+      "sha256": "1ded6a8042e2ce26bdcd9852dae2c14b16cee1efdba0227ed479d0c9491cddd8",
+      "lf_bytes": 17033,
+      "lf_sha256": "1ded6a8042e2ce26bdcd9852dae2c14b16cee1efdba0227ed479d0c9491cddd8",
+      "git_blob": "9aa0259d0d2deebd85f14805b9bd9eaae6b76587",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "include/bsp/cc13_gui1.hpp",
+      "bytes": 21485,
+      "sha256": "649ac778ac9b6c1600ab1322e81d83dda1f259b67545bf942f62f7958adddff8",
+      "lf_bytes": 21485,
+      "lf_sha256": "649ac778ac9b6c1600ab1322e81d83dda1f259b67545bf942f62f7958adddff8",
+      "git_blob": "7fd9819d04c9dc9a13c761e0176480ed6f588446",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "src/cc13_gui1.cpp",
+      "bytes": 35349,
+      "sha256": "3b60069c4991f51ac3a8ed5076cffb9c0abf5af97dd9c171773c2e99952b8798",
+      "lf_bytes": 35349,
+      "lf_sha256": "3b60069c4991f51ac3a8ed5076cffb9c0abf5af97dd9c171773c2e99952b8798",
+      "git_blob": "7f0ee9d08b5f0b90350d956f0bd2b5b79d714291",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "src/native_node_parenting_storage.cpp",
+      "bytes": 10339,
+      "sha256": "035ccf45f17b12b553fcc3e451894b67c928de4ae583c7e511a1a99269c113d1",
+      "lf_bytes": 10339,
+      "lf_sha256": "035ccf45f17b12b553fcc3e451894b67c928de4ae583c7e511a1a99269c113d1",
+      "git_blob": "a5a82c3d274d1af7f86efeb59a3939856212bb81",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "src/native_node_scene_attachment.cpp",
+      "bytes": 9245,
+      "sha256": "baaeb437926eb685257868ab3ad4c428aa012ca71dc9378aac9a28245d4dfd6f",
+      "lf_bytes": 9245,
+      "lf_sha256": "baaeb437926eb685257868ab3ad4c428aa012ca71dc9378aac9a28245d4dfd6f",
+      "git_blob": "ab47729989378bd1f4e15e888b7ec2064485bf41",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "src/native_node_tree_retirement.cpp",
+      "bytes": 7016,
+      "sha256": "f58325714135577e4a2baefdefea81b45fd1d5bfaa912d83b02d38637466fbf5",
+      "lf_bytes": 7016,
+      "lf_sha256": "f58325714135577e4a2baefdefea81b45fd1d5bfaa912d83b02d38637466fbf5",
+      "git_blob": "b3d2053bd6b0ee6016e4dac2a41004ef780b273a",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "src/native_node_base_destruction.cpp",
+      "bytes": 10425,
+      "sha256": "21bb87a236d4888ba5ef0102f3747f4cc53d28462d587dfaa94c1e731a0f055e",
+      "lf_bytes": 10425,
+      "lf_sha256": "21bb87a236d4888ba5ef0102f3747f4cc53d28462d587dfaa94c1e731a0f055e",
+      "git_blob": "79cf2d8bb81f8044074d4c70d592ee473a763312",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "src/native_node_root_propagation.cpp",
+      "bytes": 3130,
+      "sha256": "302f09b2f12d426abd9266fd265532e44bb104827b00d3894744f6a37012d48b",
+      "lf_bytes": 3130,
+      "lf_sha256": "302f09b2f12d426abd9266fd265532e44bb104827b00d3894744f6a37012d48b",
+      "git_blob": "88a1dfe8382a55a6049069da336356273ffda02f",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "src/native_group_storage_lifetime.cpp",
+      "bytes": 10100,
+      "sha256": "8da07fea5a190da43214a880d8be19fd81250ff736570c4112e8412e91de0a5d",
+      "lf_bytes": 10100,
+      "lf_sha256": "8da07fea5a190da43214a880d8be19fd81250ff736570c4112e8412e91de0a5d",
+      "git_blob": "01b9e2d917a75f695d415d2db5b4b38f4781027e",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "src/native_gui_widget_load_hooks.cpp",
+      "bytes": 1107,
+      "sha256": "34ae7ff13a92059c044217df95c01876e621be975e5cfccafd304da1b89c1551",
+      "lf_bytes": 1107,
+      "lf_sha256": "34ae7ff13a92059c044217df95c01876e621be975e5cfccafd304da1b89c1551",
+      "git_blob": "26086ecbcd28a1e7e97d403475c2164856f08135",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "src/native_gui_widget_visibility.cpp",
+      "bytes": 4749,
+      "sha256": "fc17949662d6cbe0630c0974f796def8ac1c8571323f5dc1e7605397c0957520",
+      "lf_bytes": 4749,
+      "lf_sha256": "fc17949662d6cbe0630c0974f796def8ac1c8571323f5dc1e7605397c0957520",
+      "git_blob": "6a2b4f36bb0a47d9ecf6b3b96af02f71b6a8d3d5",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "src/native_gui_widget_property_interaction.cpp",
+      "bytes": 3580,
+      "sha256": "9f5b72097c855f0b9c2b7b92aa5555ca2415d6ec0573e45426069406e135c73d",
+      "lf_bytes": 3580,
+      "lf_sha256": "9f5b72097c855f0b9c2b7b92aa5555ca2415d6ec0573e45426069406e135c73d",
+      "git_blob": "24f5cbf46d3f92d69ef49e46810bcdb6a0e44e0a",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "src/native_lua_reader.cpp",
+      "bytes": 2510,
+      "sha256": "9d83243b6422a5f5ac921b1577401a489f18181b2dd5825212ae38d397d892fc",
+      "lf_bytes": 2510,
+      "lf_sha256": "9d83243b6422a5f5ac921b1577401a489f18181b2dd5825212ae38d397d892fc",
+      "git_blob": "6afa19cf20c03c8f509624b793d2c62edaa1da47",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "src/native_lua_reader_queries.cpp",
+      "bytes": 2768,
+      "sha256": "aabdb6f268c08220068e1e2fc658527488781563bdc4bf49455796429e141328",
+      "lf_bytes": 2768,
+      "lf_sha256": "aabdb6f268c08220068e1e2fc658527488781563bdc4bf49455796429e141328",
+      "git_blob": "16d155d0f1446177916161e57875b0249421a9af",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "src/native_lua_reader_fields.cpp",
+      "bytes": 1477,
+      "sha256": "cabae403d2d8cf84ba83d216cb5bd143a96757fdd52803dd1a38a1ab5d2407c9",
+      "lf_bytes": 1477,
+      "lf_sha256": "cabae403d2d8cf84ba83d216cb5bd143a96757fdd52803dd1a38a1ab5d2407c9",
+      "git_blob": "204ab802505942accb799fd4753b6d171284fd13",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "src/native_gui_scene_storage.cpp",
+      "bytes": 13498,
+      "sha256": "c291544fa92b127f2e94c28b6072dc5a0ee6325e1e315e934e7b4567734e2935",
+      "lf_bytes": 13498,
+      "lf_sha256": "c291544fa92b127f2e94c28b6072dc5a0ee6325e1e315e934e7b4567734e2935",
+      "git_blob": "77e02c53640386c7958de575b029548be76b31b5",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "src/native_gui_scene_acquisition_storage.cpp",
+      "bytes": 26876,
+      "sha256": "79286dc355bd6cc8f1db1cf2cf12477ff97642c9279afdadb6d26ab0473a28f3",
+      "lf_bytes": 26876,
+      "lf_sha256": "79286dc355bd6cc8f1db1cf2cf12477ff97642c9279afdadb6d26ab0473a28f3",
+      "git_blob": "fe2c7eb6f64bd9ae67b1b9b8e89cf54a82839bb7",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "src/native_node_construction.cpp",
+      "bytes": 14664,
+      "sha256": "87a73019511d3575aa0887a4964a2a8703a5248106fdcff2eddfbb424918dd35",
+      "lf_bytes": 14664,
+      "lf_sha256": "87a73019511d3575aa0887a4964a2a8703a5248106fdcff2eddfbb424918dd35",
+      "git_blob": "6a0e74c4cb62f82ec0b1909a807f36b0297f72ab",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "src/game_native_renderer_gui_scene.inc",
+      "bytes": 14757,
+      "sha256": "b3c4c2270facfe38f2ed85dbe672e1771bcd37cf23dd034e4906a184c3440a4e",
+      "lf_bytes": 14757,
+      "lf_sha256": "b3c4c2270facfe38f2ed85dbe672e1771bcd37cf23dd034e4906a184c3440a4e",
+      "git_blob": "9b682e14a021562855a7e9398228e11cd06dadd9",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "src/native_gui_page_script_continuation.cpp",
+      "bytes": 7913,
+      "sha256": "3981f2536368206c093386669bcf878d2e05492366ec60893a1964b17fa60a1c",
+      "lf_bytes": 7913,
+      "lf_sha256": "3981f2536368206c093386669bcf878d2e05492366ec60893a1964b17fa60a1c",
+      "git_blob": "91d4ee65bcb34cd06c7504f108661ef6ac2cd40d",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "src/native_gui_page_reader_continuation.cpp",
+      "bytes": 6469,
+      "sha256": "93b9956c53e8d14d01f5b093a1fd5d6e49982b965a847806e4f34097f98d62e0",
+      "lf_bytes": 6469,
+      "lf_sha256": "93b9956c53e8d14d01f5b093a1fd5d6e49982b965a847806e4f34097f98d62e0",
+      "git_blob": "1ec03dbb5f17b454919a0d5572e53280a479c243",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "src/native_gui_page_properties_continuation.cpp",
+      "bytes": 5051,
+      "sha256": "83e4c42839988e6c5ff76d49ef5c8bb22c5911c48ddc08ecfc0363c8f351c77f",
+      "lf_bytes": 5051,
+      "lf_sha256": "83e4c42839988e6c5ff76d49ef5c8bb22c5911c48ddc08ecfc0363c8f351c77f",
+      "git_blob": "ce1708544a2c1c0873a292636b161cb48ae51d6d",
+      "role": "joined_or_existing_whole_supplier"
+    },
+    {
+      "path": "src/native_gui_widget_property_prefix.cpp",
+      "bytes": 6155,
+      "sha256": "d26db5468d7eb00b21ff02556493b05bfc7a0440717c687e65afed281598d6fa",
+      "lf_bytes": 6155,
+      "lf_sha256": "d26db5468d7eb00b21ff02556493b05bfc7a0440717c687e65afed281598d6fa",
+      "git_blob": "a7929db74e39bf1e98d5cf89251bd080b6359206",
+      "role": "existing_whole_supplier"
+    }
+  ],
+  "source_diff": {
+    "against": "f377ba8e51b666030a18649a3e29b0fe52661b9a",
+    "paths": [
+      "include/bsp/game_native_gui_page_application.hpp",
+      "src/game_native_gui_page_application.cpp",
+      "src/game_hosts.cpp",
+      "include/bsp/native_gui_widget_property_children.hpp",
+      "src/native_gui_widget_property_children.cpp",
+      "include/bsp/native_gui_widget_lifetime.hpp",
+      "src/native_gui_widget_lifetime.cpp",
+      "include/bsp/native_gui_page_properties.hpp",
+      "src/native_gui_page_properties.cpp",
+      "include/bsp/native_gui_widget_child_links.hpp",
+      "src/native_gui_widget_child_links.cpp"
+    ],
+    "bytes": 114686,
+    "sha256": "039162bed6adfa5cbd5b8eadf10f750a13d159ea161cd692b837a65a27f1cced"
+  },
+  "effect_body_comparisons": [
+    {
+      "path": "src/native_gui_page_properties.cpp",
+      "marker": "template<class Context> void read_properties(",
+      "start_line": 38,
+      "end_line": 96,
+      "effect_body_lf_sha256": "583c8cf384500d7e5c8d53ce41b29eb4584e13a62e64f37b9eabd9880e77ce8b",
+      "matches_baseline_with_only": []
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "marker": "template<class Schedule> void release_scene(",
+      "start_line": 270,
+      "end_line": 296,
+      "effect_body_lf_sha256": "82cf7e68aeadcd6bddf17d9dadb11b33d056ea87117849b5504ecf2bf099536d",
+      "matches_baseline_with_only": []
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "marker": "template<class Schedule> void destroy_base(",
+      "start_line": 297,
+      "end_line": 349,
+      "effect_body_lf_sha256": "e356ee518a65457071665988af08f8d7fa8ee3f337699c4d10b6eca5a556e92d",
+      "matches_baseline_with_only": [
+        {
+          "old": "resize_native_gui_timed_pointers_00aa77b0(at(owner, 0x88),\n                        static_cast<std::int32_t>(next_count));",
+          "new": "schedule.resize(at(owner, 0x88), static_cast<std::int32_t>(next_count));"
+        },
+        {
+          "old": "finish_timed_backing(at(owner, 0x88));",
+          "new": "schedule.finish_backing(at(owner, 0x88));"
+        }
+      ]
+    }
+  ],
+  "unchanged_context_acquisition_declarations": [
+    {
+      "path": "include/bsp/native_gui_widget_property_children.hpp",
+      "declaration": "struct NativeGuiWidgetPropertyChildrenContext {",
+      "same": true,
+      "start_line": 26,
+      "end_line": 33,
+      "lf_sha256": "3ba092397b9a9d658294da2658f502b202d1eab056820ed3825019150492656a"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_property_children.hpp",
+      "declaration": "struct NativeGuiWidgetPropertyChildAcquired {",
+      "same": true,
+      "start_line": 52,
+      "end_line": 59,
+      "lf_sha256": "14543989ec897fdbfb2690205883fc49547a160431dc03e1b668bce3936a52e9"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_property_children.hpp",
+      "declaration": "struct NativeGuiWidgetPropertyChildrenAcquired {",
+      "same": true,
+      "start_line": 60,
+      "end_line": 70,
+      "lf_sha256": "aeba555d31449b0b34f577ce13edc74cb6184674ad017a5a5c4471d83e76ee07"
+    },
+    {
+      "path": "include/bsp/native_gui_page_properties.hpp",
+      "declaration": "struct NativeGuiPageReadPropertiesContext {",
+      "same": true,
+      "start_line": 8,
+      "end_line": 14,
+      "lf_sha256": "6683b3155d6f5ab78cb7386fded08ce4ceb91105aae5efd61177b4bcb4052986"
+    },
+    {
+      "path": "include/bsp/native_gui_page_properties.hpp",
+      "declaration": "struct NativeGuiPageReadPropertiesFrame {",
+      "same": true,
+      "start_line": 22,
+      "end_line": 30,
+      "lf_sha256": "abc2af378994f474bed374216266ecb3fcc08f9362e49bb5282a04a4535d1db2"
+    },
+    {
+      "path": "include/bsp/native_gui_page_properties.hpp",
+      "declaration": "struct NativeGuiPageReadPropertiesAcquired {",
+      "same": true,
+      "start_line": 31,
+      "end_line": 45,
+      "lf_sha256": "04838b7bbd3a7ff290245f2ce3ead969472dbd37c7b40f98368e2f29b78ba136"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_lifetime.hpp",
+      "declaration": "struct NativeGuiWidgetLifetimeContext {",
+      "same": true,
+      "start_line": 80,
+      "end_line": 86,
+      "lf_sha256": "a53dc0a57c078b063151f2efb618a8cd25e5fe53d304ff16da9f689063e43d83"
+    }
+  ],
+  "bounded_body_receipts": [
+    {
+      "path": "src/game_native_gui_page_application.cpp",
+      "marker": "struct NativeCalls {",
+      "start_line": 154,
+      "end_line": 185,
+      "body_lf_sha256": "37c6a51ea2540fcf9e1879b46e22818b4b09741a13d4f2fcddfadfaa2b222e81"
+    },
+    {
+      "path": "src/game_native_gui_page_application.cpp",
+      "marker": "struct GroupTrees final",
+      "start_line": 189,
+      "end_line": 231,
+      "body_lf_sha256": "c6586aefbbb55a756a172525e885f4231cffea8f8e2edf253abd1ee530caacdc"
+    },
+    {
+      "path": "src/game_native_gui_page_application.cpp",
+      "marker": "struct Roots final",
+      "start_line": 234,
+      "end_line": 280,
+      "body_lf_sha256": "ddcf99a528b9623beaf72f8088fddeda13b13157fc418f5070826a6705256eb6"
+    },
+    {
+      "path": "src/game_native_gui_page_application.cpp",
+      "marker": "struct SceneTypes final",
+      "start_line": 370,
+      "end_line": 399,
+      "body_lf_sha256": "d309eaf4d665196890b2b26632296857cfcd234e7c90abf612ecef9834020bdd"
+    },
+    {
+      "path": "src/game_native_gui_page_application.cpp",
+      "marker": "struct ChildCalls final",
+      "start_line": 413,
+      "end_line": 466,
+      "body_lf_sha256": "a1689f38785234a824d344d5f4995a4d7577c41ff594c00fc3e0a56b005bb2de"
+    },
+    {
+      "path": "src/game_native_gui_page_application.cpp",
+      "marker": "struct RawTimedEntries {",
+      "start_line": 467,
+      "end_line": 586,
+      "body_lf_sha256": "f5332d774326125e0e98e94b6240689503eca3ae770822a59529077e825eca68"
+    },
+    {
+      "path": "src/game_native_gui_page_application.cpp",
+      "marker": "struct Widgets final",
+      "start_line": 590,
+      "end_line": 678,
+      "body_lf_sha256": "6bae580c9fe064ee9985ed2120705f5bc4461d649b943e5da975ab01dd0266c7"
+    },
+    {
+      "path": "src/game_native_gui_page_application.cpp",
+      "marker": "void GameNativeGuiPageApplication::Impl::read_properties(",
+      "start_line": 988,
+      "end_line": 1012,
+      "body_lf_sha256": "5a3831baa32ad73ad4d2977ec5f22948e92899b398e4b02bd95a02ffbc504930"
+    },
+    {
+      "path": "src/game_native_gui_page_application.cpp",
+      "marker": "void GameNativeGuiPageApplication::Impl::read_group_properties(",
+      "start_line": 1013,
+      "end_line": 1040,
+      "body_lf_sha256": "b7e6cbcb49d1eff8298ff623cd87f04a32fc9bd03c2bcf86f07a2c8c4ad3cd53"
+    },
+    {
+      "path": "src/game_native_gui_page_application.cpp",
+      "marker": "void GameNativeGuiPageApplication::Impl::release_page_scene(",
+      "start_line": 1059,
+      "end_line": 1074,
+      "body_lf_sha256": "693674c86b7b0fc48f74233a4285eefc7b193b5939cfcd2272e2891343b4c9ce"
+    },
+    {
+      "path": "src/game_native_gui_page_application.cpp",
+      "marker": "void GameNativeGuiPageApplication::Impl::delete_page(",
+      "start_line": 1075,
+      "end_line": 1093,
+      "body_lf_sha256": "a64082198c0916c0f670f0aef02b136f2d814fd831de5098e0ebb8fbd8056756"
+    },
+    {
+      "path": "src/game_native_gui_page_application.cpp",
+      "marker": "void GameNativeGuiPageApplication::after_native_renderer_drain(",
+      "start_line": 1155,
+      "end_line": 1165,
+      "body_lf_sha256": "b2ce30f5f9fde0714ef6074caac97e400cdf292ba748d4d45b38b68eaaa62cde"
+    },
+    {
+      "path": "src/native_gui_widget_property_children.cpp",
+      "marker": "void preflight(NativeGuiWidgetPropertyChildrenRawContext&",
+      "start_line": 45,
+      "end_line": 58,
+      "body_lf_sha256": "9212c83114eb5050ba3252e63586800bebe85acd304aae775612797a885c5f34"
+    },
+    {
+      "path": "src/native_gui_widget_property_children.cpp",
+      "marker": "void parent_child(Word parent, Word child, NativeGuiWidgetPropertyChildrenRawContext&",
+      "start_line": 75,
+      "end_line": 82,
+      "body_lf_sha256": "bd899014220a8e7ca2068e75cece97b9e1ac2e3734ab76afac55cd38f5ac36c0"
+    },
+    {
+      "path": "src/native_gui_widget_property_children.cpp",
+      "marker": "template<class Context> void body(",
+      "start_line": 134,
+      "end_line": 220,
+      "body_lf_sha256": "bd87557c10c97dd11774dc7dcf6aa5122375e137d879a269915b82ac65dfdd2e"
+    },
+    {
+      "path": "src/native_gui_widget_child_links.cpp",
+      "marker": "struct RawDetach {",
+      "start_line": 133,
+      "end_line": 146,
+      "body_lf_sha256": "fdb46b722f3e2942d3d0d98cd3512ec34cc5fb6e41d5b94cc8f9713fc8939952"
+    },
+    {
+      "path": "src/native_gui_widget_child_links.cpp",
+      "marker": "template<class Calls> void detach_child(",
+      "start_line": 147,
+      "end_line": 159,
+      "body_lf_sha256": "0d8f8f9b664e669c36b3e82bdd9423df49d0d616cc2f2fb09e95a2d26f4e2da7"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "marker": "void reserve_timed(",
+      "start_line": 64,
+      "end_line": 77,
+      "body_lf_sha256": "68be971abca9e6b891f6c182b34a19816fa15164e0c7561f874aa19512f92ec3"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "marker": "void resize_timed(",
+      "start_line": 78,
+      "end_line": 88,
+      "body_lf_sha256": "4c937dadd3d9d0136d2123b0874e6ee4e47f3abcb24217527e5dc3c9f4eb0c53"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "marker": "void finish_timed_backing(",
+      "start_line": 89,
+      "end_line": 107,
+      "body_lf_sha256": "16716d16804204b12ef9937a09eb5de63f2e20da8e71774e93ac5924d88aa041"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "marker": "void* construct_native_gui_timed_entry_base_00ad3970(",
+      "start_line": 135,
+      "end_line": 141,
+      "body_lf_sha256": "3693bd3caf812f5ad005bd8e3a8e1d3fdf3faa258bbf1c854a4302a77b32b03a"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "marker": "void* construct_native_gui_timed_entry_alpha_00ac2ed0(",
+      "start_line": 142,
+      "end_line": 150,
+      "body_lf_sha256": "1d820c6f0541b8d652841ecfd30a63eb43ff479802cec5fb47b8a633eab78974"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "marker": "void* scalar_delete_native_gui_timed_entry_alpha_00ac2fe0(",
+      "start_line": 152,
+      "end_line": 158,
+      "body_lf_sha256": "5150f3623f90d324930de867cf6d162f941b349df1fc74745d67bba5a18d7738"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "marker": "void* scalar_delete_native_gui_timed_entry_section_00ad3a40(",
+      "start_line": 159,
+      "end_line": 166,
+      "body_lf_sha256": "1924e3b6a8a7f87b69a837e5619161390de1f7261a33ce224c6113d013c1ef3a"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "marker": "void* scalar_delete_native_gui_timed_entry_base_00ad3a60(",
+      "start_line": 167,
+      "end_line": 170,
+      "body_lf_sha256": "c23a9f5ad2fe190851c2b03b360946a4432a8016ed4c1e88cc8f54739322a083"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "marker": "struct LegacySchedule {",
+      "start_line": 193,
+      "end_line": 244,
+      "body_lf_sha256": "39f7425b48c2941728d0a0b4b94ae79da49a30cb2bbfdec51c4b7184429a05e7"
+    }
+  ],
+  "actual_connected_callers": [
+    "game_hosts existing Page constructor passes this renderer.model_domain(); Page creates stable raw client before providers publish",
+    "Page Properties current18 AC4C50 consumes whole helper and same f.widget scratch for AAA710/AAACD4",
+    "Group current18 AC6FD0 consumes whole AAA710 with separate retained invocation and same shared reader",
+    "actual Widgets lifetime binding carries raw node and timed custody through SAME Group/Layer contexts",
+    "game_hosts after actual native drain acknowledges Page/client emptiness before Page reset"
+  ],
+  "identity_contract": {
+    "GuiGroup": "EC actual object/F0 F8BFA0 slot, D5CB80, genuine current F8BFD8 lineage",
+    "renderer_root": "188 actual Group/18C010902F4 slot, D634F8, SAME NativeGroupStorageReference",
+    "child_Model": "188 actual01090054 slot, D62DE8/live D62C88, SAME NativeModelReference actual+04/canonical registry",
+    "point_lights": "Page trees borrow renderer.camera_environment().nodes.point_lights, exactly SAME common Model environment runtime",
+    "no_extra_credits": true,
+    "no_second_Model_companion": true,
+    "no_legacy_raw_scene_transport": true
+  },
+  "frame_capacity": {
+    "preparation": "before associated Native sequence, from4*all retained Page records + all retained GuiGroup producer records +1",
+    "slots_per_kind": "8*prepared graph nodes +8, monotonically grown stable deques; no fixed total/depth",
+    "walk_acquisition": "prepared pure metadata only, fresh slot for every call, no allocation/callback/reset in recursive provider",
+    "call_edge_bound": "fresh default child has no descendants before its own separate reader; property parenting has at most3scene/1attachment edges per fresh child; lifetime AA8320 postorder consumes each nonzero4C before ancestor/scalar repeated passes; one real scalar/parent detach per widget; separate raw scene/tree/cleanup edges fit8 per retained producer node",
+    "failure": "never reuse incomplete/failed arena calls; only sequential completed outer AAACD4 diagnostics may reset while argument homes retain preimages",
+    "root_scene_calls": "dynamic prepared vector sized from SAME producer graph before constructor/lifetime entry; no256 reservation"
+  },
+  "failure_and_retirement": [
+    "Group custody record precedes AA12F0; successful result+constructor_returned stored before canonical allocation/bind",
+    "Model helper constructor_returned precedes bind; completed orphans retained independently of publication/list membership",
+    "same actual list/count/native field schedules; original4C/timed slot clears remain after callback; no protective reference/list repair/retry",
+    "normal raw18/raw54 explicit throwing SAME companion methods; caller arena retains exceptions; canonical zero alone stays existing noexcept",
+    "qualified raw outer widget failure retains partial graph; legacy callers keep existing native container cleanup; Layer/Model own existing cleanup unchanged",
+    "Page/client/providers survive through actual drain; healthy client records must be empty before Page metadata drops"
+  ],
+  "timed_phase": {
+    "raw_type": "14h actual profile/remaining/widget/target/rate; no virtuals/count/canonical registry",
+    "profiles": {
+      "00d5ca74": "00ac2fe0",
+      "00d5d210": "00ad3a40",
+      "00d5d204": "00ad3a60"
+    },
+    "source_producers": "Root shared AA8B00/AD3A80 narrow hooks; distinct per-invocation receipt adapter; captured-block constructor EH",
+    "actual_Page_timer_producer": false,
+    "invented_Page_timer_calls": false,
+    "bound_consumers": "actual Widgets captured-table/scalar/current backing service at all AA9730 backing sites",
+    "future_real_HUD_producers": [
+      "0064dd30",
+      "00648060",
+      "00648c20"
+    ],
+    "update_setter_and_HUD_activation_claimed": false
+  },
+  "closed_resource_phase": [
+    "B6F5A0/B75030 initialize node130/point-light storage and Model174/180; exact default-Group property/load callback graph has no setter/acquirer for them",
+    "existing full raw bodies consume current reached resource fields; no empty-field acceptance gate or preclear added",
+    "Page scripts/readers publish values to sealed field/load callbacks, not a raw timed producer; no get_or_create call injected",
+    "broader raw95/Frame/other factories/current callbacks need genuine independent authority and remain gated"
+  ],
+  "functions": [
+    {
+      "address": "00ac4c50",
+      "source": "src/native_gui_page_properties.cpp",
+      "original_abi": "ECX Page; reader stack; RET4",
+      "composition": "whole shared effect body + new raw context consumed by Page",
+      "new_native_body_credit": 0,
+      "abi_game_equivalence_proved": false
+    },
+    {
+      "address": "00aaa710",
+      "source": "src/native_gui_widget_property_children.cpp",
+      "original_abi": "ECX widget; reader stack; RET4",
+      "composition": "whole prefix/interaction/child schedule over SAME820 scratch",
+      "new_native_body_credit": 0,
+      "abi_game_equivalence_proved": false
+    },
+    {
+      "address": "00aaacd4",
+      "source": "src/native_gui_widget_property_children.cpp",
+      "original_abi": "AAA710 suffix, original private frame",
+      "composition": "same250-record enumeration/list/current74/18/78, raw parent transport",
+      "new_native_body_credit": 0,
+      "abi_game_equivalence_proved": false
+    },
+    {
+      "address": "00aa83a0",
+      "source": "src/native_gui_widget_child_links.cpp",
+      "original_abi": "ECX parent; child stack; RET4",
+      "composition": "shared previous-parent detach + raw counterpart",
+      "new_native_body_credit": 0,
+      "abi_game_equivalence_proved": false
+    },
+    {
+      "address": "00aa8320",
+      "source": "src/native_gui_widget_lifetime.cpp",
+      "original_abi": "ECX widget; RET",
+      "composition": "unchanged whole effect body; genuine raw current4C release provider",
+      "new_native_body_credit": 0,
+      "abi_game_equivalence_proved": false
+    },
+    {
+      "address": "00aa9730",
+      "source": "src/native_gui_widget_lifetime.cpp",
+      "original_abi": "ECX widget; RET",
+      "composition": "whole original schedule with explicit timed backing dispatch",
+      "new_native_body_credit": 0,
+      "abi_game_equivalence_proved": false
+    },
+    {
+      "address": "00ac73e0",
+      "source": "src/native_gui_group_factory.cpp",
+      "original_abi": "ECX group; flags stack; EAX identity; RET4",
+      "composition": "unchanged real canonical Group/deleter/context consumption",
+      "new_native_body_credit": 0,
+      "abi_game_equivalence_proved": false
+    },
+    {
+      "address": "00aa38f0",
+      "source": "src/native_gui_layer_lifetime.cpp",
+      "original_abi": "ECX Page; flags stack; EAX identity; RET4",
+      "composition": "unchanged direct real Layer scalar; actual Page caller",
+      "new_native_body_credit": 0,
+      "abi_game_equivalence_proved": false
+    },
+    {
+      "address": "00ac5480",
+      "source": "src/native_gui_layer_lifetime.cpp",
+      "original_abi": "ECX Page; RET",
+      "composition": "unchanged real store/name/EC/base order through same context",
+      "new_native_body_credit": 0,
+      "abi_game_equivalence_proved": false
+    },
+    {
+      "address": "00b6e680",
+      "source": "src/native_node_parenting_storage.cpp",
+      "original_abi": "ECX node; requested parent stack; RET4",
+      "composition": "existing full204B body consumed",
+      "new_native_body_credit": 0,
+      "abi_game_equivalence_proved": false
+    },
+    {
+      "address": "00b6d7b0",
+      "source": "src/native_node_parenting_storage.cpp",
+      "original_abi": "ECX node; attachment stack; RET4",
+      "composition": "existing full71B attachment consumed",
+      "new_native_body_credit": 0,
+      "abi_game_equivalence_proved": false
+    },
+    {
+      "address": "00b8f4f0",
+      "source": "src/native_node_parenting_storage.cpp",
+      "original_abi": "ECX Group; attachment stack; RET4",
+      "composition": "existing full73B attachment consumed",
+      "new_native_body_credit": 0,
+      "abi_game_equivalence_proved": false
+    },
+    {
+      "address": "00b6ed80",
+      "source": "src/native_node_scene_attachment.cpp",
+      "original_abi": "ECX node; scene/recursion stack; RET8",
+      "composition": "existing whole raw scene attach",
+      "new_native_body_credit": 0,
+      "abi_game_equivalence_proved": false
+    },
+    {
+      "address": "00b6ee10",
+      "source": "src/native_node_scene_attachment.cpp",
+      "original_abi": "ECX node; expected scene/recursion stack; RET8",
+      "composition": "SAME canonical Model throwing raw54 or actual root raw body",
+      "new_native_body_credit": 0,
+      "abi_game_equivalence_proved": false
+    },
+    {
+      "address": "00b6dfa0",
+      "source": "src/native_node_tree_retirement.cpp",
+      "original_abi": "ECX node; RET/tail current18",
+      "composition": "existing whole raw unlink and current18",
+      "new_native_body_credit": 0,
+      "abi_game_equivalence_proved": false
+    },
+    {
+      "address": "00b6f310",
+      "source": "src/native_node_tree_retirement.cpp",
+      "original_abi": "ECX node; RET/current0 tail",
+      "composition": "existing whole tree logical release; explicit throwing raw Model18",
+      "new_native_body_credit": 0,
+      "abi_game_equivalence_proved": false
+    },
+    {
+      "address": "00b8eec0",
+      "source": "src/native_group_storage_lifetime.cpp",
+      "original_abi": "ECX raw renderer Group; tail B6F310",
+      "composition": "genuine raw root current18 with fresh retained diagnostics",
+      "new_native_body_credit": 0,
+      "abi_game_equivalence_proved": false
+    },
+    {
+      "address": "00ad3970",
+      "source": "src/native_gui_widget_lifetime.cpp",
+      "original_abi": "ECX raw14h; actual widget stack; EAX same; RET4",
+      "composition": "raw actual-widget constructor preserving C/10",
+      "new_native_body_credit": 0,
+      "abi_game_equivalence_proved": false
+    },
+    {
+      "address": "00ac2ed0",
+      "source": "src/native_gui_widget_lifetime.cpp",
+      "original_abi": "ECX raw14h; actual widget stack; EAX same; RET4",
+      "composition": "raw alpha constructor, one live D7A24C DWORD load",
+      "new_native_body_credit": 0,
+      "abi_game_equivalence_proved": false
+    },
+    {
+      "address": "00ad3990",
+      "source": "src/native_gui_widget_lifetime.cpp",
+      "original_abi": "ECX entry; RET",
+      "composition": "genuine D5D204 reset",
+      "new_native_body_credit": 0,
+      "abi_game_equivalence_proved": false
+    },
+    {
+      "address": "00ac2fe0",
+      "source": "src/native_gui_widget_lifetime.cpp",
+      "original_abi": "ECX entry; flags stack; EAX identity; RET4",
+      "composition": "alpha reset/conditional same allocation free",
+      "new_native_body_credit": 0,
+      "abi_game_equivalence_proved": false
+    },
+    {
+      "address": "00ad3a40",
+      "source": "src/native_gui_widget_lifetime.cpp",
+      "original_abi": "ECX entry; flags stack; EAX identity; RET4",
+      "composition": "section flags test/reset/conditional same allocation free",
+      "new_native_body_credit": 0,
+      "abi_game_equivalence_proved": false
+    },
+    {
+      "address": "00ad3a60",
+      "source": "src/native_gui_widget_lifetime.cpp",
+      "original_abi": "ECX entry; flags stack; EAX identity; RET4",
+      "composition": "real base-profile flags0 successor scalar",
+      "new_native_body_credit": 0,
+      "abi_game_equivalence_proved": false
+    },
+    {
+      "address": "00aa6f30",
+      "source": "src/native_gui_widget_lifetime.cpp",
+      "original_abi": "ECX header; signed capacity stack; RET4",
+      "composition": "shared whole native reserve schedule with custody overload",
+      "new_native_body_credit": 0,
+      "abi_game_equivalence_proved": false
+    },
+    {
+      "address": "00aa77b0",
+      "source": "src/native_gui_widget_lifetime.cpp",
+      "original_abi": "ECX header; signed count stack; RET4",
+      "composition": "shared whole native resize schedule with custody overload",
+      "new_native_body_credit": 0,
+      "abi_game_equivalence_proved": false
+    },
+    {
+      "address": "00aa7f50",
+      "source": "src/native_gui_widget_lifetime.cpp",
+      "original_abi": "ECX header; RET",
+      "composition": "shared resize0/backing free with custody overload",
+      "new_native_body_credit": 0,
+      "abi_game_equivalence_proved": false
+    }
+  ],
+  "verification": {
+    "git_diff_check": "passed",
+    "effect_body_and_declaration_comparisons": "all assertions passed",
+    "configure": {
+      "status": "passed",
+      "log": "local/output/cc16_populated_page_configure.log",
+      "generator": "Visual Studio18 2026",
+      "architecture": "Win32",
+      "BSP_CL_MP": 2,
+      "BSP_PCH": true,
+      "BSP_COVERAGE_PDB": false
+    },
+    "required_scripts_build_ps1": "pending Root joined warm build by explicit Root direction; cold full compile not started",
+    "existing_tests": "pending Root joined warm build; no new tests added by this component",
+    "ad_hoc_probe_Game_process_control_Ghidra_mutation": "not performed"
+  },
+  "remaining_gates": [
+    "Root primary ownership/current-target/capacity review",
+    "joined warm scripts/build.ps1 all-target compile and existing suites",
+    "actual populated Type2 consumer/retirement evidence",
+    "full raw95/Frame/Game/current-vptr authority and other widget factories before Page guard change",
+    "genuine future HUD timer producer/update/setter connection before timed activation"
+  ],
+  "credit": {
+    "new_native_bodies": 0,
+    "vendor": 0,
+    "reconstruction_functions": 0,
+    "activation": 0,
+    "abi": 0,
+    "game_validation": 0
+  },
+  "documentation_receipt": {
+    "path": "docs/CC16_POPULATED_PAGE_IMPLEMENTATION.md",
+    "bytes": 10191,
+    "sha256": "5c5157b21f8b24a4485203c7700b54239fbcdb8e3b6e5938698c2aaa66975623",
+    "lf_bytes": 10146,
+    "lf_sha256": "21c87571e25210ab48255f0656759d21b1004bc9d3c3ac2955dfaa99db92ad4c",
+    "git_blob": "15e70aaf7526de1564848ff7070c577c2fad07bb"
+  },
+  "supplier_final_receipts": {
+    "model_domain_metadata_final": "123c726602f7236717b0bb9af8c62c45b667d031",
+    "model_domain_source_unchanged_from": "d0d609dbc0c77c74001cadf2648154245da5aa8a"
+  }
+}
