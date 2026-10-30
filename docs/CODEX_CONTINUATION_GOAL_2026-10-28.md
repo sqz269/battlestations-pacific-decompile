@@ -1430,3 +1430,21 @@ withsingleCoreinverse/nineTextOFF/no tests/entry/game/runtime. Actualrawvector
 producer composition stays unbound. Push6EDF00 full35ops/ownEH auditsealed:
 reserve/copy/tag5vendortransport remain truegaps, not absent lowerhelpers;
 selected401130 actionRETonly/no countrollback. Goal ACTIVE.
+
+
+Whole4-op/15B raw machine-type leaf068b945f now uses actual linked Lua CAPI.
+Indexcapture→CURRENTrawmachine+4→lua_typeONCE/actual signedresult, no modelcast/
+default/statecreation/validation/Frame/cleanup. Genuine linkedSource state/
+stack/index/rawbacking/provider provenance required; not OriginalVM/privateABI.
+Root+2actualSource/finalpin reviews; ONE014C882B object8eabdc2d, realCAPI UNDEF.
+Coreonce592b97a01; peer0d063joined retainedentry10300be0→unforcedLua10556a40,
+existing2/2 12.68s; canonicalrestored2/2 13.30s. Elevenpriorrepo+3actualLua
+paths unchanged withoneCoreinverse/nineTextOFF/no tests/entry/runtime. Existing
+name/evidenceprefix/priorrecords kept, one distinct rawrecord; official locked
+commentappend journal234004Z/saved/refreshedexport. No duplicateNative/vendor
+credit or parent886E00/VM/factory/startup closure. Fullbuilder188ops/759B and
+sixEH actions sealed433435; raw setters/key/pair/copy/insert/tree and caller
+nested/VM domains remain. Next DESIGN-ONLY wave: cc9 stack70/80/90/A0, Gui
+predicatesEE0/F00/F60, Frame variant8869F0/B30, disjoint ownership. Predicate
+IsString Native is STRICT type4, not Lua lua_isstring admitting numbers.
+No Source for next wave yet. Goal ACTIVE.

@@ -490,3 +490,5 @@ target_sources(bsp_core PRIVATE src/native_lua_variant_tag6.cpp)
 target_sources(bsp_core PRIVATE src/native_lua_variant_slot0.cpp)
 
 target_sources(bsp_core PRIVATE src/native_lua_variant_record_storage.cpp)
+
+target_sources(bsp_core PRIVATE src/native_mission_lua_type.cpp)

@@ -45142,6 +45142,23 @@
         "reports/native_lua_variant_record_storage.json"
       ],
       "notes": "Fiveuint32/20B Source birth only, sole global scalar placement-new without initializer. Root+2independent actualSource/finalpins; ONE014C1275B strictobject6071bda0, actual8B442404C3/no receiver access/calls/UNDEF. Coreonce, retainedentry100107f0/existing2/2 12.12s, canonicalrestored2/2 11.77s. Ninepriorpaths+oneCoreinverse exact/nineTextOFF. No Originaladdress/ledger/bodycredit/test/entry/runtime; actualproducer/nestedlifetime/backing/allocator domain unbound. reports/codex_lua_variant_record_storage_integration.json."
+    },
+    {
+      "id": "codex-native-mission-lua-type",
+      "state": "qualified_raw_whole_leaf_reviewed_strict_object_retained_link_canonical_win32_pass_caller_vm_unbound",
+      "worker": "gameplay_integration_review",
+      "function_addresses": [
+        "006b7ec0"
+      ],
+      "source_ready": false,
+      "commit": "068b945f0182b408c9900dd69f9e0a56a556ecf9",
+      "output_files": [
+        "include/bsp/native_mission_lua_type.hpp",
+        "src/native_mission_lua_type.cpp",
+        "docs/NATIVE_MISSION_LUA_TYPE.md",
+        "reports/native_mission_lua_type.json"
+      ],
+      "notes": "Whole4ops/15B: indexcapture\u2192CURRENTraw+4\u2192genuine linkedLua_type once/resultunchanged. Root+2actualSource/finalreviews, ONE014C882B object8eabdc2d. Coreonce/retainedentry10300be0->unforcedLua10556a40/existing2/2 12.68s/canonicalrestored2/2 13.30s. Elevenrepo+3actualLua paths preserved withoneCoreinverse/nineTextOFF. Existing name/evidenceprefix/oldrecords kept, lockedcommentappend saved/exportrefreshed. No newtests/entry/duplicateNative/vendor/parentbuilder/VM/ABI/runtime credit. reports/codex_mission_lua_type_integration.json."
     }
   ],
   "snapshot_after_analysis": {

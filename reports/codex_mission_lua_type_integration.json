@@ -1,0 +1,164 @@
+{
+  "status": "integrated_qualified_raw_whole_leaf_primary_plus_two_independent_reviews_strict_object_retained_and_canonical_win32_checked_caller_vm_unbound",
+  "source_ready": false,
+  "activation": false,
+  "new_tests": 0,
+  "new_native_body_credit": 0,
+  "new_vendor_body_credit": 0,
+  "new_entry_or_game_invoked": false,
+  "scope": "whole006B7EC0/15B/4op game-owned leaf, ordinary qualified Source interface; existing typed record preserved",
+  "design_sha256": "ef3457a0728ae68d36de81543c3f679dcc14a31b1a55fbd8c0c506d6f426c7aa",
+  "source_pins": {
+    "include/bsp/native_mission_lua_type.hpp": {
+      "sha256": "f4687e3fcdc1495e4b3e5caec7f3284e407286706704f24c68a2c13303a90c46",
+      "lines": 25
+    },
+    "src/native_mission_lua_type.cpp": {
+      "sha256": "fd6e57257c4826bf0c5010987456f247804330027ad9280cd6cc0607eb26a12a",
+      "lines": 32
+    }
+  },
+  "joined_peer_main": "0d06349335bdef28acb130b0df7238051844a959",
+  "prior_repo_path_count": 11,
+  "actual_lua_provider_path_count": 3,
+  "original_abi": "ECX raw machine; stacked index; lua_type receives ECX state/EDX index; EAX result; RET4. Source API uses ordinary C++ ABI, not a drop-in.",
+  "producer_commit": "068b945f0182b408c9900dd69f9e0a56a556ecf9",
+  "core_registration_commit": "592b97a01651869627067d6374c2e6a1e278e010",
+  "producer_receipt_sha256": "63540f4c8b0fe40000957097ca76d42c11fe1ca072b6621146c63b1c49da9286",
+  "producer_receipt": {
+    "schema": "bsp-native-mission-lua-type-final-v1",
+    "verdict": "QUALIFIED_SOURCE_ONLY",
+    "commit": "068b945f0182b408c9900dd69f9e0a56a556ecf9",
+    "base": "0d06349335bdef28acb130b0df7238051844a959",
+    "exactly_four_new_files": true,
+    "files": [
+      {
+        "path": "include/bsp/native_mission_lua_type.hpp",
+        "physical_sha256": "f4687e3fcdc1495e4b3e5caec7f3284e407286706704f24c68a2c13303a90c46",
+        "git_sha256": "f4687e3fcdc1495e4b3e5caec7f3284e407286706704f24c68a2c13303a90c46",
+        "eol_normalized_equal": true
+      },
+      {
+        "path": "src/native_mission_lua_type.cpp",
+        "physical_sha256": "fd6e57257c4826bf0c5010987456f247804330027ad9280cd6cc0607eb26a12a",
+        "git_sha256": "fd6e57257c4826bf0c5010987456f247804330027ad9280cd6cc0607eb26a12a",
+        "eol_normalized_equal": true
+      },
+      {
+        "path": "docs/NATIVE_MISSION_LUA_TYPE.md",
+        "physical_sha256": "095481f1cac3bf9f7976c873f7208ed6e17e52a1146e724bd7a66df807dc9d0e",
+        "git_sha256": "095481f1cac3bf9f7976c873f7208ed6e17e52a1146e724bd7a66df807dc9d0e",
+        "eol_normalized_equal": true
+      },
+      {
+        "path": "reports/native_mission_lua_type.json",
+        "physical_sha256": "355f1a44eb38cb34b761c53a4bddff68f3ec5646c20c1c3ed0de128d356ea1eb",
+        "git_sha256": "aae0a35a1f447a44447658d0d90c64f0ba6156ed4fbb9bdea48e94031e8a9d6d",
+        "eol_normalized_equal": true
+      }
+    ],
+    "source_ready": false,
+    "runtime_validated": false,
+    "native_body_credit": false,
+    "vendor_body_credit": false,
+    "compile_count": 1,
+    "compile_exit": 0,
+    "object": {
+      "compiles": 1,
+      "exit_code": 0,
+      "machine": "014C",
+      "bytes": 882,
+      "sha256": "8eabdc2d08bf8f7ef41ab54e08c5210164f876e045c37aa3bd89c9c1917d0b7d",
+      "defined_entry": "?type_native_mission_lua_006b7ec0@bsp@@YAHPBXH@Z",
+      "genuine_lua_type_undefined": "_lua_type",
+      "same_object_symbol_receipt": "local/native_mission_lua_type_validation_cc9_20261030/objects/actual_symbols.json"
+    },
+    "compile_receipt_sha256": "2a9bbc16f8c34e3fef50b707d4ce0bad87a13f5b7f75de4b59353b1ee883c470",
+    "actual_symbols_sha256": "33b204bf2535696cfc660f9774e5979d6a33ba289a0ae67d0b7deebe5bb021c8",
+    "provider_preservation_sha256": "e925ee95e1b79d3670e0b934d0ac041eba5ebdc1900c6c4b9a4d0ed85f5146f7",
+    "after_compile_preservation_sha256": "b337408522d098c05249a0f8f2f562a8c02135294c4f7de346e2a945dc2431f4",
+    "unchanged_repository_provider_count": 11,
+    "unchanged_actual_lua_file_count": 3,
+    "all_prior_tracked_paths_preserved": true,
+    "root_and_independent_actual_code_accepted": true,
+    "working_tree_status": "",
+    "no_tests_link_executable_or_entry": true,
+    "limits": "Existing actual linked Source Lua state/index domain only; no raw-machine producer, parent886E00, VM/factory, startup, private/binary ABI or runtime grant."
+  },
+  "retained": {
+    "entry_row": "0001:002ffbe0       ?type_native_mission_lua_006b7ec0@bsp@@YAHPBXH@Z 10300be0 f   bsp_core:native_mission_lua_type.obj",
+    "actual_lua_type_row": "0001:00555a40       _lua_type                  10556a40 f   bsp_lua511:lapi.obj",
+    "lua_type_independently_forced": false,
+    "map_sha256": "9495134061cc5d5765d062b527e0dfbce575e7118c7fad38f7e67510e0cd743c",
+    "overlay_sha256": "ef1f32447fb73c2e40b2d49c197b52027d32ded379948bfd53456210137cb34a",
+    "entry_invoked": false,
+    "suite": "existing2/2 12.68s"
+  },
+  "canonical": {
+    "suite": "existing2/2 13.30s",
+    "map_sha256": "a1555114a9fc1dbe7558938093ece0326f7154643874f42e6be43a37ccef2933",
+    "source_entry_absent_from_project_and_map": true,
+    "overlay_cache_and_project_removed": true,
+    "actual_lua_type_may_remain_for_other_callers": true,
+    "eleven_prior_repo_paths_preserved_with_one_core_inverse": {
+      "CMakeLists.txt": "ee51c688e4133b3a7eb05e3705d25a0fdfe90fc40da11ed6958c2c2f05faef7d",
+      "cmake/startup.cmake": "91d1de5e0df99d75ab2133869f154c0560d969f8ed3b60c999a495ba097f416b",
+      "cmake/lua.cmake": "0c432ec1026aa6921d876098d29359d34f9463cd894d7adafcb67b954eb7a006",
+      "src/settings_seg29_cc13.cpp": "7a882cf94ad8bc30120e0a953d7cb0af729d017593f31b1929205c266f43df24",
+      "include/bsp/native_mission_lua_register.hpp": "b95598224eb920cfa54dc23aa36a32807936889280e03d54a7a1c15eace9952c",
+      "src/native_mission_lua_register.cpp": "b0ca8ad834ed3eaf2a685e6a2bba8432a94154a0ce1fabb9658a9b555509491d",
+      "src/native_lua_type_name.cpp": "04bbfdfe7fd03e9c6d1b457275c91872de5c414ec8d486f0a7efd3906e24c8f1",
+      "src/native_lua_dot_path.cpp": "885a777d11b16b05a17a5cc56740e5eb71d1e0c344f72c48fbedb16eccc3225c",
+      "src/game_native_gui_render_application.cpp": "2132e6bf7222381755f375f333d01a68187acff8daddc2d92e5a0788632aec31",
+      "include/bsp/native_lua_variant_record_storage.hpp": "4fc512334233a12060ba1d4488499e29b116f3ccfa732a1630686e233877b59f",
+      "src/native_lua_variant_record_storage.cpp": "64f050b32085e00eb0f0f3fd3d455106827e40a72b3219b6ad69561426ddba2e"
+    },
+    "three_actual_lua_provider_paths_unchanged": {
+      "build/win32/_deps/lua511-src/src/lua.h": "0a69a11d3e176ceb0e0220c4cdeb1c1f3a0e466a347d813e449ff9246afba3a6",
+      "build/win32/_deps/lua511-src/src/lapi.c": "a9f0f87af50f18b4cf0483ded3a6bf41803032bc7ed575bda84359a46c993fe0",
+      "build/win32/_deps/lua511-src/src/luaconf.h": "5c962567aaf250570b772a3dccbfde80e6add621ec04f429120dce83adb0a4d9"
+    },
+    "nine_text_flags": {
+      "kRawDefaultTextQualificationCc16Bound": "false",
+      "kRawDefaultSourceEqualQualificationCc16Bound": "false",
+      "kRawPrimaryPrefixQualificationCc16Bound": "false",
+      "kRawPrefixGeometryQualificationCc16Bound": "false",
+      "kRawMainSectionQualificationCc16Bound": "false",
+      "kRawFontMainQualificationCc16Bound": "false",
+      "kRawEmptyUnchangedQualificationCc16Bound": "false",
+      "kRawFontMetadataQualificationCc16Bound": "false",
+      "kRawFontWorkQualificationCc16Bound": "false"
+    },
+    "entry_invoked": false
+  },
+  "ghidra_annotation": {
+    "journal": "local\\ghidra-annotations-20261030T234004Z.json",
+    "journal_sha256": "ba4f278aa1926e71520ad1ac96410b4ec8f64be8be1144f8e065d288bc4af3cb",
+    "old_values_recorded_before_mutation": true,
+    "existing_name_preserved": true,
+    "comments_append_only": true,
+    "locked_tool": "tools/ghidra_annotate.py --apply --addresses006b7ec0",
+    "project_saved": true,
+    "affected_export_refreshed": true
+  },
+  "ledger_preservation": {
+    "all_prior_reconstruction_records_preserved": true,
+    "one_distinct_raw_function_record": true,
+    "existing_name_and_all_fields_preserved": true,
+    "name_evidence_suffix_only": true,
+    "old_evidence_prefix_preserved": true
+  },
+  "independent_final_reviews": {
+    "gui": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_mission_lua_type_review_gui_20261030\\FINAL_REVIEW.md",
+      "sha256": "e421ab995d15b650801245e2f5a6109ac43e8378b87169b9e340cee47a96ae28",
+      "verdict": "ACCEPT_SOURCE_ONLY"
+    },
+    "frame": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_mission_lua_type_review_frame_20261030\\REVIEW.md",
+      "sha256": "8dcee890a8e6e4ece36b4ef55283b08800e90ce8b230bd7b2752bab126f49e01",
+      "verdict": "ACCEPT_SOURCE_ONLY"
+    }
+  },
+  "primary_review": "local\\mission_lua_type_integration_cc16_20261030\\PRIMARY_REVIEW.md"
+}
