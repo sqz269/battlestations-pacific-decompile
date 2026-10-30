@@ -1,0 +1,35 @@
+{
+  "status": "reviewed_source_coupled_win32_pass",
+  "commit": "41d78aea4c10431e5b3dbb0332bb82607d7daa19",
+  "cpp_sha256": "158502f1efb91f678011dd971c643d5236eb10bf56da3c9997631a6d8df96e55",
+  "header_sha256": "5606f96b372362a6831a1633a583f264fbab4290789481f94f1ba97537f6e051",
+  "old_whole_cpp_header_inverse_exact": true,
+  "provider_dependencies_unchanged": 6,
+  "strict_object": {
+    "exit_code": 0,
+    "machine": "14C",
+    "receipt_sha256": "110dca111269aaae09d739206ee4cdb9bd5e05e1f47e3305a0616edbbb04c7cc"
+  },
+  "primary_review": "complete_added_source_compared_to_saved_native_assembly",
+  "independent_review": "gui_frame_lifetime_ACCEPT_SOURCE_CODE_ONLY",
+  "combined_build": {
+    "head": "9e0ef9cd5af2541f2bde0cc520b7e060e9c5f31c",
+    "command": "./scripts/build.ps1",
+    "target": "MSVC Win32 Release",
+    "exit_code": 0,
+    "existing_checks_passed": 2,
+    "existing_checks_total": 2,
+    "ctest_seconds": 11.92,
+    "log": "local/raw_wide_resize_integration_cc16_20261030/combined_build.log"
+  },
+  "source_ready": false,
+  "new_native_body_credit": false,
+  "runtime_execution": false,
+  "raw_startup_choices": "all_nine_false",
+  "frozen_empty_source_admission": "hold",
+  "remaining": [
+    "raw_VFS_override_and_0Ch_string_vector_transport",
+    "raw16_growth_provider",
+    "selected_parser_cleanup_and_actual_loaded_locale"
+  ]
+}

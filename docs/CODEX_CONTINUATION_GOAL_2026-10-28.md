@@ -1071,3 +1071,9 @@ Strict objects and combined ReleaseWin32 linking/checks2/2 pass11.50s at0616ca39
 Independent owner/map Source reviews accept the exact commits; all9off/ac60hold unchanged.
 See CODEX_CANONICAL_LOCALE_BINDING_INTEGRATION.md. Remaining raw parser/value,
 raw16 growth and effectiveVFS loading contracts stay explicit dependencies.
+
+Raw004C53E0 wide-resize overload41d78 adds genuine SAME3cell getter/allocate/return
+routing with propagating getterexceptions. WholeoldCPP/HPP inverse-exact; primary
+and independentSource reviews accept. Strictobject and combinedReleaseWin32checks
+2/2 pass11.92s. No parser/loading/raw16/startup/runtime/ABI authority follows;
+all9off/ac60hold remain. See CODEX_RAW_WIDE_RESIZE_INTEGRATION.md.
