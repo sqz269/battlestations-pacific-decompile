@@ -1,0 +1,387 @@
+{
+  "schema_version": 1,
+  "packet": "codex-source-active-cause-identity-probe",
+  "classification": "single_fresh_own_runtime_metadata_probe_only",
+  "utc": "2026-10-30T20:12:37.478980+00:00",
+  "design_commit": "b81152aeeeda77a11470576326c2924d5daacc96",
+  "held_Source": "96dd22fd0f8b0cbc6ce97b6ed7f69af399993d33",
+  "authorization": "Root explicit one focused fresh own-runtime SDK probe after design seal",
+  "runtime_domain": {
+    "target": "Win32 x86 PE32",
+    "toolset_folder": "14.51.36231",
+    "compiler": "19.51.36244.0",
+    "_MSC_VER": 1951,
+    "_MSC_FULL_VER": 195136244,
+    "STL_update": 202604,
+    "linker": "14.51.36244.0",
+    "Windows_SDK": "10.0.26100.0",
+    "exception_runtime": "/MT own static CRT within this fresh exe only",
+    "flags": [
+      "/std:c++20",
+      "/EHsc",
+      "/MT",
+      "/Od",
+      "/W4",
+      "/D_VCRT_ALLOW_INTERNALS"
+    ],
+    "SDK_declaration": "__current_exception in actual trnsctrl.h",
+    "SDK_types": [
+      "EHExceptionRecord",
+      "PER_IS_MSVC_EH",
+      "PER_PEXCEPTOBJ",
+      "PER_PTHROW"
+    ],
+    "SDK_view": "static_cast of SDK current-record void* to SDK EHExceptionRecord; no local layout/prototype/offset",
+    "imports": [
+      "KERNEL32.dll"
+    ],
+    "map_symbols": [
+      " 0001:000016b0       ?__ExceptionPtrCompare@@YA_NPBX0@Z 004026b0 f   libcpmt:excptptr.obj",
+      " 0001:000016f0       ?__ExceptionPtrCurrentException@@YAXPAX@Z 004026f0 f   libcpmt:excptptr.obj",
+      " 0001:000027c0       ___current_exception       004037c0 f   libvcruntime:ehhelpers.obj",
+      " 0001:000027f0       __CxxThrowException@8      004037f0 f   libvcruntime:throw.obj",
+      " 0001:00002c90       ___CxxFrameHandler3        00403c90 f   libvcruntime:trnsctrl.obj"
+    ],
+    "production_MD_or_cross_module_verified": false
+  },
+  "exact_compile_script": "@echo off\ncall \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvarsall.bat\" x86 -vcvars_ver=14.51 > \"J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_probe_20261030\\vcvars.log\" 2>&1\nif errorlevel 1 exit /b %errorlevel%\n\"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe\" /nologo /Bv /std:c++20 /EHsc /MT /Od /W4 /D_VCRT_ALLOW_INTERNALS /I\"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\crt\\src\\vcruntime\" \"J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_probe_20261030\\source_cause_probe.cpp\" /Fo\"J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_probe_20261030\\source_cause_probe.obj\" /Fd\"J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_probe_20261030\\source_cause_probe.pdb\" /Fe\"J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_probe_20261030\\source_cause_probe.exe\" /link /MANIFEST:EMBED /INCREMENTAL:NO /MAP:\"J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_probe_20261030\\source_cause_probe.map\" /VERBOSE:LIB > \"J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_probe_20261030\\compile.log\" 2>&1\nexit /b %errorlevel%\n",
+  "compile": {
+    "command": [
+      "cmd.exe",
+      "/d",
+      "/c",
+      "local\\output\\source_cause_probe_20261030\\compile_source_cause_probe.cmd"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 2.080315100029111,
+    "priority": "NORMAL_PRIORITY_CLASS",
+    "timeout_seconds": 45,
+    "output": ""
+  },
+  "run": {
+    "command": [
+      "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_probe_20261030\\source_cause_probe.exe"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.06802639993838966,
+    "priority": "NORMAL_PRIORITY_CLASS",
+    "timeout_seconds": 10,
+    "source_runtime": "Win32 /MT static MSVC14.51 CRT in this fresh exe only",
+    "outside_current_catch_reader_calls": 0,
+    "one_fresh_exe_run": true
+  },
+  "manifest": {
+    "embedded_RT_MANIFEST_verified_before_run": true,
+    "level": "asInvoker",
+    "local_xml": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_probe_20261030\\embedded_manifest.xml"
+  },
+  "observed": {
+    "check_count": 15,
+    "checks": [
+      {
+        "name": "SDK_object_matches_actual_caught_reference",
+        "result": "PASS"
+      },
+      {
+        "name": "repeated_reader_same_actual_object",
+        "result": "PASS"
+      },
+      {
+        "name": "reader_has_no_exception_copy_destruction_or_payload_mutation",
+        "result": "PASS"
+      },
+      {
+        "name": "bare_throw_nested_catch_preserves_actual_object",
+        "result": "PASS"
+      },
+      {
+        "name": "bare_throw_reader_no_exception_copy_or_destroy",
+        "result": "PASS"
+      },
+      {
+        "name": "same_object_does_not_equal_call_edge_identity",
+        "result": "PASS"
+      },
+      {
+        "name": "primary_stays_live_after_nested_catch",
+        "result": "PASS"
+      },
+      {
+        "name": "distinct_secondary_object_while_primary_live",
+        "result": "PASS"
+      },
+      {
+        "name": "secondary_does_not_mutate_primary_payload",
+        "result": "PASS"
+      },
+      {
+        "name": "secondary_destroyed_while_primary_stays_live",
+        "result": "PASS"
+      },
+      {
+        "name": "current_exception_two_actual_exception_copies",
+        "result": "PASS"
+      },
+      {
+        "name": "current_exception_snapshots_not_equal",
+        "result": "PASS"
+      },
+      {
+        "name": "diagnostic_copies_not_the_active_object_identity",
+        "result": "PASS"
+      },
+      {
+        "name": "active_primary_survives_diagnostic_snapshot_release",
+        "result": "PASS"
+      },
+      {
+        "name": "all_four_actual_objects_end_once",
+        "result": "PASS"
+      }
+    ],
+    "reader_calls": 7,
+    "reader_calls_outside_supported_Cpp_catch": 0,
+    "reader_exception_copies": 0,
+    "reader_exception_destructions": 0,
+    "reader_test_payload_mutation": false,
+    "SDK_object_matches_actual_caught_reference": true,
+    "repeated_reader_object_descriptor_same": true,
+    "bare_throw_nested_object_same": true,
+    "bare_throw_record_address_equal_this_run": true,
+    "record_address_equality_required_or_claimed": false,
+    "distinct_secondary_object_while_primary_live": true,
+    "secondary_test_is_not_actual_Native_cleanup_unwind": true,
+    "current_exception_captures": 2,
+    "diagnostic_exception_copies": 2,
+    "diagnostic_snapshots_compare_equal": false,
+    "exception_objects_destroyed": 4,
+    "explicit_call_edge_identity_separate": true,
+    "private_cross_invocation_routing_proved": false,
+    "exit_code": 0
+  },
+  "local_artifact_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_probe_20261030\\compile.log",
+      "hash_format": "raw_local_artifact_bytes",
+      "bytes": 6613,
+      "sha256": "550df790735c61943c170565fd9913abd7a2ef5612ee99458f413d14ed14fbae"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_probe_20261030\\compile_receipt.json",
+      "hash_format": "raw_local_artifact_bytes",
+      "bytes": 290,
+      "sha256": "12e44c221d20a45ab45a73d9ac41db91f11942593027266946c26328938af1b1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_probe_20261030\\compile_source_cause_probe.cmd",
+      "hash_format": "raw_local_artifact_bytes",
+      "bytes": 1567,
+      "sha256": "1a4a904f6217a27a955c370b8132c19e6825b210a367cccc949b2369e8a3ba23"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_probe_20261030\\embedded_manifest.xml",
+      "hash_format": "raw_local_artifact_bytes",
+      "bytes": 381,
+      "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_probe_20261030\\run.log",
+      "hash_format": "raw_local_artifact_bytes",
+      "bytes": 1374,
+      "sha256": "529e240cbed3f2d0b14abfa2db4103fcc1d83037c0b77ca78eb1681377d4a7b0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_probe_20261030\\run_receipt.json",
+      "hash_format": "raw_local_artifact_bytes",
+      "bytes": 468,
+      "sha256": "c8e63cb521f89781d5fc614d2f211ed91aa072c57d2e9a6137b31f8407209f28"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_probe_20261030\\source_cause_probe.cpp",
+      "hash_format": "raw_local_artifact_bytes",
+      "bytes": 6042,
+      "sha256": "5ea48a46de348a1fee231f13df67a00e777b0b6844e73a9396b6a8a86ca512b1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_probe_20261030\\source_cause_probe.exe",
+      "hash_format": "raw_local_artifact_bytes",
+      "bytes": 127488,
+      "sha256": "636fb9f532b76404d9948c2a445540db571a5af22ff20df3479797587ae3a191"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_probe_20261030\\source_cause_probe.map",
+      "hash_format": "raw_local_artifact_bytes",
+      "bytes": 236553,
+      "sha256": "9d714ed7fa8ed5c189c55ed4bba79c2f3d54a705c5f2bfdfbd714dc3c2c501b6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_probe_20261030\\source_cause_probe.obj",
+      "hash_format": "raw_local_artifact_bytes",
+      "bytes": 10763,
+      "sha256": "ac6540c44048c43dde474e9ce18cf4697546ba6a80a6b93101f97d7d9c202693"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_probe_20261030\\vcvars.log",
+      "hash_format": "raw_local_artifact_bytes",
+      "bytes": 297,
+      "sha256": "1a4df196337e03bcdb59d67050d46e47764dfc64fa184608219d7e229cd9cb3c"
+    }
+  ],
+  "SDK_source_pins_from_sealed_design": [
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/exception",
+      "hash_format": "raw_installed_SDK_file_bytes",
+      "bytes": 13765,
+      "sha256": "49c3ebe69f8fd1947c6a05f7de89dd17fc962e4c229b8bf1a5b0d040e5dcb0cb"
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/ehdata.h",
+      "hash_format": "raw_installed_SDK_file_bytes",
+      "bytes": 21203,
+      "sha256": "9b1a482479e67e9918726d803f157f00c41ac54f6eee42fb331752ad994940c3"
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/ehdata_forceinclude.h",
+      "hash_format": "raw_installed_SDK_file_bytes",
+      "bytes": 9605,
+      "sha256": "2bfa6b2b47050d6a70bca12a6080507a57cdb4e4120958d75f94b8393c23ff4d"
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/crt/src/stl/excptptr.cpp",
+      "hash_format": "raw_installed_SDK_file_bytes",
+      "bytes": 25790,
+      "sha256": "1da96022d880a6cefef920ab4066b0b248c18c0453a7a910194e48e0253b6fee"
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/crt/src/vcruntime/trnsctrl.h",
+      "hash_format": "raw_installed_SDK_file_bytes",
+      "bytes": 7415,
+      "sha256": "f3fc6e51c56d11da31486793b4629053d7a874b8918cdd14bf7ea7546f7ee918"
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/crt/src/vcruntime/ehhelpers.cpp",
+      "hash_format": "raw_installed_SDK_file_bytes",
+      "bytes": 13208,
+      "sha256": "f11f3056bd63e5cc2241d8c97c43f613f9e50a728ffa189316df4794325cf901"
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/crt/src/vcruntime/frame.cpp",
+      "hash_format": "raw_installed_SDK_file_bytes",
+      "bytes": 84077,
+      "sha256": "a11ff510d0e0d37bc6ec0214c94514e8fe3127b726ec71ba89009c8f49d9c6ef"
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/crt/src/i386/trnsctrl.cpp",
+      "hash_format": "raw_installed_SDK_file_bytes",
+      "bytes": 29655,
+      "sha256": "97eaba1752f55305b719b6f4743d50673d0f7ba1efa9df8a87a26492d4e870d8"
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/crt/src/vcruntime/per_thread_data.cpp",
+      "hash_format": "raw_installed_SDK_file_bytes",
+      "bytes": 6825,
+      "sha256": "9a3e101c56b39c654687c8fe519a3fbd7da1b9d090c634b61383b360184a3439"
+    }
+  ],
+  "compiler_link_runtime_header_pins": [
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x86/cl.exe",
+      "hash_format": "raw_installed_toolchain_file_bytes",
+      "bytes": 891752,
+      "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938"
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x86/link.exe",
+      "hash_format": "raw_installed_toolchain_file_bytes",
+      "bytes": 3698016,
+      "sha256": "36186698fc03d62a1151e48c55d5c17170b94b4621a2faa11189d08182e11a81"
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/libcmt.lib",
+      "hash_format": "raw_installed_toolchain_file_bytes",
+      "bytes": 6627672,
+      "sha256": "9f0229b54ae7c995bd4a1e590354db8bc09e4b789604c8528fccaf4665eed388"
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/libcpmt.lib",
+      "hash_format": "raw_installed_toolchain_file_bytes",
+      "bytes": 21649390,
+      "sha256": "102d72c65c14a0c3883b67f523169138aa0dd08b8e95c2e5e5f304ac52d1bc14"
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/libvcruntime.lib",
+      "hash_format": "raw_installed_toolchain_file_bytes",
+      "bytes": 2097670,
+      "sha256": "d2fcbd693d49d1fc171b3717e349c300aa5072648da2bd8173545827c149b3bc"
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/ucrt/x86/libucrt.lib",
+      "hash_format": "raw_installed_toolchain_file_bytes",
+      "bytes": 40572188,
+      "sha256": "5a17862298fc04332aae61315014d838f5a7c6a05c9e643666939d91b533f0cb"
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/crt/src/vcruntime/vcruntime_internal.h",
+      "hash_format": "raw_installed_toolchain_file_bytes",
+      "bytes": 14015,
+      "sha256": "321832ff67f889ebab622fdeea5744d6650266efd0476af468296d941f0728ce"
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/crt/src/vcruntime/internal_shared.h",
+      "hash_format": "raw_installed_toolchain_file_bytes",
+      "bytes": 34477,
+      "sha256": "e4fafa942177aabe0cd8069b1bf1cd74d84a8064a5b01eb4a834f5a47ac4fada"
+    }
+  ],
+  "limitations": [
+    "Only one own-static14.51 x86 /Od /EHsc fixture",
+    "No reader query outside established current catch/PTD",
+    "No general NoThrow guarantee or terminal policy",
+    "Record address not cause identity; this equal observation is not universal",
+    "Object key does not classify Native versus host/provider origin",
+    "Call edge separated but no private stale/reentry/sibling/secondary permission routing implemented",
+    "Committed host/unknown denial must remain sticky, not proved by this probe",
+    "Six existing suppliers still lack private positive Native receipts",
+    "No /MD/other CRT/managed/SEH/foreign/Original gameCRT validation",
+    "No actual game/frontend process, Native address call, activation or Original ABI proof"
+  ],
+  "validation": {
+    "fresh_cpp_and_exe": true,
+    "compile_attempts": 1,
+    "probe_runs": 1,
+    "normal_priority": true,
+    "compile_timeout_seconds": 45,
+    "run_timeout_seconds": 10,
+    "SDK_declarations_types_without_stub_or_vendor_replacement": true,
+    "local_artifacts_ignored": true,
+    "new_tracked_files": 2,
+    "production_Source_unchanged": true,
+    "no_other_build_tests_probe_game_Ghidra_process_control": true
+  },
+  "readiness": {
+    "own_runtime_identity_fixture_measured": true,
+    "production_reader_implemented": false,
+    "positive_Native_origin_closed": false,
+    "changed96_admitted": false,
+    "whole_frontend_ready": false,
+    "Original_ABI_gameCRT_FH3_SEH_proved": false,
+    "runtime_game_activation": false
+  },
+  "credit": {
+    "newOriginal": 0,
+    "newVendor": 0,
+    "newHelper": 0,
+    "newCG": 0,
+    "duplicateBody": 0,
+    "ABI": 0,
+    "Native_exception_origin": 0,
+    "Game_runtime": 0,
+    "activation": 0
+  },
+  "document_pin": {
+    "path": "docs/CC16_SOURCE_ACTIVE_CAUSE_IDENTITY_PROBE.md",
+    "hash_format": "UTF8_LF_content",
+    "bytes": 4012,
+    "sha256": "741af0502dc68b5265772add0b5e6eac83c22a838c2b6bd614add7e4ff22e6b1"
+  }
+}
