@@ -434,6 +434,7 @@ target_sources(bsp_core PRIVATE src/native_mission_clock_reset.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/game_native_game_application_frame.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/native_lua_script_overrides_raw.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/native_locale_parser_record_storage.cpp)
+target_sources(bsp_core PRIVATE src/native_string_from_int_raw.cpp)
 
 target_sources(bsp_core PRIVATE src/native_lua_variant_pair_advance.cpp)
 target_sources(bsp_core PRIVATE src/native_observer_member_cleanup.cpp)
