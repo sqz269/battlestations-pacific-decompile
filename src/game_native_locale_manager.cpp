@@ -3,6 +3,7 @@
 #include "bsp/game_native_locale_pool.hpp"
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/game_native_vfs_application.hpp"
+#include "bsp/native_locale_initial_language.hpp"
 #include "bsp/native_locale_manager_base_scalar.hpp"
 #include "bsp/native_locale_manager_constructor.hpp"
 #include "bsp/native_locale_manager_retirement.hpp"
@@ -39,6 +40,14 @@ bool overlaps(const volatile void* a, std::size_t an,
 } // namespace
 
 struct GameNativeLocaleManagerProcess::Impl {
+    struct InitialLanguageAttempt {
+        NativeLocaleInitialLanguageContext context;
+        NativeLocaleInitialLanguageFrame frame;
+        bool call_entered{}, call_returned{}, branch_normal_returned{}, normal_completed{};
+        InitialLanguageAttempt(void* receiver, const void* input,
+            NativeStringRawPoolContext& strings, void* pool) noexcept
+            : context(receiver, input, strings, pool), frame(context) {}
+    };
     struct NameRegistration {
         const void* const name; // borrowed identity; NEVER dereferenced by history
         NameRegistration* next{};
@@ -59,7 +68,8 @@ struct GameNativeLocaleManagerProcess::Impl {
     };
     enum class Phase { fresh, binding, bound, initializing, initialized,
         draining, deleting, retired, ended_allocation_retained, detached, failed,
-        preparing_textual, parsing_textual, registering_name };
+        preparing_textual, parsing_textual, registering_name,
+        preparing_initial_language, setting_initial_language };
 
     GameNativeStringProcess& process;
     NativeStringRawPoolContext& strings;
@@ -107,6 +117,11 @@ struct GameNativeLocaleManagerProcess::Impl {
     NameRegistration* names_first{};
     NameRegistration* names_last{};
     NameRegistration* names_active{};
+    bool initial_language_selected{};
+    bool initial_language_derived_debt{};
+    const void* pending_initial_language{}; // borrowed identity, never late-read
+    InitialLanguageAttempt* initial_language_attempt{};
+    InitialLanguageAttempt* initial_language_active{};
 
     explicit Impl(GameNativeLocaleManagerProcess& actual_owner)
         : process(game_native_string_process()), strings(process.raw_context()),
@@ -114,6 +129,7 @@ struct GameNativeLocaleManagerProcess::Impl {
           owner(actual_owner) {}
 
     ~Impl() {
+        delete initial_language_attempt; // metadata only; never native input/manager cleanup
         while (names_first) {
             auto* const node = names_first;
             names_first = node->next;
@@ -174,6 +190,16 @@ struct GameNativeLocaleManagerProcess::Impl {
             reject("locale owner requires its actual complete constructor/provider history");
     }
     void require_operations_quiescent() {
+        // Initial language is independent of both old producer histories.
+        // All of these checks remain own C++ metadata after native retirement.
+        if (initial_language_selected) {
+            const auto* const node = initial_language_attempt;
+            if (failed || pending_initial_language || initial_language_active ||
+                !initial_language_derived_debt || !node || !node->call_entered ||
+                !node->call_returned || !node->branch_normal_returned ||
+                !node->normal_completed || !node->frame.has_normal_result())
+                reject("locale initial language lacks private healthy branch completion");
+        }
         // Registration is independent of textual_selected: register-only
         // histories must be checked BEFORE the old textual fast return.
         if (names_selected) {
@@ -220,6 +246,15 @@ struct GameNativeLocaleManagerProcess::Impl {
             publication.actual_locale_00f8bc4c != allocation ||
             publication.actual_manager_01090aa0 == nullptr)
             reject("locale registration lost its actual live canonical owner");
+    }
+    void require_initial_language_phase(Phase expected) {
+        require_phase(expected);
+        require_fixed_bound();
+        require_constructor_history();
+        if (drain_entered || scalar_entered ||
+            publication.actual_locale_00f8bc4c != allocation ||
+            publication.actual_manager_01090aa0 == nullptr)
+            reject("locale initial language lost its actual live canonical owner");
     }
     bool unused() const noexcept {
         return !initialization_entered && !pool_startup_entered && !pool_startup_returned &&
@@ -321,6 +356,54 @@ void GameNativeLocaleManagerProcess::initialize_once() {
             p.reject("locale constructor did not leave its same actual publication");
         p.phase = Impl::Phase::initialized;
     } catch (...) { p.poison(); throw; } // retain all actual effects; never free/repair/retry
+}
+
+void GameNativeLocaleManagerProcess::set_initial_language_before_tables(const void* input) {
+    auto& p = *impl_;
+    std::lock_guard lock(p.mutex);
+    try {
+        p.require_phase(Impl::Phase::initialized);
+        p.require_fixed_bound();
+        p.require_constructor_history();
+        p.require_operations_quiescent();
+        if (p.initial_language_selected || p.initial_language_attempt ||
+            p.initial_language_active || p.pending_initial_language ||
+            p.initial_language_derived_debt || p.names_selected ||
+            p.names_first || p.names_last || p.names_active || p.pending_name ||
+            p.names_derived_debt || p.textual_selected || p.textual_first ||
+            p.textual_last || p.textual_active || p.pending_textual_input ||
+            p.derived_textual_debt)
+            p.reject("locale initial language requires its pristine constructor-only graph");
+        p.phase = Impl::Phase::preparing_initial_language; // BEFORE bookkeeping/providers
+        p.initial_language_selected = true;
+        p.pending_initial_language = input;
+        p.require_initial_language_phase(Impl::Phase::preparing_initial_language);
+        if (!input) p.reject("locale initial language requires a completed borrowed raw8");
+        void* const actual_pool = p.pool_process->pool_storage_00e1768c();
+        p.require_initial_language_phase(Impl::Phase::preparing_initial_language);
+        if (actual_pool != p.pool)
+            p.reject("locale initial language lost its initialized canonical pool");
+        auto* const node = new Impl::InitialLanguageAttempt(
+            p.allocation, input, p.strings, p.pool);
+        // Retain the exact normal bookkeeping result BEFORE a healthy fence.
+        p.initial_language_attempt = node;
+        p.initial_language_active = node;
+        p.require_initial_language_phase(Impl::Phase::preparing_initial_language);
+        p.phase = Impl::Phase::setting_initial_language;
+        node->call_entered = true;
+        p.initial_language_derived_debt = true; // conservative even on actual equal arm
+        set_native_locale_initial_language_before_tables_00aa09d0(node->context, node->frame);
+        node->call_returned = true;
+        node->branch_normal_returned = node->frame.has_normal_result();
+        p.require_initial_language_phase(Impl::Phase::setting_initial_language);
+        if (!node->branch_normal_returned)
+            p.reject("locale initial language lacks its private normal branch result");
+        node->normal_completed = true;
+        p.initial_language_active = nullptr;
+        p.pending_initial_language = nullptr;
+        p.phase = Impl::Phase::initialized; // initialization-only, never loaded
+        p.require_operations_quiescent();
+    } catch (...) { p.poison(); throw; } // no borrowed-input action or native rollback
 }
 
 void GameNativeLocaleManagerProcess::parse_textual_option1(void* input,
@@ -461,7 +544,8 @@ void* GameNativeLocaleManagerProcess::delete_registered_current_profile(void* ca
             p.publication.actual_manager_01090aa0 == nullptr ||
             captured != p.allocation || (profile != 0x00cff140u && profile != 0x00cfea5cu))
             p.reject("locale deletion requires the exact captured owner/current admitted profile");
-        if ((p.derived_textual_debt || p.names_derived_debt) && profile != 0x00cff140u)
+        if ((p.derived_textual_debt || p.names_derived_debt ||
+            p.initial_language_derived_debt) && profile != 0x00cff140u)
             p.reject("locale producer history requires its genuine derived deletion route");
         p.require_flags_storage(flags);
         p.scalar_entered = true;

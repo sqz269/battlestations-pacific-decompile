@@ -28,6 +28,11 @@ public:
     // Genuine pool startup/status0, matched uninitialized4040 allocation and
     // actual73C960. Failed effects are retained, never rolled back or retried.
     void initialize_once();
+    // ONE initial-language-before-tables operation on the actual pristine ctor
+    // graph, before any language/name/textual attempt. Borrow completed raw8;
+    // do not consume it. Retain all attempt/native effects on failure. This is
+    // only the equal/late-empty AA09D0 domain, never reload/GUI/loaded permission.
+    void set_initial_language_before_tables(const void* borrowed_completed_raw8);
     // Consume one genuinely completed owning raw8 input ONLY at the admitted
     // parser entry. Retain input on preparation failure and all unresolved
     // operation/provider history on escape; no cleanup/retry is invented.
