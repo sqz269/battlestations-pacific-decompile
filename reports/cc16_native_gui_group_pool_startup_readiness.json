@@ -1,0 +1,1429 @@
+{
+  "schema": "cc16_native_gui_group_pool_startup_readiness_v1",
+  "status": "readonly_actionable_three_file_same_owner_backing_state_caller_plan_source_adoption_and_runtime_not_ready",
+  "baseline_commit": "a299cdfc6e73814528b007f524d317dce02df0f8",
+  "owned_files": [
+    "docs/CC16_NATIVE_GUI_GROUP_POOL_STARTUP_READINESS.md",
+    "reports/cc16_native_gui_group_pool_startup_readiness.json"
+  ],
+  "decision": {
+    "existing_native_and_source_entries_available": true,
+    "exact_crt_subset_slot_established": true,
+    "same_owner_permanent_backing_precedent_established": true,
+    "bounded_three_file_followup_identified": true,
+    "source_adoption_ready": false,
+    "source_changes_implemented": false,
+    "main_activation_authorized_by_this_report": false,
+    "current_host_runtime_proved": false,
+    "reason": "Existing Group automatic C++ backing lifetime does not preserve nonzero registration custody. Proposed same-owner backing/state/caller repair is not authored or reviewed; new Source allocation/constructor, full current owner graph and callback-suffix gates remain."
+  },
+  "analysis_target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "verified_before_batch": true,
+    "process_id": 47268
+  },
+  "original_image": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "native_bodies": [
+    {
+      "address": "00CD7440",
+      "bytes": 22,
+      "sha256": "0bbd7d52756ec66252fa7f9fe38a99cce8343ed64173f71383d65d9e6b710754",
+      "hex": "b9a0bff800e8c6ffdeff68e00ace00e8a1fbf1ff59c3",
+      "live_pe_and_retained_report_equal": true,
+      "instructions": [
+        {
+          "address": "00CD7440",
+          "bytes": "b9a0bff800",
+          "text": "mov ecx, 0xf8bfa0"
+        },
+        {
+          "address": "00CD7445",
+          "bytes": "e8c6ffdeff",
+          "text": "call 0xac7410"
+        },
+        {
+          "address": "00CD744A",
+          "bytes": "68e00ace00",
+          "text": "push 0xce0ae0"
+        },
+        {
+          "address": "00CD744F",
+          "bytes": "e8a1fbf1ff",
+          "text": "call 0xbf6ff5"
+        },
+        {
+          "address": "00CD7454",
+          "bytes": "59",
+          "text": "pop ecx"
+        },
+        {
+          "address": "00CD7455",
+          "bytes": "c3",
+          "text": "ret "
+        }
+      ]
+    },
+    {
+      "address": "00CE0AE0",
+      "bytes": 10,
+      "sha256": "b87476b80337fa6afb431c13599c781f38f540c015a82eb6bd2e4a40a8680075",
+      "hex": "b9a0bff800e9b666deff",
+      "live_pe_and_retained_report_equal": true,
+      "instructions": [
+        {
+          "address": "00CE0AE0",
+          "bytes": "b9a0bff800",
+          "text": "mov ecx, 0xf8bfa0"
+        },
+        {
+          "address": "00CE0AE5",
+          "bytes": "e9b666deff",
+          "text": "jmp 0xac71a0"
+        }
+      ]
+    },
+    {
+      "address": "00AC7410",
+      "bytes": 211,
+      "sha256": "39e2a7b1d22bb4b133f7a347e0582b231ac6b0425c5979e098d18d3eb4a567d4",
+      "hex": "6aff680e8bcb0064a10000000050648925000000005153568bf133dbc706c0a0d700895e04a1b488e100894608a1b488e1003bc3578974240c74038970048935b488e1008d7e0c57895c241cc706fccbd500ff150c22ce00895f18895e28895e2c895e30b820000000c74634ffffffff394630c64424180273456880000000894630e827e112008bf883c40433c0395e2c76198bcf3bcb74088b56288b1482891183c00183c1043b462c72e98b46283bc3740950e8c0f4120083c404897e288b4c24105f8bc65e5b64890d0000000083c410c3",
+      "live_pe_and_retained_report_equal": true,
+      "instructions": [
+        {
+          "address": "00AC7410",
+          "bytes": "6aff",
+          "text": "push -1"
+        },
+        {
+          "address": "00AC7412",
+          "bytes": "680e8bcb00",
+          "text": "push 0xcb8b0e"
+        },
+        {
+          "address": "00AC7417",
+          "bytes": "64a100000000",
+          "text": "mov eax, dword ptr fs:[0]"
+        },
+        {
+          "address": "00AC741D",
+          "bytes": "50",
+          "text": "push eax"
+        },
+        {
+          "address": "00AC741E",
+          "bytes": "64892500000000",
+          "text": "mov dword ptr fs:[0], esp"
+        },
+        {
+          "address": "00AC7425",
+          "bytes": "51",
+          "text": "push ecx"
+        },
+        {
+          "address": "00AC7426",
+          "bytes": "53",
+          "text": "push ebx"
+        },
+        {
+          "address": "00AC7427",
+          "bytes": "56",
+          "text": "push esi"
+        },
+        {
+          "address": "00AC7428",
+          "bytes": "8bf1",
+          "text": "mov esi, ecx"
+        },
+        {
+          "address": "00AC742A",
+          "bytes": "33db",
+          "text": "xor ebx, ebx"
+        },
+        {
+          "address": "00AC742C",
+          "bytes": "c706c0a0d700",
+          "text": "mov dword ptr [esi], 0xd7a0c0"
+        },
+        {
+          "address": "00AC7432",
+          "bytes": "895e04",
+          "text": "mov dword ptr [esi + 4], ebx"
+        },
+        {
+          "address": "00AC7435",
+          "bytes": "a1b488e100",
+          "text": "mov eax, dword ptr [0xe188b4]"
+        },
+        {
+          "address": "00AC743A",
+          "bytes": "894608",
+          "text": "mov dword ptr [esi + 8], eax"
+        },
+        {
+          "address": "00AC743D",
+          "bytes": "a1b488e100",
+          "text": "mov eax, dword ptr [0xe188b4]"
+        },
+        {
+          "address": "00AC7442",
+          "bytes": "3bc3",
+          "text": "cmp eax, ebx"
+        },
+        {
+          "address": "00AC7444",
+          "bytes": "57",
+          "text": "push edi"
+        },
+        {
+          "address": "00AC7445",
+          "bytes": "8974240c",
+          "text": "mov dword ptr [esp + 0xc], esi"
+        },
+        {
+          "address": "00AC7449",
+          "bytes": "7403",
+          "text": "je 0xac744e"
+        },
+        {
+          "address": "00AC744B",
+          "bytes": "897004",
+          "text": "mov dword ptr [eax + 4], esi"
+        },
+        {
+          "address": "00AC744E",
+          "bytes": "8935b488e100",
+          "text": "mov dword ptr [0xe188b4], esi"
+        },
+        {
+          "address": "00AC7454",
+          "bytes": "8d7e0c",
+          "text": "lea edi, [esi + 0xc]"
+        },
+        {
+          "address": "00AC7457",
+          "bytes": "57",
+          "text": "push edi"
+        },
+        {
+          "address": "00AC7458",
+          "bytes": "895c241c",
+          "text": "mov dword ptr [esp + 0x1c], ebx"
+        },
+        {
+          "address": "00AC745C",
+          "bytes": "c706fccbd500",
+          "text": "mov dword ptr [esi], 0xd5cbfc"
+        },
+        {
+          "address": "00AC7462",
+          "bytes": "ff150c22ce00",
+          "text": "call dword ptr [0xce220c]"
+        },
+        {
+          "address": "00AC7468",
+          "bytes": "895f18",
+          "text": "mov dword ptr [edi + 0x18], ebx"
+        },
+        {
+          "address": "00AC746B",
+          "bytes": "895e28",
+          "text": "mov dword ptr [esi + 0x28], ebx"
+        },
+        {
+          "address": "00AC746E",
+          "bytes": "895e2c",
+          "text": "mov dword ptr [esi + 0x2c], ebx"
+        },
+        {
+          "address": "00AC7471",
+          "bytes": "895e30",
+          "text": "mov dword ptr [esi + 0x30], ebx"
+        },
+        {
+          "address": "00AC7474",
+          "bytes": "b820000000",
+          "text": "mov eax, 0x20"
+        },
+        {
+          "address": "00AC7479",
+          "bytes": "c74634ffffffff",
+          "text": "mov dword ptr [esi + 0x34], 0xffffffff"
+        },
+        {
+          "address": "00AC7480",
+          "bytes": "394630",
+          "text": "cmp dword ptr [esi + 0x30], eax"
+        },
+        {
+          "address": "00AC7483",
+          "bytes": "c644241802",
+          "text": "mov byte ptr [esp + 0x18], 2"
+        },
+        {
+          "address": "00AC7488",
+          "bytes": "7345",
+          "text": "jae 0xac74cf"
+        },
+        {
+          "address": "00AC748A",
+          "bytes": "6880000000",
+          "text": "push 0x80"
+        },
+        {
+          "address": "00AC748F",
+          "bytes": "894630",
+          "text": "mov dword ptr [esi + 0x30], eax"
+        },
+        {
+          "address": "00AC7492",
+          "bytes": "e827e11200",
+          "text": "call 0xbf55be"
+        },
+        {
+          "address": "00AC7497",
+          "bytes": "8bf8",
+          "text": "mov edi, eax"
+        },
+        {
+          "address": "00AC7499",
+          "bytes": "83c404",
+          "text": "add esp, 4"
+        },
+        {
+          "address": "00AC749C",
+          "bytes": "33c0",
+          "text": "xor eax, eax"
+        },
+        {
+          "address": "00AC749E",
+          "bytes": "395e2c",
+          "text": "cmp dword ptr [esi + 0x2c], ebx"
+        },
+        {
+          "address": "00AC74A1",
+          "bytes": "7619",
+          "text": "jbe 0xac74bc"
+        },
+        {
+          "address": "00AC74A3",
+          "bytes": "8bcf",
+          "text": "mov ecx, edi"
+        },
+        {
+          "address": "00AC74A5",
+          "bytes": "3bcb",
+          "text": "cmp ecx, ebx"
+        },
+        {
+          "address": "00AC74A7",
+          "bytes": "7408",
+          "text": "je 0xac74b1"
+        },
+        {
+          "address": "00AC74A9",
+          "bytes": "8b5628",
+          "text": "mov edx, dword ptr [esi + 0x28]"
+        },
+        {
+          "address": "00AC74AC",
+          "bytes": "8b1482",
+          "text": "mov edx, dword ptr [edx + eax*4]"
+        },
+        {
+          "address": "00AC74AF",
+          "bytes": "8911",
+          "text": "mov dword ptr [ecx], edx"
+        },
+        {
+          "address": "00AC74B1",
+          "bytes": "83c001",
+          "text": "add eax, 1"
+        },
+        {
+          "address": "00AC74B4",
+          "bytes": "83c104",
+          "text": "add ecx, 4"
+        },
+        {
+          "address": "00AC74B7",
+          "bytes": "3b462c",
+          "text": "cmp eax, dword ptr [esi + 0x2c]"
+        },
+        {
+          "address": "00AC74BA",
+          "bytes": "72e9",
+          "text": "jb 0xac74a5"
+        },
+        {
+          "address": "00AC74BC",
+          "bytes": "8b4628",
+          "text": "mov eax, dword ptr [esi + 0x28]"
+        },
+        {
+          "address": "00AC74BF",
+          "bytes": "3bc3",
+          "text": "cmp eax, ebx"
+        },
+        {
+          "address": "00AC74C1",
+          "bytes": "7409",
+          "text": "je 0xac74cc"
+        },
+        {
+          "address": "00AC74C3",
+          "bytes": "50",
+          "text": "push eax"
+        },
+        {
+          "address": "00AC74C4",
+          "bytes": "e8c0f41200",
+          "text": "call 0xbf6989"
+        },
+        {
+          "address": "00AC74C9",
+          "bytes": "83c404",
+          "text": "add esp, 4"
+        },
+        {
+          "address": "00AC74CC",
+          "bytes": "897e28",
+          "text": "mov dword ptr [esi + 0x28], edi"
+        },
+        {
+          "address": "00AC74CF",
+          "bytes": "8b4c2410",
+          "text": "mov ecx, dword ptr [esp + 0x10]"
+        },
+        {
+          "address": "00AC74D3",
+          "bytes": "5f",
+          "text": "pop edi"
+        },
+        {
+          "address": "00AC74D4",
+          "bytes": "8bc6",
+          "text": "mov eax, esi"
+        },
+        {
+          "address": "00AC74D6",
+          "bytes": "5e",
+          "text": "pop esi"
+        },
+        {
+          "address": "00AC74D7",
+          "bytes": "5b",
+          "text": "pop ebx"
+        },
+        {
+          "address": "00AC74D8",
+          "bytes": "64890d00000000",
+          "text": "mov dword ptr fs:[0], ecx"
+        },
+        {
+          "address": "00AC74DF",
+          "bytes": "83c410",
+          "text": "add esp, 0x10"
+        },
+        {
+          "address": "00AC74E2",
+          "bytes": "c3",
+          "text": "ret "
+        }
+      ]
+    },
+    {
+      "address": "00AC71A0",
+      "bytes": 138,
+      "sha256": "34a282db6b4a61c7a860fb73952edb4a11171e7c30b15741a34cee619c3ffa36",
+      "hex": "56578bf933f639772cc707fccbd50076178b47288b0cb051e8eff3120083c60183c4043b772c72e98b472885c0740950e8b4f7120083c404837f24008d770c7e15538b1d1022ce00834618ff56ffd3837e18007ff35b56ff151422ce008b470485c0c707c0a0d70074088b5708895008eb088b4708a3b488e1008b470885c074068b4f048948045f5ec3",
+      "live_pe_and_retained_report_equal": true,
+      "instructions": [
+        {
+          "address": "00AC71A0",
+          "bytes": "56",
+          "text": "push esi"
+        },
+        {
+          "address": "00AC71A1",
+          "bytes": "57",
+          "text": "push edi"
+        },
+        {
+          "address": "00AC71A2",
+          "bytes": "8bf9",
+          "text": "mov edi, ecx"
+        },
+        {
+          "address": "00AC71A4",
+          "bytes": "33f6",
+          "text": "xor esi, esi"
+        },
+        {
+          "address": "00AC71A6",
+          "bytes": "39772c",
+          "text": "cmp dword ptr [edi + 0x2c], esi"
+        },
+        {
+          "address": "00AC71A9",
+          "bytes": "c707fccbd500",
+          "text": "mov dword ptr [edi], 0xd5cbfc"
+        },
+        {
+          "address": "00AC71AF",
+          "bytes": "7617",
+          "text": "jbe 0xac71c8"
+        },
+        {
+          "address": "00AC71B1",
+          "bytes": "8b4728",
+          "text": "mov eax, dword ptr [edi + 0x28]"
+        },
+        {
+          "address": "00AC71B4",
+          "bytes": "8b0cb0",
+          "text": "mov ecx, dword ptr [eax + esi*4]"
+        },
+        {
+          "address": "00AC71B7",
+          "bytes": "51",
+          "text": "push ecx"
+        },
+        {
+          "address": "00AC71B8",
+          "bytes": "e8eff31200",
+          "text": "call 0xbf65ac"
+        },
+        {
+          "address": "00AC71BD",
+          "bytes": "83c601",
+          "text": "add esi, 1"
+        },
+        {
+          "address": "00AC71C0",
+          "bytes": "83c404",
+          "text": "add esp, 4"
+        },
+        {
+          "address": "00AC71C3",
+          "bytes": "3b772c",
+          "text": "cmp esi, dword ptr [edi + 0x2c]"
+        },
+        {
+          "address": "00AC71C6",
+          "bytes": "72e9",
+          "text": "jb 0xac71b1"
+        },
+        {
+          "address": "00AC71C8",
+          "bytes": "8b4728",
+          "text": "mov eax, dword ptr [edi + 0x28]"
+        },
+        {
+          "address": "00AC71CB",
+          "bytes": "85c0",
+          "text": "test eax, eax"
+        },
+        {
+          "address": "00AC71CD",
+          "bytes": "7409",
+          "text": "je 0xac71d8"
+        },
+        {
+          "address": "00AC71CF",
+          "bytes": "50",
+          "text": "push eax"
+        },
+        {
+          "address": "00AC71D0",
+          "bytes": "e8b4f71200",
+          "text": "call 0xbf6989"
+        },
+        {
+          "address": "00AC71D5",
+          "bytes": "83c404",
+          "text": "add esp, 4"
+        },
+        {
+          "address": "00AC71D8",
+          "bytes": "837f2400",
+          "text": "cmp dword ptr [edi + 0x24], 0"
+        },
+        {
+          "address": "00AC71DC",
+          "bytes": "8d770c",
+          "text": "lea esi, [edi + 0xc]"
+        },
+        {
+          "address": "00AC71DF",
+          "bytes": "7e15",
+          "text": "jle 0xac71f6"
+        },
+        {
+          "address": "00AC71E1",
+          "bytes": "53",
+          "text": "push ebx"
+        },
+        {
+          "address": "00AC71E2",
+          "bytes": "8b1d1022ce00",
+          "text": "mov ebx, dword ptr [0xce2210]"
+        },
+        {
+          "address": "00AC71E8",
+          "bytes": "834618ff",
+          "text": "add dword ptr [esi + 0x18], -1"
+        },
+        {
+          "address": "00AC71EC",
+          "bytes": "56",
+          "text": "push esi"
+        },
+        {
+          "address": "00AC71ED",
+          "bytes": "ffd3",
+          "text": "call ebx"
+        },
+        {
+          "address": "00AC71EF",
+          "bytes": "837e1800",
+          "text": "cmp dword ptr [esi + 0x18], 0"
+        },
+        {
+          "address": "00AC71F3",
+          "bytes": "7ff3",
+          "text": "jg 0xac71e8"
+        },
+        {
+          "address": "00AC71F5",
+          "bytes": "5b",
+          "text": "pop ebx"
+        },
+        {
+          "address": "00AC71F6",
+          "bytes": "56",
+          "text": "push esi"
+        },
+        {
+          "address": "00AC71F7",
+          "bytes": "ff151422ce00",
+          "text": "call dword ptr [0xce2214]"
+        },
+        {
+          "address": "00AC71FD",
+          "bytes": "8b4704",
+          "text": "mov eax, dword ptr [edi + 4]"
+        },
+        {
+          "address": "00AC7200",
+          "bytes": "85c0",
+          "text": "test eax, eax"
+        },
+        {
+          "address": "00AC7202",
+          "bytes": "c707c0a0d700",
+          "text": "mov dword ptr [edi], 0xd7a0c0"
+        },
+        {
+          "address": "00AC7208",
+          "bytes": "7408",
+          "text": "je 0xac7212"
+        },
+        {
+          "address": "00AC720A",
+          "bytes": "8b5708",
+          "text": "mov edx, dword ptr [edi + 8]"
+        },
+        {
+          "address": "00AC720D",
+          "bytes": "895008",
+          "text": "mov dword ptr [eax + 8], edx"
+        },
+        {
+          "address": "00AC7210",
+          "bytes": "eb08",
+          "text": "jmp 0xac721a"
+        },
+        {
+          "address": "00AC7212",
+          "bytes": "8b4708",
+          "text": "mov eax, dword ptr [edi + 8]"
+        },
+        {
+          "address": "00AC7215",
+          "bytes": "a3b488e100",
+          "text": "mov dword ptr [0xe188b4], eax"
+        },
+        {
+          "address": "00AC721A",
+          "bytes": "8b4708",
+          "text": "mov eax, dword ptr [edi + 8]"
+        },
+        {
+          "address": "00AC721D",
+          "bytes": "85c0",
+          "text": "test eax, eax"
+        },
+        {
+          "address": "00AC721F",
+          "bytes": "7406",
+          "text": "je 0xac7227"
+        },
+        {
+          "address": "00AC7221",
+          "bytes": "8b4f04",
+          "text": "mov ecx, dword ptr [edi + 4]"
+        },
+        {
+          "address": "00AC7224",
+          "bytes": "894804",
+          "text": "mov dword ptr [eax + 4], ecx"
+        },
+        {
+          "address": "00AC7227",
+          "bytes": "5f",
+          "text": "pop edi"
+        },
+        {
+          "address": "00AC7228",
+          "bytes": "5e",
+          "text": "pop esi"
+        },
+        {
+          "address": "00AC7229",
+          "bytes": "c3",
+          "text": "ret "
+        }
+      ]
+    }
+  ],
+  "native_startup_contract": {
+    "address": "00CD7440",
+    "bytes": 22,
+    "instructions": 6,
+    "abi": "No caller stack arguments, RET; actual atexit status remains EAX. ECX F8BFA0 selects existing pool.",
+    "ordered_operations": [
+      {
+        "site": "00CD7440",
+        "operation": "MOV ECX,F8BFA0"
+      },
+      {
+        "site": "00CD7445",
+        "target": "00AC7410",
+        "operation": "initialize same raw pool"
+      },
+      {
+        "site": "00CD744A",
+        "operation": "PUSH CE0AE0"
+      },
+      {
+        "site": "00CD744F",
+        "target": "00BF6FF5",
+        "operation": "real CRT atexit"
+      },
+      {
+        "site": "00CD7454",
+        "operation": "POP ECX; RET preserves returned EAX"
+      }
+    ],
+    "nonzero_result": "Native constructor completed and pool remains initialized/linked; no CE0AE0 callback was registered. No status error, rollback, manual destroy or fallback.",
+    "type_dependency_added": false,
+    "text_dependency_added": false
+  },
+  "native_teardown_contract": {
+    "address": "00CE0AE0",
+    "bytes": 10,
+    "instructions": 2,
+    "operation": "ECX F8BFA0 then tail AC71A0; same actual pool.",
+    "successful_payload_destructors": false,
+    "no_new_recovery_or_terminal_policy": true,
+    "qualification": "Source private callback currently noexcept; Native register/private stack/EH/SEH/arbitrary fault equivalence not inferred."
+  },
+  "crt_subset": {
+    "start": "00CE3470",
+    "bytes": 128,
+    "sha256": "928a32d1a40c7f3a0315fb57e470cf7370e3a4a3577aff6da32a22b682efee4c",
+    "hex": "f071cd001072cd0000000000000000008072cd00a072cd00f072cd001073cd006073cd008073cd00d073cd00f073cd004074cd006074cd00b074cd001075cd003075cd008075cd00a075cd00f075cd001076cd006076cd008076cd00d076cd00f076cd004077cd006077cd00b077cd00d077cd00f077cd001078cd003078cd00",
+    "words": [
+      {
+        "slot": "00CE3470",
+        "value": "00CD71F0"
+      },
+      {
+        "slot": "00CE3474",
+        "value": "00CD7210"
+      },
+      {
+        "slot": "00CE3478",
+        "value": "00000000"
+      },
+      {
+        "slot": "00CE347C",
+        "value": "00000000"
+      },
+      {
+        "slot": "00CE3480",
+        "value": "00CD7280"
+      },
+      {
+        "slot": "00CE3484",
+        "value": "00CD72A0"
+      },
+      {
+        "slot": "00CE3488",
+        "value": "00CD72F0"
+      },
+      {
+        "slot": "00CE348C",
+        "value": "00CD7310"
+      },
+      {
+        "slot": "00CE3490",
+        "value": "00CD7360"
+      },
+      {
+        "slot": "00CE3494",
+        "value": "00CD7380"
+      },
+      {
+        "slot": "00CE3498",
+        "value": "00CD73D0"
+      },
+      {
+        "slot": "00CE349C",
+        "value": "00CD73F0"
+      },
+      {
+        "slot": "00CE34A0",
+        "value": "00CD7440"
+      },
+      {
+        "slot": "00CE34A4",
+        "value": "00CD7460"
+      },
+      {
+        "slot": "00CE34A8",
+        "value": "00CD74B0"
+      },
+      {
+        "slot": "00CE34AC",
+        "value": "00CD7510"
+      },
+      {
+        "slot": "00CE34B0",
+        "value": "00CD7530"
+      },
+      {
+        "slot": "00CE34B4",
+        "value": "00CD7580"
+      },
+      {
+        "slot": "00CE34B8",
+        "value": "00CD75A0"
+      },
+      {
+        "slot": "00CE34BC",
+        "value": "00CD75F0"
+      },
+      {
+        "slot": "00CE34C0",
+        "value": "00CD7610"
+      },
+      {
+        "slot": "00CE34C4",
+        "value": "00CD7660"
+      },
+      {
+        "slot": "00CE34C8",
+        "value": "00CD7680"
+      },
+      {
+        "slot": "00CE34CC",
+        "value": "00CD76D0"
+      },
+      {
+        "slot": "00CE34D0",
+        "value": "00CD76F0"
+      },
+      {
+        "slot": "00CE34D4",
+        "value": "00CD7740"
+      },
+      {
+        "slot": "00CE34D8",
+        "value": "00CD7760"
+      },
+      {
+        "slot": "00CE34DC",
+        "value": "00CD77B0"
+      },
+      {
+        "slot": "00CE34E0",
+        "value": "00CD77D0"
+      },
+      {
+        "slot": "00CE34E4",
+        "value": "00CD77F0"
+      },
+      {
+        "slot": "00CE34E8",
+        "value": "00CD7810"
+      },
+      {
+        "slot": "00CE34EC",
+        "value": "00CD7830"
+      }
+    ],
+    "live_pe_equal": true,
+    "selected_slots": [
+      {
+        "slot": "00CE3470",
+        "value": "00CD71F0",
+        "role": "existing Main Text pool subset startup"
+      },
+      {
+        "slot": "00CE34A0",
+        "value": "00CD7440",
+        "role": "missing Main raw UI Group pool startup"
+      },
+      {
+        "slot": "00CE34A4",
+        "value": "00CD7460",
+        "role": "separate type-authority worker owns body; table boundary only"
+      },
+      {
+        "slot": "00CE34EC",
+        "value": "00CD7830",
+        "role": "existing Main particle model pool subset startup"
+      }
+    ],
+    "live_xrefs": [
+      "00CE34A0 DATA -> 00CD7440",
+      "00CD744A DATA -> 00CE0AE0"
+    ],
+    "source_slot": {
+      "file": "src/game_main.cpp",
+      "after_lines": [
+        1143,
+        1144,
+        1145
+      ],
+      "before_line": 1146,
+      "meaning": "After actual CD71F0 Text result log, before particle process getter/CD7830 initialization."
+    },
+    "qualification": "Order of this Source subset only; omitted original CRT entries are not implicitly installed."
+  },
+  "existing_source_process": {
+    "file": "src/native_gui_group_storage.cpp",
+    "same_pool": "38h F8BFA0 storage; EC payload/F0 slot/+EC slab ID",
+    "shared_domain": "game_native_physical_pool_process().allocator_list_domain_00e188b4()",
+    "profile": "D5CBFC/AC74F0 actual Group virtual0 binding in SAME domain",
+    "startup_states": [
+      "unattempted",
+      "returned",
+      "threw"
+    ],
+    "sticky_attempt": "State::threw written before pool initialization; a thrown entered attempt never replays. Returned status, including nonzero, is cached.",
+    "access": "Actual pool accessor requires completed returned state, including a completed nonzero registration result.",
+    "gaps": [
+      "No public interruption query.",
+      "Callback does not mark retiring/retired.",
+      "Function-static C++ object later destroys NativeGuiGroupPool and unbinds virtual0 even if nonzero result left native pool linked.",
+      "No real Main initialize_once_00cd7440 caller."
+    ],
+    "source_caller_search": [
+      "src\\native_gui_group_factory.cpp:15:void* create_native_gui_group_00aa12f0(NativeGuiGroupFactoryInputs inputs) {",
+      "src\\native_gui_group_factory.cpp:35:void* create_native_gui_group_00aa12f0(const void* source,",
+      "src\\native_gui_group_factory.cpp:39:        return create_native_gui_group_00aa12f0(NativeGuiGroupCopyInputs{",
+      "src\\native_gui_group_factory.cpp:41:    return create_native_gui_group_00aa12f0(NativeGuiGroupDefaultInputs{one});",
+      "src\\native_gui_group_storage.cpp:17:int GameNativeGuiGroupPoolProcess::initialize_once_00cd7440() {"
+    ]
+  },
+  "main_catch_custody": {
+    "file": "src/game_main.cpp",
+    "existing_text_pointer_line": 1135,
+    "typed_catch_line": 1230,
+    "unknown_catch_line": 1243,
+    "existing_policy": "Both catches query Text interruption and retain via existing _Exit(2); typed noninterrupted failure returns1, unknown noninterrupted failure preserves existing terminate boundary.",
+    "group_requirement": "Capture SAME Group process pointer before entering initialize_once. Extend both interruption predicates to the genuine Group query. Do not call pool accessor, create an owner or infer partial Native cleanup from exception type.",
+    "not_a_native_policy": "Existing Source caller retention is extended for entered interruption only; nonzero registration alone is not interruption or a new exit/error condition."
+  },
+  "permanent_backing_assessment": {
+    "proposal_only": true,
+    "same_existing_owner": "Replace Group getter function-static object backing with one function-static const pointer to new GameNativeGuiGroupPoolProcess, matching existing Source pattern; do not add another storage/domain/callback/global identity.",
+    "direct_precedent": {
+      "path": "src/game_native_locale_pool.cpp",
+      "domain_line": 54,
+      "getter_lines": [
+        86,
+        87,
+        88,
+        89,
+        90
+      ],
+      "reason": "Same physical E188B4 domain; explicit no-C++-destructor comment because failed atexit leaves the native element linked."
+    },
+    "additional_metadata_precedents": [
+      "src/game_native_gui_icon_process.cpp:57",
+      "src/game_native_gui_text_state.cpp:39"
+    ],
+    "policies_not_imported": "Locale reentry checks, crt_failed, extra callbacks, terminal policies and canonical globals are not part of Group proposal.",
+    "zero_status": "Only registered real CE0AE0 owns Native teardown. Backing/profile context stays live after native unlink until root registry retirement.",
+    "nonzero_status": "No Native callback and no C++ Group unbind; same initialized raw backing/link words survive through OS reclamation, without status rejection or manual cleanup.",
+    "new_source_allocation": {
+      "count": 1,
+      "size": "sizeof(GameNativeGuiGroupPoolProcess)",
+      "numeric_size_measured": false,
+      "epoch": "Before Group constructor and Native CD7440 entry; in proposed Main slot actual physical domain already exists from Text construction.",
+      "failure": "Source allocation/constructor failure before pointer publication is not an entered Native attempt. Existing C++ new-expression/member construction cleanup applies; Native partial initialization is never replayed or rolled back."
+    },
+    "existing_constructor_failure_boundary": "Actual NativeGuiGroupPool constructor binds unordered_map virtual0 entry and may allocate node/buckets. Later member construction may fail. These remain Source construction boundaries before Native entry.",
+    "expanded_source_boundary": "Additional operator new/new-handler callbacks before Group Native entry require review/current runtime evidence; historical native/provider proof cannot prove them."
+  },
+  "physical_domain_exit_order": {
+    "root": "GameNativePhysicalPoolProcess remains function-static; default C++ destructor.",
+    "registration_order_argument": [
+      "Physical root construction finishes before Group constructor can borrow E188B4 domain or bind virtual0.",
+      "Its C++ destructor registration therefore precedes shown dependent native callbacks/ordinary owner destructors.",
+      "Real CD9010 registers CE10F0 after that same physical root exists.",
+      "Reverse registration runs these callbacks and dependent unbinds before physical root C++ destruction."
+    ],
+    "native_neighbor_access": "Permanent Group raw storage/context remains valid for neighboring callbacks and physical native unlink, with either Group registration result.",
+    "registry_destruction": "AllocatorListDomain implicit unordered_map destructor frees nodes containing scalar/profile/raw context/function pointer values; it does not traverse native head, invoke trim, dereference context or unlink Group.",
+    "after_root_retirement": "Group borrowed domain reference becomes dormant; no Group C++ destructor is registered to use it. No later real consumer/callback may access the ended root.",
+    "limits": "Bounded Source ordering argument, not new current Host/runtime proof or arbitrary late external callback proof. Does not repair unrelated owners nonzero-registration lifetimes; exact current graph and callback suffix remain admission gates."
+  },
+  "minimal_followup_owned_files": [
+    {
+      "path": "include/bsp/native_gui_group_storage.hpp",
+      "change": "Add readonly interruption query and append host retiring/retired phases; preserve all raw storage/identities and completed nonzero startup."
+    },
+    {
+      "path": "src/native_gui_group_storage.cpp",
+      "change": "Retain SAME process backing; keep AC7410 then real atexit and actual result. Query entered-threw/retiring. Mark retiring before actual callback and retired after return, with existing noexcept/failure boundary. Refuse replay after any entered/retired phase; returned startup status remains cached."
+    },
+    {
+      "path": "src/game_main.cpp",
+      "change": "Include genuine header, retain actual process pointer before entry in exact Text/particle gap, log real returned status, extend BOTH existing catch predicates/logs to entered Group interruption without new terminal/fallback/status policy."
+    }
+  ],
+  "state_and_lifetime_qualifications": [
+    "Nonzero registration alone must not make interruption query true.",
+    "Retirement metadata does not destroy live payloads or authorize pool reuse.",
+    "Phase query is for serialized startup/exit control observation; no new concurrent access/retirement contract or added host lock around native destructor.",
+    "Group pool startup remains independent of Text and GroupType bodies; Source caller ordering does not create such dependency.",
+    "No factory caller, fake context/capsule, duplicate owner or childless-only admission rule.",
+    "Existing GameNativeGuiGroupApplication uses ModelGroup010902F4/B8F5E0, not this raw UI Group pool."
+  ],
+  "actual_owner_admission": {
+    "source_adoption_ready": false,
+    "pool_teardown_destroys_payloads": false,
+    "required": [
+      "Implement/review the same-owner backing/state/caller repair first.",
+      "Strict/common build/link for exact changed Source and current PE, including added Source allocation/constructor boundary.",
+      "Actual Group payload/reference/child/parent/model/timed ownership retires before CE0AE0 and root-domain retirement.",
+      "Existing Host owner retention remains with actual records; no generic invented Group capsule or policy.",
+      "Current runtime must establish zero/nonzero registration custody, canonical shared profile/domain, other owners exit custody and callback suffix. Historical zero/provider proof alone does not authorize activation."
+    ]
+  },
+  "runtime_coordination": {
+    "runtime_performed": false,
+    "coordinator": "agent/cc16-progress",
+    "protocol": "Existing bsp.py msg/lease protocol; exclusive current PID/session/cohort window with coordinator agreement BEFORE launch.",
+    "no_lease_is_not_stopped_process_proof": true,
+    "NoForceStop": true,
+    "on_observation_timeout": "Re-poll actual authoritative handle; never restart on timeout.",
+    "root_supplied_message_references": {
+      "ids": [
+        1099,
+        1100
+      ],
+      "meaning": "Source publication/continuation coordination only, not runtime permission."
+    },
+    "existing_entry_wrapper": "scripts/run.ps1, private runtime/settings/log paths, DRAIN and installed-root/XLive preparation",
+    "exact_current_cohort_command": "Obtain from working current harness/controller and coordinator; no new Group helper/run plan established here.",
+    "frozen_historical_cohorts": [
+      "Sourceequal-dc2",
+      "font-main-d8",
+      "empty-d58"
+    ],
+    "frozen_cohort_policy": "Never rerun or mutate historical trees; inherit no result after Source/PE changes.",
+    "user_authorization": "Full activation and required gameplay are allowed; this bounded packet does not execute them."
+  },
+  "retained_provider_revalidation": [
+    {
+      "path": "include/bsp/native_gui_group_storage.hpp",
+      "sha256": "3bd8555c54d685ce14ce23f9d0f23168fa49b33e948577f59fdcdc14f15b0f3b",
+      "matches_retained_compiled_source": true
+    },
+    {
+      "path": "src/native_gui_group_storage.cpp",
+      "sha256": "4c4729f66671693189cadd2cc5e27310f6e09a9a86aee6d50b1c7570b4cd4ad2",
+      "matches_retained_compiled_source": true
+    },
+    {
+      "path": "include/bsp/native_gui_group_default.hpp",
+      "sha256": "b054e5bd554850d323e32e7bcded424911bfe087d9558f4844efcf2711288047",
+      "matches_retained_compiled_source": true
+    },
+    {
+      "path": "src/native_gui_group_default.cpp",
+      "sha256": "df6ba36d57a630662188b97637a35d5d15c1e094c1ccb24a847889d58ec6d6c8",
+      "matches_retained_compiled_source": true
+    },
+    {
+      "path": "src/native_material_pools.cpp",
+      "retained_git_commit": "e7a20afcf0509401e6f26b97b09bb952594204ad",
+      "retained_compiled_source_sha256": "dae9c549cfc295d680184d7a51d0d073c310bf6bd00553d31be5fd81f530f13f",
+      "retained_source_bytes": 19885,
+      "current_sha256": "52c0de304c861907c1799517e038e8383ca62829e12176eb1b48f406d163c95a",
+      "old_normalized_complete_source_is_exact_current_prefix": true,
+      "unchanged_shared_engine_first_lines": 353,
+      "unchanged_shared_engine_prefix_sha256": "9691d74084ee2eb364ee58a02c10132e7d7f13c67cf1b05e1ad387bcc6d5ab2f",
+      "qualification": "Current full file has later append-only widget-family specialization; not a full-file old hash match."
+    },
+    {
+      "path": "src/native_gui_widget_base_storage.cpp",
+      "sha256": "4ddd5ab1ad4a2b8174d80caf70dba76afa648479e4e8637a56884f2b9db6354d",
+      "matches_retained_compiled_source": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "matches_retained_compiled_source": true
+    },
+    {
+      "path": "src/allocator_list.cpp",
+      "sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732",
+      "matches_retained_compiled_source": true
+    }
+  ],
+  "historical_archive_qualification": "Recorded CC10 ZIP absent at this checkout/main relative paths; archive not opened or revalidated. Existing tracked Source/PE/live/report evidence independently revalidated; no old archive or build result inherited as current runtime proof.",
+  "current_source_and_evidence_pins": [
+    {
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+    },
+    {
+      "path": "include/bsp/native_gui_group_storage.hpp",
+      "bytes": 3240,
+      "sha256": "3bd8555c54d685ce14ce23f9d0f23168fa49b33e948577f59fdcdc14f15b0f3b",
+      "git_blob": "922b1596a57bb51fef5bd68d308b27937a0b8b6c"
+    },
+    {
+      "path": "src/native_gui_group_storage.cpp",
+      "bytes": 1772,
+      "sha256": "4c4729f66671693189cadd2cc5e27310f6e09a9a86aee6d50b1c7570b4cd4ad2",
+      "git_blob": "8e67b3168018e9973124c13996f037e96e676e7c"
+    },
+    {
+      "path": "include/bsp/native_material_pools.hpp",
+      "bytes": 10219,
+      "sha256": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715",
+      "git_blob": "ab0dc45412b6892081f630d376d1fd9df035e527"
+    },
+    {
+      "path": "src/native_material_pools.cpp",
+      "bytes": 24320,
+      "sha256": "52c0de304c861907c1799517e038e8383ca62829e12176eb1b48f406d163c95a",
+      "git_blob": "b488015a211952463ac5c1fb78e1f42a9aeca917"
+    },
+    {
+      "path": "include/bsp/allocator_list.hpp",
+      "bytes": 2192,
+      "sha256": "5344cbd4fe4ea86a4206c24f08e2407eea3055f03947f677c46b3a635d4f1570",
+      "git_blob": "e3cfca6ec4c44d5aa20ee8e6870a5c4f02cd784a"
+    },
+    {
+      "path": "src/allocator_list.cpp",
+      "bytes": 2682,
+      "sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732",
+      "git_blob": "185d612496c4d9deb3b8233e565b1bc82a6f0e70"
+    },
+    {
+      "path": "include/bsp/game_native_physical_pool.hpp",
+      "bytes": 6954,
+      "sha256": "eb9dd2f1b6cfdcb3950bf7912228f346e513526fd0f7c3d4a2e82dfbc86cef70",
+      "git_blob": "46f885365c86fc5078b7e4ae12bdbc285352a729"
+    },
+    {
+      "path": "src/game_native_physical_pool.cpp",
+      "bytes": 6623,
+      "sha256": "2cacaa43521df1c3698e633ac5d919f2a34d21f7cb3630589cad07aa4b9f9c90",
+      "git_blob": "8cc7ecafb64180d38c2eb434c51ba91d82e5e9ba"
+    },
+    {
+      "path": "include/bsp/game_native_gui_text_process.hpp",
+      "bytes": 5524,
+      "sha256": "215be8dcc255664c7f50a75ea9287012d1b8090ba860f111d341983819419e47",
+      "git_blob": "2f85c4faead42a7a295d2f4ba5d6345334759244"
+    },
+    {
+      "path": "src/game_native_gui_text_process.cpp",
+      "bytes": 8246,
+      "sha256": "84fe56b3b40589a831dfbdf57d289d9f85dc91ef41bb5a239b81e43d462c8f2f",
+      "git_blob": "66234fe46a716dab05525201c260eea39da426f4"
+    },
+    {
+      "path": "src/game_main.cpp",
+      "bytes": 80404,
+      "sha256": "50034a37098bc7a1c738c541d5a97d0afb0cb4b1cf84b8e92102db92284df5c7",
+      "git_blob": "18909178937d4a3fbd4ddf9073819b959f3fa47a"
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "bytes": 47507,
+      "sha256": "67a5164b1b20061f0f1353783c12cfcb92cc7392b37e04ec87371577425f7f58",
+      "git_blob": "867d8b7032fc7531bfaa4f2c43c649988b8e0710"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "bytes": 185132,
+      "sha256": "6915e364d7c2eb73ebba01d7d1c521ca7fdc94ab78ad7f0302288fc281cad9f4",
+      "git_blob": "d138983e92e5f93339e529655990f924f1c06be8"
+    },
+    {
+      "path": "src/game_native_gui_render_application.cpp",
+      "bytes": 59357,
+      "sha256": "a5b6be17c269f9486a210716143c17b2375c62e4401139d4d7adf66a39ca00cd",
+      "git_blob": "eef54bf0e2ef8a5a457756d864b8cb50222d1539"
+    },
+    {
+      "path": "include/bsp/native_gui_group_factory.hpp",
+      "bytes": 4054,
+      "sha256": "824bb49ed0a651ef8df2fdc169fa56b99601ed084b253f7b763e0b8fa1b33f43",
+      "git_blob": "1bc8d7ca5bf9becac0a53aaf242f963dddb41681"
+    },
+    {
+      "path": "src/native_gui_group_factory.cpp",
+      "bytes": 2385,
+      "sha256": "16f91c2a6607f7593910be66cc616eefbd32945f7dec910055c3665dbabdb61c",
+      "git_blob": "73777a41968ce1e4ffa3c0560943d33ca162074e"
+    },
+    {
+      "path": "scripts/run.ps1",
+      "bytes": 3500,
+      "sha256": "7f940db8939c31dc179908273f7fc836f4c7c6edd28d4dee2552e0feb817be71",
+      "git_blob": "c7c4d511fad9086e0f345be08650c6f1f6404704"
+    },
+    {
+      "path": "tools/prepare_xlive_runtime.py",
+      "bytes": 5265,
+      "sha256": "69fa8b31b72b088eb2dcdf67e9c0491a7400a00f4943773337081b065340c86d",
+      "git_blob": "810508c36ef10c60cb87bf5545edf2af4735a42e"
+    },
+    {
+      "path": "docs/NATIVE_GUI_GROUP_POOL_CC10.md",
+      "bytes": 7854,
+      "sha256": "149857c6ec5e071376e07749b8e60e22a03804dd3c4ccafe478cf4ee918a4036",
+      "git_blob": "ad760c890f8b8054d4cbd62c848881b8d363edea"
+    },
+    {
+      "path": "reports/native_gui_group_pool_cc10.json",
+      "bytes": 28741,
+      "sha256": "e643af4945c51172a77ea39d95e25a28a864f3d151467f72a089fbfaf539694f",
+      "git_blob": "21eafc12c357820e56230feb99c10cb8a6aad5b6"
+    },
+    {
+      "path": "docs/GAME_NATIVE_PHYSICAL_POOL_BI.md",
+      "bytes": 3929,
+      "sha256": "d6e2746f201aa049d59a2b62d87c0299aeaf2b4a6c5062457b53342cf0dab531",
+      "git_blob": "b813793a51b747debcc3c942d7d7dc04a9ae990f"
+    },
+    {
+      "path": "reports/game_native_physical_pool_bi.json",
+      "bytes": 3585,
+      "sha256": "7e8d6908a91a380f50c383c7d1c355425869705355cfbe071ce316bf984ebaaa",
+      "git_blob": "7003455daa672eceac9a7fe2e7cd8b1e7df09697"
+    },
+    {
+      "path": "docs/CODEX_GUI_RAW_DEFAULT_SOURCE_EQUAL_RUNTIME.md",
+      "bytes": 2656,
+      "sha256": "f28f45a457157a400869422b3b4117d770f5584d442ae1347c93bccb8c5a1528",
+      "git_blob": "9322522a0c94ceb908471c8cf0044aeeaf796489"
+    },
+    {
+      "path": "docs/CODEX_GUI_RAW_EMPTY_UNCHANGED_RUNTIME_PREPARATION.md",
+      "bytes": 6064,
+      "sha256": "40f03c99fd3eef4975341cb09e7e270eedab4e96989bc56b4340be90909836a9",
+      "git_blob": "a64a8e17676f60cac8896087f5b7e9513f84cb81"
+    },
+    {
+      "path": "include/bsp/game_native_locale_pool.hpp",
+      "bytes": 1919,
+      "sha256": "969db5c9f80ab1e4b6e5098f43ef1515d0e726fe2aa9e119dfb777cccc989911",
+      "git_blob": "e4536a56a7ab139d2b43b1b28222975047154d68"
+    },
+    {
+      "path": "src/game_native_locale_pool.cpp",
+      "bytes": 5830,
+      "sha256": "ef01a5c56a1c61617274c5bcc6021d6785947305e333f4048094f5946aaf73de",
+      "git_blob": "07dadaa2f2bac2f9ca79d380d5d6f793e6c73288"
+    },
+    {
+      "path": "include/bsp/game_native_gui_icon_process.hpp",
+      "bytes": 3257,
+      "sha256": "be7972224e23dd7f4871ae5359c585227c5c31f4028b99d9c3e2e4d4e8b77ae1",
+      "git_blob": "edad517eacdc50d3effee7655d58e26545a8bb45"
+    },
+    {
+      "path": "src/game_native_gui_icon_process.cpp",
+      "bytes": 3064,
+      "sha256": "cc1d80e034d36fa28899a91473a863807b3c1be29f8c0825d87d35266665316e",
+      "git_blob": "de4e8cb628c4dd2f16dfdcbd2fb9c7fc2ab3eb35"
+    },
+    {
+      "path": "src/game_native_gui_text_state.cpp",
+      "bytes": 1821,
+      "sha256": "ff10c4e60079ea23117223b10dc9b64bb61715930fa2c1d1b7fff0b81396dd5f",
+      "git_blob": "4aeb220bed382de390912a2320ad1ca4adb4bf65"
+    },
+    {
+      "path": "src/game_native_vfs_application.cpp",
+      "bytes": 8470,
+      "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+      "git_blob": "32a441a593a381b649ccd89b71a6e4277e91401d"
+    },
+    {
+      "path": "include/bsp/native_physical_provider_pool_lifecycle.hpp",
+      "bytes": 2892,
+      "sha256": "04175010f383b41ebaa628a2044af2cb408ed85636cb049bd7913c4f50c57e53",
+      "git_blob": "1aa0e2d76ca7bd559e44cb28ba58fcb1445dfa57"
+    },
+    {
+      "path": "src/native_physical_provider_pool_lifecycle.cpp",
+      "bytes": 6639,
+      "sha256": "6da8617044b9bedb8762aa325f9041e38ded869aaf455f21c95e2a14b6aba9d7",
+      "git_blob": "9dfc0e48b8c373f5f5062c8bca3865aa0ce2ef5b"
+    }
+  ],
+  "audit_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup-readiness\\local\\native_gui_group_pool_startup_readiness\\audit.json",
+    "bytes": 32372,
+    "sha256": "3aa317a2d5a6aa274f437e012f9148128c0f86b58729df4c6334638ca18be4ed"
+  },
+  "artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup-readiness\\local\\native_gui_group_pool_startup_readiness\\collect.py",
+      "bytes": 1612,
+      "sha256": "e4f325ec1f3c33e4a843a1c7c71461412fa92f410f9831e7329e2de39f60c856"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup-readiness\\local\\native_gui_group_pool_startup_readiness\\audit.py",
+      "bytes": 6704,
+      "sha256": "1e111bed62a09054fe61151b83cf51d165f9c4abb88547bc6f05ceeb5f3b209c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup-readiness\\local\\native_gui_group_pool_startup_readiness\\audit.json",
+      "bytes": 32372,
+      "sha256": "3aa317a2d5a6aa274f437e012f9148128c0f86b58729df4c6334638ca18be4ed"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup-readiness\\local\\native_gui_group_pool_startup_readiness\\target_verified.json",
+      "bytes": 158,
+      "sha256": "0d5843bfe66bf8cb9ee3cf437d8d599bb2344fa3320b4a2bf4e244758bbd72ae"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup-readiness\\local\\native_gui_group_pool_startup_readiness\\target_status.txt",
+      "bytes": 40,
+      "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup-readiness\\local\\native_gui_group_pool_startup_readiness\\target_process.json",
+      "bytes": 804,
+      "sha256": "b4de0a17c5d09c96bdc2390dd24adcedfd1a4e732822b4109fded82c24727db7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup-readiness\\local\\native_gui_group_pool_startup_readiness\\proto.txt",
+      "bytes": 1455,
+      "sha256": "240acb6605a1b3bde23c42e7fbce6ac8c0a6a46ad8806a79da7645afec0784f8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup-readiness\\local\\native_gui_group_pool_startup_readiness\\live_cd7440_asm.txt",
+      "bytes": 147,
+      "sha256": "d314e12a7de2c424e7a28a7c583047c1850589e96905e22f09711c6d9ff328f3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup-readiness\\local\\native_gui_group_pool_startup_readiness\\live_ce0ae0_asm.txt",
+      "bytes": 56,
+      "sha256": "7f51e7179ced30b7875d00e987a41b3349568554521426c5a8a150b18be12bc6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup-readiness\\local\\native_gui_group_pool_startup_readiness\\live_cd7440_bytes.txt",
+      "bytes": 114,
+      "sha256": "400b6f3485ab92388c4dfc9bcaf66c1cf3ed5fe6f3b223a5085c934a2f396593"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup-readiness\\local\\native_gui_group_pool_startup_readiness\\live_ce0ae0_bytes.txt",
+      "bytes": 53,
+      "sha256": "7946d20a75b5aa36cae9b435c75b86ea2e5f46edcd40b24f7dca404630f2edb0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup-readiness\\local\\native_gui_group_pool_startup_readiness\\live_ac7410_bytes.txt",
+      "bytes": 1026,
+      "sha256": "7d92544514f6d2b2a617c8f98f2d2aee1ce757f35f709e9a7abd33d68a19353a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup-readiness\\local\\native_gui_group_pool_startup_readiness\\live_ac71a0_bytes.txt",
+      "bytes": 669,
+      "sha256": "b8092915854893d6a2af15b1acedca271c0e54902f6c1178109fd2304d04fc6b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup-readiness\\local\\native_gui_group_pool_startup_readiness\\live_crt_ce3470_bytes.txt",
+      "bytes": 616,
+      "sha256": "1e47ffb1af76e69e35dfd250cde731bba75ca625df8a7f1f6ab045c1aa3cc7d1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup-readiness\\local\\native_gui_group_pool_startup_readiness\\live_cd7440_xrefs.txt",
+      "bytes": 22,
+      "sha256": "151f9f403149a81fe6d867c5a83d30d2e45f31454ae86985fc004a9803aa8d28"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup-readiness\\local\\native_gui_group_pool_startup_readiness\\live_ce0ae0_xrefs.txt",
+      "bytes": 59,
+      "sha256": "fb5ebd78a472d6278a67d5cd9f9f2bbebd7c178a0a0b3a456515990a0f6fb0ae"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup-readiness\\local\\native_gui_group_pool_startup_readiness\\live_cd7440_callers.txt",
+      "bytes": 37,
+      "sha256": "5e7dc1e664996c8dcb87c5750a3def40076e77bc358cbe73adc6278c3b23c1d2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup-readiness\\local\\native_gui_group_pool_startup_readiness\\live_ce0ae0_callers.txt",
+      "bytes": 37,
+      "sha256": "5e7dc1e664996c8dcb87c5750a3def40076e77bc358cbe73adc6278c3b23c1d2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup-readiness\\local\\native_gui_group_pool_startup_readiness\\source_startup_and_factory_callers.txt",
+      "bytes": 538,
+      "sha256": "957df8839e2a4ad878a41aecbccd4d7309cbcd3b4fb44bbacb86c59cb8ed2500"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup-readiness\\local\\native_gui_group_pool_startup_readiness\\write_report.py",
+      "bytes": 14025,
+      "sha256": "fa7ae9a402549ad4b62619383d71dc90b1d70b3c0e17c02afa9e86d2e874f887"
+    }
+  ],
+  "diagnostics_not_used_as_evidence": [
+    "live_cd7440_callers.txt and live_ce0ae0_callers.txt returned null function; no negative Native caller claim is derived."
+  ],
+  "not_performed": [
+    "Source/header/CMake/shared metadata edits",
+    "Ghidra mutation",
+    "compile/link/build/tests/probes/target execution/runtime/gameplay",
+    "old frozen artifact mutation or execution"
+  ],
+  "credit": {
+    "new_native_bodies": 0,
+    "vendor": 0,
+    "duplicate_bodies": 0,
+    "runtime": 0,
+    "activation": 0
+  }
+}
