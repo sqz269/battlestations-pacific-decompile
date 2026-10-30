@@ -1,0 +1,248 @@
+{
+  "status": "primary_and_independent_source_reviews_common_build_actual_entry_link_emitted_checks_passed_unactivated",
+  "published_base": "10e96821ca642f519a3030af05023e2894bc11b7",
+  "source_build_head": "daac9c4b0",
+  "candidates": {
+    "engine": "5c320a1f5b508a59862db6d8d055c2878c0a643a",
+    "getter": "632df2e40a58e33c288b0fe1ae16bc8c516bf593"
+  },
+  "independent_reviews": {
+    "engine": "aef563e72dc9a906aa4014ad14cdc37f271c42b9",
+    "getter": "7116fb2d39a06128a2d58a72ad3da4572188aa4f"
+  },
+  "source_pins": [
+    {
+      "path": "include/bsp/dyn_engine_runtime.hpp",
+      "bytes": 7203,
+      "sha256": "a09651ed5813e1ef6ed2c79c1e648e0af5741b65787b80893bb2be813aecc800",
+      "candidate": "5c320a1f5b508a59862db6d8d055c2878c0a643a",
+      "git_blob": "3ebafb25dc442e94b5dae47eecbda4e6294627de"
+    },
+    {
+      "path": "src/dyn_engine_runtime.cpp",
+      "bytes": 9562,
+      "sha256": "1a1484921ed59ef9c9334a65bb4f9fbcb43ef27e74ca502703516e6ffefd7c67",
+      "candidate": "5c320a1f5b508a59862db6d8d055c2878c0a643a",
+      "git_blob": "fe118dfb7b5ef18d6df922e4d86bbd9f7f05671b"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_resolved_position.hpp",
+      "bytes": 2378,
+      "sha256": "17672fb9b31bbfec5faea2568e62edc0b2fe88a431348a5abab3980eb3a601ca",
+      "candidate": "632df2e40a58e33c288b0fe1ae16bc8c516bf593",
+      "git_blob": "f6b05430f5846c6cd09d1c242a6fe2e34d388c8c"
+    },
+    {
+      "path": "src/native_gui_widget_resolved_position.cpp",
+      "bytes": 2784,
+      "sha256": "385c4fd6a50d75e7734cce7442923d5cf6dfc1830a444d49257d9cae2fc04457",
+      "candidate": "632df2e40a58e33c288b0fe1ae16bc8c516bf593",
+      "git_blob": "bf65a9da0a9264cf39b80ecc092c4cb48d01fe12"
+    }
+  ],
+  "getter_unchanged_dependencies_checked": 7,
+  "common_build": {
+    "target": "MSVC Win32 Release",
+    "existing_suites": "2/2",
+    "test_seconds": 13.96,
+    "BSP_CL_MP": 2,
+    "BSP_PCH": "ON"
+  },
+  "engine_common": [
+    {
+      "symbol": "?dyn_engine_construct_qualified_00c55ea0@bsp@@YAPAUDynEngineStorage@1@AAU21@PDIABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z",
+      "normal_bytes": 210,
+      "section_bytes_including_catches_and_padding": 302,
+      "code_sha256": "3ddbee94c4d171ef191836dfe9079e7334141fe162002d1ee3fc3193c952b696",
+      "strict_code_and_relocations_identical": true,
+      "strict_entire_EH_section_and_relocations_identical": true,
+      "maxState": 6
+    },
+    {
+      "symbol": "?dyn_engine_ensure_qualified_00c55f50@bsp@@YAPAUDynEngineStorage@1@PDIABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z",
+      "normal_bytes": 125,
+      "section_bytes_including_catches_and_padding": 176,
+      "code_sha256": "d6d0b2561967e65163036f10c9e1b5c4a0de5cf53c891c65ba8f61b46f3771ac",
+      "strict_code_and_relocations_identical": true,
+      "strict_entire_EH_section_and_relocations_identical": true,
+      "maxState": 2
+    }
+  ],
+  "getter_common": [
+    {
+      "symbol": "??0NativeGuiWidgetResolvedPositionData@bsp@@QAE@ABVGameNativeReadOnlyData@game@1@@Z",
+      "bytes": 30,
+      "sha256": "767090b5c672222db860df86bcffe0a135f50ab10ae49446e41bc89ab3f806f0",
+      "strict_code_and_relocations_identical": false
+    },
+    {
+      "symbol": "?get_native_gui_widget_resolved_position_00aa6750@bsp@@YAPAXPAX0ABVNativeGuiWidgetResolvedPositionData@1@@Z",
+      "bytes": 36,
+      "sha256": "05f42d264365183eb5bc3924312a62209bcff77022aaac5144e6fa34cf60452b",
+      "strict_code_and_relocations_identical": true
+    },
+    {
+      "symbol": "?resolved_position_kernel_00aa6750@?A0x12c0c6cc@bsp@@YAXXZ",
+      "bytes": 142,
+      "sha256": "611ce5f02cf18f50c4819e3544bb42599bf36b9808fe0f055dbe6ae2b177f202",
+      "strict_code_and_relocations_identical": true
+    }
+  ],
+  "actual_entry_link": {
+    "passed": true,
+    "machine": "014c",
+    "embedded_manifest": true,
+    "executed": false,
+    "entries": {
+      "engine_construct": {
+        "symbol": "?dyn_engine_construct_qualified_00c55ea0@bsp@@YAPAUDynEngineStorage@1@AAU21@PDIABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z",
+        "address": 4198960,
+        "object": "bsp_core:dyn_engine_runtime.obj"
+      },
+      "engine_ensure": {
+        "symbol": "?dyn_engine_ensure_qualified_00c55f50@bsp@@YAPAUDynEngineStorage@1@PDIABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z",
+        "address": 4199264,
+        "object": "bsp_core:dyn_engine_runtime.obj"
+      },
+      "qualified_root": {
+        "symbol": "?dyn_profile_construct_00c50310@bsp@@YAPAUDynProfileStorage@1@AAU21@ABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z",
+        "address": 4199440,
+        "object": "bsp_core:dyn_engine_runtime.obj"
+      },
+      "qualified_task": {
+        "symbol": "?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z",
+        "address": 4200176,
+        "object": "bsp_core:dyn_task_manager.obj"
+      },
+      "getter": {
+        "symbol": "?get_native_gui_widget_resolved_position_00aa6750@bsp@@YAPAXPAX0ABVNativeGuiWidgetResolvedPositionData@1@@Z",
+        "address": 4199872,
+        "object": "bsp_core:native_gui_widget_resolved_position.obj"
+      },
+      "getter_binding": {
+        "symbol": "??0NativeGuiWidgetResolvedPositionData@bsp@@QAE@ABVGameNativeReadOnlyData@game@1@@Z",
+        "address": 4199840,
+        "object": "bsp_core:native_gui_widget_resolved_position.obj"
+      },
+      "getter_kernel": {
+        "symbol": "?resolved_position_kernel_00aa6750@?A0x12c0c6cc@bsp@@YAXXZ",
+        "address": 4199920,
+        "object": "bsp_core:native_gui_widget_resolved_position.obj"
+      },
+      "actual_data_at": {
+        "symbol": "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z",
+        "address": 4202608,
+        "object": "bsp_core:game_native_readonly_data.obj"
+      }
+    }
+  },
+  "kernel_PE_check": "142B equals all original146B bytes after exactlyJZ6A->66 and FSUBabsoluteD7A258->[EDX]; selfREL32unchanged relative, all47operations, noEDXwrites.",
+  "engine_qualification": "State0+40 precedeszeros47/4D/54; profile+Cstore7D precedesphysicaldemotion8A; validC++throwingepochs only, notnativefault/SEH/FH3/secondarycleanup. DescriptorA7 afteralloc91/state3+95/nullguard; ensurehotread31/branch35 beforecoldprovider/alloc.",
+  "getter_qualification": "Common bindingctor30B vsstrict27B; wrapper36/kernel142exact with normalizedrelocs. Borrowactualreadonlyowner/mapping/disjointstablemetadata; no originalEDX/liveout/privateframe/unmaskedFP/SEH/fault/Gameadoption proof.",
+  "frozen_artifacts": [
+    {
+      "path": "local/function_source_batch6/artifacts/dyn_engine_runtime.obj",
+      "bytes": 21093,
+      "sha256": "d2e123d91aa2c458f9dc3070468bb49fb64f40e948a2432b33c80d2fa89369a5",
+      "copied_from": "build/win32/bsp_core.dir/Release/dyn_engine_runtime.obj"
+    },
+    {
+      "path": "local/function_source_batch6/artifacts/dyn_task_manager.obj",
+      "bytes": 14132,
+      "sha256": "97ca64168228934954f2bd921e345bac863b62deb0bf91deb8c6c839a9f4f2c4",
+      "copied_from": "build/win32/bsp_core.dir/Release/dyn_task_manager.obj"
+    },
+    {
+      "path": "local/function_source_batch6/artifacts/native_gui_widget_resolved_position.obj",
+      "bytes": 4315,
+      "sha256": "ba26a2dcd95f77912a382e4d6ffb9848aaadf2698ced6727a7e46cc9ea23a468",
+      "copied_from": "build/win32/bsp_core.dir/Release/native_gui_widget_resolved_position.obj"
+    },
+    {
+      "path": "local/function_source_batch6/artifacts/game_native_readonly_data.obj",
+      "bytes": 103139,
+      "sha256": "ec4f9b31f7fc424d135e41b50352b6187f80061dc79cdf9e2e585f14e7111e29",
+      "copied_from": "build/win32/bsp_core.dir/Release/game_native_readonly_data.obj"
+    },
+    {
+      "path": "local/function_source_batch6/artifacts/bsp_game.exe",
+      "bytes": 7497216,
+      "sha256": "8cf63390e9ab7db7cb793c57695381119f91af8b7f35eed094f702a17102213f",
+      "copied_from": "build/win32/Release/bsp_game.exe"
+    },
+    {
+      "path": "local/function_source_batch6/artifacts/entries_probe.exe",
+      "bytes": 17408,
+      "sha256": "94f7e03dd097480cfce0474e6ecef30b2da2dd38a4c259539d00fa8d1a0e6d95",
+      "copied_from": "local/function_source_batch6/entries_probe.exe"
+    },
+    {
+      "path": "local/function_source_batch6/artifacts/entries_probe.map",
+      "bytes": 49085,
+      "sha256": "6215898fd9fd6ea64305a323dc027a3b8129957540edea9eb0c823c34e194170",
+      "copied_from": "local/function_source_batch6/entries_probe.map"
+    },
+    {
+      "path": "local/function_source_batch6/artifacts/entries_probe.obj",
+      "bytes": 2415,
+      "sha256": "41a989ad8ffb956cbc2d5077565181b13e042bea9a6c5ef09cc807d5353435d9",
+      "copied_from": "local/function_source_batch6/entries_probe.obj"
+    },
+    {
+      "path": "local/function_source_batch6/artifacts/entries_probe.cpp",
+      "bytes": 720,
+      "sha256": "d9d782b176cd666ff2f7bb3ae44d698b487d1addaf6cc4433a603c3cf3d6077d",
+      "copied_from": "local/function_source_batch6/entries_probe.cpp"
+    },
+    {
+      "path": "local/function_source_batch6/artifacts/entries_probe.cmd",
+      "bytes": 1048,
+      "sha256": "24a2367a29bf3a9a6fd6b2f0ca9c704af26178e314451d5e721e401fcb39a437",
+      "copied_from": "local/function_source_batch6/entries_probe.cmd"
+    },
+    {
+      "path": "local/function_source_batch6/artifacts/build.log",
+      "bytes": 3620,
+      "sha256": "5955424b37d2348199bc78e799c96bc8a0cf2695afda8eed36c8cd30a5076180",
+      "copied_from": "local/function_source_batch6/build.log"
+    },
+    {
+      "path": "local/function_source_batch6/artifacts/link.log",
+      "bytes": 19,
+      "sha256": "48d974da562e4793f8ff5dad5377207422c2b5093bd7c730baf580da948db910",
+      "copied_from": "local/function_source_batch6/link.log"
+    },
+    {
+      "path": "local/function_source_batch6/artifacts/engine_common.txt",
+      "bytes": 123034,
+      "sha256": "5b2d9b0ccf0b05c3cb83cf0ed572bb7c00de536caa0bbc6354aafc67f5bc4864",
+      "copied_from": "local/function_source_batch6/engine_common.txt"
+    },
+    {
+      "path": "local/function_source_batch6/artifacts/getter_common.txt",
+      "bytes": 32589,
+      "sha256": "fbe8bc762c89ca266653b960df35d07248b0ddb69df826d72f04a3cc87094d7c",
+      "copied_from": "local/function_source_batch6/getter_common.txt"
+    }
+  ],
+  "guard_changes": 0,
+  "new_tests": 0,
+  "new_fixture_or_body_execution": false,
+  "game_or_Dll_execution": false,
+  "abi_compatible": false,
+  "game_validated": false,
+  "activation": false,
+  "credit": {
+    "native_bodies": 0,
+    "duplicate_native_bodies": 0,
+    "vendor_bodies": 0
+  },
+  "ghidra": {
+    "prior_annotations": "local/ghidra-annotations-20261030T025210Z.json",
+    "three_names_preserved": true,
+    "comments_preserved_extended": true,
+    "project_saved": true,
+    "exports_refreshed": true,
+    "index_rebuilt": true
+  }
+}

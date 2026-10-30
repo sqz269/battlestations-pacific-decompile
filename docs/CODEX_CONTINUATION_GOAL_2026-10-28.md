@@ -987,3 +987,17 @@ hostFALSE projection pass. All NINE raw choices remain FALSE. Fresh private
 Source/linkage/runtime admission is next; olddc2c/71db tests do not qualify this
 layout. No actual runtime, wholecontent/caller, full13/USN21/Page/P4, visual or
 ABI/production credit follows. See CODEX_GUI_RAW_EMPTY_UNCHANGED_OWNER_INTEGRATION.md.
+
+Fresh private EMPTY build/static preparation now pins OFFd58e0e3ae and the
+one-bool privateONac60a3af in a separate immutable execution tree. OFF/ON existing
+checks2/2 pass12.71s/14.07s; static42/42 includes15 actual compiled call/jump
+edges, and Root independently rehashed38 archivedfiles. No game/controller/
+evaluator/observer ran. Outcome-blind Source/protocol and v4payload reviews
+pass, but execution is not approved: v5operator guards must bind genuine
+sampler1055/exclusive-window/current-process evidence before EACH invocation.
+Checkpoint3 Source review includes actualCIMcreation time, per-PIDcap8 and
+NoForceStop with no stale cleanup. A copiedguard missing-context negative
+check rejects correctly, without invoking a target. All published choices
+remain FALSE. Genuine loaded rawlocale-manager binding is also still missing
+for uppercase; a stale cdecl note is contradicted by savedECXmanager/RET4 ASM.
+Proof scopes and open gates: CODEX_GUI_RAW_EMPTY_UNCHANGED_RUNTIME_PREPARATION.md.

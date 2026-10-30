@@ -1,0 +1,649 @@
+{
+  "packet": "codex-native-gui-widget-resolved-position",
+  "generated_utc": "2026-10-30T00:51:22.275987+00:00",
+  "status": "complete_raw_normal_source_only_unwired",
+  "source_base": "60c8453a1b661dfa62625945986e38d71bee0216",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position",
+  "branch": "agent/codex-native-gui-widget-resolved-position",
+  "owned_address": "00AA6750",
+  "source_and_doc_receipts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position\\include\\bsp\\native_gui_widget_resolved_position.hpp",
+      "bytes": 2378,
+      "sha256": "17672fb9b31bbfec5faea2568e62edc0b2fe88a431348a5abab3980eb3a601ca"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position\\src\\native_gui_widget_resolved_position.cpp",
+      "bytes": 2784,
+      "sha256": "385c4fd6a50d75e7734cce7442923d5cf6dfc1830a444d49257d9cae2fc04457"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position\\docs\\CC16_NATIVE_GUI_WIDGET_RESOLVED_POSITION.md",
+      "bytes": 9148,
+      "sha256": "1a3cc72039afabdfb5b755b0b4bd6db0e88c551f904d2dc7417b51e5d9aba8ba"
+    }
+  ],
+  "readiness_input": {
+    "commit": "6326a9e11f65a800d9129bfcf1c3ed0e6ceb122e",
+    "path": "docs/CC16_NATIVE_GAME_PAUSE_READINESS.md",
+    "relationship": "read-only prerequisite evidence; no private production dependency"
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_before_live_batches": true,
+    "last_status": "ghidra: up  /battlestationspacific.exe",
+    "original_image": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "original_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "no_analysis_mutation_or_import": true
+  },
+  "original": {
+    "address": "00AA6750",
+    "bytes": 146,
+    "instructions": 47,
+    "file_offset": "0x6a6750",
+    "hex": "83ec20568bf1837e7000746a8b4e70d941208d442418d8491850d95c2408d94124d8491cd95c240ce8d3ffffffd900d8460cd95c240cd94004d84610d95c2410d940088b442428d846145ed95c2410d9442408d82424d918d944240cd8642404d95804d9442410dc2558a2d700d9580883c420c204008b442428d9460cd918d94610d95804d946145ed9580883c420c20400",
+    "sha256": "4bec621d37131c0143aa7a8df0e4eac74286cc4955adc5ec853b2422055d3c48",
+    "listing": [
+      "00AA6750: sub esp, 0x20",
+      "00AA6753: push esi",
+      "00AA6754: mov esi, ecx",
+      "00AA6756: cmp dword ptr [esi + 0x70], 0",
+      "00AA675A: je 0xaa67c6",
+      "00AA675C: mov ecx, dword ptr [esi + 0x70]",
+      "00AA675F: fld dword ptr [ecx + 0x20]",
+      "00AA6762: lea eax, [esp + 0x18]",
+      "00AA6766: fmul dword ptr [ecx + 0x18]",
+      "00AA6769: push eax",
+      "00AA676A: fstp dword ptr [esp + 8]",
+      "00AA676E: fld dword ptr [ecx + 0x24]",
+      "00AA6771: fmul dword ptr [ecx + 0x1c]",
+      "00AA6774: fstp dword ptr [esp + 0xc]",
+      "00AA6778: call 0xaa6750",
+      "00AA677D: fld dword ptr [eax]",
+      "00AA677F: fadd dword ptr [esi + 0xc]",
+      "00AA6782: fstp dword ptr [esp + 0xc]",
+      "00AA6786: fld dword ptr [eax + 4]",
+      "00AA6789: fadd dword ptr [esi + 0x10]",
+      "00AA678C: fstp dword ptr [esp + 0x10]",
+      "00AA6790: fld dword ptr [eax + 8]",
+      "00AA6793: mov eax, dword ptr [esp + 0x28]",
+      "00AA6797: fadd dword ptr [esi + 0x14]",
+      "00AA679A: pop esi",
+      "00AA679B: fstp dword ptr [esp + 0x10]",
+      "00AA679F: fld dword ptr [esp + 8]",
+      "00AA67A3: fsub dword ptr [esp]",
+      "00AA67A6: fstp dword ptr [eax]",
+      "00AA67A8: fld dword ptr [esp + 0xc]",
+      "00AA67AC: fsub dword ptr [esp + 4]",
+      "00AA67B0: fstp dword ptr [eax + 4]",
+      "00AA67B3: fld dword ptr [esp + 0x10]",
+      "00AA67B7: fsub qword ptr [0xd7a258]",
+      "00AA67BD: fstp dword ptr [eax + 8]",
+      "00AA67C0: add esp, 0x20",
+      "00AA67C3: ret 4",
+      "00AA67C6: mov eax, dword ptr [esp + 0x28]",
+      "00AA67CA: fld dword ptr [esi + 0xc]",
+      "00AA67CD: fstp dword ptr [eax]",
+      "00AA67CF: fld dword ptr [esi + 0x10]",
+      "00AA67D2: fstp dword ptr [eax + 4]",
+      "00AA67D5: fld dword ptr [esi + 0x14]",
+      "00AA67D8: pop esi",
+      "00AA67D9: fstp dword ptr [eax + 8]",
+      "00AA67DC: add esp, 0x20",
+      "00AA67DF: ret 4"
+    ]
+  },
+  "original_abi": {
+    "receiver": "ECX actual raw widget storage",
+    "stack_argument": "one pointer to twelve writable XYZ bytes",
+    "result": "EAX same output pointer",
+    "returns": "RET 4 at both exits",
+    "saved_register": "ESI",
+    "EDX": "neither read nor written in all 47 original instructions",
+    "calls": [
+      {
+        "address": "00AA6778",
+        "native": "00AA6750",
+        "function": "00AA6750",
+        "phase": "concrete_self_recursion"
+      }
+    ],
+    "null_or_cycle_guard": false,
+    "external_callee": null
+  },
+  "source_interface": {
+    "binding_constructor": "bsp::NativeGuiWidgetResolvedPositionData(const bsp::game::GameNativeReadOnlyData&)",
+    "getter": "void* bsp::get_native_gui_widget_resolved_position_00aa6750(void*, void*, const NativeGuiWidgetResolvedPositionData&)",
+    "private_kernel": "ECX receiver / EDX genuine data-cell pointer / one stacked output pointer / EAX output / RET 4",
+    "binding_lifetime": "Borrowed metadata only. Retain the same authenticated data owner/mapping through all binding copies and calls.",
+    "binding_lookup": "The required constructor calls real data_at(0x00D7A258, 8), stores its returned pointer, and may propagate its C++ exception before getter use.",
+    "getter_lookup": "None; integer wrapper only. Every recursive invocation uses the same EDX pointer without extra stack arguments.",
+    "default_or_literal_cell_constructor": false,
+    "semantic_widget_conversion": false,
+    "numeric_native_code_call": false
+  },
+  "actual_cell": {
+    "address": "00D7A258",
+    "bytes": 8,
+    "file_offset": "0x97a258",
+    "hex": "0000000000000000",
+    "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+  },
+  "data_dependency": {
+    "supplier": "Existing GameNativeReadOnlyData::data_at, authenticated supported-image read-only mapping",
+    "declaration": "include/bsp/game_native_readonly_data.hpp",
+    "implementation": "src/game_native_readonly_data.cpp:137-147",
+    "existing_same_cell_consumer": "src/native_gui_text_field_storage.cpp",
+    "double_literal_substitution": false,
+    "cell_value_snapshot": false,
+    "binding_metadata_assumes_stable_valid_lifetime": true
+  },
+  "epochs": {
+    "parent_read": "CMP [widget+70],0 followed by separate MOV ECX,[widget+70]",
+    "products": "Parent +20 times +18 spills single, then +24 times +1C spills single; both before recursion.",
+    "sums": "Returned XYZ plus own +0C/+10/+14 each spill single before first caller-output store; Z spans POP ESI before FSTP.",
+    "output": "Saved X minus saved X product -> outX; saved Y minus saved Y product -> outY; saved Z minus actual double cell -> outZ.",
+    "no_parent": "Load own X/store outX, then load own Y/store outY, then load own Z/POP ESI/store outZ. No three-field snapshot.",
+    "private_stack_relative_to_entry": {
+      "saved_ESI": "-24h",
+      "products": [
+        "-20h",
+        "-1Ch"
+      ],
+      "sum_spills": [
+        "-18h",
+        "-14h",
+        "-10h"
+      ],
+      "recursive_output": [
+        "-0Ch",
+        "-08h",
+        "-04h"
+      ]
+    },
+    "payload_aliases": "Allowed subject to reached readable/writable storage; original progressive read/store order preserved.",
+    "binding_private_frame_aliases": "Binding metadata/mapping must remain stable and disjoint from writable payload/private scratch; native physical-stack alias equivalence is not claimed."
+  },
+  "floating_point": {
+    "implementation": "Exact x87 opcodes/operand widths/directions/spill epochs; no C++ floating arithmetic.",
+    "ambient": "No precision/rounding/mask/status change or MXCSR manipulation; no new empty-stack assumption.",
+    "paths": [
+      {
+        "path": "parent",
+        "FP_net_delta": 0,
+        "max_extra_FP_depth": 1,
+        "FP_depth_before_self": 0,
+        "FSTP_count": 8,
+        "FP_ops": [
+          {
+            "index": 6,
+            "mnemonic": "fld",
+            "operand": "dword ptr [ecx + 0x20]"
+          },
+          {
+            "index": 8,
+            "mnemonic": "fmul",
+            "operand": "dword ptr [ecx + 0x18]"
+          },
+          {
+            "index": 10,
+            "mnemonic": "fstp",
+            "operand": "dword ptr [esp + 8]"
+          },
+          {
+            "index": 11,
+            "mnemonic": "fld",
+            "operand": "dword ptr [ecx + 0x24]"
+          },
+          {
+            "index": 12,
+            "mnemonic": "fmul",
+            "operand": "dword ptr [ecx + 0x1c]"
+          },
+          {
+            "index": 13,
+            "mnemonic": "fstp",
+            "operand": "dword ptr [esp + 0xc]"
+          },
+          {
+            "index": 15,
+            "mnemonic": "fld",
+            "operand": "dword ptr [eax]"
+          },
+          {
+            "index": 16,
+            "mnemonic": "fadd",
+            "operand": "dword ptr [esi + 0xc]"
+          },
+          {
+            "index": 17,
+            "mnemonic": "fstp",
+            "operand": "dword ptr [esp + 0xc]"
+          },
+          {
+            "index": 18,
+            "mnemonic": "fld",
+            "operand": "dword ptr [eax + 4]"
+          },
+          {
+            "index": 19,
+            "mnemonic": "fadd",
+            "operand": "dword ptr [esi + 0x10]"
+          },
+          {
+            "index": 20,
+            "mnemonic": "fstp",
+            "operand": "dword ptr [esp + 0x10]"
+          },
+          {
+            "index": 21,
+            "mnemonic": "fld",
+            "operand": "dword ptr [eax + 8]"
+          },
+          {
+            "index": 23,
+            "mnemonic": "fadd",
+            "operand": "dword ptr [esi + 0x14]"
+          },
+          {
+            "index": 25,
+            "mnemonic": "fstp",
+            "operand": "dword ptr [esp + 0x10]"
+          },
+          {
+            "index": 26,
+            "mnemonic": "fld",
+            "operand": "dword ptr [esp + 8]"
+          },
+          {
+            "index": 27,
+            "mnemonic": "fsub",
+            "operand": "dword ptr [esp]"
+          },
+          {
+            "index": 28,
+            "mnemonic": "fstp",
+            "operand": "dword ptr [eax]"
+          },
+          {
+            "index": 29,
+            "mnemonic": "fld",
+            "operand": "dword ptr [esp + 0xc]"
+          },
+          {
+            "index": 30,
+            "mnemonic": "fsub",
+            "operand": "dword ptr [esp + 4]"
+          },
+          {
+            "index": 31,
+            "mnemonic": "fstp",
+            "operand": "dword ptr [eax + 4]"
+          },
+          {
+            "index": 32,
+            "mnemonic": "fld",
+            "operand": "dword ptr [esp + 0x10]"
+          },
+          {
+            "index": 33,
+            "mnemonic": "fsub",
+            "operand": "qword ptr [edx]"
+          },
+          {
+            "index": 34,
+            "mnemonic": "fstp",
+            "operand": "dword ptr [eax + 8]"
+          }
+        ]
+      },
+      {
+        "path": "no_parent",
+        "FP_net_delta": 0,
+        "max_extra_FP_depth": 1,
+        "FP_depth_before_self": null,
+        "FSTP_count": 3,
+        "FP_ops": [
+          {
+            "index": 38,
+            "mnemonic": "fld",
+            "operand": "dword ptr [esi + 0xc]"
+          },
+          {
+            "index": 39,
+            "mnemonic": "fstp",
+            "operand": "dword ptr [eax]"
+          },
+          {
+            "index": 40,
+            "mnemonic": "fld",
+            "operand": "dword ptr [esi + 0x10]"
+          },
+          {
+            "index": 41,
+            "mnemonic": "fstp",
+            "operand": "dword ptr [eax + 4]"
+          },
+          {
+            "index": 42,
+            "mnemonic": "fld",
+            "operand": "dword ptr [esi + 0x14]"
+          },
+          {
+            "index": 44,
+            "mnemonic": "fstp",
+            "operand": "dword ptr [eax + 8]"
+          }
+        ]
+      }
+    ],
+    "wrapper_and_binding_constructor": "No x87 or SSE floating-point instruction in either relevant emitted function; provider lookup is outside getter boundary.",
+    "effects_retained": [
+      "NaN single loads/stores",
+      "signed-zero arithmetic",
+      "subnormal processing",
+      "infinities",
+      "single overflow/underflow",
+      "late genuine double subtraction"
+    ],
+    "runtime_proof": false,
+    "unmasked_delivery_SEH_fault_transport_proof": false
+  },
+  "strict_compile": {
+    "result": "PASS / no warnings / compile-only",
+    "target": "MSVC Win32 COFF 014c",
+    "flags": [
+      "/nologo",
+      "/c",
+      "/std:c++17",
+      "/MD",
+      "/O2",
+      "/Gy",
+      "/fp:strict",
+      "/EHsc",
+      "/W4",
+      "/WX",
+      "/Iinclude",
+      "/FAs"
+    ],
+    "vcvarsall": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Auxiliary/Build/vcvarsall.bat x86",
+    "vc_tools_default_version": "14.51.36231",
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position\\local\\native_gui_widget_resolved_position\\native_gui_widget_resolved_position.obj",
+      "bytes": 4852,
+      "machine": "014c",
+      "sha256": "eb9ade66754a8e3ad0240164d2dd6bb0f76f76d1d8db982a4a9a45792a099e86"
+    },
+    "assembler_listing": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position\\local\\native_gui_widget_resolved_position\\native_gui_widget_resolved_position.asm",
+      "sha256": "794e71446df08fb10c97250fdada3914948be032e896f2f94fe0233218894b89"
+    },
+    "relevant_functions": [
+      {
+        "name": "??0NativeGuiWidgetResolvedPositionData@bsp@@QAE@ABVGameNativeReadOnlyData@game@1@@Z",
+        "bytes": 27,
+        "sha256": "8bbb5d1e253df5bda6b80687127e1e65efd5255d0d785a4c5ab119e1a3496eb1",
+        "hex": "566a088bf18b4c240c6858a2d700e80000000089068bc65ec20400",
+        "relocations": [
+          [
+            15,
+            20,
+            "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z"
+          ]
+        ],
+        "listing": [
+          "0000: push esi",
+          "0001: push 8",
+          "0003: mov esi, ecx",
+          "0005: mov ecx, dword ptr [esp + 0xc]",
+          "0009: push 0xd7a258",
+          "000e: call 0x13",
+          "0013: mov dword ptr [esi], eax",
+          "0015: mov eax, esi",
+          "0017: pop esi",
+          "0018: ret 4"
+        ]
+      },
+      {
+        "name": "?get_native_gui_widget_resolved_position_00aa6750@bsp@@YAPAXPAX0ABVNativeGuiWidgetResolvedPositionData@1@@Z",
+        "bytes": 36,
+        "sha256": "05f42d264365183eb5bc3924312a62209bcff77022aaac5144e6fa34cf60452b",
+        "hex": "558bec518b45108b008945108b4d088b5510ff750ce8000000008945fc8b45fc8be55dc3",
+        "relocations": [
+          [
+            22,
+            20,
+            "?resolved_position_kernel_00aa6750@?anonymous@bsp@@YAXXZ"
+          ]
+        ],
+        "listing": [
+          "0000: push ebp",
+          "0001: mov ebp, esp",
+          "0003: push ecx",
+          "0004: mov eax, dword ptr [ebp + 0x10]",
+          "0007: mov eax, dword ptr [eax]",
+          "0009: mov dword ptr [ebp + 0x10], eax",
+          "000c: mov ecx, dword ptr [ebp + 8]",
+          "000f: mov edx, dword ptr [ebp + 0x10]",
+          "0012: push dword ptr [ebp + 0xc]",
+          "0015: call 0x1a",
+          "001a: mov dword ptr [ebp - 4], eax",
+          "001d: mov eax, dword ptr [ebp - 4]",
+          "0020: mov esp, ebp",
+          "0022: pop ebp",
+          "0023: ret "
+        ]
+      },
+      {
+        "name": "?resolved_position_kernel_00aa6750@?anonymous@bsp@@YAXXZ",
+        "bytes": 142,
+        "sha256": "611ce5f02cf18f50c4819e3544bb42599bf36b9808fe0f055dbe6ae2b177f202",
+        "hex": "83ec20568bf1837e700074668b4e70d941208d442418d8491850d95c2408d94124d8491cd95c240ce800000000d900d8460cd95c240cd94004d84610d95c2410d940088b442428d846145ed95c2410d9442408d82424d918d944240cd8642404d95804d9442410dc22d9580883c420c204008b442428d9460cd918d94610d95804d946145ed9580883c420c20400",
+        "relocations": [
+          [
+            41,
+            20,
+            "?resolved_position_kernel_00aa6750@?anonymous@bsp@@YAXXZ"
+          ]
+        ],
+        "listing": [
+          "0000: sub esp, 0x20",
+          "0003: push esi",
+          "0004: mov esi, ecx",
+          "0006: cmp dword ptr [esi + 0x70], 0",
+          "000a: je 0x72",
+          "000c: mov ecx, dword ptr [esi + 0x70]",
+          "000f: fld dword ptr [ecx + 0x20]",
+          "0012: lea eax, [esp + 0x18]",
+          "0016: fmul dword ptr [ecx + 0x18]",
+          "0019: push eax",
+          "001a: fstp dword ptr [esp + 8]",
+          "001e: fld dword ptr [ecx + 0x24]",
+          "0021: fmul dword ptr [ecx + 0x1c]",
+          "0024: fstp dword ptr [esp + 0xc]",
+          "0028: call 0x2d",
+          "002d: fld dword ptr [eax]",
+          "002f: fadd dword ptr [esi + 0xc]",
+          "0032: fstp dword ptr [esp + 0xc]",
+          "0036: fld dword ptr [eax + 4]",
+          "0039: fadd dword ptr [esi + 0x10]",
+          "003c: fstp dword ptr [esp + 0x10]",
+          "0040: fld dword ptr [eax + 8]",
+          "0043: mov eax, dword ptr [esp + 0x28]",
+          "0047: fadd dword ptr [esi + 0x14]",
+          "004a: pop esi",
+          "004b: fstp dword ptr [esp + 0x10]",
+          "004f: fld dword ptr [esp + 8]",
+          "0053: fsub dword ptr [esp]",
+          "0056: fstp dword ptr [eax]",
+          "0058: fld dword ptr [esp + 0xc]",
+          "005c: fsub dword ptr [esp + 4]",
+          "0060: fstp dword ptr [eax + 4]",
+          "0063: fld dword ptr [esp + 0x10]",
+          "0067: fsub qword ptr [edx]",
+          "0069: fstp dword ptr [eax + 8]",
+          "006c: add esp, 0x20",
+          "006f: ret 4",
+          "0072: mov eax, dword ptr [esp + 0x28]",
+          "0076: fld dword ptr [esi + 0xc]",
+          "0079: fstp dword ptr [eax]",
+          "007b: fld dword ptr [esi + 0x10]",
+          "007e: fstp dword ptr [eax + 4]",
+          "0081: fld dword ptr [esi + 0x14]",
+          "0084: pop esi",
+          "0085: fstp dword ptr [eax + 8]",
+          "0088: add esp, 0x20",
+          "008b: ret 4"
+        ]
+      }
+    ],
+    "other_comdats": "Compiler/library COMDATs from standard headers; no vendor/body credit and no whole-object FP-free claim."
+  },
+  "complete_helper_comparison": {
+    "all47": true,
+    "sole_data_operand_rewrite_index": 33,
+    "self_call_relocated": true,
+    "branch_target_instruction_indices_equal": true,
+    "all_other_operands_exact": true,
+    "original_EDX_unused": true,
+    "Source_EDX_not_written": true,
+    "native_bytes": 146,
+    "source_bytes": 142,
+    "native_instruction_count": 47,
+    "source_instruction_count": 47,
+    "sole_data_rewrite": "FSUB qword ptr [00D7A258] -> FSUB qword ptr [EDX]",
+    "recursive_call_relocation": "Concrete source helper, exactly one helper relocation/call.",
+    "short_branch_repair": "Same no-parent target instruction index; displacement changes with four-byte shortening.",
+    "instructions_added_for_recursive_context": 0,
+    "helper_EDX_writes": 0,
+    "call_stack_word_count": 1,
+    "callee_cleanup_bytes": 4
+  },
+  "original_call_verification": {
+    "command": "python tools/verify_report_calls.py local/native_gui_widget_resolved_position/original_call_rows.json",
+    "rows_checked": 1,
+    "failed": 0,
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position\\local\\native_gui_widget_resolved_position\\call_verification.txt",
+      "bytes": 98,
+      "sha256": "f265e11fc3d5fd4aa49ddb228c36995884dec178f6a0efadb3338a5591bb4b7b"
+    },
+    "scope": "One actual original self-call row; not an ABI or runtime test."
+  },
+  "unchanged_dependencies": [
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3"
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+      "git_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e"
+    },
+    {
+      "path": "include/bsp/gui_widget.hpp",
+      "sha256": "846d1f6378e3459fb585917289d2f3342de37ba98dafc7fc952c9c48ea8061f9",
+      "git_blob": "4cbd859ee389a56e4c3b0b03bca145d9b1ebaecd"
+    },
+    {
+      "path": "src/gui_widget.cpp",
+      "sha256": "c59c3b3a8f6aad8bdd8ebf72c830df870ca8a491835d92e4f9e50b342e8a4fdf",
+      "git_blob": "b595a5ab2fcf204a6722f1d176793a33d5ca6504"
+    },
+    {
+      "path": "src/gui_widget_relative_bounds.cpp",
+      "sha256": "72ab4ebc4840577834242168b1ec3f1c44b8eb51b7db69ac724cf1eec9322633",
+      "git_blob": "2bf5a831d4e825ebaf9159a263604c3dabb21a8a"
+    },
+    {
+      "path": "src/cc13_gui1.cpp",
+      "sha256": "7dfe47d4f105cf2556058954e1b493c683f458073674a8bf310adfa378db6b62",
+      "git_blob": "40dc47c12558bb85e3db366f94d4b0c5c7a5e9ea"
+    },
+    {
+      "path": "src/native_gui_text_field_storage.cpp",
+      "sha256": "70c6b9180077424b5e6d457a82b47024722bd14ea9ba5c5d8da2b2bda2bf2441",
+      "git_blob": "77befd8c28ae3c289aff1ea202f43e2832642082"
+    }
+  ],
+  "saved_exports": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aa6750\\assembly.txt",
+      "sha256": "efcb2e6d2e74b9e768b675dc0e4362ae3e2278139889f3c7788e11825fac8161"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aa6750\\decompiled.c",
+      "sha256": "2bd37f0c0c1c2e21f149b201d57c2aa11059b77c9dce767e2ef723b0fee3cc1b"
+    }
+  ],
+  "retained_local_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position\\local\\native_gui_widget_resolved_position\\compile.cmd",
+      "bytes": 468,
+      "sha256": "3809dcd7d44d0bf047efd96e95911f53a00f45b1c2b4d7120424abf9a4118d78"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position\\local\\native_gui_widget_resolved_position\\compile.log",
+      "bytes": 41,
+      "sha256": "11cce94d8dbc3ea42d084651aba434e1480e6999863dd0362951092641932bfe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position\\local\\native_gui_widget_resolved_position\\audit.py",
+      "bytes": 9025,
+      "sha256": "835f8e72a1130292f8c6b5de41397976cca345c7270611ff84d2671a61dbc01c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position\\local\\native_gui_widget_resolved_position\\audit.json",
+      "bytes": 13950,
+      "sha256": "a40b248dae9b07370bb6cdf84ef7d49b9251b687307d1ff63c890b4292814da1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position\\local\\native_gui_widget_resolved_position\\live_body.txt",
+      "bytes": 714,
+      "sha256": "5606144b42800e211f2c8f4d23b985d334b7a8c35a820ad33d414b64a94f1dfc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position\\local\\native_gui_widget_resolved_position\\live_cell.txt",
+      "bytes": 45,
+      "sha256": "a4982da7ccbbac71b63aba25a86857176986e3dce15705236e0447d5aed1ac32"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position\\local\\native_gui_widget_resolved_position\\target_status.txt",
+      "bytes": 40,
+      "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position\\local\\native_gui_widget_resolved_position\\original_call_rows.json",
+      "bytes": 170,
+      "sha256": "114c6f5bf9e709bba8fda5cfe020c59f0d4edacbca78bd3e8dae264a5ada83f5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position\\local\\native_gui_widget_resolved_position\\call_verification.txt",
+      "bytes": 98,
+      "sha256": "f265e11fc3d5fd4aa49ddb228c36995884dec178f6a0efadb3338a5591bb4b7b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position\\local\\native_gui_widget_resolved_position\\write_report.py",
+      "bytes": 10018,
+      "sha256": "8fd3eea42603ac9afd8ce104259c98a42a2063af4b7e07fb307ab219a1359be1"
+    }
+  ],
+  "limitations": [
+    "New C++ interface/private EDX context; original drop-in ABI, caller flags/register live-outs, stack addresses/overflow and physical private-stack aliases are unproven.",
+    "x87 environment instruction/data pointers differ. Unmasked x87/SEH/hardware-fault identities and context-resuming handlers that alter EDX are unvalidated.",
+    "Binding authenticates through the real data service at construction, borrows its lifetime, and does not revalidate forged/dangling metadata on each getter.",
+    "Reached raw widget/parent fields must be readable, twelve output bytes writable, and parent chain finite for normal return. No null/cycle guard or synthetic object is added.",
+    "AA8240, whole parked-screen/hint/pause, current screen/manager/Game owners, caller configuration and actual lifetime adoption remain separate.",
+    "No shared CMake/ledger/guard/Ghidra edit; primary integration review/common build/link pending.",
+    "No executable, full build, test, native fixture/probe, game or DLL was created or run by this packet."
+  ],
+  "credit": {
+    "new_native_body": 0,
+    "duplicate": 0,
+    "vendor": 0,
+    "activation": 0,
+    "runtime": 0
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "status": "primary_reviewed_readiness_evidence_only_full_game_admission_held",
+  "commits": {
+    "game_binding": "a66fe38859be997bf8756d80f1e9546ba2cd9269",
+    "mode_name": "b0f123400131f206ce5fd3986726589cd6d558dd",
+    "grid_domain": "0320908cfe58ba85ef0c539308549b3373c4c4cc"
+  },
+  "pin_checks": {
+    "cc16_native_game_application_binding_readiness": {
+      "baseline": "42185e9219bd4e5f771410e1072e69ebd2bd54b1",
+      "baseline_git_pins_valid": 86,
+      "current_unchanged": 85,
+      "current_changed": [
+        "include/bsp/dyn_engine_runtime.hpp"
+      ],
+      "other_retained_path_sha256_checks": 25
+    },
+    "cc16_native_game_grid_domain_readiness": {
+      "baseline": "9e360e71494881f48b7944862b7777f69ef5ac9d",
+      "baseline_git_pins_valid": 25,
+      "current_unchanged": 25,
+      "current_changed": [],
+      "other_retained_path_sha256_checks": 13
+    },
+    "cc16_native_game_mode_name_epoch": {
+      "baseline": "469375b4cdca7a60b91a13f0f052c1d2ce248a13",
+      "baseline_git_pins_valid": 12,
+      "current_unchanged": 12,
+      "current_changed": [],
+      "other_retained_path_sha256_checks": 5
+    }
+  },
+  "current_delta": "Only pinned header change adds qualified C55 declarations/limits, admitted Main9e360. No Game caller adoption; native_game_construction still selects old normal ensure. All old as-of-base conclusions are retained with newer corrections below.",
+  "corrections": [
+    "Earlier mode-name recommendation did not close actual73E466 release hook. Later b0f evidence holds the whole epoch; no producer/dormantrelease/skip/terminal policy added.",
+    "Original three grid owner membership and exact whole-context identity are neither necessary nor sufficient. Correct matching frees and actual canonical stream companions/retained contexts are required, including new valid address generations.",
+    "No universal renderer registry or full current publication/replacement-domain closure established. No C++ dispatch approval."
+  ],
+  "source_native_vendor_duplicate_ABI_fixture_game_activation_credit": 0,
+  "new_build_test_run_Ghidra_or_peer_action": false
+}

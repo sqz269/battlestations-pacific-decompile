@@ -1,0 +1,372 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-gui-widget-resolved-position-review",
+  "generated_utc": "2026-10-30T01:18:49.646180+00:00",
+  "status": "qualified_source_review_pass",
+  "candidate_commit": "632df2e40a58e33c288b0fe1ae16bc8c516bf593",
+  "frozen_base": "60c8453a1b661dfa62625945986e38d71bee0216",
+  "ownership": {
+    "files": [
+      "docs/CC16_NATIVE_GUI_WIDGET_RESOLVED_POSITION_REVIEW.md",
+      "reports/cc16_native_gui_widget_resolved_position_review.json"
+    ],
+    "addresses": []
+  },
+  "blocking_findings": [],
+  "qualification": "Static normal instruction/storage composition at new C++ boundary with genuine retained read-only data; original ABI/unmasked-FP/SEH/fault/caller adoption unproved.",
+  "candidate_files": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position-review\\include\\bsp\\native_gui_widget_resolved_position.hpp",
+      "bytes": 2378,
+      "sha256": "17672fb9b31bbfec5faea2568e62edc0b2fe88a431348a5abab3980eb3a601ca"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position-review\\src\\native_gui_widget_resolved_position.cpp",
+      "bytes": 2784,
+      "sha256": "385c4fd6a50d75e7734cce7442923d5cf6dfc1830a444d49257d9cae2fc04457"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position-review\\docs\\CC16_NATIVE_GUI_WIDGET_RESOLVED_POSITION.md",
+      "bytes": 9148,
+      "sha256": "1a3cc72039afabdfb5b755b0b4bd6db0e88c551f904d2dc7417b51e5d9aba8ba"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position-review\\reports\\cc16_native_gui_widget_resolved_position.json",
+      "bytes": 25995,
+      "sha256": "d783d1d30b82b2cc6886a99b928107f106e225b72389924a45dd846f97aa4ad9"
+    }
+  ],
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_before_read_batches": true,
+    "mutation_or_import": false,
+    "original_image": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "original_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "native": {
+    "start": "00AA6750",
+    "end_inclusive": "00AA67E1",
+    "bytes": 146,
+    "instructions": 47,
+    "sha256": "4bec621d37131c0143aa7a8df0e4eac74286cc4955adc5ec853b2422055d3c48",
+    "file_offset": "0x6a6750",
+    "original_ABI": {
+      "receiver": "ECX actual raw widget storage",
+      "stack_argument": "one pointer to twelve writable XYZ bytes",
+      "result": "EAX same output pointer",
+      "returns": "RET 4 at both exits",
+      "saved_register": "ESI",
+      "EDX": "neither read nor written in all 47 original instructions",
+      "null_or_cycle_guard": false,
+      "external_callee": null
+    },
+    "prototype_is_not_ABI_proof": true,
+    "direct_self_call_rows_reference": "original_call_rows"
+  },
+  "original_call_rows": [
+    {
+      "address": "00AA6778",
+      "native": "00AA6750",
+      "function": "00AA6750",
+      "phase": "concrete_self_recursion"
+    }
+  ],
+  "actual_cell": {
+    "address": "00D7A258",
+    "bytes": 8,
+    "file_offset": "0x97a258",
+    "hex": "0000000000000000",
+    "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+  },
+  "supplier": {
+    "binding_constructor": "NativeGuiWidgetResolvedPositionData(const GameNativeReadOnlyData&)",
+    "lookup": "real data_at(0x00D7A258,8)",
+    "required_span_band": "D7, index9 relative CE0000",
+    "literal_default_or_snapshot": false,
+    "public_service_noncopyable_nonmovable": true,
+    "ordinary_mapping": "Exact whole-image SHA256 verification, selected-band ownership, copied original section, read-only/non-executable committed pages",
+    "joint_route": "Private deferred constructor is followed by actual initializer/authentication and joint verification before canonical ACK/permanent publication",
+    "ownership": "Borrowed pointer metadata only; caller retains SAME initialized owner/mapping through every copy/use",
+    "disjointness": "Stable metadata and immutable actual mapping disjoint from writable payload/private scratch",
+    "destructor": "Actual read-only owner normally VirtualFree releases reservations; arbitrary borrowed owner is not process-permanent",
+    "no_parent": "Wrapper reads valid metadata pointer first; helper branch does not read double value",
+    "forged_metadata_or_lifetime_authentication_at_each_getter": false
+  },
+  "owner_source_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position-review\\include\\bsp\\game_native_readonly_data.hpp",
+      "bytes": 2713,
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position-review\\src\\game_native_readonly_data.cpp",
+      "bytes": 7167,
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position-review\\include\\bsp\\game_native_mutable_crt_data.hpp",
+      "bytes": 3200,
+      "sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position-review\\src\\game_native_mutable_crt_data.cpp",
+      "bytes": 10114,
+      "sha256": "d9dabf905fd4acf195f72c14e9ae2c7ef457514f4ff6227efffdcbb1f24a0c39"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position-review\\src\\native_gui_text_field_storage.cpp",
+      "bytes": 31161,
+      "sha256": "70c6b9180077424b5e6d457a82b47024722bd14ea9ba5c5d8da2b2bda2bf2441"
+    }
+  ],
+  "source_contract": {
+    "private_helper": "ECX actual widget, EDX actual D7A258 pointer, one stacked output word, EAX output, RET4; same20h scratch/saveESI",
+    "EDX_read_only_through_recursion": true,
+    "old_semantic_APIs_callers_unchanged": true,
+    "new_source_callers": 0,
+    "parent": "CMP [widget+70],0 followed by separate MOV ECX,[widget+70]",
+    "products": "Parent +20 times +18 spills single, then +24 times +1C spills single; both before recursion.",
+    "sums": "Returned XYZ plus own +0C/+10/+14 each spill single before first caller-output store; Z spans POP ESI before FSTP.",
+    "output": "Saved X minus saved X product -> outX; saved Y minus saved Y product -> outY; saved Z minus actual double cell -> outZ.",
+    "no_parent": "Load own X/store outX, then load own Y/store outY, then load own Z/POP ESI/store outZ. No three-field snapshot.",
+    "private_stack": {
+      "saved_ESI": "-24h",
+      "products": [
+        "-20h",
+        "-1Ch"
+      ],
+      "sum_spills": [
+        "-18h",
+        "-14h",
+        "-10h"
+      ],
+      "recursive_output": [
+        "-0Ch",
+        "-08h",
+        "-04h"
+      ]
+    },
+    "payload_aliases": "Original ordered raw accesses retained; metadata/mapping/private-frame alias exclusions remain",
+    "null_or_cycle_guard": false
+  },
+  "strict_compile": {
+    "result": "PASS",
+    "target": "MSVC Win32 COFF014C",
+    "flags": "/std:c++17 /MD /O2 /Gy /fp:strict /EHsc /W4 /WX /c /FAs",
+    "warnings": 0,
+    "compile_only": true,
+    "relevant_functions": [
+      {
+        "name": "??0NativeGuiWidgetResolvedPositionData@bsp@@QAE@ABVGameNativeReadOnlyData@game@1@@Z",
+        "bytes": 27,
+        "sha256": "8bbb5d1e253df5bda6b80687127e1e65efd5255d0d785a4c5ab119e1a3496eb1",
+        "relocations": [
+          [
+            15,
+            20,
+            "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z"
+          ]
+        ]
+      },
+      {
+        "name": "?get_native_gui_widget_resolved_position_00aa6750@bsp@@YAPAXPAX0ABVNativeGuiWidgetResolvedPositionData@1@@Z",
+        "bytes": 36,
+        "sha256": "05f42d264365183eb5bc3924312a62209bcff77022aaac5144e6fa34cf60452b",
+        "relocations": [
+          [
+            22,
+            20,
+            "?resolved_position_kernel_00aa6750@?anonymous@bsp@@YAXXZ"
+          ]
+        ]
+      },
+      {
+        "name": "?resolved_position_kernel_00aa6750@?anonymous@bsp@@YAXXZ",
+        "bytes": 142,
+        "sha256": "611ce5f02cf18f50c4819e3544bb42599bf36b9808fe0f055dbe6ae2b177f202",
+        "relocations": [
+          [
+            41,
+            20,
+            "?resolved_position_kernel_00aa6750@?anonymous@bsp@@YAXXZ"
+          ]
+        ]
+      }
+    ]
+  },
+  "independent_byte_comparison": {
+    "native_bytes": 146,
+    "source_bytes": 142,
+    "changes_only": [
+      "short JZ displacement6A->66",
+      "self CALL REL32 operand patched by relocation at41",
+      "FSUB DC2558A2D700->DC22 atnative offset103"
+    ],
+    "all_other_bytes_equal": true
+  },
+  "all47_instruction_mapping": {
+    "all47": true,
+    "sole_data_operand_rewrite_index": 33,
+    "self_call_relocated": true,
+    "branch_target_instruction_indices_equal": true,
+    "all_other_operands_exact": true,
+    "original_EDX_unused": true,
+    "Source_EDX_not_written": true
+  },
+  "fresh_author_report_relevant_record_equality": true,
+  "FP": {
+    "paths": [
+      {
+        "path": "parent",
+        "FP_net_delta": 0,
+        "max_extra_FP_depth": 1,
+        "FP_depth_before_self": 0,
+        "FSTP_count": 8
+      },
+      {
+        "path": "no_parent",
+        "FP_net_delta": 0,
+        "max_extra_FP_depth": 1,
+        "FP_depth_before_self": null,
+        "FSTP_count": 3
+      }
+    ],
+    "constructor_wrapper_no_FP": true,
+    "no_whole_object_FP_free_claim": true,
+    "ambient": "Existing x87 control/precision/rounding/masks/sticky status/stack remain inputs; no control/status/MXCSR modifications or default model",
+    "numerical_execution_proof": false,
+    "unmasked_delivery_SEH_fault_transport": false
+  },
+  "pin_checks": {
+    "author_report_files": 25,
+    "unchanged_dependency_files_Git_base": 7,
+    "only_four_candidate_files_differ": true
+  },
+  "validation": {
+    "original_self_call_existing_checker": {
+      "rows": 1,
+      "failed": 0,
+      "exit_code": 0
+    },
+    "all47_full_PE_live_and_COFF_comparison": "PASS",
+    "fresh_strict_compile": "PASS",
+    "new_tests_added_or_executed": false,
+    "review_self_check": "PASS exact candidate/base,26 evidence/document pins,27/36/142 records,8/3 spills,net0/max1/recursion-depth0"
+  },
+  "fresh_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position-review\\local\\native_gui_widget_resolved_position\\compile.cmd",
+      "bytes": 468,
+      "sha256": "3809dcd7d44d0bf047efd96e95911f53a00f45b1c2b4d7120424abf9a4118d78"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position-review\\local\\native_gui_widget_resolved_position\\compile.log",
+      "bytes": 41,
+      "sha256": "11cce94d8dbc3ea42d084651aba434e1480e6999863dd0362951092641932bfe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position-review\\local\\native_gui_widget_resolved_position\\native_gui_widget_resolved_position.obj",
+      "bytes": 4856,
+      "sha256": "1d107bf2a45b2f9dbe9e6c65defbe8d36211fb983edd2d453a48cbb1b6c57193"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position-review\\local\\native_gui_widget_resolved_position\\native_gui_widget_resolved_position.asm",
+      "bytes": 32030,
+      "sha256": "845b86b1cd4f056449ec4d401a272b898a2ab627f7a83497110f75c2679463f4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position-review\\local\\native_gui_widget_resolved_position\\audit.py",
+      "bytes": 9063,
+      "sha256": "a2bdf3f85f196fbe7dfa5d6dca490653d2be8dabfed0156fb0b1653c30c71aeb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position-review\\local\\native_gui_widget_resolved_position\\audit.json",
+      "bytes": 13964,
+      "sha256": "bff6609bc712c0ef99cf30242e245233face4dc8832217688dbfd43d52f14929"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position-review\\local\\native_gui_widget_resolved_position\\audit_run.log",
+      "bytes": 702,
+      "sha256": "f8fd0e89c48ed21bfa35df005af0d215687658aa76ed472e44456a1628721c3d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position-review\\local\\native_gui_widget_resolved_position\\live_body.txt",
+      "bytes": 714,
+      "sha256": "5606144b42800e211f2c8f4d23b985d334b7a8c35a820ad33d414b64a94f1dfc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position-review\\local\\native_gui_widget_resolved_position\\live_cell.txt",
+      "bytes": 45,
+      "sha256": "a4982da7ccbbac71b63aba25a86857176986e3dce15705236e0447d5aed1ac32"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position-review\\local\\native_gui_widget_resolved_position\\original_call_rows.json",
+      "bytes": 170,
+      "sha256": "114c6f5bf9e709bba8fda5cfe020c59f0d4edacbca78bd3e8dae264a5ada83f5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position-review\\local\\native_gui_widget_resolved_position\\call_verification.txt",
+      "bytes": 98,
+      "sha256": "f265e11fc3d5fd4aa49ddb228c36995884dec178f6a0efadb3338a5591bb4b7b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position-review\\local\\native_gui_widget_resolved_position\\independent_comparison.py",
+      "bytes": 3720,
+      "sha256": "49dbc8fb54c605f57eee4bc3fe52e4e50100490fa1828883905fa0289b56ad4d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position-review\\local\\native_gui_widget_resolved_position\\independent_comparison.json",
+      "bytes": 9052,
+      "sha256": "b3c1fd71fd62c355dbd9bd80a10af9a3536260184f8e47c63765643087c3ab80"
+    }
+  ],
+  "retained_author_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position\\local\\native_gui_widget_resolved_position\\audit.py",
+      "bytes": 9025,
+      "sha256": "835f8e72a1130292f8c6b5de41397976cca345c7270611ff84d2671a61dbc01c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position\\local\\native_gui_widget_resolved_position\\audit.json",
+      "bytes": 13950,
+      "sha256": "a40b248dae9b07370bb6cdf84ef7d49b9251b687307d1ff63c890b4292814da1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position\\local\\native_gui_widget_resolved_position\\native_gui_widget_resolved_position.obj",
+      "bytes": 4852,
+      "sha256": "eb9ade66754a8e3ad0240164d2dd6bb0f76f76d1d8db982a4a9a45792a099e86"
+    }
+  ],
+  "remaining_limits": [
+    "New C++ interface/private EDX context; original drop-in ABI, caller flags/register live-outs, stack addresses/overflow and physical private-stack aliases are unproven.",
+    "x87 environment instruction/data pointers differ. Unmasked x87/SEH/hardware-fault identities and context-resuming handlers that alter EDX are unvalidated.",
+    "Binding authenticates through the real data service at construction, borrows its lifetime, and does not revalidate forged/dangling metadata on each getter.",
+    "Reached raw widget/parent fields must be readable, twelve output bytes writable, and parent chain finite for normal return. No null/cycle guard or synthetic object is added.",
+    "AA8240, whole parked-screen/hint/pause, current screen/manager/Game owners, caller configuration and actual lifetime adoption remain separate.",
+    "No shared CMake/ledger/guard/Ghidra edit; primary integration review/common build/link pending.",
+    "No executable, full build, test, native fixture/probe, game or DLL was created or run by this packet.",
+    "Wrapper always reads valid metadata even if no-parent helper skips cell value. No original private-frame/EDX live-out identity is inferred."
+  ],
+  "activity": {
+    "tracked_changes": "Only two owned review files",
+    "source_address_Ghidra_mutations": false,
+    "CMake_ledger_guard_changes": false,
+    "tests_executables_body_execution_DLL_games": false,
+    "full_build_link": false,
+    "peer_frozen_trees_touched": false
+  },
+  "credit": {
+    "new_native_body": 0,
+    "duplicate": 0,
+    "vendor": 0,
+    "original_ABI": false,
+    "runtime": false,
+    "activation": false
+  },
+  "documentation": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-position-review\\docs\\CC16_NATIVE_GUI_WIDGET_RESOLVED_POSITION_REVIEW.md",
+    "bytes": 9279,
+    "sha256": "de6473f6ee14c12d30ba8fa25294514b6789ac26c3791cf7226bf116171a7da1"
+  }
+}
