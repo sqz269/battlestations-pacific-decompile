@@ -1,0 +1,98 @@
+{
+  "status": "reviewed_source_integrated_build_pass",
+  "source_commits": [
+    "094adc160",
+    "8b9c9a2cf"
+  ],
+  "source_hashes": {
+    "include/bsp/native_locale_manager_deletion_lifetime.hpp": "9e3acb9e44481d9dd4cf34cea3e3ff7d150a98020321f067583ad1eeb7b6b385",
+    "include/bsp/game_native_string_process.hpp": "68ac5c24794233d13e2b68d7276e703dc62d39bded4b969bfcf7a06361fac697",
+    "src/game_native_string_process.cpp": "baee34f67bf3948f0a92e05ebd2fc27d16b90727adc8ad4c8f6414dd16f77d6a",
+    "include/bsp/native_singleton_destruction.hpp": "de933f3c758aed5b505b61582845be194396bace2efc88f676e9de462049f686",
+    "src/native_singleton_destruction.cpp": "98a476d0aa3d76fa3b79793a6c10dca5ce621b89f9a290eecef23866a483831a",
+    "include/bsp/game_hosts_singletons.hpp": "a047bfe45fd98e2586c30b4a87d5124bfadf1d29af198140544bb2f7652481bd",
+    "src/game_hosts_singletons.cpp": "be179a72d97447dcd59620d05a791ac48cea74ab4ccf2468b0445d10c961b38e",
+    "cmake/startup.cmake": "05fe945d4f619467a2c2baadc33a1bc3898384e8f366094ab6a0873de7e984f8"
+  },
+  "object_check": {
+    "target": "MSVC Win32",
+    "flags": [
+      "/W4",
+      "/WX",
+      "/permissive-",
+      "/fp:strict"
+    ],
+    "translation_units": [
+      "src/native_singleton_destruction.cpp",
+      "src/game_native_string_process.cpp"
+    ],
+    "result": "pass",
+    "machine": "14C",
+    "concrete_game_locale_undefined_symbols": 0,
+    "log": "local/canonical_locale_owner_integration_20261030/shared_object.log"
+  },
+  "combined_build": {
+    "head": "0616ca399e7146c0a61cc8959af461383d722df2",
+    "command": "./scripts/build.ps1",
+    "configuration": "Release",
+    "target": "MSVC Win32",
+    "exit_code": 0,
+    "linked": [
+      "bsp_game",
+      "bsp_math_tests"
+    ],
+    "existing_checks_passed": 2,
+    "existing_checks_total": 2,
+    "ctest_seconds": 11.5,
+    "log": "local/canonical_locale_owner_integration_20261030/combined_build.log",
+    "native_locale_execution": false
+  },
+  "source_ready": false,
+  "runtime_executed": false,
+  "raw_text_choices_enabled": false,
+  "frozen_empty_source_admission": "hold",
+  "map_insertion": {
+    "commit": "3ed87041c0b1d35a2dacac3cd76452b8ebb74eee",
+    "cpp_sha256": "f0097efca294fd45c318bc33c8ca3c79697edd922b30ce4ea08b0a15606a243a",
+    "header_sha256": "f2acc7f8723e3f2a1f8324b50f84b6b25337064d1d11d16c6d78eb6b726e9fbb",
+    "worker_strict_object": "pass",
+    "root_review": "requested_local_canonical_pool_authority_fix_applied",
+    "independent_review": "ACCEPT_SOURCE_CODE_ONLY",
+    "independent_reviewer": "gui_frame_lifetime"
+  },
+  "concrete_owner": {
+    "commit": "b8b71e79e15d336fc76ed63dda2058b5a8f4ccfc",
+    "cpp_sha256": "236044fc8a912d66d7ff6e20fe738ba114fa9a49dce1adaccf33ab4e9ff82928",
+    "header_sha256": "29df6eb2858bebce81bebf4e650c2c6f09d002601bc14ab8eb13bab9b84cae04",
+    "worker_strict_object": "pass",
+    "root_review": "actual_AA0_nonnull_pre_drain_fix_applied_and_prior_VFS_bindings_required",
+    "independent_review": "ACCEPT_SOURCE_CODE_ONLY",
+    "scope": "initialized_only",
+    "loaded": false,
+    "failed_graph_policy": "retain_and_poison_no_retry_or_drain",
+    "independent_review_receipt": {
+      "reviewer": "gui_frame_lifetime",
+      "path": "local/raw_locale_owner_boundary_review_frame_20261030/owner_source_review",
+      "review_sha256": "0c7f6b06219852d07e6a3dd0c9e58a12a31c488d7589fd94562dea981410d8d1",
+      "pins_sha256": "28bd3a92664999524636852c6ffbe922c6ebbb9349946463977a118be7d2a20e"
+    }
+  },
+  "merged_boundary_recheck": {
+    "reviewer": "gui_integration_review",
+    "head": "0616ca399e7146c0a61cc8959af461383d722df2",
+    "verdict": "ACCEPT_SOURCE_INTEGRATION_ONLY",
+    "owner_four_files_exact": true,
+    "prior_twelve_files_exact": true,
+    "shared_seven_files_exact": true,
+    "owner_cpp_game_target_only": true,
+    "native_execution": false
+  },
+  "post_build_peer_merge": {
+    "head": "99e3c4919ed1d73bd5cd8c0f6a026969b6b747ea",
+    "origin_main": "69001e56a",
+    "code_change": "only_six_comment_lines_in_unrelated_hints_header",
+    "other_changes": "docs_reports_ledgers",
+    "executable_locale_source_unchanged": true,
+    "repeat_build_required": false
+  }
+}

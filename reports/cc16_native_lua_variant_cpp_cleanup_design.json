@@ -1,0 +1,678 @@
+{
+  "schema": "bsp.cc16.native_lua_variant_cpp_cleanup_design.v1",
+  "packet": "cc16-native-lua-variant-cpp-cleanup-design",
+  "utc": "2026-10-30T05:43:08.146793+00:00",
+  "base_commit": "17b77e69a79d82a5b89841edb23c2046cfe86cd1",
+  "branch": "agent/codex-native-lua-variant-cpp-cleanup-design",
+  "status": "read_only_design_complete_root_implementation_decision_required",
+  "ownership": {
+    "files": [
+      "docs/CC16_NATIVE_LUA_VARIANT_CPP_CLEANUP_DESIGN.md",
+      "reports/cc16_native_lua_variant_cpp_cleanup_design.json"
+    ],
+    "addresses": [],
+    "ranges": [],
+    "source_edits": false,
+    "normal_candidate_immutable": true,
+    "normal_candidate_worktree_clean": true
+  },
+  "frozen_inputs": [
+    {
+      "path": "reports/cc16_native_lua_variant_retirement.json",
+      "bytes": 234893,
+      "sha256": "c768a2da1b3ba3928aae7ab06f53b18987e27da8e80532e0a995131be151fb87",
+      "base_blob": "a356f201d017db4391011076f99a08edbcda8759",
+      "matches_frozen_base": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_LUA_VARIANT_RETIREMENT.md",
+      "bytes": 10696,
+      "sha256": "1615778a50a91bc455cedec31721b398b0728439ac9167a91be7229778452016",
+      "base_blob": "40883cb01cf0b453ac5b826bc06c1b939f8f355d",
+      "matches_frozen_base": true
+    }
+  ],
+  "explicit_prior_readiness_input": {
+    "commit": "83a63b4df1aa5962208bfb232d00da331ced9c45",
+    "path": "reports/cc16_native_mission_lua_queue_payload_readiness.json",
+    "sha256": "0f7bf4bacc0584563fb52c2f79282fe5f0fd4afb8e289a4b13531f514ba4e339",
+    "read_only": true,
+    "full_source_producer_adoption_claim": false
+  },
+  "native_evidence": {
+    "mode": "fresh installed-PE hashes/spans against explicit frozen report; cached exports only; no live Ghidra batch",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "blocks": [
+      {
+        "id": "variant_clear",
+        "address": "00886920",
+        "length": 168,
+        "end_inclusive": "008869c7",
+        "file_offset": "00486920",
+        "sha256": "0fc4cfcda1e7bce2c2b169965d909e30e68d836732d836d0bbd84fc07be93938",
+        "bytes_hex": "83ec0856578bf98b470483e801745983e8040f85830000008b770885f6747c8b46048b08505651568d442418508bcee80c80e6ff8b4e0451e84ffc360056c7460400000000c7460800000000e83bfc360083c408c7470800000000c74704ffffffff5f5e83c408c38b770885f6742c8b4e0485c974158b066a0183c0015051e81c33b9ff8bc8e865ab340056e8fbfb360083c404c7470800000000c74704ffffffff5f5e83c408c3",
+        "fresh_PE_matches_frozen_report": true,
+        "live_Ghidra_requeried": false
+      },
+      {
+        "id": "variant_destructor",
+        "address": "00884af0",
+        "length": 101,
+        "end_inclusive": "00884b54",
+        "file_offset": "00484af0",
+        "sha256": "40a084311f56d31bed50c8487a75be912da83ec178507028bab016b5775db2c3",
+        "bytes_hex": "6aff68db70c90064a100000000506489250000000051568bf189742404c706f4e6d000c744241000000000e8001e00008b461085c0c7442410ffffffff74168b760c6a0183c6015650e88251b9ff8bc8e8cbc934008b4c24085e64890d0000000083c410c3",
+        "fresh_PE_matches_frozen_report": true,
+        "live_Ghidra_requeried": false
+      },
+      {
+        "id": "subtree",
+        "address": "006ee890",
+        "length": 150,
+        "end_inclusive": "006ee925",
+        "file_offset": "002ee890",
+        "sha256": "d7415860864ad8bebea6795a8bc3d9a751855a72ca9cda6833f0f4c16c06d1d6",
+        "bytes_hex": "64a1000000006aff68a830c800506489250000000053558b6c2418807d310056578bd98bf5755a8b4608508bcbe8ceffffff8b368d7d0c897c24208d4f10c744241800000000e8156219008b470885c0c7442418ffffffff74168b7f046a0183c7015750e8c7b3d2ff8bc8e8102c4e0055e8a67c500083c404807e31008bee74a68b4c24105f5e5d64890d000000005b83c40cc20400",
+        "fresh_PE_matches_frozen_report": true,
+        "live_Ghidra_requeried": false
+      },
+      {
+        "id": "erase_range",
+        "address": "006ee960",
+        "length": 201,
+        "end_inclusive": "006eea28",
+        "file_offset": "002ee960",
+        "sha256": "bcf888af4677f8fd105b176f8b3ee00c4a824075d2185d3dba79ebf1b3a8d022",
+        "bytes_hex": "83ec08535556578b7c242085ff8bf18b46048b2874043bfe7405e8947d50008b5c24243bdd75598b44242885c08b6e0474043bc67405e8787d5000396c242c753f8b4e048b5104528bcee8e1feffff8b46048940048b4604c746080000000089008b46048940088b46048b088b44241c5f89305e5d8948045b83c408c214009085ff74063b7c24287405e8247d50003b5c242c74218d4c2420e822f0ffff53578d542418528bcee8c4fbffff8b5c24248b7c2420ebca8b44241c89385f5e5d8958045b83c408c21400",
+        "fresh_PE_matches_frozen_report": true,
+        "live_Ghidra_requeried": false
+      },
+      {
+        "id": "variant_profile",
+        "address": "00d0e6f4",
+        "length": 4,
+        "end_inclusive": "00d0e6f7",
+        "file_offset": "0090e6f4",
+        "sha256": "75f6591c4e50361ede510f9fc914fd98e0a12d4d8d0de16cdc7a292fa4bceb47",
+        "bytes_hex": "a04f8800",
+        "fresh_PE_matches_frozen_report": true,
+        "live_Ghidra_requeried": false
+      },
+      {
+        "id": "variant_EH",
+        "address": "00dc9464",
+        "length": 44,
+        "end_inclusive": "00dc948f",
+        "file_offset": "009c9464",
+        "sha256": "b9dc69d92e87d0e4b30476465b639dc11294adbcdab7273c4b9954636bf794c9",
+        "bytes_hex": "ffffffffd070c90022059319010000006494dc00000000000000000000000000000000000000000001000000",
+        "fresh_PE_matches_frozen_report": true,
+        "live_Ghidra_requeried": false,
+        "unwind_map": {
+          "from_state": 0,
+          "to_state": -1,
+          "action": "00c970d0",
+          "FuncInfo": "00dc946c",
+          "magic": "19930522",
+          "max_state": 1,
+          "unwind_map_address": "00dc9464",
+          "try_blocks": 0,
+          "EH_flags": 1
+        }
+      },
+      {
+        "id": "variant_action",
+        "address": "00c970d0",
+        "length": 11,
+        "end_inclusive": "00c970da",
+        "file_offset": "008970d0",
+        "sha256": "92e2360fc32bfb7f78e4d5a38a9637d1913b7eaf99d2bf9ba10da62daf9099f3",
+        "bytes_hex": "8b4df083c10ce9456c78ff",
+        "fresh_PE_matches_frozen_report": true,
+        "live_Ghidra_requeried": false,
+        "frozen_instructions": [
+          {
+            "address": "00c970d0",
+            "bytes": "8b4df0",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ebp - 0x10]"
+          },
+          {
+            "address": "00c970d3",
+            "bytes": "83c10c",
+            "mnemonic": "add",
+            "operands": "ecx, 0xc"
+          },
+          {
+            "address": "00c970d6",
+            "bytes": "e9456c78ff",
+            "mnemonic": "jmp",
+            "operands": "0x41dd20"
+          }
+        ]
+      },
+      {
+        "id": "variant_handler",
+        "address": "00c970db",
+        "length": 10,
+        "end_inclusive": "00c970e4",
+        "file_offset": "008970db",
+        "sha256": "7029bf02bfcfe5968cfed352e4274632aa50d39d4ebdef89feb1bac18a4b2c7b",
+        "bytes_hex": "b86c94dc00e95efaf5ff",
+        "fresh_PE_matches_frozen_report": true,
+        "live_Ghidra_requeried": false
+      },
+      {
+        "id": "subtree_EH",
+        "address": "00db10b8",
+        "length": 44,
+        "end_inclusive": "00db10e3",
+        "file_offset": "009b10b8",
+        "sha256": "9fe207f03bbd6ad9c99c8e1463728b89ad3dd82d07afd0861b27a01adf052fba",
+        "bytes_hex": "ffffffffa030c8002205931901000000b810db00000000000000000000000000000000000000000001000000",
+        "fresh_PE_matches_frozen_report": true,
+        "live_Ghidra_requeried": false,
+        "unwind_map": {
+          "from_state": 0,
+          "to_state": -1,
+          "action": "00c830a0",
+          "FuncInfo": "00db10c0",
+          "magic": "19930522",
+          "max_state": 1,
+          "unwind_map_address": "00db10b8",
+          "try_blocks": 0,
+          "EH_flags": 1
+        }
+      },
+      {
+        "id": "subtree_action",
+        "address": "00c830a0",
+        "length": 8,
+        "end_inclusive": "00c830a7",
+        "file_offset": "008830a0",
+        "sha256": "5e36c6da43c2e6c7f7754e5430f46a238b2d42a084dc5bbabb2806216b7cf6de",
+        "bytes_hex": "8b4d04e978afa6ff",
+        "fresh_PE_matches_frozen_report": true,
+        "live_Ghidra_requeried": false,
+        "frozen_instructions": [
+          {
+            "address": "00c830a0",
+            "bytes": "8b4d04",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ebp + 4]"
+          },
+          {
+            "address": "00c830a3",
+            "bytes": "e978afa6ff",
+            "mnemonic": "jmp",
+            "operands": "0x6ee020"
+          }
+        ]
+      },
+      {
+        "id": "subtree_handler",
+        "address": "00c830a8",
+        "length": 10,
+        "end_inclusive": "00c830b1",
+        "file_offset": "008830a8",
+        "sha256": "9871a1a40011b157da12df0d4451351e24d54babd9ef8d9fea1b1747995a51ab",
+        "bytes_hex": "b8c010db00e9913af7ff",
+        "fresh_PE_matches_frozen_report": true,
+        "live_Ghidra_requeried": false
+      }
+    ],
+    "all_frozen_blocks_match": true,
+    "project_and_program_identity": "C:/Users/sqz269/bsp.gpr /battlestationspacific.exe inherited from frozen verified input; not a fresh live-program assertion",
+    "new_project_import_save_or_Ghidra_query": false
+  },
+  "unchanged_source_pins": [
+    {
+      "path": "include/bsp/native_lua_variant_retirement.hpp",
+      "bytes": 6890,
+      "sha256": "72937402fa2d3de1a8502a4e2b74481e311de143e9c0d7f790ea6e71913ff255",
+      "base_blob": "43eed0986792b328ff5c924e84417630e06caa64",
+      "matches_frozen_base": true
+    },
+    {
+      "path": "src/native_lua_variant_retirement.cpp",
+      "bytes": 13410,
+      "sha256": "1c7d9f9064cdfda5a2818fd87eee1657c3ec94a0bc0d25f62eda51e8e79df206",
+      "base_blob": "e47e87843355e1de2101e7d7313a87c4e003f9d2",
+      "matches_frozen_base": true
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "base_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+      "matches_frozen_base": true
+    },
+    {
+      "path": "src/native_string.cpp",
+      "bytes": 9121,
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "base_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+      "matches_frozen_base": true
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "bytes": 5893,
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "base_blob": "4a2569e19b6f25c308cba1c3cdb2b2989db2cddd",
+      "matches_frozen_base": true
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "bytes": 8443,
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "base_blob": "de3c69b53e00840fab31b41e2195bdc1789b6baf",
+      "matches_frozen_base": true
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "bytes": 3113,
+      "sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+      "base_blob": "60b3f627150fa058fac7b8c4c74537cb3aee0a68",
+      "matches_frozen_base": true
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "bytes": 5450,
+      "sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+      "base_blob": "103d6fe4d772bb3078c48fe8bcf3f929a385fdda",
+      "matches_frozen_base": true
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "base_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "matches_frozen_base": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "base_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "matches_frozen_base": true
+    },
+    {
+      "path": "src/native_game_container_lifetime.cpp",
+      "bytes": 7370,
+      "sha256": "026006b90be17b7b8a2527bee98828a9a80ba0bdbbc96053fae5d244585a4a9c",
+      "base_blob": "04959dc2f18535f1f3c656bca22bd53996dac45d",
+      "matches_frozen_base": true
+    },
+    {
+      "path": "include/bsp/native_lua_variant_link_record_allocation.hpp",
+      "bytes": 1395,
+      "sha256": "7981f4745307349729690d0c2e1e2a0b8526a0829e3778d1c1b55f91c832f52d",
+      "base_blob": "0c7ec0eeeaa26327bdb68db0428777c22002fddc",
+      "matches_frozen_base": true
+    },
+    {
+      "path": "src/native_lua_variant_link_record_allocation.cpp",
+      "bytes": 1101,
+      "sha256": "6724c0bc953776268b22b310341b3e847495b94a247a37918af3f7b9590d01e9",
+      "base_blob": "f7e89244438d07e0ae9bb3624f648e59bb81885f",
+      "matches_frozen_base": true
+    },
+    {
+      "path": "include/bsp/native_lua_variant_header_initializer.hpp",
+      "bytes": 1998,
+      "sha256": "de307db13063f3a5b775c9c2ee775b8a11f475944705bdda7860ef8a0af2a596",
+      "base_blob": "b2a658d0ce6b4b210c727e12b8b640c7b318735e",
+      "matches_frozen_base": true
+    },
+    {
+      "path": "src/native_lua_variant_header_initializer.cpp",
+      "bytes": 1351,
+      "sha256": "113c184fca2a7c20e1da61cf310913eec074d03835f767ef4f07d6b9deab1f96",
+      "base_blob": "9db6cff3a1f8291375a1bf2df6e498c9f70ace75",
+      "matches_frozen_base": true
+    },
+    {
+      "path": "include/bsp/cc13_left55.hpp",
+      "bytes": 32394,
+      "sha256": "5a71656a1194f5838743ba5b2b5ea7b6f94a8a4ed8cc65ffd3714c18b8de4dfb",
+      "base_blob": "837cbc3ce7b9ead900f52ef505293f6fa378fd7f",
+      "matches_frozen_base": true
+    },
+    {
+      "path": "src/cc13_left55_seg55.cpp",
+      "bytes": 49527,
+      "sha256": "5d33b376fb3f98f9b05a438165207ec346de4a8400e8e6c94e726e8ca1ffbf4c",
+      "base_blob": "da88eab79d03eeb7b5b7b84fcb645d9cb7ca2de4",
+      "matches_frozen_base": true
+    },
+    {
+      "path": "include/bsp/cc13_seg33b.hpp",
+      "bytes": 53766,
+      "sha256": "3cbe6be635f637ffc0d10ab50246d5cb4ad0ca5b509e35325f122c4f28de48d3",
+      "base_blob": "6114ab19972bc4519b8ceba9192eb17ca86832af",
+      "matches_frozen_base": true
+    },
+    {
+      "path": "src/cc13_seg33b_misc.cpp",
+      "bytes": 67079,
+      "sha256": "b7097473cbe468dfa0a7737ee15da61b4d53f7eb0aa7e1b93dbe7c60c0b74a68",
+      "base_blob": "99bbb11a9447d0e51d0485b0de44b3c82ee195f4",
+      "matches_frozen_base": true
+    },
+    {
+      "path": "include/bsp/native_lua_variant_string_fields_cleanup.hpp",
+      "bytes": 1698,
+      "sha256": "ae929f84634f6a83d4a6cc22c6264b7a9e6a1ce8e23f993658c50b56eb08fdd9",
+      "base_blob": "4641600a6913109803278e3675d8aa5c615fff38",
+      "matches_frozen_base": true
+    },
+    {
+      "path": "src/native_lua_variant_string_fields_cleanup.cpp",
+      "bytes": 1226,
+      "sha256": "b31d80cd54faaba97c7a83a2e2994915ebb18003e17500614f04bc1f68e54921",
+      "base_blob": "f7ab40687b6b3ff421096b6d5537de9347786d22",
+      "matches_frozen_base": true
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "bytes": 2373,
+      "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "base_blob": "9379a2a6cd97f13fabc2554b0b539363b85a5da2",
+      "matches_frozen_base": true
+    },
+    {
+      "path": "src/native_singleton_vector_registration_wrappers.cpp",
+      "bytes": 4283,
+      "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "base_blob": "4096dfcf1c693f3c509c8db5f1cfb621e523b0d0",
+      "matches_frozen_base": true
+    }
+  ],
+  "inherited_compile_receipts": {
+    "source_commit": "17b77e69a79d82a5b89841edb23c2046cfe86cd1",
+    "artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-retirement-cycle\\local\\native_lua_variant_retirement\\compile.cmd",
+        "bytes": 470,
+        "sha256": "6fa20cefda7af3ace7ed344aa7a04be963ba33e40a6f56467de8d714cf023756",
+        "matches_17b77_receipt": true,
+        "rerun": false
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-retirement-cycle\\local\\native_lua_variant_retirement\\compile.log",
+        "bytes": 35,
+        "sha256": "5e744182c7f07a68b0f2f9dd498d144f6591c53565c55416703f7aaa0072a22e",
+        "matches_17b77_receipt": true,
+        "rerun": false
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-retirement-cycle\\local\\native_lua_variant_retirement\\retirement.obj",
+        "bytes": 12703,
+        "sha256": "3a512b56396bcc5c6948a13eb04433c08fca9f7f8b4cc4abb51ff7fb62e0505a",
+        "matches_17b77_receipt": true,
+        "rerun": false
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-retirement-cycle\\local\\native_lua_variant_retirement\\retirement.asm",
+        "bytes": 59245,
+        "sha256": "b52e4e6675bd51497cce79cc5ed6c209041f2a77ad4d6ad2a27272279c20f641",
+        "matches_17b77_receipt": true,
+        "rerun": false
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-retirement-cycle\\local\\native_lua_variant_retirement\\emitted.json",
+        "bytes": 276508,
+        "sha256": "c287d6f47da491496b435cebb57418dad537e5d7c8219984f751dfd33eb8ee2b",
+        "matches_17b77_receipt": true,
+        "rerun": false
+      }
+    ],
+    "compiler": "MSVC19.51.36244.0 Win32",
+    "flags": "/c /std:c++17 /O2 /Ob2 /DNDEBUG /MD /EHsc /W4 /WX /fp:strict /Iinclude /FAs",
+    "original_result": "passed",
+    "new_compile_or_object_decode": false,
+    "fresh_common_build_or_link_attestation": false,
+    "reusable_for_new_implementation_without_new_review": false
+  },
+  "finding": {
+    "normal_17b77_supplies_actual_Cpp_cleanup_actions": false,
+    "normal_17b77_behavior": "retain metadata and bare-rethrow only",
+    "actual_action_Source_definitions_present": true,
+    "bounded_qualification_possible": true,
+    "full_CPP_failure_transport_closed": false,
+    "full_host_adoption_closed": false,
+    "smallest_packet": "add qualified recursive cycle APIs and two lexical handlers by bounded shared-kernel factoring; zero unique Original/vendor credit"
+  },
+  "exact_scopes": [
+    {
+      "body": "00884af0",
+      "native_range": "00884af0..00884b54",
+      "native_bytes": 101,
+      "saved_identity": "entry receiver V; native action loads EH-adjusted saved V and adds Ch; Source uses captured V, not a claimed stack slot",
+      "arm_site": "00884b13",
+      "protected_call": "00884b1b -> 00886920",
+      "normal_buffer_capture": "00884b20: current V+10h",
+      "normal_demotion": "00884b25: -1 before conditional V+Ch length/getter/return",
+      "exceptional_map": "00dc9464 state0 -> -1 action00c970d0",
+      "exception_action": "00c970d0..00c970da -> 0041dd20(savedV+Ch)",
+      "exceptional_demotion": "before action entry and its current buffer capture",
+      "action_read_order": [
+        "current buffer at savedV+10h",
+        "null skips length and services",
+        "conditional current length at savedV+Ch",
+        "uint32 wrap length+1",
+        "real419CC0 through same AA8/AA0",
+        "realBD1510 captured block,size and liveAA4"
+      ],
+      "existing_provider": [
+        "include/bsp/native_string.hpp:65",
+        "src/native_string.cpp:129"
+      ],
+      "forbidden_effects": [
+        "name/header clear",
+        "free V",
+        "resume failed clear suffix",
+        "reuse failed normal buffer as action input"
+      ]
+    },
+    {
+      "body": "006ee890",
+      "native_range": "006ee890..006ee925",
+      "native_bytes": 150,
+      "saved_identity": "K=current node+Ch, written into incoming argument-home VALUE at6EE8C7 after right returns/currentLEFT captured",
+      "arm_site": "006ee8ce",
+      "protected_call": "006ee8d6 -> 00884af0(K+10h)",
+      "normal_buffer_capture": "006ee8db: current K+8",
+      "normal_demotion": "006ee8e0: -1 before conditional K+4 length/getter/return",
+      "exceptional_map": "00db10b8 state0 -> -1 action00c830a0",
+      "exception_action": "00c830a0..00c830a7 -> 006ee020(saved key-home VALUE)",
+      "exceptional_demotion": "before action entry and its current buffer capture",
+      "action_read_order": [
+        "current buffer at savedK+8",
+        "null skips length and services",
+        "conditional current length at savedK+4",
+        "uint32 wrap length+1",
+        "real419CC0 through same AA8/AA0",
+        "realBD1510 captured block,size and liveAA4"
+      ],
+      "existing_provider": [
+        "include/bsp/native_lua_variant_string_fields_cleanup.hpp:27",
+        "src/native_lua_variant_string_fields_cleanup.cpp:11"
+      ],
+      "forbidden_effects": [
+        "key/header clear",
+        "free captured node",
+        "traverse captured LEFT after failure",
+        "recompute K from current head or overwritten links",
+        "action while unarmed in right recursion"
+      ]
+    }
+  ],
+  "concrete_domain": {
+    "same_cells": [
+      "NativeStringRawPoolContext.actual_published_01090aa8",
+      "NativeStringRawPoolContext.actual_manager_publication_01090aa0",
+      "NativeStringRawPoolContext.actual_small_returns_disabled_01090aa4"
+    ],
+    "heap": "same genuine singleton_lifetime_allocate/free malloc domain for already-required variant payloads/maps/nodes; actions add no object allocation/free",
+    "pool_lifetime": "same qualified real pool deletion binding, actual raw manager, real pool owner/critical-section/ring storage; live through callbacks and last action",
+    "nonnull_action_must_call_getter_even_large_or_gate_disabled": true,
+    "existing_noexcept_boundaries_unchanged": [
+      "return_native_string_pool_00bd1510",
+      "singleton_lifetime_free",
+      "CRT/OS boundaries in existing providers"
+    ],
+    "no_fabricated_provider_or_cells": true
+  },
+  "proposed_implementation": {
+    "owned_files": [
+      "include/bsp/native_lua_variant_retirement.hpp",
+      "src/native_lua_variant_retirement.cpp",
+      "docs/CC16_NATIVE_LUA_VARIANT_CPP_CLEANUP.md",
+      "reports/cc16_native_lua_variant_cpp_cleanup.json"
+    ],
+    "prerequisite": "root completes immutable17b77 independent review and authorizes separate bounded implementation; refresh leases/base then",
+    "additive_API_names_provisional": [
+      "clear_native_lua_variant_00886920_cpp_cleanup",
+      "destruct_native_lua_variant_00884af0_cpp_cleanup",
+      "destroy_native_lua_variant_subtree_006ee890_cpp_cleanup"
+    ],
+    "original_normal_signatures_and_Frame_Operation_layouts_unchanged": true,
+    "legacy_Host_definitions_unchanged": [
+      "src/cc13_left55_seg55.cpp",
+      "src/cc13_seg33b_misc.cpp"
+    ],
+    "kernel_selection": "private compile-time mode, complete existing normal cycle shared; normal public APIs remain retain/rethrow-only; qualified entries select local exact actions",
+    "mode_closed_edges": [
+      "clear->subtree",
+      "subtree->right subtree",
+      "subtree->value destructor",
+      "destructor->clear"
+    ],
+    "not_outer_wrapper_repair": true,
+    "action_composition": "two private kernels compose existing complete41DD20/6EE020 read/service contracts and current concrete getter/return definitions; same actual captures recorded without pre-read/re-read or opaque helper failure losing the captured block",
+    "passive_return_helper_factoring": "existing return_buffer can accept a compile-time passive record type; no callback/provider abstraction, no overwrite of original failure captures",
+    "existing_public_action_helpers_edited": false,
+    "no_generic_record_replay_or_FH3_interpreter": true
+  },
+  "handler_algorithm": [
+    "Hold trivial local eligibility flag, saved receiver/key-home value, and own frame+sidecar refs at the native epochs.",
+    "On actual C++ catch, retain incoming failure metadata. If unarmed, bare-rethrow without action.",
+    "If armed, demote before entering own exact action; capture current fields at that action epoch.",
+    "If action returns normally, mark action completion only and bare-rethrow incoming exception; no normal suffix or frame completion/pop.",
+    "If actual action throws, mark distinct secondary escape/stage and bare-rethrow that escaping exception; no retry of this action and no invented terminal handling."
+  ],
+  "metadata_contract": {
+    "sidecars": "additional caller-owned typed/trivially-destructible array indexed by matching existing frame slot; no alteration to old metadata layout",
+    "capacity": "both spans genuinely sufficient for actual maximum active call chain including nested maps; no count inference, fixed maximum or object/address history",
+    "prepared": "at entry before any fallible/native body operation; corresponding range metadata before88693F",
+    "fields": [
+      "scope/action identity",
+      "saved receiver or key-home VALUE",
+      "incoming throw site/state",
+      "arm/demotion/action-entry",
+      "incoming C++ observation",
+      "action buffer",
+      "conditional late length/wrapped size",
+      "getter entry/captured pool",
+      "return entry/normal return",
+      "action completion",
+      "secondary C++ escape/stage"
+    ],
+    "passive_latest_scope_not_journal": true,
+    "preserve_original_failure_captures": true,
+    "metadata_rejection": "ordinary outside-domain returned non-completion, immediate propagation on every nested edge; no fabricated throw/action/demotion/normal suffix",
+    "failed_depth": "retained inner frames make active_depth different from current lexical frame; each handler must use its saved refs/index, never active_depth-1 or speculative pop",
+    "after_action_normal_return": "failed body remains failed/active; action completion never implies node/map/object retirement or permits automatic retry",
+    "through_last_use": "all raw homes,current/captured buffers,node,LEFT,map,pool,context,providers and independent metadata retained; reentrant callbacks use independent operation/backing",
+    "destructor_policy": "no operation-abandonment, rollback, replay, retry or failure-cleanup destructor",
+    "critical_interval": "88693F endpoint capture through whole-range predicates/root capture has only raw reads/predicates/pure metadata and Source ABI stores; preserve zero CALLs"
+  },
+  "CPP_qualification": {
+    "positive_claim": "actual name/key action effects for genuine C++ exceptions crossing Source scopes when every invoked cleanup action returns normally; bare-rethrow preserves that incoming exception",
+    "concrete_sufficient_pool_subset": "actual AA8 publication remains genuine/nonnull at each action getter; matching pool owner/section/ring live+valid; existing pool/CRT/OS operations return normally. Getter fast path has no allocation/manager-registration callback.",
+    "not_a_runtime_precheck_or_cached_path": true,
+    "lazy_getter_limit": "real manager lookup, allocator/new-handler, constructor or registration can fail; normal lazy completion is permitted but no no-secondary guarantee inferred",
+    "scope_guard_evaluation": "exception-only local guard can execute actual actions in returning-cleanup domain if exact eligibility and status exclusions are preserved; not needed for recommended explicit-handler design",
+    "secondary_scope_guard_limit": "implicit noexcept or noexcept(false) destructor during unwind can terminate; this is C++ behavior, not Original terminal equivalence; do not add such an operation-abandonment/failure destructor",
+    "secondary_explicit_handler_limit": "secondary getter exception may propagate into outer C++ handlers; their own armed actions may run. Incoming exception object is not promised to reach root or remain retained; passive flags are not exception identity storage.",
+    "no_new_throw_policy": [
+      "no nested_exception wrapping",
+      "no replacement exception",
+      "no catch-and-success",
+      "no forced termination",
+      "no fallback allocator",
+      "no guessed native secondary behavior"
+    ],
+    "excluded_transport": [
+      "Native FH3/SEH ABI",
+      "Win32 SEH/access faults",
+      "longjmp/panic/nonlocal exit",
+      "existing noexcept or CRT termination",
+      "process termination"
+    ],
+    "original_secondary_failure_terminal_equivalence": false
+  },
+  "schedule_examples": [
+    {
+      "trigger": "clear throws in state0 value destructor",
+      "action_order": "current name savedV+Ch, then armed caller key savedK if name action returns; rethrow",
+      "forbidden_suffix": "node free, LEFT read/traversal, map head/count reset, map/descriptor frees"
+    },
+    {
+      "trigger": "normal name getter throws after name demotion",
+      "action_order": "no same-name action; an armed caller key may run"
+    },
+    {
+      "trigger": "normal key getter throws after key demotion",
+      "action_order": "no same-key action/node free; caller paused in right recursion has no own armed key action"
+    },
+    {
+      "trigger": "metadata/domain status",
+      "action_order": "no exception action at any caller; retain and return non-completion immediately"
+    }
+  ],
+  "implementation_review_requirements": [
+    "Freeze separate implementation commit and exact input/dependency hashes; refresh leases after root decision.",
+    "New strict Win32 compile/COFF/nativePE checks and root common admission after authorization; no inherited unchanged-code claim from design.",
+    "Review old normal public/support code, EH data and relocations against17b77; explain every emitted drift after factoring.",
+    "Inspect all new exceptional edges, saved-home/current-field captures, exceptional demotion-before-action and normal buffer-before-demotion.",
+    "Check four normal nested status exits and all four postcallback CURRENT-head reads/reset/output order.",
+    "Verify zero CALLs in88693F endpoint-to-predicates/root interval; no new allocations/callbacks there.",
+    "Normal mode cannot reach cleanup actions; all qualified internal recursive edges select qualified mode.",
+    "Only genuine real pool/free provider imports; no action on metadata rejection/after normal demotion, no postfailure normal suffix/free, trivial passive metadata.",
+    "No Original ABI/FH3/SEH/secondary-terminal/runtime/gameplay claim from compile/static review alone."
+  ],
+  "performed": {
+    "Source_edits": 0,
+    "builds": 0,
+    "strict_compiles": 0,
+    "tests": 0,
+    "links": 0,
+    "probe_executables": 0,
+    "target_body_executions": 0,
+    "DLL_or_game_runs": 0,
+    "live_Ghidra_queries": 0,
+    "Ghidra_mutations": 0,
+    "shared_metadata_CMake_ledger_guard_peer_install_edits": 0,
+    "static_file_hash_and_PE_span_checks": true,
+    "two_new_evidence_files_only": true
+  },
+  "credit": {
+    "new_unique_Original_bodies": 0,
+    "new_unique_Original_bytes": 0,
+    "vendor_body_credit": 0,
+    "duplicate_body_credit": 0,
+    "ABI_credit": 0,
+    "activation_credit": 0,
+    "implemented_CPP_action_credit": 0
+  },
+  "document_pin": {
+    "path": "docs/CC16_NATIVE_LUA_VARIANT_CPP_CLEANUP_DESIGN.md",
+    "bytes": 15048,
+    "sha256": "658d46772428836592995c9457002a1ff01598e2e355f40af51e75519f6863bf",
+    "LF_only": true
+  }
+}

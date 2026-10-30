@@ -34,6 +34,11 @@ public:
     // fixed-address native mapping. Borrow the cell; do not copy/reset it.
     // Access creates no factory, registration, module or sound state.
     void* volatile& movie_factory_00f8aefc() noexcept;
+    // Sole permanent Source locale publication; borrowing creates no manager.
+    // The actual constructor/base lifetime owns its values, never a semantic view.
+    void* volatile& locale_manager_00f8bc4c() noexcept;
+    // One quiescent Source owner graph; never reset after failure or drain.
+    bool claim_locale_manager_domain() noexcept;
     NativeStringPoolStorage* volatile& pool_01090aa8() noexcept { return pool_; }
     volatile std::uint32_t& returns_disabled_01090aa4() noexcept { return disabled_; }
     NativeStringRawPoolContext& raw_context() noexcept { return raw_; }
@@ -84,6 +89,9 @@ private:
     // Append after every established authority/field. The process owns this
     // ONE writable publication; application hosts only borrow its reference.
     void* volatile movie_factory_00f8aefc_{};
+    // Append after all established authorities, retaining their offsets.
+    void* volatile locale_manager_00f8bc4c_{};
+    bool locale_manager_domain_claimed_{};
 };
 
 // Intentionally retained through process termination. No C++ exit destructor
