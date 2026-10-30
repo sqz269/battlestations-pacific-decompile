@@ -439,6 +439,7 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_gam
 target_sources(bsp_core PRIVATE src/native_string_from_int_raw.cpp)
 target_sources(bsp_core PRIVATE src/native_locale_map_find.cpp)
 target_sources(bsp_core PRIVATE src/native_locale_initial_language.cpp)
+target_sources(bsp_core PRIVATE src/native_settings_language_name.cpp)
 
 target_sources(bsp_core PRIVATE src/native_lua_variant_pair_advance.cpp)
 target_sources(bsp_core PRIVATE src/native_observer_member_cleanup.cpp)
