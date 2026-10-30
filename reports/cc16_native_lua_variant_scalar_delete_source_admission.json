@@ -1,0 +1,1183 @@
+{
+  "schema": "bsp.cc16.native_lua_variant_scalar_delete_source_admission.v1",
+  "classification": "reviewed_common_build_actual_entry_link_passed_unwired",
+  "common": {
+    "candidate": "65d9e8f90e0c2794ddd503ee4acfab443ec5a5fc",
+    "review": "aae8908825f20ab0a28cfad4bbd26e07b9382fdc",
+    "source_build_head": "0d4ed49576b1f73ff659b12ecb6e25bc19169364",
+    "proof_sealed_at": "9ec5db6d7facdd156a85a220f373f1d6e64c7598",
+    "common_build": {
+      "MSVC": "Win32 Release",
+      "MP": 2,
+      "PCH": true,
+      "coverage_PDB": false,
+      "existing_suites": "2/2",
+      "seconds": 12.05
+    },
+    "code_sections": 37,
+    "common_code_bytes": 5449,
+    "strict_exact_code_sections": 13,
+    "all36_old_code_match_prior_common": true,
+    "all6_kernels_and_compiler_EH_entries_strict_exact": true,
+    "all6_whole_EH_tables632B_strict_exact": true,
+    "common_SafeSEH_names": [
+      "__ehhandler$??$clear_kernel@$0A@@?A0x524a1db5@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "__ehhandler$??$destruct_kernel@$0A@@?A0x524a1db5@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "__ehhandler$??$subtree_kernel@$0A@@?A0x524a1db5@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "__ehhandler$??$clear_kernel@$00@?A0x524a1db5@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "__ehhandler$??$destruct_kernel@$00@?A0x524a1db5@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+      "__ehhandler$??$subtree_kernel@$00@?A0x524a1db5@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z"
+    ],
+    "all6_handlers_in_actual_PE_SafeSEH_table": true,
+    "public_entries": {
+      "?clear_native_lua_variant_00886920@": {
+        "symbol": "?clear_native_lua_variant_00886920@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+        "address": 4203024,
+        "object": "bsp_core:native_lua_variant_retirement.obj",
+        "section_bytes": 24
+      },
+      "?destruct_native_lua_variant_00884af0@": {
+        "symbol": "?destruct_native_lua_variant_00884af0@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+        "address": 4203168,
+        "object": "bsp_core:native_lua_variant_retirement.obj",
+        "section_bytes": 24
+      },
+      "?destroy_native_lua_variant_subtree_006ee890@": {
+        "symbol": "?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+        "address": 4203120,
+        "object": "bsp_core:native_lua_variant_retirement.obj",
+        "section_bytes": 27
+      },
+      "?clear_native_lua_variant_00886920_cpp_cleanup@": {
+        "symbol": "?clear_native_lua_variant_00886920_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "address": 4203056,
+        "object": "bsp_core:native_lua_variant_retirement.obj",
+        "section_bytes": 9
+      },
+      "?destruct_native_lua_variant_00884af0_cpp_cleanup@": {
+        "symbol": "?destruct_native_lua_variant_00884af0_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "address": 4203200,
+        "object": "bsp_core:native_lua_variant_retirement.obj",
+        "section_bytes": 9
+      },
+      "?destroy_native_lua_variant_subtree_006ee890_cpp_cleanup@": {
+        "symbol": "?destroy_native_lua_variant_subtree_006ee890_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "address": 4203152,
+        "object": "bsp_core:native_lua_variant_retirement.obj",
+        "section_bytes": 9
+      },
+      "?scalar_delete_native_lua_variant_00884fa0_cpp_cleanup@": {
+        "symbol": "?scalar_delete_native_lua_variant_00884fa0_cpp_cleanup@bsp@@YA?AUNativeLuaVariantScalarDeleteResult@1@PAXADIAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "address": 4203712,
+        "object": "bsp_core:native_lua_variant_retirement.obj",
+        "section_bytes": 54
+      }
+    },
+    "actual_providers": {
+      "?native_string_pool_get_or_create_00419cc0": {
+        "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+        "address": 4204464,
+        "object": "bsp_core:native_string_pool_owner.obj"
+      },
+      "?return_native_string_pool_00bd1510": {
+        "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+        "address": 4204784,
+        "object": "bsp_core:native_string_pool_storage.obj"
+      },
+      "?singleton_lifetime_free": {
+        "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "address": 4204304,
+        "object": "bsp_core:singleton_lifetime.obj"
+      }
+    },
+    "PE_complete_live_code_sections": [
+      {
+        "symbols": [
+          "??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "__catch$??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0"
+        ],
+        "common_section": 3,
+        "address": 4198528,
+        "bytes": 973,
+        "relocations": 15,
+        "sha256": "dc8a9bcc3f65a9585ad702de7d72ed45236624c7783aac6922b090b01458ada9"
+      },
+      {
+        "symbols": [
+          "__ehhandler$??$clear_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z"
+        ],
+        "common_section": 4,
+        "address": 4324400,
+        "bytes": 29,
+        "relocations": 3,
+        "sha256": "1cee2d161668f627767dfe3aced646883a50ff235eef5f5d6be6e0043e27b91f"
+      },
+      {
+        "symbols": [
+          "??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "__catch$??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0"
+        ],
+        "common_section": 5,
+        "address": 4199504,
+        "bytes": 852,
+        "relocations": 13,
+        "sha256": "2bc7a918bc0fac2c7579c62203ebd9cb1793d87f2fc86e80061a8cd15563f99e"
+      },
+      {
+        "symbols": [
+          "__ehhandler$??$clear_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z"
+        ],
+        "common_section": 6,
+        "address": 4324432,
+        "bytes": 29,
+        "relocations": 3,
+        "sha256": "b0b08f6f430d7e619c5ebf5bbfb8a6936ab751d0d7dfdb87a2aa0a4d868893cd"
+      },
+      {
+        "symbols": [
+          "??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "__catch$??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0",
+          "__catch$??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$1"
+        ],
+        "common_section": 7,
+        "address": 4200368,
+        "bytes": 493,
+        "relocations": 10,
+        "sha256": "ebb1bf5d332a36ebc0fa53bd50e10974df00027388882056a7f43a7d9ec8c2d8"
+      },
+      {
+        "symbols": [
+          "__ehhandler$??$destruct_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z"
+        ],
+        "common_section": 8,
+        "address": 4324464,
+        "bytes": 29,
+        "relocations": 3,
+        "sha256": "25955f14a786e3c9c4cc96aa3a54da1e7fc83559910cb29be0ac797748bdbdb9"
+      },
+      {
+        "symbols": [
+          "??$destruct_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "__catch$??$destruct_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0"
+        ],
+        "common_section": 9,
+        "address": 4200864,
+        "bytes": 359,
+        "relocations": 8,
+        "sha256": "7090aff9705002660856102e5b3d9c10f1f92a7887ccd9e63da088fa6bed8cda"
+      },
+      {
+        "symbols": [
+          "__ehhandler$??$destruct_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z"
+        ],
+        "common_section": 10,
+        "address": 4324496,
+        "bytes": 29,
+        "relocations": 3,
+        "sha256": "922ae91912ed40d91eb13d7092acd0ef5c41678fe15a2ec21bdeac32d73e8fa6"
+      },
+      {
+        "symbols": [
+          "??$enter_mode@$00@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@1@AAUNativeLuaVariantRetirementOperation@1@AAUNativeStringRawPoolContext@1@W4NativeLuaVariantRetirementBody@1@PAX3PBUNativeLuaVariantCppCleanupBacking@1@@Z"
+        ],
+        "common_section": 11,
+        "address": 4201232,
+        "bytes": 276,
+        "relocations": 1,
+        "sha256": "5fb48dd97162b3fac4e87e426d8b076b460913b57dcafe241fe76a33945a7672"
+      },
+      {
+        "symbols": [
+          "??$observe_incoming@$00@?A0x32cdb250@bsp@@YAXPAUNativeLuaVariantCppCleanupRecord@1@ABUNativeLuaVariantRetirementFrame@1@_NPAX@Z"
+        ],
+        "common_section": 13,
+        "address": 4201520,
+        "bytes": 39,
+        "relocations": 0,
+        "sha256": "cfc3c372a44c0bf31776265a9a5dfa7adcffd5249fbdb72aa411d75dedeb8861"
+      },
+      {
+        "symbols": [
+          "??$run_action@$00@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@1@AAUNativeStringRawPoolContext@1@PAX@Z"
+        ],
+        "common_section": 17,
+        "address": 4201568,
+        "bytes": 158,
+        "relocations": 2,
+        "sha256": "fc25170342b412b65390803e310ab88e8352823b6a80631ce58e7dc1b99b0248"
+      },
+      {
+        "symbols": [
+          "??$run_action@$01@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@1@AAUNativeStringRawPoolContext@1@PAX@Z"
+        ],
+        "common_section": 18,
+        "address": 4201728,
+        "bytes": 159,
+        "relocations": 2,
+        "sha256": "fae8664c7b27955134b558b50b640936407f6416ace153cf411c02399f7e067b"
+      },
+      {
+        "symbols": [
+          "??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "__catch$??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0",
+          "__catch$??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$1"
+        ],
+        "common_section": 19,
+        "address": 4201888,
+        "bytes": 630,
+        "relocations": 12,
+        "sha256": "1b88b5146869a4f63e4e466824163dca6c99426efbdc0f87fdf0894f9e75483d"
+      },
+      {
+        "symbols": [
+          "__ehhandler$??$subtree_kernel@$00@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z"
+        ],
+        "common_section": 20,
+        "address": 4324528,
+        "bytes": 29,
+        "relocations": 3,
+        "sha256": "d32baff055f52c63d3cffcdcefaba6e7e645f21e39866f1c24833ddd638a0f11"
+      },
+      {
+        "symbols": [
+          "??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "__catch$??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z$0"
+        ],
+        "common_section": 21,
+        "address": 4202528,
+        "bytes": 484,
+        "relocations": 10,
+        "sha256": "c7c94ca07d833f786563f4cf55e306527688749f50cb75c3f73203069c013322"
+      },
+      {
+        "symbols": [
+          "__ehhandler$??$subtree_kernel@$0A@@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z"
+        ],
+        "common_section": 22,
+        "address": 4324560,
+        "bytes": 29,
+        "relocations": 3,
+        "sha256": "97ca7c3cbc8403a15312b55eb6f81eb036f676ae1c60cb20c31eb1307382c5c6"
+      },
+      {
+        "symbols": [
+          "?clear_native_lua_variant_00886920@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z"
+        ],
+        "common_section": 25,
+        "address": 4203024,
+        "bytes": 24,
+        "relocations": 1,
+        "sha256": "70905b9a813b27ec52ed7081a6b560c752018fb8b1b3ebd3d66cae55a0bb81e9"
+      },
+      {
+        "symbols": [
+          "?clear_native_lua_variant_00886920_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z"
+        ],
+        "common_section": 26,
+        "address": 4203056,
+        "bytes": 9,
+        "relocations": 1,
+        "sha256": "3d59308ad8c7f9424f8cade2ac9d1a14e7e48e757487bbaa3a264130a4f84279"
+      },
+      {
+        "symbols": [
+          "?complete@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@@Z"
+        ],
+        "common_section": 27,
+        "address": 4203072,
+        "bytes": 37,
+        "relocations": 0,
+        "sha256": "119ce9fed780eda607372e676683c0ce22ac78d6b05a1e8743fb7f98ab060929"
+      },
+      {
+        "symbols": [
+          "?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z"
+        ],
+        "common_section": 28,
+        "address": 4203120,
+        "bytes": 27,
+        "relocations": 1,
+        "sha256": "1ffcda34dec69c8fe0194de90615983f2e2d97e6e928a54b6b12668af1399fc6"
+      },
+      {
+        "symbols": [
+          "?destroy_native_lua_variant_subtree_006ee890_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z"
+        ],
+        "common_section": 29,
+        "address": 4203152,
+        "bytes": 9,
+        "relocations": 1,
+        "sha256": "7c34f84bec1ada1c727ddc2d646bff8417673384e7fdfaff64d103b56f926a8e"
+      },
+      {
+        "symbols": [
+          "?destruct_native_lua_variant_00884af0@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z"
+        ],
+        "common_section": 30,
+        "address": 4203168,
+        "bytes": 24,
+        "relocations": 1,
+        "sha256": "5ff9f0f52e3dee99fef19b3761e567be40d0acbf90d99a0810ec913e6dd74987"
+      },
+      {
+        "symbols": [
+          "?destruct_native_lua_variant_00884af0_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z"
+        ],
+        "common_section": 31,
+        "address": 4203200,
+        "bytes": 9,
+        "relocations": 1,
+        "sha256": "55161f647dd89241f3dda4f0c8f66507c679d72d1e1e0d14693506629e58ba4d"
+      },
+      {
+        "symbols": [
+          "?enter@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z"
+        ],
+        "common_section": 32,
+        "address": 4203216,
+        "bytes": 351,
+        "relocations": 0,
+        "sha256": "17186d24dbcf5591e9aeaba250f0769330145ec91456882986cb50b828cd5a29"
+      },
+      {
+        "symbols": [
+          "?retain_cpp_failure@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z"
+        ],
+        "common_section": 36,
+        "address": 4203568,
+        "bytes": 76,
+        "relocations": 0,
+        "sha256": "523908463c943278c50db3a68f3a83edb4b3140cc37b288ff612dd378fcdfd2c"
+      },
+      {
+        "symbols": [
+          "?return_buffer@?A0x32cdb250@bsp@@YAXAAUNativeStringRawPoolContext@2@AAUNativeLuaVariantRetirementFrame@2@PAXIII@Z"
+        ],
+        "common_section": 37,
+        "address": 4203648,
+        "bytes": 58,
+        "relocations": 2,
+        "sha256": "3c7a921cba9b2ee36d062571694593350acf9395e06e348e8332ebce16699881"
+      },
+      {
+        "symbols": [
+          "?scalar_delete_native_lua_variant_00884fa0_cpp_cleanup@bsp@@YA?AUNativeLuaVariantScalarDeleteResult@1@PAXADIAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z"
+        ],
+        "common_section": 38,
+        "address": 4203712,
+        "bytes": 54,
+        "relocations": 2,
+        "sha256": "375459146ec4c583504ff95e4bd799c9b02170b07a5b5be20dff8eaf87646d79"
+      }
+    ],
+    "defining_object_only_code_sections": [
+      {
+        "symbols": [
+          "??$enter_mode@$0A@@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantRetirementFrame@1@AAUNativeLuaVariantRetirementOperation@1@AAUNativeStringRawPoolContext@1@W4NativeLuaVariantRetirementBody@1@PAX3PBUNativeLuaVariantCppCleanupBacking@1@@Z"
+        ],
+        "bytes": 28,
+        "qualification": "Retained defining-object code; no named entry in this /OPT:REF link"
+      },
+      {
+        "symbols": [
+          "??$record_for@$00@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantCppCleanupRecord@1@PBUNativeLuaVariantCppCleanupBacking@1@I@Z"
+        ],
+        "bytes": 25,
+        "qualification": "Retained defining-object code; no named entry in this /OPT:REF link"
+      },
+      {
+        "symbols": [
+          "??$record_for@$0A@@?A0x32cdb250@bsp@@YAPAUNativeLuaVariantCppCleanupRecord@1@PBUNativeLuaVariantCppCleanupBacking@1@I@Z"
+        ],
+        "bytes": 3,
+        "qualification": "Retained defining-object code; no named entry in this /OPT:REF link"
+      },
+      {
+        "symbols": [
+          "?arm_action@?A0x32cdb250@bsp@@YAXAAUNativeLuaVariantCppCleanupRecord@2@PAX@Z"
+        ],
+        "bytes": 21,
+        "qualification": "Retained defining-object code; no named entry in this /OPT:REF link"
+      },
+      {
+        "symbols": [
+          "?at@?A0x32cdb250@bsp@@YAPAXPAXI@Z"
+        ],
+        "bytes": 11,
+        "qualification": "Retained defining-object code; no named entry in this /OPT:REF link"
+      },
+      {
+        "symbols": [
+          "?read_byte@?A0x32cdb250@bsp@@YAEPAXI@Z"
+        ],
+        "bytes": 14,
+        "qualification": "Retained defining-object code; no named entry in this /OPT:REF link"
+      },
+      {
+        "symbols": [
+          "?read_pointer@?A0x32cdb250@bsp@@YAPAXPAXI@Z"
+        ],
+        "bytes": 14,
+        "qualification": "Retained defining-object code; no named entry in this /OPT:REF link"
+      },
+      {
+        "symbols": [
+          "?read_word@?A0x32cdb250@bsp@@YAIPAXI@Z"
+        ],
+        "bytes": 14,
+        "qualification": "Retained defining-object code; no named entry in this /OPT:REF link"
+      },
+      {
+        "symbols": [
+          "?stop@?A0x32cdb250@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@W432@@Z"
+        ],
+        "bytes": 27,
+        "qualification": "Retained defining-object code; no named entry in this /OPT:REF link"
+      },
+      {
+        "symbols": [
+          "?write_word@?A0x32cdb250@bsp@@YAXPAXII@Z"
+        ],
+        "bytes": 17,
+        "qualification": "Retained defining-object code; no named entry in this /OPT:REF link"
+      }
+    ],
+    "PE_complete_EH_tables": [
+      {
+        "symbol": "__ehfuncinfo$??$clear_kernel@$0A@@?A0x524a1db5@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "address": 4404904,
+        "bytes": 88,
+        "relocations": 4,
+        "sha256": "cbb4e77be36cf97a198ea384a1b747ac125fd275630fe97734b1e69edd57753b"
+      },
+      {
+        "symbol": "__ehfuncinfo$??$destruct_kernel@$0A@@?A0x524a1db5@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "address": 4404992,
+        "bytes": 88,
+        "relocations": 4,
+        "sha256": "ada94b30b81d1fb92b5aab2e863ab3d9e3cedce492116e9f7c9d634ddf557d6e"
+      },
+      {
+        "symbol": "__ehfuncinfo$??$subtree_kernel@$0A@@?A0x524a1db5@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "address": 4405080,
+        "bytes": 88,
+        "relocations": 4,
+        "sha256": "b49c2c61b064dbae8157abfdfecf42002464f587b586b8f06adf24af29994ff7"
+      },
+      {
+        "symbol": "__ehfuncinfo$??$clear_kernel@$00@?A0x524a1db5@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "address": 4405168,
+        "bytes": 88,
+        "relocations": 4,
+        "sha256": "13d0177d6edcd75dd53853334d3b26cef12208a479971176f8208770c10e3511"
+      },
+      {
+        "symbol": "__ehfuncinfo$??$destruct_kernel@$00@?A0x524a1db5@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "address": 4405256,
+        "bytes": 140,
+        "relocations": 6,
+        "sha256": "c0ff66221060d3b8d92ae9614ae5db0c30b01832575d403ed8eac7fc769860b7"
+      },
+      {
+        "symbol": "__ehfuncinfo$??$subtree_kernel@$00@?A0x524a1db5@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z",
+        "address": 4405396,
+        "bytes": 140,
+        "relocations": 6,
+        "sha256": "b85c7e42356e05a02107be43bd574c71390fbfaea42bb3883b182952a945e972"
+      }
+    ],
+    "manifest_embedded": true,
+    "link_client_executed": false,
+    "artifacts": [
+      {
+        "path": "local/function_source_batch14/artifacts/native_lua_variant_retirement.obj",
+        "bytes": 27208,
+        "sha256": "bd50d87ceb1c4263cd7dec19cbc648c6a9d798c4044f980197b1334423d5b1b8",
+        "copied_from": "build/win32/bsp_core.dir/Release/native_lua_variant_retirement.obj"
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/native_string_pool_owner.obj",
+        "bytes": 15595,
+        "sha256": "6b8d709e064a23e75ea5ff7255c985280d0efb89e9ca8f353b83b903cb42a891",
+        "copied_from": "build/win32/bsp_core.dir/Release/native_string_pool_owner.obj"
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/native_string_pool_storage.obj",
+        "bytes": 9441,
+        "sha256": "bbc0339374e3a681e633f2d14ef90f94ade4cf7921f3231ff5115a6315913ee2",
+        "copied_from": "build/win32/bsp_core.dir/Release/native_string_pool_storage.obj"
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/singleton_lifetime.obj",
+        "bytes": 33008,
+        "sha256": "386824ba4b5224ce24dfa43d84dd09b6c8b1fc64e02011998109d91cdc72171f",
+        "copied_from": "build/win32/bsp_core.dir/Release/singleton_lifetime.obj"
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/bsp_game.exe",
+        "bytes": 7503360,
+        "sha256": "082e5634021137c797729afdbd9040f2bc85e470e15c0c4793e459f4cae335d6",
+        "copied_from": "build/win32/Release/bsp_game.exe"
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/native_lua_variant_retirement.hpp",
+        "bytes": 13881,
+        "sha256": "14258135096189f2892e4d896af417ed0c8fb616d5f1659bbc1d9d032f68a7db",
+        "copied_from": "include/bsp/native_lua_variant_retirement.hpp"
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/native_lua_variant_retirement.cpp",
+        "bytes": 24076,
+        "sha256": "5db41574abcb3a94fdb9c6f5c8f96f2b7b0c1f0c2a7f438fe64d622980c065ca",
+        "copied_from": "src/native_lua_variant_retirement.cpp"
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/build-head.txt",
+        "bytes": 42,
+        "sha256": "5443a007d4c4c9c75c954adbd7b4d570450da3d46a9549e496075c4e97f7db4e",
+        "copied_from": "local/function_source_batch14/build-head.txt"
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/review-head.txt",
+        "bytes": 42,
+        "sha256": "ced97a70f8ff164b31c6d46d0d189964c84e072c98fab6323dffda100220d466",
+        "copied_from": "local/function_source_batch14/review-head.txt"
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/primary_scalar_diff_reads.json",
+        "bytes": 949,
+        "sha256": "0a2ab59397b3dba146e66dc4c8f8d1e4f638db02de8e324ca810a68656846dc3",
+        "copied_from": "local/function_source_batch14/primary_scalar_diff_reads.json"
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/scalar_native_call_rows.json",
+        "bytes": 231,
+        "sha256": "d460d752710f5eda4fd100d384c077393a1371c23a49b739ba093a2374ceaf82",
+        "copied_from": "local/function_source_batch14/scalar_native_call_rows.json"
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/verify_review.py",
+        "bytes": 1880,
+        "sha256": "6f020bc1dab875244b2baab97ab1d01bb77d1e44993fed41de94ca0a03f103fd",
+        "copied_from": "local/function_source_batch14/verify_review.py"
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/seal_common.py",
+        "bytes": 8174,
+        "sha256": "0b4cfe46ce3c5d5fa71c264f71ff5a8db4d80b4587b9f3759bc6a40a849cdb44",
+        "copied_from": "local/function_source_batch14/seal_common.py"
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/group_readiness_pins.json",
+        "bytes": 22514,
+        "sha256": "aa05d16254207d645014b97877bd4acf955d156b5eb2904407145f3c75c49aad",
+        "copied_from": "local/function_source_batch14/group_readiness_pins.json"
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/group_native_checks.json",
+        "bytes": 1558,
+        "sha256": "c9f15176ff96b3431c10a3b0e451f50e3c2f026833b9acd2925aa2e989107cee",
+        "copied_from": "local/function_source_batch14/group_native_checks.json"
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/global_readiness_pins.json",
+        "bytes": 17239,
+        "sha256": "0b7d8fd44af313775d461fb34361de6b81c150f8ea040f34a0ef8625d4b9ffc6",
+        "copied_from": "local/function_source_batch14/global_readiness_pins.json"
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/global_design_native_checks.json",
+        "bytes": 1509,
+        "sha256": "d055d5f0b1b12e3fc9ae3a5af0369565bea1c904855ecac012de6a74c3b68569",
+        "copied_from": "local/function_source_batch14/global_design_native_checks.json"
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/entries_probe.cpp",
+        "bytes": 902,
+        "sha256": "4ba3fcc4b85c172efd9e1209f6a144c60faa2e8ba221eaaaa99e9a04a87f8cf5",
+        "copied_from": "local/function_source_batch14/entries_probe.cpp"
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/entries_probe.cmd",
+        "bytes": 865,
+        "sha256": "bad9db295b37f67a45e6f85a266d900173ed4beaeb400c3f1fbf073386600515",
+        "copied_from": "local/function_source_batch14/entries_probe.cmd"
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/entries_probe.obj",
+        "bytes": 2953,
+        "sha256": "001c2d8399293c50a56e69893a1baa102872d5f8e14603e3179be45131bd2373",
+        "copied_from": "local/function_source_batch14/entries_probe.obj"
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/entries_probe.exe",
+        "bytes": 221696,
+        "sha256": "de8771ad36fab89cbaa9fae577a95680ebe0cf84fdc5ad8a43538852ea3ae544",
+        "copied_from": "local/function_source_batch14/entries_probe.exe"
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/entries_probe.map",
+        "bytes": 320233,
+        "sha256": "e67a2d8a9861e7764269522bb90ba86ad519bb552eab88b7e6d318b1c599e9d6",
+        "copied_from": "local/function_source_batch14/entries_probe.map"
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/build.log",
+        "bytes": 2630,
+        "sha256": "e097f1e1babd81e670cea0f4ceaaa0487de8cbd8503efe0c30dd7027b8cd2236",
+        "copied_from": "local/function_source_batch14/build.log"
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/link.log",
+        "bytes": 19,
+        "sha256": "48d974da562e4793f8ff5dad5377207422c2b5093bd7c730baf580da948db910",
+        "copied_from": "local/function_source_batch14/link.log"
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/retirement_common.txt",
+        "bytes": 205630,
+        "sha256": "5f7dddbb1164e98e7d422ad73d67bc9566bcc48d37b7a902817bbbfef3b8129f",
+        "copied_from": "local/function_source_batch14/retirement_common.txt"
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/common_inspection.json",
+        "bytes": 141456,
+        "sha256": "0b1038eb5ccb3197f57081b90b79227e7fde05bfa99f16756338dea2016caedc",
+        "copied_from": "local/function_source_batch14/common_inspection.json"
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/review_pin_checks.json",
+        "bytes": 16856,
+        "sha256": "e0239fdd4a16dac08ba91b612d4e7b93a5ccc14896157c504c554c0c50f73a05",
+        "copied_from": "local/function_source_batch14/review_pin_checks.json"
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/verify_scalar.py",
+        "bytes": 6106,
+        "sha256": "7fed5dba860ebd873c47d71413272cff59199678e325e70608781fd8cfa5f105",
+        "copied_from": "local/function_source_batch14/verify_scalar.py"
+      }
+    ]
+  },
+  "primary_review": {
+    "comparison": "a4774a47499cf3ad0f38af058a53fef1e71cea61",
+    "production_diff_complete_primary_read": [
+      {
+        "path": "include/bsp/native_lua_variant_retirement.hpp",
+        "sha256": "14258135096189f2892e4d896af417ed0c8fb616d5f1659bbc1d9d032f68a7db"
+      },
+      {
+        "path": "src/native_lua_variant_retirement.cpp",
+        "sha256": "5db41574abcb3a94fdb9c6f5c8f96f2b7b0c1f0c2a7f438fe64d622980c065ca"
+      }
+    ],
+    "pending_header_wording_correction_only": false,
+    "final_header_comment_correction_read": true,
+    "complete_author_doc_read": {
+      "path": "docs/CC16_NATIVE_LUA_VARIANT_SCALAR_DELETE.md",
+      "lines": 154,
+      "sha256": "6bff0b47e3ce9ec5f83087bb274c2827a9cd7c8f701cbbfa870780b5dbdd4b51"
+    },
+    "preseal_author_doc_sha256": "dc13c3aa8ec81ec20681a90dafe4cf880a3cce95ae2726601d6af469705c5110",
+    "final154_line_author_doc_reread_complete": true,
+    "complete_common_scalar_54B_24ops_primary_read": true
+  },
+  "independent_review_checks": {
+    "candidate": "65d9e8f90e0c2794ddd503ee4acfab443ec5a5fc",
+    "checks": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\author_artifacts\\compile.cmd",
+        "sha256": "97ab4ba790745b4b73898b4ef254640306ed0efc44fcdcb20e880b24d5e50953"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\author_artifacts\\compile.log",
+        "sha256": "5e744182c7f07a68b0f2f9dd498d144f6591c53565c55416703f7aaa0072a22e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\author_artifacts\\compile_receipt.json",
+        "sha256": "18a6da9e49814065459504891e3571c6715f42bcc8a3463e14b5abfc843074a3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\author_artifacts\\retirement.obj",
+        "sha256": "bcf718e1da6a3616432f6ce4ca1a1975b04413611437c73dae9626af73710bdd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\author_artifacts\\retirement.asm",
+        "sha256": "4e73f461faf55cbf8042268c4540f9ffd3d6eef665d0474593f45a9ff65bf79f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\author_artifacts\\coff_parser.py",
+        "sha256": "881421504c9ca78a9baf2bccbed0d46e57ea0a203fccdf3ebe6f7c77bd5ea8f4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\author_artifacts\\audit_scalar.py",
+        "sha256": "e707e1b7ee12a44e0b587194567739c69e2a5902e86ed622d4769d7a8486ac99"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\author_artifacts\\emitted.json",
+        "sha256": "04b5039b3c2e11443196e35b3549b2dd7f4aa1a8f3d3f79bb98a8c3763e56ccc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\author_artifacts\\audit.json",
+        "sha256": "d808981a5fd586387a6a1d4ae5cea8db2cfd1836f86c023c0505ec920052d2e3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\author_artifacts\\scalar_listing.txt",
+        "sha256": "4db0c905c1492af6513515eab397ba20b02b0bed9211d956d118735e192089c8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\author_artifacts\\metadata.json",
+        "sha256": "77b1f4aa3733cc270acd71195009d3896ca1454c1a41c0796c46237d06380b13"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\author_artifacts\\input_pins.json",
+        "sha256": "1ea5f43070dfac0c8ade40a41ad41522d445e3048d21f3d70ae00ce9d6398236"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\author_artifacts\\native_verified.json",
+        "sha256": "773b3c89b74c12435f5838b0f62b3406fa2ed5f801935c27fe83a02335958411"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\author_artifacts\\compile_inputs\\include\\bsp\\native_lua_variant_retirement.hpp",
+        "sha256": "df5d0402be719517ff4704794e723b0dd5b8235731449bf8256edf8640603a9a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\author_artifacts\\compile_inputs\\src\\native_lua_variant_retirement.cpp",
+        "sha256": "5db41574abcb3a94fdb9c6f5c8f96f2b7b0c1f0c2a7f438fe64d622980c065ca"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\baseline_artifacts\\compile.cmd",
+        "sha256": "c40ee65612e53349c78b9fba322f2449477157d46c7983a8e4466b9b4d986359"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\baseline_artifacts\\compile.log",
+        "sha256": "5e744182c7f07a68b0f2f9dd498d144f6591c53565c55416703f7aaa0072a22e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\baseline_artifacts\\retirement.obj",
+        "sha256": "387096d30eda207e5c0873fe66e2805ac2179dd4a46e5070db77b62a9dd43594"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\baseline_artifacts\\retirement.asm",
+        "sha256": "1757cd7e6d3339912d9dd5ef6aa6fd78324f768d2aed2d33e5c47fddbb19b5ef"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\baseline_artifacts\\emitted.json",
+        "sha256": "5243b25ce3898c10c6e4bae945f5120be8acea6757852caab010eba56e1898b1"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\baseline_artifacts\\EH.json",
+        "sha256": "49d822392a935a6489b186f9519b82f07262b03c9cadb6a8ec9d0f746b60ae02"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\immutable_inputs\\a4774a47499cf3ad0f38af058a53fef1e71cea61\\reports\\cc16_native_lua_variant_cpp_cleanup.json",
+        "sha256": "9670177711f416451dccf5b9e86b17bbd9d01f9eef086f4152966a94c16eeb7d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\immutable_inputs\\b5d3e2c957ca22cb8f29ca0816f6e2aec87d5e73\\reports\\cc16_native_lua_variant_cpp_cleanup_review.json",
+        "sha256": "2e62e204bcf69c54d354a578797851cb80dc18cea5b03da4bcd79d20b4c988a2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\immutable_inputs\\5ef322e05be0fa3197cc9ee6d952dcbe5c9dd142\\docs\\CC16_NATIVE_LUA_VARIANT_SCALAR_DELETE_READINESS.md",
+        "sha256": "e04a1bb5a12a6e7ce0aac4d0c4e6b72b213d4254c722be8c97bdf7035f543a62"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\immutable_inputs\\5ef322e05be0fa3197cc9ee6d952dcbe5c9dd142\\reports\\cc16_native_lua_variant_scalar_delete_readiness.json",
+        "sha256": "58ebba71c39ef0b5c71c894f5b177e95f2e6ae58e285b65c07a4715d7ee8589a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\immutable_inputs\\879f5d855aa43e099fb349ea7b18d58c7f2d1a40\\docs\\CC16_NATIVE_LUA_VARIANT_CPP_CLEANUP_SOURCE_ADMISSION.md",
+        "sha256": "03d99151929ad7cfeb601bf54e246da9b50ba95a625bc81d3f27427715ad0ae5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\immutable_inputs\\879f5d855aa43e099fb349ea7b18d58c7f2d1a40\\reports\\cc16_native_lua_variant_cpp_cleanup_source_admission.json",
+        "sha256": "e12a8884c035a08ac6ee86a49d172bce03f58a29bb34dbe3cedae02a55b3435d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\include\\bsp\\native_string.hpp",
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\src\\native_string.cpp",
+        "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\include\\bsp\\native_string_pool_owner.hpp",
+        "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\src\\native_string_pool_owner.cpp",
+        "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\include\\bsp\\native_string_pool_storage.hpp",
+        "sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\src\\native_string_pool_storage.cpp",
+        "sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\include\\bsp\\singleton_lifetime.hpp",
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\src\\singleton_lifetime.cpp",
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\src\\native_game_container_lifetime.cpp",
+        "sha256": "026006b90be17b7b8a2527bee98828a9a80ba0bdbbc96053fae5d244585a4a9c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\include\\bsp\\native_lua_variant_link_record_allocation.hpp",
+        "sha256": "7981f4745307349729690d0c2e1e2a0b8526a0829e3778d1c1b55f91c832f52d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\src\\native_lua_variant_link_record_allocation.cpp",
+        "sha256": "6724c0bc953776268b22b310341b3e847495b94a247a37918af3f7b9590d01e9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\include\\bsp\\native_lua_variant_header_initializer.hpp",
+        "sha256": "de307db13063f3a5b775c9c2ee775b8a11f475944705bdda7860ef8a0af2a596"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\src\\native_lua_variant_header_initializer.cpp",
+        "sha256": "113c184fca2a7c20e1da61cf310913eec074d03835f767ef4f07d6b9deab1f96"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\include\\bsp\\cc13_left55.hpp",
+        "sha256": "5a71656a1194f5838743ba5b2b5ea7b6f94a8a4ed8cc65ffd3714c18b8de4dfb"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\src\\cc13_left55_seg55.cpp",
+        "sha256": "5d33b376fb3f98f9b05a438165207ec346de4a8400e8e6c94e726e8ca1ffbf4c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\include\\bsp\\cc13_seg33b.hpp",
+        "sha256": "3cbe6be635f637ffc0d10ab50246d5cb4ad0ca5b509e35325f122c4f28de48d3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\src\\cc13_seg33b_misc.cpp",
+        "sha256": "b7097473cbe468dfa0a7737ee15da61b4d53f7eb0aa7e1b93dbe7c60c0b74a68"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\include\\bsp\\native_lua_variant_string_fields_cleanup.hpp",
+        "sha256": "ae929f84634f6a83d4a6cc22c6264b7a9e6a1ce8e23f993658c50b56eb08fdd9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\src\\native_lua_variant_string_fields_cleanup.cpp",
+        "sha256": "b31d80cd54faaba97c7a83a2e2994915ebb18003e17500614f04bc1f68e54921"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\include\\bsp\\native_singleton_vector_registration_wrappers.hpp",
+        "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\src\\native_singleton_vector_registration_wrappers.cpp",
+        "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\candidate_pins.json",
+        "bytes": 1027,
+        "sha256": "be96bce5e0ed64b921c303b6711c72a4b39144e57a31129a5e24bc8b9f6bfd53"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\verified_receipts.json",
+        "bytes": 14267,
+        "sha256": "899f22ff1d51f1f69f01060993c330f807240e9a5d46e188532e3cf5111e5de8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\independent_static.py",
+        "bytes": 10972,
+        "sha256": "c883f4baa8597f3b3b1ca6496e1ad352fea3afc3e96bff713eb91c204977ee27"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\independent_old_coff.json",
+        "bytes": 418962,
+        "sha256": "57002434c3c504ff8301aa3c72eb075e3fbea531ed03baff4ebfadc1cb6a89af"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\independent_new_coff.json",
+        "bytes": 425593,
+        "sha256": "bdc506ec4292ecb3b84c1146db0a6b9e550dbbf4c1f9db2d900af3b9bc5caf18"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\independent_analysis.json",
+        "bytes": 56961,
+        "sha256": "e5759afa3ffe411394d4046e0f5487ad9a13b3e555eda8a123af61b6d2a5e94b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\crosschecks.py",
+        "bytes": 6924,
+        "sha256": "5efce4028bd8004ef421887d62f6fa4088546936ecd4a95b919a4c0d67fa5d5a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\independent_crosschecks.json",
+        "bytes": 9916,
+        "sha256": "e2394b606c1bac874a838c762ba6d55aa80760060d036f0eedf04a7442232cf2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-scalar-delete-review\\local\\variant_scalar_review\\metadata_supplement.json",
+        "bytes": 756,
+        "sha256": "d29cd8667983ad217c67e4a0e8eb86c1d72474664ac2174fff61961315105b8a"
+      },
+      {
+        "path": "docs/CC16_NATIVE_LUA_VARIANT_SCALAR_DELETE_REVIEW.md",
+        "bytes": 9238,
+        "lines": 142,
+        "sha256": "7f7b961bc02edacf469514cedb6fb03f24a483951bdd8261ff825bc9ad64f552"
+      }
+    ],
+    "candidate_pins": [
+      {
+        "path": "include/bsp/native_lua_variant_retirement.hpp",
+        "bytes": 13881,
+        "lines": 271,
+        "sha256": "14258135096189f2892e4d896af417ed0c8fb616d5f1659bbc1d9d032f68a7db",
+        "git_blob": "d4babed549ceff1536f80413fc0f8e4716e78f53"
+      },
+      {
+        "path": "src/native_lua_variant_retirement.cpp",
+        "bytes": 24076,
+        "lines": 570,
+        "sha256": "5db41574abcb3a94fdb9c6f5c8f96f2b7b0c1f0c2a7f438fe64d622980c065ca",
+        "git_blob": "7b51801d0ade27ee9818fe92ff9cddaa1b19cab7"
+      },
+      {
+        "path": "docs/CC16_NATIVE_LUA_VARIANT_SCALAR_DELETE.md",
+        "bytes": 9884,
+        "lines": 154,
+        "sha256": "6bff0b47e3ce9ec5f83087bb274c2827a9cd7c8f701cbbfa870780b5dbdd4b51",
+        "git_blob": "b0c084483e3532169b8de0346ec4015af01c6377"
+      },
+      {
+        "path": "reports/cc16_native_lua_variant_scalar_delete.json",
+        "bytes": 177134,
+        "lines": 5066,
+        "sha256": "3c8dae8e3044fb5d5132e7c6a52b6219eba0ab777e16ab5dc339bcc8fc88498b",
+        "git_blob": "b76e63af2f984a223e72539843841584d67e0023"
+      }
+    ],
+    "complete_primary_doc_read": 142
+  },
+  "complete_new_common_scalar": {
+    "strict_section": 60,
+    "common_section": 38,
+    "symbols": [
+      "?scalar_delete_native_lua_variant_00884fa0_cpp_cleanup@bsp@@YA?AUNativeLuaVariantScalarDeleteResult@1@PAXADIAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z"
+    ],
+    "strict_bytes": 55,
+    "common_bytes": 54,
+    "strict_bytes_and_normalized_relocs_exact": false,
+    "common_hex": "558bec56ff75188b7508ff7514ff751056e80000000083c41085c075148b450c8a00a801740956e80000000083c40433c08bd65e5dc3",
+    "relocations": [
+      [
+        18,
+        20,
+        "??$destruct_kernel@$00@?anonymous@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@PBUNativeLuaVariantCppCleanupBacking@1@@Z"
+      ],
+      [
+        40,
+        20,
+        "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+      ]
+    ],
+    "listing": [
+      "0000 push ebp",
+      "0001 mov ebp, esp",
+      "0003 push esi",
+      "0004 push dword ptr [ebp + 0x18]",
+      "0007 mov esi, dword ptr [ebp + 8]",
+      "000a push dword ptr [ebp + 0x14]",
+      "000d push dword ptr [ebp + 0x10]",
+      "0010 push esi",
+      "0011 call 0x16",
+      "0016 add esp, 0x10",
+      "0019 test eax, eax",
+      "001b jne 0x31",
+      "001d mov eax, dword ptr [ebp + 0xc]",
+      "0020 mov al, byte ptr [eax]",
+      "0022 test al, 1",
+      "0024 je 0x2f",
+      "0026 push esi",
+      "0027 call 0x2c",
+      "002c add esp, 4",
+      "002f xor eax, eax",
+      "0031 mov edx, esi",
+      "0033 pop esi",
+      "0034 pop ebp",
+      "0035 ret "
+    ]
+  },
+  "source_native_domain_and_limits": "Complete qualified Source scalar_delete_native_lua_variant_00884fa0_cpp_cleanup; candidate65d9 and independent reviewaae890 passed; common Win32 MP2/PCH build0d4ed49576b1f73ff659b12ecb6e25bc19169364 2/2 suites12.05s. Native00884FA0..00884FBD is30B/11ops (RET4 at884FBB is3B), not28B; D0E6F4 preserved. Captured receiver and identity bits; actual qualified884AF0 child; returned noncompletion bypasses HOME/free; completed child then one current volatile LOW BYTE flags-home read; bit0 frees captured canonical malloc root through actual singleton_lifetime_free. Escaping C++ child has no ordinary result and bypasses flags/free. Flags HOME may legally alias raw receiver but stays readable through late read; context/sidecars/result storage independently live/disjoint. Common scalar54B/24ops EBP frame, EAX=status/EDX=bits/plainRET; old36 common bodies5395B and632B wholeEH unchanged. Actual seven-entry manifested link:27 live whole code sections+six wholeEH tables relocated byte-exact; client never executed. CG name/tag preserved; zero new unique Original/vendor/duplicate body credit. No OriginalABI/FH3/SEH/private-home/fault/provider CPP-transport/secondary-terminal/CF-D0 host-caller/runtime/gameplay/activation proof.",
+  "companion_readonly_evidence": {
+    "group": {
+      "candidate": "412722191f4d5b015380edf55e88f3ba527f6969",
+      "pins": 90,
+      "current_Source_pins": 41,
+      "Native_spans": {
+        "spans": [
+          {
+            "address": "00AA6560",
+            "bytes": 148,
+            "sha256": "1bb0d52c372cba3ed8219100366ad915c02e90ededba2ac80c0e3ed3c9b5d27a"
+          },
+          {
+            "address": "00AA12F0",
+            "bytes": 132,
+            "sha256": "a9edbd7a48814ab9c740f4dfa99efdb329c720802422276def792614e1005855"
+          },
+          {
+            "address": "00AC6F50",
+            "bytes": 20,
+            "sha256": "107dcbb6dc4a04850cc742b6ec39766e55c3a3db37bfb969d47a439b7c3cc511"
+          },
+          {
+            "address": "00AC6FA0",
+            "bytes": 25,
+            "sha256": "0b6017b668b5967193a8b96fda544c0b5311f3b73b31cd14b897ba1b89d1fe99"
+          },
+          {
+            "address": "00AA65F4",
+            "bytes": 72,
+            "sha256": "f2aed7883488594c932320d76f542b88353656d208cd16a07f9c8ffad6bfc91c"
+          },
+          {
+            "address": "00D5CB80",
+            "bytes": 128,
+            "sha256": "dced1d3f2484bccef6b1fd07ea13d1fe360d237f22189055df74a0fe780d7ff9"
+          },
+          {
+            "address": "00D5C0B8",
+            "bytes": 76,
+            "sha256": "47c0181aaf0d6571b65077b3c01ce8c2b61ca45492d53cfad9f59aee4eaaf1d7"
+          },
+          {
+            "address": "00D7A24C",
+            "bytes": 4,
+            "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+          },
+          {
+            "address": "00CE34A0",
+            "bytes": 8,
+            "sha256": "2b8584267de74b3492a868ce9fd6888cf5884a38abb3014558796a857b2e8d35"
+          },
+          {
+            "address": "00D5CC00",
+            "bytes": 10,
+            "sha256": "ff6650a93a9d80cae30bece064140e4bfb07ce4eb5a80f7194313bf7107c94cc"
+          }
+        ],
+        "source_pins_current_and_baseline": 41
+      }
+    },
+    "frontend_globals": {
+      "candidate": "104bdc717871c4409311c713553b495def887d25",
+      "pins": 76,
+      "Native_spans": {
+        "spans": [
+          {
+            "address": "00e18b60",
+            "bytes": 380,
+            "sha256": "08c3e5bbea4fba57201a69d4bf70a0d255df921fdef4924c22da087f9338c2bc"
+          },
+          {
+            "address": "00e18d80",
+            "bytes": 16,
+            "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb"
+          },
+          {
+            "address": "00e08500",
+            "bytes": 260,
+            "sha256": "80019dee6d281250dcf02c58d1b649cd4647ab2721620c263ec6e4836412fd1f"
+          },
+          {
+            "address": "00e08604",
+            "bytes": 40,
+            "sha256": "e806e65cb5ecc6e3bc1ec9d59a13d4e8d494ac949050936fe8169d8d843796c3"
+          },
+          {
+            "address": "00e0862c",
+            "bytes": 40,
+            "sha256": "4dcc1b1d42c6501ff41305a9fd5aba5737abd55c070f4bab8db05202dba8121c"
+          },
+          {
+            "address": "00e08654",
+            "bytes": 4,
+            "sha256": "26b25d457597a7b0463f9620f666dd10aa2c4373a505967c7c8d70922a2d6ece"
+          },
+          {
+            "address": "00cec388",
+            "bytes": 60,
+            "sha256": "08b8ce38cdf768da0e99aa02b87ed68073bd3435274b2ce3d2a79f751743fdcb"
+          }
+        ],
+        "page_preimages": [
+          {
+            "va": "00e08000",
+            "size": 4096,
+            "sha256": "45b9d99ece79ccff905e2a9b8b9fb5060a370c5e3e32bffb1ce29164d255102c",
+            "backing": "PE raw A08000"
+          },
+          {
+            "va": "00e18000",
+            "size": 4096,
+            "sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+            "backing": "loader zero-fill"
+          }
+        ],
+        "zero_fill_from_virtual_section_extent": true
+      },
+      "implementation_ready": false
+    }
+  },
+  "activation": false,
+  "game_validated": false,
+  "caller_adopted": false,
+  "runtime_credit": 0,
+  "new_Original_vendor_duplicate_body_credit": 0,
+  "Ghidra_annotation": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_before_batch": true,
+    "write_lock": true,
+    "saved_project": true,
+    "preserved_name": "CG_scalar_deleting_dtor_00884fa0",
+    "preserved_cg_tag": true,
+    "prior_values_retained": true,
+    "fresh_export": true,
+    "receipts": [
+      {
+        "path": "local/function_source_batch14/artifacts/ghidra_annotation.log",
+        "sha256": "63a7697ad3627a7bd44aa96aff152cb54c4ad7b4fc74fc0544bc1879f41c1e04",
+        "bytes": 214
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/ghidra_export.log",
+        "sha256": "2084e2ae86ea4bd8131718779eada2c05d3262e0393776f5632ea9cc13999b6d",
+        "bytes": 104
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/ghidra-annotations-20261030T094616Z.json",
+        "sha256": "c76075908875e8321f3bfafa7bc268c695fad953f67122c97f528d9b83659f29",
+        "bytes": 1522
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/prior_ledger_records.json",
+        "sha256": "ce3ef9ffb41f92408ba43deb2bd77b2686ce9042ef5b63158872a8e393d160f7",
+        "bytes": 160
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/ledger_record.json",
+        "sha256": "a2d2bcda74828245507536412a4227ff4fbe0c21428545e057b3d76a86698484",
+        "bytes": 2330
+      },
+      {
+        "path": "local/function_source_batch14/artifacts/ledger_changes.log",
+        "sha256": "3e22851c9f60ca05fd8b1ad7ceff76c8982fe4f010172eb70d4e49c8c68588f2",
+        "bytes": 98
+      }
+    ]
+  }
+}
