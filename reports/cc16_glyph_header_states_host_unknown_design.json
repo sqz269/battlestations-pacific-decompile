@@ -1,0 +1,640 @@
+{
+  "schema_version": 1,
+  "packet": "codex-glyph-header-states-host-unknown-design",
+  "utc": "2026-10-30T23:27:25.796094+00:00",
+  "classification": "bounded read-only actual-site design; no implementation/admission",
+  "owned_files": [
+    "docs/CC16_GLYPH_HEADER_STATES_HOST_UNKNOWN_DESIGN.md",
+    "reports/cc16_glyph_header_states_host_unknown_design.json"
+  ],
+  "baseline": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+  "Root4667": "4667b108e2623e5902148aea9130be1be33bc188",
+  "separate_listener_peer": "e28fb54f014bc5cbd9cacc1296279667c925a00b",
+  "source_and_native_evidence": {
+    "utc": "2026-10-30T23:25:07.991251+00:00",
+    "baseline": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+    "Root4667": "4667b108e2623e5902148aea9130be1be33bc188",
+    "listener_packet_separate": "6230a05912747c5fd87f41c6997166479e3eba95",
+    "source_pins": [
+      {
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 9403,
+        "sha256": "61f7eff6fbe50303bc339c0cf1a56acbb77d0ece0ad9b6d00f6c04667b5cb42e",
+        "blob": "836469e59c5a60df1907bddf78311cbf7600cebd"
+      },
+      {
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 21995,
+        "sha256": "2bab8e816665596ab8d9372524fddc240e68c3aacdc83afa31927bef1fbd198c",
+        "blob": "9b7e47f46bb0d7cdc269bc31315e9fc4f01f467c"
+      },
+      {
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "path": "include/bsp/native_string.hpp",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 8771,
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "blob": "3b7af4c6508cfc1df81e913108b5162208685e97"
+      },
+      {
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "path": "src/native_string.cpp",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 9121,
+        "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+        "blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a"
+      },
+      {
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "path": "include/bsp/native_wide_string.hpp",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 5239,
+        "sha256": "5606f96b372362a6831a1633a583f264fbab4290789481f94f1ba97537f6e051",
+        "blob": "ca3887e0d34038a9e799ebdead68b0db55f16108"
+      },
+      {
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "path": "src/native_wide_string.cpp",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 10671,
+        "sha256": "158502f1efb91f678011dd971c643d5236eb10bf56da3c9997631a6d8df96e55",
+        "blob": "7b9df08e026a67a9dbab9c6c8df74676fd43645d"
+      },
+      {
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "path": "include/bsp/native_string_pool_storage.hpp",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 3113,
+        "sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+        "blob": "60b3f627150fa058fac7b8c4c74537cb3aee0a68"
+      },
+      {
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "path": "src/native_string_pool_storage.cpp",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 5450,
+        "sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+        "blob": "103d6fe4d772bb3078c48fe8bcf3f929a385fdda"
+      },
+      {
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "path": "include/bsp/native_string_pool_owner.hpp",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 5893,
+        "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+        "blob": "4a2569e19b6f25c308cba1c3cdb2b2989db2cddd"
+      },
+      {
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "path": "src/native_string_pool_owner.cpp",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 8443,
+        "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+        "blob": "de3c69b53e00840fab31b41e2195bdc1789b6baf"
+      },
+      {
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "path": "include/bsp/gui_text_glyph_child.hpp",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 3706,
+        "sha256": "42d4ad6a32778b97583f74efac51853072943c2aa9929df44b0f57189c78b895",
+        "blob": "72410e701afcfa72b1b4f5518a68e6a7fc76b1e1"
+      },
+      {
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "path": "src/gui_text_glyph_child.cpp",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 4709,
+        "sha256": "c4e494d1ffdaf20257d8e5a77bebf352925ba3be53d0f595a5e58f6a8dcdc6f4",
+        "blob": "cda642f5f5ecd3b86bdadf98c897a5f6e1cd8874"
+      },
+      {
+        "commit": "4667b108e2623e5902148aea9130be1be33bc188",
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 9403,
+        "sha256": "61f7eff6fbe50303bc339c0cf1a56acbb77d0ece0ad9b6d00f6c04667b5cb42e",
+        "blob": "836469e59c5a60df1907bddf78311cbf7600cebd"
+      },
+      {
+        "commit": "4667b108e2623e5902148aea9130be1be33bc188",
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 21995,
+        "sha256": "2bab8e816665596ab8d9372524fddc240e68c3aacdc83afa31927bef1fbd198c",
+        "blob": "9b7e47f46bb0d7cdc269bc31315e9fc4f01f467c"
+      },
+      {
+        "commit": "6230a05912747c5fd87f41c6997166479e3eba95",
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 9317,
+        "sha256": "eb066d93ec72e0f25c5d4ec62b160d73001fe7ce5dc620b9177ea9362eb793b9",
+        "blob": "272096a0c03738e7812231572dc2ba6a67ab859a"
+      },
+      {
+        "commit": "6230a05912747c5fd87f41c6997166479e3eba95",
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 22045,
+        "sha256": "d67826d8c2e7136d77891ecb46ee5389087e8f8c2aba031dd786988e984a0a5c",
+        "blob": "db143445f4e77a58aa2a1c7cb11b3fac35f91963"
+      },
+      {
+        "commit": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+        "path": "include/bsp/native_gui_text_failure_origin.hpp",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 12422,
+        "sha256": "05244d307d0cbdb80b83f59c1b188acbed3f9422204e22c10ec56a36b6934704",
+        "blob": "1863acded67119b6e16ab9e26b72b06475742067"
+      },
+      {
+        "commit": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+        "path": "src/native_gui_text_failure_origin.cpp",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 11627,
+        "sha256": "aacd70ec3d609de1b8a544884fd4d844d51b684a96194a0f95a62b9c843fc8c1",
+        "blob": "6226f079539631f02df8b9665e1ec4a213d91455"
+      },
+      {
+        "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+        "path": "include/bsp/native_gui_text_changed_storage.hpp",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 11813,
+        "sha256": "75a9ebed1b5b9f505ffa2593899d92108c9a687ffdbcc81339f5be888f095b63",
+        "blob": "a7531deb87f433cc115f6a48765622ef109237fe"
+      },
+      {
+        "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+        "path": "src/native_gui_text_changed_storage.cpp",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 30553,
+        "sha256": "632288ebfe99bef41e3dcdd2aa3448a0abefa48860b690e2ee5aba2d4acc2517",
+        "blob": "87afebe9613ca5cde74452f875afd72202d98083"
+      },
+      {
+        "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+        "path": "include/bsp/native_gui_text_main_section_storage.hpp",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 7926,
+        "sha256": "1c7554fc16cf2432f27f6eef83c8a16bbaaff4531268ee79dfdb52f5efd7104a",
+        "blob": "b5e51a7e4275d4db0b7fc338e818e7aa9f3f2b3f"
+      }
+    ],
+    "evidence_pins": [
+      {
+        "commit": "42143ae2e0e854d8d87d9ae7e0065d7bfba8a0c9",
+        "path": "docs/CC16_GLYPH_CONSTRUCTOR_SLOT_ORIGIN_AUDIT.md",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 9590,
+        "sha256": "b87d0b6867b7ce84220b24c3e6f127b0997c31296a457cb99860c56f93d6c0db",
+        "blob": "a5960c22b6879e8e87f7026e24a559ca499bb908"
+      },
+      {
+        "commit": "42143ae2e0e854d8d87d9ae7e0065d7bfba8a0c9",
+        "path": "reports/cc16_glyph_constructor_slot_origin_audit.json",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 24489,
+        "sha256": "22c17ba09caf7b2191112d5904d39fb9db3053449993662c1ffc56940c5d3dfe",
+        "blob": "f0f39975f1fbee41406abc2b6ffbedb8834fbcf8"
+      },
+      {
+        "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+        "path": "docs/CC16_NATIVE_GUI_TEXT_FAILURE_ORIGIN_HOST_SLICE.md",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 10377,
+        "sha256": "ea450188bbc964dcd582ea4b735a6f082f6b7cd59382bb5c965116099a471ea0",
+        "blob": "d853e97e2ea9f07c41945b983cbadb9d4724a6de"
+      },
+      {
+        "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+        "path": "reports/cc16_native_gui_text_failure_origin_host_slice.json",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 51611,
+        "sha256": "e026a4078eb566cfd7e8ba6c9c65d3d9cb5e060e4168ce275aca5e48b71cb9fa",
+        "blob": "14e77b70ae25adde54c60f783eb749fb3fef2a41"
+      },
+      {
+        "commit": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+        "path": "docs/CC16_GLYPH_CONSTRUCTOR_SLOT_HOST_UNKNOWN.md",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 9132,
+        "sha256": "296f77be8573742ed042698c61a470b704c0ab4941bf50341f67a1f7e2f95a90",
+        "blob": "b85908b1681daa9b02a6bb0ecbb0b7ad01748f70"
+      },
+      {
+        "commit": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+        "path": "reports/cc16_glyph_constructor_slot_host_unknown.json",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 98451,
+        "sha256": "9494230347907caa8c2b74ddee0b71bfb77a04f7823457a59239334c4d869a96",
+        "blob": "5028957d6c74ba4d1c96d667149d1a0805bdea8a"
+      },
+      {
+        "commit": "1087e96a7d66a55488cb601cf935dfdccec20159",
+        "path": "reports/cc16_glyph_constructor_slot_host_unknown_independent_review.json",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 25352,
+        "sha256": "163ca8f6efe214e3373ac99747c388c9cc7acfe2d32db3c1f3b96cfb94bda2e8",
+        "blob": "9a76907037516976b56e4f66dc8fbbaaf821cedf"
+      },
+      {
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "path": "docs/CC16_NATIVE_GLYPH_CODE_UNIT_RAW_POOL_CALLER.md",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 6267,
+        "sha256": "e5e7815914a0982992db0f605a774223c0eff886b2223f379eafe67e79fff833",
+        "blob": "382fe165319985e8070ffd9ad7ae73d04aa17533"
+      },
+      {
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "path": "reports/cc16_native_glyph_code_unit_raw_pool_caller.json",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 31337,
+        "sha256": "8c03b89714700a0cf90b1639b0ff56fe7379ffda8672b8b2f8c7070237416137",
+        "blob": "06685e0fd0f78791a8dc0d438ba83a9573d6388c"
+      },
+      {
+        "commit": "5b1872889d968856e29895e8883a7c9eaecddc47",
+        "path": "reports/cc16_native_glyph_code_unit_raw_pool_caller_independent_review.json",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 27538,
+        "sha256": "5eae82ce5a503d61986886a79be9d26986a3b4dd69491c7d31236747b1c61491",
+        "blob": "2c48153db7978bc0aa0d42bce20b4900ca6eea2d"
+      },
+      {
+        "commit": "e28fb54f014bc5cbd9cacc1296279667c925a00b",
+        "path": "reports/cc16_native_glyph_listener_direct_caller_independent_review.json",
+        "format": "exact immutable Git blob UTF-8 LF bytes; no CRLF normalization",
+        "bytes": 28582,
+        "sha256": "c2fc5b7b4eb31c79da54e6ae737cbb4b83e8895d82300819e402da44a91b9327",
+        "blob": "486ea23e7978b590bf38d44b45fae1257937be84"
+      }
+    ],
+    "saved_exports": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab98f0\\assembly.txt",
+        "format": "current saved-export on-disk snapshot at audit epoch; annotations may later refresh",
+        "bytes": 16685,
+        "sha256": "7165707dcf74507fb24b2d3bfc77de8fa764a33c46fe46ff16aef417efd50bd4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab98f0\\decompiled.c",
+        "format": "current saved-export on-disk snapshot at audit epoch; annotations may later refresh",
+        "bytes": 52076,
+        "sha256": "9308504d66ebfb46914987c8af15afba92af6435557c7389b86eabb58d993fe7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab98f0\\metadata.json",
+        "format": "current saved-export on-disk snapshot at audit epoch; annotations may later refresh",
+        "bytes": 277,
+        "sha256": "cb946b6c6494db4eda03737c7d0eba7bb8cf61d1d100bbeef5906167afa7dab7"
+      }
+    ],
+    "native": {
+      "PE": {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "bytes": 12223752,
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+      },
+      "ranges": [
+        {
+          "name": "wholeGlyph",
+          "address": "00ab98f0",
+          "bytes": 1747,
+          "sha256": "795b76de15e3a52d032bfca739ca1cffe9714a83d7d619fd6aae9302aa13d236",
+          "hex": null
+        },
+        {
+          "name": "narrow arm and normal return",
+          "address": "00ab9e0a",
+          "bytes": 59,
+          "sha256": "1f05d7c0ab01363037860d07da187b0d1ee0c947bf2b7fc344778e85b36679b9",
+          "hex": "6878fdce008d4c2428e8584a96ff508bce895c2458e84cf0ffff8b44242885c0896c245474158b4c24245303cb5150e882fe95ff8bc8e8cb761100"
+        },
+        {
+          "name": "wide arm and normal return",
+          "address": "00ab9e45",
+          "bytes": 81,
+          "sha256": "5636a519c242b8a7e6831ee7b3e5f688eef60ab4ffcfdd87354747f1e89da5eb",
+          "hex": "8b8c2480000000518d4c2428e86ae3ffff508bcec744245802000000e86a0a00008b168b52508d4650508bceffd28b44242885c0896c245474178b4c2424538d4c09025150e831fe95ff8bc8e87a761100"
+        },
+        {
+          "name": "FuncInfo",
+          "address": "00deeefc",
+          "bytes": 36,
+          "sha256": "0d28587e7799bec05a77638df0c853f23d838f16b734dc26364f1dd93a8e7d07",
+          "hex": "2205931903000000e4eede00000000000000000000000000000000000000000001000000"
+        },
+        {
+          "name": "unwindmap",
+          "address": "00deeee4",
+          "bytes": 24,
+          "sha256": "65d0a3f7149eae76b82869d7537a60e122dbed34cfd4819907036f4f6c5659d3",
+          "hex": "ffffffffb080cb00ffffffffb880cb00ffffffffc080cb00"
+        },
+        {
+          "name": "state0 untouched",
+          "address": "00cb80b0",
+          "bytes": 8,
+          "sha256": "bc0d1fdba725ced26204885cbe4f6fbf69b164676eda79417fe6fcf87a656ad5",
+          "hex": "8b4d20e938f6dfff",
+          "tail_target": "00ab76f0"
+        },
+        {
+          "name": "state1",
+          "address": "00cb80b8",
+          "bytes": 8,
+          "sha256": "2343e342b0699aa3027e26628f7bc20965fc9f6704e7cf0feac1405d752fe504",
+          "hex": "8d4dcce9605c76ff",
+          "tail_target": "0041dd20"
+        },
+        {
+          "name": "state2",
+          "address": "00cb80c0",
+          "bytes": 8,
+          "sha256": "a991a8eddc81fc9530b1ee6006edd77d69ae2db52db22145dffe1ac900750810",
+          "hex": "8d4dcce968e377ff",
+          "tail_target": "00436430"
+        },
+        {
+          "name": "handler",
+          "address": "00cb80c8",
+          "bytes": 10,
+          "sha256": "d4b3c03a6cccf4d6e82c7df48e66c3eceae688b608adadb5a03a8ec9be6a99a1",
+          "hex": "b8fceede00e971eaf3ff"
+        }
+      ],
+      "map": [
+        {
+          "state": 0,
+          "parent": -1,
+          "action": "00cb80b0"
+        },
+        {
+          "state": 1,
+          "parent": -1,
+          "action": "00cb80b8"
+        },
+        {
+          "state": 2,
+          "parent": -1,
+          "action": "00cb80c0"
+        }
+      ],
+      "full_listing_read": "verified bsp show pages0,64,128,192,256,320,384,448 (all485ops)",
+      "whole_native_body_new_credit": 0
+    },
+    "Source_line_pins": [
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "line": 270,
+        "text": "void normal_string_return(Acquired& a, NativeStringRawPoolContext& strings,",
+        "utf8_sha256": "9f2c5fbc6ddbe07bf67b5b64b50fdc8545d2be789865f677764d347f64349d53"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "line": 272,
+        "text": "    const Word data = static_cast<volatile Word*>(a.locals)[5]; // F28, capture before getter.",
+        "utf8_sha256": "f6d9d1426595348b78d3912ecfa5701f21a1fe0f7029ebc0070b9c2987e3279d"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "line": 273,
+        "text": "    a.native_eh_state = -1; // Native TEST data, then disarm before length/getter.",
+        "utf8_sha256": "6bdf2afb60b9635f7410b222ed28a578129858de45a6a2d9037b8ab31bab8fb6"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "line": 275,
+        "text": "    const Word length = static_cast<volatile Word*>(a.locals)[4];",
+        "utf8_sha256": "e9930f56912a819627595aeeb7a3fa6bd1379e26eb7b50439b3351a72cee7f82"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "line": 276,
+        "text": "    const Word bytes = wide ? length * 2u + 2u : length + 1u;",
+        "utf8_sha256": "e770a4971a128b3c09e9a8dfd75c898f2a9128f035c5a2fad987a4b757b93a49"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "line": 471,
+        "text": "        void* const shader_argument = construct_native_string_header_0041e870(",
+        "utf8_sha256": "857cac7962249bb85c4d2ef8f8403a44b49b7376ef8ae4a5d555b980664cd966"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "line": 473,
+        "text": "        a.native_eh_state = 1;",
+        "utf8_sha256": "d37eabc8bab750eef84b97e44984cbcd1bbac014dace806816486ba216f10718"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "line": 474,
+        "text": "        boundary(a, 0x00ab9e1f, child); c.calls.shader_00ab8e70(child, shader_argument, a);",
+        "utf8_sha256": "84bbfc5d7c68bcfcf44a8ba9d58f64b441148515d006719dbf9fb5dee0f96f52"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "line": 475,
+        "text": "        normal_string_return(a, c.strings, 0x00ab9e39, 0x00ab9e40, false);",
+        "utf8_sha256": "b517d5fa224c1e429b215b08c449dce55d0bb94df78029d9b8cd89ebaa3452ae"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "line": 476,
+        "text": "        const Word current_code_unit = homes[9];",
+        "utf8_sha256": "41c41c07c53ab9376fa1ca5c65e308c76f076679801de9eaa5cc9b2f8b247b63"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "line": 478,
+        "text": "        void* const content_argument = construct_gui_text_code_unit_00ab81c0(",
+        "utf8_sha256": "72dbc7274479f4630c3510eabff107c8e86be2514078e82f2c8bf6100d372ec2"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "line": 480,
+        "text": "        a.native_eh_state = 2;",
+        "utf8_sha256": "39f8aba2c168bf727c61dbe2b42ebca7717b783128b1b95c78becb3438b271d1"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "line": 481,
+        "text": "        boundary(a, 0x00ab9e61, child); c.calls.content_00aba8d0(child, content_argument, a);",
+        "utf8_sha256": "6c63772d77ada0e599d4abb5706c6f17a017821086d0ae9f822446f1fe748541"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "line": 484,
+        "text": "        c.calls.child_current50(child, a.captured_profile, a.captured_target, pointer(bits(child) + 0x50), a);",
+        "utf8_sha256": "33f20985287663862507abb59dd2e738d096f39b36e56d5b0d1bbe05fceb0c28"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "line": 485,
+        "text": "        normal_string_return(a, c.strings, 0x00ab9e8a, 0x00ab9e91, true);",
+        "utf8_sha256": "b23b8d1c614029a0bcc6ba94ff85efe8e58993a8be22608c28ecee6435d304ad"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "line": 508,
+        "text": "        bool constructor_permit = false;",
+        "utf8_sha256": "ed6ea01b37ac15702416b98f79889ddeb2b37e0f9e798161a2731cce9137a16a"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "line": 517,
+        "text": "        a.failure = std::current_exception();",
+        "utf8_sha256": "b72c56c87bc028ecf60251280c0ea1c8c1dfcff2ab502f228039ab7e40ee2dab"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "line": 536,
+        "text": "                    destroy_native_string_header_0041dd20(a.locals + 4, c.strings);",
+        "utf8_sha256": "228ca981fd2516ceb577a1ac9263fbacc03f2e46d98b66e7d5aa000630f0643f"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "commit": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+        "line": 539,
+        "text": "                    destroy_native_wide_string_header_00436430(a.locals + 4, c.strings);",
+        "utf8_sha256": "bf974fbd531310bf15de5673017699b1e650322fc57baffa472dd92f23ede3f5"
+      }
+    ],
+    "Source_pins_count": 21,
+    "evidence_count": 11,
+    "baseline_Root_two_files_equal": true,
+    "no_Source_edits": true
+  },
+  "finite_contract": {
+    "Source_files": [
+      "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "src/native_gui_text_glyph_quad_storage.cpp",
+      "include/bsp/native_gui_text_failure_origin.hpp"
+    ],
+    "protocol_CPP_changed": false,
+    "new_CPP_or_CMake": false,
+    "HeaderArm_API_reused": true,
+    "distinct_retained_arms": [
+      "narrowstate1",
+      "widestate2"
+    ],
+    "same_actual_header": "a.locals+4 ordinary F24/F28",
+    "extra_Origin_friend": "existing exact Glyph entry, private escaped-edge read only in proposed body; no setter/issuer",
+    "normal_helper_signature": "void normal_string_return(Acquired&,NativeStringRawPoolContext&,Word getter_site,Word return_site,bool wide,NativeGuiTextFailureHeaderArm*,NativeGuiTextFailureOrigin*,const NativeGuiTextFailureOriginRuntime*)",
+    "null_runtime_legacy": "unchanged and unadmitted",
+    "private_edge_allowlist": {
+      "state1": [
+        "00ab9e1f"
+      ],
+      "state2": [
+        "00ab9e61",
+        "00ab9e71"
+      ],
+      "supplier": "SAMEactualCalls unless future authentic child record supplied",
+      "stage": "ordinary",
+      "source_tags": "fixed actual wrapper identity, preserve old3counteridentities; never publicactive_call_site"
+    },
+    "positive_predicate": "exact private edge guard then existing consume_proven_primary before diagnostics/current header reads; absentissuer alwaysdenies",
+    "new_Native_issuer": false,
+    "new_public_Native_flag": false,
+    "new_termination_cleanup_retry_rollback_inputcap_or_successdefault_policy": false
+  },
+  "top_unknown_vs_child": {
+    "top_retain_sufficient_for_negative_suppression_only": true,
+    "top_retain_authenticates_actual_site": false,
+    "actual_static_UNKNOWN_wrappers_required_for_edge_claim": true,
+    "HeaderArm_existing_predicate_checks_exact_site_supplier": false,
+    "HeaderArm_existing_predicate_negative_safe_noissuer": true,
+    "private_child_HOST_forwarding_implemented": false,
+    "actual_content_gap": "Opaque contentmethod has no actualmutableoutgoingDWORDhome/retainedChangedScratch; known8f9entry requires actualhome+sameContext+Scratch.failure_origin andexactcurrentcause/record/entry",
+    "do_not_upgrade_committed_denial": true
+  },
+  "nested_provider_and_custody": {
+    "direct_raw_narrow_construct_resize_codeunit_destructors_have_local_cleanup_catch": false,
+    "opaque_shader_content_current50_cleanup_authenticated": false,
+    "actual8f9nested_header_negative_binding_required": true,
+    "BD1510_noexcept_inherited_not_Original_proof": true,
+    "normal_capture_is_unwind_operand": false,
+    "normal_capture_rule": "capturedata beforedisarm, length/bytes beforegetter, samepool/gate; do notrescanheader orretry afterfailure/reuse",
+    "disposition_gap": "prove actualretainedproviderkeepscapturedreturnoperands orappendpassivemetadataatNativecaptures; identityobservations only, notowner/actionpermission",
+    "secondary": "consume first, actualCURRENT header helper undercleanup_secondary; retainprimary; throw escapes ordinarySource ifitcouldrun; noFH3terminationproof"
+  },
+  "gates": {
+    "Source_implementation_done": false,
+    "bounded_negative_design_finite": true,
+    "Native_positive": false,
+    "actual_child_binding_closed": false,
+    "full_failed_disposition_closed": false,
+    "Original_ABI_FH3_SEH_fault_privatealias_unmaskedFP": false,
+    "whole_Glyph_EH_admitted": false,
+    "whole_frontend_ready": false,
+    "activation_ready": false
+  },
+  "validation": {
+    "Source_edits": 0,
+    "CMake_edits": 0,
+    "ledger_edits": 0,
+    "Ghidra_writes": 0,
+    "builds": 0,
+    "tests": 0,
+    "new_tests": 0,
+    "probes": 0,
+    "game_runs": 0,
+    "executable_runs": 0,
+    "replays": 0,
+    "process_actions": 0,
+    "memory_writes": 0,
+    "full_Native_ops_read": 485,
+    "verified_Ghidra_count": 77632,
+    "old_evidence_immutable": true,
+    "separate_listener_review_commit_unchanged": true
+  },
+  "credit": {
+    "Original": 0,
+    "Native": 0,
+    "body": 0,
+    "helper": 0,
+    "vendor": 0,
+    "CG": 0,
+    "duplicate_body": 0,
+    "ABI": 0,
+    "runtime": 0,
+    "activation": 0
+  },
+  "static_artifact": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-frame-selection-closure\\local\\output\\cc16_glyph_header_states_design_static.json",
+    "format": "ignored exact UTF-8 LF static JSON metadata",
+    "bytes": 22995,
+    "sha256": "867ba481958cc36c93077eb9e804564f5e26432463e2f1a2f302969acb5398cd"
+  },
+  "document_pin": {
+    "path": "docs/CC16_GLYPH_HEADER_STATES_HOST_UNKNOWN_DESIGN.md",
+    "format": "authored exact UTF-8 LF prospective Git blob",
+    "bytes": 12112,
+    "sha256": "2198e7737e72bc00b0a0897e09e659ec988d3b14c23f261e4dc44102c4c485df"
+  }
+}
