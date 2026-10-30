@@ -164,11 +164,10 @@ def read_context(reader, game: int) -> dict:
         pointer(controlled)
     non_campaign = reader.u32(game + 0x1FE4)
     effective, = struct.unpack("<i", reader.read(game + 0x6AC, 4))
-    state = reader.u32(game + 0x5D4)
     if reader.u32(GAME_GLOBAL) != game:
         raise SampleError("game singleton changed during context read")
     difficulty = 2 if non_campaign != 0 else effective
-    return {"game_state": state, "non_campaign_flag": non_campaign,
+    return {"non_campaign_flag": non_campaign,
             "effective_difficulty": effective, "reported_get_difficulty": difficulty,
             "difficulty_matches_bsp_reference_1": difficulty == 1,
             "controlled_pointer": f"0x{controlled:08X}"}
@@ -224,8 +223,7 @@ class ClockWindow:
                                     "previous": self.last})
                 self.last = observation
                 return "clock_reset"
-        ready = (scene_ready and sample["context"]["game_state"] == 0x0D
-                 and clock["fixed_step_count"] > 0 and clock["game_time"] > 0)
+        ready = scene_ready and clock["fixed_step_count"] > 0 and clock["game_time"] > 0
         if not self.first:
             if not ready:
                 return None

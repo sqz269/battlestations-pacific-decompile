@@ -74,7 +74,7 @@ counted separately. Equal brackets remain external observations, not an atomic
 engine-tick snapshot.
 
 The first mission epoch is admitted only after the fresh marker, a valid native
-game pointer, game state `0x0D`, positive `fixed_step_count`, and positive native
+game pointer, positive `fixed_step_count`, and positive native
 GameTime. Earlier clean clock reads are retained separately as
 `first_clean_clock_read`, without treating a menu/uninitialized clock as the
 mission start. The target is **absolute native GameTime >= 240**, not another
@@ -92,11 +92,14 @@ Native cells and their verified writers are documented in
 - `engine_dt` is scaled per-OnMove float `[game+21F0h]`, not the sample's wall
   interval and not a promise that every engine frame is a fixed step.
 
-The observer also reads `game+5D4h` state, `game+1FE4h` non-campaign flag,
+The observer also reads uint32 `game+1FE4h` non-campaign flag,
 signed `game+6ACh` effective difficulty, and controlled pointer `[00E188D8]`.
 It derives GetDifficulty exactly as `008AE113..008AE130`: return 2 when the
 non-campaign flag is nonzero, otherwise the effective field
-(`src/lua_binding_core.cpp:26`). A mismatch against the BSP reference difficulty
+(`src/lua_binding_core.cpp:26`). The controlled global is a 32-bit x86 pointer;
+its native producer at `004C0893` and live xrefs were verified by the baseline
+workstream (`include/bsp/controlled_unit.hpp`). No extra reconstructed game-state
+field participates in admission. A mismatch against the BSP reference difficulty
 1 is recorded, never corrected. Controlled pointer is context only; the
 observer does not inspect or auto-follow a selected unit.
 
@@ -161,9 +164,10 @@ python tools/original_coverage_clock.py --pid 1234 `
 ## Validation boundary
 
 Python compilation passed. Six focused fake-reader/clock checks covered one
-retry/final-torn exclusion, scene/state/step admission, absolute target/reset
+retry/final-torn exclusion, scene/step admission, absolute target/reset
 isolation, timeout/DRAIN, nonce/FILETIME/PID/fresh-log/path rejection, log
-truncation, and end-to-end exclusive atomic JSON publication. The fixture lives
+truncation, initial null/unreadable clock recovery, and end-to-end exclusive
+atomic JSON publication. The fixture lives
 only in ignored `local/coverage-clock-fixture/`; no new test framework or game
 process was used. This is synthetic validation, not a live original/DR clock
 or native stop/flush validation.
