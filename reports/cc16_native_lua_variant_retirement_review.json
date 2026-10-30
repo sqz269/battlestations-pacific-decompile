@@ -1,0 +1,1530 @@
+{
+  "schema": "bsp.independent-native-lua-retirement-review.v1",
+  "packet": "codex-native-lua-variant-retirement-review",
+  "utc": "2026-10-30T05:28:58.116676+00:00",
+  "candidate_commit": "17b77e69a79d82a5b89841edb23c2046cfe86cd1",
+  "candidate_base": "03ef58daf98d9dff844e8a4039be830868d429b7",
+  "branch": "agent/codex-native-lua-variant-retirement-review",
+  "status": "qualified_complete_normal_Source_review_pass; known_Source_exceptional_cleanup_effect_gap_and_whole_failure_contract_held",
+  "disposition": {
+    "normal_body_contract_review_pass": true,
+    "normal_scope_correctness_findings": [],
+    "complete_normal_Source_interfaces": 3,
+    "whole_Source_failure_equivalence_admitted": false,
+    "native_exceptional_name_key_cleanup_effects_implemented": false,
+    "common_build_link_or_Source_registration_admitted_here": false,
+    "runtime_ABI_or_activation_admitted": false
+  },
+  "ownership": {
+    "files": [
+      "docs/CC16_NATIVE_LUA_VARIANT_RETIREMENT_REVIEW.md",
+      "reports/cc16_native_lua_variant_retirement_review.json"
+    ],
+    "addresses": [],
+    "source_shared_metadata_CMake_guard_caller_install_or_Ghidra_edits": false
+  },
+  "immutable_inputs": {
+    "candidate_manifest": [
+      {
+        "path": "docs/CC16_NATIVE_LUA_VARIANT_RETIREMENT.md",
+        "git_blob": "40883cb01cf0b453ac5b826bc06c1b939f8f355d",
+        "bytes": 10696,
+        "sha256": "1615778a50a91bc455cedec31721b398b0728439ac9167a91be7229778452016"
+      },
+      {
+        "path": "include/bsp/native_lua_variant_retirement.hpp",
+        "git_blob": "43eed0986792b328ff5c924e84417630e06caa64",
+        "bytes": 6890,
+        "sha256": "72937402fa2d3de1a8502a4e2b74481e311de143e9c0d7f790ea6e71913ff255"
+      },
+      {
+        "path": "reports/cc16_native_lua_variant_retirement.json",
+        "git_blob": "a356f201d017db4391011076f99a08edbcda8759",
+        "bytes": 234893,
+        "sha256": "c768a2da1b3ba3928aae7ab06f53b18987e27da8e80532e0a995131be151fb87"
+      },
+      {
+        "path": "src/native_lua_variant_retirement.cpp",
+        "git_blob": "e47e87843355e1de2101e7d7313a87c4e003f9d2",
+        "bytes": 13410,
+        "sha256": "1c7d9f9064cdfda5a2818fd87eee1657c3ec94a0bc0d25f62eda51e8e79df206"
+      }
+    ],
+    "readiness_commit": "83a63b4df1aa5962208bfb232d00da331ced9c45",
+    "readiness_report_sha256": "0f7bf4bacc0584563fb52c2f79282fe5f0fd4afb8e289a4b13531f514ba4e339",
+    "design_commit": "b76e5230bf4918d2709ad4d57f263e36aa22638c",
+    "design_document_sha256": "89155d1f8560c38ed774b2f81e46da1458a561a0a63ab8d9a4873c4d1854d4b7",
+    "design_report_sha256": "71abf324f29848aa6d12f3ffbca9d4629aee946bbfbffea87a402eb939d181bf",
+    "complete_candidate_header_source_document_and_complete_readiness_design_documents_read": true,
+    "source_pins": [
+      {
+        "path": "include/bsp/native_lua_variant_retirement.hpp",
+        "bytes": 6890,
+        "sha256": "72937402fa2d3de1a8502a4e2b74481e311de143e9c0d7f790ea6e71913ff255"
+      },
+      {
+        "path": "src/native_lua_variant_retirement.cpp",
+        "bytes": 13410,
+        "sha256": "1c7d9f9064cdfda5a2818fd87eee1657c3ec94a0bc0d25f62eda51e8e79df206"
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "bytes": 8771,
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+      },
+      {
+        "path": "src/native_string.cpp",
+        "bytes": 9121,
+        "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+      },
+      {
+        "path": "include/bsp/native_string_pool_owner.hpp",
+        "bytes": 5893,
+        "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+      },
+      {
+        "path": "src/native_string_pool_owner.cpp",
+        "bytes": 8443,
+        "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e"
+      },
+      {
+        "path": "include/bsp/native_string_pool_storage.hpp",
+        "bytes": 3113,
+        "sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02"
+      },
+      {
+        "path": "src/native_string_pool_storage.cpp",
+        "bytes": 5450,
+        "sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "src/native_game_container_lifetime.cpp",
+        "bytes": 7370,
+        "sha256": "026006b90be17b7b8a2527bee98828a9a80ba0bdbbc96053fae5d244585a4a9c"
+      },
+      {
+        "path": "include/bsp/native_lua_variant_link_record_allocation.hpp",
+        "bytes": 1395,
+        "sha256": "7981f4745307349729690d0c2e1e2a0b8526a0829e3778d1c1b55f91c832f52d"
+      },
+      {
+        "path": "src/native_lua_variant_link_record_allocation.cpp",
+        "bytes": 1101,
+        "sha256": "6724c0bc953776268b22b310341b3e847495b94a247a37918af3f7b9590d01e9"
+      },
+      {
+        "path": "include/bsp/native_lua_variant_header_initializer.hpp",
+        "bytes": 1998,
+        "sha256": "de307db13063f3a5b775c9c2ee775b8a11f475944705bdda7860ef8a0af2a596"
+      },
+      {
+        "path": "src/native_lua_variant_header_initializer.cpp",
+        "bytes": 1351,
+        "sha256": "113c184fca2a7c20e1da61cf310913eec074d03835f767ef4f07d6b9deab1f96"
+      },
+      {
+        "path": "include/bsp/cc13_left55.hpp",
+        "bytes": 32394,
+        "sha256": "5a71656a1194f5838743ba5b2b5ea7b6f94a8a4ed8cc65ffd3714c18b8de4dfb"
+      },
+      {
+        "path": "src/cc13_left55_seg55.cpp",
+        "bytes": 49527,
+        "sha256": "5d33b376fb3f98f9b05a438165207ec346de4a8400e8e6c94e726e8ca1ffbf4c"
+      },
+      {
+        "path": "include/bsp/cc13_seg33b.hpp",
+        "bytes": 53766,
+        "sha256": "3cbe6be635f637ffc0d10ab50246d5cb4ad0ca5b509e35325f122c4f28de48d3"
+      },
+      {
+        "path": "src/cc13_seg33b_misc.cpp",
+        "bytes": 67079,
+        "sha256": "b7097473cbe468dfa0a7737ee15da61b4d53f7eb0aa7e1b93dbe7c60c0b74a68"
+      }
+    ],
+    "readiness_pins": [
+      {
+        "path": "include/bsp/native_string.hpp",
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "verified": true
+      },
+      {
+        "path": "src/native_string.cpp",
+        "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+        "verified": true
+      },
+      {
+        "path": "include/bsp/native_string_pool_owner.hpp",
+        "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+        "verified": true
+      },
+      {
+        "path": "src/native_string_pool_owner.cpp",
+        "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+        "verified": true
+      },
+      {
+        "path": "include/bsp/native_string_pool_storage.hpp",
+        "sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+        "verified": true
+      },
+      {
+        "path": "src/native_string_pool_storage.cpp",
+        "sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+        "verified": true
+      },
+      {
+        "path": "include/bsp/native_lua_variant_string_fields_cleanup.hpp",
+        "sha256": "ae929f84634f6a83d4a6cc22c6264b7a9e6a1ce8e23f993658c50b56eb08fdd9",
+        "verified": true
+      },
+      {
+        "path": "src/native_lua_variant_string_fields_cleanup.cpp",
+        "sha256": "b31d80cd54faaba97c7a83a2e2994915ebb18003e17500614f04bc1f68e54921",
+        "verified": true
+      },
+      {
+        "path": "include/bsp/native_lua_variant_link_record_allocation.hpp",
+        "sha256": "7981f4745307349729690d0c2e1e2a0b8526a0829e3778d1c1b55f91c832f52d",
+        "verified": true
+      },
+      {
+        "path": "src/native_lua_variant_link_record_allocation.cpp",
+        "sha256": "6724c0bc953776268b22b310341b3e847495b94a247a37918af3f7b9590d01e9",
+        "verified": true
+      },
+      {
+        "path": "include/bsp/native_lua_variant_header_initializer.hpp",
+        "sha256": "de307db13063f3a5b775c9c2ee775b8a11f475944705bdda7860ef8a0af2a596",
+        "verified": true
+      },
+      {
+        "path": "src/native_lua_variant_header_initializer.cpp",
+        "sha256": "113c184fca2a7c20e1da61cf310913eec074d03835f767ef4f07d6b9deab1f96",
+        "verified": true
+      },
+      {
+        "path": "include/bsp/native_mission_lua_variant_initializer.hpp",
+        "sha256": "b648ca0d15c70d6a78a4006e23798b6187bba70a63f70bc8c5f86c54d615c494",
+        "verified": true
+      },
+      {
+        "path": "src/native_mission_lua_variant_initializer.cpp",
+        "sha256": "3d8c5e4e5e04a4408e3d0ae8135c56cc03c4a05b3bdf4f1a1cf0e80e371f5c28",
+        "verified": true
+      },
+      {
+        "path": "include/bsp/settings_seg29_cc13.hpp",
+        "sha256": "71eac28bfcc7cf1ffdecf63e96e342107450c69bf50a0fd7eabfbd19007a0946",
+        "verified": true
+      },
+      {
+        "path": "src/settings_seg29_cc13.cpp",
+        "sha256": "7a882cf94ad8bc30120e0a953d7cb0af729d017593f31b1929205c266f43df24",
+        "verified": true
+      },
+      {
+        "path": "include/bsp/landscape_lua_seg55_argon.hpp",
+        "sha256": "bdfc54da13f7c748669dca38e19c767fcb24fc090f6211e83e479e348962ca33",
+        "verified": true
+      },
+      {
+        "path": "src/landscape_lua_seg55_argon.cpp",
+        "sha256": "30e87cf86e4b46906f438a9234e957a311f10c92d58fd89206c6ed22a682d27d",
+        "verified": true
+      },
+      {
+        "path": "include/bsp/cc13_left55.hpp",
+        "sha256": "5a71656a1194f5838743ba5b2b5ea7b6f94a8a4ed8cc65ffd3714c18b8de4dfb",
+        "verified": true
+      },
+      {
+        "path": "src/cc13_left55_seg55.cpp",
+        "sha256": "5d33b376fb3f98f9b05a438165207ec346de4a8400e8e6c94e726e8ca1ffbf4c",
+        "verified": true
+      },
+      {
+        "path": "include/bsp/cc13_seg33b.hpp",
+        "sha256": "3cbe6be635f637ffc0d10ab50246d5cb4ad0ca5b509e35325f122c4f28de48d3",
+        "verified": true
+      },
+      {
+        "path": "src/cc13_seg33b_misc.cpp",
+        "sha256": "b7097473cbe468dfa0a7737ee15da61b4d53f7eb0aa7e1b93dbe7c60c0b74a68",
+        "verified": true
+      },
+      {
+        "path": "src/native_game_container_lifetime.cpp",
+        "sha256": "026006b90be17b7b8a2527bee98828a9a80ba0bdbbc96053fae5d244585a4a9c",
+        "verified": true
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "verified": true
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "verified": true
+      },
+      {
+        "path": "config/target.json",
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "verified": true
+      }
+    ]
+  },
+  "finding_known_Source_exceptional_cleanup_gap": {
+    "id": "F1",
+    "classification": "known_remaining_completion_gate_outside_declared_NORMAL_only_implementation_domain",
+    "blocks_normal_only_static_review": false,
+    "blocks_whole_failure_or_activation_admission": true,
+    "native_actions": [
+      {
+        "map": "00DC9464",
+        "from_state": 0,
+        "to_state": -1,
+        "action": "00C970D0",
+        "target": "0041DD20(saved V+0C)",
+        "effect": "release CURRENT name if clear throws while state0 armed"
+      },
+      {
+        "map": "00DB10B8",
+        "from_state": 0,
+        "to_state": -1,
+        "action": "00C830A0",
+        "target": "006EE020(rewritten argument-home K)",
+        "effect": "release CURRENT key if value destruction throws while state0 armed"
+      }
+    ],
+    "Source_actual_behavior": "Every catch marks retained active frames cpp_exception and result cpp_exception_retained, then rethrows. No original name/key cleanup release effects are invoked. Both Source unwind entries have null actions; no relevant helper imports/actions are supplied.",
+    "diagnostic_fields_are_not_cleanup_effects": [
+      "cleanup_state",
+      "name_home",
+      "key_home",
+      "node_argument_home",
+      "native_site"
+    ],
+    "wording_assessment": "Candidate header/document explicitly say no automatic raw cleanup or equivalent action-frame delivery, and consistently claim complete NORMAL bodies. This is truthful for that scope. FH3-unproved alone would understate the known absence of Source cleanup effects.",
+    "required_remaining_work": [
+      "Deliver actual armed name/key cleanup effects at correct current backing/home epochs with correct nested order and demotions, using the SAME genuine retained provider context.",
+      "Retain entered/completed action custody and resolve further failure disposition without replaying consumed frees/returns, catch-time rollback, abandoned active resources or an invented termination policy.",
+      "Separately establish Original private-frame/FH3 action transport, SEH and foreign nonlocal-transfer behavior before any such compatibility claim.",
+      "Keep whole failure/producer/activation admission held until its corresponding implementation and evidence exist."
+    ],
+    "Source_cpp_EH": [
+      {
+        "body": "clear",
+        "catch_start_offset": 820,
+        "calls": [
+          {
+            "offset": 826,
+            "bytes": "e800000000",
+            "mnemonic": "call",
+            "operands": "0x33f",
+            "relocations": [
+              {
+                "offset": 827,
+                "symbol": "?retain_cpp_failure@?A0x9e3264da@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z",
+                "type": 20
+              }
+            ]
+          },
+          {
+            "offset": 838,
+            "bytes": "e800000000",
+            "mnemonic": "call",
+            "operands": "0x34b",
+            "relocations": [
+              {
+                "offset": 839,
+                "symbol": "__CxxThrowException@8",
+                "type": 20
+              }
+            ]
+          }
+        ],
+        "EH_section": 31,
+        "EH_raw_sha256": "c2e16d96e581f4eeaef2204b948f670cbdf33619feb218b80a4ef4b636374ea1",
+        "FuncInfo_magic": "0x19930522",
+        "unwind_entries": [
+          {
+            "to_state": -1,
+            "action_pointer": 0
+          },
+          {
+            "to_state": -1,
+            "action_pointer": 0
+          }
+        ],
+        "native_name_or_key_cleanup_effect_performed": false,
+        "native_actions_merely_diagnostic": true
+      },
+      {
+        "body": "destruct",
+        "catch_start_offset": 327,
+        "calls": [
+          {
+            "offset": 333,
+            "bytes": "e800000000",
+            "mnemonic": "call",
+            "operands": "0x152",
+            "relocations": [
+              {
+                "offset": 334,
+                "symbol": "?retain_cpp_failure@?A0x9e3264da@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z",
+                "type": 20
+              }
+            ]
+          },
+          {
+            "offset": 345,
+            "bytes": "e800000000",
+            "mnemonic": "call",
+            "operands": "0x15e",
+            "relocations": [
+              {
+                "offset": 346,
+                "symbol": "__CxxThrowException@8",
+                "type": 20
+              }
+            ]
+          }
+        ],
+        "EH_section": 32,
+        "EH_raw_sha256": "c2e16d96e581f4eeaef2204b948f670cbdf33619feb218b80a4ef4b636374ea1",
+        "FuncInfo_magic": "0x19930522",
+        "unwind_entries": [
+          {
+            "to_state": -1,
+            "action_pointer": 0
+          },
+          {
+            "to_state": -1,
+            "action_pointer": 0
+          }
+        ],
+        "native_name_or_key_cleanup_effect_performed": false,
+        "native_actions_merely_diagnostic": true
+      },
+      {
+        "body": "subtree",
+        "catch_start_offset": 449,
+        "calls": [
+          {
+            "offset": 455,
+            "bytes": "e800000000",
+            "mnemonic": "call",
+            "operands": "0x1cc",
+            "relocations": [
+              {
+                "offset": 456,
+                "symbol": "?retain_cpp_failure@?A0x9e3264da@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z",
+                "type": 20
+              }
+            ]
+          },
+          {
+            "offset": 467,
+            "bytes": "e800000000",
+            "mnemonic": "call",
+            "operands": "0x1d8",
+            "relocations": [
+              {
+                "offset": 468,
+                "symbol": "__CxxThrowException@8",
+                "type": 20
+              }
+            ]
+          }
+        ],
+        "EH_section": 33,
+        "EH_raw_sha256": "c2e16d96e581f4eeaef2204b948f670cbdf33619feb218b80a4ef4b636374ea1",
+        "FuncInfo_magic": "0x19930522",
+        "unwind_entries": [
+          {
+            "to_state": -1,
+            "action_pointer": 0
+          },
+          {
+            "to_state": -1,
+            "action_pointer": 0
+          }
+        ],
+        "native_name_or_key_cleanup_effect_performed": false,
+        "native_actions_merely_diagnostic": true
+      }
+    ]
+  },
+  "native_verification": {
+    "PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "image_base": "0x400000",
+      "machine": "0x14c"
+    },
+    "Ghidra_mode": "No live query/mutation; target/project identity is retained from digest-verified readiness. Fresh preserved PE checked independently.",
+    "readiness_blocks": [
+      {
+        "id": "payload",
+        "address": "008876b0",
+        "bytes": 148,
+        "sha256": "8d56710334051e14b4203db8b1e68b182368ec9403a84553d391d6357ab51b25",
+        "instructions": 49,
+        "candidate_selected": false
+      },
+      {
+        "id": "queue",
+        "address": "00887d90",
+        "bytes": 62,
+        "sha256": "d880f5648567cf5eff13004ff2f00a99464ac1a9a94f1101c8724831314a6a33",
+        "instructions": 26,
+        "candidate_selected": false
+      },
+      {
+        "id": "resize",
+        "address": "006b88e0",
+        "bytes": 164,
+        "sha256": "888d1861f34fc0ac3b957903eb3e266b3f661661408cf50ddb7130a374d3f319",
+        "instructions": 58,
+        "candidate_selected": false
+      },
+      {
+        "id": "variant_clear",
+        "address": "00886920",
+        "bytes": 168,
+        "sha256": "0fc4cfcda1e7bce2c2b169965d909e30e68d836732d836d0bbd84fc07be93938",
+        "instructions": 59,
+        "candidate_selected": true
+      },
+      {
+        "id": "variant_destructor",
+        "address": "00884af0",
+        "bytes": 101,
+        "sha256": "40a084311f56d31bed50c8487a75be912da83ec178507028bab016b5775db2c3",
+        "instructions": 29,
+        "candidate_selected": true
+      },
+      {
+        "id": "subtree",
+        "address": "006ee890",
+        "bytes": 150,
+        "sha256": "d7415860864ad8bebea6795a8bc3d9a751855a72ca9cda6833f0f4c16c06d1d6",
+        "instructions": 50,
+        "candidate_selected": true
+      },
+      {
+        "id": "erase_range",
+        "address": "006ee960",
+        "bytes": 201,
+        "sha256": "bcf888af4677f8fd105b176f8b3ee00c4a824075d2185d3dba79ebf1b3a8d022",
+        "instructions": 77,
+        "candidate_selected": true
+      },
+      {
+        "id": "variant_scalar",
+        "address": "00884fa0",
+        "bytes": 30,
+        "sha256": "1e12378e15ffd6846e22c5321444c71e85ca37f9f502a575667414cc12a7f02b",
+        "instructions": 11,
+        "candidate_selected": false
+      },
+      {
+        "id": "variant_profile",
+        "address": "00d0e6f4",
+        "bytes": 4,
+        "sha256": "75f6591c4e50361ede510f9fc914fd98e0a12d4d8d0de16cdc7a292fa4bceb47",
+        "instructions": 0,
+        "candidate_selected": true
+      },
+      {
+        "id": "payload_EH",
+        "address": "00dc9a94",
+        "bytes": 52,
+        "sha256": "7ceab817a192518f296bba07a97e79e1901693a49276157c572a954b7b8c6f48",
+        "instructions": 0,
+        "candidate_selected": false
+      },
+      {
+        "id": "payload_first_action",
+        "address": "00c97530",
+        "bytes": 8,
+        "sha256": "fa97727f3aeba8ed00d54e959f588d85e1b986058b3ff87eb5052cc894beb896",
+        "instructions": 2,
+        "candidate_selected": false
+      },
+      {
+        "id": "payload_second_action",
+        "address": "00c97538",
+        "bytes": 11,
+        "sha256": "67d744af0d41886bd52d21805a7b22b8fde8515803ca1ceb5113fbeba81b5bca",
+        "instructions": 3,
+        "candidate_selected": false
+      },
+      {
+        "id": "payload_handler",
+        "address": "00c97543",
+        "bytes": 10,
+        "sha256": "97b85628ad6129fdfde8fab34cbd395381c5e8611033bb4bf0733b01ba9a1914",
+        "instructions": 2,
+        "candidate_selected": false
+      },
+      {
+        "id": "variant_EH",
+        "address": "00dc9464",
+        "bytes": 44,
+        "sha256": "b9dc69d92e87d0e4b30476465b639dc11294adbcdab7273c4b9954636bf794c9",
+        "instructions": 0,
+        "candidate_selected": true
+      },
+      {
+        "id": "variant_action",
+        "address": "00c970d0",
+        "bytes": 11,
+        "sha256": "92e2360fc32bfb7f78e4d5a38a9637d1913b7eaf99d2bf9ba10da62daf9099f3",
+        "instructions": 3,
+        "candidate_selected": true
+      },
+      {
+        "id": "variant_handler",
+        "address": "00c970db",
+        "bytes": 10,
+        "sha256": "7029bf02bfcfe5968cfed352e4274632aa50d39d4ebdef89feb1bac18a4b2c7b",
+        "instructions": 2,
+        "candidate_selected": true
+      },
+      {
+        "id": "subtree_EH",
+        "address": "00db10b8",
+        "bytes": 44,
+        "sha256": "9fe207f03bbd6ad9c99c8e1463728b89ad3dd82d07afd0861b27a01adf052fba",
+        "instructions": 0,
+        "candidate_selected": true
+      },
+      {
+        "id": "subtree_action",
+        "address": "00c830a0",
+        "bytes": 8,
+        "sha256": "5e36c6da43c2e6c7f7754e5430f46a238b2d42a084dc5bbabb2806216b7cf6de",
+        "instructions": 2,
+        "candidate_selected": true
+      },
+      {
+        "id": "subtree_handler",
+        "address": "00c830a8",
+        "bytes": 10,
+        "sha256": "9871a1a40011b157da12df0d4451351e24d54babd9ef8d9fea1b1747995a51ab",
+        "instructions": 2,
+        "candidate_selected": true
+      }
+    ],
+    "all_19_blocks_match": true,
+    "ready_block_bytes": 1236,
+    "complete_normal_owned_native_bytes": 419,
+    "whole_006ee960_or_vendor_body_claim": false
+  },
+  "normal_contract_checks": {
+    "clear": [
+      "Read tag once; all DWORD tags accepted. Only selected nonnull tag1/tag5 payloads are retired and cleared. Other/null cases only store tag=-1.",
+      "Capture tag1 descriptor and buffer, read length only for nonnull buffer; actual getter/return precedes captured-descriptor free.",
+      "Preserve captured map M through callbacks and retained variant V independently; current sentinel free, captured M field reset/free, then retained V payload/tag stores. No payload reread substitutes a new M."
+    ],
+    "destruct": [
+      "Store numerical D0E6F4 only; retain V+0C name home and arm state0 before clear.",
+      "Propagate non-completed clear before current name read.",
+      "Capture CURRENT name buffer, demote, conditional late length and actual raw pool return; no name clear or receiver free."
+    ],
+    "subtree": [
+      "ANY nonzero nil byte stops; no null/cycle/default policy.",
+      "Right recursion precedes CURRENT left capture; K=N+0C rewrites retained node-argument-home VALUE before value N+1C destruction.",
+      "Propagate right/value status before later native effects.",
+      "CURRENT key buffer then demotion and conditional late length/return; free captured N before reading captured LEFT current nil byte."
+    ],
+    "same_actual_context_and_heap": [
+      "Same NativeStringRawPoolContext reference forwarded across all direct nested calls.",
+      "Context borrows actual AA8 pool, AA0 manager and AA4 gate; qualified raw deletion/lifetime domain is a caller precondition.",
+      "Every nonnull return resolves raw419CC0 even for large/disabled-small returns, then calls actual BD1510.",
+      "Captured descriptor/map/node frees call real singleton_lifetime_free in its matching malloc/new-handler allocation domain."
+    ],
+    "whole_range": {
+      "caller": "first={captured nonnull M, captured head.left}; last={same M, captured head}; output independent parent-frame Pair",
+      "owner_validation": "Actual nonnull equal M identities discharge owner predicates; revalidate current begin/end before selecting whole-range path.",
+      "map0_count_traversal_admission": false,
+      "range_frame_prepared_before_capture": true,
+      "no_external_callback_during_capture_predicates_root_selection": true,
+      "source_interval_start": 217,
+      "source_interval_end_exclusive": 380,
+      "call_count": 0,
+      "range_enter_call_offset": 160,
+      "subtree_call_offset": 387,
+      "four_current_head_reads": [
+        {
+          "offset": 455,
+          "bytes": "8b4204",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx + 4]",
+          "relocations": []
+        },
+        {
+          "offset": 471,
+          "bytes": "8b4204",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx + 4]",
+          "relocations": []
+        },
+        {
+          "offset": 493,
+          "bytes": "8b4204",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx + 4]",
+          "relocations": []
+        },
+        {
+          "offset": 509,
+          "bytes": "8b4204",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx + 4]",
+          "relocations": []
+        }
+      ],
+      "ordered_reset_and_output_stores": [
+        {
+          "offset": 461,
+          "bytes": "894004",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 4], eax",
+          "relocations": []
+        },
+        {
+          "offset": 477,
+          "bytes": "c7420800000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [edx + 8], 0",
+          "relocations": []
+        },
+        {
+          "offset": 484,
+          "bytes": "8900",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax], eax",
+          "relocations": []
+        },
+        {
+          "offset": 499,
+          "bytes": "894008",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 8], eax",
+          "relocations": []
+        },
+        {
+          "offset": 517,
+          "bytes": "895670",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x70], edx",
+          "relocations": []
+        },
+        {
+          "offset": 520,
+          "bytes": "894674",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x74], eax",
+          "relocations": []
+        }
+      ],
+      "domain_mismatch": "Explicit retained Source non-completion before traversal/reset/free; no partial erase or manufactured empty result."
+    },
+    "metadata": {
+      "frame_bytes": 120,
+      "operation_bytes": 24,
+      "pair_bytes": 8,
+      "backing": "Actual live typed caller-owned span sufficient for maximum active call chain including nested maps; independent/disjoint from all retired backing and live through disposition.",
+      "reentry": "Independent operation/span; callbacks cannot mutate active metadata.",
+      "no_heap_fixed_count_depth_history_policy_or_terminating_destructor": true,
+      "complete_only_means_returned_API_completion": "operation.result is merely latest nested diagnostic while active_depth != 0.",
+      "four_nested_status_edges": [
+        {
+          "body": "clear",
+          "call_offset": 387,
+          "callee": "?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+          "test": {
+            "offset": 395,
+            "bytes": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax",
+            "relocations": []
+          },
+          "branch": {
+            "offset": 397,
+            "bytes": "742c",
+            "mnemonic": "je",
+            "operands": "0x1bb",
+            "relocations": []
+          },
+          "noncompletion_path_start": 399,
+          "noncompletion_path_end": 442,
+          "next_native_epoch_offset": 443,
+          "returns_before_later_native_reads_free_reset_or_success": true
+        },
+        {
+          "body": "destruct",
+          "call_offset": 144,
+          "callee": "?clear_native_lua_variant_00886920@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+          "test": {
+            "offset": 152,
+            "bytes": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax",
+            "relocations": []
+          },
+          "branch": {
+            "offset": 154,
+            "bytes": "741f",
+            "mnemonic": "je",
+            "operands": "0xbb",
+            "relocations": []
+          },
+          "noncompletion_path_start": 156,
+          "noncompletion_path_end": 186,
+          "next_native_epoch_offset": 187,
+          "returns_before_later_native_reads_free_reset_or_success": true
+        },
+        {
+          "body": "subtree",
+          "call_offset": 164,
+          "callee": "?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+          "test": {
+            "offset": 172,
+            "bytes": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax",
+            "relocations": []
+          },
+          "branch": {
+            "offset": 174,
+            "bytes": "741f",
+            "mnemonic": "je",
+            "operands": "0xcf",
+            "relocations": []
+          },
+          "noncompletion_path_start": 176,
+          "noncompletion_path_end": 206,
+          "next_native_epoch_offset": 207,
+          "returns_before_later_native_reads_free_reset_or_success": true
+        },
+        {
+          "body": "subtree",
+          "call_offset": 253,
+          "callee": "?destruct_native_lua_variant_00884af0@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+          "test": {
+            "offset": 261,
+            "bytes": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax",
+            "relocations": []
+          },
+          "branch": {
+            "offset": 263,
+            "bytes": "75a7",
+            "mnemonic": "jne",
+            "operands": "0xb0",
+            "relocations": []
+          },
+          "noncompletion_path_start": 176,
+          "noncompletion_path_end": 206,
+          "next_native_epoch_offset": 265,
+          "returns_before_later_native_reads_free_reset_or_success": true
+        }
+      ]
+    },
+    "source_line_references": {
+      "metadata_enter": [
+        44
+      ],
+      "metadata_stop": [
+        73
+      ],
+      "retain_cpp_failure": [
+        79
+      ],
+      "real_pool_getter": [
+        90
+      ],
+      "clear": [
+        101
+      ],
+      "destruct": [
+        236
+      ],
+      "subtree": [
+        271
+      ],
+      "range_metadata_before_capture": [
+        120
+      ],
+      "current_head_epochs": [
+        170,
+        174,
+        179,
+        183
+      ],
+      "cpp_catches": [
+        230,
+        265,
+        326
+      ]
+    }
+  },
+  "independent_compile": {
+    "compiler": "MSVC 19.51.36244.0 Win32",
+    "flags": "/c /std:c++17 /O2 /Ob2 /DNDEBUG /MD /EHsc /W4 /WX /fp:strict /Iinclude /FAs",
+    "passed": true,
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-retirement-review\\local\\native_lua_variant_retirement_review\\retirement.obj",
+      "bytes": 12711,
+      "sha256": "ae82ba6a9c414f7489d197f6630c3a10e8f3d66270b61f598c97449533a489a2",
+      "machine": "0x14c",
+      "timestamp": 1793337480,
+      "symbol_count": 112
+    },
+    "retained_author_object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-retirement-cycle\\local\\native_lua_variant_retirement\\retirement.obj",
+      "bytes": 12703,
+      "sha256": "3a512b56396bcc5c6948a13eb04433c08fca9f7f8b4cc4abb51ff7fb62e0505a",
+      "machine": "0x14c",
+      "timestamp": 1793336608,
+      "symbol_count": 112
+    },
+    "COFF_section_count": 34,
+    "complete_code_section_count": 16,
+    "complete_code_bytes": 2423,
+    "complete_code_instructions": 723,
+    "code_relocations": 42,
+    "code_and_EH_section_census": [
+      {
+        "section": 4,
+        "name": ".text$mn",
+        "bytes": 9,
+        "raw_file_bytes": 9,
+        "sha256": "6d1e1d30f2068501de61e0022c4352fda2a7650f29eb96f01ad04fa160305e21",
+        "instructions": 3,
+        "relocations": []
+      },
+      {
+        "section": 6,
+        "name": ".text$mn",
+        "bytes": 849,
+        "raw_file_bytes": 849,
+        "sha256": "d0025acaf9aa90b0cf0c36cf4952e279522bbb590a9a116ac428fade0299e7c8",
+        "instructions": 260,
+        "relocations": [
+          {
+            "offset": 6,
+            "symbol": "__ehhandler$?clear_native_lua_variant_00886920@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+            "type": 6
+          },
+          {
+            "offset": 24,
+            "symbol": "___security_cookie",
+            "type": 6
+          },
+          {
+            "offset": 65,
+            "symbol": "?enter@?A0x9e3264da@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z",
+            "type": 20
+          },
+          {
+            "offset": 161,
+            "symbol": "?enter@?A0x9e3264da@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z",
+            "type": 20
+          },
+          {
+            "offset": 388,
+            "symbol": "?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+            "type": 20
+          },
+          {
+            "offset": 524,
+            "symbol": "?complete@?A0x9e3264da@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@@Z",
+            "type": 20
+          },
+          {
+            "offset": 550,
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "type": 20
+          },
+          {
+            "offset": 587,
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "type": 20
+          },
+          {
+            "offset": 625,
+            "symbol": "?complete@?A0x9e3264da@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@@Z",
+            "type": 20
+          },
+          {
+            "offset": 722,
+            "symbol": "?return_buffer@?A0x9e3264da@bsp@@YAXAAUNativeStringRawPoolContext@2@AAUNativeLuaVariantRetirementFrame@2@PAXIII@Z",
+            "type": 20
+          },
+          {
+            "offset": 741,
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "type": 20
+          },
+          {
+            "offset": 827,
+            "symbol": "?retain_cpp_failure@?A0x9e3264da@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z",
+            "type": 20
+          },
+          {
+            "offset": 839,
+            "symbol": "__CxxThrowException@8",
+            "type": 20
+          }
+        ]
+      },
+      {
+        "section": 7,
+        "name": ".text$x",
+        "bytes": 29,
+        "raw_file_bytes": 29,
+        "sha256": "8afea02d98ad0c01a97364d71172448b65489b675b09649b09075195de9cdd27",
+        "instructions": 9,
+        "relocations": [
+          {
+            "offset": 15,
+            "symbol": "@__security_check_cookie@4",
+            "type": 20
+          },
+          {
+            "offset": 20,
+            "symbol": "__ehfuncinfo$?clear_native_lua_variant_00886920@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+            "type": 6
+          },
+          {
+            "offset": 25,
+            "symbol": "___CxxFrameHandler3",
+            "type": 20
+          }
+        ]
+      },
+      {
+        "section": 8,
+        "name": ".text$mn",
+        "bytes": 35,
+        "raw_file_bytes": 35,
+        "sha256": "27dab23c88a0380197acac2bd56b87701bbaeb479ac408c2c41fefc1a135368a",
+        "instructions": 8,
+        "relocations": []
+      },
+      {
+        "section": 10,
+        "name": ".text$mn",
+        "bytes": 478,
+        "raw_file_bytes": 478,
+        "sha256": "2918fe3207cfef31d4c95714c54b2d6637aeeb911b5c8516feff88b30b19d94e",
+        "instructions": 155,
+        "relocations": [
+          {
+            "offset": 6,
+            "symbol": "__ehhandler$?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+            "type": 6
+          },
+          {
+            "offset": 24,
+            "symbol": "___security_cookie",
+            "type": 6
+          },
+          {
+            "offset": 66,
+            "symbol": "?enter@?A0x9e3264da@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z",
+            "type": 20
+          },
+          {
+            "offset": 165,
+            "symbol": "?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+            "type": 20
+          },
+          {
+            "offset": 254,
+            "symbol": "?destruct_native_lua_variant_00884af0@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+            "type": 20
+          },
+          {
+            "offset": 324,
+            "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+            "type": 20
+          },
+          {
+            "offset": 359,
+            "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+            "type": 20
+          },
+          {
+            "offset": 375,
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "type": 20
+          },
+          {
+            "offset": 456,
+            "symbol": "?retain_cpp_failure@?A0x9e3264da@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z",
+            "type": 20
+          },
+          {
+            "offset": 468,
+            "symbol": "__CxxThrowException@8",
+            "type": 20
+          }
+        ]
+      },
+      {
+        "section": 11,
+        "name": ".text$x",
+        "bytes": 29,
+        "raw_file_bytes": 29,
+        "sha256": "de50d5cf7b34573d5321c7f14cae5853d1153ecc9e75bd47e1e242bd17cb630f",
+        "instructions": 9,
+        "relocations": [
+          {
+            "offset": 15,
+            "symbol": "@__security_check_cookie@4",
+            "type": 20
+          },
+          {
+            "offset": 20,
+            "symbol": "__ehfuncinfo$?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+            "type": 6
+          },
+          {
+            "offset": 25,
+            "symbol": "___CxxFrameHandler3",
+            "type": 20
+          }
+        ]
+      },
+      {
+        "section": 12,
+        "name": ".text$mn",
+        "bytes": 356,
+        "raw_file_bytes": 356,
+        "sha256": "bfdea4874510dc59e9a547b4683f442e504a81797f0d704849766f5b865aec2d",
+        "instructions": 120,
+        "relocations": [
+          {
+            "offset": 6,
+            "symbol": "__ehhandler$?destruct_native_lua_variant_00884af0@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+            "type": 6
+          },
+          {
+            "offset": 24,
+            "symbol": "___security_cookie",
+            "type": 6
+          },
+          {
+            "offset": 65,
+            "symbol": "?enter@?A0x9e3264da@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z",
+            "type": 20
+          },
+          {
+            "offset": 145,
+            "symbol": "?clear_native_lua_variant_00886920@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+            "type": 20
+          },
+          {
+            "offset": 246,
+            "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+            "type": 20
+          },
+          {
+            "offset": 276,
+            "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+            "type": 20
+          },
+          {
+            "offset": 334,
+            "symbol": "?retain_cpp_failure@?A0x9e3264da@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z",
+            "type": 20
+          },
+          {
+            "offset": 346,
+            "symbol": "__CxxThrowException@8",
+            "type": 20
+          }
+        ]
+      },
+      {
+        "section": 13,
+        "name": ".text$x",
+        "bytes": 29,
+        "raw_file_bytes": 29,
+        "sha256": "8afea02d98ad0c01a97364d71172448b65489b675b09649b09075195de9cdd27",
+        "instructions": 9,
+        "relocations": [
+          {
+            "offset": 15,
+            "symbol": "@__security_check_cookie@4",
+            "type": 20
+          },
+          {
+            "offset": 20,
+            "symbol": "__ehfuncinfo$?destruct_native_lua_variant_00884af0@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+            "type": 6
+          },
+          {
+            "offset": 25,
+            "symbol": "___CxxFrameHandler3",
+            "type": 20
+          }
+        ]
+      },
+      {
+        "section": 14,
+        "name": ".text$mn",
+        "bytes": 396,
+        "raw_file_bytes": 396,
+        "sha256": "11e62136994cb17bdf9d096da67378c61f56c6063d439aaeb1f192392fd43a72",
+        "instructions": 80,
+        "relocations": []
+      },
+      {
+        "section": 16,
+        "name": ".text$mn",
+        "bytes": 12,
+        "raw_file_bytes": 12,
+        "sha256": "70f382ed286514895a32913b02b0f76dace67c0ab00f7fa65c76b13712200bc8",
+        "instructions": 4,
+        "relocations": []
+      },
+      {
+        "section": 18,
+        "name": ".text$mn",
+        "bytes": 12,
+        "raw_file_bytes": 12,
+        "sha256": "141fe36521c0146c800983701f3780f1e87872eba06924b50770fb794107644c",
+        "instructions": 4,
+        "relocations": []
+      },
+      {
+        "section": 20,
+        "name": ".text$mn",
+        "bytes": 12,
+        "raw_file_bytes": 12,
+        "sha256": "141fe36521c0146c800983701f3780f1e87872eba06924b50770fb794107644c",
+        "instructions": 4,
+        "relocations": []
+      },
+      {
+        "section": 22,
+        "name": ".text$mn",
+        "bytes": 75,
+        "raw_file_bytes": 75,
+        "sha256": "36fe0e3a64cc2e13c497f9e4a3eea880c56077af66f774bf4dcaea7bbde1a533",
+        "instructions": 25,
+        "relocations": []
+      },
+      {
+        "section": 24,
+        "name": ".text$mn",
+        "bytes": 60,
+        "raw_file_bytes": 60,
+        "sha256": "369979cde4503a4fbe2fefbfa3df954b0a832996de1d91960fd1c7105b64a599",
+        "instructions": 21,
+        "relocations": [
+          {
+            "offset": 23,
+            "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+            "type": 20
+          },
+          {
+            "offset": 50,
+            "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+            "type": 20
+          }
+        ]
+      },
+      {
+        "section": 26,
+        "name": ".text$mn",
+        "bytes": 26,
+        "raw_file_bytes": 26,
+        "sha256": "4566e135fa48eb18764218ecca73f2b37ba9bbec73c4d05bacb35b7e37c99b17",
+        "instructions": 7,
+        "relocations": []
+      },
+      {
+        "section": 28,
+        "name": ".text$mn",
+        "bytes": 16,
+        "raw_file_bytes": 16,
+        "sha256": "76bbadc14dccdb9d6227d26bf221f5ac30a809741438df8ba9a77bc568a30b0b",
+        "instructions": 5,
+        "relocations": []
+      },
+      {
+        "section": 31,
+        "name": ".xdata$x",
+        "bytes": 88,
+        "raw_file_bytes": 88,
+        "sha256": "c2e16d96e581f4eeaef2204b948f670cbdf33619feb218b80a4ef4b636374ea1",
+        "instructions": 0,
+        "relocations": [
+          {
+            "offset": 12,
+            "symbol": "__catch$?clear_native_lua_variant_00886920@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z$0",
+            "type": 6
+          },
+          {
+            "offset": 48,
+            "symbol": "__catchsym$?clear_native_lua_variant_00886920@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z$2",
+            "type": 6
+          },
+          {
+            "offset": 60,
+            "symbol": "__unwindtable$?clear_native_lua_variant_00886920@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+            "type": 6
+          },
+          {
+            "offset": 68,
+            "symbol": "__tryblocktable$?clear_native_lua_variant_00886920@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+            "type": 6
+          }
+        ]
+      },
+      {
+        "section": 32,
+        "name": ".xdata$x",
+        "bytes": 88,
+        "raw_file_bytes": 88,
+        "sha256": "c2e16d96e581f4eeaef2204b948f670cbdf33619feb218b80a4ef4b636374ea1",
+        "instructions": 0,
+        "relocations": [
+          {
+            "offset": 12,
+            "symbol": "__catch$?destruct_native_lua_variant_00884af0@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z$0",
+            "type": 6
+          },
+          {
+            "offset": 48,
+            "symbol": "__catchsym$?destruct_native_lua_variant_00884af0@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z$2",
+            "type": 6
+          },
+          {
+            "offset": 60,
+            "symbol": "__unwindtable$?destruct_native_lua_variant_00884af0@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+            "type": 6
+          },
+          {
+            "offset": 68,
+            "symbol": "__tryblocktable$?destruct_native_lua_variant_00884af0@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+            "type": 6
+          }
+        ]
+      },
+      {
+        "section": 33,
+        "name": ".xdata$x",
+        "bytes": 88,
+        "raw_file_bytes": 88,
+        "sha256": "c2e16d96e581f4eeaef2204b948f670cbdf33619feb218b80a4ef4b636374ea1",
+        "instructions": 0,
+        "relocations": [
+          {
+            "offset": 12,
+            "symbol": "__catch$?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z$0",
+            "type": 6
+          },
+          {
+            "offset": 48,
+            "symbol": "__catchsym$?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z$2",
+            "type": 6
+          },
+          {
+            "offset": 60,
+            "symbol": "__unwindtable$?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+            "type": 6
+          },
+          {
+            "offset": 68,
+            "symbol": "__tryblocktable$?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+            "type": 6
+          }
+        ]
+      }
+    ],
+    "public": {
+      "clear": {
+        "section": 6,
+        "bytes": 849,
+        "sha256": "d0025acaf9aa90b0cf0c36cf4952e279522bbb590a9a116ac428fade0299e7c8",
+        "instructions": 260,
+        "relocations": 13
+      },
+      "destruct": {
+        "section": 12,
+        "bytes": 356,
+        "sha256": "bfdea4874510dc59e9a547b4683f442e504a81797f0d704849766f5b865aec2d",
+        "instructions": 120,
+        "relocations": 8
+      },
+      "subtree": {
+        "section": 10,
+        "bytes": 478,
+        "sha256": "2918fe3207cfef31d4c95714c54b2d6637aeeb911b5c8516feff88b30b19d94e",
+        "instructions": 155,
+        "relocations": 10
+      }
+    },
+    "all_code_bytes_equal": true,
+    "all_primary_symbol_values_and_all_section_relocation_targets_equal_after_only_local_namespace_normalization": true,
+    "normalization": "Only MSVC anonymous-namespace A0x9e3264da versus A0x34aed873 spelling is normalized. Raw code bytes never normalized. All primary symbol values and relocation kinds/offsets/targets match.",
+    "full_object_identity_claim": false,
+    "full_object_differences": "Compilation-location/timestamp/local-symbol spelling; .debug$S and .chks64 raw sections differ. All other section bytes, including EH tables, match.",
+    "undefined_symbols": [
+      "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+      "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+      "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+      "@__security_check_cookie@4",
+      "__CxxThrowException@8",
+      "___CxxFrameHandler3",
+      "___security_cookie"
+    ],
+    "metadata_enter_has_no_CALLs": true
+  },
+  "positive_real_provider_definitions": {
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\bsp_core.lib",
+      "bytes": 103643136,
+      "sha256": "e657ab2d8fdee8b9459ffe98ec8e9f134c1624f74a288721404010bc59107775",
+      "matches_retained_author_hash": true
+    },
+    "providers": [
+      {
+        "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+        "member_offset": 40151842,
+        "defined_in_archive_symbol_index": true
+      },
+      {
+        "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+        "member_offset": 40142340,
+        "defined_in_archive_symbol_index": true
+      },
+      {
+        "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "member_offset": 97403240,
+        "defined_in_archive_symbol_index": true
+      }
+    ],
+    "relevant_immutable_Source_definitions_read": [
+      "include/bsp/native_string.hpp:NativeStringRawPoolContext",
+      "src/native_string.cpp:RawStringPoolAccess and raw0041DD20",
+      "src/native_string_pool_owner.cpp:raw419CC0",
+      "include/bsp/native_string_pool_owner.hpp:qualified raw deletion domain",
+      "src/native_string_pool_storage.cpp:BD1510 and BD12A0",
+      "src/singleton_lifetime.cpp:singleton_lifetime_allocate/free",
+      "src/native_lua_variant_link_record_allocation.cpp:006EDEA0",
+      "src/native_lua_variant_header_initializer.cpp:006EEAF0",
+      "src/native_game_container_lifetime.cpp:matching BF65AC/BF55BE services"
+    ],
+    "current_whole_source_to_archive_attestation": false
+  },
+  "retained_author_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-retirement-cycle\\local\\native_lua_variant_retirement\\compile.cmd",
+      "bytes": 470,
+      "sha256": "6fa20cefda7af3ace7ed344aa7a04be963ba33e40a6f56467de8d714cf023756"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-retirement-cycle\\local\\native_lua_variant_retirement\\compile.log",
+      "bytes": 35,
+      "sha256": "5e744182c7f07a68b0f2f9dd498d144f6591c53565c55416703f7aaa0072a22e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-retirement-cycle\\local\\native_lua_variant_retirement\\retirement.obj",
+      "bytes": 12703,
+      "sha256": "3a512b56396bcc5c6948a13eb04433c08fca9f7f8b4cc4abb51ff7fb62e0505a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-retirement-cycle\\local\\native_lua_variant_retirement\\retirement.asm",
+      "bytes": 59245,
+      "sha256": "b52e4e6675bd51497cce79cc5ed6c209041f2a77ad4d6ad2a27272279c20f641"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-lua-variant-retirement-cycle\\local\\native_lua_variant_retirement\\emitted.json",
+      "bytes": 276508,
+      "sha256": "c287d6f47da491496b435cebb57418dad537e5d7c8219984f751dfd33eb8ee2b"
+    }
+  ],
+  "retained_independent_review_artifacts": [
+    {
+      "path": "local\\native_lua_variant_retirement_review\\compile.cmd",
+      "bytes": 491,
+      "sha256": "6162811691e1aa0169a022c271038744b7c2e5c92c940e4b3e01c1e82aa25f16"
+    },
+    {
+      "path": "local\\native_lua_variant_retirement_review\\compile.log",
+      "bytes": 35,
+      "sha256": "5e744182c7f07a68b0f2f9dd498d144f6591c53565c55416703f7aaa0072a22e"
+    },
+    {
+      "path": "local\\native_lua_variant_retirement_review\\retirement.obj",
+      "bytes": 12711,
+      "sha256": "ae82ba6a9c414f7489d197f6630c3a10e8f3d66270b61f598c97449533a489a2"
+    },
+    {
+      "path": "local\\native_lua_variant_retirement_review\\retirement.asm",
+      "bytes": 59266,
+      "sha256": "0db00b44d1d5682270bc75732c889c44b7fd05b343f862b43a7fef5a6e5f55b2"
+    },
+    {
+      "path": "local\\native_lua_variant_retirement_review\\audit.py",
+      "bytes": 10198,
+      "sha256": "7e543129732abee9274822c95acfa6c3abdd63bfa44ea94ac51580dbb79d816f"
+    },
+    {
+      "path": "local\\native_lua_variant_retirement_review\\audit.json",
+      "bytes": 486013,
+      "sha256": "5732222f20ab4444f579428b9adc49010d1e2ce87b9c47c48a0d500bc68d59a6"
+    }
+  ],
+  "unchanged_and_excluded": {
+    "candidate_diff_exactly_four_new_files": true,
+    "legacy_broad_Host_dependencies_hash_equal_base": true,
+    "CMake_shared_metadata_guard_caller_or_Ghidra_changes": false,
+    "producer_queue_payload_vector_resize_copy_scalar_current_vslot_adoption": false,
+    "numerical_profiles_authenticate_callable_or_heap_domains": false,
+    "Original_ABI_private_frames_FH3_SEH_or_runtime_admission": false
+  },
+  "credit": {
+    "new_unique_Original_bodies": 0,
+    "new_unique_Original_bytes": 0,
+    "vendor_bodies": 0,
+    "duplicate_bodies": 0,
+    "ABI": 0,
+    "activation": 0,
+    "new_tests": 0,
+    "tests_run": 0,
+    "full_builds": 0,
+    "executable_links": 0,
+    "probe_target_body_DLL_or_game_execution": 0,
+    "Ghidra_queries_or_mutations": 0
+  },
+  "document_pin": {
+    "path": "docs\\CC16_NATIVE_LUA_VARIANT_RETIREMENT_REVIEW.md",
+    "bytes": 9287,
+    "sha256": "5ac455c0ac64eece1fdb9aa08838485ab6d5caf3576891069424037649566acb"
+  }
+}

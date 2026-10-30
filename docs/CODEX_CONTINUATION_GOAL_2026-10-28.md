@@ -1051,3 +1051,12 @@ retained. Common Win32 Release build/checks2/2 pass14.24s; no body/game executio
 canonical F8 owner/profile/startup or Original ABI proof follows. Slab/slot
 allocation and raw loading remain separate; all9off/ac60hold unchanged.
 See CODEX_FULL_RAW_LOCALE_RETIREMENT_INTEGRATION.md.
+
+Direct SourceA9F0B0 slot allocation2c5a now couples the SAMEcanonicalpool/heap/
+imports and realE970 without broadhoststubs. Root's E970 raw-store correction
+preserves wholeunrelatedSource/API and count/stack/node order. The per-call
+nonmoving frame retains escaped slab/table/lock custody; no cleanup/retry or
+safeexit follows from startuphealth. Root737010 supplies the actualbase-scalar
+route with late callerflags. Strict objects and commonWin32checks2/2 pass12.98s.
+No body/game execution, payload/map/loadedlocale/canonicalF8 wiring or startup
+authority follows; all9off/ac60hold unchanged. See CODEX_LOCALE_ALLOCATION_INTEGRATION.md.

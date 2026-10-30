@@ -1,0 +1,44 @@
+{
+  "packet": "codex-raw-locale-base-scalar",
+  "address": "00737010",
+  "source": "src/native_locale_manager_base_scalar.cpp",
+  "header": "include/bsp/native_locale_manager_base_scalar.hpp",
+  "documentation": "docs/NATIVE_LOCALE_MANAGER_BASE_SCALAR.md",
+  "native_span": {
+    "start": "00737010",
+    "end_exclusive": "0073702e",
+    "bytes": 30
+  },
+  "original_abi": "ECX actual receiver; stacked DWORD flags; late low-byte bit0 after7365E0; EAX captured address bits; RET4",
+  "profile": "CFEA5C slot0",
+  "calls": [
+    {
+      "address": "00737013",
+      "native": "007365e0",
+      "source": "actual destroy_native_locale_manager_base_007365e0"
+    },
+    {
+      "address": "00737020",
+      "native": "00bf65ac",
+      "source": "matched current singleton_lifetime_free"
+    }
+  ],
+  "validation": {
+    "source_review": "saved complete assembly reviewed",
+    "common_build": "Win32 Release passed; existing checks2/2, 12.98s",
+    "tests_added": false,
+    "body_execution": false,
+    "strict_objects": "MSVC Win32 /W4 /WX /permissive- /O2 /fp:strict object-only exit0",
+    "object_receipt": "local/raw_locale_pool_owner_frontier_cc16_20261030/root_raw_access_object_receipt.json"
+  },
+  "source_ready": false,
+  "abi_compatible": false,
+  "game_validated": false,
+  "new_native_body_credit": false,
+  "limits": [
+    "ordinary Source API; no Original stack/register ABI",
+    "actual caller-owned live flags/context/cells and matching allocation required",
+    "base-only destruction, no derived payload cleanup",
+    "canonical dispatch/owner/startup unbound"
+  ]
+}

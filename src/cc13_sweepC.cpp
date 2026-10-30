@@ -7,6 +7,7 @@
 #include <cstring>
 #include <string.h>
 #include <initializer_list>
+#include <intrin.h>
 
 namespace bsp::cc13_sweepC {
 
@@ -1532,10 +1533,15 @@ void native_input_backend_destroy_00a97b30(SweepCHost& host, void* backend) {
 // 00A9E970-00A9E9B0, __thiscall(ECX = pool, value), RET 4. +7800h word = 400h; for i in 0..3FFh:
 // word +7000h[i] = 3FFh - i (the free-index stack) and dword +18h + i x 1Ch = value.
 void string_map_node_pool_init_block_00a9e970(void* pool, std::uint32_t value) {
-    at<std::uint16_t>(pool, 0x7800) = 0x400;
+    const auto store = [pool](std::uint32_t offset, auto field) {
+        _ReadWriteBarrier();
+        std::memcpy(static_cast<unsigned char*>(pool) + offset, &field, sizeof(field));
+        _ReadWriteBarrier();
+    };
+    store(0x7800u, std::uint16_t{0x400});
     for (std::uint32_t i = 0; i < 0x400; ++i) {
-        at<std::uint16_t>(pool, 0x7000 + i * 2) = static_cast<std::uint16_t>(0x3FF - i);
-        at<std::uint32_t>(pool, 0x18 + i * 0x1C) = value;
+        store(0x7000u + i * 2u, static_cast<std::uint16_t>(0x3ffu - i));
+        store(0x18u + i * 0x1cu, value);
     }
 }
 

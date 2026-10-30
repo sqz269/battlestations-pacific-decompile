@@ -1,0 +1,923 @@
+{
+  "status": "registered_common_build_link_and_emission_passed_unactivated",
+  "source_build_head": "16c2b6afd1b9c0834888c0a6cedd074f10495522",
+  "published_peer_base": "ce13abee975ca207a332cdb6e12e3356d2c4d705",
+  "sources": [
+    {
+      "path": "include/bsp/native_hud_hints_collect.hpp",
+      "bytes": 1827,
+      "sha256": "c4f5d3129a02f95eeb194b6d26af2fd9b6a3e91163c84c0807b57da611567054",
+      "candidate": "70f1c6cef32575c5e93b58ef4a566e301e891b63",
+      "git_blob": "4b00d1e179907447bc2b9899ea57bdf3e8c07ecf"
+    },
+    {
+      "path": "src/native_hud_hints_collect.cpp",
+      "bytes": 1206,
+      "sha256": "6d3ccedd4dd98e0039aec3bb97efc7290c5346ee29e433f0485e3b5716d505e1",
+      "candidate": "70f1c6cef32575c5e93b58ef4a566e301e891b63",
+      "git_blob": "6eaf9442e9b76fae414e07480904409a4fa1c24f"
+    },
+    {
+      "path": "include/bsp/native_tactical_library_collect.hpp",
+      "bytes": 1742,
+      "sha256": "667650e7313e76e2c1f874af8ca4a59adb318cd0a025a8e412f216020a485a36",
+      "candidate": "824dd024d1e736da6d2aa63b62f9c80a182fe6a9",
+      "git_blob": "90b23667473dc07b5516739d23bd4c6b5866d421"
+    },
+    {
+      "path": "src/native_tactical_library_collect.cpp",
+      "bytes": 1568,
+      "sha256": "29d175e43c1b5dadeacae2d3ded9eb584ceff01a1273b5f737ef05a162e68d2d",
+      "candidate": "824dd024d1e736da6d2aa63b62f9c80a182fe6a9",
+      "git_blob": "f9b691aeb8bcb05f6fb5b9cfcbdcf4135f2d0d3f"
+    },
+    {
+      "path": "include/bsp/native_lua_variant_retirement.hpp",
+      "bytes": 6890,
+      "sha256": "72937402fa2d3de1a8502a4e2b74481e311de143e9c0d7f790ea6e71913ff255",
+      "candidate": "17b77e69a79d82a5b89841edb23c2046cfe86cd1",
+      "git_blob": "43eed0986792b328ff5c924e84417630e06caa64"
+    },
+    {
+      "path": "src/native_lua_variant_retirement.cpp",
+      "bytes": 13410,
+      "sha256": "1c7d9f9064cdfda5a2818fd87eee1657c3ec94a0bc0d25f62eda51e8e79df206",
+      "candidate": "17b77e69a79d82a5b89841edb23c2046cfe86cd1",
+      "git_blob": "e47e87843355e1de2101e7d7313a87c4e003f9d2"
+    }
+  ],
+  "common_build": {
+    "MSVC": "Win32 Release",
+    "BSP_CL_MP": 2,
+    "BSP_PCH": "ON",
+    "BSP_COVERAGE_PDB": false,
+    "existing_suites": "2/2",
+    "seconds": 14.53
+  },
+  "functions": {
+    "hints": {
+      "symbol": "?collect_native_hud_hints_children_0054e370@bsp@@YAXPAXABUNativeHudHintsCollectFrame@1@@Z",
+      "common_bytes": 59,
+      "common_hex": "558bec83ec0c8b550c8b4d0883c11c8b420489088b028b088b42048945f48b42088945f88b420c8945fc8d45f45051e80000000083c4088be55dc3",
+      "relocations": [
+        [
+          48,
+          20,
+          "?push_back_native_scene_dword_vector_0046c450@bsp@@YAXPAXABUNativeSceneDwordVectorPushBackFrame@1@@Z"
+        ]
+      ],
+      "instructions": [
+        "0000 push ebp",
+        "0001 mov ebp, esp",
+        "0003 sub esp, 0xc",
+        "0006 mov edx, dword ptr [ebp + 0xc]",
+        "0009 mov ecx, dword ptr [ebp + 8]",
+        "000c add ecx, 0x1c",
+        "000f mov eax, dword ptr [edx + 4]",
+        "0012 mov dword ptr [eax], ecx",
+        "0014 mov eax, dword ptr [edx]",
+        "0016 mov ecx, dword ptr [eax]",
+        "0018 mov eax, dword ptr [edx + 4]",
+        "001b mov dword ptr [ebp - 0xc], eax",
+        "001e mov eax, dword ptr [edx + 8]",
+        "0021 mov dword ptr [ebp - 8], eax",
+        "0024 mov eax, dword ptr [edx + 0xc]",
+        "0027 mov dword ptr [ebp - 4], eax",
+        "002a lea eax, [ebp - 0xc]",
+        "002d push eax",
+        "002e push ecx",
+        "002f call 0x34",
+        "0034 add esp, 8",
+        "0037 mov esp, ebp",
+        "0039 pop ebp",
+        "003a ret "
+      ],
+      "payload_home_stores": [
+        18
+      ],
+      "destination_capture": 22,
+      "real_child_calls": [
+        47
+      ],
+      "qualification": "Balanced EBP common frame differs from strict57/106; complete emitted payload/stack schedule inspected."
+    },
+    "tactical": {
+      "symbol": "?collect_native_tactical_library_children_00509da0@bsp@@YAXPAXABUNativeTacticalLibraryCollectFrame@1@@Z",
+      "common_bytes": 101,
+      "common_hex": "558bec83ec0c8b4d0c53568b75088b01578b188b41088b79048945f88b410c8945fc8d86dc040000897df489078d45f45053e8000000008d86e004000089078d45f45053e8000000008d86e404000089078d45f45053e80000000083c4185f5e5b8be55dc3",
+      "relocations": [
+        [
+          51,
+          20,
+          "?push_back_native_scene_dword_vector_0046c450@bsp@@YAXPAXABUNativeSceneDwordVectorPushBackFrame@1@@Z"
+        ],
+        [
+          69,
+          20,
+          "?push_back_native_scene_dword_vector_0046c450@bsp@@YAXPAXABUNativeSceneDwordVectorPushBackFrame@1@@Z"
+        ],
+        [
+          87,
+          20,
+          "?push_back_native_scene_dword_vector_0046c450@bsp@@YAXPAXABUNativeSceneDwordVectorPushBackFrame@1@@Z"
+        ]
+      ],
+      "instructions": [
+        "0000 push ebp",
+        "0001 mov ebp, esp",
+        "0003 sub esp, 0xc",
+        "0006 mov ecx, dword ptr [ebp + 0xc]",
+        "0009 push ebx",
+        "000a push esi",
+        "000b mov esi, dword ptr [ebp + 8]",
+        "000e mov eax, dword ptr [ecx]",
+        "0010 push edi",
+        "0011 mov ebx, dword ptr [eax]",
+        "0013 mov eax, dword ptr [ecx + 8]",
+        "0016 mov edi, dword ptr [ecx + 4]",
+        "0019 mov dword ptr [ebp - 8], eax",
+        "001c mov eax, dword ptr [ecx + 0xc]",
+        "001f mov dword ptr [ebp - 4], eax",
+        "0022 lea eax, [esi + 0x4dc]",
+        "0028 mov dword ptr [ebp - 0xc], edi",
+        "002b mov dword ptr [edi], eax",
+        "002d lea eax, [ebp - 0xc]",
+        "0030 push eax",
+        "0031 push ebx",
+        "0032 call 0x37",
+        "0037 lea eax, [esi + 0x4e0]",
+        "003d mov dword ptr [edi], eax",
+        "003f lea eax, [ebp - 0xc]",
+        "0042 push eax",
+        "0043 push ebx",
+        "0044 call 0x49",
+        "0049 lea eax, [esi + 0x4e4]",
+        "004f mov dword ptr [edi], eax",
+        "0051 lea eax, [ebp - 0xc]",
+        "0054 push eax",
+        "0055 push ebx",
+        "0056 call 0x5b",
+        "005b add esp, 0x18",
+        "005e pop edi",
+        "005f pop esi",
+        "0060 pop ebx",
+        "0061 mov esp, ebp",
+        "0063 pop ebp",
+        "0064 ret "
+      ],
+      "payload_home_stores": [
+        43,
+        61,
+        79
+      ],
+      "destination_capture": 17,
+      "real_child_calls": [
+        50,
+        68,
+        86
+      ],
+      "qualification": "Balanced EBP common frame differs from strict57/106; complete emitted payload/stack schedule inspected."
+    },
+    "clear": {
+      "symbol": "?clear_native_lua_variant_00886920@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+      "common_bytes": 849,
+      "common_hex": "558bec6aff680000000064a1000000005083ec10535657a10000000033c5508d45f464a3000000008965f08b7d088b5d106a00576a00ff750c8b4308538945e4e8000000008bf083c41485f675158b43108b4df464890d00000000595f5e5b8be55dc3c7460c276988008b4704c745fc0000000089464883f8050f850a020000c7460c386988008b47088945ec89462085c00f846202000050506a03ff750c53e8000000008bf883c41485ff75228b4310894608c74604030000008943108b4df464890d00000000595f5e5b8be55dc38d467089476c8b45ecc7460c3f6988008b4804894de88b11894f4c894750895754894758894f5cc7470c6fe96e008b40048b08894760894f643bd17441c7470802000000b802000000c7470403000000c7431002000000c7460802000000c7460403000000c74310020000008b4df464890d00000000595f5e5b8be55dc38b55ecc7470c8de96e008b42048947603945e875aac7470ca1e96e008b420453ff750c8b480489474c51894f6852c7470caae96e00e80000000083c41085c0742c894708c7470403000000894310894608c74604030000008943108b4df464890d00000000595f5e5b8be55dc38b55ecc7470cafe96e0053578b420489474c894004c7470cb5e96e008b420489474cc74208000000008900c7470cc1e96e008b420489474c894008c7470cc7e96e008b420489474c8b00895670894674e800000000c7460c546988008b420489464c50c7460c58698800e8000000008b55ecc7460c5e69880052c7420400000000c7420800000000c7460c6c698800e8000000008b4508c7460c746988005356c7400800000000c7460c7b698800c74004ffffffffe80000000083c4188b4df464890d00000000595f5e5b8be55dc383f801756bc7460c886988008b47088945e889462085c07457c7460c8f6988008b4804894e3c85c9742868a6698800c7460c966988008b00689f69880089464440505156ff750ce8000000008b45e883c41850c7460cac698800e800000000c7460cb469880083c404c7470800000000c7460cbb698800c74704ffffffffc7460800000000c7460402000000ff4b0833c0c74310000000008b4df464890d00000000595f5e5b8be55dc3ff75e4ff7510e80000000083c4086a006a00e800000000cccccccccccc",
+      "relocations": [
+        [
+          6,
+          6,
+          "__ehhandler$?clear_native_lua_variant_00886920@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z"
+        ],
+        [
+          24,
+          6,
+          "___security_cookie"
+        ],
+        [
+          65,
+          20,
+          "?enter@?anonymous@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z"
+        ],
+        [
+          161,
+          20,
+          "?enter@?anonymous@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z"
+        ],
+        [
+          388,
+          20,
+          "?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z"
+        ],
+        [
+          524,
+          20,
+          "?complete@?anonymous@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@@Z"
+        ],
+        [
+          550,
+          20,
+          "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+        ],
+        [
+          587,
+          20,
+          "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+        ],
+        [
+          625,
+          20,
+          "?complete@?anonymous@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@@Z"
+        ],
+        [
+          722,
+          20,
+          "?return_buffer@?anonymous@bsp@@YAXAAUNativeStringRawPoolContext@2@AAUNativeLuaVariantRetirementFrame@2@PAXIII@Z"
+        ],
+        [
+          741,
+          20,
+          "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+        ],
+        [
+          827,
+          20,
+          "?retain_cpp_failure@?anonymous@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z"
+        ],
+        [
+          839,
+          20,
+          "__CxxThrowException@8"
+        ]
+      ]
+    },
+    "destruct": {
+      "symbol": "?destruct_native_lua_variant_00884af0@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+      "common_bytes": 356,
+      "common_hex": "558bec6aff680000000064a1000000005083ec10535657a10000000033c5508d45f464a3000000008965f08b5d088b7d106a00536a01ff750c8b4708578945e4e8000000008bf083c41485f675158b47108b4df464890d00000000595f5e5b8be55dc3c7460c0d4b88008d430c57ff750cc703f4e6d000894638c746100000000053c745fc00000000c7460c1b4b8800e80000000083c40c85c0741f894608c74604030000008947108b4df464890d00000000595f5e5b8be55dc3c7460c204b88008b431089463c8945e8c74610ffffffff85c07445c7460c2f4b88008b430c8b5d0c894644c7460c394b88008945ecff7308ff33e8000000008b4dec83c40889464041c7460c404b8800ff730451ff75e850e80000000083c410c7460800000000c7460402000000ff4f0833c0c74710000000008b4df464890d00000000595f5e5b8be55dc3ff75e4ff7510e80000000083c4086a006a00e800000000cccccccccccc",
+      "relocations": [
+        [
+          6,
+          6,
+          "__ehhandler$?destruct_native_lua_variant_00884af0@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z"
+        ],
+        [
+          24,
+          6,
+          "___security_cookie"
+        ],
+        [
+          65,
+          20,
+          "?enter@?anonymous@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z"
+        ],
+        [
+          145,
+          20,
+          "?clear_native_lua_variant_00886920@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z"
+        ],
+        [
+          246,
+          20,
+          "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z"
+        ],
+        [
+          276,
+          20,
+          "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z"
+        ],
+        [
+          334,
+          20,
+          "?retain_cpp_failure@?anonymous@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z"
+        ],
+        [
+          346,
+          20,
+          "__CxxThrowException@8"
+        ]
+      ]
+    },
+    "subtree": {
+      "symbol": "?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+      "common_bytes": 478,
+      "common_hex": "558bec6aff680000000064a1000000005083ec14535657a10000000033c5508d45f464a3000000008965f0ff75088b5d0c8b7d14536a02ff75108b4708578945e0e8000000008bf083c41485f675158b47108b4df464890d00000000595f5e5b8be55dc3895e24895e34c7460cabe86e008a4b31c745fc000000000f1f44000084c90f850d01000057ff7510c7460cb7e86e008b430850ff7508894628c7460cbde86e00e80000000083c41085c0741f894608c74604030000008947108b4df464890d00000000595f5e5b8be55dc3c7460cc2e86e008b0389462c8945e48d430c89463089463483c01057ff7510c746100000000050c7460cd6e86e00e80000000083c40c85c075a7c7460cdbe86e008b431489463c8945e8c74610ffffffff85c0744ac7460ceae86e008b43108946448945ec8b4510c7460cf4e86e00ff7008ff30e8000000008b4dec8bd08b451083c40889564041c7460cfbe86e00ff700451ff75e852e80000000083c41053c7460c01e96e00e8000000008b45e483c404c7460c09e96e008bd88a4831894624e9ebfeffffc7460800000000c7460402000000ff4f0833c0c74710000000008b4df464890d00000000595f5e5b8be55dc3ff75e0ff7514e80000000083c4086a006a00e800000000cccccccccccc",
+      "relocations": [
+        [
+          6,
+          6,
+          "__ehhandler$?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z"
+        ],
+        [
+          24,
+          6,
+          "___security_cookie"
+        ],
+        [
+          66,
+          20,
+          "?enter@?anonymous@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z"
+        ],
+        [
+          165,
+          20,
+          "?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z"
+        ],
+        [
+          254,
+          20,
+          "?destruct_native_lua_variant_00884af0@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z"
+        ],
+        [
+          324,
+          20,
+          "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z"
+        ],
+        [
+          359,
+          20,
+          "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z"
+        ],
+        [
+          375,
+          20,
+          "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+        ],
+        [
+          456,
+          20,
+          "?retain_cpp_failure@?anonymous@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z"
+        ],
+        [
+          468,
+          20,
+          "__CxxThrowException@8"
+        ]
+      ]
+    }
+  },
+  "SCC_all16_code_sections": [
+    {
+      "symbols": [
+        "?at@?A0x9e3264da@bsp@@YAPAXPAXI@Z"
+      ],
+      "strict_bytes": 9,
+      "common_bytes": 11,
+      "sha256": "bd938e409fd7adea661f129903b0c423217965673832a58652967e992d90b850",
+      "strict_code_relocations_exact": false,
+      "qualification": "Complete changed helper inspected: balanced EBP/stack marshalling; enter initializes/copies120B then records frame and depth, retain uses120B stride; return_buffer calls same actual getter then return with captured bytes/live gate."
+    },
+    {
+      "symbols": [
+        "?clear_native_lua_variant_00886920@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+        "__catch$?clear_native_lua_variant_00886920@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z$0"
+      ],
+      "strict_bytes": 849,
+      "common_bytes": 849,
+      "sha256": "d0025acaf9aa90b0cf0c36cf4952e279522bbb590a9a116ac428fade0299e7c8",
+      "strict_code_relocations_exact": true,
+      "qualification": null
+    },
+    {
+      "symbols": [
+        "__ehhandler$?clear_native_lua_variant_00886920@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z"
+      ],
+      "strict_bytes": 29,
+      "common_bytes": 29,
+      "sha256": "8afea02d98ad0c01a97364d71172448b65489b675b09649b09075195de9cdd27",
+      "strict_code_relocations_exact": true,
+      "qualification": null
+    },
+    {
+      "symbols": [
+        "?complete@?A0x9e3264da@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@@Z"
+      ],
+      "strict_bytes": 35,
+      "common_bytes": 37,
+      "sha256": "119ce9fed780eda607372e676683c0ce22ac78d6b05a1e8743fb7f98ab060929",
+      "strict_code_relocations_exact": false,
+      "qualification": "Complete changed helper inspected: balanced EBP/stack marshalling; enter initializes/copies120B then records frame and depth, retain uses120B stride; return_buffer calls same actual getter then return with captured bytes/live gate."
+    },
+    {
+      "symbols": [
+        "?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+        "__catch$?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z$0"
+      ],
+      "strict_bytes": 478,
+      "common_bytes": 478,
+      "sha256": "2918fe3207cfef31d4c95714c54b2d6637aeeb911b5c8516feff88b30b19d94e",
+      "strict_code_relocations_exact": true,
+      "qualification": null
+    },
+    {
+      "symbols": [
+        "__ehhandler$?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z"
+      ],
+      "strict_bytes": 29,
+      "common_bytes": 29,
+      "sha256": "de50d5cf7b34573d5321c7f14cae5853d1153ecc9e75bd47e1e242bd17cb630f",
+      "strict_code_relocations_exact": true,
+      "qualification": null
+    },
+    {
+      "symbols": [
+        "?destruct_native_lua_variant_00884af0@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+        "__catch$?destruct_native_lua_variant_00884af0@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z$0"
+      ],
+      "strict_bytes": 356,
+      "common_bytes": 356,
+      "sha256": "bfdea4874510dc59e9a547b4683f442e504a81797f0d704849766f5b865aec2d",
+      "strict_code_relocations_exact": true,
+      "qualification": null
+    },
+    {
+      "symbols": [
+        "__ehhandler$?destruct_native_lua_variant_00884af0@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z"
+      ],
+      "strict_bytes": 29,
+      "common_bytes": 29,
+      "sha256": "8afea02d98ad0c01a97364d71172448b65489b675b09649b09075195de9cdd27",
+      "strict_code_relocations_exact": true,
+      "qualification": null
+    },
+    {
+      "symbols": [
+        "?enter@?A0x9e3264da@bsp@@YAPAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@AAUNativeStringRawPoolContext@2@W4NativeLuaVariantRetirementBody@2@PAX3@Z"
+      ],
+      "strict_bytes": 396,
+      "common_bytes": 351,
+      "sha256": "17186d24dbcf5591e9aeaba250f0769330145ec91456882986cb50b828cd5a29",
+      "strict_code_relocations_exact": false,
+      "qualification": "Complete changed helper inspected: balanced EBP/stack marshalling; enter initializes/copies120B then records frame and depth, retain uses120B stride; return_buffer calls same actual getter then return with captured bytes/live gate."
+    },
+    {
+      "symbols": [
+        "?read_byte@?A0x9e3264da@bsp@@YAEPAXI@Z"
+      ],
+      "strict_bytes": 12,
+      "common_bytes": 14,
+      "sha256": "cd3715ac3f4ae181402a22f3a82cad94d016edfa224d64efe352146e79d99f81",
+      "strict_code_relocations_exact": false,
+      "qualification": "Complete changed helper inspected: balanced EBP/stack marshalling; enter initializes/copies120B then records frame and depth, retain uses120B stride; return_buffer calls same actual getter then return with captured bytes/live gate."
+    },
+    {
+      "symbols": [
+        "?read_pointer@?A0x9e3264da@bsp@@YAPAXPAXI@Z"
+      ],
+      "strict_bytes": 12,
+      "common_bytes": 14,
+      "sha256": "968c17a0375a47c786e584c230018ee9ddbb72bfbd8b42d8ffe49fefcecff650",
+      "strict_code_relocations_exact": false,
+      "qualification": "Complete changed helper inspected: balanced EBP/stack marshalling; enter initializes/copies120B then records frame and depth, retain uses120B stride; return_buffer calls same actual getter then return with captured bytes/live gate."
+    },
+    {
+      "symbols": [
+        "?read_word@?A0x9e3264da@bsp@@YAIPAXI@Z"
+      ],
+      "strict_bytes": 12,
+      "common_bytes": 14,
+      "sha256": "968c17a0375a47c786e584c230018ee9ddbb72bfbd8b42d8ffe49fefcecff650",
+      "strict_code_relocations_exact": false,
+      "qualification": "Complete changed helper inspected: balanced EBP/stack marshalling; enter initializes/copies120B then records frame and depth, retain uses120B stride; return_buffer calls same actual getter then return with captured bytes/live gate."
+    },
+    {
+      "symbols": [
+        "?retain_cpp_failure@?A0x9e3264da@bsp@@YAXAAUNativeLuaVariantRetirementOperation@2@I@Z"
+      ],
+      "strict_bytes": 75,
+      "common_bytes": 76,
+      "sha256": "523908463c943278c50db3a68f3a83edb4b3140cc37b288ff612dd378fcdfd2c",
+      "strict_code_relocations_exact": false,
+      "qualification": "Complete changed helper inspected: balanced EBP/stack marshalling; enter initializes/copies120B then records frame and depth, retain uses120B stride; return_buffer calls same actual getter then return with captured bytes/live gate."
+    },
+    {
+      "symbols": [
+        "?return_buffer@?A0x9e3264da@bsp@@YAXAAUNativeStringRawPoolContext@2@AAUNativeLuaVariantRetirementFrame@2@PAXIII@Z"
+      ],
+      "strict_bytes": 60,
+      "common_bytes": 58,
+      "sha256": "903ccbea9a82f830ca20e84af2504844d91e91882c48236fe925219ed93ef898",
+      "strict_code_relocations_exact": false,
+      "qualification": "Complete changed helper inspected: balanced EBP/stack marshalling; enter initializes/copies120B then records frame and depth, retain uses120B stride; return_buffer calls same actual getter then return with captured bytes/live gate."
+    },
+    {
+      "symbols": [
+        "?stop@?A0x9e3264da@bsp@@YA?AW4NativeLuaVariantRetirementResult@2@AAUNativeLuaVariantRetirementFrame@2@AAUNativeLuaVariantRetirementOperation@2@W432@@Z"
+      ],
+      "strict_bytes": 26,
+      "common_bytes": 27,
+      "sha256": "50784bca4ce6ea972b574ada10569a518c86a84a61b9bcf296cd34904d53925d",
+      "strict_code_relocations_exact": false,
+      "qualification": "Complete changed helper inspected: balanced EBP/stack marshalling; enter initializes/copies120B then records frame and depth, retain uses120B stride; return_buffer calls same actual getter then return with captured bytes/live gate."
+    },
+    {
+      "symbols": [
+        "?write_word@?A0x9e3264da@bsp@@YAXPAXII@Z"
+      ],
+      "strict_bytes": 16,
+      "common_bytes": 17,
+      "sha256": "cdb70beb04767abdb190d475687cb3d73f5a60446387ee001a9169bd0ce2b7eb",
+      "strict_code_relocations_exact": false,
+      "qualification": "Complete changed helper inspected: balanced EBP/stack marshalling; enter initializes/copies120B then records frame and depth, retain uses120B stride; return_buffer calls same actual getter then return with captured bytes/live gate."
+    }
+  ],
+  "SCC_entire_EH_sections": [
+    {
+      "symbol": "__ehfuncinfo$?clear_native_lua_variant_00886920@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+      "whole_section_bytes": 88,
+      "strict_bytes_relocations_exact": true,
+      "cleanup_actions": "zero, as independently reviewed; no Native name/key actions supplied"
+    },
+    {
+      "symbol": "__ehfuncinfo$?destruct_native_lua_variant_00884af0@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+      "whole_section_bytes": 88,
+      "strict_bytes_relocations_exact": true,
+      "cleanup_actions": "zero, as independently reviewed; no Native name/key actions supplied"
+    },
+    {
+      "symbol": "__ehfuncinfo$?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+      "whole_section_bytes": 88,
+      "strict_bytes_relocations_exact": true,
+      "cleanup_actions": "zero, as independently reviewed; no Native name/key actions supplied"
+    }
+  ],
+  "SCC_whole_range_interval_zero_calls": true,
+  "SCC_four_postcallback_head_loads": [
+    455,
+    471,
+    493,
+    509
+  ],
+  "link": {
+    "executed": false,
+    "manifest_embedded": true,
+    "actual_entries": {
+      "hints": {
+        "symbol": "?collect_native_hud_hints_children_0054e370@bsp@@YAXPAXABUNativeHudHintsCollectFrame@1@@Z",
+        "address": 4198496,
+        "object": "bsp_core:native_hud_hints_collect.obj"
+      },
+      "tactical": {
+        "symbol": "?collect_native_tactical_library_children_00509da0@bsp@@YAXPAXABUNativeTacticalLibraryCollectFrame@1@@Z",
+        "address": 4198560,
+        "object": "bsp_core:native_tactical_library_collect.obj"
+      },
+      "clear": {
+        "symbol": "?clear_native_lua_variant_00886920@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+        "address": 4198672,
+        "object": "bsp_core:native_lua_variant_retirement.obj"
+      },
+      "destruct": {
+        "symbol": "?destruct_native_lua_variant_00884af0@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+        "address": 4200064,
+        "object": "bsp_core:native_lua_variant_retirement.obj"
+      },
+      "subtree": {
+        "symbol": "?destroy_native_lua_variant_subtree_006ee890@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAX0AAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@@Z",
+        "address": 4199584,
+        "object": "bsp_core:native_lua_variant_retirement.obj"
+      },
+      "real_push": {
+        "symbol": "?push_back_native_scene_dword_vector_0046c450@bsp@@YAXPAXABUNativeSceneDwordVectorPushBackFrame@1@@Z",
+        "address": 4200928,
+        "object": "bsp_core:native_scene_dword_vector_push_back.obj"
+      },
+      "real_one": {
+        "symbol": "?insert_native_scene_dword_vector_one_0046b4a0@bsp@@YAPAXPAXABUNativeSceneDwordVectorInsertOneFrame@1@@Z",
+        "address": 4202992,
+        "object": "bsp_core:native_scene_dword_vector_insert.obj"
+      },
+      "real_n": {
+        "symbol": "?insert_native_scene_dword_vector_n_0046afb0@bsp@@YAXPAXABUNativeSceneDwordVectorInsertNFrame@1@@Z",
+        "address": 4202432,
+        "object": "bsp_core:native_scene_dword_vector_insert.obj"
+      },
+      "real_pool_getter": {
+        "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+        "address": 4201760,
+        "object": "bsp_core:native_string_pool_owner.obj"
+      },
+      "real_pool_return": {
+        "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+        "address": 4202080,
+        "object": "bsp_core:native_string_pool_storage.obj"
+      },
+      "real_free": {
+        "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "address": 4201600,
+        "object": "bsp_core:singleton_lifetime.obj"
+      }
+    },
+    "all5_final_PE_code_and_relocations_match": true
+  },
+  "artifacts": [
+    {
+      "path": "local/function_source_batch10/artifacts/native_hud_hints_collect.obj",
+      "bytes": 1489,
+      "sha256": "3c760d4c77d167a7c2751fbfe31c4fd8c0467e9ccfca8bef672a8b253b161026",
+      "copied_from": "build/win32/bsp_core.dir/Release/native_hud_hints_collect.obj"
+    },
+    {
+      "path": "local/function_source_batch10/artifacts/native_tactical_library_collect.obj",
+      "bytes": 1569,
+      "sha256": "36c804db13f94b8868a8289bd3b32b98d3fa335d190f5bf3fdaeefb223f4dc0d",
+      "copied_from": "build/win32/bsp_core.dir/Release/native_tactical_library_collect.obj"
+    },
+    {
+      "path": "local/function_source_batch10/artifacts/native_lua_variant_retirement.obj",
+      "bytes": 11610,
+      "sha256": "7d19c2bb15e910cb418785dd86d19191176cd36082d10481ef13d20c9d6c263f",
+      "copied_from": "build/win32/bsp_core.dir/Release/native_lua_variant_retirement.obj"
+    },
+    {
+      "path": "local/function_source_batch10/artifacts/native_scene_dword_vector_push_back.obj",
+      "bytes": 2275,
+      "sha256": "55274176ab67c57117e4b4052a4127935da5cb525c15e277b549c37c406a828f",
+      "copied_from": "build/win32/bsp_core.dir/Release/native_scene_dword_vector_push_back.obj"
+    },
+    {
+      "path": "local/function_source_batch10/artifacts/native_scene_dword_vector_insert.obj",
+      "bytes": 4029,
+      "sha256": "23caf622dfdfee65428dbe7eb4f05d3bb5b0284fde46b063e0f88889f62425df",
+      "copied_from": "build/win32/bsp_core.dir/Release/native_scene_dword_vector_insert.obj"
+    },
+    {
+      "path": "local/function_source_batch10/artifacts/native_string_pool_owner.obj",
+      "bytes": 15595,
+      "sha256": "6b8d709e064a23e75ea5ff7255c985280d0efb89e9ca8f353b83b903cb42a891",
+      "copied_from": "build/win32/bsp_core.dir/Release/native_string_pool_owner.obj"
+    },
+    {
+      "path": "local/function_source_batch10/artifacts/native_string_pool_storage.obj",
+      "bytes": 9441,
+      "sha256": "bbc0339374e3a681e633f2d14ef90f94ade4cf7921f3231ff5115a6315913ee2",
+      "copied_from": "build/win32/bsp_core.dir/Release/native_string_pool_storage.obj"
+    },
+    {
+      "path": "local/function_source_batch10/artifacts/singleton_lifetime.obj",
+      "bytes": 33008,
+      "sha256": "386824ba4b5224ce24dfa43d84dd09b6c8b1fc64e02011998109d91cdc72171f",
+      "copied_from": "build/win32/bsp_core.dir/Release/singleton_lifetime.obj"
+    },
+    {
+      "path": "local/function_source_batch10/artifacts/bsp_game.exe",
+      "bytes": 7500288,
+      "sha256": "8065608fa57d07a4fe29121163ae2358d8cf875792843d68629abe4da5761306",
+      "copied_from": "build/win32/Release/bsp_game.exe"
+    },
+    {
+      "path": "local/function_source_batch10/artifacts/entries_probe.exe",
+      "bytes": 219648,
+      "sha256": "005eb86999a8620a5c32c71357c00f8247fb71755fc9c570fa515b73c4483d6e",
+      "copied_from": "local/function_source_batch10/entries_probe.exe"
+    },
+    {
+      "path": "local/function_source_batch10/artifacts/entries_probe.obj",
+      "bytes": 2191,
+      "sha256": "071da08b32c83130b1919a4558f8765e0aad10e566fe6c45e49278415b9d9610",
+      "copied_from": "local/function_source_batch10/entries_probe.obj"
+    },
+    {
+      "path": "local/function_source_batch10/artifacts/entries_probe.map",
+      "bytes": 311623,
+      "sha256": "6f8f9c9bbe5a5382fb84d2ea4eb26753ff1277f7620a582d95cf3e9d47de1273",
+      "copied_from": "local/function_source_batch10/entries_probe.map"
+    },
+    {
+      "path": "local/function_source_batch10/artifacts/entries_probe.cpp",
+      "bytes": 601,
+      "sha256": "79557263c7867a3fcbbacfa53b88116fa07c4cce013dae5317f552326ad19179",
+      "copied_from": "local/function_source_batch10/entries_probe.cpp"
+    },
+    {
+      "path": "local/function_source_batch10/artifacts/entries_probe.cmd",
+      "bytes": 1250,
+      "sha256": "83154544604706c0961433699861a0f76708dd71e166bde8ec5095262455df31",
+      "copied_from": "local/function_source_batch10/entries_probe.cmd"
+    },
+    {
+      "path": "local/function_source_batch10/artifacts/build.log",
+      "bytes": 15126,
+      "sha256": "367ae7dbacbc33750b501de569095e7093ea05e268c8969ac44bd59d5a4bc6b1",
+      "copied_from": "local/function_source_batch10/build.log"
+    },
+    {
+      "path": "local/function_source_batch10/artifacts/link.log",
+      "bytes": 19,
+      "sha256": "48d974da562e4793f8ff5dad5377207422c2b5093bd7c730baf580da948db910",
+      "copied_from": "local/function_source_batch10/link.log"
+    },
+    {
+      "path": "local/function_source_batch10/artifacts/hints_common.txt",
+      "bytes": 3791,
+      "sha256": "e1c6e2ec8d6e8b132cb3987dac7ebd55970e966da6162828505327e240a47a69",
+      "copied_from": "local/function_source_batch10/hints_common.txt"
+    },
+    {
+      "path": "local/function_source_batch10/artifacts/tactical_common.txt",
+      "bytes": 5507,
+      "sha256": "b46137761e8f033c2f1fd5f42f0fb667ffe7ac76c72f1efc4ff1658528e20582",
+      "copied_from": "local/function_source_batch10/tactical_common.txt"
+    },
+    {
+      "path": "local/function_source_batch10/artifacts/retirement_common.txt",
+      "bytes": 82679,
+      "sha256": "9585851e1f78eacc1071e5b2e70234afb4fa4f2832121432e5f25df6aa4c3ba6",
+      "copied_from": "local/function_source_batch10/retirement_common.txt"
+    },
+    {
+      "path": "local/function_source_batch10/artifacts/author_cc16_native_hud_hints_collect.json",
+      "bytes": 39818,
+      "sha256": "c513297754d6a2e90c216bcc03e9a0766bbd63cd9911ccb337bbb7731cc16af7",
+      "copied_from": "immutable Git report"
+    },
+    {
+      "path": "local/function_source_batch10/artifacts/author_cc16_native_lua_variant_retirement.json",
+      "bytes": 234893,
+      "sha256": "c768a2da1b3ba3928aae7ab06f53b18987e27da8e80532e0a995131be151fb87",
+      "copied_from": "immutable Git report"
+    },
+    {
+      "path": "local/function_source_batch10/artifacts/author_cc16_native_tactical_library_collect.json",
+      "bytes": 35676,
+      "sha256": "c74ce9a426e570e11cc6bce1dc52a9feb43422291ce28d27b7dd652a7f7c5ac1",
+      "copied_from": "immutable Git report"
+    },
+    {
+      "path": "local/function_source_batch10/artifacts/review_cc16_native_hud_hints_collect_review.json",
+      "bytes": 57624,
+      "sha256": "49d573b3a601350604e4976d9b31c7e19b87b366882546a78c50c636ab65e0d8",
+      "copied_from": "immutable Git report"
+    },
+    {
+      "path": "local/function_source_batch10/artifacts/review_cc16_native_lua_variant_retirement_review.json",
+      "bytes": 56533,
+      "sha256": "68de3a5968f927350532e566a8b378b785beb1da1b963c3e1706d9097f80fc21",
+      "copied_from": "immutable Git report"
+    },
+    {
+      "path": "local/function_source_batch10/artifacts/review_cc16_native_tactical_library_collect_review.json",
+      "bytes": 68269,
+      "sha256": "c6fecffef3770bbbbef27647745baa39c890d9d8e180982309ddee2ae745d5aa",
+      "copied_from": "immutable Git report"
+    }
+  ],
+  "known_SCC_failure_effect_gap": "Catches retain/rethrow only; Native C970D0 name /C830A0 key cleanup effects are NOT supplied. Not merely unverified FH3. Whole failure and activation held.",
+  "normal_only": true,
+  "runtime_activation_credit": 0,
+  "new_native_vendor_duplicate_body_credit": 0,
+  "author_receipt_checks": {
+    "hints": {
+      "candidate": "70f1c6cef32575c5e93b58ef4a566e301e891b63",
+      "immutable_author_report": "local/function_source_batch10/artifacts/author_cc16_native_hud_hints_collect.json",
+      "author_report_sha256": "c513297754d6a2e90c216bcc03e9a0766bbd63cd9911ccb337bbb7731cc16af7",
+      "retained_path_or_Git_checks": 47,
+      "current_dependency_Git_checks": 26,
+      "historical_archive_qualification": []
+    },
+    "tactical": {
+      "candidate": "824dd024d1e736da6d2aa63b62f9c80a182fe6a9",
+      "immutable_author_report": "local/function_source_batch10/artifacts/author_cc16_native_tactical_library_collect.json",
+      "author_report_sha256": "c74ce9a426e570e11cc6bce1dc52a9feb43422291ce28d27b7dd652a7f7c5ac1",
+      "retained_path_or_Git_checks": 51,
+      "current_dependency_Git_checks": 26,
+      "historical_archive_qualification": []
+    },
+    "retirement": {
+      "candidate": "17b77e69a79d82a5b89841edb23c2046cfe86cd1",
+      "immutable_author_report": "local/function_source_batch10/artifacts/author_cc16_native_lua_variant_retirement.json",
+      "author_report_sha256": "c768a2da1b3ba3928aae7ab06f53b18987e27da8e80532e0a995131be151fb87",
+      "retained_path_or_Git_checks": 26,
+      "current_dependency_Git_checks": 17,
+      "historical_archive_qualification": [
+        "Old Core archive availability/hash snapshot retained historically; fresh common entry link binds actual providers."
+      ]
+    }
+  },
+  "independent_reviews": {
+    "hints": {
+      "review_commit": "f99048625e034af3c4ac7c811b3e1a517c60c5c4",
+      "retained_path_sha256_checks": 69,
+      "historical_archive_drift": [],
+      "immutable_review_report": "local/function_source_batch10/artifacts/review_cc16_native_hud_hints_collect_review.json",
+      "review_report_sha256": "49d573b3a601350604e4976d9b31c7e19b87b366882546a78c50c636ab65e0d8"
+    },
+    "tactical": {
+      "review_commit": "7c2fe750a8cc563090d57c533363e16011340ddd",
+      "retained_path_sha256_checks": 81,
+      "historical_archive_drift": [],
+      "immutable_review_report": "local/function_source_batch10/artifacts/review_cc16_native_tactical_library_collect_review.json",
+      "review_report_sha256": "c6fecffef3770bbbbef27647745baa39c890d9d8e180982309ddee2ae745d5aa"
+    },
+    "retirement": {
+      "review_commit": "18737bee6c0ec2e4f563afe83c4129da7afb955a",
+      "retained_path_sha256_checks": 64,
+      "historical_archive_drift": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\bsp_core.lib",
+          "historical_sha256": "e657ab2d8fdee8b9459ffe98ec8e9f134c1624f74a288721404010bc59107775",
+          "current_sha256": "de4ff118363c8fe9e47f09e9bef6478a2aa6089993827799053f3e5121a162bb",
+          "qualification": "Old archive availability receipt; fresh Root common link supplies current providers."
+        }
+      ],
+      "immutable_review_report": "local/function_source_batch10/artifacts/review_cc16_native_lua_variant_retirement_review.json",
+      "review_report_sha256": "68de3a5968f927350532e566a8b378b785beb1da1b963c3e1706d9097f80fc21"
+    }
+  },
+  "primary_complete_reads": {
+    "hints": {
+      "header": 33,
+      "cpp": 26,
+      "author_doc": 31,
+      "review_doc": 52,
+      "native_bytes": 16,
+      "native_ops": 5
+    },
+    "tactical": {
+      "header": 34,
+      "cpp": 32,
+      "author_doc": 33,
+      "review_doc": 21,
+      "native_bytes": 55,
+      "native_ops": 19
+    },
+    "retirement": {
+      "header": 145,
+      "cpp": 332,
+      "author_doc": 199,
+      "review_doc": 145,
+      "native_bytes": 419,
+      "native_ops": 138
+    }
+  },
+  "evidence_correction": "Hints author report/doc now distinguish ordinary C++ Push/One/N from the actual naked BF6713 SDK diagnostic bridge. All six production header/CPP blobs remain candidate-exact; original author/review reports frozen.",
+  "additional_runtime_evidence": "Separate Source-only438E40 bad_alloc case reviewed in CC16_NATIVE_STRING_DUPLICATE_CPP_UNWIND; supplies no collector/SCC/ABI/Game proof.",
+  "required_remaining_work": [
+    "Actual creator/Page/GUI/vector/owner registry/current callable-table/caller adoption for both collectors.",
+    "Native C970D0 name and C830A0 key cleanup effects absent on SCC C++ failure; qualified Source handlers and secondary-action custody still needed.",
+    "Actual producer/current-element scalar/vector/reserve/copy/queue/payload/host and whole application graph.",
+    "Original ABI/private-frame/FH3/SEH/fault and required focused/runtime/gameplay gates."
+  ],
+  "Movie_reuse": "Readiness c0bf proof retained outside this admission: current public header remains Hints7C; Movie34 needs explicit supported-receiver clarification plus actual custody, not an address-only wrapper.",
+  "ghidra": {
+    "prior_annotations": "local/ghidra-annotations-20261030T061802Z.json",
+    "all5_existing_names_and_comments_preserved": true,
+    "project_saved": true,
+    "all5_exports_refreshed": true,
+    "index_rebuilt": true,
+    "old_semantic_broad_Host_records_preserved": true
+  },
+  "merged_Main_refresh": {
+    "head": "147b671e6b4f494225ec69e11839f0cf175475f0",
+    "peer_Main": "74cfd9e5c",
+    "existing_suites": "2/2",
+    "seconds": 11.74,
+    "objects": [
+      {
+        "path": "build\\win32\\bsp_core.dir\\Release\\native_hud_hints_collect.obj",
+        "sha256": "3c760d4c77d167a7c2751fbfe31c4fd8c0467e9ccfca8bef672a8b253b161026",
+        "identical_to_frozen_common_object": true
+      },
+      {
+        "path": "build\\win32\\bsp_core.dir\\Release\\native_tactical_library_collect.obj",
+        "sha256": "36c804db13f94b8868a8289bd3b32b98d3fa335d190f5bf3fdaeefb223f4dc0d",
+        "identical_to_frozen_common_object": true
+      },
+      {
+        "path": "build\\win32\\bsp_core.dir\\Release\\native_lua_variant_retirement.obj",
+        "sha256": "7d19c2bb15e910cb418785dd86d19191176cd36082d10481ef13d20c9d6c263f",
+        "identical_to_frozen_common_object": true
+      },
+      {
+        "path": "build\\win32\\bsp_core.dir\\Release\\native_scene_dword_vector_push_back.obj",
+        "sha256": "55274176ab67c57117e4b4052a4127935da5cb525c15e277b549c37c406a828f",
+        "identical_to_frozen_common_object": true
+      },
+      {
+        "path": "build\\win32\\bsp_core.dir\\Release\\native_scene_dword_vector_insert.obj",
+        "sha256": "23caf622dfdfee65428dbe7eb4f05d3bb5b0284fde46b063e0f88889f62425df",
+        "identical_to_frozen_common_object": true
+      },
+      {
+        "path": "build\\win32\\bsp_core.dir\\Release\\native_string_pool_owner.obj",
+        "sha256": "6b8d709e064a23e75ea5ff7255c985280d0efb89e9ca8f353b83b903cb42a891",
+        "identical_to_frozen_common_object": true
+      },
+      {
+        "path": "build\\win32\\bsp_core.dir\\Release\\native_string_pool_storage.obj",
+        "sha256": "bbc0339374e3a681e633f2d14ef90f94ade4cf7921f3231ff5115a6315913ee2",
+        "identical_to_frozen_common_object": true
+      },
+      {
+        "path": "build\\win32\\bsp_core.dir\\Release\\singleton_lifetime.obj",
+        "sha256": "386824ba4b5224ce24dfa43d84dd09b6c8b1fc64e02011998109d91cdc72171f",
+        "identical_to_frozen_common_object": true
+      }
+    ],
+    "build_log": {
+      "path": "local\\function_source_batch10\\artifacts\\merged-main-build.log",
+      "sha256": "a6c92e95ed3d611a6ef2681c7c7c40bb66b80699e17a9191d426eba67be20522"
+    },
+    "original_common_PE_link_receipt_preserved": true,
+    "new_gameplay_or_new_body_execution": false
+  }
+}
