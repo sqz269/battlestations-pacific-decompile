@@ -334,12 +334,12 @@ void build_native_gui_text_single_line_storage_00ab9fd0(
         acquired.vertex_unmap_entered = true;
         unmap_vertex(vertex, acquired.vertex_unmap_target, context);
         acquired.vertex_unmap_returned = true;
-        void* const final_section = pointer(frame.homes_[1]); // AFTER both unmaps
         location(acquired, Acquired::Boundary::layout, 0x00aba255);
         acquired.layout_entered = true;
         auto& layout_operands = context.bindings.prepared_layout_operands(acquired);
         acquired.selected_layout_operands = &layout_operands;
         layout_operands.mesh_dword_home = bits(mesh); // Native caller's PUSH mesh.
+        void* const final_section = pointer(frame.homes_[1]); // ABA251, AFTER PUSH mesh and both unmaps.
         rebuild_native_mesh_section_vertex_layout_storage_00b865a0(final_section,
             layout_operands.mesh_dword_home, layout_operands.raw_key_home,
             context.layout, layout_operands.acquired_before_insertion);
