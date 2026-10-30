@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/native_font_glyph_selection_storage.hpp"
 #include "bsp/native_logical_buffer_mapping.hpp"
 #include "bsp/native_render_context.hpp"
 #include <cstdint>
@@ -15,7 +16,6 @@ namespace bsp {
 struct NativeGuiTextSingleLineStorageBindings {
     virtual ~NativeGuiTextSingleLineStorageBindings() = default;
     virtual void* model_geometry_00b74640(void* captured_model, std::uint32_t index) = 0;
-    virtual void* font_glyph_00ad4480(void* captured_font, std::uint32_t code_unit) = 0;
     // Pure metadata lookup of this captured CURRENT raw profile. SAME live
     // table, at least18h; no reentry, Native operation or numeric-code call.
     virtual const volatile std::uint32_t* current_stream_table(void* captured_stream,
@@ -98,6 +98,10 @@ struct NativeGuiTextSingleLineStorageScratch final {
     volatile std::uint32_t quad_homes[10];
     volatile std::uint32_t cursor, next_unit, advance;
     volatile std::uint32_t first_vertex, quad_index, index_position, first_glyph;
+    // Reached selector calls borrow this real WORD home, not a typed DWORD
+    // alias. Reuse only after normal return; a failed call retains both fields.
+    volatile std::uint16_t font_code_unit_home;
+    NativeFontGlyphSelectionStorageScratch font_glyph;
 };
 
 class NativeGuiTextSingleLineStorageFrame final {
