@@ -246,12 +246,22 @@
     },
     {
       "path": "reports/cc16_native_menu_prompt_construction_publication.json",
-      "sha256": "bf9dfd7d0351c8c8eb6c5a5183aa849285c876afab3817662186915150fb930b"
+      "sha256": "7cffc066556df5e12ad9eaa4bb57ffac4de552f08191740fe28aeeb5bcf0014d",
+      "historical_working_copy_CRLF_sha256": "bf9dfd7d0351c8c8eb6c5a5183aa849285c876afab3817662186915150fb930b",
+      "historical_working_copy_CRLF_bytes": 41920,
+      "hash_format": "immutable_Git_LF_bytes",
+      "Git_LF_bytes": 40597,
+      "git_blob": "a8d32e5e250605d611260b92979f2857e9afbbf9"
     },
     {
       "path": "config/target.json",
       "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
     }
   ],
-  "document": "docs/CC16_NATIVE_MENU_PROMPT_SCALAR_LIFETIME.md"
+  "document": "docs/CC16_NATIVE_MENU_PROMPT_SCALAR_LIFETIME.md",
+  "integrator_evidence_format_correction": {
+    "reason": "Independent review055454P2, historicalCRLF pin is distinct from immutableGitLF",
+    "Source_changed": false,
+    "historical_pin_preserved": true
+  }
 }
