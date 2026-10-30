@@ -1,0 +1,1160 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-gui-text-glyph-quad-independent-review",
+  "classification": "independent bounded whole raw GlyphQuad Source review",
+  "original_reviewed_commit": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+  "final_reviewed_commit": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+  "utc": "2026-10-30T17:42:09.240328+00:00",
+  "owned_files": [
+    "docs/CC16_NATIVE_GUI_TEXT_GLYPH_QUAD_INDEPENDENT_REVIEW.md",
+    "reports/cc16_native_gui_text_glyph_quad_independent_review.json"
+  ],
+  "verdict": {
+    "blocking_Source_findings": 0,
+    "findings": [
+      {
+        "id": "GQ-VOLATILE-HEADER-001",
+        "status": "resolved_in_exact_corrected_Source",
+        "original_commit": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+        "sites": [
+          "include/bsp/native_gui_text_glyph_quad_storage.hpp:99",
+          "src/native_gui_text_glyph_quad_storage.cpp:449",
+          "src/native_gui_text_glyph_quad_storage.cpp:455",
+          "src/native_gui_text_glyph_quad_storage.cpp:498",
+          "src/native_gui_text_glyph_quad_storage.cpp:501"
+        ],
+        "description": "Private locals[] is declared volatile DWORD[14], but raw header construction/code-unit/destruction calls strip volatile and existing concrete header helpers use ordinary nonvolatile memcpy reads/writes. No supported qualification exception was established; author and Root confirmed correction is required.",
+        "required_bounded_correction": "Use actual ordinary DWORD backing for private locals, volatile views only at reached native raw reads/writes, and retain external volatile10homes. Preserve every native operand/FP/call/cleanup schedule; no new provider/owner/policy.",
+        "reviewer_Source_edits": false,
+        "corrected_commit": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+        "resolution": "Private backing is ordinary DWORD objects; current raw accesses retain explicit volatile views; existing header helpers receive SAME ordinary F24/F28 objects directly. No volatile object is stripped to those helper accesses.",
+        "followup_verification": {
+          "status": "passed",
+          "corrected_commit": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+          "exact_whole_CPP_only_13_selected_replacements": true,
+          "exact_whole_header_declaration_plus_two_comment_lines_only": true,
+          "ordinary_private_DWORD_backing": true,
+          "current_private_data_length_reads_explicit_volatile": 2,
+          "provider_pointer_views_explicit_volatile": 3,
+          "private_header_qualifier_stripping_casts_removed": 8,
+          "all_22_asm_blocks_byte_identical": true,
+          "asm_block_bodies_joined_LF_sha256": "fc5975b3c80f3db93f7feb2b04e44d10272d738c6848c82e0499e7b6307c45ab",
+          "all_19_required_method_names_and_order_unchanged": true,
+          "all_22_boundary_markers_and_order_unchanged": true,
+          "external_ten_volatile_homes_and_public_signature_unchanged": true,
+          "F24_F28_header_object_addresses_and_aliases_unchanged": true,
+          "no_header_copies_or_new_owner_policy": true,
+          "current_31_corrected_pins_match": true,
+          "original_28_provider_pins_unchanged": true,
+          "original_report_fields_preserved_except_currentpins_additivevalidation_correction": true,
+          "parent_6490_both_sources_unchanged": true,
+          "compiled_runtime_equivalence_proved": false
+        }
+      }
+    ],
+    "ready_for_primary_integration_common_build_assessment": true,
+    "compiled_by_reviewer": false,
+    "actual_caller_admitted": false,
+    "whole_Text_or_frontend_ready": false,
+    "activation": false
+  },
+  "scope": {
+    "production_files": [
+      "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "src/native_gui_text_glyph_quad_storage.cpp"
+    ],
+    "all_Source_read": true,
+    "Native": "00ab98f0..00ab9fc2",
+    "bytes": 1747,
+    "ops": 485,
+    "all_Native_rows_read": true,
+    "new_address_write_lease": false,
+    "no_helper_catalogue_expansion": true
+  },
+  "Native_PE_evidence": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "length": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_base": "0x400000"
+  },
+  "body": {
+    "VA": "00ab98f0",
+    "bytes": 1747,
+    "sha256": "795b76de15e3a52d032bfca739ca1cffe9714a83d7d619fd6aae9302aa13d236",
+    "instructions": 485
+  },
+  "raw_exports": [
+    {
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab98f0\\assembly.txt",
+      "hash_format": "raw bytes; no newline conversion",
+      "sha256": "7165707dcf74507fb24b2d3bfc77de8fa764a33c46fe46ff16aef417efd50bd4",
+      "bytes": 16685
+    },
+    {
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab98f0\\decompiled.c",
+      "hash_format": "raw bytes; no newline conversion",
+      "sha256": "0069bafb0df7e27b6c3c936922b78d0d8e2f9d87761a5ee7107cb24536420962",
+      "bytes": 21657
+    }
+  ],
+  "source_and_input_pins_31_original": [
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "724c0c6c5e0b43d87e8247df183d542e4f0ad22b",
+      "sha256": "579b0f21d5f5af10f9cd968b3eef6d59a666f750ece936a6b88d1a044021d10f",
+      "bytes": 8331
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "e7209ec08855da07c2b3c20fe960ef16c2d63024",
+      "sha256": "ad5f656ddbccebc3c5d2b243f5d3fe0e01c71b12eeea97e3ef29033aa01e84f3",
+      "bytes": 19837
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "docs/CC16_NATIVE_GUI_TEXT_GLYPH_QUAD_STORAGE.md",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "74c9cecc2f2aa49a47c0f308511b318591912cc6",
+      "sha256": "3acd83823d5cabdb0c00ada85956ce649a7c0bec3fdcbb9e5515ef1e141ac802",
+      "bytes": 11749
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "config/target.json",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "bytes": 455
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "src/engine_seg11_35_66_cc13.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "d3ac98e5caad5a78a3eed116c6833435f26ad1a4",
+      "sha256": "86d443153ac95f6de31721c79b7bc9c706c4be28487ebfd223736c8fdabfd367",
+      "bytes": 206645
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "include/bsp/oct18_tail_c.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "e7a8ecbce80f7ed0443b4429cf95f6fc11bb53be",
+      "sha256": "afd3a4d036494eeec6c1ddd8328bfab2f8fed9db89a509311f79aef87a34e99e",
+      "bytes": 22684
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "src/cc13_gui2.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "74984642095b6a8ac902ad19e0d0d8fccdfebad0",
+      "sha256": "7c2cf61c9c7e807d9e3eb0bf94b5f12acce93de7bed9f120f06586a06049dce4",
+      "bytes": 43232
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "include/bsp/cc13_gui2.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "d386f52c2088c8a171d47c257867183622f52973",
+      "sha256": "0afa4f4e5d6b02c706796e774d5b1597370aa432cce0dcb6307f55d0a24af5ba",
+      "bytes": 16373
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "include/bsp/gui_text_glyph_child.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "1a6651999afbff27b313bcde0602cc7259ddcf35",
+      "sha256": "dbb7e982686b7cb5d5ccfcb20a1d6fcef9d652a2603e458f7f6964c51570cb8c",
+      "bytes": 2312
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "include/bsp/gui_text_glyph_child_runtime.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "0d463e101e7b8000269b4b59138d025ad9e4d3f0",
+      "sha256": "1ee83daf701f707024c5be7ceb60303dac16dc57054ee8a2afa3f3a314c0698e",
+      "bytes": 4302
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "src/gui_text_glyph_child_runtime.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "210e7d5e56501e06eebfa777ca1c38a63066d407",
+      "sha256": "27e847751c9ef215ae46f8e96c4e13248a26c9c4d69c32de2519bb5c9fd0a9dd",
+      "bytes": 11084
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "include/bsp/gui_text_glyph_reference.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "1ebadcda1fd1f7c39db9eb73832cb4c27f59bce5",
+      "sha256": "a2a6edfa7e1477bc19a46e71c819972b5cb699a426ee2a0383602c6d11bcfc37",
+      "bytes": 3057
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "src/gui_text_glyph_reference.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "204b8a672c4dbed58b84db19e9e94df57e976992",
+      "sha256": "d3e2c205c906ea2e6697ea1810f7b268e108a5e2e22ca695f4b625a7333587e6",
+      "bytes": 6542
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "include/bsp/native_string.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "bytes": 8771
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "src/native_string.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "bytes": 9121
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "4a2569e19b6f25c308cba1c3cdb2b2989db2cddd",
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "bytes": 5893
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "src/native_string_pool_owner.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "de3c69b53e00840fab31b41e2195bdc1789b6baf",
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "bytes": 8443
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "60b3f627150fa058fac7b8c4c74537cb3aee0a68",
+      "sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+      "bytes": 3113
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "src/native_string_pool_storage.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "103d6fe4d772bb3078c48fe8bcf3f929a385fdda",
+      "sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+      "bytes": 5450
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "include/bsp/native_wide_string.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "ca3887e0d34038a9e799ebdead68b0db55f16108",
+      "sha256": "5606f96b372362a6831a1633a583f264fbab4290789481f94f1ba97537f6e051",
+      "bytes": 5239
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "src/native_wide_string.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "7b9df08e026a67a9dbab9c6c8df74676fd43645d",
+      "sha256": "158502f1efb91f678011dd971c643d5236eb10bf56da3c9997631a6d8df96e55",
+      "bytes": 10671
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "include/bsp/game_native_gui_text_state.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "c2f420b227592ab4ac84c680467f5142bf9e026a",
+      "sha256": "7b544feaa7da8a1a4bab5b5f01546d8e4d8b5621d8da37c6b22e4dfbc9d964e0",
+      "bytes": 3899
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "src/game_native_gui_text_state.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "4aeb220bed382de390912a2320ad1ca4adb4bf65",
+      "sha256": "ff10c4e60079ea23117223b10dc9b64bb61715930fa2c1d1b7fff0b81396dd5f",
+      "bytes": 1821
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "bytes": 2713
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "src/game_native_readonly_data.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e",
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+      "bytes": 7167
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "include/bsp/native_gui_text_default_storage.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "51d97889adc254306247f4ecbdab4361b41533bf",
+      "sha256": "411848bea4eb0f79635bfca06493782d40c0b27cb92f713728d52b48648e119f",
+      "bytes": 5404
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "src/native_gui_text_default_storage.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "766918f8f8e48160ec322045b363b2d9361ae7e4",
+      "sha256": "757647269fba2238edce3723fb7aa870cc4d75c71610d621177a0c581d5a85cf",
+      "bytes": 22565
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "include/bsp/native_gui_text_storage_construct.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "4a426546480d657390ff04d2adbc1f8fe738ec3f",
+      "sha256": "6f142a031781e0c9e5a703abed07967790b4ff8669494330bfffb1bdea9b3876",
+      "bytes": 8628
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "src/native_gui_text_storage_construct.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "702cae62590b20313d953ceb885df8d4a5aed076",
+      "sha256": "d3ae2db948ce9109fea392b6766a6f31b397fcf773256141098c6c49a663d156",
+      "bytes": 32680
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "include/bsp/native_gui_text_glyph_children.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "c5a7a2dc5aea299663866f07cb661d94c14c237a",
+      "sha256": "441e4a25ab536b115d87bdc2de81778eda2dc4d47f61faced68485f1cc4e8b11",
+      "bytes": 3622
+    },
+    {
+      "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+      "path": "src/native_gui_text_glyph_children.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "025cdd3d7fde5bb7b8b9e215da4d604c6d3a5407",
+      "sha256": "cf9454f0b8e09ccd1fc9eeb7250daca7cccab0ad6b25969fd511b09968018081",
+      "bytes": 6167
+    }
+  ],
+  "producer_report_pin_original": {
+    "revision": "6d0dc92b8c5cac92fa658d4b96edf00cd5c58239",
+    "path": "reports/cc16_native_gui_text_glyph_quad_storage.json",
+    "hash_format": "immutable Git blob bytes; LF",
+    "git_blob": "6d8346f15616b7a7cec2cd14776432e8db9fb304",
+    "sha256": "7b017b771faead636bfe834da913ef178155588bab2ebd80861c6cc550a25f95",
+    "bytes": 35220
+  },
+  "home_checks": {
+    "actual_mutable_homes": 10,
+    "incoming_EDX_not_input": true,
+    "never_read_homes": [
+      4,
+      5
+    ],
+    "mutated_homes": [
+      0,
+      2,
+      7
+    ],
+    "home0": "glyph -> signed bearing -> unsigned width -> raw right spill -> firstVertex+1; glyph separately captured",
+    "home2": "stream captured -> firstVertex+2; stream separately captured",
+    "home7": "unsigned lowWORD height -> raw bottom spill -> repeated individualFFbyte stores -> allocation -> captured child",
+    "live_child_home_address_to_append": true,
+    "captured_child_survives_append_home_vector_mutation": true,
+    "state0_cleanup_current_home7_not_allocation_snapshot": true,
+    "after_normal_return_homes_are_historical_identity_only": true,
+    "failed_invocation_requires_retained_caller_home_position_graph_and_frames": true
+  },
+  "geometry_checks": {
+    "vertex_order": [
+      "TL",
+      "TR",
+      "BR",
+      "BL"
+    ],
+    "current_stream_fields": [
+      "+8buffer",
+      "+Cstride",
+      "+10position",
+      "+28UV",
+      "signed+34packed_or+38/+3C/+40/+44color_offsets"
+    ],
+    "color_read_write_epochs_reviewed": true,
+    "first_Z_pre_bottom_spill": true,
+    "UV_SSE_moves_preserve_DWORD_payload_bits": true,
+    "packed_home7_and_float_captured_one_paths": true,
+    "index_write_byte_offsets": [
+      2,
+      0,
+      6,
+      4,
+      8,
+      10
+    ],
+    "index_values": [
+      "q4+1",
+      "q4",
+      "q4",
+      "q4+2",
+      "q4+2",
+      "q4+3"
+    ],
+    "DWORD_wrap_and_low16_stores": true,
+    "membership_current_DWORD_gates_and_UTF16_lowWORD_home_reload": true,
+    "zero_UV_second_third_live_home_reads_after_stride": true,
+    "no_input_domain_filter_or_new_default": true
+  },
+  "x87": {
+    "native_count": 78,
+    "Source_count": 78,
+    "blocks": [
+      40,
+      2,
+      13,
+      9,
+      14
+    ],
+    "whole_mnemonic_order_equal": true,
+    "native_mnemonic_sequence": "FILD FADD FST FLD FILD FMULP FADDP FSTP FLD FILD FADDP FLD1 FADD FSUBP FSTP FLD FLD FDIV FXCH FSTP FLD FLD FDIV FLD FLD FMULP FXCH FSTP FLD FDIVRP FXCH FSTP FLD FDIVRP FMULP FSTP FLD FSTP FLD FSTP FLD FSTP FLD FSTP FLD FSTP FLD FADD FSTP FLD FADD FSTP FLD FSUB FSTP FLD FSUB FSTP FLD FSUB FSTP FLD FSUB FSTP FLD FSUB FDIV FADD FSTP FLD FSUB FSTP FLD FSUB FSTP FLD FSUB FSTP",
+    "Source_mnemonic_sequence": "FILD FADD FST FLD FILD FMULP FADDP FSTP FLD FILD FADDP FLD1 FADD FSUBP FSTP FLD FLD FDIV FXCH FSTP FLD FLD FDIV FLD FLD FMULP FXCH FSTP FLD FDIVRP FXCH FSTP FLD FDIVRP FMULP FSTP FLD FSTP FLD FSTP FLD FSTP FLD FSTP FLD FSTP FLD FADD FSTP FLD FADD FSTP FLD FSUB FSTP FLD FSUB FSTP FLD FSUB FSTP FLD FSUB FSTP FLD FSUB FDIV FADD FSTP FLD FSUB FSTP FLD FSUB FSTP FLD FSUB FSTP",
+    "operands_and_dynamic_paths_reviewed": true,
+    "details": [
+      "FST raw-left retains Native extended value; raw-right home0/raw-bottom home7 FSTP then FLD; +1/-1 retained",
+      "First output-position Z precedes bottom subtraction/spill; X/Y use exact later FLD/FSTP",
+      "CURRENT E12FD4 backing read at Native phase; distinct from E12FC4",
+      "Shadow FLD/FSTP before callback and CURRENT one reload preserved",
+      "Offset mode F24/F28 spills then F30 writes; refEC==1 branch separate; long arm mandatory F40 spill/reload then subtract/spill",
+      "All x87 groups finish before C++/provider calls; no C++ floating arithmetic/float-return helper or new FP environment policy"
+    ],
+    "generated_code_runtime_CW_status_unmasked_fault_PC_identity_proved": false
+  },
+  "direct_call_receipts": [
+    {
+      "site": "00ab9d38",
+      "target": "00ab78a0",
+      "bytes": "e863dbffff",
+      "source_provider": "required.allocate_00ab78a0"
+    },
+    {
+      "site": "00ab9d4f",
+      "target": "00ab9650",
+      "bytes": "e8fcf8ffff",
+      "source_provider": "required.construct_00ab9650"
+    },
+    {
+      "site": "00ab9d70",
+      "target": "005dad40",
+      "bytes": "e8cb0fb2ff",
+      "source_provider": "required.append_005dad40"
+    },
+    {
+      "site": "00ab9d8c",
+      "target": "00aa6720",
+      "bytes": "e88fc9feff",
+      "source_provider": "required.scene_node_00aa6720"
+    },
+    {
+      "site": "00ab9d93",
+      "target": "00ab8530",
+      "bytes": "e898e7ffff",
+      "source_provider": "required.sections_00ab8530"
+    },
+    {
+      "site": "00ab9db2",
+      "target": "00aa6bc0",
+      "bytes": "e809cefeff",
+      "source_provider": "required.listeners_00aa6bc0"
+    },
+    {
+      "site": "00ab9dc9",
+      "target": "00ab8c30",
+      "bytes": "e862eeffff",
+      "source_provider": "required.font_00ab8c30"
+    },
+    {
+      "site": "00ab9e05",
+      "target": "00ab6c30",
+      "bytes": "e826ceffff",
+      "source_provider": "required.shadow_00ab6c30"
+    },
+    {
+      "site": "00ab9e13",
+      "target": "0041e870",
+      "bytes": "e8584a96ff",
+      "source_provider": "genuine.construct_native_string_header_0041e870"
+    },
+    {
+      "site": "00ab9e1f",
+      "target": "00ab8e70",
+      "bytes": "e84cf0ffff",
+      "source_provider": "required.shader_00ab8e70"
+    },
+    {
+      "site": "00ab9e39",
+      "target": "00419cc0",
+      "bytes": "e882fe95ff",
+      "source_provider": "genuine.native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "site": "00ab9e40",
+      "target": "00bd1510",
+      "bytes": "e8cb761100",
+      "source_provider": "genuine.return_native_string_pool_00bd1510"
+    },
+    {
+      "site": "00ab9e51",
+      "target": "00ab81c0",
+      "bytes": "e86ae3ffff",
+      "source_provider": "required.code_unit_00ab81c0"
+    },
+    {
+      "site": "00ab9e61",
+      "target": "00aba8d0",
+      "bytes": "e86a0a0000",
+      "source_provider": "required.content_00aba8d0"
+    },
+    {
+      "site": "00ab9e8a",
+      "target": "00419cc0",
+      "bytes": "e831fe95ff",
+      "source_provider": "genuine.native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "site": "00ab9e91",
+      "target": "00bd1510",
+      "bytes": "e87a761100",
+      "source_provider": "genuine.return_native_string_pool_00bd1510"
+    },
+    {
+      "site": "00ab9e9b",
+      "target": "00aaa5a0",
+      "bytes": "e80007ffff",
+      "source_provider": "required.attach_00aaa5a0"
+    },
+    {
+      "site": "00ab9ecd",
+      "target": "00aa6750",
+      "bytes": "e87ec8feff",
+      "source_provider": "required.position_00aa6750"
+    },
+    {
+      "site": "00ab9fa9",
+      "target": "00aa8240",
+      "bytes": "e892e2feff",
+      "source_provider": "required.position_00aa8240"
+    }
+  ],
+  "captured_virtual_call_receipts": [
+    {
+      "site": "00ab9d87",
+      "slot": "10",
+      "bytes": "ffd0",
+      "operands": "captured referenceNode flags26,parent0",
+      "target_resolution": "caller capturesactualprofile/targetDATA; requiredgenuineprovider consumescapturedselector only, no codewordcall cast"
+    },
+    {
+      "site": "00ab9da5",
+      "slot": "34",
+      "bytes": "ffd0",
+      "operands": "capturedchild value1",
+      "target_resolution": "caller capturesactualprofile/targetDATA; requiredgenuineprovider consumescapturedselector only, no codewordcall cast"
+    },
+    {
+      "site": "00ab9e71",
+      "slot": "50",
+      "bytes": "ffd2",
+      "operands": "capturedchild actualchild+50color4",
+      "target_resolution": "caller capturesactualprofile/targetDATA; requiredgenuineprovider consumescapturedselector only, no codewordcall cast"
+    },
+    {
+      "site": "00ab9ec0",
+      "slot": "30",
+      "bytes": "ffd2",
+      "operands": "capturedchild actualF24pivot2",
+      "target_resolution": "caller capturesactualprofile/targetDATA; requiredgenuineprovider consumescapturedselector only, no codewordcall cast"
+    }
+  ],
+  "call_count_audit": {
+    "direct_E8_targets_verified_from_PE": 19,
+    "register_CALL_bytes_verified_from_PE": 4,
+    "current_profile_target_Data_only_no_numeric_code_call_cast": true
+  },
+  "EH": {
+    "FuncInfo_hex": "2205931903000000e4eede00000000000000000000000000000000000000000001000000",
+    "FuncInfo_sha256": "0d28587e7799bec05a77638df0c853f23d838f16b734dc26364f1dd93a8e7d07",
+    "map_hex": "ffffffffb080cb00ffffffffb880cb00ffffffffc080cb00",
+    "map_sha256": "65d0a3f7149eae76b82869d7537a60e122dbed34cfd4819907036f4f6c5659d3",
+    "actions": [
+      {
+        "state": 0,
+        "parent": -1,
+        "action": "00cb80b0",
+        "bytes": "8b4d20e938f6dfff",
+        "jmp_target": "00ab76f0",
+        "operand": "[EBP+20h] CURRENT home7"
+      },
+      {
+        "state": 1,
+        "parent": -1,
+        "action": "00cb80b8",
+        "bytes": "8d4dcce9605c76ff",
+        "jmp_target": "0041dd20",
+        "operand": "LEA [EBP-34h] SAME F24 header"
+      },
+      {
+        "state": 2,
+        "parent": -1,
+        "action": "00cb80c0",
+        "bytes": "8d4dcce968e377ff",
+        "jmp_target": "00436430",
+        "operand": "LEA [EBP-34h] SAME F24 header"
+      }
+    ],
+    "handler_hex": "b8fceede00e971eaf3ff",
+    "handler_jump_target": "00bf6b43",
+    "secondary_transport_proved": false
+  },
+  "raw_string_cleanup_review": {
+    "same_F24_F28_words_reused": true,
+    "shader_41E870_and_wide_AB81C0_states_armed_only_after_return": true,
+    "normal_buffer_captured_then_state_disarmed_before_length_and_fresh_getter": true,
+    "normal_lengths": [
+      "length+1 DWORDwrap",
+      "2*length+2 DWORDwrap"
+    ],
+    "same_AA8_AA4_AA0_references": true,
+    "concrete_reused_operations": [
+      "construct_native_string_header_0041e870",
+      "native_string_pool_get_or_create_00419cc0",
+      "return_native_string_pool_00bd1510",
+      "destroy_native_string_header_0041dd20",
+      "destroy_native_wide_string_header_00436430"
+    ],
+    "cleanup_actions_reused": true,
+    "no_added_cleanup_on_constructor_or_normal_getter_failure": true,
+    "no_new_termination_retry_rollback_recovery_or_FP_policy": true,
+    "secondary_cleanup_exception_FH3_SEH_private_frame_fault_identity_proved": false,
+    "private_header_typing_finding": "GQ-VOLATILE-HEADER-001 resolved at 071439bfb5e0d82c956253d21b8cc73f2651c174"
+  },
+  "constant_and_loader_preimages": [
+    {
+      "VA": "00d7a24c",
+      "bytes": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "storage_preimage": "file",
+      "runtime_authority_proved": "Mapped supplier authentication/binding still required"
+    },
+    {
+      "VA": "00e12fd4",
+      "bytes": 4,
+      "sha256": "9a8208635e00348ab64aac2b759e76391fd47089e9a749bbcec770d9eb5c6421",
+      "storage_preimage": "file",
+      "runtime_authority_proved": false
+    },
+    {
+      "VA": "00cec380",
+      "bytes": 8,
+      "sha256": "567be61e7cefcfaba897e6d95d81a49a884e657b6a67ada1595e794ed90f6ed7",
+      "storage_preimage": "file",
+      "runtime_authority_proved": "Mapped supplier authentication/binding still required"
+    },
+    {
+      "VA": "00cef1b8",
+      "bytes": 8,
+      "sha256": "a8e4956cde576d6c13f666f99704ab75c94011539574ec1e26983f27156ba5fa",
+      "storage_preimage": "file",
+      "runtime_authority_proved": "Mapped supplier authentication/binding still required"
+    },
+    {
+      "VA": "00d5c5c0",
+      "bytes": 4,
+      "sha256": "0b9d79ff0fc4d0a77ef398763bbe45c445501e826219f2b6a1aa709411ab631d",
+      "storage_preimage": "file",
+      "runtime_authority_proved": "Mapped supplier authentication/binding still required"
+    },
+    {
+      "VA": "00ce3800",
+      "bytes": 4,
+      "sha256": "d99e58435243d9fef9c88273b8d553b4fba4d0baf8009d29eae74fa99e0d9f57",
+      "storage_preimage": "file",
+      "runtime_authority_proved": "Mapped supplier authentication/binding still required"
+    },
+    {
+      "VA": "00d7a358",
+      "bytes": 8,
+      "sha256": "595700f5c0ba132c9ede02f9ad9a19cffe697fd8fd52890abb10fd78f47d9aa1",
+      "storage_preimage": "file",
+      "runtime_authority_proved": "Mapped supplier authentication/binding still required"
+    },
+    {
+      "VA": "00d5c7a8",
+      "bytes": 8,
+      "sha256": "473c81abdbb08f957b3d158fec2c9896f29678a2720d7b86bd7dc82452850d6f",
+      "storage_preimage": "file",
+      "runtime_authority_proved": "Mapped supplier authentication/binding still required"
+    },
+    {
+      "VA": "00d7a220",
+      "bytes": 8,
+      "sha256": "00754a39f7de30495780d4c6242f680316f56bf4bf735c3681b3ac1d14f1512e",
+      "storage_preimage": "file",
+      "runtime_authority_proved": "Mapped supplier authentication/binding still required"
+    },
+    {
+      "VA": "00d06880",
+      "bytes": 8,
+      "sha256": "beecd69557c8ef93fab51123b114ff4c586c10b1042b181274ad124086529bd6",
+      "storage_preimage": "file",
+      "runtime_authority_proved": "Mapped supplier authentication/binding still required"
+    },
+    {
+      "VA": "00cefd78",
+      "bytes": 21,
+      "sha256": "0a69eafbd6247c2dc22a29c6921cc75a72db0701a4d5cecd1ba38d2c11159d44",
+      "storage_preimage": "file",
+      "runtime_authority_proved": "Mapped supplier authentication/binding still required"
+    },
+    {
+      "VA": "00f8be50",
+      "bytes": 2,
+      "sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+      "storage_preimage": "loaderZero",
+      "runtime_authority_proved": false
+    }
+  ],
+  "required_provider_contract": {
+    "pure_methods": [
+      "allocate_00ab78a0",
+      "construct_00ab9650",
+      "return_failed_00ab76f0",
+      "append_005dad40",
+      "node_current10",
+      "scene_node_00aa6720",
+      "sections_00ab8530",
+      "child_current34",
+      "listeners_00aa6bc0",
+      "font_00ab8c30",
+      "shadow_00ab6c30",
+      "shader_00ab8e70",
+      "code_unit_00ab81c0",
+      "content_00aba8d0",
+      "child_current50",
+      "attach_00aaa5a0",
+      "child_current30",
+      "position_00aa6750",
+      "position_00aa8240"
+    ],
+    "count": 19,
+    "implementations_added": 0,
+    "required_all_before_entry_and_reached_callback": true,
+    "same_actual_Text_Model_child_node_renderer_font_material_string_pool_domain": true,
+    "no_typed_owner_cast_fake_payload_defaultsuccess_pendingcompletion_or_new_shared_owner": true,
+    "actual_bound_provider_source_closure": false
+  },
+  "parent_6490_coupling": {
+    "commit": "6490c5de7ac2a7dbdf90fc0a267e27da9332f364",
+    "pins": [
+      {
+        "revision": "6490c5de7ac2a7dbdf90fc0a267e27da9332f364",
+        "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+        "hash_format": "immutable Git blob bytes; LF",
+        "git_blob": "48d89e15a71561637b64b56bb350f8012a094e06",
+        "sha256": "cb3ceeadbdf6ee0de0403247a825c9c4ec2947062449ef31549a1ea4a3e25ea2",
+        "bytes": 8362
+      },
+      {
+        "revision": "6490c5de7ac2a7dbdf90fc0a267e27da9332f364",
+        "path": "src/native_gui_text_single_line_storage.cpp",
+        "hash_format": "immutable Git blob bytes; LF",
+        "git_blob": "33ed0eaa0f7b25d0dfaed106a787f3e0ac2a34e7",
+        "sha256": "bf28c40e92462d515327e90bbecca4336144ee8d7b40ca60e87535d3d8320c6d",
+        "bytes": 16669
+      },
+      {
+        "revision": "6490c5de7ac2a7dbdf90fc0a267e27da9332f364",
+        "path": "reports/cc16_native_single_line_font_selector_composition.json",
+        "hash_format": "immutable Git blob bytes; LF",
+        "git_blob": "c610c773ac5aa3728d755f6bb8c7b3456dc39d30",
+        "sha256": "063409f2e9eac113b199ed580fae216036d5b8cccc1a87dd6c434c6a349dece4",
+        "bytes": 20393
+      }
+    ],
+    "all_current_parent_Source_bytes_match": true,
+    "two_direct_Font_selector_calls_preserved": true,
+    "quad_protocol": "actual Text plus same volatileDWORD(&homes)[10]; current mandatory parent binding must directly adapt to new raw entry with same borrowed context and fresh prepared acquired record",
+    "position_alias_homes": [
+      1,
+      4,
+      5
+    ],
+    "separate_parent_glyph_vertex_height_and_pen": true,
+    "parent_rebuilds_homes_only_after_normal_return": true,
+    "actual_app_adapter_bound": false,
+    "unnecessary_shared_owner_or_context_file": false
+  },
+  "validation": {
+    "Source_assembly_operand_epoch_review": true,
+    "Git_LF_pins_verified": 31,
+    "raw_export_hash_format": "raw exact bytes; no newline conversion",
+    "PE_EH_call_constant_audit": true,
+    "read_only_Ghidra_query": "python tools/bsp.py ghidra proto 0x00AB98F0; wrapper Client.verify checked configured bsp.gpr/program identity. Undefined(void) pseudocode prototype was not used as an ABI.",
+    "Ghidra_writes": 0,
+    "Source_edits": 0,
+    "CMake_ledger_edits": 0,
+    "build": false,
+    "test": false,
+    "probe": false,
+    "native_or_game_process": false,
+    "new_tests": 0,
+    "prior_Root_bf658_9416_build_credit_for_Glyph": false,
+    "staged_diff_check": "git diff --cached --check passed; exactly two owned review paths staged; current corrected Source pins verified; parent6490 preserved.",
+    "representation_only_followup": {
+      "status": "passed",
+      "corrected_commit": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "exact_whole_CPP_only_13_selected_replacements": true,
+      "exact_whole_header_declaration_plus_two_comment_lines_only": true,
+      "ordinary_private_DWORD_backing": true,
+      "current_private_data_length_reads_explicit_volatile": 2,
+      "provider_pointer_views_explicit_volatile": 3,
+      "private_header_qualifier_stripping_casts_removed": 8,
+      "all_22_asm_blocks_byte_identical": true,
+      "asm_block_bodies_joined_LF_sha256": "fc5975b3c80f3db93f7feb2b04e44d10272d738c6848c82e0499e7b6307c45ab",
+      "all_19_required_method_names_and_order_unchanged": true,
+      "all_22_boundary_markers_and_order_unchanged": true,
+      "external_ten_volatile_homes_and_public_signature_unchanged": true,
+      "F24_F28_header_object_addresses_and_aliases_unchanged": true,
+      "no_header_copies_or_new_owner_policy": true,
+      "current_31_corrected_pins_match": true,
+      "original_28_provider_pins_unchanged": true,
+      "original_report_fields_preserved_except_currentpins_additivevalidation_correction": true,
+      "parent_6490_both_sources_unchanged": true,
+      "compiled_runtime_equivalence_proved": false
+    }
+  },
+  "remaining_gates": [
+    "Bind all19 genuine entered providers and same actual resource domains",
+    "Bind actual raw caller with prepared records/frames and retained graph/failure lifetimes",
+    "Root joined MSVC Win32 compilation for exact Glyph Source",
+    "OriginalABI/private-stack/FH3/SEH/fault/FP/provider runtime/game validation remain unproved",
+    "Whole ABA8D0/changed ABAED0/wrapped/glyphrecursion/frontend activation remain false"
+  ],
+  "new_credit": {
+    "Original": 0,
+    "vendor": 0,
+    "duplicate_body": 0,
+    "compiler_generated": 0,
+    "ABI": 0,
+    "runtime": 0,
+    "gameplay": 0,
+    "activation": 0
+  },
+  "source_and_input_pins_31_corrected": [
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "acec6947cf7777181a97335456dc5142a1149cae",
+      "sha256": "6a8e8ff45a4415fbdbb81992726f2e9e4fc17c0819fde21c279ac4c3d354b245",
+      "bytes": 8477
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "5505123a0d02398d4d4c16873ef87f4f856fb790",
+      "sha256": "f05676b34f28b95194810e4f325cbec759b0ece70b9cb41b38b64efc89d7a96e",
+      "bytes": 19830
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "docs/CC16_NATIVE_GUI_TEXT_GLYPH_QUAD_STORAGE.md",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "ba9fd195d0680450c4d97008bfd6009d4c45c0a1",
+      "sha256": "75bbc760c32aa8bc5b2d037c4f57372f6e4bea7c678acce476fb19197f7d80b1",
+      "bytes": 14000
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "config/target.json",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "bytes": 455
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "src/engine_seg11_35_66_cc13.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "d3ac98e5caad5a78a3eed116c6833435f26ad1a4",
+      "sha256": "86d443153ac95f6de31721c79b7bc9c706c4be28487ebfd223736c8fdabfd367",
+      "bytes": 206645
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "include/bsp/oct18_tail_c.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "e7a8ecbce80f7ed0443b4429cf95f6fc11bb53be",
+      "sha256": "afd3a4d036494eeec6c1ddd8328bfab2f8fed9db89a509311f79aef87a34e99e",
+      "bytes": 22684
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "src/cc13_gui2.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "74984642095b6a8ac902ad19e0d0d8fccdfebad0",
+      "sha256": "7c2cf61c9c7e807d9e3eb0bf94b5f12acce93de7bed9f120f06586a06049dce4",
+      "bytes": 43232
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "include/bsp/cc13_gui2.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "d386f52c2088c8a171d47c257867183622f52973",
+      "sha256": "0afa4f4e5d6b02c706796e774d5b1597370aa432cce0dcb6307f55d0a24af5ba",
+      "bytes": 16373
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "include/bsp/gui_text_glyph_child.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "1a6651999afbff27b313bcde0602cc7259ddcf35",
+      "sha256": "dbb7e982686b7cb5d5ccfcb20a1d6fcef9d652a2603e458f7f6964c51570cb8c",
+      "bytes": 2312
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "include/bsp/gui_text_glyph_child_runtime.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "0d463e101e7b8000269b4b59138d025ad9e4d3f0",
+      "sha256": "1ee83daf701f707024c5be7ceb60303dac16dc57054ee8a2afa3f3a314c0698e",
+      "bytes": 4302
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "src/gui_text_glyph_child_runtime.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "210e7d5e56501e06eebfa777ca1c38a63066d407",
+      "sha256": "27e847751c9ef215ae46f8e96c4e13248a26c9c4d69c32de2519bb5c9fd0a9dd",
+      "bytes": 11084
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "include/bsp/gui_text_glyph_reference.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "1ebadcda1fd1f7c39db9eb73832cb4c27f59bce5",
+      "sha256": "a2a6edfa7e1477bc19a46e71c819972b5cb699a426ee2a0383602c6d11bcfc37",
+      "bytes": 3057
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "src/gui_text_glyph_reference.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "204b8a672c4dbed58b84db19e9e94df57e976992",
+      "sha256": "d3e2c205c906ea2e6697ea1810f7b268e108a5e2e22ca695f4b625a7333587e6",
+      "bytes": 6542
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "include/bsp/native_string.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "bytes": 8771
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "src/native_string.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "bytes": 9121
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "4a2569e19b6f25c308cba1c3cdb2b2989db2cddd",
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "bytes": 5893
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "src/native_string_pool_owner.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "de3c69b53e00840fab31b41e2195bdc1789b6baf",
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "bytes": 8443
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "60b3f627150fa058fac7b8c4c74537cb3aee0a68",
+      "sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+      "bytes": 3113
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "src/native_string_pool_storage.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "103d6fe4d772bb3078c48fe8bcf3f929a385fdda",
+      "sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+      "bytes": 5450
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "include/bsp/native_wide_string.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "ca3887e0d34038a9e799ebdead68b0db55f16108",
+      "sha256": "5606f96b372362a6831a1633a583f264fbab4290789481f94f1ba97537f6e051",
+      "bytes": 5239
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "src/native_wide_string.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "7b9df08e026a67a9dbab9c6c8df74676fd43645d",
+      "sha256": "158502f1efb91f678011dd971c643d5236eb10bf56da3c9997631a6d8df96e55",
+      "bytes": 10671
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "include/bsp/game_native_gui_text_state.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "c2f420b227592ab4ac84c680467f5142bf9e026a",
+      "sha256": "7b544feaa7da8a1a4bab5b5f01546d8e4d8b5621d8da37c6b22e4dfbc9d964e0",
+      "bytes": 3899
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "src/game_native_gui_text_state.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "4aeb220bed382de390912a2320ad1ca4adb4bf65",
+      "sha256": "ff10c4e60079ea23117223b10dc9b64bb61715930fa2c1d1b7fff0b81396dd5f",
+      "bytes": 1821
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "bytes": 2713
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "src/game_native_readonly_data.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e",
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+      "bytes": 7167
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "include/bsp/native_gui_text_default_storage.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "51d97889adc254306247f4ecbdab4361b41533bf",
+      "sha256": "411848bea4eb0f79635bfca06493782d40c0b27cb92f713728d52b48648e119f",
+      "bytes": 5404
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "src/native_gui_text_default_storage.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "766918f8f8e48160ec322045b363b2d9361ae7e4",
+      "sha256": "757647269fba2238edce3723fb7aa870cc4d75c71610d621177a0c581d5a85cf",
+      "bytes": 22565
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "include/bsp/native_gui_text_storage_construct.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "4a426546480d657390ff04d2adbc1f8fe738ec3f",
+      "sha256": "6f142a031781e0c9e5a703abed07967790b4ff8669494330bfffb1bdea9b3876",
+      "bytes": 8628
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "src/native_gui_text_storage_construct.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "702cae62590b20313d953ceb885df8d4a5aed076",
+      "sha256": "d3ae2db948ce9109fea392b6766a6f31b397fcf773256141098c6c49a663d156",
+      "bytes": 32680
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "include/bsp/native_gui_text_glyph_children.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "c5a7a2dc5aea299663866f07cb661d94c14c237a",
+      "sha256": "441e4a25ab536b115d87bdc2de81778eda2dc4d47f61faced68485f1cc4e8b11",
+      "bytes": 3622
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "src/native_gui_text_glyph_children.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "025cdd3d7fde5bb7b8b9e215da4d604c6d3a5407",
+      "sha256": "cf9454f0b8e09ccd1fc9eeb7250daca7cccab0ad6b25969fd511b09968018081",
+      "bytes": 6167
+    }
+  ],
+  "corrected_Source_pins": [
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "acec6947cf7777181a97335456dc5142a1149cae",
+      "sha256": "6a8e8ff45a4415fbdbb81992726f2e9e4fc17c0819fde21c279ac4c3d354b245",
+      "bytes": 8477
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "hash_format": "immutable Git blob bytes; LF",
+      "git_blob": "5505123a0d02398d4d4c16873ef87f4f856fb790",
+      "sha256": "f05676b34f28b95194810e4f325cbec759b0ece70b9cb41b38b64efc89d7a96e",
+      "bytes": 19830
+    }
+  ],
+  "producer_report_pin_corrected": {
+    "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+    "path": "reports/cc16_native_gui_text_glyph_quad_storage.json",
+    "hash_format": "immutable Git blob bytes; LF",
+    "git_blob": "25f1de32a95bcdb751068523157befd8e0c1f459",
+    "sha256": "b883d8e032e088dc240bb8768efd4baaf8eadcd421aaebcdfaf73f7c0f1231eb",
+    "bytes": 42551
+  },
+  "correction_followup": {
+    "status": "passed",
+    "corrected_commit": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+    "exact_whole_CPP_only_13_selected_replacements": true,
+    "exact_whole_header_declaration_plus_two_comment_lines_only": true,
+    "ordinary_private_DWORD_backing": true,
+    "current_private_data_length_reads_explicit_volatile": 2,
+    "provider_pointer_views_explicit_volatile": 3,
+    "private_header_qualifier_stripping_casts_removed": 8,
+    "all_22_asm_blocks_byte_identical": true,
+    "asm_block_bodies_joined_LF_sha256": "fc5975b3c80f3db93f7feb2b04e44d10272d738c6848c82e0499e7b6307c45ab",
+    "all_19_required_method_names_and_order_unchanged": true,
+    "all_22_boundary_markers_and_order_unchanged": true,
+    "external_ten_volatile_homes_and_public_signature_unchanged": true,
+    "F24_F28_header_object_addresses_and_aliases_unchanged": true,
+    "no_header_copies_or_new_owner_policy": true,
+    "current_31_corrected_pins_match": true,
+    "original_28_provider_pins_unchanged": true,
+    "original_report_fields_preserved_except_currentpins_additivevalidation_correction": true,
+    "parent_6490_both_sources_unchanged": true,
+    "compiled_runtime_equivalence_proved": false
+  }
+}
