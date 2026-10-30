@@ -1316,3 +1316,22 @@ current CRT; implementation/reviews advance, B692C0 waits for that real API.
 Embedded game VM adoption/setup needs genuine producer completion and actual
 zero-upvalue handler bindings; existing semantic two-upvalue registrar does
 not close it. Resolver/full reload/raw16/GUI/Font48/ABI/runtime gates remain.
+
+
+Raw B68D70 dotted-path b49bd653e, zero-upvalue registration6B8610 corrected
+755cac3b4, and raw4C5E60 widening c1bfae407 now compose genuine providers in
+Core. Primary+two independent full Source/listing reviews each; strict single
+Win32 object ONCE each. The registration's typed pointer-field assumption was
+corrected to fenced raw4B copying before any compilation. B68D70 retains exact
+five-state/normal-release and no-split getter/return-before-DATA0/LEN0 epochs;
+actual mutable0108FF2C remains a caller mapping role. No semantic empty byte,
+callback table or completed VM setup is substituted.
+Joined peer Source34 Maind5d29e7db before common retained3entries/path C++EH,
+existing checks2/2 11.21s; overlay removed, canonical2/2 11.18s with no forced
+cache/project/map entries. All24 prior paths remain byte-identical; three
+Root Core registry additions inverse to exact baseline bytes. Nine Text flags
+remain OFF; no test addition, entry/game execution, extra Native/vendor-body,
+ABI or runtime credit. Next disjoint Source packets are B692C0 same-raw path
+value wrapper, lawful raw4C5E20 assignment and436630 low-byte constructor.
+Actual E1/open-owner/factory/handler setup, recursive resolver/key-list, full
+reload/raw16/GUI/Font48 and runtime gates remain separate. Goal stays ACTIVE.
