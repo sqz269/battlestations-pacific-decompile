@@ -1,0 +1,821 @@
+{
+  "schema": "bsp.cc16.native_mission_lua_machine_storage_review.v1",
+  "review_baseline_main": "3fe6fe7eb9ae9528341f3291897cbb26988c0182",
+  "candidate": "041540774d60ad7b95c59496795b97fb16d807ae",
+  "candidate_base": "9e360e71494881f48b7944862b7777f69ef5ac9d",
+  "frozen_readiness": "414237d0820620782aeb28760b63fff825e74b4f",
+  "status": "independent_bounded_Source_native_contract_strict_compile_whole_COFF_actual_provider_review_passed_root_common_build_admission_separate",
+  "blocking_findings": [],
+  "candidate_sources_or_contracts_changed": false,
+  "mutable_candidate_inspected_before_immutable_hash": false,
+  "CMake_shared_metadata_address_Ghidra_guard_peer_installation_changes": false,
+  "tests_executables_reviewed_bodies_Lua_states_DLLs_or_game_executed": false,
+  "new_unique_native_duplicate_vendor_ABI_activation_credit": 0,
+  "artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-mission-lua-machine-storage-review\\local\\native_mission_lua_machine_storage_review\\compile.cmd",
+      "bytes": 827,
+      "sha256": "1645e9f519b2534780b0bdc7e1dcc8aaad0644637aa0dc3d3f60cec606d65dcf"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-mission-lua-machine-storage-review\\local\\native_mission_lua_machine_storage_review\\compile.log",
+      "bytes": 40,
+      "sha256": "7414d80ee666e1c18a4ac8d5dd479348abd632b8d8c657b87d15b1690cd78b0c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-mission-lua-machine-storage-review\\local\\native_mission_lua_machine_storage_review\\machine.obj",
+      "bytes": 4419,
+      "sha256": "2c4091048ecddd752c8a2d08bb7338e935ea89c75a2a872fa29c45129bc87e52"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-mission-lua-machine-storage-review\\local\\native_mission_lua_machine_storage_review\\machine.asm",
+      "bytes": 9830,
+      "sha256": "a1715301586a85d80223aea22d1a5e9e112b019e9f0feae8ae9106def307f4fa"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-mission-lua-machine-storage-review\\local\\native_mission_lua_machine_storage_review\\dependencies.json",
+      "bytes": 10815,
+      "sha256": "4a88671a2aec47f521191acf3d89b08ca8f81de39e456595be51cb1fcfbd722a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-mission-lua-machine-storage-review\\local\\native_mission_lua_machine_storage_review\\actual_compile_input_pins.json",
+      "bytes": 20504,
+      "sha256": "d73bf510f3549eee0c3e33ae15b89ada8157c87abef034837f07367460161d7b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-mission-lua-machine-storage-review\\local\\native_mission_lua_machine_storage_review\\coff_review.json",
+      "bytes": 17042,
+      "sha256": "1299d8ededd7d985dfe8763b3d8b023437b6d91fe8d28959418eba83f4563445"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-mission-lua-machine-storage-review\\local\\native_mission_lua_machine_storage_review\\archive_provider_review.json",
+      "bytes": 6856,
+      "sha256": "c6d2a1722ee743c97bb33417c86a7300e2197b5ccf030abb2c25ff7973466d81"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-mission-lua-machine-storage-review\\local\\native_mission_lua_machine_storage_review\\independent_epoch_checks.json",
+      "bytes": 381,
+      "sha256": "109bef0f992ad3e2aa241b07b0a38f42c695b9611920984dcf9e7f071b912b00"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-mission-lua-machine-storage-review\\local\\native_mission_lua_machine_storage_review\\dependency_rechecks.json",
+      "bytes": 834,
+      "sha256": "f33d5f3a9835ca097d1a007dd77685a0e596cab7b6dd869784e2c4a51906c23d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-mission-lua-machine-storage-review\\local\\native_mission_lua_machine_storage_review\\author_artifact_rechecks.json",
+      "bytes": 1349,
+      "sha256": "03d5d2041f994c04e6393a93e46af6b348c92a5af96018ccb35732db73c7b1eb"
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "cmake/lua.cmake",
+      "bytes": 2242,
+      "sha256": "0c432ec1026aa6921d876098d29359d34f9463cd894d7adafcb67b954eb7a006",
+      "git_blob": "c92cd290b5050de1b075928ad2aa04631e6a4da4"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 26464,
+      "sha256": "f8ba57bcf733dff041e995e97d0acfe7b01106b07e4cb0b2e64081dfae519dd6",
+      "git_blob": "77f08796a11ff8a8538e72e6e07019a3b19bb4ff"
+    },
+    {
+      "path": "include/bsp/settings_seg29_cc13.hpp",
+      "bytes": 18075,
+      "sha256": "71eac28bfcc7cf1ffdecf63e96e342107450c69bf50a0fd7eabfbd19007a0946",
+      "git_blob": "8f3b5994e23a34a7d8d3bb2e8b9420be04738b13"
+    },
+    {
+      "path": "src/settings_seg29_cc13.cpp",
+      "bytes": 22135,
+      "sha256": "7a882cf94ad8bc30120e0a953d7cb0af729d017593f31b1929205c266f43df24",
+      "git_blob": "0042393a06ad3a75db575178a67d8cae412c7222"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+    },
+    {
+      "path": "src/native_game_array_elements.cpp",
+      "bytes": 6467,
+      "sha256": "95747768f853969303dc9a03c2b4e733328307cb0253583d3c00871f7d4033f9",
+      "git_blob": "54cda181da6a9e76e7f2f961f03b0f4f6927e4b3"
+    },
+    {
+      "path": "include/bsp/native_mission_lua_machine_release.hpp",
+      "bytes": 1307,
+      "sha256": "d633058757380240c117b3ad6f71671cb9303632190ac261898776c8c4d601e0",
+      "git_blob": "2576a6ffce3eaca536e337616e3d0bc21efb3032"
+    },
+    {
+      "path": "src/native_mission_lua_machine_release.cpp",
+      "bytes": 972,
+      "sha256": "0495473be085237a6b759a551e7be6e94304596596c584f3fd0041293cf2e3c0",
+      "git_blob": "8e8c801c8e06d5018b78491d524e4e52a5cd198b"
+    }
+  ],
+  "owned_files": [
+    "docs/CC16_NATIVE_MISSION_LUA_MACHINE_STORAGE_REVIEW.md",
+    "reports/cc16_native_mission_lua_machine_storage_review.json"
+  ],
+  "observed_utc": "2026-10-30T03:48:47.519464+00:00",
+  "review_worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-native-mission-lua-machine-storage-review",
+  "review_disposition": {
+    "bounded_Source_primitive_contract": "pass",
+    "strict_i386_object_compile": "pass",
+    "complete_emission_and_library_table": "pass",
+    "actual_provider_availability": "pass",
+    "root_common_build_registration_link_admission": "separate_pending_or_independently_advanced_by_root",
+    "application_host_table_dispatch_gameplay": "not_admitted"
+  },
+  "native_reference_blocks": [
+    {
+      "id": "machine_construct",
+      "address": "006b8740",
+      "length": 118,
+      "end_inclusive": "006b87b5",
+      "sha256": "3d2064abfdee2a6864d50deac134bb06f053e0f18c18d16db93b87e7e20ab700",
+      "disk_bytes_hex": "568bf157c7069483cf00e8111b3b00ba20876b008bc8894604e832ec3a008b4e046a64ba06000000e813fb3a008b155483cf0085d2bf5083cf0074318d6424008b4e046a00e896f33a008b178b4e04e8bcf23a008b4e046a00ba01000000e8edf83a008b570c83c70885d275d35f8bc6c64608015ec3",
+      "decoded_instructions": 37
+    },
+    {
+      "id": "machine_scalar",
+      "address": "006b87c0",
+      "length": 45,
+      "end_inclusive": "006b87ec",
+      "sha256": "d44a2f4a0c7733d0e780369175279f847d9e9e8c991f090ae6cb67e1c2440c61",
+      "disk_bytes_hex": "568bf1807e0800c7069483cf0074088b4e04e8b9023b00f644240801740956e8c8dd530083c4048bc65ec20400",
+      "decoded_instructions": 15
+    },
+    {
+      "id": "machine_panic",
+      "address": "006b8720",
+      "length": 23,
+      "end_inclusive": "006b8736",
+      "sha256": "f0031185e405343cedff231777f29796c22fe06002ede4c4a627aac3482c25d5",
+      "disk_bytes_hex": "566a008bf1e8a6ec3a008bd08bcee8ddf03a0033c05ec3",
+      "decoded_instructions": 10
+    }
+  ],
+  "constructor_review": {
+    "actual_backing": "genuine aligned writable0Ch machine allocation in canonical matching outer-free domain; no projected class cast",
+    "writes": [
+      "DWORD+0 CF8394",
+      "created linkedLua state pointer+4",
+      "BYTE+8=1 only after seven unprotected openers return"
+    ],
+    "padding9_B_and_earlier_owns_preimage_preserved": true,
+    "panic_receives": "captured newstate, not current+4 reload",
+    "later_VM_calls": "CURRENT+4 reload before GC and separately before closure, string, call loop sites",
+    "libraries": [
+      {
+        "name": "",
+        "function": "_luaopen_base"
+      },
+      {
+        "name": "table",
+        "function": "_luaopen_table"
+      },
+      {
+        "name": "io",
+        "function": "_luaopen_io"
+      },
+      {
+        "name": "os",
+        "function": "_luaopen_os"
+      },
+      {
+        "name": "string",
+        "function": "_luaopen_string"
+      },
+      {
+        "name": "math",
+        "function": "_luaopen_math"
+      },
+      {
+        "name": "debug",
+        "function": "_luaopen_debug"
+      }
+    ],
+    "loop": "initial opener, current row name, next opener before row advance/test; actual volatile read epochs",
+    "GC": [
+      "LUA_GCSETPAUSE=6",
+      "data100"
+    ],
+    "unprotected_arguments": "zero upvalues; lua_call(1,0)",
+    "not_added": [
+      "package",
+      "luaL_openlibs",
+      "guarded-opener substitution",
+      "null recovery",
+      "catch",
+      "rollback",
+      "automatic close",
+      "duplicate panic body"
+    ],
+    "callback_state_replacement": "current state may differ from created state; preserve reloads and reached raw prefix, no orphan repair or implicit close of earlier state",
+    "partial_failure": "owns preimage is not construction success; external allocation/state/provider metadata remains in custody"
+  },
+  "scalar_review": {
+    "captured_owns": "BYTE+8 once before restoringCF8394, all nonzero values own",
+    "owns0": "state+4 not read",
+    "owns_nonzero": "reload CURRENT+4 after profile store; real lua_close, no state-null fallback",
+    "flags": "Source by-value flags low byte volatile read only after normal close return; emitted offset0x1E after close CALL0x16",
+    "free": "bit0 selects singleton_lifetime_free of captured original machine base",
+    "return": "captured original address bits; no receiver read after free",
+    "unchanged_bytes": "no state/owns/padding clear or post-callback restore",
+    "flags0": "owned state still closed, outer allocation retained with stale fields; replay not admitted",
+    "failure": "nonlocal/failing close does not reach flags/free; no automatic constructor-failure cleanup",
+    "ABI_limit": "does not reproduce original receiver/register transport, RET4, caller-stack placement/aliases, arithmetic flags/fault/FH3"
+  },
+  "actual_Lua_contract": {
+    "release": "actual fetchedLua5.1.1 header and archive",
+    "C_build": "CMake project LANGUAGES C CXX; .c units, physical luaD_throw member imports real_longjmp/_setjmp/exit branch",
+    "newstate_allocator": "luaL_newstate -> lua_newstate(l_alloc,NULL); actual l_alloc realloc/free; can return null",
+    "outer_heap_is_separate": "canonical singleton_lifetime_allocate object12 -> malloc/new-handler; scalar singleton_lifetime_free -> std::free",
+    "panic": "existing cc13_seg29::lua_machine_panic_006b8720 uses realgettop/tolstring(top,null), returns0, no pop/log; linkedC ABI not OriginalECX",
+    "unprotected_error": "real Lua longjmp handler if present; otherwise panic then real exit even if panic returns",
+    "close": "runs finalizers; actual library protected GC-finalizer-error loop then close_state",
+    "foreign_CPP_escape": "no restored Lua invariants, safe reuse or automatic close inferred; retain actual state/allocation and independent live callback/provider custody",
+    "vendor_body_reconstruction_or_identity_credit": 0,
+    "C_unit_count": 28,
+    "cached_archive": {
+      "path": "C:\\Users\\sqz269\\.bsp\\deps\\lua-5.1.1.tar.gz",
+      "available": true,
+      "sha256": "c5daeed0a75d8e4dd2328b7c7a69888247868154acbda69110e97d4a6e17d1f0",
+      "declared_sha256": "c5daeed0a75d8e4dd2328b7c7a69888247868154acbda69110e97d4a6e17d1f0"
+    }
+  },
+  "vendor_contract_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\_deps\\lua511-src\\src\\lua.h",
+      "bytes": 11612,
+      "sha256": "0a69a11d3e176ceb0e0220c4cdeb1c1f3a0e466a347d813e449ff9246afba3a6",
+      "matches_frozen_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\_deps\\lua511-src\\src\\lauxlib.c",
+      "bytes": 17435,
+      "sha256": "1a0c5a19655b4f7a5c760ec5481cc035a3d34a76ed5abd470f25b444d2bc13e4",
+      "matches_frozen_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\_deps\\lua511-src\\src\\lapi.c",
+      "bytes": 22526,
+      "sha256": "a9f0f87af50f18b4cf0483ded3a6bf41803032bc7ed575bda84359a46c993fe0",
+      "matches_frozen_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\_deps\\lua511-src\\src\\lstate.c",
+      "bytes": 5638,
+      "sha256": "19667a7e7c20d5c148c57ed668b3fcf32560911d2a9bfe0a20831c5238a7f1ba",
+      "matches_frozen_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\_deps\\lua511-src\\src\\ldo.c",
+      "bytes": 14735,
+      "sha256": "a568a93a20ef4e5f0606f0d435f682ec12145e2cf05b07266b1e195b57684112",
+      "matches_frozen_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\_deps\\lua511-src\\src\\lbaselib.c",
+      "bytes": 16654,
+      "sha256": "95973fad29bb11d8588cdf883a3d1ac4b20aa39cffd55b22eee843dee6844c8c",
+      "matches_frozen_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\_deps\\lua511-src\\src\\ltablib.c",
+      "bytes": 7049,
+      "sha256": "c7daf4ff755c0728e8ce97677353622dc0ce32babd189ed3275e0618ba101b78",
+      "matches_frozen_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\_deps\\lua511-src\\src\\liolib.c",
+      "bytes": 12986,
+      "sha256": "e172b34553ed5e06c0af949b2d3819a236f73404f368653283f4cde5f58e584b",
+      "matches_frozen_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\_deps\\lua511-src\\src\\loslib.c",
+      "bytes": 5689,
+      "sha256": "a3da5b29679a5660e5abaa3c665e00c94aa1418316b0082980622c5aac5613b0",
+      "matches_frozen_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\_deps\\lua511-src\\src\\lstrlib.c",
+      "bytes": 23318,
+      "sha256": "d1b4d12b3f8d13d5daf3c7ec469fd19c169e8444a59e50928625a1f6f12cecda",
+      "matches_frozen_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\_deps\\lua511-src\\src\\lmathlib.c",
+      "bytes": 5827,
+      "sha256": "2cd6c4b10b57d095aa8e9e3849fb0112dd0d935504d528e096892dffbc43c003",
+      "matches_frozen_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\_deps\\lua511-src\\src\\ldblib.c",
+      "bytes": 10045,
+      "sha256": "71b05a330d9a36d59ce0a56339ef012e9b0bd741d21df9df50eb2e3894bd6c55",
+      "matches_frozen_readiness": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\_deps\\lua511-src\\src\\lauxlib.h",
+      "bytes": 5773,
+      "sha256": "5a56da312e412dc849fc66a867ce6925fb6ebf4c1744bb594953e0efccfafbef",
+      "matches_frozen_readiness": null
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\_deps\\lua511-src\\src\\lualib.h",
+      "bytes": 1022,
+      "sha256": "b00e231750624e31235b0b639933de85bc936a89dd780abc8f20e2725e11ddd0",
+      "matches_frozen_readiness": null
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\_deps\\lua511-src\\src\\luaconf.h",
+      "bytes": 22998,
+      "sha256": "5c962567aaf250570b772a3dccbfde80e6add621ec04f429120dce83adb0a4d9",
+      "matches_frozen_readiness": null
+    }
+  ],
+  "candidate_source_pins": [
+    {
+      "path": "include/bsp/native_mission_lua_machine_storage.hpp",
+      "bytes": 3489,
+      "sha256": "787c3ccc2a7ccda984170757c7a429b84255fd3164c379d637531367dfd54b7a",
+      "git_blob": "4d932436aba4ffef1b6bf68f473368cd6d66340c"
+    },
+    {
+      "path": "src/native_mission_lua_machine_storage.cpp",
+      "bytes": 2887,
+      "sha256": "4189c5e81dd20abf3ae5193df4fe693f91c037d9c935cb73c0537fbc07c6c559",
+      "git_blob": "5b3b7b5b9b5e912ed313cc1e96507df5a6767598"
+    }
+  ],
+  "independent_strict_compile": {
+    "exit_code": 0,
+    "object_only": true,
+    "compiled_TUs": 1,
+    "compiler_version": "MSVC19.51.36244.0 from own emitted listing",
+    "target": "i386 Win320x14C",
+    "flags": "/c /std:c++17 /O2 /Ob2 /DNDEBUG /MD /EHsc /W4 /WX /fp:strict /sourceDependencies /FAs",
+    "source_origin": "two candidate blobs extracted from immutable Git, into ignored local frozen inputs",
+    "actual_input_files": 87,
+    "included_headers": 86,
+    "new_tests_or_executable": false
+  },
+  "independent_COFF": {
+    "object_sha256": "2c4091048ecddd752c8a2d08bb7338e935ea89c75a2a872fa29c45129bc87e52",
+    "constructor": {
+      "symbol": "?construct_native_mission_lua_machine_006b8740@bsp@@YAPAXPAX@Z",
+      "section": 12,
+      "bytes": 123,
+      "sha256": "20ed407eeef28091a8f9cc4b8229fa5a123a0177ee99a5d00b2ffc6cc17bf61e",
+      "code_hex": "568b74240857c7069483cf00e800000000680000000050894604e8000000008b46046a646a0650e800000000a10400000083c414bf0000000085c074350f1f006a00508b460450e8000000008b0f8b46045150e8000000008b46046a006a0150e8000000008b470c8d7f0883c42085c075ce5f8bc6c64608015ec3",
+      "calls": [
+        "_luaL_newstate",
+        "_lua_atpanic",
+        "_lua_gc",
+        "_lua_pushcclosure",
+        "_lua_pushstring",
+        "_lua_call"
+      ]
+    },
+    "scalar": {
+      "symbol": "?delete_native_mission_lua_machine_006b87c0@bsp@@YAPAXPAXI@Z",
+      "section": 14,
+      "bytes": 52,
+      "sha256": "f2ca2258165ea3048150f2c0ece1e1dde58da3e1d6a339bcb4544dd67e331be6",
+      "code_hex": "568b7424088a4608c7069483cf0084c0740c8b460450e80000000083c4048a4c240cf6c101740956e80000000083c4048bc65ec3",
+      "calls": [
+        "_lua_close",
+        "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+      ]
+    },
+    "table": {
+      "section": 3,
+      "bytes": 64,
+      "relocations": [
+        {
+          "offset": 0,
+          "symbol_index": 18,
+          "symbol": "??_C@_00CNPNBAHC@@",
+          "kind": 6
+        },
+        {
+          "offset": 4,
+          "symbol_index": 6,
+          "symbol": "_luaopen_base",
+          "kind": 6
+        },
+        {
+          "offset": 8,
+          "symbol_index": 21,
+          "symbol": "??_C@_05LCLENNFI@table@",
+          "kind": 6
+        },
+        {
+          "offset": 12,
+          "symbol_index": 7,
+          "symbol": "_luaopen_table",
+          "kind": 6
+        },
+        {
+          "offset": 16,
+          "symbol_index": 24,
+          "symbol": "??_C@_02KFNNKBCK@io@",
+          "kind": 6
+        },
+        {
+          "offset": 20,
+          "symbol_index": 8,
+          "symbol": "_luaopen_io",
+          "kind": 6
+        },
+        {
+          "offset": 24,
+          "symbol_index": 27,
+          "symbol": "??_C@_02EHCHIAMF@os@",
+          "kind": 6
+        },
+        {
+          "offset": 28,
+          "symbol_index": 9,
+          "symbol": "_luaopen_os",
+          "kind": 6
+        },
+        {
+          "offset": 32,
+          "symbol_index": 30,
+          "symbol": "??_C@_06ICGJLFIM@string@",
+          "kind": 6
+        },
+        {
+          "offset": 36,
+          "symbol_index": 10,
+          "symbol": "_luaopen_string",
+          "kind": 6
+        },
+        {
+          "offset": 40,
+          "symbol_index": 33,
+          "symbol": "??_C@_04CFDJAKFL@math@",
+          "kind": 6
+        },
+        {
+          "offset": 44,
+          "symbol_index": 11,
+          "symbol": "_luaopen_math",
+          "kind": 6
+        },
+        {
+          "offset": 48,
+          "symbol_index": 36,
+          "symbol": "??_C@_05GFCDIDHO@debug@",
+          "kind": 6
+        },
+        {
+          "offset": 52,
+          "symbol_index": 12,
+          "symbol": "_luaopen_debug",
+          "kind": 6
+        }
+      ],
+      "entries": [
+        {
+          "name": "",
+          "function": "_luaopen_base"
+        },
+        {
+          "name": "table",
+          "function": "_luaopen_table"
+        },
+        {
+          "name": "io",
+          "function": "_luaopen_io"
+        },
+        {
+          "name": "os",
+          "function": "_luaopen_os"
+        },
+        {
+          "name": "string",
+          "function": "_luaopen_string"
+        },
+        {
+          "name": "math",
+          "function": "_luaopen_math"
+        },
+        {
+          "name": "debug",
+          "function": "_luaopen_debug"
+        }
+      ],
+      "zero_terminator": true
+    },
+    "epoch_checks": {
+      "whole_constructor_and_scalar_code_match_author": true,
+      "scalar_owns_capture_before_profile_store": true,
+      "scalar_current_state_load_only_in_owned_branch": true,
+      "scalar_flag_byte_after_close": true,
+      "scalar_free_uses_captured_base": true,
+      "constructor_only_byte_store_owns_after_loop": true,
+      "no_padding_writes": true,
+      "no_package_or_openlibs": true
+    },
+    "whole_bodies_match_author": true,
+    "numeric_CF8394_is_identity_not_callable_Source_table": true
+  },
+  "actual_archive_provider_checks": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\bsp_lua511.lib",
+      "bytes": 455792,
+      "sha256": "5c85533230b079a93921c0c445da3da39c0c3f22d02b9a6bac0b7730d6460125",
+      "matches_author_archive_hash": true,
+      "positive_actual_member_definitions": [
+        {
+          "symbol": "_luaL_newstate",
+          "member_header_offset": 210012,
+          "member_name_field": "/279",
+          "member_bytes": 20007,
+          "member_sha256": "069c9438fad0554ebd3122fb275588061bf512af56b89a8378a000543bdda7d6",
+          "defined_section": 36
+        },
+        {
+          "symbol": "_lua_atpanic",
+          "member_header_offset": 437704,
+          "member_name_field": "/911",
+          "member_bytes": 18027,
+          "member_sha256": "964cd5c954301b04f4f79dc4297209f5c0d3bce974c3d03d982883aa7150bb98",
+          "defined_section": 10
+        },
+        {
+          "symbol": "_lua_gc",
+          "member_header_offset": 437704,
+          "member_name_field": "/911",
+          "member_bytes": 18027,
+          "member_sha256": "964cd5c954301b04f4f79dc4297209f5c0d3bce974c3d03d982883aa7150bb98",
+          "defined_section": 19
+        },
+        {
+          "symbol": "_lua_pushcclosure",
+          "member_header_offset": 437704,
+          "member_name_field": "/911",
+          "member_bytes": 18027,
+          "member_sha256": "964cd5c954301b04f4f79dc4297209f5c0d3bce974c3d03d982883aa7150bb98",
+          "defined_section": 40
+        },
+        {
+          "symbol": "_lua_pushstring",
+          "member_header_offset": 437704,
+          "member_name_field": "/911",
+          "member_bytes": 18027,
+          "member_sha256": "964cd5c954301b04f4f79dc4297209f5c0d3bce974c3d03d982883aa7150bb98",
+          "defined_section": 47
+        },
+        {
+          "symbol": "_lua_call",
+          "member_header_offset": 437704,
+          "member_name_field": "/911",
+          "member_bytes": 18027,
+          "member_sha256": "964cd5c954301b04f4f79dc4297209f5c0d3bce974c3d03d982883aa7150bb98",
+          "defined_section": 11
+        },
+        {
+          "symbol": "_lua_close",
+          "member_header_offset": 278282,
+          "member_name_field": "/512",
+          "member_bytes": 3808,
+          "member_sha256": "1dcff12868e4002f99e9c8414190efecff8079a0bd284b89a2884797f4f9fdf7",
+          "defined_section": 9
+        },
+        {
+          "symbol": "_lua_gettop",
+          "member_header_offset": 437704,
+          "member_name_field": "/911",
+          "member_bytes": 18027,
+          "member_sha256": "964cd5c954301b04f4f79dc4297209f5c0d3bce974c3d03d982883aa7150bb98",
+          "defined_section": 25
+        },
+        {
+          "symbol": "_lua_tolstring",
+          "member_header_offset": 437704,
+          "member_name_field": "/911",
+          "member_bytes": 18027,
+          "member_sha256": "964cd5c954301b04f4f79dc4297209f5c0d3bce974c3d03d982883aa7150bb98",
+          "defined_section": 69
+        },
+        {
+          "symbol": "_luaopen_base",
+          "member_header_offset": 180338,
+          "member_name_field": "/243",
+          "member_bytes": 29613,
+          "member_sha256": "d56404af5de0f6057d9e379847558dec91eac6e6e45865ca782f36d1a35f1a9f",
+          "defined_section": 82
+        },
+        {
+          "symbol": "_luaopen_table",
+          "member_header_offset": 150406,
+          "member_name_field": "/173",
+          "member_bytes": 9361,
+          "member_sha256": "48afdbff6182227e2d3bee74e7f25a5bfacc489a00e0cc3415edba60c63f2e80",
+          "defined_section": 23
+        },
+        {
+          "symbol": "_luaopen_io",
+          "member_header_offset": 125352,
+          "member_name_field": "/139",
+          "member_bytes": 24994,
+          "member_sha256": "556ce1facf5c74744b63b576a20946011f72c76bbe07a6b6f95179ccb31c08e6",
+          "defined_section": 64
+        },
+        {
+          "symbol": "_luaopen_os",
+          "member_header_offset": 111518,
+          "member_name_field": "/105",
+          "member_bytes": 13774,
+          "member_sha256": "f121dfa2919a27360195458d4a366fd1cf5e393c4760989fd08b630f34b98319",
+          "defined_section": 36
+        },
+        {
+          "symbol": "_luaopen_string",
+          "member_header_offset": 82174,
+          "member_name_field": "/70",
+          "member_bytes": 29283,
+          "member_sha256": "e4c349c326e997b4ed5843cac326107cc1e1aa9f5faffe6f6cf2eb73387129ff",
+          "defined_section": 49
+        },
+        {
+          "symbol": "_luaopen_math",
+          "member_header_offset": 67610,
+          "member_name_field": "/34",
+          "member_bytes": 14503,
+          "member_sha256": "b6d9955b4ae975db8c659a3ff739f1d992ba7e59dc5e9a0e5566911aced0f5d7",
+          "defined_section": 60
+        },
+        {
+          "symbol": "_luaopen_debug",
+          "member_header_offset": 47874,
+          "member_name_field": "/0",
+          "member_bytes": 19676,
+          "member_sha256": "011a0c4dacc02c0a323c9ef5d0c9f61588dd5ddee9bd35ed3d5b5e94412879a0",
+          "defined_section": 41
+        },
+        {
+          "symbol": "_luaD_throw",
+          "member_header_offset": 379062,
+          "member_name_field": "/813",
+          "member_bytes": 10813,
+          "member_sha256": "0a19db54d87864fc82280ca0a606deacb2c66fb1484f40de16a89a8646670db4",
+          "defined_section": 19,
+          "relevant_undefined": [
+            "_longjmp",
+            "__imp__exit",
+            "__setjmp3"
+          ]
+        }
+      ],
+      "fresh_build_or_exe_link_attestation": false
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\bsp_core.lib",
+      "bytes": 103643136,
+      "sha256": "e657ab2d8fdee8b9459ffe98ec8e9f134c1624f74a288721404010bc59107775",
+      "matches_author_archive_hash": false,
+      "positive_actual_member_definitions": [
+        {
+          "symbol": "?lua_machine_panic_006b8720@cc13_seg29@bsp@@YAHPAUlua_State@@@Z",
+          "member_header_offset": 30128156,
+          "member_name_field": "/9653",
+          "member_bytes": 28873,
+          "member_sha256": "01015c1e8e2144a6615908c76ba560d8a3e68df49f33775e8610f3f972fc06f9",
+          "defined_section": 70
+        },
+        {
+          "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+          "member_header_offset": 97403240,
+          "member_name_field": "/133417",
+          "member_bytes": 33008,
+          "member_sha256": "386824ba4b5224ce24dfa43d84dd09b6c8b1fc64e02011998109d91cdc72171f",
+          "defined_section": 75
+        },
+        {
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "member_header_offset": 97403240,
+          "member_name_field": "/133417",
+          "member_bytes": 33008,
+          "member_sha256": "386824ba4b5224ce24dfa43d84dd09b6c8b1fc64e02011998109d91cdc72171f",
+          "defined_section": 76
+        }
+      ],
+      "fresh_build_or_exe_link_attestation": false
+    }
+  ],
+  "archive_limit": "Lua archive unchanged; Core whole archive advanced during concurrent primary integration; physical actual panic/allocate/free defining members independently checked. No fresh whole Source-to-archive/common-build or actual exe link attestation.",
+  "unchanged_dependency_rechecks": [
+    {
+      "path": "include\\bsp\\settings_seg29_cc13.hpp",
+      "raw_match": true,
+      "lf_match": true
+    },
+    {
+      "path": "src\\settings_seg29_cc13.cpp",
+      "raw_match": true,
+      "lf_match": true
+    },
+    {
+      "path": "include\\bsp\\singleton_lifetime.hpp",
+      "raw_match": true,
+      "lf_match": true
+    },
+    {
+      "path": "src\\singleton_lifetime.cpp",
+      "raw_match": true,
+      "lf_match": true
+    },
+    {
+      "path": "include\\bsp\\native_game_array_elements.hpp",
+      "raw_match": true,
+      "lf_match": true
+    },
+    {
+      "path": "src\\native_game_array_elements.cpp",
+      "raw_match": true,
+      "lf_match": true
+    },
+    {
+      "path": "cmake\\lua.cmake",
+      "raw_match": true,
+      "lf_match": true
+    },
+    {
+      "path": "CMakeLists.txt",
+      "raw_match": true,
+      "lf_match": true
+    }
+  ],
+  "author_artifacts_rechecks": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-mission-lua-machine-storage\\local\\native_mission_lua_machine_storage\\compile.cmd",
+      "sha256": "0422db4d50de7718c6d474e72e3d53ef0c4772683ab6e850dbc0e21890827e93",
+      "bytes": 596
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-mission-lua-machine-storage\\local\\native_mission_lua_machine_storage\\compile.log",
+      "sha256": "7414d80ee666e1c18a4ac8d5dd479348abd632b8d8c657b87d15b1690cd78b0c",
+      "bytes": 40
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-mission-lua-machine-storage\\local\\native_mission_lua_machine_storage\\machine.obj",
+      "sha256": "098e1b05a62575c325824fd3a142eca7299d4b8d3e701b4c691c84835ed4b02e",
+      "bytes": 4403
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-mission-lua-machine-storage\\local\\native_mission_lua_machine_storage\\machine.asm",
+      "sha256": "650afff42323878a480f9fb4e80e762003d406d4bef56d786487a2da5669019c",
+      "bytes": 9506
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-mission-lua-machine-storage\\local\\native_mission_lua_machine_storage\\emitted.json",
+      "sha256": "f85b7c0f3f7340616488751dac7bcf29d4abce8644fe66de02638b845b74b35c",
+      "bytes": 20763
+    }
+  ],
+  "immutable_report_pins": [
+    {
+      "commit": "041540774d60ad7b95c59496795b97fb16d807ae",
+      "path": "reports/cc16_native_mission_lua_machine_storage.json",
+      "bytes": 69923,
+      "sha256": "08b76b2d6acc485dceada134e21a7965af11f762ad68aa52b530d5d79ec67e18"
+    },
+    {
+      "commit": "414237d0820620782aeb28760b63fff825e74b4f",
+      "path": "reports/cc16_native_lua_host_lifetime_readiness.json",
+      "bytes": 72242,
+      "sha256": "120479c2d6c5a94a5ee64767ff17fe1775c3bb500af4ef88cbb3f5bf4ad5e904"
+    }
+  ],
+  "open_gates": [
+    "root common registration/build/actual entry linking and admission",
+    "genuine00884BE0 host and callback custody",
+    "CF8394 authenticated callable scalar transport",
+    "rawD0E7A8 host/queue/payload/vector lifetime",
+    "applicationGame aggregate",
+    "OriginalABI/fault/FH3/SEH/vendor-private-policy equivalence",
+    "startup/runtime/gameplay"
+  ],
+  "document_pin": {
+    "path": "docs\\CC16_NATIVE_MISSION_LUA_MACHINE_STORAGE_REVIEW.md",
+    "sha256": "0478317756f0303c12873c194cf7cfc65e8749200954109a55a248abc6fdb0fc"
+  }
+}
