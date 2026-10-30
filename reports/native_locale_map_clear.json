@@ -1,0 +1,155 @@
+{
+  "address": "0073c240",
+  "source_symbol": "bsp::clear_native_locale_map_0073c240",
+  "source_ready": false,
+  "status": "dormant_game_owned_composition_isolated_win32_object_compiled",
+  "base_revision": "68e865f4f9fccaeea363f5120df17a7bc69635f3",
+  "original_contract": {
+    "extent": "0073C240..0073C323,228 bytes",
+    "ABI": "ECX actual4000h bucketbase followed by DWORDcount; plainRET",
+    "evidence": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0073c240\\assembly.txt",
+        "sha256": "6e1fb7eefd500e9fa353905d3b5bbbe5b3b82374db96c16ca44a8048fbd1b462",
+        "scope": "map whole schedule and return-helper factoring; existing payload qualification retained"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00736090\\assembly.txt",
+        "sha256": "219b0d0e7ef38f413951856676237db315a4fa852f1cf5d6819bae46a4a6c5ab",
+        "scope": "map whole schedule and return-helper factoring; existing payload qualification retained"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00737ce0\\assembly.txt",
+        "sha256": "c516f760ffa4772a981024c99502351d500f443153df0f4ee30a728288711362",
+        "scope": "map whole schedule and return-helper factoring; existing payload qualification retained"
+      }
+    ]
+  },
+  "source_schedule": [
+    {
+      "site": "0073C24D",
+      "action": "capture actualmap bits once; no manager or semantic map overlay"
+    },
+    {
+      "site": "0073C260",
+      "action": "4096 ascending CURRENT bucketheadDWORD reads"
+    },
+    {
+      "site": "0073C270",
+      "action": "capture CURRENT node+14 next before any payload effects"
+    },
+    {
+      "site": "0073C275",
+      "action": "genuine737CE0 nodepayload with SAME rawstringcontext"
+    },
+    {
+      "site": "0073C27A..0073C2DC",
+      "action": "genuine736090 return through SAME initializedE1768C pool onlyafterpayloadnormalreturn"
+    },
+    {
+      "site": "0073C2E2",
+      "action": "continue savednext; no progressiveheadclear/unlink/countupdate"
+    },
+    {
+      "site": "0073C302..0073C30A",
+      "action": "onlyafterallnormalreturns actualmemset4000h"
+    },
+    {
+      "site": "0073C312",
+      "action": "separate countDWORD+4000store0"
+    }
+  ],
+  "factoring_comparison": {
+    "same_pool_offsets": {
+      "critical_section": "+0C=E17698",
+      "depth": "+24=E176B0",
+      "block_table": "+28=E176B4",
+      "current_min_index": "+34=E176C0"
+    },
+    "same_node_and_block_schedule": [
+      "postEnter/depthincrement node+18 blockindex",
+      "currenttable/currentblock",
+      "wrapped signed offset/28 truncation thenWORDslotindex",
+      "capturedblockWORDfreecount7800\u2192storeat7000+2count",
+      "separateCURRENTfreecountWORDincrement",
+      "currentminimumindexconditionalstore",
+      "currentdepthdecrement thenLeave"
+    ],
+    "specific_qualification": "Originalclear capturesEnterIATCE2218 once; existingSource736090 uses its importedEnter percall. StableEnter/Leaveimports/nohooks/replacement duringcall is an explicitdomain, not hidden nativeABI equivalence."
+  },
+  "caller_requirements": [
+    "genuine writable/live map4004 storage and native-width fields",
+    "genuine initializedE1768C authority/criticalsection/table/slabs and genuinelyallocated1Ch slots",
+    "SAME actual AA8/AA4/AA0 stringpublicationcells/providerlifetimes",
+    "full current/captured graph/backing custody through callbacks and allfailure paths",
+    "no privateargument/frame aliases or concurrentdestruction; nativehardwarefault/EH/SEH ABI outside Sourcecontract"
+  ],
+  "failure_policy": {
+    "new_cleanup_or_catch": false,
+    "meaning": "propagate existingpayload/returnhelper failures; heads/countmaystillreferencehistoricalpartiallydestroyed/returnednodes. Retainfullgraph/context/providers; no rollback/retry/laterdrain assumed. Existing737CE0 qualifiednarrowunwind/Sourceexceptionlimits remain intact.",
+    "empty_arm": "no payloadorpool call; emptyclear is notloadedmanager/producerauthority"
+  },
+  "existing_source_dependencies": [
+    {
+      "path": "include/bsp/native_locale_map_node_lifetime.hpp",
+      "revision": "68e865f4f9fccaeea363f5120df17a7bc69635f3",
+      "git_blob_sha256": "284ae86f7b104914f5b93477ff1bc01a68b8ab1f52fe027f5f1abee86b698a77"
+    },
+    {
+      "path": "src/native_locale_map_node_lifetime.cpp",
+      "revision": "68e865f4f9fccaeea363f5120df17a7bc69635f3",
+      "git_blob_sha256": "65e5b8d4ede42ba7df6527468b83594df5351a0d35e3ee5c391a7f88926036fd"
+    },
+    {
+      "path": "include/bsp/native_locale_map_node_recycling.hpp",
+      "revision": "68e865f4f9fccaeea363f5120df17a7bc69635f3",
+      "git_blob_sha256": "a6871ac6e15ad4bd1652dc52375c413942e7562c311ca0fb06ed28a5ba07a0c1"
+    },
+    {
+      "path": "src/native_locale_map_node_recycling.cpp",
+      "revision": "68e865f4f9fccaeea363f5120df17a7bc69635f3",
+      "git_blob_sha256": "94546ed000b7f35699ea63f05ae2409604d20381586f5b1501d9cf761269fb12"
+    },
+    {
+      "path": "include/bsp/native_wide_string.hpp",
+      "revision": "68e865f4f9fccaeea363f5120df17a7bc69635f3",
+      "git_blob_sha256": "4ca6e5849827c4890ede11e4f4c3760fceff6b3eb4567c4f7f5fbb3e3f1acd55"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "revision": "68e865f4f9fccaeea363f5120df17a7bc69635f3",
+      "git_blob_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+    }
+  ],
+  "validation": {
+    "scope": "one MSVCx86TU only; firstidentifiercompilefailure preserved then sameTU succeeds",
+    "final_exit_code": 0,
+    "coff_machine": "0x14c",
+    "flags": "/std:c++17 /permissive- /W4 /WX /EHsc /MD /O2 /fp:strict",
+    "final_receipt": "local\\raw_locale_map_clear_compile_cc9_20261030\\compile_final_receipt.json",
+    "final_receipt_sha256": "daa3ac475cb47bc6389a1e2aaee6a45c180d4c7187d66688a0b67eb69be9abf4",
+    "initial_failed_receipt_sha256": "bab99f8b5e112b0f1206a326ffe11f868b7da92aaf92d469f64674defff97664",
+    "object_sha256": "9bdd2dcde9c9ac3096d286da86ac4e7d557b3fb5348570891a813663969782b5",
+    "cpp_sha256_at_compile": "9b8e6db0ca2c4f8b98a263f7bdd2ba161577d6ba36a50703a1b850f2800cfac1",
+    "hpp_sha256_at_compile": "0c09f57232da819c7575bc316dbdafc0e2b68866865dd5dc4ab837488dd76059",
+    "new_tests": 0,
+    "new_probes_or_executables": 0,
+    "full_build_run": false,
+    "game_runs": 0,
+    "Ghidra_mutations": 0
+  },
+  "owned_source_sha256": {
+    "include/bsp/native_locale_map_clear.hpp": "0c09f57232da819c7575bc316dbdafc0e2b68866865dd5dc4ab837488dd76059",
+    "src/native_locale_map_clear.cpp": "9b8e6db0ca2c4f8b98a263f7bdd2ba161577d6ba36a50703a1b850f2800cfac1",
+    "docs/NATIVE_LOCALE_MAP_CLEAR.md": "cd86e56392ea17811aa094afa9020f17a21b544c495fc82e949882b53836c2d0"
+  },
+  "unbound": [
+    "actualinitializedE1768Cproducerandlifetime",
+    "canonicalrawLocaleowner/publication/lifetime",
+    "rawloading/startup/applicationcaller",
+    "runtime/NativeABI/fullconsumerproof"
+  ],
+  "vendor_library_body_credit": false,
+  "new_native_credit": false,
+  "integration_owner": "Root CMake/ledger/metadata/historicalreadinessupdate/coupledbuild; no caller added"
+}

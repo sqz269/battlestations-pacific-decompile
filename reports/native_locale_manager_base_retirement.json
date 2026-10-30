@@ -1,0 +1,224 @@
+{
+  "packet": "codex-raw-locale-base-retirement",
+  "state": "dormant_source_object_compiled",
+  "source_ready": false,
+  "created_utc": "2026-10-30T05:15:21.688491+00:00",
+  "base_commit": "d5c116833d55eeb91ccd84756792dd8f473bbeb3",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor",
+  "owned_files": [
+    "include/bsp/native_locale_manager_base_retirement.hpp",
+    "src/native_locale_manager_base_retirement.cpp",
+    "docs/NATIVE_LOCALE_MANAGER_BASE_RETIREMENT.md",
+    "reports/native_locale_manager_base_retirement.json"
+  ],
+  "address": "007365e0",
+  "api": {
+    "name": "destroy_native_locale_manager_base_007365e0",
+    "ordinary_result": "void",
+    "context": "const SAME NativeLocaleManagerConstructorContext&; borrowed immutable actual cell reference identities",
+    "native_receiver": "ECX",
+    "native_stack_arguments": 0,
+    "native_return": "plain RET; no meaningful EAX result",
+    "binary_replacement": false
+  },
+  "evidence": {
+    "contract_path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\raw_locale_base_unregister_contract_gui_20261030\\CONTRACT.md",
+    "contract_sha256": "7943d82db7588957cbb3365d09aac29983e2a47a94f7ee78bfd0532924ce5072",
+    "pins_sha256": "0343bc8c89182cb0494b48ef360ee94e11fff3fb20f537a82ec1dd5542e83ad6",
+    "original_pe": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "machine": "0x14c",
+      "image_base": "0x400000"
+    },
+    "native_spans": [
+      {
+        "start": "007365e0",
+        "end_inclusive": "00736678",
+        "length": 153,
+        "sha256": "fda24f78440f9fb22d9711a4c3b05e7056f9b4297d42b3e9d2ca23e73ccf8e54",
+        "hex": "6aff68705fc80064a100000000506489250000000083ec0c56578bf9897c2408c7075ceacf00c744241c00000000e83dedcdff8b701085f6c744240cfc37ce0089742410740b56ff151822ce0083461801c644241c01e815edcdff8b0d4cbcf800518bc8e857964900c7054cbcf8000000000085f6740b834618ff56ff151022ce008b4c2414c7071838ce005f5e64890d0000000083c418c3",
+        "matches_saved_live_query_bytes": true
+      },
+      {
+        "start": "00c85f70",
+        "end_inclusive": "00c85f79",
+        "length": 10,
+        "sha256": "dadbe3e722545deef2b88f7cc89630c770d6d0da36514a83b9bc2c35bccfcbf7",
+        "hex": "b8bc53db00e9c90bf7ff",
+        "matches_saved_live_query_bytes": true
+      },
+      {
+        "start": "00db53bc",
+        "end_inclusive": "00db53df",
+        "length": 36,
+        "sha256": "30c3ee2f0a51673f425df3d3b5204ef923548ac0ea12000a4df50d42333f27a8",
+        "hex": "2205931902000000ac53db00000000000000000000000000000000000000000001000000",
+        "matches_saved_live_query_bytes": true
+      },
+      {
+        "start": "00db53ac",
+        "end_inclusive": "00db53bb",
+        "length": 16,
+        "sha256": "f287dc5752860ed82ff3eb2946c2960698d6fe77658bf816a944c16bd8134fb5",
+        "hex": "ffffffff605fc80000000000685fc800",
+        "matches_saved_live_query_bytes": true
+      },
+      {
+        "start": "00c85f60",
+        "end_inclusive": "00c85f6f",
+        "length": 16,
+        "sha256": "e6f62fad3445e04f081a94b27acd04e4d64a7817a43f5927ad3fc16764b814cd",
+        "hex": "8b4de8e9c8c478ff8d4dece970bf78ff",
+        "matches_saved_live_query_bytes": true
+      }
+    ],
+    "selected_eh": {
+      "handler": "00c85f70",
+      "func_info": "00db53bc",
+      "magic": "19930522",
+      "max_state": 2,
+      "unwind_map": "00db53ac",
+      "state0": {
+        "previous": -1,
+        "action": "00c85f60",
+        "receiver": "original receiver [EBP-18]",
+        "provider": "00412430"
+      },
+      "state1": {
+        "previous": 0,
+        "action": "00c85f68",
+        "receiver": "actual local eight-byte guard [EBP-14]",
+        "provider": "00411ee0"
+      },
+      "state1_armed_through_normal_leave": true
+    },
+    "new_live_analysis_or_mutation": false,
+    "source_hashes": {
+      "include/bsp/native_locale_manager_base_retirement.hpp": "3332d5e49dd229d4a24a90d09e72539db0e616f7bce307e0c947e6c8c722159b",
+      "src/native_locale_manager_base_retirement.cpp": "6debd92e67eba61695a5fc2bd384176bde5181c0841f3b30944fb25250f74e7b",
+      "docs/NATIVE_LOCALE_MANAGER_BASE_RETIREMENT.md": "81d71bf9c8b00846c6dbb977b59767c53464777510890af15b1a2ee42bcdefba"
+    }
+  },
+  "normal_schedule": [
+    "store_word(actual_receiver, 0, 0x00cfea5cu);",
+    "BaseCleanup base_cleanup{actual_receiver};",
+    "void* const first_manager =",
+    "Word const section_bits = load_word(first_manager, 0x10);",
+    "NativeGuard guard{0x00ce37fcu, section};",
+    "EnterCriticalSection(section);",
+    "store_word(section, 0x18, load_word(section, 0x18) + 1u);",
+    "GuardCleanup guard_cleanup{guard};",
+    "void* const second_manager =",
+    "void* const current_locale = context.actual_locale_00f8bc4c;",
+    "unregister_native_singleton_object_00bcfca0(",
+    "context.actual_locale_00f8bc4c = nullptr;",
+    "store_word(section, 0x18, load_word(section, 0x18) - 1u);",
+    "LeaveCriticalSection(section);",
+    "destroy_native_generic_singleton_base_00412430(actual_receiver);",
+    "guard_cleanup.armed = false;",
+    "base_cleanup.armed = false;"
+  ],
+  "failure_contract": {
+    "before_state0": "Profile store precedes arm; no selected cleanup. Hardware fault behavior not reconstructed.",
+    "state0_before_state1": "Only actual root reset412430 on ORIGINAL receiver; no unarmed unlock.",
+    "state1_before_clear": "Actual local guard411EE0 then root412430 if guard cleanup returns; do not clear/retry/rollback/free.",
+    "state1_after_clear": "Cell remains cleared; same cleanup chain on escape.",
+    "normal_leave_escape": "Normal current-depth decrement already occurred; armed guard cleanup decrements SAME captured section again before Leave.",
+    "secondary_cpp_cleanup": "MSVC C++ escape0xe06d7363 during guard unwind terminates; other SEH continues search. Root provider remains noexcept.",
+    "native_fh3_hardware_private_spill_throw_identity": "not reproduced"
+  },
+  "raw_storage": {
+    "own_DWORD_access": "four-byte memcpy bracketed by _ReadWriteBarrier",
+    "manager_section": "raw32 bits -> uintptr_t -> actual CRITICAL_SECTION pointer",
+    "depth": "CURRENT raw32 load, unsigned wrap arithmetic, raw32 store",
+    "typed_local_objects": [
+      "actual local8B guard",
+      "borrowed context/reference cells"
+    ],
+    "no_live_cpp_primitive_field_precondition": true,
+    "compiler_fences_are_not_synchronization": true
+  },
+  "coupled_prerequisite": {
+    "commit": "f411f273717aa1f24c1973a89dcc8490cfdd93f0",
+    "providers": [
+      "00411ee0",
+      "00412430"
+    ],
+    "source_hashes": {
+      "src/native_diagnostic_sink_lifetime.cpp": "7ef822175d062d799683312c6a8f9618c1771ec013e7424b48eedd66c7968499",
+      "src/native_render_service_base.cpp": "5ad0e48f648cdaf3305fd52b58ef068873cf6f1c242683b77053cb1e06206420"
+    },
+    "scope": "raw field access only; declarations unchanged; no shared helper edits in this packet",
+    "merged_in_this_worker": false,
+    "common_link_or_runtime_proof": false
+  },
+  "verification": {
+    "isolated_compile": {
+      "command": "$taskObjectDir=Join-Path (Get-Location).Path 'build/locale_base_retirement_object'; New-Item -ItemType Directory -Path $taskObjectDir -Force | Out-Null; $taskCompileCommand='call \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\Tools\\VsDevCmd.bat\" -arch=x86 -host_arch=x64 -no_logo && cl.exe /nologo /std:c++17 /permissive- /W4 /WX /EHsc /MD /O2 /Ob2 /DNDEBUG /DWIN32 /D_WINDOWS /DNOMINMAX /DWIN32_LEAN_AND_MEAN /I include /c src\\native_locale_manager_base_retirement.cpp /Fo\"build\\locale_base_retirement_object\\native_locale_manager_base_retirement.obj\"'; & $env:ComSpec /d /s /c $taskCompileCommand; exit $LASTEXITCODE",
+      "exit_code": 0,
+      "stdout": "native_locale_manager_base_retirement.cpp\r\n",
+      "wall_time_seconds": 9.2922417,
+      "attempts": 1,
+      "policy": "same existing CMake/MSVC Win32 C++17 Release/EH/runtime/warning flags; /c only",
+      "toolchain": "Visual Studio18 Community VsDevCmd x86 host_x64"
+    },
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\build\\locale_base_retirement_object\\native_locale_manager_base_retirement.obj",
+      "sha256": "b2fb572afddb53d9143d715375634c422a2f28c16ffbc6497f9cd8738cc11542",
+      "bytes": 5207,
+      "machine": "0x14c",
+      "defined_entry_symbols": [
+        "?destroy_native_locale_manager_base_007365e0@bsp@@YAXPAXABUNativeLocaleManagerConstructorContext@1@@Z"
+      ],
+      "referenced_genuine_providers": [
+        "?destroy_native_singleton_guard_00411ee0@bsp@@YAXPAX@Z",
+        "?destroy_native_generic_singleton_base_00412430@bsp@@YAXPAX@Z",
+        "?get_native_singleton_manager_00415350@bsp@@YAPAXACRAX@Z",
+        "?unregister_native_singleton_object_00bcfca0@bsp@@YIXPAX00@Z",
+        "__imp__EnterCriticalSection@4",
+        "__imp__LeaveCriticalSection@4"
+      ],
+      "compile_only": true,
+      "linked_or_executed": false
+    },
+    "source_control_order": {
+      "ordered_markers": 17,
+      "two_manager_getters": true,
+      "one_actual_unregister": true,
+      "one_late_current_publication_load_then_one_clear": true
+    },
+    "constructor_four_files_unchanged": {
+      "include/bsp/native_locale_manager_constructor.hpp": "043639699cb7855ab0ee4ba244cdf060a09191dea73e267514ef359adf8bf674",
+      "src/native_locale_manager_constructor.cpp": "49fbe8d8a02f37dd2fda4790264d2fc92d42d3925294f41ebea9d745e6acb353",
+      "docs/NATIVE_LOCALE_MANAGER_CONSTRUCTOR.md": "241d76091762dbcb134f8499301e35d72a8b0b82abf175014e5dc881b92cfdae",
+      "reports/native_locale_manager_constructor.json": "8a0e41211d34e611c00aeca609fb318c05285076bb69a7f93c6412ded3644921"
+    },
+    "full_build": false,
+    "new_tests": 0,
+    "tests_run": 0,
+    "probe_executable": false,
+    "game": false
+  },
+  "caller_obligations": [
+    "actual stable canonical cells and SAME context as construction; no retargeted copied domain",
+    "genuine receiver/profile/registration lifecycle before invocation",
+    "aligned/addressable native receiver/managers/section+18 backing and real Win32 physical section",
+    "no concurrent conflicting access, invalidating/reentrant lifetime mutation, or alias of receiver/guard/context/cells/providers",
+    "retain ORIGINAL receiver, captured section, cells, manager/registration and any actual publication graph through all escaping effects, including already-cleared publication",
+    "couple exact raw411EE0/412430 qualification before raw storage invocation"
+  ],
+  "excluded": [
+    "full73c9f0",
+    "scalar deletion",
+    "new host/canonical cell",
+    "profile dispatcher",
+    "allocation/free",
+    "loading/parser",
+    "startup activation",
+    "loaded locale/uppercase/Text readiness",
+    "ABI/runtime compatibility",
+    "native FH3/vendor-library reconstruction credit"
+  ],
+  "activation": false
+}

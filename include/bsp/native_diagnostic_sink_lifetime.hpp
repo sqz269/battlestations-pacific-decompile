@@ -41,6 +41,8 @@ void destroy_native_diagnostic_sink_007363b0(
 // it is not a pointer to SystemSingletonCriticalSection's C++ projection.
 // Captures +04 before writing the guard profile, decrements then leaves,
 // and preserves +04. The caller owns entry/state arming and raw storage.
+// This entry accesses the guard/counter DWORDs by fenced byte copies; it does
+// not require C++ uint32_t field objects there. Fences do not add synchronization.
 void destroy_native_singleton_guard_00411ee0(void* actual_8byte_guard);
 
 } // namespace bsp
