@@ -1,0 +1,267 @@
+{
+  "schema_version": 1,
+  "classification": "Reviewed actual Frame lifetime and direct raw Widget child lookup in Frame flag/title/position callers; common library Source admission",
+  "Source_head": "aa287c1ed6c276b9edac44f21562e8a440d617a5",
+  "baseline": "83c7f6b1af1cfbb794f827390612331a13b6fd94",
+  "utc": "2026-10-30T18:17:07.225767+00:00",
+  "command": "./scripts/build.ps1 -Configuration Release",
+  "exit_code": 0,
+  "target": "MSVC Win32 Release",
+  "MP": 2,
+  "PCH": "ON",
+  "coverage_PDB": "OFF",
+  "production_files_changed": 8,
+  "new_production_files": 4,
+  "CMake_files_changed": 1,
+  "new_tests": 0,
+  "checks": {
+    "reconstructed_math": {
+      "passed": true,
+      "seconds": 0.21
+    },
+    "tool_tests": {
+      "passed": true,
+      "seconds": 11.25
+    },
+    "total_seconds": 11.51,
+    "compiler_warnings_or_errors_found": false
+  },
+  "Source_inputs": [
+    {
+      "path": "CMakeLists.txt",
+      "Git_LF_bytes": 27496,
+      "Git_LF_sha256": "a146ace14439f122413d28e776e887cc36f85a015a0bc0e3e1e4735f3133df80",
+      "git_blob": "1c88e4e81d66a2fdc8687c2deddba1eddb89034c",
+      "retained_path": "local/function_source_batch27/inputs/CMakeLists.txt"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "Git_LF_bytes": 295378,
+      "Git_LF_sha256": "c8653abbcdf257934734be9ebd8033b9fae88b39740023c6ed62285a7b153211",
+      "git_blob": "a4068e9a0342ea11cc898c820092b0fc34be58e8",
+      "retained_path": "local/function_source_batch27/inputs/cmake/startup.cmake"
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_lifetime.hpp",
+      "Git_LF_bytes": 4385,
+      "Git_LF_sha256": "a21b38daad89af7b6fc968273dece3fba3789ab22476299ea66cf88c4002b4d2",
+      "git_blob": "b58427ca1c6332f7c62409f298dca4d523fb571c",
+      "retained_path": "local/function_source_batch27/inputs/include/bsp/native_front_end_frame_lifetime.hpp"
+    },
+    {
+      "path": "src/native_front_end_frame_lifetime.cpp",
+      "Git_LF_bytes": 4768,
+      "Git_LF_sha256": "50eae08b6ca3a7561b8ec1a1bfaeb7b2b717cb9c16f46ab4470f1befe0dcf4f8",
+      "git_blob": "1246c5fea7640f9754190cc86ee8614ea1567400",
+      "retained_path": "local/function_source_batch27/inputs/src/native_front_end_frame_lifetime.cpp"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_child_lookup_storage.hpp",
+      "Git_LF_bytes": 2332,
+      "Git_LF_sha256": "e408dd88cf17ae875e0342cff65a8115244eb0b6002d3ab19040413bd9a84b1a",
+      "git_blob": "100bc4383af9c31c5a47d3407a2df92ae13e363e",
+      "retained_path": "local/function_source_batch27/inputs/include/bsp/native_gui_widget_child_lookup_storage.hpp"
+    },
+    {
+      "path": "src/native_gui_widget_child_lookup_storage.cpp",
+      "Git_LF_bytes": 3558,
+      "Git_LF_sha256": "c3d83ca8f2e8baf4ec5d4e4ec9dbbfab6b2c43f8732d29066dd367534124403f",
+      "git_blob": "275d1132cf00150308bfd4ff296029eb1474c75f",
+      "retained_path": "local/function_source_batch27/inputs/src/native_gui_widget_child_lookup_storage.cpp"
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_operations.hpp",
+      "Git_LF_bytes": 5436,
+      "Git_LF_sha256": "021bda07c3c9cdf1d8e591f8ba293bc974ccbfc87b2752fbefc9460f8e0d4fa0",
+      "git_blob": "578677291d2b7df25a8859f4334b51f858fb3f17",
+      "retained_path": "local/function_source_batch27/inputs/include/bsp/native_front_end_frame_operations.hpp"
+    },
+    {
+      "path": "src/native_front_end_frame_operations.cpp",
+      "Git_LF_bytes": 8111,
+      "Git_LF_sha256": "efca4b447abbb067a40b8ac05708eb0daf41761d59a8ee0325fd505a816d5ae1",
+      "git_blob": "7be5257ef58dd0b3bba686ffcf37798ed116e8d5",
+      "retained_path": "local/function_source_batch27/inputs/src/native_front_end_frame_operations.cpp"
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_title_position.hpp",
+      "Git_LF_bytes": 6715,
+      "Git_LF_sha256": "6f9b78effaa284af936071159a859bd2e37d43b2e4bf4d9284f03e2174857555",
+      "git_blob": "e55b76d9c18fd30a66d7c3151bb69c0d37e175aa",
+      "retained_path": "local/function_source_batch27/inputs/include/bsp/native_front_end_frame_title_position.hpp"
+    },
+    {
+      "path": "src/native_front_end_frame_title_position.cpp",
+      "Git_LF_bytes": 13271,
+      "Git_LF_sha256": "3cd170af1be5889cba4251409fbe04f8237084ee14807167bf832b1b58018c41",
+      "git_blob": "b6baf39de6ff5806ce1e66be3bc5ff2045a377f3",
+      "retained_path": "local/function_source_batch27/inputs/src/native_front_end_frame_title_position.cpp"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "local/function_source_batch27/build.log",
+      "bytes": 2764,
+      "sha256": "82714c0dd5833d1ff2c5c84713bd64f4ab6d44c205611b2ad36870a18bda0b6f",
+      "retained_path": "local/function_source_batch27/artifacts/01_build.log"
+    },
+    {
+      "path": "build/win32/CMakeCache.txt",
+      "bytes": 19943,
+      "sha256": "1685db07153e0ad413c8e75a1536cf232b943fdc86f5e983cd18cf2abfa3ecb2",
+      "retained_path": "local/function_source_batch27/artifacts/02_CMakeCache.txt"
+    },
+    {
+      "path": "build/win32/bsp_game.map",
+      "bytes": 11382467,
+      "sha256": "d206ec8779175c142c417f8978fb934f4d72c82fa48a135c4d956848adf4e8c7",
+      "retained_path": "local/function_source_batch27/artifacts/03_bsp_game.map"
+    },
+    {
+      "path": "build/win32/Release/bsp_game.exe",
+      "bytes": 7517696,
+      "sha256": "c50bba38c8b58961f9c6c08f432c8d2bdfeda2dc686df1750c5707d6ee9ef6a3",
+      "retained_path": "local/function_source_batch27/artifacts/04_bsp_game.exe"
+    },
+    {
+      "path": "build/win32/Release/bsp_math_tests.exe",
+      "bytes": 893952,
+      "sha256": "5b6331cd3249712f50e9ee3a72f6837b30614da029216cee8a3264ffeee44b2d",
+      "retained_path": "local/function_source_batch27/artifacts/05_bsp_math_tests.exe"
+    },
+    {
+      "path": "build/win32/Release/xlive_stub.dll",
+      "bytes": 32768,
+      "sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3",
+      "retained_path": "local/function_source_batch27/artifacts/06_xlive_stub.dll"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 103981532,
+      "sha256": "556bfb1b4f056fd22ce65139d533abda95eb6a04044ee5e76c3f62685d3fdb08",
+      "retained_path": "local/function_source_batch27/artifacts/07_bsp_core.lib"
+    },
+    {
+      "path": "build/win32/Testing/Temporary/LastTest.log",
+      "bytes": 1658,
+      "sha256": "57da3a9c5b898ee185572f0f53a5e9ad383f01d71ed28113f38927f8bb70a15b",
+      "retained_path": "local/function_source_batch27/artifacts/08_LastTest.log"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_front_end_frame_lifetime.obj",
+      "bytes": 5140,
+      "sha256": "6185243d584db9a29db69c516d13e1c3203dedc13214366b707aa1ef93567a77",
+      "retained_path": "local/function_source_batch27/artifacts/09_native_front_end_frame_lifetime.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_gui_widget_child_lookup_storage.obj",
+      "bytes": 2479,
+      "sha256": "f8ca86d848844a217acf82d779a4ba9b6d9854da18ebdbefcc14aa59b09d7deb",
+      "retained_path": "local/function_source_batch27/artifacts/10_native_gui_widget_child_lookup_storage.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_front_end_frame_operations.obj",
+      "bytes": 14382,
+      "sha256": "0fa200872a2c5a787281cb7a2be6ff2658d164c07f2346f6b679cc3dab1619b6",
+      "retained_path": "local/function_source_batch27/artifacts/11_native_front_end_frame_operations.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_front_end_frame_title_position.obj",
+      "bytes": 18333,
+      "sha256": "106ad54300c71edbba070eff4808d58f8f4b6aea4046d59d754b1dd52508bb7e",
+      "retained_path": "local/function_source_batch27/artifacts/12_native_front_end_frame_title_position.obj"
+    }
+  ],
+  "Source_commits": {
+    "Frame_lifetime": "d4e6aa48d20e55b6667a11d37a462c50ab2ee6e2",
+    "raw_child_lookup": "ab484553b268d9b3787f52fb987fa1661e3fafc9",
+    "direct_Frame_child_composition": "2a673dbf58a1a58f954ae3cf3acfb0d5d59ac523"
+  },
+  "independent_reviews": {
+    "Frame_lifetime": "0722bcb795efcfe4b3bb25b9adbaef8a541f790b",
+    "Frame_child_composition": "e74a6d28a80a5c145b026b66e183d87404c8bcc3"
+  },
+  "primary_review": {
+    "Frame_full_Source_doc_and_all_four_listings_read": true,
+    "raw_child_lookup_full_Source_doc_and_70op_listing_read": true,
+    "exact_historical_GitLF_pins": 47,
+    "exact_raw_exports_frozen": 14,
+    "historical_pin_failures": 0,
+    "evolved_inputs": [
+      {
+        "path": "src/native_physical_file_date.cpp",
+        "historical_pin_revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4",
+        "current_sha256": "8169ba029806d3705149e79cd5e6b208aba5206819a889b134a757ac84db5526"
+      },
+      {
+        "path": "include/bsp/native_front_end_frame_operations.hpp",
+        "historical_pin_revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4",
+        "current_sha256": "021bda07c3c9cdf1d8e591f8ba293bc974ccbfc87b2752fbefc9460f8e0d4fa0"
+      },
+      {
+        "path": "src/native_front_end_frame_operations.cpp",
+        "historical_pin_revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4",
+        "current_sha256": "efca4b447abbb067a40b8ac05708eb0daf41761d59a8ee0325fd505a816d5ae1"
+      },
+      {
+        "path": "include/bsp/native_front_end_frame_title_position.hpp",
+        "historical_pin_revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4",
+        "current_sha256": "6f9b78effaa284af936071159a859bd2e37d43b2e4bf4d9284f03e2174857555"
+      },
+      {
+        "path": "src/native_front_end_frame_title_position.cpp",
+        "historical_pin_revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4",
+        "current_sha256": "3cd170af1be5889cba4251409fbe04f8237084ee14807167bf832b1b58018c41"
+      }
+    ],
+    "evolved_input_qualification": "Four current Frame caller files evolve through admitted namespace correction and strict2a composition. native_physical_file_date.cpp uses new ordinary-header barriers in Main; AA7E00 does not invoke435C40 or that file; exact owning-SDK _stricmp call remains unchanged. Old pinned versions remain historical proof, not claims of current byte equality.",
+    "strict_Frame_composition": "Only two unused virtual removals, two includes and two direct-call blocks; all other CPP bytes and all asm unchanged."
+  },
+  "library_link_qualification": {
+    "touched_entry_names": [
+      "destroy_native_front_end_frame_00517d90",
+      "delete_native_front_end_frame_00517eb0",
+      "delete_native_front_end_frame_secondary_00517d50",
+      "find_native_gui_widget_child_storage_00aa7e00",
+      "set_native_front_end_frame_flag_00518b90",
+      "set_native_front_end_frame_title_005189b0",
+      "set_native_front_end_frame_title_position_005186b0",
+      "get_native_front_end_frame_title_position_00518820"
+    ],
+    "present_as_name_bytes_in_core_archive": {
+      "destroy_native_front_end_frame_00517d90": 9,
+      "delete_native_front_end_frame_00517eb0": 3,
+      "delete_native_front_end_frame_secondary_00517d50": 3,
+      "find_native_gui_widget_child_storage_00aa7e00": 5,
+      "set_native_front_end_frame_flag_00518b90": 9,
+      "set_native_front_end_frame_title_005189b0": 3,
+      "set_native_front_end_frame_title_position_005186b0": 3,
+      "get_native_front_end_frame_title_position_00518820": 3
+    },
+    "game_map_name_hits": {
+      "destroy_native_front_end_frame_00517d90": 0,
+      "delete_native_front_end_frame_00517eb0": 0,
+      "delete_native_front_end_frame_secondary_00517d50": 0,
+      "find_native_gui_widget_child_storage_00aa7e00": 0,
+      "set_native_front_end_frame_flag_00518b90": 0,
+      "set_native_front_end_frame_title_005189b0": 0,
+      "set_native_front_end_frame_title_position_005186b0": 0,
+      "get_native_front_end_frame_title_position_00518820": 0
+    },
+    "qualification": "Core archive Source compilation/name presence only; no activated game caller, Original binary ABI or runtime proof."
+  },
+  "readiness": {
+    "accepted_for_Main_Source_publication": true,
+    "caller_peer_pending": false,
+    "actual_Startup_frontend_application_bound": false,
+    "canonical_view_and_retirement_closed": false,
+    "Page_guard_changed": false,
+    "activated": false,
+    "game_or_probe_executed": false
+  },
+  "credit": {
+    "new_Original_vendor_CG_helper_duplicate_body_ABI_runtime_gameplay": 0
+  },
+  "admission_document": "docs/CC16_FRONTEND_LIFETIME_CHILD_LOOKUP_SOURCE_ADMISSION.md",
+  "review_merge_Source_inputs_unchanged": 10
+}

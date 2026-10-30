@@ -1,0 +1,25 @@
+# Frame lifetime and connected child lookup Source admission
+
+The actual Frame destructor, scalar deletion, secondary adjustment and raw Widget child lookup now compile into `bsp_core.lib`. Frame flag/title/position operations call the raw lookup directly at all seven reached sites. Actual Startup frontend application binding, Page/current-target services and activation remain open.
+
+## Recovered and connected operations
+
+Frame lifetime `d4e6aa48d20e55b6667a11d37a462c50ab2ee6e2` supplies whole `517D90`, `517EB0` and `517D50`, with private existing `4F71A0` composition. The destructor preserves all 85 column-major slot probes, whole genuine GUI getter followed by a fresh read of the same slot, and whole raw `AA31F0`. The tail unconditionally clears the same Frame publication, restores the secondary profile and clears every matching identity in the same 95 cells, leaving the sentinel separate. The native unwind chain is restricted to traversal exceptions; the normal base tail stays outside its catch. Scalar deletion reads the live flag byte only after destruction returns and frees the captured allocation; the secondary route forwards the same flag home after subtracting eight.
+
+Independent review `0722bcb795efcfe4b3bb25b9adbaef8a541f790b` found no actionable Source issue after checking the complete Source/listings, PE bodies, calls, profiles, padding and unwind actions. Actual Page `+20`/`+04` services and full entered-graph lifetime remain required. Compiler-generated classifications and all existing body credit are preserved.
+
+Child lookup `ab484553b268d9b3787f52fb987fa1661e3fafc9` supplies whole `AA7E00` and the finite private `B6D800` address primitive. It searches only direct children; captures the query home after the initial parent/head read; never reads the second home; and preserves current list/payload/node/name reads around genuine SDK callbacks. Its inline comparison keeps query/child length and data reads in their native order while using the existing owning-SDK `_stricmp`. No new owner, context, operation provider, name policy, typed receiver cast or loop bound is added.
+
+Connection `2a673dbf58a1a58f954ae3cf3acfb0d5d59ac523` removes two unused Frame lookup virtuals and replaces their calls with the concrete raw body. Each call supplies real volatile DWORD homes containing the unused literal one and the same actual query-header address. Every other C++ byte and every assembly block matches published Main `83c7f6b1af1cfbb794f827390612331a13b6fd94`. Existing name cleanup, captured receiver generations, position copies and quotient alias remain unchanged. Independent caller review `e74a6d28a80a5c145b026b66e183d87404c8bcc3` found no actionable Source issue after reconstructing every permitted whole-file change and checking all seven call paths, argument-home lifetimes and header cleanup. Both review merges changed evidence files only; all ten compiled input pins remain identical.
+
+## Common compilation and evidence
+
+Exact Source `aa287c1ed6c276b9edac44f21562e8a440d617a5` passed `./scripts/build.ps1 -Configuration Release`: all registered targets and both existing suites, 11.51 seconds total test time, no compiler warning/error. Configuration is MSVC Win32 Release, compiler parallelism two, PCH ON and coverage PDB OFF. Eight production files and one startup CMake file differ in this batch; no new test was added.
+
+Ten Git-LF input snapshots and twelve artifacts are frozen under `local/function_source_batch27/`, including four changed objects, core library, game PE/map, cache and test logs. The PE SHA-256 is `c50bba38c8b58961f9c6c08f432c8d2bdfeda2dc686df1750c5707d6ee9ef6a3`. Primary review also verified 47 exact historical Git-LF pins and froze fourteen exact raw exports. Four caller inputs have explicitly reviewed later changes; the separately evolved string-helper precedent still uses the same SDK comparator and is not called by this raw lookup. Historical pins remain scoped to their recorded revisions.
+
+All eight new or directly changed entry names occur in the core archive's symbol-name bytes and are absent from the game map. These are library compilation and existing-suite checks, with no activated game caller or runtime proof. Full receipts are in [cc16_frontend_lifetime_child_lookup_common_build.json](../reports/cc16_frontend_lifetime_child_lookup_common_build.json). No game/probe or process-control action occurred, and previous frozen cohorts remain unchanged.
+
+## Remaining activation work
+
+The genuine Page/WidgetChildren graph, real manager/Page/current-target services, live captured Frame and flag homes, canonical publication/raw95 authority and retained Startup application must be supplied across all operations and both retirement routes. Raw prefix construction alone does not prove all 85 slot representations. Changed Text, layout/glyph recursion, other factories and actual frontend callers remain gated. This batch changes no Page guard or activation switch. Additional Original/vendor/CG/helper/duplicate-body, ABI, runtime and gameplay credit is zero; the full activation goal remains active under the user's gameplay authorization.
