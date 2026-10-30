@@ -71,7 +71,99 @@ angular-velocity and yaw-rate columns require recapture.
 
 External reads remain non-atomic and may straddle engine updates. The native
 position integrator also adds pseudo-velocity, which this sampler does not
-report as physical velocity. `dt` and `engine_dt` stay empty because the engine
-frame delta was not observed. This repair establishes native field selection
+report as physical velocity. Schema 2 left `dt` and `engine_dt` empty because
+the engine frame delta was not observed. This repair establishes native field selection
 and read consistency; it does not establish deterministic ticks or parity with
 the reconstructed executable.
+
+## Clock fields for the sampler handoff
+
+The clock lane documents its writer evidence and coherent-read contract in
+[`ORIGINAL_GAME_CLOCK.md`](ORIGINAL_GAME_CLOCK.md). Its address/width handoff is:
+
+| Field | Native storage | Producer evidence |
+| --- | --- | --- |
+| Game pointer | uint32 at `00E188A8` | Loaded at `00875BB1`. |
+| Game time | float32 at `00F876A4` | Reset `MOVSS 0087464C`; step stores `FSTP 00875C21`, `00875C80`, `00875F26`. |
+| OnMove frame | uint32 at `game+648h` | `ADD DWORD 004E4FF5`. |
+| Engine dt | float32 at `game+21F0h` | `FSTP 004C6F7F`; time controls `004C700D`, cinematic zero `004C7020`. |
+| Fixed-step count | uint32 at `00F876B0` | `ADD DWORD 00875C6E`; reset `0087466B`. |
+| Fixed-step dt | float32 at `00D0DE84` | Loaded at `00875C8D`. |
+
+`sample_game_dt` is the difference between sampled game-time values. It is
+distinct from the native `engine_dt` field and the fixed-step dt/count. The
+motion breakpoint's `engine_dt_bytes` remains the float argument at `ESP+4`
+for that particular native call; it is not a wall-clock interval.
+
+## Guard thread and x87 capture protocol
+
+The guard identifies the main thread as the thread that actually reaches the
+original PE entry breakpoint. `processes[].initial_thread_id` comes from the
+process-creation debug event; `original_entry_thread_id` and `main_thread_id`
+come from the original entry event. `entry_thread_matches_initial` records
+their equality, and the top-level `root_initial_thread_id` retains the
+suspended `CreateProcessAsUser` thread ID. This does not infer thread identity
+from a small numeric ID or from a control word.
+
+After the mission is visible, the operator writes the private stage marker
+`discover-motion.request`. The recommended content is:
+
+```json
+{"hits":20,"interval_ms":50,"timeout_seconds":30}
+```
+
+Empty or legacy plain-text markers use those defaults. An integer such as
+`20` is also accepted. UTF-8 BOMs are supported. The JSON accepts only the three
+shown keys: `hits` is 1–100, `interval_ms` is 10–1000, and `timeout_seconds` is
+1–120. The marker is renamed to `discover-motion.ack` when inspected; that
+acknowledges the request, not its completion. Read the launch receipt's
+`processes[].motion_session.status` for `complete` or `expired`. Invalid or
+busy requests are acknowledged and recorded in `motion_request_rejected`
+without changing an active request. Wait for the previous request to finish
+and its breakpoint to be restored before writing another marker. A process
+is limited to 32 requests and 1000 recorded hits.
+
+Each `motion_captures[]` record retains `thread_id` and adds:
+
+| Field | Meaning |
+| --- | --- |
+| `event_thread_id` | Thread ID from this motion exception event; equals `thread_id`. |
+| `initial_thread_id` | This process's initial thread ID. |
+| `original_entry_thread_id`, `main_thread_id` | The actual original-entry thread, defining the main-thread comparison. |
+| `is_main_thread` | Whether this event's thread equals `main_thread_id`. |
+| `x87_control_word`, `x87_control_word_hex` | This event thread's `FloatSave.ControlWord`, read with its integer/control context through `Wow64GetThreadContext`. |
+| `request_sequence`, `hit_index` | Request identity and one-based recorded-hit index. |
+| `unit`, `controlled`, `matches_controlled_pointer` | Existing `ECX-310h` unit hypothesis and controlled-pointer equality; no ship/team inference. |
+
+`motion_session.histogram` groups recorded hits by thread and x87 control word
+and includes the main-thread equality. `unit_counts` and `unique_units` show
+the actual spread across unit addresses. These are sampled calls: debugger
+stops perturb scheduling, the rearm cadence is wall time, and the histogram
+is not a frequency estimate for every engine call. A request can complete
+with repeated units; inspect `unique_units` and recapture if the live sample
+does not cover several units. Thread IDs are meaningful only with that PID
+and run. Historical receipts lacking the entry/main identity cannot establish
+whether an old `027Fh` hit came from the main thread.
+
+The entry byte and EIP are restored for every trap. Already queued traps from
+other threads are genuine calls and can fill the bounded request; excess
+queued traps are rewound without adding records. Rearming occurs at a later
+debug stop after scanning every tracked live WOW64 thread. Windows holds the
+affected process's threads until the debugger continues the event; see
+[Microsoft's debugging-event contract](https://learn.microsoft.com/en-us/windows/win32/debug/debugging-events).
+A thread at the
+entry or entry+1, or an unavailable context, defers arming. `CREATE_THREAD` and
+`EXIT_THREAD` events maintain that inventory. No thread is single-stepped.
+The interval has a deterministic 0–30 ms stagger to avoid one fixed frame
+phase. At the requested count, no further rearm occurs. Expiry requests a
+debug stop to restore an armed byte even if no motion call arrives. The
+single debugger, source write-lock protections and owned-job cleanup remain
+in force.
+
+The focused manifested x86 probe uses two synthetic units and native threads,
+with its main thread explicitly set to `007Fh` and worker to `027Fh`. It checks
+six bounded hits against their actual Windows thread IDs, then rearms an idle
+request to check expiry/restoration. These fixture settings are not evidence
+about the retail game's thread precision. Live histogram results belong in a
+separate run report; no PC24 classification changes follow from this tool
+update.
