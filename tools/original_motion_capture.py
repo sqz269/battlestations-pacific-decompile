@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Read-only, wall-clock motion samples from the original x86 game on Windows.
 
-The caller supplies a unit discovered at 00825F20 (ECX - 310h). Offsets and
-evidence are in docs/MOTION_DIFFERENTIAL.md section 3. This tool neither starts
-nor stops the game, attaches a debugger, injects code, nor writes process memory.
+The caller supplies a unit discovered at 00825F20 (ECX - 310h). Native offsets
+and evidence are in docs/ORIGINAL_MOTION_ABI.md and docs/MOTION_DIFFERENTIAL.md
+section 3. This tool neither starts nor stops the game, attaches a debugger,
+injects code, nor writes process memory.
 It opens only PROCESS_QUERY_LIMITED_INFORMATION | PROCESS_VM_READ.
 
 The CSV is accepted by tools/motion_trace_compare.py, but is NOT a tick trace:
@@ -56,7 +57,8 @@ FIELDS = (
     "t", "dt", "pos_x", "pos_y", "pos_z", "fwd_x", "fwd_y", "fwd_z",
     "fwd_speed", "throttle", "rudder", "yaw_rate", "sample_dt", "engine_dt",
     "monotonic_ns", "wall_utc", "sample_span", "unit_id", "class_ptr",
-    "controller_ptr", "rigidbody_ptr", "smoothed_rudder", "up_x", "up_y", "up_z",
+    "controller_ptr", "rigidbody_ptr", "motion_state_ptr", "smoothed_rudder",
+    "up_x", "up_y", "up_z",
     "vel_x", "vel_y", "vel_z", "angvel_x", "angvel_y", "angvel_z",
     "controlled_global_before", "controlled_global_after", "controlled_relationship",
 )
@@ -197,8 +199,8 @@ def finite_range(values, bound: float, label: str):
         raise SampleError(f"nonfinite/out-of-range {label} (absolute bound {bound:g})")
 
 
-def motion_sample(reader: ProcessReader, unit: int) -> tuple[dict, tuple[int, int, int]]:
-    """Read a unit/controller/body snapshot, then recheck the pointer chain."""
+def motion_sample(reader: ProcessReader, unit: int) -> tuple[dict, tuple[int, int, int, int]]:
+    """Read native unit/controller/body/motion state, then recheck the chain."""
     raw = reader.read(unit + UNIT_START, UNIT_END - UNIT_START)
     def values(fmt, offset):
         return struct.unpack_from("<" + fmt, raw, offset - UNIT_START)
@@ -218,13 +220,18 @@ def motion_sample(reader: ProcessReader, unit: int) -> tuple[dict, tuple[int, in
     smoothed, = struct.unpack_from("<f", control, 0x80)
     if back != unit:
         raise SampleError("controller unit back-pointer mismatch")
-    pointer(body, 0x18)
-    velocity = struct.unpack("<6f", reader.read(body, 0x18))
+    pointer(body, 8)
+    # Native Dyn body B owns M = [B+4]; velocity offsets are relative to M.
+    # 00C41587 loads M; 00C5B1EA and 00C5B1F8..2B9 consume its two vectors.
+    motion_state = reader.u32(body + 4)
+    pointer(motion_state, 0x18)
+    velocity = struct.unpack("<6f", reader.read(motion_state, 0x18))
     recheck = reader.read(controller + 0x1C, 0x14)
     if (reader.u32(unit + 0x1018) != controller or reader.u32(unit + 0x538) != class_ptr
             or struct.unpack_from("<I", recheck, 0)[0] != unit
-            or struct.unpack_from("<I", recheck, 0x10)[0] != body):
-        raise SampleError("unit/controller/body pointer chain changed during sample")
+            or struct.unpack_from("<I", recheck, 0x10)[0] != body
+            or reader.u32(body + 4) != motion_state):
+        raise SampleError("unit/controller/body/motion-state pointer chain changed during sample")
     finite_range(position, 1e8, "position")
     finite_range((*up, *forward), 2, "pose axes")
     for axis in (up, forward):
@@ -243,8 +250,9 @@ def motion_sample(reader: ProcessReader, unit: int) -> tuple[dict, tuple[int, in
                   yaw_rate=sum(a * b for a, b in zip(velocity[3:], up)),
                   throttle=throttle, rudder=rudder, smoothed_rudder=smoothed,
                   unit_id=f"0x{unit:08X}", class_ptr=f"0x{class_ptr:08X}",
-                  controller_ptr=f"0x{controller:08X}", rigidbody_ptr=f"0x{body:08X}")
-    return result, (class_ptr, controller, body)
+                  controller_ptr=f"0x{controller:08X}", rigidbody_ptr=f"0x{body:08X}",
+                  motion_state_ptr=f"0x{motion_state:08X}")
+    return result, (class_ptr, controller, body, motion_state)
 
 
 def read_controlled(reader: ProcessReader) -> tuple[int | None, str | None]:
@@ -282,10 +290,11 @@ def discover_controlled(args) -> int:
         before_time = time.perf_counter_ns()
         before, before_error = read_controlled(reader)
         unit = args.unit if args.unit is not None else (before or 0)
-        report = {"schema_version": 1, "kind": "original_game_controlled_unit_discovery",
+        report = {"schema_version": 2, "kind": "original_game_controlled_unit_discovery",
                   "pid": args.pid, "recorded_utc": utc_now(), "executable": identity,
                   "status": "no_valid_ship_state", "unit_address": f"0x{unit:08X}",
                   "read_rights": ["PROCESS_QUERY_LIMITED_INFORMATION", "PROCESS_VM_READ"],
+                  "offset_evidence": "docs/ORIGINAL_MOTION_ABI.md; docs/MOTION_DIFFERENTIAL.md section 3",
                   "limitations": ["Unsuspended reads are not atomic or a motion-tick trace.",
                                   "A different pointer leaves any driven-sub-unit relationship unverified.",
                                   "A valid ship snapshot does not establish the mission or visible state."]}
@@ -370,12 +379,17 @@ def capture(args) -> int:
                 raise CaptureError(f"refusing to overwrite existing output: {path}")
             path.parent.mkdir(parents=True, exist_ok=True)
         metadata = {
-            "schema_version": 1, "kind": "original_game_external_read_only_motion",
+            "schema_version": 2, "kind": "original_game_external_read_only_motion",
             "status": "capturing", "started_utc": utc_now(), "pid": args.pid,
             "unit_address": f"0x{args.unit:08X}", "unit_id_semantics": "supplied address, not a recovered game ID",
             "executable": identity, "csv": str(args.output), "requested_seconds": args.seconds,
             "requested_hz": args.hz, "read_rights": ["PROCESS_QUERY_LIMITED_INFORMATION", "PROCESS_VM_READ"],
-            "offset_evidence": "docs/MOTION_DIFFERENTIAL.md section 3; 00825F20 unit=ECX-310h",
+            "offset_evidence": "docs/ORIGINAL_MOTION_ABI.md; docs/MOTION_DIFFERENTIAL.md section 3",
+            "native_motion_layout": {"body": "B=[controller+0x2C]", "motion_state": "M=[B+0x04]",
+                                     "linear_velocity": "M+0x00, 3 float32, world space",
+                                     "angular_velocity": "M+0x0C, 3 float32, world space",
+                                     "fwd_speed": "dot(linear_velocity, pose row 2)",
+                                     "yaw_rate": "dot(angular_velocity, pose row 1)"},
             "timing": {"clock": "time.perf_counter_ns", "t": "seconds from first valid sample midpoint",
                        "dt": "empty: engine frame delta not observed", "engine_dt": "empty: unavailable",
                        "sample_dt": "seconds between valid sample midpoints; first row empty",
@@ -385,6 +399,7 @@ def capture(args) -> int:
                             "Reads do not suspend the game; pose/body/orders may span engine updates.",
                             "Pointer-chain rechecks detect some changes, not atomicity or all unit-address reuse.",
                             "Repeated states can mean pause, idle motion, or sampling the same engine tick.",
+                            "Motion-state velocity excludes the pseudo-velocity added by position integration.",
                             "Read-only capture does not prove visual behavior or reconstruction parity."],
             "range_checks": {"position_abs_max": 1e8, "linear_velocity_abs_max": 1e5,
                              "angular_velocity_abs_max": 1e4, "order_abs_max": 8,
@@ -430,7 +445,7 @@ def capture(args) -> int:
                     try:
                         sample, current_identity = motion_sample(reader, args.unit)
                         if stable_identity is not None and current_identity != stable_identity:
-                            raise IdentityChanged("class/controller/body identity changed from first valid sample")
+                            raise IdentityChanged("class/controller/body/motion-state identity changed from first valid sample")
                         stable_identity = current_identity
                     except SampleError as error:
                         consecutive += 1

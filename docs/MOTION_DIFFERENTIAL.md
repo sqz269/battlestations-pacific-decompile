@@ -183,10 +183,15 @@ fidelity and the trace for a first pass.
 
 **Through the controller** (`0092E8C0`: `ESI` the controller): unit back-pointer at
 `controller+1Ch`, rigid body at `controller+2Ch`, smoothed rudder at `controller+80h`.
-**On the rigid body** (`docs/RIGID_BODY_INTEGRATION.md`): linear velocity `body+00h`,
-angular velocity `body+0Ch`, maximum linear speed `body+18h`. Forward speed for the CSV
-is the linear velocity projected on pose row 2; the yaw rate is the angular velocity's
-row-1 component, which is what `0092E8C0` slews.
+**Native body and motion state** (`docs/RIGID_BODY_INTEGRATION.md`): the complete
+body object is `B = [controller+2Ch]`; the motion state is a second indirection,
+`M = [B+4h]`. Linear velocity is `M+00h`, angular velocity `M+0Ch`, and maximum
+linear speed `M+18h`. Reading those offsets directly from `B` interprets object
+pointers/pose data as velocities. This distinction was verified in the original
+assembly (`00C41587`, `00C415B7..00C415EB`) and a live original-game run on
+2026-10-29; see `docs/ORIGINAL_MOTION_ABI.md`. Forward speed for the CSV projects
+the motion-state linear velocity onto pose row 2; yaw rate projects its angular
+velocity onto the unit up axis. These are unsuspended samples, not engine ticks.
 
 **Two one-shot reads that settle open questions and need no mission at all**, only a
 process sitting at the main menu:
