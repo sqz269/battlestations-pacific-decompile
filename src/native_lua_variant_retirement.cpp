@@ -545,4 +545,26 @@ Result destroy_native_lua_variant_subtree_006ee890_cpp_cleanup(void* owner,
     return subtree_kernel<true>(owner, actual_node, strings, o, &cleanup);
 }
 
+NativeLuaVariantScalarDeleteResult
+scalar_delete_native_lua_variant_00884fa0_cpp_cleanup(void* actual_variant,
+    const volatile std::uint32_t& actual_flags_home,
+    NativeStringRawPoolContext& strings, Operation& o,
+    const CleanupBacking& cleanup) {
+    static_assert(std::is_aggregate_v<NativeLuaVariantScalarDeleteResult>);
+    static_assert(std::is_trivially_copyable_v<NativeLuaVariantScalarDeleteResult>);
+    static_assert(sizeof(NativeLuaVariantScalarDeleteResult) == 8);
+    static_assert(offsetof(NativeLuaVariantScalarDeleteResult,
+        captured_receiver_bits) == 4);
+    void* const captured_variant = actual_variant;
+    const auto captured_bits = reinterpret_cast<std::uintptr_t>(captured_variant);
+    const Result child = destruct_native_lua_variant_00884af0_cpp_cleanup(
+        captured_variant, strings, o, cleanup);
+    if (child != Result::completed) return {child, captured_bits};
+
+    const auto* const flags_byte =
+        reinterpret_cast<const volatile unsigned char*>(&actual_flags_home);
+    if ((*flags_byte & 1u) != 0) singleton_lifetime_free(captured_variant);
+    return {child, captured_bits};
+}
+
 } // namespace bsp
