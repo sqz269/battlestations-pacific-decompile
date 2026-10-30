@@ -1,0 +1,865 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-gui-text-changed-failure-origin-design",
+  "classification": "bounded_repair_design_only_no_Source_change",
+  "utc": "2026-10-30T19:52:55.024851+00:00",
+  "baseline": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+  "held_Source": "96dd22fd0f8b0cbc6ce97b6ed7f69af399993d33",
+  "coordinated_audit": "97ced874aeaae30e98aa28fcfb972a70fb4b0a10",
+  "decision": {
+    "96_pair_alone_closes_Native_origin": false,
+    "local_guard_can_retain_host_unknown": true,
+    "positive_permission_requires_actual_private_upstream_evidence": true,
+    "no_ready_Native_issuer_exists_by_declaration": true,
+    "no_admission_or_Source_implementation": true,
+    "active_cause_identity_reader_implemented_and_bound": false,
+    "SDK_object_identity_ordinary_own_runtime_static_candidate": true
+  },
+  "selected_API": {
+    "placement": "append private noncopyable/nonmovable failure metadata to both existing96 Scratch objects; preserve all existing raw prefixes",
+    "new_owner_global_TLS_registry": false,
+    "port": "NativeGuiTextFailurePort",
+    "public_methods": [
+      "host(const NativeGuiTextActiveCauseKey&) noexcept",
+      "unclassified(const NativeGuiTextActiveCauseKey&) noexcept",
+      "propagate(const NativeGuiTextEscapeWitness&, const NativeGuiTextActiveCauseKey&) noexcept"
+    ],
+    "public_Native_mutator": false,
+    "supplier_query": "const NativeGuiTextEscapeWitness* escaped_origin(const NativeGuiTextActiveCauseKey& exact_current_cause) const noexcept",
+    "witness": "private sealed issuer/current-invocation/current-call/current-cause record; no public constructor",
+    "private_fields": [
+      "immutable self/parent invocation identity",
+      "fresh stable static-site edge identity",
+      "expected SAME actual callee-record identity",
+      "active edge",
+      "exact private active SDK object key",
+      "default unclassified/known host/sealed Native",
+      "issuer/leaf/nested witness link",
+      "ordinary versus cleanup-secondary stage",
+      "outgoing receipt",
+      "per-header armed/disarmed/return-entered/returned/return-failed state"
+    ],
+    "passive_noexcept_scope": "only proven internal pointer/state/active-key comparisons; never unproved SDK reader/provider/cleanup wrapper",
+    "context_addition": "borrowed qualified NativeGuiTextActiveCauseReader, only after SDK same-own-runtime/header/link admission; no new game owner",
+    "diagnostic_exception_ptr": "existing diagnostics only, not identity; capture can allocate/copy/substitute"
+  },
+  "binding_methods": {
+    "host_only_metadata": [
+      "sections_invocation",
+      "glyph_children_invocation",
+      "glyph_buffers_frame",
+      "shader_invocation",
+      "layout_invocation",
+      "single_line_frame",
+      "current_table"
+    ],
+    "native_operation_with_borrowed_port": [
+      "localise_00a9fad0",
+      "geometry_00b74640",
+      "section_00b732c0",
+      "shader_00b19210",
+      "parameter2_00b18b00",
+      "parameter4_00b18aa0",
+      "parameter1_00b18b20",
+      "clip_00aa9f10",
+      "wrapped_00aba270",
+      "text_current50",
+      "vertex_00b73bb0",
+      "index_00b73b70",
+      "texture_00b189f0",
+      "diffuse_00b179f0",
+      "model_current2c",
+      "parent_00b6e680",
+      "root_00b6d890"
+    ],
+    "derived_implementations_found_in_scoped_Source": 0,
+    "actual_provider_closure": false
+  },
+  "cause_invariants": [
+    "active cause SDK object key read in supported current catch; no new current_exception capture; rethrow unchanged",
+    "Native witness matches exact cause AND active caller/callee/site/issuer/stage chain",
+    "entered/provider_call/type/profile/normal credit never mints Native",
+    "missing/mismatched/stale/completed evidence gives no cleanup permission",
+    "same exception object reused by sibling cannot match distinct active edge",
+    "cause swallowed/replaced cannot borrow historical witness",
+    "per-header one-shot consumption not global per-exception consumption",
+    "completed raw header/home identities never reread after refill",
+    "fresh persistent recursion records; no cap/exhaustion/reset/retry policy"
+  ],
+  "cleanup_scopes": [
+    {
+      "scope": "parameter_narrow",
+      "Native_states": "inner1..9",
+      "arm": "after41E870normalreturn",
+      "header": "SAMEwords+4",
+      "action": "raw41DD20once for proved current Native primary",
+      "host_unknown": "retain header/records/graph"
+    },
+    {
+      "scope": "inner_wide",
+      "Native_state": 0,
+      "arm": "after4C8DD0normalreturn",
+      "header": "SAMEwords+2",
+      "action": "raw436430once for proved current Native primary",
+      "host_unknown": "retain header/records/graph"
+    },
+    {
+      "scope": "outer_localized",
+      "Native_state": 0,
+      "arm": "afterzeroheaderwritesbeforeA9FAD0",
+      "header": "SAMEwide_headers",
+      "action": "raw436430once for proved current Native primary",
+      "host_unknown": "retain header/records/graph"
+    },
+    {
+      "scope": "outer_widened",
+      "Native_state": 1,
+      "arm": "after4C5E60normalreturn",
+      "header": "SAMEwide_headers+2",
+      "action": "raw436430once for proved current Native primary",
+      "host_unknown": "retain header/records/graph"
+    }
+  ],
+  "normal_return": "disarm BEFORE actual raw return/getter; return failure is its own primary for still-armed parent only; no same-header retry",
+  "pre_post_arm_transport": [
+    "AB8530 before inner copy still reaches armed outer",
+    "widen constructor before outer arm",
+    "inner and outer normal return failures",
+    "final current50 after own wide normal return"
+  ],
+  "secondary": {
+    "new_distinct_cleanup_node_and_cause": true,
+    "retain_trigger_history": true,
+    "trigger_permission_inherited": false,
+    "actual_Native_origin_does_not_prove_FH3_secondary_transport": true,
+    "current_secondary_transport": "unproved; no automatic ordinary-primary permission; preserve Source propagation and retain unresolved records",
+    "no_added_terminate_noexcept_retry_rollback": true
+  },
+  "upstream_API_cuts": [
+    {
+      "files": [
+        "include/bsp/native_gui_text_main_section_storage.hpp",
+        "src/native_gui_text_main_section_storage.cpp"
+      ],
+      "entry": "00AB8530",
+      "api": "ensure_native_gui_text_post_constructor_sections_storage_00ab8530 / NativeGuiTextMainSectionStorageFrame/Acquired",
+      "needed": "private exact-cause receipt; local additional require/admission host; nested origin forwarded only with sealed evidence"
+    },
+    {
+      "files": [
+        "include/bsp/native_gui_text_glyph_children.hpp",
+        "src/native_gui_text_glyph_children.cpp"
+      ],
+      "entry": "00AB80C0",
+      "api": "clear_native_gui_text_glyph_children_00ab80c0 / explicit private caller-retained failure record used overload",
+      "needed": "public sticky boundary not origin; current child/detach/handler/move cause is private genuine witness or unknown"
+    },
+    {
+      "files": [
+        "include/bsp/native_gui_text_shader_storage.hpp",
+        "src/native_gui_text_shader_storage.cpp"
+      ],
+      "entry": "00AB8CE0",
+      "api": "raw-Model ensure_native_gui_text_font_shader_storage_00ab8ce0 / NativeGuiTextShaderStorageFrame",
+      "needed": "separate exact-cause receipt, not effect/normal-return credits; inherited cleanup/termination limitations unchanged"
+    },
+    {
+      "files": [
+        "include/bsp/native_gui_text_glyph_buffers_storage.hpp",
+        "src/native_gui_text_glyph_buffers_storage.cpp"
+      ],
+      "entry": "00AB8400",
+      "api": "create_native_gui_text_glyph_buffers_storage_00ab8400 / Frame/Acquired",
+      "needed": "private current cause, actual declaration/stream/string origin distinct from added registry/preflight/renderer admission"
+    },
+    {
+      "files": [
+        "include/bsp/native_gui_text_single_line_storage.hpp",
+        "src/native_gui_text_single_line_storage.cpp"
+      ],
+      "entry": "00AB9FD0",
+      "api": "build_native_gui_text_single_line_storage_00ab9fd0 / Frame/Acquired",
+      "needed": "transitive exact-cause evidence from Model/Font/Glyph/Layout; phase/retention insufficient"
+    },
+    {
+      "files": [
+        "include/bsp/native_mesh_section_layout_storage.hpp",
+        "src/native_mesh_section_layout_storage.cpp"
+      ],
+      "entry": "00B865A0",
+      "api": "rebuild_native_mesh_section_vertex_layout_storage_00b865a0 / explicit private caller-retained failure-record used overload",
+      "needed": "current interface has no cause record; preserve all captured/current slot/count/key epochs"
+    },
+    {
+      "files": [
+        "include/bsp/native_string.hpp",
+        "src/native_string.cpp",
+        "include/bsp/native_wide_string.hpp",
+        "src/native_wide_string.cpp",
+        "include/bsp/native_string_pool_storage.hpp",
+        "src/native_string_pool_storage.cpp",
+        "include/bsp/native_string_pool_owner.hpp"
+      ],
+      "entries": [
+        "0041E870",
+        "0041DD20",
+        "004C8DD0",
+        "004C5E20",
+        "004C5E60",
+        "00436430",
+        "00419CC0"
+      ],
+      "needed": "actual per-invocation allocation/return/getter origin; noexcept release restriction not solved or relabeled"
+    },
+    {
+      "files": [
+        "include/bsp/native_locale_uppercase.hpp",
+        "src/native_locale_uppercase.cpp"
+      ],
+      "entry": "00A9EC30",
+      "needed": "SDK/invalid-handler exceptions remain unknown without genuine leaf proof; no exception-type inference"
+    },
+    {
+      "files": [
+        "include/bsp/native_gui_text_changed_storage.hpp",
+        "src/native_gui_text_changed_storage.cpp"
+      ],
+      "required_native_operation_methods": [
+        "localise_00a9fad0",
+        "geometry_00b74640",
+        "section_00b732c0",
+        "shader_00b19210",
+        "parameter2_00b18b00",
+        "parameter4_00b18aa0",
+        "parameter1_00b18b20",
+        "clip_00aa9f10",
+        "wrapped_00aba270",
+        "text_current50",
+        "vertex_00b73bb0",
+        "index_00b73b70",
+        "texture_00b189f0",
+        "diffuse_00b179f0",
+        "model_current2c",
+        "parent_00b6e680",
+        "root_00b6d890"
+      ],
+      "needed": "same per-call passive port supplied by actual genuine providers; no implementations/defaults claimed"
+    },
+    {
+      "files": [
+        "include/bsp/native_gui_text_changed_storage.hpp",
+        "src/native_gui_text_changed_storage.cpp"
+      ],
+      "required_API": "qualified own-runtime NativeGuiTextActiveCauseReader using existing SDK __current_exception / EHExceptionRecord / PER_PEXCEPTOBJ / PER_PTHROW declarations/types",
+      "needed": "before positive origin matching, establish pinned14.51 same-runtime/header/link/active-catch contract; no private-offset invention; otherwise unclassified"
+    }
+  ],
+  "glyph071_coordination": {
+    "audit_pins": [
+      {
+        "commit": "97ced874aeaae30e98aa28fcfb972a70fb4b0a10",
+        "path": "docs/CC16_GLYPH_CHILD_PRODUCER_BIRTH_AUDIT.md",
+        "hash_format": "immutable_git_blob_content_lf",
+        "git_blob_oid": "2eda70a578e787fa40242c9ca17c59116590f831",
+        "bytes": 19343,
+        "sha256": "df477c98a4d14bf534ed0c573d5d96831233ec73aec3ab45b879c8bf3a264cdd"
+      },
+      {
+        "commit": "97ced874aeaae30e98aa28fcfb972a70fb4b0a10",
+        "path": "reports/cc16_glyph_child_producer_birth_audit.json",
+        "hash_format": "immutable_git_blob_content_lf",
+        "git_blob_oid": "715efcc2d00a9abfe8fee4433a20657ee0250571",
+        "bytes": 33774,
+        "sha256": "5b907c3babba150d35fc9526bd57d07b0e4f29f0ed684eb3886b75131842c5a8"
+      }
+    ],
+    "required_method": "NativeGuiTextGlyphQuadStorageBindings::construct_00ab9650",
+    "genuine_state0_action": "return_failed_00ab76f0(CURRENTactualhome7)",
+    "host_bind_raw85_raw93_action": "retain; no guessed failed-slot return",
+    "BindingAdmission_is_origin_proof": false,
+    "prepare_publish_nonthrow_claim": false,
+    "Model188_custody_independent": true,
+    "no_Glyph_Source_change": true,
+    "sibling_reserved_birth_reported_commit": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+    "sibling_birth_not_independently_reviewed_here": true,
+    "reserved_birth_removes_only_insertion_rehash_not_Origin_or_all_throwing_admissions": true
+  },
+  "finite_implementation_candidate": {
+    "local_files": [
+      "include/bsp/native_gui_text_changed_storage.hpp",
+      "src/native_gui_text_changed_storage.cpp",
+      "new implementation evidence doc/report afterRootassignment"
+    ],
+    "local_changes": [
+      "private appended metadata",
+      "7host-only metadata seams",
+      "17Native binding ports",
+      "4guarded catches",
+      "passive whole-entry outgoing cause propagation",
+      "per-arm and secondary-state bookkeeping"
+    ],
+    "alone_ready": false,
+    "smallest_meaningful_coupled_slice": "actual AB8530 added-host admission before innercopy propagates through SAME retained Frame to armed outer cleanup guard; unknown nested Native paths stay gated",
+    "new_Native_body_needed": false,
+    "prerequisite": "Root approval and genuine binding of pinned SDK active-cause reader, or fully audited rethrow-only lineage; neither implemented"
+  },
+  "validation_plan_not_run": [
+    "establish exact same-own-runtime SDK header/link/catch identity contract; verify active object across rethrow and replacement without using current_exception equality; no Original ABI upgrade",
+    "exact outside-seam/prefix/2asm/8forms/native-home and call epoch identity inspection",
+    "audit genuine private issuer/forwarders against actual modeled boundary; no fixture Native flag accepted",
+    "at most1focused routing check for host/unknown/stale same-cause sibling/secondary replacement; synthetic checks are routing only",
+    "positive Native cleanup needs actual audited issuer; otherwiseblocked",
+    "RootcommonWin32build/checks aftercoupledSourceapproval; no currentbuildcredit"
+  ],
+  "input_pins": [
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "include/bsp/native_gui_text_changed_storage.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "056e9689803ff897d3340b73785adb3b2eb14b59",
+      "bytes": 10238,
+      "sha256": "13cc02308c28bf3ba443adfe1334627dffae05231a0c05e7bff6cbd634da5cc8"
+    },
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "src/native_gui_text_changed_storage.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "c8f766005b8a90f7250f467fb46bc0ab47989bc4",
+      "bytes": 18298,
+      "sha256": "721a3bff0f346ae3506deda59f5a7e892e7ca46eefb8fcaa4d57d04a9c1753a1"
+    },
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "docs/CC16_NATIVE_GUI_TEXT_CHANGED_STORAGE.md",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "1c44053db72d1c06d13d0a506243e57f55fed5f7",
+      "bytes": 13922,
+      "sha256": "722dbb1c6f8a3304f95a6cba1b6bd9cf4cd0921f12776ff7da17cb6aecb408b8"
+    },
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "reports/cc16_native_gui_text_changed_storage.json",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "06d650e4cc2c9680cdc15f3d42fd70e49b648fe5",
+      "bytes": 42426,
+      "sha256": "e95b6ce8a228b676cb4c8c42ccabda4826064453be0b5fc18741985062595ca3"
+    },
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "docs/CC16_NATIVE_GUI_TEXT_CHANGED_INDEPENDENT_REVIEW.md",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "c344a1fd311de9fbfc687d4eb23a505d5d18a7a2",
+      "bytes": 8103,
+      "sha256": "24546c2276ca32b6c8eec4177291418c1b7b71309d2645df02b6d80b919030f3"
+    },
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "reports/cc16_native_gui_text_changed_independent_review.json",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "a157f9d830b0ead19d2ceef544388bd45e8eb1c6",
+      "bytes": 42051,
+      "sha256": "1d26ee44bb01224398406cd700f60475e5d257e3a4d1ec0ca4b383a4762f5153"
+    },
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "include/bsp/native_gui_text_main_section_storage.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "b78b82bacc8a8e444b1cdaf04f1039198c031cf6",
+      "bytes": 6847,
+      "sha256": "2fffebb5ba867421eacc9bec461648004238f870d671337544ebdf3989bccc72"
+    },
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "src/native_gui_text_main_section_storage.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "8e85ebe1fe98e0d2c245617dd7493a82ccd32042",
+      "bytes": 29712,
+      "sha256": "9cea2fa635091c01ad61fabad16a406843709a1d267d830a2aedfc97ebd2b7a1"
+    },
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "include/bsp/native_gui_text_glyph_children.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "c5a7a2dc5aea299663866f07cb661d94c14c237a",
+      "bytes": 3622,
+      "sha256": "441e4a25ab536b115d87bdc2de81778eda2dc4d47f61faced68485f1cc4e8b11"
+    },
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "src/native_gui_text_glyph_children.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "025cdd3d7fde5bb7b8b9e215da4d604c6d3a5407",
+      "bytes": 6167,
+      "sha256": "cf9454f0b8e09ccd1fc9eeb7250daca7cccab0ad6b25969fd511b09968018081"
+    },
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "include/bsp/native_gui_text_shader_storage.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "35bb10edaf18f2c43bc9ea48f87fb61873139605",
+      "bytes": 14069,
+      "sha256": "746d87e6274a37f16697df0ae8645c35a2d5b32b9673ae2444d13f461d8bddbf"
+    },
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "dbf1955d6dee1f89f253d42b9eee40e3577c438b",
+      "bytes": 37788,
+      "sha256": "2864664a00d8b3d7237b7d7cefc22bfb2ab584aaf62e9d56fb142f60ffa1b49f"
+    },
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "include/bsp/native_gui_text_glyph_buffers_storage.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "2d49499a1552b69728ad41939266dcdc5b07b2ba",
+      "bytes": 6701,
+      "sha256": "d80b39a0dab6f1297098fc185cd833de0f928799b2903c8bacdce2384bd4444f"
+    },
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "src/native_gui_text_glyph_buffers_storage.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "647cab67621d63b9801a383346edf413db4dada6",
+      "bytes": 10097,
+      "sha256": "729018eaa935d606d6ea233a856b6b2e598183bdfabb83974a0ee75b565a6c94"
+    },
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "9a50b1dc9591d851b3517d1e65b2c5e5c557b807",
+      "bytes": 8946,
+      "sha256": "b7a68ae45274614acc678a0572a3e465876c76a4716d0a33f70c2a58017af26a"
+    },
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "src/native_gui_text_single_line_storage.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "3f9ef7d072c5c190b89f9a966dd2700fd02c2324",
+      "bytes": 16899,
+      "sha256": "937a05a473811134a35e7359c9746e00907cef3f0f560e37379a1bc5069db8fb"
+    },
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "include/bsp/native_mesh_section_layout_storage.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "9875909104d429eb1144a83d7c2947fc49c6e383",
+      "bytes": 6385,
+      "sha256": "19245d00005b8d543fdcd5b85e71dba091ca158063e38fd86010cfb8e72c8939"
+    },
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "src/native_mesh_section_layout_storage.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "3e473a56ff11e6f1f1b24713e6306f763c78e313",
+      "bytes": 5775,
+      "sha256": "d6f0378634d82d4287cf698dd529e24f3a53b4f1b6b0398647d33c4f956c4115"
+    },
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "include/bsp/native_string.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "3b7af4c6508cfc1df81e913108b5162208685e97",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+    },
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "src/native_string.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+      "bytes": 9121,
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+    },
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "include/bsp/native_wide_string.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "ca3887e0d34038a9e799ebdead68b0db55f16108",
+      "bytes": 5239,
+      "sha256": "5606f96b372362a6831a1633a583f264fbab4290789481f94f1ba97537f6e051"
+    },
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "src/native_wide_string.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "7b9df08e026a67a9dbab9c6c8df74676fd43645d",
+      "bytes": 10671,
+      "sha256": "158502f1efb91f678011dd971c643d5236eb10bf56da3c9997631a6d8df96e55"
+    },
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "60b3f627150fa058fac7b8c4c74537cb3aee0a68",
+      "bytes": 3113,
+      "sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02"
+    },
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "src/native_string_pool_storage.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "103d6fe4d772bb3078c48fe8bcf3f929a385fdda",
+      "bytes": 5450,
+      "sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a"
+    },
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "include/bsp/native_locale_uppercase.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "46b6edf767c4a06adcc942119274a9cbc931b796",
+      "bytes": 2269,
+      "sha256": "8b05e024ed1971d1970adeaf5c6a56029d34a1cf62d3ad67a4981212d45fe6f5"
+    },
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "src/native_locale_uppercase.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "b2a7ac06272c40dbdb47861f63beebfc0f245be6",
+      "bytes": 3899,
+      "sha256": "25e6297a7ee1752a4f74711fa61ffd3f4998faeb67b248011f12cf0ca23584d7"
+    },
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "4a2569e19b6f25c308cba1c3cdb2b2989db2cddd",
+      "bytes": 5893,
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+    },
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "acec6947cf7777181a97335456dc5142a1149cae",
+      "bytes": 8477,
+      "sha256": "6a8e8ff45a4415fbdbb81992726f2e9e4fc17c0819fde21c279ac4c3d354b245"
+    },
+    {
+      "commit": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "5505123a0d02398d4d4c16873ef87f4f856fb790",
+      "bytes": 19830,
+      "sha256": "f05676b34f28b95194810e4f325cbec759b0ece70b9cb41b38b64efc89d7a96e"
+    }
+  ],
+  "existing_native_evidence_reused_not_newly_recovered": {
+    "review": "bf33b8f604df48bc17ea6ac75a3b963a1623d154",
+    "functions": [
+      {
+        "entry": "00ABAED0",
+        "inclusive_end": "00ABAFF8",
+        "bytes": 297,
+        "decoded_instructions": 94,
+        "sha256": "29ff5f9dcd90c37af2a1ee684f3029ac3b1e97d50835bf612631aa8bc34695d8"
+      },
+      {
+        "entry": "00ABA8D0",
+        "inclusive_end": "00ABAEC6",
+        "bytes": 1527,
+        "decoded_instructions": 451,
+        "sha256": "81b87216443b038af05450c9d23a2348da40c546753edbba95265cdb6cea8ea8"
+      }
+    ],
+    "Native_cleanup_maps": [
+      {
+        "entry": "00ABAED0",
+        "handler": {
+          "address": "00CB8150",
+          "bytes": 10,
+          "sha256": "d8f96cbddb330382d12016b99caf3b388c86e62c60dfca0574a2eb96497a0339",
+          "hex": "b8a4efde00e9e9e9f3ff"
+        },
+        "funcinfo": {
+          "address": "00DEEFA4",
+          "bytes": 36,
+          "sha256": "f2602002463bfa8813145a76820a5e49cef9b9fe102398155860232653f401dc",
+          "hex": "220593190200000094efde00000000000000000000000000000000000000000001000000"
+        },
+        "unwind_map": {
+          "address": "00DEEF94",
+          "bytes": 16,
+          "sha256": "82f71aa5a344967a055ceade60f4233e0c6dd387b1598a5c656f085bcfc900d4",
+          "hex": "ffffffff4081cb00ffffffff4881cb00"
+        },
+        "states": 2,
+        "actions": [
+          {
+            "address": "00CB8140",
+            "bytes": 8,
+            "sha256": "32013743fb0ff8fe79ba24afd762b9dac98cddad01f42f9675ce10eeacd54a6a",
+            "hex": "8d4de4e9e8e277ff",
+            "state": 0,
+            "parent": -1,
+            "ebp_header_offset": -28,
+            "tail_target": "00436430"
+          },
+          {
+            "address": "00CB8148",
+            "bytes": 8,
+            "sha256": "74bc51fa25cf5d75e3348b0f07ce0bdae97365042a7937621f14a0e6b1a3240c",
+            "hex": "8d4dece9e0e277ff",
+            "state": 1,
+            "parent": -1,
+            "ebp_header_offset": -20,
+            "tail_target": "00436430"
+          }
+        ]
+      },
+      {
+        "entry": "00ABA8D0",
+        "handler": {
+          "address": "00CB8130",
+          "bytes": 10,
+          "sha256": "9158733662475dccfed8e2830148614b9cdf8f3182347d051f4f04963c4226e7",
+          "hex": "b820efde00e909eaf3ff"
+        },
+        "funcinfo": {
+          "address": "00DEEF20",
+          "bytes": 36,
+          "sha256": "1e9f0f1929c2efe44f3753cd0df3841fb21722fc7d16dc2ee655429cb5c98125",
+          "hex": "220593190a00000044efde00000000000000000000000000000000000000000001000000"
+        },
+        "unwind_map": {
+          "address": "00DEEF44",
+          "bytes": 80,
+          "sha256": "25eb4bcdcb8f3f3556114a799a20db0e5fd108d3230784f0e75a8f539be7cb8d",
+          "hex": "ffffffffe080cb0000000000e880cb0000000000f080cb0000000000f880cb00000000000081cb00000000000881cb00000000001081cb00000000001881cb00000000002081cb00000000002881cb00"
+        },
+        "states": 10,
+        "actions": [
+          {
+            "address": "00CB80E0",
+            "bytes": 8,
+            "sha256": "4cdc2893a4dfdfae907c7606f90e438111f7647b70812c8b387b40fa141c9fa2",
+            "hex": "8d4de0e948e377ff",
+            "state": 0,
+            "parent": -1,
+            "ebp_header_offset": -32,
+            "tail_target": "00436430"
+          },
+          {
+            "address": "00CB80E8",
+            "bytes": 8,
+            "sha256": "031b1ddc2a64539715d75fc5b8d26553b10ebc7edf2558ce53a691a3841356f8",
+            "hex": "8d4de8e9305c76ff",
+            "state": 1,
+            "parent": 0,
+            "ebp_header_offset": -24,
+            "tail_target": "0041DD20"
+          },
+          {
+            "address": "00CB80F0",
+            "bytes": 8,
+            "sha256": "7bc1c4840ce6ba3dca1e19c65c3dd20c184ff798fccfc7cc512550e90c00c1bf",
+            "hex": "8d4de8e9285c76ff",
+            "state": 2,
+            "parent": 0,
+            "ebp_header_offset": -24,
+            "tail_target": "0041DD20"
+          },
+          {
+            "address": "00CB80F8",
+            "bytes": 8,
+            "sha256": "5665a5793ea31ad6a54fe751c3ea73ffbe5232981a4ef7e1796284a484e02cb8",
+            "hex": "8d4de8e9205c76ff",
+            "state": 3,
+            "parent": 0,
+            "ebp_header_offset": -24,
+            "tail_target": "0041DD20"
+          },
+          {
+            "address": "00CB8100",
+            "bytes": 8,
+            "sha256": "f1b9f6edacea0316873f1f082aa1542429ed966a0f1c384850d6b5cdf96e2c7a",
+            "hex": "8d4de8e9185c76ff",
+            "state": 4,
+            "parent": 0,
+            "ebp_header_offset": -24,
+            "tail_target": "0041DD20"
+          },
+          {
+            "address": "00CB8108",
+            "bytes": 8,
+            "sha256": "3eacb49d906e2e509d1ac8dc1285e1f64ad1997133f7b5994278c2aa9b114f6d",
+            "hex": "8d4de8e9105c76ff",
+            "state": 5,
+            "parent": 0,
+            "ebp_header_offset": -24,
+            "tail_target": "0041DD20"
+          },
+          {
+            "address": "00CB8110",
+            "bytes": 8,
+            "sha256": "3c6022f5357cc679cd1552d1548cd4b61e8905d8909d172987a2ef5c3c8c3357",
+            "hex": "8d4de8e9085c76ff",
+            "state": 6,
+            "parent": 0,
+            "ebp_header_offset": -24,
+            "tail_target": "0041DD20"
+          },
+          {
+            "address": "00CB8118",
+            "bytes": 8,
+            "sha256": "5f8fabdd77802f5bcb53846cf7c222c79170a41eeaedfdad6de95332c1542704",
+            "hex": "8d4de8e9005c76ff",
+            "state": 7,
+            "parent": 0,
+            "ebp_header_offset": -24,
+            "tail_target": "0041DD20"
+          },
+          {
+            "address": "00CB8120",
+            "bytes": 8,
+            "sha256": "743abe9366d31ac8c22523251a0f5e9d38e7e7ea85f630b90dad451d2f9d5e72",
+            "hex": "8d4de8e9f85b76ff",
+            "state": 8,
+            "parent": 0,
+            "ebp_header_offset": -24,
+            "tail_target": "0041DD20"
+          },
+          {
+            "address": "00CB8128",
+            "bytes": 8,
+            "sha256": "eb47c8400b3f80a8ce082e30c0c168ae8971f09702ec37618280d8943280e0bb",
+            "hex": "8d4de8e9f05b76ff",
+            "state": 9,
+            "parent": 0,
+            "ebp_header_offset": -24,
+            "tail_target": "0041DD20"
+          }
+        ]
+      }
+    ],
+    "no_new_Ghidra_batch": true
+  },
+  "document_pin": {
+    "path": "docs/CC16_NATIVE_GUI_TEXT_CHANGED_FAILURE_ORIGIN_DESIGN.md",
+    "hash_format": "UTF8_LF_content",
+    "bytes": 25460,
+    "sha256": "03d7ad861c5c1e175663854763723e422decc513553124ce11dbcbc7813586cf"
+  },
+  "validation": {
+    "Source_modified": false,
+    "prior_files_modified": false,
+    "owned_new_files": 2,
+    "no_CMake_owner_ledger_Ghidra_build_tests_game_probe_process_action": true,
+    "design_artifact_consistency_only": true
+  },
+  "readiness": {
+    "failure_origin_implemented": false,
+    "positive_Native_path_genuinely_closed": false,
+    "changed96_admitted": false,
+    "actual_producer_wrapped_graph_closed": false,
+    "Original_ABI_FH3_SEH_secondary_proved": false,
+    "whole_frontend_ready": false,
+    "guard_flip": false,
+    "runtime_activation": false,
+    "active_cause_reader_implemented_linked_verified": false
+  },
+  "credit": {
+    "newOriginal": 0,
+    "newVendor": 0,
+    "newHelper": 0,
+    "newCG": 0,
+    "duplicateBody": 0,
+    "ABI": 0,
+    "runtime": 0,
+    "activation": 0
+  },
+  "SDK_identity_evidence": {
+    "toolset": "14.51.36231",
+    "domain": "own Source runtime only, nonrelative x86 C++ catch/rethrow",
+    "new_vendor_body_credit": 0,
+    "pins": [
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/exception",
+        "hash_format": "raw_installed_SDK_file_bytes",
+        "bytes": 13765,
+        "sha256": "49c3ebe69f8fd1947c6a05f7de89dd17fc962e4c229b8bf1a5b0d040e5dcb0cb"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/ehdata.h",
+        "hash_format": "raw_installed_SDK_file_bytes",
+        "bytes": 21203,
+        "sha256": "9b1a482479e67e9918726d803f157f00c41ac54f6eee42fb331752ad994940c3"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/ehdata_forceinclude.h",
+        "hash_format": "raw_installed_SDK_file_bytes",
+        "bytes": 9605,
+        "sha256": "2bfa6b2b47050d6a70bca12a6080507a57cdb4e4120958d75f94b8393c23ff4d"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/crt/src/stl/excptptr.cpp",
+        "hash_format": "raw_installed_SDK_file_bytes",
+        "bytes": 25790,
+        "sha256": "1da96022d880a6cefef920ab4066b0b248c18c0453a7a910194e48e0253b6fee"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/crt/src/vcruntime/trnsctrl.h",
+        "hash_format": "raw_installed_SDK_file_bytes",
+        "bytes": 7415,
+        "sha256": "f3fc6e51c56d11da31486793b4629053d7a874b8918cdd14bf7ea7546f7ee918"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/crt/src/vcruntime/ehhelpers.cpp",
+        "hash_format": "raw_installed_SDK_file_bytes",
+        "bytes": 13208,
+        "sha256": "f11f3056bd63e5cc2241d8c97c43f613f9e50a728ffa189316df4794325cf901"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/crt/src/vcruntime/frame.cpp",
+        "hash_format": "raw_installed_SDK_file_bytes",
+        "bytes": 84077,
+        "sha256": "a11ff510d0e0d37bc6ec0214c94514e8fe3127b726ec71ba89009c8f49d9c6ef"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/crt/src/i386/trnsctrl.cpp",
+        "hash_format": "raw_installed_SDK_file_bytes",
+        "bytes": 29655,
+        "sha256": "97eaba1752f55305b719b6f4743d50673d0f7ba1efa9df8a87a26492d4e870d8"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/crt/src/vcruntime/per_thread_data.cpp",
+        "hash_format": "raw_installed_SDK_file_bytes",
+        "bytes": 6825,
+        "sha256": "9a3e101c56b39c654687c8fe519a3fbd7da1b9d090c634b61383b360184a3439"
+      }
+    ],
+    "exception_ptr_rejected": {
+      "copy_allocation": "excptptr.cpp312..351",
+      "snapshot_compare": "excptptr.cpp433..436",
+      "fresh_capture": "excptptr.cpp448..461",
+      "passive_exact_identity": false
+    },
+    "existing_SDK_typed_candidate": {
+      "declaration": "trnsctrl.h217",
+      "SDK_use": "trnsctrl.h239",
+      "accessor": "ehhelpers.cpp113..115",
+      "actual_object_and_descriptor": "ehdata.h483..510",
+      "x86_definitions": "ehdata_forceinclude.h24..38",
+      "rethrow_resolution": "frame.cpp553..563",
+      "active_catch_install": "frame.cpp1696..1706",
+      "rethrow_lifetime": "frame.cpp1751..1759",
+      "nested_object_lifetime": [
+        "i386/trnsctrl.cpp750..767",
+        "ehhelpers.cpp277..287"
+      ],
+      "key": "own-runtime domain + PER_PEXCEPTOBJ actual object; PER_PTHROW corroboration; never record address or type"
+    },
+    "qualifications": [
+      "not implemented/linked/tested",
+      "same own-runtime instance must be established before query",
+      "per_thread_data.cpp117..119 existing PTD branch;161..166 abort if unavailable; no general NoThrow",
+      "actual SDK declarations/types only; no invented offsets or vendor replacement",
+      "current active supported C++ catch only; other domains unclassified",
+      "object identity historical after final consumption; no dereference/permission afterward",
+      "SDK identity proves cause only, not Native origin",
+      "Original gameCRT/FH3/SEH/ABI not upgraded"
+    ],
+    "lineage_alternative": "not selected as proved; requires no replacing exits/destructors/metadata/secondary across exact current edge; currently unproved"
+  }
+}
