@@ -1,0 +1,647 @@
+{
+  "schema_version": 1,
+  "packet": "codex-frontend-frame-selection-closure",
+  "classification": "read_only_finite_frame_selection_retirement_caller_lifetime_contract",
+  "baseline": {
+    "revision": "eb63c7c17ae1e20f0ad728e2d410a360e1ebc4c1",
+    "ref": "origin/main",
+    "verified_before_worktree_creation": true
+  },
+  "document": "docs/CC16_FRONTEND_FRAME_SELECTION_CLOSURE.md",
+  "scope": {
+    "owned_files": [
+      "docs/CC16_FRONTEND_FRAME_SELECTION_CLOSURE.md",
+      "reports/cc16_frontend_frame_selection_closure.json"
+    ],
+    "source_changes": false,
+    "cmake_changes": false,
+    "ledger_changes": false,
+    "ghidra_reads": false,
+    "ghidra_mutations": false,
+    "build": false,
+    "test_execution": false,
+    "probe": false,
+    "game_or_reconstructed_body_execution": false,
+    "local_lookup_index_generated": true,
+    "static_original_pe_read": true,
+    "shared_saved_exports_read_only": true
+  },
+  "decision": {
+    "finite_source_composition_contract": true,
+    "whole_frontend_source_ready": false,
+    "caller_admission": false,
+    "activation": false,
+    "current_page_guard": false,
+    "change_since_prior_authority_design": "Connected Type2 Page/Group/Model/child/node/timed providers are Source integrated on Main; the older uncomposed nonempty-Type2 Page provider gap no longer describes current Source.",
+    "prior_recorded_validation": "22 production files plus one regression; common Win32 build and 2/2 suites passed; default Host frame/shutdown/shared drain passed. These receipts were not rerun by this evidence packet.",
+    "exact_remaining_genuine_provider_cut": [
+      "Raw changed ABAED0 arm rejected before 00ABAF07; raw nonempty ABA8D0/current50 on SAME Text/Model owners is not supplied by typed or raw empty/unchanged counterparts.",
+      "Page AA6560 binding accepts only default Type2; reached actual Text/Icon/FrameBox factory/current-method and raw AA7E00 child-list variants remain required.",
+      "Sibling raw95 producer/current dispatch and canonical view/capability contracts must be implemented in the SAME actual graph."
+    ],
+    "no_missing_unknown_native_for": [
+      "known517EB0/517D50 scalar-adjustor listing",
+      "AA31F0 manager route",
+      "BD30E0/current04 helper",
+      "AA38F0/AC5480 Page scalar/lifetime"
+    ],
+    "no_duplicate_body_credit": true
+  },
+  "existing_closed": [
+    {
+      "addresses": [
+        "004F7180",
+        "00517D10",
+        "004C1AC0",
+        "00517D30"
+      ],
+      "status": "already_source_admitted_reuse",
+      "files": [
+        "src/native_front_end_frame_construction.cpp",
+        "src/native_front_end_frame_publication.cpp",
+        "src/native_front_end_frame_identity.cpp"
+      ]
+    },
+    {
+      "addresses": [
+        "00AA31F0"
+      ],
+      "status": "existing_whole_raw_registry_manager_route",
+      "file": "src/native_gui_page_registry.cpp"
+    },
+    {
+      "addresses": [
+        "00BD30E0"
+      ],
+      "status": "existing_throwing_helper_fresh_current04",
+      "file": "src/native_ref_counted.cpp"
+    },
+    {
+      "addresses": [
+        "00AA8320",
+        "00AA38F0",
+        "00AC5480",
+        "00AA9730"
+      ],
+      "status": "existing_real_page_widget_lifetime_composed_for_type2",
+      "files": [
+        "src/native_gui_layer_lifetime.cpp",
+        "src/game_native_gui_page_application.cpp"
+      ]
+    },
+    {
+      "addresses": [
+        "00517EB0",
+        "00517D50"
+      ],
+      "status": "known_saved_listing_compiler_generated_out_of_scope_no_new_native_credit",
+      "requires": "real Source primary and secondary dispatch composition"
+    },
+    {
+      "addresses": [
+        "00517D60",
+        "00517CF0"
+      ],
+      "status": "distinct_base_scalar_and_clear",
+      "requires": "same publication and native early flags sampling; never substitute for derived scalar"
+    }
+  ],
+  "selected_application": {
+    "namespace": "bsp::game",
+    "name": "GameNativeFrontEndApplication",
+    "proposed_files": [
+      "include/bsp/game_native_frontend_application.hpp",
+      "src/game_native_frontend_application.cpp"
+    ],
+    "root_owner": "GameStartupHost::native_frontend_ unique_ptr adjacent to native_gui_pages_",
+    "constructor": "GameNativeFrontEndApplication(GameHostLog&,GameSingletonHost&,const GameNativeFrontEndDataView&,void* volatile& actual_game_00e188a8,GameNativeGuiManagerApplication&,GameNativeGuiPageApplication&,NativeStringRawPoolContext&,GameNativeReadOnlyData&)",
+    "creation": "After real Page/manager/providers and before first raw Game/screen/Frame creator; no activation change authorized by this evidence.",
+    "lifetime": "Survive Menu/Frontend deletion, actual Game destruction, and normal/fallback shared manager drain; drop Frame bindings/application before Page/manager after genuine completion.",
+    "shared_refs": {
+      "frontend_view": "EXISTING GameNativeCanonicalDataOwner::front_end_data() const borrowed nondefault view",
+      "manager": "GameSingletonHost::manager_publication_01090aa0() SAME Source cell",
+      "game": "GameNativeSettingsProcess::game_00e188a8() SAME Source cell, borrowed separately",
+      "no_numeric_game_cell": "E188A8 bytes mapped by E18000 do not establish another Game publication",
+      "selectors": "E18D84/88/8C process-global; flagE08654 separate DWORD; live names E08500/E08604/E0862C uint32 cells",
+      "captured_old_frame_can_differ_from_current_publication": true
+    },
+    "methods": [
+      "void* frame_004c1ac0()",
+      "void register_current_primary_10(void* captured_receiver)",
+      "void select_layout_set_00518250(void* captured_frame,const volatile uint32_t& requested_dword_home,const volatile uint8_t& commit_byte_home)",
+      "void apply_00518c80(void* captured_frame)",
+      "void select_00518d60(uint32_t backdrop,uint32_t panel,const volatile uint32_t& title_dword_home,const void* const volatile& text_pointer_home)",
+      "void select_backdrop_00518da0(uint32_t backdrop)",
+      "void flag_00518b90(uint32_t flag)",
+      "void title_005189b0(const void* captured_native_header8)",
+      "void set_title_position_005186b0(const void* box_xyz,const void* title_xyz)",
+      "void get_title_position_00518820(void* box_xyz,void* title_xyz)",
+      "void collect_00518e00(void* captured_frame,void* actual_output_vector)",
+      "void scalar_current_primary_0c(void* captured_frame,const volatile uint32_t& flags_dword_home)",
+      "void scalar_current_secondary_00(void* captured_plus8,const volatile uint32_t& flags_dword_home)"
+    ],
+    "raw95_dispatch": "SAME application's RawFrontEndScreenDispatch service; sibling contract provides current00 -> raw register and raw full95 destructor",
+    "current_target_resolution": "Capture actual CURRENT profile/slot, finite real Source operations only, never numeric codeword-to-callable casts or successful unknown-target fallback",
+    "raw_base_register_signature": "uint32_t register_raw_front_end_screen_004f71d0(void* captured_receiver,const GameNativeFrontEndDataView&,RawFrontEndScreenDispatch&)",
+    "raw_base_destruct_signature": "void destruct_raw_front_end_screen_004f71a0(void* captured_receiver,const GameNativeFrontEndDataView&)"
+  },
+  "getter_custody_seam": {
+    "existing_api_problem": "Two-reference getter allocates/constructs/publishes and captures CURRENT+8 before second manager lookup/register. A wrapper observing only return/catch-time E18D80 can lose an older allocation on replacement or registration failure.",
+    "proposed_files": [
+      "include/bsp/native_front_end_frame_publication.hpp",
+      "src/native_front_end_frame_publication.cpp"
+    ],
+    "proposed_overload": "void* get_native_front_end_frame_004c1ac0(void* volatile& manager,void* volatile& frame,NativeFrontEndFramePublicationCustody&)",
+    "precondition": "App preallocates stable per-call operation and receiver metadata before entry; no native effects during preparation",
+    "custody_methods": [
+      "void allocation_returned(void* captured_allocation) noexcept",
+      "void construction_returned(void* captured_allocation,void* constructed_return) noexcept",
+      "void lifetime_argument_captured(void* captured_current_plus8) noexcept",
+      "void allocation_freed(void* captured_allocation) noexcept"
+    ],
+    "epochs": "Capture allocation/constructed identity before publication/registration; capture actual existing current+8 local before second manager getter; record captured free exactly where existing constructor-failure cleanup frees.",
+    "no_new_native_behavior": [
+      "no retain/count",
+      "no Page-array initialization",
+      "no dispatch",
+      "no extra catch",
+      "no rollback/reset",
+      "no change to existing getter schedule"
+    ],
+    "fast_path": "Authenticate existing live record; no new allocation epoch",
+    "partial_failure": "Retain raw bytes/publication/entered operation; do not infer85slot initialization or reconstruct old identity from CURRENT publication"
+  },
+  "page_current00_used_extension": {
+    "file": "include/bsp/game_native_gui_page_application.hpp + src/game_native_gui_page_application.cpp",
+    "supplied_only_with_used_frontend_consumer": true,
+    "methods": [
+      "void remove_page_00aa31f0(void* actual_manager,void* actual_page)",
+      "long decrement_reference_00ce2220(void* captured_actual_page)",
+      "void call_current_page_virtual_00(void* captured_actual_page)"
+    ],
+    "throwing": true,
+    "noexcept": false,
+    "same_records": "GameNativeGuiPageApplication::Impl::Page; existing layer_lifetime/widgets/strings/scene/node/child/timed and retained NativeCalls",
+    "no_layer_companion": "No NativeGuiLayerReference counted class exists at frozen baseline; only NativeGuiLayerReferenceDecrement typedef.",
+    "same_decrement": "Read layer_lifetime.actual_decrement_00ce2220 at reached native call; aligned actual Page+4; no import/default substitute.",
+    "zero_schedule": "After returned decrement0 capture CURRENT profile/current00 of captured Page. Captured BD30E0 invokes existing helper, freshly captures current profile/current04(flags1), then SAME Impl::delete_page/AA38F0/AC5480.",
+    "zero_does_not": [
+      "get GUI manager",
+      "remove registry pointer",
+      "call current20",
+      "add scene-released precondition",
+      "recheck/add native count",
+      "route through a Group/Text canonical noexcept zero terminal"
+    ],
+    "existing_noexcept_terminals_unchanged": true,
+    "manager_route": "AA31F0 removes same first registry pointer before current20 then fresh current04(flags1), no decrement",
+    "metadata_after_scalar": "Mark retired only from retained record after genuine returned scalar; no raw payload reads after possible pool return"
+  },
+  "whole_body_contracts": {
+    "00517ED0": {
+      "native_slot": "CEC39C+10, stale header+14 is wrong",
+      "order": "Whole raw4F71D0 first; own+160=4;13x5,2x5,2x5 slot-major/set-minor",
+      "name_epoch": "Each outer column captures CURRENT name using CURRENT own; each inner row rereads own.",
+      "acquired": "Actual NativeString8/41DD40(length,1)/memcpy(length+1)/4C12B0/AA5840(header,1,0); publish actual slot before reached pool/header cleanup.",
+      "initial_row4_null_is_policy": false,
+      "correction_existing_hook": "Existing Fe8FrameRegisterHost::front_end_screen_register_004f71d0 returns void; adopted whole raw base operation preserves genuine current00 ID EAX normal return even though517ED0 subsequently ignores it."
+    },
+    "00518250": {
+      "argument_homes": "Borrow actual request DWORD and commit BYTE; no int/bool/string_view cached copies or index admission narrowing.",
+      "entry": "Request/current own comparison then initial commit-byte retirement decision.",
+      "retirement": "Each row rereads request; count1 GUI getter then slot reload then AA31F0; otherwise capture Page, actualCE2220(+4), current00 on returned0; clear original slot only after returned call.",
+      "acquisition": "Each group rereads request; CURRENT name cell read before existing-slot test; NativeString/getter/AA5840(header,1,1); publish before cleanup.",
+      "final": "Reread commit BYTE then request DWORD before own+160 write.",
+      "callback_replacement": "Slot clear is not compare-and-clear; clear after returned retirement even if callback replaced Page.",
+      "no_invalid_index_success_fallback": true
+    },
+    "00517D90": {
+      "order": "Stamp CEC39C/secondaryCEC398; native85slot traversal; each nonnull condition then realGUI getter then reload slot for AA31F0; no per-slot clear; unconditionally clearD80; secondaryCE3818; raw4F71A0 primaryCEAE54/full95 scan."
+    },
+    "00517EB0": "Full517D90 then CURRENT flags low BYTE bit0; free captured allocation conditionally; identity return.",
+    "00517D50": "Captured secondary receiver minus8 then same517EB0 route; full flags transport.",
+    "00517D60": "Sample flags bit0 BEFORE unconditional D80 clear/receiverCE3818 stamp; distinct base scalar.",
+    "00518C80": "Captured receiver; own/selector/Page/current34 reloads per phase; preserve full computed visibility carrier upper24+SETZ lowbyte; Game+5D4 mode0D skips backdrop and flag tail.",
+    "00518D60": "Capture title DWORD; write84/88/8C; getter/apply; late CURRENT text-pointer home/header length before title.",
+    "00518DA0": "Write84 then real getter/tail apply.",
+    "00518B90": "Compare signed panel before storeE08654 DWORD; repeated getter schedule; child lookup then LOW WORD flag current88(word,0,1.0f).",
+    "005189B0": "Actual repeated getter pairs and NativeString child names; actual ABAED0(header,1); x87 FDIV960/FSTPfloat/FCOMI/FSTP/JBE including unordered minimum; native spill across size getter; FADDdouble pad/FSTPfloat; ambient FP retained.",
+    "005186B0_00518820": "Repeated getter pairs/current selector; raw actual xyz pointers; ordered component FLD/FSTP getter stores, no memcpy replacement.",
+    "00518E00": "Captured Frame; reload ownE03/E2A/E4B and selectorsE0C/E30/E51; append each actual Page-slot ADDRESS before next phase."
+  },
+  "caller_graph": [
+    {
+      "function": "004DD5B0",
+      "source": "src/oct18_tail_a.cpp:619-620",
+      "sequence": "00425D10 menu-command current+10 at4DD756, then4C1AC0 returned Frame current+10 at4DD764",
+      "root_binding": "InitOnceServices not Root supplied"
+    },
+    {
+      "function": "004C9A70",
+      "sites": [
+        "004C9B7E",
+        "004C9B85"
+      ],
+      "homes": {
+        "set": 2,
+        "commit": 1
+      },
+      "hook": "MenuTitleInitHost::select_front_end_frame_set_impl"
+    },
+    {
+      "function": "004C9CA0",
+      "sites": [
+        "004C9E06"
+      ],
+      "homes": {
+        "set": 3,
+        "commit": 1
+      },
+      "hook": "GameHudHost::apply_in_game_interface"
+    },
+    {
+      "function": "004DFB70",
+      "sites": [
+        "004E04EE"
+      ],
+      "homes": {
+        "set": 3,
+        "commit": 0
+      },
+      "hook": "GameHudHost::select_front_end_layout_00518250"
+    },
+    {
+      "function": "0057CB60",
+      "sites": [
+        "0057CD1E",
+        "0057CD7B"
+      ],
+      "homes": [
+        {
+          "set": 2,
+          "commit": 1
+        },
+        {
+          "set": 1,
+          "commit": 1
+        }
+      ],
+      "hook": "MenuLoadingScreenHost::select_menu_layout"
+    },
+    {
+      "families": [
+        "frontend_state_machine",
+        "frontend_states",
+        "frontend_screen_sets",
+        "frontend_menus",
+        "main_menu_path",
+        "park4D64E0",
+        "hint",
+        "pause"
+      ],
+      "requirement": "SAME actual raw95/current dispatch and app writer/apply/title/position; no semantic bank/layout authority"
+    }
+  ],
+  "lifetime": {
+    "game_source": "src/native_game_lifetime.cpp63 and native_game_singleton_lifetime.cpp17-48",
+    "game_entry": "004DCF90 / scalar004DE270 reaches4C0CE0 at4DD0E6 via SAME NativeGameLifetimeContext::singletons",
+    "primary_path": "4C0CE0 captured section; enter/+18; captured current+8 before second manager getter; unregister; reload CURRENT publication/current primary+0C(flags1); unconditional postscalar clear; decrement/leave captured section.",
+    "secondary_path": "Shared/fallback manager pop CURRENT CEC398+00 ->517D50 adjust-8 ->517EB0 -> full517D90, using retained app/Page contexts.",
+    "before_getter": "Install real CEC398 resolver before any+8 registration; CE3818 base case is insufficient.",
+    "root_current_problem": "game_hosts.cpp2313-2315 delete menu_/frontend_ before drain2321; Page/manager currently retained2335-2348.",
+    "selected_retention": "Startup native_frontend_ and all actual Page/renderer/Model/VFS/Lua/string/scene/node/child/timed providers survive actual Game destruction and shared/fallback drain.",
+    "close_order": "After actual Frame/shared drain completion drop Frame binding/app, then existing Page and manager bindings/acknowledgements; permanent canonical/settings/manager cells survive CRT.",
+    "no_new_terminal_policy": true,
+    "no_compare_and_clear": true,
+    "no_replay_or_cleanup_from_diagnostic_ack": true
+  },
+  "next_packets": [
+    {
+      "kind": "finite_source_composition_repair",
+      "scope": "Used app + canonical/raw95 contracts; actual homes and Page methods; getter custody;517ED0/518250/517D90 repairs; known scalar/adjustor binding; complete apply/flag/title/position/collector schedule; Startup/caller lifetime migration",
+      "new_original_body_credit": 0,
+      "whole_adoption_ready": false
+    },
+    {
+      "kind": "genuine_raw_title_widget_provider",
+      "addresses": [
+        "00ABAED0 changed arm from00ABAF07",
+        "00ABA8D0 nonempty/current50",
+        "00A9FAD0",
+        "00AA6560 reachedText/Icon/FrameBox",
+        "00AA7E00 actual child-list variant"
+      ],
+      "scope": "SAME actual Text/Model/Page identities and matching factories/current methods; typed/equal-only paths cannot substitute.",
+      "prohibited": "Do not broaden catalogue, remove guard, narrow accepted inputs, or ship unused accessor."
+    },
+    {
+      "kind": "sibling_contract_implementation",
+      "artifacts": [
+        "docs/CC16_FRONTEND_CANONICAL_AUTHORITY_CLOSURE.md",
+        "docs/CC16_FRONTEND_RAW95_PRODUCER_CLOSURE.md"
+      ],
+      "scope": "Canonical matched capability/view plus real raw95/menu-command/MenuPrompt creator/current dispatch cut; coordinate actual final sibling artifact names."
+    }
+  ],
+  "static_original_pe": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "page_profile": "00D5BE38",
+    "slot00": "00BD30E0",
+    "slot04": "00AA38F0",
+    "constant_CEC380_double": 960,
+    "constant_CEC3E8_double": 0.26666666666666666,
+    "evidence_scope": "Static authenticated PE bytes, not current receiver or runtime values."
+  },
+  "qualifiers": [
+    "New Source signatures are not Original ABI.",
+    "Ordinary Source C++ exceptions are not Native FH3/SEH/private-frame/fault proof.",
+    "Ambient x87 schedule requirement is not unmasked-FP execution proof.",
+    "Current default Host receipt does not exercise gated populated/new timer/whole frontend paths."
+  ],
+  "new_credit": {
+    "original_bodies": 0,
+    "native_runtime": 0,
+    "reconstructed_body_execution": 0,
+    "vendor": 0,
+    "duplicate_body": 0,
+    "compiler_generated": 0,
+    "abi": 0,
+    "gameplay": 0,
+    "activation": 0
+  },
+  "source_pins": [
+    {
+      "path": "docs/CC16_NATIVE_FRONTEND_GLOBAL_AUTHORITY_DESIGN.md",
+      "sha256": "d1619ee0028cb1810678bbca2b21d31ba4ef9866686cdeb89f36ba2482a8d818"
+    },
+    {
+      "path": "reports/cc16_native_frontend_global_authority_design.json",
+      "sha256": "ebf978c52526fd74037806327b94f12d1a295bc9b01c94716a9b96fea52e4daf"
+    },
+    {
+      "path": "docs/CC16_POPULATED_GUI_COMBINED_SOURCE_ADMISSION.md",
+      "sha256": "1a93021abe896e57e6ad18a4ec00228eff045d3a83fd93ee16fb033ad6c6c515"
+    },
+    {
+      "path": "reports/cc16_populated_gui_combined_source_admission.json",
+      "sha256": "fb55888522ba32b280333c6527c0ec31877e73ceef4e5bcb6804343377754e3f"
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_publication.hpp",
+      "sha256": "b0d35be85ed8448ee1a89d66027e777a0aa4947a49164321c8bce3e628a8aae0"
+    },
+    {
+      "path": "src/native_front_end_frame_publication.cpp",
+      "sha256": "0d88f92b07b44eab54283aecea4c7626566c6d165b04d1285cfd3648b5e0a64a"
+    },
+    {
+      "path": "src/native_front_end_frame_construction.cpp",
+      "sha256": "f90858ce1f08c8124d18a53bb51cfc43c46ced96fc8e64636c613a08a037cd9f"
+    },
+    {
+      "path": "src/native_front_end_frame_identity.cpp",
+      "sha256": "86d12ab23e19a2a06834cc980b926b6fc815dd738fc910ac90ce703e3f3d5fe0"
+    },
+    {
+      "path": "include/bsp/game_native_gui_page_application.hpp",
+      "sha256": "7ad6d366ec92695ede58d8f44deeee6b6874f8c344788f626aab286495d83221"
+    },
+    {
+      "path": "src/game_native_gui_page_application.cpp",
+      "sha256": "0f770bd8713656eeb56b77a97109eb7168e1be5d53d96305e4105edbe44b1668"
+    },
+    {
+      "path": "include/bsp/game_native_gui_manager_application.hpp",
+      "sha256": "0e0b45171c310df86edd5689cdd0ab07be06d42e302e9cf1ff98c42c7c5ccf83"
+    },
+    {
+      "path": "src/game_native_gui_manager_application.cpp",
+      "sha256": "a3bc4aa99e159228c3366f77c4bfb00fc33cfb7e6688d1faf260ffbadb3a3219"
+    },
+    {
+      "path": "include/bsp/native_gui_page_registry.hpp",
+      "sha256": "92f55df728ad8ec45fab8182e60c5ac8c7752883edd76eded997364fa984e6cc"
+    },
+    {
+      "path": "src/native_gui_page_registry.cpp",
+      "sha256": "df890ebe7e74d5dddb5b014ca9491a874cef905fb4fa86f4003200a05625b89d"
+    },
+    {
+      "path": "include/bsp/native_ref_counted.hpp",
+      "sha256": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82"
+    },
+    {
+      "path": "src/native_ref_counted.cpp",
+      "sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9"
+    },
+    {
+      "path": "include/bsp/native_gui_layer_lifetime.hpp",
+      "sha256": "dbf0d44346d847bd4c2daa86b73cdb6ec175e2553ad113ef8bbeffc444f631dd"
+    },
+    {
+      "path": "src/native_gui_layer_lifetime.cpp",
+      "sha256": "d6d789179cd68cbd1bf66a6ebf2b1aeb4c2c29fc03155b3be335ebfdb22cf7d0"
+    },
+    {
+      "path": "src/native_gui_group_identity.cpp",
+      "sha256": "7c562ecc89b706df3ed39a05c444a921d737a67f5db3ca3cffb179859d4d744c"
+    },
+    {
+      "path": "src/native_gui_text_reference.cpp",
+      "sha256": "e4e363507f24729369a69dc92c825b08b08524dd1a368cca40883f177b3d14d9"
+    },
+    {
+      "path": "include/bsp/render_command_queue.hpp",
+      "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_visibility.hpp",
+      "sha256": "e45b5295ad86616f7184bbae7d1868c5a5a4cf8b193f6ceec6b0b27cdfd042fd"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_position.hpp",
+      "sha256": "fd7397b1af7ba72bc335703507d4013e78298126ab8d8be5816794bcbcd40512"
+    },
+    {
+      "path": "src/native_gui_text_source_storage.cpp",
+      "sha256": "8ed38445f48d3b7188995a7f4f782d2e47b99853c86782150b0e493b309f1542"
+    },
+    {
+      "path": "include/bsp/native_gui_text_source_storage.hpp",
+      "sha256": "fc760051616625254a74186df22d967c835c75116a20821c6ee7a77b7adeacc5"
+    },
+    {
+      "path": "src/gui_text_type_dispatch.cpp",
+      "sha256": "0a56deab2a02681a587152cf85a33065db65f2b237ec13be52f97aa46cbd0e3a"
+    },
+    {
+      "path": "src/title_init.cpp",
+      "sha256": "fdeb6154f772f18ae496daeff3b02b4331e8989b869f308b67678d7d47c0a33e"
+    },
+    {
+      "path": "include/bsp/frontend_seg12_17_cc13.hpp",
+      "sha256": "6c7c46fac64e4c3fd89e6c5f67ef4739508787eb7a4aa6d6b90ca7aa4a0233f6"
+    },
+    {
+      "path": "src/frontend_seg12_17_cc13.cpp",
+      "sha256": "fc47eb8b8c9db2dcd0f25b5bc633502304ba39a7694b1f2ae0d1e50e74637a9f"
+    },
+    {
+      "path": "include/bsp/menu_screens_2.hpp",
+      "sha256": "2ef72c791db3abc89d9b52b82bf57adee15a1de9edb3efaeedd64360457dce36"
+    },
+    {
+      "path": "src/menu_screens_2.cpp",
+      "sha256": "23e3c082e0688f77fbba57f0d5c9f23a0ce1390d41226936890bf1e55adb2809"
+    },
+    {
+      "path": "include/bsp/oct18_tail_a.hpp",
+      "sha256": "623b45904d9f7a9558cf9a3aca26e51d8336fa60f511cc68f3d63faac86f81d7"
+    },
+    {
+      "path": "src/oct18_tail_a.cpp",
+      "sha256": "afe458f3af69587a6f0b42bc61e5dda6585247411e4173b8cc4b6a1d648f7eaa"
+    },
+    {
+      "path": "src/native_game_singleton_lifetime.cpp",
+      "sha256": "fffeccd7bf5f34e3f7129e0a5034cad0b97c09fdda8b89977d7e6d23c9ca8574"
+    },
+    {
+      "path": "include/bsp/native_game_singleton_lifetime.hpp",
+      "sha256": "76ca3babd50d2102fd0f5d08ba931e327e3570aef60286fd634eaa365cace35c"
+    },
+    {
+      "path": "src/native_game_lifetime.cpp",
+      "sha256": "4535650c8dcd06db58f4fed96260c0b1c1eac410255fb14603bedfecdce59c90"
+    },
+    {
+      "path": "src/game_native_game_runtime.cpp",
+      "sha256": "1e205d8375994a80cbc5d15a5270b9281f2e9c073a039c3b614535933c068bca"
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "sha256": "98a476d0aa3d76fa3b79793a6c10dca5ce621b89f9a290eecef23866a483831a"
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "sha256": "de933f3c758aed5b505b61582845be194396bace2efc88f676e9de462049f686"
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "sha256": "67a5164b1b20061f0f1353783c12cfcb92cc7392b37e04ec87371577425f7f58"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "sha256": "6403dacc40b04fe9df818e5fa1e175609b876d54a51dbeae9a7e2ef69856cff6"
+    },
+    {
+      "path": "src/game_hosts_menu.cpp",
+      "sha256": "f0c936fa3f0f1ca9b739b1c66428d2f4b5af2b1f15081ea2a36c5346ad4bb052"
+    },
+    {
+      "path": "src/game_hosts_hud.cpp",
+      "sha256": "0aee4bea0fdc1c5f88b08246ebe21177e59be6c070111cdec626ce56deb11d4c"
+    },
+    {
+      "path": "src/frontend_entry.cpp",
+      "sha256": "ab4663f339e0c73d4156220a827c9b35c2db99ce26dd5a4015036f3a3a9071fa"
+    },
+    {
+      "path": "src/mission_load_hosts.cpp",
+      "sha256": "60a52837c66cf61a5f42221882a9319dff3f7163cac7990ea0d01e432a241f8e"
+    },
+    {
+      "path": "config/target.json",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    }
+  ],
+  "saved_export_pins": [
+    {
+      "path": "exports/bsp/functions/00518250/decompiled.c",
+      "sha256": "c4e459b3b62dbc8d1af1a12819d0a464991beeeaf94cd0ecf65ceee0ee9986a5"
+    },
+    {
+      "path": "exports/bsp/functions/00518250/assembly.txt",
+      "sha256": "11987c2eee96483a2adc9635564af01d23a89ea53e0691f6c11521aab8e1e963"
+    },
+    {
+      "path": "exports/bsp/functions/00517ed0/decompiled.c",
+      "sha256": "c175454b5c1d188f4c80369a763ca6fd7f8d690fe6bdede1939de9c694909f76"
+    },
+    {
+      "path": "exports/bsp/functions/00517d90/decompiled.c",
+      "sha256": "b09d4ca4b945d01d7633a23fe3141fc460f592834b2548bd829838fa77145320"
+    },
+    {
+      "path": "exports/bsp/functions/005189b0/decompiled.c",
+      "sha256": "e49a8425697abd963422ae82e907f228d993e557e8ba243d2b533479f8507ed6"
+    },
+    {
+      "path": "exports/bsp/functions/005189b0/assembly.txt",
+      "sha256": "c144ac989220e20e35ad273524997b138e8b76353a776ef577429db631841564"
+    },
+    {
+      "path": "exports/bsp/functions/00518b90/assembly.txt",
+      "sha256": "230f1da06dc825d41cbf7964e278d11a8240a0b661b4ed274c7db1c336cffbff"
+    },
+    {
+      "path": "exports/bsp/functions/00518c80/decompiled.c",
+      "sha256": "ee9ee09fb3e322d39ce18c9b87fc1dd1ae9e002cdd462ae6f27ff7d5f9d605f7"
+    },
+    {
+      "path": "exports/bsp/functions/00518c80/assembly.txt",
+      "sha256": "ec314151825c9dee044594dbdaca0ea436ba850dc0004827983171b316762b02"
+    },
+    {
+      "path": "exports/bsp/functions/00518d60/decompiled.c",
+      "sha256": "c51407b00047129fc87ad18c1e086f3cb315a49caf3b8322451b1cf66827c08e"
+    },
+    {
+      "path": "exports/bsp/functions/00518d60/assembly.txt",
+      "sha256": "05cf3238cb450475357d7be40b4ca889c2892391d8aa7e4c5e14a17bc05b2b37"
+    },
+    {
+      "path": "exports/bsp/functions/005186b0/assembly.txt",
+      "sha256": "6d4f08a9e0b2beaa172baf398c08a98537276071a50877120b6cba3886bf32ab"
+    },
+    {
+      "path": "exports/bsp/functions/00518820/assembly.txt",
+      "sha256": "a963b4136f1d16ddf5753ceb120ab8e1ea0bb4ab782bc2edf9196c5a79548b8f"
+    },
+    {
+      "path": "exports/bsp/functions/00518da0/assembly.txt",
+      "sha256": "e86c9a023f049b93b18f8c42dea47ac92e7147e947c6438ef5eafa152d369deb"
+    },
+    {
+      "path": "exports/bsp/functions/00518e00/assembly.txt",
+      "sha256": "f4041af608b866accfd92f7db5a5d73a03247ae1d850b5b3da572235a252eb10"
+    },
+    {
+      "path": "exports/bsp/functions/00517eb0/assembly.txt",
+      "sha256": "6792652e25800b6cda72f8d1a89891994f925cf47ef5d22cb5a64246a26bd8d6"
+    },
+    {
+      "path": "exports/bsp/functions/00517d50/assembly.txt",
+      "sha256": "481da8ed29d587093148a2e8ce38256e5dea8601ff7743bf3afa18145a07289e"
+    },
+    {
+      "path": "exports/bsp/functions/00517d60/assembly.txt",
+      "sha256": "7b8965d1d6b6d8f75e496d12265f0ffae909e50a62c932182a081800b5469cf3"
+    },
+    {
+      "path": "exports/bsp/functions/00517cf0/assembly.txt",
+      "sha256": "6d9a2b2322cdcd939449a64dd7b8855cf425aa97f4b71d44f06551230f9d94f0"
+    },
+    {
+      "path": "exports/bsp/functions/00abaed0/decompiled.c",
+      "sha256": "2c480a33514a8069abc91366e15058adb14dea82fff6f7b3e38843e5378178a7"
+    }
+  ],
+  "validation": {
+    "json_parsed": true,
+    "git_diff_check": true,
+    "scope_checked": true
+  },
+  "utc": "2026-10-30T15:24:16.6263191Z"
+}
