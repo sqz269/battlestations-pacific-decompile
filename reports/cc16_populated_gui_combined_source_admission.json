@@ -1,0 +1,873 @@
+{
+  "schema": "bsp.cc16.populated_GUI_connected_Source_admission.v1",
+  "status": "accepted_guarded_connected_Source_primary_independent_common_build_default_Host_regression_passed_activation_pending",
+  "baseline_Main": "40acabef63ed84dec8deb4d54530ef13a4d4da8d",
+  "source_build_head": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+  "publication_target": "origin/main",
+  "accepted_for_Main_Source_integration": true,
+  "activation_scope": "Existing default startup regression only; Page guard remains false; optional Mission flag unchanged. No newly activated Page/HUD path.",
+  "components": {
+    "Root_timed": "44ee1b9ba4aaa88aae3f6937e2f0c452ba098c3a",
+    "canonical": "07e4a6b4658501ffb33413f61df894761234ffc2",
+    "shared_domain": "123c726602f7236717b0bb9af8c62c45b667d031",
+    "Page": "a09e26c57374bd454c20d1b3f8227525f5707792",
+    "Root_compile_fix": "5092d03115c2dfd4b137b0f8022ac60c67b33522"
+  },
+  "independent_reviews": {
+    "Model": "a842fbcd37e3cdb3a440af36cb85910305fc36c2",
+    "Page_and_common_followup": "7d66e1eb8d932538048c5989aabfad2ab90b3820",
+    "no_remaining_blocking_Source_findings": true
+  },
+  "primary": {
+    "immutable_author_and_review_receipt_checks": 166,
+    "review": "selected actual preparation/normal/raw-zero/completion/scalar/owner/client/renderer/Page reader/retirement/host seams plus independent complete changed-body review",
+    "full_docs_read": {
+      "canonical_impl": 49,
+      "domain_impl": 31,
+      "Page_impl": 51,
+      "independent_Model": 45,
+      "independent_Page": 55
+    },
+    "closed_source_phase": "Default Type2 GuiGroup producer/reader/load/retirement with canonical raw Model supplier; other factories and fullfrontend authority remain separate.",
+    "resolved_findings": [
+      "Unnecessary optional raw_name_services preflight rejected actual environment: removed without live retargeting.",
+      "Actual GroupCD7460 startup absent: same VFS provider process initializer connected before Group use, with existing interrupted-role disposition.",
+      "Direct lifetime metadata preparation now inside retained-failure catch.",
+      "One MSVC/W4/WX local name collision fixed, exact same effect independently confirmed."
+    ],
+    "final_independent_followup_Git_LF_hashes_verified": true
+  },
+  "actual_Source_and_one_regression": [
+    {
+      "path": "include/bsp/cc13_gui1.hpp",
+      "git_blob": "7fd9819d04c9dc9a13c761e0176480ed6f588446",
+      "Git_LF_sha256": "649ac778ac9b6c1600ab1322e81d83dda1f259b67545bf942f62f7958adddff8",
+      "Git_LF_bytes": 21485
+    },
+    {
+      "path": "include/bsp/game_native_gui_page_application.hpp",
+      "git_blob": "4abf6219f61e37b4e6c9ceb2777bd69aa7f7d8df",
+      "Git_LF_sha256": "7ad6d366ec92695ede58d8f44deeee6b6874f8c344788f626aab286495d83221",
+      "Git_LF_bytes": 2945
+    },
+    {
+      "path": "include/bsp/game_native_model_domain.hpp",
+      "git_blob": "5d8bc4a64c104cbeee4a0d6280719f6209bbb182",
+      "Git_LF_sha256": "6feef900ac2a2093856da5a88e8ec7eadd6923d7d9eaa5cb8353a13be323e128",
+      "Git_LF_bytes": 3144
+    },
+    {
+      "path": "include/bsp/game_native_renderer_application.hpp",
+      "git_blob": "dc90eb7264b1a84b06d9658d359864b96cc60a2c",
+      "Git_LF_sha256": "35d3649c491e263cb0c6752bf637d70af3135a9bae12e375ed9d12bbecd26bd5",
+      "Git_LF_bytes": 20750
+    },
+    {
+      "path": "include/bsp/native_gui_page_properties.hpp",
+      "git_blob": "abab42af993b749a79f5dcdd3a13d3e7e298de79",
+      "Git_LF_sha256": "ef5e212e46b6c14e1b64702b0cf71e0412b648729ded260814f69d35be7a44b0",
+      "Git_LF_bytes": 3525
+    },
+    {
+      "path": "include/bsp/native_gui_widget_child_links.hpp",
+      "git_blob": "0fe77896b7eb14b888e01a68a39dce34d1d182cb",
+      "Git_LF_sha256": "00b86ac36f6860c22b9b6154aba306aaaa424d77eb60f4deb4755358698277a9",
+      "Git_LF_bytes": 5058
+    },
+    {
+      "path": "include/bsp/native_gui_widget_lifetime.hpp",
+      "git_blob": "3dfab3f1b6a42f2a37f8c84e1d813e4d7201ec20",
+      "Git_LF_sha256": "c9155c508f98bb913ebe8ae71cd6c98e050d86ce25a746a5c8f4909f37242d1a",
+      "Git_LF_bytes": 7899
+    },
+    {
+      "path": "include/bsp/native_gui_widget_property_children.hpp",
+      "git_blob": "91aeee519f1a47441d2f1c7648244c171daa1b2a",
+      "Git_LF_sha256": "531c63dcf73098a5a6dc09e21b84126d89ad6172145f2f2c6735e31aff931874",
+      "Git_LF_bytes": 5793
+    },
+    {
+      "path": "include/bsp/native_model_owner.hpp",
+      "git_blob": "1ef6610b9534c327e4e58412eb6a0cd5f8a9409e",
+      "Git_LF_sha256": "d1cfa9b664075d836d9818ed57f4d9c89858b0c0c507c8ca3dce75f727a52a2a",
+      "Git_LF_bytes": 9870
+    },
+    {
+      "path": "include/bsp/native_model_storage_lifetime.hpp",
+      "git_blob": "d00d1110e199b05a65c948d42017593a8f102661",
+      "Git_LF_sha256": "0764b927078091103c21e6c2d6215ccb7a403c2b3eed832943dfae632a55ec3e",
+      "Git_LF_bytes": 8247
+    },
+    {
+      "path": "src/cc13_gui1.cpp",
+      "git_blob": "7f0ee9d08b5f0b90350d956f0bd2b5b79d714291",
+      "Git_LF_sha256": "3b60069c4991f51ac3a8ed5076cffb9c0abf5af97dd9c171773c2e99952b8798",
+      "Git_LF_bytes": 35349
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "git_blob": "f0ddd36fa94585e7be5ec76fe894e6d90d4951eb",
+      "Git_LF_sha256": "6403dacc40b04fe9df818e5fa1e175609b876d54a51dbeae9a7e2ef69856cff6",
+      "Git_LF_bytes": 186067
+    },
+    {
+      "path": "src/game_native_gui_page_application.cpp",
+      "git_blob": "996fbbdec1f9160540da07b0842295920734eead",
+      "Git_LF_sha256": "0f770bd8713656eeb56b77a97109eb7168e1be5d53d96305e4105edbe44b1668",
+      "Git_LF_bytes": 72373
+    },
+    {
+      "path": "src/game_native_mission_model.inc",
+      "git_blob": "bba02b361321fd41e4173b557650c8c6e55d14e0",
+      "Git_LF_sha256": "ed4f91ff37398cc690c5657e9160e1d8aae36f4bf8361dd90ef253ee2733fb87",
+      "Git_LF_bytes": 54516
+    },
+    {
+      "path": "src/game_native_model_domain.inc",
+      "git_blob": "000f2395134b994791d4284d279ffead14c9d317",
+      "Git_LF_sha256": "ff8788d41c4e4b34b302910cc3c52d3593b232fc409d229a3b4999cbaef242ed",
+      "Git_LF_bytes": 15824
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "git_blob": "c7ac9206b53f7fdf8e5c4e53a17cf3b3f6e4231f",
+      "Git_LF_sha256": "ca5482dcb5566b9ccf14aebd2ec0b78f1e547bf5ab4e5268e2922fb207277d3e",
+      "Git_LF_bytes": 80905
+    },
+    {
+      "path": "src/native_gui_page_properties.cpp",
+      "git_blob": "94cb2bea918059fda155b44a6c6b0b2f244645b9",
+      "Git_LF_sha256": "acd659fac018b6742223dc4eb02bdda7d7b3e8e1c0a00c9720957206887ff379",
+      "Git_LF_bytes": 5329
+    },
+    {
+      "path": "src/native_gui_widget_child_links.cpp",
+      "git_blob": "1628e0a950e5f0addc58705f7504f6ac4387def0",
+      "Git_LF_sha256": "fbaf30b0a635a7030981a9e95fd34aab97f9b52979c2409598f5779a829a0a0b",
+      "Git_LF_bytes": 7146
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "git_blob": "9c8b06d3a4071d57ab1a539eaacdfb2fb810cbd3",
+      "Git_LF_sha256": "e8a53199f409248cc89b6d64c326a0b037970703e3b34ca628162a730907df68",
+      "Git_LF_bytes": 17866
+    },
+    {
+      "path": "src/native_gui_widget_property_children.cpp",
+      "git_blob": "c2d74159ed5486a1fc2b9b6248d06ee02ecb2154",
+      "Git_LF_sha256": "28da89eae3bccc34b58dbb9255865b762d7477630c0822203c11604b38633ec4",
+      "Git_LF_bytes": 14060
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "git_blob": "7c764a3abcd1ffeb713dad482807965574aadb74",
+      "Git_LF_sha256": "6e774d73c4a5bbd0109e19c271e2ff05a613e389c50ec72bd888c4c49f5ddd2d",
+      "Git_LF_bytes": 29717
+    },
+    {
+      "path": "src/native_model_storage_lifetime.cpp",
+      "git_blob": "9aa0259d0d2deebd85f14805b9bd9eaae6b76587",
+      "Git_LF_sha256": "1ded6a8042e2ce26bdcd9852dae2c14b16cee1efdba0227ed479d0c9491cddd8",
+      "Git_LF_bytes": 17033
+    },
+    {
+      "path": "tests/math_tests.cpp",
+      "git_blob": "1689744ed46b0d03c38a0e74a63bc1d25c7b9265",
+      "Git_LF_sha256": "50ac2afd8f9c611365d8ed39c2d2bc77fbb6110a44a4f472d01bf62cd1f86e1c",
+      "Git_LF_bytes": 221977
+    }
+  ],
+  "common_build": {
+    "schema": "bsp.cc16.joined_populated_GUI_common_build.v1",
+    "utc": "2026-10-30T14:36:20.241397+00:00",
+    "Source_head": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+    "baseline": "40acabef63ed84dec8deb4d54530ef13a4d4da8d",
+    "actual_Source_and_one_regression": [
+      {
+        "path": "include/bsp/cc13_gui1.hpp",
+        "bytes": 21832,
+        "sha256": "79cdf7721281e3c47ea49203c73253b408c475c76833105209056cf30058de40",
+        "git_blob": "7fd9819d04c9dc9a13c761e0176480ed6f588446"
+      },
+      {
+        "path": "include/bsp/game_native_gui_page_application.hpp",
+        "bytes": 2945,
+        "sha256": "7ad6d366ec92695ede58d8f44deeee6b6874f8c344788f626aab286495d83221",
+        "git_blob": "4abf6219f61e37b4e6c9ceb2777bd69aa7f7d8df"
+      },
+      {
+        "path": "include/bsp/game_native_model_domain.hpp",
+        "bytes": 3144,
+        "sha256": "6feef900ac2a2093856da5a88e8ec7eadd6923d7d9eaa5cb8353a13be323e128",
+        "git_blob": "5d8bc4a64c104cbeee4a0d6280719f6209bbb182"
+      },
+      {
+        "path": "include/bsp/game_native_renderer_application.hpp",
+        "bytes": 20750,
+        "sha256": "35d3649c491e263cb0c6752bf637d70af3135a9bae12e375ed9d12bbecd26bd5",
+        "git_blob": "dc90eb7264b1a84b06d9658d359864b96cc60a2c"
+      },
+      {
+        "path": "include/bsp/native_gui_page_properties.hpp",
+        "bytes": 3525,
+        "sha256": "ef5e212e46b6c14e1b64702b0cf71e0412b648729ded260814f69d35be7a44b0",
+        "git_blob": "abab42af993b749a79f5dcdd3a13d3e7e298de79"
+      },
+      {
+        "path": "include/bsp/native_gui_widget_child_links.hpp",
+        "bytes": 5058,
+        "sha256": "00b86ac36f6860c22b9b6154aba306aaaa424d77eb60f4deb4755358698277a9",
+        "git_blob": "0fe77896b7eb14b888e01a68a39dce34d1d182cb"
+      },
+      {
+        "path": "include/bsp/native_gui_widget_lifetime.hpp",
+        "bytes": 7899,
+        "sha256": "c9155c508f98bb913ebe8ae71cd6c98e050d86ce25a746a5c8f4909f37242d1a",
+        "git_blob": "3dfab3f1b6a42f2a37f8c84e1d813e4d7201ec20"
+      },
+      {
+        "path": "include/bsp/native_gui_widget_property_children.hpp",
+        "bytes": 5793,
+        "sha256": "531c63dcf73098a5a6dc09e21b84126d89ad6172145f2f2c6735e31aff931874",
+        "git_blob": "91aeee519f1a47441d2f1c7648244c171daa1b2a"
+      },
+      {
+        "path": "include/bsp/native_model_owner.hpp",
+        "bytes": 9870,
+        "sha256": "d1cfa9b664075d836d9818ed57f4d9c89858b0c0c507c8ca3dce75f727a52a2a",
+        "git_blob": "1ef6610b9534c327e4e58412eb6a0cd5f8a9409e"
+      },
+      {
+        "path": "include/bsp/native_model_storage_lifetime.hpp",
+        "bytes": 8247,
+        "sha256": "0764b927078091103c21e6c2d6215ccb7a403c2b3eed832943dfae632a55ec3e",
+        "git_blob": "d00d1110e199b05a65c948d42017593a8f102661"
+      },
+      {
+        "path": "src/cc13_gui1.cpp",
+        "bytes": 35939,
+        "sha256": "2c9ea1b7e77542e13717ffe9721f0efe62bbefcc5868ae8988dd1587ac800fef",
+        "git_blob": "7f0ee9d08b5f0b90350d956f0bd2b5b79d714291"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "bytes": 186067,
+        "sha256": "6403dacc40b04fe9df818e5fa1e175609b876d54a51dbeae9a7e2ef69856cff6",
+        "git_blob": "f0ddd36fa94585e7be5ec76fe894e6d90d4951eb"
+      },
+      {
+        "path": "src/game_native_gui_page_application.cpp",
+        "bytes": 73641,
+        "sha256": "c33dc7b8980c4c7eb62406778962b2f4cdfdbf4d18421d4e2417a5ff54031841",
+        "git_blob": "996fbbdec1f9160540da07b0842295920734eead"
+      },
+      {
+        "path": "src/game_native_mission_model.inc",
+        "bytes": 54516,
+        "sha256": "ed4f91ff37398cc690c5657e9160e1d8aae36f4bf8361dd90ef253ee2733fb87",
+        "git_blob": "bba02b361321fd41e4173b557650c8c6e55d14e0"
+      },
+      {
+        "path": "src/game_native_model_domain.inc",
+        "bytes": 15824,
+        "sha256": "ff8788d41c4e4b34b302910cc3c52d3593b232fc409d229a3b4999cbaef242ed",
+        "git_blob": "000f2395134b994791d4284d279ffead14c9d317"
+      },
+      {
+        "path": "src/game_native_renderer_application.cpp",
+        "bytes": 80905,
+        "sha256": "ca5482dcb5566b9ccf14aebd2ec0b78f1e547bf5ab4e5268e2922fb207277d3e",
+        "git_blob": "c7ac9206b53f7fdf8e5c4e53a17cf3b3f6e4231f"
+      },
+      {
+        "path": "src/native_gui_page_properties.cpp",
+        "bytes": 5329,
+        "sha256": "acd659fac018b6742223dc4eb02bdda7d7b3e8e1c0a00c9720957206887ff379",
+        "git_blob": "94cb2bea918059fda155b44a6c6b0b2f244645b9"
+      },
+      {
+        "path": "src/native_gui_widget_child_links.cpp",
+        "bytes": 7146,
+        "sha256": "fbaf30b0a635a7030981a9e95fd34aab97f9b52979c2409598f5779a829a0a0b",
+        "git_blob": "1628e0a950e5f0addc58705f7504f6ac4387def0"
+      },
+      {
+        "path": "src/native_gui_widget_lifetime.cpp",
+        "bytes": 17866,
+        "sha256": "e8a53199f409248cc89b6d64c326a0b037970703e3b34ca628162a730907df68",
+        "git_blob": "9c8b06d3a4071d57ab1a539eaacdfb2fb810cbd3"
+      },
+      {
+        "path": "src/native_gui_widget_property_children.cpp",
+        "bytes": 14060,
+        "sha256": "28da89eae3bccc34b58dbb9255865b762d7477630c0822203c11604b38633ec4",
+        "git_blob": "c2d74159ed5486a1fc2b9b6248d06ee02ecb2154"
+      },
+      {
+        "path": "src/native_model_owner.cpp",
+        "bytes": 29717,
+        "sha256": "6e774d73c4a5bbd0109e19c271e2ff05a613e389c50ec72bd888c4c49f5ddd2d",
+        "git_blob": "7c764a3abcd1ffeb713dad482807965574aadb74"
+      },
+      {
+        "path": "src/native_model_storage_lifetime.cpp",
+        "bytes": 17033,
+        "sha256": "1ded6a8042e2ce26bdcd9852dae2c14b16cee1efdba0227ed479d0c9491cddd8",
+        "git_blob": "9aa0259d0d2deebd85f14805b9bd9eaae6b76587"
+      },
+      {
+        "path": "tests/math_tests.cpp",
+        "bytes": 226039,
+        "sha256": "81cffca04aaf51c02c5b3f4b73f70a06fb0572a521be385204e979009ffda6e1",
+        "git_blob": "1689744ed46b0d03c38a0e74a63bc1d25c7b9265"
+      }
+    ],
+    "command": "./scripts/build.ps1 -Configuration Release",
+    "target": "MSVC Win32 Release",
+    "MP": 2,
+    "PCH": "ON",
+    "coverage_PDB": "OFF",
+    "existing_suites": "2/2 passed",
+    "test_seconds": 12.28,
+    "first_attempt": {
+      "head": "61eb824318b4ba15aeb8b1c1aae37edef677e33c",
+      "result": "C4458 /WX local timed hid Impl::timed",
+      "fix": "one local name timed->timed_table, same lookup/call/return, commit5092d031"
+    },
+    "artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch22\\build.log",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch22\\artifacts\\01_build.log",
+        "bytes": 14575,
+        "sha256": "b8011aed3b7d41fcc09d4d00d81934619e6dc96aca5373f4628397a65bef89a7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch22\\build_after_C4458_fix.log",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch22\\artifacts\\02_build_after_C4458_fix.log",
+        "bytes": 2633,
+        "sha256": "c1aa90508b9108053a0d4bc162702d53a073576bdc39ee44ec9b8196d46dbc69"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch22\\compile_fix.txt",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch22\\artifacts\\03_compile_fix.txt",
+        "bytes": 256,
+        "sha256": "897187171ad1c6b747f9380dfa26d4fcbfbe8d8dc32b13dc2dee24df80949945"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch22\\build-head.txt",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch22\\artifacts\\04_build-head.txt",
+        "bytes": 42,
+        "sha256": "f5e38d3f7abccd75705642dedfb878d5dd56ccc4392e41a44e8a08afcceb3424"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch22\\build_after_C4458_fix_head.txt",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch22\\artifacts\\05_build_after_C4458_fix_head.txt",
+        "bytes": 42,
+        "sha256": "64636da6ce15a63ee8a0dd675159d7e6a8350c9643e3ac56b88b41241dca03d9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch22\\joined_Source.json",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch22\\artifacts\\06_joined_Source.json",
+        "bytes": 5786,
+        "sha256": "1592d3d60abc0f10931c590a30f33d4328c630b9aa6036fd565ffa989492bc14"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\CMakeCache.txt",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch22\\artifacts\\07_CMakeCache.txt",
+        "bytes": 19943,
+        "sha256": "1685db07153e0ad413c8e75a1536cf232b943fdc86f5e983cd18cf2abfa3ecb2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\bsp_game.map",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch22\\artifacts\\08_bsp_game.map",
+        "bytes": 11381951,
+        "sha256": "6bb9b7edffced0ab628e36390fac8ef517a2b6c4e17486777c34c1554b5898b0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\bsp_game.exe",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch22\\artifacts\\09_bsp_game.exe",
+        "bytes": 7516672,
+        "sha256": "a761fedd0c552fc0fc16b94efb22a79e76d74879975d1870ef9c1059e45ed2a5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\bsp_math_tests.exe",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch22\\artifacts\\10_bsp_math_tests.exe",
+        "bytes": 893952,
+        "sha256": "a0fa3d995398da96f24a293c1f9b8f1bf411d38389311ef4054053192fefdf9a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\xlive_stub.dll",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch22\\artifacts\\11_xlive_stub.dll",
+        "bytes": 32768,
+        "sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3"
+      }
+    ],
+    "Game_or_manual_probes_executed_for_combined_component": false,
+    "Page_guard": false,
+    "Main_admitted": false,
+    "runtime_activated": false,
+    "new_Original_vendor_duplicate_body_credit": 0,
+    "independent_reviews": [
+      "a842fbcd37e3cdb3a440af36cb85910305fc36c2",
+      "1c26fc57a45089b386d39121c795a30ed6b81a0b"
+    ],
+    "remaining": "Primary final actual-caller/receipt admission, qualified ledger/Ghidra evidence and finalbatchMain publication; guard staysfalse until fullraw95/Frame/Game/otherfactories/genuineHUD+required actualruntime gates."
+  },
+  "current_default_SourceHost_regression": {
+    "schema": "bsp.cc16.joined_SourceHost_regression.v1",
+    "status": "fresh_current_Source_Host_normal_exit_passed",
+    "build_head": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+    "loaded_PE": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\bsp_game.exe",
+      "size": 7516672,
+      "mtime_utc": "2026-10-30T14:03:23.3673379Z",
+      "sha256": "a761fedd0c552fc0fc16b94efb22a79e76d74879975d1870ef9c1059e45ed2a5",
+      "build_checkout": {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration",
+        "head": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+        "dirty": false
+      }
+    },
+    "observer": {
+      "schema": "bsp_one_current_Host_handle_observation_v1",
+      "preflight": {
+        "utc": "2026-10-30T14:43:56.852228+00:00",
+        "DRAIN": false,
+        "ignore_DRAIN_env": null,
+        "slot": 0,
+        "slot_lock_exists": false,
+        "prior_bsp_processes": [
+          {
+            "pid": 40812,
+            "parent_pid": 31836,
+            "threads": 0
+          }
+        ],
+        "artifacts": {
+          "build/win32/Release/bsp_game.exe": "a761fedd0c552fc0fc16b94efb22a79e76d74879975d1870ef9c1059e45ed2a5",
+          "build/win32/bsp_game.map": "6bb9b7edffced0ab628e36390fac8ef517a2b6c4e17486777c34c1554b5898b0",
+          "build/win32/Release/xlive_stub.dll": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3"
+        },
+        "fresh_outputs": true,
+        "mutex_exists": false,
+        "mutex_open_error": 2,
+        "root_head": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+        "build_head": "5092d03115c2dfd4b137b0f8022ac60c67b33522"
+      },
+      "started_utc": "2026-10-30T14:43:56.932195+00:00",
+      "no_force_stop": true,
+      "no_retries": true,
+      "no_old_process_operations": true,
+      "records": {
+        "wrapper": {
+          "pid": 81140,
+          "handle_value": "0x134",
+          "creation_FILETIME": 134378450369466752,
+          "exit_FILETIME": 134378450468691115,
+          "image_path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+          "wait0": 0,
+          "exit_code": 0,
+          "observed_utc": "2026-10-30T14:44:06.918084+00:00"
+        },
+        "bootstrap": {
+          "pid": 77444,
+          "handle_value": "0x1f8",
+          "creation_FILETIME": 134378450384421344,
+          "exit_FILETIME": 134378450450847948,
+          "image_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\bsp_game.exe",
+          "wait0": 0,
+          "exit_code": 0,
+          "observed_utc": "2026-10-30T14:44:06.918102+00:00",
+          "parent_pid": 81140
+        },
+        "child": {
+          "pid": 58180,
+          "handle_value": "0x12c",
+          "creation_FILETIME": 134378450384806525,
+          "exit_FILETIME": 134378450450654345,
+          "image_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\bsp_game.exe",
+          "wait0": 0,
+          "exit_code": 0,
+          "observed_utc": "2026-10-30T14:44:06.918114+00:00",
+          "parent_pid": 77444
+        }
+      },
+      "errors": [],
+      "run_script_sha256": "cd5631e3829dcf25ba82243906a38ccd8c5a6ab1afcf81982e713d400880602c",
+      "complete_three_terminal_handles": true,
+      "all_three_exit_zero": true,
+      "wrapper_returncode": 0,
+      "finished_utc": "2026-10-30T14:44:06.918122+00:00",
+      "post_bsp_processes": [
+        {
+          "pid": 40812,
+          "parent_pid": 31836,
+          "threads": 0
+        }
+      ],
+      "DRAIN_after": false
+    },
+    "manifest": {
+      "started_utc": "2026-10-30T14:43:58.0586043Z",
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration",
+      "owner": "agent/codex-function-source-integration",
+      "slot": 0,
+      "instance_tag": "slot0",
+      "affinity_core": 2,
+      "log": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\joined_source_host.log",
+      "launcher": {
+        "game_args": [
+          "--frames",
+          "1",
+          "--difficulty",
+          "1",
+          "--settings-personal-root",
+          "J:/PROG/battlestations-pacific-decompile-codex-function-source-integration/local/function_source_batch23/personal",
+          "--window-monitor",
+          "smallest",
+          "--window-resolution",
+          "fit",
+          "--present-interval",
+          "immediate"
+        ],
+        "exe": "J:/PROG/battlestations-pacific-decompile-codex-function-source-integration/build/win32/Release/bsp_game.exe",
+        "xlive_dll": "J:/PROG/battlestations-pacific-decompile-codex-function-source-integration/build/win32/Release/xlive_stub.dll",
+        "no_force_stop": true,
+        "game_root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific"
+      },
+      "arguments": [
+        "--game-root",
+        "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+        "--xlive-dll",
+        "J:/PROG/battlestations-pacific-decompile-codex-function-source-integration/build/win32/Release/xlive_stub.dll",
+        "--log",
+        "J:/PROG/battlestations-pacific-decompile-codex-function-source-integration/local/function_source_batch23/joined_source_host.log",
+        "--instance-tag",
+        "slot0",
+        "--affinity-core",
+        "2",
+        "--frames",
+        "1",
+        "--difficulty",
+        "1",
+        "--settings-personal-root",
+        "J:/PROG/battlestations-pacific-decompile-codex-function-source-integration/local/function_source_batch23/personal",
+        "--window-monitor",
+        "smallest",
+        "--window-resolution",
+        "fit",
+        "--present-interval",
+        "immediate"
+      ],
+      "difficulty": {
+        "value": "1",
+        "source": "caller"
+      },
+      "env": {
+        "BSP_AGENT": "agent/codex-function-source-integration"
+      },
+      "exe": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\bsp_game.exe",
+        "size": 7516672,
+        "mtime_utc": "2026-10-30T14:03:23.3673379Z",
+        "sha256": "a761fedd0c552fc0fc16b94efb22a79e76d74879975d1870ef9c1059e45ed2a5",
+        "build_checkout": {
+          "root": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration",
+          "head": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+          "dirty": false
+        }
+      },
+      "host": {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration",
+        "head": "5092d03115c2dfd4b137b0f8022ac60c67b33522",
+        "dirty": false
+      },
+      "inputs": [
+        {
+          "option": "--xlive-dll",
+          "arg_index": 3,
+          "value": "J:/PROG/battlestations-pacific-decompile-codex-function-source-integration/build/win32/Release/xlive_stub.dll",
+          "source": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\xlive_stub.dll",
+          "archived": "xlive_stub.dll",
+          "sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3"
+        }
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T14:44:05.0935759Z",
+      "launcher_exit_code": 0,
+      "drain": {
+        "no_force_stop": true,
+        "waited_seconds": 0,
+        "natural_completed": true,
+        "timed_out": false,
+        "forced_stop_requested_pids": [],
+        "retained_pids": []
+      }
+    },
+    "ordered_events": [
+      {
+        "line": 3,
+        "text": "native GUI Text pool CRT CD71F0: atexit=0 storage_bytes=56 before_particle_pool=1 type_bootstrap=pending_canonical_vfs"
+      },
+      {
+        "line": 4,
+        "text": "native GUI Group pool CRT CD7440: atexit=0 storage_bytes=56 before_particle_pool=1"
+      },
+      {
+        "line": 5,
+        "text": "native particle pools initialized: model_atexit=0 parameter_atexit=0 storage=process_actual38h/actual38h"
+      },
+      {
+        "line": 745,
+        "text": "frame limit 1 reached, requesting loop exit"
+      },
+      {
+        "line": 767,
+        "text": "summary window_created=1 device_created=1 device_hr=0x00000000 back_buffer=1600x900 frames_presented=0 presents_skipped=1 loop_finished=1 exit_code=0"
+      }
+    ],
+    "concrete_lifecycle_calls": [
+      "application_construct",
+      "application_initialize",
+      "platform_run_loop_dispatch",
+      "application_shutdown",
+      "application_destruct",
+      "destroy_singleton_lifetime_manager",
+      "random_threads_shutdown"
+    ],
+    "existing_unbound_singleton_shutdown": [
+      {
+        "line": 749,
+        "text": "host ApplicationShutdownHost::singleton_teardown [00737f80] UNIMPLEMENTED, returning a neutral value"
+      },
+      {
+        "line": 939,
+        "text": "  ApplicationShutdownHost::singleton_teardown              00737f80             UNIMPLEMENTED calls=1"
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\joined_source_host.log",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\artifacts\\01_joined_source_host.log",
+        "bytes": 100131,
+        "sha256": "d69db0c7d685a8e2a04750544c43886b7c997d83bc1368820421843a4d85f7ba"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\joined_source_host.log.manifest.json",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\artifacts\\02_joined_source_host.log.manifest.json",
+        "bytes": 3602,
+        "sha256": "1293ee04b1f74d2e60409e1f8493d60dccc91c5716c7fea3a21ff4191b3bb6f4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\observe_host_once.py",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\artifacts\\03_observe_host_once.py",
+        "bytes": 9107,
+        "sha256": "e2b7caa4608e890802df9034ef4e91306773af498d6b0f89234887bdae517192"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\run_current_host.ps1",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\artifacts\\04_run_current_host.ps1",
+        "bytes": 701,
+        "sha256": "cd5631e3829dcf25ba82243906a38ccd8c5a6ab1afcf81982e713d400880602c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\host_preflight.json",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\artifacts\\05_host_preflight.json",
+        "bytes": 803,
+        "sha256": "8f83a10f6fd258a2cd3f20f528f9dcbe297021fc3836ee91bd13666531c08aed"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\host_observer.json",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\artifacts\\06_host_observer.json",
+        "bytes": 2712,
+        "sha256": "7e0041a7bfb82ef88fbf812d4f8baf28a422fa2572dc59520512d80b4f4c6ed2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\wrapper_stdout.log",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\artifacts\\07_wrapper_stdout.log",
+        "bytes": 386,
+        "sha256": "054a81e87f03469ff311e5fe03e9eaefc42d8bda32d7255967f83a51c845d2f7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\coordinator_notice.txt",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\artifacts\\08_coordinator_notice.txt",
+        "bytes": 978,
+        "sha256": "6d1b8ba5e03fff1e7bdbea88f9d2152fa3ee162d47541e692475b862f7057ca6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\joined_source_host.log.inputs\\xlive_stub.dll",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\artifacts\\09_xlive_stub.dll",
+        "bytes": 32768,
+        "sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3"
+      }
+    ],
+    "Page_guard": false,
+    "new_Page_Model_client_or_timed_nonempty_execution_proved": false,
+    "new_Original_ABI_or_gameplay_credit": 0,
+    "qualification": "Current default Host regression and actual terminal custody only; guards and broader actual-consumer gates remain. Existing old40812 preserved/unknown."
+  },
+  "ledger_scope": {
+    "existing_function_records_updated": 17,
+    "existing_fragment_records_updated": 5,
+    "existing_name_evidence_appended": 19,
+    "no_new_AAACD4_entry": "Suffix inside existing AAA710+5C4 fragment; zero new body.",
+    "semantic_and_library_variants_preserved": true,
+    "raw_timed_interfaces_mapped_as_counterparts_not_rebindings": true,
+    "all_old_probe_and_differential_scopes_preserved": true,
+    "CD7460_guarded_Source_caller_adopted": true,
+    "CD7460_activated": false,
+    "raw_counterparts_only": "Semantic/vendor records are not adopted/rebound; only nested raw-widget interface and conditional consumer evidence is added. Page timer producer reached=false."
+  },
+  "saved_analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "existing_names_CG_tags_and_comments_preserved": true,
+    "prior_values_backed_up": true,
+    "locked_annotation_saved": true,
+    "export_refresh": {
+      "complete": true,
+      "addresses": [
+        "00ac4c50",
+        "00aaa710",
+        "00aa83a0",
+        "00aa8320",
+        "00aa9730",
+        "00cd7460",
+        "00aa6f30",
+        "00aa77b0",
+        "00aa7f50",
+        "00aa8b00",
+        "00ad3a80",
+        "00b750c0",
+        "00b75290",
+        "00ad3970",
+        "00ad3990",
+        "00ac2ed0",
+        "00ac2fe0",
+        "00ad3a40",
+        "00ad3a60"
+      ],
+      "receipt": "local/function_source_batch23/ghidra_export.log"
+    }
+  },
+  "admission_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\ghidra_annotation.log",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\admission_artifacts\\01_ghidra_annotation.log",
+      "bytes": 996,
+      "sha256": "71364356daa6f03fc80c0afcbf8498b178c806b705511cc474c6082bb5cf3781"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\ghidra-annotations-20261030T145331Z.json",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\admission_artifacts\\02_ghidra-annotations-20261030T145331Z.json",
+      "bytes": 136945,
+      "sha256": "fccd712b4f80e4d8cd0d5991866427d317177841d98bdd6929fe6bbeafb872cb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\ledger_changes.log",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\admission_artifacts\\03_ledger_changes.log",
+      "bytes": 32404,
+      "sha256": "04b438feebb523cb63085bfaf868bab376a0cbe54ba0413e484584aaf5b4794c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\prior_selected_ledger.json",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\admission_artifacts\\04_prior_selected_ledger.json",
+      "bytes": 75871,
+      "sha256": "42ec238830f2d4055ab4f01a5cc1f1abb03de936ffde15f104b1765f20acee5d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\selected_function_records.json",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\admission_artifacts\\05_selected_function_records.json",
+      "bytes": 67096,
+      "sha256": "48ab1706836e59ee2aa9b27ddd7e6ee8bed0b9a269cb5c691da8625237b42e53"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\selected_fragment_records.json",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\admission_artifacts\\06_selected_fragment_records.json",
+      "bytes": 16219,
+      "sha256": "acdceb39622422c8ee3d36d64aa3e6c36c898a27726e197b0a695f7ae8666a42"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\admit_ledger.py",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\admission_artifacts\\07_admit_ledger.py",
+      "bytes": 6859,
+      "sha256": "9d8abeb092b9744690fe94b20d05c68f9100ff62497a9247bcf04fb715a0a261"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch22\\verify_admission_receipts.py",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\admission_artifacts\\08_verify_admission_receipts.py",
+      "bytes": 4923,
+      "sha256": "f698f8812b6d84f2cb47d0316150e90171e6a77c95aaf0a1f737da519bae1a16"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch22\\primary_receipt_checks.json",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\admission_artifacts\\09_primary_receipt_checks.json",
+      "bytes": 30910,
+      "sha256": "0580de921c71b3c16961fd082b4d6afeac5db421996817e9d0b9ae23050ea86a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch21\\component_contract_pin_checks.json",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\admission_artifacts\\10_component_contract_pin_checks.json",
+      "bytes": 1367,
+      "sha256": "f4e8426d1dbad3add149f0170b94f380ae4b2dcf80138af830c55626565f1c3b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch22\\common_build_pass.json",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\admission_artifacts\\11_common_build_pass.json",
+      "bytes": 11549,
+      "sha256": "9f99524238e38b4f86c79883c60a9dd522aa4d8cc4e86ec97c0ccc592c007fc3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\runtime_regression.json",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\admission_artifacts\\12_runtime_regression.json",
+      "bytes": 13164,
+      "sha256": "8ae486816481232d10b9fdfef99ff46d9502b3be6223f9bb75881181d788ca48"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\ghidra_export.log",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\admission_artifacts\\20_ghidra_export.log",
+      "bytes": 466,
+      "sha256": "5a1c8361d31c4d7faa9dee1494597adda4096fe11baa4fbdc2cc22ad566dcc4b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\docs\\CC16_RAW_MODEL_DOMAIN_INDEPENDENT_REVIEW.md",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\admission_artifacts\\21_CC16_RAW_MODEL_DOMAIN_INDEPENDENT_REVIEW.md",
+      "bytes": 10216,
+      "sha256": "ecab4567bbd02b6879fb953aaeef53bd4cd0cc0737437896bfc77fdfa35473d9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\reports\\cc16_raw_model_domain_independent_review.json",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\admission_artifacts\\22_cc16_raw_model_domain_independent_review.json",
+      "bytes": 37042,
+      "sha256": "352cbccb9f2ae15d1eaaa518fcf2da123891ad7d6f31a039de0a9fa692450a8a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\docs\\CC16_POPULATED_PAGE_INDEPENDENT_REVIEW.md",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\admission_artifacts\\23_CC16_POPULATED_PAGE_INDEPENDENT_REVIEW.md",
+      "bytes": 13343,
+      "sha256": "6dbdbc4cfbbe8f5733bb8af1dfcd11ee4d2f84d3824c6e0e5d5ec81b777f3cb1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\reports\\cc16_populated_page_independent_review.json",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch23\\admission_artifacts\\24_cc16_populated_page_independent_review.json",
+      "bytes": 46721,
+      "sha256": "a56e650fae99245a76a6c5104d42850d86a6fc30148791bcf22d73da376b2e0c"
+    }
+  ],
+  "Page_guard": false,
+  "new_populated_Page_Model_failures_flags0_or_nonempty_timer_runtime_tested": false,
+  "new_Mission_live_gameplay_parity_rerun": false,
+  "fixture_scope": "One Source constructor-failure/captured-slot regression plus existing suites; no new Native fixture scope.",
+  "remaining_gates": [
+    "Populated Type2 reader/retirement actual-consumer execution before activation.",
+    "Full raw95/current-vptr shared authority, Frame/Game ownership and actual caller migration.",
+    "Other widget factories and mmod Model-page route.",
+    "Genuine HUD raw-widget timer producer/setter/update integration and nonempty execution.",
+    "Existing optional BSP_NATIVE_MISSION_SHIP qualifications remain; no new Mission gameplay claim.",
+    "Original ABI/FH3/SEH/fault/private-frame/unmasked-FP and visual/gameplay proof remain distinct."
+  ],
+  "new_Original_vendor_duplicate_body_credit": 0,
+  "ABI_compatible": false,
+  "game_validated": false,
+  "goal_complete": false
+}
