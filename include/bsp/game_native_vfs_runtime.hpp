@@ -52,6 +52,9 @@ struct GameNativeVfsRawServices {
     NativeRetainedMemoryOwnerContext& retained_memory;
     NativeVfsEnumerationContext& enumeration;
     const SingletonLifetimeCallbacks& invalid_parameters;
+    // SAME retained caller-supplied 0109CEF0 role used by existing VFS routes.
+    // Distinct from E17654; borrowing creates no buffer or fallback provider.
+    const char* actual_empty_name_0109cef0;
 };
 
 // Borrow one initialized raw lifetime, physical-provider pool, type-ID set and

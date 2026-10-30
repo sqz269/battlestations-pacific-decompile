@@ -30,6 +30,16 @@ void* construct_native_wide_string_header_004c5e60(void* actual_header,
 void resize_native_wide_string_header_004c53e0(void* actual_header,
     NativeStringStorage& storage, std::uint32_t length, bool preserve);
 
+// Same actual-header body through the caller's SAME AA8/AA4/AA0 raw cells.
+// Resolve419CC0 before allocation and EVERY nonnull return (large/disabled
+// included); capture return operands before its getter. Getter exceptions
+// propagate, unlike the pre-existing noexcept NativeStringStorage::release
+// boundary. No caching, adapter, header/object cast, rollback or local cleanup.
+// Raw overlap uses memmove; zero-byte copy call is omitted after operand reads.
+// Source/CRT/null/fault/FH3/SEH limits remain; no Original ABI/startup claim.
+void resize_native_wide_string_header_004c53e0(void* actual_header,
+    NativeStringRawPoolContext& context, std::uint32_t length, bool preserve);
+
 // Full 00436430, native ECX=header (__fastcall), RET. Capture a nonnull buffer
 // and current 2*length+2 byte size, then release. No header writes, even if the
 // release callback changes it. A null pointer skips the length read entirely.
