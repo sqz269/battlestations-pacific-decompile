@@ -1,0 +1,89 @@
+{
+  "status": "two_caller_fragments_source_reviewed_retained_link_restored_canonical_win32_pass",
+  "language": {
+    "commit": "76c9dca933d384e6a61cfd59b7d9e487ef200cb4",
+    "source_hashes": {
+      "include/bsp/game_native_locale_language_input.hpp": "fe7b8994648fa49833464f6fa88f0bd1b6b32456c437133ed84469e9a0e3b031",
+      "src/game_native_locale_language_input.cpp": "85bfa98edecb33bf9c991827e67457c4e289100cb8b2c9a29e31b8d317231561",
+      "docs/GAME_NATIVE_LOCALE_LANGUAGE_INPUT.md": "4ed0393b2a5f262e6ed8edb80ae2f62409e877c96843199aab7c0949ea89065f",
+      "reports/game_native_locale_language_input.json": "df26805f5c34f49edf934b235bb40e3464970f1221018d9a16b9101924f712e3"
+    },
+    "primary_review": "complete84lineHPP_134lineCPP_matches93c3_contract",
+    "independent_gameplay_review_sha256": "dc773682e429060c9820d04e98c46843e0565761192a453d1eb07c9e10f9a068",
+    "strict_object": {
+      "compile_count": 1,
+      "exit_code": 0,
+      "coff_machine": "014C",
+      "sha256": "655c20db0cefb55a9d1e29338d1546030c79dbfddc8d97b25326136f5115b319"
+    },
+    "producer_receipt_sha256": "d09cf00bdb2f13401e143958f184ca2cee6c40a3b681bf491a8a39076bf8577a",
+    "registration": "a29e89b509e93bcda0e4ff438ef51cfa3bf53707",
+    "symbol": "?initialize_native_locale_language_input_0073e06a@game@bsp@@YAXABVGameNativeLocaleLanguageInputContext@12@AAVGameNativeLocaleLanguageInputFrame@12@@Z",
+    "independent_lifetime_review_sha256": "17e41175b6f50c26b349c9bbe6dcbeb5cb5ab1aa391c647a6f4c25d553cf972a"
+  },
+  "startup_activation": false,
+  "source_ready": false,
+  "new_test_cases": 0,
+  "new_native_body_credit": 0,
+  "original_abi_or_runtime_proof": false,
+  "full_reload_raw16_loaded_consumers": false,
+  "globals": {
+    "commit": "5ceb6719544084e36c91d5a6e177a77de6cf5098",
+    "git_lf_source_hashes": {
+      "include/bsp/game_native_locale_globals_input.hpp": "0aec340cff921e6f67ebab93d4ff6350bd9a9ff61baf3c1110079a087a88372b",
+      "src/game_native_locale_globals_input.cpp": "9be2a9136a8e0d24241ceb38351f857c3f2ae4d34c876efc21c94f27f8bd68f5",
+      "docs/GAME_NATIVE_LOCALE_GLOBALS_INPUT.md": "79a3113534b847510a702670a83e03d5dde019d73da4253b01787fa3a8ce45a8",
+      "reports/game_native_locale_globals_input.json": "e1594dccc54dd20a6739b218fc9178738e9409ef6c0686bafd9740d13982e2f1"
+    },
+    "physical_compiled_source_hashes": {
+      "include/bsp/game_native_locale_globals_input.hpp": "c7917aa6c76ad21c60485c02c27e8492570f38a6f085cd4879fc725d36a8a2f9",
+      "src/game_native_locale_globals_input.cpp": "74daeccd102fdea5086d6b1c69be27ee783a68891fc935c80f3e437cddd1b9e3",
+      "docs/GAME_NATIVE_LOCALE_GLOBALS_INPUT.md": "d7e4b6b447f26620f155d79be861a8f815b5821fdc86b6a390b3c7de25a0442f",
+      "reports/game_native_locale_globals_input.json": "b8971573faebe7e5d3c0577314a8bb79c181184bdef3b8e2b41d80d3d24124a1"
+    },
+    "line_endings_only_difference": true,
+    "primary_review": "complete75lineHPP_169lineCPP_matches078ce8_contract",
+    "strict_object": {
+      "compile_count": 1,
+      "exit_code": 0,
+      "coff_machine": "014C",
+      "sha256": "fcd7cd4ca9d6aeecdb64e2a64a4c04fd8c791c3dad422b042d3a73055ac6d300"
+    },
+    "producer_receipt_sha256": "b0c0f2b18b6fc42ea31e659346221a580abd5da85d55e9f5bcc4749e8e5872ea",
+    "symbol": "?register_native_locale_globals_input_0073e0ba@game@bsp@@YAXABVGameNativeLocaleGlobalsInputContext@12@AAVGameNativeLocaleGlobalsInputFrame@12@@Z",
+    "registration": "8e6e82f2d77870f7d30ac534f8a7093bcee38e07",
+    "independent_gameplay_review_sha256": "e669d28dda02b956c1bbfd60ce5d1b7b9bfb1af14d3b574a2ac3d7351ed4c7e1",
+    "independent_lifetime_review_sha256": "e8ca4ce01bc7838b505214d482dabc8019aea8dda4f17d351a7284ca7bc390c5"
+  },
+  "joined_provider_preservation_count": 21,
+  "registration_target": "bsp_game",
+  "registration_count_each": 1,
+  "retained_link": {
+    "head": "8e6e82f2d77870f7d30ac534f8a7093bcee38e07",
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "existing_checks": "2/2",
+    "ctest_seconds": 10.64,
+    "map_sha256": "1a9c752a8797bb77ebb7f90082c3830cbb5c7b1c85dd78547bd1ddbb803caa5c",
+    "overlay_sha256": "db04b045d89724ebe801e35bc66c7dcdf7f1cda4e550b376c3a55a01e5f919cf",
+    "executable_sha256": "6a49807dde63b23e7aba686989e5f3810da80dbb16d6030c9a71527362e09980",
+    "new_entry_or_game_invoked": false,
+    "language_address": "103018b0",
+    "globals_address": "10301bd0",
+    "both_cpp_handlers_and_unwind_tables_present": true
+  },
+  "restored_canonical_build": {
+    "head": "8e6e82f2d77870f7d30ac534f8a7093bcee38e07",
+    "command": "./scripts/build.ps1",
+    "configuration": "Release Win32",
+    "exit_code": 0,
+    "existing_checks": "2/2",
+    "ctest_seconds": 11.25,
+    "include_before_cache_entry_absent": true,
+    "forced_symbols_absent": true,
+    "both_unbound_entries_absent_from_map": true,
+    "log": "local/locale_input_integration_cc16_20261030/build.log"
+  },
+  "all_nine_raw_text_flags_off": true,
+  "each_packet_primary_plus_two_independent_source_reviews": true
+}

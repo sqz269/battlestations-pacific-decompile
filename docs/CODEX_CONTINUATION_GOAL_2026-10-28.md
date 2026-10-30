@@ -1254,3 +1254,15 @@ canonicalReleaseWin32checks2/2 11.13s/cache+projectrestored/unboundmapentryabsen
 Validrow/no-writer/pre-world-pool-catalog-CRT lifetime remainscallerscope.
 Exactlanguage0x25 andglobals0x26 callerbridges advanceasdisjointfourNEWfile
 packets; no startupredirect/fullreload/raw16/GUI/loadedconsumer/runtimegrant.
+
+Caller language76c9dca93(hex0x25) andglobals5ceb67195(hex0x26) nowcompose
+genuine owningraw8 construction/borrowedlocaleoperation/normalstorage return
+and distinctselectedCURRENT41DD20 cleanup. FourNEWGamefiles each; no existing
+provider/owner/host edits. Primary+2independentCode, strict1objectONCE014C each;
+Gamecountonce each; all21Rootproviderpathsunchanged. Joined8e6e82f2d retained
+bothcallerentries+CppEH/checks2/2 10.64s; overlayremovedcanonical2/2 11.25s,
+forcedcache/project/mapentriesabsent. Puremetadata status/dtor/privatefailure,
+no prearm/consumedcleanupretry, explicitcallerretention/lifetime/currentCRT.
+Startupsequence orchestration/fullreload/raw16/GUI/Font48/consumer/runtime
+gates remain; all9Textoff. Next read-only rawA9F4B0/A9FAD0 consumer readiness
+contract advances independently; no empty/substitution/loaded domain invented.
