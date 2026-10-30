@@ -1,0 +1,675 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-glyph-code-unit-raw-pool-caller",
+  "classification": "bounded_direct_existing_whole_raw_body_composition_not_activation",
+  "owned_files": [
+    "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+    "src/native_gui_text_glyph_quad_storage.cpp",
+    "docs/CC16_NATIVE_GLYPH_CODE_UNIT_RAW_POOL_CALLER.md",
+    "reports/cc16_native_glyph_code_unit_raw_pool_caller.json"
+  ],
+  "scope": {
+    "leased_native_address": "00ab98f0",
+    "existing_whole_caller": "00ab98f0..00ab9fc2",
+    "caller_native_bytes": 1747,
+    "caller_native_instructions": 485,
+    "recovered_body_added": false,
+    "existing_callee": "00ab81c0..00ab8242",
+    "callee_native_bytes": 131,
+    "callee_native_instructions": 46,
+    "native_site": "00ab9e51",
+    "intended_source_seams": 3,
+    "no_new_owner_context_record_fields_or_providers": true,
+    "additional_operation_calls_at_caller_site": 0
+  },
+  "baseline": {
+    "immutable_constructor_packet": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+    "root_import": "efeded4772493a91eec36f410adaf61b6534cd04",
+    "separate_sync_commit_not_for_integration": "40b27455e828712b3aaf260a093448ef31dbca61",
+    "temporary_sync": "Root authorized only2059 cherry-pick; two Origin modify/delete resolutions to exact2059 final blobs; temporary8file/3address lease released before4file/AB98F0 caller lease",
+    "all8_source_blobs_equal_2059_efeded_sync": true,
+    "all8_source_pins": [
+      {
+        "commit": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+        "path": "include/bsp/native_gui_text_default_storage.hpp",
+        "git_blob": "2eb5db69eff0b68c093a5006e13eb2d490e821b7",
+        "git_lf_bytes": 6352,
+        "git_lf_sha256": "7a23774d66bb90e59712407d58fd3356640da3f77f1c087bf766b77d3748141a"
+      },
+      {
+        "commit": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+        "path": "src/native_gui_text_default_storage.cpp",
+        "git_blob": "47f32c0fb30dc7ebfaeb83ce2480ec88f59d3039",
+        "git_lf_bytes": 26698,
+        "git_lf_sha256": "6ed36cf3cad97ef089be15302827995d3bc6f303f5df3a3eb122b970dde67d09"
+      },
+      {
+        "commit": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+        "path": "include/bsp/native_gui_text_failure_origin.hpp",
+        "git_blob": "1863acded67119b6e16ab9e26b72b06475742067",
+        "git_lf_bytes": 12422,
+        "git_lf_sha256": "05244d307d0cbdb80b83f59c1b188acbed3f9422204e22c10ec56a36b6934704"
+      },
+      {
+        "commit": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+        "path": "src/native_gui_text_failure_origin.cpp",
+        "git_blob": "6226f079539631f02df8b9665e1ec4a213d91455",
+        "git_lf_bytes": 11627,
+        "git_lf_sha256": "aacd70ec3d609de1b8a544884fd4d844d51b684a96194a0f95a62b9c843fc8c1"
+      },
+      {
+        "commit": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "git_blob": "a18bd35fc56ce26196c90a783cd97b1b6be54c13",
+        "git_lf_bytes": 9462,
+        "git_lf_sha256": "da98a4e498a5394c6dc3c36949a9c7bb1022b2702e85783c2d3fa53413cd2e23"
+      },
+      {
+        "commit": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "git_blob": "bbb8e2db8399ccd3dda8efab6db47900caba661e",
+        "git_lf_bytes": 21923,
+        "git_lf_sha256": "1dfd76f3a69ff451faf54ffac707fc5c746b137ab91956f1c046f5494bbd3a06"
+      },
+      {
+        "commit": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+        "path": "include/bsp/native_gui_text_storage_construct.hpp",
+        "git_blob": "736c02913b09a1de5f606362747305a2a4a36318",
+        "git_lf_bytes": 9641,
+        "git_lf_sha256": "681a44709442353f716f2ead0377804df61cbc659ec7fc7dcc3a7a05c56ec5b2"
+      },
+      {
+        "commit": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+        "path": "src/native_gui_text_storage_construct.cpp",
+        "git_blob": "88fa09e70019fa61d59652c5434666b8db4931b2",
+        "git_lf_bytes": 37007,
+        "git_lf_sha256": "a4c2c5e06dfa78d0dba7769900cb7a8302f7567c70f77707262246088326db60"
+      }
+    ],
+    "raw_supplier_packet": "b6c69bfb9b83b61d2bb085668e53ac8cef63a19a",
+    "raw_supplier_independent_review": "f0a38625c8192d6a8a2f73a166ebb3f250eef4bf",
+    "historical_glyph_backing_correction": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+    "final_packet_only_must_be_cherry_picked": true
+  },
+  "direct_call_contract": {
+    "before": "c.calls.code_unit_00ab81c0(a.locals + 4, current_code_unit, a)",
+    "after": "construct_gui_text_code_unit_00ab81c0(a.locals + 4, current_code_unit, c.strings)",
+    "native_argument_epoch": "read already-current full homes[9] DWORD before boundaryAB9E51, unchanged; callee reads its lowWORD at late8222 epoch",
+    "header": "SAME acquired ordinary locals[4]/[5], Native F24/F28, no new header/copy/const_cast/typed owner",
+    "context": "SAME c.strings NativeStringRawPoolContext; actual AA8/AA4/AA0 raw cells, no semantic/noexcept storage adapter",
+    "normal_return": "use genuine returned SAME-header pointer as content_argument; state2 begins only after full code-unit return, then existing contentAB9E61/current50/normal wide return order",
+    "on_escape": "existing activeAB9E51 record/captured scratch/outer catch remain; no forced return, implicit destructor or rollback added",
+    "opaque_method_removed": true,
+    "unused_interface_search": [
+      {
+        "commit": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+        "command": "git grep -n NativeGuiTextGlyphQuadStorageCalls <commit> -- include src tests",
+        "lines": [
+          "2059c68fefc976951d2a455ee3c1ee7250c3e525:include/bsp/native_gui_text_glyph_quad_storage.hpp:25:class NativeGuiTextGlyphQuadStorageCalls {",
+          "2059c68fefc976951d2a455ee3c1ee7250c3e525:include/bsp/native_gui_text_glyph_quad_storage.hpp:27:    virtual ~NativeGuiTextGlyphQuadStorageCalls() = default;",
+          "2059c68fefc976951d2a455ee3c1ee7250c3e525:include/bsp/native_gui_text_glyph_quad_storage.hpp:77:    NativeGuiTextGlyphQuadStorageCalls& calls;"
+        ],
+        "concrete_implementers_found": 0
+      },
+      {
+        "commit": "efeded4772493a91eec36f410adaf61b6534cd04",
+        "command": "git grep -n NativeGuiTextGlyphQuadStorageCalls <commit> -- include src tests",
+        "lines": [
+          "efeded4772493a91eec36f410adaf61b6534cd04:include/bsp/native_gui_text_glyph_quad_storage.hpp:25:class NativeGuiTextGlyphQuadStorageCalls {",
+          "efeded4772493a91eec36f410adaf61b6534cd04:include/bsp/native_gui_text_glyph_quad_storage.hpp:27:    virtual ~NativeGuiTextGlyphQuadStorageCalls() = default;",
+          "efeded4772493a91eec36f410adaf61b6534cd04:include/bsp/native_gui_text_glyph_quad_storage.hpp:77:    NativeGuiTextGlyphQuadStorageCalls& calls;"
+        ],
+        "concrete_implementers_found": 0
+      }
+    ],
+    "other_code_unit_named_apis": "unrelated typed/engine/oct18 interfaces untouched; only this Calls member is removed"
+  },
+  "whole_file_inverse": {
+    "baseline_files": [
+      {
+        "commit": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "git_blob": "a18bd35fc56ce26196c90a783cd97b1b6be54c13",
+        "git_lf_bytes": 9462,
+        "git_lf_sha256": "da98a4e498a5394c6dc3c36949a9c7bb1022b2702e85783c2d3fa53413cd2e23"
+      },
+      {
+        "commit": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "git_blob": "bbb8e2db8399ccd3dda8efab6db47900caba661e",
+        "git_lf_bytes": 21923,
+        "git_lf_sha256": "1dfd76f3a69ff451faf54ffac707fc5c746b137ab91956f1c046f5494bbd3a06"
+      }
+    ],
+    "seams": [
+      {
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "old": "    virtual void* code_unit_00ab81c0(void* actual_header8, std::uint32_t captured_code_unit,\n        NativeGuiTextGlyphQuadStorageAcquired&) = 0;\n",
+        "new": "    // AB81C0 is composed directly over SAME ordinary F24 backing and Context.strings.\n",
+        "purpose": "remove unused opaque Source operation; no concrete implementer in scoped search"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "old": "#include \"bsp/native_wide_string.hpp\"\n",
+        "new": "#include \"bsp/native_wide_string.hpp\"\n#include \"bsp/gui_text_glyph_child.hpp\"\n",
+        "purpose": "import the real raw-pool overload declaration"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "old": "        void* const content_argument = c.calls.code_unit_00ab81c0(a.locals + 4, current_code_unit, a);\n",
+        "new": "        void* const content_argument = construct_gui_text_code_unit_00ab81c0(\n            a.locals + 4, current_code_unit, c.strings);\n",
+        "purpose": "direct whole raw code-unit body at SAME AB9E51 boundary"
+      }
+    ],
+    "full_files_exact": true,
+    "also_equals_root_efeded": true,
+    "script": "import hashlib,json,subprocess,sys\nr=json.load(open(sys.argv[1],encoding=\"utf-8\"))\npacket=sys.argv[2]\ndef git(ref,p): return subprocess.check_output([\"git\",\"show\",ref+\":\"+p])\nfor pin in r[\"whole_file_inverse\"][\"baseline_files\"]:\n p=pin[\"path\"];data=git(packet,p)\n for seam in reversed(r[\"whole_file_inverse\"][\"seams\"]):\n  if seam[\"path\"]==p:\n   new=seam[\"new\"].encode(\"utf-8\");old=seam[\"old\"].encode(\"utf-8\")\n   assert data.count(new)==1\n   data=data.replace(new,old,1)\n assert data==git(r[\"baseline\"][\"immutable_constructor_packet\"],p)\n assert data==git(r[\"baseline\"][\"root_import\"],p)\n assert hashlib.sha256(data).hexdigest()==pin[\"git_lf_sha256\"]\nprint(\"both complete Source files restore immutable2059 and Root efeded exactly\")\n",
+    "script_encoding": "UTF-8/LF, exactly one terminal LF",
+    "script_bytes": 732,
+    "script_sha256": "368d63a411a6fb463057fc95ce64bdd88219d46298329a39f19d5666dada78ff",
+    "text_only_no_Source_writes": true
+  },
+  "source": {
+    "new_files": [
+      {
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "git_lf_bytes": 9403,
+        "git_lf_sha256": "61f7eff6fbe50303bc339c0cf1a56acbb77d0ece0ad9b6d00f6c04667b5cb42e"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "git_lf_bytes": 21995,
+        "git_lf_sha256": "2bab8e816665596ab8d9372524fddc240e68c3aacdc83afa31927bef1fbd198c"
+      }
+    ],
+    "line_pins": [
+      {
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "line": 54,
+        "text": "    // AB81C0 is composed directly over SAME ordinary F24 backing and Context.strings.",
+        "utf8_sha256": "05c814618e7e2465c08b23282ca0a7b37400678c044190be394110d9e1b0cc7b"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "line": 7,
+        "text": "#include \"bsp/gui_text_glyph_child.hpp\"",
+        "utf8_sha256": "dd944496a03d56885999bec8d7cd05454eccec41e28f80cd5a17a135b3097bd0"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "line": 476,
+        "text": "        const Word current_code_unit = homes[9];",
+        "utf8_sha256": "41c41c07c53ab9376fa1ca5c65e308c76f076679801de9eaa5cc9b2f8b247b63"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "line": 477,
+        "text": "        boundary(a, 0x00ab9e51, a.locals + 4);",
+        "utf8_sha256": "f62c770d4a12a13a6cbf1dd34ce5494c5c1a496e254fb45d65474f05955ae31f"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "line": 478,
+        "text": "        void* const content_argument = construct_gui_text_code_unit_00ab81c0(",
+        "utf8_sha256": "72dbc7274479f4630c3510eabff107c8e86be2514078e82f2c8bf6100d372ec2"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "line": 479,
+        "text": "            a.locals + 4, current_code_unit, c.strings);",
+        "utf8_sha256": "ccfbfe950dea7887fecf41e72657fac9a2d2809b1e4e5fa20540b77723975898"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "line": 480,
+        "text": "        a.native_eh_state = 2;",
+        "utf8_sha256": "39f8aba2c168bf727c61dbe2b42ebca7717b783128b1b95c78becb3438b271d1"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "line": 481,
+        "text": "        boundary(a, 0x00ab9e61, child); c.calls.content_00aba8d0(child, content_argument, a);",
+        "utf8_sha256": "6c63772d77ada0e599d4abb5706c6f17a017821086d0ae9f822446f1fe748541"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "line": 485,
+        "text": "        normal_string_return(a, c.strings, 0x00ab9e8a, 0x00ab9e91, true);",
+        "utf8_sha256": "b23b8d1c614029a0bcc6ba94ff85efe8e58993a8be22608c28ecee6435d304ad"
+      }
+    ],
+    "pinned_inputs": [
+      {
+        "commit": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+        "path": "docs/CC16_GLYPH_CONSTRUCTOR_SLOT_HOST_UNKNOWN.md",
+        "git_blob": "b85908b1681daa9b02a6bb0ecbb0b7ad01748f70",
+        "git_lf_bytes": 9132,
+        "git_lf_sha256": "296f77be8573742ed042698c61a470b704c0ab4941bf50341f67a1f7e2f95a90"
+      },
+      {
+        "commit": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+        "path": "reports/cc16_glyph_constructor_slot_host_unknown.json",
+        "git_blob": "5028957d6c74ba4d1c96d667149d1a0805bdea8a",
+        "git_lf_bytes": 98451,
+        "git_lf_sha256": "9494230347907caa8c2b74ddee0b71bfb77a04f7823457a59239334c4d869a96"
+      },
+      {
+        "commit": "b6c69bfb9b83b61d2bb085668e53ac8cef63a19a",
+        "path": "include/bsp/gui_text_glyph_child.hpp",
+        "git_blob": "72410e701afcfa72b1b4f5518a68e6a7fc76b1e1",
+        "git_lf_bytes": 3706,
+        "git_lf_sha256": "42d4ad6a32778b97583f74efac51853072943c2aa9929df44b0f57189c78b895"
+      },
+      {
+        "commit": "b6c69bfb9b83b61d2bb085668e53ac8cef63a19a",
+        "path": "src/gui_text_glyph_child.cpp",
+        "git_blob": "cda642f5f5ecd3b86bdadf98c897a5f6e1cd8874",
+        "git_lf_bytes": 4709,
+        "git_lf_sha256": "c4e494d1ffdaf20257d8e5a77bebf352925ba3be53d0f595a5e58f6a8dcdc6f4"
+      },
+      {
+        "commit": "b6c69bfb9b83b61d2bb085668e53ac8cef63a19a",
+        "path": "docs/CC16_NATIVE_CODE_UNIT_RAW_POOL.md",
+        "git_blob": "5644d39d953b3263a9e11ac4997ccc51e05776ad",
+        "git_lf_bytes": 7745,
+        "git_lf_sha256": "12403e21cccbef167e919ad46d8f8df60d5323b0a5c195237f37187126dc8fec"
+      },
+      {
+        "commit": "b6c69bfb9b83b61d2bb085668e53ac8cef63a19a",
+        "path": "reports/cc16_native_code_unit_raw_pool.json",
+        "git_blob": "d3084672022f8ff4f1f4fce53c16c438d39b7b81",
+        "git_lf_bytes": 40701,
+        "git_lf_sha256": "6f2f6b5507bdfac61b049632188461fb5b349aa48248aed4d0578ebdd9a5d6c0"
+      },
+      {
+        "commit": "f0a38625c8192d6a8a2f73a166ebb3f250eef4bf",
+        "path": "docs/CC16_NATIVE_CODE_UNIT_RAW_POOL_INDEPENDENT_REVIEW.md",
+        "git_blob": "11e1024958832ac05bd86390d364df42e2a334e0",
+        "git_lf_bytes": 5408,
+        "git_lf_sha256": "bab8cdea20c80ee5972ed314fde828bdecdbea15c21533d4dd6ef4ef9c6bca54"
+      },
+      {
+        "commit": "f0a38625c8192d6a8a2f73a166ebb3f250eef4bf",
+        "path": "reports/cc16_native_code_unit_raw_pool_independent_review.json",
+        "git_blob": "8c7911cafec541dd58243299078522c648e7e943",
+        "git_lf_bytes": 30343,
+        "git_lf_sha256": "9e09d29c62281664fddc158eb176c1f97c67581bdde0d53ab5bb98800d99c1af"
+      },
+      {
+        "commit": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "git_blob": "acec6947cf7777181a97335456dc5142a1149cae",
+        "git_lf_bytes": 8477,
+        "git_lf_sha256": "6a8e8ff45a4415fbdbb81992726f2e9e4fc17c0819fde21c279ac4c3d354b245"
+      },
+      {
+        "commit": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "git_blob": "5505123a0d02398d4d4c16873ef87f4f856fb790",
+        "git_lf_bytes": 19830,
+        "git_lf_sha256": "f05676b34f28b95194810e4f325cbec759b0ece70b9cb41b38b64efc89d7a96e"
+      },
+      {
+        "commit": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+        "path": "docs/CC16_NATIVE_GUI_TEXT_GLYPH_QUAD_STORAGE.md",
+        "git_blob": "ba9fd195d0680450c4d97008bfd6009d4c45c0a1",
+        "git_lf_bytes": 14000,
+        "git_lf_sha256": "75bbc760c32aa8bc5b2d037c4f57372f6e4bea7c678acce476fb19197f7d80b1"
+      },
+      {
+        "commit": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+        "path": "reports/cc16_native_gui_text_glyph_quad_storage.json",
+        "git_blob": "25f1de32a95bcdb751068523157befd8e0c1f459",
+        "git_lf_bytes": 42551,
+        "git_lf_sha256": "b883d8e032e088dc240bb8768efd4baaf8eadcd421aaebcdfaf73f7c0f1231eb"
+      },
+      {
+        "commit": "b6c69bfb9b83b61d2bb085668e53ac8cef63a19a",
+        "path": "include/bsp/native_string.hpp",
+        "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+        "git_lf_bytes": 8771,
+        "git_lf_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+      },
+      {
+        "commit": "b6c69bfb9b83b61d2bb085668e53ac8cef63a19a",
+        "path": "include/bsp/native_string_pool_owner.hpp",
+        "git_blob": "4a2569e19b6f25c308cba1c3cdb2b2989db2cddd",
+        "git_lf_bytes": 5893,
+        "git_lf_sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+      },
+      {
+        "commit": "b6c69bfb9b83b61d2bb085668e53ac8cef63a19a",
+        "path": "include/bsp/native_string_pool_storage.hpp",
+        "git_blob": "60b3f627150fa058fac7b8c4c74537cb3aee0a68",
+        "git_lf_bytes": 3113,
+        "git_lf_sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02"
+      }
+    ]
+  },
+  "preservation": {
+    "all22_asm_blocks_byte_exact_071_2059_current": true,
+    "asm_regex": "__asm\\s*\\{.*?\\} with DOTALL over complete UTF-8/LF CPP; wrapper included",
+    "asm_aggregate_recipe": "SHA256 of raw block bytes joined by one NUL byte, no terminal NUL",
+    "asm_nul_join_sha256": "0d95d0c8aa5c4123c75ee603d24d1bb9ad0a8b0430d13d73c70c19d25c74faed",
+    "asm_blocks": [
+      {
+        "ordinal": 1,
+        "bytes": 20,
+        "baseline_and_new_sha256": "73661f71c743cc3fb79313192f7f92fff69a3108fd9f3c87ee2868f11e4621bc",
+        "historical071_equal": true
+      },
+      {
+        "ordinal": 2,
+        "bytes": 20,
+        "baseline_and_new_sha256": "5408819a1be75a39eb20fda0077db6eaf19317ae7cee9c6801a6e02fbabb6ce0",
+        "historical071_equal": true
+      },
+      {
+        "ordinal": 3,
+        "bytes": 40,
+        "baseline_and_new_sha256": "403d37335f94cb7f2eb0cc07d699f75501a793dc9249c734eb504210b67a9c05",
+        "historical071_equal": true
+      },
+      {
+        "ordinal": 4,
+        "bytes": 25,
+        "baseline_and_new_sha256": "4cfca19d58417feaa9619815e356ab03d50f9ef92030f5dd6cbb8dc3dcf4423d",
+        "historical071_equal": true
+      },
+      {
+        "ordinal": 5,
+        "bytes": 20,
+        "baseline_and_new_sha256": "73661f71c743cc3fb79313192f7f92fff69a3108fd9f3c87ee2868f11e4621bc",
+        "historical071_equal": true
+      },
+      {
+        "ordinal": 6,
+        "bytes": 20,
+        "baseline_and_new_sha256": "5408819a1be75a39eb20fda0077db6eaf19317ae7cee9c6801a6e02fbabb6ce0",
+        "historical071_equal": true
+      },
+      {
+        "ordinal": 7,
+        "bytes": 20,
+        "baseline_and_new_sha256": "e2103adfae893eadfa492aeb23e46505f9862ba955ee724a2845562982535b33",
+        "historical071_equal": true
+      },
+      {
+        "ordinal": 8,
+        "bytes": 40,
+        "baseline_and_new_sha256": "1c57b99fd173dfa20b8ec347aa19e0e64b6098e88efd3431fca8d40e18a17b81",
+        "historical071_equal": true
+      },
+      {
+        "ordinal": 9,
+        "bytes": 20,
+        "baseline_and_new_sha256": "73661f71c743cc3fb79313192f7f92fff69a3108fd9f3c87ee2868f11e4621bc",
+        "historical071_equal": true
+      },
+      {
+        "ordinal": 10,
+        "bytes": 20,
+        "baseline_and_new_sha256": "5408819a1be75a39eb20fda0077db6eaf19317ae7cee9c6801a6e02fbabb6ce0",
+        "historical071_equal": true
+      },
+      {
+        "ordinal": 11,
+        "bytes": 41,
+        "baseline_and_new_sha256": "16cd8a59c773d2321e28ee6aac64e967503ff9b685ebeebe2ab576282535726d",
+        "historical071_equal": true
+      },
+      {
+        "ordinal": 12,
+        "bytes": 25,
+        "baseline_and_new_sha256": "4cfca19d58417feaa9619815e356ab03d50f9ef92030f5dd6cbb8dc3dcf4423d",
+        "historical071_equal": true
+      },
+      {
+        "ordinal": 13,
+        "bytes": 20,
+        "baseline_and_new_sha256": "73661f71c743cc3fb79313192f7f92fff69a3108fd9f3c87ee2868f11e4621bc",
+        "historical071_equal": true
+      },
+      {
+        "ordinal": 14,
+        "bytes": 20,
+        "baseline_and_new_sha256": "5408819a1be75a39eb20fda0077db6eaf19317ae7cee9c6801a6e02fbabb6ce0",
+        "historical071_equal": true
+      },
+      {
+        "ordinal": 15,
+        "bytes": 20,
+        "baseline_and_new_sha256": "e2103adfae893eadfa492aeb23e46505f9862ba955ee724a2845562982535b33",
+        "historical071_equal": true
+      },
+      {
+        "ordinal": 16,
+        "bytes": 38,
+        "baseline_and_new_sha256": "27995ae30f627d47c1cd5a065d0f53127e545275171fd002f44340de754f5730",
+        "historical071_equal": true
+      },
+      {
+        "ordinal": 17,
+        "bytes": 2313,
+        "baseline_and_new_sha256": "714fdcfc5f68cedd436b0e9fdf83d396dc0d4e715db23c176357d2969610b00d",
+        "historical071_equal": true
+      },
+      {
+        "ordinal": 18,
+        "bytes": 387,
+        "baseline_and_new_sha256": "9ce18789320aa3bf9909b48cc1b08a1895119219cd1daa4f8636537be51032c0",
+        "historical071_equal": true
+      },
+      {
+        "ordinal": 19,
+        "bytes": 587,
+        "baseline_and_new_sha256": "35fa85271991a7200c040d5b96b2be6810b948e10b5a4e278dc53ecae2cb4f17",
+        "historical071_equal": true
+      },
+      {
+        "ordinal": 20,
+        "bytes": 447,
+        "baseline_and_new_sha256": "dbb48da7ca320520556f1179c85980425ed9ae72be39633e0dd06167841a0a59",
+        "historical071_equal": true
+      },
+      {
+        "ordinal": 21,
+        "bytes": 740,
+        "baseline_and_new_sha256": "c70abbdfd02e8a8bfd0a5b2fd154f7ce70feab152774807bed80664bb75da1f1",
+        "historical071_equal": true
+      },
+      {
+        "ordinal": 22,
+        "bytes": 205,
+        "baseline_and_new_sha256": "30e0c6bbdb860f8a0a66220d67a28ebc627012f5ba6856178ed9b3789daec1b6",
+        "historical071_equal": true
+      }
+    ],
+    "source_x87_forms": 78,
+    "x87_lines": [
+      "fild dword ptr [edx]",
+      "fadd dword ptr [ecx]",
+      "fst dword ptr [esi + 4]",
+      "fld dword ptr [ebx + 1d8h]",
+      "fild dword ptr [edx]",
+      "fmulp st(1), st(0)",
+      "faddp st(1), st(0)",
+      "fstp dword ptr [edx]",
+      "fld dword ptr [esi]",
+      "fild dword ptr [edx + 1ch]",
+      "faddp st(1), st(0)",
+      "fld1",
+      "fadd st(1), st(0)",
+      "fsubp st(1), st(0)",
+      "fstp dword ptr [edx + 1ch]",
+      "fld dword ptr [esi + 4]",
+      "fld qword ptr [edi]",
+      "fdiv st(1), st(0)",
+      "fxch st(1)",
+      "fstp dword ptr [esi + 4]",
+      "fld dword ptr [esi + 10h]",
+      "fld qword ptr [edi]",
+      "fdiv st(1), st(0)",
+      "fld dword ptr [edi]",
+      "fld st(0)",
+      "fmulp st(3), st(0)",
+      "fxch st(2)",
+      "fstp dword ptr [esi + 8]",
+      "fld dword ptr [edx]",
+      "fdivrp st(3), st(0)",
+      "fxch st(2)",
+      "fstp dword ptr [esi + 10h]",
+      "fld dword ptr [edx + 1ch]",
+      "fdivrp st(2), st(0)",
+      "fmulp st(1), st(0)",
+      "fstp dword ptr [esi + 14h]",
+      "fld dword ptr [esi + 4]",
+      "fstp dword ptr [ecx]",
+      "fld dword ptr [esi + 8]",
+      "fstp dword ptr [ecx + 4]",
+      "fld dword ptr [eax]",
+      "fstp dword ptr [edx]",
+      "fld dword ptr [eax + 1b8h]",
+      "fstp dword ptr [edx + 10h]",
+      "fld dword ptr [eax + 1bch]",
+      "fstp dword ptr [edx + 14h]",
+      "fld dword ptr [edx + 10h]",
+      "fadd dword ptr [edx + 4]",
+      "fstp dword ptr [edx + 1ch]",
+      "fld dword ptr [edx + 14h]",
+      "fadd dword ptr [edx + 8]",
+      "fstp dword ptr [edx + 20h]",
+      "fld dword ptr [edx + 0ch]",
+      "fsub qword ptr [eax]",
+      "fstp dword ptr [edx + 24h]",
+      "fld dword ptr [edx + 4]",
+      "fsub qword ptr [eax]",
+      "fstp dword ptr [edx + 1ch]",
+      "fld dword ptr [edx + 8]",
+      "fsub qword ptr [eax]",
+      "fstp dword ptr [edx + 20h]",
+      "fld dword ptr [edx + 0ch]",
+      "fsub qword ptr [eax]",
+      "fstp dword ptr [edx + 24h]",
+      "fld dword ptr [ecx]",
+      "fsub qword ptr [eax]",
+      "fdiv qword ptr [eax]",
+      "fadd dword ptr [edx + 4]",
+      "fstp dword ptr [edx + 2ch]",
+      "fld dword ptr [edx + 2ch]",
+      "fsub qword ptr [eax]",
+      "fstp dword ptr [edx + 2ch]",
+      "fld dword ptr [edx + 8]",
+      "fsub qword ptr [eax]",
+      "fstp dword ptr [edx + 30h]",
+      "fld dword ptr [edx + 0ch]",
+      "fsub qword ptr [eax]",
+      "fstp dword ptr [edx + 34h]"
+    ],
+    "new_cpp_fp_or_fp_reset": false,
+    "all_old_homes_aliases_prefixes_operand_and_callback_epochs_unchanged_outside3_seams": true,
+    "record_and_tail_header_bytes": 3723,
+    "record_and_tail_header_sha256": "18a492d6fe1b8b47c5be064b2dccfaba4f2544a1c81bb6682d9fefefcc3a9707",
+    "full_final_catch_bytes": 2028,
+    "full_final_catch_sha256": "960e18c78e5cdbf3f341fe3f347803c42a716f95eb6e54d7187180ff9173e628",
+    "full_final_catch_including_legacy_states1_2_exact": true,
+    "constructor_allocation_home7_arm_invoke_disarm_sequence_bytes": 1035,
+    "constructor_allocation_home7_arm_invoke_disarm_sequence_sha256": "52c95d4969d11b5fa77daed065438111a286c8da7e1033905fe6ffd39c41aa6d",
+    "constructor_private_origin_route_exact": true,
+    "old_and_new_counter_tokens": 3,
+    "new_static_origin_edge_or_permission_added": false,
+    "cxx_source_call_interface_not_original_native_vtable_abi": true
+  },
+  "native_evidence_reuse": {
+    "no_new_ghidra_or_native_analysis_batch": true,
+    "no_ghidra_mutation_or_recovery": true,
+    "caller_evidence_commit": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+    "caller_function": {
+      "entry": "00ab98f0",
+      "end": "00ab9fc2",
+      "physical_span_bytes": 1747,
+      "native_instruction_count": 485,
+      "native_blocks": 37,
+      "native_direct_ordinary_calls": 19,
+      "native_captured_target_calls": 4,
+      "native_body_sha256": "795b76de15e3a52d032bfca739ca1cffe9714a83d7d619fd6aae9302aa13d236",
+      "original_abi": "ECX actualText; ten actual mutableDWORDcallee homes; RET28; incomingEDXunconsumed; observedcallers ignore incidentalreturnregisters",
+      "new_source_symbol": "write_native_gui_text_glyph_quad_storage_00ab98f0",
+      "new_source_signature": "void(void*,volatile uint32_t(&homes)[10],NativeGuiTextGlyphQuadStorageContext&,NativeGuiTextGlyphQuadStorageAcquired&)",
+      "source_coverage": "whole prefix/allordinarybranches/requiredrawchildschedule andthree cleanupactions; valid actualstorage/providers required; OriginalABI/privateframes/fault/FH3/SEH/secondarytransport andconcretebinding unproved"
+    },
+    "caller_original_pe": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "length": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "callee_evidence_commit": "b6c69bfb9b83b61d2bb085668e53ac8cef63a19a",
+    "callee_native_region": {
+      "path": "native_00ab81c0_131.bin",
+      "bytes": 131,
+      "sha256": "496b74b0d518f60f6b8e7490288b2516d672ac748a9735d05941e0ef6488333f",
+      "address": "00ab81c0",
+      "last_byte": "00ab8242",
+      "file_offset": 7045568,
+      "image_base": "00400000",
+      "live_bytes_equal": true
+    },
+    "callee_native_exports": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab81c0\\assembly.txt",
+        "bytes": 1282,
+        "sha256": "1e50764915dfbddb0283edb4e0f5570bc85ab38a1d53bda64bcdb48e83e113c9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab81c0\\decompiled.c",
+        "bytes": 1156,
+        "sha256": "47ff83339704112c654f5ba973e381f64bc79e91eb5ee811697197d0434aeba6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab81c0\\metadata.json",
+        "bytes": 279,
+        "sha256": "c6f23934347a6e4a1f1b71dadd707bb2bdb8d6e458b8db4fefb30b608e85803e"
+      }
+    ],
+    "callee_live_listing_disk_equality": "frozen b6 receipt and zero-finding f0 independent review; not a new caller run"
+  },
+  "exception_and_lifetime_qualifications": [
+    "Genuine raw returning getter can throw; the old opaque provider supplied no stronger proof. Raw getter is outside historical ActualNativeStringPoolStorage::release noexcept. Existing BD1510 noexcept Source transport remains inherited.",
+    "Supplier zero-byte CRT omission, ordinary by-value argument rather than physical Native stack alias, valid storage/CRT/Win32/private FH3/SEH/fault/secondary exception and exact ABI limits remain unchanged.",
+    "The acquired F24 ordinary backing and SAME strings/pool/manager/gate/domain and all reached private frames/providers must remain alive through partial failure; no destructor, added retain/custody owner, cancellation, replay or cleanup policy is supplied.",
+    "Constructor2059 qualified state0 HOST/UNKNOWN route and its no-Native-issuer withholding remain exact. No entered/provider_call/exception_ptr identity or arbitrary getter escape authenticates Native origin.",
+    "Legacy state1/2 catch projections are deliberately byte-identical and separately UNADMITTED for genuine Native-origin/secondary/FH3 behavior. Direct helper composition does not admit them or changed96. This packet must not be activated as an end-to-end failure-domain closure."
+  ],
+  "remaining_finite_gates": [
+    "official Root build/review/integration of exact caller and b6 supplier",
+    "genuine actual Glyph Calls producer and same raw pool/manager/lifetime application binding",
+    "existing constructor/native-origin issuer and separately gated state1/2/changed96 failure domains",
+    "Original ABI, runtime/render/game and whole frontend activation"
+  ],
+  "credits": {
+    "new_original": 0,
+    "new_native_helper": 0,
+    "vendor": 0,
+    "compiler_generated": 0,
+    "duplicate_body": 0,
+    "original_abi": 0,
+    "native_runtime": 0,
+    "activation": 0
+  },
+  "validation": {
+    "worker_build_test_probe_game_or_process_control": false,
+    "cmake_ledger_application_or_shared_source_edits": false,
+    "standalone_used_body_composition_implemented": true,
+    "all8_imported_source_blobs_exact": true,
+    "whole2_file_inverse_passed": true,
+    "all22_asm_and78_x87_passed": true,
+    "git_diff_check": true,
+    "whole_frontend_source_ready": false,
+    "activation_ready": false
+  },
+  "document": {
+    "path": "docs/CC16_NATIVE_GLYPH_CODE_UNIT_RAW_POOL_CALLER.md",
+    "git_lf_bytes": 6267,
+    "git_lf_sha256": "e5e7815914a0982992db0f605a774223c0eff886b2223f379eafe67e79fff833"
+  }
+}

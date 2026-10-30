@@ -51,8 +51,7 @@ public:
         NativeGuiTextGlyphQuadStorageAcquired&) = 0;
     virtual void shader_00ab8e70(void* actual_child, const void* actual_name_header8,
         NativeGuiTextGlyphQuadStorageAcquired&) = 0;
-    virtual void* code_unit_00ab81c0(void* actual_header8, std::uint32_t captured_code_unit,
-        NativeGuiTextGlyphQuadStorageAcquired&) = 0;
+    // AB81C0 is composed directly over SAME ordinary F24 backing and Context.strings.
     virtual void content_00aba8d0(void* actual_child, const void* actual_utf16_header8,
         NativeGuiTextGlyphQuadStorageAcquired&) = 0;
     virtual void child_current50(void* actual_child, std::uint32_t captured_profile,

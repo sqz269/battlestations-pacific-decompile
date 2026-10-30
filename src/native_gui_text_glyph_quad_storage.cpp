@@ -4,6 +4,7 @@
 #include "bsp/native_string_pool_owner.hpp"
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/native_wide_string.hpp"
+#include "bsp/gui_text_glyph_child.hpp"
 
 #include <stdexcept>
 
@@ -474,7 +475,8 @@ __declspec(noinline) void write_native_gui_text_glyph_quad_storage_00ab98f0(
         normal_string_return(a, c.strings, 0x00ab9e39, 0x00ab9e40, false);
         const Word current_code_unit = homes[9];
         boundary(a, 0x00ab9e51, a.locals + 4);
-        void* const content_argument = c.calls.code_unit_00ab81c0(a.locals + 4, current_code_unit, a);
+        void* const content_argument = construct_gui_text_code_unit_00ab81c0(
+            a.locals + 4, current_code_unit, c.strings);
         a.native_eh_state = 2;
         boundary(a, 0x00ab9e61, child); c.calls.content_00aba8d0(child, content_argument, a);
         current(a, bits(child), 0x50);
