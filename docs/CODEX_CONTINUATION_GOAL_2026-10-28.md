@@ -1412,3 +1412,7 @@ transport and typed/nested producer composition remain separate. No-value-write
 Record20 lifetime helper Source accepted independently; ONE author object
 no-receiver-store evidence is pending. Goal ACTIVE; Main peer Source39
 publication window held before next Root push.
+
+PeerSource39 Main9bf294 joined at6b88556e; exactlistener delta/admission read,
+Root ninepriorpaths preserved. Joined standardWin32/alltargets/existing2/2
+11.84s after the two Source38-cohort slot checks. No entry/runtime grant.
