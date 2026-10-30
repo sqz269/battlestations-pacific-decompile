@@ -11,6 +11,7 @@ param(
     [switch]$RunPrepared,
     [switch]$HandleKnownXLiveDebugClose,
     [switch]$Drcov,
+    [string]$FunctionEntryCoverage = '',
     [string]$DynamoRioRoot = '',
     [ValidateSet('low', 'medium-restricted', 'medium-write-locked')][string]$TokenMode = 'low',
     [string[]]$GameArguments = @(),
@@ -20,6 +21,16 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+if ($FunctionEntryCoverage) {
+    if (-not $RunPrepared -or $Drcov -or $DynamoRioRoot -or $TokenMode -ne 'medium-write-locked' -or -not $HandleKnownXLiveDebugClose) {
+        throw 'Function-entry coverage requires -RunPrepared -TokenMode medium-write-locked -HandleKnownXLiveDebugClose and the classic guard.'
+    }
+    if ($RuntimeSeconds -lt 5 -or $RuntimeSeconds -gt 3600) { throw 'Function-entry runtime bound must be 5..3600 seconds.' }
+    $FunctionEntryCoverage = (Resolve-Path -LiteralPath $FunctionEntryCoverage).Path
+    $entryScene = 'universe/Scenes/missions/USN/usn_19_coralus.scn'
+    if ($GameArguments.Count -eq 0) { $GameArguments = @($entryScene) }
+    if ($GameArguments.Count -ne 1 -or $GameArguments[0] -cne $entryScene) { throw 'Function-entry coverage admits only the exact full USN04 scene argument.' }
+}
 if ($Drcov) {
     if (-not $RunPrepared -or $TokenMode -ne 'medium-write-locked' -or -not $DynamoRioRoot -or $HandleKnownXLiveDebugClose) {
         throw 'DR coverage requires -RunPrepared -TokenMode medium-write-locked -DynamoRioRoot and no debugger exception policy.'
@@ -218,6 +229,7 @@ try {
                             '--token-mode', $TokenMode)
         if ($HandleKnownXLiveDebugClose) { $guardArguments += '--handle-known-xlivedebugclose' }
         if ($Drcov) { $guardArguments += @('--drcov', '--dr-root', $DynamoRioRoot) }
+        if ($FunctionEntryCoverage) { $guardArguments += @('--function-entry-coverage', $FunctionEntryCoverage) }
         foreach ($gameArgument in $GameArguments) { $guardArguments += "--arg=$gameArgument" }
         & python @guardArguments
         $guardExit = $LASTEXITCODE

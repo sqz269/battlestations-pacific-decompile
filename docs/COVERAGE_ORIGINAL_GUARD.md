@@ -528,3 +528,98 @@ exit classification and source preservation. The observer is supervised
 automatically. Native EBFE text visibility, real retail startup under DBI,
 runtime timing/FP behavior and a successful mission-clock capture remain live
 validation risks; these fixture results do not resolve them.
+
+## Classic first-entry fallback
+
+The opt-in `-FunctionEntryCoverage <manifest>` path uses the existing classic
+debugger guard, with no DR runtime or helper. It keeps the same flags9 token,
+private Documents IAT hook, source mutation audit, independent source handles,
+normal process priority, kill-on-close job and locked-mode rejection of every
+additional executable before continuation. It adds no active-process limit.
+The exact, once-only xlive invalid-HMODULE debug-CloseHandle policy is required.
+Motion and DirectInput observation breakpoints are disabled for this path.
+
+`tools/original_entry_coverage.py` accepts
+`bsp.original-entry.targets.v1`: the supported image SHA/base/size, frozen
+`index_sha256` and `wire_sha256`, and 21,770 sorted unique points containing
+eight-digit `address`, integer `expected_byte` and Boolean `board_target`
+(20,892 true). The exact loaded manifest bytes are SHA-bound to the trace.
+Executable/file-backed bytes are checked against the image and then against
+live memory while stopped at the already-guarded original entry. Non-executable,
+original-INT3 or mismatching points are skipped and remain unknown.
+
+The collector patches only first bytes in memory, batching writes by page while
+all debuggee threads are stopped. A first owned hit restores its original byte,
+flushes the instruction cache and rewinds only WOW64 CONTROL/EIP. A retained
+fired-address set also rewinds already-queued traps from other threads after
+checking that the byte is still original; it emits no duplicate positive.
+There is no rearm, trap flag, single-step or x87/MXCSR write. Unexpected bytes or
+contexts fail closed. The disk executable is unchanged.
+
+The append-only `entry-hits.jsonl` schema is `bsp.original-entry.trace.v1`.
+Its header binds run ID, PID, exact integer process creation FILETIME, image,
+manifest, index and wire hashes. Each `entry_hit` records exact address, PID,
+thread ID and contiguous first-hit sequence. These are positive entry
+observations, not call frequencies or basic-block observations. Call and BB
+counts are null; every unhit point remains UNKNOWN even after a complete run.
+`skipped-points.json` preserves skip reasons separately.
+
+The automatically supervised observer explicitly selects
+`--tracer-method debugger-function-entries` and the neutral launch schema
+`bsp.original-baseline.function-entry.launch.v1`. It retains the same fixed
+PID/path/hash/FILETIME/nonce binding and fresh private ordered USN04
+LoadingScene/SceneInit gate. At native GameTime >=240 with a positive fixed-step
+count, the collector flushes its trace, drains pending debug events and stops
+only its owned job with exit code `E0000002`. This is recorded as
+`forced_window_stop`, never a natural game quit. Root crash/early exit,
+timeout, DRAIN and observer failures remain incomplete/nonzero. A qualified
+terminal additionally requires the observer's bound same-scene proof, source
+hash preservation and final job count zero. The independent source handles
+remain held until the owned job exits.
+
+The focused manifested Win32 fixture is reproducible with:
+
+```powershell
+python tools/original_entry_coverage.py --probe J:/PROG/battlestations-pacific-decompile-codex-coverage-guard/local/classic-entry-probe-NEW
+```
+
+`local/classic-entry-probe-02/result.json` passed: 64 native threads made 4,096
+calls, yielding exactly 32 unique positives and 72 safely rewound queued traps.
+It also verified original-INT3, non-executable and live-mismatch skips, forced
+job stop, final job `[0]`, and unchanged protected fixture SHA
+`d909f1685f86659fba404e9f46b362aa7691fda15895a8155319957d2cf15e67`.
+The trace SHA is
+`181d885bd044544622e82ac406abab7a33438578521695386acc44d96caca69c`.
+Its clock request is explicitly synthetic and its terminal stays unqualified.
+This worker launched no original game for this fallback.
+
+After integration and primary review, the production recipe is:
+
+```powershell
+pwsh -NoProfile -File tools/run_original_baseline.ps1 -RunPrepared -TokenMode medium-write-locked -HandleKnownXLiveDebugClose -FunctionEntryCoverage <PRIVATE_TARGETS_JSON> -StageRoot J:/PROG/battlestations-pacific-decompile-codex-coverage/local/original-coverage/stage-usn04 -RuntimeSeconds 3600
+```
+
+The full USN04 argument and observer invocation are selected automatically.
+Breakpoint timing overhead, text inspection and alternate/interior function
+entries remain material limitations. Fixture success is not retail startup,
+mission-window or uninstrumented timing proof.
+
+
+## Primary retail result, 2026-10-30
+
+The primary subsequently ran the classic entry fallback on the private b6 image:
+root612, native GameTime0.0500000007 to240.050979614, fixed-step endpoint4800,
+7097 unique game-function starts,2639 queued duplicates and0 skipped points.
+Real ordered USN04 LoadingScene/SceneInit evidence qualified the one clock epoch.
+The owned forced window stop was E0000002; observer exit0 and job[0] preceded
+parent source-lock release. Independent inventories and review found all17
+installed runtime files and4 real profile files unchanged. This is entry reach,
+not basic-block coverage or call counts; all unhit entries remain unknown.
+Native mission difficulty0 differs from the BSP reference1.
+
+Two earlier guarded DR attempts admitted entry but exited C0000005 before a
+mission clock. The diagnostic retry observed an AV in nvd3dum.dll at RVA1B0285,
+reading40; the initiating cause remains unresolved. Their complete startup BB
+files are not treated as mission coverage. The qualified classic trace SHA is
+36044442b9b05bc93ac30e57f3a5d09660bd75f826dcf1f4829887ec755764c3.
+See CODEX_COVERAGE_CENSUS.md for hashes, comparison, candidate frontier and limits.

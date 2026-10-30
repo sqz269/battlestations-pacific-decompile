@@ -1,0 +1,349 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-font-glyph-selection-storage",
+  "classification": "Whole actual raw AD4480 with finite concrete private AD3E70 support; no new owner",
+  "baseline": "8ee5d8cfdfbfa09ec25411a451f08118c52a8548",
+  "utc": "2026-10-30T17:02:52.952621+00:00",
+  "owned_files": [
+    "include/bsp/native_font_glyph_selection_storage.hpp",
+    "src/native_font_glyph_selection_storage.cpp",
+    "docs/CC16_NATIVE_FONT_GLYPH_SELECTION_STORAGE.md",
+    "reports/cc16_native_font_glyph_selection_storage.json"
+  ],
+  "address_lease": [
+    "00ad4480",
+    "00ad3e70"
+  ],
+  "additional_helper_authorization": "Root expressly authorized additionally leasing/privately composing only whole14-op AD3E70 in same4 files with zero helper/vendor/Original credit.",
+  "Native_evidence": {
+    "selector": {
+      "entry": "00ad4480",
+      "end_inclusive": "00ad44fd",
+      "bytes": 126,
+      "instructions": 45,
+      "ABI": "ECX actual raw Font,stack DWORD lowWORD unsigned code unit,EAX borrowed glyph pointer,RET4."
+    },
+    "helper": {
+      "entry": "00ad3e70",
+      "end_inclusive": "00ad3e93",
+      "bytes": 36,
+      "instructions": 14,
+      "ABI": "ECX actual2DWORD iterator,no stack args,EAX current node+0C,RET."
+    },
+    "whole_listings_read": true,
+    "x87_SSE_or_FP_operations": 0,
+    "live_read_only_query": {
+      "command": "python tools/bsp.py ghidra proto 00ad4480",
+      "verified_project": "bsp",
+      "configured_project_file": "C:/Users/sqz269/bsp.gpr",
+      "verified_program": "/battlestationspacific.exe",
+      "verification": "bsp.py client() invokes Client.verify() before query; current config and verified wrapper pinned.",
+      "queries": 1,
+      "mutations": 0
+    },
+    "saved_exports": [
+      {
+        "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ad4480\\assembly.txt",
+        "sha256": "ffd4fc28c27b152b73b077ee622c4a1c425d766b3b2b31d3eecd5c6f149fdb30",
+        "bytes": 1152,
+        "instruction_rows": 45
+      },
+      {
+        "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ad4480\\decompiled.c",
+        "sha256": "c7c85d74255d96fc0aa3365f1c27c88688974a85ca3eebec574274a395f48a0b",
+        "bytes": 812,
+        "instruction_rows": null
+      },
+      {
+        "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ad3e70\\assembly.txt",
+        "sha256": "9c14e0bf092cd5b8b1eb98729b4cdb55dda6eb42f96e0ad82c1204ab00e8421f",
+        "bytes": 399,
+        "instruction_rows": 14
+      },
+      {
+        "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ad3e70\\decompiled.c",
+        "sha256": "ecaf2d7e91c5909793c771df372ee958ea3b619f7a43d0dfb6201a5626bb792c",
+        "bytes": 224,
+        "instruction_rows": null
+      }
+    ],
+    "independent_PE_audit": {
+      "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "body_hashes": [
+        {
+          "address": "00ad4480",
+          "bytes": 126,
+          "sha256": "fe786a41f924b7a9ef37af1db008c658c9d494a19f10a90d2adf400579efd1ce"
+        },
+        {
+          "address": "00ad3e70",
+          "bytes": 36,
+          "sha256": "d69b7ad3915dfd8af546e06b38b633bd5d84eb7b68f0d1125797e8838c73491f"
+        }
+      ],
+      "static_only": true
+    }
+  },
+  "API": {
+    "symbol": "bsp::select_native_font_glyph_storage_00ad4480",
+    "signature": "void*(void* captured_actual_font,const volatile uint16_t& actual_code_unit_home,NativeFontGlyphSelectionStorageScratch&)",
+    "scratch": "Actual uninitialized2DWORD iterator output,8B/alignment4; no constructor/default zeros/destructor/owner.",
+    "low_WORD_home": "Same actual unsigned key WORD object is read first by selector and passed by reference to existing raw AD4370; no initial-key snapshot replaces lookup input. Native upper16 DWORD bits unused.",
+    "AB9_AB98_adaptation": "Current uint32 code-unit callback input becomes its actual lowWORD callee home; pass that stable WORD with distinct caller scratch. No shared new context/authority file.",
+    "return": "Borrowed actual embedded or pointed glyph address; node payload NULL returns NULL unchanged. No retain/cache/mirror/constructed glyph."
+  },
+  "ordered_selector_effects": [
+    {
+      "sites": [
+        "00ad4480",
+        "00ad4488",
+        "00ad4491"
+      ],
+      "effect": "Read actual key lowWORD FIRST; SPACE0020 or LF000A returns Font+4C without reading Font/head/node or touching scratch."
+    },
+    {
+      "sites": [
+        "00ad4497",
+        "00ad449d"
+      ],
+      "effect": "CR000D returns Font+8C directly. All other0..FFFF units,includingNUL,reach tree; no uppercase/conversion/range policy."
+    },
+    {
+      "sites": [
+        "00ad44aa",
+        "00ad44b7"
+      ],
+      "effect": "Invoke SAME existing raw AD4370(Font,actual output8,SAME actual key WORD home),which implements actual unsigned search/head/current-key epochs. No typedFontData/stdmap or copied key."
+    },
+    {
+      "sites": [
+        "00ad44bc",
+        "00ad44c0",
+        "00ad44c2",
+        "00ad44cb"
+      ],
+      "effect": "Read output owner; capture CURRENT Font+4 head BEFORE real invalid-owner guard. Zero/foreign owner calls existing currentSDK BF6713 once; it may return/throw."
+    },
+    {
+      "sites": [
+        "00ad44d0",
+        "00ad44d7"
+      ],
+      "effect": "Read CURRENT output node after handler and compare with captured pre-handler head. Equality returns actual Font+6C; no node-payload read/constructed fallback."
+    },
+    {
+      "sites": [
+        "00ad44e1",
+        "00ad44e5",
+        "00ad44ea"
+      ],
+      "effect": "Otherwise whole privately composed AD3E70 on SAME actual output8; read CURRENT returned key/value-pair+4 and return raw pointer,includingNULL."
+    }
+  ],
+  "ordered_helper_effects": [
+    {
+      "sites": [
+        "00ad3e73",
+        "00ad3e78"
+      ],
+      "effect": "Read actual iterator owner; ifzero invoke genuineSDK invalid-parameter call. No noreturn assumption."
+    },
+    {
+      "sites": [
+        "00ad3e7d",
+        "00ad3e7f",
+        "00ad3e82",
+        "00ad3e87"
+      ],
+      "effect": "Reload CURRENT owner after first possible handler; capture current node,compare with that owner CURRENT head; equality invokes genuineSDK handler."
+    },
+    {
+      "sites": [
+        "00ad3e8c",
+        "00ad3e8f"
+      ],
+      "effect": "Reload CURRENT node AFTER second possible handler,return its actual+0C key/value pair. AD4480 then reads pair+4; no stale node cache."
+    }
+  ],
+  "embedded_and_payload_roles": {
+    "space_or_LF": "actual raw Font+4C block",
+    "missing_lookup": "actual raw Font+6C block selected only by captured-head equality",
+    "CR": "actual raw Font+8C block",
+    "ordinary_node": "actual node key/value pair at+0C; CURRENT glyph pointer at pair+4/node+10",
+    "nullable": "Nullable node pointer value is propagated unchanged,no fallback-on-null",
+    "producer_scope": "Real initialized AC-byte Font,tree/head/nodes and embedded/pointed glyph payloads are produced/retained elsewhere. Selector copies or creates none and does not assume their bytes/texture values/defaults.",
+    "no_cache_index_shortcut": "No cache/array/count shortcut beyond genuine existing raw tree traversal; Font count is not read by selector.",
+    "textures_and_counts": "No texture/material/map/pool/string/allocation/refcount operation. Result borrow does not extend Font/glyph/resource lifetime.",
+    "empty_roles": "No F8BE50 or replacement empty/default authority. Empty tree is handled through real AD4370 head/sentinel and actual embedded+6C,not an invented zero payload."
+  },
+  "genuine_reuse": {
+    "iterator": "find_native_font_glyph_iterator_00ad4370 and its existing shared whole AD4540 body,unchanged",
+    "invalid_parameter": "invoke_native_invalid_parameter_00bf6713 existing real currentSDK _invalid_parameter_noinfo transport; no new handler installation/exception conversion/noexcept/noreturn/termination policy",
+    "private_AD3E70": "Complete finite14-op support body only,no Source-public provider/owner or helper/vendor/Original credit",
+    "semantic_APIs": "font_data/font_layout/native_font_resources typed APIs unchanged; no typedowner reinterpret"
+  },
+  "callback_lifetime_and_failure": [
+    "Actual key WORD,scratch and initialized raw Font/head/node/pair/glyph graph remain valid,serialized and disjoint from private Source/callee frames through each reached read/handler. No synchronization or protective retain is added.",
+    "Capture Font receiver for whole selector. Selector current head is captured before possible owner-handler call and MUST NOT be reacquired for its later node comparison. The helper separately performs its own fresh owner/current-head/final-node epochs.",
+    "CurrentSDK invalid handler may return,throw or implement its existing terminal policy. Source continues/propagates directly with no added catch,noexcept,noreturn,termination,cleanup,retry,rollback or acknowledgment. Original encoded handler/Watson/debug/privateStack/fault/return-address identity remains inherited Source qualification.",
+    "Raw lookup output and prior handler mutations remain on Source failure; scratch destruction has no effects. No empty-tree/payload fabrication or Source successful fallback is added.",
+    "No FP instruction,mask/control/status normalization or ambient policy is introduced. Runtime/Original ABI,FH3/SEH/hardwarefault/private-alias behavior is unproved."
+  ],
+  "implementation_counts": {
+    "production_files": 2,
+    "whole_selector_Source_variant": 1,
+    "finite_private_helper_bodies": 1,
+    "extra_owner_or_context": 0,
+    "extra_opaque_provider": 0,
+    "new_tests": 0,
+    "helper_vendor_Original_duplicate_credit": 0
+  },
+  "gates": {
+    "whole_raw_selector_Source_present": true,
+    "opaque_AD3E70_provider_required": false,
+    "genuine_Font_population_and_payload_lifetime_proved_by_this_packet": false,
+    "AB9FD0_AB98F0_actual_caller_bound": false,
+    "changed_Text_or_nonempty_graph_closed": false,
+    "whole_frontend_ready": false,
+    "activation": false,
+    "Page_guard_changed": false
+  },
+  "validation": {
+    "static_check": {
+      "status": "passed",
+      "utc": "2026-10-30T17:06:02.561427+00:00",
+      "scope": [
+        "All45 selector and14 helper instructions/branches reviewed",
+        "Initial actual WORD first and SAME home sent to raw lookup,not initial snapshot",
+        "Head capture before owner guard and current-node compare; helper owner/node reloads around returning handlers",
+        "Actual4C/8C/6C return roles; nullable current pair+4 returned unchanged",
+        "15 unchanged input pins,2 new Source pins,4 raw exports and2 authenticated PE body hashes",
+        "No typedowner cast,extra throw/termination/retry/cleanup or FP policy",
+        "4 owned paths only; prior0bc supplier remains ancestor"
+      ],
+      "limitation": "No compilation/runtime/caller/producer/ABI proof; Root common build pending."
+    },
+    "new_build_tests_probe_game_or_process_actions": false,
+    "Ghidra_mutation": false,
+    "CMake_ledger_or_other_Source_change": false,
+    "new_tests": 0,
+    "Root_common_build": "pending for new Source; prior Source publication/build cohorts are not reused as this packet proof.",
+    "staged_diff_check": "git diff --cached --check passed; four owned files only"
+  },
+  "new_credit": {
+    "Original": 0,
+    "vendor": 0,
+    "duplicate": 0,
+    "helper": 0,
+    "ABI": false,
+    "runtime": false,
+    "activation": false
+  },
+  "new_Source_pins": [
+    {
+      "path": "include/bsp/native_font_glyph_selection_storage.hpp",
+      "git_blob": "ca2ffe295116537e8cb3525a87c2b21dab9b1c6b",
+      "Git_LF_sha256": "235e9a965fe063fa6562601cedb2eda2d2f868e8b05de313d018fdb5a2cea5b7",
+      "Git_LF_bytes": 2534
+    },
+    {
+      "path": "src/native_font_glyph_selection_storage.cpp",
+      "git_blob": "f8f6c0c327205a8295c4ff0557ea2e257a3b4a3f",
+      "Git_LF_sha256": "f1a52596c913d0d2fe45db6d09ea76190539f993175d017ffa3bc1c38df27253",
+      "Git_LF_bytes": 3249
+    }
+  ],
+  "unchanged_supplier_and_evidence_pins": [
+    {
+      "path": "include/bsp/native_font_storage.hpp",
+      "git_blob": "6e9244c9cfcebe4f2d59e85235f1302ddf0b0111",
+      "Git_LF_sha256": "3d62ca18439d3b83b586f9aae1d14e84108280386d88d85532a4f3a8fc92eeb9",
+      "Git_LF_bytes": 4737
+    },
+    {
+      "path": "src/native_font_storage.cpp",
+      "git_blob": "8200f5eb7004be352897f2b4baefa74138586fea",
+      "Git_LF_sha256": "760c148ed5d3bbdb6ddb40781893251caf646dbab18755b3bb8af5c46a5279ce",
+      "Git_LF_bytes": 6829
+    },
+    {
+      "path": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+      "git_blob": "4984c27fa603fe05a308d701c54dafba6110de7e",
+      "Git_LF_sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+      "Git_LF_bytes": 1471
+    },
+    {
+      "path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "git_blob": "bf2a25c5f28d9eb10d37f7099faf9adaabb0a97d",
+      "Git_LF_sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+      "Git_LF_bytes": 1089
+    },
+    {
+      "path": "include/bsp/font_data.hpp",
+      "git_blob": "1b04d267ef910dee68c99353c639cd6acdb8da99",
+      "Git_LF_sha256": "f7a1f433fb7f0466873da79a6da0b45944df5965fbe756715682265afd257c49",
+      "Git_LF_bytes": 2515
+    },
+    {
+      "path": "src/font_data.cpp",
+      "git_blob": "89ed303bfd14c788d0ec8f419dbb34241986c072",
+      "Git_LF_sha256": "24ba9b6e37f798072ed06fc796b0dec560b3b500b4697b3b6634c7892a8717c1",
+      "Git_LF_bytes": 4612
+    },
+    {
+      "path": "include/bsp/font_layout.hpp",
+      "git_blob": "cb2014d4a212c9020dd31d094a7e860440c3fc49",
+      "Git_LF_sha256": "44f289f7218257d36a9f5e3a55de74b4123d1305a60391027bc53a731b2717d4",
+      "Git_LF_bytes": 2755
+    },
+    {
+      "path": "src/font_layout.cpp",
+      "git_blob": "47c19968d2e18a7d4b217e4e1dbf999adc73bd65",
+      "Git_LF_sha256": "e91e7b62147bacf2f90216b38951b85319e648e874bdd1ee08fa36578f3bbad8",
+      "Git_LF_bytes": 7390
+    },
+    {
+      "path": "include/bsp/native_font_resources.hpp",
+      "git_blob": "7fa2146c9bafa5b017ef06a1cf16e5d6a5df40d8",
+      "Git_LF_sha256": "6adc6b54bd132033e5762bf3371f68a0c82181f43ca69b93d8d5a14bff5eece5",
+      "Git_LF_bytes": 7923
+    },
+    {
+      "path": "src/native_font_resources.cpp",
+      "git_blob": "59427662be69ce716904f13ff63f30b9d2ba97df",
+      "Git_LF_sha256": "aa947f8e748baf2c7e3a20f78c9e007a17cd32f73eba9141d097253e8edd5249",
+      "Git_LF_bytes": 25841
+    },
+    {
+      "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+      "git_blob": "be2c9f193e663cfac9d036c1878ad37f7cff640e",
+      "Git_LF_sha256": "b4aaa584bc70d7be2c97209b4321c949ab27fbfebea561e627d07f492ed0e51a",
+      "Git_LF_bytes": 8136
+    },
+    {
+      "path": "src/native_gui_text_single_line_storage.cpp",
+      "git_blob": "0f5535dd8c51553512848ee119ef4b35532bbddc",
+      "Git_LF_sha256": "b86b045bde08b7fa7149908218537ace39f18545e5398e96e5c0a883b7270d00",
+      "Git_LF_bytes": 16309
+    },
+    {
+      "path": "tools/bsp.py",
+      "git_blob": "2e1fb76a9fd700f079912706d9459c4293f96c86",
+      "Git_LF_sha256": "0532d1e3fa711fb62d198e6747a4e0eb8978ef7e301de75710afd40d6c1a1339",
+      "Git_LF_bytes": 103131
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "git_blob": "bd937766a7e4d62c015b2ab44a14a9153fbb4542",
+      "Git_LF_sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+      "Git_LF_bytes": 14518
+    },
+    {
+      "path": "config/target.json",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "Git_LF_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "Git_LF_bytes": 455
+    }
+  ]
+}

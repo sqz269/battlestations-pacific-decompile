@@ -1,0 +1,71 @@
+{
+  "status": "reviewed_source_canonical_win32_pass_caller_unbound",
+  "commit": "df498923926442f74acf85b740f18d1cd7ce25dc",
+  "range": "[00aa0130,00aa0257)",
+  "cpp_sha256": "bd9e2fa264c47cbecdd86b15019f9b68e823e04c2f375b46f37ffea1540eb33b",
+  "header_sha256": "ce969305d71d990c07c8f556579122cb2ce3aaaee9752c004452125e0126682a",
+  "contract_sha256": "0a342da6ced3ced240f99815493e7b9ddfc170541e52e3de12b2960badb2d219",
+  "primary_review": "complete_actual_source_against_saved_native_block",
+  "independent_review": "gui_frame_lifetime_ACCEPT_SOURCE_CODE_exact_pin",
+  "strict_object": {
+    "exit_code": 0,
+    "machine": "14C",
+    "receipt_sha256": "4cbec23bb273e77da648289ad3f8af96847fae371cf55810261464a671698820",
+    "provider_pins_unchanged": 16
+  },
+  "registration": {
+    "commit": "bb7d2a7a1cde65edd5aa103b35b5ac0dd5f2956e",
+    "target": "bsp_game",
+    "source_entries": 1,
+    "generated_compile_entries": 1,
+    "independent_review": "gui_frame_lifetime_ACCEPTED_actual_target_and_count"
+  },
+  "combined_build": {
+    "head": "edfa5a068d5624a8ef53d3bd7574e9ea81d50132",
+    "command": "./scripts/build.ps1",
+    "configuration": "Release Win32",
+    "exit_code": 0,
+    "existing_checks_passed": 2,
+    "existing_checks_total": 2,
+    "ctest_seconds": 12.77,
+    "log": "local/locale_record_storage_integration_cc16_20261030/joined_build.log",
+    "includes_peer_main": "87c709f68"
+  },
+  "full_parser": false,
+  "source_ready": false,
+  "runtime": false,
+  "native_body_credit": false,
+  "missing": [
+    "genuine_upstream_scanner_branch_and_input_custody",
+    "full_stream_ownership_composition",
+    "raw16_checked_insertion_provider",
+    "loaded_locale_startup_authority"
+  ],
+  "initial_record_build": {
+    "head": "bb7d2a7a1cde65edd5aa103b35b5ac0dd5f2956e",
+    "command": "./scripts/build.ps1",
+    "configuration": "Release Win32",
+    "exit_code": 0,
+    "existing_checks_passed": 2,
+    "existing_checks_total": 2,
+    "ctest_seconds": 12.81,
+    "log": "local/locale_record_storage_integration_cc16_20261030/build.log"
+  },
+  "numbered_name_formatter": {
+    "commit": "b8aa50ce479cd15757f7c238ee0d43e30b99bf77",
+    "cpp_sha256": "038af1332614c51386c4717f7d65fb06c74eb2dfe184eb14c0b2b78a73b43bcf",
+    "header_sha256": "4dc40b6ac2ee07aa7bb44e7fd315e9f5beca77821ff58ad4146fb31eeb716695",
+    "primary_review": "complete_actual_source",
+    "independent_review": "gui_frame_lifetime_ACCEPT_SOURCE_CODE_exact_pin",
+    "strict_object_exit": 0,
+    "final_object_sha256": "a538f9e1e8137e801f1a8549dfed818428d226f16df58210c6a08c31d480551e",
+    "prior_candidate_preserved": true,
+    "selected_edge_consumed_before_cleanup": true,
+    "old_typed_files_unchanged": true,
+    "target": "bsp_core",
+    "registration_commit": "b2332814fa0bbb6a1c7f7fb1f9fffc8c4dfb2f6f",
+    "caller_bound": false,
+    "runtime": false,
+    "independent_registration_review": "gui_frame_lifetime_ACCEPTED_Core_once_no_Game_dependency"
+  }
+}

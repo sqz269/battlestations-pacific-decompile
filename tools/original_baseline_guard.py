@@ -1340,7 +1340,7 @@ def directinput_observation(process, thread_id, state, capture=True):
 def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=None,
               arguments=(), protected_roots=(), probe=False, motion_discovery=True,
               handle_known_xlive_debug_close=False, observe_directinput_startup=False,
-              token_mode="low"):
+              token_mode="low", entry_coverage=None):
     drain = Path(os.environ["USERPROFILE"]) / ".bsp/DRAIN"
     def check_drain():
         if drain.exists() and os.environ.get("BSP_IGNORE_DRAIN") != "1":
@@ -1394,6 +1394,10 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
             "known_xlive_debug_close_policy": "opt-in exact SHA+live return/argument+callsite, first chance before OEP, once" if handle_known_xlive_debug_close else "disabled; exceptions are not swallowed",
             "directinput_startup_observation": "restored one-shot at original 00A98340" if observe_directinput_startup else "disabled",
             "disk_binary_modified": False, "started_unix": time.time(), "probe": probe}
+    if entry_coverage:
+        if not locked_mode or motion_discovery or observe_directinput_startup:
+            raise RuntimeError("Entry collection requires locked classic mode without other breakpoint observations")
+        entry_coverage.bind(data, receipt)
     write_receipt(receipt, data)
     try:
         data["sandbox_scan"] = scan_tree(stage, True,
@@ -1453,6 +1457,8 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
         suspended_created = True
         data["root_pid"] = pi.dwProcessId
         data["root_initial_thread_id"] = pi.dwThreadId
+        if entry_coverage:
+            entry_coverage.created(pi.hProcess, pi.dwProcessId)
         process_token_info(pi.hProcess, token_mode)
         wow64 = W.BOOL()
         checked(K.IsWow64Process(pi.hProcess, C.byref(wow64)), "IsWow64Process")
@@ -1467,6 +1473,7 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
         deadline, entry_deadline = time.monotonic() + seconds, time.monotonic() + min(seconds, 90)
         while True:
             check_drain()
+            coverage_stop_requested = bool(entry_coverage and entry_coverage.poll())
             marker = stage / "discover-motion.request"
             if discovery_enabled and marker.exists() and live and all(owned[p][1]["hooked"] for p in live):
                 ordinary(marker)
@@ -1507,18 +1514,24 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
                     state["motion_break_requested"] = True
                     checked(K.DebugBreakProcess(process), "DebugBreakProcess bounded motion rearm")
             if time.monotonic() >= deadline:
+                if entry_coverage:
+                    raise TimeoutError("Entry collection timed out before its qualified native-clock stop")
                 data["phase"] = "timeout"
                 break
             if live and not all(owned[pid][1]["hooked"] for pid in live) and time.monotonic() >= entry_deadline:
                 raise RuntimeError("Target did not reach a guarded entry within the startup deadline")
             event = DEBUG_EVENT()
-            wait_ms = 200
+            # Drain already-pending events before a qualified forced stop, so
+            # a pending root exit/second-chance exception keeps its diagnosis.
+            wait_ms = 0 if coverage_stop_requested else 200
             for pid in live:
                 due = owned[pid][1].get("motion_next_arm_monotonic")
                 if due is not None and due > time.monotonic():
                     wait_ms = min(wait_ms, max(1, int((due - time.monotonic()) * 1000)))
             if not K.WaitForDebugEvent(C.byref(event), wait_ms):
                 if C.get_last_error() == 121:  # ERROR_SEM_TIMEOUT
+                    if coverage_stop_requested:
+                        break
                     continue
                 checked(False, "WaitForDebugEvent")
             status, stop = 0x10002, False  # DBG_CONTINUE
@@ -1580,7 +1593,11 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
                     record = exception.record
                     handle, state = owned[event.pid]
                     if record.code in (0x80000003, 0x4000001F):
-                        if record.address == state.get("directinput_address"):
+                        if entry_coverage and entry_coverage.owns(record.address):
+                            if not exception.first_chance or event.pid != pi.dwProcessId:
+                                raise RuntimeError("Entry breakpoint is not a first-chance owned-root event")
+                            entry_coverage.hit(handle, event.tid, record.address)
+                        elif record.address == state.get("directinput_address"):
                             directinput_observation(handle, event.tid, state, state.get("directinput_armed", False))
                             write_receipt(receipt, data)
                         elif record.address == state.get("motion_address"):
@@ -1604,6 +1621,8 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
                                 state["source_lock_handles_at_entry"] = count.value
                             if observe_directinput_startup:
                                 arm_directinput_observation(handle, state)
+                            if entry_coverage:
+                                entry_coverage.admit(handle, state)
                             if all(owned[pid][1]["hooked"] for pid in live):
                                 data.update(phase="running", live_launch_allowed=True)
                             write_receipt(receipt, data)
@@ -1678,13 +1697,16 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
         failed = exc
         data.update(phase="failed", error=f"{type(exc).__name__}: {exc}")
     finally:
+        termination_code = 0xE0000002 if data.get("stop_classification") == "forced_window_stop" else 0xE0000001
+        if entry_coverage and data.get("phase") == "forced_window_stop":
+            data["owned_forced_stop_exit_code"] = termination_code
         if suspended_created and not exit_seen:
             # TerminateProcess covers failure before job assignment; the only
             # target handle is the process just created by this invocation.
             if job:
-                K.TerminateJobObject(job, 0xE0000001)
+                K.TerminateJobObject(job, termination_code)
             if pi.hProcess:
-                K.TerminateProcess(pi.hProcess, 0xE0000001)
+                K.TerminateProcess(pi.hProcess, termination_code)
             # Drain debug exit events so termination completes while we are the
             # debugger. No process is resumed after failure.
             drain_until = time.monotonic() + 10
@@ -1720,7 +1742,7 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
                 if accounting.active == 0 and K.WaitForSingleObject(pi.hProcess, 0) == 0:
                     data["source_locks"]["owned_job_exited_before_parent_release"] = True
                     break
-                K.TerminateJobObject(job, 0xE0000001)
+                K.TerminateJobObject(job, termination_code)
                 event = DEBUG_EVENT()
                 if K.WaitForDebugEvent(C.byref(event), 200):
                     if event.code == 3:
@@ -1734,6 +1756,15 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
                     last_report = time.monotonic()
         close(pi.hThread)
         close(pi.hProcess)
+        if entry_coverage and job:
+            try:
+                accounting, returned = JOB_ACCOUNTING(), DWORD()
+                checked(K.QueryInformationJobObject(job, 1, C.byref(accounting), C.sizeof(accounting),
+                    C.byref(returned)), "Final entry-collector job accounting")
+                data["final_job_active"] = [accounting.active]
+            except BaseException as exc:
+                data.setdefault("secondary_errors", []).append(f"Final job accounting: {exc}")
+                failed = failed or exc
         close(job)
         close(token)
         if source_locks:
@@ -2009,6 +2040,8 @@ def main():
     launch.add_argument("--token-mode", choices=("low", "medium-restricted", "medium-write-locked"), default="low")
     launch.add_argument("--drcov", action="store_true", help="Opt in to the pinned no-debugger DR coverage backend")
     launch.add_argument("--dr-root", type=Path, help="Pinned DynamoRIO11.91.20749 root, required with --drcov")
+    launch.add_argument("--function-entry-coverage", type=Path,
+        help="Opt in to one-shot exact frozen function-entry hits using the classic debugger guard")
     launch.add_argument("--no-motion-discovery", action="store_true")
     launch.add_argument("--handle-known-xlivedebugclose", action="store_true",
         help="Opt in to one first-chance invalid-HMODULE CloseHandle exception only with exact loaded xlive hash/call/live stack proof")
@@ -2038,12 +2071,20 @@ def main():
             exe = args.exe or args.stage / "game/battlestationspacific.exe"
             arguments = [*args.game_arguments, *(args.arguments[1:] if args.arguments[:1] == ["--"] else args.arguments)]
             if args.drcov:
-                if not args.dr_root or args.handle_known_xlivedebugclose or args.observe_directinput_startup:
+                if not args.dr_root or args.handle_known_xlivedebugclose or args.observe_directinput_startup or args.function_entry_coverage:
                     raise RuntimeError("DR requires --dr-root and rejects debugger-only observations/exception policies")
                 import original_drcov_guard
                 result = original_drcov_guard.run_guard(args.stage, exe, args.cwd or exe.parent,
                     args.documents or args.stage / "Documents", args.receipt, args.seconds,
                     args.original_exe, arguments, args.token_mode, args.dr_root)
+            elif args.function_entry_coverage:
+                if args.dr_root or args.observe_directinput_startup:
+                    raise RuntimeError("Function-entry coverage rejects DR and DirectInput observation")
+                import original_entry_coverage
+                result = original_entry_coverage.run_guard(args.stage, exe, args.cwd or exe.parent,
+                    args.documents or args.stage / "Documents", args.receipt, args.seconds,
+                    args.original_exe, arguments, args.token_mode, args.function_entry_coverage,
+                    args.handle_known_xlivedebugclose)
             else:
                 if args.dr_root:
                     raise RuntimeError("--dr-root requires explicit --drcov")
