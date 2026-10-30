@@ -256,8 +256,10 @@ void build_native_gui_text_single_line_storage_00ab9fd0(
         Word code_unit = unit(pointer(scratch.cursor));
         while (code_unit != 0) {
             location(acquired, Acquired::Boundary::measure_glyph, 0x00aba0ca);
-            void* const glyph = context.bindings.font_glyph_00ad4480(
-                pointer(load(text, 0x108)), code_unit);
+            void* const current_font = pointer(load(text, 0x108));
+            scratch.font_code_unit_home = static_cast<std::uint16_t>(code_unit);
+            void* const glyph = select_native_font_glyph_storage_00ad4480(current_font,
+                scratch.font_code_unit_home, scratch.font_glyph);
             acquired.measured_glyph = glyph;
             measure_advance(text, glyph, scratch);
             ++acquired.measured_units;
@@ -274,8 +276,10 @@ void build_native_gui_text_single_line_storage_00ab9fd0(
             scratch.position_bits[2] = 0;
             do {
                 location(acquired, Acquired::Boundary::emit_glyph, 0x00aba17b);
-                void* const glyph = context.bindings.font_glyph_00ad4480(
-                    pointer(load(text, 0x108)), code_unit);
+                void* const current_font = pointer(load(text, 0x108));
+                scratch.font_code_unit_home = static_cast<std::uint16_t>(code_unit);
+                void* const glyph = select_native_font_glyph_storage_00ad4480(current_font,
+                    scratch.font_code_unit_home, scratch.font_glyph);
                 acquired.emitted_glyph = glyph;
                 if (scratch.first_glyph != 0) {
                     void* const texture = pointer(load(glyph, 0x18));
