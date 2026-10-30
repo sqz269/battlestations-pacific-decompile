@@ -26,6 +26,12 @@ struct NativeHudHintsCollectFrame {
 // Use its SAME actual Source allocator/free/providers and valid raw vector16.
 // Screen/Page/vector/providing owners and real provenance remain caller proof;
 // no semantic receiver cast, fabricated class or automatic authentication.
+// Original0054E370 remains the genuine7Ch hints body. The SAME Source operation
+// may also accept a separately genuine34h Movie receiver for004F8F00, provided
+// its retained actual Page slot+1C and SAME destination/Push/output8/One/N
+// backing and real provider contracts hold. Keep genuine creator/Page/GUI/heap
+// lifetimes and failure custody through every child last use. This admits no
+// Movie-to-hints cast, fabricated owner, callable native table or caller binding.
 // Ordinary C++ Source/private ABI; child failure contracts and completed effects
 // remain qualified. No Original register/stack/FH3/SEH/fault or game admission.
 void collect_native_hud_hints_children_0054e370(void* actual_hints,
