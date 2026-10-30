@@ -682,11 +682,24 @@ def write_receipt(path, data):
     if path.exists() and path.stat().st_nlink != 1:
         raise RuntimeError("Receipt hardlink refused")
     path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_name(path.name + f".{os.getpid()}.tmp")
-    with open(temporary, "x", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, sort_keys=True)
-        f.write("\n")
-    os.replace(temporary, path)
+    temporary = path.with_name(path.name + f".{os.getpid()}.{time.time_ns()}.tmp")
+    try:
+        with open(temporary, "x", encoding="utf-8", newline="\n") as f:
+            json.dump(data, f, indent=2, sort_keys=True)
+            f.write("\n")
+        # Windows readers can briefly deny FILE_SHARE_DELETE. Keep the prior
+        # complete receipt and retry the atomic replacement for at most 0.5 s.
+        for attempt in range(51):
+            try:
+                os.replace(temporary, path)
+                break
+            except OSError as error:
+                if getattr(error, "winerror", None) not in (5, 32, 33) or attempt == 50:
+                    raise
+                time.sleep(0.01)
+    finally:
+        if temporary.exists():
+            temporary.unlink()
 
 
 def current_user_sid():

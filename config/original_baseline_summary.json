@@ -116,5 +116,140 @@
     "Motion-state velocity excludes integration pseudo-velocity; wall secant speed differs.",
     "Reconstruction behavior, AI, combat, objectives and visual parity have not been measured.",
     "Capture completed, but cleanup used a forced stop and was not a normal exit."
+  ],
+  "clock_check": {
+    "status": "capture_completed",
+    "pid": 13880,
+    "schema_version": 3,
+    "evidence_root": "local/original-baseline-clock-20261030",
+    "trace": "usn04-clocked-motion.csv",
+    "read_samples": 500,
+    "read_failures": 0,
+    "clean_clock_samples": 499,
+    "torn_clock_samples": 1,
+    "metrics": {
+      "rows": 500,
+      "clean_rows": 499,
+      "wall_span_s": 24.9504303,
+      "game_span_s": 24.928272008895874,
+      "game_to_wall_ratio": 0.999111907456597,
+      "game_frame_start": 8134,
+      "game_frame_end": 9626,
+      "displacement_metres": {
+        "x": 218.2060546875,
+        "y": -0.19150802493095398,
+        "z": 136.2724609375
+      },
+      "net_distance_3d_m": 257.2627112264238,
+      "net_distance_xz_m": 257.26263994650816,
+      "secant_speed_wall_mps": 10.310952882701336,
+      "secant_speed_game_mps": 10.320118102635325,
+      "time_weighted_native_forward_mps": 10.32215394208327,
+      "forward_mps_min": 8.480886419926396,
+      "forward_mps_max": 15.299427821071388,
+      "native_velocity_game_integral_m": {
+        "x": 218.31375856999097,
+        "y": -0.16272810424266737,
+        "z": 136.35205773671356
+      },
+      "position_minus_native_integral_m": {
+        "x": -0.10770388249096641,
+        "y": -0.02877992068828661,
+        "z": -0.07959679921356155
+      },
+      "engine_dt_range": [
+        0.006820200011134148,
+        0.018954399973154068
+      ],
+      "old_trace_ratio_needed_approx": 0.9405838602096903,
+      "limits": [
+        "Native motion state excludes integration pseudo-velocity.",
+        "New clocked run cannot reconstruct the missing clock in the earlier20s trace.",
+        "Main JSON receipt stopped updating due atomic replacement failure; orphan temp preserves15 genuine hits."
+      ]
+    },
+    "native_frame_semantics": "OnMove application frame, not a mission-relative fixed-step count",
+    "original_exe_and_xlive_unchanged": true,
+    "protected_files_unchanged": true,
+    "cleanup": "Guard receipt-write failure ended owned job after capture; final root exit was not persisted. Raw published receipt is stale; recovered temp contains partial histogram.",
+    "unit_address": "0x4225DB20",
+    "unit_semantics": "Fixed initially controlled unit; no auto-follow",
+    "controlled_relationship_counts": {
+      "direct_match": 487,
+      "relationship_unverified": 13
+    }
+  },
+  "thread_check": {
+    "status": "partial_histogram_preserved",
+    "function": "00825F20",
+    "requested_hits": 20,
+    "captured_hits": 15,
+    "unique_units": 6,
+    "main_thread_id": 85524,
+    "main_thread_hits": 0,
+    "histogram": [
+      {
+        "hits": 3,
+        "is_main_thread": false,
+        "main_thread_id": 85524,
+        "thread_id": 10228,
+        "x87_control_word": 639,
+        "x87_control_word_hex": "027f"
+      },
+      {
+        "hits": 3,
+        "is_main_thread": false,
+        "main_thread_id": 85524,
+        "thread_id": 117204,
+        "x87_control_word": 639,
+        "x87_control_word_hex": "027f"
+      },
+      {
+        "hits": 3,
+        "is_main_thread": false,
+        "main_thread_id": 85524,
+        "thread_id": 128976,
+        "x87_control_word": 639,
+        "x87_control_word_hex": "027f"
+      },
+      {
+        "hits": 3,
+        "is_main_thread": false,
+        "main_thread_id": 85524,
+        "thread_id": 100276,
+        "x87_control_word": 639,
+        "x87_control_word_hex": "027f"
+      },
+      {
+        "hits": 1,
+        "is_main_thread": false,
+        "main_thread_id": 85524,
+        "thread_id": 62112,
+        "x87_control_word": 639,
+        "x87_control_word_hex": "027f"
+      },
+      {
+        "hits": 2,
+        "is_main_thread": false,
+        "main_thread_id": 85524,
+        "thread_id": 114196,
+        "x87_control_word": 639,
+        "x87_control_word_hex": "027f"
+      }
+    ],
+    "interpretation": "All15 observed entries were on non-main threads at027F; no exclusive-worker or observed-main-precision claim.",
+    "pc24_classification_changed": false,
+    "notifications": {
+      "agent/cc13": 1068,
+      "agent/cc9": 1069,
+      "agent/cc16-progress": 1070
+    },
+    "sampled_csv_unit_hits": 0,
+    "precision_of_csv_rows_established": false
+  },
+  "deferred_gaps": [
+    "Long maneuvering capture",
+    "Campaign-menu/direct-scene start equivalence",
+    "Time-aligned motion comparison against bsp_game"
   ]
 }

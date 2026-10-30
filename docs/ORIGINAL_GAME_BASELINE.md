@@ -11,6 +11,11 @@ forward speed; the visible HUD showed 31 knots / Full. All 400 samples matched
 the controlled-unit global before and after the read. This supplies a native
 motion reference; reconstruction parity has not yet been measured.
 
+The revision-2 clock check adds 500 reads over 25 seconds (499 clean clocks)
+and a partial 15-hit thread histogram. It ran nearly in real time; the earlier
+unclocked 6% speed discrepancy remains unresolved. See the final section for
+the measured limits and the guard receipt-write repair.
+
 ## Provenance
 
 The installed executable is x86, preferred image base `00400000`, entry
@@ -238,3 +243,74 @@ needs its exact x86 calling convention, live object lifetime and state checks.
 Arbitrary remote-thread calls and fabricated engine ticks have not been
 validated. No native movement/order injection was needed or implemented for
 this capture.
+
+
+## Clock and thread check (sampler-gaps revision 2)
+
+A second short capture from original PID13880 completed before a guard receipt
+failure ended that owned run. Its evidence is in the main checkout's ignored
+`local/original-baseline-clock-20261030/`. The first sampler-check attempt
+(PID85892) exited normally with code0 before recording; it is not a capture.
+
+| Measured quantity | New check |
+| --- | ---: |
+| Read samples / failures | 500 /0 |
+| Clean / final-torn clock rows | 499 /1 |
+| Clean first-to-last wall time | 24.9504303s |
+| Native GameTime interval | 24.9282720s |
+| Game time / wall time | 0.9991119 |
+| Native OnMove frames | 8134 through9626 |
+| Position secant per wall second | 10.310953m/s |
+| Position secant per game second | 10.320118m/s |
+| Game-time-weighted native forward speed | 10.322154m/s |
+| Native speed range | 8.480886–15.299428m/s |
+
+The fixed unit was initially controlled address `4225DB20`:487 rows matched
+the controlled global and13 left that relationship unverified. The sampler
+did not follow selection changes. The speed varied during this short window; the extrema are not its endpoints
+or a claim of monotonic deceleration. Integrated native velocity differs from
+observed displacement by about(-0.108,-0.029,-0.080)m. Motion-state velocity
+excludes integration pseudo-velocity, and external reads are not atomic.
+Clock brackets, retry/torn flags, raw frame delta and fixed-step cells are
+specified in `ORIGINAL_GAME_CLOCK.md` and `ORIGINAL_MOTION_ABI.md`. Consecutive
+sample game-time deltas are `sample_game_dt`; `engine_dt` remains the actual
+stored scaled frame interval(0.0068202–0.0189544s here), not a sampling tick.
+The OnMove frame is an application counter, not a mission-relative20Hz frame.
+
+This check runs nearly in real time. It does **not** explain the earlier
+15.19m/s wall secant versus approximately16.15m/s native speed: that would need
+about0.9406 game seconds per wall second. The earlier trace has no game clock,
+so its remaining6% discrepancy cannot be measured retrospectively. The new
+clocked trace's position/velocity agreement supports the corrected sampler;
+it does not establish reconstruction parity.
+
+After motion capture, a20-hit marker collected15 genuine entries at00825F20
+across six unit addresses and six non-main threads, all with CW027Fh. Initial,
+original-entry and main thread ID85524 were explicitly recorded. No hit in this
+partial sample was on that thread. None of these hits was on the CSV unit,
+and histogram collection began after the CSV; it does not establish precision
+for those sampled rows. See the ABI and precision docs for counts;
+this does not show that motion runs exclusively on workers. cc13/cc9 were
+notified; no precision classification or reconstructed body was changed.
+
+The guard's atomic receipt replacement failed while a reader was polling it.
+A fixed per-PID temp name then caused FileExistsError on later writes. The
+exact original low-level replacement error was not persisted. The
+published launch JSON remained stale; the complete orphan temp preserves the
+15-hit partial histogram. The root and guard were subsequently observed gone;
+the final game exit code/ordered cleanup receipt was not persisted. This is a
+guard/instrumentation failure after a completed capture, not evidence of a
+spontaneous native gameplay crash. Original options/save hashes and timestamps,
+and original EXE/xlive hashes, remained unchanged.
+
+The writer now uses unique temps, retries transient Windows sharing failures
+for a bounded0.5s, preserves the old complete receipt on permanent failure,
+and removes its own unused temp. A focused Windows reader-sharing fixture
+reproduced winerror5 and passed release/retry, persistent-lock failure and
+subsequent-write cases. Private stage reuse also allows only the two generated
+private game logs to change; every source-root hash and other private runtime
+identity remains checked.
+
+Per revision2, the long maneuvering capture, start-path equivalence and first
+motion comparison remain open/deferred. Execution coverage proceeds separately
+under `CODEX_COVERAGE_CENSUS.md`; a native short capture is not a coverage census.
