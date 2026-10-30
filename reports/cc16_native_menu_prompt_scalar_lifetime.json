@@ -1,0 +1,257 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-menu-prompt-scalar-lifetime",
+  "classification": "required_source_composition_of_out_of_scope_compiler_wrappers_pending_primary_integration",
+  "baseline": "16991d87c0f5b77b0a0284b44a77b65bd67ca7b8",
+  "utc": "2026-10-30T16:02:06.956867+00:00",
+  "scope": {
+    "owned_files": [
+      "include/bsp/native_menu_prompt_lifetime.hpp",
+      "src/native_menu_prompt_lifetime.cpp",
+      "docs/CC16_NATIVE_MENU_PROMPT_SCALAR_LIFETIME.md",
+      "reports/cc16_native_menu_prompt_scalar_lifetime.json"
+    ],
+    "leased_addresses": [
+      "00532340",
+      "00532a00"
+    ],
+    "existing_member_body_modified": false,
+    "sealed_constructor_getter_modified": false,
+    "shared_singleton_deletion_bindings_modified": false,
+    "application_global_view_modified": false,
+    "cmake_or_ledger_modified": false,
+    "ghidra_mutation": false,
+    "build_test_or_probe": false,
+    "native_or_game_process_started": false,
+    "process_control": false,
+    "activation": false
+  },
+  "analysis_identity": {
+    "configured_project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "live_program_proto_name": "battlestationspacific.exe",
+    "live_function_count": 77632,
+    "autostart_disabled": true,
+    "source_read_before_native_assembly": true,
+    "bad_undefined_void_prototypes_not_used_as_interfaces": true
+  },
+  "pe": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "length": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "native_profile": {
+    "address": "00ced3ac",
+    "slot": "00",
+    "bytes": "40235300",
+    "current_target": "00532340",
+    "registered_pointer": "actual MenuPrompt allocation+0C from genuine00425D10/00BD0C30",
+    "fixed_old_profile_is_not_permission_to_skip_future_current_dispatch": true
+  },
+  "wrappers": [
+    {
+      "entry": "00532340",
+      "end": "00532347",
+      "physical_bytes": 8,
+      "instructions": 2,
+      "native_bytes": "83e90ce9b8060000",
+      "native_sha256": "f56ac9310f1ca5311d3b289a21f551160d2518128e77000044bde9f1bf32671e",
+      "native_abi": "ECX actual singleton subobject; retain original fullDWORD stackflags home; SUB ECX,0Ch then JMP00532A00",
+      "source_symbol": "delete_native_menu_prompt_secondary_00532340",
+      "source_signature": "void*(void*,volatile std::uint32_t&,frontend_seg15_22_cc13::Seg15Host&)",
+      "source_file": "src/native_menu_prompt_lifetime.cpp",
+      "source_semantics": [
+        "captureactualsecondary addressword",
+        "subtract0C withDWORDwrap",
+        "forward SAME volatileDWORDhome reference andSAME genuineHost unchanged",
+        "ordinarySourcecall532A00composition; no publication/profile/flag read"
+      ],
+      "classification_retained": "compiler_generated_out_of_scope",
+      "native_tail_jump_generation_claim": false
+    },
+    {
+      "entry": "00532a00",
+      "end": "00532a1d",
+      "physical_bytes": 30,
+      "instructions": 11,
+      "native_bytes": "568bf1e8e8f7fffff644240801740956e8973b6c0083c4048bc65ec20400",
+      "native_sha256": "6f5eb17b50d04f0d58fb285fafdb0d2fa9ef3d90a98015bbbd95b5f74b9ff83c",
+      "native_abi": "ECX actualallocation; originalfullDWORDstackflags; nootherargs; EAX capturedreceiveridentity; RET4",
+      "source_symbol": "delete_native_menu_prompt_screen_00532a00",
+      "source_signature": "void*(void*,volatile std::uint32_t&,frontend_seg15_22_cc13::Seg15Host&)",
+      "source_file": "src/native_menu_prompt_lifetime.cpp",
+      "source_semantics": [
+        "captureallocationaddress asintegeridentity beforedestruction",
+        "directlycallWHOLE existingrawmenu_prompt_destroy_005321f0 on SAMEactualreceiver/SAMEgenuineSeg15Host",
+        "after normalreturn readonlybyte0 of CURRENTactualvolatileflagsDWORDhome",
+        "bit0set invokesrequiredHostfree_00bf65ac on capturedallocation",
+        "returncapturedidentity only; no dereferenceorpublication/profile/flag reread afterpossiblefree"
+      ],
+      "late_native_byte_test": {
+        "address": "00532a08",
+        "bytes": "f644240801",
+        "operation": "TEST byte ptr [ESP+8],1",
+        "early_flags_read": false,
+        "full_dword_load_in_scalar": false,
+        "flags_normalization_or_rewrite": false
+      },
+      "destructor_call": {
+        "address": "00532a03",
+        "target": "005321f0",
+        "bytes": "e8e8f7ffff"
+      },
+      "free_call": {
+        "address": "00532a10",
+        "target": "00bf65ac",
+        "bytes": "e8973b6c00"
+      },
+      "classification_retained": "compiler_generated_out_of_scope",
+      "local_native_eh_handler": false
+    }
+  ],
+  "existing_full_member_destructor": {
+    "entry": "005321f0",
+    "source": "src/frontend_seg15_22_cc13.cpp",
+    "header": "include/bsp/frontend_seg15_22_cc13.hpp",
+    "source_symbol": "bsp::frontend_seg15_22_cc13::menu_prompt_destroy_005321f0",
+    "source_line": 1013,
+    "source_body_sha256_utf8_logical_lf": "0baf211888773dcb946ee4ec7c02d76db90161974258f4fe17b4cac7ac19d237",
+    "source_interface": "void(Raw,Seg15Host&)",
+    "whole_body_reused": true,
+    "copied_recovered_or_modified": false,
+    "duplicate_credit": 0
+  },
+  "required_host": {
+    "type": "bsp::frontend_seg15_22_cc13::Seg15Host",
+    "same_reference_for_member_destruction_and_free": true,
+    "free_method": "virtual void free_00bf65ac(void*) = 0",
+    "new_host_adapter": false,
+    "default_or_fallback": false,
+    "allocation_ownership": "actualoriginal290h heapallocation; originalgenuineallocator/free identity supplied by realexistingHost",
+    "caller_proof": "retain realHost/memberproviders throughwholecall; actualrawbacking untilits reachedaccess/free andgenuine flagsDWORDhome untillateBYTEread; no semanticcast/shadowowner"
+  },
+  "flags_and_exception_contract": {
+    "fullflags_transport": "volatile uint32_t reference forwardedunchanged byadjustor; no earlycopy/byte/bool/enum/normalizedargument",
+    "scalar_consumption": "exactlatevolatileunsignedchar byte0 read afterwhole5321F0; onlybit0 determinesconditionalfree",
+    "callback_mutation": "destructor callbacks maychangefull flags homebeforelate read; freecallbacks cause no secondread",
+    "destructor_throw": "priorfullmember effects retained; skipflagsread,wrapperfree andnormalreturn; propagate",
+    "free_throw": "propagate; nonormalidentityreturn",
+    "new_noexcept_or_termination": false,
+    "catch_rollback_retain_count_retry_or_recovery": false,
+    "after_free": "identityonlyreturn using capturedintegeraddress; no receiverbytes/publication/currentprofile access"
+  },
+  "future_real_binding": {
+    "required_route": "actualsingletonretirementcapturesregisteredinstance+0C andresolvesCURRENT profile/slot0 atnativeepoch; currentCED3AC selects532340->minus0C->532A00->existingwhole5321F0",
+    "base_profile_variants": "mustretain their ownrealcurrenttarget; donotforce derivedroute fromoldmetadata",
+    "shared_deletion_binding_installed": false,
+    "same_root_retention": "existing retainedfrontendapplication andactualmanager/publication graph; no extraowner/publication/references",
+    "member_providers_still_required": [
+      "actualGUI Page removal004C12B0/00AA31F0 fromrawdestructor",
+      "actualrecord/list/stringvector/string release andallocator identities",
+      "actual530CC0 E18E6C clear",
+      "callbackbase restoration andactual4F71A0 raw95all-match unregister"
+    ],
+    "other_gates": [
+      "actualE18E6C/95bank view andsameGame/managerrefs",
+      "separateexisting5311C0 current+10registration fromInitOnce",
+      "Frame/Page/Text/mainHUD/press-start currentroute/lifetime gates",
+      "primaryRootCMakeintegration+MSVCWin32build"
+    ],
+    "whole_frontend_source_ready": false,
+    "activation_ready": false
+  },
+  "credit": {
+    "source_composition_wrappers_added": 2,
+    "new_original_function_credit": 0,
+    "new_original_instruction_credit": 0,
+    "new_original_byte_credit": 0,
+    "new_cg_credit": 0,
+    "new_vendor_credit": 0,
+    "duplicate_member_body_credit": 0,
+    "new_data_credit": 0,
+    "build_tested": false,
+    "native_abi_proved": false,
+    "runtime_or_game_validated": false
+  },
+  "validation": {
+    "static_checks": [
+      "originalPE SHA256 andwhole8B/30B bodyhashes",
+      "CED3AC/+0 targetword",
+      "fulladjustor SUB-C andrelative JMP target",
+      "scalarwholebody2CALLtargets andlateBYTEtest/RET4bytes",
+      "Sourcewhole-membercallbeforeonlyvolatileBYTEreadbeforerequiredfree",
+      "noSourcecatch/noexcept/newowner/fallback",
+      "unchangedsealedconstructor-getter35pinreceipt",
+      "owned/provider hashes andstagedwhitespace"
+    ],
+    "not_run": [
+      "build",
+      "compiler",
+      "tests",
+      "probe",
+      "Nativeexecution",
+      "gameplay",
+      "processcontrol",
+      "Ghidramutation",
+      "activation"
+    ],
+    "primary_integration_required": true
+  },
+  "owned_file_pins": [
+    {
+      "path": "include/bsp/native_menu_prompt_lifetime.hpp",
+      "sha256": "4b012a38e9c8d98eba9f295e5216a1afe93861e1b8ab121e74957ba3b4c454f8"
+    },
+    {
+      "path": "src/native_menu_prompt_lifetime.cpp",
+      "sha256": "6bf440c15d61fb3a745089914aa6fd9ba33c897f1a3de8c0a481620fc543c799"
+    },
+    {
+      "path": "docs/CC16_NATIVE_MENU_PROMPT_SCALAR_LIFETIME.md",
+      "sha256": "88bb93f527dea6eaefde42461e2a61dd7dd5788d169e6fec55a93a8ba0f0d3a9"
+    }
+  ],
+  "provider_pins": [
+    {
+      "path": "include/bsp/frontend_seg15_22_cc13.hpp",
+      "sha256": "08e224ddcdd625c6cfe57cb6f20bf37c022541885b757592e1fa657ea46c6a23"
+    },
+    {
+      "path": "src/frontend_seg15_22_cc13.cpp",
+      "sha256": "4fc672106f5b3cd2136fa28f312c97990c8b3989e53db75c66bac819074e095f"
+    },
+    {
+      "path": "include/bsp/ingame_gui_cc13.hpp",
+      "sha256": "423075cba6819b0d817427165e5bccbcdd7823b6ef9a4864799c8d965f51db9b"
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "sha256": "98a476d0aa3d76fa3b79793a6c10dca5ce621b89f9a290eecef23866a483831a"
+    },
+    {
+      "path": "include/bsp/native_menu_prompt_construction.hpp",
+      "sha256": "9aa4ae61cde44ea344417c604e99ad9005871187f8a0f4e05d39b920298d3ec5"
+    },
+    {
+      "path": "src/native_menu_prompt_construction.cpp",
+      "sha256": "e9b8e42198ae4ab028aa7d5211459730b4995eb02f2baede80cb8e3cb69c4c88"
+    },
+    {
+      "path": "include/bsp/native_menu_prompt_publication.hpp",
+      "sha256": "6fb7c234e37aefd4cff6d84186b838d4b4a8fc92be09ad6e1d4f5393de24267a"
+    },
+    {
+      "path": "src/native_menu_prompt_publication.cpp",
+      "sha256": "759a3b3e2e3e565afc97dc8c3c70911cfb13d8498448ef71c6898b83c99e58fd"
+    },
+    {
+      "path": "reports/cc16_native_menu_prompt_construction_publication.json",
+      "sha256": "bf9dfd7d0351c8c8eb6c5a5183aa849285c876afab3817662186915150fb930b"
+    },
+    {
+      "path": "config/target.json",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    }
+  ],
+  "document": "docs/CC16_NATIVE_MENU_PROMPT_SCALAR_LIFETIME.md"
+}
