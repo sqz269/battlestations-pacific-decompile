@@ -4,8 +4,8 @@
   "created_utc": "2026-10-30T13:11:10.511651+00:00",
   "baseline": "40acabef63ed84dec8deb4d54530ef13a4d4da8d",
   "canonical_bridge_contract": "c0f735c3af934905a3f6681b24261bfab493e4e6",
-  "canonical_bridge_implementation": null,
-  "status": "source_component_written_pending_dependent_build_and_coupled_page_admission",
+  "canonical_bridge_implementation": "07e4a6b4658501ffb33413f61df894761234ffc2",
+  "status": "source_component_build_tested_pending_coupled_page_admission",
   "owned_production_files": [
     "include/bsp/game_native_model_domain.hpp",
     "src/game_native_model_domain.inc",
@@ -157,6 +157,13 @@
       "sha256": "3b1476e2f06b04a6b4933de734cd294638f73cde0b16cf9bb829d0a78239c1a6",
       "git_blob": "5e96e31a4ea483b3883a5923696654bc9626877b",
       "revision": "c0f735c3af934905a3f6681b24261bfab493e4e6"
+    },
+    {
+      "path": "src/game_native_renderer_gui_scene.inc",
+      "revision": "40acabef63ed84dec8deb4d54530ef13a4d4da8d",
+      "bytes": 14757,
+      "sha256": "b3c4c2270facfe38f2ed85dbe672e1771bcd37cf23dd034e4906a184c3440a4e",
+      "git_blob": "9b682e14a021562855a7e9398228e11cd06dadd9"
     }
   ],
   "api": {
@@ -192,7 +199,8 @@
       "D62C88",
       "D5E520"
     ],
-    "native_count": "same NativeModelReference actual+04 alias"
+    "native_count": "same NativeModelReference actual+04 alias",
+    "page_point_lights": "Page storage.node.trees.point_lights must be renderer.camera_environment().nodes.point_lights; StartupSceneDomain has a distinct runtime and is not a substitute"
   },
   "retirement": {
     "mission_selection": "3arg legacy including raw names",
@@ -206,12 +214,78 @@
   },
   "validation": {
     "diff_check": "passed",
-    "build": "pending canonical implementation commit and Root build slot",
+    "build": {
+      "result": "passed",
+      "configuration": "Release",
+      "architecture": "Win32",
+      "BSP_CL_MP": 2,
+      "BSP_PCH": "ON",
+      "BSP_COVERAGE_PDB": "OFF",
+      "seconds": 373.9104322,
+      "log": "local/cc16-model-domain-build.log",
+      "source_commit": "be0806fe95bcb92c61f03a97057597c6ab805f3d",
+      "all_targets": "compiled_and_linked",
+      "existing_suites": [
+        {
+          "name": "reconstructed_math",
+          "result": "passed",
+          "seconds": 0.25
+        },
+        {
+          "name": "tool_tests",
+          "result": "passed",
+          "seconds": 11.55
+        }
+      ],
+      "ctest_total_seconds": 11.87,
+      "tests_passed": 2,
+      "tests_failed": 0,
+      "cpp_corrections_after_first_compile": 0,
+      "root_build_slot": "explicitly_released_before_finalizing_metadata"
+    },
     "new_tests": 0,
     "game_or_probe_runs": 0,
     "process_control": 0,
     "ghidra_queries": 0,
-    "ghidra_mutations": 0
+    "ghidra_mutations": 0,
+    "local_artifacts": [
+      {
+        "path": "local/cc16-model-domain-configure.log",
+        "bytes": 981,
+        "sha256": "2aa663d8a5c3b7acc687fbd984c2f676206fba3ccc1d43d34437499d806c12fd"
+      },
+      {
+        "path": "local/cc16-model-domain-build.log",
+        "bytes": 100821,
+        "sha256": "5af78cf2415f555c2952c3b9ff74b59691aaa4b59d93ab1a43fe000387c90bd7"
+      },
+      {
+        "path": "local/cc16-model-domain-build-receipt.json",
+        "bytes": 294,
+        "sha256": "7978974248eeb84f270d58b8b889bcd5d2262fa6f499275c3379570007af738f"
+      },
+      {
+        "path": "build/win32/CMakeCache.txt",
+        "bytes": 20015,
+        "sha256": "78a6ec6cc41a3c5307e5276bba3eabb2e44695a203092b86d09e7cecb10b1cda"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 1685,
+        "sha256": "21952b7b705b874f8c6243f9fb60a4e075bf1983b75497a93ba15f36ba60a752"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 7512064,
+        "sha256": "207873cb20e6c690a17050ecf3e0eaa85967f385439bf9328b74eaa957d22958"
+      }
+    ],
+    "limits": [
+      "Existing suites do not exercise new client isolation or raw Page lifetimes",
+      "No new Native-body, ABI, FH3/SEH, runtime or gameplay evidence",
+      "Actual Page caller/supplier/consumer must join before Main admission",
+      "Complete failed graph retention remains the existing Page/Mission/renderer host disposition"
+    ]
   },
   "admission": {
     "standalone_main_admissible": false,
@@ -227,5 +301,49 @@
       "Page child/parent/reader/lifetime supplier files",
       "canonical Model raw lifetime bridge files"
     ]
+  },
+  "dependent_merge": "be0806fe95bcb92c61f03a97057597c6ab805f3d",
+  "coupled_dependency_inputs": [
+    {
+      "path": "include/bsp/native_model_owner.hpp",
+      "revision": "07e4a6b4658501ffb33413f61df894761234ffc2",
+      "bytes": 9870,
+      "sha256": "d1cfa9b664075d836d9818ed57f4d9c89858b0c0c507c8ca3dce75f727a52a2a",
+      "git_blob": "1ef6610b9534c327e4e58412eb6a0cd5f8a9409e"
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "revision": "07e4a6b4658501ffb33413f61df894761234ffc2",
+      "bytes": 29717,
+      "sha256": "6e774d73c4a5bbd0109e19c271e2ff05a613e389c50ec72bd888c4c49f5ddd2d",
+      "git_blob": "7c764a3abcd1ffeb713dad482807965574aadb74"
+    },
+    {
+      "path": "include/bsp/native_model_storage_lifetime.hpp",
+      "revision": "07e4a6b4658501ffb33413f61df894761234ffc2",
+      "bytes": 8247,
+      "sha256": "0764b927078091103c21e6c2d6215ccb7a403c2b3eed832943dfae632a55ec3e",
+      "git_blob": "d00d1110e199b05a65c948d42017593a8f102661"
+    },
+    {
+      "path": "src/native_model_storage_lifetime.cpp",
+      "revision": "07e4a6b4658501ffb33413f61df894761234ffc2",
+      "bytes": 17033,
+      "sha256": "1ded6a8042e2ce26bdcd9852dae2c14b16cee1efdba0227ed479d0c9491cddd8",
+      "git_blob": "9aa0259d0d2deebd85f14805b9bd9eaae6b76587"
+    },
+    {
+      "path": "docs/CC16_CANONICAL_MODEL_RAW_LIFETIME_BRIDGE_IMPLEMENTATION.md",
+      "revision": "07e4a6b4658501ffb33413f61df894761234ffc2",
+      "bytes": 10124,
+      "sha256": "943e8d530e55a10ee688a36a512496a4a90b0e3166f7b9ba8d5504b2af577921",
+      "git_blob": "14821896396e963b612ce0ea4edba209b4dc70b4"
+    }
+  ],
+  "component_document": {
+    "path": "docs/CC16_FRONTEND_MODEL_DOMAIN_IMPLEMENTATION.md",
+    "bytes": 7569,
+    "sha256": "be77e706e8a30af7b4e1086f8bdfc2ef9fe5232d196cf024438ae0fa82dad37f",
+    "git_blob": "20d58dc68a53bfcd520cd324d57b7b6f0a71b502"
   }
 }
