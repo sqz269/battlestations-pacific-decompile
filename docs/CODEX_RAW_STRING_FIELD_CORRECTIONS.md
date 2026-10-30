@@ -15,3 +15,10 @@ The raw override body is separate and is not included in this build. Existing
 lower-provider fencing/exception qualifications remain. No loaded locale,
 raw16 growth, parser, startup or raw Text activation follows. All nine raw Text
 choices remain false; the frozen EMPTY source-admission hold is unchanged.
+
+The later equality correction is f8dd5924: only four field-read calls change to
+the existing raw byte helpers. Left/right length capture, unequal/zero early
+returns, right/left data reads and current CRT comparison stay unchanged. Exact
+primary/independent review, strict Win32 object and canonical combined build
+pass (2/2 existing checks, 11.83 seconds). This closes a language-call prerequisite,
+with language/reload/parser and runtime admission still separate.

@@ -1108,3 +1108,9 @@ pass11.21s. No game/body executed. Canonicalstartup.cmake stayed unchanged and
 localoverlaycache was removed/restored (canonicalregistrationcount0). Shared
 CMake registration remains queued; local link is not canonicalbuild admission.
 Receipt: local/raw_lua_overrides_local_link_cc16_20261030/receipt.json.
+
+Raw435C40 equal-header field correction f8dd5924 switches onlyfourreadcalls to
+existing fencedbytehelpers. Native leftlen/rightlen, earlyreturns and rightdata/
+leftdata/currentCRT order unchanged. Exactprimary+independentreview, strictobject
+and canonicalWin32build/checks2/2 pass11.83s. No language/reload/loadedlocale or
+runtime authority follows; raw16/parser/GUI/owneroperation gates remain.

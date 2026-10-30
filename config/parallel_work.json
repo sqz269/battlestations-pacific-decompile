@@ -44606,14 +44606,14 @@
       "state": "source_reviewed_coupled_win32_pass",
       "worker": "gui_integration_review",
       "source_ready": false,
-      "function_addresses": ["004bcb80", "00425f40", "004261a0"],
+      "function_addresses": ["004bcb80", "00425f40", "004261a0", "00435c40"],
       "output_files": [
         "src/native_lua_script_overrides.cpp",
         "src/native_physical_file_date.cpp",
         "docs/CODEX_RAW_STRING_FIELD_CORRECTIONS.md",
         "reports/codex_raw_string_field_corrections.json"
       ],
-      "notes": "Published2c851 contains exact0265/276857 raw-only fencedbytefield corrections. Read/store/self/cleanup order unchanged; sharedhelpers/typed/allotherbodies inverse-exact. Primary/independentSource/strictobjects/commonWin32checks2/2 pass14.10s. No lowerprovider transitiveABI/fault/runtime closure."
+      "notes": "Published2c851 contains exact0265/276857 raw-only fencedbytefield corrections. Later f8dd5924 changes onlyfour435C40 reads using existingrawhelpers; left/right length, earlyreturns, right/left data/currentCRT order unchanged. Sharedhelpers/otherbodies inverse-exact. Primary/independentSource/strictobjects and canonicalWin32checks2/2 pass11.83s forf8dd. No lowerprovider transitiveABI/fault/runtime closure or language/reload activation."
     },
     {
       "id": "codex-raw-lua-overrides-binding",
