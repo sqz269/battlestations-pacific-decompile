@@ -11,5 +11,6 @@ alive through its operations and any retained failure state. This role is
 distinct from the E17654 fallback and must not be replaced by a new empty literal.
 
 The borrow is metadata only: no getter, I/O, mutation, native call or startup
-activation occurs. Raw BDEF90 and parser composition remain separate. Review
-and combined build are pending.
+activation occurs. Independent source review accepts the exact change. The
+combined Win32 Release build/checks pass (2/2, 11.47 seconds) at 74b8f2617.
+Raw BDEF90 and parser composition remain separate.

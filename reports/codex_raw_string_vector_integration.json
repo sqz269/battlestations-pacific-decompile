@@ -1,0 +1,51 @@
+{
+  "status": "reviewed_source_coupled_win32_pass",
+  "contract_sha256": "a27c4ec624660875674a62fb0422ef9428bf9c8cc7b7a127a1987822fb4305da",
+  "addresses": [
+    "00426520",
+    "00427110",
+    "004cdc20",
+    "004d0fa0"
+  ],
+  "primary_review": "complete_raw_HPP_CPP_against_saved_native_assembly",
+  "independent_review": "gui_frame_lifetime_ACCEPT_SOURCE_CODE_ONLY",
+  "strict_object": {
+    "exit_code": 0,
+    "machine": "14C",
+    "cpp_sha256": "59b7d98235c5123c47d48eb46cc1971455d9db12d9a218764d681799c90d710a",
+    "header_sha256": "a91385da645d3acf4ef360209a41c05499b2a33fee8b6b2416cd3512e5c8ea74"
+  },
+  "combined_build": {
+    "head": "74b8f2617a68fba40b2832926337df51c7384281",
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "target": "MSVC Win32 Release",
+    "existing_checks_passed": 2,
+    "existing_checks_total": 2,
+    "ctest_seconds": 11.47,
+    "log": "local/raw_string_vector_integration_cc16_20261030/combined_build.log",
+    "game_executed": false
+  },
+  "old_typed_files_unchanged": true,
+  "source_ready": false,
+  "vendor_body_credit": false,
+  "runtime": false,
+  "startup": "nine_raw_text_gates_false_empty_source_hold",
+  "vfs_exists_entry": {
+    "commit": "fc50974eb19ba1c0c2a2d76c00470113196911da",
+    "primary_review": "complete_tiny_diff_no_issue",
+    "independent_review": "gui_frame_lifetime_ACCEPT_SOURCE_CODE_ONLY",
+    "strict_object_exit": 0,
+    "numeric_target": "00bdd440",
+    "raw_lookup": "same_retained_lookup_context",
+    "previous_cpp_header_inverse_exact": true
+  },
+  "fallback_borrow": {
+    "commit": "b03a95511",
+    "role": "exact_retained_0109CEF0_input",
+    "append_only": true,
+    "creates_storage": false,
+    "independent_review": "gui_frame_lifetime_ACCEPT_SOURCE_CODE_ONLY"
+  },
+  "commit": "1432b1ae88c59671825e32ef90f499b9122b2a57"
+}
