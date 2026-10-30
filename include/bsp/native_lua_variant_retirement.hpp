@@ -142,4 +142,90 @@ NativeLuaVariantRetirementResult destroy_native_lua_variant_subtree_006ee890(
     void* owner, void* actual_node, NativeStringRawPoolContext& strings,
     NativeLuaVariantRetirementOperation& operation);
 
+
+// Additive qualified Source C++ cleanup; the normal-only APIs/metadata above
+// retain their exact signatures/layouts/retain-and-rethrow behavior. These are
+// passive caller-owned records, not Original frames or an execution journal.
+enum class NativeLuaVariantCppCleanupAction : std::uint32_t {
+    none, name_00c970d0, key_00c830a0
+};
+enum class NativeLuaVariantCppCleanupStage : std::uint32_t {
+    unarmed, armed, normal_demoted, exceptional_demoted, action_entered,
+    buffer_captured, length_captured, getter_entered, pool_captured,
+    return_entered, completed
+};
+struct NativeLuaVariantCppCleanupIncoming {
+    volatile bool observed{};
+    volatile bool armed{};
+    volatile std::uint32_t native_site{};
+    volatile std::int32_t cleanup_state{-1};
+    void* volatile saved_home{};
+};
+struct NativeLuaVariantCppCleanupActionRecord {
+    volatile NativeLuaVariantCppCleanupAction kind{};
+    volatile NativeLuaVariantCppCleanupStage stage{};
+    volatile bool entered{};
+    volatile bool completed{};
+    volatile bool secondary_cpp_seen{};
+    void* volatile saved_home{};
+    void* volatile captured_buffer{};
+    volatile std::uint32_t captured_length{};
+    volatile std::uint32_t captured_size{};
+    void* volatile captured_pool{};
+    volatile std::uint32_t native_site{};
+};
+struct NativeLuaVariantCppCleanupRecord {
+    volatile NativeLuaVariantRetirementBody body{};
+    NativeLuaVariantCppCleanupIncoming incoming;
+    NativeLuaVariantCppCleanupActionRecord action;
+};
+struct NativeLuaVariantCppCleanupBacking {
+    NativeLuaVariantCppCleanupRecord* records;
+    std::size_t capacity;
+};
+
+// Supply genuine typed/disjoint backing, sufficient for the ACTUAL active call
+// chain including range/nested-map frames, for BOTH this sidecar span and the
+// existing operation span. Metadata/context remain stable and independently
+// live through all callbacks/failure disposition. No count/history-derived
+// limit, allocation or automatic failed-state cleanup is supplied. Each lexical
+// handler retains its own slot reference; failed active_depth is not its index.
+// Sidecars record current scope/incoming/action captures independently; they do
+// not drive cleanup, own exceptions, or authorize replay/retry/abandonment.
+//
+// All four internal cycle edges select the qualified mode. Genuine C++ escape
+// from clear while destructor state0 invokes C970D0's actual41DD20 contract at
+// saved V+Ch. Escape from value destruction while subtree state0 invokes
+// C830A0's actual6EE020 contract at the rewritten key-home VALUE. Exceptional
+// demotion precedes CURRENT action buffer/conditional late length capture.
+// Normal demotion remains after the normal buffer capture. Actions use SAME
+// actual AA8/AA0/AA4 raw pool services, add no object/node/map free/header clear,
+// and do not resume the normal suffix. Metadata returned non-completion never
+// triggers an action and is immediately propagated, outside the valid domain.
+//
+// If each actual action returns normally, bare rethrow preserves its incoming
+// C++ exception. A cleanup getter can itself throw: record its distinct stage
+// and propagate that escaping exception, without a new terminal/throw policy
+// or promise to retain the incoming exception object. Existing noexcept/CRT/OS
+// boundaries remain. /EHsc C++ handlers need not catch faults, SEH, longjmp or
+// other nonlocal exits; compiler EH state over nonthrowing volatile operations
+// does not establish Original fault/state epochs. No FH3/SEH/Original ABI or
+// secondary-terminal equivalence, rollback or cleanup destructor is supplied.
+// Saved K is the Source VALUE at the rewrite epoch; a mutable Native private
+// home reload/replacement and arbitrary private-stack aliases are not supplied.
+// Full host/vector/queue/payload/scalar/producer/adoption gates remain separate.
+NativeLuaVariantRetirementResult clear_native_lua_variant_00886920_cpp_cleanup(
+    void* actual_variant, NativeStringRawPoolContext& strings,
+    NativeLuaVariantRetirementOperation& operation,
+    const NativeLuaVariantCppCleanupBacking& cleanup);
+NativeLuaVariantRetirementResult destruct_native_lua_variant_00884af0_cpp_cleanup(
+    void* actual_variant, NativeStringRawPoolContext& strings,
+    NativeLuaVariantRetirementOperation& operation,
+    const NativeLuaVariantCppCleanupBacking& cleanup);
+NativeLuaVariantRetirementResult
+    destroy_native_lua_variant_subtree_006ee890_cpp_cleanup(
+        void* owner, void* actual_node, NativeStringRawPoolContext& strings,
+        NativeLuaVariantRetirementOperation& operation,
+        const NativeLuaVariantCppCleanupBacking& cleanup);
+
 } // namespace bsp
