@@ -346,7 +346,7 @@ class Resolver:
             for name in row.get("ident", []):
                 self.by_ident[name.rsplit("::", 1)[-1]].add(address)
 
-    def resolve(self, name, source=None):
+    def resolve(self, name, source=None, allow_unverified=False):
         ident = identifier(name)
         candidates = set(self.by_ident.get(ident, ()))
         if not candidates and ident:
@@ -355,14 +355,25 @@ class Resolver:
             suffix = re.search(r"_([0-9a-fA-F]{8})$", ident)
             if suffix and int(suffix.group(1), 16) in self.rows:
                 candidates.add(int(suffix.group(1), 16))
-        if len(candidates) > 1 and source:
-            normalized = source.replace("\\", "/").casefold()
-            matching = {address for address in candidates
-                        if any(normalized.endswith("/" + str(self.rows[address].get(field, "")).replace("\\", "/").casefold())
-                               for field in ("implementation_source", "source") if self.rows[address].get(field))}
-            if matching:
-                candidates = matching
-        return candidates
+        if allow_unverified:
+            return candidates
+        qualified = re.sub(r"<.*>", "", name.split("(", 1)[0].strip())
+        normalized = source.replace("\\", "/").casefold() if source else None
+        confirmed = set()
+        for address in candidates:
+            row = self.rows[address]
+            suffix_match = bool(ident and re.search(rf"_{address:08x}$", ident, re.I))
+            qualified_match = any("::" in value and value == qualified for value in row.get("ident", []))
+            source_match = normalized and any(
+                normalized.endswith("/" + str(row[field]).replace("\\", "/").casefold())
+                for field in ("implementation_source", "source") if row.get(field))
+            if suffix_match or qualified_match or source_match:
+                confirmed.add(address)
+        # An unqualified leaf such as next/to_string is not identity evidence:
+        # std::next and a game class's next can coexist in the same PDB.
+        if len(candidates) > 1 and not source and confirmed:
+            return candidates  # retain known alias ambiguity without source disambiguation
+        return confirmed
 
 
 class PdbSymbols:
@@ -534,8 +545,25 @@ def attribute_bsp(observations, symbols, resolver, max_addresses):
     present, inventory_ambiguous = set(), set()
     outer = []
     aliases = defaultdict(set)
+    unverified_inventory = set()
     for row in inventory:
         candidates = resolver.resolve(row["name"])
+        if not candidates:
+            loose = resolver.resolve(row["name"], allow_unverified=True)
+            if loose:
+                if row["inline"]:
+                    try:
+                        frames = symbols.inline_at(symbols.base + row["rva"])
+                        row["source"] = next((frame.get("source") for frame in frames
+                                              if frame["index"] == row["index"]), None)
+                    except CensusError:
+                        row["source"] = None
+                else:
+                    row["source"] = symbols.line(symbols.base + row["rva"])
+                candidates = resolver.resolve(row["name"], row.get("source"))
+                if not candidates and not row.get("source"):
+                    unverified_inventory.update(loose)
+                    inventory_ambiguous.update(loose)
         if len(candidates) == 1:
             present.update(candidates)
         elif candidates:
@@ -558,8 +586,16 @@ def attribute_bsp(observations, symbols, resolver, max_addresses):
             runtime[key] = {**row, "original_candidates": [f"{a:08x}" for a in sorted(candidates)],
                             "mapping": "unique_identifier" if len(candidates) == 1 else
                                        "ambiguous_identifier" if candidates else "no_wire_identifier_match"}
+            if not candidates:
+                loose = resolver.resolve(row["name"], allow_unverified=True)
+                if loose:
+                    runtime[key]["rejected_leaf_candidates"] = [f"{a:08x}" for a in sorted(loose)]
+                    runtime[key]["mapping"] = ("source_or_qualification_mismatch" if row.get("source")
+                                                else "source_identity_unverified")
+                    if not row.get("source"):
+                        possible.update(loose)
         candidates = {int(a, 16) for a in runtime[key]["original_candidates"]}
-        if shared_rva:
+        if shared_rva and candidates:
             possible.update(candidates)
             runtime[key]["mapping"] = "shared_rva_logical_caller_unknown"
         elif len(candidates) == 1:
@@ -628,9 +664,12 @@ def attribute_bsp(observations, symbols, resolver, max_addresses):
     return {"hits": hits, "possible": possible, "present": present, "complete": complete,
             "entry_counts": entry_counts,
             "metadata": {**symbols.metadata, "inventory_records": len(inventory),
+                         "identifier_resolution": "original-address suffix, exact qualified wire identifier, or source-confirmed wire leaf",
                          "outer_inventory_records": sum(not r["inline"] for r in inventory),
                          "inline_inventory_records": sum(r["inline"] for r in inventory),
                          "inventory_errors": inventory_errors, "inline_scan_error": inline_error,
+                         "source_unverified_inventory_candidates": [f"{a:08x}" for a in sorted(unverified_inventory)],
+                         "source_unverified_inventory_candidate_count": len(unverified_inventory),
                          "covered_bytes": sum(hi - lo for lo, hi in ranges), "inline_bytes_scanned": scanned,
                          "inline_scan_complete": inline_error is None,
                          "shared_rva_groups": {f"{rva:x}": sorted(names) for rva, names in aliases.items() if len(names) > 1},
@@ -638,6 +677,8 @@ def attribute_bsp(observations, symbols, resolver, max_addresses):
                          "blocks_without_outer_symbol_count": len(blocks_without_outer),
                          "unresolved_executed_symbols": list(unresolved.values()),
                          "unresolved_executed_symbol_count": len(unresolved),
+                         "rejected_leaf_name_record_count": sum(row["mapping"] == "source_or_qualification_mismatch" for row in runtime.values()),
+                         "source_unverified_executed_record_count": sum(row["mapping"] == "source_identity_unverified" for row in runtime.values()),
                          "ambiguous_executed_candidates": [f"{a:08x}" for a in sorted(possible)],
                          "ambiguous_executed_candidate_count": len(possible),
                          "ambiguous_candidates_without_positive_hit": [f"{a:08x}" for a in sorted(possible - hits.keys())],
