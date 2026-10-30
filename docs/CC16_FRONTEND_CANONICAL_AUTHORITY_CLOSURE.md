@@ -46,6 +46,7 @@ Freeze `bsp::game::GameNativeFrontEndDataView` in proposed `include/bsp/game_nat
 | `screen_words_00e18b60()` | `volatile uint32_t*` | exactly95 DWORDs,380 bytes,E18B60..E18CDB |
 | `pump_sentinel_00e18cdc()` | `volatile uint8_t&` | separate byte E18CDC |
 | `frame_publication_00e18d80()` | `void* volatile&` | actual Frame pointer cell |
+| `prompt_publication_00e18e6c()` | `void* volatile&` | actual MenuPrompt singleton cell |
 | `backdrop_selector_00e18d84()` | `volatile int32_t&` | process-global signed DWORD |
 | `panel_selector_00e18d88()` | `volatile int32_t&` | process-global signed DWORD |
 | `title_selector_00e18d8c()` | `volatile int32_t&` | process-global signed DWORD |
@@ -55,6 +56,8 @@ Freeze `bsp::game::GameNativeFrontEndDataView` in proposed `include/bsp/game_nat
 | `flag_00e08654()` | `volatile uint32_t&` | separate DWORD, authenticated cold value2 |
 
 Use `std::` on integer types in implementation. E08654 is neither a byte nor a fourth contiguous selector; its later low-WORD widget input remains a separate epoch. Current names and global selectors survive all Frame generations. Cold row4 name nulls are loader values, not permission for an enduring empty-Page implementation. Frame+160 and85 Page words belong to each genuine receiver; the prefix constructor deliberately leaves them untouched. Data accessors do not authorize adjacent globals as initialized services, arbitrary out-of-domain accesses or the original fault ABI. Numeric original codewords never become host callable pointers. Unknown profiles/slots remain unclosed providers; no successful default or metadata-only return substitute is admitted.
+
+Primary cross-contract correction after the original seal: the mandatory InitOnce MenuPrompt getter00425D10 also needs the SAME actual E18E6C publication reference. The explicit accessor above adds that omitted consumer contract, bringing the view to11 accessors. E18E6C..E18E6F is inside the already authenticated loader-zero E18000 page; it requires no additional page, allocation, publication owner or initialization policy. Its genuine getter publishes and registers actual+0C, and its constructor/destructor contexts borrow this same cell. The historical43-pin/10-accessor seal validation below is retained as the original check, not a claim that the initial list included this correction. No standalone accessor implementation is authorized by this evidence-only correction.
 
 The view deliberately contains no manager/Game copies. Manager authority stays `game_native_string_process().manager_01090aa0()`, borrowed by `GameSingletonHost::manager_publication_01090aa0()`, not a numeric01090AA0 mapping. Getter, Game singleton lifetime and adjusted singleton drain must use that same reference.
 

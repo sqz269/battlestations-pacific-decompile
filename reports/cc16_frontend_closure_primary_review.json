@@ -38,7 +38,17 @@
     "canonical_frontend_storage_requires_coupled_real_consumers": true,
     "preprepared_getter_custody_before_registration_required": true,
     "page_direct_zero_and_manager_retirement_remain_distinct": true,
-    "no_actionable_contract_defect_found": true,
+    "initial_review_found_no_actionable_contract_defect": true,
+    "subsequent_cross_contract_omission_corrected": {
+      "method": "GameNativeFrontEndDataView::prompt_publication_00e18e6c()",
+      "type": "void* volatile&",
+      "consumer": "Actual MenuPrompt 00425D10 getter, constructor unwind and lifetime contexts",
+      "same_authenticated_page": "00e18000",
+      "additional_allocation_required": false,
+      "original_10_accessor_contract_omitted_this_required_cell": true,
+      "corrected_accessor_count": 11,
+      "source_implementation_or_activation_in_this_correction": false
+    },
     "whole_frontend_source_ready": false,
     "activation_ready": false
   },
