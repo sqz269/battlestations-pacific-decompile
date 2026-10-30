@@ -286,3 +286,25 @@ Scripts are in `local/` of this worktree (not committed): `fp1_scan.py` (`FLDCW`
 `fp1_fldcw2.py`/`fp1_ctx.py` (writer classification), `fp1_rawfldcw2.py` (byte-level
 completeness), `fp1_callers.py` (rel32 and absolute references), `fp1_sse.py` (SSE census) and
 `fp1_grepinstall.py`. The probe source is committed as `tools/d3d9_fpu_probe.cpp`.
+
+
+## Live original-entry observation, 2026-10-30
+
+The installed-original USN04 sampler check recorded main/entry TID85524 and
+15 genuine00825F20 motion entries on six other threads, all CW027Fh. Counts
+were3/3/3/3/1/2 on TIDs10228/117204/128976/100276/62112/114196. Six distinct unit
+addresses were observed. No main-thread hit was captured; this partial sample
+neither establishes exclusive-worker execution nor measures the main thread's
+CW. It confirms that a PC24-only assumption does not describe these entries.
+No PC24 classification or reconstruction was changed. cc13/cc9 notifications
+are1068/1069. Details and thread histogram: `ORIGINAL_MOTION_ABI.md`.
+
+Collection requested20 hits but a guard receipt IO failure stopped it after15.
+Raw recovered receipt: ignored
+`local/original-baseline-clock-20261030/launch-orphan-recovered.json`.
+Original files/hashes were unchanged. These are execution-context observations
+for this installed build, not numerical parity proof.
+
+The histogram was collected after the clock CSV, and none of its six unit
+addresses matches the fixed CSV unit. It does not assign a precision word
+to those trajectory rows.

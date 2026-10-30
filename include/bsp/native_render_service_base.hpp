@@ -26,6 +26,8 @@ void destroy_native_render_service_base_00b0f0c0(
     void* actual_receiver, NativeRenderServiceBaseContext& context);
 
 // Complete 412430[7]: ECX receiver, no arguments, RET. One profile DWORD store.
+// This entry uses a fenced four-byte copy into caller-provided raw backing;
+// no C++ uint32_t field object is required. The fence adds no synchronization.
 void destroy_native_generic_singleton_base_00412430(void* actual_receiver) noexcept;
 
 // Raw-domain overloads of the existing typed getter entries. LEA EAX,[ECX+84]

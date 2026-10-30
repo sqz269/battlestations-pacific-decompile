@@ -82,8 +82,9 @@ Coverage program PDB SHA-256:
 
 The program PDB is `build/coverage-pdb/Release/bsp_game.pdb`, paired with that
 directory's EXE; use that pair for attribution. Both full build directories are
-ignored. Copy census inputs/PDBs into the primary's ignored `local/` artifact
-directory before eventual worktree removal. One live compiler/process sample
+ignored. Final binaries, maps and evidence were copied with SHA-256 verification
+to the main checkout's `local/coverage-census-20261030/bsp/`; its artifact
+manifest binds each copy to its source. One live compiler/process sample
 recorded both CMake/MSBuild trees and their two active `cl.exe` descendants at
 Normal priority (`local/build-priority-sample.json`).
 
@@ -139,58 +140,29 @@ code is the tracer's result; also inspect the game log and child coverage logs.
 repeat traced runs with the explicit prefix recipe rather than assuming replay
 will retain tracing.
 
-## Smoke and reference recipes
+## Completed smoke and reference runs
 
-No game run is authorized for this worker until the primary announces that the
-original timing/thread-histogram run has finished. Run one coverage case at a
-time, at Normal priority, and never alongside an original-game run. Use the
-shared wrapper and honor `C:/Users/sqz269/.bsp/DRAIN`.
+The primary opened the launch gate after the original timing/thread-histogram
+run finished. Four cases then ran serially: untraced/traced 300-frame smoke,
+followed by untraced/traced 4,800-frame reference. All used the exact coverage
+EXE above. Every case returned root/launcher exit 0, drained naturally, and
+matched on actual mission-entry frame and requested simulated frame count.
+The real runtime/options/save inventories remained unchanged.
 
-The accepted USN04 reference environment contains exactly
-`BSP_DEATH_TABLE=1` and `BSP_GUNNERY_RNG_STREAMS=1`. Use an isolated child shell
-with that environment and no unrecorded `BSP_*` overrides. Keep the source-data
-preservation checks. Never pass `--hardware-probe-commit`, change power settings,
-or stop another owner's processes.
+[COVERAGE_BSP_RUNS.md](COVERAGE_BSP_RUNS.md) records the measured table, existing
+frame-marker proof, exact arguments, private game/options paths, write-route
+audit, process/module identities and raw drcov record counts. Its archived
+`commands/launch-case.ps1` is the precise executed recipe; it asserts the real
+save directories already exist, copies settings privately, removes unrelated
+`BSP_*` variables, and uses only `BSP_DEATH_TABLE=1` and
+`BSP_GUNNERY_RNG_STREAMS=1`. The wrapper retains slot/DRAIN handling,
+`-WaitSeconds 7200` and `-NoForceStop`. The wait is for slot acquisition, not
+an application runtime timeout.
 
-After the launch gate opens, first run an untraced and traced smoke with the
-same coverage EXE and arguments. Each output directory must be new. Example:
-
-```powershell
-$dr = 'J:/PROG/battlestations-pacific-decompile-codex-coverage/local/tools/dynamorio/DynamoRIO-Windows-11.91.20749/bin32/drrun.exe'
-$exe = 'build/coverage-pdb/Release/bsp_game.exe'
-$env:BSP_DEATH_TABLE = '1'
-$env:BSP_GUNNERY_RNG_STREAMS = '1'
-$smoke = @('--frames','620','--press-start-frame','30','--menu-select','USN04',
-           '--mission-frames','300','--mission-frame-seconds','0.05','--difficulty','1')
-./tools/run_game.ps1 -Exe $exe -Log local/coverage/smoke-untraced.log `
-  -WaitSeconds 7200 -NoForceStop -- @smoke
-$drLogs = Join-Path (Get-Location) 'local/coverage/smoke-drcov'
-New-Item -ItemType Directory -Path $drLogs | Out-Null
-./tools/run_game.ps1 -Exe $exe -Log local/coverage/smoke-traced.log `
-  -WaitSeconds 7200 -NoForceStop -TraceExecutable $dr `
-  -TraceArguments @('-follow_children','-t','drcov','-logdir',$drLogs) -- @smoke
-```
-
-Check actual mission entry/start frame, completion/exit code and both process
-logs before the longer case. `-WaitSeconds` is the slot-acquisition wait; it is
-not a game runtime timeout. If startup/renderer fails, run `query session` and
-retain the actual failure before attributing it to source or tracing.
-
-Then use the revision-2 reference window (no trajectory CSV):
-
-```powershell
-$drLogs = Join-Path (Get-Location) 'local/coverage/usn04-4800-drcov'
-New-Item -ItemType Directory -Path $drLogs | Out-Null
-./tools/run_game.ps1 -Exe $exe -Log local/coverage/usn04-4800.log `
-  -WaitSeconds 7200 -NoForceStop -TraceExecutable $dr `
-  -TraceArguments @('-follow_children','-t','drcov','-logdir',$drLogs) -- `
-  --frames 5000 --press-start-frame 30 --menu-select USN04 `
-  --mission-frames 4800 --mission-frame-seconds 0.05 --difficulty 1
-```
-
-Record that this rebuilt start uses `--menu-select USN04`; the original's direct
-scene path is a window/setup difference, not resolved by this packet. Coverage
-attribution must retain process/module bases and PDB identity, count undefined
-original code and EH funclets separately, and separate game from vendor code.
-Keep drcov logs/PDBs under ignored output paths. Delete intermediate drcov logs
-only after the census JSON has been written and inspected.
+Long-run combat totals differ between traced and untraced cases; the cause is
+unknown. Matching startup, frame count and exit validates the census window,
+not deterministic gameplay equivalence. Rebuilt `--menu-select USN04` also
+remains distinct from original direct-scene startup. Function attribution must
+retain process/module bases and PDB identity and distinguish game/vendor code,
+undefined original code, and EH funclets. Raw drcov logs remain in the frozen
+worktree for the census worker; no worktree or log cleanup occurred here.
