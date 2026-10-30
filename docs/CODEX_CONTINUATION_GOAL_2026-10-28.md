@@ -1060,3 +1060,14 @@ safeexit follows from startuphealth. Root737010 supplies the actualbase-scalar
 route with late callerflags. Strict objects and commonWin32checks2/2 pass12.98s.
 No body/game execution, payload/map/loadedlocale/canonicalF8 wiring or startup
 authority follows; all9off/ac60hold unchanged. See CODEX_LOCALE_ALLOCATION_INTEGRATION.md.
+
+Canonical initialized-only Source owner b8b71e79 plus raw map insertion3ed87041
+are now coupled with the permanent F8cell/oneclaim, typed Core deletion borrow,
+actual flags reference and normal/fallback host drain fences. Barehost preparation
+requires genuine VFS/string bindings; no loading/startup authority follows. Root
+review corrected initialized AA0nonnull admission before fallback. Constructor-only
+map cleanup uses private captured canonicalpool/slot, not copied diagnostics.
+Strict objects and combined ReleaseWin32 linking/checks2/2 pass11.50s at0616ca399.
+Independent owner/map Source reviews accept the exact commits; all9off/ac60hold unchanged.
+See CODEX_CANONICAL_LOCALE_BINDING_INTEGRATION.md. Remaining raw parser/value,
+raw16 growth and effectiveVFS loading contracts stay explicit dependencies.

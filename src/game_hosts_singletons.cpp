@@ -3,6 +3,7 @@
 #include "bsp/native_resource_registry_scalar_delete.hpp"
 #include "bsp/game_native_input_settings_process.hpp"
 #include "bsp/game_native_string_process.hpp"
+#include "bsp/game_native_locale_manager.hpp"
 #include "bsp/game_native_readonly_data.hpp"
 #include "bsp/game_native_weak_pool.hpp"
 #include "bsp/game_hosts.hpp"
@@ -164,10 +165,23 @@ void GameSingletonHost::probe_gameplay_effect_memory(const char* label) {
     probe_native_gameplay_effect_registry_0086b0b0(owner, nullptr, label);
 }
 
+GameNativeLocaleManagerProcess& GameSingletonHost::prepare_locale_manager() {
+    auto& owner = game_native_locale_manager_process();
+    locale_manager_process_ = &owner;
+    owner.bind_once(*this);
+    return owner;
+}
+
 void GameSingletonHost::shutdown() {
+    auto* const locale = locale_manager_process_;
+    if (locale != nullptr) locale->before_shared_drain(*this);
     void* const manager = manager_publication_01090aa0_;
     if (manager == nullptr) {
         retire_vfs_after_drain();
+        if (locale != nullptr) {
+            locale->after_shared_drain(*this);
+            locale_manager_process_ = nullptr;
+        }
         return;
     }
     const std::uint32_t registered = count_native_singleton_slots_00bcf910(manager, nullptr);
@@ -176,6 +190,10 @@ void GameSingletonHost::shutdown() {
     observers_->record_after_singleton_drain();
     singleton_lifetime_free(manager);
     manager_publication_01090aa0_ = nullptr;
+    if (locale != nullptr) {
+        locale->after_shared_drain(*this);
+        locale_manager_process_ = nullptr;
+    }
     log_.notef("singleton lifetime drained: registered_slots=%u effect_publication=%s "
         "manager_publication=%s factory_publication=%s factory_alias=%p "
         "storage=raw14h/raw10h/raw8h", registered,

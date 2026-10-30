@@ -1,0 +1,193 @@
+{
+  "status": "implemented_qualified_source_strict_object_compile_pass_uncalled",
+  "source_ready": false,
+  "runtime": false,
+  "native_body_credit": false,
+  "vendor_body_credit": false,
+  "source_base": "74cfd9e5c4d51944158c01f5f5c09dc3eb13e015",
+  "addresses": [
+    {
+      "address": "00a9fc30",
+      "original_abi": "ECX=actual bucketbase, stack raw8h key, RET4/EAX=node+8",
+      "role": "ordinary direct raw insert-or-get binding"
+    },
+    {
+      "address": "00a9f460",
+      "original_abi": "ECX=fresh actualrecord, stack raw8h source, RET4/EAX=SAME record",
+      "role": "internal raw keycopy +emptywide constructor"
+    }
+  ],
+  "contract": {
+    "path": "local/raw_locale_map_insert_contract_cc9_20261030/CONTRACT.md",
+    "sha256": "2087c49722460fce6d3a5e94bd3293f8a7d5fc1991d4d55d3e82ad948ae7169f"
+  },
+  "api": "insert_or_get_native_locale_value_00a9fc30(const NativeLocaleMapInsertionContext&, NativeLocaleMapInsertionFrame&)",
+  "dependencies": [
+    {
+      "path": "include/bsp/native_locale_node_allocation.hpp",
+      "sha256": "32edb640c7ae9f1d3e3de7313cf48001a5a8a927abb0af791ea3e862084d6def",
+      "revision": "74cfd9e5c4d51944158c01f5f5c09dc3eb13e015"
+    },
+    {
+      "path": "src/native_locale_node_allocation.cpp",
+      "sha256": "52d129c8e9131778ce71105fe8b2f6a9a945d1e0197a5972188d13a7e618d0ca",
+      "revision": "74cfd9e5c4d51944158c01f5f5c09dc3eb13e015"
+    },
+    {
+      "path": "include/bsp/game_native_locale_pool.hpp",
+      "sha256": "969db5c9f80ab1e4b6e5098f43ef1515d0e726fe2aa9e119dfb777cccc989911",
+      "revision": "74cfd9e5c4d51944158c01f5f5c09dc3eb13e015"
+    },
+    {
+      "path": "src/game_native_locale_pool.cpp",
+      "sha256": "ef01a5c56a1c61617274c5bcc6021d6785947305e333f4048094f5946aaf73de",
+      "revision": "74cfd9e5c4d51944158c01f5f5c09dc3eb13e015"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "revision": "74cfd9e5c4d51944158c01f5f5c09dc3eb13e015"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "revision": "74cfd9e5c4d51944158c01f5f5c09dc3eb13e015"
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "revision": "74cfd9e5c4d51944158c01f5f5c09dc3eb13e015"
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "revision": "74cfd9e5c4d51944158c01f5f5c09dc3eb13e015"
+    },
+    {
+      "path": "include/bsp/native_locale_map_node_recycling.hpp",
+      "sha256": "a6871ac6e15ad4bd1652dc52375c413942e7562c311ca0fb06ed28a5ba07a0c1",
+      "revision": "74cfd9e5c4d51944158c01f5f5c09dc3eb13e015"
+    },
+    {
+      "path": "src/native_locale_map_node_recycling.cpp",
+      "sha256": "94546ed000b7f35699ea63f05ae2409604d20381586f5b1501d9cf761269fb12",
+      "revision": "74cfd9e5c4d51944158c01f5f5c09dc3eb13e015"
+    },
+    {
+      "path": "include/bsp/cc13_sweepC.hpp",
+      "sha256": "d200ad27a2ae8da59d4dceb4f04e5e7a74064bfdbe2adedf7876aecd5bd34364",
+      "revision": "74cfd9e5c4d51944158c01f5f5c09dc3eb13e015"
+    },
+    {
+      "path": "src/cc13_sweepC.cpp",
+      "sha256": "525967abade08902e87ea015932c2296c16c194501758d907842e80ae5652fd1",
+      "revision": "74cfd9e5c4d51944158c01f5f5c09dc3eb13e015"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "saved_exports/00a9fc30/assembly.txt",
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00a9fc30\\assembly.txt",
+      "sha256": "b8abec4f3d36e4b184778389ea2fa3402c515a3551b0a5c8ad0f2a3fc1824fc0"
+    },
+    {
+      "path": "saved_exports/00a9fc30/decompiled.c",
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00a9fc30\\decompiled.c",
+      "sha256": "c7621202a559dccfb10f835f7f9002933bed46a3ed904c96256100e79cd939d9"
+    },
+    {
+      "path": "saved_exports/00a9fc30/metadata.json",
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00a9fc30\\metadata.json",
+      "sha256": "d8c83a2c7255f7ff925b1f8675f57bada0b19d4513853985013d6981d63f8683"
+    },
+    {
+      "path": "saved_exports/00a9f460/assembly.txt",
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00a9f460\\assembly.txt",
+      "sha256": "32d48df9046615f52998e5549b1b09c962bf4def4bc61f3a24cef2390dd5f76f"
+    },
+    {
+      "path": "saved_exports/00a9f460/decompiled.c",
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00a9f460\\decompiled.c",
+      "sha256": "cf7b0b52dbf6f807743d03674dbefe45d277ab6690929d5b5ae93ce444a4d60b"
+    },
+    {
+      "path": "saved_exports/00a9f460/metadata.json",
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00a9f460\\metadata.json",
+      "sha256": "9e0c70a9b86eb0cf4f1203acc4ddeb41d29284cc25760f4c56907a82bc5d73d5"
+    },
+    {
+      "path": "saved_exports/007373f0/assembly.txt",
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\007373f0\\assembly.txt",
+      "sha256": "707897977043be2e42f081d7441305af12297b42a80175662d2cd5b6ebefb0fa"
+    },
+    {
+      "path": "saved_exports/007373f0/decompiled.c",
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\007373f0\\decompiled.c",
+      "sha256": "6ac18f6f5ebd5bc70f135e1d3592b7b5db1cc39d39b61f766391ca8eaa0c220a"
+    },
+    {
+      "path": "saved_exports/007373f0/metadata.json",
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\007373f0\\metadata.json",
+      "sha256": "d6a34ff9ecb06b22640caffb2108e1091cdba1cd489bca79755757fc5788ccdd"
+    }
+  ],
+  "live_selected_cleanup": {
+    "instructions": [
+      "00cb6d00 MOV ECX,[EBP-10]",
+      "00cb6d03 JMP007373F0"
+    ],
+    "observed_contract_evidence": "local/raw_locale_map_insert_contract_cc9_20261030/live_00cb6d00.txt",
+    "sha256": "7156d6f8855473ac58bc225b70c04317c040751503e75f534085e03b681fb2db",
+    "binding": "savedactualslot to canonical E1768C through7373F0/736090"
+  },
+  "schedule": [
+    "hash initiallength/data captured once, ASCII-only fold, signedbyte contribution, DWORDwrap",
+    "each node CURRENT length/keylength; zero match skipsdata; CURRENT rightdata beforeleft; actualcurrentCRTcompare; CURRENT next afterreturn",
+    "duplicate returnsnode+8 withoutcount/allocation/getter/constructor",
+    "countDWORD RMW before additional qualified healthy canonicalpool observation and actual allocator",
+    "actual returnedslot and private allocator normalreceipt; copiedprogress is diagnosticcompare only, never cleanupauthority",
+    "F460 CMPself before key0/key4 stores; raw0041DD40; CURRENTsourcelen; destlen then srcdata then dstdata; overlapcopy; wide8/C0",
+    "ONLY actualF460 invocation inside selectedcleanuptry; allpreflight/allocator/postnormalguards outside",
+    "actual736090 on privately/local capturedhealthy pool andactual returnedslot; preserveoriginal andrecordsecondary cleanup failure",
+    "CURRENTbucket\u2192newnext, newprev0, SECONDcurrentbucket\u2192headprev, publishnewhead, node+8"
+  ],
+  "private_frame_contract": [
+    "pure immutable actualmap/key/raw3cell/canonicalowner Context",
+    "oneattempt exactcontext/frame, noncopy/nonmove, nestedrealallocationframe, copy-onlydiagnostics",
+    "sticky reject/exception/reentry cannot issue normalreceipt",
+    "no Native cleanup in frame/context destruction"
+  ],
+  "source_refinement": {
+    "approved_by": "Root before compile/freeze",
+    "additional_healthy_pool_observation": "AFTERcount++ immediatelyBEFOREactualallocator; outsideconstructortry; duplicatesgetterfree",
+    "cleanup_pool_authority": "local actualpool returned by real canonicalowner getter, NOT copied allocation.progress.pool",
+    "qualification": "same stable canonicaldomain, externalserialization/no concurrent or reentrant teardown; no Original call-count/ABI claim"
+  },
+  "failure_policy": "ordinary-C++ constructor-only selected736090; no key/wide/payload cleanup or count/header rollback; allocator/preflight/post-normal failure origins retain; original constructor exception preserved even if cleanup escapes, secondary metadata retained, no retry/resume",
+  "limits": [
+    "notOriginalregister/stack/FH3/SEH/hardware/doublefailure equivalence",
+    "actualcurrentCRT_stricmp/currentlocale and overlap-awarecopy convention; no vendor reconstruction/fake NativeCrtStricmp provider/cell",
+    "zero-bytecopycall omitted butcapturedoperands preserved; no Nativecalleeentry claimed",
+    "genuineinitialized actualmap/key/provider backing andheader/terminator provenance caller-supplied; no manager construction/publication/loading",
+    "no abstracthost/stubs/semanticMap/NativeStringobject cast",
+    "no endedslot/header/data following afterselectedreturn; diagnostics IDs only",
+    "startuphealthy notallocationquiescence orsafe trim/exit; failedpartialgraphretained evenwhen slotreturn completed",
+    "new returnedvalue is emptywideborrow only; parser/valueassignment/aggregate retirement/startup separate"
+  ],
+  "validation": {
+    "strict_object": {
+      "exit_code": 0,
+      "COFF_machine": "0x14c",
+      "receipt": "local/native_locale_map_insertion_compile_cc9_20261030/compile_receipt.json",
+      "receipt_sha256": "324b99b327524a15dc1e419be96fdd938a2848545ae3964b48cb4e82b13907b4",
+      "object_sha256": "2105b5c848ed68c94a5c1427ed082dc21afee382a3650d857f4e3f0d386d3fbc",
+      "flags": "/std:c++17 /permissive- /W4 /WX /EHsc /MD /O2 /fp:strict"
+    },
+    "link": false,
+    "tests": false,
+    "probes": false,
+    "game": false,
+    "Ghidra_mutation": false
+  },
+  "evidence_base": "local/raw_locale_map_insert_contract_cc9_20261030"
+}

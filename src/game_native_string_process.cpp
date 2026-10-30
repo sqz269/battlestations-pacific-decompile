@@ -34,6 +34,16 @@ void* volatile& GameNativeStringProcess::movie_factory_00f8aefc() noexcept {
     return movie_factory_00f8aefc_;
 }
 
+void* volatile& GameNativeStringProcess::locale_manager_00f8bc4c() noexcept {
+    return locale_manager_00f8bc4c_;
+}
+
+bool GameNativeStringProcess::claim_locale_manager_domain() noexcept {
+    if (locale_manager_domain_claimed_) return false;
+    locale_manager_domain_claimed_ = true;
+    return true;
+}
+
 const char* GameNativeStringProcess::property_empty_00e177e4() const noexcept {
     return &property_empty_00e177e4_;
 }

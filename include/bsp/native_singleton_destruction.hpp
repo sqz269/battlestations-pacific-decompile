@@ -4,6 +4,7 @@
 #include <cstdint>
 
 namespace bsp {
+class NativeLocaleManagerDeletionLifetime;
 struct NativeAllocationStatsConstructorContext;
 struct NativeAvoidManagerLifetimeContext;
 struct GlobalConfigContext;
@@ -293,6 +294,9 @@ struct NativeSingletonDeletionBindings {
     // CFEA78 ->737950 / CFEA60 ->737030. Root-owned real callbacks avoid
     // bsp_core depending directly on application-only factory-owner symbols.
     const NativeMovieFactoryDeletionBindings* movie_factory{};
+    // CFF140/CFEA5C borrow the real retained locale owner. Core knows only this
+    // typed interface; no Game symbol or default/fallback provider is linked.
+    NativeLocaleManagerDeletionLifetime* locale_manager{};
 };
 static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
 static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);
@@ -326,7 +330,8 @@ static_assert(offsetof(NativeSingletonDeletionBindings, platform) == 200);
 static_assert(offsetof(NativeSingletonDeletionBindings, avoid_manager) == 204);
 static_assert(offsetof(NativeSingletonDeletionBindings, actual_loading_queue_publication_00e18d4c) == 208);
 static_assert(offsetof(NativeSingletonDeletionBindings, movie_factory) == 216);
-static_assert(sizeof(NativeSingletonDeletionBindings) == 220);
+static_assert(offsetof(NativeSingletonDeletionBindings, locale_manager) == 220);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 224);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting
