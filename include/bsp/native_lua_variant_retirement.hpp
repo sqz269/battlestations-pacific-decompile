@@ -228,4 +228,44 @@ NativeLuaVariantRetirementResult
         NativeLuaVariantRetirementOperation& operation,
         const NativeLuaVariantCppCleanupBacking& cleanup);
 
+// New ordinary Source result, not Native EAX/RET4 or a success-pointer policy.
+// No default values or implicit conversion: a returned non-completion carries
+// diagnostic receiver identity only. Completed bits can already be dangling.
+struct NativeLuaVariantScalarDeleteResult {
+    NativeLuaVariantRetirementResult completion;
+    std::uintptr_t captured_receiver_bits;
+};
+
+// Complete 00884FA0..00884FBD (30 bytes/11 instructions), qualified Source API.
+// Capture V; call the actual qualified884AF0 with the SAME context/metadata.
+// Returned non-completion exits before flags/free. Genuine C++ escape has no
+// ordinary returned result and skips flags/free; provider/secondary limits of
+// the qualified child remain. No scalar-local action/frame/guard is added.
+//
+// actual_flags_home borrows a live DWORD HOME, never an entry-value snapshot.
+// Only after child completion, read its CURRENT LOW BYTE once and test mask01.
+// If set, actual singleton_lifetime_free receives captured V. Return captured
+// pointer bits even after free; do not dereference them as a live receiver.
+// V is genuine20-byte variant backing; a late free bit requires its exact root
+// allocation base in the matching canonical malloc/free domain. Numerical
+// profiles/flags/sizes authenticate neither receiver nor provider ownership.
+// Flags HOME stays live/readable through its late read; supported raw-home/
+// receiver aliases retain that order. Context, operation/sidecars and Source
+// result metadata stay independently live/disjoint from mutable homes and raw
+// payload through use/failure disposition. Legal aliases may change the flags
+// HOME during the child; active metadata cannot be externally changed and
+// reentry uses independent operation/backing.
+//
+// The reference/aggregate interface and compiler return storage supply no
+// Original private-home alias, ECX/RET4, register/FH3/SEH/fault or secondary-
+// terminal equivalence. No null/default/profile/retry policy, callable table,
+// host/current-slot dispatch or activation is introduced.
+NativeLuaVariantScalarDeleteResult
+scalar_delete_native_lua_variant_00884fa0_cpp_cleanup(
+    void* actual_variant,
+    const volatile std::uint32_t& actual_flags_home,
+    NativeStringRawPoolContext& strings,
+    NativeLuaVariantRetirementOperation& operation,
+    const NativeLuaVariantCppCleanupBacking& cleanup);
+
 } // namespace bsp
