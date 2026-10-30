@@ -2,6 +2,7 @@
 #include "bsp/native_string_pool_storage.hpp"
 
 #include <cstring>
+#include <intrin.h>
 
 namespace bsp {
 namespace {
@@ -18,6 +19,24 @@ template<class T> T read_header(const void* header, std::size_t offset) noexcept
 template<class T> void write_header(void* header, std::size_t offset, T value) noexcept {
     std::memcpy(static_cast<char*>(header) + offset, &value, sizeof(value));
 }
+
+// Raw-context byte helpers: fence CURRENT header epochs, without typed fields.
+std::uint32_t raw_wide_word(const void* header, std::uint32_t offset) noexcept {
+    std::uint32_t value;
+    const auto location = reinterpret_cast<std::uintptr_t>(header) + offset;
+    _ReadWriteBarrier();
+    std::memcpy(&value, reinterpret_cast<const void*>(location), sizeof(value));
+    _ReadWriteBarrier();
+    return value;
+}
+
+template<class T> void raw_wide_store(void* header, std::uint32_t offset, T value) noexcept {
+    const auto location = reinterpret_cast<std::uintptr_t>(header) + offset;
+    _ReadWriteBarrier();
+    std::memcpy(reinterpret_cast<void*>(location), &value, sizeof(value));
+    _ReadWriteBarrier();
+}
+// End raw-context byte helpers.
 
 } // namespace
 
@@ -54,6 +73,58 @@ void resize_native_wide_string_header_004c53e0(void* actual_header,
     const std::uint16_t terminator = 0;
     std::memcpy(reinterpret_cast<void*>(reinterpret_cast<std::uintptr_t>(block) + byte_length),
         &terminator, sizeof(terminator)); // 004c5484: store after both header writes.
+}
+
+void resize_native_wide_string_header_004c53e0(void* actual_header,
+    NativeStringRawPoolContext& context, std::uint32_t length, bool preserve) {
+    const auto initial_length = raw_wide_word(actual_header, 0u);
+    if (length == initial_length) return; // no pointer/getter on equality
+
+    if (length == 0u) {
+        const auto old_data = raw_wide_word(actual_header, 4u);
+        if (old_data != 0u) {
+            const auto bytes = initial_length * 2u + 2u; // BEFORE getter
+            auto* const pool = native_string_pool_get_or_create_00419cc0(
+                context.actual_published_01090aa8,
+                context.actual_manager_publication_01090aa0);
+            return_native_string_pool_00bd1510(pool,
+                reinterpret_cast<void*>(old_data), bytes,
+                context.actual_small_returns_disabled_01090aa4);
+        }
+        raw_wide_store(actual_header, 4u, std::uint32_t{0});
+        raw_wide_store(actual_header, 0u, std::uint32_t{0});
+        return;
+    }
+
+    auto* const allocation_pool = native_string_pool_get_or_create_00419cc0(
+        context.actual_published_01090aa8,
+        context.actual_manager_publication_01090aa0);
+    const auto byte_length = length * 2u; // Native DWORD wrap, AFTER getter
+    void* const block = allocate_native_string_pool_00bd1120(
+        allocation_pool, byte_length + 2u);
+    if (preserve) {
+        const auto current_length = raw_wide_word(actual_header, 0u);
+        const auto copy_length = length > current_length ? current_length : length;
+        const auto source = raw_wide_word(actual_header, 4u);
+        const auto copy_bytes = copy_length * 2u;
+        // BF7680 admits overlap; retain CURRENT operand reads even at count0.
+        if (copy_bytes != 0u)
+            std::memmove(block, reinterpret_cast<const void*>(source), copy_bytes);
+    }
+    const auto old_data = raw_wide_word(actual_header, 4u); // AFTER copy
+    if (old_data != 0u) {
+        const auto bytes = raw_wide_word(actual_header, 0u) * 2u + 2u;
+        auto* const return_pool = native_string_pool_get_or_create_00419cc0(
+            context.actual_published_01090aa8,
+            context.actual_manager_publication_01090aa0);
+        return_native_string_pool_00bd1510(return_pool,
+            reinterpret_cast<void*>(old_data), bytes,
+            context.actual_small_returns_disabled_01090aa4);
+    }
+    raw_wide_store(actual_header, 4u,
+        static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(block)));
+    raw_wide_store(actual_header, 0u, length);
+    raw_wide_store(block, byte_length, std::uint16_t{0});
 }
 
 void* construct_native_wide_string_header_004c5e60(void* actual_header,
