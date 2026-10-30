@@ -5,6 +5,7 @@
 #include "bsp/native_gui_text_shader_storage.hpp"
 #include "bsp/native_gui_text_font_lifetime_storage.hpp"
 #include "bsp/native_gui_text_main_section_lifetime_storage.hpp"
+#include "bsp/native_gui_text_empty_unchanged_storage.hpp"
 #include "bsp/native_string_raw_domain.hpp"
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/game_native_gui_text_process.hpp"
@@ -49,6 +50,41 @@ bool fresh(const NativeGuiTextRetirementAcquired& a) noexcept {
     return !a.started && !a.complete && a.native_eh_state == -1 && !a.destination &&
         a.boundary == Boundary::none && !a.shader.decrement_entered &&
         !a.shadow.started && !a.glyphs.started && !a.unwind_actions_consumed && !a.unwind_actions_returned;
+}
+void require_empty_retirement(const NativeGuiTextRawModelRetirementContext& c) {
+    const auto* const leaf = c.empty_unchanged;
+    if (!leaf) return;
+    // Own history only: pending/failed work and caller input debt poison even
+    // when a caller catches the rejection. No native header is sampled here.
+    leaf->require_retirement_quiescent();
+    const auto& prepared = leaf->prepared_context();
+    const auto* const prefix = c.primary_prefix;
+    require(prefix && &prepared.prefix == prefix &&
+        gui_text_font_main_detail::selected(*prefix) && prefix->operation.geometry() &&
+        prefix->operation.main_section() == &prepared.main &&
+        prefix->operation.font_lifetime() == &prepared.font && c.font_lifetime == &prepared.font &&
+        &prefix->text.factory_context.publication.retirement == &c,
+        "EMPTY retirement requires its SAME immutable Font/Main/prefix reservation");
+    const auto& expected = prefix->text.factory_context.reference_frame;
+    const auto& main = prepared.main.prepared_context();
+    const auto& font = prepared.font.prepared_context();
+    const auto* const acquired = leaf->acquired_identity();
+    const auto& input = leaf->input_progress();
+    require(&main.geometry == prefix->operation.geometry() && &font.geometry == &main.geometry &&
+        &main.reference_frame == &expected && &font.reference_frame == &expected &&
+        &prepared.construction == &main.construction &&
+        &prepared.construction.text == &prefix->text &&
+        &prepared.construction.authentication == &prefix->authentication &&
+        &prepared.construction.resources == &c.resources &&
+        &prepared.ensure_frame != &main.frame && &prepared.ensure_acquired != &main.acquired &&
+        prepared.ensure_frame.matches(prepared.construction, prepared.ensure_acquired, prepared.ensure_frame.phase()) &&
+        &leaf->reference_frame() == &expected && acquired &&
+        leaf->matches(prepared, input.header8, input, expected, *acquired, leaf->phase()) &&
+        leaf->input_header() == input.header8 && &prepared.strings == &input.strings &&
+        same_native_string_raw_pool_cells(prepared.raw_strings, input.raw_strings) &&
+        same_native_string_raw_pool_cells(prepared.raw_strings, c.resources.strings) &&
+        same_native_string_storage_raw_pool_cells(prepared.strings, prepared.raw_strings),
+        "EMPTY retirement requires exact constructor/Ensure/reference/input/string metadata");
 }
 void preflight(void* raw, std::size_t bytes, void* diagnostics, std::size_t diagnostic_bytes,
     NativeGuiTextRetirementContext& c, const volatile Word* flags = nullptr) {
@@ -113,6 +149,7 @@ void raw_default_admission(void* raw, NativeGuiTextRawModelRetirementContext& c)
 }
 void preflight(void* raw, std::size_t bytes, void* diagnostics, std::size_t diagnostic_bytes,
     NativeGuiTextRawModelRetirementContext& c, const volatile Word* flags = nullptr) {
+    require_empty_retirement(c); // BEFORE the first native Text read below.
     auto& r = c.resources;
     auto& storage = r.model.storage;
     auto& node = storage.node;
@@ -190,6 +227,21 @@ void preflight(void* raw, std::size_t bytes, void* diagnostics, std::size_t diag
         require(!(bits(flags) & 3u), "Raw Text scalar flags require stable DWORD backing");
         for (const auto region : writes) require(disjoint(region, {flags, sizeof(Word)}),
             "Raw Text scalar flags must be separate from Text and diagnostics");
+    }
+    if (c.empty_unchanged) {
+        const auto& expected = c.empty_unchanged->reference_frame();
+        const auto regions = c.empty_unchanged->metadata_regions();
+        require(regions.count <= regions.entries.size(), "EMPTY retirement metadata exceeds fixed backing");
+        for (std::size_t i = 0; i != regions.count; ++i) {
+            const auto& b = regions.entries[i];
+            const Region borrowed{b.begin, b.bytes};
+            require(b.begin && b.bytes && static_cast<std::uint64_t>(bits(b.begin)) + b.bytes <= 0x100000000ull,
+                "EMPTY retirement requires representable retained metadata");
+            const bool own_frame = b.begin == &expected && b.bytes == sizeof(expected);
+            require(disjoint(writes[0], borrowed), "Text cannot alias EMPTY retained metadata");
+            if (!own_frame) require(disjoint(writes[1], borrowed), "Text diagnostics cannot alias EMPTY metadata");
+            if (flags) require(disjoint({flags, sizeof(Word)}, borrowed), "Text flags cannot alias EMPTY metadata");
+        }
     }
     if (c.primary_prefix && c.primary_prefix->operation.main_section()) {
         using Main = NativeGuiTextMainSectionLifetimeStorageFrame;
@@ -490,6 +542,11 @@ void* delete_text(void* raw, const volatile Word& flags, Context& c, NativeGuiTe
     a.destructor_entered = true;
     destroy_text(raw, c, a.destruction);
     a.destructor_returned = true;
+    if constexpr (std::is_same_v<Context, NativeGuiTextRawModelRetirementContext>) {
+        // Text/Font/headers may have ended: inspect ONLY the leaf's own retained
+        // history. Preserve the original late LOW BYTE load immediately below.
+        if (c.empty_unchanged) c.empty_unchanged->require_retirement_quiescent();
+    }
     const auto current_flags = *reinterpret_cast<const volatile std::uint8_t*>(&flags); // AB8EE8 LOW BYTE only
     a.captured_flags_byte = current_flags;
     a.flags_captured = true;
