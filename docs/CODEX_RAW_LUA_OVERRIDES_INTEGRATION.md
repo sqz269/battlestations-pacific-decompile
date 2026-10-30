@@ -20,17 +20,20 @@ Existing lower-provider
 fencing, exception, CRT and zero-copy qualifications remain explicit; outer
 fences do not establish transitive Native ABI/fault parity.
 
-The canonical bsp_game CMake entry remains queued behind a peer's held file
-lease. A local CMake overlay supplies separate link evidence without changing
-that file: the standard build passes with both public entries forced to remain
+Canonical registration now uses the existing deferred Game pattern in the
+unleased root CMakeLists.txt, at 51102e823. Independent review confirms exactly
+one registration; the peer's held startup file is unchanged and the queue request
+is canceled. The standard Win32 build and both existing checks pass (11.46 seconds)
+without a local overlay. The body remains uncalled by a loading caller.
+
+Earlier local CMake overlay evidence separately retained both public entries
 in bsp_game (constructor 103009A0, raw body 10300B00, plus unwind metadata).
 Both existing checks pass (2/2, 11.21 seconds). The exact linked PE is retained
 under local/raw_lua_overrides_local_link_cc16_20261030/; no game/body ran.
 
 The local overlay initially ran before target creation; moving its registration
 after the deferred target creation corrected that configuration error. The
-overlay cache setting is removed and canonical generated configuration restored.
-Canonical registration and its standard build remain pending; local retention
-does not establish a loading caller, runtime behavior or Original ABI parity.
+overlay cache setting is removed. Neither local retention nor the later canonical
+build establishes a loading caller, runtime behavior or Original ABI parity.
 Raw16 growth, AA0020
 parser composition, loaded locale and startup/runtime activation remain separate.

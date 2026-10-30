@@ -1,5 +1,5 @@
 {
-  "status": "reviewed_source_local_retained_link_pass_canonical_registration_pending",
+  "status": "reviewed_source_canonical_game_build_pass_caller_unbound",
   "contract_sha256": "82c7c42c2194d1d897b61b52e80d6d01b1d1302115c6374a7921f29b71b3c172",
   "baseline_main": "1b5dead2c",
   "reverse_find": {
@@ -20,18 +20,31 @@
     }
   },
   "override_body": {
-    "status": "reviewed_source_local_retained_link_pass_canonical_registration_pending",
+    "status": "reviewed_source_canonical_game_build_pass_caller_unbound",
     "independent_review": "gui_frame_lifetime_ACCEPT_SOURCE_CODE_ONLY_exact_f73a9_hashes",
     "strict_object_exit": 0,
     "machine": "14C",
     "object_sha256": "2cda8daacd8be2c8dce703b12237cc3a4dcd22e0e44e9baa0baf74e2e40b3c2f",
     "receipt_sha256": "e1dcf518a94045c65bf748c94d1e18b9dc6b0d5f4054c6acdc6ecb023ef8c969",
-    "registration": "queued_behind_existing_peer_lease",
+    "registration": "CMakeLists.txt_deferred_bsp_game_once",
     "commit": "f73a9ecbd7c19cdf4973cb72b8b3c82cf6dd7689",
     "cpp_sha256": "6a85a2c876df5f325f250f75665b4d96eca1bdef84693519410536734b61b62c",
     "header_sha256": "c276238af5019cdf3dc0a9119cec4ce28b24fa936135879f516b26ce3b5d0632"
   },
-  "combined_build": "local_overlay_standard_build_pass_canonical_registration_pending",
+  "combined_build": {
+    "head": "51102e8234abe48278d635aac3bb975bef66e5ed",
+    "command": "./scripts/build.ps1",
+    "registration_commit": "51102e8234abe48278d635aac3bb975bef66e5ed",
+    "independent_registration_review": "gui_frame_lifetime_ACCEPTED",
+    "exit_code": 0,
+    "existing_checks_passed": 2,
+    "existing_checks_total": 2,
+    "ctest_seconds": 11.46,
+    "log": "local/raw_lua_overrides_integration_cc16_20261030/canonical_build.log",
+    "local_overlay": false,
+    "held_startup_registry_changed": false,
+    "runtime_executed": false
+  },
   "source_ready": false,
   "runtime": false,
   "raw16_provider": "unbound",

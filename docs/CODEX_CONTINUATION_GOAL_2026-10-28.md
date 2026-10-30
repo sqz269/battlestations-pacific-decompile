@@ -1114,3 +1114,9 @@ existing fencedbytehelpers. Native leftlen/rightlen, earlyreturns and rightdata/
 leftdata/currentCRT order unchanged. Exactprimary+independentreview, strictobject
 and canonicalWin32build/checks2/2 pass11.83s. No language/reload/loadedlocale or
 runtime authority follows; raw16/parser/GUI/owneroperation gates remain.
+
+Canonical BDEF90 Game registration is complete at51102e823 via the existing
+rootCMakeLists deferredGame pattern. Peerleasedstartup registry untouched and
+oldqueuecanceled. Independentregistrationreview confirms exactlyone; standard
+Win32build/checks2/2 pass11.46s with NOlocaloverlay. Rawbody remains caller-unbound;
+stream/raw16/fullparser/loading/startup/runtime/ABI gates remain open.
