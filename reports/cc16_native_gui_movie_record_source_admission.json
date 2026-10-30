@@ -1,0 +1,421 @@
+{
+  "status": "primary_and_independent_static_reviews_common_build_and_actual_registered_entry_link_passed_unactivated",
+  "published_base": "60c8453a1b661dfa62625945986e38d71bee0216",
+  "allocation_candidate": "a10686893116585ca6b7e1d1f848fd9d44781712",
+  "allocation_review": "c4e4ef94ac33bb6e839fb4ab978974f91b72015e",
+  "range_candidate": "50d24663b24b84f29b44ef1d6d47973423f94b4a",
+  "range_primary_review": {
+    "review": "primary_independent_source_native_and_fresh_emitted_review_passed",
+    "candidate": "50d24663b24b84f29b44ef1d6d47973423f94b4a",
+    "source_pins_checked": 17,
+    "artifact_pins_checked": 11,
+    "original_PE_spans": "both56B/24ops match original; full assembly manually reviewed",
+    "source_review": "All source/header/documentation reviewed; exact raw-context overload, cached end, DWORD strides, empty header/pool skip and no writes/rollback/free/extra deletion.",
+    "fresh_records_match": [
+      {
+        "symbol": "?destroy_native_gui_movie_subtitle_strings_00aaf0e0@bsp@@YAXPAXPBXAAUNativeStringRawPoolContext@1@@Z",
+        "bytes": 40,
+        "code_sha256": "1323e01f045af1b510ad9ea9205583c29dc5ca2f6e3acd5c459b84e10a968838",
+        "relocations": [
+          {
+            "offset": 22,
+            "type": 20,
+            "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z"
+          }
+        ]
+      },
+      {
+        "symbol": "?destroy_native_gui_movie_extratitle_strings_00aaf120@bsp@@YAXPAXPBXAAUNativeStringRawPoolContext@1@@Z",
+        "bytes": 40,
+        "code_sha256": "0239f386f00116465ceb7d277a5a0bde1cbfd7f3b77c99bd7fdd5010a2bdd953",
+        "relocations": [
+          {
+            "offset": 22,
+            "type": 20,
+            "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z"
+          }
+        ]
+      },
+      {
+        "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+        "bytes": 49,
+        "code_sha256": "7efb78f657fe57d3c54c1d9aa0a89d81a91490e218c39f0ec6d8f1b6f90ab4c0",
+        "relocations": [
+          {
+            "offset": 27,
+            "type": 20,
+            "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z"
+          },
+          {
+            "offset": 38,
+            "type": 20,
+            "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z"
+          }
+        ]
+      }
+    ],
+    "executed": false,
+    "new_tests": 0,
+    "qualified_scope": "Original hidden register/deadstack/RET8 versus new cdecl3 API; caller real backing/rawpool/custody required; no container/whole Movie/ABI/activation credit"
+  },
+  "common_registration": true,
+  "common_build": {
+    "target": "MSVC Win32 Release",
+    "existing_suites": "2/2",
+    "test_seconds": 11.35,
+    "BSP_CL_MP": 2,
+    "BSP_PCH": "ON"
+  },
+  "actual_entry_link": {
+    "passed": true,
+    "machine": "014c",
+    "manifest_embedded": true,
+    "executed": false,
+    "entries": {
+      "allocate_native_gui_movie_records_14h_00aacd30": {
+        "symbol": "?allocate_native_gui_movie_records_14h_00aacd30@bsp@@YIPAXIPAX@Z",
+        "address": 4198704,
+        "object": "bsp_core:native_gui_movie_record_allocation.obj"
+      },
+      "allocate_native_gui_movie_records_24h_00aacd90": {
+        "symbol": "?allocate_native_gui_movie_records_24h_00aacd90@bsp@@YIPAXIPAX@Z",
+        "address": 4198800,
+        "object": "bsp_core:native_gui_movie_record_allocation.obj"
+      },
+      "destroy_native_gui_movie_subtitle_strings_00aaf0e0": {
+        "symbol": "?destroy_native_gui_movie_subtitle_strings_00aaf0e0@bsp@@YAXPAXPBXAAUNativeStringRawPoolContext@1@@Z",
+        "address": 4198960,
+        "object": "bsp_core:native_gui_movie_record_lifetime.obj"
+      },
+      "destroy_native_gui_movie_extratitle_strings_00aaf120": {
+        "symbol": "?destroy_native_gui_movie_extratitle_strings_00aaf120@bsp@@YAXPAXPBXAAUNativeStringRawPoolContext@1@@Z",
+        "address": 4198912,
+        "object": "bsp_core:native_gui_movie_record_lifetime.obj"
+      },
+      "singleton_lifetime_allocate": {
+        "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+        "address": 4199216,
+        "object": "bsp_core:singleton_lifetime.obj"
+      },
+      "singleton_lifetime_free": {
+        "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "address": 4199312,
+        "object": "bsp_core:singleton_lifetime.obj"
+      },
+      "native_string_pool_get_or_create_00419cc0": {
+        "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+        "address": 4199520,
+        "object": "bsp_core:native_string_pool_owner.obj"
+      },
+      "return_native_string_pool_00bd1510": {
+        "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+        "address": 4199840,
+        "object": "bsp_core:native_string_pool_storage.obj"
+      },
+      "raw_string": {
+        "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+        "address": 4199328,
+        "object": "bsp_core:native_string.obj"
+      }
+    }
+  },
+  "published": "Verify containing Main commit separately after push; no prepublication claim.",
+  "runtime_executed": false,
+  "activation": false,
+  "game_validated": false,
+  "original_abi_compatible": false,
+  "credit": {
+    "new_native_bodies": 0,
+    "duplicate_native_bodies": 0,
+    "vendor_bodies": 0
+  },
+  "shared_cmake_queue": "codex-source-batch4-cmake",
+  "candidate_source_pins": [
+    {
+      "path": "include/bsp/native_gui_movie_record_allocation.hpp",
+      "bytes": 1477,
+      "sha256": "4cfef47c42d04e90810af6d9d73dc51a21ace4fd1ff03c9bd9ddfe27ef454c12",
+      "git_blob": "fd871905131390c11f44d5603aafd32ce878b481"
+    },
+    {
+      "path": "src/native_gui_movie_record_allocation.cpp",
+      "bytes": 808,
+      "sha256": "a625807ba2026c69ec7edb0a89ac98921505d5981d12014da436339413bd3901",
+      "git_blob": "f448c3b537ed544ea349902e6251ced6febe80e7"
+    },
+    {
+      "path": "include/bsp/native_gui_movie_record_lifetime.hpp",
+      "bytes": 1796,
+      "sha256": "9fee4436a904017755361e475765fea23bac511ce2eab2c1eb57368368bff01f",
+      "git_blob": "bd2bb7b61ca3cfbb98876b5e59aeaacc516ba5ad"
+    },
+    {
+      "path": "src/native_gui_movie_record_lifetime.cpp",
+      "bytes": 1293,
+      "sha256": "356ecdeeeba26ee6a383cbd3efe4fa6d85edfc50830e211fa7e4067400bd8efe",
+      "git_blob": "a5efbd63d93befe63c06ba1bd860d187c441bcd3"
+    }
+  ],
+  "source_build_head": "5e3b54e35",
+  "incorporated_published_main": "657828a92",
+  "published_main_delta": "15 paths since60c: peer raw empty-content library/shared guards; all17 range and6 allocation dependency/source pins remain exact.",
+  "strict_object_link_closure": {
+    "passed": true,
+    "executed": false,
+    "scope": "Separate strict objects plus existing real core; not target registration or common-object identity."
+  },
+  "common_records": {
+    "?allocate_native_gui_movie_records_14h_00aacd30@bsp@@YIPAXIPAX@Z": {
+      "bytes": 92,
+      "code_sha256": "a0fb82c3b60be1de0305795a0a4af679ef4c869dd900503d6dd9f7bec9bdbd11",
+      "relocations": [
+        {
+          "offset": 7,
+          "type": 6,
+          "symbol": "___security_cookie"
+        },
+        {
+          "offset": 48,
+          "type": 20,
+          "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+        },
+        {
+          "offset": 61,
+          "type": 20,
+          "symbol": "@__security_check_cookie@4"
+        },
+        {
+          "offset": 73,
+          "type": 20,
+          "symbol": "??0bad_alloc@std@@QAE@XZ"
+        },
+        {
+          "offset": 78,
+          "type": 6,
+          "symbol": "__TI2?AVbad_alloc@std@@"
+        },
+        {
+          "offset": 87,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        }
+      ]
+    },
+    "?allocate_native_gui_movie_records_24h_00aacd90@bsp@@YIPAXIPAX@Z": {
+      "bytes": 92,
+      "code_sha256": "547ebb935b3087766d47332ad6efe594fcfcff9f72ff4c55ac2a1437881761fa",
+      "relocations": [
+        {
+          "offset": 7,
+          "type": 6,
+          "symbol": "___security_cookie"
+        },
+        {
+          "offset": 48,
+          "type": 20,
+          "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+        },
+        {
+          "offset": 61,
+          "type": 20,
+          "symbol": "@__security_check_cookie@4"
+        },
+        {
+          "offset": 73,
+          "type": 20,
+          "symbol": "??0bad_alloc@std@@QAE@XZ"
+        },
+        {
+          "offset": 78,
+          "type": 6,
+          "symbol": "__TI2?AVbad_alloc@std@@"
+        },
+        {
+          "offset": 87,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        }
+      ]
+    },
+    "?destroy_native_gui_movie_subtitle_strings_00aaf0e0@bsp@@YAXPAXPBXAAUNativeStringRawPoolContext@1@@Z": {
+      "bytes": 41,
+      "code_sha256": "bda770a5ffbc8b0b3132700f8adf8204b46c1601abc6ffb5a0ec941a408a356b",
+      "relocations": [
+        {
+          "offset": 22,
+          "type": 20,
+          "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z"
+        }
+      ]
+    },
+    "?destroy_native_gui_movie_extratitle_strings_00aaf120@bsp@@YAXPAXPBXAAUNativeStringRawPoolContext@1@@Z": {
+      "bytes": 41,
+      "code_sha256": "7e23aa7e96f2bf1e6ad4a05636ba5877e1d6714d4e31a2f01b4b25e607c803d7",
+      "relocations": [
+        {
+          "offset": 22,
+          "type": 20,
+          "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z"
+        }
+      ]
+    }
+  },
+  "common_qualification": "Common allocations92B including1trap versus strict94B; common ranges41B versus strict40B; balanced EBP frames and reviewed field/call/control schedule, no byte-identity claim. Selected actual raw-string core overload51B versus strict49B, data/null before length/getter/return preserved.",
+  "frozen_artifacts": [
+    {
+      "path": "local/function_source_batch4/artifacts/native_gui_movie_record_allocation.obj",
+      "bytes": 7390,
+      "sha256": "6f46b12b5c76c592afa00b57567c9f4077ce0d2961df7417a55a91fb1bb16cbe",
+      "copied_from": "build/win32/bsp_core.dir/Release/native_gui_movie_record_allocation.obj"
+    },
+    {
+      "path": "local/function_source_batch4/artifacts/native_gui_movie_record_lifetime.obj",
+      "bytes": 2224,
+      "sha256": "5d571cf07b2f984cdf0425c15b8f3c136fcfc92f511b7d4e6d817437bc30dd86",
+      "copied_from": "build/win32/bsp_core.dir/Release/native_gui_movie_record_lifetime.obj"
+    },
+    {
+      "path": "local/function_source_batch4/artifacts/native_string.obj",
+      "bytes": 18867,
+      "sha256": "dbab381c522b7e3c7385cb441de32ff9d545e65fb9cd9f956c5a7aaf9c6c2def",
+      "copied_from": "build/win32/bsp_core.dir/Release/native_string.obj"
+    },
+    {
+      "path": "local/function_source_batch4/artifacts/singleton_lifetime.obj",
+      "bytes": 33008,
+      "sha256": "386824ba4b5224ce24dfa43d84dd09b6c8b1fc64e02011998109d91cdc72171f",
+      "copied_from": "build/win32/bsp_core.dir/Release/singleton_lifetime.obj"
+    },
+    {
+      "path": "local/function_source_batch4/artifacts/bsp_game.exe",
+      "bytes": 7494656,
+      "sha256": "6f23e870f9167e5444aadedac646f2eb1e7c40a8e9744c1ea70e49c1708ad701",
+      "copied_from": "build/win32/Release/bsp_game.exe"
+    },
+    {
+      "path": "local/function_source_batch4/artifacts/allocation.obj",
+      "bytes": 7978,
+      "sha256": "6df39be4aadf362f409f9a0814fec5a66b1bc16818ac892e8c2ebf24028f53c0",
+      "copied_from": "local/movie-record-allocation/allocation.obj"
+    },
+    {
+      "path": "local/function_source_batch4/artifacts/range.obj",
+      "bytes": 2595,
+      "sha256": "5a979b0690fc6fa8b5b91b9737b865636a442be453c65492fd05ff7353a745fe",
+      "copied_from": "local/function_source_batch4/range.obj"
+    },
+    {
+      "path": "local/function_source_batch4/artifacts/string.obj",
+      "bytes": 22739,
+      "sha256": "f18a8d218f4303834dfe9e45a65d3b734f5435099d5cfc0748a04342b4330936",
+      "copied_from": "local/function_source_batch4/string.obj"
+    },
+    {
+      "path": "local/function_source_batch4/artifacts/common_entries_probe.exe",
+      "bytes": 216064,
+      "sha256": "8ee20d9c15d55a284358b8f175dab3f892a3d0dd59b82e9585c58f9af6dc4c55",
+      "copied_from": "local/function_source_batch4/common_entries_probe.exe"
+    },
+    {
+      "path": "local/function_source_batch4/artifacts/common_entries_probe.map",
+      "bytes": 304560,
+      "sha256": "7350e00e3c70d3f0a82349553f1b9d8bc0a101ca9485b1727008d43ef57c3328",
+      "copied_from": "local/function_source_batch4/common_entries_probe.map"
+    },
+    {
+      "path": "local/function_source_batch4/artifacts/common_entries_probe.obj",
+      "bytes": 1305,
+      "sha256": "717b2cd7e34bbe6acc3e6cff51fa9877dfbd3ddf460f91910285b70ac79993fa",
+      "copied_from": "local/function_source_batch4/common_entries_probe.obj"
+    },
+    {
+      "path": "local/function_source_batch4/artifacts/strict_entries_probe.exe",
+      "bytes": 216064,
+      "sha256": "58b4b2e4c4d36d3d1bea26708fb4b412814bd60c286592782cdc6294e681341a",
+      "copied_from": "local/function_source_batch4/strict_entries_probe.exe"
+    },
+    {
+      "path": "local/function_source_batch4/artifacts/strict_entries_probe.map",
+      "bytes": 303531,
+      "sha256": "8a9f0f1e788e3b74b003ad683d4be2dcdb8a8c6b03cdb5e2d065408451aed2c8",
+      "copied_from": "local/function_source_batch4/strict_entries_probe.map"
+    },
+    {
+      "path": "local/function_source_batch4/artifacts/strict_entries_probe.obj",
+      "bytes": 1305,
+      "sha256": "b0ad168760c6fea985a74d1eaa974b1ba8393bd2616729766b4c49bf25613199",
+      "copied_from": "local/function_source_batch4/strict_entries_probe.obj"
+    },
+    {
+      "path": "local/function_source_batch4/artifacts/build.log",
+      "bytes": 3524,
+      "sha256": "f2c5bbae8a30a6990eb851746b4c25e2ca3a2ce204eac12d8167251496e9c857",
+      "copied_from": "local/function_source_batch4/build.log"
+    },
+    {
+      "path": "local/function_source_batch4/artifacts/common_link.log",
+      "bytes": 26,
+      "sha256": "83eab791d8a788e7e6d672383fd693ad971f8e14c436a808457650470ed8b689",
+      "copied_from": "local/function_source_batch4/common_link.log"
+    },
+    {
+      "path": "local/function_source_batch4/artifacts/strict_link.log",
+      "bytes": 26,
+      "sha256": "83eab791d8a788e7e6d672383fd693ad971f8e14c436a808457650470ed8b689",
+      "copied_from": "local/function_source_batch4/strict_link.log"
+    },
+    {
+      "path": "local/function_source_batch4/artifacts/allocation_common.txt",
+      "bytes": 37184,
+      "sha256": "7456911e97dcc22c2ae8bcd79554bbb2f1e63248ff771890ffa273739783458b",
+      "copied_from": "local/function_source_batch4/allocation_common.txt"
+    },
+    {
+      "path": "local/function_source_batch4/artifacts/range_common.txt",
+      "bytes": 10560,
+      "sha256": "a556d7278604d717fb613dca9f276bb2cf985be55d5dd5fc41cc3bf78bf59e01",
+      "copied_from": "local/function_source_batch4/range_common.txt"
+    },
+    {
+      "path": "local/function_source_batch4/artifacts/range_primary_review.json",
+      "bytes": 2284,
+      "sha256": "d50a8ea1eee566abdbf75ff541991900ef01776ef7bade11925047712e76d305",
+      "copied_from": "local/function_source_batch4/range_primary_review.json"
+    }
+  ],
+  "remaining": [
+    "raw vector tidies need separate source review/admission",
+    "whole Movie destructor/current decoder scalar/base and observer ownership",
+    "Page/property/loaded-hook and genuine consumer services",
+    "required current-profile gameplay gates"
+  ],
+  "selected_raw_string_common_record": {
+    "bytes": 51,
+    "code_sha256": "281055a229e2b97300811e741f0b40d5e929c07513a58e27f641a8ef6e079c7d",
+    "relocations": [
+      {
+        "offset": 28,
+        "type": 20,
+        "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z"
+      },
+      {
+        "offset": 39,
+        "type": 20,
+        "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z"
+      }
+    ]
+  },
+  "ghidra": {
+    "prior_annotations": "local/ghidra-annotations-20261030T003427Z.json",
+    "four_library_names_preserved": true,
+    "comments_preserved_and_extended": true,
+    "project_saved": true,
+    "exports_refreshed": true,
+    "index_rebuilt": true
+  },
+  "guard_states": {
+    "kMovieFactoryRootCc16Bound": false,
+    "kMovieSubtitlesBound": false,
+    "kNativeGuiPageChainCc15Bound": false
+  }
+}
