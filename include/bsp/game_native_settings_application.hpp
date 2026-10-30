@@ -32,6 +32,11 @@ public:
     bool requires_process_retention() const noexcept;
     std::uint32_t failure_site() const noexcept;
     void copy_read_view(GameSettingsBlock&) const;
+    // Ready actual 8190/catalog history only, never the semantic language copy.
+    // Borrow actual row data (or the process F88A3C fallback). Ready does not
+    // prove row/index validity. Caller excludes invalidating writers and uses
+    // the CString synchronously BEFORE catalog/world/string-pool/CRT cleanup.
+    const char* raw_language_name_008d4870() const;
     //The actual process-retained settings +34h cell, after static initialization.
     //Borrow this for NativeGlobalConfigLoadContext; no projected read-view copy.
     const volatile float& fov_divisor_00f889b4() const;
