@@ -47,6 +47,16 @@ struct NativeModelStorageLifetimeAcquired {
     NativeNodeBaseDestructionAcquired node;
 };
 
+// Optional HOST extent completion for a canonical NativeModelOwner transport.
+// The raw bodies below do not own that caller's typed node/tail extents. This
+// nonthrowing callback ends those extents/metadata only, never native cleanup,
+// reference adjustment, allocation or another B6F440. Its backing survives the
+// destructor and its explicit failure disposition.
+struct NativeModelStorageHostCompletion {
+    void* context;
+    void (*end_typed_storage)(void*) noexcept;
+};
+
 // Complete B75030[132B], ECX actual188h slot/stack name, EAX self, RET4.
 // Raw B6F5A0 then CURRENT model constants/tail/pose stores. Establishes only
 // the real node prefix and trivial model tail; preserves pool index184.
@@ -69,6 +79,11 @@ void destroy_native_model_geometry_storage_00b74f20(void* actual_member_178,
 void destroy_native_model_storage_00b750c0(void* actual_model,
     NativeModelStorageLifetimeFrame&, NativeModelStorageContext&,
     NativeModelStorageLifetimeAcquired&);
+// Same complete body; complete HOST extents after raw node destruction, also
+// on an escaping C++ exception once that raw base was entered. No cleanup replay.
+void destroy_native_model_storage_00b750c0(void* actual_model,
+    NativeModelStorageLifetimeFrame&, NativeModelStorageContext&,
+    NativeModelStorageLifetimeAcquired&, const NativeModelStorageHostCompletion&);
 
 // B75290[32B], ECX model/stack flags, EAX original identity, RET4. The Source
 // API borrows an actual initialized flags DWORD: read CURRENT LOW BYTE only
@@ -80,6 +95,12 @@ void* delete_native_model_storage_00b75290(void* actual_model,
     const volatile std::uint32_t& actual_flags_argument,
     NativeModelStorageLifetimeFrame&, NativeModelStorageContext&,
     NativeModelStorageLifetimeAcquired&);
+// Completion precedes CURRENT flags LOW BYTE and any physical pool return.
+// Existing no-completion callers keep their original raw-storage contract.
+void* delete_native_model_storage_00b75290(void* actual_model,
+    const volatile std::uint32_t& actual_flags_argument,
+    NativeModelStorageLifetimeFrame&, NativeModelStorageContext&,
+    NativeModelStorageLifetimeAcquired&, const NativeModelStorageHostCompletion&);
 
 struct NativeModelStorageIdentityContext {
     NativeModelStorageContext& storage;
