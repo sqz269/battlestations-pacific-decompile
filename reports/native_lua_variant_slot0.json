@@ -1,0 +1,42 @@
+{
+  "schema": "qualified-source-binding-v1",
+  "name": "NativeLuaVariantSlot0Flags0",
+  "source_ready": false,
+  "runtime_validated": false,
+  "native_body_credit": false,
+  "ordinary_cpp_abi_only": true,
+  "baseline": "d5d188c4c2c412b9abfde0ba1afc526a22e0aa4e",
+  "native_callsite": "006B8960..006B8966; caller count decrement and receiver derivation precede entry",
+  "actual_profile": "00D0E6F4",
+  "actual_slot0_target": "00884FA0",
+  "design_sha256": "c19943662216e71ad58b4781f5ed0aa2fa63b2d29551400a0c2d0d3a8ceebc62",
+  "source_sha256": {
+    "include/bsp/native_lua_variant_slot0.hpp": "d07608ad7eced7695383120269922b31ed694010be1be628f8c42bf8bc861e02",
+    "src/native_lua_variant_slot0.cpp": "9bca14979276e2753fe275b4800f7f1a37ad3c2de4d3091a0d7d8e0eb763ce22"
+  },
+  "actual_source_lines": {
+    "header": 99,
+    "cpp": 105
+  },
+  "qualified_scope": [
+    "CURRENT profile then CURRENT slot0; live HOME0 store only afterward",
+    "direct existing scalar API with SAME context/operation/cleanup tuple",
+    "actual aggregate and completion captured before healthy fence",
+    "explicit unadmitted/noncompletion retention; no post-child payload reads"
+  ],
+  "limits": [
+    "Caller proves genuine mapped RO owner and typed/nested/provider/backing lifetimes",
+    "No vector count/header repair, rollback, retry, cleanup or type birth",
+    "No unknown-profile Native behavior, Original stack/ABI, loaded manager, VM or startup claim"
+  ],
+  "strict_object": {
+    "compiles": 1,
+    "exit_code": 0,
+    "machine": "014C",
+    "sha256": "150b903d35b7f1384c9c215269fd2c2c43052f738cb0dc82bca9a9de96e2736d",
+    "symbols": "local/native_lua_variant_slot0_validation_cc9_20261030/objects/actual_symbols.json"
+  },
+  "provider_count": 14,
+  "preservation_receipt": "local/native_lua_variant_slot0_validation_cc9_20261030/provider_preservation.json",
+  "validation": "object and same-object static symbols only; no link, tests, probes or invocation"
+}
