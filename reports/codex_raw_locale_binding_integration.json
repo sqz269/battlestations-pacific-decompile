@@ -1,0 +1,173 @@
+{
+  "utc": "2026-10-30T04:16:34.660256+00:00",
+  "scope": "three qualified raw Source library entries; startup unbound",
+  "head_before_metadata": "1badb78433e10bdc02258f0f025d708af14b11ba",
+  "worker_commits": [
+    "4ae5e1069281da1936e1908af8fc13a545d52b37",
+    "79019d9505d9cc7aa30bc9a2958af1ae4208c8b1"
+  ],
+  "primary_review": "Complete two CPP/HPP/doc filesets checked against saved assembly and actual existing callee Source; accepted with no body revision.",
+  "validation": {
+    "build": "MSVC Win32 Release scripts/build.ps1 passed, exit0",
+    "existing_checks": "2/2 passed",
+    "test_seconds": "14.19",
+    "tests_added": false,
+    "body_execution_claim": false,
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "build_log": {
+    "path": "local\\cc16_empty_runtime_preparation_20261029\\raw_locale_coupled_build.log",
+    "bytes": 4537,
+    "sha256": "f5e425dae0cafc687c90cda8440de804086d9193bae9df1f84a12c7357b468f1"
+  },
+  "source_pins": [
+    {
+      "path": "src\\native_locale_uppercase.cpp",
+      "bytes": 3899,
+      "sha256": "25e6297a7ee1752a4f74711fa61ffd3f4998faeb67b248011f12cf0ca23584d7"
+    },
+    {
+      "path": "include\\bsp\\native_locale_uppercase.hpp",
+      "bytes": 2269,
+      "sha256": "8b05e024ed1971d1970adeaf5c6a56029d34a1cf62d3ad67a4981212d45fe6f5"
+    },
+    {
+      "path": "src\\native_locale_table_name.cpp",
+      "bytes": 820,
+      "sha256": "d64ef922320884c97c885b9cc65c5c2b87255c1d735225a39ba5aec6825a110c"
+    },
+    {
+      "path": "include\\bsp\\native_locale_table_name.hpp",
+      "bytes": 694,
+      "sha256": "ffc79b027057b619f9d5acb8e51c057a09ff0fedcaca16e050c0b9a07924a955"
+    },
+    {
+      "path": "src\\native_string_vector_append.cpp",
+      "bytes": 2605,
+      "sha256": "3466e182a77d60aed1f36695c69a3c4433cfe096b7e6709d8cc26e83259ef99f"
+    },
+    {
+      "path": "include\\bsp\\native_string_vector_append.hpp",
+      "bytes": 646,
+      "sha256": "fd8913146555084faa9111a2779ef9f8f7a00d520b2fcac555a98045b71a0600"
+    },
+    {
+      "path": "src\\native_invalid_parameter_noinfo_call.cpp",
+      "bytes": 1089,
+      "sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b"
+    },
+    {
+      "path": "include\\bsp\\native_invalid_parameter_noinfo_call.hpp",
+      "bytes": 1471,
+      "sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613"
+    },
+    {
+      "path": "include\\bsp\\locale_text_lookup.hpp",
+      "bytes": 2223,
+      "sha256": "6eb8b29a655d6c9996989301b4ce82463fc2678b81ae34ab9fd8fb51a4bddc61"
+    },
+    {
+      "path": "cmake\\startup.cmake",
+      "bytes": 291757,
+      "sha256": "86d1b51ebed91a29330b0f24713defab519e85adc167938d8912a5c0f6d98b16"
+    }
+  ],
+  "entries": [
+    {
+      "address": "00a9eba0",
+      "name": "uppercase_native_locale_code_unit_00a9eba0",
+      "source": "src/native_locale_uppercase.cpp",
+      "status": "reconstructed_source_reviewed_win32_build_tested_unbound",
+      "original_abi": "ECX manager; stack DWORD; AX result; RET4. Source input restricted to zero-extended WORD supplied by A9EC30.",
+      "documentation": "docs/NATIVE_LOCALE_UPPERCASE.md",
+      "evidence": "reports/codex_raw_locale_binding_integration.json; saved assembly and primary complete Source review; qualified ordinary C++ interface.",
+      "scope": "raw_storage_with_qualified_current_providers_unbound_startup",
+      "validation": {
+        "build": "MSVC Win32 Release scripts/build.ps1 passed, exit0",
+        "existing_checks": "2/2 passed",
+        "test_seconds": "14.19",
+        "tests_added": false,
+        "body_execution_claim": false,
+        "game_validated": false,
+        "abi_compatible": false
+      },
+      "source_ready": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "new_native_body_credit": false,
+      "notes": "Keep prior semantic implementation separate. Genuine canonical loaded manager/lifetime binding remains missing. No activation or frozen ac60 change."
+    },
+    {
+      "address": "00a9ec30",
+      "name": "uppercase_native_locale_wide_header_00a9ec30",
+      "source": "src/native_locale_uppercase.cpp",
+      "status": "reconstructed_source_reviewed_win32_build_tested_unbound",
+      "original_abi": "ECX locale manager; stack raw8 wide header; RET4; no semantic EAX result.",
+      "documentation": "docs/NATIVE_LOCALE_UPPERCASE.md",
+      "evidence": "reports/codex_raw_locale_binding_integration.json; saved assembly and primary complete Source review; qualified ordinary C++ interface.",
+      "scope": "raw_storage_with_qualified_current_providers_unbound_startup",
+      "validation": {
+        "build": "MSVC Win32 Release scripts/build.ps1 passed, exit0",
+        "existing_checks": "2/2 passed",
+        "test_seconds": "14.19",
+        "tests_added": false,
+        "body_execution_claim": false,
+        "game_validated": false,
+        "abi_compatible": false
+      },
+      "source_ready": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "new_native_body_credit": false,
+      "notes": "Keep prior semantic implementation separate. Genuine canonical loaded manager/lifetime binding remains missing. No activation or frozen ac60 change."
+    },
+    {
+      "address": "00aa0d30",
+      "name": "register_native_locale_table_name_00aa0d30",
+      "source": "src/native_locale_table_name.cpp",
+      "status": "reconstructed_source_reviewed_win32_build_tested_unbound",
+      "original_abi": "ADD ECX,4 then tail JMP00450540; borrowed stacked raw8 name; no semantic EAX result.",
+      "documentation": "docs/NATIVE_LOCALE_TABLE_NAME.md",
+      "evidence": "reports/codex_raw_locale_binding_integration.json; saved assembly and primary complete Source review; qualified ordinary C++ interface.",
+      "scope": "raw_storage_with_qualified_current_providers_unbound_startup",
+      "validation": {
+        "build": "MSVC Win32 Release scripts/build.ps1 passed, exit0",
+        "existing_checks": "2/2 passed",
+        "test_seconds": "14.19",
+        "tests_added": false,
+        "body_execution_claim": false,
+        "game_validated": false,
+        "abi_compatible": false
+      },
+      "source_ready": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "new_native_body_credit": false,
+      "notes": "Keep prior semantic implementation separate. Genuine canonical loaded manager/lifetime binding remains missing. No activation or frozen ac60 change."
+    }
+  ],
+  "source_admission": "Frozen ac60 remains HOLD: selected installed Viper19 uppercase flag vs zero-only Font48 contract. Effective runtime VFS resolution unobserved.",
+  "proof_limits": [
+    "No startup caller, manager publication/load/lifetime dispatch or font flag/asset change.",
+    "BF6713 is a potentially returning current-SDK invalid-parameter binding, not a fabricated range exception.",
+    "towupper is current CRT/locale/PTD policy; Original vendor equivalence is unproved.",
+    "New ordinary C++ APIs do not reproduce Original register/tail-stack/FH3 ABI.",
+    "Build/static Source evidence only; no new body execution, runtime, visual or production claim."
+  ],
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved": true,
+    "annotation_before_log": "local/ghidra-annotations-20261030T041721Z.json",
+    "corrected_receiver_abi": "ECX locale manager; stacked raw8 header; RET4",
+    "preserved_existing_comments": true,
+    "refreshed_exports": [
+      "00a9eba0",
+      "00a9ec30",
+      "00aa0d30",
+      "00aba8d0",
+      "00ab8f00"
+    ]
+  }
+}

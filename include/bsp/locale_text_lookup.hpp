@@ -18,9 +18,12 @@ public:
     virtual char16_t crt_uppercase_00c0391c(char16_t code_unit) = 0;
 };
 
-// 00a9eba0: first sidecar mapping wins, otherwise use the native CRT's
-// towupper behavior. A missing paired sidecar entry throws here; native calls
-// its vector range-error path. New C++ interface, not the original ABI.
+// Semantic 00a9eba0 projection: first sidecar mapping wins, otherwise the
+// supplied host provides uppercase conversion. A missing paired entry throws
+// here through vector::at. Native instead calls potentially returning BF6713
+// (invalid-parameter path) and reloads the current vector before access.
+// This interface supplies neither raw-manager transport nor Original CRT/ABI
+// equivalence; keep it separate from the native raw helper.
 char16_t locale_uppercase_00a9eba0(const LocaleTables& tables,
     LocaleTextRuntimeHost& host, char16_t code_unit);
 
