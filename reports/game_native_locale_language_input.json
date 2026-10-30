@@ -1,0 +1,66 @@
+{
+  "packet": "codex-game-native-locale-language-input",
+  "base": "da387b83796fb3c6ff27dba8e7640d23b5943455",
+  "status": "source_reviewed_single_strict_win32_object_compiled_root_coupling_pending",
+  "source_ready": false,
+  "fragment_start": "0073e06a",
+  "fragment_end_exclusive": "0073e0ba",
+  "native_owning_state": "0x25 (decimal37)",
+  "api": "initialize_native_locale_language_input_0073e06a(const GameNativeLocaleLanguageInputContext&, GameNativeLocaleLanguageInputFrame&)",
+  "ownership": "real41E870 owning caller input; canonical setter borrows only",
+  "normal_edge": "captureDATA -> consume -> nonNULL CURRENTlen+1 -> actual419CC0 -> healthy fence -> actualBD1510; no resample/retry",
+  "selected_edge": "only actual admitted armed invocation consumes0x25 then CURRENT41DD20; second exception terminates",
+  "metadata": "constructors/status/destructor own metadata only; failed Frame and unresolved graphs must be retained; no shared reservation/startup wiring added",
+  "source_hashes": {
+    "include/bsp/game_native_locale_language_input.hpp": "fe7b8994648fa49833464f6fa88f0bd1b6b32456c437133ed84469e9a0e3b031",
+    "src/game_native_locale_language_input.cpp": "85bfa98edecb33bf9c991827e67457c4e289100cb8b2c9a29e31b8d317231561"
+  },
+  "preservation_sha256": "5f027c99639bc5468a61faabe216c19e88a8899fbb306b13569d5b03aef5f6ed",
+  "providers_unchanged": {
+    "include/bsp/native_settings_language_name.hpp": "339cfabe493d80e0b22d6304a06e9c5553ee4b5ce24be0cf280ba2ce903397f1",
+    "src/native_settings_language_name.cpp": "488d9bdbb8e1408defc2a10f5537086120b3cc847bb202f1a06aba997af43b73",
+    "include/bsp/game_native_settings_application.hpp": "9b336a5e45c735c7a75cde6216476cfd4994e3a95f1fddc187af9f39d347b86f",
+    "src/game_native_settings_application.cpp": "d37fc9362dcc1685cbac6872cabaa90655f10c865bf1c442cbdbc64292a07a69",
+    "docs/NATIVE_SETTINGS_LANGUAGE_NAME.md": "2f8b0c5771641422c3a751c3edb385157f637d5d97bf24474837409d8708b912",
+    "reports/native_settings_language_name.json": "3d9a01101e5bac5cde30dd23727e64d20a15ddea777e3629b3f2d1787aee0d91",
+    "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+    "src/native_string.cpp": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+    "include/bsp/native_string_pool_storage.hpp": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+    "src/native_string_pool_storage.cpp": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+    "include/bsp/game_native_locale_manager.hpp": "42dec9cccba35990c919428d7a02b663dfbd2e21f9ca3a345a87f7e80c2fcb13",
+    "src/game_native_locale_manager.cpp": "e9869bf1841514522558e013e847d59212bceb65abb948b7037b89079f867341",
+    "include/bsp/game_native_string_process.hpp": "68ac5c24794233d13e2b68d7276e703dc62d39bded4b969bfcf7a06361fac697",
+    "src/game_native_string_process.cpp": "baee34f67bf3948f0a92e05ebd2fc27d16b90727adc8ad4c8f6414dd16f77d6a"
+  },
+  "contract_sha256": "93c3ac7b0f6ff1ec4b1b38bf65eca5404c6ddc8f1b09e2f221304556756295ca",
+  "source_review": "Root and Gameplay full code ACCEPT exactfe7b/85bf before compile",
+  "no_existing_source_host_owner_accessor_or_sharedmetadata_edits": true,
+  "no_tests_probe_executable_game_ghidra": true,
+  "limits": [
+    "valid real raw catalog/CString/cells/no-writer lifetime domain",
+    "ordinary C++ cleanup vs Original private stack/FH3/SEH/hardware boundary",
+    "no globals/reload/fullAA/bodycredit/loading/Font48/ABI/runtime/startup permission"
+  ],
+  "strict_object": {
+    "compile_count": 1,
+    "compile_exit": 0,
+    "machine": "014c",
+    "sha256": "655c20db0cefb55a9d1e29338d1546030c79dbfddc8d97b25326136f5115b319",
+    "artifacts": {
+      "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\game_native_locale_language_input_validation_gui_20261030\\objects\\caller.obj": "655c20db0cefb55a9d1e29338d1546030c79dbfddc8d97b25326136f5115b319",
+      "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\game_native_locale_language_input_validation_gui_20261030\\objects\\compile.cmd": "3e93889d18f4c9b15368ed6b634aee44f7b65882c3fb592dc2a03cda468420f2",
+      "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\game_native_locale_language_input_validation_gui_20261030\\objects\\compile.log": "bae3a8d9481a686955ee8d1ee1eacfa1caec34fd7088426ac20b002a87560ec9",
+      "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\game_native_locale_language_input_validation_gui_20261030\\objects\\compile_command.txt": "054d33ff301248276eba3288f07e495283162cbc034e43f671133e809818943b",
+      "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\game_native_locale_language_input_validation_gui_20261030\\objects\\compile_exit.txt": "9aca8dfce962538fb8131d73f84cada05e4dc79f5a0d3612c511b1150f3e33e2",
+      "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\game_native_locale_language_input_validation_gui_20261030\\objects\\symbols.cmd": "f292dec5e2289ca6724cbf50e27e700b2d94a92cd91b0b6e1f7c02300d9e9c0f",
+      "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\game_native_locale_language_input_validation_gui_20261030\\objects\\symbols.txt": "12d0ecd2c37878afcc482a13a6ee3315501dc83a1171047cfb37c7098b3c0024"
+    }
+  },
+  "actual_defined_symbol": {
+    "actual_defined_external_row": "06E 00000000 SECT1E notype ()    External     | ?initialize_native_locale_language_input_0073e06a@game@bsp@@YAXABVGameNativeLocaleLanguageInputContext@12@AAVGameNativeLocaleLanguageInputFrame@12@@Z (void __cdecl bsp::game::initialize_native_locale_language_input_0073e06a(class bsp::game::GameNativeLocaleLanguageInputContext const &,class bsp::game::GameNativeLocaleLanguageInputFrame &))",
+    "decorated_symbol": "?initialize_native_locale_language_input_0073e06a@game@bsp@@YAXABVGameNativeLocaleLanguageInputContext@12@AAVGameNativeLocaleLanguageInputFrame@12@@Z",
+    "object_sha256": "655c20db0cefb55a9d1e29338d1546030c79dbfddc8d97b25326136f5115b319",
+    "coff_machine": "014c"
+  },
+  "defined_symbol_sha256": "5e052412864ded68231485b0f59197c87e3a9b516046cab70f12334afb9ea0b7"
+}
