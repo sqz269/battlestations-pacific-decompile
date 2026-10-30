@@ -725,5 +725,59 @@
     "affected_exports_refreshed": true,
     "index_rebuilt": true,
     "old_semantic_reconstruction_records_preserved": true
+  },
+  "publication_refresh": {
+    "head": "5723f5b730924b8025d7ce4d445e11771b633653",
+    "peer_Main": "931c998604c5799fcfdf2fc03db2305f4402fb81",
+    "existing_suites": "2/2",
+    "seconds": 11.96,
+    "eight_objects": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_front_end_frame_construction.obj",
+        "sha256": "19daa472d3ba01be7924d2f78e58ef654001f9ba5f44061121152cace2d948b3",
+        "identical_to_frozen_common_object": true
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_front_end_frame_publication.obj",
+        "sha256": "211f16a9be59c8d68c0b077b7bef96020b22fd3fdac1cfaef80f75d968d84a74",
+        "identical_to_frozen_common_object": true
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_publication.obj",
+        "sha256": "f300f114ba5ee23b842e02f475ee5a3e3754a78692afeed72a2f35c4b37326c3",
+        "identical_to_frozen_common_object": true
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_vector_registration_wrappers.obj",
+        "sha256": "741c96c19860dc1d26f7cdf6047566d8b66a37c85bcd1c9bfd13f514e8172684",
+        "identical_to_frozen_common_object": true
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_vector_insert_count.obj",
+        "sha256": "4cdb6b139f160850f86752569f7b1093832e68250aa9b9fbd92dfb946b6c25a1",
+        "identical_to_frozen_common_object": true
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_vector_reserve_construct.obj",
+        "sha256": "21f2589497ea71920dc178db99951b9f269b5dc0ea9582fc1cb298d50e52cce8",
+        "identical_to_frozen_common_object": true
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_diagnostic_sink_lifetime.obj",
+        "sha256": "714438d073eea2f6d967249f16b241c07bf763c52e25dfff3f21e4e25e7bde40",
+        "identical_to_frozen_common_object": true
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/singleton_lifetime.obj",
+        "sha256": "386824ba4b5224ce24dfa43d84dd09b6c8b1fc64e02011998109d91cdc72171f",
+        "identical_to_frozen_common_object": true
+      }
+    ],
+    "log": {
+      "path": "local/function_source_batch11/artifacts/publication-refresh-build.log",
+      "sha256": "9eaf812e8b7b8af0d21f2a26452dd21087c5a607c1ac0e3ec21b94ab27385182"
+    },
+    "earlier_PE_EH_receipts_preserved": true,
+    "additional_execution": false
   }
 }

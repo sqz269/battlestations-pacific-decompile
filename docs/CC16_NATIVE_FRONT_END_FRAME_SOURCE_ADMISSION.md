@@ -33,3 +33,5 @@ Actual canonical owner/caller/drain, raw current-ID/base registration,85Page ini
 Machine-readable proof: `reports/cc16_native_front_end_frame_source_admission.json`.
 
 Independent review36928ac5 pins all eight candidate blobs, inspects all415 strict code bytes,140B EH, symbols and28 code/data/debug relocations. Primary read its complete23-line document and checks64 retained/Git receipts. Both bases' provider pins agree; Root separately verifies the eight direct current provider sources after peer6824.
+
+Publication refresh merges peer Main931c9986 and passes both existing suites (11.96s). All eight defining/provider objects are byte-identical to the frozen common objects; earlier PE/EH proof stays immutable. The refreshed build log is retained separately. No additional body or gameplay execution occurred.
