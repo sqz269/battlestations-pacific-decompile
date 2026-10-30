@@ -246,6 +246,26 @@ def main():
     def active(handle):
         return accounting(handle)["active"]
 
+    def extra_pid_statuses(snapshots, known):
+        result = []
+        open_process = g.api(g.K, "OpenProcess", g.HANDLE, g.DWORD, g.W.BOOL, g.DWORD)
+        exit_code = g.api(g.K, "GetExitCodeProcess", g.W.BOOL, g.HANDLE, C.POINTER(g.DWORD))
+        for pid in sorted({pid for item in snapshots for pid in item["pid_list"]["pids"]} - known):
+            handle = open_process(0x1000 | 0x100000, False, pid)
+            if not handle:
+                result.append({"pid": pid, "open_error": C.get_last_error()})
+                continue
+            try:
+                code = g.DWORD()
+                if exit_code(handle, C.byref(code)):
+                    result.append({"pid": pid, "exit_code": code.value,
+                                   "process_signaled": g.K.WaitForSingleObject(handle, 0) == 0})
+                else:
+                    result.append({"pid": pid, "query_error": C.get_last_error()})
+            finally:
+                g.close(handle)
+        return result
+
     try:
         token = g.restricted_token("medium-write-locked")
         report["token"] = g.verify_token(token, "medium-write-locked")
@@ -371,9 +391,14 @@ def main():
                             wrong_nonce_job_accounting=[accounting(handle) for handle in jobs],
                             job_accounting_layout={"dword_bytes": C.sizeof(g.DWORD), "structure_bytes": C.sizeof(g.JOB_ACCOUNTING),
                                 "offsets": {name: getattr(g.JOB_ACCOUNTING, name).offset for name, _ in g.JOB_ACCOUNTING._fields_}})
-                        leaf_active = report["wrong_nonce_job_accounting"][0]["active"]
-                        if leaf_active != 1:
-                            raise RuntimeError(f"Wrong nonce changed the guarded leaf job: active={leaf_active}")
+                        before, after = report["pre_wrong_nonce_job_accounting"], report["wrong_nonce_job_accounting"]
+                        report["wrong_nonce_extra_pid_exit_statuses"] = extra_pid_statuses(after, {root_pid, pi.dwProcessId})
+                        stable = all(left["active"] == right["active"] and
+                            set(left["pid_list"]["pids"]) == set(right["pid_list"]["pids"])
+                            for left, right in zip(before, after))
+                        report["wrong_nonce_job_state_stable"] = stable
+                        if not stable:
+                            raise RuntimeError("Wrong nonce changed owned job counts or PID sets")
                         report.update(wrong_nonce_ignored=True, wrong_nonce_root_alive=True,
                                       wrong_nonce_native_entry_bytes=observed)
                         request = dict(schema="bsp.dr.fixture-stop.v1", pid=root_pid,
