@@ -1,0 +1,893 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-glyph-pool-borrow-contract",
+  "classification": "concrete proposed Source contract only; no implementation authorization or production edits",
+  "utc": "2026-10-30T23:25:06.908981+00:00",
+  "Root_Source_baseline": "4667b108e2623e5902148aea9130be1be33bc188",
+  "bf9": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+  "constructor2059": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+  "raw_code_unit_b6": "b6c69bfb9b83b61d2bb085668e53ac8cef63a19a",
+  "prospective_listener_author_reference_only": "6230a05912747c5fd87f41c6997166479e3eba95",
+  "approved_post_listener_Source39_reference": "9bf2949406254e3a037b322a9c6a8fef5d1ae1ae",
+  "Root_Glyph_blobs_equal_bf9": true,
+  "Root_pool_process_allocator_CRT_files_equal_prior_efeded": true,
+  "Root_input_pins": [
+    {
+      "ref": "4667b108e2623e5902148aea9130be1be33bc188",
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "format": "Git blob bytes, UTF-8 LF without conversion",
+      "bytes": 9403,
+      "sha256": "61f7eff6fbe50303bc339c0cf1a56acbb77d0ece0ad9b6d00f6c04667b5cb42e",
+      "git_blob": "836469e59c5a60df1907bddf78311cbf7600cebd"
+    },
+    {
+      "ref": "4667b108e2623e5902148aea9130be1be33bc188",
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "format": "Git blob bytes, UTF-8 LF without conversion",
+      "bytes": 21995,
+      "sha256": "2bab8e816665596ab8d9372524fddc240e68c3aacdc83afa31927bef1fbd198c",
+      "git_blob": "9b7e47f46bb0d7cdc269bc31315e9fc4f01f467c"
+    },
+    {
+      "ref": "4667b108e2623e5902148aea9130be1be33bc188",
+      "path": "include/bsp/gui_text_factory.hpp",
+      "format": "Git blob bytes, UTF-8 LF without conversion",
+      "bytes": 3689,
+      "sha256": "5aad1ef48c9c29b28ffd17178f20446ab8277508dd39a0b69cf23760adcfb657",
+      "git_blob": "7f4fdee0750a70754668a19a4fb17ac3f2a716f3"
+    },
+    {
+      "ref": "4667b108e2623e5902148aea9130be1be33bc188",
+      "path": "src/gui_text_factory.cpp",
+      "format": "Git blob bytes, UTF-8 LF without conversion",
+      "bytes": 10917,
+      "sha256": "bde7d1a4130a2ba7d71381143daa58c26d050200638bd7f4f8a60b35579b03c8",
+      "git_blob": "4f361c10e8680f3984db49948a726819ef52c488"
+    },
+    {
+      "ref": "4667b108e2623e5902148aea9130be1be33bc188",
+      "path": "include/bsp/game_native_gui_text_process.hpp",
+      "format": "Git blob bytes, UTF-8 LF without conversion",
+      "bytes": 7271,
+      "sha256": "dbadef0978a9bfca2fb48533ea3d0f4f309ab38a679f348843744348ac633f52",
+      "git_blob": "c5396f5a44125e4912a8cdc69d09f7677be55c11"
+    },
+    {
+      "ref": "4667b108e2623e5902148aea9130be1be33bc188",
+      "path": "src/game_native_gui_text_process.cpp",
+      "format": "Git blob bytes, UTF-8 LF without conversion",
+      "bytes": 11028,
+      "sha256": "01ce505d584e1fdd98165e4fe17459d1c8af78bf1f0ce10262bd45591302f5f0",
+      "git_blob": "302873adc7eae6b67f6e9c48c3623ef6b901fb03"
+    },
+    {
+      "ref": "4667b108e2623e5902148aea9130be1be33bc188",
+      "path": "include/bsp/allocator_list.hpp",
+      "format": "Git blob bytes, UTF-8 LF without conversion",
+      "bytes": 2192,
+      "sha256": "5344cbd4fe4ea86a4206c24f08e2407eea3055f03947f677c46b3a635d4f1570",
+      "git_blob": "e3cfca6ec4c44d5aa20ee8e6870a5c4f02cd784a"
+    },
+    {
+      "ref": "4667b108e2623e5902148aea9130be1be33bc188",
+      "path": "src/allocator_list.cpp",
+      "format": "Git blob bytes, UTF-8 LF without conversion",
+      "bytes": 2682,
+      "sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732",
+      "git_blob": "185d612496c4d9deb3b8233e565b1bc82a6f0e70"
+    },
+    {
+      "ref": "4667b108e2623e5902148aea9130be1be33bc188",
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "format": "Git blob bytes, UTF-8 LF without conversion",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936"
+    },
+    {
+      "ref": "4667b108e2623e5902148aea9130be1be33bc188",
+      "path": "src/singleton_lifetime.cpp",
+      "format": "Git blob bytes, UTF-8 LF without conversion",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+    },
+    {
+      "ref": "4667b108e2623e5902148aea9130be1be33bc188",
+      "path": "reports/gui_text_factory.json",
+      "format": "Git blob bytes, UTF-8 LF without conversion",
+      "bytes": 18507,
+      "sha256": "6ccee48ddf00a96288bf7b0f5b28fdaaf7b733d66e30807b637791da8524e2cb",
+      "git_blob": "5403791ce4c0b503bb53e54f9768da7c7770e6fe"
+    },
+    {
+      "ref": "4667b108e2623e5902148aea9130be1be33bc188",
+      "path": "reports/cc16_glyph_child_producer_birth_audit.json",
+      "format": "Git blob bytes, UTF-8 LF without conversion",
+      "bytes": 33774,
+      "sha256": "5b907c3babba150d35fc9526bd57d07b0e4f29f0ed684eb3886b75131842c5a8",
+      "git_blob": "715efcc2d00a9abfe8fee4433a20657ee0250571"
+    },
+    {
+      "ref": "4667b108e2623e5902148aea9130be1be33bc188",
+      "path": "config/target.json",
+      "format": "Git blob bytes, UTF-8 LF without conversion",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+    }
+  ],
+  "immutable_other_inputs": [
+    {
+      "ref": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "format": "Git blob bytes, UTF-8 LF without conversion",
+      "bytes": 9403,
+      "sha256": "61f7eff6fbe50303bc339c0cf1a56acbb77d0ece0ad9b6d00f6c04667b5cb42e",
+      "git_blob": "836469e59c5a60df1907bddf78311cbf7600cebd"
+    },
+    {
+      "ref": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "format": "Git blob bytes, UTF-8 LF without conversion",
+      "bytes": 21995,
+      "sha256": "2bab8e816665596ab8d9372524fddc240e68c3aacdc83afa31927bef1fbd198c",
+      "git_blob": "9b7e47f46bb0d7cdc269bc31315e9fc4f01f467c"
+    },
+    {
+      "ref": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+      "path": "docs/CC16_NATIVE_GLYPH_CODE_UNIT_RAW_POOL_CALLER.md",
+      "format": "Git blob bytes, UTF-8 LF without conversion",
+      "bytes": 6267,
+      "sha256": "e5e7815914a0982992db0f605a774223c0eff886b2223f379eafe67e79fff833",
+      "git_blob": "382fe165319985e8070ffd9ad7ae73d04aa17533"
+    },
+    {
+      "ref": "bf9a643e77e06a9d72cfa012c5c0b66bd43990c4",
+      "path": "reports/cc16_native_glyph_code_unit_raw_pool_caller.json",
+      "format": "Git blob bytes, UTF-8 LF without conversion",
+      "bytes": 31337,
+      "sha256": "8c03b89714700a0cf90b1639b0ff56fe7379ffda8672b8b2f8c7070237416137",
+      "git_blob": "06685e0fd0f78791a8dc0d438ba83a9573d6388c"
+    },
+    {
+      "ref": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+      "path": "docs/CC16_GLYPH_CONSTRUCTOR_SLOT_HOST_UNKNOWN.md",
+      "format": "Git blob bytes, UTF-8 LF without conversion",
+      "bytes": 9132,
+      "sha256": "296f77be8573742ed042698c61a470b704c0ab4941bf50341f67a1f7e2f95a90",
+      "git_blob": "b85908b1681daa9b02a6bb0ecbb0b7ad01748f70"
+    },
+    {
+      "ref": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+      "path": "reports/cc16_glyph_constructor_slot_host_unknown.json",
+      "format": "Git blob bytes, UTF-8 LF without conversion",
+      "bytes": 98451,
+      "sha256": "9494230347907caa8c2b74ddee0b71bfb77a04f7823457a59239334c4d869a96",
+      "git_blob": "5028957d6c74ba4d1c96d667149d1a0805bdea8a"
+    },
+    {
+      "ref": "b6c69bfb9b83b61d2bb085668e53ac8cef63a19a",
+      "path": "include/bsp/gui_text_glyph_child.hpp",
+      "format": "Git blob bytes, UTF-8 LF without conversion",
+      "bytes": 3706,
+      "sha256": "42d4ad6a32778b97583f74efac51853072943c2aa9929df44b0f57189c78b895",
+      "git_blob": "72410e701afcfa72b1b4f5518a68e6a7fc76b1e1"
+    },
+    {
+      "ref": "b6c69bfb9b83b61d2bb085668e53ac8cef63a19a",
+      "path": "src/gui_text_glyph_child.cpp",
+      "format": "Git blob bytes, UTF-8 LF without conversion",
+      "bytes": 4709,
+      "sha256": "c4e494d1ffdaf20257d8e5a77bebf352925ba3be53d0f595a5e58f6a8dcdc6f4",
+      "git_blob": "cda642f5f5ecd3b86bdadf98c897a5f6e1cd8874"
+    },
+    {
+      "ref": "b6c69bfb9b83b61d2bb085668e53ac8cef63a19a",
+      "path": "docs/CC16_NATIVE_CODE_UNIT_RAW_POOL.md",
+      "format": "Git blob bytes, UTF-8 LF without conversion",
+      "bytes": 7745,
+      "sha256": "12403e21cccbef167e919ad46d8f8df60d5323b0a5c195237f37187126dc8fec",
+      "git_blob": "5644d39d953b3263a9e11ac4997ccc51e05776ad"
+    },
+    {
+      "ref": "b6c69bfb9b83b61d2bb085668e53ac8cef63a19a",
+      "path": "reports/cc16_native_code_unit_raw_pool.json",
+      "format": "Git blob bytes, UTF-8 LF without conversion",
+      "bytes": 40701,
+      "sha256": "6f2f6b5507bdfac61b049632188461fb5b349aa48248aed4d0578ebdd9a5d6c0",
+      "git_blob": "d3084672022f8ff4f1f4fce53c16c438d39b7b81"
+    },
+    {
+      "ref": "6230a05912747c5fd87f41c6997166479e3eba95",
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "format": "Git blob bytes, UTF-8 LF without conversion",
+      "bytes": 9317,
+      "sha256": "eb066d93ec72e0f25c5d4ec62b160d73001fe7ce5dc620b9177ea9362eb793b9",
+      "git_blob": "272096a0c03738e7812231572dc2ba6a67ab859a"
+    },
+    {
+      "ref": "6230a05912747c5fd87f41c6997166479e3eba95",
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "format": "Git blob bytes, UTF-8 LF without conversion",
+      "bytes": 22045,
+      "sha256": "d67826d8c2e7136d77891ecb46ee5389087e8f8c2aba031dd786988e984a0a5c",
+      "git_blob": "db143445f4e77a58aa2a1c7cb11b3fac35f91963"
+    },
+    {
+      "ref": "9bf2949406254e3a037b322a9c6a8fef5d1ae1ae",
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "format": "Git blob bytes, UTF-8 LF without conversion",
+      "bytes": 9317,
+      "sha256": "eb066d93ec72e0f25c5d4ec62b160d73001fe7ce5dc620b9177ea9362eb793b9",
+      "git_blob": "272096a0c03738e7812231572dc2ba6a67ab859a"
+    },
+    {
+      "ref": "9bf2949406254e3a037b322a9c6a8fef5d1ae1ae",
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "format": "Git blob bytes, UTF-8 LF without conversion",
+      "bytes": 22045,
+      "sha256": "d67826d8c2e7136d77891ecb46ee5389087e8f8c2aba031dd786988e984a0a5c",
+      "git_blob": "db143445f4e77a58aa2a1c7cb11b3fac35f91963"
+    }
+  ],
+  "decision": {
+    "API": "mandatory appended NativeGuiTextPool& actual_text_pool_companion_00f8bdf0 after unchanged failure_runtime",
+    "ready_service_in_Glyph_or_Native_calls": false,
+    "precondition_only_affinity": false,
+    "actual_Source_Host_affinity_check": true,
+    "check_epoch": "reached AB9D33/38 role selection AFTER prefix/gates/UV; no early-path check",
+    "check": "static_cast<void*>(&prepared_text_pool.storage()) == actual_pool_receiver",
+    "metadata_capture_epoch": "before callbacks alongside existing failure_runtime; no Native cell/ready snapshot",
+    "storage_capture_epoch": "read Context raw role at reached9D33; existing methods own all CURRENT mutable pool cell epochs",
+    "allocation_classification": "separate UNKNOWN exact real Source allocation; no Native-origin mint",
+    "supplier": "address of caller-retained actual companion, not a local closure/reference wrapper or raw cast",
+    "preparation_failure": "not a Glyph invocation; genuine retained caller Host scope with SAME runtime if available, otherwise Unknown; no Native cleanup or retry",
+    "null_runtime": "no SDK query/private Host receipt; direct check/calls retain historical Source qualification",
+    "no_new_owner_companion_startup_cleanup_recovery_NoThrow_or_Native_issuer": true
+  },
+  "counter_plan": {
+    "old_tokens": 3,
+    "new_tokens": 3,
+    "new_preceding_COUNTER_tokens": 0,
+    "official_before_header_Core_preprocess_receipt": {
+      "manifest_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch40\\counter_baseline\\manifest.json",
+      "manifest_bytes": 3667,
+      "manifest_sha256": "30b6e35af9473efae6adaca5bfc2086daab08131f576d6faea3ab28edf476cca",
+      "Source_ref": "9bf2949406254e3a037b322a9c6a8fef5d1ae1ae",
+      "Root_preprocessed_expanded_values": [
+        0,
+        1,
+        2
+      ],
+      "worker_independently_extracted_same_values": true,
+      "worker_reran_compiler": false,
+      "no_object_exe_or_runtime_by_receipt": true,
+      "Source_inputs": [
+        {
+          "path": "src/native_gui_text_glyph_quad_storage.cpp",
+          "bytes": 22045,
+          "sha256": "d67826d8c2e7136d77891ecb46ee5389087e8f8c2aba031dd786988e984a0a5c",
+          "retained_path": "local/function_source_batch40/counter_baseline/native_gui_text_glyph_quad_storage.cpp",
+          "raw_bytes_hash_verified": true,
+          "raw_CR_bytes": 0,
+          "raw_LF_bytes": 548,
+          "git_LF_bytes": 22045,
+          "git_LF_sha256": "d67826d8c2e7136d77891ecb46ee5389087e8f8c2aba031dd786988e984a0a5c",
+          "raw_equals_git_LF": true,
+          "only_CRLF_to_LF_matches_git": true
+        },
+        {
+          "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+          "bytes": 9317,
+          "sha256": "eb066d93ec72e0f25c5d4ec62b160d73001fe7ce5dc620b9177ea9362eb793b9",
+          "retained_path": "local/function_source_batch40/counter_baseline/native_gui_text_glyph_quad_storage.hpp",
+          "raw_bytes_hash_verified": true,
+          "raw_CR_bytes": 0,
+          "raw_LF_bytes": 153,
+          "git_LF_bytes": 9317,
+          "git_LF_sha256": "eb066d93ec72e0f25c5d4ec62b160d73001fe7ce5dc620b9177ea9362eb793b9",
+          "raw_equals_git_LF": true,
+          "only_CRLF_to_LF_matches_git": true
+        },
+        {
+          "path": "build/win32/CMakeFiles/bsp_core.dir/Release/cmake_pch.hxx",
+          "bytes": 387,
+          "sha256": "f65a1b760051eabf286afa54599b52a0670b6782993918778fbd0be59269343f",
+          "retained_path": "local/function_source_batch40/counter_baseline/cmake_pch.hxx",
+          "raw_bytes_hash_verified": true,
+          "raw_CR_bytes": 20,
+          "raw_LF_bytes": 20
+        }
+      ],
+      "artifacts": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch40\\counter_baseline\\baseline.i",
+          "bytes": 2482222,
+          "sha256": "cffe1b4d5cc02f7387ad0eb9859768cb51386ee67a2e3404f2263eb01a6d881c",
+          "independently_read_and_hash_verified": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch40\\counter_baseline\\preprocess.rsp",
+          "bytes": 1068,
+          "sha256": "31e2e57b0046c6416ee222c0d390123e47a4bd4616eadbfef44e27fd6afd7d10",
+          "independently_read_and_hash_verified": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch40\\counter_baseline\\preprocess.cmd",
+          "bytes": 440,
+          "sha256": "77233e8fd7d9029be2bcf4bb9a60843a9491af79266f72718e64cf5384d0955f",
+          "independently_read_and_hash_verified": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch40\\counter_baseline\\preprocess.log",
+          "bytes": 40,
+          "sha256": "b19a945fb231c6c58b708d089effcca1026b01130173210c0aea14b8bd6caffc",
+          "independently_read_and_hash_verified": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch40\\counter_baseline\\actual_tlog_command.txt",
+          "bytes": 1444,
+          "sha256": "f8288ba8b41db5468b6aaeb238a35bbf9b6e069c836953b50f23bd567a0f2963",
+          "independently_read_and_hash_verified": true
+        },
+        {
+          "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+          "bytes": 891752,
+          "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938",
+          "independently_read_and_hash_verified": true
+        }
+      ],
+      "VsDevCmd_current_read_pin": {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\Tools\\VsDevCmd.bat",
+        "bytes": 11526,
+        "sha256": "a7815e85d636828e5cf70fe4235b11fcb41750896a4d2d60756b43bacaf4f0b2"
+      },
+      "scope": "BEFORE new pool header only; official Root must repeat same Core-options preprocessing after proposed include and compare [0,1,2]"
+    },
+    "required_actual_values_after_header": [
+      0,
+      1,
+      2
+    ],
+    "old_constructor_site_supplier_and_order_preserved": true,
+    "new_Host_site": {
+      "native": "00ab9d33",
+      "source": "47504131",
+      "label": "GPA1"
+    },
+    "new_Unknown_allocation_site": {
+      "native": "00ab9d38",
+      "source": "47504132",
+      "label": "GPA2"
+    },
+    "tag_Source_search_matches": 0,
+    "uniqueness": "distinct reviewed native+source pairs even independently of existing counter ordinal values",
+    "new_plain_project_headers_have_COUNTER_tokens": false,
+    "expanded_values_proven_by_worker": false,
+    "acceptance": "Root compare all3 actual expanded values on exact post-listener baseline; reject any include/header drift, no silent constructor Origin renumbering"
+  },
+  "Native_fixed_pool_epoch": {
+    "installed_PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "allocation_operand_window": {
+      "address": "00ab9d33",
+      "bytes": 10,
+      "file_offset": 7052595,
+      "hex": "b9f0bdf800e863dbffff",
+      "sha256": "de98abb0beea66fa24b916cb6c11935f236c9ff1f1a5ed0153f68aa7c5813f2d"
+    },
+    "failed_wrapper": {
+      "address": "00ab76f0",
+      "bytes": 12,
+      "file_offset": 7042800,
+      "hex": "51b9f0bdf800e8a5feffffc3",
+      "sha256": "e604d4cdf787833fd18aedeae1de2cb1f7486e956d0150939b76170b13af8693"
+    },
+    "meaning": "Native MOV ECX,immediateF8BDF0 before allocate and independently in failed wrapper; Source binds same relocated storage ROLE, not numeric Original address or a publication-pointer getter",
+    "no_snapshot_native_cells": [
+      "vtable",
+      "CS/depth",
+      "slabs",
+      "count",
+      "capacity",
+      "first-free",
+      "payload/trailer"
+    ],
+    "saved_asm_read": "bsp.py show00ab98f0 asm page295 includes9D33/38; no live Ghidra batch or mutation"
+  },
+  "proposed_seams": [
+    {
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "before": "struct NativeStringRawPoolContext;\n",
+      "after": "struct NativeStringRawPoolContext;\nclass NativeGuiTextPool;\n",
+      "count": 1,
+      "label": "H1 forward-declare existing companion"
+    },
+    {
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "before": "    virtual void* allocate_00ab78a0(void* actual_pool, NativeGuiTextGlyphQuadStorageAcquired&) = 0;\n",
+      "after": "    // AB78A0 uses the SAME prepared Text pool companion directly.\n",
+      "count": 1,
+      "label": "H2 remove obsolete opaque allocation method only"
+    },
+    {
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "before": "    virtual void return_failed_00ab76f0(void* current_slot, NativeGuiTextGlyphQuadStorageAcquired&) = 0;\n",
+      "after": "    // Guarded AB76F0 uses that SAME companion; this is not cleanup permission.\n",
+      "count": 1,
+      "label": "H3 remove obsolete opaque failed-return method only"
+    },
+    {
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "before": "    const NativeGuiTextFailureOriginRuntime* failure_runtime{};\n",
+      "after": "    const NativeGuiTextFailureOriginRuntime* failure_runtime{};\n    // Mandatory ready borrow from the existing canonical Text process BEFORE\n    // entry. Retain it, its storage/list/CRT domain and every pending slot.\n    // No owner/startup/getter or Native permission is created by this reference.\n    NativeGuiTextPool& actual_text_pool_companion_00f8bdf0;\n",
+      "count": 1,
+      "label": "H4 append required non-owning reference after unchanged existing prefix"
+    },
+    {
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "before": "#include \"bsp/native_gui_text_glyph_quad_storage.hpp\"\n",
+      "after": "#include \"bsp/native_gui_text_glyph_quad_storage.hpp\"\n#include \"bsp/gui_text_factory.hpp\"\n",
+      "count": 1,
+      "label": "C1 include existing complete pool API, no body copy"
+    },
+    {
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "before": "    const auto* const failure_runtime = c.failure_runtime;\n",
+      "after": "    const auto* const failure_runtime = c.failure_runtime;\n    NativeGuiTextPool& prepared_text_pool = c.actual_text_pool_companion_00f8bdf0;\n",
+      "count": 1,
+      "label": "C2 capture stable companion reference before callbacks, not Native cells"
+    },
+    {
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "before": "        boundary(a, 0x00ab9d38, c.actual_text_pool_00f8bdf0);\n        void* const allocation = c.calls.allocate_00ab78a0(c.actual_text_pool_00f8bdf0, a);\n",
+      "after": "        void* const actual_pool_receiver = c.actual_text_pool_00f8bdf0; // Native AB9D33 role\n        boundary(a, 0x00ab9d38, actual_pool_receiver);\n        const auto require_pool_affinity = [&] {\n            if (static_cast<void*>(&prepared_text_pool.storage()) != actual_pool_receiver)\n                throw std::invalid_argument(\"Glyph Text pool companion must borrow the SAME actual F8BDF0 storage\");\n        };\n        void* const allocation = [&]() -> void* {\n            if (failure_runtime) {\n                a.failure_origin_.host(*failure_runtime, {0x00ab9d33u, 0x47504131u}, &prepared_text_pool,\n                    require_pool_affinity); // GPA1: actual Source address-affinity check\n                return a.failure_origin_.unknown(*failure_runtime, {0x00ab9d38u, 0x47504132u}, &prepared_text_pool,\n                    [&] { return prepared_text_pool.allocate_raw_slot_00ab78a0(); }); // GPA2: mixed real allocation\n            }\n            require_pool_affinity();\n            return prepared_text_pool.allocate_raw_slot_00ab78a0();\n        }();\n",
+      "count": 1,
+      "label": "C3 reached native pool-role selection, Host affinity, separate Unknown real allocation"
+    },
+    {
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "before": "                    if (failure_runtime)\n                        a.failure_origin_.unknown(*failure_runtime, {0x00cb80b3u, __COUNTER__}, &c.calls,\n                            [&] { c.calls.return_failed_00ab76f0(current_slot, a); },\n                            NativeGuiTextFailureOrigin::Stage::cleanup_secondary);\n                    else c.calls.return_failed_00ab76f0(current_slot, a);\n",
+      "after": "                    if (failure_runtime)\n                        a.failure_origin_.unknown(*failure_runtime, {0x00cb80b3u, __COUNTER__}, &prepared_text_pool,\n                            [&] { return_gui_text_failed_slot_00ab76f0(current_slot, prepared_text_pool); },\n                            NativeGuiTextFailureOrigin::Stage::cleanup_secondary);\n                    else return_gui_text_failed_slot_00ab76f0(current_slot, prepared_text_pool);\n",
+      "count": 1,
+      "label": "C4 direct existing failed wrapper with actual stable supplier, unchanged predicate/current-home/null qualification"
+    }
+  ],
+  "in_memory_full_forward_inverse_trials": [
+    {
+      "reference": "4667b108e2623e5902148aea9130be1be33bc188",
+      "proposal_only": true,
+      "source_files_written": false,
+      "seam_count": 8,
+      "full_inverse_exact": true,
+      "Glyph_asm_blocks": 22,
+      "Glyph_x87_count": 78,
+      "all_asm_bytes_unchanged": true,
+      "old_counter_tokens": 3,
+      "new_counter_tokens": 3,
+      "old_counter_relative_sequence_unchanged": true,
+      "expanded_counter_VALUES_proven": false,
+      "Root_preprocessor_comparison_required": true,
+      "constructor_site_and_supplier_exact": true,
+      "return_guard_and_current_home_load_exact": true,
+      "files": [
+        {
+          "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+          "before_bytes": 9403,
+          "before_sha256": "61f7eff6fbe50303bc339c0cf1a56acbb77d0ece0ad9b6d00f6c04667b5cb42e",
+          "hypothetical_after_bytes": 9667,
+          "hypothetical_after_sha256": "8f59b0994e681c20de455922c943c31ce89d4084db52b654e47c2041d96e435e",
+          "inverse_sha256": "61f7eff6fbe50303bc339c0cf1a56acbb77d0ece0ad9b6d00f6c04667b5cb42e"
+        },
+        {
+          "path": "src/native_gui_text_glyph_quad_storage.cpp",
+          "before_bytes": 21995,
+          "before_sha256": "2bab8e816665596ab8d9372524fddc240e68c3aacdc83afa31927bef1fbd198c",
+          "hypothetical_after_bytes": 23080,
+          "hypothetical_after_sha256": "c3a8f2a8e08f6fe7a7207cbefb457963b80c020bc42f59f73bedefd291c89e7c",
+          "inverse_sha256": "2bab8e816665596ab8d9372524fddc240e68c3aacdc83afa31927bef1fbd198c"
+        }
+      ],
+      "seams": [
+        {
+          "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+          "before": "struct NativeStringRawPoolContext;\n",
+          "after": "struct NativeStringRawPoolContext;\nclass NativeGuiTextPool;\n",
+          "count": 1,
+          "label": "H1 forward-declare existing companion",
+          "after_character_offset": 245,
+          "state_before_sha256": "61f7eff6fbe50303bc339c0cf1a56acbb77d0ece0ad9b6d00f6c04667b5cb42e",
+          "state_after_sha256": "0d44e2208fe9bde720c5d7c1baf3d314a3c6419723303b0c3ca18b42a9621aef"
+        },
+        {
+          "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+          "before": "    virtual void* allocate_00ab78a0(void* actual_pool, NativeGuiTextGlyphQuadStorageAcquired&) = 0;\n",
+          "after": "    // AB78A0 uses the SAME prepared Text pool companion directly.\n",
+          "count": 1,
+          "label": "H2 remove obsolete opaque allocation method only",
+          "after_character_offset": 1218,
+          "state_before_sha256": "0d44e2208fe9bde720c5d7c1baf3d314a3c6419723303b0c3ca18b42a9621aef",
+          "state_after_sha256": "1e1f4cfff0345c6b3b07e41f6324507341ad4ed258b1f03f59bbac34277ecf4b"
+        },
+        {
+          "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+          "before": "    virtual void return_failed_00ab76f0(void* current_slot, NativeGuiTextGlyphQuadStorageAcquired&) = 0;\n",
+          "after": "    // Guarded AB76F0 uses that SAME companion; this is not cleanup permission.\n",
+          "count": 1,
+          "label": "H3 remove obsolete opaque failed-return method only",
+          "after_character_offset": 1713,
+          "state_before_sha256": "1e1f4cfff0345c6b3b07e41f6324507341ad4ed258b1f03f59bbac34277ecf4b",
+          "state_after_sha256": "bda16b42c3b3dec554fec830d8f813a4d7121972530767a16d0169e5aa5c4f62"
+        },
+        {
+          "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+          "before": "    const NativeGuiTextFailureOriginRuntime* failure_runtime{};\n",
+          "after": "    const NativeGuiTextFailureOriginRuntime* failure_runtime{};\n    // Mandatory ready borrow from the existing canonical Text process BEFORE\n    // entry. Retain it, its storage/list/CRT domain and every pending slot.\n    // No owner/startup/getter or Native permission is created by this reference.\n    NativeGuiTextPool& actual_text_pool_companion_00f8bdf0;\n",
+          "count": 1,
+          "label": "H4 append required non-owning reference after unchanged existing prefix",
+          "after_character_offset": 5579,
+          "state_before_sha256": "bda16b42c3b3dec554fec830d8f813a4d7121972530767a16d0169e5aa5c4f62",
+          "state_after_sha256": "8f59b0994e681c20de455922c943c31ce89d4084db52b654e47c2041d96e435e"
+        },
+        {
+          "path": "src/native_gui_text_glyph_quad_storage.cpp",
+          "before": "#include \"bsp/native_gui_text_glyph_quad_storage.hpp\"\n",
+          "after": "#include \"bsp/native_gui_text_glyph_quad_storage.hpp\"\n#include \"bsp/gui_text_factory.hpp\"\n",
+          "count": 1,
+          "label": "C1 include existing complete pool API, no body copy",
+          "after_character_offset": 0,
+          "state_before_sha256": "2bab8e816665596ab8d9372524fddc240e68c3aacdc83afa31927bef1fbd198c",
+          "state_after_sha256": "3e1e01175a2d120140ba445177aee74327667606ddc68ab452654cc41076f715"
+        },
+        {
+          "path": "src/native_gui_text_glyph_quad_storage.cpp",
+          "before": "    const auto* const failure_runtime = c.failure_runtime;\n",
+          "after": "    const auto* const failure_runtime = c.failure_runtime;\n    NativeGuiTextPool& prepared_text_pool = c.actual_text_pool_companion_00f8bdf0;\n",
+          "count": 1,
+          "label": "C2 capture stable companion reference before callbacks, not Native cells",
+          "after_character_offset": 13577,
+          "state_before_sha256": "3e1e01175a2d120140ba445177aee74327667606ddc68ab452654cc41076f715",
+          "state_after_sha256": "0e184151c5ddcf9607fc7e2e297edd471645ea7cd1700823bf12845ab33c3e80"
+        },
+        {
+          "path": "src/native_gui_text_glyph_quad_storage.cpp",
+          "before": "        boundary(a, 0x00ab9d38, c.actual_text_pool_00f8bdf0);\n        void* const allocation = c.calls.allocate_00ab78a0(c.actual_text_pool_00f8bdf0, a);\n",
+          "after": "        void* const actual_pool_receiver = c.actual_text_pool_00f8bdf0; // Native AB9D33 role\n        boundary(a, 0x00ab9d38, actual_pool_receiver);\n        const auto require_pool_affinity = [&] {\n            if (static_cast<void*>(&prepared_text_pool.storage()) != actual_pool_receiver)\n                throw std::invalid_argument(\"Glyph Text pool companion must borrow the SAME actual F8BDF0 storage\");\n        };\n        void* const allocation = [&]() -> void* {\n            if (failure_runtime) {\n                a.failure_origin_.host(*failure_runtime, {0x00ab9d33u, 0x47504131u}, &prepared_text_pool,\n                    require_pool_affinity); // GPA1: actual Source address-affinity check\n                return a.failure_origin_.unknown(*failure_runtime, {0x00ab9d38u, 0x47504132u}, &prepared_text_pool,\n                    [&] { return prepared_text_pool.allocate_raw_slot_00ab78a0(); }); // GPA2: mixed real allocation\n            }\n            require_pool_affinity();\n            return prepared_text_pool.allocate_raw_slot_00ab78a0();\n        }();\n",
+          "count": 1,
+          "label": "C3 reached native pool-role selection, Host affinity, separate Unknown real allocation",
+          "after_character_offset": 15531,
+          "state_before_sha256": "0e184151c5ddcf9607fc7e2e297edd471645ea7cd1700823bf12845ab33c3e80",
+          "state_after_sha256": "c3e43ea5cc3d53fd56fd48f45e3442749c79fa08490bc5d5899bd264710b9599"
+        },
+        {
+          "path": "src/native_gui_text_glyph_quad_storage.cpp",
+          "before": "                    if (failure_runtime)\n                        a.failure_origin_.unknown(*failure_runtime, {0x00cb80b3u, __COUNTER__}, &c.calls,\n                            [&] { c.calls.return_failed_00ab76f0(current_slot, a); },\n                            NativeGuiTextFailureOrigin::Stage::cleanup_secondary);\n                    else c.calls.return_failed_00ab76f0(current_slot, a);\n",
+          "after": "                    if (failure_runtime)\n                        a.failure_origin_.unknown(*failure_runtime, {0x00cb80b3u, __COUNTER__}, &prepared_text_pool,\n                            [&] { return_gui_text_failed_slot_00ab76f0(current_slot, prepared_text_pool); },\n                            NativeGuiTextFailureOrigin::Stage::cleanup_secondary);\n                    else return_gui_text_failed_slot_00ab76f0(current_slot, prepared_text_pool);\n",
+          "count": 1,
+          "label": "C4 direct existing failed wrapper with actual stable supplier, unchanged predicate/current-home/null qualification",
+          "after_character_offset": 22101,
+          "state_before_sha256": "c3e43ea5cc3d53fd56fd48f45e3442749c79fa08490bc5d5899bd264710b9599",
+          "state_after_sha256": "c3a8f2a8e08f6fe7a7207cbefb457963b80c020bc42f59f73bedefd291c89e7c"
+        }
+      ]
+    },
+    {
+      "reference": "6230a05912747c5fd87f41c6997166479e3eba95",
+      "proposal_only": true,
+      "source_files_written": false,
+      "seam_count": 8,
+      "full_inverse_exact": true,
+      "Glyph_asm_blocks": 22,
+      "Glyph_x87_count": 78,
+      "all_asm_bytes_unchanged": true,
+      "old_counter_tokens": 3,
+      "new_counter_tokens": 3,
+      "old_counter_relative_sequence_unchanged": true,
+      "expanded_counter_VALUES_proven": false,
+      "Root_preprocessor_comparison_required": true,
+      "constructor_site_and_supplier_exact": true,
+      "return_guard_and_current_home_load_exact": true,
+      "files": [
+        {
+          "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+          "before_bytes": 9317,
+          "before_sha256": "eb066d93ec72e0f25c5d4ec62b160d73001fe7ce5dc620b9177ea9362eb793b9",
+          "hypothetical_after_bytes": 9581,
+          "hypothetical_after_sha256": "b80eab62fd47d54572fde1273713b736a23ae4f1b537dede95b90f32a1f9c75e",
+          "inverse_sha256": "eb066d93ec72e0f25c5d4ec62b160d73001fe7ce5dc620b9177ea9362eb793b9"
+        },
+        {
+          "path": "src/native_gui_text_glyph_quad_storage.cpp",
+          "before_bytes": 22045,
+          "before_sha256": "d67826d8c2e7136d77891ecb46ee5389087e8f8c2aba031dd786988e984a0a5c",
+          "hypothetical_after_bytes": 23130,
+          "hypothetical_after_sha256": "815bf54b7d58657722c629d8c58c6099c3b53c7416d5dbcb06e6c4e38f2c5b6b",
+          "inverse_sha256": "d67826d8c2e7136d77891ecb46ee5389087e8f8c2aba031dd786988e984a0a5c"
+        }
+      ],
+      "seams": [
+        {
+          "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+          "before": "struct NativeStringRawPoolContext;\n",
+          "after": "struct NativeStringRawPoolContext;\nclass NativeGuiTextPool;\n",
+          "count": 1,
+          "label": "H1 forward-declare existing companion",
+          "after_character_offset": 245,
+          "state_before_sha256": "eb066d93ec72e0f25c5d4ec62b160d73001fe7ce5dc620b9177ea9362eb793b9",
+          "state_after_sha256": "d18f91bac24dfeafbf0f45e29cf2b3b567466ec3d9ba3847da1ef5e5d1e67c18"
+        },
+        {
+          "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+          "before": "    virtual void* allocate_00ab78a0(void* actual_pool, NativeGuiTextGlyphQuadStorageAcquired&) = 0;\n",
+          "after": "    // AB78A0 uses the SAME prepared Text pool companion directly.\n",
+          "count": 1,
+          "label": "H2 remove obsolete opaque allocation method only",
+          "after_character_offset": 1218,
+          "state_before_sha256": "d18f91bac24dfeafbf0f45e29cf2b3b567466ec3d9ba3847da1ef5e5d1e67c18",
+          "state_after_sha256": "8b015ad8471940406dc478d1b5e9fafa95a28214f7f0fc59d0d897b6edfdae9b"
+        },
+        {
+          "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+          "before": "    virtual void return_failed_00ab76f0(void* current_slot, NativeGuiTextGlyphQuadStorageAcquired&) = 0;\n",
+          "after": "    // Guarded AB76F0 uses that SAME companion; this is not cleanup permission.\n",
+          "count": 1,
+          "label": "H3 remove obsolete opaque failed-return method only",
+          "after_character_offset": 1713,
+          "state_before_sha256": "8b015ad8471940406dc478d1b5e9fafa95a28214f7f0fc59d0d897b6edfdae9b",
+          "state_after_sha256": "625930e1b0d2a120285a7f95e2934e55d750cdf2601cfae0c515d5f8931b3b28"
+        },
+        {
+          "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+          "before": "    const NativeGuiTextFailureOriginRuntime* failure_runtime{};\n",
+          "after": "    const NativeGuiTextFailureOriginRuntime* failure_runtime{};\n    // Mandatory ready borrow from the existing canonical Text process BEFORE\n    // entry. Retain it, its storage/list/CRT domain and every pending slot.\n    // No owner/startup/getter or Native permission is created by this reference.\n    NativeGuiTextPool& actual_text_pool_companion_00f8bdf0;\n",
+          "count": 1,
+          "label": "H4 append required non-owning reference after unchanged existing prefix",
+          "after_character_offset": 5493,
+          "state_before_sha256": "625930e1b0d2a120285a7f95e2934e55d750cdf2601cfae0c515d5f8931b3b28",
+          "state_after_sha256": "b80eab62fd47d54572fde1273713b736a23ae4f1b537dede95b90f32a1f9c75e"
+        },
+        {
+          "path": "src/native_gui_text_glyph_quad_storage.cpp",
+          "before": "#include \"bsp/native_gui_text_glyph_quad_storage.hpp\"\n",
+          "after": "#include \"bsp/native_gui_text_glyph_quad_storage.hpp\"\n#include \"bsp/gui_text_factory.hpp\"\n",
+          "count": 1,
+          "label": "C1 include existing complete pool API, no body copy",
+          "after_character_offset": 0,
+          "state_before_sha256": "d67826d8c2e7136d77891ecb46ee5389087e8f8c2aba031dd786988e984a0a5c",
+          "state_after_sha256": "b3e14afe38c6c473a270f70baf678fc807a98c7e494bb9a11450a95b733b0e41"
+        },
+        {
+          "path": "src/native_gui_text_glyph_quad_storage.cpp",
+          "before": "    const auto* const failure_runtime = c.failure_runtime;\n",
+          "after": "    const auto* const failure_runtime = c.failure_runtime;\n    NativeGuiTextPool& prepared_text_pool = c.actual_text_pool_companion_00f8bdf0;\n",
+          "count": 1,
+          "label": "C2 capture stable companion reference before callbacks, not Native cells",
+          "after_character_offset": 13606,
+          "state_before_sha256": "b3e14afe38c6c473a270f70baf678fc807a98c7e494bb9a11450a95b733b0e41",
+          "state_after_sha256": "75ef11bc554f17815e4d2e74d9d80e2645bfe8b81288bd4306620b5a87e54e2c"
+        },
+        {
+          "path": "src/native_gui_text_glyph_quad_storage.cpp",
+          "before": "        boundary(a, 0x00ab9d38, c.actual_text_pool_00f8bdf0);\n        void* const allocation = c.calls.allocate_00ab78a0(c.actual_text_pool_00f8bdf0, a);\n",
+          "after": "        void* const actual_pool_receiver = c.actual_text_pool_00f8bdf0; // Native AB9D33 role\n        boundary(a, 0x00ab9d38, actual_pool_receiver);\n        const auto require_pool_affinity = [&] {\n            if (static_cast<void*>(&prepared_text_pool.storage()) != actual_pool_receiver)\n                throw std::invalid_argument(\"Glyph Text pool companion must borrow the SAME actual F8BDF0 storage\");\n        };\n        void* const allocation = [&]() -> void* {\n            if (failure_runtime) {\n                a.failure_origin_.host(*failure_runtime, {0x00ab9d33u, 0x47504131u}, &prepared_text_pool,\n                    require_pool_affinity); // GPA1: actual Source address-affinity check\n                return a.failure_origin_.unknown(*failure_runtime, {0x00ab9d38u, 0x47504132u}, &prepared_text_pool,\n                    [&] { return prepared_text_pool.allocate_raw_slot_00ab78a0(); }); // GPA2: mixed real allocation\n            }\n            require_pool_affinity();\n            return prepared_text_pool.allocate_raw_slot_00ab78a0();\n        }();\n",
+          "count": 1,
+          "label": "C3 reached native pool-role selection, Host affinity, separate Unknown real allocation",
+          "after_character_offset": 15560,
+          "state_before_sha256": "75ef11bc554f17815e4d2e74d9d80e2645bfe8b81288bd4306620b5a87e54e2c",
+          "state_after_sha256": "3b2f58978204baaf81706f633ffa12e72244ac24bfd07e08adb9f23d894e0e30"
+        },
+        {
+          "path": "src/native_gui_text_glyph_quad_storage.cpp",
+          "before": "                    if (failure_runtime)\n                        a.failure_origin_.unknown(*failure_runtime, {0x00cb80b3u, __COUNTER__}, &c.calls,\n                            [&] { c.calls.return_failed_00ab76f0(current_slot, a); },\n                            NativeGuiTextFailureOrigin::Stage::cleanup_secondary);\n                    else c.calls.return_failed_00ab76f0(current_slot, a);\n",
+          "after": "                    if (failure_runtime)\n                        a.failure_origin_.unknown(*failure_runtime, {0x00cb80b3u, __COUNTER__}, &prepared_text_pool,\n                            [&] { return_gui_text_failed_slot_00ab76f0(current_slot, prepared_text_pool); },\n                            NativeGuiTextFailureOrigin::Stage::cleanup_secondary);\n                    else return_gui_text_failed_slot_00ab76f0(current_slot, prepared_text_pool);\n",
+          "count": 1,
+          "label": "C4 direct existing failed wrapper with actual stable supplier, unchanged predicate/current-home/null qualification",
+          "after_character_offset": 22151,
+          "state_before_sha256": "3b2f58978204baaf81706f633ffa12e72244ac24bfd07e08adb9f23d894e0e30",
+          "state_after_sha256": "815bf54b7d58657722c629d8c58c6099c3b53c7416d5dbcb06e6c4e38f2c5b6b"
+        }
+      ]
+    },
+    {
+      "reference": "9bf2949406254e3a037b322a9c6a8fef5d1ae1ae",
+      "proposal_only": true,
+      "source_files_written": false,
+      "seam_count": 8,
+      "full_inverse_exact": true,
+      "Glyph_asm_blocks": 22,
+      "Glyph_x87_count": 78,
+      "all_asm_bytes_unchanged": true,
+      "old_counter_tokens": 3,
+      "new_counter_tokens": 3,
+      "old_counter_relative_sequence_unchanged": true,
+      "expanded_counter_VALUES_proven": false,
+      "Root_preprocessor_comparison_required": true,
+      "constructor_site_and_supplier_exact": true,
+      "return_guard_and_current_home_load_exact": true,
+      "files": [
+        {
+          "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+          "before_bytes": 9317,
+          "before_sha256": "eb066d93ec72e0f25c5d4ec62b160d73001fe7ce5dc620b9177ea9362eb793b9",
+          "hypothetical_after_bytes": 9581,
+          "hypothetical_after_sha256": "b80eab62fd47d54572fde1273713b736a23ae4f1b537dede95b90f32a1f9c75e",
+          "inverse_sha256": "eb066d93ec72e0f25c5d4ec62b160d73001fe7ce5dc620b9177ea9362eb793b9"
+        },
+        {
+          "path": "src/native_gui_text_glyph_quad_storage.cpp",
+          "before_bytes": 22045,
+          "before_sha256": "d67826d8c2e7136d77891ecb46ee5389087e8f8c2aba031dd786988e984a0a5c",
+          "hypothetical_after_bytes": 23130,
+          "hypothetical_after_sha256": "815bf54b7d58657722c629d8c58c6099c3b53c7416d5dbcb06e6c4e38f2c5b6b",
+          "inverse_sha256": "d67826d8c2e7136d77891ecb46ee5389087e8f8c2aba031dd786988e984a0a5c"
+        }
+      ],
+      "seams": [
+        {
+          "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+          "before": "struct NativeStringRawPoolContext;\n",
+          "after": "struct NativeStringRawPoolContext;\nclass NativeGuiTextPool;\n",
+          "count": 1,
+          "label": "H1 forward-declare existing companion",
+          "after_character_offset": 245,
+          "state_before_sha256": "eb066d93ec72e0f25c5d4ec62b160d73001fe7ce5dc620b9177ea9362eb793b9",
+          "state_after_sha256": "d18f91bac24dfeafbf0f45e29cf2b3b567466ec3d9ba3847da1ef5e5d1e67c18"
+        },
+        {
+          "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+          "before": "    virtual void* allocate_00ab78a0(void* actual_pool, NativeGuiTextGlyphQuadStorageAcquired&) = 0;\n",
+          "after": "    // AB78A0 uses the SAME prepared Text pool companion directly.\n",
+          "count": 1,
+          "label": "H2 remove obsolete opaque allocation method only",
+          "after_character_offset": 1218,
+          "state_before_sha256": "d18f91bac24dfeafbf0f45e29cf2b3b567466ec3d9ba3847da1ef5e5d1e67c18",
+          "state_after_sha256": "8b015ad8471940406dc478d1b5e9fafa95a28214f7f0fc59d0d897b6edfdae9b"
+        },
+        {
+          "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+          "before": "    virtual void return_failed_00ab76f0(void* current_slot, NativeGuiTextGlyphQuadStorageAcquired&) = 0;\n",
+          "after": "    // Guarded AB76F0 uses that SAME companion; this is not cleanup permission.\n",
+          "count": 1,
+          "label": "H3 remove obsolete opaque failed-return method only",
+          "after_character_offset": 1713,
+          "state_before_sha256": "8b015ad8471940406dc478d1b5e9fafa95a28214f7f0fc59d0d897b6edfdae9b",
+          "state_after_sha256": "625930e1b0d2a120285a7f95e2934e55d750cdf2601cfae0c515d5f8931b3b28"
+        },
+        {
+          "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+          "before": "    const NativeGuiTextFailureOriginRuntime* failure_runtime{};\n",
+          "after": "    const NativeGuiTextFailureOriginRuntime* failure_runtime{};\n    // Mandatory ready borrow from the existing canonical Text process BEFORE\n    // entry. Retain it, its storage/list/CRT domain and every pending slot.\n    // No owner/startup/getter or Native permission is created by this reference.\n    NativeGuiTextPool& actual_text_pool_companion_00f8bdf0;\n",
+          "count": 1,
+          "label": "H4 append required non-owning reference after unchanged existing prefix",
+          "after_character_offset": 5493,
+          "state_before_sha256": "625930e1b0d2a120285a7f95e2934e55d750cdf2601cfae0c515d5f8931b3b28",
+          "state_after_sha256": "b80eab62fd47d54572fde1273713b736a23ae4f1b537dede95b90f32a1f9c75e"
+        },
+        {
+          "path": "src/native_gui_text_glyph_quad_storage.cpp",
+          "before": "#include \"bsp/native_gui_text_glyph_quad_storage.hpp\"\n",
+          "after": "#include \"bsp/native_gui_text_glyph_quad_storage.hpp\"\n#include \"bsp/gui_text_factory.hpp\"\n",
+          "count": 1,
+          "label": "C1 include existing complete pool API, no body copy",
+          "after_character_offset": 0,
+          "state_before_sha256": "d67826d8c2e7136d77891ecb46ee5389087e8f8c2aba031dd786988e984a0a5c",
+          "state_after_sha256": "b3e14afe38c6c473a270f70baf678fc807a98c7e494bb9a11450a95b733b0e41"
+        },
+        {
+          "path": "src/native_gui_text_glyph_quad_storage.cpp",
+          "before": "    const auto* const failure_runtime = c.failure_runtime;\n",
+          "after": "    const auto* const failure_runtime = c.failure_runtime;\n    NativeGuiTextPool& prepared_text_pool = c.actual_text_pool_companion_00f8bdf0;\n",
+          "count": 1,
+          "label": "C2 capture stable companion reference before callbacks, not Native cells",
+          "after_character_offset": 13606,
+          "state_before_sha256": "b3e14afe38c6c473a270f70baf678fc807a98c7e494bb9a11450a95b733b0e41",
+          "state_after_sha256": "75ef11bc554f17815e4d2e74d9d80e2645bfe8b81288bd4306620b5a87e54e2c"
+        },
+        {
+          "path": "src/native_gui_text_glyph_quad_storage.cpp",
+          "before": "        boundary(a, 0x00ab9d38, c.actual_text_pool_00f8bdf0);\n        void* const allocation = c.calls.allocate_00ab78a0(c.actual_text_pool_00f8bdf0, a);\n",
+          "after": "        void* const actual_pool_receiver = c.actual_text_pool_00f8bdf0; // Native AB9D33 role\n        boundary(a, 0x00ab9d38, actual_pool_receiver);\n        const auto require_pool_affinity = [&] {\n            if (static_cast<void*>(&prepared_text_pool.storage()) != actual_pool_receiver)\n                throw std::invalid_argument(\"Glyph Text pool companion must borrow the SAME actual F8BDF0 storage\");\n        };\n        void* const allocation = [&]() -> void* {\n            if (failure_runtime) {\n                a.failure_origin_.host(*failure_runtime, {0x00ab9d33u, 0x47504131u}, &prepared_text_pool,\n                    require_pool_affinity); // GPA1: actual Source address-affinity check\n                return a.failure_origin_.unknown(*failure_runtime, {0x00ab9d38u, 0x47504132u}, &prepared_text_pool,\n                    [&] { return prepared_text_pool.allocate_raw_slot_00ab78a0(); }); // GPA2: mixed real allocation\n            }\n            require_pool_affinity();\n            return prepared_text_pool.allocate_raw_slot_00ab78a0();\n        }();\n",
+          "count": 1,
+          "label": "C3 reached native pool-role selection, Host affinity, separate Unknown real allocation",
+          "after_character_offset": 15560,
+          "state_before_sha256": "75ef11bc554f17815e4d2e74d9d80e2645bfe8b81288bd4306620b5a87e54e2c",
+          "state_after_sha256": "3b2f58978204baaf81706f633ffa12e72244ac24bfd07e08adb9f23d894e0e30"
+        },
+        {
+          "path": "src/native_gui_text_glyph_quad_storage.cpp",
+          "before": "                    if (failure_runtime)\n                        a.failure_origin_.unknown(*failure_runtime, {0x00cb80b3u, __COUNTER__}, &c.calls,\n                            [&] { c.calls.return_failed_00ab76f0(current_slot, a); },\n                            NativeGuiTextFailureOrigin::Stage::cleanup_secondary);\n                    else c.calls.return_failed_00ab76f0(current_slot, a);\n",
+          "after": "                    if (failure_runtime)\n                        a.failure_origin_.unknown(*failure_runtime, {0x00cb80b3u, __COUNTER__}, &prepared_text_pool,\n                            [&] { return_gui_text_failed_slot_00ab76f0(current_slot, prepared_text_pool); },\n                            NativeGuiTextFailureOrigin::Stage::cleanup_secondary);\n                    else return_gui_text_failed_slot_00ab76f0(current_slot, prepared_text_pool);\n",
+          "count": 1,
+          "label": "C4 direct existing failed wrapper with actual stable supplier, unchanged predicate/current-home/null qualification",
+          "after_character_offset": 22151,
+          "state_before_sha256": "3b2f58978204baaf81706f633ffa12e72244ac24bfd07e08adb9f23d894e0e30",
+          "state_after_sha256": "815bf54b7d58657722c629d8c58c6099c3b53c7416d5dbcb06e6c4e38f2c5b6b"
+        }
+      ]
+    }
+  ],
+  "implementation_Source_scope": [
+    "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+    "src/native_gui_text_glyph_quad_storage.cpp"
+  ],
+  "implementation_other_scope": "only NEW implementation evidence names separately authorized by Root",
+  "unchanged_production_bodies": [
+    "include/bsp/gui_text_factory.hpp",
+    "src/gui_text_factory.cpp",
+    "include/bsp/game_native_gui_text_process.hpp",
+    "src/game_native_gui_text_process.cpp",
+    "include/bsp/allocator_list.hpp",
+    "src/allocator_list.cpp",
+    "include/bsp/singleton_lifetime.hpp",
+    "src/singleton_lifetime.cpp",
+    "include/bsp/native_gui_text_failure_origin.hpp",
+    "src/native_gui_text_failure_origin.cpp",
+    "include/bsp/native_gui_text_default_storage.hpp",
+    "src/native_gui_text_default_storage.cpp",
+    "src/native_gui_text_storage_construct.cpp"
+  ],
+  "preservation": {
+    "captured_allocation_home_state0_order": true,
+    "optional_ctor_and_disarm_before_child_store_append_address": true,
+    "constructor_private_envelope_same_runtime_callee_binding_and_body_return_revocation": true,
+    "current_home7_load_before_guarded_action_no_snapshot_substitution_or_value_equality": true,
+    "secondary_existing_site_and_runtime_kept_actual_supplier_changed_to_pool": true,
+    "legacy_null_runtime_no_inferred_Native_cleanup_proof": true,
+    "states1_2_later9D93_held96_stay_unadmitted": true
+  },
+  "limits": [
+    "affinity proves only storage address relationship, not canonicality/readiness/lifetime/CRT/sole allocator binding or Native origin",
+    "valid mandatory ref even on early-return Source paths; no default/fallback owner or getter",
+    "host startup ready getter does not detect later AB78 interrupted allocation; no recursion-zero test/recovery",
+    "Source malloc/new-handler retry and Win32/CRT/FH3/SEH/private-alias/secondary qualifications remain inherited",
+    "callbacks may mutate real cells legitimately but cannot relocate/destroy/rebind companion/storage/domain metadata",
+    "captured reference extends no lifetime; retain all failed graphs and real slot/list/CRT/callback domains until separate disposal contract",
+    "no whole actual Calls producer or activation consumer is supplied"
+  ],
+  "required_acceptance": [
+    "Root review/authorization and listener integration/release before Source lease",
+    "freeze exact implementation base; full8seam inverse for both Glyph files without losing listener/b6",
+    "actual expanded3 counter-value comparison plus22asm78x87/native operands/home/order/privateOrigin preservation",
+    "official Win32 build/common checks and explicit genuine borrow args in Root-owned retained fixtures",
+    "minimal concrete affinity failure test only if necessary; no routine new framework/fake producer",
+    "no Source/fixture pass promoted to Native recovery/ABI/runtime/Game/activation"
+  ],
+  "worker_actions": {
+    "new_design_files": 2,
+    "production_Source_edits": 0,
+    "proposal_CXX_files_written": 0,
+    "address_leases": 0,
+    "builds_tests_probes_Game_replay_CMake_ledger_or_process_control": 0,
+    "Ghidra_live_queries_or_mutations": 0,
+    "mechanical_in_memory_proposal_trials_only": true
+  },
+  "recommendation": "approve finite two-Source-file pool caller packet with this mandatory borrow/reached Host check/literal sites, after Root approves contract and listener lease release",
+  "readiness": {
+    "design_concrete_for_review": true,
+    "Source_implemented": false,
+    "Source_authorized_by_this_design": false,
+    "Native_origin_permission": false,
+    "ABI_runtime_Game_or_activation": false
+  },
+  "credits": {
+    "Native": 0,
+    "Original": 0,
+    "body": 0,
+    "helper": 0,
+    "vendor": 0,
+    "duplicate": 0,
+    "ABI": 0,
+    "runtime": 0,
+    "activation": 0
+  },
+  "document_pin": {
+    "path": "docs/CC16_NATIVE_GLYPH_POOL_BORROW_CONTRACT.md",
+    "format": "UTF-8 LF bytes, no BOM",
+    "bytes": 12681,
+    "sha256": "2df1ff50d2be376c6803e6952e1ef25c1f73404ed015c240f7ee1987e638131f"
+  }
+}
