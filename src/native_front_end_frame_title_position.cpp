@@ -1,4 +1,5 @@
 #include "bsp/native_front_end_frame_title_position.hpp"
+#include "bsp/native_gui_widget_child_lookup_storage.hpp"
 
 #include "bsp/cc13_gui1.hpp"
 #include "bsp/game_native_readonly_data.hpp"
@@ -69,7 +70,10 @@ void* find_and_return_name(void* actual_header8,
     void* captured_widget;
     try {
         void* const page = current_title_page(c, selector_before_own);
-        captured_widget = c.bindings.find_child_00aa7e00(page, actual_header8, 1);
+        volatile Word child_homes[2];
+        child_homes[1] = 1; // Native unused stacked argument, before query pointer.
+        child_homes[0] = address(actual_header8);
+        captured_widget = find_native_gui_widget_child_storage_00aa7e00(page, child_homes);
     } catch (...) {
         // Each FH3 map arms just this header, after construction/copy returns.
         // Ordinary Source secondary transport only; no terminate/retry policy.

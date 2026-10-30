@@ -1,4 +1,5 @@
 #include "bsp/native_front_end_frame_operations.hpp"
+#include "bsp/native_gui_widget_child_lookup_storage.hpp"
 
 #include "bsp/game_native_readonly_data.hpp"
 #include "bsp/native_string.hpp"
@@ -80,8 +81,11 @@ __declspec(noinline) void set_native_front_end_frame_flag_00518b90(
         const Word own = load(index_frame, 0x160);
         const Word panel = selector_bits(c.panel_00e18d88);
         void* const page = pointer(load(slots_frame, (panel + own * 2u + 0x44u) * 4u));
-        void* const captured_widget = c.bindings.find_child_00aa7e00(
-            page, scratch.name_header, 1);
+        volatile Word child_homes[2];
+        child_homes[1] = 1; // Native unused stacked argument, before query pointer.
+        child_homes[0] = address(scratch.name_header);
+        void* const captured_widget = find_native_gui_widget_child_storage_00aa7e00(
+            page, child_homes);
 
         Word captured_profile;
         Word captured_target;
