@@ -17,6 +17,7 @@ struct NativeResourceRegistryDeleteBindings;
 
 namespace bsp::game {
 class GameHostLog;
+class GameNativeLocaleManagerProcess;
 
 // cc15-ob3: the native loading queue, the lazy 20h E18D4C singleton built by
 // 004FDE20 (ctor 004FDBA0, registered through 00BD0C30) on 00737A50's first
@@ -140,6 +141,9 @@ public:
     // 008F8449: capture current manager, rawBD0400 drain, free captured manager,
     // then clear its actual publication, while all bindings remain alive.
     void shutdown();
+    // Explicit metadata/domain binding only; the caller separately opts into
+    // native initialization. No application startup path invokes this here.
+    GameNativeLocaleManagerProcess& prepare_locale_manager();
 
 private:
     void retire_vfs_after_drain() noexcept;
@@ -171,5 +175,8 @@ private:
     // Stable inline binding survives the destructor's shutdown body. Never reset
     // while registered owners/callbacks remain; the host cannot copy or move.
     std::optional<NativeParticleModelManagerAccess> particle_manager_context_;
+    // Append after every established member. Retain failed preparation too so
+    // fallback shutdown cannot bypass the real owner's pre-drain fence.
+    GameNativeLocaleManagerProcess* locale_manager_process_{};
 };
 } // namespace bsp::game

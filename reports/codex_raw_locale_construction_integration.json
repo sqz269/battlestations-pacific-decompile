@@ -1,0 +1,217 @@
+{
+  "utc": "2026-10-30T04:49:42.848727+00:00",
+  "scope": "dormant raw constructor/base and map-clear composition",
+  "head_before_metadata": "82003f0e03dd22fc1b2a9813499353f01db79da3",
+  "worker_commits": [
+    "550488c70c37dbca0d93d7289d827ae5bb6d0a9f",
+    "d5c116833d55eeb91ccd84756792dd8f473bbeb3"
+  ],
+  "held_constructor": "37ce9b6066b07d76bb7a5783c7b66be1cc9ce8fe",
+  "raw_access_revision": "Actual raw-storage admission gap corrected with fenced byte copies; exact inverse substitution recovers held CPP18af3294; EH/control/derived write order unchanged.",
+  "primary_review": "Complete CPP/HPP/docs and saved listings checked; map-clear factoring checked against real payload/recycling services.",
+  "peer_review": "Frame independently accepted final d5c dormant Source, verified all four Git blobs, both I386 objects and inverse primitive projection; no reviewer execution.",
+  "validation": {
+    "build": "scripts/build.ps1 MSVC Win32 Release passed exit0",
+    "existing_checks": "2/2 passed",
+    "test_seconds": "19.29",
+    "tests_added": false,
+    "new_body_execution": false,
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "build_log": {
+    "path": "local\\raw_locale_pool_owner_frontier_cc16_20261030\\construction_with_raw_cleanup_build.log",
+    "bytes": 14173,
+    "sha256": "16014e5732de7474bab1c048c1a3b1b47b169656d1546902ce4798fde3e227fe"
+  },
+  "source_pins": [
+    {
+      "path": "src\\native_locale_manager_constructor.cpp",
+      "bytes": 4475,
+      "sha256": "49fbe8d8a02f37dd2fda4790264d2fc92d42d3925294f41ebea9d745e6acb353"
+    },
+    {
+      "path": "include\\bsp\\native_locale_manager_constructor.hpp",
+      "bytes": 2939,
+      "sha256": "043639699cb7855ab0ee4ba244cdf060a09191dea73e267514ef359adf8bf674"
+    },
+    {
+      "path": "src\\native_locale_map_clear.cpp",
+      "bytes": 1731,
+      "sha256": "9b8e6db0ca2c4f8b98a263f7bdd2ba161577d6ba36a50703a1b850f2800cfac1"
+    },
+    {
+      "path": "include\\bsp\\native_locale_map_clear.hpp",
+      "bytes": 947,
+      "sha256": "0c09f57232da819c7575bc316dbdafc0e2b68866865dd5dc4ab837488dd76059"
+    },
+    {
+      "path": "src\\native_locale_map_node_lifetime.cpp",
+      "bytes": 820,
+      "sha256": "65e5b8d4ede42ba7df6527468b83594df5351a0d35e3ee5c391a7f88926036fd"
+    },
+    {
+      "path": "src\\native_locale_map_node_recycling.cpp",
+      "bytes": 3644,
+      "sha256": "94546ed000b7f35699ea63f05ae2409604d20381586f5b1501d9cf761269fb12"
+    },
+    {
+      "path": "src\\native_singleton_publication.cpp",
+      "bytes": 4127,
+      "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a"
+    },
+    {
+      "path": "src\\native_singleton_vector_registration_wrappers.cpp",
+      "bytes": 4283,
+      "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+    },
+    {
+      "path": "src\\native_diagnostic_sink_lifetime.cpp",
+      "bytes": 6035,
+      "sha256": "7ef822175d062d799683312c6a8f9618c1771ec013e7424b48eedd66c7968499"
+    },
+    {
+      "path": "src\\native_render_service_base.cpp",
+      "bytes": 11200,
+      "sha256": "5ad0e48f648cdaf3305fd52b58ef068873cf6f1c242683b77053cb1e06206420"
+    },
+    {
+      "path": "cmake\\startup.cmake",
+      "bytes": 292013,
+      "sha256": "2d8b1911aa867863b36e29b7002a710c363683542e70a58a8844ced80b5d1e0f"
+    }
+  ],
+  "entries": [
+    {
+      "address": "00736540",
+      "name": "construct_native_locale_manager_base_00736540",
+      "source": "src/native_locale_manager_constructor.cpp",
+      "status": "reconstructed_source_reviewed_win32_build_tested_dormant",
+      "original_abi": "ECX actual receiver, EAX captured receiver, no stacked arguments, plain RET.",
+      "documentation": "docs/NATIVE_LOCALE_MANAGER_CONSTRUCTOR.md",
+      "evidence": "reports/codex_raw_locale_construction_integration.json; complete primary Source/listing review, constructor independent peer acceptance.",
+      "validation": {
+        "build": "scripts/build.ps1 MSVC Win32 Release passed exit0",
+        "existing_checks": "2/2 passed",
+        "test_seconds": "19.29",
+        "tests_added": false,
+        "new_body_execution": false,
+        "game_validated": false,
+        "abi_compatible": false
+      },
+      "source_ready": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "new_native_body_credit": false,
+      "scope": "qualified_raw_storage_library_unbound_canonical_owner_and_startup"
+    },
+    {
+      "address": "0073c960",
+      "name": "construct_native_locale_manager_0073c960",
+      "source": "src/native_locale_manager_constructor.cpp",
+      "status": "reconstructed_source_reviewed_win32_build_tested_dormant",
+      "original_abi": "ECX actual4040 receiver, EAX captured receiver, no stacked arguments, plain RET.",
+      "documentation": "docs/NATIVE_LOCALE_MANAGER_CONSTRUCTOR.md",
+      "evidence": "reports/codex_raw_locale_construction_integration.json; complete primary Source/listing review, constructor independent peer acceptance.",
+      "validation": {
+        "build": "scripts/build.ps1 MSVC Win32 Release passed exit0",
+        "existing_checks": "2/2 passed",
+        "test_seconds": "19.29",
+        "tests_added": false,
+        "new_body_execution": false,
+        "game_validated": false,
+        "abi_compatible": false
+      },
+      "source_ready": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "new_native_body_credit": false,
+      "scope": "qualified_raw_storage_library_unbound_canonical_owner_and_startup"
+    },
+    {
+      "address": "0073c240",
+      "name": "clear_native_locale_map_0073c240",
+      "source": "src/native_locale_map_clear.cpp",
+      "status": "reconstructed_source_reviewed_win32_build_tested_dormant",
+      "original_abi": "ECX actual bucket base, no stacked arguments, plain RET, no semantic EAX result.",
+      "documentation": "docs/NATIVE_LOCALE_MAP_CLEAR.md",
+      "evidence": "reports/codex_raw_locale_construction_integration.json; complete primary Source/listing review, constructor independent peer acceptance.",
+      "validation": {
+        "build": "scripts/build.ps1 MSVC Win32 Release passed exit0",
+        "existing_checks": "2/2 passed",
+        "test_seconds": "19.29",
+        "tests_added": false,
+        "new_body_execution": false,
+        "game_validated": false,
+        "abi_compatible": false
+      },
+      "source_ready": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "new_native_body_credit": false,
+      "scope": "qualified_raw_storage_library_unbound_canonical_owner_and_startup"
+    }
+  ],
+  "proof_limits": [
+    "No canonical locale publication owner, lifetime dispatch, unregister/dtor/scalar, actual loaded tables or startup caller supplied.",
+    "Constructor may retain publication/registration effects on failure; no clear/unregister/free/retry invented.",
+    "Map clear uses actual initialized node-pool authority; producer remains unbound. Partial map failure is not safe to retry or drain.",
+    "Stable Enter/Leave imports required when factoring cached-Enter native map clear; current provider and ordinary-C++/FH3/hardware limits explicit.",
+    "Old semantic/derived-field-only APIs retained separately. No Native ABI, vendor/new-body, runtime, visual or production credit.",
+    "All nine raw Text choices remain FALSE; frozen ac60 is unchanged on Font48/Viper19 Source-admission hold."
+  ],
+  "peer_artifacts": {
+    "report": "J:/PROG/battlestations-pacific-decompile-codex-raw-locale-uppercase/local/raw_locale_constructor_review_frame_20261030/REVIEW.md",
+    "report_sha256": "d7f5869564155725a3263a7a9fe468c8b2a39a1b407f2e73248544e19d0b4487",
+    "pins_sha256": "f972439903f3de2e8a00cb8d5d25c44485d4eea4247c114ec14c1d22395863f4",
+    "status": "ACCEPT_DORMANT_SOURCE_ONLY",
+    "primary_rehashed_seal_files": true
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved": true,
+    "prior_values_log": "local/ghidra-annotations-20261030T045229Z.json",
+    "existing_comments_preserved": true,
+    "refreshed_exports": [
+      "00736540",
+      "0073c960",
+      "0073c240"
+    ],
+    "cleanup_prior_values_log": "local/ghidra-annotations-20261030T052010Z.json",
+    "cleanup_refreshed_exports": [
+      "00411ee0",
+      "00412430"
+    ]
+  },
+  "prior_pre_cleanup_build": {
+    "validation": {
+      "build": "scripts/build.ps1 MSVC Win32 Release passed exit0",
+      "existing_checks": "2/2 passed",
+      "test_seconds": "13.12",
+      "tests_added": false,
+      "new_body_execution": false,
+      "game_validated": false,
+      "abi_compatible": false
+    },
+    "log": {
+      "path": "local\\raw_locale_pool_owner_frontier_cc16_20261030\\construction_coupled_build.log",
+      "bytes": 2365,
+      "sha256": "fc89b93c9d3cce102aff01549188ded2fd1db46f7399d73ee68e96277e5ed37d"
+    }
+  },
+  "head_with_raw_cleanup": "80e2aede216d2e7d24beda20382059c0f6370b79",
+  "shared_cleanup_fix": {
+    "commit": "f411f273717aa1f24c1973a89dcc8490cfdd93f0",
+    "documentation": "docs/NATIVE_SINGLETON_RAW_CLEANUP_ACCESS.md",
+    "report": "reports/native_singleton_raw_cleanup_access.json",
+    "effect": "Only 411EE0 guard/counter and 412430 reset use fenced raw byte copies; signatures, exception specifications, imports, shared access helpers and other functions unchanged.",
+    "primary_review": "Complete targeted source/header diff reviewed, actual original/helper schedule preserved; author four whole-file inverse projections and two strict I386 object checks.",
+    "limit": "Closes the identified selected cleanup raw-access preconditions, not arbitrary transitive provider, FH3, lifetime, runtime or Native ABI proof.",
+    "worker_final_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_singleton_raw_cleanup_validation_20261030\\final_receipt.json",
+      "sha256": "43448ac97ef6300b62f3b5a67d99dcb49048dc876a5afe3ed6403e54a41899d5",
+      "primary_rehashed": true
+    }
+  }
+}

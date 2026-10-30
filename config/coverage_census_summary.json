@@ -1,16 +1,81 @@
 {
   "schema_version": 1,
   "mission": "USN04",
-  "status": "preparing_execution_census",
+  "status": "bsp_measured_original_pending_guard_admission",
   "orig_live": null,
-  "bsp_live": null,
+  "bsp_live": 1740,
+  "count_semantics": "PDB source/qualified-identifier verified reconstruction-body mappings in supplied observations; candidate/host reaches alone are excluded",
+  "scope": "Bootstrap plus game handoff, including startup/menu; not per-BB mission-time filtered.",
   "runs": {
-    "original": {"id": null, "status": "not_traced"},
-    "bsp": {"id": null, "status": "not_traced"}
+    "original": {
+      "id": null,
+      "status": "not_traced",
+      "planned_start": "native direct USN04 scene argument",
+      "planned_game_seconds": 240,
+      "guard_status": "Private admission, authenticated stop, strict trace-flush and integrated backend fixtures passed; original runtime is next."
+    },
+    "bsp": {
+      "id": "USN04-reference-4800-20261030",
+      "status": "attributed",
+      "source_commit": "9c79eedff6231a0140c6dc401f5305e8526bc4fd",
+      "exe_sha256": "128fba34c171517a605d0188c00fac76f8edf020b9a6dbad51da6d192c9c6d93",
+      "pdb_sha256": "6545e1ea9eefd884b969264f15e74b8f714eaac90bdab4268746089a403e61b4",
+      "bootstrap_pid": 92948,
+      "game_pid": 20456,
+      "app_frames": 5000,
+      "mission_frames": 4800,
+      "mission_frame_seconds": 0.05,
+      "simulated_seconds": 240,
+      "mission_entry_app_frame": 38,
+      "first_mission_tick_app_frame": 39,
+      "exit_code": 0,
+      "natural_drain": true,
+      "runtime_files_unchanged": 17,
+      "protected_files_unchanged": 4,
+      "module_base": "10000000",
+      "distinct_main_blocks": 104884,
+      "inline_only_game_addresses": 342,
+      "known_not_observed_game_addresses": 1989,
+      "unknown_game_addresses": 18041
+    }
   },
-  "limitations": [
-    "No execution coverage totals are available yet.",
-    "A missing trace is unknown, not evidence that a function did not execute.",
-    "Execution reach does not establish behavioral correctness."
-  ]
+  "by_category": {
+    "core": 152,
+    "other": 27,
+    "scene": 177,
+    "gui": 127,
+    "lua": 141,
+    "ai": 203,
+    "mission": 48,
+    "units": 309,
+    "render": 371,
+    "net": 13,
+    "sound": 77,
+    "files": 95
+  },
+  "frontier_status": "Not computable without an attributable original-game coverage trace.",
+  "artifacts": {
+    "census": "local/output/coverage_census.json",
+    "census_sha256": "bc7da4a9c4bdc2dc500c1603d182a088f7cb32a8f01aa9258c79fb4bf55d4e99",
+    "persistent_archive": "local/coverage-census-20261030/coverage_census_bsp_only.json",
+    "tool_commit": "10854c04b1f86c046e258dbd1371c8d418bdd30b"
+  },
+  "limits": [
+    "Coverage establishes reach in this run, not correctness or parity.",
+    "Missing original coverage is unknown, not zero or not executed.",
+    "Different startup paths and nondeterministic behavior limit a later frontier interpretation.",
+    "Traced and untraced long runs had different combat totals despite matching starts and fixed simulation time; cause not established.",
+    "Alias, absent-symbol, unresolved-identifier and source-identity buckets overlap.",
+    "1740 is a conservative source-body count; 18041 game-address cells remain unknown.",
+    "The 21770-row frozen census includes unknown unreferenced addresses outside the 20892 board target; these denominators differ."
+  ],
+  "host_adapter_audit": {
+    "host_adapter_candidate_record_count": 1233,
+    "host_adapter_candidate_address_count": 882,
+    "host_adapter_candidates_without_positive_body_hit_count": 471,
+    "host_adapter_source_mismatched_record_count": 921
+  },
+  "census_game_address_rows": 21770,
+  "board_target_at_run": 20892,
+  "executed_body_mappings_outside_board_target": 0
 }

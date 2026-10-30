@@ -2007,6 +2007,8 @@ def main():
     launch.add_argument("--original-exe", type=Path, default=RETAIL)
     launch.add_argument("--seconds", "--timeout", type=int, default=900)
     launch.add_argument("--token-mode", choices=("low", "medium-restricted", "medium-write-locked"), default="low")
+    launch.add_argument("--drcov", action="store_true", help="Opt in to the pinned no-debugger DR coverage backend")
+    launch.add_argument("--dr-root", type=Path, help="Pinned DynamoRIO11.91.20749 root, required with --drcov")
     launch.add_argument("--no-motion-discovery", action="store_true")
     launch.add_argument("--handle-known-xlivedebugclose", action="store_true",
         help="Opt in to one first-chance invalid-HMODULE CloseHandle exception only with exact loaded xlive hash/call/live stack proof")
@@ -2018,6 +2020,9 @@ def main():
     probe = sub.add_parser("probe")
     probe.add_argument("--root", type=Path, required=True)
     probe.add_argument("--token-mode", choices=("low", "medium-restricted", "medium-write-locked"), default="low")
+    dr_probe = sub.add_parser("probe-drcov")
+    dr_probe.add_argument("--root", type=Path, required=True)
+    dr_probe.add_argument("--dr-root", type=Path, required=True)
     args = parser.parse_args()
     try:
         if args.mode == "prepare":
@@ -2026,18 +2031,30 @@ def main():
             result = prepare_medium(args.stage, args.receipt, args.exe, args.original_exe)
         elif args.mode == "probe":
             result = safety_probe(args.root, args.token_mode)
+        elif args.mode == "probe-drcov":
+            import original_drcov_guard
+            result = original_drcov_guard.selftest(args.root, args.dr_root)
         else:
             exe = args.exe or args.stage / "game/battlestationspacific.exe"
-            real_documents = folder(5) / "Battlestations-Pacific"
-            roots = [args.original_exe.parent, real_documents if real_documents.exists() else real_documents.parent]
-            result = run_guard(args.stage, exe, args.cwd or exe.parent,
-                args.documents or args.stage / "Documents", args.receipt, args.seconds,
-                original_exe=ordinary(args.original_exe),
-                arguments=[*args.game_arguments, *(args.arguments[1:] if args.arguments[:1] == ["--"] else args.arguments)],
-                protected_roots=roots,
-                motion_discovery=not args.no_motion_discovery,
-                handle_known_xlive_debug_close=args.handle_known_xlivedebugclose,
-                observe_directinput_startup=args.observe_directinput_startup, token_mode=args.token_mode)
+            arguments = [*args.game_arguments, *(args.arguments[1:] if args.arguments[:1] == ["--"] else args.arguments)]
+            if args.drcov:
+                if not args.dr_root or args.handle_known_xlivedebugclose or args.observe_directinput_startup:
+                    raise RuntimeError("DR requires --dr-root and rejects debugger-only observations/exception policies")
+                import original_drcov_guard
+                result = original_drcov_guard.run_guard(args.stage, exe, args.cwd or exe.parent,
+                    args.documents or args.stage / "Documents", args.receipt, args.seconds,
+                    args.original_exe, arguments, args.token_mode, args.dr_root)
+            else:
+                if args.dr_root:
+                    raise RuntimeError("--dr-root requires explicit --drcov")
+                real_documents = folder(5) / "Battlestations-Pacific"
+                roots = [args.original_exe.parent, real_documents if real_documents.exists() else real_documents.parent]
+                result = run_guard(args.stage, exe, args.cwd or exe.parent,
+                    args.documents or args.stage / "Documents", args.receipt, args.seconds,
+                    original_exe=ordinary(args.original_exe), arguments=arguments, protected_roots=roots,
+                    motion_discovery=not args.no_motion_discovery,
+                    handle_known_xlive_debug_close=args.handle_known_xlivedebugclose,
+                    observe_directinput_startup=args.observe_directinput_startup, token_mode=args.token_mode)
         print(json.dumps({k: result[k] for k in ("phase", "stage", "root", "root_pid", "receipt", "evidence") if k in result}))
         return 0
     except BaseException as exc:

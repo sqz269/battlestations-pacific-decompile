@@ -1,0 +1,612 @@
+{
+  "schema": "bsp.cc16.native_movie_hints_collect_reuse.v1",
+  "packet": "cc16-native-movie-hints-collect-reuse",
+  "utc": "2026-10-30T06:38:43.445893+00:00",
+  "base_commit": "feb4586baf3a521f137f9d10cb35014da61a1ada",
+  "branch": "agent/codex-native-movie-hints-collect-reuse",
+  "status": "comment_only_supported_receiver_contract_clarified_source_operation_reusable_under_actual_custody",
+  "ownership": {
+    "addresses": [
+      "004F8F00",
+      "0054E370"
+    ],
+    "files": [
+      "include/bsp/native_hud_hints_collect.hpp",
+      "docs/CC16_NATIVE_MOVIE_HINTS_COLLECT_REUSE.md",
+      "reports/cc16_native_movie_hints_collect_reuse.json"
+    ],
+    "Source_signature_body_wrapper_type_table_caller_guard_edits": false
+  },
+  "frozen_inputs": [
+    {
+      "commit": "c0bf42b51bc477f0ed7c74e375ef9bd3d87c9774",
+      "path": "reports/cc16_native_screen_collector_family_readiness.json",
+      "bytes": 48311,
+      "sha256": "cddbcc298dfadd034daebe7eda88a530b42afa35a0ead3738a90dd63c2b95e12",
+      "git_blob": "2ba55a52c4b86ef9ab01e15265557a5b0a5be4ac"
+    },
+    {
+      "commit": "c0bf42b51bc477f0ed7c74e375ef9bd3d87c9774",
+      "path": "docs/CC16_NATIVE_SCREEN_COLLECTOR_FAMILY_READINESS.md",
+      "bytes": 15692,
+      "sha256": "b7a0a182595e69d579b531ffb2859df842c385d056797d5e2d56f7c872e26905",
+      "git_blob": "3f331803955b3d0fb744f2ebcaabb85a15b4dcb9"
+    },
+    {
+      "commit": "70f1c6cef32575c5e93b58ef4a566e301e891b63",
+      "path": "reports/cc16_native_hud_hints_collect.json",
+      "bytes": 39818,
+      "sha256": "c513297754d6a2e90c216bcc03e9a0766bbd63cd9911ccb337bbb7731cc16af7",
+      "git_blob": "360878fff09a80794dc9f2d0b7c2dcdd761c6c74"
+    },
+    {
+      "commit": "feb4586baf3a521f137f9d10cb35014da61a1ada",
+      "path": "reports/cc16_native_hud_hints_collect_review.json",
+      "bytes": 57624,
+      "sha256": "49d573b3a601350604e4976d9b31c7e19b87b366882546a78c50c636ab65e0d8",
+      "git_blob": "235d8381d86de4f327f50ecf70c6f2f7f76d2cbc"
+    },
+    {
+      "commit": "feb4586baf3a521f137f9d10cb35014da61a1ada",
+      "path": "reports/cc16_collectors_lua_retirement_source_admission.json",
+      "bytes": 43730,
+      "sha256": "a011f4826d2e73ca678d8ad770cdc58a9da3c8a37be1484a04c1692856cbcbfe",
+      "git_blob": "5e899338bc31be13f6c3f2308cd667686c7367c3"
+    }
+  ],
+  "native_proof": {
+    "mode": "current installed PE file hashes/full bytes and call decoding against immutable reports; cached assembly only, no live Ghidra",
+    "image": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "image_bytes": 12223752,
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "bodies": [
+      {
+        "address": "004F8F00",
+        "end_inclusive": "004F8F0F",
+        "bytes": 16,
+        "operations": 5,
+        "file_offset": "000F8F00",
+        "hex": "83c11c518b4c2408e883d8fdffc20400",
+        "sha256": "e0a034a0cf877d87912081f5b89cf126e6b183ff66068253869d523c65368b9a",
+        "all_current_PE_bytes_match_frozen_input": true,
+        "operations_cover_every_byte": true,
+        "listing": [
+          {
+            "offset": 0,
+            "bytes": "83c11c",
+            "operation": "add ecx,1Ch"
+          },
+          {
+            "offset": 3,
+            "bytes": "51",
+            "operation": "push ecx"
+          },
+          {
+            "offset": 4,
+            "bytes": "8b4c2408",
+            "operation": "mov ecx,[esp+8]"
+          },
+          {
+            "offset": 8,
+            "bytes": "e883d8fdff",
+            "operation": "call004D6790",
+            "resolved_target": "004D6790"
+          },
+          {
+            "offset": 13,
+            "bytes": "c20400",
+            "operation": "ret4"
+          }
+        ],
+        "direct_call_site": "004F8F08",
+        "direct_call_target": "004D6790"
+      },
+      {
+        "address": "0054E370",
+        "end_inclusive": "0054E37F",
+        "bytes": 16,
+        "operations": 5,
+        "file_offset": "0014E370",
+        "hex": "83c11c518b4c2408e81384f8ffc20400",
+        "sha256": "dda027ca96f98fa217c398fcc3f3de9d091b74973e1cff08f269b167df96d0a1",
+        "all_current_PE_bytes_match_frozen_input": true,
+        "operations_cover_every_byte": true,
+        "listing": [
+          {
+            "offset": 0,
+            "bytes": "83c11c",
+            "operation": "add ecx,1Ch"
+          },
+          {
+            "offset": 3,
+            "bytes": "51",
+            "operation": "push ecx"
+          },
+          {
+            "offset": 4,
+            "bytes": "8b4c2408",
+            "operation": "mov ecx,[esp+8]"
+          },
+          {
+            "offset": 8,
+            "bytes": "e81384f8ff",
+            "operation": "call004D6790",
+            "resolved_target": "004D6790"
+          },
+          {
+            "offset": 13,
+            "bytes": "c20400",
+            "operation": "ret4"
+          }
+        ],
+        "direct_call_site": "0054E378",
+        "direct_call_target": "004D6790"
+      }
+    ],
+    "total_bytes": 32,
+    "total_operations": 10,
+    "normalized_schedule_equal": true,
+    "same_real_direct_callee": "004D6790",
+    "no_local_EH_Page_snapshot_null_skip_or_ownership_action": true,
+    "original_ABI": "ECX actual receiver; one stacked destination vector pointer, original home E+4;RET4; no common semantic EAX/flags result",
+    "Source_ABI_is_Original_dropin": false
+  },
+  "header_change": {
+    "path": "include/bsp/native_hud_hints_collect.hpp",
+    "before": {
+      "commit": "feb4586baf3a521f137f9d10cb35014da61a1ada",
+      "bytes": 1827,
+      "lines": 33,
+      "sha256": "c4f5d3129a02f95eeb194b6d26af2fd9b6a3e91163c84c0807b57da611567054",
+      "git_blob": "4b00d1e179907447bc2b9899ea57bdf3e8c07ecf"
+    },
+    "after": {
+      "bytes": 2305,
+      "lines": 39,
+      "sha256": "d3904dcac6f9fa6d6b0f8129aff33292f0a6d148da2b87fca62ae365fedb3c26"
+    },
+    "inserted_comment_lines": [
+      "// Original0054E370 remains the genuine7Ch hints body. The SAME Source operation",
+      "// may also accept a separately genuine34h Movie receiver for004F8F00, provided",
+      "// its retained actual Page slot+1C and SAME destination/Push/output8/One/N",
+      "// backing and real provider contracts hold. Keep genuine creator/Page/GUI/heap",
+      "// lifetimes and failure custody through every child last use. This admits no",
+      "// Movie-to-hints cast, fabricated owner, callable native table or caller binding."
+    ],
+    "removing_only_comment_insertion_restores_exact_base": true,
+    "original_0054E370_receiver_remains": "genuine Hints7C",
+    "additional_supported_receiver": "independently genuine34h Movie for004F8F00 under SAME actual child contracts",
+    "no_new_Cpp_token_declaration_signature_type_default_or_body": true
+  },
+  "production_Source_pin": {
+    "path": "src/native_hud_hints_collect.cpp",
+    "bytes": 1206,
+    "sha256": "6d3ccedd4dd98e0039aec3bb97efc7290c5346ee29e433f0485e3b5716d505e1",
+    "git_blob": "6eaf9442e9b76fae414e07480904409a4fa1c24f",
+    "unchanged_from_base": true
+  },
+  "production_Source_matches_70f1_and_base": true,
+  "symbol_unchanged": "?collect_native_hud_hints_children_0054e370@bsp@@YAXPAXABUNativeHudHintsCollectFrame@1@@Z",
+  "signature_unchanged": "void collect_native_hud_hints_children_0054e370(void* actual_hints, const NativeHudHintsCollectFrame&)",
+  "genuine_Movie_layout_provider_pins": [
+    {
+      "path": "include/bsp/movie_player.hpp",
+      "bytes": 8774,
+      "sha256": "03b1dfd456e1ea97b8cd173e962ae6482982e975875560f35a29108bd61fb12c",
+      "git_blob": "03b9d9106c25845c678497285ccbecf1767f5b54",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "src/movie_player.cpp",
+      "bytes": 9545,
+      "sha256": "20165a62377e27ae5e4a223844e4b70ec2a432580d10cf321fa4475e2ab1224d",
+      "git_blob": "94ff89d32e3d933a361599f3a75abfce1781e71c",
+      "unchanged_from_base": true
+    }
+  ],
+  "supported_operation_contract": {
+    "schedule": [
+      "wrapping receiver+1Ch ADDRESS",
+      "store actual Push pointer home before reading destination",
+      "load CURRENT original destination home",
+      "real RawScenePushBack with same home/output8/One metadata"
+    ],
+    "Page": "retained genuine readable actual Page-pointer slot at receiver+1Ch; no parent Page-value snapshot or null skip; child can append zero",
+    "metadata": "existing stable16-byte Source frame, disjoint from mutable homes/payload, no new type/default; genuine supported aliases retain order but arbitrary async/private-stack coincidence is not proved",
+    "homes": "SAME actual original destination, writable Push parameter, actual writable output8 and full One/N metadata+homes on reached fallback, including initially empty vector",
+    "genuine_receiver": "Movie34 differs from Hints7C; accepted struct size/offset/raw profile authenticates no receiver/context",
+    "producer_custody": "actual creator, Page producer004F8CF0 -> load_movie_page00AA5840 and matching GUI/Page/heap owners live through every child last use and actual failure disposition",
+    "same_real_heap": "current actual Source malloc/_callnewh/free, allocation/memory/owning-length-error providers; not foreign original storage/operatornew/opaque release callback",
+    "no_authentication": [
+      "no Movie-to-hints class cast",
+      "no fabricated constructor/provider/owner",
+      "no native table token as callable Source code",
+      "no second address-only forwarding function",
+      "no dispatch/caller/registry/activation binding"
+    ],
+    "old_semantic_API": "MoviePlayer std::vector/value-push API unchanged and not evidence for actual raw home/heap epochs"
+  },
+  "native_Movie_home_coordinates_hex": {
+    "collector_entry": "E",
+    "original_destination": "E+4",
+    "Push_entry": "P=E-8",
+    "Push_pointer_home": "P+4=E-4",
+    "Push_output8": [
+      "P-8=E-10",
+      "P-4=E-C"
+    ],
+    "One_entry": "Q=P-24",
+    "One_homes_output_owner_position_value": [
+      "P-20",
+      "P-1C",
+      "P-18",
+      "P-14"
+    ],
+    "N_entry": "R=P-4C",
+    "N_homes_owner_position_count_value": [
+      "P-48",
+      "P-44",
+      "P-40",
+      "P-3C"
+    ],
+    "Source_stack_coincidence_claim": false
+  },
+  "unchanged_real_provider_pins": [
+    {
+      "path": "include/bsp/native_scene_dword_vector_push_back.hpp",
+      "bytes": 1933,
+      "sha256": "f625398a8a8fdcf9db57aa37ed18090813ca530c2e03d2cc1083034e04f72a32",
+      "git_blob": "16bb88003124d8caeaefe04a100d14911b5f3e2f",
+      "unchanged_from_base": true,
+      "matches_family_readiness_pin": true
+    },
+    {
+      "path": "src/native_scene_dword_vector_push_back.cpp",
+      "bytes": 2119,
+      "sha256": "e52eddf87ab208c36b4d0efea6cdcedea784c31ae43acccae381931e88b3b1ec",
+      "git_blob": "f0d16d4a16b180e27671fd09c61b27bb9a36d443",
+      "unchanged_from_base": true,
+      "matches_family_readiness_pin": true
+    },
+    {
+      "path": "include/bsp/native_scene_dword_vector_insert.hpp",
+      "bytes": 2447,
+      "sha256": "6cfce807c25821ae9d65d8b76b990c34793df31b0b9920caa320366d8462952d",
+      "git_blob": "831f3e32e500ad99eb6acde7454aed8fabd3ac4d",
+      "unchanged_from_base": true,
+      "matches_family_readiness_pin": true
+    },
+    {
+      "path": "src/native_scene_dword_vector_insert.cpp",
+      "bytes": 6473,
+      "sha256": "ffd200811897d4626ae5b13fc4f6cb74daaebef43c99702df99befd13157479a",
+      "git_blob": "c68430e65b67724de4706d1372827022af6842f5",
+      "unchanged_from_base": true,
+      "matches_family_readiness_pin": true
+    },
+    {
+      "path": "include/bsp/native_scene_dword_vector_allocation.hpp",
+      "bytes": 1871,
+      "sha256": "4d1db8661952a7eec9a8944a5a07fce5df32071bee7b519d3e7f1b81695d454d",
+      "git_blob": "6321968ede441af722bf18114c473509d50a7bb7",
+      "unchanged_from_base": true,
+      "matches_family_readiness_pin": true
+    },
+    {
+      "path": "src/native_scene_dword_vector_allocation.cpp",
+      "bytes": 820,
+      "sha256": "b6435b655c5f7cf6391d2b4ff68a729112382607661bbd148dcd3837e8949c9a",
+      "git_blob": "3b5a8a2861fcb5a000108693e186ff3c6aa6f744",
+      "unchanged_from_base": true,
+      "matches_family_readiness_pin": true
+    },
+    {
+      "path": "include/bsp/native_scene_dword_move_nonzero.hpp",
+      "bytes": 1311,
+      "sha256": "b6c522fddc880ddeb9b0ad78dfbf001e951fb678b1488666bba05833981f0419",
+      "git_blob": "37a720ffdaee9ce84ab6536328d4c6e9aa2db87d",
+      "unchanged_from_base": true,
+      "matches_family_readiness_pin": true
+    },
+    {
+      "path": "src/native_scene_dword_move_nonzero.cpp",
+      "bytes": 996,
+      "sha256": "b7cb4a0d41a6c2c1715f13a1d45f69a02d6026308d5d3a3f582770fb058f323f",
+      "git_blob": "b65c8d7cd0c47c6c8395caaef506d05eb4d854c9",
+      "unchanged_from_base": true,
+      "matches_family_readiness_pin": true
+    },
+    {
+      "path": "include/bsp/native_scene_dword_vector_ranges.hpp",
+      "bytes": 2090,
+      "sha256": "445c8c1c56b3f6172602411f46c9524d69099d3b54199b68aaf8adbda5f14442",
+      "git_blob": "15c35eeb7b5030e30f81c65f0083dd59cf28b427",
+      "unchanged_from_base": true,
+      "matches_family_readiness_pin": true
+    },
+    {
+      "path": "src/native_scene_dword_vector_ranges.cpp",
+      "bytes": 1215,
+      "sha256": "1396e216684fde725c976a35d84102c7a74886698ca9192a8bd94ef00a793072",
+      "git_blob": "68c96c67fc9c0b23c8967d3cb009768e54f3cb7b",
+      "unchanged_from_base": true,
+      "matches_family_readiness_pin": true
+    },
+    {
+      "path": "include/bsp/native_scene_dword_fill_alias.hpp",
+      "bytes": 1361,
+      "sha256": "f9371b7d36c772157f381f72bf04877281f40e7ed23c9a4dddd8fd6c80cfe7f4",
+      "git_blob": "f53b88a690f9c6ed553ee22f9068483517f6c39b",
+      "unchanged_from_base": true,
+      "matches_family_readiness_pin": true
+    },
+    {
+      "path": "src/native_scene_dword_fill_alias.cpp",
+      "bytes": 317,
+      "sha256": "2c7843c82c7fef4016b816225f075d4d2baccffbb2115d0530fcfa23d0751866",
+      "git_blob": "8c63bb78d7e7ed925b5b8cb3ab4019f66bc9cd3f",
+      "unchanged_from_base": true,
+      "matches_family_readiness_pin": true
+    },
+    {
+      "path": "include/bsp/native_dword_fill_ranges.hpp",
+      "bytes": 1622,
+      "sha256": "2aa80307d15cff371497456d97161b00b706de89a979d3398e2b8fe857919c5f",
+      "git_blob": "e268823c57a07a8a479198400328f42c2b3c2d99",
+      "unchanged_from_base": true,
+      "matches_family_readiness_pin": true
+    },
+    {
+      "path": "src/native_dword_fill_ranges.cpp",
+      "bytes": 1743,
+      "sha256": "613cb9e7d485fd7a52d25acf726a2c4dc9ad03cdb8009a6238de50439d09e412",
+      "git_blob": "f099b147bbfac9d51fe547060d8871034e72bc03",
+      "unchanged_from_base": true,
+      "matches_family_readiness_pin": true
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_allocation.hpp",
+      "bytes": 2149,
+      "sha256": "2910d0e12e3ecce6820cc1a083a3bfba9c5478fbbea9cdf9dc4c2926bdb0296a",
+      "git_blob": "182ba31dcb54f78b0aae4d42c69ce8e5a7ee4414",
+      "unchanged_from_base": true,
+      "matches_family_readiness_pin": true
+    },
+    {
+      "path": "src/native_singleton_vector_allocation.cpp",
+      "bytes": 1966,
+      "sha256": "4771197c3f1ead7dd635637c849c60f8f525c4d482dcc4a33c8617922362e09e",
+      "git_blob": "3d4ea10f5e6a8e0a9fe75db0b96ceffd3bdb73c7",
+      "unchanged_from_base": true,
+      "matches_family_readiness_pin": true
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "unchanged_from_base": true,
+      "matches_family_readiness_pin": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "unchanged_from_base": true,
+      "matches_family_readiness_pin": true
+    },
+    {
+      "path": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+      "bytes": 1471,
+      "sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+      "git_blob": "4984c27fa603fe05a308d701c54dafba6110de7e",
+      "unchanged_from_base": true,
+      "matches_family_readiness_pin": true
+    },
+    {
+      "path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "bytes": 1089,
+      "sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+      "git_blob": "bf2a25c5f28d9eb10d37f7099faf9adaabb0a97d",
+      "unchanged_from_base": true,
+      "matches_family_readiness_pin": true
+    },
+    {
+      "path": "include/bsp/native_legacy_sbo_string.hpp",
+      "bytes": 2115,
+      "sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+      "git_blob": "1ede441960632c9f604e8ade53c16c9c461d9830",
+      "unchanged_from_base": true,
+      "matches_family_readiness_pin": true
+    },
+    {
+      "path": "src/native_legacy_sbo_string.cpp",
+      "bytes": 7772,
+      "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+      "git_blob": "f8c0f47406710a7e078d7cf09c0529e3838665c5",
+      "unchanged_from_base": true,
+      "matches_family_readiness_pin": true
+    },
+    {
+      "path": "include/bsp/native_legacy_exception_owner.hpp",
+      "bytes": 3232,
+      "sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "git_blob": "574905ddb640b9cd3edf3cfa70feef903c165b42",
+      "unchanged_from_base": true,
+      "matches_family_readiness_pin": true
+    },
+    {
+      "path": "src/native_legacy_exception_owner.cpp",
+      "bytes": 4352,
+      "sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33",
+      "git_blob": "a0c7fc145166c2c668930f64bb79f07c06ccda13",
+      "unchanged_from_base": true,
+      "matches_family_readiness_pin": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_GAME_PAUSE_READINESS.md",
+      "bytes": 10655,
+      "sha256": "b60f4cd4f1039cf1e98dacb738733b3930a4e39db0a04495870e287705ecf6a0",
+      "git_blob": "0691a5c2398944a8e6a46ef449f46b1c12e8a59d",
+      "unchanged_from_base": true,
+      "matches_family_readiness_pin": true
+    },
+    {
+      "path": "src/game_hosts_scene_contents.cpp",
+      "bytes": 322630,
+      "sha256": "7d297cdb1ab3d4994b17ba28a6790decf653f5b243ce6003092cf17100616038",
+      "git_blob": "180e8831f1a2259077593f50f1425925edebf22f",
+      "unchanged_from_base": true,
+      "matches_family_readiness_pin": true
+    }
+  ],
+  "real_provider_mapping": [
+    {
+      "native": "004D6790",
+      "Source": "0046C450",
+      "role": "Push",
+      "bytes": 105,
+      "operations": 44
+    },
+    {
+      "native": "004D3B70",
+      "Source": "0046B4A0",
+      "role": "One",
+      "bytes": 137,
+      "operations": 56
+    },
+    {
+      "native": "004D1B20",
+      "Source": "0046AFB0",
+      "role": "N",
+      "bytes": 436,
+      "operations": 181
+    }
+  ],
+  "failure_qualification": {
+    "parent": "no catch/rollback/clear/refcount/Page destructor/policy; child-home write and completed actual child effects remain on failure",
+    "child": "existing real C++ owning length-error/partial-effect contracts remain qualified; no generic exception replacement",
+    "transport_gap": "safe C++ transport through reached naked SDK invalid-parameter diagnostic bridge and Original FH3/SEH/private-stack/fault/unmaskedFP identities are not supplied",
+    "independent_custody": "retain actual creator/Page/GUI/vector/heap/metadata/provider ownership through last use and actual failure disposition"
+  },
+  "historical_common_object": {
+    "report_commit": "feb4586baf3a521f137f9d10cb35014da61a1ada",
+    "report_path": "reports/cc16_collectors_lua_retirement_source_admission.json",
+    "source_build_head": "16c2b6afd1b9c0834888c0a6cedd074f10495522",
+    "merged_Main_refresh_head": "147b671e6b4f494225ec69e11839f0cf175475f0",
+    "recorded_common_suites": "2/2",
+    "object_pins": [
+      {
+        "kind": "frozen_common_artifact",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch10\\artifacts\\native_hud_hints_collect.obj",
+        "bytes": 1489,
+        "sha256": "3c760d4c77d167a7c2751fbfe31c4fd8c0467e9ccfca8bef672a8b253b161026",
+        "historical_expected_sha256": "3c760d4c77d167a7c2751fbfe31c4fd8c0467e9ccfca8bef672a8b253b161026",
+        "matches_historical_receipt": true,
+        "rebuilt_or_reemitted_in_this_packet": false
+      },
+      {
+        "kind": "existing_common_build_object",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\bsp_core.dir\\Release\\native_hud_hints_collect.obj",
+        "bytes": 1489,
+        "sha256": "3c760d4c77d167a7c2751fbfe31c4fd8c0467e9ccfca8bef672a8b253b161026",
+        "historical_expected_sha256": "3c760d4c77d167a7c2751fbfe31c4fd8c0467e9ccfca8bef672a8b253b161026",
+        "matches_historical_receipt": true,
+        "rebuilt_or_reemitted_in_this_packet": false
+      }
+    ],
+    "recorded_public_body": {
+      "symbol": "?collect_native_hud_hints_children_0054e370@bsp@@YAXPAXABUNativeHudHintsCollectFrame@1@@Z",
+      "common_bytes": 59,
+      "common_hex": "558bec83ec0c8b550c8b4d0883c11c8b420489088b028b088b42048945f48b42088945f88b420c8945fc8d45f45051e80000000083c4088be55dc3",
+      "relocations": [
+        [
+          48,
+          20,
+          "?push_back_native_scene_dword_vector_0046c450@bsp@@YAXPAXABUNativeSceneDwordVectorPushBackFrame@1@@Z"
+        ]
+      ],
+      "instructions": [
+        "0000 push ebp",
+        "0001 mov ebp, esp",
+        "0003 sub esp, 0xc",
+        "0006 mov edx, dword ptr [ebp + 0xc]",
+        "0009 mov ecx, dword ptr [ebp + 8]",
+        "000c add ecx, 0x1c",
+        "000f mov eax, dword ptr [edx + 4]",
+        "0012 mov dword ptr [eax], ecx",
+        "0014 mov eax, dword ptr [edx]",
+        "0016 mov ecx, dword ptr [eax]",
+        "0018 mov eax, dword ptr [edx + 4]",
+        "001b mov dword ptr [ebp - 0xc], eax",
+        "001e mov eax, dword ptr [edx + 8]",
+        "0021 mov dword ptr [ebp - 8], eax",
+        "0024 mov eax, dword ptr [edx + 0xc]",
+        "0027 mov dword ptr [ebp - 4], eax",
+        "002a lea eax, [ebp - 0xc]",
+        "002d push eax",
+        "002e push ecx",
+        "002f call 0x34",
+        "0034 add esp, 8",
+        "0037 mov esp, ebp",
+        "0039 pop ebp",
+        "003a ret "
+      ],
+      "payload_home_stores": [
+        18
+      ],
+      "destination_capture": 22,
+      "real_child_calls": [
+        47
+      ],
+      "qualification": "Balanced EBP common frame differs from strict57/106; complete emitted payload/stack schedule inspected."
+    },
+    "common_code_sha256": "4bd598e1ae5c7d0f6ea542a34e6836f5181c6bd3294ea35ebbe8497443e981a3",
+    "author_strict_object": {
+      "public_bytes": 57,
+      "instructions": 20,
+      "common_body_same_as_author": false
+    },
+    "new_compile_or_fresh_build_claim": false,
+    "Movie_runtime_or_current_body_execution_evidence": false
+  },
+  "remaining_gates": [
+    "genuine Movie creator/Page/GUI/raw-vector/heap provider lifetime binding",
+    "actual Movie+24 Source callable-table dispatch and caller adoption",
+    "current95-screen raw registry custody",
+    "whole park004D6480/visibility004F83B0/pause callers",
+    "required focused fixture/gameplay/activation gates",
+    "Native ABI/FH3/SEH/fault/private alias transport"
+  ],
+  "performed": {
+    "comment_only_header_change": true,
+    "Cpp_body_signature_type_wrapper_table_caller_changes": 0,
+    "strict_compiles": 0,
+    "full_builds": 0,
+    "tests": 0,
+    "links": 0,
+    "target_body_probe_executions": 0,
+    "game_DLL_runs": 0,
+    "live_Ghidra_queries": 0,
+    "Ghidra_mutations": 0,
+    "CMake_shared_ledger_guard_peer_original_install_edits": 0
+  },
+  "credit": {
+    "new_address_only_Movie_body": 0,
+    "new_unique_Original_bodies": 0,
+    "new_unique_Original_bytes": 0,
+    "vendor_body_credit": 0,
+    "duplicate_body_credit": 0,
+    "ABI_credit": 0,
+    "runtime_credit": 0,
+    "activation_credit": 0
+  },
+  "document_pin": {
+    "path": "docs/CC16_NATIVE_MOVIE_HINTS_COLLECT_REUSE.md",
+    "bytes": 6617,
+    "lines": 106,
+    "sha256": "76a0e386552e230be3577ecc20c61fb8f7ccb501a3f3fc994601a7000acdc1ee",
+    "LF_only": true
+  }
+}
