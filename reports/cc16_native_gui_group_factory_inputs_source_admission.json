@@ -1,0 +1,1265 @@
+{
+  "schema": "bsp.cc16.native_gui_group_factory_inputs_source_admission.v1",
+  "status": "primary_independent_common_build_actual_entry_link_passed_unwired",
+  "common": {
+    "candidate": "476d3408a74ba5651d434dc49d50e926fb987883",
+    "source_build_head": "d5125503766ab8ffdd932728d09e77c35b60027b",
+    "build": {
+      "target": "Win32 Release",
+      "MP": 2,
+      "PCH": true,
+      "coverage_PDB": false,
+      "suites": "2/2",
+      "seconds": 13.0
+    },
+    "common_code_sections": 8,
+    "common_bytes": 484,
+    "all3_old_common_supports_exact": [
+      {
+        "symbol": "?construct_native_gui_group_copy_00ac6fa0@bsp@@YAPAXPAXPBXAAUNativeGuiWidgetCopyContext@1@AAUNativeGuiWidgetCopyAcquired@1@@Z",
+        "bytes": 36,
+        "prior_common_exact": true
+      },
+      {
+        "symbol": "?delete_native_gui_group_00ac73e0@bsp@@YAPAXPAXADIAAUNativeGuiWidgetLifetimeContext@1@@Z",
+        "bytes": 59,
+        "prior_common_exact": true
+      },
+      {
+        "symbol": "??_H@YGXPAXIIP6EPAX0@Z@Z",
+        "bytes": 38,
+        "prior_common_exact": true
+      }
+    ],
+    "complete_common_EH140_raw_normalized_relocs_strict_exact": true,
+    "PE_whole_live_code": [
+      {
+        "symbols": [
+          "?construct_native_gui_group_copy_00ac6fa0@bsp@@YAPAXPAXPBXAAUNativeGuiWidgetCopyContext@1@AAUNativeGuiWidgetCopyAcquired@1@@Z"
+        ],
+        "address": 4198800,
+        "bytes": 36,
+        "sha256": "db242aa9185f8c79470cc80646ff4ecdb8d3c3c2886de9dc3cea05c8a9d42486",
+        "relocations": 1
+      },
+      {
+        "symbols": [
+          "?create_native_gui_group_00aa12f0@bsp@@YAPAXPBXADIAAUNativeGuiWidgetCopyContext@1@AAUNativeGuiWidgetCopyAcquired@1@@Z"
+        ],
+        "address": 4198848,
+        "bytes": 64,
+        "sha256": "59b587ec8d9f9ad162ba81b936f33abc51dac4da23b83c440fb6bd4f4e262b0a",
+        "relocations": 2
+      },
+      {
+        "symbols": [
+          "?create_native_gui_group_00aa12f0@bsp@@YAPAXVNativeGuiGroupFactoryInputs@1@@Z",
+          "__catch$?create_native_gui_group_00aa12f0@bsp@@YAPAXVNativeGuiGroupFactoryInputs@1@@Z$1",
+          "__catch$?create_native_gui_group_00aa12f0@bsp@@YAPAXVNativeGuiGroupFactoryInputs@1@@Z$0"
+        ],
+        "address": 4198912,
+        "bytes": 207,
+        "sha256": "9d00bfa1f505f38e1449da7c0a530bb362b5739bc7e9b99d5adac0eb89cb66af",
+        "relocations": 8
+      },
+      {
+        "symbols": [
+          "__ehhandler$?create_native_gui_group_00aa12f0@bsp@@YAPAXVNativeGuiGroupFactoryInputs@1@@Z"
+        ],
+        "address": 4374160,
+        "bytes": 29,
+        "sha256": "57352f565cbf9d3415a918efcccce07b9157acd7696ad72a11c18e85ca988542",
+        "relocations": 3
+      },
+      {
+        "symbols": [
+          "?delete_native_gui_group_00ac73e0@bsp@@YAPAXPAXADIAAUNativeGuiWidgetLifetimeContext@1@@Z"
+        ],
+        "address": 4199120,
+        "bytes": 59,
+        "sha256": "596af53d70f6e49601274b8af376a28c8659977146d20be1d3c2e76c1d4ba96b",
+        "relocations": 4
+      }
+    ],
+    "object_only_code": [
+      {
+        "symbols": [
+          "??0NativeGuiGroupFactoryInputs@bsp@@QAE@UNativeGuiGroupCopyInputs@1@@Z"
+        ],
+        "bytes": 30
+      },
+      {
+        "symbols": [
+          "??0NativeGuiGroupFactoryInputs@bsp@@QAE@UNativeGuiGroupDefaultInputs@1@@Z"
+        ],
+        "bytes": 21
+      },
+      {
+        "symbols": [
+          "??_H@YGXPAXIIP6EPAX0@Z@Z"
+        ],
+        "bytes": 38
+      }
+    ],
+    "PE_whole_EH": [
+      {
+        "symbol": "__ehfuncinfo$?create_native_gui_group_00aa12f0@bsp@@YAPAXVNativeGuiGroupFactoryInputs@1@@Z",
+        "address": 4465052,
+        "bytes": 140,
+        "sha256": "532f9c82d4c67378abe553da1b5f3ecf4389491c3713978f3c9c73ac378271c1",
+        "relocations": 6
+      }
+    ],
+    "actual_providers": {
+      "?allocate_native_gui_group_slot_00ac76d0@": {
+        "symbol": "?allocate_native_gui_group_slot_00ac76d0@bsp@@YAPAXXZ",
+        "address": 4203680,
+        "object": "bsp_core:native_gui_group_storage.obj"
+      },
+      "?return_native_gui_group_slot_00ac73d0@": {
+        "symbol": "?return_native_gui_group_slot_00ac73d0@bsp@@YAXPAX@Z",
+        "address": 4204144,
+        "object": "bsp_core:native_gui_group_storage.obj"
+      },
+      "?construct_native_gui_group_default_00ac6f50@": {
+        "symbol": "?construct_native_gui_group_default_00ac6f50@bsp@@YAPAXPAXADI@Z",
+        "address": 4202784,
+        "object": "bsp_core:native_gui_group_default.obj"
+      },
+      "?construct_native_gui_widget_copy_00aa9520@": {
+        "symbol": "?construct_native_gui_widget_copy_00aa9520@bsp@@YAPAXPAXPBXAAUNativeGuiWidgetCopyContext@1@AAUNativeGuiWidgetCopyAcquired@1@@Z",
+        "address": 4200032,
+        "object": "bsp_core:native_gui_widget_copy_storage.obj"
+      }
+    },
+    "Game_object_definitions_not_retained_as_named_PE_entries": [
+      "?game_native_gui_text_process@",
+      "?game_native_gui_text_state@"
+    ],
+    "SafeSEH_handlers_present": [
+      "__ehhandler$?create_native_gui_group_00aa12f0@bsp@@YAPAXVNativeGuiGroupFactoryInputs@1@@Z"
+    ],
+    "manifest_embedded": true,
+    "never_executed": true,
+    "initial_link_missing_actual_Game_objects_then_PCH_corrected_without_Source_edits": true,
+    "artifacts": [
+      {
+        "path": "local/function_source_batch15/artifacts/native_gui_group_factory.obj",
+        "copied_from": "build/win32/bsp_core.dir/Release/native_gui_group_factory.obj",
+        "bytes": 5408,
+        "sha256": "0656a6b10eac6ddbe9931d45bf91bf5cb1071b97be9b07a8fec2e7abac34ff7e"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/native_gui_group_storage.obj",
+        "copied_from": "build/win32/bsp_core.dir/Release/native_gui_group_storage.obj",
+        "bytes": 17308,
+        "sha256": "51717d53436e30debd68ce40f4e06ef56452d5aecb064b838869a9c79c8c4579"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/native_gui_group_default.obj",
+        "copied_from": "build/win32/bsp_core.dir/Release/native_gui_group_default.obj",
+        "bytes": 1639,
+        "sha256": "91377fa7ce57dece2578c92fa83b37bec761aee7e70c38b7aa050b53818b53fb"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/native_gui_widget_copy_storage.obj",
+        "copied_from": "build/win32/bsp_core.dir/Release/native_gui_widget_copy_storage.obj",
+        "bytes": 14092,
+        "sha256": "e9d0b63c188f09c21ddcb3cb3bf006ebad4c066a217802a81a1fd32245c01acc"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/game_native_gui_text_process.obj",
+        "copied_from": "build/win32/bsp_game.dir/Release/game_native_gui_text_process.obj",
+        "bytes": 31882,
+        "sha256": "fc87cbea5e6a117fe7712a96b63f01ef2f4f9a1af74b7f8331de2dae473ba3ee"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/game_native_gui_text_state.obj",
+        "copied_from": "build/win32/bsp_game.dir/Release/game_native_gui_text_state.obj",
+        "bytes": 4056,
+        "sha256": "6cb91e7eac2c0b5529bbe7a9b2456c33e7387505d01fe093f7741b9393987c6f"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/cmake_pch.obj",
+        "copied_from": "build/win32/bsp_game.dir/Release/cmake_pch.obj",
+        "bytes": 2223,
+        "sha256": "b5332f632b4d48d3b83a3e4f0a846a9b674f026dcbb4013ec55d6a76bf522bfb"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/bsp_game.exe",
+        "copied_from": "build/win32/Release/bsp_game.exe",
+        "bytes": 7503360,
+        "sha256": "e336eacdf983d35db276c73311e679d22a3d277599037ecca0a458e64554907d"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/entries_probe.cpp",
+        "copied_from": "local/function_source_batch15/entries_probe.cpp",
+        "bytes": 780,
+        "sha256": "a09b0dbf3a35ce1f01a519be584a3d68dd7a7c4e25a166774af67ef01f688801"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/entries_probe.cmd",
+        "copied_from": "local/function_source_batch15/entries_probe.cmd",
+        "bytes": 855,
+        "sha256": "be666c2bbf366270e10cf5211145f8c4d109e75c7699cd2f6b2caf1fc8fb0084"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/entries_probe.obj",
+        "copied_from": "local/function_source_batch15/entries_probe.obj",
+        "bytes": 2825,
+        "sha256": "ab520bf50a3ec5dcd9a3b77458d433ff458a15488dca351817c026e3644b864d"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/entries_probe.exe",
+        "copied_from": "local/function_source_batch15/entries_probe.exe",
+        "bytes": 287744,
+        "sha256": "aef2f68fd572d648e20f3970c924020d7105255f35864b7b0a37f40419f73f92"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/entries_probe.map",
+        "copied_from": "local/function_source_batch15/entries_probe.map",
+        "bytes": 471346,
+        "sha256": "9f39a1e79621e6bde12d1fb72da440a66775460c86af3469fb2a4f39dfb1f9de"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/build.log",
+        "copied_from": "local/function_source_batch15/build.log",
+        "bytes": 2658,
+        "sha256": "2fc4717ab4242c5e6a272bf84983506fed40959a042414e3a88cb7717c903927"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/build-head.txt",
+        "copied_from": "local/function_source_batch15/build-head.txt",
+        "bytes": 42,
+        "sha256": "f9cfdea24de09f81baa271420070e70374461d421a641c6540c9a9942c6b6ebd"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/link.log",
+        "copied_from": "local/function_source_batch15/link.log",
+        "bytes": 19,
+        "sha256": "48d974da562e4793f8ff5dad5377207422c2b5093bd7c730baf580da948db910"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/link_initial_missing_game_objects.log",
+        "copied_from": "local/function_source_batch15/link_initial_missing_game_objects.log",
+        "bytes": 6467,
+        "sha256": "654fa71c62a763efc0a58ceb1dd95ed6171cb80582033aebf123ed53ed9adf35"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/link_second_missing_game_pch.log",
+        "copied_from": "local/function_source_batch15/link_second_missing_game_pch.log",
+        "bytes": 440,
+        "sha256": "422ccec8dac028af791e8c9e1ec02e8c396ef0767cd683b0c4553e167fe57aa3"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/common_inspection.json",
+        "copied_from": "local/function_source_batch15/common_inspection.json",
+        "bytes": 19875,
+        "sha256": "2be80239713740c5ebd98eba72ec60a86e716ae76b723a71cce922a28a8d6832"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/baseline.json",
+        "copied_from": "local/function_source_batch15/baseline.json",
+        "bytes": 983,
+        "sha256": "a8be1c21c4efd50f21722e3065768c66720d1587b05d9265fec73761e04024e4"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/inspect_common.py",
+        "copied_from": "local/function_source_batch15/inspect_common.py",
+        "bytes": 5580,
+        "sha256": "abdd0fca0f2c9aeeab18140b55cff25b2bdbfc53d142f27d9820873c33d30c27"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/seal_link.py",
+        "copied_from": "local/function_source_batch15/seal_link.py",
+        "bytes": 5931,
+        "sha256": "56e6b3f78ba97dc23ccdbd15dd73ff318613151b1d3b2d76d1bc81c62b7c4610"
+      }
+    ]
+  },
+  "primary_and_independent_checks": {
+    "checks": [
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_00aa12f0_bytes.txt",
+        "retained": "local/function_source_batch15/review_inputs/000_live_00aa12f0_bytes.txt",
+        "bytes": 645,
+        "sha256": "b8949faeaf5481a815ddbc625e6bb2c208597177f05f822d1770a1d6482e4056"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_00aa12f0_proto.txt",
+        "retained": "local/function_source_batch15/review_inputs/001_live_00aa12f0_proto.txt",
+        "bytes": 1139,
+        "sha256": "8fc94588b883c1415b50b8451185bbf05e5b86e3e392dfadae9a3fe77b9d9810"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_00aa6560_bytes.txt",
+        "retained": "local/function_source_batch15/review_inputs/002_live_00aa6560_bytes.txt",
+        "bytes": 722,
+        "sha256": "cd2a4200258519589cba34f892673304c5734e1b7cfc2ce8e095bd2b444c2ed6"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_00aa6560_proto.txt",
+        "retained": "local/function_source_batch15/review_inputs/003_live_00aa6560_proto.txt",
+        "bytes": 2839,
+        "sha256": "612178ae3dbddd482eebf0969709bf385bdec2a12604e7331037b4d63f8bcdbd"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_00ac6f50_bytes.txt",
+        "retained": "local/function_source_batch15/review_inputs/004_live_00ac6f50_bytes.txt",
+        "bytes": 106,
+        "sha256": "27543b67d20074c54b774f03396328c16e813dc94fa38ed125e53b98d1fecafe"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_00ac6f50_proto.txt",
+        "retained": "local/function_source_batch15/review_inputs/005_live_00ac6f50_proto.txt",
+        "bytes": 698,
+        "sha256": "464265c6dfc8c938887479aec8509bd12bba4d7f887f52b0942887e3fbac3ca7"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_00ac6fa0_bytes.txt",
+        "retained": "local/function_source_batch15/review_inputs/006_live_00ac6fa0_bytes.txt",
+        "bytes": 126,
+        "sha256": "9394b6341965d55dabdfa469ed7ab7fc3d1a24a5546d0baa2b44d6f9c197bf8a"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_00ac6fa0_proto.txt",
+        "retained": "local/function_source_batch15/review_inputs/007_live_00ac6fa0_proto.txt",
+        "bytes": 714,
+        "sha256": "99d0de69bafd612ca4bf2421311f94af9c52c70fc63d09f087ecf0896cd9adca"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_copy_flags.txt",
+        "retained": "local/function_source_batch15/review_inputs/008_live_copy_flags.txt",
+        "bytes": 369,
+        "sha256": "572c67acc5ca86c346322f42db9c75c4b7848fa154350aea89c8f9013d9dbbe5"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_crt_data_slots.txt",
+        "retained": "local/function_source_batch15/review_inputs/009_live_crt_data_slots.txt",
+        "bytes": 45,
+        "sha256": "b5548d7e2377cab9959e3b1335270726afd25437f66711a279e82c5f3637a965"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_factory_actions.txt",
+        "retained": "local/function_source_batch15/review_inputs/010_live_factory_actions.txt",
+        "bytes": 77,
+        "sha256": "c5d65415d5322960c2a3f129d9fa6648175058da5c41eb118e9998d63d3c24e0"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_factory_funcinfo.txt",
+        "retained": "local/function_source_batch15/review_inputs/011_live_factory_funcinfo.txt",
+        "bytes": 183,
+        "sha256": "fdd30e053d0aaaf8f72cc1a65c968deff37d20b1c602f10cdb68765e9b2b2f0d"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_factory_handler.txt",
+        "retained": "local/function_source_batch15/review_inputs/012_live_factory_handler.txt",
+        "bytes": 53,
+        "sha256": "c9eeb4bea480499760c9b3ff0c0b3579b88692f23fb04850b5eafb8cfe5b4d31"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_factory_unwind_map.txt",
+        "retained": "local/function_source_batch15/review_inputs/013_live_factory_unwind_map.txt",
+        "bytes": 77,
+        "sha256": "687044e625dce53c21fdf38ec1845db0d5ffc4f78393679d353adc39f8c4854c"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_group_name.txt",
+        "retained": "local/function_source_batch15/review_inputs/014_live_group_name.txt",
+        "bytes": 53,
+        "sha256": "be4b6066eb3fd22da237d6b6a13373c75ef47e0222a5ff3dd54d9e4101578692"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_jump_table.txt",
+        "retained": "local/function_source_batch15/review_inputs/015_live_jump_table.txt",
+        "bytes": 353,
+        "sha256": "43c2a72fa70cd2dbb3cdcdb2a3ed91693a3ca601e242b0194d0f3230c5dcb7cf"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_one_word.txt",
+        "retained": "local/function_source_batch15/review_inputs/016_live_one_word.txt",
+        "bytes": 29,
+        "sha256": "fd6f7a7d3874dfe569d075d61e99337d9cca002b06a4ebed7f03e974e26bdabc"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_profile.txt",
+        "retained": "local/function_source_batch15/review_inputs/017_live_profile.txt",
+        "bytes": 616,
+        "sha256": "b364b0629677f5a91ac5ce6ff262ded91c7c346367b8e48c0f5f38f63266895f"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\target_status.txt",
+        "retained": "local/function_source_batch15/review_inputs/018_target_status.txt",
+        "bytes": 40,
+        "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\target_status_bytes.txt",
+        "retained": "local/function_source_batch15/review_inputs/019_target_status_bytes.txt",
+        "bytes": 40,
+        "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\target_status_eh.txt",
+        "retained": "local/function_source_batch15/review_inputs/020_target_status_eh.txt",
+        "bytes": 40,
+        "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\target_status_data.txt",
+        "retained": "local/function_source_batch15/review_inputs/021_target_status_data.txt",
+        "bytes": 40,
+        "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\lookup_00cd7440.txt",
+        "retained": "local/function_source_batch15/review_inputs/022_lookup_00cd7440.txt",
+        "bytes": 802,
+        "sha256": "23d431c6d82700f8b5a39d16a8acc0dd2114e129c73c0b2c06291107ab80ecf6"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\lookup_00cd7460.txt",
+        "retained": "local/function_source_batch15/review_inputs/023_lookup_00cd7460.txt",
+        "bytes": 396,
+        "sha256": "151ca795f275f46a8abb170828969afefdcbf80385fa788a3698be17643514b5"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\callers_00cd7440.txt",
+        "retained": "local/function_source_batch15/review_inputs/024_callers_00cd7440.txt",
+        "bytes": 153,
+        "sha256": "0a0bdfa0f47d5d58c3f8ed35c591d4f8b66752e680188310472e4baab5597f14"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\callers_00cd7460.txt",
+        "retained": "local/function_source_batch15/review_inputs/025_callers_00cd7460.txt",
+        "bytes": 143,
+        "sha256": "0c19bc7c63ef6dd15c23f3c20b9399dfbcbd8ce2080e16964495214ea195c37b"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\base_named_callees.txt",
+        "retained": "local/function_source_batch15/review_inputs/026_base_named_callees.txt",
+        "bytes": 611,
+        "sha256": "6d2725c2ae29c76be265099d5eed2f41e2bf48aa048f88c4f0c418658cdc23ae"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\group_supplier_search.txt",
+        "retained": "local/function_source_batch15/review_inputs/027_group_supplier_search.txt",
+        "bytes": 1402,
+        "sha256": "3b004aee5d274fbc60a6463df2f7b54533d302ecb3ca235fdfe6029eafa43f30"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\root_supplied_cd7460_note.txt",
+        "retained": "local/function_source_batch15/review_inputs/028_root_supplied_cd7460_note.txt",
+        "bytes": 828,
+        "sha256": "59d94c0a6a5c53c38d3e00c88a7bd91ede47e003d218e6d92cf8f0522d832be3"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\target_status_verifier.txt",
+        "retained": "local/function_source_batch15/review_inputs/029_target_status_verifier.txt",
+        "bytes": 40,
+        "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\original_call_rows.json",
+        "retained": "local/function_source_batch15/review_inputs/030_original_call_rows.json",
+        "bytes": 5547,
+        "sha256": "411710d7a7eb5dc79d19ca1ddc9145681066549d79c567c7b941ef1b8a8d2fd1"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\call_verification.txt",
+        "retained": "local/function_source_batch15/review_inputs/031_call_verification.txt",
+        "bytes": 99,
+        "sha256": "7d1dba4d961374c6d61770ec8e01b85526d585d181375ef2e796c6f351e639f9"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\audit.py",
+        "retained": "local/function_source_batch15/review_inputs/032_audit.py",
+        "bytes": 10255,
+        "sha256": "b0fd89c4e07ce5a5d0b8113eacdda4a21958eec222abc3b64cd6b274b8c3ea5d"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-factory-inputs\\local\\native_gui_group_factory_inputs\\prepare.py",
+        "retained": "local/function_source_batch15/review_inputs/033_prepare.py",
+        "bytes": 4554,
+        "sha256": "de8a8041363133aa84695a5f689f5e6e852b801f23cae9c3984c0b32e0f4a302"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-factory-inputs\\local\\native_gui_group_factory_inputs\\precompile_receipt.json",
+        "retained": "local/function_source_batch15/review_inputs/034_precompile_receipt.json",
+        "bytes": 16203,
+        "sha256": "7764fe8a7408e7214d2a8592d867095e2635218f24629a56156991f16bc95a41"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-factory-inputs\\local\\native_gui_group_factory_inputs\\compile.cmd",
+        "retained": "local/function_source_batch15/review_inputs/035_compile.cmd",
+        "bytes": 1092,
+        "sha256": "09ca11f4b58fb96c80371a58cd836637806fb9df7f11c70e2e14a2d0114d9a8f"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-factory-inputs\\local\\native_gui_group_factory_inputs\\current_compile.txt",
+        "retained": "local/function_source_batch15/review_inputs/036_current_compile.txt",
+        "bytes": 1130,
+        "sha256": "28ca6ac2b93edde208b9e509d1099cb64ed9312be29c1eac03b57458c13da9fe"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-factory-inputs\\local\\native_gui_group_factory_inputs\\baseline_compile.txt",
+        "retained": "local/function_source_batch15/review_inputs/037_baseline_compile.txt",
+        "bytes": 30,
+        "sha256": "c4b181b377a9bbd5dd107eb1b0004b1ddfefefacf71e6f2e6fd554293173fdcf"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-factory-inputs\\local\\native_gui_group_factory_inputs\\current.obj",
+        "retained": "local/function_source_batch15/review_inputs/038_current.obj",
+        "bytes": 6925,
+        "sha256": "04ee1aacc754926773356837e6c0b486e63cdb2e7296375d3922ffae6c65edaa"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-factory-inputs\\local\\native_gui_group_factory_inputs\\baseline.obj",
+        "retained": "local/function_source_batch15/review_inputs/039_baseline.obj",
+        "bytes": 6256,
+        "sha256": "3d359a8a9454cfc9a2168a754276c0b074b73f69ca4bf83710536cf73bab3fd6"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-factory-inputs\\local\\native_gui_group_factory_inputs\\current_dumpbin.txt",
+        "retained": "local/function_source_batch15/review_inputs/040_current_dumpbin.txt",
+        "bytes": 43409,
+        "sha256": "f22339723320c6aa08740a13ee5699d4ed99d398c41e4fa1b46c59eb569fb5d9"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-factory-inputs\\local\\native_gui_group_factory_inputs\\baseline_dumpbin.txt",
+        "retained": "local/function_source_batch15/review_inputs/041_baseline_dumpbin.txt",
+        "bytes": 35157,
+        "sha256": "9d75ea288cd5214ca17e8a95b14e2efc85340f0db408e5655e80d790ce8e7e66"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-factory-inputs\\local\\native_gui_group_factory_inputs\\audit_object.py",
+        "retained": "local/function_source_batch15/review_inputs/042_audit_object.py",
+        "bytes": 7705,
+        "sha256": "cc59375bd2732671d06d775e2b695be4e53a512f6254a4b7ff6b33c41b8dcd36"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-factory-inputs\\local\\native_gui_group_factory_inputs\\object_audit.json",
+        "retained": "local/function_source_batch15/review_inputs/043_object_audit.json",
+        "bytes": 126731,
+        "sha256": "339a8a22d1ac5ea93329c8ef0b1ac63c7c55634978d9c4c56ba381f305c64c91"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-factory-inputs\\local\\native_gui_group_factory_inputs\\current_decoded.txt",
+        "retained": "local/function_source_batch15/review_inputs/044_current_decoded.txt",
+        "bytes": 5163,
+        "sha256": "e42b5025ffb7857c4b96a1ab5c626f1d43cf9b96f0c5e9083a344122a61812d9"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-factory-inputs\\local\\native_gui_group_factory_inputs\\baseline_decoded.txt",
+        "retained": "local/function_source_batch15/review_inputs/045_baseline_decoded.txt",
+        "bytes": 3985,
+        "sha256": "b817bab3f337f1cbfa8b4b2255b50aaf10a3b6ecae0ed6a6222b49d668e1b0c1"
+      }
+    ],
+    "sealed_candidate_files": [
+      {
+        "path": "include/bsp/native_gui_group_factory.hpp",
+        "git_blob": "1bc8d7ca5bf9becac0a53aaf242f963dddb41681",
+        "git_blob_sha256": "824bb49ed0a651ef8df2fdc169fa56b99601ed084b253f7b763e0b8fa1b33f43",
+        "worktree_sha256": "824bb49ed0a651ef8df2fdc169fa56b99601ed084b253f7b763e0b8fa1b33f43"
+      },
+      {
+        "path": "src/native_gui_group_factory.cpp",
+        "git_blob": "73777a41968ce1e4ffa3c0560943d33ca162074e",
+        "git_blob_sha256": "16f91c2a6607f7593910be66cc616eefbd32945f7dec910055c3665dbabdb61c",
+        "worktree_sha256": "16f91c2a6607f7593910be66cc616eefbd32945f7dec910055c3665dbabdb61c"
+      },
+      {
+        "path": "docs/CC16_NATIVE_GUI_GROUP_FACTORY_INPUTS.md",
+        "git_blob": "b73ad45de0f830e331dce7f2e2564fa944876516",
+        "git_blob_sha256": "871b26348f7c6065bf83b2cc651034e97bbf477c6253dd9b8db630ab53220812",
+        "worktree_sha256": "871b26348f7c6065bf83b2cc651034e97bbf477c6253dd9b8db630ab53220812"
+      },
+      {
+        "path": "reports/cc16_native_gui_group_factory_inputs.json",
+        "git_blob": "02ee453d42234c64a801420bc1bffb434b6b148f",
+        "git_blob_sha256": "25d1992e0a1c493ac80c9ce45821bb0089810aa4e03086aaec39da4be77379dd",
+        "worktree_sha256": "bc45b6f952686d29f19a90e44fa6c5d2e87e1802e9af87fc17dc818cbd858666"
+      }
+    ],
+    "provider_pins": 39,
+    "seal_sha256": "a8a8e0356bf48165bbefc469ba1ac59d58064fd3ed9f6303fb52ffad373b8d29",
+    "primary_author_doc_lines": 40,
+    "primary_independent_review_doc_lines": 31,
+    "complete_primary_changed_production_diff": true,
+    "complete_common_new_bodies_primary_read": true
+  },
+  "common_body_inspection": {
+    "candidate": "476d3408a74ba5651d434dc49d50e926fb987883",
+    "artifact_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-factory-inputs\\local\\native_gui_group_factory_inputs\\prepare.py",
+        "bytes": 4554,
+        "sha256": "de8a8041363133aa84695a5f689f5e6e852b801f23cae9c3984c0b32e0f4a302"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-factory-inputs\\local\\native_gui_group_factory_inputs\\precompile_receipt.json",
+        "bytes": 16203,
+        "sha256": "7764fe8a7408e7214d2a8592d867095e2635218f24629a56156991f16bc95a41"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-factory-inputs\\local\\native_gui_group_factory_inputs\\compile.cmd",
+        "bytes": 1092,
+        "sha256": "09ca11f4b58fb96c80371a58cd836637806fb9df7f11c70e2e14a2d0114d9a8f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-factory-inputs\\local\\native_gui_group_factory_inputs\\current_compile.txt",
+        "bytes": 1130,
+        "sha256": "28ca6ac2b93edde208b9e509d1099cb64ed9312be29c1eac03b57458c13da9fe"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-factory-inputs\\local\\native_gui_group_factory_inputs\\baseline_compile.txt",
+        "bytes": 30,
+        "sha256": "c4b181b377a9bbd5dd107eb1b0004b1ddfefefacf71e6f2e6fd554293173fdcf"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-factory-inputs\\local\\native_gui_group_factory_inputs\\current.obj",
+        "bytes": 6925,
+        "sha256": "04ee1aacc754926773356837e6c0b486e63cdb2e7296375d3922ffae6c65edaa"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-factory-inputs\\local\\native_gui_group_factory_inputs\\baseline.obj",
+        "bytes": 6256,
+        "sha256": "3d359a8a9454cfc9a2168a754276c0b074b73f69ca4bf83710536cf73bab3fd6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-factory-inputs\\local\\native_gui_group_factory_inputs\\current_dumpbin.txt",
+        "bytes": 43409,
+        "sha256": "f22339723320c6aa08740a13ee5699d4ed99d398c41e4fa1b46c59eb569fb5d9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-factory-inputs\\local\\native_gui_group_factory_inputs\\baseline_dumpbin.txt",
+        "bytes": 35157,
+        "sha256": "9d75ea288cd5214ca17e8a95b14e2efc85340f0db408e5655e80d790ce8e7e66"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-factory-inputs\\local\\native_gui_group_factory_inputs\\audit_object.py",
+        "bytes": 7705,
+        "sha256": "cc59375bd2732671d06d775e2b695be4e53a512f6254a4b7ff6b33c41b8dcd36"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-factory-inputs\\local\\native_gui_group_factory_inputs\\object_audit.json",
+        "bytes": 126731,
+        "sha256": "339a8a22d1ac5ea93329c8ef0b1ac63c7c55634978d9c4c56ba381f305c64c91"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-factory-inputs\\local\\native_gui_group_factory_inputs\\current_decoded.txt",
+        "bytes": 5163,
+        "sha256": "e42b5025ffb7857c4b96a1ab5c626f1d43cf9b96f0c5e9083a344122a61812d9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-factory-inputs\\local\\native_gui_group_factory_inputs\\baseline_decoded.txt",
+        "bytes": 3985,
+        "sha256": "b817bab3f337f1cbfa8b4b2255b50aaf10a3b6ecae0ed6a6222b49d668e1b0c1"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-factory-inputs\\include\\bsp\\native_gui_group_factory.hpp",
+        "bytes": 4054,
+        "sha256": "824bb49ed0a651ef8df2fdc169fa56b99601ed084b253f7b763e0b8fa1b33f43",
+        "relative_path": "include/bsp/native_gui_group_factory.hpp",
+        "git_blob": "1bc8d7ca5bf9becac0a53aaf242f963dddb41681"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-factory-inputs\\src\\native_gui_group_factory.cpp",
+        "bytes": 2385,
+        "sha256": "16f91c2a6607f7593910be66cc616eefbd32945f7dec910055c3665dbabdb61c",
+        "relative_path": "src/native_gui_group_factory.cpp",
+        "git_blob": "73777a41968ce1e4ffa3c0560943d33ca162074e"
+      }
+    ],
+    "provider_count": 39,
+    "native": [
+      {
+        "address": "00AA6560",
+        "bytes": 148,
+        "sha256": "1bb0d52c372cba3ed8219100366ad915c02e90ededba2ac80c0e3ed3c9b5d27a"
+      },
+      {
+        "address": "00AA12F0",
+        "bytes": 132,
+        "sha256": "a9edbd7a48814ab9c740f4dfa99efdb329c720802422276def792614e1005855"
+      },
+      {
+        "address": "00AC6F50",
+        "bytes": 20,
+        "sha256": "107dcbb6dc4a04850cc742b6ec39766e55c3a3db37bfb969d47a439b7c3cc511"
+      },
+      {
+        "address": "00AC6FA0",
+        "bytes": 25,
+        "sha256": "0b6017b668b5967193a8b96fda544c0b5311f3b73b31cd14b897ba1b89d1fe99"
+      },
+      {
+        "address": "00CB6DF0",
+        "bytes": 10,
+        "sha256": "cd022f2fd278ada411c4ff86360a985dd759b93710490b9326bdc47fed0574ce"
+      },
+      {
+        "address": "00DED36C",
+        "bytes": 36,
+        "sha256": "53a6e2e7af46167d8a24a2c47d4fa37c02695e777a28e3478cba30c72b2ccf04"
+      },
+      {
+        "address": "00DED35C",
+        "bytes": 16,
+        "sha256": "fd23d2f4c0b46e6e7db7141f9e895f596941395beed7b6b3ff32fcd8d90b15c2"
+      },
+      {
+        "address": "00CB6DE0",
+        "bytes": 8,
+        "sha256": "d314c847c6c91f33f69423997b7a344d4c24455cf3ac652637e3b337adc2bb26"
+      },
+      {
+        "address": "00CB6DE8",
+        "bytes": 8,
+        "sha256": "f332a066dfe70b06e3437e9e765a42af2aa398ea6cc16776202d59a73ca2763a"
+      }
+    ],
+    "code": [
+      {
+        "symbols": [
+          "??0NativeGuiGroupFactoryInputs@bsp@@QAE@UNativeGuiGroupCopyInputs@1@@Z"
+        ],
+        "strict_bytes": 29,
+        "common_emitted": true,
+        "common_section": 3,
+        "common_bytes": 30,
+        "common_operations": 11,
+        "strict_bytes_normalized_relocs_exact": false,
+        "hex": "558bec8b4508f30f7e450889018b4510660fd6410489410c8bc15dc20c00",
+        "relocations": [],
+        "listing": [
+          "0000 push ebp",
+          "0001 mov ebp, esp",
+          "0003 mov eax, dword ptr [ebp + 8]",
+          "0006 movq xmm0, qword ptr [ebp + 8]",
+          "000b mov dword ptr [ecx], eax",
+          "000d mov eax, dword ptr [ebp + 0x10]",
+          "0010 movq qword ptr [ecx + 4], xmm0",
+          "0015 mov dword ptr [ecx + 0xc], eax",
+          "0018 mov eax, ecx",
+          "001a pop ebp",
+          "001b ret 0xc"
+        ]
+      },
+      {
+        "symbols": [
+          "??0NativeGuiGroupFactoryInputs@bsp@@QAE@UNativeGuiGroupDefaultInputs@1@@Z"
+        ],
+        "strict_bytes": 18,
+        "common_emitted": true,
+        "common_section": 4,
+        "common_bytes": 21,
+        "common_operations": 8,
+        "strict_bytes_normalized_relocs_exact": false,
+        "hex": "558bec8b45088941048bc1c701000000005dc20400",
+        "relocations": [],
+        "listing": [
+          "0000 push ebp",
+          "0001 mov ebp, esp",
+          "0003 mov eax, dword ptr [ebp + 8]",
+          "0006 mov dword ptr [ecx + 4], eax",
+          "0009 mov eax, ecx",
+          "000b mov dword ptr [ecx], 0",
+          "0011 pop ebp",
+          "0012 ret 4"
+        ]
+      },
+      {
+        "symbols": [
+          "??_H@YGXPAXIIP6EPAX0@Z@Z"
+        ],
+        "strict_bytes": 42,
+        "common_emitted": true,
+        "common_section": 5,
+        "common_bytes": 38,
+        "common_operations": 20,
+        "strict_bytes_normalized_relocs_exact": false,
+        "hex": "558bec568b751085f67416538b5d14578b7d088bcfffd3037d0c83ee0175f45f5b5e5dc21000",
+        "relocations": [],
+        "listing": [
+          "0000 push ebp",
+          "0001 mov ebp, esp",
+          "0003 push esi",
+          "0004 mov esi, dword ptr [ebp + 0x10]",
+          "0007 test esi, esi",
+          "0009 je 0x21",
+          "000b push ebx",
+          "000c mov ebx, dword ptr [ebp + 0x14]",
+          "000f push edi",
+          "0010 mov edi, dword ptr [ebp + 8]",
+          "0013 mov ecx, edi",
+          "0015 call ebx",
+          "0017 add edi, dword ptr [ebp + 0xc]",
+          "001a sub esi, 1",
+          "001d jne 0x13",
+          "001f pop edi",
+          "0020 pop ebx",
+          "0021 pop esi",
+          "0022 pop ebp",
+          "0023 ret 0x10"
+        ]
+      },
+      {
+        "symbols": [
+          "?construct_native_gui_group_copy_00ac6fa0@bsp@@YAPAXPAXPBXAAUNativeGuiWidgetCopyContext@1@AAUNativeGuiWidgetCopyAcquired@1@@Z"
+        ],
+        "strict_bytes": 36,
+        "common_emitted": true,
+        "common_section": 6,
+        "common_bytes": 36,
+        "common_operations": 15,
+        "strict_bytes_normalized_relocs_exact": false,
+        "hex": "558bec56ff75148b7508ff7510ff750c56e80000000083c410c70680cbd5008bc65e5dc3",
+        "relocations": [
+          [
+            18,
+            20,
+            "?construct_native_gui_widget_copy_00aa9520@bsp@@YAPAXPAXPBXAAUNativeGuiWidgetCopyContext@1@AAUNativeGuiWidgetCopyAcquired@1@@Z"
+          ]
+        ],
+        "listing": [
+          "0000 push ebp",
+          "0001 mov ebp, esp",
+          "0003 push esi",
+          "0004 push dword ptr [ebp + 0x14]",
+          "0007 mov esi, dword ptr [ebp + 8]",
+          "000a push dword ptr [ebp + 0x10]",
+          "000d push dword ptr [ebp + 0xc]",
+          "0010 push esi",
+          "0011 call 0x16",
+          "0016 add esp, 0x10",
+          "0019 mov dword ptr [esi], 0xd5cb80",
+          "001f mov eax, esi",
+          "0021 pop esi",
+          "0022 pop ebp",
+          "0023 ret "
+        ]
+      },
+      {
+        "symbols": [
+          "?create_native_gui_group_00aa12f0@bsp@@YAPAXPBXADIAAUNativeGuiWidgetCopyContext@1@AAUNativeGuiWidgetCopyAcquired@1@@Z"
+        ],
+        "strict_bytes": 63,
+        "common_emitted": true,
+        "common_section": 7,
+        "common_bytes": 64,
+        "common_operations": 24,
+        "strict_bytes_normalized_relocs_exact": false,
+        "hex": "558bec8b450883ec108bcc85c0741b89018941048b45108941088b451489410ce80000000083c4105dc38b450cc70100000000894104e80000000083c4105dc3",
+        "relocations": [
+          [
+            33,
+            20,
+            "?create_native_gui_group_00aa12f0@bsp@@YAPAXVNativeGuiGroupFactoryInputs@1@@Z"
+          ],
+          [
+            55,
+            20,
+            "?create_native_gui_group_00aa12f0@bsp@@YAPAXVNativeGuiGroupFactoryInputs@1@@Z"
+          ]
+        ],
+        "listing": [
+          "0000 push ebp",
+          "0001 mov ebp, esp",
+          "0003 mov eax, dword ptr [ebp + 8]",
+          "0006 sub esp, 0x10",
+          "0009 mov ecx, esp",
+          "000b test eax, eax",
+          "000d je 0x2a",
+          "000f mov dword ptr [ecx], eax",
+          "0011 mov dword ptr [ecx + 4], eax",
+          "0014 mov eax, dword ptr [ebp + 0x10]",
+          "0017 mov dword ptr [ecx + 8], eax",
+          "001a mov eax, dword ptr [ebp + 0x14]",
+          "001d mov dword ptr [ecx + 0xc], eax",
+          "0020 call 0x25",
+          "0025 add esp, 0x10",
+          "0028 pop ebp",
+          "0029 ret ",
+          "002a mov eax, dword ptr [ebp + 0xc]",
+          "002d mov dword ptr [ecx], 0",
+          "0033 mov dword ptr [ecx + 4], eax",
+          "0036 call 0x3b",
+          "003b add esp, 0x10",
+          "003e pop ebp",
+          "003f ret "
+        ]
+      },
+      {
+        "symbols": [
+          "?create_native_gui_group_00aa12f0@bsp@@YAPAXVNativeGuiGroupFactoryInputs@1@@Z",
+          "__catch$?create_native_gui_group_00aa12f0@bsp@@YAPAXVNativeGuiGroupFactoryInputs@1@@Z$1",
+          "__catch$?create_native_gui_group_00aa12f0@bsp@@YAPAXVNativeGuiGroupFactoryInputs@1@@Z$0"
+        ],
+        "strict_bytes": 206,
+        "common_emitted": true,
+        "common_section": 8,
+        "common_bytes": 207,
+        "common_operations": 80,
+        "strict_bytes_normalized_relocs_exact": false,
+        "hex": "558bec6aff680000000064a1000000005083ec08535657a10000000033c5508d45f464a3000000008965f08b7d08e8000000008bf08975ec85f675128b4df464890d00000000595f5e5b8be55dc3c745fc0000000085ff742aff7514ff75105756e80000000083c410c70680cbd5008bc68b4df464890d00000000595f5e5b8be55dc3ff750c56e80000000083c4088b4df464890d00000000595f5e5b8be55dc3ff15000000008965f0ff75ecc645fc02e80000000083c404c745fc010000006a006a00e800000000cccccccccccc",
+        "relocations": [
+          [
+            6,
+            6,
+            "__ehhandler$?create_native_gui_group_00aa12f0@bsp@@YAPAXVNativeGuiGroupFactoryInputs@1@@Z"
+          ],
+          [
+            24,
+            6,
+            "___security_cookie"
+          ],
+          [
+            47,
+            20,
+            "?allocate_native_gui_group_slot_00ac76d0@bsp@@YAPAXXZ"
+          ],
+          [
+            98,
+            20,
+            "?construct_native_gui_widget_copy_00aa9520@bsp@@YAPAXPAXPBXAAUNativeGuiWidgetCopyContext@1@AAUNativeGuiWidgetCopyAcquired@1@@Z"
+          ],
+          [
+            136,
+            20,
+            "?construct_native_gui_group_default_00ac6f50@bsp@@YAPAXPAXADI@Z"
+          ],
+          [
+            163,
+            6,
+            "__imp__terminate"
+          ],
+          [
+            178,
+            20,
+            "?return_native_gui_group_slot_00ac73d0@bsp@@YAXPAX@Z"
+          ],
+          [
+            197,
+            20,
+            "__CxxThrowException@8"
+          ]
+        ],
+        "listing": [
+          "0000 push ebp",
+          "0001 mov ebp, esp",
+          "0003 push -1",
+          "0005 push 0",
+          "000a mov eax, dword ptr fs:[0]",
+          "0010 push eax",
+          "0011 sub esp, 8",
+          "0014 push ebx",
+          "0015 push esi",
+          "0016 push edi",
+          "0017 mov eax, dword ptr [0]",
+          "001c xor eax, ebp",
+          "001e push eax",
+          "001f lea eax, [ebp - 0xc]",
+          "0022 mov dword ptr fs:[0], eax",
+          "0028 mov dword ptr [ebp - 0x10], esp",
+          "002b mov edi, dword ptr [ebp + 8]",
+          "002e call 0x33",
+          "0033 mov esi, eax",
+          "0035 mov dword ptr [ebp - 0x14], esi",
+          "0038 test esi, esi",
+          "003a jne 0x4e",
+          "003c mov ecx, dword ptr [ebp - 0xc]",
+          "003f mov dword ptr fs:[0], ecx",
+          "0046 pop ecx",
+          "0047 pop edi",
+          "0048 pop esi",
+          "0049 pop ebx",
+          "004a mov esp, ebp",
+          "004c pop ebp",
+          "004d ret ",
+          "004e mov dword ptr [ebp - 4], 0",
+          "0055 test edi, edi",
+          "0057 je 0x83",
+          "0059 push dword ptr [ebp + 0x14]",
+          "005c push dword ptr [ebp + 0x10]",
+          "005f push edi",
+          "0060 push esi",
+          "0061 call 0x66",
+          "0066 add esp, 0x10",
+          "0069 mov dword ptr [esi], 0xd5cb80",
+          "006f mov eax, esi",
+          "0071 mov ecx, dword ptr [ebp - 0xc]",
+          "0074 mov dword ptr fs:[0], ecx",
+          "007b pop ecx",
+          "007c pop edi",
+          "007d pop esi",
+          "007e pop ebx",
+          "007f mov esp, ebp",
+          "0081 pop ebp",
+          "0082 ret ",
+          "0083 push dword ptr [ebp + 0xc]",
+          "0086 push esi",
+          "0087 call 0x8c",
+          "008c add esp, 8",
+          "008f mov ecx, dword ptr [ebp - 0xc]",
+          "0092 mov dword ptr fs:[0], ecx",
+          "0099 pop ecx",
+          "009a pop edi",
+          "009b pop esi",
+          "009c pop ebx",
+          "009d mov esp, ebp",
+          "009f pop ebp",
+          "00a0 ret ",
+          "00a1 call dword ptr [0]",
+          "00a7 mov dword ptr [ebp - 0x10], esp",
+          "00aa push dword ptr [ebp - 0x14]",
+          "00ad mov byte ptr [ebp - 4], 2",
+          "00b1 call 0xb6",
+          "00b6 add esp, 4",
+          "00b9 mov dword ptr [ebp - 4], 1",
+          "00c0 push 0",
+          "00c2 push 0",
+          "00c4 call 0xc9",
+          "00c9 int3 ",
+          "00ca int3 ",
+          "00cb int3 ",
+          "00cc int3 ",
+          "00cd int3 ",
+          "00ce int3 "
+        ]
+      },
+      {
+        "symbols": [
+          "__ehhandler$?create_native_gui_group_00aa12f0@bsp@@YAPAXVNativeGuiGroupFactoryInputs@1@@Z"
+        ],
+        "strict_bytes": 29,
+        "common_emitted": true,
+        "common_section": 9,
+        "common_bytes": 29,
+        "common_operations": 9,
+        "strict_bytes_normalized_relocs_exact": true,
+        "hex": "90908b5424088d420c8b4ae833c8e800000000b800000000e900000000",
+        "relocations": [
+          [
+            15,
+            20,
+            "@__security_check_cookie@4"
+          ],
+          [
+            20,
+            6,
+            "__ehfuncinfo$?create_native_gui_group_00aa12f0@bsp@@YAPAXVNativeGuiGroupFactoryInputs@1@@Z"
+          ],
+          [
+            25,
+            20,
+            "___CxxFrameHandler3"
+          ]
+        ],
+        "listing": [
+          "0000 nop ",
+          "0001 nop ",
+          "0002 mov edx, dword ptr [esp + 8]",
+          "0006 lea eax, [edx + 0xc]",
+          "0009 mov ecx, dword ptr [edx - 0x18]",
+          "000c xor ecx, eax",
+          "000e call 0x13",
+          "0013 mov eax, 0",
+          "0018 jmp 0x1d"
+        ]
+      },
+      {
+        "symbols": [
+          "?delete_native_gui_group_00ac73e0@bsp@@YAPAXPAXADIAAUNativeGuiWidgetLifetimeContext@1@@Z"
+        ],
+        "strict_bytes": 58,
+        "common_emitted": true,
+        "common_section": 10,
+        "common_bytes": 59,
+        "common_operations": 23,
+        "strict_bytes_normalized_relocs_exact": false,
+        "hex": "558bec568b7508ff751056c70680cbd500e8000000008b450c83c4088a00a8017414e8000000008bc8e800000000568bc8e8000000008bc65e5dc3",
+        "relocations": [
+          [
+            18,
+            20,
+            "?destroy_native_gui_widget_base_00aa9730@bsp@@YAXPAXAAUNativeGuiWidgetLifetimeContext@1@@Z"
+          ],
+          [
+            35,
+            20,
+            "?game_native_gui_group_pool_process@game@bsp@@YAAAVGameNativeGuiGroupPoolProcess@12@XZ"
+          ],
+          [
+            42,
+            20,
+            "?pool_00f8bfa0@GameNativeGuiGroupPoolProcess@game@bsp@@QAEAAVNativeGuiGroupPool@3@XZ"
+          ],
+          [
+            50,
+            20,
+            "?return_00ac7260@NativeGuiGroupPool@bsp@@QAEXPAX@Z"
+          ]
+        ],
+        "listing": [
+          "0000 push ebp",
+          "0001 mov ebp, esp",
+          "0003 push esi",
+          "0004 mov esi, dword ptr [ebp + 8]",
+          "0007 push dword ptr [ebp + 0x10]",
+          "000a push esi",
+          "000b mov dword ptr [esi], 0xd5cb80",
+          "0011 call 0x16",
+          "0016 mov eax, dword ptr [ebp + 0xc]",
+          "0019 add esp, 8",
+          "001c mov al, byte ptr [eax]",
+          "001e test al, 1",
+          "0020 je 0x36",
+          "0022 call 0x27",
+          "0027 mov ecx, eax",
+          "0029 call 0x2e",
+          "002e push esi",
+          "002f mov ecx, eax",
+          "0031 call 0x36",
+          "0036 mov eax, esi",
+          "0038 pop esi",
+          "0039 pop ebp",
+          "003a ret "
+        ]
+      }
+    ],
+    "EH": [
+      {
+        "symbol": "__ehfuncinfo$?create_native_gui_group_00aa12f0@bsp@@YAPAXVNativeGuiGroupFactoryInputs@1@@Z",
+        "common_section": 12,
+        "bytes": 140,
+        "funcinfo_offset": 64,
+        "raw_bytes_normalized_relocations_strict_exact": true
+      }
+    ],
+    "SafeSEH_names": [
+      "__ehhandler$?create_native_gui_group_00aa12f0@bsp@@YAPAXVNativeGuiGroupFactoryInputs@1@@Z"
+    ],
+    "old_common": [
+      {
+        "symbol": "?construct_native_gui_group_copy_00ac6fa0@bsp@@YAPAXPAXPBXAAUNativeGuiWidgetCopyContext@1@AAUNativeGuiWidgetCopyAcquired@1@@Z",
+        "bytes": 36,
+        "prior_common_exact": true
+      },
+      {
+        "symbol": "?delete_native_gui_group_00ac73e0@bsp@@YAPAXPAXADIAAUNativeGuiWidgetLifetimeContext@1@@Z",
+        "bytes": 59,
+        "prior_common_exact": true
+      },
+      {
+        "symbol": "??_H@YGXPAXIIP6EPAX0@Z@Z",
+        "bytes": 38,
+        "prior_common_exact": true
+      }
+    ],
+    "BSS_payload_not_interpreted": true
+  },
+  "preserved_prior_ledger": {
+    "names": [
+      {
+        "address": "00aa12f0",
+        "name": "BSP_GuiGroup_Create",
+        "evidence": "Hypothesis, not recovered symbol; old Ghidra name FUN_00aa12f0 retained read-only. ECX optional source, EAX allocated object, RET;00AA12F0..00AA1373 selects pool00AC76D0 and constructor00AC6F50(type2,vtable00D5CB80) or copy00AC6FA0. GuiTypeDispatchFactory reproduces fresh logical type selection only. docs/GUI_TYPE_DISPATCH.md; native allocation/copy ABI unimplemented; annotation deferred. | Complete normal raw Group adapter/factory/scalar destruction using same EC/F0 pool, caller-owned base-copy diagnostics, captured-slot failed-constructor return and late caller flags byte. Supported actual base-copy and required raw lifetime domains; native FH3/SEH, canonical Group admission and gameplay excluded. docs/NATIVE_GUI_GROUP_FACTORY_CC10.md; reports/native_gui_group_factory_cc10.json"
+      }
+    ],
+    "reconstruction": [
+      {
+        "address": "00aa12f0",
+        "name": "GuiTypeDispatchFactory::make_factory",
+        "abi": "Native allocator ECX optional source/EAX object/RET; new factory semantic C++ ABI",
+        "boundary": "fresh logical Group2/Icon6/FrameBox18/explicit script Screen1 companions; physical widget pool and copy paths excluded",
+        "source": "src/gui_type_dispatch.cpp",
+        "status": "reconstructed_build_tested_focused_fixture_tested",
+        "evidence": "docs/GUI_TYPE_DISPATCH.md; reports/gui_type_dispatch.json; read-only Ghidra verified; descriptive names hypotheses, no binary/game parity",
+        "kind": "fragment"
+      },
+      {
+        "address": "00aa12f0",
+        "name": "create_native_gui_group_00aa12f0",
+        "source": "src/native_gui_group_factory.cpp",
+        "coverage": "complete normal body in supported actual base-copy/raw lifetime domains",
+        "original_abi": "ECX optional source; EAX actual slot or null; RET",
+        "last_instruction_length": 1,
+        "last_instruction": "00aa1373",
+        "status": "complete_raw_normal_supported_domains_strict_win32_compiled_order_checked",
+        "notes": "Complete normal raw Group adapter/factory/scalar destruction using same EC/F0 pool, caller-owned base-copy diagnostics, captured-slot failed-constructor return and late caller flags byte. Supported actual base-copy and required raw lifetime domains; native FH3/SEH, canonical Group admission and gameplay excluded. docs/NATIVE_GUI_GROUP_FACTORY_CC10.md; reports/native_gui_group_factory_cc10.json",
+        "kind": "function"
+      }
+    ]
+  },
+  "evidence_and_limits": "Closed branch-input correction476d3408 and independent review79dcc01d admitted. Default borrows only genuineD7A24C; copy borrows same raw source-start reference/context/fresh frame; private immutable alternatives feed ONEcomplete AA12F0 allocation/constructor/unwind body. Legacy signature delegates actualrefs; no fakeunusedcontext, mismatch/fallback/error or new input restriction. Capture beforeallocation; nullalloc before any constructorinputreads; copy/frame/one/nativecurrentepochs and capturedfailedslotreturn preserved. Common Win32MP2/PCH buildd5125503766ab8ffdd932728d09e77c35b60027b passes2/2(13.00s). Common8code484B, shared207B, legacy64B; copy36B/scalar59B/helper38B priorcommon byte+reloc exact. WholeEH140 raw/normalizedreloc strict-exact; actualmanifestlink5wholelivecode395B+wholeEH140 relocatedPEexact, SafeSEH checked, neverexecuted. Link uses actualGameTextprocess/state/PCH objects; named Text entries discarded byOPTREF, no Text execution claim. See CC16_NATIVE_GUI_GROUP_FACTORY_INPUTS_SOURCE_ADMISSION. Pool/type startup, actualGroupidentity/currentPagechild/graph/lifetime/calleradoption, OriginalABI/FH3/SEH/fault/runtime/gameplay/activation remain open. Zero newOriginal/vendor/duplicatecredit.",
+  "caller_adopted": false,
+  "activated": false,
+  "game_validated": false,
+  "ABI_compatible": false,
+  "new_Original_vendor_duplicate_body_credit": 0,
+  "runtime_credit": 0,
+  "Ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_before_batch": true,
+    "write_lock": true,
+    "saved": true,
+    "prior_values_retained": true,
+    "preserved_name": "BSP_GuiGroup_Create",
+    "fresh_export": true,
+    "receipts": [
+      {
+        "path": "local/function_source_batch15/artifacts/ghidra_annotation.log",
+        "bytes": 201,
+        "sha256": "23a0661f287069fa8b6440bc79d83626b940ed6c447916276c6a9b072fb4391f"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/ghidra_export.log",
+        "bytes": 104,
+        "sha256": "fa74189c4880428bf51736461490df7e9691d8067ed6a28fb14d2858c38a3d82"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/ghidra-annotations-20261030T100335Z.json",
+        "bytes": 3560,
+        "sha256": "71c0bd13c61826141903340d2faa9980cdaf0e302e8944962948f3cbf96edd60"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/ledger_changes.log",
+        "bytes": 1913,
+        "sha256": "60736eb9f7bd4a0ca199525f27450605aa9649fb85b94ec75c64b188f1f4f985"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/prior_ledger_records.json",
+        "bytes": 2520,
+        "sha256": "35b9dbdda819e53e42495709e5d4323becd35b4af1a985f4b87cd3efbb2a00d9"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/ledger_record.json",
+        "bytes": 2779,
+        "sha256": "9423b2611c6b029036c6bb6b75c2d6de2a298aa6ce59935f9f5cf98d92bdbca6"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/review_pin_checks.json",
+        "bytes": 19151,
+        "sha256": "f9aae61a10f0d3a85961ec6eae3c1128fd6841d4113813b79d684521fdab2d70"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/admit.py",
+        "bytes": 5566,
+        "sha256": "d87c43142e5aa90a04918311f9fffae7d550e235d5ca6fd5c8b4d88c0bc8d143"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/native_gui_group_factory.hpp",
+        "bytes": 4054,
+        "sha256": "824bb49ed0a651ef8df2fdc169fa56b99601ed084b253f7b763e0b8fa1b33f43"
+      },
+      {
+        "path": "local/function_source_batch15/artifacts/native_gui_group_factory.cpp",
+        "bytes": 2385,
+        "sha256": "16f91c2a6607f7593910be66cc616eefbd32945f7dec910055c3665dbabdb61c"
+      }
+    ]
+  }
+}
