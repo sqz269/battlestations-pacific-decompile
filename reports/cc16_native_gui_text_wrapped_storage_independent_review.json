@@ -1,0 +1,1939 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-gui-text-wrapped-storage-independent-review",
+  "stage": "SEALED_REVIEW_READY_FOR_ROOT_COMMON_BUILD",
+  "reviewed_commit": "7bb7203c1a135b660eda011a4a22056861d035e9",
+  "utc": "2026-10-30T20:51:57.578524+00:00",
+  "reviewed_source_pins": [
+    {
+      "path": "include/bsp/native_gui_text_wrapped_storage.hpp",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "b42fac4733660ac91f2bb9281ddc3cb65cd90534",
+      "sha256": "f785044a529250140974d61d41b2d1cfc24a79626ed47a5965783a86463a5cb7",
+      "bytes": 9676
+    },
+    {
+      "path": "src/native_gui_text_wrapped_storage.cpp",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "8634a725e6c207dd1d995555863fff7cc8493e13",
+      "sha256": "65c3b12ccea1e59d35866570c351837e89e057e0fc09e12a359bbd1a562afa48",
+      "bytes": 31435
+    }
+  ],
+  "producer_doc_report_pins": [
+    {
+      "path": "docs/CC16_NATIVE_GUI_TEXT_WRAPPED_STORAGE.md",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "9b6727bc8ccbe2105a8f9453b788ec26a968b172",
+      "sha256": "b6a6999987ce0da6bf6af91945b1cb6468627691a366fc760750d6781f012989",
+      "bytes": 10879
+    },
+    {
+      "path": "reports/cc16_native_gui_text_wrapped_storage.json",
+      "revision": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "5b5572da57297a20dfd8141d34fa4b566d0df1b2",
+      "sha256": "62a70c3897339846240780e50a59f83b43928b1d88e753e7c237b796b7def206",
+      "bytes": 180006
+    }
+  ],
+  "supplier_input_pins": [
+    {
+      "path": "include/bsp/native_gui_text_glyph_children.hpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "c5a7a2dc5aea299663866f07cb661d94c14c237a",
+      "sha256": "441e4a25ab536b115d87bdc2de81778eda2dc4d47f61faced68485f1cc4e8b11",
+      "bytes": 3622,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "src/native_gui_text_glyph_children.cpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "025cdd3d7fde5bb7b8b9e215da4d604c6d3a5407",
+      "sha256": "cf9454f0b8e09ccd1fc9eeb7250daca7cccab0ad6b25969fd511b09968018081",
+      "bytes": 6167,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "include/bsp/native_wide_string.hpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "ca3887e0d34038a9e799ebdead68b0db55f16108",
+      "sha256": "5606f96b372362a6831a1633a583f264fbab4290789481f94f1ba97537f6e051",
+      "bytes": 5239,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "src/native_wide_string.cpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "7b9df08e026a67a9dbab9c6c8df74676fd43645d",
+      "sha256": "158502f1efb91f678011dd971c643d5236eb10bf56da3c9997631a6d8df96e55",
+      "bytes": 10671,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "include/bsp/native_mesh_remaining_fields.hpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "9c9bf7c0117e1bcc46eb5c0732c6f6e5e3a91be8",
+      "sha256": "ad9802edc73b3e59b31420f8e0bf7e4bd789c520d774f0c0837b28d8150766ae",
+      "bytes": 4059,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "src/native_mesh_remaining_fields.cpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "ff7808a460b5d8e122e1c5266b3409b570e602f9",
+      "sha256": "8510d38e2a8e24d9d35156cf0274c3dc4590a49b6250d23221cbe0302712fa99",
+      "bytes": 5969,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "include/bsp/native_font_glyph_selection_storage.hpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "ca2ffe295116537e8cb3525a87c2b21dab9b1c6b",
+      "sha256": "235e9a965fe063fa6562601cedb2eda2d2f868e8b05de313d018fdb5a2cea5b7",
+      "bytes": 2534,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "src/native_font_glyph_selection_storage.cpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "f8f6c0c327205a8295c4ff0557ea2e257a3b4a3f",
+      "sha256": "f1a52596c913d0d2fe45db6d09ea76190539f993175d017ffa3bc1c38df27253",
+      "bytes": 3249,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "include/bsp/native_mesh_texture_field.hpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "f63a27633a5dd4f7dac54ce56204eb21aaa9319d",
+      "sha256": "7d358c7a8cba0e80b37b5cb4fa0f04e4f292c34b630d18c40600530cd9429ce7",
+      "bytes": 3128,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "src/native_mesh_texture_field.cpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "634768855b5b209fc3929d86d8da7083cbb7c314",
+      "sha256": "a9db17ac15a9f00dae714ba41208bfdaf8e5cb40f5ee7d23651f76d183d2bb39",
+      "bytes": 6476,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "acec6947cf7777181a97335456dc5142a1149cae",
+      "sha256": "6a8e8ff45a4415fbdbb81992726f2e9e4fc17c0819fde21c279ac4c3d354b245",
+      "bytes": 8477,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "5505123a0d02398d4d4c16873ef87f4f856fb790",
+      "sha256": "f05676b34f28b95194810e4f325cbec759b0ece70b9cb41b38b64efc89d7a96e",
+      "bytes": 19830,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "include/bsp/native_logical_buffer_mapping.hpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "56a4d6adc352e6432970a1172d5ea4a20f0dea98",
+      "sha256": "d3ee48a208b6636dc70941c6a62967407d657ad18f1ae971f2d900c752fcaef0",
+      "bytes": 2420,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "src/native_logical_buffer_mapping.cpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "82403d816de34e8fd52a5b14cc62702460e0194c",
+      "sha256": "6e9b61c4928f34705e12be655d0c8e6a72bca9210a9d9a2748e43054c55d3075",
+      "bytes": 6598,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "include/bsp/native_vertex_position_read.hpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "1b694e5e7a727f9c7e2ce3bf82569f0053b2f719",
+      "sha256": "5e5933b441f3806ab97fef05c8e409c967ad8925a451e99ef77dd19c35e6ef10",
+      "bytes": 3810,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "src/native_vertex_position_read.cpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "d27b8aca44716fe2ce03e164371b8c4da9d52a26",
+      "sha256": "17238c8326d7c223740e5b229cbc721641504c91fe5c48f9c8b2ef3bcf14b450",
+      "bytes": 13361,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "include/bsp/game_native_gui_text_state.hpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "c2f420b227592ab4ac84c680467f5142bf9e026a",
+      "sha256": "7b544feaa7da8a1a4bab5b5f01546d8e4d8b5621d8da37c6b22e4dfbc9d964e0",
+      "bytes": 3899,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "src/game_native_gui_text_state.cpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "4aeb220bed382de390912a2320ad1ca4adb4bf65",
+      "sha256": "ff10c4e60079ea23117223b10dc9b64bb61715930fa2c1d1b7fff0b81396dd5f",
+      "bytes": 1821,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "src/native_gui_text_single_line_storage.cpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "22427ad2c2c04bf357b2770e075e1c794ee03bf9",
+      "sha256": "ffda6f98ac137a60af72332a3981da2e51a18992097ff359feda8a93028ee048",
+      "bytes": 17311,
+      "unchanged_at_reviewed_commit": true
+    }
+  ],
+  "frozen_artifact_pins": [
+    {
+      "path": "include/bsp/native_gui_text_reference.hpp",
+      "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "492cf04c44cfeae90887bba02c32039f325bc318",
+      "sha256": "62224192a6d0fb5043ed68a3f34374ce1bc3584ee1f3bb031c1041b33fdd1827",
+      "bytes": 12718,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "src/native_gui_text_reference.cpp",
+      "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "f3a8e3a5c855acc668fb526d6de781621cfdb8c2",
+      "sha256": "0fb188e79dbc014db098d01e3afff14a5e07f1671a33db063d2e126e5af4257e",
+      "bytes": 58312,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "include/bsp/native_model_storage_lifetime.hpp",
+      "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "319ac5182e317f50e999437b3d300c92d695fbdf",
+      "sha256": "7754b1a3df10ccf79a83899513b48ab4616df9b9f9a5da54400ed7d4fe51ea1f",
+      "bytes": 9363,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "src/native_model_storage_lifetime.cpp",
+      "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "7ca6d5ae17001f48426aeed0826f2db496a56f2f",
+      "sha256": "d9ea114fa0e88f42f5a692adf96014827c32cd5d856a8e228e1ccd0550dd99b0",
+      "bytes": 17638,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "docs/CC16_RESERVED_TEXT_MODEL_REFERENCE_BIRTH.md",
+      "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "e296f0cba1841992eb20403f21ed0d7cee038c32",
+      "sha256": "0b6baa062db3f00024b2010cd65c0056eea42838b76afa0ace32f92dfcf68b5a",
+      "bytes": 8413,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "reports/cc16_reserved_text_model_reference_birth.json",
+      "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "9830a07de4f77e67722a62fd047fcb7f226b178a",
+      "sha256": "c6362b49b11ec568b371d4d5953a18cd143ede3042dc3510cc2ea41d605d88c9",
+      "bytes": 19638,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_lifetime.hpp",
+      "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "b58427ca1c6332f7c62409f298dca4d523fb571c",
+      "sha256": "a21b38daad89af7b6fc968273dece3fba3789ab22476299ea66cf88c4002b4d2",
+      "bytes": 4385,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "src/native_front_end_frame_lifetime.cpp",
+      "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "1246c5fea7640f9754190cc86ee8614ea1567400",
+      "sha256": "50eae08b6ca3a7561b8ec1a1bfaeb7b2b717cb9c16f46ab4470f1befe0dcf4f8",
+      "bytes": 4768,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_FRONT_END_FRAME_LIFETIME.md",
+      "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "240491d6d58bc72b56ef5379a8da400523f25aaf",
+      "sha256": "3409aa99fb04a5e98aa05994563b6522ebb78dad506ec80db0c8aa85de7810ea",
+      "bytes": 10234,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "reports/cc16_native_front_end_frame_lifetime.json",
+      "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "f192c477eb3c86d3546fc1d73802d8a034ae0b14",
+      "sha256": "f3c4b17cf1e49dafd606735cd4977cecc659edab841417cb007c5fd1eb50bea0",
+      "bytes": 23228,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "include/bsp/native_mesh_section_layout_storage.hpp",
+      "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "9875909104d429eb1144a83d7c2947fc49c6e383",
+      "sha256": "19245d00005b8d543fdcd5b85e71dba091ca158063e38fd86010cfb8e72c8939",
+      "bytes": 6385,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "src/native_mesh_section_layout_storage.cpp",
+      "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "3e473a56ff11e6f1f1b24713e6306f763c78e313",
+      "sha256": "d6f0378634d82d4287cf698dd529e24f3a53b4f1b6b0398647d33c4f956c4115",
+      "bytes": 5775,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_MESH_SECTION_LAYOUT_STORAGE.md",
+      "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "76088842ebf07edcc9b86b4144d064ecefa57ba2",
+      "sha256": "a50cc363c8c5a5d1afe47d0fe9c4859169f3569752f9340840f0f7a99e5abbb0",
+      "bytes": 12004,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "reports/cc16_native_mesh_section_layout_storage.json",
+      "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "7d9f3e950b3fdea27eb7973298e9de5fabaed3b0",
+      "sha256": "11f6144d7de2e18c674a5a51471079d9a4240725e2a5f14211bf79a447698a05",
+      "bytes": 21782,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "include/bsp/native_gui_text_changed_storage.hpp",
+      "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "056e9689803ff897d3340b73785adb3b2eb14b59",
+      "sha256": "13cc02308c28bf3ba443adfe1334627dffae05231a0c05e7bff6cbd634da5cc8",
+      "bytes": 10238,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "src/native_gui_text_changed_storage.cpp",
+      "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "c8f766005b8a90f7250f467fb46bc0ab47989bc4",
+      "sha256": "721a3bff0f346ae3506deda59f5a7e892e7ca46eefb8fcaa4d57d04a9c1753a1",
+      "bytes": 18298,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_TEXT_CHANGED_STORAGE.md",
+      "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "1c44053db72d1c06d13d0a506243e57f55fed5f7",
+      "sha256": "722dbb1c6f8a3304f95a6cba1b6bd9cf4cd0921f12776ff7da17cb6aecb408b8",
+      "bytes": 13922,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "reports/cc16_native_gui_text_changed_storage.json",
+      "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "06d650e4cc2c9680cdc15f3d42fd70e49b648fe5",
+      "sha256": "e95b6ce8a228b676cb4c8c42ccabda4826064453be0b5fc18741985062595ca3",
+      "bytes": 42426,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "docs/CC16_GLYPH_CHILD_PRODUCER_BIRTH_AUDIT.md",
+      "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "2eda70a578e787fa40242c9ca17c59116590f831",
+      "sha256": "df477c98a4d14bf534ed0c573d5d96831233ec73aec3ab45b879c8bf3a264cdd",
+      "bytes": 19343,
+      "unchanged_at_reviewed_commit": true
+    },
+    {
+      "path": "reports/cc16_glyph_child_producer_birth_audit.json",
+      "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "715efcc2d00a9abfe8fee4433a20657ee0250571",
+      "sha256": "5b907c3babba150d35fc9526bd57d07b0e4f29f0ed684eb3886b75131842c5a8",
+      "bytes": 33774,
+      "unchanged_at_reviewed_commit": true
+    }
+  ],
+  "raw_export_pins": [
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00aba270/assembly.txt",
+      "raw_bytes": 14763,
+      "raw_sha256": "e1f68d8a1e3d5d575d4109c68193672f780574153e98aba4a129920ddd71f06e"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00aba270/decompiled.c",
+      "raw_bytes": 17770,
+      "raw_sha256": "ecf9b882c6b576fd027910771d4a8ab7e64afb32b36ce975ae0942857377cf69"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00aba270/metadata.json",
+      "raw_bytes": 281,
+      "raw_sha256": "9a07cc5af08719b1f02303d6abd6e024853f76cc9a4399251cd416a86354d056"
+    }
+  ],
+  "instruction_count": 457,
+  "all_instruction_map_addresses_operands_regions_and_Source_lines_verified": true,
+  "x87_count": 84,
+  "all_x87_native_Source_canonical_operands_widths_aliases_order_verified": true,
+  "x87_function_counts": {
+    "capture_control": 1,
+    "prepare_width": 5,
+    "scan_glyph": 11,
+    "align_line": 13,
+    "begin_line": 3,
+    "update_bounds": 8,
+    "advance_glyph": 9,
+    "finish_line": 10,
+    "vertical_metrics": 19,
+    "shift_position": 5
+  },
+  "SSE_conversion_count": 6,
+  "all_SSE_Source_lines_verified": true,
+  "Native_call_count": 15,
+  "call_map": [
+    {
+      "native_site": "00aba279",
+      "target": "00ab80c0",
+      "source_line": 541,
+      "contract": "concrete raw whole; caller prepared child graph/clear record"
+    },
+    {
+      "native_site": "00aba2ab",
+      "target": "004c53e0",
+      "source_line": 550,
+      "contract": "concrete raw whole with SAME genuine raw pool; Source preserve=true matches Native1"
+    },
+    {
+      "native_site": "00aba2d6",
+      "target": "00b74640",
+      "source_line": 567,
+      "contract": "compose existing whole getter, stacked0 unused; no extra body credit"
+    },
+    {
+      "native_site": "00aba2e1",
+      "target": "00b73260",
+      "source_line": 570,
+      "contract": "concrete unchecked whole, no typed Mesh cast"
+    },
+    {
+      "native_site": "00aba302",
+      "target": "current stream+10",
+      "source_line": 579,
+      "contract": "B49980 direct, genuine OTHER target transport"
+    },
+    {
+      "native_site": "00aba328",
+      "target": "current stream+0C",
+      "source_line": 592,
+      "contract": "B49B60 direct, genuine OTHER target transport"
+    },
+    {
+      "native_site": "00aba3a1",
+      "target": "00ad4480",
+      "source_line": 608,
+      "contract": "concrete raw whole, captured Font before width block"
+    },
+    {
+      "native_site": "00aba460",
+      "target": "00ad4480",
+      "source_line": 651,
+      "contract": "concrete raw whole, current Font each scan iteration"
+    },
+    {
+      "native_site": "00aba67a",
+      "target": "00ad4480",
+      "source_line": 687,
+      "contract": "concrete raw whole, current Font each emitted glyph"
+    },
+    {
+      "native_site": "00aba695",
+      "target": "00b189f0",
+      "source_line": 695,
+      "contract": "concrete unchecked raw whole; SAME actual owner registry"
+    },
+    {
+      "native_site": "00aba6a7",
+      "target": "00b189f0",
+      "source_line": 700,
+      "contract": "concrete unchecked raw whole; material reload AFTER first callback"
+    },
+    {
+      "native_site": "00aba730",
+      "target": "00ab98f0",
+      "source_line": 727,
+      "contract": "concrete whole071 with SAME10 mutable homes, preprepared fresh retained record/context"
+    },
+    {
+      "native_site": "00aba868",
+      "target": "004768d0",
+      "source_line": 755,
+      "contract": "required genuine whole provider; existing initialized raw helper is not whole undefined/private scratch admission"
+    },
+    {
+      "native_site": "00aba8b2",
+      "target": "current index+10",
+      "source_line": 765,
+      "contract": "B49C70 direct, genuine OTHER target transport"
+    },
+    {
+      "native_site": "00aba8bb",
+      "target": "current vertex+14",
+      "source_line": 771,
+      "contract": "B49A80 direct, genuine OTHER target transport AFTER index returns"
+    }
+  ],
+  "independent_relative_call_depths": [
+    {
+      "native_site": "00aba279",
+      "relative_depths": [
+        0
+      ]
+    },
+    {
+      "native_site": "00aba2ab",
+      "relative_depths": [
+        0
+      ]
+    },
+    {
+      "native_site": "00aba2d6",
+      "relative_depths": [
+        0
+      ]
+    },
+    {
+      "native_site": "00aba2e1",
+      "relative_depths": [
+        0
+      ]
+    },
+    {
+      "native_site": "00aba302",
+      "relative_depths": [
+        0
+      ]
+    },
+    {
+      "native_site": "00aba328",
+      "relative_depths": [
+        0
+      ]
+    },
+    {
+      "native_site": "00aba3a1",
+      "relative_depths": [
+        0
+      ]
+    },
+    {
+      "native_site": "00aba460",
+      "relative_depths": [
+        0
+      ]
+    },
+    {
+      "native_site": "00aba67a",
+      "relative_depths": [
+        0
+      ]
+    },
+    {
+      "native_site": "00aba695",
+      "relative_depths": [
+        0
+      ]
+    },
+    {
+      "native_site": "00aba6a7",
+      "relative_depths": [
+        0
+      ]
+    },
+    {
+      "native_site": "00aba730",
+      "relative_depths": [
+        0
+      ]
+    },
+    {
+      "native_site": "00aba868",
+      "relative_depths": [
+        0
+      ]
+    },
+    {
+      "native_site": "00aba8b2",
+      "relative_depths": [
+        0
+      ]
+    },
+    {
+      "native_site": "00aba8bb",
+      "relative_depths": [
+        0
+      ]
+    }
+  ],
+  "relative_depth_CFG_max": 3,
+  "relative_depth_qualification": "Relative to ambient entry stack; calls assumed to honor genuine required callee ABI. No absolute-empty-stack/unmasked-fault/private-frame/Original ABI proof.",
+  "PE_verification": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "read_only": true,
+    "machine": "014C",
+    "image_base": "00400000",
+    "body_bytes": 1623,
+    "body_sha256": "4c435d42b8c60f1eeab6987c2530b1bd54216c74c9d1b325f0f491f8d114d54b",
+    "all8literal_preimages_verified": true,
+    "unreachable_padding_gaps": [
+      {
+        "first": "00aba2bd",
+        "last": "00aba2bf",
+        "bytes": 3,
+        "hex": "8d4900",
+        "sha256": "53e090edb4fca0626d458dbefa0ae1bcbffc511ed159f1a70641610ad0d9a200",
+        "reachability": "skipped by unconditional Native jump; no Source effect/credit"
+      },
+      {
+        "first": "00aba669",
+        "last": "00aba66f",
+        "bytes": 7,
+        "hex": "8da42400000000",
+        "sha256": "4fe06c07aad18cb5faea1a925ff71a52931084bbb3f844ffd60bae6a9ce14cce",
+        "reachability": "skipped by unconditional Native jump; no Source effect/credit"
+      }
+    ],
+    "no_Ghidra_mutation_or_export": true
+  },
+  "producer_native_maps_retained": {
+    "instruction_regions": [
+      {
+        "first": "00aba270",
+        "last": "00aba277",
+        "name": "entry",
+        "source_line": 527,
+        "mapping": "ordinary_source_abi_qualified"
+      },
+      {
+        "first": "00aba279",
+        "last": "00aba279",
+        "name": "clear",
+        "source_line": 541,
+        "mapping": "direct_existing_whole"
+      },
+      {
+        "first": "00aba27e",
+        "last": "00aba29c",
+        "name": "height_source_capture",
+        "source_line": 543,
+        "mapping": "ordered_raw_operands_and_height_to_float"
+      },
+      {
+        "first": "00aba2a2",
+        "last": "00aba2cf",
+        "name": "source_assignment",
+        "source_line": 547,
+        "mapping": "ordered_current_headers_forward_word_copy"
+      },
+      {
+        "first": "00aba2d1",
+        "last": "00aba2db",
+        "name": "model_geometry",
+        "source_line": 564,
+        "mapping": "existing_whole_B74640_load"
+      },
+      {
+        "first": "00aba2dd",
+        "last": "00aba2e6",
+        "name": "vertex_stream",
+        "source_line": 570,
+        "mapping": "direct_existing_whole"
+      },
+      {
+        "first": "00aba2e8",
+        "last": "00aba302",
+        "name": "vertex_map",
+        "source_line": 572,
+        "mapping": "current_profile_target_capture_and_raw_map"
+      },
+      {
+        "first": "00aba304",
+        "last": "00aba328",
+        "name": "index_map",
+        "source_line": 581,
+        "mapping": "post_callback_current_count_mesh60_profile_and_raw_map"
+      },
+      {
+        "first": "00aba32a",
+        "last": "00aba353",
+        "name": "control_section",
+        "source_line": 595,
+        "mapping": "home0_lowWORD_then_current_home1_and_separate_count_reads"
+      },
+      {
+        "first": "00aba356",
+        "last": "00aba39d",
+        "name": "width",
+        "source_line": 602,
+        "mapping": "captured_font_before_native_width_CW_block"
+      },
+      {
+        "first": "00aba3a1",
+        "last": "00aba3dd",
+        "name": "space_glyph_cursor",
+        "source_line": 607,
+        "mapping": "direct_AD4480_and_ordered_literal_cursor_accesses"
+      },
+      {
+        "first": "00aba3e3",
+        "last": "00aba427",
+        "name": "leading_spaces",
+        "source_line": 620,
+        "mapping": "same_repeated_F0_loads_and_WORD_tests"
+      },
+      {
+        "first": "00aba429",
+        "last": "00aba446",
+        "name": "scan_setup",
+        "source_line": 637,
+        "mapping": "zero_specific_reached_homes_not_whole_image"
+      },
+      {
+        "first": "00aba44c",
+        "last": "00aba4cc",
+        "name": "scan",
+        "source_line": 645,
+        "mapping": "current_Font_raw_selector_and_live_ST0_scan_block"
+      },
+      {
+        "first": "00aba4cd",
+        "last": "00aba4f8",
+        "name": "trailing_spaces",
+        "source_line": 657,
+        "mapping": "captured_space_metric_and_wrapping_backward_trim"
+      },
+      {
+        "first": "00aba4fb",
+        "last": "00aba539",
+        "name": "line_end",
+        "source_line": 668,
+        "mapping": "current_WORD_then_spaces_capture_and_full_home0_write"
+      },
+      {
+        "first": "00aba53a",
+        "last": "00aba634",
+        "name": "alignment",
+        "source_line": 677,
+        "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+      },
+      {
+        "first": "00aba635",
+        "last": "00aba667",
+        "name": "line_begin",
+        "source_line": 678,
+        "mapping": "current_line_end_compare_S1C_zero_and_same_position_YZ"
+      },
+      {
+        "first": "00aba670",
+        "last": "00aba686",
+        "name": "emit_glyph",
+        "source_line": 686,
+        "mapping": "direct_AD4480_current_Font_and_codeunit"
+      },
+      {
+        "first": "00aba688",
+        "last": "00aba6b7",
+        "name": "first_resources",
+        "source_line": 691,
+        "mapping": "separate_current_home1_material20_loads_around_callbacks"
+      },
+      {
+        "first": "00aba6bf",
+        "last": "00aba6f2",
+        "name": "bounds",
+        "source_line": 705,
+        "mapping": "FCOMIP_FSTP_JA_unordered_assignment"
+      },
+      {
+        "first": "00aba6f3",
+        "last": "00aba730",
+        "name": "glyph_quad",
+        "source_line": 706,
+        "mapping": "same_mutable10homes_push_order_and_actual_float3_then_direct_whole_Glyph"
+      },
+      {
+        "first": "00aba735",
+        "last": "00aba741",
+        "name": "post_quad",
+        "source_line": 729,
+        "mapping": "independent_parent_indices_vertex_and_current_codeunit"
+      },
+      {
+        "first": "00aba743",
+        "last": "00aba77b",
+        "name": "advance",
+        "source_line": 733,
+        "mapping": "captured_glyph_current12_scale1D8_and_live_ST0_block"
+      },
+      {
+        "first": "00aba781",
+        "last": "00aba7d8",
+        "name": "line_finish",
+        "source_line": 735,
+        "mapping": "ordered_width_linecount_spacing_and_code_capture_then_normal_arm_reload"
+      },
+      {
+        "first": "00aba7dc",
+        "last": "00aba842",
+        "name": "vertical",
+        "source_line": 744,
+        "mapping": "exact_alias_spills_ST2_multiply_and_native_vertical_branches"
+      },
+      {
+        "first": "00aba843",
+        "last": "00aba85c",
+        "name": "final_ranges",
+        "source_line": 745,
+        "mapping": "lowWORD_quad_ranges_no_count_gate"
+      },
+      {
+        "first": "00aba85e",
+        "last": "00aba868",
+        "name": "position",
+        "source_line": 755,
+        "mapping": "required_genuine_whole_getter_with_same_S54_object"
+      },
+      {
+        "first": "00aba86d",
+        "last": "00aba8a7",
+        "name": "position_store",
+        "source_line": 757,
+        "mapping": "sequential_FP_and_current_stride_offset_mapping_then_current_count"
+      },
+      {
+        "first": "00aba8a9",
+        "last": "00aba8bb",
+        "name": "unmaps",
+        "source_line": 760,
+        "mapping": "current_index10_then_AFTER_return_current_vertex14"
+      },
+      {
+        "first": "00aba8bd",
+        "last": "00aba8c4",
+        "name": "exit",
+        "source_line": 773,
+        "mapping": "ordinary_source_abi_qualified"
+      }
+    ],
+    "x87_operand_map": [
+      {
+        "native_address": "00aba32a",
+        "native_opcode": "FNSTCW",
+        "native_operand": "word ptr [ESP + 0x78] ",
+        "source_line": 141,
+        "source_opcode": "FNSTCW",
+        "source_operand": "word ptr [edx] // ABA32A, preserves upperWORD",
+        "source_function": "capture_control",
+        "canonical_operand": "wordptr[s:78]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba35c",
+        "native_opcode": "FLD",
+        "native_operand": "float ptr [EDI + 0x20] ",
+        "source_line": 154,
+        "source_opcode": "FLD",
+        "source_operand": "dword ptr [ebx + 0x20]",
+        "source_function": "prepare_width",
+        "canonical_operand": "dwordptr[text:20]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba364",
+        "native_opcode": "FMUL",
+        "native_operand": "double ptr [0x00cec380] ",
+        "source_line": 156,
+        "source_opcode": "FMUL",
+        "source_operand": "qword ptr [edx]",
+        "source_function": "prepare_width",
+        "canonical_operand": "qwordptr[va:00cec380]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba372",
+        "native_opcode": "FLDCW",
+        "native_operand": "word ptr [ESP + 0x48] ",
+        "source_line": 159,
+        "source_opcode": "FLDCW",
+        "source_operand": "word ptr [esi + wAlias]",
+        "source_function": "prepare_width",
+        "canonical_operand": "wordptr[s:44]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba391",
+        "native_opcode": "FISTP",
+        "native_operand": "qword ptr [ESP + 0x58] ",
+        "source_line": 165,
+        "source_opcode": "FISTP",
+        "source_operand": "qword ptr [esi + wConversion]",
+        "source_function": "prepare_width",
+        "canonical_operand": "qwordptr[s:54]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba39d",
+        "native_opcode": "FLDCW",
+        "native_operand": "word ptr [ESP + 0x7c] ",
+        "source_line": 168,
+        "source_opcode": "FLDCW",
+        "source_operand": "word ptr [edi]",
+        "source_function": "prepare_width",
+        "canonical_operand": "wordptr[s:78]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba465",
+        "native_opcode": "FLD",
+        "native_operand": "float ptr [EDI + 0x1d8] ",
+        "source_line": 186,
+        "source_opcode": "FLD",
+        "source_operand": "dword ptr [ebx + 0x1d8]",
+        "source_function": "scan_glyph",
+        "canonical_operand": "dwordptr[text:1d8]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba479",
+        "native_opcode": "FILD",
+        "native_operand": "dword ptr [ESP + 0x54] ",
+        "source_line": 191,
+        "source_opcode": "FILD",
+        "source_operand": "dword ptr [esi + wConversion]",
+        "source_function": "scan_glyph",
+        "canonical_operand": "dwordptr[s:54]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba47d",
+        "native_opcode": "FMULP",
+        "native_operand": "",
+        "source_line": 192,
+        "source_opcode": "FMULP",
+        "source_operand": "st(1), st(0)",
+        "source_function": "scan_glyph",
+        "canonical_operand": "st(1),st(0)",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba47f",
+        "native_opcode": "FADD",
+        "native_operand": "float ptr [ESP + 0x2c] ",
+        "source_line": 193,
+        "source_opcode": "FADD",
+        "source_operand": "dword ptr [esi + wScan]",
+        "source_function": "scan_glyph",
+        "canonical_operand": "dwordptr[s:2c]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba483",
+        "native_opcode": "FILD",
+        "native_operand": "dword ptr [ESP + 0x30] ",
+        "source_line": 194,
+        "source_opcode": "FILD",
+        "source_operand": "dword ptr [esi + wWidth]",
+        "source_function": "scan_glyph",
+        "canonical_operand": "dwordptr[s:30]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba489",
+        "native_opcode": "FADD",
+        "native_operand": "float ptr [0x00ce3978] ",
+        "source_line": 197,
+        "source_opcode": "FADD",
+        "source_operand": "dword ptr [edx]",
+        "source_function": "scan_glyph",
+        "canonical_operand": "dwordptr[va:00ce3978]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba48f",
+        "native_opcode": "FXCH",
+        "native_operand": "",
+        "source_line": 199,
+        "source_opcode": "FXCH",
+        "source_operand": "st(1)",
+        "source_function": "scan_glyph",
+        "canonical_operand": "st(1)",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba491",
+        "native_opcode": "FCOMI",
+        "native_operand": "ST0,ST1 ",
+        "source_line": 200,
+        "source_opcode": "FCOMI",
+        "source_operand": "st(0), st(1)",
+        "source_function": "scan_glyph",
+        "canonical_operand": "st(0),st(1)",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba493",
+        "native_opcode": "FSTP",
+        "native_operand": "ST1 ",
+        "source_line": 201,
+        "source_opcode": "FSTP",
+        "source_operand": "st(1)",
+        "source_function": "scan_glyph",
+        "canonical_operand": "st(1)",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba4b6",
+        "native_opcode": "FSTP",
+        "native_operand": "float ptr [ESP + 0x2c] ",
+        "source_line": 218,
+        "source_opcode": "FSTP",
+        "source_operand": "dword ptr [esi + wScan]",
+        "source_function": "scan_glyph",
+        "canonical_operand": "dwordptr[s:2c]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba4c6",
+        "native_opcode": "FSTP",
+        "native_operand": "ST0 ",
+        "source_line": 228,
+        "source_opcode": "FSTP",
+        "source_operand": "st(0)",
+        "source_function": "scan_glyph",
+        "canonical_operand": "st(0)",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba570",
+        "native_opcode": "FILD",
+        "native_operand": "dword ptr [ESP + 0x54] ",
+        "source_line": 272,
+        "source_opcode": "FILD",
+        "source_operand": "dword ptr [esi + wConversion]",
+        "source_function": "align_line",
+        "canonical_operand": "dwordptr[s:54]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba576",
+        "native_opcode": "FADD",
+        "native_operand": "float ptr [0x00ce3978] ",
+        "source_line": 275,
+        "source_opcode": "FADD",
+        "source_operand": "dword ptr [eax]",
+        "source_function": "align_line",
+        "canonical_operand": "dwordptr[va:00ce3978]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba583",
+        "native_opcode": "FIDIV",
+        "native_operand": "dword ptr [ESP + 0x54] ",
+        "source_line": 279,
+        "source_opcode": "FIDIV",
+        "source_operand": "dword ptr [esi + wConversion] // spaces1 deliberately divides by0",
+        "source_function": "align_line",
+        "canonical_operand": "dwordptr[s:54]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba593",
+        "native_opcode": "FILD",
+        "native_operand": "dword ptr [ESP + 0x54] ",
+        "source_line": 283,
+        "source_opcode": "FILD",
+        "source_operand": "dword ptr [esi + wConversion]",
+        "source_function": "align_line",
+        "canonical_operand": "dwordptr[s:54]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba597",
+        "native_opcode": "FADDP",
+        "native_operand": "",
+        "source_line": 284,
+        "source_opcode": "FADDP",
+        "source_operand": "st(1), st(0)",
+        "source_function": "align_line",
+        "canonical_operand": "st(1),st(0)",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba599",
+        "native_opcode": "FSTP",
+        "native_operand": "float ptr [ESP + 0x28] ",
+        "source_line": 285,
+        "source_opcode": "FSTP",
+        "source_operand": "dword ptr [esi + wSpaceStep]",
+        "source_function": "align_line",
+        "canonical_operand": "dwordptr[s:28]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba5ca",
+        "native_opcode": "FILD",
+        "native_operand": "dword ptr [ESP + 0x54] ",
+        "source_line": 300,
+        "source_opcode": "FILD",
+        "source_operand": "dword ptr [esi + wConversion]",
+        "source_function": "align_line",
+        "canonical_operand": "dwordptr[s:54]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba5d6",
+        "native_opcode": "FADD",
+        "native_operand": "float ptr [0x00ce3978] ",
+        "source_line": 304,
+        "source_opcode": "FADD",
+        "source_operand": "dword ptr [ecx]",
+        "source_function": "align_line",
+        "canonical_operand": "dwordptr[va:00ce3978]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba5dc",
+        "native_opcode": "FSTP",
+        "native_operand": "float ptr [ESP + 0x14] ",
+        "source_line": 306,
+        "source_opcode": "FSTP",
+        "source_operand": "dword ptr [esi + wPen]",
+        "source_function": "align_line",
+        "canonical_operand": "dwordptr[s:14]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba5ff",
+        "native_opcode": "FILD",
+        "native_operand": "dword ptr [ESP + 0x54] ",
+        "source_line": 318,
+        "source_opcode": "FILD",
+        "source_operand": "dword ptr [esi + wConversion]",
+        "source_function": "align_line",
+        "canonical_operand": "dwordptr[s:54]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba60b",
+        "native_opcode": "FADD",
+        "native_operand": "float ptr [0x00ce3978] ",
+        "source_line": 322,
+        "source_opcode": "FADD",
+        "source_operand": "dword ptr [ecx]",
+        "source_function": "align_line",
+        "canonical_operand": "dwordptr[va:00ce3978]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba611",
+        "native_opcode": "FMUL",
+        "native_operand": "double ptr [0x00d7a280] ",
+        "source_line": 325,
+        "source_opcode": "FMUL",
+        "source_operand": "qword ptr [eax]",
+        "source_function": "align_line",
+        "canonical_operand": "qwordptr[va:00d7a280]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba617",
+        "native_opcode": "FSTP",
+        "native_operand": "float ptr [ESP + 0x14] ",
+        "source_line": 326,
+        "source_opcode": "FSTP",
+        "source_operand": "dword ptr [esi + wPen]",
+        "source_function": "align_line",
+        "canonical_operand": "dwordptr[s:14]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba645",
+        "native_opcode": "FLD",
+        "native_operand": "float ptr [ESP + 0x20] ",
+        "source_line": 343,
+        "source_opcode": "FLD",
+        "source_operand": "dword ptr [edx + wTop]",
+        "source_function": "begin_line",
+        "canonical_operand": "dwordptr[s:20]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba64f",
+        "native_opcode": "FADD",
+        "native_operand": "float ptr [ESP + 0x4c] ",
+        "source_line": 345,
+        "source_opcode": "FADD",
+        "source_operand": "dword ptr [edx + wHeightFloat]",
+        "source_function": "begin_line",
+        "canonical_operand": "dwordptr[s:4c]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba663",
+        "native_opcode": "FSTP",
+        "native_operand": "float ptr [ESP + 0x44] ",
+        "source_line": 350,
+        "source_opcode": "FSTP",
+        "source_operand": "dword ptr [edx + wAlias]",
+        "source_function": "begin_line",
+        "canonical_operand": "dwordptr[s:44]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba6bf",
+        "native_opcode": "FLD",
+        "native_operand": "float ptr [ESP + 0x40] ",
+        "source_line": 359,
+        "source_opcode": "FLD",
+        "source_operand": "dword ptr [edx + wMin]",
+        "source_function": "update_bounds",
+        "canonical_operand": "dwordptr[s:40]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba6c3",
+        "native_opcode": "FLD",
+        "native_operand": "float ptr [ESP + 0x20] ",
+        "source_line": 360,
+        "source_opcode": "FLD",
+        "source_operand": "dword ptr [edx + wTop]",
+        "source_function": "update_bounds",
+        "canonical_operand": "dwordptr[s:20]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba6c7",
+        "native_opcode": "FCOMIP",
+        "native_operand": "ST0,ST1 ",
+        "source_line": 361,
+        "source_opcode": "FCOMIP",
+        "source_operand": "st(0), st(1)",
+        "source_function": "update_bounds",
+        "canonical_operand": "st(0),st(1)",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba6c9",
+        "native_opcode": "FSTP",
+        "native_operand": "ST0 ",
+        "source_line": 362,
+        "source_opcode": "FSTP",
+        "source_operand": "st(0)",
+        "source_function": "update_bounds",
+        "canonical_operand": "st(0)",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba6d9",
+        "native_opcode": "FLD",
+        "native_operand": "float ptr [ESP + 0x44] ",
+        "source_line": 367,
+        "source_opcode": "FLD",
+        "source_operand": "dword ptr [edx + wAlias]",
+        "source_function": "update_bounds",
+        "canonical_operand": "dwordptr[s:44]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba6dd",
+        "native_opcode": "FLD",
+        "native_operand": "float ptr [ESP + 0x3c] ",
+        "source_line": 368,
+        "source_opcode": "FLD",
+        "source_operand": "dword ptr [edx + wMax]",
+        "source_function": "update_bounds",
+        "canonical_operand": "dwordptr[s:3c]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba6e1",
+        "native_opcode": "FCOMIP",
+        "native_operand": "ST0,ST1 ",
+        "source_line": 369,
+        "source_opcode": "FCOMIP",
+        "source_operand": "st(0), st(1)",
+        "source_function": "update_bounds",
+        "canonical_operand": "st(0),st(1)",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba6e3",
+        "native_opcode": "FSTP",
+        "native_operand": "ST0 ",
+        "source_line": 370,
+        "source_opcode": "FSTP",
+        "source_operand": "st(0)",
+        "source_function": "update_bounds",
+        "canonical_operand": "st(0)",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba74b",
+        "native_opcode": "FILD",
+        "native_operand": "dword ptr [ESP + 0x54] ",
+        "source_line": 392,
+        "source_opcode": "FILD",
+        "source_operand": "dword ptr [esi + wConversion]",
+        "source_function": "advance_glyph",
+        "canonical_operand": "dwordptr[s:54]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba74f",
+        "native_opcode": "FLD",
+        "native_operand": "float ptr [EDI + 0x1d8] ",
+        "source_line": 393,
+        "source_opcode": "FLD",
+        "source_operand": "dword ptr [ebx + 0x1d8]",
+        "source_function": "advance_glyph",
+        "canonical_operand": "dwordptr[text:1d8]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba755",
+        "native_opcode": "FMUL",
+        "native_operand": "ST1 ",
+        "source_line": 394,
+        "source_opcode": "FMUL",
+        "source_operand": "st(0), st(1)",
+        "source_function": "advance_glyph",
+        "canonical_operand": "st(0),st(1)",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba759",
+        "native_opcode": "FLD",
+        "native_operand": "float ptr [ESP + 0x28] ",
+        "source_line": 397,
+        "source_opcode": "FLD",
+        "source_operand": "dword ptr [esi + wSpaceStep]",
+        "source_function": "advance_glyph",
+        "canonical_operand": "dwordptr[s:28]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba75d",
+        "native_opcode": "FLD",
+        "native_operand": "ST0 ",
+        "source_line": 398,
+        "source_opcode": "FLD",
+        "source_operand": "st(0)",
+        "source_function": "advance_glyph",
+        "canonical_operand": "st(0)",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba75f",
+        "native_opcode": "FADD",
+        "native_operand": "float ptr [ESP + 0x14] ",
+        "source_line": 400,
+        "source_opcode": "FADD",
+        "source_operand": "dword ptr [esi + wPen]",
+        "source_function": "advance_glyph",
+        "canonical_operand": "dwordptr[s:14]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba76f",
+        "native_opcode": "FSTP",
+        "native_operand": "float ptr [ESP + 0x14] ",
+        "source_line": 407,
+        "source_opcode": "FSTP",
+        "source_operand": "dword ptr [esi + wPen]",
+        "source_function": "advance_glyph",
+        "canonical_operand": "dwordptr[s:14]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba773",
+        "native_opcode": "FADD",
+        "native_operand": "float ptr [ESP + 0x1c] ",
+        "source_line": 408,
+        "source_opcode": "FADD",
+        "source_operand": "dword ptr [esi + wSum]",
+        "source_function": "advance_glyph",
+        "canonical_operand": "dwordptr[s:1c]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba777",
+        "native_opcode": "FSTP",
+        "native_operand": "float ptr [ESP + 0x1c] ",
+        "source_line": 409,
+        "source_opcode": "FSTP",
+        "source_operand": "dword ptr [esi + wSum]",
+        "source_function": "advance_glyph",
+        "canonical_operand": "dwordptr[s:1c]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba785",
+        "native_opcode": "FLD",
+        "native_operand": "float ptr [EDI + 0x114] ",
+        "source_line": 424,
+        "source_opcode": "FLD",
+        "source_operand": "dword ptr [ebx + 0x114]",
+        "source_function": "finish_line",
+        "canonical_operand": "dwordptr[text:114]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba78b",
+        "native_opcode": "FLD",
+        "native_operand": "float ptr [ESP + 0x1c] ",
+        "source_line": 425,
+        "source_opcode": "FLD",
+        "source_operand": "dword ptr [esi + wSum]",
+        "source_function": "finish_line",
+        "canonical_operand": "dwordptr[s:1c]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba78f",
+        "native_opcode": "FCOMIP",
+        "native_operand": "ST0,ST1 ",
+        "source_line": 426,
+        "source_opcode": "FCOMIP",
+        "source_operand": "st(0), st(1)",
+        "source_function": "finish_line",
+        "canonical_operand": "st(0),st(1)",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba791",
+        "native_opcode": "FSTP",
+        "native_operand": "ST0 ",
+        "source_line": 427,
+        "source_opcode": "FSTP",
+        "source_operand": "st(0)",
+        "source_function": "finish_line",
+        "canonical_operand": "st(0)",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba7a3",
+        "native_opcode": "FLD",
+        "native_operand": "float ptr [EDI + 0x10c] ",
+        "source_line": 432,
+        "source_opcode": "FLD",
+        "source_operand": "dword ptr [ebx + 0x10c]",
+        "source_function": "finish_line",
+        "canonical_operand": "dwordptr[text:10c]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba7b0",
+        "native_opcode": "FADD",
+        "native_operand": "double ptr [0x00d7a210] ",
+        "source_line": 435,
+        "source_opcode": "FADD",
+        "source_operand": "qword ptr [edx]",
+        "source_function": "finish_line",
+        "canonical_operand": "qwordptr[va:00d7a210]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba7bc",
+        "native_opcode": "FSUB",
+        "native_operand": "double ptr [0x00ce6618] ",
+        "source_line": 440,
+        "source_opcode": "FSUB",
+        "source_operand": "qword ptr [edx]",
+        "source_function": "finish_line",
+        "canonical_operand": "qwordptr[va:00ce6618]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba7c2",
+        "native_opcode": "FMUL",
+        "native_operand": "float ptr [ESP + 0x4c] ",
+        "source_line": 441,
+        "source_opcode": "FMUL",
+        "source_operand": "dword ptr [esi + wHeightFloat]",
+        "source_function": "finish_line",
+        "canonical_operand": "dwordptr[s:4c]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba7c6",
+        "native_opcode": "FADD",
+        "native_operand": "float ptr [ESP + 0x20] ",
+        "source_line": 442,
+        "source_opcode": "FADD",
+        "source_operand": "dword ptr [esi + wTop]",
+        "source_function": "finish_line",
+        "canonical_operand": "dwordptr[s:20]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba7ca",
+        "native_opcode": "FSTP",
+        "native_operand": "float ptr [ESP + 0x20] ",
+        "source_line": 443,
+        "source_opcode": "FSTP",
+        "source_operand": "dword ptr [esi + wTop]",
+        "source_function": "finish_line",
+        "canonical_operand": "dwordptr[s:20]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba7dc",
+        "native_opcode": "FLD",
+        "native_operand": "float ptr [ESP + 0x3c] ",
+        "source_line": 458,
+        "source_opcode": "FLD",
+        "source_operand": "dword ptr [esi + wMax]",
+        "source_function": "vertical_metrics",
+        "canonical_operand": "dwordptr[s:3c]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba7e9",
+        "native_opcode": "FSUB",
+        "native_operand": "float ptr [ESP + 0x40] ",
+        "source_line": 461,
+        "source_opcode": "FSUB",
+        "source_operand": "dword ptr [esi + wMin]",
+        "source_function": "vertical_metrics",
+        "canonical_operand": "dwordptr[s:40]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba7f0",
+        "native_opcode": "FSTP",
+        "native_operand": "float ptr [ESP + 0x7c] ",
+        "source_line": 463,
+        "source_opcode": "FSTP",
+        "source_operand": "dword ptr [edi + 4]",
+        "source_function": "vertical_metrics",
+        "canonical_operand": "dwordptr[s:7c]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba7f4",
+        "native_opcode": "FLD",
+        "native_operand": "float ptr [ESP + 0x7c] ",
+        "source_line": 464,
+        "source_opcode": "FLD",
+        "source_operand": "dword ptr [edi + 4]",
+        "source_function": "vertical_metrics",
+        "canonical_operand": "dwordptr[s:7c]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba7fe",
+        "native_opcode": "FST",
+        "native_operand": "float ptr [EDI + 0x178] ",
+        "source_line": 466,
+        "source_opcode": "FST",
+        "source_operand": "dword ptr [ebx + 0x178]",
+        "source_function": "vertical_metrics",
+        "canonical_operand": "dwordptr[text:178]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba804",
+        "native_opcode": "FDIV",
+        "native_operand": "double ptr [0x00cef1b8] ",
+        "source_line": 468,
+        "source_opcode": "FDIV",
+        "source_operand": "qword ptr [edx]",
+        "source_function": "vertical_metrics",
+        "canonical_operand": "qwordptr[va:00cef1b8]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba80a",
+        "native_opcode": "FLD",
+        "native_operand": "float ptr [0x00e12fd4] ",
+        "source_line": 470,
+        "source_opcode": "FLD",
+        "source_operand": "dword ptr [edx]",
+        "source_function": "vertical_metrics",
+        "canonical_operand": "dwordptr[va:00e12fd4]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba810",
+        "native_opcode": "FLD",
+        "native_operand": "ST0 ",
+        "source_line": 471,
+        "source_opcode": "FLD",
+        "source_operand": "st(0)",
+        "source_function": "vertical_metrics",
+        "canonical_operand": "st(0)",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba812",
+        "native_opcode": "FMULP",
+        "native_operand": "ST2 ",
+        "source_line": 472,
+        "source_opcode": "FMULP",
+        "source_operand": "st(2), st(0)",
+        "source_function": "vertical_metrics",
+        "canonical_operand": "st(2),st(0)",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba814",
+        "native_opcode": "FXCH",
+        "native_operand": "",
+        "source_line": 473,
+        "source_opcode": "FXCH",
+        "source_operand": "st(1)",
+        "source_function": "vertical_metrics",
+        "canonical_operand": "st(1)",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba816",
+        "native_opcode": "FSTP",
+        "native_operand": "float ptr [ESP + 0x78] ",
+        "source_line": 474,
+        "source_opcode": "FSTP",
+        "source_operand": "dword ptr [edi]",
+        "source_function": "vertical_metrics",
+        "canonical_operand": "dwordptr[s:78]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba821",
+        "native_opcode": "FMUL",
+        "native_operand": "float ptr [EDI + 0x24] ",
+        "source_line": 478,
+        "source_opcode": "FMUL",
+        "source_operand": "dword ptr [ebx + 0x24]",
+        "source_function": "vertical_metrics",
+        "canonical_operand": "dwordptr[text:24]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba824",
+        "native_opcode": "FSUB",
+        "native_operand": "float ptr [ESP + 0x78] ",
+        "source_line": 479,
+        "source_opcode": "FSUB",
+        "source_operand": "dword ptr [edi]",
+        "source_function": "vertical_metrics",
+        "canonical_operand": "dwordptr[s:78]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba828",
+        "native_opcode": "FSTP",
+        "native_operand": "float ptr [ESP + 0x7c] ",
+        "source_line": 480,
+        "source_opcode": "FSTP",
+        "source_operand": "dword ptr [edi + 4]",
+        "source_function": "vertical_metrics",
+        "canonical_operand": "dwordptr[s:7c]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba82e",
+        "native_opcode": "FMUL",
+        "native_operand": "float ptr [EDI + 0x24] ",
+        "source_line": 483,
+        "source_opcode": "FMUL",
+        "source_operand": "dword ptr [ebx + 0x24]",
+        "source_function": "vertical_metrics",
+        "canonical_operand": "dwordptr[text:24]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba831",
+        "native_opcode": "FSUB",
+        "native_operand": "float ptr [ESP + 0x78] ",
+        "source_line": 484,
+        "source_opcode": "FSUB",
+        "source_operand": "dword ptr [edi]",
+        "source_function": "vertical_metrics",
+        "canonical_operand": "dwordptr[s:78]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba835",
+        "native_opcode": "FMUL",
+        "native_operand": "double ptr [0x00d7a280] ",
+        "source_line": 486,
+        "source_opcode": "FMUL",
+        "source_operand": "qword ptr [edx]",
+        "source_function": "vertical_metrics",
+        "canonical_operand": "qwordptr[va:00d7a280]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba83b",
+        "native_opcode": "FSTP",
+        "native_operand": "float ptr [ESP + 0x7c] ",
+        "source_line": 487,
+        "source_opcode": "FSTP",
+        "source_operand": "dword ptr [edi + 4]",
+        "source_function": "vertical_metrics",
+        "canonical_operand": "dwordptr[s:7c]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba841",
+        "native_opcode": "FSTP",
+        "native_operand": "ST0 ",
+        "source_line": 490,
+        "source_opcode": "FSTP",
+        "source_operand": "st(0)",
+        "source_function": "vertical_metrics",
+        "canonical_operand": "st(0)",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba86d",
+        "native_opcode": "FLD",
+        "native_operand": "float ptr [ESP + 0x58] ",
+        "source_line": 504,
+        "source_opcode": "FLD",
+        "source_operand": "dword ptr [esi + wConversion + 4]",
+        "source_function": "shift_position",
+        "canonical_operand": "dwordptr[s:58]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba874",
+        "native_opcode": "FADD",
+        "native_operand": "float ptr [ESP + 0x7c] ",
+        "source_line": 506,
+        "source_opcode": "FADD",
+        "source_operand": "dword ptr [edi + 4]",
+        "source_function": "shift_position",
+        "canonical_operand": "dwordptr[s:7c]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba881",
+        "native_opcode": "FSTP",
+        "native_operand": "float ptr [ESP + 0x58] ",
+        "source_line": 509,
+        "source_opcode": "FSTP",
+        "source_operand": "dword ptr [esi + wConversion + 4]",
+        "source_function": "shift_position",
+        "canonical_operand": "dwordptr[s:58]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba885",
+        "native_opcode": "FLD",
+        "native_operand": "float ptr [ESP + 0x58] ",
+        "source_line": 510,
+        "source_opcode": "FLD",
+        "source_operand": "dword ptr [esi + wConversion + 4]",
+        "source_function": "shift_position",
+        "canonical_operand": "dwordptr[s:58]",
+        "operand_alias_width_epoch_match": true
+      },
+      {
+        "native_address": "00aba896",
+        "native_opcode": "FSTP",
+        "native_operand": "float ptr [EAX + 0x4] ",
+        "source_line": 516,
+        "source_opcode": "FSTP",
+        "source_operand": "dword ptr [eax + 4]",
+        "source_function": "shift_position",
+        "canonical_operand": "dwordptr[dest:4]",
+        "operand_alias_width_epoch_match": true
+      }
+    ],
+    "sse_conversion_map": [
+      {
+        "native_address": "00aba294",
+        "source_function": "height_to_float",
+        "source_line": 132,
+        "source_instruction": "cvtsi2ss xmm0, eax"
+      },
+      {
+        "native_address": "00aba4a2",
+        "source_function": "scan_glyph",
+        "source_line": 208,
+        "source_instruction": "cvttss2si ecx, dword ptr [esi + wScan]"
+      },
+      {
+        "native_address": "00aba534",
+        "source_function": "truncate_scan",
+        "source_line": 242,
+        "source_instruction": "cvttss2si eax, dword ptr [edx + wScan]"
+      },
+      {
+        "native_address": "00aba5c2",
+        "source_function": "align_line",
+        "source_line": 298,
+        "source_instruction": "cvtsi2ss xmm1, edx"
+      },
+      {
+        "native_address": "00aba5f7",
+        "source_function": "align_line",
+        "source_line": 316,
+        "source_instruction": "cvtsi2ss xmm1, edx"
+      },
+      {
+        "native_address": "00aba625",
+        "source_function": "align_line",
+        "source_line": 331,
+        "source_instruction": "cvtsi2ss xmm1, edx"
+      }
+    ]
+  },
+  "target_verification": {
+    "bsp_cli_client_verify_called": true,
+    "project": "bsp",
+    "configured_project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "route": "bsp.py ghidra count and ensure --status; entire saved listing read with bsp.py show --asm in capped pages"
+  },
+  "static_pin_counts": {
+    "new_Source": 2,
+    "suppliers": 19,
+    "frozen_Source_evidence": 20,
+    "raw_exports": 3,
+    "PE_literals": 8,
+    "instruction_maps": 457,
+    "x87": 84,
+    "SSE": 6,
+    "calls": 15,
+    "all_passed": true
+  },
+  "no_Source_edits_build_tests_probe_game_process_actions_or_Ghidra_writes": true,
+  "classification": "Independent whole raw wrapped Text ordinary library Source review; genuine provider/app/ABI/runtime gates retained",
+  "verdict": "accepted_for_Root_common_build_with_explicit_remaining_genuine_bindings",
+  "actionable_findings": [],
+  "actionable_finding_count": 0,
+  "scope": {
+    "only_two_new_review_evidence_files": true,
+    "reviewed_packet_via_git_show_without_merging_Source_ancestry": true,
+    "no_Source96_admission": true,
+    "entire_header_CPP_and_Native_assembly_read": true,
+    "Source_line_counts": {
+      "header": 166,
+      "CPP": 782
+    }
+  },
+  "manual_contract_review": {
+    "entry_and_copy": "Captured Text survives whole rawAB80C0; current Font+14 is MOVSX16, then source home0 DWORD capture, then CVTSI2SS/full signed height stores before copy. Equal raw input header/TextEC skips assignment; otherwise genuine raw4C53E0 preserve1, then CURRENT source length and data pointers, forward WORD copy through NUL without cap.",
+    "home0": "S78 external home0 is source pointer, savedCW LOWWORD preserving upperWORD, all-spaces LOWBYTE preserving other bytes, full successor/line-end pointer, then scaled height float. Actual SAME writable home; no snapshot/copyback/restore.",
+    "home1": "S7C is captured Section for initial counts, separately reloaded for both first-glyph material calls, late reloaded ONLY after processed-text arm (initial-empty retains initial capture), then overwritten span/zero/vertical-offset float. Counts/loop use captured Section after home destruction.",
+    "private_image": "Ordinary100B S10..73 with17DWORDs, actual float3 S54 and S68, DWORD60/64. Raw integer aliases use asm object representations without typed DWORD lvalue aliases; helper receives genuine float3 object. No initialization or destructor cleanup. Authentic staleS28 and other residue remain caller proof.",
+    "width_and_scan": "Native FNSTCW/truncCW OR0C00/FISTP64 lowDWORD/exact FLDCW restore points. Scan has original unsigned2^32 correction, FCOMI/FSTP_ST1/JA unordered path, SSE CVTTSS2SI, trailing-space retreat and repeated current F0 reads. Candidate ST0 stays in one asm region across required integer/string operations.",
+    "alignment": "Full mode branches0/1/2/3 only write what Native writes. Unsupported modes preserve stale S28 and current pen without rejection/defaulting. Justification tests spaces!=0 then signed FIDIV(spaces-1), including unguarded zero divisor at spaces1. No std max/min, FP reset, cap or content-domain rejection.",
+    "genuine_Font_and_resources": "All3Font calls directly reuse rawAD4480 with captured current Font, actual uint16 key home and retained scratch. First texture0 uses glyph18 then current section/material20; only AFTER return read glyph1C and separately current section/material20 for texture1. Current pen captured only after both calls, then first byte cleared/Text18C store.",
+    "Glyph_and_history": "S68 float3 Y/Z initialized once per nonempty line, X after all10 Native-order home stores. SAME pointer at zero-based homes1/4/5; full signed height at7. Direct whole071 gets SAME10volatile homes/context and distinct already-prepared record selected by parent identity. No native operand/work/allocation/reentry/FP/cap/default/reuse policy in selector. Selected history retained; completed identities do not follow refills.",
+    "post_Glyph": "No pointer/counter/pen advance until whole Glyph returns. Current code unit, captured glyph+12 and current Text1D8 are reread; independent caller pen is not copied from mutable Glyph position/home. ST1 retains UNSCALED advance for line sum while pen uses current scaled advance; space branch duplicates the actual S28 step.",
+    "line_metrics": "Text110 zeroed only at width epoch, increments current value per processed line. Text114 is not initialized here and changes only ordered-greater sum (JBE retains on unordered). Bounds use exact FCOMIP/JA unordered arms; line Y uses current Text10C but captured pre-copy signed height float and original double constants.",
+    "vertical_and_counts": "Exact FST/FDIV/FLD/FLD_ST0/FMULP_ST2/FXCH/FSTP and alignment tails overwrite actual homes. Current E12FD4 is borrowed directly from SAME Glyph context, not E12FC4 or a copy. Final counts use LOWWORD quad count; no range/count cap.",
+    "position_and_unmaps": "Whole genuine4768D0 called on captured vertex with SAME S54 float3/preimage/current index. Then ordered x87 Y offset, current stride/base/mapping reads/stores and CURRENT section+10 unsigned loop condition. Capture index current profile/target, call/unmap; only after return read captured vertex CURRENT profile/+14. No B865A0 anywhere.",
+    "lifetime_and_escapes": "One-shot record guard is metadata admission only. Frame destructor is default/no-op. Native has no local EH; catch records diagnostics/failed phase and bare-rethrows without Native cleanup/unmap/FP restore/retirement/retry/rollback/termination. All entered maps/homes/private backing/history/providers retained by actual caller."
+  },
+  "exception_snapshot_qualification": {
+    "producer_wording": "Producer doc/report says exact current exception_ptr.",
+    "review_qualification": "Only the snapshot returned by std::current_exception at that catch is recorded. Installed SDK and sealed423/874 fixtures show capture may allocate/copy/substitute and repeated snapshots need not compare equal. It is not passive exact active-object identity, Native-vs-host provenance or cleanup permission.",
+    "Source_consistency": "Source and header already say retention only/no origin; no Source defect or frozen evidence rewrite is required. Ordinary Source capture effects/private Native EH/secondary identity remain qualified.",
+    "authority": "No Native permission from phase, boundary, entered/returned fields, public bool, provider_call, exception type or exception_ptr."
+  },
+  "direct_provider_signature_review": {
+    "raw_actual_receivers_verified": true,
+    "AB80C0": "void* actualText + genuine context + caller-retained clear record",
+    "4C53E0": "void* actual header + SAME Glyph NativeStringRawPoolContext + captured length + preserve1; no typed string projection",
+    "B74640": "private exact raw Model180 load, unused argument0 has no effect; no typed Model owner",
+    "B73260": "existing unchecked actual Mesh pointer/index0 API",
+    "AD4480": "actual raw Font + SAME actual uint16 key home and raw lookup scratch",
+    "B189F0": "actual raw material/index/texture + SAME actual-owner registry; no typed material/texture projection",
+    "AB98F0": "whole071 actual Text/SAME ten mutable homes/context/preprepared record",
+    "observed_stream_targets": "B49980/B49B60/B49C70/B49A80 directly reuse raw mapping services; literal read-only0 is represented by existing byte API without narrowing this Native literal. Other targets remain mandatory genuine transports, not codeword casts or fallback.",
+    "other_stream_current": "Pure SAME live table resolver after captured profile; preserve current target word and actual receiver for each call. No newer-profile substitution/code pointer cast/synthesized table.",
+    "4768D0": "Whole mandatory provider is explicitly unclosed. Existing initialized-format raw helper false is not successful output/default/retry or a format admission; no preliminary classification read may replace getter epochs. Root separate whole-getter packet is not credited/admitted here."
+  },
+  "remaining_gates": [
+    "Root common compilation/integration and independent review",
+    "genuine seven-method binding/current other targets/4768D0 private scratch",
+    "authentic actual scratch preimage and full graph/recursive record lifetimes",
+    "genuine child/reference birth/custody and passive private failure-origin composition",
+    "private Native stack/FH3/SEH/fault/secondary-exception and ABI/runtime/game validation"
+  ],
+  "additional_gates": [
+    "Genuine seven-method binding, current OTHER stream families and authentic whole4768D0 private scratch/FP operation remain required.",
+    "Actual independent Text/Model188/Font/material/texture/renderer/mapping/current-profile/children/reservation/reference graph, recursive fresh records and authentic raw preimages/backing/lifetimes remain caller proof.",
+    "Private per-current-cause/edge/issuer failure-origin composition remains separate. Wrapped no-origin failure diagnostics cannot authorize changed96 wide cleanup or Glyph native failed-constructor return.",
+    "No Source96 or actual FC1/wrapped producer binding, frontend activation, Original stack/FH3/SEH/fault/unmasked-FP/secondary or binary ABI claim. Root owns common build."
+  ],
+  "readiness": {
+    "library_Source_statically_reviewed": true,
+    "common_build_run_by_reviewer": false,
+    "actual_seven_method_binding_closed": false,
+    "whole4768D0_provider_closed_by_this_packet": false,
+    "actual_provider_and_recursive_graph_lifetime_proved": false,
+    "Native_origin_closed": false,
+    "changed96_admitted": false,
+    "Original_ABI_FH3_SEH_fault_secondary_unmaskedFP_proved": false,
+    "game_runtime_activation": false,
+    "whole_frontend_ready": false
+  },
+  "new_credit": {
+    "Original": 0,
+    "Native_helper": 0,
+    "vendor": 0,
+    "CG": 0,
+    "trivial": 0,
+    "duplicate_body": 0,
+    "ABI": 0,
+    "Native_origin": 0,
+    "runtime": 0,
+    "gameplay": 0,
+    "activation": 0
+  }
+}
