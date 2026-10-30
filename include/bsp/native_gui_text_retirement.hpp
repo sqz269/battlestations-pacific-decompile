@@ -103,6 +103,7 @@ void* delete_native_gui_text_storage_00ab8ee0(void* actual_text,
 struct NativeGuiTextPrimaryPrefixLifetimeContext;
 struct NativeGuiTextShaderStorageFrame;
 class NativeGuiTextFontLifetimeStorageFrame;
+class NativeGuiTextEmptyUnchangedStorageFrame;
 struct NativeGuiTextRawModelRetirementContext {
     NativeGuiTextRawModelSectionStorageContext& resources;
     NativeGuiTextRawModelRecord& model; // SAME independent85 record, not Text slot storage
@@ -118,6 +119,9 @@ struct NativeGuiTextRawModelRetirementContext {
     // Fixed before pools/raw122. Presence selects a concrete staged proof,
     // never ownership by itself; current callers leave this null.
     NativeGuiTextFontLifetimeStorageFrame* const font_lifetime{};
+    // One fixed pre-pool leaf reservation. This adds no native ownership or
+    // scalar permission; old callers retain NULL and their existing predicates.
+    const NativeGuiTextEmptyUnchangedStorageFrame* const empty_unchanged{};
 };
 // DEFAULT constructor/bind admission stays strict. These overloads additionally
 // admit the optional private-receipt-qualified primary prefix lifetime graph;
