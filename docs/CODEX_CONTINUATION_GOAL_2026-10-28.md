@@ -987,3 +987,26 @@ hostFALSE projection pass. All NINE raw choices remain FALSE. Fresh private
 Source/linkage/runtime admission is next; olddc2c/71db tests do not qualify this
 layout. No actual runtime, wholecontent/caller, full13/USN21/Page/P4, visual or
 ABI/production credit follows. See CODEX_GUI_RAW_EMPTY_UNCHANGED_OWNER_INTEGRATION.md.
+
+Fresh private EMPTY build/static preparation now pins OFFd58e0e3ae and the
+one-bool privateONac60a3af in a separate immutable execution tree. OFF/ON existing
+checks2/2 pass12.71s/14.07s; static42/42 includes15 actual compiled call/jump
+edges, and Root independently rehashed38 archivedfiles. No game/controller/
+evaluator/observer ran. Outcome-blind Source/protocol and v4payload reviews
+pass, but execution is not approved: v5operator guards must bind genuine
+sampler1055/exclusive-window/current-process evidence before EACH invocation.
+Checkpoint3 Source review includes actualCIMcreation time, per-PIDcap8 and
+NoForceStop with no stale cleanup. A copiedguard missing-context negative
+check rejects correctly, without invoking a target. All published choices
+remain FALSE. Genuine loaded rawlocale-manager binding is also still missing
+for uppercase; a stale cdecl note is contradicted by savedECXmanager/RET4 ASM.
+Proof scopes and open gates: CODEX_GUI_RAW_EMPTY_UNCHANGED_RUNTIME_PREPARATION.md.
+
+The frozen ac60 EMPTY candidate is on Source-admission HOLD. Installed Viper19
+sets uppercase_only=true, while the leaf requires CURRENT Font+0x48==0.
+The Source descriptor-to-constructor chain preserves that flag; exact effective
+VFS resolution is not runtime-proven. No game was launched and no asset, flag,
+font choice or frozen artifact was changed. Prospective v5 evaluator Source
+review is complete; operator permission cannot waive this separate domain
+conflict. Work now advances the genuine raw locale-manager publication/load
+contract required by A9EC30, with semantic LocaleTables substitution excluded.

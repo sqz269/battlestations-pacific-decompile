@@ -66,7 +66,8 @@ function Assert-SamePath([string]$recorded, [string]$expected) {
         throw "Receipt path does not match expected location: $expected"
     }
 }
-function Assert-RecordedHashes($records, [string]$root, [switch]$RootFilesOnly) {
+function Assert-RecordedHashes($records, [string]$root, [switch]$RootFilesOnly, [switch]$AllowPrivateRuntimeLogs) {
+    if ($AllowPrivateRuntimeLogs -and -not $RootFilesOnly) { throw 'Private log allowance requires root-file validation.' }
     $seen = @{}
     foreach ($record in $records) {
         $relative = [string]$record.path
@@ -78,6 +79,9 @@ function Assert-RecordedHashes($records, [string]$root, [switch]$RootFilesOnly) 
         $path = [IO.Path]::GetFullPath((Join-Path $root $relative))
         if (-not (Is-InTree $path $root) -or $path -eq $root) { throw 'Hash record escapes its recorded root.' }
         Assert-NoReparseAncestor $path
+        # A prepared copy is reusable after the game writes its own logs.
+        # Source hashes and every other private root file remain required.
+        if ($AllowPrivateRuntimeLogs -and $relative -in @('bsp_debug.log', 'xlive_debug.log')) { continue }
         $actual = Hash-Record $path $relative
         if ($actual.sha256 -ne $record.sha256 -or $actual.length -ne $record.length) { throw "Prepared/original file identity changed: $path" }
     }
@@ -134,7 +138,7 @@ if ($RunPrepared) {
         if (@($rootRecords | Where-Object { $_.path -ieq $name }).Count -ne 1) { throw "Preparation receipt lacks unique required retail identity: $name" }
     }
     Assert-RecordedHashes $rootRecords $source -RootFilesOnly
-    Assert-RecordedHashes $rootRecords $prepared.private_game -RootFilesOnly
+    Assert-RecordedHashes $rootRecords $prepared.private_game -RootFilesOnly -AllowPrivateRuntimeLogs
     Assert-RecordedHashes @($prepared.profile_files_sha256) $profileSource
     $privateProfileRoot = Join-Path $prepared.private_documents 'Battlestations-Pacific'
     $privateProfileRecords = @($prepared.profile_files_sha256)
