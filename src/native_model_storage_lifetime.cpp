@@ -5,6 +5,7 @@
 #include <exception>
 #include <new>
 #include <stdexcept>
+#include <utility>
 #include <type_traits>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -322,6 +323,15 @@ NativeModelStorageReference::NativeModelStorageReference(void* owner,
     : RenderCommandReference(bind_count(owner, c, construction, acquired)), identity_(owner),
       context_(c), frame_(frame), acquired_(acquired) {
     c.storage.node.scenes.owners.bind(owner, *this);
+    construction.metadata_bound = true;
+}
+NativeModelStorageReference::NativeModelStorageReference(void* owner,
+    NativeModelStorageIdentityContext& c, NativeModelStorageConstructAcquired& construction,
+    NativeModelStorageLifetimeFrame& frame, NativeModelStorageLifetimeAcquired& acquired,
+    NativeRenderActualOwnerRegistry::BindingAdmission& reservation)
+    : RenderCommandReference(bind_count(owner, c, construction, acquired)), identity_(owner),
+      context_(c), frame_(frame), acquired_(acquired) {
+    c.storage.node.scenes.owners.publish(std::move(reservation), *this);
     construction.metadata_bound = true;
 }
 NativeModelStorageReference::~NativeModelStorageReference() {

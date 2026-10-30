@@ -1,0 +1,797 @@
+{
+  "schema_version": 1,
+  "packet": "codex-reserved-text-model-reference-birth-independent-review",
+  "classification": "Independent static review of reserved Text/Model metadata birth; no new Native body or actual consumer binding",
+  "reviewed_commit": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+  "reviewed_baseline": "1465a08827a97a50ee81e1eda850e59300097492",
+  "working_HEAD": "3268075b35440ee0ca28207b4e046d2677f692d9",
+  "published_Main_baseline": "bcf127f7d796506accdb13e18723ef7580835b2b",
+  "utc": "2026-10-30T20:06:03.511589+00:00",
+  "verdict": "accepted_for_Root_common_build_with_existing_caller_and_failure_origin_gates",
+  "actionable_findings": [],
+  "actionable_finding_count": 0,
+  "reviewed_evidence": [
+    {
+      "path": "docs/CC16_RESERVED_TEXT_MODEL_REFERENCE_BIRTH.md",
+      "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "e296f0cba1841992eb20403f21ed0d7cee038c32",
+      "sha256": "0b6baa062db3f00024b2010cd65c0056eea42838b76afa0ace32f92dfcf68b5a",
+      "bytes": 8413
+    },
+    {
+      "path": "reports/cc16_reserved_text_model_reference_birth.json",
+      "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "9830a07de4f77e67722a62fd047fcb7f226b178a",
+      "sha256": "c6362b49b11ec568b371d4d5953a18cd143ede3042dc3510cc2ea41d605d88c9",
+      "bytes": 19638
+    }
+  ],
+  "production_file_inverse_proof": [
+    {
+      "baseline": {
+        "path": "include/bsp/native_gui_text_reference.hpp",
+        "revision": "1465a08827a97a50ee81e1eda850e59300097492",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "3002563931447a3429fcf9d3c966fc1dc6ff09ce",
+        "sha256": "e270e6f39bcf6014b18bb04d6f3d5eacf24ee09596dca809b99ca778bb1c3eb1",
+        "bytes": 10891
+      },
+      "reviewed": {
+        "path": "include/bsp/native_gui_text_reference.hpp",
+        "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "492cf04c44cfeae90887bba02c32039f325bc318",
+        "sha256": "62224192a6d0fb5043ed68a3f34374ce1bc3584ee1f3bb031c1041b33fdd1827",
+        "bytes": 12718
+      },
+      "insertion_ranges": [
+        {
+          "first_line": 162,
+          "last_line": 164,
+          "lines": 3,
+          "git_lf_bytes": 286,
+          "git_lf_sha256": "2825d73dea6268a34760f86ce4081b1d3ab6148397c8880f1e7454bd1ff19fd1",
+          "independently_verified": true
+        },
+        {
+          "first_line": 168,
+          "last_line": 171,
+          "lines": 4,
+          "git_lf_bytes": 288,
+          "git_lf_sha256": "75efaa4561e38afe4173ba2445259300487b2a66cc41881b3b054e2650edc2f3",
+          "independently_verified": true
+        },
+        {
+          "first_line": 199,
+          "last_line": 214,
+          "lines": 16,
+          "git_lf_bytes": 1253,
+          "git_lf_sha256": "15a90e45cba5ae600b99682ad9fafa0bc15874f6075d6645998d1097745bd071",
+          "independently_verified": true
+        }
+      ],
+      "independent_inverse_sha256": "e270e6f39bcf6014b18bb04d6f3d5eacf24ee09596dca809b99ca778bb1c3eb1",
+      "entire_old_file_exactly_restored": true,
+      "merged_HEAD_source_identical": true
+    },
+    {
+      "baseline": {
+        "path": "src/native_gui_text_reference.cpp",
+        "revision": "1465a08827a97a50ee81e1eda850e59300097492",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "136bf8ab484aa78a5ce7a65a3dc8ce38851aac99",
+        "sha256": "e4e363507f24729369a69dc92c825b08b08524dd1a368cca40883f177b3d14d9",
+        "bytes": 57192
+      },
+      "reviewed": {
+        "path": "src/native_gui_text_reference.cpp",
+        "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "f3a8e3a5c855acc668fb526d6de781621cfdb8c2",
+        "sha256": "0fb188e79dbc014db098d01e3afff14a5e07f1671a33db063d2e126e5af4257e",
+        "bytes": 58312
+      },
+      "insertion_ranges": [
+        {
+          "first_line": 24,
+          "last_line": 24,
+          "lines": 1,
+          "git_lf_bytes": 19,
+          "git_lf_sha256": "ff110192bdb4c9ba99a3352b17cf8bfe10b6d565b274414a657cb0db5ad0e541",
+          "independently_verified": true
+        },
+        {
+          "first_line": 792,
+          "last_line": 808,
+          "lines": 17,
+          "git_lf_bytes": 1101,
+          "git_lf_sha256": "9b53297798134a9794823e48f1e1f4f05f6e43e6f2fc2dedfea4b34e93fbc36b",
+          "independently_verified": true
+        }
+      ],
+      "independent_inverse_sha256": "e4e363507f24729369a69dc92c825b08b08524dd1a368cca40883f177b3d14d9",
+      "entire_old_file_exactly_restored": true,
+      "merged_HEAD_source_identical": true
+    },
+    {
+      "baseline": {
+        "path": "include/bsp/native_model_storage_lifetime.hpp",
+        "revision": "1465a08827a97a50ee81e1eda850e59300097492",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "d00d1110e199b05a65c948d42017593a8f102661",
+        "sha256": "0764b927078091103c21e6c2d6215ccb7a403c2b3eed832943dfae632a55ec3e",
+        "bytes": 8247
+      },
+      "reviewed": {
+        "path": "include/bsp/native_model_storage_lifetime.hpp",
+        "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "319ac5182e317f50e999437b3d300c92d695fbdf",
+        "sha256": "7754b1a3df10ccf79a83899513b48ab4616df9b9f9a5da54400ed7d4fe51ea1f",
+        "bytes": 9363
+      },
+      "insertion_ranges": [
+        {
+          "first_line": 4,
+          "last_line": 4,
+          "lines": 1,
+          "git_lf_bytes": 41,
+          "git_lf_sha256": "dfa605b1c360a854c086b390a0c254bc82e1734e7288951c7362c67b590ac4a7",
+          "independently_verified": true
+        },
+        {
+          "first_line": 120,
+          "last_line": 133,
+          "lines": 14,
+          "git_lf_bytes": 1075,
+          "git_lf_sha256": "06dd7ea5dd55636d71fffbd3f52731ace295ad82d04ea61279b2f69dd343ebfa",
+          "independently_verified": true
+        }
+      ],
+      "independent_inverse_sha256": "0764b927078091103c21e6c2d6215ccb7a403c2b3eed832943dfae632a55ec3e",
+      "entire_old_file_exactly_restored": true,
+      "merged_HEAD_source_identical": true
+    },
+    {
+      "baseline": {
+        "path": "src/native_model_storage_lifetime.cpp",
+        "revision": "1465a08827a97a50ee81e1eda850e59300097492",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "9aa0259d0d2deebd85f14805b9bd9eaae6b76587",
+        "sha256": "1ded6a8042e2ce26bdcd9852dae2c14b16cee1efdba0227ed479d0c9491cddd8",
+        "bytes": 17033
+      },
+      "reviewed": {
+        "path": "src/native_model_storage_lifetime.cpp",
+        "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "7ca6d5ae17001f48426aeed0826f2db496a56f2f",
+        "sha256": "d9ea114fa0e88f42f5a692adf96014827c32cd5d856a8e228e1ccd0550dd99b0",
+        "bytes": 17638
+      },
+      "insertion_ranges": [
+        {
+          "first_line": 8,
+          "last_line": 8,
+          "lines": 1,
+          "git_lf_bytes": 19,
+          "git_lf_sha256": "ff110192bdb4c9ba99a3352b17cf8bfe10b6d565b274414a657cb0db5ad0e541",
+          "independently_verified": true
+        },
+        {
+          "first_line": 328,
+          "last_line": 336,
+          "lines": 9,
+          "git_lf_bytes": 586,
+          "git_lf_sha256": "d3e62610c503213df2cfe979cbe0f9f17f098cdfa793724674e817df2d61d35d",
+          "independently_verified": true
+        }
+      ],
+      "independent_inverse_sha256": "1ded6a8042e2ce26bdcd9852dae2c14b16cee1efdba0227ed479d0c9491cddd8",
+      "entire_old_file_exactly_restored": true,
+      "merged_HEAD_source_identical": true
+    }
+  ],
+  "insertion_summary": {
+    "Source_files": 4,
+    "added_lines": 66,
+    "deleted_lines": 0,
+    "replaced_old_bytes": 0,
+    "whole_baseline_files_exactly_restored": 4,
+    "class_data_virtuals_and_old_APIs_unchanged": true,
+    "diff_numstat": [
+      "23\t0\tinclude/bsp/native_gui_text_reference.hpp",
+      "15\t0\tinclude/bsp/native_model_storage_lifetime.hpp",
+      "18\t0\tsrc/native_gui_text_reference.cpp",
+      "10\t0\tsrc/native_model_storage_lifetime.cpp"
+    ]
+  },
+  "eight_existing_body_pins": [
+    {
+      "name": "raw_model_text_preflight",
+      "path": "src/native_gui_text_reference.cpp",
+      "baseline_first_line": 601,
+      "baseline_last_line": 680,
+      "current_first_line": 602,
+      "current_last_line": 681,
+      "git_lf_bytes": 6366,
+      "git_lf_sha256": "5d0a4aa530f4642c398b82cc8370851215f087173cff12ff3ddd67a5017e5363",
+      "byte_identical": true,
+      "independently_verified": true
+    },
+    {
+      "name": "ordinary_raw_model_text_binder",
+      "path": "src/native_gui_text_reference.cpp",
+      "baseline_first_line": 776,
+      "baseline_last_line": 782,
+      "current_first_line": 777,
+      "current_last_line": 783,
+      "git_lf_bytes": 463,
+      "git_lf_sha256": "52fd81ab0e55c6332974976fcbd726e19f95c597e472482ed43b80b786eb30ea",
+      "byte_identical": true,
+      "independently_verified": true
+    },
+    {
+      "name": "ordinary_raw_model_text_constructor",
+      "path": "src/native_gui_text_reference.cpp",
+      "baseline_first_line": 783,
+      "baseline_last_line": 790,
+      "current_first_line": 784,
+      "current_last_line": 791,
+      "git_lf_bytes": 505,
+      "git_lf_sha256": "021db5bb5528ccdbf7250df8f073c6c1ae20d91908730d1ba56b41267d795b5c",
+      "byte_identical": true,
+      "independently_verified": true
+    },
+    {
+      "name": "model_bind_count",
+      "path": "src/native_model_storage_lifetime.cpp",
+      "baseline_first_line": 86,
+      "baseline_last_line": 103,
+      "current_first_line": 87,
+      "current_last_line": 104,
+      "git_lf_bytes": 1082,
+      "git_lf_sha256": "2fffb970bd72d342d1769b1aafe27519e253ea40b1f4ff7ad3956be516444dc3",
+      "byte_identical": true,
+      "independently_verified": true
+    },
+    {
+      "name": "ordinary_model_reference_constructor",
+      "path": "src/native_model_storage_lifetime.cpp",
+      "baseline_first_line": 319,
+      "baseline_last_line": 326,
+      "current_first_line": 320,
+      "current_last_line": 327,
+      "git_lf_bytes": 498,
+      "git_lf_sha256": "d8a5e4dd0ff9218b9b367b14951c191ba9de9216982248ce3a251b62e4d8ca4c",
+      "byte_identical": true,
+      "independently_verified": true
+    },
+    {
+      "name": "existing_registry_prepare_binding",
+      "path": "src/native_render_context.cpp",
+      "baseline_first_line": 101,
+      "baseline_last_line": 109,
+      "current_first_line": 101,
+      "current_last_line": 109,
+      "git_lf_bytes": 610,
+      "git_lf_sha256": "dd535243fe123bf5f760965a45409dc6a482c8d12a371c02d3e650e3be717e1f",
+      "byte_identical": true,
+      "independently_verified": true
+    },
+    {
+      "name": "existing_registry_publish",
+      "path": "src/native_render_context.cpp",
+      "baseline_first_line": 111,
+      "baseline_last_line": 130,
+      "current_first_line": 111,
+      "current_last_line": 130,
+      "git_lf_bytes": 1002,
+      "git_lf_sha256": "c695a44836b4b6c71232bed4e9d63a52e2ee6ce7110c3c717066d690865fc496",
+      "byte_identical": true,
+      "independently_verified": true
+    },
+    {
+      "name": "existing_registry_find",
+      "path": "src/native_render_context.cpp",
+      "baseline_first_line": 141,
+      "baseline_last_line": 145,
+      "current_first_line": 141,
+      "current_last_line": 145,
+      "git_lf_bytes": 262,
+      "git_lf_sha256": "4221ed5d53beca3adb573b5be87398d9236e7c1acc761361eebf29eedcd93e1a",
+      "byte_identical": true,
+      "independently_verified": true
+    }
+  ],
+  "three_new_metadata_body_pins": [
+    {
+      "name": "reserved_raw_model_text_binder",
+      "path": "src/native_gui_text_reference.cpp",
+      "first_line": 792,
+      "last_line": 799,
+      "git_lf_bytes": 554,
+      "git_lf_sha256": "b33ec55cc500144c1041b36fc55c2e2563f08cd47ff102fc2c92c30cf8570cb0",
+      "independently_verified": true
+    },
+    {
+      "name": "reserved_raw_model_text_constructor",
+      "path": "src/native_gui_text_reference.cpp",
+      "first_line": 800,
+      "last_line": 808,
+      "git_lf_bytes": 547,
+      "git_lf_sha256": "16ee3266914d22877773b2aab847478a4d94ec1a28b9f671861d063106e79970",
+      "independently_verified": true
+    },
+    {
+      "name": "reserved_model_reference_constructor",
+      "path": "src/native_model_storage_lifetime.cpp",
+      "first_line": 328,
+      "last_line": 336,
+      "git_lf_bytes": 586,
+      "git_lf_sha256": "d3e62610c503213df2cfe979cbe0f9f17f098cdfa793724674e817df2d61d35d",
+      "independently_verified": true
+    }
+  ],
+  "unchanged_dependency_and_frozen_evidence_pins": [
+    {
+      "category": "unchanged_dependencies",
+      "historical": {
+        "path": "include/bsp/native_render_context.hpp",
+        "revision": "1465a08827a97a50ee81e1eda850e59300097492",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808",
+        "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+        "bytes": 10071
+      },
+      "at_reviewed_commit": {
+        "path": "include/bsp/native_render_context.hpp",
+        "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808",
+        "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+        "bytes": 10071
+      },
+      "byte_identical": true
+    },
+    {
+      "category": "unchanged_dependencies",
+      "historical": {
+        "path": "src/native_render_context.cpp",
+        "revision": "1465a08827a97a50ee81e1eda850e59300097492",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c",
+        "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+        "bytes": 11471
+      },
+      "at_reviewed_commit": {
+        "path": "src/native_render_context.cpp",
+        "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c",
+        "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+        "bytes": 11471
+      },
+      "byte_identical": true
+    },
+    {
+      "category": "unchanged_dependencies",
+      "historical": {
+        "path": "include/bsp/render_command_queue.hpp",
+        "revision": "1465a08827a97a50ee81e1eda850e59300097492",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "4f0f5ca5a87b59f7d05349a36619a4459e874e8d",
+        "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+        "bytes": 10656
+      },
+      "at_reviewed_commit": {
+        "path": "include/bsp/render_command_queue.hpp",
+        "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "4f0f5ca5a87b59f7d05349a36619a4459e874e8d",
+        "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+        "bytes": 10656
+      },
+      "byte_identical": true
+    },
+    {
+      "category": "frozen_artifacts",
+      "historical": {
+        "path": "include/bsp/native_front_end_frame_lifetime.hpp",
+        "revision": "d4e6aa48d20e55b6667a11d37a462c50ab2ee6e2",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "b58427ca1c6332f7c62409f298dca4d523fb571c",
+        "sha256": "a21b38daad89af7b6fc968273dece3fba3789ab22476299ea66cf88c4002b4d2",
+        "bytes": 4385
+      },
+      "at_reviewed_commit": {
+        "path": "include/bsp/native_front_end_frame_lifetime.hpp",
+        "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "b58427ca1c6332f7c62409f298dca4d523fb571c",
+        "sha256": "a21b38daad89af7b6fc968273dece3fba3789ab22476299ea66cf88c4002b4d2",
+        "bytes": 4385
+      },
+      "byte_identical": true
+    },
+    {
+      "category": "frozen_artifacts",
+      "historical": {
+        "path": "src/native_front_end_frame_lifetime.cpp",
+        "revision": "d4e6aa48d20e55b6667a11d37a462c50ab2ee6e2",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "1246c5fea7640f9754190cc86ee8614ea1567400",
+        "sha256": "50eae08b6ca3a7561b8ec1a1bfaeb7b2b717cb9c16f46ab4470f1befe0dcf4f8",
+        "bytes": 4768
+      },
+      "at_reviewed_commit": {
+        "path": "src/native_front_end_frame_lifetime.cpp",
+        "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "1246c5fea7640f9754190cc86ee8614ea1567400",
+        "sha256": "50eae08b6ca3a7561b8ec1a1bfaeb7b2b717cb9c16f46ab4470f1befe0dcf4f8",
+        "bytes": 4768
+      },
+      "byte_identical": true
+    },
+    {
+      "category": "frozen_artifacts",
+      "historical": {
+        "path": "docs/CC16_NATIVE_FRONT_END_FRAME_LIFETIME.md",
+        "revision": "d4e6aa48d20e55b6667a11d37a462c50ab2ee6e2",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "240491d6d58bc72b56ef5379a8da400523f25aaf",
+        "sha256": "3409aa99fb04a5e98aa05994563b6522ebb78dad506ec80db0c8aa85de7810ea",
+        "bytes": 10234
+      },
+      "at_reviewed_commit": {
+        "path": "docs/CC16_NATIVE_FRONT_END_FRAME_LIFETIME.md",
+        "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "240491d6d58bc72b56ef5379a8da400523f25aaf",
+        "sha256": "3409aa99fb04a5e98aa05994563b6522ebb78dad506ec80db0c8aa85de7810ea",
+        "bytes": 10234
+      },
+      "byte_identical": true
+    },
+    {
+      "category": "frozen_artifacts",
+      "historical": {
+        "path": "reports/cc16_native_front_end_frame_lifetime.json",
+        "revision": "d4e6aa48d20e55b6667a11d37a462c50ab2ee6e2",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "f192c477eb3c86d3546fc1d73802d8a034ae0b14",
+        "sha256": "f3c4b17cf1e49dafd606735cd4977cecc659edab841417cb007c5fd1eb50bea0",
+        "bytes": 23228
+      },
+      "at_reviewed_commit": {
+        "path": "reports/cc16_native_front_end_frame_lifetime.json",
+        "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "f192c477eb3c86d3546fc1d73802d8a034ae0b14",
+        "sha256": "f3c4b17cf1e49dafd606735cd4977cecc659edab841417cb007c5fd1eb50bea0",
+        "bytes": 23228
+      },
+      "byte_identical": true
+    },
+    {
+      "category": "frozen_artifacts",
+      "historical": {
+        "path": "include/bsp/native_mesh_section_layout_storage.hpp",
+        "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "9875909104d429eb1144a83d7c2947fc49c6e383",
+        "sha256": "19245d00005b8d543fdcd5b85e71dba091ca158063e38fd86010cfb8e72c8939",
+        "bytes": 6385
+      },
+      "at_reviewed_commit": {
+        "path": "include/bsp/native_mesh_section_layout_storage.hpp",
+        "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "9875909104d429eb1144a83d7c2947fc49c6e383",
+        "sha256": "19245d00005b8d543fdcd5b85e71dba091ca158063e38fd86010cfb8e72c8939",
+        "bytes": 6385
+      },
+      "byte_identical": true
+    },
+    {
+      "category": "frozen_artifacts",
+      "historical": {
+        "path": "src/native_mesh_section_layout_storage.cpp",
+        "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "3e473a56ff11e6f1f1b24713e6306f763c78e313",
+        "sha256": "d6f0378634d82d4287cf698dd529e24f3a53b4f1b6b0398647d33c4f956c4115",
+        "bytes": 5775
+      },
+      "at_reviewed_commit": {
+        "path": "src/native_mesh_section_layout_storage.cpp",
+        "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "3e473a56ff11e6f1f1b24713e6306f763c78e313",
+        "sha256": "d6f0378634d82d4287cf698dd529e24f3a53b4f1b6b0398647d33c4f956c4115",
+        "bytes": 5775
+      },
+      "byte_identical": true
+    },
+    {
+      "category": "frozen_artifacts",
+      "historical": {
+        "path": "docs/CC16_NATIVE_MESH_SECTION_LAYOUT_STORAGE.md",
+        "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "76088842ebf07edcc9b86b4144d064ecefa57ba2",
+        "sha256": "a50cc363c8c5a5d1afe47d0fe9c4859169f3569752f9340840f0f7a99e5abbb0",
+        "bytes": 12004
+      },
+      "at_reviewed_commit": {
+        "path": "docs/CC16_NATIVE_MESH_SECTION_LAYOUT_STORAGE.md",
+        "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "76088842ebf07edcc9b86b4144d064ecefa57ba2",
+        "sha256": "a50cc363c8c5a5d1afe47d0fe9c4859169f3569752f9340840f0f7a99e5abbb0",
+        "bytes": 12004
+      },
+      "byte_identical": true
+    },
+    {
+      "category": "frozen_artifacts",
+      "historical": {
+        "path": "reports/cc16_native_mesh_section_layout_storage.json",
+        "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "7d9f3e950b3fdea27eb7973298e9de5fabaed3b0",
+        "sha256": "11f6144d7de2e18c674a5a51471079d9a4240725e2a5f14211bf79a447698a05",
+        "bytes": 21782
+      },
+      "at_reviewed_commit": {
+        "path": "reports/cc16_native_mesh_section_layout_storage.json",
+        "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "7d9f3e950b3fdea27eb7973298e9de5fabaed3b0",
+        "sha256": "11f6144d7de2e18c674a5a51471079d9a4240725e2a5f14211bf79a447698a05",
+        "bytes": 21782
+      },
+      "byte_identical": true
+    },
+    {
+      "category": "frozen_artifacts",
+      "historical": {
+        "path": "include/bsp/native_gui_text_changed_storage.hpp",
+        "revision": "96dd22fd0f8b0cbc6ce97b6ed7f69af399993d33",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "056e9689803ff897d3340b73785adb3b2eb14b59",
+        "sha256": "13cc02308c28bf3ba443adfe1334627dffae05231a0c05e7bff6cbd634da5cc8",
+        "bytes": 10238
+      },
+      "at_reviewed_commit": {
+        "path": "include/bsp/native_gui_text_changed_storage.hpp",
+        "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "056e9689803ff897d3340b73785adb3b2eb14b59",
+        "sha256": "13cc02308c28bf3ba443adfe1334627dffae05231a0c05e7bff6cbd634da5cc8",
+        "bytes": 10238
+      },
+      "byte_identical": true
+    },
+    {
+      "category": "frozen_artifacts",
+      "historical": {
+        "path": "src/native_gui_text_changed_storage.cpp",
+        "revision": "96dd22fd0f8b0cbc6ce97b6ed7f69af399993d33",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "c8f766005b8a90f7250f467fb46bc0ab47989bc4",
+        "sha256": "721a3bff0f346ae3506deda59f5a7e892e7ca46eefb8fcaa4d57d04a9c1753a1",
+        "bytes": 18298
+      },
+      "at_reviewed_commit": {
+        "path": "src/native_gui_text_changed_storage.cpp",
+        "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "c8f766005b8a90f7250f467fb46bc0ab47989bc4",
+        "sha256": "721a3bff0f346ae3506deda59f5a7e892e7ca46eefb8fcaa4d57d04a9c1753a1",
+        "bytes": 18298
+      },
+      "byte_identical": true
+    },
+    {
+      "category": "frozen_artifacts",
+      "historical": {
+        "path": "docs/CC16_NATIVE_GUI_TEXT_CHANGED_STORAGE.md",
+        "revision": "96dd22fd0f8b0cbc6ce97b6ed7f69af399993d33",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "1c44053db72d1c06d13d0a506243e57f55fed5f7",
+        "sha256": "722dbb1c6f8a3304f95a6cba1b6bd9cf4cd0921f12776ff7da17cb6aecb408b8",
+        "bytes": 13922
+      },
+      "at_reviewed_commit": {
+        "path": "docs/CC16_NATIVE_GUI_TEXT_CHANGED_STORAGE.md",
+        "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "1c44053db72d1c06d13d0a506243e57f55fed5f7",
+        "sha256": "722dbb1c6f8a3304f95a6cba1b6bd9cf4cd0921f12776ff7da17cb6aecb408b8",
+        "bytes": 13922
+      },
+      "byte_identical": true
+    },
+    {
+      "category": "frozen_artifacts",
+      "historical": {
+        "path": "reports/cc16_native_gui_text_changed_storage.json",
+        "revision": "96dd22fd0f8b0cbc6ce97b6ed7f69af399993d33",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "06d650e4cc2c9680cdc15f3d42fd70e49b648fe5",
+        "sha256": "e95b6ce8a228b676cb4c8c42ccabda4826064453be0b5fc18741985062595ca3",
+        "bytes": 42426
+      },
+      "at_reviewed_commit": {
+        "path": "reports/cc16_native_gui_text_changed_storage.json",
+        "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "06d650e4cc2c9680cdc15f3d42fd70e49b648fe5",
+        "sha256": "e95b6ce8a228b676cb4c8c42ccabda4826064453be0b5fc18741985062595ca3",
+        "bytes": 42426
+      },
+      "byte_identical": true
+    },
+    {
+      "category": "frozen_artifacts",
+      "historical": {
+        "path": "docs/CC16_GLYPH_CHILD_PRODUCER_BIRTH_AUDIT.md",
+        "revision": "97ced874aeaae30e98aa28fcfb972a70fb4b0a10",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "2eda70a578e787fa40242c9ca17c59116590f831",
+        "sha256": "df477c98a4d14bf534ed0c573d5d96831233ec73aec3ab45b879c8bf3a264cdd",
+        "bytes": 19343
+      },
+      "at_reviewed_commit": {
+        "path": "docs/CC16_GLYPH_CHILD_PRODUCER_BIRTH_AUDIT.md",
+        "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "2eda70a578e787fa40242c9ca17c59116590f831",
+        "sha256": "df477c98a4d14bf534ed0c573d5d96831233ec73aec3ab45b879c8bf3a264cdd",
+        "bytes": 19343
+      },
+      "byte_identical": true
+    },
+    {
+      "category": "frozen_artifacts",
+      "historical": {
+        "path": "reports/cc16_glyph_child_producer_birth_audit.json",
+        "revision": "97ced874aeaae30e98aa28fcfb972a70fb4b0a10",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "715efcc2d00a9abfe8fee4433a20657ee0250571",
+        "sha256": "5b907c3babba150d35fc9526bd57d07b0e4f29f0ed684eb3886b75131842c5a8",
+        "bytes": 33774
+      },
+      "at_reviewed_commit": {
+        "path": "reports/cc16_glyph_child_producer_birth_audit.json",
+        "revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+        "hash_format": "immutable Git LF blob content",
+        "git_blob": "715efcc2d00a9abfe8fee4433a20657ee0250571",
+        "sha256": "5b907c3babba150d35fc9526bd57d07b0e4f29f0ed684eb3886b75131842c5a8",
+        "bytes": 33774
+      },
+      "byte_identical": true
+    }
+  ],
+  "independent_pin_counts": {
+    "source_files_before_after": 8,
+    "inserted_ranges": 9,
+    "old_function_bodies": 8,
+    "new_metadata_bodies": 3,
+    "unchanged_dependency_files": 3,
+    "historical_frozen_Source_evidence_files": 14,
+    "producer_doc_report": 2,
+    "all_passed": true
+  },
+  "contracts": {
+    "Text": {
+      "new_named_binder": "bind_native_gui_text_raw_model_reference_reserved",
+      "domain": "Existing completed DEFAULT RawModel Text path only; legacy Text APIs unchanged.",
+      "order": [
+        "exact unchanged RawModel preflight",
+        "placement construction into same separate caller companion backing",
+        "borrow exact admission.count actual+04 in existing base and initialize same members",
+        "existing context.owners.publish(std::move(reservation), *this)"
+      ],
+      "validation_preserved": [
+        "aligned separate Text/companion/frame and sized disposal",
+        "known-region disjointness plus unchanged transitive caller backing proof",
+        "completed same93 DEFAULT/internal188 canonical Model/B75170 graph and fresh shader/empty/scalar records",
+        "same registry/pools/lineages/imports/provider identities",
+        "current D5C6C8 zeroBD30E0/scalarAB8EE0 slots",
+        "positive same actual+04 and find(raw)==nullptr"
+      ]
+    },
+    "Model": {
+      "new_path": "NativeModelStorageReference overload with BindingAdmission&",
+      "order": [
+        "exact unchanged bind_count in borrowed-count base initializer",
+        "same identity/context/frame/acquired members",
+        "existing scenes.owners.publish(std::move(reservation), *this)",
+        "construction.metadata_bound=true only after normal publication"
+      ],
+      "validation_preserved": [
+        "same live slab/slot/free-index membership and context/decrement/registry",
+        "fresh lifetime diagnostics",
+        "completed same-context node/tail construction, metadata_bound false, same actual owner, unregistered identity",
+        "current D62DE8 zeroBD30E0/scalarB75290 slots",
+        "positive same actual+04"
+      ]
+    },
+    "authentic_token": {
+      "API": "Persistent caller-owned nonconst lvalue BindingAdmission&.",
+      "transport": "std::move only binds existing publish(BindingAdmission&&); no move construction, local token owner, token destruction or cancellation.",
+      "preparation": "Existing prepare_binding on SAME registry and aligned actual identity at proven pre-Native-construction epoch; unavailable null entry, authentic private token.",
+      "publication": "find returns nullptr for unavailable prepared entry; existing publish locks, authenticates registry/key/entry, validates same actual+04 alias and positive count, fills entry then clears token. No insertion/rehash, retain/adoption/count init/decrement or callback.",
+      "backing_and_lifetime": "Token/registry stable and serialized, token storage disjoint from actual object, companion and all reached writes. Existing contexts/frames/providers/disposal/native backing and quiescence remain caller proof, not new runtime admission."
+    },
+    "failure_transport": {
+      "validation_throw": "No completed companion; raw object/graph/custody and persistent reservation stay with caller; Model metadata_bound false. Text preflight precedes placement new; Model bind_count is evaluated for base initialization.",
+      "publication_mutex_throw": "No entry/token write before successful lock; failed derived construction unwinds only initialized metadata members and borrowed-count base. Its owned-count optional is disengaged and destructor defaulted, with no Native cleanup/count release.",
+      "existing_terminal_policy": "Invalid registry/token/entry/count alias/nonpositive count retain unchanged publish termination; existing token cancel/destructor and registry/destructor/retirement policies unchanged. Neither new API is noexcept.",
+      "constructor_destructor_rule": "A failed derived constructor does not invoke its derived destructor, so unchanged phase-terminal destructors do not automatically terminate these new host publication escapes.",
+      "no_added_policy": [
+        "automatic cancellation",
+        "Native cleanup",
+        "failed-Native-ctor slot return",
+        "retry",
+        "rollback",
+        "reset",
+        "Native-vs-host cause classification",
+        "new termination",
+        "NoThrow claim"
+      ],
+      "qualification": "Ordinary C++ transport only; no Native private-frame/FH3/SEH/fault/secondary exception or Original ABI equivalence."
+    },
+    "retirement_lifetime": {
+      "Text": "Unchanged success retires metadata then exact unbind then saved disposal LAST after possible slot return; no subsequent raw access.",
+      "independent_Model": "Keep complete internal188 Model graph/companions/providers after Text return through unresolved Model credits/failures and flags0 physical-slot custody.",
+      "Model": "Unchanged current-zero/current-scalar/deletion/retirement code; birth adds no earlier cleanup, unbinding or slot return."
+    }
+  },
+  "remaining_gates": [
+    "Genuine Glyph child caller must stage authentic Text/internal Model reservations at proven identity epochs; actual provider binding unchanged.",
+    "Keep complete independent internal188 Model graph, companions and all reached providers through unresolved credits/failures/flags0 slot custody and retirement.",
+    "FC1/wrapped child content remains genuine; no forced mode/flag/count.",
+    "Passive private Native-vs-host/unclassified cause composition remains required across Glyph071 and changed96 EH; entered/provider_call does not authorize Native cleanup.",
+    "Changed96 remains unadmitted; no AB76F0 for added metadata bind failures and no wide cleanup for unclassified host escape.",
+    "Root owns compilation/integration; no ABI/runtime/game/activation proof."
+  ],
+  "additional_scope_qualifications": [
+    "Actual Glyph producer/reservation owner, identity timing, backing, aliases, contexts and disposal/lifetime remain unbound. No force admission/count/mode/FC1/wrapped substitute.",
+    "Host admission/publication escape requires passive private Native-versus-host/unclassified cause transport before current Glyph071/changed96 catches. entered/provider_call/exception_ptr is insufficient; no AB76F0 from added host bind failure or wide cleanup from unclassified escape.",
+    "Changed96 remains unadmitted; no actual consumer/whole frontend/activation claim. Root owns compilation/integration."
+  ],
+  "validation": {
+    "all_reported_pins_independently_verified": true,
+    "inverse_all_old_files_verified": true,
+    "old_eight_bodies_verified": true,
+    "diff_check": "passed",
+    "build_or_tests_run": false,
+    "new_tests": 0,
+    "Native_analysis_or_Ghidra_queries": false,
+    "Ghidra_mutation": false,
+    "Source_registry_CMake_ledger_shared_metadata_edits": false,
+    "game_probe_or_process_actions": false,
+    "ABI_runtime_or_game_execution_claim": false
+  },
+  "new_credit": {
+    "Original": 0,
+    "Native_body": 0,
+    "helper": 0,
+    "trivial": 0,
+    "vendor": 0,
+    "CG": 0,
+    "duplicate_body": 0,
+    "ABI": 0,
+    "runtime": 0,
+    "activation": 0,
+    "gameplay": 0
+  },
+  "whole_frontend_source_ready": false,
+  "changed96_admitted": false
+}

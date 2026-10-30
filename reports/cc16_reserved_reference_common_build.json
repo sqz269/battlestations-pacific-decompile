@@ -1,0 +1,421 @@
+{
+  "schema_version": 1,
+  "classification": "Reserved Text/Model metadata publication API; no actual producer binding or Native-origin authority",
+  "Source_head": "73cd93fabec1553b923458812abdc03cc886febe",
+  "baseline_Main": "bcf127f7d796506accdb13e18723ef7580835b2b",
+  "utc": "2026-10-30T20:20:14.032358+00:00",
+  "command": "./scripts/build.ps1 -Configuration Release",
+  "exit_code": 0,
+  "target": "MSVC Win32 Release",
+  "MP": 2,
+  "PCH": "ON",
+  "coverage_PDB": "OFF",
+  "production_files_changed": 4,
+  "CMake_files_changed": 0,
+  "new_tests": 0,
+  "checks": {
+    "reconstructed_math": {
+      "passed": true,
+      "seconds": 0.21
+    },
+    "tool_tests": {
+      "passed": true,
+      "seconds": 13.79
+    },
+    "total_seconds": 14.03,
+    "compiler_warnings_or_errors_found": false
+  },
+  "Source_inputs": [
+    {
+      "path": "CMakeLists.txt",
+      "Git_LF_bytes": 27969,
+      "Git_LF_sha256": "bc76bfb6ebb2cfe94b1605ae319b3d5274d5ca3a386595e6a919066093f0bdb0",
+      "git_blob": "d55c24f07237c4d06bebe4b3d23259185c99672c",
+      "retained_path": "local/function_source_batch30/inputs/CMakeLists.txt"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "Git_LF_bytes": 295512,
+      "Git_LF_sha256": "9dc25fa7f076fdcaf0a2291d894d2f332a1be96e6175c8a08c07953e56abd29b",
+      "git_blob": "59281c74e5074485d61510c7d4f2497bc54ad935",
+      "retained_path": "local/function_source_batch30/inputs/cmake/startup.cmake"
+    },
+    {
+      "path": "include/bsp/native_gui_text_reference.hpp",
+      "Git_LF_bytes": 12718,
+      "Git_LF_sha256": "62224192a6d0fb5043ed68a3f34374ce1bc3584ee1f3bb031c1041b33fdd1827",
+      "git_blob": "492cf04c44cfeae90887bba02c32039f325bc318",
+      "retained_path": "local/function_source_batch30/inputs/include/bsp/native_gui_text_reference.hpp"
+    },
+    {
+      "path": "src/native_gui_text_reference.cpp",
+      "Git_LF_bytes": 58312,
+      "Git_LF_sha256": "0fb188e79dbc014db098d01e3afff14a5e07f1671a33db063d2e126e5af4257e",
+      "git_blob": "f3a8e3a5c855acc668fb526d6de781621cfdb8c2",
+      "retained_path": "local/function_source_batch30/inputs/src/native_gui_text_reference.cpp"
+    },
+    {
+      "path": "include/bsp/native_model_storage_lifetime.hpp",
+      "Git_LF_bytes": 9363,
+      "Git_LF_sha256": "7754b1a3df10ccf79a83899513b48ab4616df9b9f9a5da54400ed7d4fe51ea1f",
+      "git_blob": "319ac5182e317f50e999437b3d300c92d695fbdf",
+      "retained_path": "local/function_source_batch30/inputs/include/bsp/native_model_storage_lifetime.hpp"
+    },
+    {
+      "path": "src/native_model_storage_lifetime.cpp",
+      "Git_LF_bytes": 17638,
+      "Git_LF_sha256": "d9ea114fa0e88f42f5a692adf96014827c32cd5d856a8e228e1ccd0550dd99b0",
+      "git_blob": "7ca6d5ae17001f48426aeed0826f2db496a56f2f",
+      "retained_path": "local/function_source_batch30/inputs/src/native_model_storage_lifetime.cpp"
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "Git_LF_bytes": 10071,
+      "Git_LF_sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+      "git_blob": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808",
+      "retained_path": "local/function_source_batch30/inputs/include/bsp/native_render_context.hpp"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "Git_LF_bytes": 11471,
+      "Git_LF_sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+      "git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c",
+      "retained_path": "local/function_source_batch30/inputs/src/native_render_context.cpp"
+    },
+    {
+      "path": "include/bsp/render_command_queue.hpp",
+      "Git_LF_bytes": 10656,
+      "Git_LF_sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+      "git_blob": "4f0f5ca5a87b59f7d05349a36619a4459e874e8d",
+      "retained_path": "local/function_source_batch30/inputs/include/bsp/render_command_queue.hpp"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "local/function_source_batch30/build_isolated.log",
+      "bytes": 13046,
+      "sha256": "bfd3ab146380223afaae135f5661f900e3c4ccd56cab0d49b1d4b3e309efb517",
+      "retained_path": "local/function_source_batch30/artifacts/01_build_isolated.log"
+    },
+    {
+      "path": "build/win32/CMakeCache.txt",
+      "bytes": 19943,
+      "sha256": "1685db07153e0ad413c8e75a1536cf232b943fdc86f5e983cd18cf2abfa3ecb2",
+      "retained_path": "local/function_source_batch30/artifacts/02_CMakeCache.txt"
+    },
+    {
+      "path": "build/win32/bsp_game.map",
+      "bytes": 11383346,
+      "sha256": "4c15093b625837a5f45214abc4ef7b334a2e8fd8ea1994be058291abe0b6a638",
+      "retained_path": "local/function_source_batch30/artifacts/03_bsp_game.map"
+    },
+    {
+      "path": "build/win32/Release/bsp_game.exe",
+      "bytes": 7517696,
+      "sha256": "ed91d258c7325b4b78cd9251559e749b1116333be7545384927b37235be40620",
+      "retained_path": "local/function_source_batch30/artifacts/04_bsp_game.exe"
+    },
+    {
+      "path": "build/win32/Release/bsp_math_tests.exe",
+      "bytes": 893952,
+      "sha256": "64ccf24ccf2733d5a3aceb581cc4eb1d2505c6d4dd80905882ebd475e58f26f1",
+      "retained_path": "local/function_source_batch30/artifacts/05_bsp_math_tests.exe"
+    },
+    {
+      "path": "build/win32/Release/xlive_stub.dll",
+      "bytes": 32768,
+      "sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3",
+      "retained_path": "local/function_source_batch30/artifacts/06_xlive_stub.dll"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 104017426,
+      "sha256": "0e326d89ebec4690fb9423bef24310894d4549ad1ff2227815c7edb9bfc4c131",
+      "retained_path": "local/function_source_batch30/artifacts/07_bsp_core.lib"
+    },
+    {
+      "path": "build/win32/Testing/Temporary/LastTest.log",
+      "bytes": 1658,
+      "sha256": "002897ce11f08cb90c4c330e1e2cc29bf64bb4340576d364470596fbfefebdef",
+      "retained_path": "local/function_source_batch30/artifacts/08_LastTest.log"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_gui_text_reference.obj",
+      "bytes": 134755,
+      "sha256": "c636a1b1e32e1f6eb7c0ebc8bbf2268fdb77ea2156f8117d5f5b8ad58f2f2ccd",
+      "retained_path": "local/function_source_batch30/artifacts/09_native_gui_text_reference.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_model_storage_lifetime.obj",
+      "bytes": 46266,
+      "sha256": "915af6ebc06110c036209d1b8e8859235694be31accae883c9b56ddc50e77c2f",
+      "retained_path": "local/function_source_batch30/artifacts/10_native_model_storage_lifetime.obj"
+    }
+  ],
+  "original_Source_commit": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+  "admitted_Source_commit": "eb1a269a80897e60d9edc06d38cceac69424ad71",
+  "independent_review": {
+    "worker_commit": "65c1bfb8d23277474ee66ce55b571a945a8cb6b1",
+    "admitted_commit": "73cd93fabec1553b923458812abdc03cc886febe",
+    "findings": 0
+  },
+  "primary_review": {
+    "full66line_delta_58line_doc_and27line_peer_read": true,
+    "four_entire_baseline_files_restored_by_inverse": true,
+    "insertions": 66,
+    "deletions": 0,
+    "old_validation_and_bodies_unchanged": true,
+    "unchanged_registry_base_pins": 3,
+    "frozen_historical_Source_evidence_pins": 14
+  },
+  "isolation": {
+    "only_reviewed_Source_and_peer_cherry_picked": true,
+    "held96_files_absent_from_head_and_project": true,
+    "staging_backup_branch": "agent/codex-reference-pre-isolation-20261030",
+    "pre_isolation_build_log": "local/function_source_batch30/build.log",
+    "pre_isolation_build_not_admission_evidence": true
+  },
+  "library_link_qualification": {
+    "new_Text_name_present_in_archive": true,
+    "new_Text_absent_Game_map": true,
+    "new_Model_constructor_mangled_symbol": "??0NativeModelStorageReference@bsp@@QAE@PAXAAUNativeModelStorageIdentityContext@1@AAUNativeModelStorageConstructAcquired@1@AAUNativeModelStorageLifetimeFrame@1@AAUNativeModelStorageLifetimeAcquired@1@AAVBindingAdmission@NativeRenderActualOwnerRegistry@1@@Z",
+    "new_Model_constructor_present_Game_map": false,
+    "actual_reserved_consumer_binding": false,
+    "ABI_runtime_game_proof": false
+  },
+  "remaining_gates": [
+    "persistent authentic caller reservation and actual producer/resource graph",
+    "private Native-versus-host/unclassified failure-origin transport",
+    "actual Glyph producer/wrapped/retirement/Startup consumer",
+    "production runtime and required gameplay"
+  ],
+  "readiness": {
+    "accepted_for_Main_Source_publication": true,
+    "actual_native_producer_bound": false,
+    "changed96_admitted": false,
+    "activated": false,
+    "Page_guard_changed": false,
+    "game_or_probe_executed": false
+  },
+  "credit": {
+    "new_Original_vendor_CG_helper_trivial_duplicate_body_ABI_runtime_gameplay": 0
+  },
+  "admission_document": "docs/CC16_RESERVED_REFERENCE_SOURCE_ADMISSION.md",
+  "joined_Main_build": {
+    "Source_head": "983ccb67a928eaa65a9f31f67b1dca98423063a3",
+    "joined_Main": "1d81c7f20fd71aa0daea6ddbe3762f97866132cc",
+    "command": "./scripts/build.ps1 -Configuration Release",
+    "exit_code": 0,
+    "target": "MSVC Win32 Release",
+    "MP": 2,
+    "PCH": "ON",
+    "coverage_PDB": "OFF",
+    "checks": {
+      "reconstructed_math": 0.22,
+      "tool_tests": 12.51,
+      "total_seconds": 12.76,
+      "compiler_warnings_or_errors_found": false
+    },
+    "Source_inputs": [
+      {
+        "path": "CMakeLists.txt",
+        "Git_LF_bytes": 28105,
+        "Git_LF_sha256": "60c5dba7f2d37a9f4391d513e597cdcc5f76cc99fa7600834b28fb5a6eb0a29b",
+        "git_blob": "84bb63d156e2290216818b3909877ba99bc4b6e1",
+        "retained_path": "local/function_source_batch30/joined_main/inputs/CMakeLists.txt"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "Git_LF_bytes": 295512,
+        "Git_LF_sha256": "9dc25fa7f076fdcaf0a2291d894d2f332a1be96e6175c8a08c07953e56abd29b",
+        "git_blob": "59281c74e5074485d61510c7d4f2497bc54ad935",
+        "retained_path": "local/function_source_batch30/joined_main/inputs/cmake/startup.cmake"
+      },
+      {
+        "path": "include/bsp/native_gui_text_reference.hpp",
+        "Git_LF_bytes": 12718,
+        "Git_LF_sha256": "62224192a6d0fb5043ed68a3f34374ce1bc3584ee1f3bb031c1041b33fdd1827",
+        "git_blob": "492cf04c44cfeae90887bba02c32039f325bc318",
+        "retained_path": "local/function_source_batch30/joined_main/inputs/include/bsp/native_gui_text_reference.hpp"
+      },
+      {
+        "path": "src/native_gui_text_reference.cpp",
+        "Git_LF_bytes": 58312,
+        "Git_LF_sha256": "0fb188e79dbc014db098d01e3afff14a5e07f1671a33db063d2e126e5af4257e",
+        "git_blob": "f3a8e3a5c855acc668fb526d6de781621cfdb8c2",
+        "retained_path": "local/function_source_batch30/joined_main/inputs/src/native_gui_text_reference.cpp"
+      },
+      {
+        "path": "include/bsp/native_model_storage_lifetime.hpp",
+        "Git_LF_bytes": 9363,
+        "Git_LF_sha256": "7754b1a3df10ccf79a83899513b48ab4616df9b9f9a5da54400ed7d4fe51ea1f",
+        "git_blob": "319ac5182e317f50e999437b3d300c92d695fbdf",
+        "retained_path": "local/function_source_batch30/joined_main/inputs/include/bsp/native_model_storage_lifetime.hpp"
+      },
+      {
+        "path": "src/native_model_storage_lifetime.cpp",
+        "Git_LF_bytes": 17638,
+        "Git_LF_sha256": "d9ea114fa0e88f42f5a692adf96014827c32cd5d856a8e228e1ccd0550dd99b0",
+        "git_blob": "7ca6d5ae17001f48426aeed0826f2db496a56f2f",
+        "retained_path": "local/function_source_batch30/joined_main/inputs/src/native_model_storage_lifetime.cpp"
+      },
+      {
+        "path": "include/bsp/native_render_context.hpp",
+        "Git_LF_bytes": 10071,
+        "Git_LF_sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+        "git_blob": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808",
+        "retained_path": "local/function_source_batch30/joined_main/inputs/include/bsp/native_render_context.hpp"
+      },
+      {
+        "path": "src/native_render_context.cpp",
+        "Git_LF_bytes": 11471,
+        "Git_LF_sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+        "git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c",
+        "retained_path": "local/function_source_batch30/joined_main/inputs/src/native_render_context.cpp"
+      },
+      {
+        "path": "include/bsp/render_command_queue.hpp",
+        "Git_LF_bytes": 10656,
+        "Git_LF_sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+        "git_blob": "4f0f5ca5a87b59f7d05349a36619a4459e874e8d",
+        "retained_path": "local/function_source_batch30/joined_main/inputs/include/bsp/render_command_queue.hpp"
+      },
+      {
+        "path": "include/bsp/native_wide_string_append.hpp",
+        "Git_LF_bytes": 1032,
+        "Git_LF_sha256": "f3cdfe50534032e83519db19f281448d125fe446b428c50df01f92aeb9303ab7",
+        "git_blob": "52b55b6450035b34f7dc8fe76f5392208d9e9cbd",
+        "retained_path": "local/function_source_batch30/joined_main/inputs/include/bsp/native_wide_string_append.hpp"
+      },
+      {
+        "path": "src/native_wide_string_append.cpp",
+        "Git_LF_bytes": 1826,
+        "Git_LF_sha256": "c60840f94c29823ae2952a2cfb9d940e12a1789f2f588c6eab3df6b58bda90e5",
+        "git_blob": "4e76fd47a61a7c2d66b1352b9a42412eb24253d6",
+        "retained_path": "local/function_source_batch30/joined_main/inputs/src/native_wide_string_append.cpp"
+      },
+      {
+        "path": "include/bsp/native_wide_string_raw_copy.hpp",
+        "Git_LF_bytes": 943,
+        "Git_LF_sha256": "2e3cc1084d0f0893a0abd67866a4e1505872e790665c2a97e9845f85b7fa4836",
+        "git_blob": "f5f5b3c8c6bb5f951d4ea9ca95c8376ba956a3b4",
+        "retained_path": "local/function_source_batch30/joined_main/inputs/include/bsp/native_wide_string_raw_copy.hpp"
+      },
+      {
+        "path": "src/native_wide_string_raw_copy.cpp",
+        "Git_LF_bytes": 2320,
+        "Git_LF_sha256": "3089c374bf1b39ea2d8b73ec4713c77bf343fd2f751e775f91a1654bb2a42688",
+        "git_blob": "6ddef14b9ce6e96594c50b8289af1946ac6a2a6f",
+        "retained_path": "local/function_source_batch30/joined_main/inputs/src/native_wide_string_raw_copy.cpp"
+      },
+      {
+        "path": "include/bsp/native_wide_string.hpp",
+        "Git_LF_bytes": 5239,
+        "Git_LF_sha256": "5606f96b372362a6831a1633a583f264fbab4290789481f94f1ba97537f6e051",
+        "git_blob": "ca3887e0d34038a9e799ebdead68b0db55f16108",
+        "retained_path": "local/function_source_batch30/joined_main/inputs/include/bsp/native_wide_string.hpp"
+      },
+      {
+        "path": "src/native_wide_string.cpp",
+        "Git_LF_bytes": 10671,
+        "Git_LF_sha256": "158502f1efb91f678011dd971c643d5236eb10bf56da3c9997631a6d8df96e55",
+        "git_blob": "7b9df08e026a67a9dbab9c6c8df74676fd43645d",
+        "retained_path": "local/function_source_batch30/joined_main/inputs/src/native_wide_string.cpp"
+      },
+      {
+        "path": "docs/CODEX_RAW_WIDE_BINDINGS_INTEGRATION.md",
+        "Git_LF_bytes": 2268,
+        "Git_LF_sha256": "3342de6f0dc391261ff6fbecbec4ba83db1a53fc86828749abaeeae0b5f708fa",
+        "git_blob": "3efbb08491eb38ce1b716fb3e7028c052065b5d2",
+        "retained_path": "local/function_source_batch30/joined_main/inputs/docs/CODEX_RAW_WIDE_BINDINGS_INTEGRATION.md"
+      },
+      {
+        "path": "reports/codex_raw_wide_bindings_integration.json",
+        "Git_LF_bytes": 4690,
+        "Git_LF_sha256": "9427240b3e9e711277da978f873d8a9a388fd2e9360f1bf7540cf675b2143fde",
+        "git_blob": "a09c0732782e1d92fb5d9eef16da20175c10c648",
+        "retained_path": "local/function_source_batch30/joined_main/inputs/reports/codex_raw_wide_bindings_integration.json"
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "local\\function_source_batch30\\joined_main\\build.log",
+        "bytes": 2661,
+        "sha256": "bf0d8b40942cfe7dc695746453487569954ec000140252cea5ff1605690660b5",
+        "retained_path": "local/function_source_batch30/joined_main/artifacts/01_build.log"
+      },
+      {
+        "path": "build/win32/CMakeCache.txt",
+        "bytes": 19943,
+        "sha256": "1685db07153e0ad413c8e75a1536cf232b943fdc86f5e983cd18cf2abfa3ecb2",
+        "retained_path": "local/function_source_batch30/joined_main/artifacts/02_CMakeCache.txt"
+      },
+      {
+        "path": "build/win32/bsp_game.map",
+        "bytes": 11383346,
+        "sha256": "2f48fd012b0909fdd5a8258c9204f15a87fda0735910ca9780909d0ba52b5310",
+        "retained_path": "local/function_source_batch30/joined_main/artifacts/03_bsp_game.map"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 7517696,
+        "sha256": "6b954e38f591e5af3b8b4d3e47f884385ac30302935853bd94720152a76a8eae",
+        "retained_path": "local/function_source_batch30/joined_main/artifacts/04_bsp_game.exe"
+      },
+      {
+        "path": "build/win32/Release/bsp_math_tests.exe",
+        "bytes": 893952,
+        "sha256": "7bada6b78787f5ae40290ddf71a34acd3b1a250a996c03aa45c23e2147aefcda",
+        "retained_path": "local/function_source_batch30/joined_main/artifacts/05_bsp_math_tests.exe"
+      },
+      {
+        "path": "build/win32/Release/xlive_stub.dll",
+        "bytes": 32768,
+        "sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3",
+        "retained_path": "local/function_source_batch30/joined_main/artifacts/06_xlive_stub.dll"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 104022146,
+        "sha256": "e1681fcf5dc577be7656549229dfaeae8c8d7ca52b89f6f91b642bed053e3420",
+        "retained_path": "local/function_source_batch30/joined_main/artifacts/07_bsp_core.lib"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 1658,
+        "sha256": "bcd8dbd6a3b9b8b046e6e2c206001e52bc086a0e2e5f37287b28d98d370a8150",
+        "retained_path": "local/function_source_batch30/joined_main/artifacts/08_LastTest.log"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_gui_text_reference.obj",
+        "bytes": 134755,
+        "sha256": "c636a1b1e32e1f6eb7c0ebc8bbf2268fdb77ea2156f8117d5f5b8ad58f2f2ccd",
+        "retained_path": "local/function_source_batch30/joined_main/artifacts/09_native_gui_text_reference.obj"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_model_storage_lifetime.obj",
+        "bytes": 46266,
+        "sha256": "915af6ebc06110c036209d1b8e8859235694be31accae883c9b56ddc50e77c2f",
+        "retained_path": "local/function_source_batch30/joined_main/artifacts/10_native_model_storage_lifetime.obj"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_wide_string_append.obj",
+        "bytes": 1819,
+        "sha256": "81879684316cb32d8a0b55d840394429fe8dcd9a162f0866a1dcdd29dde6a1ee",
+        "retained_path": "local/function_source_batch30/joined_main/artifacts/11_native_wide_string_append.obj"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_wide_string_raw_copy.obj",
+        "bytes": 2267,
+        "sha256": "62b8f68a324bd7ab323f798146f0b163f9a257bb9e79196939a9421e04efd5c2",
+        "retained_path": "local/function_source_batch30/joined_main/artifacts/12_native_wide_string_raw_copy.obj"
+      }
+    ],
+    "prior_input_pins_unchanged_except_shared_CMakeLists": true,
+    "held96_absent": true,
+    "new_Text_and_Model_names_present_archive_absent_Game_map": true,
+    "actual_reserved_consumer_binding": false,
+    "game_or_probe_executed": false,
+    "activated": false
+  }
+}

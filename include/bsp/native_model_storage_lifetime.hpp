@@ -1,6 +1,7 @@
 #pragma once
 #include "bsp/native_model_pool.hpp"
 #include "bsp/native_node_base_destruction.hpp"
+#include "bsp/native_render_context.hpp"
 #include "bsp/native_node_construction.hpp"
 
 namespace bsp {
@@ -116,6 +117,20 @@ public:
     NativeModelStorageReference(void* actual_model, NativeModelStorageIdentityContext&,
         NativeModelStorageConstructAcquired&, NativeModelStorageLifetimeFrame&,
         NativeModelStorageLifetimeAcquired&);
+    // RESERVED birth: the SAME registry/actual Model identity was reserved
+    // before Native construction. Reuses every ordinary admission/count check;
+    // metadata_bound is set only after successful existing publish. No new
+    // Native credit, insertion/rehash, retain or cleanup. Mutex locking may
+    // throw; invalid capabilities/aliases/counts keep publish's terminal contract.
+    // Keep the caller-owned lvalue token/registry alive, stable and serialized;
+    // token backing is separate from actual Model/companion/reached writes.
+    // A C++ escape leaves the completed raw owner, custody and reservation
+    // with the caller, metadata_bound still false, for explicit disposition.
+    // This path neither cancels the token nor classifies Native exceptions.
+    NativeModelStorageReference(void* actual_model, NativeModelStorageIdentityContext&,
+        NativeModelStorageConstructAcquired&, NativeModelStorageLifetimeFrame&,
+        NativeModelStorageLifetimeAcquired&,
+        NativeRenderActualOwnerRegistry::BindingAdmission& caller_reservation);
     ~NativeModelStorageReference() override;
     NativeModelStorageReference(const NativeModelStorageReference&) = delete;
     NativeModelStorageReference& operator=(const NativeModelStorageReference&) = delete;

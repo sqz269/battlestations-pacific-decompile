@@ -21,6 +21,7 @@
 #include <iterator>
 #include <new>
 #include <stdexcept>
+#include <utility>
 #include <type_traits>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -787,6 +788,23 @@ NativeGuiTextRawModelReference::NativeGuiTextRawModelReference(void* raw,
     : RenderCommandReference(count), identity_(raw), context_(context), frame_(frame),
       disposal_(disposal), profile_(profile) {
     context_.owners.bind(identity_, *this); // transactional metadata only, no retain
+}
+NativeGuiTextRawModelReference& bind_native_gui_text_raw_model_reference_reserved(
+    void* companion, void* raw, NativeGuiTextRawModelReferenceContext& context,
+    NativeGuiTextReferenceFrame& frame, NativeGuiTextRawModelReferenceDisposal disposal,
+    NativeRenderActualOwnerRegistry::BindingAdmission& reservation) {
+    const auto admission = preflight(companion, raw, context, frame, disposal);
+    return *::new (companion) NativeGuiTextRawModelReference(raw, context, frame,
+        disposal, admission.profile, admission.count, reservation);
+}
+NativeGuiTextRawModelReference::NativeGuiTextRawModelReference(void* raw,
+    NativeGuiTextRawModelReferenceContext& context, NativeGuiTextReferenceFrame& frame,
+    NativeGuiTextRawModelReferenceDisposal disposal, const volatile Word* profile,
+    std::atomic<std::int32_t>& count,
+    NativeRenderActualOwnerRegistry::BindingAdmission& reservation)
+    : RenderCommandReference(count), identity_(raw), context_(context), frame_(frame),
+      disposal_(disposal), profile_(profile) {
+    context_.owners.publish(std::move(reservation), *this);
 }
 NativeGuiTextRawModelReference::~NativeGuiTextRawModelReference() {
     if (phase_ != Phase::retired) std::terminate();
