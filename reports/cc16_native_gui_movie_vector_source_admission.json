@@ -1,0 +1,272 @@
+{
+  "status": "primary_independent_source_native_fresh_object_review_common_build_registered_entry_link_passed_unactivated",
+  "candidate": "997f877bb57ed15540b4ca0f603f50349ee1ebfa",
+  "published_base": "42185e9219bd4e5f771410e1072e69ebd2bd54b1",
+  "source_build_head": "12e6e7345",
+  "source_pins": [
+    {
+      "path": "include/bsp/native_gui_movie_vector_lifetime.hpp",
+      "bytes": 1875,
+      "sha256": "85e68d0c0d648c1d1183e70d77dd536c4f4be2f87c4f1517d9aec2d3f72c65cc",
+      "git_blob": "a044dc94af5ca7573b695e2ec0c770b3d1d4f75f"
+    },
+    {
+      "path": "src/native_gui_movie_vector_lifetime.cpp",
+      "bytes": 1748,
+      "sha256": "1d6d763ad270063fcb6eb0931a1df40bd7d863d8c04f00bf3ae9e1d23277c029",
+      "git_blob": "3068b40d235518f312d0726ae3706c250c79cb9e"
+    }
+  ],
+  "primary_review": {
+    "candidate": "997f877bb57ed15540b4ca0f603f50349ee1ebfa",
+    "review": "primary independent source/native/fresh strict object pass",
+    "source_pins": 15,
+    "artifact_pins": 12,
+    "fresh_records_identical": [
+      {
+        "symbol": "?tidy_native_gui_movie_subtitle_vector_00aaf720@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+        "bytes": 61,
+        "code_sha256": "ca0b821832b581ff6cde890e0460c2948ab17515fe9dafec6f0a09f6d5ddfa13",
+        "relocations": [
+          {
+            "offset": 22,
+            "type": 20,
+            "symbol": "?destroy_native_gui_movie_subtitle_strings_00aaf0e0@bsp@@YAXPAXPBXAAUNativeStringRawPoolContext@1@@Z"
+          },
+          {
+            "offset": 31,
+            "type": 20,
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          }
+        ]
+      },
+      {
+        "symbol": "?tidy_native_gui_movie_extratitle_vector_00aaf7a0@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+        "bytes": 61,
+        "code_sha256": "ca0b821832b581ff6cde890e0460c2948ab17515fe9dafec6f0a09f6d5ddfa13",
+        "relocations": [
+          {
+            "offset": 22,
+            "type": 20,
+            "symbol": "?destroy_native_gui_movie_extratitle_strings_00aaf120@bsp@@YAXPAXPBXAAUNativeStringRawPoolContext@1@@Z"
+          },
+          {
+            "offset": 31,
+            "type": 20,
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          }
+        ]
+      }
+    ],
+    "original_PE_spans": "both61B/21ops exact",
+    "manually_reviewed": "All source/header/doc and complete native assembly; initial-null/end epoch, postrange CURRENT reload/unconditional actualfree, ordered three volatile clears, opaque0 preserved.",
+    "qualified_scope": "Actual matching backing/rawpool/providers/partial-failure custody are preconditions. No owner/whole Movie/native ABI/fault/activation credit.",
+    "executed": false,
+    "new_tests": 0
+  },
+  "common_build": {
+    "target": "MSVC Win32 Release",
+    "existing_suites": "2/2",
+    "test_seconds": 13.53,
+    "BSP_CL_MP": 2,
+    "BSP_PCH": "ON"
+  },
+  "actual_entry_link": {
+    "passed": true,
+    "machine": "014c",
+    "embedded_manifest": true,
+    "executed": false,
+    "entries": {
+      "tidy_native_gui_movie_subtitle_vector_00aaf720": {
+        "symbol": "?tidy_native_gui_movie_subtitle_vector_00aaf720@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+        "address": 4199104,
+        "object": "bsp_core:native_gui_movie_vector_lifetime.obj"
+      },
+      "tidy_native_gui_movie_extratitle_vector_00aaf7a0": {
+        "symbol": "?tidy_native_gui_movie_extratitle_vector_00aaf7a0@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+        "address": 4199040,
+        "object": "bsp_core:native_gui_movie_vector_lifetime.obj"
+      },
+      "destroy_native_gui_movie_subtitle_strings_00aaf0e0": {
+        "symbol": "?destroy_native_gui_movie_subtitle_strings_00aaf0e0@bsp@@YAXPAXPBXAAUNativeStringRawPoolContext@1@@Z",
+        "address": 4198992,
+        "object": "bsp_core:native_gui_movie_record_lifetime.obj"
+      },
+      "destroy_native_gui_movie_extratitle_strings_00aaf120": {
+        "symbol": "?destroy_native_gui_movie_extratitle_strings_00aaf120@bsp@@YAXPAXPBXAAUNativeStringRawPoolContext@1@@Z",
+        "address": 4198944,
+        "object": "bsp_core:native_gui_movie_record_lifetime.obj"
+      },
+      "allocate_native_gui_movie_records_14h_00aacd30": {
+        "symbol": "?allocate_native_gui_movie_records_14h_00aacd30@bsp@@YIPAXIPAX@Z",
+        "address": 4198736,
+        "object": "bsp_core:native_gui_movie_record_allocation.obj"
+      },
+      "allocate_native_gui_movie_records_24h_00aacd90": {
+        "symbol": "?allocate_native_gui_movie_records_24h_00aacd90@bsp@@YIPAXIPAX@Z",
+        "address": 4198832,
+        "object": "bsp_core:native_gui_movie_record_allocation.obj"
+      },
+      "singleton_lifetime_free": {
+        "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "address": 4199472,
+        "object": "bsp_core:singleton_lifetime.obj"
+      }
+    }
+  },
+  "common_records": {
+    "?tidy_native_gui_movie_subtitle_vector_00aaf720@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z": {
+      "bytes": 63,
+      "code_sha256": "e5b0685e7dc17ceaee4865e5c262b3d32656b0ea5b512d4749e2f5abdd6bdc07",
+      "relocations": [
+        {
+          "offset": 23,
+          "type": 20,
+          "symbol": "?destroy_native_gui_movie_subtitle_strings_00aaf0e0@bsp@@YAXPAXPBXAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 32,
+          "type": 20,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+        }
+      ]
+    },
+    "?tidy_native_gui_movie_extratitle_vector_00aaf7a0@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z": {
+      "bytes": 63,
+      "code_sha256": "e5b0685e7dc17ceaee4865e5c262b3d32656b0ea5b512d4749e2f5abdd6bdc07",
+      "relocations": [
+        {
+          "offset": 23,
+          "type": 20,
+          "symbol": "?destroy_native_gui_movie_extratitle_strings_00aaf120@bsp@@YAXPAXPBXAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 32,
+          "type": 20,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+        }
+      ]
+    }
+  },
+  "common_bytes_each": 63,
+  "strict_bytes_each": 61,
+  "byte_identity_claim": false,
+  "PE_effect_check": "Exactlyheader reads4/8/4; sole initial null branch; actualmatchingrange thenfree with no secondnullguard; zeroDWORDstores4/8/C. Opaque0 untouched.",
+  "frozen_artifacts": [
+    {
+      "path": "local/function_source_batch5/artifacts/native_gui_movie_vector_lifetime.obj",
+      "bytes": 2278,
+      "sha256": "a9874af90555968d85fd5c3f831ab5df3e363edd9904e37b70f87e5a6fc0b994",
+      "copied_from": "build/win32/bsp_core.dir/Release/native_gui_movie_vector_lifetime.obj"
+    },
+    {
+      "path": "local/function_source_batch5/artifacts/native_gui_movie_record_lifetime.obj",
+      "bytes": 2224,
+      "sha256": "5d571cf07b2f984cdf0425c15b8f3c136fcfc92f511b7d4e6d817437bc30dd86",
+      "copied_from": "build/win32/bsp_core.dir/Release/native_gui_movie_record_lifetime.obj"
+    },
+    {
+      "path": "local/function_source_batch5/artifacts/singleton_lifetime.obj",
+      "bytes": 33008,
+      "sha256": "386824ba4b5224ce24dfa43d84dd09b6c8b1fc64e02011998109d91cdc72171f",
+      "copied_from": "build/win32/bsp_core.dir/Release/singleton_lifetime.obj"
+    },
+    {
+      "path": "local/function_source_batch5/artifacts/bsp_game.exe",
+      "bytes": 7494656,
+      "sha256": "bf774125f2e531fe020ee089e11f0e470cc8a3aacdb944525a1b213ae91b2b37",
+      "copied_from": "build/win32/Release/bsp_game.exe"
+    },
+    {
+      "path": "local/function_source_batch5/artifacts/entries_probe.exe",
+      "bytes": 216064,
+      "sha256": "c615c04ca155e588941e693c86bc70880b41c6a057f287cbbfed640708ea3759",
+      "copied_from": "local/function_source_batch5/entries_probe.exe"
+    },
+    {
+      "path": "local/function_source_batch5/artifacts/entries_probe.map",
+      "bytes": 304898,
+      "sha256": "9f0f61388590bd70baab2f640aa4b754c48e664f417804340f077a0431f9e321",
+      "copied_from": "local/function_source_batch5/entries_probe.map"
+    },
+    {
+      "path": "local/function_source_batch5/artifacts/entries_probe.obj",
+      "bytes": 1573,
+      "sha256": "c1d29e133bd3556753483af014e972256172983789558506eeb56c2a93a854d3",
+      "copied_from": "local/function_source_batch5/entries_probe.obj"
+    },
+    {
+      "path": "local/function_source_batch5/artifacts/vector.obj",
+      "bytes": 2535,
+      "sha256": "b3ae75827b33233b5cdfa1abd745bc8759faa60f908cd541ca4b292fb00a0dfb",
+      "copied_from": "local/function_source_batch5/vector.obj"
+    },
+    {
+      "path": "local/function_source_batch5/artifacts/vector.asm",
+      "bytes": 6745,
+      "sha256": "0e5f0e785d0ec7198dd3ab8e8529333ecc29639393e2f7c7d59b56bbe26565d4",
+      "copied_from": "local/function_source_batch5/vector.asm"
+    },
+    {
+      "path": "local/function_source_batch5/artifacts/vector.dump.txt",
+      "bytes": 10717,
+      "sha256": "be8e784432effcf4e3063f1ac1a7a92e615386cb4d737b43170deeab879c8da1",
+      "copied_from": "local/function_source_batch5/vector.dump.txt"
+    },
+    {
+      "path": "local/function_source_batch5/artifacts/vector_common.txt",
+      "bytes": 8601,
+      "sha256": "89b85097b535e33b2cd0640e9800be4a95a0d756c893f6fff504f5678f3c9f7a",
+      "copied_from": "local/function_source_batch5/vector_common.txt"
+    },
+    {
+      "path": "local/function_source_batch5/artifacts/build.log",
+      "bytes": 2633,
+      "sha256": "df7d0c64dd0764787e0eaa1d2f1779c352d3443b5b70422af224d53df66bcc31",
+      "copied_from": "local/function_source_batch5/build.log"
+    },
+    {
+      "path": "local/function_source_batch5/artifacts/link.log",
+      "bytes": 19,
+      "sha256": "48d974da562e4793f8ff5dad5377207422c2b5093bd7c730baf580da948db910",
+      "copied_from": "local/function_source_batch5/link.log"
+    },
+    {
+      "path": "local/function_source_batch5/artifacts/compile.log",
+      "bytes": 38,
+      "sha256": "50d4c09eb7f28130fbab4c9930a2a86062cdeccdf716a772b62de50e5c73304b",
+      "copied_from": "local/function_source_batch5/compile.log"
+    },
+    {
+      "path": "local/function_source_batch5/artifacts/primary_review.json",
+      "bytes": 1884,
+      "sha256": "ee3e879d1b7bc72d9281668f080d040e88fbb69deab3a2567c850c41717a2f47",
+      "copied_from": "local/function_source_batch5/primary_review.json"
+    }
+  ],
+  "guard_states": {
+    "kMovieFactoryRootCc16Bound": false,
+    "kMovieSubtitlesBound": false,
+    "kNativeGuiPageChainCc15Bound": false
+  },
+  "scope": "Actual matchingbacking/pool/cells/providers/retainedpartialfailurecustody required; no wholeMovie/scalar/owner/consumer/ABI/fault/runtime activation.",
+  "credit": {
+    "native_bodies": 0,
+    "duplicate_native_bodies": 0,
+    "vendor_bodies": 0,
+    "original_ABI": 0,
+    "activation": 0
+  },
+  "new_tests": 0,
+  "fixture_tested": false,
+  "game_validated": false,
+  "game_or_Dll_execution": false,
+  "ghidra": {
+    "prior_annotations": "local/ghidra-annotations-20261030T005540Z.json",
+    "native_library_names_preserved": true,
+    "prior_comments_preserved_and_extended": true,
+    "project_saved": true,
+    "exports_refreshed": true,
+    "index_rebuilt": true
+  }
+}
