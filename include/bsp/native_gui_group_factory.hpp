@@ -12,6 +12,37 @@ void* construct_native_gui_group_copy_00ac6fa0(void* actual_destination,
     const void* actual_source, NativeGuiWidgetCopyContext&,
     NativeGuiWidgetCopyAcquired&);
 
+struct NativeGuiGroupDefaultInputs {
+    const volatile std::uint32_t& actual_one_00d7a24c;
+};
+struct NativeGuiGroupCopyInputs {
+    // Borrow the first byte at the SAME actual raw source address. Binding
+    // this reference reads no byte and adds no class/type/provenance check.
+    const unsigned char& actual_source_start;
+    NativeGuiWidgetCopyContext& context;
+    NativeGuiWidgetCopyAcquired& acquired;
+};
+
+// Closed borrowed alternatives: default has no source/copy requirements;
+// copy has no one-word requirement. A real source reference cannot encode
+// the null/default branch. Private immutable metadata keeps the source and
+// its matching references together across allocation/constructor callbacks.
+// Referents retain the existing raw providers' domain/lifetime contracts.
+class NativeGuiGroupFactoryInputs final {
+public:
+    NativeGuiGroupFactoryInputs(NativeGuiGroupDefaultInputs inputs) noexcept
+        : captured_source_(nullptr), default_(inputs) {}
+    NativeGuiGroupFactoryInputs(NativeGuiGroupCopyInputs inputs) noexcept
+        : captured_source_(&inputs.actual_source_start), copy_(inputs) {}
+private:
+    const void* const captured_source_;
+    union {
+        const NativeGuiGroupDefaultInputs default_;
+        const NativeGuiGroupCopyInputs copy_;
+    };
+    friend void* create_native_gui_group_00aa12f0(NativeGuiGroupFactoryInputs);
+};
+
 // AA12F0: native ECX optional source, EAX actual slot or null, RET. Requires
 // completed explicit Group-process startup. Uses its SAME F8BFA0 EC/F0 pool;
 // a null source selects genuine AC6F50, otherwise genuine AC6FA0. A constructor
@@ -24,6 +55,12 @@ void* construct_native_gui_group_copy_00ac6fa0(void* actual_destination,
 // allocation leaves copy diagnostics untouched. A successful raw result has
 // its native creator reference; the caller owns publication and final deletion.
 // Host C++ exception projection only, not native FH3/SEH or binary ABI parity.
+// Only binding metadata is captured before allocation; borrowed one/source/
+// context/frame contents are consumed at their existing constructor epochs.
+void* create_native_gui_group_00aa12f0(NativeGuiGroupFactoryInputs);
+
+// Compatible entry: delegates its actual references to the matching closed
+// alternative and the SAME complete allocation/constructor/unwind body.
 void* create_native_gui_group_00aa12f0(const void* optional_actual_source,
     const volatile std::uint32_t& actual_one_00d7a24c,
     NativeGuiWidgetCopyContext&, NativeGuiWidgetCopyAcquired&);
