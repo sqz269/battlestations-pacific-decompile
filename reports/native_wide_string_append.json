@@ -1,0 +1,67 @@
+{
+  "packet": "codex-raw-wide-append",
+  "base": "bcf127f7d796506accdb13e18723ef7580835b2b",
+  "address": "005cf090",
+  "status": "source_reviewed_strict_win32_object_compiled_root_integration_pending",
+  "source_ready": false,
+  "original_abi": "ECX destination raw8; stack SOURCE raw8 header; RET4; no stable explicit return result",
+  "source_api": "void append_native_wide_string_header_005cf090(void*, const void*, NativeStringRawPoolContext&)",
+  "normal_epochs": [
+    "captured sourceLen FIRST",
+    "sourceLen0 returns before all dst/context Native reads",
+    "captured OLD dstLen",
+    "DWORDsum -> actual RAWresize(sum,true)",
+    "CURRENTsourceData BEFORE CURRENTdstData",
+    "captured sourceLen*2 and oldDstLen*2 output address, DWORD wrap",
+    "qualified memmove; wrapped0 omission only after operand reads"
+  ],
+  "ownership": "no local owner/frame/cleanup; borrow source, mutate actual destination through real raw resize",
+  "exception_policy": "propagate callee escape/partial effects; no cleanup, rollback, retry or noexcept adapter",
+  "source_hashes": {
+    "include/bsp/native_wide_string_append.hpp": "f3cdfe50534032e83519db19f281448d125fe446b428c50df01f92aeb9303ab7",
+    "src/native_wide_string_append.cpp": "c60840f94c29823ae2952a2cfb9d940e12a1789f2f588c6eab3df6b58bda90e5"
+  },
+  "preservation_sha256": "0cc492bc09fc997d1c2be1100e1ee8abad124fe32a71bd737a90dc19544c3032",
+  "providers_unchanged": {
+    "include/bsp/native_wide_string.hpp": "5606f96b372362a6831a1633a583f264fbab4290789481f94f1ba97537f6e051",
+    "src/native_wide_string.cpp": "158502f1efb91f678011dd971c643d5236eb10bf56da3c9997631a6d8df96e55",
+    "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+    "src/native_string.cpp": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+    "include/bsp/native_string_pool_storage.hpp": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+    "src/native_string_pool_storage.cpp": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+    "src/frontend_seg15_22_cc13.cpp": "4fc672106f5b3cd2136fa28f312c97990c8b3989e53db75c66bac819074e095f"
+  },
+  "contract_sha256": "3be45cf2cb93a78ead3d7bf97228c2da2ddf04d2080cf8b864e20f052cf4c6bf",
+  "source_review": "Root, Frame and Gameplay full actual HPP/CPP/all28ASM accepted exact f3cdfe50/c60840f9 before freeze",
+  "limits": [
+    "valid reached raw field/copy/alias domains",
+    "SAME actual raw pool/provider/code and no invalidating writers",
+    "ordinary C++/currentCRT/FH3/SEH/hardware boundary",
+    "no resolver/Lua/startup/ABI/runtime/vendor-body/helper credit"
+  ],
+  "no_tests_probe_game_ghidra_or_existing_sources_sharedmetadata_edits": true,
+  "strict_object": {
+    "compile_count": 1,
+    "compile_exit": 0,
+    "coff_machine": "014c",
+    "sha256": "59ee8b806311c6d433aac22834c0c6d419f0ffa59617dd4add25b9847b43b591",
+    "artifacts": {
+      "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_wide_string_append_validation_gui_20261030\\objects\\compile.cmd": "6f70d691484061bbbcbf0f7a56a0c21239a75a4fbf288900b8f253754b9b67b8",
+      "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_wide_string_append_validation_gui_20261030\\objects\\compile.log": "6e35bbbd6ea29fb70c7d300d1d5c78853f074db9067b882eb3c12607a4ddb928",
+      "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_wide_string_append_validation_gui_20261030\\objects\\compile_command.txt": "7d240a09dd5002af34745e261f75f82a7b7c4f2f515294ea79ec9cf3fcdc6bf1",
+      "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_wide_string_append_validation_gui_20261030\\objects\\compile_exit.txt": "9aca8dfce962538fb8131d73f84cada05e4dc79f5a0d3612c511b1150f3e33e2",
+      "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_wide_string_append_validation_gui_20261030\\objects\\symbols.cmd": "f4d7698984f8ae4e0ee675b34f5f8a86f5fe70993df4cd1b1683554872d89222",
+      "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_wide_string_append_validation_gui_20261030\\objects\\symbols.txt": "743a00158b03d9983a87f7a4f80193cb6b35b725146dc9633ead5473b9fab7d6",
+      "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_wide_string_append_validation_gui_20261030\\objects\\wide_append.obj": "59ee8b806311c6d433aac22834c0c6d419f0ffa59617dd4add25b9847b43b591"
+    }
+  },
+  "actual_symbol": {
+    "defined_external_row": "015 00000000 SECT4  notype ()    External     | ?append_native_wide_string_header_005cf090@bsp@@YAXPAXPBXAAUNativeStringRawPoolContext@1@@Z (void __cdecl bsp::append_native_wide_string_header_005cf090(void *,void const *,struct bsp::NativeStringRawPoolContext &))",
+    "decorated_symbol": "?append_native_wide_string_header_005cf090@bsp@@YAXPAXPBXAAUNativeStringRawPoolContext@1@@Z",
+    "actual_raw_resize_reference_row": "016 00000000 UNDEF  notype ()    External     | ?resize_native_wide_string_header_004c53e0@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z (void __cdecl bsp::resize_native_wide_string_header_004c53e0(void *,struct bsp::NativeStringRawPoolContext &,unsigned int,bool))",
+    "raw_resize_decorated_symbol": "?resize_native_wide_string_header_004c53e0@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z",
+    "object_sha256": "59ee8b806311c6d433aac22834c0c6d419f0ffa59617dd4add25b9847b43b591",
+    "coff_machine": "014c"
+  },
+  "symbol_receipt_sha256": "a66a3d700a7928c152fcee1b5c6755c8b5c2b8b59944923bd2e634f7c59aef6a"
+}
