@@ -9,7 +9,9 @@
 #include <Windows.h>
 #include <cstddef>
 #include <cstdint>
+#include <cstring>
 #include <exception>
+#include <intrin.h>
 
 namespace bsp {
 namespace {
@@ -49,7 +51,10 @@ struct GuardCleanup {
 } // namespace
 
 void destroy_native_generic_singleton_base_00412430(void* actual_receiver) noexcept {
-    *static_cast<volatile Word*>(actual_receiver) = 0x00ce3818u;
+    const Word profile = 0x00ce3818u;
+    _ReadWriteBarrier();
+    std::memcpy(actual_receiver, &profile, 4);
+    _ReadWriteBarrier();
 }
 
 void* publish_native_render_service_base_00b0f020(
