@@ -1,0 +1,391 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-frame-title-position-independent-review",
+  "classification": "independent_static_source_review",
+  "reviewed_commit": "40d286ed3b1451a7a58d7b9f3a315b990ddf5217",
+  "review_tree_merge_commit": "994378998d9db56d70a1bc9be820cd09b1bc9e27",
+  "reviewed_packet_receipt": {
+    "path": "reports/cc16_native_front_end_frame_title_position.json",
+    "git_blob_oid": "0ac99fdd0ee96c1ee9412d9faf23cfea4a04f5b7",
+    "bytes": 27767,
+    "sha256": "cc56f68f903663941f39c97425ab4f7ee82972d415cfefec46699479e85a1996",
+    "hash_format": "immutable_git_blob_content_lf"
+  },
+  "reviewer_files": [
+    "docs/CC16_NATIVE_FRAME_TITLE_POSITION_INDEPENDENT_REVIEW.md",
+    "reports/cc16_native_frame_title_position_independent_review.json"
+  ],
+  "verdict": "accepted_bounded_static_source_review_with_explicit_integration_gates",
+  "actionable_findings": [],
+  "production_files_unchanged": true,
+  "glyph_quad_6d_four_files_unchanged": true,
+  "reviewed_source_pins": [
+    {
+      "path": "include/bsp/native_front_end_frame_title_position.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "87dacd5b92bb9389185c808de3a4015283fc9cf0be7d7e944c81a8ef3c148244",
+      "git_blob_oid": "49b090b2fd5c06dbe9814633f8edc67ebf14dae2",
+      "bytes": 6839
+    },
+    {
+      "path": "src/native_front_end_frame_title_position.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "96938f1b2de7483e384b29768798eb5b78086b4d7747ab8bd6164cbcbc07d3bf",
+      "git_blob_oid": "4a79485066a1905445495757399e300cb6305bb7",
+      "bytes": 13009
+    }
+  ],
+  "native_bodies": [
+    {
+      "bytes": 477,
+      "sha256": "7fe5fc22fbc04236b09f559010c1d41c03d351802efb282a9b110cdd5bae3109",
+      "entry": "005189B0",
+      "end": "00518B8C",
+      "instructions": 126,
+      "source_symbol": "set_native_front_end_frame_title_005189b0",
+      "native_abi": "ECX actual native string8h; plainRET"
+    },
+    {
+      "bytes": 361,
+      "sha256": "f6c53c855833087d8674ce2563ed7d98c45c4593990e644452eeba966fa8a8da",
+      "entry": "005186B0",
+      "end": "00518818",
+      "instructions": 109,
+      "source_symbol": "set_native_front_end_frame_title_position_005186b0",
+      "native_abi": "ECX captured box XYZ, EDX captured title XYZ; plainRET"
+    },
+    {
+      "bytes": 386,
+      "sha256": "46dbf6f367daac3e5f2ebce86834a8f5720b5491f033b9447ff6754d48fb5df3",
+      "entry": "00518820",
+      "end": "005189A1",
+      "instructions": 119,
+      "source_symbol": "get_native_front_end_frame_title_position_00518820",
+      "native_abi": "ECX captured box output, EDX captured title output; plainRET"
+    },
+    {
+      "bytes": 113,
+      "sha256": "7857c9c253e61d684c39661b56ef128ce7c470bda15f3a5939d317f4c19a89e1",
+      "entry": "00518E00",
+      "end": "00518E70",
+      "instructions": 34,
+      "source_symbol": "collect_native_front_end_frame_children_00518e00",
+      "native_abi": "ECX captured Frame, stacked output-vector pointer; RET4"
+    }
+  ],
+  "independent_pin_checks": {
+    "source_pins": 2,
+    "input_pins": 24,
+    "saved_raw_exports": 8,
+    "original_pe_identity": true,
+    "complete_native_body_hashes": 4,
+    "native_bytes": 1337,
+    "native_instructions": 388,
+    "literal_sha256_hex_and_fnv": 6,
+    "fh3_handlers_funcinfos_maps": 3,
+    "cleanup_actions_and_tail_targets": 6,
+    "mismatches": [],
+    "git_blob_basis": "immutable Git blob content with LF; no CRLF working-copy hash substitution"
+  },
+  "ghidra_target_verification": {
+    "tool": "python tools/bsp.py ghidra count",
+    "mechanism": "bsp.py client() calls ghidra_export.Client.verify() before endpoint reads",
+    "configured_project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "live_function_count": 77632,
+    "snapshot_function_count": 77632,
+    "autostart_disabled": true,
+    "writes": false
+  },
+  "original_pe": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "hash_format": "raw_original_pe_file_bytes",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "literal_preimages": [
+    {
+      "address": "00CEC3D8",
+      "bytes": 11,
+      "sha256": "877b4ac5196f2191b19b318667fd830ce53866e7a4793f647eeda5db455a58a6",
+      "role": "title_Text NUL name",
+      "hex": "7469746c655f5465787400",
+      "fnv1a32": "00ccf4cb"
+    },
+    {
+      "address": "00CEC3C4",
+      "bytes": 18,
+      "sha256": "d04d92502b93c8228e692a6c3604cb8bf07d23b3285d4fd0f2da67eb782401c7",
+      "role": "szarnyas_FrameBox NUL name",
+      "hex": "737a61726e7961735f4672616d65426f7800",
+      "fnv1a32": "81a834c3"
+    },
+    {
+      "address": "00CEC380",
+      "bytes": 8,
+      "sha256": "567be61e7cefcfaba897e6d95d81a49a884e657b6a67ada1595e794ed90f6ed7",
+      "role": "FDIV double960",
+      "hex": "0000000000008e40",
+      "fnv1a32": "de8b100b"
+    },
+    {
+      "address": "00CEC3E8",
+      "bytes": 8,
+      "sha256": "56a92133b522de3f3673749fd1c4858192e3a13bf9e6550177c190320174937e",
+      "role": "compare and late FADD double pad",
+      "hex": "111111111111d13f",
+      "fnv1a32": "f824fd23"
+    },
+    {
+      "address": "00CEC3E4",
+      "bytes": 4,
+      "sha256": "e946f46d1c2fe128e6666e3137dc707d0577b33cc910a1365822bf568aa0a731",
+      "role": "minimum FLOAT width",
+      "hex": "8988083f",
+      "fnv1a32": "119be001"
+    },
+    {
+      "address": "00CE3E18",
+      "bytes": 4,
+      "sha256": "2f0d6f3d65a7e28c4223e4389106e46f1e9010a2bd724d35f9794cb8a86d7c68",
+      "role": "fixed FLOAT width",
+      "hex": "3333333f",
+      "fnv1a32": "3d39a85d"
+    }
+  ],
+  "eh_static_evidence": [
+    {
+      "entry": "005189B0",
+      "handler": {
+        "address": "00C6A980",
+        "bytes": 10,
+        "sha256": "409fdef9be3a661bee81ba949691408814c1faf746e2f2f147b7ba5717ff4cff",
+        "hex": "b8fc3dd900e9b9c1f8ff",
+        "funcinfo_immediate": "00D93DFC",
+        "tail_target": "00BF6B43"
+      },
+      "funcinfo": {
+        "address": "00D93DFC",
+        "bytes": 36,
+        "sha256": "cb4a7711b7dd19a1aeee9491fa9d6c27930aac2271a5a73e92c3971b479a9a24",
+        "hex": "2205931902000000ec3dd900000000000000000000000000000000000000000001000000",
+        "magic": "19930522",
+        "max_state": 2
+      },
+      "unwind_map": {
+        "address": "00D93DEC",
+        "bytes": 16,
+        "sha256": "e9d835046cffa49b277666d1d22e5980e0580144c2740fc119360a3e51b12f81",
+        "hex": "ffffffff70a9c600ffffffff78a9c600"
+      },
+      "actions": [
+        {
+          "address": "00C6A970",
+          "bytes": 8,
+          "sha256": "dcccf119c5cbe969c96cbdb2fd471d53c243fcfb93f3ac5038e4fbd944c11e1c",
+          "state": 0,
+          "to_state": -1,
+          "hex": "8d4dd4e9a8337bff",
+          "ebp_header_offset": -44,
+          "tail_target": "0041DD20"
+        },
+        {
+          "address": "00C6A978",
+          "bytes": 8,
+          "sha256": "77380f0959a30591f2c840021257dd7d1ab548fa87c8a81130829dcdfe9d974e",
+          "state": 1,
+          "to_state": -1,
+          "hex": "8d4ddce9a0337bff",
+          "ebp_header_offset": -36,
+          "tail_target": "0041DD20"
+        }
+      ]
+    },
+    {
+      "entry": "005186B0",
+      "handler": {
+        "address": "00C6A940",
+        "bytes": 10,
+        "sha256": "70afb1f2b5b11e05d1ec4f50242528be9480591afca87980da86daf32597545a",
+        "hex": "b8943dd900e9f9c1f8ff",
+        "funcinfo_immediate": "00D93D94",
+        "tail_target": "00BF6B43"
+      },
+      "funcinfo": {
+        "address": "00D93D94",
+        "bytes": 36,
+        "sha256": "f2bb27c0f0aae6edd404fc1bd27d796a837384c53c9f8d4254c718dd8c195e03",
+        "hex": "2205931902000000843dd900000000000000000000000000000000000000000001000000",
+        "magic": "19930522",
+        "max_state": 2
+      },
+      "unwind_map": {
+        "address": "00D93D84",
+        "bytes": 16,
+        "sha256": "7b2fc9c44089184d006945e0ced18247a9623e741e5f8e747d6c261e48d60b7a",
+        "hex": "ffffffff30a9c600ffffffff38a9c600"
+      },
+      "actions": [
+        {
+          "address": "00C6A930",
+          "bytes": 8,
+          "sha256": "eab70df974064b9698efe788ef09cf2b678d949e05b8d027d9c69f7ad19aba81",
+          "state": 0,
+          "to_state": -1,
+          "hex": "8d4de4e9e8337bff",
+          "ebp_header_offset": -28,
+          "tail_target": "0041DD20"
+        },
+        {
+          "address": "00C6A938",
+          "bytes": 8,
+          "sha256": "f5e19877daffc85e386e5d1a21be199eafdf4c5aab5d854e3e72157bd1a689dd",
+          "state": 1,
+          "to_state": -1,
+          "hex": "8d4dece9e0337bff",
+          "ebp_header_offset": -20,
+          "tail_target": "0041DD20"
+        }
+      ]
+    },
+    {
+      "entry": "00518820",
+      "handler": {
+        "address": "00C6A960",
+        "bytes": 10,
+        "sha256": "c08e7cdeebc9994709329756f35da6090531170fb211127466eba42a6e85bfd7",
+        "hex": "b8c83dd900e9d9c1f8ff",
+        "funcinfo_immediate": "00D93DC8",
+        "tail_target": "00BF6B43"
+      },
+      "funcinfo": {
+        "address": "00D93DC8",
+        "bytes": 36,
+        "sha256": "aa8721a12527903680d871c1c8aa0e53badef46930e1439f67946aff311f0db1",
+        "hex": "2205931902000000b83dd900000000000000000000000000000000000000000001000000",
+        "magic": "19930522",
+        "max_state": 2
+      },
+      "unwind_map": {
+        "address": "00D93DB8",
+        "bytes": 16,
+        "sha256": "24392b1c7ada1dfb8ae9a27270eab93e594dc64d2e1650d44d16fed85a3901f2",
+        "hex": "ffffffff50a9c600ffffffff58a9c600"
+      },
+      "actions": [
+        {
+          "address": "00C6A950",
+          "bytes": 8,
+          "sha256": "9c3b53e1a9b620caa33c4b734f193a11d1478792ed39334d563dc2149ca89498",
+          "state": 0,
+          "to_state": -1,
+          "hex": "8d4de4e9c8337bff",
+          "ebp_header_offset": -28,
+          "tail_target": "0041DD20"
+        },
+        {
+          "address": "00C6A958",
+          "bytes": 8,
+          "sha256": "d219543d7887d95aee438cccd1295a50c64a7d31bad79d25d76229cd0c561417",
+          "state": 1,
+          "to_state": -1,
+          "hex": "8d4dece9c0337bff",
+          "ebp_header_offset": -20,
+          "tail_target": "0041DD20"
+        }
+      ]
+    }
+  ],
+  "behavior_checks": {
+    "whole_header_and_cpp_read": true,
+    "whole_four_saved_assembly_bodies_read": true,
+    "title_getters": "Three separate paired getters; first Frame supplies slots, second supplies +160. Precheck and title find own-before-selector; box find selector-before-own. Multigeneration identity retained.",
+    "title_update_game_flags": "Captured Text/header and literal one to changed ABAED0; current Game captured afterward; +61F then short-circuited +634.",
+    "title_same_home_alias": "First retired title-name header DWORD is the FLOAT quotient home, including spill and post-getter reload.",
+    "title_x87": "12 static forms checked by branch path: FDIV DOUBLE960 and FLOAT spill; FCOMI/FSTP ST1/JBE includes unordered minimum; branch pop before callback; true AA6740 pointer getter; late quotient and DOUBLE pad reload; ambient FP state not reset.",
+    "no_cpp_callback_while_new_st0_live": true,
+    "title_size_and_dispatch": "Height loaded before constant width; selected scratch retained; current captured box profile and +58 target loaded at final epoch and passed as data to required real dispatch.",
+    "position": "Raw resize/copy headers; paired getters with selector-before-own; captured box set first; direct existing AA67F0 twice; XYZ FLD/FSTP sequential, preserving alias propagation; second getter after first copy.",
+    "collector": "Captured Frame; three fresh own-before-selector phases; first Page test before exactly one output-home capture even for null first Page; late SLOT ADDRESSES passed to genuine 4D6790; no copied Page values.",
+    "native_strings": "Required raw-pool overload of genuine41DD20; header data capture before length+1 and manager/pool return; no noexcept storage overload.",
+    "exception_intervals": "Armed only after constructor/copy returns; reached getter/find guarded; native normal disarm before pool return; one cleanup then original rethrow if cleanup returns; cleanup exception escapes without new termination/retry/rollback."
+  },
+  "x87_scope": {
+    "005189B0": 12,
+    "005186B0": 0,
+    "00518820": 12,
+    "00518E00": 0,
+    "total": 24,
+    "cpp_float_expression_substitution": false,
+    "fp_reset_added": false,
+    "unmasked_fp_or_stack_fault_equivalence_proved": false
+  },
+  "existing_body_reuse": {
+    "direct_00aa67f0": "Existing whole cc13_gui1 actual widget+0C pointer getter; native assembly independently read. No new credit.",
+    "00aa6740": "Native pointer-return getter at widget+20 verified; required binding remains open."
+  },
+  "required_genuine_bindings": [
+    {
+      "method": "void* frame_004c1ac0()",
+      "native": "004C1AC0",
+      "gap": "Existing raw getter body; actual SAME manager/publication/preprepared allocation custody and application retention binding remain required."
+    },
+    {
+      "method": "void* find_child_00aa7e00(void* parent,const void* header8,uint32_t one)",
+      "native": "00AA7E00",
+      "gap": "Actual Page/widget/node/list/name graph for captured receivers; supported typed/actual-owner overloads alone do not establish full raw consumer."
+    },
+    {
+      "method": "void text_source_00abaed0(void* text,const void* header8,uint32_t one)",
+      "native": "00ABAED0",
+      "gap": "Genuine changed raw source/localization/inner updater/current+50 path still unclosed; unchanged-storage fragment is insufficient."
+    },
+    {
+      "method": "const void* widget_size_00aa6740(void* widget)",
+      "native": "00AA6740",
+      "gap": "True pointer-returning widget+20 getter at reached native call point. Width-only/precomputed semantic value is invalid."
+    },
+    {
+      "method": "void set_local_position_00aa7dc0(void* widget,const void* xyz)",
+      "native": "00AA7DC0",
+      "gap": "Existing complete raw normal body; retain actual transform/bounds scratch, genuine captured transform dispatch and canonical half constant in application."
+    },
+    {
+      "method": "void call_widget_virtual58(void* widget,uint32_t profile,uint32_t target,void* float2)",
+      "native": "CURRENT raw widget profile +58",
+      "gap": "Actual finite captured target/receiver transport; no codeword invocation, ignored target, later-epoch substitution or fallback."
+    },
+    {
+      "method": "void push_page_slot_004d6790(void* output_vector,void* actual_slot_address)",
+      "native": "004D6790",
+      "gap": "Genuine raw vector append/insert/allocator and late pointer-to-slot read; semantic stdvector<Page*> copying cannot bind it."
+    }
+  ],
+  "lifetime_gate": "Future actual Startup-owned GameNativeFrontEndApplication consumer retains SAME canonical RO/selectors/SettingsGame/string-manager refs, operation scratch, actual Page/widget/Frame clients and providers across Game/Menu deletion and both singleton-drain retirement paths. Captured allocation/receiver may differ from publication; no extra native retain or replacement owner is introduced.",
+  "limits": {
+    "common_build_run": false,
+    "tests_or_probes_run": false,
+    "game_process_or_activation": false,
+    "ghidra_mutation_or_new_export": false,
+    "cmake_ledger_shared_owner_or_view_edits": false,
+    "original_register_abi_proved": false,
+    "fh3_seh_identity_proved": false,
+    "exact_faults_and_private_stack_aliases_proved": false,
+    "runtime_visual_gameplay_proved": false,
+    "whole_frontend_ready": false
+  },
+  "credit": {
+    "new_original_bodies": 0,
+    "new_vendor_bodies": 0,
+    "new_compiler_generated_bodies": 0,
+    "duplicate_bodies": 0,
+    "original_abi": 0,
+    "runtime": 0,
+    "activation": 0
+  },
+  "remaining_packet": "Root common integration/build and genuine retained application bindings for the seven endpoints, especially whole changed ABAED0 and raw slot-vector insertion. No guard flip from this review.",
+  "review_utc": "2026-10-30T17:33:37.796942+00:00"
+}
