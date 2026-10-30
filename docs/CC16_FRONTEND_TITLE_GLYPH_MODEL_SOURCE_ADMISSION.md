@@ -18,6 +18,8 @@ Ten Git-LF input snapshots and eleven artifacts are frozen under `local/function
 
 All six touched entry names occur in the core archive's symbol-name bytes and are absent from the checked game map. This establishes library compilation with the existing tests; it supplies no actual game caller, drop-in Original ABI or runtime proof. No game/probe or process-control action occurred. Earlier build/runtime receipts remain scoped to their own frozen cohorts.
 
+Before publication, Main advanced to `9fbf79db66bda33a45fe9808c57fbabda80dd064` with the independently reviewed canonical locale textual operation. Joined Source `ef71782c26ce048820ba5ef3f549a1cc424c4d0a` passed all targets and both suites again in 9.99 seconds, with no compiler warning/error. All ten frontend Source/configuration inputs stayed byte-identical. Its fourteen inputs and thirteen artifacts are frozen separately under `local/function_source_batch26/joined_main/`; the latest PE SHA-256 is `569147c99832ad901e4086f39cd4b73439316c6d74d670ff6146f41bb8c6a6ad`. The receipt preserves both passing cohorts and their separate Source identities. All six names remain absent from the joined game map, and no game/probe was executed.
+
 ## Remaining activation work
 
 Frame title still requires genuine same-domain Frame/child/changed-Text/size/position/current-58/vector bindings. GlyphQuad requires its real child/pool/node/renderer/Font/shader/content/attachment/position graph and prepared nested records. SingleLine still needs actual Glyph composition, layout/current-stream/F8BE50 roles and genuine Model/resource production and lifetime.
