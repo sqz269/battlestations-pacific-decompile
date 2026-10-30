@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "packet": "codex-native-gui-text-single-line-storage",
-  "classification": "Whole raw AB9FD0 with direct sealed Font selector and local raw Model geometry read; actual production/caller/other application bindings unclosed",
+  "classification": "Whole raw AB9FD0 with direct Font/Model/Glyph operations; genuine prepared record owner, nested providers and actual caller remain unclosed",
   "baseline": "e8a0876d85b33722420476be055120836984faed",
-  "utc": "2026-10-30T17:48:34.157812+00:00",
+  "utc": "2026-10-30T18:21:42.955377+00:00",
   "owned_files": [
     "include/bsp/native_gui_text_single_line_storage.hpp",
     "src/native_gui_text_single_line_storage.cpp",
@@ -115,7 +115,8 @@
     ],
     "destructor": "default/no-op; requires_process_retention() remains mandatory caller graph/record lifetime contract, not automatic process policy.",
     "font_selector": "Both reached calls directly use sealed1a35 select_native_font_glyph_storage_00ad4480 with stable actual WORD home/iterator scratch; unused Font virtual removed.",
-    "model_geometry": "Existing AB9FE5 phase directly reads captured Model+180; unused Model virtual removed. No new standalone API/context."
+    "model_geometry": "Existing AB9FE5 phase directly reads captured Model+180; unused Model virtual removed. No new standalone API/context.",
+    "glyph_quad": "Concrete whole071 call; one same-context borrow, pure parent-identity prepared-record selector, selected record pointer published before entry. No new standalone Native accessor, owner or operation adapter."
   },
   "loop_and_reload_contract": [
     "Capture actual Text+4C model BEFORE Text+110=0. Whole B74640(model,0) returns one captured actual mesh; direct rawB73260(mesh,0) selects captured vertex stream.",
@@ -200,7 +201,7 @@
     "current_table": "Required pure metadata resolver returns SAME live current profile table, no Native call/reentry/resource effects.",
     "model_B74640": "Closed local raw field-read operation: after Text4C capture and Text110 zero store, read CURRENT capturedModel+180 at existing AB9FE5 phase; unused0 has no effect. No NativeModelTailStorage cast, count/index restriction, standalone accessor, provider/default/owner. Genuine raw Model production/lifetime remain caller proof.",
     "font_AD4480": "Closed direct selector operation: unchanged sealed1a35 whole raw AD4480 + private AD3E70 + rawAD4370/AD4540 + real SDK invalid transport. Actual populated Font/head/node/payload producer and lifetime remain caller requirements; embedded/NULL results unchanged.",
-    "quad_AB98F0": "Parallel whole raw body with agreed actual10DWORD homes/aliases; Root binds its same retained private contexts/operation.",
+    "quad_AB98F0": "Closed direct whole071 operation at ABA1F8 with SAME actual Text/10 mutable homes and borrowed genuine GlyphContext. Pure prepared-record selector supplies a distinct stable fresh acquired/nested backing by parent identity; actual preparation/history owner/all entered genuine providers remain caller proof. No opaque Native-operation virtual, default, capacity/shortage/fallback policy or typed child owner.",
     "layout_B865A0": "Required whole raw actual section/captured mesh/current renderer-layout provider, not typed section/mesh reinterpret.",
     "empty_F8BE50": "Required retained genuine initial-wide-NUL role supplied by caller authority. No replacement static0 array/default payload/new process owner added. Existing canonical role binding is not established in this packet.",
     "constants": "Borrow actual authenticated CEC380 double,CE3978 float,D7A280 double references, never copied hardcoded defaults."
@@ -226,7 +227,10 @@
     "font_selector_operation_directly_composed": true,
     "genuine_populated_font_producer_and_lifetime_bound": false,
     "model_geometry_operation_directly_composed": true,
-    "genuine_populated_model_producer_and_lifetime_bound": false
+    "genuine_populated_model_producer_and_lifetime_bound": false,
+    "glyph_quad_operation_directly_composed": true,
+    "prepared_Glyph_records_and_nested_frames_bound": false,
+    "genuine_GlyphContext_domain_bound": false
   },
   "validation": {
     "new_build_or_tests_or_probe_or_game_or_process_actions": false,
@@ -234,13 +238,13 @@
     "new_tests": 0,
     "static_check": {
       "status": "passed",
-      "exact_one_cpp_expression_replacement_only": true,
-      "exact_one_header_virtual_removal_only": true,
+      "comparison_basis": "9b3f12e85eff43edbc7d120adc70b02b62776310",
+      "exact_one_cpp_callblock_replacement_only": true,
+      "exact_header_include_forward_declaration_selector_borrow_and_identity_field_only": true,
       "all_other_cpp_Git_LF_bytes_identical": true,
-      "comparison_basis": "6490c5de7ac2a7dbdf90fc0a267e27da9332f364",
-      "outside_expression_mask": "Entire old/new Model expression statement replaced with identical independently chosen comment marker; remaining Git-LF bytes compare exactly.",
-      "outside_expression_bytes": 16633,
-      "outside_expression_sha256": "9a39362b3890bea01297427d2602f543b1c6d0fff6aadbc58d7625b93778a113",
+      "masked_cpp_bytes": 16645,
+      "masked_cpp_sha256": "00a0eb32490f1c325978f901258758765f55646e669ee4c54a267ea5e1f666f6",
+      "mask_definition": "Only entire old/new Glyph call block replaced with identical independently chosen DIRECT_GLYPH_CALL comment marker.",
       "all_five_inline_assembly_blocks_identical": true,
       "inline_assembly_sha256": [
         "088ae144722bfdf3ee94f78772e1da811e722bae7eb431c5b9f12081a7c417ee",
@@ -249,20 +253,25 @@
         "c1153e46b002384db94f5865ad5382c30581809b8ec9fb2a109a13af490cb473",
         "83f44dedb88c5832817d758bcc3679e4ff30209f6a23b3c5e76e17cdd95e8f58"
       ],
-      "both_direct_Font_call_blocks_identical": true,
+      "both_Font_call_blocks_identical": true,
       "Font_call_block_sha256": [
         "7b2427e8d74035642986825013226d088166a44cd72e62a9c854e0f6895943e9",
         "3e953bccaaab63f3de3b286eb23239e83fbf71690cbf510969e6bdf425654729"
       ],
-      "old_scratch_homes_loops_geometry_mapping_layout_failure_and_FP_unchanged": true,
-      "current_27_parent_inputs_match_accepted6490": true,
-      "six_Font_provider_Source_files_match_sealed1a35": true,
-      "nine_Main081_build_inputs_preserved_as_history": true,
-      "saved_export_pins_verified": 8,
+      "Model_raw_expression_identical": true,
+      "original_10_home_and_position_writes_identical": true,
+      "home_write_block_sha256": "0a2af048e3f83c3786dc5e04a3e3fc256efbd06ff65809ef05c39587f7c26653",
+      "old_scratch_and_all_old_Context_Acquired_fields_preserved": true,
+      "selected_record_published_before_concrete_entry": true,
+      "advance_refill_mapping_layout_failure_and_FP_code_unchanged": true,
+      "Glyph071_production_files_unchanged": true,
+      "current_parent_input_pins_checked": 27,
+      "frozen_3c_build_inputs_checked": 10,
+      "new_native_analysis_or_exports": false,
       "new_tests": 0,
-      "qualification": "Static source/PE/hash proof only; no compilation, actual Model production/caller, Original ABI/private-frame/fault/runtime/activation proof."
+      "qualification": "Static source/Git-LF identity only, not new compilation, generated-code/private-frame/ABI/fault/unmasked-FP/runtime proof."
     },
-    "common_build": "New Model expression/header removal unbuilt by this packet. Main0819416/bf658 old parent Source pins are preserved history only; no old receipt applies to this change.",
+    "common_build": "New Glyph header/metadata/callblock not built by this worker. Frozen Source3c09723 9.75s pass applies to old Source only; Root joined build/publication is separate.",
     "staged_diff_check": "passed final owned six-file staged whitespace check before commit",
     "historical_accepted6490_validation": {
       "new_build_or_tests_or_probe_or_game_or_process_actions": false,
@@ -286,6 +295,66 @@
       },
       "common_build": "Root pending for this new composition. Prior0bc/f502/cohort receipts remain frozen; none validates this later Source.",
       "staged_diff_check": "git diff --cached --check passed; exactly six owned paths staged; two current parent Git-LF pins match index; sealed1a35 remains ancestor."
+    },
+    "historical_accepted9b_validation": {
+      "new_build_or_tests_or_probe_or_game_or_process_actions": false,
+      "Ghidra_mutations": 0,
+      "new_tests": 0,
+      "static_check": {
+        "status": "passed",
+        "exact_one_cpp_expression_replacement_only": true,
+        "exact_one_header_virtual_removal_only": true,
+        "all_other_cpp_Git_LF_bytes_identical": true,
+        "comparison_basis": "6490c5de7ac2a7dbdf90fc0a267e27da9332f364",
+        "outside_expression_mask": "Entire old/new Model expression statement replaced with identical independently chosen comment marker; remaining Git-LF bytes compare exactly.",
+        "outside_expression_bytes": 16633,
+        "outside_expression_sha256": "9a39362b3890bea01297427d2602f543b1c6d0fff6aadbc58d7625b93778a113",
+        "all_five_inline_assembly_blocks_identical": true,
+        "inline_assembly_sha256": [
+          "088ae144722bfdf3ee94f78772e1da811e722bae7eb431c5b9f12081a7c417ee",
+          "f3b02ce5df6d86ee96eb05da745ea2d66eff5a91266fffbdb365923588979be9",
+          "2f394ac930bdfa211b605ced8f3cc5f98ce15079a9c1e573fd2fb63a206c58c5",
+          "c1153e46b002384db94f5865ad5382c30581809b8ec9fb2a109a13af490cb473",
+          "83f44dedb88c5832817d758bcc3679e4ff30209f6a23b3c5e76e17cdd95e8f58"
+        ],
+        "both_direct_Font_call_blocks_identical": true,
+        "Font_call_block_sha256": [
+          "7b2427e8d74035642986825013226d088166a44cd72e62a9c854e0f6895943e9",
+          "3e953bccaaab63f3de3b286eb23239e83fbf71690cbf510969e6bdf425654729"
+        ],
+        "old_scratch_homes_loops_geometry_mapping_layout_failure_and_FP_unchanged": true,
+        "current_27_parent_inputs_match_accepted6490": true,
+        "six_Font_provider_Source_files_match_sealed1a35": true,
+        "nine_Main081_build_inputs_preserved_as_history": true,
+        "saved_export_pins_verified": 8,
+        "new_tests": 0,
+        "qualification": "Static source/PE/hash proof only; no compilation, actual Model production/caller, Original ABI/private-frame/fault/runtime/activation proof."
+      },
+      "common_build": "New Model expression/header removal unbuilt by this packet. Main0819416/bf658 old parent Source pins are preserved history only; no old receipt applies to this change.",
+      "staged_diff_check": "passed final owned six-file staged whitespace check before commit",
+      "historical_accepted6490_validation": {
+        "new_build_or_tests_or_probe_or_game_or_process_actions": false,
+        "Ghidra_mutations": false,
+        "new_tests": 0,
+        "static_check": {
+          "status": "passed",
+          "utc": "2026-10-30T17:20:01.905684+00:00",
+          "exact_two_cpp_call_replacements_only": true,
+          "exact_header_include_virtual_removal_appended_scratch_only": true,
+          "all_other_cpp_Git_LF_bytes_identical": true,
+          "masked_cpp_Git_LF_sha256": "0ff29b10d094fafa6bb142fc54ea5f3b8434feb2356fd69d0c4eb4746e12bdec",
+          "all_five_inline_assembly_blocks_byte_identical": true,
+          "all_old_scratch_fields_precede_new_fields": true,
+          "original_27_parent_inputs_current_verified": 27,
+          "sealed_font_inputs_verified_at_1a35": 15,
+          "six_concrete_provider_Source_files_current_match_1a35": true,
+          "saved_raw_exports_verified": 6,
+          "historical_f502_parent_source_pins_verified": 2,
+          "qualification": "Static canonical Git-LF hashes/diff only. No compilation/generated-code/private-stack/ABI/runtime/unmasked-FP exception proof."
+        },
+        "common_build": "Root pending for this new composition. Prior0bc/f502/cohort receipts remain frozen; none validates this later Source.",
+        "staged_diff_check": "git diff --cached --check passed; exactly six owned paths staged; two current parent Git-LF pins match index; sealed1a35 remains ancestor."
+      }
     }
   },
   "new_credit": {
@@ -300,238 +369,238 @@
   "new_Source_pins": [
     {
       "path": "include/bsp/native_gui_text_single_line_storage.hpp",
-      "git_blob": "85cb7b172426fb3fd9d82c9fdefac54d8a596652",
-      "Git_LF_sha256": "4c29abfcfa41c929d8d4c584239e4cbadb5f5847c91a59becc3262274ed72394",
-      "Git_LF_bytes": 8272,
-      "hash_format": "immutable_git_blob_content_lf"
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob": "9a50b1dc9591d851b3517d1e65b2c5e5c557b807",
+      "Git_LF_sha256": "b7a68ae45274614acc678a0572a3e465876c76a4716d0a33f70c2a58017af26a",
+      "Git_LF_bytes": 8946
     },
     {
       "path": "src/native_gui_text_single_line_storage.cpp",
-      "git_blob": "3ee333ef7714dbfc051e0878b4ad5956770469b4",
-      "Git_LF_sha256": "c67aeabe843cbf8799713a9077075100a532b5ff4ab067a19ef2f96564f7d62c",
-      "Git_LF_bytes": 16679,
-      "hash_format": "immutable_git_blob_content_lf"
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob": "3f9ef7d072c5c190b89f9a966dd2700fd02c2324",
+      "Git_LF_sha256": "937a05a473811134a35e7359c9746e00907cef3f0f560e37379a1bc5069db8fb",
+      "Git_LF_bytes": 16899
     }
   ],
   "unchanged_supplier_and_evidence_pins": [
     {
       "path": "include/bsp/gui_text_single_line.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
       "git_blob": "f6db9ccc437534487d065686ff6628d14510c945",
       "Git_LF_sha256": "5a675a2f32cd822917a1b3492e0e00f4f2b88d00f13eab6371fa0d826ba2e122",
       "Git_LF_bytes": 3569,
-      "revision": "0812812ea198274454e1fab0a5da8f9e7e716b64",
-      "hash_format": "immutable_git_blob_content_lf"
+      "revision": "ef71782c26ce048820ba5ef3f549a1cc424c4d0a"
     },
     {
       "path": "src/gui_text_single_line.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
       "git_blob": "d59e2f31353f90de5676c615bc52c802b19f80ef",
       "Git_LF_sha256": "71e02d897b88e42df7ca6cc8b03b0f9dabd2766b1e4b86a613cdb5965b369114",
       "Git_LF_bytes": 7562,
-      "revision": "0812812ea198274454e1fab0a5da8f9e7e716b64",
-      "hash_format": "immutable_git_blob_content_lf"
+      "revision": "ef71782c26ce048820ba5ef3f549a1cc424c4d0a"
     },
     {
       "path": "include/bsp/cc13_gui2.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
       "git_blob": "d386f52c2088c8a171d47c257867183622f52973",
       "Git_LF_sha256": "0afa4f4e5d6b02c706796e774d5b1597370aa432cce0dcb6307f55d0a24af5ba",
       "Git_LF_bytes": 16373,
-      "revision": "0812812ea198274454e1fab0a5da8f9e7e716b64",
-      "hash_format": "immutable_git_blob_content_lf"
+      "revision": "ef71782c26ce048820ba5ef3f549a1cc424c4d0a"
     },
     {
       "path": "src/cc13_gui2.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
       "git_blob": "74984642095b6a8ac902ad19e0d0d8fccdfebad0",
       "Git_LF_sha256": "7c2cf61c9c7e807d9e3eb0bf94b5f12acce93de7bed9f120f06586a06049dce4",
       "Git_LF_bytes": 43232,
-      "revision": "0812812ea198274454e1fab0a5da8f9e7e716b64",
-      "hash_format": "immutable_git_blob_content_lf"
+      "revision": "ef71782c26ce048820ba5ef3f549a1cc424c4d0a"
     },
     {
       "path": "include/bsp/font_layout.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
       "git_blob": "cb2014d4a212c9020dd31d094a7e860440c3fc49",
       "Git_LF_sha256": "44f289f7218257d36a9f5e3a55de74b4123d1305a60391027bc53a731b2717d4",
       "Git_LF_bytes": 2755,
-      "revision": "0812812ea198274454e1fab0a5da8f9e7e716b64",
-      "hash_format": "immutable_git_blob_content_lf"
+      "revision": "ef71782c26ce048820ba5ef3f549a1cc424c4d0a"
     },
     {
       "path": "src/font_layout.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
       "git_blob": "47c19968d2e18a7d4b217e4e1dbf999adc73bd65",
       "Git_LF_sha256": "e91e7b62147bacf2f90216b38951b85319e648e874bdd1ee08fa36578f3bbad8",
       "Git_LF_bytes": 7390,
-      "revision": "0812812ea198274454e1fab0a5da8f9e7e716b64",
-      "hash_format": "immutable_git_blob_content_lf"
+      "revision": "ef71782c26ce048820ba5ef3f549a1cc424c4d0a"
     },
     {
       "path": "include/bsp/native_mesh_remaining_fields.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
       "git_blob": "9c9bf7c0117e1bcc46eb5c0732c6f6e5e3a91be8",
       "Git_LF_sha256": "ad9802edc73b3e59b31420f8e0bf7e4bd789c520d774f0c0837b28d8150766ae",
       "Git_LF_bytes": 4059,
-      "revision": "0812812ea198274454e1fab0a5da8f9e7e716b64",
-      "hash_format": "immutable_git_blob_content_lf"
+      "revision": "ef71782c26ce048820ba5ef3f549a1cc424c4d0a"
     },
     {
       "path": "src/native_mesh_remaining_fields.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
       "git_blob": "ff7808a460b5d8e122e1c5266b3409b570e602f9",
       "Git_LF_sha256": "8510d38e2a8e24d9d35156cf0274c3dc4590a49b6250d23221cbe0302712fa99",
       "Git_LF_bytes": 5969,
-      "revision": "0812812ea198274454e1fab0a5da8f9e7e716b64",
-      "hash_format": "immutable_git_blob_content_lf"
+      "revision": "ef71782c26ce048820ba5ef3f549a1cc424c4d0a"
     },
     {
       "path": "include/bsp/native_mesh_texture_field.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
       "git_blob": "f63a27633a5dd4f7dac54ce56204eb21aaa9319d",
       "Git_LF_sha256": "7d358c7a8cba0e80b37b5cb4fa0f04e4f292c34b630d18c40600530cd9429ce7",
       "Git_LF_bytes": 3128,
-      "revision": "0812812ea198274454e1fab0a5da8f9e7e716b64",
-      "hash_format": "immutable_git_blob_content_lf"
+      "revision": "ef71782c26ce048820ba5ef3f549a1cc424c4d0a"
     },
     {
       "path": "src/native_mesh_texture_field.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
       "git_blob": "634768855b5b209fc3929d86d8da7083cbb7c314",
       "Git_LF_sha256": "a9db17ac15a9f00dae714ba41208bfdaf8e5cb40f5ee7d23651f76d183d2bb39",
       "Git_LF_bytes": 6476,
-      "revision": "0812812ea198274454e1fab0a5da8f9e7e716b64",
-      "hash_format": "immutable_git_blob_content_lf"
+      "revision": "ef71782c26ce048820ba5ef3f549a1cc424c4d0a"
     },
     {
       "path": "include/bsp/native_logical_buffer_mapping.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
       "git_blob": "56a4d6adc352e6432970a1172d5ea4a20f0dea98",
       "Git_LF_sha256": "d3ee48a208b6636dc70941c6a62967407d657ad18f1ae971f2d900c752fcaef0",
       "Git_LF_bytes": 2420,
-      "revision": "0812812ea198274454e1fab0a5da8f9e7e716b64",
-      "hash_format": "immutable_git_blob_content_lf"
+      "revision": "ef71782c26ce048820ba5ef3f549a1cc424c4d0a"
     },
     {
       "path": "src/native_logical_buffer_mapping.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
       "git_blob": "82403d816de34e8fd52a5b14cc62702460e0194c",
       "Git_LF_sha256": "6e9b61c4928f34705e12be655d0c8e6a72bca9210a9d9a2748e43054c55d3075",
       "Git_LF_bytes": 6598,
-      "revision": "0812812ea198274454e1fab0a5da8f9e7e716b64",
-      "hash_format": "immutable_git_blob_content_lf"
+      "revision": "ef71782c26ce048820ba5ef3f549a1cc424c4d0a"
     },
     {
       "path": "include/bsp/native_logical_buffer_device_restore.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
       "git_blob": "9e805d8426bae63b34dc31dfbf1c6371e1aaebcd",
       "Git_LF_sha256": "2e79708e49c1559f706602b9fe761791776f11fee1c5b3efa69d7fbb2bd57c45",
       "Git_LF_bytes": 2649,
-      "revision": "0812812ea198274454e1fab0a5da8f9e7e716b64",
-      "hash_format": "immutable_git_blob_content_lf"
+      "revision": "ef71782c26ce048820ba5ef3f549a1cc424c4d0a"
     },
     {
       "path": "src/native_logical_buffer_device_restore.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
       "git_blob": "edbafed29c4d1d0bb57e170d2ec15824700f4531",
       "Git_LF_sha256": "aa1db11b86a016620d3445f957c002765a65b2aa026494cdfa00cf01f7d8f2c7",
       "Git_LF_bytes": 10316,
-      "revision": "0812812ea198274454e1fab0a5da8f9e7e716b64",
-      "hash_format": "immutable_git_blob_content_lf"
+      "revision": "ef71782c26ce048820ba5ef3f549a1cc424c4d0a"
     },
     {
       "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
       "git_blob": "88060a54f9208f2fee8c0e20c3f32d5fceed02c0",
       "Git_LF_sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0",
       "Git_LF_bytes": 2877,
-      "revision": "0812812ea198274454e1fab0a5da8f9e7e716b64",
-      "hash_format": "immutable_git_blob_content_lf"
+      "revision": "ef71782c26ce048820ba5ef3f549a1cc424c4d0a"
     },
     {
       "path": "src/native_renderer_synchronization_actual.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
       "git_blob": "55569529ca8f92a70a2ed94771a08ae9cf66a5c5",
       "Git_LF_sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a",
       "Git_LF_bytes": 3242,
-      "revision": "0812812ea198274454e1fab0a5da8f9e7e716b64",
-      "hash_format": "immutable_git_blob_content_lf"
+      "revision": "ef71782c26ce048820ba5ef3f549a1cc424c4d0a"
     },
     {
       "path": "include/bsp/native_render_context.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
       "git_blob": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808",
       "Git_LF_sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
       "Git_LF_bytes": 10071,
-      "revision": "0812812ea198274454e1fab0a5da8f9e7e716b64",
-      "hash_format": "immutable_git_blob_content_lf"
+      "revision": "ef71782c26ce048820ba5ef3f549a1cc424c4d0a"
     },
     {
       "path": "src/native_render_context.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
       "git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c",
       "Git_LF_sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
       "Git_LF_bytes": 11471,
-      "revision": "0812812ea198274454e1fab0a5da8f9e7e716b64",
-      "hash_format": "immutable_git_blob_content_lf"
+      "revision": "ef71782c26ce048820ba5ef3f549a1cc424c4d0a"
     },
     {
       "path": "include/bsp/native_font_storage.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
       "git_blob": "6e9244c9cfcebe4f2d59e85235f1302ddf0b0111",
       "Git_LF_sha256": "3d62ca18439d3b83b586f9aae1d14e84108280386d88d85532a4f3a8fc92eeb9",
       "Git_LF_bytes": 4737,
-      "revision": "0812812ea198274454e1fab0a5da8f9e7e716b64",
-      "hash_format": "immutable_git_blob_content_lf"
+      "revision": "ef71782c26ce048820ba5ef3f549a1cc424c4d0a"
     },
     {
       "path": "src/native_font_storage.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
       "git_blob": "8200f5eb7004be352897f2b4baefa74138586fea",
       "Git_LF_sha256": "760c148ed5d3bbdb6ddb40781893251caf646dbab18755b3bb8af5c46a5279ce",
       "Git_LF_bytes": 6829,
-      "revision": "0812812ea198274454e1fab0a5da8f9e7e716b64",
-      "hash_format": "immutable_git_blob_content_lf"
+      "revision": "ef71782c26ce048820ba5ef3f549a1cc424c4d0a"
     },
     {
       "path": "include/bsp/native_font_resources.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
       "git_blob": "7fa2146c9bafa5b017ef06a1cf16e5d6a5df40d8",
       "Git_LF_sha256": "6adc6b54bd132033e5762bf3371f68a0c82181f43ca69b93d8d5a14bff5eece5",
       "Git_LF_bytes": 7923,
-      "revision": "0812812ea198274454e1fab0a5da8f9e7e716b64",
-      "hash_format": "immutable_git_blob_content_lf"
+      "revision": "ef71782c26ce048820ba5ef3f549a1cc424c4d0a"
     },
     {
       "path": "src/native_font_resources.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
       "git_blob": "59427662be69ce716904f13ff63f30b9d2ba97df",
       "Git_LF_sha256": "aa947f8e748baf2c7e3a20f78c9e007a17cd32f73eba9141d097253e8edd5249",
       "Git_LF_bytes": 25841,
-      "revision": "0812812ea198274454e1fab0a5da8f9e7e716b64",
-      "hash_format": "immutable_git_blob_content_lf"
+      "revision": "ef71782c26ce048820ba5ef3f549a1cc424c4d0a"
     },
     {
       "path": "include/bsp/game_native_string_process.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
       "git_blob": "d5e1fdd68d64a6e5429068335742f669fd8f1ddd",
       "Git_LF_sha256": "68ac5c24794233d13e2b68d7276e703dc62d39bded4b969bfcf7a06361fac697",
       "Git_LF_bytes": 6018,
-      "revision": "0812812ea198274454e1fab0a5da8f9e7e716b64",
-      "hash_format": "immutable_git_blob_content_lf"
+      "revision": "ef71782c26ce048820ba5ef3f549a1cc424c4d0a"
     },
     {
       "path": "src/game_native_string_process.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
       "git_blob": "d5916015af98534a5c1915968a757510cc45b583",
       "Git_LF_sha256": "baee34f67bf3948f0a92e05ebd2fc27d16b90727adc8ad4c8f6414dd16f77d6a",
       "Git_LF_bytes": 2120,
-      "revision": "0812812ea198274454e1fab0a5da8f9e7e716b64",
-      "hash_format": "immutable_git_blob_content_lf"
+      "revision": "ef71782c26ce048820ba5ef3f549a1cc424c4d0a"
     },
     {
       "path": "tools/bsp.py",
+      "hash_format": "immutable_git_blob_content_lf",
       "git_blob": "2e1fb76a9fd700f079912706d9459c4293f96c86",
       "Git_LF_sha256": "0532d1e3fa711fb62d198e6747a4e0eb8978ef7e301de75710afd40d6c1a1339",
       "Git_LF_bytes": 103131,
-      "revision": "0812812ea198274454e1fab0a5da8f9e7e716b64",
-      "hash_format": "immutable_git_blob_content_lf"
+      "revision": "ef71782c26ce048820ba5ef3f549a1cc424c4d0a"
     },
     {
       "path": "tools/ghidra_export.py",
+      "hash_format": "immutable_git_blob_content_lf",
       "git_blob": "bd937766a7e4d62c015b2ab44a14a9153fbb4542",
       "Git_LF_sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
       "Git_LF_bytes": 14518,
-      "revision": "0812812ea198274454e1fab0a5da8f9e7e716b64",
-      "hash_format": "immutable_git_blob_content_lf"
+      "revision": "ef71782c26ce048820ba5ef3f549a1cc424c4d0a"
     },
     {
       "path": "config/target.json",
+      "hash_format": "immutable_git_blob_content_lf",
       "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
       "Git_LF_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
       "Git_LF_bytes": 455,
-      "revision": "0812812ea198274454e1fab0a5da8f9e7e716b64",
-      "hash_format": "immutable_git_blob_content_lf"
+      "revision": "ef71782c26ce048820ba5ef3f549a1cc424c4d0a"
     }
   ],
-  "latest_packet": "codex-native-single-line-model-geometry-composition",
+  "latest_packet": "codex-native-single-line-glyph-quad-composition",
   "direct_font_selector_composition": {
     "packet": "codex-native-single-line-font-selector-composition",
     "baseline": "1a35a95f8fe44b0fe1c3f0324462abd7809fc9f8",
@@ -784,6 +853,116 @@
         "Git_LF_bytes": 16679,
         "hash_format": "immutable_git_blob_content_lf"
       }
-    ]
+    ],
+    "historical_scope_qualification": "Frozen Model9b comparison/Source pins before this later Glyph callblock/header seam; Model expression remains byte-identical. Latest current Source pins are top-level and in direct_glyph_quad_composition."
+  },
+  "latest_owned_files": [
+    "include/bsp/native_gui_text_single_line_storage.hpp",
+    "src/native_gui_text_single_line_storage.cpp",
+    "docs/CC16_NATIVE_GUI_TEXT_SINGLE_LINE_STORAGE.md",
+    "reports/cc16_native_gui_text_single_line_storage.json",
+    "docs/CC16_NATIVE_SINGLE_LINE_GLYPH_QUAD_COMPOSITION.md",
+    "reports/cc16_native_single_line_glyph_quad_composition.json"
+  ],
+  "direct_glyph_quad_composition": {
+    "packet": "codex-native-single-line-glyph-quad-composition",
+    "published_Main_baseline": "ef71782c26ce048820ba5ef3f549a1cc424c4d0a",
+    "accepted_Model_Source_baseline": "9b3f12e85eff43edbc7d120adc70b02b62776310",
+    "sealed_Glyph_supplier": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+    "concrete_call": "bsp::write_native_gui_text_glyph_quad_storage_00ab98f0(text, scratch.quad_homes, context.glyph_quad, quad_record)",
+    "existing_native_call_site": "00ABA1F8",
+    "removed_Native_operation_virtual": "NativeGuiTextSingleLineStorageBindings::write_glyph_quad_00ab98f0",
+    "new_parent_Context_borrow": "NativeGuiTextGlyphQuadStorageContext& glyph_quad",
+    "new_parent_diagnostic_identity": "NativeGuiTextGlyphQuadStorageAcquired* selected_glyph_quad_record",
+    "record_contract": {
+      "metadata_selector": "NativeGuiTextGlyphQuadStorageAcquired& prepared_glyph_quad_record(NativeGuiTextSingleLineStorageAcquired& parent)",
+      "allowed_effect": "Select/consume a distinct stable already-prepared fresh record keyed to parent identity. Genuine nested provider frames exist before entry; owner retains every selected history record.",
+      "forbidden_effects": [
+        "Native operand reads",
+        "Native operation or reentry",
+        "allocation or record construction/reset/reuse",
+        "FP operation/environment effect",
+        "default record/context/typed child owner",
+        "count/index/capacity/EC-derived input bound",
+        "new shortage/throw/termination or successful fallback policy"
+      ],
+      "precondition": "Actual caller supplies sufficient distinct prepared records and genuine nested frames for EVERY reached/recursive call, with serialization/stable lifetime. No capacity value or bound is exposed/implemented by the composition. This genuine preparation/owner implementation remains unbound.",
+      "same_context": "Appended borrowed NativeGuiTextGlyphQuadStorageContext& is the SAME retained genuine Text/pool/string/font/renderer/constant/process-scale domain; never synthesized/copied/defaulted. Existing Calls methods receive selected Acquired&, permitting pure identity lookup of preprepared nested frames before actual callbacks.",
+      "identity_publication": "Parent selected_glyph_quad_record points to chosen record BEFORE write_native_gui_text_glyph_quad_storage_00ab98f0 entry. Pointer is diagnostic identity, not ownership of all history. Initial null means no selection yet, not default Glyph/fallback.",
+      "normal_return": "Existing whole071 performs fresh-entry guard and marks entered/complete/failed; no new caller status/pending/ack guard. Only real normal return reaches unchanged advance/count/next-unit and subsequent home refill.",
+      "failure": "Existing parent catch records and rethrows; keep selected Glyph/nested frames and parent frame/acquired/homes/pos/streams/genuine graph alive. No record rewind/reset/retry, advance, extra cleanup/unlock/rollback or termination.",
+      "completed_history": "All previously selected records remain retained. Their home_identity is identity ONLY after parent normal return/refill; historical records must not follow reused homes. Recursive callers/operations use distinct records, never current/previous ones."
+    },
+    "static_comparison": {
+      "status": "passed",
+      "comparison_basis": "9b3f12e85eff43edbc7d120adc70b02b62776310",
+      "exact_one_cpp_callblock_replacement_only": true,
+      "exact_header_include_forward_declaration_selector_borrow_and_identity_field_only": true,
+      "all_other_cpp_Git_LF_bytes_identical": true,
+      "masked_cpp_bytes": 16645,
+      "masked_cpp_sha256": "00a0eb32490f1c325978f901258758765f55646e669ee4c54a267ea5e1f666f6",
+      "mask_definition": "Only entire old/new Glyph call block replaced with identical independently chosen DIRECT_GLYPH_CALL comment marker.",
+      "all_five_inline_assembly_blocks_identical": true,
+      "inline_assembly_sha256": [
+        "088ae144722bfdf3ee94f78772e1da811e722bae7eb431c5b9f12081a7c417ee",
+        "f3b02ce5df6d86ee96eb05da745ea2d66eff5a91266fffbdb365923588979be9",
+        "2f394ac930bdfa211b605ced8f3cc5f98ce15079a9c1e573fd2fb63a206c58c5",
+        "c1153e46b002384db94f5865ad5382c30581809b8ec9fb2a109a13af490cb473",
+        "83f44dedb88c5832817d758bcc3679e4ff30209f6a23b3c5e76e17cdd95e8f58"
+      ],
+      "both_Font_call_blocks_identical": true,
+      "Font_call_block_sha256": [
+        "7b2427e8d74035642986825013226d088166a44cd72e62a9c854e0f6895943e9",
+        "3e953bccaaab63f3de3b286eb23239e83fbf71690cbf510969e6bdf425654729"
+      ],
+      "Model_raw_expression_identical": true,
+      "original_10_home_and_position_writes_identical": true,
+      "home_write_block_sha256": "0a2af048e3f83c3786dc5e04a3e3fc256efbd06ff65809ef05c39587f7c26653",
+      "old_scratch_and_all_old_Context_Acquired_fields_preserved": true,
+      "selected_record_published_before_concrete_entry": true,
+      "advance_refill_mapping_layout_failure_and_FP_code_unchanged": true,
+      "Glyph071_production_files_unchanged": true,
+      "current_parent_input_pins_checked": 27,
+      "frozen_3c_build_inputs_checked": 10,
+      "new_native_analysis_or_exports": false,
+      "new_tests": 0,
+      "qualification": "Static source/Git-LF identity only, not new compilation, generated-code/private-frame/ABI/fault/unmasked-FP/runtime proof."
+    },
+    "current_parent_Source_pins": [
+      {
+        "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+        "hash_format": "immutable_git_blob_content_lf",
+        "git_blob": "9a50b1dc9591d851b3517d1e65b2c5e5c557b807",
+        "Git_LF_sha256": "b7a68ae45274614acc678a0572a3e465876c76a4716d0a33f70c2a58017af26a",
+        "Git_LF_bytes": 8946
+      },
+      {
+        "path": "src/native_gui_text_single_line_storage.cpp",
+        "hash_format": "immutable_git_blob_content_lf",
+        "git_blob": "3f9ef7d072c5c190b89f9a966dd2700fd02c2324",
+        "Git_LF_sha256": "937a05a473811134a35e7359c9746e00907cef3f0f560e37379a1bc5069db8fb",
+        "Git_LF_bytes": 16899
+      }
+    ],
+    "unchanged_Glyph_Source_pins": [
+      {
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "hash_format": "immutable_git_blob_content_lf",
+        "git_blob": "acec6947cf7777181a97335456dc5142a1149cae",
+        "Git_LF_sha256": "6a8e8ff45a4415fbdbb81992726f2e9e4fc17c0819fde21c279ac4c3d354b245",
+        "Git_LF_bytes": 8477,
+        "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "hash_format": "immutable_git_blob_content_lf",
+        "git_blob": "5505123a0d02398d4d4c16873ef87f4f856fb790",
+        "Git_LF_sha256": "f05676b34f28b95194810e4f325cbec759b0ece70b9cb41b38b64efc89d7a96e",
+        "Git_LF_bytes": 19830,
+        "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174"
+      }
+    ],
+    "current_Source_body_credit": 0,
+    "actual_record_owner_or_nested_provider_binding_closed": false
   }
 }
