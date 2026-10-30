@@ -1,0 +1,65 @@
+{
+  "schema": "bsp-source-record-lifetime-v1",
+  "name": "begin_native_lua_variant_record_lifetime_20",
+  "source_base": "ff1278fff7afd34e3cbad3a2196f065b4af79ab8",
+  "original_entry": null,
+  "native_body_credit": false,
+  "ordinary_cpp_abi_only": true,
+  "design_sha256": "dff1e14c083a47f12369a99dcb70b84ed363f50e341f7757d8aff6e839a65f97",
+  "inherited_admission_sha256": "d6bf9cc888a6809a0871e804a58adb55909502e1775b51fb464cc704cd5e2349",
+  "source_sha256": {
+    "include/bsp/native_lua_variant_record_storage.hpp": "4fc512334233a12060ba1d4488499e29b116f3ccfa732a1630686e233877b59f",
+    "src/native_lua_variant_record_storage.cpp": "64f050b32085e00eb0f0f3fd3d455106827e40a72b3219b6ad69561426ddba2e"
+  },
+  "layout": {
+    "size": 20,
+    "alignment": 4,
+    "member_offsets": [0, 4, 8, 12, 16],
+    "member_type": "std::uint32_t",
+    "compiled_assertions": [
+      "CHAR_BIT8 and Win32 pointer/uintptr4",
+      "uint32 size4 alignment4",
+      "standard layout and trivial type",
+      "trivial and nothrow default construction",
+      "trivial destruction",
+      "exact size/alignment and all five offsets"
+    ]
+  },
+  "operation": "return ::new (actual_storage) NativeLuaVariantRecordStorage20;",
+  "preconditions": [
+    "Actual retained nonnull aligned writable 20-byte slot and valid extent/address domain",
+    "Fresh lifetime or independently settled prior lifetime/resource debt; no forbidden alias/writer",
+    "Actual returned pointer used before genuine8849B0 or independently admitted copy",
+    "No member-value read until genuine writes, no value seeding or post-hoc byte-image adoption",
+    "No array arithmetic across separately placement-born records; no ownership or free inferred"
+  ],
+  "strict_object": {
+    "compiles": 1,
+    "exit_code": 0,
+    "machine": "014C",
+    "bytes": 1275,
+    "sha256": "6071bda0d0a72615f2f42eedf714d2ff0ea91622619ad5c81dce7a56784c1864",
+    "defined_symbol": "?begin_native_lua_variant_record_lifetime_20@bsp@@YAPAUNativeLuaVariantRecordStorage20@1@PAX@Z",
+    "helper_instructions": ["mov eax,dword ptr [esp+4]", "ret"],
+    "receiver_loads_or_stores": false,
+    "calls": false,
+    "undefined_externals": [],
+    "sdk_placement_comdat": "mov eax,dword ptr [esp+8]; ret; not called by the helper",
+    "receipt": "local/native_lua_variant_record_storage_gui_20261030/compile_receipt.json",
+    "same_object_disassembly": "local/native_lua_variant_record_storage_gui_20261030/disassembly.txt"
+  },
+  "preservation": {
+    "all_preexisting_tracked_files_unchanged": true,
+    "selected_initializer_and_retirement_provider_count": 4,
+    "receipt": "local/native_lua_variant_record_storage_gui_20261030/provider_preservation.json"
+  },
+  "source_ready": false,
+  "runtime_validated": false,
+  "tests_probes_entry_or_game_execution": false,
+  "limits": [
+    "No allocator, resource destructor, native constructor/copy body, callback, count or lifetime repair",
+    "No arbitrary image adoption, typed nested slab birth, profile or metadata/backing admission",
+    "Actual future producer placement and full tag-selected domain remain caller obligations",
+    "No whole-vector, vendor-body, VM, startup, Native ABI, hardware/SEH or runtime claim"
+  ]
+}
