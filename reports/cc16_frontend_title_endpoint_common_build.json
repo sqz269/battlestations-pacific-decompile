@@ -233,5 +233,233 @@
   "credit": {
     "new_Original_vendor_CG_helper_trivial_duplicate_body_ABI_runtime_gameplay": 0
   },
-  "admission_document": "docs/CC16_FRONTEND_TITLE_ENDPOINT_SOURCE_ADMISSION.md"
+  "admission_document": "docs/CC16_FRONTEND_TITLE_ENDPOINT_SOURCE_ADMISSION.md",
+  "latest_Main_joined_build": {
+    "Source_head": "b2359676473a7ba06e46299f1ba725854c5ecefa",
+    "merged_origin_Main": "ae7198090702eb5937aa96dd8b4897cf4d1749b6",
+    "utc": "2026-10-30T19:51:03.150905+00:00",
+    "command": "./scripts/build.ps1 -Configuration Release",
+    "exit_code": 0,
+    "MP": 2,
+    "PCH": "ON",
+    "coverage_PDB": "OFF",
+    "checks": {
+      "reconstructed_math": {
+        "passed": true,
+        "seconds": 0.2
+      },
+      "tool_tests": {
+        "passed": true,
+        "seconds": 10.19
+      },
+      "total_seconds": 10.42,
+      "compiler_warnings_or_errors_found": false
+    },
+    "Source_snapshot_inputs": [
+      {
+        "path": "CMakeLists.txt",
+        "Git_LF_bytes": 27703,
+        "Git_LF_sha256": "c9b1e289a264bc2fd1aa825877e037f0c583003df5f84f95686d21625bbe01bc",
+        "git_blob": "38bae32556dc80e7f421cd088301ea86bb56614e",
+        "retained_path": "local/function_source_batch29/joined_main/inputs/CMakeLists.txt"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "Git_LF_bytes": 295512,
+        "Git_LF_sha256": "9dc25fa7f076fdcaf0a2291d894d2f332a1be96e6175c8a08c07953e56abd29b",
+        "git_blob": "59281c74e5074485d61510c7d4f2497bc54ad935",
+        "retained_path": "local/function_source_batch29/joined_main/inputs/cmake/startup.cmake"
+      },
+      {
+        "path": "include/bsp/native_front_end_frame_title_position.hpp",
+        "Git_LF_bytes": 7999,
+        "Git_LF_sha256": "adcde559eb6b277875f4dd671b2cf7bc29a82f8f3fb77510699191a111c99f1e",
+        "git_blob": "3dfd4e93dd5b16263d34dd3844dd2aeadc866947",
+        "retained_path": "local/function_source_batch29/joined_main/inputs/include/bsp/native_front_end_frame_title_position.hpp"
+      },
+      {
+        "path": "src/native_front_end_frame_title_position.cpp",
+        "Git_LF_bytes": 14009,
+        "Git_LF_sha256": "5e13b7ebb02c36fea613c28d3fd7998e96bc5289946db12469755457627aeeb4",
+        "git_blob": "4e9d6093410e8fdd5eb08436d374fddde1565293",
+        "retained_path": "local/function_source_batch29/joined_main/inputs/src/native_front_end_frame_title_position.cpp"
+      },
+      {
+        "path": "include/bsp/native_gui_widget_position.hpp",
+        "Git_LF_bytes": 1025,
+        "Git_LF_sha256": "fd7397b1af7ba72bc335703507d4013e78298126ab8d8be5816794bcbcd40512",
+        "git_blob": "929216cd0afb675271dd0385b809a7612a39ca2f",
+        "retained_path": "local/function_source_batch29/joined_main/inputs/include/bsp/native_gui_widget_position.hpp"
+      },
+      {
+        "path": "src/native_gui_widget_position.cpp",
+        "Git_LF_bytes": 988,
+        "Git_LF_sha256": "674336c5043078be5e3ed0398f83999da3f783435a5767f7ce2abcd14142e6b6",
+        "git_blob": "d6b37f61f34ab15547ecaeaf47d99ca1f3147b05",
+        "retained_path": "local/function_source_batch29/joined_main/inputs/src/native_gui_widget_position.cpp"
+      },
+      {
+        "path": "include/bsp/native_locale_initial_language.hpp",
+        "Git_LF_bytes": 3776,
+        "Git_LF_sha256": "8e80e4fc697dc687eb20f6c37ecd6f2722d0feeda50f80080cfa19e3e53cd0dc",
+        "git_blob": "77e7d4655d88eecd70ab67d4abbbd1830f3f4eca",
+        "retained_path": "local/function_source_batch29/joined_main/inputs/include/bsp/native_locale_initial_language.hpp"
+      },
+      {
+        "path": "src/native_locale_initial_language.cpp",
+        "Git_LF_bytes": 5817,
+        "Git_LF_sha256": "dbd61beef482386e7662e35504b35163b92ab109162ada6c862ce47577ca467a",
+        "git_blob": "5a30a1384313cdc01ff3108e80703ff61f1824df",
+        "retained_path": "local/function_source_batch29/joined_main/inputs/src/native_locale_initial_language.cpp"
+      },
+      {
+        "path": "include/bsp/game_native_locale_manager.hpp",
+        "Git_LF_bytes": 4092,
+        "Git_LF_sha256": "42dec9cccba35990c919428d7a02b663dfbd2e21f9ca3a345a87f7e80c2fcb13",
+        "git_blob": "a0a8374de9cce69892b19537731d70482af0979d",
+        "retained_path": "local/function_source_batch29/joined_main/inputs/include/bsp/game_native_locale_manager.hpp"
+      },
+      {
+        "path": "src/game_native_locale_manager.cpp",
+        "Git_LF_bytes": 30338,
+        "Git_LF_sha256": "e9869bf1841514522558e013e847d59212bceb65abb948b7037b89079f867341",
+        "git_blob": "debdabd2260fe02c9d9f007fb1a6b5640d1871ea",
+        "retained_path": "local/function_source_batch29/joined_main/inputs/src/game_native_locale_manager.cpp"
+      },
+      {
+        "path": "src/game_hosts_singletons.cpp",
+        "Git_LF_bytes": 10557,
+        "Git_LF_sha256": "be179a72d97447dcd59620d05a791ac48cea74ab4ccf2468b0445d10c961b38e",
+        "git_blob": "4a09a311654e49a588572535cb4b7d5f32ee09e1",
+        "retained_path": "local/function_source_batch29/joined_main/inputs/src/game_hosts_singletons.cpp"
+      },
+      {
+        "path": "include/bsp/game_native_settings_application.hpp",
+        "Git_LF_bytes": 2650,
+        "Git_LF_sha256": "9b336a5e45c735c7a75cde6216476cfd4994e3a95f1fddc187af9f39d347b86f",
+        "git_blob": "7b7ee39fe464157c23d28a382f2452bb5ce2b98f",
+        "retained_path": "local/function_source_batch29/joined_main/inputs/include/bsp/game_native_settings_application.hpp"
+      },
+      {
+        "path": "src/game_native_settings_application.cpp",
+        "Git_LF_bytes": 12622,
+        "Git_LF_sha256": "d37fc9362dcc1685cbac6872cabaa90655f10c865bf1c442cbdbc64292a07a69",
+        "git_blob": "be7807328f113d2444fd53c6078ab04738084395",
+        "retained_path": "local/function_source_batch29/joined_main/inputs/src/game_native_settings_application.cpp"
+      },
+      {
+        "path": "include/bsp/native_settings_language_name.hpp",
+        "Git_LF_bytes": 856,
+        "Git_LF_sha256": "339cfabe493d80e0b22d6304a06e9c5553ee4b5ce24be0cf280ba2ce903397f1",
+        "git_blob": "a8c6e7a3a4a07e5e76565b96650f9b1b2676d7d3",
+        "retained_path": "local/function_source_batch29/joined_main/inputs/include/bsp/native_settings_language_name.hpp"
+      },
+      {
+        "path": "src/native_settings_language_name.cpp",
+        "Git_LF_bytes": 1351,
+        "Git_LF_sha256": "488d9bdbb8e1408defc2a10f5537086120b3cc847bb202f1a06aba997af43b73",
+        "git_blob": "6d62fb6a2d19a0269c059129fd4e882f08c5ddbd",
+        "retained_path": "local/function_source_batch29/joined_main/inputs/src/native_settings_language_name.cpp"
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "local/function_source_batch29/joined_main/build.log",
+        "bytes": 2713,
+        "sha256": "bea049fc10b49918aad1a3846311c1d2f234b1c9ce1642de028ed7b1bdccbf2e",
+        "retained_path": "local/function_source_batch29/joined_main/artifacts/01_build.log"
+      },
+      {
+        "path": "build/win32/CMakeCache.txt",
+        "bytes": 19943,
+        "sha256": "1685db07153e0ad413c8e75a1536cf232b943fdc86f5e983cd18cf2abfa3ecb2",
+        "retained_path": "local/function_source_batch29/joined_main/artifacts/02_CMakeCache.txt"
+      },
+      {
+        "path": "build/win32/bsp_game.map",
+        "bytes": 11383091,
+        "sha256": "073255e18cc8e49f97b22cfc4f5b09e4370ea5cfc50b81de71c320c3e39512e6",
+        "retained_path": "local/function_source_batch29/joined_main/artifacts/03_bsp_game.map"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 7517696,
+        "sha256": "cc4523ec60c163a7900d7cc3c2736866c45fadfb997b4167fa245b133c35934e",
+        "retained_path": "local/function_source_batch29/joined_main/artifacts/04_bsp_game.exe"
+      },
+      {
+        "path": "build/win32/Release/bsp_math_tests.exe",
+        "bytes": 893952,
+        "sha256": "3916fb22f18b66afffc96c0729690887e6789a0c8e96bf288df87ed4b67de331",
+        "retained_path": "local/function_source_batch29/joined_main/artifacts/05_bsp_math_tests.exe"
+      },
+      {
+        "path": "build/win32/Release/xlive_stub.dll",
+        "bytes": 32768,
+        "sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3",
+        "retained_path": "local/function_source_batch29/joined_main/artifacts/06_xlive_stub.dll"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 104008702,
+        "sha256": "82e42d38ff76c27ddb5ed5101dc4d07654c87fcf2d7ab567279f8754e12bb8bb",
+        "retained_path": "local/function_source_batch29/joined_main/artifacts/07_bsp_core.lib"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 1657,
+        "sha256": "9610a9d99dfcbd56eb644e70855bf49879158fd1667d19c317a7571e847438d0",
+        "retained_path": "local/function_source_batch29/joined_main/artifacts/08_LastTest.log"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_front_end_frame_title_position.obj",
+        "bytes": 18744,
+        "sha256": "b6f92ee1b1a50ec4cd22c3bdeeff5d34bda8bbedb334168b6fb8750ebe3747e6",
+        "retained_path": "local/function_source_batch29/joined_main/artifacts/09_native_front_end_frame_title_position.obj"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_gui_widget_position.obj",
+        "bytes": 1711,
+        "sha256": "6a4f7726fe8f9d9fe20b7eb52249f7d8f45607c970fcbcba4d4043c9db97c7d7",
+        "retained_path": "local/function_source_batch29/joined_main/artifacts/10_native_gui_widget_position.obj"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_locale_initial_language.obj",
+        "bytes": 12635,
+        "sha256": "4362aac80f726cd6f53c3a7a800cc56afa7f12f10ff38c1abf3c4565ae3bed3d",
+        "retained_path": "local/function_source_batch29/joined_main/artifacts/11_native_locale_initial_language.obj"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_locale_manager.obj",
+        "bytes": 73188,
+        "sha256": "13c5673c043fae8261320b5098a3184d6ab38d1c24554429d5e709c40385f43b",
+        "retained_path": "local/function_source_batch29/joined_main/artifacts/12_game_native_locale_manager.obj"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_singletons.obj",
+        "bytes": 48280,
+        "sha256": "9c1d7d0588601b44e5d63c9d782ed3095e8c69301702f8195d6bef4097a06d2f",
+        "retained_path": "local/function_source_batch29/joined_main/artifacts/13_game_hosts_singletons.obj"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/game_native_settings_application.obj",
+        "bytes": 155892,
+        "sha256": "c2dae82a7a95980fc17ac9329c205fa98379d61dc8ce89f3b14378bb66be3dee",
+        "retained_path": "local/function_source_batch29/joined_main/artifacts/14_game_native_settings_application.obj"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_settings_language_name.obj",
+        "bytes": 1460,
+        "sha256": "fbe06358546a4bafeeb93d4867cf751cf2bd0b63dc06d2a8c3fb674e4e025fcd",
+        "retained_path": "local/function_source_batch29/joined_main/artifacts/15_native_settings_language_name.obj"
+      }
+    ],
+    "original_inputs_unchanged": 10,
+    "changed_only_shared_Main_CMakeLists": true,
+    "game_map_name_hits": {
+      "set_native_front_end_frame_title_005189b0": 0,
+      "set_native_front_end_frame_title_position_005186b0": 0
+    },
+    "game_or_probe_executed": false
+  }
 }
