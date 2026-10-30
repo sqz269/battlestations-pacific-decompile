@@ -1,0 +1,1357 @@
+{
+  "schema_version": 1,
+  "classification": "Additive historical library Source evidence only; no status/name/body-count or activation promotion",
+  "baseline_head": "a2f0d6bc0be1d02c67e24e744646b0efe86cb5ae",
+  "draft": {
+    "path": "local/function_source_batch29/metadata_admission_draft.json",
+    "sha256": "1053bc115cfef42b5e51112bbf646c3ae692fb0aac24fc1e6ddd342fceeb8780",
+    "verification": {
+      "frozen_build_input_pin_comparisons": 146,
+      "all_frozen_build_input_Git_LF_sha_blob_bytes_match": true,
+      "failed_build_input_pin_comparisons": [],
+      "all_64_old_records_preserved_or_evidence_prefix_appended": true,
+      "all_captured_shard_bytes_unchanged_during_draft": true,
+      "JSON_output_is_ignored": true,
+      "all_latest_publication_target_shards_and64oldrecord_preimages_unchanged": true,
+      "batch29_all_three_cohort_input_Git_LF_sha_blob_bytes_checks": 45,
+      "batch29_all_three_cohort_input_checks_passed": true,
+      "historical_pre_refresh_frozen_input_comparisons": 112
+    }
+  },
+  "ledger": {
+    "schema_version": 1,
+    "baseline_head": "a2f0d6bc0be1d02c67e24e744646b0efe86cb5ae",
+    "draft_sha256": "1053bc115cfef42b5e51112bbf646c3ae692fb0aac24fc1e6ddd342fceeb8780",
+    "target_addresses": [
+      "00532340",
+      "00532A00",
+      "00518B90",
+      "00518C80",
+      "00518D60",
+      "00518DA0",
+      "00AB9FD0",
+      "00AD4480",
+      "005189B0",
+      "005186B0",
+      "00518820",
+      "00518E00",
+      "00AB98F0",
+      "00517D90",
+      "00517EB0",
+      "00517D50",
+      "00AA7E00",
+      "00B865A0",
+      "00B86550",
+      "00B74640",
+      "00AD3E70",
+      "00B6D800",
+      "004F71A0",
+      "00AA6740",
+      "00AA7DC0"
+    ],
+    "target_rows": 64,
+    "modified_rows": 53,
+    "no_op_rows": 11,
+    "modified_files": 24,
+    "actions": {
+      "add_nested_library_history_to_existing_row": 31,
+      "append_existing_name_evidence_only": 22
+    },
+    "new_rows": 0,
+    "deleted_rows": 0,
+    "old_fields_status_Source_ABI_names_tags_counts_preserved": true,
+    "new_Original_vendor_CG_helper_trivial_duplicate_body_credit": 0,
+    "actual_caller_ABI_runtime_gameplay_activation_credit": false,
+    "files": [
+      {
+        "path": "config/reconstruction/00530000.jsonl",
+        "before_sha256": "b79f6fa341b6710de6507ec596e1cb85cd1993938824110773fdae3b404d13b9",
+        "after_sha256": "9323e3aa834722e4ec954310509c1234d478f04cd1d7c6e3b8b68147459ce268",
+        "row_count": 118,
+        "modified_rows": 2,
+        "unrelated_lines_unchanged": true
+      },
+      {
+        "path": "config/names/00530000.jsonl",
+        "before_sha256": "12cf687d2f2d77b3e0ddcfb1d7d782388a3a241868d28404ba7d2d5bc816f4ea",
+        "after_sha256": "31068eaa09563aeb57ecaf50b27bd0646335bd639c00918133ada6bb943dff23",
+        "row_count": 109,
+        "modified_rows": 1,
+        "unrelated_lines_unchanged": true
+      },
+      {
+        "path": "config/tags/00530000.jsonl",
+        "before_sha256": "dcc2280d5ef15292af5381188e0204c372a4cb76c9dcb9617244afbb9713d628",
+        "after_sha256": "cf47508afa07147fd86f7e430bf4ff328814aeabc4fe88ee7f7d5d4d41ec453f",
+        "row_count": 152,
+        "modified_rows": 1,
+        "unrelated_lines_unchanged": true
+      },
+      {
+        "path": "config/reconstruction/00510000.jsonl",
+        "before_sha256": "ddac2fa97d5f554c6a004aaeeb606dc88c626e32baa057bd80aa2782e0ee51d3",
+        "after_sha256": "205d1c4d4773cc323686fc2f1ff8ffdee528e863dcf0e5ebbfd6d7ba0326b636",
+        "row_count": 140,
+        "modified_rows": 11,
+        "unrelated_lines_unchanged": true
+      },
+      {
+        "path": "config/names/00510000.jsonl",
+        "before_sha256": "09e5a82874d150ce51fa88e81a545196a04ec9250d3e75e42cd0bd270a024263",
+        "after_sha256": "2435011388b983a0f9ed6eadce492109ac8a8d9b20ebf42dc4f38dd8b16278da",
+        "row_count": 143,
+        "modified_rows": 10,
+        "unrelated_lines_unchanged": true
+      },
+      {
+        "path": "config/reconstruction/00ab0000.jsonl",
+        "before_sha256": "07c719b386d766f32c24d6bc6c97cbcaea125face2259139bb21086f84da421e",
+        "after_sha256": "b694791e3e0747dbacb77cd9e64682c804ec189ac5b00473bc9f24ba03a046cb",
+        "row_count": 252,
+        "modified_rows": 2,
+        "unrelated_lines_unchanged": true
+      },
+      {
+        "path": "config/names/00ab0000.jsonl",
+        "before_sha256": "d785fec9063735bddf0705d79f63cd80d9ec81b4b528e6c2626fe9a728eaab52",
+        "after_sha256": "9a97c1fb16f0dee3b4b1dcafe137ed1f6c20098de0abfc055f5204242ea68a02",
+        "row_count": 180,
+        "modified_rows": 2,
+        "unrelated_lines_unchanged": true
+      },
+      {
+        "path": "config/reconstruction/00ad0000.jsonl",
+        "before_sha256": "620a5c584272e1b5d1753783b309dcd4c16855a901012b1750fb57c68a6a8cde",
+        "after_sha256": "3363be200ece447d8738bed9f2672f00dc576186650ae6400bee3db38139fd35",
+        "row_count": 277,
+        "modified_rows": 1,
+        "unrelated_lines_unchanged": true
+      },
+      {
+        "path": "config/names/00ad0000.jsonl",
+        "before_sha256": "0480d1e6519f015090910d0845ace0bfb33738414a41d0716501aa6e01cc9aba",
+        "after_sha256": "814f2d995d30203f5100d9ae8160009b54d878a574545c15eebafc563828e83c",
+        "row_count": 257,
+        "modified_rows": 1,
+        "unrelated_lines_unchanged": true
+      },
+      {
+        "path": "config/tags/00510000.jsonl",
+        "before_sha256": "8ac2a99ce788817f234725add9acc268511275788dae473562fef327d57d0c9a",
+        "after_sha256": "da11498113dc5cc2dcd8083d7800fe126903920ae47ce49d85a7b0cb44dc8db6",
+        "row_count": 86,
+        "modified_rows": 1,
+        "unrelated_lines_unchanged": true
+      },
+      {
+        "path": "config/reconstruction/00aa0000.jsonl",
+        "before_sha256": "c5bcd3da50849e8a7eea99e3068dd080daeec2ca28d0e6e853c40a8cadc095e5",
+        "after_sha256": "7787d58ca802bdfdb33435a056e3b7a799f51472a1274ef3a780d6db05d2dd82",
+        "row_count": 365,
+        "modified_rows": 3,
+        "unrelated_lines_unchanged": true
+      },
+      {
+        "path": "config/names/00aa0000.jsonl",
+        "before_sha256": "3568444e1f1c1e6b9c1833be32d9083d56679c8ac2b6ef655f7906376febece9",
+        "after_sha256": "4c1196447eba3745dd7573dfa8b65b147a88c685fae460330acf48cfe7983e93",
+        "row_count": 287,
+        "modified_rows": 3,
+        "unrelated_lines_unchanged": true
+      },
+      {
+        "path": "config/tags/00aa0000.jsonl",
+        "before_sha256": "9e7b46db62a8fae579d0e58135cba6cb4b91574ee0a48cae25cb02cf4ea5c772",
+        "after_sha256": "845f5fe98bcf3775ba3825769e9734df3b21a50a0546b38fa16e2d17339f7a30",
+        "row_count": 136,
+        "modified_rows": 2,
+        "unrelated_lines_unchanged": true
+      },
+      {
+        "path": "config/reconstruction/00b80000.jsonl",
+        "before_sha256": "b3121fcdcb683ac98121ac925e8e8603677d03b43059e53b91a2a07a05bb48e6",
+        "after_sha256": "271a9c435c035a28d2868b5e93a2c1dc358ba53407b72a6a5d0e5c7979aa91eb",
+        "row_count": 405,
+        "modified_rows": 2,
+        "unrelated_lines_unchanged": true
+      },
+      {
+        "path": "config/names/00b80000.jsonl",
+        "before_sha256": "d374cd3277986745837f9fd0de116fd7c0ff7d22bde760752c5fd1a26bfc06ed",
+        "after_sha256": "80fdd5bd59344506e0458eb5521beb4392dc572935e7974bd9d669798ade26b9",
+        "row_count": 390,
+        "modified_rows": 2,
+        "unrelated_lines_unchanged": true
+      },
+      {
+        "path": "config/reconstruction/00b70000.jsonl",
+        "before_sha256": "e601d6608d8139ed283c9e679e3594f0f43fb753dffd6989b5966562dfee2a5a",
+        "after_sha256": "b020f0586b77f8e08c4ec3deff105b981662d97022a088fe9fe7f5a6748655bc",
+        "row_count": 526,
+        "modified_rows": 1,
+        "unrelated_lines_unchanged": true
+      },
+      {
+        "path": "config/names/00b70000.jsonl",
+        "before_sha256": "2b26e544eb79c9a5c73e0bad248c808c98ed7afb45407fba57de28e31483d939",
+        "after_sha256": "2a255aaf1b2998232bb7490ef76529c7f9211d734190c44a42d6f2a4061155fd",
+        "row_count": 442,
+        "modified_rows": 1,
+        "unrelated_lines_unchanged": true
+      },
+      {
+        "path": "config/tags/00b70000.jsonl",
+        "before_sha256": "662293118d30c74dda6ee83049dfded385db54fa8135c716d77bcd03e39486ef",
+        "after_sha256": "49523993896b9d7c0f79dfb657d424c28b38d844fc6c139e26852fb9864e3e4d",
+        "row_count": 79,
+        "modified_rows": 1,
+        "unrelated_lines_unchanged": true
+      },
+      {
+        "path": "config/tags/00ad0000.jsonl",
+        "before_sha256": "e7800466bc5ba1bc34be78cb391b938d16e2385c9f39bd5c3b4e2e65a250e45b",
+        "after_sha256": "7ee9d7eccf18650e0334f8161aa51a6166fd78fe13087ecdcf058687eac3c171",
+        "row_count": 152,
+        "modified_rows": 1,
+        "unrelated_lines_unchanged": true
+      },
+      {
+        "path": "config/reconstruction/00b60000.jsonl",
+        "before_sha256": "073ae3445cb6614ca9d9e74eca9fc805c1fc83f2511ddb45f99b80288e9714ca",
+        "after_sha256": "174231dca9f2bf12f607fbe3d698b539444c1e44277c62e31d609e775a4bac85",
+        "row_count": 388,
+        "modified_rows": 1,
+        "unrelated_lines_unchanged": true
+      },
+      {
+        "path": "config/names/00b60000.jsonl",
+        "before_sha256": "e085dcd06a3b1f0197249a04abbfe735abe816e8c5f5d5233e03892adbe003ca",
+        "after_sha256": "e49cee72dac8add8f436e40003fb160adbd91d0b7540e31e843dbe5493f3011b",
+        "row_count": 301,
+        "modified_rows": 1,
+        "unrelated_lines_unchanged": true
+      },
+      {
+        "path": "config/tags/00b60000.jsonl",
+        "before_sha256": "3b7793d740f32cba56c9563138eb4ae3e2f31f04950e348a82a2b843cdcd1064",
+        "after_sha256": "9749f8ca9db9bc64ec05933ef6b51a466db7b135136e939340bb9b1673e54932",
+        "row_count": 77,
+        "modified_rows": 1,
+        "unrelated_lines_unchanged": true
+      },
+      {
+        "path": "config/reconstruction/004f0000.jsonl",
+        "before_sha256": "dd88ec3f8bb97452fdc1b341533c40bff5c96369c4cb10e8cf16af19b4e15341",
+        "after_sha256": "f8da29821cd2378d4640e95a847e41ebcc021dfb622c847f1c0dbaa3ce59154e",
+        "row_count": 223,
+        "modified_rows": 1,
+        "unrelated_lines_unchanged": true
+      },
+      {
+        "path": "config/names/004f0000.jsonl",
+        "before_sha256": "19fde5bfe0ef746cad25bcdf3fa897666e439acad1d95e18a804a05937f3b80e",
+        "after_sha256": "3d2d6954f99cd804d5af1ec56c2f2834d35661398d41795adc14b454fc8d115d",
+        "row_count": 213,
+        "modified_rows": 1,
+        "unrelated_lines_unchanged": true
+      }
+    ],
+    "applied": true
+  },
+  "rows": [
+    {
+      "address": "00532340",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00530000.jsonl",
+      "line_1_based": 29,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "8d3e02bef01e9dd988f813ce0bd65ac6e3be1032e41f46ed79d216cfe0c0b2c4",
+      "new_raw_line_sha256": "b314f3d6793fb8c493ec2435724ad86a4730d1911167b888d383702ea88a796a"
+    },
+    {
+      "address": "00532340",
+      "family": "names",
+      "shard": "config/names/00530000.jsonl",
+      "line_1_based": 25,
+      "action": "append_existing_name_evidence_only",
+      "old_raw_line_sha256": "4effe7c37854479d35ba885dfdd2582e49408937881a09b381bbf0ca7c484986",
+      "new_raw_line_sha256": "a21dc700230b223e15805c87ab05249e6ea74ad5619c6edf703ee83a46297b20"
+    },
+    {
+      "address": "00532A00",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00530000.jsonl",
+      "line_1_based": 33,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "1d2dff76460684991ab3765d27e056335cc9be4534004ec236c1f9473f420036",
+      "new_raw_line_sha256": "ed59a00ba379bfc35f755f03475b3485af68e3b01541601585f8c221f274d71f"
+    },
+    {
+      "address": "00532A00",
+      "family": "tags",
+      "shard": "config/tags/00530000.jsonl",
+      "line_1_based": 23,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "182b51f54b3e9ccd9dfc5a5fa87003e982b22da9c2226500727c6818e3c49248",
+      "new_raw_line_sha256": "ce274d52836ee4227e376b515e762d587e4aab7f5ddd4aa737026eacfe130d4a"
+    },
+    {
+      "address": "00518B90",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00510000.jsonl",
+      "line_1_based": 51,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "37593fed3d2f0f763ecd741a96a508811d3b690bc0fe908051897a6f5512f100",
+      "new_raw_line_sha256": "c622bd0cd4485cf986684ab4e16ea71c26bc6603ea076480368ed68febe46aac"
+    },
+    {
+      "address": "00518B90",
+      "family": "names",
+      "shard": "config/names/00510000.jsonl",
+      "line_1_based": 49,
+      "action": "append_existing_name_evidence_only",
+      "old_raw_line_sha256": "49e19fa7fad089b90cc4d55b35b8dcf4cc8e4b32f87e08330f887ea269b9be6d",
+      "new_raw_line_sha256": "b1f5490405e48976d52ac3a71ee8969fe35ef096e1e39638da6004492a84feaa"
+    },
+    {
+      "address": "00518C80",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00510000.jsonl",
+      "line_1_based": 52,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "75a5150f9a8e0e0327f6e36d83a0d34ce6406cfe31ead6102ab1da70fac4c055",
+      "new_raw_line_sha256": "dca662284d8b0b31cce0dc8f6744fd83849e8019b2196d1b63829b2ad76bc994"
+    },
+    {
+      "address": "00518C80",
+      "family": "names",
+      "shard": "config/names/00510000.jsonl",
+      "line_1_based": 50,
+      "action": "append_existing_name_evidence_only",
+      "old_raw_line_sha256": "cc61df3eb0617fe8bbd64c584d88a60f43d801c18da9a1562e4f8137839a5e93",
+      "new_raw_line_sha256": "81bfe0a346df56f2967765ab174a18ff7364096d3efb21e7725f64fa19a1c3bb"
+    },
+    {
+      "address": "00518D60",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00510000.jsonl",
+      "line_1_based": 53,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "2d5b916e2a544afc37208feb46e7a875fec15d594d9fead0fd4894eb3f01124c",
+      "new_raw_line_sha256": "fb52b4dabf63c5cbba509bf781f7fd9b693d9d567549b57e88f5765ec38049e8"
+    },
+    {
+      "address": "00518D60",
+      "family": "names",
+      "shard": "config/names/00510000.jsonl",
+      "line_1_based": 51,
+      "action": "append_existing_name_evidence_only",
+      "old_raw_line_sha256": "4e522c166e2179c99f2e9a4615d319b859d46b011fff9f40f894ade0e480ee5f",
+      "new_raw_line_sha256": "f989ebaeb2c7a193120846fa60a86b03fe174b450cd3dbd5b478cd119acf939f"
+    },
+    {
+      "address": "00518DA0",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00510000.jsonl",
+      "line_1_based": 54,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "cbf33a5522e4b4630c321cb134e0a07767e02b788ffa35300b6763a66ef3b342",
+      "new_raw_line_sha256": "9b8e3161e642a3c1e3b45fbad515bfc3964262261d61f4689f321bb49e623430"
+    },
+    {
+      "address": "00518DA0",
+      "family": "names",
+      "shard": "config/names/00510000.jsonl",
+      "line_1_based": 52,
+      "action": "append_existing_name_evidence_only",
+      "old_raw_line_sha256": "33be3d79e6cc91b5114f32bde1a679bc230764dda495ede1f3a830cec6406dc2",
+      "new_raw_line_sha256": "1cb8f27cd4219600461f8b385128dd4d4a860ea7910b90cd5da21523180ab5b0"
+    },
+    {
+      "address": "00AB9FD0",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00ab0000.jsonl",
+      "line_1_based": 156,
+      "action": "preserve_historical_variant_no_change",
+      "old_raw_line_sha256": "71f7d5796b924c23b7a18628f3a9f010b4afe1f5d539e438a85f7951fa9f9a9f",
+      "new_raw_line_sha256": "71f7d5796b924c23b7a18628f3a9f010b4afe1f5d539e438a85f7951fa9f9a9f"
+    },
+    {
+      "address": "00AB9FD0",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00ab0000.jsonl",
+      "line_1_based": 157,
+      "action": "preserve_historical_variant_no_change",
+      "old_raw_line_sha256": "58d09e294378757181bd0b96be68df91fa839f014426610182f9ad527d9902ad",
+      "new_raw_line_sha256": "58d09e294378757181bd0b96be68df91fa839f014426610182f9ad527d9902ad"
+    },
+    {
+      "address": "00AB9FD0",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00ab0000.jsonl",
+      "line_1_based": 158,
+      "action": "preserve_historical_variant_no_change",
+      "old_raw_line_sha256": "06607044dbf383248fd8ee2d64d4c3d7756abf9480208ae5db7487aacc525b4d",
+      "new_raw_line_sha256": "06607044dbf383248fd8ee2d64d4c3d7756abf9480208ae5db7487aacc525b4d"
+    },
+    {
+      "address": "00AB9FD0",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00ab0000.jsonl",
+      "line_1_based": 159,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "516404583879de1dbf4388c5af983a1e7b79bc667599bcd14c6016c637d9db17",
+      "new_raw_line_sha256": "9b0c5c173e5ec4334f832bea25688b572a6a8eff0c64301bcd3ae5d4026d03d1"
+    },
+    {
+      "address": "00AB9FD0",
+      "family": "names",
+      "shard": "config/names/00ab0000.jsonl",
+      "line_1_based": 121,
+      "action": "append_existing_name_evidence_only",
+      "old_raw_line_sha256": "878a319731c9cf171b194862d11ecd732237904d826b45a67ab199b0333f0e0f",
+      "new_raw_line_sha256": "3b2cbeee77369afc789d82e5dcc27350fb9f3953a648da9acd56509f9e941720"
+    },
+    {
+      "address": "00AD4480",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00ad0000.jsonl",
+      "line_1_based": 71,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "fcf55379f1703484ffcd1c7ddc2f99a71e453d72529335a27d3b1cd4eee34b4c",
+      "new_raw_line_sha256": "aca69ee27d79932f26b14dae98b75ae162708d8d0c2dfecfa854e9ac9ed76682"
+    },
+    {
+      "address": "00AD4480",
+      "family": "names",
+      "shard": "config/names/00ad0000.jsonl",
+      "line_1_based": 57,
+      "action": "append_existing_name_evidence_only",
+      "old_raw_line_sha256": "01de67211a1feccbd8fe517af282053423a703fbb5a89d8c48ead35b3cc1706b",
+      "new_raw_line_sha256": "43ca35793443fc7d039e1c364763416cd5e44e7c102b46045c8160c7b83ff6e2"
+    },
+    {
+      "address": "005189B0",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00510000.jsonl",
+      "line_1_based": 50,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "4bbd7fcfe443fffd8480f5e60f2822213d6834dddf5c28bad8fce0f28e154c3c",
+      "new_raw_line_sha256": "f8968ad9eb2ca178ed80ccb60f41babb505b3ef18ed1611f0ab9d4236588db81"
+    },
+    {
+      "address": "005189B0",
+      "family": "names",
+      "shard": "config/names/00510000.jsonl",
+      "line_1_based": 48,
+      "action": "append_existing_name_evidence_only",
+      "old_raw_line_sha256": "6ada8d3cdc8381c487ffd08293ba5c9a071f1977463c9991a3a586d917c93fc4",
+      "new_raw_line_sha256": "06b55f8291ab22f18c1b5e93d6fffa10beaaf0c5389695c94da58b8828ecbecf"
+    },
+    {
+      "address": "005186B0",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00510000.jsonl",
+      "line_1_based": 48,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "8729b4a1e93c99ce68741b1164e37b2bafb14006e81db6cd7bebe529a3512471",
+      "new_raw_line_sha256": "10da93bf632f4877b5daea7c00b9a64b82e00d6b94bc261cee9cba1dac4a11ad"
+    },
+    {
+      "address": "005186B0",
+      "family": "names",
+      "shard": "config/names/00510000.jsonl",
+      "line_1_based": 46,
+      "action": "append_existing_name_evidence_only",
+      "old_raw_line_sha256": "5c8369c811165ef18c13576c1c9cb11b9dbc307cec1611c27184913c68c0f453",
+      "new_raw_line_sha256": "632b4ff8d7237ef0d328fecf1ffab530adee8e209ee8099140325f5b502c781f"
+    },
+    {
+      "address": "00518820",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00510000.jsonl",
+      "line_1_based": 49,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "ab6fae7aa85bbac4af73e6d6bac965f48c0decd9324d8d3f99472d7d675ffd04",
+      "new_raw_line_sha256": "18638062b1bc2124f8e5641e1062afa005a0a4a3be76e40e70b0695c5bc6fe8d"
+    },
+    {
+      "address": "00518820",
+      "family": "names",
+      "shard": "config/names/00510000.jsonl",
+      "line_1_based": 47,
+      "action": "append_existing_name_evidence_only",
+      "old_raw_line_sha256": "0f2792e6548152b3ba0028e7ddd2eb4b0540ecf03c12fce5adf586be2d6cdb32",
+      "new_raw_line_sha256": "a059cd4a28b3e121176950235c8dc25ccf0b747a0cd4d75dcb783c98bf4c546f"
+    },
+    {
+      "address": "00518E00",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00510000.jsonl",
+      "line_1_based": 55,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "6b9a80dba6e86d0e0ddf80de3c9f3d60f7bfea4258475d9e362f495fc1c1700a",
+      "new_raw_line_sha256": "87c8d37a9e31579629109ea270f9d72137f31c771b181fed5601a86c9c803e01"
+    },
+    {
+      "address": "00518E00",
+      "family": "names",
+      "shard": "config/names/00510000.jsonl",
+      "line_1_based": 53,
+      "action": "append_existing_name_evidence_only",
+      "old_raw_line_sha256": "fde9d434029a276d88feef7c5b8f0637a4c00a98d06392de3a344b0b9fc7e7a2",
+      "new_raw_line_sha256": "1e3a1f368a88147c3f94777fde93e25978fb12ffb5acc4bf72e106184a649abf"
+    },
+    {
+      "address": "00AB98F0",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00ab0000.jsonl",
+      "line_1_based": 150,
+      "action": "preserve_historical_variant_no_change",
+      "old_raw_line_sha256": "4216e5468b1fbacda61e7aeb4e8dca49b21deac85921524ce0c39a8708a9e732",
+      "new_raw_line_sha256": "4216e5468b1fbacda61e7aeb4e8dca49b21deac85921524ce0c39a8708a9e732"
+    },
+    {
+      "address": "00AB98F0",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00ab0000.jsonl",
+      "line_1_based": 151,
+      "action": "preserve_historical_variant_no_change",
+      "old_raw_line_sha256": "a211d3b1fd505e0a3413942e15514f19c74db7eb821d5fc2568afd4572a0a630",
+      "new_raw_line_sha256": "a211d3b1fd505e0a3413942e15514f19c74db7eb821d5fc2568afd4572a0a630"
+    },
+    {
+      "address": "00AB98F0",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00ab0000.jsonl",
+      "line_1_based": 152,
+      "action": "preserve_historical_variant_no_change",
+      "old_raw_line_sha256": "758404c48a2b26327ecbe87d61130d3d92e786c2291c59a6f3c22d78ad33ab21",
+      "new_raw_line_sha256": "758404c48a2b26327ecbe87d61130d3d92e786c2291c59a6f3c22d78ad33ab21"
+    },
+    {
+      "address": "00AB98F0",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00ab0000.jsonl",
+      "line_1_based": 153,
+      "action": "preserve_historical_variant_no_change",
+      "old_raw_line_sha256": "448ed3955b5f9ecd79189cb69301cbcbf339ce9c566088086a9b14b64fbae0c6",
+      "new_raw_line_sha256": "448ed3955b5f9ecd79189cb69301cbcbf339ce9c566088086a9b14b64fbae0c6"
+    },
+    {
+      "address": "00AB98F0",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00ab0000.jsonl",
+      "line_1_based": 154,
+      "action": "preserve_historical_variant_no_change",
+      "old_raw_line_sha256": "f4435b930b17a8a1434b45be233cd10e52e19b4398e7f16a362ae796a2859e86",
+      "new_raw_line_sha256": "f4435b930b17a8a1434b45be233cd10e52e19b4398e7f16a362ae796a2859e86"
+    },
+    {
+      "address": "00AB98F0",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00ab0000.jsonl",
+      "line_1_based": 155,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "2e21e88becd10019e222031e85439db53668d528b615340d3a293b35f542aa7d",
+      "new_raw_line_sha256": "af47b89a5bb31a38b6774dbddd7054e2e0ce8951c98ca99c1e0dc346dc83b57d"
+    },
+    {
+      "address": "00AB98F0",
+      "family": "names",
+      "shard": "config/names/00ab0000.jsonl",
+      "line_1_based": 120,
+      "action": "append_existing_name_evidence_only",
+      "old_raw_line_sha256": "38f3ab05dde326425be03ede279bd693a5d8f9f6acbd20f652c359c07c101bd4",
+      "new_raw_line_sha256": "d9398d2bbd1f450c5683cda74c64d474221111042c02ad1c1aee2558daeb1e82"
+    },
+    {
+      "address": "00517D90",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00510000.jsonl",
+      "line_1_based": 44,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "6aff2a6c2173ceddfbf774c61ff17fabb52e01b599578329dcdd091c459d06d8",
+      "new_raw_line_sha256": "b4d8154216e7562ebe6f6e4d942747e68564a37f5f51a4e80771cd28afb4a882"
+    },
+    {
+      "address": "00517D90",
+      "family": "names",
+      "shard": "config/names/00510000.jsonl",
+      "line_1_based": 43,
+      "action": "append_existing_name_evidence_only",
+      "old_raw_line_sha256": "24cbcd36d54ed813f05126ef0a51d6acefece8bec16e42340e67508d4a6c0ee0",
+      "new_raw_line_sha256": "66e8c22da7b4c09c037e31ee505b46f8f1e10a7e248a23bf319dd7d9afd80178"
+    },
+    {
+      "address": "00517EB0",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00510000.jsonl",
+      "line_1_based": 45,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "a845520fbfe831e6333606d45e0c3d95b111ebe3e2284be24d946447e4dab7fd",
+      "new_raw_line_sha256": "e69df35a69028e459b1a6e4184f6b3d2c1a2803e54e870f83199be9073678a19"
+    },
+    {
+      "address": "00517EB0",
+      "family": "tags",
+      "shard": "config/tags/00510000.jsonl",
+      "line_1_based": 4,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "3fa170072f1de9af4606ddd27f112f3678f5fd36b02a243c7b89189abb0946d5",
+      "new_raw_line_sha256": "a21a8b180a996d9e692fd45c9c5c7c225feada50342bd2adbdd849e751089a21"
+    },
+    {
+      "address": "00517D50",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00510000.jsonl",
+      "line_1_based": 42,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "4b12548c1e9bb5df655ae348d74de3b3787a284e38db9945a4e2c0939861d51b",
+      "new_raw_line_sha256": "ddb3c3b54849f102b924dd202c15ff4961a1cb0eb7e128e4d374c445995c70a6"
+    },
+    {
+      "address": "00517D50",
+      "family": "names",
+      "shard": "config/names/00510000.jsonl",
+      "line_1_based": 41,
+      "action": "append_existing_name_evidence_only",
+      "old_raw_line_sha256": "c23f50454db36f6e7cf4856ab69dbca5e90764250b171bfc0899de445b7a570a",
+      "new_raw_line_sha256": "ce88ca10ff8c3ed8eb65fdf6d5d8d49ce7e14fefdfd8f54976bdf1ddb3620c35"
+    },
+    {
+      "address": "00AA7E00",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00aa0000.jsonl",
+      "line_1_based": 227,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "401e39ee4823bae91568858235e7c74826b2f5ab3f35d8612ef146881fd4e1b8",
+      "new_raw_line_sha256": "038bb98ce1413f90cd953a705093244e6db6e4f38d1c405858783b1a46f1831f"
+    },
+    {
+      "address": "00AA7E00",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00aa0000.jsonl",
+      "line_1_based": 228,
+      "action": "preserve_historical_variant_no_change",
+      "old_raw_line_sha256": "9ff77010f87595397705c8035730190c589c2fc907cb2466cc42916280ac42d7",
+      "new_raw_line_sha256": "9ff77010f87595397705c8035730190c589c2fc907cb2466cc42916280ac42d7"
+    },
+    {
+      "address": "00AA7E00",
+      "family": "names",
+      "shard": "config/names/00aa0000.jsonl",
+      "line_1_based": 173,
+      "action": "append_existing_name_evidence_only",
+      "old_raw_line_sha256": "9cf77051423eee5bc6495a9243ce68b1346c6d7aa3b28d3b75aab09c9bdd8b01",
+      "new_raw_line_sha256": "bdd57878d80ea0682b97410626c37e5c8a6b9dc2ae3960a3b3ed940b996d2d1c"
+    },
+    {
+      "address": "00AA7E00",
+      "family": "tags",
+      "shard": "config/tags/00aa0000.jsonl",
+      "line_1_based": 39,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "96179a86ab8cf301f3503a5061ecc1802813b89bd64e50f30ad5e32b80331887",
+      "new_raw_line_sha256": "fceee57f2ad30459f0e35397f1a0199e3bfe383a0203def95d50a4a282137e5e"
+    },
+    {
+      "address": "00B865A0",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00b80000.jsonl",
+      "line_1_based": 178,
+      "action": "preserve_historical_variant_no_change",
+      "old_raw_line_sha256": "ba71bdabb1ca21d4bc5c525536d3066eed05d35d668c5e920a92d666c1039f1e",
+      "new_raw_line_sha256": "ba71bdabb1ca21d4bc5c525536d3066eed05d35d668c5e920a92d666c1039f1e"
+    },
+    {
+      "address": "00B865A0",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00b80000.jsonl",
+      "line_1_based": 179,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "adb1f9bbbdd2a124cb4294e3adbf3e460e4ecd0d12f4e2a3ca625c5d3340cbf6",
+      "new_raw_line_sha256": "df6e6580f270c1e127b072953aca4077b484b49c7bf662c913180ca9bdca8a56"
+    },
+    {
+      "address": "00B865A0",
+      "family": "names",
+      "shard": "config/names/00b80000.jsonl",
+      "line_1_based": 143,
+      "action": "append_existing_name_evidence_only",
+      "old_raw_line_sha256": "30021cca86d15b06c499db240a7ccb84f2c7d200221f0a8779f80aed671a5369",
+      "new_raw_line_sha256": "8af3078b8b11ce5baa1127e1a5ca6ed0ef4e5c634c6d74bda1c3e64a85293d7b"
+    },
+    {
+      "address": "00B86550",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00b80000.jsonl",
+      "line_1_based": 177,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "455c468a62f4cac646443329746cbe8ac36b641ed6b4b23de9e4af4c82f4aaf4",
+      "new_raw_line_sha256": "97a3f2f02b835b4cd5336fa3cf92bd1cb8eee107c96e863cff74f2bc378e4b06"
+    },
+    {
+      "address": "00B86550",
+      "family": "names",
+      "shard": "config/names/00b80000.jsonl",
+      "line_1_based": 142,
+      "action": "append_existing_name_evidence_only",
+      "old_raw_line_sha256": "5cff9cd143765299ba2308dafe3a889dbedb0bc48427a651bafec40e0599020c",
+      "new_raw_line_sha256": "7d728b581137c634bd8d80d75d4873064297d52c14ab8b1cce36393b937bfd58"
+    },
+    {
+      "address": "00B74640",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00b70000.jsonl",
+      "line_1_based": 154,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "0941d216811fb145516bbc54c4967d4068fb44e4b678f015efbd729e761a091a",
+      "new_raw_line_sha256": "32a6c0fec86fea1821cf3da69afee72b4e940c9df6214881cc37dc5e3d0cce34"
+    },
+    {
+      "address": "00B74640",
+      "family": "names",
+      "shard": "config/names/00b70000.jsonl",
+      "line_1_based": 125,
+      "action": "append_existing_name_evidence_only",
+      "old_raw_line_sha256": "677172be80fb84f985f18adcaa805129dbaecf38f94c5d0b8dc2e52cbebe8bce",
+      "new_raw_line_sha256": "ce577a7022b19244e1d0b1a40bb12ad7f0ffaf6adf518c5619ff5ed63086bedf"
+    },
+    {
+      "address": "00B74640",
+      "family": "tags",
+      "shard": "config/tags/00b70000.jsonl",
+      "line_1_based": 8,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "117b7e4e2ad2321cf10f3792ef57e38215c2992b7488fe37e6edf3dfff21e12b",
+      "new_raw_line_sha256": "77313d40d7a78ad6570dcb1243e48974d509697efef2a9b540e73d971d6ea3de"
+    },
+    {
+      "address": "00AD3E70",
+      "family": "tags",
+      "shard": "config/tags/00ad0000.jsonl",
+      "line_1_based": 38,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "4be0230db875934cd1e2a7e954184d3badc7ed154201c6d09b2b5f0d10f44412",
+      "new_raw_line_sha256": "61836e6bed814c3b2f0834d605e16cd127b1f44f3fbdd02b024b58704c27c1a7"
+    },
+    {
+      "address": "00B6D800",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00b60000.jsonl",
+      "line_1_based": 254,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "7c1b15a81fa9b0714beb1ceb07686cce570c3b29c19485f23b8f90c9b0aa5508",
+      "new_raw_line_sha256": "ef15f00a701f61116e4f01185611500681f189c2d6bc210dea5494582c0890c3"
+    },
+    {
+      "address": "00B6D800",
+      "family": "names",
+      "shard": "config/names/00b60000.jsonl",
+      "line_1_based": 204,
+      "action": "append_existing_name_evidence_only",
+      "old_raw_line_sha256": "a147cc20421b62bbeefdcd600ca4711c19fece385dad39ee8dffe5117159de81",
+      "new_raw_line_sha256": "1e6e242e51d35d88b58753f1b6e49bbeaf2d7e16b745d0c3df85a3e117368bc0"
+    },
+    {
+      "address": "00B6D800",
+      "family": "tags",
+      "shard": "config/tags/00b60000.jsonl",
+      "line_1_based": 65,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "ead79b205c9bde20846bd4ef852ced962ba9ec99966caaed005c68979aca9b33",
+      "new_raw_line_sha256": "782e846346f66204c50fb7a634eae91b584092ab14c0234d9a6823bff304495f"
+    },
+    {
+      "address": "004F71A0",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/004f0000.jsonl",
+      "line_1_based": 90,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "4f6542d4d703fa953380c4b05f45c1ae223d327d6bd90676cecd3cd9c73a344c",
+      "new_raw_line_sha256": "4679cba15f410b27d27c0ec3bbbb2ee8ddd049d3fa23c8670f04bb2271cd341d"
+    },
+    {
+      "address": "004F71A0",
+      "family": "names",
+      "shard": "config/names/004f0000.jsonl",
+      "line_1_based": 85,
+      "action": "append_existing_name_evidence_only",
+      "old_raw_line_sha256": "ce098c63e0698a66b6054ca8b4e5157fdca32a55999a27a8c1654761e59f7e8c",
+      "new_raw_line_sha256": "5f3053297f0ac229240c7f3d5b6c1e7f147ae1b2cebb9650de6b4fa78c4a98a9"
+    },
+    {
+      "address": "00AA6740",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00aa0000.jsonl",
+      "line_1_based": 166,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "f773f2cb388c856045b05308f3cdef7c015d74670c9f0e536ca1550a66a322ff",
+      "new_raw_line_sha256": "87105ec7451d020ffb580e0342e3a5787bc878bbd34d1b98afeea2ef633c0d96"
+    },
+    {
+      "address": "00AA6740",
+      "family": "names",
+      "shard": "config/names/00aa0000.jsonl",
+      "line_1_based": 123,
+      "action": "append_existing_name_evidence_only",
+      "old_raw_line_sha256": "e31b04f593967d4d95294e7353db38a6b0156d7b2610f87795af40f335219e18",
+      "new_raw_line_sha256": "b90ac0bd41a1ce1f8a10a181baa3d08e4217f1cd6db1d9f4f479a5bf87873489"
+    },
+    {
+      "address": "00AA6740",
+      "family": "tags",
+      "shard": "config/tags/00aa0000.jsonl",
+      "line_1_based": 30,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "6ba9536423ec05edc9c891ab9a1ebaac73ba82a8ea9661ad747985d91f73dfc6",
+      "new_raw_line_sha256": "ced81c8649488c5301f5c46de1581987db4430b78b011270322df9b9c62b8c07"
+    },
+    {
+      "address": "00AA7DC0",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00aa0000.jsonl",
+      "line_1_based": 225,
+      "action": "preserve_historical_variant_no_change",
+      "old_raw_line_sha256": "1aa45babee190f06e8b92b8cc3e69fe9e5dbf85df9812d32dc431a032b762fa2",
+      "new_raw_line_sha256": "1aa45babee190f06e8b92b8cc3e69fe9e5dbf85df9812d32dc431a032b762fa2"
+    },
+    {
+      "address": "00AA7DC0",
+      "family": "reconstruction",
+      "shard": "config/reconstruction/00aa0000.jsonl",
+      "line_1_based": 226,
+      "action": "add_nested_library_history_to_existing_row",
+      "old_raw_line_sha256": "ae115d436c124fa549f4e2764f2ed8fdd26b2cea33954dde2068d2ed19cfbca8",
+      "new_raw_line_sha256": "88af918c122ddbc319a6c779fc229054f02b103d77a2502b1f58a1ce4e7241fd"
+    },
+    {
+      "address": "00AA7DC0",
+      "family": "names",
+      "shard": "config/names/00aa0000.jsonl",
+      "line_1_based": 172,
+      "action": "append_existing_name_evidence_only",
+      "old_raw_line_sha256": "46b576fb3f7e788f980d502b916473abcc341ff00ccf73a41891cbfcda7f8f4f",
+      "new_raw_line_sha256": "e78036cc7606ce97811a38e720ecf305148c9bff704f17aa2bfaddda5a84c6bb"
+    }
+  ],
+  "Ghidra": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "write_lock_used": true,
+    "official_apply_entries_reused_with_exact_current_names": true,
+    "comment_appends": 25,
+    "renames": 0,
+    "new_functions": 0,
+    "prior_names_and_comments_preserved": true,
+    "project_saved": true,
+    "exports_before_files": 75,
+    "exports_after_files": 75,
+    "exports_before_manifest": "local/function_source_batch32/Ghidra_annotation_manifest.json",
+    "exports_after": [
+      {
+        "address": "00532340",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00532340\\assembly.txt",
+        "bytes": 49,
+        "sha256": "73a010d7dd10d37042cd3462b0638b0588fb553275467f54ad787dea619dfb55"
+      },
+      {
+        "address": "00532340",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00532340\\decompiled.c",
+        "bytes": 892,
+        "sha256": "1e6b3f4ab1a13b3a0ee23cc472ee083d27901d1a5c7c5c5a5600f4046de33f4d"
+      },
+      {
+        "address": "00532340",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00532340\\metadata.json",
+        "bytes": 289,
+        "sha256": "40e4a214a69056470e304f2fb25ae39e9f0a6ace152f468347457a7dbae32d37"
+      },
+      {
+        "address": "00532a00",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00532a00\\assembly.txt",
+        "bytes": 267,
+        "sha256": "07aec56a47adc34d46cd078d9449892b1355cbc5dbddde71a57907044a385f12"
+      },
+      {
+        "address": "00532a00",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00532a00\\decompiled.c",
+        "bytes": 850,
+        "sha256": "a3be9bccb96ec5241ec821f7557c9379fc22e0470929b6ab118897faeef83ce2"
+      },
+      {
+        "address": "00532a00",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00532a00\\metadata.json",
+        "bytes": 279,
+        "sha256": "3ced8ea7aed43761292bcaa8cdda02129fd29393ec170ab657dad46f5631a994"
+      },
+      {
+        "address": "00518b90",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00518b90\\assembly.txt",
+        "bytes": 1768,
+        "sha256": "230f1da06dc825d41cbf7964e278d11a8240a0b661b4ed274c7db1c336cffbff"
+      },
+      {
+        "address": "00518b90",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00518b90\\decompiled.c",
+        "bytes": 2262,
+        "sha256": "9f35545c117422a11cdef6d53a7c3c3c416f6c2e71feeaaf608daef2f9dbebb7"
+      },
+      {
+        "address": "00518b90",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00518b90\\metadata.json",
+        "bytes": 272,
+        "sha256": "97764790f66659aa33ab8d68b432661ae51b09a5fce370ac4fed3dd77e3e9ac9"
+      },
+      {
+        "address": "00518c80",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00518c80\\assembly.txt",
+        "bytes": 2035,
+        "sha256": "ec314151825c9dee044594dbdaca0ea436ba850dc0004827983171b316762b02"
+      },
+      {
+        "address": "00518c80",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00518c80\\decompiled.c",
+        "bytes": 2478,
+        "sha256": "6d7e982e168b61993d440a41a84cd10bd05075f0e11b2211ee944876165166cc"
+      },
+      {
+        "address": "00518c80",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00518c80\\metadata.json",
+        "bytes": 279,
+        "sha256": "1dcb1cb0d50374bea10893ad30b58025f2e95f81556d350a7304da2fb084deb1"
+      },
+      {
+        "address": "00518d60",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00518d60\\assembly.txt",
+        "bytes": 381,
+        "sha256": "05cf3238cb450475357d7be40b4ca889c2892391d8aa7e4c5e14a17bc05b2b37"
+      },
+      {
+        "address": "00518d60",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00518d60\\decompiled.c",
+        "bytes": 1608,
+        "sha256": "8c72ab765f2ecb43042f72fb796ecee3fa20ab4842902d3f1e362ad952ba5da5"
+      },
+      {
+        "address": "00518d60",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00518d60\\metadata.json",
+        "bytes": 271,
+        "sha256": "3223dd4707001a9b516b8e256b9d856bfd694de364b177b9aff228e11cd125de"
+      },
+      {
+        "address": "00518da0",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00518da0\\assembly.txt",
+        "bytes": 118,
+        "sha256": "e86c9a023f049b93b18f8c42dea47ac92e7147e947c6438ef5eafa152d369deb"
+      },
+      {
+        "address": "00518da0",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00518da0\\decompiled.c",
+        "bytes": 1218,
+        "sha256": "ac8b4bdb670fdacf663657ab02abea168faf90d5d688e0183e146df3ba088793"
+      },
+      {
+        "address": "00518da0",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00518da0\\metadata.json",
+        "bytes": 277,
+        "sha256": "cfffed87ec6b4b7b70dd610722be5e4497cc87a52f6954585cac8678ccd9e290"
+      },
+      {
+        "address": "00ab9fd0",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00ab9fd0\\assembly.txt",
+        "bytes": 6236,
+        "sha256": "079f6ad910bdefc081fca92361780e773e9b0113cf99dc255f001814ec443182"
+      },
+      {
+        "address": "00ab9fd0",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00ab9fd0\\decompiled.c",
+        "bytes": 9452,
+        "sha256": "d68fe530b46c862ec5e101078409fb7ec966e3028020783f892f00a3b2d4ec2e"
+      },
+      {
+        "address": "00ab9fd0",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00ab9fd0\\metadata.json",
+        "bytes": 291,
+        "sha256": "e44e089653b220c2c0ff2e825d19ceb6b8cd8fc3c8ff36c6efe3da7d396b9de9"
+      },
+      {
+        "address": "00ad4480",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00ad4480\\assembly.txt",
+        "bytes": 1152,
+        "sha256": "ffd4fc28c27b152b73b077ee622c4a1c425d766b3b2b31d3eecd5c6f149fdb30"
+      },
+      {
+        "address": "00ad4480",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00ad4480\\decompiled.c",
+        "bytes": 1541,
+        "sha256": "4ddd189ac97383227c61ef433a389a63baaa318a1612586c7de539f4809b4053"
+      },
+      {
+        "address": "00ad4480",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00ad4480\\metadata.json",
+        "bytes": 267,
+        "sha256": "9f941987c92559cdcdfd7643a2ee2b593eb3dacefc931a984d12d4c9bc622525"
+      },
+      {
+        "address": "005189b0",
+        "retained_path": "local\\function_source_batch32\\exports_after\\005189b0\\assembly.txt",
+        "bytes": 3837,
+        "sha256": "c144ac989220e20e35ad273524997b138e8b76353a776ef577429db631841564"
+      },
+      {
+        "address": "005189b0",
+        "retained_path": "local\\function_source_batch32\\exports_after\\005189b0\\decompiled.c",
+        "bytes": 4100,
+        "sha256": "73ff568899b5aa8d071d9f33d1da2fea24a505b7c9bbb75ee0bb6fa3db53ce8e"
+      },
+      {
+        "address": "005189b0",
+        "retained_path": "local\\function_source_batch32\\exports_after\\005189b0\\metadata.json",
+        "bytes": 273,
+        "sha256": "ef1e020a13998b03bbb2f3d98c3aca63e4f0c2ed7f425dd411289d945de93c19"
+      },
+      {
+        "address": "005186b0",
+        "retained_path": "local\\function_source_batch32\\exports_after\\005186b0\\assembly.txt",
+        "bytes": 3137,
+        "sha256": "6d4f08a9e0b2beaa172baf398c08a98537276071a50877120b6cba3886bf32ab"
+      },
+      {
+        "address": "005186b0",
+        "retained_path": "local\\function_source_batch32\\exports_after\\005186b0\\decompiled.c",
+        "bytes": 3282,
+        "sha256": "4fde0da891cfb2723ad01fb5adeadf0005350b7b27f965bc71a3681aa7fdb36d"
+      },
+      {
+        "address": "005186b0",
+        "retained_path": "local\\function_source_batch32\\exports_after\\005186b0\\metadata.json",
+        "bytes": 281,
+        "sha256": "02fe0fb20705d8debecdfab08f3d1dc606258dc1f061d73bd112587ea543f6de"
+      },
+      {
+        "address": "00518820",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00518820\\assembly.txt",
+        "bytes": 3479,
+        "sha256": "a963b4136f1d16ddf5753ceb120ab8e1ea0bb4ab782bc2edf9196c5a79548b8f"
+      },
+      {
+        "address": "00518820",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00518820\\decompiled.c",
+        "bytes": 3480,
+        "sha256": "92f90363c985deb5aa305912a111e6b0b211b5513dd070fb4f9788fc4cc0573e"
+      },
+      {
+        "address": "00518820",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00518820\\metadata.json",
+        "bytes": 281,
+        "sha256": "0277bd80fd013d91533f0f6dc0a631c8ed3fa7efe0214b5c1c71d8f1d5a4eaae"
+      },
+      {
+        "address": "00518e00",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00518e00\\assembly.txt",
+        "bytes": 1065,
+        "sha256": "f4041af608b866accfd92f7db5a5d73a03247ae1d850b5b3da572235a252eb10"
+      },
+      {
+        "address": "00518e00",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00518e00\\decompiled.c",
+        "bytes": 2211,
+        "sha256": "97369d0ddb11bb9b461c845033206c4a06ede25488a0915c3c7f3f1fbc3cf968"
+      },
+      {
+        "address": "00518e00",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00518e00\\metadata.json",
+        "bytes": 280,
+        "sha256": "f2bf4398e257385bf8011b2a976ecb5976e060b4b950ac48f4886d69aec3754e"
+      },
+      {
+        "address": "00ab98f0",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00ab98f0\\assembly.txt",
+        "bytes": 16685,
+        "sha256": "7165707dcf74507fb24b2d3bfc77de8fa764a33c46fe46ff16aef417efd50bd4"
+      },
+      {
+        "address": "00ab98f0",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00ab98f0\\decompiled.c",
+        "bytes": 27673,
+        "sha256": "e60343b77713b27a1558718e63f4fa25036734d474cd6eec5ee64bd5fe55e6e6"
+      },
+      {
+        "address": "00ab98f0",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00ab98f0\\metadata.json",
+        "bytes": 277,
+        "sha256": "9e6f8a9d2057915b9dce2aff06d84f33de58b372d2639ebc7cadfb7831d98bc5"
+      },
+      {
+        "address": "00517d90",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00517d90\\assembly.txt",
+        "bytes": 2296,
+        "sha256": "415a70541e8c76cdc776e68ff6e9f18efeb44a397e470f6591c41cb783e97539"
+      },
+      {
+        "address": "00517d90",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00517d90\\decompiled.c",
+        "bytes": 2848,
+        "sha256": "655dfa19f6568a80cbd22d00977900547a2d5c15ba99739cff6eb2af3a116576"
+      },
+      {
+        "address": "00517d90",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00517d90\\metadata.json",
+        "bytes": 273,
+        "sha256": "4cb8b991370c4d0d6352ca424d1df3a1826cab82829133dda720f32daa23a53d"
+      },
+      {
+        "address": "00517eb0",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00517eb0\\assembly.txt",
+        "bytes": 267,
+        "sha256": "6792652e25800b6cda72f8d1a89891994f925cf47ef5d22cb5a64246a26bd8d6"
+      },
+      {
+        "address": "00517eb0",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00517eb0\\decompiled.c",
+        "bytes": 831,
+        "sha256": "cf294d4a0514c9e18f5c21c44793801ca7bb0c0a920d76845968136edf3a1b13"
+      },
+      {
+        "address": "00517eb0",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00517eb0\\metadata.json",
+        "bytes": 279,
+        "sha256": "1b3c8094081c0f89cb134e4e90beacb66468cb06548624a9d23b5de46e0d420f"
+      },
+      {
+        "address": "00517d50",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00517d50\\assembly.txt",
+        "bytes": 49,
+        "sha256": "481da8ed29d587093148a2e8ce38256e5dea8601ff7743bf3afa18145a07289e"
+      },
+      {
+        "address": "00517d50",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00517d50\\decompiled.c",
+        "bytes": 872,
+        "sha256": "d35e866a2342c55c766f200bc46468a2af5f8f05c85fe9b62a780092c460da6d"
+      },
+      {
+        "address": "00517d50",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00517d50\\metadata.json",
+        "bytes": 289,
+        "sha256": "019ace2a5b3212548febd1775ab98b5013a475efe94de5193005336adb762291"
+      },
+      {
+        "address": "00aa7e00",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00aa7e00\\assembly.txt",
+        "bytes": 1933,
+        "sha256": "64c71c1a904bfa57f5a2a9b0b4de38e8e2b591151edb7de9c5a55e7cced06e95"
+      },
+      {
+        "address": "00aa7e00",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00aa7e00\\decompiled.c",
+        "bytes": 7403,
+        "sha256": "4c95173bb8d886ffb37f69a0ce7afb0f90e28124b5370c6858a362293142344d"
+      },
+      {
+        "address": "00aa7e00",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00aa7e00\\metadata.json",
+        "bytes": 276,
+        "sha256": "440b924ec84588cfd4b2a9862d55cab54cd055b0338e5d6385d1c02a0ad77594"
+      },
+      {
+        "address": "00b865a0",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00b865a0\\assembly.txt",
+        "bytes": 1963,
+        "sha256": "8e0972542222311cff0a9107b03831d99eed2b5b9776a567ef9a54d17dddb357"
+      },
+      {
+        "address": "00b865a0",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00b865a0\\decompiled.c",
+        "bytes": 4876,
+        "sha256": "e81a7294db04f67853fee9a182db3ca6249a62cf3a3683911d7fe19311513fc3"
+      },
+      {
+        "address": "00b865a0",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00b865a0\\metadata.json",
+        "bytes": 282,
+        "sha256": "da63b25db6719e0dd3dfdec8625de8dde3f0cbe2384b59ce5a0ca45d3ca20d14"
+      },
+      {
+        "address": "00b86550",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00b86550\\assembly.txt",
+        "bytes": 939,
+        "sha256": "f54138542c6ff397368aa4c31ac686f09d1bf972d735cdb1d2b04e29862c2155"
+      },
+      {
+        "address": "00b86550",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00b86550\\decompiled.c",
+        "bytes": 2265,
+        "sha256": "cf9133467816685a70a4d951370631ca2a1f298159592f8909572986101d7cbd"
+      },
+      {
+        "address": "00b86550",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00b86550\\metadata.json",
+        "bytes": 281,
+        "sha256": "2f21278a059415890cb3bc871b0560da123dfde8cedc93c8096ad3c8cb667b98"
+      },
+      {
+        "address": "00b74640",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00b74640\\assembly.txt",
+        "bytes": 62,
+        "sha256": "1959a214cd04d94ae7ec1b57be28658079c1f9c9717ac49aceb2b3b86e729e01"
+      },
+      {
+        "address": "00b74640",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00b74640\\decompiled.c",
+        "bytes": 1028,
+        "sha256": "11a33b54f8d6a576b81a5aef94b714ca8f66f52dd517db96b85c614739c04c56"
+      },
+      {
+        "address": "00b74640",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00b74640\\metadata.json",
+        "bytes": 277,
+        "sha256": "e56af9d3664b8ec87ad54e8a215105a41cb5a2ecf424ccbba4370e6069ddbdd4"
+      },
+      {
+        "address": "00ad3e70",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00ad3e70\\assembly.txt",
+        "bytes": 399,
+        "sha256": "9c14e0bf092cd5b8b1eb98729b4cdb55dda6eb42f96e0ad82c1204ab00e8421f"
+      },
+      {
+        "address": "00ad3e70",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00ad3e70\\decompiled.c",
+        "bytes": 894,
+        "sha256": "93b1a2d19746eca588614c31443d7c73231e92018c47b2026786caf981ddc429"
+      },
+      {
+        "address": "00ad3e70",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00ad3e70\\metadata.json",
+        "bytes": 264,
+        "sha256": "a450e40ee9ba2edafaace59a9e0a2df08eecbf29c195cc210b6d700bac32c43f"
+      },
+      {
+        "address": "00b6d800",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00b6d800\\assembly.txt",
+        "bytes": 47,
+        "sha256": "54fb7f55edf15520413016ce2cce8906c657211167e1c24f54ac43cbae32c2d4"
+      },
+      {
+        "address": "00b6d800",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00b6d800\\decompiled.c",
+        "bytes": 1095,
+        "sha256": "3e8368651eba58ca6937242b82e4c20b2b9b1e24a598a095cac9477daedc8cff"
+      },
+      {
+        "address": "00b6d800",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00b6d800\\metadata.json",
+        "bytes": 269,
+        "sha256": "3f86216e04f234cff6a979fe8577e13ce1e64cd30c2acd8209cb9f64b6442ff2"
+      },
+      {
+        "address": "004f71a0",
+        "retained_path": "local\\function_source_batch32\\exports_after\\004f71a0\\assembly.txt",
+        "bytes": 281,
+        "sha256": "8fe391b2630e8552d0e9f2adeb4bc9bd93157ac0080bac263666d97c8637b26f"
+      },
+      {
+        "address": "004f71a0",
+        "retained_path": "local\\function_source_batch32\\exports_after\\004f71a0\\decompiled.c",
+        "bytes": 1342,
+        "sha256": "0d7091b2b97461490f9aaa9fe96cfb8f3a166d708c0e4cc1a6570e0b7a0a6bfa"
+      },
+      {
+        "address": "004f71a0",
+        "retained_path": "local\\function_source_batch32\\exports_after\\004f71a0\\metadata.json",
+        "bytes": 274,
+        "sha256": "41cbc9b2e662bfcc01755dc924cda7f07b8c2e231749311c4d229bb4a25782b2"
+      },
+      {
+        "address": "00aa6740",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00aa6740\\assembly.txt",
+        "bytes": 47,
+        "sha256": "a5de4cb8a27bd5c1df86180a7ce6410eef284147828c953f41cf308e22fdb2c0"
+      },
+      {
+        "address": "00aa6740",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00aa6740\\decompiled.c",
+        "bytes": 1803,
+        "sha256": "8b61d8b2c47397ce5cff2efcd3c070c5e4e70cef62f72c408936ed911351f404"
+      },
+      {
+        "address": "00aa6740",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00aa6740\\metadata.json",
+        "bytes": 268,
+        "sha256": "cd4cdbc6177f67ba0ecca6823434083498b4b37e2db1284d697a3dd622a57e1e"
+      },
+      {
+        "address": "00aa7dc0",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00aa7dc0\\assembly.txt",
+        "bytes": 459,
+        "sha256": "97c68d5a681512e81274d5e7f4ff05b6e007b57c1fb1b9fc0faf1debd9920a8f"
+      },
+      {
+        "address": "00aa7dc0",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00aa7dc0\\decompiled.c",
+        "bytes": 3876,
+        "sha256": "e8f1f2f8f0be22ee6d6a54fa04e93aef3b2693ffc884d2d7fb10df8d8c3ffc58"
+      },
+      {
+        "address": "00aa7dc0",
+        "retained_path": "local\\function_source_batch32\\exports_after\\00aa7dc0\\metadata.json",
+        "bytes": 286,
+        "sha256": "8d6dcfc168459a5034ee3fe688002b9cf521a84cadf1987be1f77e87aec9d66b"
+      }
+    ],
+    "refresh_command": "python tools/bsp.py ghidra export <25 exact addresses> --force",
+    "refresh_exit_code": 0
+  },
+  "retained_artifact_pins": [
+    {
+      "path": "local\\function_source_batch32\\Ghidra_comments_before.json",
+      "bytes": 40719,
+      "sha256": "ffa2adb733abc9f92b1b1fbbe91cae20425ec96c9b5ea5f91c0d193926fa0370"
+    },
+    {
+      "path": "local\\function_source_batch32\\Ghidra_comments_after.json",
+      "bytes": 62335,
+      "sha256": "768ced9dabcf4acff0f538a9e2ff072c8a8b1b995567f4462002103fc254f071"
+    },
+    {
+      "path": "local\\function_source_batch32\\Ghidra_annotation_manifest.json",
+      "bytes": 51841,
+      "sha256": "fa02dd950773520cab165c1cea5cbec9232c1922be98c7106ff0f56f7769b8af"
+    },
+    {
+      "path": "local\\function_source_batch32\\ledger_application.json",
+      "bytes": 9295,
+      "sha256": "76a1ef68d8d635beacd7b386c7f19c4c3c533008ad8b29283fa10a60727cedb2"
+    },
+    {
+      "path": "local\\ghidra-annotations-20261030T203357Z.json",
+      "bytes": 64588,
+      "sha256": "7d9a82c737be6d2801475bece8723ea72b732b20c3cc2d0eaf3705477e57c1be"
+    }
+  ],
+  "validation": {
+    "all64_preimages_and_proposals_verified": true,
+    "all24_shard_row_counts_preserved": true,
+    "all_unrelated_raw_lines_unchanged": true,
+    "old_keys_and_values_preserved_except_strict_name_evidence_suffix": true,
+    "only_new_field": "library_source_admission_history",
+    "existing_CG_STL_trivial_vendor_status_Source_ABI_and_counts_preserved": true,
+    "AD3E70_existing_STL_tag_only_no_name_or_function_created": true,
+    "AA7E00_actual_owner_and_AA7DC0_typed_variants_unmodified": true,
+    "new_test_cases": 0,
+    "no_build_for_metadata_only": true
+  },
+  "readiness": {
+    "actual_game_caller_bound": false,
+    "Original_ABI_proven": false,
+    "runtime_gameplay_validated_by_metadata": false,
+    "activated": false,
+    "changed96_admitted": false
+  },
+  "credit": {
+    "new_Original_vendor_CG_private_helper_trivial_duplicate_body": 0
+  },
+  "document": "docs/CC16_SOURCE25_29_METADATA_ADMISSION.md"
+}
