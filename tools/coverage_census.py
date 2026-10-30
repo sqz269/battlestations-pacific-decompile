@@ -346,34 +346,45 @@ class Resolver:
             for name in row.get("ident", []):
                 self.by_ident[name.rsplit("::", 1)[-1]].add(address)
 
-    def resolve(self, name, source=None, allow_unverified=False):
+    def body_identity(self, name, source=None):
         ident = identifier(name)
         candidates = set(self.by_ident.get(ident, ()))
         if not candidates and ident:
-            # This is the same address-suffix evidence wire_readiness begins
-            # with, but require a matching wire row rather than inventing one.
+            # A suffix identifies a candidate address, never the executing body.
             suffix = re.search(r"_([0-9a-fA-F]{8})$", ident)
             if suffix and int(suffix.group(1), 16) in self.rows:
                 candidates.add(int(suffix.group(1), 16))
-        if allow_unverified:
-            return candidates
         qualified = re.sub(r"<.*>", "", name.split("(", 1)[0].strip())
         normalized = source.replace("\\", "/").casefold() if source else None
-        confirmed = set()
+        evidence = {}
         for address in candidates:
             row = self.rows[address]
-            suffix_match = bool(ident and re.search(rf"_{address:08x}$", ident, re.I))
             qualified_match = any("::" in value and value == qualified for value in row.get("ident", []))
-            source_match = normalized and any(
-                normalized.endswith("/" + str(row[field]).replace("\\", "/").casefold())
-                for field in ("implementation_source", "source") if row.get(field))
-            if suffix_match or qualified_match or source_match:
-                confirmed.add(address)
-        # An unqualified leaf such as next/to_string is not identity evidence:
-        # std::next and a game class's next can coexist in the same PDB.
-        if len(candidates) > 1 and not source and confirmed:
-            return candidates  # retain known alias ambiguity without source disambiguation
-        return confirmed
+            expected = row.get("implementation_source") or row.get("source")
+            expected_normalized = str(expected).replace("\\", "/").casefold() if expected else None
+            if normalized and expected_normalized:
+                matches = normalized == expected_normalized or normalized.endswith("/" + expected_normalized)
+                status = "verified_implementation_source" if matches else "implementation_source_mismatch"
+            elif qualified_match:
+                status = "exact_qualified_body_identifier"
+            else:
+                status = "implementation_source_unverified"
+            evidence[address] = {"status": status, "expected_source": expected,
+                                 "exact_qualified_body_identifier": qualified_match}
+        return evidence
+
+    def resolve(self, name, source=None, allow_unverified=False):
+        evidence = self.body_identity(name, source)
+        if allow_unverified:
+            return set(evidence)
+        return {address for address, item in evidence.items() if item["status"] in
+                ("verified_implementation_source", "exact_qualified_body_identifier")}
+
+
+def host_adapter_hint(row):
+    """A review aid; host-file/name membership does not prove a stand-in body."""
+    source = (row.get("source") or "").replace("\\", "/").casefold()
+    return "/game_hosts" in source or bool(re.search(r"(?:Adapter|Binding|Host)::", row["name"]))
 
 
 class PdbSymbols:
@@ -546,24 +557,28 @@ def attribute_bsp(observations, symbols, resolver, max_addresses):
     outer = []
     aliases = defaultdict(set)
     unverified_inventory = set()
+    mismatched_inventory = set()
+    mismatched_inventory_records = 0
     for row in inventory:
-        candidates = resolver.resolve(row["name"])
-        if not candidates:
-            loose = resolver.resolve(row["name"], allow_unverified=True)
-            if loose:
-                if row["inline"]:
-                    try:
-                        frames = symbols.inline_at(symbols.base + row["rva"])
-                        row["source"] = next((frame.get("source") for frame in frames
-                                              if frame["index"] == row["index"]), None)
-                    except CensusError:
-                        row["source"] = None
-                else:
-                    row["source"] = symbols.line(symbols.base + row["rva"])
-                candidates = resolver.resolve(row["name"], row.get("source"))
-                if not candidates and not row.get("source"):
-                    unverified_inventory.update(loose)
-                    inventory_ambiguous.update(loose)
+        loose = resolver.resolve(row["name"], allow_unverified=True)
+        if loose and not row.get("source"):
+            if row["inline"]:
+                try:
+                    frames = symbols.inline_at(symbols.base + row["rva"])
+                    row["source"] = next((frame.get("source") for frame in frames
+                                          if frame["index"] == row["index"]), None)
+                except CensusError:
+                    row["source"] = None
+            else:
+                row["source"] = symbols.line(symbols.base + row["rva"])
+        evidence = resolver.body_identity(row["name"], row.get("source"))
+        candidates = resolver.resolve(row["name"], row.get("source"))
+        unverified = {a for a, item in evidence.items() if item["status"] == "implementation_source_unverified"}
+        mismatched = {a for a, item in evidence.items() if item["status"] == "implementation_source_mismatch"}
+        unverified_inventory.update(unverified)
+        inventory_ambiguous.update(unverified)
+        mismatched_inventory.update(mismatched)
+        mismatched_inventory_records += bool(mismatched)
         if len(candidates) == 1:
             present.update(candidates)
         elif candidates:
@@ -582,18 +597,21 @@ def attribute_bsp(observations, symbols, resolver, max_addresses):
         if key not in runtime:
             if not row.get("source") and not row["inline"]:
                 row = {**row, "source": symbols.line(symbols.base + max(row["rva"], observation.rva))}
+            evidence = resolver.body_identity(row["name"], row.get("source"))
             candidates = resolver.resolve(row["name"], row.get("source"))
             runtime[key] = {**row, "original_candidates": [f"{a:08x}" for a in sorted(candidates)],
+                            "candidate_reaches": [f"{a:08x}" for a in sorted(evidence)],
+                            "body_identity": {f"{a:08x}": item for a, item in sorted(evidence.items())},
+                            "host_adapter_hint": host_adapter_hint(row),
                             "mapping": "unique_identifier" if len(candidates) == 1 else
                                        "ambiguous_identifier" if candidates else "no_wire_identifier_match"}
+            possible.update(a for a, item in evidence.items() if item["status"] == "implementation_source_unverified")
             if not candidates:
-                loose = resolver.resolve(row["name"], allow_unverified=True)
-                if loose:
-                    runtime[key]["rejected_leaf_candidates"] = [f"{a:08x}" for a in sorted(loose)]
-                    runtime[key]["mapping"] = ("source_or_qualification_mismatch" if row.get("source")
-                                                else "source_identity_unverified")
-                    if not row.get("source"):
-                        possible.update(loose)
+                if evidence:
+                    runtime[key]["rejected_leaf_candidates"] = [f"{a:08x}" for a in sorted(evidence)]
+                    runtime[key]["mapping"] = ("source_or_qualification_mismatch" if any(
+                        item["status"] == "implementation_source_mismatch" for item in evidence.values())
+                        else "source_identity_unverified")
         candidates = {int(a, 16) for a in runtime[key]["original_candidates"]}
         if shared_rva and candidates:
             possible.update(candidates)
@@ -661,15 +679,22 @@ def attribute_bsp(observations, symbols, resolver, max_addresses):
     inventory_present = present | inventory_ambiguous
     absent = [f"{address:08x}" for address, row in resolver.rows.items()
               if wire_identifier_known(row) and address not in inventory_present] if not inventory_errors else None
+    host_records = [row for row in runtime.values() if row["host_adapter_hint"] and row["candidate_reaches"]]
+    host_candidates = {int(a, 16) for row in host_records for a in row["candidate_reaches"]}
+    source_mismatches = [row for row in runtime.values() if any(
+        item["status"] == "implementation_source_mismatch" for item in row["body_identity"].values())]
     return {"hits": hits, "possible": possible, "present": present, "complete": complete,
             "entry_counts": entry_counts,
             "metadata": {**symbols.metadata, "inventory_records": len(inventory),
-                         "identifier_resolution": "original-address suffix, exact qualified wire identifier, or source-confirmed wire leaf",
+                         "identifier_resolution": "suffix/leaf creates candidates only; verified frozen implementation source or exact qualified body identifier required; known source mismatch rejects",
                          "outer_inventory_records": sum(not r["inline"] for r in inventory),
                          "inline_inventory_records": sum(r["inline"] for r in inventory),
                          "inventory_errors": inventory_errors, "inline_scan_error": inline_error,
                          "source_unverified_inventory_candidates": [f"{a:08x}" for a in sorted(unverified_inventory)],
                          "source_unverified_inventory_candidate_count": len(unverified_inventory),
+                         "source_mismatched_inventory_candidates": [f"{a:08x}" for a in sorted(mismatched_inventory)],
+                         "source_mismatched_inventory_candidate_count": len(mismatched_inventory),
+                         "source_mismatched_inventory_record_count": mismatched_inventory_records,
                          "covered_bytes": sum(hi - lo for lo, hi in ranges), "inline_bytes_scanned": scanned,
                          "inline_scan_complete": inline_error is None,
                          "shared_rva_groups": {f"{rva:x}": sorted(names) for rva, names in aliases.items() if len(names) > 1},
@@ -679,6 +704,14 @@ def attribute_bsp(observations, symbols, resolver, max_addresses):
                          "unresolved_executed_symbol_count": len(unresolved),
                          "rejected_leaf_name_record_count": sum(row["mapping"] == "source_or_qualification_mismatch" for row in runtime.values()),
                          "source_unverified_executed_record_count": sum(row["mapping"] == "source_identity_unverified" for row in runtime.values()),
+                         "source_mismatched_executed_record_count": len(source_mismatches),
+                         "host_adapter_candidate_record_count": len(host_records),
+                         "host_adapter_candidate_addresses": [f"{a:08x}" for a in sorted(host_candidates)],
+                         "host_adapter_candidate_address_count": len(host_candidates),
+                         "host_adapter_candidates_without_positive_body_hit": [f"{a:08x}" for a in sorted(host_candidates - hits.keys())],
+                         "host_adapter_candidates_without_positive_body_hit_count": len(host_candidates - hits.keys()),
+                         "host_adapter_source_mismatched_record_count": sum(row["host_adapter_hint"] for row in source_mismatches),
+                         "host_adapter_hint_semantics": "PDB source/name review hint, not a stand-in classification; candidate reach alone gives no reconstruction-body credit",
                          "ambiguous_executed_candidates": [f"{a:08x}" for a in sorted(possible)],
                          "ambiguous_executed_candidate_count": len(possible),
                          "ambiguous_candidates_without_positive_hit": [f"{a:08x}" for a in sorted(possible - hits.keys())],
@@ -769,7 +802,8 @@ def report(catalog, resolver, original, bsp, originals, bsps):
                 "by_scope_category": {scope: dict(counts) for scope, counts in scopes.items()},
                 "board_game_unknown_cells": sum(row[f"{side}_executed"] is None for row in game_rows),
                 "mapped_addresses_without_index_function": sum(address not in catalog.functions for address in data["hits"]),
-                "count_semantics": "identified mapped reach in supplied observations; unknown/ambiguous mappings remain outside this count",
+                "count_semantics": ("PDB source/qualified-identifier verified reconstruction-body mappings in supplied observations; candidate/host reaches alone are excluded"
+                                    if side == "bsp" else "identified mapped reach in supplied observations; unknown/ambiguous mappings remain outside this count"),
                 "inputs": sources}
     original_details = None
     if original is not None:
@@ -808,6 +842,7 @@ def report(catalog, resolver, original, bsp, originals, bsps):
                        "EH/undefined overlap counts are not additive partitions of block counts.",
                        "Board categories reuse current rules; the historical/reference target gate is a separate denominator.",
                        "Shared PDB RVAs leave logical callers ambiguous; ICF/removal/optimization causes are not inferred.",
+                       "PDB suffix/leaf and host/adapter candidate reaches alone do not credit reconstruction-body execution; known source mismatch rejects.",
                        "wire_readiness ident_via and file-level OFF-switch caveats remain; source wiring is not runtime reach.",
                        "False means not observed in supplied usable logs, not dead code or unreachable in other missions.",
                        "Drcov has no per-block game timestamps; clock markers do not filter startup/menu blocks out of these logs."]}

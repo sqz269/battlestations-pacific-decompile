@@ -125,14 +125,30 @@ BSP execution claims for unobserved functions. Positive mapped hits remain
 usable as a lower bound. A block-coverage log is still not an instruction-
 retirement trace or an exact tick/window boundary.
 
-C++ names resolve through the wire file's `ident` values. A bare leaf name
-alone is insufficient: require an original-address suffix, an exact qualified
-wire identifier, or a matching PDB source/implementation filename. Inventory
-records needing that source check are queried before establishing presence;
-unavailable source identity remains unknown. In particular, MSVC `std::next`
-or `std::to_string` records must not establish execution of a game class's
-similarly named method. Rejected leaf mappings and source-unverified records
-are counted separately. Per-address rows
+C++ names resolve through the wire file's `ident` values. A leaf name or
+original-address suffix establishes a candidate address, not execution of its
+reconstruction body. Credit requires the PDB source to match the frozen wire
+`implementation_source` (preferred) or `source`, or an exact qualified body
+identifier from `ident`. A known source mismatch rejects even a matching
+suffix or qualified identifier. Inventory candidates are queried for source
+before establishing presence; unavailable source remains unknown unless that
+independent exact qualified identity is available. MSVC `std::next` and
+`std::to_string`, and host adapter methods carrying an original suffix, must
+not establish execution of a different reconstruction body.
+
+Executed records retain `candidate_reaches`, `body_identity` evidence and
+`original_candidates` that passed that evidence check. Source mismatches and
+unverified source records have separate counts. `host_adapter_hint` marks
+PDB source/name hints for review; host candidate addresses and candidates
+without a positive body hit are reported separately. These hints neither
+credit a reconstruction body nor classify every host function as a stand-in:
+a verified body may legitimately live in `game_hosts*.cpp`. For example,
+`GameHudHost::update_ship_view_screen_0064d610` matches that address's frozen
+host source, while `ShipScreenApplyUnitAdapter::unit_hud_icon_index_0059cb90`
+does not match the frozen `frontend_menus.cpp` body. A source-mismatched
+adapter does not cancel a separate verified body/inline hit for the address.
+Candidate, rejection and positive-body buckets can overlap and are not additive.
+Per-address rows
 retain `ident_via`, wiring state, source, and implementation source. A unique
 heuristic mapping remains a mapping approximation, not an ABI proof. A source
 use behind an OFF switch remains source wiring; it establishes no execution.
