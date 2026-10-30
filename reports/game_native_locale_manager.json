@@ -1,0 +1,210 @@
+{
+  "packet": "codex-raw-locale-canonical-game-owner",
+  "state": "dormant_initialized_only_source_object_compiled",
+  "source_ready": false,
+  "created_utc": "2026-10-30T06:42:48.276601+00:00",
+  "base_commit": "8b9c9a2cf2fab55cf3e49ef4f466fb1b11da2dab",
+  "shared_api_commit": "094adc160",
+  "host_commit": "8b9c9a2cf",
+  "owned_files": [
+    "include/bsp/game_native_locale_manager.hpp",
+    "src/game_native_locale_manager.cpp",
+    "docs/GAME_NATIVE_LOCALE_MANAGER.md",
+    "reports/game_native_locale_manager.json"
+  ],
+  "source_hashes": {
+    "include/bsp/game_native_locale_manager.hpp": "29df6eb2858bebce81bebf4e650c2c6f09d002601bc14ab8eb13bab9b84cae04",
+    "src/game_native_locale_manager.cpp": "236044fc8a912d66d7ff6e20fe738ba114fa9a49dce1adaccf33ab4e9ff82928",
+    "docs/GAME_NATIVE_LOCALE_MANAGER.md": "752b0beaab595a2d7d1905ccbd6c6906d00f23ab4ab1c5a8d48c43cc40698c92"
+  },
+  "contracts": {
+    "canonical": "7fd234677af94d2f5c3823fd5ba7849d81c092a0b5f456e4d4625f8a7c252627",
+    "core_boundary": "d1ea16e3a6e5802c4a83e17fb25b115e9ddf214454cbeb15eed751620f327a87"
+  },
+  "private_authority": {
+    "retained_factory": "Cppmetadata only, no automatic Native/CRT teardown",
+    "binding": "one permanent claim, exact live host/table/AA0/F8/raw3cell identities, actual preinstalled AA8/AA4 D68200 pointers",
+    "initialization": "actualstatus0 c1e pool borrow; matched uninitialized4040 allocation captured before genuine73C960; result/SAMEpub/nonNullparent/stickyhealth",
+    "no_public_diagnostic_seal_or_loaded_authority": true,
+    "actual_raw_fields_seeded_or_zero_image": false,
+    "bare_fresh_host_ready": false
+  },
+  "source_order": {
+    "initialization_epochs": [
+      "p.initialization_entered = true;",
+      "p.phase = Impl::Phase::initializing;",
+      "p.pool_process = &game_native_locale_pool_process();",
+      "p.pool_startup_entered = true;",
+      "p.pool_status = p.pool_process->initialize_once_00cc8d30();",
+      "p.pool_startup_returned = true;",
+      "if (p.pool_status != 0)",
+      "p.pool = p.pool_process->pool_storage_00e1768c();",
+      "p.retirement.emplace(",
+      "p.allocation_entered = true;",
+      "p.allocation = singleton_lifetime_allocate(",
+      "p.allocation_returned = true;",
+      "p.constructor_entered = true;",
+      "p.constructor_result = construct_native_locale_manager_0073c960(",
+      "p.constructor_returned = true;",
+      "p.phase = Impl::Phase::initialized;"
+    ],
+    "scalar_epochs": [
+      "p.require_phase(Impl::Phase::draining);",
+      "p.require_constructor_history();",
+      "p.require_flags_storage(flags);",
+      "p.scalar_entered = true;",
+      "p.flags_identity = &flags;",
+      "p.phase = Impl::Phase::deleting;",
+      "p.scalar_result = profile == 0x00cff140u",
+      "? delete_native_locale_manager_0073caf0(captured, flags, *p.retirement)",
+      ": delete_native_locale_manager_base_00737010(captured, flags, p.publication);",
+      "p.scalar_returned = true;",
+      "p.require_phase(Impl::Phase::deleting);",
+      "p.flags_after_return = low_byte(flags);",
+      "p.flags_sampled_after_return = true;",
+      "p.allocation_released = (p.flags_after_return & 1u) != 0;",
+      "Impl::Phase::ended_allocation_retained;"
+    ],
+    "parent_nonNull_permanent_cell_checks": 5,
+    "before_drain_parent_guard_before_null_fallback": true,
+    "all_public_entry_and_completion_failures_sticky": true,
+    "flags": "sameactualref torealScalar; onlypostnormalstablebyte classification, no earlyvalue/default/copy",
+    "flags_zero": "ended_allocation_retained; nofreed/settled/replay/guessedfree",
+    "after_drain": "Cpphistory/permanentcells only; actualF8/AA0null before typedtable detach; no ended Native/flags-pointer read"
+  },
+  "failure_policy": {
+    "retains": "allocation/publication/registration/context/providergraph on every escaped/recursive/partial attempt",
+    "no_rollback_unregister_retry_or_speculative_native_free": true,
+    "native73e030_exception_free_policy_reproduced": false,
+    "source_difference_explicit": true,
+    "healthy_repeats": "samebinding/init metadata validation only; no Native effects replay",
+    "failed_drain": "rejectbeforeCorepop evenifAA0null; parent/caller must retain graph or fail-stop"
+  },
+  "verification": {
+    "fixed_object_compile": {
+      "command": "$taskObjectDir=Join-Path (Get-Location).Path 'build/canonical_locale_manager_parent_guard_object'; New-Item -ItemType Directory -Path $taskObjectDir -Force | Out-Null; $taskCompileCommand='call \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\Tools\\VsDevCmd.bat\" -arch=x86 -host_arch=x64 -no_logo && cl.exe /nologo /std:c++17 /permissive- /W4 /WX /EHsc /MD /O2 /Ob2 /DNDEBUG /DWIN32 /D_WINDOWS /DNOMINMAX /DWIN32_LEAN_AND_MEAN /I include /c src\\game_native_locale_manager.cpp /Fo\"build\\canonical_locale_manager_parent_guard_object\\game_native_locale_manager.obj\"'; & $env:ComSpec /d /s /c $taskCompileCommand; exit $LASTEXITCODE",
+      "exit_code": 0,
+      "stdout": "game_native_locale_manager.cpp\r\n",
+      "wall_time_seconds": 5.5283458,
+      "attempts": 1,
+      "scope": "onefresh fixedTU after concrete parentguard review; strict existingWin32 C++17 release flags, /c only"
+    },
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\build\\canonical_locale_manager_parent_guard_object\\game_native_locale_manager.obj",
+      "machine": "0x14c",
+      "bytes": 53925,
+      "sha256": "69f50be6e7f645dd7f7f640561b8368db1edb721114dad3fcc082b3125d85397",
+      "defined_public_entries": [
+        "?bind_once@GameNativeLocaleManagerProcess@game@bsp@@QAEXAAVGameSingletonHost@23@@Z",
+        "?initialize_once@GameNativeLocaleManagerProcess@game@bsp@@QAEXXZ",
+        "?initialized_receiver@GameNativeLocaleManagerProcess@game@bsp@@QAEPAXXZ",
+        "?before_shared_drain@GameNativeLocaleManagerProcess@game@bsp@@QAEXAAVGameSingletonHost@23@@Z",
+        "?after_shared_drain@GameNativeLocaleManagerProcess@game@bsp@@QAEXAAVGameSingletonHost@23@@Z",
+        "?delete_registered_current_profile@GameNativeLocaleManagerProcess@game@bsp@@UAEPAXPAXIADI@Z",
+        "?game_native_locale_manager_process@game@bsp@@YAAAVGameNativeLocaleManagerProcess@12@XZ"
+      ],
+      "real_provider_refs": [
+        "?game_native_locale_pool_process@game@bsp@@YAAAVGameNativeLocalePoolProcess@12@XZ",
+        "?initialize_once_00cc8d30@GameNativeLocalePoolProcess@game@bsp@@QAEHXZ",
+        "?pool_storage_00e1768c@GameNativeLocalePoolProcess@game@bsp@@QAEPAXXZ",
+        "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+        "?construct_native_locale_manager_0073c960@bsp@@YAPAXPAXABUNativeLocaleManagerConstructorContext@1@@Z",
+        "?delete_native_locale_manager_0073caf0@bsp@@YAPAXPAXADIABUNativeLocaleManagerRetirementContext@1@@Z",
+        "?delete_native_locale_manager_base_00737010@bsp@@YAPAXPAXADIABUNativeLocaleManagerConstructorContext@1@@Z",
+        "?claim_locale_manager_domain@GameNativeStringProcess@game@bsp@@QAE_NXZ"
+      ],
+      "no_direct_native_heap_free_ref": true,
+      "compile_only": true,
+      "linked_or_executed": false
+    },
+    "held_prior_candidate": {
+      "cpp_path": "build/canonical_locale_manager_object/held_owner.cpp",
+      "cpp_sha256": "f1014223229023302d9bb9b5b9b874dbed427ed5c49a434457523683f5dc1c50",
+      "object": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\build\\canonical_locale_manager_object\\game_native_locale_manager.obj",
+        "machine": "0x14c",
+        "bytes": 53851,
+        "sha256": "571271d5a6e942d89d67853d4418d81407a6bc3d7742062960a7fb0836b75b7d",
+        "defined_public_entries": [
+          "?bind_once@GameNativeLocaleManagerProcess@game@bsp@@QAEXAAVGameSingletonHost@23@@Z",
+          "?initialize_once@GameNativeLocaleManagerProcess@game@bsp@@QAEXXZ",
+          "?initialized_receiver@GameNativeLocaleManagerProcess@game@bsp@@QAEPAXXZ",
+          "?before_shared_drain@GameNativeLocaleManagerProcess@game@bsp@@QAEXAAVGameSingletonHost@23@@Z",
+          "?after_shared_drain@GameNativeLocaleManagerProcess@game@bsp@@QAEXAAVGameSingletonHost@23@@Z",
+          "?delete_registered_current_profile@GameNativeLocaleManagerProcess@game@bsp@@UAEPAXPAXIADI@Z",
+          "?game_native_locale_manager_process@game@bsp@@YAAAVGameNativeLocaleManagerProcess@12@XZ"
+        ],
+        "real_provider_refs": [
+          "?game_native_locale_pool_process@game@bsp@@YAAAVGameNativeLocalePoolProcess@12@XZ",
+          "?initialize_once_00cc8d30@GameNativeLocalePoolProcess@game@bsp@@QAEHXZ",
+          "?pool_storage_00e1768c@GameNativeLocalePoolProcess@game@bsp@@QAEPAXXZ",
+          "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+          "?construct_native_locale_manager_0073c960@bsp@@YAPAXPAXABUNativeLocaleManagerConstructorContext@1@@Z",
+          "?delete_native_locale_manager_0073caf0@bsp@@YAPAXPAXADIABUNativeLocaleManagerRetirementContext@1@@Z",
+          "?delete_native_locale_manager_base_00737010@bsp@@YAPAXPAXADIABUNativeLocaleManagerConstructorContext@1@@Z",
+          "?claim_locale_manager_domain@GameNativeStringProcess@game@bsp@@QAE_NXZ"
+        ],
+        "no_direct_native_heap_free_ref": true,
+        "compile_only": true,
+        "linked_or_executed": false
+      },
+      "compile_exit_code": 0,
+      "compile_wall_time_seconds": 5.1147073,
+      "root_blocker": "missing actualAA0nonnull pre-drain/initialized authority; fixed5sites, firstcandidate preserved"
+    },
+    "frozen_twelve_unchanged": {
+      "include/bsp/native_locale_manager_constructor.hpp": "043639699cb7855ab0ee4ba244cdf060a09191dea73e267514ef359adf8bf674",
+      "src/native_locale_manager_constructor.cpp": "49fbe8d8a02f37dd2fda4790264d2fc92d42d3925294f41ebea9d745e6acb353",
+      "docs/NATIVE_LOCALE_MANAGER_CONSTRUCTOR.md": "241d76091762dbcb134f8499301e35d72a8b0b82abf175014e5dc881b92cfdae",
+      "reports/native_locale_manager_constructor.json": "8a0e41211d34e611c00aeca609fb318c05285076bb69a7f93c6412ded3644921",
+      "include/bsp/native_locale_manager_base_retirement.hpp": "3332d5e49dd229d4a24a90d09e72539db0e616f7bce307e0c947e6c8c722159b",
+      "src/native_locale_manager_base_retirement.cpp": "6debd92e67eba61695a5fc2bd384176bde5181c0841f3b30944fb25250f74e7b",
+      "docs/NATIVE_LOCALE_MANAGER_BASE_RETIREMENT.md": "81d71bf9c8b00846c6dbb977b59767c53464777510890af15b1a2ee42bcdefba",
+      "reports/native_locale_manager_base_retirement.json": "25869433af8dfc1e127ecfd8fb91f069b3a1fb07c7a3d545e6f9c337e959c0b3",
+      "include/bsp/native_locale_manager_retirement.hpp": "fb4fe4198ce00f35f9fd9f907d200e89477cf0fb31f97089f03437b48ef4bfda",
+      "src/native_locale_manager_retirement.cpp": "5812c7eed5d4dd10f3df8dff884faf82a776fd1b190525210dbbd4f1e2d59715",
+      "docs/NATIVE_LOCALE_MANAGER_RETIREMENT.md": "ec57e0937f46222af1997c8be21f839339da06f0ae207191d2cbf0f31b37b2dc",
+      "reports/native_locale_manager_retirement.json": "2e6d4cbdfcf68ee66f8db03a392fbfb298d1bf39c12817e871fe7e4f2507abd1"
+    },
+    "prerequisite_hashes": {
+      "include/bsp/native_locale_manager_deletion_lifetime.hpp": "9e3acb9e44481d9dd4cf34cea3e3ff7d150a98020321f067583ad1eeb7b6b385",
+      "include/bsp/game_native_string_process.hpp": "68ac5c24794233d13e2b68d7276e703dc62d39bded4b969bfcf7a06361fac697",
+      "src/game_native_string_process.cpp": "baee34f67bf3948f0a92e05ebd2fc27d16b90727adc8ad4c8f6414dd16f77d6a",
+      "include/bsp/native_singleton_destruction.hpp": "de933f3c758aed5b505b61582845be194396bace2efc88f676e9de462049f686",
+      "src/native_singleton_destruction.cpp": "98a476d0aa3d76fa3b79793a6c10dca5ce621b89f9a290eecef23866a483831a",
+      "include/bsp/game_hosts_singletons.hpp": "a047bfe45fd98e2586c30b4a87d5124bfadf1d29af198140544bb2f7652481bd",
+      "src/game_hosts_singletons.cpp": "be179a72d97447dcd59620d05a791ac48cea74ab4ccf2468b0445d10c961b38e",
+      "include/bsp/game_native_locale_pool.hpp": "969db5c9f80ab1e4b6e5098f43ef1515d0e726fe2aa9e119dfb777cccc989911",
+      "src/game_native_locale_pool.cpp": "ef01a5c56a1c61617274c5bcc6021d6785947305e333f4048094f5946aaf73de",
+      "include/bsp/native_locale_manager_base_scalar.hpp": "5f4beb88ed8f27e18225cb43902f880b0332793b5168d75b8cf93d709b530170",
+      "src/native_locale_manager_base_scalar.cpp": "4a9be77a355fbefe17dc2bba56aae69303e24cbb20bd87e147768e03c708d906",
+      "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    "new_tests": 0,
+    "tests_run": 0,
+    "full_build": false,
+    "probe_executable": false,
+    "game": false,
+    "Ghidra_analysis_or_mutation": false
+  },
+  "external_contracts": [
+    "GameSingletonHost::prepare_locale_manager captures realprocessbeforebind; actualVFS D68200 binding mustprecede it",
+    "actualfixedcontexts/cells/host/table and provider lifetimes throughworld/CRT drain",
+    "stable disjoint actual flagsDWORD under realCore PUSH1; no conflicting/provider writes or arbitraryprivate-stackaliases",
+    "common E188B4 allocator-list/physical pool/CRT window serialized; settlebefore actualc1e exitcallback",
+    "metadatafactory nonreentrant duringconstruction; ownrecursive mutex is only Sourceadmission, not native/global lock",
+    "no invalidating Nativeproducer writes or populated derived payloads in initialized-only base-profile route",
+    "existing raw noexcept/factoring/FH3/hardware/private-spill/double-failure limits unchanged"
+  ],
+  "excluded": [
+    "hoststartup activation",
+    "loadedlocale/parser/mapinsertion/growth",
+    "language/uppercase/Text/Font48 readiness",
+    "semantic owner/container or fakeprovider",
+    "erased callback or Core-toGame method symbol",
+    "Native/vendor body reconstruction credit",
+    "Original ABI/runtime/physicalheap observation"
+  ],
+  "activation": false
+}
