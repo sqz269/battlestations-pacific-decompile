@@ -1,0 +1,868 @@
+{
+  "schema": "bsp.cc16.native_game_global_config_producer_readiness.v1",
+  "packet": "codex-native-game-global-config-producer-readiness",
+  "baseline_published_Main": "3d861b9ac16576a155de34441993ea68fe393e18",
+  "baseline_is_ancestor_of_origin_main": true,
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness",
+  "observed_utc": "2026-10-30T04:12:28.129446+00:00",
+  "status": "exact_GlobalConfig_producer_and_receiver_domain_gap_retained_no_new_Source_body_or_partial_aggregate_proposed",
+  "source_ready": false,
+  "application_aggregate_adopted": false,
+  "new_Source_leaf_proposed": false,
+  "owned_files": [
+    "docs/CC16_NATIVE_GAME_GLOBAL_CONFIG_PRODUCER_READINESS.md",
+    "reports/cc16_native_game_global_config_producer_readiness.json"
+  ],
+  "scope": {
+    "source_CMake_shared_metadata_ledger_guard_peer_installation_edits": false,
+    "Ghidra_mutation_or_new_import": false,
+    "compile_build_test_executable_DLL_Lua_state_or_game_execution": false,
+    "numeric_PE_code_execution": false,
+    "new_unique_native_body_credit": 0,
+    "vendor_body_credit": 0,
+    "ABI_runtime_gameplay_activation_credit": 0,
+    "names_are_hypotheses": true
+  },
+  "prior_admitted_findings": [
+    {
+      "commit": "a66fe38859be997bf8756d80f1e9546ba2cd9269",
+      "reuse": "No actual Game runtime/frame attachment or GlobalConfig authority/aggregate; concrete defaults are not missing abstract bodies."
+    },
+    {
+      "commit": "b0f123400131f206ce5fd3986726589cd6d558dd",
+      "reuse": "Projected menu or skipped Game/preload segment does not supply the real parent hook or epoch release."
+    },
+    {
+      "commit": "0320908cfe58ba85ef0c539308549b3373c4c4cc",
+      "reuse": "Provenance observations and old owner addresses are not pointer/context authentication; retain replacement and address-generation gates."
+    }
+  ],
+  "target_verification": {
+    "configured_project": "bsp",
+    "existing_project_file": "C:/Users/sqz269/bsp.gpr",
+    "existing_project_file_present": true,
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "live_function_count": 77631,
+    "every_native_query": "bsp.py ghidra Client.verify checks actual project_name, program path, language and image base before querying; ensure --status also checked before the fresh batch",
+    "fresh_queries": [
+      "ghidra xrefs 00f878e4 --limit 40 --lines 30",
+      "ghidra callers 008dd460 --limit 20 --lines 15"
+    ],
+    "new_export_or_GPR_write": false
+  },
+  "concrete_available_suppliers": [
+    {
+      "input": "lifetime",
+      "producer": "GameSingletonHost::sound_lifetime()",
+      "owner": "same GameNativeStringProcess 01090AA0 publication and retained application host used by Sound/native Lua",
+      "selected_for_GlobalConfig": false
+    },
+    {
+      "input": "strings",
+      "producer": "app.vfs_->borrow_raw_services().strings",
+      "owner": "exact retained actual VFS pool wrapper already used by core samples and Lua fundamentals",
+      "same_wrapper_required": true
+    },
+    {
+      "input": "cache and sample lifetime",
+      "producer": "app.sound_->core.samples(); sample_cache_context(); core.lifetime_bindings().global_00f8bbe8",
+      "owner": "real GameSoundRuntime::Impl current_cache/cache, SoundSampleRuntime, resources, FMOD library, accounting word and actual string domain",
+      "actual_sample_storage_bytes": 124,
+      "sample_identity": "00d5b074",
+      "cache_layout": "existing host tree projection, not original native STL"
+    },
+    {
+      "input": "effects final release",
+      "producer": "NativeGlobalConfigSampleDispatch(core.samples()) class",
+      "application_instance_present": false,
+      "qualified_sample_zero_route": "SoundSampleRuntime::zero_references_slot_00 -> scalar_delete_sound_sample_00a82e80(actual,1,same sample context)",
+      "profile_is_authentication": false,
+      "raw_stop_domain_supplied": false
+    },
+    {
+      "input": "Lua bootstrap/files",
+      "producer": "lua_services_->bootstrap(); lua_services_->binding().files(); NativeLuaServiceBindings::Activation",
+      "owner": "same retained actual fundamentals/VFS/Lua process domain",
+      "same_DoFile_and_exact_cache_strings_guards_preserved": true
+    },
+    {
+      "input": "FOV divisor",
+      "producer": "settings_host_->fov_divisor_00f889b4()",
+      "owner": "GameNativeSettingsApplication process.settings().fov_divisor_34",
+      "copied_read_view_used": false
+    }
+  ],
+  "application_binding_search": {
+    "search_artifact": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\current_binding_search.txt",
+    "production_GlobalConfigContext_instances": 0,
+    "production_NativeGlobalConfigLoadContext_instances": 0,
+    "production_NativeGlobalConfigSampleDispatch_instances": 0,
+    "production_global_configuration_deletion_binding_assignments": 0,
+    "canonical_Source_F878E4_authority_present": false,
+    "existing_Seg2_addressed_global_interface_is_actual_authority": false,
+    "existing_forwarders": [
+      "NativeGameConstructionCalls::call_00432650 -> get_global_config_00432650",
+      "NativeGameConstructionCalls::call_0087d7b0 -> full loader on returned actual owner",
+      "GlobalSubsystemContext borrows GlobalConfigContext"
+    ],
+    "another_forwarder_supplies_missing_input": false
+  },
+  "owner_contract": {
+    "allocation": "actual2E8h; preserve preimage, construct only established fields, no blanket zero",
+    "getter": "captured fast return, actual lifetime lock, second check, construct/publish, second manager, CURRENT publication registration, captured guard exit, FINAL publication reload",
+    "deletion": "CE3D98 ->00432710 with popped actual owner and SAME retained context even if publication changed; destructor clears F878E4 unconditionally and stamps CE3818; flags bit0 controls outer free",
+    "numeric_profile_authenticates_heap_or_context": false,
+    "actual_current_cell_xrefs": [
+      {
+        "site": "0042ac00",
+        "action": "base destructor clear"
+      },
+      {
+        "site": "00432665",
+        "action": "getter read"
+      },
+      {
+        "site": "004326a1",
+        "action": "getter read"
+      },
+      {
+        "site": "004326d4",
+        "action": "getter owner-or-null publication"
+      },
+      {
+        "site": "004326de",
+        "action": "getter read"
+      },
+      {
+        "site": "004326fb",
+        "action": "getter final read"
+      },
+      {
+        "site": "00432631",
+        "action": "full destructor clear"
+      },
+      {
+        "site": "0042cfd8",
+        "action": "base scalar clear"
+      }
+    ],
+    "xref_count": 8,
+    "historical_count": 7,
+    "newly_recognized_reference": {
+      "start": "0042cfd0",
+      "end_inclusive": "0042cff8",
+      "bytes": 41,
+      "sha256": "0ea08458c4668547a4d58c4490e717019ee5fca927c2af445cc9941db9589764",
+      "hex": "f644240401568bf1c705e478f80000000000c7061838ce00740956e8bc957c0083c4048bc65ec20400",
+      "instructions": [
+        {
+          "address": "0042cfd0",
+          "size": 5,
+          "mnemonic": "test",
+          "operands": "byte ptr [esp + 4], 1"
+        },
+        {
+          "address": "0042cfd5",
+          "size": 1,
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "0042cfd6",
+          "size": 2,
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "0042cfd8",
+          "size": 10,
+          "mnemonic": "mov",
+          "operands": "dword ptr [0xf878e4], 0"
+        },
+        {
+          "address": "0042cfe2",
+          "size": 6,
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi], 0xce3818"
+        },
+        {
+          "address": "0042cfe8",
+          "size": 2,
+          "mnemonic": "je",
+          "operands": "0x42cff3"
+        },
+        {
+          "address": "0042cfea",
+          "size": 1,
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "0042cfeb",
+          "size": 5,
+          "mnemonic": "call",
+          "operands": "0xbf65ac"
+        },
+        {
+          "address": "0042cff0",
+          "size": 3,
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "address": "0042cff3",
+          "size": 2,
+          "mnemonic": "mov",
+          "operands": "eax, esi"
+        },
+        {
+          "address": "0042cff5",
+          "size": 1,
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "0042cff6",
+          "size": 3,
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "new_Source_or_unique_body_credit": 0
+    },
+    "initial_image_cell_storage": {
+      "address": "00f878e4",
+      "section": ".data",
+      "section_rva": "00a08000",
+      "section_raw_bytes": 65536,
+      "section_virtual_bytes": 2719452,
+      "offset_in_section": 1571044,
+      "origin": "loader-zero virtual section tail",
+      "hex": "00000000",
+      "scope": "initial image only; not later process contents or a Source authority"
+    },
+    "whole_program_absence_claimed": false
+  },
+  "sample_producer": {
+    "native_loader": "0087D7B0 selects Globals.ObjectiveSounds after initial file plus overrides; index starts0 and increments with Lua iteration, no3-entry bound",
+    "assignment": "008DBE90 ->CURRENT F8BBE8 acquire00A83FD0 ->canonical real cache/factory/sample",
+    "publication": "008DBEDC publishes sample at block+uint32(index)*4; captures old after acquisition, retains new and releases old/current temporary in native order",
+    "indices3_4_5": "same samples reach owner+2CC/+2D0/+2D4; not channels",
+    "larger_indices": "remain unchecked; no accepted-input restriction or repair introduced",
+    "D5B074_original_first_words": [
+      "00bd30e0",
+      "00a82e80"
+    ],
+    "D5B074_plus8_hex": "0a4c6f6f",
+    "D5B074_plus8_is_valid_stop": false,
+    "Source_sample_zero_available": true,
+    "Source_sample_stop_invented": false
+  },
+  "raw_receiver_contract": {
+    "second_cells": [
+      "owner+2CC",
+      "owner+2D0",
+      "owner+2D4"
+    ],
+    "schedule": [
+      "capture initial second pointee",
+      "if nonnull invoke its CURRENT callable table+8(flag0)",
+      "reload CURRENT slot after callback",
+      "decrement actual reloaded pointee+4 once; atzero invoke CURRENT table+0 without second decrement",
+      "clear slot after callback and release paired first slot",
+      "reverse second then first pointer-slot passes preserve repopulation effects"
+    ],
+    "callback_slot_and_profile_replacement_preserved": true,
+    "admitted_union": "genuine canonical Source samples for qualified zero release; genuine raw objects with compatible current-process callable tables for stop/other zero",
+    "dispatch_class_itself_supplies_or_authenticates_receivers": false,
+    "numeric_PE_tables_are_callables": false,
+    "recorded_three_owner_membership_policy_proposed": false,
+    "profile_or_address_reuse_is_authentication": false
+  },
+  "native_publication_attribution": {
+    "objective_callers": [
+      "008e1b90",
+      "008e1d30"
+    ],
+    "playback_008dd460": "stack output reference ->A7E490; releases local; block+18 timestamp only, no block+0C/+10/+14 publication",
+    "tracked_A7E490": "manager active array and caller output; not GlobalConfig second slots",
+    "conditional_A7F640": "under recovered concrete manager/current kind0 dispatch, native5Ch D5ABF8 channel; no established second-slot pointee",
+    "conditional_D5ABF8_slots": {
+      "00": "00bd30e0 -> CURRENT+04(flags1), no decrement",
+      "04": "00a7d5a0",
+      "08": "00a7a570",
+      "14": "00a7a630"
+    },
+    "global_subsystem_effect_destination": "Game+718C vector; separate GlobalConfig timestamp clear",
+    "positively_attributed_compatible_raw_second_array_publisher": null
+  },
+  "Source_channel_limit": {
+    "storage": "SoundInstance/SoundChannelInstance explicitly projected nonnative layouts",
+    "reference_api": "SoundChannelRuntime::release_reference decrements projected count itself",
+    "existing_factories_and_stop": "genuine real FMOD services over canonical projections, not raw+4/5Ch receivers",
+    "cast_or_raw_postdecrement_callback_admission": false,
+    "raw_storage_producer_and_current_stop_zero_domain_closed": false
+  },
+  "installed_input_evidence": [
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\globals.lua",
+      "bytes": 7134,
+      "sha256": "5c5d9066992da486ba06dd04cf5256f84628f60db0bd2f7aac83592feb2e483c",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\installed_inputs\\globals.lua",
+      "literal_table_line": 192,
+      "static_literal_names": [
+        "sound/environment/environment_objective_add.fsb",
+        "sound/environment/environment_objective_completed.fsb",
+        "sound/environment/environment_objective_fail.fsb"
+      ],
+      "scope": "static installed file bytes only; not an executed final Lua table or stock-release attestation"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\sound\\environment\\environment_objective_add.fsb",
+      "bytes": 9440,
+      "sha256": "f891a74fec05301e99068602c224742c5e4b6e4bbe49fb762d1bbc86bd2c86d6",
+      "scope": "named FSB exists; not loaded or played"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\sound\\environment\\environment_objective_completed.fsb",
+      "bytes": 10496,
+      "sha256": "b6ff2002b4705d3d4fc481b95141bef210bc4163acd40d1651a466abde2d6b82",
+      "scope": "named FSB exists; not loaded or played"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\sound\\environment\\environment_objective_fail.fsb",
+      "bytes": 3808,
+      "sha256": "60255e5481e1a206df8ec6596b7046823390550a0dfe2d235708ad2ab8758d6a",
+      "scope": "named FSB exists; not loaded or played"
+    }
+  ],
+  "installed_input_limits": [
+    "File statically contains three literals, not an executed final Lua table.",
+    "No claim of stock release identity, immutable file, exclusive mount selection, complete alias/computed-write search or runtime suffix state.",
+    "Search of scripts/**/*.lua for ObjectiveSounds spelling returned this file; that does not constrain accepted Lua/overrides.",
+    "Actual file/override services remain unrestricted; no<=3, empty-slot invariant, new parser/input policy or missing-handler suppression.",
+    "FSB files were read/hashed only, never loaded/played."
+  ],
+  "override_contract": {
+    "run_00b69d40": "initial chunk followed by captured override vector paths in order",
+    "append_00bdef90": "actual manager+48 suffix vector; candidate stem_suffix.extension tested by same VFS dispatcher",
+    "Activation": "actual NativeLuaServiceBindings around interpreter entry; C++ scope restoration is not Lua nonlocal restoration"
+  },
+  "remaining_frontier": {
+    "reused_direct_callsite_audit": {
+      "function_callers": 41,
+      "recognized_direct_sites": 75,
+      "function_contained_sites": 66,
+      "unassigned_sites": 9,
+      "whole_caller_or_program_coverage": false
+    },
+    "opaque_current_virtual_borrows": [
+      {
+        "getter_site": "005adfd8",
+        "kind": "opaque_virtual_color_borrow",
+        "getter_result_flow": "Push owner+108 to current virtual+50 of [ESI+18] at005ADFF7.",
+        "nonnull_second_array_store_established": false,
+        "containing_function_entry": "005adda0",
+        "containing_function_name": "FUN_005adda0",
+        "coverage": "Return-use slice and the explicitly retained continuations; not whole-function or whole-program absence."
+      },
+      {
+        "getter_site": "005adfe4",
+        "kind": "opaque_virtual_color_borrow",
+        "getter_result_flow": "Push owner+128 to current virtual+50 of [ESI+18] at005ADFF7.",
+        "nonnull_second_array_store_established": false,
+        "containing_function_entry": "005adda0",
+        "containing_function_name": "FUN_005adda0",
+        "coverage": "Return-use slice and the explicitly retained continuations; not whole-function or whole-program absence."
+      },
+      {
+        "getter_site": "005aed36",
+        "kind": "opaque_virtual_color_borrow",
+        "getter_result_flow": "Push owner+158 to current virtual+50 of [EDI] at005AED48.",
+        "nonnull_second_array_store_established": false,
+        "containing_function_entry": "005adda0",
+        "containing_function_name": "FUN_005adda0",
+        "coverage": "Return-use slice and the explicitly retained continuations; not whole-function or whole-program absence."
+      },
+      {
+        "getter_site": "005d08f1",
+        "kind": "opaque_virtual_color_borrow",
+        "getter_result_flow": "Push owner+218 to current virtual+50 of [ESI+5C] at005D0904.",
+        "nonnull_second_array_store_established": false,
+        "containing_function_entry": "005d07e0",
+        "containing_function_name": "FUN_005d07e0",
+        "coverage": "Return-use slice and the explicitly retained continuations; not whole-function or whole-program absence."
+      },
+      {
+        "getter_site": "005d092b",
+        "kind": "opaque_virtual_color_borrow",
+        "getter_result_flow": "Push owner+208+(bool(caller+8C)!=0)*10 to current virtual+50 of [ESI+60] at005D094E.",
+        "nonnull_second_array_store_established": false,
+        "containing_function_entry": "005d07e0",
+        "containing_function_name": "FUN_005d07e0",
+        "coverage": "Return-use slice and the explicitly retained continuations; not whole-function or whole-program absence."
+      },
+      {
+        "getter_site": "005d0ad7",
+        "kind": "opaque_virtual_color_borrow",
+        "getter_result_flow": "Push owner+208+stack_index*10 to current virtual+50 of ESI at005D0AF2; no input-index range is assumed.",
+        "nonnull_second_array_store_established": false,
+        "containing_function_entry": "005d09a0",
+        "containing_function_name": "FUN_005d09a0",
+        "coverage": "Return-use slice and the explicitly retained continuations; not whole-function or whole-program absence."
+      }
+    ],
+    "whole_owner_escape": "registration00BD0C30; cached aliases, unrecognized code and later indirect callbacks not exhausted",
+    "exact_missing_fact": "actual second-slot payload publication/input/receiver domain, or complete justification of write/alias domains without suppressing accepted inputs; compatible raw Source storage/current stop/postdecrement zero receivers under retained real service domain, including replacements",
+    "new_complete_Source_ready_leaf_or_aggregate": false,
+    "rejected_shortcuts": [
+      "installed three-name table as universal bound",
+      "second slots presumed empty",
+      "projected SoundInstance cast",
+      "double-decrement channel release API",
+      "numeric PE table/code execution",
+      "D5ABF8 tag or prior address as authentication",
+      "fabricated callback/owner or fake success",
+      "unused forwarder or dormant partial aggregate",
+      "new accepted-input/subsequence/release policy"
+    ]
+  },
+  "lifetime_and_failure": {
+    "normal_order": "shared raw manager drains while Sound/native Lua/scripts/VFS exact services live; Sound reset before singleton host; scripts/native Lua before VFS",
+    "future_binding": "ONE retained F878E4 authority, configuration context/effects and SAME manager deletion binding survive every registration, alias and callback through drain",
+    "loader_failure": "one-shot failed operation retains actual Lua/objects/temporary strings and already performed owner writes; no replay or catch rollback",
+    "foreign_CPP_escape": "not proof of valid Lua restoration; no automatic close or provider destruction",
+    "new_failure_or_terminal_policy_added": false
+  },
+  "native_receipt_recheck": {
+    "installed_PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "machine": "0x14c",
+      "image_base": "0x400000"
+    },
+    "payload_receipt_code_spans": 13,
+    "direct_audit_code_windows": 70,
+    "combined_recorded_code_windows": 83,
+    "combined_recorded_code_bytes": 10965,
+    "data_spans": 4,
+    "data_bytes": 84,
+    "all_recorded_bytes_match_current_installed_PE": true,
+    "counts_include_overlap_and_reuse": true,
+    "evidence_artifact": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\native_receipt_recheck.json",
+    "new_reconstruction_credit": 0
+  },
+  "source_pins": [
+    {
+      "path": "include/bsp/global_config.hpp",
+      "bytes": 4312,
+      "sha256": "6a3d0de7a38939e9dc275df4b3d733f7bad53444526c587113dae880e827bf76",
+      "git_blob": "ecd627f026e2821bfe6dc87583f99fd3d04f9283",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\include\\bsp\\global_config.hpp"
+    },
+    {
+      "path": "src/global_config.cpp",
+      "bytes": 7970,
+      "sha256": "0110127a72de3f23319f78155196528b1f49d29d7aa78df36d0c107d1c8d17dc",
+      "git_blob": "551550917f25cf96ba756cebc77815424062d29c",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\src\\global_config.cpp"
+    },
+    {
+      "path": "include/bsp/native_global_config_sample_dispatch.hpp",
+      "bytes": 1731,
+      "sha256": "8657e8f424294ccf42a9bd334aa93c5a95a410d38a43c0ebcac0e2e2a9363498",
+      "git_blob": "8005173515da82b82804c785f3ea53cb2d0a68a2",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\include\\bsp\\native_global_config_sample_dispatch.hpp"
+    },
+    {
+      "path": "src/native_global_config_sample_dispatch.cpp",
+      "bytes": 951,
+      "sha256": "3a25139152e76046b256130f93b22b06170ea85f7769cd081ce7dd1e1f6e6db8",
+      "git_blob": "25527e0da9337d652384479f1148d157f6f9801a",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\src\\native_global_config_sample_dispatch.cpp"
+    },
+    {
+      "path": "include/bsp/native_global_config_load.hpp",
+      "bytes": 2693,
+      "sha256": "ee56688b89c34e85b12718de2c308c1d574fcb739c7d44e7d874ae1f12d079dd",
+      "git_blob": "f9c84135484d9e08b42280643c8dc303f01bc680",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\include\\bsp\\native_global_config_load.hpp"
+    },
+    {
+      "path": "src/native_global_config_load.cpp",
+      "bytes": 20907,
+      "sha256": "93b022c7bddc29753e9e0c20e1a6867c0166d5842f45fbfa6597389fafb24c1b",
+      "git_blob": "42f6c44fdd60659d4096a64a7c6b2d3b8709120e",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\src\\native_global_config_load.cpp"
+    },
+    {
+      "path": "include/bsp/native_global_config_fields.hpp",
+      "bytes": 1473,
+      "sha256": "c8b78c0382a8d994d37107c969acf691dc6f781e409523691fe821042b435803",
+      "git_blob": "9d47937ea57c05a4742f6ae2d37dfa16e3aa9e8c",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\include\\bsp\\native_global_config_fields.hpp"
+    },
+    {
+      "path": "src/native_global_config_fields.cpp",
+      "bytes": 1898,
+      "sha256": "c56c9b51411b3c549859dd2e094d50c5a96c3ff87d716f302641b34ded863017",
+      "git_blob": "781de7128109686318b8cc9f08be63688f150141",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\src\\native_global_config_fields.cpp"
+    },
+    {
+      "path": "include/bsp/game_sound_runtime.hpp",
+      "bytes": 5374,
+      "sha256": "adc71df223c83c0042fe0b984f4c9bc34ee6ab2ea2867d4e96111d460f706957",
+      "git_blob": "82568ef1384e93785a93eba2a220d5084bba348b",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\include\\bsp\\game_sound_runtime.hpp"
+    },
+    {
+      "path": "src/game_sound_runtime.cpp",
+      "bytes": 20101,
+      "sha256": "ccce5e3d933fcfb8f08655cc969601c09c467386393f441df8efbf9e58b37fba",
+      "git_blob": "0522dcc40e93a6d29b7b891c03d6e45f440d8c0c",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\src\\game_sound_runtime.cpp"
+    },
+    {
+      "path": "include/bsp/sound_sample_runtime.hpp",
+      "bytes": 2285,
+      "sha256": "56d9973e57397b155d36b5b14d3d66cec31522946e3a3a007c3635b4cd7fd123",
+      "git_blob": "1630dbb61c3d0eb956fa559f8a9ad50eba48b1f9",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\include\\bsp\\sound_sample_runtime.hpp"
+    },
+    {
+      "path": "src/sound_sample_runtime.cpp",
+      "bytes": 6059,
+      "sha256": "5947d8359105d82371b8af8d9e3f58bd2d12b05c87f5475ac37ae06727c8d837",
+      "git_blob": "2720f31f8c84398c504fbda6ab9b51edb49670fc",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\src\\sound_sample_runtime.cpp"
+    },
+    {
+      "path": "include/bsp/sound_sample_cache.hpp",
+      "bytes": 2596,
+      "sha256": "2fbe6d92bbfa4d04c2ed03124fb5e739bb883568547be174a112f0b9c17213e2",
+      "git_blob": "56d27eec8437a43e2f10a73769bc751b948523e9",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\include\\bsp\\sound_sample_cache.hpp"
+    },
+    {
+      "path": "src/sound_sample_cache.cpp",
+      "bytes": 5900,
+      "sha256": "2050d68340afef08411e483c65f637917c81c301b17314d9d2e1f8e21d0bf364",
+      "git_blob": "07de91a05a3dbdcd393f9fb59d0315e9005c01e8",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\src\\sound_sample_cache.cpp"
+    },
+    {
+      "path": "include/bsp/sound_instance.hpp",
+      "bytes": 5323,
+      "sha256": "62360e80832a782b893e29ff530b6291fa3d6ac371a01d5f6d87480e3f004948",
+      "git_blob": "c507ddae58017f82a77c516683f8ccf58f77209b",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\include\\bsp\\sound_instance.hpp"
+    },
+    {
+      "path": "src/sound_instance.cpp",
+      "bytes": 12985,
+      "sha256": "7feb69ce59f248dd53e45a440791438e711c56d18a29e77a9f986439db2bb925",
+      "git_blob": "718943254c227ba676844871493a0c0c2e3c115d",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\src\\sound_instance.cpp"
+    },
+    {
+      "path": "include/bsp/sound_channel_runtime.hpp",
+      "bytes": 2660,
+      "sha256": "ece72ded94c356ecfce4599c0764786d9c4ab637f80baa357a3a2866d2f53b03",
+      "git_blob": "c666fbb10ff2f3a0b99e158bb92e2cff18b86680",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\include\\bsp\\sound_channel_runtime.hpp"
+    },
+    {
+      "path": "src/sound_channel_runtime.cpp",
+      "bytes": 8827,
+      "sha256": "d01fcf1abf5e3b07b9f021a4d08244179847d89008e895862ae02806021dcc57",
+      "git_blob": "0a50a79c9d9ab6e4f078179b97055f0e5ace8953",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\src\\sound_channel_runtime.cpp"
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "bytes": 22967,
+      "sha256": "92c2c26b6d4f69a7926e4bbf3d2c327fcc18dc03b9cb5e60a61a6b2e06d2fbf2",
+      "git_blob": "fb3bf4cb9eab83d2f31fd956e9a0074ab1a81ccb",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\include\\bsp\\native_singleton_destruction.hpp"
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "bytes": 29691,
+      "sha256": "bb6b0556d30f4eac3c112f5acb72802cf3339247729863d8a4dbf3410a188808",
+      "git_blob": "2a879d538151867200cda15069d6733ded335cff",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\src\\native_singleton_destruction.cpp"
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "bytes": 47507,
+      "sha256": "67a5164b1b20061f0f1353783c12cfcb92cc7392b37e04ec87371577425f7f58",
+      "git_blob": "867d8b7032fc7531bfaa4f2c43c649988b8e0710",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\include\\bsp\\game_hosts.hpp"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "bytes": 185132,
+      "sha256": "6915e364d7c2eb73ebba01d7d1c521ca7fdc94ab78ad7f0302288fc281cad9f4",
+      "git_blob": "d138983e92e5f93339e529655990f924f1c06be8",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\src\\game_hosts.cpp"
+    },
+    {
+      "path": "include/bsp/game_hosts_singletons.hpp",
+      "bytes": 10262,
+      "sha256": "0bb1cce85717ff94c44e12e6f2a071ea30fac43baa13d99539fe354385821648",
+      "git_blob": "1ce17a275af38e991c3e04802cd4d5d5314bcd3b",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\include\\bsp\\game_hosts_singletons.hpp"
+    },
+    {
+      "path": "src/game_hosts_singletons.cpp",
+      "bytes": 9919,
+      "sha256": "cca7ac5b6943b5332b92e4b9c0014c1fdeead64519d0fb81036c4407a67180c7",
+      "git_blob": "ab773af78122d6cc35606471f08d6f2e47168a05",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\src\\game_hosts_singletons.cpp"
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "bytes": 5509,
+      "sha256": "ec2c6715a64888c87e61f4703073d094a62340f548aaa9a6a668f33787a3a518",
+      "git_blob": "aeb12627616969e974915847b1fc1bea83341e23",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\include\\bsp\\game_native_string_process.hpp"
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "bytes": 1814,
+      "sha256": "703f35233ccfc376633034f80854b1cfb1ffe621a8018424a324d18535f6612f",
+      "git_blob": "03312a4648572edfe0f75867b1ecd917c253b69d",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\src\\game_native_string_process.cpp"
+    },
+    {
+      "path": "include/bsp/game_native_lua_services.hpp",
+      "bytes": 1332,
+      "sha256": "8f3944745d91adeedfd48964026f5506fb6116c2ae49b7e796802b890b7f4707",
+      "git_blob": "e65575d7d77f549cbbd3a26bc6a222d51ee2d3a7",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\include\\bsp\\game_native_lua_services.hpp"
+    },
+    {
+      "path": "src/game_native_lua_services.cpp",
+      "bytes": 3183,
+      "sha256": "9a8b02210f9274fa18e30454fc5e0ae2e6649820145aa623d933b614af406bb7",
+      "git_blob": "4db37e5e61e542e2ff22b53bd6e33d067b42e4dd",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\src\\game_native_lua_services.cpp"
+    },
+    {
+      "path": "include/bsp/native_lua_service_bindings.hpp",
+      "bytes": 2281,
+      "sha256": "1614271db4ab18e13ad1443bea31d77b5339d12515c79bc72a3bfd8d96f08093",
+      "git_blob": "ab5a5b6e35045f2a1af64ce580b90e4d5d14e28e",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\include\\bsp\\native_lua_service_bindings.hpp"
+    },
+    {
+      "path": "src/native_lua_service_bindings.cpp",
+      "bytes": 1608,
+      "sha256": "fcdf7b2295d2c45b2e36e475f62bea7a53bb6a385a4540bc2b5071d4a147302f",
+      "git_blob": "9cb4727222e58bad2af86c2544ca3a7224e82934",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\src\\native_lua_service_bindings.cpp"
+    },
+    {
+      "path": "include/bsp/native_lua_file_loading.hpp",
+      "bytes": 2302,
+      "sha256": "a0435cdc3005ca852c88e7d7840239b77ae58981c56fbee07fc4be9997cd8c23",
+      "git_blob": "54bce8af8b78aba243c8f0b9f001a598110fa955",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\include\\bsp\\native_lua_file_loading.hpp"
+    },
+    {
+      "path": "src/native_lua_file_loading.cpp",
+      "bytes": 4399,
+      "sha256": "5429158efe57f0c14d3829562ee38ca63ab8c526f3282476d419babdeac959ac",
+      "git_blob": "e4f6fab13edeceb25dc218920e0dc71efd8ac920",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\src\\native_lua_file_loading.cpp"
+    },
+    {
+      "path": "include/bsp/native_lua_script_overrides.hpp",
+      "bytes": 1747,
+      "sha256": "9cbc3d9b6921e100b26cbfdfd2accd541afe729fcea39f24105f6a136b37f226",
+      "git_blob": "03a60e7d5f1ccb3310e895873f4a757d510c74a8",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\include\\bsp\\native_lua_script_overrides.hpp"
+    },
+    {
+      "path": "src/native_lua_script_overrides.cpp",
+      "bytes": 5580,
+      "sha256": "028d02c005e18aaf1c2ee987b230a7c877fc8523e8f965e3ab2d292efc5d4135",
+      "git_blob": "46e336885fb3302a6fb706313e98fd069511ca74",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\src\\native_lua_script_overrides.cpp"
+    },
+    {
+      "path": "include/bsp/game_native_vfs_runtime.hpp",
+      "bytes": 9863,
+      "sha256": "57c378aabe457270e7d71e64f581aa8a2a31249976d8405e6dd51eb932e57ab1",
+      "git_blob": "97fa588dece2f718a2a1648ef5a72b5d616cfb17",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\include\\bsp\\game_native_vfs_runtime.hpp"
+    },
+    {
+      "path": "include/bsp/game_native_settings_application.hpp",
+      "bytes": 2280,
+      "sha256": "27dcda3ae4e6c975b5692790915575079dd28e9014e01bac5e430becd9298760",
+      "git_blob": "313bab85fb4df16ea6cee3ff537d4fbb76026191",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\include\\bsp\\game_native_settings_application.hpp"
+    },
+    {
+      "path": "src/game_native_settings_application.cpp",
+      "bytes": 11474,
+      "sha256": "4e442e6362764777f48eed986d0666e9b65fde269200eefaa6c0aef03e6d94a5",
+      "git_blob": "c7798be90dd59ad8c59f556e18ecb7025bda8bd7",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\src\\game_native_settings_application.cpp"
+    },
+    {
+      "path": "src/objectives_seg57_argon.cpp",
+      "bytes": 62263,
+      "sha256": "4869432a01ba965069da5674183b4e867e69d8a185646c6cea42c11649b2fbba",
+      "git_blob": "7c9f645bc6002b81bfadc6f3c99a0dc3e73460bb",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\src\\objectives_seg57_argon.cpp"
+    },
+    {
+      "path": "src/global_subsystems.cpp",
+      "bytes": 6856,
+      "sha256": "5960203d5d1a04d9db887b288ed0765e88989cb7fe90db08a3042cfe4906fddc",
+      "git_blob": "97b35b53796a2adca6ffc3248a36378262f37032",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\src\\global_subsystems.cpp"
+    },
+    {
+      "path": "include/bsp/native_game_construction.hpp",
+      "bytes": 7095,
+      "sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e",
+      "git_blob": "e83a2b3736edfb4d6fa699526a003861d3805977",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\include\\bsp\\native_game_construction.hpp"
+    },
+    {
+      "path": "src/native_game_construction.cpp",
+      "bytes": 14665,
+      "sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e",
+      "git_blob": "ad55eb59309369dff06d596cbdf3efd1e4c7037a",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\src\\native_game_construction.cpp"
+    },
+    {
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\config\\target.json"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "bytes": 14518,
+      "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+      "git_blob": "bd937766a7e4d62c015b2ab44a14a9153fbb4542",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\tools\\ghidra_export.py"
+    },
+    {
+      "path": "tools/bsp.py",
+      "bytes": 103131,
+      "sha256": "0532d1e3fa711fb62d198e6747a4e0eb8978ef7e301de75710afd40d6c1a1339",
+      "git_blob": "2e1fb76a9fd700f079912706d9459c4293f96c86",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\tools\\bsp.py"
+    },
+    {
+      "path": "src/profile_seg2_cc13.cpp",
+      "bytes": 27669,
+      "sha256": "f6de0937cbcbbc711890e46d0bfab472bf2f9b6783d218435d584d4303763a6c",
+      "git_blob": "6320e30eb71b9c4ff67310b47bf510d30a2893df",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\src\\profile_seg2_cc13.cpp"
+    },
+    {
+      "path": "include/bsp/sound_system_owner.hpp",
+      "bytes": 9465,
+      "sha256": "68206cebc39f894e3653d55a76018ecf07f105cac5fed614515cd24029b5d215",
+      "git_blob": "31094e55e31ba307184980116b8abd90e66ebe09",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs\\include\\bsp\\sound_system_owner.hpp"
+    }
+  ],
+  "prior_receipt_pins": [
+    {
+      "path": "reports/cc12_global_config_second_array_payload.json",
+      "bytes": 53042,
+      "sha256": "4af722c3a181ccbb876f40a3c0f388c79da2d8791765ba935c7a4dfe5f9b799b",
+      "git_blob": "9ff12e21ba2927bb151651f5d770e1803f29d759",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\prior_receipts\\cc12_global_config_second_array_payload.json"
+    },
+    {
+      "path": "reports/cc12_global_config_second_array_direct_callers.json",
+      "bytes": 310832,
+      "sha256": "316e28165d25e060dfe6e0c4990d70d8774dddb6b358008472413bfe6b8c3350",
+      "git_blob": "1658a694d6bf18590d36d82f01119f6874ff8d01",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\prior_receipts\\cc12_global_config_second_array_direct_callers.json"
+    },
+    {
+      "path": "reports/cc16_native_game_application_binding_readiness.json",
+      "bytes": 67319,
+      "sha256": "ba42904acbe4f36f620ee38d055c83e3f469860a8acce06e940518e36261b377",
+      "git_blob": "b93c8a693bee56853ee1732c92ec8457caea4d96",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\prior_receipts\\cc16_native_game_application_binding_readiness.json"
+    },
+    {
+      "path": "reports/cc16_native_game_mode_name_epoch.json",
+      "bytes": 15940,
+      "sha256": "6a45a76677422a8cb90cb022527fda4c36c227514cf0d5cfae6bfbf60803c4b3",
+      "git_blob": "b095c57b25192c4bfc3eb7098cdf459deeb83cda",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\prior_receipts\\cc16_native_game_mode_name_epoch.json"
+    },
+    {
+      "path": "reports/cc16_native_game_grid_domain_readiness.json",
+      "bytes": 24103,
+      "sha256": "3b863c4e48f7dc07bab5d0090b01ca25b889213d9379a2790b9423b3514d53aa",
+      "git_blob": "c0eadc65da751466806a81dc73ca66e1d9739cad",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\prior_receipts\\cc16_native_game_grid_domain_readiness.json"
+    }
+  ],
+  "retained_metadata_query_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\current_binding_search.txt",
+      "bytes": 4211,
+      "sha256": "d5fac71d0b8b64300199e6ba18d35748d401b171e02fd30b302de5638d665598"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\current_f878e4_xrefs.txt",
+      "bytes": 456,
+      "sha256": "92c8531ced8ef32ed30287ea92cf7b44e0c054d47b74a8e4ce64cff3bcf18659"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\current_objective_playback_callers.txt",
+      "bytes": 104,
+      "sha256": "fdd1cc0f25afae00bc03572a39c9a912d25d703fa7900237074dfed20f0ca099"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\installed_input_evidence.json",
+      "bytes": 1690,
+      "sha256": "71a164300c144567f73d9004c36e17fba957c4d241e00f726c8544af26190b57"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\native_receipt_recheck.json",
+      "bytes": 33351,
+      "sha256": "eaba8462e30fb6c940c464cef617473d7efa7c739149989a760c629aaad9cae6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\prior_receipt_pins.json",
+      "bytes": 2408,
+      "sha256": "aff8ca8df66dcd3815c43e4eef06663fad1bd70ee570c239b8f1d6b52bd3099d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-global-config-producer-readiness\\local\\native_game_global_config_producer_readiness\\source_inputs.json",
+      "bytes": 20624,
+      "sha256": "5ed5135a3627d0ae322ccb38d06b3ec7f48467bd1fb4c899bda119ec24132ee8"
+    }
+  ],
+  "open_gates": [
+    "complete GlobalConfig producer/current raw receiver and replacement domains",
+    "ONE actual F878E4 authority and retained contexts selected by application",
+    "actual Game parent/construction/lifetime aggregate and all other gates retained",
+    "Original ABI/fault/FH3/SEH/foreign-unwind/vendor-private equivalence",
+    "startup/runtime/gameplay"
+  ],
+  "document_pin": {
+    "path": "docs\\CC16_NATIVE_GAME_GLOBAL_CONFIG_PRODUCER_READINESS.md",
+    "sha256": "8c0f0892ee8264d8f32a58813cd1dabe1cd52786d3977f69e5ff78fc8f377ac1",
+    "lf_sha256": "8c0f0892ee8264d8f32a58813cd1dabe1cd52786d3977f69e5ff78fc8f377ac1"
+  }
+}
