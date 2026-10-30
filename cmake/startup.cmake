@@ -38,6 +38,8 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURC
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/native_hud_hints_collect.cpp")
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/native_tactical_library_collect.cpp")
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/native_front_end_frame_construction.cpp")
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/native_menu_prompt_construction.cpp")
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/native_menu_prompt_publication.cpp")
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/native_front_end_frame_publication.cpp")
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/native_front_end_frame_selection.cpp")
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/native_front_end_frame_identity.cpp")
