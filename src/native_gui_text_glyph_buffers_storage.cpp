@@ -88,10 +88,6 @@ void preflight(Context& context, Acquired& acquired) {
 NativeGuiTextGlyphBuffersStorageFrame::NativeGuiTextGlyphBuffersStorageFrame(
     Context& context, volatile std::uint32_t (&arguments)[2], Acquired& acquired) noexcept
     : context_(context), arguments_(arguments), acquired_(acquired) {}
-NativeGuiTextGlyphBuffersStorageFrame::~NativeGuiTextGlyphBuffersStorageFrame() noexcept {
-    if (requires_process_retention()) std::terminate();
-}
-
 void create_native_gui_text_glyph_buffers_storage_00ab8400(
     NativeGuiTextGlyphBuffersStorageFrame& frame) {
     auto& context = frame.context_;
