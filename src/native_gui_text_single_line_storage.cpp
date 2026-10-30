@@ -312,7 +312,10 @@ void build_native_gui_text_single_line_storage_00ab9fd0(
                 scratch.quad_homes[0] = bits(glyph);
                 scratch.position_bits[0] = scratch.pen_bits; // ABA1F2 after PUSHes
                 location(acquired, Acquired::Boundary::glyph_quad, 0x00aba1f8);
-                context.bindings.write_glyph_quad_00ab98f0(text, scratch.quad_homes);
+                auto& quad_record = context.bindings.prepared_glyph_quad_record(acquired);
+                acquired.selected_glyph_quad_record = &quad_record;
+                write_native_gui_text_glyph_quad_storage_00ab98f0(
+                    text, scratch.quad_homes, context.glyph_quad, quad_record);
                 emit_advance(text, glyph, scratch); // captured glyph, CURRENT scale
                 ++acquired.emitted_units;
                 code_unit = scratch.next_unit;
