@@ -87,3 +87,12 @@ build/existing checks and any runtime fixture remain Root's separate gates.
 No new test, game, Ghidra write, field/count/flag/height repair, shader producer,
 nonempty/changed/localisation/property/rendering/wholecaller/FE_initial/Page/P4
 or Original ABI/FH3/SEH claim is made.
+
+Follow-up to frozen d5d55c7ee: provider-capable prefix/widgets before-scalar
+admission is followed by a NEW-mode retiring/healthy bound-Font owner fence,
+used0/fresh-array check and private leaf quiescence BEFORE saved companion/count
+access or scalar flags/stores. A caught recursive retire/close request can no
+longer pass that continuation point after latching owner failure. The existing
+retirement catch retains the failed graph. Prior d5 Source/evidence stays frozen;
+revision evidence is local/raw_empty_owner_prescalar_revision_20261029. Old-mode
+Source projection and native scalar/late-flags order remain unchanged.

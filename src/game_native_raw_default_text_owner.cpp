@@ -1963,6 +1963,14 @@ void GameNativeRawDefaultTextOwner::retire_before_native_drain() {
         // delegates its Font slice to the exact staged helper when selected.
         if (a.primary_prefix) require_native_gui_text_primary_prefix_before_scalar(a.primary_prefix->context);
         else a.widgets->require_default_before_scalar();
+        if (a.empty_unchanged) {
+            require(p.phase == Impl::Phase::retiring && !p.failure && p.font_link == Impl::FontLink::bound &&
+                p.font_producer && p.font_resources && p.font_registry_image &&
+                p.font_producer->ready() && !p.font_producer->failure(),
+                "EMPTY before-scalar provider rejection must stop BEFORE saved companion/count/native scalar access");
+            a.empty_unchanged->require_closed_calls();
+            a.empty_unchanged->frame.require_retirement_quiescent();
+        }
         auto& reference = *a.publication.reference;
         require(reference.reference_count.load(std::memory_order_relaxed) == 1,
             "forced DEFAULT scalar requires this sole unpublished private Text creator"); // OWNER admission, no decrement
