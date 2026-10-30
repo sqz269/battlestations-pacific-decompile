@@ -1,9 +1,10 @@
 # Original coverage guard: feasibility and safety gates
 
-Status: no safe coverage launch mode is enabled. The initial suspended-root
-DynamoRIO attach candidate failed a private fixture before client initialization
-or fixture entry. No original game was launched. The ordinary guarded
-baseline/histogram path remains unchanged.
+Status: the private CREATE/import-shim, Documents, independent entry-admission
+and drcov fixture passed, including missing-client negatives and 69,700 source
+handles. No production coverage mode is enabled and no original was launched
+by this packet. The ordinary guarded baseline/histogram path remains unchanged.
+The rejected attach and flush/redirect candidates are recorded below.
 
 ## Tool provenance checked locally
 
@@ -300,10 +301,136 @@ owned helper PID `119268` was terminated and waited before lock release; both
 jobs were empty, no entry markers appeared, and dummy/SDK hashes were unchanged
 (`local/dr-create-shim-job-failure/result.json`).
 
-This proves a narrow CREATE bridge for these dummy binaries, **not safe retail
-coverage integration**. It has no Documents redirection/admission client yet,
-no original game run, no retail SDK-startup proof under DBI, and no 69,700-handle
-CREATE/inject measurement. The stock SDK remains without a public custom
-creator callback; the tested bridge is an explicitly reviewed in-memory import
-shim. Further private proof and review are required before changing production
-launchers or opening original source handles.
+That checkpoint proved a narrow CREATE bridge for these dummy binaries. The
+next fixture gate below adds Documents admission and handle-count evidence;
+neither checkpoint is a retail run. The stock SDK remains without a public
+custom creator callback; the tested bridge is an explicitly reviewed in-memory
+import shim. Production launchers remain unchanged.
+
+## Documents, tracing and independent entry admission fixture
+
+`tools/dr_original_entry_probe.c` is a second DR client beside stock `drcov`.
+At the original entry, its clean call verifies the expected image path/base,
+entry bytes and resolved app IAT slot. It installs the same stdcall16 Personal
+redirect as the classic guard in application-callable memory allocated with
+`DR_ALLOC_NON_HEAP | DR_ALLOC_NON_DR`, then changes that memory from RW to RX.
+Only this application's SHGetSpecialFolderPathA import is changed. Personal's
+CSIDL flag bits are masked, NULL output returns FALSE, and other folders tail
+call the original export. The client self-tests only its own pure copy/return
+stub before admitting entry; the app separately tests Personal+CREATE, ESP and
+ESI/EDI preservation, a private Documents write, and unchanged non-Personal
+results against the original export.
+
+Client presence alone is not a barrier: DR can continue natively when a client
+is missing. The creator therefore verifies the original first 16 bytes and
+writes an independent `EB FE` loop into the suspended private root's entry
+before returning its real PI to the SDK. The native bytes remain `EB FE` for
+the whole fixture. Only the correct admission client replaces that synthetic
+spin in DR's IR with the original verified direct `E8` CALL5. It uses
+`decode_from_copy` with the original PC, preserves the translation and absolute
+call target, and explicitly sets the return target to `entry+5`.
+[The DR decoder](https://dynamorio.org/dr__ir__decode_8h.html) and
+[instruction-list APIs](https://dynamorio.org/dr__ir__instrlist_8h.html) document
+these contracts. Other entry shapes are rejected.
+
+The shared drmgr app2app stage runs before drcov's analysis stage. Two clean
+calls precede the reconstructed original instruction. The first establishes
+the Documents hook and requires the loaded drcov client plus its PID-specific
+log file in the new, initially empty trace directory. The second verifies the
+selected saved FP state: x87 CW/SW/abridged tag, all eight 80-bit ST payloads and
+MXCSR. Both calls manually save/restore FP state and return normally; there is
+no cache flush or execution redirect. A callback at the actual CALL target
+also reads the app stack and checks the actual return address is `entry+5`.
+The independent peer review checked the API contracts, shared drmgr linkage,
+compiled first/final FP-save/restore calls and the positive runtime evidence.
+This fixture's CW `027F` and MXCSR `1F80` are measurements, not a game policy.
+
+The earlier synchronous flush/redirect attempt was stopped after an owned
+dummy hit DR `C0000029` (`STATUS_INVALID_UNWIND_TARGET`) before its body entry.
+Its private diagnostic is
+`local/dr-independent-barrier-positive-03/stage/stdio.log`. It is not the
+implemented admission method. DR's redirect documentation explicitly requires
+manual x87 restoration; no passed redirect or original-game result is claimed.
+
+One reviewed writable **private diagnostic sink** is now permitted beside the
+source handles. Parent and helper verify `stage/stdio.log` by canonical path,
+volume/file ID, link count 1, regular-file type and granted access `00120196`
+(write plus attribute query, with no data-read/delete/DAC/owner-write rights).
+It has inheritance flag 1 and is classified separately. Every source handle
+still has flags 3; neither token nor job/control handle reaches the root.
+Both standard streams use this one file and no console is created. Parent
+source copies and the sink remain open until both jobs are empty; the sink's
+identity is checked again before closing it.
+
+The first two-client configuration used nested double quotes around drcov's
+path. DR parsed that path as a runtime option and displayed a notice for owned
+root PID 125276. That run was stopped; its final receipt records both jobs 0 and
+unchanged dummy/SDK hashes. Later CIM checks found no residual fixture. This
+was a fixture configuration mistake, not an original launch. The corrected
+fixture refuses paths requiring nested quoting, captures the private PID
+configuration and verifies its complete options line **before injection/run**.
+
+The fixed runtime options include `-msgbox_mask 0 -stderr_mask 15` and a private
+`-logdir`; client options have only the SDK's enclosing client-lib quotes.
+These masks are defined in the exact release's
+[options source](https://github.com/DynamoRIO/dynamorio/blob/cronbuild-11.91.20749/core/optionsx.h).
+[The log-directory implementation](https://github.com/DynamoRIO/dynamorio/blob/cronbuild-11.91.20749/core/utils.c)
+confirms that the explicit option overrides the SDK's default config directory.
+No registry/system configuration is written. Missing-library diagnostics in
+the negative tests were captured only in the private sink, with no notice UI.
+
+The following final cases passed; paths are under this worktree's ignored
+`local/` directory. Helper exit1 is expected for the negative child outcomes;
+the fixture driver returns0 only after checking the expected rejection.
+
+| Case | Root PID | Evidence/result |
+| --- | --- | --- |
+| `dr-entry-ir-positive-01` | 112368 | Documents/stdcall/fallback, FP check, actual target/return, drcov entry CALL5, writes/child fences passed. |
+| `dr-entry-ir-negative-admission-omitted` | 95768 | Native EBFE still present before bounded timeout/owned kill; no app entry. |
+| `dr-entry-ir-negative-admission-missing` | 129364 | Same EBFE proof despite DR's missing-library continuation; no app entry. |
+| `dr-entry-ir-negative-admission-options` | 61256 | Invalid admission args exited before app entry. |
+| `dr-entry-ir-negative-drcov-missing` | 736 | Admission rejected `tracer_not_loaded`; no app entry. |
+| `dr-entry-ir-69700` | 125484 | All 69,700 protected source handles verified; actual process handle count 69,869. CALL5, FP, folder, write and child gates passed. |
+
+All cases kept dummy-source and target disk hashes unchanged and ended with
+both jobs empty before parent source-lock release. The large case has 69,700
+source handles plus one classified sink; the extra source handles are
+duplicates of a dummy file, **not 69,700 real installation objects**. Its real
+drcov log has 21,326 blocks and the entry block has size 5. Eight hashed SDK
+components were unchanged. Source writes/ACL writes failed 5, deletion and
+empty-directory removal failed 32, private writes succeeded, and child creation
+failed 1816 before the child's entry marker. Current Python checks and native
+manifested Win32/client builds passed.
+
+After fast-forwarding to current main (including the guard receipt-writer
+fix), a focused failure injection denied the helper's initial job assignment.
+Suspended helper PID 34680 was terminated and waited; no helper/root entry ran,
+both jobs were empty, and dummy/target/SDK/sink identity checks stayed unchanged
+(`local/dr-entry-ir-forced-job-failure/result.json`). This driver error is
+expected for that injected failure and does not claim a launched root.
+
+Examples (always use a new private output path):
+
+```powershell
+python tools/dr_create_guard_probe.py --dr-root <official-DR-root> --output local/entry-plan --prepare-only
+python tools/dr_create_guard_probe.py --dr-root <official-DR-root> --output local/entry-positive --handles 69700
+python tools/dr_create_guard_probe.py --dr-root <official-DR-root> --output local/entry-negative --negative admission-missing
+```
+
+Supported negatives are `admission-omitted`, `admission-missing`,
+`admission-options` and `drcov-missing`; `--fail-entry-gate` is a separate forced
+client-rejection option. `launch-plan.json` contains the exact intended strings
+and serialized config. `result.json` contains token/source/sink identities,
+client/helper/root diagnostics, drcov file hashes/block counts, entry sizes,
+cleanup counts and immutability checks. No original/install handles were
+opened, no original was launched, and production guard/wrapper files were not
+edited by this packet.
+
+Primary separately supplied a hash-verified private retail-copy shape:
+base `400000`, entry `BFD2BD`, first 16 bytes
+`e89cae0100e916feffff558bec515157`, CALL5 target `C1815E`. It matches the narrow
+entry shape; that is static evidence only. Leaving native entry bytes as EBFE
+is observable to code inspecting its own text and requires production review.
+This is still private-fixture proof, not retail startup, gameplay, coverage or
+FP parity validation. Actual-source audits/lock acquisition, retail DBI startup
+and original Documents/asset immutability remain production gates.

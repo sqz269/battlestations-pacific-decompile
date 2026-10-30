@@ -7,6 +7,7 @@
 #include <windows.h>
 #include <sddl.h>
 #include <bcrypt.h>
+#include <shlobj.h>
 #include <dr_defines.h>
 #include <dr_inject.h>
 #include <dr_config.h>
@@ -17,9 +18,13 @@
 #include <vector>
 #pragma comment(lib, "advapi32.lib")
 #pragma comment(lib, "bcrypt.lib")
+#pragma comment(lib, "shell32.lib")
 
 static std::wstring stage, target, expected_hash, dr_root, client;
 static HANDLE root_job, root_token;
+static HANDLE diagnostic_sink;
+static DWORD entry_rva;
+static BYTE original_entry[16];
 static std::vector<HANDLE> source_handles;
 static unsigned create_calls;
 static DWORD root_pid;
@@ -43,16 +48,48 @@ static std::wstring env(const wchar_t *name) {
     require(n && n < 32768, "missing_environment"); return value;
 }
 static std::vector<HANDLE> handles(const std::wstring &s) {
-    std::vector<HANDLE> result; const wchar_t *p = s.c_str();
-    while (*p) {
-        wchar_t *next; unsigned long value = wcstoul(p, &next, 10);
-        require(next != p && value && value != 0x400000 && (*next == ',' || !*next), "bad_handle_list");
-        result.push_back(reinterpret_cast<HANDLE>(value)); p = *next ? next + 1 : next;
-    }
-    require(!result.empty(), "empty_handle_list"); return result;
+    HANDLE file = CreateFileW(s.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
+    require(file != INVALID_HANDLE_VALUE, "handle_manifest_open"); DWORD count, read;
+    require(ReadFile(file, &count, sizeof(count), &read, nullptr) && read == sizeof(count) && count && count <= 69700, "handle_manifest_count");
+    std::vector<HANDLE> result(count);
+    require(ReadFile(file, result.data(), count * sizeof(HANDLE), &read, nullptr) && read == count * sizeof(HANDLE), "handle_manifest_read");
+    BYTE extra; require(ReadFile(file, &extra, 1, &read, nullptr) && read == 0, "handle_manifest_tail"); CloseHandle(file);
+    for (HANDLE value : result) require(value && value != reinterpret_cast<HANDLE>(0x400000), "bad_handle_list");
+    return result;
 }
 static void check_flags(const std::vector<HANDLE> &list) {
     for (HANDLE h : list) { DWORD flags; require(GetHandleInformation(h, &flags) && flags == 3, "source_handle_flags"); }
+}
+static void sink_check() {
+    DWORD flags; BY_HANDLE_FILE_INFORMATION info; wchar_t path[32768];
+    require(diagnostic_sink && diagnostic_sink != reinterpret_cast<HANDLE>(0x400000) && GetHandleInformation(diagnostic_sink, &flags) && flags == 1 &&
+        GetFileType(diagnostic_sink) == FILE_TYPE_DISK && GetFileInformationByHandle(diagnostic_sink, &info) &&
+        info.nNumberOfLinks == 1 && !(info.dwFileAttributes & (FILE_ATTRIBUTE_DIRECTORY | FILE_ATTRIBUTE_REPARSE_POINT)), "private_sink_type");
+    require(GetFinalPathNameByHandleW(diagnostic_sink, path, 32768, 0) &&
+        !_wcsicmp(path, (L"\\\\?\\" + stage + L"\\stdio.log").c_str()), "private_sink_canonical_path");
+    require(info.dwVolumeSerialNumber == wcstoul(env(L"BSP_SINK_VOLUME").c_str(), nullptr, 10) &&
+        info.nFileIndexHigh == wcstoul(env(L"BSP_SINK_INDEX_HIGH").c_str(), nullptr, 10) &&
+        info.nFileIndexLow == wcstoul(env(L"BSP_SINK_INDEX_LOW").c_str(), nullptr, 10), "private_sink_file_id");
+    using query_t = LONG (NTAPI *)(HANDLE, ULONG, PVOID, ULONG, PULONG);
+    auto query = reinterpret_cast<query_t>(GetProcAddress(GetModuleHandleW(L"ntdll.dll"), "NtQueryObject"));
+    ULONG basic[14] = {}, size; require(query && query(diagnostic_sink, 0, basic, sizeof(basic), &size) >= 0 &&
+        basic[1] == 0x120196, "private_sink_write_mode");
+    event("private_sink_verified_access", basic[1]);
+}
+static void entry_barrier(HANDLE process) {
+    std::wstring text = env(L"BSP_ENTRY_BYTES"); require(text.size() == 32, "entry_bytes_length");
+    for (size_t i = 0; i < 16; ++i) original_entry[i] = BYTE(wcstoul(text.substr(i * 2, 2).c_str(), nullptr, 16));
+    BYTE observed[16], spin[2] = {0xeb, 0xfe}; SIZE_T count;
+    auto address = reinterpret_cast<void *>(0x400000 + entry_rva);
+    require(ReadProcessMemory(process, address, observed, 16, &count) && count == 16 &&
+        !memcmp(observed, original_entry, 16), "entry_barrier_original_bytes");
+    DWORD old, ignored;
+    require(VirtualProtectEx(process, address, 2, PAGE_EXECUTE_READWRITE, &old) &&
+        WriteProcessMemory(process, address, spin, 2, &count) && count == 2 &&
+        FlushInstructionCache(process, address, 2) && VirtualProtectEx(process, address, 2, old, &ignored), "entry_barrier_install");
+    require(ReadProcessMemory(process, address, observed, 2, &count) && count == 2 &&
+        observed[0] == 0xeb && observed[1] == 0xfe, "entry_barrier_verify");
+    event("independent_entry_barrier_installed", 0x400000 + entry_rva);
 }
 static std::wstring sha256(const std::wstring &path) {
     HANDLE f = CreateFileW(path.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
@@ -141,12 +178,15 @@ static BOOL WINAPI guarded_create(LPCWSTR app, LPWSTR command, LPSECURITY_ATTRIB
         require(!pa && !ta && inherit && flags == CREATE_SUSPENDED && !environment && !cwd &&
             startup && startup->cb == sizeof(STARTUPINFOW) && pi, "unexpected_sdk_create_contract");
         require(sha256(target) == expected_hash, "target_hash_mismatch"); check_flags(source_handles);
+        sink_check(); std::vector<HANDLE> root_inherited(source_handles); root_inherited.push_back(diagnostic_sink);
         SIZE_T bytes = 0; InitializeProcThreadAttributeList(nullptr, 1, 0, &bytes);
         storage.resize(bytes); attrs = reinterpret_cast<LPPROC_THREAD_ATTRIBUTE_LIST>(storage.data());
         require(InitializeProcThreadAttributeList(attrs, 1, 0, &bytes) != 0, "root_attribute_init");
-        require(UpdateProcThreadAttribute(attrs, 0, PROC_THREAD_ATTRIBUTE_HANDLE_LIST, source_handles.data(),
-            source_handles.size() * sizeof(HANDLE), nullptr, nullptr) != 0, "root_exact_handle_list");
+        require(UpdateProcThreadAttribute(attrs, 0, PROC_THREAD_ATTRIBUTE_HANDLE_LIST, root_inherited.data(),
+            root_inherited.size() * sizeof(HANDLE), nullptr, nullptr) != 0, "root_exact_handle_list");
         STARTUPINFOEXW si = {}; si.StartupInfo.cb = sizeof(si); si.lpAttributeList = attrs;
+        si.StartupInfo.dwFlags = STARTF_USESTDHANDLES;
+        si.StartupInfo.hStdOutput = diagnostic_sink; si.StartupInfo.hStdError = diagnostic_sink;
         LPWCH block = GetEnvironmentStringsW(); require(block != nullptr, "root_environment");
         BOOL ok = CreateProcessAsUserW(root_token, target.c_str(), command, nullptr, nullptr, TRUE,
             CREATE_SUSPENDED | CREATE_UNICODE_ENVIRONMENT | EXTENDED_STARTUPINFO_PRESENT |
@@ -155,6 +195,7 @@ static BOOL WINAPI guarded_create(LPCWSTR app, LPWSTR command, LPSECURITY_ATTRIB
         DeleteProcThreadAttributeList(attrs); attrs = nullptr; SetLastError(error);
         require(ok != 0, "root_create_failed");
         require(AssignProcessToJobObject(root_job, made.hProcess) != 0, "root_job_assignment");
+        entry_barrier(made.hProcess);
         token_check(made.hProcess, "root_pre_run_integrity");
         BOOL in_job; require(IsProcessInJob(made.hProcess, root_job, &in_job) && in_job, "root_job_membership");
         root_pid = made.dwProcessId; event("root_job_assigned_before_sdk_pi", root_pid);
@@ -182,11 +223,16 @@ static int helper() {
         stage = env(L"BSP_STAGE"); target = env(L"BSP_TARGET"); expected_hash = env(L"BSP_TARGET_SHA256");
         require(target == stage + L"\\dr_root_probe.exe", "not_private_fixture_image");
         dr_root = env(L"BSP_DR_ROOT"); client = env(L"BSP_DR_CLIENT");
+        require(stage.find_first_of(L" \t\r\n\"';`") == std::wstring::npos &&
+            dr_root.find_first_of(L" \t\r\n\"';`") == std::wstring::npos, "unsupported_fixture_path_quoting");
         root_job = reinterpret_cast<HANDLE>(wcstoul(env(L"BSP_ROOT_JOB").c_str(), nullptr, 10));
         root_token = reinterpret_cast<HANDLE>(wcstoul(env(L"BSP_ROOT_TOKEN").c_str(), nullptr, 10));
-        source_handles = handles(env(L"BSP_DUMMY_HANDLES")); check_flags(source_handles); token_check(GetCurrentProcess(), "helper_integrity");
+        diagnostic_sink = reinterpret_cast<HANDLE>(wcstoul(env(L"BSP_DIAGNOSTIC_SINK").c_str(), nullptr, 10));
+        entry_rva = wcstoul(env(L"BSP_ENTRY_RVA").c_str(), nullptr, 16);
+        source_handles = handles(env(L"BSP_HANDLES_FILE")); check_flags(source_handles); token_check(GetCurrentProcess(), "helper_integrity");
         require(std::find(source_handles.begin(), source_handles.end(), root_job) == source_handles.end() &&
             std::find(source_handles.begin(), source_handles.end(), root_token) == source_handles.end(), "control_handle_in_root_list");
+        require(std::find(source_handles.begin(), source_handles.end(), diagnostic_sink) == source_handles.end(), "sink_misclassified_as_source");
         JOBOBJECT_EXTENDED_LIMIT_INFORMATION limits = {};
         require(QueryInformationJobObject(root_job, JobObjectExtendedLimitInformation, &limits, sizeof(limits), nullptr) &&
             limits.BasicLimitInformation.LimitFlags == (JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE | JOB_OBJECT_LIMIT_ACTIVE_PROCESS) &&
@@ -216,16 +262,62 @@ static int helper() {
         swap_iat(original_create); iat_slot = nullptr;
         pid = get_pid(data); require(pid == root_pid && get_process(data), "sdk_real_process_information");
         require(!debug_key(data), "sdk_debugger_branch"); event("sdk_non_debugger_path");
-        std::string dr = utf8(dr_root), library = utf8(dr_root + L"\\lib32\\release\\dynamorio.dll");
-        status = reg("dr_root_probe.exe", pid, false, dr.c_str(), DR_MODE_CODE_MANIPULATION, false, DR_PLATFORM_32BIT, "-no_follow_children");
+        bool diagnostic = env(L"BSP_DR_DIAGNOSTIC") == L"1";
+        std::string dr = utf8(dr_root), library = utf8(dr_root +
+            (diagnostic ? L"\\lib32\\debug\\dynamorio.dll" : L"\\lib32\\release\\dynamorio.dll"));
+        std::string runtime_options = "-no_follow_children -nop_initial_bblock -max_elide_jmp 0 -max_elide_call 0 -msgbox_mask 0 -stderr_mask 15 -logdir " + utf8(stage + L"\\drdebug");
+        if (diagnostic) runtime_options += " -loglevel 2";
+        status = reg("dr_root_probe.exe", pid, false, dr.c_str(), DR_MODE_CODE_MANIPULATION, diagnostic, DR_PLATFORM_32BIT,
+            runtime_options.c_str());
         event("sdk_register_status", status); require(status == DR_SUCCESS, "sdk_register_failed"); registered = true;
-        std::string dll = utf8(client), options = "\"" + utf8(stage + L"\\client.log") + "\"";
-        status = reg_client("dr_root_probe.exe", pid, false, DR_PLATFORM_32BIT, 0, 0, dll.c_str(), options.c_str());
-        event("sdk_register_client_status", status); require(status == DR_SUCCESS, "sdk_client_registration_failed");
+        std::string dll = utf8(client), options = utf8(env(L"BSP_ENTRY_CLIENT_OPTIONS"));
+        std::wstring negative = env(L"BSP_NEGATIVE"); bool omit = negative == L"admission-omitted";
+        if (negative == L"admission-missing") dll = utf8(stage + L"\\missing-admission.dll");
+        if (negative == L"admission-options") options = "-invalid-fixture-admission-option";
+        if (!omit) {
+            status = reg_client("dr_root_probe.exe", pid, false, DR_PLATFORM_32BIT, 0, 0, dll.c_str(), options.c_str());
+            event("sdk_register_client_status", status); require(status == DR_SUCCESS, "sdk_client_registration_failed");
+        }
+        std::string cov = utf8(dr_root + L"\\tools\\lib32\\release\\drcov.dll");
+        if (negative == L"drcov-missing") cov = utf8(stage + L"\\missing-drcov.dll");
+        std::string cov_options = "-logdir " + utf8(stage + L"\\drcov") + " -dump_text";
+        status = reg_client("dr_root_probe.exe", pid, false, DR_PLATFORM_32BIT, 1, omit ? 0 : 1, cov.c_str(), cov_options.c_str());
+        event("sdk_register_drcov_status", status); require(status == DR_SUCCESS, "sdk_drcov_registration_failed");
+        // Preserve the private PID config before DR consumes it, for bounded
+        // fixture diagnostics. No global config or registry writes are used.
+        WIN32_FIND_DATAW found; std::wstring config_dir = env(L"DYNAMORIO_CONFIGDIR") + L"\\dynamorio\\";
+        HANDLE scan = FindFirstFileW((config_dir + L"*").c_str(), &found); unsigned config_count = 0;
+        std::string expected_options = "DYNAMORIO_OPTIONS=-code_api -probe_api " + runtime_options;
+        if (!omit) expected_options += " -client_lib32 \"" + dll + ";0;" + options + "\"";
+        expected_options += " -client_lib32 \"" + cov + ";1;" + cov_options + "\"";
+        if (scan != INVALID_HANDLE_VALUE) {
+            do { if (!(found.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
+                require(CopyFileW((config_dir + found.cFileName).c_str(),
+                    (stage + L"\\captured-" + found.cFileName).c_str(), TRUE) != 0, "private_config_snapshot");
+                FILE *input; require(_wfopen_s(&input, (config_dir + found.cFileName).c_str(), L"rb") == 0, "private_config_read");
+                char line[16384]; bool matched = false;
+                while (fgets(line, sizeof(line), input)) {
+                    size_t length = strlen(line); while (length && (line[length - 1] == '\r' || line[length - 1] == '\n')) line[--length] = 0;
+                    if (!strncmp(line, "DYNAMORIO_OPTIONS=", 18)) {
+                        require(expected_options == line, "sdk_options_serialization_mismatch"); matched = true;
+                    }
+                }
+                fclose(input); require(matched, "sdk_options_missing"); ++config_count;
+            }
+            } while (FindNextFileW(scan, &found)); FindClose(scan);
+        }
+        require(config_count == 1, "sdk_config_count"); event("sdk_options_serialization_verified");
         require(inject_process(data, true, library.c_str()), "sdk_injection_failed"); event("sdk_injected");
         require(GetFileAttributesW((stage + L"\\root-entry.txt").c_str()) == INVALID_FILE_ATTRIBUTES, "premature_root_entry");
         require(run(data), "sdk_run_failed"); event("sdk_run_only_resume");
-        require(WaitForSingleObject(get_process(data), 20000) == WAIT_OBJECT_0, "root_wait_timeout");
+        DWORD wait = WaitForSingleObject(get_process(data), negative == L"none" ? 40000 : 3000);
+        if (wait == WAIT_TIMEOUT) {
+            BYTE observed[2]; SIZE_T count;
+            require(ReadProcessMemory(get_process(data), reinterpret_cast<void *>(0x400000 + entry_rva), observed, 2, &count) &&
+                count == 2 && observed[0] == 0xeb && observed[1] == 0xfe, "negative_barrier_removed");
+            event("independent_entry_spin_retained");
+        }
+        require(wait == WAIT_OBJECT_0, "root_wait_timeout");
         DWORD code; require(GetExitCodeProcess(get_process(data), &code) != 0, "root_exit_query"); event("root_exit_code", code);
         require(code == 0, "root_failed"); result = 0;
     } catch (...) { event("helper_failed"); }
@@ -244,12 +336,45 @@ static void deny_open(const std::wstring &path, DWORD access, const char *name) 
     DWORD error = GetLastError(); if (h != INVALID_HANDLE_VALUE) CloseHandle(h);
     event(name, h == INVALID_HANDLE_VALUE ? error : 0); require(h == INVALID_HANDLE_VALUE && (error == 5 || error == 32), "protected_open_allowed");
 }
+static void folder_checks() {
+    char personal[MAX_PATH] = {}, flagged[MAX_PATH] = {}, other[MAX_PATH] = {}, direct[MAX_PATH] = {};
+    require(SHGetSpecialFolderPathA(nullptr, personal, CSIDL_PERSONAL, FALSE) != 0 &&
+        std::string(personal) == utf8(env(L"BSP_DOCUMENTS")), "personal_redirect_failed");
+    DWORD before, after, esi_after, edi_after; BOOL returned;
+    auto invoke = &SHGetSpecialFolderPathA;
+    __asm {
+        mov before, esp
+        mov esi, 0x13579bdf
+        mov edi, 0x2468ace0
+        push 1
+        push 0x8005
+        lea eax, flagged
+        push eax
+        push 0
+        call invoke
+        mov returned, eax
+        mov after, esp
+        mov esi_after, esi
+        mov edi_after, edi
+    }
+    require(returned && before == after && esi_after == 0x13579bdf && edi_after == 0x2468ace0 &&
+        std::string(flagged) == personal, "personal_stdcall_flags_or_preservation_failed");
+    require(!invoke(nullptr, nullptr, CSIDL_PERSONAL, FALSE), "personal_null_buffer_failed");
+    auto original = reinterpret_cast<decltype(invoke)>(GetProcAddress(GetModuleHandleW(L"shell32.dll"), "SHGetSpecialFolderPathA"));
+    require(original && original(nullptr, direct, CSIDL_WINDOWS, FALSE) &&
+        SHGetSpecialFolderPathA(nullptr, other, CSIDL_WINDOWS, FALSE) && !strcmp(other, direct), "nonpersonal_fallback_changed");
+    file_event((env(L"BSP_DOCUMENTS") + L"\\personal-write.txt").c_str(), "private documents fixture\n");
+    event("personal_redirect_flags_stdcall_passed"); event("nonpersonal_original_fallback_passed");
+}
 static int root() {
     try {
-        stage = env(L"BSP_STAGE"); file_event((stage + L"\\root-entry.txt").c_str(), "fixture-root-entry\n");
+        stage = env(L"BSP_STAGE"); folder_checks();
+        file_event((stage + L"\\root-entry.txt").c_str(), "fixture-root-entry\n");
         token_check(GetCurrentProcess(), "root_runtime_integrity");
-        auto list = handles(env(L"BSP_DUMMY_HANDLES")); check_flags(list); event("inherited_source_count", DWORD(list.size()));
-        for (HANDLE h : list) { SetLastError(0); BOOL ok = CloseHandle(h); event("protected_close_error", GetLastError()); require(!ok && GetLastError() == ERROR_INVALID_HANDLE, "protected_close_succeeded"); }
+        auto list = handles(env(L"BSP_HANDLES_FILE")); check_flags(list); event("inherited_source_count", DWORD(list.size()));
+        DWORD actual_handles; require(GetProcessHandleCount(GetCurrentProcess(), &actual_handles) &&
+            actual_handles >= list.size(), "root_process_handle_count"); event("root_process_handle_count", actual_handles);
+        for (size_t index : {size_t(0), list.size() / 2, list.size() - 1}) { SetLastError(0); BOOL ok = CloseHandle(list[index]); event("protected_close_error", GetLastError()); require(!ok && GetLastError() == ERROR_INVALID_HANDLE, "protected_close_succeeded"); }
         std::wstring protected_dir = env(L"BSP_PROTECTED"), file = protected_dir + L"\\protected.txt";
         deny_open(file, GENERIC_WRITE, "write_denied"); deny_open(file, WRITE_DAC, "write_dac_denied");
         deny_open(file, WRITE_OWNER, "write_owner_denied"); deny_open(file, FILE_WRITE_ATTRIBUTES, "attributes_denied");
@@ -273,5 +398,6 @@ int wmain(int argc, wchar_t **argv) {
     if (!wcscmp(argv[1], L"child")) { HANDLE f = CreateFileW((location + L"\\child-entry.txt").c_str(), GENERIC_WRITE, 3, nullptr, CREATE_NEW, 0, nullptr); if (f != INVALID_HANDLE_VALUE) CloseHandle(f); return 0; }
     bool is_helper = !wcscmp(argv[1], L"helper"); if (!is_helper && wcscmp(argv[1], L"root")) return 4;
     if (_wfopen_s(&journal, (location + (is_helper ? L"\\helper.log" : L"\\root.log")).c_str(), L"w")) return 5;
+    fprintf(stdout, "%s-private-stdio-entry\n", is_helper ? "helper" : "root"); fflush(stdout);
     int code = is_helper ? helper() : root(); fclose(journal); return code;
 }
