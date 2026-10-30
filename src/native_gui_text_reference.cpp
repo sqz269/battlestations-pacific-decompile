@@ -4,6 +4,7 @@
 #include "bsp/native_gui_text_font_lifetime_storage.hpp"
 #include "bsp/native_gui_text_main_section_lifetime_storage.hpp"
 #include "bsp/native_gui_text_shader_storage.hpp"
+#include "bsp/native_gui_text_empty_unchanged_storage.hpp"
 #include "bsp/native_gui_text_primary_prefix_lifetime.hpp"
 #include "bsp/native_gui_text_prefix_geometry_lifetime.hpp"
 #include "bsp/game_native_resource_pools.hpp"
@@ -17,6 +18,7 @@
 #include "bsp/native_string_pool_storage.hpp"
 #include <exception>
 #include <initializer_list>
+#include <iterator>
 #include <new>
 #include <stdexcept>
 #include <type_traits>
@@ -46,6 +48,120 @@ bool disjoint(Region left, Region right) noexcept {
 }
 bool representable(Region r) noexcept {
     return r.begin && r.size && static_cast<std::uint64_t>(bits(r.begin)) + r.size <= 0x100000000ull;
+}
+// Own-record borrowing only. In particular this never invokes the leaf's live
+// admission (which uses the existing Font/Main guards) or follows a header.
+bool empty_lexical_borrow(const NativeGuiTextEmptyUnchangedStorageFrame& f) noexcept {
+    using Stage = NativeGuiTextEmptyUnchangedStorageFrame::Stage;
+    if (!f.active_lexical_stage()) return false;
+    switch (f.lexical_stage()) {
+    case Stage::admission: case Stage::ensure: case Stage::copy:
+    case Stage::getter: case Stage::disarmed: case Stage::returning: return true;
+    default: return false;
+    }
+}
+const NativeGuiTextEmptyUnchangedStorageFrame* empty_binding(
+    const NativeGuiTextRawModelReferenceContext& c) {
+    using Empty = NativeGuiTextEmptyUnchangedStorageFrame;
+    using Ensure = NativeGuiTextMainSectionStoragePhase;
+    const auto* const f = c.retirement.empty_unchanged;
+    if (!f) return nullptr;
+    require(representable({f, sizeof(*f)}) && !(bits(f) & 3u),
+        "Raw Text empty reservation needs retained aligned Frame storage");
+    const auto& e = f->prepared_context();
+    const auto& p = e.prefix;
+    require(c.retirement.primary_prefix == &p && &p.text.factory_context.publication == &c &&
+        &p.text.factory_context.publication.retirement == &c.retirement &&
+        gui_text_font_main_detail::selected(p),
+        "Raw Text empty reservation requires its SAME fixed Font/Main context");
+    const auto q = gui_text_font_main_detail::peers(p);
+    const auto& m = q.main.prepared_context();
+    const auto& input = f->input_progress();
+    const auto* const a = f->acquired_identity();
+    require(&e.main == &q.main && &e.font == &q.font && &e.construction == &m.construction &&
+        &e.construction.text == &p.text && &e.construction.resources == &c.retirement.resources &&
+        &e.ensure_frame != &m.frame && &e.ensure_acquired != &m.acquired &&
+        &f->reference_frame() == &p.text.factory_context.reference_frame && a &&
+        input.header8 == f->input_header() && &input.strings == &e.strings &&
+        &input.raw_strings == &e.raw_strings && &e.raw_strings == &e.construction.resources.strings &&
+        static_cast<const NativeStringStorage*>(&e.strings) == &e.construction.resources.material_strings &&
+        same_native_string_storage_raw_pool_cells(e.strings, e.raw_strings),
+        "Raw Text empty reservation needs exact creator/Ensure/input/reference/string identities");
+    const Region own[] = {{f, sizeof(*f)}, {&e, sizeof(e)}, {a, sizeof(*a)},
+        {&input, sizeof(input)}, {input.header8, 8}, {&e.ensure_frame, sizeof(e.ensure_frame)},
+        {&e.ensure_acquired, sizeof(e.ensure_acquired)}};
+    for (std::size_t i = 0; i != std::size(own); ++i) {
+        require(representable(own[i]) && !(bits(own[i].begin) & 3u) &&
+            disjoint(own[i], {&f->reference_frame(), sizeof(f->reference_frame())}),
+            "Raw Text empty writable roles must be separate from canonical122 diagnostics");
+        for (std::size_t j = i + 1; j != std::size(own); ++j)
+            require(disjoint(own[i], own[j]), "Raw Text empty records/input cannot alias another owned role");
+    }
+    const Region temporary{f->temporary_header_extent(), 8};
+    require(representable(temporary) && !(bits(temporary.begin) & 3u) &&
+        bits(temporary.begin) >= bits(f) &&
+        static_cast<std::uint64_t>(bits(temporary.begin)) + temporary.size <=
+            static_cast<std::uint64_t>(bits(f)) + sizeof(*f),
+        "Raw Text empty Temp must be its constructor-bound Frame subobject");
+    const auto phase = f->phase();
+    require(f->matches(e, input.header8, input, f->reference_frame(), *a, phase) &&
+        !f->failure() && !a->failed() &&
+        (phase == Empty::Phase::fresh || phase == Empty::Phase::unchanged ||
+            (phase == Empty::Phase::entered && empty_lexical_borrow(*f))),
+        "Raw Text empty metadata excludes failed/replayed or unsupported lexical work");
+    const auto ensure = e.ensure_frame.phase();
+    require(e.ensure_frame.matches(e.construction, e.ensure_acquired, ensure) &&
+        ((phase == Empty::Phase::fresh && ensure == Ensure::fresh && !a->bound_frame_identity() &&
+            !a->requires_process_retention() && !a->normal_empty_returned()) ||
+         (phase == Empty::Phase::entered &&
+            ((f->lexical_stage() == Empty::Stage::admission && ensure == Ensure::fresh &&
+                (!a->bound_frame_identity() || a->bound_frame_identity() == f)) ||
+             (f->lexical_stage() == Empty::Stage::ensure && a->bound_frame_identity() == f &&
+                (ensure == Ensure::fresh || ensure == Ensure::entered || ensure == Ensure::complete)) ||
+             (f->lexical_stage() != Empty::Stage::admission && f->lexical_stage() != Empty::Stage::ensure &&
+                a->bound_frame_identity() == f && ensure == Ensure::complete))) ||
+         (phase == Empty::Phase::unchanged && ensure == Ensure::complete && a->bound_frame_identity() == f &&
+            f->normal_empty_returned() && a->normal_empty_returned() && !f->requires_process_retention())),
+        "Raw Text empty reservation requires its exact fresh/current/completed Ensure invocation");
+    return f;
+}
+template<class Check>
+void known_empty_borrowed(const NativeGuiTextRawModelReferenceContext& c, Check check) {
+    const auto* const f = empty_binding(c);
+    if (!f) return;
+    const auto regions = f->metadata_regions();
+    require(regions.count <= regions.entries.size(), "Raw Text empty metadata exceeds fixed backing");
+    for (std::size_t i = 0; i != regions.count; ++i) {
+        const auto& r = regions.entries[i];
+        require(representable({r.begin, r.bytes}), "Raw Text empty metadata needs valid retained extents");
+        // ONLY this full immutable expected Frame is the intentional writable
+        // raw122/scalar role. Owned leaf records were proved separate above.
+        if (r.begin == &f->reference_frame() && r.bytes == sizeof(f->reference_frame())) continue;
+        check(Region{r.begin, r.bytes});
+    }
+}
+void fresh_empty_binding(const NativeGuiTextRawModelReferenceContext& c,
+    const NativeGuiTextReferenceFrame& expected) {
+    const auto* const f = empty_binding(c);
+    if (!f) return;
+    const auto& e = f->prepared_context();
+    const auto& input = f->input_progress();
+    require(&f->reference_frame() == &expected &&
+        f->phase() == NativeGuiTextEmptyUnchangedStorageFrame::Phase::fresh &&
+        e.main.phase() == NativeGuiTextMainSectionLifetimeStorageFrame::Phase::prepared &&
+        e.font.phase() == NativeGuiTextFontLifetimeStorageFrame::Phase::prepared &&
+        !input.construct_entered && !input.construct_returned && !input.construct_failed &&
+        !input.return_entered && !input.returned && !input.return_failed,
+        "Raw122 needs a fresh untouched empty leaf over its SAME prepared Font/Main graph");
+    f->require_retirement_quiescent(); // full fresh Ensure/leaf diagnostics too; never generic active borrowing
+}
+void require_empty_quiescent(const NativeGuiTextRawModelReferenceContext& c) {
+    const auto* const f = c.retirement.empty_unchanged;
+    if (!f) return;
+    require(representable({f, sizeof(*f)}) && !(bits(f) & 3u),
+        "Raw Text empty retirement needs retained aligned Frame storage");
+    f->require_retirement_quiescent(); // private poison on active/failed/input debt; no native read
+    (void)empty_binding(c);
 }
 template<class Check>
 void known_borrowed(NativeGuiTextReferenceContext& c,
@@ -422,6 +538,7 @@ void known_borrowed(NativeGuiTextRawModelReferenceContext& c,
             check(Region{region.begin, region.bytes});
         }
     }
+    known_empty_borrowed(c, check);
     // Abstract/opaque provider implementations, actual pool/slab allocations,
     // effect loader frames and retained creator records have transitive caller
     // extent contracts. A base sizeof above never proves a derived extent.
@@ -499,6 +616,7 @@ Admission preflight(void* companion, void* raw, NativeGuiTextRawModelReferenceCo
             require(disjoint(region, borrowed), "Raw Text binding writes cannot alias the retained producer graph");
     });
     fresh_shader_binding(c, frame);
+    fresh_empty_binding(c, frame);
     const auto& a = c.construction;
     auto& p = c.construction_context;
     auto& f = c.construction_frame.sections;
@@ -564,6 +682,8 @@ template<class Reference, class Context, class Disposal>
 void flags_preflight(const volatile Word& flags, Reference* companion,
     void* raw, Context& c, NativeGuiTextReferenceFrame& frame,
     const volatile Word* profile, Disposal disposal) {
+    if constexpr (std::is_same_v<Context, NativeGuiTextRawModelReferenceContext>)
+        require_empty_quiescent(c);
     const Region flags_region{&flags, sizeof(flags)};
     require(bits(&flags) % 4 == 0 && representable(flags_region), "Direct Text scalar requires stable DWORD flags backing");
     for (const Region region : {Region{raw, 0x1f8}, {companion, sizeof(*companion)}, {&frame, sizeof(frame)}})
@@ -693,6 +813,7 @@ void NativeGuiTextRawModelReference::delete_vslot04(void* raw, Word captured_pro
     if (raw != identity_ || flags != 1)
         throw std::logic_error("Raw Text BD30E0 needs SAME actual identity/literal1");
     require_shader_quiescent(context_);
+    require_empty_quiescent(context_);
     require_slot(captured_profile, 1, scalar_target);
     auto& storage = context_.retirement;
     auto& acquired = frame_.scalar;
@@ -707,6 +828,7 @@ void NativeGuiTextRawModelReference::release_zero_references() noexcept {
     phase_ = Phase::zero_dispatch;
     try {
         require_shader_quiescent(context_);
+        require_empty_quiescent(context_);
         if (context_.owners.find(identity_) != this || reference_count.load(std::memory_order_relaxed) != 0)
             throw std::logic_error("Raw Text zero terminal requires SAME canonical observed-zero binding");
         require_slot(read(identity_), 0, zero_target);

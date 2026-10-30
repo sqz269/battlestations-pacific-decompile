@@ -1,11 +1,14 @@
 #include "bsp/native_gui_widget_raw_model_lifetime.hpp"
 #include "bsp/native_gui_text_font_lifetime_storage.hpp"
 #include "bsp/native_gui_text_main_section_lifetime_storage.hpp"
+#include "bsp/native_gui_text_empty_unchanged_storage.hpp"
+#include "bsp/native_string_raw_domain.hpp"
 #include "native_gui_text_cache_backing.hpp"
 #include "native_gui_text_font_main_admission.hpp"
 #include "bsp/native_node_destruction.hpp"
 #include <exception>
 #include <initializer_list>
+#include <iterator>
 #include <stdexcept>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -28,6 +31,90 @@ bool valid(Region r) noexcept {
 bool disjoint(Region a, Region b) noexcept {
     return static_cast<std::uint64_t>(bits(a.p)) + a.n <= bits(b.p) ||
         static_cast<std::uint64_t>(bits(b.p)) + b.n <= bits(a.p);
+}
+bool empty_lexical_borrow(const NativeGuiTextEmptyUnchangedStorageFrame& f) noexcept {
+    using Stage = NativeGuiTextEmptyUnchangedStorageFrame::Stage;
+    if (!f.active_lexical_stage()) return false;
+    switch (f.lexical_stage()) {
+    case Stage::admission: case Stage::ensure: case Stage::copy:
+    case Stage::getter: case Stage::disarmed: case Stage::returning: return true;
+    default: return false;
+    }
+}
+bool empty_region(Region r) noexcept { return r.p && r.n && valid(r); }
+// The new leaf contributes only its own retained records. Never call its live
+// admission or sibling posts from a Widget borrow (native payloads may be gone).
+const NativeGuiTextEmptyUnchangedStorageFrame* empty_binding(
+    const NativeGuiTextRawModelReferenceContext& c) {
+    using Empty = NativeGuiTextEmptyUnchangedStorageFrame;
+    using Ensure = NativeGuiTextMainSectionStoragePhase;
+    const auto* const f = c.retirement.empty_unchanged;
+    if (!f) return nullptr;
+    require(empty_region({f, sizeof(*f)}) && !(bits(f) & 3u),
+        "raw widget empty reservation needs retained aligned Frame storage");
+    const auto& e = f->prepared_context();
+    const auto& p = e.prefix;
+    require(c.retirement.primary_prefix == &p && &p.text.factory_context.publication == &c &&
+        &p.text.factory_context.publication.retirement == &c.retirement &&
+        gui_text_font_main_detail::selected(p),
+        "raw widget empty reservation requires its SAME fixed Font/Main context");
+    const auto q = gui_text_font_main_detail::peers(p);
+    const auto& m = q.main.prepared_context();
+    const auto& input = f->input_progress();
+    const auto* const a = f->acquired_identity();
+    require(&e.main == &q.main && &e.font == &q.font && &e.construction == &m.construction &&
+        &e.construction.text == &p.text && &e.construction.resources == &c.retirement.resources &&
+        &e.ensure_frame != &m.frame && &e.ensure_acquired != &m.acquired &&
+        &f->reference_frame() == &p.text.factory_context.reference_frame && a &&
+        input.header8 == f->input_header() && &input.strings == &e.strings &&
+        &input.raw_strings == &e.raw_strings && &e.raw_strings == &e.construction.resources.strings &&
+        static_cast<const NativeStringStorage*>(&e.strings) == &e.construction.resources.material_strings &&
+        same_native_string_storage_raw_pool_cells(e.strings, e.raw_strings),
+        "raw widget empty reservation needs exact creator/Ensure/input/reference/string identities");
+    const Region own[] = {{f, sizeof(*f)}, {&e, sizeof(e)}, {a, sizeof(*a)},
+        {&input, sizeof(input)}, {input.header8, 8}, {&e.ensure_frame, sizeof(e.ensure_frame)},
+        {&e.ensure_acquired, sizeof(e.ensure_acquired)}};
+    for (std::size_t i = 0; i != std::size(own); ++i) {
+        require(empty_region(own[i]) && !(bits(own[i].p) & 3u) &&
+            disjoint(own[i], {&f->reference_frame(), sizeof(f->reference_frame())}),
+            "raw widget empty writable roles must be separate from canonical122 diagnostics");
+        for (std::size_t j = i + 1; j != std::size(own); ++j)
+            require(disjoint(own[i], own[j]), "raw widget empty records/input cannot alias another owned role");
+    }
+    const Region temporary{f->temporary_header_extent(), 8};
+    require(empty_region(temporary) && !(bits(temporary.p) & 3u) && bits(temporary.p) >= bits(f) &&
+        static_cast<std::uint64_t>(bits(temporary.p)) + temporary.n <=
+            static_cast<std::uint64_t>(bits(f)) + sizeof(*f),
+        "raw widget empty Temp must be its constructor-bound Frame subobject");
+    const auto phase = f->phase();
+    require(f->matches(e, input.header8, input, f->reference_frame(), *a, phase) &&
+        !f->failure() && !a->failed() &&
+        (phase == Empty::Phase::fresh || phase == Empty::Phase::unchanged ||
+            (phase == Empty::Phase::entered && empty_lexical_borrow(*f))),
+        "raw widget empty metadata excludes failed/replayed or unsupported lexical work");
+    const auto ensure = e.ensure_frame.phase();
+    require(e.ensure_frame.matches(e.construction, e.ensure_acquired, ensure) &&
+        ((phase == Empty::Phase::fresh && ensure == Ensure::fresh && !a->bound_frame_identity() &&
+            !a->requires_process_retention() && !a->normal_empty_returned()) ||
+         (phase == Empty::Phase::entered &&
+            ((f->lexical_stage() == Empty::Stage::admission && ensure == Ensure::fresh &&
+                (!a->bound_frame_identity() || a->bound_frame_identity() == f)) ||
+             (f->lexical_stage() == Empty::Stage::ensure && a->bound_frame_identity() == f &&
+                (ensure == Ensure::fresh || ensure == Ensure::entered || ensure == Ensure::complete)) ||
+             (f->lexical_stage() != Empty::Stage::admission && f->lexical_stage() != Empty::Stage::ensure &&
+                a->bound_frame_identity() == f && ensure == Ensure::complete))) ||
+         (phase == Empty::Phase::unchanged && ensure == Ensure::complete && a->bound_frame_identity() == f &&
+            f->normal_empty_returned() && a->normal_empty_returned() && !f->requires_process_retention())),
+        "raw widget empty reservation requires its exact fresh/current/completed Ensure invocation");
+    return f;
+}
+void require_empty_quiescent(const NativeGuiTextRawModelReferenceContext& c) {
+    const auto* const f = c.retirement.empty_unchanged;
+    if (!f) return;
+    require(empty_region({f, sizeof(*f)}) && !(bits(f) & 3u),
+        "raw widget empty retirement needs retained aligned Frame storage");
+    f->require_retirement_quiescent(); // own history only, including late input-return debt
+    (void)empty_binding(c);
 }
 template<class Check> void borrowed(NativeGuiWidgetRawModelLifetimeContext& c, Check check,
     const NativeGuiWidgetRawModelLifetimeAcquired* binding_self = nullptr) {
@@ -102,6 +189,15 @@ template<class Check> void borrowed(NativeGuiWidgetRawModelLifetimeContext& c, C
                 require(valid(region), "raw widget Font/Main shader backing requires valid retained extents");
                 check(region);
             });
+    }
+    if (const auto* const empty = empty_binding(f.publication)) {
+        const auto regions = empty->metadata_regions();
+        require(regions.count <= regions.entries.size(), "raw widget empty metadata exceeds fixed backing");
+        for (std::size_t i = 0; i != regions.count; ++i) {
+            const Region region{regions.entries[i].begin, regions.entries[i].bytes};
+            require(empty_region(region), "raw widget empty metadata needs valid retained extents");
+            check(region); // no new self/ReferenceFrame waiver: Widget writes are separate roles
+        }
     }
 }
 void require_fresh(NativeGuiWidgetRawModelRoute& q) {
@@ -202,6 +298,7 @@ void NativeGuiWidgetRawModelSlots::authenticate(void* actual) {
         "raw widget transport requires genuine current raw118 base-entry records");
 }
 void NativeGuiWidgetRawModelSlots::require_domain(void* actual) {
+    require_empty_quiescent(context().text.factory_context.publication);
     // FIRST domain only. No188 read: raw118 may have retired that Model already.
     require(!read(actual, 0x70) && !read(actual, 0x6c) &&
         !read(actual, 0x88) && !read(actual, 0x8c) && !read(actual, 0x90) &&
