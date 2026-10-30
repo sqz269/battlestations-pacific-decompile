@@ -1,0 +1,3494 @@
+{
+  "schema_version": 1,
+  "packet": "codex-frontend-raw95-producer-closure",
+  "classification": "read_only_source_and_native_contract_evidence_not_source_admission",
+  "baseline": "eb63c7c17ae1e20f0ad728e2d410a360e1ebc4c1",
+  "utc": "2026-10-30T15:23:29.771851+00:00",
+  "scope": {
+    "owned_files": [
+      "docs/CC16_FRONTEND_RAW95_PRODUCER_CLOSURE.md",
+      "reports/cc16_frontend_raw95_producer_closure.json"
+    ],
+    "source_edits": false,
+    "cmake_edits": false,
+    "ledger_edits": false,
+    "ghidra_mutation": false,
+    "run_build_probe_or_activation": false,
+    "native_code_or_game_process_started": false
+  },
+  "decision": {
+    "complete_root_source_packet_ready": false,
+    "selected_next_packet": "whole raw MenuPrompt00533120 plus genuine00425D10 publication/lifetime recovery, then coupled existing005311C0/005321F0/current55 dispatch inside SAME GameNativeFrontEndApplication",
+    "no_standalone_unused_adapter": true,
+    "already_recovered_leaf_bodies_are_reused": true
+  },
+  "binary": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "length": 12223752,
+    "preferred_base": "00400000",
+    "primary_profiles": 53,
+    "primary_profile_bytes_checked": 2120,
+    "id_leaves_checked": 53,
+    "id_leaf_verification": "all selected slot0 targets contain B8 imm32 C3 and match the recorded native ID; IDs are evidence, never registration arguments"
+  },
+  "analysis_identity": {
+    "configured_project_file": "C:/Users/sqz269/bsp.gpr",
+    "configured_program": "/battlestationspacific.exe",
+    "bsp_ghidra_count": 77632,
+    "autostart_disabled": true,
+    "read_only_proto_recovered_program_name": "battlestationspacific.exe",
+    "project_note": "config target and program-targeted bsp.py count/proto verified; no Ghidra import/save/annotation, no process launch"
+  },
+  "shared_authority": {
+    "view": "bsp::game::GameNativeFrontEndDataView",
+    "creation": "nondefault/private owner-created borrowed view from existing GameNativeCanonicalDataOwner::front_end_data() const&",
+    "bank": "00E18B60..00E18CDB exact95 DWORD words/380 bytes; neither95 classes nor a resized array",
+    "sentinel": "separate byte00E18CDC",
+    "frame_publication": "00E18D80",
+    "selectors": [
+      "00E18D84",
+      "00E18D88",
+      "00E18D8C"
+    ],
+    "names": [
+      "00E08500",
+      "00E08604",
+      "00E0862C"
+    ],
+    "application": "bsp::game::GameNativeFrontEndApplication",
+    "application_files": [
+      "include/bsp/game_native_frontend_application.hpp",
+      "src/game_native_frontend_application.cpp"
+    ],
+    "retention": "Startup retains same app/view/manager/Game ref plus real GUI/Page/String services before first raw creator and through last current scalar/unregister; app survives menu/frontend teardown; actual receiver contexts remain outside permanent data owner",
+    "manager_ref": "same game_native_string_process manager_01090aa0 borrowed by GameSingletonHost",
+    "game_ref": "same GameNativeSettingsProcess::game_00e188a8() Source ref; no extra numeric Game cell authority",
+    "reseed_copy_default_or_secondary_bank": false
+  },
+  "raw_base_contract": {
+    "construction": "existing authentic004F7180 writesCEAE54 at+0 then distinct zero byte+4/+5; does not initialize+6.. or Page fields",
+    "base_id": "CEAE54 slot00=BF698E purecall; never0/default",
+    "register": {
+      "entry": "004f71d0",
+      "source_proposal": "std::uint32_t register_raw_front_end_screen_004f71d0(void* captured_receiver,const GameNativeFrontEndDataView&,RawFrontEndScreenDispatch&)",
+      "original_abi": "ECX=actual screen; no stack args; bareRET4F71E1; EAX retains current00 result",
+      "order": [
+        "capture actual receiver",
+        "resolve CURRENT primary slot00 and call on captured receiver",
+        "store captured receiver DWORD at base+returnedDWORD*4",
+        "return returnedDWORD"
+      ],
+      "no_supplied_id_or_range_guard": true,
+      "current00_call": "004f71d7",
+      "publication": "004f71d9"
+    },
+    "destruct": {
+      "entry": "004f71a0",
+      "source_proposal": "void destruct_raw_front_end_screen_004f71a0(void* captured_receiver,const GameNativeFrontEndDataView&)",
+      "order": [
+        "storeCEAE54 at actual+0",
+        "scan exactly95 DWORDs",
+        "clear every equality match, never just expected ID"
+      ],
+      "native_eax_after_scan": "00e18cdc",
+      "sentinel_written": false
+    },
+    "dispatch_service": "RawFrontEndScreenDispatch is operation domain of SAME GameNativeFrontEndApplication, not another owner; current00/current04/current08/current0C/current10/current14/current18/current1C/current20/current24 re-read actual current profile at every reached dispatch; no Native-vtable word cast to host callable, no unknown-profile success default",
+    "flag_phase": "actual byte+4 wanted and byte+5 active, with native byte widths and load/store order; semantic FrontEndScreen bool offsets are not raw layout"
+  },
+  "families": [
+    {
+      "family": "hud_44",
+      "producer": "0068cc70",
+      "manager_field": "40",
+      "expected_id": 68,
+      "allocation_size": 372,
+      "constructor": "0068bf60",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 0,
+      "primary_profile": "00cf5a9c",
+      "constructor_source": {
+        "path": "src/frontend_seg16_24_28_cc13.cpp",
+        "line": 811,
+        "signature": "void* hud_root_screen_construct_0068bf60(Raw screen, Fe5Host& host)",
+        "profile_store_receipts": [
+          "screen.at<std::uint32_t>(0x08) = kCallbackOwnerBaseVtable;",
+          "screen.at<std::uint32_t>(0x00) = kHudRootVtable;",
+          "screen.at<std::uint32_t>(0x08) = kHudRootSecondaryVtable;",
+          "screen.at<std::uint32_t>(0xD0) = kObserverBaseVtable;"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068cd3f",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "00647fe0",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "00648040",
+        "10": "00645f10",
+        "14": "006463e0",
+        "18": "006488d0",
+        "1c": "00646c50",
+        "20": "00649860",
+        "24": "00648000"
+      },
+      "primary_profile_disk_sha256": "75510bc8ba27c8ef657d98f0e8817292a9b114b5b62bc6ad2794c6431f6607a7",
+      "current00_native_bytes": "b844000000c3",
+      "current00_native_return": 68,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cf5a84",
+        "d0": "00ce3cf0"
+      }
+    },
+    {
+      "family": "hud_27",
+      "producer": "0068cc70",
+      "manager_field": "44",
+      "expected_id": 39,
+      "allocation_size": 52,
+      "constructor": "0068a8a0",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 1,
+      "primary_profile": "00cf7a38",
+      "constructor_source": {
+        "path": "src/frontend_seg16_24_28_cc13.cpp",
+        "line": 664,
+        "signature": "void* small_hud_screen_construct(const SmallHudScreenShape&, Raw, Fe5Host&)",
+        "shape_address": "0068a8a0",
+        "shape_header": "include/bsp/frontend_seg16_24_28_cc13.hpp:1007"
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068cd74",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "0068a8f0",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "0068a970",
+        "10": "0067b3f0",
+        "14": "004f7590",
+        "18": "0067b400",
+        "1c": "0067b410",
+        "20": "0067bb50",
+        "24": "004f75d0"
+      },
+      "primary_profile_disk_sha256": "2ba83d065d150dfea30c7ae2a38c289e617a834008e653b10fbeffeaac8ef85d",
+      "current00_native_bytes": "b827000000c3",
+      "current00_native_return": 39,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cf7a20",
+        "1c": "00ce75cc"
+      }
+    },
+    {
+      "family": "hud_4d",
+      "producer": "0068cc70",
+      "manager_field": "48",
+      "expected_id": 77,
+      "allocation_size": 176,
+      "constructor": "00640c80",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 2,
+      "primary_profile": "00cf5950",
+      "constructor_source": {
+        "path": "src/ingame_gui_cc13.cpp",
+        "line": 533,
+        "signature": "Raw hud_markers_construct_00640c80(Raw s, HudScreenHost& host, void* tree_head)",
+        "profile_store_receipts": [
+          "s.at<std::uint32_t>(0x8) = kCallbackOwnerBaseVtable;",
+          "s.at<std::uint32_t>(0x0) = kHudMarkersVtable;",
+          "s.at<std::uint32_t>(0x8) = kHudMarkersCallbackVtable;"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068cdac",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "006405e0",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "00640d50",
+        "10": "0063e280",
+        "14": "004f7590",
+        "18": "00639480",
+        "1c": "0063e360",
+        "20": "006435d0",
+        "24": "00640600"
+      },
+      "primary_profile_disk_sha256": "7e6d5ab1e013f053104d0017e101789cdfdf137810c50b82565da944e7aa896f",
+      "current00_native_bytes": "b84d000000c3",
+      "current00_native_return": 77,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cf5938"
+      }
+    },
+    {
+      "family": "hud_26",
+      "producer": "0068cc70",
+      "manager_field": "4c",
+      "expected_id": 38,
+      "allocation_size": 80,
+      "constructor": "0051e950",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 3,
+      "primary_profile": "00cec9b0",
+      "constructor_source": {
+        "path": "src/view_seg14_cc13.cpp",
+        "line": 122,
+        "signature": "Raw binoculars_screen_construct_0051e950(Raw screen, ViewSeg14Hooks& hooks)",
+        "profile_store_receipts": [
+          "put<std::uint32_t>(screen, 8, kCallbackBaseVtable);",
+          "put<std::uint32_t>(screen, 0, kBinocularsVtable);",
+          "put<std::uint32_t>(screen, 8, kBinocularsCallbackVtable);"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068cde1",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "0051e990",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "0051ed40",
+        "10": "0051ed60",
+        "14": "004f7590",
+        "18": "0051ee50",
+        "1c": "0051e9b0",
+        "20": "004f75c0",
+        "24": "0051f040"
+      },
+      "primary_profile_disk_sha256": "182c8174d4f3b0ddd455dee521df34fed24e5308339b03a4e937e64a7ad5f708",
+      "current00_native_bytes": "b826000000c3",
+      "current00_native_return": 38,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cec998"
+      }
+    },
+    {
+      "family": "hud_2e",
+      "producer": "0068cc70",
+      "manager_field": "50",
+      "expected_id": 46,
+      "allocation_size": 276,
+      "constructor": "005472f0",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 4,
+      "primary_profile": "00cedf34",
+      "constructor_source": {
+        "path": "src/frontend_seg16_24_28_cc13.cpp",
+        "line": 1824,
+        "signature": "void* screen2e_construct_005472f0(Raw screen, Fe5Host& host)",
+        "profile_store_receipts": [
+          "screen.at<std::uint32_t>(0x08) = kCallbackOwnerBaseVtable;",
+          "screen.at<std::uint32_t>(0x00) = kScreen2EVtable;",
+          "screen.at<std::uint32_t>(0x08) = kScreen2ESecondaryVtable;",
+          "screen.at<std::uint32_t>(0x2C) = 0x00CEDDB8;"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068ce19",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "00547370",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "00547a00",
+        "10": "005468b0",
+        "14": "00546a20",
+        "18": "005494c0",
+        "1c": "005470a0",
+        "20": "004f75c0",
+        "24": "005482d0"
+      },
+      "primary_profile_disk_sha256": "91a5bddacbc1bee5bf347a042a09e4e2348abf57216ffc433a48c4b0ff3fac70",
+      "current00_native_bytes": "b82e000000c3",
+      "current00_native_return": 46,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cedf1c",
+        "2c": "00ceddb8"
+      }
+    },
+    {
+      "family": "hud_4c",
+      "producer": "0068cc70",
+      "manager_field": "54",
+      "expected_id": 76,
+      "allocation_size": 1556,
+      "constructor": "005aaef0",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 5,
+      "primary_profile": "00cf0134",
+      "constructor_source": {
+        "path": "src/cc13_sweepB2.cpp",
+        "line": 557,
+        "signature": "void* cc13_sweepB2_ingame_interface_screen_construct_005aaef0(void* screen, Cc13SweepB2Host& host)",
+        "profile_store_receipts": [
+          "at<std::uint32_t>(screen, 0x64) = 0x00CE3CD4;",
+          "at<std::uint32_t>(screen, 0x8) = 0x00CF0130;",
+          "at<std::uint32_t>(screen, 0x0) = 0x00CF0134;",
+          "at<std::uint32_t>(screen, 0x64) = 0x00CF0118;"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068ce51",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "005a8ee0",
+        "04": "004f7570",
+        "08": "005a8ef0",
+        "0c": "005ab140",
+        "10": "005ab190",
+        "14": "004f7590",
+        "18": "005b3470",
+        "1c": "005a4200",
+        "20": "005b45c0",
+        "24": "005a8f20"
+      },
+      "primary_profile_disk_sha256": "50b8f1faac9dea1a5468a541aaf3b501866dd974eb970aabad30fb93b20c86ae",
+      "current00_native_bytes": "b84c000000c3",
+      "current00_native_return": 76,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cf0130",
+        "64": "00cf0118"
+      }
+    },
+    {
+      "family": "hud_35",
+      "producer": "0068cc70",
+      "manager_field": "58",
+      "expected_id": 53,
+      "allocation_size": 432,
+      "constructor": "005c0810",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 6,
+      "primary_profile": "00cf1404",
+      "constructor_source": {
+        "path": "src/frontend_screens_cc13.cpp",
+        "line": 1648,
+        "signature": "void* hud_minimap_screen_construct_005c0810(void* screen, MapPoolHost& host)",
+        "profile_store_receipts": [
+          "write_field<std::uint32_t>(screen, 0x08, 0x00CE3CD4u);",
+          "write_field<std::uint32_t>(screen, 0x00, 0x00CF1404u);",
+          "write_field<std::uint32_t>(screen, 0x08, 0x00CF13ECu);"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068ce89",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "005c06b0",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "005c0910",
+        "10": "005bec50",
+        "14": "005be240",
+        "18": "005bd550",
+        "1c": "005c0e10",
+        "20": "005c0f20",
+        "24": "005c0800"
+      },
+      "primary_profile_disk_sha256": "89674cfbb3579ab2bd8c9dabd5586aa4bb57907f2cb4c0d6a10f4fa8fd593af7",
+      "current00_native_bytes": "b835000000c3",
+      "current00_native_return": 53,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cf13ec"
+      }
+    },
+    {
+      "family": "hud_2a",
+      "producer": "0068cc70",
+      "manager_field": "5c",
+      "expected_id": 42,
+      "allocation_size": 428,
+      "constructor": "00538e30",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 7,
+      "primary_profile": "00ced6fc",
+      "constructor_source": {
+        "path": "src/frontend_seg15_22_cc13.cpp",
+        "line": 1207,
+        "signature": "Raw hud_formation_construct_00538e30(Raw s, Seg15Host& host)",
+        "profile_store_receipts": [
+          "s.at<std::uint32_t>(0x64) = 0x00CE3CD4;",
+          "s.at<std::uint32_t>(0x78) = kListboxListenerBaseVtable;",
+          "s.at<std::uint32_t>(0x8) = 0x00CED6F8;",
+          "s.at<std::uint32_t>(0x0) = 0x00CED6FC;",
+          "s.at<std::uint32_t>(0x64) = 0x00CED6E0;",
+          "s.at<std::uint32_t>(0x78) = 0x00CED6CC;"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068cec1",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "00538cd0",
+        "04": "004f7570",
+        "08": "00538ce0",
+        "0c": "00538f60",
+        "10": "00538f80",
+        "14": "004f7590",
+        "18": "0053a4d0",
+        "1c": "00536800",
+        "20": "0053a8e0",
+        "24": "00538d20"
+      },
+      "primary_profile_disk_sha256": "7079f03a86f05f73b75ef3928d97cb83df73569ea67fc8c72029ff57e0c1e8bf",
+      "current00_native_bytes": "b82a000000c3",
+      "current00_native_return": 42,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00ced6f8",
+        "64": "00ced6e0",
+        "78": "00ced6cc"
+      }
+    },
+    {
+      "family": "hud_39",
+      "producer": "0068cc70",
+      "manager_field": "60",
+      "expected_id": 57,
+      "allocation_size": 116,
+      "constructor": "005ee440",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 8,
+      "primary_profile": "00cf2d20",
+      "constructor_source": {
+        "path": "src/frontend_screens_cc13.cpp",
+        "line": 682,
+        "signature": "void* hud_objectives_construct_005ee440(void* screen, ScreenLifetimeHost& host)",
+        "profile_store_receipts": [
+          "write_field<std::uint32_t>(screen, 0x0, 0x00CF2D20u);",
+          "write_field<std::uint32_t>(screen, 0x8, 0x00CF2D0Cu);"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068cef6",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "005edfd0",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "005ee100",
+        "10": "005ee010",
+        "14": "004f7590",
+        "18": "005eea00",
+        "1c": "005ed5c0",
+        "20": "005eef60",
+        "24": "005ee510"
+      },
+      "primary_profile_disk_sha256": "0c9998ca90e514e3f61d4a7622e93221feb9a071fd4e1014d04b22d82f85162b",
+      "current00_native_bytes": "b839000000c3",
+      "current00_native_return": 57,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cf2d0c"
+      }
+    },
+    {
+      "family": "hud_3b",
+      "producer": "0068cc70",
+      "manager_field": "64",
+      "expected_id": 59,
+      "allocation_size": 144,
+      "constructor": "005f9440",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 9,
+      "primary_profile": "00cf3b7c",
+      "constructor_source": {
+        "path": "src/frontend_screens_cc13.cpp",
+        "line": 690,
+        "signature": "void* hud_order_construct_005f9440(void* screen, ScreenLifetimeHost& host)",
+        "profile_store_receipts": [
+          "write_field<std::uint32_t>(screen, 0x0, 0x00CF3B7Cu);"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068cf2e",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "005f9460",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "005f9fd0",
+        "10": "005f9ff0",
+        "14": "005fa0f0",
+        "18": "005fad70",
+        "1c": "005f9480",
+        "20": "005f9dd0",
+        "24": "005fad60"
+      },
+      "primary_profile_disk_sha256": "8a29cb05e5e449d4ad3138ebcd074b0671e1b6a4188eafa5e961312db56cee69",
+      "current00_native_bytes": "b83b000000c3",
+      "current00_native_return": 59,
+      "secondary_and_embedded_profile_writes": {}
+    },
+    {
+      "family": "hud_3e",
+      "producer": "0068cc70",
+      "manager_field": "68",
+      "expected_id": 62,
+      "allocation_size": 404,
+      "constructor": "00608e60",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 10,
+      "primary_profile": "00cf4544",
+      "constructor_source": {
+        "path": "src/frontend_seg16_24_28_cc13.cpp",
+        "line": 1478,
+        "signature": "void* plane_screen_construct_00608e60(Raw screen, Fe5Host& host)",
+        "profile_store_receipts": [
+          "screen.at<std::uint32_t>(0) = kPlaneScreenVtable;"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068cf66",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "00606a80",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "00608260",
+        "10": "00606a90",
+        "14": "00606c60",
+        "18": "006093d0",
+        "1c": "006088f0",
+        "20": "004f75c0",
+        "24": "00608ef0"
+      },
+      "primary_profile_disk_sha256": "d73b73aecbadae79bb4963b2205232cd2bd425d9c7b5852611ef47305f5879b0",
+      "current00_native_bytes": "b83e000000c3",
+      "current00_native_return": 62,
+      "secondary_and_embedded_profile_writes": {}
+    },
+    {
+      "family": "hud_3f",
+      "producer": "0068cc70",
+      "manager_field": "6c",
+      "expected_id": 63,
+      "allocation_size": 272,
+      "constructor": "00606470",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 11,
+      "primary_profile": "00cf43ac",
+      "constructor_source": {
+        "path": "src/frontend_seg16_24_28_cc13.cpp",
+        "line": 1341,
+        "signature": "void* plane_effects_construct_00606470(Raw screen, Fe5Host& host)",
+        "profile_store_receipts": [
+          "screen.at<std::uint32_t>(0x08) = kCallbackOwnerBaseVtable;",
+          "screen.at<std::uint32_t>(0x00) = kPlaneEffectsVtable;",
+          "screen.at<std::uint32_t>(0x08) = kPlaneEffectsSecondaryVtable;",
+          "screen.at<std::uint32_t>(0xD0) = kObserverBaseVtable;"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068cf9f",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "00606220",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "006065b0",
+        "10": "00607be0",
+        "14": "004f7590",
+        "18": "00608c30",
+        "1c": "00605cc0",
+        "20": "0060abd0",
+        "24": "00606230"
+      },
+      "primary_profile_disk_sha256": "6caaf1365d83c7008cf1745a9b71b40fdfa8fad440235872a46b47328231e65d",
+      "current00_native_bytes": "b83f000000c3",
+      "current00_native_return": 63,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cf4394",
+        "d0": "00ce3cf0"
+      }
+    },
+    {
+      "family": "hud_25",
+      "producer": "0068cc70",
+      "manager_field": "70",
+      "expected_id": 37,
+      "allocation_size": 48,
+      "constructor": null,
+      "native_constructor_inlined_in_init": true,
+      "construction_order": 12,
+      "primary_profile": "00cec590",
+      "constructor_source": {
+        "path": "src/frontend_seg16_24_28_cc13.cpp",
+        "line": 664,
+        "signature": "void* small_hud_screen_construct(const SmallHudScreenShape&, Raw, Fe5Host&)",
+        "shape_address": "0068a570",
+        "shape_header": "include/bsp/frontend_seg16_24_28_cc13.hpp:1007"
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068cff6",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "00519450",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "00519470",
+        "10": "00519830",
+        "14": "004f7590",
+        "18": "00519120",
+        "1c": "00519160",
+        "20": "00519bb0",
+        "24": "00519d40"
+      },
+      "primary_profile_disk_sha256": "ab880b3e3542a539ad6b25d5f7dfba80f020a05438ebdcb84dbdfb2c184cd1b9",
+      "current00_native_bytes": "b825000000c3",
+      "current00_native_return": 37,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cec578"
+      }
+    },
+    {
+      "family": "hud_41",
+      "producer": "0068cc70",
+      "manager_field": "74",
+      "expected_id": 65,
+      "allocation_size": 44,
+      "constructor": "0060cae0",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 13,
+      "primary_profile": "00cf4a7c",
+      "constructor_source": {
+        "path": "src/frontend_seg16_24_28_cc13.cpp",
+        "line": 664,
+        "signature": "void* small_hud_screen_construct(const SmallHudScreenShape&, Raw, Fe5Host&)",
+        "shape_address": "0060cae0",
+        "shape_header": "include/bsp/frontend_seg16_24_28_cc13.hpp:1007"
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068d02b",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "0060cb20",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "0060d1a0",
+        "10": "0060d1c0",
+        "14": "004f7590",
+        "18": "0060c870",
+        "1c": "0060c880",
+        "20": "0060c830",
+        "24": "0060d280"
+      },
+      "primary_profile_disk_sha256": "baa9f7c8977d38e7aebc72906847c28714e0cc7b26cb2c98c7afb2302c11713e",
+      "current00_native_bytes": "b841000000c3",
+      "current00_native_return": 65,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cf4a64"
+      }
+    },
+    {
+      "family": "hud_45",
+      "producer": "0068cc70",
+      "manager_field": "78",
+      "expected_id": 69,
+      "allocation_size": 432,
+      "constructor": "0064b780",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 14,
+      "primary_profile": "00cf5e30",
+      "constructor_source": {
+        "path": "src/cg_rebuild_c_cc13.cpp",
+        "line": 313,
+        "signature": "void* vt_cf5e30_construct_0064b780(void* screen, CgRebuildCHost& host)",
+        "profile_store_receipts": [
+          "field<std::uint32_t>(screen, 0) = 0x00CF5E30u;",
+          "field<std::uint32_t>(screen, 0x170) = 0x00CF5C94u;"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068d063",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "0064b860",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "0064d9e0",
+        "10": "0064bb90",
+        "14": "0064c0f0",
+        "18": "0064b370",
+        "1c": "0064d8d0",
+        "20": "0064dd30",
+        "24": "0064da00"
+      },
+      "primary_profile_disk_sha256": "6ab1a8916bef580d9d86e552ec2a512b3dd0a16275de1474dbd037e16438603a",
+      "current00_native_bytes": "b845000000c3",
+      "current00_native_return": 69,
+      "secondary_and_embedded_profile_writes": {
+        "170": "00cf5c94"
+      }
+    },
+    {
+      "family": "hud_46",
+      "producer": "0068cc70",
+      "manager_field": "7c",
+      "expected_id": 70,
+      "allocation_size": 56,
+      "constructor": null,
+      "native_constructor_inlined_in_init": true,
+      "construction_order": 15,
+      "primary_profile": "00cf7978",
+      "constructor_source": {
+        "path": "src/frontend_seg16_24_28_cc13.cpp",
+        "line": 664,
+        "signature": "void* small_hud_screen_construct(const SmallHudScreenShape&, Raw, Fe5Host&)",
+        "shape_address": "0068a3b0",
+        "shape_header": "include/bsp/frontend_seg16_24_28_cc13.hpp:1007"
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068d0d5",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "0068a400",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "0068a480",
+        "10": "0064a360",
+        "14": "004f7590",
+        "18": "0064a450",
+        "1c": "0064a490",
+        "20": "0064d610",
+        "24": "0068a410"
+      },
+      "primary_profile_disk_sha256": "8ca1b39344338b841b84fcbcd79dda6eff119c5de85cd3a5024dac6f9c7ddde4",
+      "current00_native_bytes": "b846000000c3",
+      "current00_native_return": 70,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cf7960"
+      }
+    },
+    {
+      "family": "hud_4a",
+      "producer": "0068cc70",
+      "manager_field": "80",
+      "expected_id": 74,
+      "allocation_size": 48,
+      "constructor": null,
+      "native_constructor_inlined_in_init": true,
+      "construction_order": 16,
+      "primary_profile": "00cf79f8",
+      "constructor_source": {
+        "path": "src/frontend_seg16_24_28_cc13.cpp",
+        "line": 664,
+        "signature": "void* small_hud_screen_construct(const SmallHudScreenShape&, Raw, Fe5Host&)",
+        "shape_address": "0068a5a0",
+        "shape_header": "include/bsp/frontend_seg16_24_28_cc13.hpp:1007"
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068d12f",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "0068a5d0",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "0068a650",
+        "10": "0067c430",
+        "14": "004f7590",
+        "18": "0067c050",
+        "1c": "0067c0a0",
+        "20": "0067c4f0",
+        "24": "0068a5e0"
+      },
+      "primary_profile_disk_sha256": "3c36177d3586c4fb5b78467dcbb99093ad5b2eae0c97e427a47c6949f0d10fba",
+      "current00_native_bytes": "b84a000000c3",
+      "current00_native_return": 74,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cf79e0"
+      }
+    },
+    {
+      "family": "hud_47",
+      "producer": "0068cc70",
+      "manager_field": "84",
+      "expected_id": 71,
+      "allocation_size": 124,
+      "constructor": "00650b00",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 17,
+      "primary_profile": "00cf639c",
+      "constructor_source": {
+        "path": "src/ingame_gui_cc13.cpp",
+        "line": 441,
+        "signature": "Raw periscope_construct_00650b00(Raw s, HudScreenHost& host)",
+        "profile_store_receipts": [
+          "s.at<std::uint32_t>(0x8) = kCallbackOwnerBaseVtable;",
+          "s.at<std::uint32_t>(0x0) = kPeriscopeScreenVtable;",
+          "s.at<std::uint32_t>(0x8) = kPeriscopeCallbackVtable;"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068d167",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "00650ac0",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "00650ae0",
+        "10": "00650e00",
+        "14": "00651230",
+        "18": "00650750",
+        "1c": "00650810",
+        "20": "00651800",
+        "24": "00651360"
+      },
+      "primary_profile_disk_sha256": "96887c72983627fe2fee301cbe0bfecb4cc892f4aaaa0039ebfc818bcddb41be",
+      "current00_native_bytes": "b847000000c3",
+      "current00_native_return": 71,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cf6384"
+      }
+    },
+    {
+      "family": "hud_48",
+      "producer": "0068cc70",
+      "manager_field": "88",
+      "expected_id": 72,
+      "allocation_size": 36,
+      "constructor": "00650140",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 18,
+      "primary_profile": "00cf61d4",
+      "constructor_source": {
+        "path": "src/ingame_gui_cc13.cpp",
+        "line": 402,
+        "signature": "Raw submarine_construct_00650140(Raw s, HudScreenHost& host)",
+        "profile_store_receipts": [
+          "s.at<std::uint32_t>(0x0) = kSubmarineScreenVtable;"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068d19f",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "00650160",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "00650b70",
+        "10": "00650170",
+        "14": "00650b90",
+        "18": "00650190",
+        "1c": "004f75b0",
+        "20": "00650450",
+        "24": "00651350"
+      },
+      "primary_profile_disk_sha256": "7ff2a04b1637e2830153fed7b0320116ec7fb0781a1bb54dbab0b5025b0ffedf",
+      "current00_native_bytes": "b848000000c3",
+      "current00_native_return": 72,
+      "secondary_and_embedded_profile_writes": {}
+    },
+    {
+      "family": "hud_24",
+      "producer": "0068cc70",
+      "manager_field": "8c",
+      "expected_id": 36,
+      "allocation_size": 88,
+      "constructor": null,
+      "native_constructor_inlined_in_init": true,
+      "construction_order": 19,
+      "primary_profile": "00cf7938",
+      "constructor_source": {
+        "path": "src/frontend_seg16_24_28_cc13.cpp",
+        "line": 664,
+        "signature": "void* small_hud_screen_construct(const SmallHudScreenShape&, Raw, Fe5Host&)",
+        "shape_address": "0068a2d0",
+        "shape_header": "include/bsp/frontend_seg16_24_28_cc13.hpp:1007"
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068d217",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "0068a320",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "0068a390",
+        "10": "0067b390",
+        "14": "004f7590",
+        "18": "0067baa0",
+        "1c": "0067b450",
+        "20": "0067b7e0",
+        "24": "004f75d0"
+      },
+      "primary_profile_disk_sha256": "e6c135147197443c28b4724b128329311134133fa0302697e77a7ef882ebd580",
+      "current00_native_bytes": "b824000000c3",
+      "current00_native_return": 36,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cf7920"
+      }
+    },
+    {
+      "family": "hud_2b",
+      "producer": "0068cc70",
+      "manager_field": "90",
+      "expected_id": 43,
+      "allocation_size": 144,
+      "constructor": "00540ba0",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 20,
+      "primary_profile": "00cedca8",
+      "constructor_source": {
+        "path": "src/frontend_seg15_22_cc13.cpp",
+        "line": 1551,
+        "signature": "Raw free_camera_construct_00540ba0(Raw s, Seg15Host& host)",
+        "profile_store_receipts": [
+          "s.at<std::uint32_t>(0x8) = 0x00CE3CD4;",
+          "s.at<std::uint32_t>(0x0) = 0x00CEDCA8;",
+          "s.at<std::uint32_t>(0x8) = 0x00CEDC90;"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068d252",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "00540360",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "00540c80",
+        "10": "00540fe0",
+        "14": "004f7590",
+        "18": "0053dd90",
+        "1c": "0053d280",
+        "20": "00540390",
+        "24": "00540380"
+      },
+      "primary_profile_disk_sha256": "9ec891b63aa32e093607372437beb3beaa16595f6ded6eb65dcf2f9ad51cccc6",
+      "current00_native_bytes": "b82b000000c3",
+      "current00_native_return": 43,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cedc90"
+      }
+    },
+    {
+      "family": "hud_2c",
+      "producer": "0068cc70",
+      "manager_field": "94",
+      "expected_id": 44,
+      "allocation_size": 40,
+      "constructor": "0054f8c0",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 21,
+      "primary_profile": "00cee408",
+      "constructor_source": {
+        "path": "src/frontend_seg16_24_28_cc13.cpp",
+        "line": 1955,
+        "signature": "void* idle_camera_screen_construct_0054f8c0(Raw screen, Fe5Host& host)",
+        "profile_store_receipts": [
+          "screen.at<std::uint32_t>(0x08) = kCallbackOwnerBaseVtable;",
+          "screen.at<std::uint32_t>(0x00) = 0x00CEE408;",
+          "screen.at<std::uint32_t>(0x08) = 0x00CEE3F0;"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068d28a",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "0054ecf0",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "0054efa0",
+        "10": "0054ed00",
+        "14": "004f7590",
+        "18": "0054f900",
+        "1c": "0054efc0",
+        "20": "00550410",
+        "24": "004f75d0"
+      },
+      "primary_profile_disk_sha256": "7f2cd8b8594753df93a2ad2a944830cf94f8534e188d76b609ff77885829236f",
+      "current00_native_bytes": "b82c000000c3",
+      "current00_native_return": 44,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cee3f0"
+      }
+    },
+    {
+      "family": "hud_36",
+      "producer": "0068cc70",
+      "manager_field": "98",
+      "expected_id": 54,
+      "allocation_size": 132,
+      "constructor": "005ce610",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 22,
+      "primary_profile": "00cf1968",
+      "constructor_source": {
+        "path": "src/frontend_seg15_22_cc13.cpp",
+        "line": 1779,
+        "signature": "Raw movie_camera_debug_construct_005ce610(Raw s, Seg15Host& host)",
+        "profile_store_receipts": [
+          "s.at<std::uint32_t>(0x8) = 0x00CE3CD4;",
+          "s.at<std::uint32_t>(0x0) = 0x00CF1968;",
+          "s.at<std::uint32_t>(0x8) = 0x00CF1950;"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068d2c5",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "005ce5b0",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "005ce6d0",
+        "10": "005cc770",
+        "14": "004f7590",
+        "18": "005cca80",
+        "1c": "005cc590",
+        "20": "005caf60",
+        "24": "005ce5d0"
+      },
+      "primary_profile_disk_sha256": "441097e9cd548f9620ea65ad438044987845016dfe5a0a09c9e38830324c85ca",
+      "current00_native_bytes": "b836000000c3",
+      "current00_native_return": 54,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cf1950"
+      }
+    },
+    {
+      "family": "hud_37",
+      "producer": "0068cc70",
+      "manager_field": "9c",
+      "expected_id": 55,
+      "allocation_size": 56,
+      "constructor": "005cc120",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 23,
+      "primary_profile": "00cf17a8",
+      "constructor_source": {
+        "path": "src/frontend_seg19_21_cc13.cpp",
+        "line": 742,
+        "signature": "void* hud_movie_screen_construct_005cc120(void* screen, Seg19_21Host& host)",
+        "profile_store_receipts": [
+          "s.at<std::uint32_t>(0x8) = 0x00CE3CD4u;",
+          "s.at<std::uint32_t>(0x0) = 0x00CF17A8u;",
+          "s.at<std::uint32_t>(0x8) = 0x00CF1790u;"
+        ]
+      },
+      "constructor_prior_ledger_status": "semantic_build_tested",
+      "registration_call": "0068d2fd",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "005cb070",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "005cbad0",
+        "10": "005cccb0",
+        "14": "004f7590",
+        "18": "005cd9c0",
+        "1c": "005cdb00",
+        "20": "005cbaf0",
+        "24": "005cdf30"
+      },
+      "primary_profile_disk_sha256": "6f3dc622615ba494bab55755b52cf250609178895ed4244bd8806d97abc93a04",
+      "current00_native_bytes": "b837000000c3",
+      "current00_native_return": 55,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cf1790"
+      }
+    },
+    {
+      "family": "hud_38",
+      "producer": "0068cc70",
+      "manager_field": "a0",
+      "expected_id": 56,
+      "allocation_size": 32,
+      "constructor": "005cb0a0",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 24,
+      "primary_profile": "00cf17d0",
+      "constructor_source": {
+        "path": "src/frontend_seg19_21_cc13.cpp",
+        "line": 539,
+        "signature": "void* hud_engine_movie_screen_construct_005cb0a0(void* screen, Seg19_21Host& host)",
+        "profile_store_receipts": [
+          "s.at<std::uint32_t>(0x0) = 0x00CF17D0u;"
+        ]
+      },
+      "constructor_prior_ledger_status": "semantic_build_tested",
+      "registration_call": "0068d335",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "005cb0d0",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "005cbd60",
+        "10": "005cce70",
+        "14": "004f7590",
+        "18": "005cdc50",
+        "1c": "005cdd70",
+        "20": "005cbd90",
+        "24": "005cdf40"
+      },
+      "primary_profile_disk_sha256": "599077d731c6067d222d967f23ec1d252f374de8560c1aa40d1b7dc3f4d4fc9e",
+      "current00_native_bytes": "b838000000c3",
+      "current00_native_return": 56,
+      "secondary_and_embedded_profile_writes": {}
+    },
+    {
+      "family": "hud_33",
+      "producer": "0068cc70",
+      "manager_field": "a4",
+      "expected_id": 51,
+      "allocation_size": 232,
+      "constructor": "005ba7b0",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 25,
+      "primary_profile": "00cf0ed8",
+      "constructor_source": {
+        "path": "src/cg_rebuild_b_cc13.cpp",
+        "line": 308,
+        "signature": "void* hud_narrative_screen_construct_005ba7b0(void* screen, CgRebuildBHost& host)",
+        "profile_store_receipts": [
+          "s.at<std::uint32_t>(0x00) = 0x00CF0ED8u;                          // 005BA7EF"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068d370",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "005b9e90",
+        "04": "005b9ea0",
+        "08": "004f7580",
+        "0c": "005ba480",
+        "10": "005bb130",
+        "14": "004f7590",
+        "18": "005b5bd0",
+        "1c": "005b5c00",
+        "20": "005bc920",
+        "24": "005bb0f0"
+      },
+      "primary_profile_disk_sha256": "940373060cf998b37f1c686bab22d101b324446db9e012fe4c35d6beab94a886",
+      "current00_native_bytes": "b833000000c3",
+      "current00_native_return": 51,
+      "secondary_and_embedded_profile_writes": {}
+    },
+    {
+      "family": "hud_34",
+      "producer": "0068cc70",
+      "manager_field": "a8",
+      "expected_id": 52,
+      "allocation_size": 124,
+      "constructor": "0054d680",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 26,
+      "primary_profile": "00cee290",
+      "constructor_source": {
+        "path": "src/pool_pool18_cc13.cpp",
+        "line": 151,
+        "signature": "void* hud_hints_screen_construct_0054d680(void* screen, Pool18Host& host)",
+        "profile_store_receipts": [
+          "at<std::uint32_t>(screen, 0) = 0x00CEE290u;                      // 0054D6C5"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068d3a8",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "0054d660",
+        "04": "0054d670",
+        "08": "004f7580",
+        "0c": "0054d840",
+        "10": "0054d860",
+        "14": "0054d980",
+        "18": "0054e380",
+        "1c": "0054e3d0",
+        "20": "0054e6b0",
+        "24": "0054e370"
+      },
+      "primary_profile_disk_sha256": "1bb558394f2fdf1458138daad13ffe8f7b7b3fefe3adafe4101f896b4e78a4a6",
+      "current00_native_bytes": "b834000000c3",
+      "current00_native_return": 52,
+      "secondary_and_embedded_profile_writes": {}
+    },
+    {
+      "family": "hud_23",
+      "producer": "0068cc70",
+      "manager_field": "ac",
+      "expected_id": 35,
+      "allocation_size": 44,
+      "constructor": "005178b0",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 27,
+      "primary_profile": "00cec194",
+      "constructor_source": {
+        "path": "src/frontend_seg12_17_cc13.cpp",
+        "line": 510,
+        "signature": "void* in_game_screen_23_construct_005178b0(Raw s, Fe3TemplateHost& host)",
+        "profile_store_receipts": [
+          "s.at<std::uint32_t>(8) = 0x00CE3CD4;",
+          "s.at<std::uint32_t>(0) = 0x00CEC194;",
+          "s.at<std::uint32_t>(8) = 0x00CEC17C;"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068d3e0",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "00517680",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "00517800",
+        "10": "005176a0",
+        "14": "004f7590",
+        "18": "00517820",
+        "1c": "00517860",
+        "20": "005178a0",
+        "24": "00517690"
+      },
+      "primary_profile_disk_sha256": "6e1f7adc73b742e619a23480b5f68346e31db0e7df8527bc205462caed7dd42c",
+      "current00_native_bytes": "b823000000c3",
+      "current00_native_return": 35,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cec17c"
+      }
+    },
+    {
+      "family": "hud_2f",
+      "producer": "0068cc70",
+      "manager_field": "b0",
+      "expected_id": 47,
+      "allocation_size": 36,
+      "constructor": null,
+      "native_constructor_inlined_in_init": true,
+      "construction_order": 28,
+      "primary_profile": "00cf79b8",
+      "constructor_source": {
+        "path": "src/frontend_seg16_24_28_cc13.cpp",
+        "line": 664,
+        "signature": "void* small_hud_screen_construct(const SmallHudScreenShape&, Raw, Fe5Host&)",
+        "shape_address": "0068a4a0",
+        "shape_header": "include/bsp/frontend_seg16_24_28_cc13.hpp:1007"
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068d440",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "0068a4e0",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "0068a550",
+        "10": "005211b0",
+        "14": "004f7590",
+        "18": "005212a0",
+        "1c": "005212e0",
+        "20": "00521240",
+        "24": "004f75d0"
+      },
+      "primary_profile_disk_sha256": "8f0a93a4e8e78f656f3650242b333ace5d77ced9a37d1e973972a55f52f63535",
+      "current00_native_bytes": "b82f000000c3",
+      "current00_native_return": 47,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cf79a0"
+      }
+    },
+    {
+      "family": "hud_49",
+      "producer": "0068cc70",
+      "manager_field": "b4",
+      "expected_id": 73,
+      "allocation_size": 12,
+      "constructor": "0067be30",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 29,
+      "primary_profile": "00cf6d68",
+      "constructor_source": {
+        "path": "src/ingame_gui_cc13.cpp",
+        "line": 164,
+        "signature": "Raw follow_screen_construct_0067be30(Raw s, HudScreenHost& host)",
+        "profile_store_receipts": [
+          "s.at<std::uint32_t>(0x0) = kFollowScreenVtable;"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068d478",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "0067be50",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "0067bed0",
+        "10": "0067be80",
+        "14": "0067bea0",
+        "18": "0067beb0",
+        "1c": "0067bec0",
+        "20": "0067bf00",
+        "24": "0067be60"
+      },
+      "primary_profile_disk_sha256": "69bc40252eaf0e7de7e9b232592a98321bfb4191324c7c7b03d5c7dce923ef19",
+      "current00_native_bytes": "b849000000c3",
+      "current00_native_return": 73,
+      "secondary_and_embedded_profile_writes": {}
+    },
+    {
+      "family": "hud_29",
+      "producer": "0068cc70",
+      "manager_field": "cc",
+      "expected_id": 41,
+      "allocation_size": 240,
+      "constructor": "00525a90",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 30,
+      "primary_profile": "00ceccf8",
+      "constructor_source": {
+        "path": "src/cg_rebuild_b_cc13.cpp",
+        "line": 168,
+        "signature": "void* vt_ceccf8_construct_00525a90(void* screen, CgRebuildBHost& host)",
+        "profile_store_receipts": [
+          "s.at<std::uint32_t>(0x08) = 0x00CECCC8u;                          // 00525ABF",
+          "s.at<std::uint32_t>(0x18) = 0x00CE3CD4u;                          // 00525AD3",
+          "s.at<std::uint32_t>(0x00) = 0x00CECCF8u;                          // 00525AE6",
+          "s.at<std::uint32_t>(0x08) = 0x00CECCECu;",
+          "s.at<std::uint32_t>(0x18) = 0x00CECCD4u;"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068d4c1",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "00524d10",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "00524f90",
+        "10": "00521670",
+        "14": "004f7590",
+        "18": "00524960",
+        "1c": "00521690",
+        "20": "00527260",
+        "24": "004f75d0"
+      },
+      "primary_profile_disk_sha256": "ff0915955e31772bd3ac03a0ba6e04c5bfa183bb2a5bf398f5d8d3078410cd4f",
+      "current00_native_bytes": "b829000000c3",
+      "current00_native_return": 41,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00ceccec",
+        "18": "00ceccd4"
+      }
+    },
+    {
+      "family": "hud_5a",
+      "producer": "0068cc70",
+      "manager_field": "d4",
+      "expected_id": 90,
+      "allocation_size": 52,
+      "constructor": "00636d90",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 31,
+      "primary_profile": "00cf569c",
+      "constructor_source": {
+        "path": "src/ingame_gui_cc13.cpp",
+        "line": 334,
+        "signature": "Raw scene_init_construct_00636d90(Raw s, HudScreenHost& host)",
+        "profile_store_receipts": [
+          "s.at<std::uint32_t>(0x8) = kCallbackOwnerBaseVtable;",
+          "s.at<std::uint32_t>(0x0) = kSceneInitVtable;",
+          "s.at<std::uint32_t>(0x8) = kSceneInitCallbackVtable;"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068d4fa",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "00636dc0",
+        "04": "00636de0",
+        "08": "00636dd0",
+        "0c": "00636f10",
+        "10": "00636f30",
+        "14": "004f7590",
+        "18": "00637080",
+        "1c": "00636d80",
+        "20": "00636e80",
+        "24": "00637470"
+      },
+      "primary_profile_disk_sha256": "b09957f9f7b86db394594f7d49b3897182f5bc3ef66183444c296d7dcbd85ba0",
+      "current00_native_bytes": "b85a000000c3",
+      "current00_native_return": 90,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cf5684"
+      }
+    },
+    {
+      "family": "hud_3c",
+      "producer": "0068cc70",
+      "manager_field": "d8",
+      "expected_id": 60,
+      "allocation_size": 356,
+      "constructor": "005ffcb0",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 32,
+      "primary_profile": "00cf3ef4",
+      "constructor_source": {
+        "path": "src/frontend_screens_cc13.cpp",
+        "line": 1757,
+        "signature": "void* hud_pause_screen_construct_005ffcb0(void* screen, PauseLifetimeHost& host)",
+        "profile_store_receipts": [
+          "write_field<std::uint32_t>(screen, 0x0, 0x00CF3EF4u);",
+          "write_field<std::uint32_t>(screen, 0x8, 0x00CF3EE0u);",
+          "write_field<std::uint32_t>(screen, 0xC, 0x00CF3EC0u);"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068d535",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "005ffa80",
+        "04": "005ffa90",
+        "08": "004f7580",
+        "0c": "005ffd80",
+        "10": "00602280",
+        "14": "004f7590",
+        "18": "00603120",
+        "1c": "005fd880",
+        "20": "00603ca0",
+        "24": "005ffac0"
+      },
+      "primary_profile_disk_sha256": "078b12dd684c5a3df62d3d3d64be3a1787c1e7c057b49d01ba9106bd707d71b1",
+      "current00_native_bytes": "b83c000000c3",
+      "current00_native_return": 60,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cf3ee0",
+        "c": "00cf3ec0"
+      }
+    },
+    {
+      "family": "hud_3d",
+      "producer": "0068cc70",
+      "manager_field": "dc",
+      "expected_id": 61,
+      "allocation_size": 12,
+      "constructor": "00604780",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 33,
+      "primary_profile": "00cf41a0",
+      "constructor_source": {
+        "path": "src/frontend_screens_cc13.cpp",
+        "line": 696,
+        "signature": "void* hud_pause_cheat_construct_00604780(void* screen, ScreenLifetimeHost& host)",
+        "profile_store_receipts": [
+          "write_field<std::uint32_t>(screen, 0x0, 0x00CF41A0u);"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068d56d",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "006047a0",
+        "04": "006047b0",
+        "08": "004f7580",
+        "0c": "00604870",
+        "10": "00604890",
+        "14": "004f7590",
+        "18": "006047c0",
+        "1c": "006047d0",
+        "20": "00604800",
+        "24": "00604950"
+      },
+      "primary_profile_disk_sha256": "8f1c75cbfa98ac31fa3f9f587e3e89496b351491e99a4a52b9b390d6ec8a99ce",
+      "current00_native_bytes": "b83d000000c3",
+      "current00_native_return": 61,
+      "secondary_and_embedded_profile_writes": {}
+    },
+    {
+      "family": "hud_5e",
+      "producer": "0068cc70",
+      "manager_field": "e0",
+      "expected_id": 94,
+      "allocation_size": 72,
+      "constructor": "0060fd90",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 34,
+      "primary_profile": "00cf4b98",
+      "constructor_source": {
+        "path": "src/seg25_cc13.cpp",
+        "line": 165,
+        "signature": "void* hud_scoring_screen_construct_0060fd90(void* screen, Seg25Host& host)",
+        "profile_store_receipts": [
+          "s.at<std::uint32_t>(0x8) = 0x00CEB0FCu;",
+          "s.at<std::uint32_t>(0xC) = 0x00CEB110u;",
+          "s.at<std::uint32_t>(0x0) = 0x00CF4B98u;",
+          "s.at<std::uint32_t>(0x8) = 0x00CF4B84u;",
+          "s.at<std::uint32_t>(0xC) = 0x00CF4B64u;"
+        ]
+      },
+      "constructor_prior_ledger_status": "semantic_build_tested",
+      "registration_call": "0068d5a5",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "0060fe00",
+        "04": "0060fe20",
+        "08": "004f7580",
+        "0c": "0060ffa0",
+        "10": "0060d740",
+        "14": "0060f210",
+        "18": "00610070",
+        "1c": "0060d980",
+        "20": "0060e440",
+        "24": "0060fe40"
+      },
+      "primary_profile_disk_sha256": "00e178bd7a7c16b5a294912c88b9148df196e496e12c9bf51072dc8b1d6b2c92",
+      "current00_native_bytes": "b85e000000c3",
+      "current00_native_return": 94,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cf4b84",
+        "c": "00cf4b64"
+      }
+    },
+    {
+      "family": "hud_19",
+      "producer": "0068cc70",
+      "manager_field": "e4",
+      "expected_id": 25,
+      "allocation_size": 40,
+      "constructor": "005d3540",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 35,
+      "primary_profile": "00cf1d70",
+      "constructor_source": {
+        "path": "src/frontend_seg15_22_cc13.cpp",
+        "line": 2278,
+        "signature": "Raw pause_multi_construct_005d3540(Raw s, Seg15Host& host)",
+        "profile_store_receipts": [
+          "s.at<std::uint32_t>(0x8) = kListboxListenerBaseVtable;",
+          "s.at<std::uint32_t>(0xC) = kWidgetListenerBaseVtable;",
+          "s.at<std::uint32_t>(0x0) = 0x00CF1D70;",
+          "s.at<std::uint32_t>(0x8) = 0x00CF1D5C;",
+          "s.at<std::uint32_t>(0xC) = 0x00CF1D3C;"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068d5dd",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "005d3580",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "005d3880",
+        "10": "005d38a0",
+        "14": "004f7590",
+        "18": "005d3b40",
+        "1c": "005d3960",
+        "20": "005d3f20",
+        "24": "005d3990"
+      },
+      "primary_profile_disk_sha256": "ce20f70e1fdd3ac1d9d094707fbcffd4af6da8543fa830183ae4dd000d354024",
+      "current00_native_bytes": "b819000000c3",
+      "current00_native_return": 25,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cf1d5c",
+        "c": "00cf1d3c"
+      }
+    },
+    {
+      "family": "hud_32",
+      "producer": "0068cc70",
+      "manager_field": "e8",
+      "expected_id": 50,
+      "allocation_size": 28,
+      "constructor": "00565d40",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 36,
+      "primary_profile": "00ceebac",
+      "constructor_source": {
+        "path": "src/frontend_seg12_17_cc13.cpp",
+        "line": 173,
+        "signature": "void* hud_limbo_construct_00565d40(Raw s, Fe3Host& host)",
+        "profile_store_receipts": [
+          "s.at<std::uint32_t>(0) = 0x00CEEBAC;"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068d615",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "00565d60",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "00565ec0",
+        "10": "00565ee0",
+        "14": "004f7590",
+        "18": "00566080",
+        "1c": "00565d70",
+        "20": "00565e00",
+        "24": "00565fa0"
+      },
+      "primary_profile_disk_sha256": "74d9d43294e4c9040fded556768f30126a27494009b40db3b7e8f22ebecb1f9e",
+      "current00_native_bytes": "b832000000c3",
+      "current00_native_return": 50,
+      "secondary_and_embedded_profile_writes": {}
+    },
+    {
+      "family": "hud_43",
+      "producer": "0068cc70",
+      "manager_field": "b8",
+      "expected_id": 67,
+      "allocation_size": 24,
+      "constructor": "00643da0",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 37,
+      "primary_profile": "00cf5998",
+      "constructor_source": {
+        "path": "src/ingame_gui_cc13.cpp",
+        "line": 292,
+        "signature": "Raw spectator_construct_00643da0(Raw s, HudScreenHost& host)",
+        "profile_store_receipts": [
+          "s.at<std::uint32_t>(0x0) = kSpectatorScreenVtable;"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068d64d",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "00643dc0",
+        "04": "00643dd0",
+        "08": "004f7580",
+        "0c": "00643e60",
+        "10": "00643e80",
+        "14": "004f7590",
+        "18": "00643f40",
+        "1c": "00643de0",
+        "20": "00643df0",
+        "24": "00644060"
+      },
+      "primary_profile_disk_sha256": "3c800f622ff1ac5e733f9f57762f5f7abaea8b459f86b01f203bbe339a6c551f",
+      "current00_native_bytes": "b843000000c3",
+      "current00_native_return": 67,
+      "secondary_and_embedded_profile_writes": {}
+    },
+    {
+      "family": "hud_4e",
+      "producer": "0068cc70",
+      "manager_field": "bc",
+      "expected_id": 78,
+      "allocation_size": 1152,
+      "constructor": "006735d0",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 38,
+      "primary_profile": "00cf6b44",
+      "constructor_source": {
+        "path": "src/seg27_cc13.cpp",
+        "line": 925,
+        "signature": "Raw support_manager_screen_construct_006735d0(Raw s, SupportScreenConstructHost& host)",
+        "profile_store_receipts": [
+          "s.at<std::uint32_t>(0x00) = kSupportManagerScreenVtable;",
+          "s.at<std::uint32_t>(0x208) = 0x00CE75CCu;",
+          "s.at<std::uint32_t>(0x224) = 0x00CF6544u;",
+          "s.at<std::uint32_t>(0x258) = 0x00CE3CF0u;"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068d688",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "006730f0",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "006739f0",
+        "10": "0066ea60",
+        "14": "0065daa0",
+        "18": "00674b80",
+        "1c": "00662470",
+        "20": "00675c40",
+        "24": "00673100"
+      },
+      "primary_profile_disk_sha256": "cce8993e4f7491b92e7dd7af5cf78f8d097c5f1133cf2764df298577dd32321c",
+      "current00_native_bytes": "b84e000000c3",
+      "current00_native_return": 78,
+      "secondary_and_embedded_profile_writes": {
+        "208": "00ce75cc",
+        "224": "00cf6544",
+        "258": "00ce3cf0"
+      }
+    },
+    {
+      "family": "hud_4f",
+      "producer": "0068cc70",
+      "manager_field": "c0",
+      "expected_id": 79,
+      "allocation_size": 624,
+      "constructor": "0061a480",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 39,
+      "primary_profile": "00cf4dec",
+      "constructor_source": {
+        "path": "src/seg25_cc13.cpp",
+        "line": 403,
+        "signature": "void* powerup_manager_construct_0061a480(void* screen, Seg25Host& host)",
+        "profile_store_receipts": [
+          "s.at<std::uint32_t>(0x8) = 0x00CF4C3Cu;",
+          "s.at<std::uint32_t>(0x0) = 0x00CF4DECu;",
+          "s.at<std::uint32_t>(0x8) = 0x00CF4DE8u;"
+        ]
+      },
+      "constructor_prior_ledger_status": "semantic_build_tested",
+      "registration_call": "0068d6c3",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "00619160",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "0061a6a0",
+        "10": "00614170",
+        "14": "00614600",
+        "18": "0061b850",
+        "1c": "006169f0",
+        "20": "0061bea0",
+        "24": "00619170"
+      },
+      "primary_profile_disk_sha256": "35a700339511fa125c4d1943d62ff1b065cee22d7870f06286a8cfbef8c13c52",
+      "current00_native_bytes": "b84f000000c3",
+      "current00_native_return": 79,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cf4de8"
+      }
+    },
+    {
+      "family": "hud_50",
+      "producer": "0068cc70",
+      "manager_field": "c4",
+      "expected_id": 80,
+      "allocation_size": 124,
+      "constructor": "006821c0",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 40,
+      "primary_profile": "00cf7184",
+      "constructor_source": {
+        "path": "src/cg_rebuild_c_cc13.cpp",
+        "line": 235,
+        "signature": "void* vt_cf7184_construct_006821c0(void* screen, CgRebuildCHost& host)",
+        "profile_store_receipts": [
+          "field<std::uint32_t>(screen, 0) = 0x00CF7184u;                          // state 0"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068d6fb",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "00682140",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "006823a0",
+        "10": "00682740",
+        "14": "006823c0",
+        "18": "00681e60",
+        "1c": "00682150",
+        "20": "00683020",
+        "24": "00682ec0"
+      },
+      "primary_profile_disk_sha256": "fbb4f5a50d72c4a90d49432891ce6470793763df14ed8af9a76d842b345dedbb",
+      "current00_native_bytes": "b850000000c3",
+      "current00_native_return": 80,
+      "secondary_and_embedded_profile_writes": {}
+    },
+    {
+      "family": "hud_51",
+      "producer": "0068cc70",
+      "manager_field": "c8",
+      "expected_id": 81,
+      "allocation_size": 44,
+      "constructor": "0052b030",
+      "native_constructor_inlined_in_init": false,
+      "construction_order": 41,
+      "primary_profile": "00ced0ac",
+      "constructor_source": {
+        "path": "src/frontend_seg15_22_cc13.cpp",
+        "line": 468,
+        "signature": "Raw hud_counters_construct_0052b030(Raw s, Seg15Host& host)",
+        "profile_store_receipts": [
+          "s.at<std::uint32_t>(0x0) = kHudCountersVtable;"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068d733",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained InGameInterface manager; Init publishes raw field before current+10; teardown0068B630/0068BC60 performs hide/clear/commit pass then scalar delete pass; semantic screen_constructed bool array is not raw custody",
+      "slots": {
+        "00": "0052b060",
+        "04": "0052b070",
+        "08": "004f7580",
+        "0c": "0052d1b0",
+        "10": "0052cbf0",
+        "14": "00528c60",
+        "18": "00528c40",
+        "1c": "00528c50",
+        "20": "0052baa0",
+        "24": "0052d1d0"
+      },
+      "primary_profile_disk_sha256": "e5be520a948a4a0740146c9ab05daad193ed5490800ef1dd1db988278962d5a8",
+      "current00_native_bytes": "b851000000c3",
+      "current00_native_return": 81,
+      "secondary_and_embedded_profile_writes": {}
+    },
+    {
+      "family": "main_01",
+      "producer": "00686380",
+      "manager_field": "00E198AC+58h",
+      "expected_id": 1,
+      "allocation_size": 1400,
+      "constructor": "005902e0",
+      "primary_profile": "00cefc5c",
+      "constructor_source": {
+        "path": "src/pool_pool18_cc13.cpp",
+        "line": 182,
+        "signature": "void* main_menu_screen_construct_005902e0(void* screen, Pool18Host& host)",
+        "profile_store_receipts": [
+          "at<std::uint32_t>(s, 0x08) = 0x00CEB0FCu;                        // 0059030A",
+          "at<std::uint32_t>(s, 0x40) = 0x00CEB110u;                        // 00590320",
+          "at<std::uint32_t>(s, 0x00) = 0x00CEFC5Cu;",
+          "at<std::uint32_t>(s, 0x08) = 0x00CEFC48u;",
+          "at<std::uint32_t>(s, 0x0C) = 0x00CEFC24u;",
+          "at<std::uint32_t>(s, 0x40) = 0x00CEFC04u;                        // 0059033A",
+          "at<std::uint32_t>(s, 0x3C4) = 0x00CECA24u;                       // 00590492",
+          "at<std::uint32_t>(s, 0x414) = 0x00CEFC00u;                       // 005904B4"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "00686708",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained MainMenu manager fields+58..70; genuine operator_new then constructor then stored field/current+10; semantic add_screen/MenuScreen flags/pages are not these allocations",
+      "slots": {
+        "00": "00590570",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "00590d60",
+        "10": "00582f30",
+        "14": "005861b0",
+        "18": "005987f0",
+        "1c": "0058f560",
+        "20": "00599db0",
+        "24": "005905e0"
+      },
+      "primary_profile_disk_sha256": "16fd353e70344c47a7267afd0bffc457fca7f35cfede06a8532230303932da6c",
+      "current00_native_bytes": "b801000000c3",
+      "current00_native_return": 1,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cefc48",
+        "c": "00cefc24",
+        "40": "00cefc04"
+      }
+    },
+    {
+      "family": "main_02",
+      "producer": "00686380",
+      "manager_field": "00E198AC+5Ch",
+      "expected_id": 2,
+      "allocation_size": 52,
+      "constructor": "005ca880",
+      "primary_profile": "00cf170c",
+      "constructor_source": {
+        "path": "src/frontend_seg19_21_cc13.cpp",
+        "line": 466,
+        "signature": "void* mission_tree_screen_construct_005ca880(void* screen, Seg19_21Host& host)",
+        "profile_store_receipts": [
+          "s.at<std::uint32_t>(0x8) = 0x00CEB0FCu;",
+          "s.at<std::uint32_t>(0x0) = 0x00CF170Cu;",
+          "s.at<std::uint32_t>(0x8) = 0x00CF16F8u;"
+        ]
+      },
+      "constructor_prior_ledger_status": "semantic_build_tested",
+      "registration_call": "0068674a",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained MainMenu manager fields+58..70; genuine operator_new then constructor then stored field/current+10; semantic add_screen/MenuScreen flags/pages are not these allocations",
+      "slots": {
+        "00": "005ca8e0",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "005caa20",
+        "10": "005caaf0",
+        "14": "004f7590",
+        "18": "005c27f0",
+        "1c": "005c2800",
+        "20": "005c4040",
+        "24": "004f75d0"
+      },
+      "primary_profile_disk_sha256": "1b42fa1175b9c39448526ece8e4435df5b926291b35a6f2fc78301386e1272a4",
+      "current00_native_bytes": "b802000000c3",
+      "current00_native_return": 2,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cf16f8"
+      }
+    },
+    {
+      "family": "main_04",
+      "producer": "00686380",
+      "manager_field": "00E198AC+60h",
+      "expected_id": 4,
+      "allocation_size": 608,
+      "constructor": "00626630",
+      "primary_profile": "00cf50cc",
+      "constructor_source": {
+        "path": "src/ingame_gui_cc13.cpp",
+        "line": 1215,
+        "signature": "Raw rewards_construct_00626630(Raw s, RewardsScreenHost& host)",
+        "profile_store_receipts": [
+          "s.at<std::uint32_t>(0x8) = kListboxListenerBaseVtable;",
+          "s.at<std::uint32_t>(0xC) = kWidgetListenerBaseVtable;",
+          "s.at<std::uint32_t>(0x0) = kRewardsVtable;",
+          "s.at<std::uint32_t>(0x8) = kRewardsCallbackVtable;",
+          "s.at<std::uint32_t>(0xC) = kRewardsListenerVtable;"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068678f",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained MainMenu manager fields+58..70; genuine operator_new then constructor then stored field/current+10; semantic add_screen/MenuScreen flags/pages are not these allocations",
+      "slots": {
+        "00": "00626710",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "00627800",
+        "10": "00629d10",
+        "14": "0061fbe0",
+        "18": "0062c2c0",
+        "1c": "00621720",
+        "20": "0062b640",
+        "24": "00626760"
+      },
+      "primary_profile_disk_sha256": "5ba87c29c13d9f811ab8b01459b078771a2c825dbfc2c5a15859f33754ce8de1",
+      "current00_native_bytes": "b804000000c3",
+      "current00_native_return": 4,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cf50b8",
+        "c": "00cf5098"
+      }
+    },
+    {
+      "family": "main_03",
+      "producer": "00686380",
+      "manager_field": "00E198AC+64h",
+      "expected_id": 3,
+      "allocation_size": 312,
+      "constructor": "0051e4d0",
+      "primary_profile": "00cec948",
+      "constructor_source": {
+        "path": "src/segs_13_15_22_44_cc13.cpp",
+        "line": 349,
+        "signature": "Raw briefing_construct_0051e4d0(Raw screen, SegBHost& host)",
+        "profile_store_receipts": [
+          "screen.at<std::uint32_t>(0x8) = kListboxListenerBaseVtable;",
+          "screen.at<std::uint32_t>(0xC) = kWidgetListenerBaseVtable;",
+          "screen.at<std::uint32_t>(0x0) = kBriefingVtable;",
+          "screen.at<std::uint32_t>(0x8) = kBriefingListboxListenerVtable;",
+          "screen.at<std::uint32_t>(0xC) = kBriefingWidgetListenerVtable;"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "006867d4",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained MainMenu manager fields+58..70; genuine operator_new then constructor then stored field/current+10; semantic add_screen/MenuScreen flags/pages are not these allocations",
+      "slots": {
+        "00": "0051e250",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "0051e5f0",
+        "10": "0051e280",
+        "14": "004f7590",
+        "18": "0051cde0",
+        "1c": "0051b1b0",
+        "20": "0051c7d0",
+        "24": "0051e270"
+      },
+      "primary_profile_disk_sha256": "0f4ebd9505e5fd75f32b915dc2a8ed28b1cf45e913ac7aa4dd2e26d1698ec625",
+      "current00_native_bytes": "b803000000c3",
+      "current00_native_return": 3,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cec934",
+        "c": "00cec914"
+      }
+    },
+    {
+      "family": "main_08",
+      "producer": "00686380",
+      "manager_field": "00E198AC+68h",
+      "expected_id": 8,
+      "allocation_size": 92,
+      "constructor": "0052fce0",
+      "primary_profile": "00ced200",
+      "constructor_source": {
+        "path": "src/frontend_seg15_22_cc13.cpp",
+        "line": 902,
+        "signature": "Raw credits_construct_0052fce0(Raw s, Seg15Host& host)",
+        "profile_store_receipts": [
+          "s.at<std::uint32_t>(0x8) = kWidgetListenerBaseVtable;",
+          "s.at<std::uint32_t>(0x0) = 0x00CED200;",
+          "s.at<std::uint32_t>(0x8) = 0x00CED1E0;"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "00686816",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained MainMenu manager fields+58..70; genuine operator_new then constructor then stored field/current+10; semantic add_screen/MenuScreen flags/pages are not these allocations",
+      "slots": {
+        "00": "0052fd60",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "0052fef0",
+        "10": "0052ffc0",
+        "14": "004f7590",
+        "18": "0052ee30",
+        "1c": "0052e150",
+        "20": "0052e4b0",
+        "24": "0052fd70"
+      },
+      "primary_profile_disk_sha256": "beec1dd0595014132426e68a6b22203881f14f9b82c05d1a6a4deb2e808d0df0",
+      "current00_native_bytes": "b808000000c3",
+      "current00_native_return": 8,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00ced1e0"
+      }
+    },
+    {
+      "family": "main_0a",
+      "producer": "00686380",
+      "manager_field": "00E198AC+6Ch",
+      "expected_id": 10,
+      "allocation_size": 364,
+      "constructor": "00563370",
+      "primary_profile": "00cee9cc",
+      "constructor_source": {
+        "path": "src/frontend_seg12_17_cc13.cpp",
+        "line": 742,
+        "signature": "void* leaderboards_construct_00563370(Raw s, Fe3ScreenHost& host)",
+        "profile_store_receipts": [
+          "s.at<std::uint32_t>(8) = 0x00CEB0FC;",
+          "s.at<std::uint32_t>(0xC) = 0x00CEB110;",
+          "s.at<std::uint32_t>(0) = 0x00CEE9CC;",
+          "s.at<std::uint32_t>(8) = 0x00CEE9B8;",
+          "s.at<std::uint32_t>(0xC) = 0x00CEE998;"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "0068685b",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained MainMenu manager fields+58..70; genuine operator_new then constructor then stored field/current+10; semantic add_screen/MenuScreen flags/pages are not these allocations",
+      "slots": {
+        "00": "005633f0",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "005635d0",
+        "10": "00564220",
+        "14": "004f7590",
+        "18": "00562750",
+        "1c": "00560fe0",
+        "20": "00565540",
+        "24": "00563430"
+      },
+      "primary_profile_disk_sha256": "0cdd3fb156979bcdd0286a8860166a84a60103fd1d705e4fbda723cbee3e50ba",
+      "current00_native_bytes": "b80a000000c3",
+      "current00_native_return": 10,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cee9b8",
+        "c": "00cee998"
+      }
+    },
+    {
+      "family": "main_0b",
+      "producer": "00686380",
+      "manager_field": "00E198AC+70h",
+      "expected_id": 11,
+      "allocation_size": 1488,
+      "constructor": "005098b0",
+      "primary_profile": "00ceb9b4",
+      "constructor_source": {
+        "path": "src/pool_pool17_cc13.cpp",
+        "line": 181,
+        "signature": "void* tactical_library_screen_construct_005098b0(Pool17Host& host, void* screen)",
+        "profile_store_receipts": [
+          "at<std::uint32_t>(screen, 0x64) = 0x00CEB0FC;",
+          "at<std::uint32_t>(screen, 0x68) = 0x00CEB110;",
+          "at<std::uint32_t>(screen, 0x0) = 0x00CEB9B4;",
+          "at<std::uint32_t>(screen, 0x8) = 0x00CEB9B0;",
+          "at<std::uint32_t>(screen, 0x64) = 0x00CEB99C;",
+          "at<std::uint32_t>(screen, 0x68) = 0x00CEB97C;"
+        ]
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested",
+      "registration_call": "006868a0",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "actual retained MainMenu manager fields+58..70; genuine operator_new then constructor then stored field/current+10; semantic add_screen/MenuScreen flags/pages are not these allocations",
+      "slots": {
+        "00": "00509d60",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "0050d8e0",
+        "10": "0050fdb0",
+        "14": "004fe870",
+        "18": "00511f40",
+        "1c": "0050b2d0",
+        "20": "005162b0",
+        "24": "00509da0"
+      },
+      "primary_profile_disk_sha256": "b371d5ddbc1aa97d6a07d89120fb4e2c1dcb69fc9d13d138f606be939df8fa69",
+      "current00_native_bytes": "b80b000000c3",
+      "current00_native_return": 11,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00ceb9b0",
+        "64": "00ceb99c",
+        "68": "00ceb97c"
+      }
+    },
+    {
+      "family": "press_start",
+      "producer": "0068d8d0",
+      "manager_field": "title+40",
+      "expected_id": 92,
+      "allocation_size": 24,
+      "constructor": "0067c840",
+      "primary_profile": "00cf6d90",
+      "constructor_source": {
+        "path": "src/press_start_screen.cpp",
+        "line": 44,
+        "signature": "PressStartScreen& construct_press_start_screen_0067c840(PressStartScreen& screen) noexcept",
+        "profile_store_receipts": []
+      },
+      "constructor_prior_ledger_status": "reconstructed_ledger_backfilled_from_source",
+      "source_qualification": "typed semantic constructor/register/destructor/pump object; raw18 allocation/prefix/current dispatch not supplied by that interface",
+      "registration_call": "0068d966",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "title state allocation stored+40 before null test; actual scalar0067CA60 -> destructor0067C9E0 -> raw004F71A0 -> free when flags bit0; retain same allocation through current+10/+18/+20/+24 and title teardown",
+      "slots": {
+        "00": "0067c860",
+        "04": "004f7570",
+        "08": "004f7580",
+        "0c": "0067ca60",
+        "10": "0067ca80",
+        "14": "004f7590",
+        "18": "0067cb40",
+        "1c": "0067c870",
+        "20": "0067cfb0",
+        "24": "0067d860"
+      },
+      "primary_profile_disk_sha256": "d43a5f841e55e6760f58deffa61a8dae2cc2bad5fc404a6c1c7b7468a4b57ceb",
+      "current00_native_bytes": "b85c000000c3",
+      "current00_native_return": 92,
+      "secondary_and_embedded_profile_writes": {}
+    },
+    {
+      "family": "frame",
+      "producer": "004c1ac0",
+      "manager_field": "00e18d80 publication; lifetime receiver+8",
+      "expected_id": 12,
+      "allocation_size": 356,
+      "constructor": "00517d10",
+      "primary_profile": "00cec39c",
+      "constructor_source": {
+        "path": "src/native_front_end_frame_construction.cpp",
+        "line": 20,
+        "signature": "void* construct_native_front_end_frame_00517d10(void*)"
+      },
+      "constructor_prior_ledger_status": "already admitted complete actual-prefix Source",
+      "construction_profile_writes": [
+        "004F7180: +0=CEAE54, byte+4=0,byte+5=0",
+        "00517D10: +8=CEC388, +0=CEC39C, +8=CEC398"
+      ],
+      "registration_call": "004dd764",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "existing actual getter and same manager; current secondaryCEC398/+0 is517D50 adjust-8 -> current scalar517EB0/full517D90; sibling closes Frame/Page epoch services;517D60 is destructor of base construction profile, not creator",
+      "slots": {
+        "00": "00517d30",
+        "04": "00517d40",
+        "08": "004f7580",
+        "0c": "00517eb0",
+        "10": "00517ed0",
+        "14": "004f7590",
+        "18": "004f75a0",
+        "1c": "004f75b0",
+        "20": "004f75c0",
+        "24": "00518e00"
+      },
+      "primary_profile_disk_sha256": "a1ee8fb3ef03da5e760b9270a25768422c6db7d8808716826e2cf2eda11ae287",
+      "current00_native_bytes": "b80c000000c3",
+      "current00_native_return": 12,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00cec398"
+      }
+    },
+    {
+      "family": "menu_prompt",
+      "producer": "00425d10",
+      "manager_field": "00e18e6c publication; lifetime receiver+0c",
+      "expected_id": 85,
+      "allocation_size": 656,
+      "constructor": "00533120",
+      "primary_profile": "00ced3c4",
+      "constructor_source": {
+        "path": "src/frontend_prompts.cpp",
+        "line": 66,
+        "signature": "void construct_prompt_screen_00533120(FrontEndPromptScreen&,NativeStringStorage&)"
+      },
+      "constructor_prior_ledger_status": "reconstructed_build_tested_host_projection",
+      "source_qualification": "genuine raw constructor513ops and getter56ops not supplied; raw register005311C0 and destructor005321F0 already in frontend_seg15_22_cc13.cpp",
+      "registration_call": "004dd756",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "genuine double-checked getter publication before singleton registration; register actual+0C even on null route; same manager+guard; full exception cleanup; secondaryCED3AC must adjust-0C through actual scalar00532A00/destructor005321F0; release Page/list/records/vectors before base unregister",
+      "slots": {
+        "00": "00532310",
+        "04": "00532320",
+        "08": "004f7580",
+        "0c": "00532a00",
+        "10": "005311c0",
+        "14": "004f7590",
+        "18": "00531380",
+        "1c": "00530970",
+        "20": "00532dc0",
+        "24": "00532350"
+      },
+      "primary_profile_disk_sha256": "b9fd4df4de5b04c5c111c67238434a19f0ee6a09f46490f749555e13d177c40d",
+      "current00_native_bytes": "b855000000c3",
+      "current00_native_return": 85,
+      "secondary_and_embedded_profile_writes": {
+        "8": "00ced3b0",
+        "c": "00ced3ac",
+        "10": "00ced38c"
+      }
+    },
+    {
+      "family": "command_owner_on_init",
+      "producer": "004e3aa0",
+      "manager_field": "00e1930c",
+      "expected_id": 88,
+      "allocation_size": 172,
+      "constructor": "0054a8d0",
+      "primary_profile": "00cedfdc",
+      "constructor_source": {
+        "path": "docs/MAIN_MENU_COMMAND_OWNER.md",
+        "qualification": "analyzed_only actual ctor; src/main_menu_command_owner.cpp is semantic owner/binder"
+      },
+      "constructor_prior_ledger_status": "analyzed_only",
+      "raw_root_adopted": false,
+      "allocation_and_retirement_owner": "separate actual OnInit-owned allocation; not MenuPrompt00425D10/00E18E6C; requires genuine raw callback+1C/storage before current0054C050 binder adoption",
+      "slots": {
+        "00": "0054a960",
+        "04": "0054a970",
+        "08": "004f7580",
+        "0c": "0054abf0",
+        "10": "0054c050",
+        "14": "004f7590",
+        "18": "00549fc0",
+        "1c": "00549570",
+        "20": "00549580",
+        "24": "0054b500"
+      },
+      "primary_profile_disk_sha256": "fe6435946dfe885c985044caf8bf67e4d7500e82be1b24bd1b746aa91f4f0c4c",
+      "current00_native_bytes": "b858000000c3",
+      "current00_native_return": 88,
+      "secondary_and_embedded_profile_writes": {}
+    }
+  ],
+  "native_registration_calls": {
+    "00686380": [
+      {
+        "call": "00686708",
+        "load": "00686700",
+        "native_stack_arguments": 0,
+        "context": [
+          "006866f5: JMP 0x006866f9 ",
+          "006866f7: XOR EAX,EAX ",
+          "006866f9: MOV dword ptr [ESI + 0x58],EAX ",
+          "006866fc: MOV EDX,dword ptr [EAX] ",
+          "006866fe: MOV ECX,EAX ",
+          "00686700: MOV EAX,dword ptr [EDX + 0x10] ",
+          "00686703: MOV byte ptr [ESP + 0x68],0x2 ",
+          "00686708: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068674a",
+        "load": "00686742",
+        "native_stack_arguments": 0,
+        "context": [
+          "00686737: JMP 0x0068673b ",
+          "00686739: XOR EAX,EAX ",
+          "0068673b: MOV dword ptr [ESI + 0x5c],EAX ",
+          "0068673e: MOV EDX,dword ptr [EAX] ",
+          "00686740: MOV ECX,EAX ",
+          "00686742: MOV EAX,dword ptr [EDX + 0x10] ",
+          "00686745: MOV byte ptr [ESP + 0x68],0x2 ",
+          "0068674a: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068678f",
+        "load": "00686787",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068677c: JMP 0x00686780 ",
+          "0068677e: XOR EAX,EAX ",
+          "00686780: MOV dword ptr [ESI + 0x60],EAX ",
+          "00686783: MOV EDX,dword ptr [EAX] ",
+          "00686785: MOV ECX,EAX ",
+          "00686787: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068678a: MOV byte ptr [ESP + 0x68],0x2 ",
+          "0068678f: CALL EAX "
+        ]
+      },
+      {
+        "call": "006867d4",
+        "load": "006867cc",
+        "native_stack_arguments": 0,
+        "context": [
+          "006867c1: JMP 0x006867c5 ",
+          "006867c3: XOR EAX,EAX ",
+          "006867c5: MOV dword ptr [ESI + 0x64],EAX ",
+          "006867c8: MOV EDX,dword ptr [EAX] ",
+          "006867ca: MOV ECX,EAX ",
+          "006867cc: MOV EAX,dword ptr [EDX + 0x10] ",
+          "006867cf: MOV byte ptr [ESP + 0x68],0x2 ",
+          "006867d4: CALL EAX "
+        ]
+      },
+      {
+        "call": "00686816",
+        "load": "0068680e",
+        "native_stack_arguments": 0,
+        "context": [
+          "00686803: JMP 0x00686807 ",
+          "00686805: XOR EAX,EAX ",
+          "00686807: MOV dword ptr [ESI + 0x68],EAX ",
+          "0068680a: MOV EDX,dword ptr [EAX] ",
+          "0068680c: MOV ECX,EAX ",
+          "0068680e: MOV EAX,dword ptr [EDX + 0x10] ",
+          "00686811: MOV byte ptr [ESP + 0x68],0x2 ",
+          "00686816: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068685b",
+        "load": "00686853",
+        "native_stack_arguments": 0,
+        "context": [
+          "00686848: JMP 0x0068684c ",
+          "0068684a: XOR EAX,EAX ",
+          "0068684c: MOV dword ptr [ESI + 0x6c],EAX ",
+          "0068684f: MOV EDX,dword ptr [EAX] ",
+          "00686851: MOV ECX,EAX ",
+          "00686853: MOV EAX,dword ptr [EDX + 0x10] ",
+          "00686856: MOV byte ptr [ESP + 0x68],0x2 ",
+          "0068685b: CALL EAX "
+        ]
+      },
+      {
+        "call": "006868a0",
+        "load": "00686898",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068688d: JMP 0x00686891 ",
+          "0068688f: XOR EAX,EAX ",
+          "00686891: MOV dword ptr [ESI + 0x70],EAX ",
+          "00686894: MOV EDX,dword ptr [EAX] ",
+          "00686896: MOV ECX,EAX ",
+          "00686898: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068689b: MOV byte ptr [ESP + 0x68],0x2 ",
+          "006868a0: CALL EAX "
+        ]
+      }
+    ],
+    "0068cc70": [
+      {
+        "call": "0068cd3f",
+        "load": "0068cd38",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068cd2d: JMP 0x0068cd31 ",
+          "0068cd2f: XOR EAX,EAX ",
+          "0068cd31: MOV dword ptr [ESI + 0x40],EAX ",
+          "0068cd34: MOV EDX,dword ptr [EAX] ",
+          "0068cd36: MOV ECX,EAX ",
+          "0068cd38: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068cd3b: MOV dword ptr [ESP + 0x20],EBP ",
+          "0068cd3f: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068cd74",
+        "load": "0068cd6d",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068cd62: JMP 0x0068cd66 ",
+          "0068cd64: XOR EAX,EAX ",
+          "0068cd66: MOV dword ptr [ESI + 0x44],EAX ",
+          "0068cd69: MOV EDX,dword ptr [EAX] ",
+          "0068cd6b: MOV ECX,EAX ",
+          "0068cd6d: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068cd70: MOV dword ptr [ESP + 0x20],EBP ",
+          "0068cd74: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068cdac",
+        "load": "0068cda5",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068cd9a: JMP 0x0068cd9e ",
+          "0068cd9c: XOR EAX,EAX ",
+          "0068cd9e: MOV dword ptr [ESI + 0x48],EAX ",
+          "0068cda1: MOV EDX,dword ptr [EAX] ",
+          "0068cda3: MOV ECX,EAX ",
+          "0068cda5: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068cda8: MOV dword ptr [ESP + 0x20],EBP ",
+          "0068cdac: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068cde1",
+        "load": "0068cdda",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068cdcf: JMP 0x0068cdd3 ",
+          "0068cdd1: XOR EAX,EAX ",
+          "0068cdd3: MOV dword ptr [ESI + 0x4c],EAX ",
+          "0068cdd6: MOV EDX,dword ptr [EAX] ",
+          "0068cdd8: MOV ECX,EAX ",
+          "0068cdda: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068cddd: MOV dword ptr [ESP + 0x20],EBP ",
+          "0068cde1: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068ce19",
+        "load": "0068ce12",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068ce07: JMP 0x0068ce0b ",
+          "0068ce09: XOR EAX,EAX ",
+          "0068ce0b: MOV dword ptr [ESI + 0x50],EAX ",
+          "0068ce0e: MOV EDX,dword ptr [EAX] ",
+          "0068ce10: MOV ECX,EAX ",
+          "0068ce12: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068ce15: MOV dword ptr [ESP + 0x20],EBP ",
+          "0068ce19: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068ce51",
+        "load": "0068ce4a",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068ce3f: JMP 0x0068ce43 ",
+          "0068ce41: XOR EAX,EAX ",
+          "0068ce43: MOV dword ptr [ESI + 0x54],EAX ",
+          "0068ce46: MOV EDX,dword ptr [EAX] ",
+          "0068ce48: MOV ECX,EAX ",
+          "0068ce4a: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068ce4d: MOV dword ptr [ESP + 0x20],EBP ",
+          "0068ce51: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068ce89",
+        "load": "0068ce82",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068ce77: JMP 0x0068ce7b ",
+          "0068ce79: XOR EAX,EAX ",
+          "0068ce7b: MOV dword ptr [ESI + 0x58],EAX ",
+          "0068ce7e: MOV EDX,dword ptr [EAX] ",
+          "0068ce80: MOV ECX,EAX ",
+          "0068ce82: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068ce85: MOV dword ptr [ESP + 0x20],EBP ",
+          "0068ce89: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068cec1",
+        "load": "0068ceba",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068ceaf: JMP 0x0068ceb3 ",
+          "0068ceb1: XOR EAX,EAX ",
+          "0068ceb3: MOV dword ptr [ESI + 0x5c],EAX ",
+          "0068ceb6: MOV EDX,dword ptr [EAX] ",
+          "0068ceb8: MOV ECX,EAX ",
+          "0068ceba: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068cebd: MOV dword ptr [ESP + 0x20],EBP ",
+          "0068cec1: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068cef6",
+        "load": "0068ceef",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068cee4: JMP 0x0068cee8 ",
+          "0068cee6: XOR EAX,EAX ",
+          "0068cee8: MOV dword ptr [ESI + 0x60],EAX ",
+          "0068ceeb: MOV EDX,dword ptr [EAX] ",
+          "0068ceed: MOV ECX,EAX ",
+          "0068ceef: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068cef2: MOV dword ptr [ESP + 0x20],EBP ",
+          "0068cef6: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068cf2e",
+        "load": "0068cf27",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068cf1c: JMP 0x0068cf20 ",
+          "0068cf1e: XOR EAX,EAX ",
+          "0068cf20: MOV dword ptr [ESI + 0x64],EAX ",
+          "0068cf23: MOV EDX,dword ptr [EAX] ",
+          "0068cf25: MOV ECX,EAX ",
+          "0068cf27: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068cf2a: MOV dword ptr [ESP + 0x20],EBP ",
+          "0068cf2e: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068cf66",
+        "load": "0068cf5f",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068cf54: JMP 0x0068cf58 ",
+          "0068cf56: XOR EAX,EAX ",
+          "0068cf58: MOV dword ptr [ESI + 0x68],EAX ",
+          "0068cf5b: MOV EDX,dword ptr [EAX] ",
+          "0068cf5d: MOV ECX,EAX ",
+          "0068cf5f: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068cf62: MOV dword ptr [ESP + 0x20],EBP ",
+          "0068cf66: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068cf9f",
+        "load": "0068cf97",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068cf8c: JMP 0x0068cf90 ",
+          "0068cf8e: XOR EAX,EAX ",
+          "0068cf90: MOV dword ptr [ESI + 0x6c],EAX ",
+          "0068cf93: MOV EDX,dword ptr [EAX] ",
+          "0068cf95: MOV ECX,EAX ",
+          "0068cf97: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068cf9a: PUSH EDI ",
+          "0068cf9b: MOV dword ptr [ESP + 0x24],EBP ",
+          "0068cf9f: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068cff6",
+        "load": "0068cfef",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068cfe4: MOV ECX,EDI ",
+          "0068cfe6: JMP 0x0068cfea ",
+          "0068cfe8: XOR ECX,ECX ",
+          "0068cfea: MOV dword ptr [ESI + 0x70],ECX ",
+          "0068cfed: MOV EDX,dword ptr [ECX] ",
+          "0068cfef: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068cff2: MOV dword ptr [ESP + 0x24],EBP ",
+          "0068cff6: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d02b",
+        "load": "0068d024",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d019: JMP 0x0068d01d ",
+          "0068d01b: XOR EAX,EAX ",
+          "0068d01d: MOV dword ptr [ESI + 0x74],EAX ",
+          "0068d020: MOV EDX,dword ptr [EAX] ",
+          "0068d022: MOV ECX,EAX ",
+          "0068d024: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d027: MOV dword ptr [ESP + 0x24],EBP ",
+          "0068d02b: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d063",
+        "load": "0068d05c",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d051: JMP 0x0068d055 ",
+          "0068d053: XOR EAX,EAX ",
+          "0068d055: MOV dword ptr [ESI + 0x78],EAX ",
+          "0068d058: MOV EDX,dword ptr [EAX] ",
+          "0068d05a: MOV ECX,EAX ",
+          "0068d05c: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d05f: MOV dword ptr [ESP + 0x24],EBP ",
+          "0068d063: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d0d5",
+        "load": "0068d0ce",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d0c3: MOV ECX,EDI ",
+          "0068d0c5: JMP 0x0068d0c9 ",
+          "0068d0c7: XOR ECX,ECX ",
+          "0068d0c9: MOV dword ptr [ESI + 0x7c],ECX ",
+          "0068d0cc: MOV EDX,dword ptr [ECX] ",
+          "0068d0ce: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d0d1: MOV dword ptr [ESP + 0x24],EBP ",
+          "0068d0d5: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d12f",
+        "load": "0068d128",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d11a: MOV ECX,EDI ",
+          "0068d11c: JMP 0x0068d120 ",
+          "0068d11e: XOR ECX,ECX ",
+          "0068d120: MOV dword ptr [ESI + 0x80],ECX ",
+          "0068d126: MOV EDX,dword ptr [ECX] ",
+          "0068d128: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d12b: MOV dword ptr [ESP + 0x24],EBP ",
+          "0068d12f: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d167",
+        "load": "0068d160",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d152: JMP 0x0068d156 ",
+          "0068d154: XOR EAX,EAX ",
+          "0068d156: MOV dword ptr [ESI + 0x84],EAX ",
+          "0068d15c: MOV EDX,dword ptr [EAX] ",
+          "0068d15e: MOV ECX,EAX ",
+          "0068d160: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d163: MOV dword ptr [ESP + 0x24],EBP ",
+          "0068d167: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d19f",
+        "load": "0068d198",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d18a: JMP 0x0068d18e ",
+          "0068d18c: XOR EAX,EAX ",
+          "0068d18e: MOV dword ptr [ESI + 0x88],EAX ",
+          "0068d194: MOV EDX,dword ptr [EAX] ",
+          "0068d196: MOV ECX,EAX ",
+          "0068d198: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d19b: MOV dword ptr [ESP + 0x24],EBP ",
+          "0068d19f: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d217",
+        "load": "0068d210",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d202: MOV ECX,EDI ",
+          "0068d204: JMP 0x0068d208 ",
+          "0068d206: XOR ECX,ECX ",
+          "0068d208: MOV dword ptr [ESI + 0x8c],ECX ",
+          "0068d20e: MOV EDX,dword ptr [ECX] ",
+          "0068d210: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d213: MOV dword ptr [ESP + 0x24],EBP ",
+          "0068d217: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d252",
+        "load": "0068d24b",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d23d: JMP 0x0068d241 ",
+          "0068d23f: XOR EAX,EAX ",
+          "0068d241: MOV dword ptr [ESI + 0x90],EAX ",
+          "0068d247: MOV EDX,dword ptr [EAX] ",
+          "0068d249: MOV ECX,EAX ",
+          "0068d24b: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d24e: MOV dword ptr [ESP + 0x24],EBP ",
+          "0068d252: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d28a",
+        "load": "0068d283",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d275: JMP 0x0068d279 ",
+          "0068d277: XOR EAX,EAX ",
+          "0068d279: MOV dword ptr [ESI + 0x94],EAX ",
+          "0068d27f: MOV EDX,dword ptr [EAX] ",
+          "0068d281: MOV ECX,EAX ",
+          "0068d283: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d286: MOV dword ptr [ESP + 0x24],EBP ",
+          "0068d28a: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d2c5",
+        "load": "0068d2be",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d2b0: JMP 0x0068d2b4 ",
+          "0068d2b2: XOR EAX,EAX ",
+          "0068d2b4: MOV dword ptr [ESI + 0x98],EAX ",
+          "0068d2ba: MOV EDX,dword ptr [EAX] ",
+          "0068d2bc: MOV ECX,EAX ",
+          "0068d2be: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d2c1: MOV dword ptr [ESP + 0x24],EBP ",
+          "0068d2c5: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d2fd",
+        "load": "0068d2f6",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d2e8: JMP 0x0068d2ec ",
+          "0068d2ea: XOR EAX,EAX ",
+          "0068d2ec: MOV dword ptr [ESI + 0x9c],EAX ",
+          "0068d2f2: MOV EDX,dword ptr [EAX] ",
+          "0068d2f4: MOV ECX,EAX ",
+          "0068d2f6: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d2f9: MOV dword ptr [ESP + 0x24],EBP ",
+          "0068d2fd: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d335",
+        "load": "0068d32e",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d320: JMP 0x0068d324 ",
+          "0068d322: XOR EAX,EAX ",
+          "0068d324: MOV dword ptr [ESI + 0xa0],EAX ",
+          "0068d32a: MOV EDX,dword ptr [EAX] ",
+          "0068d32c: MOV ECX,EAX ",
+          "0068d32e: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d331: MOV dword ptr [ESP + 0x24],EBP ",
+          "0068d335: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d370",
+        "load": "0068d369",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d35b: JMP 0x0068d35f ",
+          "0068d35d: XOR EAX,EAX ",
+          "0068d35f: MOV dword ptr [ESI + 0xa4],EAX ",
+          "0068d365: MOV EDX,dword ptr [EAX] ",
+          "0068d367: MOV ECX,EAX ",
+          "0068d369: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d36c: MOV dword ptr [ESP + 0x24],EBP ",
+          "0068d370: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d3a8",
+        "load": "0068d3a1",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d393: JMP 0x0068d397 ",
+          "0068d395: XOR EAX,EAX ",
+          "0068d397: MOV dword ptr [ESI + 0xa8],EAX ",
+          "0068d39d: MOV EDX,dword ptr [EAX] ",
+          "0068d39f: MOV ECX,EAX ",
+          "0068d3a1: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d3a4: MOV dword ptr [ESP + 0x24],EBP ",
+          "0068d3a8: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d3e0",
+        "load": "0068d3d9",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d3cb: JMP 0x0068d3cf ",
+          "0068d3cd: XOR EAX,EAX ",
+          "0068d3cf: MOV dword ptr [ESI + 0xac],EAX ",
+          "0068d3d5: MOV EDX,dword ptr [EAX] ",
+          "0068d3d7: MOV ECX,EAX ",
+          "0068d3d9: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d3dc: MOV dword ptr [ESP + 0x24],EBP ",
+          "0068d3e0: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d440",
+        "load": "0068d439",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d42b: MOV ECX,EDI ",
+          "0068d42d: JMP 0x0068d431 ",
+          "0068d42f: XOR ECX,ECX ",
+          "0068d431: MOV dword ptr [ESI + 0xb0],ECX ",
+          "0068d437: MOV EDX,dword ptr [ECX] ",
+          "0068d439: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d43c: MOV dword ptr [ESP + 0x24],EBP ",
+          "0068d440: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d478",
+        "load": "0068d471",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d463: JMP 0x0068d467 ",
+          "0068d465: XOR EAX,EAX ",
+          "0068d467: MOV dword ptr [ESI + 0xb4],EAX ",
+          "0068d46d: MOV EDX,dword ptr [EAX] ",
+          "0068d46f: MOV ECX,EAX ",
+          "0068d471: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d474: MOV dword ptr [ESP + 0x24],EBP ",
+          "0068d478: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d4c1",
+        "load": "0068d4ba",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d4ac: JMP 0x0068d4b0 ",
+          "0068d4ae: XOR EAX,EAX ",
+          "0068d4b0: MOV dword ptr [ESI + 0xcc],EAX ",
+          "0068d4b6: MOV EDX,dword ptr [EAX] ",
+          "0068d4b8: MOV ECX,EAX ",
+          "0068d4ba: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d4bd: MOV dword ptr [ESP + 0x24],EBP ",
+          "0068d4c1: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d4fa",
+        "load": "0068d4f3",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d4e5: JMP 0x0068d4e9 ",
+          "0068d4e7: XOR EAX,EAX ",
+          "0068d4e9: MOV dword ptr [ESI + 0xd4],EAX ",
+          "0068d4ef: MOV EDX,dword ptr [EAX] ",
+          "0068d4f1: MOV ECX,EAX ",
+          "0068d4f3: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d4f6: MOV dword ptr [ESP + 0x20],EBP ",
+          "0068d4fa: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d535",
+        "load": "0068d52e",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d520: JMP 0x0068d524 ",
+          "0068d522: XOR EAX,EAX ",
+          "0068d524: MOV dword ptr [ESI + 0xd8],EAX ",
+          "0068d52a: MOV EDX,dword ptr [EAX] ",
+          "0068d52c: MOV ECX,EAX ",
+          "0068d52e: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d531: MOV dword ptr [ESP + 0x20],EBP ",
+          "0068d535: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d56d",
+        "load": "0068d566",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d558: JMP 0x0068d55c ",
+          "0068d55a: XOR EAX,EAX ",
+          "0068d55c: MOV dword ptr [ESI + 0xdc],EAX ",
+          "0068d562: MOV EDX,dword ptr [EAX] ",
+          "0068d564: MOV ECX,EAX ",
+          "0068d566: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d569: MOV dword ptr [ESP + 0x20],EBP ",
+          "0068d56d: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d5a5",
+        "load": "0068d59e",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d590: JMP 0x0068d594 ",
+          "0068d592: XOR EAX,EAX ",
+          "0068d594: MOV dword ptr [ESI + 0xe0],EAX ",
+          "0068d59a: MOV EDX,dword ptr [EAX] ",
+          "0068d59c: MOV ECX,EAX ",
+          "0068d59e: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d5a1: MOV dword ptr [ESP + 0x20],EBP ",
+          "0068d5a5: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d5dd",
+        "load": "0068d5d6",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d5c8: JMP 0x0068d5cc ",
+          "0068d5ca: XOR EAX,EAX ",
+          "0068d5cc: MOV dword ptr [ESI + 0xe4],EAX ",
+          "0068d5d2: MOV EDX,dword ptr [EAX] ",
+          "0068d5d4: MOV ECX,EAX ",
+          "0068d5d6: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d5d9: MOV dword ptr [ESP + 0x20],EBP ",
+          "0068d5dd: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d615",
+        "load": "0068d60e",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d600: JMP 0x0068d604 ",
+          "0068d602: XOR EAX,EAX ",
+          "0068d604: MOV dword ptr [ESI + 0xe8],EAX ",
+          "0068d60a: MOV EDX,dword ptr [EAX] ",
+          "0068d60c: MOV ECX,EAX ",
+          "0068d60e: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d611: MOV dword ptr [ESP + 0x20],EBP ",
+          "0068d615: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d64d",
+        "load": "0068d646",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d638: JMP 0x0068d63c ",
+          "0068d63a: XOR EAX,EAX ",
+          "0068d63c: MOV dword ptr [ESI + 0xb8],EAX ",
+          "0068d642: MOV EDX,dword ptr [EAX] ",
+          "0068d644: MOV ECX,EAX ",
+          "0068d646: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d649: MOV dword ptr [ESP + 0x20],EBP ",
+          "0068d64d: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d688",
+        "load": "0068d681",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d673: JMP 0x0068d677 ",
+          "0068d675: XOR EAX,EAX ",
+          "0068d677: MOV dword ptr [ESI + 0xbc],EAX ",
+          "0068d67d: MOV EDX,dword ptr [EAX] ",
+          "0068d67f: MOV ECX,EAX ",
+          "0068d681: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d684: MOV dword ptr [ESP + 0x20],EBP ",
+          "0068d688: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d6c3",
+        "load": "0068d6bc",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d6ae: JMP 0x0068d6b2 ",
+          "0068d6b0: XOR EAX,EAX ",
+          "0068d6b2: MOV dword ptr [ESI + 0xc0],EAX ",
+          "0068d6b8: MOV EDX,dword ptr [EAX] ",
+          "0068d6ba: MOV ECX,EAX ",
+          "0068d6bc: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d6bf: MOV dword ptr [ESP + 0x20],EBP ",
+          "0068d6c3: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d6fb",
+        "load": "0068d6f4",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d6e6: JMP 0x0068d6ea ",
+          "0068d6e8: XOR EAX,EAX ",
+          "0068d6ea: MOV dword ptr [ESI + 0xc4],EAX ",
+          "0068d6f0: MOV EDX,dword ptr [EAX] ",
+          "0068d6f2: MOV ECX,EAX ",
+          "0068d6f4: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d6f7: MOV dword ptr [ESP + 0x20],EBP ",
+          "0068d6fb: CALL EAX "
+        ]
+      },
+      {
+        "call": "0068d733",
+        "load": "0068d72c",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d71e: JMP 0x0068d722 ",
+          "0068d720: XOR EAX,EAX ",
+          "0068d722: MOV dword ptr [ESI + 0xc8],EAX ",
+          "0068d728: MOV EDX,dword ptr [EAX] ",
+          "0068d72a: MOV ECX,EAX ",
+          "0068d72c: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d72f: MOV dword ptr [ESP + 0x20],EBP ",
+          "0068d733: CALL EAX "
+        ]
+      }
+    ],
+    "0068d8d0": [
+      {
+        "call": "0068d966",
+        "load": "0068d95b",
+        "native_stack_arguments": 0,
+        "context": [
+          "0068d950: JMP 0x0068d954 ",
+          "0068d952: XOR EAX,EAX ",
+          "0068d954: MOV dword ptr [ESI + 0x40],EAX ",
+          "0068d957: MOV EDX,dword ptr [EAX] ",
+          "0068d959: MOV ECX,EAX ",
+          "0068d95b: MOV EAX,dword ptr [EDX + 0x10] ",
+          "0068d95e: MOV dword ptr [ESP + 0x10],0xffffffff ",
+          "0068d966: CALL EAX "
+        ]
+      }
+    ],
+    "004dd5b0": [
+      {
+        "call": "004dd756",
+        "load": "004dd753",
+        "native_stack_arguments": 0,
+        "context": [
+          "004dd742: LEA ECX,[ESI + 0x3c] ",
+          "004dd745: CALL 0x00698a10 ",
+          "004dd74a: CALL 0x00425d10 ",
+          "004dd74f: MOV EDX,dword ptr [EAX] ",
+          "004dd751: MOV ECX,EAX ",
+          "004dd753: MOV EAX,dword ptr [EDX + 0x10] ",
+          "004dd756: CALL EAX "
+        ]
+      },
+      {
+        "call": "004dd764",
+        "load": "004dd761",
+        "native_stack_arguments": 0,
+        "context": [
+          "004dd753: MOV EAX,dword ptr [EDX + 0x10] ",
+          "004dd756: CALL EAX ",
+          "004dd758: CALL 0x004c1ac0 ",
+          "004dd75d: MOV EDX,dword ptr [EAX] ",
+          "004dd75f: MOV ECX,EAX ",
+          "004dd761: MOV EAX,dword ptr [EDX + 0x10] ",
+          "004dd764: CALL EAX "
+        ]
+      }
+    ]
+  },
+  "registration_arguments": {
+    "main_7": "00686380 allocates exactsize, invokes real ctor, stores field+58..70, loads that raw pointer CURRENT primary+10 and calls with ECX=same pointer/no explicit args",
+    "hud_42": "0068CC70 exactsize/order/field/current+10; allocation-null still follows stored raw pointer and unguarded dispatch, not boolean success",
+    "press": "0068D8D0 alloc18/0067C840/storetitle+40 before null test, then captured receiver current+10 at68D966; writes+4/+5=1, commit then current+18",
+    "init_once": "004DD756 receives captured00425D10 prompt, then004DD764 captured004C1AC0 Frame; each current+10/no explicit args; getter alone is not registration"
+  },
+  "source_replacement_sites": [
+    {
+      "path": "src/game_hosts_menu.cpp:134",
+      "gap": "MenuScreen owned_flags/flags/pages/virtual-address diagnostics stand for real allocations; must become retained raw receiver metadata only"
+    },
+    {
+      "path": "src/game_hosts_menu.cpp:153",
+      "gap": "world.screens/frame_layouts cannot remain state owners on adopted route"
+    },
+    {
+      "path": "src/game_hosts_menu.cpp:708",
+      "gap": "typedPressStartScreen base return is not native18-byte allocation"
+    },
+    {
+      "path": "src/game_hosts_menu.cpp:1189",
+      "gap": "create_screen ignores allocator and substitutes add_screen; all7 real ctor bodies already exist"
+    },
+    {
+      "path": "src/game_hosts_menu.cpp:1218",
+      "gap": "registration supplies record slot and flags; must dispatch captured raw primary+10"
+    },
+    {
+      "path": "src/game_hosts_menu.cpp:1995",
+      "gap": "HUD register_in_game_screen supplies slot/two-bool placeholder; real42 producers+current calls/lifetime needed"
+    },
+    {
+      "path": "src/game_hosts_hud.cpp:833",
+      "gap": "allocator returnstrue/ctor ignored; semantic manager bool array is not actual108-byte manager or raw fields"
+    },
+    {
+      "path": "src/main_menu_registration.cpp:34",
+      "gap": "complete ordinary582F30 exists but no Source caller; FrontEndScreen/FrontEndScreenTable/selection field projections do not constitute actual578-byte receiver"
+    },
+    {
+      "path": "src/frontend_state_machine.cpp:25",
+      "gap": "existing4F71D0 takes supplied ID and bounds it; existing4F71A0 does not write actual vptr; retain semantic route only until entire Root migration"
+    },
+    {
+      "path": "src/frontend_states.cpp:72",
+      "gap": "pump current callbacks keyedby slot can re-resolve replacement; must retain captured raw receiver and fresh currentprofile through each callback"
+    }
+  ],
+  "bounded_bank_consumer_entries": [
+    "004f71a0",
+    "004f71d0",
+    "004f75e0",
+    "004f8830",
+    "004f7620",
+    "004f8390",
+    "004f8530",
+    "004f85d0",
+    "004f8670",
+    "004f8710",
+    "004f87b0",
+    "004e4a40",
+    "004d64e0"
+  ],
+  "retained_prior_static_xrefs": {
+    "source": "reports/cc16_native_frontend_global_authority_design.json",
+    "rows": 41,
+    "families": [
+      "BSP_FrontEndScreen_Destruct",
+      "BSP_FrontEndScreen_Register",
+      "BSP_FrontEndScreens_Pump",
+      "BSP_FrontEndScreens_RecomputeRequests",
+      "BSP_FrontEndScreens_RestoreLevelSet",
+      "BSP_FrontEndScreens_SetLevel1Set",
+      "BSP_FrontEndScreens_SetLevel2Set",
+      "BSP_FrontEndScreens_SetLevel3Set",
+      "BSP_FrontEndScreens_SetLevel4Set",
+      "BSP_FrontEndScreens_SetLevel5Set",
+      "BSP_Game_OnMove",
+      "BSP_GuiScreens_ParkWidgets",
+      "CG_scalar_deleting_dtor_004f75e0"
+    ],
+    "qualification": "95 DWORD exact-address xrefs plus separate sentinel; indexed references/analysis aliases are not dynamically enumerated receiver/index proof",
+    "fresh_dynamic_receiver_or_index_coverage": false
+  },
+  "existing_bodies_to_reuse": {
+    "base_frame": [
+      "actual004F7180,00517D10,004C1AC0 and00517D30 admitted; no duplicateconstruction/getter/ID leaf",
+      "00517ED0 body frontend_seg12_17_cc13.cpp2997 exists; sibling owns live-name/own160/Page services and staleslot+14 header correction"
+    ],
+    "main_hud": [
+      "main7 real raw constructor bodies recorded per family",
+      "HUD37 named/shape constructors and5 inline-equivalent smallHud shapes exist; semantic668CC70 manager composition still needs genuine fields/custody",
+      "Raw current registration bodies are CC13 host-based operations, not Root-adopted providers"
+    ],
+    "prompt": [
+      "005311C0 raw registration atfrontend_seg15_22_cc13.cpp969",
+      "005321F0 raw destruction atsamefile1013",
+      "00532350 raw collector and00530CC0/00530E00 singleton base services exist",
+      "00530F40 actual record constructor atpool_pool17_cc13.cpp; actualStringVectorAppend00450540 alreadySource",
+      "00533120 frontend_prompts.cpp is hostprojection;00425D10 storage_backend.cpp is UIforwarder"
+    ]
+  },
+  "exact_next_recovery_packet": {
+    "name": "cc16-raw-menu-prompt-producer-publication",
+    "reasoning_effort": "max",
+    "native_functions": [
+      {
+        "entry": "00533120",
+        "body_end": "0053378d",
+        "instructions": 513,
+        "basic_blocks": 57,
+        "calls": 74,
+        "task": "complete raw290-byte constructor, register inputs, actual vector/list/string/record initialization and EH unwind; repair badundefined(void) only from assembly evidence"
+      },
+      {
+        "entry": "00425d10",
+        "body_end": "00425dd9",
+        "instructions": 56,
+        "task": "genuine doublecheck+guard+new290+rawctor+E18E6C publication+manager registeractual+0C; preserve allocation failure, publication-before-registration exception states and guard release"
+      }
+    ],
+    "existing_reached_bodies": [
+      "004F7180",
+      "00450540",
+      "0041DD40",
+      "0041DD20",
+      "00419CC0",
+      "00BD1510",
+      "00530E30",
+      "004322C0",
+      "004324A0",
+      "00530F40",
+      "00530F90",
+      "005311C0",
+      "005321F0",
+      "00532310",
+      "00532A00",
+      "00530CC0",
+      "00530E00"
+    ],
+    "existing_provider_qualification": "actual native string/pool/vectorappend providers are already reconstructed;530E30/4322C0/532190 and EHiterator address contracts must be honestly resolved for authentic raw storage; existinghostiterator substitution is not Native ABI/FH3 proof",
+    "owned_source_files_proposed": [
+      "include/bsp/native_menu_prompt_construction.hpp",
+      "src/native_menu_prompt_construction.cpp",
+      "include/bsp/native_menu_prompt_publication.hpp",
+      "src/native_menu_prompt_publication.cpp"
+    ],
+    "shared_integration_files_primary_only": [
+      "include/bsp/game_native_frontend_application.hpp",
+      "src/game_native_frontend_application.cpp",
+      "include/bsp/game_native_front_end_data.hpp",
+      "src/oct18_tail_a.cpp",
+      "include/bsp/oct18_tail_a.hpp",
+      "src/native_singleton_destruction.cpp",
+      "cmake/startup.cmake",
+      "relevant sharded ledgers via bsp.py ledger commands"
+    ],
+    "source_signatures_proposed": [
+      "void* construct_native_menu_prompt_screen_00533120(void* actual_receiver,NativeMenuPromptConstructionContext&)",
+      "void* native_menu_prompt_get_singleton_00425d10(NativeMenuPromptPublicationContext&)",
+      "std::uint32_t GameNativeFrontEndApplication::current00(void* captured_receiver)",
+      "void GameNativeFrontEndApplication::register_current10(void* captured_receiver)"
+    ],
+    "coupling": "same retained application/view+manager ref+Game ref; genuine Page GUI/Text graph and promptsecondary currentscalar operation before getter can register+0C; wire actual InitOnce current+10 boundary in same Root adoption, not a successful unusedadapter",
+    "gates_until_coupled": [
+      "full raw95 currentdispatch and nonempty Page lifetime",
+      "raw press-start18-byte allocation/constructor/registration/retirement composition",
+      "OnInit004E3AA0 genuineACh commandowner0054A8D0 (differentobject)",
+      "authentic managerallocation/lifetime for main7/HUD42; no semanticboolstands-in",
+      "Frame/Page sibling closures including currentRawText methods",
+      "same owner/view startup admission and retained processreceiver epochs"
+    ]
+  },
+  "new_credit": {
+    "functions": 0,
+    "fragments": 0,
+    "bytes": 0,
+    "native_execution": false,
+    "abi": false,
+    "runtime": false,
+    "build_test": false,
+    "fixture_test": false,
+    "game_activation": false
+  },
+  "validation": {
+    "checks": [
+      "selected53 primaryprofiles read from installedPE .rdata",
+      "all53 current00 leaves decoded to exact expected IDs from Native6bytes",
+      "Native registration sites paged with bsp.py show:7+42+1+2=52",
+      "Source definitions and constructorpriorledger statuses inspected",
+      "JSON parse/count/hash/static path review only"
+    ],
+    "not_performed": [
+      "build",
+      "test",
+      "probe",
+      "gameplay",
+      "Native execution",
+      "ABI comparison",
+      "Ghidra mutation",
+      "activation"
+    ]
+  },
+  "source_pins": [
+    {
+      "path": "config/target.json",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "docs/CC16_NATIVE_FRONTEND_GLOBAL_AUTHORITY_DESIGN.md",
+      "sha256": "d1619ee0028cb1810678bbca2b21d31ba4ef9866686cdeb89f36ba2482a8d818"
+    },
+    {
+      "path": "docs/MAIN_MENU_COMMAND_OWNER.md",
+      "sha256": "ca43ce74c981939df4273d8ec431e3ea9cee8fe0a831ed221b1b32b6c052b147"
+    },
+    {
+      "path": "include/bsp/frontend_prompts.hpp",
+      "sha256": "ba11e0c866cb414881296390f7bd4717b3547322055e134eb95e4f2c1a400cb1"
+    },
+    {
+      "path": "include/bsp/frontend_seg16_24_28_cc13.hpp",
+      "sha256": "62602538008e5fda45e1198007b1749c4b44c640b7bcb616017241e616fd3f58"
+    },
+    {
+      "path": "include/bsp/ingame_interface.hpp",
+      "sha256": "b93f84b99f64a94356b7f355a6f028bdd62f51f1f3d16f784f79babf0cf019bb"
+    },
+    {
+      "path": "include/bsp/main_menu_command_owner.hpp",
+      "sha256": "e4c094dcd55bdc58891629f9e4c7253d2c96c08da82a0e4591395c255dfff31a"
+    },
+    {
+      "path": "include/bsp/main_menu_registration.hpp",
+      "sha256": "f785838c7cda350a0f4ed37608b410380a628a978e818a934c431d062108dcca"
+    },
+    {
+      "path": "include/bsp/main_menu_screens.hpp",
+      "sha256": "6d3ee2bf2c95088895f0e00955013e427960bb8637d0e44c79409d15fc0c6281"
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_construction.hpp",
+      "sha256": "cd96bfd81f06f903c973593cde3daddff837d7a75f4649eb007ae4a14a7deb61"
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_publication.hpp",
+      "sha256": "b0d35be85ed8448ee1a89d66027e777a0aa4947a49164321c8bce3e628a8aae0"
+    },
+    {
+      "path": "include/bsp/oct18_tail_a.hpp",
+      "sha256": "623b45904d9f7a9558cf9a3aca26e51d8336fa60f511cc68f3d63faac86f81d7"
+    },
+    {
+      "path": "include/bsp/press_start_screen.hpp",
+      "sha256": "89192564db34e8d304050650920478c2c40013c01de94921ae468a4c7e591187"
+    },
+    {
+      "path": "reports/cc16_native_frontend_global_authority_design.json",
+      "sha256": "ebf978c52526fd74037806327b94f12d1a295bc9b01c94716a9b96fea52e4daf"
+    },
+    {
+      "path": "src/cc13_sweepB2.cpp",
+      "sha256": "b7b7ece6f6276d276fa744bff21c54cb41ae2e4cdcb9c1d512128bf6f54d819b"
+    },
+    {
+      "path": "src/cg_rebuild_b_cc13.cpp",
+      "sha256": "8c8fdfdf41bedefaee12e4dc5070764342222346573e15953904ec15619978f9"
+    },
+    {
+      "path": "src/cg_rebuild_c_cc13.cpp",
+      "sha256": "10ba2eca3de6dd48cbd1d915308edb419e4ded2af36f3490a224dae5a19427f7"
+    },
+    {
+      "path": "src/frontend_managers.cpp",
+      "sha256": "dd1545809b0689ce18818bac951c7cc31ae0e9e8dc75b9c2f10dc4c47acb5461"
+    },
+    {
+      "path": "src/frontend_prompts.cpp",
+      "sha256": "e0f56234f2f89ae80da3367b6a60e5b98445c3a290d2fd549c06f84f5420c41a"
+    },
+    {
+      "path": "src/frontend_screen_sets.cpp",
+      "sha256": "9ee1c8e167246d10ca0d01e17969df6d175357c8adb4dbb2ac66e851e6469ea3"
+    },
+    {
+      "path": "src/frontend_screens_cc13.cpp",
+      "sha256": "2731f529367ff3b5beca60a1ca373e9602b54514fc1cf5748ba5338382ce8fac"
+    },
+    {
+      "path": "src/frontend_seg12_17_cc13.cpp",
+      "sha256": "fc47eb8b8c9db2dcd0f25b5bc633502304ba39a7694b1f2ae0d1e50e74637a9f"
+    },
+    {
+      "path": "src/frontend_seg15_22_cc13.cpp",
+      "sha256": "4fc672106f5b3cd2136fa28f312c97990c8b3989e53db75c66bac819074e095f"
+    },
+    {
+      "path": "src/frontend_seg16_24_28_cc13.cpp",
+      "sha256": "a262dfad8fd9d2d5c814fec79e56287a9c75405497ed4a198004a05508c2ea9b"
+    },
+    {
+      "path": "src/frontend_seg19_21_cc13.cpp",
+      "sha256": "d5f86dbc3c00305ace8b05b15ff6fa6a1e3a5522bb8eaf4231b01c9536adb330"
+    },
+    {
+      "path": "src/frontend_state_machine.cpp",
+      "sha256": "3a4b1fd9c62fa0427be56b61fafecc609d21747ca65c38c5b9e6bf6945de9519"
+    },
+    {
+      "path": "src/frontend_states.cpp",
+      "sha256": "1030f0818ecc09acf78b48b34b005f9f2f89076131aa7d9e3dc2f7f3db4c15cc"
+    },
+    {
+      "path": "src/game_hosts_hud.cpp",
+      "sha256": "0aee4bea0fdc1c5f88b08246ebe21177e59be6c070111cdec626ce56deb11d4c"
+    },
+    {
+      "path": "src/game_hosts_menu.cpp",
+      "sha256": "f0c936fa3f0f1ca9b739b1c66428d2f4b5af2b1f15081ea2a36c5346ad4bb052"
+    },
+    {
+      "path": "src/in_mission_interface_runtime.cpp",
+      "sha256": "183f6915b56e72ca72e71a9a2e19ec5997434c63043d0b55b0f03d400f7636a4"
+    },
+    {
+      "path": "src/ingame_gui_cc13.cpp",
+      "sha256": "cc4e8eb4a78350ed4843022e98a9218baba44dcab3ba9271ea1640ab15dd3859"
+    },
+    {
+      "path": "src/ingame_interface.cpp",
+      "sha256": "8a7e35efb5142e5c12ed7103fd5781af6241f1af021509f387bd552ac805bd20"
+    },
+    {
+      "path": "src/main_menu_command_owner.cpp",
+      "sha256": "d78b1da89f66bf0e537f8058121b970abccaa6ae9d92162e2a99f33e254836b8"
+    },
+    {
+      "path": "src/main_menu_registration.cpp",
+      "sha256": "e4f617c6ad798acc68829ff67f8f419984d83688a23b5c38c8452ef123b1c804"
+    },
+    {
+      "path": "src/native_front_end_frame_construction.cpp",
+      "sha256": "f90858ce1f08c8124d18a53bb51cfc43c46ced96fc8e64636c613a08a037cd9f"
+    },
+    {
+      "path": "src/native_front_end_frame_identity.cpp",
+      "sha256": "86d12ab23e19a2a06834cc980b926b6fc815dd738fc910ac90ce703e3f3d5fe0"
+    },
+    {
+      "path": "src/native_front_end_frame_publication.cpp",
+      "sha256": "0d88f92b07b44eab54283aecea4c7626566c6d165b04d1285cfd3648b5e0a64a"
+    },
+    {
+      "path": "src/oct18_tail_a.cpp",
+      "sha256": "afe458f3af69587a6f0b42bc61e5dda6585247411e4173b8cc4b6a1d648f7eaa"
+    },
+    {
+      "path": "src/pool_pool17_cc13.cpp",
+      "sha256": "7761d2359a7fbd0394c8c700bda41ac7e90747559770db1c831146ee30173205"
+    },
+    {
+      "path": "src/pool_pool18_cc13.cpp",
+      "sha256": "d39bb3de9777376329ee0c24d7980d735a39cfe60bfe46f16be0bf7d44fa67ec"
+    },
+    {
+      "path": "src/press_start_screen.cpp",
+      "sha256": "2f7c1a03a8576334684b1f8aa07dd6e66acd2365e799df5d6e68b3a35d6761af"
+    },
+    {
+      "path": "src/seg25_cc13.cpp",
+      "sha256": "ea4f47ba891ab76a7f2ca7ee574dff95c96efbf37b6ddd84c7c40ea021b2280a"
+    },
+    {
+      "path": "src/seg27_cc13.cpp",
+      "sha256": "f1c32673313957b7a63cfe8de2da62207ceccd9e688cbeb4ee1cc8e9edcddc3c"
+    },
+    {
+      "path": "src/segs_13_15_22_44_cc13.cpp",
+      "sha256": "440f04a1512cf6b885f2a0ae6b78b88d1a8d160019c96fe61044967580003ebf"
+    },
+    {
+      "path": "src/view_seg14_cc13.cpp",
+      "sha256": "33b4b67c29292316cb30eb4094ef8cb7ccd11ddcd10a34239c8797f26297629e"
+    }
+  ],
+  "document": "docs/CC16_FRONTEND_RAW95_PRODUCER_CLOSURE.md"
+}
