@@ -1,13 +1,23 @@
 {
   "address": "006b8610",
-  "status": "source_checkpoint_independent_reviews_and_strict_object_pending",
+  "status": "source_reviewed_primary_plus_two_strict_single_win32_object_pass_consumer_unbound",
   "source": "src/native_mission_lua_register.cpp",
   "header": "include/bsp/native_mission_lua_register.hpp",
   "documentation": "docs/NATIVE_MISSION_LUA_REGISTER.md",
   "normal_instruction_count": 13,
   "original_abi": "ECX machine; stack name and callback; RET8; new ordinary C++ interface, no physical caller-stack/ABI claim",
-  "providers": ["linked Lua5.1.1 lua_pushcclosure", "linked Lua5.1.1 lua_setfield"],
-  "epochs": ["capture genuine function", "CURRENT machine state+4", "lua_pushcclosure(state,function,0)", "volatile Source by-value name read", "CURRENT machine state+4", "lua_setfield(state,-10002,name)"],
+  "providers": [
+    "linked Lua5.1.1 lua_pushcclosure",
+    "linked Lua5.1.1 lua_setfield"
+  ],
+  "epochs": [
+    "capture genuine function",
+    "CURRENT machine state+4",
+    "lua_pushcclosure(state,function,0)",
+    "volatile Source by-value name read",
+    "CURRENT machine state+4",
+    "lua_setfield(state,-10002,name)"
+  ],
   "local_cleanup": false,
   "stack_restoration": false,
   "callback_table_or_handler_identity_supplied": false,
@@ -16,5 +26,20 @@
   "game_validated": false,
   "new_native_body_credit": false,
   "new_tests": 0,
-  "new_entry_or_game_invoked": false
+  "new_entry_or_game_invoked": false,
+  "source_checkpoint": "65868c2b3",
+  "raw_access_correction": "755cac3b4",
+  "source_hashes": {
+    "include/bsp/native_mission_lua_register.hpp": "b95598224eb920cfa54dc23aa36a32807936889280e03d54a7a1c15eace9952c",
+    "src/native_mission_lua_register.cpp": "b0ca8ad834ed3eaf2a685e6a2bba8432a94154a0ce1fabb9658a9b555509491d"
+  },
+  "strict_object": {
+    "compile_count": 1,
+    "exit_code": 0,
+    "coff_machine": "014C",
+    "sha256": "c521445eeb72170bc677173edd41f48ee69a597d27dcc00bfb7c1ad85bf2e7aa"
+  },
+  "actual_symbol": "?register_native_mission_lua_global_006b8610@bsp@@YAXPAXPBDP6AHPAUlua_State@@@Z@Z",
+  "static_object_inspected": true,
+  "reviewer_compilation": false
 }
