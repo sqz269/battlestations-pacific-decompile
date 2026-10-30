@@ -3,6 +3,9 @@
 #include "bsp/native_invalid_parameter_noinfo_call.hpp"
 #include "bsp/native_string_vector_insert.hpp"
 
+#include <cstring>
+#include <intrin.h>
+
 namespace bsp {
 namespace {
 using Word = std::uint32_t;
@@ -12,10 +15,16 @@ Word address(const void* value) noexcept {
     return reinterpret_cast<Word>(value);
 }
 Word word(Word base, Word offset) noexcept {
-    return *reinterpret_cast<const volatile Word*>(base + offset);
+    Word value;
+    _ReadWriteBarrier();
+    std::memcpy(&value, reinterpret_cast<const void*>(base + offset), sizeof value);
+    _ReadWriteBarrier();
+    return value;
 }
 void put(Word base, Word offset, Word value) noexcept {
-    *reinterpret_cast<volatile Word*>(base + offset) = value;
+    _ReadWriteBarrier();
+    std::memcpy(reinterpret_cast<void*>(base + offset), &value, sizeof value);
+    _ReadWriteBarrier();
 }
 Word sar_three(Word value) noexcept {
     return (value >> 3) | ((value & 0x80000000u) ? 0xe0000000u : 0u);

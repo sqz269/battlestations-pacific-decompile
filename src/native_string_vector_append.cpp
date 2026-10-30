@@ -5,6 +5,8 @@
 #include "bsp/native_string_vector_insert_one.hpp"
 
 #include <cstdint>
+#include <cstring>
+#include <intrin.h>
 
 namespace bsp {
 namespace {
@@ -20,13 +22,17 @@ void* pointer(Word value) {
 }
 
 Word word(Word base, Word offset) {
-    return *reinterpret_cast<const volatile Word*>(
-        static_cast<std::uintptr_t>(base + offset));
+    Word value;
+    _ReadWriteBarrier();
+    std::memcpy(&value, pointer(base + offset), sizeof value);
+    _ReadWriteBarrier();
+    return value;
 }
 
 void put(Word base, Word offset, Word value) {
-    *reinterpret_cast<volatile Word*>(
-        static_cast<std::uintptr_t>(base + offset)) = value;
+    _ReadWriteBarrier();
+    std::memcpy(pointer(base + offset), &value, sizeof value);
+    _ReadWriteBarrier();
 }
 
 Word sar_three(Word value) {

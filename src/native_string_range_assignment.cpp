@@ -3,6 +3,7 @@
 #include "bsp/native_string.hpp"
 
 #include <cstring>
+#include <intrin.h>
 
 namespace bsp {
 namespace {
@@ -19,7 +20,11 @@ void* pointer(std::uint32_t value) noexcept {
 }
 
 std::uint32_t word(std::uint32_t base, std::uint32_t offset = 0) noexcept {
-    return *reinterpret_cast<const volatile std::uint32_t*>(base + offset);
+    std::uint32_t value;
+    _ReadWriteBarrier();
+    std::memcpy(&value, pointer(base + offset), sizeof value);
+    _ReadWriteBarrier();
+    return value;
 }
 
 std::uint32_t sar_three(std::uint32_t value) noexcept {

@@ -1184,3 +1184,17 @@ genuine birth/publicmutators/destruction atNativeepochs and externallyproved
 Nativecapacity/overflow/allocation/publication/escape contracts. No rawvector
 adoption/pointertransplant/vendorbodyrewrite or replacementmodel admitted.
 See CODEX_CANONICAL_TEXTUAL_OPERATION_INTEGRATION.md.
+
+Checkedstring registration-provider fieldqualification nowcovers450540/450180/
+44F410word+put, raw48DA50word andraw-only44BCB0 access. FiveSource corrections
+preserveexactbody/call/cleanup schedules; sharedaliasTemplate/typedoverloads/
+unrelatedbytes inverseexact. Primary/independentreviews,5strict014C objects and
+joinedMain6f786fd canonicalWin32checks2/2 pass10.41s (prior83c7pass9.95s).
+No newOriginal/vendorbodycredit, registerednames/loaded/raw16/runtime authority.
+Next actualstartup binding is canonicalAA0D30 borrowedname registration through
+theexistingchecked10h provider, notraw0C orsemanticLocaleTables.
+Newraw16contract0ca443 establishes generalSDK differences in fillcapture/current
+reload, puborder,overflow andunpublishedfailuredebt. Sidecar0c160 confirms common
+input/vectorstillarmed; completedtextual1cannotbechainedbeforeoption0. SDKlayout
+406d955 provesonlyprospective4Ballocator/16Bobject layout, no backendadmission.
+All9Textoff/ac60hold remain; fulloption0/loading/consumer/startup stillgated.

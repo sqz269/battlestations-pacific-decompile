@@ -10,6 +10,9 @@
 #include "bsp/native_string_vector_operations.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
+#include <cstring>
+#include <intrin.h>
+
 namespace bsp {
 namespace {
 
@@ -26,11 +29,17 @@ void* pointer(Word value) noexcept {
 }
 
 Word word(Word base, Word offset) noexcept {
-    return *reinterpret_cast<const volatile Word*>(base + offset);
+    Word value;
+    _ReadWriteBarrier();
+    std::memcpy(&value, pointer(base + offset), sizeof value);
+    _ReadWriteBarrier();
+    return value;
 }
 
 void put(Word base, Word offset, Word value) noexcept {
-    *reinterpret_cast<volatile Word*>(base + offset) = value;
+    _ReadWriteBarrier();
+    std::memcpy(pointer(base + offset), &value, sizeof value);
+    _ReadWriteBarrier();
 }
 
 Word sar_three(Word value) noexcept {
