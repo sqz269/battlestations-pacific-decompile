@@ -36,3 +36,8 @@ actual bool clarification while preserving names and earlier comments. The
 write-lock annotation tool recorded prior values, saved bsp.gpr and refreshed
 both affected exports. This is analysis metadata, with no game installation
 or Native code modification.
+
+Peer Main063d52a13 additive address/Ghidra evidence was joined after these
+checks. Production/CMake/scripts/target configuration and all8 new file pins
+are unchanged; the existing build cohorts remain valid. Both raw-output name
+evidence amendments survive the ledger merge.
