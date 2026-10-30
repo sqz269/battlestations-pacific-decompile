@@ -617,6 +617,8 @@ void native_input_backend_destroy_00a97b30(SweepCHost& host, void* backend);
 // Segments 75, 77, 79: string-map pool, GUI widgets.
 // ---------------------------------------------------------------------------
 // 00A9E970, __thiscall(ECX = pool, value), RET 4: the 1024-entry free stack and node fill.
+// This narrow entry writes fenced raw bytes: fresh slab backing needs no live
+// C++ primitive field objects. Shared at<> and all other entries are unchanged.
 void string_map_node_pool_init_block_00a9e970(void* pool, std::uint32_t value);
 // 00AA6810, __thiscall(ECX = widget, name): tail jump to 00B6F960 on +4Ch.
 void gui_widget_assign_node_name_00aa6810(SweepCHost& host, void* widget, const void* name);

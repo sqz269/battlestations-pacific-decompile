@@ -1,0 +1,192 @@
+{
+  "utc": "2026-10-30T06:03:36.182975+00:00",
+  "scope": "direct canonical locale slot allocation, E970 raw-store refinement, base scalar wrapper",
+  "worker_commit": "2c5a57359b7a92b366e02471c64d51ed3797a726",
+  "head_before_metadata": "6ed2b57059ef5010bdff9cbcfa145e18836801a6",
+  "validation": {
+    "build": "scripts/build.ps1 MSVC Win32 Release passed exit0",
+    "existing_checks": "2/2 passed",
+    "test_seconds": "12.98",
+    "strict_root_objects": "two changed TUs /W4 /WX /O2 object-only passed",
+    "tests_added": false,
+    "new_body_execution_claim": false,
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "build_log": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\local\\raw_locale_pool_owner_frontier_cc16_20261030\\node_allocation_coupled_build.log",
+    "bytes": 2429,
+    "sha256": "237e92699aa3121fca1cad8f7f061257eb367d082fb1147b1a1f97087816e1c5"
+  },
+  "entries": [
+    {
+      "address": "00737010",
+      "name": "delete_native_locale_manager_base_00737010",
+      "source": "src/native_locale_manager_base_scalar.cpp",
+      "status": "source_reviewed_coupled_win32_pass_caller_activation_unbound",
+      "original_abi": "ECX receiver, stackedDWORDflags, EAXsavedaddress, RET4; flags lowbyte after7365E0.",
+      "documentation": "docs/NATIVE_LOCALE_MANAGER_BASE_SCALAR.md",
+      "evidence": "reports/codex_locale_allocation_integration.json; complete Source/native schedule and raw dependency review.",
+      "validation": {
+        "build": "scripts/build.ps1 MSVC Win32 Release passed exit0",
+        "existing_checks": "2/2 passed",
+        "test_seconds": "12.98",
+        "strict_root_objects": "two changed TUs /W4 /WX /O2 object-only passed",
+        "tests_added": false,
+        "new_body_execution_claim": false,
+        "game_validated": false,
+        "abi_compatible": false
+      },
+      "source_ready": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "new_native_body_credit": false,
+      "scope": "qualified_direct_current_services_and_retained_failure_frame_no_startup_caller"
+    },
+    {
+      "address": "00a9e970",
+      "name": "cc13_sweepC::string_map_node_pool_init_block_00a9e970",
+      "source": "src/cc13_sweepC.cpp",
+      "status": "source_reviewed_coupled_win32_pass_caller_activation_unbound",
+      "original_abi": "ECX block, stackedDWORDindex, EAXSAMEblock, RET4; existing Source return remains void.",
+      "documentation": "docs/NATIVE_LOCALE_BLOCK_INITIALIZER_RAW_ACCESS.md",
+      "evidence": "reports/codex_locale_allocation_integration.json; complete Source/native schedule and raw dependency review.",
+      "validation": {
+        "build": "scripts/build.ps1 MSVC Win32 Release passed exit0",
+        "existing_checks": "2/2 passed",
+        "test_seconds": "12.98",
+        "strict_root_objects": "two changed TUs /W4 /WX /O2 object-only passed",
+        "tests_added": false,
+        "new_body_execution_claim": false,
+        "game_validated": false,
+        "abi_compatible": false
+      },
+      "source_ready": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "new_native_body_credit": false,
+      "scope": "qualified_direct_current_services_and_retained_failure_frame_no_startup_caller"
+    },
+    {
+      "address": "00a9f0b0",
+      "name": "allocate_native_locale_node_00a9f0b0",
+      "source": "src/native_locale_node_allocation.cpp",
+      "status": "source_reviewed_coupled_win32_pass_caller_activation_unbound",
+      "original_abi": "ECX actual pool, EAXcapturednode, plainRET; no native EH cleanup.",
+      "documentation": "docs/NATIVE_LOCALE_NODE_ALLOCATION.md",
+      "evidence": "reports/codex_locale_allocation_integration.json; complete Source/native schedule and raw dependency review.",
+      "validation": {
+        "build": "scripts/build.ps1 MSVC Win32 Release passed exit0",
+        "existing_checks": "2/2 passed",
+        "test_seconds": "12.98",
+        "strict_root_objects": "two changed TUs /W4 /WX /O2 object-only passed",
+        "tests_added": false,
+        "new_body_execution_claim": false,
+        "game_validated": false,
+        "abi_compatible": false
+      },
+      "source_ready": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "new_native_body_credit": false,
+      "scope": "qualified_direct_current_services_and_retained_failure_frame_no_startup_caller"
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\src\\native_locale_node_allocation.cpp",
+      "bytes": 9683,
+      "sha256": "52d129c8e9131778ce71105fe8b2f6a9a945d1e0197a5972188d13a7e618d0ca"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\include\\bsp\\native_locale_node_allocation.hpp",
+      "bytes": 3430,
+      "sha256": "32edb640c7ae9f1d3e3de7313cf48001a5a8a927abb0af791ea3e862084d6def"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\src\\cc13_sweepC.cpp",
+      "bytes": 96611,
+      "sha256": "525967abade08902e87ea015932c2296c16c194501758d907842e80ae5652fd1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\include\\bsp\\cc13_sweepC.hpp",
+      "bytes": 48717,
+      "sha256": "d200ad27a2ae8da59d4dceb4f04e5e7a74064bfdbe2adedf7876aecd5bd34364"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\src\\native_locale_manager_base_scalar.cpp",
+      "bytes": 950,
+      "sha256": "4a9be77a355fbefe17dc2bba56aae69303e24cbb20bd87e147768e03c708d906"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\include\\bsp\\native_locale_manager_base_scalar.hpp",
+      "bytes": 1009,
+      "sha256": "5f4beb88ed8f27e18225cb43902f880b0332793b5168d75b8cf93d709b530170"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\src\\game_native_locale_pool.cpp",
+      "bytes": 5830,
+      "sha256": "ef01a5c56a1c61617274c5bcc6021d6785947305e333f4048094f5946aaf73de"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\src\\singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\cmake\\startup.cmake",
+      "bytes": 292667,
+      "sha256": "0a48cb46e48d589cb06fc0778ffb2a7fb29f01d9368ddf87158176fdce04ebed"
+    }
+  ],
+  "worker_final_receipt": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc9\\local\\native_locale_node_allocation_compile_cc9_20261030\\final_receipt.json",
+    "bytes": 1768,
+    "sha256": "8857d166d05d11b28e03247ad375a3651bb8eb051fcde1b13ca23f197a762a9a"
+  },
+  "root_object_projection_receipt": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\local\\raw_locale_pool_owner_frontier_cc16_20261030\\root_raw_access_object_receipt.json",
+    "bytes": 1276,
+    "sha256": "0533f8da482c161c1fbb1cbcdee241aa2ba7b4ac14e1aa5295b999a30b96510f"
+  },
+  "primary_review": "All allocator CPP/HPP and normal/failure metadata reviewed against complete F0B0/E970 listings; base scalar matched complete30B listing.",
+  "proof_limits": [
+    "Exact same canonical pool and current heap/import services; no broad host stub or allocator replacement.",
+    "Capture slab/table results immediately; preserve table/count/current vs captured scan cursor and WORD-RMW epochs.",
+    "Escapes retain frame/unpublished allocations/pool/held section/depth; no unlock/free/rollback/retry or safe process-exit inference.",
+    "Normal receipt is private and issued after real Leave; raw slot does not initialize payload/header/next or map ownership.",
+    "Only E970 raw stores changed; exact whole-file inverse projection preserves shared at and unrelated functions.",
+    "Base scalar borrows actual caller DWORD flags and uses real base retirement then late lowbyte/free; no derived cleanup.",
+    "Current allocator throw/OOM/import/FH3/hardware/alias/lifetime limits remain explicit; no Original ABI, runtime or new body credit.",
+    "No startup caller, populated locale, canonical F8 host/profile wiring; all nine raw Text choices FALSE and frozen ac60 hold unchanged."
+  ],
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved": true,
+    "prior_values": "local/ghidra-annotations-20261030T060412Z.json",
+    "existing_comments_preserved": true,
+    "refreshed_exports": [
+      "00737010",
+      "00a9e970",
+      "00a9f0b0"
+    ]
+  },
+  "allocator_peer": {
+    "status": "ACCEPT_COUPLED_SOURCE",
+    "commit": "2c5a57359b7a92b366e02471c64d51ed3797a726",
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\raw_locale_node_allocation_review_frame_20261030",
+    "files": {
+      "REVIEW.md": "cffde8b8179847ad0733e2c4f72fe4011710499f0efef2f4921d0f8c9bec5199",
+      "pins_final.json": "12704bae0e351067f5adf64e2c258eab71eaf81d0b9722929cc7fd082c462643"
+    },
+    "primary_rehashed": true,
+    "scope": "actualallocator plus current RootE970bytefix; exact unrelatedSource projections, actualobject/dependency pins; no execution"
+  },
+  "base_scalar_peer": {
+    "status": "ACCEPT_SOURCE_ASM_ONLY",
+    "directory": "J:/PROG/battlestations-pacific-decompile-codex-raw-locale-constructor/local/raw_locale_canonical_owner_binding_gui_20261030",
+    "report_sha256": "7fd234677af94d2f5c3823fd5ba7849d81c092a0b5f456e4d4625f8a7c252627",
+    "scope": "actualRootCPP/HPP/doc vs30B/slot0, no compile/runtime inherited"
+  }
+}
