@@ -8,33 +8,14 @@ import argparse
 import ctypes as C
 import json
 import os
+import re
 import shutil
+import struct
 import subprocess
 import time
 import winreg
 
 import original_baseline_guard as g
-
-
-CLIENT = r'''#include "dr_api.h"
-static app_pc entry;
-static char log_path[MAXIMUM_PATH];
-static void log_event(const char *name) {
- file_t f=dr_open_file(log_path,DR_FILE_WRITE_APPEND);
- if(f!=INVALID_FILE){dr_fprintf(f,"%s pid=%d\n",name,dr_get_process_id());dr_close_file(f);}
-}
-static void at_entry(void){log_event("entry_execution");}
-static dr_emit_flags_t bb(void *dc,void *tag,instrlist_t *list,bool trace,bool translating){
- if(!translating && tag==entry)dr_insert_clean_call(dc,list,instrlist_first_app(list),(void*)at_entry,true,0);
- return DR_EMIT_DEFAULT;
-}
-DR_EXPORT void dr_client_main(client_id_t id,int argc,const char *argv[]){
- int i;if(argc!=2)dr_abort();
- for(i=0;argv[1][i] && i+1<MAXIMUM_PATH;++i)log_path[i]=argv[1][i];log_path[i]=0;
- module_data_t *m=dr_get_main_module();if(!m)dr_abort();entry=m->entry_point;dr_free_module_data(m);
- dr_register_bb_event(bb);log_event("client_ready");
-}
-'''
 
 
 def run(command, cwd, log):
@@ -71,6 +52,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dr-root", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--handles", type=int, default=0, choices=[0, 69700],
+                        help="0 uses unique dummy/ancestor handles; 69700 duplicates only dummy objects")
+    parser.add_argument("--fail-entry-gate", action="store_true", help="Prove rejection before application entry")
+    parser.add_argument("--negative", default="none", choices=["none", "admission-omitted", "admission-missing", "admission-options", "drcov-missing"])
+    parser.add_argument("--diagnostic-dr", action="store_true", help="Use official debug runtime, retaining all creation gates")
+    parser.add_argument("--prepare-only", action="store_true", help="Compile and write exact planned options without creating a fixture process")
     args = parser.parse_args()
     root = g.private(args.output, exists=False)
     if root.exists():
@@ -81,7 +68,11 @@ def main():
     before_sdk = g.sha(sdk)
     if before_sdk != "173c8d46926c9b7a05c71fd7521526baf2878e668e84b80e02388c4e64a1fc9e":
         raise RuntimeError("Unreviewed DR injector binary")
-    sdk_files = [sdk, dr / "bin32/drconfiglib.dll", dr / "lib32/release/dynamorio.dll"]
+    sdk_files = [sdk, dr / "bin32/drconfiglib.dll", dr / "lib32/release/dynamorio.dll",
+                 dr / "tools/lib32/release/drcov.dll", dr / "bin32/drrun.exe",
+                 *(dr / ("ext/lib32/release/" + name + ".dll") for name in ("drmgr", "drx", "drcovlib"))]
+    if args.diagnostic_dr:
+        sdk_files.append(dr / "lib32/debug/dynamorio.dll")
     sdk_hashes = {str(path.relative_to(dr)): g.sha(path) for path in sdk_files}
     vswhere = Path(os.environ["ProgramFiles(x86)"]) / "Microsoft Visual Studio/Installer/vswhere.exe"
     vs = Path(subprocess.check_output([str(vswhere), "-latest", "-products", "*", "-requires",
@@ -96,7 +87,7 @@ def main():
     source = protected / "protected.txt"
     source.write_bytes(b"protected dummy fixture\n")
     source_hash = g.sha(source)
-    for name in ("profile", "temp", "drconfig"):
+    for name in ("profile", "temp", "drconfig", "Documents", "drcov", "drdebug"):
         (stage / name).mkdir()
     helper = stage / "dr_helper_probe.exe"
     target = stage / "dr_root_probe.exe"
@@ -105,25 +96,63 @@ def main():
         'if errorlevel 1 exit /b %errorlevel%\n' + subprocess.list2cmdline([
         "cl.exe", "/nologo", "/O2", "/EHsc", "/MT", "/DUNICODE", "/D_UNICODE",
         "/I" + str(dr / "include"), str(Path(__file__).with_suffix(".cpp")),
-        "/Fe:" + str(helper), "/Fo:" + str(root / "helper.obj"), "/link", "/MANIFEST:EMBED"]) + "\n", encoding="utf-8")
+        "/Fe:" + str(helper), "/Fo:" + str(root / "helper.obj"), "/link", "/MANIFEST:EMBED",
+        "/DYNAMICBASE:NO", "/FIXED", "/BASE:0x400000"]) + "\n", encoding="utf-8")
     run(["cmd.exe", "/d", "/c", str(batch)], root, root / "compile.log")
     shutil.copyfile(helper, target)
-    (root / "client.c").write_text(CLIENT, encoding="utf-8")
+    entry_client = Path(__file__).with_name("dr_original_entry_probe.c").resolve()
     (root / "CMakeLists.txt").write_text('cmake_minimum_required(VERSION 3.15)\nproject(create_probe C CXX)\n'
-        'find_package(DynamoRIO REQUIRED)\nadd_library(create_client SHARED client.c)\n'
-        'configure_DynamoRIO_client(create_client)\n', encoding="utf-8")
+        'find_package(DynamoRIO REQUIRED)\nadd_library(create_client SHARED "' + entry_client.as_posix() + '")\n'
+        'configure_DynamoRIO_client(create_client)\nuse_DynamoRIO_extension(create_client drmgr)\n', encoding="utf-8")
     cmake = vs / "Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe"
     run([str(cmake), "-S", str(root), "-B", str(root / "build"), "-A", "Win32",
          "-DDynamoRIO_DIR=" + str(dr / "cmake")], root, root / "cmake-configure.log")
     run([str(cmake), "--build", str(root / "build"), "--config", "Release"], root, root / "cmake-build.log")
     client = root / "build/Release/create_client.dll"
+    pe = g.pe_info(target)
+    import pefile
+    image = pefile.PE(str(target))
+    entry_bytes = image.get_data(pe["entry_rva"], 16).hex()
+    image.close()
+    documents = stage / "Documents"
+    str(documents).encode("ascii")  # This bounded fixture deliberately uses an ANSI-safe path.
+    if any(char.isspace() for char in str(root)):
+        raise RuntimeError("This bounded fixture requires a private path without spaces")
+    if any(char in str(path) for path in (root, dr) for char in '\";`\'') or any(char.isspace() for char in str(dr)):
+        raise RuntimeError("This bounded fixture requires paths without embedded option quoting")
+    entry_options = subprocess.list2cmdline([str(stage / "client.log"), str(documents), str(target),
+        f'{pe["image_base"]:x}', f'{pe["entry_rva"]:x}', f'{pe["iat_rva"]:x}', entry_bytes,
+        "1" if args.fail_entry_gate else "0", str(stage / "drcov")])
+    runtime_options = "-no_follow_children -nop_initial_bblock -max_elide_jmp 0 -max_elide_call 0 -msgbox_mask 0 -stderr_mask 15 -logdir " + str(stage / "drdebug")
+    if args.diagnostic_dr:
+        runtime_options += " -loglevel 2"
+    cov_options = "-logdir " + str(stage / "drcov") + " -dump_text"
+    registered_client = stage / "missing-admission.dll" if args.negative == "admission-missing" else client
+    registered_options = "-invalid-fixture-admission-option" if args.negative == "admission-options" else entry_options
+    registered_cov = stage / "missing-drcov.dll" if args.negative == "drcov-missing" else dr / "tools/lib32/release/drcov.dll"
+    expected_serialization = 'DYNAMORIO_OPTIONS=-code_api -probe_api ' + runtime_options
+    if args.negative != "admission-omitted":
+        expected_serialization += ' -client_lib32 "' + str(registered_client) + ';0;' + registered_options + '"'
+    expected_serialization += ' -client_lib32 "' + str(registered_cov) + ';1;' + cov_options + '"'
+    launch_plan = dict(runtime_options=runtime_options, entry_client_options=entry_options,
+        drcov_client_options=cov_options, expected_config_options_line=expected_serialization,
+        original_launched=False, fixture_processes_created=False, pe=pe)
+    g.write_receipt(root / "launch-plan.json", launch_plan)
+    if args.prepare_only:
+        print(json.dumps({"prepared_only": True, "fixture_processes_created": False,
+                          "plan": str(root / "launch-plan.json")}))
+        return 0
     ifeo_clear(target.name)
     report = dict(schema="bsp.dr-create-guard.fixture.v1", fixture_only=True,
         original_launched=False, original_handles_opened=False, debugger_flags=False,
+        drcov_directory_fresh=True,
         dr_injector_sha256=before_sdk, sdk_sha256=sdk_hashes, target_sha256=g.sha(target), started_unix=time.time(),
         root_job_active_limit=1, helper_job_active_limit=2, source_lock_scope="dummy fixtures plus filesystem ancestors",
-        source_parent_independent_handles_retained_until_jobs_empty=True, documents_redirect_tested=False)
-    token = None; locks = None; attributes = None; jobs = []; pi = g.PROCESS_INFORMATION()
+        source_parent_independent_handles_retained_until_jobs_empty=True, documents_redirect_tested=True,
+        expected_admission_rejection=args.fail_entry_gate or args.negative != "none", negative_case=args.negative, pe=pe, entry_bytes=entry_bytes,
+        diagnostic_debug_runtime=args.diagnostic_dr,
+        private_documents=str(documents), clients=[str(client), str(dr / "tools/lib32/release/drcov.dll")])
+    token = None; locks = None; attributes = None; sink = None; jobs = []; duplicates = []; pi = g.PROCESS_INFORMATION()
 
     def job(limit):
         handle = g.K.CreateJobObjectW(None, None); g.checked(handle, "fixture job")
@@ -145,11 +174,54 @@ def main():
             raise RuntimeError("Dummy source audit failed")
         locks = g.SourceReadLocks([protected], audit, root / "dummy-handles.jsonl")
         report["dummy_locks"] = locks.receipt
+        root_handles = list(locks.handles)
+        if args.handles:
+            # These are duplicates of a dummy fixture handle, not 69,700 source
+            # objects. Retain all independent parent copies until both jobs exit.
+            current = g.K.GetCurrentProcess()
+            dummy_base = g.K.CreateFileW(str(source), 1, 3, None, 3, 0x02200000, None)
+            g.checked(dummy_base != g.PVOID(-1).value, "open duplicate-only dummy object")
+            duplicates.append(dummy_base)
+            g.checked(g.K.SetHandleInformation(dummy_base, 3, 3), "protected dummy base")
+            root_handles.append(dummy_base)
+            while len(root_handles) < args.handles:
+                duplicate = g.HANDLE()
+                g.checked(g.K.DuplicateHandle(current, dummy_base, current,
+                    C.byref(duplicate), 0, True, 2), "duplicate dummy handle")
+                duplicates.append(duplicate.value)
+                g.checked(g.K.SetHandleInformation(duplicate, 3, 3), "protected dummy duplicate")
+                if duplicate.value == 0x400000 or duplicate.value > 0xffffffff:
+                    raise RuntimeError("Unsafe x86 handle value")
+                root_handles.append(duplicate.value)
+        report["explicit_root_handle_count"] = len(root_handles)
+        handle_file = stage / "source-handle-list.bin"
+        handle_file.write_bytes(struct.pack("<I", len(root_handles)) + struct.pack("<" + "I" * len(root_handles), *root_handles))
+        report["handle_manifest_sha256"] = g.sha(handle_file)
+        sink_path = g.private(stage / "stdio.log", stage, exists=False)
+        sink = g.K.CreateFileW(str(sink_path), 0x40000080, 3, None, 1, 0, None)
+        g.checked(sink != g.PVOID(-1).value, "create exclusive private stdout/stderr sink")
+        if sink == 0x400000 or sink > 0xffffffff:
+            raise RuntimeError("Unsafe private sink handle value")
+        g.checked(g.K.SetHandleInformation(sink, 1, 1), "sink inheritance")
+        sink_info = g.FILE_INFORMATION(); canonical = C.create_unicode_buffer(32768)
+        g.checked(g.K.GetFileInformationByHandle(sink, C.byref(sink_info)), "sink identity")
+        g.checked(g.K.GetFinalPathNameByHandleW(sink, canonical, len(canonical), 0), "sink canonical")
+        resolved_sink = Path(canonical.value.removeprefix("\\\\?\\"))
+        if g.private(resolved_sink, stage) != sink_path or sink_info.links != 1 or sink_info.attributes & 0x410:
+            raise RuntimeError("Unsafe diagnostic sink identity")
+        query_object = g.api(g.N, "NtQueryObject", C.c_long, g.HANDLE, g.DWORD, g.PVOID, g.DWORD, C.POINTER(g.DWORD))
+        basic = (g.DWORD * 14)(); returned = g.DWORD()
+        if query_object(sink, 0, basic, C.sizeof(basic), C.byref(returned)) < 0 or basic[1] != 0x120196:
+            raise RuntimeError("Private sink access differs from write plus attribute-query mode")
+        report["diagnostic_sink"] = dict(path=str(resolved_sink), links=1, volume=sink_info.volume,
+            file_id=(sink_info.index_high << 32) | sink_info.index_low, requested_access=0x40000080,
+            granted_access=basic[1], share=3, creation="CREATE_NEW", flags=1, source=False,
+            count=1, standard_streams="stdout and stderr combined; no console")
         root_job = job(1); helper_job = job(2)
         # Control handles are inherited by the helper, never by the root.
         for handle in (token, root_job):
             g.checked(g.K.SetHandleInformation(handle, 1, 1), "helper control inheritance")
-        inherited = list(locks.handles) + [token, root_job]
+        inherited = root_handles + [token, root_job, sink]
         size = g.SIZE(); g.K.InitializeProcThreadAttributeList(None, 1, 0, C.byref(size))
         attributes = C.create_string_buffer(size.value)
         g.checked(g.K.InitializeProcThreadAttributeList(attributes, 1, 0, C.byref(size)), "helper attrs")
@@ -159,11 +231,18 @@ def main():
         environment.update(USERPROFILE=str(stage / "profile"), APPDATA=str(stage / "profile"),
             LOCALAPPDATA=str(stage / "profile"), TEMP=str(stage / "temp"), TMP=str(stage / "temp"),
             DYNAMORIO_CONFIGDIR=str(stage / "drconfig"), BSP_STAGE=str(stage), BSP_TARGET=str(target),
+            DYNAMORIO_LOGDIR=str(stage / "drdebug"),
             BSP_TARGET_SHA256=report["target_sha256"], BSP_DR_ROOT=str(dr), BSP_DR_CLIENT=str(client),
             BSP_PROTECTED=str(protected), BSP_ROOT_JOB=str(root_job), BSP_ROOT_TOKEN=str(token),
-            BSP_DUMMY_HANDLES=",".join(map(str, locks.handles)), BSP_EXPECT_LOGON_SID=g.expected_restricting_sids()[1])
+            BSP_HANDLES_FILE=str(handle_file), BSP_EXPECT_LOGON_SID=g.expected_restricting_sids()[1],
+            BSP_DIAGNOSTIC_SINK=str(sink), BSP_SINK_VOLUME=str(sink_info.volume),
+            BSP_SINK_INDEX_HIGH=str(sink_info.index_high), BSP_SINK_INDEX_LOW=str(sink_info.index_low),
+            BSP_ENTRY_RVA=f'{pe["entry_rva"]:x}', BSP_ENTRY_BYTES=entry_bytes, BSP_NEGATIVE=args.negative,
+            BSP_DR_DIAGNOSTIC="1" if args.diagnostic_dr else "0",
+            BSP_DOCUMENTS=str(documents), BSP_ENTRY_CLIENT_OPTIONS=entry_options)
         envbuf = C.create_unicode_buffer("\0".join(k + "=" + v for k, v in sorted(environment.items())) + "\0\0")
         si = g.STARTUPINFOEX(); si.startup.cb = C.sizeof(si); si.attributes = C.addressof(attributes)
+        si.startup.dwFlags = 0x100; si.startup.hStdOutput = sink; si.startup.hStdError = sink
         command = C.create_unicode_buffer(subprocess.list2cmdline([str(helper), "helper"]))
         g.checked(g.A.CreateProcessAsUserW(token, str(helper), command, None, None, True,
             4 | 0x400 | 0x20 | 0x80000 | 0x8000000, envbuf, str(stage),
@@ -174,7 +253,7 @@ def main():
         if Path("C:/Users/sqz269/.bsp/DRAIN").exists():
             raise RuntimeError("DRAIN")
         g.checked(g.K.ResumeThread(pi.hThread) != 0xffffffff, "resume owned helper only")
-        deadline = time.monotonic() + 30
+        deadline = time.monotonic() + 60
         while g.K.WaitForSingleObject(pi.hProcess, 100) != 0:
             if time.monotonic() >= deadline or Path("C:/Users/sqz269/.bsp/DRAIN").exists():
                 raise RuntimeError("Fixture timeout or DRAIN")
@@ -186,13 +265,53 @@ def main():
         report.update(helper_log=helper_log, root_log=root_log, client_log=client_log,
             root_entry=(stage / "root-entry.txt").exists(), child_entry=(stage / "child-entry.txt").exists(),
             private_write=(stage / "private-write.txt").exists())
-        if code.value or "root_child_before_code_denied=0" not in root_log:
+        report["stdio_text"] = sink_path.read_text(encoding="utf-8", errors="replace")[:16384]
+        cov_files = list((stage / "drcov").glob("drcov.*.log"))
+        report["drcov_logs"] = []
+        for path in cov_files:
+            text = path.read_text(encoding="utf-8")
+            table = re.search(r"^BB Table: (\d+) bbs$", text, re.M)
+            target_rows = [line for line in text.splitlines() if line.rstrip().endswith(str(target))]
+            target_id = int(target_rows[0].split(",", 1)[0]) if len(target_rows) == 1 else None
+            target_entry_hit = target_id is not None and re.search(
+                rf"^module\[\s*{target_id}\]: 0x{pe['entry_rva']:08x},", text, re.M) is not None
+            entry_sizes = [int(size) for size in re.findall(
+                rf"^module\[\s*{target_id}\]: 0x{pe['entry_rva']:08x},\s+(\d+)", text, re.M)] if target_id is not None else []
+            report["drcov_logs"].append(dict(path=str(path), size=path.stat().st_size,
+                sha256=g.sha(path), bb_count=int(table.group(1)) if table else 0,
+                target_module_id=target_id, target_entry_covered=target_entry_hit, entry_bb_sizes=entry_sizes))
+        if not report["expected_admission_rejection"] and (not cov_files or not all(path.read_bytes().startswith(b"DRCOV VERSION:") for path in cov_files)):
+            raise RuntimeError("No valid drcov log alongside admission client")
+        if args.negative != "none":
+            if code.value != 1 or report["root_entry"] or report["child_entry"] or "entry_admitted" in client_log or "root-private-stdio-entry" in report["stdio_text"]:
+                raise RuntimeError("Missing/bad client escaped the independent entry barrier")
+            if not all(text in helper_log for text in ("independent_entry_barrier_installed=", "sdk_options_serialization_verified=0", "sdk_run_only_resume=0")):
+                raise RuntimeError("Negative did not reach the independent barrier/run gate")
+            report["passed"] = True
+        elif args.fail_entry_gate:
+            if code.value != 1 or report["root_entry"] or report["child_entry"] or "admission_rejected reason=forced_fixture_gate_failure" not in client_log:
+                raise RuntimeError("Forced entry-gate failure did not fail closed")
+            if "entry_admitted" in client_log or "hook_installed" in client_log:
+                raise RuntimeError("Forced rejected entry was admitted")
+            report["passed"] = True
+        elif code.value or "root_child_before_code_denied=0" not in root_log:
             raise RuntimeError("CREATE/inject/root safety fixture failed; see logs")
-        if not (client_log.startswith("client_ready ") and "entry_execution " in client_log):
+        elif not (client_log.startswith("client_ready ") and "hook_installed " in client_log and
+                  "personal_stub_selftest_passed " in client_log and "entry_admitted " in client_log and
+                  "tracer_ready " in client_log and "fp_preservation_verified " in client_log and
+                  "entry_call_target_and_return_verified " in client_log and
+                  client_log.index("hook_installed ") < client_log.index("entry_admitted ")):
             raise RuntimeError("DR client not ready before original entry")
-        if not report["root_entry"] or report["child_entry"] or not report["private_write"]:
+        elif not report["root_entry"] or report["child_entry"] or not report["private_write"]:
             raise RuntimeError("Root admission/child policy/private write failed")
-        report["passed"] = True
+        else:
+            if f'inherited_source_count={len(root_handles)}\n' not in root_log or "personal_redirect_flags_stdcall_passed=0" not in root_log or "nonpersonal_original_fallback_passed=0" not in root_log:
+                raise RuntimeError("Folder redirect/ABI/handle count proof missing")
+            report["passed"] = True
+        if not report["expected_admission_rejection"] and not any(log["target_entry_covered"] for log in report["drcov_logs"]):
+            raise RuntimeError("Drcov log does not cover the target entry")
+        if not report["expected_admission_rejection"] and not all(log["entry_bb_sizes"] and all(size == 5 for size in log["entry_bb_sizes"]) for log in report["drcov_logs"]):
+            raise RuntimeError("Drcov did not observe the original CALL5 after app2app substitution")
     except BaseException as exc:
         report.update(passed=False, error=str(exc))
     finally:
@@ -209,15 +328,25 @@ def main():
         report["final_job_active"] = [active(handle) for handle in jobs]
         if any(report["final_job_active"]):
             raise RuntimeError("Owned job not empty; refusing source-lock cleanup")
+        for handle in duplicates:
+            g.K.SetHandleInformation(handle, 2, 0)
+            g.close(handle)
         if locks:
             locks.close()
         if attributes:
             g.K.DeleteProcThreadAttributeList(attributes)
-        for handle in (pi.hThread, pi.hProcess, *jobs, token):
+        if sink and "diagnostic_sink" in report:
+            final_sink = g.FILE_INFORMATION()
+            report["private_sink_identity_retained"] = bool(g.K.GetFileInformationByHandle(sink, C.byref(final_sink)) and
+                final_sink.links == 1 and final_sink.volume == sink_info.volume and
+                final_sink.index_high == sink_info.index_high and final_sink.index_low == sink_info.index_low)
+        for handle in (pi.hThread, pi.hProcess, *jobs, token, sink):
             g.close(handle)
         report.update(protected_fixture_unchanged=source.exists() and g.sha(source) == source_hash,
+            target_disk_unchanged=g.sha(target) == report["target_sha256"],
             sdk_disk_unchanged=all(g.sha(dr / path) == value for path, value in sdk_hashes.items()), ended_unix=time.time())
-        report["passed"] = bool(report.get("passed") and report["protected_fixture_unchanged"] and report["sdk_disk_unchanged"])
+        report["passed"] = bool(report.get("passed") and report["protected_fixture_unchanged"] and report["sdk_disk_unchanged"] and
+            report["target_disk_unchanged"] and report.get("private_sink_identity_retained"))
         g.write_receipt(root / "result.json", report)
     print(json.dumps({k: report.get(k) for k in ("passed", "helper_pid", "helper_exit_code", "error", "final_job_active", "protected_fixture_unchanged", "sdk_disk_unchanged")}))
     return 0 if report["passed"] else 1
