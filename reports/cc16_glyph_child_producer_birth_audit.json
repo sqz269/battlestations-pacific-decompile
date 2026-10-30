@@ -1,0 +1,836 @@
+{
+  "baseline": "9f3f19e63c51eef23f13606ba330567a640d516b",
+  "utc": "2026-10-30T19:25:39.987113+00:00",
+  "original_pe": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "native_bodies": [
+    {
+      "entry": "00AB78A0",
+      "inclusive_end": "00AB79DB",
+      "bytes": 316,
+      "decoded_instructions": 109,
+      "sha256": "cbc275ed2c139a3143c6342fd5b888b08e5789c3c81a87ed8358a67feeadbc89"
+    },
+    {
+      "entry": "00AB9650",
+      "inclusive_end": "00AB98EE",
+      "bytes": 671,
+      "decoded_instructions": 123,
+      "sha256": "36224703ecd780748bfbb4a21ccb90ee39ab4287c17fbc673f50e8d68ca41af5"
+    },
+    {
+      "entry": "00AB76F0",
+      "inclusive_end": "00AB76FB",
+      "bytes": 12,
+      "decoded_instructions": 4,
+      "sha256": "e604d4cdf787833fd18aedeae1de2cb1f7486e956d0150939b76170b13af8693"
+    }
+  ],
+  "saved_export_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab78a0\\assembly.txt",
+      "hash_format": "raw_saved_export_file_bytes",
+      "bytes": 3285,
+      "sha256": "f8a725d86036669df84daf14fab5785cf9d1e7205c63169e99671f504b7fba70"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab78a0\\decompiled.c",
+      "hash_format": "raw_saved_export_file_bytes",
+      "bytes": 2961,
+      "sha256": "760cf47cb26aacfa5466a03f1573537a7417f080ac9a1481a33782a3fd9882ff"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab9650\\assembly.txt",
+      "hash_format": "raw_saved_export_file_bytes",
+      "bytes": 4924,
+      "sha256": "e1ce487b311f69edbc6137d3da4c649f83b2abd011967a74239072d221e3cdb5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab9650\\decompiled.c",
+      "hash_format": "raw_saved_export_file_bytes",
+      "bytes": 9767,
+      "sha256": "f7a1ac2485063edce1c214f7702f8708c909a72a5d4d31381ab4ed8efad354c4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab76f0\\assembly.txt",
+      "hash_format": "raw_saved_export_file_bytes",
+      "bytes": 90,
+      "sha256": "a565464c5168bc5c04280a68aebb37260166dbbf89b9b43576d0f24fcfe5b168"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab76f0\\decompiled.c",
+      "hash_format": "raw_saved_export_file_bytes",
+      "bytes": 530,
+      "sha256": "4e511ea30f9fb788bebcc3f5c617ea715559ff9707736e2832db166b127cf529"
+    }
+  ],
+  "call_receipts": [
+    {
+      "caller": "00AB78A0",
+      "site": "00AB78AA",
+      "instruction": "dword ptr [0x00ce2218]",
+      "hex": "ff151822ce00",
+      "import_home": "00CE2218"
+    },
+    {
+      "caller": "00AB78A0",
+      "site": "00AB78CB",
+      "instruction": "0x00bf681b",
+      "hex": "e84bef1300",
+      "target": "00BF681B"
+    },
+    {
+      "caller": "00AB78A0",
+      "site": "00AB78DD",
+      "instruction": "0x00ab6f60",
+      "hex": "e87ef6ffff",
+      "target": "00AB6F60"
+    },
+    {
+      "caller": "00AB78A0",
+      "site": "00AB78FF",
+      "instruction": "0x00bf55be",
+      "hex": "e8badc1300",
+      "target": "00BF55BE"
+    },
+    {
+      "caller": "00AB78A0",
+      "site": "00AB7931",
+      "instruction": "0x00bf6989",
+      "hex": "e853f01300",
+      "target": "00BF6989"
+    },
+    {
+      "caller": "00AB78A0",
+      "site": "00AB79BB",
+      "instruction": "dword ptr [0x00ce2210]",
+      "hex": "ff151022ce00",
+      "import_home": "00CE2210"
+    },
+    {
+      "caller": "00AB78A0",
+      "site": "00AB79CF",
+      "instruction": "dword ptr [0x00ce2210]",
+      "hex": "ff151022ce00",
+      "import_home": "00CE2210"
+    },
+    {
+      "caller": "00AB9650",
+      "site": "00AB9671",
+      "instruction": "0x00aa9390",
+      "hex": "e81afdfeff",
+      "target": "00AA9390"
+    },
+    {
+      "caller": "00AB9650",
+      "site": "00AB98D8",
+      "instruction": "0x00ab8530",
+      "hex": "e853ecffff",
+      "target": "00AB8530"
+    },
+    {
+      "caller": "00AB76F0",
+      "site": "00AB76F6",
+      "instruction": "0x00ab75a0",
+      "hex": "e8a5feffff",
+      "target": "00AB75A0"
+    }
+  ],
+  "ctor_eh": {
+    "handler": {
+      "address": "00CB809C",
+      "bytes": 10,
+      "sha256": "0f06d3e5c4e5a0e30a275d0055683fdd787996a16d2b1465c0a5f7429f905a7c",
+      "hex": "b888eede00e99deaf3ff"
+    },
+    "funcinfo": {
+      "address": "00DEEE88",
+      "bytes": 36,
+      "sha256": "9ace887ca5a2cf28196bc0c664f2530f6cb8ab041b5a347322f87e0b0669f461",
+      "hex": "2205931907000000aceede00000000000000000000000000000000000000000001000000"
+    },
+    "unwind_map": {
+      "address": "00DEEEAC",
+      "bytes": 56,
+      "sha256": "b5753697d45152294309f0804b37988ac659db4a578d9c915826cb70a82f83cb",
+      "hex": "ffffffff4080cb00000000004880cb00010000005680cb00020000006480cb00030000007280cb00040000008080cb00050000008e80cb00"
+    },
+    "states": 7,
+    "actions": [
+      {
+        "address": "00CB8040",
+        "bytes": 8,
+        "sha256": "d3b40179e7c11ec2fd5fa1aa1ddfa4107f55ff2f88b1b5fb591fe0776688f4cf",
+        "hex": "8b4de0e9e816dfff",
+        "state": 0,
+        "parent": -1
+      },
+      {
+        "address": "00CB8048",
+        "bytes": 14,
+        "sha256": "7f55fee91a4515da5f3351ce84db2ce4dca8c39ada7035ebdee55bac42df6f00",
+        "hex": "8b4de081c1ec000000e9dae377ff",
+        "state": 1,
+        "parent": 0
+      },
+      {
+        "address": "00CB8056",
+        "bytes": 14,
+        "sha256": "de57c7f3ad68a2631d273cc31db637b580687e5b6818344d532a07901b6f4b3a",
+        "hex": "8b4de081c1f4000000e9bc5c76ff",
+        "state": 2,
+        "parent": 1
+      },
+      {
+        "address": "00CB8064",
+        "bytes": 14,
+        "sha256": "fcbc4f165f2ea0124c520adb2c0d46bb1009bdb3f13bc7fa88d6bdc77bdf0dd6",
+        "hex": "8b4de081c194010000e97eec91ff",
+        "state": 3,
+        "parent": 2
+      },
+      {
+        "address": "00CB8072",
+        "bytes": 14,
+        "sha256": "966f48c65477fc36222cfe5ee87deadb65cb243330fd56cec8da57d9d83aed3d",
+        "hex": "8b4de081c1a4010000e9b0e377ff",
+        "state": 4,
+        "parent": 3
+      },
+      {
+        "address": "00CB8080",
+        "bytes": 14,
+        "sha256": "8301aeaf7a0df1b52dfafeee903edfa3206a16a8a8199e7c85a6bfcde61f4a1c",
+        "hex": "8b4de081c1c0010000e9925c76ff",
+        "state": 5,
+        "parent": 4
+      },
+      {
+        "address": "00CB808E",
+        "bytes": 14,
+        "sha256": "70fc9a08f32139b4645a573d3a56e8dc7d35578e49969846bad8cd5972e4aa89",
+        "hex": "8b4de081c1c8010000e9845c76ff",
+        "state": 6,
+        "parent": 5
+      }
+    ]
+  },
+  "jumped_padding": {
+    "address": "00AB7999",
+    "bytes": 7,
+    "sha256": "4fe06c07aad18cb5faea1a925ff71a52931084bbb3f844ffd60bae6a9ce14cce",
+    "hex": "8da42400000000"
+  },
+  "read_source_pins": [
+    {
+      "path": "include/bsp/gui_text_factory.hpp",
+      "commit": "9f3f19e63c51eef23f13606ba330567a640d516b",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "7f4fdee0750a70754668a19a4fb17ac3f2a716f3",
+      "bytes": 3689,
+      "sha256": "5aad1ef48c9c29b28ffd17178f20446ab8277508dd39a0b69cf23760adcfb657"
+    },
+    {
+      "path": "src/gui_text_factory.cpp",
+      "commit": "9f3f19e63c51eef23f13606ba330567a640d516b",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "4f361c10e8680f3984db49948a726819ef52c488",
+      "bytes": 10917,
+      "sha256": "bde7d1a4130a2ba7d71381143daa58c26d050200638bd7f4f8a60b35579b03c8"
+    },
+    {
+      "path": "include/bsp/game_native_gui_text_process.hpp",
+      "commit": "9f3f19e63c51eef23f13606ba330567a640d516b",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "c5396f5a44125e4912a8cdc69d09f7677be55c11",
+      "bytes": 7271,
+      "sha256": "dbadef0978a9bfca2fb48533ea3d0f4f309ab38a679f348843744348ac633f52"
+    },
+    {
+      "path": "include/bsp/native_gui_text_default_storage.hpp",
+      "commit": "9f3f19e63c51eef23f13606ba330567a640d516b",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "51d97889adc254306247f4ecbdab4361b41533bf",
+      "bytes": 5404,
+      "sha256": "411848bea4eb0f79635bfca06493782d40c0b27cb92f713728d52b48648e119f"
+    },
+    {
+      "path": "src/native_gui_text_default_storage.cpp",
+      "commit": "9f3f19e63c51eef23f13606ba330567a640d516b",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "766918f8f8e48160ec322045b363b2d9361ae7e4",
+      "bytes": 22565,
+      "sha256": "757647269fba2238edce3723fb7aa870cc4d75c71610d621177a0c581d5a85cf"
+    },
+    {
+      "path": "include/bsp/native_gui_text_default_factory_storage.hpp",
+      "commit": "9f3f19e63c51eef23f13606ba330567a640d516b",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "c375df0e72f3bbb01134ad99a1cab4dbc0bc9cd7",
+      "bytes": 4809,
+      "sha256": "1587babdcc646f3b91b15b688a27338ea7d1e5038db3e92a7fd6738fb8924cd0"
+    },
+    {
+      "path": "src/native_gui_text_default_factory_storage.cpp",
+      "commit": "9f3f19e63c51eef23f13606ba330567a640d516b",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "2030545c00812ae683f1bb7d58e6b34c3c00bf24",
+      "bytes": 9890,
+      "sha256": "0b97742d0e583fe07aa78650b11add009bf411714ac275c01c65260dc57ff834"
+    },
+    {
+      "path": "include/bsp/native_gui_text_storage_construct.hpp",
+      "commit": "9f3f19e63c51eef23f13606ba330567a640d516b",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "4a426546480d657390ff04d2adbc1f8fe738ec3f",
+      "bytes": 8628,
+      "sha256": "6f142a031781e0c9e5a703abed07967790b4ff8669494330bfffb1bdea9b3876"
+    },
+    {
+      "path": "include/bsp/native_gui_text_reference.hpp",
+      "commit": "9f3f19e63c51eef23f13606ba330567a640d516b",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "3002563931447a3429fcf9d3c966fc1dc6ff09ce",
+      "bytes": 10891,
+      "sha256": "e270e6f39bcf6014b18bb04d6f3d5eacf24ee09596dca809b99ca778bb1c3eb1"
+    },
+    {
+      "path": "src/native_gui_text_reference.cpp",
+      "commit": "9f3f19e63c51eef23f13606ba330567a640d516b",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "136bf8ab484aa78a5ce7a65a3dc8ce38851aac99",
+      "bytes": 57192,
+      "sha256": "e4e363507f24729369a69dc92c825b08b08524dd1a368cca40883f177b3d14d9"
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "commit": "9f3f19e63c51eef23f13606ba330567a640d516b",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808",
+      "bytes": 10071,
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "commit": "9f3f19e63c51eef23f13606ba330567a640d516b",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "cac68c258f191a798e3c5e8e2316370402f17a9c",
+      "bytes": 11471,
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43"
+    },
+    {
+      "path": "include/bsp/native_model_storage_lifetime.hpp",
+      "commit": "9f3f19e63c51eef23f13606ba330567a640d516b",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "d00d1110e199b05a65c948d42017593a8f102661",
+      "bytes": 8247,
+      "sha256": "0764b927078091103c21e6c2d6215ccb7a403c2b3eed832943dfae632a55ec3e"
+    },
+    {
+      "path": "src/native_model_storage_lifetime.cpp",
+      "commit": "9f3f19e63c51eef23f13606ba330567a640d516b",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "9aa0259d0d2deebd85f14805b9bd9eaae6b76587",
+      "bytes": 17033,
+      "sha256": "1ded6a8042e2ce26bdcd9852dae2c14b16cee1efdba0227ed479d0c9491cddd8"
+    },
+    {
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "commit": "9f3f19e63c51eef23f13606ba330567a640d516b",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "acec6947cf7777181a97335456dc5142a1149cae",
+      "bytes": 8477,
+      "sha256": "6a8e8ff45a4415fbdbb81992726f2e9e4fc17c0819fde21c279ac4c3d354b245"
+    },
+    {
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "commit": "9f3f19e63c51eef23f13606ba330567a640d516b",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "5505123a0d02398d4d4c16873ef87f4f856fb790",
+      "bytes": 19830,
+      "sha256": "f05676b34f28b95194810e4f325cbec759b0ece70b9cb41b38b64efc89d7a96e"
+    },
+    {
+      "path": "include/bsp/native_gui_text_main_section_storage.hpp",
+      "commit": "9f3f19e63c51eef23f13606ba330567a640d516b",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "b78b82bacc8a8e444b1cdaf04f1039198c031cf6",
+      "bytes": 6847,
+      "sha256": "2fffebb5ba867421eacc9bec461648004238f870d671337544ebdf3989bccc72"
+    },
+    {
+      "path": "src/native_gui_text_main_section_storage.cpp",
+      "commit": "9f3f19e63c51eef23f13606ba330567a640d516b",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "8e85ebe1fe98e0d2c245617dd7493a82ccd32042",
+      "bytes": 29712,
+      "sha256": "9cea2fa635091c01ad61fabad16a406843709a1d267d830a2aedfc97ebd2b7a1"
+    },
+    {
+      "path": "include/bsp/native_gui_text_shader_storage.hpp",
+      "commit": "9f3f19e63c51eef23f13606ba330567a640d516b",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "35bb10edaf18f2c43bc9ea48f87fb61873139605",
+      "bytes": 14069,
+      "sha256": "746d87e6274a37f16697df0ae8645c35a2d5b32b9673ae2444d13f461d8bddbf"
+    },
+    {
+      "path": "include/bsp/native_gui_text_glyph_buffers_storage.hpp",
+      "commit": "9f3f19e63c51eef23f13606ba330567a640d516b",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "2d49499a1552b69728ad41939266dcdc5b07b2ba",
+      "bytes": 6701,
+      "sha256": "d80b39a0dab6f1297098fc185cd833de0f928799b2903c8bacdce2384bd4444f"
+    },
+    {
+      "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+      "commit": "9f3f19e63c51eef23f13606ba330567a640d516b",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "85cb7b172426fb3fd9d82c9fdefac54d8a596652",
+      "bytes": 8272,
+      "sha256": "4c29abfcfa41c929d8d4c584239e4cbadb5f5847c91a59becc3262274ed72394"
+    },
+    {
+      "path": "include/bsp/native_gui_text_glyph_children.hpp",
+      "commit": "9f3f19e63c51eef23f13606ba330567a640d516b",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "c5a7a2dc5aea299663866f07cb661d94c14c237a",
+      "bytes": 3622,
+      "sha256": "441e4a25ab536b115d87bdc2de81778eda2dc4d47f61faced68485f1cc4e8b11"
+    },
+    {
+      "path": "include/bsp/native_mesh_section_layout_storage.hpp",
+      "commit": "9f3f19e63c51eef23f13606ba330567a640d516b",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "9875909104d429eb1144a83d7c2947fc49c6e383",
+      "bytes": 6385,
+      "sha256": "19245d00005b8d543fdcd5b85e71dba091ca158063e38fd86010cfb8e72c8939"
+    },
+    {
+      "path": "include/bsp/native_gui_text_changed_storage.hpp",
+      "commit": "9f3f19e63c51eef23f13606ba330567a640d516b",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "056e9689803ff897d3340b73785adb3b2eb14b59",
+      "bytes": 10238,
+      "sha256": "13cc02308c28bf3ba443adfe1334627dffae05231a0c05e7bff6cbd634da5cc8"
+    },
+    {
+      "path": "src/native_gui_text_changed_storage.cpp",
+      "commit": "9f3f19e63c51eef23f13606ba330567a640d516b",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "c8f766005b8a90f7250f467fb46bc0ab47989bc4",
+      "bytes": 18298,
+      "sha256": "721a3bff0f346ae3506deda59f5a7e892e7ca46eefb8fcaa4d57d04a9c1753a1"
+    }
+  ],
+  "frozen_packet_pins": [
+    {
+      "path": "include/bsp/native_gui_text_changed_storage.hpp",
+      "commit": "96dd22fd0f8b0cbc6ce97b6ed7f69af399993d33",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "056e9689803ff897d3340b73785adb3b2eb14b59",
+      "bytes": 10238,
+      "sha256": "13cc02308c28bf3ba443adfe1334627dffae05231a0c05e7bff6cbd634da5cc8"
+    },
+    {
+      "path": "src/native_gui_text_changed_storage.cpp",
+      "commit": "96dd22fd0f8b0cbc6ce97b6ed7f69af399993d33",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "c8f766005b8a90f7250f467fb46bc0ab47989bc4",
+      "bytes": 18298,
+      "sha256": "721a3bff0f346ae3506deda59f5a7e892e7ca46eefb8fcaa4d57d04a9c1753a1"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_TEXT_CHANGED_STORAGE.md",
+      "commit": "96dd22fd0f8b0cbc6ce97b6ed7f69af399993d33",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "1c44053db72d1c06d13d0a506243e57f55fed5f7",
+      "bytes": 13922,
+      "sha256": "722dbb1c6f8a3304f95a6cba1b6bd9cf4cd0921f12776ff7da17cb6aecb408b8"
+    },
+    {
+      "path": "reports/cc16_native_gui_text_changed_storage.json",
+      "commit": "96dd22fd0f8b0cbc6ce97b6ed7f69af399993d33",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "06d650e4cc2c9680cdc15f3d42fd70e49b648fe5",
+      "bytes": 42426,
+      "sha256": "e95b6ce8a228b676cb4c8c42ccabda4826064453be0b5fc18741985062595ca3"
+    },
+    {
+      "path": "include/bsp/native_mesh_section_layout_storage.hpp",
+      "commit": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "9875909104d429eb1144a83d7c2947fc49c6e383",
+      "bytes": 6385,
+      "sha256": "19245d00005b8d543fdcd5b85e71dba091ca158063e38fd86010cfb8e72c8939"
+    },
+    {
+      "path": "src/native_mesh_section_layout_storage.cpp",
+      "commit": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "3e473a56ff11e6f1f1b24713e6306f763c78e313",
+      "bytes": 5775,
+      "sha256": "d6f0378634d82d4287cf698dd529e24f3a53b4f1b6b0398647d33c4f956c4115"
+    },
+    {
+      "path": "docs/CC16_NATIVE_MESH_SECTION_LAYOUT_STORAGE.md",
+      "commit": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "76088842ebf07edcc9b86b4144d064ecefa57ba2",
+      "bytes": 12004,
+      "sha256": "a50cc363c8c5a5d1afe47d0fe9c4859169f3569752f9340840f0f7a99e5abbb0"
+    },
+    {
+      "path": "reports/cc16_native_mesh_section_layout_storage.json",
+      "commit": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "7d9f3e950b3fdea27eb7973298e9de5fabaed3b0",
+      "bytes": 21782,
+      "sha256": "11f6144d7de2e18c674a5a51471079d9a4240725e2a5f14211bf79a447698a05"
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_lifetime.hpp",
+      "commit": "d4e6aa48d20e55b6667a11d37a462c50ab2ee6e2",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "b58427ca1c6332f7c62409f298dca4d523fb571c",
+      "bytes": 4385,
+      "sha256": "a21b38daad89af7b6fc968273dece3fba3789ab22476299ea66cf88c4002b4d2"
+    },
+    {
+      "path": "src/native_front_end_frame_lifetime.cpp",
+      "commit": "d4e6aa48d20e55b6667a11d37a462c50ab2ee6e2",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "1246c5fea7640f9754190cc86ee8614ea1567400",
+      "bytes": 4768,
+      "sha256": "50eae08b6ca3a7561b8ec1a1bfaeb7b2b717cb9c16f46ab4470f1befe0dcf4f8"
+    },
+    {
+      "path": "docs/CC16_NATIVE_FRONT_END_FRAME_LIFETIME.md",
+      "commit": "d4e6aa48d20e55b6667a11d37a462c50ab2ee6e2",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "240491d6d58bc72b56ef5379a8da400523f25aaf",
+      "bytes": 10234,
+      "sha256": "3409aa99fb04a5e98aa05994563b6522ebb78dad506ec80db0c8aa85de7810ea"
+    },
+    {
+      "path": "reports/cc16_native_front_end_frame_lifetime.json",
+      "commit": "d4e6aa48d20e55b6667a11d37a462c50ab2ee6e2",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "f192c477eb3c86d3546fc1d73802d8a034ae0b14",
+      "bytes": 23228,
+      "sha256": "f3c4b17cf1e49dafd606735cd4977cecc659edab841417cb007c5fd1eb50bea0"
+    }
+  ],
+  "schema_version": 1,
+  "packet": "codex-glyph-child-producer-birth-audit",
+  "classification": "read_only_existing_body_and_birth_provenance_contract_audit",
+  "scope": {
+    "owned_files": [
+      "docs/CC16_GLYPH_CHILD_PRODUCER_BIRTH_AUDIT.md",
+      "reports/cc16_glyph_child_producer_birth_audit.json"
+    ],
+    "leased_addresses": [],
+    "production_edits": false,
+    "new_Native_recovery": false,
+    "native_addresses_audited": [
+      "00AB78A0",
+      "00AB9650",
+      "00AB76F0"
+    ],
+    "physical_bytes": 999,
+    "decoded_instructions": 236,
+    "x87_forms": 0,
+    "frozen96_611_d4e_blobs_unchanged": 12
+  },
+  "analysis_identity": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "live_and_snapshot_function_count": 77632,
+    "target_verified_before_audit_batches": true,
+    "whole_three_saved_assembly_listings_read": true,
+    "liveCtorHandler_map_padding_matched_PE": true,
+    "Ghidra_mutation_or_new_export": false
+  },
+  "existing_apis": [
+    {
+      "address": "00AB78A0",
+      "api": "NativeGuiTextPool::allocate_raw_slot_00ab78a0()",
+      "header": "include/bsp/gui_text_factory.hpp",
+      "source": "src/gui_text_factory.cpp",
+      "native_abi": "ECX SAME actual pool, EAX raw slot, plainRET",
+      "body_missing": false
+    },
+    {
+      "address": "00AB9650",
+      "api": "construct_native_gui_text_default_storage_00ab9650(void*,NativeGuiTextRawModelDefaultStorageFrame&,NativeGuiTextRawModelDefaultStorageContext&,NativeGuiTextRawModelDefaultStorageAcquired&)",
+      "header": "include/bsp/native_gui_text_default_storage.hpp",
+      "source": "src/native_gui_text_default_storage.cpp",
+      "native_abi": "ECX actual1F4 freshText; AA9390(type3); EAX same receiver; plainRET",
+      "body_missing": false
+    },
+    {
+      "address": "00AB76F0",
+      "api": "return_gui_text_failed_slot_00ab76f0(void*,NativeGuiTextPool&)",
+      "header": "include/bsp/gui_text_factory.hpp",
+      "source": "src/gui_text_factory.cpp",
+      "native_abi": "ECX CURRENT failedslot; PUSHslot,ECX=F8BDF0,CALLAB75A0,RET",
+      "body_missing": false
+    }
+  ],
+  "pool_contract": {
+    "canonical_accessor": "game::GameNativeGuiTextProcess::pool_00f8bdf0()",
+    "header": "include/bsp/game_native_gui_text_process.hpp",
+    "Source_pool_identity": "SAME &pool.storage(), not arbitraryvoid* cast/new/copied/F8mappedbank",
+    "payload_bytes": "1F4",
+    "slot_stride": "1F8",
+    "hidden_slab_index_offset": "1F4",
+    "payload_zeroed_by_allocation": false,
+    "no_local_EH_unlock_on_allocation_escape": true,
+    "lifetime": "process/pool/list/CRT/slabs retainedthroughall slots andenteredfailure; noinstalledgameCRTslabadoption"
+  },
+  "step_distinctions": {
+    "85": "Real raw section/Model operation; Failure{none,provider_call,host_metadata}; entered/provider_call notNativeorigin.",
+    "93": "Genuine normal SAMErawconstructorreturn andreal85graph; noTextregistryreferenceyet.",
+    "122": "SeparatequalifiedDEFAULTrawTextcompanion/currentprofile/+04alias/registrybirth; noextraNativecredit; failureadditionalhostadmissionNOTfailedNativeCtor."
+  },
+  "model188_custody": {
+    "record": "NativeGuiTextRawModelRecord",
+    "header": "include/bsp/native_gui_text_storage_construct.hpp",
+    "members": [
+      "actual",
+      "construction",
+      "lifetime_frame",
+      "lifetime",
+      "optional<NativeModelStorageReference> reference",
+      "association",
+      "release_frame",
+      "release"
+    ],
+    "same_identity_domains": "constructorsections.model,publication/retirementmodel andactualnode/world/scene/pool/type/import/string/pointlight domains",
+    "survives_Text_companion_or_pool_slot_disposal": true,
+    "must_keep_through": [
+      "allremainingModelcredits",
+      "enteredfailures",
+      "completedflags0",
+      "unreturnedphysicalslot",
+      "opaqueproviders"
+    ],
+    "retired_alone_provesphysicalreturn": false,
+    "new_Model_owner_or_retain_inferred": false
+  },
+  "registry_capabilities": {
+    "prepare_binding": "Alignednonnullopaquekey; noNative+04read; null/unavailableentry; mayallocate/throw; rejectsALLexistingkeys.",
+    "publish": "Authenticsameregistry/exactnullentry/token; sameactual+04alias/positivecount; afterlockingvalidation fill+consume withoutinsertion/rehash/retain/callback.",
+    "publish_noexcept_guarantee": false,
+    "publish_qualifications": [
+      "mutexlockingcanthrow",
+      "invalidcapabilities/aliases/countsterminateunderexistingcontract"
+    ],
+    "token_is_Native_origin_or_owner_credential": false,
+    "current_Text_binders": "src/native_gui_text_reference.cpp ordinary/rawconstructors bothowners.bind",
+    "current_Model_binder": "src/native_model_storage_lifetime.cpp NativeModelStorageReference ctor owners.bind",
+    "current_binders_accept_reservation_token": false,
+    "prepare_then_old_bind_safe_reserved_commit": false
+  },
+  "Glyph071_cut": {
+    "source": "src/native_gui_text_glyph_quad_storage.cpp",
+    "Native_interval": "actualallocationreturn ->home7=allocation ->state0 ->nonnullAB9650 ->disarm ->home7=child ->appendActualHome",
+    "Native_failed_return_argument": "CURRENTlivehome7, notcapturedallocation/destination",
+    "current_added_failure_hazard": "state0catchreturnsCURRENTslot onanyconstructor-providerCppescape, includingunclassifiedhostmetadata/bindfailure",
+    "new_automatic_AB8250_rollback_retry_or_terminal_allowed": false
+  },
+  "changed96_finding": {
+    "status": "UNADMITTED, reportedbyRootandcanonicalindependentreview;Source28excludes96",
+    "source": "src/native_gui_text_changed_storage.cpp",
+    "frozen_commit": "96dd22fd0f8b0cbc6ce97b6ed7f69af399993d33",
+    "sites": [
+      {
+        "line": 54,
+        "cleanup": "parameter41DD20"
+      },
+      {
+        "line": 246,
+        "cleanup": "inner436430copy"
+      },
+      {
+        "line": 281,
+        "cleanup": "outer436430localized"
+      },
+      {
+        "line": 293,
+        "cleanup": "outer436430widened"
+      }
+    ],
+    "issue": "UnconditionalparentNativecleanup onANYCppescape withouttrustedNative-vs-added-host/privatecausechannel.",
+    "AB8530_specific": "Qualifiednonnull188mainarm;late15C0/current188andhierarchyadmissions; ALLescapesretain; firstensurebeforeinnercopybutcanreacharmedoutercatch.",
+    "normal_operand_x87_review_does_not_close_exception_origin": true,
+    "class_key_warning": "SeparateknownShaderFramestruct/classforward-keynormalization;notprovenanceclosure",
+    "production_patch_by_this_audit": false
+  },
+  "callee_public_cause_API_cut": [
+    {
+      "callee": "raw85/raw93",
+      "api": "Failure{none,provider_call,host_metadata},site/state/acquisitionfields",
+      "limit": "publicdiagnostics/enteredprovider notNativeorigin"
+    },
+    {
+      "callee": "AB8530mainSection",
+      "api": "phase(),matches(...),matches_created_normal(...),Acquired.failureexception_ptr/escapedboundary",
+      "limit": "preparation/normalwitness/retention only;ALLescapesretain"
+    },
+    {
+      "callee": "AB8CE0shader",
+      "api": "Phase/Boundary,prepared_raw_context(),prepared_reference_frame(),privateraw-creditnormal/preparedwitnesses",
+      "limit": "NoNativeexceptioncredential; notallfutureadmissionsNoThrow"
+    },
+    {
+      "callee": "AB8400andAB9FD0",
+      "api": "Frame.phase(),requires_process_retention(),Acquired.failureexception_ptr/boundary",
+      "limit": "RetentionnotparentEHpermission"
+    },
+    {
+      "callee": "AB80C0",
+      "api": "stickyAcquiredboundary/progress",
+      "limit": "HeaderexplicitlydeniesNative-vs-hostorigininference"
+    },
+    {
+      "callee": "B865A0",
+      "api": "borrowedcontext/key/optionalacquisitionobservation",
+      "limit": "Noexception-originrecord"
+    },
+    {
+      "callee": "Changed96",
+      "api": "rawoperandScratch/bindings",
+      "limit": "Noprivatepassivecausepropagationcurrently"
+    }
+  ],
+  "caller_preparation_order": [
+    "Preparefullnonmovingreal93/85/188/retirement/reference/companion/Shader/Main/Font/providergraphbeforefirstpool/AA9390callback.",
+    "CallactualsameprocessAB78A0;captureindependentrawslotcustodybeforeanypostallocationmetadatawork.",
+    "While071state0stillunarmed,preparepermittedopaquereservations/admissions;failurekeepsslot/domain/recordsretained.",
+    "InvokegenuineAB9650withfreshmatchingsourceCtx/Frame/Acquired; nozeroing/fakeFont/model.",
+    "Onlyafterrealconstructorcount/profile/defaultgraphcompleted,performqualifiedreferencebirthbeforeappend/latermutatingGlyphcallbacks;currentbindersneedreservedseam/causework.",
+    "PreserveindependentModelcustodybeyondTextdisposal/slotreturn andallfailedoperations.",
+    "FCconstructor1doesnotprovelatercurrentvalue; genuinewrapped/recursivepathsremainrequiredwithoutmode/depth/countcap."
+  ],
+  "next_design_not_implemented": {
+    "coupled_Source_contract_before_any_new_body": true,
+    "optionA": "Existingreservation-backedText/ModelbirthAPI preservingcurrentpreflight/lifetimechecks andexactregistryqualifications;noinventednonthrowcommit.",
+    "optionB_or_remaining_requirement": "Privateissuer/invocation-boundpassivefailurecauseacrosscallee/parentEH, preservingoriginalexceptionidentity andactualarmed/disarmedstate.",
+    "cause_categories_conceptual_not_current_API": [
+      "qualifiedmodeledNativeescape",
+      "addedhostmetadata",
+      "bind/preparation",
+      "unclassified"
+    ],
+    "Native_cause_action": "RunexactlegitimateNativecleanup,includingCURRENT071home7and96armedheaderactions.",
+    "host_or_unclassified_action": "Retainunresolvedwholegraph/headers/records;doNOTmasqueradeasNativeCtorfailedreturnorNativeparentwidecleanup.",
+    "publicmarkers_or_exception_type_may_promote_to_Native": false,
+    "reset_or_retry_failed_operation": false,
+    "invent_new_NoThrow_or_terminal_cleanup_policy": false,
+    "force_owner_or_default_graph_admission": false,
+    "candidates": [
+      {
+        "files": [
+          "include/bsp/native_gui_text_reference.hpp",
+          "src/native_gui_text_reference.cpp"
+        ],
+        "API": "qualifiedrawTextbind/privateconstructorreservedtokenconsumption"
+      },
+      {
+        "files": [
+          "include/bsp/native_model_storage_lifetime.hpp",
+          "src/native_model_storage_lifetime.cpp"
+        ],
+        "API": "Modelcompletedconstructorreferencebirthwithauthenticreservation"
+      },
+      {
+        "files": [
+          "include/bsp/native_render_context.hpp",
+          "src/native_render_context.cpp"
+        ],
+        "API": "reviewexistingprepare_binding/publishcapability/lock/terminalcontractonlyifstrongerseamneeded"
+      },
+      {
+        "files": [
+          "include/bsp/native_gui_text_default_storage.hpp",
+          "src/native_gui_text_default_storage.cpp",
+          "include/bsp/native_gui_text_storage_construct.hpp",
+          "src/native_gui_text_storage_construct.cpp",
+          "include/bsp/native_gui_text_default_factory_storage.hpp",
+          "src/native_gui_text_default_factory_storage.cpp"
+        ],
+        "API": "genuinepreparation/custodyandprivatepassivecauseataddedhostversusmodeledcalleeepochs;no provider_call relabel"
+      },
+      {
+        "files": [
+          "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+          "src/native_gui_text_glyph_quad_storage.cpp"
+        ],
+        "API": "actualproducer/privatefailuretranslationbeforestate0failedslotdecision"
+      },
+      {
+        "files": [
+          "include/bsp/native_gui_text_changed_storage.hpp",
+          "src/native_gui_text_changed_storage.cpp"
+        ],
+        "API": "sameprivatecausetranslationacrossparameter/inner/outerparentEH; preserveexactNativeactions"
+      }
+    ],
+    "cause_record_identity_requirements": [
+      "privateissuer+operationidentity/generation",
+      "exactactiveexceptionidentity",
+      "host/unclassifieddefault",
+      "nestedcausepropagationwithoutpromotion",
+      "distinctcleanup-secondarycause,notinheritedtriggerpermission"
+    ]
+  },
+  "parent_reported_integration_status": {
+    "Source28": "Parentreports3cefverified/alltests12.14s,excludes96;notverificationbythisaudit",
+    "changed96_admitted": false,
+    "new_runtime_credit_from_status": false
+  },
+  "document_pin": {
+    "path": "docs/CC16_GLYPH_CHILD_PRODUCER_BIRTH_AUDIT.md",
+    "hash_format": "immutable_git_blob_content_lf",
+    "git_blob_oid": "2eda70a578e787fa40242c9ca17c59116590f831",
+    "bytes": 19343,
+    "sha256": "df477c98a4d14bf534ed0c573d5d96831233ec73aec3ab45b879c8bf3a264cdd"
+  },
+  "validation": {
+    "wholethreeassemblylistingsread": true,
+    "supportedPEbodyhashes": 3,
+    "savedexportpins": 6,
+    "callencodings": 10,
+    "ctorFH3states_actions": 7,
+    "Sourceversions_pinned": 25,
+    "frozenpacketblobs": 12,
+    "newSourceNativebody_implementation_or_shared_changes": false,
+    "build_tests_probe_game_native_processcontrol_Ghidramutation": false
+  },
+  "readiness": {
+    "existing_raw_body_recovery_required": false,
+    "actual_genuine_Glyph_child_provider_bound": false,
+    "reserved_Text_Model_birth_seam_closed": false,
+    "private_failure_provenance_closed": false,
+    "changed96_admitted": false,
+    "wholefrontend_ready": false,
+    "guard_flip": false
+  },
+  "credit": {
+    "newOriginal": 0,
+    "newVendor": 0,
+    "newHelper": 0,
+    "newCG": 0,
+    "duplicateBody": 0,
+    "ABI": 0,
+    "runtime": 0,
+    "activation": 0
+  }
+}
