@@ -33,6 +33,14 @@
       "sha256": "154fd3fe9c6a6ac78b3e791540970be9916a4e08a77e23cb7d18cad899c3c814",
       "status": "NOT_PROVIDER_CLOSED",
       "normal_instruction_count": 35
+    },
+    "value_builder": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\raw_lua_value_builder_readiness_frame_20261030\\CONTRACT.md",
+      "sha256": "433435e81a39e023de527e371b006a54d98d5113a56eff6877aa2b0e4f404edd",
+      "status": "FULL_RAW_BUILDER_NOT_ADMITTED",
+      "normal_instruction_count": 188,
+      "normal_bytes": 759,
+      "own_eh_states": 6
     }
   },
   "native_instruction_counts": {
@@ -45,7 +53,9 @@
     "006b89f0": 81,
     "006b8ad0": 24,
     "0074fb30": 6,
-    "006edf00": 35
+    "006edf00": 35,
+    "00886e00": 188,
+    "006b7ec0": 4
   },
   "available_bodies": [
     "008849b0 initializer",
@@ -58,7 +68,8 @@
     "0041e350 actual raw C-string assignment",
     "qualified6B8960 current-slot flags0 to existing scalar (callsite fragment)",
     "qualified0074FB30 tag6 using actual clear completion",
-    "Source-only Record20 lifetime primitive (no Original entry)"
+    "Source-only Record20 lifetime primitive (no Original entry)",
+    "qualified raw006B7EC0 machine-type using genuine linked lua_type"
   ],
   "unclosed": [
     "00781f20 matching vendor map assignment (006ee960/00781890)",
@@ -108,5 +119,14 @@
     "retained_checks": "2/2 12.12s",
     "canonical_checks": "2/2 11.77s",
     "source_ready": false
-  }
+  },
+  "type_leaf_integration": {
+    "producer": "068b945f0182b408c9900dd69f9e0a56a556ecf9",
+    "receipt": "reports/codex_mission_lua_type_integration.json",
+    "whole_leaf_only": true,
+    "retained_checks": "2/2 12.68s",
+    "canonical_checks": "2/2 13.30s",
+    "source_ready": false
+  },
+  "builder_remaining": "actual raw stack/setter/key/pair/copy/insert/tree transports and caller nested/VM domain; type query capability now present, no partial case"
 }
