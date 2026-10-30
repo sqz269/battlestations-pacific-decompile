@@ -1,0 +1,5822 @@
+{
+  "schema": "cc16-native-gui-text-wrapped-storage-v1",
+  "packet": "codex-native-gui-text-wrapped-storage",
+  "status": "whole_raw_source_implemented_static_only_genuine_bindings_gated",
+  "base_commit": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+  "base_published_main": "bcf127f7d796506accdb13e18723ef7580835b2b",
+  "later_primary_main_notice": "e71c9ddaf87e57f1c6e974306d48df7fddfc214f",
+  "integration": "Root cherry-picks packet commit ONLY; held96 ancestry excluded",
+  "owned_files": [
+    "include/bsp/native_gui_text_wrapped_storage.hpp",
+    "src/native_gui_text_wrapped_storage.cpp",
+    "docs/CC16_NATIVE_GUI_TEXT_WRAPPED_STORAGE.md",
+    "reports/cc16_native_gui_text_wrapped_storage.json"
+  ],
+  "native": {
+    "entry": "00aba270",
+    "last_byte": "00aba8c6",
+    "last_instruction": "00aba8c4 RET8",
+    "bytes": 1623,
+    "instructions": 457,
+    "x87_forms": 84,
+    "sse_conversions": 6,
+    "direct_calls": 11,
+    "current_calls": 4,
+    "native_abi": "ECX captured actual Text; two mutable DWORD stack homes; RET8; preserved EBX/EBP/ESI/EDI; 64h locals",
+    "ghidra_prototype": "undefined(void) is missing BOTH arguments",
+    "local_eh": "none; no FH3/FS handler or cleanup map",
+    "layout_call": "NONE; B865A0 belongs to other caller/body paths",
+    "unreachable_padding_gaps": [
+      {
+        "first": "00aba2bd",
+        "last": "00aba2bf",
+        "bytes": 3,
+        "hex": "8d4900",
+        "sha256": "53e090edb4fca0626d458dbefa0ae1bcbffc511ed159f1a70641610ad0d9a200",
+        "reachability": "skipped by unconditional Native jump; no Source effect/credit"
+      },
+      {
+        "first": "00aba669",
+        "last": "00aba66f",
+        "bytes": 7,
+        "hex": "8da42400000000",
+        "sha256": "4fe06c07aad18cb5faea1a925ff71a52931084bbb3f844ffd60bae6a9ce14cce",
+        "reachability": "skipped by unconditional Native jump; no Source effect/credit"
+      }
+    ]
+  },
+  "target_verification": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "route": "bsp.py ghidra ensure --status/proto/disasm/export/bytes; client verifies project/program/language/image-base before every batch",
+    "function_count": 77632,
+    "database_mutation": false
+  },
+  "pe": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "boundary": "00aba270..00aba8c6",
+    "body_bytes": 1623,
+    "body_sha256": "4c435d42b8c60f1eeab6987c2530b1bd54216c74c9d1b325f0f491f8d114d54b",
+    "live_ghidra_equals_installed_pe": true,
+    "constants": [
+      {
+        "address": "00cec380",
+        "bytes": "0000000000008e40",
+        "value": 960.0
+      },
+      {
+        "address": "00ce4970",
+        "bytes": "f9021550",
+        "value": 10000000000.0
+      },
+      {
+        "address": "00ce4adc",
+        "bytes": "f90215d0",
+        "value": -10000000000.0
+      },
+      {
+        "address": "00ce3978",
+        "bytes": "0000804f",
+        "value": 4294967296.0
+      },
+      {
+        "address": "00d7a280",
+        "bytes": "000000000000e03f",
+        "value": 0.5
+      },
+      {
+        "address": "00d7a210",
+        "bytes": "000000000000f03f",
+        "value": 1.0
+      },
+      {
+        "address": "00ce6618",
+        "bytes": "000000403333c33f",
+        "value": 0.15000000596046448
+      },
+      {
+        "address": "00cef1b8",
+        "bytes": "0000000000808640",
+        "value": 720.0
+      }
+    ]
+  },
+  "raw_exports": [
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00aba270/assembly.txt",
+      "raw_bytes": 14763,
+      "raw_sha256": "e1f68d8a1e3d5d575d4109c68193672f780574153e98aba4a129920ddd71f06e"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00aba270/decompiled.c",
+      "raw_bytes": 17770,
+      "raw_sha256": "ecf9b882c6b576fd027910771d4a8ab7e64afb32b36ce975ae0942857377cf69"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00aba270/metadata.json",
+      "raw_bytes": 281,
+      "raw_sha256": "9a07cc5af08719b1f02303d6abd6e024853f76cc9a4399251cd416a86354d056"
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "include/bsp/native_gui_text_wrapped_storage.hpp",
+      "revision": "packet_owned_new_file",
+      "git_lf_bytes": 9676,
+      "git_lf_sha256": "f785044a529250140974d61d41b2d1cfc24a79626ed47a5965783a86463a5cb7"
+    },
+    {
+      "path": "src/native_gui_text_wrapped_storage.cpp",
+      "revision": "packet_owned_new_file",
+      "git_lf_bytes": 31435,
+      "git_lf_sha256": "65c3b12ccea1e59d35866570c351837e89e057e0fc09e12a359bbd1a562afa48"
+    }
+  ],
+  "document": {
+    "path": "docs/CC16_NATIVE_GUI_TEXT_WRAPPED_STORAGE.md",
+    "revision": "packet_owned_new_file",
+    "git_lf_bytes": 10879,
+    "git_lf_sha256": "b6a6999987ce0da6bf6af91945b1cb6468627691a366fc760750d6781f012989"
+  },
+  "supplier_input_pins": [
+    {
+      "path": "include/bsp/native_gui_text_glyph_children.hpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "git_lf_bytes": 3622,
+      "git_lf_sha256": "441e4a25ab536b115d87bdc2de81778eda2dc4d47f61faced68485f1cc4e8b11"
+    },
+    {
+      "path": "src/native_gui_text_glyph_children.cpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "git_lf_bytes": 6167,
+      "git_lf_sha256": "cf9454f0b8e09ccd1fc9eeb7250daca7cccab0ad6b25969fd511b09968018081"
+    },
+    {
+      "path": "include/bsp/native_wide_string.hpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "git_lf_bytes": 5239,
+      "git_lf_sha256": "5606f96b372362a6831a1633a583f264fbab4290789481f94f1ba97537f6e051"
+    },
+    {
+      "path": "src/native_wide_string.cpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "git_lf_bytes": 10671,
+      "git_lf_sha256": "158502f1efb91f678011dd971c643d5236eb10bf56da3c9997631a6d8df96e55"
+    },
+    {
+      "path": "include/bsp/native_mesh_remaining_fields.hpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "git_lf_bytes": 4059,
+      "git_lf_sha256": "ad9802edc73b3e59b31420f8e0bf7e4bd789c520d774f0c0837b28d8150766ae"
+    },
+    {
+      "path": "src/native_mesh_remaining_fields.cpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "git_lf_bytes": 5969,
+      "git_lf_sha256": "8510d38e2a8e24d9d35156cf0274c3dc4590a49b6250d23221cbe0302712fa99"
+    },
+    {
+      "path": "include/bsp/native_font_glyph_selection_storage.hpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "git_lf_bytes": 2534,
+      "git_lf_sha256": "235e9a965fe063fa6562601cedb2eda2d2f868e8b05de313d018fdb5a2cea5b7"
+    },
+    {
+      "path": "src/native_font_glyph_selection_storage.cpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "git_lf_bytes": 3249,
+      "git_lf_sha256": "f1a52596c913d0d2fe45db6d09ea76190539f993175d017ffa3bc1c38df27253"
+    },
+    {
+      "path": "include/bsp/native_mesh_texture_field.hpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "git_lf_bytes": 3128,
+      "git_lf_sha256": "7d358c7a8cba0e80b37b5cb4fa0f04e4f292c34b630d18c40600530cd9429ce7"
+    },
+    {
+      "path": "src/native_mesh_texture_field.cpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "git_lf_bytes": 6476,
+      "git_lf_sha256": "a9db17ac15a9f00dae714ba41208bfdaf8e5cb40f5ee7d23651f76d183d2bb39"
+    },
+    {
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "git_lf_bytes": 8477,
+      "git_lf_sha256": "6a8e8ff45a4415fbdbb81992726f2e9e4fc17c0819fde21c279ac4c3d354b245"
+    },
+    {
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "git_lf_bytes": 19830,
+      "git_lf_sha256": "f05676b34f28b95194810e4f325cbec759b0ece70b9cb41b38b64efc89d7a96e"
+    },
+    {
+      "path": "include/bsp/native_logical_buffer_mapping.hpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "git_lf_bytes": 2420,
+      "git_lf_sha256": "d3ee48a208b6636dc70941c6a62967407d657ad18f1ae971f2d900c752fcaef0"
+    },
+    {
+      "path": "src/native_logical_buffer_mapping.cpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "git_lf_bytes": 6598,
+      "git_lf_sha256": "6e9b61c4928f34705e12be655d0c8e6a72bca9210a9d9a2748e43054c55d3075"
+    },
+    {
+      "path": "include/bsp/native_vertex_position_read.hpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "git_lf_bytes": 3810,
+      "git_lf_sha256": "5e5933b441f3806ab97fef05c8e409c967ad8925a451e99ef77dd19c35e6ef10"
+    },
+    {
+      "path": "src/native_vertex_position_read.cpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "git_lf_bytes": 13361,
+      "git_lf_sha256": "17238c8326d7c223740e5b229cbc721641504c91fe5c48f9c8b2ef3bcf14b450"
+    },
+    {
+      "path": "include/bsp/game_native_gui_text_state.hpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "git_lf_bytes": 3899,
+      "git_lf_sha256": "7b544feaa7da8a1a4bab5b5f01546d8e4d8b5621d8da37c6b22e4dfbc9d964e0"
+    },
+    {
+      "path": "src/game_native_gui_text_state.cpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "git_lf_bytes": 1821,
+      "git_lf_sha256": "ff10c4e60079ea23117223b10dc9b64bb61715930fa2c1d1b7fff0b81396dd5f"
+    },
+    {
+      "path": "src/native_gui_text_single_line_storage.cpp",
+      "revision": "bc049005db2e1007e405b69ca8fcc7c30f828c9d",
+      "git_lf_bytes": 17311,
+      "git_lf_sha256": "ffda6f98ac137a60af72332a3981da2e51a18992097ff359feda8a93028ee048"
+    }
+  ],
+  "supplier_input_pin_count": 19,
+  "frozen_artifacts": [
+    {
+      "path": "include/bsp/native_gui_text_reference.hpp",
+      "baseline_revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "git_lf_sha256": "62224192a6d0fb5043ed68a3f34374ce1bc3584ee1f3bb031c1041b33fdd1827",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_gui_text_reference.cpp",
+      "baseline_revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "git_lf_sha256": "0fb188e79dbc014db098d01e3afff14a5e07f1671a33db063d2e126e5af4257e",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_model_storage_lifetime.hpp",
+      "baseline_revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "git_lf_sha256": "7754b1a3df10ccf79a83899513b48ab4616df9b9f9a5da54400ed7d4fe51ea1f",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_model_storage_lifetime.cpp",
+      "baseline_revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "git_lf_sha256": "d9ea114fa0e88f42f5a692adf96014827c32cd5d856a8e228e1ccd0550dd99b0",
+      "unchanged": true
+    },
+    {
+      "path": "docs/CC16_RESERVED_TEXT_MODEL_REFERENCE_BIRTH.md",
+      "baseline_revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "git_lf_sha256": "0b6baa062db3f00024b2010cd65c0056eea42838b76afa0ace32f92dfcf68b5a",
+      "unchanged": true
+    },
+    {
+      "path": "reports/cc16_reserved_text_model_reference_birth.json",
+      "baseline_revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "git_lf_sha256": "c6362b49b11ec568b371d4d5953a18cd143ede3042dc3510cc2ea41d605d88c9",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_lifetime.hpp",
+      "baseline_revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "git_lf_sha256": "a21b38daad89af7b6fc968273dece3fba3789ab22476299ea66cf88c4002b4d2",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_front_end_frame_lifetime.cpp",
+      "baseline_revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "git_lf_sha256": "50eae08b6ca3a7561b8ec1a1bfaeb7b2b717cb9c16f46ab4470f1befe0dcf4f8",
+      "unchanged": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_FRONT_END_FRAME_LIFETIME.md",
+      "baseline_revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "git_lf_sha256": "3409aa99fb04a5e98aa05994563b6522ebb78dad506ec80db0c8aa85de7810ea",
+      "unchanged": true
+    },
+    {
+      "path": "reports/cc16_native_front_end_frame_lifetime.json",
+      "baseline_revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "git_lf_sha256": "f3c4b17cf1e49dafd606735cd4977cecc659edab841417cb007c5fd1eb50bea0",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_mesh_section_layout_storage.hpp",
+      "baseline_revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "git_lf_sha256": "19245d00005b8d543fdcd5b85e71dba091ca158063e38fd86010cfb8e72c8939",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_mesh_section_layout_storage.cpp",
+      "baseline_revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "git_lf_sha256": "d6f0378634d82d4287cf698dd529e24f3a53b4f1b6b0398647d33c4f956c4115",
+      "unchanged": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_MESH_SECTION_LAYOUT_STORAGE.md",
+      "baseline_revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "git_lf_sha256": "a50cc363c8c5a5d1afe47d0fe9c4859169f3569752f9340840f0f7a99e5abbb0",
+      "unchanged": true
+    },
+    {
+      "path": "reports/cc16_native_mesh_section_layout_storage.json",
+      "baseline_revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "git_lf_sha256": "11f6144d7de2e18c674a5a51471079d9a4240725e2a5f14211bf79a447698a05",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_gui_text_changed_storage.hpp",
+      "baseline_revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "git_lf_sha256": "13cc02308c28bf3ba443adfe1334627dffae05231a0c05e7bff6cbd634da5cc8",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_gui_text_changed_storage.cpp",
+      "baseline_revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "git_lf_sha256": "721a3bff0f346ae3506deda59f5a7e892e7ca46eefb8fcaa4d57d04a9c1753a1",
+      "unchanged": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_TEXT_CHANGED_STORAGE.md",
+      "baseline_revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "git_lf_sha256": "722dbb1c6f8a3304f95a6cba1b6bd9cf4cd0921f12776ff7da17cb6aecb408b8",
+      "unchanged": true
+    },
+    {
+      "path": "reports/cc16_native_gui_text_changed_storage.json",
+      "baseline_revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "git_lf_sha256": "e95b6ce8a228b676cb4c8c42ccabda4826064453be0b5fc18741985062595ca3",
+      "unchanged": true
+    },
+    {
+      "path": "docs/CC16_GLYPH_CHILD_PRODUCER_BIRTH_AUDIT.md",
+      "baseline_revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "git_lf_sha256": "df477c98a4d14bf534ed0c573d5d96831233ec73aec3ab45b879c8bf3a264cdd",
+      "unchanged": true
+    },
+    {
+      "path": "reports/cc16_glyph_child_producer_birth_audit.json",
+      "baseline_revision": "8c0cb6617d538e3600a74cdf29d654233fe02528",
+      "git_lf_sha256": "5b907c3babba150d35fc9526bd57d07b0e4f29f0ed684eb3886b75131842c5a8",
+      "unchanged": true
+    }
+  ],
+  "public_api": {
+    "frame": "NativeGuiTextWrappedStorageFrame(void*, volatile uint32_t(&)[2], NativeGuiTextWrappedStorageScratch&, NativeGuiTextWrappedStorageContext&, NativeGuiTextWrappedStorageAcquired&) noexcept; metadata references only, no operand/preimage read or initialization",
+    "operation": "void build_native_gui_text_wrapped_storage_00aba270(NativeGuiTextWrappedStorageFrame&);",
+    "private_image": "caller-borrowed ordinary100B at Native S+10..73; never defaulted/zeroed",
+    "source_private_layout_qualification": "physical Original private stack/register/FH3/SEH/fault alias equivalence not supplied by this new ordinary interface"
+  },
+  "mutable_home_and_alias_map": [
+    {
+      "native": "S+78 incoming arg0",
+      "source": "frame.homes_[0]",
+      "epochs": [
+        "ABA288 DWORD source header captured after clear/height read",
+        "ABA32A FNSTCW LOWWORD only, upper WORD retained",
+        "ABA34C MOVZX current savedCW WORD; ABA39D FLDCW same WORD",
+        "ABA43B LOWBYTE1 / ABA4AE LOWBYTE0, all other bytes retained",
+        "ABA518/521 full DWORD line end",
+        "ABA816 full float raised height spill"
+      ],
+      "copied_back_or_restored": false
+    },
+    {
+      "native": "S+7C incoming arg1",
+      "source": "frame.homes_[1]",
+      "epochs": [
+        "ABA32E captured actual section for initial range writes",
+        "ABA68B/69D separately CURRENT home -> CURRENT material20 for each texture call",
+        "ABA7D8 late section reload ONLY processed-text arm; initial-empty retains ABA32E capture",
+        "ABA7F0 float span spill, ABA7F8 zero then vertical offset stores",
+        "ABA874 current offset float read for every position"
+      ],
+      "copied_back_or_restored": false
+    },
+    {
+      "native": "S+28",
+      "source": "scratch.words_10_50[6] ordinary DWORD",
+      "epochs": [
+        "authentic supplied preimage, never initialized by frame/body",
+        "alignment0..3 may store Native-selected space-step",
+        "all other alignments leave prior/current bits unchanged",
+        "space emission FLD actual same home"
+      ],
+      "default_or_mode_gate": false
+    },
+    {
+      "native": "S+44",
+      "source": "scratch.words_10_50[13] ordinary DWORD",
+      "epochs": [
+        "truncation CW DWORD",
+        "last-space pointer",
+        "line bottom float"
+      ],
+      "same_address": true
+    },
+    {
+      "native": "S+54..5C",
+      "source": "scratch.conversion_and_position_54 ordinary float[3]",
+      "epochs": [
+        "FISTP64 writes54/58 and lowDWORD feeds container width",
+        "signed metric/slack/divisor FILD scratch writes54 only",
+        "4768D0 actual output float3, then Y float spill/reload"
+      ],
+      "same_address": true,
+      "raw_integer_access": "asm object-representation access; no C++ DWORD lvalue aliases float"
+    },
+    {
+      "native": "S+68..70",
+      "source": "scratch.glyph_position_68 ordinary float[3]",
+      "epochs": [
+        "Y=line top and Z=0 once per nonempty line",
+        "X=current independent pen immediately before Glyph call",
+        "same pointer at quad zero-based homes1/4/5; caller never copies positionX back to pen"
+      ],
+      "same_address": true
+    },
+    {
+      "native": "Glyph outgoing ten DWORD homes",
+      "source": "frame.quad_homes_[10] volatile DWORDs",
+      "epochs": [
+        "all10 refilled in Native push order for each reached call",
+        "full MOVSX height DWORD at home7, NOT zero-extended unsigned WORD",
+        "callee may overwrite0/2/7; parent retains glyph/stream/height independently",
+        "same homes reused only after normal whole return; historical records identity only"
+      ],
+      "preprepared_record_each_call": true
+    }
+  ],
+  "private_layout": {
+    "size": 100,
+    "words_10_50": {
+      "offset": 0,
+      "DWORDs": 17
+    },
+    "conversion_and_position_54": {
+      "offset": 68,
+      "ordinary_float_objects": 3
+    },
+    "height_60": {
+      "offset": 80,
+      "bytes": 4
+    },
+    "index_stream_64": {
+      "offset": 84,
+      "bytes": 4
+    },
+    "glyph_position_68": {
+      "offset": 88,
+      "ordinary_float_objects": 3
+    },
+    "stale_space_step_offset": 24,
+    "construction_initialization": "NONE",
+    "asm_object_representation_access": "all reached raw private DWORD/WORD/BYTE reads/writes, no illegal C++ float/DWORD alias or stripped volatile"
+  },
+  "data_roles": {
+    "literal_preimages": [
+      {
+        "address": "00cec380",
+        "bytes": "0000000000008e40",
+        "value": 960.0
+      },
+      {
+        "address": "00ce4970",
+        "bytes": "f9021550",
+        "value": 10000000000.0
+      },
+      {
+        "address": "00ce4adc",
+        "bytes": "f90215d0",
+        "value": -10000000000.0
+      },
+      {
+        "address": "00ce3978",
+        "bytes": "0000804f",
+        "value": 4294967296.0
+      },
+      {
+        "address": "00d7a280",
+        "bytes": "000000000000e03f",
+        "value": 0.5
+      },
+      {
+        "address": "00d7a210",
+        "bytes": "000000000000f03f",
+        "value": 1.0
+      },
+      {
+        "address": "00ce6618",
+        "bytes": "000000403333c33f",
+        "value": 0.15000000596046448
+      },
+      {
+        "address": "00cef1b8",
+        "bytes": "0000000000808640",
+        "value": 720.0
+      }
+    ],
+    "shared_glyph_context": [
+      "strings raw pool",
+      "width_00cec380",
+      "height_00cef1b8",
+      "vertical_scale_00e12fd4 CURRENT mutable cell",
+      "actual_empty_utf16_00f8be50 genuine process backing"
+    ],
+    "extra_authenticated_borrowed_refs": [
+      "CE4970",
+      "CE4ADC",
+      "CE3978",
+      "D7A280",
+      "D7A210",
+      "CE6618"
+    ],
+    "no_new_data_authority": true
+  },
+  "instruction_regions": [
+    {
+      "first": "00aba270",
+      "last": "00aba277",
+      "name": "entry",
+      "source_line": 527,
+      "mapping": "ordinary_source_abi_qualified"
+    },
+    {
+      "first": "00aba279",
+      "last": "00aba279",
+      "name": "clear",
+      "source_line": 541,
+      "mapping": "direct_existing_whole"
+    },
+    {
+      "first": "00aba27e",
+      "last": "00aba29c",
+      "name": "height_source_capture",
+      "source_line": 543,
+      "mapping": "ordered_raw_operands_and_height_to_float"
+    },
+    {
+      "first": "00aba2a2",
+      "last": "00aba2cf",
+      "name": "source_assignment",
+      "source_line": 547,
+      "mapping": "ordered_current_headers_forward_word_copy"
+    },
+    {
+      "first": "00aba2d1",
+      "last": "00aba2db",
+      "name": "model_geometry",
+      "source_line": 564,
+      "mapping": "existing_whole_B74640_load"
+    },
+    {
+      "first": "00aba2dd",
+      "last": "00aba2e6",
+      "name": "vertex_stream",
+      "source_line": 570,
+      "mapping": "direct_existing_whole"
+    },
+    {
+      "first": "00aba2e8",
+      "last": "00aba302",
+      "name": "vertex_map",
+      "source_line": 572,
+      "mapping": "current_profile_target_capture_and_raw_map"
+    },
+    {
+      "first": "00aba304",
+      "last": "00aba328",
+      "name": "index_map",
+      "source_line": 581,
+      "mapping": "post_callback_current_count_mesh60_profile_and_raw_map"
+    },
+    {
+      "first": "00aba32a",
+      "last": "00aba353",
+      "name": "control_section",
+      "source_line": 595,
+      "mapping": "home0_lowWORD_then_current_home1_and_separate_count_reads"
+    },
+    {
+      "first": "00aba356",
+      "last": "00aba39d",
+      "name": "width",
+      "source_line": 602,
+      "mapping": "captured_font_before_native_width_CW_block"
+    },
+    {
+      "first": "00aba3a1",
+      "last": "00aba3dd",
+      "name": "space_glyph_cursor",
+      "source_line": 607,
+      "mapping": "direct_AD4480_and_ordered_literal_cursor_accesses"
+    },
+    {
+      "first": "00aba3e3",
+      "last": "00aba427",
+      "name": "leading_spaces",
+      "source_line": 620,
+      "mapping": "same_repeated_F0_loads_and_WORD_tests"
+    },
+    {
+      "first": "00aba429",
+      "last": "00aba446",
+      "name": "scan_setup",
+      "source_line": 637,
+      "mapping": "zero_specific_reached_homes_not_whole_image"
+    },
+    {
+      "first": "00aba44c",
+      "last": "00aba4cc",
+      "name": "scan",
+      "source_line": 645,
+      "mapping": "current_Font_raw_selector_and_live_ST0_scan_block"
+    },
+    {
+      "first": "00aba4cd",
+      "last": "00aba4f8",
+      "name": "trailing_spaces",
+      "source_line": 657,
+      "mapping": "captured_space_metric_and_wrapping_backward_trim"
+    },
+    {
+      "first": "00aba4fb",
+      "last": "00aba539",
+      "name": "line_end",
+      "source_line": 668,
+      "mapping": "current_WORD_then_spaces_capture_and_full_home0_write"
+    },
+    {
+      "first": "00aba53a",
+      "last": "00aba634",
+      "name": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "first": "00aba635",
+      "last": "00aba667",
+      "name": "line_begin",
+      "source_line": 678,
+      "mapping": "current_line_end_compare_S1C_zero_and_same_position_YZ"
+    },
+    {
+      "first": "00aba670",
+      "last": "00aba686",
+      "name": "emit_glyph",
+      "source_line": 686,
+      "mapping": "direct_AD4480_current_Font_and_codeunit"
+    },
+    {
+      "first": "00aba688",
+      "last": "00aba6b7",
+      "name": "first_resources",
+      "source_line": 691,
+      "mapping": "separate_current_home1_material20_loads_around_callbacks"
+    },
+    {
+      "first": "00aba6bf",
+      "last": "00aba6f2",
+      "name": "bounds",
+      "source_line": 705,
+      "mapping": "FCOMIP_FSTP_JA_unordered_assignment"
+    },
+    {
+      "first": "00aba6f3",
+      "last": "00aba730",
+      "name": "glyph_quad",
+      "source_line": 706,
+      "mapping": "same_mutable10homes_push_order_and_actual_float3_then_direct_whole_Glyph"
+    },
+    {
+      "first": "00aba735",
+      "last": "00aba741",
+      "name": "post_quad",
+      "source_line": 729,
+      "mapping": "independent_parent_indices_vertex_and_current_codeunit"
+    },
+    {
+      "first": "00aba743",
+      "last": "00aba77b",
+      "name": "advance",
+      "source_line": 733,
+      "mapping": "captured_glyph_current12_scale1D8_and_live_ST0_block"
+    },
+    {
+      "first": "00aba781",
+      "last": "00aba7d8",
+      "name": "line_finish",
+      "source_line": 735,
+      "mapping": "ordered_width_linecount_spacing_and_code_capture_then_normal_arm_reload"
+    },
+    {
+      "first": "00aba7dc",
+      "last": "00aba842",
+      "name": "vertical",
+      "source_line": 744,
+      "mapping": "exact_alias_spills_ST2_multiply_and_native_vertical_branches"
+    },
+    {
+      "first": "00aba843",
+      "last": "00aba85c",
+      "name": "final_ranges",
+      "source_line": 745,
+      "mapping": "lowWORD_quad_ranges_no_count_gate"
+    },
+    {
+      "first": "00aba85e",
+      "last": "00aba868",
+      "name": "position",
+      "source_line": 755,
+      "mapping": "required_genuine_whole_getter_with_same_S54_object"
+    },
+    {
+      "first": "00aba86d",
+      "last": "00aba8a7",
+      "name": "position_store",
+      "source_line": 757,
+      "mapping": "sequential_FP_and_current_stride_offset_mapping_then_current_count"
+    },
+    {
+      "first": "00aba8a9",
+      "last": "00aba8bb",
+      "name": "unmaps",
+      "source_line": 760,
+      "mapping": "current_index10_then_AFTER_return_current_vertex14"
+    },
+    {
+      "first": "00aba8bd",
+      "last": "00aba8c4",
+      "name": "exit",
+      "source_line": 773,
+      "mapping": "ordinary_source_abi_qualified"
+    }
+  ],
+  "instruction_map": [
+    {
+      "native_address": "00aba270",
+      "opcode": "SUB",
+      "operand": "ESP,0x64 ",
+      "region": "entry",
+      "source_line": 527,
+      "mapping": "ordinary_source_abi_qualified"
+    },
+    {
+      "native_address": "00aba273",
+      "opcode": "PUSH",
+      "operand": "EBX ",
+      "region": "entry",
+      "source_line": 527,
+      "mapping": "ordinary_source_abi_qualified"
+    },
+    {
+      "native_address": "00aba274",
+      "opcode": "PUSH",
+      "operand": "EBP ",
+      "region": "entry",
+      "source_line": 527,
+      "mapping": "ordinary_source_abi_qualified"
+    },
+    {
+      "native_address": "00aba275",
+      "opcode": "PUSH",
+      "operand": "ESI ",
+      "region": "entry",
+      "source_line": 527,
+      "mapping": "ordinary_source_abi_qualified"
+    },
+    {
+      "native_address": "00aba276",
+      "opcode": "PUSH",
+      "operand": "EDI ",
+      "region": "entry",
+      "source_line": 527,
+      "mapping": "ordinary_source_abi_qualified"
+    },
+    {
+      "native_address": "00aba277",
+      "opcode": "MOV",
+      "operand": "EDI,ECX ",
+      "region": "entry",
+      "source_line": 527,
+      "mapping": "ordinary_source_abi_qualified"
+    },
+    {
+      "native_address": "00aba279",
+      "opcode": "CALL",
+      "operand": "0x00ab80c0 ",
+      "region": "clear",
+      "source_line": 541,
+      "mapping": "direct_existing_whole"
+    },
+    {
+      "native_address": "00aba27e",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [EDI + 0x108] ",
+      "region": "height_source_capture",
+      "source_line": 543,
+      "mapping": "ordered_raw_operands_and_height_to_float"
+    },
+    {
+      "native_address": "00aba284",
+      "opcode": "MOVSX",
+      "operand": "EAX,word ptr [EAX + 0x14] ",
+      "region": "height_source_capture",
+      "source_line": 543,
+      "mapping": "ordered_raw_operands_and_height_to_float"
+    },
+    {
+      "native_address": "00aba288",
+      "opcode": "MOV",
+      "operand": "EBX,dword ptr [ESP + 0x78] ",
+      "region": "height_source_capture",
+      "source_line": 543,
+      "mapping": "ordered_raw_operands_and_height_to_float"
+    },
+    {
+      "native_address": "00aba28c",
+      "opcode": "LEA",
+      "operand": "ESI,[EDI + 0xec] ",
+      "region": "height_source_capture",
+      "source_line": 543,
+      "mapping": "ordered_raw_operands_and_height_to_float"
+    },
+    {
+      "native_address": "00aba292",
+      "opcode": "CMP",
+      "operand": "ESI,EBX ",
+      "region": "height_source_capture",
+      "source_line": 543,
+      "mapping": "ordered_raw_operands_and_height_to_float"
+    },
+    {
+      "native_address": "00aba294",
+      "opcode": "CVTSI2SS",
+      "operand": "XMM0,EAX ",
+      "region": "height_source_capture",
+      "source_line": 543,
+      "mapping": "ordered_raw_operands_and_height_to_float"
+    },
+    {
+      "native_address": "00aba298",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x60],EAX ",
+      "region": "height_source_capture",
+      "source_line": 543,
+      "mapping": "ordered_raw_operands_and_height_to_float"
+    },
+    {
+      "native_address": "00aba29c",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [ESP + 0x4c],XMM0 ",
+      "region": "height_source_capture",
+      "source_line": 543,
+      "mapping": "ordered_raw_operands_and_height_to_float"
+    },
+    {
+      "native_address": "00aba2a2",
+      "opcode": "JZ",
+      "operand": "0x00aba2d1 ",
+      "region": "source_assignment",
+      "source_line": 547,
+      "mapping": "ordered_current_headers_forward_word_copy"
+    },
+    {
+      "native_address": "00aba2a4",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [EBX] ",
+      "region": "source_assignment",
+      "source_line": 547,
+      "mapping": "ordered_current_headers_forward_word_copy"
+    },
+    {
+      "native_address": "00aba2a6",
+      "opcode": "PUSH",
+      "operand": "0x1 ",
+      "region": "source_assignment",
+      "source_line": 547,
+      "mapping": "ordered_current_headers_forward_word_copy"
+    },
+    {
+      "native_address": "00aba2a8",
+      "opcode": "PUSH",
+      "operand": "ECX ",
+      "region": "source_assignment",
+      "source_line": 547,
+      "mapping": "ordered_current_headers_forward_word_copy"
+    },
+    {
+      "native_address": "00aba2a9",
+      "opcode": "MOV",
+      "operand": "ECX,ESI ",
+      "region": "source_assignment",
+      "source_line": 547,
+      "mapping": "ordered_current_headers_forward_word_copy"
+    },
+    {
+      "native_address": "00aba2ab",
+      "opcode": "CALL",
+      "operand": "0x004c53e0 ",
+      "region": "source_assignment",
+      "source_line": 547,
+      "mapping": "ordered_current_headers_forward_word_copy"
+    },
+    {
+      "native_address": "00aba2b0",
+      "opcode": "CMP",
+      "operand": "dword ptr [EBX],0x0 ",
+      "region": "source_assignment",
+      "source_line": 547,
+      "mapping": "ordered_current_headers_forward_word_copy"
+    },
+    {
+      "native_address": "00aba2b3",
+      "opcode": "JZ",
+      "operand": "0x00aba2d1 ",
+      "region": "source_assignment",
+      "source_line": 547,
+      "mapping": "ordered_current_headers_forward_word_copy"
+    },
+    {
+      "native_address": "00aba2b5",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [EBX + 0x4] ",
+      "region": "source_assignment",
+      "source_line": 547,
+      "mapping": "ordered_current_headers_forward_word_copy"
+    },
+    {
+      "native_address": "00aba2b8",
+      "opcode": "MOV",
+      "operand": "EDX,dword ptr [ESI + 0x4] ",
+      "region": "source_assignment",
+      "source_line": 547,
+      "mapping": "ordered_current_headers_forward_word_copy"
+    },
+    {
+      "native_address": "00aba2bb",
+      "opcode": "JMP",
+      "operand": "0x00aba2c0 ",
+      "region": "source_assignment",
+      "source_line": 547,
+      "mapping": "ordered_current_headers_forward_word_copy"
+    },
+    {
+      "native_address": "00aba2c0",
+      "opcode": "MOVZX",
+      "operand": "EAX,word ptr [ECX] ",
+      "region": "source_assignment",
+      "source_line": 547,
+      "mapping": "ordered_current_headers_forward_word_copy"
+    },
+    {
+      "native_address": "00aba2c3",
+      "opcode": "MOV",
+      "operand": "word ptr [EDX],AX ",
+      "region": "source_assignment",
+      "source_line": 547,
+      "mapping": "ordered_current_headers_forward_word_copy"
+    },
+    {
+      "native_address": "00aba2c6",
+      "opcode": "ADD",
+      "operand": "ECX,0x2 ",
+      "region": "source_assignment",
+      "source_line": 547,
+      "mapping": "ordered_current_headers_forward_word_copy"
+    },
+    {
+      "native_address": "00aba2c9",
+      "opcode": "ADD",
+      "operand": "EDX,0x2 ",
+      "region": "source_assignment",
+      "source_line": 547,
+      "mapping": "ordered_current_headers_forward_word_copy"
+    },
+    {
+      "native_address": "00aba2cc",
+      "opcode": "TEST",
+      "operand": "AX,AX ",
+      "region": "source_assignment",
+      "source_line": 547,
+      "mapping": "ordered_current_headers_forward_word_copy"
+    },
+    {
+      "native_address": "00aba2cf",
+      "opcode": "JNZ",
+      "operand": "0x00aba2c0 ",
+      "region": "source_assignment",
+      "source_line": 547,
+      "mapping": "ordered_current_headers_forward_word_copy"
+    },
+    {
+      "native_address": "00aba2d1",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [EDI + 0x4c] ",
+      "region": "model_geometry",
+      "source_line": 564,
+      "mapping": "existing_whole_B74640_load"
+    },
+    {
+      "native_address": "00aba2d4",
+      "opcode": "PUSH",
+      "operand": "0x0 ",
+      "region": "model_geometry",
+      "source_line": 564,
+      "mapping": "existing_whole_B74640_load"
+    },
+    {
+      "native_address": "00aba2d6",
+      "opcode": "CALL",
+      "operand": "0x00b74640 ",
+      "region": "model_geometry",
+      "source_line": 564,
+      "mapping": "existing_whole_B74640_load"
+    },
+    {
+      "native_address": "00aba2db",
+      "opcode": "MOV",
+      "operand": "EBX,EAX ",
+      "region": "model_geometry",
+      "source_line": 564,
+      "mapping": "existing_whole_B74640_load"
+    },
+    {
+      "native_address": "00aba2dd",
+      "opcode": "PUSH",
+      "operand": "0x0 ",
+      "region": "vertex_stream",
+      "source_line": 570,
+      "mapping": "direct_existing_whole"
+    },
+    {
+      "native_address": "00aba2df",
+      "opcode": "MOV",
+      "operand": "ECX,EBX ",
+      "region": "vertex_stream",
+      "source_line": 570,
+      "mapping": "direct_existing_whole"
+    },
+    {
+      "native_address": "00aba2e1",
+      "opcode": "CALL",
+      "operand": "0x00b73260 ",
+      "region": "vertex_stream",
+      "source_line": 570,
+      "mapping": "direct_existing_whole"
+    },
+    {
+      "native_address": "00aba2e6",
+      "opcode": "MOV",
+      "operand": "ESI,EAX ",
+      "region": "vertex_stream",
+      "source_line": 570,
+      "mapping": "direct_existing_whole"
+    },
+    {
+      "native_address": "00aba2e8",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [EDI + 0xec] ",
+      "region": "vertex_map",
+      "source_line": 572,
+      "mapping": "current_profile_target_capture_and_raw_map"
+    },
+    {
+      "native_address": "00aba2ee",
+      "opcode": "MOV",
+      "operand": "EDX,dword ptr [ESI] ",
+      "region": "vertex_map",
+      "source_line": 572,
+      "mapping": "current_profile_target_capture_and_raw_map"
+    },
+    {
+      "native_address": "00aba2f0",
+      "opcode": "MOV",
+      "operand": "EDX,dword ptr [EDX + 0x10] ",
+      "region": "vertex_map",
+      "source_line": 572,
+      "mapping": "current_profile_target_capture_and_raw_map"
+    },
+    {
+      "native_address": "00aba2f3",
+      "opcode": "PUSH",
+      "operand": "0x0 ",
+      "region": "vertex_map",
+      "source_line": 572,
+      "mapping": "current_profile_target_capture_and_raw_map"
+    },
+    {
+      "native_address": "00aba2f5",
+      "opcode": "ADD",
+      "operand": "EAX,EAX ",
+      "region": "vertex_map",
+      "source_line": 572,
+      "mapping": "current_profile_target_capture_and_raw_map"
+    },
+    {
+      "native_address": "00aba2f7",
+      "opcode": "PUSH",
+      "operand": "0x0 ",
+      "region": "vertex_map",
+      "source_line": 572,
+      "mapping": "current_profile_target_capture_and_raw_map"
+    },
+    {
+      "native_address": "00aba2f9",
+      "opcode": "ADD",
+      "operand": "EAX,EAX ",
+      "region": "vertex_map",
+      "source_line": 572,
+      "mapping": "current_profile_target_capture_and_raw_map"
+    },
+    {
+      "native_address": "00aba2fb",
+      "opcode": "PUSH",
+      "operand": "EAX ",
+      "region": "vertex_map",
+      "source_line": 572,
+      "mapping": "current_profile_target_capture_and_raw_map"
+    },
+    {
+      "native_address": "00aba2fc",
+      "opcode": "MOV",
+      "operand": "ECX,ESI ",
+      "region": "vertex_map",
+      "source_line": 572,
+      "mapping": "current_profile_target_capture_and_raw_map"
+    },
+    {
+      "native_address": "00aba2fe",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x5c],ESI ",
+      "region": "vertex_map",
+      "source_line": 572,
+      "mapping": "current_profile_target_capture_and_raw_map"
+    },
+    {
+      "native_address": "00aba302",
+      "opcode": "CALL",
+      "operand": "EDX ",
+      "region": "vertex_map",
+      "source_line": 572,
+      "mapping": "current_profile_target_capture_and_raw_map"
+    },
+    {
+      "native_address": "00aba304",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [EDI + 0xec] ",
+      "region": "index_map",
+      "source_line": 581,
+      "mapping": "post_callback_current_count_mesh60_profile_and_raw_map"
+    },
+    {
+      "native_address": "00aba30a",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [EBX + 0x60] ",
+      "region": "index_map",
+      "source_line": 581,
+      "mapping": "post_callback_current_count_mesh60_profile_and_raw_map"
+    },
+    {
+      "native_address": "00aba30d",
+      "opcode": "MOV",
+      "operand": "EDX,dword ptr [ECX] ",
+      "region": "index_map",
+      "source_line": 581,
+      "mapping": "post_callback_current_count_mesh60_profile_and_raw_map"
+    },
+    {
+      "native_address": "00aba30f",
+      "opcode": "MOV",
+      "operand": "EDX,dword ptr [EDX + 0xc] ",
+      "region": "index_map",
+      "source_line": 581,
+      "mapping": "post_callback_current_count_mesh60_profile_and_raw_map"
+    },
+    {
+      "native_address": "00aba312",
+      "opcode": "PUSH",
+      "operand": "0x0 ",
+      "region": "index_map",
+      "source_line": 581,
+      "mapping": "post_callback_current_count_mesh60_profile_and_raw_map"
+    },
+    {
+      "native_address": "00aba314",
+      "opcode": "LEA",
+      "operand": "EAX,[EAX + EAX*0x2] ",
+      "region": "index_map",
+      "source_line": 581,
+      "mapping": "post_callback_current_count_mesh60_profile_and_raw_map"
+    },
+    {
+      "native_address": "00aba317",
+      "opcode": "PUSH",
+      "operand": "0x0 ",
+      "region": "index_map",
+      "source_line": 581,
+      "mapping": "post_callback_current_count_mesh60_profile_and_raw_map"
+    },
+    {
+      "native_address": "00aba319",
+      "opcode": "ADD",
+      "operand": "EAX,EAX ",
+      "region": "index_map",
+      "source_line": 581,
+      "mapping": "post_callback_current_count_mesh60_profile_and_raw_map"
+    },
+    {
+      "native_address": "00aba31b",
+      "opcode": "PUSH",
+      "operand": "EAX ",
+      "region": "index_map",
+      "source_line": 581,
+      "mapping": "post_callback_current_count_mesh60_profile_and_raw_map"
+    },
+    {
+      "native_address": "00aba31c",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x54],0x0 ",
+      "region": "index_map",
+      "source_line": 581,
+      "mapping": "post_callback_current_count_mesh60_profile_and_raw_map"
+    },
+    {
+      "native_address": "00aba324",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x70],ECX ",
+      "region": "index_map",
+      "source_line": 581,
+      "mapping": "post_callback_current_count_mesh60_profile_and_raw_map"
+    },
+    {
+      "native_address": "00aba328",
+      "opcode": "CALL",
+      "operand": "EDX ",
+      "region": "index_map",
+      "source_line": 581,
+      "mapping": "post_callback_current_count_mesh60_profile_and_raw_map"
+    },
+    {
+      "native_address": "00aba32a",
+      "opcode": "FNSTCW",
+      "operand": "word ptr [ESP + 0x78] ",
+      "region": "control_section",
+      "source_line": 141,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "word ptr [edx] // ABA32A, preserves upperWORD",
+      "source_function": "capture_control"
+    },
+    {
+      "native_address": "00aba32e",
+      "opcode": "MOV",
+      "operand": "EBP,dword ptr [ESP + 0x7c] ",
+      "region": "control_section",
+      "source_line": 595,
+      "mapping": "home0_lowWORD_then_current_home1_and_separate_count_reads"
+    },
+    {
+      "native_address": "00aba332",
+      "opcode": "XORPS",
+      "operand": "XMM0,XMM0 ",
+      "region": "control_section",
+      "source_line": 595,
+      "mapping": "home0_lowWORD_then_current_home1_and_separate_count_reads"
+    },
+    {
+      "native_address": "00aba335",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x38],EAX ",
+      "region": "control_section",
+      "source_line": 595,
+      "mapping": "home0_lowWORD_then_current_home1_and_separate_count_reads"
+    },
+    {
+      "native_address": "00aba339",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [EDI + 0xec] ",
+      "region": "control_section",
+      "source_line": 595,
+      "mapping": "home0_lowWORD_then_current_home1_and_separate_count_reads"
+    },
+    {
+      "native_address": "00aba33f",
+      "opcode": "ADD",
+      "operand": "EAX,EAX ",
+      "region": "control_section",
+      "source_line": 595,
+      "mapping": "home0_lowWORD_then_current_home1_and_separate_count_reads"
+    },
+    {
+      "native_address": "00aba341",
+      "opcode": "ADD",
+      "operand": "EAX,EAX ",
+      "region": "control_section",
+      "source_line": 595,
+      "mapping": "home0_lowWORD_then_current_home1_and_separate_count_reads"
+    },
+    {
+      "native_address": "00aba343",
+      "opcode": "MOV",
+      "operand": "dword ptr [EBP + 0x10],EAX ",
+      "region": "control_section",
+      "source_line": 595,
+      "mapping": "home0_lowWORD_then_current_home1_and_separate_count_reads"
+    },
+    {
+      "native_address": "00aba346",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [EDI + 0xec] ",
+      "region": "control_section",
+      "source_line": 595,
+      "mapping": "home0_lowWORD_then_current_home1_and_separate_count_reads"
+    },
+    {
+      "native_address": "00aba34c",
+      "opcode": "MOVZX",
+      "operand": "EAX,word ptr [ESP + 0x78] ",
+      "region": "control_section",
+      "source_line": 595,
+      "mapping": "home0_lowWORD_then_current_home1_and_separate_count_reads"
+    },
+    {
+      "native_address": "00aba351",
+      "opcode": "ADD",
+      "operand": "ECX,ECX ",
+      "region": "control_section",
+      "source_line": 595,
+      "mapping": "home0_lowWORD_then_current_home1_and_separate_count_reads"
+    },
+    {
+      "native_address": "00aba353",
+      "opcode": "MOV",
+      "operand": "dword ptr [EBP + 0x18],ECX ",
+      "region": "control_section",
+      "source_line": 595,
+      "mapping": "home0_lowWORD_then_current_home1_and_separate_count_reads"
+    },
+    {
+      "native_address": "00aba356",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [EDI + 0x108] ",
+      "region": "width",
+      "source_line": 602,
+      "mapping": "captured_font_before_native_width_CW_block"
+    },
+    {
+      "native_address": "00aba35c",
+      "opcode": "FLD",
+      "operand": "float ptr [EDI + 0x20] ",
+      "region": "width",
+      "source_line": 154,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [ebx + 0x20]",
+      "source_function": "prepare_width"
+    },
+    {
+      "native_address": "00aba35f",
+      "opcode": "OR",
+      "operand": "EAX,0xc00 ",
+      "region": "width",
+      "source_line": 602,
+      "mapping": "captured_font_before_native_width_CW_block"
+    },
+    {
+      "native_address": "00aba364",
+      "opcode": "FMUL",
+      "operand": "double ptr [0x00cec380] ",
+      "region": "width",
+      "source_line": 156,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "qword ptr [edx]",
+      "source_function": "prepare_width"
+    },
+    {
+      "native_address": "00aba36a",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x44],EAX ",
+      "region": "width",
+      "source_line": 602,
+      "mapping": "captured_font_before_native_width_CW_block"
+    },
+    {
+      "native_address": "00aba36e",
+      "opcode": "XOR",
+      "operand": "EBX,EBX ",
+      "region": "width",
+      "source_line": 602,
+      "mapping": "captured_font_before_native_width_CW_block"
+    },
+    {
+      "native_address": "00aba370",
+      "opcode": "PUSH",
+      "operand": "0x20 ",
+      "region": "width",
+      "source_line": 602,
+      "mapping": "captured_font_before_native_width_CW_block"
+    },
+    {
+      "native_address": "00aba372",
+      "opcode": "FLDCW",
+      "operand": "word ptr [ESP + 0x48] ",
+      "region": "width",
+      "source_line": 159,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "word ptr [esi + wAlias]",
+      "source_function": "prepare_width"
+    },
+    {
+      "native_address": "00aba376",
+      "opcode": "MOV",
+      "operand": "dword ptr [EDI + 0x110],EBX ",
+      "region": "width",
+      "source_line": 602,
+      "mapping": "captured_font_before_native_width_CW_block"
+    },
+    {
+      "native_address": "00aba37c",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x38],EBX ",
+      "region": "width",
+      "source_line": 602,
+      "mapping": "captured_font_before_native_width_CW_block"
+    },
+    {
+      "native_address": "00aba380",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [ESP + 0x18],XMM0 ",
+      "region": "width",
+      "source_line": 602,
+      "mapping": "captured_font_before_native_width_CW_block"
+    },
+    {
+      "native_address": "00aba386",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [ESP + 0x24],XMM0 ",
+      "region": "width",
+      "source_line": 602,
+      "mapping": "captured_font_before_native_width_CW_block"
+    },
+    {
+      "native_address": "00aba38c",
+      "opcode": "MOV",
+      "operand": "byte ptr [ESP + 0x17],0x1 ",
+      "region": "width",
+      "source_line": 602,
+      "mapping": "captured_font_before_native_width_CW_block"
+    },
+    {
+      "native_address": "00aba391",
+      "opcode": "FISTP",
+      "operand": "qword ptr [ESP + 0x58] ",
+      "region": "width",
+      "source_line": 165,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "qword ptr [esi + wConversion]",
+      "source_function": "prepare_width"
+    },
+    {
+      "native_address": "00aba395",
+      "opcode": "MOV",
+      "operand": "EDX,dword ptr [ESP + 0x58] ",
+      "region": "width",
+      "source_line": 602,
+      "mapping": "captured_font_before_native_width_CW_block"
+    },
+    {
+      "native_address": "00aba399",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x34],EDX ",
+      "region": "width",
+      "source_line": 602,
+      "mapping": "captured_font_before_native_width_CW_block"
+    },
+    {
+      "native_address": "00aba39d",
+      "opcode": "FLDCW",
+      "operand": "word ptr [ESP + 0x7c] ",
+      "region": "width",
+      "source_line": 168,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "word ptr [edi]",
+      "source_function": "prepare_width"
+    },
+    {
+      "native_address": "00aba3a1",
+      "opcode": "CALL",
+      "operand": "0x00ad4480 ",
+      "region": "space_glyph_cursor",
+      "source_line": 607,
+      "mapping": "direct_AD4480_and_ordered_literal_cursor_accesses"
+    },
+    {
+      "native_address": "00aba3a6",
+      "opcode": "MOVSS",
+      "operand": "XMM0,dword ptr [0x00ce4970] ",
+      "region": "space_glyph_cursor",
+      "source_line": 607,
+      "mapping": "direct_AD4480_and_ordered_literal_cursor_accesses"
+    },
+    {
+      "native_address": "00aba3ae",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x24],EAX ",
+      "region": "space_glyph_cursor",
+      "source_line": 607,
+      "mapping": "direct_AD4480_and_ordered_literal_cursor_accesses"
+    },
+    {
+      "native_address": "00aba3b2",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [EDI + 0xf0] ",
+      "region": "space_glyph_cursor",
+      "source_line": 607,
+      "mapping": "direct_AD4480_and_ordered_literal_cursor_accesses"
+    },
+    {
+      "native_address": "00aba3b8",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [ESP + 0x40],XMM0 ",
+      "region": "space_glyph_cursor",
+      "source_line": 607,
+      "mapping": "direct_AD4480_and_ordered_literal_cursor_accesses"
+    },
+    {
+      "native_address": "00aba3be",
+      "opcode": "MOVSS",
+      "operand": "XMM0,dword ptr [0x00ce4adc] ",
+      "region": "space_glyph_cursor",
+      "source_line": 607,
+      "mapping": "direct_AD4480_and_ordered_literal_cursor_accesses"
+    },
+    {
+      "native_address": "00aba3c6",
+      "opcode": "CMP",
+      "operand": "EAX,EBX ",
+      "region": "space_glyph_cursor",
+      "source_line": 607,
+      "mapping": "direct_AD4480_and_ordered_literal_cursor_accesses"
+    },
+    {
+      "native_address": "00aba3c8",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [ESP + 0x3c],XMM0 ",
+      "region": "space_glyph_cursor",
+      "source_line": 607,
+      "mapping": "direct_AD4480_and_ordered_literal_cursor_accesses"
+    },
+    {
+      "native_address": "00aba3ce",
+      "opcode": "MOV",
+      "operand": "EBX,EAX ",
+      "region": "space_glyph_cursor",
+      "source_line": 607,
+      "mapping": "direct_AD4480_and_ordered_literal_cursor_accesses"
+    },
+    {
+      "native_address": "00aba3d0",
+      "opcode": "JNZ",
+      "operand": "0x00aba3d7 ",
+      "region": "space_glyph_cursor",
+      "source_line": 607,
+      "mapping": "direct_AD4480_and_ordered_literal_cursor_accesses"
+    },
+    {
+      "native_address": "00aba3d2",
+      "opcode": "MOV",
+      "operand": "EBX,0xf8be50 ",
+      "region": "space_glyph_cursor",
+      "source_line": 607,
+      "mapping": "direct_AD4480_and_ordered_literal_cursor_accesses"
+    },
+    {
+      "native_address": "00aba3d7",
+      "opcode": "MOVZX",
+      "operand": "EAX,word ptr [EBX] ",
+      "region": "space_glyph_cursor",
+      "source_line": 607,
+      "mapping": "direct_AD4480_and_ordered_literal_cursor_accesses"
+    },
+    {
+      "native_address": "00aba3da",
+      "opcode": "TEST",
+      "operand": "AX,AX ",
+      "region": "space_glyph_cursor",
+      "source_line": 607,
+      "mapping": "direct_AD4480_and_ordered_literal_cursor_accesses"
+    },
+    {
+      "native_address": "00aba3dd",
+      "opcode": "JZ",
+      "operand": "0x00aba7dc ",
+      "region": "space_glyph_cursor",
+      "source_line": 607,
+      "mapping": "direct_AD4480_and_ordered_literal_cursor_accesses"
+    },
+    {
+      "native_address": "00aba3e3",
+      "opcode": "CMP",
+      "operand": "AX,0x20 ",
+      "region": "leading_spaces",
+      "source_line": 620,
+      "mapping": "same_repeated_F0_loads_and_WORD_tests"
+    },
+    {
+      "native_address": "00aba3e7",
+      "opcode": "JNZ",
+      "operand": "0x00aba429 ",
+      "region": "leading_spaces",
+      "source_line": 620,
+      "mapping": "same_repeated_F0_loads_and_WORD_tests"
+    },
+    {
+      "native_address": "00aba3e9",
+      "opcode": "CMP",
+      "operand": "dword ptr [EDI + 0x100],0x0 ",
+      "region": "leading_spaces",
+      "source_line": 620,
+      "mapping": "same_repeated_F0_loads_and_WORD_tests"
+    },
+    {
+      "native_address": "00aba3f0",
+      "opcode": "JNZ",
+      "operand": "0x00aba420 ",
+      "region": "leading_spaces",
+      "source_line": 620,
+      "mapping": "same_repeated_F0_loads_and_WORD_tests"
+    },
+    {
+      "native_address": "00aba3f2",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [EDI + 0xf0] ",
+      "region": "leading_spaces",
+      "source_line": 620,
+      "mapping": "same_repeated_F0_loads_and_WORD_tests"
+    },
+    {
+      "native_address": "00aba3f8",
+      "opcode": "TEST",
+      "operand": "EAX,EAX ",
+      "region": "leading_spaces",
+      "source_line": 620,
+      "mapping": "same_repeated_F0_loads_and_WORD_tests"
+    },
+    {
+      "native_address": "00aba3fa",
+      "opcode": "JNZ",
+      "operand": "0x00aba401 ",
+      "region": "leading_spaces",
+      "source_line": 620,
+      "mapping": "same_repeated_F0_loads_and_WORD_tests"
+    },
+    {
+      "native_address": "00aba3fc",
+      "opcode": "MOV",
+      "operand": "EAX,0xf8be50 ",
+      "region": "leading_spaces",
+      "source_line": 620,
+      "mapping": "same_repeated_F0_loads_and_WORD_tests"
+    },
+    {
+      "native_address": "00aba401",
+      "opcode": "CMP",
+      "operand": "EBX,EAX ",
+      "region": "leading_spaces",
+      "source_line": 620,
+      "mapping": "same_repeated_F0_loads_and_WORD_tests"
+    },
+    {
+      "native_address": "00aba403",
+      "opcode": "JZ",
+      "operand": "0x00aba429 ",
+      "region": "leading_spaces",
+      "source_line": 620,
+      "mapping": "same_repeated_F0_loads_and_WORD_tests"
+    },
+    {
+      "native_address": "00aba405",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [EDI + 0xf0] ",
+      "region": "leading_spaces",
+      "source_line": 620,
+      "mapping": "same_repeated_F0_loads_and_WORD_tests"
+    },
+    {
+      "native_address": "00aba40b",
+      "opcode": "TEST",
+      "operand": "EAX,EAX ",
+      "region": "leading_spaces",
+      "source_line": 620,
+      "mapping": "same_repeated_F0_loads_and_WORD_tests"
+    },
+    {
+      "native_address": "00aba40d",
+      "opcode": "JNZ",
+      "operand": "0x00aba414 ",
+      "region": "leading_spaces",
+      "source_line": 620,
+      "mapping": "same_repeated_F0_loads_and_WORD_tests"
+    },
+    {
+      "native_address": "00aba40f",
+      "opcode": "MOV",
+      "operand": "EAX,0xf8be50 ",
+      "region": "leading_spaces",
+      "source_line": 620,
+      "mapping": "same_repeated_F0_loads_and_WORD_tests"
+    },
+    {
+      "native_address": "00aba414",
+      "opcode": "CMP",
+      "operand": "EBX,EAX ",
+      "region": "leading_spaces",
+      "source_line": 620,
+      "mapping": "same_repeated_F0_loads_and_WORD_tests"
+    },
+    {
+      "native_address": "00aba416",
+      "opcode": "JZ",
+      "operand": "0x00aba420 ",
+      "region": "leading_spaces",
+      "source_line": 620,
+      "mapping": "same_repeated_F0_loads_and_WORD_tests"
+    },
+    {
+      "native_address": "00aba418",
+      "opcode": "CMP",
+      "operand": "word ptr [EBX + -0x2],0xa ",
+      "region": "leading_spaces",
+      "source_line": 620,
+      "mapping": "same_repeated_F0_loads_and_WORD_tests"
+    },
+    {
+      "native_address": "00aba41d",
+      "opcode": "JZ",
+      "operand": "0x00aba429 ",
+      "region": "leading_spaces",
+      "source_line": 620,
+      "mapping": "same_repeated_F0_loads_and_WORD_tests"
+    },
+    {
+      "native_address": "00aba41f",
+      "opcode": "NOP",
+      "operand": "",
+      "region": "leading_spaces",
+      "source_line": 620,
+      "mapping": "native_alignment_no_effect"
+    },
+    {
+      "native_address": "00aba420",
+      "opcode": "ADD",
+      "operand": "EBX,0x2 ",
+      "region": "leading_spaces",
+      "source_line": 620,
+      "mapping": "same_repeated_F0_loads_and_WORD_tests"
+    },
+    {
+      "native_address": "00aba423",
+      "opcode": "CMP",
+      "operand": "word ptr [EBX],0x20 ",
+      "region": "leading_spaces",
+      "source_line": 620,
+      "mapping": "same_repeated_F0_loads_and_WORD_tests"
+    },
+    {
+      "native_address": "00aba427",
+      "opcode": "JZ",
+      "operand": "0x00aba420 ",
+      "region": "leading_spaces",
+      "source_line": 620,
+      "mapping": "same_repeated_F0_loads_and_WORD_tests"
+    },
+    {
+      "native_address": "00aba429",
+      "opcode": "XORPS",
+      "operand": "XMM0,XMM0 ",
+      "region": "scan_setup",
+      "source_line": 637,
+      "mapping": "zero_specific_reached_homes_not_whole_image"
+    },
+    {
+      "native_address": "00aba42c",
+      "opcode": "XOR",
+      "operand": "EBP,EBP ",
+      "region": "scan_setup",
+      "source_line": 637,
+      "mapping": "zero_specific_reached_homes_not_whole_image"
+    },
+    {
+      "native_address": "00aba42e",
+      "opcode": "CMP",
+      "operand": "word ptr [EBX],BP ",
+      "region": "scan_setup",
+      "source_line": 637,
+      "mapping": "zero_specific_reached_homes_not_whole_image"
+    },
+    {
+      "native_address": "00aba431",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [ESP + 0x2c],XMM0 ",
+      "region": "scan_setup",
+      "source_line": 637,
+      "mapping": "zero_specific_reached_homes_not_whole_image"
+    },
+    {
+      "native_address": "00aba437",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x18],EBP ",
+      "region": "scan_setup",
+      "source_line": 637,
+      "mapping": "zero_specific_reached_homes_not_whole_image"
+    },
+    {
+      "native_address": "00aba43b",
+      "opcode": "MOV",
+      "operand": "byte ptr [ESP + 0x78],0x1 ",
+      "region": "scan_setup",
+      "source_line": 637,
+      "mapping": "zero_specific_reached_homes_not_whole_image"
+    },
+    {
+      "native_address": "00aba440",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x44],EBP ",
+      "region": "scan_setup",
+      "source_line": 637,
+      "mapping": "zero_specific_reached_homes_not_whole_image"
+    },
+    {
+      "native_address": "00aba444",
+      "opcode": "MOV",
+      "operand": "ESI,EBX ",
+      "region": "scan_setup",
+      "source_line": 637,
+      "mapping": "zero_specific_reached_homes_not_whole_image"
+    },
+    {
+      "native_address": "00aba446",
+      "opcode": "JZ",
+      "operand": "0x00aba4fb ",
+      "region": "scan_setup",
+      "source_line": 637,
+      "mapping": "zero_specific_reached_homes_not_whole_image"
+    },
+    {
+      "native_address": "00aba44c",
+      "opcode": "LEA",
+      "operand": "ESP,[ESP] ",
+      "region": "scan",
+      "source_line": 645,
+      "mapping": "native_alignment_no_effect"
+    },
+    {
+      "native_address": "00aba450",
+      "opcode": "MOVZX",
+      "operand": "EAX,word ptr [ESI] ",
+      "region": "scan",
+      "source_line": 645,
+      "mapping": "current_Font_raw_selector_and_live_ST0_scan_block"
+    },
+    {
+      "native_address": "00aba453",
+      "opcode": "CMP",
+      "operand": "AX,0xa ",
+      "region": "scan",
+      "source_line": 645,
+      "mapping": "current_Font_raw_selector_and_live_ST0_scan_block"
+    },
+    {
+      "native_address": "00aba457",
+      "opcode": "JZ",
+      "operand": "0x00aba4cd ",
+      "region": "scan",
+      "source_line": 645,
+      "mapping": "current_Font_raw_selector_and_live_ST0_scan_block"
+    },
+    {
+      "native_address": "00aba459",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [EDI + 0x108] ",
+      "region": "scan",
+      "source_line": 645,
+      "mapping": "current_Font_raw_selector_and_live_ST0_scan_block"
+    },
+    {
+      "native_address": "00aba45f",
+      "opcode": "PUSH",
+      "operand": "EAX ",
+      "region": "scan",
+      "source_line": 645,
+      "mapping": "current_Font_raw_selector_and_live_ST0_scan_block"
+    },
+    {
+      "native_address": "00aba460",
+      "opcode": "CALL",
+      "operand": "0x00ad4480 ",
+      "region": "scan",
+      "source_line": 645,
+      "mapping": "current_Font_raw_selector_and_live_ST0_scan_block"
+    },
+    {
+      "native_address": "00aba465",
+      "opcode": "FLD",
+      "operand": "float ptr [EDI + 0x1d8] ",
+      "region": "scan",
+      "source_line": 186,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [ebx + 0x1d8]",
+      "source_function": "scan_glyph"
+    },
+    {
+      "native_address": "00aba46b",
+      "opcode": "MOVZX",
+      "operand": "EAX,word ptr [EAX + 0x12] ",
+      "region": "scan",
+      "source_line": 645,
+      "mapping": "current_Font_raw_selector_and_live_ST0_scan_block"
+    },
+    {
+      "native_address": "00aba46f",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [ESP + 0x30] ",
+      "region": "scan",
+      "source_line": 645,
+      "mapping": "current_Font_raw_selector_and_live_ST0_scan_block"
+    },
+    {
+      "native_address": "00aba473",
+      "opcode": "TEST",
+      "operand": "ECX,ECX ",
+      "region": "scan",
+      "source_line": 645,
+      "mapping": "current_Font_raw_selector_and_live_ST0_scan_block"
+    },
+    {
+      "native_address": "00aba475",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x54],EAX ",
+      "region": "scan",
+      "source_line": 645,
+      "mapping": "current_Font_raw_selector_and_live_ST0_scan_block"
+    },
+    {
+      "native_address": "00aba479",
+      "opcode": "FILD",
+      "operand": "dword ptr [ESP + 0x54] ",
+      "region": "scan",
+      "source_line": 191,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [esi + wConversion]",
+      "source_function": "scan_glyph"
+    },
+    {
+      "native_address": "00aba47d",
+      "opcode": "FMULP",
+      "operand": "",
+      "region": "scan",
+      "source_line": 192,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "st(1), st(0)",
+      "source_function": "scan_glyph"
+    },
+    {
+      "native_address": "00aba47f",
+      "opcode": "FADD",
+      "operand": "float ptr [ESP + 0x2c] ",
+      "region": "scan",
+      "source_line": 193,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [esi + wScan]",
+      "source_function": "scan_glyph"
+    },
+    {
+      "native_address": "00aba483",
+      "opcode": "FILD",
+      "operand": "dword ptr [ESP + 0x30] ",
+      "region": "scan",
+      "source_line": 194,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [esi + wWidth]",
+      "source_function": "scan_glyph"
+    },
+    {
+      "native_address": "00aba487",
+      "opcode": "JGE",
+      "operand": "0x00aba48f ",
+      "region": "scan",
+      "source_line": 645,
+      "mapping": "current_Font_raw_selector_and_live_ST0_scan_block"
+    },
+    {
+      "native_address": "00aba489",
+      "opcode": "FADD",
+      "operand": "float ptr [0x00ce3978] ",
+      "region": "scan",
+      "source_line": 197,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [edx]",
+      "source_function": "scan_glyph"
+    },
+    {
+      "native_address": "00aba48f",
+      "opcode": "FXCH",
+      "operand": "",
+      "region": "scan",
+      "source_line": 199,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "st(1)",
+      "source_function": "scan_glyph"
+    },
+    {
+      "native_address": "00aba491",
+      "opcode": "FCOMI",
+      "operand": "ST0,ST1 ",
+      "region": "scan",
+      "source_line": 200,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "st(0), st(1)",
+      "source_function": "scan_glyph"
+    },
+    {
+      "native_address": "00aba493",
+      "opcode": "FSTP",
+      "operand": "ST1 ",
+      "region": "scan",
+      "source_line": 201,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "st(1)",
+      "source_function": "scan_glyph"
+    },
+    {
+      "native_address": "00aba495",
+      "opcode": "JA",
+      "operand": "0x00aba4c2 ",
+      "region": "scan",
+      "source_line": 645,
+      "mapping": "current_Font_raw_selector_and_live_ST0_scan_block"
+    },
+    {
+      "native_address": "00aba497",
+      "opcode": "CMP",
+      "operand": "word ptr [ESI],0x20 ",
+      "region": "scan",
+      "source_line": 645,
+      "mapping": "current_Font_raw_selector_and_live_ST0_scan_block"
+    },
+    {
+      "native_address": "00aba49b",
+      "opcode": "JNZ",
+      "operand": "0x00aba4ae ",
+      "region": "scan",
+      "source_line": 645,
+      "mapping": "current_Font_raw_selector_and_live_ST0_scan_block"
+    },
+    {
+      "native_address": "00aba49d",
+      "opcode": "ADD",
+      "operand": "dword ptr [ESP + 0x18],0x1 ",
+      "region": "scan",
+      "source_line": 645,
+      "mapping": "current_Font_raw_selector_and_live_ST0_scan_block"
+    },
+    {
+      "native_address": "00aba4a2",
+      "opcode": "CVTTSS2SI",
+      "operand": "EBP,dword ptr [ESP + 0x2c] ",
+      "region": "scan",
+      "source_line": 645,
+      "mapping": "current_Font_raw_selector_and_live_ST0_scan_block"
+    },
+    {
+      "native_address": "00aba4a8",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x44],ESI ",
+      "region": "scan",
+      "source_line": 645,
+      "mapping": "current_Font_raw_selector_and_live_ST0_scan_block"
+    },
+    {
+      "native_address": "00aba4ac",
+      "opcode": "JMP",
+      "operand": "0x00aba4b3 ",
+      "region": "scan",
+      "source_line": 645,
+      "mapping": "current_Font_raw_selector_and_live_ST0_scan_block"
+    },
+    {
+      "native_address": "00aba4ae",
+      "opcode": "MOV",
+      "operand": "byte ptr [ESP + 0x78],0x0 ",
+      "region": "scan",
+      "source_line": 645,
+      "mapping": "current_Font_raw_selector_and_live_ST0_scan_block"
+    },
+    {
+      "native_address": "00aba4b3",
+      "opcode": "ADD",
+      "operand": "ESI,0x2 ",
+      "region": "scan",
+      "source_line": 645,
+      "mapping": "current_Font_raw_selector_and_live_ST0_scan_block"
+    },
+    {
+      "native_address": "00aba4b6",
+      "opcode": "FSTP",
+      "operand": "float ptr [ESP + 0x2c] ",
+      "region": "scan",
+      "source_line": 218,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [esi + wScan]",
+      "source_function": "scan_glyph"
+    },
+    {
+      "native_address": "00aba4ba",
+      "opcode": "CMP",
+      "operand": "word ptr [ESI],0x0 ",
+      "region": "scan",
+      "source_line": 645,
+      "mapping": "current_Font_raw_selector_and_live_ST0_scan_block"
+    },
+    {
+      "native_address": "00aba4be",
+      "opcode": "JNZ",
+      "operand": "0x00aba450 ",
+      "region": "scan",
+      "source_line": 645,
+      "mapping": "current_Font_raw_selector_and_live_ST0_scan_block"
+    },
+    {
+      "native_address": "00aba4c0",
+      "opcode": "JMP",
+      "operand": "0x00aba4cd ",
+      "region": "scan",
+      "source_line": 645,
+      "mapping": "current_Font_raw_selector_and_live_ST0_scan_block"
+    },
+    {
+      "native_address": "00aba4c2",
+      "opcode": "CMP",
+      "operand": "word ptr [ESI],0x20 ",
+      "region": "scan",
+      "source_line": 645,
+      "mapping": "current_Font_raw_selector_and_live_ST0_scan_block"
+    },
+    {
+      "native_address": "00aba4c6",
+      "opcode": "FSTP",
+      "operand": "ST0 ",
+      "region": "scan",
+      "source_line": 228,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "st(0)",
+      "source_function": "scan_glyph"
+    },
+    {
+      "native_address": "00aba4c8",
+      "opcode": "JNZ",
+      "operand": "0x00aba4cd ",
+      "region": "scan",
+      "source_line": 645,
+      "mapping": "current_Font_raw_selector_and_live_ST0_scan_block"
+    },
+    {
+      "native_address": "00aba4ca",
+      "opcode": "SUB",
+      "operand": "ESI,0x2 ",
+      "region": "scan",
+      "source_line": 645,
+      "mapping": "current_Font_raw_selector_and_live_ST0_scan_block"
+    },
+    {
+      "native_address": "00aba4cd",
+      "opcode": "CMP",
+      "operand": "byte ptr [ESP + 0x78],0x0 ",
+      "region": "trailing_spaces",
+      "source_line": 657,
+      "mapping": "captured_space_metric_and_wrapping_backward_trim"
+    },
+    {
+      "native_address": "00aba4d2",
+      "opcode": "JNZ",
+      "operand": "0x00aba4f8 ",
+      "region": "trailing_spaces",
+      "source_line": 657,
+      "mapping": "captured_space_metric_and_wrapping_backward_trim"
+    },
+    {
+      "native_address": "00aba4d4",
+      "opcode": "CMP",
+      "operand": "word ptr [ESI],0x20 ",
+      "region": "trailing_spaces",
+      "source_line": 657,
+      "mapping": "captured_space_metric_and_wrapping_backward_trim"
+    },
+    {
+      "native_address": "00aba4d8",
+      "opcode": "JNZ",
+      "operand": "0x00aba4f8 ",
+      "region": "trailing_spaces",
+      "source_line": 657,
+      "mapping": "captured_space_metric_and_wrapping_backward_trim"
+    },
+    {
+      "native_address": "00aba4da",
+      "opcode": "MOV",
+      "operand": "EDX,dword ptr [ESP + 0x24] ",
+      "region": "trailing_spaces",
+      "source_line": 657,
+      "mapping": "captured_space_metric_and_wrapping_backward_trim"
+    },
+    {
+      "native_address": "00aba4de",
+      "opcode": "MOVZX",
+      "operand": "EAX,word ptr [EDX + 0x12] ",
+      "region": "trailing_spaces",
+      "source_line": 657,
+      "mapping": "captured_space_metric_and_wrapping_backward_trim"
+    },
+    {
+      "native_address": "00aba4e2",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [ESP + 0x18] ",
+      "region": "trailing_spaces",
+      "source_line": 657,
+      "mapping": "captured_space_metric_and_wrapping_backward_trim"
+    },
+    {
+      "native_address": "00aba4e6",
+      "opcode": "SUB",
+      "operand": "ESI,0x2 ",
+      "region": "trailing_spaces",
+      "source_line": 657,
+      "mapping": "captured_space_metric_and_wrapping_backward_trim"
+    },
+    {
+      "native_address": "00aba4e9",
+      "opcode": "SUB",
+      "operand": "ECX,0x1 ",
+      "region": "trailing_spaces",
+      "source_line": 657,
+      "mapping": "captured_space_metric_and_wrapping_backward_trim"
+    },
+    {
+      "native_address": "00aba4ec",
+      "opcode": "SUB",
+      "operand": "EBP,EAX ",
+      "region": "trailing_spaces",
+      "source_line": 657,
+      "mapping": "captured_space_metric_and_wrapping_backward_trim"
+    },
+    {
+      "native_address": "00aba4ee",
+      "opcode": "CMP",
+      "operand": "word ptr [ESI],0x20 ",
+      "region": "trailing_spaces",
+      "source_line": 657,
+      "mapping": "captured_space_metric_and_wrapping_backward_trim"
+    },
+    {
+      "native_address": "00aba4f2",
+      "opcode": "JZ",
+      "operand": "0x00aba4e6 ",
+      "region": "trailing_spaces",
+      "source_line": 657,
+      "mapping": "captured_space_metric_and_wrapping_backward_trim"
+    },
+    {
+      "native_address": "00aba4f4",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x18],ECX ",
+      "region": "trailing_spaces",
+      "source_line": 657,
+      "mapping": "captured_space_metric_and_wrapping_backward_trim"
+    },
+    {
+      "native_address": "00aba4f8",
+      "opcode": "XORPS",
+      "operand": "XMM0,XMM0 ",
+      "region": "trailing_spaces",
+      "source_line": 657,
+      "mapping": "captured_space_metric_and_wrapping_backward_trim"
+    },
+    {
+      "native_address": "00aba4fb",
+      "opcode": "MOVZX",
+      "operand": "ECX,word ptr [ESI] ",
+      "region": "line_end",
+      "source_line": 668,
+      "mapping": "current_WORD_then_spaces_capture_and_full_home0_write"
+    },
+    {
+      "native_address": "00aba4fe",
+      "opcode": "TEST",
+      "operand": "CX,CX ",
+      "region": "line_end",
+      "source_line": 668,
+      "mapping": "current_WORD_then_spaces_capture_and_full_home0_write"
+    },
+    {
+      "native_address": "00aba501",
+      "opcode": "MOV",
+      "operand": "EDX,dword ptr [ESP + 0x18] ",
+      "region": "line_end",
+      "source_line": 668,
+      "mapping": "current_WORD_then_spaces_capture_and_full_home0_write"
+    },
+    {
+      "native_address": "00aba505",
+      "opcode": "JZ",
+      "operand": "0x00aba521 ",
+      "region": "line_end",
+      "source_line": 668,
+      "mapping": "current_WORD_then_spaces_capture_and_full_home0_write"
+    },
+    {
+      "native_address": "00aba507",
+      "opcode": "TEST",
+      "operand": "EDX,EDX ",
+      "region": "line_end",
+      "source_line": 668,
+      "mapping": "current_WORD_then_spaces_capture_and_full_home0_write"
+    },
+    {
+      "native_address": "00aba509",
+      "opcode": "JZ",
+      "operand": "0x00aba51e ",
+      "region": "line_end",
+      "source_line": 668,
+      "mapping": "current_WORD_then_spaces_capture_and_full_home0_write"
+    },
+    {
+      "native_address": "00aba50b",
+      "opcode": "CMP",
+      "operand": "CX,0xa ",
+      "region": "line_end",
+      "source_line": 668,
+      "mapping": "current_WORD_then_spaces_capture_and_full_home0_write"
+    },
+    {
+      "native_address": "00aba50f",
+      "opcode": "JZ",
+      "operand": "0x00aba51e ",
+      "region": "line_end",
+      "source_line": 668,
+      "mapping": "current_WORD_then_spaces_capture_and_full_home0_write"
+    },
+    {
+      "native_address": "00aba511",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [ESP + 0x44] ",
+      "region": "line_end",
+      "source_line": 668,
+      "mapping": "current_WORD_then_spaces_capture_and_full_home0_write"
+    },
+    {
+      "native_address": "00aba515",
+      "opcode": "ADD",
+      "operand": "EAX,0x2 ",
+      "region": "line_end",
+      "source_line": 668,
+      "mapping": "current_WORD_then_spaces_capture_and_full_home0_write"
+    },
+    {
+      "native_address": "00aba518",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x78],EAX ",
+      "region": "line_end",
+      "source_line": 668,
+      "mapping": "current_WORD_then_spaces_capture_and_full_home0_write"
+    },
+    {
+      "native_address": "00aba51c",
+      "opcode": "JMP",
+      "operand": "0x00aba525 ",
+      "region": "line_end",
+      "source_line": 668,
+      "mapping": "current_WORD_then_spaces_capture_and_full_home0_write"
+    },
+    {
+      "native_address": "00aba51e",
+      "opcode": "ADD",
+      "operand": "ESI,0x2 ",
+      "region": "line_end",
+      "source_line": 668,
+      "mapping": "current_WORD_then_spaces_capture_and_full_home0_write"
+    },
+    {
+      "native_address": "00aba521",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x78],ESI ",
+      "region": "line_end",
+      "source_line": 668,
+      "mapping": "current_WORD_then_spaces_capture_and_full_home0_write"
+    },
+    {
+      "native_address": "00aba525",
+      "opcode": "TEST",
+      "operand": "EBP,EBP ",
+      "region": "line_end",
+      "source_line": 668,
+      "mapping": "current_WORD_then_spaces_capture_and_full_home0_write"
+    },
+    {
+      "native_address": "00aba527",
+      "opcode": "JZ",
+      "operand": "0x00aba534 ",
+      "region": "line_end",
+      "source_line": 668,
+      "mapping": "current_WORD_then_spaces_capture_and_full_home0_write"
+    },
+    {
+      "native_address": "00aba529",
+      "opcode": "TEST",
+      "operand": "CX,CX ",
+      "region": "line_end",
+      "source_line": 668,
+      "mapping": "current_WORD_then_spaces_capture_and_full_home0_write"
+    },
+    {
+      "native_address": "00aba52c",
+      "opcode": "JZ",
+      "operand": "0x00aba534 ",
+      "region": "line_end",
+      "source_line": 668,
+      "mapping": "current_WORD_then_spaces_capture_and_full_home0_write"
+    },
+    {
+      "native_address": "00aba52e",
+      "opcode": "CMP",
+      "operand": "CX,0xa ",
+      "region": "line_end",
+      "source_line": 668,
+      "mapping": "current_WORD_then_spaces_capture_and_full_home0_write"
+    },
+    {
+      "native_address": "00aba532",
+      "opcode": "JNZ",
+      "operand": "0x00aba53a ",
+      "region": "line_end",
+      "source_line": 668,
+      "mapping": "current_WORD_then_spaces_capture_and_full_home0_write"
+    },
+    {
+      "native_address": "00aba534",
+      "opcode": "CVTTSS2SI",
+      "operand": "EBP,dword ptr [ESP + 0x2c] ",
+      "region": "line_end",
+      "source_line": 668,
+      "mapping": "current_WORD_then_spaces_capture_and_full_home0_write"
+    },
+    {
+      "native_address": "00aba53a",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [EDI + 0x100] ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba540",
+      "opcode": "TEST",
+      "operand": "EAX,EAX ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba542",
+      "opcode": "JZ",
+      "operand": "0x00aba61d ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba548",
+      "opcode": "CMP",
+      "operand": "EAX,0x3 ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba54b",
+      "opcode": "JNZ",
+      "operand": "0x00aba5ad ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba54d",
+      "opcode": "TEST",
+      "operand": "CX,CX ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba550",
+      "opcode": "JZ",
+      "operand": "0x00aba61d ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba556",
+      "opcode": "CMP",
+      "operand": "CX,0xa ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba55a",
+      "opcode": "JZ",
+      "operand": "0x00aba61d ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba560",
+      "opcode": "TEST",
+      "operand": "EDX,EDX ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba562",
+      "opcode": "JZ",
+      "operand": "0x00aba5a2 ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba564",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [ESP + 0x30] ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba568",
+      "opcode": "SUB",
+      "operand": "ECX,EBP ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba56a",
+      "opcode": "TEST",
+      "operand": "ECX,ECX ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba56c",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x54],ECX ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba570",
+      "opcode": "FILD",
+      "operand": "dword ptr [ESP + 0x54] ",
+      "region": "alignment",
+      "source_line": 272,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [esi + wConversion]",
+      "source_function": "align_line"
+    },
+    {
+      "native_address": "00aba574",
+      "opcode": "JGE",
+      "operand": "0x00aba57c ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba576",
+      "opcode": "FADD",
+      "operand": "float ptr [0x00ce3978] ",
+      "region": "alignment",
+      "source_line": 275,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [eax]",
+      "source_function": "align_line"
+    },
+    {
+      "native_address": "00aba57c",
+      "opcode": "ADD",
+      "operand": "EDX,-0x1 ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba57f",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x54],EDX ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba583",
+      "opcode": "FIDIV",
+      "operand": "dword ptr [ESP + 0x54] ",
+      "region": "alignment",
+      "source_line": 279,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [esi + wConversion] // spaces1 deliberately divides by0",
+      "source_function": "align_line"
+    },
+    {
+      "native_address": "00aba587",
+      "opcode": "MOV",
+      "operand": "EDX,dword ptr [ESP + 0x24] ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba58b",
+      "opcode": "MOVZX",
+      "operand": "EAX,word ptr [EDX + 0x12] ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba58f",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x54],EAX ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba593",
+      "opcode": "FILD",
+      "operand": "dword ptr [ESP + 0x54] ",
+      "region": "alignment",
+      "source_line": 283,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [esi + wConversion]",
+      "source_function": "align_line"
+    },
+    {
+      "native_address": "00aba597",
+      "opcode": "FADDP",
+      "operand": "",
+      "region": "alignment",
+      "source_line": 284,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "st(1), st(0)",
+      "source_function": "align_line"
+    },
+    {
+      "native_address": "00aba599",
+      "opcode": "FSTP",
+      "operand": "float ptr [ESP + 0x28] ",
+      "region": "alignment",
+      "source_line": 285,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [esi + wSpaceStep]",
+      "source_function": "align_line"
+    },
+    {
+      "native_address": "00aba59d",
+      "opcode": "JMP",
+      "operand": "0x00aba62f ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba5a2",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [ESP + 0x28],XMM0 ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba5a8",
+      "opcode": "JMP",
+      "operand": "0x00aba62f ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba5ad",
+      "opcode": "CMP",
+      "operand": "EAX,0x2 ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba5b0",
+      "opcode": "JNZ",
+      "operand": "0x00aba5e2 ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba5b2",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [ESP + 0x24] ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba5b6",
+      "opcode": "MOVZX",
+      "operand": "EDX,word ptr [ECX + 0x12] ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba5ba",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [ESP + 0x30] ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba5be",
+      "opcode": "SUB",
+      "operand": "EAX,EBP ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba5c0",
+      "opcode": "TEST",
+      "operand": "EAX,EAX ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba5c2",
+      "opcode": "CVTSI2SS",
+      "operand": "XMM1,EDX ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba5c6",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x54],EAX ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba5ca",
+      "opcode": "FILD",
+      "operand": "dword ptr [ESP + 0x54] ",
+      "region": "alignment",
+      "source_line": 300,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [esi + wConversion]",
+      "source_function": "align_line"
+    },
+    {
+      "native_address": "00aba5ce",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [ESP + 0x28],XMM1 ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba5d4",
+      "opcode": "JGE",
+      "operand": "0x00aba5dc ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba5d6",
+      "opcode": "FADD",
+      "operand": "float ptr [0x00ce3978] ",
+      "region": "alignment",
+      "source_line": 304,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [ecx]",
+      "source_function": "align_line"
+    },
+    {
+      "native_address": "00aba5dc",
+      "opcode": "FSTP",
+      "operand": "float ptr [ESP + 0x14] ",
+      "region": "alignment",
+      "source_line": 306,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [esi + wPen]",
+      "source_function": "align_line"
+    },
+    {
+      "native_address": "00aba5e0",
+      "opcode": "JMP",
+      "operand": "0x00aba635 ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba5e2",
+      "opcode": "CMP",
+      "operand": "EAX,0x1 ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba5e5",
+      "opcode": "JNZ",
+      "operand": "0x00aba635 ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba5e7",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [ESP + 0x24] ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba5eb",
+      "opcode": "MOVZX",
+      "operand": "EDX,word ptr [ECX + 0x12] ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba5ef",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [ESP + 0x30] ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba5f3",
+      "opcode": "SUB",
+      "operand": "EAX,EBP ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba5f5",
+      "opcode": "TEST",
+      "operand": "EAX,EAX ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba5f7",
+      "opcode": "CVTSI2SS",
+      "operand": "XMM1,EDX ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba5fb",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x54],EAX ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba5ff",
+      "opcode": "FILD",
+      "operand": "dword ptr [ESP + 0x54] ",
+      "region": "alignment",
+      "source_line": 318,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [esi + wConversion]",
+      "source_function": "align_line"
+    },
+    {
+      "native_address": "00aba603",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [ESP + 0x28],XMM1 ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba609",
+      "opcode": "JGE",
+      "operand": "0x00aba611 ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba60b",
+      "opcode": "FADD",
+      "operand": "float ptr [0x00ce3978] ",
+      "region": "alignment",
+      "source_line": 322,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [ecx]",
+      "source_function": "align_line"
+    },
+    {
+      "native_address": "00aba611",
+      "opcode": "FMUL",
+      "operand": "double ptr [0x00d7a280] ",
+      "region": "alignment",
+      "source_line": 325,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "qword ptr [eax]",
+      "source_function": "align_line"
+    },
+    {
+      "native_address": "00aba617",
+      "opcode": "FSTP",
+      "operand": "float ptr [ESP + 0x14] ",
+      "region": "alignment",
+      "source_line": 326,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [esi + wPen]",
+      "source_function": "align_line"
+    },
+    {
+      "native_address": "00aba61b",
+      "opcode": "JMP",
+      "operand": "0x00aba635 ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba61d",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [ESP + 0x24] ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba621",
+      "opcode": "MOVZX",
+      "operand": "EDX,word ptr [ECX + 0x12] ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba625",
+      "opcode": "CVTSI2SS",
+      "operand": "XMM1,EDX ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba629",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [ESP + 0x28],XMM1 ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba62f",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [ESP + 0x14],XMM0 ",
+      "region": "alignment",
+      "source_line": 677,
+      "mapping": "exact_native_branches_no_mode_gate_and_no_default_S28"
+    },
+    {
+      "native_address": "00aba635",
+      "opcode": "CMP",
+      "operand": "EBX,dword ptr [ESP + 0x78] ",
+      "region": "line_begin",
+      "source_line": 678,
+      "mapping": "current_line_end_compare_S1C_zero_and_same_position_YZ"
+    },
+    {
+      "native_address": "00aba639",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [ESP + 0x1c],XMM0 ",
+      "region": "line_begin",
+      "source_line": 678,
+      "mapping": "current_line_end_compare_S1C_zero_and_same_position_YZ"
+    },
+    {
+      "native_address": "00aba63f",
+      "opcode": "JZ",
+      "operand": "0x00aba785 ",
+      "region": "line_begin",
+      "source_line": 678,
+      "mapping": "current_line_end_compare_S1C_zero_and_same_position_YZ"
+    },
+    {
+      "native_address": "00aba645",
+      "opcode": "FLD",
+      "operand": "float ptr [ESP + 0x20] ",
+      "region": "line_begin",
+      "source_line": 343,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [edx + wTop]",
+      "source_function": "begin_line"
+    },
+    {
+      "native_address": "00aba649",
+      "opcode": "MOVSS",
+      "operand": "XMM1,dword ptr [ESP + 0x20] ",
+      "region": "line_begin",
+      "source_line": 678,
+      "mapping": "current_line_end_compare_S1C_zero_and_same_position_YZ"
+    },
+    {
+      "native_address": "00aba64f",
+      "opcode": "FADD",
+      "operand": "float ptr [ESP + 0x4c] ",
+      "region": "line_begin",
+      "source_line": 345,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [edx + wHeightFloat]",
+      "source_function": "begin_line"
+    },
+    {
+      "native_address": "00aba653",
+      "opcode": "MOV",
+      "operand": "ESI,dword ptr [ESP + 0x48] ",
+      "region": "line_begin",
+      "source_line": 678,
+      "mapping": "current_line_end_compare_S1C_zero_and_same_position_YZ"
+    },
+    {
+      "native_address": "00aba657",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [ESP + 0x6c],XMM1 ",
+      "region": "line_begin",
+      "source_line": 678,
+      "mapping": "current_line_end_compare_S1C_zero_and_same_position_YZ"
+    },
+    {
+      "native_address": "00aba65d",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [ESP + 0x70],XMM0 ",
+      "region": "line_begin",
+      "source_line": 678,
+      "mapping": "current_line_end_compare_S1C_zero_and_same_position_YZ"
+    },
+    {
+      "native_address": "00aba663",
+      "opcode": "FSTP",
+      "operand": "float ptr [ESP + 0x44] ",
+      "region": "line_begin",
+      "source_line": 350,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [edx + wAlias]",
+      "source_function": "begin_line"
+    },
+    {
+      "native_address": "00aba667",
+      "opcode": "JMP",
+      "operand": "0x00aba670 ",
+      "region": "line_begin",
+      "source_line": 678,
+      "mapping": "current_line_end_compare_S1C_zero_and_same_position_YZ"
+    },
+    {
+      "native_address": "00aba670",
+      "opcode": "MOVZX",
+      "operand": "EAX,word ptr [EBX] ",
+      "region": "emit_glyph",
+      "source_line": 686,
+      "mapping": "direct_AD4480_current_Font_and_codeunit"
+    },
+    {
+      "native_address": "00aba673",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [EDI + 0x108] ",
+      "region": "emit_glyph",
+      "source_line": 686,
+      "mapping": "direct_AD4480_current_Font_and_codeunit"
+    },
+    {
+      "native_address": "00aba679",
+      "opcode": "PUSH",
+      "operand": "EAX ",
+      "region": "emit_glyph",
+      "source_line": 686,
+      "mapping": "direct_AD4480_current_Font_and_codeunit"
+    },
+    {
+      "native_address": "00aba67a",
+      "opcode": "CALL",
+      "operand": "0x00ad4480 ",
+      "region": "emit_glyph",
+      "source_line": 686,
+      "mapping": "direct_AD4480_current_Font_and_codeunit"
+    },
+    {
+      "native_address": "00aba67f",
+      "opcode": "CMP",
+      "operand": "byte ptr [ESP + 0x13],0x0 ",
+      "region": "emit_glyph",
+      "source_line": 686,
+      "mapping": "direct_AD4480_current_Font_and_codeunit"
+    },
+    {
+      "native_address": "00aba684",
+      "opcode": "MOV",
+      "operand": "EBP,EAX ",
+      "region": "emit_glyph",
+      "source_line": 686,
+      "mapping": "direct_AD4480_current_Font_and_codeunit"
+    },
+    {
+      "native_address": "00aba686",
+      "opcode": "JZ",
+      "operand": "0x00aba6bf ",
+      "region": "emit_glyph",
+      "source_line": 686,
+      "mapping": "direct_AD4480_current_Font_and_codeunit"
+    },
+    {
+      "native_address": "00aba688",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [EBP + 0x18] ",
+      "region": "first_resources",
+      "source_line": 691,
+      "mapping": "separate_current_home1_material20_loads_around_callbacks"
+    },
+    {
+      "native_address": "00aba68b",
+      "opcode": "MOV",
+      "operand": "EDX,dword ptr [ESP + 0x7c] ",
+      "region": "first_resources",
+      "source_line": 691,
+      "mapping": "separate_current_home1_material20_loads_around_callbacks"
+    },
+    {
+      "native_address": "00aba68f",
+      "opcode": "PUSH",
+      "operand": "ECX ",
+      "region": "first_resources",
+      "source_line": 691,
+      "mapping": "separate_current_home1_material20_loads_around_callbacks"
+    },
+    {
+      "native_address": "00aba690",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [EDX + 0x20] ",
+      "region": "first_resources",
+      "source_line": 691,
+      "mapping": "separate_current_home1_material20_loads_around_callbacks"
+    },
+    {
+      "native_address": "00aba693",
+      "opcode": "PUSH",
+      "operand": "0x0 ",
+      "region": "first_resources",
+      "source_line": 691,
+      "mapping": "separate_current_home1_material20_loads_around_callbacks"
+    },
+    {
+      "native_address": "00aba695",
+      "opcode": "CALL",
+      "operand": "0x00b189f0 ",
+      "region": "first_resources",
+      "source_line": 691,
+      "mapping": "separate_current_home1_material20_loads_around_callbacks"
+    },
+    {
+      "native_address": "00aba69a",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [EBP + 0x1c] ",
+      "region": "first_resources",
+      "source_line": 691,
+      "mapping": "separate_current_home1_material20_loads_around_callbacks"
+    },
+    {
+      "native_address": "00aba69d",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [ESP + 0x7c] ",
+      "region": "first_resources",
+      "source_line": 691,
+      "mapping": "separate_current_home1_material20_loads_around_callbacks"
+    },
+    {
+      "native_address": "00aba6a1",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [ECX + 0x20] ",
+      "region": "first_resources",
+      "source_line": 691,
+      "mapping": "separate_current_home1_material20_loads_around_callbacks"
+    },
+    {
+      "native_address": "00aba6a4",
+      "opcode": "PUSH",
+      "operand": "EAX ",
+      "region": "first_resources",
+      "source_line": 691,
+      "mapping": "separate_current_home1_material20_loads_around_callbacks"
+    },
+    {
+      "native_address": "00aba6a5",
+      "opcode": "PUSH",
+      "operand": "0x1 ",
+      "region": "first_resources",
+      "source_line": 691,
+      "mapping": "separate_current_home1_material20_loads_around_callbacks"
+    },
+    {
+      "native_address": "00aba6a7",
+      "opcode": "CALL",
+      "operand": "0x00b189f0 ",
+      "region": "first_resources",
+      "source_line": 691,
+      "mapping": "separate_current_home1_material20_loads_around_callbacks"
+    },
+    {
+      "native_address": "00aba6ac",
+      "opcode": "MOVSS",
+      "operand": "XMM0,dword ptr [ESP + 0x14] ",
+      "region": "first_resources",
+      "source_line": 691,
+      "mapping": "separate_current_home1_material20_loads_around_callbacks"
+    },
+    {
+      "native_address": "00aba6b2",
+      "opcode": "MOV",
+      "operand": "byte ptr [ESP + 0x13],0x0 ",
+      "region": "first_resources",
+      "source_line": 691,
+      "mapping": "separate_current_home1_material20_loads_around_callbacks"
+    },
+    {
+      "native_address": "00aba6b7",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [EDI + 0x18c],XMM0 ",
+      "region": "first_resources",
+      "source_line": 691,
+      "mapping": "separate_current_home1_material20_loads_around_callbacks"
+    },
+    {
+      "native_address": "00aba6bf",
+      "opcode": "FLD",
+      "operand": "float ptr [ESP + 0x40] ",
+      "region": "bounds",
+      "source_line": 359,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [edx + wMin]",
+      "source_function": "update_bounds"
+    },
+    {
+      "native_address": "00aba6c3",
+      "opcode": "FLD",
+      "operand": "float ptr [ESP + 0x20] ",
+      "region": "bounds",
+      "source_line": 360,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [edx + wTop]",
+      "source_function": "update_bounds"
+    },
+    {
+      "native_address": "00aba6c7",
+      "opcode": "FCOMIP",
+      "operand": "ST0,ST1 ",
+      "region": "bounds",
+      "source_line": 361,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "st(0), st(1)",
+      "source_function": "update_bounds"
+    },
+    {
+      "native_address": "00aba6c9",
+      "opcode": "FSTP",
+      "operand": "ST0 ",
+      "region": "bounds",
+      "source_line": 362,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "st(0)",
+      "source_function": "update_bounds"
+    },
+    {
+      "native_address": "00aba6cb",
+      "opcode": "JA",
+      "operand": "0x00aba6d9 ",
+      "region": "bounds",
+      "source_line": 705,
+      "mapping": "FCOMIP_FSTP_JA_unordered_assignment"
+    },
+    {
+      "native_address": "00aba6cd",
+      "opcode": "MOVSS",
+      "operand": "XMM0,dword ptr [ESP + 0x20] ",
+      "region": "bounds",
+      "source_line": 705,
+      "mapping": "FCOMIP_FSTP_JA_unordered_assignment"
+    },
+    {
+      "native_address": "00aba6d3",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [ESP + 0x40],XMM0 ",
+      "region": "bounds",
+      "source_line": 705,
+      "mapping": "FCOMIP_FSTP_JA_unordered_assignment"
+    },
+    {
+      "native_address": "00aba6d9",
+      "opcode": "FLD",
+      "operand": "float ptr [ESP + 0x44] ",
+      "region": "bounds",
+      "source_line": 367,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [edx + wAlias]",
+      "source_function": "update_bounds"
+    },
+    {
+      "native_address": "00aba6dd",
+      "opcode": "FLD",
+      "operand": "float ptr [ESP + 0x3c] ",
+      "region": "bounds",
+      "source_line": 368,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [edx + wMax]",
+      "source_function": "update_bounds"
+    },
+    {
+      "native_address": "00aba6e1",
+      "opcode": "FCOMIP",
+      "operand": "ST0,ST1 ",
+      "region": "bounds",
+      "source_line": 369,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "st(0), st(1)",
+      "source_function": "update_bounds"
+    },
+    {
+      "native_address": "00aba6e3",
+      "opcode": "FSTP",
+      "operand": "ST0 ",
+      "region": "bounds",
+      "source_line": 370,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "st(0)",
+      "source_function": "update_bounds"
+    },
+    {
+      "native_address": "00aba6e5",
+      "opcode": "JA",
+      "operand": "0x00aba6f3 ",
+      "region": "bounds",
+      "source_line": 705,
+      "mapping": "FCOMIP_FSTP_JA_unordered_assignment"
+    },
+    {
+      "native_address": "00aba6e7",
+      "opcode": "MOVSS",
+      "operand": "XMM0,dword ptr [ESP + 0x44] ",
+      "region": "bounds",
+      "source_line": 705,
+      "mapping": "FCOMIP_FSTP_JA_unordered_assignment"
+    },
+    {
+      "native_address": "00aba6ed",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [ESP + 0x3c],XMM0 ",
+      "region": "bounds",
+      "source_line": 705,
+      "mapping": "FCOMIP_FSTP_JA_unordered_assignment"
+    },
+    {
+      "native_address": "00aba6f3",
+      "opcode": "MOVZX",
+      "operand": "EDX,word ptr [EBX] ",
+      "region": "glyph_quad",
+      "source_line": 706,
+      "mapping": "same_mutable10homes_push_order_and_actual_float3_then_direct_whole_Glyph"
+    },
+    {
+      "native_address": "00aba6f6",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [ESP + 0x60] ",
+      "region": "glyph_quad",
+      "source_line": 706,
+      "mapping": "same_mutable10homes_push_order_and_actual_float3_then_direct_whole_Glyph"
+    },
+    {
+      "native_address": "00aba6fa",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [ESP + 0x34] ",
+      "region": "glyph_quad",
+      "source_line": 706,
+      "mapping": "same_mutable10homes_push_order_and_actual_float3_then_direct_whole_Glyph"
+    },
+    {
+      "native_address": "00aba6fe",
+      "opcode": "MOVSS",
+      "operand": "XMM0,dword ptr [ESP + 0x14] ",
+      "region": "glyph_quad",
+      "source_line": 706,
+      "mapping": "same_mutable10homes_push_order_and_actual_float3_then_direct_whole_Glyph"
+    },
+    {
+      "native_address": "00aba704",
+      "opcode": "PUSH",
+      "operand": "EDX ",
+      "region": "glyph_quad",
+      "source_line": 706,
+      "mapping": "same_mutable10homes_push_order_and_actual_float3_then_direct_whole_Glyph"
+    },
+    {
+      "native_address": "00aba705",
+      "opcode": "PUSH",
+      "operand": "ESI ",
+      "region": "glyph_quad",
+      "source_line": 706,
+      "mapping": "same_mutable10homes_push_order_and_actual_float3_then_direct_whole_Glyph"
+    },
+    {
+      "native_address": "00aba706",
+      "opcode": "PUSH",
+      "operand": "EAX ",
+      "region": "glyph_quad",
+      "source_line": 706,
+      "mapping": "same_mutable10homes_push_order_and_actual_float3_then_direct_whole_Glyph"
+    },
+    {
+      "native_address": "00aba707",
+      "opcode": "PUSH",
+      "operand": "ECX ",
+      "region": "glyph_quad",
+      "source_line": 706,
+      "mapping": "same_mutable10homes_push_order_and_actual_float3_then_direct_whole_Glyph"
+    },
+    {
+      "native_address": "00aba708",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [ESP + 0x48] ",
+      "region": "glyph_quad",
+      "source_line": 706,
+      "mapping": "same_mutable10homes_push_order_and_actual_float3_then_direct_whole_Glyph"
+    },
+    {
+      "native_address": "00aba70c",
+      "opcode": "LEA",
+      "operand": "EDX,[ESP + 0x78] ",
+      "region": "glyph_quad",
+      "source_line": 706,
+      "mapping": "same_mutable10homes_push_order_and_actual_float3_then_direct_whole_Glyph"
+    },
+    {
+      "native_address": "00aba710",
+      "opcode": "PUSH",
+      "operand": "EDX ",
+      "region": "glyph_quad",
+      "source_line": 706,
+      "mapping": "same_mutable10homes_push_order_and_actual_float3_then_direct_whole_Glyph"
+    },
+    {
+      "native_address": "00aba711",
+      "opcode": "MOV",
+      "operand": "EDX,dword ptr [ESP + 0x64] ",
+      "region": "glyph_quad",
+      "source_line": 706,
+      "mapping": "same_mutable10homes_push_order_and_actual_float3_then_direct_whole_Glyph"
+    },
+    {
+      "native_address": "00aba715",
+      "opcode": "LEA",
+      "operand": "EAX,[ESP + 0x7c] ",
+      "region": "glyph_quad",
+      "source_line": 706,
+      "mapping": "same_mutable10homes_push_order_and_actual_float3_then_direct_whole_Glyph"
+    },
+    {
+      "native_address": "00aba719",
+      "opcode": "PUSH",
+      "operand": "EAX ",
+      "region": "glyph_quad",
+      "source_line": 706,
+      "mapping": "same_mutable10homes_push_order_and_actual_float3_then_direct_whole_Glyph"
+    },
+    {
+      "native_address": "00aba71a",
+      "opcode": "PUSH",
+      "operand": "ECX ",
+      "region": "glyph_quad",
+      "source_line": 706,
+      "mapping": "same_mutable10homes_push_order_and_actual_float3_then_direct_whole_Glyph"
+    },
+    {
+      "native_address": "00aba71b",
+      "opcode": "PUSH",
+      "operand": "EDX ",
+      "region": "glyph_quad",
+      "source_line": 706,
+      "mapping": "same_mutable10homes_push_order_and_actual_float3_then_direct_whole_Glyph"
+    },
+    {
+      "native_address": "00aba71c",
+      "opcode": "LEA",
+      "operand": "EAX,[ESP + 0x88] ",
+      "region": "glyph_quad",
+      "source_line": 706,
+      "mapping": "same_mutable10homes_push_order_and_actual_float3_then_direct_whole_Glyph"
+    },
+    {
+      "native_address": "00aba723",
+      "opcode": "PUSH",
+      "operand": "EAX ",
+      "region": "glyph_quad",
+      "source_line": 706,
+      "mapping": "same_mutable10homes_push_order_and_actual_float3_then_direct_whole_Glyph"
+    },
+    {
+      "native_address": "00aba724",
+      "opcode": "PUSH",
+      "operand": "EBP ",
+      "region": "glyph_quad",
+      "source_line": 706,
+      "mapping": "same_mutable10homes_push_order_and_actual_float3_then_direct_whole_Glyph"
+    },
+    {
+      "native_address": "00aba725",
+      "opcode": "MOV",
+      "operand": "ECX,EDI ",
+      "region": "glyph_quad",
+      "source_line": 706,
+      "mapping": "same_mutable10homes_push_order_and_actual_float3_then_direct_whole_Glyph"
+    },
+    {
+      "native_address": "00aba727",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [ESP + 0x90],XMM0 ",
+      "region": "glyph_quad",
+      "source_line": 706,
+      "mapping": "same_mutable10homes_push_order_and_actual_float3_then_direct_whole_Glyph"
+    },
+    {
+      "native_address": "00aba730",
+      "opcode": "CALL",
+      "operand": "0x00ab98f0 ",
+      "region": "glyph_quad",
+      "source_line": 706,
+      "mapping": "same_mutable10homes_push_order_and_actual_float3_then_direct_whole_Glyph"
+    },
+    {
+      "native_address": "00aba735",
+      "opcode": "ADD",
+      "operand": "dword ptr [ESP + 0x38],0xc ",
+      "region": "post_quad",
+      "source_line": 729,
+      "mapping": "independent_parent_indices_vertex_and_current_codeunit"
+    },
+    {
+      "native_address": "00aba73a",
+      "opcode": "ADD",
+      "operand": "ESI,0x4 ",
+      "region": "post_quad",
+      "source_line": 729,
+      "mapping": "independent_parent_indices_vertex_and_current_codeunit"
+    },
+    {
+      "native_address": "00aba73d",
+      "opcode": "CMP",
+      "operand": "word ptr [EBX],0x20 ",
+      "region": "post_quad",
+      "source_line": 729,
+      "mapping": "independent_parent_indices_vertex_and_current_codeunit"
+    },
+    {
+      "native_address": "00aba741",
+      "opcode": "JZ",
+      "operand": "0x00aba759 ",
+      "region": "post_quad",
+      "source_line": 729,
+      "mapping": "independent_parent_indices_vertex_and_current_codeunit"
+    },
+    {
+      "native_address": "00aba743",
+      "opcode": "MOVZX",
+      "operand": "ECX,word ptr [EBP + 0x12] ",
+      "region": "advance",
+      "source_line": 733,
+      "mapping": "captured_glyph_current12_scale1D8_and_live_ST0_block"
+    },
+    {
+      "native_address": "00aba747",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x54],ECX ",
+      "region": "advance",
+      "source_line": 733,
+      "mapping": "captured_glyph_current12_scale1D8_and_live_ST0_block"
+    },
+    {
+      "native_address": "00aba74b",
+      "opcode": "FILD",
+      "operand": "dword ptr [ESP + 0x54] ",
+      "region": "advance",
+      "source_line": 392,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [esi + wConversion]",
+      "source_function": "advance_glyph"
+    },
+    {
+      "native_address": "00aba74f",
+      "opcode": "FLD",
+      "operand": "float ptr [EDI + 0x1d8] ",
+      "region": "advance",
+      "source_line": 393,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [ebx + 0x1d8]",
+      "source_function": "advance_glyph"
+    },
+    {
+      "native_address": "00aba755",
+      "opcode": "FMUL",
+      "operand": "ST1 ",
+      "region": "advance",
+      "source_line": 394,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "st(0), st(1)",
+      "source_function": "advance_glyph"
+    },
+    {
+      "native_address": "00aba757",
+      "opcode": "JMP",
+      "operand": "0x00aba75f ",
+      "region": "advance",
+      "source_line": 733,
+      "mapping": "captured_glyph_current12_scale1D8_and_live_ST0_block"
+    },
+    {
+      "native_address": "00aba759",
+      "opcode": "FLD",
+      "operand": "float ptr [ESP + 0x28] ",
+      "region": "advance",
+      "source_line": 397,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [esi + wSpaceStep]",
+      "source_function": "advance_glyph"
+    },
+    {
+      "native_address": "00aba75d",
+      "opcode": "FLD",
+      "operand": "ST0 ",
+      "region": "advance",
+      "source_line": 398,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "st(0)",
+      "source_function": "advance_glyph"
+    },
+    {
+      "native_address": "00aba75f",
+      "opcode": "FADD",
+      "operand": "float ptr [ESP + 0x14] ",
+      "region": "advance",
+      "source_line": 400,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [esi + wPen]",
+      "source_function": "advance_glyph"
+    },
+    {
+      "native_address": "00aba763",
+      "opcode": "ADD",
+      "operand": "dword ptr [ESP + 0x34],0x1 ",
+      "region": "advance",
+      "source_line": 733,
+      "mapping": "captured_glyph_current12_scale1D8_and_live_ST0_block"
+    },
+    {
+      "native_address": "00aba768",
+      "opcode": "ADD",
+      "operand": "EBX,0x2 ",
+      "region": "advance",
+      "source_line": 733,
+      "mapping": "captured_glyph_current12_scale1D8_and_live_ST0_block"
+    },
+    {
+      "native_address": "00aba76b",
+      "opcode": "CMP",
+      "operand": "EBX,dword ptr [ESP + 0x78] ",
+      "region": "advance",
+      "source_line": 733,
+      "mapping": "captured_glyph_current12_scale1D8_and_live_ST0_block"
+    },
+    {
+      "native_address": "00aba76f",
+      "opcode": "FSTP",
+      "operand": "float ptr [ESP + 0x14] ",
+      "region": "advance",
+      "source_line": 407,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [esi + wPen]",
+      "source_function": "advance_glyph"
+    },
+    {
+      "native_address": "00aba773",
+      "opcode": "FADD",
+      "operand": "float ptr [ESP + 0x1c] ",
+      "region": "advance",
+      "source_line": 408,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [esi + wSum]",
+      "source_function": "advance_glyph"
+    },
+    {
+      "native_address": "00aba777",
+      "opcode": "FSTP",
+      "operand": "float ptr [ESP + 0x1c] ",
+      "region": "advance",
+      "source_line": 409,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [esi + wSum]",
+      "source_function": "advance_glyph"
+    },
+    {
+      "native_address": "00aba77b",
+      "opcode": "JNZ",
+      "operand": "0x00aba670 ",
+      "region": "advance",
+      "source_line": 733,
+      "mapping": "captured_glyph_current12_scale1D8_and_live_ST0_block"
+    },
+    {
+      "native_address": "00aba781",
+      "opcode": "MOV",
+      "operand": "dword ptr [ESP + 0x48],ESI ",
+      "region": "line_finish",
+      "source_line": 735,
+      "mapping": "ordered_width_linecount_spacing_and_code_capture_then_normal_arm_reload"
+    },
+    {
+      "native_address": "00aba785",
+      "opcode": "FLD",
+      "operand": "float ptr [EDI + 0x114] ",
+      "region": "line_finish",
+      "source_line": 424,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [ebx + 0x114]",
+      "source_function": "finish_line"
+    },
+    {
+      "native_address": "00aba78b",
+      "opcode": "FLD",
+      "operand": "float ptr [ESP + 0x1c] ",
+      "region": "line_finish",
+      "source_line": 425,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [esi + wSum]",
+      "source_function": "finish_line"
+    },
+    {
+      "native_address": "00aba78f",
+      "opcode": "FCOMIP",
+      "operand": "ST0,ST1 ",
+      "region": "line_finish",
+      "source_line": 426,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "st(0), st(1)",
+      "source_function": "finish_line"
+    },
+    {
+      "native_address": "00aba791",
+      "opcode": "FSTP",
+      "operand": "ST0 ",
+      "region": "line_finish",
+      "source_line": 427,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "st(0)",
+      "source_function": "finish_line"
+    },
+    {
+      "native_address": "00aba793",
+      "opcode": "JBE",
+      "operand": "0x00aba7a3 ",
+      "region": "line_finish",
+      "source_line": 735,
+      "mapping": "ordered_width_linecount_spacing_and_code_capture_then_normal_arm_reload"
+    },
+    {
+      "native_address": "00aba795",
+      "opcode": "MOVSS",
+      "operand": "XMM0,dword ptr [ESP + 0x1c] ",
+      "region": "line_finish",
+      "source_line": 735,
+      "mapping": "ordered_width_linecount_spacing_and_code_capture_then_normal_arm_reload"
+    },
+    {
+      "native_address": "00aba79b",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [EDI + 0x114],XMM0 ",
+      "region": "line_finish",
+      "source_line": 735,
+      "mapping": "ordered_width_linecount_spacing_and_code_capture_then_normal_arm_reload"
+    },
+    {
+      "native_address": "00aba7a3",
+      "opcode": "FLD",
+      "operand": "float ptr [EDI + 0x10c] ",
+      "region": "line_finish",
+      "source_line": 432,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [ebx + 0x10c]",
+      "source_function": "finish_line"
+    },
+    {
+      "native_address": "00aba7a9",
+      "opcode": "ADD",
+      "operand": "dword ptr [EDI + 0x110],0x1 ",
+      "region": "line_finish",
+      "source_line": 735,
+      "mapping": "ordered_width_linecount_spacing_and_code_capture_then_normal_arm_reload"
+    },
+    {
+      "native_address": "00aba7b0",
+      "opcode": "FADD",
+      "operand": "double ptr [0x00d7a210] ",
+      "region": "line_finish",
+      "source_line": 435,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "qword ptr [edx]",
+      "source_function": "finish_line"
+    },
+    {
+      "native_address": "00aba7b6",
+      "opcode": "MOVZX",
+      "operand": "EAX,word ptr [EBX] ",
+      "region": "line_finish",
+      "source_line": 735,
+      "mapping": "ordered_width_linecount_spacing_and_code_capture_then_normal_arm_reload"
+    },
+    {
+      "native_address": "00aba7b9",
+      "opcode": "TEST",
+      "operand": "AX,AX ",
+      "region": "line_finish",
+      "source_line": 735,
+      "mapping": "ordered_width_linecount_spacing_and_code_capture_then_normal_arm_reload"
+    },
+    {
+      "native_address": "00aba7bc",
+      "opcode": "FSUB",
+      "operand": "double ptr [0x00ce6618] ",
+      "region": "line_finish",
+      "source_line": 440,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "qword ptr [edx]",
+      "source_function": "finish_line"
+    },
+    {
+      "native_address": "00aba7c2",
+      "opcode": "FMUL",
+      "operand": "float ptr [ESP + 0x4c] ",
+      "region": "line_finish",
+      "source_line": 441,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [esi + wHeightFloat]",
+      "source_function": "finish_line"
+    },
+    {
+      "native_address": "00aba7c6",
+      "opcode": "FADD",
+      "operand": "float ptr [ESP + 0x20] ",
+      "region": "line_finish",
+      "source_line": 442,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [esi + wTop]",
+      "source_function": "finish_line"
+    },
+    {
+      "native_address": "00aba7ca",
+      "opcode": "FSTP",
+      "operand": "float ptr [ESP + 0x20] ",
+      "region": "line_finish",
+      "source_line": 443,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [esi + wTop]",
+      "source_function": "finish_line"
+    },
+    {
+      "native_address": "00aba7ce",
+      "opcode": "JNZ",
+      "operand": "0x00aba3e3 ",
+      "region": "line_finish",
+      "source_line": 735,
+      "mapping": "ordered_width_linecount_spacing_and_code_capture_then_normal_arm_reload"
+    },
+    {
+      "native_address": "00aba7d4",
+      "opcode": "MOV",
+      "operand": "ESI,dword ptr [ESP + 0x50] ",
+      "region": "line_finish",
+      "source_line": 735,
+      "mapping": "ordered_width_linecount_spacing_and_code_capture_then_normal_arm_reload"
+    },
+    {
+      "native_address": "00aba7d8",
+      "opcode": "MOV",
+      "operand": "EBP,dword ptr [ESP + 0x7c] ",
+      "region": "line_finish",
+      "source_line": 735,
+      "mapping": "ordered_width_linecount_spacing_and_code_capture_then_normal_arm_reload"
+    },
+    {
+      "native_address": "00aba7dc",
+      "opcode": "FLD",
+      "operand": "float ptr [ESP + 0x3c] ",
+      "region": "vertical",
+      "source_line": 458,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [esi + wMax]",
+      "source_function": "vertical_metrics"
+    },
+    {
+      "native_address": "00aba7e0",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [EDI + 0x104] ",
+      "region": "vertical",
+      "source_line": 744,
+      "mapping": "exact_alias_spills_ST2_multiply_and_native_vertical_branches"
+    },
+    {
+      "native_address": "00aba7e6",
+      "opcode": "SUB",
+      "operand": "EAX,0x1 ",
+      "region": "vertical",
+      "source_line": 744,
+      "mapping": "exact_alias_spills_ST2_multiply_and_native_vertical_branches"
+    },
+    {
+      "native_address": "00aba7e9",
+      "opcode": "FSUB",
+      "operand": "float ptr [ESP + 0x40] ",
+      "region": "vertical",
+      "source_line": 461,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [esi + wMin]",
+      "source_function": "vertical_metrics"
+    },
+    {
+      "native_address": "00aba7ed",
+      "opcode": "XORPS",
+      "operand": "XMM0,XMM0 ",
+      "region": "vertical",
+      "source_line": 744,
+      "mapping": "exact_alias_spills_ST2_multiply_and_native_vertical_branches"
+    },
+    {
+      "native_address": "00aba7f0",
+      "opcode": "FSTP",
+      "operand": "float ptr [ESP + 0x7c] ",
+      "region": "vertical",
+      "source_line": 463,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [edi + 4]",
+      "source_function": "vertical_metrics"
+    },
+    {
+      "native_address": "00aba7f4",
+      "opcode": "FLD",
+      "operand": "float ptr [ESP + 0x7c] ",
+      "region": "vertical",
+      "source_line": 464,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [edi + 4]",
+      "source_function": "vertical_metrics"
+    },
+    {
+      "native_address": "00aba7f8",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [ESP + 0x7c],XMM0 ",
+      "region": "vertical",
+      "source_line": 744,
+      "mapping": "exact_alias_spills_ST2_multiply_and_native_vertical_branches"
+    },
+    {
+      "native_address": "00aba7fe",
+      "opcode": "FST",
+      "operand": "float ptr [EDI + 0x178] ",
+      "region": "vertical",
+      "source_line": 466,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [ebx + 0x178]",
+      "source_function": "vertical_metrics"
+    },
+    {
+      "native_address": "00aba804",
+      "opcode": "FDIV",
+      "operand": "double ptr [0x00cef1b8] ",
+      "region": "vertical",
+      "source_line": 468,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "qword ptr [edx]",
+      "source_function": "vertical_metrics"
+    },
+    {
+      "native_address": "00aba80a",
+      "opcode": "FLD",
+      "operand": "float ptr [0x00e12fd4] ",
+      "region": "vertical",
+      "source_line": 470,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [edx]",
+      "source_function": "vertical_metrics"
+    },
+    {
+      "native_address": "00aba810",
+      "opcode": "FLD",
+      "operand": "ST0 ",
+      "region": "vertical",
+      "source_line": 471,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "st(0)",
+      "source_function": "vertical_metrics"
+    },
+    {
+      "native_address": "00aba812",
+      "opcode": "FMULP",
+      "operand": "ST2 ",
+      "region": "vertical",
+      "source_line": 472,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "st(2), st(0)",
+      "source_function": "vertical_metrics"
+    },
+    {
+      "native_address": "00aba814",
+      "opcode": "FXCH",
+      "operand": "",
+      "region": "vertical",
+      "source_line": 473,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "st(1)",
+      "source_function": "vertical_metrics"
+    },
+    {
+      "native_address": "00aba816",
+      "opcode": "FSTP",
+      "operand": "float ptr [ESP + 0x78] ",
+      "region": "vertical",
+      "source_line": 474,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [edi]",
+      "source_function": "vertical_metrics"
+    },
+    {
+      "native_address": "00aba81a",
+      "opcode": "JZ",
+      "operand": "0x00aba82e ",
+      "region": "vertical",
+      "source_line": 744,
+      "mapping": "exact_alias_spills_ST2_multiply_and_native_vertical_branches"
+    },
+    {
+      "native_address": "00aba81c",
+      "opcode": "SUB",
+      "operand": "EAX,0x1 ",
+      "region": "vertical",
+      "source_line": 744,
+      "mapping": "exact_alias_spills_ST2_multiply_and_native_vertical_branches"
+    },
+    {
+      "native_address": "00aba81f",
+      "opcode": "JNZ",
+      "operand": "0x00aba841 ",
+      "region": "vertical",
+      "source_line": 744,
+      "mapping": "exact_alias_spills_ST2_multiply_and_native_vertical_branches"
+    },
+    {
+      "native_address": "00aba821",
+      "opcode": "FMUL",
+      "operand": "float ptr [EDI + 0x24] ",
+      "region": "vertical",
+      "source_line": 478,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [ebx + 0x24]",
+      "source_function": "vertical_metrics"
+    },
+    {
+      "native_address": "00aba824",
+      "opcode": "FSUB",
+      "operand": "float ptr [ESP + 0x78] ",
+      "region": "vertical",
+      "source_line": 479,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [edi]",
+      "source_function": "vertical_metrics"
+    },
+    {
+      "native_address": "00aba828",
+      "opcode": "FSTP",
+      "operand": "float ptr [ESP + 0x7c] ",
+      "region": "vertical",
+      "source_line": 480,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [edi + 4]",
+      "source_function": "vertical_metrics"
+    },
+    {
+      "native_address": "00aba82c",
+      "opcode": "JMP",
+      "operand": "0x00aba843 ",
+      "region": "vertical",
+      "source_line": 744,
+      "mapping": "exact_alias_spills_ST2_multiply_and_native_vertical_branches"
+    },
+    {
+      "native_address": "00aba82e",
+      "opcode": "FMUL",
+      "operand": "float ptr [EDI + 0x24] ",
+      "region": "vertical",
+      "source_line": 483,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [ebx + 0x24]",
+      "source_function": "vertical_metrics"
+    },
+    {
+      "native_address": "00aba831",
+      "opcode": "FSUB",
+      "operand": "float ptr [ESP + 0x78] ",
+      "region": "vertical",
+      "source_line": 484,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [edi]",
+      "source_function": "vertical_metrics"
+    },
+    {
+      "native_address": "00aba835",
+      "opcode": "FMUL",
+      "operand": "double ptr [0x00d7a280] ",
+      "region": "vertical",
+      "source_line": 486,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "qword ptr [edx]",
+      "source_function": "vertical_metrics"
+    },
+    {
+      "native_address": "00aba83b",
+      "opcode": "FSTP",
+      "operand": "float ptr [ESP + 0x7c] ",
+      "region": "vertical",
+      "source_line": 487,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [edi + 4]",
+      "source_function": "vertical_metrics"
+    },
+    {
+      "native_address": "00aba83f",
+      "opcode": "JMP",
+      "operand": "0x00aba843 ",
+      "region": "vertical",
+      "source_line": 744,
+      "mapping": "exact_alias_spills_ST2_multiply_and_native_vertical_branches"
+    },
+    {
+      "native_address": "00aba841",
+      "opcode": "FSTP",
+      "operand": "ST0 ",
+      "region": "vertical",
+      "source_line": 490,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "st(0)",
+      "source_function": "vertical_metrics"
+    },
+    {
+      "native_address": "00aba843",
+      "opcode": "MOVZX",
+      "operand": "EAX,word ptr [ESP + 0x34] ",
+      "region": "final_ranges",
+      "source_line": 745,
+      "mapping": "lowWORD_quad_ranges_no_count_gate"
+    },
+    {
+      "native_address": "00aba848",
+      "opcode": "LEA",
+      "operand": "ECX,[EAX*0x4 + 0x0] ",
+      "region": "final_ranges",
+      "source_line": 745,
+      "mapping": "lowWORD_quad_ranges_no_count_gate"
+    },
+    {
+      "native_address": "00aba84f",
+      "opcode": "LEA",
+      "operand": "EDX,[EAX + EAX*0x1] ",
+      "region": "final_ranges",
+      "source_line": 745,
+      "mapping": "lowWORD_quad_ranges_no_count_gate"
+    },
+    {
+      "native_address": "00aba852",
+      "opcode": "XOR",
+      "operand": "EDI,EDI ",
+      "region": "final_ranges",
+      "source_line": 745,
+      "mapping": "lowWORD_quad_ranges_no_count_gate"
+    },
+    {
+      "native_address": "00aba854",
+      "opcode": "TEST",
+      "operand": "ECX,ECX ",
+      "region": "final_ranges",
+      "source_line": 745,
+      "mapping": "lowWORD_quad_ranges_no_count_gate"
+    },
+    {
+      "native_address": "00aba856",
+      "opcode": "MOV",
+      "operand": "dword ptr [EBP + 0x10],ECX ",
+      "region": "final_ranges",
+      "source_line": 745,
+      "mapping": "lowWORD_quad_ranges_no_count_gate"
+    },
+    {
+      "native_address": "00aba859",
+      "opcode": "MOV",
+      "operand": "dword ptr [EBP + 0x18],EDX ",
+      "region": "final_ranges",
+      "source_line": 745,
+      "mapping": "lowWORD_quad_ranges_no_count_gate"
+    },
+    {
+      "native_address": "00aba85c",
+      "opcode": "JBE",
+      "operand": "0x00aba8a9 ",
+      "region": "final_ranges",
+      "source_line": 745,
+      "mapping": "lowWORD_quad_ranges_no_count_gate"
+    },
+    {
+      "native_address": "00aba85e",
+      "opcode": "MOV",
+      "operand": "EDI,EDI ",
+      "region": "position",
+      "source_line": 755,
+      "mapping": "native_alignment_no_effect"
+    },
+    {
+      "native_address": "00aba860",
+      "opcode": "PUSH",
+      "operand": "EDI ",
+      "region": "position",
+      "source_line": 755,
+      "mapping": "required_genuine_whole_getter_with_same_S54_object"
+    },
+    {
+      "native_address": "00aba861",
+      "opcode": "LEA",
+      "operand": "EAX,[ESP + 0x58] ",
+      "region": "position",
+      "source_line": 755,
+      "mapping": "required_genuine_whole_getter_with_same_S54_object"
+    },
+    {
+      "native_address": "00aba865",
+      "opcode": "PUSH",
+      "operand": "EAX ",
+      "region": "position",
+      "source_line": 755,
+      "mapping": "required_genuine_whole_getter_with_same_S54_object"
+    },
+    {
+      "native_address": "00aba866",
+      "opcode": "MOV",
+      "operand": "ECX,ESI ",
+      "region": "position",
+      "source_line": 755,
+      "mapping": "required_genuine_whole_getter_with_same_S54_object"
+    },
+    {
+      "native_address": "00aba868",
+      "opcode": "CALL",
+      "operand": "0x004768d0 ",
+      "region": "position",
+      "source_line": 755,
+      "mapping": "required_genuine_whole_getter_with_same_S54_object"
+    },
+    {
+      "native_address": "00aba86d",
+      "opcode": "FLD",
+      "operand": "float ptr [ESP + 0x58] ",
+      "region": "position_store",
+      "source_line": 504,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [esi + wConversion + 4]",
+      "source_function": "shift_position"
+    },
+    {
+      "native_address": "00aba871",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [ESI + 0xc] ",
+      "region": "position_store",
+      "source_line": 757,
+      "mapping": "sequential_FP_and_current_stride_offset_mapping_then_current_count"
+    },
+    {
+      "native_address": "00aba874",
+      "opcode": "FADD",
+      "operand": "float ptr [ESP + 0x7c] ",
+      "region": "position_store",
+      "source_line": 506,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [edi + 4]",
+      "source_function": "shift_position"
+    },
+    {
+      "native_address": "00aba878",
+      "opcode": "MOVSS",
+      "operand": "XMM0,dword ptr [ESP + 0x54] ",
+      "region": "position_store",
+      "source_line": 757,
+      "mapping": "sequential_FP_and_current_stride_offset_mapping_then_current_count"
+    },
+    {
+      "native_address": "00aba87e",
+      "opcode": "IMUL",
+      "operand": "EAX,EDI ",
+      "region": "position_store",
+      "source_line": 757,
+      "mapping": "sequential_FP_and_current_stride_offset_mapping_then_current_count"
+    },
+    {
+      "native_address": "00aba881",
+      "opcode": "FSTP",
+      "operand": "float ptr [ESP + 0x58] ",
+      "region": "position_store",
+      "source_line": 509,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [esi + wConversion + 4]",
+      "source_function": "shift_position"
+    },
+    {
+      "native_address": "00aba885",
+      "opcode": "FLD",
+      "operand": "float ptr [ESP + 0x58] ",
+      "region": "position_store",
+      "source_line": 510,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [esi + wConversion + 4]",
+      "source_function": "shift_position"
+    },
+    {
+      "native_address": "00aba889",
+      "opcode": "ADD",
+      "operand": "EAX,dword ptr [ESI + 0x10] ",
+      "region": "position_store",
+      "source_line": 757,
+      "mapping": "sequential_FP_and_current_stride_offset_mapping_then_current_count"
+    },
+    {
+      "native_address": "00aba88c",
+      "opcode": "ADD",
+      "operand": "EDI,0x1 ",
+      "region": "position_store",
+      "source_line": 757,
+      "mapping": "sequential_FP_and_current_stride_offset_mapping_then_current_count"
+    },
+    {
+      "native_address": "00aba88f",
+      "opcode": "ADD",
+      "operand": "EAX,dword ptr [ESI + 0x8] ",
+      "region": "position_store",
+      "source_line": 757,
+      "mapping": "sequential_FP_and_current_stride_offset_mapping_then_current_count"
+    },
+    {
+      "native_address": "00aba892",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [EAX],XMM0 ",
+      "region": "position_store",
+      "source_line": 757,
+      "mapping": "sequential_FP_and_current_stride_offset_mapping_then_current_count"
+    },
+    {
+      "native_address": "00aba896",
+      "opcode": "FSTP",
+      "operand": "float ptr [EAX + 0x4] ",
+      "region": "position_store",
+      "source_line": 516,
+      "mapping": "exact_x87_opcode_and_operand_epoch",
+      "source_operand": "dword ptr [eax + 4]",
+      "source_function": "shift_position"
+    },
+    {
+      "native_address": "00aba899",
+      "opcode": "MOVSS",
+      "operand": "XMM0,dword ptr [ESP + 0x5c] ",
+      "region": "position_store",
+      "source_line": 757,
+      "mapping": "sequential_FP_and_current_stride_offset_mapping_then_current_count"
+    },
+    {
+      "native_address": "00aba89f",
+      "opcode": "MOVSS",
+      "operand": "dword ptr [EAX + 0x8],XMM0 ",
+      "region": "position_store",
+      "source_line": 757,
+      "mapping": "sequential_FP_and_current_stride_offset_mapping_then_current_count"
+    },
+    {
+      "native_address": "00aba8a4",
+      "opcode": "CMP",
+      "operand": "EDI,dword ptr [EBP + 0x10] ",
+      "region": "position_store",
+      "source_line": 757,
+      "mapping": "sequential_FP_and_current_stride_offset_mapping_then_current_count"
+    },
+    {
+      "native_address": "00aba8a7",
+      "opcode": "JC",
+      "operand": "0x00aba860 ",
+      "region": "position_store",
+      "source_line": 757,
+      "mapping": "sequential_FP_and_current_stride_offset_mapping_then_current_count"
+    },
+    {
+      "native_address": "00aba8a9",
+      "opcode": "MOV",
+      "operand": "ECX,dword ptr [ESP + 0x64] ",
+      "region": "unmaps",
+      "source_line": 760,
+      "mapping": "current_index10_then_AFTER_return_current_vertex14"
+    },
+    {
+      "native_address": "00aba8ad",
+      "opcode": "MOV",
+      "operand": "EDX,dword ptr [ECX] ",
+      "region": "unmaps",
+      "source_line": 760,
+      "mapping": "current_index10_then_AFTER_return_current_vertex14"
+    },
+    {
+      "native_address": "00aba8af",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [EDX + 0x10] ",
+      "region": "unmaps",
+      "source_line": 760,
+      "mapping": "current_index10_then_AFTER_return_current_vertex14"
+    },
+    {
+      "native_address": "00aba8b2",
+      "opcode": "CALL",
+      "operand": "EAX ",
+      "region": "unmaps",
+      "source_line": 760,
+      "mapping": "current_index10_then_AFTER_return_current_vertex14"
+    },
+    {
+      "native_address": "00aba8b4",
+      "opcode": "MOV",
+      "operand": "EDX,dword ptr [ESI] ",
+      "region": "unmaps",
+      "source_line": 760,
+      "mapping": "current_index10_then_AFTER_return_current_vertex14"
+    },
+    {
+      "native_address": "00aba8b6",
+      "opcode": "MOV",
+      "operand": "EAX,dword ptr [EDX + 0x14] ",
+      "region": "unmaps",
+      "source_line": 760,
+      "mapping": "current_index10_then_AFTER_return_current_vertex14"
+    },
+    {
+      "native_address": "00aba8b9",
+      "opcode": "MOV",
+      "operand": "ECX,ESI ",
+      "region": "unmaps",
+      "source_line": 760,
+      "mapping": "current_index10_then_AFTER_return_current_vertex14"
+    },
+    {
+      "native_address": "00aba8bb",
+      "opcode": "CALL",
+      "operand": "EAX ",
+      "region": "unmaps",
+      "source_line": 760,
+      "mapping": "current_index10_then_AFTER_return_current_vertex14"
+    },
+    {
+      "native_address": "00aba8bd",
+      "opcode": "POP",
+      "operand": "EDI ",
+      "region": "exit",
+      "source_line": 773,
+      "mapping": "ordinary_source_abi_qualified"
+    },
+    {
+      "native_address": "00aba8be",
+      "opcode": "POP",
+      "operand": "ESI ",
+      "region": "exit",
+      "source_line": 773,
+      "mapping": "ordinary_source_abi_qualified"
+    },
+    {
+      "native_address": "00aba8bf",
+      "opcode": "POP",
+      "operand": "EBP ",
+      "region": "exit",
+      "source_line": 773,
+      "mapping": "ordinary_source_abi_qualified"
+    },
+    {
+      "native_address": "00aba8c0",
+      "opcode": "POP",
+      "operand": "EBX ",
+      "region": "exit",
+      "source_line": 773,
+      "mapping": "ordinary_source_abi_qualified"
+    },
+    {
+      "native_address": "00aba8c1",
+      "opcode": "ADD",
+      "operand": "ESP,0x64 ",
+      "region": "exit",
+      "source_line": 773,
+      "mapping": "ordinary_source_abi_qualified"
+    },
+    {
+      "native_address": "00aba8c4",
+      "opcode": "RET",
+      "operand": "0x8 ",
+      "region": "exit",
+      "source_line": 773,
+      "mapping": "ordinary_source_abi_qualified"
+    }
+  ],
+  "x87_operand_map": [
+    {
+      "native_address": "00aba32a",
+      "native_opcode": "FNSTCW",
+      "native_operand": "word ptr [ESP + 0x78] ",
+      "source_line": 141,
+      "source_opcode": "FNSTCW",
+      "source_operand": "word ptr [edx] // ABA32A, preserves upperWORD",
+      "source_function": "capture_control",
+      "canonical_operand": "wordptr[s:78]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba35c",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [EDI + 0x20] ",
+      "source_line": 154,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [ebx + 0x20]",
+      "source_function": "prepare_width",
+      "canonical_operand": "dwordptr[text:20]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba364",
+      "native_opcode": "FMUL",
+      "native_operand": "double ptr [0x00cec380] ",
+      "source_line": 156,
+      "source_opcode": "FMUL",
+      "source_operand": "qword ptr [edx]",
+      "source_function": "prepare_width",
+      "canonical_operand": "qwordptr[va:00cec380]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba372",
+      "native_opcode": "FLDCW",
+      "native_operand": "word ptr [ESP + 0x48] ",
+      "source_line": 159,
+      "source_opcode": "FLDCW",
+      "source_operand": "word ptr [esi + wAlias]",
+      "source_function": "prepare_width",
+      "canonical_operand": "wordptr[s:44]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba391",
+      "native_opcode": "FISTP",
+      "native_operand": "qword ptr [ESP + 0x58] ",
+      "source_line": 165,
+      "source_opcode": "FISTP",
+      "source_operand": "qword ptr [esi + wConversion]",
+      "source_function": "prepare_width",
+      "canonical_operand": "qwordptr[s:54]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba39d",
+      "native_opcode": "FLDCW",
+      "native_operand": "word ptr [ESP + 0x7c] ",
+      "source_line": 168,
+      "source_opcode": "FLDCW",
+      "source_operand": "word ptr [edi]",
+      "source_function": "prepare_width",
+      "canonical_operand": "wordptr[s:78]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba465",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [EDI + 0x1d8] ",
+      "source_line": 186,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [ebx + 0x1d8]",
+      "source_function": "scan_glyph",
+      "canonical_operand": "dwordptr[text:1d8]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba479",
+      "native_opcode": "FILD",
+      "native_operand": "dword ptr [ESP + 0x54] ",
+      "source_line": 191,
+      "source_opcode": "FILD",
+      "source_operand": "dword ptr [esi + wConversion]",
+      "source_function": "scan_glyph",
+      "canonical_operand": "dwordptr[s:54]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba47d",
+      "native_opcode": "FMULP",
+      "native_operand": "",
+      "source_line": 192,
+      "source_opcode": "FMULP",
+      "source_operand": "st(1), st(0)",
+      "source_function": "scan_glyph",
+      "canonical_operand": "st(1),st(0)",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba47f",
+      "native_opcode": "FADD",
+      "native_operand": "float ptr [ESP + 0x2c] ",
+      "source_line": 193,
+      "source_opcode": "FADD",
+      "source_operand": "dword ptr [esi + wScan]",
+      "source_function": "scan_glyph",
+      "canonical_operand": "dwordptr[s:2c]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba483",
+      "native_opcode": "FILD",
+      "native_operand": "dword ptr [ESP + 0x30] ",
+      "source_line": 194,
+      "source_opcode": "FILD",
+      "source_operand": "dword ptr [esi + wWidth]",
+      "source_function": "scan_glyph",
+      "canonical_operand": "dwordptr[s:30]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba489",
+      "native_opcode": "FADD",
+      "native_operand": "float ptr [0x00ce3978] ",
+      "source_line": 197,
+      "source_opcode": "FADD",
+      "source_operand": "dword ptr [edx]",
+      "source_function": "scan_glyph",
+      "canonical_operand": "dwordptr[va:00ce3978]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba48f",
+      "native_opcode": "FXCH",
+      "native_operand": "",
+      "source_line": 199,
+      "source_opcode": "FXCH",
+      "source_operand": "st(1)",
+      "source_function": "scan_glyph",
+      "canonical_operand": "st(1)",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba491",
+      "native_opcode": "FCOMI",
+      "native_operand": "ST0,ST1 ",
+      "source_line": 200,
+      "source_opcode": "FCOMI",
+      "source_operand": "st(0), st(1)",
+      "source_function": "scan_glyph",
+      "canonical_operand": "st(0),st(1)",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba493",
+      "native_opcode": "FSTP",
+      "native_operand": "ST1 ",
+      "source_line": 201,
+      "source_opcode": "FSTP",
+      "source_operand": "st(1)",
+      "source_function": "scan_glyph",
+      "canonical_operand": "st(1)",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba4b6",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [ESP + 0x2c] ",
+      "source_line": 218,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [esi + wScan]",
+      "source_function": "scan_glyph",
+      "canonical_operand": "dwordptr[s:2c]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba4c6",
+      "native_opcode": "FSTP",
+      "native_operand": "ST0 ",
+      "source_line": 228,
+      "source_opcode": "FSTP",
+      "source_operand": "st(0)",
+      "source_function": "scan_glyph",
+      "canonical_operand": "st(0)",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba570",
+      "native_opcode": "FILD",
+      "native_operand": "dword ptr [ESP + 0x54] ",
+      "source_line": 272,
+      "source_opcode": "FILD",
+      "source_operand": "dword ptr [esi + wConversion]",
+      "source_function": "align_line",
+      "canonical_operand": "dwordptr[s:54]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba576",
+      "native_opcode": "FADD",
+      "native_operand": "float ptr [0x00ce3978] ",
+      "source_line": 275,
+      "source_opcode": "FADD",
+      "source_operand": "dword ptr [eax]",
+      "source_function": "align_line",
+      "canonical_operand": "dwordptr[va:00ce3978]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba583",
+      "native_opcode": "FIDIV",
+      "native_operand": "dword ptr [ESP + 0x54] ",
+      "source_line": 279,
+      "source_opcode": "FIDIV",
+      "source_operand": "dword ptr [esi + wConversion] // spaces1 deliberately divides by0",
+      "source_function": "align_line",
+      "canonical_operand": "dwordptr[s:54]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba593",
+      "native_opcode": "FILD",
+      "native_operand": "dword ptr [ESP + 0x54] ",
+      "source_line": 283,
+      "source_opcode": "FILD",
+      "source_operand": "dword ptr [esi + wConversion]",
+      "source_function": "align_line",
+      "canonical_operand": "dwordptr[s:54]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba597",
+      "native_opcode": "FADDP",
+      "native_operand": "",
+      "source_line": 284,
+      "source_opcode": "FADDP",
+      "source_operand": "st(1), st(0)",
+      "source_function": "align_line",
+      "canonical_operand": "st(1),st(0)",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba599",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [ESP + 0x28] ",
+      "source_line": 285,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [esi + wSpaceStep]",
+      "source_function": "align_line",
+      "canonical_operand": "dwordptr[s:28]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba5ca",
+      "native_opcode": "FILD",
+      "native_operand": "dword ptr [ESP + 0x54] ",
+      "source_line": 300,
+      "source_opcode": "FILD",
+      "source_operand": "dword ptr [esi + wConversion]",
+      "source_function": "align_line",
+      "canonical_operand": "dwordptr[s:54]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba5d6",
+      "native_opcode": "FADD",
+      "native_operand": "float ptr [0x00ce3978] ",
+      "source_line": 304,
+      "source_opcode": "FADD",
+      "source_operand": "dword ptr [ecx]",
+      "source_function": "align_line",
+      "canonical_operand": "dwordptr[va:00ce3978]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba5dc",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [ESP + 0x14] ",
+      "source_line": 306,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [esi + wPen]",
+      "source_function": "align_line",
+      "canonical_operand": "dwordptr[s:14]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba5ff",
+      "native_opcode": "FILD",
+      "native_operand": "dword ptr [ESP + 0x54] ",
+      "source_line": 318,
+      "source_opcode": "FILD",
+      "source_operand": "dword ptr [esi + wConversion]",
+      "source_function": "align_line",
+      "canonical_operand": "dwordptr[s:54]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba60b",
+      "native_opcode": "FADD",
+      "native_operand": "float ptr [0x00ce3978] ",
+      "source_line": 322,
+      "source_opcode": "FADD",
+      "source_operand": "dword ptr [ecx]",
+      "source_function": "align_line",
+      "canonical_operand": "dwordptr[va:00ce3978]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba611",
+      "native_opcode": "FMUL",
+      "native_operand": "double ptr [0x00d7a280] ",
+      "source_line": 325,
+      "source_opcode": "FMUL",
+      "source_operand": "qword ptr [eax]",
+      "source_function": "align_line",
+      "canonical_operand": "qwordptr[va:00d7a280]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba617",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [ESP + 0x14] ",
+      "source_line": 326,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [esi + wPen]",
+      "source_function": "align_line",
+      "canonical_operand": "dwordptr[s:14]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba645",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [ESP + 0x20] ",
+      "source_line": 343,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [edx + wTop]",
+      "source_function": "begin_line",
+      "canonical_operand": "dwordptr[s:20]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba64f",
+      "native_opcode": "FADD",
+      "native_operand": "float ptr [ESP + 0x4c] ",
+      "source_line": 345,
+      "source_opcode": "FADD",
+      "source_operand": "dword ptr [edx + wHeightFloat]",
+      "source_function": "begin_line",
+      "canonical_operand": "dwordptr[s:4c]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba663",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [ESP + 0x44] ",
+      "source_line": 350,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [edx + wAlias]",
+      "source_function": "begin_line",
+      "canonical_operand": "dwordptr[s:44]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba6bf",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [ESP + 0x40] ",
+      "source_line": 359,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [edx + wMin]",
+      "source_function": "update_bounds",
+      "canonical_operand": "dwordptr[s:40]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba6c3",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [ESP + 0x20] ",
+      "source_line": 360,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [edx + wTop]",
+      "source_function": "update_bounds",
+      "canonical_operand": "dwordptr[s:20]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba6c7",
+      "native_opcode": "FCOMIP",
+      "native_operand": "ST0,ST1 ",
+      "source_line": 361,
+      "source_opcode": "FCOMIP",
+      "source_operand": "st(0), st(1)",
+      "source_function": "update_bounds",
+      "canonical_operand": "st(0),st(1)",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba6c9",
+      "native_opcode": "FSTP",
+      "native_operand": "ST0 ",
+      "source_line": 362,
+      "source_opcode": "FSTP",
+      "source_operand": "st(0)",
+      "source_function": "update_bounds",
+      "canonical_operand": "st(0)",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba6d9",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [ESP + 0x44] ",
+      "source_line": 367,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [edx + wAlias]",
+      "source_function": "update_bounds",
+      "canonical_operand": "dwordptr[s:44]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba6dd",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [ESP + 0x3c] ",
+      "source_line": 368,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [edx + wMax]",
+      "source_function": "update_bounds",
+      "canonical_operand": "dwordptr[s:3c]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba6e1",
+      "native_opcode": "FCOMIP",
+      "native_operand": "ST0,ST1 ",
+      "source_line": 369,
+      "source_opcode": "FCOMIP",
+      "source_operand": "st(0), st(1)",
+      "source_function": "update_bounds",
+      "canonical_operand": "st(0),st(1)",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba6e3",
+      "native_opcode": "FSTP",
+      "native_operand": "ST0 ",
+      "source_line": 370,
+      "source_opcode": "FSTP",
+      "source_operand": "st(0)",
+      "source_function": "update_bounds",
+      "canonical_operand": "st(0)",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba74b",
+      "native_opcode": "FILD",
+      "native_operand": "dword ptr [ESP + 0x54] ",
+      "source_line": 392,
+      "source_opcode": "FILD",
+      "source_operand": "dword ptr [esi + wConversion]",
+      "source_function": "advance_glyph",
+      "canonical_operand": "dwordptr[s:54]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba74f",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [EDI + 0x1d8] ",
+      "source_line": 393,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [ebx + 0x1d8]",
+      "source_function": "advance_glyph",
+      "canonical_operand": "dwordptr[text:1d8]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba755",
+      "native_opcode": "FMUL",
+      "native_operand": "ST1 ",
+      "source_line": 394,
+      "source_opcode": "FMUL",
+      "source_operand": "st(0), st(1)",
+      "source_function": "advance_glyph",
+      "canonical_operand": "st(0),st(1)",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba759",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [ESP + 0x28] ",
+      "source_line": 397,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [esi + wSpaceStep]",
+      "source_function": "advance_glyph",
+      "canonical_operand": "dwordptr[s:28]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba75d",
+      "native_opcode": "FLD",
+      "native_operand": "ST0 ",
+      "source_line": 398,
+      "source_opcode": "FLD",
+      "source_operand": "st(0)",
+      "source_function": "advance_glyph",
+      "canonical_operand": "st(0)",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba75f",
+      "native_opcode": "FADD",
+      "native_operand": "float ptr [ESP + 0x14] ",
+      "source_line": 400,
+      "source_opcode": "FADD",
+      "source_operand": "dword ptr [esi + wPen]",
+      "source_function": "advance_glyph",
+      "canonical_operand": "dwordptr[s:14]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba76f",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [ESP + 0x14] ",
+      "source_line": 407,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [esi + wPen]",
+      "source_function": "advance_glyph",
+      "canonical_operand": "dwordptr[s:14]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba773",
+      "native_opcode": "FADD",
+      "native_operand": "float ptr [ESP + 0x1c] ",
+      "source_line": 408,
+      "source_opcode": "FADD",
+      "source_operand": "dword ptr [esi + wSum]",
+      "source_function": "advance_glyph",
+      "canonical_operand": "dwordptr[s:1c]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba777",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [ESP + 0x1c] ",
+      "source_line": 409,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [esi + wSum]",
+      "source_function": "advance_glyph",
+      "canonical_operand": "dwordptr[s:1c]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba785",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [EDI + 0x114] ",
+      "source_line": 424,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [ebx + 0x114]",
+      "source_function": "finish_line",
+      "canonical_operand": "dwordptr[text:114]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba78b",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [ESP + 0x1c] ",
+      "source_line": 425,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [esi + wSum]",
+      "source_function": "finish_line",
+      "canonical_operand": "dwordptr[s:1c]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba78f",
+      "native_opcode": "FCOMIP",
+      "native_operand": "ST0,ST1 ",
+      "source_line": 426,
+      "source_opcode": "FCOMIP",
+      "source_operand": "st(0), st(1)",
+      "source_function": "finish_line",
+      "canonical_operand": "st(0),st(1)",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba791",
+      "native_opcode": "FSTP",
+      "native_operand": "ST0 ",
+      "source_line": 427,
+      "source_opcode": "FSTP",
+      "source_operand": "st(0)",
+      "source_function": "finish_line",
+      "canonical_operand": "st(0)",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba7a3",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [EDI + 0x10c] ",
+      "source_line": 432,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [ebx + 0x10c]",
+      "source_function": "finish_line",
+      "canonical_operand": "dwordptr[text:10c]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba7b0",
+      "native_opcode": "FADD",
+      "native_operand": "double ptr [0x00d7a210] ",
+      "source_line": 435,
+      "source_opcode": "FADD",
+      "source_operand": "qword ptr [edx]",
+      "source_function": "finish_line",
+      "canonical_operand": "qwordptr[va:00d7a210]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba7bc",
+      "native_opcode": "FSUB",
+      "native_operand": "double ptr [0x00ce6618] ",
+      "source_line": 440,
+      "source_opcode": "FSUB",
+      "source_operand": "qword ptr [edx]",
+      "source_function": "finish_line",
+      "canonical_operand": "qwordptr[va:00ce6618]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba7c2",
+      "native_opcode": "FMUL",
+      "native_operand": "float ptr [ESP + 0x4c] ",
+      "source_line": 441,
+      "source_opcode": "FMUL",
+      "source_operand": "dword ptr [esi + wHeightFloat]",
+      "source_function": "finish_line",
+      "canonical_operand": "dwordptr[s:4c]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba7c6",
+      "native_opcode": "FADD",
+      "native_operand": "float ptr [ESP + 0x20] ",
+      "source_line": 442,
+      "source_opcode": "FADD",
+      "source_operand": "dword ptr [esi + wTop]",
+      "source_function": "finish_line",
+      "canonical_operand": "dwordptr[s:20]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba7ca",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [ESP + 0x20] ",
+      "source_line": 443,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [esi + wTop]",
+      "source_function": "finish_line",
+      "canonical_operand": "dwordptr[s:20]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba7dc",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [ESP + 0x3c] ",
+      "source_line": 458,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [esi + wMax]",
+      "source_function": "vertical_metrics",
+      "canonical_operand": "dwordptr[s:3c]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba7e9",
+      "native_opcode": "FSUB",
+      "native_operand": "float ptr [ESP + 0x40] ",
+      "source_line": 461,
+      "source_opcode": "FSUB",
+      "source_operand": "dword ptr [esi + wMin]",
+      "source_function": "vertical_metrics",
+      "canonical_operand": "dwordptr[s:40]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba7f0",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [ESP + 0x7c] ",
+      "source_line": 463,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [edi + 4]",
+      "source_function": "vertical_metrics",
+      "canonical_operand": "dwordptr[s:7c]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba7f4",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [ESP + 0x7c] ",
+      "source_line": 464,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [edi + 4]",
+      "source_function": "vertical_metrics",
+      "canonical_operand": "dwordptr[s:7c]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba7fe",
+      "native_opcode": "FST",
+      "native_operand": "float ptr [EDI + 0x178] ",
+      "source_line": 466,
+      "source_opcode": "FST",
+      "source_operand": "dword ptr [ebx + 0x178]",
+      "source_function": "vertical_metrics",
+      "canonical_operand": "dwordptr[text:178]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba804",
+      "native_opcode": "FDIV",
+      "native_operand": "double ptr [0x00cef1b8] ",
+      "source_line": 468,
+      "source_opcode": "FDIV",
+      "source_operand": "qword ptr [edx]",
+      "source_function": "vertical_metrics",
+      "canonical_operand": "qwordptr[va:00cef1b8]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba80a",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [0x00e12fd4] ",
+      "source_line": 470,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [edx]",
+      "source_function": "vertical_metrics",
+      "canonical_operand": "dwordptr[va:00e12fd4]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba810",
+      "native_opcode": "FLD",
+      "native_operand": "ST0 ",
+      "source_line": 471,
+      "source_opcode": "FLD",
+      "source_operand": "st(0)",
+      "source_function": "vertical_metrics",
+      "canonical_operand": "st(0)",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba812",
+      "native_opcode": "FMULP",
+      "native_operand": "ST2 ",
+      "source_line": 472,
+      "source_opcode": "FMULP",
+      "source_operand": "st(2), st(0)",
+      "source_function": "vertical_metrics",
+      "canonical_operand": "st(2),st(0)",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba814",
+      "native_opcode": "FXCH",
+      "native_operand": "",
+      "source_line": 473,
+      "source_opcode": "FXCH",
+      "source_operand": "st(1)",
+      "source_function": "vertical_metrics",
+      "canonical_operand": "st(1)",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba816",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [ESP + 0x78] ",
+      "source_line": 474,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [edi]",
+      "source_function": "vertical_metrics",
+      "canonical_operand": "dwordptr[s:78]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba821",
+      "native_opcode": "FMUL",
+      "native_operand": "float ptr [EDI + 0x24] ",
+      "source_line": 478,
+      "source_opcode": "FMUL",
+      "source_operand": "dword ptr [ebx + 0x24]",
+      "source_function": "vertical_metrics",
+      "canonical_operand": "dwordptr[text:24]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba824",
+      "native_opcode": "FSUB",
+      "native_operand": "float ptr [ESP + 0x78] ",
+      "source_line": 479,
+      "source_opcode": "FSUB",
+      "source_operand": "dword ptr [edi]",
+      "source_function": "vertical_metrics",
+      "canonical_operand": "dwordptr[s:78]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba828",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [ESP + 0x7c] ",
+      "source_line": 480,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [edi + 4]",
+      "source_function": "vertical_metrics",
+      "canonical_operand": "dwordptr[s:7c]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba82e",
+      "native_opcode": "FMUL",
+      "native_operand": "float ptr [EDI + 0x24] ",
+      "source_line": 483,
+      "source_opcode": "FMUL",
+      "source_operand": "dword ptr [ebx + 0x24]",
+      "source_function": "vertical_metrics",
+      "canonical_operand": "dwordptr[text:24]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba831",
+      "native_opcode": "FSUB",
+      "native_operand": "float ptr [ESP + 0x78] ",
+      "source_line": 484,
+      "source_opcode": "FSUB",
+      "source_operand": "dword ptr [edi]",
+      "source_function": "vertical_metrics",
+      "canonical_operand": "dwordptr[s:78]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba835",
+      "native_opcode": "FMUL",
+      "native_operand": "double ptr [0x00d7a280] ",
+      "source_line": 486,
+      "source_opcode": "FMUL",
+      "source_operand": "qword ptr [edx]",
+      "source_function": "vertical_metrics",
+      "canonical_operand": "qwordptr[va:00d7a280]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba83b",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [ESP + 0x7c] ",
+      "source_line": 487,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [edi + 4]",
+      "source_function": "vertical_metrics",
+      "canonical_operand": "dwordptr[s:7c]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba841",
+      "native_opcode": "FSTP",
+      "native_operand": "ST0 ",
+      "source_line": 490,
+      "source_opcode": "FSTP",
+      "source_operand": "st(0)",
+      "source_function": "vertical_metrics",
+      "canonical_operand": "st(0)",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba86d",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [ESP + 0x58] ",
+      "source_line": 504,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [esi + wConversion + 4]",
+      "source_function": "shift_position",
+      "canonical_operand": "dwordptr[s:58]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba874",
+      "native_opcode": "FADD",
+      "native_operand": "float ptr [ESP + 0x7c] ",
+      "source_line": 506,
+      "source_opcode": "FADD",
+      "source_operand": "dword ptr [edi + 4]",
+      "source_function": "shift_position",
+      "canonical_operand": "dwordptr[s:7c]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba881",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [ESP + 0x58] ",
+      "source_line": 509,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [esi + wConversion + 4]",
+      "source_function": "shift_position",
+      "canonical_operand": "dwordptr[s:58]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba885",
+      "native_opcode": "FLD",
+      "native_operand": "float ptr [ESP + 0x58] ",
+      "source_line": 510,
+      "source_opcode": "FLD",
+      "source_operand": "dword ptr [esi + wConversion + 4]",
+      "source_function": "shift_position",
+      "canonical_operand": "dwordptr[s:58]",
+      "operand_alias_width_epoch_match": true
+    },
+    {
+      "native_address": "00aba896",
+      "native_opcode": "FSTP",
+      "native_operand": "float ptr [EAX + 0x4] ",
+      "source_line": 516,
+      "source_opcode": "FSTP",
+      "source_operand": "dword ptr [eax + 4]",
+      "source_function": "shift_position",
+      "canonical_operand": "dwordptr[dest:4]",
+      "operand_alias_width_epoch_match": true
+    }
+  ],
+  "sse_conversion_map": [
+    {
+      "native_address": "00aba294",
+      "source_function": "height_to_float",
+      "source_line": 132,
+      "source_instruction": "cvtsi2ss xmm0, eax"
+    },
+    {
+      "native_address": "00aba4a2",
+      "source_function": "scan_glyph",
+      "source_line": 208,
+      "source_instruction": "cvttss2si ecx, dword ptr [esi + wScan]"
+    },
+    {
+      "native_address": "00aba534",
+      "source_function": "truncate_scan",
+      "source_line": 242,
+      "source_instruction": "cvttss2si eax, dword ptr [edx + wScan]"
+    },
+    {
+      "native_address": "00aba5c2",
+      "source_function": "align_line",
+      "source_line": 298,
+      "source_instruction": "cvtsi2ss xmm1, edx"
+    },
+    {
+      "native_address": "00aba5f7",
+      "source_function": "align_line",
+      "source_line": 316,
+      "source_instruction": "cvtsi2ss xmm1, edx"
+    },
+    {
+      "native_address": "00aba625",
+      "source_function": "align_line",
+      "source_line": 331,
+      "source_instruction": "cvtsi2ss xmm1, edx"
+    }
+  ],
+  "native_call_map": [
+    {
+      "native_site": "00aba279",
+      "target": "00ab80c0",
+      "source_line": 541,
+      "contract": "concrete raw whole; caller prepared child graph/clear record"
+    },
+    {
+      "native_site": "00aba2ab",
+      "target": "004c53e0",
+      "source_line": 550,
+      "contract": "concrete raw whole with SAME genuine raw pool; Source preserve=true matches Native1"
+    },
+    {
+      "native_site": "00aba2d6",
+      "target": "00b74640",
+      "source_line": 567,
+      "contract": "compose existing whole getter, stacked0 unused; no extra body credit"
+    },
+    {
+      "native_site": "00aba2e1",
+      "target": "00b73260",
+      "source_line": 570,
+      "contract": "concrete unchecked whole, no typed Mesh cast"
+    },
+    {
+      "native_site": "00aba302",
+      "target": "current stream+10",
+      "source_line": 579,
+      "contract": "B49980 direct, genuine OTHER target transport"
+    },
+    {
+      "native_site": "00aba328",
+      "target": "current stream+0C",
+      "source_line": 592,
+      "contract": "B49B60 direct, genuine OTHER target transport"
+    },
+    {
+      "native_site": "00aba3a1",
+      "target": "00ad4480",
+      "source_line": 608,
+      "contract": "concrete raw whole, captured Font before width block"
+    },
+    {
+      "native_site": "00aba460",
+      "target": "00ad4480",
+      "source_line": 651,
+      "contract": "concrete raw whole, current Font each scan iteration"
+    },
+    {
+      "native_site": "00aba67a",
+      "target": "00ad4480",
+      "source_line": 687,
+      "contract": "concrete raw whole, current Font each emitted glyph"
+    },
+    {
+      "native_site": "00aba695",
+      "target": "00b189f0",
+      "source_line": 695,
+      "contract": "concrete unchecked raw whole; SAME actual owner registry"
+    },
+    {
+      "native_site": "00aba6a7",
+      "target": "00b189f0",
+      "source_line": 700,
+      "contract": "concrete unchecked raw whole; material reload AFTER first callback"
+    },
+    {
+      "native_site": "00aba730",
+      "target": "00ab98f0",
+      "source_line": 727,
+      "contract": "concrete whole071 with SAME10 mutable homes, preprepared fresh retained record/context"
+    },
+    {
+      "native_site": "00aba868",
+      "target": "004768d0",
+      "source_line": 755,
+      "contract": "required genuine whole provider; existing initialized raw helper is not whole undefined/private scratch admission"
+    },
+    {
+      "native_site": "00aba8b2",
+      "target": "current index+10",
+      "source_line": 765,
+      "contract": "B49C70 direct, genuine OTHER target transport"
+    },
+    {
+      "native_site": "00aba8bb",
+      "target": "current vertex+14",
+      "source_line": 771,
+      "contract": "B49A80 direct, genuine OTHER target transport AFTER index returns"
+    }
+  ],
+  "native_call_map_count": 15,
+  "binding_cut": {
+    "methods": 7,
+    "metadata_only": [
+      "current_stream_table",
+      "prepared_glyph_quad_record"
+    ],
+    "genuine_operations": [
+      "other_vertex_map_10",
+      "other_index_map_0c",
+      "other_index_unmap_10",
+      "other_vertex_unmap_14",
+      "position_004768d0 whole genuine getter/private scratch transport"
+    ],
+    "position_boundary": "Existing raw initialized-format helper reusable with genuine retained half import; false is NOT successful output/retry/default or whole unknown-format completion. No preliminary classification read replaces genuine current reads.",
+    "prepared_records": "distinct fresh retained Glyph acquired/nested provider graph for every reached/recursive call; same10 homes reused only after normal return; no reset, default, shortage/count/depth policy",
+    "actual_custody": "real Text/Model188/Font/material/texture/mapping/renderer/current profiles and independent reference/reservation/retirement records; FC1/wrapped recursion retained"
+  },
+  "failure_contract": {
+    "local_native_eh": false,
+    "source_catch": "passive exact current exception_ptr/boundary/site + failed phase, rethrow only",
+    "native_origin_permission": false,
+    "host_failures": "metadata/preflight/provider/registry failures stay unclassified absent genuine future private cause evidence",
+    "partial_failure": "retain whole entered graph/maps/homes/private image/frame/selected history for explicit disposition; no retry/rollback/cleanup/unmap/retirement",
+    "fresh_guard": "host pre-entry logic_error only; no overwrite of prior invocation record",
+    "changed96_still_held": true,
+    "no_new_cause_port": true,
+    "future_design": "Root b811 private per-call protocol, separate task"
+  },
+  "static_checks": {
+    "all457_instructions_mapped": true,
+    "all84_x87_opcodes_operands_widths_aliases_STforms_order_match": true,
+    "all6_SSE_conversions_mapped": true,
+    "all15_calls_mapped": true,
+    "no_Cpp_FP_arithmetic": true,
+    "scratch_layout_static_asserts": true,
+    "all20_frozen_unchanged": true,
+    "git_diff_check": "passed",
+    "native_call_relative_x87_depth_zero_all15": true
+  },
+  "performed": {
+    "source_reconstruction": true,
+    "readonly_ghidra_queries_and_exports": true,
+    "ghidra_database_write": false,
+    "shared_source_edit": false,
+    "ledger_edit": false,
+    "cmake_edit": false,
+    "application_edit": false,
+    "build": false,
+    "tests": false,
+    "probe": false,
+    "process_actions": false,
+    "game": false,
+    "activation": false
+  },
+  "remaining_gates": [
+    "Root common compilation/integration and independent review",
+    "genuine seven-method binding/current other targets/4768D0 private scratch",
+    "authentic actual scratch preimage and full graph/recursive record lifetimes",
+    "genuine child/reference birth/custody and passive private failure-origin composition",
+    "private Native stack/FH3/SEH/fault/secondary-exception and ABI/runtime/game validation"
+  ],
+  "whole_frontend_activation": false,
+  "whole_frontend_source_ready": false,
+  "credit_delta": {
+    "Original": 0,
+    "helper": 0,
+    "vendor": 0,
+    "compiler_generated": 0,
+    "duplicate_body": 0,
+    "ABI": 0,
+    "runtime": 0,
+    "activation": 0
+  },
+  "existing_body_credit_unchanged": true,
+  "native_call_x87_depth_proof": [
+    {
+      "native_site": "00aba279",
+      "relative_x87_depth": [
+        0
+      ]
+    },
+    {
+      "native_site": "00aba2ab",
+      "relative_x87_depth": [
+        0
+      ]
+    },
+    {
+      "native_site": "00aba2d6",
+      "relative_x87_depth": [
+        0
+      ]
+    },
+    {
+      "native_site": "00aba2e1",
+      "relative_x87_depth": [
+        0
+      ]
+    },
+    {
+      "native_site": "00aba302",
+      "relative_x87_depth": [
+        0
+      ]
+    },
+    {
+      "native_site": "00aba328",
+      "relative_x87_depth": [
+        0
+      ]
+    },
+    {
+      "native_site": "00aba3a1",
+      "relative_x87_depth": [
+        0
+      ]
+    },
+    {
+      "native_site": "00aba460",
+      "relative_x87_depth": [
+        0
+      ]
+    },
+    {
+      "native_site": "00aba67a",
+      "relative_x87_depth": [
+        0
+      ]
+    },
+    {
+      "native_site": "00aba695",
+      "relative_x87_depth": [
+        0
+      ]
+    },
+    {
+      "native_site": "00aba6a7",
+      "relative_x87_depth": [
+        0
+      ]
+    },
+    {
+      "native_site": "00aba730",
+      "relative_x87_depth": [
+        0
+      ]
+    },
+    {
+      "native_site": "00aba868",
+      "relative_x87_depth": [
+        0
+      ]
+    },
+    {
+      "native_site": "00aba8b2",
+      "relative_x87_depth": [
+        0
+      ]
+    },
+    {
+      "native_site": "00aba8bb",
+      "relative_x87_depth": [
+        0
+      ]
+    }
+  ],
+  "native_call_x87_depth_qualification": "Relative body-owned stack depth; genuine callees preserve their Native normal-return stack contract, no ambient FP reset/assertion."
+}
