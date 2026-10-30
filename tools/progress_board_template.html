@@ -42,17 +42,19 @@ header .meta span { font-family: "IBM Plex Mono", monospace; color: var(--muted)
 header .meta b { font-weight: 500; color: var(--ink); }
 
 /* KPI strip: one object, shared edges */
-.kpis { display: grid; grid-template-columns: repeat(6, 1fr); background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; box-shadow: var(--shadow); overflow: hidden; }
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; box-shadow: var(--shadow); overflow: hidden; }
 .kpi { padding: 14px 16px 12px; border-right: 1px solid var(--rule-soft); display: grid; gap: 2px; align-content: start; }
 .kpi:last-child { border-right: 0; }
+.kpi:nth-child(4n) { border-right: 0; }
+.kpi:nth-child(-n+4) { border-bottom: 1px solid var(--rule-soft); }
 .kpi .label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
 .kpi .value { font-family: "IBM Plex Mono", monospace; font-size: 26px; font-weight: 500; line-height: 1.1; font-variant-numeric: tabular-nums; }
 .kpi .sub { font-size: 12.5px; color: var(--muted); }
 .kpi .sub b { color: var(--accent); font-weight: 600; }
 .bar { height: 6px; background: var(--neutral-fill); border-radius: 3px; overflow: hidden; margin-top: 6px; }
 .bar i { display: block; height: 100%; background: var(--accent); }
-@media (max-width: 900px) { .kpis { grid-template-columns: repeat(3, 1fr); } .kpi:nth-child(3) { border-right: 0; } .kpi:nth-child(-n+3) { border-bottom: 1px solid var(--rule-soft); } }
-@media (max-width: 520px) { .kpis { grid-template-columns: repeat(2, 1fr); } .kpi { border-right: 1px solid var(--rule-soft); border-bottom: 1px solid var(--rule-soft); } .kpi:nth-child(even) { border-right: 0; } .kpi:nth-child(3) { border-right: 1px solid var(--rule-soft); } }
+@media (max-width: 900px) { .kpis { grid-template-columns: repeat(3, 1fr); } .kpi:nth-child(4n) { border-right: 1px solid var(--rule-soft); } .kpi:nth-child(3n) { border-right: 0; } .kpi:nth-child(-n+6) { border-bottom: 1px solid var(--rule-soft); } }
+@media (max-width: 520px) { .kpis { grid-template-columns: repeat(2, 1fr); } .kpi, .kpi:nth-child(3n), .kpi:nth-child(4n) { border-right: 1px solid var(--rule-soft); border-bottom: 1px solid var(--rule-soft); } .kpi:nth-child(even) { border-right: 0; } }
 
 section.panel { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; box-shadow: var(--shadow); padding: 18px 20px 20px; display: grid; gap: 14px; }
 .section-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; }
@@ -294,6 +296,11 @@ tr.hidden { display: none; }
   $('#m-snap').textContent = D.snapshot; $('#m-head').textContent = D.head; $('#m-gen').textContent = D.generated;
   const K = D.kpi;
   const share = pct(K.game_done, K.target);
+  const reachValue = (n) => Number.isFinite(n) ? fmt(n) : 'Not measured';
+  const reachRun = (side) => {
+    const run = D.coverage?.runs?.[side];
+    return `${esc(D.coverage?.mission || 'No mission')} · ${esc(run?.id || 'no trace')} · execution reach only`;
+  };
   $('#kpis').innerHTML = [
     ['Game code reconstructed', fmt(K.game_done), `<b>+${fmt(K.game_rate24)}</b> in the last 24 h; ${fmt(K.functions)} including libraries; ${fmt(K.pc24_debt)} carry PC24 precision debt`],
     [`Of the ${fmt(K.target)} game target`, share + '%', `<div class="bar"><i style="width:${share}%"></i></div>`],
@@ -301,6 +308,8 @@ tr.hidden { display: none; }
     ['Fragments', fmt(K.fragments), 'partial routines, counted apart'],
     ['Game code remaining', fmt(K.target - K.game_done), `${fmt(K.pool_remaining)} in partition segments, the rest outside them`],
     ['Excluded as non-game', fmt(K.excluded), `CRT, STL, Lua, zlib, telemetry, generated; plus ${fmt(K.unreferenced)} unreferenced game bodies that can never run`],
+    ['Original functions executed', reachValue(K.orig_live), reachRun('original')],
+    ['Reconstruction functions executed', reachValue(K.bsp_live), reachRun('bsp')],
   ].map(([l, v, s]) => `<div class="kpi"><div class="label">${l}</div><div class="value">${v}</div><div class="sub">${s}</div></div>`).join('');
 
   // ---- address map

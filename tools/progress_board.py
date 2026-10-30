@@ -306,7 +306,23 @@ def cumulative(first_map, addr_cat, grid):
     return {'cat': out_cat, 'harness': out_h, 'total': total}
 
 
+def coverage_summary():
+    """Read committed reach measurements; an unavailable trace is not zero."""
+    path = ROOT / 'config/coverage_census_summary.json'
+    if not path.exists():
+        return dict(schema_version=1, mission=None, orig_live=None, bsp_live=None, runs={})
+    data = json.loads(path.read_text(encoding='utf-8-sig'))
+    if data.get('schema_version') != 1:
+        raise ValueError(f'Unsupported coverage summary schema: {path}')
+    for key in ('orig_live', 'bsp_live'):
+        value = data.get(key)
+        if value is not None and (type(value) is not int or value < 0):
+            raise ValueError(f'Invalid coverage count {key}: {value!r}')
+    return data
+
+
 def build(now=None):
+    coverage = coverage_summary()
     now = now or int(time.time())
     db = sqlite3.connect(f'file:{INDEX.as_posix()}?mode=ro', uri=True)
     funcs = {}
@@ -428,13 +444,14 @@ def build(now=None):
         segments=segments, grid=grid, funcs=funcs_series, names=names_series, ledger_total=ledger_total, frag_total=frag_total,
         game_total=game_total,
         commits=sorted(hourly.items()), milestones=milestones, tags=dict(tags.most_common()),
-        passes=passes.rows, tag_names=tag_names, fn=fn,
+        passes=passes.rows, tag_names=tag_names, fn=fn, coverage=coverage,
         remaining=sorted((a, funcs[a][0], funcs[a][4]) for a, g in game.items()
                          if g and a not in union and funcs[a][0] is not None),
         kpi=dict(functions=len(union), ledger_functions=len(ledger_first), fragments=len(frag_first), names=len(names_first),
                  tags=sum(tags.values()), excluded=sum(1 for g in game_any.values() if not g),
                  unreferenced=sum(1 for a, g in game_any.items() if g and not game[a]),
                  target=sum(game.values()), game_done=len(game_union),
+                 orig_live=coverage.get('orig_live'), bsp_live=coverage.get('bsp_live'),
                  game_rate24=sum(1 for v in game_union.values() if v[0] >= now - 86400),
                  game_outside=sum(1 for a, g in game.items() if g and funcs[a][0] is None),
                  audited_no_body=len(audited_no_body),
