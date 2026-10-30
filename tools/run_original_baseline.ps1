@@ -10,7 +10,7 @@ param(
     [switch]$PrepareOnly,
     [switch]$RunPrepared,
     [switch]$HandleKnownXLiveDebugClose,
-    [ValidateSet('low', 'medium-restricted')][string]$TokenMode = 'low',
+    [ValidateSet('low', 'medium-restricted', 'medium-write-locked')][string]$TokenMode = 'low',
     [string[]]$GameArguments = @(),
     [ValidateRange(1, 7200)][int]$RuntimeSeconds = 900,
     [int]$WaitSeconds = 120,

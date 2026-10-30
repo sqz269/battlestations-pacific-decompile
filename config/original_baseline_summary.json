@@ -1,8 +1,8 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "kind": "original_executable_behavior_baseline",
   "mission": "USN04",
-  "status": "capture_pending_after_startup_failures",
+  "status": "motion_reference_captured",
   "data_origin": "installed files, matching reconstruction data; explicitly selected by user",
   "executable": {
     "name": "battlestationspacific.exe",
@@ -12,12 +12,86 @@
     "preferred_image_base": "00400000"
   },
   "runtime_scope": "Installed data includes Kantai Kessen references and replacement xlive/dxgi DLLs; this is not a clean vanilla baseline.",
-  "run": null,
+  "run": {
+    "attempt": 6,
+    "pid": 32132,
+    "scene": "universe/Scenes/missions/USN/usn_19_coralus.scn",
+    "startup": "native direct-scene argument; campaign-menu equivalence unverified",
+    "token_mode": "medium-write-locked",
+    "started_capture_utc": "2026-10-30T00:56:17.081335+00:00",
+    "ended_capture_utc": "2026-10-30T00:56:37.082218+00:00",
+    "visible_unit": "USS Lexington",
+    "visible_speed_knots": 31,
+    "visible_throttle": "Full",
+    "movement_input": "none; native scenario orders/AI",
+    "unit_address": "0x2A32B7B0",
+    "metrics": {
+      "successful_samples": 400,
+      "failed_samples": 0,
+      "skipped_deadlines": 0,
+      "requested_hz": 20,
+      "elapsed_wall_seconds": 20.0002385,
+      "sample_span_seconds": 19.9502816,
+      "net_displacement_metres": 303.05334300551345,
+      "wall_secant_speed_mps": 15.190429342386498,
+      "forward_speed_mps_min": 16.10105518220951,
+      "forward_speed_mps_max": 16.20194308225608,
+      "max_abs_yaw_rate_rad_s": 0.0004702896045521884,
+      "controlled_relationship_counts": {
+        "direct_match": 400
+      }
+    },
+    "capture_status": "completed",
+    "cleanup": {
+      "reason": "operator stopped verified private PID after quit dialog did not complete",
+      "child_exit_hex": "FFFFFFFF",
+      "guard_receipt_phase": "crashed",
+      "normal_exit": false,
+      "owned_job_empty_before_source_handle_release": true
+    },
+    "entry_observation": {
+      "function": "00825F20",
+      "unit": "42B59148",
+      "matches_controlled": false,
+      "engine_dt": 0.05000000074505806,
+      "x87_control_word": "027F"
+    },
+    "evidence_root": "local/original-baseline-20261029",
+    "csv": "usn04-original-motion.csv",
+    "metadata": "usn04-original-motion.metadata.json",
+    "launch_receipt": "attempt-06-launch.json"
+  },
   "startup_attempts": [
-    {"attempt": 1, "pid": 43732, "result": "C0000008 before entry; installed emulator CloseHandle misuse"},
-    {"attempt": 2, "pid": 96968, "result": "C0000005 at 00A98342; low integrity DirectInput failure"},
-    {"attempt": 3, "pid": 15144, "result": "C0000005 at 00A855EC; full restricted mode also impairs FMOD init"},
-    {"attempt": 4, "pid": 85096, "result": "same sound-cache crash with normal heap; heap setting is not sufficient"}
+    {
+      "attempt": 1,
+      "pid": 43732,
+      "result": "C0000008 before entry; installed emulator CloseHandle misuse"
+    },
+    {
+      "attempt": 2,
+      "pid": 96968,
+      "result": "C0000005 at 00A98342; low integrity DirectInput failure"
+    },
+    {
+      "attempt": 3,
+      "pid": 15144,
+      "result": "C0000005 at 00A855EC; full restricted mode also impairs FMOD init"
+    },
+    {
+      "attempt": 4,
+      "pid": 85096,
+      "result": "same sound-cache crash with normal heap; heap setting is not sufficient"
+    },
+    {
+      "attempt": 5,
+      "pid": 112908,
+      "result": "original main menu reached; bounded timeout before mission entry"
+    },
+    {
+      "attempt": 6,
+      "pid": 32132,
+      "result": "native USN04 scene loaded; motion capture completed; operator forced cleanup afterwards"
+    }
   ],
   "private_options": {
     "source_bytes": 226,
@@ -27,11 +101,20 @@
   },
   "preservation": {
     "protected_files_in_initial_inventory": 4,
-    "initial_unchanged_verification": true
+    "initial_unchanged_verification": true,
+    "final_unchanged_verification": true,
+    "original_exe_hash_unchanged": true,
+    "installed_xlive_hash_unchanged": true,
+    "source_objects_and_ancestors_held": 69700,
+    "source_acl_modified": false
   },
   "limitations": [
-    "Preparation and synthetic checks do not establish original-game execution.",
+    "Installed Kantai Kessen data and custom runtime DLLs; not a clean vanilla baseline.",
+    "Native direct-scene setup has not been equated with ordinary campaign-menu setup.",
     "Motion sampling uses wall time and non-atomic remote reads, not engine ticks.",
-    "Behavioral parity with the reconstruction has not been measured."
+    "The observed engine dt is from another unit and is not the trace sampling interval.",
+    "Motion-state velocity excludes integration pseudo-velocity; wall secant speed differs.",
+    "Reconstruction behavior, AI, combat, objectives and visual parity have not been measured.",
+    "Capture completed, but cleanup used a forced stop and was not a normal exit."
   ]
 }

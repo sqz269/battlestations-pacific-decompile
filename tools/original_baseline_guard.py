@@ -536,7 +536,7 @@ class SourceReadLocks:
             "manifest": str(private(manifest, exists=False)), "complete": False}
         digest, paths_digest = hashlib.sha256(), hashlib.sha256()
         try:
-            with open(manifest, "x", encoding="utf-8") as output:
+            with open(manifest, "x", encoding="utf-8", newline="\n") as output:
                 for path in protected_paths(roots):
                     if check_cancel and len(self.handles) % 256 == 0:
                         check_cancel()
