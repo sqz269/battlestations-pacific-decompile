@@ -16,6 +16,7 @@
 #include <cstdint>
 #include <cstring>
 #include <exception>
+#include <intrin.h>
 
 namespace bsp {
 namespace {
@@ -31,12 +32,19 @@ static_assert(sizeof(CRITICAL_SECTION) == 0x18);
 static_assert(sizeof(NativeLocaleManagerConstructorContext) == 8);
 static_assert(sizeof(LocaleTableManagerImage) == 0x4040);
 
-volatile Word& word_at(void* receiver, std::size_t offset) noexcept {
-    return *reinterpret_cast<volatile Word*>(
-        static_cast<std::byte*>(receiver) + offset);
+Word load_word(const void* storage, std::size_t offset) noexcept {
+    _ReadWriteBarrier();
+    Word value;
+    std::memcpy(&value, static_cast<const unsigned char*>(storage) + offset,
+        sizeof(value));
+    _ReadWriteBarrier();
+    return value;
 }
-volatile Word& depth(CRITICAL_SECTION* section) noexcept {
-    return word_at(section, 0x18);
+void store_word(void* storage, std::size_t offset, Word value) noexcept {
+    _ReadWriteBarrier();
+    std::memcpy(static_cast<unsigned char*>(storage) + offset, &value,
+        sizeof(value));
+    _ReadWriteBarrier();
 }
 int cleanup_exception(unsigned long code) noexcept {
     if (code == 0xe06d7363u) std::terminate();
@@ -64,15 +72,16 @@ struct GuardCleanup {
 void* construct_native_locale_manager_base_00736540(
     void* actual_receiver, const NativeLocaleManagerConstructorContext& context) {
     BaseCleanup base_cleanup{actual_receiver}; // Native state0 before CFEA5C.
-    word_at(actual_receiver, 0) = 0x00cfea5cu;
+    store_word(actual_receiver, 0, 0x00cfea5cu);
     void* const first_manager = get_native_singleton_manager_00415350(
         context.actual_manager_01090aa0);
-    auto* const section = *reinterpret_cast<CRITICAL_SECTION* volatile*>(
-        static_cast<std::byte*>(first_manager) + 0x10);
+    Word const section_bits = load_word(first_manager, 0x10);
+    auto* const section = reinterpret_cast<CRITICAL_SECTION*>(
+        static_cast<std::uintptr_t>(section_bits));
     NativeGuard guard{0x00ce37fcu, section};
     if (section) {
         EnterCriticalSection(section);
-        depth(section) = depth(section) + 1u;
+        store_word(section, 0x18, load_word(section, 0x18) + 1u);
     }
     GuardCleanup guard_cleanup{guard}; // State1 only after Enter/increment.
     context.actual_locale_00f8bc4c = actual_receiver;
@@ -82,7 +91,7 @@ void* construct_native_locale_manager_base_00736540(
     register_native_singleton_object_00bd0c30(
         second_manager, nullptr, current_locale);
     if (section) {
-        depth(section) = depth(section) - 1u;
+        store_word(section, 0x18, load_word(section, 0x18) - 1u);
         LeaveCriticalSection(section);
     }
     guard_cleanup.armed = false;
@@ -94,20 +103,20 @@ void* construct_native_locale_manager_0073c960(
     void* actual_receiver, const NativeLocaleManagerConstructorContext& context) {
     construct_native_locale_manager_base_00736540(actual_receiver, context);
     // Native derived EH state stays -1; no derived/member cleanup is armed.
-    word_at(actual_receiver, 0) = 0x00cff140u;
-    word_at(actual_receiver, 0x8) = 0u;
-    word_at(actual_receiver, 0xc) = 0u;
-    word_at(actual_receiver, 0x10) = 0u;
+    store_word(actual_receiver, 0, 0x00cff140u);
+    store_word(actual_receiver, 0x8, 0u);
+    store_word(actual_receiver, 0xc, 0u);
+    store_word(actual_receiver, 0x10, 0u);
     std::memset(static_cast<std::byte*>(actual_receiver) + 0x14, 0, 0x4000);
-    word_at(actual_receiver, 0x4014) = 0u;
-    word_at(actual_receiver, 0x4018) = 0u;
-    word_at(actual_receiver, 0x401c) = 0u;
-    word_at(actual_receiver, 0x4024) = 0u;
-    word_at(actual_receiver, 0x4028) = 0u;
-    word_at(actual_receiver, 0x402c) = 0u;
-    word_at(actual_receiver, 0x4034) = 0u;
-    word_at(actual_receiver, 0x4038) = 0u;
-    word_at(actual_receiver, 0x403c) = 0u;
+    store_word(actual_receiver, 0x4014, 0u);
+    store_word(actual_receiver, 0x4018, 0u);
+    store_word(actual_receiver, 0x401c, 0u);
+    store_word(actual_receiver, 0x4024, 0u);
+    store_word(actual_receiver, 0x4028, 0u);
+    store_word(actual_receiver, 0x402c, 0u);
+    store_word(actual_receiver, 0x4034, 0u);
+    store_word(actual_receiver, 0x4038, 0u);
+    store_word(actual_receiver, 0x403c, 0u);
     return actual_receiver;
 }
 } // namespace bsp

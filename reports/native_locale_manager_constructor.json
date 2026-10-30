@@ -1,6 +1,6 @@
 {
   "packet": "codex-raw-locale-constructor",
-  "state": "dormant_normal_source_object_compiled_unlinked",
+  "state": "dormant_raw_storage_revision_object_compiled_unlinked",
   "source_ready": false,
   "created_utc": "2026-10-30T04:29:47.221Z",
   "base_commit": "03ef58daf98d9dff844e8a4039be830868d429b7",
@@ -113,23 +113,24 @@
     "saved_assembly": "shared exports/bsp/functions/{00736540,0073c960}/assembly.txt",
     "prior_EH_capture": "docs/CC12_LOCALE_STARTUP_CONSTRUCTOR_OWNER_READINESS.md; no new Ghidra query/mutation in implementation",
     "source_hashes": {
-      "include/bsp/native_locale_manager_constructor.hpp": "5d75358b8c7891c2fccc94d81c0035c2187b91a5e4fd88606cd165e267c38248",
-      "src/native_locale_manager_constructor.cpp": "18af3294649bb1ea11d0c8ed74f4bf5ef36691d7badffe42a0bdf6102c64b6f9",
-      "docs/NATIVE_LOCALE_MANAGER_CONSTRUCTOR.md": "1eba8ba10d8bd7621d4ec98ae5d37a0cc614f7971e9c2ac1eb54cad8d392cd09",
+      "include/bsp/native_locale_manager_constructor.hpp": "043639699cb7855ab0ee4ba244cdf060a09191dea73e267514ef359adf8bf674",
+      "src/native_locale_manager_constructor.cpp": "49fbe8d8a02f37dd2fda4790264d2fc92d42d3925294f41ebea9d745e6acb353",
+      "docs/NATIVE_LOCALE_MANAGER_CONSTRUCTOR.md": "241d76091762dbcb134f8499301e35d72a8b0b82abf175014e5dc881b92cfdae",
       "include/bsp/native_singleton_publication.hpp": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
       "include/bsp/native_singleton_vector_registration_wrappers.hpp": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
       "include/bsp/native_diagnostic_sink_lifetime.hpp": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
       "include/bsp/native_render_service_base.hpp": "2ca92c2900f4cd03fb2e768a33ac44e54578dab09a2ec20be54dd4b40dfb59be",
       "src/native_allocation_stats_constructor.cpp": "8f47655e5a7475baa9ac06f38f98682e35821709f3540e20f055d0824fc6c389",
       "CMakeLists.txt": "e5bb0f08fbe35db9ea716f52009daf7db1f51b4ebb676760c5c37b3610dd69d8"
-    }
+    },
+    "raw_primitive_pattern": "Existing native_avoid_manager_lifetime.cpp byte-memcpy/compiler-fence pattern; no new provider"
   },
   "verification": {
     "isolated_compile": {
-      "command": "$taskObjectDir=Join-Path (Get-Location).Path 'build/locale_constructor_object'; New-Item -ItemType Directory -Path $taskObjectDir -Force | Out-Null; $taskCompileCommand='call \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\Tools\\VsDevCmd.bat\" -arch=x86 -host_arch=x64 -no_logo && cl.exe /nologo /std:c++17 /permissive- /W4 /WX /EHsc /MD /O2 /Ob2 /DNDEBUG /DWIN32 /D_WINDOWS /DNOMINMAX /DWIN32_LEAN_AND_MEAN /I include /c src\\native_locale_manager_constructor.cpp /Fo\"build\\locale_constructor_object\\native_locale_manager_constructor.obj\"'; & $env:ComSpec /d /s /c $taskCompileCommand; exit $LASTEXITCODE",
+      "command": "$taskObjectDir=Join-Path (Get-Location).Path 'build/locale_constructor_raw_storage_object'; New-Item -ItemType Directory -Path $taskObjectDir -Force | Out-Null; $taskCompileCommand='call \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\Tools\\VsDevCmd.bat\" -arch=x86 -host_arch=x64 -no_logo && cl.exe /nologo /std:c++17 /permissive- /W4 /WX /EHsc /MD /O2 /Ob2 /DNDEBUG /DWIN32 /D_WINDOWS /DNOMINMAX /DWIN32_LEAN_AND_MEAN /I include /c src\\native_locale_manager_constructor.cpp /Fo\"build\\locale_constructor_raw_storage_object\\native_locale_manager_constructor.obj\"'; & $env:ComSpec /d /s /c $taskCompileCommand; exit $LASTEXITCODE",
       "exit_code": 0,
       "stdout": "native_locale_manager_constructor.cpp\r\n",
-      "wall_time_seconds": 5.6683050999999995,
+      "wall_time_seconds": 5.2505014,
       "policy": "Existing CMake/MSVC Win32 C++17 Release/EH/runtime/warning policy; isolated /c, no PCH or target link",
       "toolchain": "Visual Studio18 Community VsDevCmd x86 host_x64",
       "flags": [
@@ -148,13 +149,14 @@
         "/DWIN32_LEAN_AND_MEAN",
         "/c"
       ],
-      "attempts": 1
+      "attempts": 1,
+      "scope": "One fresh revised-TU compile; held37ce object/Source retained separately"
     },
     "object": {
       "machine": "0x14c",
-      "object": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\build\\locale_constructor_object\\native_locale_manager_constructor.obj",
-      "bytes": 7866,
-      "sha256": "25ee4fdb3fe93d06c9b20856f005e8cc3ee296d592082e96d132be4c3bb05075",
+      "object": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\build\\locale_constructor_raw_storage_object\\native_locale_manager_constructor.obj",
+      "bytes": 7883,
+      "sha256": "22f7247e88d6a3830da6c4139b77ae69035a8995f4170969bcdb73eba8de31bb",
       "defined_entry_symbols": [
         "?construct_native_locale_manager_base_00736540@bsp@@YAPAXPAXABUNativeLocaleManagerConstructorContext@1@@Z",
         "?construct_native_locale_manager_0073c960@bsp@@YAPAXPAXABUNativeLocaleManagerConstructorContext@1@@Z"
@@ -168,9 +170,9 @@
         "__imp__LeaveCriticalSection@4",
         "_memset"
       ],
-      "cpp_sha256": "18af3294649bb1ea11d0c8ed74f4bf5ef36691d7badffe42a0bdf6102c64b6f9",
-      "hpp_sha256": "5d75358b8c7891c2fccc94d81c0035c2187b91a5e4fd88606cd165e267c38248",
-      "old_field_only_api_unchanged": {
+      "cpp_sha256": "49fbe8d8a02f37dd2fda4790264d2fc92d42d3925294f41ebea9d745e6acb353",
+      "hpp_sha256": "043639699cb7855ab0ee4ba244cdf060a09191dea73e267514ef359adf8bf674",
+      "old_field_only_API_unchanged": {
         "include/bsp/gui_startup.hpp": "625f71034415a96315aff758371b9e52a07747e06455b51108e9893e3adc8bb9",
         "src/gui_startup.cpp": "ef86036b6cc55c6ae4a9ad3a118933f83762510dc1e2ce3be612df6d3b0e76d4"
       },
@@ -201,5 +203,62 @@
     "frozen ac60 Viper19/Font48 Source-admission HOLD not waived"
   ],
   "body_credit": "Normal Source only; existing vendor providers reused, zero vendor-body credit",
-  "activation": false
+  "activation": false,
+  "revised_utc": "2026-10-30T04:45:27.428719+00:00",
+  "raw_storage_revision": {
+    "held_commit": "37ce9b6066b07d76bb7a5783c7b66be1cc9ce8fe",
+    "held_file_hashes": {
+      "include/bsp/native_locale_manager_constructor.hpp": "5d75358b8c7891c2fccc94d81c0035c2187b91a5e4fd88606cd165e267c38248",
+      "src/native_locale_manager_constructor.cpp": "18af3294649bb1ea11d0c8ed74f4bf5ef36691d7badffe42a0bdf6102c64b6f9",
+      "docs/NATIVE_LOCALE_MANAGER_CONSTRUCTOR.md": "1eba8ba10d8bd7621d4ec98ae5d37a0cc614f7971e9c2ac1eb54cad8d392cd09",
+      "reports/native_locale_manager_constructor.json": "04e572d7b24ba5415407189af79873af6b39a4837969e72332d6530ba8d2b35a"
+    },
+    "held_object_preserved": {
+      "machine": "0x14c",
+      "object": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\build\\locale_constructor_object\\native_locale_manager_constructor.obj",
+      "bytes": 7866,
+      "sha256": "25ee4fdb3fe93d06c9b20856f005e8cc3ee296d592082e96d132be4c3bb05075",
+      "defined_entry_symbols": [
+        "?construct_native_locale_manager_base_00736540@bsp@@YAPAXPAXABUNativeLocaleManagerConstructorContext@1@@Z",
+        "?construct_native_locale_manager_0073c960@bsp@@YAPAXPAXABUNativeLocaleManagerConstructorContext@1@@Z"
+      ],
+      "referenced_genuine_providers": [
+        "?destroy_native_singleton_guard_00411ee0@bsp@@YAXPAX@Z",
+        "?destroy_native_generic_singleton_base_00412430@bsp@@YAXPAX@Z",
+        "?get_native_singleton_manager_00415350@bsp@@YAPAXACRAX@Z",
+        "?register_native_singleton_object_00bd0c30@bsp@@YIXPAX00@Z",
+        "__imp__EnterCriticalSection@4",
+        "__imp__LeaveCriticalSection@4",
+        "_memset"
+      ],
+      "cpp_sha256": "18af3294649bb1ea11d0c8ed74f4bf5ef36691d7badffe42a0bdf6102c64b6f9",
+      "hpp_sha256": "5d75358b8c7891c2fccc94d81c0035c2187b91a5e4fd88606cd165e267c38248",
+      "old_field_only_api_unchanged": {
+        "include/bsp/gui_startup.hpp": "625f71034415a96315aff758371b9e52a07747e06455b51108e9893e3adc8bb9",
+        "src/gui_startup.cpp": "ef86036b6cc55c6ae4a9ad3a118933f83762510dc1e2ce3be612df6d3b0e76d4"
+      },
+      "compile_only": true,
+      "linked_or_executed": false
+    },
+    "changes": [
+      "fenced4byte memcpy receiver stores",
+      "raw32 manager+10 load then uintptr_t pointer conversion",
+      "current raw32 depth load then unsigned-wrap arithmetic then raw32 store"
+    ],
+    "typed_objects_unchanged": [
+      "actual local8B guard",
+      "real borrowed publication-cell references",
+      "context"
+    ],
+    "no_cpp_primitive_field_lifetime_precondition": true,
+    "alignment_addressability_native_backing_still_required": true,
+    "compiler_fences_not_concurrency_support": true,
+    "inverse_primitive_projection": {
+      "description": "Exact37ceCPP after inverse raw-primitive substitution",
+      "sha256": "18af3294649bb1ea11d0c8ed74f4bf5ef36691d7badffe42a0bdf6102c64b6f9",
+      "exact_original_CPP": true
+    },
+    "no_EH_control_capture_or_write_order_change": true,
+    "no_placement_or_dummy_header": true
+  }
 }

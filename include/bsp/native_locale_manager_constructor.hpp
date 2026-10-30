@@ -28,9 +28,10 @@ void* construct_native_locale_manager_base_00736540(
 void* construct_native_locale_manager_0073c960(
     void* actual_receiver, const NativeLocaleManagerConstructorContext&);
 
-// Caller supplies valid four-byte-aligned 4040h receiver storage with live
-// uint32_t accesses, disjoint stable context/cells, actual raw managers/vector
-// owners and captured Win32 section+18 storage through all calls and cleanup.
+// Caller supplies valid four-byte-aligned 4040h receiver byte storage,
+// disjoint stable context/cells, actual raw managers/vector owners and captured
+// Win32 section+18 backing through all calls and cleanup. Raw DWORD accesses
+// use fenced byte copies; no live C++ uint32_t/pointer field object is assumed.
 // Install genuine profile/lifetime handling before any registration. Borrow
 // the real application domains; no concurrent conflicting access, retargeted
 // context or provider-induced storage invalidation is supported.

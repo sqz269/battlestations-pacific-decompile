@@ -45,6 +45,17 @@ The original complete derived body retains EH state `-1`; its five unarmed map
 entries do not justify additional member/base cleanup. It returns the original
 receiver, not a later publication value.
 
+The held `37ce9b606` version required live C++ DWORD/pointer fields in raw
+storage. The bounded revision removes that restriction: receiver fields,
+manager `+10` and section depth `+18` use four-byte `memcpy` loads/stores with
+MSVC compiler fences. The captured section DWORD converts through full-width
+`uintptr_t` to the actual Win32 pointer; depth arithmetic remains unsigned
+wrap before its store. Only the local eight-byte guard and real borrowed cell
+references remain typed objects. Alignment, byte addressability, real native
+backing and all alias/retention obligations still apply. Compiler fences are
+not synchronization or a new concurrent-writer guarantee. EH/control/order
+and the untouched words are unchanged; no object-lifetime placement is invented.
+
 Both Original bodies consume ECX, return captured EAX and plain RET; no EDX
 payload or stack argument is observed. These Source APIs add explicit receiver
 and context arguments. Profile DWORDs are identities, not callable C++ vtables.
