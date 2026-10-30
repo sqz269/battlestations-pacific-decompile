@@ -15,7 +15,6 @@ namespace bsp {
 // graph and survives callbacks. No default glyph/font/table/owner is supplied.
 struct NativeGuiTextSingleLineStorageBindings {
     virtual ~NativeGuiTextSingleLineStorageBindings() = default;
-    virtual void* model_geometry_00b74640(void* captured_model, std::uint32_t index) = 0;
     // Pure metadata lookup of this captured CURRENT raw profile. SAME live
     // table, at least18h; no reentry, Native operation or numeric-code call.
     virtual const volatile std::uint32_t* current_stream_table(void* captured_stream,
