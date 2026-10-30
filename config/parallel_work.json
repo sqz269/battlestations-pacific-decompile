@@ -44505,7 +44505,7 @@
     },
     {
       "id": "codex-raw-locale-base-scalar",
-      "state": "source_reviewed_coupled_win32_pass_dispatch_unbound",
+      "state": "source_reviewed_coupled_win32_pass_initialized_owner_bound",
       "worker": "cc16-progress",
       "source_ready": false,
       "function_addresses": ["00737010"],
@@ -44515,7 +44515,35 @@
         "docs/NATIVE_LOCALE_MANAGER_BASE_SCALAR.md",
         "reports/native_locale_manager_base_scalar.json"
       ],
-      "notes": "ActualCFEA5C slot0 route callsaa56 thenreads genuinecallerowned volatileDWORDlowbyte, optionalmatchedfree savedreceiver, returnsbits/no postfree read. GuiSource/ASM review, strictobject/commonWin32checks2/2 pass12.98s. No fullpayloadcleanup or owner/profile/startup/ABI/runtime authority; source_readyfalse."
+      "notes": "ActualCFEA5C slot0 route callsaa56 thenreads genuinecallerowned volatileDWORDlowbyte, optionalmatchedfree savedreceiver, returnsbits/no postfree read. Published6824 binds the exact retained initialized-only owner through the typed Core dispatcher and actual flags lvalue. Independent Source reviews and commonWin32checks2/2 pass11.50s. No loaded payload/startup/ABI/runtime authority; source_readyfalse."
+    },
+    {
+      "id": "codex-canonical-locale-owner-binding",
+      "state": "source_reviewed_coupled_win32_pass_initialized_only",
+      "worker": "gui_integration_review",
+      "source_ready": false,
+      "function_addresses": [],
+      "output_files": [
+        "include/bsp/game_native_locale_manager.hpp",
+        "src/game_native_locale_manager.cpp",
+        "docs/GAME_NATIVE_LOCALE_MANAGER.md",
+        "reports/game_native_locale_manager.json"
+      ],
+      "notes": "Published6824 contains exactb8 owner, permanent F8/oneclaim, typed Core borrow, captured profile/actual flags ref and host normal/fallback pre/post drain fences. Requires genuine prior VFS/string bindings; barehost not admitted. Actual poolstatus0, matched uninitialized4040 allocation and constructor histories; failed graphs retained/poisoned, flags0 retains ended allocation debt. Primary/independent review and combinedWin32checks2/2 pass11.50s. Initialization only, no loading/startup/runtime/ABI activation."
+    },
+    {
+      "id": "codex-raw-locale-map-insertion",
+      "state": "source_reviewed_coupled_win32_pass_parser_unbound",
+      "worker": "gameplay_integration_review",
+      "source_ready": false,
+      "function_addresses": ["00a9fc30", "00a9f460"],
+      "output_files": [
+        "include/bsp/native_locale_map_insertion.hpp",
+        "src/native_locale_map_insertion.cpp",
+        "docs/NATIVE_LOCALE_MAP_INSERTION.md",
+        "reports/native_locale_map_insertion.json"
+      ],
+      "notes": "Published6824 exact3ed uses actual raw map/key, SAME3cells and canonical pool/node allocator. Duplicate getter/allocation-free; count++ before localpool admission and allocator; only actual key-constructor escape selects736090 on private capturedpool/slot. No payload/count rollback or retry. Current hash/compare/next/dualhead epochs, private receipts and failure retention reviewed independently; combinedWin32checks2/2 pass11.50s. Parser/value/aggregate lifetime/loading remain unbound; no vendor bodycredit/startup/runtime/ABI activation."
     }
   ],
   "snapshot_after_analysis": {
