@@ -1,0 +1,57 @@
+{
+  "address": "004c5e20",
+  "status": "source_reviewed_single_strict_object_pass",
+  "source": "src/native_wide_string_raw_assign.cpp",
+  "header": "include/bsp/native_wide_string_raw_assign.hpp",
+  "documentation": "docs/NATIVE_WIDE_STRING_RAW_ASSIGN.md",
+  "source_ready": false,
+  "startup_activated": false,
+  "normal_instruction_count": 24,
+  "original_abi": "ECX destination8; stack source8; EAX SAME destination; RET4; ordinary new Source signature, not binary ABI",
+  "source_sha256": {
+    "include/bsp/native_wide_string_raw_assign.hpp": "753fb7659dd7516b01eb29c010db2c80e49a50aa0a780ea8047eedc125c39c99",
+    "src/native_wide_string_raw_assign.cpp": "f3f21df11f73ba8f4299d51ffb8518d93a16f8e18a6ac0d2a61d86af170f8652"
+  },
+  "evidence": {
+    "asm_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004c5e20\\assembly.txt",
+    "asm_sha256": "c4e775b8e3421949e8692e3384534e02653ec357d4264867b8f3159f5a7dfb27",
+    "contract_sha256": "fd80d5ee5279a072c6f76e5076df5222c709de029c90cd921050db7aecc6f587"
+  },
+  "epochs": [
+    "identity before any read/effect",
+    "capture source LENGTH",
+    "genuine SAME-context raw4C53E0 preserve1",
+    "CURRENT source LENGTH gate",
+    "CURRENT source DATA FIRST then destination DATA",
+    "streamed WORD load/store through actual NUL; source2 then destination2 DWORD wrap",
+    "return actual destination"
+  ],
+  "local_cleanup_or_frame": false,
+  "new_provider_adapter_or_header_object_cast": false,
+  "partial_failure": "real caller retains actual header/backing/pool/publication effects; no rollback/retry",
+  "validation": {
+    "compile_count": 1,
+    "compile_receipt_sha256": "e237e44645fd16695efe6b752c8bdacd5eb57c24d42897e64a7e5763a331301b",
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_wide_string_raw_assign_frame_20261030\\object_build\\raw_wide_assign_object.dir\\Release\\native_wide_string_raw_assign.obj",
+      "bytes": 2122,
+      "sha256": "8bae79dafae4cfcf707a3611158671f5084fdf5287b7380a2878a80c9818b2d2",
+      "machine": "0x14c"
+    },
+    "symbol_receipt_sha256": "b22124ea55fd54b2328d0042e5a6420d6080669bf04340aaefd667429dadcc47",
+    "provider_proof_sha256": "0e95719193227c40c5e2d823e49dcc5ececde3dea7027ef69c2be53d08bc6516",
+    "old_tracked_source_diff_empty": true,
+    "old_provider_count": 10,
+    "defined_entry": [
+      "013 00000000 SECT8  notype ()    External     | ?assign_native_wide_string_header_004c5e20@bsp@@YAPAXPAXPBXAAUNativeStringRawPoolContext@1@@Z (void * __cdecl bsp::assign_native_wide_string_header_004c5e20(void *,void const *,struct bsp::NativeStringRawPoolContext &))"
+    ],
+    "raw_reference": [
+      "014 00000000 UNDEF  notype ()    External     | ?resize_native_wide_string_header_004c53e0@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z (void __cdecl bsp::resize_native_wide_string_header_004c53e0(void *,struct bsp::NativeStringRawPoolContext &,unsigned int,bool))"
+    ]
+  },
+  "abi_compatible": false,
+  "game_validated": false,
+  "new_native_body_credit": false,
+  "new_tests": 0,
+  "new_entry_or_game_invoked": false
+}

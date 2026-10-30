@@ -1,0 +1,273 @@
+{
+  "status": "integrated_primary_plus_two_independent_full_source_reviews_strict_objects_retained_actual_parent_child_linkage_canonical_win32_pass_consumers_unbound",
+  "source_ready": false,
+  "activation": false,
+  "new_tests": 0,
+  "new_native_body_credit": 0,
+  "new_entry_or_game_invoked": false,
+  "baseline_main": "8dd0811f111acee854d4e124402a9c0cda703ea4",
+  "primary_review": "local/lua_path_value_conversion_integration_cc16_20261030/PRIMARY_REVIEW.md",
+  "assign": {
+    "commit": "66a4a3ab1ac2ebe3a59c065b6a407beb9150529e",
+    "four_source_Git_hashes": {
+      "include/bsp/native_wide_string_raw_assign.hpp": "753fb7659dd7516b01eb29c010db2c80e49a50aa0a780ea8047eedc125c39c99",
+      "src/native_wide_string_raw_assign.cpp": "f3f21df11f73ba8f4299d51ffb8518d93a16f8e18a6ac0d2a61d86af170f8652",
+      "docs/NATIVE_WIDE_STRING_RAW_ASSIGN.md": "00ea44c816ac38b6c2e5777326694507f873d391778d4aa93b4023e8f544d730",
+      "reports/native_wide_string_raw_assign.json": "4ab7b1d93bea146f6027eec7f8655a23ac46069b8e55e0d8684d3d4cf6d7ba6b"
+    },
+    "producer_receipt_sha256": "26108f967f78231cb6e382aec99e4267ecb0e5136afa0eb9ec85d8a1c4786536",
+    "producer_receipt_path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_wide_string_raw_assign_frame_20261030\\final_receipt.json",
+    "strict_compile_receipt": {
+      "schema": "bsp-single-object-source-validation-v1",
+      "base": "d5d29e7db967cf9bfdd682af3d6d8d5c036fa064",
+      "started_utc": "2026-10-30T22:07:51.885225+00:00",
+      "source_sha256": {
+        "include/bsp/native_wide_string_raw_assign.hpp": "753fb7659dd7516b01eb29c010db2c80e49a50aa0a780ea8047eedc125c39c99",
+        "src/native_wide_string_raw_assign.cpp": "f3f21df11f73ba8f4299d51ffb8518d93a16f8e18a6ac0d2a61d86af170f8652"
+      },
+      "object_compile_attempts": 1,
+      "code_review": "Root and Gui accepted exact753fb765/f3f21df1 before compile",
+      "execution_scope": "CMake configure and one OBJECT target; no link/tests/probe/Native entry/game",
+      "configure": {
+        "argv": [
+          "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+          "-S",
+          "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_wide_string_raw_assign_frame_20261030\\object_project",
+          "-B",
+          "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_wide_string_raw_assign_frame_20261030\\object_build",
+          "-G",
+          "Visual Studio 18 2026",
+          "-A",
+          "Win32",
+          "-DBSP_WORKSPACE=J:/PROG/battlestations-pacific-decompile-codex-raw-locale-uppercase"
+        ],
+        "started_utc": "2026-10-30T22:07:51.885257+00:00",
+        "finished_utc": "2026-10-30T22:07:54.507137+00:00",
+        "exit_code": 0,
+        "log": "configure.log"
+      },
+      "object_compile": {
+        "argv": [
+          "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+          "--build",
+          "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_wide_string_raw_assign_frame_20261030\\object_build",
+          "--config",
+          "Release",
+          "--target",
+          "raw_wide_assign_object",
+          "--parallel",
+          "1"
+        ],
+        "started_utc": "2026-10-30T22:07:54.507161+00:00",
+        "finished_utc": "2026-10-30T22:07:55.431651+00:00",
+        "exit_code": 0,
+        "log": "object_compile.log"
+      },
+      "finished_utc": "2026-10-30T22:07:55.436821+00:00",
+      "object": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_wide_string_raw_assign_frame_20261030\\object_build\\raw_wide_assign_object.dir\\Release\\native_wide_string_raw_assign.obj",
+        "bytes": 2122,
+        "sha256": "8bae79dafae4cfcf707a3611158671f5084fdf5287b7380a2878a80c9818b2d2",
+        "machine": "0x14c"
+      },
+      "source_unchanged_after_compile": true
+    },
+    "independent_reviews": {
+      "gui": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_wide_string_raw_assign_review_gui_20261030\\REVIEW.md",
+        "sha256": "7638aae52fc82a28f08925cb46064a79aa917a5cb1317bcdc918a42111abffce"
+      },
+      "gameplay": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc9\\local\\native_wide_string_raw_assign_review_cc9_20261030\\REVIEW.md",
+        "sha256": "177733172b5e6bdf46675f9c4c8bb3c9a6635a24c5b1a3537522fa38bfe8e611"
+      }
+    },
+    "target_object_rehashed_by_primary": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_wide_string_raw_assign_frame_20261030\\object_build\\raw_wide_assign_object.dir\\Release\\native_wide_string_raw_assign.obj",
+      "sha256": "8bae79dafae4cfcf707a3611158671f5084fdf5287b7380a2878a80c9818b2d2",
+      "machine": "014C"
+    }
+  },
+  "narrow": {
+    "commit": "35510b3bc72aacb06e899b9aeb77b8bf11d7b38b",
+    "four_source_Git_hashes": {
+      "include/bsp/native_string_raw_from_wide.hpp": "bca276c679f9a48c1cec2e55d89b7d5091216b59ab118e505d5e7505169a2729",
+      "src/native_string_raw_from_wide.cpp": "0dcfb22f7d86794a21818bb1764fd32b4af8ea61355082c277a62953935344a9",
+      "docs/NATIVE_STRING_RAW_FROM_WIDE.md": "63a7b7541f7de6252e29e8d58dc9f0551416478c42894ff34a3e7eb49018b29f",
+      "reports/native_string_raw_from_wide.json": "937ec70cad7b35ba6a09b7663252a49b4a28a8d4743151a43ff479e8bf9a44b4"
+    },
+    "producer_receipt_sha256": "0087128e8477ce5ce8b15291b967473bd77c7fd319fff066efedfcc72d9330b4",
+    "producer_receipt_path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_string_raw_from_wide_validation_gui_20261030\\final_receipt.json",
+    "strict_compile_receipt": {
+      "compile_attempts": 1,
+      "compile_exit": 0,
+      "coff_machine": "014c",
+      "object_sha256": "d05943f135cac31d747ba9f466ff799fe9c053d29e9fb2fc2705fce471883569",
+      "source_sha256": {
+        "include/bsp/native_string_raw_from_wide.hpp": {
+          "sha256": "bca276c679f9a48c1cec2e55d89b7d5091216b59ab118e505d5e7505169a2729",
+          "lines": 14
+        },
+        "src/native_string_raw_from_wide.cpp": {
+          "sha256": "0dcfb22f7d86794a21818bb1764fd32b4af8ea61355082c277a62953935344a9",
+          "lines": 78
+        }
+      },
+      "actual_defined_entry": "021 00000000 SECTA  notype ()    External     | ?construct_narrow_from_wide_00436630@bsp@@YAPAXPAXPBXAAUNativeStringRawPoolContext@1@@Z (void * __cdecl bsp::construct_narrow_from_wide_00436630(void *,void const *,struct bsp::NativeStringRawPoolContext &))",
+      "no_link_tests_probe_game_entry_Ghidra_writes": true
+    },
+    "independent_reviews": {
+      "frame": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_string_raw_from_wide_review_frame_20261030\\REVIEW.md",
+        "sha256": "28e0f80476ffb19fc8e7b015b0b687697e5a8a97efe820823ba30f77bd3dcb68"
+      },
+      "gameplay": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc9\\local\\native_string_raw_from_wide_review_cc9_20261030\\REVIEW.md",
+        "sha256": "a41430636d259f86f4c4bf3720224c4c0001324cb25736beae9f53588e5b1c00"
+      }
+    },
+    "target_object_rehashed_by_primary": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_string_raw_from_wide_validation_gui_20261030\\raw_from_wide.obj",
+      "sha256": "d05943f135cac31d747ba9f466ff799fe9c053d29e9fb2fc2705fce471883569",
+      "machine": "014C"
+    }
+  },
+  "path_value": {
+    "commit": "0dc6d84d9a7cf79cf032e9f792ebbc9c76771219",
+    "four_source_Git_hashes": {
+      "include/bsp/native_lua_path_value_string.hpp": "afe466e09051281ab531643a97df43c8ce9d1c0acb3124a107775985c20ebcd8",
+      "src/native_lua_path_value_string.cpp": "45ca8089e05297bc2822ef79c508cd4c270527ed406e361cfc17b3dccfb34e2d",
+      "docs/NATIVE_LUA_PATH_VALUE_STRING.md": "9da2024094eeadd8e4387b59ec72a2eff578b112f2ed839ef924456e7ccb80ec",
+      "reports/native_lua_path_value_string.json": "040cebdf5ea315a6e1621d5f09a8be9864283c0d64d4d444b536e1ac2f5c3df8"
+    },
+    "producer_receipt_sha256": "742f6e94738756ece0726d24277e5a9631190bce5f4679a453d74fb6a5d911de",
+    "producer_receipt_path": "J:\\PROG\\battlestations-pacific-decompile-cc9\\local\\native_lua_path_value_string_validation_cc9_20261030\\final_receipt.json",
+    "strict_compile_receipt": {
+      "compile_count": 1,
+      "compile_exit": 0,
+      "coff_machine": "014c",
+      "source_reviews": "Root primary and Frame independent full actual Code/all48ASM/liveEH accepted exactafe466e0/45ca8089 before ONE compile",
+      "actual_source_line_counts": {
+        "include/bsp/native_lua_path_value_string.hpp": 121,
+        "src/native_lua_path_value_string.cpp": 151
+      },
+      "source_sha256": {
+        "include/bsp/native_lua_path_value_string.hpp": "afe466e09051281ab531643a97df43c8ce9d1c0acb3124a107775985c20ebcd8",
+        "src/native_lua_path_value_string.cpp": "45ca8089e05297bc2822ef79c508cd4c270527ed406e361cfc17b3dccfb34e2d"
+      },
+      "object_sha256": "d35a861cef0aa210827b8eb9f0aa0792a1caa345b3e13781f6859fb97df3e65d",
+      "actual_artifacts": {
+        "objects\\compile.cmd": "3d2c1797b8b2d1e295837a699308d607708353f359bea352e0c9c74a477194f0",
+        "objects\\compile.log": "0aa08a9d77da5ff8f665436f41286fe71a32982549aa16ada176482314ce5fc8",
+        "objects\\compile_exit.txt": "9aca8dfce962538fb8131d73f84cada05e4dc79f5a0d3612c511b1150f3e33e2",
+        "objects\\inspect.cmd": "0456078e6c3004f7fd6a404df0419cf89e3186dc94bcbd6d3bcf4ac86e49a39a",
+        "objects\\path_value_string.obj": "d35a861cef0aa210827b8eb9f0aa0792a1caa345b3e13781f6859fb97df3e65d",
+        "objects\\symbols.txt": "4a58662fae4bbdba9c76d64acbc2cbca341b0a548ecdc3bbfc3e94ddf62eb1c0"
+      },
+      "actual_symbols_sha256": "819070276d1ce0e886c03ee329064eb1beb32ad205699dfc93aa194e98e02ea8",
+      "instruction_count": 48,
+      "historical_47_count_only_corrected_original_design_preserved": true,
+      "verified_ghidra": {
+        "project_file": "C:/Users/sqz269/bsp.gpr",
+        "program": "/battlestationspacific.exe",
+        "count": 77632
+      },
+      "fresh_live_EH": {
+        "00dfa4b4": "22 05 93 19 01 00 00 00 ac a4 df 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00",
+        "00dfa4ac": "ff ff ff ff 00 16 cc 00",
+        "00cc1600": "LEA ECX,[EBP-20]; JMPB67700"
+      },
+      "fresh_invalid_span": {
+        "address": "00cf8594",
+        "bytes": "69 6e 76 61 6c 69 64 00"
+      },
+      "no_link_test_probe_game_native_entry_ghidra_mutation": true
+    },
+    "normal_instruction_count": 48,
+    "historical_count_label_correction_only": true,
+    "independent_reviews": {
+      "frame": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_lua_path_value_string_review_frame_20261030\\REVIEW.md",
+        "sha256": "03014067c68d1f23078853d69e489d38002836d180d141b4c22a75786400047d"
+      },
+      "gui": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_lua_path_value_string_review_gui_20261030\\REVIEW.md",
+        "sha256": "3eb7165af8610bd530df3aed6f899b2c1e0d5b8dc56ad9073a3077e99ce36169"
+      }
+    },
+    "target_object_rehashed_by_primary": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc9\\local\\native_lua_path_value_string_validation_cc9_20261030\\objects\\path_value_string.obj",
+      "sha256": "d35a861cef0aa210827b8eb9f0aa0792a1caa345b3e13781f6859fb97df3e65d",
+      "machine": "014C"
+    }
+  },
+  "actual_symbols": {
+    "operations": {
+      "path_value": "?construct_native_lua_path_value_string_00b692c0@bsp@@YAPAXABVNativeLuaPathValueStringContext@1@AAVNativeLuaPathValueStringFrame@1@@Z",
+      "assign": "?assign_native_wide_string_header_004c5e20@bsp@@YAPAXPAXPBXAAUNativeStringRawPoolContext@1@@Z",
+      "narrow": "?construct_narrow_from_wide_00436630@bsp@@YAPAXPAXPBXAAUNativeStringRawPoolContext@1@@Z"
+    },
+    "preparation": {
+      "context_ctor": "??0NativeLuaPathValueStringContext@bsp@@QAE@AAUNativeLuaObjectStorage@1@PAXPBXAAUNativeStringRawPoolContext@1@ADIABV?$array@UNativeLuaTypeNameSpan@bsp@@$0L@@std@@ABV?$array@UNativeLuaValueStringSpan@bsp@@$03@5@UNativeLuaDotPathLiteralSpan@1@7PADUNativeLuaPathValueStringInvalidSpan@1@@Z",
+      "frame_ctor": "??0NativeLuaPathValueStringFrame@bsp@@QAE@ABVNativeLuaPathValueStringContext@1@@Z"
+    }
+  },
+  "build_head": "aaaba76a6a0b14dff8e278f7be61230cb281e1bd",
+  "retained_link": {
+    "head": "aaaba76a6a0b14dff8e278f7be61230cb281e1bd",
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "existing_checks": "2/2",
+    "ctest_seconds": 13.57,
+    "entry_addresses": {
+      "operations": {
+        "path_value": "10300d40",
+        "assign": "10301030",
+        "narrow": "10301080"
+      },
+      "preparation": {
+        "context_ctor": "10300be0",
+        "frame_ctor": "10300c80"
+      }
+    },
+    "unforced_actual_children": {
+      "dot_path": {
+        "symbol": "?resolve_native_lua_dot_path_00b68d70@bsp@@YAPAUNativeLuaObjectStorage@1@ABVNativeLuaDotPathContext@1@AAVNativeLuaDotPathFrame@1@@Z",
+        "address": "1047c9c0",
+        "independently_forced": false
+      },
+      "value_string": {
+        "symbol": "?construct_native_lua_value_string_00b69130@bsp@@YAPAXABUNativeLuaObjectStorage@1@PAXABVNativeLuaValueStringContext@1@@Z",
+        "address": "1047d700",
+        "independently_forced": false
+      }
+    },
+    "path_value_cpp_handler_and_unwind_table": true,
+    "map_sha256": "c6d359e0bd20574fb97ac041bdfa15ada8f5ca9162159e79f85854b60333464f",
+    "overlay_sha256": "d4ff880e4942b4c3c9c91c1779ace9503a6020d581b0da442c17e5ff62f2b1c3",
+    "executable_sha256": "9514c086c635c34d41529e8564db42232b69431c0f70e55548627ab4ee3d04ef",
+    "entry_execution": false
+  },
+  "provider_preservation": {
+    "baseline_count": 21,
+    "prior_paths_byte_identical": 20,
+    "only_registry_change": "three_Root_Core_additions_inverse_physical_bytes_exact"
+  },
+  "Core_registration_count_each": 1,
+  "restored_canonical_build": {
+    "head": "aaaba76a6a0b14dff8e278f7be61230cb281e1bd",
+    "command": "./scripts/build.ps1",
+    "configuration": "Release Win32",
+    "exit_code": 0,
+    "existing_checks": "2/2",
+    "ctest_seconds": 11.47,
+    "include_before_cache_entry_absent": true,
+    "forced_symbols_absent": true,
+    "all_five_forced_operations_preparation_entries_absent_from_map": true,
+    "both_unforced_child_entries_absent_from_map": true,
+    "log": "local\\lua_path_value_conversion_integration_cc16_20261030\\build.log",
+    "log_sha256": "a75085d32b6e8dc2c8f44c34d499f2726e201d43fd6ddc44ff5509f39bab40b1"
+  },
+  "all_nine_raw_text_flags_off": true,
+  "each_primary_plus_two_independent_source_reviews": true
+}

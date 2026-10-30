@@ -1,0 +1,34 @@
+{
+  "address": "00436630",
+  "status": "actual_raw_storage_normal_Source",
+  "source_ready": false,
+  "original_abi": "ECX destination raw8; stacked raw WORD-source pointer; EAX same destination; RET4",
+  "normal_instructions": 32,
+  "source_contract_sha256": "fd80d5ee5279a072c6f76e5076df5222c709de029c90cd921050db7aecc6f587",
+  "base": "b49bd653efe877e3be145dda6e64f2b1a3782c42",
+  "measurement": "LENGTH0 then DATA0 before full-WORD0 scan; wrapping cursor-(source+2) then explicit SAR1 bits",
+  "provider": "genuine resize_native_string_header_0041dd40(actual8,SAME RawPoolContext,request,true)",
+  "copy": "CURRENT destination DATA once/null skip; BYTE-only low bytes source+2/destination+1 through low-byte0; full actual resize length and tail preserved",
+  "own_selected_actions_Frame_cleanup_guard_adapter": false,
+  "failure_custody": "caller retains abandoned/partial output and actual source/cell/pool/provider graph; no guessed cleanup or constructor completion",
+  "strict_object": {
+    "status": "single strict Win32 object passed",
+    "compile_attempts": 1,
+    "exit_code": 0,
+    "coff_machine": "014c",
+    "object_sha256": "d05943f135cac31d747ba9f466ff799fe9c053d29e9fb2fc2705fce471883569",
+    "compile_receipt_sha256": "e00d8f531352c5f0641ce999af93bb764cee5e146a0de3c5e07fbe7fa32de040",
+    "actual_symbols_sha256": "a10fc422d517ebc479fd1c303108fca46ad8dbba05a9bba03e5c4cee2f7fd60d"
+  },
+  "limits": [
+    "ordinary raw backing/stream overlap/no invalidating writer and reached extent proof",
+    "existing raw resize/current provider/CRT and C++/FH3/SEH/hardware qualifications",
+    "no resolver/VM/loading/startup/ABI/runtime/game or Native/vendor-body credit"
+  ],
+  "new_tests_probe_game_native_entry_Ghidra_writes": 0,
+  "source_sha256": {
+    "include/bsp/native_string_raw_from_wide.hpp": "bca276c679f9a48c1cec2e55d89b7d5091216b59ab118e505d5e7505169a2729",
+    "src/native_string_raw_from_wide.cpp": "0dcfb22f7d86794a21818bb1764fd32b4af8ea61355082c277a62953935344a9"
+  },
+  "provider_preservation_sha256": "78b7c01877ff0a410297373086597e2f81d29534f56d2973100519ab52de8de8"
+}
