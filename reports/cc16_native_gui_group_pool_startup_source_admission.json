@@ -1,6 +1,6 @@
 {
-  "schema": "bsp.cc16.native_gui_group_pool_startup_pending_admission.v1",
-  "status": "primary_independent_common_build_actual_PE_passed_current_Host_runtime_pending_NOT_Main_integrated",
+  "schema": "bsp.cc16.native_gui_group_pool_startup_source_admission.v2",
+  "status": "primary_independent_common_build_actual_PE_and_current_Host_normal_zero_gate_passed",
   "candidate": "6772843657c3ab62f7bb4f9ae613adbac0770c80",
   "independent_review": "41106def0cae436ea117b563ce5470bb96f4c161",
   "primary_review": {
@@ -8293,22 +8293,418 @@
       "sha256": "761ca1dfc2e54c2daa129a25811b86a8bb3f4771b5a18a26498ce11a8d94dc7b"
     }
   ],
-  "required_gate": [
-    "Root common build/link of exact composed Source",
-    "Current Source/current PE Host cohort covering added Source allocation/constructor boundary and actual domain/profile",
-    "Completed zero/nonzero registration custody and interrupted-attempt retention in both catches",
-    "Actual raw GuiGroup payload/consumer retirement before pool/root retirement and real callback suffix; separate ModelGroup proof is insufficient",
-    "Current authoritative PID/session/cohort window agreed with agent/cc16-progress, NoForceStop and actual-handle observation on timeout; required gameplay belongs to that controlled gate"
-  ],
-  "runtime": {
-    "executed": false,
-    "current_Host_admitted": false,
-    "exclusive_window_confirmed": false,
-    "existing_PID40812_terminal_status": "unknown; query access denied, historical preservation instruction",
-    "canonical_coordinator_request": "message1103 to agent/cc16-progress; earlier bare-owner1101/1102 not routed"
+  "required_gate": {
+    "status": "passed_scoped_current_Source_Host_normal_zero",
+    "evidence": "local/function_source_batch20/runtime_admission.json",
+    "broader_Type2_and_gameplay_gate": "separate_not_claimed"
   },
-  "Main_integrated": false,
-  "activated": false,
+  "runtime": {
+    "executed": true,
+    "current_Host_admitted": true,
+    "cohort": "fresh current2,2026-10-30T12:41:07Z",
+    "slot": 0,
+    "user_authorization": "Fully activated; allow required gameplay runs",
+    "standard_independent_slot_basis": "docs/COORDINATION.md235-247, actual lock absent/OpenMutex error2/DRAIN absent, one existing+two new below8",
+    "canonical_coordination_notifications": [
+      1104,
+      1105
+    ],
+    "prior_exclusive_window_interpretation_corrected": "Notification+standard independently tagged available slot; no new user/coordinator approval invented. Never bypassed DRAIN.",
+    "existing_PID40812_terminal_status": "Unknown and preserved; no stop, restart, affinity mutation or successful process handle operation on this old PID.",
+    "observer": {
+      "schema": "bsp_one_current_Host_handle_observation_v1",
+      "preflight": {
+        "utc": "2026-10-30T12:41:06.160272+00:00",
+        "DRAIN": false,
+        "ignore_DRAIN_env": null,
+        "slot": 0,
+        "slot_lock_exists": false,
+        "prior_bsp_processes": [
+          {
+            "pid": 40812,
+            "parent_pid": 31836,
+            "threads": 0
+          }
+        ],
+        "artifacts": {
+          "build/win32/Release/bsp_game.exe": "3e978e1458d38707442b97abd0c658f5d1a324ee3afd5bc4794eaad609f35ba0",
+          "build/win32/bsp_game.map": "cf71f08d97212453bc00ecc3e51234cc67cf0c84f79045addfd6123d09546100",
+          "build/win32/Release/xlive_stub.dll": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3"
+        },
+        "fresh_outputs": true,
+        "mutex_exists": false,
+        "mutex_open_error": 2,
+        "root_head": "bdb223fb78e75fad07521ffae46e460e81ee5b7c",
+        "build_head": "7a227bf1274da5c4b02364df74f193f3bbf99d02"
+      },
+      "started_utc": "2026-10-30T12:41:06.391620+00:00",
+      "no_force_stop": true,
+      "no_retries": true,
+      "no_old_process_operations": true,
+      "records": {
+        "wrapper": {
+          "pid": 15228,
+          "handle_value": "0x1d0",
+          "creation_FILETIME": 134378376664027810,
+          "exit_FILETIME": 134378376760653477,
+          "image_path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+          "wait0": 0,
+          "exit_code": 0,
+          "observed_utc": "2026-10-30T12:41:16.101042+00:00"
+        },
+        "bootstrap": {
+          "pid": 31640,
+          "handle_value": "0x1e8",
+          "creation_FILETIME": 134378376676749110,
+          "exit_FILETIME": 134378376739620592,
+          "image_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\bsp_game.exe",
+          "wait0": 0,
+          "exit_code": 0,
+          "observed_utc": "2026-10-30T12:41:16.101060+00:00",
+          "parent_pid": 15228
+        },
+        "child": {
+          "pid": 76712,
+          "handle_value": "0x1ec",
+          "creation_FILETIME": 134378376677083187,
+          "exit_FILETIME": 134378376739376155,
+          "image_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\bsp_game.exe",
+          "wait0": 0,
+          "exit_code": 0,
+          "observed_utc": "2026-10-30T12:41:16.101071+00:00",
+          "parent_pid": 31640
+        }
+      },
+      "errors": [],
+      "run_script_sha256": "7d0f17b5e9a0279888c2e1685cbdf4627eac06f596a9f11c813d578b66d87b24",
+      "complete_three_terminal_handles": true,
+      "all_three_exit_zero": true,
+      "wrapper_returncode": 0,
+      "finished_utc": "2026-10-30T12:41:16.101078+00:00",
+      "post_bsp_processes": [
+        {
+          "pid": 40812,
+          "parent_pid": 31836,
+          "threads": 0
+        }
+      ],
+      "DRAIN_after": false
+    },
+    "manifest": {
+      "started_utc": "2026-10-30T12:41:07.4650053Z",
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration",
+      "owner": "agent/codex-function-source-integration",
+      "slot": 0,
+      "instance_tag": "slot0",
+      "affinity_core": 2,
+      "log": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch17\\group_pool_host_current2.log",
+      "launcher": {
+        "xlive_dll": "J:/PROG/battlestations-pacific-decompile-codex-function-source-integration/build/win32/Release/xlive_stub.dll",
+        "game_args": [
+          "--frames",
+          "1",
+          "--difficulty",
+          "1",
+          "--settings-personal-root",
+          "J:/PROG/battlestations-pacific-decompile-codex-function-source-integration/local/function_source_batch17/group_pool_host_personal2",
+          "--window-monitor",
+          "smallest",
+          "--window-resolution",
+          "fit",
+          "--present-interval",
+          "immediate"
+        ],
+        "exe": "J:/PROG/battlestations-pacific-decompile-codex-function-source-integration/build/win32/Release/bsp_game.exe",
+        "no_force_stop": true,
+        "game_root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific"
+      },
+      "arguments": [
+        "--game-root",
+        "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+        "--xlive-dll",
+        "J:/PROG/battlestations-pacific-decompile-codex-function-source-integration/build/win32/Release/xlive_stub.dll",
+        "--log",
+        "J:/PROG/battlestations-pacific-decompile-codex-function-source-integration/local/function_source_batch17/group_pool_host_current2.log",
+        "--instance-tag",
+        "slot0",
+        "--affinity-core",
+        "2",
+        "--frames",
+        "1",
+        "--difficulty",
+        "1",
+        "--settings-personal-root",
+        "J:/PROG/battlestations-pacific-decompile-codex-function-source-integration/local/function_source_batch17/group_pool_host_personal2",
+        "--window-monitor",
+        "smallest",
+        "--window-resolution",
+        "fit",
+        "--present-interval",
+        "immediate"
+      ],
+      "difficulty": {
+        "value": "1",
+        "source": "caller"
+      },
+      "env": {
+        "BSP_AGENT": "agent/codex-function-source-integration"
+      },
+      "exe": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\bsp_game.exe",
+        "size": 7505408,
+        "mtime_utc": "2026-10-30T11:38:32.8882070Z",
+        "sha256": "3e978e1458d38707442b97abd0c658f5d1a324ee3afd5bc4794eaad609f35ba0",
+        "build_checkout": {
+          "root": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration",
+          "head": "bdb223fb78e75fad07521ffae46e460e81ee5b7c",
+          "dirty": false
+        }
+      },
+      "host": {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration",
+        "head": "bdb223fb78e75fad07521ffae46e460e81ee5b7c",
+        "dirty": false
+      },
+      "inputs": [
+        {
+          "option": "--xlive-dll",
+          "arg_index": 3,
+          "value": "J:/PROG/battlestations-pacific-decompile-codex-function-source-integration/build/win32/Release/xlive_stub.dll",
+          "source": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\xlive_stub.dll",
+          "archived": "xlive_stub.dll",
+          "sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3"
+        }
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-30T12:41:13.9722540Z",
+      "launcher_exit_code": 0,
+      "drain": {
+        "no_force_stop": true,
+        "waited_seconds": 0,
+        "natural_completed": true,
+        "timed_out": false,
+        "forced_stop_requested_pids": [],
+        "retained_pids": []
+      }
+    },
+    "events": {
+      "Text": {
+        "line": 3,
+        "text": "native GUI Text pool CRT CD71F0: atexit=0 storage_bytes=56 before_particle_pool=1 type_bootstrap=pending_canonical_vfs"
+      },
+      "Group": {
+        "line": 4,
+        "text": "native GUI Group pool CRT CD7440: atexit=0 storage_bytes=56 before_particle_pool=1"
+      },
+      "particle": {
+        "line": 5,
+        "text": "native particle pools initialized: model_atexit=0 parameter_atexit=0 storage=process_actual38h/actual38h"
+      },
+      "frame": {
+        "line": 745,
+        "text": "frame limit 1 reached, requesting loop exit"
+      },
+      "summary": {
+        "line": 767,
+        "text": "summary window_created=1 device_created=1 device_hr=0x00000000 back_buffer=1600x900 frames_presented=0 presents_skipped=1 loop_finished=1 exit_code=0"
+      }
+    },
+    "concrete_method_calls": [
+      "application_construct",
+      "application_initialize",
+      "platform_run_loop_dispatch",
+      "application_shutdown",
+      "application_destruct",
+      "destroy_singleton_lifetime_manager",
+      "random_threads_shutdown"
+    ],
+    "known_unbound_singleton_shutdown": [
+      {
+        "line": 749,
+        "text": "host ApplicationShutdownHost::singleton_teardown [00737f80] UNIMPLEMENTED, returning a neutral value"
+      },
+      {
+        "line": 939,
+        "text": "  ApplicationShutdownHost::singleton_teardown              00737f80             UNIMPLEMENTED calls=1"
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch17\\group_pool_host_current2.log",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\artifacts\\01_group_pool_host_current2.log",
+        "bytes": 100172,
+        "sha256": "3382fe09920699298bbcdbe813fdb5d1a1e55590e4760f03e1fc2201c3ca3761"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch17\\group_pool_host_current2.log.manifest.json",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\artifacts\\02_group_pool_host_current2.log.manifest.json",
+        "bytes": 3648,
+        "sha256": "42226425b5ddd6047f5d1dad59471a41fd5c81cb7195c974b263dd453aaeec52"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\observe_host_once.py",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\artifacts\\03_observe_host_once.py",
+        "bytes": 9137,
+        "sha256": "77c14e36c57a719db51bab23169fa9fc92d0e325173f5fb072cf41a1791f4253"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\run_current_host.ps1",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\artifacts\\04_run_current_host.ps1",
+        "bytes": 724,
+        "sha256": "7d0f17b5e9a0279888c2e1685cbdf4627eac06f596a9f11c813d578b66d87b24"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\wrapper_stdout.log",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\artifacts\\05_wrapper_stdout.log",
+        "bytes": 392,
+        "sha256": "90d29d65b995afa2dcc6df7a8d6e4c8bde1126c691b314d8f80e0b8f75d2e904"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\host_preflight.json",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\artifacts\\06_host_preflight.json",
+        "bytes": 803,
+        "sha256": "8ab1d6d44c97daef24ce13ca0ef522ae18d4d19a768e400fefba551143691e91"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\host_observer.json",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\artifacts\\07_host_observer.json",
+        "bytes": 2712,
+        "sha256": "9d44929293477fee90910d0087f78b8e89f1ef972d16f2c6cf84a149ba01f365"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\post_exit_handle_selfcheck.json",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\artifacts\\08_post_exit_handle_selfcheck.json",
+        "bytes": 193,
+        "sha256": "ce99fcacc76280ed7317bf560235a65bc871f697f172ecdfd54672c6d983bfb0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\coordinator-observer-fix-notice.txt",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\artifacts\\09_coordinator-observer-fix-notice.txt",
+        "bytes": 1059,
+        "sha256": "d8594c90dc9c2da217c97d361ece8dee1c09e0ad4fe192ad31adb567b928ec45"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\tools\\run_game.ps1",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\artifacts\\10_run_game.ps1",
+        "bytes": 20037,
+        "sha256": "022bbd455f5605d75c7421837f0f25d1beaff7bc5695c598885a8af0a6568d81"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch17\\build-head.txt",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\artifacts\\11_build-head.txt",
+        "bytes": 42,
+        "sha256": "c269beaf7081c0befe18b87a631134cacda8de7a5c0ce001dbc192778a26266d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch17\\common_pe.json",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\artifacts\\12_common_pe.json",
+        "bytes": 268091,
+        "sha256": "3240e6479f06df9d085497d3faeceb3abe26554388c2af53c4c2ccfb799b6ea2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch19\\host_observer.json",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\artifacts\\13_host_observer.json",
+        "bytes": 2657,
+        "sha256": "cd743397a2908fe6134ba6762c75ce6c9f40b1c662cde9df5375500211ab6dd8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch19\\wrapper_stdout.log",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\artifacts\\14_wrapper_stdout.log",
+        "bytes": 647,
+        "sha256": "c0767b24b0134db3778fe4851e4fd218c4e1960a7ca8692c2edc865bbbc0250e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch19\\observe_host_once.py",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\artifacts\\15_observe_host_once.py",
+        "bytes": 8385,
+        "sha256": "0a2f1d0ccccd27b513b46b4066dbf077a129f52c85756797014730d5b4757b81"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch17\\group_pool_host_current2.log.inputs\\xlive_stub.dll",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\artifacts\\16_xlive_stub.dll",
+        "bytes": 32768,
+        "sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3"
+      }
+    ],
+    "first_observation_not_admitted": "Batch19 Host logged normal0 but observer post-exit image query ERROR31 and PS5 manifest unavailable. It is preserved unchanged, receives no authoritative terminal/runtime acceptance; second cohort was explicit fresh observation repair with same PE, not replay after Source failure.",
+    "Source_runtime_boundaries": [
+      "Normal atexit=0 Group startup slot and current Host normal exit only; no nonzero status injection, allocation/ctor failure, UI Group payload/factory/Type2 activation or gameplay parity.",
+      "Group callback has no dedicated log; actual normal CRT registration/normal child return support compiled callback contract, not direct instruction trace.",
+      "Source host uses its existing display-required and lane-affinity harness behavior; no external power-policy or old-process affinity changes.",
+      "Known unbound ApplicationShutdownHost singleton_teardown remains separate; concrete actual shared lifetime drain logged.",
+      "Source xlive_stub provider, no Original GFWL/runtime/ABI/FH3/SEH/private-stack/fault proof."
+    ]
+  },
+  "Main_integrated": true,
+  "activated": true,
   "game_validated": false,
-  "new_Original_vendor_duplicate_body_credit": 0
+  "new_Original_vendor_duplicate_body_credit": 0,
+  "activation_scope": "Default current Source Main Group pool CRT slot only; not populated Page/Group caller activation.",
+  "saved_Ghidra_and_ledger_admission": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "existing_names_and_CG_tags_preserved": true,
+    "prior_values_recorded": true,
+    "locked_annotation_saved": true,
+    "affected_exports_refreshed": [
+      "00cd7440",
+      "00ce0ae0"
+    ],
+    "artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\ghidra_annotation.log",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\annotation_artifacts\\01_ghidra_annotation.log",
+        "bytes": 259,
+        "sha256": "df3ec77fccf11e591f8644d3857db885770f83bf418db356ed273cafc7248b75"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\ghidra_export.log",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\annotation_artifacts\\02_ghidra_export.log",
+        "bytes": 46,
+        "sha256": "2fbad3f6d50e52fd43a1020a375b54212933706e91a662e9a74813c1aa290d30"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\ghidra-annotations-20261030T124705Z.json",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\annotation_artifacts\\03_ghidra-annotations-20261030T124705Z.json",
+        "bytes": 5786,
+        "sha256": "9244ef57d691e21109478d3637bf95741b0b3cc5bdb54efe0436a8d6b80315c7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\ledger_changes.log",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\annotation_artifacts\\04_ledger_changes.log",
+        "bytes": 1460,
+        "sha256": "4cba7bfc6651201ce061dfa2e2b38d9a42d8d4367b96cbfc0a3a3c3b582efc7e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\prior_pool_ledger_records.json",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\annotation_artifacts\\05_prior_pool_ledger_records.json",
+        "bytes": 3447,
+        "sha256": "9f613abb69048490249e384d2ad6970bab6b84abacac59eb1a65d9bb17c2b25b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\pool_ledger_records.json",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\annotation_artifacts\\06_pool_ledger_records.json",
+        "bytes": 7382,
+        "sha256": "2db72c9513feeea661f878b978253123b02de2242888add2b53f62d3b6960885"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\admit_ledger.py",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\annotation_artifacts\\07_admit_ledger.py",
+        "bytes": 3982,
+        "sha256": "e7302fd2c2e85e429b0640d4c6be1730df769ab09a1d4a3f8507e9bacc8f0758"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\seal_runtime.py",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\annotation_artifacts\\08_seal_runtime.py",
+        "bytes": 9172,
+        "sha256": "0ea9e75440ad8bb78f36dc27ad968fbd58d6484c22819d1cadc0910e4395cf30"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\runtime_admission.json",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch20\\annotation_artifacts\\09_runtime_admission.json",
+        "bytes": 17183,
+        "sha256": "002206dda9eefb86a8214605412f59f554472c9a18ddaca65f5736b0dc3c1993"
+      }
+    ]
+  }
 }
