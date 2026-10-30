@@ -20,8 +20,17 @@ Existing lower-provider
 fencing, exception, CRT and zero-copy qualifications remain explicit; outer
 fences do not establish transitive Native ABI/fault parity.
 
-The new body is not yet registered or linked. Its bsp_game CMake entry is queued
-behind a peer's held file lease; the prerequisite build above does not cover it.
-Complete registration and the combined build before claiming link validation.
+The canonical bsp_game CMake entry remains queued behind a peer's held file
+lease. A local CMake overlay supplies separate link evidence without changing
+that file: the standard build passes with both public entries forced to remain
+in bsp_game (constructor 103009A0, raw body 10300B00, plus unwind metadata).
+Both existing checks pass (2/2, 11.21 seconds). The exact linked PE is retained
+under local/raw_lua_overrides_local_link_cc16_20261030/; no game/body ran.
+
+The local overlay initially ran before target creation; moving its registration
+after the deferred target creation corrected that configuration error. The
+overlay cache setting is removed and canonical generated configuration restored.
+Canonical registration and its standard build remain pending; local retention
+does not establish a loading caller, runtime behavior or Original ABI parity.
 Raw16 growth, AA0020
 parser composition, loaded locale and startup/runtime activation remain separate.

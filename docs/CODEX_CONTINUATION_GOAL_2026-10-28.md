@@ -1100,3 +1100,11 @@ providerblobs unchanged. CMakebsp_game registration is queuedbehindpeerheldfile,
 so newbodylink/commonbuild remainPENDING. Existingproviderfixbuild2/2 isseparate.
 No raw16/parser/loadedlocale/startup/runtime/ABI activation follows; all9offhold.
 See CODEX_RAW_LUA_OVERRIDES_INTEGRATION.md; continue registration/build next.
+
+RawBDEF90 local link evidence now passes with a temporary CMake overlay:
+standardbuildscript links exactf73 body into actualbsp_game, /INCLUDE retains
+both contextconstructor and rawbody (map103009A0/10300B00 plus EH), checks2/2
+pass11.21s. No game/body executed. Canonicalstartup.cmake stayed unchanged and
+localoverlaycache was removed/restored (canonicalregistrationcount0). Shared
+CMake registration remains queued; local link is not canonicalbuild admission.
+Receipt: local/raw_lua_overrides_local_link_cc16_20261030/receipt.json.

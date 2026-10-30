@@ -1,5 +1,5 @@
 {
-  "status": "reviewed_source_object_pass_registration_pending",
+  "status": "reviewed_source_local_retained_link_pass_canonical_registration_pending",
   "contract_sha256": "82c7c42c2194d1d897b61b52e80d6d01b1d1302115c6374a7921f29b71b3c172",
   "baseline_main": "1b5dead2c",
   "reverse_find": {
@@ -20,7 +20,7 @@
     }
   },
   "override_body": {
-    "status": "reviewed_source_object_pass_registration_pending",
+    "status": "reviewed_source_local_retained_link_pass_canonical_registration_pending",
     "independent_review": "gui_frame_lifetime_ACCEPT_SOURCE_CODE_ONLY_exact_f73a9_hashes",
     "strict_object_exit": 0,
     "machine": "14C",
@@ -31,7 +31,7 @@
     "cpp_sha256": "6a85a2c876df5f325f250f75665b4d96eca1bdef84693519410536734b61b62c",
     "header_sha256": "c276238af5019cdf3dc0a9119cec4ce28b24fa936135879f516b26ce3b5d0632"
   },
-  "combined_build": "not_run_new_body_unregistered_queued_CMake",
+  "combined_build": "local_overlay_standard_build_pass_canonical_registration_pending",
   "source_ready": false,
   "runtime": false,
   "raw16_provider": "unbound",
@@ -47,5 +47,27 @@
     "ctest_seconds": 14.1,
     "includes_new_override_body": false,
     "log": "local/raw_lua_overrides_integration_cc16_20261030/prerequisite_build.log"
+  },
+  "local_link_check": {
+    "head": "87f85d78df45a08254c8c8d3b2b4e4a52ffba428",
+    "command": "./scripts/build.ps1",
+    "overlay": "local/raw_lua_overrides_local_link_cc16_20261030/overlay.cmake",
+    "source_registrations": 1,
+    "retained_public_symbols": 2,
+    "retained_addresses": [
+      "103009a0",
+      "10300b00"
+    ],
+    "exit_code": 0,
+    "existing_checks_passed": 2,
+    "existing_checks_total": 2,
+    "ctest_seconds": 11.21,
+    "executable_sha256": "fa12b5782ff6f10788689f5e7cc9181ef8b9ffcb62999fbbdf67ca32e3b23504",
+    "receipt": "local/raw_lua_overrides_local_link_cc16_20261030/receipt.json",
+    "canonical_startup_changed": false,
+    "overlay_cache_removed": true,
+    "canonical_source_registrations_after_restore": 0,
+    "new_game_executed": false,
+    "semantic_loading_runtime_or_ABI_proof": false
   }
 }
