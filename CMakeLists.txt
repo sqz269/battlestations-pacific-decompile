@@ -486,3 +486,7 @@ target_sources(bsp_core PRIVATE src/native_lua_path_value_string.cpp)
 target_sources(bsp_core PRIVATE src/native_lua_log_raw.cpp)
 target_sources(bsp_core PRIVATE src/native_string_raw_assign_cstring.cpp)
 target_sources(bsp_core PRIVATE src/native_lua_variant_tag6.cpp)
+
+target_sources(bsp_core PRIVATE src/native_lua_variant_slot0.cpp)
+
+target_sources(bsp_core PRIVATE src/native_lua_variant_record_storage.cpp)

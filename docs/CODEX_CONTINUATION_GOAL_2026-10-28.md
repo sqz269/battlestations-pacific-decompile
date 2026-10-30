@@ -1395,3 +1395,38 @@ Fullcopyheldvendor781F20/erase-copybinding, rawvector/reserve/currentprofile
 andproducerbinding. Nextcurrent-slot0designc199 preservesactualprofile/slot
 reads thenHOME0/realScalar/completion withunadmittedroutesexplicit; independent
 reviewbeforeSource. GoalremainsACTIVE; no fullVM/resolver/startupclosure.
+
+
+Qualified current-slot0 callsite fae424f3 is now reviewed and Core-registered.
+Actual CURRENTprofile/currentSlot0 only admits genuineD0E6F4→884FA0, then
+liveHOME0 and SAME actual scalar; capture aggregate/completion before health.
+Explicit unadmitted/noncompletion retains already-decremented caller debt.
+No postchildpayload/countrepair/cleanup/typebirth/unknownNativebranch.
+Root+2independent Source, ONE strict014C object; retained entry10300ca0 plus
+Context/Frame/unforcedscalar1047d0f0/EH and existingchecks2/2 14.29s. Canonical
+restored2/2 16.07s; cache/project/entries absent. Ninepriorpaths preserved with
+oneCoreline inverse, nineTextOFF; no newtest/entry/game/Native/vendor credit.
+Both tested cohorts join Source38ff1278. Fragment ledger006B8960 preserves
+prior whole semantic model, no whole88E0 admission. Actual raw vector/copy
+transport and typed/nested producer composition remain separate. No-value-write
+Record20 lifetime helper Source accepted independently; ONE author object
+no-receiver-store evidence is pending. Goal ACTIVE; Main peer Source39
+publication window held before next Root push.
+
+PeerSource39 Main9bf294 joined at6b88556e; exactlistener delta/admission read,
+Root ninepriorpaths preserved. Joined standardWin32/alltargets/existing2/2
+11.84s after the two Source38-cohort slot checks. No entry/runtime grant.
+
+
+Record20 birth primitive d1f115b3 accepted Root+2independent actualSource/final
+pins; one014C1275B object6071bda0, actual8B442404C3/no receiver access/calls/
+UNDEF. Fiveuint32/exact20B alignment4 and full trivial/layout assertions, sole
+global scalar placement-new without initializer. No Nativeaddress/ledger/body
+credit. Actualfreshstorage/priorresource debt/returnedpointer before genuine
+initializer or admittedcopy remain caller obligations; no nestedbirth or array
+arithmetic/byteadoption. Coreonce; Source39joined retainedentry100107f0 and
+existingchecks2/2 12.12s, canonicalrestored2/2 11.77s. Ninepriorpaths preserved
+withsingleCoreinverse/nineTextOFF/no tests/entry/game/runtime. Actualrawvector
+producer composition stays unbound. Push6EDF00 full35ops/ownEH auditsealed:
+reserve/copy/tag5vendortransport remain truegaps, not absent lowerhelpers;
+selected401130 actionRETonly/no countrollback. Goal ACTIVE.
