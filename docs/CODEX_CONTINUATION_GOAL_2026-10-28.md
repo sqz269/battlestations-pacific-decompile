@@ -1279,3 +1279,21 @@ SourceFramepolicy design advances; actualLuaB68460/B68550 type-nameoutput
 contract05091413 ready(exactBOOLliteral=bool), Sourcebinding advances. Whole
 B69130/B692C0/dotpath/currentE1route/resolver/fullreload/raw16/GUI/runtime
 gates stayopen; realBF7420converter/currentword alreadyexists, no vendorport.
+
+TypeNameb556c7d7 andconcat229f01ca nowbind actualrawoutput/Lua/currentwide
+providers. FourNEWCorefileseach, primary+2independentSource/1strictONCE014C;
+all37priorproviderpaths unchanged. TypeNameexactboolROrole/unsigneddomain/
+kind-once0/2/other+orderedowner-state-index/oneLuaType/directrawCtor, noFrame
+orlocalcleanup. ConcatprivateconstructedauthoritybeforeSourcefence explicitly
+distinctNativephysicalbit1/rightlen epoch; actualRAWcopy/directcurrentresize/
+rightDATAfirst/ownedselectedCURRENTwidecleanup/normaltransfer. Joinede71c9
+reservedTextModelpeerMain; Corecountonceeach; retained3entries+CppEH/checks2/2
+11.49s, restoredcanonical2/2 10.85s/no forcedcache-project-symbols;9Textoff.
+Ghidratype-nameABI/boolcomments appended underwritelock, priorvaluespreserved,
+savedproject/refreshed2exports. No Nativecode/gameinstall modification.
+B69130numericaldisplaySourceAPI design536fa53 readyaftertypednamecapability;
+widefind/substring andcurrentE1routecontracts advance independently. Key owner
+route finding: AppCFEAB0slot14=735B40 returns CURRENT E188A8+1A0C andignores
+receiver/scratch; followingB67980 consumes pushedscratch. Do notpreserveearlier
+scratch-as-slot14-argument assumption. FullLua-path/currentbinding/resolver/
+reload/raw16/GUI/Font48/ABI/runtime gates stayopen.
