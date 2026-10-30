@@ -1,0 +1,59 @@
+{
+  "status": "source_reviewed_strict_object_pass_consumer_unbound",
+  "base": "bcf127f7d796506accdb13e18723ef7580835b2b",
+  "address": "004c8dd0",
+  "native_extent": "72bytes;27instructions",
+  "source": "src/native_wide_string_raw_copy.cpp",
+  "source_abi": "ordinary_cpp_actual_destination_source_and_raw_pool_context",
+  "original_abi": "ECX destination;stack source;EAX SAME destination;RET4",
+  "source_hashes": {
+    "include/bsp/native_wide_string_raw_copy.hpp": "2e3cc1084d0f0893a0abd67866a4e1505872e790665c2a97e9845f85b7fa4836",
+    "src/native_wide_string_raw_copy.cpp": "3089c374bf1b39ea2d8b73ec4713c77bf343fd2f751e775f91a1654bb2a42688",
+    "docs/NATIVE_WIDE_STRING_RAW_COPY.md": "bf6b06b7b87e2d720b7cd4ce72cc2f6ae7c939e68184a4f70788dfe5815d1a79"
+  },
+  "assembly_sha256": "e34453e9df4cafaaaf8038f897c3a524a5604dc344f52a2bb3df802096470b19",
+  "ordered_epochs": [
+    "compare_identity_before_stores",
+    "length0",
+    "data0",
+    "self_return_only_after_stores",
+    "capture_source_length",
+    "genuine_raw_resize_preserve1",
+    "CURRENT_source_length_gate",
+    "CURRENT_source_data",
+    "CURRENT_destination_data",
+    "forward_WORD_read_then_store_through_NUL",
+    "DWORD_wrap_increment2",
+    "return_actual_destination"
+  ],
+  "raw_access": "fenced4B_and2B_memcpy_no_typed_raw_lvalues",
+  "cleanup_local": false,
+  "validation_or_Frame_added": false,
+  "no_counted_copy_or_adapter": true,
+  "provider_proof": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_wide_string_raw_copy_frame_20261030\\provider_proof.json",
+    "sha256": "52f8dece7fb9613596b9575320e1f5fe9cbf81bfcb48f178643f238732cd5bcf",
+    "all_old_tracked_source_unchanged": true
+  },
+  "strict_object": {
+    "source_compile_count": 1,
+    "exit_code": 0,
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_wide_string_raw_copy_frame_20261030\\object_build\\raw_wide_copy_object.dir\\Release\\native_wide_string_raw_copy.obj",
+    "sha256": "1e491bf00f9c24eda4da74644c79238177323904ef85947f0c4aba89f469a1c8",
+    "machine": "014C",
+    "bytes": 2290,
+    "receipt_sha256": "51b504b4324df24594d170e1bedc2f68c43070a3d4b0dbb20ca815e30acecc8a",
+    "symbol_receipt_sha256": "d8910bdeeb32549f932893ffe2f2faa34e97164a6c2f598cd8a5ffc9fe590e80"
+  },
+  "source_code_reviews": [
+    "Root complete27ASM/code",
+    "Gui independent complete27ASM/code beforecompile",
+    "Gameplay independent complete27ASM/code"
+  ],
+  "caller_custody": "retain_actual_headers_backing_and_partial_unpublished_resize_write_debt_no_cleanup_repair",
+  "new_native_vendor_body_credit": false,
+  "source_ready": false,
+  "startup": false,
+  "runtime": false,
+  "new_tests": 0
+}
