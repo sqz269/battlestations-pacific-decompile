@@ -10,6 +10,8 @@ param(
     [switch]$PrepareOnly,
     [switch]$RunPrepared,
     [switch]$HandleKnownXLiveDebugClose,
+    [switch]$Drcov,
+    [string]$DynamoRioRoot = '',
     [ValidateSet('low', 'medium-restricted', 'medium-write-locked')][string]$TokenMode = 'low',
     [string[]]$GameArguments = @(),
     [ValidateRange(1, 7200)][int]$RuntimeSeconds = 900,
@@ -18,6 +20,15 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+if ($Drcov) {
+    if (-not $RunPrepared -or $TokenMode -ne 'medium-write-locked' -or -not $DynamoRioRoot -or $HandleKnownXLiveDebugClose) {
+        throw 'DR coverage requires -RunPrepared -TokenMode medium-write-locked -DynamoRioRoot and no debugger exception policy.'
+    }
+    if ($RuntimeSeconds -lt 5 -or $RuntimeSeconds -gt 3600) { throw 'DR runtime bound must be 5..3600 seconds plus controlled-stop grace.' }
+    $scene = 'universe/Scenes/missions/USN/usn_19_coralus.scn'
+    if ($GameArguments.Count -eq 0) { $GameArguments = @($scene) }
+    if ($GameArguments.Count -ne 1 -or $GameArguments[0] -cne $scene) { throw 'DR coverage admits only the exact full USN04 scene argument.' }
+} elseif ($DynamoRioRoot) { throw '-DynamoRioRoot requires explicit -Drcov.' }
 if ($PrepareOnly -and $RunPrepared) { throw 'Choose either -PrepareOnly or -RunPrepared.' }
 if (-not $PrepareOnly -and -not $RunPrepared) {
     throw 'LIVE LAUNCH BLOCKED: choose -PrepareOnly or -RunPrepared with a verified restricted-token guard and pre-entry Documents redirection. Environment variables alone do not isolate retail saves.'
@@ -206,6 +217,7 @@ try {
                             (Join-Path $stage 'launch.json'), '--seconds', [string]$RuntimeSeconds,
                             '--token-mode', $TokenMode)
         if ($HandleKnownXLiveDebugClose) { $guardArguments += '--handle-known-xlivedebugclose' }
+        if ($Drcov) { $guardArguments += @('--drcov', '--dr-root', $DynamoRioRoot) }
         foreach ($gameArgument in $GameArguments) { $guardArguments += "--arg=$gameArgument" }
         & python @guardArguments
         $guardExit = $LASTEXITCODE

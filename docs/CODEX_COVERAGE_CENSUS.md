@@ -104,6 +104,11 @@ qualified identity is required, and a known source mismatch rejects it. The sepa
 | Matched identity, not observed in this run | 1,989 |
 | Execution attribution remains unknown | 18,041 |
 
+The frozen census table contains 21,770 game-classified addresses, including
+unknown unreferenced rows outside the board's 20,892 reconstruction target.
+Those are different denominators. All 1,740 observed body mappings belong to
+the board target; none comes from its excluded unreferenced addresses.
+
 Uncertainty buckets overlap: 74,085 unresolved PDB site records (23,635 unique
 names), 284 ambiguous executed candidates (275 without another definite hit),
 85 inventory candidates without source confirmation, 206 source-identifier-
