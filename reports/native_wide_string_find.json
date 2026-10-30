@@ -1,0 +1,64 @@
+{
+  "packet": "codex-native-wide-string-find",
+  "base": "a08d221c0fdc5b61696570137cd3c705c89c0a6e",
+  "address": "00a9ef60",
+  "status": "source_reviewed_strict_win32_object_compiled_root_integration_pending",
+  "source_ready": false,
+  "ordinary_api": "int32_t find_first_of_native_wide_string_header_00a9ef60(const void*hay8,const void*set8,int32_t start)",
+  "original_abi": "ECX hay; stack(set,start); EAX DWORD bits/-1; RET8; ordinary Source not physical ABI",
+  "epochs": [
+    "set DATA FIRST",
+    "hay DATA -> gatedhaylen -> gatedsetNULL",
+    "negative0 else unsigned>reject with==allowed",
+    "realRawC0382C once",
+    "DWORDadd effective start",
+    "CURRENT haylen AFTER CRT",
+    "equalityONLY -1 else bitpreserving int32"
+  ],
+  "frame_context_pool_owner_cleanup_added": false,
+  "crt_boundary": "existing count_native_crt_wide_prefix_excluding_00c0382c(const void*,const void*) exactnative SUB/SARbits",
+  "source_hashes": {
+    "include/bsp/native_wide_string_find.hpp": "7a3c2f98e371f4718dd45520485b052dc3614c935a4556ce9b93776e5db63b44",
+    "src/native_wide_string_find.cpp": "0282246a22aa97a32c695bf4d24a496b9068f712ae844fd6c7c30bf20c8bae85"
+  },
+  "preservation_sha256": "ac9c832384a067a06c7463b06987d358ad85631fafd51629ac587c265a5e51d5",
+  "providers_unchanged": {
+    "include/bsp/native_wide_string.hpp": "5606f96b372362a6831a1633a583f264fbab4290789481f94f1ba97537f6e051",
+    "src/native_wide_string.cpp": "158502f1efb91f678011dd971c643d5236eb10bf56da3c9997631a6d8df96e55",
+    "include/bsp/native_crt_wcscspn.hpp": "3d055e4115d1e27ce548abd3520be55972ee48c771123fcefdccfa33666e84c3",
+    "src/native_crt_wcscspn.cpp": "b1889b603c98903a26b115a51ad7ca8c992366bc15d582ad38920cd7597cb08f",
+    "src/cc13_seg87.cpp": "f2c6fa222c1062e66da7d645bc2b742668ffbab9b331a3b0567701e0f4dafaca"
+  },
+  "contract_sha256": "b6e52065c33d8d3c6ada550fe51f975af3bfcc25371a7caaaf7f41ab04ab2318",
+  "source_review": "Root and Gameplay full actual HPP/CPP/all32ASM accepted exact7a3c2f98/0282246a before compile",
+  "limits": [
+    "actual reached raw header/WORD/stop/extent/alias domains",
+    "no invalidating writer/private-frame/fault/MMIO/concurrency protocol",
+    "no semantic wchar/string cast, stdwcscspn or newCRT body",
+    "no resolver/startup/ABI/runtime/Nativebody credit"
+  ],
+  "no_tests_probe_game_ghidra_existing_source_sharedmetadata_edits": true,
+  "strict_object": {
+    "compile_count": 1,
+    "compile_exit": 0,
+    "coff_machine": "014c",
+    "sha256": "774b6ff13681d70e04b9d3aae7d0b74b9b1f4c2de7ac273b3a69c360374d918c",
+    "artifacts": {
+      "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_wide_string_find_validation_gui_20261030\\objects\\compile.cmd": "854aa955599b228a1bf1b4ca9b3e0e8e1ff0694257a51270165044b1d979b254",
+      "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_wide_string_find_validation_gui_20261030\\objects\\compile.log": "d411335175ee9b2622d051606fd5148bb3570fc4da64d13276a1d50399f1990d",
+      "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_wide_string_find_validation_gui_20261030\\objects\\compile_command.txt": "e1d63ee3acca66ab8c93c02dd66fd4a6e88b9f7dd9087a857408529fd8b20234",
+      "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_wide_string_find_validation_gui_20261030\\objects\\compile_exit.txt": "9aca8dfce962538fb8131d73f84cada05e4dc79f5a0d3612c511b1150f3e33e2",
+      "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_wide_string_find_validation_gui_20261030\\objects\\symbols.cmd": "7128964f618f0dfc71b04c6504f8c3984c515028da81a4f96017fecaf397460e",
+      "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_wide_string_find_validation_gui_20261030\\objects\\symbols.txt": "7af367881e959e1ef5fccfd1409afc4ae9b681b9cde01d48b82ded7967227f44",
+      "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_wide_string_find_validation_gui_20261030\\objects\\wide_find.obj": "774b6ff13681d70e04b9d3aae7d0b74b9b1f4c2de7ac273b3a69c360374d918c"
+    }
+  },
+  "actual_symbol": {
+    "defined_external_row": "012 00000000 SECT3  notype ()    External     | ?find_first_of_native_wide_string_header_00a9ef60@bsp@@YAHPBX0H@Z (int __cdecl bsp::find_first_of_native_wide_string_header_00a9ef60(void const *,void const *,int))",
+    "decorated_symbol": "?find_first_of_native_wide_string_header_00a9ef60@bsp@@YAHPBX0H@Z",
+    "actual_raw_crt_reference_row": "013 00000000 UNDEF  notype ()    External     | ?count_native_crt_wide_prefix_excluding_00c0382c@bsp@@YAIPBX0@Z (unsigned int __cdecl bsp::count_native_crt_wide_prefix_excluding_00c0382c(void const *,void const *))",
+    "object_sha256": "774b6ff13681d70e04b9d3aae7d0b74b9b1f4c2de7ac273b3a69c360374d918c",
+    "coff_machine": "014c"
+  },
+  "symbol_receipt_sha256": "34ffed60d91f8169f0e6cbce36e4769e9b3091f60b14b754a6dee6737c94feed"
+}

@@ -1297,3 +1297,22 @@ route finding: AppCFEAB0slot14=735B40 returns CURRENT E188A8+1A0C andignores
 receiver/scratch; followingB67980 consumes pushedscratch. Do notpreserveearlier
 scratch-as-slot14-argument assumption. FullLua-path/currentbinding/resolver/
 reload/raw16/GUI/Font48/ABI/runtime gates stayopen.
+
+
+B69130 value-string d2d592346, A9EF60 wide first-of2ada876f8 and770E50
+substring403a381dc now integrated as dormant actual-provider Core bindings.
+Primary+two independent full Source/listing reviews each; strict one object
+ONCE COFF014C each; same-object FLOAT32/ST0/current-word-address numeric
+bridge inspected. Core registration once; peer1d2a1ca joined before common
+retained3entries+substring C++EH/checks2/2 11.01s, canonical2/2 10.81s;
+overlay/cache/project/symbols restored. 50/51 prior paths unchanged, peer-only
+wrapped registry addition exact inverse. Nine Text flags OFF, no entry/game
+execution. 770E50 negative position adds to count then zero, NOT from end;
+locked appended Ghidra correction/name preserved/old values saved/export
+refreshed. Source private constructed authority remains distinct from Native
+physical bit/FH3/hardware policy; no new Native/vendor credit. B68D70 raw
+path design admitted with actual mutable0108FF2C caller role and qualified
+current CRT; implementation/reviews advance, B692C0 waits for that real API.
+Embedded game VM adoption/setup needs genuine producer completion and actual
+zero-upvalue handler bindings; existing semantic two-upvalue registrar does
+not close it. Resolver/full reload/raw16/GUI/Font48/ABI/runtime gates remain.
