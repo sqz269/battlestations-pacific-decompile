@@ -1,0 +1,48 @@
+{
+  "kind": "ordinary_cpp_retained_one_file_fragment_storage",
+  "native_range": {
+    "begin": "00AA00B0",
+    "end_exclusive": "00AA0356",
+    "existing_record_callee": "00AA0130..00AA0257"
+  },
+  "original_abi": "ECX actual locale manager in whole AA0020; per-file block uses actual captured filename8 and saved original/converted stream registers; no independent recovered function ABI",
+  "source_abi": "void scan_native_locale_parser_file_00aa00b0(const Context&, Frame&); caller-retained nonmoving one-shot graph",
+  "base": "5ab5abc9ce71ae71eba65e5fd924e59c41d322ef",
+  "source_ready": false,
+  "runtime": false,
+  "no_whole_AA_parser_loading_startup_NativeABI_vendor_body_credit": true,
+  "contract_sha256": "1d12690bb7ec55f36105efa6ea6c835767f5d68f8f442b532f3e85bfef33949d",
+  "sources": {
+    "include/bsp/native_locale_parser_file_storage.hpp": "a5a6ddc4e6ddbe1f0f3f4fe3ee7531a4f12208cfbbe93f0e64db6ffcf223409e",
+    "src/native_locale_parser_file_storage.cpp": "d6a6bf6fdb202e7c5085ef09b6f8ccc921f3c1f59c4d0fb4ba1ed0ed8356966f",
+    "docs/NATIVE_LOCALE_PARSER_FILE_STORAGE.md": "8ee4b76ea22fa179dd10f57924136cf156df7f2ba4ba1594466f499bfa82b275"
+  },
+  "private_authority": [
+    "exact one-shot Context/Frame plus sticky entry/return checks",
+    "stable append-only actual RecordContext/Frame nodes; real private has_normal_result, never copied diagnostics",
+    "genuine borrowed current decrement role captured only once at normal pair release"
+  ],
+  "failure": "retain exact partial streams/references/scratch/record nodes/providers; no stream cleanup, count/header rollback or retry; filename is synchronous-call borrow and afterward only diagnostic identity",
+  "qualification": [
+    "evidenced raw scratch offsets plus valid native extent/alias domain, no universal cap",
+    "current Source import-role producer, not Original IAT equality",
+    "ordinary C++/current provider/CRT domains; lower field/fencing, private stack/register/FH3/SEH/hardware/hook equivalence unproved"
+  ],
+  "unchanged_provider_receipt": {
+    "path": "local\\native_locale_parser_file_storage_compile_cc9_20261030\\dependency_preservation.json",
+    "sha256": "68fd8f40acd105f69af8b1803d72ecee1b1bbcfebb817049a9fb01c4b01b5995",
+    "count": 14
+  },
+  "strict_object": {
+    "path": "local\\native_locale_parser_file_storage_compile_cc9_20261030\\compile_receipt.json",
+    "sha256": "b6ee525563f0792bbc8c705da7de7403136b99e1e58b73008457e048456e789a",
+    "exit_code": 0,
+    "object_sha256": "b9c1ee1cd6e82025af0d5804d0403895f865012256ebad096f1e2be9ebc081cf",
+    "COFF_machine": "0x14c"
+  },
+  "saved_assembly": {
+    "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00aa0020/assembly.txt",
+    "sha256": "a4f39e571230e247f8e30586b4e86e2a7fa33bb0b8c73a89601cd93ab4ed32a7"
+  },
+  "utc": "2026-10-30T17:04:55.584832+00:00"
+}

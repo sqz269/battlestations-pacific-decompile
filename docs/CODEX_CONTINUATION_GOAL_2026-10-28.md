@@ -1143,3 +1143,28 @@ lowWORD/partial tails remain exactqualifiedSource. Existing4HPP/CPP inverse-exac
 primary/independentSource+2strictobjects+canonicalWin32checks2/2 pass11.50s.
 No scanner/input/release composition or raw16/fullparser/loading/runtime admission.
 See CODEX_STREAM_WORD_ENTRY_INTEGRATION.md.
+
+ONE-file scanner4006752d [AA00B0,AA0356) now composes actualGameVFS/current
+read/word/length/position and realrecord storage in caller-retained nonmoving
+graphs. Primary/independent fullSourceaccept, strictobject014C/14providersunchanged.
+Game-only deferredregistration92344c103 countonce; canonicalWin32checks2/2 pass9.36s.
+Native >=vs== EOFepochs and onecaptured genuine decrement convertedthenoriginal
+normalreturn preserved; no selectedstreamcleanup/replay/aliasdedup. Filename is
+call-scoped then historicalidentity, permitting later Nativevectorcleanup.
+Fullinput/vector/option0/raw16/parser/loading/runtime/ABI gates remain unbound;
+all9Textflags off/ac60hold unchanged. Nextboundedwork is exactoption1 textual
+composition with realformalinput/pathvector selectedcleanup, not fullbodycredit.
+See CODEX_LOCALE_FILE_STORAGE_INTEGRATION.md.
+
+Explicittextualoption1 composition06f8ca1d nowjoins owningformalinput/raw0C,
+actualBDEF90/originalcopy andper-occurrence retainedFileFrames. Privateentry
+reject isoutsidecleanup; currentstate1/vector thenstate0/input cleanupconsumes
+first; normalshrink/free andEARLYinputfooter preserved. Independentreview fixed
+healthyfence afterreturningpoolgetter beforeBD1510; state-1neverretries.
+Primary+2independentSourceaccept/strict014C/14providersunchanged. Game-only
+registration5049d1b9b countonce. Local forcedsymbols retainedrealctor/entry and
+scanner/record/BDEF/VFSword+EH, checks2/2 10.51s; overlayremoved/cache+project
+restored, canonicalWin32checks2/2 pass10.46s. Unboundentry normallydiscarded;
+no newentry/gameinvocation. FullAA/option0/raw16/loading/publication/consumer/
+startup/runtime/ABI gates remain; all9Textoff/ac60hold unchanged.
+See CODEX_LOCALE_TEXTUAL_PARSER_INTEGRATION.md.
