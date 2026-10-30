@@ -1,0 +1,488 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-gui-text-glyph-buffers-storage",
+  "classification": "Whole raw AB8400 Source supplier counterpart; unbuilt in this worker",
+  "baseline": "20bf26c13ba5bf1dc0ade39cceb848222000042e",
+  "utc": "2026-10-30T15:39:05.438201+00:00",
+  "owned_files": [
+    "include/bsp/native_gui_text_glyph_buffers_storage.hpp",
+    "src/native_gui_text_glyph_buffers_storage.cpp",
+    "docs/CC16_NATIVE_GUI_TEXT_GLYPH_BUFFERS_STORAGE.md",
+    "reports/cc16_native_gui_text_glyph_buffers_storage.json"
+  ],
+  "address_lease": [
+    "00ab8400"
+  ],
+  "Source_symbol": "bsp::create_native_gui_text_glyph_buffers_storage_00ab8400",
+  "document": "docs/CC16_NATIVE_GUI_TEXT_GLYPH_BUFFERS_STORAGE.md",
+  "implementation": {
+    "source_written": true,
+    "new_owner_or_shadow_registry": false,
+    "existing_semantic_and_equal_only_APIs_changed": false,
+    "CMake_or_ledger_changed": false,
+    "new_Original_or_duplicate_body_credit": 0,
+    "recovered_native_body_credit": 0,
+    "new_Source_supplier_counterpart": 1,
+    "integration_and_common_build_owner": "Root",
+    "production_consumer_admission": false
+  },
+  "Native_evidence": {
+    "entry": "00ab8400",
+    "end_inclusive": "00ab852d",
+    "bytes": 302,
+    "instructions": 110,
+    "ABI": "Incoming ECX unused; actual capacity and Mesh DWORD stack args; RET8; EAX incidental decrement result is not a new Source result contract.",
+    "assembly_inspected": "All110 saved listing lines, first69 and remaining41; no x87.",
+    "pseudocode_defects": "No-param signature and unaff_EBX/unaff_retaddr are stack-analysis artifacts. Source follows listing stack homes, register captures and calls.",
+    "live_read_only_query": {
+      "command": "python tools/bsp.py ghidra proto 00ab8400",
+      "verified_config_project_file": "C:/Users/sqz269/bsp.gpr",
+      "verified_project": "bsp",
+      "verified_program_path": "/battlestationspacific.exe",
+      "program_response": "battlestationspacific.exe",
+      "verification": "bsp.py client() calls ghidra_export.Client.verify() before proto query; current config and verify implementation inspected.",
+      "live_queries": 1,
+      "Ghidra_mutations": 0
+    },
+    "saved_exports": [
+      {
+        "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab8400\\assembly.txt",
+        "sha256": "12c4cb33863f0f599677fa39cc1098280503a77ac5c64475727c090238a701d4",
+        "bytes": 3030
+      },
+      {
+        "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab8400\\decompiled.c",
+        "sha256": "a4daee2543c5b1133c1f08bcffe17b8f600b9ddc40fd729e787df4760d849d79",
+        "bytes": 5976
+      }
+    ]
+  },
+  "API": {
+    "context": "NativeGuiTextGlyphBuffersStorageContext",
+    "frame": "NativeGuiTextGlyphBuffersStorageFrame",
+    "acquisition": "NativeGuiTextGlyphBuffersStorageAcquired",
+    "entry": "void create_native_gui_text_glyph_buffers_storage_00ab8400(NativeGuiTextGlyphBuffersStorageFrame&)",
+    "frame_constructor": "(Context&, volatile uint32_t (&actual_argument_homes)[2], Acquired&) noexcept",
+    "constructor_effects": "Store references only; no argument/native cell reads, name initialization, allocation, retain or native call.",
+    "one_shot": "Private phase and nonmoving frame; failure remains sticky and not resumable. Default/no-op destructor performs no cleanup, retry or termination. requires_process_retention() remains mandatory caller graph/record retention contract; distinct stable frame/acquisition per invocation.",
+    "arguments": [
+      {
+        "word": 0,
+        "role": "capacity",
+        "native_load": "00ab8496",
+        "reads": 1,
+        "captured_for": "both wrapping4*n and6*n products"
+      },
+      {
+        "word": 1,
+        "role": "actual Mesh publication operand",
+        "native_loads": [
+          "00ab84ac",
+          "00ab84fb"
+        ],
+        "reads": 2,
+        "reloads_not_a_snapshot": true
+      }
+    ]
+  },
+  "ordered_native_effects": [
+    {
+      "sites": [
+        "00ab8426",
+        "00ab842a",
+        "00ab842e"
+      ],
+      "effect": "Initialize actual local8B header length/data to0, then existing raw41DD40(size16,preserve1) on same raw string cells."
+    },
+    {
+      "sites": [
+        "00ab8433",
+        "00ab843b",
+        "00ab8449"
+      ],
+      "effect": "Capture current data first; only nonnull reads current length+1 then memcpy from authenticated mapped CFADA4 simplecolor.mvfm literal."
+    },
+    {
+      "sites": [
+        "00ab8451",
+        "00ab8457",
+        "00ab8459",
+        "00ab8461",
+        "00ab8465"
+      ],
+      "effect": "Reload renderer; resolve observed current38 genuine B317E0 over actual raw header and existing declaration cache. Only this call is name-EH-state0; canonical registration adds metadata, no native retain."
+    },
+    {
+      "sites": [
+        "00ab846f",
+        "00ab8477",
+        "00ab8484",
+        "00ab848b"
+      ],
+      "effect": "Disarm name cleanup before explicit actual raw pool return. Capture current data/length+1 through existing raw41DD20; no header clear. Resize/copy are outside name cleanup."
+    },
+    {
+      "sites": [
+        "00ab8490",
+        "00ab8496",
+        "00ab849c",
+        "00ab84aa"
+      ],
+      "effect": "Reload renderer, read/capture capacity once, resolve current5C and realB287C0(4*n,1,declaration). No extra capacity bound or reuse policy."
+    },
+    {
+      "sites": [
+        "00ab84ac",
+        "00ab84b4"
+      ],
+      "effect": "Read CURRENT Mesh home after factory, resolve exact existing Mesh companion and invoke genuine B73BB0(mesh,0,vertex)."
+    },
+    {
+      "sites": [
+        "00ab84b9",
+        "00ab84c3",
+        "00ab84d5"
+      ],
+      "effect": "Capture genuine CE2220 target CELL once AFTER vertex publication. Return vertex then declaration with that captured target; zero branches use existing canonical current00 dispatch."
+    },
+    {
+      "sites": [
+        "00ab84e4",
+        "00ab84ec",
+        "00ab84f9"
+      ],
+      "effect": "Reload renderer independently, resolve current60 and realB288B0(6*captured_n,1,65). Same captured capacity survives callbacks."
+    },
+    {
+      "sites": [
+        "00ab84fb",
+        "00ab8502",
+        "00ab850b"
+      ],
+      "effect": "Read Mesh home AGAIN after index factory, resolve exact existing companion, invoke B73B70(mesh,index), return index using SAME earlier captured decrement."
+    }
+  ],
+  "existing_genuine_supplier_composition": {
+    "Mesh": {
+      "canonical_domain": "Context::owners is exactly graphics.streams.geometry.actual_owners(). Each late raw argument identity resolves in that registry.",
+      "identity": "dynamic_cast existing RenderCommandReference companion to NativeMeshReference; require address of companion.storage() equals captured raw operand; invoke existing B73BB0/B73B70 with that actual reference.",
+      "raw_pointer_to_NativeMeshStorage_cast": false,
+      "new_Mesh_reference_or_retain": false,
+      "lifetime": "Caller retains actual producer/pool/companion and valid raw Mesh through each setter/callback; registry metadata lock does not retain it. No new Mesh body or fake value is supplied."
+    },
+    "renderer": "Context::renderer_00f8d394 borrows SAME GameNativeRendererApplication::publication_00f8d394() cell. Existing require_gui_text_native_renderer_domain checks cell identity against vertex/index/mapping contexts and shared physical/pool/synchronization/type-size/profile domains.",
+    "current38": "Current actual D5F0A8 receiver and actual profile38=B317E0; use existing raw-header B317E0 + geometry.register_native_declaration_reference because older Text helper takes NativeString&. No typed-string header cast.",
+    "current5C": "Existing create_gui_text_native_vertex_current5c, B287C0 and existing stream companion registration in SAME geometry registry.",
+    "current60": "Existing create_gui_text_native_index_current60, B288B0 and SAME canonical stream registry.",
+    "strings": "ActualNativeStringPoolStorage::uses_raw_pool_cells and existing domain validator verify SAME actual AA8/AA4/AA0 references. Resize/normal+exceptional return use raw NativeStringRawPoolContext overloads.",
+    "literal": "Context::data is existing authenticated GameNativeReadOnlyData; data_at(CFADA4,17) borrows mapped simplecolor.mvfm bytes. No host hardcoded replacement name or new data owner.",
+    "decrement": "Context borrows genuine const-volatile CE2220 target cell already retained by renderer/model/scene services; captured only once at84B9 and reused. No generic fetch_sub substitute.",
+    "zero_terminal": "Existing dispatch_native_render_actual_owner_zero resolves SAME canonical companion, verifies actual+04 alias and invokes its real CURRENT profile terminal. No second decrement or retain."
+  },
+  "failure_and_lifetime_contract": [
+    "Preflight inspects Source metadata/domain identity only; actual argument homes are read solely at listing sites. Caller proves context/frame/acquisition/homes/name and transitive backing disjointness, valid finite native data and serialized lifetime.",
+    "Header resize and literal copy have no local cleanup arm, matching native state-1. Only current38/declaration admission exceptions execute armed name cleanup. Explicit normal name return disarms first and is never retried.",
+    "Factory or canonical metadata admission failure preserves actual partial creators/registrations. Name cleanup does not release declaration/stream effects.",
+    "Publication returns before dropping creator. Creator metadata is consumed before its captured decrement; entered/decremented/zero/returned status preserves diagnostics without automatic cleanup or retry. Do not treat consumed metadata as proof that a throwing terminal completed.",
+    "All actual registry, cache/pools/renderer/device/physical/synchronization/string/import services, raw Mesh/streams/declaration and operation records remain alive through reached callbacks/failure disposition. No extra protective retain or count is added.",
+    "On a terminal return, raw identities are diagnostic only; never rediscover freed storage. Canonical resource entries retire through their existing genuine lifetime path.",
+    "Existing null-result/profile support and canonical terminal noexcept policies remain Source qualification limits. No arbitrary unknown-target fallback, Original hardware-fault/FH3/SEH/private-stack/register/async-alias equivalence is claimed.",
+    "Correction of historical93cb: metadata destruction is now default/no-op. Explicit requires_process_retention()/caller retention obligations remain; no new terminal process policy, cleanup, retry or acknowledgment is introduced."
+  ],
+  "consumer_boundary": {
+    "actual_supplier_closes": "Raw nonempty ABA8D0 glyph-buffer creation call after real Text/clear/assign work can use this actual mesh/renderer supplier. No unused owner or authority is constructed.",
+    "changed_ABAED0_ABA8D0_admitted": false,
+    "nonempty_layout_AB9FD0_ABA270_admitted": false,
+    "glyph_recursion_admitted": false,
+    "Text_Icon_FrameBox_factories_or_full_frontend_ready": false,
+    "Page_guard_changed": false,
+    "old_equal_only_and_empty_unchanged_APIs_relaxed": false,
+    "remaining_callbacks": "Actual raw changed Text caller must retain this exact context/frame/acquisition and provide current real Mesh homes; same registry/physical/factory/decrement bindings must be installed by Root. Actual layout/glyph child/other factories and Page/Frame callers still need their own closed composition."
+  },
+  "validation": {
+    "build_tests_or_probe_run": false,
+    "game_run": false,
+    "process_service_changes": false,
+    "Ghidra_mutations": false,
+    "new_tests": 0,
+    "CMake_ledger_or_extra_Source_edits": false,
+    "static_evidence_check": {
+      "status": "passed corrected Source",
+      "utc": "2026-10-30T15:46:19.397156+00:00",
+      "scope": [
+        "CPP differs from93cb ONLY by removal of four-line destructor definition",
+        "Header defaults destructor; unchanged requires_process_retention() query",
+        "2 current Source pins,35 unchanged input pins and2 preserved93cb Source pins",
+        "Listing/body/call/cleanup schedule unchanged; raw home/global read counts unchanged",
+        "4 owned paths only; no build/tests/process/Ghidra changes"
+      ],
+      "limitation": "Static inspection only; common build and independent review remain with Root."
+    },
+    "Root_common_MSVC_Win32_build": "pending; worker explicitly forbidden to build",
+    "staged_diff_check": "Correction git diff --cached --check passed; four owned files; CPP only destructor removal"
+  },
+  "new_credit": {
+    "Original": 0,
+    "duplicate_native_body": 0,
+    "vendor": 0,
+    "ABI": false,
+    "runtime": false,
+    "activation": false,
+    "game_validated": false
+  },
+  "new_Source_pins": [
+    {
+      "path": "include/bsp/native_gui_text_glyph_buffers_storage.hpp",
+      "Git_LF_sha256": "d80b39a0dab6f1297098fc185cd833de0f928799b2903c8bacdce2384bd4444f",
+      "Git_LF_bytes": 6701,
+      "git_blob": "2d49499a1552b69728ad41939266dcdc5b07b2ba"
+    },
+    {
+      "path": "src/native_gui_text_glyph_buffers_storage.cpp",
+      "Git_LF_sha256": "729018eaa935d606d6ea233a856b6b2e598183bdfabb83974a0ee75b565a6c94",
+      "Git_LF_bytes": 10097,
+      "git_blob": "647cab67621d63b9801a383346edf413db4dada6"
+    }
+  ],
+  "unchanged_supplier_and_evidence_pins": [
+    {
+      "path": "include/bsp/gui_text_native_renderer.hpp",
+      "git_blob": "45aff1d95bc11528ebff9dba43c5b8b402747f61",
+      "Git_LF_sha256": "9ee3aeaa194ebf677efd3e96817b057d7093bf08bed72702fd44f45edee4a572",
+      "Git_LF_bytes": 2743
+    },
+    {
+      "path": "src/gui_text_native_renderer.cpp",
+      "git_blob": "02a68b42f6d9f7cc81e9d66c90afe3794cedbe45",
+      "Git_LF_sha256": "9f3753d2cc0232eea8dd990cc5c0e4a5f958145dbd8de35ba64860ab370c74e5",
+      "Git_LF_bytes": 5735
+    },
+    {
+      "path": "include/bsp/gui_native_geometry.hpp",
+      "git_blob": "6d2c181bb30aeb29dc21f3fb70e797bfc54da139",
+      "Git_LF_sha256": "132f61a4e1f2b7cd09d16b4bae2e5c5cd223805d0fcf7592560f46737a6286cf",
+      "Git_LF_bytes": 10778
+    },
+    {
+      "path": "src/gui_native_geometry.cpp",
+      "git_blob": "b60d0c7fd032e7f146980d91c6fb578690517b43",
+      "Git_LF_sha256": "1b957f0aa970eec806bd09389aaa4f21157a64013a3a5c721a0065a0a7e5f0bf",
+      "Git_LF_bytes": 30316
+    },
+    {
+      "path": "include/bsp/native_mesh_owner.hpp",
+      "git_blob": "e07733e92317d2e38e48a14e9c9121ba0342dab6",
+      "Git_LF_sha256": "f0f4b0d87721717033e823aee5494a280481c6b4a02a7fd2bea51970b46d5636",
+      "Git_LF_bytes": 9476
+    },
+    {
+      "path": "src/native_mesh_owner.cpp",
+      "git_blob": "148a586af9e2cc2ce8a64c0d7705852797d4634c",
+      "Git_LF_sha256": "8725dee8119cf400bf58464d6dd2dcb6771502b6edd8f527f65ec3f3c7fe40fe",
+      "Git_LF_bytes": 12622
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "git_blob": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808",
+      "Git_LF_sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+      "Git_LF_bytes": 10071
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c",
+      "Git_LF_sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+      "Git_LF_bytes": 11471
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+      "Git_LF_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "Git_LF_bytes": 8771
+    },
+    {
+      "path": "src/native_string.cpp",
+      "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+      "Git_LF_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "Git_LF_bytes": 9121
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "git_blob": "60b3f627150fa058fac7b8c4c74537cb3aee0a68",
+      "Git_LF_sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+      "Git_LF_bytes": 3113
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "git_blob": "103d6fe4d772bb3078c48fe8bcf3f929a385fdda",
+      "Git_LF_sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+      "Git_LF_bytes": 5450
+    },
+    {
+      "path": "include/bsp/native_vertex_declaration_cache.hpp",
+      "git_blob": "7d37a86057b18a38457e291e704a7fc9691cd3d6",
+      "Git_LF_sha256": "14123aa649c71cae8c4c35bad989533402ae66daeaa25bff86dcfd017b2768d1",
+      "Git_LF_bytes": 4248
+    },
+    {
+      "path": "src/native_vertex_declaration_cache.cpp",
+      "git_blob": "27628144aaa05721aa6d2660581027b109a798f6",
+      "Git_LF_sha256": "809bf7d8f598d0bdc9768c52e659146c88a9c64ce16e48a0d926dbb24e0ff8c6",
+      "Git_LF_bytes": 14186
+    },
+    {
+      "path": "include/bsp/native_vertex_declaration_loading.hpp",
+      "git_blob": "dfe6048ebb96c4619821b2a6bd06467632a96704",
+      "Git_LF_sha256": "9ef3f5c6bd9d535215cfb90630e7d90a7bee00d7988c66243226d8a423248227",
+      "Git_LF_bytes": 5700
+    },
+    {
+      "path": "include/bsp/native_stream_clone.hpp",
+      "git_blob": "ce2e7741362f51544b91a798c3e96ca4c67d180e",
+      "Git_LF_sha256": "a333d180afcf21084068a671d60c34ee8e1b18ea980a6c03b115a32ce2ff3e6a",
+      "Git_LF_bytes": 3283
+    },
+    {
+      "path": "include/bsp/native_logical_vertex_owner.hpp",
+      "git_blob": "f2c5a72e46f030f049f370eda07de9594a5f3816",
+      "Git_LF_sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c",
+      "Git_LF_bytes": 7242
+    },
+    {
+      "path": "include/bsp/native_texture_surface_getter.hpp",
+      "git_blob": "99dea4ccdfb98725c3ded24718de5243f1401a28",
+      "Git_LF_sha256": "958bab84aaa61abb9cceeb290805bf51faec2010543f46ace4b28385fb182d87",
+      "Git_LF_bytes": 1851
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+      "Git_LF_sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "Git_LF_bytes": 2713
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "git_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e",
+      "Git_LF_sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+      "Git_LF_bytes": 7167
+    },
+    {
+      "path": "include/bsp/game_native_renderer_application.hpp",
+      "git_blob": "dc90eb7264b1a84b06d9658d359864b96cc60a2c",
+      "Git_LF_sha256": "35d3649c491e263cb0c6752bf637d70af3135a9bae12e375ed9d12bbecd26bd5",
+      "Git_LF_bytes": 20750
+    },
+    {
+      "path": "include/bsp/native_gui_text_main_section_storage.hpp",
+      "git_blob": "b78b82bacc8a8e444b1cdaf04f1039198c031cf6",
+      "Git_LF_sha256": "2fffebb5ba867421eacc9bec461648004238f870d671337544ebdf3989bccc72",
+      "Git_LF_bytes": 6847
+    },
+    {
+      "path": "src/native_gui_text_main_section_storage.cpp",
+      "git_blob": "8e85ebe1fe98e0d2c245617dd7493a82ccd32042",
+      "Git_LF_sha256": "9cea2fa635091c01ad61fabad16a406843709a1d267d830a2aedfc97ebd2b7a1",
+      "Git_LF_bytes": 29712
+    },
+    {
+      "path": "include/bsp/native_gui_text_field_storage.hpp",
+      "git_blob": "cb67db1bae62fa1e20c8dc85b2d791939761d795",
+      "Git_LF_sha256": "ae32fa79cb78a8df9b2d8ee89b9930a4358db6e4d2045bbc2d894dd4e480e29c",
+      "Git_LF_bytes": 14343
+    },
+    {
+      "path": "include/bsp/native_gui_text_source_storage.hpp",
+      "git_blob": "aacfc39bb0a116308bd4b1dd767c395c9d4c5ebd",
+      "Git_LF_sha256": "fc760051616625254a74186df22d967c835c75116a20821c6ee7a77b7adeacc5",
+      "Git_LF_bytes": 6898
+    },
+    {
+      "path": "src/native_gui_text_source_storage.cpp",
+      "git_blob": "3e2e9377df16703aa84e76ca34891f72592bec97",
+      "Git_LF_sha256": "8ed38445f48d3b7188995a7f4f782d2e47b99853c86782150b0e493b309f1542",
+      "Git_LF_bytes": 18244
+    },
+    {
+      "path": "include/bsp/native_gui_text_empty_unchanged_storage.hpp",
+      "git_blob": "1dd493f03b94ee6493371da0207141c0419fa32e",
+      "Git_LF_sha256": "ac44178e32a44ddd96959849dba524acc048679a29c15a2cae3a12bf0bbbe6c3",
+      "Git_LF_bytes": 9991
+    },
+    {
+      "path": "src/native_gui_text_empty_unchanged_storage.cpp",
+      "git_blob": "084ae2148df77f91c3225bf7cd83eb6475d395a7",
+      "Git_LF_sha256": "63f56034585bd44e06ceaef87a967b1e07e9c3dc8957e52e66b28da8f8fdc839",
+      "Git_LF_bytes": 35888
+    },
+    {
+      "path": "include/bsp/gui_text_buffers.hpp",
+      "git_blob": "53911d9001f31d73ae706a5dc6cd350c27749cfd",
+      "Git_LF_sha256": "80c262bf3a456c6ac81849d8636f20a31cd6616bf974874d4d5494e89b12c2d0",
+      "Git_LF_bytes": 2900
+    },
+    {
+      "path": "src/gui_text_buffers.cpp",
+      "git_blob": "94e485723f1303a6e15833b9e142d7982b7fe383",
+      "Git_LF_sha256": "a729a73760e188888f45d6deb24f1bd0f7effba466f7c6394d53c2bedea38edd",
+      "Git_LF_bytes": 3691
+    },
+    {
+      "path": "src/cc13_gui1.cpp",
+      "git_blob": "7f0ee9d08b5f0b90350d956f0bd2b5b79d714291",
+      "Git_LF_sha256": "3b60069c4991f51ac3a8ed5076cffb9c0abf5af97dd9c171773c2e99952b8798",
+      "Git_LF_bytes": 35349
+    },
+    {
+      "path": "src/cc13_gui2.cpp",
+      "git_blob": "74984642095b6a8ac902ad19e0d0d8fccdfebad0",
+      "Git_LF_sha256": "7c2cf61c9c7e807d9e3eb0bf94b5f12acce93de7bed9f120f06586a06049dce4",
+      "Git_LF_bytes": 43232
+    },
+    {
+      "path": "tools/bsp.py",
+      "git_blob": "2e1fb76a9fd700f079912706d9459c4293f96c86",
+      "Git_LF_sha256": "0532d1e3fa711fb62d198e6747a4e0eb8978ef7e301de75710afd40d6c1a1339",
+      "Git_LF_bytes": 103131
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "git_blob": "bd937766a7e4d62c015b2ab44a14a9153fbb4542",
+      "Git_LF_sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+      "Git_LF_bytes": 14518
+    },
+    {
+      "path": "config/target.json",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "Git_LF_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "Git_LF_bytes": 455
+    }
+  ],
+  "historical_Source_versions": [
+    {
+      "commit": "93cbff9705e248dacca0edb2978f580fb98b3dba",
+      "status": "historical Source before destructor policy correction; retained unchanged for audit",
+      "new_Source_pins": [
+        {
+          "path": "include/bsp/native_gui_text_glyph_buffers_storage.hpp",
+          "Git_LF_sha256": "1865c9150c0185e302273f92c0733f85eda3ef55a63b60f11b3d3b8351f84471",
+          "Git_LF_bytes": 6640,
+          "git_blob": "30a9a3b9f559c058804328d864705787e818b22c"
+        },
+        {
+          "path": "src/native_gui_text_glyph_buffers_storage.cpp",
+          "Git_LF_sha256": "e22b83dacefebf19066feece8b62bc9d05f56fa4ac90b509d83d38c3f3c63459",
+          "Git_LF_bytes": 10247,
+          "git_blob": "393b17f9967b40d7d0efb589b085349087b3426f"
+        }
+      ],
+      "superseded_API_one_shot": "Private phase and nonmoving frame. Entered/failed frame destruction terminates; no destructor cleanup or retry. Distinct stable frame/acquisition per invocation."
+    }
+  ],
+  "policy_correction": {
+    "parent_commit": "93cbff9705e248dacca0edb2978f580fb98b3dba",
+    "utc": "2026-10-30T15:46:02.181530+00:00",
+    "scope": "Remove ONLY automatic std::terminate from borrowed AB8400 metadata frame destructor; default/no-op destructor. No body schedule, cleanup, retry, acknowledgment or new failure policy.",
+    "reason": "Existing genuine resource owner contracts do not require this borrowed frame to impose a new process terminal policy.",
+    "caller_contract": "requires_process_retention() is unchanged. Actual caller MUST retain unresolved graph, frame/acquisition/homes/providers and diagnose/dispose them under its existing genuine owner policy; metadata destruction supplies no resolution.",
+    "cleanup_secondary_exception_transport": "Existing explicit cleanup behavior retained and honestly qualified; independent review pending. No termination was invented to imitate unproved Native FH3."
+  }
+}

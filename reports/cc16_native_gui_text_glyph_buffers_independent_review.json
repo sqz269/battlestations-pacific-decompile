@@ -1,0 +1,278 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-gui-text-glyph-buffers-independent-review",
+  "classification": "independent_bounded_source_and_pin_review",
+  "reviewed": {
+    "historical_source": "93cbff9705e248dacca0edb2978f580fb98b3dba",
+    "corrected_source": "6896c65e34f796e3a7912390ce3293bd9205aa49",
+    "native_entry": "00AB8400",
+    "native_end_inclusive": "00AB852D",
+    "bytes": 302,
+    "instructions": 110,
+    "original_abi": "Incoming ECX unused; capacity/Mesh DWORD stack homes; RET8",
+    "scope": "Full2Source files and full110instruction listing, exact correction diff, existing shared providers and evidence pins."
+  },
+  "owned_files": [
+    "docs/CC16_NATIVE_GUI_TEXT_GLYPH_BUFFERS_INDEPENDENT_REVIEW.md",
+    "reports/cc16_native_gui_text_glyph_buffers_independent_review.json"
+  ],
+  "verdict": {
+    "historical_findings": 1,
+    "p1_findings": 1,
+    "p1_fixed": 1,
+    "remaining_blocking_source_findings": 0,
+    "corrected_supplier_ready_for_primary_common_build": true,
+    "build_validated": false,
+    "caller_admitted": false,
+    "whole_frontend_ready": false,
+    "activation": false
+  },
+  "findings": [
+    {
+      "id": "AB8400-R1",
+      "priority": "P1",
+      "status": "fixed",
+      "against_commit": "93cbff9705e248dacca0edb2978f580fb98b3dba",
+      "file": "src/native_gui_text_glyph_buffers_storage.cpp",
+      "lines": [
+        91,
+        92,
+        93
+      ],
+      "header_lines": [
+        94,
+        95,
+        118,
+        119
+      ],
+      "trigger": "Any operation exception becomes sticky failed, including a preflight admission error before native entry; scope destruction calls terminate with no public failed-phase disposition path.",
+      "effect": "Adds an automatic process terminal policy to a borrowed metadata frame even if caller retains the native graph; no actual Mesh/stream/declaration owner requires it.",
+      "fix_commit": "6896c65e34f796e3a7912390ce3293bd9205aa49",
+      "fix": "Default/no-op frame destructor, remove ONLY four-line CPP definition, preserve explicit retention query/caller obligation; no new cleanup/retry/reset/acknowledgment policy.",
+      "verification": {
+        "cpp_only_removed_destructor": true,
+        "whole_entry_body_and_cleanup_bytes_unchanged": true,
+        "all_other_helpers_unchanged": true,
+        "requires_process_retention_query_unchanged": true,
+        "owner_doc_report_corrected": true,
+        "historical_source_pins_preserved": true
+      }
+    }
+  ],
+  "normal_schedule_checks": [
+    {
+      "sites": [
+        "00AB8426",
+        "00AB842A",
+        "00AB842E",
+        "00AB8433",
+        "00AB843B",
+        "00AB8449"
+      ],
+      "result": "Raw8B header/native resize/current data-before-length/literal copy; no earlier cleanup arm."
+    },
+    {
+      "sites": [
+        "00AB8451",
+        "00AB8457",
+        "00AB8459",
+        "00AB8461",
+        "00AB8465"
+      ],
+      "result": "First renderer/current38 genuine raw-header declaration and SAME cache/registry domain."
+    },
+    {
+      "sites": [
+        "00AB8467",
+        "00AB846F",
+        "00AB8484",
+        "00AB848B"
+      ],
+      "result": "Disarm before explicit normal raw name return; no cleanup retry or declaration rollback."
+    },
+    {
+      "sites": [
+        "00AB8490",
+        "00AB8496",
+        "00AB849C",
+        "00AB84AA"
+      ],
+      "result": "Second renderer and one late capacity read; wrapping4*n; existing current5C factory."
+    },
+    {
+      "sites": [
+        "00AB84AC",
+        "00AB84B4"
+      ],
+      "result": "Fresh current Mesh home after factory; genuine SAME registry NativeMeshReference exact storage identity; B73BB0 index0."
+    },
+    {
+      "sites": [
+        "00AB84B9",
+        "00AB84C3",
+        "00AB84CF",
+        "00AB84D5",
+        "00AB84E2"
+      ],
+      "result": "One CE2220 target capture after vertex publication; vertex then declaration release; current canonical zero dispatch on returned0; no second decrement."
+    },
+    {
+      "sites": [
+        "00AB84E4",
+        "00AB84EC",
+        "00AB84F9",
+        "00AB84FB",
+        "00AB8502",
+        "00AB850B",
+        "00AB8517"
+      ],
+      "result": "Third renderer; wrapping6*captured capacity; existing current60 format65; independently reload Mesh; B73B70; SAME captured decrement for index return."
+    }
+  ],
+  "provider_review": {
+    "sources": [
+      "src/gui_text_native_renderer.cpp:12-79",
+      "src/gui_native_geometry.cpp:141-203",
+      "src/native_mesh_owner.cpp:29-41,126-136,191-213",
+      "src/native_render_context.cpp:147-188",
+      "include/bsp/gui_text_native_renderer.hpp:15-33",
+      "include/bsp/native_render_context.hpp:129-135"
+    ],
+    "real_mesh_identity": "Existing same-registry resolve_actual -> dynamic_cast of genuine companion -> &reference.storage()==captured raw identity; no cast of raw bytes into NativeMeshStorage.",
+    "import_epochs": "CE2220 target once atAB84B9, after vertex publication, reused all3returns; preserves captured value across later callbacks.",
+    "zero_boundary": "Existing dispatch verifies SAME actual+04 companion alias, then already-existing noexcept current-profile terminal. No new count/retain/terminal or raw access after return.",
+    "null_factory": "bad_alloc on null declaration/stream inherited from existing adapters; Native later dereference/fault behavior explicitly excluded, not claimed equivalent.",
+    "unsupported_profile": "Finite genuine observed renderer targets only; explicit rejection, no successful fallback."
+  },
+  "exception_transport_qualification": {
+    "inner_scope": "Current38 plus Source canonical admission only; resize/copy and explicit normal name return outside.",
+    "original_trigger": "Retained separately in acquired.name_cleanup_trigger.",
+    "secondary_cleanup_throw": "Outer catch records/propagates cleanup exception while original trigger remains separately stored.",
+    "verdict": "Honestly qualified ordinary Source exception transport, not an additional blocker in this supported Source scope.",
+    "original_fh3_seh_private_unwind_identity": false,
+    "secondary_native_termination_proved": false,
+    "new_termination_requested": false
+  },
+  "historical_source_pins": [
+    {
+      "path": "include/bsp/native_gui_text_glyph_buffers_storage.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "1865c9150c0185e302273f92c0733f85eda3ef55a63b60f11b3d3b8351f84471",
+      "bytes": 6640,
+      "git_blob": "30a9a3b9f559c058804328d864705787e818b22c"
+    },
+    {
+      "path": "src/native_gui_text_glyph_buffers_storage.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "e22b83dacefebf19066feece8b62bc9d05f56fa4ac90b509d83d38c3f3c63459",
+      "bytes": 10247,
+      "git_blob": "393b17f9967b40d7d0efb589b085349087b3426f"
+    }
+  ],
+  "corrected_source_pins": [
+    {
+      "path": "include/bsp/native_gui_text_glyph_buffers_storage.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "d80b39a0dab6f1297098fc185cd833de0f928799b2903c8bacdce2384bd4444f",
+      "bytes": 6701,
+      "git_blob": "2d49499a1552b69728ad41939266dcdc5b07b2ba"
+    },
+    {
+      "path": "src/native_gui_text_glyph_buffers_storage.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "729018eaa935d606d6ea233a856b6b2e598183bdfabb83974a0ee75b565a6c94",
+      "bytes": 10097,
+      "git_blob": "647cab67621d63b9801a383346edf413db4dada6"
+    }
+  ],
+  "corrected_owner_artifact_pins": [
+    {
+      "path": "docs/CC16_NATIVE_GUI_TEXT_GLYPH_BUFFERS_STORAGE.md",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "3baa40d1e5dc319ce3a3aac934081b51f17261128db54dd87d90efb6f64c39c2",
+      "bytes": 9483,
+      "git_blob": "921f7373ce8e84872d0f97e966c2244e712c9471"
+    },
+    {
+      "path": "reports/cc16_native_gui_text_glyph_buffers_storage.json",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "f720de171fb16fa956d3ac89fb51a220156e67fbadf4d50a3dcf1964d4a63020",
+      "bytes": 24087,
+      "git_blob": "d27735480cc671fc86e962f2eff6bb7259b0bfa1"
+    }
+  ],
+  "pin_audit": {
+    "historical_new_source": {
+      "count": 2,
+      "format": "immutable Git blob content LF SHA/OID/bytes",
+      "mismatches": []
+    },
+    "corrected_new_source": {
+      "count": 2,
+      "format": "immutable Git blob content LF SHA/OID/bytes",
+      "mismatches": []
+    },
+    "unchanged_supplier_and_evidence": {
+      "count": 35,
+      "verified_at_both_commits": true,
+      "format": "immutable Git blob content LF SHA/OID/bytes",
+      "mismatches": [],
+      "exact_rows": "Pinned corrected owner report unchanged_supplier_and_evidence_pins, whose whole blob SHA/OID/bytes are independently pinned above."
+    },
+    "exports": {
+      "count": 2,
+      "format": "raw shared saved-export file bytes with no normalization",
+      "mismatches": [],
+      "rows": [
+        {
+          "path": "exports/bsp/functions/00ab8400/assembly.txt",
+          "sha256": "12c4cb33863f0f599677fa39cc1098280503a77ac5c64475727c090238a701d4",
+          "bytes": 3030
+        },
+        {
+          "path": "exports/bsp/functions/00ab8400/decompiled.c",
+          "sha256": "a4daee2543c5b1133c1f08bcffe17b8f600b9ddc40fd729e787df4760d849d79",
+          "bytes": 5976
+        }
+      ]
+    },
+    "owner_report_historical93cb_pins_preserved": true,
+    "working_copy_bytes": "Corrected owner doc/report match Git LF exactly; no silent normalization of raw export hashes."
+  },
+  "validation": {
+    "full_new_source_and_native_listing_static_review": true,
+    "exact_git_and_raw_file_pins_verified": true,
+    "correction_body_identity_verified": true,
+    "json_parsed": true,
+    "staged_diff_check": true,
+    "owned_review_files_only": true,
+    "source_edits": false,
+    "cmake_edits": false,
+    "ledger_edits": false,
+    "ghidra_reads": false,
+    "ghidra_writes": false,
+    "build": false,
+    "test": false,
+    "probe": false,
+    "original_or_reconstructed_execution": false,
+    "game_or_process_actions": false
+  },
+  "remaining_scope": [
+    "Primary common MSVC Win32 build/existing checks",
+    "Actual caller/custody and same retained provider graph",
+    "Changed ABAED0/ABA8D0 and nonempty layout/glyph recursion",
+    "Reached actual widget factories/current methods",
+    "Whole frontend integration and activation"
+  ],
+  "new_credit": {
+    "original": 0,
+    "vendor": 0,
+    "duplicate_body": 0,
+    "compiler_generated": 0,
+    "abi": 0,
+    "runtime": 0,
+    "gameplay": 0,
+    "activation": 0
+  },
+  "review_worktree_head_before_commit": "22735eecbb8392ce7c159ecd44587cf8f5e734a1"
+}

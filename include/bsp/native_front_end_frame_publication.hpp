@@ -6,6 +6,21 @@
 
 namespace bsp {
 
+// Pure Source custody for a caller-prepared, retained getter invocation.
+// These callbacks are noexcept METADATA ONLY: no native call, allocation,
+// publication/receiver writes, retain, initialization, cleanup or reentry.
+// Every record/backing exists before entry and survives all manager callbacks.
+// Record the captured identities, never infer them from current publication.
+struct NativeFrontEndFramePublicationCustody {
+    virtual ~NativeFrontEndFramePublicationCustody() = default;
+    virtual void allocation_returned(void* captured_allocation) noexcept = 0;
+    virtual void construction_returned(void* captured_allocation,
+        void* constructed_return) noexcept = 0;
+    virtual void lifetime_argument_captured(void* captured_current_plus8) noexcept = 0;
+    // Called AFTER the existing captured-allocation free; identity only.
+    virtual void allocation_freed(void* captured_allocation) noexcept = 0;
+};
+
 // Complete004C1AC0 [202B/56ops]. Native consumes no argument, returns EAX,
 // plain RET. Source borrows the SAME genuine distinct manager/Frame publication
 // cells as the caller's actual singleton and Frame lifetime owners. No new
@@ -22,6 +37,19 @@ namespace bsp {
 void* get_native_front_end_frame_004c1ac0(
     void* volatile& actual_manager_publication_01090aa0,
     void* volatile& actual_frame_publication_00e18d80);
+
+// SAME body and genuine two publication references; adds only the nonthrowing
+// custody observations above. No extra native operation, early getter, Page
+// initialization, changed catch, rollback/reset/retry or successful fallback.
+// Observe allocation return (including null), constructor return before publish,
+// captured CURRENT+8/null before second manager lookup, and existing constructor-
+// failure free after it returns. Fast/existing arm emits no new allocation epoch.
+// A registration failure leaves its published/older identities with the caller's
+// preprepared records even if callbacks replace the CURRENT publication.
+void* get_native_front_end_frame_004c1ac0(
+    void* volatile& actual_manager_publication_01090aa0,
+    void* volatile& actual_frame_publication_00e18d80,
+    NativeFrontEndFramePublicationCustody& preprepared_custody);
 
 // Real current CRT allocation/free, raw constructors/singleton registration,
 // Win32 section/physical +18 counter and 411EE0 providers are composed directly.

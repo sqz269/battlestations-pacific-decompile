@@ -1,0 +1,824 @@
+{
+  "schema_version": 1,
+  "packet": "codex-frontend-canonical-authority-closure",
+  "classification": "Source-pinned implementation contract; evidence only",
+  "baseline": {
+    "origin_main": "eb63c7c17ae1e20f0ad728e2d410a360e1ebc4c1",
+    "checked_out_HEAD": "eb63c7c17ae1e20f0ad728e2d410a360e1ebc4c1",
+    "origin_main_checked_before_worktree": true
+  },
+  "utc": "2026-10-30T15:16:39.407771+00:00",
+  "document": "docs/CC16_FRONTEND_CANONICAL_AUTHORITY_CLOSURE.md",
+  "owned_files": [
+    "docs/CC16_FRONTEND_CANONICAL_AUTHORITY_CLOSURE.md",
+    "reports/cc16_frontend_canonical_authority_closure.json"
+  ],
+  "decision": {
+    "storage_capability_and_borrowed_view_contract_closed": true,
+    "new_source_implementation_in_this_packet": false,
+    "standalone_unused_owner_adapter_ready": false,
+    "coupled_production_migration_ready": false,
+    "activation_ready": false,
+    "reason": "Exact storage, API and Root lifetime seam are selected. Genuine raw95 producers/current operations and full Frame operations/callers remain bounded coupled recoveries, detailed by the sibling contracts; no unused/default bank is admitted."
+  },
+  "current_Source": {
+    "owner": "GameNativeCanonicalDataOwner",
+    "owner_publication": "process_owner atomic release after pending owner release and accepted finish(true)",
+    "intentionally_non_destructed": true,
+    "current_plan": "CanonicalCrtV2",
+    "current_wire_version": 2,
+    "current_RO_masks": [
+      "0000038f",
+      "0000039f"
+    ],
+    "current_full_masks": [
+      "0018038f",
+      "0018039f"
+    ],
+    "current_RW_pages": [
+      "00e15000",
+      "00e16000",
+      "0109e000"
+    ],
+    "E00000_not_currently_selected": true,
+    "current_RW_allocation_bases": [
+      "00e10000",
+      "01090000"
+    ],
+    "existing_RO_owner_band_slots": 19,
+    "existing_total_capability_band_slots": 21,
+    "Page_Source_admission": "Connected Type2 Page/Model 22-file Source batch accepted; current saved build and default Host regression are prior receipts, not rerun here.",
+    "Page_guard": false,
+    "prior_Page_mapped_key_or_child_lifetime_blocker_superseded_by_current_Source": true,
+    "full_frontend_raw_current95_Frame_Game_gate_remains": true
+  },
+  "capability_contract": {
+    "enum": "GameNativeDataPlan::CanonicalFrontEndV3",
+    "wire_version": 3,
+    "preserve_ReadOnlyV1_and_CanonicalCrtV2_exact_plans": true,
+    "new_RO_span": {
+      "address": "00e00000",
+      "bytes": 1,
+      "meaning": "Select existing RO band slot18, not a mutable address in native_data_spans; current mapper commits genuine .rdata E00000..E07B23 and protects E00000..E07FFF RO."
+    },
+    "RO_masks": [
+      "0004038f",
+      "0004039f"
+    ],
+    "full_reservation_masks": [
+      "001c038f",
+      "001c039f"
+    ],
+    "unchanged_slot_count_and_band_address_mapping": true,
+    "new_allocation": "00e00000",
+    "reuse_existing_allocation": "00e10000",
+    "ro_subset_transfer": "Accept v3 only with exact selected frontend RO mask; transfer E00000 once into readonly_.reservations_[18]. Remaining capability mask is exactly00180000.",
+    "crt_subset_transfer": "Accept v3 only after RO transfer, with exact remaining mutable mask; transfer E10000 and1090000 once to mutable_.reservations_. No separate E18000 allocation.",
+    "wire_record": {
+      "preserved_prefix_bytes": 40,
+      "preserved_prefix_layout": {
+        "magic": "00",
+        "version": "04",
+        "parent_pid": "08",
+        "child_pid": "0c",
+        "band_mask": "10",
+        "state": "14",
+        "mutable_page[3]": "18..23",
+        "mutable_roles": "24"
+      },
+      "append": {
+        "frontend_page[2]": "28..2f",
+        "frontend_roles": "30"
+      },
+      "proposed_size_bytes": 52,
+      "v3_mutable_page": [
+        "00e15000",
+        "00e16000",
+        "0109e000"
+      ],
+      "v3_mutable_roles": "00000007",
+      "v3_frontend_page": [
+        "00e08000",
+        "00e18000"
+      ],
+      "v3_frontend_roles": "00000003",
+      "frontend_role_bits": {
+        "0": "authenticated initialized names/flag page E08000",
+        "1": "loader-zero frontend publication/selector page E18000"
+      },
+      "v1_v2_appended_fields_zero": true,
+      "static_assert_size_and_offsets": true
+    },
+    "matching_checks": [
+      "Parent constructor writes exact selected version, full band mask, five named page roles and PID pair before resume.",
+      "Parent reserve_and_resume and child accept use the same selected plan, record validator and exact masks; v2 is never accepted as frontend v3.",
+      "Child validates all exact reserved allocation bases before ready->claimed and transfers.",
+      "Coordinator checks allocation identity, current state/protection, supported PE and complete page preimages before claimed->mapped ACK.",
+      "On both ordinary and fast-child-exit mapped branches, parent verifies immutable identity/version/mask/page-role fields against its saved plan before accepting state_mapped.",
+      "Cancellation wins if finish(true) CAS no longer sees claimed; no owner or view is published."
+    ],
+    "v3_never_implemented_by_widening_v2": true
+  },
+  "physical_pages": [
+    {
+      "page": "00e08000",
+      "bytes": 4096,
+      "allocation_base": "00e00000",
+      "allocation_owner": "GameNativeReadOnlyData child of existing canonical owner",
+      "commit_authority": "GameNativeCanonicalDataOwner coordinator",
+      "protection": "MEM_PRIVATE MEM_COMMIT PAGE_READWRITE",
+      "preimage": "supported PE .data initialized page",
+      "file_offset": "00a08000",
+      "sha256": "45b9d99ece79ccff905e2a9b8b9fb5060a370c5e3e32bffb1ce29164d255102c"
+    },
+    {
+      "page": "00e18000",
+      "bytes": 4096,
+      "allocation_base": "00e10000",
+      "allocation_owner": "GameNativeMutableCrtData child of existing canonical owner",
+      "commit_authority": "GameNativeCanonicalDataOwner coordinator",
+      "protection": "MEM_PRIVATE MEM_COMMIT PAGE_READWRITE",
+      "preimage": "loader zero-fill beyond .data raw end E18000",
+      "file_offset": null,
+      "sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7"
+    }
+  ],
+  "PE_preimage_evidence": {
+    "source": "Pinned prior authority report and document; no new live Ghidra or PE byte query in this packet.",
+    "image_bytes": 12223752,
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "A18B60_is_not_runtime_bank": true,
+    "prior_saved_analysis_byte_comparison_is_not_running_game_current_state": true
+  },
+  "borrowed_view": {
+    "qualified_type": "bsp::game::GameNativeFrontEndDataView",
+    "planned_header": "include/bsp/game_native_front_end_data.hpp",
+    "creator": "private constructor, friend GameNativeCanonicalDataOwner only",
+    "default_copy_move_construction_deleted": true,
+    "owner_accessor": "const GameNativeFrontEndDataView& GameNativeCanonicalDataOwner::front_end_data() const",
+    "accessor_v2_behavior": "throw for a non-frontend plan; no nullable/default/empty view supplied to the adopted route",
+    "metadata_allocation_before_ACK": true,
+    "published_only_after_ACK": true,
+    "owns_allocations": false,
+    "has_reset_or_initialize_or_release_api": false,
+    "accessors": [
+      {
+        "method": "screen_words_00e18b60",
+        "type": "volatile std::uint32_t*",
+        "va": "00e18b60",
+        "words": 95,
+        "bytes": 380,
+        "last_inclusive": "00e18cdb"
+      },
+      {
+        "method": "pump_sentinel_00e18cdc",
+        "type": "volatile std::uint8_t&",
+        "va": "00e18cdc",
+        "bytes": 1
+      },
+      {
+        "method": "frame_publication_00e18d80",
+        "type": "void* volatile&",
+        "va": "00e18d80",
+        "bytes": 4
+      },
+      {
+        "method": "backdrop_selector_00e18d84",
+        "type": "volatile std::int32_t&",
+        "va": "00e18d84",
+        "bytes": 4
+      },
+      {
+        "method": "panel_selector_00e18d88",
+        "type": "volatile std::int32_t&",
+        "va": "00e18d88",
+        "bytes": 4
+      },
+      {
+        "method": "title_selector_00e18d8c",
+        "type": "volatile std::int32_t&",
+        "va": "00e18d8c",
+        "bytes": 4
+      },
+      {
+        "method": "backdrop_name_words_00e08500",
+        "type": "volatile std::uint32_t*",
+        "va": "00e08500",
+        "words": 65,
+        "shape": [
+          5,
+          13
+        ]
+      },
+      {
+        "method": "panel_name_words_00e08604",
+        "type": "volatile std::uint32_t*",
+        "va": "00e08604",
+        "words": 10,
+        "shape": [
+          5,
+          2
+        ]
+      },
+      {
+        "method": "title_name_words_00e0862c",
+        "type": "volatile std::uint32_t*",
+        "va": "00e0862c",
+        "words": 10,
+        "shape": [
+          5,
+          2
+        ]
+      },
+      {
+        "method": "flag_00e08654",
+        "type": "volatile std::uint32_t&",
+        "va": "00e08654",
+        "bytes": 4,
+        "loader_preimage_hex": "02000000",
+        "not_a_fourth_selector": true
+      }
+    ],
+    "no_snapshot_or_per_Frame_copy": true,
+    "arbitrary_out_of_domain_and_original_fault_ABI_not_claimed": true,
+    "native_codeword_to_host_function_pointer_casts": false
+  },
+  "existing_publication_dependencies": {
+    "manager": {
+      "actual_Source_cell": "game_native_string_process().manager_01090aa0()",
+      "Root_borrower": "GameSingletonHost::manager_publication_01090aa0()",
+      "numeric_01090AA0_mapping": false,
+      "same_reference_for": [
+        "Frame getter4C1AC0",
+        "NativeGameSingletonLifetimeContext::actual_manager_01090aa0",
+        "Frame manager-registration and adjusted +8 scalar drain"
+      ]
+    },
+    "Game": {
+      "actual_Source_cell": "GameNativeSettingsProcess::Impl::game",
+      "accessor": "settings_process_->game_00e188a8()",
+      "permanent_process_owner": true,
+      "existing_borrowers": [
+        "NativeProfileSettingsContext in GameNativeSettingsProcess",
+        "GameNativeEnumLuaDeclarationBindings::context_"
+      ],
+      "new_required_same_reference": [
+        "NativeGameConstructionContext::actual_game_00e188a8",
+        "NativeGameLifetimeContext::game_00e188a8",
+        "Frame apply/title/position actual Game reads",
+        "raw frontend Game OnMove services"
+      ],
+      "runtime_identity_check": "GameNativeGameRuntime::Impl compares construction/lifetime reference addresses",
+      "numeric_E188A8_mapping_is_not_a_Game_authority": true
+    },
+    "neither_is_copied_into_frontend_view": true
+  },
+  "cold_initialization_and_failure": [
+    "Process bootstrap reserves the exact v3 bands while the child is suspended; unchanged v1/v2 clients remain exact v1/v2. No raw frontend creator runs here.",
+    "initialize consumes one inherited capability; transfer all RO allocation custody, then existing CRT allocation custody, before any page commit.",
+    "Initialize/authenticate selected RO data and three existing CRT pages; coordinator commits and copies fullE08000 from authenticated PE and commits/zero-fills fullE18000.",
+    "Verify both new pages, allocation bases/protection, complete preimages and existing joint D6/CRT relation. Initialize genuine cookie/complement and verify existing invariants.",
+    "Construct nonowning frontend-view metadata before ACK; accepted finish(true) precedes permanent owner pointer publication. No throwing allocation/logging follows successful ACK.",
+    "Before ACK, failure destroys pending child owners and releases each transferred allocation exactly once; capability releases only untransferred bands and marks failed. E00000 release is only readonly_ custody, E10000/1090000 only mutable_ custody.",
+    "After ACK no per-Frame teardown, selector setter or replacement resets/reseeds/unmaps these pages. Existing canonical owner remains permanent through later CRT callbacks.",
+    "Once a raw creator/operation entered, failure preserves actual partial publications, Page/receiver graph and operation state; no reconstruction rollback, retry, semantic synchronization or compare-and-clear guard is added. Retained failure requires the existing Root retention/exit boundary before dependent providers are destroyed."
+  ],
+  "Root_binding": {
+    "entrypoint_current": "src/game_main.cpp1112..1121 initializes owner;1330 currently gives GameStartupHost only native_data pointer.",
+    "selected_entrypoint_change": "Retain const GameNativeCanonicalDataOwner* after initialize and pass owner by mandatory reference to the adopted GameStartupHost constructor; derive native_data_ and frontend-data reference from it. Parent and child select the same v3 plan plus E0 span in this same migration.",
+    "selected_Root_member": "std::unique_ptr<GameNativeFrontEndApplication> GameStartupHost::native_frontend_",
+    "placement": "Startup-owned beside native_gui_pages_, created with genuine Page/GUI manager/renderer/VFS/Lua/model/string providers and same manager/Game references before the FIRST actual raw Game/screen/Frame creator. Current source creation landmarks are Page setup3181 before semantic Menu constructor3274; these are the insertion ordering bounds, not evidence that actual Game/InitOnce is already bound.",
+    "no_unsafe_borrowers": [
+      "GameMenuHost::Impl-owned dispatch/lifetime contexts",
+      "MenuFrameLayoutHost",
+      "GameFrontendHost-owned callbacks retained past deletion"
+    ],
+    "actual_caller_adoption": "Menu/HUD/title/loading/InitOnce services borrow the same Startup application and view. Active adopted route replaces semantic world.screens/frame_layouts/selection ownership rather than synchronizing copies.",
+    "drain": "Game OnDestroy4C0CE0 and normal/fallback shared manager drain run while native_frontend_, native_gui_pages_, native_gui_manager_, renderer/model/scene, VFS/Lua/string/counter/import and actual Game services remain alive. Only after actual Frame/Page retirement and shared drain acknowledgments may frontend bindings retire, followed by Page and GUI-manager bindings. Data owner and manager/Game cells remain process permanent.",
+    "current_teardown_hazard": "src/game_hosts.cpp2314..2316 deletes menu_/frontend_ before drain2321; do not put Frame services inside those objects.",
+    "failure_retention": "Add frontend requires_process_retention check before any Menu/Frontend/provider teardown, parallel to existing retained Page/manager failure checks. It reports incomplete operations then retains the real graph at process exit, without replay or synthetic cleanup.",
+    "sibling_agreement": [
+      "frontend_raw95_producer_closure agreed view/private creation and external per-receiver lifetime contexts.",
+      "frontend_frame_selection_closure agreed accessors and Startup native_frontend_ owner through both drains.",
+      "Both agreed separately borrowing existing settings Game and string-process manager cells."
+    ],
+    "application_files": [
+      "include/bsp/game_native_frontend_application.hpp",
+      "src/game_native_frontend_application.cpp"
+    ],
+    "application_constructor": "GameNativeFrontEndApplication(GameHostLog&, GameSingletonHost&, const GameNativeFrontEndDataView&, void* volatile& actual_game_00e188a8, GameNativeGuiManagerApplication&, GameNativeGuiPageApplication&, NativeStringRawPoolContext&, GameNativeReadOnlyData&)",
+    "selected_methods": [
+      "frame_004c1ac0()",
+      "register_current_primary_10(void* captured_receiver)",
+      "select_layout_set_00518250(void*, const volatile std::uint32_t& request_home, const volatile std::uint8_t& commit_home)",
+      "apply_00518c80(void* captured_frame)",
+      "select_00518d60(std::uint32_t backdrop, std::uint32_t panel, const volatile std::uint32_t& title_home, const void* const volatile& text_pointer_home)",
+      "select_backdrop_00518da0(std::uint32_t)",
+      "flag_00518b90(std::uint32_t)",
+      "title_005189b0(const void* captured_header)",
+      "raw-pointer position set/get methods specified in Frame closure",
+      "scalar_current_primary_0c(void*, const volatile std::uint32_t& flags_home)",
+      "scalar_current_secondary_00(void* captured_plus8, const volatile std::uint32_t& flags_home)"
+    ],
+    "before_getter_entry": "Prepare a stable invocation FrameRecord/operation before the whole getter begins, install its genuine primary/secondary lifetime dispatch before any actual constructor/publication/registration, and retain records for every actual receiver generation. Metadata is not native ownership/refcount.",
+    "required_used_getter_overload": "get_native_front_end_frame_004c1ac0(manager_ref, frame_ref, NativeFrontEndFramePublicationCustody&)",
+    "getter_custody_seam": "Existing two-reference getter publishes and registers CURRENT+8 before returning. Required Source overload reuses that complete schedule and makes only metadata-only noexcept capture notifications at allocation/constructor-return/captured-free sites BEFORE registration. Preserve captured allocation, constructed result, CURRENT publication and adjusted registered receiver separately; returning/catching wrapper cannot recover all of these. No native call, byte initialization, retain, catch, reset, replay, compare-and-clear or changed cleanup is introduced by the notifications.",
+    "record_storage": "Stable addresses for per-invocation/per-receiver contexts; no moving vector elements whose addresses are borrowed by lifetime callbacks. Entered failures and old receivers remain retained until genuine native retirement or explicit resolved diagnostic acknowledgment."
+  },
+  "actual_borrower_cut": [
+    {
+      "family": "raw bank register/destruct/scalar",
+      "addresses": [
+        "004f71d0",
+        "004f71a0",
+        "004f75e0"
+      ],
+      "binding": "Same95-word base; captured receiver, freshly resolved current00 ID and authentic EAX return; no supplied ID or range guard. Destructor stamps CEAE54 and scans all95 exact matches."
+    },
+    {
+      "family": "bank consumers/publishers",
+      "addresses": [
+        "004f8830",
+        "004f7620",
+        "004f8390",
+        "004f8530",
+        "004f85d0",
+        "004f8670",
+        "004f8710",
+        "004f87b0",
+        "004e4a40",
+        "004d64e0"
+      ],
+      "binding": "Pump/recompute/commit/park, five set-levels/restore and Game OnMove use same bank/separate sentinel and actual raw fields/current slots. Screen-set header/list provenance is separate, not supplied by page mapping.",
+      "prior_saved_xref_families": [
+        "BSP_FrontEndScreen_Destruct",
+        "BSP_FrontEndScreen_Register",
+        "BSP_FrontEndScreens_Pump",
+        "BSP_FrontEndScreens_RecomputeRequests",
+        "BSP_FrontEndScreens_RestoreLevelSet",
+        "BSP_FrontEndScreens_SetLevel1Set",
+        "BSP_FrontEndScreens_SetLevel2Set",
+        "BSP_FrontEndScreens_SetLevel3Set",
+        "BSP_FrontEndScreens_SetLevel4Set",
+        "BSP_FrontEndScreens_SetLevel5Set",
+        "BSP_Game_OnMove",
+        "BSP_GuiScreens_ParkWidgets",
+        "CG_scalar_deleting_dtor_004f75e0"
+      ],
+      "xref_inventory_scope": "Prior saved analysis41 rows,13 families; not complete dynamic receiver/index proof.",
+      "entry_addresses": [
+        "004f8830",
+        "004f7620",
+        "004f8390",
+        "004f8530",
+        "004f85d0",
+        "004f8670",
+        "004f8710",
+        "004f87b0",
+        "004e4a40",
+        "004d64e0"
+      ],
+      "sentinel_store_sites": [
+        "004f8597",
+        "004f8637",
+        "004f86d7",
+        "004f8777",
+        "004f87fb",
+        "004f839a",
+        "004f8881",
+        "004e544c",
+        "004e5481"
+      ]
+    },
+    {
+      "family": "Frame creation/publication",
+      "addresses": [
+        "004c1ac0",
+        "004f7180",
+        "00517d10",
+        "00517cf0",
+        "00517d60"
+      ],
+      "binding": "Getter uses same manager and view Frame reference. Prefix constructor leaves+C..160 untouched. Every publication writer uses same reference; no zeroing Page slots in getter."
+    },
+    {
+      "family": "Frame current primary/adjusted secondary dispatch and retirement",
+      "addresses": [
+        "00517d30",
+        "00517d50",
+        "00517eb0",
+        "00517d90",
+        "004c0ce0"
+      ],
+      "binding": "Keep exact old/new receiver identities and contexts; CEC39C primary and CEC398+8 secondary use current captured codeword genuine Source operations. Shared drain must admit CEC398 before getter registers+8."
+    },
+    {
+      "family": "registration/set/names",
+      "addresses": [
+        "00517ed0",
+        "00518250"
+      ],
+      "binding": "Whole operations consume current writable name DWORD cells and same actual raw Page services. Initial row4 zeros are authenticated cold bytes, not a permanent empty-page policy."
+    },
+    {
+      "family": "selectors/apply/flag/title/position/collector",
+      "addresses": [
+        "00518d60",
+        "00518da0",
+        "00518c80",
+        "00518b90",
+        "005189b0",
+        "005186b0",
+        "00518820",
+        "00518e00"
+      ],
+      "binding": "Same global refs; retain native argument-home and callback read epochs. Captured receiver may differ from CURRENT publication. E08654 is DWORD2 cold value and late low-WORD input."
+    },
+    {
+      "family": "actual caller bindings",
+      "addresses": [
+        "004dd5b0",
+        "004c9a70",
+        "004c9b7e",
+        "004c9b85",
+        "004c9e06",
+        "004e04ee",
+        "0057cd1e",
+        "0057cd7b"
+      ],
+      "binding": "InitOnce real getter then captured current+10; title/HUD/loading obtain same current Frame then whole set with genuine request/commit homes. All31 saved writer518D60 and2 writer518DA0 caller families must join the same selector service before their routes are admitted."
+    }
+  ],
+  "implementation_surface": {
+    "minimum_storage_existing_file_changes": [
+      "include/bsp/game_native_data_bootstrap.hpp",
+      "src/game_native_data_bootstrap.cpp",
+      "include/bsp/game_native_mutable_crt_data.hpp",
+      "src/game_native_mutable_crt_data.cpp",
+      "src/game_main.cpp"
+    ],
+    "minimum_storage_new_file": [
+      "include/bsp/game_native_front_end_data.hpp"
+    ],
+    "RO_mapper_required_behavior_change": false,
+    "mandatory_Root_and_lifetime_existing_file_changes": [
+      "include/bsp/game_hosts.hpp",
+      "src/game_hosts.cpp",
+      "include/bsp/game_hosts_menu.hpp",
+      "src/game_hosts_menu.cpp",
+      "include/bsp/game_hosts_singletons.hpp",
+      "src/game_hosts_singletons.cpp",
+      "include/bsp/native_singleton_destruction.hpp",
+      "src/native_singleton_destruction.cpp",
+      "include/bsp/native_front_end_frame_publication.hpp",
+      "src/native_front_end_frame_publication.cpp"
+    ],
+    "coupled_application_new_files": [
+      "include/bsp/game_native_frontend_application.hpp",
+      "src/game_native_frontend_application.cpp"
+    ],
+    "other_reached_consumer_sources": [
+      "src/game_hosts_hud.cpp",
+      "src/oct18_tail_a.cpp",
+      "src/title_init.cpp",
+      "src/frontend_state_machine.cpp",
+      "src/frontend_screen_sets.cpp",
+      "src/frontend_states.cpp",
+      "src/main_menu_registration.cpp",
+      "src/main_menu_path.cpp",
+      "src/menu_screens_2.cpp",
+      "src/frontend_seg12_17_cc13.cpp"
+    ],
+    "consumer_projection_rewrite_scope": "Sibling contracts select genuine raw operation counterparts and actual caller services; these consumers cannot be satisfied by only changing storage argument types. Do not edit every historical semantic variant indiscriminately."
+  },
+  "next_bounded_work": [
+    {
+      "owner": "raw95 sibling",
+      "addresses": [
+        "00425d10",
+        "00533120"
+      ],
+      "task": "Recover genuine MenuPrompt creator/constructor and actual fields/current slots/lifetime before InitOnce registration; current semantic prompt is not a raw receiver. Raw registration5311C0/destructor5321F0 already exist; do not conflate E1930C command-owner54A8D0 with this prompt.",
+      "new_raw_files": [
+        "include/bsp/native_menu_prompt_construction.hpp",
+        "src/native_menu_prompt_construction.cpp",
+        "include/bsp/native_menu_prompt_publication.hpp",
+        "src/native_menu_prompt_publication.cpp"
+      ]
+    },
+    {
+      "owner": "Frame sibling",
+      "addresses": [
+        "00517ed0",
+        "00518250",
+        "00518d60",
+        "00518da0",
+        "00518c80",
+        "00518b90",
+        "005189b0",
+        "005186b0",
+        "00518820",
+        "00518e00",
+        "00517d90",
+        "00517eb0",
+        "00517d50"
+      ],
+      "task": "Provide whole raw operation/context and retained actual Page lifetime/caller cut over selected view; repair typed projections where whole Native schedule differs, without duplicate Native-body credit.",
+      "remaining_widget_source_contracts": [
+        "Actual raw Text ABAED0/ABA8D0 and reached Text/Icon/FrameBox methods and factories; full scope in Frame closure.",
+        "Same-Page direct decrement/current0 retirement and GUI-manager AA31F0 path must be borrowed from actual Page lifetime graph, not a parallel Frame-specific binding."
+      ]
+    },
+    {
+      "owner": "integrator",
+      "task": "Review coupled consumer closures before implementing a single Root migration batch. It must contain genuine reached raw creators/operations plus v3/view/Root placement and both lifetime routes. No standalone unconsumed zero bank packet."
+    }
+  ],
+  "cross_references": {
+    "raw95": "docs/CC16_FRONTEND_RAW95_PRODUCER_CLOSURE.md",
+    "Frame": "docs/CC16_FRONTEND_FRAME_SELECTION_CLOSURE.md",
+    "accepted_Page_Source": "docs/CC16_POPULATED_GUI_COMBINED_SOURCE_ADMISSION.md"
+  },
+  "new_credit": {
+    "Original_bodies": 0,
+    "recovered_bodies": 0,
+    "vendor_bodies": 0,
+    "duplicate_bodies": 0,
+    "ABI": false,
+    "runtime": false,
+    "activation": false,
+    "game_validated": false,
+    "Original_new_native_body_count": 0
+  },
+  "validation": {
+    "Source_read_only_inspection": true,
+    "JSON_and_diff_checks": "Passed JSON parse; exact masks/record offsets/extents;10 accessor/13 entry-family consistency;43 unchanged Source/evidence LF hashes and Git blobs; owned-path-only status; git diff --cached --check.",
+    "new_live_Ghidra_queries": 0,
+    "Ghidra_mutations": 0,
+    "build_or_probe_or_game_execution": false,
+    "process_or_service_changes": false,
+    "Source_or_CMake_or_ledger_changes": false,
+    "push": false,
+    "static_check_utc": "2026-10-30T15:21:53.875776+00:00"
+  },
+  "source_and_evidence_pins": [
+    {
+      "path": "include/bsp/game_native_data_bootstrap.hpp",
+      "git_blob": "0fff23e432b46cab3978466f0f13f69bbdf4f144",
+      "Git_LF_sha256": "13e7a4a85d6096f3f0b4be04fce0d065d5e196c4119d914ae2af268026c7642a",
+      "Git_LF_bytes": 4111
+    },
+    {
+      "path": "src/game_native_data_bootstrap.cpp",
+      "git_blob": "b37fe02f39f358a9f2a9ac48b4dcd367ec95c1d0",
+      "Git_LF_sha256": "380bf1ebc8ba9691f19fd2ae33ce167cdf5b33e9095f9fc4f5d172489e2f879d",
+      "Git_LF_bytes": 23472
+    },
+    {
+      "path": "include/bsp/game_native_mutable_crt_data.hpp",
+      "git_blob": "ec1a1c9c2a7359031b4b77c2b86ba12cd6f3420e",
+      "Git_LF_sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+      "Git_LF_bytes": 3200
+    },
+    {
+      "path": "src/game_native_mutable_crt_data.cpp",
+      "git_blob": "2c0d73f8164a8b0d4cbbc499801935d1f28c213a",
+      "Git_LF_sha256": "d9dabf905fd4acf195f72c14e9ae2c7ef457514f4ff6227efffdcbb1f24a0c39",
+      "Git_LF_bytes": 10114
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+      "Git_LF_sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "Git_LF_bytes": 2713
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "git_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e",
+      "Git_LF_sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+      "Git_LF_bytes": 7167
+    },
+    {
+      "path": "src/game_main.cpp",
+      "git_blob": "4371f58bb28daa984bccea95ed0147f923ac59ff",
+      "Git_LF_sha256": "761ca1dfc2e54c2daa129a25811b86a8bb3f4771b5a18a26498ce11a8d94dc7b",
+      "Git_LF_bytes": 81290
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "git_blob": "867d8b7032fc7531bfaa4f2c43c649988b8e0710",
+      "Git_LF_sha256": "67a5164b1b20061f0f1353783c12cfcb92cc7392b37e04ec87371577425f7f58",
+      "Git_LF_bytes": 47507
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "git_blob": "f0ddd36fa94585e7be5ec76fe894e6d90d4951eb",
+      "Git_LF_sha256": "6403dacc40b04fe9df818e5fa1e175609b876d54a51dbeae9a7e2ef69856cff6",
+      "Git_LF_bytes": 186067
+    },
+    {
+      "path": "include/bsp/game_hosts_menu.hpp",
+      "git_blob": "b2fd10f60f8a2a4de10e30dff43db77e7a3c6946",
+      "Git_LF_sha256": "a7fe3146065a71cdbcf9a6f62dd2674f617722dc4615e0c0a00e03d8278c6dcf",
+      "Git_LF_bytes": 14176
+    },
+    {
+      "path": "src/game_hosts_menu.cpp",
+      "git_blob": "53bd558c0b9511967eadaec0d014626f20c44ae2",
+      "Git_LF_sha256": "f0c936fa3f0f1ca9b739b1c66428d2f4b5af2b1f15081ea2a36c5346ad4bb052",
+      "Git_LF_bytes": 113822
+    },
+    {
+      "path": "include/bsp/game_hosts_singletons.hpp",
+      "git_blob": "f149240ef3390bd0e138802061135aefcf1a2e55",
+      "Git_LF_sha256": "a047bfe45fd98e2586c30b4a87d5124bfadf1d29af198140544bb2f7652481bd",
+      "Git_LF_bytes": 10732
+    },
+    {
+      "path": "src/game_hosts_singletons.cpp",
+      "git_blob": "4a09a311654e49a588572535cb4b7d5f32ee09e1",
+      "Git_LF_sha256": "be179a72d97447dcd59620d05a791ac48cea74ab4ccf2468b0445d10c961b38e",
+      "Git_LF_bytes": 10557
+    },
+    {
+      "path": "src/game_hosts_hud.cpp",
+      "git_blob": "8bf7b1d3f20d65cd365ad2678842a1d09beebbf7",
+      "Git_LF_sha256": "0aee4bea0fdc1c5f88b08246ebe21177e59be6c070111cdec626ce56deb11d4c",
+      "Git_LF_bytes": 231791
+    },
+    {
+      "path": "include/bsp/game_native_settings_process.hpp",
+      "git_blob": "c3af3aab298f334d35c33ac276eeab3a2a17e29e",
+      "Git_LF_sha256": "c39242f443a95a5a4d5f910279123a90fb09e8e0fa63d0036632cd597c26ccb6",
+      "Git_LF_bytes": 2203
+    },
+    {
+      "path": "src/game_native_settings_process.cpp",
+      "git_blob": "3fdec928d327e44bab7297a987591d43c7fd4d95",
+      "Git_LF_sha256": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b",
+      "Git_LF_bytes": 7791
+    },
+    {
+      "path": "src/game_native_enum_lua_declaration.cpp",
+      "git_blob": "3c3bf0fca53ad29ecaaece3632866c507a8fd3f7",
+      "Git_LF_sha256": "7bf410f7a824910801d540e5b6c05f2e20f1ef17dbca79e337e955a8f3bec6ef",
+      "Git_LF_bytes": 1172
+    },
+    {
+      "path": "src/game_native_game_runtime.cpp",
+      "git_blob": "ad9f8b3518827f1b1117ea55c92a2b1de23fa78d",
+      "Git_LF_sha256": "1e205d8375994a80cbc5d15a5270b9281f2e9c073a039c3b614535933c068bca",
+      "Git_LF_bytes": 4780
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_publication.hpp",
+      "git_blob": "27dc5ef2dc4a00418158573799171e086e49f158",
+      "Git_LF_sha256": "b0d35be85ed8448ee1a89d66027e777a0aa4947a49164321c8bce3e628a8aae0",
+      "Git_LF_bytes": 1892
+    },
+    {
+      "path": "src/native_front_end_frame_publication.cpp",
+      "git_blob": "14461512a935bb5c330b688b9f713ad38ddb7270",
+      "Git_LF_sha256": "0d88f92b07b44eab54283aecea4c7626566c6d165b04d1285cfd3648b5e0a64a",
+      "Git_LF_bytes": 3253
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_construction.hpp",
+      "git_blob": "a77dcd8510f937497d2da08037e96c3682a2aa5b",
+      "Git_LF_sha256": "cd96bfd81f06f903c973593cde3daddff837d7a75f4649eb007ae4a14a7deb61",
+      "Git_LF_bytes": 1622
+    },
+    {
+      "path": "src/native_front_end_frame_construction.cpp",
+      "git_blob": "9db47b30cfb3578c40f52e07da606900db4653d4",
+      "Git_LF_sha256": "f90858ce1f08c8124d18a53bb51cfc43c46ced96fc8e64636c613a08a037cd9f",
+      "Git_LF_bytes": 976
+    },
+    {
+      "path": "include/bsp/native_game_singleton_lifetime.hpp",
+      "git_blob": "a5dfc0241ea74a986d947acc3b55c1d4821b13c6",
+      "Git_LF_sha256": "76ca3babd50d2102fd0f5d08ba931e327e3570aef60286fd634eaa365cace35c",
+      "Git_LF_bytes": 2916
+    },
+    {
+      "path": "src/native_game_singleton_lifetime.cpp",
+      "git_blob": "885e06ba824ec171d00b1f44b28ea7afbcae407f",
+      "Git_LF_sha256": "fffeccd7bf5f34e3f7129e0a5034cad0b97c09fdda8b89977d7e6d23c9ca8574",
+      "Git_LF_bytes": 4151
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "git_blob": "dc774f7d5ba1b15a117da9d2b5e39113b998f349",
+      "Git_LF_sha256": "de933f3c758aed5b505b61582845be194396bace2efc88f676e9de462049f686",
+      "Git_LF_bytes": 23310
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "git_blob": "0c9759b7d908e778dbdc44d8785d8fae226ea75b",
+      "Git_LF_sha256": "98a476d0aa3d76fa3b79793a6c10dca5ce621b89f9a290eecef23866a483831a",
+      "Git_LF_bytes": 29984
+    },
+    {
+      "path": "include/bsp/native_game_construction.hpp",
+      "git_blob": "e83a2b3736edfb4d6fa699526a003861d3805977",
+      "Git_LF_sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e",
+      "Git_LF_bytes": 7095
+    },
+    {
+      "path": "include/bsp/native_game_lifetime.hpp",
+      "git_blob": "0f2f50a4b1ad95e354e352354a210d43e227c9ba",
+      "Git_LF_sha256": "5f780de4ea8a8f7f67a68cc5d72f4940921b40703027891edc14671ecfca6136",
+      "Git_LF_bytes": 9440
+    },
+    {
+      "path": "include/bsp/oct18_tail_a.hpp",
+      "git_blob": "236989ea251856372d869c90434ce10c5f4e3752",
+      "Git_LF_sha256": "623b45904d9f7a9558cf9a3aca26e51d8336fa60f511cc68f3d63faac86f81d7",
+      "Git_LF_bytes": 28399
+    },
+    {
+      "path": "src/oct18_tail_a.cpp",
+      "git_blob": "aa28639f185c2d3e461cde88f60967d5cbbdaac1",
+      "Git_LF_sha256": "afe458f3af69587a6f0b42bc61e5dda6585247411e4173b8cc4b6a1d648f7eaa",
+      "Git_LF_bytes": 111176
+    },
+    {
+      "path": "include/bsp/game_native_gui_page_application.hpp",
+      "git_blob": "4abf6219f61e37b4e6c9ceb2777bd69aa7f7d8df",
+      "Git_LF_sha256": "7ad6d366ec92695ede58d8f44deeee6b6874f8c344788f626aab286495d83221",
+      "Git_LF_bytes": 2945
+    },
+    {
+      "path": "src/game_native_gui_page_application.cpp",
+      "git_blob": "996fbbdec1f9160540da07b0842295920734eead",
+      "Git_LF_sha256": "0f770bd8713656eeb56b77a97109eb7168e1be5d53d96305e4105edbe44b1668",
+      "Git_LF_bytes": 72373
+    },
+    {
+      "path": "include/bsp/menu_screens_2.hpp",
+      "git_blob": "975c2a5be7c4d0348aa45134a6744f3689804c1f",
+      "Git_LF_sha256": "2ef72c791db3abc89d9b52b82bf57adee15a1de9edb3efaeedd64360457dce36",
+      "Git_LF_bytes": 99822
+    },
+    {
+      "path": "src/menu_screens_2.cpp",
+      "git_blob": "a81f1c88068789bc2af55431b634936e31a4dbc3",
+      "Git_LF_sha256": "23e3c082e0688f77fbba57f0d5c9f23a0ce1390d41226936890bf1e55adb2809",
+      "Git_LF_bytes": 171242
+    },
+    {
+      "path": "src/frontend_seg12_17_cc13.cpp",
+      "git_blob": "2f91cd9bcdd7d9c8aae14a4c6cb8bec29e9b7dd0",
+      "Git_LF_sha256": "fc47eb8b8c9db2dcd0f25b5bc633502304ba39a7694b1f2ae0d1e50e74637a9f",
+      "Git_LF_bytes": 272095
+    },
+    {
+      "path": "include/bsp/frontend_states.hpp",
+      "git_blob": "fe3d4e4fae9839902e923793ad615492f8a348f8",
+      "Git_LF_sha256": "3e246376a1571ab4a158cdeccacdd570c7bc51211dc4418d5dc0512e01f46afa",
+      "Git_LF_bytes": 8366
+    },
+    {
+      "path": "include/bsp/frontend_state_machine.hpp",
+      "git_blob": "889a1abb8d110b74fc2885eb44bb4bf1e57b7350",
+      "Git_LF_sha256": "2a6558ee41078b0b97183ef7038870623d35fc7854ddf34de2a16ab46055f2ac",
+      "Git_LF_bytes": 12017
+    },
+    {
+      "path": "src/frontend_screen_sets.cpp",
+      "git_blob": "f89225afa7fa86f1bbb35b129488ef7f8a7f26f8",
+      "Git_LF_sha256": "9ee1c8e167246d10ca0d01e17969df6d175357c8adb4dbb2ac66e851e6469ea3",
+      "Git_LF_bytes": 9515
+    },
+    {
+      "path": "src/main_menu_registration.cpp",
+      "git_blob": "f733e6c5154db8b3ab87b52f461fde453d97bd97",
+      "Git_LF_sha256": "e4f617c6ad798acc68829ff67f8f419984d83688a23b5c38c8452ef123b1c804",
+      "Git_LF_bytes": 3497
+    },
+    {
+      "path": "docs/CC16_NATIVE_FRONTEND_GLOBAL_AUTHORITY_DESIGN.md",
+      "git_blob": "0ec1b2d3cd32092e5e8d4e0487ecb4fd7087958d",
+      "Git_LF_sha256": "d1619ee0028cb1810678bbca2b21d31ba4ef9866686cdeb89f36ba2482a8d818",
+      "Git_LF_bytes": 27471
+    },
+    {
+      "path": "reports/cc16_native_frontend_global_authority_design.json",
+      "git_blob": "cf65c4d0649c3a22f0259953c6fc82571b3e9e25",
+      "Git_LF_sha256": "ebf978c52526fd74037806327b94f12d1a295bc9b01c94716a9b96fea52e4daf",
+      "Git_LF_bytes": 68638
+    },
+    {
+      "path": "docs/CC16_POPULATED_GUI_COMBINED_SOURCE_ADMISSION.md",
+      "git_blob": "99314fb4cfc5387194087a16a55b83eb84110b9c",
+      "Git_LF_sha256": "1a93021abe896e57e6ad18a4ec00228eff045d3a83fd93ee16fb033ad6c6c515",
+      "Git_LF_bytes": 3813
+    },
+    {
+      "path": "reports/cc16_populated_gui_combined_source_admission.json",
+      "git_blob": "aa4fd88bc14a4b4914aa8fa419290d1f4e656243",
+      "Git_LF_sha256": "fb55888522ba32b280333c6527c0ec31877e73ceef4e5bcb6804343377754e3f",
+      "Git_LF_bytes": 45263
+    }
+  ]
+}

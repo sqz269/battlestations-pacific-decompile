@@ -1,0 +1,423 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-front-end-frame-selection-operations",
+  "classification": "raw_frame_operations_source_variants_unbuilt_genuine_bindings_required",
+  "baseline": {
+    "worktree_head": "055454412bc50576f1a415ddbd7a4263ec7ee3d7",
+    "observed_origin_main": "57ad37a3397ff99b113583ad256ddb75ff6b573e",
+    "prior_passed_receipts_immutable": true
+  },
+  "owned": {
+    "addresses": [
+      "00518C80",
+      "00518D60",
+      "00518DA0",
+      "00518B90"
+    ],
+    "files": [
+      "include/bsp/native_front_end_frame_operations.hpp",
+      "src/native_front_end_frame_operations.cpp",
+      "docs/CC16_NATIVE_FRONT_END_FRAME_SELECTION_OPERATIONS.md",
+      "reports/cc16_native_front_end_frame_selection_operations.json"
+    ]
+  },
+  "source_variants": [
+    {
+      "address": "00518C80",
+      "source_symbol": "apply_native_front_end_frame_selection_00518c80",
+      "instructions": 68,
+      "physical_span_bytes": 220,
+      "unexecuted_alignment_gap_bytes": 18,
+      "entry": "00518C80",
+      "end": "00518D5B",
+      "native_sha256": "b03d0e4f7095044f1bb9a3dbbce3bc042ae57dfc62aeda1a9570b805ed8378a8",
+      "native_abi": "ECX captured actual Frame, plainRET or tail518B90"
+    },
+    {
+      "address": "00518D60",
+      "source_symbol": "select_native_front_end_frame_00518d60",
+      "instructions": 12,
+      "physical_span_bytes": 50,
+      "entry": "00518D60",
+      "end": "00518D91",
+      "native_sha256": "aca629364d76fdd6373152b98ee2af2882d2dcb28812bcc8105f37d617886338",
+      "native_abi": "ECX backdrop/EDX panel; stacked titleDWORD/text pointer; RET8"
+    },
+    {
+      "address": "00518DA0",
+      "source_symbol": "select_native_front_end_frame_backdrop_00518da0",
+      "instructions": 4,
+      "physical_span_bytes": 18,
+      "entry": "00518DA0",
+      "end": "00518DB1",
+      "native_sha256": "1a5284208bfd34cc2722c062fb988ea4134122f12c54363ef5ec1490fd354881",
+      "native_abi": "ECX backdrop; tailwhole518C80"
+    },
+    {
+      "address": "00518B90",
+      "source_symbol": "set_native_front_end_frame_flag_00518b90",
+      "instructions": 60,
+      "physical_span_bytes": 229,
+      "entry": "00518B90",
+      "end": "00518C74",
+      "native_sha256": "93e91bb1cf5c0c0d86e83750807293615832fa6d355e0bce9b1c94f71b26955a",
+      "native_abi": "ECX flagDWORD; plainRET"
+    }
+  ],
+  "counts": {
+    "production_files": 2,
+    "raw_Source_variants": 4,
+    "required_binding_methods": 5,
+    "borrowed_context_references": 8,
+    "owned_global_values": 0,
+    "flag_actual_header_bytes": 8,
+    "flag_getters": 4,
+    "FP_intervals_with_Cpp_provider_calls": 0,
+    "new_tests": 0
+  },
+  "context": {
+    "type": "NativeFrontEndFrameOperationsContext",
+    "selectors": "volatile int32 references SAMEE18D84/88/8C",
+    "flag": "separate volatile uint32 reference SAMEE08654",
+    "game": "void* const volatile reference to existing GameNativeSettingsProcess::game_00e188a8() SAME Source cell",
+    "strings": "SAME NativeStringRawPoolContext/manager",
+    "literal": "Nondefault preentry NativeFrontEndFrameOperationLiterals over existing authenticated canonical RO owner",
+    "bindings": "Required genuine actual app, no default implementation",
+    "no_value_owner_or_copied_authority": true
+  },
+  "required_methods": [
+    "void* frame_004c1ac0()",
+    "void* find_child_00aa7e00(void* actual_parent,const void* actual_name_header8,uint32_t one)",
+    "void call_widget_virtual34(void* captured_widget,uint32_t captured_profile,uint32_t captured_target,uint32_t actual_argument_word)",
+    "void call_widget_virtual88(void* captured_widget,uint32_t captured_profile,uint32_t captured_target,uint32_t frame_word,uint32_t zero_word,uint32_t alpha_float_bits)",
+    "void title_005189b0(const void* captured_native_header8)"
+  ],
+  "current_table_contract": {
+    "loads": "Direct raw CURRENT profile and original-VA table DATA words at+34/+88",
+    "caller_proof": "SAME retained authenticated canonical original-VA RO mapping for every reached table; valid same-domain raw receivers/fields; genuine finite captured-target Source dispatcher",
+    "codeword_to_callable_cast": false,
+    "synthesized_table": false,
+    "successful_target_fallback": false,
+    "metadata_callback_while_ST0_live": false
+  },
+  "apply_epochs": {
+    "captured_frame_retained": true,
+    "no_getter_inside_apply_before_flag_tail": true,
+    "panel_title": "Per slot own read ONCE; nonnullslot test; CURRENT selector; sameindexedslot reload; CURRENTprofile/34target; SETZcarrierupper24 from computedwordindex INCLUDING44/4E.",
+    "panel_title_formula": "((own*2+slot+base_word)&FFFFFF00)|(slot==CURRENTselector), base_word44/4E",
+    "mode": "After both small groups read CURRENT Game then actualGame+5D4;0D skips BOTH backdrop AND flagtail.",
+    "backdrop": "Own fornonnulltest, then own AGAIN forcallindex, CURRENTselector, slotreload/profile/34target; SETZcarrierupper24 from own*13+slot WITHOUT+0C byteoffset.",
+    "backdrop_formula": "((own*13+slot)&FFFFFF00)|(slot==CURRENTbackdrop)",
+    "tail": "Read CURRENT flagDWORD only after all backdrop calls, then whole518B90.",
+    "bool_Shown_transport": false,
+    "index_range_narrowing": false
+  },
+  "writer_epochs": {
+    "00518D60": "Capture actualtitleDWORDhome FIRST; write84/88/8C; realgetter/capturedFrameapply; THEN CURRENTtext-pointerhome/headerlength; nonzero genuinewholeTitle binding with capturedheader.",
+    "00518DA0": "Store84; realgetter/capturedFrame; tailwholeapply counterpart.",
+    "cached_text_or_string_view": false,
+    "whole_Title_body_implemented": false
+  },
+  "flag_epochs": {
+    "signed_compare_before_store": true,
+    "negative_branch_uses_prestore_compare": true,
+    "flag_fullDWORD_store": true,
+    "initial_getter_pair": "First return supplies Pagearrayreceiver; second return supplies own; thenCURRENTpanel; actualPage test.",
+    "real_native_name": "Actual41E870 on caller-retained raw8Bheader; cleanupstate0 only afterconstructorreturns.",
+    "second_getter_pair": "First return Pagearrayreceiver, second own; CURRENTpanel thenactualPage forAA7E00(header,1).",
+    "FP_and_call_words": [
+      "FLD1",
+      "actual CURRENTwidget profile read",
+      "CURRENT rawtable+88 target word read",
+      "MOVZX CURRENTflagLOWWORD",
+      "FSTP actualalphaargument bits",
+      "genuine capturedtarget call88(frameword,0,spilledbits)"
+    ],
+    "Cpp_callback_during_x87_live": false,
+    "guessed_1_float_or_bit_constant": false,
+    "ordinary_unwind": "Once-only actualcurrent-header41DD20; originalproviderexception rethrows ifcleanupreturns, cleanupfailure escapes ifcleanupthrows.",
+    "normal_cleanup": "Outside armed Source try scope; no repeat on normal pool-return failure.",
+    "new_noexcept_or_termination_policy": false,
+    "retry_or_rollback_or_ack_policy": false
+  },
+  "literal_receipt": {
+    "address": "00CEC3F0",
+    "text": "frame_flag_Icon",
+    "length": 15,
+    "bytes": 16,
+    "bytes_hex": "6672616d655f666c61675f49636f6e00",
+    "sha256": "fe752d486c35b8fa7b924c6f57139dbc723f7f8b18527ba7a2f4fd3cf12d4c61",
+    "fnv1a_including_NUL": "53993661",
+    "borrow": "Existing canonical GameNativeReadOnlyData; exact originalVA/NUL/FNV checked beforeentry; no literalbank"
+  },
+  "flag_EH_receipt": {
+    "handler": "00C6A998",
+    "handler_ops": [
+      "MOV EAX,00D93E28",
+      "JMP00BF6B43"
+    ],
+    "funcinfo": "00D93E28",
+    "magic": "19930522",
+    "state_count": 1,
+    "unwind_map": "00D93E20",
+    "parent": -1,
+    "action": "00C6A990",
+    "action_ops": [
+      "LEA ECX,[EBP-14]",
+      "JMP0041DD20"
+    ],
+    "funcinfo_sha256": "67c07e00256b1716f8ae8392c4da6804f2daa4b6ef1ba5286f31ec210aeaeefb",
+    "map_sha256": "8e3aeaf7508a06f1ac0f03f5a25549e7d18cf02afd984a816db00819cc16786d",
+    "qualification": "Logical cleanup only; no Native secondary-exception/fault/private-frame identity claim."
+  },
+  "analysis_identity": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "bsp.py ghidra client verifies configured project/currentprogram/language/base beforeeachlivequery",
+    "read_only_queries": [
+      "proto4assignedaddresses",
+      "disasmC6A998handler"
+    ],
+    "Ghidra_mutation": false,
+    "new_exports": false
+  },
+  "static_PE": {
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "scope": "Staticfilebytes only, not runtimeglobals/currentreceiver or execution proof."
+  },
+  "source_pins": [
+    {
+      "path": "include/bsp/native_front_end_frame_operations.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "076f002fc017d984c9a211f734b6693d7e283dc1a757e9764d6d7bf660247340",
+      "git_blob_oid": "6cfec6d5b479d18c3e899dfa7df34d0e8b6aa21a",
+      "bytes": 5560
+    },
+    {
+      "path": "src/native_front_end_frame_operations.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "a5e8a64e96bda0cf0dbbd5ee820300dde36d97fb449a433814675623c9a908f7",
+      "git_blob_oid": "00db12bcb036da666349d4bc06e2f206a0c877a0",
+      "bytes": 7871
+    }
+  ],
+  "input_pins": [
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "git_blob_oid": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+      "bytes": 2713
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+      "git_blob_oid": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e",
+      "bytes": 7167
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "git_blob_oid": "3b7af4c6508cfc1df81e913108b5162208685e97",
+      "bytes": 8771
+    },
+    {
+      "path": "src/native_string.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "git_blob_oid": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+      "bytes": 9121
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+      "git_blob_oid": "60b3f627150fa058fac7b8c4c74537cb3aee0a68",
+      "bytes": 3113
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+      "git_blob_oid": "103d6fe4d772bb3078c48fe8bcf3f929a385fdda",
+      "bytes": 5450
+    },
+    {
+      "path": "include/bsp/game_native_settings_process.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "c39242f443a95a5a4d5f910279123a90fb09e8e0fa63d0036632cd597c26ccb6",
+      "git_blob_oid": "c3af3aab298f334d35c33ac276eeab3a2a17e29e",
+      "bytes": 2203
+    },
+    {
+      "path": "src/game_native_settings_process.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b",
+      "git_blob_oid": "3fdec928d327e44bab7297a987591d43c7fd4d95",
+      "bytes": 7791
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_publication.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "81549e83081937cc498dfb750865ee2ee9de971c034bd2029978146a1a575974",
+      "git_blob_oid": "82575b594f78f58fd433715f4a21407e92f1297a",
+      "bytes": 3679
+    },
+    {
+      "path": "src/native_front_end_frame_publication.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "72a6ecb29e7622b225dc93d0009ef3e3a4df438d47900dd7813073afb73d38f4",
+      "git_blob_oid": "b1ae284c6ac34e848f83978013dda633f92cfece",
+      "bytes": 4237
+    },
+    {
+      "path": "include/bsp/menu_screens_2.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "2ef72c791db3abc89d9b52b82bf57adee15a1de9edb3efaeedd64360457dce36",
+      "git_blob_oid": "975c2a5be7c4d0348aa45134a6744f3689804c1f",
+      "bytes": 99822
+    },
+    {
+      "path": "src/menu_screens_2.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "23e3c082e0688f77fbba57f0d5c9f23a0ce1390d41226936890bf1e55adb2809",
+      "git_blob_oid": "a81f1c88068789bc2af55431b634936e31a4dbc3",
+      "bytes": 171242
+    },
+    {
+      "path": "include/bsp/frontend_seg12_17_cc13.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "6c7c46fac64e4c3fd89e6c5f67ef4739508787eb7a4aa6d6b90ca7aa4a0233f6",
+      "git_blob_oid": "e6ccbbe3d242253970da0db7179875ac5ffe0709",
+      "bytes": 227595
+    },
+    {
+      "path": "src/frontend_seg12_17_cc13.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "fc47eb8b8c9db2dcd0f25b5bc633502304ba39a7694b1f2ae0d1e50e74637a9f",
+      "git_blob_oid": "2f91cd9bcdd7d9c8aae14a4c6cb8bec29e9b7dd0",
+      "bytes": 272095
+    },
+    {
+      "path": "config/target.json",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "git_blob_oid": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "bytes": 455
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+      "git_blob_oid": "bd937766a7e4d62c015b2ab44a14a9153fbb4542",
+      "bytes": 14518
+    }
+  ],
+  "saved_export_pins": [
+    {
+      "path": "exports/bsp/functions/00518c80/assembly.txt",
+      "hash_format": "raw_saved_export_file_bytes",
+      "sha256": "ec314151825c9dee044594dbdaca0ea436ba850dc0004827983171b316762b02",
+      "bytes": 2035
+    },
+    {
+      "path": "exports/bsp/functions/00518c80/decompiled.c",
+      "hash_format": "raw_saved_export_file_bytes",
+      "sha256": "ee9ee09fb3e322d39ce18c9b87fc1dd1ae9e002cdd462ae6f27ff7d5f9d605f7",
+      "bytes": 1614
+    },
+    {
+      "path": "exports/bsp/functions/00518d60/assembly.txt",
+      "hash_format": "raw_saved_export_file_bytes",
+      "sha256": "05cf3238cb450475357d7be40b4ca889c2892391d8aa7e4c5e14a17bc05b2b37",
+      "bytes": 381
+    },
+    {
+      "path": "exports/bsp/functions/00518d60/decompiled.c",
+      "hash_format": "raw_saved_export_file_bytes",
+      "sha256": "c51407b00047129fc87ad18c1e086f3cb315a49caf3b8322451b1cf66827c08e",
+      "bytes": 778
+    },
+    {
+      "path": "exports/bsp/functions/00518da0/assembly.txt",
+      "hash_format": "raw_saved_export_file_bytes",
+      "sha256": "e86c9a023f049b93b18f8c42dea47ac92e7147e947c6438ef5eafa152d369deb",
+      "bytes": 118
+    },
+    {
+      "path": "exports/bsp/functions/00518da0/decompiled.c",
+      "hash_format": "raw_saved_export_file_bytes",
+      "sha256": "8c2882ef59a03a5eac5fd45a2475aee4c883b14cecf2383731c7571f8b6d60cd",
+      "bytes": 423
+    },
+    {
+      "path": "exports/bsp/functions/00518b90/assembly.txt",
+      "hash_format": "raw_saved_export_file_bytes",
+      "sha256": "230f1da06dc825d41cbf7964e278d11a8240a0b661b4ed274c7db1c336cffbff",
+      "bytes": 1768
+    },
+    {
+      "path": "exports/bsp/functions/00518b90/decompiled.c",
+      "hash_format": "raw_saved_export_file_bytes",
+      "sha256": "ea7b31d7ce472bec9075519e384f6d6277055eaaefb2439b316e2c4585c808f1",
+      "bytes": 1378
+    }
+  ],
+  "validation": {
+    "full144instruction_saved_assembly_review": true,
+    "Source_schedule_static_review": true,
+    "PE_literal_body_and_EH_receipts": true,
+    "json_parsed": true,
+    "git_diff_check": true,
+    "owned_files_only": true,
+    "compiled": false,
+    "linked": false,
+    "tested": false,
+    "probe": false,
+    "body_or_game_execution": false,
+    "process_control": false,
+    "new_tests": 0,
+    "CMake_or_ledger_changes": false,
+    "existing_semantic_Source_unchanged": true,
+    "Root_common_build": "pending for these newfiles; no priorpassedreceipt reuse"
+  },
+  "readiness": {
+    "library_Source_present": true,
+    "genuine_required_binding_implemented": false,
+    "used_app_or_caller_admitted": false,
+    "whole_frontend_Source_ready": false,
+    "activation": false
+  },
+  "remaining_bindings": [
+    "Used Startup app/canonical/raw95 and same retained Frame getter/custody",
+    "ActualAA7E00 and genuine captured34/88 dispatch over realPage/Icon/child graph",
+    "Whole5189B0 and changedText/factories",
+    "Actual lifetime/drain/caller graph"
+  ],
+  "excluded_scope": [
+    "WholeTitle/x87width",
+    "position",
+    "destructor/scalars",
+    "collector",
+    "sharedowner/view/app",
+    "singleton deletion map",
+    "CMake/ledger/guard flips"
+  ],
+  "new_credit": {
+    "original": 0,
+    "vendor": 0,
+    "duplicate_body": 0,
+    "compiler_generated": 0,
+    "abi": 0,
+    "runtime": 0,
+    "gameplay": 0,
+    "activation": 0
+  },
+  "utc": "2026-10-30T16:33:20.792833+00:00"
+}
