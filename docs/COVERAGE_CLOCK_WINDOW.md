@@ -6,7 +6,7 @@ process memory, or follows a replacement PID. It imports the existing
 `ProcessReader` and `read_game_clock` from `original_motion_capture.py`; its
 process handle has only `PROCESS_QUERY_LIMITED_INFORMATION | PROCESS_VM_READ`.
 
-This is a control-file producer for the guarded original drcov backend. The
+This is a control-file producer for the guarded original coverage backends. The
 backend owns admission, the nonce-authenticated stop nudge, trace flushing and
 exit validation. A request alone is not evidence that a trace flushed or the
 game exited successfully.
@@ -27,9 +27,14 @@ receipt's fresh run directory. They must not exist. The script derives its
 repository from its own file location, so integration must precede use with
 another worktree's control directory. Existing files are never overwritten.
 
-The observer waits for an atomic receipt with schema
-`bsp.original-baseline.drcov.launch.v1` and `admitted: true`. Required binding
-fields are:
+The observer waits for an atomic admitted receipt. Default `--tracer-method
+drcov` still requires exact schema `bsp.original-baseline.drcov.launch.v1`;
+legacy DR receipts may omit `tracer_method`, otherwise it must be `drcov`.
+The classic debugger fallback requires explicit `--tracer-method
+debugger-function-entries`, exact schema
+`bsp.original-baseline.function-entry.launch.v1`, and matching
+`tracer_method: debugger-function-entries`. Schemas/methods are not silently
+interchanged. Required binding fields remain identical:
 
 ```text
 root_pid: integer, equal to --pid
@@ -160,10 +165,16 @@ does not manufacture a successful target request. Before admission, timeout
 or DRAIN is reported without an unbound stop request.
 
 Observer exit 0 means it published a `game_time_target` request. Other reasons
-return 2. Backend success additionally requires the matching native client
+return 2. DR backend success additionally requires the matching native client
 stop ACK, flushed parent/child trace evidence and its own exit validation.
 Reset, timeout and DRAIN remain aborted/nonzero outcomes even if flushing
 succeeds. This observer never calls `TerminateProcess` or any equivalent.
+The classic function-entry collector owns its separate qualified
+`forced_window_stop`: persisted entry observations, bound native clock/source
+checks and empty owned jobs. That is an intentional window boundary, not a
+natural process exit. The observer does not manufacture either backend's
+terminal qualification. Its report records the selected tracer method; the
+nonce-bound stop-request schema is unchanged.
 
 Example after the receipt has root identity fields (run from the integrated
 repository; all placeholder paths must be replaced with that run's receipt):
@@ -178,9 +189,48 @@ python tools/original_coverage_clock.py --pid 1234 `
   --stop-request local/original-drcov/run/stop-request.json
 ```
 
+For the fallback, add `--tracer-method debugger-function-entries` and supply the
+function-entry launch receipt. Clock cells, ordered Loading-scene/SceneInit
+gate, identity checks and stop-request schema remain unchanged.
+
+## Frozen function-entry target dataset
+
+The ignored generator/manifest are under the worker's
+`local/function-entry-targets/`; no new tracked generator tool is required.
+`targets.json` uses schema `bsp.original-entry.targets.v1`, flat
+`image_sha256`, integer `image_base`/`image_size`, `index_sha256`, `wire_sha256`,
+and sorted `points` with eight-hex `address`, integer `expected_byte`, and
+Boolean `board_target`. It contains all 21,770 frozen Catalog game starts;
+20,892 have the board reference/body target flag, and 878 remain in the cohort
+outside that target. Expected bytes come only from the independent private
+original EXE copy matching the hash above, not the installation.
+
+Frozen input SHA-256 pins are:
+
+- Index: `bcb7a602b1f0ad7eaa1d5a3237a98154c9876247b9257402405e7b8be6692bfc`.
+- Wire: `744d9ff74452777ac820d2c14f4146943dd8c6a246b568e860be2686d3be8811`.
+- Scope tool: `b901b3aa5f6b5716923bec20afa270790d91339351e3ed4dc971199c2d7e5183`.
+
+The board mask uses frozen indexed references or positive audited function
+bodies, plus historical source-only exceptions `009d5240` and `00a9a600`.
+The manifest records the exact policy/status set and classification hash
+`869068370c83d5cde27bbb17b53b1eb2b9199cbeb3cc548bdbc7f1bdfb6ec613`.
+All generated points are file-backed executable PE bytes; none starts with
+`0xCC`. Per-point flags still expose those properties instead of dropping
+cohort members. The collector must independently validate runtime PE mapping,
+protection, live byte and breakpoint ownership; unsafe/unreadable/mismatched
+points remain UNKNOWN in reports.
+
+The frozen SQLite cache contains function starts/ranges but no per-entry
+decoded instruction proof. A matching disk byte alone is not instruction-
+boundary proof; that uncertainty is explicit in the manifest. One-shot entry
+observations measure reached starts, not block spans, frequency or call counts.
+An unhit target is not promoted to false execution. The manifest must be
+independently hash/cohort reviewed before primary copies or uses it.
+
 ## Validation boundary
 
-Python compilation passed. Six focused fake-reader/clock checks covered one
+Python compilation passed. The existing six focused fake-reader/clock checks covered one
 retry/final-torn exclusion, scene/step admission, absolute target/reset
 isolation, timeout/DRAIN, nonce/FILETIME/PID/fresh-log/path rejection, log
 truncation, the concrete Arguments echo at byte 124, engine load-only rejection,
@@ -190,3 +240,6 @@ atomic JSON publication. The fixture lives
 only in ignored `local/coverage-clock-fixture/`; no new test framework or game
 process was used. This is synthetic validation, not a live original/DR clock
 or native stop/flush validation.
+The same receipt fixture also verifies that legacy/default DR remains strict,
+function-entry requires explicit mode and matching schema/method, and wrong or
+missing method/schema combinations are rejected.
