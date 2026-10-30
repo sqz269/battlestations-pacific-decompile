@@ -1246,3 +1246,11 @@ Initial-language joined peer Main3cef38659 at af1656af1: canonical Release
 Win32 checks2/2 passed14.14s, exact locale pins unchanged, no forced overlay
 or entry/game execution. Raw settings ready-borrow contracts accepted; actual
 8D4870 Core/App binding advances independently with valid-row/lifetime gates.
+
+Actual raw8D4870 accessor/Appready borrow da387b837 accepted(primary+2independent),
+full2Appinverse/13Rootproviderpins/2strictONCE014C. Corecountonce04391652b;
+retainedApp10302440→Core10480f60/commonchecks2/2 13.09s; overlayremoved,
+canonicalReleaseWin32checks2/2 11.13s/cache+projectrestored/unboundmapentryabsent.
+Validrow/no-writer/pre-world-pool-catalog-CRT lifetime remainscallerscope.
+Exactlanguage0x25 andglobals0x26 callerbridges advanceasdisjointfourNEWfile
+packets; no startupredirect/fullreload/raw16/GUI/loadedconsumer/runtimegrant.
