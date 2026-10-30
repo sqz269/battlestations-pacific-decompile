@@ -127,6 +127,11 @@ std::uint8_t NativeVfsRuntimeBindings::exists(std::uintptr_t table,void* manager
     require_manager(table);if(slot(table,8)!=0x00bdd440)unsupported();
     return exists_native_vfs_file_00bdd440(manager,&name,lookup_);
 }
+std::uint8_t NativeVfsRuntimeBindings::exists_manager_entry(std::uintptr_t entry,
+    void* manager,const void* name) {
+    if(entry!=0x00bdd440)unsupported();
+    return exists_native_vfs_file_00bdd440(manager,name,lookup_);
+}
 std::uint8_t NativeVfsRuntimeBindings::is_open(std::uintptr_t table,void* stream) {
     require_stream(table);
     return source_is_open(slot(table,0x18),stream);
