@@ -862,6 +862,10 @@ struct GameNativeGuiPageApplication::Impl {
         // The existing owner rejects uninitialized aliases and retargeting.
         game_native_gui_text_process().initialize_layer_type_once_00cd73f0(
             vfs.native_owners().types(), vfs.native_types().light_types());
+        // Same public process role API and exact VFS provider identities as
+        // CD7210/Layer; never a copied lineage or Page-local counter wrapper.
+        game_native_gui_text_process().initialize_group_type_once_00cd7460(
+            vfs.native_owners().types(), vfs.native_types().light_types());
     }
     void require_entry() const {
         require(!active && !failed && !retiring_page && !current_properties && !resolvers.requires_process_retention(),

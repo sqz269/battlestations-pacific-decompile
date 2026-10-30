@@ -94,20 +94,20 @@
     },
     {
       "path": "src/game_native_gui_page_application.cpp",
-      "bytes": 73317,
-      "sha256": "a3e07cdeb1ba49dcb90dc94bd36bfe1ab4965e9ceaf3a1d0987785dc5f512624",
-      "lf_bytes": 72053,
-      "lf_sha256": "30ea9f4169a4c7192bdbbd0cee89cb26f4ae4738b8941a5c4f1c7070182ebbf6",
-      "git_blob": "97a2990e58c9d91a5e213eaf31c04a69e065e015",
+      "bytes": 73629,
+      "sha256": "5da702932516615f6fc72a9ae23a9cb07bfd83e5c08ef43e196cac7a40e69fde",
+      "lf_bytes": 72361,
+      "lf_sha256": "f0680d24d134ab1c0a3be454a3e56f482d8b32bbdb66ab15e921041020a8a49a",
+      "git_blob": "3245d427cb1ce9c41cf7b36a01fa151c138f9f2c",
       "role": "component_changed"
     },
     {
       "path": "src/game_hosts.cpp",
-      "bytes": 189179,
-      "sha256": "74cdefd20de293edbc2c256e072a8ca28fc867bfe6c2c0a9745de709110d673f",
-      "lf_bytes": 185565,
-      "lf_sha256": "2b4f594039fbd7b20056cd34c59cd6b4571a23a2269dc98db2210ab6c8a179e2",
-      "git_blob": "05df16b3b7dae726a02cd243ded6ffa469d94beb",
+      "bytes": 189692,
+      "sha256": "010a9a801ff7be596f4e1729d36527e34415b1b5b7472a0bbacec6ad70843cea",
+      "lf_bytes": 186067,
+      "lf_sha256": "6403dacc40b04fe9df818e5fa1e175609b876d54a51dbeae9a7e2ef69856cff6",
+      "git_blob": "f0ddd36fa94585e7be5ec76fe894e6d90d4951eb",
       "role": "component_changed"
     },
     {
@@ -514,6 +514,42 @@
       "lf_sha256": "d26db5468d7eb00b21ff02556493b05bfc7a0440717c687e65afed281598d6fa",
       "git_blob": "a7929db74e39bf1e98d5cf89251bd080b6359206",
       "role": "existing_whole_supplier"
+    },
+    {
+      "path": "include/bsp/game_native_gui_text_process.hpp",
+      "bytes": 7271,
+      "sha256": "dbadef0978a9bfca2fb48533ea3d0f4f309ab38a679f348843744348ac633f52",
+      "lf_bytes": 7271,
+      "lf_sha256": "dbadef0978a9bfca2fb48533ea3d0f4f309ab38a679f348843744348ac633f52",
+      "git_blob": "c5396f5a44125e4912a8cdc69d09f7677be55c11",
+      "role": "genuine_same_VFS_Group_role_supplier"
+    },
+    {
+      "path": "src/game_native_gui_text_process.cpp",
+      "bytes": 11028,
+      "sha256": "01ce505d584e1fdd98165e4fe17459d1c8af78bf1f0ce10262bd45591302f5f0",
+      "lf_bytes": 11028,
+      "lf_sha256": "01ce505d584e1fdd98165e4fe17459d1c8af78bf1f0ce10262bd45591302f5f0",
+      "git_blob": "302873adc7eae6b67f6e9c48c3623ef6b901fb03",
+      "role": "genuine_same_VFS_Group_role_supplier"
+    },
+    {
+      "path": "include/bsp/native_vfs_owner_services.hpp",
+      "bytes": 3548,
+      "sha256": "2df162f0937d2c9b34c790609d92c3e41ef8cc6ae49977ec0fcd6e07b699a128",
+      "lf_bytes": 3548,
+      "lf_sha256": "2df162f0937d2c9b34c790609d92c3e41ef8cc6ae49977ec0fcd6e07b699a128",
+      "git_blob": "4c8bdae5e23b4af895d0b3ab2eb6b45c0f393333",
+      "role": "genuine_same_VFS_Group_role_supplier"
+    },
+    {
+      "path": "src/native_vfs_owner_services.cpp",
+      "bytes": 1236,
+      "sha256": "1df19acedaa8505b0bc1d0fd4279a514a73f4a1db5cf63300c53f89e9cb1ed6c",
+      "lf_bytes": 1236,
+      "lf_sha256": "1df19acedaa8505b0bc1d0fd4279a514a73f4a1db5cf63300c53f89e9cb1ed6c",
+      "git_blob": "62fe8b31d3d38ae8f352549b091282e839807415",
+      "role": "genuine_same_VFS_Group_role_supplier"
     }
   ],
   "source_diff": {
@@ -531,8 +567,8 @@
       "include/bsp/native_gui_widget_child_links.hpp",
       "src/native_gui_widget_child_links.cpp"
     ],
-    "bytes": 114617,
-    "sha256": "f60fc97f487069c29c94eca2dbd6a8d9e047ae3cb021808c94e77ae8577044cd"
+    "bytes": 116370,
+    "sha256": "550a3e4137ceb1fcef7ede309b6bb7c3ec372476fde3b8f1b55dede640ccb0c0"
   },
   "effect_body_comparisons": [
     {
@@ -680,36 +716,36 @@
     {
       "path": "src/game_native_gui_page_application.cpp",
       "marker": "void GameNativeGuiPageApplication::Impl::read_properties(",
-      "start_line": 988,
-      "end_line": 1012,
+      "start_line": 992,
+      "end_line": 1016,
       "body_lf_sha256": "5a3831baa32ad73ad4d2977ec5f22948e92899b398e4b02bd95a02ffbc504930"
     },
     {
       "path": "src/game_native_gui_page_application.cpp",
       "marker": "void GameNativeGuiPageApplication::Impl::read_group_properties(",
-      "start_line": 1013,
-      "end_line": 1040,
+      "start_line": 1017,
+      "end_line": 1044,
       "body_lf_sha256": "b7e6cbcb49d1eff8298ff623cd87f04a32fc9bd03c2bcf86f07a2c8c4ad3cd53"
     },
     {
       "path": "src/game_native_gui_page_application.cpp",
       "marker": "void GameNativeGuiPageApplication::Impl::release_page_scene(",
-      "start_line": 1059,
-      "end_line": 1079,
+      "start_line": 1063,
+      "end_line": 1083,
       "body_lf_sha256": "6ae6e69190e779c770ed20eb8de63a6bd83ccc00a5c8c2c5ef4de68851584280"
     },
     {
       "path": "src/game_native_gui_page_application.cpp",
       "marker": "void GameNativeGuiPageApplication::Impl::delete_page(",
-      "start_line": 1080,
-      "end_line": 1103,
+      "start_line": 1084,
+      "end_line": 1107,
       "body_lf_sha256": "87fec2379b65c30194a6c8dd26bcb3c064407de20ba9e55d10ea960300de6c1f"
     },
     {
       "path": "src/game_native_gui_page_application.cpp",
       "marker": "void GameNativeGuiPageApplication::after_native_renderer_drain(",
-      "start_line": 1165,
-      "end_line": 1175,
+      "start_line": 1169,
+      "end_line": 1179,
       "body_lf_sha256": "b2ce30f5f9fde0714ef6074caac97e400cdf292ba748d4d45b38b68eaaa62cde"
     },
     {
@@ -809,6 +845,13 @@
       "start_line": 193,
       "end_line": 244,
       "body_lf_sha256": "39f7425b48c2941728d0a0b4b94ae79da49a30cb2bbfdec51c4b7184429a05e7"
+    },
+    {
+      "path": "src/game_native_gui_text_process.cpp",
+      "marker": "void GameNativeGuiTextProcess::initialize_group_type_once_00cd7460(",
+      "start_line": 154,
+      "end_line": 189,
+      "body_lf_sha256": "222347ca994e8dfc25d4c33ff159cdec2a36ad4c5bfd3eb772c1b5952af41f3e"
     }
   ],
   "actual_connected_callers": [
@@ -1110,18 +1153,18 @@
   },
   "documentation_receipt": {
     "path": "docs/CC16_POPULATED_PAGE_IMPLEMENTATION.md",
-    "bytes": 10729,
-    "sha256": "0830acebeba1fd3f59a761ede71aff775763fa8101c4fd1f262821ff6857234b",
-    "lf_bytes": 10680,
-    "lf_sha256": "874d3bcb02c3dc8836bdc927b625bed5671e4429d7185bb83536cca38aa61a5d",
-    "git_blob": "deb6ee184bf433ec83b7631b2e3a9a7a737b8991"
+    "bytes": 11286,
+    "sha256": "8e266442627d9ea203efd6fd9417a5bd61c0c92551dd10ce45f70ad0b53199f9",
+    "lf_bytes": 11235,
+    "lf_sha256": "d7dd997ba14da521272a5d293463f009d1b082c573e922a050bdd77bca7f2a88",
+    "git_blob": "58951ca428b2594d7d6606bc3eec374593347a9a"
   },
   "supplier_final_receipts": {
     "model_domain_metadata_final": "123c726602f7236717b0bb9af8c62c45b667d031",
     "model_domain_source_unchanged_from": "d0d609dbc0c77c74001cadf2648154245da5aa8a"
   },
-  "updated_utc": "2026-10-30T13:44:21.183610+00:00",
-  "prior_sealed_candidate": "39cae2bbef4519f416840b5de0dd99f99edeefde",
+  "updated_utc": "2026-10-30T13:49:21.498449+00:00",
+  "prior_sealed_candidate": "c9435299371683e2a5ea21d40ac1422c522cdfe4",
   "review_fixes": [
     {
       "finding": "unnecessary optional raw_name_services precondition always rejected the born-raw common view",
@@ -1132,6 +1175,23 @@
       "finding": "direct Page lifetime frame preparation escaped before Page retained-failure catch",
       "resolution": "retiring metadata starts before preparation and same catch retains preparation failure before associated Native effects",
       "source": "src/game_native_gui_page_application.cpp"
+    },
+    {
+      "finding": "genuine Group process lineage had no actual CD7460 startup caller",
+      "resolution": "Page calls existing public process role initializer with exact vfs.native_owners().types()/vfs.native_types().light_types() before Group use; actual guarded GameHost caller retains interrupted GUI-role state via existing _Exit policy; no copied IDs/wrapper or guard-off startup effect",
+      "source": [
+        "src/game_native_gui_page_application.cpp",
+        "src/game_hosts.cpp"
+      ]
     }
-  ]
+  ],
+  "Group_role_startup": {
+    "api": "GameNativeGuiTextProcess::initialize_group_type_once_00cd7460",
+    "counter": "same TypeIdCounterLifetime& vfs.native_owners().types() passed to actual CD7210 startup",
+    "common_storage": "same vfs.native_types().light_types() domain references",
+    "Page_wrapper_host": false,
+    "caller": "Page Impl after existing Layer role, before published providers/Group use",
+    "interrupted_retention": "actual guarded GameHost Page construction catches native_operation_interrupted and applies existing GUI-type _Exit disposition before VFS/provider drain",
+    "guard_off_effects_added": false
+  }
 }
