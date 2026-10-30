@@ -1,0 +1,602 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-gui-movie-default-storage-review",
+  "status": "independent_qualified_pass_normal_raw_constructor_static_contract_only",
+  "candidate_commit": "54fb69ac5e00304636dcb6609034b8026f50802d",
+  "base": "71dbafc86780bd90afbb69873b7f5d2badc5a3f7",
+  "reviewed_at_utc": "2026-10-29T23:21:50.849639+00:00",
+  "blocking_findings": [],
+  "inputs": {
+    "primary_document": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-movie-default-storage-review\\docs\\CC16_NATIVE_GUI_MOVIE_DEFAULT_STORAGE.md",
+      "bytes": 5762,
+      "sha256": "9a0717fa87e2b7b2732946f39ddd38623754fe10c2ed9f51d4fb21b9dc71807f"
+    },
+    "primary_report": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-movie-default-storage-review\\reports\\cc16_native_gui_movie_default_storage.json",
+      "bytes": 19705,
+      "sha256": "a005b9ab96736f8ac486d6a95f5b216dea140b09e9b9e45ec1268b73ba12c5e4"
+    },
+    "original_PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "machine": "014c",
+      "PE_magic": "010b",
+      "image_base": "00400000"
+    },
+    "configured_project": "C:/Users/sqz269/bsp.gpr",
+    "verified_program": "/battlestationspacific.exe",
+    "source_pins": [
+      {
+        "path": "include/bsp/native_gui_movie_default_storage.hpp",
+        "bytes": 1311,
+        "sha256": "b0a20c56f0b4bbbcabba47537e029355a8e935f35de959c65df871bdeef18459",
+        "git_blob": "9a1e20567dd9b56f06d876ffaef10dc73e2ddf07",
+        "new_owned_file": true
+      },
+      {
+        "path": "src/native_gui_movie_default_storage.cpp",
+        "bytes": 1662,
+        "sha256": "54625e168768812717df102b4ce8f41ce897a6ebe347e9c58b7412a563148065",
+        "git_blob": "911c301e1e2bb497de575c46fd05bfc8332c4ffc",
+        "new_owned_file": true
+      },
+      {
+        "path": "include/bsp/native_gui_widget_base_storage.hpp",
+        "bytes": 1081,
+        "sha256": "35748704f96ed477f2f55f01edf5a8e598f1995955f847343f94327dc495faab",
+        "git_blob": "61c72c99fab59f5c86da392495d7bae5381607cf",
+        "new_owned_file": false,
+        "baseline_blob": "61c72c99fab59f5c86da392495d7bae5381607cf"
+      },
+      {
+        "path": "src/native_gui_widget_base_storage.cpp",
+        "bytes": 3008,
+        "sha256": "4ddd5ab1ad4a2b8174d80caf70dba76afa648479e4e8637a56884f2b9db6354d",
+        "git_blob": "997a33c5ac7bbf7b57e133feb53b91163e7308b5",
+        "new_owned_file": false,
+        "baseline_blob": "997a33c5ac7bbf7b57e133feb53b91163e7308b5"
+      },
+      {
+        "path": "include/bsp/native_gui_text_identity.hpp",
+        "bytes": 4245,
+        "sha256": "6de31247104e9d98b5b369846bd8c743058c14aeae8ce0520ce15fd3926335a6",
+        "git_blob": "002c6855b1de966a5a690fca0914971c4683a227",
+        "new_owned_file": false,
+        "baseline_blob": "002c6855b1de966a5a690fca0914971c4683a227"
+      },
+      {
+        "path": "include/bsp/native_gui_widget_pools_cc13.hpp",
+        "bytes": 12674,
+        "sha256": "fd2be32f59443f79787b5006a628b9d0f78597b4d4dff62d09dbc65831c1fed3",
+        "git_blob": "759fba46de564d4d09549b0f3950bf2bbfc4f718",
+        "new_owned_file": false,
+        "baseline_blob": "759fba46de564d4d09549b0f3950bf2bbfc4f718"
+      },
+      {
+        "path": "src/native_gui_widget_pools_cc13.cpp",
+        "bytes": 3180,
+        "sha256": "e9fa3a2f4e8d0f644d601aa974bab567f8cd36e5c9ea958ae06aacaca4b5e925",
+        "git_blob": "18a2efa93a00c8e48d79003e8af0ed4fbc5f80b3",
+        "new_owned_file": false,
+        "baseline_blob": "18a2efa93a00c8e48d79003e8af0ed4fbc5f80b3"
+      },
+      {
+        "path": "include/bsp/game_hosts.hpp",
+        "bytes": 46822,
+        "sha256": "69af1a3c2359cb9d670f5f423cff65d4acd928590a3f05d55cdfd889ae7eb28a",
+        "git_blob": "04f8a795156feeb734856a7747100e7dfbc6f9d5",
+        "new_owned_file": false,
+        "baseline_blob": "04f8a795156feeb734856a7747100e7dfbc6f9d5"
+      },
+      {
+        "path": "src/game_hosts_mission_result.cpp",
+        "bytes": 34180,
+        "sha256": "f4be4960d0475fb11050987c2b905c4f2839cc1f53dcf190dd9ca3784fa3228c",
+        "git_blob": "4aa1c95d387d5084ce12e742303d6a87772bc77d",
+        "new_owned_file": false,
+        "baseline_blob": "4aa1c95d387d5084ce12e742303d6a87772bc77d"
+      },
+      {
+        "path": "include/bsp/game_native_gui_page_application.hpp",
+        "bytes": 3811,
+        "sha256": "8a21c044261937a47938887584b94650d1d04ab1584d3c447af276a6c04cebcb",
+        "git_blob": "3900c1e90fb9dd685f1c1375079b6fd13252cff9",
+        "new_owned_file": false,
+        "baseline_blob": "3900c1e90fb9dd685f1c1375079b6fd13252cff9"
+      }
+    ],
+    "native_export_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aafe20\\decompiled.c",
+        "bytes": 914,
+        "sha256": "a1114f9f50f5ac427883df349b1a8887b96086a40eb5cdeab1ca1a33c53548f3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aafe20\\assembly.txt",
+        "bytes": 1059,
+        "sha256": "9d181a53a58642c7f6e19a26a6ffcccc7666dd279a74a5678bb3b3d5e3fb4c96"
+      }
+    ],
+    "primary_artifact_root": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-movie-default-storage",
+    "primary_artifact_pins": [
+      {
+        "path": "local/native_gui_movie_default_storage/compile.cmd",
+        "bytes": 1101,
+        "sha256": "c337f62a092c27f60c1bb84e0092c220e927cbf2457c02bcbbad725f26e14468"
+      },
+      {
+        "path": "local/native_gui_movie_default_storage/compile.log",
+        "bytes": 74,
+        "sha256": "f3ff1071f6f072408329707bf3df9756d6c49884fcd04bc25627d50fd43f98a5"
+      },
+      {
+        "path": "local/native_gui_movie_default_storage/movie_default.obj",
+        "bytes": 2870,
+        "sha256": "ef4b5ae4f16328e321caa7e96339d564fe194dbeb3f52c86c058dcdbbf1cfc45"
+      },
+      {
+        "path": "local/native_gui_movie_default_storage/widget_base.obj",
+        "bytes": 7951,
+        "sha256": "5f3df9c01229106fe0fd630c35f238c96cf8ca4dc01964f5a268c68d4a46f1c5"
+      },
+      {
+        "path": "local/native_gui_movie_default_storage/movie_default.symbols.txt",
+        "bytes": 3146,
+        "sha256": "86e23be86140d0430a9131159fbbeb9909998141397d83d03eccc03ed3a97bc5"
+      },
+      {
+        "path": "local/native_gui_movie_default_storage/widget_base.symbols.txt",
+        "bytes": 11133,
+        "sha256": "c2d24624537b674559055d5a5f80c6a3c4e1551e6039d01dbba0ef724108fb99"
+      },
+      {
+        "path": "local/native_gui_movie_default_storage/movie_default.assembly.txt",
+        "bytes": 3581,
+        "sha256": "04bcab0f643bb44c3faa1c70d3e3c407f1e2af5dbffa3cd451199449eab365c4"
+      },
+      {
+        "path": "local/native_gui_movie_default_storage/static_audit.py",
+        "bytes": 5017,
+        "sha256": "0b5d9707bf7b56cf76c4cdc4d5bd73902496997f9d70d709ac2e0ccc4f5b0b57"
+      },
+      {
+        "path": "local/native_gui_movie_default_storage/static_audit.json",
+        "bytes": 4505,
+        "sha256": "dcf0e97efa9b600e603d7d122e21e64257c9da9c0e251cf227964a1025a992e2"
+      },
+      {
+        "path": "local\\native_gui_movie_default_storage\\verify_report_calls.log",
+        "bytes": 83,
+        "sha256": "2f62156d6834ec0d38a783e6d8b708f771d7ce33bb91a36b9b3eaf24f659d3f7"
+      }
+    ]
+  },
+  "review_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-movie-default-storage-review\\docs\\CC16_NATIVE_GUI_MOVIE_DEFAULT_STORAGE_REVIEW.md",
+    "bytes": 5495,
+    "sha256": "6382a8f8a5ed1f421e0f054e7ac1f22d75874238c757aa13c6864b650b920724"
+  },
+  "native_evidence": {
+    "entry": "00AAFE20",
+    "inclusive_end": "00AAFEAD",
+    "exclusive_end": "00AAFEAE",
+    "bytes": 142,
+    "instruction_starts": 32,
+    "sha256": "d3b5e4fd890aa8e80177acad4cff7cea6b74d66e674b8645eedd1880a4f45269",
+    "live_cli_reference_equal": true,
+    "only_call": {
+      "site": "00AAFE3B",
+      "target": "00AA9390"
+    },
+    "type10_push": "00AAFE37",
+    "same_receiver_EAX": true,
+    "plain_ret": true
+  },
+  "live_byte_method": "Read-only BSP ensure/status target check before native batches; saved pseudocode then complete assembly and live142 bytes. Exact observed live byte string transcribed into independent verifier and equals independently parsed original PE body.",
+  "source_evidence": {
+    "symbol": "?construct_native_gui_movie_default_00aafe20@bsp@@YAPAXPAXADI@Z",
+    "bytes": 164,
+    "instruction_starts": 25,
+    "sha256": "b8a91acbf07fb1c88ffbeff6474c602f2c0f2bcd364c4313e443f7846ebcf282",
+    "same_receiver_EAX": true,
+    "only_call_relocation": {
+      "offset": 13,
+      "target": "?construct_native_gui_widget_base_00aa9390@bsp@@YAPAUNativeGuiTextIdentityPrefix@1@PAXIADI@Z",
+      "type": 20
+    },
+    "real_definition_in_separate_base_object": true,
+    "call_arguments": [
+      "same raw storage",
+      "10",
+      "borrowed actual_one address"
+    ],
+    "new_cdecl_abi_not_original": true
+  },
+  "native_stores": [
+    {
+      "offset": 0,
+      "bytes": 4,
+      "value": 14008944,
+      "instruction": 11206210
+    },
+    {
+      "offset": 236,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 11206216
+    },
+    {
+      "offset": 240,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 11206222
+    },
+    {
+      "offset": 248,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 11206228
+    },
+    {
+      "offset": 252,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 11206234
+    },
+    {
+      "offset": 256,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 11206240
+    },
+    {
+      "offset": 260,
+      "bytes": 1,
+      "value": 0,
+      "instruction": 11206246
+    },
+    {
+      "offset": 261,
+      "bytes": 1,
+      "value": 0,
+      "instruction": 11206252
+    },
+    {
+      "offset": 264,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 11206258
+    },
+    {
+      "offset": 272,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 11206264
+    },
+    {
+      "offset": 276,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 11206270
+    },
+    {
+      "offset": 280,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 11206276
+    },
+    {
+      "offset": 292,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 11206286
+    },
+    {
+      "offset": 296,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 11206292
+    },
+    {
+      "offset": 300,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 11206298
+    }
+  ],
+  "source_stores": [
+    {
+      "offset": 0,
+      "bytes": 4,
+      "value": 14008944,
+      "instruction": 17
+    },
+    {
+      "offset": 236,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 26
+    },
+    {
+      "offset": 240,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 38
+    },
+    {
+      "offset": 248,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 48
+    },
+    {
+      "offset": 252,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 58
+    },
+    {
+      "offset": 256,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 68
+    },
+    {
+      "offset": 260,
+      "bytes": 1,
+      "value": 0,
+      "instruction": 78
+    },
+    {
+      "offset": 261,
+      "bytes": 1,
+      "value": 0,
+      "instruction": 85
+    },
+    {
+      "offset": 264,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 92
+    },
+    {
+      "offset": 272,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 102
+    },
+    {
+      "offset": 276,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 112
+    },
+    {
+      "offset": 280,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 122
+    },
+    {
+      "offset": 292,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 132
+    },
+    {
+      "offset": 296,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 142
+    },
+    {
+      "offset": 300,
+      "bytes": 4,
+      "value": 0,
+      "instruction": 152
+    }
+  ],
+  "store_review": {
+    "ordered_offset_width_value_equal": true,
+    "total_stores": 15,
+    "distinct_written_bytes": 54,
+    "zero_store_count": 14,
+    "zero_byte_stores": [
+      260,
+      261
+    ],
+    "zero_dword_store_count": 12,
+    "profile_dword": {
+      "offset": 0,
+      "value": "00D5C270",
+      "callable_host_table": false
+    },
+    "untouched_ranges_exclusive": [
+      [
+        228,
+        236
+      ],
+      [
+        244,
+        248
+      ],
+      [
+        262,
+        264
+      ],
+      [
+        268,
+        272
+      ],
+      [
+        284,
+        292
+      ],
+      [
+        304,
+        308
+      ]
+    ],
+    "all_other_unwritten_bytes_preserved": true,
+    "highest_written_byte": "012F",
+    "whole_payload_zeroed": false
+  },
+  "actual_inputs_and_custody": {
+    "destination": "Required actual fresh DWORD-aligned raw storage spanning00..12F; no null/misalignment success promise or semantic overlay",
+    "constant": "Required genuine initialized, disjoint/address-stable actual D7A24C storage retained through call and sentinel allocation; passed as borrowed const volatile uint32_t reference, no cache/default/literal substitution",
+    "actual_constant_producer_added": false,
+    "actual_caller_binding_added": false,
+    "base": "Real unchanged construct_native_gui_widget_base_00aa9390(raw,10,actual_one), not a callback/surrogate or replacement heap",
+    "identity_prefix": "Unchanged existing8-byte NativeGuiTextIdentityPrefix, reference count offset4; genuine raw generic base prefix, not complete semantic Text/GuiWidgetOwner",
+    "pool": "Existing GuiMoviePoolTraits slot0x134, payload0x130, slab-index DWORD at0x130; new function neither allocates/frees slot nor writes index/transfers custody",
+    "failure": "All derived stores follow base call; no new derived effects/catch/rollback/free when it throws. Existing base C++ cleanup and caller raw allocation/operation custody remain separate",
+    "return": "Same incoming raw destination in EAX; no returned surrogate metadata or current-global snapshot"
+  },
+  "unchanged_base": {
+    "header": {
+      "path": "include/bsp/native_gui_widget_base_storage.hpp",
+      "git_blob": "61c72c99fab59f5c86da392495d7bae5381607cf"
+    },
+    "source": {
+      "path": "src/native_gui_widget_base_storage.cpp",
+      "git_blob": "997a33c5ac7bbf7b57e133feb53b91163e7308b5"
+    },
+    "source_and_baseline_blobs_equal": true,
+    "strict_real_definition": true,
+    "source_function_bytes": 692,
+    "actual_word_load_epochs": {
+      "first": "+5B",
+      "actual_sentinel_call": "+153",
+      "second": "+158"
+    },
+    "full_new_native_base_body_proof": false
+  },
+  "independent_validation": {
+    "strict_flags": "/c /std:c++17 /O2 /Ob2 /DNDEBUG /MD /EHsc /W4 /WX /fp:strict",
+    "fresh_units": [
+      "src/native_gui_movie_default_storage.cpp",
+      "src/native_gui_widget_base_storage.cpp"
+    ],
+    "fresh_objects_passed": true,
+    "source_function_164bytes_25ops": true,
+    "both_relevant_function_emissions_match_primary_code_and_relocations": true,
+    "source_pins_verified": 10,
+    "native_export_pins_verified": 2,
+    "primary_artifact_pins_verified": 10,
+    "report_call_checker": {
+      "checked": 1,
+      "failed": 0,
+      "receipt": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-movie-default-storage-review\\local\\native-gui-movie-default-storage-review\\verify_report_calls.log"
+    },
+    "candidate_diff": {
+      "new_files": 4,
+      "existing_files_changed": 0
+    },
+    "final_link_claim": false,
+    "common_build_claim": false,
+    "CMake_registration": false,
+    "local_artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-movie-default-storage-review\\local\\native-gui-movie-default-storage-review\\audit_constructor.py",
+        "bytes": 10159,
+        "sha256": "6aee60267a166985d47805bd21632a895a740a09a277daf9725c398987928f9c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-movie-default-storage-review\\local\\native-gui-movie-default-storage-review\\coff_view.py",
+        "bytes": 2265,
+        "sha256": "9f05aacaa962220e778c9268b39616484e75de9d953e2b7f77f65247036c2acc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-movie-default-storage-review\\local\\native-gui-movie-default-storage-review\\object_audit.json",
+        "bytes": 7506,
+        "sha256": "e248d4a7f1a328287dcb691d3b3d32c77846f1a361b7e83ac02eaad2c58cd5bc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-movie-default-storage-review\\local\\native-gui-movie-default-storage-review\\compile.cmd",
+        "bytes": 971,
+        "sha256": "450497ae6c94d0c27fd7bb45c09c554dc9cf439a3485a21b3eb565d6e8fd43f7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-movie-default-storage-review\\local\\native-gui-movie-default-storage-review\\compile.log",
+        "bytes": 74,
+        "sha256": "f3ff1071f6f072408329707bf3df9756d6c49884fcd04bc25627d50fd43f98a5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-movie-default-storage-review\\local\\native-gui-movie-default-storage-review\\movie_default.obj",
+        "bytes": 2882,
+        "sha256": "22beddd202da21e905c9251d290f2d9ddac9e678a4c86d62774218f2b6598dd0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-movie-default-storage-review\\local\\native-gui-movie-default-storage-review\\widget_base.obj",
+        "bytes": 7967,
+        "sha256": "bac8e99e9047db94d36c60029fea7c8853c20a309941d17a48c9cc4becedbdcf"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-movie-default-storage-review\\local\\native-gui-movie-default-storage-review\\machine_windows.asm",
+        "bytes": 3253,
+        "sha256": "8cd8ef9344f949f4f2dd869c5298418808cdd912b336871091418e3c93680557"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-movie-default-storage-review\\local\\native-gui-movie-default-storage-review\\verify_report_calls.log",
+        "bytes": 83,
+        "sha256": "2f62156d6834ec0d38a783e6d8b708f771d7ce33bb91a36b9b3eaf24f659d3f7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-movie-default-storage-review\\local\\native-gui-movie-default-storage-review\\input_pins.json",
+        "bytes": 6156,
+        "sha256": "2acb8b6a7dcf58f5eeb1bd532d7fdddeaed5981d1ded84efd3de66b97641aabd"
+      }
+    ]
+  },
+  "legacy_semantic_scope": "Existing gui_movie_construct_00aafe20(GuiMovieFields&) assigns GuiMovieFields{}; it and its callers remain unchanged and are not promoted as the raw-byte constructor",
+  "unchanged_scope": {
+    "semantic_api_and_consumers": true,
+    "AA1770_factory": true,
+    "AAFFF0_copy": true,
+    "AAFEF0_destructor": true,
+    "AAD560_properties": true,
+    "AAE770_loaded_hook": true,
+    "decoder_consumer": true,
+    "Page_child_policy": true,
+    "FP_models": true,
+    "GameHosts_sources": true,
+    "CMake_shared_ledgers": true,
+    "Ghidra": true,
+    "installation_and_saved_state": true,
+    "frozen_font_peer": true
+  },
+  "frozen_candidate_guard_record": {
+    "changes": 0,
+    "subtitle": false,
+    "child_Page": false,
+    "movie_root": "Separate private38e16 default-OFF packet was not imported into this published-base worktree; no change or admission here."
+  },
+  "guard_or_FP_admission": false,
+  "limits": [
+    "Whole normal raw constructor composition only; new cdecl two-argument API is not original ECX/EAX/plain-RET register ABI",
+    "Existing native frame/handler CB7834, FH3/SEH/fault/nonlocal/foreign transport, private stack identity and allocator ABI are unproved",
+    "Actual constant producer/caller, allocation/pool custody, AA1770/default-copy selection, AAFFF0 copy, AAFEF0 destructor, AAD560 properties and AAE770 loaded hook remain separate",
+    "No Page-child, decoder/clock/callback/renderer/VFS/Lua/provider/FP or lifetime admission",
+    "Native numeric profile is an evidence identity; no raw PE call or callable vtable is supplied",
+    "Static definitions and relocations do not establish final link, runtime construction, retirement or playback"
+  ],
+  "product_source_or_CMake_or_shared_metadata_changed": false,
+  "Ghidra_mutation": false,
+  "Ghidra_read_only_analysis": true,
+  "full_build_run": false,
+  "new_tests_or_fixtures": false,
+  "games_or_probes_or_native_object_execution": false,
+  "DLL_load_or_imported_calls": false,
+  "guard_flip": false,
+  "abi_compatible": false,
+  "game_validated": false,
+  "credit": {
+    "additional_native_bodies": 0,
+    "duplicate_native_bodies": 0,
+    "vendor_bodies": 0,
+    "original_ABI": 0,
+    "activation": 0
+  }
+}

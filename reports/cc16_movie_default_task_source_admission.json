@@ -1,0 +1,259 @@
+{
+  "status": "primary_and_independent_source_review_common_build_and_actual_entry_link_passed_unactivated",
+  "published_base": "f90f5d178da2ef3b8265145cd08ea8e9bc935467",
+  "source_build_head": "923e0fb16",
+  "source_pins": {
+    "54fb69ac5e00304636dcb6609034b8026f50802d": [
+      {
+        "path": "include\\bsp\\native_gui_movie_default_storage.hpp",
+        "bytes": 1311,
+        "sha256": "b0a20c56f0b4bbbcabba47537e029355a8e935f35de959c65df871bdeef18459",
+        "git_blob": "9a1e20567dd9b56f06d876ffaef10dc73e2ddf07"
+      },
+      {
+        "path": "src\\native_gui_movie_default_storage.cpp",
+        "bytes": 1662,
+        "sha256": "54625e168768812717df102b4ce8f41ce897a6ebe347e9c58b7412a563148065",
+        "git_blob": "911c301e1e2bb497de575c46fd05bfc8332c4ffc"
+      }
+    ],
+    "237e6c51838a56e326b6fe379a3bcaf8826156e2": [
+      {
+        "path": "include\\bsp\\dyn_task_manager.hpp",
+        "bytes": 3559,
+        "sha256": "fa2af4d66164cc2db0bbc01ea45909d6c324dda70c94075239c0eb2a5e25395a",
+        "git_blob": "94ade3902471e36a05bf3c499b4c0833044c64ce"
+      },
+      {
+        "path": "src\\dyn_task_manager.cpp",
+        "bytes": 8741,
+        "sha256": "602a1d3ce86abfc57546746533443fa1921618c7a809d76893b69d655d21e1b8",
+        "git_blob": "0a57e42b12db9b5545db68da3959e100d9be2ab5"
+      }
+    ]
+  },
+  "reviews": {
+    "movie": "2d9d919e035f0e21aaeeb31a6b777ebd68104461",
+    "task": "e0b04478c60c9c923e0b29f38ab5c1ea98438e07"
+  },
+  "incorporated_published_main": "0d8fdd152d24698ec3b14ca5ea9f008abb606ee9",
+  "published_main_delta": "Ten paths since f90: original-baseline tooling/config, private DEFAULT source-equal runtime evidence and coordination docs. No production C++/header/CMake delta; common constructor build remains applicable.",
+  "ghidra": {
+    "names_unchanged": true,
+    "prior_annotations": "local/ghidra-annotations-20261029T235058Z.json",
+    "project_saved": true,
+    "affected_exports_refreshed": true,
+    "index_rebuilt": true
+  },
+  "build": {
+    "target": "MSVC Win32 Release",
+    "tests": "2/2 existing suites",
+    "test_seconds": 12.18,
+    "BSP_CL_MP": 2,
+    "BSP_PCH": "ON",
+    "log": "local/source_batch3/build.log"
+  },
+  "link_only": {
+    "executed": false,
+    "machine": "014c",
+    "embedded_manifest": true,
+    "entries": {
+      "movie": {
+        "symbol": "?construct_native_gui_movie_default_00aafe20@bsp@@YAPAXPAXADI@Z",
+        "address": 4198448,
+        "object": "native_gui_movie_default_storage.obj"
+      },
+      "task": {
+        "symbol": "?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z",
+        "address": 4198864,
+        "object": "dyn_task_manager.obj"
+      },
+      "base": {
+        "symbol": "?construct_native_gui_widget_base_00aa9390@bsp@@YAPAUNativeGuiTextIdentityPrefix@1@PAXIADI@Z",
+        "address": 4199616,
+        "object": "native_gui_widget_base_storage.obj"
+      }
+    }
+  },
+  "common_movie": {
+    "bytes": 166,
+    "instructions": 28,
+    "sha256": "6429595b76fab3ceeefe71a6110715bfd9ba2d6d94514407b7c5e38fe450ea05",
+    "derived_stores": [
+      {
+        "offset": 0,
+        "bytes": 4,
+        "value": 14008944
+      },
+      {
+        "offset": 236,
+        "bytes": 4,
+        "value": 0
+      },
+      {
+        "offset": 240,
+        "bytes": 4,
+        "value": 0
+      },
+      {
+        "offset": 248,
+        "bytes": 4,
+        "value": 0
+      },
+      {
+        "offset": 252,
+        "bytes": 4,
+        "value": 0
+      },
+      {
+        "offset": 256,
+        "bytes": 4,
+        "value": 0
+      },
+      {
+        "offset": 260,
+        "bytes": 1,
+        "value": 0
+      },
+      {
+        "offset": 261,
+        "bytes": 1,
+        "value": 0
+      },
+      {
+        "offset": 264,
+        "bytes": 4,
+        "value": 0
+      },
+      {
+        "offset": 272,
+        "bytes": 4,
+        "value": 0
+      },
+      {
+        "offset": 276,
+        "bytes": 4,
+        "value": 0
+      },
+      {
+        "offset": 280,
+        "bytes": 4,
+        "value": 0
+      },
+      {
+        "offset": 292,
+        "bytes": 4,
+        "value": 0
+      },
+      {
+        "offset": 296,
+        "bytes": 4,
+        "value": 0
+      },
+      {
+        "offset": 300,
+        "bytes": 4,
+        "value": 0
+      }
+    ],
+    "derived_store_bytes": 54,
+    "real_base_direct_call": true,
+    "strict_author_bytes": 164,
+    "difference": "Common object retains balanced EBP frame; not byte-identical to strict candidate."
+  },
+  "common_task": {
+    "bytes": 220,
+    "primary_emitted_review": "local/source_batch3/task_common.txt",
+    "state0_offset": "34",
+    "count_read_offset": "3b",
+    "queue_store_offsets": [
+      "43",
+      "4a",
+      "52"
+    ],
+    "initialize_critical_section_offset": "59",
+    "state1_offset": "6a",
+    "inner_delete_critical_section_offset": "105",
+    "qualification": "EHsc arms state0 before count read and queue stores; valid C++ throwing epochs only, not native hardware fault/SEH/FH3 equivalence."
+  },
+  "frozen_artifacts": [
+    {
+      "path": "local\\source_batch3\\artifacts\\native_gui_movie_default_storage.obj",
+      "bytes": 1781,
+      "sha256": "c02fcce3d40daa5774d2377f238aa9a38bedef4858ee78d1b804c5338e1555d9",
+      "copied_from": "build/win32/bsp_core.dir/Release/native_gui_movie_default_storage.obj"
+    },
+    {
+      "path": "local\\source_batch3\\artifacts\\native_gui_widget_base_storage.obj",
+      "bytes": 6003,
+      "sha256": "84f32eed6ef3f3b792fbee56ca972c63469833402e65dd7bc3e2e055084cc0bf",
+      "copied_from": "build/win32/bsp_core.dir/Release/native_gui_widget_base_storage.obj"
+    },
+    {
+      "path": "local\\source_batch3\\artifacts\\dyn_task_manager.obj",
+      "bytes": 14132,
+      "sha256": "97ca64168228934954f2bd921e345bac863b62deb0bf91deb8c6c839a9f4f2c4",
+      "copied_from": "build/win32/bsp_core.dir/Release/dyn_task_manager.obj"
+    },
+    {
+      "path": "local\\source_batch3\\artifacts\\bsp_game.exe",
+      "bytes": 7482880,
+      "sha256": "fab77ec2d17200f4bfe25673654c471c9e26dcfc869675bfc9ad9a85d1f8769c",
+      "copied_from": "build/win32/Release/bsp_game.exe"
+    },
+    {
+      "path": "local\\source_batch3\\artifacts\\entries_probe.exe",
+      "bytes": 210944,
+      "sha256": "552b872b3b968db2b6e3fed8b7e6b5752077949603ee74524c0d9f52bcc59910",
+      "copied_from": "local/source_batch3/entries_probe.exe"
+    },
+    {
+      "path": "local\\source_batch3\\artifacts\\entries_probe.map",
+      "bytes": 289655,
+      "sha256": "c2d61186984176cecefa572d2c488bd790e76ed8a202d1d9e9d81c20bf4ce48d",
+      "copied_from": "local/source_batch3/entries_probe.map"
+    },
+    {
+      "path": "local\\source_batch3\\artifacts\\entries_probe.obj",
+      "bytes": 1551,
+      "sha256": "7909eca6ebf31700e4f50adf57e07e696976c296d2f31dfdaa4e853ba6d7b0bd",
+      "copied_from": "local/source_batch3/entries_probe.obj"
+    },
+    {
+      "path": "local\\source_batch3\\artifacts\\build.log",
+      "bytes": 2752,
+      "sha256": "fe83d414eef991968a83818f3b772a1f04f6ec270934503a88594e3d8941067b",
+      "copied_from": "local/source_batch3/build.log"
+    },
+    {
+      "path": "local\\source_batch3\\artifacts\\movie_common.txt",
+      "bytes": 5376,
+      "sha256": "2924a0b67e71c17b7c910c4646f8a71ee7c6dfff2b2b05da652c22bc2f5464fa",
+      "copied_from": "local/source_batch3/movie_common.txt"
+    },
+    {
+      "path": "local\\source_batch3\\artifacts\\task_common.txt",
+      "bytes": 69010,
+      "sha256": "26abf1fbf3b62226d55de785d6cb1bf9acfd264f0826332f4ecccbf760a1d2cd",
+      "copied_from": "local/source_batch3/task_common.txt"
+    }
+  ],
+  "source_scope": {
+    "movie": "Actual fresh aligned 130h raw storage, real AA9390 base/type10 and genuine stable D7A24C cell; 15 stores/54 bytes; F4 and all unwritten bytes preserved. No owner, pool allocation, decoder or base-unwind activation.",
+    "task": "New qualified C++ entry preserves old normal API. Nested cleanup deletes live critical section then releases current task+C vector backing without clear; no worker/handle rollback or raw-object free."
+  },
+  "credits": {
+    "new_native_bodies": 0,
+    "vendor_bodies": 0,
+    "new_fixture_execution": false,
+    "original_abi_compatible": false,
+    "game_validated": false,
+    "activation": false
+  },
+  "remaining": [
+    "Complete C55 task cleanup propagation and real engine/Game owner",
+    "Raw Movie lifetime, property/loaded-hook and Page children",
+    "Genuine VFS/renderer/Lua/decoder/clock/audio providers and lifetime custody",
+    "Required current-profile gameplay activation gates"
+  ]
+}

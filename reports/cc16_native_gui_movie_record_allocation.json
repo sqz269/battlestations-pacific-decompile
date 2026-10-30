@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-gui-movie-record-allocation",
+  "base": "60c8453a1b661dfa62625945986e38d71bee0216",
+  "status": "source_static_native_calls_and_strict_object_pass_pending_independent_review_common_build_unwired",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000"
+  },
+  "original_binary": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "native": [
+    {
+      "address": "00aacd30",
+      "end_exclusive": "00aacd85",
+      "bytes": 85,
+      "instructions": 27,
+      "sha256": "06c336dfad3762bbadfde1eb5da0f255aca1ce0844fe25544efa3112d442349d",
+      "live_matches_original_PE": true,
+      "stride": 20,
+      "max_count": 214748364,
+      "max_product": 4294967280,
+      "first_rejected_product": 4294967300,
+      "original_abi": "fastcall ECX unsigned count, incoming EDX dead, EAX allocator result, no stack inputs, plain RET"
+    },
+    {
+      "address": "00aacd90",
+      "end_exclusive": "00aacde5",
+      "bytes": 85,
+      "instructions": 27,
+      "sha256": "69d7021229f6b41f363b7d55ac228759444521d2f75a33b480ced463803dd8df",
+      "live_matches_original_PE": true,
+      "stride": 36,
+      "max_count": 119304647,
+      "max_product": 4294967292,
+      "first_rejected_product": 4294967328,
+      "original_abi": "fastcall ECX unsigned count, incoming EDX dead, EAX allocator result, no stack inputs, plain RET"
+    }
+  ],
+  "native_call_rows": [
+    {
+      "caller": "00aacd30",
+      "address": "00aacd41",
+      "native": "00bf681b"
+    },
+    {
+      "caller": "00aacd30",
+      "address": "00aacd69",
+      "native": "00bf6340"
+    },
+    {
+      "caller": "00aacd30",
+      "address": "00aacd80",
+      "native": "00bf6885"
+    },
+    {
+      "caller": "00aacd90",
+      "address": "00aacda1",
+      "native": "00bf681b"
+    },
+    {
+      "caller": "00aacd90",
+      "address": "00aacdc9",
+      "native": "00bf6340"
+    },
+    {
+      "caller": "00aacd90",
+      "address": "00aacde0",
+      "native": "00bf6885"
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\include\\bsp\\native_gui_movie_record_allocation.hpp",
+      "bytes": 1477,
+      "sha256": "4cfef47c42d04e90810af6d9d73dc51a21ace4fd1ff03c9bd9ddfe27ef454c12",
+      "git_blob": "fd871905131390c11f44d5603aafd32ce878b481"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\src\\native_gui_movie_record_allocation.cpp",
+      "bytes": 808,
+      "sha256": "a625807ba2026c69ec7edb0a89ac98921505d5981d12014da436339413bd3901",
+      "git_blob": "f448c3b537ed544ea349902e6251ced6febe80e7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\include\\bsp\\singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\src\\singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\include\\bsp\\native_gui_frame_box_vector_allocation.hpp",
+      "bytes": 2545,
+      "sha256": "3509e22b102883665c8762dad02f67ac7152ba9d47b8f657ce0241f4778cbdf6",
+      "git_blob": "4f33ed96c5952ba2d6e73b39f80e25494fe6547b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\src\\native_gui_frame_box_vector_allocation.cpp",
+      "bytes": 894,
+      "sha256": "81e484b5fa16037fbb5daef3e2b97b97752e56c6d56e8db5bb5ac52a081abcb7",
+      "git_blob": "615e0cd5e6ba064245df9b14c077d08685548710"
+    }
+  ],
+  "boundary": {
+    "allocation": "Actual singleton_lifetime_allocate object-byte malloc/_callnewh/retry/bad_alloc service, even count0",
+    "matching_return": "Actual singleton_lifetime_free/free; no foreign/private/new[]/string/widget-pool authentication",
+    "overflow": "Source std::bad_alloc; original exception/RTTI/FH3/stack identity not reproduced",
+    "ownership": "No record/header initialization/destruction/backing release/publication/rollback/consumer; caller retains actual backing, partial graph and providers"
+  },
+  "strict_compile": {
+    "passed": true,
+    "command": "local/movie-record-allocation/compile.cmd",
+    "target": "MSVC Win32",
+    "flags": "/std:c++17 /permissive- /MD /O2 /Gy /fp:strict /EHsc /W4 /WX /c /FAs"
+  },
+  "emitted_review": {
+    "each_record_bytes": 94,
+    "final_trap_padding_bytes": 1,
+    "unsigned_compare_offset": "0e",
+    "unsigned_ja_offset": "14",
+    "count_scale_offsets": [
+      "16",
+      "20"
+    ],
+    "request_kind_object_offset": "19",
+    "native_host_extent_store_offsets": [
+      "23",
+      "27"
+    ],
+    "actual_allocate_call_offset": "2f",
+    "normal_ret_offset": "45",
+    "bad_alloc_ctor_offset": "49",
+    "CxxThrowException_offset": "58",
+    "relocation_offsets": [
+      "04",
+      "30",
+      "3e",
+      "4a",
+      "4f",
+      "59"
+    ],
+    "qualification": "Source security-cookie and exception/CRT support remain host boundaries. No stores into returned backing or incoming EDX reads; no private native stack or byte identity."
+  },
+  "call_check": {
+    "passed": true,
+    "checked": 6,
+    "failed": 0,
+    "receipt": "local/movie-record-allocation/verify_calls.log"
+  },
+  "artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\movie-record-allocation\\00aacd30.bin",
+      "bytes": 85,
+      "sha256": "06c336dfad3762bbadfde1eb5da0f255aca1ce0844fe25544efa3112d442349d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\movie-record-allocation\\00aacd30_live.txt",
+      "bytes": 418,
+      "sha256": "08cdd992f74243783298588f2a1454dd3c0c7c5bd3bbfa772d8ebb00800e34a1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\movie-record-allocation\\00aacd90.bin",
+      "bytes": 85,
+      "sha256": "69d7021229f6b41f363b7d55ac228759444521d2f75a33b480ced463803dd8df"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\movie-record-allocation\\00aacd90_live.txt",
+      "bytes": 418,
+      "sha256": "fd2cc81f4938b502b7e33122469a38ea67b508c4c91c8d558b5bf8ce1e72a491"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\movie-record-allocation\\allocation.asm",
+      "bytes": 17480,
+      "sha256": "b8ae4a870552ee527a0d756481de6695d42ba9302ec537b0cfc202a73c446a70"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\movie-record-allocation\\allocation.dump.txt",
+      "bytes": 62259,
+      "sha256": "7da9fa6d17a0432e0cf381c0ca0a242212ace0119354a2fd4fd2b51bca55888e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\movie-record-allocation\\allocation.obj",
+      "bytes": 7978,
+      "sha256": "6df39be4aadf362f409f9a0814fec5a66b1bc16818ac892e8c2ebf24028f53c0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\movie-record-allocation\\compile.cmd",
+      "bytes": 572,
+      "sha256": "84482c8c99a1cbc104db73ccb43ab4f693839c1e6ceba553771990dae960b0b2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\movie-record-allocation\\compile.log",
+      "bytes": 40,
+      "sha256": "13fc6614bbbd788a57e651d4bdec438bd1b6f926c99bd144bafb723b2c505c53"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\movie-record-allocation\\target_proto.txt",
+      "bytes": 1404,
+      "sha256": "97998aef680b02a962a173a7d4c4b8bc7ff2d167645ec2da3ccad79330a7f5d2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\movie-record-allocation\\verify_calls.log",
+      "bytes": 85,
+      "sha256": "87ab18673c9ee2eeb255413dfaedc2e18542a4a208d2e0c42e7d9f14b69c704c"
+    }
+  ],
+  "credit": {
+    "native_bodies": 0,
+    "vendor_bodies": 0,
+    "abi_compatible": false,
+    "fixture_tested": false,
+    "game_validated": false,
+    "activation": false
+  },
+  "new_tests": 0,
+  "executables": 0,
+  "allocation_execution": false,
+  "Ghidra_mutations": 0,
+  "shared_metadata_changes": 0,
+  "guard_changes": 0
+}

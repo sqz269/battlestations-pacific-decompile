@@ -1,0 +1,549 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-gui-movie-record-allocation-review",
+  "candidate": "a10686893116585ca6b7e1d1f848fd9d44781712",
+  "candidate_base": "60c8453a1b661dfa62625945986e38d71bee0216",
+  "status": "independent_qualified_pass_source_boundary_no_blocker_common_admission_pending",
+  "documentation": "docs/CC16_NATIVE_GUI_MOVIE_RECORD_ALLOCATION_REVIEW.md",
+  "verdict": "qualified_pass",
+  "blockers": [],
+  "scope": {
+    "read_all_candidate_files": [
+      "docs/CC16_NATIVE_GUI_MOVIE_RECORD_ALLOCATION.md",
+      "include/bsp/native_gui_movie_record_allocation.hpp",
+      "reports/cc16_native_gui_movie_record_allocation.json",
+      "src/native_gui_movie_record_allocation.cpp"
+    ],
+    "candidate_changes_exactly_these_four_additions": true,
+    "owned_files": [
+      "docs/CC16_NATIVE_GUI_MOVIE_RECORD_ALLOCATION_REVIEW.md",
+      "reports/cc16_native_gui_movie_record_allocation_review.json"
+    ],
+    "file_only_lease_no_source_or_address_mutation": true,
+    "separate_range_code_or_proof_inherited": false,
+    "future_common_build_inherited": false
+  },
+  "target": {
+    "configured_project_file": "C:/Users/sqz269/bsp.gpr",
+    "verified_project": "bsp",
+    "verified_program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "live_function_count": 77631,
+    "snapshot_function_count": 77631,
+    "original_binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "verification": "BSP target verification, pseudocode then complete assembly/live85-byte spans; independent PE/saved-live/native-export/COFF inspection. No original code execution."
+  },
+  "native_call_rows": [
+    {
+      "caller": "00aacd30",
+      "address": "00aacd41",
+      "native": "00bf681b"
+    },
+    {
+      "caller": "00aacd30",
+      "address": "00aacd69",
+      "native": "00bf6340"
+    },
+    {
+      "caller": "00aacd30",
+      "address": "00aacd80",
+      "native": "00bf6885"
+    },
+    {
+      "caller": "00aacd90",
+      "address": "00aacda1",
+      "native": "00bf681b"
+    },
+    {
+      "caller": "00aacd90",
+      "address": "00aacdc9",
+      "native": "00bf6340"
+    },
+    {
+      "caller": "00aacd90",
+      "address": "00aacde0",
+      "native": "00bf6885"
+    }
+  ],
+  "findings": [
+    {
+      "area": "Unsigned partition",
+      "result": "pass",
+      "evidence": "Each native85B/27ops receives unsignedECX, incomingEDXdead. TEST/JA means any nonzeroDWORD. For positive s and nonzero n, floor(UINTMAX/n)>=s iff n<=floor(UINTMAX/s); exact Source maxima match."
+    },
+    {
+      "area": "Zero",
+      "result": "pass",
+      "evidence": "Nativezero avoids division, still callsBF681B(0). Sourcezero takes normalarm and passes actualobject request with both extents0, no null-result shortcut or local size normalization."
+    },
+    {
+      "area": "Raw service/domain",
+      "result": "qualified_pass",
+      "evidence": "Real singleton_lifetime_allocate uses actualhostmalloc/_callnewh(size)/retry/bad_alloc. Matching singleton_lifetime_free tails actualhostfree. Source CRT domain only; no Original/private/foreign/new[]/string/widgetpool authentication."
+    },
+    {
+      "area": "Host support",
+      "result": "qualification_retained",
+      "evidence": "DefaultGS, securitycookie/check, Sourcebad_alloc/RTTI/CxxThrowException and private-stack schedule differ from nativeBF6340/BF6885/D6923C/E03CC0; not binary ABI, FH3/SEH/fault or crossCRTexception proof."
+    },
+    {
+      "area": "Effects/ownership",
+      "result": "pass",
+      "evidence": "No incomingEDX reads, returnedbacking stores/dereference, record construction, vector publication/tidy/free, rollback or consumer/owner effects."
+    },
+    {
+      "area": "Actual FrameBox dependency",
+      "result": "pass_unchanged",
+      "evidence": "Existing admitted Source FrameBox allocation uses same explicit countgate/Sourcebad_alloc/object-native=host service boundary. Its header/source and allocation/free service are unchanged from60c8453a1; not a fresh fullNativeACEF10 audit."
+    }
+  ],
+  "count_limits": [
+    {
+      "stride": 20,
+      "max_count": 214748364,
+      "max_product": 4294967280,
+      "first_rejected_product": 4294967300
+    },
+    {
+      "stride": 36,
+      "max_count": 119304647,
+      "max_product": 4294967292,
+      "first_rejected_product": 4294967328
+    }
+  ],
+  "independent_static_inspection": {
+    "scope": "Independent static arithmetic/PE/live/COFF inspection only; no executable or allocation execution.",
+    "result": "qualified_pass_no_source_blocker",
+    "public_entries": [
+      {
+        "native_entry": "00aacd30",
+        "native_bytes": 85,
+        "native_ops": 27,
+        "native_sha256": "06c336dfad3762bbadfde1eb5da0f255aca1ce0844fe25544efa3112d442349d",
+        "live_and_saved_PE_equal": true,
+        "stride": 20,
+        "max_count": 214748364,
+        "max_product": 4294967280,
+        "first_rejected_product": 4294967300,
+        "source_symbol": "?allocate_native_gui_movie_records_14h_00aacd30@bsp@@YIPAXIPAX@Z",
+        "Source_code_bytes": 94,
+        "Source_code_ops_including_trap": 27,
+        "Source_code_sha256": "409d225165daa3f6c4f15fbc635dbaa9e5a6700055e83d38f8f5c207d7704564",
+        "Source_relocations": [
+          {
+            "offset": 4,
+            "type": 6,
+            "symbol": "___security_cookie"
+          },
+          {
+            "offset": 48,
+            "type": 20,
+            "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+          },
+          {
+            "offset": 62,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4"
+          },
+          {
+            "offset": 74,
+            "type": 20,
+            "symbol": "??0bad_alloc@std@@QAE@XZ"
+          },
+          {
+            "offset": 79,
+            "type": 6,
+            "symbol": "__TI2?AVbad_alloc@std@@"
+          },
+          {
+            "offset": 89,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          }
+        ],
+        "public_code_and_relocations_equal_author": true,
+        "zero_on_normal_allocation_arm": true,
+        "incoming_EDX_reads": 0,
+        "returned_backing_dereferences": 0
+      },
+      {
+        "native_entry": "00aacd90",
+        "native_bytes": 85,
+        "native_ops": 27,
+        "native_sha256": "69d7021229f6b41f363b7d55ac228759444521d2f75a33b480ced463803dd8df",
+        "live_and_saved_PE_equal": true,
+        "stride": 36,
+        "max_count": 119304647,
+        "max_product": 4294967292,
+        "first_rejected_product": 4294967328,
+        "source_symbol": "?allocate_native_gui_movie_records_24h_00aacd90@bsp@@YIPAXIPAX@Z",
+        "Source_code_bytes": 94,
+        "Source_code_ops_including_trap": 27,
+        "Source_code_sha256": "e4bb828474140418e48b2a2318d3802b806ff90bdf3901f4cc29707966c020c6",
+        "Source_relocations": [
+          {
+            "offset": 4,
+            "type": 6,
+            "symbol": "___security_cookie"
+          },
+          {
+            "offset": 48,
+            "type": 20,
+            "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+          },
+          {
+            "offset": 62,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4"
+          },
+          {
+            "offset": 74,
+            "type": 20,
+            "symbol": "??0bad_alloc@std@@QAE@XZ"
+          },
+          {
+            "offset": 79,
+            "type": 6,
+            "symbol": "__TI2?AVbad_alloc@std@@"
+          },
+          {
+            "offset": 89,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          }
+        ],
+        "public_code_and_relocations_equal_author": true,
+        "zero_on_normal_allocation_arm": true,
+        "incoming_EDX_reads": 0,
+        "returned_backing_dereferences": 0
+      }
+    ],
+    "actual_service": {
+      "allocate_symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+      "allocate_code_bytes": 90,
+      "allocate_code_sha256": "84bd9cbcc712d9283664090c1b35610db581ef80c3fde7bc888c0f90672f4e4e",
+      "allocate_relocations": [
+        {
+          "offset": 6,
+          "type": 6,
+          "symbol": "__imp__malloc"
+        },
+        {
+          "offset": 30,
+          "type": 6,
+          "symbol": "__imp___callnewh"
+        },
+        {
+          "offset": 70,
+          "type": 20,
+          "symbol": "??0bad_alloc@std@@QAE@XZ"
+        },
+        {
+          "offset": 75,
+          "type": 6,
+          "symbol": "__TI2?AVbad_alloc@std@@"
+        },
+        {
+          "offset": 85,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        }
+      ],
+      "matching_free_symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+      "free_code_bytes": 6,
+      "free_code_sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb",
+      "free_relocations": [
+        {
+          "offset": 2,
+          "type": 6,
+          "symbol": "__imp__free"
+        }
+      ],
+      "real_definition_in_separate_strict_object": true,
+      "source_domain_only_not_original_CRT_ABI": true
+    },
+    "count_partition_proof": "For fixed positive s, any nonzero uint32 n satisfies floor(UINTMAX/n)>=s iff n<=floor(UINTMAX/s). Zero separately reaches the original and Source real allocation arm.",
+    "Source_host_EH_GS_RTTI_original_qualification_retained": true,
+    "vendor_body_recovery": false,
+    "final_link_or_common_build": false,
+    "separate_range_candidate_inherited": false
+  },
+  "validation": {
+    "strict_independent_objects": {
+      "passed": true,
+      "units": [
+        "src/native_gui_movie_record_allocation.cpp",
+        "src/singleton_lifetime.cpp"
+      ],
+      "flags": "/std:c++17 /permissive- /MD /O2 /Gy /fp:strict /EHsc /W4 /WX /c /FAs; defaultGS",
+      "receipt": "local/native_gui_movie_record_allocation_review/compile.log"
+    },
+    "original_call_rows": {
+      "passed": true,
+      "checked": 6,
+      "failed": 0,
+      "checker": "tools/verify_report_calls.py",
+      "receipt": "local/native_gui_movie_record_allocation_review/verify_report_calls.log"
+    },
+    "author_pins": {
+      "Source_checked": 6,
+      "artifacts_checked": 11,
+      "all_match": true
+    },
+    "fresh_public_code_and_relocations_equal_author": true,
+    "real_service_definition_imports_available_in_independent_object": true,
+    "final_link": false,
+    "common_build": false,
+    "new_tests": 0,
+    "tests": 0,
+    "executables": 0,
+    "allocation_execution": false,
+    "probes": 0,
+    "games": 0,
+    "DLL_loads": 0
+  },
+  "remaining": [
+    "Primary independent final review/admission and common build/link",
+    "Original heap/RTTI/private-stack/FH3/SEH/fault/exception ABI remains qualified",
+    "No record construction/range/tidy/AAFEF0/flags1 or actual consumer/lifetime/runtime admission from allocation"
+  ],
+  "unchanged": {
+    "source": true,
+    "CMake_shared_metadata_ledger": true,
+    "Ghidra": true,
+    "guards": true,
+    "frozen_peer_trees": true,
+    "game_install_and_saves": true
+  },
+  "credit": {
+    "new_native_bodies": 0,
+    "duplicate_native_bodies": 0,
+    "vendor_bodies": 0,
+    "original_ABI": 0,
+    "activation": 0
+  },
+  "abi_compatible": false,
+  "game_validated": false,
+  "candidate_source_and_dependency_pins": [
+    {
+      "path": "docs\\CC16_NATIVE_GUI_MOVIE_RECORD_ALLOCATION.md",
+      "bytes": 4011,
+      "sha256": "e3b79ff5089e762697486d8faad9cc963be24d6d61d82b25605bd7ee5458db59",
+      "git_blob": "6b2a82a1678e7159cb1d87bc47a50f5aafe0f241",
+      "candidate_blob": "6b2a82a1678e7159cb1d87bc47a50f5aafe0f241",
+      "candidate_added_file": true
+    },
+    {
+      "path": "include\\bsp\\native_gui_movie_record_allocation.hpp",
+      "bytes": 1477,
+      "sha256": "4cfef47c42d04e90810af6d9d73dc51a21ace4fd1ff03c9bd9ddfe27ef454c12",
+      "git_blob": "fd871905131390c11f44d5603aafd32ce878b481",
+      "candidate_blob": "fd871905131390c11f44d5603aafd32ce878b481",
+      "candidate_added_file": true
+    },
+    {
+      "path": "reports\\cc16_native_gui_movie_record_allocation.json",
+      "bytes": 9078,
+      "sha256": "635e1548b668a1380022302863a9f46823e3e2632129856ff99479b8bbd2255b",
+      "git_blob": "9a6a9d85c19f16bd1a509779d6e81d081937a1e7",
+      "candidate_blob": "9a6a9d85c19f16bd1a509779d6e81d081937a1e7",
+      "candidate_added_file": true
+    },
+    {
+      "path": "src\\native_gui_movie_record_allocation.cpp",
+      "bytes": 808,
+      "sha256": "a625807ba2026c69ec7edb0a89ac98921505d5981d12014da436339413bd3901",
+      "git_blob": "f448c3b537ed544ea349902e6251ced6febe80e7",
+      "candidate_blob": "f448c3b537ed544ea349902e6251ced6febe80e7",
+      "candidate_added_file": true
+    },
+    {
+      "path": "include\\bsp\\singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "candidate_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "candidate_added_file": false,
+      "baseline_blob": "4d10f6c53a3b9be4745776df443f340ea1769936"
+    },
+    {
+      "path": "src\\singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "candidate_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "candidate_added_file": false,
+      "baseline_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+    },
+    {
+      "path": "include\\bsp\\native_gui_frame_box_vector_allocation.hpp",
+      "bytes": 2545,
+      "sha256": "3509e22b102883665c8762dad02f67ac7152ba9d47b8f657ce0241f4778cbdf6",
+      "git_blob": "4f33ed96c5952ba2d6e73b39f80e25494fe6547b",
+      "candidate_blob": "4f33ed96c5952ba2d6e73b39f80e25494fe6547b",
+      "candidate_added_file": false,
+      "baseline_blob": "4f33ed96c5952ba2d6e73b39f80e25494fe6547b"
+    },
+    {
+      "path": "src\\native_gui_frame_box_vector_allocation.cpp",
+      "bytes": 894,
+      "sha256": "81e484b5fa16037fbb5daef3e2b97b97752e56c6d56e8db5bb5ac52a081abcb7",
+      "git_blob": "615e0cd5e6ba064245df9b14c077d08685548710",
+      "candidate_blob": "615e0cd5e6ba064245df9b14c077d08685548710",
+      "candidate_added_file": false,
+      "baseline_blob": "615e0cd5e6ba064245df9b14c077d08685548710"
+    }
+  ],
+  "author_retained_artifact_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\movie-record-allocation\\00aacd30.bin",
+      "bytes": 85,
+      "sha256": "06c336dfad3762bbadfde1eb5da0f255aca1ce0844fe25544efa3112d442349d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\movie-record-allocation\\00aacd30_live.txt",
+      "bytes": 418,
+      "sha256": "08cdd992f74243783298588f2a1454dd3c0c7c5bd3bbfa772d8ebb00800e34a1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\movie-record-allocation\\00aacd90.bin",
+      "bytes": 85,
+      "sha256": "69d7021229f6b41f363b7d55ac228759444521d2f75a33b480ced463803dd8df"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\movie-record-allocation\\00aacd90_live.txt",
+      "bytes": 418,
+      "sha256": "fd2cc81f4938b502b7e33122469a38ea67b508c4c91c8d558b5bf8ce1e72a491"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\movie-record-allocation\\allocation.asm",
+      "bytes": 17480,
+      "sha256": "b8ae4a870552ee527a0d756481de6695d42ba9302ec537b0cfc202a73c446a70"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\movie-record-allocation\\allocation.dump.txt",
+      "bytes": 62259,
+      "sha256": "7da9fa6d17a0432e0cf381c0ca0a242212ace0119354a2fd4fd2b51bca55888e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\movie-record-allocation\\allocation.obj",
+      "bytes": 7978,
+      "sha256": "6df39be4aadf362f409f9a0814fec5a66b1bc16818ac892e8c2ebf24028f53c0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\movie-record-allocation\\compile.cmd",
+      "bytes": 572,
+      "sha256": "84482c8c99a1cbc104db73ccb43ab4f693839c1e6ceba553771990dae960b0b2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\movie-record-allocation\\compile.log",
+      "bytes": 40,
+      "sha256": "13fc6614bbbd788a57e651d4bdec438bd1b6f926c99bd144bafb723b2c505c53"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\movie-record-allocation\\target_proto.txt",
+      "bytes": 1404,
+      "sha256": "97998aef680b02a962a173a7d4c4b8bc7ff2d167645ec2da3ccad79330a7f5d2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\movie-record-allocation\\verify_calls.log",
+      "bytes": 85,
+      "sha256": "87ab18673c9ee2eeb255413dfaedc2e18542a4a208d2e0c42e7d9f14b69c704c"
+    }
+  ],
+  "independent_artifact_pins": [
+    {
+      "path": "local\\native_gui_movie_record_allocation_review\\compile.cmd",
+      "bytes": 1538,
+      "sha256": "30bf2d4c9c8761e1041628bde26f65e33121936216472a366230feb6f705920a"
+    },
+    {
+      "path": "local\\native_gui_movie_record_allocation_review\\compile.log",
+      "bytes": 64,
+      "sha256": "2ac28df9a87233b70639cb29fbaad56ae7322e560e5ce23a479ac0b656b8dbd9"
+    },
+    {
+      "path": "local\\native_gui_movie_record_allocation_review\\allocation.asm",
+      "bytes": 17540,
+      "sha256": "4936121a728fafb19c0f0f6987c7f7e474b4919f56e35a3827c25f15e959b5ca"
+    },
+    {
+      "path": "local\\native_gui_movie_record_allocation_review\\allocation.obj",
+      "bytes": 8010,
+      "sha256": "109c3a224e77b0a2d0d706fd2840739adfe172e5cfde20e0848556466bff2be5"
+    },
+    {
+      "path": "local\\native_gui_movie_record_allocation_review\\allocation.symbols.txt",
+      "bytes": 12887,
+      "sha256": "222e36681416a6a3c52fa32f3e08cafc44074c084d44d07ca35155c897113c12"
+    },
+    {
+      "path": "local\\native_gui_movie_record_allocation_review\\allocation.assembly.txt",
+      "bytes": 10314,
+      "sha256": "59982231db1141231d41eaa777f8fe06c9070e80eddb1055c0a64a2f0f63a231"
+    },
+    {
+      "path": "local\\native_gui_movie_record_allocation_review\\singleton_lifetime.asm",
+      "bytes": 135655,
+      "sha256": "b957656548088ff61d060c06d21e6f93d77bf8b1d7b3a2f127585b271d4ad009"
+    },
+    {
+      "path": "local\\native_gui_movie_record_allocation_review\\singleton_lifetime.obj",
+      "bytes": 36891,
+      "sha256": "156b19527d702d3aae8e40f9a9baea7ac717800d2615535f8c04f92ffd0075f9"
+    },
+    {
+      "path": "local\\native_gui_movie_record_allocation_review\\singleton_lifetime.symbols.txt",
+      "bytes": 56011,
+      "sha256": "9b786705b496a7be5f3467cda79b2408a526cae8f835d3dc570fd4de6f2f7433"
+    },
+    {
+      "path": "local\\native_gui_movie_record_allocation_review\\singleton_lifetime.assembly.txt",
+      "bytes": 95920,
+      "sha256": "beb2e9e5d8a385b0c7ce05c346144f2165a05bb76b51e900d97b7673f1ccd288"
+    },
+    {
+      "path": "local\\native_gui_movie_record_allocation_review\\static_review.py",
+      "bytes": 5849,
+      "sha256": "9ba944db9722a2415f52f7a7be7007e8a6a6761e0f7d4dd2d49872944eb3f0f6"
+    },
+    {
+      "path": "local\\native_gui_movie_record_allocation_review\\static_review.json",
+      "bytes": 5026,
+      "sha256": "0d5f930b7d05d446149c3f51d5143d06a289b2f9323a0fac6f00f4471d0c812f"
+    },
+    {
+      "path": "local\\native_gui_movie_record_allocation_review\\verify_report_calls.log",
+      "bytes": 85,
+      "sha256": "87ab18673c9ee2eeb255413dfaedc2e18542a4a208d2e0c42e7d9f14b69c704c"
+    }
+  ],
+  "native_export_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aacd30\\decompiled.c",
+      "bytes": 704,
+      "sha256": "52cd09444b830c5aa1641d27e358d02ba38144bb38f127af6fb29d08083e7ce7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aacd30\\assembly.txt",
+      "bytes": 700,
+      "sha256": "1aff4a48a56300b7decb40b65f891cbf6e61001910c9c2c36f7082e1aa5217f6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aacd90\\decompiled.c",
+      "bytes": 704,
+      "sha256": "037530afd9d3167ae3bb913e5600d6f3471365973d91296bbac44503e5168e70"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aacd90\\assembly.txt",
+      "bytes": 700,
+      "sha256": "5ffd6f03068a582a5cdc6bfaeaf09a8acaf686b53516c0e6cd48281d4f0a5155"
+    }
+  ],
+  "review_utc": "2026-10-30T00:15:02.936286+00:00"
+}

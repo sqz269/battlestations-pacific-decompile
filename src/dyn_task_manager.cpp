@@ -48,6 +48,14 @@ unsigned __stdcall worker_entry_00c37680(void* manager) {
     worker_loop_00c375f0(*static_cast<DynTaskManagerStorage*>(manager));
     return 0;
 }
+
+//00408E80..00408E8D: actual vector in EAX, RET. Capture CURRENT data once,
+//release through the genuine BF6989 service only when nonnull; no field clear.
+void release_task_vector_storage_00408e80(
+    void* actual_vector, const AvoidZoneDynHullMemory& memory) {
+    void* const data = *reinterpret_cast<void* volatile*>(actual_vector);
+    if (data) memory.release(memory.context, data);
+}
 } // namespace
 
 DynTaskManagerStorage* dyn_task_manager_construct_00c37740(DynTaskManagerStorage& storage,
@@ -67,6 +75,40 @@ DynTaskManagerStorage* dyn_task_manager_construct_00c37740(DynTaskManagerStorage
     at<std::uint32_t>(manager, 4) = 0;
     dyn_task_manager_set_worker_count_00c37690(storage, requested_count, memory);
     return &storage;
+}
+
+DynTaskManagerStorage* dyn_task_manager_construct_qualified_00c37740(
+    DynTaskManagerStorage& storage, const std::uint32_t& worker_count,
+    const AvoidZoneDynHullMemory& memory) {
+    const auto requested_count = worker_count;
+    void* manager = &storage;
+    at<void*>(manager, 0xc) = nullptr;
+    at<std::uint32_t>(manager, 0x10) = 0;
+    at<std::uint32_t>(manager, 0x14) = 0;
+    // E03DE8: state0 begins at C37771, after queue zeroing, before CS init.
+    try {
+        InitializeCriticalSectionAndSpinCount(&at<CRITICAL_SECTION>(manager, 0x18), 10000);
+        // C37783 arms state1 after return, without testing the API's BOOL.
+        try {
+            at<HANDLE>(manager, 0x350) = CreateSemaphoreA(nullptr, 0, 1000, nullptr);
+            at<HANDLE>(manager, 0x354) = CreateEventA(nullptr, TRUE, FALSE, nullptr);
+            for (std::uint32_t i = 0; i < 100; ++i) {
+                at<LONG>(manager, 0x30 + i * 4) = 0;
+                at<HANDLE>(manager, 0x1c0 + i * 4) = CreateEventA(nullptr, FALSE, FALSE, nullptr);
+            }
+            at<std::uint32_t>(manager, 4) = 0;
+            dyn_task_manager_set_worker_count_00c37690(storage, requested_count, memory);
+            return &storage;
+        } catch (...) {
+            // CC8064 ->C30930: real DeleteCriticalSection(actual task+18).
+            DeleteCriticalSection(&at<CRITICAL_SECTION>(manager, 0x18));
+            throw;
+        }
+    } catch (...) {
+        // CC8059 ->408E80 follows the acquired CS action, if any.
+        release_task_vector_storage_00408e80(storage.bytes + 0xc, memory);
+        throw;
+    }
 }
 
 void dyn_task_manager_set_worker_count_00c37690(DynTaskManagerStorage& storage,

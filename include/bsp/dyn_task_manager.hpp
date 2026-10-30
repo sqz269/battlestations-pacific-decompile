@@ -11,8 +11,26 @@ struct alignas(4) DynTaskManagerStorage { unsigned char bytes[0x358]; };
 // Fresh disjoint storage and successful allocations/Win32 calls are required.
 // Count0 leaves +0 (handle-array pointer) and +8 untouched; callers that will
 //destroy that manager must supply +0=null. docs/DYN_TASK_MANAGER.md.
+// This existing interface remains normal-only.
 DynTaskManagerStorage* dyn_task_manager_construct_00c37740(DynTaskManagerStorage&,
     const std::uint32_t& worker_count, const AvoidZoneDynHullMemory&);
+
+// Additive C++ partial-construction cleanup using the SAME actual three inputs.
+// Queue+C/+10/+14 zeroing precedes acquired cleanup. The outer queue catch
+// starts before CS initialization; the inner CS catch starts after that call
+// returns, regardless of its BOOL. An acquired CS is deleted on covered C++
+// failure; outer cleanup then captures CURRENT queue data+C once and
+// BF6989-releases it iff nonnull. A pre-CS-return failure acquires only queue
+// cleanup. These are source catch extents; emitted /EHsc state may be hoisted
+// over nonthrowing stores and does not establish native fault coverage.
+// No field clear, raw-storage free, handle/worker closure or full destructor
+// is added. The genuine memory.release must return normally; all borrowed
+// services/backing must remain valid. Normal success performs no cleanup.
+// Original Win32 extern-C/SEH faults, FH3/frame/ABI and secondary-cleanup
+// transport are not established by these C++ catches. Old callers are unchanged.
+DynTaskManagerStorage* dyn_task_manager_construct_qualified_00c37740(
+    DynTaskManagerStorage&, const std::uint32_t& worker_count,
+    const AvoidZoneDynHullMemory&);
 
 // Native ESI manager, stack count, RET4. Stops/joins existing workers, then
 //creates the requested count. Does not drain pending work, close old thread
