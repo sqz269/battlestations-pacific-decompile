@@ -1,0 +1,542 @@
+{
+  "Source_head": "a815ee5c4441b47ef9d88c78d2372f7e467515d1",
+  "packet": "b6c69bfb9b83b61d2bb085668e53ac8cef63a19a",
+  "admitted_Source": "18062ae4a",
+  "independent_review": "f0a38625c8192d6a8a2f73a166ebb3f250eef4bf",
+  "admitted_review": "a815ee5c4",
+  "classification": "additional ordinary raw-pool overload of existing body; zero new Native body credit",
+  "command": "./scripts/build.ps1 -Configuration Release",
+  "exit_code": 0,
+  "target": "MSVC Win32 Release",
+  "MP": 2,
+  "PCH": "ON",
+  "coverage_PDB": "OFF",
+  "checks": {
+    "both_suites_passed": true,
+    "total_seconds": 11.41,
+    "compiler_warnings_or_errors_found": false,
+    "canonical_cache": true,
+    "Win32_COFF014C": true,
+    "nine_provider_files_unchanged": true
+  },
+  "Source_inputs": [
+    {
+      "path": "include/bsp/gui_text_glyph_child.hpp",
+      "bytes": 3706,
+      "sha256": "42d4ad6a32778b97583f74efac51853072943c2aa9929df44b0f57189c78b895",
+      "git_blob": "72410e701afcfa72b1b4f5518a68e6a7fc76b1e1",
+      "retained_path": "local/function_source_batch37/inputs/include/bsp/gui_text_glyph_child.hpp"
+    },
+    {
+      "path": "src/gui_text_glyph_child.cpp",
+      "bytes": 4709,
+      "sha256": "c4e494d1ffdaf20257d8e5a77bebf352925ba3be53d0f595a5e58f6a8dcdc6f4",
+      "git_blob": "cda642f5f5ecd3b86bdadf98c897a5f6e1cd8874",
+      "retained_path": "local/function_source_batch37/inputs/src/gui_text_glyph_child.cpp"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+      "retained_path": "local/function_source_batch37/inputs/include/bsp/native_string.hpp"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "bytes": 3113,
+      "sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+      "git_blob": "60b3f627150fa058fac7b8c4c74537cb3aee0a68",
+      "retained_path": "local/function_source_batch37/inputs/include/bsp/native_string_pool_storage.hpp"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "bytes": 5450,
+      "sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+      "git_blob": "103d6fe4d772bb3078c48fe8bcf3f929a385fdda",
+      "retained_path": "local/function_source_batch37/inputs/src/native_string_pool_storage.cpp"
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "bytes": 5893,
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "git_blob": "4a2569e19b6f25c308cba1c3cdb2b2989db2cddd",
+      "retained_path": "local/function_source_batch37/inputs/include/bsp/native_string_pool_owner.hpp"
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "bytes": 8443,
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "git_blob": "de3c69b53e00840fab31b41e2195bdc1789b6baf",
+      "retained_path": "local/function_source_batch37/inputs/src/native_string_pool_owner.cpp"
+    },
+    {
+      "path": "include/bsp/native_wide_string.hpp",
+      "bytes": 5239,
+      "sha256": "5606f96b372362a6831a1633a583f264fbab4290789481f94f1ba97537f6e051",
+      "git_blob": "ca3887e0d34038a9e799ebdead68b0db55f16108",
+      "retained_path": "local/function_source_batch37/inputs/include/bsp/native_wide_string.hpp"
+    },
+    {
+      "path": "src/native_wide_string.cpp",
+      "bytes": 10671,
+      "sha256": "158502f1efb91f678011dd971c643d5236eb10bf56da3c9997631a6d8df96e55",
+      "git_blob": "7b9df08e026a67a9dbab9c6c8df74676fd43645d",
+      "retained_path": "local/function_source_batch37/inputs/src/native_wide_string.cpp"
+    },
+    {
+      "path": "include/bsp/native_wide_string_raw_copy.hpp",
+      "bytes": 943,
+      "sha256": "2e3cc1084d0f0893a0abd67866a4e1505872e790665c2a97e9845f85b7fa4836",
+      "git_blob": "f5f5b3c8c6bb5f951d4ea9ca95c8376ba956a3b4",
+      "retained_path": "local/function_source_batch37/inputs/include/bsp/native_wide_string_raw_copy.hpp"
+    },
+    {
+      "path": "src/native_wide_string_raw_copy.cpp",
+      "bytes": 2320,
+      "sha256": "3089c374bf1b39ea2d8b73ec4713c77bf343fd2f751e775f91a1654bb2a42688",
+      "git_blob": "6ddef14b9ce6e96594c50b8289af1946ac6a2a6f",
+      "retained_path": "local/function_source_batch37/inputs/src/native_wide_string_raw_copy.cpp"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 28850,
+      "sha256": "45ee6d0ca76cae355213cecd6048ce90fb458638abefe46c3369ec4c09669e4f",
+      "git_blob": "82b1c5f6ab450aa96c8f7212957d65433e0ed75b",
+      "retained_path": "local/function_source_batch37/inputs/CMakeLists.txt"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 296702,
+      "sha256": "91d1de5e0df99d75ab2133869f154c0560d969f8ed3b60c999a495ba097f416b",
+      "git_blob": "f5032c4bccf117bf25445331020a0d95aa8e98a4",
+      "retained_path": "local/function_source_batch37/inputs/cmake/startup.cmake"
+    },
+    {
+      "path": "tests/math_tests.cpp",
+      "bytes": 224028,
+      "sha256": "2345ee250b579646bb4efd0091e0b246ac0fb1fa89d6ab3c3fde2a3a462a1151",
+      "git_blob": "d33c4e5aa47ec11421c0c42a812462f26357371f",
+      "retained_path": "local/function_source_batch37/inputs/tests/math_tests.cpp"
+    },
+    {
+      "path": "docs/CC16_NATIVE_CODE_UNIT_RAW_POOL.md",
+      "bytes": 7745,
+      "sha256": "12403e21cccbef167e919ad46d8f8df60d5323b0a5c195237f37187126dc8fec",
+      "git_blob": "5644d39d953b3263a9e11ac4997ccc51e05776ad",
+      "retained_path": "local/function_source_batch37/inputs/docs/CC16_NATIVE_CODE_UNIT_RAW_POOL.md"
+    },
+    {
+      "path": "reports/cc16_native_code_unit_raw_pool.json",
+      "bytes": 40701,
+      "sha256": "6f2f6b5507bdfac61b049632188461fb5b349aa48248aed4d0578ebdd9a5d6c0",
+      "git_blob": "d3084672022f8ff4f1f4fce53c16c438d39b7b81",
+      "retained_path": "local/function_source_batch37/inputs/reports/cc16_native_code_unit_raw_pool.json"
+    },
+    {
+      "path": "docs/CC16_NATIVE_CODE_UNIT_RAW_POOL_INDEPENDENT_REVIEW.md",
+      "bytes": 5408,
+      "sha256": "bab8cdea20c80ee5972ed314fde828bdecdbea15c21533d4dd6ef4ef9c6bca54",
+      "git_blob": "11e1024958832ac05bd86390d364df42e2a334e0",
+      "retained_path": "local/function_source_batch37/inputs/docs/CC16_NATIVE_CODE_UNIT_RAW_POOL_INDEPENDENT_REVIEW.md"
+    },
+    {
+      "path": "reports/cc16_native_code_unit_raw_pool_independent_review.json",
+      "bytes": 30343,
+      "sha256": "9e09d29c62281664fddc158eb176c1f97c67581bdde0d53ab5bb98800d99c1af",
+      "git_blob": "8c7911cafec541dd58243299078522c648e7e943",
+      "retained_path": "local/function_source_batch37/inputs/reports/cc16_native_code_unit_raw_pool_independent_review.json"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "local/function_source_batch37/build.log",
+      "bytes": 2754,
+      "sha256": "38f411c369b6a97db918d99f4b022a55e282dc760fa174c1f8f063e282f01560",
+      "retained_path": "local/function_source_batch37/artifacts/01_build.log"
+    },
+    {
+      "path": "local/function_source_batch36/raw_pool_review/primary_checks.json",
+      "bytes": 343,
+      "sha256": "1925fac9f568987da1ab128beb26d2a8f1ad3e7c4b92010658b50a0b13fa9591",
+      "retained_path": "local/function_source_batch37/artifacts/02_primary_checks.json"
+    },
+    {
+      "path": "local/function_source_batch36/raw_pool_review/inverse.py",
+      "bytes": 615,
+      "sha256": "e29f6433fedc70bd1dd1ff162f901a7c7d1dbcd09c6f4799d37306b7adc94723",
+      "retained_path": "local/function_source_batch37/artifacts/03_inverse.py"
+    },
+    {
+      "path": "local/function_source_batch36/raw_pool_review/inverse.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "retained_path": "local/function_source_batch37/artifacts/04_inverse.log"
+    },
+    {
+      "path": "build/win32/CMakeCache.txt",
+      "bytes": 19943,
+      "sha256": "1685db07153e0ad413c8e75a1536cf232b943fdc86f5e983cd18cf2abfa3ecb2",
+      "retained_path": "local/function_source_batch37/artifacts/05_CMakeCache.txt"
+    },
+    {
+      "path": "build/win32/bsp_core.vcxproj",
+      "bytes": 3449995,
+      "sha256": "a3bf0a664aafe037b8f086c27149ac82f82b3fc6ba4865d82775d13878aa4bbe",
+      "retained_path": "local/function_source_batch37/artifacts/06_bsp_core.vcxproj"
+    },
+    {
+      "path": "build/win32/bsp_game.vcxproj",
+      "bytes": 277506,
+      "sha256": "10b0730a508a6ed1fe61c39ccca84e904c9f39a1801648ec61d3c80d6c9c1b76",
+      "retained_path": "local/function_source_batch37/artifacts/07_bsp_game.vcxproj"
+    },
+    {
+      "path": "build/win32/bsp_game.map",
+      "bytes": 11461078,
+      "sha256": "131c2ea9be22e573d22a08fd2c046c25b667ea37b58fe2b02db559ea358639b1",
+      "retained_path": "local/function_source_batch37/artifacts/08_bsp_game.map"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/gui_text_glyph_child.obj",
+      "bytes": 4561,
+      "sha256": "c178831232ee10fe929bdca7bc4433b27068f88a66ef4afad5d6fdc1866e2218",
+      "retained_path": "local/function_source_batch37/artifacts/09_gui_text_glyph_child.obj"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 104833336,
+      "sha256": "78745df18f0d4615fe68cbbeaa890621efbe92240eb3cda7aa1415f3b97a2de7",
+      "retained_path": "local/function_source_batch37/artifacts/10_bsp_core.lib"
+    },
+    {
+      "path": "build/win32/Release/bsp_game.exe",
+      "bytes": 7536640,
+      "sha256": "a554ab740d3f2f93d391c797cf3c450ea2f741b91dbc7f0bba3a230deb435536",
+      "retained_path": "local/function_source_batch37/artifacts/11_bsp_game.exe"
+    },
+    {
+      "path": "build/win32/Release/bsp_math_tests.exe",
+      "bytes": 890368,
+      "sha256": "11034de219da87a3234c5f80d48d2c8a4f8e7fd97eb0345d3c66bfa9917c14f5",
+      "retained_path": "local/function_source_batch37/artifacts/12_bsp_math_tests.exe"
+    },
+    {
+      "path": "build/win32/Testing/Temporary/LastTest.log",
+      "bytes": 1658,
+      "sha256": "807906c2422f648573cb5ccc64e57b1622935f435f482f43411b0b68d834ba52",
+      "retained_path": "local/function_source_batch37/artifacts/13_LastTest.log"
+    }
+  ],
+  "primary_review": {
+    "packet": "b6c69bfb9b83b61d2bb085668e53ac8cef63a19a",
+    "source_files": 2,
+    "whole_file_inverses": 2,
+    "pinned_inputs": 19,
+    "Source_line_pins": 26,
+    "unchanged_native_exports": 3,
+    "native_instructions": 46,
+    "native_calls": 5,
+    "installed_PE_region_unchanged": true,
+    "build_runtime_Original_ABI_activation": false
+  },
+  "independent_findings": 0,
+  "entry_game_or_probe_executed": false,
+  "actual_Glyph_caller": false,
+  "Original_ABI_runtime_activation": false,
+  "retained_link": {
+    "Source_head": "a815ee5c4441b47ef9d88c78d2372f7e467515d1",
+    "cohort": "retained_link",
+    "all18_Source_inputs_unchanged": true,
+    "command": "./scripts/build.ps1 -Configuration Release",
+    "exit_code": 0,
+    "target": "MSVC Win32 Release",
+    "MP": 2,
+    "PCH": "ON",
+    "coverage_PDB": "OFF",
+    "both_suites_passed": true,
+    "total_seconds": 10.74,
+    "no_compiler_warnings_errors": true,
+    "forced_entries": [
+      "?construct_gui_text_code_unit_00ab81c0@bsp@@YAPAXPAXIAAUNativeStringRawPoolContext@1@@Z"
+    ],
+    "entries_present": {
+      "?construct_gui_text_code_unit_00ab81c0@bsp@@YAPAXPAXIAAUNativeStringRawPoolContext@1@@Z": "10300be0",
+      "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z": "10326a50",
+      "?allocate_native_string_pool_00bd1120@bsp@@YAPAXPAUNativeStringPoolStorage@1@I@Z": "10326ca0",
+      "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z": "10326f00"
+    },
+    "provider_symbols_unforced": true,
+    "artifacts": [
+      {
+        "path": "local/function_source_batch37/retained_link/build.log",
+        "bytes": 4216,
+        "sha256": "4addb04838454ec786eb347eb752cd92f31e94118535f87b70f7735021f599aa",
+        "retained_path": "local/function_source_batch37/retained_link/artifacts/01_build.log"
+      },
+      {
+        "path": "build/win32/CMakeCache.txt",
+        "bytes": 20183,
+        "sha256": "02772194701f3199cab5876009c8fdd9d459f45fa5e12790f6839c75ab764af1",
+        "retained_path": "local/function_source_batch37/retained_link/artifacts/02_CMakeCache.txt"
+      },
+      {
+        "path": "build/win32/bsp_game.vcxproj",
+        "bytes": 278642,
+        "sha256": "01594debc8d28f1b1cd17e2cef5a2aa22e0cee8ff95a96afd8d2a377eea78405",
+        "retained_path": "local/function_source_batch37/retained_link/artifacts/03_bsp_game.vcxproj"
+      },
+      {
+        "path": "build/win32/bsp_game.map",
+        "bytes": 11461235,
+        "sha256": "c09dff1fadd58b8db24787c50e82729af6e9681c7ba966c982ae0360cb291871",
+        "retained_path": "local/function_source_batch37/retained_link/artifacts/04_bsp_game.map"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 7537152,
+        "sha256": "9a7f29d5a13d40285fdf3d287682515c86d8cc094efb78511dbef791c7dcefae",
+        "retained_path": "local/function_source_batch37/retained_link/artifacts/05_bsp_game.exe"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 104833336,
+        "sha256": "78745df18f0d4615fe68cbbeaa890621efbe92240eb3cda7aa1415f3b97a2de7",
+        "retained_path": "local/function_source_batch37/retained_link/artifacts/06_bsp_core.lib"
+      },
+      {
+        "path": "build/win32/Release/bsp_math_tests.exe",
+        "bytes": 890368,
+        "sha256": "11034de219da87a3234c5f80d48d2c8a4f8e7fd97eb0345d3c66bfa9917c14f5",
+        "retained_path": "local/function_source_batch37/retained_link/artifacts/07_bsp_math_tests.exe"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 1657,
+        "sha256": "53625ac208f3311e91aae2ea631402fe730094b44fca0073a81285bcd432c79b",
+        "retained_path": "local/function_source_batch37/retained_link/artifacts/08_LastTest.log"
+      },
+      {
+        "path": "local/function_source_batch37/retained_link/retain_code_unit.cmake",
+        "bytes": 336,
+        "sha256": "a952a50eb16b56d3c16fca1733029747fed0b3e4655e367ad318003d543f6d75",
+        "retained_path": "local/function_source_batch37/retained_link/artifacts/09_retain_code_unit.cmake"
+      },
+      {
+        "path": "local/function_source_batch37/retained_link/forced_symbols.json",
+        "bytes": 99,
+        "sha256": "b2c973cba887b77ddcb78c21aab27087e6c0aa99990fb2a9233e6dd48cd12c90",
+        "retained_path": "local/function_source_batch37/retained_link/artifacts/10_forced_symbols.json"
+      },
+      {
+        "path": "local/function_source_batch37/retained_link/symbols.txt",
+        "bytes": 7991,
+        "sha256": "b596c762ec9ef445a5994c23102c0b6a99bba36fad4def13db69ef3e1d28d17b",
+        "retained_path": "local/function_source_batch37/retained_link/artifacts/11_symbols.txt"
+      },
+      {
+        "path": "local/function_source_batch37/retained_link/configure.log",
+        "bytes": 253,
+        "sha256": "5ac5fcb963a2638ab7c3a9cbc7745cb9ffd15f0501da32994aca4ac1aee941f7",
+        "retained_path": "local/function_source_batch37/retained_link/artifacts/12_configure.log"
+      }
+    ],
+    "entry_game_probe_executed": false,
+    "Original_ABI_runtime_activation": false
+  },
+  "canonical_restored": {
+    "Source_head": "a815ee5c4441b47ef9d88c78d2372f7e467515d1",
+    "cohort": "canonical_restored",
+    "all18_Source_inputs_unchanged": true,
+    "command": "./scripts/build.ps1 -Configuration Release",
+    "exit_code": 0,
+    "target": "MSVC Win32 Release",
+    "MP": 2,
+    "PCH": "ON",
+    "coverage_PDB": "OFF",
+    "both_suites_passed": true,
+    "total_seconds": 10.17,
+    "no_compiler_warnings_errors": true,
+    "forced_entries": [],
+    "entries_present": {},
+    "provider_symbols_unforced": true,
+    "artifacts": [
+      {
+        "path": "local/function_source_batch37/canonical_restored/build.log",
+        "bytes": 4216,
+        "sha256": "4421ca8abebc150a1e8adf199a47aa51c6b81fc7dddf494bd03ce48e3c16b8cb",
+        "retained_path": "local/function_source_batch37/canonical_restored/artifacts/01_build.log"
+      },
+      {
+        "path": "build/win32/CMakeCache.txt",
+        "bytes": 19943,
+        "sha256": "1685db07153e0ad413c8e75a1536cf232b943fdc86f5e983cd18cf2abfa3ecb2",
+        "retained_path": "local/function_source_batch37/canonical_restored/artifacts/02_CMakeCache.txt"
+      },
+      {
+        "path": "build/win32/bsp_game.vcxproj",
+        "bytes": 277506,
+        "sha256": "10b0730a508a6ed1fe61c39ccca84e904c9f39a1801648ec61d3c80d6c9c1b76",
+        "retained_path": "local/function_source_batch37/canonical_restored/artifacts/03_bsp_game.vcxproj"
+      },
+      {
+        "path": "build/win32/bsp_game.map",
+        "bytes": 11461078,
+        "sha256": "6738ca6d39c3122cde7e0407c3b55bf7283f210f1c7550a593c1117d84a41058",
+        "retained_path": "local/function_source_batch37/canonical_restored/artifacts/04_bsp_game.map"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 7536640,
+        "sha256": "94c6a926f473036ac6f37f79df9c0b6ae08abd6c58c4e04ae5a430efb5214c69",
+        "retained_path": "local/function_source_batch37/canonical_restored/artifacts/05_bsp_game.exe"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 104833336,
+        "sha256": "78745df18f0d4615fe68cbbeaa890621efbe92240eb3cda7aa1415f3b97a2de7",
+        "retained_path": "local/function_source_batch37/canonical_restored/artifacts/06_bsp_core.lib"
+      },
+      {
+        "path": "build/win32/Release/bsp_math_tests.exe",
+        "bytes": 890368,
+        "sha256": "11034de219da87a3234c5f80d48d2c8a4f8e7fd97eb0345d3c66bfa9917c14f5",
+        "retained_path": "local/function_source_batch37/canonical_restored/artifacts/07_bsp_math_tests.exe"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 1657,
+        "sha256": "a842b233ef9bdb19f0b1d15a239f3c8928d5f4230bd2ec2f112a07ffec9fe2a7",
+        "retained_path": "local/function_source_batch37/canonical_restored/artifacts/08_LastTest.log"
+      }
+    ],
+    "entry_game_probe_executed": false,
+    "Original_ABI_runtime_activation": false
+  },
+  "independent_review_receipt": {
+    "original": "f0a38625c8192d6a8a2f73a166ebb3f250eef4bf",
+    "admitted": "a815ee5c4",
+    "full_document_read": true,
+    "actionable_Source_findings": 0,
+    "pins": [
+      {
+        "path": "docs/CC16_NATIVE_CODE_UNIT_RAW_POOL_INDEPENDENT_REVIEW.md",
+        "bytes": 5408,
+        "sha256": "bab8cdea20c80ee5972ed314fde828bdecdbea15c21533d4dd6ef4ef9c6bca54"
+      },
+      {
+        "path": "reports/cc16_native_code_unit_raw_pool_independent_review.json",
+        "bytes": 30343,
+        "sha256": "9e09d29c62281664fddc158eb176c1f97c67581bdde0d53ab5bb98800d99c1af"
+      }
+    ]
+  },
+  "metadata": {
+    "ledger": {
+      "existing_function_variant_added": 1,
+      "name_evidence_suffixes": 1,
+      "all_old_fields_status_names_evidence_prefixes_and_other_rows_preserved": true,
+      "complete_Native_records_added": 0,
+      "new_Original_vendor_CG_helper_trivial_duplicate_ABI_runtime_gameplay_credit": 0,
+      "files": [
+        {
+          "path": "config/names/00ab0000.jsonl",
+          "before_sha256": "abac2e564109a0056e8a7d51356710647453b65a5807a05531e6c105a8272112",
+          "after_sha256": "f464c7cb54ec084c52f95c9af8a62d706b3640428553c29aa2a98180045f6e88",
+          "rows_before": 180,
+          "rows_after": 180
+        },
+        {
+          "path": "config/reconstruction/00ab0000.jsonl",
+          "before_sha256": "d6cdca38458c037d0c46fb923cf445849cb11414185dc6c5c8b0edf7c10d9271",
+          "after_sha256": "1d24a88b1640ec2b5e13f0317a66be905ccb2ed0b44988aa361b922eaa679648",
+          "rows_before": 258,
+          "rows_after": 258
+        }
+      ],
+      "exports_before": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab81c0\\assembly.txt",
+          "bytes": 1282,
+          "sha256": "1e50764915dfbddb0283edb4e0f5570bc85ab38a1d53bda64bcdb48e83e113c9",
+          "retained_path": "local/function_source_batch37/native_exports_before/00ab81c0/assembly.txt"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab81c0\\decompiled.c",
+          "bytes": 1156,
+          "sha256": "47ff83339704112c654f5ba973e381f64bc79e91eb5ee811697197d0434aeba6",
+          "retained_path": "local/function_source_batch37/native_exports_before/00ab81c0/decompiled.c"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab81c0\\metadata.json",
+          "bytes": 279,
+          "sha256": "c6f23934347a6e4a1f1b71dadd707bb2bdb8d6e458b8db4fefb30b608e85803e",
+          "retained_path": "local/function_source_batch37/native_exports_before/00ab81c0/metadata.json"
+        }
+      ]
+    },
+    "Ghidra": {
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "official_write_lock": true,
+      "prior_name_comment_preserved": true,
+      "comment_appends": 1,
+      "renames": 0,
+      "project_saved": true,
+      "exports_after": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab81c0\\assembly.txt",
+          "bytes": 1282,
+          "sha256": "1e50764915dfbddb0283edb4e0f5570bc85ab38a1d53bda64bcdb48e83e113c9",
+          "retained_path": "local/function_source_batch37/native_exports_after/assembly.txt"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab81c0\\decompiled.c",
+          "bytes": 2564,
+          "sha256": "552c15b4c7a095c80acc3e8fb4c20a0c3a2accf34625ab2fcd362123fb8be770",
+          "retained_path": "local/function_source_batch37/native_exports_after/decompiled.c"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab81c0\\metadata.json",
+          "bytes": 279,
+          "sha256": "1148c8aad621c4528e8fdf549a01b7a3d808a7397ef8fc4c5b37e4af718b5898",
+          "retained_path": "local/function_source_batch37/native_exports_after/metadata.json"
+        }
+      ]
+    },
+    "localpins": [
+      {
+        "path": "local/function_source_batch37/Ghidra_comments_before.json",
+        "bytes": 579,
+        "sha256": "f09b90f60b869256b51d9ed4cd9c66ddbd009b51faa94c518e5231a63f46cff5"
+      },
+      {
+        "path": "local/function_source_batch37/Ghidra_comments_after.json",
+        "bytes": 1936,
+        "sha256": "e5c98e2614bf87576d246835b34058c4a4db99674e5343384a454eaeeac2763a"
+      },
+      {
+        "path": "local/function_source_batch37/metadata_checks.json",
+        "bytes": 1930,
+        "sha256": "764fc9b8d7e63dd0ac25701e6f9422d99fd97c972fbd47c49cafcb6edcbab0ed"
+      },
+      {
+        "path": "local/ghidra-annotations-20261030T224324Z.json",
+        "bytes": 2037,
+        "sha256": "22fbd6319e489dc78e77f43aaa1cbd24ae1e37c18cd7e84be7049fdcd6f5e498"
+      }
+    ]
+  },
+  "credit": {
+    "new_Original_bodies": 0,
+    "new_vendor_CG_helper_trivial_duplicate_bodies": 0,
+    "new_Original_ABI_runtime_gameplay": 0
+  },
+  "readiness": {
+    "ordinary_raw_pool_library_overload": true,
+    "actual_Glyph_caller": false,
+    "Origin_permission": false,
+    "Original_ABI_runtime_gameplay": false,
+    "activated": false
+  },
+  "admission_document": "docs/CC16_NATIVE_CODE_UNIT_RAW_POOL_SOURCE_ADMISSION.md"
+}
