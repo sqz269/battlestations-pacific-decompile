@@ -28,11 +28,10 @@ volatile std::uint32_t& tracked_counter(CRITICAL_SECTION* section) noexcept {
     return *reinterpret_cast<volatile std::uint32_t*>(
         reinterpret_cast<std::byte*>(section) + 0x18);
 }
-} // namespace
-
-__declspec(noinline) void* get_native_front_end_frame_004c1ac0(
+void* get_frame_same_body(
     void* volatile& actual_manager_publication_01090aa0,
-    void* volatile& actual_frame_publication_00e18d80) {
+    void* volatile& actual_frame_publication_00e18d80,
+    NativeFrontEndFramePublicationCustody* custody) {
     void* const initial = actual_frame_publication_00e18d80;
     if (initial) return initial;
 
@@ -52,6 +51,7 @@ __declspec(noinline) void* get_native_front_end_frame_004c1ac0(
         if (!actual_frame_publication_00e18d80) {
             void* const allocation = singleton_lifetime_allocate({
                 SingletonAllocationKind::object, 0x164, 0x164});
+            if (custody) custody->allocation_returned(allocation);
             void* constructed;
             // Native state1 starts after allocation and ends before publish.
             try {
@@ -60,14 +60,17 @@ __declspec(noinline) void* get_native_front_end_frame_004c1ac0(
                     : nullptr;
             } catch (...) {
                 singleton_lifetime_free(allocation);
+                if (custody) custody->allocation_freed(allocation);
                 throw;
             }
 
+            if (custody) custody->construction_returned(allocation, constructed);
             actual_frame_publication_00e18d80 = constructed;
             void* const current_frame = actual_frame_publication_00e18d80;
             void* const adjusted = current_frame
                 ? static_cast<void*>(static_cast<std::byte*>(current_frame) + 8)
                 : nullptr;
+            if (custody) custody->lifetime_argument_captured(adjusted);
             void* const second_manager = get_native_singleton_manager_00415350(
                 actual_manager_publication_01090aa0);
             register_native_singleton_object_00bd0c30(
@@ -83,6 +86,22 @@ __declspec(noinline) void* get_native_front_end_frame_004c1ac0(
         throw;
     }
     return actual_frame_publication_00e18d80;
+}
+} // namespace
+
+__declspec(noinline) void* get_native_front_end_frame_004c1ac0(
+    void* volatile& actual_manager_publication_01090aa0,
+    void* volatile& actual_frame_publication_00e18d80) {
+    return get_frame_same_body(actual_manager_publication_01090aa0,
+        actual_frame_publication_00e18d80, nullptr);
+}
+
+__declspec(noinline) void* get_native_front_end_frame_004c1ac0(
+    void* volatile& actual_manager_publication_01090aa0,
+    void* volatile& actual_frame_publication_00e18d80,
+    NativeFrontEndFramePublicationCustody& preprepared_custody) {
+    return get_frame_same_body(actual_manager_publication_01090aa0,
+        actual_frame_publication_00e18d80, &preprepared_custody);
 }
 
 } // namespace bsp
