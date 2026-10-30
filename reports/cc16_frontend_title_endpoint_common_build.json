@@ -1,0 +1,237 @@
+{
+  "schema_version": 1,
+  "classification": "Reviewed true-size/private LEA and direct raw position in Frame title library callers",
+  "Source_head": "9c76cdaba8c52e40b9fc0b5ed5b80f8b7123ecaa",
+  "baseline_Main": "6a745da7df7c162f90f3ec0f24b61cd618867995",
+  "utc": "2026-10-30T19:41:08.137037+00:00",
+  "command": "./scripts/build.ps1 -Configuration Release",
+  "exit_code": 0,
+  "target": "MSVC Win32 Release",
+  "MP": 2,
+  "PCH": "ON",
+  "coverage_PDB": "OFF",
+  "production_files_changed": 2,
+  "CMake_files_changed": 0,
+  "new_tests": 0,
+  "checks": {
+    "reconstructed_math": {
+      "passed": true,
+      "seconds": 0.3
+    },
+    "tool_tests": {
+      "passed": true,
+      "seconds": 14.21
+    },
+    "total_seconds": 14.55,
+    "compiler_warnings_or_errors_found": false
+  },
+  "Source_inputs": [
+    {
+      "path": "CMakeLists.txt",
+      "Git_LF_bytes": 27632,
+      "Git_LF_sha256": "f7fd43b767d7f4afb09d7de6451314f30b1f8f94f06cf758cdd3c1837ed9fd74",
+      "git_blob": "1f7fc0c0a9022e1a75aff4c97753806b99554fa8",
+      "retained_path": "local/function_source_batch29/inputs/CMakeLists.txt"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "Git_LF_bytes": 295512,
+      "Git_LF_sha256": "9dc25fa7f076fdcaf0a2291d894d2f332a1be96e6175c8a08c07953e56abd29b",
+      "git_blob": "59281c74e5074485d61510c7d4f2497bc54ad935",
+      "retained_path": "local/function_source_batch29/inputs/cmake/startup.cmake"
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_title_position.hpp",
+      "Git_LF_bytes": 7999,
+      "Git_LF_sha256": "adcde559eb6b277875f4dd671b2cf7bc29a82f8f3fb77510699191a111c99f1e",
+      "git_blob": "3dfd4e93dd5b16263d34dd3844dd2aeadc866947",
+      "retained_path": "local/function_source_batch29/inputs/include/bsp/native_front_end_frame_title_position.hpp"
+    },
+    {
+      "path": "src/native_front_end_frame_title_position.cpp",
+      "Git_LF_bytes": 14009,
+      "Git_LF_sha256": "5e13b7ebb02c36fea613c28d3fd7998e96bc5289946db12469755457627aeeb4",
+      "git_blob": "4e9d6093410e8fdd5eb08436d374fddde1565293",
+      "retained_path": "local/function_source_batch29/inputs/src/native_front_end_frame_title_position.cpp"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_position.hpp",
+      "Git_LF_bytes": 1025,
+      "Git_LF_sha256": "fd7397b1af7ba72bc335703507d4013e78298126ab8d8be5816794bcbcd40512",
+      "git_blob": "929216cd0afb675271dd0385b809a7612a39ca2f",
+      "retained_path": "local/function_source_batch29/inputs/include/bsp/native_gui_widget_position.hpp"
+    },
+    {
+      "path": "src/native_gui_widget_position.cpp",
+      "Git_LF_bytes": 988,
+      "Git_LF_sha256": "674336c5043078be5e3ed0398f83999da3f783435a5767f7ce2abcd14142e6b6",
+      "git_blob": "d6b37f61f34ab15547ecaeaf47d99ca1f3147b05",
+      "retained_path": "local/function_source_batch29/inputs/src/native_gui_widget_position.cpp"
+    },
+    {
+      "path": "include/bsp/native_locale_initial_language.hpp",
+      "Git_LF_bytes": 3776,
+      "Git_LF_sha256": "8e80e4fc697dc687eb20f6c37ecd6f2722d0feeda50f80080cfa19e3e53cd0dc",
+      "git_blob": "77e7d4655d88eecd70ab67d4abbbd1830f3f4eca",
+      "retained_path": "local/function_source_batch29/inputs/include/bsp/native_locale_initial_language.hpp"
+    },
+    {
+      "path": "src/native_locale_initial_language.cpp",
+      "Git_LF_bytes": 5817,
+      "Git_LF_sha256": "dbd61beef482386e7662e35504b35163b92ab109162ada6c862ce47577ca467a",
+      "git_blob": "5a30a1384313cdc01ff3108e80703ff61f1824df",
+      "retained_path": "local/function_source_batch29/inputs/src/native_locale_initial_language.cpp"
+    },
+    {
+      "path": "include/bsp/game_native_locale_manager.hpp",
+      "Git_LF_bytes": 4092,
+      "Git_LF_sha256": "42dec9cccba35990c919428d7a02b663dfbd2e21f9ca3a345a87f7e80c2fcb13",
+      "git_blob": "a0a8374de9cce69892b19537731d70482af0979d",
+      "retained_path": "local/function_source_batch29/inputs/include/bsp/game_native_locale_manager.hpp"
+    },
+    {
+      "path": "src/game_native_locale_manager.cpp",
+      "Git_LF_bytes": 30338,
+      "Git_LF_sha256": "e9869bf1841514522558e013e847d59212bceb65abb948b7037b89079f867341",
+      "git_blob": "debdabd2260fe02c9d9f007fb1a6b5640d1871ea",
+      "retained_path": "local/function_source_batch29/inputs/src/game_native_locale_manager.cpp"
+    },
+    {
+      "path": "src/game_hosts_singletons.cpp",
+      "Git_LF_bytes": 10557,
+      "Git_LF_sha256": "be179a72d97447dcd59620d05a791ac48cea74ab4ccf2468b0445d10c961b38e",
+      "git_blob": "4a09a311654e49a588572535cb4b7d5f32ee09e1",
+      "retained_path": "local/function_source_batch29/inputs/src/game_hosts_singletons.cpp"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "local/function_source_batch29/build.log",
+      "bytes": 2739,
+      "sha256": "3b7afc32e2c589baebb8b78c4cd9d8b9d3c69165b2018c0bf5ec01da65051f36",
+      "retained_path": "local/function_source_batch29/artifacts/01_build.log"
+    },
+    {
+      "path": "build/win32/CMakeCache.txt",
+      "bytes": 19943,
+      "sha256": "1685db07153e0ad413c8e75a1536cf232b943fdc86f5e983cd18cf2abfa3ecb2",
+      "retained_path": "local/function_source_batch29/artifacts/02_CMakeCache.txt"
+    },
+    {
+      "path": "build/win32/bsp_game.map",
+      "bytes": 11383091,
+      "sha256": "a93cee21866fc55db5e5507e9ffd1c0e36e4a1b577c1838414eae1c3f76089d8",
+      "retained_path": "local/function_source_batch29/artifacts/03_bsp_game.map"
+    },
+    {
+      "path": "build/win32/Release/bsp_game.exe",
+      "bytes": 7517696,
+      "sha256": "b79143154601c41070f750cc0e72ef869ac1866272e937c8c3cfee3950e87565",
+      "retained_path": "local/function_source_batch29/artifacts/04_bsp_game.exe"
+    },
+    {
+      "path": "build/win32/Release/bsp_math_tests.exe",
+      "bytes": 893952,
+      "sha256": "d28418a347798aa16faa37b544affd6634a17d85e94aa7b78414bcd51379f29f",
+      "retained_path": "local/function_source_batch29/artifacts/05_bsp_math_tests.exe"
+    },
+    {
+      "path": "build/win32/Release/xlive_stub.dll",
+      "bytes": 32768,
+      "sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3",
+      "retained_path": "local/function_source_batch29/artifacts/06_xlive_stub.dll"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 104003750,
+      "sha256": "77d04ed95a8ae4d736ff8519febb357a2fb0f1b3714c68111886c07af5c4c6e0",
+      "retained_path": "local/function_source_batch29/artifacts/07_bsp_core.lib"
+    },
+    {
+      "path": "build/win32/Testing/Temporary/LastTest.log",
+      "bytes": 1658,
+      "sha256": "027d8863bcb35bbd1ca99c61042551837ed2ebe1ac4d5fd102f0595002f2e020",
+      "retained_path": "local/function_source_batch29/artifacts/08_LastTest.log"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_front_end_frame_title_position.obj",
+      "bytes": 18744,
+      "sha256": "b6f92ee1b1a50ec4cd22c3bdeeff5d34bda8bbedb334168b6fb8750ebe3747e6",
+      "retained_path": "local/function_source_batch29/artifacts/09_native_front_end_frame_title_position.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_gui_widget_position.obj",
+      "bytes": 1711,
+      "sha256": "6a4f7726fe8f9d9fe20b7eb52249f7d8f45607c970fcbcba4d4043c9db97c7d7",
+      "retained_path": "local/function_source_batch29/artifacts/10_native_gui_widget_position.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_locale_initial_language.obj",
+      "bytes": 12635,
+      "sha256": "4362aac80f726cd6f53c3a7a800cc56afa7f12f10ff38c1abf3c4565ae3bed3d",
+      "retained_path": "local/function_source_batch29/artifacts/11_native_locale_initial_language.obj"
+    },
+    {
+      "path": "build/win32/bsp_game.dir/Release/game_native_locale_manager.obj",
+      "bytes": 73188,
+      "sha256": "13c5673c043fae8261320b5098a3184d6ab38d1c24554429d5e709c40385f43b",
+      "retained_path": "local/function_source_batch29/artifacts/12_game_native_locale_manager.obj"
+    },
+    {
+      "path": "build/win32/bsp_game.dir/Release/game_hosts_singletons.obj",
+      "bytes": 48280,
+      "sha256": "9c1d7d0588601b44e5d63c9d782ed3095e8c69301702f8195d6bef4097a06d2f",
+      "retained_path": "local/function_source_batch29/artifacts/13_game_hosts_singletons.obj"
+    }
+  ],
+  "Source_commit": "68f3dcbd326367727d5133aa809e4ec2025a114d",
+  "independent_review": {
+    "worker_commit": "979f1140bdc60e6e1e5fc8ccb8ebe570fe836616",
+    "admitted_commit": "b0373efc7",
+    "findings": 0
+  },
+  "primary_review": {
+    "whole_new_header_CPP_diff_document_and_peer_read": true,
+    "whole_native_getter_setter_listings_and_raw_setter_Source_read": true,
+    "exact_historical_GitLF_pins": 36,
+    "pin_failures": 0,
+    "raw_exports_frozen": 8,
+    "strict_proof": "Private size+20 pointer only, direct Box thenText rawsetter via distinctprepared4refrecords; all4asm,Context,bothScratch andallotherCPP unchanged."
+  },
+  "library_link_qualification": {
+    "changed_entry_names": [
+      "set_native_front_end_frame_title_005189b0",
+      "set_native_front_end_frame_title_position_005186b0"
+    ],
+    "name_bytes_present_in_core_archive": {
+      "set_native_front_end_frame_title_005189b0": 3,
+      "set_native_front_end_frame_title_position_005186b0": 3
+    },
+    "game_map_name_hits": {
+      "set_native_front_end_frame_title_005189b0": 0,
+      "set_native_front_end_frame_title_position_005186b0": 0
+    },
+    "qualification": "Core-library compilation only; no actual game caller/binary ABI/runtime proof."
+  },
+  "remaining_genuine_gates": [
+    "prepared selector/history owner",
+    "initialized1DCtransformpreimage/unwrittenholes",
+    "realone-negativezero-WidgetE12FC4/authhalf/currenttarget dispatch",
+    "enabled-bounds currentrealModel/geometry/elementgraph",
+    "retainedactualStartupfrontend/canonical/retirementbinding",
+    "requiredruntime/gameplay"
+  ],
+  "readiness": {
+    "accepted_for_Main_Source_publication": true,
+    "actual_selector_owner_and_resource_graph_bound": false,
+    "actual_frontend_game_caller_bound": false,
+    "activated": false,
+    "Page_guard_changed": false,
+    "game_or_probe_executed": false
+  },
+  "held_Text96": "Excluded/unmerged/unbuilt; needsrevision forNativevsaddedhost/unclassifiedcleanuporigin andShaderFrameclass-key. Thisbuild grants it no evidence.",
+  "credit": {
+    "new_Original_vendor_CG_helper_trivial_duplicate_body_ABI_runtime_gameplay": 0
+  },
+  "admission_document": "docs/CC16_FRONTEND_TITLE_ENDPOINT_SOURCE_ADMISSION.md"
+}
