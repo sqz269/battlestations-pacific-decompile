@@ -1,0 +1,84 @@
+{
+  "status": "canonical_textual_operation_reviewed_retained_link_and_restored_win32_pass_caller_unbound",
+  "commit": "476ba17cc9e28f584def2fcfa6ca9a947c4d83f7",
+  "contract_sha256": "55f488831db25d5e0ebd4c429a5f96972ee7221dc494b25bba4bc63cd68a620f",
+  "source_hashes": {
+    "include/bsp/game_native_locale_manager.hpp": "aababa647cd4c11765528881dbc04c47eb3779d5433079186e299597e801f532",
+    "src/game_native_locale_manager.cpp": "09bc7442c647b9d65e531908d16c6598396d17d60bbf4bf1177d4cd19dd6e074",
+    "include/bsp/game_native_vfs_application.hpp": "afb93e571b81b23ae9f1a422ace53908b785ff3ee3c859348cfacc018663780b",
+    "src/game_native_vfs_application.cpp": "d5f170374607496e31022eae8c33a62d12f458b16b7000e72b45d6da035aaddc"
+  },
+  "primary_review": "full_actual_four_file_delta_and_affected_existing_owner_paths",
+  "independent_reviews": {
+    "gameplay": "0a5d330cc904cbd552067a7dc5a356015ee43e0a78dc98b8b81740f466fdf04e",
+    "frame_lifetime": "2e423b27ce5cf5dce3a3fbc5be36d7df5920c5e8c25521c6ee119d522226b7a4",
+    "verdict": "ACCEPT_SOURCE_CODE_exact_476ba17c_four_Source_pins_and_doc_qualification"
+  },
+  "strict_objects": {
+    "count": 2,
+    "exit_codes": [0, 0],
+    "machine": "014C",
+    "owner_sha256": "cc14f081fa602d7c3798908cd349b295c792a67f7c11e2e4459a32430c195c6c",
+    "vfs_sha256": "2fe377b5a51ba959f853f95230a05d3d768fc31df1336b8d6ba5fc7756869c16"
+  },
+  "preservation": {
+    "whole_file_inverse_projections": 4,
+    "affected_old_method_inverse_projections": 6,
+    "independent_old_methods_plus_vfs_projection": 7,
+    "unchanged_native_helper_core_host_cmake_pins": 10,
+    "root_verified_all_four_source_and_ten_unchanged_pins": true
+  },
+  "local_retained_link": {
+    "head": "7bbe0967d741c847f87d2afdcd2c0b0cf3c25c20",
+    "joined_main": "0812812ea198274454e1fab0a5da8f9e7e716b64",
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "existing_checks_passed": 2,
+    "existing_checks_total": 2,
+    "ctest_seconds": 9.24,
+    "owner_method_address": "100297d0",
+    "vfs_identity_getter_address": "102c8350",
+    "textual_entry_address": "10303d50",
+    "scanner_address": "10302ee0",
+    "record_address": "10302740",
+    "cpp_unwind_entries_present": true,
+    "map": "local/canonical_textual_operation_integration_cc16_20261030/retained.map",
+    "map_sha256": "86846a94f0065e4882516fd95b5206b78790589a1ba99a02a6460642238e7930",
+    "overlay_sha256": "c1563705b8c61ab1181a58fb4386f18b9c658e670a9caaf954493b90571bb8d1",
+    "retained_executable_sha256": "e7f94369da3e61758937fc1be4b30e930a18549b73a41f413f892ca19b46ee39",
+    "new_entry_or_game_invoked": false
+  },
+  "canonical_build_after_restoration": {
+    "head": "7bbe0967d741c847f87d2afdcd2c0b0cf3c25c20",
+    "command": "./scripts/build.ps1",
+    "configuration": "Release Win32",
+    "exit_code": 0,
+    "existing_checks_passed": 2,
+    "existing_checks_total": 2,
+    "ctest_seconds": 10.48,
+    "include_before_cache_entry_absent": true,
+    "forced_symbols_absent": true,
+    "unbound_owner_method_absent_from_canonical_map": true,
+    "log": "local/canonical_textual_operation_integration_cc16_20261030/build.log"
+  },
+  "raw16_sdk_frontier": {
+    "review_sha256": "93d762bd2425a1c95733462786f9da6910ce269ac9c5564ff9234edf7a692a46",
+    "default_sdk_allocator_incompatible_with_raw_retirement": true,
+    "real_allocator_owned_sdk_route": "unproven_not_admitted",
+    "vendor_body_reconstructed": false
+  },
+  "manager_source": "canonical_owner_private_allocation",
+  "pool_source": "canonical_owner_initialized_pool_process",
+  "host_data_identity": "actual_retained_vfs_impl_reference_addresses",
+  "history": "stable_append_only_context_before_frame_nodes",
+  "input_transfer": "actual_admitted_parser_entry_only",
+  "failed_operation_allows_drain_or_retry": false,
+  "base_profile_allowed_after_textual_entry": false,
+  "derived_profile": "00cff140_to_real_0073caf0",
+  "new_tests": 0,
+  "cmake_changed": false,
+  "source_ready": false,
+  "runtime": false,
+  "loaded_manager_permission": false,
+  "option0_raw16": "unbound"
+}

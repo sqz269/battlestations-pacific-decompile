@@ -1,0 +1,61 @@
+{
+  "kind": "ordinary_cpp_actual_AA0020_textual_option1_branch_composition",
+  "native_disjoint_ranges_inclusive": [
+    "00AA0020..00AA00AF",
+    "00AA0356..00AA0378",
+    "00AA060E..00AA0678"
+  ],
+  "reused_callees": [
+    "BDEF90",
+    "4CDC20",
+    "AA00B0..AA0356 scanner including AA0130 record",
+    "427110",
+    "4D0FA0",
+    "41DD20",
+    "419CC0",
+    "BD1510",
+    "qualified matched BF6989/singleton_lifetime_free"
+  ],
+  "original_abi": "whole Native ECX manager, owning raw8 by value, opaque other DWORD and low-byte trailing option, RET10; new Source interface only option1, no binary ABI claim",
+  "base": "b81dbc8f4ea3e6290067445f19d7231839499645",
+  "source_ready": false,
+  "runtime": false,
+  "contract_sha256": "c8da4a9f3135f584018ae96eba5df116bca4714b9096708471d98b7bb4e7f5e8",
+  "sanity_sha256": "548bec5b7ef17acc1127aec500812a8b95b3ce20ca5ca66d36ac2f8d1d8873ca",
+  "files": {
+    "include/bsp/native_locale_textual_parser_storage.hpp": "d7c24dff54c96ca152f767a7c711d22d475ada0046102b9380881f1db92606b7",
+    "src/native_locale_textual_parser_storage.cpp": "ce6eb230fcc28644d4d1d3e0180c52ec95ff0dca9e6596357c85d2d6eb1e5c6a",
+    "docs/NATIVE_LOCALE_TEXTUAL_PARSER_STORAGE.md": "df23a2a6fe2db94ebd2ae0420e91219c88e81e2f09b44cf40fc7af1d38407416"
+  },
+  "private_authority": [
+    "initial rejection OUTSIDE invocation cleanup; private actual admitted state0/1 only",
+    "stable per-occurrence FileContext-before-FileFrame; private file normal receipt",
+    "consume-before-lower vector/input normal/selected actions; caught reentry stays failed"
+  ],
+  "cleanup": "only owning outer current state1 vector then state0 input; normal input EARLYdata/disarm/currentlen; true-unwind second cleanup escape terminate; no stream/key/count/header rollback",
+  "lifetime": "native filenames/input may end after synchronous scan; only own-metadata history/status/dtors afterward; caller retains all unresolved native/provider/renderer and File/Record graphs",
+  "qualification": [
+    "explicit option1 skips all sidecar/raw16; not wholeAA/reload/loading/caller readiness",
+    "current Source CRT/provider/raw-field/fencing and ordinary C++ exception limits",
+    "Native stack/register ABI, FH3/SEH/hardware/opaque-hook/vendor-body/runtime equivalence unproved"
+  ],
+  "unchanged_provider_receipt": {
+    "path": "local\\native_locale_textual_parser_storage_compile_cc9_20261030\\dependency_preservation.json",
+    "sha256": "636a34dcc984d62d809abb57e69484dc19682098b7eee7438f47d9efe782a037",
+    "count": 14
+  },
+  "strict_object": {
+    "path": "local\\native_locale_textual_parser_storage_compile_cc9_20261030\\compile_receipt.json",
+    "sha256": "b8aab6fbb495f0bf06b7e2d11d93935d5ca541d5dfdcb615df676176e1b9781a",
+    "exit_code": 0,
+    "object_sha256": "6ced2bd613ffa47239530eb04839d65ebdc65299218ec183a5902fcb6151d280",
+    "COFF_machine": "0x14c",
+    "symbols_receipt_sha256": "d0ff7c8ad5686e58bba02af42f22db29a496d530f271676f1247c47c4f7d3da9"
+  },
+  "utc": "2026-10-30T17:16:46.978304+00:00",
+  "review_correction": {
+    "unfrozen_prior_cpp_sha256": "7c250027597d84138465eda332a9d86a940bade43a589d1f63acece2ab72e3cb",
+    "final_cpp_sha256": "ce6eb230fcc28644d4d1d3e0180c52ec95ff0dca9e6596357c85d2d6eb1e5c6a",
+    "change": "private f.require_entered immediately after419CC0 and beforeBD1510; state-1 consumed; no retry/header peek; corrected before one final object compile"
+  }
+}

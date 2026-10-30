@@ -52,6 +52,10 @@ public:
     // this application and GameSingletonHost alive through every consumer and
     // the shared singleton drain.
     NativeStringRawPoolContext& raw_strings() noexcept;
+    // Pure identity view over existing retained references; no startup,
+    // publication, native payload read or provider construction is performed.
+    bool borrows_graph(const GameSingletonHost&,
+        const GameNativeReadOnlyData&) const noexcept;
     GameNativeVfsRawServices borrow_raw_services();
     NativeVfsOwnerServices& owners() noexcept;
     GameNativeTypeStorage& types() noexcept;

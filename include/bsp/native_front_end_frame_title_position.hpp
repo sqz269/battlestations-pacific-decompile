@@ -45,8 +45,6 @@ NativeFrontEndFrameTitlePositionData borrow_native_front_end_frame_title_positio
 struct NativeFrontEndFrameTitlePositionBindings {
     virtual ~NativeFrontEndFrameTitlePositionBindings() = default;
     virtual void* frame_004c1ac0() = 0;
-    virtual void* find_child_00aa7e00(void* actual_parent,
-        const void* actual_name_header8, std::uint32_t one) = 0;
     virtual void text_source_00abaed0(void* captured_text,
         const void* captured_native_header8, std::uint32_t one) = 0;
     virtual const void* widget_size_00aa6740(void* captured_widget) = 0;

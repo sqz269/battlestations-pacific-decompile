@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "classification": "Primary review of finite implementation contracts; evidence only",
+  "baseline_source": "eb63c7c17ae1e20f0ad728e2d410a360e1ebc4c1",
+  "utc": "2026-10-30T15:29:00Z",
+  "contracts": [
+    {
+      "commit": "20bf26c13ba5bf1dc0ade39cceb848222000042e",
+      "document": "docs/CC16_FRONTEND_CANONICAL_AUTHORITY_CLOSURE.md",
+      "report": "reports/cc16_frontend_canonical_authority_closure.json",
+      "document_lines_read": 109,
+      "git_lf_source_and_evidence_pins_verified": 43
+    },
+    {
+      "commit": "8aba68e15cc4344e8dbdac94d77c4ae36a9629c7",
+      "document": "docs/CC16_FRONTEND_FRAME_SELECTION_CLOSURE.md",
+      "report": "reports/cc16_frontend_frame_selection_closure.json",
+      "document_lines_read": 134,
+      "git_lf_source_and_evidence_pins_verified": 46,
+      "saved_export_hashes_verified": 20
+    },
+    {
+      "commit": "830efe569dc1cba491456eec75ad01bc8a5fdb8e",
+      "document": "docs/CC16_FRONTEND_RAW95_PRODUCER_CLOSURE.md",
+      "report": "reports/cc16_frontend_raw95_producer_closure.json",
+      "document_lines_read": 81,
+      "git_lf_source_and_evidence_pins_verified": 45,
+      "installed_pe_identity_verified": true,
+      "current_profiles_verified": 53,
+      "current_profile_slot_words_verified": 530,
+      "current_id_instruction_leaves_verified": 53,
+      "profile_and_id_bytes_verified": 2438
+    }
+  ],
+  "review": {
+    "contracts_consistent_with_current_type2_source_admission": true,
+    "existing_manager_and_settings_game_cell_identity_required": true,
+    "canonical_frontend_storage_requires_coupled_real_consumers": true,
+    "preprepared_getter_custody_before_registration_required": true,
+    "page_direct_zero_and_manager_retirement_remain_distinct": true,
+    "initial_review_found_no_actionable_contract_defect": true,
+    "subsequent_cross_contract_omission_corrected": {
+      "method": "GameNativeFrontEndDataView::prompt_publication_00e18e6c()",
+      "type": "void* volatile&",
+      "consumer": "Actual MenuPrompt 00425D10 getter, constructor unwind and lifetime contexts",
+      "same_authenticated_page": "00e18000",
+      "additional_allocation_required": false,
+      "original_10_accessor_contract_omitted_this_required_cell": true,
+      "corrected_accessor_count": 11,
+      "source_implementation_or_activation_in_this_correction": false
+    },
+    "whole_frontend_source_ready": false,
+    "activation_ready": false
+  },
+  "next_owned_source_packets": [
+    "codex-native-menu-prompt-construction-publication: whole 00533120 and 00425D10",
+    "codex-frontend-frame-native-selection: whole 00517ED0 and 00518250 plus existing 004C1AC0 custody seam",
+    "codex-native-gui-text-glyph-buffers-storage: whole raw 00AB8400 supplier"
+  ],
+  "verification_scope": {
+    "new_build_or_tests": false,
+    "new_game_or_probe_execution": false,
+    "new_ghidra_mutation": false,
+    "prior_build_and_host_receipts_rerun": false,
+    "new_original_or_duplicate_body_credit": 0,
+    "new_vendor_or_abi_or_runtime_or_gameplay_credit": 0
+  },
+  "goal": {
+    "status": "active",
+    "target": "All in-scope functions integrated and fully activated with required gameplay checks",
+    "user_gameplay_authorization": "Fully activated; allow required gameplay runs"
+  }
+}

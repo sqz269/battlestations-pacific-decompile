@@ -1,0 +1,87 @@
+{
+  "packet": "codex-native-string-equal-raw-fields",
+  "state": "four_raw_field_loads_object_compiled",
+  "source_ready": false,
+  "base_commit": "5e4c2fff16c185e3d806040105aa11517a4c9577",
+  "created_utc": "2026-10-30T16:10:49.751228+00:00",
+  "address": "00435c40",
+  "owned_files": [
+    "src/native_physical_file_date.cpp",
+    "docs/NATIVE_STRING_EQUAL_RAW_FIELDS.md",
+    "reports/native_string_equal_raw_fields.json"
+  ],
+  "source_hashes": {
+    "src/native_physical_file_date.cpp": "8169ba029806d3705149e79cd5e6b208aba5206819a889b134a757ac84db5526",
+    "docs/NATIVE_STRING_EQUAL_RAW_FIELDS.md": "670dbd992d0383094bef12f5878fdf7bf547573dec7d35ced53a73669fc64f55"
+  },
+  "change": "ONLY4accessor substitutions in equal_native_string_headers_00435c40 using existingprivatefencedhelpers",
+  "preserved_order": [
+    "capturedleftlength",
+    "capturedrightlength",
+    "unequalreturnfalse",
+    "zeroreturntrue",
+    "rightdata",
+    "leftdata",
+    "samecurrentCRT_stricmp(left,right)"
+  ],
+  "inverse": {
+    "baseline_CPP_sha256": "14a03f9de4eb9ff466dec9323f331192adb6089c3c5c70db8ac61f9829b0c43d",
+    "inverse_CPP_sha256": "14a03f9de4eb9ff466dec9323f331192adb6089c3c5c70db8ac61f9829b0c43d",
+    "complete_CPP_byte_exact": true,
+    "sharedhelpers_unequal_typed_allotherbodies_unchanged": true,
+    "API_provider_callback_comparison_EH_unchanged": true
+  },
+  "verification": {
+    "strict_object_compile": {
+      "toolchain": "VS18Community VsDevCmd x86/hostx64",
+      "source": "src/native_physical_file_date.cpp",
+      "flags": [
+        "/std:c++17",
+        "/permissive-",
+        "/W4",
+        "/WX",
+        "/EHsc",
+        "/MD",
+        "/O2",
+        "/Ob2",
+        "/fp:strict",
+        "/DNDEBUG",
+        "/DWIN32",
+        "/D_WINDOWS",
+        "/DNOMINMAX",
+        "/DWIN32_LEAN_AND_MEAN",
+        "/I include",
+        "/c"
+      ],
+      "exit_code": 0,
+      "stdout": "native_physical_file_date.cpp\r\n",
+      "wall_time_seconds": 4.7776032,
+      "attempts": 1
+    },
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\build\\native_string_equal_raw_fields_object\\native_physical_file_date.obj",
+      "sha256": "074a1de89dafa2fb2a79c83b6a35bfb7cdda8426a7b8555b9b7db5f53109ac0c",
+      "bytes": 30570,
+      "machine": "0x14c",
+      "existing_entry": "?equal_native_string_headers_00435c40@bsp@@YA_NPBX0@Z",
+      "compile_only": true,
+      "linked_or_executed": false
+    },
+    "full_build": false,
+    "new_tests": 0,
+    "tests_run": 0,
+    "probe_executable": false,
+    "game": false,
+    "Ghidra_analysis_or_mutation": false
+  },
+  "limits": [
+    "livevalidrawheader/data, no conflictingwriters/invalidation",
+    "compilerbarriers not synchronization/Nativefault/SEH/ABI guarantee",
+    "existingcurrentCRTcompare unchanged"
+  ],
+  "excluded": [
+    "newNative/vendorbodycredit",
+    "CMake/ledger/sharedmetadata",
+    "AA09D0/loader/consumer/startup/runtime activation"
+  ]
+}

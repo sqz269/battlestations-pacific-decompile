@@ -32,8 +32,6 @@ NativeFrontEndFrameOperationLiterals borrow_native_front_end_frame_operation_lit
 struct NativeFrontEndFrameOperationsBindings {
     virtual ~NativeFrontEndFrameOperationsBindings() = default;
     virtual void* frame_004c1ac0() = 0;
-    virtual void* find_child_00aa7e00(void* actual_parent,
-        const void* actual_name_header8, std::uint32_t one) = 0;
     virtual void call_widget_virtual34(void* captured_widget,
         std::uint32_t captured_profile, std::uint32_t captured_target,
         std::uint32_t actual_argument_word) = 0;

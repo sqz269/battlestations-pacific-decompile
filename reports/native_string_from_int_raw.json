@@ -1,0 +1,127 @@
+{
+  "schema": "bsp.raw-string-from-int-source.v1",
+  "created_utc": "2026-10-30T16:27:38.437289+00:00",
+  "source_base": "704d1282dd73cb7a195c0c39d99cfb851e8bca23",
+  "address": "004260b0",
+  "original_abi": "ECX raw output8; stack signed32; EAX original output; RET4",
+  "source_ready": false,
+  "status": "dormant normalized Source; isolated Win32 object compiled",
+  "source_files": {
+    "include/bsp/native_string_from_int_raw.hpp": "4dc40b6ac2ee07aa7bb44e7fd315e9f5beca77821ff58ad4146fb31eeb716695",
+    "src/native_string_from_int_raw.cpp": "038af1332614c51386c4717f7d65fb06c74eb2dfe184eb14c0b2b78a73b43bcf",
+    "docs/NATIVE_STRING_FROM_INT_RAW.md": "cadb83a7039cc668d62a66139498593bee3e39e732a298473fbfe99fe2faaf99"
+  },
+  "contract": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\raw_string_from_int_contract_gui_20261030\\CONTRACT.md",
+    "sha256": "679ea3bb6d5659906bad73309dc9556104780243da15da344b4c055cff5b204a",
+    "pins_path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\raw_string_from_int_contract_gui_20261030\\pins.json",
+    "pins_sha256": "b904f6bf86d13ebced3dbfaf865725b701aebe4be0c1419e73ede4fff3b216a4"
+  },
+  "native_evidence": {
+    "original_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "native_spans": [
+      {
+        "start": "004260b0",
+        "bytes": 229,
+        "sha256": "0cf667ad0a1964b3da93f0122eace9b98f8160782ac0f046ce1908a7c7617127"
+      },
+      {
+        "start": "00c5e818",
+        "bytes": 10,
+        "sha256": "11efa03cf87ffaa186c57c7359580955f64df58abfc31d1819510f72082a2a3b"
+      },
+      {
+        "start": "00d84d24",
+        "bytes": 36,
+        "sha256": "9312e8e8a03567a85ea9e9eacb9920f24b84b86f9e33bf1fd768b8320fa11d91"
+      },
+      {
+        "start": "00d84d1c",
+        "bytes": 8,
+        "sha256": "8772f12fba3f935fa7c5f4cf506bf27460a7004e974ab2b669666ff7d2b46ee6"
+      },
+      {
+        "start": "00c5e810",
+        "bytes": 8,
+        "sha256": "081b6b51818fca82dc536a9cacc6e42546299a1ff55330926ba8d95c762e3e00"
+      },
+      {
+        "start": "00ce3a34",
+        "bytes": 3,
+        "sha256": "0b782fc3030dbdf3756f17e7adf2ce5808dfc513ca7589adeb679c7d25eaef6f"
+      }
+    ],
+    "selected_EH": "state0previous-1 C5E810 CURRENTtemp header\u219241DD20; normaldisarm beforecaptureddata/lengthreturn",
+    "live_verification": "bsp /battlestationspacific.exe count77632; selector/map/action/format read; no mutation"
+  },
+  "provider_source_snapshot": {
+    "include/bsp/main_menu_selection_listener.hpp": "095f1c4ec2c6d77770ecfdd19ead30af002d2c6927964aa0f70bc6755aa7e8bf",
+    "src/main_menu_selection_listener.cpp": "20244ce3567729807aeeec4792a56620d0653bcc357e736595b04caa49f93a2d",
+    "include/bsp/game_native_readonly_data.hpp": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+    "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+    "include/bsp/native_string_pool_owner.hpp": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+    "include/bsp/native_string_pool_storage.hpp": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02"
+  },
+  "schedule": [
+    "validate actual immutable CE3A34 span shape/content; provenance remains caller proof",
+    "raw output0/data0 before current snprintf52; temp0/data0 only after formatting",
+    "real raw41DD40 temp; capture data then length; copy buffer before selected arm",
+    "self comparison then state0; real output resize; CURRENT output length then data copy from captured pair",
+    "normal disarm-1 before captured nonnull size+1/getter/BD1510; no temp reread or return retry",
+    "selected Cpp unwind consumes state0 to -1 before CURRENT-temp raw41DD20; secondary throw terminates; no output cleanup"
+  ],
+  "unchanged_old_source": {
+    "full_tracked_projection_changed_paths": [],
+    "main_menu_files": {
+      "include/bsp/main_menu_selection_listener.hpp": "095f1c4ec2c6d77770ecfdd19ead30af002d2c6927964aa0f70bc6755aa7e8bf",
+      "src/main_menu_selection_listener.cpp": "20244ce3567729807aeeec4792a56620d0653bcc357e736595b04caa49f93a2d"
+    }
+  },
+  "object_compile": {
+    "command": "call \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\Tools\\VsDevCmd.bat\" -arch=x86 -host_arch=x64 -no_logo && cl.exe /nologo /std:c++17 /permissive- /W4 /WX /EHsc /MD /O2 /Ob2 /fp:strict /DNDEBUG /DWIN32 /D_WINDOWS /DNOMINMAX /DWIN32_LEAN_AND_MEAN /I include /c src\\native_string_from_int_raw.cpp /Fo\"build\\native_string_from_int_raw_object\\native_string_from_int_raw.obj\"",
+    "exit_code": 0,
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\build\\native_string_from_int_raw_object\\native_string_from_int_raw.obj",
+    "sha256": "a538f9e1e8137e801f1a8549dfed818428d226f16df58210c6a08c31d480551e",
+    "machine": "0x014c",
+    "sections": 79,
+    "undefined_external_symbols": [
+      "??3@YAXPAXI@Z",
+      "___std_terminate",
+      "___std_exception_copy",
+      "___std_exception_destroy",
+      "__imp____stdio_common_vsprintf",
+      "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+      "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z",
+      "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+      "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+      "@__security_check_cookie@4",
+      "__CxxThrowException@8",
+      "___CxxFrameHandler3",
+      "_memmove",
+      "??_7type_info@@6B@",
+      "___security_cookie"
+    ],
+    "log_sha256": "c551baffaaf5417ae9b512390b665639a0c2df5ed80e549c0f4ed782d8b3bbf1",
+    "prior_candidate_object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\build\\native_string_from_int_raw_object\\pre_consume_state.obj",
+      "sha256": "192e1e3b5146434c2b468e40212addb84bd4c8f97269e8becdc56e574f0a6c2f",
+      "reason": "first compile passed before requested selected-edge consume refinement"
+    }
+  },
+  "qualifications": [
+    "actual mapped CE3A34 bytes/lifetime/extent and SAME raw pool cells are caller obligations; matching bytes are not provenance",
+    "current SDK snprintf52 fixed signed32 %d qualifies Original sprintf; no vendor-body credit",
+    "own fenced raw fields do not extend lower-provider qualifications",
+    "synchronous noninvalidating disjoint output/context/format/provider backing; no concurrent/private-frame writer",
+    "overlap-safe copies omit zero-byte copy after required operand loads",
+    "ordinary Cpp selected cleanup only; no FH3/private-spill/SEH/hardware/Original binary ABI identity",
+    "no new caller, cleanup owner, parser/loading/locale/consumer/startup activation or runtime result"
+  ],
+  "validation": {
+    "isolated_object_only": true,
+    "new_tests": false,
+    "full_build": false,
+    "game_run": false,
+    "ghidra_mutation": false
+  }
+}

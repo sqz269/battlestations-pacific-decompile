@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-frame-child-lookup-composition",
+  "baseline": "83c7f6b1af1cfbb794f827390612331a13b6fd94",
+  "supplier_commit": "ab484553b268d9b3787f52fb987fa1661e3fafc9",
+  "scope": "Direct actual AA7E00 in Frame flag and all six title/position lookups; no new owner/context/provider",
+  "Source_pins": [
+    {
+      "path": "include/bsp/native_front_end_frame_operations.hpp",
+      "hash_format": "immutable Git LF index blob content",
+      "git_blob": "578677291d2b7df25a8859f4334b51f858fb3f17",
+      "bytes": 5436,
+      "sha256": "021bda07c3c9cdf1d8e591f8ba293bc974ccbfc87b2752fbefc9460f8e0d4fa0"
+    },
+    {
+      "path": "src/native_front_end_frame_operations.cpp",
+      "hash_format": "immutable Git LF index blob content",
+      "git_blob": "7be5257ef58dd0b3bba686ffcf37798ed116e8d5",
+      "bytes": 8111,
+      "sha256": "efca4b447abbb067a40b8ac05708eb0daf41761d59a8ee0325fd505a816d5ae1"
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_title_position.hpp",
+      "hash_format": "immutable Git LF index blob content",
+      "git_blob": "e55b76d9c18fd30a66d7c3151bb69c0d37e175aa",
+      "bytes": 6715,
+      "sha256": "6f9b78effaa284af936071159a859bd2e37d43b2e4bf4d9284f03e2174857555"
+    },
+    {
+      "path": "src/native_front_end_frame_title_position.cpp",
+      "hash_format": "immutable Git LF index blob content",
+      "git_blob": "b6baf39de6ff5806ce1e66be3bc5ff2045a377f3",
+      "bytes": 13271,
+      "sha256": "3cd170af1be5889cba4251409fbe04f8237084ee14807167bf832b1b58018c41"
+    }
+  ],
+  "strict_comparison": [
+    {
+      "path": "include/bsp/native_front_end_frame_operations.hpp",
+      "only_authorized_replacements": true,
+      "baseline_sha256": "076f002fc017d984c9a211f734b6693d7e283dc1a757e9764d6d7bf660247340",
+      "new_sha256": "021bda07c3c9cdf1d8e591f8ba293bc974ccbfc87b2752fbefc9460f8e0d4fa0"
+    },
+    {
+      "path": "src/native_front_end_frame_operations.cpp",
+      "only_authorized_replacements": true,
+      "baseline_sha256": "a5e8a64e96bda0cf0dbbd5ee820300dde36d97fb449a433814675623c9a908f7",
+      "new_sha256": "efca4b447abbb067a40b8ac05708eb0daf41761d59a8ee0325fd505a816d5ae1"
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_title_position.hpp",
+      "only_authorized_replacements": true,
+      "baseline_sha256": "87dacd5b92bb9389185c808de3a4015283fc9cf0be7d7e944c81a8ef3c148244",
+      "new_sha256": "6f9b78effaa284af936071159a859bd2e37d43b2e4bf4d9284f03e2174857555"
+    },
+    {
+      "path": "src/native_front_end_frame_title_position.cpp",
+      "only_authorized_replacements": true,
+      "baseline_sha256": "5706ecadb6403943e5175075f647cf5e74003a8431f69566fb1eeaf3bc04507c",
+      "new_sha256": "3cd170af1be5889cba4251409fbe04f8237084ee14807167bf832b1b58018c41"
+    }
+  ],
+  "all_other_CPP_bytes_and_asm_blocks_identical": true,
+  "removed_unused_Native_operation_virtuals": 2,
+  "actual_sites": {
+    "00518B90": "one reached flag-icon lookup",
+    "005189B0": "two title/box lookups",
+    "005186B0": "two title/box lookups",
+    "00518820": "two title/box lookups"
+  },
+  "callee_homes": "Two real volatile DWORDs at each call; write unused literal1 then SAME actual raw name-header address. Whole AA7E00 captures root+68 before home0, never reads home1. Homes are local to the active call and no retained callee state points into them.",
+  "lifetime": "SAME captured Page/query8B/raw WidgetChildren graph; local homes last through return/escape; returned child unretained. Existing outer native header cleanup/normal return and callers retained backing obligations remain unchanged.",
+  "no_new_policy": [
+    "header/data preflight",
+    "snapshot",
+    "typed Widget/Node cast",
+    "default/empty graph",
+    "new owner/retain",
+    "recursion/loop/count cap",
+    "catch/cleanup/retry/rollback/termination",
+    "FP environment effect"
+  ],
+  "historical_receipts": "83c7 batch26 admitted old caller interfaces; its passing Source3c/ef and frozen pins remain immutable and do not validate this composition. Original producer/review docs and reports remain scoped to their recorded commits; current Source pair pins are above.",
+  "validation": {
+    "strict_canonical_diff": "passed",
+    "unrelated_derived_bindings_found": 0,
+    "new_tests": 0,
+    "build_run": false,
+    "game_probe_process_actions": false,
+    "ledger_Ghidra_shared_application_changes": false
+  },
+  "remaining_gates": [
+    "Root common Win32 build",
+    "real Frame getter/current dispatch",
+    "genuine actual Page/WidgetChildren production and lifetime",
+    "changed Text/title/position/vector bindings",
+    "actual Startup frontend application and canonical process/retirement binding",
+    "required runtime/gameplay gates"
+  ],
+  "activated": false,
+  "new_Original_vendor_CG_helper_duplicate_body_ABI_runtime_gameplay_credit": 0
+}

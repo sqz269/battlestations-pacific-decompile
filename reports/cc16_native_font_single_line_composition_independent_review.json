@@ -1,0 +1,557 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-font-single-line-composition-independent-review",
+  "classification": "independent_static_font_and_single_line_composition_review_passed_source_only",
+  "reviewed_font_commit": "1a35a95f8fe44b0fe1c3f0324462abd7809fc9f8",
+  "reviewed_composition_commit": "6490c5de7ac2a7dbdf90fc0a267e27da9332f364",
+  "owned_files": [
+    "docs/CC16_NATIVE_FONT_SINGLE_LINE_COMPOSITION_INDEPENDENT_REVIEW.md",
+    "reports/cc16_native_font_single_line_composition_independent_review.json"
+  ],
+  "verdict": {
+    "final_coupled_receipt": true,
+    "blocking_source_findings": 0,
+    "findings": [],
+    "font_selector_static_review_passed": true,
+    "composition_static_review_passed": true,
+    "ready_for_primary_integration_common_build_assessment": true,
+    "compiled_by_reviewer": false,
+    "actual_caller_admitted": false,
+    "whole_Text_or_frontend_ready": false,
+    "activation": false
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "read_only_bsp_verified_queries": [
+      "ghidra proto 00ad4480 00ad3e70",
+      "ghidra proto 00ab9fd0"
+    ],
+    "ghidra_mutation": false
+  },
+  "font_scope": {
+    "selector_entry": "00AD4480",
+    "selector_end": "00AD44FD",
+    "selector_bytes": 126,
+    "selector_instructions": 45,
+    "private_helper_entry": "00AD3E70",
+    "private_helper_end": "00AD3E93",
+    "private_helper_bytes": 36,
+    "private_helper_instructions": 14,
+    "all59_operations_and_both_production_files_reviewed": true,
+    "source_header_lines": 44,
+    "source_cpp_lines": 65,
+    "fp_operations": 0,
+    "extra_owner_context_opaque_provider": 0
+  },
+  "font_schedule_review": {
+    "initial_home": "Initial unsigned lowWORD read FIRST; SPACE/LF return actualFont+4C and CR actualFont+8C without head/node/scratch access. All other0..FFFF values use SAME actual WORD home in realAD4370, not initial_key local.",
+    "lookup_reuse": "Existing raw AD4370 delegates unchanged sharedAD4540: conditional initial key read, CURRENT head reload, final conditional current key read; owner then node output stores.",
+    "selector_guard": "Read output owner then CURRENT Font+4 head BEFORE the null/foreign owner guard invokes existing real SDK BF6713. After a returning handler, compare CURRENT output node with CAPTURED pre-handler head. Equality returns actualFont+6C.",
+    "helper_guard": "AD3E70 tests CURRENT owner; SDK call ifnull; FRESH owner then node then owner+4 head comparison; SDK call ifequal; FRESH node after possible callback then node+0C pair. No extra guard/repair or head caching across calls.",
+    "payload_return": "Read CURRENT pair+4/node+10 actual glyph pointer and return unchanged, including NULL. No fallback-on-null, synthesized glyph, FontData/FontDescriptor cast, count/cache mutation, allocation, resource callback or FP policy.",
+    "exception_transport": "Existing selected SDK _invalid_parameter_noinfo may return/throw/enact its existing policy. No new catch/noexcept/noreturn/termination, cleanup/retry/rollback or acknowledgement. Native encoded-handler/Watson/debug/ABI/fault identity remains qualified."
+  },
+  "source_pins": [
+    {
+      "path": "include/bsp/native_font_glyph_selection_storage.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "235e9a965fe063fa6562601cedb2eda2d2f868e8b05de313d018fdb5a2cea5b7",
+      "git_blob_oid": "ca2ffe295116537e8cb3525a87c2b21dab9b1c6b",
+      "bytes": 2534,
+      "revision": "6490c5de7ac2a7dbdf90fc0a267e27da9332f364"
+    },
+    {
+      "path": "src/native_font_glyph_selection_storage.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "f1a52596c913d0d2fe45db6d09ea76190539f993175d017ffa3bc1c38df27253",
+      "git_blob_oid": "f8f6c0c327205a8295c4ff0557ea2e257a3b4a3f",
+      "bytes": 3249,
+      "revision": "6490c5de7ac2a7dbdf90fc0a267e27da9332f364"
+    },
+    {
+      "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "cb3ceeadbdf6ee0de0403247a825c9c4ec2947062449ef31549a1ea4a3e25ea2",
+      "git_blob_oid": "48d89e15a71561637b64b56bb350f8012a094e06",
+      "bytes": 8362,
+      "revision": "6490c5de7ac2a7dbdf90fc0a267e27da9332f364"
+    },
+    {
+      "path": "src/native_gui_text_single_line_storage.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "bf28c40e92462d515327e90bbecca4336144ee8d7b40ca60e87535d3d8320c6d",
+      "git_blob_oid": "33ed0eaa0f7b25d0dfaed106a787f3e0ac2a34e7",
+      "bytes": 16669,
+      "revision": "6490c5de7ac2a7dbdf90fc0a267e27da9332f364"
+    }
+  ],
+  "font_input_pin_audit": {
+    "basis_revision": "1a35a95f8fe44b0fe1c3f0324462abd7809fc9f8",
+    "hash_format": "immutable_git_blob_content_lf",
+    "inputs_checked": 15,
+    "all_matched": true,
+    "working_copy_crlf_not_used": true,
+    "pins": [
+      {
+        "path": "include/bsp/native_font_storage.hpp",
+        "hash_format": "immutable_git_blob_content_lf",
+        "sha256": "3d62ca18439d3b83b586f9aae1d14e84108280386d88d85532a4f3a8fc92eeb9",
+        "git_blob_oid": "6e9244c9cfcebe4f2d59e85235f1302ddf0b0111",
+        "bytes": 4737,
+        "revision": "1a35a95f8fe44b0fe1c3f0324462abd7809fc9f8"
+      },
+      {
+        "path": "src/native_font_storage.cpp",
+        "hash_format": "immutable_git_blob_content_lf",
+        "sha256": "760c148ed5d3bbdb6ddb40781893251caf646dbab18755b3bb8af5c46a5279ce",
+        "git_blob_oid": "8200f5eb7004be352897f2b4baefa74138586fea",
+        "bytes": 6829,
+        "revision": "1a35a95f8fe44b0fe1c3f0324462abd7809fc9f8"
+      },
+      {
+        "path": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+        "hash_format": "immutable_git_blob_content_lf",
+        "sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+        "git_blob_oid": "4984c27fa603fe05a308d701c54dafba6110de7e",
+        "bytes": 1471,
+        "revision": "1a35a95f8fe44b0fe1c3f0324462abd7809fc9f8"
+      },
+      {
+        "path": "src/native_invalid_parameter_noinfo_call.cpp",
+        "hash_format": "immutable_git_blob_content_lf",
+        "sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+        "git_blob_oid": "bf2a25c5f28d9eb10d37f7099faf9adaabb0a97d",
+        "bytes": 1089,
+        "revision": "1a35a95f8fe44b0fe1c3f0324462abd7809fc9f8"
+      },
+      {
+        "path": "include/bsp/font_data.hpp",
+        "hash_format": "immutable_git_blob_content_lf",
+        "sha256": "f7a1f433fb7f0466873da79a6da0b45944df5965fbe756715682265afd257c49",
+        "git_blob_oid": "1b04d267ef910dee68c99353c639cd6acdb8da99",
+        "bytes": 2515,
+        "revision": "1a35a95f8fe44b0fe1c3f0324462abd7809fc9f8"
+      },
+      {
+        "path": "src/font_data.cpp",
+        "hash_format": "immutable_git_blob_content_lf",
+        "sha256": "24ba9b6e37f798072ed06fc796b0dec560b3b500b4697b3b6634c7892a8717c1",
+        "git_blob_oid": "89ed303bfd14c788d0ec8f419dbb34241986c072",
+        "bytes": 4612,
+        "revision": "1a35a95f8fe44b0fe1c3f0324462abd7809fc9f8"
+      },
+      {
+        "path": "include/bsp/font_layout.hpp",
+        "hash_format": "immutable_git_blob_content_lf",
+        "sha256": "44f289f7218257d36a9f5e3a55de74b4123d1305a60391027bc53a731b2717d4",
+        "git_blob_oid": "cb2014d4a212c9020dd31d094a7e860440c3fc49",
+        "bytes": 2755,
+        "revision": "1a35a95f8fe44b0fe1c3f0324462abd7809fc9f8"
+      },
+      {
+        "path": "src/font_layout.cpp",
+        "hash_format": "immutable_git_blob_content_lf",
+        "sha256": "e91e7b62147bacf2f90216b38951b85319e648e874bdd1ee08fa36578f3bbad8",
+        "git_blob_oid": "47c19968d2e18a7d4b217e4e1dbf999adc73bd65",
+        "bytes": 7390,
+        "revision": "1a35a95f8fe44b0fe1c3f0324462abd7809fc9f8"
+      },
+      {
+        "path": "include/bsp/native_font_resources.hpp",
+        "hash_format": "immutable_git_blob_content_lf",
+        "sha256": "6adc6b54bd132033e5762bf3371f68a0c82181f43ca69b93d8d5a14bff5eece5",
+        "git_blob_oid": "7fa2146c9bafa5b017ef06a1cf16e5d6a5df40d8",
+        "bytes": 7923,
+        "revision": "1a35a95f8fe44b0fe1c3f0324462abd7809fc9f8"
+      },
+      {
+        "path": "src/native_font_resources.cpp",
+        "hash_format": "immutable_git_blob_content_lf",
+        "sha256": "aa947f8e748baf2c7e3a20f78c9e007a17cd32f73eba9141d097253e8edd5249",
+        "git_blob_oid": "59427662be69ce716904f13ff63f30b9d2ba97df",
+        "bytes": 25841,
+        "revision": "1a35a95f8fe44b0fe1c3f0324462abd7809fc9f8"
+      },
+      {
+        "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+        "hash_format": "immutable_git_blob_content_lf",
+        "sha256": "b4aaa584bc70d7be2c97209b4321c949ab27fbfebea561e627d07f492ed0e51a",
+        "git_blob_oid": "be2c9f193e663cfac9d036c1878ad37f7cff640e",
+        "bytes": 8136,
+        "revision": "1a35a95f8fe44b0fe1c3f0324462abd7809fc9f8"
+      },
+      {
+        "path": "src/native_gui_text_single_line_storage.cpp",
+        "hash_format": "immutable_git_blob_content_lf",
+        "sha256": "b86b045bde08b7fa7149908218537ace39f18545e5398e96e5c0a883b7270d00",
+        "git_blob_oid": "0f5535dd8c51553512848ee119ef4b35532bbddc",
+        "bytes": 16309,
+        "revision": "1a35a95f8fe44b0fe1c3f0324462abd7809fc9f8"
+      },
+      {
+        "path": "tools/bsp.py",
+        "hash_format": "immutable_git_blob_content_lf",
+        "sha256": "0532d1e3fa711fb62d198e6747a4e0eb8978ef7e301de75710afd40d6c1a1339",
+        "git_blob_oid": "2e1fb76a9fd700f079912706d9459c4293f96c86",
+        "bytes": 103131,
+        "revision": "1a35a95f8fe44b0fe1c3f0324462abd7809fc9f8"
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "hash_format": "immutable_git_blob_content_lf",
+        "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+        "git_blob_oid": "bd937766a7e4d62c015b2ab44a14a9153fbb4542",
+        "bytes": 14518,
+        "revision": "1a35a95f8fe44b0fe1c3f0324462abd7809fc9f8"
+      },
+      {
+        "path": "config/target.json",
+        "hash_format": "immutable_git_blob_content_lf",
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "git_blob_oid": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "bytes": 455,
+        "revision": "1a35a95f8fe44b0fe1c3f0324462abd7809fc9f8"
+      }
+    ],
+    "expected_parent_pair_superseded_at_final_composition": [
+      {
+        "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+        "sealed_font_input_basis": "1a35a95f8fe44b0fe1c3f0324462abd7809fc9f8",
+        "old_pin": {
+          "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+          "hash_format": "immutable_git_blob_content_lf",
+          "sha256": "b4aaa584bc70d7be2c97209b4321c949ab27fbfebea561e627d07f492ed0e51a",
+          "git_blob_oid": "be2c9f193e663cfac9d036c1878ad37f7cff640e",
+          "bytes": 8136,
+          "revision": "1a35a95f8fe44b0fe1c3f0324462abd7809fc9f8"
+        },
+        "new_pin": {
+          "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+          "hash_format": "immutable_git_blob_content_lf",
+          "sha256": "cb3ceeadbdf6ee0de0403247a825c9c4ec2947062449ef31549a1ea4a3e25ea2",
+          "git_blob_oid": "48d89e15a71561637b64b56bb350f8012a094e06",
+          "bytes": 8362,
+          "revision": "6490c5de7ac2a7dbdf90fc0a267e27da9332f364"
+        },
+        "expected_current_supersession_not_pin_failure": true
+      },
+      {
+        "path": "src/native_gui_text_single_line_storage.cpp",
+        "sealed_font_input_basis": "1a35a95f8fe44b0fe1c3f0324462abd7809fc9f8",
+        "old_pin": {
+          "path": "src/native_gui_text_single_line_storage.cpp",
+          "hash_format": "immutable_git_blob_content_lf",
+          "sha256": "b86b045bde08b7fa7149908218537ace39f18545e5398e96e5c0a883b7270d00",
+          "git_blob_oid": "0f5535dd8c51553512848ee119ef4b35532bbddc",
+          "bytes": 16309,
+          "revision": "1a35a95f8fe44b0fe1c3f0324462abd7809fc9f8"
+        },
+        "new_pin": {
+          "path": "src/native_gui_text_single_line_storage.cpp",
+          "hash_format": "immutable_git_blob_content_lf",
+          "sha256": "bf28c40e92462d515327e90bbecca4336144ee8d7b40ca60e87535d3d8320c6d",
+          "git_blob_oid": "33ed0eaa0f7b25d0dfaed106a787f3e0ac2a34e7",
+          "bytes": 16669,
+          "revision": "6490c5de7ac2a7dbdf90fc0a267e27da9332f364"
+        },
+        "expected_current_supersession_not_pin_failure": true
+      }
+    ]
+  },
+  "font_producer_evidence_pins": [
+    {
+      "path": "docs/CC16_NATIVE_FONT_GLYPH_SELECTION_STORAGE.md",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "b3f7a9b07c4b8394ff1aec533c44536fc74636cc1d75db3d430493ee848970f4",
+      "git_blob_oid": "62317a1cf3b22c0dca95c942e3f691eda6207974",
+      "bytes": 6222,
+      "revision": "1a35a95f8fe44b0fe1c3f0324462abd7809fc9f8"
+    },
+    {
+      "path": "reports/cc16_native_font_glyph_selection_storage.json",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "6efb026be25cf06da724b0a04bfe21e29904aa3f162c546c6a7bf02b51321f71",
+      "git_blob_oid": "f89095efac230e7644b5b088a6d1e391c9220ccc",
+      "bytes": 15945,
+      "revision": "1a35a95f8fe44b0fe1c3f0324462abd7809fc9f8"
+    }
+  ],
+  "font_exports": [
+    {
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ad4480\\assembly.txt",
+      "sha256": "ffd4fc28c27b152b73b077ee622c4a1c425d766b3b2b31d3eecd5c6f149fdb30",
+      "bytes": 1152,
+      "instruction_rows": 45,
+      "hash_format": "raw_saved_export_file_bytes"
+    },
+    {
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ad4480\\decompiled.c",
+      "sha256": "c7c85d74255d96fc0aa3365f1c27c88688974a85ca3eebec574274a395f48a0b",
+      "bytes": 812,
+      "instruction_rows": null,
+      "hash_format": "raw_saved_export_file_bytes"
+    },
+    {
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ad3e70\\assembly.txt",
+      "sha256": "9c14e0bf092cd5b8b1eb98729b4cdb55dda6eb42f96e0ad82c1204ab00e8421f",
+      "bytes": 399,
+      "instruction_rows": 14,
+      "hash_format": "raw_saved_export_file_bytes"
+    },
+    {
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ad3e70\\decompiled.c",
+      "sha256": "ecaf2d7e91c5909793c771df372ee958ea3b619f7a43d0dfb6201a5626bb792c",
+      "bytes": 224,
+      "instruction_rows": null,
+      "hash_format": "raw_saved_export_file_bytes"
+    }
+  ],
+  "font_pe_audit": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "body_hashes": [
+      {
+        "address": "00ad4480",
+        "bytes": 126,
+        "sha256": "fe786a41f924b7a9ef37af1db008c658c9d494a19f10a90d2adf400579efd1ce"
+      },
+      {
+        "address": "00ad3e70",
+        "bytes": 36,
+        "sha256": "d69b7ad3915dfd8af546e06b38b633bd5d84eb7b68f0d1125797e8838c73491f"
+      }
+    ],
+    "static_only": true
+  },
+  "prior_AB9FD0_review": {
+    "commit": "f50237488def3c94c54c4cde97a63e2916176f58",
+    "report_pin": {
+      "path": "reports/cc16_native_gui_text_single_line_independent_review.json",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "c05e2d81d3246e0b843a2f6e14d989c9f29267872623633226c43e82c6f6318f",
+      "git_blob_oid": "0b066c55a29e44c457ce393883b8832e2e412414",
+      "bytes": 8824,
+      "revision": "f50237488def3c94c54c4cde97a63e2916176f58"
+    },
+    "source_commit": "0bc258c71f44b0729da801f3aa9b598856d2276f",
+    "source_pins": [
+      {
+        "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+        "hash_format": "immutable_git_blob_content_lf",
+        "sha256": "b4aaa584bc70d7be2c97209b4321c949ab27fbfebea561e627d07f492ed0e51a",
+        "git_blob_oid": "be2c9f193e663cfac9d036c1878ad37f7cff640e",
+        "bytes": 8136,
+        "revision": "0bc258c71f44b0729da801f3aa9b598856d2276f"
+      },
+      {
+        "path": "src/native_gui_text_single_line_storage.cpp",
+        "hash_format": "immutable_git_blob_content_lf",
+        "sha256": "b86b045bde08b7fa7149908218537ace39f18545e5398e96e5c0a883b7270d00",
+        "git_blob_oid": "0f5535dd8c51553512848ee119ef4b35532bbddc",
+        "bytes": 16309,
+        "revision": "0bc258c71f44b0729da801f3aa9b598856d2276f"
+      }
+    ],
+    "immutable_baseline_scope": {
+      "production_files": 2,
+      "Native_entry": "00AB9FD0",
+      "Native_end": "00ABA263",
+      "Native_bytes": 660,
+      "Native_instructions": 195,
+      "x87_forms": 22,
+      "full_Source_and_assembly_reviewed": true,
+      "no_extra_catalogue_or_tests": true
+    },
+    "reuse_limit": "Only immutable0bc body evidence is reused for unchanged code. This review will independently check the complete final HPP/CPP diff and actual two direct Font call windows; no old build/runtime receipt applies."
+  },
+  "native_caller_argument_order": {
+    "sites": [
+      "00ABA0C3 -> 00ABA0C9 -> 00ABA0CA",
+      "00ABA174 -> 00ABA17A -> 00ABA17B"
+    ],
+    "operations": "CURRENT Font load from Text+108, PUSH EAX lowWORD codeunit, CALL AD4480. Caller Source must capture Font before assigning stable typed WORD home, then invoke concrete selector with SAME home.",
+    "saved_assembly_path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00ab9fd0/assembly.txt"
+  },
+  "composition_review": {
+    "status": "passed_zero_actionable_findings",
+    "final_commit": "6490c5de7ac2a7dbdf90fc0a267e27da9332f364",
+    "production_files": 2,
+    "hpp_lines": 152,
+    "cpp_lines": 350,
+    "independent_exact_comparison": {
+      "basis_revision": "0bc258c71f44b0729da801f3aa9b598856d2276f",
+      "exact_two_cpp_call_replacements_only": true,
+      "exact_header_include_virtual_removal_appended_fields_only": true,
+      "all_other_cpp_bytes_identical": true,
+      "independent_mask_format": "Each entire old/new Font-call statement block is replaced by its same independently chosen comment marker FONT_CALL_A0CA or FONT_CALL_A17B; all remaining canonical Git-LF bytes compare exactly.",
+      "outside_call_bytes": 16143,
+      "outside_call_masked_sha256": "33e2397937d94460f2804d3716d2a57a0f14e6a8bdbd3d957b144f4c7e3888c2",
+      "five_inline_assembly_blocks_identical": true,
+      "inline_assembly_block_sha256": [
+        {
+          "function": "capture_control",
+          "sha256": "088ae144722bfdf3ee94f78772e1da811e722bae7eb431c5b9f12081a7c417ee"
+        },
+        {
+          "function": "prepare_width",
+          "sha256": "f3b02ce5df6d86ee96eb05da745ea2d66eff5a91266fffbdb365923588979be9"
+        },
+        {
+          "function": "measure_advance",
+          "sha256": "2f394ac930bdfa211b605ced8f3cc5f98ce15079a9c1e573fd2fb63a206c58c5"
+        },
+        {
+          "function": "align_pen",
+          "sha256": "c1153e46b002384db94f5865ad5382c30581809b8ec9fb2a109a13af490cb473"
+        },
+        {
+          "function": "emit_advance",
+          "sha256": "83f44dedb88c5832817d758bcc3679e4ff30209f6a23b3c5e76e17cdd95e8f58"
+        }
+      ],
+      "all_old_scratch_fields_unchanged_and_precede_appended_fields": true
+    },
+    "actual_operand_home": {
+      "object": "Appended volatile std::uint16_t font_code_unit_home, genuine typed WORD object; no DWORD-reference alias.",
+      "order": "At BOTH reached sites CURRENT Text+108 Font capture precedes current code_unit lowWORD assignment, then direct concrete selector with SAME home and iterator scratch. Native lowWORD alone is used; all unsigned UTF16 units remain accepted.",
+      "forwarding": "AD4480 reads initial key first for embedded arms, then passes same reference into existing raw AD4370; no initial-key-local address or pre-key snapshot replaces its own current/conditional reads.",
+      "initialization_and_lifetime": "New home/iterator fields have no initializer, destructor, owner or extra resource effect. WORD is assigned only at each reached call. Embedded arms do not touch iterator. Nonmoving entered parent retains home/iterator and genuine graph through existing failure behavior.",
+      "parent_operands": "Original cursor/code_unit/captured glyph/height/counters/22 x87 forms/geometry/loops/post-texture UTF16 reload/10 mutable quad homes remain outside the substitutions and byte-identical. Selector-home mutations are not copied back into these operands.",
+      "policy": "No new FP reset/CW guard, catch/noexcept/termination, cleanup/retry/rollback/acknowledgement or successful fallback. Existing SDK and parent failure qualifications persist."
+    },
+    "unused_virtual_audit": {
+      "before_revision": "0bc258c71f44b0729da801f3aa9b598856d2276f",
+      "exact_symbol": "font_glyph_00ad4480",
+      "roots": [
+        "include",
+        "src",
+        "tests"
+      ],
+      "before_matches": 3,
+      "before_matches_are_only_declaration_and_two_parent_calls": true,
+      "actual_implementor_or_derived_class_changed": false,
+      "after_symbol_references": 0
+    },
+    "coupled_pin_audit": {
+      "current_parent_Source": 2,
+      "unchanged_original_parent_inputs": 27,
+      "same_concrete_provider_Source": 6,
+      "sealed_provider_evidence": 2,
+      "historical_parent_Source_and_evidence": 4,
+      "historical_f502_review_evidence": 2,
+      "raw_exports": 6,
+      "all_matched": true,
+      "Source_and_history_hash_format": "immutable_git_blob_content_lf",
+      "export_hash_format": "raw_saved_export_file_bytes",
+      "provider_files_equal_sealed_1a35": true,
+      "report_pin": {
+        "path": "reports/cc16_native_single_line_font_selector_composition.json",
+        "hash_format": "immutable_git_blob_content_lf",
+        "sha256": "063409f2e9eac113b199ed580fae216036d5b8cccc1a87dd6c434c6a349dece4",
+        "git_blob_oid": "c610c773ac5aa3728d755f6bb8c7b3456dc39d30",
+        "bytes": 20393,
+        "revision": "6490c5de7ac2a7dbdf90fc0a267e27da9332f364"
+      }
+    },
+    "changed_evidence_pins": [
+      {
+        "path": "docs/CC16_NATIVE_GUI_TEXT_SINGLE_LINE_STORAGE.md",
+        "hash_format": "immutable_git_blob_content_lf",
+        "sha256": "a92b3fd4ec3829d81d0a2d557d9add83ceb7c5c31f5c0c0e260b416b54ca988c",
+        "git_blob_oid": "f0ae1cbf4689b03ecc97d0466931ee24883116da",
+        "bytes": 11286,
+        "revision": "6490c5de7ac2a7dbdf90fc0a267e27da9332f364"
+      },
+      {
+        "path": "reports/cc16_native_gui_text_single_line_storage.json",
+        "hash_format": "immutable_git_blob_content_lf",
+        "sha256": "76d0e1bc8d0187e915ac496544ad37d71ce38b3d945ace47fd0d6a1f39263791",
+        "git_blob_oid": "a38830c3c4d20c1c68a0bab7d64f268fc18b8554",
+        "bytes": 30888,
+        "revision": "6490c5de7ac2a7dbdf90fc0a267e27da9332f364"
+      },
+      {
+        "path": "docs/CC16_NATIVE_SINGLE_LINE_FONT_SELECTOR_COMPOSITION.md",
+        "hash_format": "immutable_git_blob_content_lf",
+        "sha256": "fbf2153f12d37b35f1746d8684fcd98ee8d5307611299c348c41d85ec3d51a39",
+        "git_blob_oid": "066a8cb614b018b0ad74f88a804c74f63d9f2033",
+        "bytes": 4460,
+        "revision": "6490c5de7ac2a7dbdf90fc0a267e27da9332f364"
+      }
+    ],
+    "saved_raw_exports": [
+      {
+        "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab9fd0\\assembly.txt",
+        "sha256": "079f6ad910bdefc081fca92361780e773e9b0113cf99dc255f001814ec443182",
+        "bytes": 6236,
+        "hash_format": "raw_saved_export_file_bytes"
+      },
+      {
+        "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab9fd0\\decompiled.c",
+        "sha256": "7650be6851522538d64a1bf2478c1bb1acb21de90a3cb5ddd6f8e2d82e1bec64",
+        "bytes": 7925,
+        "hash_format": "raw_saved_export_file_bytes"
+      },
+      {
+        "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ad4480\\assembly.txt",
+        "sha256": "ffd4fc28c27b152b73b077ee622c4a1c425d766b3b2b31d3eecd5c6f149fdb30",
+        "bytes": 1152,
+        "instruction_rows": 45,
+        "hash_format": "raw_saved_export_file_bytes"
+      },
+      {
+        "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ad4480\\decompiled.c",
+        "sha256": "c7c85d74255d96fc0aa3365f1c27c88688974a85ca3eebec574274a395f48a0b",
+        "bytes": 812,
+        "instruction_rows": null,
+        "hash_format": "raw_saved_export_file_bytes"
+      },
+      {
+        "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ad3e70\\assembly.txt",
+        "sha256": "9c14e0bf092cd5b8b1eb98729b4cdb55dda6eb42f96e0ad82c1204ab00e8421f",
+        "bytes": 399,
+        "instruction_rows": 14,
+        "hash_format": "raw_saved_export_file_bytes"
+      },
+      {
+        "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ad3e70\\decompiled.c",
+        "sha256": "ecaf2d7e91c5909793c771df372ee958ea3b619f7a43d0dfb6201a5626bb792c",
+        "bytes": 224,
+        "instruction_rows": null,
+        "hash_format": "raw_saved_export_file_bytes"
+      }
+    ]
+  },
+  "remaining_gates": {
+    "genuine_Font_production_and_payload_resource_lifetime": false,
+    "actual_Text_Font_caller_graph_admitted": false,
+    "whole_frontend_ready": false,
+    "Original_ABI_FH3_SEH_private_frame_fault_proved": false,
+    "runtime_game_visuals_activation": false,
+    "Page_guard_flip": false
+  },
+  "validation": {
+    "static_only": true,
+    "new_tests": 0,
+    "source_changes_by_reviewer": false,
+    "CMake_ledger_Ghidra_changes_by_reviewer": false,
+    "build_probe_game_process_actions": false,
+    "review_paths_only": true,
+    "fresh_static_pin_and_diff_audits_passed": true,
+    "prior_build_or_runtime_receipt_reused": false,
+    "staged_diff_check": "passed final owned two-file staged whitespace check before commit"
+  },
+  "new_credit": {
+    "Original": 0,
+    "vendor": 0,
+    "duplicate": 0,
+    "private_helper": 0,
+    "ABI": false,
+    "runtime": false,
+    "activation": false
+  },
+  "utc": "2026-10-30T17:28:47.364745+00:00"
+}
