@@ -5,6 +5,7 @@
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/native_wide_string.hpp"
 #include "bsp/gui_text_glyph_child.hpp"
+#include "bsp/cc13_gui1.hpp"
 
 #include <stdexcept>
 
@@ -458,7 +459,7 @@ __declspec(noinline) void write_native_gui_text_glyph_quad_storage_00ab98f0(
         boundary(a, 0x00ab9da5, child);
         c.calls.child_current34(child, a.captured_profile, a.captured_target, 1, a);
         void* const listener = pointer(word(text, 0x1ac));
-        boundary(a, 0x00ab9db2, child); c.calls.listeners_00aa6bc0(child, listener, 0, a);
+        boundary(a, 0x00ab9db2, child); cc13_gui1::gui_widget_set_listener_fields_00aa6bc0(child, listener, 0);
         *reinterpret_cast<volatile unsigned char*>(static_cast<std::uintptr_t>(bits(child) + 0x78)) = 1;
         const void* const font_name = pointer(word(text, 0x1b0) + 0x1c8);
         boundary(a, 0x00ab9dc9, child); c.calls.font_00ab8c30(child, font_name, a);
