@@ -1,0 +1,78 @@
+{
+  "schema": "bsp-native-lua-variant-tag6-v1",
+  "entry": "0074fb30",
+  "descriptive_name": "initialize_native_lua_variant_tag6_0074fb30",
+  "source_base": "9ee6702daab95c54ac97bffc6a3054a30549e098",
+  "program": "/battlestationspacific.exe",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "normal_instructions": 6,
+  "native_bytes": 17,
+  "original_abi": "ECX actual variant; plain RET; child EAX incidental",
+  "normal_assembly": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0074fb30\\assembly.txt",
+    "sha256": "dc373bc9346175345d7d0c2a5f3996e324aec9bd60d53e416e0ff0b1b6f824e4"
+  },
+  "source_files": {
+    "include/bsp/native_lua_variant_tag6.hpp": "33331fe322af7564cfaf4f04995261adb44c5defe0f827785d4b75a56251f596",
+    "src/native_lua_variant_tag6.cpp": "986f954e728e89ea5d4d0b6dbfd4dfa8df08ab428f8ffcad501d12ab85ef38f4"
+  },
+  "dependency": {
+    "entry": "00886920",
+    "api": "clear_native_lua_variant_00886920_cpp_cleanup",
+    "existing_provider_sha256": {
+      "include/bsp/native_lua_variant_retirement.hpp": "14258135096189f2892e4d896af417ed0c8fb616d5f1659bbc1d9d032f68a7db",
+      "src/native_lua_variant_retirement.cpp": "5db41574abcb3a94fdb9c6f5c8f96f2b7b0c1f0c2a7f438fe64d622980c065ca"
+    }
+  },
+  "design_sha256": "dd71f3363e8ebfd8b008e78b1afa1ceeaf142cef680567f7d117136e7f0c66da",
+  "normal_order": [
+    "capture receiver identity",
+    "actual child SAME strings/operation/cleanup",
+    "propagate returned non-completion unchanged before tag store",
+    "fenced DWORD6 store at captured receiver+4 only after completed",
+    "return completed Source status"
+  ],
+  "exception_policy": "No wrapper catch/action/cleanup; actual C++ exception propagates unchanged",
+  "required_domain": [
+    "existing live typed/aligned fields and nested payload/map/node lifetime",
+    "existing matched allocator and SAME genuine raw-cell/string-pool domain",
+    "independently retained disjoint sufficient operation/cleanup backing and existing alias/reentry exclusions"
+  ],
+  "source_ready": false,
+  "limits": [
+    "No arbitrary byte-slab or object-birth permission",
+    "No new Frame, allocator, callback, repair, type filter, rollback or retry",
+    "Ordinary Source completion differs from Original EAX/ABI/FH3/SEH/fault/private-home behavior",
+    "No whole copy/vendor/reserve/current-slot/VM/startup/runtime closure or extra vendor-body credit"
+  ],
+  "validation": {
+    "primary_code_review": "Root ACCEPT_SOURCE_CODE exact 33331fe3/986f954e",
+    "independent_code_review": "Game ACCEPT_SOURCE_CODE exact 33331fe3/986f954e",
+    "strict_object": {
+      "target_invocations": 1,
+      "exit": 0,
+      "machine": "014C",
+      "object_sha256": "d4a92fb88d3aa269fc173d0efdf4b6e7f52ccba28c4a673152d21bc23dd0b1e3",
+      "flags": [
+        "/O2",
+        "/W4",
+        "/WX",
+        "/permissive-",
+        "/fp:strict",
+        "/EHsc"
+      ],
+      "compile_receipt": {
+        "path": "local/native_lua_variant_tag6_frame_20261030/compile_receipt.json",
+        "sha256": "af9c79dbb1d2efb6087339ea98ad82307a21bdcdca2acb5595ef11a8046ec868"
+      }
+    },
+    "same_object_symbols": {
+      "path": "local/native_lua_variant_tag6_frame_20261030/symbol_receipt.json",
+      "sha256": "2e661c9456f52201553b49a9c97f8d4c1b6b9c65e0d7ca235306bcdb409c0b70",
+      "entry_defined": true,
+      "genuine_clear_cpp_cleanup_undefined": true
+    },
+    "existing_providers_unchanged": true,
+    "tests_or_entry_execution": false
+  }
+}
