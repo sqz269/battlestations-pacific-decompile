@@ -21,6 +21,9 @@
 #pragma comment(lib, "shell32.lib")
 
 static std::wstring stage, target, expected_hash, dr_root, client;
+static std::wstring work_dir, target_root;
+static const wchar_t *target_name = L"dr_root_probe.exe", *target_argument = L"root";
+static unsigned long long root_created_filetime;
 static HANDLE root_job, root_token;
 static HANDLE diagnostic_sink;
 static DWORD entry_rva;
@@ -35,6 +38,9 @@ static FILE *journal;
 static void event(const char *name, unsigned long value = 0) {
     fprintf(journal, "%s=%lu\n", name, value); fflush(journal);
 }
+static void event64(const char *name, unsigned long long value) {
+    fprintf(journal, "%s=%llu\n", name, value); fflush(journal);
+}
 static void require(bool ok, const char *what) {
     if (!ok) { event(what, GetLastError()); throw what; }
 }
@@ -46,6 +52,10 @@ static std::string utf8(const std::wstring &s) {
 static std::wstring env(const wchar_t *name) {
     wchar_t value[32768]; DWORD n = GetEnvironmentVariableW(name, value, 32768);
     require(n && n < 32768, "missing_environment"); return value;
+}
+static std::wstring optional_env(const wchar_t *name) {
+    wchar_t value[32768]; DWORD n = GetEnvironmentVariableW(name, value, 32768);
+    if (!n) return L""; require(n < 32768, "long_environment"); return value;
 }
 static std::vector<HANDLE> handles(const std::wstring &s) {
     HANDLE file = CreateFileW(s.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
@@ -174,7 +184,7 @@ static BOOL WINAPI guarded_create(LPCWSTR app, LPWSTR command, LPSECURITY_ATTRIB
         ++create_calls; event("shim_calls", create_calls);
         std::wstring expected_command = target.find_first_of(L" \t") == std::wstring::npos ? target : L"\"" + target + L"\"";
         require(create_calls == 1 && app && target == app && command &&
-            std::wstring(command) == expected_command + L" root", "unexpected_sdk_command");
+            std::wstring(command) == expected_command + L" " + target_argument, "unexpected_sdk_command");
         require(!pa && !ta && inherit && flags == CREATE_SUSPENDED && !environment && !cwd &&
             startup && startup->cb == sizeof(STARTUPINFOW) && pi, "unexpected_sdk_create_contract");
         require(sha256(target) == expected_hash, "target_hash_mismatch"); check_flags(source_handles);
@@ -190,7 +200,7 @@ static BOOL WINAPI guarded_create(LPCWSTR app, LPWSTR command, LPSECURITY_ATTRIB
         LPWCH block = GetEnvironmentStringsW(); require(block != nullptr, "root_environment");
         BOOL ok = CreateProcessAsUserW(root_token, target.c_str(), command, nullptr, nullptr, TRUE,
             CREATE_SUSPENDED | CREATE_UNICODE_ENVIRONMENT | EXTENDED_STARTUPINFO_PRESENT |
-            NORMAL_PRIORITY_CLASS | CREATE_NO_WINDOW, block, stage.c_str(), &si.StartupInfo, &made);
+            NORMAL_PRIORITY_CLASS | CREATE_NO_WINDOW, block, work_dir.c_str(), &si.StartupInfo, &made);
         DWORD error = GetLastError(); FreeEnvironmentStringsW(block);
         DeleteProcThreadAttributeList(attrs); attrs = nullptr; SetLastError(error);
         require(ok != 0, "root_create_failed");
@@ -199,6 +209,10 @@ static BOOL WINAPI guarded_create(LPCWSTR app, LPWSTR command, LPSECURITY_ATTRIB
         token_check(made.hProcess, "root_pre_run_integrity");
         BOOL in_job; require(IsProcessInJob(made.hProcess, root_job, &in_job) && in_job, "root_job_membership");
         root_pid = made.dwProcessId; event("root_job_assigned_before_sdk_pi", root_pid);
+        FILETIME created, exited, kernel, user;
+        require(GetProcessTimes(made.hProcess, &created, &exited, &kernel, &user) != 0, "root_creation_time");
+        root_created_filetime = (static_cast<unsigned long long>(created.dwHighDateTime) << 32) | created.dwLowDateTime;
+        event64("root_created_filetime", root_created_filetime);
         *pi = made; return TRUE;
     } catch (...) {
         DWORD error = GetLastError(); if (!error) error = ERROR_ACCESS_DENIED;
@@ -221,7 +235,22 @@ static int helper() {
     decltype(&dr_unregister_process) unregister = nullptr;
     try {
         stage = env(L"BSP_STAGE"); target = env(L"BSP_TARGET"); expected_hash = env(L"BSP_TARGET_SHA256");
-        require(target == stage + L"\\dr_root_probe.exe", "not_private_fixture_image");
+        target_root = optional_env(L"BSP_TARGET_ROOT"); if (target_root.empty()) target_root = stage;
+        work_dir = optional_env(L"BSP_CWD"); if (work_dir.empty()) work_dir = stage;
+#if defined(BSP_DR_PRODUCTION)
+        target_name = L"battlestationspacific.exe";
+        target_argument = L"universe/Scenes/missions/USN/usn_19_coralus.scn";
+        require(target == target_root + L"\\game\\battlestationspacific.exe" && work_dir == target_root + L"\\game" &&
+            expected_hash == L"b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6" &&
+            env(L"BSP_ENTRY_RVA") == L"7fd2bd" && env(L"BSP_ENTRY_BYTES") == L"e89cae0100e916feffff558bec515157" &&
+            sha256(target_root + L"\\game\\xlive.dll") == L"71b50b3e91b5e17603f1d8fd44f1fc1da53c305f191dd126fb5059e5d3c841b2",
+            "unsupported_retail_identity");
+#else
+        require(target == target_root + L"\\dr_root_probe.exe" && work_dir == target_root, "not_private_fixture_image");
+#if defined(BSP_DR_PRODUCTION_TEST)
+        require(optional_env(L"BSP_ISOLATED_TEST") == L"1", "isolated_test_not_selected");
+#endif
+#endif
         dr_root = env(L"BSP_DR_ROOT"); client = env(L"BSP_DR_CLIENT");
         require(stage.find_first_of(L" \t\r\n\"';`") == std::wstring::npos &&
             dr_root.find_first_of(L" \t\r\n\"';`") == std::wstring::npos, "unsupported_fixture_path_quoting");
@@ -238,7 +267,7 @@ static int helper() {
             limits.BasicLimitInformation.LimitFlags == (JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE | JOB_OBJECT_LIMIT_ACTIVE_PROCESS) &&
             limits.BasicLimitInformation.ActiveProcessLimit == 1, "root_job_limits");
         event("root_exact_source_handle_count", DWORD(source_handles.size())); event("root_control_handles_excluded");
-        std::wstring ifeo = L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\dr_root_probe.exe";
+        std::wstring ifeo = std::wstring(L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\") + target_name;
         for (REGSAM view : {KEY_WOW64_32KEY, KEY_WOW64_64KEY}) ifeo_key(HKEY_LOCAL_MACHINE, ifeo, view, 0);
         event("ifeo_preflight_clear");
         HMODULE inject = LoadLibraryW((dr_root + L"\\bin32\\drinjectlib.dll").c_str()); require(inject != nullptr, "load_inject_sdk");
@@ -256,7 +285,8 @@ static int helper() {
         iat_slot = find_create_iat(inject); original_create = *iat_slot;
         require(original_create == reinterpret_cast<void *>(GetProcAddress(GetModuleHandleW(L"kernel32.dll"), "CreateProcessW")), "unexpected_original_create_pointer");
         swap_iat(reinterpret_cast<void *>(&guarded_create)); event("sdk_create_iat_rva", 0x3415c);
-        std::string image = utf8(target); const char *args[] = {image.c_str(), "root", nullptr};
+        std::string image = utf8(target), native_argument = utf8(target_argument), image_name = utf8(target_name);
+        const char *args[] = {image.c_str(), native_argument.c_str(), nullptr};
         int status = create(image.c_str(), args, &data); event("sdk_create_status", status);
         require(status == 0 && create_calls == 1 && data, "sdk_create_failed");
         swap_iat(original_create); iat_slot = nullptr;
@@ -267,21 +297,26 @@ static int helper() {
             (diagnostic ? L"\\lib32\\debug\\dynamorio.dll" : L"\\lib32\\release\\dynamorio.dll"));
         std::string runtime_options = "-no_follow_children -nop_initial_bblock -max_elide_jmp 0 -max_elide_call 0 -msgbox_mask 0 -stderr_mask 15 -logdir " + utf8(stage + L"\\drdebug");
         if (diagnostic) runtime_options += " -loglevel 2";
-        status = reg("dr_root_probe.exe", pid, false, dr.c_str(), DR_MODE_CODE_MANIPULATION, diagnostic, DR_PLATFORM_32BIT,
+        status = reg(image_name.c_str(), pid, false, dr.c_str(), DR_MODE_CODE_MANIPULATION, diagnostic, DR_PLATFORM_32BIT,
             runtime_options.c_str());
         event("sdk_register_status", status); require(status == DR_SUCCESS, "sdk_register_failed"); registered = true;
         std::string dll = utf8(client), options = utf8(env(L"BSP_ENTRY_CLIENT_OPTIONS"));
+        std::wstring stop_nonce = optional_env(L"BSP_STOP_NONCE");
+        if (!stop_nonce.empty()) {
+            require(stop_nonce.size() == 16 && stop_nonce.find_first_not_of(L"0123456789abcdef") == std::wstring::npos, "stop_nonce_format");
+            options += " " + utf8(stop_nonce) + " " + std::to_string(pid) + " " + std::to_string(root_created_filetime);
+        }
         std::wstring negative = env(L"BSP_NEGATIVE"); bool omit = negative == L"admission-omitted";
         if (negative == L"admission-missing") dll = utf8(stage + L"\\missing-admission.dll");
         if (negative == L"admission-options") options = "-invalid-fixture-admission-option";
         if (!omit) {
-            status = reg_client("dr_root_probe.exe", pid, false, DR_PLATFORM_32BIT, 0, 0, dll.c_str(), options.c_str());
+            status = reg_client(image_name.c_str(), pid, false, DR_PLATFORM_32BIT, 0, 0, dll.c_str(), options.c_str());
             event("sdk_register_client_status", status); require(status == DR_SUCCESS, "sdk_client_registration_failed");
         }
         std::string cov = utf8(dr_root + L"\\tools\\lib32\\release\\drcov.dll");
         if (negative == L"drcov-missing") cov = utf8(stage + L"\\missing-drcov.dll");
         std::string cov_options = "-logdir " + utf8(stage + L"\\drcov") + " -dump_text";
-        status = reg_client("dr_root_probe.exe", pid, false, DR_PLATFORM_32BIT, 1, omit ? 0 : 1, cov.c_str(), cov_options.c_str());
+        status = reg_client(image_name.c_str(), pid, false, DR_PLATFORM_32BIT, 1, omit ? 0 : 1, cov.c_str(), cov_options.c_str());
         event("sdk_register_drcov_status", status); require(status == DR_SUCCESS, "sdk_drcov_registration_failed");
         // Preserve the private PID config before DR consumes it, for bounded
         // fixture diagnostics. No global config or registry writes are used.
@@ -310,7 +345,46 @@ static int helper() {
         require(inject_process(data, true, library.c_str()), "sdk_injection_failed"); event("sdk_injected");
         require(GetFileAttributesW((stage + L"\\root-entry.txt").c_str()) == INVALID_FILE_ATTRIBUTES, "premature_root_entry");
         require(run(data), "sdk_run_failed"); event("sdk_run_only_resume");
-        DWORD wait = WaitForSingleObject(get_process(data), negative == L"none" ? 40000 : 3000);
+        DWORD wait;
+        if (!stop_nonce.empty()) {
+            auto nudge = symbol<decltype(&dr_nudge_pid)>(config, "dr_nudge_pid");
+            std::wstring control = env(L"BSP_HELPER_CONTROL"), prior;
+            unsigned seconds = 40; auto duration = optional_env(L"BSP_RUNTIME_SECONDS");
+            if (!duration.empty()) seconds = wcstoul(duration.c_str(), nullptr, 10);
+            require(seconds >= 5 && seconds <= 3600, "runtime_seconds");
+            ULONGLONG until = GetTickCount64() + seconds * 1000ULL; bool sent = false;
+            while ((wait = WaitForSingleObject(get_process(data), 100)) == WAIT_TIMEOUT && GetTickCount64() < until) {
+                FILE *command; if (_wfopen_s(&command, control.c_str(), L"rb")) continue;
+                char line[512]; bool read = fgets(line, sizeof(line), command) != nullptr; fclose(command);
+                if (!read) continue; std::wstring signature; for (const char *p = line; *p; ++p) signature += wchar_t(*p);
+                if (signature == prior) continue; prior = signature;
+                char nonce[17], reason[64], tail; unsigned command_pid; unsigned long long command_created;
+                int fields = sscanf_s(line, "%16s %u %llu %63s %c", nonce, unsigned(sizeof(nonce)), &command_pid,
+                    &command_created, reason, unsigned(sizeof(reason)), &tail, 1U);
+                if (fields != 4 || command_pid != pid || command_created != root_created_filetime || utf8(stop_nonce) != nonce) {
+                    event("stop_command_rejected_identity"); continue;
+                }
+                FILETIME actual, out, kernel, user;
+                require(GetProcessTimes(get_process(data), &actual, &out, &kernel, &user) &&
+                    ((static_cast<unsigned long long>(actual.dwHighDateTime) << 32) | actual.dwLowDateTime) == command_created,
+                    "stop_command_process_reused");
+#if !defined(BSP_DR_PRODUCTION)
+                if (!strcmp(reason, "fixture_wrong_nonce") && optional_env(L"BSP_PROBE_WAIT_FOR_NUDGE") == L"1") {
+                    auto wrong_status = nudge(pid, 0, _strtoui64(nonce, nullptr, 16) ^ 1ULL, 1000);
+                    event("fixture_wrong_nonce_status", wrong_status); require(wrong_status == DR_SUCCESS, "fixture_wrong_nonce_dispatch");
+                    continue;
+                }
+#endif
+                require(!strcmp(reason, "game_time_target") || !strcmp(reason, "clock_reset") || !strcmp(reason, "timeout") ||
+                    !strcmp(reason, "drain") || !strcmp(reason, "startup_gate_timeout") || !strcmp(reason, "invalid_request") ||
+                    !strcmp(reason, "parent_shutdown"), "stop_reason_unsupported");
+                if (!sent) {
+                    auto value = _strtoui64(nonce, nullptr, 16);
+                    auto nudge_status = nudge(pid, 0, value, 1000); event("stop_nudge_status", nudge_status);
+                    require(nudge_status == DR_SUCCESS, "stop_nudge_failed"); sent = true; event("stop_nudge_sent", pid);
+                }
+            }
+        } else wait = WaitForSingleObject(get_process(data), negative == L"none" ? 40000 : 3000);
         if (wait == WAIT_TIMEOUT) {
             BYTE observed[2]; SIZE_T count;
             require(ReadProcessMemory(get_process(data), reinterpret_cast<void *>(0x400000 + entry_rva), observed, 2, &count) &&
@@ -323,7 +397,7 @@ static int helper() {
     } catch (...) { event("helper_failed"); }
     if (iat_slot) { try { swap_iat(original_create); } catch (...) {} }
     if (data && finish) finish(data, result != 0);
-    if (registered && unregister) event("sdk_unregister_status", unregister("dr_root_probe.exe", pid, false, DR_PLATFORM_32BIT));
+    if (registered && unregister) event("sdk_unregister_status", unregister(utf8(target_name).c_str(), pid, false, DR_PLATFORM_32BIT));
     return result;
 }
 static void file_event(const wchar_t *path, const char *text) {
@@ -388,7 +462,11 @@ static int root() {
         event("root_child_create_error", ok ? 0 : GetLastError());
         if (ok) { WaitForSingleObject(pi.hProcess, 2000); TerminateProcess(pi.hProcess, 0xe0000021); CloseHandle(pi.hThread); CloseHandle(pi.hProcess); }
         require(!ok && GetFileAttributesW((stage + L"\\child-entry.txt").c_str()) == INVALID_FILE_ATTRIBUTES, "root_child_admission_failed");
-        event("root_child_before_code_denied"); return 0;
+        event("root_child_before_code_denied");
+        if (optional_env(L"BSP_PROBE_WAIT_FOR_NUDGE") == L"1") {
+            event("probe_waiting_for_nudge"); Sleep(30000); require(false, "probe_nudge_timeout");
+        }
+        return 0;
     } catch (...) { event("root_failed"); return 1; }
 }
 int wmain(int argc, wchar_t **argv) {
