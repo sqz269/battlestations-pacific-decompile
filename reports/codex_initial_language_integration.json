@@ -1,0 +1,63 @@
+{
+  "status": "pristine_initial_language_fragment_reviewed_retained_link_restored_win32_pass",
+  "commit": "08e17bd7b158b1b7f19684e9cca2a7c6c0ef14c1",
+  "domain": "actual_initial_language_before_tables_equal_or_late_empty_AA09D0",
+  "source_hashes": {
+    "include/bsp/native_locale_initial_language.hpp": "8e80e4fc697dc687eb20f6c37ecd6f2722d0feeda50f80080cfa19e3e53cd0dc",
+    "src/native_locale_initial_language.cpp": "dbd61beef482386e7662e35504b35163b92ab109162ada6c862ce47577ca467a",
+    "include/bsp/game_native_locale_manager.hpp": "42dec9cccba35990c919428d7a02b663dfbd2e21f9ca3a345a87f7e80c2fcb13",
+    "src/game_native_locale_manager.cpp": "e9869bf1841514522558e013e847d59212bceb65abb948b7037b89079f867341"
+  },
+  "schedule_contract_sha256": "de85a6f66aabcff079da7173783e697a7b31ffe465ba72a2a6132d244594971a",
+  "startup_contract_sha256": "279255a2d671a9ba494d31aa3e6d38c96632719a88db2a89f6fdc4dd7dc1795c",
+  "review_correction": "explicit_unsigned_SAR3_bits_instead_of_signed_conversion",
+  "primary_review": "complete_four_source_files_and_affected_existing_owner_paths",
+  "independent_retirement_review": "gui_frame_lifetime_ACCEPT_SOURCE_CODE_exact_four_pins",
+  "independent_source_review_sha256": "3f64a391c30b797b8e1ef04c8790f83244af80d726438a8e59e80e0128e9facf",
+  "independent_retirement_review_sha256": "e31f9fb9f79b437772f357f24ea1f1fb0de5ab291568c2e4aea92b2ee14d14e9",
+  "preservation": {"whole_prior_owner_projection_rules": 9, "old_public_methods": 8, "unchanged_providers": 8},
+  "strict_objects": {
+    "count": 2,
+    "exit_codes": [0, 0],
+    "machine": "014C",
+    "core_sha256": "fb22d21fecf4f4eac991ff2d2dfd7f1b2ed4e110bb21000983e2cb6de7f41349",
+    "owner_sha256": "6e2f595cb08fab4137562079b568426705e12df2e4f97261147f657c16cccb7f"
+  },
+  "canonical_registration": {"commit": "11c4fe246b226127724114a3035b2b08f23adaf0", "target": "bsp_core", "occurrences": 1, "startup_cmake_changed": false},
+  "retained_link": {
+    "head": "11c4fe246b226127724114a3035b2b08f23adaf0",
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "existing_checks": "2/2",
+    "ctest_seconds": 13.02,
+    "owner_address": "10028cc0",
+    "core_primitive_address": "1032ac80",
+    "map_clear_address": "104bb220",
+    "cpp_unwind_entries_present": true,
+    "map_sha256": "2edf1e568a5ec4f0cb2d0f3a9920c03ddb2c7c20edacb74ff406102053feda18",
+    "overlay_sha256": "3d6525de30722feb811922d275e1252fdacb54c721f4e0b3f84ca737a000bfc2",
+    "executable_sha256": "6d0aa405f2c0807dc92f8bdb4d04450954ba8950e6d4bfec41e743e577c19551",
+    "new_entry_or_game_invoked": false
+  },
+  "restored_canonical_build": {
+    "head": "11c4fe246b226127724114a3035b2b08f23adaf0",
+    "command": "./scripts/build.ps1",
+    "configuration": "Release Win32",
+    "exit_code": 0,
+    "existing_checks": "2/2",
+    "ctest_seconds": 12.71,
+    "include_before_cache_entry_absent": true,
+    "forced_symbols_absent": true,
+    "unbound_owner_entry_absent_from_map": true,
+    "log": "local/initial_language_integration_cc16_20261030/build.log"
+  },
+  "input_consumed": false,
+  "new_input_cleanup": false,
+  "nonempty_names_treated_as_success": false,
+  "canonical_admission": "actual_pristine_constructor_history_no_language_name_textual_attempt",
+  "loaded_permission": false,
+  "new_tests": 0,
+  "source_ready": false,
+  "runtime": false,
+  "full_setter_reload_gui": false
+}

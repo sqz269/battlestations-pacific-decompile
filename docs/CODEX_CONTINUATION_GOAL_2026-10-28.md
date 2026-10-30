@@ -1227,3 +1227,17 @@ No newsizecap/privatepolicy/prereserve/model admitted. Genuineversionmatched
 callablevendor+heap/EH/ownership binding orvalidcomplete-domain proof remains
 required; read-onlyOriginalimage isnotexecutableprovider. Game-ownedstartup
 language/name/consumerbindings continue independently; fulloption0staysunbound.
+
+Initial-language-before-tables08e17bd7 nowbinds actualAA09D0equal/changed-lateempty
+fragment tocanonicalpristinehistory, borrowedinput/noinputcleanup. Exactinline
+DESTdata-before-sourceData/mapclear/latenameschecks retained; unsignedSAR3fix.
+PrivateContext→Frame/stickyfailure/pristinestate andlanguageORnames/textualdebt
+requireCFF140. Primary+2independentSource/2strict014C/9rulewholeownerinverse and
+8providerpins pass. Corecountonce11c4fe246; retainedowner→leaf/mapclear+EH link/
+checks2/2 13.02s, overlayremoved/cache+projectrestored, canonical2/2 12.71s.
+No fullsetter/reload/GUI/runtime grant; all9Textoff/ac60hold unchanged.
+LiveSourcecorrectsolderavailabilitynote: GameNativeSettingsProcess/App ALREADY
+own+populate realrawBCh/settings andraw32-row catalog via8D8190/8D7BC0. Next
+binding is ready-phase actual8D4870 CStringborrow andgenuinecallerinput, notnew
+catalog/semantic.c_str. Nativeaccessor hasno bounds/Englishfallback. See
+CODEX_INITIAL_LANGUAGE_INTEGRATION.md.
