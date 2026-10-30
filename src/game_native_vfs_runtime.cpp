@@ -464,7 +464,8 @@ GameNativeVfsRawServices GameNativeVfsRuntime::borrow_raw_services() noexcept {
     return {impl_->inputs.owners.vfs_publication_0109ceec(), impl_->bindings,
         impl_->name_resolution_context, impl_->date_context, impl_->open, impl_->conversion,
         impl_->inputs.owners.strings(), impl_->inputs.retained_memory,
-        impl_->enumeration_context, impl_->inputs.invalid_parameters};
+        impl_->enumeration_context, impl_->inputs.invalid_parameters,
+        impl_->inputs.actual_empty_name_0109cef0};
 }
 NativeVfsFileBlockScopeContext& GameNativeVfsRuntime::borrow_fileblock_scopes() {
     auto& p = *impl_;
