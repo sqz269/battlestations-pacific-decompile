@@ -1,0 +1,1559 @@
+{
+  "schema": "bsp.cc16.native_game_application_binding_readiness.v1",
+  "packet": "codex-native-game-application-binding-readiness",
+  "baseline_published_main": "42185e9219bd4e5f771410e1072e69ebd2bd54b1",
+  "status": "read_only_complete_game_aggregate_unready_genuine_name_epoch_preparation_closed",
+  "source_pins": [
+    {
+      "path": "include/bsp/native_game_construction.hpp",
+      "bytes": 7095,
+      "sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e",
+      "lf_sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e",
+      "git_blob": "e83a2b3736edfb4d6fa699526a003861d3805977"
+    },
+    {
+      "path": "src/native_game_construction.cpp",
+      "bytes": 14665,
+      "sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e",
+      "lf_sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e",
+      "git_blob": "ad55eb59309369dff06d596cbdf3efd1e4c7037a"
+    },
+    {
+      "path": "include/bsp/native_game_lifetime.hpp",
+      "bytes": 9440,
+      "sha256": "5f780de4ea8a8f7f67a68cc5d72f4940921b40703027891edc14671ecfca6136",
+      "lf_sha256": "5f780de4ea8a8f7f67a68cc5d72f4940921b40703027891edc14671ecfca6136",
+      "git_blob": "0f2f50a4b1ad95e354e352354a210d43e227c9ba"
+    },
+    {
+      "path": "src/native_game_lifetime.cpp",
+      "bytes": 21717,
+      "sha256": "4535650c8dcd06db58f4fed96260c0b1c1eac410255fb14603bedfecdce59c90",
+      "lf_sha256": "4535650c8dcd06db58f4fed96260c0b1c1eac410255fb14603bedfecdce59c90",
+      "git_blob": "bca722876e5b4cfd4033c20b2be6adec7e2b3f6f"
+    },
+    {
+      "path": "include/bsp/game_native_game_runtime.hpp",
+      "bytes": 2173,
+      "sha256": "da151d489b0bdea13c0ac2c4ad513c4a73d9d767d9078397a72a8f8d2ed5169a",
+      "lf_sha256": "da151d489b0bdea13c0ac2c4ad513c4a73d9d767d9078397a72a8f8d2ed5169a",
+      "git_blob": "82d6f97019a8ced315745431c1d80759d0251779"
+    },
+    {
+      "path": "src/game_native_game_runtime.cpp",
+      "bytes": 4780,
+      "sha256": "1e205d8375994a80cbc5d15a5270b9281f2e9c073a039c3b614535933c068bca",
+      "lf_sha256": "1e205d8375994a80cbc5d15a5270b9281f2e9c073a039c3b614535933c068bca",
+      "git_blob": "ad9f8b3518827f1b1117ea55c92a2b1de23fa78d"
+    },
+    {
+      "path": "include/bsp/game_native_game_application_frame.hpp",
+      "bytes": 4893,
+      "sha256": "888edb0cdab9adbf87935c81923890940342435840358081cf88178d0c1fcd33",
+      "lf_sha256": "888edb0cdab9adbf87935c81923890940342435840358081cf88178d0c1fcd33",
+      "git_blob": "3be78aa1c3e7004e1e75a7f278a4ccfbf2e58cdf"
+    },
+    {
+      "path": "src/game_native_game_application_frame.cpp",
+      "bytes": 7687,
+      "sha256": "b4b420da696055f815a5afcea3bed5fc9979818f45fa2230699de554bacacb09",
+      "lf_sha256": "b4b420da696055f815a5afcea3bed5fc9979818f45fa2230699de554bacacb09",
+      "git_blob": "965a53b7a9ecf78978677f6a930154da1bd3768c"
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "bytes": 47507,
+      "sha256": "67a5164b1b20061f0f1353783c12cfcb92cc7392b37e04ec87371577425f7f58",
+      "lf_sha256": "67a5164b1b20061f0f1353783c12cfcb92cc7392b37e04ec87371577425f7f58",
+      "git_blob": "867d8b7032fc7531bfaa4f2c43c649988b8e0710"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "bytes": 185132,
+      "sha256": "6915e364d7c2eb73ebba01d7d1c521ca7fdc94ab78ad7f0302288fc281cad9f4",
+      "lf_sha256": "6915e364d7c2eb73ebba01d7d1c521ca7fdc94ab78ad7f0302288fc281cad9f4",
+      "git_blob": "d138983e92e5f93339e529655990f924f1c06be8"
+    },
+    {
+      "path": "include/bsp/game_hosts_fixed_step.hpp",
+      "bytes": 18494,
+      "sha256": "254eca0c16d8ffd59c8af0e88af9a0559a91ae9fd577a4b18917aa547f549ee7",
+      "lf_sha256": "254eca0c16d8ffd59c8af0e88af9a0559a91ae9fd577a4b18917aa547f549ee7",
+      "git_blob": "836f41cd95402bdefd26750d896ab31c38b30848"
+    },
+    {
+      "path": "src/game_hosts_fixed_step.cpp",
+      "bytes": 25208,
+      "sha256": "b95fc61fe7a511d83dccd057a9149cea8a79ed6c596ff242f15f84ba41612d03",
+      "lf_sha256": "b95fc61fe7a511d83dccd057a9149cea8a79ed6c596ff242f15f84ba41612d03",
+      "git_blob": "2387327fd643ed6a4c718d8746cce1024fa2de80"
+    },
+    {
+      "path": "src/game_main.cpp",
+      "bytes": 80404,
+      "sha256": "50034a37098bc7a1c738c541d5a97d0afb0cb4b1cf84b8e92102db92284df5c7",
+      "lf_sha256": "50034a37098bc7a1c738c541d5a97d0afb0cb4b1cf84b8e92102db92284df5c7",
+      "git_blob": "18909178937d4a3fbd4ddf9073819b959f3fa47a"
+    },
+    {
+      "path": "include/bsp/native_game_embedded_state.hpp",
+      "bytes": 2369,
+      "sha256": "c915da207b5212ae77559082be9bf39de180e0db228294ebec8fdcd1de29e64d",
+      "lf_sha256": "c915da207b5212ae77559082be9bf39de180e0db228294ebec8fdcd1de29e64d",
+      "git_blob": "439a346b5117b693886d5c8acf1e04835724d52c"
+    },
+    {
+      "path": "src/native_game_embedded_state.cpp",
+      "bytes": 5514,
+      "sha256": "cd27fec780bf95b6625c882154c5a608d0f31cb86a2ad88bd5122e476e00ad7f",
+      "lf_sha256": "cd27fec780bf95b6625c882154c5a608d0f31cb86a2ad88bd5122e476e00ad7f",
+      "git_blob": "d0fa106c3fa279e5681f1d4298db9be17b1d912b"
+    },
+    {
+      "path": "include/bsp/native_game_array_elements.hpp",
+      "bytes": 2529,
+      "sha256": "c649a43f9f5d79d7e1f73bed13d28bce4c973672e1b185b4c4305c5dae886609",
+      "lf_sha256": "c649a43f9f5d79d7e1f73bed13d28bce4c973672e1b185b4c4305c5dae886609",
+      "git_blob": "4ff19ab2288a1548dc230a892f0dc0bab08052d0"
+    },
+    {
+      "path": "src/native_game_array_elements.cpp",
+      "bytes": 6467,
+      "sha256": "95747768f853969303dc9a03c2b4e733328307cb0253583d3c00871f7d4033f9",
+      "lf_sha256": "95747768f853969303dc9a03c2b4e733328307cb0253583d3c00871f7d4033f9",
+      "git_blob": "54cda181da6a9e76e7f2f961f03b0f4f6927e4b3"
+    },
+    {
+      "path": "src/native_game_storage_defaults.cpp",
+      "bytes": 1768,
+      "sha256": "49247cf9028bf574267220f2bfe2ddcad28732da9917c08bb676f218e1a27d96",
+      "lf_sha256": "49247cf9028bf574267220f2bfe2ddcad28732da9917c08bb676f218e1a27d96",
+      "git_blob": "4c3cabb87b3d315ca541825b4961f903c07e1d49"
+    },
+    {
+      "path": "include/bsp/native_player_profile_owner.hpp",
+      "bytes": 4505,
+      "sha256": "3bb853af8712fdb9d8b1bcca8e27cb48ede6b2219ca20648f0c1a8675ef139a8",
+      "lf_sha256": "3bb853af8712fdb9d8b1bcca8e27cb48ede6b2219ca20648f0c1a8675ef139a8",
+      "git_blob": "3fd7763d13fd8dfbfc3e26d23158dd5014ddb6fa"
+    },
+    {
+      "path": "src/native_player_profile_owner.cpp",
+      "bytes": 12427,
+      "sha256": "58d3710ec8fdc8a6985c2da99d3addad3ff56367f7579207499b1fd49c7162d9",
+      "lf_sha256": "58d3710ec8fdc8a6985c2da99d3addad3ff56367f7579207499b1fd49c7162d9",
+      "git_blob": "f694405c60ec2ec000c4921e7f26318d073471d3"
+    },
+    {
+      "path": "include/bsp/game_native_player_profile_context.hpp",
+      "bytes": 1667,
+      "sha256": "e28106bdf2a14bb82fa35a0fd4b465422e6081488b831f77515b690c7f8a373b",
+      "lf_sha256": "e28106bdf2a14bb82fa35a0fd4b465422e6081488b831f77515b690c7f8a373b",
+      "git_blob": "88f22f94767119dc6855bee68365ea1888a37882"
+    },
+    {
+      "path": "src/game_native_player_profile_context.cpp",
+      "bytes": 871,
+      "sha256": "36687e71130eac32af0ac0bec59555fd95df8496e459097d1b68630df41fb36f",
+      "lf_sha256": "36687e71130eac32af0ac0bec59555fd95df8496e459097d1b68630df41fb36f",
+      "git_blob": "c45e6c87b13b1af29c42df94400400e02603de64"
+    },
+    {
+      "path": "include/bsp/game_native_game_tables.hpp",
+      "bytes": 1612,
+      "sha256": "df5e57025a0c1ac61b8c9809be9bc888c0eb134ff1ee64340b576233d0f0cfeb",
+      "lf_sha256": "df5e57025a0c1ac61b8c9809be9bc888c0eb134ff1ee64340b576233d0f0cfeb",
+      "git_blob": "e5eb7b86ef82e88242a122dfa87de444d10cb8ee"
+    },
+    {
+      "path": "src/game_native_game_tables.cpp",
+      "bytes": 705,
+      "sha256": "8d36b08e9999ac5113ceed719b743f8fd211f887b858149460835fd16aa0c489",
+      "lf_sha256": "8d36b08e9999ac5113ceed719b743f8fd211f887b858149460835fd16aa0c489",
+      "git_blob": "d1a656c767c436420ea9497b715be9ab6921541a"
+    },
+    {
+      "path": "include/bsp/native_game_tables.hpp",
+      "bytes": 1948,
+      "sha256": "f17e77015efb5ea9f1909479682bd5c602e1f5f8ac1b34e63ed852d7107e1743",
+      "lf_sha256": "f17e77015efb5ea9f1909479682bd5c602e1f5f8ac1b34e63ed852d7107e1743",
+      "git_blob": "0978540fddeea88fc548f239ca0032458f023591"
+    },
+    {
+      "path": "src/native_game_tables.cpp",
+      "bytes": 6174,
+      "sha256": "c5f443a1b2e3b417b8885a83d24e74e212468fbc51813c809a5fe8bd705ed4b1",
+      "lf_sha256": "c5f443a1b2e3b417b8885a83d24e74e212468fbc51813c809a5fe8bd705ed4b1",
+      "git_blob": "a373d40cade5df54364ce4eae00e3c236037cc70"
+    },
+    {
+      "path": "include/bsp/game_native_settings_process.hpp",
+      "bytes": 2203,
+      "sha256": "c39242f443a95a5a4d5f910279123a90fb09e8e0fa63d0036632cd597c26ccb6",
+      "lf_sha256": "c39242f443a95a5a4d5f910279123a90fb09e8e0fa63d0036632cd597c26ccb6",
+      "git_blob": "c3af3aab298f334d35c33ac276eeab3a2a17e29e"
+    },
+    {
+      "path": "src/game_native_settings_process.cpp",
+      "bytes": 7791,
+      "sha256": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b",
+      "lf_sha256": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b",
+      "git_blob": "3fdec928d327e44bab7297a987591d43c7fd4d95"
+    },
+    {
+      "path": "include/bsp/game_native_settings_application.hpp",
+      "bytes": 2280,
+      "sha256": "27dcda3ae4e6c975b5692790915575079dd28e9014e01bac5e430becd9298760",
+      "lf_sha256": "27dcda3ae4e6c975b5692790915575079dd28e9014e01bac5e430becd9298760",
+      "git_blob": "313bab85fb4df16ea6cee3ff537d4fbb76026191"
+    },
+    {
+      "path": "include/bsp/native_profile_settings.hpp",
+      "bytes": 2526,
+      "sha256": "2dd92ab3c7dc33673fa830d1d4382da40c45852c2cd04b868f26f8734c95d5b9",
+      "lf_sha256": "2dd92ab3c7dc33673fa830d1d4382da40c45852c2cd04b868f26f8734c95d5b9",
+      "git_blob": "2801030191538c3b30797042591ea92c90c997c6"
+    },
+    {
+      "path": "include/bsp/game_native_vfs_runtime.hpp",
+      "bytes": 9863,
+      "sha256": "57c378aabe457270e7d71e64f581aa8a2a31249976d8405e6dd51eb932e57ab1",
+      "lf_sha256": "57c378aabe457270e7d71e64f581aa8a2a31249976d8405e6dd51eb932e57ab1",
+      "git_blob": "97fa588dece2f718a2a1648ef5a72b5d616cfb17"
+    },
+    {
+      "path": "include/bsp/game_hosts_vfs.hpp",
+      "bytes": 12974,
+      "sha256": "1e3878ed0f752e14946c132fdee509a76f07c95cd52676bc00fafdbeb7ad0326",
+      "lf_sha256": "1e3878ed0f752e14946c132fdee509a76f07c95cd52676bc00fafdbeb7ad0326",
+      "git_blob": "00d36ad12ab70f56c72886fc750163115162d645"
+    },
+    {
+      "path": "include/bsp/native_game_resource_parsers.hpp",
+      "bytes": 4676,
+      "sha256": "b0f0c81f3265118c317db6066537d3f17daed818e482651234f1ea3a041c9a94",
+      "lf_sha256": "b0f0c81f3265118c317db6066537d3f17daed818e482651234f1ea3a041c9a94",
+      "git_blob": "6935a548fde67886752484664ec58423a4a50bfd"
+    },
+    {
+      "path": "src/game_native_resource_application.cpp",
+      "bytes": 16565,
+      "sha256": "83ed3891956c0f2699f6f4807877c330ddd5d3c6dfedd2836b0446966ab2f236",
+      "lf_sha256": "83ed3891956c0f2699f6f4807877c330ddd5d3c6dfedd2836b0446966ab2f236",
+      "git_blob": "7e025cbfed54f5aa01534f0f37d7ba7246887f4c"
+    },
+    {
+      "path": "include/bsp/game_native_lua_services.hpp",
+      "bytes": 1332,
+      "sha256": "8f3944745d91adeedfd48964026f5506fb6116c2ae49b7e796802b890b7f4707",
+      "lf_sha256": "8f3944745d91adeedfd48964026f5506fb6116c2ae49b7e796802b890b7f4707",
+      "git_blob": "e65575d7d77f549cbbd3a26bc6a222d51ee2d3a7"
+    },
+    {
+      "path": "src/game_native_lua_services.cpp",
+      "bytes": 3183,
+      "sha256": "9a8b02210f9274fa18e30454fc5e0ae2e6649820145aa623d933b614af406bb7",
+      "lf_sha256": "9a8b02210f9274fa18e30454fc5e0ae2e6649820145aa623d933b614af406bb7",
+      "git_blob": "4db37e5e61e542e2ff22b53bd6e33d067b42e4dd"
+    },
+    {
+      "path": "include/bsp/native_lua_service_bindings.hpp",
+      "bytes": 2281,
+      "sha256": "1614271db4ab18e13ad1443bea31d77b5339d12515c79bc72a3bfd8d96f08093",
+      "lf_sha256": "1614271db4ab18e13ad1443bea31d77b5339d12515c79bc72a3bfd8d96f08093",
+      "git_blob": "ab5a5b6e35045f2a1af64ce580b90e4d5d14e28e"
+    },
+    {
+      "path": "include/bsp/game_native_lua_globals.hpp",
+      "bytes": 1638,
+      "sha256": "3e84148f240b3d09b318a5a276ccff59f01d8c02be737fb1c729f93064a728e6",
+      "lf_sha256": "3e84148f240b3d09b318a5a276ccff59f01d8c02be737fb1c729f93064a728e6",
+      "git_blob": "6af98fc4681b66dca9060a1c1b3c7efa4b4aabed"
+    },
+    {
+      "path": "include/bsp/global_config.hpp",
+      "bytes": 4312,
+      "sha256": "6a3d0de7a38939e9dc275df4b3d733f7bad53444526c587113dae880e827bf76",
+      "lf_sha256": "6a3d0de7a38939e9dc275df4b3d733f7bad53444526c587113dae880e827bf76",
+      "git_blob": "ecd627f026e2821bfe6dc87583f99fd3d04f9283"
+    },
+    {
+      "path": "src/global_config.cpp",
+      "bytes": 7970,
+      "sha256": "0110127a72de3f23319f78155196528b1f49d29d7aa78df36d0c107d1c8d17dc",
+      "lf_sha256": "0110127a72de3f23319f78155196528b1f49d29d7aa78df36d0c107d1c8d17dc",
+      "git_blob": "551550917f25cf96ba756cebc77815424062d29c"
+    },
+    {
+      "path": "include/bsp/native_global_config_load.hpp",
+      "bytes": 2693,
+      "sha256": "ee56688b89c34e85b12718de2c308c1d574fcb739c7d44e7d874ae1f12d079dd",
+      "lf_sha256": "ee56688b89c34e85b12718de2c308c1d574fcb739c7d44e7d874ae1f12d079dd",
+      "git_blob": "f9c84135484d9e08b42280643c8dc303f01bc680"
+    },
+    {
+      "path": "src/native_global_config_load.cpp",
+      "bytes": 20907,
+      "sha256": "93b022c7bddc29753e9e0c20e1a6867c0166d5842f45fbfa6597389fafb24c1b",
+      "lf_sha256": "93b022c7bddc29753e9e0c20e1a6867c0166d5842f45fbfa6597389fafb24c1b",
+      "git_blob": "42f6c44fdd60659d4096a64a7c6b2d3b8709120e"
+    },
+    {
+      "path": "include/bsp/native_global_config_fields.hpp",
+      "bytes": 1473,
+      "sha256": "c8b78c0382a8d994d37107c969acf691dc6f781e409523691fe821042b435803",
+      "lf_sha256": "c8b78c0382a8d994d37107c969acf691dc6f781e409523691fe821042b435803",
+      "git_blob": "9d47937ea57c05a4742f6ae2d37dfa16e3aa9e8c"
+    },
+    {
+      "path": "src/native_global_config_fields.cpp",
+      "bytes": 1898,
+      "sha256": "c56c9b51411b3c549859dd2e094d50c5a96c3ff87d716f302641b34ded863017",
+      "lf_sha256": "c56c9b51411b3c549859dd2e094d50c5a96c3ff87d716f302641b34ded863017",
+      "git_blob": "781de7128109686318b8cc9f08be63688f150141"
+    },
+    {
+      "path": "include/bsp/native_global_config_sample_dispatch.hpp",
+      "bytes": 1731,
+      "sha256": "8657e8f424294ccf42a9bd334aa93c5a95a410d38a43c0ebcac0e2e2a9363498",
+      "lf_sha256": "8657e8f424294ccf42a9bd334aa93c5a95a410d38a43c0ebcac0e2e2a9363498",
+      "git_blob": "8005173515da82b82804c785f3ea53cb2d0a68a2"
+    },
+    {
+      "path": "src/native_global_config_sample_dispatch.cpp",
+      "bytes": 951,
+      "sha256": "3a25139152e76046b256130f93b22b06170ea85f7769cd081ce7dd1e1f6e6db8",
+      "lf_sha256": "3a25139152e76046b256130f93b22b06170ea85f7769cd081ce7dd1e1f6e6db8",
+      "git_blob": "25527e0da9337d652384479f1148d157f6f9801a"
+    },
+    {
+      "path": "include/bsp/game_sound_runtime.hpp",
+      "bytes": 5374,
+      "sha256": "adc71df223c83c0042fe0b984f4c9bc34ee6ab2ea2867d4e96111d460f706957",
+      "lf_sha256": "adc71df223c83c0042fe0b984f4c9bc34ee6ab2ea2867d4e96111d460f706957",
+      "git_blob": "82568ef1384e93785a93eba2a220d5084bba348b"
+    },
+    {
+      "path": "src/game_sound_runtime.cpp",
+      "bytes": 20101,
+      "sha256": "ccce5e3d933fcfb8f08655cc969601c09c467386393f441df8efbf9e58b37fba",
+      "lf_sha256": "ccce5e3d933fcfb8f08655cc969601c09c467386393f441df8efbf9e58b37fba",
+      "git_blob": "0522dcc40e93a6d29b7b891c03d6e45f440d8c0c"
+    },
+    {
+      "path": "include/bsp/sound_sample_runtime.hpp",
+      "bytes": 2285,
+      "sha256": "56d9973e57397b155d36b5b14d3d66cec31522946e3a3a007c3635b4cd7fd123",
+      "lf_sha256": "56d9973e57397b155d36b5b14d3d66cec31522946e3a3a007c3635b4cd7fd123",
+      "git_blob": "1630dbb61c3d0eb956fa559f8a9ad50eba48b1f9"
+    },
+    {
+      "path": "include/bsp/game_hosts_singletons.hpp",
+      "bytes": 10262,
+      "sha256": "0bb1cce85717ff94c44e12e6f2a071ea30fac43baa13d99539fe354385821648",
+      "lf_sha256": "0bb1cce85717ff94c44e12e6f2a071ea30fac43baa13d99539fe354385821648",
+      "git_blob": "1ce17a275af38e991c3e04802cd4d5d5314bcd3b"
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "bytes": 5509,
+      "sha256": "ec2c6715a64888c87e61f4703073d094a62340f548aaa9a6a668f33787a3a518",
+      "lf_sha256": "ec2c6715a64888c87e61f4703073d094a62340f548aaa9a6a668f33787a3a518",
+      "git_blob": "aeb12627616969e974915847b1fc1bea83341e23"
+    },
+    {
+      "path": "src/native_render_service_base.cpp",
+      "bytes": 11091,
+      "sha256": "dd001e140d8799f99aba2d593c90bfa1592051ee780b62e14c2f265d80567f1e",
+      "lf_sha256": "dd001e140d8799f99aba2d593c90bfa1592051ee780b62e14c2f265d80567f1e",
+      "git_blob": "0424b6fe7d30e249ca9e2dc444b9d0db80a4cc3f"
+    },
+    {
+      "path": "include/bsp/native_string_duplicate.hpp",
+      "bytes": 933,
+      "sha256": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477",
+      "lf_sha256": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477",
+      "git_blob": "a3c211324e0a44deab01eca75af8dfad848c516b"
+    },
+    {
+      "path": "src/native_string_duplicate.cpp",
+      "bytes": 1554,
+      "sha256": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0",
+      "lf_sha256": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0",
+      "git_blob": "f745264df105154fe437e331df18d4f2418c2160"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+    },
+    {
+      "path": "include/bsp/native_game_grid.hpp",
+      "bytes": 5796,
+      "sha256": "22389375b044ac8a3e75fc43d18db5b70ee37983e92cb1947d8e599246bda13a",
+      "lf_sha256": "22389375b044ac8a3e75fc43d18db5b70ee37983e92cb1947d8e599246bda13a",
+      "git_blob": "4a44fea8e79a5af1b60cf4ee17823656d7809997"
+    },
+    {
+      "path": "src/native_game_grid.cpp",
+      "bytes": 22715,
+      "sha256": "27c9d4e2844de811d8b62e6660d08f39dbcec89eabd2df30c93138409c1eede3",
+      "lf_sha256": "27c9d4e2844de811d8b62e6660d08f39dbcec89eabd2df30c93138409c1eede3",
+      "git_blob": "7244837f706e627ae678486f3b17f960c051a3dc"
+    },
+    {
+      "path": "src/game_native_renderer_grid.inc",
+      "bytes": 1778,
+      "sha256": "d5d84bdca33ec50491228d0ae5cccc03c05c02ce2d18d1a69586d423681afcbb",
+      "lf_sha256": "d5d84bdca33ec50491228d0ae5cccc03c05c02ce2d18d1a69586d423681afcbb",
+      "git_blob": "90385738716bc7337bf9b5b77a0256c861bb528d"
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "bytes": 80060,
+      "sha256": "3ed5485d8b619dce29caed0c1fa2b810b71504478bbb4ce44ca683c9e398ae7f",
+      "lf_sha256": "3ed5485d8b619dce29caed0c1fa2b810b71504478bbb4ce44ca683c9e398ae7f",
+      "git_blob": "5baacc9a3bb8b4856951e8780485dea44502e951"
+    },
+    {
+      "path": "include/bsp/native_game_current_virtual_calls.hpp",
+      "bytes": 2159,
+      "sha256": "dbef0b32a1bee0d2dd0e19881c3caf6955f86a04e4c7b05422dc1281a68b3c46",
+      "lf_sha256": "dbef0b32a1bee0d2dd0e19881c3caf6955f86a04e4c7b05422dc1281a68b3c46",
+      "git_blob": "8de8416376a3ec486f1bb3a6a81a8118cf041fe9"
+    },
+    {
+      "path": "src/native_game_current_virtual_calls.cpp",
+      "bytes": 1691,
+      "sha256": "4de2e297c9dcfbcb37a79644ad9c10ebab011b52f8654866fa3bbff80316c80f",
+      "lf_sha256": "4de2e297c9dcfbcb37a79644ad9c10ebab011b52f8654866fa3bbff80316c80f",
+      "git_blob": "2bca11481b05e0cc04777e766f2652d6b3b2bd5f"
+    },
+    {
+      "path": "include/bsp/native_game_array_lifetime.hpp",
+      "bytes": 3035,
+      "sha256": "296271866c2b7f47893ccc3687cc6148345b376d6bb0d0d35d11495c64a1f7aa",
+      "lf_sha256": "296271866c2b7f47893ccc3687cc6148345b376d6bb0d0d35d11495c64a1f7aa",
+      "git_blob": "3fb5fb39149482d7ab1ec8862cc0a7e6cfd61125"
+    },
+    {
+      "path": "include/bsp/native_game_embedded_lifetime.hpp",
+      "bytes": 3447,
+      "sha256": "7471f546612018324a42748fb484af08e38f4567684bcba3bc80003a3cf7c42a",
+      "lf_sha256": "7471f546612018324a42748fb484af08e38f4567684bcba3bc80003a3cf7c42a",
+      "git_blob": "16cdc2d72e6378a9e8be413adbef5fcc02a50817"
+    },
+    {
+      "path": "include/bsp/native_game_profile_lifetime.hpp",
+      "bytes": 4690,
+      "sha256": "8006896a2b99841ac0ab801df5e46d934aea55fb7266a204d5d4a5975f8f280f",
+      "lf_sha256": "8006896a2b99841ac0ab801df5e46d934aea55fb7266a204d5d4a5975f8f280f",
+      "git_blob": "5c86abbfdeaea489091975b2eb7c90f929fafd77"
+    },
+    {
+      "path": "include/bsp/native_game_singleton_lifetime.hpp",
+      "bytes": 2916,
+      "sha256": "76ca3babd50d2102fd0f5d08ba931e327e3570aef60286fd634eaa365cace35c",
+      "lf_sha256": "76ca3babd50d2102fd0f5d08ba931e327e3570aef60286fd634eaa365cace35c",
+      "git_blob": "a5dfc0241ea74a986d947acc3b55c1d4821b13c6"
+    },
+    {
+      "path": "include/bsp/native_game_lua_globals_lifetime.hpp",
+      "bytes": 2744,
+      "sha256": "286ba341fe3538746e5d2ac0ae3bc92a5fa19815b5db51a568fb9cfaa5a7fcd4",
+      "lf_sha256": "286ba341fe3538746e5d2ac0ae3bc92a5fa19815b5db51a568fb9cfaa5a7fcd4",
+      "git_blob": "0afc42025739a8e4bdcb9299687c6a7aae76c8b2"
+    },
+    {
+      "path": "include/bsp/native_game_class_cleanup.hpp",
+      "bytes": 6159,
+      "sha256": "9be5dd2f28906897af1707d56a385bb1a597c6479037a7f0be71f5c13fcdfd76",
+      "lf_sha256": "9be5dd2f28906897af1707d56a385bb1a597c6479037a7f0be71f5c13fcdfd76",
+      "git_blob": "26703505fbe5620fe2d03e1917162e5f6fef90bc"
+    },
+    {
+      "path": "include/bsp/native_game_physics_lifetime.hpp",
+      "bytes": 6288,
+      "sha256": "829ef5aded5279e62aed7e91b974db4275a90535d6b2ffa41a85bb38410e4d8e",
+      "lf_sha256": "829ef5aded5279e62aed7e91b974db4275a90535d6b2ffa41a85bb38410e4d8e",
+      "git_blob": "1afc7f6aef423a3fedb65beeea64830069856437"
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "bytes": 22967,
+      "sha256": "92c2c26b6d4f69a7926e4bbf3d2c327fcc18dc03b9cb5e60a61a6b2e06d2fbf2",
+      "lf_sha256": "92c2c26b6d4f69a7926e4bbf3d2c327fcc18dc03b9cb5e60a61a6b2e06d2fbf2",
+      "git_blob": "fb3bf4cb9eab83d2f31fd956e9a0074ab1a81ccb"
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "bytes": 29691,
+      "sha256": "bb6b0556d30f4eac3c112f5acb72802cf3339247729863d8a4dbf3410a188808",
+      "lf_sha256": "bb6b0556d30f4eac3c112f5acb72802cf3339247729863d8a4dbf3410a188808",
+      "git_blob": "2a879d538151867200cda15069d6733ded335cff"
+    },
+    {
+      "path": "include/bsp/native_game_dynamics.hpp",
+      "bytes": 819,
+      "sha256": "a3e10519df0f4bb2327ee46713069f0aa761630ca1c633f438db09bb41668290",
+      "lf_sha256": "a3e10519df0f4bb2327ee46713069f0aa761630ca1c633f438db09bb41668290",
+      "git_blob": "51b8b01d805789799ee8a8faacacd20ec3cac5a0"
+    },
+    {
+      "path": "src/game_native_dyn_process.cpp",
+      "bytes": 9436,
+      "sha256": "54ec1cb0688d099fc46c0e00b79799e19416d3879c5b72258fe4f0b14c21350b",
+      "lf_sha256": "54ec1cb0688d099fc46c0e00b79799e19416d3879c5b72258fe4f0b14c21350b",
+      "git_blob": "6b5a81d375fdf645dcc6e4d1831fcbe115728218"
+    },
+    {
+      "path": "include/bsp/dyn_engine_runtime.hpp",
+      "bytes": 4624,
+      "sha256": "2f40e8f9347e6cb454d6cefc016a9143fdc1178d00269769231192d50cb59dcf",
+      "lf_sha256": "2f40e8f9347e6cb454d6cefc016a9143fdc1178d00269769231192d50cb59dcf",
+      "git_blob": "8d84bc29f6aeb0bba575ed649708eb06a7b19c42"
+    },
+    {
+      "path": "include/bsp/native_game_on_destroy.hpp",
+      "bytes": 3654,
+      "sha256": "96a100da9a58bbd9632f8a25d7f442e1a291e2f98f9dde3beb6c113ae40759f4",
+      "lf_sha256": "96a100da9a58bbd9632f8a25d7f442e1a291e2f98f9dde3beb6c113ae40759f4",
+      "git_blob": "e0b4b7e246b1d219cdf23fc45dcfb9650105dd43"
+    },
+    {
+      "path": "include/bsp/native_front_end_manager_destruction.hpp",
+      "bytes": 2190,
+      "sha256": "82cd89a5ce6dab66de8b96284b1eb185b1d2d959d3deebd3d2e0fefa8067839c",
+      "lf_sha256": "82cd89a5ce6dab66de8b96284b1eb185b1d2d959d3deebd3d2e0fefa8067839c",
+      "git_blob": "8520215c120b94fc8eb90cdcfdae66ac77fa4830"
+    },
+    {
+      "path": "src/native_front_end_manager_destruction.cpp",
+      "bytes": 886,
+      "sha256": "4139ddadcca01ae630b4e9a00a93b5d5d2b1418042a015abd2c7ed459860fac5",
+      "lf_sha256": "4139ddadcca01ae630b4e9a00a93b5d5d2b1418042a015abd2c7ed459860fac5",
+      "git_blob": "ed5ed729674349aa50cbdbcf2addc081fe063eaf"
+    },
+    {
+      "path": "include/bsp/native_mission_lua_machine_release.hpp",
+      "bytes": 1307,
+      "sha256": "d633058757380240c117b3ad6f71671cb9303632190ac261898776c8c4d601e0",
+      "lf_sha256": "d633058757380240c117b3ad6f71671cb9303632190ac261898776c8c4d601e0",
+      "git_blob": "2576a6ffce3eaca536e337616e3d0bc21efb3032"
+    },
+    {
+      "path": "src/native_mission_lua_machine_release.cpp",
+      "bytes": 972,
+      "sha256": "0495473be085237a6b759a551e7be6e94304596596c584f3fd0041293cf2e3c0",
+      "lf_sha256": "0495473be085237a6b759a551e7be6e94304596596c584f3fd0041293cf2e3c0",
+      "git_blob": "8e8c801c8e06d5018b78491d524e4e52a5cd198b"
+    },
+    {
+      "path": "src/native_frame_job_lifetime.cpp",
+      "bytes": 10078,
+      "sha256": "dc132731d865ccfd585420c6bae6ebdd9130dc772011991254697c3ce0e51a88",
+      "lf_sha256": "dc132731d865ccfd585420c6bae6ebdd9130dc772011991254697c3ce0e51a88",
+      "git_blob": "cf33b16e652e56f38d8fee987307258b18115048"
+    },
+    {
+      "path": "src/landscape_lua_seg55_argon.cpp",
+      "bytes": 63918,
+      "sha256": "30e87cf86e4b46906f438a9234e957a311f10c92d58fd89206c6ed22a682d27d",
+      "lf_sha256": "30e87cf86e4b46906f438a9234e957a311f10c92d58fd89206c6ed22a682d27d",
+      "git_blob": "2efdb3f1e5f51610e251fb57328c996c5c085c88"
+    },
+    {
+      "path": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "bytes": 55787,
+      "sha256": "bdfc54da13f7c748669dca38e19c767fcb24fc090f6211e83e479e348962ca33",
+      "lf_sha256": "bdfc54da13f7c748669dca38e19c767fcb24fc090f6211e83e479e348962ca33",
+      "git_blob": "90a752af07ada787634e3f3ac973cccce973e13f"
+    },
+    {
+      "path": "src/settings_seg29_cc13.cpp",
+      "bytes": 22135,
+      "sha256": "7a882cf94ad8bc30120e0a953d7cb0af729d017593f31b1929205c266f43df24",
+      "lf_sha256": "7a882cf94ad8bc30120e0a953d7cb0af729d017593f31b1929205c266f43df24",
+      "git_blob": "0042393a06ad3a75db575178a67d8cae412c7222"
+    },
+    {
+      "path": "src/seg6_cc13.cpp",
+      "bytes": 64665,
+      "sha256": "956d2b67bbeacd966960d2093611edc06700017d867070de894bcbdabd488812",
+      "lf_sha256": "956d2b67bbeacd966960d2093611edc06700017d867070de894bcbdabd488812",
+      "git_blob": "f94230911487c1937eef59626fd4f2daec185e61"
+    },
+    {
+      "path": "src/engine_seg11_35_66_cc13.cpp",
+      "bytes": 206645,
+      "sha256": "86d443153ac95f6de31721c79b7bc9c706c4be28487ebfd223736c8fdabfd367",
+      "lf_sha256": "86d443153ac95f6de31721c79b7bc9c706c4be28487ebfd223736c8fdabfd367",
+      "git_blob": "d3ac98e5caad5a78a3eed116c6833435f26ad1a4"
+    },
+    {
+      "path": "src/native_mission_lua_variant_initializer.cpp",
+      "bytes": 1022,
+      "sha256": "3d8c5e4e5e04a4408e3d0ae8135c56cc03c4a05b3bdf4f1a1cf0e80e371f5c28",
+      "lf_sha256": "3d8c5e4e5e04a4408e3d0ae8135c56cc03c4a05b3bdf4f1a1cf0e80e371f5c28",
+      "git_blob": "9184e342f6702b026fc042cd1dc959c58e311c6b"
+    },
+    {
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+    }
+  ],
+  "saved_export_pins": [
+    {
+      "address": "0070bd70",
+      "metadata_project": "bsp",
+      "metadata_program": "/battlestationspacific.exe",
+      "saved_utc": "2026-10-13T02:10:04.286283+00:00",
+      "files": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0070bd70\\metadata.json",
+          "bytes": 269,
+          "sha256": "a53ab168cd2f4b36e1e110651b46dc7b54dd255403e1112f33048b87d08bc380"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0070bd70\\decompiled.c",
+          "bytes": 5279,
+          "sha256": "06c99556629f880fd1b83bd9a94ce26556793c0e1e413cc2749e3b7e81a956bd"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0070bd70\\assembly.txt",
+          "bytes": 3102,
+          "sha256": "bf6e8bbd0e06a2d40d8d18ad16c69531e1051233ae87459f79daf8a7ec3ebb45"
+        }
+      ]
+    },
+    {
+      "address": "00709c90",
+      "metadata_project": "bsp",
+      "metadata_program": "/battlestationspacific.exe",
+      "saved_utc": "2026-10-13T02:09:54.851908+00:00",
+      "files": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00709c90\\metadata.json",
+          "bytes": 274,
+          "sha256": "e89df8f6d0c1c16c27f766e6bb48ba7261f75e2e919f52544d22be9d403f6a82"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00709c90\\decompiled.c",
+          "bytes": 1245,
+          "sha256": "9585d0b29160e7dbf725c2b0c0ebbf7c76ffdb54f9309931f87f365e9070c0af"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00709c90\\assembly.txt",
+          "bytes": 1155,
+          "sha256": "0950a0e29548ae0cbe22059c41ed4432b5cb32911b4cd0a490ea699e67a254e4"
+        }
+      ]
+    },
+    {
+      "address": "008d9150",
+      "metadata_project": "bsp",
+      "metadata_program": "/battlestationspacific.exe",
+      "saved_utc": "2026-10-13T02:52:27.154260+00:00",
+      "files": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\008d9150\\metadata.json",
+          "bytes": 285,
+          "sha256": "ec5f9ab7069abf3d164c992dc99b9e856ab536f9b7643f910a725697cc715220"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\008d9150\\decompiled.c",
+          "bytes": 8790,
+          "sha256": "3246230294f7c1953b675c2dd598d620d5baffbfd21fd4680de87a343d3bea0c"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\008d9150\\assembly.txt",
+          "bytes": 12899,
+          "sha256": "523f22d13e9170d8400f36e3f38beffe81716c084976f13025ea0ed748d0d62c"
+        }
+      ]
+    },
+    {
+      "address": "008d9750",
+      "metadata_project": "bsp",
+      "metadata_program": "/battlestationspacific.exe",
+      "saved_utc": "2026-10-13T02:52:27.457851+00:00",
+      "files": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\008d9750\\metadata.json",
+          "bytes": 284,
+          "sha256": "18752647a00ca84d46d18a6598ce340239f09a94da50464b9d7f316ae0878377"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\008d9750\\decompiled.c",
+          "bytes": 2788,
+          "sha256": "38564c00b024a0d459333b8bf199f5e9cf561a8361cee0ba7c0c4a42c75fcd95"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\008d9750\\assembly.txt",
+          "bytes": 3795,
+          "sha256": "8a77c5eff96683b58a9509fa12562cac1625921a33e2a758b0e5476f04fcf514"
+        }
+      ]
+    }
+  ],
+  "prior_receipt_rechecks": [
+    {
+      "path": "reports/cc16_native_game_on_destroy_source_admission.json",
+      "receipt_sha256": "018374aef38ae3de06f5453ec93db2b293a1f6a963fe65026a51cd43282911b9",
+      "recorded_status": "primary_and_independent_complete_normal_parent_source_review_build_link_passed_six_providers_unbound",
+      "current_source_pin_results": [
+        {
+          "path": "include/bsp/native_game_on_destroy.hpp",
+          "raw_sha256_match": true,
+          "git_blob_match": true,
+          "historical_sha256": "96a100da9a58bbd9632f8a25d7f442e1a291e2f98f9dde3beb6c113ae40759f4",
+          "historical_git_blob": "e0b4b7e246b1d219cdf23fc45dcfb9650105dd43"
+        },
+        {
+          "path": "src/native_game_on_destroy.cpp",
+          "raw_sha256_match": true,
+          "git_blob_match": true,
+          "historical_sha256": "90862d3277029dbb7b74e0d3d19ac1e8f9b7601d43700abd3daaa485723c0670",
+          "historical_git_blob": "514563564cfb3cd28a41e5d32200bcef24c144a5"
+        }
+      ],
+      "recorded_build_log_recheck": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\qualified_dyn_destroy_admission\\build.log",
+        "available": true,
+        "sha256_match": true
+      }
+    },
+    {
+      "path": "reports/cc16_native_teardown_helpers_source_admission.json",
+      "receipt_sha256": "95608c9b3ee2b2f9884233d1b0f076670822c364575a4256e46ddc3a777dda9b",
+      "recorded_status": "primary_and_independent_source_static_review_common_build_actual_entry_link_passed_unactivated",
+      "current_source_pin_results": [
+        {
+          "path": "include/bsp/dyn_engine_runtime.hpp",
+          "raw_sha256_match": true,
+          "git_blob_match": true,
+          "historical_sha256": "2f40e8f9347e6cb454d6cefc016a9143fdc1178d00269769231192d50cb59dcf",
+          "historical_git_blob": "8d84bc29f6aeb0bba575ed649708eb06a7b19c42"
+        },
+        {
+          "path": "src/dyn_engine_runtime.cpp",
+          "raw_sha256_match": true,
+          "git_blob_match": true,
+          "historical_sha256": "c8267909406fbe475e6f9ffa0954ce2c03d523e4c8be27bbf53261f9f947d7f2",
+          "historical_git_blob": "b1ee284f064dcc6d18f7470afe7984c303111392"
+        },
+        {
+          "path": "include/bsp/native_mission_lua_machine_release.hpp",
+          "raw_sha256_match": true,
+          "git_blob_match": true,
+          "historical_sha256": "d633058757380240c117b3ad6f71671cb9303632190ac261898776c8c4d601e0",
+          "historical_git_blob": "2576a6ffce3eaca536e337616e3d0bc21efb3032"
+        },
+        {
+          "path": "src/native_mission_lua_machine_release.cpp",
+          "raw_sha256_match": true,
+          "git_blob_match": true,
+          "historical_sha256": "0495473be085237a6b759a551e7be6e94304596596c584f3fd0041293cf2e3c0",
+          "historical_git_blob": "8e8c801c8e06d5018b78491d524e4e52a5cd198b"
+        },
+        {
+          "path": "include/bsp/native_front_end_manager_destruction.hpp",
+          "raw_sha256_match": true,
+          "git_blob_match": true,
+          "historical_sha256": "82cd89a5ce6dab66de8b96284b1eb185b1d2d959d3deebd3d2e0fefa8067839c",
+          "historical_git_blob": "8520215c120b94fc8eb90cdcfdae66ac77fa4830"
+        },
+        {
+          "path": "src/native_front_end_manager_destruction.cpp",
+          "raw_sha256_match": true,
+          "git_blob_match": true,
+          "historical_sha256": "4139ddadcca01ae630b4e9a00a93b5d5d2b1418042a015abd2c7ed459860fac5",
+          "historical_git_blob": "ed5ed729674349aa50cbdbcf2addc081fe063eaf"
+        },
+        {
+          "path": "include/bsp/game_hosts.hpp",
+          "raw_sha256_match": true,
+          "git_blob_match": true,
+          "historical_sha256": "67a5164b1b20061f0f1353783c12cfcb92cc7392b37e04ec87371577425f7f58",
+          "historical_git_blob": "867d8b7032fc7531bfaa4f2c43c649988b8e0710"
+        },
+        {
+          "path": "src/game_hosts.cpp",
+          "raw_sha256_match": true,
+          "git_blob_match": true,
+          "historical_sha256": "6915e364d7c2eb73ebba01d7d1c521ca7fdc94ab78ad7f0302288fc281cad9f4",
+          "historical_git_blob": "d138983e92e5f93339e529655990f924f1c06be8"
+        },
+        {
+          "path": "include/bsp/native_singleton_destruction.hpp",
+          "raw_sha256_match": true,
+          "git_blob_match": true,
+          "historical_sha256": "92c2c26b6d4f69a7926e4bbf3d2c327fcc18dc03b9cb5e60a61a6b2e06d2fbf2",
+          "historical_git_blob": "fb3bf4cb9eab83d2f31fd956e9a0074ab1a81ccb"
+        },
+        {
+          "path": "src/native_singleton_destruction.cpp",
+          "raw_sha256_match": true,
+          "git_blob_match": true,
+          "historical_sha256": "bb6b0556d30f4eac3c112f5acb72802cf3339247729863d8a4dbf3410a188808",
+          "historical_git_blob": "2a879d538151867200cda15069d6733ded335cff"
+        }
+      ],
+      "recorded_build_log_recheck": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch2\\build.log",
+        "available": true,
+        "sha256_match": true
+      }
+    },
+    {
+      "path": "reports/cc12_game_current_virtual_dispatch_source.json",
+      "receipt_sha256": "dd80021360a6a7b18d07cd0ba6745211bee2cf6684b8f3ec607a54c1ff4fb6cb",
+      "recorded_status": "NEW_SOURCE_GLUE_IMPLEMENTED_REGISTRATION_BUILD_WHOLE_EMITTED_REVIEW_PENDING",
+      "current_source_pin_results": [
+        {
+          "path": "include/bsp/native_game_current_virtual_calls.hpp",
+          "raw_sha256_match": true,
+          "git_blob_match": null,
+          "historical_sha256": "dbef0b32a1bee0d2dd0e19881c3caf6955f86a04e4c7b05422dc1281a68b3c46",
+          "historical_git_blob": null
+        },
+        {
+          "path": "src/native_game_current_virtual_calls.cpp",
+          "raw_sha256_match": true,
+          "git_blob_match": null,
+          "historical_sha256": "4de2e297c9dcfbcb37a79644ad9c10ebab011b52f8654866fa3bbff80316c80f",
+          "historical_git_blob": null
+        },
+        {
+          "path": "include/bsp/native_game_lifetime.hpp",
+          "raw_sha256_match": false,
+          "git_blob_match": null,
+          "historical_sha256": "44f3465992db1d4e5e5ca117a21d25bb1cdfe7e1aa1ef9d62026ba4f1a3c9889",
+          "historical_git_blob": null
+        },
+        {
+          "path": "include/bsp/native_game_embedded_lifetime.hpp",
+          "raw_sha256_match": true,
+          "git_blob_match": null,
+          "historical_sha256": "7471f546612018324a42748fb484af08e38f4567684bcba3bc80003a3cf7c42a",
+          "historical_git_blob": null
+        },
+        {
+          "path": "include/bsp/native_game_physics_lifetime.hpp",
+          "raw_sha256_match": true,
+          "git_blob_match": null,
+          "historical_sha256": "829ef5aded5279e62aed7e91b974db4275a90535d6b2ffa41a85bb38410e4d8e",
+          "historical_git_blob": null
+        },
+        {
+          "path": "src/native_game_physics_lifetime.cpp",
+          "raw_sha256_match": true,
+          "git_blob_match": null,
+          "historical_sha256": "8be35f8b307a3b5143b6271ee94ba693f4a7243397f5b2cc90f0bfebed642ec4",
+          "historical_git_blob": null
+        }
+      ],
+      "recorded_build_log_recheck": null,
+      "drift_classification": {
+        "path": "include/bsp/native_game_lifetime.hpp",
+        "change": "only two free-domain comment lines added after source packet",
+        "commit": "93b7653af59cd8ae4337f07527e5a05a50a153ed",
+        "no_fresh_build_inferred": true
+      }
+    },
+    {
+      "path": "reports/cc12_current_dispatch_primary_review.json",
+      "receipt_sha256": "f06718abf4b185455949b9709b60f3c0852be167376a37f7ba8aefa7fa4d35e4",
+      "recorded_status": "source_review_and_normal_win32_build_passed",
+      "current_source_pin_results": [],
+      "recorded_build_log_recheck": null
+    },
+    {
+      "path": "reports/native_game_grid_services_r156.json",
+      "receipt_sha256": "8df68beb5531882e771e3ce95cd75da8f42f4a712f9b14e0f6232f6c96bde170",
+      "recorded_status": "application_grid_context_bound_build_regression_and_real_device_composition_verified",
+      "current_source_pin_results": [],
+      "recorded_build_log_recheck": null
+    }
+  ],
+  "scope": {
+    "owned_files": [
+      "docs/CC16_NATIVE_GAME_APPLICATION_BINDING_READINESS.md",
+      "reports/cc16_native_game_application_binding_readiness.json"
+    ],
+    "new_source": false,
+    "build_test_probe_game_executable_or_dll_run": false,
+    "ghidra_live_query_or_mutation": false,
+    "source_cmake_ledger_guard_peer_or_installation_mutation": false,
+    "new_native_body_credit": 0,
+    "vendor_body_credit": 0,
+    "original_ABI_credit": 0,
+    "activation_credit": 0,
+    "gameplay_credit": 0
+  },
+  "observed_utc": "2026-10-30T00:59:37.166985+00:00",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-native-game-application-binding-readiness",
+  "baseline_verified": "42185e9219bd4e5f771410e1072e69ebd2bd54b1",
+  "names_are_source_hypotheses": true,
+  "application_binding": {
+    "actual_application_owner": "GameStartupHost::native_application_[7], genuine 1Ch; word5 is +14h",
+    "actual_application_publication": "GameNativeStringProcess::application_00e1ae90(), canonical manager_01090aa0()",
+    "runtime_frame_or_attach_symbol_files": [
+      "src/game_hosts_fixed_step.cpp",
+      "src/game_native_game_runtime.cpp",
+      "src/game_native_game_application_frame.cpp",
+      "include/bsp/game_hosts_fixed_step.hpp",
+      "include/bsp/game_native_game_application_frame.hpp",
+      "include/bsp/game_native_game_runtime.hpp"
+    ],
+    "application_runtime_construction_count": 0,
+    "application_frame_construction_count": 0,
+    "attach_invocation_count": 0,
+    "fixed_step_unattached_behavior": "record at00875E0C then return; no native World call",
+    "success_admission": [
+      "completed frame constructor",
+      "runtime live",
+      "runtime storage == current actual E188A8 == current Application+14",
+      "matching canonical Dyn contexts"
+    ],
+    "publication_not_sufficient": "004DE105 publishes E188A8 before engine/world construction",
+    "runtime_owns": [
+      "one-slot source scalar method table",
+      "persistent construction operation",
+      "persistent storage-lifetime operation"
+    ],
+    "runtime_borrows": [
+      "71A0h storage",
+      "all contexts and providers",
+      "canonical Dyn report table and step context"
+    ],
+    "not_supplied_by_scalar_table": [
+      "other Game vslots",
+      "entry",
+      "mission World/entity production",
+      "OnDestroy",
+      "Application+14 clearing"
+    ]
+  },
+  "construction_service_groups": [
+    {
+      "methods": [
+        "array_construct_00bf7cd1",
+        "construct_empty_strings_00bf7cd1"
+      ],
+      "implementation": "src/native_game_array_elements.cpp",
+      "contract": "exact three callback/stride domains and raw empty-string pair",
+      "binding": "concrete_defaults_no_application_instance"
+    },
+    {
+      "methods": [
+        "call_004c2700",
+        "call_004c2750",
+        "call_004c27a0",
+        "call_004c2830",
+        "call_004c26b0",
+        "call_004c1950",
+        "call_004c1a40"
+      ],
+      "implementation": "src/native_game_storage_defaults.cpp",
+      "contract": "canonical raw self-linked trees/lists; untouched bytes preserved",
+      "binding": "concrete_defaults_no_application_instance"
+    },
+    {
+      "methods": [
+        "allocate_00bf681b"
+      ],
+      "implementation": "src/native_game_array_elements.cpp",
+      "contract": "canonical singleton_lifetime_allocate malloc/new-handler object domain",
+      "binding": "concrete_inherited_default"
+    },
+    {
+      "methods": [
+        "allocate_00bf55be",
+        "free_00bf6989",
+        "call_00bd1860"
+      ],
+      "implementation": "src/native_game_embedded_state.cpp",
+      "contract": "canonical pointer-slot allocator, matching free, actual tracked section",
+      "binding": "concrete_inherited_defaults"
+    },
+    {
+      "methods": [
+        "call_007ff9d0",
+        "call_008882d0"
+      ],
+      "implementation": "src/native_game_storage_defaults.cpp",
+      "contract": "race raw prefix; raw14h Lua host with real2Ch sentinel and numeric D0E7A8",
+      "binding": "concrete_defaults_lua_retirement_unbound"
+    },
+    {
+      "methods": [
+        "call_0076ede0"
+      ],
+      "implementation": "src/native_game_embedded_state.cpp",
+      "contract": "real embedded/peer initialization using borrowed constants and retained operation",
+      "binding": "concrete_default"
+    },
+    {
+      "methods": [
+        "call_008d9150",
+        "call_00727bd0"
+      ],
+      "implementation": "src/native_game_tables.cpp",
+      "contract": "GameNativeGameTables actual23x16 rows/count and12x97 ranks; explicit opaque word",
+      "binding": "concrete_defaults_owner_definitions_only_input_unbound"
+    },
+    {
+      "methods": [
+        "call_00432650"
+      ],
+      "implementation": "src/global_config.cpp",
+      "contract": "same actual2E8h GlobalConfig with raw SoundLifetimeAccess",
+      "binding": "body_exists_actual_context_uncomposed"
+    },
+    {
+      "methods": [
+        "call_0087d7b0"
+      ],
+      "implementation": "src/native_global_config_load.cpp",
+      "contract": "same GlobalConfig; canonical strings/Lua/files/sound/FOV",
+      "binding": "body_exists_actual_context_effect_domain_unclosed"
+    },
+    {
+      "methods": [
+        "call_00717e80"
+      ],
+      "implementation": "src/native_game_resource_parsers.cpp",
+      "contract": "existing VFS raw manager and five parser contexts",
+      "binding": "concrete_provider_available_not_borrowed_by_Game"
+    },
+    {
+      "methods": [
+        "call_0070bd70"
+      ],
+      "implementation": "src/native_game_grid.cpp",
+      "contract": "existing renderer game_grid_context and three retained child operations",
+      "binding": "body_provider_exist_private_preimages_and_retirement_unbound"
+    },
+    {
+      "methods": [
+        "call_00be4800"
+      ],
+      "implementation": "src/native_frame_job_lifetime.cpp",
+      "contract": "real processor environment helper, signed result converted toDWORD",
+      "binding": "concrete_default"
+    },
+    {
+      "methods": [
+        "call_00c55f50"
+      ],
+      "implementation": "src/dyn_engine_runtime.cpp",
+      "contract": "legacy normal-only dyn_engine_ensure_00c55f50; canonical engine context",
+      "binding": "qualified_private_candidate_not_selected"
+    },
+    {
+      "methods": [
+        "call_00c420e0"
+      ],
+      "implementation": "src/dyn_world_factory.cpp",
+      "contract": "real world48Ch creation into captured canonical engine",
+      "binding": "concrete_default"
+    },
+    {
+      "methods": [
+        "call_00c31a40"
+      ],
+      "implementation": "src/native_game_dynamics.cpp",
+      "contract": "store game+1Ch at actual DynWorld+24 after parent world publication",
+      "binding": "concrete_default"
+    }
+  ],
+  "construction_effective_method_count": 26,
+  "raw_profile": {
+    "provider": "GameNativePlayerProfileContext",
+    "provider_selected_by_application": false,
+    "owner": "actualF8h Game+650 storage",
+    "named_service_methods": [
+      "call_004c3020",
+      "call_007f82f0",
+      "call_004c26b0",
+      "call_007f8540",
+      "call_005826b0",
+      "call_004cec60",
+      "call_0058b520",
+      "call_00bf6713",
+      "call_004954f0",
+      "call_007fa880",
+      "call_005070c0",
+      "call_004d05e0",
+      "call_007f8390",
+      "call_007fa3a0",
+      "call_008d4820",
+      "call_008d41c0"
+    ],
+    "all_named_methods_have_concrete_defaults": true,
+    "borrowed_inputs": [
+      "exact VFS ActualNativeStringPoolStorage wrapper",
+      "initialized settings BCh",
+      "mapped CE3A0C/CEF794/CEF15C",
+      "settings.profile_context() live E188A8/F8ABE8 and SDK"
+    ],
+    "sdk": "GameNativeSettingsProcess ProfileSdk resolves NativeProfileSettingsSdkRuntime over SoundServices bound XLiveLibrary; absent binding throws",
+    "lifetime": "NativeGameProfileLifetimeContext uses same raw cells and the Game lifetime calls; provider and SDK/string/data owners outlive any retained operation",
+    "projected_menu_profile_is_not_actual": true
+  },
+  "construction_fields": [
+    {
+      "field": "actual_game_00e188a8",
+      "supplier": "GameNativeSettingsProcess::game_00e188a8()",
+      "state": "actual_process_cell_available"
+    },
+    {
+      "field": "actual_00e19b0c/actual_00e19b08/actual_00e19b04",
+      "supplier": null,
+      "state": "three_canonical_grid_authorities_uncomposed"
+    },
+    {
+      "field": "actual_movie_00e18d48",
+      "supplier": null,
+      "state": "canonical_movie_screen_authority_uncomposed_not_F8AEFC_factory"
+    },
+    {
+      "field": "strings",
+      "supplier": "GameVfsHost::borrow_raw_services().strings",
+      "state": "exact_actual_wrapper_available"
+    },
+    {
+      "field": "constants",
+      "supplier": "GameNativeReadOnlyData::data_at(exact_word_or_float)",
+      "state": "read_only_reference_provider_available"
+    },
+    {
+      "field": "profile",
+      "supplier": "GameNativePlayerProfileContext::borrow_construction_context()",
+      "state": "concrete_owner_definitions_only"
+    },
+    {
+      "field": "calls",
+      "supplier": "NativeGameConstructionCalls concrete defaults",
+      "state": "no_selected_application_instance"
+    },
+    {
+      "field": "embedded_constants/array_constants",
+      "supplier": "same verified mapped constants",
+      "state": "reference_bundles_uncomposed"
+    },
+    {
+      "field": "dynamics",
+      "supplier": "canonical GameNativeDynProcess::dynamics()",
+      "state": "available_after_explicit_startup"
+    },
+    {
+      "field": "tables",
+      "supplier": "GameNativeGameTables::borrow_construction_context()",
+      "state": "definitions_only_explicit_preimage_missing_single_borrow_count0"
+    },
+    {
+      "field": "global_configuration",
+      "supplier": "GlobalConfigContext",
+      "state": "actual_F878E4_context_effect_aggregate_uncomposed"
+    },
+    {
+      "field": "global_configuration_load",
+      "supplier": "NativeGlobalConfigLoadContext",
+      "state": "real_Lua_VFS_sound_settings_services_available_effect_input_domain_unclosed"
+    },
+    {
+      "field": "resource_parsers",
+      "supplier": "GameVfsHost::raw_game_resource_parsers_context()",
+      "state": "actual_existing_provider_available"
+    },
+    {
+      "field": "grids",
+      "supplier": "GameNativeRendererApplication::game_grid_context()",
+      "state": "real_actual_renderer_provider_available"
+    },
+    {
+      "field": "grid_descriptor_preimages[3]",
+      "supplier": null,
+      "state": "six_private_frame_words_unbound"
+    },
+    {
+      "field": "source_tables",
+      "supplier": "GameNativeGameRuntime plus canonical Dyn report runtime",
+      "state": "runtime_owns_one_scalar_slot_only"
+    }
+  ],
+  "private_preimages": {
+    "unit": {
+      "input": "unit_frame_word_preimage",
+      "producer": "preexisting private stack bytes in008D9150; no native argument",
+      "evidence": [
+        "008D9150 SUB ESP,10h",
+        "008D9186 MOV BYTE[ESP+10h],AL",
+        "008D9195 loadDWORD[ESP+10h]",
+        "008D9199 storeDWORD row+0Ch"
+      ],
+      "persisted": "upper24 bits copied to each of23 native16B rows",
+      "recognized_consumer": "008D9750;008D9851 CMP BYTE[row+0Ch],CL and inverse branch",
+      "upper24_read_by_recognized_converter": false,
+      "whole_program_nonuse_proven": false,
+      "application_input_producer": null,
+      "default_zero_inferred": false
+    },
+    "grids": {
+      "inputs": "three distinct word20/word24 pairs",
+      "producer": "preexisting private descriptor-frame bytes inside each0070BD70 call",
+      "evidence": [
+        "0070BD70 SUB ESP,50h",
+        "descriptor base localESP+1Ch; no +20/+24 stores before0070BE8D",
+        "00709CC4/CC7 and00709CCA/CCD FLD/FSTP descriptor+20/+24",
+        "copied at actualGrid+5Ch/+60h before six allocations",
+        "grid_steps overwrites+60 then+5C before coordinate consumers"
+      ],
+      "actual_reads_before_overwrite": "x87 FLD/FSTP; representation and FP status are observable",
+      "canonical_cpu_provider": "real NativeGameGridCpuCalls defaults; allocator receives byte count only, no explicit grid-field read",
+      "interim_state_observation": "permitted aliases/allocation/new-handler boundaries; no blanket non-observation proof",
+      "later_geometry": "reads freshly calculated steps, not original preimages",
+      "application_input_producer": null,
+      "game_or_grid_zeroing_supplies_private_stack": false,
+      "default_zero_inferred": false
+    }
+  },
+  "global_config_aggregate": {
+    "application_instance_present": false,
+    "complete_aggregate_ready": false,
+    "available_inputs": [
+      "existing normal getter/constructor/destructor/loader",
+      "raw CE3D98 deletion branch",
+      "singletons.sound_lifetime()",
+      "exact VFS strings wrapper",
+      "sound.core.samples()",
+      "sample_cache_context()",
+      "core.lifetime_bindings().global_00f8bbe8",
+      "NativeGlobalConfigSampleDispatch",
+      "lua_services.bootstrap()",
+      "lua_services.binding().files()",
+      "NativeLuaServiceBindings::Activation",
+      "settings_host.fov_divisor_00f889b4()"
+    ],
+    "required_authority": "one genuine retained F878E4 cell, same context installed in deletion_bindings.global_configuration before registration",
+    "effect_domain": [
+      "first three slots admit canonical D5B074 Source sample final release",
+      "Source samples have no valid stop slot",
+      "second three need genuine raw callable stop+8 and final+0; no attributed nonnull producer"
+    ],
+    "reached_input_risk": "real ObjectiveSounds iteration at0087F66B..0087F738 has no three-entry bound; later rows address second slots",
+    "not_claimed": [
+      "installed Globals/override output count",
+      "whole escaped-owner absence proof",
+      "second-array producer",
+      "arbitrary raw receiver admission"
+    ]
+  },
+  "lifetime_binding": {
+    "concrete_current_dispatch_exists": true,
+    "application_call_service_selected": false,
+    "complete_context_aggregate_present": false,
+    "same_service_required_by": [
+      "arrays",
+      "embedded",
+      "profile",
+      "singletons",
+      "lua_globals",
+      "classes",
+      "physics"
+    ],
+    "available_borrowed_domains": [
+      "VFS raw AA0/AA8/AA4 strings and resource manager",
+      "singletons.observers().lifetime()",
+      "canonical Dyn dynamics and body_creation",
+      "actual renderer grid context"
+    ],
+    "uncomposed_authorities": [
+      "E18678",
+      "E1867C",
+      "E19900",
+      "E18DB0",
+      "E19698",
+      "E1930C",
+      "E198BC",
+      "E18D48",
+      "E19B0C",
+      "E19B08",
+      "E19B04",
+      "E18E6C",
+      "E18D80",
+      "F89B34",
+      "E187BC",
+      "six10h headers E1875C..E187AC",
+      "E0AF14",
+      "actual10h headers108FF30/108FF40"
+    ],
+    "not_equivalent": [
+      "projected menu/frontend managers",
+      "Lua process0Ch region",
+      "read_only_native_image_cells",
+      "arbitrary zero cells"
+    ],
+    "unclosed_constructor_produced_receivers": [
+      {
+        "receiver": "three actual84h grids",
+        "numeric_profile": "00CFD484",
+        "existing_source": "destroy/delete_native_game_grid_0070B220/0070B280 and real renderer context",
+        "missing": "actual allocation provenance and source-family retirement in selected lifetime service; generic table call inadmissible"
+      },
+      {
+        "receiver": "actual14h mission Lua host,2Ch sentinel",
+        "numeric_profile": "00D0E7A8",
+        "existing_source": "raw008882D0 constructor and admitted raw008844F0 machine-release helper",
+        "missing": "complete raw00888380/00888300/00887D90/deferred-payload retirement and genuine machine/table domains; projected strings/vectors not raw"
+      }
+    ],
+    "default_current_dispatch_admission": "genuine live readable current callable tables, Win32 call shape, matching real allocator and child lifetime; numeric identities do not authenticate them",
+    "free_domains": "Game/grid/raw containers canonical malloc/free; Dyn scalar new/delete and profile SBO text have distinct explicit contracts"
+  },
+  "dyn_process": {
+    "startup": "game_main explicitly CC8950 then CC89C0",
+    "engine_or_world_constructed_by_startup": false,
+    "owned": [
+      "engine0109E9FC/profile0109E9F8 cells",
+      "real dispatch/SAP2/solver/task/report tables",
+      "default scalar ::operator new/delete callbacks",
+      "convex pool and shape binding over actual E188B4 and CRT conversion cell"
+    ],
+    "borrowable": [
+      "dynamics()",
+      "world_step()",
+      "contact_reports()",
+      "body_creation()"
+    ],
+    "partial_node_delete_supplier": "profile_partial_node_delete_00bf65ac() guards actual default scalar-new domain, returns genuine ::operator delete",
+    "partial_node_delete_supplier_application_use_count": 0,
+    "Main421_construction_route": "NativeGameConstructionCalls::call_00c55f50 -> legacy normal dyn_engine_ensure_00c55f50",
+    "ordinary_policy": "48Ch DynWorld -> E8h scene ->248h SAPBroadPhaseManager2; not SAPRadix",
+    "mission_world_distinct": "4BCh owner at Game+19CCh, not DynWorld at+18h",
+    "entity_body_terrain_adoption": "available actual process runtimes/context do not produce new Game-world body/shape/hull/mission graph"
+  },
+  "private_candidate": {
+    "commit": "5c320a1f5b508a59862db6d8d055c2878c0a643a",
+    "inspection": "additive header diff only; not body review or build",
+    "adopted_on_baseline": false,
+    "adds": [
+      "dyn_engine_construct_qualified_00c55ea0",
+      "dyn_engine_ensure_qualified_00c55f50"
+    ],
+    "requires": "genuine matching DynProfileRootPartialNodeDelete; actual stable scalar-new and vector-release custody",
+    "preserve": [
+      "captured9Ch profile scope",
+      "captured358h task scope",
+      "captured14h engine scope",
+      "Root48h nested scope",
+      "outer CURRENT vector cleanup",
+      "single late volatile worker-count read",
+      "native publication and no-rollback epochs"
+    ],
+    "not_closed": [
+      "Game production caller",
+      "whole partial-failure lifetime",
+      "native fault/FH3/SEH",
+      "emitted original ABI"
+    ],
+    "header_pin": {
+      "path": "include/bsp/dyn_engine_runtime.hpp",
+      "bytes": 7203,
+      "sha256": "a09651ed5813e1ef6ed2c79c1e648e0af5741b65787b80893bb2be813aecc800",
+      "git_blob": "3ebafb25dc442e94b5dae47eecbda4e6294627de"
+    }
+  },
+  "on_destroy": {
+    "normal_parent_source_admitted": true,
+    "selected_application_NativeGameOnDestroyCalls": false,
+    "raw_helpers_source_admitted": [
+      "destroy_native_front_end_managers_004da650",
+      "release_native_mission_lua_machine_008844f0"
+    ],
+    "remaining_real_call_domains": [
+      "whole raw004DA780",
+      "actual0046F3E0 scene DB publication/receiver binding",
+      "whole004D95F0 required by raw frontend helper",
+      "actual F8A2FC current-slot8 receiver and F8A300/F8A2FC00992AC0 lifetime",
+      "actual raw Lua machine/host scalar domains"
+    ],
+    "separate_online_domains": "F8A2FC/F8A300 system is not settings/profile F8ABE8 manager",
+    "order": [
+      "full004DC5C0",
+      "scalar004DE270(flags1)",
+      "clear CURRENT Application+14 after success"
+    ],
+    "frame_scalar_does_not": [
+      "invoke OnDestroy",
+      "clear Application+14"
+    ]
+  },
+  "failure_custody": {
+    "one_shot_no_replay": true,
+    "retain": [
+      "partial Game graph",
+      "persistent child/parent operations",
+      "same contexts/cells/tables/code/SDK/string wrappers",
+      "entered locks and unresolved allocation/map credits"
+    ],
+    "diagnostic_acknowledgement": "only after actual child graph/locks/resources resolved; no cleanup, rollback, publication repair or retry",
+    "destructor_policy": "active/failed unresolved operations can terminate; Game frame/runtime reject abandonment",
+    "scalar_outer_allocation": "indeterminate before scalar call, since release then throw is possible; success flags1 released once, flags0 retained",
+    "host_release_order": "raw singleton drain while sound/Lua/VFS borrowed services live; Sound reset before singleton host deletion; native Lua services after scripts and before VFS",
+    "required_new_containment": "Game-specific custody check before every existing host release point",
+    "native_EH_fault_terminal_parity": false,
+    "unprotected_lua_escape": "Retained backing is diagnostic custody, not restored Lua invariants; close/release may execute finalizers and requires independently valid state/live services."
+  },
+  "source_ready_next": {
+    "scope": "closed initialization-mode name epoch in existing GameStartupHost, preparation only",
+    "new_wrapper_or_native_body_needed": false,
+    "actual_input": "nonnull actual0073D410 mode, already validated and passed to parse_command_line_0073CE20",
+    "epochs": [
+      {
+        "site": "0073D93C/0073D945",
+        "action": "existing duplicate_native_string_00438E40(mode), publish its real canonical allocation in sole retainedE1AE78"
+      },
+      {
+        "site": "0073E17E/0073E188/0073E1A1",
+        "action": "existing frame captures same cell, constructs actual raw8h pooled name, invokes full constructor only after complete graph admission"
+      },
+      {
+        "site": "0073E466/0073E46E",
+        "action": "matching canonical free of captured CURRENT duplicate, then clear CURRENT authority after success"
+      }
+    ],
+    "failure": "retain actual name custody on interrupted initialization; no invented catch-time rollback",
+    "does_not_authorize": [
+      "Game construction with missing providers",
+      "attachment",
+      "ordinary shutdown activation",
+      "gameplay claim"
+    ]
+  },
+  "smallest_aggregate_prerequisites": [
+    {
+      "gate": "private-byte provenance",
+      "scope": "unit upper24 input and three grid descriptor pairs",
+      "why_not_ready": "no real current producer or selected justified Source policy; actual x87 reads and interim grid state remain"
+    },
+    {
+      "gate": "real GlobalConfig retained aggregate",
+      "scope": "same F878E4/lifetime/strings/cache/component/sample-dispatch/Lua/FOV/deletion context",
+      "why_not_ready": "required references available, but actual first/second-array input and receiver domain not closed"
+    },
+    {
+      "gate": "actual raw retirement and authorities",
+      "scope": "exact constructor grid/Lua-host allocations; native mutable singleton/header producers",
+      "why_not_ready": "numeric profiles and projections do not establish callable child lifetime; raw helper admission is not selected Calls"
+    },
+    {
+      "gate": "normal app shutdown providers",
+      "scope": "full OnDestroy genuine scene/session/pause/frontend/online/Lua call domains",
+      "why_not_ready": "raw parent exists; concrete application call/provider graph unselected"
+    }
+  ],
+  "no_complete_new_native_body_declared_source_ready": true,
+  "historical_receipt_interpretation": "Static rehash/reuse of recorded source/build/link evidence only; no new compile/execution, Game composition, ABI, runtime or gameplay proof.",
+  "prior_document_pins": [
+    {
+      "path": "docs/CC16_NATIVE_GAME_ATTACHMENT_READINESS.md",
+      "bytes": 18335,
+      "sha256": "23774b18270ddbf058062985fb2f3d902bb1744c95ce9599e4d3921f121ce0e3",
+      "lf_sha256": "23774b18270ddbf058062985fb2f3d902bb1744c95ce9599e4d3921f121ce0e3",
+      "git_blob": "6191470a1d02430ca4ba25b8995dc56edc2f8daa"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GAME_ON_DESTROY_SOURCE_ADMISSION.md",
+      "bytes": 2146,
+      "sha256": "a9d61c139a14da52a695efd2916aa78990ca6b37b0f502ff7a4b665e777ba79f",
+      "lf_sha256": "a9d61c139a14da52a695efd2916aa78990ca6b37b0f502ff7a4b665e777ba79f",
+      "git_blob": "41bbcab98c5cf7438e721804f00165d376d498f9"
+    },
+    {
+      "path": "docs/CC12_GAME_UNIT_RANK_CONTEXT_READINESS.md",
+      "bytes": 6853,
+      "sha256": "a54d3e071b5d383b8b0808f3909e859aa980d3c98b062fd8b24c560d587cc254",
+      "lf_sha256": "a54d3e071b5d383b8b0808f3909e859aa980d3c98b062fd8b24c560d587cc254",
+      "git_blob": "f6fb8156f6e49697141a033b7dd0ba981f8d2001"
+    },
+    {
+      "path": "docs/CC12_GLOBAL_CONFIG_SECOND_ARRAY_DIRECT_CALLERS.md",
+      "bytes": 11377,
+      "sha256": "e89d7f1c7a3e61b528b2238ed2ae2923ce4d2c745c5f38cc6b6fef1b55ef8191",
+      "lf_sha256": "e89d7f1c7a3e61b528b2238ed2ae2923ce4d2c745c5f38cc6b6fef1b55ef8191",
+      "git_blob": "88f6e264d62515a4090b4dde0ecb3f50670347e2"
+    },
+    {
+      "path": "docs/CC12_GLOBAL_CONFIG_SECOND_ARRAY_PAYLOAD.md",
+      "bytes": 8479,
+      "sha256": "c5146ce6907aed33643a383941e53da8e4add2de88b6aa79bd019b305044435a",
+      "lf_sha256": "c5146ce6907aed33643a383941e53da8e4add2de88b6aa79bd019b305044435a",
+      "git_blob": "0bdda0e483444533ad0bd3e089fa354298f2cc8f"
+    },
+    {
+      "path": "docs/CC12_MISSION_LUA_PAYLOAD_BODY_EXTENT_READINESS.md",
+      "bytes": 5291,
+      "sha256": "d7bb6b6fd923b34de30046e3cec2c0dbc5d4f153d8ce7e88c60ab19b80a0b53b",
+      "lf_sha256": "d7bb6b6fd923b34de30046e3cec2c0dbc5d4f153d8ce7e88c60ab19b80a0b53b",
+      "git_blob": "39020c90c3465dfbeed1fc01a6800f1d247eab1f"
+    },
+    {
+      "path": "docs/CC12_MISSION_LUA_PAYLOAD_VECTOR_READINESS.md",
+      "bytes": 9947,
+      "sha256": "d8dbf91373672ba24b350d96a9057521460f89ee10f123fba4ea1b6f385250f4",
+      "lf_sha256": "d8dbf91373672ba24b350d96a9057521460f89ee10f123fba4ea1b6f385250f4",
+      "git_blob": "98d1c53607a2d35fb616d2281a32abc6dfe27e99"
+    },
+    {
+      "path": "docs/CC12_GAME_CURRENT_VIRTUAL_DISPATCH_SOURCE.md",
+      "bytes": 5676,
+      "sha256": "a3be7fd2cfb0fa09944010d271a656abef8b1912ed44aca95a20730a83b6905e",
+      "lf_sha256": "a3be7fd2cfb0fa09944010d271a656abef8b1912ed44aca95a20730a83b6905e",
+      "git_blob": "b20d64099361dce9068c87ba5693da8076936845"
+    },
+    {
+      "path": "docs/NATIVE_GAME_GRID_R119.md",
+      "bytes": 6319,
+      "sha256": "9e07241a6bad77363ca2ebe703bbbb2fc475b00642620d5f1cfc308bb79d7444",
+      "lf_sha256": "9e07241a6bad77363ca2ebe703bbbb2fc475b00642620d5f1cfc308bb79d7444",
+      "git_blob": "694d054403cd7eb878e1d5dfcc14e79ae348a70c"
+    },
+    {
+      "path": "docs/NATIVE_GAME_GRID_R120.md",
+      "bytes": 8433,
+      "sha256": "ebd68ecfe1574fd902a0cf2cd291f0071637a0adfd6d38bb4bb341f78f101fd4",
+      "lf_sha256": "ebd68ecfe1574fd902a0cf2cd291f0071637a0adfd6d38bb4bb341f78f101fd4",
+      "git_blob": "4f2f72efe8a410fb4c3af057c6875708b0d7f086"
+    },
+    {
+      "path": "docs/NATIVE_GAME_GRID_SERVICES_R156.md",
+      "bytes": 3732,
+      "sha256": "cf6a7645edd1cd12883a51d9bbe9862049b32579621d4dc3dff7e4e66dca87cc",
+      "lf_sha256": "cf6a7645edd1cd12883a51d9bbe9862049b32579621d4dc3dff7e4e66dca87cc",
+      "git_blob": "7bfff9bc1ffbd9e199d5cee438f73380140c0026"
+    }
+  ],
+  "saved_target_identity": {
+    "configured_project": "bsp",
+    "configured_program": "/battlestationspacific.exe",
+    "configured_language": "x86:LE:32:default",
+    "configured_image_base": "00400000",
+    "existing_project_file": "C:/Users/sqz269/bsp.gpr",
+    "project_file_exists": true,
+    "live_program_not_queried": true,
+    "saved_export_metadata_all_match": true
+  },
+  "document_pin": {
+    "path": "docs/CC16_NATIVE_GAME_APPLICATION_BINDING_READINESS.md",
+    "sha256": "e01474cab20a45ef6b7410e266582b2f973fdf1c0d37ec45ad60fba421464657",
+    "lf_sha256": "e01474cab20a45ef6b7410e266582b2f973fdf1c0d37ec45ad60fba421464657"
+  }
+}
