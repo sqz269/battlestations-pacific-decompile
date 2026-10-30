@@ -1,0 +1,215 @@
+{
+  "status": "implemented_qualified_raw_override_binding_strict_object_compile_pass_uncalled",
+  "source_ready": false,
+  "runtime": false,
+  "native_body_credit": false,
+  "vendor_body_credit": false,
+  "source_base": "2c85154b461b7bf4db0855b596b8906922a2dcd0",
+  "address": "00bdef90",
+  "original_abi": "ECX manager; stack actualpath8/output0C; RET8; ordinary Sourcecontext differs",
+  "target": "bsp_game (ContextreferencesrealGameApp/ReadonlyData; noCore-toGame dependency introduced)",
+  "contract": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc9\\local\\raw_lua_override_binding_contract_cc9_20261030\\CONTRACT.md",
+    "sha256": "82c7c42c2194d1d897b61b52e80d6d01b1d1302115c6374a7921f29b71b3c172"
+  },
+  "dependencies": [
+    {
+      "path": "include/bsp/native_lua_script_overrides.hpp",
+      "revision": "2c85154b461b7bf4db0855b596b8906922a2dcd0",
+      "physical_sha256": "9cbc3d9b6921e100b26cbfdfd2accd541afe729fcea39f24105f6a136b37f226",
+      "git_blob_sha256": "9cbc3d9b6921e100b26cbfdfd2accd541afe729fcea39f24105f6a136b37f226"
+    },
+    {
+      "path": "src/native_lua_script_overrides.cpp",
+      "revision": "2c85154b461b7bf4db0855b596b8906922a2dcd0",
+      "physical_sha256": "074cd71ecfa23c7ef952c923fddfc54faf7c3d95ad59dd95dbcc6b3ecac48656",
+      "git_blob_sha256": "074cd71ecfa23c7ef952c923fddfc54faf7c3d95ad59dd95dbcc6b3ecac48656"
+    },
+    {
+      "path": "include/bsp/native_string_vector_raw_storage.hpp",
+      "revision": "2c85154b461b7bf4db0855b596b8906922a2dcd0",
+      "physical_sha256": "a91385da645d3acf4ef360209a41c05499b2a33fee8b6b2416cd3512e5c8ea74",
+      "git_blob_sha256": "a91385da645d3acf4ef360209a41c05499b2a33fee8b6b2416cd3512e5c8ea74"
+    },
+    {
+      "path": "src/native_string_vector_raw_storage.cpp",
+      "revision": "2c85154b461b7bf4db0855b596b8906922a2dcd0",
+      "physical_sha256": "59b7d98235c5123c47d48eb46cc1971455d9db12d9a218764d681799c90d710a",
+      "git_blob_sha256": "59b7d98235c5123c47d48eb46cc1971455d9db12d9a218764d681799c90d710a"
+    },
+    {
+      "path": "include/bsp/native_physical_file_date.hpp",
+      "revision": "2c85154b461b7bf4db0855b596b8906922a2dcd0",
+      "physical_sha256": "158161430fea02951e7449c8c5d1c8ae2fb5f75df70d4b0b0606cf6abcf5ad2f",
+      "git_blob_sha256": "158161430fea02951e7449c8c5d1c8ae2fb5f75df70d4b0b0606cf6abcf5ad2f"
+    },
+    {
+      "path": "src/native_physical_file_date.cpp",
+      "revision": "2c85154b461b7bf4db0855b596b8906922a2dcd0",
+      "physical_sha256": "14a03f9de4eb9ff466dec9323f331192adb6089c3c5c70db8ac61f9829b0c43d",
+      "git_blob_sha256": "14a03f9de4eb9ff466dec9323f331192adb6089c3c5c70db8ac61f9829b0c43d"
+    },
+    {
+      "path": "include/bsp/native_pooled_string_substring.hpp",
+      "revision": "2c85154b461b7bf4db0855b596b8906922a2dcd0",
+      "physical_sha256": "6243c6ba8acb0e1b7f0358a456d6e65ac1b9303cc79b1f1dfd5be01d05b985ff",
+      "git_blob_sha256": "6243c6ba8acb0e1b7f0358a456d6e65ac1b9303cc79b1f1dfd5be01d05b985ff"
+    },
+    {
+      "path": "src/native_pooled_string_substring.cpp",
+      "revision": "2c85154b461b7bf4db0855b596b8906922a2dcd0",
+      "physical_sha256": "7a18633cf114b21290f0c4ddfb9ec96d817f6a246a97ebfa05e9be3fdce9b8e1",
+      "git_blob_sha256": "7a18633cf114b21290f0c4ddfb9ec96d817f6a246a97ebfa05e9be3fdce9b8e1"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "revision": "2c85154b461b7bf4db0855b596b8906922a2dcd0",
+      "physical_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "git_blob_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "revision": "2c85154b461b7bf4db0855b596b8906922a2dcd0",
+      "physical_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "git_blob_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "revision": "2c85154b461b7bf4db0855b596b8906922a2dcd0",
+      "physical_sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+      "git_blob_sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "revision": "2c85154b461b7bf4db0855b596b8906922a2dcd0",
+      "physical_sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+      "git_blob_sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a"
+    },
+    {
+      "path": "include/bsp/native_vfs_runtime_bindings.hpp",
+      "revision": "2c85154b461b7bf4db0855b596b8906922a2dcd0",
+      "physical_sha256": "3c83fb5bed4b54624ff84c65dafc6f48679aefc4bfa5cf0e8f9a6b25669452a8",
+      "git_blob_sha256": "3c83fb5bed4b54624ff84c65dafc6f48679aefc4bfa5cf0e8f9a6b25669452a8"
+    },
+    {
+      "path": "src/native_vfs_runtime_bindings.cpp",
+      "revision": "2c85154b461b7bf4db0855b596b8906922a2dcd0",
+      "physical_sha256": "46f5f6f39218f781ddcfc58d0d82b0c2c0aa1ae04b4c966b5f72dbc209f5062a",
+      "git_blob_sha256": "46f5f6f39218f781ddcfc58d0d82b0c2c0aa1ae04b4c966b5f72dbc209f5062a"
+    },
+    {
+      "path": "include/bsp/game_native_vfs_application.hpp",
+      "revision": "2c85154b461b7bf4db0855b596b8906922a2dcd0",
+      "physical_sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f",
+      "git_blob_sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f"
+    },
+    {
+      "path": "src/game_native_vfs_application.cpp",
+      "revision": "2c85154b461b7bf4db0855b596b8906922a2dcd0",
+      "physical_sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+      "git_blob_sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148"
+    },
+    {
+      "path": "include/bsp/game_native_vfs_runtime.hpp",
+      "revision": "2c85154b461b7bf4db0855b596b8906922a2dcd0",
+      "physical_sha256": "9aac7e73eb21744bf0951ba60c78454ef90c4d2884830a32d35a3d15d886f38b",
+      "git_blob_sha256": "9aac7e73eb21744bf0951ba60c78454ef90c4d2884830a32d35a3d15d886f38b"
+    },
+    {
+      "path": "src/game_native_vfs_runtime.cpp",
+      "revision": "2c85154b461b7bf4db0855b596b8906922a2dcd0",
+      "physical_sha256": "4420a276eb28c22c334bad1707c520d15f46b7f129dff34bd70ca27cb63ce893",
+      "git_blob_sha256": "4420a276eb28c22c334bad1707c520d15f46b7f129dff34bd70ca27cb63ce893"
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "revision": "2c85154b461b7bf4db0855b596b8906922a2dcd0",
+      "physical_sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "git_blob_sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+    }
+  ],
+  "coupled_provider_fixes": [
+    "0265ee8ad3 reverse-find fields ancestorverified",
+    "276857287701261059cd2376f1bd36a9f64ebe33 raw425F40/raw4261A0 bytecorrection"
+  ],
+  "constants": {
+    "readonly_spans": [
+      [
+        "00ce7898",
+        2
+      ],
+      [
+        "00ce3a70",
+        2
+      ],
+      [
+        "00ce7890",
+        2
+      ]
+    ],
+    "same_data_identity": "callerprecondition only; notvaluechecked",
+    "fallback": "SAME actual borrowed0109CEF0 role, notE17654/newbuffer"
+  },
+  "private_state_graph": {
+    "predecessors": [
+      -1,
+      0,
+      1,
+      1,
+      3,
+      4,
+      5,
+      4,
+      3,
+      1
+    ],
+    "roles": [
+      "stem",
+      "extension",
+      "substringtemp",
+      "underscore",
+      "prefix",
+      "withSuffix",
+      "candidate",
+      "candidate",
+      "candidate",
+      "candidate"
+    ],
+    "selected_cleanup": "consume action predecessor beforeactualraw41DD20; trueunwind secondfailure terminates",
+    "normal_footer": "CURRENTdata capture BEFOREdisarm; CURRENTlength AFTERdisarm; actualrawgetter/BD1510, neverresampledata",
+    "underscore_normal": "earlycaptured data+length, notcurrentfooter; selectedunwindcurrentheader",
+    "state6": "mapretained, no invented normalproviderboundary"
+  },
+  "schedule": [
+    "rightmostslash/firstdot andcaptured/currentheaderCstringepochs",
+    "actualsubstring\u2192assignment\u2192tempreturn; failedcalleeoutputnotarmed",
+    "currentinputdata_orSAME0109CEF0+captureddot, rawextensionresize/copy",
+    "capturedsuffixbegin/count/SECONDdata-forend; fixedrange",
+    "actualunderscorebytes andearlydata/len capture; threeconcatcalls",
+    "withSuffix/prefix/capturedunderscorereturn beforeCURRENTtable/slot8/concreteexists",
+    "rawALtruth/currentcandidate append; capturednormalcandidate/ext/stemfooters"
+  ],
+  "qualification": [
+    "wholelowerproviderfencing notclaimed; raw469840/41DD40/41DD20/currentVFS policies retained",
+    "noNativeABI/FH3/SEH/fault/doublefailure/privateframealias proof",
+    "currentCRT/copy/zerobytecall qualification, no vendorbody",
+    "verifiedbareRET4254B0diagnostics explicitlyomitted, no fakeprovider",
+    "no constructors/newpublication/count/rollback/recovery/loading/raw16/fullAA0020/Font/startup/runtime admission"
+  ],
+  "validation": {
+    "strict_object": {
+      "exit_code": 0,
+      "COFF_machine": "0x14c",
+      "receipt": "local/native_lua_script_overrides_raw_compile_cc9_20261030/compile_receipt.json",
+      "receipt_sha256": "e1dcf518a94045c65bf748c94d1e18b9dc6b0d5f4054c6acdc6ecb023ef8c969",
+      "object_sha256": "2cda8daacd8be2c8dce703b12237cc3a4dcd22e0e44e9baa0baf74e2e40b3c2f",
+      "flags": "/std:c++17 /permissive- /W4 /WX /EHsc /MD /O2 /fp:strict"
+    },
+    "link": false,
+    "tests": false,
+    "probes": false,
+    "game": false,
+    "Ghidra_mutation": false,
+    "old_typed_preservation_sha256": "cd07a9747183c0ee08b4c9ff278686886312c93fc367bce0c3d97f1e1529e9f3"
+  }
+}

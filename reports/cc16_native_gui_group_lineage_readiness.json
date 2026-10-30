@@ -1,0 +1,615 @@
+{
+  "schema": "cc16_native_gui_group_lineage_readiness_v1",
+  "status": "independent_native_recovery_and_qualified_source_authority_ready",
+  "baseline_commit": "33d4b470b7ec752da670c1d2807a41389cd76dab",
+  "decision": {
+    "initializer_source_ready": true,
+    "implemented": false,
+    "source_scope": "CD7460 and same-process Group authority only",
+    "actual_Group_Page_Frame_Game_adoption_ready": false,
+    "required_source_files": [
+      "include/bsp/game_native_gui_text_process.hpp",
+      "src/game_native_gui_text_process.cpp"
+    ],
+    "no_extra_Element_state_required": true,
+    "qualification": "Only under exact concrete Source failure/lifetime proof below; no Native ABI/fault/SEH or arbitrary provider claim."
+  },
+  "analysis_target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "verified_before_live_batches": true,
+    "mutations": false
+  },
+  "original_image": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "native": {
+    "address": "00CD7460",
+    "end_inclusive": "00CD74AE",
+    "bytes": 79,
+    "instructions": 16,
+    "hex": "803d9cbff800007545b988bcf800c6059cbff80001c705e4bff80000ccd500e87c0dddffa188bcf8008b0d8cbcf800a3dcbff800890de0bff800e88137a2ff8b48048d5101895004890dd8bff800c3",
+    "sha256": "62efefd806bf370b48bfbe69730e70b5c1f02f9fdcc51fc8e0de2c7192c3dd66",
+    "decoded": [
+      "00CD7460: cmp byte ptr [0xf8bf9c], 0",
+      "00CD7467: jne 0xcd74ae",
+      "00CD7469: mov ecx, 0xf8bc88",
+      "00CD746E: mov byte ptr [0xf8bf9c], 1",
+      "00CD7475: mov dword ptr [0xf8bfe4], 0xd5cc00",
+      "00CD747F: call 0xaa8200",
+      "00CD7484: mov eax, dword ptr [0xf8bc88]",
+      "00CD7489: mov ecx, dword ptr [0xf8bc8c]",
+      "00CD748F: mov dword ptr [0xf8bfdc], eax",
+      "00CD7494: mov dword ptr [0xf8bfe0], ecx",
+      "00CD749A: call 0x6fac20",
+      "00CD749F: mov ecx, dword ptr [eax + 4]",
+      "00CD74A2: lea edx, [ecx + 1]",
+      "00CD74A5: mov dword ptr [eax + 4], edx",
+      "00CD74A8: mov dword ptr [0xf8bfd8], ecx",
+      "00CD74AE: ret "
+    ],
+    "live_proto": {
+      "function_name": "CG_static_init_00cd7460",
+      "address": "00cd7460",
+      "program": "battlestationspacific.exe",
+      "instruction_count": 16,
+      "basic_block_count": 3,
+      "edge_count": 3,
+      "call_count": 2,
+      "string_ref_count": 1,
+      "param_count": 0,
+      "cyclomatic_complexity": 2,
+      "prologue_stripped": false,
+      "epilogue_stripped": false,
+      "callee_names": [
+        "BSP_GuiElement_TypeIdInit",
+        "BSP_TypeId_GetCounterSingleton"
+      ],
+      "string_constants": [
+        "cGuiGroup"
+      ],
+      "immediate_values": [
+        1
+      ],
+      "basic_block_hashes": [
+        "cdc20cc70c742d1b6cd75c9585fca258c5e015556df3d854a2d4ae4fffe452e9",
+        "635044d828d20480c68e6a433b0b99abccb7a7c297f6d9edb7219f3272738b70",
+        "0adbbd810c0c7db52c9091b7038939924132e8623b99a21e2aa57785f8c77d61"
+      ]
+    },
+    "call_rows": [
+      {
+        "address": "00CD747F",
+        "native": "00AA8200",
+        "function": "00CD7460",
+        "phase": "complete Native Group lineage initializer"
+      },
+      {
+        "address": "00CD749A",
+        "native": "006FAC20",
+        "function": "00CD7460",
+        "phase": "complete Native Group lineage initializer"
+      }
+    ],
+    "cached_listing": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\local\\native_gui_group_lineage_readiness\\cached_asm.txt",
+      "bytes": 555,
+      "sha256": "e94ccb1576c2d56be345aca3c5f8420af08542b4e1e0ad8bec56ff5cdd60c566"
+    }
+  },
+  "native_data": [
+    {
+      "address": "00D5CC00",
+      "bytes": 10,
+      "hex": "6347756947726f757000",
+      "sha256": "ff6650a93a9d80cae30bece064140e4bfb07ce4eb5a80f7194313bf7107c94cc",
+      "image_origin": {
+        "section": ".rdata",
+        "file_backed_bytes": 10,
+        "loader_zero_bytes": 0
+      },
+      "qualification": "Original image/loader preimage, not current game runtime state."
+    },
+    {
+      "address": "00CE3498",
+      "bytes": 16,
+      "hex": "d073cd00f073cd004074cd006074cd00",
+      "sha256": "e2bea9637eb08ff67f9d5c461eddd488f76d2db0d1c7e5c5229283784edfa2b6",
+      "image_origin": {
+        "section": ".rdata",
+        "file_backed_bytes": 16,
+        "loader_zero_bytes": 0
+      },
+      "qualification": "Original image/loader preimage, not current game runtime state."
+    },
+    {
+      "address": "00F8BF9C",
+      "bytes": 1,
+      "hex": "00",
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "image_origin": {
+        "section": ".data",
+        "file_backed_bytes": 0,
+        "loader_zero_bytes": 1
+      },
+      "qualification": "Original image/loader preimage, not current game runtime state."
+    },
+    {
+      "address": "00F8BFD8",
+      "bytes": 16,
+      "hex": "00000000000000000000000000000000",
+      "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb",
+      "image_origin": {
+        "section": ".data",
+        "file_backed_bytes": 0,
+        "loader_zero_bytes": 16
+      },
+      "qualification": "Original image/loader preimage, not current game runtime state."
+    }
+  ],
+  "native_contract": {
+    "abi": "no consumed register/stack inputs; plain RET; no local EH frame; cold scratch/live-outs and flags not promised by new Source C++ API",
+    "guard": "byte F8BF9C nonzero -> immediate RET, no parent/counter access",
+    "cold_epochs": [
+      "ECX=F8BC88",
+      "guardF8BF9C=1",
+      "namehomeF8BFE4=D5CC00",
+      "actual AA8200",
+      "read CURRENT F8BC88 atCD7484 andF8BC8C atCD7489 BEFORE eitherGroup parent store",
+      "store parentsF8BFDC/CD748F andF8BFE0/CD7494",
+      "actual6FAC20/CD749A",
+      "read returnedobject+4 ONCE/CD749F",
+      "wrapping increment/storecounter FIRST/CD74A5",
+      "storeoldID GroupF8BFD8/CD74A8"
+    ],
+    "failure": "guard/name and earlier stores sticky; no rollback/reset",
+    "pseudocode_limitation": "decompiler reverses final counter/GroupID store order; assembly governs",
+    "not_inputs": [
+      "Text payload pool",
+      "Text descriptor completion",
+      "Layer completion",
+      "Group payload pool"
+    ],
+    "name": "actual D5CC00 cGuiGroup bytes; descriptor stores Native identity word, not host callable/string pointer",
+    "zero_values": "Original loader preimage only; completed IDs may legitimately be0 or wrap; no nonzero completion test"
+  },
+  "actual_suppliers": [
+    {
+      "name": "Element",
+      "source": "GameNativeGuiTextProcess private initialize_element_00aa8200",
+      "body": "existing gui_type_initialize<2> plus actual LightTypeBootstrap::initialize_root_00bea780 and real staged root ID",
+      "custody": "SAME private Element guard/record; no duplicate Element or staged fake ID"
+    },
+    {
+      "name": "counter",
+      "source": "private final CounterHost -> final TypeIdCounterLifetime::get_006fac20",
+      "owner": "GameNativeVfsApplication::Impl.type_counter_0109db7c + NativeVfsOwnerServices.types_",
+      "input": "vfs.native_owners().types()",
+      "storage": "real8B profileCFB6C4/counter+4 with existing malloc/new-handler/free and actual manager registration",
+      "limit": "existing accepted Source/provider proof, no fresh unrelated Native recovery"
+    },
+    {
+      "name": "root",
+      "source": "GameNativeTypeStorage.light_types() -> LightTypeBootstrapStorage",
+      "input": "vfs.native_types().light_types()",
+      "custody": "SAME root0109DB84/rootguard0109DB80 and counter domain; stable through consumers/shared drain"
+    },
+    {
+      "name": "name data",
+      "source": "GameNativeReadOnlyData actual D5CC00 if name bytes are consumed",
+      "custody": "numeric word metadata from verified Native instruction; no new default literal/global or numeric code invocation"
+    }
+  ],
+  "minimal_same_process_change": {
+    "append_fields": [
+      "uint8_t group_guard_00f8bf9c_{}",
+      "GuiTypeDescriptor<3> group_00f8bfd8_{}",
+      "State group_type_state_{unattempted}"
+    ],
+    "reuse_fields": [
+      "counter_",
+      "root_",
+      "root_guard_",
+      "element_guard_00f8bc80_",
+      "element_00f8bc88_"
+    ],
+    "shared_helper": "private pure monotonic bind-or-check of existing counter/root/rootguard identities. First admitted Text OR Group binds once; later operations match, never overwrite/retarget. No Native getter/field read/callback/pool work.",
+    "new_initializer": "initialize_group_type_once_00cd7460(TypeIdCounterLifetime&, LightTypeBootstrapStorage)",
+    "new_accessor": "const volatile uint32_t (&group_lineage_00f8bfd8() const)[3]",
+    "Group_entry": [
+      "completed own role: require same domain then return; do not blanket-veto because another role failed",
+      "cold own role: reject own entered failure/reentry and cold Text-state threw as pure admission",
+      "bind/check same domain before Native guard/name/counter effects",
+      "no Text or Group pool, Text descriptor or Layer condition",
+      "mark Group entered, execute exact Native volatile field schedule, mark returned only after GroupID store"
+    ],
+    "Text_entry": [
+      "preserve existing Text pool/own-state admission and public signature",
+      "cold Text rejects Group-state threw before new Native effects",
+      "replace unconditional counter/root identity assignments with monotonic shared helper",
+      "Text after completed Group uses SAME Element/counter/root, no duplicate initialization"
+    ],
+    "Layer_and_getters": "Preserve existing qualified Layer Text prerequisite and Element/Text/Layer getter gates; no broad failed-other-role veto on completed own-role access.",
+    "retention_query": "MANDATORY append group_type_state_==threw to native_operation_interrupted(); no extra Element failure bit needed because Element is always inside an entered Text/Layer/Group role.",
+    "consumer": "existing native_gui_group_is_kind_of_00ac6f70 consumes SAME returned const volatile3-word reference in current ordered reads. Actual current0C binding must join that consumer/authority; no copied/fake/zero chain or unused replacement array.",
+    "avoid": "do not use generic depth3 parent-copy loop; two explicit parent snapshots before eitherGroup store; no new globals/counter/root/Element/payload pool"
+  },
+  "closed_suffix_Source_failure_proof": {
+    "result": "No supported ordinary C++ failure after normally completed Element in this exact actual domain; role-state induction suffices.",
+    "conditions": [
+      "Private loader-zero Element; cold writer only entered Text/newGroup; Layer already requires completed Text. Hot Element has prior normal role completion or cold cross-entry rejects prior entered failure; no unexplained external guard writer.",
+      "Concrete final local CounterHost calls SAME final TypeIdCounterLifetime, not arbitrary generic host. Completed cold Element has completed same getter/ID update with valid nonnull published object.",
+      "Publication/object remain nonnull/live/unchanged across subsequent role initializations; no counter clearing/replacement/deletion, retirement, reentry, races or foreign providers. Actual VFS/counter/root/manager graph retained through consumers/shared drain.",
+      "After parent return, Group only bounded DWORD copies/stores then same getter; Text only primitive parent copies then same getter. Actual warm get lines23-24 is load/branch/return with no manager/heap/registration/validation/callback; uint32 operations/completion assignment do not throw.",
+      "Fault/SEH/nonlocal/invalid-storage/unmasked-FP and arbitrary-provider behavior excluded. Any future throwing warm getter, post-parent call/logging/check, allowed publication reset or relaxed serialization invalidates proof: then track actual Element completion rather than broad failed-role veto."
+    ],
+    "safe_cross_entry": "An ordinary entered failure in one cold role leaves potentially partial Element; cold other role rejects before new Native effects. A post-parent ordinary failure that would wrongly poison completed Element is unreachable under these conditions.",
+    "warm_access": "Completed same-domain own-role entry/getter stays available; original interrupted other-role state is neither cleared nor treated as recovery.",
+    "independent_challenge": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\local\\native_gui_group_lineage_readiness\\independent_failure_domain_note.txt",
+      "bytes": 1440,
+      "sha256": "b0e393ed47524bf0a016ca16a79055f8a0ef03958cfe24a32fd26e69462bec44"
+    }
+  },
+  "actual_retention_and_pool_caller": {
+    "current_retention": "game_hosts.cpp3119 calls Text with same actual VFS services; catch checks native_operation_interrupted() before existing process-retention boundary. Adding Group-threw makes Group failure observable there. Initializer adds no terminal policy.",
+    "CD7440_separate": "real GameNativeGuiGroupPoolProcess::initialize_once_00cd7440 exists; Native slotsCE34A0/CD7440 andCE34A4/CD7460 distinct. Pool is required at actual allocation/use, NOT a CD7460 precondition.",
+    "relative_CRT_data": [
+      "CE3498=CD73D0",
+      "CE349C=CD73F0",
+      "CE34A0=CD7440",
+      "CE34A4=CD7460"
+    ],
+    "production_coupling_candidate": "retained GUI startup owner/Page Layer setup already has actual VFS domain; compose real pool/type calls there when actual Type2 producer/consumer is adopted. Preserve pool status/own failure custody and same scalar lifetime graph; no implicit CRT execution or absolute numeric ID claim.",
+    "independence": "type-only/Group-before-Text needs no payload startup. Existing process construction metadata binds its own pool companion but enters no Text/Group payload startup.",
+    "open": "pool failure is separate API/caller custody, not fake Group-type entered state; full actual Group/Page/Frame/Game ownership and gates remain open"
+  },
+  "compatibility_and_future_validation": {
+    "unchanged_signatures_and_member_order": "append only; preserve current public APIs and old members",
+    "required_existing_method_change": "Text cold-domain bind/check and cold cross-entry check are necessary to preserve Group-first domain; do not assert old machine-byte identity for changed method",
+    "normal_cases": [
+      "Text-first old native-data sequence unchanged",
+      "Group-first then Text shares same Element/counter/root",
+      "warm same-domain re-entry returns",
+      "mismatched domain rejects before new effects",
+      "cold cross-entry after supported ordinary entered failure rejects before new effects",
+      "completed-role getters/entries remain available"
+    ],
+    "future_checks": "strict Win32 Source objects/emission proving parent-load/store and counter/ID epochs, appropriate existing common integration checks; no compile or test here",
+    "peer_context": "eight critical provider paths unchanged from frozen33d4 to independent review Maina299; empty delta pinned"
+  },
+  "verification": {
+    "independent_Native_body_count": 1,
+    "bytes": 79,
+    "instructions": 16,
+    "call_rows": [
+      {
+        "address": "00CD747F",
+        "native": "00AA8200",
+        "function": "00CD7460",
+        "phase": "complete Native Group lineage initializer"
+      },
+      {
+        "address": "00CD749A",
+        "native": "006FAC20",
+        "function": "00CD7460",
+        "phase": "complete Native Group lineage initializer"
+      }
+    ],
+    "live_checked_rows": 2,
+    "failed_rows": 0,
+    "source_pin_count": 27,
+    "source_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\config\\target.json",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\include\\bsp\\game_native_gui_text_process.hpp",
+        "bytes": 5524,
+        "sha256": "215be8dcc255664c7f50a75ea9287012d1b8090ba860f111d341983819419e47",
+        "git_blob": "2f85c4faead42a7a295d2f4ba5d6345334759244"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\src\\game_native_gui_text_process.cpp",
+        "bytes": 8246,
+        "sha256": "84fe56b3b40589a831dfbdf57d289d9f85dc91ef41bb5a239b81e43d462c8f2f",
+        "git_blob": "66234fe46a716dab05525201c260eea39da426f4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\include\\bsp\\gui_widgets_cc13.hpp",
+        "bytes": 92980,
+        "sha256": "2a889c7f79cdfa87e99283c4b0286eed4911845410425a38918cb39aeecb63b7",
+        "git_blob": "a69f853d6015aa99b2efaaa0bb71f497052c8292"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\src\\gui_widgets_cc13.cpp",
+        "bytes": 75116,
+        "sha256": "20312bdde0d2a577300c6431ea53a54aaaaf6c05c3c6670dc655c20864bb74da",
+        "git_blob": "4511ee034957d5d2322c36deae1ee9618ac847bb"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\include\\bsp\\light_type_bootstrap.hpp",
+        "bytes": 3214,
+        "sha256": "7856c5bbb320d6d5e1dd0df2f4969314cd2d7365134741702e187a901456333f",
+        "git_blob": "c97724bb24247b8a9d4543050d2caf45f15ec197"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\src\\light_type_bootstrap.cpp",
+        "bytes": 5880,
+        "sha256": "6384bd3d557e9c9378e9ea54994d3defcccf2814d9918f371fd461cbeed0e6ef",
+        "git_blob": "0c1fdc4e2aa3f27f2c56bb518b99ccf2597db2d9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\include\\bsp\\native_vfs_owner_services.hpp",
+        "bytes": 3548,
+        "sha256": "2df162f0937d2c9b34c790609d92c3e41ef8cc6ae49977ec0fcd6e07b699a128",
+        "git_blob": "4c8bdae5e23b4af895d0b3ab2eb6b45c0f393333"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\src\\native_vfs_owner_services.cpp",
+        "bytes": 1236,
+        "sha256": "1df19acedaa8505b0bc1d0fd4279a514a73f4a1db5cf63300c53f89e9cb1ed6c",
+        "git_blob": "62fe8b31d3d38ae8f352549b091282e839807415"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\include\\bsp\\sound_lifetime_access.hpp",
+        "bytes": 3039,
+        "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b",
+        "git_blob": "733525b1563c1641db659681fd812485aa71c7ed"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\src\\sound_lifetime_access.cpp",
+        "bytes": 2751,
+        "sha256": "00ace40faa75007eb4e7cf857de0473347d8bdba0d99ed15ce8bc750c09efd29",
+        "git_blob": "3215502c513d22bb0d5c0201dfb110283803b0da"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\include\\bsp\\singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\src\\singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\include\\bsp\\game_native_vfs_application.hpp",
+        "bytes": 3022,
+        "sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f",
+        "git_blob": "a9d2ecefb12f656e5b43a56026234abefd34c670"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\src\\game_native_vfs_application.cpp",
+        "bytes": 8470,
+        "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+        "git_blob": "32a441a593a381b649ccd89b71a6e4277e91401d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\include\\bsp\\game_native_type_storage.hpp",
+        "bytes": 7900,
+        "sha256": "fc659c2705ef9899c150106ce1bfb7291fc23046f689528f6ec379d48d4d7337",
+        "git_blob": "52d2a009f0404a611feba2abcc41dab751204af6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\src\\game_native_type_storage.cpp",
+        "bytes": 5640,
+        "sha256": "87958d36dc6c7480e73992698c3c9dac86bc153f7033fc0e55a9833fd2ea5b4b",
+        "git_blob": "106fa3ce980394494b62512c35e6d46c3167c78d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\include\\bsp\\game_hosts_vfs.hpp",
+        "bytes": 12974,
+        "sha256": "1e3878ed0f752e14946c132fdee509a76f07c95cd52676bc00fafdbeb7ad0326",
+        "git_blob": "00d36ad12ab70f56c72886fc750163115162d645"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\src\\game_hosts_vfs.cpp",
+        "bytes": 22223,
+        "sha256": "7394248062dc8b98f55e06ea172e93fb3da3243a897f9e04dcb652a70750e087",
+        "git_blob": "e5a1882aba8b93ee30a928646c412359214f40f8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\src\\game_hosts.cpp",
+        "bytes": 185132,
+        "sha256": "6915e364d7c2eb73ebba01d7d1c521ca7fdc94ab78ad7f0302288fc281cad9f4",
+        "git_blob": "d138983e92e5f93339e529655990f924f1c06be8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\include\\bsp\\game_native_gui_page_application.hpp",
+        "bytes": 3811,
+        "sha256": "8a21c044261937a47938887584b94650d1d04ab1584d3c447af276a6c04cebcb",
+        "git_blob": "3900c1e90fb9dd685f1c1375079b6fd13252cff9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\src\\game_native_gui_page_application.cpp",
+        "bytes": 54018,
+        "sha256": "6931fc7c1dced9222a47ec072ca143b00d1789b5a344b85c7bfc639b15314711",
+        "git_blob": "0e1e95e2a1372504cce0dda0a00a6c4476f8a367"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\include\\bsp\\native_gui_group_identity.hpp",
+        "bytes": 3927,
+        "sha256": "6e251cf75959a850d2a763840cbd798be33d8d7c14a4979e73287378645ff527",
+        "git_blob": "78935045d86006ff11adc7ef949f417443e8a981"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\src\\native_gui_group_identity.cpp",
+        "bytes": 4261,
+        "sha256": "7c562ecc89b706df3ed39a05c444a921d737a67f5db3ca3cffb179859d4d744c",
+        "git_blob": "94763c5fb3279fb3841a968ebcabc287a3b9f1ca"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\include\\bsp\\native_gui_group_storage.hpp",
+        "bytes": 3240,
+        "sha256": "3bd8555c54d685ce14ce23f9d0f23168fa49b33e948577f59fdcdc14f15b0f3b",
+        "git_blob": "922b1596a57bb51fef5bd68d308b27937a0b8b6c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\src\\native_gui_group_storage.cpp",
+        "bytes": 1772,
+        "sha256": "4c4729f66671693189cadd2cc5e27310f6e09a9a86aee6d50b1c7570b4cd4ad2",
+        "git_blob": "8e67b3168018e9973124c13996f037e96e676e7c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\include\\bsp\\game_native_readonly_data.hpp",
+        "bytes": 2713,
+        "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+        "git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3"
+      }
+    ],
+    "artifact_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\local\\native_gui_group_lineage_readiness\\live_asm.txt",
+        "bytes": 571,
+        "sha256": "d032bcd9684caf85767143d8abd4ccac37834225a321e6b07b4a0ee89282185c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\local\\native_gui_group_lineage_readiness\\live_body_bytes.txt",
+        "bytes": 381,
+        "sha256": "846f4d1042fcf822678f18b2701bb7bcc6c63830be8ab66fd056d23b624d4529"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\local\\native_gui_group_lineage_readiness\\live_crt_neighbor_slots.txt",
+        "bytes": 77,
+        "sha256": "8a754e00ebbe3ec55f125c2c972a99e7eb69299ace45554d31d55366b87977f0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\local\\native_gui_group_lineage_readiness\\live_descriptor_preimage.txt",
+        "bytes": 77,
+        "sha256": "1e01b9febc51dfb858148502aec779c46a19994b0367eb56bf63fba7ab9b6049"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\local\\native_gui_group_lineage_readiness\\live_guard_preimage.txt",
+        "bytes": 17,
+        "sha256": "8c29400acd4cad0d94e944d86bafe117b8eb281a453343f71085908d507849a9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\local\\native_gui_group_lineage_readiness\\live_name.txt",
+        "bytes": 53,
+        "sha256": "be4b6066eb3fd22da237d6b6a13373c75ef47e0222a5ff3dd54d9e4101578692"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\local\\native_gui_group_lineage_readiness\\live_proto.txt",
+        "bytes": 901,
+        "sha256": "004cf481df30321305017642d2f368c123fa4de86ed0a47a81ac1a546b40431b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\local\\native_gui_group_lineage_readiness\\target_status.txt",
+        "bytes": 40,
+        "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\local\\native_gui_group_lineage_readiness\\target_status_bytes.txt",
+        "bytes": 40,
+        "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\local\\native_gui_group_lineage_readiness\\element_lookup.txt",
+        "bytes": 1609,
+        "sha256": "f19796af7c30ce1cb3f39bde156c1aac81ff4ebab02c73909a50c500f93a63fa"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\local\\native_gui_group_lineage_readiness\\counter_lookup.txt",
+        "bytes": 2517,
+        "sha256": "7449fce65b3bb984cdbf0c2f259e6992fa7dbe4ce9e6730c00e4bb0ba0b8bb8f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\local\\native_gui_group_lineage_readiness\\element_docs.txt",
+        "bytes": 376,
+        "sha256": "a526c4e358e50640fc9b46aaa4f24c9715f9a85c975b73b3d510592391a6fc04"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\local\\native_gui_group_lineage_readiness\\counter_docs.txt",
+        "bytes": 455,
+        "sha256": "b3e4fdf39a864e6b07ec96cea70492758e4cf6f081485b89073a828de7483056"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\local\\native_gui_group_lineage_readiness\\callers.txt",
+        "bytes": 143,
+        "sha256": "0c19bc7c63ef6dd15c23f3c20b9399dfbcbd8ce2080e16964495214ea195c37b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\local\\native_gui_group_lineage_readiness\\pool_lookup.txt",
+        "bytes": 802,
+        "sha256": "23d431c6d82700f8b5a39d16a8acc0dd2114e129c73c0b2c06291107ab80ecf6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\local\\native_gui_group_lineage_readiness\\current_group_binding_search.txt",
+        "bytes": 180,
+        "sha256": "c5a6812edfabde37be3abbf3310fcdb927798b6cd862b3a6c898d922c937da13"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\local\\native_gui_group_lineage_readiness\\independent_failure_domain_note.txt",
+        "bytes": 1440,
+        "sha256": "b0e393ed47524bf0a016ca16a79055f8a0ef03958cfe24a32fd26e69462bec44"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\local\\native_gui_group_lineage_readiness\\target_status_verifier.txt",
+        "bytes": 40,
+        "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\local\\native_gui_group_lineage_readiness\\original_call_rows.json",
+        "bytes": 337,
+        "sha256": "131f1b1a426679f37ccd0fddb4c94c0124642cadb947e9892b15643c4c7c9447"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\local\\native_gui_group_lineage_readiness\\call_verification.txt",
+        "bytes": 97,
+        "sha256": "de2a26e70f42f2037812ef476344f8231cd52113ef8e59cb95d468397b1aa565"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\local\\native_gui_group_lineage_readiness\\peer_context_provider_delta.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\local\\native_gui_group_lineage_readiness\\audit.py",
+        "bytes": 6518,
+        "sha256": "6c41d7f6bbc127c5955f61437ccaccce4a09ce6477c03ee19bca8e451f663e66"
+      }
+    ],
+    "audit": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\local\\native_gui_group_lineage_readiness\\audit.json",
+      "bytes": 19743,
+      "sha256": "2ab89101c410267988663a5bdfe56b9e430120515fcfe4f56a08bf2a44068571"
+    },
+    "audit_run": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\local\\native_gui_group_lineage_readiness\\audit_run.txt",
+      "bytes": 265,
+      "sha256": "54b67a295e7772577210b137c6feb63b86d8726909ab674e3b29a82bfa175ac7"
+    },
+    "call_verification": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\local\\native_gui_group_lineage_readiness\\call_verification.txt",
+      "bytes": 97,
+      "sha256": "de2a26e70f42f2037812ef476344f8231cd52113ef8e59cb95d468397b1aa565"
+    }
+  },
+  "scope_preservation": [
+    "AA8200/6FAC20 existing evidence retained, not fresh unrelated Native recovery",
+    "No Source/header/shared metadata/CMake/Ghidra/guard/caller edits",
+    "No compile/link/tests/executable/probe/code/DLL/game execution",
+    "Prior frozen artifacts unchanged"
+  ],
+  "credit": {
+    "native_bodies": 0,
+    "recovered_bodies": 0,
+    "vendor_bodies": 0,
+    "duplicate_bodies": 0,
+    "runtime": 0,
+    "activation": 0
+  },
+  "owned_doc": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-lineage-readiness\\docs\\CC16_NATIVE_GUI_GROUP_LINEAGE_READINESS.md",
+    "bytes": 10460,
+    "sha256": "74a81574ad48e6bbc031c1a7d87c178b49d90c29008fa657d601fb1fcbb15bf4"
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "packet": "codex-native-reverse-find-raw-fields",
+  "state": "bounded_raw_field_qualification_object_compiled",
+  "source_ready": false,
+  "base_commit": "931c998604c5799fcfdf2fc03db2305f4402fb81",
+  "created_utc": "2026-10-30T07:31:06.380917+00:00",
+  "address": "004bcb80",
+  "owned_files": [
+    "src/native_lua_script_overrides.cpp",
+    "docs/NATIVE_REVERSE_FIND_RAW_FIELDS.md",
+    "reports/native_reverse_find_raw_fields.json"
+  ],
+  "source_hashes": {
+    "src/native_lua_script_overrides.cpp": "074cd71ecfa23c7ef952c923fddfc54faf7c3d95ad59dd95dbcc6b3ecac48656",
+    "docs/NATIVE_REVERSE_FIND_RAW_FIELDS.md": "7fc004066d47b1f0fbb65828c5a653a8b2cd980b4fa82c75a9b2943a1a082ec3"
+  },
+  "change": "ONLY data+4 then length+0 fields use private fenced4byte memcpy; no rawCppDWORD field object assumption",
+  "ordering": [
+    "read data+4",
+    "ifnull return beforelength",
+    "read length+0",
+    "unchanged count/set/start tests, clamp, strlen and reverse scan"
+  ],
+  "preservation": {
+    "baseline_CPP_sha256": "028d02c005e18aaf1c2ee987b230a7c877fc8523e8f965e3ab2d292efc5d4135",
+    "inverse_CPP_sha256": "028d02c005e18aaf1c2ee987b230a7c877fc8523e8f965e3ab2d292efc5d4135",
+    "complete_CPP_byte_exact": true,
+    "typed_overload_delegate_unchanged": true,
+    "all_BDEF90_and_other_bodies_literal_unchanged": true,
+    "no_new_entry_provider_callback_semantics": true
+  },
+  "verification": {
+    "isolated_compile": {
+      "command": "$taskObjectDir=Join-Path (Get-Location).Path 'build/native_reverse_find_raw_fields_object'; New-Item -ItemType Directory -Path $taskObjectDir -Force | Out-Null; $taskCompileCommand='call \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\Tools\\VsDevCmd.bat\" -arch=x86 -host_arch=x64 -no_logo && cl.exe /nologo /std:c++17 /permissive- /W4 /WX /EHsc /MD /O2 /Ob2 /fp:strict /DNDEBUG /DWIN32 /D_WINDOWS /DNOMINMAX /DWIN32_LEAN_AND_MEAN /I include /c src\\native_lua_script_overrides.cpp /Fo\"build\\native_reverse_find_raw_fields_object\\native_lua_script_overrides.obj\"'; & $env:ComSpec /d /s /c $taskCompileCommand; exit $LASTEXITCODE",
+      "exit_code": 0,
+      "stdout": "native_lua_script_overrides.cpp\r\n",
+      "wall_time_seconds": 5.2212331,
+      "attempts": 1,
+      "scope": "strictWin32 C++17 release/EH/runtime/fp flags; /c only"
+    },
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\build\\native_reverse_find_raw_fields_object\\native_lua_script_overrides.obj",
+      "sha256": "5c9e3ad46a9f974d745150190a47bbfb7277d42fe9f9f77f6272b8bf46eb9170",
+      "bytes": 8872,
+      "machine": "0x14c",
+      "existing_raw_and_typed_entries": [
+        "?reverse_find_native_string_bytes_004bcb80@bsp@@YAIABVNativeString@1@PBDH@Z",
+        "?reverse_find_native_string_bytes_004bcb80@bsp@@YAIPBXPBDH@Z"
+      ],
+      "compile_only": true,
+      "linked_or_executed": false
+    },
+    "full_build": false,
+    "new_tests": 0,
+    "tests_run": 0,
+    "probe_executable": false,
+    "game": false,
+    "Ghidra_analysis_or_mutation": false
+  },
+  "limits": [
+    "actualheader/data/set storage readable andalive",
+    "no conflictingwriters/invalidatingcallbacks; barriers are not synchronization",
+    "no new NativeABI/SEH/hardwarefault or physicalpointer/lifetime claim",
+    "rawBDEF90/VFS/vector/caller integration remains separate"
+  ],
+  "exclusions": [
+    "sharedCMake/ledger edits",
+    "newNative/vendorbodycredit",
+    "newstdlib implementation",
+    "loadedlocale/startup/runtime readiness"
+  ]
+}

@@ -1,0 +1,350 @@
+{
+  "schema": "cc16_native_gui_group_pool_startup_review_v1",
+  "status": "accepted_bounded_source_composition_no_blocking_static_findings_common_current_host_gate_pending",
+  "review_base": "266f3e65e6f1e3421f8875fb046cba8fbb14dd33",
+  "production_baseline": "376a6e6c84ba24e4ed8246c5eead59094b8dcd8a",
+  "candidate_commit": "6772843657c3ab62f7bb4f9ae613adbac0770c80",
+  "readiness_commit": "26b944d87556b055be37aa0079e4d801ed80a21c",
+  "owned_files": [
+    "docs/CC16_NATIVE_GUI_GROUP_POOL_STARTUP_REVIEW.md",
+    "reports/cc16_native_gui_group_pool_startup_review.json"
+  ],
+  "decision": {
+    "bounded_source_accepted": true,
+    "blocking_static_findings": [],
+    "default_Main_integration_or_activation_accepted": false,
+    "common_build_link_proved": false,
+    "current_Host_runtime_proved": false,
+    "gameplay_proved": false
+  },
+  "candidate_report_git_blob_sha256": "987b52bbab9d1e54ea62c7e251ff8ceeee81e3c59d921c973f1f982efa5577c0",
+  "candidate_report_worktree_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\reports\\cc16_native_gui_group_pool_startup.json",
+    "bytes": 72169,
+    "sha256": "41af1438ba6e8d09c3bb34e147f962c3e7d37e1f8ffcb8c2848e8a6918914921"
+  },
+  "candidate_document_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\docs\\CC16_NATIVE_GUI_GROUP_POOL_STARTUP.md",
+    "bytes": 10446,
+    "sha256": "a4b534ba7ed6146b2bc3c3a4c9d58d53c71c537dd9d10163a09a30a01adcff71"
+  },
+  "sealed_candidate_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\sealed_candidate.json",
+    "bytes": 1996,
+    "sha256": "86a392bc0578b60831174ed8b981ee8f5fae0554ff908e1fd9509cefa42aec8c"
+  },
+  "candidate_diff_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\candidate_diff.patch",
+    "bytes": 91296,
+    "sha256": "ee39d70fb6b62008debf3e81c810e5e474394bb8df2f9cc295e810d1b4a79a5d"
+  },
+  "readiness_report_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup-review\\reports\\cc16_native_gui_group_pool_startup_readiness.json",
+    "bytes": 50716,
+    "sha256": "6f4ab080106d85c74fe02ef329c5152b3417fda7cbffec74f9965ae8aa471237"
+  },
+  "owned_candidate_source_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\include\\bsp\\native_gui_group_storage.hpp",
+      "bytes": 3543,
+      "sha256": "8f57c8e86d31c72583fd692d9f34cbeccd615c8c274de849e0f36e0d8802159b",
+      "relative_path": "include/bsp/native_gui_group_storage.hpp",
+      "git_blob": "1b5faa0c0dc8bb6f85a81357063304bebe89a8fb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\src\\native_gui_group_storage.cpp",
+      "bytes": 2382,
+      "sha256": "1713d147e754aba3d0ba6cbcf7bd5faffe4a4644ccec082fc66faa534bf69e46",
+      "relative_path": "src/native_gui_group_storage.cpp",
+      "git_blob": "7d0fd3c6d9e0f40ad4bc91d9dcf20f46bb3a8678"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\src\\game_main.cpp",
+      "bytes": 81290,
+      "sha256": "761ca1dfc2e54c2daa129a25811b86a8bb3f4771b5a18a26498ce11a8d94dc7b",
+      "relative_path": "src/game_main.cpp",
+      "git_blob": "4371f58bb28daa984bccea95ed0147f923ac59ff"
+    }
+  ],
+  "checks": {
+    "full_readiness_document_lines": 66,
+    "full_candidate_document_lines": 47,
+    "readiness_artifact_and_source_pins": 54,
+    "readiness_pin_mismatches": [],
+    "candidate_artifact_source_provider_pins": 76,
+    "candidate_pin_mismatches": [],
+    "sealed_git_blob_and_worktree_pins": 5,
+    "full_candidate_diff_exact": true,
+    "report_worktree_vs_git_difference": "Only LF/CRLF; normalized bytes equal.",
+    "baseline_provider_git_identities": 33,
+    "saved_baseline_source_snapshots_byte_exact": 3,
+    "resolved_unique_header_pins": 529,
+    "header_pin_mismatches": [],
+    "root_settings_project_snapshots": 3,
+    "root_source_or_pch_headers_consumed": false,
+    "compiler_logs_without_warning_error_diagnostics": 4,
+    "preserved_storage_sections": 60,
+    "preserved_main_sections": 2366,
+    "explicit_lambda_identities": 22,
+    "lambda_bijection_supporting_pairs": 51,
+    "all_sections_classified_and_independently_compared": true,
+    "changed_current_code_bytes": 7813,
+    "changed_current_instructions_including_padding": 2068,
+    "Main_full_difference_hunks": 100,
+    "Main_unwind_full_difference_hunks": 8,
+    "actual_Main_branch_edges": 178,
+    "intentional_Text_to_Group_OR_target_changes": 2,
+    "actual_Main_local_label_edges": 8,
+    "local_label_current_to_baseline_bijection": {
+      "$LN90": "$LN86",
+      "$LN106": "$LN102",
+      "$LN98": "$LN94",
+      "$LN96": "$LN92",
+      "$LN94": "$LN90",
+      "$LN92": "$LN88"
+    },
+    "Main_nonhunk_instructions_compared": 1652,
+    "Main_unwind_nonhunk_instructions_compared": 55,
+    "nonhunk_comparison_qualification": "Exact symbolic relocations, explicit local-label bijection, branch encoding and one equivalent 7-byte to 4-byte NOP padding change; no literal full-Main byte identity or arbitrary compiler dataflow/runtime claim.",
+    "rebuilt_FH3_FuncInfos": 142,
+    "rebuilt_throw_records": 52,
+    "rebuilt_SafeSEH_associations": 142,
+    "rebuilt_EH_dwords": 2672,
+    "rebuilt_EH_relocated_pointers": 709,
+    "all_nonpadding_xdata_bytes_accounted": true,
+    "equal_symbolic_FuncInfos": 70,
+    "sole_changed_symbolic_FuncInfo": "getter pre-Native Source allocation/guard cleanup gains maxState2; no try blocks",
+    "Main_EH_bytes": 620,
+    "Main_max_state": 35,
+    "Main_try_blocks": 8,
+    "callback_noexcept_flags": 5,
+    "callback_max_state": 0,
+    "throw_records_and_safe_seh_symbolic_sets_equal": true
+  },
+  "native_evidence": {
+    "installed_original_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "independently_read_PE_spans": [
+      {
+        "address": "00CD7440",
+        "bytes": 22
+      },
+      {
+        "address": "00CE0AE0",
+        "bytes": 10
+      },
+      {
+        "address": "00AC7410",
+        "bytes": 211
+      },
+      {
+        "address": "00AC71A0",
+        "bytes": 138
+      },
+      {
+        "address": "00CE3470",
+        "bytes": 128
+      }
+    ],
+    "total_bytes": 509,
+    "retained_target": {
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe"
+    },
+    "new_live_analysis": false,
+    "historical_material_source_bytes": 19885,
+    "historical_material_normalized_current_prefix_equal": true
+  },
+  "source_contract": {
+    "same_single_owner": true,
+    "native_pool": "actual F8BFA0 38h EC/F0 GuiGroup pool, not ModelGroup 188/18C",
+    "old_state_values": {
+      "unattempted": 0,
+      "returned": 1,
+      "threw": 2
+    },
+    "appended_state_values": {
+      "retiring": 3,
+      "retired": 4
+    },
+    "interruption_query": "const noexcept; only state==threw || state==retiring; no status/native/accessor/guard/callback/lock reads",
+    "native_order": "actual AC7410 then real atexit(actual CE0AE0), cache and return every actual status",
+    "replay": "returned caches any status; all other entered/retired states reject",
+    "callback": "existing noexcept; retiring before actual AC71A0; retired only after return; no new lock/cleanup/rollback/termination policy",
+    "zero_status": "real callback solely owns native pool teardown",
+    "nonzero_status": "completed initialized linked lifetime; same permanent backing/profile context; no status-as-error, exit, manual teardown or rollback",
+    "Main": "genuine header and pointer; publish before Native initialization between Text result log and particle getter; actual status log; both catches OR actual query; existing interrupted _Exit2, typed return1 and unknown terminate retained",
+    "additional_type_Text_factory_payload_activation": false
+  },
+  "expanded_source_boundary": {
+    "allocations_added": 1,
+    "observed_host_object_bytes": 120,
+    "native_storage_bytes": 56,
+    "epoch": "Source new + existing physical-domain/map binding constructor before publication/Native CD7440",
+    "getter_sites": {
+      "new": "0x74",
+      "physical_domain": "0x96",
+      "pool_binding_constructor": "0xA3",
+      "pointer_publication": "0xF7"
+    },
+    "failure_cleanup": "sized Source delete at guard state1, then static guard abort at state0; no entered Native recovery",
+    "no_cpp_Group_destructor_registration_or_exit_unbind": true,
+    "sole_storage_atexit_relocation": "actual explicit CD7440 pool registration",
+    "physical_root": "ordinary retained physical root is constructed before shown dependent callbacks; implicit map destruction releases scalar/context/function-pointer bookkeeping without native traversal or context invocation",
+    "qualification": "No arbitrary late callback/consumer, unrelated owner, Original heap/new-handler/ABI/FH3/SEH/fault, or new concurrent retirement/access proof."
+  },
+  "objects": [
+    {
+      "unit": "storage",
+      "version": "current",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\current_storage.obj",
+      "bytes": 19133,
+      "sha256": "c748fe0f39943ab2f791a230c7e52ad6b6bdbf74d46e61c4f7557657a6861535",
+      "sections": 86,
+      "primary_symbols": 186,
+      "relocations": 159,
+      "code_bytes": 1758,
+      "instructions": 576,
+      "raw_sections_symbols_relocations_and_full_decode_match": true
+    },
+    {
+      "unit": "storage",
+      "version": "baseline",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\baseline_storage.obj",
+      "bytes": 19371,
+      "sha256": "139a19bc51bf7a1d8ce90c1120bc90acf8ae40acb33db8dbb5f1ccd20e8aa0d5",
+      "sections": 88,
+      "primary_symbols": 188,
+      "relocations": 172,
+      "code_bytes": 1724,
+      "instructions": 542,
+      "raw_sections_symbols_relocations_and_full_decode_match": true
+    },
+    {
+      "unit": "main",
+      "version": "current",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\current_main.obj",
+      "bytes": 596793,
+      "sha256": "9c751311be8f448fe67897812d7937657d4d94522cb22870b592a1140d6500a4",
+      "sections": 2391,
+      "primary_symbols": 4761,
+      "relocations": 4378,
+      "code_bytes": 85463,
+      "instructions": 27337,
+      "raw_sections_symbols_relocations_and_full_decode_match": true
+    },
+    {
+      "unit": "main",
+      "version": "baseline",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\baseline_main.obj",
+      "bytes": 596090,
+      "sha256": "d3e9d77a606ac21c1fd0cb36b4e31417fafea002485905a9f5c76edbc414af5b",
+      "sections": 2390,
+      "primary_symbols": 4756,
+      "relocations": 4372,
+      "code_bytes": 85377,
+      "instructions": 27313,
+      "raw_sections_symbols_relocations_and_full_decode_match": true
+    }
+  ],
+  "evidence_receipts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\compile_inputs.json",
+      "bytes": 23164,
+      "sha256": "e491f8477681f53013e2c4c8a6cfa6d3336f19cb6970e8b24a65b9503ef883ed"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\actual_project_settings.json",
+      "bytes": 5185,
+      "sha256": "aafb456b89325227cd66fcfc4dc881cf5baf4c62e2ef89747fcb23adf7ed572d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\compile.cmd",
+      "bytes": 2815,
+      "sha256": "e739f6dae1cbb3cf24b463e54ed85bed3da8809a24cf8b75b490ed6cde9fdf8d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\coff_audit.json",
+      "bytes": 19708706,
+      "sha256": "fb4d603d6272b1990a69179f8f03fb772769a908b5c45202d34df430cce74643"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\eh_audit.json",
+      "bytes": 624949,
+      "sha256": "8fa64acb28e236978cca9a2f8d4f6666318ca5a593dd77a0eba1bca3cc63d1ae"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\symbolic_eh_comparisons.json",
+      "bytes": 20226,
+      "sha256": "020b37edf588958db9df7ba7451e7f1af672dfb56bf525518956c9730d407e1c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\main_flow_audit.json",
+      "bytes": 113177,
+      "sha256": "f2e2edf0824036093e7427d4626f8a12c14037e70152e21069f1c54faa82b576"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\main_flow_diff.txt",
+      "bytes": 13538,
+      "sha256": "579f062fd5ecbfe134f8d9099612363eb13a22e8de34f7c2c41f2f77f0b05c98"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\main_unwind_flow_diff.txt",
+      "bytes": 940,
+      "sha256": "9aaa5532e61dad86a679c62c60cbef4c899bb20b9d1528190a8b1be993bad04c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\compile_header_pins.json",
+      "bytes": 544527,
+      "sha256": "cbd7ddbef1de98c79f8a524a64e418593ae54ec07f0370d2cfde359cb6a90a50"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup\\local\\native_gui_group_pool_startup\\project_input_snapshots.json",
+      "bytes": 1797,
+      "sha256": "340cbde06bef1357a1110e38953657cb82bf9885328904d75ea50fb6c4ddd539"
+    }
+  ],
+  "root_compile_settings_sha256": "37bc3806390cc0348ed7eccb3c65f891fdfb83f8da412d50607b4a1b5397188e",
+  "required_before_changed_default_Main_integration_activation": [
+    "Root common build/link of exact composed Source",
+    "Current Source/current PE Host cohort covering added Source allocation/constructor boundary and actual domain/profile",
+    "Completed zero/nonzero registration custody and interrupted-attempt retention in both catches",
+    "Actual raw GuiGroup payload/consumer retirement before pool/root retirement and real callback suffix; separate ModelGroup proof is insufficient",
+    "Current authoritative PID/session/cohort window agreed with agent/cc16-progress, NoForceStop and actual-handle observation on timeout; required gameplay belongs to that controlled gate"
+  ],
+  "runtime_qualification": {
+    "reviewer_runtime_performed": false,
+    "process_query_control_performed": false,
+    "existing_PID_terminal_status_inferred": false,
+    "frozen_cohorts": [
+      "Sourceequal-dc2",
+      "font-main-d8",
+      "empty-d58"
+    ],
+    "frozen_cohorts_mutated_or_rerun": false,
+    "absent_lease_proves_process_stopped": false,
+    "timeout_policy": "re-poll same authoritative actual handle; do not restart on timeout"
+  },
+  "not_performed": [
+    "production Source merge or edit",
+    "reviewer compilation/common build/link/tests/probe execution",
+    "Original/game execution or gameplay",
+    "process query/control/start/stop/restart",
+    "live Ghidra batch/mutation",
+    "CMake/ledger/shared metadata edit",
+    "frozen historical artifact modification"
+  ],
+  "credit": {
+    "new_native_bodies": 0,
+    "vendor": 0,
+    "duplicate_bodies": 0,
+    "binary_ABI_Native_FH3_SEH": 0,
+    "runtime": 0,
+    "gameplay": 0,
+    "activation": 0
+  },
+  "review_document_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-pool-startup-review\\docs\\CC16_NATIVE_GUI_GROUP_POOL_STARTUP_REVIEW.md",
+    "bytes": 12061,
+    "sha256": "b86567a95096d7af7d6d74587afe570ce3cfd871fdaf8882fce0153a14053447"
+  }
+}

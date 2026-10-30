@@ -1085,3 +1085,38 @@ and priorVFSbinding bodies remain unchanged. Nativecurrentepoch/count/cleanup
 schedules and partialeffect retention remain explicit. No raw16growth/parser/
 loadedlocale/startup/runtime/ABI authority follows; all9off/ac60hold remain.
 See CODEX_RAW_STRING_VECTOR_INTEGRATION.md.
+
+Raw reverse-find0265ee8ad and rawassignment/concat276857 field corrections now
+use fencedbytecopies onactualbyteheaders. Sharedhelpers/typed/unrelatedbodies
+and cleanupbehavior inverse-exact. Primary/independentSource/strictobject and
+combinedReleaseWin32checks2/2 pass14.10s. BDEF90newbody remains separatepending
+registration/review/build; no raw16/parser/loading/startup/runtime/ABI authority.
+See CODEX_RAW_STRING_FIELD_CORRECTIONS.md; all9off/ac60hold remain.
+
+RawBDEF90 f73a9ecbd now supplies qualified fullactualpath8/output0C transport
+through realVFS app/rawcells/constants/fallback, currentexists target and vector.
+Primary/independentSource read and strictWin32objectpass; oldtyped2files/all19
+providerblobs unchanged. CMakebsp_game registration is queuedbehindpeerheldfile,
+so newbodylink/commonbuild remainPENDING. Existingproviderfixbuild2/2 isseparate.
+No raw16/parser/loadedlocale/startup/runtime/ABI activation follows; all9offhold.
+See CODEX_RAW_LUA_OVERRIDES_INTEGRATION.md; continue registration/build next.
+
+RawBDEF90 local link evidence now passes with a temporary CMake overlay:
+standardbuildscript links exactf73 body into actualbsp_game, /INCLUDE retains
+both contextconstructor and rawbody (map103009A0/10300B00 plus EH), checks2/2
+pass11.21s. No game/body executed. Canonicalstartup.cmake stayed unchanged and
+localoverlaycache was removed/restored (canonicalregistrationcount0). Shared
+CMake registration remains queued; local link is not canonicalbuild admission.
+Receipt: local/raw_lua_overrides_local_link_cc16_20261030/receipt.json.
+
+Raw435C40 equal-header field correction f8dd5924 switches onlyfourreadcalls to
+existing fencedbytehelpers. Native leftlen/rightlen, earlyreturns and rightdata/
+leftdata/currentCRT order unchanged. Exactprimary+independentreview, strictobject
+and canonicalWin32build/checks2/2 pass11.83s. No language/reload/loadedlocale or
+runtime authority follows; raw16/parser/GUI/owneroperation gates remain.
+
+Canonical BDEF90 Game registration is complete at51102e823 via the existing
+rootCMakeLists deferredGame pattern. Peerleasedstartup registry untouched and
+oldqueuecanceled. Independentregistrationreview confirms exactlyone; standard
+Win32build/checks2/2 pass11.46s with NOlocaloverlay. Rawbody remains caller-unbound;
+stream/raw16/fullparser/loading/startup/runtime/ABI gates remain open.

@@ -1,0 +1,99 @@
+{
+  "packet": "codex-native-raw-assign-concat-fields",
+  "state": "two_raw_overload_field_qualification_object_compiled",
+  "source_ready": false,
+  "base_commit": "4a6d36f903faa783da63fa28cc9c11d3f6ddd418",
+  "synced_origin_main": "1b5dead2c9c7b32fee92778d0b069173a3db3212",
+  "created_utc": "2026-10-30T15:48:42.729519+00:00",
+  "addresses": [
+    "00425f40",
+    "004261a0"
+  ],
+  "owned_files": [
+    "src/native_physical_file_date.cpp",
+    "docs/NATIVE_RAW_STRING_ASSIGN_CONCAT_FIELDS.md",
+    "reports/native_raw_string_assign_concat_fields.json"
+  ],
+  "source_hashes": {
+    "src/native_physical_file_date.cpp": "14a03f9de4eb9ff466dec9323f331192adb6089c3c5c70db8ac61f9829b0c43d",
+    "docs/NATIVE_RAW_STRING_ASSIGN_CONCAT_FIELDS.md": "675f9831ebda7fadd99c2028dd25cb477b8287e3c178dfa8d485b0b2c9f32fd2"
+  },
+  "change": "Only twoRawContext overload fields use private fenced4Bword/store/pointer; concatclear is twofencedstores",
+  "preserved": [
+    "assignment identity skipsallfields; current source len,destlen,srcdata,dstdata",
+    "concat selfCMPbeforezero; initialcopy count,dstdata,leftdata",
+    "initial copy unowned, rightlength captured beforetry",
+    "append currentrightdata beforeoutputdata, capturedoldlength/appendcount",
+    "same memmove/zero omission/unsignedwrap",
+    "same catch consumesoutputedge; newer cleanupfailure mayreplaceoriginal; no retry/EHrepair"
+  ],
+  "inverse_proof": {
+    "baseline_CPP_sha256": "6ad9b3bff2280f3c27889ba13ef785a236a2f34e2d733b83bcc92ad20a8a55d0",
+    "inverse_CPP_sha256": "6ad9b3bff2280f3c27889ba13ef785a236a2f34e2d733b83bcc92ad20a8a55d0",
+    "complete_file_byte_exact": true,
+    "shared_word_put_pointer_clear_at_unchanged": true,
+    "typed_and_all_other_bodies_literal_unchanged": true,
+    "removed_private_helper_sha256": "eabbfb80859dd3b397f4217b1e427f21724f122e53dbd109f4a459e3f6ef81d7"
+  },
+  "verification": {
+    "isolated_compile": {
+      "toolchain": "VS18 Community VsDevCmd -arch=x86 -host_arch=x64",
+      "source": "src/native_physical_file_date.cpp",
+      "flags": [
+        "/nologo",
+        "/std:c++17",
+        "/permissive-",
+        "/W4",
+        "/WX",
+        "/EHsc",
+        "/MD",
+        "/O2",
+        "/Ob2",
+        "/fp:strict",
+        "/DNDEBUG",
+        "/DWIN32",
+        "/D_WINDOWS",
+        "/DNOMINMAX",
+        "/DWIN32_LEAN_AND_MEAN",
+        "/I include",
+        "/c"
+      ],
+      "exit_code": 0,
+      "stdout": "native_physical_file_date.cpp\r\n",
+      "wall_time_seconds": 5.8371661,
+      "attempts": 1
+    },
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\build\\native_raw_assign_concat_fields_object\\native_physical_file_date.obj",
+      "sha256": "9d23eb9182eb94e8468efe0ef89ae523eff80968dd712316befae94cb785c28f",
+      "bytes": 30574,
+      "machine": "0x14c",
+      "existing_typed_and_raw_entries": [
+        "?concatenate_native_string_headers_004261a0@bsp@@YAPAXPBXPAX0AAVNativeStringStorage@1@@Z",
+        "?assign_native_string_header_00425f40@bsp@@YAPAXPAXPBXAAVNativeStringStorage@1@@Z",
+        "?assign_native_string_header_00425f40@bsp@@YAPAXPAXPBXAAUNativeStringRawPoolContext@1@@Z",
+        "?concatenate_native_string_headers_004261a0@bsp@@YAPAXPBXPAX0AAUNativeStringRawPoolContext@1@@Z"
+      ],
+      "compile_only": true,
+      "linked_or_executed": false
+    },
+    "full_build": false,
+    "new_tests": 0,
+    "tests_run": 0,
+    "probe_executable": false,
+    "game": false,
+    "Ghidra_analysis_or_mutation": false
+  },
+  "limits": [
+    "caller rawheader/data/context storage valid/live; no conflictingwriters or invalidation",
+    "ownfences do notupgrade transitive rawresize/destroy access",
+    "existing noexcept/alias/zero-copy/CRT/NativeFH3/SEH/hardware/privateframe limits unchanged"
+  ],
+  "excluded": [
+    "newcallback/provider/semanticcast",
+    "newNativeentry/vendorbodycredit",
+    "sharedCMake/ledger/metadata",
+    "startup/consumer/loadedlocale/ABI/runtime readiness"
+  ],
+  "authoring_note": "Initialreportassembly stopped on a bytes/str check error before writing report; sameSource/object/inversecriteria retained, no recompile."
+}

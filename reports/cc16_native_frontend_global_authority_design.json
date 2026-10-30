@@ -1,0 +1,1646 @@
+{
+  "schema_version": 1,
+  "packet": "cc16-native-frontend-global-authority-design",
+  "classification": "read_only_actual_source_owner_view_callsite_design",
+  "baseline": {
+    "frozen_published_main": "879f5d855aa43e099fb349ea7b18d58c7f2d1a40",
+    "initial_remote_verified": true,
+    "later_remote_observed": "33d4b470b7ec752da670c1d2807a41389cd76dab",
+    "later_remote_changed_paths": [
+      "docs/CC16_NATIVE_LUA_VARIANT_SCALAR_DELETE_READINESS.md",
+      "docs/CODEX_FUNCTION_INTEGRATION_GOAL_2026-10-28.md",
+      "reports/cc16_native_lua_variant_scalar_delete_readiness.json"
+    ],
+    "source_pin_count": 58,
+    "all_pins_unchanged_at_later_remote": true
+  },
+  "utc": "2026-10-30T09:25:24.739708+00:00",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-global-authority-design",
+  "branch": "agent/codex-frontend-global-authority-design",
+  "scope": {
+    "owned_files": [
+      "docs/CC16_NATIVE_FRONTEND_GLOBAL_AUTHORITY_DESIGN.md",
+      "reports/cc16_native_frontend_global_authority_design.json"
+    ],
+    "data_addresses_read_only": true,
+    "addresses_leased": [],
+    "source_shared_ghidra_mutations": false,
+    "compile_test_link_or_body_execution": false,
+    "original_execution": false,
+    "new_global_owner_created": false
+  },
+  "decision": {
+    "complete_new_source_binding_ready": false,
+    "caller_adoption_ready": false,
+    "activation_ready": false,
+    "smallest_coherent_proposal": "Extend EXISTING GameNativeCanonicalDataOwner capability/commits with an actual frontend borrowed view, and replace Root semantic bank/layout ownership plus all reached producers/current dispatch/lifetimes in the same migration; do not instantiate a dormant default bank.",
+    "no_standalone_owner_or_consumer_adapter_packet_closed": true,
+    "proposal_is_not_existing_provider_or_implementation_permission": true
+  },
+  "existing_closed_source_prerequisites": [
+    {
+      "entries": [
+        "004f7180",
+        "00517d10",
+        "004c1ac0"
+      ],
+      "admission": "docs/CC16_NATIVE_FRONT_END_FRAME_SOURCE_ADMISSION.md",
+      "caller_adoption": "held"
+    },
+    {
+      "entry": "00517d30",
+      "operation": "native_front_end_frame_id_00517d30() returns genuine12",
+      "admission": "docs/CC16_NATIVE_FRONT_END_FRAME_IDENTITY_SOURCE_ADMISSION.md",
+      "does_not_supply": "raw bank/current-ID dispatcher/receiver provenance"
+    }
+  ],
+  "pe": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "size": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_base": "00400000",
+    "sections": [
+      {
+        "name": ".rdata",
+        "va": 13508608,
+        "virtual_size": 1202980,
+        "raw_size": 1204224,
+        "raw_offset": 9314304,
+        "flags": 1073741888
+      },
+      {
+        "name": ".data",
+        "va": 14712832,
+        "virtual_size": 2719452,
+        "raw_size": 65536,
+        "raw_offset": 10518528,
+        "flags": 3221225536
+      }
+    ],
+    "translation": "initialized .data file=A08000+(VA-E08000) only below offset10000; beyond raw is loader zero-fill",
+    "page_preimages": [
+      {
+        "va": "00e08000",
+        "size": 4096,
+        "sha256": "45b9d99ece79ccff905e2a9b8b9fb5060a370c5e3e32bffb1ce29164d255102c",
+        "backing": "PE raw A08000"
+      },
+      {
+        "va": "00e18000",
+        "size": 4096,
+        "sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+        "backing": "loader zero-fill"
+      }
+    ]
+  },
+  "fields": [
+    {
+      "role": "raw_screen_bank",
+      "va": "00e18b60",
+      "bytes": 380,
+      "shape": "95 DWORD captured raw receiver publications",
+      "preimage": "loader-zero",
+      "owner_proposal": "existing canonical data owner E18000 page",
+      "value_writers": [
+        "004f71d0 unchecked CURRENT+0 returned-id publication",
+        "004f71a0 scan all95 exact receiver matches",
+        "004f75e0 base scalar scan"
+      ],
+      "current_source_authority": "GameMenuHost::Impl::world.screens semantic FrontEndScreenTable; not raw"
+    },
+    {
+      "role": "pump_sentinel",
+      "va": "00e18cdc",
+      "bytes": 1,
+      "preimage": "loader-zero",
+      "separate_from_registry": true,
+      "value_writers": [
+        "004f8597",
+        "004f8637",
+        "004f86d7",
+        "004f8777",
+        "004f87fb",
+        "004f839a",
+        "004f8881",
+        "004e544c",
+        "004e5481"
+      ]
+    },
+    {
+      "role": "frame_publication",
+      "va": "00e18d80",
+      "bytes": 4,
+      "preimage": "loader-zero",
+      "same_reference_required": [
+        "get_native_front_end_frame_004c1ac0",
+        "NativeGameSingletonLifetimeContext::publication_00e18d80",
+        "517cf0",
+        "517d60",
+        "517d90",
+        "Game OnDestroy 4c0ce0",
+        "shared drain Frame scalar"
+      ],
+      "current_source_authority": "required references only; no Root supplier found"
+    },
+    {
+      "role": "backdrop_selector",
+      "va": "00e18d84",
+      "bytes": 4,
+      "preimage": "loader-zero",
+      "writers": [
+        "00518d60",
+        "00518da0"
+      ],
+      "lifetime": "process; survives every Frame generation"
+    },
+    {
+      "role": "panel_selector",
+      "va": "00e18d88",
+      "bytes": 4,
+      "preimage": "loader-zero",
+      "writers": [
+        "00518d60"
+      ],
+      "lifetime": "process; survives every Frame generation"
+    },
+    {
+      "role": "title_selector",
+      "va": "00e18d8c",
+      "bytes": 4,
+      "preimage": "loader-zero",
+      "writers": [
+        "00518d60"
+      ],
+      "lifetime": "process; survives every Frame generation"
+    },
+    {
+      "role": "flag",
+      "va": "00e08654",
+      "bytes": 4,
+      "preimage_hex": "02000000",
+      "writers": [
+        "00518baf DWORD store"
+      ],
+      "late_reader": "00518c2d low WORD widget argument",
+      "contiguous_fourth_selector": false
+    },
+    {
+      "role": "manager_dependency",
+      "native_role_va": "01090aa0",
+      "actual_source_cell": "game_native_string_process().manager_01090aa0()",
+      "borrower": "GameSingletonHost::manager_publication_01090aa0()",
+      "numeric_va_mapping": false,
+      "new_or_copied_manager_allowed": false
+    },
+    {
+      "role": "game_dependency",
+      "native_role_va": "00e188a8",
+      "required_reference_identity": [
+        "NativeGameConstructionContext::actual_game_00e188a8",
+        "NativeGameLifetimeContext::game_00e188a8"
+      ],
+      "existing_runtime_check": "GameNativeGameRuntime::Impl compares addresses of those references",
+      "root_adoption_established": false
+    }
+  ],
+  "current_writable_name_tables": [
+    {
+      "address": "00e08500",
+      "rows": 5,
+      "columns": 13,
+      "bytes": 260,
+      "pe_file_offset": "00a08500",
+      "sha256": "80019dee6d281250dcf02c58d1b649cd4647ab2721620c263ec6e4836412fd1f",
+      "mutable_current_cells_required": true,
+      "nonzero_preimage_cells": [
+        {
+          "row": 2,
+          "column": 6,
+          "value": "00cec364",
+          "name": "FE_options_bg"
+        },
+        {
+          "row": 2,
+          "column": 12,
+          "value": "00ce7a70",
+          "name": "FE_main"
+        }
+      ],
+      "other_preimage_cells": "null",
+      "row4_all_null": true
+    },
+    {
+      "address": "00e08604",
+      "rows": 5,
+      "columns": 2,
+      "bytes": 40,
+      "pe_file_offset": "00a08604",
+      "sha256": "e806e65cb5ecc6e3bc1ec9d59a13d4e8d494ac949050936fe8169d8d843796c3",
+      "mutable_current_cells_required": true,
+      "nonzero_preimage_cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": "00cec358",
+          "name": "FE_frame"
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "value": "00cec358",
+          "name": "FE_frame"
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "value": "00cec358",
+          "name": "FE_frame"
+        },
+        {
+          "row": 3,
+          "column": 0,
+          "value": "00cec34c",
+          "name": "GUI_pause"
+        }
+      ],
+      "other_preimage_cells": "null",
+      "row4_all_null": true
+    },
+    {
+      "address": "00e0862c",
+      "rows": 5,
+      "columns": 2,
+      "bytes": 40,
+      "pe_file_offset": "00a0862c",
+      "sha256": "4dcc1b1d42c6501ff41305a9fd5aba5737abd55c070f4bab8db05202dba8121c",
+      "mutable_current_cells_required": true,
+      "nonzero_preimage_cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": "00cec33c",
+          "name": "FE_frame_title"
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "value": "00cec33c",
+          "name": "FE_frame_title"
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "value": "00cec33c",
+          "name": "FE_frame_title"
+        },
+        {
+          "row": 3,
+          "column": 0,
+          "value": "00cec32c",
+          "name": "GUI_pause_title"
+        }
+      ],
+      "other_preimage_cells": "null",
+      "row4_all_null": true
+    }
+  ],
+  "canonical_storage_proposal": {
+    "status": "explicit design only",
+    "existing_owner": "GameNativeCanonicalDataOwner",
+    "current_committed_rw_pages": [
+      "00e15000",
+      "00e16000",
+      "0109e000"
+    ],
+    "current_ro_masks": [
+      "0000038f",
+      "0000039f"
+    ],
+    "required_new_allocation": "00e00000",
+    "required_new_rw_pages": [
+      "00e08000 initialized PE page",
+      "00e18000 loader-zero page"
+    ],
+    "existing_00e10000_allocation_reused": true,
+    "explicit_new_matched_plan_version_required": true,
+    "current_v2_record_page_count": 3,
+    "frontend_view": "references and bases only; no default values/copies",
+    "read_only_data_at_range_unchanged": [
+      "00ce2000",
+      "00e07b23"
+    ],
+    "manager_authority_unchanged": true,
+    "requires_before_first_raw_creator": true,
+    "reseed_on_frame_replacement": false
+  },
+  "receiver_current_dispatch": {
+    "constructor_writes_native_profile_tokens": true,
+    "original_words_are_host_function_pointers": false,
+    "primary_profile": "00cec39c",
+    "slots": {
+      "00": "00517d30 actual id",
+      "0c": "00517eb0 scalar",
+      "10": "00517ed0 registration",
+      "24": "00518e00 captured collector"
+    },
+    "secondary_profile": "00cec398",
+    "secondary00": "00517d50 subtract8 then tail00517eb0",
+    "base_construction_profile": "00cec388 ->00517d60",
+    "base_ceae54_id": "purecall; not usable default",
+    "required_current_profile_to_actual_source_operation_resolver": true,
+    "unresolved_target_success_fallback": false,
+    "old_live_receiver_may_differ_from_current_publication": true,
+    "registration_id_argument_or_range_guard": false
+  },
+  "value_epoch_requirements": [
+    "4f71d0 captures receiver; CURRENT vptr/current+0; unchecked publish at E18B60+returnedEAX*4; callback publication changes do not replace captured receiver.",
+    "517ed0 base registration before own160=4 and85 Page writes; current own/table/inner reads across real callbacks; initial row4-null is not permanent policy.",
+    "518250 actual requested DWORD and commit BYTE homes remain live; per-row requested reloads, separate group acquisition bases and late final commit/requested reload.",
+    "Retirement count1 GUI getter then reload Page forAA31F0; other counts captured Page decrement/current0; clear current slot only after returned retirement, including replacement.",
+    "518d60 capture title home then84/88/8c writes; getter/apply then late CURRENT text-pointer home/header length. 518da0 writes84 only then getter/tailapply.",
+    "518e00 actual own160 loads E03/E2A/E4B and selectors E0C/E30/E51; append slot ADDRESS via4d6790; legacy cached own/all-offsets projection requires whole-schedule repair.",
+    "Selectors/names/flag have process lifetime; Frame85Pages/own160 have per-receiver lifetime; no receiver=current publication restriction.",
+    "517d90/517cf0/517d60 clear same publication unconditionally; 4c0ce0 unregister capture, current scalar receiver, post-return publication clear can erase replacements."
+  ],
+  "ownership_migration": [
+    {
+      "site": "GameMenuHost::Impl",
+      "replace": [
+        "world.screens",
+        "frame_layouts",
+        "semantic screen flags/raw receiver aliases",
+        "MenuFrameLayoutHost semantic Page acquisition/hide-for-delete"
+      ],
+      "with": "borrowed canonical view and genuine per-receiver raw creator/dispatch/lifetime graph; no mirror banks"
+    },
+    {
+      "site": "InitOnceServices + game_on_init_once_004dd5b0 at oct18_tail_a.cpp619..620",
+      "contract": "real getter on SAME manager/Frame reference, then captured receiver current primary+10 complete registration; preceding menu-command raw registration remains required"
+    },
+    {
+      "site": "title_init.cpp187 and MenuTitleInitHost helper",
+      "native_sites": [
+        "004c9b7e",
+        "004c9b85"
+      ],
+      "contract": "real getter then complete set518250 on current writable names/homes"
+    },
+    {
+      "site": "GameHudHost::apply_in_game_interface and select_front_end_layout_00518250 via GameMenuHost",
+      "native_sites": [
+        "004c9e06 set3 commit1",
+        "004e04ee set3 commit0"
+      ],
+      "contract": "same real Frame/Page/name graph; no acquire_hidden or semantic retirement substitute"
+    },
+    {
+      "site": "MenuLoadingScreenHost::select_menu_layout",
+      "native_sites": [
+        "0057cd1e",
+        "0057cd7b"
+      ],
+      "contract": "both same getter/set services"
+    },
+    {
+      "site": "frontend_state_machine/frontend_screen_sets/frontend_states/main_menu_path/main_menu_registration/menu+HUD registration and accessors",
+      "contract": "one raw95 bank/separate sentinel; real raw producers/current slots; no fake id/range policy or two-bool receiver casts"
+    },
+    {
+      "site": "writers/apply/flag/title/position and captured collector/park services",
+      "contract": "shared global view, live homes/current epochs; repair legacy body projections rather than bind only collector"
+    },
+    {
+      "site": "NativeGameSingletonLifetimeContext + NativeGameLifetimeContext",
+      "contract": "same exact Frame/manager references and complete actual primary scalar lifetime operation context"
+    },
+    {
+      "site": "NativeSingletonDeletionBindings + current-profile manager dispatcher",
+      "contract": "admit actual CEC398 subobject profile with517d50 adjustment/scalar/destructor providers before getter registration; CE3818 base case alone is insufficient"
+    },
+    {
+      "site": "GameStartupHost teardown game_hosts.cpp2312..2336",
+      "current": "delete menu/frontend before shared drain; native Page/GUI manager retained until after",
+      "required": "retain real frontend Frame dispatch and complete Page/renderer/VFS/Lua/string/scene/child/timed provider graph through Game OnDestroy and normal/fallback shared drain, then retire bindings; permanent cells survive CRT"
+    }
+  ],
+  "missing_actual_provider_closures": [
+    {
+      "id": "raw95_producers_and_current_dispatch",
+      "gap": "Current FrontEndScreenTable/two-bool/typed MainMenuRegistration/HUD42/press-start objects are semantic; actual raw sizes/prefixes/slots/lifetimes and all reached bank consumers must migrate, not cast or copy."
+    },
+    {
+      "id": "complete_registration_set_selection",
+      "gap": "Whole517ed0/518250 current writable names/raw Page acquisition+both retirement paths and live input homes; full apply/flag/title/position providers and x87 qualifications."
+    },
+    {
+      "id": "page_production_and_same_graph_retirement",
+      "gap": "GameNativeGuiPageApplication rejects mapped keys beforeAA6560/Model; private PageLifetime rejects children/timed/parent and needs prior scene release. Compose actual reached creators/layout preimages and SAME Group/Model/node/child/timed owners with existing scalar/destructor/dispatch bodies. BD30E0/current04 zero terminal is separate fromAA31F0 current20/fresh04."
+    },
+    {
+      "id": "root_lifetime_and_whole_callers",
+      "gap": "Actual InitOnce/Game/singleton drain bindings must share references; Frame+8 deletion profile currently not admitted; current menu services die before drain. Park/hint/pause and all reached caller families need actual receiver/slot lifetime proof."
+    }
+  ],
+  "gates": {
+    "kNativeGuiPageChainCc15Bound": "unchanged false at baseline",
+    "required_fixture_startup_gameplay_gates": "remain required; none bypassed",
+    "native_fh3_seh_stack_register_fault_fp_abi": "unproved; Source/new interfaces do not establish Original binary replacements"
+  },
+  "live_evidence": {
+    "identity": {
+      "utc": "2026-10-30T09:18:30.825287+00:00",
+      "config_project_file": "C:/Users/sqz269/bsp.gpr",
+      "verified_live_program": "/battlestationspacific.exe",
+      "wrapper_verification": "tools/bsp.py client() invokes Client.verify() before each read; verifies bsp project, program path, x86/language/image base"
+    },
+    "global_queries": [
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00e18b60",
+          "--length",
+          "380"
+        ],
+        "stdout": "00e18b60  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e18b70  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e18b80  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e18b90  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e18ba0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e18bb0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e18bc0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e18bd0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e18be0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e18bf0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e18c00  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e18c10  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e18c20  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e18c30  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e18c40  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e18c50  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e18c60  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e18c70  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e18c80  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e18c90  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e18ca0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e18cb0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e18cc0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e18cd0  00 00 00 00 00 00 00 00 00 00 00 00  ............\n",
+        "stdout_sha256": "a816f62b6e5d844ce046e2d7e03b80e81385ff2fecf57683b97cef9f3f58d876",
+        "address": "00e18b60",
+        "size": 380,
+        "live_sha256": "08c3e5bbea4fba57201a69d4bf70a0d255df921fdef4924c22da087f9338c2bc",
+        "pe_match": true
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00e18d80",
+          "--length",
+          "16"
+        ],
+        "stdout": "00e18d80  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n",
+        "stdout_sha256": "f055f9f2b751c35d7ca3f5e65abe00f388186e4fb8857a04122392636af54df5",
+        "address": "00e18d80",
+        "size": 16,
+        "live_sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb",
+        "pe_match": true
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00e08500",
+          "--length",
+          "260"
+        ],
+        "stdout": "00e08500  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e08510  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e08520  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e08530  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e08540  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e08550  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e08560  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e08570  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e08580  64 c3 ce 00 00 00 00 00 00 00 00 00 00 00 00 00  d...............\n00e08590  00 00 00 00 00 00 00 00 70 7a ce 00 00 00 00 00  ........pz......\n00e085a0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e085b0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e085c0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e085d0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e085e0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e085f0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00e08600  00 00 00 00  ....\n",
+        "stdout_sha256": "6fa48051044266805642cf84475748221d8bd32466bc7f964afebbbe2d6f866d",
+        "address": "00e08500",
+        "size": 260,
+        "live_sha256": "80019dee6d281250dcf02c58d1b649cd4647ab2721620c263ec6e4836412fd1f",
+        "pe_match": true
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00e08604",
+          "--length",
+          "40"
+        ],
+        "stdout": "00e08604  58 c3 ce 00 00 00 00 00 58 c3 ce 00 00 00 00 00  X.......X.......\n00e08614  58 c3 ce 00 00 00 00 00 4c c3 ce 00 00 00 00 00  X.......L.......\n00e08624  00 00 00 00 00 00 00 00  ........\n",
+        "stdout_sha256": "3051a4a8d738b8b90c20b81fac76b0824552d0d89014a4986f446297e9dff423",
+        "address": "00e08604",
+        "size": 40,
+        "live_sha256": "e806e65cb5ecc6e3bc1ec9d59a13d4e8d494ac949050936fe8169d8d843796c3",
+        "pe_match": true
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00e0862c",
+          "--length",
+          "40"
+        ],
+        "stdout": "00e0862c  3c c3 ce 00 00 00 00 00 3c c3 ce 00 00 00 00 00  <.......<.......\n00e0863c  3c c3 ce 00 00 00 00 00 2c c3 ce 00 00 00 00 00  <.......,.......\n00e0864c  00 00 00 00 00 00 00 00  ........\n",
+        "stdout_sha256": "629084faaa3e4fa2f72a5e9e488c2e1df66ead07ebce1ce5121700ae8c1b7913",
+        "address": "00e0862c",
+        "size": 40,
+        "live_sha256": "4dcc1b1d42c6501ff41305a9fd5aba5737abd55c070f4bab8db05202dba8121c",
+        "pe_match": true
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00e08654",
+          "--length",
+          "4"
+        ],
+        "stdout": "00e08654  02 00 00 00  ....\n",
+        "stdout_sha256": "674161a68368648302d46e415fdaa3153cae7635cc57475b5900da06d642888d",
+        "address": "00e08654",
+        "size": 4,
+        "live_sha256": "26b25d457597a7b0463f9620f666dd10aa2c4373a505967c7c8d70922a2d6ece",
+        "pe_match": true
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00cec388",
+          "--length",
+          "60"
+        ],
+        "stdout": "00cec388  60 7d 51 00 00 00 00 00 00 00 00 c0 74 93 78 3f  `}Q.........t.x?\n00cec398  50 7d 51 00 30 7d 51 00 40 7d 51 00 80 75 4f 00  P}Q.0}Q.@}Q..uO.\n00cec3a8  b0 7e 51 00 d0 7e 51 00 90 75 4f 00 a0 75 4f 00  .~Q..~Q..uO..uO.\n00cec3b8  b0 75 4f 00 c0 75 4f 00 00 8e 51 00  .uO..uO...Q.\n",
+        "stdout_sha256": "edd8cffb911926d79f866e1246f5de2e8286246e303d8805e85bebec25433461",
+        "address": "00cec388",
+        "size": 60,
+        "live_sha256": "08b8ce38cdf768da0e99aa02b87ed68073bd3435274b2ce3d2a79f751743fdcb",
+        "pe_match": true
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "xrefs",
+          "00e18d80",
+          "--limit",
+          "100",
+          "--lines",
+          "100"
+        ],
+        "stdout": "From 00517cf0 in BSP_FrontEndFrame_ClearSingleton [WRITE]\nFrom 004c1ad5 in BSP_FrontEndFrame_GetOrCreate [READ]\nFrom 004c1b11 in BSP_FrontEndFrame_GetOrCreate [READ]\nFrom 004c1b44 in BSP_FrontEndFrame_GetOrCreate [WRITE]\nFrom 004c1b49 in BSP_FrontEndFrame_GetOrCreate [READ]\nFrom 004c1b75 in BSP_FrontEndFrame_GetOrCreate [READ]\nFrom 004c0cf8 in BSP_GameSingleton_Delete_E18D80 [READ]\nFrom 004c0d2d in BSP_GameSingleton_Delete_E18D80 [READ]\nFrom 004c0d46 in BSP_GameSingleton_Delete_E18D80 [READ]\nFrom 004c0d59 in BSP_GameSingleton_Delete_E18D80 [WRITE]\nFrom 00517e7f in BSP_FrontEndFrame_Destruct [WRITE]\nFrom 00517d68 in CG_scalar_deleting_dtor_00517d60 [WRITE]\n",
+        "stdout_sha256": "cc59127c878a13c5a4e9c2f789776173936dfe6fb8f69578fcb951e29caa92e0",
+        "rows": [
+          "From 00517cf0 in BSP_FrontEndFrame_ClearSingleton [WRITE]",
+          "From 004c1ad5 in BSP_FrontEndFrame_GetOrCreate [READ]",
+          "From 004c1b11 in BSP_FrontEndFrame_GetOrCreate [READ]",
+          "From 004c1b44 in BSP_FrontEndFrame_GetOrCreate [WRITE]",
+          "From 004c1b49 in BSP_FrontEndFrame_GetOrCreate [READ]",
+          "From 004c1b75 in BSP_FrontEndFrame_GetOrCreate [READ]",
+          "From 004c0cf8 in BSP_GameSingleton_Delete_E18D80 [READ]",
+          "From 004c0d2d in BSP_GameSingleton_Delete_E18D80 [READ]",
+          "From 004c0d46 in BSP_GameSingleton_Delete_E18D80 [READ]",
+          "From 004c0d59 in BSP_GameSingleton_Delete_E18D80 [WRITE]",
+          "From 00517e7f in BSP_FrontEndFrame_Destruct [WRITE]",
+          "From 00517d68 in CG_scalar_deleting_dtor_00517d60 [WRITE]"
+        ]
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "xrefs",
+          "00e18d84",
+          "--limit",
+          "100",
+          "--lines",
+          "100"
+        ],
+        "stdout": "From 00518d64 in BSP_FrontEndFrame_Select [WRITE]\nFrom 00518d2f in BSP_FrontEndFrame_ApplySelection [READ]\nFrom 00518e0c in BSP_FrontEndFrame_CollectChildren [READ]\nFrom 00518da0 in BSP_FrontEndFrame_SetSelection [WRITE]\n",
+        "stdout_sha256": "9bc63a43cc33317b7b03290c44563e96570fda26668135fed1949b6056449218",
+        "rows": [
+          "From 00518d64 in BSP_FrontEndFrame_Select [WRITE]",
+          "From 00518d2f in BSP_FrontEndFrame_ApplySelection [READ]",
+          "From 00518e0c in BSP_FrontEndFrame_CollectChildren [READ]",
+          "From 00518da0 in BSP_FrontEndFrame_SetSelection [WRITE]"
+        ]
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "xrefs",
+          "00e18d88",
+          "--limit",
+          "100",
+          "--lines",
+          "100"
+        ],
+        "stdout": "From 00518d6a in BSP_FrontEndFrame_Select [WRITE]\nFrom 00518ca0 in BSP_FrontEndFrame_ApplySelection [READ]\nFrom 00518ba8 in BSP_FrontEndFrame_SetFlag [READ]\nFrom 00518bce in BSP_FrontEndFrame_SetFlag [READ]\nFrom 00518c0a in BSP_FrontEndFrame_SetFlag [READ]\nFrom 00518e30 in BSP_FrontEndFrame_CollectChildren [READ]\n",
+        "stdout_sha256": "a39755b2c5c166e5be3dd6b7df1c1d9c3583170dfc9d9d3dbacbb8cd4593bf5a",
+        "rows": [
+          "From 00518d6a in BSP_FrontEndFrame_Select [WRITE]",
+          "From 00518ca0 in BSP_FrontEndFrame_ApplySelection [READ]",
+          "From 00518ba8 in BSP_FrontEndFrame_SetFlag [READ]",
+          "From 00518bce in BSP_FrontEndFrame_SetFlag [READ]",
+          "From 00518c0a in BSP_FrontEndFrame_SetFlag [READ]",
+          "From 00518e30 in BSP_FrontEndFrame_CollectChildren [READ]"
+        ]
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "xrefs",
+          "00e18d8c",
+          "--limit",
+          "100",
+          "--lines",
+          "100"
+        ],
+        "stdout": "From 00518d70 in BSP_FrontEndFrame_Select [WRITE]\nFrom 005189de in BSP_FrontEndFrame_SetTitle [READ]\nFrom 00518a1b in BSP_FrontEndFrame_SetTitle [READ]\nFrom 00518a7e in BSP_FrontEndFrame_SetTitle [READ]\nFrom 00518ce0 in BSP_FrontEndFrame_ApplySelection [READ]\nFrom 00518718 in BSP_FrontEndFrame_SetTitlePosition [READ]\nFrom 005187a7 in BSP_FrontEndFrame_SetTitlePosition [READ]\nFrom 00518885 in BSP_FrontEndFrame_GetTitlePosition [READ]\nFrom 00518916 in BSP_FrontEndFrame_GetTitlePosition [READ]\nFrom 00518e51 in BSP_FrontEndFrame_CollectChildren [READ]\n",
+        "stdout_sha256": "0eebc273be46d29ef03611c087c34ee6fb3527073cf2373e7309f45355459c15",
+        "rows": [
+          "From 00518d70 in BSP_FrontEndFrame_Select [WRITE]",
+          "From 005189de in BSP_FrontEndFrame_SetTitle [READ]",
+          "From 00518a1b in BSP_FrontEndFrame_SetTitle [READ]",
+          "From 00518a7e in BSP_FrontEndFrame_SetTitle [READ]",
+          "From 00518ce0 in BSP_FrontEndFrame_ApplySelection [READ]",
+          "From 00518718 in BSP_FrontEndFrame_SetTitlePosition [READ]",
+          "From 005187a7 in BSP_FrontEndFrame_SetTitlePosition [READ]",
+          "From 00518885 in BSP_FrontEndFrame_GetTitlePosition [READ]",
+          "From 00518916 in BSP_FrontEndFrame_GetTitlePosition [READ]",
+          "From 00518e51 in BSP_FrontEndFrame_CollectChildren [READ]"
+        ]
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "xrefs",
+          "00e08500",
+          "--limit",
+          "100",
+          "--lines",
+          "100"
+        ],
+        "stdout": "From 00518403 in BSP_FrontEndFrame_SelectLayoutSet [DATA]\nFrom 00517f2f in BSP_FrontEndFrame_Register [DATA]\nFrom 005183ef in BSP_FrontEndFrame_SelectLayoutSet [DATA]\n",
+        "stdout_sha256": "f7396b366d857bfb9903ff95f3e96bc29c7d8ec818ca9c9802cb2955186cbe4e",
+        "rows": [
+          "From 00518403 in BSP_FrontEndFrame_SelectLayoutSet [DATA]",
+          "From 00517f2f in BSP_FrontEndFrame_Register [DATA]",
+          "From 005183ef in BSP_FrontEndFrame_SelectLayoutSet [DATA]"
+        ]
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "xrefs",
+          "00e08604",
+          "--limit",
+          "100",
+          "--lines",
+          "100"
+        ],
+        "stdout": "From 005184e3 in BSP_FrontEndFrame_SelectLayoutSet [DATA]\nFrom 0051803d in BSP_FrontEndFrame_Register [DATA]\nFrom 005184c6 in BSP_FrontEndFrame_SelectLayoutSet [DATA]\n",
+        "stdout_sha256": "2625afb1cae16778efce289b342e0ef10b0a70b1e584b9c6fd5a46c3da49ac7f",
+        "rows": [
+          "From 005184e3 in BSP_FrontEndFrame_SelectLayoutSet [DATA]",
+          "From 0051803d in BSP_FrontEndFrame_Register [DATA]",
+          "From 005184c6 in BSP_FrontEndFrame_SelectLayoutSet [DATA]"
+        ]
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "xrefs",
+          "00e0862c",
+          "--limit",
+          "100",
+          "--lines",
+          "100"
+        ],
+        "stdout": "From 005185c3 in BSP_FrontEndFrame_SelectLayoutSet [DATA]\nFrom 0051814f in BSP_FrontEndFrame_Register [DATA]\nFrom 005185a6 in BSP_FrontEndFrame_SelectLayoutSet [DATA]\n",
+        "stdout_sha256": "208d807f3dba213fcd3cd8b0674617c8e5eadb46ed9f4175fc2e8c0bc8192dbf",
+        "rows": [
+          "From 005185c3 in BSP_FrontEndFrame_SelectLayoutSet [DATA]",
+          "From 0051814f in BSP_FrontEndFrame_Register [DATA]",
+          "From 005185a6 in BSP_FrontEndFrame_SelectLayoutSet [DATA]"
+        ]
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "xrefs",
+          "00e08654",
+          "--limit",
+          "100",
+          "--lines",
+          "100"
+        ],
+        "stdout": "From 00518d4c in BSP_FrontEndFrame_ApplySelection [READ]\nFrom 00518baf in BSP_FrontEndFrame_SetFlag [WRITE]\nFrom 00518c2d in BSP_FrontEndFrame_SetFlag [READ]\n",
+        "stdout_sha256": "fb459ab94199d918c605b05023180f6786e343f4507f4982f46e865051a1e6ce",
+        "rows": [
+          "From 00518d4c in BSP_FrontEndFrame_ApplySelection [READ]",
+          "From 00518baf in BSP_FrontEndFrame_SetFlag [WRITE]",
+          "From 00518c2d in BSP_FrontEndFrame_SetFlag [READ]"
+        ]
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "callers",
+          "00518d60",
+          "--limit",
+          "100",
+          "--lines",
+          "100"
+        ],
+        "stdout": "BSP_ControlBindingScreen_ListboxListener04 @ 0055fca0\nBSP_ControlBindingScreen_RefreshPage @ 0055e3a0\nBSP_ControlLayoutScreen_Enter @ 00528240\nBSP_ControlLayoutScreen_Exit @ 00528920\nBSP_FrontEndFrame_SelectDefault @ 004c9680\nBSP_FrontEnd_ShowDifficultySelect @ 004ff6f0\nBSP_HudPauseMultiScreen_Enter @ 005d3b40\nBSP_HudPauseScreen_Enter @ 00603120\nBSP_HudPauseScreen_ShowPage @ 005fd890\nBSP_LeaderboardsScreen_Enter @ 00562750\nBSP_MainMenuScreen_BuildMissionListPage @ 00597870\nBSP_MainMenuScreen_Enter @ 005987f0\nBSP_MainMenu_BuildMissionDetailPage @ 0058c010\nBSP_MainMenu_BuildMultiplayerPage @ 005853c0\nBSP_MainMenu_BuildObjectiveRows @ 00594bf0\nBSP_MainMenu_BuildSinglePlayerPage @ 00584f50\nBSP_MainMenu_BuildTacticalLibraryPage @ 005886f0\nBSP_MainMenu_BuildTopLevelPage @ 00584ae0\nBSP_MultiGameLobbyScreen_Enter @ 005e51d0\nBSP_MultiMainMenuScreen_Enter @ 005e8b20\nBSP_MultiModeSelectorScreen_Enter @ 005ec5b0\nBSP_MultiSessionBrowserScreen_Enter @ 0057a680\nBSP_OptionsScreen_ActivateListRow @ 005f7c40\nBSP_OptionsScreen_BuildMainList @ 005f54f0\nBSP_OptionsScreen_Enter @ 005f5bd0\nBSP_PressStartScreen_Enter @ 0067cb40\nBSP_RewardsScreen_Enter @ 0062c2c0\nBSP_TacticalLibraryScreen_Enter @ 00511f40\nBSP_TacticalLibraryScreen_ShowOrderOfBattlePage @ 004fff20\nBSP_TacticalLibraryScreen_ShowUnlocksPage @ 004ffd00\nBSP_UnitLibraryScreen_Enter @ 0067f4d0\n",
+        "stdout_sha256": "f4d104292ce78bf9fe71fb9055551aee5f0794b88492b174d62254a50cada4a5",
+        "rows": [
+          "BSP_ControlBindingScreen_ListboxListener04 @ 0055fca0",
+          "BSP_ControlBindingScreen_RefreshPage @ 0055e3a0",
+          "BSP_ControlLayoutScreen_Enter @ 00528240",
+          "BSP_ControlLayoutScreen_Exit @ 00528920",
+          "BSP_FrontEndFrame_SelectDefault @ 004c9680",
+          "BSP_FrontEnd_ShowDifficultySelect @ 004ff6f0",
+          "BSP_HudPauseMultiScreen_Enter @ 005d3b40",
+          "BSP_HudPauseScreen_Enter @ 00603120",
+          "BSP_HudPauseScreen_ShowPage @ 005fd890",
+          "BSP_LeaderboardsScreen_Enter @ 00562750",
+          "BSP_MainMenuScreen_BuildMissionListPage @ 00597870",
+          "BSP_MainMenuScreen_Enter @ 005987f0",
+          "BSP_MainMenu_BuildMissionDetailPage @ 0058c010",
+          "BSP_MainMenu_BuildMultiplayerPage @ 005853c0",
+          "BSP_MainMenu_BuildObjectiveRows @ 00594bf0",
+          "BSP_MainMenu_BuildSinglePlayerPage @ 00584f50",
+          "BSP_MainMenu_BuildTacticalLibraryPage @ 005886f0",
+          "BSP_MainMenu_BuildTopLevelPage @ 00584ae0",
+          "BSP_MultiGameLobbyScreen_Enter @ 005e51d0",
+          "BSP_MultiMainMenuScreen_Enter @ 005e8b20",
+          "BSP_MultiModeSelectorScreen_Enter @ 005ec5b0",
+          "BSP_MultiSessionBrowserScreen_Enter @ 0057a680",
+          "BSP_OptionsScreen_ActivateListRow @ 005f7c40",
+          "BSP_OptionsScreen_BuildMainList @ 005f54f0",
+          "BSP_OptionsScreen_Enter @ 005f5bd0",
+          "BSP_PressStartScreen_Enter @ 0067cb40",
+          "BSP_RewardsScreen_Enter @ 0062c2c0",
+          "BSP_TacticalLibraryScreen_Enter @ 00511f40",
+          "BSP_TacticalLibraryScreen_ShowOrderOfBattlePage @ 004fff20",
+          "BSP_TacticalLibraryScreen_ShowUnlocksPage @ 004ffd00",
+          "BSP_UnitLibraryScreen_Enter @ 0067f4d0"
+        ]
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "callers",
+          "00518da0",
+          "--limit",
+          "100",
+          "--lines",
+          "100"
+        ],
+        "stdout": "BSP_BriefingScreen_Enter @ 0051cde0\nBSP_LeaderboardsScreen_ReturnToMenu @ 005629a0\n",
+        "stdout_sha256": "983db4a031aca99dc5173261b34cb4e01936471ae002ee53d0f0f4f359b1d8bc",
+        "rows": [
+          "BSP_BriefingScreen_Enter @ 0051cde0",
+          "BSP_LeaderboardsScreen_ReturnToMenu @ 005629a0"
+        ]
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "callers",
+          "00518250",
+          "--limit",
+          "100",
+          "--lines",
+          "100"
+        ],
+        "stdout": "BSP_Game_ApplyInGameInterface @ 004c9ca0\nBSP_Game_LoadMissionScene @ 004dfb70\nBSP_Game_OnInitTitle @ 004c9a70\nBSP_LoadingScreen_Begin @ 0057cb60\n",
+        "stdout_sha256": "8b5e09da47edb61d93e8ceefc9b2326ddced2e9e12e9abf6bd48742aaa7c6f57",
+        "rows": [
+          "BSP_Game_ApplyInGameInterface @ 004c9ca0",
+          "BSP_Game_LoadMissionScene @ 004dfb70",
+          "BSP_Game_OnInitTitle @ 004c9a70",
+          "BSP_LoadingScreen_Begin @ 0057cb60"
+        ]
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "callers",
+          "004c1ac0",
+          "--limit",
+          "100",
+          "--lines",
+          "100"
+        ],
+        "stdout": "BSP_FrontEndFrame_GetTitlePosition @ 00518820\nBSP_FrontEndFrame_Select @ 00518d60\nBSP_FrontEndFrame_SetFlag @ 00518b90\nBSP_FrontEndFrame_SetSelection @ 00518da0\nBSP_FrontEndFrame_SetTitle @ 005189b0\nBSP_FrontEndFrame_SetTitlePosition @ 005186b0\nBSP_Game_ApplyInGameInterface @ 004c9ca0\nBSP_Game_LoadMissionScene @ 004dfb70\nBSP_Game_OnInitOnce @ 004dd5b0\nBSP_Game_OnInitTitle @ 004c9a70\nBSP_LoadingScreen_Begin @ 0057cb60\n",
+        "stdout_sha256": "5ea0f9a1a87aeb04dc01d3ca569afa47f6f839c8a79ebbcd03d9af134965d13c",
+        "rows": [
+          "BSP_FrontEndFrame_GetTitlePosition @ 00518820",
+          "BSP_FrontEndFrame_Select @ 00518d60",
+          "BSP_FrontEndFrame_SetFlag @ 00518b90",
+          "BSP_FrontEndFrame_SetSelection @ 00518da0",
+          "BSP_FrontEndFrame_SetTitle @ 005189b0",
+          "BSP_FrontEndFrame_SetTitlePosition @ 005186b0",
+          "BSP_Game_ApplyInGameInterface @ 004c9ca0",
+          "BSP_Game_LoadMissionScene @ 004dfb70",
+          "BSP_Game_OnInitOnce @ 004dd5b0",
+          "BSP_Game_OnInitTitle @ 004c9a70",
+          "BSP_LoadingScreen_Begin @ 0057cb60"
+        ]
+      }
+    ],
+    "verified_byte_spans": 7,
+    "verified_byte_count": 800,
+    "registry_query_count": 96,
+    "registry_xref_rows": 41,
+    "registry_cells_with_actual_xrefs": 4,
+    "registry_xref_function_families": [
+      "BSP_FrontEndScreen_Destruct",
+      "BSP_FrontEndScreen_Register",
+      "BSP_FrontEndScreens_Pump",
+      "BSP_FrontEndScreens_RecomputeRequests",
+      "BSP_FrontEndScreens_RestoreLevelSet",
+      "BSP_FrontEndScreens_SetLevel1Set",
+      "BSP_FrontEndScreens_SetLevel2Set",
+      "BSP_FrontEndScreens_SetLevel3Set",
+      "BSP_FrontEndScreens_SetLevel4Set",
+      "BSP_FrontEndScreens_SetLevel5Set",
+      "BSP_Game_OnMove",
+      "BSP_GuiScreens_ParkWidgets",
+      "CG_scalar_deleting_dtor_004f75e0"
+    ],
+    "registry_xrefs": [
+      {
+        "cell": "00e18b60",
+        "xref": "From 004f8890 in BSP_FrontEndScreens_Pump [READ]"
+      },
+      {
+        "cell": "00e18b60",
+        "xref": "From 004f88d0 in BSP_FrontEndScreens_Pump [READ]"
+      },
+      {
+        "cell": "00e18b60",
+        "xref": "From 004f8906 in BSP_FrontEndScreens_Pump [READ]"
+      },
+      {
+        "cell": "00e18b60",
+        "xref": "From 004f71d9 in BSP_FrontEndScreen_Register [DATA]"
+      },
+      {
+        "cell": "00e18b60",
+        "xref": "From 004f71b0 in BSP_FrontEndScreen_Destruct [READ]"
+      },
+      {
+        "cell": "00e18b60",
+        "xref": "From 004f71b4 in BSP_FrontEndScreen_Destruct [WRITE]"
+      },
+      {
+        "cell": "00e18b60",
+        "xref": "From 004f75f0 in CG_scalar_deleting_dtor_004f75e0 [READ]"
+      },
+      {
+        "cell": "00e18b60",
+        "xref": "From 004f75f4 in CG_scalar_deleting_dtor_004f75e0 [WRITE]"
+      },
+      {
+        "cell": "00e18b60",
+        "xref": "From 004f767e in BSP_FrontEndScreens_RecomputeRequests [DATA]"
+      },
+      {
+        "cell": "00e18b60",
+        "xref": "From 004f76d0 in BSP_FrontEndScreens_RecomputeRequests [READ]"
+      },
+      {
+        "cell": "00e18b60",
+        "xref": "From 004f7700 in BSP_FrontEndScreens_RecomputeRequests [READ]"
+      },
+      {
+        "cell": "00e18b60",
+        "xref": "From 004d64e8 in BSP_GuiScreens_ParkWidgets [READ]"
+      },
+      {
+        "cell": "00e18b60",
+        "xref": "From 004f71a6 in BSP_FrontEndScreen_Destruct [DATA]"
+      },
+      {
+        "cell": "00e18b60",
+        "xref": "From 004f75e9 in CG_scalar_deleting_dtor_004f75e0 [DATA]"
+      },
+      {
+        "cell": "00e18b60",
+        "xref": "From 004f8888 in BSP_FrontEndScreens_Pump [DATA]"
+      },
+      {
+        "cell": "00e18b60",
+        "xref": "From 004f88c7 in BSP_FrontEndScreens_Pump [DATA]"
+      },
+      {
+        "cell": "00e18b60",
+        "xref": "From 004f8901 in BSP_FrontEndScreens_Pump [DATA]"
+      },
+      {
+        "cell": "00e18b64",
+        "xref": "From 004f8890 in BSP_FrontEndScreens_Pump [READ]"
+      },
+      {
+        "cell": "00e18b64",
+        "xref": "From 004f88d0 in BSP_FrontEndScreens_Pump [READ]"
+      },
+      {
+        "cell": "00e18b64",
+        "xref": "From 004f8906 in BSP_FrontEndScreens_Pump [READ]"
+      },
+      {
+        "cell": "00e18b64",
+        "xref": "From 004f71b0 in BSP_FrontEndScreen_Destruct [READ]"
+      },
+      {
+        "cell": "00e18b64",
+        "xref": "From 004f71b4 in BSP_FrontEndScreen_Destruct [WRITE]"
+      },
+      {
+        "cell": "00e18b64",
+        "xref": "From 004f75f0 in CG_scalar_deleting_dtor_004f75e0 [READ]"
+      },
+      {
+        "cell": "00e18b64",
+        "xref": "From 004f75f4 in CG_scalar_deleting_dtor_004f75e0 [WRITE]"
+      },
+      {
+        "cell": "00e18b64",
+        "xref": "From 004f76d0 in BSP_FrontEndScreens_RecomputeRequests [READ]"
+      },
+      {
+        "cell": "00e18b64",
+        "xref": "From 004f7700 in BSP_FrontEndScreens_RecomputeRequests [READ]"
+      },
+      {
+        "cell": "00e18b68",
+        "xref": "From 004f71ba in BSP_FrontEndScreen_Destruct [DATA]"
+      },
+      {
+        "cell": "00e18cdc",
+        "xref": "From 004f8597 in BSP_FrontEndScreens_SetLevel1Set [WRITE]"
+      },
+      {
+        "cell": "00e18cdc",
+        "xref": "From 004f8637 in BSP_FrontEndScreens_SetLevel2Set [WRITE]"
+      },
+      {
+        "cell": "00e18cdc",
+        "xref": "From 004f86d7 in BSP_FrontEndScreens_SetLevel3Set [WRITE]"
+      },
+      {
+        "cell": "00e18cdc",
+        "xref": "From 004f8777 in BSP_FrontEndScreens_SetLevel4Set [WRITE]"
+      },
+      {
+        "cell": "00e18cdc",
+        "xref": "From 004f839a in BSP_FrontEndScreens_RestoreLevelSet [WRITE]"
+      },
+      {
+        "cell": "00e18cdc",
+        "xref": "From 004f87fb in BSP_FrontEndScreens_SetLevel5Set [WRITE]"
+      },
+      {
+        "cell": "00e18cdc",
+        "xref": "From 004f8881 in BSP_FrontEndScreens_Pump [WRITE]"
+      },
+      {
+        "cell": "00e18cdc",
+        "xref": "From 004f71bd in BSP_FrontEndScreen_Destruct [DATA]"
+      },
+      {
+        "cell": "00e18cdc",
+        "xref": "From 004f75fd in CG_scalar_deleting_dtor_004f75e0 [DATA]"
+      },
+      {
+        "cell": "00e18cdc",
+        "xref": "From 004f88bf in BSP_FrontEndScreens_Pump [DATA]"
+      },
+      {
+        "cell": "00e18cdc",
+        "xref": "From 004f88f9 in BSP_FrontEndScreens_Pump [DATA]"
+      },
+      {
+        "cell": "00e18cdc",
+        "xref": "From 004f892a in BSP_FrontEndScreens_Pump [DATA]"
+      },
+      {
+        "cell": "00e18cdc",
+        "xref": "From 004e544c in BSP_Game_OnMove [WRITE]"
+      },
+      {
+        "cell": "00e18cdc",
+        "xref": "From 004e5481 in BSP_Game_OnMove [WRITE]"
+      }
+    ],
+    "registry_scope_qualification": "95 DWORD exact-address xrefs plus separate sentinel; indexed references/analysis aliases are not dynamically enumerated receiver/index proof"
+  },
+  "retained_local_audits": [
+    {
+      "path": "local\\native_frontend_global_authority_design\\registry_xrefs.json",
+      "sha256": "1daaca9cf048230bafae22cc9c3b1671cbbc46be84d0e32120d24e671fdc664b"
+    },
+    {
+      "path": "local\\native_frontend_global_authority_design\\global_queries.json",
+      "sha256": "1485d2724334f9edd703758451a7a92a3e7f0d6eeb00c5378ce2807f65380fcc"
+    }
+  ],
+  "source_and_named_document_pins": [
+    {
+      "path": "config/target.json",
+      "baseline_git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "bytes": 455,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "tools/bsp.py",
+      "baseline_git_blob": "2e1fb76a9fd700f079912706d9459c4293f96c86",
+      "sha256": "0532d1e3fa711fb62d198e6747a4e0eb8978ef7e301de75710afd40d6c1a1339",
+      "bytes": 103131,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "baseline_git_blob": "bd937766a7e4d62c015b2ab44a14a9153fbb4542",
+      "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+      "bytes": 14518,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "src/game_main.cpp",
+      "baseline_git_blob": "18909178937d4a3fbd4ddf9073819b959f3fa47a",
+      "sha256": "50034a37098bc7a1c738c541d5a97d0afb0cb4b1cf84b8e92102db92284df5c7",
+      "bytes": 80404,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "include/bsp/game_native_data_bootstrap.hpp",
+      "baseline_git_blob": "0fff23e432b46cab3978466f0f13f69bbdf4f144",
+      "sha256": "13e7a4a85d6096f3f0b4be04fce0d065d5e196c4119d914ae2af268026c7642a",
+      "bytes": 4111,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "src/game_native_data_bootstrap.cpp",
+      "baseline_git_blob": "b37fe02f39f358a9f2a9ac48b4dcd367ec95c1d0",
+      "sha256": "380bf1ebc8ba9691f19fd2ae33ce167cdf5b33e9095f9fc4f5d172489e2f879d",
+      "bytes": 23472,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "baseline_git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "bytes": 2713,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "baseline_git_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e",
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+      "bytes": 7167,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "include/bsp/game_native_mutable_crt_data.hpp",
+      "baseline_git_blob": "ec1a1c9c2a7359031b4b77c2b86ba12cd6f3420e",
+      "sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+      "bytes": 3200,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "src/game_native_mutable_crt_data.cpp",
+      "baseline_git_blob": "2c0d73f8164a8b0d4cbbc499801935d1f28c213a",
+      "sha256": "d9dabf905fd4acf195f72c14e9ae2c7ef457514f4ff6227efffdcbb1f24a0c39",
+      "bytes": 10114,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "baseline_git_blob": "d5e1fdd68d64a6e5429068335742f669fd8f1ddd",
+      "sha256": "68ac5c24794233d13e2b68d7276e703dc62d39bded4b969bfcf7a06361fac697",
+      "bytes": 6018,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "baseline_git_blob": "d5916015af98534a5c1915968a757510cc45b583",
+      "sha256": "baee34f67bf3948f0a92e05ebd2fc27d16b90727adc8ad4c8f6414dd16f77d6a",
+      "bytes": 2120,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "include/bsp/game_hosts_singletons.hpp",
+      "baseline_git_blob": "f149240ef3390bd0e138802061135aefcf1a2e55",
+      "sha256": "a047bfe45fd98e2586c30b4a87d5124bfadf1d29af198140544bb2f7652481bd",
+      "bytes": 10732,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "src/game_hosts_singletons.cpp",
+      "baseline_git_blob": "4a09a311654e49a588572535cb4b7d5f32ee09e1",
+      "sha256": "be179a72d97447dcd59620d05a791ac48cea74ab4ccf2468b0445d10c961b38e",
+      "bytes": 10557,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "baseline_git_blob": "867d8b7032fc7531bfaa4f2c43c649988b8e0710",
+      "sha256": "67a5164b1b20061f0f1353783c12cfcb92cc7392b37e04ec87371577425f7f58",
+      "bytes": 47507,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "baseline_git_blob": "d138983e92e5f93339e529655990f924f1c06be8",
+      "sha256": "6915e364d7c2eb73ebba01d7d1c521ca7fdc94ab78ad7f0302288fc281cad9f4",
+      "bytes": 185132,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "include/bsp/game_hosts_menu.hpp",
+      "baseline_git_blob": "b2fd10f60f8a2a4de10e30dff43db77e7a3c6946",
+      "sha256": "a7fe3146065a71cdbcf9a6f62dd2674f617722dc4615e0c0a00e03d8278c6dcf",
+      "bytes": 14176,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "src/game_hosts_menu.cpp",
+      "baseline_git_blob": "53bd558c0b9511967eadaec0d014626f20c44ae2",
+      "sha256": "f0c936fa3f0f1ca9b739b1c66428d2f4b5af2b1f15081ea2a36c5346ad4bb052",
+      "bytes": 113822,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "src/game_hosts_hud.cpp",
+      "baseline_git_blob": "8bf7b1d3f20d65cd365ad2678842a1d09beebbf7",
+      "sha256": "0aee4bea0fdc1c5f88b08246ebe21177e59be6c070111cdec626ce56deb11d4c",
+      "bytes": 231791,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "src/game_hosts_mission_frame.cpp",
+      "baseline_git_blob": "2257b8333afc3e71fa2bfcd2f8686d7e510efb54",
+      "sha256": "63069582a2a2d193e51dea7085185f28f6b2b580098735966748909df9a0a796",
+      "bytes": 316563,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "include/bsp/frontend_states.hpp",
+      "baseline_git_blob": "fe3d4e4fae9839902e923793ad615492f8a348f8",
+      "sha256": "3e246376a1571ab4a158cdeccacdd570c7bc51211dc4418d5dc0512e01f46afa",
+      "bytes": 8366,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "include/bsp/frontend_state_machine.hpp",
+      "baseline_git_blob": "889a1abb8d110b74fc2885eb44bb4bf1e57b7350",
+      "sha256": "2a6558ee41078b0b97183ef7038870623d35fc7854ddf34de2a16ab46055f2ac",
+      "bytes": 12017,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "src/frontend_state_machine.cpp",
+      "baseline_git_blob": "9e05c6f1e9dc7064e5d06ed2e1d75ff413abe8f4",
+      "sha256": "3a4b1fd9c62fa0427be56b61fafecc609d21747ca65c38c5b9e6bf6945de9519",
+      "bytes": 6010,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "src/frontend_screen_sets.cpp",
+      "baseline_git_blob": "f89225afa7fa86f1bbb35b129488ef7f8a7f26f8",
+      "sha256": "9ee1c8e167246d10ca0d01e17969df6d175357c8adb4dbb2ac66e851e6469ea3",
+      "bytes": 9515,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "src/main_menu_path.cpp",
+      "baseline_git_blob": "fa1b4c4b71123ed6fc5cafc0fd10ca3b32416f23",
+      "sha256": "a73de5cdea164b95626201a40eacfa49d162186ee741ed56acc35e2600b584d0",
+      "bytes": 13788,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "include/bsp/main_menu_registration.hpp",
+      "baseline_git_blob": "554cbf74e2d2c3d2bde70941dacd5e7c6193f9bf",
+      "sha256": "f785838c7cda350a0f4ed37608b410380a628a978e818a934c431d062108dcca",
+      "bytes": 2431,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "src/main_menu_registration.cpp",
+      "baseline_git_blob": "f733e6c5154db8b3ab87b52f461fde453d97bd97",
+      "sha256": "e4f617c6ad798acc68829ff67f8f419984d83688a23b5c38c8452ef123b1c804",
+      "bytes": 3497,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_construction.hpp",
+      "baseline_git_blob": "a77dcd8510f937497d2da08037e96c3682a2aa5b",
+      "sha256": "cd96bfd81f06f903c973593cde3daddff837d7a75f4649eb007ae4a14a7deb61",
+      "bytes": 1622,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "src/native_front_end_frame_construction.cpp",
+      "baseline_git_blob": "9db47b30cfb3578c40f52e07da606900db4653d4",
+      "sha256": "f90858ce1f08c8124d18a53bb51cfc43c46ced96fc8e64636c613a08a037cd9f",
+      "bytes": 976,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_publication.hpp",
+      "baseline_git_blob": "27dc5ef2dc4a00418158573799171e086e49f158",
+      "sha256": "b0d35be85ed8448ee1a89d66027e777a0aa4947a49164321c8bce3e628a8aae0",
+      "bytes": 1892,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "src/native_front_end_frame_publication.cpp",
+      "baseline_git_blob": "14461512a935bb5c330b688b9f713ad38ddb7270",
+      "sha256": "0d88f92b07b44eab54283aecea4c7626566c6d165b04d1285cfd3648b5e0a64a",
+      "bytes": 3253,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_identity.hpp",
+      "baseline_git_blob": "5c0da3fbb5985eb508547c7befb68120ea430354",
+      "sha256": "753b9e91c83040c07e54e32dc5102ef1cf8a43024cfd6fa5304e45dd9d52d439",
+      "bytes": 618,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "src/native_front_end_frame_identity.cpp",
+      "baseline_git_blob": "25d99ed275fb35985e0f9df611143a3013ebfba1",
+      "sha256": "86d12ab23e19a2a06834cc980b926b6fc815dd738fc910ac90ce703e3f3d5fe0",
+      "bytes": 192,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "include/bsp/native_game_singleton_lifetime.hpp",
+      "baseline_git_blob": "a5dfc0241ea74a986d947acc3b55c1d4821b13c6",
+      "sha256": "76ca3babd50d2102fd0f5d08ba931e327e3570aef60286fd634eaa365cace35c",
+      "bytes": 2916,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "src/native_game_singleton_lifetime.cpp",
+      "baseline_git_blob": "885e06ba824ec171d00b1f44b28ea7afbcae407f",
+      "sha256": "fffeccd7bf5f34e3f7129e0a5034cad0b97c09fdda8b89977d7e6d23c9ca8574",
+      "bytes": 4151,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "baseline_git_blob": "dc774f7d5ba1b15a117da9d2b5e39113b998f349",
+      "sha256": "de933f3c758aed5b505b61582845be194396bace2efc88f676e9de462049f686",
+      "bytes": 23310,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "baseline_git_blob": "0c9759b7d908e778dbdc44d8785d8fae226ea75b",
+      "sha256": "98a476d0aa3d76fa3b79793a6c10dca5ce621b89f9a290eecef23866a483831a",
+      "bytes": 29984,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "include/bsp/native_game_lifetime.hpp",
+      "baseline_git_blob": "0f2f50a4b1ad95e354e352354a210d43e227c9ba",
+      "sha256": "5f780de4ea8a8f7f67a68cc5d72f4940921b40703027891edc14671ecfca6136",
+      "bytes": 9440,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "src/native_game_lifetime.cpp",
+      "baseline_git_blob": "bca722876e5b4cfd4033c20b2be6adec7e2b3f6f",
+      "sha256": "4535650c8dcd06db58f4fed96260c0b1c1eac410255fb14603bedfecdce59c90",
+      "bytes": 21717,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "include/bsp/game_native_game_runtime.hpp",
+      "baseline_git_blob": "82d6f97019a8ced315745431c1d80759d0251779",
+      "sha256": "da151d489b0bdea13c0ac2c4ad513c4a73d9d767d9078397a72a8f8d2ed5169a",
+      "bytes": 2173,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "src/game_native_game_runtime.cpp",
+      "baseline_git_blob": "ad9f8b3518827f1b1117ea55c92a2b1de23fa78d",
+      "sha256": "1e205d8375994a80cbc5d15a5270b9281f2e9c073a039c3b614535933c068bca",
+      "bytes": 4780,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "src/game_native_game_application_frame.cpp",
+      "baseline_git_blob": "965a53b7a9ecf78978677f6a930154da1bd3768c",
+      "sha256": "b4b420da696055f815a5afcea3bed5fc9979818f45fa2230699de554bacacb09",
+      "bytes": 7687,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "include/bsp/oct18_tail_a.hpp",
+      "baseline_git_blob": "236989ea251856372d869c90434ce10c5f4e3752",
+      "sha256": "623b45904d9f7a9558cf9a3aca26e51d8336fa60f511cc68f3d63faac86f81d7",
+      "bytes": 28399,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "src/oct18_tail_a.cpp",
+      "baseline_git_blob": "aa28639f185c2d3e461cde88f60967d5cbbdaac1",
+      "sha256": "afe458f3af69587a6f0b42bc61e5dda6585247411e4173b8cc4b6a1d648f7eaa",
+      "bytes": 111176,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "include/bsp/title_init.hpp",
+      "baseline_git_blob": "31fec5f7f61fe3e562934162f3519dc312394f92",
+      "sha256": "812e33bb6a996f862bbbd73af8d6d3c90575b132bb25e3d3dcca722ec3a20e72",
+      "bytes": 13398,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "src/title_init.cpp",
+      "baseline_git_blob": "837f14985cec3f5f1264d39943f2685d721cbe3c",
+      "sha256": "fdeb6154f772f18ae496daeff3b02b4331e8989b869f308b67678d7d47c0a33e",
+      "bytes": 8720,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "include/bsp/menu_screens_2.hpp",
+      "baseline_git_blob": "975c2a5be7c4d0348aa45134a6744f3689804c1f",
+      "sha256": "2ef72c791db3abc89d9b52b82bf57adee15a1de9edb3efaeedd64360457dce36",
+      "bytes": 99822,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "src/menu_screens_2.cpp",
+      "baseline_git_blob": "a81f1c88068789bc2af55431b634936e31a4dbc3",
+      "sha256": "23e3c082e0688f77fbba57f0d5c9f23a0ce1390d41226936890bf1e55adb2809",
+      "bytes": 171242,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "include/bsp/frontend_seg12_17_cc13.hpp",
+      "baseline_git_blob": "e6ccbbe3d242253970da0db7179875ac5ffe0709",
+      "sha256": "6c7c46fac64e4c3fd89e6c5f67ef4739508787eb7a4aa6d6b90ca7aa4a0233f6",
+      "bytes": 227595,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "src/frontend_seg12_17_cc13.cpp",
+      "baseline_git_blob": "2f91cd9bcdd7d9c8aae14a4c6cb8bec29e9b7dd0",
+      "sha256": "fc47eb8b8c9db2dcd0f25b5bc633502304ba39a7694b1f2ae0d1e50e74637a9f",
+      "bytes": 272095,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "include/bsp/game_native_gui_page_application.hpp",
+      "baseline_git_blob": "3900c1e90fb9dd685f1c1375079b6fd13252cff9",
+      "sha256": "8a21c044261937a47938887584b94650d1d04ab1584d3c447af276a6c04cebcb",
+      "bytes": 3811,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "src/game_native_gui_page_application.cpp",
+      "baseline_git_blob": "0e1e95e2a1372504cce0dda0a00a6c4476f8a367",
+      "sha256": "6931fc7c1dced9222a47ec072ca143b00d1789b5a344b85c7bfc639b15314711",
+      "bytes": 54018,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_FRAME_REGISTRATION_READINESS.md",
+      "baseline_git_blob": "0a88e77a218424b7c2387ccf348bb2479219b5df",
+      "sha256": "82aaef16aea892b5bdcffc02d5e8e997e389877cf8730d0488400e1292556219",
+      "bytes": 14194,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_FRAME_SELECTOR_BINDING_DESIGN.md",
+      "baseline_git_blob": "33a33e45793d0ed585196780312c402099a555d1",
+      "sha256": "07a7af491cfc2f43d1fa472078315f3dbc578debc6e63ca2fa629c9f3fe5b716",
+      "bytes": 16347,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_FRAME_PAGE_RETIREMENT_READINESS.md",
+      "baseline_git_blob": "a93e54ffd579b86e5ad0b59476e028273bfdf191",
+      "sha256": "4117cb20159e7e4d61416b36676aa041a7bb2f788a4195c49db8e0d9ca717fa6",
+      "bytes": 11618,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_FRONT_END_FRAME_SOURCE_ADMISSION.md",
+      "baseline_git_blob": "a37a71b85194b02b2073c85afbe5fd21ce499a03",
+      "sha256": "8d2343ebdb295c53cad5c5bcb548d3be090561671b4d8e58c93220112bf1d2d2",
+      "bytes": 5658,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_FRONT_END_FRAME_PUBLICATION.md",
+      "baseline_git_blob": "1b94026d373bb495ead1114b4122ef19fa8ab74e",
+      "sha256": "5733a09b9022c65b6a5e0d5ab76a7c064f1944ec3be10803ff8205b272f19c86",
+      "bytes": 6788,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_FRONT_END_FRAME_IDENTITY_SOURCE_ADMISSION.md",
+      "baseline_git_blob": "8f8ef929780563e7614b83c981653554475de905",
+      "sha256": "6a423f4586033e408831226ec5467e03f11dd792c191221c4eafd351837e1a14",
+      "bytes": 3212,
+      "matches_baseline_blob": true,
+      "matches_later_remote_blob": true
+    }
+  ],
+  "consulted_shared_export_receipts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004f71d0\\decompiled.c",
+      "sha256": "dd4169969dbac446e7c01f949727afb3646bd52ef9c2c2cef5b97f77bba8dc82",
+      "bytes": 509,
+      "source": "shared saved Ghidra exports via bsp.py show; no export mutation"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004f71a0\\decompiled.c",
+      "sha256": "b2b01a3c84b43e2d895d36b703f6e58108c2bca3a7fbddc6fc22689d74f49413",
+      "bytes": 643,
+      "source": "shared saved Ghidra exports via bsp.py show; no export mutation"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00517cf0\\decompiled.c",
+      "sha256": "b26cd3131f20038f4ce6c1501908a2ff10098d8b18e1177a3c5409707d76df51",
+      "bytes": 477,
+      "source": "shared saved Ghidra exports via bsp.py show; no export mutation"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00517d50\\assembly.txt",
+      "sha256": "481da8ed29d587093148a2e8ce38256e5dea8601ff7743bf3afa18145a07289e",
+      "bytes": 49,
+      "source": "shared saved Ghidra exports via bsp.py show; no export mutation"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00517d60\\decompiled.c",
+      "sha256": "34a45b06ce34ceb6ebddb69fadf45685fcf858e1f063e9eba7e35ca30947e865",
+      "bytes": 470,
+      "source": "shared saved Ghidra exports via bsp.py show; no export mutation"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00517d60\\assembly.txt",
+      "sha256": "7b8965d1d6b6d8f75e496d12265f0ffae909e50a62c932182a081800b5469cf3",
+      "bytes": 322,
+      "source": "shared saved Ghidra exports via bsp.py show; no export mutation"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00517d90\\decompiled.c",
+      "sha256": "b09d4ca4b945d01d7633a23fe3141fc460f592834b2548bd829838fa77145320",
+      "bytes": 2079,
+      "source": "shared saved Ghidra exports via bsp.py show; no export mutation"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00517eb0\\decompiled.c",
+      "sha256": "64d2c8a7d26e2e171e24627ebee1adb6f25dfb5072ce947a3e247983484b3bf9",
+      "bytes": 188,
+      "source": "shared saved Ghidra exports via bsp.py show; no export mutation"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00517eb0\\assembly.txt",
+      "sha256": "6792652e25800b6cda72f8d1a89891994f925cf47ef5d22cb5a64246a26bd8d6",
+      "bytes": 267,
+      "source": "shared saved Ghidra exports via bsp.py show; no export mutation"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00518b90\\decompiled.c",
+      "sha256": "ea7b31d7ce472bec9075519e384f6d6277055eaaefb2439b316e2c4585c808f1",
+      "bytes": 1378,
+      "source": "shared saved Ghidra exports via bsp.py show; no export mutation"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00518b90\\assembly.txt",
+      "sha256": "230f1da06dc825d41cbf7964e278d11a8240a0b661b4ed274c7db1c336cffbff",
+      "bytes": 1768,
+      "source": "shared saved Ghidra exports via bsp.py show; no export mutation"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00518d60\\assembly.txt",
+      "sha256": "05cf3238cb450475357d7be40b4ca889c2892391d8aa7e4c5e14a17bc05b2b37",
+      "bytes": 381,
+      "source": "shared saved Ghidra exports via bsp.py show; no export mutation"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00518e00\\decompiled.c",
+      "sha256": "647e01c5ea7873471f6095b5375a531390b6d12fedd3bfd8dc60e0dd696e3be8",
+      "bytes": 807,
+      "source": "shared saved Ghidra exports via bsp.py show; no export mutation"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00518e00\\assembly.txt",
+      "sha256": "f4041af608b866accfd92f7db5a5d73a03247ae1d850b5b3da572235a252eb10",
+      "bytes": 1065,
+      "source": "shared saved Ghidra exports via bsp.py show; no export mutation"
+    }
+  ],
+  "new_credit": {
+    "native_bodies": 0,
+    "recovered_bodies": 0,
+    "vendor_bodies": 0,
+    "duplicate_bodies": 0,
+    "runtime": 0,
+    "activation": 0
+  },
+  "validation": {
+    "read_only_pe_parser_and_source_blob_checks": true,
+    "byte_queries_match_pe": true,
+    "new_repository_tests": 0,
+    "compile": false,
+    "tests": false,
+    "link": false,
+    "executables_or_dlls_created": false,
+    "probes_or_game_or_body_execution": false,
+    "ghidra_mutations": false
+  },
+  "document": {
+    "path": "docs/CC16_NATIVE_FRONTEND_GLOBAL_AUTHORITY_DESIGN.md",
+    "sha256": "d1619ee0028cb1810678bbca2b21d31ba4ef9866686cdeb89f36ba2482a8d818"
+  }
+}

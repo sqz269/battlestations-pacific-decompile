@@ -1,0 +1,236 @@
+{
+  "schema": "bsp.cc16.gui_timed_producer_implementation.v1",
+  "status": "component_Win32_build_and_focused_Source_regression_passed_actual_Page_consumer_pending_NOT_Main_admitted",
+  "baseline_Main": "40acabef63ed84dec8deb4d54530ef13a4d4da8d",
+  "contract_commit": "f23d66e500fbfa80da93e7b6f05670d9520464e9",
+  "contract_report_sha256": "dc5738f7465d222db97ee3421784fd702e442059396bedbae46d859cdea07815",
+  "complete_contract_doc_lines_read": 102,
+  "owned_Source_pins": [
+    {
+      "path": "include/bsp/cc13_gui1.hpp",
+      "bytes": 21832,
+      "sha256": "79cdf7721281e3c47ea49203c73253b408c475c76833105209056cf30058de40",
+      "Git_LF_sha256": "649ac778ac9b6c1600ab1322e81d83dda1f259b67545bf942f62f7958adddff8",
+      "Git_blob": "7fd9819d04c9dc9a13c761e0176480ed6f588446"
+    },
+    {
+      "path": "src/cc13_gui1.cpp",
+      "bytes": 35939,
+      "sha256": "2c9ea1b7e77542e13717ffe9721f0efe62bbefcc5868ae8988dd1587ac800fef",
+      "Git_LF_sha256": "3b60069c4991f51ac3a8ed5076cffb9c0abf5af97dd9c171773c2e99952b8798",
+      "Git_blob": "7f0ee9d08b5f0b90350d956f0bd2b5b79d714291"
+    },
+    {
+      "path": "tests/math_tests.cpp",
+      "bytes": 226039,
+      "sha256": "81cffca04aaf51c02c5b3f4b73f70a06fb0572a521be385204e979009ffda6e1",
+      "Git_LF_sha256": "50ac2afd8f9c611365d8ed39c2d2bc77fbb6110a44a4f472d01bf62cd1f86e1c",
+      "Git_blob": "1689744ed46b0d03c38a0e74a63bc1d25c7b9265"
+    }
+  ],
+  "Native_functions": [
+    {
+      "address": "00aa8b00",
+      "end_inclusive": "00aa8b7e",
+      "abi": "ECX actual widget; signed index stack; EAX entry/null; RET4",
+      "existing_source": "src/cc13_gui1.cpp:267-279",
+      "effects": "three signed count/resize sites; capture original slot before producer; normal-return publication there; reload current header/data for final lookup"
+    },
+    {
+      "address": "00ad3a80",
+      "end_inclusive": "00ad3b40",
+      "abi": "ECX signed index, EDX actual widget; EAX entry/null; RET",
+      "existing_source": "src/cc13_gui1.cpp:319-335",
+      "effects": "indices0/1 allocate14h, alpha ctor; index2 allocate14h then widget08,zero04,D5D210,zero0C,zero10; other/null=>0",
+      "missing_current_source_arm": "captured-block BF65AC on throwing alpha ctor"
+    },
+    {
+      "address": "00ad3970",
+      "end_inclusive": "00ad3989",
+      "abi": "ECX destination; borrowed widget stack; EAX destination; RET4",
+      "effects": "D5D204, positive-zero04, actual widget08; C/10 untouched",
+      "missing_raw_source": "current typed ctor requires semantic GuiLayoutWidget&"
+    },
+    {
+      "address": "00ac2ed0",
+      "end_inclusive": "00ac2efa",
+      "abi": "ECX destination; borrowed widget stack; EAX destination; RET4",
+      "effects": "raw base ctor; one live D7A24C MOVSS load; D5CA74; same bits to0C/10",
+      "missing_raw_source": "current typed ctor requires semantic GuiLayoutWidget&"
+    },
+    {
+      "address": "00ad3990",
+      "end_inclusive": "00ad3996",
+      "abi": "ECX entry; RET",
+      "effects": "D5D204 profile reset only"
+    },
+    {
+      "address": "00ac2fe0",
+      "end_inclusive": "00ac2ffd",
+      "abi": "ECX entry; flags stack; EAX original identity; RET4",
+      "effects": "AD3990 reset; lowbyte flags bit0; conditional BF65AC(entry)"
+    },
+    {
+      "address": "00ad3a40",
+      "end_inclusive": "00ad3a5e",
+      "abi": "ECX entry; flags stack; EAX original identity; RET4",
+      "effects": "test lowbyte flags bit0; stamp D5D204; conditional BF65AC(entry)"
+    },
+    {
+      "address": "00ad3a60",
+      "end_inclusive": "00ad3a7e",
+      "abi": "ECX entry; flags stack; EAX original identity; RET4",
+      "effects": "base current0 after flags0; test lowbyte bit0; stamp D5D204; conditional BF65AC(entry)"
+    },
+    {
+      "address": "00aa6f30",
+      "end_inclusive": "00aa6f8e",
+      "abi": "ECX actual pointer/count/capacity header; signed capacity stack; RET4",
+      "effects": "signed clamp >=1; allocate wrapping4*capacity; CURRENT count/data copy; CURRENT backing free before new data/capacity publication"
+    },
+    {
+      "address": "00aa77b0",
+      "end_inclusive": "00aa77ff",
+      "abi": "ECX actual header; signed count stack; RET4",
+      "effects": "reserve if needed, exact null-fill, current-count decrement and final count store; never destroys entries"
+    },
+    {
+      "address": "00aa7f50",
+      "end_inclusive": "00aa7f66",
+      "abi": "ECX actual header; RET",
+      "effects": "resize0 then free current backing; no entry deletion"
+    },
+    {
+      "address": "00aa9730",
+      "existing_source": "src/native_gui_widget_lifetime.cpp:190-242",
+      "abi": "ECX actual widget; RET",
+      "effects": "timed loop captures original slot, current0(flags1), post-return original clear; current count reload; inline final backing schedule; state2 unwind frees backing only"
+    }
+  ],
+  "constructor_EH": {
+    "handler": "00cb9376",
+    "handler_listing": [
+      "MOV EAX,0xdf0958",
+      "JMP 0x00bf6b43"
+    ],
+    "func_info_address": "00df0958",
+    "func_info_bytes_hex": "22059319020000004809df00000000000000000000000000000000000000000001000000",
+    "max_state": 2,
+    "unwind_map": "00df0948",
+    "unwind_map_bytes_hex": "ffffffff6b93cb00ffffffff6093cb00",
+    "states": [
+      {
+        "index": 0,
+        "state": 0,
+        "allocation_home_store": "00ad3b07",
+        "state_store": "00ad3b0b",
+        "action": "00cb936b",
+        "action_listing": [
+          "MOV EAX,dword ptr [EBP + -0x10]",
+          "PUSH EAX",
+          "CALL 0x00bf65ac",
+          "POP ECX",
+          "RET"
+        ]
+      },
+      {
+        "index": 1,
+        "state": 1,
+        "allocation_home_store": "00ad3aef",
+        "state_store": "00ad3af3",
+        "action": "00cb9360",
+        "action_listing": [
+          "MOV EAX,dword ptr [EBP + -0x10]",
+          "PUSH EAX",
+          "CALL 0x00bf65ac",
+          "POP ECX",
+          "RET"
+        ]
+      }
+    ],
+    "constructor_call": "00ad3b1a",
+    "raw_source_rule": "after successful nonnull allocation, catch only constructor unwind, free same captured block through mandatory matching free hook, rethrow; no slot publication. Allocation throw has no block. Index2 no constructor action.",
+    "native_fh3_seh_fault_transport_proved": false
+  },
+  "changes": [
+    "GuiTimedEntryHooks exposes only the5actual producer/metadata operations; full GuiWidgetHooks inherits it, with existing public overloads forwarding to same narrow bodies.",
+    "AA8B00 body retains all3signed count checks, original pre-constructor slot capture, original publication and final CURRENT header/data lookup.",
+    "AD3A80 index0/1 saves returned entry only after actual ctor completes; ctor escape frees captured allocated block through mandatory matching nonthrowing BF65AC hook and rethrows. Allocation escape/null and index2 retain their original schedules.",
+    "Nonthrowing allocation-free construction-returned receipt runs once after actual ctor/inline construction and before original slot publication. It grants no Native reference/ownership.",
+    "No concrete full GuiWidgetHooks provider exists in current src/include/tests; no rejecting/noop adapter was added. Page supplies the actual narrow per-invocation provider in coupled packet."
+  ],
+  "focused_regression": {
+    "file": "tests/math_tests.cpp",
+    "cases_added": 1,
+    "risk": "Constructor mutates current widget backing then throws: captured allocation freed once, same exception escapes, neither captured nor replacement slot published; no constructor-returned receipt.",
+    "Source_only": true,
+    "Native_FH3_SEH_or_game_proof": false,
+    "status": "passed_in_existing_reconstructed_math_suite"
+  },
+  "build": {
+    "status": "passed",
+    "source_commit": "44ee1b9ba4aaa88aae3f6937e2f0c452ba098c3a",
+    "command": "./scripts/build.ps1 -Configuration Release",
+    "target": "MSVC Win32 Release",
+    "MP": 2,
+    "PCH": "ON",
+    "coverage_PDB": "OFF",
+    "existing_suites": "2/2 passed",
+    "total_test_seconds": 12.58,
+    "artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch21\\build.log",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch21\\artifacts\\01_build.log",
+        "bytes": 2645,
+        "sha256": "7d0054f5c7939189076131090ea809c6b2d2c9d3f93b516fbd812525686a4d9f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\CMakeCache.txt",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch21\\artifacts\\02_CMakeCache.txt",
+        "bytes": 19943,
+        "sha256": "1685db07153e0ad413c8e75a1536cf232b943fdc86f5e983cd18cf2abfa3ecb2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\bsp_game.map",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch21\\artifacts\\03_bsp_game.map",
+        "bytes": 11350752,
+        "sha256": "e0ba3914ae161bc78b1beac6ceef572daab31223e2fb96fc1d66deb474158441"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\bsp_game.exe",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch21\\artifacts\\04_bsp_game.exe",
+        "bytes": 7505408,
+        "sha256": "c215df15898d1cee70b3d161e9c93702e742d6883557ef733de4f70a118afbac"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\bsp_math_tests.exe",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch21\\artifacts\\05_bsp_math_tests.exe",
+        "bytes": 893952,
+        "sha256": "6955c3b835c0ec8b5261dbe8d434a594a9cab73b0cd44d7b5c82bdabdb427698"
+      }
+    ],
+    "Game_or_probes_executed": false,
+    "reconstructed_math_Source_cleanup_fixture": true
+  },
+  "consumer": {
+    "Page_author": "gui_populated_page_implementation",
+    "Page_files_owned_elsewhere": [
+      "include/bsp/native_gui_widget_lifetime.hpp",
+      "src/native_gui_widget_lifetime.cpp",
+      "src/game_native_gui_page_application.cpp"
+    ],
+    "no_actual_Page_timer_producer": true,
+    "real_future_HUD_callers": [
+      "0064dd30",
+      "00648060",
+      "00648c20"
+    ],
+    "no_artificial_Page_timer_call": true,
+    "producer_activation": "not_claimed"
+  },
+  "interfaces": "Source C++ overloads/hook-base layout change; not original binary ABI or native vtables. Existing implementations must supply real matching failure free/prepared receipt.",
+  "Main_admitted": false,
+  "activated": false,
+  "game_validated": false,
+  "new_Original_vendor_duplicate_body_credit": 0
+}

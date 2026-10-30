@@ -1,5 +1,6 @@
 #include "bsp/native_gui_widget_child_links.hpp"
 #include "bsp/effect_deletion_queue.hpp"
+#include "bsp/native_node_root_propagation.hpp"
 #include "bsp/native_lua_script_overrides.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <cstdlib>
@@ -119,23 +120,51 @@ void remove_native_gui_widget_list_value_00a9bd50(
     }
 }
 
-void detach_native_gui_widget_child_00aa83a0(void* parent, void* child,
-    NativeNodeDestructionRuntime& nodes) {
+namespace {
+struct LegacyDetach {
+    NativeNodeDestructionRuntime& nodes;
+    void parent_null(void* child) { set_native_node_parent_null_00b6e680(nodes, current_node(child, nodes)); }
+    void root_null(void* child) { propagate_native_node_root_00b6d890(nodes, current_node(child, nodes), nullptr); }
+    void unlink(void* parent, void* child) {
+        auto& p = nodes.scenes.resolve_key(reinterpret_cast<std::uint32_t>(parent)).transform;
+        unlink_native_node_child_00b6d940(p, current_node(child, nodes));
+    }
+};
+struct RawDetach {
+    NativeNodeParentNullFrame& frame;
+    NativeNodeBaseDestructionContext& node;
+    NativeNodeParentNullAcquired& acquired;
+    void parent_null(void* child) {
+        set_native_raw_parent_null_00b6e680(pointer(child, 0x4c), frame, node, acquired);
+    }
+    void root_null(void* child) {
+        propagate_native_node_root_storage_00b6d890(pointer(child, 0x4c), nullptr, node.scenes.children);
+    }
+    void unlink(void* parent, void* child) {
+        unlink_native_raw_child_00b6d940(parent, pointer(child, 0x4c));
+    }
+};
+template<class Calls> void detach_child(void* parent, void* child, Calls& calls) {
     if (!child) return;
     if (word(child, 0x4c) != 0) {
-        set_native_node_parent_null_00b6e680(nodes, current_node(child, nodes));
-        propagate_native_node_root_00b6d890(nodes, current_node(child, nodes), nullptr);
-        const auto parent_node = word(parent, 0x4c);
-        if (parent_node != 0) {
-            auto& actual_parent = nodes.scenes.resolve_key(parent_node).transform;
-            auto& actual_child = current_node(child, nodes);
-            unlink_native_node_child_00b6d940(actual_parent, actual_child);
-        }
+        calls.parent_null(child);
+        calls.root_null(child);
+        void* const parent_node = pointer(parent, 0x4c);
+        if (parent_node) calls.unlink(parent_node, child);
     }
     remove_native_gui_widget_list_value_00a9bd50(
         *reinterpret_cast<NativeEffectDeletionListStorage*>(
             static_cast<std::byte*>(parent) + 0x64), &child);
     store(child, 0x70, 0);
 }
-
+}
+void detach_native_gui_widget_child_00aa83a0(void* parent, void* child,
+    NativeNodeDestructionRuntime& nodes) {
+    LegacyDetach calls{nodes}; detach_child(parent, child, calls);
+}
+void detach_native_gui_widget_child_00aa83a0(void* parent, void* child,
+    NativeNodeParentNullFrame& frame, NativeNodeBaseDestructionContext& node,
+    NativeNodeParentNullAcquired& acquired) {
+    RawDetach calls{frame, node, acquired}; detach_child(parent, child, calls);
+}
 } // namespace bsp

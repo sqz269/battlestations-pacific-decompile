@@ -35,8 +35,8 @@ Word target(void* receiver, Word offset, game::GameNativeReadOnlyData& data) {
 NativeGuiPageReadPropertiesAcquired::~NativeGuiPageReadPropertiesAcquired() noexcept {
     if (phase == Phase::entered || phase == Phase::failed) std::terminate();
 }
-void read_native_gui_page_properties_00ac4c50(void* page, void* reader,
-    NativeGuiPageReadPropertiesFrame& frame, NativeGuiPageReadPropertiesContext& c, Acquired& a) {
+template<class Context> void read_properties(void* page, void* reader,
+    NativeGuiPageReadPropertiesFrame& frame, Context& c, Acquired& a) {
     require(a.phase == Acquired::Phase::fresh && !a.scene.started &&
         a.children.phase == NativeGuiWidgetPropertyChildrenAcquired::Phase::fresh &&
         &c.widget.properties.strings == &c.children.strings &&
@@ -93,5 +93,13 @@ void read_native_gui_page_properties_00ac4c50(void* page, void* reader,
             c.widget, c.children, a.children);
         a.properties_returned = true; a.phase = Acquired::Phase::complete;
     } catch (...) { a.phase = Acquired::Phase::failed; throw; }
+}
+void read_native_gui_page_properties_00ac4c50(void* p, void* r,
+    NativeGuiPageReadPropertiesFrame& f, NativeGuiPageReadPropertiesContext& c, Acquired& a) {
+    read_properties(p, r, f, c, a);
+}
+void read_native_gui_page_properties_00ac4c50(void* p, void* r,
+    NativeGuiPageReadPropertiesFrame& f, NativeGuiPageReadPropertiesRawContext& c, Acquired& a) {
+    read_properties(p, r, f, c, a);
 }
 } // namespace bsp

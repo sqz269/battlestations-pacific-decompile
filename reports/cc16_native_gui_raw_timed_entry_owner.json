@@ -1,0 +1,603 @@
+{
+  "schema_version": 1,
+  "packet": "codex-gui-raw-timed-entry-owner",
+  "status": "raw_source_provider_contract_specified_actual_page_producer_absent_implementation_not_performed",
+  "documentation": "docs/CC16_NATIVE_GUI_RAW_TIMED_ENTRY_OWNER.md",
+  "frozen_source": "a7a1a46f7d77db931534d81fee8985d8809b1f13",
+  "source_previous_contract_base": "5dc9e9a018c8cb59b606fe904fca95ed7f9c574a",
+  "source_previous_contract_base_delta": [],
+  "immutable_context_commits": {
+    "type2_readiness": "911d59186e23f760a908e70648db26ec364e63f7",
+    "frontend_model_contract": "8eea91c3a8dfe9a47c33c8eeb9f8147155a31447",
+    "raw_parenting_contract": "dfa633c235398dd2ebbc5d561e0f9d8f9853dff2"
+  },
+  "ownership": {
+    "worktree": "J:/PROG/battlestations-pacific-decompile-codex-gui-raw-timed-entry-owner",
+    "branch": "agent/codex-gui-raw-timed-entry-owner",
+    "leased_files": [
+      "docs/CC16_NATIVE_GUI_RAW_TIMED_ENTRY_OWNER.md",
+      "reports/cc16_native_gui_raw_timed_entry_owner.json"
+    ],
+    "leased_addresses": [],
+    "source_mutation": false,
+    "ghidra_mutation": false,
+    "new_reconstruction_credit": 0,
+    "runtime_or_process_control": false
+  },
+  "ghidra_identity": {
+    "configured_project_file": "C:/Users/sqz269/bsp.gpr",
+    "configured_project_file_exists": true,
+    "live_project_name": "bsp",
+    "live_program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "live_function_count": 77632,
+    "verification": "Every live bsp.py ghidra batch calls Client.verify: project_name, program_path, language and image_base against config/target.json; autostart disabled for Native follow-ups. Configured project path was checked on disk. No project launch/import/write.",
+    "shared_exports": "tools/workspace.py main-checkout exports/bsp resolution; no worktree junction"
+  },
+  "actual_page_reach": {
+    "producer_calls_in_current_page_properties_or_hooks": [],
+    "source_path": "src/game_native_gui_page_application.cpp:630-650,661-727",
+    "library_properties": [
+      "src/native_gui_widget_property_prefix.cpp:40-132",
+      "src/native_gui_widget_property_interaction.cpp:29-75",
+      "src/native_gui_widget_property_children.cpp:89-176",
+      "src/native_gui_page_properties.cpp:38-95"
+    ],
+    "reached_body_summary": "Page scene/current78, root propagation, local position, AAA710 field prefix, Visible/MouseBlock/MouseHit, transform, childless key walk. Full AAACD4 library calls create/Model/parent/current74/current18/current78; contains no timed producer. Current mapped child key rejects.",
+    "current_table_blocker": "Widgets::current_table requires live_page before table lookup, cpp336-339",
+    "current_timed_callback_blocker": "Widgets::call_timed_delete_00 rejects, cpp374",
+    "current_delete_blocker": "delete_page requires actual88/8C/90 all zero, cpp787-790",
+    "base_constructor_empty_headers": [
+      {
+        "body": "00aa9390",
+        "source": "src/native_gui_widget_base_storage.cpp:65-66",
+        "effect": "88/8C/90 zero"
+      },
+      {
+        "body": "00aa9520",
+        "source": "src/native_gui_widget_copy_storage.cpp:77-78",
+        "effect": "destination88/8C/90 zero, not copied from source"
+      }
+    ],
+    "scope_limit": "These constructor effects/current childless Page reach do not prove a complete future populated/HUD callback invariant. No artificial Page timer call, empty-only general policy or timer update admission.",
+    "native_aa8b00_callers": [
+      "0064dd30",
+      "00648060",
+      "00648c20"
+    ],
+    "existing_source_consumers": [
+      {
+        "source": "src/ingame_gui_cc13.cpp:3057-3070",
+        "function": "hud_root_advance_award_ticker_00648060",
+        "contract": "same actual widgets5C/60, current4C(1), AA8B00 index0, AC2F20(0,1), remaining04 countdown"
+      },
+      {
+        "source": "src/oct18_tail_a.cpp:1715,1782-1785",
+        "function": "update_hud_rows_00648c20",
+        "contract": "same actual widget3C, current4C(1), AA8B00 index0, AC2F20(0,1), remaining04 actual one"
+      },
+      {
+        "source": "src/game_hosts_hud.cpp:2940-2949",
+        "function": "circle_progress",
+        "contract": "current bridge only records ABE6E0/AA8B00; creates no raw timed entry"
+      }
+    ],
+    "timer_updates_in_scope": false,
+    "excluded_unreached_update_bodies": [
+      "00ac2f40",
+      "00abe7b0",
+      "00ad39a0"
+    ]
+  },
+  "raw_physical_storage": {
+    "new_source_type": "NativeGuiTimedEntryStorage",
+    "size_bytes": 20,
+    "fields": {
+      "00": "uint32 profile identity",
+      "04": "float remaining time",
+      "08": "void* actual raw widget, borrowed",
+      "0c": "float target",
+      "10": "float rate"
+    },
+    "existing_semantic_type_inapplicable": "GuiTimedEntryStorage widget08 is GuiLayoutWidget* and GuiTimedEntryOwner header belongs to semantic layout; no casts or adopted header.",
+    "entry_allocation": "singleton_lifetime_allocate({SingletonAllocationKind::object,0x14,0x14}); trivial lifetime starts without value initialization",
+    "entry_free": "matching singleton_lifetime_free at BF65AC site on same actual14h allocation",
+    "backing_allocation": "pointer_slots request with exact native byte count; same malloc/CRT new handler/retry and free domain",
+    "not_counted": true,
+    "canonical_registry_insertion": false,
+    "custody": "Independent prepared entry/backing receipts retained by same Page/WidgetRecords; native count remains solely actual widget8C; entry04 is never a count.",
+    "widget08_not_frozen": "Borrowed actual widget pointer is initialized by constructor; deletion does not read/compare it and no shadow widget owner is created."
+  },
+  "native_functions": [
+    {
+      "address": "00aa8b00",
+      "end_inclusive": "00aa8b7e",
+      "abi": "ECX actual widget; signed index stack; EAX entry/null; RET4",
+      "existing_source": "src/cc13_gui1.cpp:267-279",
+      "effects": "three signed count/resize sites; capture original slot before producer; normal-return publication there; reload current header/data for final lookup"
+    },
+    {
+      "address": "00ad3a80",
+      "end_inclusive": "00ad3b40",
+      "abi": "ECX signed index, EDX actual widget; EAX entry/null; RET",
+      "existing_source": "src/cc13_gui1.cpp:319-335",
+      "effects": "indices0/1 allocate14h, alpha ctor; index2 allocate14h then widget08,zero04,D5D210,zero0C,zero10; other/null=>0",
+      "missing_current_source_arm": "captured-block BF65AC on throwing alpha ctor"
+    },
+    {
+      "address": "00ad3970",
+      "end_inclusive": "00ad3989",
+      "abi": "ECX destination; borrowed widget stack; EAX destination; RET4",
+      "effects": "D5D204, positive-zero04, actual widget08; C/10 untouched",
+      "missing_raw_source": "current typed ctor requires semantic GuiLayoutWidget&"
+    },
+    {
+      "address": "00ac2ed0",
+      "end_inclusive": "00ac2efa",
+      "abi": "ECX destination; borrowed widget stack; EAX destination; RET4",
+      "effects": "raw base ctor; one live D7A24C MOVSS load; D5CA74; same bits to0C/10",
+      "missing_raw_source": "current typed ctor requires semantic GuiLayoutWidget&"
+    },
+    {
+      "address": "00ad3990",
+      "end_inclusive": "00ad3996",
+      "abi": "ECX entry; RET",
+      "effects": "D5D204 profile reset only"
+    },
+    {
+      "address": "00ac2fe0",
+      "end_inclusive": "00ac2ffd",
+      "abi": "ECX entry; flags stack; EAX original identity; RET4",
+      "effects": "AD3990 reset; lowbyte flags bit0; conditional BF65AC(entry)"
+    },
+    {
+      "address": "00ad3a40",
+      "end_inclusive": "00ad3a5e",
+      "abi": "ECX entry; flags stack; EAX original identity; RET4",
+      "effects": "test lowbyte flags bit0; stamp D5D204; conditional BF65AC(entry)"
+    },
+    {
+      "address": "00ad3a60",
+      "end_inclusive": "00ad3a7e",
+      "abi": "ECX entry; flags stack; EAX original identity; RET4",
+      "effects": "base current0 after flags0; test lowbyte bit0; stamp D5D204; conditional BF65AC(entry)"
+    },
+    {
+      "address": "00aa6f30",
+      "end_inclusive": "00aa6f8e",
+      "abi": "ECX actual pointer/count/capacity header; signed capacity stack; RET4",
+      "effects": "signed clamp >=1; allocate wrapping4*capacity; CURRENT count/data copy; CURRENT backing free before new data/capacity publication"
+    },
+    {
+      "address": "00aa77b0",
+      "end_inclusive": "00aa77ff",
+      "abi": "ECX actual header; signed count stack; RET4",
+      "effects": "reserve if needed, exact null-fill, current-count decrement and final count store; never destroys entries"
+    },
+    {
+      "address": "00aa7f50",
+      "end_inclusive": "00aa7f66",
+      "abi": "ECX actual header; RET",
+      "effects": "resize0 then free current backing; no entry deletion"
+    },
+    {
+      "address": "00aa9730",
+      "existing_source": "src/native_gui_widget_lifetime.cpp:190-242",
+      "abi": "ECX actual widget; RET",
+      "effects": "timed loop captures original slot, current0(flags1), post-return original clear; current count reload; inline final backing schedule; state2 unwind frees backing only"
+    }
+  ],
+  "actual_tables": [
+    {
+      "profile": "00d5ca74",
+      "slot0": "00ac2fe0",
+      "observed_first3": [
+        "00ac2fe0",
+        "00ac2f00",
+        "00ac2f40"
+      ]
+    },
+    {
+      "profile": "00d5d210",
+      "slot0": "00ad3a40",
+      "observed_first3": [
+        "00ad3a40",
+        "00ad3a20",
+        "00abe7b0"
+      ]
+    },
+    {
+      "profile": "00d5d204",
+      "slot0": "00ad3a60",
+      "observed_first3": [
+        "00ad3a60",
+        "00bf698e",
+        "00bf698e"
+      ]
+    }
+  ],
+  "constructor_eh": {
+    "handler": "00cb9376",
+    "handler_listing": [
+      "MOV EAX,0xdf0958",
+      "JMP 0x00bf6b43"
+    ],
+    "func_info_address": "00df0958",
+    "func_info_bytes_hex": "22059319020000004809df00000000000000000000000000000000000000000001000000",
+    "max_state": 2,
+    "unwind_map": "00df0948",
+    "unwind_map_bytes_hex": "ffffffff6b93cb00ffffffff6093cb00",
+    "states": [
+      {
+        "index": 0,
+        "state": 0,
+        "allocation_home_store": "00ad3b07",
+        "state_store": "00ad3b0b",
+        "action": "00cb936b",
+        "action_listing": [
+          "MOV EAX,dword ptr [EBP + -0x10]",
+          "PUSH EAX",
+          "CALL 0x00bf65ac",
+          "POP ECX",
+          "RET"
+        ]
+      },
+      {
+        "index": 1,
+        "state": 1,
+        "allocation_home_store": "00ad3aef",
+        "state_store": "00ad3af3",
+        "action": "00cb9360",
+        "action_listing": [
+          "MOV EAX,dword ptr [EBP + -0x10]",
+          "PUSH EAX",
+          "CALL 0x00bf65ac",
+          "POP ECX",
+          "RET"
+        ]
+      }
+    ],
+    "constructor_call": "00ad3b1a",
+    "raw_source_rule": "after successful nonnull allocation, catch only constructor unwind, free same captured block through mandatory matching free hook, rethrow; no slot publication. Allocation throw has no block. Index2 no constructor action.",
+    "native_fh3_seh_fault_transport_proved": false
+  },
+  "implementation_contract": {
+    "minimal_existing_production_files": [
+      "include/bsp/cc13_gui1.hpp",
+      "src/cc13_gui1.cpp",
+      "include/bsp/native_gui_widget_lifetime.hpp",
+      "src/native_gui_widget_lifetime.cpp",
+      "src/game_native_gui_page_application.cpp"
+    ],
+    "new_cmake_target_required": false,
+    "producer_interface": "new GuiTimedEntryHooks: exact existing resize/new/alpha-ctor hooks + mandatory noexcept failed-constructor free + mandatory nonthrowing construction-returned receipt transition; GuiWidgetHooks inherits; old producer signatures forward to shared narrow full bodies",
+    "raw_ctor_scalar_signatures": "Exact new declarations are in documentation. Separate raw void* widget storage; context-bearing prepared no-throw scalar free thunk; no semantic timed entry casts.",
+    "backing_interface": "new pure NativeGuiTimedStorageCalls: allocate(actual_header,bytes), free(actual_header,actual_backing); exact reserve/resize/destroy overloads share raw bodies",
+    "context_transport": "Page actual composite Widgets implements allocation interface; AA9730 schedule discovers cross-interface once by pure metadata dynamic_cast; qualified Page requires same retained service before effects; existing context/acquisition layouts unchanged and legacy genuine CRT path unchanged",
+    "source_only_completion_point": "after alpha ctor returns or index2 inline writes, before entry publication; once, no allocation/throw; not Native dispatch",
+    "page_service": "one retained RawTimedEntries service over same Page/WidgetRecords; distinct retained per-invocation narrow hook adapter; get_or_create(actual_widget,index) directly calls existing narrow AA8B00 body",
+    "entry_authentication": "independent genuine14h allocation, never canonical counted registry; captured profile selects actual mapped table; captured target selects exact Source scalar including base AD3A60",
+    "page_table_binding": "actual timed receipt authentication before Widgets live_page/widget-only lookup; genuine table from same readonly data",
+    "page_scalar_binding": "actual call_timed_delete_00 delegates raw scalar/free, no original/replacement slot clear by provider",
+    "backing_sites": [
+      "AA8B00 resize hooks",
+      "AA9730 timed-loop resize",
+      "AA9730 inline negative-capacity reserve",
+      "AA9730 inline final backing free",
+      "AA9730 state2 AA7F50 unwind"
+    ],
+    "failure_custody": "prepare receipt nodes before allocation; no throwing post-allocation metadata setup; native/free-consumed receipts only retire their own allocation; completed orphan entries and replacement backings retained; no rollback/header restoration/default clears/retry/replay/drain",
+    "flags0": "derived reset ends derived phase; allocation retained in base phase; later current0 must resolve D5D204/AD3A60",
+    "scalar_flags1": "consume only same entry receipt before native matching free; return pointer value only without post-free read",
+    "physical_admission": "nonnegative valid count/index, no wrapped physical allocation sizes; callbacks must keep original captured destination live. Whole Source signed schedules preserved; malformed physical storage is not normalized.",
+    "legacy_unwind": "AA9730 state2 frees backing only; original slot not cleared on callback throw; independent undeleted entry receipts survive even if backing freed",
+    "raw_page_failure": "preserve separate actual Page failure transport retaining graph; no fabricated exception-origin classification and no new noexcept boundary for normal callbacks",
+    "actual_hud_bridge": "no present Page producer. Wire the genuine HUD consumer to actual Page/WidgetRecord identities when that domain is ready; this requires its real host/consumer files outside five-file lower bound. No invented property call or unused accessor closes it.",
+    "coupling_rule": "Do not admit a detached raw owner alone: producer body, ctor/EH/scalar, backing sites and actual Page lifetime provider/custody land as a coupled packet with the graph supplier."
+  },
+  "missing_bodies": {
+    "unresolved_native_body_addresses": [],
+    "existing_source_omission": "AD3A80 alpha ctor EH captured BF65AC action at CB936B/CB9360",
+    "source_work_remaining": [
+      "raw storage ctor/scalar variants",
+      "narrow exact producer factoring and constructor-failure free",
+      "actual raw entry/backing custody callbacks",
+      "actual Page current-table/scalar and backing provider binding",
+      "genuine HUD/raw-widget producer consumer integration when reached"
+    ],
+    "separate_blockers": [
+      "recursive Page reader/frame and lifetime composition",
+      "raw Page-root/child-Model parenting",
+      "same canonical Model raw scene/zero terminal supplier"
+    ],
+    "general_populated_page_source_ready": false
+  },
+  "verification": {
+    "performed": [
+      "fresh clean worktree at frozen origin/main",
+      "exact two-file lease",
+      "capped current Source inspection",
+      "live verified Ghidra proto/callers/bytes/disasm for concrete ctor EH/current-table issue",
+      "saved constructor/scalar assembly inspection",
+      "Source SHA256/byte/Git-blob receipts",
+      "JSON parse and owned diff checks"
+    ],
+    "not_performed": [
+      "production implementation",
+      "Ghidra writes/reimport/export/annotation",
+      "build or test execution",
+      "probe/game/runtime execution",
+      "process control",
+      "push"
+    ],
+    "next_packet_validation": "required Win32 build and existing focused checks after actual Source changes; one focused constructor-failure/captured-slot case justified by missing EH arm",
+    "no_binary_abi_or_game_claim": true
+  },
+  "source_receipts": [
+    {
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "git_blob_at_frozen_source": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+    },
+    {
+      "path": "include/bsp/cc13_gui1.hpp",
+      "bytes": 19960,
+      "sha256": "9a00758ce9f7bdb218ce37b98963920bfecfc64de3743ba14a096852aa841f15",
+      "git_blob_at_frozen_source": "a262fef720e9d5149213284f361390b7d7445175"
+    },
+    {
+      "path": "src/cc13_gui1.cpp",
+      "bytes": 34424,
+      "sha256": "7dfe47d4f105cf2556058954e1b493c683f458073674a8bf310adfa378db6b62",
+      "git_blob_at_frozen_source": "40dc47c12558bb85e3db366f94d4b0c5c7a5e9ea"
+    },
+    {
+      "path": "include/bsp/gui_timed_entry_types.hpp",
+      "bytes": 3826,
+      "sha256": "54267326bcdea5d8f109454cad7a82c3c08e0d5f85532ce27284c16df71af66f",
+      "git_blob_at_frozen_source": "8dfbafc92aa04dd1cfa563010882a1c612b83b2a"
+    },
+    {
+      "path": "src/gui_timed_entry_types.cpp",
+      "bytes": 8846,
+      "sha256": "62d568950a34fe851892c875d4edeb26183825039b2038a7229b262baec7043c",
+      "git_blob_at_frozen_source": "46d3f88aca98c427c161c2960b3aad710676e354"
+    },
+    {
+      "path": "include/bsp/gui_timed_entry_owner.hpp",
+      "bytes": 2952,
+      "sha256": "a0efb47885ad930ce6da9aa8f089007247706f9c94ae53461102544d1a861cb2",
+      "git_blob_at_frozen_source": "ee7eeabfc646b244e6225838f4c57694daff5bfc"
+    },
+    {
+      "path": "src/gui_timed_entry_owner.cpp",
+      "bytes": 11087,
+      "sha256": "346c2cd79be6a886a34092ded008aeb400958024f49549c3ad1add0a0f01125e",
+      "git_blob_at_frozen_source": "e13897c6fa9d03ffca5a38a6642bd8550f81c041"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_lifetime.hpp",
+      "bytes": 5052,
+      "sha256": "030522bae83f9f7cd9e80d91ddcb5d4e841e64d983bb8be80a3b99597689aa70",
+      "git_blob_at_frozen_source": "ff4ba8bdf16ea7cf5e76a2ffb92c0729799884bc"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "bytes": 12286,
+      "sha256": "401a97f5c736a8d30896172c2acd5956550c1c17263b545dcf4bf60a2943f797",
+      "git_blob_at_frozen_source": "7d29b66582bef1929170abde259697b7ac7e2d53"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_lifetime_dispatch.hpp",
+      "bytes": 6288,
+      "sha256": "9d2c05097f3880a57bc79a5cd095bee33858a3b0300ed77af887f90fec3e291c",
+      "git_blob_at_frozen_source": "bd1b560ee54acf5c4189ecc2a130a406a70049d4"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime_dispatch.cpp",
+      "bytes": 9192,
+      "sha256": "f850db8bbd894bf91a96f730b8783cc7b66cb595c3c2a07973e33d33d9ad4803",
+      "git_blob_at_frozen_source": "b68e27db072d9cf5f549d7ed8806faf36474b530"
+    },
+    {
+      "path": "src/native_gui_widget_base_storage.cpp",
+      "bytes": 3008,
+      "sha256": "4ddd5ab1ad4a2b8174d80caf70dba76afa648479e4e8637a56884f2b9db6354d",
+      "git_blob_at_frozen_source": "997a33c5ac7bbf7b57e133feb53b91163e7308b5"
+    },
+    {
+      "path": "src/native_gui_widget_copy_storage.cpp",
+      "bytes": 5636,
+      "sha256": "66f5f04b8e71d79eba7e1791e57924a2679ef630fa4bffc80bb0f8b22d9367ae",
+      "git_blob_at_frozen_source": "cdecd59b10e8617d2c2db3d67e17113658b9a62a"
+    },
+    {
+      "path": "src/native_logical_vertex_owner.cpp",
+      "bytes": 25341,
+      "sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba",
+      "git_blob_at_frozen_source": "be3c28943b8b96b9c2e6829fb93546654271de62"
+    },
+    {
+      "path": "src/native_renderer_pointer_array_destroy.cpp",
+      "bytes": 2717,
+      "sha256": "e8fbf2456ac9e3e2a7fb6996d0e991b50c5ea32b184c1d0a13d376cee3956f21",
+      "git_blob_at_frozen_source": "699877250b9f72a0039dfe17deb4dde075a09486"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "git_blob_at_frozen_source": "4d10f6c53a3b9be4745776df443f340ea1769936"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "git_blob_at_frozen_source": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+    },
+    {
+      "path": "src/game_native_gui_page_application.cpp",
+      "bytes": 54018,
+      "sha256": "6931fc7c1dced9222a47ec072ca143b00d1789b5a344b85c7bfc639b15314711",
+      "git_blob_at_frozen_source": "0e1e95e2a1372504cce0dda0a00a6c4476f8a367"
+    },
+    {
+      "path": "include/bsp/game_native_gui_page_application.hpp",
+      "bytes": 3811,
+      "sha256": "8a21c044261937a47938887584b94650d1d04ab1584d3c447af276a6c04cebcb",
+      "git_blob_at_frozen_source": "3900c1e90fb9dd685f1c1375079b6fd13252cff9"
+    },
+    {
+      "path": "include/bsp/native_gui_layer_lifetime.hpp",
+      "bytes": 4093,
+      "sha256": "dbf0d44346d847bd4c2daa86b73cdb6ec175e2553ad113ef8bbeffc444f631dd",
+      "git_blob_at_frozen_source": "2477f2e27bb3d0fa2c59042d91f0b41a2a9be73a"
+    },
+    {
+      "path": "src/native_gui_layer_lifetime.cpp",
+      "bytes": 4457,
+      "sha256": "d6d789179cd68cbd1bf66a6ebf2b1aeb4c2c29fc03155b3be335ebfdb22cf7d0",
+      "git_blob_at_frozen_source": "5ceefd2a5021f3d9df7ce50bc5c78722be5a2b15"
+    },
+    {
+      "path": "src/native_gui_widget_property_prefix.cpp",
+      "bytes": 6155,
+      "sha256": "d26db5468d7eb00b21ff02556493b05bfc7a0440717c687e65afed281598d6fa",
+      "git_blob_at_frozen_source": "a7929db74e39bf1e98d5cf89251bd080b6359206"
+    },
+    {
+      "path": "src/native_gui_widget_property_interaction.cpp",
+      "bytes": 3580,
+      "sha256": "9f5b72097c855f0b9c2b7b92aa5555ca2415d6ec0573e45426069406e135c73d",
+      "git_blob_at_frozen_source": "24f5cbf46d3f92d69ef49e46810bcdb6a0e44e0a"
+    },
+    {
+      "path": "src/native_gui_widget_property_children.cpp",
+      "bytes": 11148,
+      "sha256": "2649822b64027d0b30421dd499aaecaf71f9f2484e2880b9c1f5c75817b77efc",
+      "git_blob_at_frozen_source": "ed66ee7c010662ad5a60008d9a218ca988a4cdc0"
+    },
+    {
+      "path": "src/native_gui_page_properties.cpp",
+      "bytes": 4960,
+      "sha256": "db3e465668de1e34c682b634a276874f44f164f17ec66175d44cb1a4a42c0182",
+      "git_blob_at_frozen_source": "e57721ad47c307d5f6b344c64f02e038a0e4e4d2"
+    },
+    {
+      "path": "src/ingame_gui_cc13.cpp",
+      "bytes": 153117,
+      "sha256": "cc4e8eb4a78350ed4843022e98a9218baba44dcab3ba9271ea1640ab15dd3859",
+      "git_blob_at_frozen_source": "a68ffe1f50d4f2be365e32b1456bb4351c45b18b"
+    },
+    {
+      "path": "include/bsp/ingame_gui_cc13.hpp",
+      "bytes": 93618,
+      "sha256": "423075cba6819b0d817427165e5bccbcdd7823b6ef9a4864799c8d965f51db9b",
+      "git_blob_at_frozen_source": "5ecc6066d6d1a3cd94f3ad63a395879dcaadcc92"
+    },
+    {
+      "path": "src/oct18_tail_a.cpp",
+      "bytes": 111176,
+      "sha256": "afe458f3af69587a6f0b42bc61e5dda6585247411e4173b8cc4b6a1d648f7eaa",
+      "git_blob_at_frozen_source": "aa28639f185c2d3e461cde88f60967d5cbbdaac1"
+    },
+    {
+      "path": "include/bsp/oct18_tail_a.hpp",
+      "bytes": 28399,
+      "sha256": "623b45904d9f7a9558cf9a3aca26e51d8336fa60f511cc68f3d63faac86f81d7",
+      "git_blob_at_frozen_source": "236989ea251856372d869c90434ce10c5f4e3752"
+    },
+    {
+      "path": "src/game_hosts_hud.cpp",
+      "bytes": 231791,
+      "sha256": "0aee4bea0fdc1c5f88b08246ebe21177e59be6c070111cdec626ce56deb11d4c",
+      "git_blob_at_frozen_source": "8bf7b1d3f20d65cd365ad2678842a1d09beebbf7"
+    },
+    {
+      "path": "src/hud_root_rows.cpp",
+      "bytes": 19688,
+      "sha256": "9a569da9fe3b61c1d7ae61cdfaf2fe44143fbea76729ee131db86f4711dd753e",
+      "git_blob_at_frozen_source": "dbde86b486647aa4e1e24b442b9e07610c0b5f49"
+    },
+    {
+      "path": "src/hud_ship_screen.cpp",
+      "bytes": 29110,
+      "sha256": "4ae3558680f9eda8c03ed88b67212255b2674ad75ae5803198396a151133a17e",
+      "git_blob_at_frozen_source": "74d695ae8213e6240f70dc319c27f930ad7279f7"
+    }
+  ],
+  "read_shared_export_receipts": [
+    {
+      "shared_export_relative_path": "functions/00aa8b00/decompiled.c",
+      "bytes": 2052,
+      "sha256": "f5c3e6ce7d82bf86dc86510f8c676fbbed728b3dcd93a9eadd8c26f9a97e9df0"
+    },
+    {
+      "shared_export_relative_path": "functions/00ad3a80/decompiled.c",
+      "bytes": 2443,
+      "sha256": "fa27c52fb408f34d0fad05ec75edf7b3bcb4b069bd4d5979d383c63f74cb5729"
+    },
+    {
+      "shared_export_relative_path": "functions/00ad3a80/assembly.txt",
+      "bytes": 1588,
+      "sha256": "dfd38ba7f2864e7a969305bf9ae7dcd4941d54e70d51844406d7ad58ef50e47c"
+    },
+    {
+      "shared_export_relative_path": "functions/00ad3970/decompiled.c",
+      "bytes": 591,
+      "sha256": "76ff131bed8befbaa1b8ee78d193e58fae694f6b86ad9adb4f759c398e43a2e0"
+    },
+    {
+      "shared_export_relative_path": "functions/00ad3970/assembly.txt",
+      "bytes": 235,
+      "sha256": "240d9b34a86555958313a05c4d76606ec7f0394299a9e8f02000e55e29eee7e9"
+    },
+    {
+      "shared_export_relative_path": "functions/00ac2ed0/decompiled.c",
+      "bytes": 734,
+      "sha256": "e0e69d45eab72f7adaff42108308d64017fc308f01c393b9c1fe2b0597a85215"
+    },
+    {
+      "shared_export_relative_path": "functions/00ac2ed0/assembly.txt",
+      "bytes": 366,
+      "sha256": "e1b59a7e3f8e6032a1ee87c4351f605442414be0bd1688fd69458be81e0b5299"
+    },
+    {
+      "shared_export_relative_path": "functions/00ac2fe0/assembly.txt",
+      "bytes": 267,
+      "sha256": "44c9675d704d0f6fa609594bf234de077416ea2aa36a275602bfd818c1ec5080"
+    },
+    {
+      "shared_export_relative_path": "functions/00ad3a40/assembly.txt",
+      "bytes": 280,
+      "sha256": "10ab996059145eea2374a6c197bc82571d0edcb93660feab2bbbc31b697fd9be"
+    },
+    {
+      "shared_export_relative_path": "functions/00ad3a60/decompiled.c",
+      "bytes": 663,
+      "sha256": "f76bcc8689c3c2856d6c88abe3ba0cf9a05f10d57c0e25e0c76d670f7e9e7911"
+    },
+    {
+      "shared_export_relative_path": "functions/00ad3a60/assembly.txt",
+      "bytes": 280,
+      "sha256": "6d851332fa5d9997ddfbe4eee6aaad3eb91fce687d7bb250047817e270996d81"
+    },
+    {
+      "shared_export_relative_path": "functions/00aa6f30/decompiled.c",
+      "bytes": 3779,
+      "sha256": "760040ae3366b6864aa288df27e51819cb1a4f29a56c781adb4926d3ee979869"
+    },
+    {
+      "shared_export_relative_path": "project.json",
+      "bytes": 300,
+      "sha256": "73391437ed958385189e8339f142751f66781bd6eb3587e87142182a11d65d36"
+    },
+    {
+      "shared_export_relative_path": "program.json",
+      "bytes": 892,
+      "sha256": "00f62004819d9616627c7fc051d00f44b9a5ec3dd2dc4e7f9a5e07c0d10149dc"
+    }
+  ]
+}

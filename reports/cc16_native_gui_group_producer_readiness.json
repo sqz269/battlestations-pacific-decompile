@@ -1,0 +1,1263 @@
+{
+  "schema": "cc16_native_gui_group_producer_readiness_v1",
+  "status": "bounded_four_body_readonly_source_and_provider_readiness",
+  "baseline_commit": "82e4d87735e48b2796c9a316780ad1c146d7a5a4",
+  "decision": {
+    "source_ready": false,
+    "scope": "Actual Type2 raw Page-child production/adoption, not the already available standalone Source constructors.",
+    "four_body_native_implementation_missing": false,
+    "existing_complete_source": [
+      "cc13_gui1::gui_layout_create_widget_of_type_00aa6560",
+      "create_native_gui_group_00aa12f0",
+      "construct_native_gui_group_default_00ac6f50",
+      "construct_native_gui_group_copy_00ac6fa0"
+    ],
+    "native_body_wrapper_needed": false,
+    "current_api_coupling": "Factory signature requires copy context/acquired references on default path and one reference on copy path although those are not consumed there. This is a Source interface coupling, NOT an extra Native input requirement.",
+    "next_coherent_candidate": "Separate real CD7460 Group-lineage authority review/Source packet sharing existing Element/counter/root owner, actual CD7440 caller custody, then one complete branch-dependent factory interface and genuine Page-child owner binding.",
+    "no_unused_api_as_activation": true
+  },
+  "analysis_target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "verified_before_live_batches": true,
+    "mutations": false
+  },
+  "original_image": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "native_bodies": [
+    {
+      "address": "00AA6560",
+      "end_inclusive": "00AA65F3",
+      "bytes": 148,
+      "hex": "8d41ff83f8110f8785000000ff2485f465aa008bcae956d6ffff8bcae96fadffff8bcae9f8adffff8bcae981aeffff8bcae90aafffff8bcae993afffff8bcae91cb0ffff8bcae9a5b0ffff8bcae92eb1ffff8bcae9b7b1ffff8bcae9f0feffff8bcae979bdffff8bcae932b2ffff8bcae9bbb2ffff8bcae964deffff8bcae93db3ffff8bcae9c6b3ffff8bcae94fb4ffff33c0c3",
+      "sha256": "1bb0d52c372cba3ed8219100366ad915c02e90ededba2ac80c0e3ed3c9b5d27a",
+      "instruction_count": 42,
+      "live_proto": {
+        "function_name": "BSP_GuiLayout_CreateWidgetOfType",
+        "address": "00aa6560",
+        "program": "battlestationspacific.exe",
+        "instruction_count": 42,
+        "basic_block_count": 21,
+        "edge_count": 20,
+        "call_count": 18,
+        "string_ref_count": 0,
+        "param_count": 0,
+        "cyclomatic_complexity": 1,
+        "prologue_stripped": false,
+        "epilogue_stripped": false,
+        "callee_names": [
+          "BSP_GuiFrameBox_AllocateAndConstruct",
+          "BSP_GuiMovie_DefaultOrCopyFactory",
+          "BSP_GuiProgbar_DefaultOrCopyFactory",
+          "BSP_GuiClipBox_DefaultOrCopyFactory",
+          "BSP_GuiText_DefaultOrCopyFactory",
+          "BSP_GuiGrid_DefaultOrCopyFactory",
+          "BSP_GuiCurve_DefaultOrCopyFactory",
+          "BSP_GuiLayer_CreateInstance",
+          "BSP_GuiGroup_Create",
+          "BSP_GuiIcon_DefaultOrCopyFactory",
+          "BSP_GuiLine_DefaultOrCopyFactory",
+          "BSP_GuiScrollbar_DefaultOrCopyFactory",
+          "BSP_GuiButton_DefaultOrCopyFactory",
+          "BSP_GuiAnimIcon_DefaultOrCopyFactory",
+          "BSP_GuiSound_DefaultOrCopyFactory",
+          "BSP_GuiModel_DefaultOrCopyFactory",
+          "BSP_GuiListbox_CreateOrCopy_00aa64b0",
+          "BSP_GuiSection_DefaultOrCopyFactory"
+        ],
+        "string_constants": [],
+        "immediate_values": [
+          17
+        ],
+        "basic_block_hashes": [
+          "b40f7f4909a75887fed643e417bc019c6c5a2a7e7dfbcf3c30d4e8239f40ed51",
+          "663681fcea8d84f5e2d1c3f9e8e9f88171bff9ea8e3ccfd625045e515f049a72",
+          "5a61ef9fbcb7495712def91bcd5c3a50ee34d76c1f908630d9751fcdacc3dd1c",
+          "5a61ef9fbcb7495712def91bcd5c3a50ee34d76c1f908630d9751fcdacc3dd1c",
+          "5a61ef9fbcb7495712def91bcd5c3a50ee34d76c1f908630d9751fcdacc3dd1c",
+          "5a61ef9fbcb7495712def91bcd5c3a50ee34d76c1f908630d9751fcdacc3dd1c",
+          "5a61ef9fbcb7495712def91bcd5c3a50ee34d76c1f908630d9751fcdacc3dd1c",
+          "5a61ef9fbcb7495712def91bcd5c3a50ee34d76c1f908630d9751fcdacc3dd1c",
+          "5a61ef9fbcb7495712def91bcd5c3a50ee34d76c1f908630d9751fcdacc3dd1c",
+          "5a61ef9fbcb7495712def91bcd5c3a50ee34d76c1f908630d9751fcdacc3dd1c",
+          "5a61ef9fbcb7495712def91bcd5c3a50ee34d76c1f908630d9751fcdacc3dd1c",
+          "5a61ef9fbcb7495712def91bcd5c3a50ee34d76c1f908630d9751fcdacc3dd1c",
+          "5a61ef9fbcb7495712def91bcd5c3a50ee34d76c1f908630d9751fcdacc3dd1c",
+          "5a61ef9fbcb7495712def91bcd5c3a50ee34d76c1f908630d9751fcdacc3dd1c",
+          "5a61ef9fbcb7495712def91bcd5c3a50ee34d76c1f908630d9751fcdacc3dd1c",
+          "5a61ef9fbcb7495712def91bcd5c3a50ee34d76c1f908630d9751fcdacc3dd1c",
+          "5a61ef9fbcb7495712def91bcd5c3a50ee34d76c1f908630d9751fcdacc3dd1c",
+          "5a61ef9fbcb7495712def91bcd5c3a50ee34d76c1f908630d9751fcdacc3dd1c",
+          "5a61ef9fbcb7495712def91bcd5c3a50ee34d76c1f908630d9751fcdacc3dd1c",
+          "5a61ef9fbcb7495712def91bcd5c3a50ee34d76c1f908630d9751fcdacc3dd1c",
+          "0d7b30e3088ee37ebf9ff6ab5294a2d861b61eb05765a265906ac56289f2b1a8"
+        ]
+      },
+      "cached_listing_receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\cached_00aa6560_asm.txt",
+        "bytes": 1047,
+        "sha256": "9fead0a8eadfe14f18ebb475a9db608cbc59dc3d04fb7e8275fdf7da1cf4cf7f"
+      }
+    },
+    {
+      "address": "00AA12F0",
+      "end_inclusive": "00AA1373",
+      "bytes": 132,
+      "hex": "6aff68f06dcb0064a100000000506489250000000051568bf1b9ec000000e8bd63020085f689442404742485c0c744241000000000743b568bc8e8715c02005e8b4c240464890d0000000083c410c385c0c74424100100000074178bc8e8fe5b02005e8b4c240464890d0000000083c410c38b4c240833c05e64890d0000000083c410c3",
+      "sha256": "a9edbd7a48814ab9c740f4dfa99efdb329c720802422276def792614e1005855",
+      "instruction_count": 40,
+      "live_proto": {
+        "function_name": "BSP_GuiGroup_Create",
+        "address": "00aa12f0",
+        "program": "battlestationspacific.exe",
+        "instruction_count": 40,
+        "basic_block_count": 6,
+        "edge_count": 6,
+        "call_count": 3,
+        "string_ref_count": 0,
+        "param_count": 0,
+        "cyclomatic_complexity": 2,
+        "prologue_stripped": false,
+        "epilogue_stripped": false,
+        "callee_names": [
+          "BSP_GuiGroupPool_AllocateInstance",
+          "BSP_GuiGroup_CopyConstruct",
+          "BSP_GuiGroup_Construct"
+        ],
+        "string_constants": [],
+        "immediate_values": [
+          -1,
+          16,
+          1,
+          236
+        ],
+        "basic_block_hashes": [
+          "b5b6a71d76c08445deed9b0f2937ec29e044dee70f3679d126cebfa4b1d31441",
+          "bd3e2447577e3bbae31842025cd1945a329c8cb7c51093585f2628f7f40a5403",
+          "7f8e3e4dd5111f7702941f0656117d8292eaa2fa89d0090f50e60a69593e1278",
+          "5b075ba15015217c32e503398e8b41faa5039790a6c8432e08a09dca93b55499",
+          "17e62b5541cf304603300cd72675798054b170ea8b6cebb751fead44fd64c809",
+          "2071f051b19ed531a221f98cef14cdaaf207645704554b1ecace9c6225f6d4e8"
+        ]
+      },
+      "cached_listing_receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\cached_00aa12f0_asm.txt",
+        "bytes": 1072,
+        "sha256": "d514f117831ff26be64ea5f8a0467296de80dd571adae36383dd3947d556c44a"
+      }
+    },
+    {
+      "address": "00AC6F50",
+      "end_inclusive": "00AC6F63",
+      "bytes": 20,
+      "hex": "566a028bf1e83624feffc70680cbd5008bc65ec3",
+      "sha256": "107dcbb6dc4a04850cc742b6ec39766e55c3a3db37bfb969d47a439b7c3cc511",
+      "instruction_count": 8,
+      "live_proto": {
+        "function_name": "BSP_GuiGroup_Construct",
+        "address": "00ac6f50",
+        "program": "battlestationspacific.exe",
+        "instruction_count": 8,
+        "basic_block_count": 1,
+        "edge_count": 0,
+        "call_count": 1,
+        "string_ref_count": 0,
+        "param_count": 0,
+        "cyclomatic_complexity": 1,
+        "prologue_stripped": false,
+        "epilogue_stripped": false,
+        "callee_names": [
+          "BSP_UIContext_Construct"
+        ],
+        "string_constants": [],
+        "immediate_values": [
+          2
+        ],
+        "basic_block_hashes": [
+          "4653549e36457a8a62db60f7aa5eb5add73a152e005bde4d679c217b41213b9e"
+        ]
+      },
+      "cached_listing_receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\cached_00ac6f50_asm.txt",
+        "bytes": 187,
+        "sha256": "9edb3030f6b103ffbca0ca12b54a731cd6a17491d7d5e5913e6814d60833caeb"
+      }
+    },
+    {
+      "address": "00AC6FA0",
+      "end_inclusive": "00AC6FB8",
+      "bytes": 25,
+      "hex": "8b44240456508bf1e87325feffc70680cbd5008bc65ec20400",
+      "sha256": "0b6017b668b5967193a8b96fda544c0b5311f3b73b31cd14b897ba1b89d1fe99",
+      "instruction_count": 9,
+      "live_proto": {
+        "function_name": "BSP_GuiGroup_CopyConstruct",
+        "address": "00ac6fa0",
+        "program": "battlestationspacific.exe",
+        "instruction_count": 9,
+        "basic_block_count": 1,
+        "edge_count": 0,
+        "call_count": 1,
+        "string_ref_count": 0,
+        "param_count": 0,
+        "cyclomatic_complexity": 1,
+        "prologue_stripped": false,
+        "epilogue_stripped": false,
+        "callee_names": [
+          "BSP_GuiWidget_CopyConstruct"
+        ],
+        "string_constants": [],
+        "immediate_values": [
+          4
+        ],
+        "basic_block_hashes": [
+          "d0470b1c58f561db7b6b8cc719693caba854778365994541ea78be52989bc1b4"
+        ]
+      },
+      "cached_listing_receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\cached_00ac6fa0_asm.txt",
+        "bytes": 232,
+        "sha256": "4143d98dcf2f523387b4121cc1255102fed72118a4901c25010a56fecef9877a"
+      }
+    }
+  ],
+  "native_switch": {
+    "stub_addresses": [
+      "00AA6573",
+      "00AA657A",
+      "00AA6581",
+      "00AA6596",
+      "00AA658F",
+      "00AA6588",
+      "00AA659D",
+      "00AA65A4",
+      "00AA65AB",
+      "00AA65B2",
+      "00AA65B9",
+      "00AA65C0",
+      "00AA65C7",
+      "00AA65CE",
+      "00AA65D5",
+      "00AA65DC",
+      "00AA65E3",
+      "00AA65EA"
+    ],
+    "creator_targets": [
+      "00AA3BD0",
+      "00AA12F0",
+      "00AA1380",
+      "00AA1530",
+      "00AA14A0",
+      "00AA1410",
+      "00AA15C0",
+      "00AA1650",
+      "00AA16E0",
+      "00AA1770",
+      "00AA64B0",
+      "00AA2340",
+      "00AA1800",
+      "00AA1890",
+      "00AA4440",
+      "00AA1920",
+      "00AA19B0",
+      "00AA1A40"
+    ],
+    "source_kCreators_all18_match": true,
+    "scope": "Type2 provider only; other17 tail destinations verified as addresses, not Source providers"
+  },
+  "native_factory": {
+    "abi": "AA6560 ECX type, EDX optional source; Type2 MOV ECX,EDX then tail AA12F0. AA12F0 ECX source, EAX result/null, RET.",
+    "type2_stub": "00AA657A",
+    "type2_tail_site": "00AA657C",
+    "type2_creator": "00AA12F0",
+    "ordering": [
+      "capture source ECX in ESI before pool allocation",
+      "load ECX sizeEC and real AC76D0",
+      "save returned allocation at ESP+4",
+      "test captured source AFTER allocation",
+      "nonnull source -> state0 and copy AC6FA0 only if allocation nonnull",
+      "null source -> state1 and default AC6F50 only if allocation nonnull",
+      "null allocation -> EAX0/no constructor",
+      "return actual constructor EAX"
+    ],
+    "source_payload_not_prefetched": true,
+    "source_profile_or_type2_check_added": false,
+    "eh": {
+      "handler": "00CB6DF0",
+      "handler_hex": "b86cd3de00e949fdf3ff",
+      "funcinfo": "00DED36C",
+      "funcinfo_hex": "22059319020000005cd3de00000000000000000000000000000000000000000001000000",
+      "unwind_map": "00DED35C",
+      "unwind_hex": "ffffffffe06dcb00ffffffffe86dcb00",
+      "actions": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00CB6DE0",
+          "hex": "8b4df0e9e805e1ff",
+          "decoded": [
+            "00CB6DE0: mov ecx, dword ptr [ebp - 0x10]",
+            "00CB6DE3: jmp 0xac73d0"
+          ],
+          "meaning": "saved captured allocation [EBP-10] to AC73D0; no payload destructor"
+        },
+        {
+          "state": 1,
+          "previous": -1,
+          "action": "00CB6DE8",
+          "hex": "8b4df0e9e005e1ff",
+          "decoded": [
+            "00CB6DE8: mov ecx, dword ptr [ebp - 0x10]",
+            "00CB6DEB: jmp 0xac73d0"
+          ],
+          "meaning": "saved captured allocation [EBP-10] to AC73D0; no payload destructor"
+        }
+      ]
+    },
+    "failure_custody": "Captured slot only returns via real AC73D0 after failed constructor own cleanup. No successful-payload destructor, second raw deletion or clone rollback. Existing Source slot-return failure terminates.",
+    "source_entry": "void* create_native_gui_group_00aa12f0(const void*, const volatile uint32_t&, NativeGuiWidgetCopyContext&, NativeGuiWidgetCopyAcquired&)",
+    "abi_qualification": "New explicit-context Source C++ ABI; no drop-in Native register/private stack/FH3/SEH/fault or general child exception transport proof."
+  },
+  "constructors": {
+    "default_AC6F50": {
+      "abi": "ECX destination; EAX captured same; RET; 20B/8ops",
+      "native": "PUSH ESI; PUSH2; MOV ESI,ECX; CALL AA9390; stamp D5CB80; return ESI",
+      "source": "src/native_gui_group_default.cpp",
+      "consumed_provider": "genuine D7A24C DWORD borrowed by raw AA9390; no copy or Model context",
+      "epochs": "raw base current one before sentinel allocation and again afterward; preserve unwritten bytes and hidden+EC",
+      "named_base": "actual raw construct_native_gui_widget_base_00aa9390, actual0Ch self-linked A9B720/A4C4A0 sentinel and ref-base unwind",
+      "manager": "No manager getter in these constructor/factory bodies or the named AA9390 call graph. Do not import semantic manager calls."
+    },
+    "copy_AC6FA0": {
+      "abi": "ECX destination; source DWORD stack; EAX captured destination; RET4;25B/9ops",
+      "native": "read incoming source home once before own push; call AA9520; stamp D5CB80; return captured destination",
+      "source": "src/native_gui_group_factory.cpp:7",
+      "source_class_or_type2_check": false,
+      "underlying_existing_source_domain": "AA9520 current source4C canonical actual Model D62DE8/+10=B752B0; flags26/3E,parent0; fresh one-shot frame; nonoverlapping live source/destination.",
+      "native_epochs": "Source60 is copied. After sentinel/allocation callbacks reload CURRENT source4C,source60,node profile and actual flags table; no early profile/node/flag prefetch.",
+      "flags_table": {
+        "address": "00D5C0B8",
+        "words": [
+          "0000003E",
+          "0000003E",
+          "0000003E",
+          "0000003E",
+          "0000003E",
+          "0000003E",
+          "0000003E",
+          "0000003E",
+          "0000003E",
+          "0000003E",
+          "0000003E",
+          "0000003E",
+          "0000003E",
+          "0000003E",
+          "0000003E",
+          "0000003E",
+          "0000003E",
+          "00000026",
+          "00000026"
+        ],
+        "type2_value": "0000003E",
+        "qualification": "Current source tag may differ from2; preserve actual current indexed value."
+      },
+      "real_context": "NativeGuiWidgetCopyContext(model_clone, actual19-word flags) and NativeGuiWidgetCopyAcquired",
+      "model_clone": "NativeGuiWidgetModelCloneContext(real NativeInstanceGeometryAccess, node constants, actualD62D60, genuine reached streams3E)",
+      "streams": "Required only if the actual current source180 arm reaches them; no fabricated empty provider.",
+      "failure": "AA9520 owns its backing/base cleanup; completed clone creators may remain retained in acquisition after later failure and widget slot return. Never inspect returned widget via diagnostics.",
+      "fp": "Inherit actual Source FLD/FSTP/signalling-NaN/ambient x87 contract and limitations; no fifth Native body or new FP/ABI/fault proof here."
+    }
+  },
+  "allocation_and_identity": {
+    "ui_GuiGroup": {
+      "payload": "ECh",
+      "slot": "F0h",
+      "hidden_slab_index": "EC",
+      "pool": "00F8BFA0",
+      "profile": "00D5CB80",
+      "startup": "00CD7440",
+      "constructor": "00AC7410",
+      "atexit_callback": "00CE0AE0",
+      "failed_slot_selector": "00AC73D0",
+      "return": "00AC7260"
+    },
+    "different_ModelGroup_root": {
+      "payload": "188h",
+      "slot": "18Ch",
+      "hidden_slab_index": "188",
+      "pool": "010902F4",
+      "profile": "00D634F8",
+      "creation": "B8F450/B8F5E0",
+      "identity": "NativeGroupStorageReference"
+    },
+    "same_generic_allocator_list_does_not_make_pools_interchangeable": true,
+    "real_pool_owner": "GameNativeGuiGroupPoolProcess, explicit one-attempt CD7440, SAME E188B4 list/real CS/CRT domain; no implicit payload construction or startup",
+    "startup_result": "nonzero atexit registration retains initialized storage; entered Source failure is not replayed; all payloads retire before pool destroy, which destroys no payloads",
+    "production_startup_found": false,
+    "real_ui_identity": "NativeGuiGroupReference with actual completed raw slot, borrowed live atomic04, SAME NativeRenderActualOwnerRegistry and NativeGuiWidgetLifetimeContext",
+    "admission_is_separate": "Factory does not admit, retain, publish or register an identity. Profile/count/pool shape do not prove actual constructor/lifetime custody.",
+    "production_identity_admission_found": false,
+    "scalar": "real delete_native_gui_group_00ac73e0 -> AA9730, late LOW BYTE flags, bit0 matching pool return; explicit nonzero count allowed; flags0 still ends payload/metadata",
+    "terminal": "current BD30E0 -> current AC73E0(flags1), no extra decrement; existing Source noexcept failure boundary and Native/FH3 qualifications retained",
+    "same_graph_required": "Every reachable actual Model node, Group widget child, parent and timed entry must use same canonical owner/registry/lifetime; no semantic GuiWidgetOwner cast."
+  },
+  "profile": {
+    "gui_group_profile_address": "00D5CB80",
+    "gui_widget_profile_bytes": 124,
+    "gui_widget_entries": [
+      "00BD30E0",
+      "00AC73E0",
+      "00AC6F30",
+      "00AC6F70",
+      "006F9D20",
+      "00AC6F40",
+      "00AC6FD0",
+      "00AC6FE0",
+      "00AA8320",
+      "00A9E0A0",
+      "00AA6800",
+      "00AA6810",
+      "00A9E0B0",
+      "00AA8530",
+      "00A9E0D0",
+      "00A9E100",
+      "00AA87B0",
+      "00AA7930",
+      "00AA7950",
+      "00AA6980",
+      "00AA6870",
+      "00AA68F0",
+      "00AA7970",
+      "00A9E110",
+      "00AA6A30",
+      "00A9E120",
+      "00AA7190",
+      "00AAA0F0",
+      "00AAA3E0",
+      "00A9AC00",
+      "00AA7170"
+    ],
+    "adjacent_pool_profile_address": "00D5CBFC",
+    "adjacent_pool_trim": "00AC74F0"
+  },
+  "named_reached_source_contracts": [
+    {
+      "site": "current74",
+      "native_target": "00A9AC00",
+      "source": "native_gui_widget_base_post_construct_00a9ac00",
+      "qualification": "Actual one-byte RET body; only selected target, never generic no-op fallback."
+    },
+    {
+      "site": "current18",
+      "native_target": "00AC6FD0",
+      "source": "logical gui_group_read_properties forwards base; raw producer requires real AAA710 visitor/scratch/recursive services",
+      "qualification": "No fifth-body recovery or semantic reader cast; reuse actual base operation only after complete raw contract is established."
+    },
+    {
+      "site": "current78",
+      "native_target": "00AA7170",
+      "source": "native_gui_widget_loaded_00aa7170",
+      "qualification": "Requires current active60 dispatch, same raw receiver/current fields, bounds scratch and genuineD7A280; inherited normal Source/failure/FP/private-frame limits."
+    },
+    {
+      "site": "class0C",
+      "native_target": "00AC6F70",
+      "source": "native_gui_group_is_kind_of_00ac6f70",
+      "qualification": "Actual CURRENT F8BFD8[3] lineage required; runtime ID is not factory enum2 or ModelGroup0109032C."
+    },
+    {
+      "site": "scene20/scalar04",
+      "native_targets": "AA8320/AC73E0",
+      "source": "NativeGuiWidgetLifetimeDispatch + NativeGuiGroupReference",
+      "qualification": "Canonical same actual children/parent/node/timed services mandatory; not authenticated by table/identity API existence."
+    }
+  ],
+  "real_data_and_services": {
+    "data_owner": "GameNativeReadOnlyData authenticated rdata mappings; genuine D7A24C word, D5CB80 profile and D5C0B8 array; tokens are data identities, not callable host pointers",
+    "copy_geometry_supplier": "GameNativeMissionModel::instance_geometry() exposes genuine retained application domain; not automatically Page producer same domain",
+    "model_parenting": "NativeNodeParentingRuntime requires actual NodeDestructionRuntime/SceneAttachment bindings, ModelGroup type0109032C and genuine current1C/attached-group3C; do not use GUI Group lineage for that distinct cGroup role",
+    "existing_text_type_owner": "GameNativeGuiTextProcess owns only Element/Text/Layer; no Group F8BFD8 writer/accessor found",
+    "required_new_authority": "Actual Group guard/descriptor writer and consumers joined to same existing Element/counter/root domain; no zero/copied chain, second counter or new global"
+  },
+  "branch_dependent_api_recommendation": {
+    "classification": "Read-only complete Source-interface recommendation; not extra Native inputs or production edit.",
+    "default_inputs": "NativeGuiGroupDefaultInputs { const volatile uint32_t& actual_one_00d7a24c; }",
+    "copy_inputs": "NativeGuiGroupCopyInputs { NativeGuiWidgetCopyContext& context; NativeGuiWidgetCopyAcquired& acquired; }",
+    "container": "explicit std::variant<DefaultInputs,CopyInputs> or equivalent non-default borrowed alternative; no default data/provider fields",
+    "shared_entry": "create_native_gui_group_00aa12f0(const void* actual_source, const NativeGuiGroupFactoryInputs& required_inputs)",
+    "branch": "Capture actual source once. Pointer null requires default alternative; nonnull requires copy alternative. Source input mismatch rejects before effects, never changes branch or selects fallback.",
+    "epochs": [
+      "preflight metadata shape only; no borrowed one/source/profile/node/flags/acquired-content reads moved earlier",
+      "real allocation remains before constructor frame-content checks",
+      "null allocation reads neither constructor inputs",
+      "default consumes one only in actual raw base at its two native epochs",
+      "copy consumes real context/frame only at actual copy constructor; preserve late source/flags and clone behavior"
+    ],
+    "lifetime": "Alternative/reference metadata is stable, live and disjoint from source/destination/pool and callee scratch through callbacks; actual reached Native fields remain current.",
+    "old_api": "Preserve old4-argument API by borrowing its genuine refs into matching alternative and delegating to same complete body. No default-only forwarding wrapper.",
+    "not_activation": "Pair interface correction with actual startup/type/creator/lifetime caller; an unused overload is no activation proof."
+  },
+  "separate_followup_CD7460": {
+    "provenance": "Primary /root supplied full-assembly epoch note; explicitly NOT independently recovered fifth game body in this packet.",
+    "source_ready_followup_candidate": "Separate bounded recovery/admission with real owner prerequisites; no Source implementation here.",
+    "root_note": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\root_supplied_cd7460_note.txt",
+      "bytes": 828,
+      "sha256": "59d94c0a6a5c53c38d3e00c88a7bd91ede47e003d218e6d92cf8f0522d832be3"
+    },
+    "exact_primary_facts": [
+      "guardF8BF9C set1 and namehomeF8BFE4=D5CC00 BEFORE AA8200(ECX=F8BC88)",
+      "after callback capture BOTH CURRENT F8BC88/F8BC8C BEFORE eitherGroup F8BFDC/F8BFE0 store",
+      "then actual6FAC20; read returnedobject+4 once; counter increment/storeCD74A5 BEFORE GroupID F8BFD8 storeCD74A8",
+      "no rollback or guard reset after throw; pseudocode reversed final stores so asm governs"
+    ],
+    "independently_pinned_data": "CE34A0=CD7440;CE34A4=CD7460 and D5CC00 bytes cGuiGroup\\0",
+    "proposed_owner_files": [
+      "include/bsp/game_native_gui_text_process.hpp",
+      "src/game_native_gui_text_process.cpp"
+    ],
+    "proposal": "Append Group role/guard/descriptor/qualified startup state and completed-lineage accessor to SAME existing process; preserve old members/APIs and actual Element/Text/Layer domain identity.",
+    "actual_inputs": [
+      "TypeIdCounterLifetime from same canonical VFS types",
+      "LightTypeBootstrapStorage actual root/root guard and current Element cells",
+      "realD5CC00 name identity",
+      "actual newly owned Group guard/descriptor role with loader preimage and current consumer references"
+    ],
+    "consumer": "Existing AC6F70 current-lineage helper through real class dispatch; other reached own-ID/name consumers need same authority, not copied cells.",
+    "limits": "No inferred generic initializer stores, fabricated globals/IDs, callback stub, implicit startup/CRT activation or guard-reset policy."
+  },
+  "actual_Page_child_adoption": {
+    "source_ready": false,
+    "native_caller": "AAACD4 current Source always calls create_widget_00aa6560(type,nullptr), then real Model creation/publication, child links/parenting, CURRENT74, reader18 and loaded78",
+    "default_copy_context_not_native_requirement": true,
+    "still_required_after_factory": [
+      "real NativeInstanceGeometryAccess and Model creator transfer",
+      "same raw ModelGroup Page root/child parenting",
+      "genuine reader/current18 and stable per-recursion scratch/acquired frames",
+      "current74/78 Source selection",
+      "same canonical GuiGroup identity/scalar/lifetime and populated child/parent/timed ownership"
+    ],
+    "current_status": "PageApplication rejects mapped types before creation; current root is separate raw ModelGroup and has unclosed direct scalar/parent-child lifetime composition as c8bb readiness states.",
+    "no_shortcuts": [
+      "semantic GuiWidgetOwner/GuiLayoutWidget projection",
+      "fake unused copy context",
+      "default table/global/creator",
+      "ModelGroup-as-GuiGroup cast",
+      "childless restriction or literal type-ID chain presented as whole proof"
+    ],
+    "scope": "Other type creators, full Page/Frame/Game binding, fixtures and gameplay remain separate."
+  },
+  "verification": {
+    "independent_native_game_bodies": 4,
+    "bytes": 325,
+    "instructions": 99,
+    "normal_direct_calls": 5,
+    "switch_tail_rows": 18,
+    "factory_unwind_tails": 2,
+    "live_checked_rows": 25,
+    "failed_rows": 0,
+    "call_rows": [
+      {
+        "address": "00AA6575",
+        "native": "00AA3BD0",
+        "function": "00AA6560",
+        "phase": "whole four-body Native direct call/tail; other type targets are address closure only",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00AA657C",
+        "native": "00AA12F0",
+        "function": "00AA6560",
+        "phase": "whole four-body Native direct call/tail; other type targets are address closure only",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00AA6583",
+        "native": "00AA1380",
+        "function": "00AA6560",
+        "phase": "whole four-body Native direct call/tail; other type targets are address closure only",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00AA658A",
+        "native": "00AA1410",
+        "function": "00AA6560",
+        "phase": "whole four-body Native direct call/tail; other type targets are address closure only",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00AA6591",
+        "native": "00AA14A0",
+        "function": "00AA6560",
+        "phase": "whole four-body Native direct call/tail; other type targets are address closure only",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00AA6598",
+        "native": "00AA1530",
+        "function": "00AA6560",
+        "phase": "whole four-body Native direct call/tail; other type targets are address closure only",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00AA659F",
+        "native": "00AA15C0",
+        "function": "00AA6560",
+        "phase": "whole four-body Native direct call/tail; other type targets are address closure only",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00AA65A6",
+        "native": "00AA1650",
+        "function": "00AA6560",
+        "phase": "whole four-body Native direct call/tail; other type targets are address closure only",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00AA65AD",
+        "native": "00AA16E0",
+        "function": "00AA6560",
+        "phase": "whole four-body Native direct call/tail; other type targets are address closure only",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00AA65B4",
+        "native": "00AA1770",
+        "function": "00AA6560",
+        "phase": "whole four-body Native direct call/tail; other type targets are address closure only",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00AA65BB",
+        "native": "00AA64B0",
+        "function": "00AA6560",
+        "phase": "whole four-body Native direct call/tail; other type targets are address closure only",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00AA65C2",
+        "native": "00AA2340",
+        "function": "00AA6560",
+        "phase": "whole four-body Native direct call/tail; other type targets are address closure only",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00AA65C9",
+        "native": "00AA1800",
+        "function": "00AA6560",
+        "phase": "whole four-body Native direct call/tail; other type targets are address closure only",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00AA65D0",
+        "native": "00AA1890",
+        "function": "00AA6560",
+        "phase": "whole four-body Native direct call/tail; other type targets are address closure only",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00AA65D7",
+        "native": "00AA4440",
+        "function": "00AA6560",
+        "phase": "whole four-body Native direct call/tail; other type targets are address closure only",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00AA65DE",
+        "native": "00AA1920",
+        "function": "00AA6560",
+        "phase": "whole four-body Native direct call/tail; other type targets are address closure only",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00AA65E5",
+        "native": "00AA19B0",
+        "function": "00AA6560",
+        "phase": "whole four-body Native direct call/tail; other type targets are address closure only",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00AA65EC",
+        "native": "00AA1A40",
+        "function": "00AA6560",
+        "phase": "whole four-body Native direct call/tail; other type targets are address closure only",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00AA130E",
+        "native": "00AC76D0",
+        "function": "00AA12F0",
+        "phase": "whole four-body Native direct call/tail; other type targets are address closure only"
+      },
+      {
+        "address": "00AA132A",
+        "native": "00AC6FA0",
+        "function": "00AA12F0",
+        "phase": "whole four-body Native direct call/tail; other type targets are address closure only"
+      },
+      {
+        "address": "00AA134D",
+        "native": "00AC6F50",
+        "function": "00AA12F0",
+        "phase": "whole four-body Native direct call/tail; other type targets are address closure only"
+      },
+      {
+        "address": "00AC6F55",
+        "native": "00AA9390",
+        "function": "00AC6F50",
+        "phase": "whole four-body Native direct call/tail; other type targets are address closure only"
+      },
+      {
+        "address": "00AC6FA8",
+        "native": "00AA9520",
+        "function": "00AC6FA0",
+        "phase": "whole four-body Native direct call/tail; other type targets are address closure only"
+      },
+      {
+        "address": "00CB6DE3",
+        "native": "00AC73D0",
+        "function": "00CB6DE0",
+        "kind": "tail_jump",
+        "phase": "actual factory constructor-failure slot-return action"
+      },
+      {
+        "address": "00CB6DEB",
+        "native": "00AC73D0",
+        "function": "00CB6DE8",
+        "kind": "tail_jump",
+        "phase": "actual factory constructor-failure slot-return action"
+      }
+    ],
+    "indirect_sites": [
+      {
+        "address": "00AA656C",
+        "function": "00AA6560",
+        "operand": "dword ptr [eax*4 + 0xaa65f4]"
+      }
+    ],
+    "source_pin_count": 41,
+    "source_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\config\\target.json",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\include\\bsp\\native_gui_group_factory.hpp",
+        "bytes": 2306,
+        "sha256": "4966a4b47350e81f12fa8575c7f8afbcfb017b7d9e95a231db7b9f03e3aedb95",
+        "git_blob": "213217cc8733eb1fc746ad39defae103bacff0e4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\src\\native_gui_group_factory.cpp",
+        "bytes": 1971,
+        "sha256": "f6f5f124a16de6878f770e6e499d165235136dfb97f4e64dc79e6095135552f2",
+        "git_blob": "e89b2627f940a15604314227823e8c72d360d07e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\include\\bsp\\native_gui_group_default.hpp",
+        "bytes": 493,
+        "sha256": "b054e5bd554850d323e32e7bcded424911bfe087d9558f4844efcf2711288047",
+        "git_blob": "92a532dc918054e2d62978a9add50ef030136d4a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\src\\native_gui_group_default.cpp",
+        "bytes": 374,
+        "sha256": "df6ba36d57a630662188b97637a35d5d15c1e094c1ccb24a847889d58ec6d6c8",
+        "git_blob": "6b423959683cb8a2d4d69e713ccc6cfa4a0610ab"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\include\\bsp\\native_gui_group_identity.hpp",
+        "bytes": 3927,
+        "sha256": "6e251cf75959a850d2a763840cbd798be33d8d7c14a4979e73287378645ff527",
+        "git_blob": "78935045d86006ff11adc7ef949f417443e8a981"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\src\\native_gui_group_identity.cpp",
+        "bytes": 4261,
+        "sha256": "7c562ecc89b706df3ed39a05c444a921d737a67f5db3ca3cffb179859d4d744c",
+        "git_blob": "94763c5fb3279fb3841a968ebcabc287a3b9f1ca"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\include\\bsp\\native_gui_group_storage.hpp",
+        "bytes": 3240,
+        "sha256": "3bd8555c54d685ce14ce23f9d0f23168fa49b33e948577f59fdcdc14f15b0f3b",
+        "git_blob": "922b1596a57bb51fef5bd68d308b27937a0b8b6c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\src\\native_gui_group_storage.cpp",
+        "bytes": 1772,
+        "sha256": "4c4729f66671693189cadd2cc5e27310f6e09a9a86aee6d50b1c7570b4cd4ad2",
+        "git_blob": "8e67b3168018e9973124c13996f037e96e676e7c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\include\\bsp\\native_gui_widget_base_storage.hpp",
+        "bytes": 1081,
+        "sha256": "35748704f96ed477f2f55f01edf5a8e598f1995955f847343f94327dc495faab",
+        "git_blob": "61c72c99fab59f5c86da392495d7bae5381607cf"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\src\\native_gui_widget_base_storage.cpp",
+        "bytes": 3008,
+        "sha256": "4ddd5ab1ad4a2b8174d80caf70dba76afa648479e4e8637a56884f2b9db6354d",
+        "git_blob": "997a33c5ac7bbf7b57e133feb53b91163e7308b5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\include\\bsp\\native_gui_widget_copy_storage.hpp",
+        "bytes": 1724,
+        "sha256": "dd3d8b700a9dda51037bf2722a893402ebd2ae3d3358ad83fd3358325f57d307",
+        "git_blob": "8867180c85381dcbd78e63dfb510ca5ba74a8ef2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\src\\native_gui_widget_copy_storage.cpp",
+        "bytes": 5636,
+        "sha256": "66f5f04b8e71d79eba7e1791e57924a2679ef630fa4bffc80bb0f8b22d9367ae",
+        "git_blob": "cdecd59b10e8617d2c2db3d67e17113658b9a62a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\include\\bsp\\native_gui_widget_model_clone.hpp",
+        "bytes": 2539,
+        "sha256": "36e1a035e9b1785450cb83314b91e457a89e3b4fb14d0945b3d0f866fb655fd7",
+        "git_blob": "0f257e4a05a8874c1c0698ff353ab71918d8af50"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\src\\native_gui_widget_model_clone.cpp",
+        "bytes": 5679,
+        "sha256": "142b07987b5624d6f36a53c77d544b4c4844b22579cdf75ea353c7a34be58dc5",
+        "git_blob": "2b123bea7261a126e57be6a125f0a32e57cd0ce0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\include\\bsp\\native_instance_geometry.hpp",
+        "bytes": 3560,
+        "sha256": "d636744a916ce5acad921606f43f76e9edbe8cb855d4580e936afca162b3cb03",
+        "git_blob": "6d0527a7db3b093c91bfe52573cbb5388df58157"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\include\\bsp\\game_native_mission_model.hpp",
+        "bytes": 5471,
+        "sha256": "8ff6600b25078b35ce8a2a201de5dc92bb7d0537f9d4bf6bb7b37cfa3443cd30",
+        "git_blob": "e137e61f47cf3857e0afa4b5e0f019f92419e822"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\include\\bsp\\native_gui_widget_load_hooks.hpp",
+        "bytes": 1564,
+        "sha256": "7e94569623ca49f509f1a6ad2177cd74831e7e33a4fe9990ec6bee0e275ea022",
+        "git_blob": "8bf9aef35e17124dbbc45ec1efb0490f70bbb270"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\src\\native_gui_widget_load_hooks.cpp",
+        "bytes": 1107,
+        "sha256": "34ae7ff13a92059c044217df95c01876e621be975e5cfccafd304da1b89c1551",
+        "git_blob": "26086ecbcd28a1e7e97d403475c2164856f08135"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\include\\bsp\\native_gui_widget_lifetime.hpp",
+        "bytes": 5052,
+        "sha256": "030522bae83f9f7cd9e80d91ddcb5d4e841e64d983bb8be80a3b99597689aa70",
+        "git_blob": "ff4ba8bdf16ea7cf5e76a2ffb92c0729799884bc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\src\\native_gui_widget_lifetime.cpp",
+        "bytes": 12286,
+        "sha256": "401a97f5c736a8d30896172c2acd5956550c1c17263b545dcf4bf60a2943f797",
+        "git_blob": "7d29b66582bef1929170abde259697b7ac7e2d53"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\include\\bsp\\native_gui_widget_lifetime_dispatch.hpp",
+        "bytes": 6288,
+        "sha256": "9d2c05097f3880a57bc79a5cd095bee33858a3b0300ed77af887f90fec3e291c",
+        "git_blob": "bd1b560ee54acf5c4189ecc2a130a406a70049d4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\src\\native_gui_widget_lifetime_dispatch.cpp",
+        "bytes": 9192,
+        "sha256": "f850db8bbd894bf91a96f730b8783cc7b66cb595c3c2a07973e33d33d9ad4803",
+        "git_blob": "b68e27db072d9cf5f549d7ed8806faf36474b530"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\include\\bsp\\game_native_gui_page_application.hpp",
+        "bytes": 3811,
+        "sha256": "8a21c044261937a47938887584b94650d1d04ab1584d3c447af276a6c04cebcb",
+        "git_blob": "3900c1e90fb9dd685f1c1375079b6fd13252cff9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\src\\game_native_gui_page_application.cpp",
+        "bytes": 54018,
+        "sha256": "6931fc7c1dced9222a47ec072ca143b00d1789b5a344b85c7bfc639b15314711",
+        "git_blob": "0e1e95e2a1372504cce0dda0a00a6c4476f8a367"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\include\\bsp\\game_native_gui_text_process.hpp",
+        "bytes": 5524,
+        "sha256": "215be8dcc255664c7f50a75ea9287012d1b8090ba860f111d341983819419e47",
+        "git_blob": "2f85c4faead42a7a295d2f4ba5d6345334759244"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\src\\game_native_gui_text_process.cpp",
+        "bytes": 8246,
+        "sha256": "84fe56b3b40589a831dfbdf57d289d9f85dc91ef41bb5a239b81e43d462c8f2f",
+        "git_blob": "66234fe46a716dab05525201c260eea39da426f4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\include\\bsp\\game_native_readonly_data.hpp",
+        "bytes": 2713,
+        "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+        "git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\include\\bsp\\native_gui_widget_property_children.hpp",
+        "bytes": 4544,
+        "sha256": "b9699af0b44d20a05fd4b09ec8cf5668f1bf000b9554387aea73796f9c20e70e",
+        "git_blob": "f782122e08e2bf78a7e41028a4735976136dc646"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\src\\native_gui_widget_property_children.cpp",
+        "bytes": 11148,
+        "sha256": "2649822b64027d0b30421dd499aaecaf71f9f2484e2880b9c1f5c75817b77efc",
+        "git_blob": "ed66ee7c010662ad5a60008d9a218ca988a4cdc0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\include\\bsp\\cc13_gui1.hpp",
+        "bytes": 19960,
+        "sha256": "9a00758ce9f7bdb218ce37b98963920bfecfc64de3743ba14a096852aa841f15",
+        "git_blob": "a262fef720e9d5149213284f361390b7d7445175"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\src\\cc13_gui1.cpp",
+        "bytes": 34424,
+        "sha256": "7dfe47d4f105cf2556058954e1b493c683f458073674a8bf310adfa378db6b62",
+        "git_blob": "40dc47c12558bb85e3db366f94d4b0c5c7a5e9ea"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\include\\bsp\\gui_type_dispatch.hpp",
+        "bytes": 7130,
+        "sha256": "101f2aee3c59f8391ec01176675b43a765f2f5ee16c29dfb870c285b5ed43734",
+        "git_blob": "70ea92febdb3054c5f6c87766cdae4594efc7904"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\src\\gui_type_dispatch.cpp",
+        "bytes": 16322,
+        "sha256": "a0cac573ee0fd632a5f2a66246d26ad4c822048f34e742e4992ab14229ae9a72",
+        "git_blob": "61d3115b64e5e94aefab0cd107c28e00b27d8d9f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\include\\bsp\\gui_widget_owner.hpp",
+        "bytes": 17870,
+        "sha256": "55bb0101eaee6369f886c6fb6956fad0cd2dea60fcca01db182fdc4cd7ae7add",
+        "git_blob": "ffc873f839f207fec8de12d53b0bbbb0b915befc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\src\\gui_widget_owner.cpp",
+        "bytes": 42079,
+        "sha256": "405c324270bd194614898b6c7f7934ab526c30d366fb0dd64933e33db81f2762",
+        "git_blob": "cc31262d504966fbaba9e546f710f44904a6cff5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\include\\bsp\\native_group_pool.hpp",
+        "bytes": 3166,
+        "sha256": "ad6835d963a433887a9b8700bec5911e4817cd15f9b06dee53c622ea1fe0a1c2",
+        "git_blob": "0d213ffeb74c2e2583e21f3902f094ea6531e54e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\include\\bsp\\native_group_storage_lifetime.hpp",
+        "bytes": 5985,
+        "sha256": "e76050ec022410905806e8ca1bcb172d6f8ad6a752d67c14b9834d626c7593cd",
+        "git_blob": "258d927f6f33cce80ff143ed752b46c314523f3f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\include\\bsp\\native_node_parenting.hpp",
+        "bytes": 2193,
+        "sha256": "4f11f3d14f3fec7f8d4144eca293cf3bef42138cd4edfae55e1152fa5935e731",
+        "git_blob": "ca6c3690049f8d6aa126999f8c2d53d8e92c5ae2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\include\\bsp\\gui_widgets_cc13.hpp",
+        "bytes": 92980,
+        "sha256": "2a889c7f79cdfa87e99283c4b0286eed4911845410425a38918cb39aeecb63b7",
+        "git_blob": "a69f853d6015aa99b2efaaa0bb71f497052c8292"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\src\\gui_widgets_cc13.cpp",
+        "bytes": 75116,
+        "sha256": "20312bdde0d2a577300c6431ea53a54aaaaf6c05c3c6670dc655c20864bb74da",
+        "git_blob": "4511ee034957d5d2322c36deae1ee9618ac847bb"
+      }
+    ],
+    "native_data": [
+      {
+        "address": "00AA65F4",
+        "bytes": 72,
+        "hex": "7365aa007a65aa008165aa009665aa008f65aa008865aa009d65aa00a465aa00ab65aa00b265aa00b965aa00c065aa00c765aa00ce65aa00d565aa00dc65aa00e365aa00ea65aa00",
+        "sha256": "f2aed7883488594c932320d76f542b88353656d208cd16a07f9c8ffad6bfc91c",
+        "receipt": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_jump_table.txt",
+          "bytes": 353,
+          "sha256": "43c2a72fa70cd2dbb3cdcdb2a3ed91693a3ca601e242b0194d0f3230c5dcb7cf"
+        }
+      },
+      {
+        "address": "00D5CB80",
+        "bytes": 128,
+        "hex": "e030bd00e073ac00306fac00706fac00209d6f00406fac00d06fac00e06fac002083aa00a0e0a9000068aa001068aa00b0e0a9003085aa00d0e0a90000e1a900b087aa003079aa005079aa008069aa007068aa00f068aa007079aa0010e1a900306aaa0020e1a9009071aa00f0a0aa00e0a3aa0000aca9007071aa00f074ac00",
+        "sha256": "dced1d3f2484bccef6b1fd07ea13d1fe360d237f22189055df74a0fe780d7ff9",
+        "receipt": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_profile.txt",
+          "bytes": 616,
+          "sha256": "b364b0629677f5a91ac5ce6ff262ded91c7c346367b8e48c0f5f38f63266895f"
+        }
+      },
+      {
+        "address": "00D5C0B8",
+        "bytes": 76,
+        "hex": "3e0000003e0000003e0000003e0000003e0000003e0000003e0000003e0000003e0000003e0000003e0000003e0000003e0000003e0000003e0000003e0000003e0000002600000026000000",
+        "sha256": "47c0181aaf0d6571b65077b3c01ce8c2b61ca45492d53cfad9f59aee4eaaf1d7",
+        "receipt": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_copy_flags.txt",
+          "bytes": 369,
+          "sha256": "572c67acc5ca86c346322f42db9c75c4b7848fa154350aea89c8f9013d9dbbe5"
+        }
+      },
+      {
+        "address": "00D7A24C",
+        "bytes": 4,
+        "hex": "0000803f",
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+        "receipt": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_one_word.txt",
+          "bytes": 29,
+          "sha256": "fd6f7a7d3874dfe569d075d61e99337d9cca002b06a4ebed7f03e974e26bdabc"
+        }
+      },
+      {
+        "address": "00CE34A0",
+        "bytes": 8,
+        "hex": "4074cd006074cd00",
+        "sha256": "2b8584267de74b3492a868ce9fd6888cf5884a38abb3014558796a857b2e8d35",
+        "receipt": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_crt_data_slots.txt",
+          "bytes": 45,
+          "sha256": "b5548d7e2377cab9959e3b1335270726afd25437f66711a279e82c5f3637a965"
+        }
+      },
+      {
+        "address": "00D5CC00",
+        "bytes": 10,
+        "hex": "6347756947726f757000",
+        "sha256": "ff6650a93a9d80cae30bece064140e4bfb07ce4eb5a80f7194313bf7107c94cc",
+        "receipt": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_group_name.txt",
+          "bytes": 53,
+          "sha256": "be4b6066eb3fd22da237d6b6a13373c75ef47e0222a5ff3dd54d9e4101578692"
+        }
+      }
+    ],
+    "audit": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\audit.json",
+      "bytes": 57114,
+      "sha256": "50a29c979166381935c3200a5bedacae9228267eb0004122599c39daf752ac9a"
+    },
+    "audit_run": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\audit_run.txt",
+      "bytes": 286,
+      "sha256": "5854de971058e074fe9693d9cf95b65167a49d6ca3e36b79a2a74f2d947f8109"
+    },
+    "call_verification": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\call_verification.txt",
+      "bytes": 99,
+      "sha256": "7d1dba4d961374c6d61770ec8e01b85526d585d181375ef2e796c6f351e639f9"
+    },
+    "artifact_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_00aa12f0_bytes.txt",
+        "bytes": 645,
+        "sha256": "b8949faeaf5481a815ddbc625e6bb2c208597177f05f822d1770a1d6482e4056"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_00aa12f0_proto.txt",
+        "bytes": 1139,
+        "sha256": "8fc94588b883c1415b50b8451185bbf05e5b86e3e392dfadae9a3fe77b9d9810"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_00aa6560_bytes.txt",
+        "bytes": 722,
+        "sha256": "cd2a4200258519589cba34f892673304c5734e1b7cfc2ce8e095bd2b444c2ed6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_00aa6560_proto.txt",
+        "bytes": 2839,
+        "sha256": "612178ae3dbddd482eebf0969709bf385bdec2a12604e7331037b4d63f8bcdbd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_00ac6f50_bytes.txt",
+        "bytes": 106,
+        "sha256": "27543b67d20074c54b774f03396328c16e813dc94fa38ed125e53b98d1fecafe"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_00ac6f50_proto.txt",
+        "bytes": 698,
+        "sha256": "464265c6dfc8c938887479aec8509bd12bba4d7f887f52b0942887e3fbac3ca7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_00ac6fa0_bytes.txt",
+        "bytes": 126,
+        "sha256": "9394b6341965d55dabdfa469ed7ab7fc3d1a24a5546d0baa2b44d6f9c197bf8a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_00ac6fa0_proto.txt",
+        "bytes": 714,
+        "sha256": "99d0de69bafd612ca4bf2421311f94af9c52c70fc63d09f087ecf0896cd9adca"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_copy_flags.txt",
+        "bytes": 369,
+        "sha256": "572c67acc5ca86c346322f42db9c75c4b7848fa154350aea89c8f9013d9dbbe5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_crt_data_slots.txt",
+        "bytes": 45,
+        "sha256": "b5548d7e2377cab9959e3b1335270726afd25437f66711a279e82c5f3637a965"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_factory_actions.txt",
+        "bytes": 77,
+        "sha256": "c5d65415d5322960c2a3f129d9fa6648175058da5c41eb118e9998d63d3c24e0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_factory_funcinfo.txt",
+        "bytes": 183,
+        "sha256": "fdd30e053d0aaaf8f72cc1a65c968deff37d20b1c602f10cdb68765e9b2b2f0d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_factory_handler.txt",
+        "bytes": 53,
+        "sha256": "c9eeb4bea480499760c9b3ff0c0b3579b88692f23fb04850b5eafb8cfe5b4d31"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_factory_unwind_map.txt",
+        "bytes": 77,
+        "sha256": "687044e625dce53c21fdf38ec1845db0d5ffc4f78393679d353adc39f8c4854c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_group_name.txt",
+        "bytes": 53,
+        "sha256": "be4b6066eb3fd22da237d6b6a13373c75ef47e0222a5ff3dd54d9e4101578692"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_jump_table.txt",
+        "bytes": 353,
+        "sha256": "43c2a72fa70cd2dbb3cdcdb2a3ed91693a3ca601e242b0194d0f3230c5dcb7cf"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_one_word.txt",
+        "bytes": 29,
+        "sha256": "fd6f7a7d3874dfe569d075d61e99337d9cca002b06a4ebed7f03e974e26bdabc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\live_profile.txt",
+        "bytes": 616,
+        "sha256": "b364b0629677f5a91ac5ce6ff262ded91c7c346367b8e48c0f5f38f63266895f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\target_status.txt",
+        "bytes": 40,
+        "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\target_status_bytes.txt",
+        "bytes": 40,
+        "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\target_status_eh.txt",
+        "bytes": 40,
+        "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\target_status_data.txt",
+        "bytes": 40,
+        "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\lookup_00cd7440.txt",
+        "bytes": 802,
+        "sha256": "23d431c6d82700f8b5a39d16a8acc0dd2114e129c73c0b2c06291107ab80ecf6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\lookup_00cd7460.txt",
+        "bytes": 396,
+        "sha256": "151ca795f275f46a8abb170828969afefdcbf80385fa788a3698be17643514b5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\callers_00cd7440.txt",
+        "bytes": 153,
+        "sha256": "0a0bdfa0f47d5d58c3f8ed35c591d4f8b66752e680188310472e4baab5597f14"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\callers_00cd7460.txt",
+        "bytes": 143,
+        "sha256": "0c19bc7c63ef6dd15c23f3c20b9399dfbcbd8ce2080e16964495214ea195c37b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\base_named_callees.txt",
+        "bytes": 611,
+        "sha256": "6d2725c2ae29c76be265099d5eed2f41e2bf48aa048f88c4f0c418658cdc23ae"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\group_supplier_search.txt",
+        "bytes": 1402,
+        "sha256": "3b004aee5d274fbc60a6463df2f7b54533d302ecb3ca235fdfe6029eafa43f30"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\root_supplied_cd7460_note.txt",
+        "bytes": 828,
+        "sha256": "59d94c0a6a5c53c38d3e00c88a7bd91ede47e003d218e6d92cf8f0522d832be3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\target_status_verifier.txt",
+        "bytes": 40,
+        "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\original_call_rows.json",
+        "bytes": 5547,
+        "sha256": "411710d7a7eb5dc79d19ca1ddc9145681066549d79c567c7b941ef1b8a8d2fd1"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\call_verification.txt",
+        "bytes": 99,
+        "sha256": "7d1dba4d961374c6d61770ec8e01b85526d585d181375ef2e796c6f351e639f9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\local\\native_gui_group_producer_readiness\\audit.py",
+        "bytes": 10255,
+        "sha256": "b0fd89c4e07ce5a5d0b8113eacdda4a21958eec222abc3b64cd6b274b8c3ea5d"
+      }
+    ]
+  },
+  "not_performed": [
+    "fifth complete Native body recovery",
+    "Source/header/shared metadata/CMake/guard/caller edits",
+    "Ghidra writes",
+    "compile/link/new tests/executable/probe/native body/DLL/game execution",
+    "prior frozen artifact edits"
+  ],
+  "credit": {
+    "native_bodies": 0,
+    "recovered_bodies": 0,
+    "vendor_bodies": 0,
+    "duplicate_bodies": 0,
+    "runtime": 0,
+    "activation": 0
+  },
+  "owned_doc": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-group-producer-readiness\\docs\\CC16_NATIVE_GUI_GROUP_PRODUCER_READINESS.md",
+    "bytes": 12191,
+    "sha256": "a66f3ada375e0f46064e2704538e8d8fd59523c7c87914a989c08c1688ce0cb8"
+  }
+}
