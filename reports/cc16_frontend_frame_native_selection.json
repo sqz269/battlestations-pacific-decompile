@@ -133,11 +133,12 @@
     "no_automatic_destructor": true,
     "arm": "After raw resize/memcpy, before actual GUI getter; Source try scope covers getter/load/slot publication.",
     "normal_disarm": "Before raw41DD20/actual pool return; normal cleanup failure cannot reenter/repeat cleanup.",
-    "ordinary_unwind": "Invoke current-header raw41DD20 once then rethrow. Secondary cleanup C++ failure terminates; no Original FH3/SEH claim.",
+    "ordinary_unwind": "Invoke current-header raw41DD20 once. If cleanup returns, rethrow the original provider exception; if cleanup throws, propagate that cleanup exception. No explicit noexcept/terminate wrapper or new Native secondary-unwind policy.",
     "earlier_failure": "No invented cleanup for resize/copy failure before native arm; raw scratch and native effects retained by caller.",
     "no_x87_in_assigned_bodies": true,
     "ambient_fp_environment_changed": false,
-    "original_private_spill_aliases": false
+    "original_private_spill_aliases": false,
+    "secondary_native_fh3_exception_identity_proved": false
   },
   "custody": {
     "interface": "NativeFrontEndFramePublicationCustody",
@@ -379,22 +380,30 @@
     {
       "path": "include/bsp/native_front_end_frame_selection.hpp",
       "sha256": "706e2dacb42303d0352e24f9e40e6e627954be9c682e87c015653f9ee733d619",
-      "hash_format": "raw_file_bytes_lf"
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "0be8f748333d8a47bd9f5bb471c1fadaca9a5928",
+      "bytes": 5524
     },
     {
       "path": "src/native_front_end_frame_selection.cpp",
-      "sha256": "23521239cc54139f700682d99ccb33b6750cecc3950e7f62c1b487a6ef5eb511",
-      "hash_format": "raw_file_bytes_lf"
+      "sha256": "77f7fe7e707340912cffc66d1d07dd5c678af896f189cf476ec1cd6c514e4070",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "82687829c7d3f226728ba91928b7887714188f88",
+      "bytes": 8809
     },
     {
       "path": "include/bsp/native_front_end_frame_publication.hpp",
       "sha256": "81549e83081937cc498dfb750865ee2ee9de971c034bd2029978146a1a575974",
-      "hash_format": "raw_file_bytes_lf"
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "82575b594f78f58fd433715f4a21407e92f1297a",
+      "bytes": 3679
     },
     {
       "path": "src/native_front_end_frame_publication.cpp",
       "sha256": "72a6ecb29e7622b225dc93d0009ef3e3a4df438d47900dd7813073afb73d38f4",
-      "hash_format": "raw_file_bytes_lf"
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "b1ae284c6ac34e848f83978013dda633f92cfece",
+      "bytes": 4237
     }
   ],
   "input_hashes": [
@@ -516,9 +525,77 @@
   ],
   "utc": "2026-10-30T15:39:26.8650929Z",
   "hash_format_qualification": {
-    "source_hashes": "Raw Source file bytes with LF line endings; primary review matched all four against immutable Git LF content.",
+    "source_hashes": "Current four Source pins use immutable Git LF blob bytes/OID/length. Historical2ed/796 raw-file pins and original report versions remain separately retained.",
     "input_hashes": "Raw LF file bytes except the explicitly corrected closure-report entry, whose primary sha256 is immutable Git blob content. Original CRLF disk hash is retained as qualified historical evidence.",
     "saved_export_hashes": "Raw read-only saved-export file bytes, without implicit line-ending conversion.",
     "correction_scope": "Metadata only. No Source, CMake, ledger, Ghidra, build or runtime change."
+  },
+  "historical_source_versions": {
+    "implementation_commit": "2ed82e8ceafef8d47d9e5bf1d4d91cb744777def",
+    "pin_format_commit": "79644264387fa1cf4a977b155f6603e75cc03830",
+    "source_hashes": [
+      {
+        "path": "include/bsp/native_front_end_frame_selection.hpp",
+        "sha256": "706e2dacb42303d0352e24f9e40e6e627954be9c682e87c015653f9ee733d619",
+        "hash_format": "raw_file_bytes_lf"
+      },
+      {
+        "path": "src/native_front_end_frame_selection.cpp",
+        "sha256": "23521239cc54139f700682d99ccb33b6750cecc3950e7f62c1b487a6ef5eb511",
+        "hash_format": "raw_file_bytes_lf"
+      },
+      {
+        "path": "include/bsp/native_front_end_frame_publication.hpp",
+        "sha256": "81549e83081937cc498dfb750865ee2ee9de971c034bd2029978146a1a575974",
+        "hash_format": "raw_file_bytes_lf"
+      },
+      {
+        "path": "src/native_front_end_frame_publication.cpp",
+        "sha256": "72a6ecb29e7622b225dc93d0009ef3e3a4df438d47900dd7813073afb73d38f4",
+        "hash_format": "raw_file_bytes_lf"
+      }
+    ],
+    "superseded_secondary_cleanup_statement": "Invoke current-header raw41DD20 once then rethrow. Secondary cleanup C++ failure terminates; no Original FH3/SEH claim.",
+    "report_pins": [
+      {
+        "commit": "2ed82e8ceafef8d47d9e5bf1d4d91cb744777def",
+        "path": "reports/cc16_frontend_frame_native_selection.json",
+        "hash_format": "immutable_git_blob_content_lf",
+        "git_blob_oid": "1cc1f917ff9bf9e126333b09356f92041ad8b13f",
+        "sha256": "ffabb1dba8865139fd19a10041d1509b6037fdff37758f73c8da625cd1bd00ea",
+        "bytes": 18266
+      },
+      {
+        "commit": "79644264387fa1cf4a977b155f6603e75cc03830",
+        "path": "reports/cc16_frontend_frame_native_selection.json",
+        "hash_format": "immutable_git_blob_content_lf",
+        "git_blob_oid": "cf7196d544b9d1eab6ddf96f52561635c5f00058",
+        "sha256": "1a7d8be21d014fb3f2c16db94556f13b371db563118d993bb614072a38a543a9",
+        "bytes": 20517
+      }
+    ],
+    "qualification": "Historical Source had an unproved explicit noexcept/terminate secondary-cleanup wrapper; preserved for audit, not current transport."
+  },
+  "cleanup_transport_correction": {
+    "parent_source_commit": "2ed82e8ceafef8d47d9e5bf1d4d91cb744777def",
+    "prior_pin_format_commit": "79644264387fa1cf4a977b155f6603e75cc03830",
+    "utc": "2026-10-30T15:54:04.232343+00:00",
+    "scope": "Remove only unwind_header explicit noexcept and terminate catch wrapper; direct once-only real41DD20 cleanup may throw. No Hpp/API/custody/normal-body change.",
+    "normal_body_and_all_other_helpers_byte_identical": true,
+    "header_and_getter_source_unchanged": true,
+    "original_provider_exception": "Rethrown only after cleanup returns.",
+    "cleanup_exception": "Escapes if cleanup itself throws; no retry/cleanup/acknowledgment/termination policy.",
+    "native_fh3_secondary_identity": "Unproved; logical unwind action is not proof of secondary termination.",
+    "fresh_input_pins": {
+      "count": 15,
+      "format": "immutable Git LF bytes matched existing declared SHA",
+      "mismatches": []
+    },
+    "fresh_export_pins": {
+      "count": 6,
+      "format": "raw saved-export file bytes",
+      "mismatches": []
+    },
+    "validation": "Static exact diff/hash and JSON checks only; common build pending Root."
   }
 }
