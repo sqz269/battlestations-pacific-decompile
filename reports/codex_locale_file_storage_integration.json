@@ -1,0 +1,48 @@
+{
+  "status": "reviewed_fragment_canonical_win32_pass_caller_unbound",
+  "commit": "4006752d04b8c85daea84841937d7a3ed0fd2367",
+  "fragment": "[00aa00b0,00aa0356)",
+  "source_hashes": {
+    "include/bsp/native_locale_parser_file_storage.hpp": "a5a6ddc4e6ddbe1f0f3f4fe3ee7531a4f12208cfbbe93f0e64db6ffcf223409e",
+    "src/native_locale_parser_file_storage.cpp": "d6a6bf6fdb202e7c5085ef09b6f8ccc921f3c1f59c4d0fb4ba1ed0ed8356966f"
+  },
+  "primary_review": "complete_source_and_saved_native_assembly",
+  "independent_review": "gui_frame_lifetime_ACCEPT_SOURCE_CODE_exact_4006752d_hpp_cpp_and_filename_doc",
+  "unchanged_existing_providers": 14,
+  "strict_object": {
+    "exit_code": 0,
+    "machine": "014C",
+    "object_sha256": "b9c1ee1cd6e82025af0d5804d0403895f865012256ebad096f1e2be9ebc081cf",
+    "receipt": "J:/PROG/battlestations-pacific-decompile-cc9/local/native_locale_parser_file_storage_compile_cc9_20261030/compile_receipt.json",
+    "receipt_sha256": "b6ee525563f0792bbc8c705da7de7403136b99e1e58b73008457e048456e789a"
+  },
+  "canonical_registration": {
+    "commit": "92344c10355fdf27914d5dcfb4a7288da6159e94",
+    "target": "bsp_game",
+    "file": "CMakeLists.txt",
+    "occurrences_across_root_and_startup": 1,
+    "startup_cmake_changed": false
+  },
+  "combined_build": {
+    "head": "92344c10355fdf27914d5dcfb4a7288da6159e94",
+    "command": "./scripts/build.ps1",
+    "configuration": "Release Win32",
+    "exit_code": 0,
+    "existing_checks_passed": 2,
+    "existing_checks_total": 2,
+    "ctest_seconds": 9.36,
+    "log": "local/locale_file_storage_integration_cc16_20261030/build.log"
+  },
+  "review_corrections": ["explicit_raw_field_compiler_fences", "check_private_record_normal_receipt"],
+  "decrement_provider": "existing_renderer_cockpit_viewport_release_decrement_iat_00ce2220_borrow",
+  "zero_reference_provider": "existing_matched_vfs_source_zero_reference",
+  "normal_release_order": ["converted", "saved_original"],
+  "decrement_captures": 1,
+  "selected_stream_cleanup": false,
+  "new_tests": 0,
+  "raw_text_flags_changed": 0,
+  "source_ready": false,
+  "runtime": false,
+  "full_parser": false,
+  "raw16_provider": "unbound"
+}
