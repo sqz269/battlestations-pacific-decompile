@@ -1,0 +1,46 @@
+{
+  "schema": "bsp-native-mission-lua-type-v1",
+  "name": "type_native_mission_lua_006b7ec0",
+  "source_base": "0d06349335bdef28acb130b0df7238051844a959",
+  "ordinary_cpp_abi_only": true,
+  "source_ready": false,
+  "runtime_validated": false,
+  "vendor_body_credit": false,
+  "native_body_credit": false,
+  "native_entry": "006B7EC0..006B7ECE",
+  "native_instruction_count": 4,
+  "native_bytes": 15,
+  "callee_interface": "00A675A0 lua_type; Native state ECX/index EDX, actual signed EAX result",
+  "design_sha256": "ef3457a0728ae68d36de81543c3f679dcc14a31b1a55fbd8c0c506d6f426c7aa",
+  "source_sha256": {
+    "include/bsp/native_mission_lua_type.hpp": "f4687e3fcdc1495e4b3e5caec7f3284e407286706704f24c68a2c13303a90c46",
+    "src/native_mission_lua_type.cpp": "fd6e57257c4826bf0c5010987456f247804330027ad9280cd6cc0607eb26a12a"
+  },
+  "actual_source_lines": {
+    "header": 25,
+    "cpp": 32
+  },
+  "schedule": [
+    "Capture signed index",
+    "Fenced memcpy4 CURRENT machine+4 into uint32, decode actual lua_State pointer",
+    "One genuine linked lua_type(state,index), unchanged signed return"
+  ],
+  "provider": "Existing actual linked Lua5.1.1 C API and its qualified build/configuration; no Original numerical code call",
+  "strict_object": {
+    "compiles": 1,
+    "exit_code": 0,
+    "machine": "014C",
+    "bytes": 882,
+    "sha256": "8eabdc2d08bf8f7ef41ab54e08c5210164f876e045c37aa3bd89c9c1917d0b7d",
+    "defined_entry": "?type_native_mission_lua_006b7ec0@bsp@@YAHPBXH@Z",
+    "genuine_lua_type_undefined": "_lua_type",
+    "same_object_symbol_receipt": "local/native_mission_lua_type_validation_cc9_20261030/objects/actual_symbols.json"
+  },
+  "provider_preservation": "local/native_mission_lua_type_validation_cc9_20261030/provider_preservation.json",
+  "limits": [
+    "Actual caller-owned raw machine and genuine linked-Lua state/stack/code/index validity remain required",
+    "No model cast, validation/default state, Frame, owner creation, cleanup, pcall, repair or retry",
+    "No parent886E00/factory/table/VM/setup/loaded/startup/privateABI/runtime closure"
+  ],
+  "tests_probes_native_or_game_entry": false
+}
