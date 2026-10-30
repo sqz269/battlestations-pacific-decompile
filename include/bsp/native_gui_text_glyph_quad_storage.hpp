@@ -10,6 +10,7 @@
 
 namespace bsp {
 struct NativeStringRawPoolContext;
+class NativeGuiTextPool;
 struct NativeGuiTextGlyphQuadStorageAcquired;
 
 // Mandatory genuine whole raw providers in ONE retained Text/Model/renderer/
@@ -25,13 +26,13 @@ struct NativeGuiTextGlyphQuadStorageAcquired;
 class NativeGuiTextGlyphQuadStorageCalls {
 public:
     virtual ~NativeGuiTextGlyphQuadStorageCalls() = default;
-    virtual void* allocate_00ab78a0(void* actual_pool, NativeGuiTextGlyphQuadStorageAcquired&) = 0;
+    // AB78A0 uses the SAME prepared Text pool companion directly.
     virtual void* construct_00ab9650(void* actual_allocation, NativeGuiTextGlyphQuadStorageAcquired&) = 0;
     // Qualified used route MUST forward this SAME retained envelope to actual raw93.
     // No adapter/default implementation or Native-origin capability is supplied.
     virtual void* construct_00ab9650(void* actual_allocation, NativeGuiTextGlyphQuadStorageAcquired&,
         NativeGuiTextFailureConstructorCall&) = 0;
-    virtual void return_failed_00ab76f0(void* current_slot, NativeGuiTextGlyphQuadStorageAcquired&) = 0;
+    // Guarded AB76F0 uses that SAME companion; this is not cleanup permission.
     virtual void append_005dad40(void* actual_vector, volatile std::uint32_t* actual_child_home,
         NativeGuiTextGlyphQuadStorageAcquired&) = 0;
     virtual void* node_current10(void* actual_node, std::uint32_t captured_profile,
@@ -90,6 +91,10 @@ struct NativeGuiTextGlyphQuadStorageContext {
     // Optional qualified own Source-runtime borrow; null preserves the legacy API.
     // Preparation only, not binding proof, Native permission or a catch-domain query.
     const NativeGuiTextFailureOriginRuntime* failure_runtime{};
+    // Mandatory ready borrow from the existing canonical Text process BEFORE
+    // entry. Retain it, its storage/list/CRT domain and every pending slot.
+    // No owner/startup/getter or Native permission is created by this reference.
+    NativeGuiTextPool& actual_text_pool_companion_00f8bdf0;
 };
 
 // Fixed, caller-prepared per-invocation scratch/diagnostics, not an owner.
