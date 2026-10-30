@@ -1,0 +1,752 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-gui-widget-resolved-setter-review",
+  "generated_utc": "2026-10-30T01:42:36.458983+00:00",
+  "status": "qualified_normal_source_review_pass",
+  "candidate_commit": "8b6084617b20fa082eb085a8edbd3321dcf8ba1e",
+  "private_prerequisite_parent": "632df2e40a58e33c288b0fe1ae16bc8c516bf593",
+  "getter_original_base": "60c8453a1b661dfa62625945986e38d71bee0216",
+  "ownership": {
+    "addresses": [],
+    "files": [
+      "docs/CC16_NATIVE_GUI_WIDGET_RESOLVED_SETTER_REVIEW.md",
+      "reports/cc16_native_gui_widget_resolved_setter_review.json"
+    ]
+  },
+  "blocking_findings": [],
+  "qualification": "Normal valid-storage/supported-provider static instruction composition only. No C++ throw transport through naked EBP-context frame, original ABI/fault or adoption claim.",
+  "candidate_files": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter-review\\include\\bsp\\native_gui_widget_resolved_setter.hpp",
+      "bytes": 2905,
+      "sha256": "f2b163215c4cb2db3154f983a64f0b96b56b73958d201dde6b12053cc48cfd7a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter-review\\src\\native_gui_widget_resolved_setter.cpp",
+      "bytes": 5064,
+      "sha256": "305c47a4d41426775a134e1517a3eef62d2248d4e05c04046eedebd39aaab937"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter-review\\docs\\CC16_NATIVE_GUI_WIDGET_RESOLVED_SETTER.md",
+      "bytes": 11725,
+      "sha256": "cbdc171235c72c1a45b680969828dac48e1ffb3552eee24807a89d931aa50cf8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter-review\\reports\\cc16_native_gui_widget_resolved_setter.json",
+      "bytes": 61366,
+      "sha256": "342d26344c541bddb436989518742125b1df5ecb85fa9c39044d8f7ce25ab145"
+    }
+  ],
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_before_read_batches": true,
+    "PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "analysis_mutation": false
+  },
+  "native": {
+    "start": "00AA8240",
+    "end_inclusive": "00AA8314",
+    "bytes": 213,
+    "instructions": 60,
+    "sha256": "66cf92b5c2f89f37217ad099092f8ae182c7e14441d7f3a44c4fe9b5d10d3e55",
+    "ABI": "ECX raw widget; one stacked XYZ pointer; saved ESI; both RET4; no EAX result contract",
+    "original_EH_registration": false,
+    "body_compared_PE_live_full_listing": true
+  },
+  "original_call_rows": [
+    {
+      "address": "00AA826C",
+      "native": "00AA6750",
+      "function": "00AA8240",
+      "phase": "parent_resolved_getter"
+    },
+    {
+      "address": "00AA82CE",
+      "native": "00AA7220",
+      "function": "00AA8240",
+      "phase": "parent_recompose"
+    },
+    {
+      "address": "00AA82D5",
+      "native": "00AA70E0",
+      "function": "00AA8240",
+      "phase": "parent_current_bounds"
+    },
+    {
+      "address": "00AA8302",
+      "native": "00AA7220",
+      "function": "00AA8240",
+      "phase": "no_parent_recompose"
+    },
+    {
+      "address": "00AA8309",
+      "native": "00AA70E0",
+      "function": "00AA8240",
+      "phase": "no_parent_current_bounds"
+    }
+  ],
+  "source_mapping": {
+    "source_bytes": 227,
+    "source_instructions": 70,
+    "native_instructions": 60,
+    "extra_integer_context_instructions": 10,
+    "all60_mapped": true,
+    "byte_classes": {
+      "calls": 5,
+      "branches": 1,
+      "arg_adjustments": 2,
+      "FADD_address": 1,
+      "unchanged": 51
+    },
+    "extra_instructions": [
+      [
+        0,
+        "push",
+        "ebp"
+      ],
+      [
+        1,
+        "mov",
+        "ebp, edx"
+      ],
+      [
+        16,
+        "mov",
+        "edx, ebp"
+      ],
+      [
+        18,
+        "mov",
+        "edx, dword ptr [ebp]"
+      ],
+      [
+        45,
+        "mov",
+        "edx, ebp"
+      ],
+      [
+        48,
+        "mov",
+        "edx, ebp"
+      ],
+      [
+        52,
+        "pop",
+        "ebp"
+      ],
+      [
+        61,
+        "mov",
+        "edx, ebp"
+      ],
+      [
+        64,
+        "mov",
+        "edx, ebp"
+      ],
+      [
+        68,
+        "pop",
+        "ebp"
+      ]
+    ],
+    "sole_FP_data_rewrite": "DC0558A2D700 FADD qword[D7A258] -> DC02 FADD qword[EDX]",
+    "argument_offsets": "Two original input-pointer loads ESP+34 -> ESP+38 for savedEBP; all native scratch displacements identical",
+    "normal_epilogues": "POP ESI/ADD ESP,2Ch/POP EBP/RET4",
+    "new_private_ABI": true
+  },
+  "actual_supplier": {
+    "readonly": {
+      "type": "bsp::game::GameNativeReadOnlyData",
+      "method": "data_at",
+      "required_aliases": [
+        "00D7A24C/4",
+        "00D7A208/4",
+        "00D7A258/8",
+        "00D7A280/8"
+      ],
+      "actual_getter_binding": "Embedded NativeGuiWidgetResolvedPositionData constructed from the SAME actual data service.",
+      "substituted_float_or_double_literals": false
+    },
+    "mutable_GUI": {
+      "type": "bsp::game::GameNativeGuiTextState",
+      "real_supplier": "game_native_gui_text_state()",
+      "borrowed_accessor": "widget_y_scale_00e12fc4()",
+      "source_owner_layout": "Private constructor and deleted copies; existing intentionally retained process state. This is Source backing, not the Original global VA/layout.",
+      "new_process_creation_reset_or_scale_copy": false,
+      "source_contract": "SAME serialized owner used by actual GUI construction/property/rendering; E12FC4 remains distinct from E12FD4."
+    },
+    "dispatch": {
+      "type": "bsp::NativeGuiFrameBoxConstructedTransformDispatch final",
+      "profiles": "retained const NativeNodeMappedRawTransformProfiles&",
+      "real_method": "call_virtual38(captured_target, current_receiver, actual_matrix)",
+      "accepted_target": "00B6DB10",
+      "direct_real_composition": "set_raw_local_matrix_00b6db10(current_receiver, profiles, matrix)",
+      "target_forcing_or_receiver_vptr_reread": false,
+      "notification_domain": "Reached current A0 Node/Model/Group aliases D62C88/D62DE8/D634F8 with actual current virtual3C B6DBC0.",
+      "same_data_profile_owner_association": "Required caller proof; existing profile class has no data-owner identity accessor.",
+      "unsupported": "Real provider rejection after prior effects; no fallback, successful no-op or generalized target family."
+    }
+  },
+  "supported_callee_closure": [
+    {
+      "native": "00AA6750",
+      "real_source": "get_native_gui_widget_resolved_position_00aa6750",
+      "files": [
+        "include/bsp/native_gui_widget_resolved_position.hpp",
+        "src/native_gui_widget_resolved_position.cpp"
+      ],
+      "context": "Exact private prerequisite binding from same retained authenticated data owner; recursive raw chain/storage valid."
+    },
+    {
+      "native": "00AA7220",
+      "real_source": "recompose_native_gui_widget_transform_00aa7220",
+      "files": [
+        "include/bsp/native_gui_widget_transform.hpp",
+        "src/native_gui_widget_transform.cpp"
+      ],
+      "context": "Actual initialized-preimage 1DCh scratch; real data one/negative-zero; SAME process live Y cell; mandatory concrete dispatch/profiles.",
+      "children": [
+        "build_gui_rotation_z_00b64780",
+        "multiply_native_camera_matrices_00413920",
+        "captured-target/current-receiver call_virtual38"
+      ]
+    },
+    {
+      "native": "00B6DB10",
+      "real_source": "set_raw_local_matrix_00b6db10(reference-profile overload)",
+      "files": [
+        "include/bsp/native_node_raw_transform.hpp",
+        "src/native_node_raw_transform.cpp"
+      ],
+      "children": [
+        "copy_native_camera_matrix_004134f0",
+        "invalidate_raw_descendants_00b6da30",
+        "notify_raw_bounds_00b6dbc0"
+      ],
+      "context": "Real current receiver/descendant/A0 graph and mapped supported profiles, not a numeric native-code call."
+    },
+    {
+      "native": "00AA70E0",
+      "real_source": "refresh_native_gui_widget_local_bounds_00aa70e0",
+      "files": [
+        "include/bsp/native_gui_widget_bounds.hpp",
+        "src/native_gui_widget_bounds.cpp"
+      ],
+      "context": "Actual separate 16B scratch and real live D7A280; CURRENT +74 gate and CURRENT +4C model/geometry/element0 storage after AA7220.",
+      "children": [
+        "gui_model_geometry_00b74640",
+        "gui_geometry_element_00b732c0",
+        "set_gui_element_bounds_00b855b0"
+      ]
+    }
+  ],
+  "cell_PE_and_live_receipts": [
+    {
+      "address": "00D7A208",
+      "bytes": 4,
+      "file_offset": "0x97a208",
+      "hex": "00000080",
+      "sha256": "6d58692645c9d1cfaf13541cbd258f86193ef63c2f1d38f6bbca9617372d7bd6"
+    },
+    {
+      "address": "00D7A24C",
+      "bytes": 4,
+      "file_offset": "0x97a24c",
+      "hex": "0000803f",
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+    },
+    {
+      "address": "00D7A258",
+      "bytes": 8,
+      "file_offset": "0x97a258",
+      "hex": "0000000000000000",
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+    },
+    {
+      "address": "00D7A280",
+      "bytes": 8,
+      "file_offset": "0x97a280",
+      "hex": "000000000000e03f",
+      "sha256": "4cfa5b42ca669328764e67cd9a34bb8f90b16ed7ca8d85e8443783d7ccce15ed"
+    },
+    {
+      "address": "00E12FC4",
+      "bytes": 4,
+      "file_offset": "0xa12fc4",
+      "hex": "0000403f",
+      "sha256": "9a8208635e00348ab64aac2b759e76391fd47089e9a749bbcec770d9eb5c6421"
+    }
+  ],
+  "provider_assessment": {
+    "data": "Real existing authenticated ReadOnlyData service; actual cell pointers/references, no floating value snapshot",
+    "GUI": "Real private/process GameNativeGuiTextState; SAME serialized widget_y_scale_00e12fc4 accessor, physically state+58; distinct from Text E12FD4",
+    "dispatch": "Required concrete final FrameBoxConstructedTransformDispatch; capturedB6DB10/currentreceiver; genuine held Node/Model/Group aliases and current B6DBC0 notifications",
+    "profile_same_data_owner_authentication": "No identity accessor; exact same held owner association remains caller precondition",
+    "normal_calls_inherit_existing_qualifications": true,
+    "arbitrary_callback_or_default_success": false
+  },
+  "epochs": {
+    "parent_pointer": "CMP current +70 then separate MOV reload.",
+    "before_getter": "Two parent size*pivot products separately spill single before genuine getter; original output pointer is private local area.",
+    "after_getter": "Read original input pointer then all three input-minus-parent differences, each spilling single before additions.",
+    "adjustments": "Saved differences plus saved products for XY, then late FADD actual double D7A258 for Z; all three spill single before any own field store.",
+    "own_stores": "Separate x87 FLD/FSTP transfers of adjusted X/Y/Z to own +0C/+10/+14.",
+    "no_parent": "MOVSS input X/Y/Z all captured before any store, then ordered bit-copy stores. No x87 arithmetic or progressive getter-style copy.",
+    "provider_order": "Real AA7220; reload same own ECX; real AA70E0 with its CURRENT fields. No early gate/model/bounds value snapshot.",
+    "native_stack_relative_to_entry": {
+      "saved_ESI": "-30h",
+      "products": [
+        "-2Ch",
+        "-28h"
+      ],
+      "differences": [
+        "-24h",
+        "-20h",
+        "-1Ch"
+      ],
+      "adjusted": [
+        "-18h",
+        "-14h",
+        "-10h"
+      ],
+      "getter_output": [
+        "-0Ch",
+        "-08h",
+        "-04h"
+      ]
+    },
+    "source_stack_adaptation": "One saved EBP shifts physical native scratch by -4; all scratch operands unchanged; two incoming XYZ pointer reads +34h -> +38h. Both exits POP ESI/ADD ESP,2Ch/POP EBP/RET4."
+  },
+  "valid_storage_and_owner_custody": [
+    "Reached raw widget/parent fields and 12 input bytes readable, own XYZ writable; terminating parent and reached provider traversals for normal return.",
+    "Input/widget payload aliases are allowed; preserve native parent spills and no-parent triple snapshot.",
+    "All explicit scratch, binding metadata/private frames stable, mutually disjoint and disjoint from input/widget/transitive provider graph.",
+    "Retain same authenticated read-only owner, mapped profiles, concrete dispatch, actual graph and serialized real GUI process state throughout copies/calls/failures.",
+    "Provide genuine initialized AA7220 scratch preimage including unwritten holes; bounds scratch has no imposed initial value.",
+    "Every reached AA7220 captured target B6DB10 and mapped notification graph within actual supported Node/Model/Group+B6DBC0 domain; enabled AA70E0 model/geometry/element0 remains valid after transform."
+  ],
+  "strict_compile": {
+    "target": "MSVC Win32",
+    "flags": "/std:c++17 /MD /O2 /Gy /fp:strict /EHsc /W4 /WX /c /FAs",
+    "result": "PASS",
+    "warnings": 0,
+    "units": [
+      "exact setter candidate",
+      "exact unchanged getter632df"
+    ],
+    "setter_records": [
+      {
+        "name": "??0NativeGuiWidgetResolvedSetterBindings@bsp@@QAE@ABVGameNativeReadOnlyData@game@1@AAVGameNativeGuiTextState@31@AAVNativeGuiFrameBoxConstructedTransformDispatch@1@@Z",
+        "bytes": 106,
+        "sha256": "0f61872c162ce873a26486d5bd6947217ece76fb5a92e949a110da0f4c7f82fd",
+        "relocations": [
+          [
+            10,
+            20,
+            "??0NativeGuiWidgetResolvedPositionData@bsp@@QAE@ABVGameNativeReadOnlyData@game@1@@Z"
+          ],
+          [
+            24,
+            20,
+            "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z"
+          ],
+          [
+            41,
+            20,
+            "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z"
+          ],
+          [
+            75,
+            20,
+            "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z"
+          ],
+          [
+            92,
+            20,
+            "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z"
+          ]
+        ]
+      },
+      {
+        "name": "?set_native_gui_widget_resolved_position_00aa8240@bsp@@YAXPAXPBXAAVNativeGuiWidgetResolvedSetterBindings@1@AAUNativeGuiWidgetTransformScratch@1@AAUGuiWidgetBounds@1@@Z",
+        "bytes": 66,
+        "sha256": "099c86f8d5dc35707835ef5df8580777e3927bc85dd3e150a4301d2045ce9739",
+        "relocations": [
+          [
+            58,
+            20,
+            "?resolved_setter_kernel_00aa8240@?anonymous@bsp@@YAXXZ"
+          ]
+        ]
+      },
+      {
+        "name": "?resolved_setter_kernel_00aa8240@?anonymous@bsp@@YAXXZ",
+        "bytes": 227,
+        "sha256": "e40881ef067363b7f8ee7b0594a7a67bc121d89b2939bf704e08ca11e4821dca",
+        "relocations": [
+          [
+            50,
+            20,
+            "?resolved_getter_bridge@?anonymous@bsp@@YIPAXPAXPBUSetterCall@12@0@Z"
+          ],
+          [
+            149,
+            20,
+            "?resolved_transform_bridge@?anonymous@bsp@@YIXPAXPBUSetterCall@12@@Z"
+          ],
+          [
+            158,
+            20,
+            "?resolved_bounds_bridge@?anonymous@bsp@@YIXPAXPBUSetterCall@12@@Z"
+          ],
+          [
+            206,
+            20,
+            "?resolved_transform_bridge@?anonymous@bsp@@YIXPAXPBUSetterCall@12@@Z"
+          ],
+          [
+            215,
+            20,
+            "?resolved_bounds_bridge@?anonymous@bsp@@YIXPAXPBUSetterCall@12@@Z"
+          ]
+        ]
+      },
+      {
+        "name": "?resolved_getter_bridge@?anonymous@bsp@@YIPAXPAXPBUSetterCall@12@0@Z",
+        "bytes": 19,
+        "sha256": "93e1e3a8233e3c1ee8a739778bfcb7d85a1aeaa83968a4d2a0cacd6968c96c5a",
+        "relocations": [
+          [
+            9,
+            20,
+            "?get_native_gui_widget_resolved_position_00aa6750@bsp@@YAPAXPAX0ABVNativeGuiWidgetResolvedPositionData@1@@Z"
+          ]
+        ]
+      },
+      {
+        "name": "?resolved_transform_bridge@?anonymous@bsp@@YIXPAXPBUSetterCall@12@@Z",
+        "bytes": 16,
+        "sha256": "83838cb65173a0b2f471f537712c7523998c58bc895b7b1d8dd5f901cf353256",
+        "relocations": [
+          [
+            8,
+            20,
+            "?recompose_native_gui_widget_transform_00aa7220@bsp@@YAXPAXAAUNativeGuiWidgetTransformScratch@1@AAUNativeGuiWidgetTransformBindings@1@@Z"
+          ]
+        ]
+      },
+      {
+        "name": "?resolved_bounds_bridge@?anonymous@bsp@@YIXPAXPBUSetterCall@12@@Z",
+        "bytes": 16,
+        "sha256": "dc29ca53b45e331eb3a08527f884b4d41b82efb482974036330647a91521f9ec",
+        "relocations": [
+          [
+            8,
+            20,
+            "?refresh_native_gui_widget_local_bounds_00aa70e0@bsp@@YAXPAXAAUGuiWidgetBounds@1@ADN@Z"
+          ]
+        ]
+      }
+    ],
+    "getter_records": [
+      {
+        "name": "??0NativeGuiWidgetResolvedPositionData@bsp@@QAE@ABVGameNativeReadOnlyData@game@1@@Z",
+        "bytes": 27,
+        "sha256": "8bbb5d1e253df5bda6b80687127e1e65efd5255d0d785a4c5ab119e1a3496eb1",
+        "relocations": [
+          [
+            15,
+            20,
+            "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z"
+          ]
+        ]
+      },
+      {
+        "name": "?get_native_gui_widget_resolved_position_00aa6750@bsp@@YAPAXPAX0ABVNativeGuiWidgetResolvedPositionData@1@@Z",
+        "bytes": 36,
+        "sha256": "05f42d264365183eb5bc3924312a62209bcff77022aaac5144e6fa34cf60452b",
+        "relocations": [
+          [
+            22,
+            20,
+            "?resolved_position_kernel_00aa6750@?anonymous@bsp@@YAXXZ"
+          ]
+        ]
+      },
+      {
+        "name": "?resolved_position_kernel_00aa6750@?anonymous@bsp@@YAXXZ",
+        "bytes": 142,
+        "sha256": "611ce5f02cf18f50c4819e3544bb42599bf36b9808fe0f055dbe6ae2b177f202",
+        "relocations": [
+          [
+            41,
+            20,
+            "?resolved_position_kernel_00aa6750@?anonymous@bsp@@YAXXZ"
+          ]
+        ]
+      }
+    ]
+  },
+  "bridge_proof": {
+    "no_FP_instructions": true,
+    "EBP_not_written": true,
+    "getter_one_stacked_output_RET4": true,
+    "other_bridges_no_stacked_args_RET": true,
+    "each_bridge_pushes_12_public_call_bytes_and_removes_12": true,
+    "fresh_getter_public_saves_restores_EBP": true,
+    "actual_provider_relocations": true,
+    "no_live_partial_FP_across_any_call": true,
+    "incoming_XYZ_one_word_private_RET4": true,
+    "two_argument_reads_shift_for_one_saved_EBP": true,
+    "all_native_private_scratch_displacements_unchanged": true
+  },
+  "FP": {
+    "paths": [
+      {
+        "path": "parent",
+        "relative_FP_net": 0,
+        "maximum_extra_FP_depth": 1,
+        "FSTP_count": 11,
+        "calls": [
+          {
+            "native_address": "00AA826C",
+            "relative_FP_depth": 0
+          },
+          {
+            "native_address": "00AA82CE",
+            "relative_FP_depth": 0
+          },
+          {
+            "native_address": "00AA82D5",
+            "relative_FP_depth": 0
+          }
+        ]
+      },
+      {
+        "path": "no_parent",
+        "relative_FP_net": 0,
+        "maximum_extra_FP_depth": 0,
+        "FSTP_count": 0,
+        "calls": [
+          {
+            "native_address": "00AA8302",
+            "relative_FP_depth": 0
+          },
+          {
+            "native_address": "00AA8309",
+            "relative_FP_depth": 0
+          }
+        ]
+      }
+    ],
+    "all5_calls_relative_depth0": true,
+    "no_FP_in_constructor_wrapper_bridges": true,
+    "no_whole_object_FP_free_claim": true,
+    "ambient": "No parent PC/RC/mask/status/MXCSR reset; actual opcodes/widths/directions/spills with existing x87 stack and genuine provider FP contracts",
+    "runtime_or_unmasked_fault_equivalence": false
+  },
+  "exception_assessment": {
+    "declared_contract": "normal-only; header/doc/report explicitly leave throwing-provider transport unproved",
+    "real_throw_routes": [
+      "Concrete dispatch invalid_argument for unsupported captured target",
+      "Mapped current-profile/3C-target rejection during B6DB10/B6DBC0"
+    ],
+    "preceding_effects": "Own XYZ and AA7220 scratch may already be written; nested rejection may follow matrix/flags/notification prefix changes",
+    "naked_EBP_context_unwind_proven": false,
+    "catchable_propagation_safe_continuation_retry_or_owner_reclaim": false,
+    "normal_byte_proof_is_not_unwind_proof": true,
+    "binding_formation": "Ordinary constructor real data_at may throw before payload invocation, outside naked helper",
+    "new_catch_rollback_or_terminal_policy": false,
+    "probe_necessary_for_declared_normal_only_review": false,
+    "future_recoverable_provider_failure": "Separate root-authorized actual-provider transport/custody proof required; no callback stand-in or implicit activation"
+  },
+  "compatibility": {
+    "getter_files_unchanged": true,
+    "existing_semantic_API_callers_unchanged": true,
+    "only_four_candidate_files_differ_from_private_parent": true,
+    "new_setter_callers": 0,
+    "private_getter_review_context": "7116fb2d39a06128a2d58a72ad3da4572188aa4f",
+    "prior_build_or_activation_inherited": false
+  },
+  "pin_checks": {
+    "author_report_file_pins": 46,
+    "unchanged_dependency_Git_pins": 16,
+    "six_setter_three_getter_records_equal_author_report": true
+  },
+  "validation": {
+    "existing_original_call_checker": {
+      "rows": 5,
+      "failed": 0,
+      "exit_code": 0
+    },
+    "fresh_strict_objects": "PASS",
+    "all60_plus10_full_mapping": "PASS",
+    "fresh_getter47ops": "PASS",
+    "new_tests_added_or_executed": false,
+    "review_report_existing_call_checker": {
+      "rows": 5,
+      "failed": 0,
+      "exit_code": 0
+    },
+    "review_integrity_self_check": "PASS candidate/base,29 file/document pins,all9 records,60+10 operations,5 calls,11/0FSTP,relative-depth0 and explicit no-unwind/no-adoption limits"
+  },
+  "fresh_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter-review\\local\\native_gui_widget_resolved_setter\\compile.cmd",
+      "bytes": 752,
+      "sha256": "0837c9a907b00cc517024bde6e9a959a7d1fc03e138f1115724fd6b2f7bf7bc3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter-review\\local\\native_gui_widget_resolved_setter\\compile.log",
+      "bytes": 80,
+      "sha256": "a9d3f888dcec445042a488f053d492c47f44c1bc2fc18f9fc76eb3ff176a09c4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter-review\\local\\native_gui_widget_resolved_setter\\native_gui_widget_resolved_setter.obj",
+      "bytes": 8197,
+      "sha256": "2f88e40fd90ccc3224941a63ec3de43c44393f65136cd7a29f4fff579972d6ea"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter-review\\local\\native_gui_widget_resolved_setter\\native_gui_widget_resolved_setter.asm",
+      "bytes": 45872,
+      "sha256": "ec9916deb6e92442852ac21c5de32d6fab0b3527ff83bde20b4febef1c3f210a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter-review\\local\\native_gui_widget_resolved_setter\\getter_dependency.obj",
+      "bytes": 4836,
+      "sha256": "1eecc134d5b30494334e7a2c3bd364d52771388ccedf7ff76318561a9bf478c3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter-review\\local\\native_gui_widget_resolved_setter\\getter_dependency.asm",
+      "bytes": 32002,
+      "sha256": "1e5e0dc0ba53403adc3821549ea421e3d17cd1e4002648aa9ec2ca787d4d5edd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter-review\\local\\native_gui_widget_resolved_setter\\audit.py",
+      "bytes": 19920,
+      "sha256": "f95819af593fd85ff3fa9ed9684d1168141cd658c81c6bde3c5eadd07fa6aa4f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter-review\\local\\native_gui_widget_resolved_setter\\audit.json",
+      "bytes": 44485,
+      "sha256": "b6db43deadb0e1e2b7c1d7837257d1ff81ac07cbfa094a8cd85988f76a8c1eb4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter-review\\local\\native_gui_widget_resolved_setter\\audit_run.log",
+      "bytes": 726,
+      "sha256": "8e2293bbf996555ffc3af03ea64206eeb5c1f45c0330c1c3ecd4dd34d688f10c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter-review\\local\\native_gui_widget_resolved_setter\\target_status.txt",
+      "bytes": 40,
+      "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter-review\\local\\native_gui_widget_resolved_setter\\live_body.txt",
+      "bytes": 1034,
+      "sha256": "fe7237e416f3acb2a4d9c18e56dca563dd8ebb252bfac9bf39344f1e0d4e7d63"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter-review\\local\\native_gui_widget_resolved_setter\\live_negative_zero.txt",
+      "bytes": 29,
+      "sha256": "ba68cff97bdc11933009685d62b197e076c39e448f996361833d006885827a9d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter-review\\local\\native_gui_widget_resolved_setter\\live_one.txt",
+      "bytes": 29,
+      "sha256": "fd6f7a7d3874dfe569d075d61e99337d9cca002b06a4ebed7f03e974e26bdabc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter-review\\local\\native_gui_widget_resolved_setter\\live_zero_double.txt",
+      "bytes": 45,
+      "sha256": "a4982da7ccbbac71b63aba25a86857176986e3dce15705236e0447d5aed1ac32"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter-review\\local\\native_gui_widget_resolved_setter\\live_half.txt",
+      "bytes": 45,
+      "sha256": "81fea576b44cac3a69373898ff463326bafee9c1c5551e0a5b946fd7c530e90f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter-review\\local\\native_gui_widget_resolved_setter\\live_y_preimage.txt",
+      "bytes": 29,
+      "sha256": "c3564d654bdebcfd0df5c660b62e556dcf56b01db7646be4f42f30b63f99a267"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter-review\\local\\native_gui_widget_resolved_setter\\original_call_rows.json",
+      "bytes": 561,
+      "sha256": "accf1b9b24a388765b00cd676869a8c0da9ae08b8827d1099711746698ea1ed5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter-review\\local\\native_gui_widget_resolved_setter\\call_verification.txt",
+      "bytes": 96,
+      "sha256": "5becb0e091b043dfbfa2a8595bba49013276f53c0b314fecda369f104bfcb5d3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter-review\\local\\native_gui_widget_resolved_setter\\independent_comparison.py",
+      "bytes": 4143,
+      "sha256": "ef4f3140ab7855485119ea6365908e9b62e1aab8657f36ce7742df483d810972"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter-review\\local\\native_gui_widget_resolved_setter\\independent_comparison.json",
+      "bytes": 15627,
+      "sha256": "2461f899868be6f0487fe7d4f027002e57a51e2b4d948ea20959479b9db07817"
+    }
+  ],
+  "retained_author_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter\\local\\native_gui_widget_resolved_setter\\audit.py",
+      "bytes": 19920,
+      "sha256": "f95819af593fd85ff3fa9ed9684d1168141cd658c81c6bde3c5eadd07fa6aa4f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter\\local\\native_gui_widget_resolved_setter\\audit.json",
+      "bytes": 44457,
+      "sha256": "b52caf5ab9d02f2213d24763a54a962cfd4585d739b6f85c87e69c957632c705"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter\\local\\native_gui_widget_resolved_setter\\native_gui_widget_resolved_setter.obj",
+      "bytes": 8189,
+      "sha256": "53569750d60ae0833b88238b35a876a971031b3d50dab4ca467b6f39f983e58b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter\\local\\native_gui_widget_resolved_setter\\getter_dependency.obj",
+      "bytes": 4828,
+      "sha256": "0ea199a5928b25f5f5ce154433a4879f76404c184f192fcfdd9d3706d227edbf"
+    }
+  ],
+  "limits": [
+    "Complete normal parent on explicitly supported existing provider domain; no generalized virtual targets or whole GUI family claim.",
+    "Private getter632df is required and unchanged; shared review/registration/common build/link still belong to primary.",
+    "Source C++/private context ABI, EBP/EDX borrowing and added stack save do not prove Original binary ABI, caller flags/liveouts, physical private-stack aliases or overflow thresholds.",
+    "x87 environment instruction/data pointers differ; unmasked delivery, SEH/hardware-fault identities/resumption and C++ throws through naked helper are unproven.",
+    "No original exception registration, catch, cleanup, rollback, repair or successful unsupported-provider fallback is invented.",
+    "Binding formation borrows real data/process/dispatch; opaque actual graph provenance, exact same data/profile association and all lifetimes remain genuine caller proof.",
+    "Whole park/hint/rawpause/screens/current Game owners/configuration/adoption remain out of scope.",
+    "No full build, executable, test, fixture, probe, game, DLL, Ghidra mutation, shared CMake/ledger or guard change.",
+    "A real rejecting child does not establish recoverable public setter failure. Preserve partial effects and owner/context custody; no retry/adoption license."
+  ],
+  "activity": {
+    "tracked_changes": "Two review files only",
+    "source_CMake_Ghidra_ledger_guard_changes": false,
+    "tests_executable_body_probe_DLL_game": false,
+    "allocation_execution": false,
+    "full_common_build_link": false,
+    "frozen_peers_touched": false
+  },
+  "credit": {
+    "duplicate": 0,
+    "native_body": 0,
+    "vendor": 0,
+    "Original_ABI": false,
+    "failure_transport": false,
+    "activation": false,
+    "runtime": false
+  },
+  "documentation": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-widget-resolved-setter-review\\docs\\CC16_NATIVE_GUI_WIDGET_RESOLVED_SETTER_REVIEW.md",
+    "bytes": 11756,
+    "sha256": "a342991af4534b360a4af955f0f249d076319b417c3804cce40400a9f8dc8d52"
+  }
+}
