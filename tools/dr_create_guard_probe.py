@@ -1,7 +1,7 @@
 """Bounded PRIVATE x86 DR CREATE/import-shim fixture. Never launches retail.
 
 Only dummy fixtures are locked. Production guard/wrapper and SDK disk bytes are
-unchanged. A successful result does not establish Documents redirection.
+unchanged. A result describes the private fixture, not retail mission time.
 """
 from pathlib import Path
 import argparse
@@ -9,13 +9,16 @@ import ctypes as C
 import json
 import os
 import re
+import secrets
 import shutil
 import struct
 import subprocess
 import time
 import winreg
+from ctypes import wintypes
 
 import original_baseline_guard as g
+from original_motion_capture import ProcessReader
 
 
 def run(command, cwd, log):
@@ -48,6 +51,52 @@ def ifeo_clear(image):
               "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\" + image, view)
 
 
+def read_optional(path):
+    try:
+        return path.read_text(encoding="utf-8")
+    except (FileNotFoundError, PermissionError):
+        return ""
+
+
+def write_control(path, nonce, pid, created, reason):
+    temporary = path.with_name(path.name + "." + secrets.token_hex(8) + ".tmp")
+    temporary.write_text(f"{nonce} {pid} {created} {reason}\n", encoding="ascii")
+    deadline = time.monotonic() + 1
+    try:
+        while True:
+            try:
+                os.replace(temporary, path)
+                return
+            except PermissionError:
+                if time.monotonic() >= deadline:
+                    raise
+                time.sleep(.02)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
+def verify_waiting_root(pid, created, target, entry_address, expected_entry):
+    """Read only: independently bind the fixture PID/time/path and native spin."""
+    reader = ProcessReader(pid)
+    try:
+        times = [wintypes.FILETIME() for _ in range(4)]
+        if not reader.api.GetProcessTimes(reader.handle, *(C.byref(item) for item in times)):
+            raise RuntimeError("Cannot read fixture creation FILETIME")
+        actual = (times[0].dwHighDateTime << 32) | times[0].dwLowDateTime
+        path, size = C.create_unicode_buffer(32768), wintypes.DWORD(32768)
+        if actual != created or not reader.api.QueryFullProcessImageNameW(reader.handle, 0, path, C.byref(size)) or Path(path.value).resolve() != target:
+            raise RuntimeError("Fixture PID/creation time/image identity changed")
+        code = wintypes.DWORD()
+        if not reader.api.GetExitCodeProcess(reader.handle, C.byref(code)) or code.value != 259:
+            raise RuntimeError("Wrong nonce stopped the fixture root")
+        observed = reader.read(entry_address, 16)
+        if observed != b"\xeb\xfe" + bytes.fromhex(expected_entry)[2:]:
+            raise RuntimeError("Independent native entry barrier changed")
+        return observed.hex()
+    finally:
+        reader.close()
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dr-root", required=True, type=Path)
@@ -58,7 +107,13 @@ def main():
     parser.add_argument("--negative", default="none", choices=["none", "admission-omitted", "admission-missing", "admission-options", "drcov-missing"])
     parser.add_argument("--diagnostic-dr", action="store_true", help="Use official debug runtime, retaining all creation gates")
     parser.add_argument("--prepare-only", action="store_true", help="Compile and write exact planned options without creating a fixture process")
+    parser.add_argument("--nudge-stop", action="store_true", help="Private wrong-nonce then correct-nonce cleanup fixture")
     args = parser.parse_args()
+    if args.nudge_stop and (args.fail_entry_gate or args.negative != "none" or args.handles):
+        parser.error("--nudge-stop requires the small positive private fixture")
+    stop_nonce = secrets.token_hex(8) if args.nudge_stop else ""
+    while args.nudge_stop and int(stop_nonce, 16) == 0:
+        stop_nonce = secrets.token_hex(8)
     root = g.private(args.output, exists=False)
     if root.exists():
         raise RuntimeError("Use a new private output directory")
@@ -135,8 +190,12 @@ def main():
         expected_serialization += ' -client_lib32 "' + str(registered_client) + ';0;' + registered_options + '"'
     expected_serialization += ' -client_lib32 "' + str(registered_cov) + ';1;' + cov_options + '"'
     launch_plan = dict(runtime_options=runtime_options, entry_client_options=entry_options,
-        drcov_client_options=cov_options, expected_config_options_line=expected_serialization,
-        original_launched=False, fixture_processes_created=False, pe=pe)
+        drcov_client_options=cov_options,
+        expected_config_options_line=None if args.nudge_stop else expected_serialization,
+        base_config_options_before_dynamic_stop_args=expected_serialization if args.nudge_stop else None,
+        original_launched=False, fixture_processes_created=False, pe=pe,
+        nudge_stop=args.nudge_stop, stop_nonce=stop_nonce,
+        dynamic_client_stop_args=["nonce16", "actual_root_pid_decimal", "native_created_filetime_decimal"] if args.nudge_stop else [])
     g.write_receipt(root / "launch-plan.json", launch_plan)
     if args.prepare_only:
         print(json.dumps({"prepared_only": True, "fixture_processes_created": False,
@@ -151,6 +210,7 @@ def main():
         source_parent_independent_handles_retained_until_jobs_empty=True, documents_redirect_tested=True,
         expected_admission_rejection=args.fail_entry_gate or args.negative != "none", negative_case=args.negative, pe=pe, entry_bytes=entry_bytes,
         diagnostic_debug_runtime=args.diagnostic_dr,
+        nudge_stop_fixture=args.nudge_stop, stop_nonce=stop_nonce,
         private_documents=str(documents), clients=[str(client), str(dr / "tools/lib32/release/drcov.dll")])
     token = None; locks = None; attributes = None; sink = None; jobs = []; duplicates = []; pi = g.PROCESS_INFORMATION()
 
@@ -239,6 +299,8 @@ def main():
             BSP_SINK_INDEX_HIGH=str(sink_info.index_high), BSP_SINK_INDEX_LOW=str(sink_info.index_low),
             BSP_ENTRY_RVA=f'{pe["entry_rva"]:x}', BSP_ENTRY_BYTES=entry_bytes, BSP_NEGATIVE=args.negative,
             BSP_DR_DIAGNOSTIC="1" if args.diagnostic_dr else "0",
+            BSP_STOP_NONCE=stop_nonce, BSP_PROBE_WAIT_FOR_NUDGE="1" if args.nudge_stop else "0",
+            BSP_HELPER_CONTROL=str(stage / "helper-control.txt"),
             BSP_DOCUMENTS=str(documents), BSP_ENTRY_CLIENT_OPTIONS=entry_options)
         envbuf = C.create_unicode_buffer("\0".join(k + "=" + v for k, v in sorted(environment.items())) + "\0\0")
         si = g.STARTUPINFOEX(); si.startup.cb = C.sizeof(si); si.attributes = C.addressof(attributes)
@@ -253,10 +315,49 @@ def main():
         if Path("C:/Users/sqz269/.bsp/DRAIN").exists():
             raise RuntimeError("DRAIN")
         g.checked(g.K.ResumeThread(pi.hThread) != 0xffffffff, "resume owned helper only")
+        nudge_phase = "awaiting_ready"
         deadline = time.monotonic() + 60
         while g.K.WaitForSingleObject(pi.hProcess, 100) != 0:
             if time.monotonic() >= deadline or Path("C:/Users/sqz269/.bsp/DRAIN").exists():
                 raise RuntimeError("Fixture timeout or DRAIN")
+            if args.nudge_stop:
+                helper_now = read_optional(stage / "helper.log")
+                client_now = read_optional(stage / "client.log")
+                root_now = read_optional(stage / "root.log")
+                if nudge_phase == "awaiting_ready":
+                    pids = re.findall(r"^root_job_assigned_before_sdk_pi=(\d+)$", helper_now, re.M)
+                    created = re.findall(r"^root_created_filetime=(\d+)$", helper_now, re.M)
+                    if (len(pids) == len(created) == 1 and "probe_waiting_for_nudge=0\n" in root_now and
+                            "entry_call_target_and_return_verified " in client_now and "nudge_stop_ready " in client_now):
+                        root_pid, root_created = int(pids[0]), int(created[0])
+                        if not 0 < root_pid <= 0xffffffff or not 0 < root_created <= 0xffffffffffffffff:
+                            raise RuntimeError("Invalid native helper PID/FILETIME")
+                        verify_waiting_root(root_pid, root_created, target, pe["image_base"] + pe["entry_rva"], entry_bytes)
+                        readiness = dict(schema="bsp.dr.fixture-ready.v1", pid=root_pid,
+                            process_created_filetime=str(root_created), nonce=stop_nonce, expected_exe=str(target),
+                            fixture_only=True, filetime_source="native GetProcessTimes, independently read by parent")
+                        g.write_receipt(root / "root-readiness.json", readiness)
+                        report["root_readiness"] = readiness
+                        write_control(stage / "helper-control.txt", stop_nonce, root_pid, root_created, "fixture_wrong_nonce")
+                        nudge_phase = "waiting_wrong_nonce"
+                elif nudge_phase == "waiting_wrong_nonce":
+                    if (f"nudge_ignored reason=nonce_mismatch pid={root_pid}\n" in client_now and
+                            "fixture_wrong_nonce_status=0\n" in helper_now):
+                        observed = verify_waiting_root(root_pid, root_created, target,
+                            pe["image_base"] + pe["entry_rva"], entry_bytes)
+                        if active(root_job) != 1:
+                            raise RuntimeError("Wrong nonce changed the guarded leaf job")
+                        report.update(wrong_nonce_ignored=True, wrong_nonce_root_alive=True,
+                                      wrong_nonce_native_entry_bytes=observed)
+                        request = dict(schema="bsp.dr.fixture-stop.v1", pid=root_pid,
+                            process_created_filetime=str(root_created), nonce=stop_nonce,
+                            reason="fixture_completion", native_control_reason="game_time_target",
+                            fixture_only=True, mission_clock_evidence=False)
+                        g.write_receipt(root / "stop-request.json", request)
+                        write_control(stage / "helper-control.txt", stop_nonce, root_pid, root_created, "game_time_target")
+                        nudge_phase = "stop_sent"
+        if args.nudge_stop and nudge_phase != "stop_sent":
+            raise RuntimeError("Fixture exited before wrong/correct nonce sequence completed")
         code = g.DWORD(); g.checked(g.K.GetExitCodeProcess(pi.hProcess, C.byref(code)), "helper exit code")
         report["helper_exit_code"] = code.value
         helper_log = (stage / "helper.log").read_text(encoding="utf-8") if (stage / "helper.log").exists() else ""
@@ -277,8 +378,10 @@ def main():
                 rf"^module\[\s*{target_id}\]: 0x{pe['entry_rva']:08x},", text, re.M) is not None
             entry_sizes = [int(size) for size in re.findall(
                 rf"^module\[\s*{target_id}\]: 0x{pe['entry_rva']:08x},\s+(\d+)", text, re.M)] if target_id is not None else []
+            bb_records = len(re.findall(r"^module\[\s*\d+\]: 0x[0-9a-fA-F]+,\s+\d+\s*$", text, re.M))
             report["drcov_logs"].append(dict(path=str(path), size=path.stat().st_size,
                 sha256=g.sha(path), bb_count=int(table.group(1)) if table else 0,
+                parsed_bb_records=bb_records, bb_table_complete=bool(table and bb_records == int(table.group(1))),
                 target_module_id=target_id, target_entry_covered=target_entry_hit, entry_bb_sizes=entry_sizes))
         if not report["expected_admission_rejection"] and (not cov_files or not all(path.read_bytes().startswith(b"DRCOV VERSION:") for path in cov_files)):
             raise RuntimeError("No valid drcov log alongside admission client")
@@ -312,6 +415,21 @@ def main():
             raise RuntimeError("Drcov log does not cover the target entry")
         if not report["expected_admission_rejection"] and not all(log["entry_bb_sizes"] and all(size == 5 for size in log["entry_bb_sizes"]) for log in report["drcov_logs"]):
             raise RuntimeError("Drcov did not observe the original CALL5 after app2app substitution")
+        if args.nudge_stop:
+            marker = (f"controlled_trace_stop pid={root_pid} expected_created_filetime={root_created} "
+                      "reason=nonce_nudge exit_code=0\n")
+            if (marker not in client_log or "admission_client_exit intentional_stop=1 " not in client_log or
+                    "stop_nudge_status=0\n" not in helper_log or f"stop_nudge_sent={root_pid}\n" not in helper_log or
+                    "root_exit_code=0\n" not in helper_log or not report.get("wrong_nonce_ignored") or
+                    not all(log["bb_table_complete"] for log in report["drcov_logs"])):
+                raise RuntimeError("Controlled stop lacks nonce, exit-callback or complete BB-table proof")
+            settling = time.monotonic() + 1
+            while any(active(handle) for handle in jobs) and time.monotonic() < settling:
+                time.sleep(.02)
+            report["pre_cleanup_job_active"] = [active(handle) for handle in jobs]
+            if any(report["pre_cleanup_job_active"]):
+                raise RuntimeError("Controlled stop left jobs active before cleanup")
+            report["controlled_trace_stop_verified"] = True
     except BaseException as exc:
         report.update(passed=False, error=str(exc))
     finally:
