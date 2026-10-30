@@ -1,0 +1,11 @@
+# Qualified variant tag6 composition
+
+`initialize_native_lua_variant_tag6_0074fb30` is an ordinary MSVC Win32 Source API for the complete six-instruction/17-byte normal body at 0074FB30..0074FB40. Original receives the actual variant in ECX, calls 00886920, stores full DWORD6 at captured receiver+4, then returns with incidental child EAX. The new completion status and added context/metadata arguments do not reproduce that ABI or EAX.
+
+The wrapper captures the actual receiver and calls genuine `clear_native_lua_variant_00886920_cpp_cleanup` with the SAME actual raw-string context, retained operation and cleanup backing. Any returned non-completion is propagated unchanged before the tag store. Only an actual completed child return permits fenced four-byte copy of DWORD6 and a completed Source result. A C++ exception propagates unchanged: this wrapper has no catch, selected action, cleanup, allocation, rollback or retry. It adds no Frame or tag/type/empty-path filter and does not duplicate the clear body.
+
+The caller must already satisfy the child's live aligned/type-compatible field domain and actual nested descriptor/map/node, matched allocator/raw-cell, pool and lifetime contracts. The operation and cleanup spans must be independently live, disjoint and sufficient for the actual nested chain; their existing control-alias/reentry exclusions remain. Five raw initializer stores or numerical profile/size alone do not establish C++ object birth. The fenced store does not admit arbitrary byte slabs, repair backing, create an owner or broaden the child's domain.
+
+A returned non-completion or exception retains the child's real partial-resource/metadata obligations; the wrapper supplies no retry or disposal permission. Completion is this Source API's normal result, not a generic free permit, loaded state or proof of physical Native return. Existing /EHsc, raw-field lifetime, CRT/allocator, FH3/SEH/fault/nonlocal/private-stack and provider qualifications remain.
+
+This closes only the qualified tag6 composition. Raw copy-child/vendor781F20, reserve/current-profile dispatch and backing, factory/VM/table/startup and runtime admission remain separate. Existing providers and typed models are unchanged. No Native/game entry, test, probe or activation was performed.
