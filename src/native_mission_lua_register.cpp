@@ -5,6 +5,8 @@ extern "C" {
 }
 
 #include <cstdint>
+#include <cstring>
+#include <intrin.h>
 
 namespace bsp {
 namespace {
@@ -13,8 +15,12 @@ static_assert(sizeof(void*) == 4 && sizeof(NativeMissionLuaCFunction) == 4);
 static_assert(LUA_GLOBALSINDEX == -10002);
 
 lua_State* current_state(void* machine) noexcept {
-    return *reinterpret_cast<lua_State* volatile*>(
-        reinterpret_cast<std::uint32_t>(machine) + 4u);
+    std::uint32_t bits;
+    _ReadWriteBarrier();
+    std::memcpy(&bits, static_cast<const unsigned char*>(machine) + 4u,
+        sizeof bits);
+    _ReadWriteBarrier();
+    return reinterpret_cast<lua_State*>(static_cast<std::uintptr_t>(bits));
 }
 
 } // namespace
