@@ -80,7 +80,7 @@ private:
 };
 
 struct NativeGuiTextEmptyUnchangedStorageRegion final {
-    const void* begin{};
+    const volatile void* begin{};
     std::size_t bytes{};
 };
 struct NativeGuiTextEmptyUnchangedStorageRegions final {
