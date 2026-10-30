@@ -1043,3 +1043,11 @@ its own selected EH ordering. Combined Win32 Release build/checks2/2 pass14.69s.
 No application startup, callback execution, new body/game or Original ABI proof
 follows. All9off/ac60hold remain; full destruction and slab/allocation/loading
 are the next bounded dependencies. See CODEX_RAW_LOCALE_POOL_RETIREMENT_INTEGRATION.md.
+
+Full raw73C9F0 destructor/scalar73CAF0 packet2bab is Source-reviewed and
+registered with aa56/f411/550 and real range/pool/heap providers. Own selected
+EH and normal disarm epochs, names-begin/current-free and lateactualflags are
+retained. Common Win32 Release build/checks2/2 pass14.24s; no body/game execution,
+canonical F8 owner/profile/startup or Original ABI proof follows. Slab/slot
+allocation and raw loading remain separate; all9off/ac60hold unchanged.
+See CODEX_FULL_RAW_LOCALE_RETIREMENT_INTEGRATION.md.
