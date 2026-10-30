@@ -12,6 +12,8 @@ baseline/histogram path remains unchanged.
 - `bin32/drrun.exe -version`: `11.91.20749 -- build 0`.
 - Local `bin32/drrun.exe` SHA-256:
   `112433d9fe45c8e7bbd0ee4f61f4d7ff2de8f6ee76554e2421805dbe0cbdf166`.
+- Inspected `bin32/drinjectlib.dll` SHA-256:
+  `173c8d46926c9b7a05c71fd7521526baf2878e668e84b80e02388c4e64a1fc9e`.
 - Downloaded archive SHA-256 supplied by the primary, matched to the official
   release asset digest:
   `9ef2d8f990a6acb4d303385fec0105bd45e54d36e92269494ac8d45e966c3844`.
@@ -173,3 +175,135 @@ the original-entry hook before releasing its initial thread. It would also have
 to carry over the exact xlive exception filter, source-handle/job lifecycle and
 all failed-gate cleanup. TinyInst would replace the Python debugger, not run
 beside it. No such adapter or TinyInst target run was attempted here.
+
+## CREATE/inject API assessment
+
+The public Windows header exposes `dr_inject_process_create(app, argv, &data)`
+and getters for the resulting PID/process handle. It has no creator callback,
+token/extended-startup parameter or API adopting a caller's suspended
+`PROCESS_INFORMATION`. The shipped x86 DLL's export table agrees. The same
+release's `injector.c` uses plain `STARTUPINFO` and
+`CreateProcessW(..., TRUE, CREATE_SUSPENDED, NULL, NULL, ...)`.
+
+| Required property | Public create/inject path |
+| --- | --- |
+| Initial suspension | Provided by `dr_inject_process_create`. |
+| Exact restricted primary token | Can be inherited from a creator already running with that primary token; there is no explicit token argument. |
+| Explicit protected source `HANDLE_LIST` | Not provided. The creator passes `TRUE` for general inheritance, with no `STARTUPINFOEX` argument. |
+| Job assigned before any resume | Possible using the public process-handle getter before injection/run. |
+| Adopt the root already created by the guard | No supported public API. Do not forge the private opaque `data` structure. |
+| Pre-OEP Documents admission | Still requires a separately proved client or startup gate; create/inject alone supplies none. |
+
+Thus the unmodified public interface is not a concrete implementation of the
+existing explicit-handle-list guarantee. A creator whose only inheritable
+handles happen to be source handles is not a replacement for that guarantee.
+No CREATE/inject dummy run was started after this boundary was established.
+
+Two further designs are possible, but neither is implemented or proved:
+
+1. **Reviewed DR source extension.** Add a narrow adoption/creator API in the
+   injection frontend, accepting duplicated suspended-process/thread handles
+   and the checked image identity. The existing guard can then create the root
+   with its exact token/handle list/job first. The library initializes its own
+   injection state; callers never reproduce its private layout. Define handle
+   ownership and explicitly disable attach/debug-key paths before using the
+   normal injection/run APIs. This is a DR source patch, not a stock SDK feature.
+2. **Owned creator import shim.** The shipped 32-bit `drinjectlib.dll` imports
+   `KERNEL32!CreateProcessW` at IAT RVA `0003415C`. An owned helper could replace
+   only that in-memory import with a strict creator that calls
+   `CreateProcessAsUserW` using the explicit `STARTUPINFOEX` source list, assigns
+   the root job before returning, and returns the real PI to the library.
+   This avoids changing the DR source/disk DLL, but is unsupported interception,
+   not a public callback. It adds ABI, argument-filtering, inheritance, helper
+   job and failure-cleanup obligations and needs separate review/fixtures.
+
+The default CREATE route can use non-debugger map injection, unlike the failed
+attach route. It also consults the image's IFEO debugger configuration and can
+unset/restore a configured debugger key. Any future design must reject that
+branch **before** calling a routine that could change it; an after-the-fact
+`dr_inject_using_debug_key` check is too late. Do not modify system/debugger
+configuration to make injection work.
+
+These are interface/security boundaries, not a claim that all DR topologies
+are impossible. Production guard and wrapper code remain unchanged. Only a
+reviewed, concrete creation bridge should proceed to the existing private
+entry-admission, redirect, SDK, inherited-handle, child-policy and cleanup gates.
+
+## Bounded owned-creator fixture
+
+The creator-import design was subsequently approved for a **private dummy
+fixture only**. `tools/dr_create_guard_probe.py` builds a manifested Win32
+`dr_helper_probe.exe`, a byte-identical `dr_root_probe.exe` copy and the small
+entry-marker DR client. It uses the existing flags `0x9` restricted-token and
+default-DACL factory. Production guard/wrapper files are unchanged.
+
+The helper changes only its loaded `drinjectlib.dll` CreateProcessW import at
+RVA `0003415C`; it restores the pointer immediately after the single SDK create
+call. The SDK DLL on disk is hash checked and unchanged. The shim rejects any
+other call/image/arguments/flags, checks the expected dummy image SHA256, and
+requires the SDK's exact `CREATE_SUSPENDED` contract. It creates the root with
+the controlled private environment/cwd and an explicit `STARTUPINFOEX` list
+containing only the protected dummy-source handles. The token and job control
+handles inherited by the helper are excluded from the root's list.
+
+The parent creates a kill-on-close helper job with an active limit of two
+(helper plus nested root). The shim assigns the root's separate, nested
+kill-on-close job with active limit one **before returning the real PI to the
+SDK**. Neither job enables breakaway. Only the SDK's public create/inject/run
+and PID-specific file-configuration APIs are used; no opaque-state fabrication,
+attach, debugger or native root resume is used. Read-only IFEO checks reject any
+configured Debugger value in either registry view, including filter subkeys,
+before the SDK can enter its unset/restore branch. Configuration goes to the
+private `DYNAMORIO_CONFIGDIR`.
+
+The parent retains its independent read-only, no-share-delete dummy handles
+until both jobs are empty, including failure cleanup. The root receives
+inheritable/protected copies. This has the existing trusted-binary limitation:
+a process can explicitly clear its own protection flags, but it cannot clear
+the parent's independent copies. No original/install handles are opened by
+this fixture.
+
+Run from an owned worktree using a **new** local output path:
+
+```powershell
+python tools/dr_create_guard_probe.py --dr-root <official-DR-root> --output local/dr-create-shim-probe
+```
+
+The successful run is recorded in ignored
+`local/dr-create-shim-probe-03/result.json`: helper PID `83424`, root PID
+`109828`, both exit codes zero. Its evidence is:
+
+- Helper, pre-run root and executing root had medium integrity `8192`; the
+  exact three restricting SIDs, mandatory policy `3`, restricted status and
+  disabled UIAccess were checked. The Python factory separately verifies the
+  expected default-DACL grants.
+- The root received eight protected dummy/ancestor handles, each with flags
+  `3`; each protected CloseHandle failed with error `6`.
+- Data/attribute/owner/DACL write opens failed with error `5`; DeleteFile and
+  removal of the locked empty directory failed with `32`. Directory rename
+  failed with `5` (destination creation is also denied). A private file write
+  succeeded. The dummy source SHA256 was unchanged.
+- Root child creation failed with quota error `1816` and the child's entry
+  marker was absent. The root job was assigned before SDK PI admission.
+- `client_ready pid=109828` preceded `entry_execution pid=109828` in the DR
+  client log. The fixture entry marker appeared only after SDK injection and
+  its public run call. There was one tracing mechanism and no debugger.
+- Both owned jobs were empty before parent lock release. Injector, config and
+  runtime DLL hashes were unchanged after the run.
+
+The first safety run reached the root but stopped on a too-specific assertion
+that required sharing error `32` for rename; the actual access denial `5` was
+safe. The corrected complete run above passed. Python compilation and the
+manifested native/client builds passed. A focused negative run then forced the
+helper's initial job assignment to fail with error `5`. The still-suspended
+owned helper PID `119268` was terminated and waited before lock release; both
+jobs were empty, no entry markers appeared, and dummy/SDK hashes were unchanged
+(`local/dr-create-shim-job-failure/result.json`).
+
+This proves a narrow CREATE bridge for these dummy binaries, **not safe retail
+coverage integration**. It has no Documents redirection/admission client yet,
+no original game run, no retail SDK-startup proof under DBI, and no 69,700-handle
+CREATE/inject measurement. The stock SDK remains without a public custom
+creator callback; the tested bridge is an explicitly reviewed in-memory import
+shim. Further private proof and review are required before changing production
+launchers or opening original source handles.

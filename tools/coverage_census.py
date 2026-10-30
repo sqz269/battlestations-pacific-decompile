@@ -150,7 +150,7 @@ def pe_info(path):
 
 
 def read_drcov(path, module_name, image=None, original=False):
-    """Read drcov v2, module-table v2..5, binary or text BB tables.
+    """Read drcov v2/v3, module-table v2..5, binary or text BB tables.
 
     Module records, not assumptions about module zero, choose the target image.
     Segmented module RVAs use the containing module's runtime base.
@@ -162,8 +162,11 @@ def read_drcov(path, module_name, image=None, original=False):
             if not raw or len(raw) > 65536:
                 raise CensusError(f"missing/oversize drcov header in {path}")
             return raw.decode("utf-8", "strict").rstrip("\r\n")
-        if line() != "DRCOV VERSION: 2":
+        version_line = line()
+        version = re.fullmatch(r"DRCOV VERSION: ([23])", version_line)
+        if not version:
             raise CensusError(f"unsupported drcov version: {path}")
+        file_version = int(version.group(1))
         flavor = line()
         if flavor not in ("DRCOV FLAVOR: drcov", "DRCOV FLAVOR: drcov-32", "DRCOV FLAVOR: drcov-64"):
             raise CensusError(f"unsupported drcov flavor: {flavor}")
@@ -247,13 +250,19 @@ def read_drcov(path, module_name, image=None, original=False):
                 other_module_records += 1
                 continue
             segment = modules[mid]
-            if offset + size > segment["end"] - segment["start"]:
-                raise CensusError("BB exceeds its module segment")
             root = modules[segment["containing_id"]]
-            observations.add(Observation(segment["start"] - root["start"] + offset, size))
-    return observations, {"path": str(path.resolve()), "sha256": sha256(path), "drcov_version": 2,
+            # Official DRCOV_VERSION_SEGMENT_OFFSETS=3 changed the offset
+            # origin; v2 offsets remain relative to the containing module.
+            address = (segment["start"] if file_version == 3 else root["start"]) + offset
+            if not segment["start"] <= address < address + size <= segment["end"]:
+                raise CensusError("BB exceeds its module segment")
+            observations.add(Observation(address - root["start"], size))
+    return observations, {"path": str(path.resolve()), "sha256": sha256(path), "drcov_version": file_version,
                           "flavor": flavor[14:], "module_table_version": table_version,
                           "bb_records": total, "distinct_selected_blocks": len(observations),
+                          "selected_bb_records": total - other_module_records - unknown_module_records,
+                          "duplicate_selected_bb_records": total - other_module_records - unknown_module_records - len(observations),
+                          "bb_table_complete": True,
                           "other_module_records": other_module_records,
                           "unknown_module_records": unknown_module_records,
                           "selected_modules": [modules[mid] for mid in sorted(target_ids)]}
@@ -318,6 +327,15 @@ def identifier(name):
     name = name.split("(", 1)[0].strip().rsplit(" ", 1)[-1]
     name = re.sub(r"<.*>", "", name).rsplit("::", 1)[-1]
     return name if re.fullmatch(r"~?[A-Za-z_]\w*", name) else None
+
+
+def wire_identifier_known(row):
+    # Legacy wire_readiness serializes ident/ident_via for fallback methods,
+    # but omits them for its ordinary address-suffix resolution. Its state
+    # still records whether a source identifier was actually resolved.
+    if row.get("state") is not None:
+        return row["state"] != "unknown_no_identifier"
+    return bool(row.get("ident"))
 
 
 class Resolver:
@@ -606,7 +624,7 @@ def attribute_bsp(observations, symbols, resolver, max_addresses):
     complete = not inventory_errors and inline_error is None
     inventory_present = present | inventory_ambiguous
     absent = [f"{address:08x}" for address, row in resolver.rows.items()
-              if row.get("ident") and address not in inventory_present] if not inventory_errors else None
+              if wire_identifier_known(row) and address not in inventory_present] if not inventory_errors else None
     return {"hits": hits, "possible": possible, "present": present, "complete": complete,
             "entry_counts": entry_counts,
             "metadata": {**symbols.metadata, "inventory_records": len(inventory),
@@ -622,8 +640,13 @@ def attribute_bsp(observations, symbols, resolver, max_addresses):
                          "unresolved_executed_symbol_count": len(unresolved),
                          "ambiguous_executed_candidates": [f"{a:08x}" for a in sorted(possible)],
                          "ambiguous_executed_candidate_count": len(possible),
-                         "wire_rows_without_identifier": [f"{a:08x}" for a, row in resolver.rows.items() if not row.get("ident")],
-                         "wire_rows_without_identifier_count": sum(not row.get("ident") for row in resolver.rows.values()),
+                         "ambiguous_candidates_without_positive_hit": [f"{a:08x}" for a in sorted(possible - hits.keys())],
+                         "ambiguous_candidates_without_positive_hit_count": len(possible - hits.keys()),
+                         "unresolved_executed_unique_symbol_name_count": len({row["name"] for row in unresolved.values()}),
+                         "symbol_count_semantics": "PDB symbol/site records; unique names are reported separately",
+                         "wire_rows_without_identifier": [f"{a:08x}" for a, row in resolver.rows.items() if not wire_identifier_known(row)],
+                         "wire_rows_without_identifier_count": sum(not wire_identifier_known(row) for row in resolver.rows.values()),
+                         "wire_rows_without_explicit_ident_field_count": sum(not row.get("ident") for row in resolver.rows.values()),
                          "wire_rows_without_symbol_or_inline_record": absent,
                          "wire_rows_without_symbol_or_inline_record_count": len(absent) if absent is not None else None,
                          "absent_record_cause": "unknown; ICF, removal, optimization, or identifier limitations are not distinguished",
@@ -803,6 +826,8 @@ def main(argv=None):
                         symbols.close()
         result = report(catalog, resolver, original, bsp, sources["original"], sources["bsp"])
         result["mission"] = args.mission
+        for side, logs in (("original", args.original_log), ("bsp", args.bsp_log)):
+            result["summary"][side]["distinct_selected_blocks"] = len(observations[side]) if logs else None
         if bsp_error:
             result["summary"]["bsp"].update(status="attribution_unavailable", reason=bsp_error)
         result["provenance"] = {"head": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
