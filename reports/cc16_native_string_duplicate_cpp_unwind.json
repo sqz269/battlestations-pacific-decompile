@@ -1,0 +1,244 @@
+{
+  "status": "one_actual_Source_bad_alloc_unwind_case_passed_primary_and_independent_review",
+  "address": "00438e40",
+  "source_head": "03ef58daf98d9dff844e8a4039be830868d429b7",
+  "observed_utc": "2026-10-30T04:27:35.695615+00:00",
+  "purpose": "Resolve one concrete Source allocation-failure transport risk left open by the normal/null duplicate admission. No production implementation change.",
+  "claim": "Exactly the frozen Source caller/compiler/input/no-retry/private-limit case produced real std::bad_alloc, reached its typed catch, unwound its one observation marker and preserved four volatile caller words. Restoration/release APIs reported success; no broader cleanup or ABI claim.",
+  "execution": {
+    "runs": 1,
+    "tool_terminal_exit_code": 0,
+    "tool_wall_seconds": 3.0438863,
+    "pid": 64572,
+    "creation_filetime": 134378080556956158,
+    "actual_observations": {
+      "pid": 64572,
+      "creation_ticks": 134378080556956158,
+      "input_bytes": 16777216,
+      "private_before": 17813504,
+      "limit": 22007808,
+      "bad_alloc": 1,
+      "other": 0,
+      "normal": 0,
+      "handler_calls": 1,
+      "handler_bytes": 16777216,
+      "marker_constructed": 1,
+      "marker_destroyed": 1,
+      "words": 1,
+      "input_endpoints": 1,
+      "restored_limit": 1,
+      "restore_error": 0,
+      "restored_handler": 1,
+      "input_released": 1,
+      "job_closed": 1
+    },
+    "origin": "Owned compiled probe process; source helper from actual current bsp_core archive. No original-image or relocated Original-copy/game execution.",
+    "source_body_executed": true,
+    "game_executed": false,
+    "original_executable_executed": false
+  },
+  "static_preflight": {
+    "status": "preflight_passed_not_yet_executed",
+    "source_head": "03ef58daf98d9dff844e8a4039be830868d429b7",
+    "scope": "ONE Source-only actual canonical malloc failure -> no-retry real CRT new-handler -> real allocator std::bad_alloc -> outer caller catch/unwind marker; not Original/native/whole-family/Game proof.",
+    "whole_raw_function_bytes": 57,
+    "noncall_native_bytes_equal": 49,
+    "actual_relative_calls": [
+      {
+        "offset": 34,
+        "symbol": "?allocate_native_string_bytes@?A0xb479a2c2@bsp@@YAPAXI@Z",
+        "address": 4199984,
+        "object": "bsp_core:native_string_duplicate.obj"
+      },
+      {
+        "offset": 44,
+        "symbol": "_memcpy",
+        "address": 4203710,
+        "object": "vcruntime:VCRUNTIME140.dll"
+      }
+    ],
+    "source_pins": [
+      {
+        "path": "src/native_string_duplicate.cpp",
+        "sha256": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0",
+        "git_blob": "f745264df105154fe437e331df18d4f2418c2160"
+      },
+      {
+        "path": "include/bsp/native_string_duplicate.hpp",
+        "sha256": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477",
+        "git_blob": "a3c211324e0a44deab01eca75af8dfad848c516b"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936"
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "local/raw_duplicate_cpp_unwind/artifacts/native_string_duplicate.obj",
+        "bytes": 1773,
+        "sha256": "298ae968d00e3a3587bfba1b1f35156e77492fae75aca928c5ac3fb8616af68b",
+        "copied_from": "build/win32/bsp_core.dir/Release/native_string_duplicate.obj"
+      },
+      {
+        "path": "local/raw_duplicate_cpp_unwind/artifacts/singleton_lifetime.obj",
+        "bytes": 33008,
+        "sha256": "386824ba4b5224ce24dfa43d84dd09b6c8b1fc64e02011998109d91cdc72171f",
+        "copied_from": "build/win32/bsp_core.dir/Release/singleton_lifetime.obj"
+      },
+      {
+        "path": "local/raw_duplicate_cpp_unwind/artifacts/dup_oom_transport_probe.exe",
+        "bytes": 13824,
+        "sha256": "d7bc7dc9d2a696d93e8410e989a10b2c147ca800b3b168ccdd205be61b0bd263",
+        "copied_from": "local/raw_duplicate_cpp_unwind/dup_oom_transport_probe.exe"
+      },
+      {
+        "path": "local/raw_duplicate_cpp_unwind/artifacts/dup_oom_transport_probe.cpp",
+        "bytes": 6512,
+        "sha256": "3f0bec9b4d5fcb56f217eb335b0e572ee41f750eb3bab70ac6fcbb256b5b086c",
+        "copied_from": "local/raw_duplicate_cpp_unwind/dup_oom_transport_probe.cpp"
+      },
+      {
+        "path": "local/raw_duplicate_cpp_unwind/artifacts/probe.obj",
+        "bytes": 10155,
+        "sha256": "cc3967d5dcce6cc6d69f6032c84547f9393a8a90b9e9f37e88283e351216bf73",
+        "copied_from": "local/raw_duplicate_cpp_unwind/probe.obj"
+      },
+      {
+        "path": "local/raw_duplicate_cpp_unwind/artifacts/probe.asm",
+        "bytes": 33801,
+        "sha256": "3cc542610f54560277e0b2b938f0a119ddb609df21c25c89cbd3afb48fecddbf",
+        "copied_from": "local/raw_duplicate_cpp_unwind/probe.asm"
+      },
+      {
+        "path": "local/raw_duplicate_cpp_unwind/artifacts/probe.map",
+        "bytes": 31509,
+        "sha256": "d46eecdb8fe298fa299e4588b51e7122e3858e5f7e225250f313fa0ace8555c5",
+        "copied_from": "local/raw_duplicate_cpp_unwind/probe.map"
+      },
+      {
+        "path": "local/raw_duplicate_cpp_unwind/artifacts/build.cmd",
+        "bytes": 750,
+        "sha256": "f477b317d468508e4df7d6f540e07d46fc4eebd03fd24db9d968e7212630927a",
+        "copied_from": "local/raw_duplicate_cpp_unwind/build.cmd"
+      },
+      {
+        "path": "local/raw_duplicate_cpp_unwind/artifacts/build.log",
+        "bytes": 29,
+        "sha256": "b95d34c9f9df5f81d77eee0c859b5d2de2d2eb91fde0cf213381ebe099cba0f8",
+        "copied_from": "local/raw_duplicate_cpp_unwind/build.log"
+      }
+    ],
+    "probe_machine": "i386",
+    "manifest_embedded": true,
+    "guard": "Probe creates unnamed noninherited private job, proves only its own PID is a member, commits genuine16MiB NUL input first, then sets process memory to observed private commit+4MiB. No other process/job settings are changed.",
+    "EH_physical_review": "main maxState3, try0..1/catchHigh2; state1 covers raw call, action1->0 destroys real observation marker, typedstd::bad_alloc andcatchall. Volatile live stack canaries checked after catch. No Native register/liveout equivalence claim.",
+    "execution_authorized_by_goal": true,
+    "new_production_source_guard_policy_or_Game_change": false
+  },
+  "artifacts": [
+    {
+      "path": "local/raw_duplicate_cpp_unwind/artifacts/native_string_duplicate.obj",
+      "bytes": 1773,
+      "sha256": "298ae968d00e3a3587bfba1b1f35156e77492fae75aca928c5ac3fb8616af68b",
+      "copied_from": "build/win32/bsp_core.dir/Release/native_string_duplicate.obj"
+    },
+    {
+      "path": "local/raw_duplicate_cpp_unwind/artifacts/singleton_lifetime.obj",
+      "bytes": 33008,
+      "sha256": "386824ba4b5224ce24dfa43d84dd09b6c8b1fc64e02011998109d91cdc72171f",
+      "copied_from": "build/win32/bsp_core.dir/Release/singleton_lifetime.obj"
+    },
+    {
+      "path": "local/raw_duplicate_cpp_unwind/artifacts/dup_oom_transport_probe.exe",
+      "bytes": 13824,
+      "sha256": "d7bc7dc9d2a696d93e8410e989a10b2c147ca800b3b168ccdd205be61b0bd263",
+      "copied_from": "local/raw_duplicate_cpp_unwind/dup_oom_transport_probe.exe"
+    },
+    {
+      "path": "local/raw_duplicate_cpp_unwind/artifacts/dup_oom_transport_probe.cpp",
+      "bytes": 6512,
+      "sha256": "3f0bec9b4d5fcb56f217eb335b0e572ee41f750eb3bab70ac6fcbb256b5b086c",
+      "copied_from": "local/raw_duplicate_cpp_unwind/dup_oom_transport_probe.cpp"
+    },
+    {
+      "path": "local/raw_duplicate_cpp_unwind/artifacts/probe.obj",
+      "bytes": 10155,
+      "sha256": "cc3967d5dcce6cc6d69f6032c84547f9393a8a90b9e9f37e88283e351216bf73",
+      "copied_from": "local/raw_duplicate_cpp_unwind/probe.obj"
+    },
+    {
+      "path": "local/raw_duplicate_cpp_unwind/artifacts/probe.asm",
+      "bytes": 33801,
+      "sha256": "3cc542610f54560277e0b2b938f0a119ddb609df21c25c89cbd3afb48fecddbf",
+      "copied_from": "local/raw_duplicate_cpp_unwind/probe.asm"
+    },
+    {
+      "path": "local/raw_duplicate_cpp_unwind/artifacts/probe.map",
+      "bytes": 31509,
+      "sha256": "d46eecdb8fe298fa299e4588b51e7122e3858e5f7e225250f313fa0ace8555c5",
+      "copied_from": "local/raw_duplicate_cpp_unwind/probe.map"
+    },
+    {
+      "path": "local/raw_duplicate_cpp_unwind/artifacts/build.cmd",
+      "bytes": 750,
+      "sha256": "f477b317d468508e4df7d6f540e07d46fc4eebd03fd24db9d968e7212630927a",
+      "copied_from": "local/raw_duplicate_cpp_unwind/build.cmd"
+    },
+    {
+      "path": "local/raw_duplicate_cpp_unwind/artifacts/build.log",
+      "bytes": 29,
+      "sha256": "b95d34c9f9df5f81d77eee0c859b5d2de2d2eb91fde0cf213381ebe099cba0f8",
+      "copied_from": "local/raw_duplicate_cpp_unwind/build.log"
+    },
+    {
+      "path": "local/raw_duplicate_cpp_unwind/artifacts/run.log",
+      "bytes": 333,
+      "sha256": "6a1fbe1e98dffdf9f81fad57079de675344b5126277bf8a6f96af8e3a2aed85f"
+    },
+    {
+      "path": "local/raw_duplicate_cpp_unwind/artifacts/preflight.json",
+      "bytes": 4777,
+      "sha256": "e0e2c7dcdbd4bb5fd11ba5114c94efd1f66e1869b6d4bbab34b6488075b8fcdf"
+    }
+  ],
+  "fixture_guard": "Actual input allocated before process limit; private unnamed/noninherited job verified to contain only the probe PID. No other process or job limits/handlers changed. Not an allocation provider stub.",
+  "physical_EH": "Compiled ordinary caller has maxState3, try0..1/catchHigh2, state1 before Raw call and marker action1->0; typedstd::bad_alloc andcatchall remain. Volatile canaries are emitted stack reads after catch. No generic register/ABI claim.",
+  "existing_tests": "No new repository test case, suite or framework. One ignored ad hoc focused probe for a concrete uncovered failure risk; actual standard allocator/new-handler hooks used.",
+  "limits": [
+    "One caller/compiler/input/actual no-retry policy only; not all allocation failures, handler retry/reentry/throws or Source callers.",
+    "No complete hidden-record constructor or Game/GUI/ownership/current-profile/activation proof.",
+    "Loaded CRT DLL identities/versions were not captured; static import/defining-object evidence is retained, so the run is not a portable frozen-runtime attestation.",
+    "Original private CRT/heap/type/FH3/SEH/fault/terminal behavior and register/private-frame ABI remain unproved.",
+    "No production source/API/header contract, new failure/rollback/terminal policy or guard is changed. General Source admission remains as previously qualified."
+  ],
+  "new_Source_native_vendor_duplicate_ABI_Game_activation_credit": 0,
+  "independent_review": "ac6d45fd269abc12e2457e8603d73d2ce9df0ffa",
+  "independent_retained_path_sha256_checks": 20,
+  "immutable_manifest": {
+    "path": "local/raw_duplicate_cpp_unwind/case_manifest.json",
+    "sha256": "d0f3b598e4b96a29985e4c47e863c47b9574e9cc437014fe14ba23e08e3a6b4e",
+    "frozen_files": 12
+  },
+  "independent_physical_checks": {
+    "complete_selected_Source_EH_sections": 9,
+    "bytes": 1836,
+    "object_to_PE_relocations": 105,
+    "reviewer_rerun_or_compilation": false
+  },
+  "restoration_scope": "API success acknowledgements/hook setter previous value only; no post-restore readback or pre-exit job detachment. Handle-close success and actual probe termination recorded.",
+  "ghidra": {
+    "prior_annotations": "local/ghidra-annotations-20261030T050831Z.json",
+    "existing_name_and_comments_preserved": true,
+    "project_saved": true,
+    "export_refreshed": true,
+    "index_rebuilt": true,
+    "reconstruction_or_public_header_contract_broadened": false
+  }
+}

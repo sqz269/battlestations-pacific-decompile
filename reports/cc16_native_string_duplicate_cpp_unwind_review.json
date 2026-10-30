@@ -1,0 +1,728 @@
+{
+  "schema": "bsp.cc16.native_string_duplicate_cpp_unwind_review.v1",
+  "packet": "codex-native-string-duplicate-cpp-unwind-review",
+  "baseline_published_Main": "03ef58daf98d9dff844e8a4039be830868d429b7",
+  "observed_utc": "2026-10-30T04:54:32.860023+00:00",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-native-string-duplicate-cpp-unwind-review",
+  "status": "independent_review_passed_exact_one_recorded_Source_bad_alloc_unwind_case_only",
+  "blocking_findings": [],
+  "qualified_case_review_passed": true,
+  "general_Source_Original_hiddenCtor_Game_ABI_admission": false,
+  "owned_files": [
+    "docs/CC16_NATIVE_STRING_DUPLICATE_CPP_UNWIND_REVIEW.md",
+    "reports/cc16_native_string_duplicate_cpp_unwind_review.json"
+  ],
+  "review_scope": {
+    "only_manifest_named_frozen_Root_artifacts_read": true,
+    "digests_verified_before_use": true,
+    "Root_artifact_or_Source_shared_Ghidra_guard_peer_installation_mutation": false,
+    "mutable_SCC_candidate_access": false,
+    "address_leases_claimed": 0,
+    "production_Source_policy_or_activation_change": false,
+    "new_native_vendor_duplicate_ABI_Game_credit": 0,
+    "review_compile_rerun_target_body_emulation_test_executable_DLL_game_or_Ghidra_analysis_mutation": false
+  },
+  "immutable_manifest": {
+    "Root_path": "J:/PROG/battlestations-pacific-decompile-codex-function-source-integration/local/raw_duplicate_cpp_unwind/case_manifest.json",
+    "sha256": "d0f3b598e4b96a29985e4c47e863c47b9574e9cc437014fe14ba23e08e3a6b4e",
+    "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-string-duplicate-cpp-unwind-review\\local\\native_string_duplicate_cpp_unwind_review\\frozen\\case_manifest.json",
+    "file_count": 12,
+    "initial_report_path": "local/raw_duplicate_cpp_unwind/artifacts/initial_case_report.json",
+    "initial_report_sha256": "6d72455b2604754ce9ff0464413ae015aeb82c20c0b30a4df6ca27b8bc488d26",
+    "all_file_and_report_digests_match": true
+  },
+  "frozen_files": [
+    {
+      "bytes": 1773,
+      "copied_from": "build/win32/bsp_core.dir/Release/native_string_duplicate.obj",
+      "path": "local/raw_duplicate_cpp_unwind/artifacts/native_string_duplicate.obj",
+      "sha256": "298ae968d00e3a3587bfba1b1f35156e77492fae75aca928c5ac3fb8616af68b",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-string-duplicate-cpp-unwind-review\\local\\native_string_duplicate_cpp_unwind_review\\frozen\\local\\raw_duplicate_cpp_unwind\\artifacts\\native_string_duplicate.obj",
+      "digest_verified_before_inspection": true
+    },
+    {
+      "bytes": 33008,
+      "copied_from": "build/win32/bsp_core.dir/Release/singleton_lifetime.obj",
+      "path": "local/raw_duplicate_cpp_unwind/artifacts/singleton_lifetime.obj",
+      "sha256": "386824ba4b5224ce24dfa43d84dd09b6c8b1fc64e02011998109d91cdc72171f",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-string-duplicate-cpp-unwind-review\\local\\native_string_duplicate_cpp_unwind_review\\frozen\\local\\raw_duplicate_cpp_unwind\\artifacts\\singleton_lifetime.obj",
+      "digest_verified_before_inspection": true
+    },
+    {
+      "bytes": 13824,
+      "copied_from": "local/raw_duplicate_cpp_unwind/dup_oom_transport_probe.exe",
+      "path": "local/raw_duplicate_cpp_unwind/artifacts/dup_oom_transport_probe.exe",
+      "sha256": "d7bc7dc9d2a696d93e8410e989a10b2c147ca800b3b168ccdd205be61b0bd263",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-string-duplicate-cpp-unwind-review\\local\\native_string_duplicate_cpp_unwind_review\\frozen\\local\\raw_duplicate_cpp_unwind\\artifacts\\dup_oom_transport_probe.exe",
+      "digest_verified_before_inspection": true
+    },
+    {
+      "bytes": 6512,
+      "copied_from": "local/raw_duplicate_cpp_unwind/dup_oom_transport_probe.cpp",
+      "path": "local/raw_duplicate_cpp_unwind/artifacts/dup_oom_transport_probe.cpp",
+      "sha256": "3f0bec9b4d5fcb56f217eb335b0e572ee41f750eb3bab70ac6fcbb256b5b086c",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-string-duplicate-cpp-unwind-review\\local\\native_string_duplicate_cpp_unwind_review\\frozen\\local\\raw_duplicate_cpp_unwind\\artifacts\\dup_oom_transport_probe.cpp",
+      "digest_verified_before_inspection": true
+    },
+    {
+      "bytes": 10155,
+      "copied_from": "local/raw_duplicate_cpp_unwind/probe.obj",
+      "path": "local/raw_duplicate_cpp_unwind/artifacts/probe.obj",
+      "sha256": "cc3967d5dcce6cc6d69f6032c84547f9393a8a90b9e9f37e88283e351216bf73",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-string-duplicate-cpp-unwind-review\\local\\native_string_duplicate_cpp_unwind_review\\frozen\\local\\raw_duplicate_cpp_unwind\\artifacts\\probe.obj",
+      "digest_verified_before_inspection": true
+    },
+    {
+      "bytes": 33801,
+      "copied_from": "local/raw_duplicate_cpp_unwind/probe.asm",
+      "path": "local/raw_duplicate_cpp_unwind/artifacts/probe.asm",
+      "sha256": "3cc542610f54560277e0b2b938f0a119ddb609df21c25c89cbd3afb48fecddbf",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-string-duplicate-cpp-unwind-review\\local\\native_string_duplicate_cpp_unwind_review\\frozen\\local\\raw_duplicate_cpp_unwind\\artifacts\\probe.asm",
+      "digest_verified_before_inspection": true
+    },
+    {
+      "bytes": 31509,
+      "copied_from": "local/raw_duplicate_cpp_unwind/probe.map",
+      "path": "local/raw_duplicate_cpp_unwind/artifacts/probe.map",
+      "sha256": "d46eecdb8fe298fa299e4588b51e7122e3858e5f7e225250f313fa0ace8555c5",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-string-duplicate-cpp-unwind-review\\local\\native_string_duplicate_cpp_unwind_review\\frozen\\local\\raw_duplicate_cpp_unwind\\artifacts\\probe.map",
+      "digest_verified_before_inspection": true
+    },
+    {
+      "bytes": 750,
+      "copied_from": "local/raw_duplicate_cpp_unwind/build.cmd",
+      "path": "local/raw_duplicate_cpp_unwind/artifacts/build.cmd",
+      "sha256": "f477b317d468508e4df7d6f540e07d46fc4eebd03fd24db9d968e7212630927a",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-string-duplicate-cpp-unwind-review\\local\\native_string_duplicate_cpp_unwind_review\\frozen\\local\\raw_duplicate_cpp_unwind\\artifacts\\build.cmd",
+      "digest_verified_before_inspection": true
+    },
+    {
+      "bytes": 29,
+      "copied_from": "local/raw_duplicate_cpp_unwind/build.log",
+      "path": "local/raw_duplicate_cpp_unwind/artifacts/build.log",
+      "sha256": "b95d34c9f9df5f81d77eee0c859b5d2de2d2eb91fde0cf213381ebe099cba0f8",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-string-duplicate-cpp-unwind-review\\local\\native_string_duplicate_cpp_unwind_review\\frozen\\local\\raw_duplicate_cpp_unwind\\artifacts\\build.log",
+      "digest_verified_before_inspection": true
+    },
+    {
+      "bytes": 333,
+      "path": "local/raw_duplicate_cpp_unwind/artifacts/run.log",
+      "sha256": "6a1fbe1e98dffdf9f81fad57079de675344b5126277bf8a6f96af8e3a2aed85f",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-string-duplicate-cpp-unwind-review\\local\\native_string_duplicate_cpp_unwind_review\\frozen\\local\\raw_duplicate_cpp_unwind\\artifacts\\run.log",
+      "digest_verified_before_inspection": true
+    },
+    {
+      "bytes": 4777,
+      "path": "local/raw_duplicate_cpp_unwind/artifacts/preflight.json",
+      "sha256": "e0e2c7dcdbd4bb5fd11ba5114c94efd1f66e1869b6d4bbab34b6488075b8fcdf",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-string-duplicate-cpp-unwind-review\\local\\native_string_duplicate_cpp_unwind_review\\frozen\\local\\raw_duplicate_cpp_unwind\\artifacts\\preflight.json",
+      "digest_verified_before_inspection": true
+    },
+    {
+      "bytes": 11041,
+      "path": "local/raw_duplicate_cpp_unwind/artifacts/initial_case_report.json",
+      "sha256": "6d72455b2604754ce9ff0464413ae015aeb82c20c0b30a4df6ca27b8bc488d26",
+      "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-string-duplicate-cpp-unwind-review\\local\\native_string_duplicate_cpp_unwind_review\\frozen\\local\\raw_duplicate_cpp_unwind\\artifacts\\initial_case_report.json",
+      "digest_verified_before_inspection": true
+    }
+  ],
+  "Root_recorded_execution": {
+    "runs": 1,
+    "tool_terminal_exit_code": 0,
+    "tool_wall_seconds": 3.0438863,
+    "pid": 64572,
+    "creation_filetime": 134378080556956158,
+    "actual_observations": {
+      "pid": 64572,
+      "creation_ticks": 134378080556956158,
+      "input_bytes": 16777216,
+      "private_before": 17813504,
+      "limit": 22007808,
+      "bad_alloc": 1,
+      "other": 0,
+      "normal": 0,
+      "handler_calls": 1,
+      "handler_bytes": 16777216,
+      "marker_constructed": 1,
+      "marker_destroyed": 1,
+      "words": 1,
+      "input_endpoints": 1,
+      "restored_limit": 1,
+      "restore_error": 0,
+      "restored_handler": 1,
+      "input_released": 1,
+      "job_closed": 1
+    },
+    "origin": "Owned compiled probe process; source helper from actual current bsp_core archive. No original-image or relocated Original-copy/game execution.",
+    "source_body_executed": true,
+    "game_executed": false,
+    "original_executable_executed": false
+  },
+  "fixture_review": {
+    "complete_CPP_bytes": 6512,
+    "complete_CPP_lines": 143,
+    "one_duplicate_call_site": true,
+    "input": "VirtualAlloc reserve+commit16MiB first; memset16MiB-1 actual bytes; final NUL; no test-only allocation provider",
+    "process_identity": "own GetCurrentProcessId and GetProcessTimes creation FILETIME captured",
+    "job": "CreateJobObjectW(nullptr,nullptr), assign current process only, require query assigned/listed counts1 and member=currentPID before applying any limit",
+    "other_process_job_mutation_or_child_launch": false,
+    "limit": "observed PrivateUsage+4MiB after committed input; overflow guard; only fresh own job process-memory limit",
+    "real_hook": "_set_new_handler(no_retry); no_retry records size/call and returns0; no allocator override or fabricated throw",
+    "try": "real ObservationMarker before actual duplicate; typed std::bad_alloc and catchall separate; normal return flagged failure",
+    "checked_after_catch": "four volatile caller words; three input endpoints; restoration/API results",
+    "unexpected_success_result": "matching Source free after pressure/hook restoration; not reached in recorded failure case",
+    "early_failures": "not_run with attempted input/handle cleanup, statically reviewed only",
+    "SetErrorMode_restored": false,
+    "job_detached_before_exit_captured": false
+  },
+  "static_link_and_providers": {
+    "machine": "i386",
+    "preferred_image_base": "00400000",
+    "loaded_ASLR_addresses_captured": false,
+    "build_command_read_not_executed": true,
+    "flags": [
+      "/std:c++17",
+      "/permissive-",
+      "/EHsc",
+      "/fp:strict",
+      "/MD",
+      "/O2",
+      "/DNDEBUG",
+      "/W4",
+      "/WX",
+      "/MANIFEST:EMBED"
+    ],
+    "manifest_embedded_asInvoker": true,
+    "whole_selected_Source_EH_sections": [
+      {
+        "object": "native_string_duplicate.obj",
+        "section": 3,
+        "preferred_address": "00401630",
+        "bytes": 58,
+        "object_sha256": "7b121d1cbda959af3f6bfc76d0e9390da02b20036100aa2023f449029e9c915c",
+        "PE_sha256": "199a59f03a8a9019f0a7a91b866ff05b8a33488a83cb194894beec0eabf9da57",
+        "relocations": 3,
+        "all_bytes_and_relocations_match": true
+      },
+      {
+        "object": "native_string_duplicate.obj",
+        "section": 4,
+        "preferred_address": "00401670",
+        "bytes": 57,
+        "object_sha256": "afe72d638bb48a9acbd92f66e8319c7439dd332749f838efc39a205c3b4cea1c",
+        "PE_sha256": "f2d5c2f1cc85859feae9f8db81dea1d5b7c0ed28aa988572754be73af6135d11",
+        "relocations": 2,
+        "all_bytes_and_relocations_match": true
+      },
+      {
+        "object": "singleton_lifetime.obj",
+        "section": 75,
+        "preferred_address": "00401790",
+        "bytes": 90,
+        "object_sha256": "8c48c99cdb7aaec041bb01bf55197a27fdb12f727d576a95720f3b08db0e74ac",
+        "PE_sha256": "330bd5b44e22415b46c6f0537b45ca99dc4f57b4fa32825cb426cc66b3c1ddd0",
+        "relocations": 5,
+        "all_bytes_and_relocations_match": true
+      },
+      {
+        "object": "singleton_lifetime.obj",
+        "section": 76,
+        "preferred_address": "004017f0",
+        "bytes": 6,
+        "object_sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb",
+        "PE_sha256": "c3b9fd7039f4f956567c2443fffba7565f993d6b3046df9eaedcbb3b3fc6bead",
+        "relocations": 1,
+        "all_bytes_and_relocations_match": true
+      },
+      {
+        "object": "probe.obj",
+        "section": 6,
+        "preferred_address": "00401000",
+        "bytes": 12,
+        "object_sha256": "b8ea0038b19e77e32894073da6c8d37453476f5f3f553842292a0bcebd549207",
+        "PE_sha256": "8b9c762fbdcff575037c1a6803860cf4f993ce579872987287b6d95236455a35",
+        "relocations": 2,
+        "all_bytes_and_relocations_match": true
+      },
+      {
+        "object": "probe.obj",
+        "section": 10,
+        "preferred_address": "00401010",
+        "bytes": 23,
+        "object_sha256": "0fa344c96a3f87fd3161f4841aaaaa95f05e58ed49d333d701e626d4792a8190",
+        "PE_sha256": "e3bd753ceaba1ee9e6b1619e62bdebe4e853ff8a4443798a7da99a4f9d885461",
+        "relocations": 3,
+        "all_bytes_and_relocations_match": true
+      },
+      {
+        "object": "probe.obj",
+        "section": 18,
+        "preferred_address": "00401070",
+        "bytes": 1420,
+        "object_sha256": "c18bc8d5979c9eebfd48c7566710fbeb35e0086fa47c8baea49e4f77f4197a16",
+        "PE_sha256": "77f29970a6e6361b7f16d675a2bfc7352d8eb0f1050254f77db63b7911eefa89",
+        "relocations": 77,
+        "all_bytes_and_relocations_match": true
+      },
+      {
+        "object": "probe.obj",
+        "section": 20,
+        "preferred_address": "00402620",
+        "bytes": 58,
+        "object_sha256": "06cd2556580bc5ef8f690fc7303f28501f4b97e6c57741d1cfa8ca4011eb6f5d",
+        "PE_sha256": "909204d861e3209331e4225e2b17e963a27fd889a77a2b21a87cf677dd054b6d",
+        "relocations": 5,
+        "all_bytes_and_relocations_match": true
+      },
+      {
+        "object": "probe.obj",
+        "section": 24,
+        "preferred_address": "00403888",
+        "bytes": 112,
+        "object_sha256": "a4e00d2a4be4536116d989ebdd19d76db5a7b61a11e155e26a361796a7324847",
+        "PE_sha256": "955650ec4de510da9650cb4155be4742ee7e9fb9167eb30ec000d04b65d24d85",
+        "relocations": 7,
+        "all_bytes_and_relocations_match": true
+      }
+    ],
+    "section_count": 9,
+    "whole_selected_bytes": 1836,
+    "all_relocations_count": 105,
+    "every_selected_byte_and_relocation_matches_frozen_PE": true,
+    "duplicate": {
+      "whole_Source_bytes": 57,
+      "relocation_word_offsets": [
+        34,
+        44
+      ],
+      "independently_equal_object_vs_PE_nonrelocation_bytes": 49,
+      "actual_call_targets": [
+        "00401630",
+        "004024be"
+      ],
+      "Root_frozen_preflight_Native_noncall_comparison_bytes": 49,
+      "fresh_Original_PE_comparison_performed_by_review": false
+    },
+    "allocation_helper": "58B Source wrapper at00401630 builds request and invokes actual canonical allocator00401790",
+    "canonical_allocator": "90B: import malloc(request.host_bytes); on null import _callnewh(same size); zero result constructs std::bad_alloc and invokes _CxxThrowException",
+    "matching_free": "6B real free import route; no result allocation existed to free in this failed attempt",
+    "two_actual_static_calls_are_two_executed_calls": false,
+    "memcpy_in_this_failure_case": "statically linked real target but unreachable after throwing allocation",
+    "no_retry": "23B fixture body records volatile call/size and returns zero, not a throw",
+    "standard_Runtime_imports": [
+      {
+        "dll": "KERNEL32.dll",
+        "names": [
+          "CloseHandle",
+          "GetLastError",
+          "SetErrorMode",
+          "GetProcessTimes",
+          "GetCurrentProcess",
+          "GetCurrentProcessId",
+          "VirtualAlloc",
+          "VirtualFree",
+          "CreateJobObjectW",
+          "AssignProcessToJobObject",
+          "SetInformationJobObject",
+          "QueryInformationJobObject",
+          "K32GetProcessMemoryInfo",
+          "QueryPerformanceCounter",
+          "GetCurrentThreadId",
+          "GetSystemTimeAsFileTime",
+          "InitializeSListHead",
+          "SetUnhandledExceptionFilter",
+          "GetModuleHandleW",
+          "IsProcessorFeaturePresent"
+        ]
+      },
+      {
+        "dll": "VCRUNTIME140.dll",
+        "names": [
+          "__CxxFrameHandler3",
+          "memset",
+          "memcpy",
+          "__std_exception_copy",
+          "__std_exception_destroy",
+          "_CxxThrowException",
+          "__current_exception",
+          "__current_exception_context",
+          "_except_handler4_common"
+        ]
+      },
+      {
+        "dll": "api-ms-win-crt-stdio-l1-1-0.dll",
+        "names": [
+          "__acrt_iob_func",
+          "__stdio_common_vfprintf",
+          "_set_fmode",
+          "__p__commode"
+        ]
+      },
+      {
+        "dll": "api-ms-win-crt-runtime-l1-1-0.dll",
+        "names": [
+          "_set_app_type",
+          "_seh_filter_exe",
+          "_configure_narrow_argv",
+          "_initialize_narrow_environment",
+          "_get_initial_narrow_environment",
+          "_initterm",
+          "_initterm_e",
+          "exit",
+          "_exit",
+          "__p___argc",
+          "__p___argv",
+          "_cexit",
+          "_c_exit",
+          "_register_thread_local_exe_atexit_callback",
+          "_set_new_handler",
+          "terminate",
+          "_initialize_onexit_table",
+          "_register_onexit_function",
+          "_crt_atexit",
+          "_controlfp_s"
+        ]
+      },
+      {
+        "dll": "api-ms-win-crt-heap-l1-1-0.dll",
+        "names": [
+          "malloc",
+          "_set_new_mode",
+          "_callnewh",
+          "free"
+        ]
+      },
+      {
+        "dll": "api-ms-win-crt-math-l1-1-0.dll",
+        "names": [
+          "__setusermatherr"
+        ]
+      },
+      {
+        "dll": "api-ms-win-crt-locale-l1-1-0.dll",
+        "names": [
+          "_configthreadlocale"
+        ]
+      }
+    ],
+    "vendor_CRT_bodies_inspected_or_reconstructed": false,
+    "loaded_CRT_module_identities_versions_captured": false,
+    "Source_to_whole_archive_or_fresh_Original_byte_verification_claimed": false
+  },
+  "physical_EH": {
+    "FuncInfo": {
+      "address": "004038d4",
+      "words": [
+        429065506,
+        3,
+        4208796,
+        1,
+        4208776,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "unwind_map": [
+      {
+        "state": 0,
+        "to_state": -1,
+        "action": "00000000"
+      },
+      {
+        "state": 1,
+        "to_state": 0,
+        "action": "00402620"
+      },
+      {
+        "state": 2,
+        "to_state": -1,
+        "action": "00000000"
+      }
+    ],
+    "try_blocks": [
+      {
+        "try_low": 0,
+        "try_high": 1,
+        "catch_high": 2,
+        "handler_count": 2,
+        "handler_array": "004038b4"
+      }
+    ],
+    "catch_handlers": [
+      {
+        "adjectives": 9,
+        "type": "00405064",
+        "catch_object_displacement": 0,
+        "handler": "0040138b"
+      },
+      {
+        "adjectives": 64,
+        "type": "00000000",
+        "catch_object_displacement": 0,
+        "handler": "00401395"
+      }
+    ],
+    "typed_catch_name": ".?AVbad_alloc@std@@",
+    "allocator_throw_info": {
+      "address": "00403930",
+      "words": [
+        0,
+        4200256,
+        0,
+        4208960
+      ],
+      "catchable_types": [
+        {
+          "address": "00403914",
+          "words": [
+            16,
+            4214884,
+            0,
+            4294967295,
+            0,
+            12,
+            4200112
+          ],
+          "type_name": ".?AVbad_alloc@std@@"
+        },
+        {
+          "address": "004038f8",
+          "words": [
+            0,
+            4214912,
+            0,
+            4294967295,
+            0,
+            12,
+            4200208
+          ],
+          "type_name": ".?AVexception@std@@"
+        }
+      ],
+      "same_bad_alloc_type_descriptor_as_typed_catch": true,
+      "vendor_constructor_or_CRT_body_inspected": false
+    },
+    "state1_immediately_before_actual_raw_call": true,
+    "raw_call_preferred_address": "00401373",
+    "raw_call_window": [
+      {
+        "address": "00401352",
+        "bytes": "c645eb00",
+        "mnemonic": "mov",
+        "operands": "byte ptr [ebp - 0x15], 0"
+      },
+      {
+        "address": "00401356",
+        "bytes": "c645ef00",
+        "mnemonic": "mov",
+        "operands": "byte ptr [ebp - 0x11], 0"
+      },
+      {
+        "address": "0040135a",
+        "bytes": "c745e000000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [ebp - 0x20], 0"
+      },
+      {
+        "address": "00401361",
+        "bytes": "c745fc00000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [ebp - 4], 0"
+      },
+      {
+        "address": "00401368",
+        "bytes": "a3c8504000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0x4050c8], eax"
+      },
+      {
+        "address": "0040136d",
+        "bytes": "8bcf",
+        "mnemonic": "mov",
+        "operands": "ecx, edi"
+      },
+      {
+        "address": "0040136f",
+        "bytes": "c645fc01",
+        "mnemonic": "mov",
+        "operands": "byte ptr [ebp - 4], 1"
+      },
+      {
+        "address": "00401373",
+        "bytes": "e8f8020000",
+        "mnemonic": "call",
+        "operands": "0x401670"
+      },
+      {
+        "address": "00401378",
+        "bytes": "8b0dcc504000",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [0x4050cc]"
+      },
+      {
+        "address": "0040137e",
+        "bytes": "41",
+        "mnemonic": "inc",
+        "operands": "ecx"
+      },
+      {
+        "address": "0040137f",
+        "bytes": "c645ec01",
+        "mnemonic": "mov",
+        "operands": "byte ptr [ebp - 0x14], 1"
+      },
+      {
+        "address": "00401383",
+        "bytes": "890dcc504000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0x4050cc], ecx"
+      }
+    ],
+    "real_marker_action1_to0": true,
+    "actual_marker_destructor": "00401000, real fixture counter increment; no manual catch-side simulated marker cleanup",
+    "standalone_marker_constructor": "inlined/discarded; actual counter store in linked main verified",
+    "canary_stores_and_checks": [
+      {
+        "address": "00401326",
+        "mnemonic": "mov",
+        "operands": "dword ptr [ebp - 0x58], 0x12345678"
+      },
+      {
+        "address": "00401330",
+        "mnemonic": "mov",
+        "operands": "dword ptr [ebp - 0x54], 0x87abcdef"
+      },
+      {
+        "address": "00401337",
+        "mnemonic": "mov",
+        "operands": "dword ptr [ebp - 0x50], 0x5aa5ff00"
+      },
+      {
+        "address": "00401341",
+        "mnemonic": "mov",
+        "operands": "dword ptr [ebp - 0x4c], 0x1badb002"
+      },
+      {
+        "address": "004013bd",
+        "mnemonic": "cmp",
+        "operands": "dword ptr [ebp - 0x58], 0x12345678"
+      },
+      {
+        "address": "004013c9",
+        "mnemonic": "cmp",
+        "operands": "dword ptr [ebp - 0x54], 0x87abcdef"
+      },
+      {
+        "address": "004013d2",
+        "mnemonic": "cmp",
+        "operands": "dword ptr [ebp - 0x50], 0x5aa5ff00"
+      },
+      {
+        "address": "004013db",
+        "mnemonic": "cmp",
+        "operands": "dword ptr [ebp - 0x4c], 0x1badb002"
+      }
+    ],
+    "checked_word_count": 4,
+    "canary_EBP_offsets": [
+      "-58h",
+      "-54h",
+      "-50h",
+      "-4Ch"
+    ],
+    "whole_stack_or_nonvolatile_register_ABI_proof": false,
+    "Original_FH3_SEH_private_frame_proof": false
+  },
+  "case_observation_crosschecks": {
+    "run_log_and_initial_report_agree": true,
+    "recorded_runs": 1,
+    "pid": 64572,
+    "creation_filetime": 134378080556956158,
+    "tool_exit_code": 0,
+    "input_and_handler_bytes": 16777216,
+    "private_before": 17813504,
+    "process_limit": 22007808,
+    "spare_bytes": 4194304,
+    "typed_catch": 1,
+    "other_catch": 0,
+    "normal_return": 0,
+    "handler_calls": 1,
+    "marker_constructed_destroyed": [
+      1,
+      1
+    ],
+    "four_caller_words_passed": true,
+    "three_input_endpoints_passed": true,
+    "entire_input_buffer_postrun_hash_or_whole_stack_checked": false
+  },
+  "restoration_evidence": {
+    "zero_limit_SetInformationJobObject_reported_success": true,
+    "post_restore_limit_readback_captured": false,
+    "hook_setter_given_captured_previous_and_returned_no_retry": true,
+    "independent_post_restore_hook_readback_captured": false,
+    "previous_hook_runtime_module_identity_captured": false,
+    "input_VirtualFree_reported_success": true,
+    "job_CloseHandle_reported_success": true,
+    "pre_exit_job_detachment_or_immediate_job_destruction_captured": false,
+    "actual_process_termination_recorded": true,
+    "restore_error_zero_is_fixture_success_value": true,
+    "all_own_process_state_restored_claimed": false
+  },
+  "Root_frozen_preflight_Source_pins": [
+    {
+      "path": "src/native_string_duplicate.cpp",
+      "sha256": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0",
+      "git_blob": "f745264df105154fe437e331df18d4f2418c2160"
+    },
+    {
+      "path": "include/bsp/native_string_duplicate.hpp",
+      "sha256": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477",
+      "git_blob": "a3c211324e0a44deab01eca75af8dfad848c516b"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936"
+    }
+  ],
+  "source_pin_scope": "Frozen Root Source/Git records retained and cited; mutable production Source/archive and Original image not freshly read outside the permitted manifest. Independent whole object/PE routing and physical EH checks performed on named artifacts.",
+  "limits": [
+    "Exactly one frozen ordinary caller/compiler/input/controlled no-retry policy and private-limit Source execution.",
+    "No handler retry, reentry, handler-thrown exception, every OOM or every Source caller proof.",
+    "Four volatile caller words and three input endpoints do not prove all stack, input or nonvolatile registers.",
+    "Restoration APIs reported success and hook setter returned no_retry; no post-restore readback or pre-exit job detachment captured.",
+    "Loaded CRT identities/versions and runtime ASLR addresses were not captured; static imports are not portable frozen-runtime attestation.",
+    "No complete hidden constructor, Game/GUI/ownership/current-profile/cell/producer or activation proof.",
+    "Original private CRT/heap/type/FH3/SEH/fault/terminal/register/private-frame ABI remain unproved.",
+    "No new production Source policy, guard, rollback or terminal contract; general Source qualification unchanged."
+  ],
+  "retained_independent_static_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-string-duplicate-cpp-unwind-review\\local\\native_string_duplicate_cpp_unwind_review\\physical_COFF.json",
+      "bytes": 184857,
+      "sha256": "0f2ad797b9e5c375c0624c1ed5c195b1bf4211ec06655ceebe7940be2e46298c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-string-duplicate-cpp-unwind-review\\local\\native_string_duplicate_cpp_unwind_review\\physical_EH_and_case_review.json",
+      "bytes": 8093,
+      "sha256": "292722fd52951bc1ca14474250711e934752a4ae24622d6539150ca30bc84621"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-string-duplicate-cpp-unwind-review\\local\\native_string_duplicate_cpp_unwind_review\\physical_link_review.json",
+      "bytes": 35952,
+      "sha256": "917a4f6c04f60a53cd1f280471ff0597d742199d41f6961ef30d41e6449241c6"
+    }
+  ],
+  "document_pin": {
+    "path": "docs/CC16_NATIVE_STRING_DUPLICATE_CPP_UNWIND_REVIEW.md",
+    "sha256": "5ec0e2feae6a976542cdc3e108a26724475ee749ec0ef27d55062a44344a1a3b",
+    "line_endings": "LF"
+  }
+}
