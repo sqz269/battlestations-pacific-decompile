@@ -1,0 +1,286 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-single-line-glyph-quad-independent-review",
+  "classification": "independent bounded caller/lifetime/pin review; unchanged supplier Native body not re-certified",
+  "reviewed_commit": "53a84577241834fa77473caced98fb73141fb0b0",
+  "Source_comparison_baseline": "9b3f12e85eff43edbc7d120adc70b02b62776310",
+  "accepted_Glyph_supplier": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+  "utc": "2026-10-30T18:48:06.343632+00:00",
+  "owned_files": [
+    "docs/CC16_NATIVE_SINGLE_LINE_GLYPH_QUAD_INDEPENDENT_REVIEW.md",
+    "reports/cc16_native_single_line_glyph_quad_independent_review.json"
+  ],
+  "verdict": {
+    "blocking_Source_findings": 0,
+    "findings": [],
+    "ready_for_Root_common_build_assessment": true,
+    "actual_prepared_record_owner_or_parent_caller_bound": false,
+    "all_genuine_nested_providers_bound": false,
+    "whole_frontend_ready": false,
+    "activation": false
+  },
+  "scope": {
+    "six_target_files_only_changed_by_author": true,
+    "full_changed_Header_CPP_seam_and_reached_parent_call_failure_paths_read": true,
+    "producer_doc_and_targeted_reports_read": true,
+    "strict_whole_parent_comparison_to_accepted_Model9b": true,
+    "supplier_body_Source_identity_only_no_Native_reanalysis": true,
+    "reviewer_production_or_shared_files_edited": false
+  },
+  "current_parent_Source_pins": [
+    {
+      "revision": "53a84577241834fa77473caced98fb73141fb0b0",
+      "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+      "hash_format": "immutable Git LF blob bytes",
+      "git_blob": "9a50b1dc9591d851b3517d1e65b2c5e5c557b807",
+      "sha256": "b7a68ae45274614acc678a0572a3e465876c76a4716d0a33f70c2a58017af26a",
+      "bytes": 8946
+    },
+    {
+      "revision": "53a84577241834fa77473caced98fb73141fb0b0",
+      "path": "src/native_gui_text_single_line_storage.cpp",
+      "hash_format": "immutable Git LF blob bytes",
+      "git_blob": "3f9ef7d072c5c190b89f9a966dd2700fd02c2324",
+      "sha256": "937a05a473811134a35e7359c9746e00907cef3f0f560e37379a1bc5069db8fb",
+      "bytes": 16899
+    }
+  ],
+  "baseline_parent_Source_pins": [
+    {
+      "revision": "9b3f12e85eff43edbc7d120adc70b02b62776310",
+      "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+      "hash_format": "immutable Git LF blob bytes",
+      "git_blob": "85cb7b172426fb3fd9d82c9fdefac54d8a596652",
+      "sha256": "4c29abfcfa41c929d8d4c584239e4cbadb5f5847c91a59becc3262274ed72394",
+      "bytes": 8272
+    },
+    {
+      "revision": "9b3f12e85eff43edbc7d120adc70b02b62776310",
+      "path": "src/native_gui_text_single_line_storage.cpp",
+      "hash_format": "immutable Git LF blob bytes",
+      "git_blob": "3ee333ef7714dbfc051e0878b4ad5956770469b4",
+      "sha256": "c67aeabe843cbf8799713a9077075100a532b5ff4ab067a19ef2f96564f7d62c",
+      "bytes": 16679
+    }
+  ],
+  "unchanged_Glyph071_Source_pins": [
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "hash_format": "immutable Git LF blob bytes",
+      "git_blob": "acec6947cf7777181a97335456dc5142a1149cae",
+      "sha256": "6a8e8ff45a4415fbdbb81992726f2e9e4fc17c0819fde21c279ac4c3d354b245",
+      "bytes": 8477
+    },
+    {
+      "revision": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "hash_format": "immutable Git LF blob bytes",
+      "git_blob": "5505123a0d02398d4d4c16873ef87f4f856fb790",
+      "sha256": "f05676b34f28b95194810e4f325cbec759b0ece70b9cb41b38b64efc89d7a96e",
+      "bytes": 19830
+    }
+  ],
+  "target_receipt_pins": [
+    {
+      "revision": "53a84577241834fa77473caced98fb73141fb0b0",
+      "path": "docs/CC16_NATIVE_GUI_TEXT_SINGLE_LINE_STORAGE.md",
+      "hash_format": "immutable Git LF blob bytes",
+      "git_blob": "1fa33fd04f4794641711421664ebcc65a4deb736",
+      "sha256": "fd121c32913b67e09968192422d63ecda4faca94c1a333b98b9152e6d79373fb",
+      "bytes": 14178
+    },
+    {
+      "revision": "53a84577241834fa77473caced98fb73141fb0b0",
+      "path": "reports/cc16_native_gui_text_single_line_storage.json",
+      "hash_format": "immutable Git LF blob bytes",
+      "git_blob": "a8d0a1b8a8b6e4995644363eb1077526a9f8433d",
+      "sha256": "639d646849940b4047d8d0ce12229928b7698888078ba37cbcf9015dba47bc73",
+      "bytes": 54572
+    },
+    {
+      "revision": "53a84577241834fa77473caced98fb73141fb0b0",
+      "path": "docs/CC16_NATIVE_SINGLE_LINE_GLYPH_QUAD_COMPOSITION.md",
+      "hash_format": "immutable Git LF blob bytes",
+      "git_blob": "1b2d4dc24e9726b663b5ccef68bf27a532d5f531",
+      "sha256": "fe3b78097b6affa48293d3d591d929eb1f2310b038ece10616252ae50bb21e13",
+      "bytes": 5605
+    },
+    {
+      "revision": "53a84577241834fa77473caced98fb73141fb0b0",
+      "path": "reports/cc16_native_single_line_glyph_quad_composition.json",
+      "hash_format": "immutable Git LF blob bytes",
+      "git_blob": "c812e26ca8c517620e74871b58983d3a252b83b1",
+      "sha256": "9edaff305b9fc3bb98dcb75685642da884b22bd68b25be46a1ca52bed8cb13d2",
+      "bytes": 44643
+    }
+  ],
+  "preserved_DrawSection611_pins": [
+    {
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "path": "include/bsp/native_mesh_section_layout_storage.hpp",
+      "hash_format": "immutable Git LF blob bytes",
+      "git_blob": "9875909104d429eb1144a83d7c2947fc49c6e383",
+      "sha256": "19245d00005b8d543fdcd5b85e71dba091ca158063e38fd86010cfb8e72c8939",
+      "bytes": 6385
+    },
+    {
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "path": "src/native_mesh_section_layout_storage.cpp",
+      "hash_format": "immutable Git LF blob bytes",
+      "git_blob": "3e473a56ff11e6f1f1b24713e6306f763c78e313",
+      "sha256": "d6f0378634d82d4287cf698dd529e24f3a53b4f1b6b0398647d33c4f956c4115",
+      "bytes": 5775
+    },
+    {
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "path": "docs/CC16_NATIVE_MESH_SECTION_LAYOUT_STORAGE.md",
+      "hash_format": "immutable Git LF blob bytes",
+      "git_blob": "76088842ebf07edcc9b86b4144d064ecefa57ba2",
+      "sha256": "a50cc363c8c5a5d1afe47d0fe9c4859169f3569752f9340840f0f7a99e5abbb0",
+      "bytes": 12004
+    },
+    {
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "path": "reports/cc16_native_mesh_section_layout_storage.json",
+      "hash_format": "immutable Git LF blob bytes",
+      "git_blob": "7d9f3e950b3fdea27eb7973298e9de5fabaed3b0",
+      "sha256": "11f6144d7de2e18c674a5a51471079d9a4240725e2a5f14211bf79a447698a05",
+      "bytes": 21782
+    }
+  ],
+  "all_current_Glyph_pair_and611four_files_identical": true,
+  "independent_exact_comparison": {
+    "reviewed_commit": "53a84577241834fa77473caced98fb73141fb0b0",
+    "baseline": "9b3f12e85eff43edbc7d120adc70b02b62776310",
+    "supplier": "071439bfb5e0d82c956253d21b8cc73f2651c174",
+    "exact_CPP_one_callblock_only": true,
+    "exact_header_seam_only": true,
+    "five_asm_blocks_identical": true,
+    "scratch_identical": true,
+    "two_Font_calls_and_Model_expression_unchanged_by_whole_outsidecall_proof": true,
+    "tenhome_and_position_write_block_identical": true,
+    "home_write_block_sha256": "154655085d251ec79477fec95a27b3ecfe4ee4c27e559c9ecdae1ba6918a2e37",
+    "supplier_pair_byte_identical": true,
+    "pins_verified_including_history_and_duplicates": 80,
+    "unique_revision_path_pins": 78,
+    "current_vs_pinned_parent_inputs_differences": [],
+    "publication_and_normal_advance_order": "passed",
+    "genuine_record_owner_bound": false,
+    "no_Native_reanalysis_build_or_Source_edit": true
+  },
+  "header_seam": {
+    "one_concrete_Glyph_include_and_parent_forward_declaration": true,
+    "Native_operation_virtual_removed": true,
+    "pure_metadata_selector_added_to_existing_bindings": true,
+    "SAME_borrowed_GlyphContext_ref_appended": true,
+    "latest_record_diagnostic_pointer_appended_after_old_Acquired_fields": true,
+    "default_null_is_only_no_selection_metadata_not_default_Glyph": true,
+    "old_Context_Acquired_fields_order_unchanged": true,
+    "whole_Scratch_bytes_and_offsets_unchanged": true,
+    "new_context_owner_factory_or_Native_authority": false
+  },
+  "ABA1F8_call_review": {
+    "all_original_tenhomes_and_positionX_writes_precede_selector": true,
+    "selector_receives_actual_parent_Acquired_identity_by_reference": true,
+    "selected_record_pointer_published_before_whole_Glyph_entry": true,
+    "same_captured_Text_same_mutable10home_reference_same_borrowedContext": true,
+    "same_pos3_at_zero_based_homes": [
+      1,
+      4,
+      5
+    ],
+    "captured_glyph_stream_height_and_separate_pen_unchanged": true,
+    "callee_home0_2_7_mutations_and_livehome7_address_visible": true,
+    "only_whole_normal_return_reaches_original_advance_counters_nextunit_and_refill": true,
+    "no_pending_status_optional_child_or_new_phase_ack_guard": true
+  },
+  "selector_contract_review": {
+    "return": "Distinct stable already-prepared fresh Glyph Acquired record associated with this parent identity.",
+    "only_permitted_effect": "Select/consume Source metadata; all actual nested frames exist before reached entry.",
+    "forbidden": [
+      "Native operand reads",
+      "Native operation or reentry",
+      "allocation or record construction/reset/reuse",
+      "FP operation/environment effect",
+      "default record/context/typed child owner",
+      "count/index/capacity/EC-derived input bound",
+      "new shortage/throw/termination or successful fallback policy"
+    ],
+    "no_implementation_or_default_record_supplied": true,
+    "no_new_noexcept_or_failure_shortage_policy": true,
+    "every_reached_recursive_call_needs_sufficient_distinct_prepared_backing": true,
+    "actual_selector_history_owner_implementation_bound": false
+  },
+  "lifetime_failure_review": {
+    "owner_retains_ALL_selected_history_not_only_parent_latest_pointer": true,
+    "whole071_existing_phase_metadata_not_reset_or_reused": true,
+    "all_entered_nested_frames_and_real_context_graph_retained": true,
+    "normal_completed_home_identity_is_diagnostic_only_after_reuse": true,
+    "failure_retains_parent_frame_acquired_homes_position_streams_graph_and_selected_record": true,
+    "existing_parent_catch_records_failure_and_rethrows_without_advance": true,
+    "no_new_cleanup_unlock_retry_reset_rollback_termination_or_Native_retain": true,
+    "Original_private_alias_FH3_SEH_fault_unmaskedFP_provider_runtime_proved": false
+  },
+  "pin_audit": {
+    "recorded_entries_verified_including_duplicates": 80,
+    "unique_revision_path_pairs": 78,
+    "categories": [
+      "2newparentSource",
+      "27parentinputs at declaredpublishedMain",
+      "2Glyph071receipts",
+      "28canonicalGlyph071providerinputs",
+      "6historicalModel9bSource/evidence",
+      "2directGlyph071Source",
+      "frozenbuildreceipt+10oldinputs+2oldparentSource"
+    ],
+    "all_formats_immutable_Git_LF_with_recorded_revision_or_basis": true,
+    "legacy071_reported_provider_SHA_discrepancies_independently_found": 0,
+    "current_parent_inputs_different_from_pinned_declaredMain": [],
+    "old_build_history_reused_as_newSource_validation": false
+  },
+  "unchanged_parent_semantics": {
+    "five_inline_asm_blocks": true,
+    "two_direct_Font_calls_and_actual_WORD_scratch": true,
+    "Model_raw_plus180_read": true,
+    "all_tenhome_writes_position_alias_and_native_reload_order": true,
+    "loops_geometry_mapping_layout_and_source_failure_FP_schedule": true
+  },
+  "actual_implementation_search": {
+    "scoped_roots": [
+      "include/bsp",
+      "src"
+    ],
+    "new_selector_matches": "one pure declaration and one actual caller only",
+    "record_selector_derived_implementation_found": false,
+    "no_ordinary_or_Original_binary_ABI_claim_from_interface_change": true
+  },
+  "validation": {
+    "strict_CPP_one_callblock_and_header_transform": "passed",
+    "all80recordedpins_and_sourcehistory": "passed",
+    "new_Native_queries_exports_Ghidra_mutation": false,
+    "Source_CMake_owner_sharedapp_ledger_edits": false,
+    "build_tests_probe_game_process_actions": false,
+    "new_tests": 0,
+    "all_prior_passed_builds_validate_new53a": false,
+    "Root_common_Source28_receipt_attached": false,
+    "staged_diff_check": "git diff --cached --check passed; exactly two owned review paths staged;2current parent/2unchanged071/4preserved611 pins verified."
+  },
+  "remaining_genuine_requirements": [
+    "Actual prepared-record selector implementation, sufficient stable fresh record/nested backing for every reached/recursive call and retained ALL-history owner",
+    "SAME genuine GlyphContext/process pool/string/constants/scale domain with all actual entered helper/current-target providers; no typed child owner/default",
+    "Populated actual Text/Model/Font/head/node/glyph/material/stream/resource graph and lifetime",
+    "Actual B865A0/current stream target/empty-wide roles and parent caller/retained frame/acquisition/argument-home graph"
+  ],
+  "new_credit": {
+    "Original": 0,
+    "helper": 0,
+    "vendor": 0,
+    "duplicate_body": 0,
+    "Source_body": 0,
+    "ABI": 0,
+    "runtime": 0,
+    "gameplay": 0,
+    "activation": 0
+  }
+}
