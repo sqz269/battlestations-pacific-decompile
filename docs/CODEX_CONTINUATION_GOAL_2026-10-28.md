@@ -1085,3 +1085,86 @@ and priorVFSbinding bodies remain unchanged. Nativecurrentepoch/count/cleanup
 schedules and partialeffect retention remain explicit. No raw16growth/parser/
 loadedlocale/startup/runtime/ABI authority follows; all9off/ac60hold remain.
 See CODEX_RAW_STRING_VECTOR_INTEGRATION.md.
+
+Raw reverse-find0265ee8ad and rawassignment/concat276857 field corrections now
+use fencedbytecopies onactualbyteheaders. Sharedhelpers/typed/unrelatedbodies
+and cleanupbehavior inverse-exact. Primary/independentSource/strictobject and
+combinedReleaseWin32checks2/2 pass14.10s. BDEF90newbody remains separatepending
+registration/review/build; no raw16/parser/loading/startup/runtime/ABI authority.
+See CODEX_RAW_STRING_FIELD_CORRECTIONS.md; all9off/ac60hold remain.
+
+RawBDEF90 f73a9ecbd now supplies qualified fullactualpath8/output0C transport
+through realVFS app/rawcells/constants/fallback, currentexists target and vector.
+Primary/independentSource read and strictWin32objectpass; oldtyped2files/all19
+providerblobs unchanged. CMakebsp_game registration is queuedbehindpeerheldfile,
+so newbodylink/commonbuild remainPENDING. Existingproviderfixbuild2/2 isseparate.
+No raw16/parser/loadedlocale/startup/runtime/ABI activation follows; all9offhold.
+See CODEX_RAW_LUA_OVERRIDES_INTEGRATION.md; continue registration/build next.
+
+RawBDEF90 local link evidence now passes with a temporary CMake overlay:
+standardbuildscript links exactf73 body into actualbsp_game, /INCLUDE retains
+both contextconstructor and rawbody (map103009A0/10300B00 plus EH), checks2/2
+pass11.21s. No game/body executed. Canonicalstartup.cmake stayed unchanged and
+localoverlaycache was removed/restored (canonicalregistrationcount0). Shared
+CMake registration remains queued; local link is not canonicalbuild admission.
+Receipt: local/raw_lua_overrides_local_link_cc16_20261030/receipt.json.
+
+Raw435C40 equal-header field correction f8dd5924 switches onlyfourreadcalls to
+existing fencedbytehelpers. Native leftlen/rightlen, earlyreturns and rightdata/
+leftdata/currentCRT order unchanged. Exactprimary+independentreview, strictobject
+and canonicalWin32build/checks2/2 pass11.83s. No language/reload/loadedlocale or
+runtime authority follows; raw16/parser/GUI/owneroperation gates remain.
+
+Canonical BDEF90 Game registration is complete at51102e823 via the existing
+rootCMakeLists deferredGame pattern. Peerleasedstartup registry untouched and
+oldqueuecanceled. Independentregistrationreview confirms exactlyone; standard
+Win32build/checks2/2 pass11.46s with NOlocaloverlay. Rawbody remains caller-unbound;
+stream/raw16/fullparser/loading/startup/runtime/ABI gates remain open.
+
+Completed-record fragmentdf498923 [AA0130,AA0257) is source-reviewed and canonically
+registeredGame once atbb7d2a7a1. Realmap/wide/rawstring calls, caller-retained frame,
+key-before-state2 unowned effects, earlynormalkeyreturn vsCURRENTselectedcleanup
+and metadata-failure retention matchacceptedcontract. Strictobject and standard
+Win32checks2/2 pass12.81s. Actualupstreamscanner/input custody, streamcomposition,
+raw16/fullAA0020/loading/runtime gates remain unbound; no fullparser/bodycredit.
+See CODEX_LOCALE_RECORD_STORAGE_INTEGRATION.md.
+
+Raw numbered-name4260B0 providerb8aa50ce is now Core-registered once, with real
+mappedformat3B/rawcells, lateCURRENT-temp selectedcleanup and earlycapturednormal
+pair. Consume-before-cleanup correction is in finalstrictobject; oldtypedfiles
+unchanged. Exactprimary/independentSourceaccept. JoinedMain87c709+record/formatter
+canonicalWin32build/checks2/2 pass12.77s atedfa5a068. No parser/loader caller or
+runtime/ABI admission; raw16/fullstream/scanner/GUI/ownerloading gates remain.
+
+CapturedWORD bridgea308d7b2 adds genuine dispatch-only BE4320/BE4340 overloads
+and exactnumeric VFS stream_word_entry, avoiding fabricated unrelated DB64/string
+context fields. Full incoming count-pointer DWORD seeds one current+24 read2;
+lowWORD/partial tails remain exactqualifiedSource. Existing4HPP/CPP inverse-exact;
+primary/independentSource+2strictobjects+canonicalWin32checks2/2 pass11.50s.
+No scanner/input/release composition or raw16/fullparser/loading/runtime admission.
+See CODEX_STREAM_WORD_ENTRY_INTEGRATION.md.
+
+ONE-file scanner4006752d [AA00B0,AA0356) now composes actualGameVFS/current
+read/word/length/position and realrecord storage in caller-retained nonmoving
+graphs. Primary/independent fullSourceaccept, strictobject014C/14providersunchanged.
+Game-only deferredregistration92344c103 countonce; canonicalWin32checks2/2 pass9.36s.
+Native >=vs== EOFepochs and onecaptured genuine decrement convertedthenoriginal
+normalreturn preserved; no selectedstreamcleanup/replay/aliasdedup. Filename is
+call-scoped then historicalidentity, permitting later Nativevectorcleanup.
+Fullinput/vector/option0/raw16/parser/loading/runtime/ABI gates remain unbound;
+all9Textflags off/ac60hold unchanged. Nextboundedwork is exactoption1 textual
+composition with realformalinput/pathvector selectedcleanup, not fullbodycredit.
+See CODEX_LOCALE_FILE_STORAGE_INTEGRATION.md.
+
+Explicittextualoption1 composition06f8ca1d nowjoins owningformalinput/raw0C,
+actualBDEF90/originalcopy andper-occurrence retainedFileFrames. Privateentry
+reject isoutsidecleanup; currentstate1/vector thenstate0/input cleanupconsumes
+first; normalshrink/free andEARLYinputfooter preserved. Independentreview fixed
+healthyfence afterreturningpoolgetter beforeBD1510; state-1neverretries.
+Primary+2independentSourceaccept/strict014C/14providersunchanged. Game-only
+registration5049d1b9b countonce. Local forcedsymbols retainedrealctor/entry and
+scanner/record/BDEF/VFSword+EH, checks2/2 10.51s; overlayremoved/cache+project
+restored, canonicalWin32checks2/2 pass10.46s. Unboundentry normallydiscarded;
+no newentry/gameinvocation. FullAA/option0/raw16/loading/publication/consumer/
+startup/runtime/ABI gates remain; all9Textoff/ac60hold unchanged.
+See CODEX_LOCALE_TEXTUAL_PARSER_INTEGRATION.md.

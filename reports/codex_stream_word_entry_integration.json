@@ -1,0 +1,43 @@
+{
+  "status": "reviewed_source_canonical_win32_pass_scanner_unbound",
+  "commit": "a308d7b2768d33f8b7012a0c402c454aaaa4e28e",
+  "source_hashes": {
+    "include/bsp/native_resource_stream_reads.hpp": "e010505558e8eac350ad479c2cf0dfc123dfc98fae37653a17c16e4f12d89303",
+    "src/native_resource_stream_reads.cpp": "b64d7f21b458ebd9681d0dd7bb4ab4ac7eeb6f513c604e0e98b76aa775cf6031",
+    "include/bsp/native_vfs_runtime_bindings.hpp": "6d5be92ef2b6f608934594554df401b4d2a68af3a9438fe310e1239bedd56436",
+    "src/native_vfs_runtime_bindings.cpp": "eb1062bb438883762922c88e51aea8c4a752f168e9163c53b1f9cf6e0db925cd"
+  },
+  "primary_review": "complete_actual_diff_against_two_27_byte_saved_native_bodies",
+  "independent_review": "gui_frame_lifetime_ACCEPT_SOURCE_CODE_exact_pin",
+  "existing_four_files_inverse_exact": true,
+  "strict_objects": {
+    "translation_units": 2,
+    "exit_codes": [
+      0,
+      0
+    ],
+    "machine": "14C",
+    "resource_object_sha256": "043abe53e77e39684ff038a8c006f580b78311083f9ef6e41326f972a4941544",
+    "vfs_object_sha256": "3fe98c679e776c2ad4a9f198ddec272624e80accc799c0a07433eeae2d868354"
+  },
+  "combined_build": {
+    "head": "a308d7b2768d33f8b7012a0c402c454aaaa4e28e",
+    "command": "./scripts/build.ps1",
+    "configuration": "Release Win32",
+    "exit_code": 0,
+    "existing_checks_passed": 2,
+    "existing_checks_total": 2,
+    "ctest_seconds": 11.5,
+    "log": "local/stream_word_entry_integration_cc16_20261030/build.log"
+  },
+  "fake_DB64_context_created": false,
+  "count_seed": "full_incoming_pointer_bits",
+  "raw_vptr_read": "current_fenced_bytes",
+  "read_bytes_requested": 2,
+  "result": "low_WORD",
+  "original_apis_and_bodies_unchanged": true,
+  "source_ready": false,
+  "runtime": false,
+  "full_parser": false,
+  "raw16_provider": "unbound"
+}

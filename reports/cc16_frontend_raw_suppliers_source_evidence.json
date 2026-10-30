@@ -1,0 +1,230 @@
+{
+  "schema_version": 1,
+  "classification": "Scoped evidence for published library Source; metadata only",
+  "published_Source_Main": "87c709f68fb5c88b80c855dbfa9bbfdf4d06545a",
+  "actual_latest_supplier_build": "ca88e3a776233477b18f84eb46f1db000eee73a5",
+  "admission": "docs/CC16_FRONTEND_RAW_SUPPLIERS_SOURCE_ADMISSION.md",
+  "build_receipt": "reports/cc16_frontend_raw_suppliers_common_build.json",
+  "existing_records_updated": {
+    "functions": 5,
+    "fragments": 1,
+    "names": 6,
+    "tags": 0,
+    "new_records": 0,
+    "all_old_fields_and_statuses_preserved": true,
+    "unrelated_record_values_unchanged": true
+  },
+  "addresses": [
+    "00425d10",
+    "004c1ac0",
+    "00517ed0",
+    "00518250",
+    "00533120",
+    "00ab8400"
+  ],
+  "hypothesis_name_correction": {
+    "address": "00425d10",
+    "previous": "BSP_MenuCommandScreen_GetSingleton",
+    "current": "BSP_MenuPromptScreen_GetSingleton",
+    "reason": "Genuine533120/CED3AC actual+0C lifetime and E18E6C publication;54A8D0/E1930C remains separate",
+    "recovered_symbol_claim": false
+  },
+  "prior_ledger_backup": "local/function_source_batch24/prior_source_evidence_records.json",
+  "Ghidra": {
+    "configured_project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_before_proto_and_annotation_and_export": true,
+    "write_lock": "tools/ghidra_annotate.py coordination.ghidra_lock",
+    "saved_project": true,
+    "applied": 6,
+    "prior_annotation_backup": "local\\ghidra-annotations-20261030T165544Z.json",
+    "prior_annotation_backup_sha256": "3e35d3cd98cb5774db9baa6d0153d5d9ca3c01f2f5af33b196e877b39e4a1282",
+    "prototypes_or_bodies_changed": false
+  },
+  "frozen_pre_annotation_exports": [
+    {
+      "address": "00425d10",
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00425d10\\assembly.txt",
+      "retained_path": "local\\function_source_batch24\\evidence_exports\\00425d10\\assembly.txt",
+      "bytes": 1618,
+      "sha256": "951191417fbe424bdbc6144c0b3cbb56f4c5dcd49fb792a92de48e1c3435395b"
+    },
+    {
+      "address": "00425d10",
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00425d10\\decompiled.c",
+      "retained_path": "local\\function_source_batch24\\evidence_exports\\00425d10\\decompiled.c",
+      "bytes": 2501,
+      "sha256": "5a00d87201c23e7b4508abb050e50b25804ce8094c6eecc024246dad368c30a8"
+    },
+    {
+      "address": "004c1ac0",
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004c1ac0\\assembly.txt",
+      "retained_path": "local\\function_source_batch24\\evidence_exports\\004c1ac0\\assembly.txt",
+      "bytes": 1618,
+      "sha256": "8a168220b57c0e4ae2cf204c258f18e9e588993fe5f59e17fcc1084547f0776a"
+    },
+    {
+      "address": "004c1ac0",
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004c1ac0\\decompiled.c",
+      "retained_path": "local\\function_source_batch24\\evidence_exports\\004c1ac0\\decompiled.c",
+      "bytes": 2438,
+      "sha256": "b44e155e2db0ec685151554c7c395bc1eb40a3d93aad6a6bb225b534eb2b1d0f"
+    },
+    {
+      "address": "00517ed0",
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00517ed0\\assembly.txt",
+      "retained_path": "local\\function_source_batch24\\evidence_exports\\00517ed0\\assembly.txt",
+      "bytes": 7899,
+      "sha256": "269456cf422ee413fd185670def75d45abc0457a01c839129e2b5c8cad2277cf"
+    },
+    {
+      "address": "00517ed0",
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00517ed0\\decompiled.c",
+      "retained_path": "local\\function_source_batch24\\evidence_exports\\00517ed0\\decompiled.c",
+      "bytes": 4895,
+      "sha256": "c175454b5c1d188f4c80369a763ca6fd7f8d690fe6bdede1939de9c694909f76"
+    },
+    {
+      "address": "00518250",
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00518250\\assembly.txt",
+      "retained_path": "local\\function_source_batch24\\evidence_exports\\00518250\\assembly.txt",
+      "bytes": 9881,
+      "sha256": "11987c2eee96483a2adc9635564af01d23a89ea53e0691f6c11521aab8e1e963"
+    },
+    {
+      "address": "00518250",
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00518250\\decompiled.c",
+      "retained_path": "local\\function_source_batch24\\evidence_exports\\00518250\\decompiled.c",
+      "bytes": 12938,
+      "sha256": "c4e459b3b62dbc8d1af1a12819d0a464991beeeaf94cd0ecf65ceee0ee9986a5"
+    },
+    {
+      "address": "00533120",
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00533120\\assembly.txt",
+      "retained_path": "local\\function_source_batch24\\evidence_exports\\00533120\\assembly.txt",
+      "bytes": 14415,
+      "sha256": "d6b233a03d33a1eeb52c1e256a58fe51fc7d1ce84a5f525ef8c776ba1450cc0f"
+    },
+    {
+      "address": "00533120",
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00533120\\decompiled.c",
+      "retained_path": "local\\function_source_batch24\\evidence_exports\\00533120\\decompiled.c",
+      "bytes": 10426,
+      "sha256": "ade13370990dedd81adbf0d394ae50cbb6c1caf6f4c59f0fb184fef1f64c81c0"
+    },
+    {
+      "address": "00ab8400",
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab8400\\assembly.txt",
+      "retained_path": "local\\function_source_batch24\\evidence_exports\\00ab8400\\assembly.txt",
+      "bytes": 3030,
+      "sha256": "12c4cb33863f0f599677fa39cc1098280503a77ac5c64475727c090238a701d4"
+    },
+    {
+      "address": "00ab8400",
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab8400\\decompiled.c",
+      "retained_path": "local\\function_source_batch24\\evidence_exports\\00ab8400\\decompiled.c",
+      "bytes": 5976,
+      "sha256": "a4daee2543c5b1133c1f08bcffe17b8f600b9ddc40fd729e787df4760d849d79"
+    }
+  ],
+  "refreshed_shared_exports": [
+    {
+      "address": "00425d10",
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00425d10\\assembly.txt",
+      "bytes": 1618,
+      "sha256": "951191417fbe424bdbc6144c0b3cbb56f4c5dcd49fb792a92de48e1c3435395b"
+    },
+    {
+      "address": "00425d10",
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00425d10\\decompiled.c",
+      "bytes": 4618,
+      "sha256": "62b6d5129e794856fb2348789095b2ccb5c8f5be014264f73c376ebec3280c68"
+    },
+    {
+      "address": "004c1ac0",
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004c1ac0\\assembly.txt",
+      "bytes": 1618,
+      "sha256": "8a168220b57c0e4ae2cf204c258f18e9e588993fe5f59e17fcc1084547f0776a"
+    },
+    {
+      "address": "004c1ac0",
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004c1ac0\\decompiled.c",
+      "bytes": 7348,
+      "sha256": "c7cc8714ee3cbb17d837087d330de95cf3fb055e23baa27e0d32574f46b423d0"
+    },
+    {
+      "address": "00517ed0",
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00517ed0\\assembly.txt",
+      "bytes": 7899,
+      "sha256": "269456cf422ee413fd185670def75d45abc0457a01c839129e2b5c8cad2277cf"
+    },
+    {
+      "address": "00517ed0",
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00517ed0\\decompiled.c",
+      "bytes": 6079,
+      "sha256": "e647ace5f1d6af6870396b7f213b9ba12f0d5c4803cfe6ba6fe20a7322d7f03c"
+    },
+    {
+      "address": "00518250",
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00518250\\assembly.txt",
+      "bytes": 9881,
+      "sha256": "11987c2eee96483a2adc9635564af01d23a89ea53e0691f6c11521aab8e1e963"
+    },
+    {
+      "address": "00518250",
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00518250\\decompiled.c",
+      "bytes": 16455,
+      "sha256": "59362ad298b360f945012f8c637899978ede957745a1e6ae3e56d252331b4ba5"
+    },
+    {
+      "address": "00533120",
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00533120\\assembly.txt",
+      "bytes": 14415,
+      "sha256": "d6b233a03d33a1eeb52c1e256a58fe51fc7d1ce84a5f525ef8c776ba1450cc0f"
+    },
+    {
+      "address": "00533120",
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00533120\\decompiled.c",
+      "bytes": 11849,
+      "sha256": "7a8e1677a20c1750dedc8628582f6c32286e1c7142252e5b2ac543066d638742"
+    },
+    {
+      "address": "00ab8400",
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab8400\\assembly.txt",
+      "bytes": 3030,
+      "sha256": "12c4cb33863f0f599677fa39cc1098280503a77ac5c64475727c090238a701d4"
+    },
+    {
+      "address": "00ab8400",
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab8400\\decompiled.c",
+      "bytes": 8768,
+      "sha256": "97ab8a2fa21687562a7bc382532d3731a549e8a0834ea2e51b12f6384788cb82"
+    }
+  ],
+  "Source_qualification": {
+    "new_game_routes_linked_or_executed_claimed": false,
+    "actual_frontend_callers_adopted": false,
+    "activated": false,
+    "native_ABI_FH3_SEH_fault_private_frame_proved": false,
+    "existing_fixture_and_library_exclusions_preserved": true
+  },
+  "new_credit": {
+    "Original": 0,
+    "vendor": 0,
+    "CG": 0,
+    "duplicate_body": 0,
+    "ABI": 0,
+    "runtime": 0,
+    "gameplay": 0
+  },
+  "checks": {
+    "exact_intended_record_value_diff": true,
+    "all_prior_exports_frozen_and_hash_verified": true,
+    "all_6_annotations_applied_and_project_saved": true,
+    "affected_6_function_exports_refreshed": true,
+    "index_rebuild": "completed;77190functions/140336calls/446369edges",
+    "no_CPP_or_CMake_or_tests_changed": true,
+    "refreshed_MenuPrompt_name_verified_in_export": true
+  },
+  "prior_ledger_backup_sha256": "8fb7a08a7a18137306f623804a2f65c151938537baca200e3b12b87f4a5a1e3c"
+}

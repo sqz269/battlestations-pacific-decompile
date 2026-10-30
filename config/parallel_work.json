@@ -44600,6 +44600,106 @@
         "reports/codex_vfs_raw_fallback_borrow.json"
       ],
       "notes": "b03a955 appends exactalreadyvalidated retained0109CEF0 inputpointer toRawServices; distinctE17654, no newstorage/getter/provider/I/O/startup. IndependentSource/commonWin32checks2/2 pass11.47s. Runtime/inputbacking must outlive consumers/failures. RawBDEF90 caller unbound."
+    },
+    {
+      "id": "codex-raw-string-header-field-corrections",
+      "state": "source_reviewed_coupled_win32_pass",
+      "worker": "gui_integration_review",
+      "source_ready": false,
+      "function_addresses": ["004bcb80", "00425f40", "004261a0", "00435c40"],
+      "output_files": [
+        "src/native_lua_script_overrides.cpp",
+        "src/native_physical_file_date.cpp",
+        "docs/CODEX_RAW_STRING_FIELD_CORRECTIONS.md",
+        "reports/codex_raw_string_field_corrections.json"
+      ],
+      "notes": "Published2c851 contains exact0265/276857 raw-only fencedbytefield corrections. Later f8dd5924 changes onlyfour435C40 reads using existingrawhelpers; left/right length, earlyreturns, right/left data/currentCRT order unchanged. Sharedhelpers/otherbodies inverse-exact. Primary/independentSource/strictobjects and canonicalWin32checks2/2 pass11.83s forf8dd. No lowerprovider transitiveABI/fault/runtime closure or language/reload activation."
+    },
+    {
+      "id": "codex-raw-lua-overrides-binding",
+      "state": "source_reviewed_canonical_win32_pass_caller_unbound",
+      "worker": "gameplay_integration_review",
+      "source_ready": false,
+      "function_addresses": ["00bdef90"],
+      "output_files": [
+        "include/bsp/native_lua_script_overrides_raw.hpp",
+        "src/native_lua_script_overrides_raw.cpp",
+        "docs/NATIVE_LUA_SCRIPT_OVERRIDES_RAW.md",
+        "reports/native_lua_script_overrides_raw.json"
+      ],
+      "notes": "f73a9 actualpath8/output0C with retainedGameVFS/rawcells/literals/0109CEF0, realcurrentexists andrawvector. Full887Bepochs/private10states, normalcaptureddata-before-disarm/currentlen-after, underscoreearlycaptures, no failedcalleeoutputcleanup. Primary/independentSource+strictWin32objectpass; oldtyped2/all19providers unchanged. Earlierlocaloverlay retained both publicsymbols/checks2/2 11.21s; overlayremoved. Canonical rootCMakeLists Game-only registration51102 nowindependentlyreviewed exactlyonce, standardWin32checks2/2 pass11.46s. Heldstartupfile untouched/queuecanceled; no gameexecution. Raw16/parser/loading/startup/runtime/ABI unbound."
+    },
+    {
+      "id": "codex-locale-parser-record-storage",
+      "state": "fragment_source_reviewed_canonical_win32_pass_caller_unbound",
+      "worker": "gameplay_integration_review",
+      "source_ready": false,
+      "function_addresses": ["00aa0130"],
+      "output_files": [
+        "include/bsp/native_locale_parser_record_storage.hpp",
+        "src/native_locale_parser_record_storage.cpp",
+        "docs/NATIVE_LOCALE_PARSER_RECORD_STORAGE.md",
+        "reports/native_locale_parser_record_storage.json"
+      ],
+      "notes": "Exactdf498923 fragment[AA0130,AA0257), NOTfullAA0020. Caller-retained one-shot context/frame/key/nestedmap, actualmode/delimiter/index/tokenWORD+forwardDWORD/BYTE, earlykeycaptures, state2onlymap/widecallee cleanup vs metadata-retain, borrowedmapwide/value copy and consumedearlykeyfooter. Primary/independentSource/strictobject pass; Game-only registrationbb7d exactlyonce, finaljoinedMain87c709 Win32checks2/2 pass12.77s. No scannerbranch/input authority, streamcomposition/raw16/fullparser/loading/runtime/Nativebodycredit."
+    },
+    {
+      "id": "codex-native-string-from-int-raw",
+      "state": "source_reviewed_canonical_win32_pass_caller_unbound",
+      "worker": "gui_integration_review",
+      "source_ready": false,
+      "function_addresses": ["004260b0"],
+      "output_files": [
+        "include/bsp/native_string_from_int_raw.hpp",
+        "src/native_string_from_int_raw.cpp",
+        "docs/NATIVE_STRING_FROM_INT_RAW.md",
+        "reports/native_string_from_int_raw.json"
+      ],
+      "notes": "Exactb8aa50ce Core-only actualformat3B/SAMErawcells provider; no fakeformat callback/Game cycle. Tempunowned untilbuffercopy; late selected CURRENT-temp cleanup consumesstate0 beforecall, normalfooterusesEARLYdata/len afterdisarm. No outputcleanup. CurrentCRT snprintf52 vsOriginalsprintf explicitlyqualified; oldtypedfiles unchanged, priorcandidateobject preserved. Primary/independentSource/finalstrictobject and canonicaljoinedWin32checks2/2 pass12.77s. No loadingcaller/parser/runtime/ABI/vendorbodycredit."
+    },
+    {
+      "id": "codex-vfs-stream-word-entry",
+      "state": "source_reviewed_canonical_win32_pass_scanner_unbound",
+      "worker": "gui_integration_review",
+      "source_ready": false,
+      "function_addresses": ["00be4320", "00be4340"],
+      "output_files": [
+        "include/bsp/native_resource_stream_reads.hpp",
+        "src/native_resource_stream_reads.cpp",
+        "include/bsp/native_vfs_runtime_bindings.hpp",
+        "src/native_vfs_runtime_bindings.cpp",
+        "docs/NATIVE_VFS_STREAM_WORD_ENTRY.md",
+        "reports/native_vfs_stream_word_entry.json"
+      ],
+      "notes": "Exacta308d7 dispatch-only word overloads and captured VFS method admit onlyBE4320/4340. Full optionalcount POINTERbits seedDWORD, fencedCURRENTvptr/+24, SAMEdispatch one read2/lowWORD; no swap/tailrepair/retry/outer40reread/fakeDB64. FourpreviousHPP/CPP inverse-exact. Primary/independentSource,2strictWin32objects and canonicalchecks2/2 pass11.50s. No scanner/input/normalstreamrelease/raw16/fullparser/loading/runtime/ABI admission or newNativebodycredit."
+    },
+    {
+      "id": "codex-locale-parser-file-storage",
+      "state": "fragment_source_reviewed_canonical_win32_pass_caller_unbound",
+      "worker": "gameplay_integration_review",
+      "source_ready": false,
+      "function_addresses": ["00aa00b0"],
+      "output_files": [
+        "include/bsp/native_locale_parser_file_storage.hpp",
+        "src/native_locale_parser_file_storage.cpp",
+        "docs/NATIVE_LOCALE_PARSER_FILE_STORAGE.md",
+        "reports/native_locale_parser_file_storage.json"
+      ],
+      "notes": "Exact4006752d ONEfile[AA00B0,AA0356) only. Actual retainedGameVFS routes, livecount/mode/index and uninitializedscratch, append-only stable typedrecordattempts beforeeffects. Native mode1 unsigned64>= beforespace, mode2nogate, mode3currentindexafterword, postrecord exact64==. Existing genuine renderer decrementcell capturedONCE onlynormalfooter, convertedthenoriginal zero-onlyCURRENTtable/slot0, no aliasdedup/RAII/selectedstreamcleanup. Primary/independent fullSourceaccept, strictobject014C,14existingprovidersunchanged; Game-only registration92344c103 countonce and canonicalWin32checks2/2 pass9.36s. Filenamebacking onlysynchronouscall; historicalpointers neverfollowedafteroutercleanup. Fullinput/vector/raw16/parser/loading/startup/runtime/ABI unbound."
+    },
+    {
+      "id": "codex-locale-textual-parser-storage",
+      "state": "option1_source_reviewed_retained_link_canonical_win32_pass_caller_unbound",
+      "worker": "gameplay_integration_review",
+      "source_ready": false,
+      "function_addresses": ["00aa0020"],
+      "output_files": [
+        "include/bsp/native_locale_textual_parser_storage.hpp",
+        "src/native_locale_textual_parser_storage.cpp",
+        "docs/NATIVE_LOCALE_TEXTUAL_PARSER_STORAGE.md",
+        "reports/native_locale_textual_parser_storage.json"
+      ],
+      "notes": "Exact06f8ca1d explicit textualoption1 ONLY. Actual owninginput/raw0C transfer atadmittedentry, directBDEF90+originalcopy, capturedDWORDrange/cursor8 and append-only Context-before-FileFrames. Rejectedentryoutsidecleanup; currentarmed vector/input selectedactions consume first/secondaryterminate; normalshrinkstate0/CURRENTfree, EARLYinputdata→state-1→nonnullCURRENTlen→realgetter/return. Reviewfix healthyfence aftergetter prevents swallowedreentry extraeffect. Primary+2independent Sourceaccept, strictobject014C/14providersunchanged; Game registration5049d1 countonce. Local forcedretention maps actualctor/entry/scanner/record/rawBDEF/VFSword+EH; checks2/2 10.51s. Overlayremoved/generatedflagsrestored; canonicalchecks2/2 10.46s, unboundentrydiscarded normally. Option0/raw16/fullparser/loading/publication/startup/runtime/ABI remain unbound; all9Textoff."
     }
   ],
   "snapshot_after_analysis": {
