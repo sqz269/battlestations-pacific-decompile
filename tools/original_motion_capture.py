@@ -28,6 +28,10 @@ For a one-shot validated read of the controlled-unit global (no debugger):
 Discovery prints JSON, or writes a new JSON file when --output is supplied.
 It does not start a capture or follow later selection changes.
 
+For a clock-only coverage-window marker (no unit required):
+    python tools/original_motion_capture.py --pid 1234 --clock-only
+Clock-only JSON reports both brackets and returns 2 if the final read is torn/active.
+
 For several fixed units, replace --unit with --units-file PATH. Its JSON is
 {"units": [{"unit_address": "0x1234AB00", "label": "USS Lexington"}, ...]}.
 The same wall deadline samples each unit; unit_id remains its supplied address.
@@ -418,6 +422,49 @@ def discover_controlled(args) -> int:
         reader.close()
 
 
+def clock_only(args) -> int:
+    reader = ProcessReader(args.pid)
+    try:
+        identity = reader.identity(args.expect_sha256)
+        if reader.exit_code() != STILL_ACTIVE:
+            raise CaptureError("target process has already exited")
+        started = time.perf_counter_ns()
+        for attempt in range(2):
+            before = read_game_clock(reader)
+            after = read_game_clock(reader)
+            equal = before == after
+            active = bool(before["fixed_step_active"] or after["fixed_step_active"])
+            if equal and not active:
+                break
+        ended = time.perf_counter_ns()
+        consistent = equal and not active
+        report = {"schema_version": 3, "kind": "original_game_clock_only",
+                  "pid": args.pid, "recorded_utc": utc_now(), "executable": identity,
+                  "status": "consistent" if consistent else "torn_or_active",
+                  "consistent": consistent, "clock_cells_equal": equal, "fixed_step_active": active,
+                  "clock_torn": int(not consistent), "clock_retry_count": attempt,
+                  "game_time": after["game_time"] if consistent else None,
+                  "game_frame": after["game_frame"] if consistent else None,
+                  "fixed_step_count": after["fixed_step_count"] if consistent else None,
+                  "engine_dt": after["engine_dt"] if consistent else None,
+                  "clock_before": {**before, "game_ptr": f"0x{before['game_ptr']:08X}"},
+                  "clock_after": {**after, "game_ptr": f"0x{after['game_ptr']:08X}"},
+                  "monotonic_ns": (started + ended) // 2, "sample_span": (ended - started) / 1e9,
+                  "read_rights": ["PROCESS_QUERY_LIMITED_INFORMATION", "PROCESS_VM_READ"],
+                  "offset_evidence": "docs/ORIGINAL_GAME_CLOCK.md",
+                  "limitations": ["External clock brackets do not prove an atomic engine-tick boundary.",
+                                  "Equal clocks can include pose interpolation after the fixed-step flag clears."]}
+        if args.output:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            with args.output.open("x", encoding="utf-8") as stream:
+                json.dump(report, stream, indent=2)
+                stream.write("\n")
+        print(json.dumps(report, indent=2))
+        return 0 if consistent else 2
+    finally:
+        reader.close()
+
+
 def load_fixed_units(path: Path) -> list[dict]:
     data = json.loads(path.read_text(encoding="utf-8-sig"))
     records = data.get("units") if isinstance(data, dict) else data
@@ -452,8 +499,10 @@ def parse_args(argv=None):
                            help="hexadecimal unit base, ECX - 310h at 00825F20 entry")
     selection.add_argument("--units-file", type=Path, help="JSON units array of fixed unit_address/label objects")
     parser.add_argument("--unit-label", default="", help="supplied label for --unit or controlled discovery")
-    parser.add_argument("--discover-controlled", action="store_true",
-                        help="one-shot read/validation of global 00E188D8; --unit optionally checks a candidate")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--discover-controlled", action="store_true",
+                      help="one-shot read/validation of global 00E188D8; --unit optionally checks a candidate")
+    mode.add_argument("--clock-only", action="store_true", help="bounded mission-clock JSON, no unit required")
     parser.add_argument("--seconds", type=float, default=20, help="wall duration, >0 and <=300 (default 20)")
     parser.add_argument("--hz", type=float, default=20, help="wall sample rate, 1..100 (default 20)")
     parser.add_argument("--output", type=Path, help="new CSV (capture) or JSON (discovery); discovery defaults to stdout")
@@ -463,8 +512,10 @@ def parse_args(argv=None):
     args = parser.parse_args(argv)
     if not 1 <= args.pid <= 0xFFFFFFFF:
         parser.error("--pid must be a positive DWORD")
-    if args.unit is None and args.units_file is None and not args.discover_controlled:
-        parser.error("--unit or --units-file is required unless --discover-controlled is supplied")
+    if args.unit is None and args.units_file is None and not (args.discover_controlled or args.clock_only):
+        parser.error("--unit or --units-file is required unless --discover-controlled or --clock-only is supplied")
+    if args.clock_only and (args.unit is not None or args.units_file or args.unit_label):
+        parser.error("--clock-only does not take unit selection or labels")
     if args.units_file and (args.discover_controlled or args.unit_label):
         parser.error("--units-file supplies its own labels and applies only to capture")
     if args.unit is not None:
@@ -472,8 +523,8 @@ def parse_args(argv=None):
             pointer(args.unit, UNIT_END)
         except SampleError as error:
             parser.error(str(error))
-    if args.discover_controlled and args.manifest:
-        parser.error("--manifest applies only to captures; discovery uses --output for its JSON report")
+    if (args.discover_controlled or args.clock_only) and args.manifest:
+        parser.error("--manifest applies only to captures; one-shot modes use --output for JSON")
     try:
         args.units = (load_fixed_units(args.units_file) if args.units_file else
                       [] if args.unit is None else [{"unit_address": args.unit, "label": args.unit_label}])
@@ -491,7 +542,7 @@ def parse_args(argv=None):
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
     if args.output is not None:
         args.output = args.output.resolve()
-    if not args.discover_controlled:
+    if not (args.discover_controlled or args.clock_only):
         args.output = args.output or REPO / "local" / f"original_motion_{args.pid}_{stamp}.csv"
         args.manifest = (args.manifest or args.output.with_suffix(".metadata.json")).resolve()
     if args.output is not None and args.output == args.manifest:
@@ -676,6 +727,8 @@ def capture(args) -> int:
 def main(argv=None) -> int:
     args = parse_args(argv)
     try:
+        if args.clock_only:
+            return clock_only(args)
         return discover_controlled(args) if args.discover_controlled else capture(args)
     except (CaptureError, OSError, ValueError) as error:
         print(f"original_motion_capture: {error}", file=sys.stderr)

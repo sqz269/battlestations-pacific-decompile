@@ -128,6 +128,19 @@ unit. `--unit-label TEXT` optionally labels a legacy single-unit capture.
 The total success count includes all retained rows, including flagged rows;
 the clock summary separately counts usable clock observations.
 
+## Clock-only coverage markers
+
+`python tools/original_motion_capture.py --pid PID --clock-only` needs no unit
+address. Add `--expect-sha256 HASH` to bind the on-disk original identity, and
+optionally `--output PATH` to create a new JSON receipt. It reads two clock
+brackets and retries once if they differ or a fixed step is active. JSON
+separately reports `clock_cells_equal`, `fixed_step_active`, and `consistent`,
+with both full snapshots and the observed frame/time. Exit status is zero
+only for consistent, inactive brackets; otherwise it is two and canonical
+frame/time are null. Coverage should retain the receipt rather than treat a
+torn/active marker as an exact window boundary. The same native clock cells
+remain importable through `read_game_clock`.
+
 ## Repair validation
 
 Python compilation and whitespace checks passed. A focused synthetic check
