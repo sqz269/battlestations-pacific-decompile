@@ -1,0 +1,516 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-gui-widget-child-lookup-storage",
+  "classification": "Whole actual raw AA7E00 direct-child lookup with finite private B6D800; no new owner or required provider",
+  "baseline": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4",
+  "utc": "2026-10-30T18:01:41.502634+00:00",
+  "owned_files": [
+    "include/bsp/native_gui_widget_child_lookup_storage.hpp",
+    "src/native_gui_widget_child_lookup_storage.cpp",
+    "docs/CC16_NATIVE_GUI_WIDGET_CHILD_LOOKUP_STORAGE.md",
+    "reports/cc16_native_gui_widget_child_lookup_storage.json"
+  ],
+  "address_lease": [
+    "00aa7e00",
+    "00b6d800"
+  ],
+  "Source_symbol": "bsp::find_native_gui_widget_child_storage_00aa7e00",
+  "Native_evidence": {
+    "analysis_identity": {
+      "configured_project": "C:/Users/sqz269/bsp.gpr",
+      "project": "bsp",
+      "program": "/battlestationspacific.exe",
+      "read_only_live_query": "python tools/bsp.py ghidra count",
+      "verification": "Client.verify checks configured project/program before query; live77632 matches snapshot77632",
+      "Ghidra_mutations": 0
+    },
+    "whole_main": {
+      "entry": "00aa7e00",
+      "end_inclusive": "00aa7eb0",
+      "bytes": 177,
+      "ops": 70,
+      "sha256": "b88000faaf8b4e6a41262b3da171d325d0465b70ed25bff68c508318024dab95",
+      "zero_x87_SSE": true,
+      "graph_stores": 0,
+      "no_FS_EH_registration_in_body": true,
+      "RET8_bytes": "c20800"
+    },
+    "private_getter": {
+      "entry": "00b6d800",
+      "end_inclusive": "00b6d803",
+      "bytes": 4,
+      "ops": 2,
+      "hex": "8d4154c3",
+      "sha256": "eaca16f71d7de67d82e0033e59fb22d163e2d6b7dd0cf0a6bcb8a72b37063339",
+      "Original_helper_credit": 0
+    },
+    "comparison_reference": {
+      "entry": "00435c40",
+      "end_inclusive": "00435c98",
+      "bytes": 89,
+      "ops": 39,
+      "sha256": "cd558dc4dd6db3ac479faa61b7e9618e5fa496d7102fb1efcce661bc38e84d8d",
+      "not_called_wholesale": true
+    },
+    "call_bytes": [
+      {
+        "site": "00aa7e17",
+        "target": "00bf6713",
+        "bytes": "e8f7e81400",
+        "reachable": false
+      },
+      {
+        "site": "00aa7e29",
+        "target": "00bf6713",
+        "bytes": "e8e5e81400",
+        "reachable": true
+      },
+      {
+        "site": "00aa7e3c",
+        "target": "00bf6713",
+        "bytes": "e8d2e81400",
+        "reachable": true
+      },
+      {
+        "site": "00aa7e47",
+        "target": "00b6d800",
+        "bytes": "e8b4590c00",
+        "reachable": true
+      },
+      {
+        "site": "00aa7e72",
+        "target": "00bf7fbf",
+        "bytes": "e848011500",
+        "reachable": true
+      },
+      {
+        "site": "00aa7e88",
+        "target": "00bf6713",
+        "bytes": "e886e81400",
+        "reachable": true
+      },
+      {
+        "site": "00aa7e99",
+        "target": "00bf6713",
+        "bytes": "e875e81400",
+        "reachable": true
+      }
+    ],
+    "dead_guard_proof": {
+      "CMP_self_at": "00aa7e10",
+      "bytes": "3bdb",
+      "MOV_current_head_does_not_modify_flags": "8b7b04",
+      "JZ_target": "00aa7e1c",
+      "JZ_bytes": "7405",
+      "dead_call": "00aa7e17"
+    },
+    "saved_exports": [
+      {
+        "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aa7e00\\assembly.txt",
+        "hash_format": "raw exact bytes, no newline conversion",
+        "sha256": "64c71c1a904bfa57f5a2a9b0b4de38e8e2b591151edb7de9c5a55e7cced06e95",
+        "bytes": 1933
+      },
+      {
+        "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aa7e00\\decompiled.c",
+        "hash_format": "raw exact bytes, no newline conversion",
+        "sha256": "c33048f7510f38fea37dcc37450b0c176f2c56c5177a7dceb9c732983361f18e",
+        "bytes": 6687
+      },
+      {
+        "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b6d800\\assembly.txt",
+        "hash_format": "raw exact bytes, no newline conversion",
+        "sha256": "54fb7f55edf15520413016ce2cce8906c657211167e1c24f54ac43cbae32c2d4",
+        "bytes": 47
+      },
+      {
+        "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b6d800\\decompiled.c",
+        "hash_format": "raw exact bytes, no newline conversion",
+        "sha256": "88f089cab98b8e6053f45c35c0a027faa850375f03272cd4a00666f3d1e7362b",
+        "bytes": 470
+      },
+      {
+        "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00435c40\\assembly.txt",
+        "hash_format": "raw exact bytes, no newline conversion",
+        "sha256": "57fbe648ca660a2eb4ccefd2ddb4832388874dcd5e42a96e537c3e6682a31a6f",
+        "bytes": 927
+      },
+      {
+        "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00435c40\\decompiled.c",
+        "hash_format": "raw exact bytes, no newline conversion",
+        "sha256": "753060a0bcff459bb989ca3846f3395072ff57f79a4a92d56c8ae3c0b3fd78f6",
+        "bytes": 1985
+      }
+    ],
+    "independent_PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "length": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "image_base": "00400000"
+    }
+  },
+  "API": {
+    "signature": "void*(void* captured_actual_parent,volatile uint32_t(&actual_homes)[2])",
+    "new_ordinary_Source_ABI_only": true,
+    "Native_ABI": "ECX captured actualWidget; stack actual query-header8 pointer and unusedDWORD; EAXborrowed currentchild or0; RET8",
+    "home0": "Read ONCE after first actual root+68 load, capture pointer like Native EBP. Later handler mutations of home0 do not retarget captured query. Query header/data remain current at reached reads.",
+    "home1": "Never read; allDWORDvalues remain accepted. No recursive/factory/name policy.",
+    "new_context_record_owner_provider_or_process_bank": false,
+    "root_and_header_preflight": false,
+    "return": "CURRENT sibling+8 after final guard, may be NULL after callback mutation; no retain/fake child/fallback",
+    "callbacks": "Existing real owning-SDK invalid-parameter and case-insensitive comparison transport, not new pluggable/success defaults."
+  },
+  "operation_schedule": [
+    {
+      "sites": "AA7E00..0D",
+      "effects": "Capture initial root+68; capture home0 query pointer; compute root+64 list identity; capture initialhead->next sibling."
+    },
+    {
+      "sites": "AA7E10..1E",
+      "effects": "Self-CMP always sets ZF; still reload CURRENT list+4 into end. End equality returns0. AA7E17 is unreachable, not a null-owner check."
+    },
+    {
+      "sites": "AA7E24..35",
+      "effects": "Fresh currenthead guard ->real SDKBF6713 if equal; then CURRENT sibling+8 payload and its+4C node nonnull gate."
+    },
+    {
+      "sites": "AA7E37..47",
+      "effects": "Fresh head guard; AFTER callback reload sibling+8 and currentchild+4C; exact B6D800 address-only+54 primitive, no second-null substitution."
+    },
+    {
+      "sites": "AA7E4C..7F",
+      "effects": "Read query length FIRST then node-name length. Unequal skips; bothzero match without data reads. Nonzero read query data FIRST then child data; call _stricmp(child,query), compare resultzero."
+    },
+    {
+      "sites": "AA7E94..9E",
+      "effects": "Matchguard reloads currenthead; handler mayreturn; then return CURRENT sibling+8, not tested/capturedchild."
+    },
+    {
+      "sites": "AA7E83..8F",
+      "effects": "Onskip/nonmatch fresh headguard, then CURRENT sibling->next. Reload currentend nextvisit. No count/end snapshot/loop bound."
+    }
+  ],
+  "comparison_composition": {
+    "existing_raw435C40_unchanged": true,
+    "wholesale_helper_reused": false,
+    "reason": "equal_native_string_headers_00435c40(left,right) reads leftlength then rightlength but rightdata then leftdata and compares(left,right). Candidate/query argument order would reverse the needed query-first length pair; swapped order would reverse required data reads and SDK arguments. AA7E00 inlines a different operand order.",
+    "concrete_reuse": "Same owning-SDK _stricmp as existing raw435C40; Source raw headers and exact reads are preserved inline. No new comparison implementation/default/provider.",
+    "zero_and_redundant_arms": "After captured lengths equal, childzero implies queryzero; candidatezero Native NEG/SBB yields0. Captured childnonzero implies querynonzero; redundant impossible queryzero arm has no added Source effect.",
+    "typed_B6D800_reference_not_used": "Existing NativeNodeStorage& ->NativeString& API remains unchanged; raw node is never cast into that owner. Authorized private helper is exactly wrapped32-bit node+54."
+  },
+  "genuine_graph_and_future_binding": {
+    "same_domain": "Existing GameNativeGuiPageApplication raw Page/Type2 Group graph, NativeGuiWidgetPropertyChildrenRawContext, raw Widget/list/sentinel/sibling/payload/scene-name backing; no logical GuiLayoutWidget/GuiWidgetOwner projection.",
+    "layout": "Widget+64 opaque list allocator address; currentheadWidget+68; count+6C NEVER read. Ring nodes next+0,previous+4unused,payload+8. Child+4C current scene node; actual8Bname atNode+54.",
+    "Frame_operations_binding": "NativeFrontEndFrameOperationsBindings::find_child_00aa7e00(actual_parent,actual_header8,unused) can build genuine twoDWORD homes and directly invoke this raw entry. SAME captured parent and header, no manager/publication re-resolution, typed wrapper or added owner.",
+    "Frame_title_binding": "NativeFrontEndFrameTitlePositionBindings same adaptation and raw graph; existing current/lifetime/title callbacks remain separate.",
+    "Grid_binding": "NativeGuiGridLookupCalls same exact actual-parent/header/unused contract; do not introduce descendant recursion.",
+    "actual_binding_implemented_here": false,
+    "graph_owner_or_header_changes": false,
+    "primitive_lifetime": "Homes stable for reached entry capture; same raw query header/data and captured/current parent/list/siblings/payload/nodes remain valid through callbacks and return/escape. Caller serialization permits valid callback mutations at exact reloads. Returned child is an unretained borrow, owned by existing graph.",
+    "failure": "No lookup allocation or local Native ownership. Source SDK exceptions propagate directly, no catch/destructor cleanup, retries, rollback, new terminal policy or inferred retain. Existing app caller records and real graph owners govern longer lifetime."
+  },
+  "Source_qualifications": {
+    "SDK": "Existing invoke_native_invalid_parameter_00bf6713 calls selected realSDK _invalid_parameter_noinfo and mayreturn/throw/its existing policy. _stricmp uses owning SDK CRT/locale/error/invalid-handler state. Neither reproduces original BF66EF/BF7FBF debugger/encoded-global/Watson/privateABI/fault locations; no Originalvendorcredit.",
+    "no_FP_environment_policy": true,
+    "Original_register_stack_SEH_fault_public_alias_runtime_identity_proved": false,
+    "no_native_graph_stores_in_owned_body": true
+  },
+  "validation": {
+    "static": {
+      "status": "passed",
+      "whole70_instruction_assembly_and_all_source_reviewed": true,
+      "initial_root_head_before_once_only_home0_capture": true,
+      "unused_home1_read_count": 0,
+      "current_head_loads_per_full_nonmatching_nodenonnull_iteration": 4,
+      "distinct_Source_current_head_load_sites": 5,
+      "reachable_BF6713_Source_sites": 4,
+      "unreachable_AA7E17_not_called": true,
+      "current_payload_reloads_after_guard_and_before_match_return": true,
+      "current_next_after_advance_guard": true,
+      "query_then_child_lengths_and_query_then_child_data": true,
+      "owning_SDK_comparer_arguments_child_then_query": true,
+      "zero_length_arms_no_data_read": true,
+      "no_parent_name_recursion_or_list_count_access": true,
+      "no_header_name_list_snapshot_or_typed_owner_cast": true,
+      "no_new_provider_owner_retain_or_failure_policy": true,
+      "no_extra_loop_limit_or_input_domain_filter": true,
+      "private_getter_exact_LEA32_wrap": true,
+      "selected_unchanged_GitLF_input_count": 28,
+      "saved_raw_export_count": 6,
+      "installed_PE_body_and_all_static_call_targets_verified": true,
+      "qualification": "Static Source/PE/operand/hash evidence only; not compilation, OriginalCRT/register/stack/SEH/fault/runtime/ABI or game proof."
+    },
+    "build": false,
+    "new_tests": 0,
+    "probe_game_or_process_actions": false,
+    "CMake_ledger_or_other_Source_edits": false,
+    "Ghidra_write": false,
+    "common_build_owner": "Root",
+    "prior_Source081_or_other_cohort_receipt_applies_to_this_Source": false,
+    "staged_diff_check": "git diff --cached --check passed; exactly four owned paths staged; both current Source index pins,28 unchanged inputs and6 raw exports verified."
+  },
+  "gates": {
+    "whole_raw_lookup_library_Source_present": true,
+    "all_reached_operations_have_concrete_Source_or_selected_SDK": true,
+    "actual_Page_WidgetChildren_domain_bound": false,
+    "actual_Frame_or_Grid_callers_bound": false,
+    "whole_frontend_ready": false,
+    "Page_activation_guard_changed": false,
+    "changed_ABAED0_ready": false,
+    "whole_ABA8D0_ready": false,
+    "activation": false
+  },
+  "new_credit": {
+    "raw_supplier_interface": 1,
+    "Original": 0,
+    "vendor": 0,
+    "helper": 0,
+    "duplicate_body": 0,
+    "ABI": 0,
+    "runtime": 0,
+    "activation": 0,
+    "game_validated": 0
+  },
+  "new_Source_pins": [
+    {
+      "path": "include/bsp/native_gui_widget_child_lookup_storage.hpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "100bc4383af9c31c5a47d3407a2df92ae13e363e",
+      "sha256": "e408dd88cf17ae875e0342cff65a8115244eb0b6002d3ab19040413bd9a84b1a",
+      "bytes": 2332
+    },
+    {
+      "path": "src/native_gui_widget_child_lookup_storage.cpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "275d1132cf00150308bfd4ff296029eb1474c75f",
+      "sha256": "c3d83ca8f2e8baf4ec5d4e4ec9dbbfab6b2c43f8732d29066dd367534124403f",
+      "bytes": 3558
+    }
+  ],
+  "unchanged_supplier_and_evidence_pins": [
+    {
+      "path": "config/target.json",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "bytes": 455,
+      "revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4"
+    },
+    {
+      "path": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "4984c27fa603fe05a308d701c54dafba6110de7e",
+      "sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+      "bytes": 1471,
+      "revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4"
+    },
+    {
+      "path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "bf2a25c5f28d9eb10d37f7099faf9adaabb0a97d",
+      "sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+      "bytes": 1089,
+      "revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4"
+    },
+    {
+      "path": "include/bsp/native_physical_file_date.hpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "bc6dd20dc002dbe5837d312babfc11d875ed46c9",
+      "sha256": "158161430fea02951e7449c8c5d1c8ae2fb5f75df70d4b0b0606cf6abcf5ad2f",
+      "bytes": 5969,
+      "revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4"
+    },
+    {
+      "path": "src/native_physical_file_date.cpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "3239fe3a61caf3f11d2c4f0cfb837cbf57b773d3",
+      "sha256": "6ad9b3bff2280f3c27889ba13ef785a236a2f34e2d733b83bcc92ad20a8a55d0",
+      "bytes": 18709,
+      "revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4"
+    },
+    {
+      "path": "include/bsp/gui_text_type_dispatch.hpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "27b8fcd3c600379641d0389fecf2fbb991d423c5",
+      "sha256": "4efe3b984c54d4ed6b485cb5885a85d65f06bbc77bbb5592f4fb5d2509512d34",
+      "bytes": 3261,
+      "revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4"
+    },
+    {
+      "path": "src/gui_text_type_dispatch.cpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "e6e4eea1bd86ac1a8d0bc285ee359e0292a70fb6",
+      "sha256": "0a56deab2a02681a587152cf85a33065db65f2b237ec13be52f97aa46cbd0e3a",
+      "bytes": 4740,
+      "revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4"
+    },
+    {
+      "path": "include/bsp/gui_layout_loader.hpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "b16407b8bd24f8aa066ec6bc6aa708da0d552b52",
+      "sha256": "0497e95cef5f88058d2a93c76cc4c4729b88e74f06aa19b81c992f94d26c8790",
+      "bytes": 25111,
+      "revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4"
+    },
+    {
+      "path": "src/gui_layout_loader.cpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "f36c65efd1b0743e436f551165dd9923fd7c711b",
+      "sha256": "9622ac2c7b4495026e484ab32245cc3a42dca51e575912cb81b87358ba940fcf",
+      "bytes": 38441,
+      "revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_base_storage.hpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "61c72c99fab59f5c86da392495d7bae5381607cf",
+      "sha256": "35748704f96ed477f2f55f01edf5a8e598f1995955f847343f94327dc495faab",
+      "bytes": 1081,
+      "revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4"
+    },
+    {
+      "path": "src/native_gui_widget_base_storage.cpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "997a33c5ac7bbf7b57e133feb53b91163e7308b5",
+      "sha256": "4ddd5ab1ad4a2b8174d80caf70dba76afa648479e4e8637a56884f2b9db6354d",
+      "bytes": 3008,
+      "revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4"
+    },
+    {
+      "path": "include/bsp/native_live_effect_manager.hpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "118d05db14a7fead43bc704f803080c0fcc1f893",
+      "sha256": "a2209e98f4667a06d74a2e677e86361fec821e676bcff548c80b2554002de597",
+      "bytes": 3452,
+      "revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_child_links.hpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "0fe77896b7eb14b888e01a68a39dce34d1d182cb",
+      "sha256": "00b86ac36f6860c22b9b6154aba306aaaa424d77eb60f4deb4755358698277a9",
+      "bytes": 5058,
+      "revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4"
+    },
+    {
+      "path": "src/native_gui_widget_child_links.cpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "1628e0a950e5f0addc58705f7504f6ac4387def0",
+      "sha256": "fbaf30b0a635a7030981a9e95fd34aab97f9b52979c2409598f5779a829a0a0b",
+      "bytes": 7146,
+      "revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_lifetime.hpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "3dfab3f1b6a42f2a37f8c84e1d813e4d7201ec20",
+      "sha256": "c9155c508f98bb913ebe8ae71cd6c98e050d86ce25a746a5c8f4909f37242d1a",
+      "bytes": 7899,
+      "revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "9c8b06d3a4071d57ab1a539eaacdfb2fb810cbd3",
+      "sha256": "e8a53199f409248cc89b6d64c326a0b037970703e3b34ca628162a730907df68",
+      "bytes": 17866,
+      "revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_property_children.hpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "91aeee519f1a47441d2f1c7648244c171daa1b2a",
+      "sha256": "531c63dcf73098a5a6dc09e21b84126d89ad6172145f2f2c6735e31aff931874",
+      "bytes": 5793,
+      "revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4"
+    },
+    {
+      "path": "src/native_gui_widget_property_children.cpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "c2d74159ed5486a1fc2b9b6248d06ee02ecb2154",
+      "sha256": "28da89eae3bccc34b58dbb9255865b762d7477630c0822203c11604b38633ec4",
+      "bytes": 14060,
+      "revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4"
+    },
+    {
+      "path": "include/bsp/game_native_gui_page_application.hpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "4abf6219f61e37b4e6c9ceb2777bd69aa7f7d8df",
+      "sha256": "7ad6d366ec92695ede58d8f44deeee6b6874f8c344788f626aab286495d83221",
+      "bytes": 2945,
+      "revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4"
+    },
+    {
+      "path": "src/game_native_gui_page_application.cpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "996fbbdec1f9160540da07b0842295920734eead",
+      "sha256": "0f770bd8713656eeb56b77a97109eb7168e1be5d53d96305e4105edbe44b1668",
+      "bytes": 72373,
+      "revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4"
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_operations.hpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "6cfec6d5b479d18c3e899dfa7df34d0e8b6aa21a",
+      "sha256": "076f002fc017d984c9a211f734b6693d7e283dc1a757e9764d6d7bf660247340",
+      "bytes": 5560,
+      "revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4"
+    },
+    {
+      "path": "src/native_front_end_frame_operations.cpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "00db12bcb036da666349d4bc06e2f206a0c877a0",
+      "sha256": "a5e8a64e96bda0cf0dbbd5ee820300dde36d97fb449a433814675623c9a908f7",
+      "bytes": 7871,
+      "revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4"
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_title_position.hpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "49b090b2fd5c06dbe9814633f8edc67ebf14dae2",
+      "sha256": "87dacd5b92bb9389185c808de3a4015283fc9cf0be7d7e944c81a8ef3c148244",
+      "bytes": 6839,
+      "revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4"
+    },
+    {
+      "path": "src/native_front_end_frame_title_position.cpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "4a79485066a1905445495757399e300cb6305bb7",
+      "sha256": "96938f1b2de7483e384b29768798eb5b78086b4d7747ab8bd6164cbcbc07d3bf",
+      "bytes": 13009,
+      "revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4"
+    },
+    {
+      "path": "include/bsp/native_gui_grid_storage.hpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "386dfae330bfa750e7e5348297659afa697f3827",
+      "sha256": "422b3467b1510f890ddf3710fbaaf549f61778af40047b4c7f257b6fddb1dacd",
+      "bytes": 6258,
+      "revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4"
+    },
+    {
+      "path": "src/native_gui_grid_storage.cpp",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "95bbcb3ac184a94324304242f129d85fb593e857",
+      "sha256": "c0025938abfe8119ba235f509d3445934a519ff09c46dbf133431c971031bad8",
+      "bytes": 16195,
+      "revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4"
+    },
+    {
+      "path": "tools/bsp.py",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "2e1fb76a9fd700f079912706d9459c4293f96c86",
+      "sha256": "0532d1e3fa711fb62d198e6747a4e0eb8978ef7e301de75710afd40d6c1a1339",
+      "bytes": 103131,
+      "revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "bd937766a7e4d62c015b2ab44a14a9153fbb4542",
+      "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+      "bytes": 14518,
+      "revision": "cb6d945fa6607a6c3f55a9bd218d3a57c952bcd4"
+    }
+  ]
+}
