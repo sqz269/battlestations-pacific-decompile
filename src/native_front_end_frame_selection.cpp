@@ -45,13 +45,9 @@ Word c_string_length(Word captured_name) noexcept {
     return static_cast<Word>(cursor - first_after_start);
 }
 void unwind_header(NativeFrontEndFrameStringTemporary& temporary,
-    NativeStringRawPoolContext& strings) noexcept {
-    // Ordinary C++ secondary cleanup failure, not Original FH3/SEH transport.
-    try {
-        destroy_native_string_header_0041dd20(&temporary, strings);
-    } catch (...) {
-        std::terminate();
-    }
+    NativeStringRawPoolContext& strings) {
+    // Cleanup may throw; Original secondary FH3/SEH transport is unproved.
+    destroy_native_string_header_0041dd20(&temporary, strings);
 }
 
 void load_named_slot(void* actual_slot, Word captured_name,
