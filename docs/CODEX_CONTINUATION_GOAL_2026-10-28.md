@@ -1085,3 +1085,10 @@ and priorVFSbinding bodies remain unchanged. Nativecurrentepoch/count/cleanup
 schedules and partialeffect retention remain explicit. No raw16growth/parser/
 loadedlocale/startup/runtime/ABI authority follows; all9off/ac60hold remain.
 See CODEX_RAW_STRING_VECTOR_INTEGRATION.md.
+
+Raw reverse-find0265ee8ad and rawassignment/concat276857 field corrections now
+use fencedbytecopies onactualbyteheaders. Sharedhelpers/typed/unrelatedbodies
+and cleanupbehavior inverse-exact. Primary/independentSource/strictobject and
+combinedReleaseWin32checks2/2 pass14.10s. BDEF90newbody remains separatepending
+registration/review/build; no raw16/parser/loading/startup/runtime/ABI authority.
+See CODEX_RAW_STRING_FIELD_CORRECTIONS.md; all9off/ac60hold remain.
