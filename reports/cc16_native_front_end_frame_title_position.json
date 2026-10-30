@@ -392,14 +392,15 @@
       "hash_format": "immutable_git_blob_content_lf",
       "sha256": "87dacd5b92bb9389185c808de3a4015283fc9cf0be7d7e944c81a8ef3c148244",
       "git_blob_oid": "49b090b2fd5c06dbe9814633f8edc67ebf14dae2",
-      "bytes": 6839
+      "bytes": 6839,
+      "revision": "78877b3b549f90b917ed3899f92dbacc7a1d9e65"
     },
     {
       "path": "src/native_front_end_frame_title_position.cpp",
       "hash_format": "immutable_git_blob_content_lf",
-      "sha256": "96938f1b2de7483e384b29768798eb5b78086b4d7747ab8bd6164cbcbc07d3bf",
-      "git_blob_oid": "4a79485066a1905445495757399e300cb6305bb7",
-      "bytes": 13009
+      "sha256": "5706ecadb6403943e5175075f647cf5e74003a8431f69566fb1eeaf3bc04507c",
+      "git_blob_oid": "9208c5988d9561406d0e818f6c836da20d00ee0d",
+      "bytes": 13031
     }
   ],
   "input_pins": [
@@ -647,7 +648,8 @@
       "fh3_maps_and_handlers": 3,
       "cleanup_actions": 6,
       "all_matched": true
-    }
+    },
+    "namespace_correction": "Exact two cc13_gui1:: prefix insertions; 24 immutable input and 8 raw export pins match; no algorithm/API/asm change. Root rebuild pending."
   },
   "readiness": {
     "library_source_implemented": true,
@@ -658,5 +660,137 @@
     "runtime_game_visuals_activation_proved": false,
     "guard_flip": false
   },
-  "remaining_packet": "Bind the seven genuine endpoints only inside the actual retained startup consumer. Reuse existing rawAA7DC0 and actual-pointerAA67F0; changed rawABAED0/real child/current+58/rawvector and full root lifetime remain open. This packet does not broaden into517D90, scalar destructors or the application owner."
+  "remaining_packet": "Bind the seven genuine endpoints only inside the actual retained startup consumer. Reuse existing rawAA7DC0 and actual-pointerAA67F0; changed rawABAED0/real child/current+58/rawvector and full root lifetime remain open. This packet does not broaden into517D90, scalar destructors or the application owner.",
+  "historical_source_pins_40d": [
+    {
+      "path": "include/bsp/native_front_end_frame_title_position.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "87dacd5b92bb9389185c808de3a4015283fc9cf0be7d7e944c81a8ef3c148244",
+      "git_blob_oid": "49b090b2fd5c06dbe9814633f8edc67ebf14dae2",
+      "bytes": 6839
+    },
+    {
+      "path": "src/native_front_end_frame_title_position.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "96938f1b2de7483e384b29768798eb5b78086b4d7747ab8bd6164cbcbc07d3bf",
+      "git_blob_oid": "4a79485066a1905445495757399e300cb6305bb7",
+      "bytes": 13009
+    }
+  ],
+  "namespace_build_correction": {
+    "packet": "codex-frame-title-namespace-build-correction",
+    "address": "00518820",
+    "baseline_failed_build_Source_head": "78877b3b549f90b917ed3899f92dbacc7a1d9e65",
+    "root_reported_diagnostic": {
+      "code": "C3861",
+      "file": "src/native_front_end_frame_title_position.cpp",
+      "lines": [
+        237,
+        239
+      ],
+      "unresolved_name": "gui_widget_get_local_position_00aa67f0",
+      "cause": "Caller namespace bsp did not qualify the existing declaration/definition in bsp::cc13_gui1.",
+      "reported_by": "Root common-build result; this worker did not run a build."
+    },
+    "correction": "Prefix exactly the two existing calls with cc13_gui1::; retain same actual-pointer AA67F0 provider, signatures and reached algorithm.",
+    "existing_provider_namespace": "bsp::cc13_gui1",
+    "existing_declaration": {
+      "path": "include/bsp/cc13_gui1.hpp",
+      "namespace_line": 21,
+      "declaration_line": 242
+    },
+    "existing_definition": {
+      "path": "src/cc13_gui1.cpp",
+      "namespace_line": 10,
+      "definition_line": 227
+    },
+    "historical_40d_producer_pins": [
+      {
+        "path": "include/bsp/native_front_end_frame_title_position.hpp",
+        "hash_format": "immutable_git_blob_content_lf",
+        "sha256": "87dacd5b92bb9389185c808de3a4015283fc9cf0be7d7e944c81a8ef3c148244",
+        "git_blob_oid": "49b090b2fd5c06dbe9814633f8edc67ebf14dae2",
+        "bytes": 6839,
+        "revision": "40d286ed3b1451a7a58d7b9f3a315b990ddf5217"
+      },
+      {
+        "path": "src/native_front_end_frame_title_position.cpp",
+        "hash_format": "immutable_git_blob_content_lf",
+        "sha256": "96938f1b2de7483e384b29768798eb5b78086b4d7747ab8bd6164cbcbc07d3bf",
+        "git_blob_oid": "4a79485066a1905445495757399e300cb6305bb7",
+        "bytes": 13009,
+        "revision": "40d286ed3b1451a7a58d7b9f3a315b990ddf5217"
+      },
+      {
+        "path": "docs/CC16_NATIVE_FRONT_END_FRAME_TITLE_POSITION.md",
+        "hash_format": "immutable_git_blob_content_lf",
+        "sha256": "04a2c41993eddfd570ba190beab5aa771a37e12ec26d4e8cda413a176385cd78",
+        "git_blob_oid": "e3972d525a05df65bee2de6f2f5aa3c633bad276",
+        "bytes": 10052,
+        "revision": "40d286ed3b1451a7a58d7b9f3a315b990ddf5217"
+      },
+      {
+        "path": "reports/cc16_native_front_end_frame_title_position.json",
+        "hash_format": "immutable_git_blob_content_lf",
+        "sha256": "cc56f68f903663941f39c97425ab4f7ee82972d415cfefec46699479e85a1996",
+        "git_blob_oid": "0ac99fdd0ee96c1ee9412d9faf23cfea4a04f5b7",
+        "bytes": 27767,
+        "revision": "40d286ed3b1451a7a58d7b9f3a315b990ddf5217"
+      }
+    ],
+    "independent_review": {
+      "commit": "41e908e99a515e3ab28c75d4e9bf34f801f332ff",
+      "reviewed_Source_commit": "40d286ed3b1451a7a58d7b9f3a315b990ddf5217",
+      "scope": "Static Source/listing/pin review of sealed40d only. Its pins are historical and do not constitute correction compilation proof. Peer evidence is unchanged.",
+      "pins": [
+        {
+          "path": "docs/CC16_NATIVE_FRAME_TITLE_POSITION_INDEPENDENT_REVIEW.md",
+          "hash_format": "immutable_git_blob_content_lf",
+          "sha256": "bd0ffe53c010e6f9a0386f871ea0c23785722c964a1553acc36db7e5ba4fbd8a",
+          "git_blob_oid": "232939f353c874e47d6e86777f4554edde9da427",
+          "bytes": 9868,
+          "revision": "41e908e99a515e3ab28c75d4e9bf34f801f332ff"
+        },
+        {
+          "path": "reports/cc16_native_frame_title_position_independent_review.json",
+          "hash_format": "immutable_git_blob_content_lf",
+          "sha256": "cf76be2d11418cd9fb386cc125de5a88f2388bba5c9bf4be4942a1355ec66382",
+          "git_blob_oid": "3a76c701a119575937f740b75bcdd54b27e52f10",
+          "bytes": 16196,
+          "revision": "41e908e99a515e3ab28c75d4e9bf34f801f332ff"
+        }
+      ]
+    },
+    "current_Source_pins": [
+      {
+        "path": "include/bsp/native_front_end_frame_title_position.hpp",
+        "hash_format": "immutable_git_blob_content_lf",
+        "sha256": "87dacd5b92bb9389185c808de3a4015283fc9cf0be7d7e944c81a8ef3c148244",
+        "git_blob_oid": "49b090b2fd5c06dbe9814633f8edc67ebf14dae2",
+        "bytes": 6839,
+        "revision": "78877b3b549f90b917ed3899f92dbacc7a1d9e65"
+      },
+      {
+        "path": "src/native_front_end_frame_title_position.cpp",
+        "hash_format": "immutable_git_blob_content_lf",
+        "sha256": "5706ecadb6403943e5175075f647cf5e74003a8431f69566fb1eeaf3bc04507c",
+        "git_blob_oid": "9208c5988d9561406d0e818f6c836da20d00ee0d",
+        "bytes": 13031
+      }
+    ],
+    "static_verification": {
+      "exact_two_namespace_prefix_insertions_only": true,
+      "all_other_CPP_Git_LF_bytes_identical": true,
+      "header_API_and_custody_unchanged": true,
+      "inline_assembly_blocks_identical": 4,
+      "current_24_input_pins_and_8_raw_exports_matched": true,
+      "peer_review_files_unchanged": true,
+      "new_build_tests_or_Native_analysis": false,
+      "staged_diff_check": "passed final owned three-file staged whitespace check before commit"
+    },
+    "build_status": "Correction not built by this worker; Root will run the joined build. Earlier passing receipts remain historical.",
+    "new_body_Original_vendor_trivial_helper_duplicate_credit": 0,
+    "runtime_activation_or_whole_frontend_readiness": false,
+    "utc": "2026-10-30T17:59:14.827119+00:00"
+  }
 }
