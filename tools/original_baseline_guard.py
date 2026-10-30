@@ -1144,12 +1144,78 @@ def known_xlive_debug_close(process, stage, state, diagnostic, enabled):
     return evidence
 
 
-def arm_motion(process, state):
+def motion_request_options(body):
+    """Legacy text remains valid; JSON provides bounded diagnostic controls."""
+    stripped = body.strip().lstrip("\ufeff").strip()
+    options = json.loads(stripped) if stripped.startswith("{") else {"hits": int(stripped)} if stripped.isdecimal() else {}
+    if not isinstance(options, dict) or set(options) - {"hits", "interval_ms", "timeout_seconds"}:
+        raise ValueError("Motion marker must be legacy text, an integer, or JSON with hits/interval_ms/timeout_seconds")
+    result = {"hits": options.get("hits", 20), "interval_ms": options.get("interval_ms", 50),
+              "timeout_seconds": options.get("timeout_seconds", 30)}
+    for name, low, high in (("hits", 1, 100), ("interval_ms", 10, 1000), ("timeout_seconds", 1, 120)):
+        if type(result[name]) is not int or not low <= result[name] <= high:
+            raise ValueError(f"Motion {name} must be an integer in [{low}, {high}]")
+    return result
+
+
+def finish_motion_request(state, status):
+    session = state.get("motion_session")
+    if session and session["status"] == "active":
+        session.update(status=status, ended_unix=time.time())
+    state.update(motion_pending=False, motion_next_arm_monotonic=None)
+    if state.get("motion_armed"):
+        state["motion_restore_pending"] = True
+
+
+def start_motion_request(state, request, options):
+    previous = state.get("motion_session")
+    if previous and previous["status"] == "active":
+        raise ValueError("A motion request is active; wait for completion or expiry before rearming")
+    if state.get("motion_armed") or state.get("motion_restore_pending"):
+        raise ValueError("Previous motion breakpoint restoration is pending")
+    sessions = state.setdefault("motion_requests", [])
+    if len(sessions) >= 32 or len(state.get("motion_captures", [])) + options["hits"] > 1000:
+        raise ValueError("Bounded motion receipt budget exhausted")
+    session = {"sequence": len(sessions) + 1, "request": request, **options,
+        "status": "active", "captured_hits": 0, "trap_events": 0, "arm_attempts": 0,
+        "arm_deferrals": 0, "histogram": [], "unit_counts": {}, "unique_units": 0}
+    sessions.append(session)
+    state.pop("motion_request_rejected", None)
+    state.update(motion_request=request, motion_session=session, motion_pending=True,
+        motion_next_arm_monotonic=time.monotonic(),
+        motion_request_deadline_monotonic=time.monotonic() + options["timeout_seconds"])
+
+
+def arm_motion(process, state, thread_ids):
+    """Called only at a debug stop; never single-step or rewrite running code."""
     address = state["base"] + state["motion_rva"]
+    session = state["motion_session"]
+    session["arm_attempts"] += 1
+    blocked = []
+    for thread_id in sorted(thread_ids):
+        thread = K.OpenThread(0x8, False, thread_id)
+        try:
+            checked(thread, "OpenThread motion rearm boundary")
+            context = WOW64_CONTEXT()
+            context.flags = 0x10001  # CONTROL; all target threads are debug-stopped.
+            checked(K.Wow64GetThreadContext(thread, C.byref(context)), "Motion rearm boundary context")
+            if context.Eip in (address, address + 1):
+                blocked.append({"thread_id": thread_id, "eip": context.Eip})
+        except OSError as exc:
+            blocked.append({"thread_id": thread_id, "context_error": str(exc)})
+        finally:
+            close(thread)
+    if not thread_ids or blocked:
+        session["arm_deferrals"] += 1
+        session["last_arm_blockers"] = blocked[:8]
+        state["motion_next_arm_monotonic"] = time.monotonic() + session["interval_ms"] / 1000
+        return False
     if read_remote(process, address, 1).hex() != state["motion_entry_byte"]:
         raise RuntimeError("Motion entry byte differs from original image")
     replace_remote(process, address, b"\xcc")
-    state.update(motion_armed=True, motion_pending=False, motion_address=address)
+    state.update(motion_armed=True, motion_pending=False, motion_address=address, motion_entry_restored=False)
+    session["last_arm_scanned_threads"] = len(thread_ids)
+    return True
 
 
 def motion_capture(process, thread_id, state, capture=True):
@@ -1161,23 +1227,62 @@ def motion_capture(process, thread_id, state, capture=True):
         checked(K.Wow64GetThreadContext(thread, C.byref(context)), "Wow64GetThreadContext motion")
         if context.Eip != state["motion_address"] + 1:
             raise RuntimeError("Unexpected motion-breakpoint EIP")
+        session = state.get("motion_session")
+        if session:
+            session["trap_events"] += 1
+        capture = (capture and session and session["status"] == "active"
+            and time.monotonic() < state["motion_request_deadline_monotonic"]
+            and session["captured_hits"] < session["hits"])
         if capture:
             dt_bytes = read_remote(process, context.Esp + 4, 4)
             dt = struct.unpack("<f", dt_bytes)[0]
             controlled = struct.unpack("<I", read_remote(process, state["base"] + state["controlled_rva"], 4))[0]
             unit = (context.Ecx - 0x310) & 0xFFFFFFFF
+            main_thread_id = state["main_thread_id"]
+            cw = context.float.control & 0xFFFF
             state.setdefault("motion_captures", []).append({
                 "pid": state["pid"], "thread_id": thread_id, "unix": time.time(),
+                "event_thread_id": thread_id, "initial_thread_id": state["initial_thread_id"],
+                "original_entry_thread_id": state["original_entry_thread_id"],
+                "main_thread_id": main_thread_id, "is_main_thread": thread_id == main_thread_id,
+                "request_sequence": session["sequence"], "hit_index": session["captured_hits"] + 1,
+                "breakpoint_armed_at_dispatch": bool(state.get("motion_armed")),
                 "request": state["motion_request"], "ecx": context.Ecx, "esp": context.Esp,
                 "unit": unit, "unit_hex": f"{unit:08x}", "controlled": controlled,
                 "controlled_hex": f"{controlled:08x}", "matches_controlled_pointer": bool(unit and unit == controlled),
                 "engine_dt": dt if math.isfinite(dt) else None, "engine_dt_bytes": dt_bytes.hex(),
-                "x87_control_word": context.float.control & 0xFFFF,
+                "x87_control_word": cw, "x87_control_word_hex": f"{cw:04x}",
                 "interpretation": "unit hypothesis ECX-0x310; pointer equality only, no ship/team classification"})
+            session["captured_hits"] += 1
+            key = f"{unit:08x}"
+            session["unit_counts"][key] = session["unit_counts"].get(key, 0) + 1
+            session["unique_units"] = len(session["unit_counts"])
+            bucket = next((b for b in session["histogram"] if b["thread_id"] == thread_id
+                           and b["x87_control_word"] == cw), None)
+            if bucket is None:
+                bucket = {"thread_id": thread_id, "main_thread_id": main_thread_id,
+                    "is_main_thread": thread_id == main_thread_id, "x87_control_word": cw,
+                    "x87_control_word_hex": f"{cw:04x}", "hits": 0}
+                session["histogram"].append(bucket)
+            bucket["hits"] += 1
+        current_byte = read_remote(process, state["motion_address"], 1)
+        if current_byte == b"\xcc":
             replace_remote(process, state["motion_address"], bytes.fromhex(state["motion_entry_byte"]))
-            state.update(motion_armed=False, motion_entry_restored=True)
+        elif current_byte.hex() != state["motion_entry_byte"]:
+            raise RuntimeError("Motion byte changed outside this guard")
+        state.update(motion_armed=False, motion_entry_restored=True)
         context.Eip = state["motion_address"]
         checked(K.Wow64SetThreadContext(thread, C.byref(context)), "Wow64SetThreadContext motion")
+        if session and session["status"] == "active":
+            if session["captured_hits"] >= session["hits"]:
+                finish_motion_request(state, "complete")
+            elif time.monotonic() >= state["motion_request_deadline_monotonic"]:
+                finish_motion_request(state, "expired")
+            else:
+                # Small deterministic staggering avoids locking sampling to one
+                # fixed frame phase. Already queued real traps are also retained.
+                delay_ms = session["interval_ms"] + (session["trap_events"] * 17 % 31)
+                state.update(motion_pending=True, motion_next_arm_monotonic=time.monotonic() + delay_ms / 1000)
     finally:
         close(thread)
 
@@ -1272,7 +1377,7 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
             "isolation": "write-restricted token with exhaustive source rights audit plus independent parent/protected inherited no-delete read handles" if locked_mode else "full restricted Users+LOGON+World token, fresh source DACL denial audit, owned kill-on-close job" if token_mode == "medium-restricted" else "restricted primary token, low mandatory IL/no-write-up, owned kill-on-close job",
             "known_folder": "entry-time SHGetSpecialFolderPathA IAT hook; CSIDL_PERSONAL flags masked",
             "child_policy": "DEBUG_PROCESS; root process only; reject every additional executable before continuation" if locked_mode else "DEBUG_PROCESS; only byte-identical images under stage; otherwise terminate owned job",
-            "motion_discovery": "private discover-motion.request marker arms restored one-shot entry" if discovery_enabled else "disabled",
+            "motion_discovery": "bounded private discover-motion.request sampling; each hit restores entry byte/EIP; safe stopped-thread rearm" if discovery_enabled else "disabled",
             "known_xlive_debug_close_policy": "opt-in exact SHA+live return/argument+callsite, first chance before OEP, once" if handle_known_xlive_debug_close else "disabled; exceptions are not swallowed",
             "directinput_startup_observation": "restored one-shot at original 00A98340" if observe_directinput_startup else "disabled",
             "disk_binary_modified": False, "started_unix": time.time(), "probe": probe}
@@ -1288,7 +1393,7 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
         raise
     data["protected_documents_before"] = before
     token, job, pi, source_locks = None, None, PROCESS_INFORMATION(), None
-    owned, live = {}, set()
+    owned, live, live_threads = {}, set(), {}
     failed, exit_seen, suspended_created = None, False, False
     try:
         token = restricted_token(token_mode)
@@ -1334,6 +1439,7 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
                                       startup_pointer, C.byref(pi)), "CreateProcessAsUserW restricted suspended")
         suspended_created = True
         data["root_pid"] = pi.dwProcessId
+        data["root_initial_thread_id"] = pi.dwThreadId
         process_token_info(pi.hProcess, token_mode)
         wow64 = W.BOOL()
         checked(K.IsWow64Process(pi.hProcess, C.byref(wow64)), "IsWow64Process")
@@ -1355,39 +1461,55 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
                     raise RuntimeError("Invalid motion request marker")
                 request = {"sha256": sha(marker), "mtime_ns": marker.stat().st_mtime_ns,
                            "accepted_unix": time.time()}
+                try:
+                    options = motion_request_options(marker.read_text(encoding="utf-8"))
+                    parse_error = None
+                except (ValueError, UnicodeError) as exc:
+                    options, parse_error = None, str(exc)
                 ack = stage / "discover-motion.ack"
                 ordinary(ack, False)
                 if ack.exists() and (not ack.is_file() or ack.stat().st_nlink != 1):
                     raise RuntimeError("Invalid motion acknowledgement path")
                 marker.replace(ack)
                 for pid in live:
-                    process, state = owned[pid]
-                    state["motion_request"] = request
-                    if state.get("motion_pending") or state.get("motion_armed"):
-                        # A ship may not have updated yet (for example, while
-                        # the player controls an aircraft). Keep the existing
-                        # one-shot armed and associate it with the latest request.
-                        continue
-                    state.update(motion_pending=True, motion_break_requested=True)
-                    # The ensuing debug event suspends every target thread; arm
-                    # only while stopped, never rewrite running instructions.
-                    checked(K.DebugBreakProcess(process), "DebugBreakProcess motion arm")
+                    _, state = owned[pid]
+                    try:
+                        if parse_error:
+                            raise ValueError(parse_error)
+                        start_motion_request(state, request, options)
+                    except ValueError as exc:
+                        state["motion_request_rejected"] = {"request": request, "reason": str(exc)}
                 write_receipt(receipt, data)
+            for pid in live:
+                process, state = owned[pid]
+                session = state.get("motion_session")
+                if session and session["status"] == "active" and time.monotonic() >= state["motion_request_deadline_monotonic"]:
+                    finish_motion_request(state, "expired")
+                    write_receipt(receipt, data)
+                helper_alive = state.get("motion_helper_thread_id") in live_threads.get(pid, set())
+                due = state.get("motion_next_arm_monotonic")
+                need_stop = state.get("motion_restore_pending") or (
+                    state.get("motion_pending") and not state.get("motion_armed") and due is not None and time.monotonic() >= due)
+                if need_stop and not state.get("motion_break_requested") and not helper_alive:
+                    state["motion_break_requested"] = True
+                    checked(K.DebugBreakProcess(process), "DebugBreakProcess bounded motion rearm")
             if time.monotonic() >= deadline:
                 data["phase"] = "timeout"
                 break
             if live and not all(owned[pid][1]["hooked"] for pid in live) and time.monotonic() >= entry_deadline:
                 raise RuntimeError("Target did not reach a guarded entry within the startup deadline")
             event = DEBUG_EVENT()
-            if not K.WaitForDebugEvent(C.byref(event), 200):
+            wait_ms = 200
+            for pid in live:
+                due = owned[pid][1].get("motion_next_arm_monotonic")
+                if due is not None and due > time.monotonic():
+                    wait_ms = min(wait_ms, max(1, int((due - time.monotonic()) * 1000)))
+            if not K.WaitForDebugEvent(C.byref(event), wait_ms):
                 if C.get_last_error() == 121:  # ERROR_SEM_TIMEOUT
                     continue
                 checked(False, "WaitForDebugEvent")
             status, stop = 0x10002, False  # DBG_CONTINUE
             try:
-                if event.pid in owned and owned[event.pid][1].get("motion_pending"):
-                    arm_motion(*owned[event.pid])
-                    write_receipt(receipt, data)
                 if event.code == 3:  # CREATE_PROCESS_DEBUG_EVENT, before execution.
                     creation = event.u.create
                     try:
@@ -1405,10 +1527,12 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
                                  "entry_byte": info["entry_byte"], "size": info["image_size"],
                                  "motion_entry_byte": info["motion_entry_byte"],
                                  "motion_rva": info["motion_rva"], "controlled_rva": info["controlled_rva"],
+                                 "initial_thread_id": event.tid,
                                  "token": child_info, "hooked": False, "loader_breakpoints": 0}
                         state["modules"] = [module_record(handle, base, known_path=path, known_size=info["image_size"])]
                         owned[event.pid] = (handle, state)
                         live.add(event.pid)
+                        live_threads[event.pid] = {event.tid}
                         data["processes"].append(state)
                         if read_remote(handle, state["entry"], 1).hex() != info["entry_byte"]:
                             raise RuntimeError("Entry byte does not match the original image")
@@ -1416,6 +1540,12 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
                         write_receipt(receipt, data)
                     finally:
                         close(creation.hFile)
+                elif event.code == 2:  # CREATE_THREAD_DEBUG_EVENT
+                    live_threads.setdefault(event.pid, set()).add(event.tid)
+                elif event.code == 4:  # EXIT_THREAD_DEBUG_EVENT
+                    live_threads.get(event.pid, set()).discard(event.tid)
+                    if event.pid in owned and owned[event.pid][1].get("motion_helper_thread_id") == event.tid:
+                        owned[event.pid][1]["motion_helper_thread_id"] = None
                 elif event.code == 6:  # LOAD_DLL_DEBUG_EVENT
                     try:
                         if event.pid in owned:
@@ -1441,13 +1571,17 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
                             directinput_observation(handle, event.tid, state, state.get("directinput_armed", False))
                             write_receipt(receipt, data)
                         elif record.address == state.get("motion_address"):
-                            # More than one thread can already have hit INT3.
-                            # Rewind queued duplicates after restoring the byte.
-                            motion_capture(handle, event.tid, state, state.get("motion_armed", False))
+                            # Queued traps are genuine calls from other stopped
+                            # threads. Retain them while the request has capacity;
+                            # always rewind, even after the requested count ends.
+                            motion_capture(handle, event.tid, state)
                             write_receipt(receipt, data)
                         elif state.get("motion_break_requested"):
                             state["motion_break_requested"] = False
+                            state["motion_helper_thread_id"] = event.tid
                         elif record.address == state["entry"] and not state["hooked"]:
+                            state.update(original_entry_thread_id=event.tid, main_thread_id=event.tid,
+                                entry_thread_matches_initial=event.tid == state["initial_thread_id"])
                             establish_hook(handle, event.tid, state, document_bytes)
                             if source_locks:
                                 count = DWORD()
@@ -1491,8 +1625,21 @@ def run_guard(stage, executable, cwd, documents, receipt, seconds, original_exe=
                         owned[event.pid][1]["exit_code"] = event.u.exit_code
                         owned[event.pid][1]["exit_unix"] = time.time()
                     live.discard(event.pid)
+                    if event.pid in owned:
+                        finish_motion_request(owned[event.pid][1], "process_exited")
                     if not live:
                         data["phase"], exit_seen, stop = "exited", True, True
+                if event.pid in live:
+                    process, state = owned[event.pid]
+                    if state.get("motion_restore_pending"):
+                        replace_remote(process, state["motion_address"], bytes.fromhex(state["motion_entry_byte"]))
+                        state.update(motion_restore_pending=False, motion_armed=False, motion_entry_restored=True)
+                        write_receipt(receipt, data)
+                    elif (state.get("motion_pending") and not state.get("motion_armed")
+                            and state.get("motion_session", {}).get("status") == "active"
+                            and time.monotonic() >= state["motion_next_arm_monotonic"]):
+                        arm_motion(process, state, live_threads.get(event.pid, set()))
+                        write_receipt(receipt, data)
             except BaseException:
                 # Do not resume an unknown/unverified child or a partially
                 # established hook. Mark the owned job terminating FIRST.
@@ -1605,6 +1752,20 @@ extern "C" __declspec(dllexport) DWORD motion_probe_controlled = 0x12345000;
 extern "C" __declspec(dllexport) __declspec(naked) void __stdcall motion_probe_entry(float) {
     __asm { ret 4 }
 }
+volatile LONG probe_motion_stop = 0;
+DWORD WINAPI motion_probe_worker(LPVOID) {
+    unsigned short worker_cw = 0x027f;
+    __asm { fldcw worker_cw }
+    while (InterlockedCompareExchange(&probe_motion_stop, 0, 0) == 0) {
+        __asm {
+            mov ecx, 22345310h
+            push 03c888889h
+            call motion_probe_entry
+        }
+        Sleep(1);
+    }
+    return 0;
+}
 volatile LONG probe_invalid_handle_caught = 0;
 void NTAPI guard_probe_tls(PVOID, DWORD reason, PVOID) {
     if (reason != DLL_PROCESS_ATTACH) return;
@@ -1665,17 +1826,23 @@ int main(int argc, char** argv) {
     if (f != INVALID_HANDLE_VALUE) CloseHandle(f);
     const BOOL deleted = DeleteFileA(protected_child); const DWORD delete_error = GetLastError();
     const bool protected_delete_denied = !deleted && delete_error == (locked_mode ? ERROR_SHARING_VIOLATION : ERROR_ACCESS_DENIED);
-    const bool passed = personal && flags && fallback && allowed && denied && generic_invalid_handle_caught
+    bool passed = personal && flags && fallback && allowed && denied && generic_invalid_handle_caught
         && (locked_mode ? delete_child_open_allowed : delete_child_denied) && protected_delete_denied;
+    unsigned short saved_cw, main_cw = 0x007f;
+    __asm { fnstcw saved_cw }
+    __asm { fldcw main_cw }
+    DWORD worker_thread_id = 0;
+    HANDLE worker = CreateThread(NULL, 0, motion_probe_worker, NULL, 0, &worker_thread_id);
+    passed = passed && worker != NULL;
     FILE* report = NULL;
     if (fopen_s(&report, argv[4], "w") || !report) return 91;
     for (char* p = desktop; *p; ++p) if (*p == '\\') *p = '/';
     for (char* p = argv[2]; *p; ++p) if (*p == '\\') *p = '/';
-    fprintf(report, "{\"personal_redirect\":%s,\"csidl_flags\":%s,\"fallback\":%s,\"fallback_return\":%d,\"fallback_error\":%lu,\"other_folder\":\"%s\",\"expected_other_folder\":\"%s\",\"private_write\":%s,\"medium_write_denied\":%s,\"denial_error\":%lu,\"generic_invalid_handle_caught\":%s,\"delete_child_denied\":%s,\"delete_child_open_allowed\":%s,\"protected_delete_denied\":%s,\"protected_delete_error\":%lu,\"directinput_hresult\":%lu,\"directinput_ok\":%s,\"passed\":%s}\n",
-        personal?"true":"false", flags?"true":"false", fallback?"true":"false", fallback_return, fallback_error, desktop, argv[2], allowed?"true":"false", denied?"true":"false", denial, generic_invalid_handle_caught?"true":"false", delete_child_denied?"true":"false", delete_child_open_allowed?"true":"false", protected_delete_denied?"true":"false", delete_error, (unsigned long)directinput_hr, directinput_ok?"true":"false", passed?"true":"false");
+    fprintf(report, "{\"personal_redirect\":%s,\"csidl_flags\":%s,\"fallback\":%s,\"fallback_return\":%d,\"fallback_error\":%lu,\"other_folder\":\"%s\",\"expected_other_folder\":\"%s\",\"private_write\":%s,\"medium_write_denied\":%s,\"denial_error\":%lu,\"generic_invalid_handle_caught\":%s,\"delete_child_denied\":%s,\"delete_child_open_allowed\":%s,\"protected_delete_denied\":%s,\"protected_delete_error\":%lu,\"directinput_hresult\":%lu,\"directinput_ok\":%s,\"probe_main_thread_id\":%lu,\"probe_worker_thread_id\":%lu,\"passed\":%s}\n",
+        personal?"true":"false", flags?"true":"false", fallback?"true":"false", fallback_return, fallback_error, desktop, argv[2], allowed?"true":"false", denied?"true":"false", denial, generic_invalid_handle_caught?"true":"false", delete_child_denied?"true":"false", delete_child_open_allowed?"true":"false", protected_delete_denied?"true":"false", delete_error, (unsigned long)directinput_hr, directinput_ok?"true":"false", GetCurrentThreadId(), worker_thread_id, passed?"true":"false");
     fclose(report);
     const DWORD begin = GetTickCount();
-    while (GetTickCount() - begin < 1500) {
+    while (GetTickCount() - begin < 8000) {
         __asm {
             mov ecx, dword ptr [motion_probe_controlled]
             add ecx, 310h
@@ -1684,6 +1851,17 @@ int main(int argc, char** argv) {
         }
         Sleep(1);
     }
+    InterlockedExchange(&probe_motion_stop, 1);
+    if (worker) { WaitForSingleObject(worker, 5000); CloseHandle(worker); }
+    // Rearm with no further motion calls: expiry must restore the byte itself.
+    char scope[MAX_PATH], expiry_marker[MAX_PATH]; strcpy_s(scope, argv[4]);
+    char* split = strrchr(scope, '\\'); if (!split) return 96; *split = 0;
+    sprintf_s(expiry_marker, "%s\\discover-motion.request", scope);
+    FILE* expiry = NULL;
+    if (fopen_s(&expiry, expiry_marker, "w") || !expiry) return 97;
+    fputs("{\"hits\":1,\"interval_ms\":30,\"timeout_seconds\":1}\n", expiry); fclose(expiry);
+    Sleep(1800);
+    __asm { fldcw saved_cw }
     return passed ? 0 : 92;
 }
 '''
@@ -1729,7 +1907,9 @@ def safety_probe(root, token_mode="low"):
     if token_mode != "low":
         prepare_medium(stage, root / "probe-medium-prepare.json", executable=exe,
             original_exe=exe, protected_roots=[medium], probe=True)
-    (stage / "discover-motion.request").write_text("safety-probe\n", encoding="utf-8")
+    assert motion_request_options("legacy safety-probe\n")["hits"] == 20
+    (stage / "discover-motion.request").write_text(json.dumps(
+        {"hits": 6, "interval_ms": 30, "timeout_seconds": 10}) + "\n", encoding="utf-8")
     data = run_guard(stage, exe, stage, documents, root / "probe-launch.json", 30,
         arguments=[str(documents), str(folder(0x24)), str(medium / "must-not-exist.txt"), str(result), token_mode],
         protected_roots=[medium], probe=True, handle_known_xlive_debug_close=True, token_mode=token_mode)
@@ -1737,10 +1917,22 @@ def safety_probe(root, token_mode="low"):
         raise RuntimeError(f"Probe did not produce a result; receipt: {root / 'probe-launch.json'}")
     evidence = json.loads(result.read_text(encoding="utf-8"))
     captures = [c for state in data["processes"] for c in state.get("motion_captures", [])]
-    motion_ok = (len(captures) == 1 and captures[0]["unit"] == 0x12345000
-        and captures[0]["matches_controlled_pointer"] and captures[0]["engine_dt_bytes"] == "8988883c"
-        and all(s.get("motion_entry_restored") for s in data["processes"]))
+    main_id, worker_id = evidence["probe_main_thread_id"], evidence["probe_worker_thread_id"]
+    motion_ok = (len(captures) == 6 and {c["unit"] for c in captures} == {0x12345000, 0x22345000}
+        and all(c["engine_dt_bytes"] == "8988883c" and c["main_thread_id"] == main_id
+            and c["original_entry_thread_id"] == main_id and c["initial_thread_id"] == main_id
+            and c["event_thread_id"] == c["thread_id"] and c["is_main_thread"] == (c["thread_id"] == main_id)
+            and ((c["thread_id"], c["unit"], c["x87_control_word"]) in
+                 ((main_id, 0x12345000, 0x007f), (worker_id, 0x22345000, 0x027f))) for c in captures)
+        and all(s.get("motion_entry_restored") and not s.get("motion_armed")
+            and s["motion_requests"][0]["status"] == "complete" and s["motion_requests"][0]["captured_hits"] == 6
+            and s["motion_requests"][0]["unique_units"] == 2 for s in data["processes"]))
     evidence["one_shot_motion_capture"] = motion_ok
+    expiry_ok = all(len(s["motion_requests"]) == 2 and s["motion_requests"][1]["status"] == "expired"
+        and s["motion_requests"][1]["captured_hits"] == 0 and not s.get("motion_armed")
+        and not s.get("motion_restore_pending") and s.get("motion_entry_restored") for s in data["processes"])
+    evidence["bounded_thread_precision_capture"] = motion_ok
+    evidence["idle_motion_request_expires_restored"] = expiry_ok
     diagnostics = [d for s in data["processes"] for d in s.get("exception_diagnostics", [])]
     invalid_handle = [d for d in diagnostics if d["code"] == "c0000008"]
     diagnostic_ok = (bool(invalid_handle) and all(d["first_chance"]
@@ -1774,7 +1966,7 @@ def safety_probe(root, token_mode="low"):
         evidence["extra_process_rejected_before_execution"] = rejected
         evidence["passed"] = evidence["passed"] and rejected
     evidence["protected_child_unchanged"] = protected_child.exists() and sha(protected_child) == protected_hash
-    evidence["passed"] = (evidence["passed"] and motion_ok and diagnostic_ok and crash_rejected
+    evidence["passed"] = (evidence["passed"] and motion_ok and expiry_ok and diagnostic_ok and crash_rejected
         and evidence["protected_child_unchanged"] and (token_mode == "low" or evidence["directinput_ok"]))
     if not evidence.get("passed") or (medium / "must-not-exist.txt").exists():
         raise RuntimeError(f"Isolation probe failed: {evidence}")
