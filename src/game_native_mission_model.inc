@@ -1,6 +1,7 @@
 // Included once, at file scope, by game_native_renderer_application.cpp.
 // This is mission composition of existing native bodies, not another D3D path.
 #include "bsp/game_native_mission_model.hpp"
+#include "bsp/game_native_model_domain.hpp"
 #include "bsp/game_native_gui_effect_application.hpp"
 #include "bsp/game_native_gui_sampler_application.hpp"
 #include "bsp/game_native_type_storage.hpp"
@@ -44,9 +45,6 @@ namespace mission_model_detail {
 using Word = std::uint32_t;
 void require(bool value, const char* message) {
     if (!value) throw std::logic_error(message);
-}
-template<class T> const volatile T& cell(GameNativeReadOnlyData& data, Word address) {
-    return *static_cast<const volatile T*>(data.data_at(address, sizeof(T)));
 }
 const volatile Word* table(GameNativeReadOnlyData& data, Word address, std::size_t bytes) {
     return static_cast<const volatile Word*>(data.data_at(address, bytes));
@@ -117,15 +115,10 @@ struct GameNativeMissionModel::Impl final : NativeRenderGroupModels {
     NativeRenderActualOwnerRegistry& owners;
     GuiTextNativeRendererServices& graphics;
     const GameNativeMeshFieldServices& fields;
-    LightTypeBootstrap node_types;
-    ModelTypeBootstrap model_types;
-    // These are two borrowing interfaces over the SAME native pool, types,
-    // node runtime and strings. B4C8D0's existing interface requires the typed
-    // ActualNativeStringPoolStorage name service; post-effect raw construction
-    // requires the raw-AA8/AA4/AA0 form. Neither owns or copies native storage.
-    NativeModelEnvironment raw_models;
-    NativeModelEnvironment instance_models;
-    NativeMaterialDestructionAccess materials;
+    std::unique_ptr<GameNativeModelClient> model_client;
+    NativeModelEnvironment& raw_models;
+    ModelTypeBootstrap& model_types;
+    NativeMaterialDestructionAccess& materials;
     std::unique_ptr<GameNativeGuiSamplerApplication> samplers;
     std::unique_ptr<GameNativeGuiEffectApplication> effects;
     NativeInstanceGeneratorOwners generators;
@@ -134,23 +127,6 @@ struct GameNativeMissionModel::Impl final : NativeRenderGroupModels {
     NativeNodeMappedRawTransformProfiles transform_profiles;
     std::unique_ptr<NativeMatrixIndexedModelEnvironment> matrix_models;
 
-    struct ModelRecord {
-        Impl* domain;
-        void* actual;
-        std::unique_ptr<NativeModelOwner> owner;
-        std::unique_ptr<NativeModelReference> reference;
-        bool registered{};
-        NativeString caller_name;
-        bool caller_name_live{};
-        std::size_t drawable_index{static_cast<std::size_t>(-1)};
-    };
-    struct StreamRecord {
-        Impl* domain;
-        void* actual;
-        std::unique_ptr<NativeLogicalVertexReference> reference;
-        bool registered{};
-    };
-    std::list<ModelRecord> models;
     struct Unit;
     struct BoneRecord {
         Impl* domain{};
@@ -172,8 +148,7 @@ struct GameNativeMissionModel::Impl final : NativeRenderGroupModels {
     };
     std::list<BoneRecord> bone_models;
     std::list<PlainRecord> bone_nodes;
-    std::list<StreamRecord> streams;
-    NativeInstanceGeometryAccess instance;
+    NativeInstanceGeometryAccess& instance;
     struct RenderServices final : NativeTracelineRenderServices {
         GameNativeMissionModel& facade;
         explicit RenderServices(GameNativeMissionModel& source) noexcept :facade(source) {}
@@ -259,30 +234,16 @@ struct GameNativeMissionModel::Impl final : NativeRenderGroupModels {
         : log(l), renderer(app), files(vfs), data(mapped), raw(vfs.borrow_raw_services()),
           owners(app.actual_owners()), graphics(app.game_grid_context().graphics),
           fields(app.borrow_mesh_field_services()),
-          node_types(vfs.native_owners().types(), vfs.native_types().light_types()),
-          model_types(vfs.native_owners().types(), node_types, vfs.native_types().model_types()),
-          raw_models{game_native_resource_pool_process().model_pool_01090054(),
-              app.camera_environment().nodes, model_types, owners,
-              {mission_model_detail::cell<Word>(data,0x00ce4adc),
-               mission_model_detail::cell<Word>(data,0x00ce4970),
-               mission_model_detail::cell<Word>(data,0x00d7a208),
-               mission_model_detail::cell<Word>(data,0x00d7a260)},
-              mission_model_detail::table(data,0x00d62de8,0x5c),
-              mission_model_detail::table(data,0x00d62c88,0x58), nullptr},
-          instance_models{raw_models.pool_01090054, raw_models.nodes, model_types,
-              owners, raw_models.constants, raw_models.vtable_00d62de8,
-              raw_models.vtable_00d62c88, &raw.strings},
-          materials{owners, raw.strings, game_native_material_process().parameter_pool_00f8d3e4(),
-              game_native_material_process().material_pool_00f8d3ac()},
+          model_client(app.model_domain().make_mission_client({this,&retire_model_drawable})),
+          raw_models(model_client->raw_access().models), model_types(raw_models.types),
+          materials(model_client->raw_access().materials),
           generators(app.mission_instance_generator_context()),
           transform_profiles(data),
-          instance{instance_models,graphics.streams.geometry,graphics.streams.vertices,
-              materials,raw.strings,raw_models.constants.unchanged_00d7a260,
-              app.borrow_gui_material_destruction_profile_00d5e520(),this,
-              &prepare_model,&retire_failed_model,&bind_model,&bind_stream},render_profiles(facade) {
+          instance(model_client->instance_access()),render_profiles(facade) {
         mission_model_detail::require(&fields.metadata.reads == &fields.textures.reads &&
             &fields.textures.owners == &owners && &fields.textures.textures == &app.texture_cache() &&
-            &instance_models.nodes == &app.camera_environment().nodes,
+            &instance.models.nodes == &app.camera_environment().nodes &&
+            instance.models.actual_names == &raw.strings,
             "mission model requires the application's same native reader/geometry/owner domains");
     }
     void bind_effects(GameSingletonHost& singletons,GameInputRuntime& input) {
@@ -295,49 +256,14 @@ struct GameNativeMissionModel::Impl final : NativeRenderGroupModels {
         loading=std::make_unique<NativeMeshLoadingContext>(NativeMeshLoadingContext{*subsets,fields.metadata});
     }
 
-    static NativeModelOwner& prepare_model(void* context, void* actual, NativeModelEnvironment& env) {
-        auto& self = *static_cast<Impl*>(context);
-        mission_model_detail::require(&env == &self.raw_models || &env == &self.instance_models,
-            "mission model preparation cannot retarget native environment");
-        self.models.push_back({&self,actual,{},{},false});
-        auto it = std::prev(self.models.end());
-        try { it->owner = std::make_unique<NativeModelOwner>(actual,NativeModelPool::slot_bytes,env); }
-        catch (...) { self.models.erase(it); throw; }
-        return *it->owner;
-    }
-    static void retire_failed_model(void* context, NativeModelOwner& owner) noexcept {
-        auto& self = *static_cast<Impl*>(context);
-        for (auto it=self.models.begin(); it!=self.models.end(); ++it)
-            if (it->owner.get()==&owner && !it->reference &&
-                (owner.phase==NativeModelOwner::Phase::prepared || owner.phase==NativeModelOwner::Phase::dead)) {
-                self.models.erase(it); return;
-            }
-        std::terminate();
-    }
-    static void retire_model(void* context, NativeModelReference& reference) noexcept {
-        auto& record=*static_cast<ModelRecord*>(context);
-        auto& self=*record.domain;
-        if(record.drawable_index<self.drawables.size()) {
-            auto& drawable=self.drawables[record.drawable_index];
-            if(drawable.companion!=&reference || drawable.actual!=record.actual) std::terminate();
+    static void retire_model_drawable(void* context, void* actual,
+        NativeModelReference& reference, std::size_t drawable_index) noexcept {
+        auto& self=*static_cast<Impl*>(context);
+        if(drawable_index<self.drawables.size()) {
+            auto& drawable=self.drawables[drawable_index];
+            if(drawable.companion!=&reference || drawable.actual!=actual) std::terminate();
             drawable.creator_consumed=true;drawable.retired=true;
         }
-        if (record.registered) self.owners.unbind(record.actual,reference);
-        for (auto it=self.models.begin(); it!=self.models.end(); ++it)
-            if (&*it==&record) { self.models.erase(it); return; }
-        std::terminate();
-    }
-    static NativeModelReference& bind_model(void* context, NativeModelOwner& owner) {
-        auto& self=*static_cast<Impl*>(context);
-        for (auto& record:self.models) if (record.owner.get()==&owner) {
-            mission_model_detail::require(!record.reference,"mission model cannot bind a second companion");
-            record.reference=std::make_unique<NativeModelReference>(owner,
-                NativeModelCompanionDisposal{&record,&retire_model});
-            self.owners.bind(record.actual,*record.reference);
-            record.registered=true;
-            return *record.reference;
-        }
-        throw std::logic_error("mission model companion requires its prepared actual slot");
     }
     static void retire_bone_model(void* context, NativeMatrixIndexedModelReference& reference) noexcept {
         auto& record=*static_cast<BoneRecord*>(context);
@@ -419,35 +345,14 @@ struct GameNativeMissionModel::Impl final : NativeRenderGroupModels {
             &authored_world(*unit.asset,hierarchy_index));
         return record.actual;
     }
-    static void retire_stream(void* context, NativeLogicalVertexReference& reference) noexcept {
-        auto& record=*static_cast<StreamRecord*>(context);
-        auto& self=*record.domain;
-        if(record.registered) self.owners.unbind(record.actual,reference);
-        for(auto it=self.streams.begin();it!=self.streams.end();++it)
-            if(&*it==&record) {self.streams.erase(it);return;}
-        std::terminate();
-    }
-    static NativeLogicalVertexReference& bind_stream(void* context,void* actual,
-        NativeLogicalVertexOwnerContext& env) {
-        auto& self=*static_cast<Impl*>(context);
-        mission_model_detail::require(&env==&self.graphics.streams.vertices,
-            "mission instance stream requires the canonical vertex domain");
-        self.streams.push_back({&self,actual,{},false});
-        auto& record=self.streams.back();
-        record.reference=std::make_unique<NativeLogicalVertexReference>(actual,env,
-            NativeLogicalVertexCompanionDisposal{&record,&retire_stream});
-        self.owners.bind(actual,*record.reference);
-        record.registered=true;
-        return *record.reference;
-    }
     NativeModelReference& resolve_actual_model(void* actual) override {
-        for(auto& record:models) if(record.actual==actual && record.registered) return *record.reference;
-        throw std::logic_error("render group contains a model outside the mission canonical companion domain");
+        return model_client->resolve_actual_model(actual);
     }
     GeneratedModelNodeLifetime& resolve_actual_model_node(void* actual) override {
         const auto current=mission_model_detail::read<Word>(actual);
         mission_model_detail::require(current==0x00d62de8 || current==0x00d63590,
             "render group contains an unsupported native model profile");
+        if(current==0x00d62de8) return model_client->resolve_actual_model(actual);
         auto& reference=owners.resolve_actual(actual);
         auto* node=dynamic_cast<GeneratedModelNodeLifetime*>(&reference);
         mission_model_detail::require(node && node->transform().raw_node_key()==reinterpret_cast<Word>(actual),
@@ -638,8 +543,9 @@ struct GameNativeMissionModel::Impl final : NativeRenderGroupModels {
                 auto* actual=raw_models.pool_01090054.allocate_raw_slot_00b74d00();
                 attempted_models.back()=actual;
                 if(!actual) throw std::bad_alloc();
-                NativeModelOwner* owner=&prepare_model(this,actual,raw_models);
-                auto& record=models.back();
+                auto& access=model_client->raw_access();
+                NativeModelOwner* owner=&access.prepare_model(access.companion_context,actual,raw_models);
+                auto& record=model_client->model_acquisition(*owner);
                 // Persist this caller header BEFORE native name construction.
                 // A failed name/model/registration call preserves this same
                 // record and raw slot for process retention, without replay.
@@ -650,7 +556,7 @@ struct GameNativeMissionModel::Impl final : NativeRenderGroupModels {
                     static_cast<Word>(item.name.size()),true);
                 if(!item.name.empty()) std::memmove(record.caller_name.data(),item.name.data(),item.name.size());
                 construct_native_model_00b75030(*owner,&record.caller_name,renderer.node_constants());
-                auto& reference=bind_model(this,*owner);
+                auto& reference=access.bind_completed_model(access.companion_context,*owner);
                 drawables.push_back({actual,&reference,&reference,unit_index,index,call.get(),false,false});
                 record.drawable_index=drawables.size()-1;
                 ++unit.drawable_count;
@@ -691,8 +597,7 @@ GameNativeMissionModel::GameNativeMissionModel(GameHostLog& log,GameNativeRender
 }
 GameNativeMissionModel::~GameNativeMissionModel() noexcept {
     if(impl_ && (requires_process_retention() || impl_->phase!=Impl::Phase::closed ||
-        !impl_->models.empty() || !impl_->bone_models.empty() || !impl_->bone_nodes.empty() ||
-        !impl_->streams.empty())) impl_.release();
+        !impl_->model_client->empty() || !impl_->bone_models.empty() || !impl_->bone_nodes.empty())) impl_.release();
 }
 NativeMaterialEffectCacheContext& GameNativeMissionModel::effect_cache() {return impl_->effects->native_effect_cache();}
 NativeMaterialDestructionAccess& GameNativeMissionModel::material_lifetime() noexcept {return impl_->materials;}
@@ -985,13 +890,11 @@ bool GameNativeMissionModel::requires_process_retention() const noexcept {
     const auto& p=*impl_;
     // Healthy canonical models/layouts remain alive until the ordinary native
     // drain. Only incomplete acquisition/retirement prohibits that drain.
-    for(const auto& record:p.models)
-        if(!record.registered || record.caller_name_live) return true;
+    if(p.model_client->requires_process_retention()) return true;
     for(const auto& record:p.bone_models)
         if(!record.registered || record.caller_name_live) return true;
     for(const auto& record:p.bone_nodes)
         if(!record.registered || record.caller_name_live) return true;
-    for(const auto& record:p.streams) if(!record.registered) return true;
     return p.failed || p.phase==Impl::Phase::loading || p.phase==Impl::Phase::retiring ||
         p.open_asset_calls() ||
         (p.effects && p.effects->requires_process_retention()) ||
@@ -1021,8 +924,9 @@ void GameNativeMissionModel::retire_drawables() {
 }
 void GameNativeMissionModel::after_native_renderer_drain() {
     auto& p=*impl_;
-    mission_model_detail::require(!p.failed && p.models.empty() && p.bone_models.empty() && p.streams.empty() &&
+    mission_model_detail::require(!p.failed && p.model_client->empty() && p.bone_models.empty() &&
         !p.open_asset_calls(),"mission model retains native work after drain");
+    p.model_client->after_native_renderer_drain();
     mission_model_detail::require(p.bone_nodes.empty(),"matrix-model retirement retained palette-node creators");
     for(const auto& entry:p.units) {
         const auto& unit=*entry.second;
