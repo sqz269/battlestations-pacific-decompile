@@ -8,6 +8,7 @@
 #include <Windows.h>
 #include <cstring>
 #include <stdexcept>
+#include <intrin.h>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native physical file dates require MSVC Win32.
@@ -29,6 +30,21 @@ void put(void* p, std::uint32_t offset, std::uint32_t value) noexcept {
 }
 void* pointer(const void* p, std::uint32_t offset = 0) noexcept {
     return reinterpret_cast<void*>(word(p, offset));
+}
+std::uint32_t raw_header_word(const void* p, std::uint32_t offset = 0) noexcept {
+    _ReadWriteBarrier();
+    std::uint32_t value;
+    std::memcpy(&value, at(p, offset), sizeof value);
+    _ReadWriteBarrier();
+    return value;
+}
+void raw_header_put(void* p, std::uint32_t offset, std::uint32_t value) noexcept {
+    _ReadWriteBarrier();
+    std::memcpy(at(p, offset), &value, sizeof value);
+    _ReadWriteBarrier();
+}
+void* raw_header_pointer(const void* p, std::uint32_t offset = 0) noexcept {
+    return reinterpret_cast<void*>(raw_header_word(p, offset));
 }
 unsigned char byte(const void* p, std::uint32_t offset) noexcept {
     return *static_cast<const volatile unsigned char*>(at(p, offset));
@@ -148,12 +164,12 @@ void* assign_native_string_cstring_0041e350(void* destination, const char* sourc
 void* assign_native_string_header_00425f40(void* destination, const void* source,
     NativeStringRawPoolContext& strings) {
     if (destination != source) { // 425F48: identity skips every header access.
-        const auto source_length = word(source);
+        const auto source_length = raw_header_word(source);
         resize_native_string_header_0041dd40(destination, strings, source_length, true);
-        if (word(source) != 0) { // 425F56: current source length, after resize.
-            const auto count = word(destination); // 425F5B
-            const auto* input = pointer(source, 4); // 425F5D
-            auto* output = pointer(destination, 4); // 425F60
+        if (raw_header_word(source) != 0) { // 425F56: current source length, after resize.
+            const auto count = raw_header_word(destination); // 425F5B
+            const auto* input = raw_header_pointer(source, 4); // 425F5D
+            auto* output = raw_header_pointer(destination, 4); // 425F60
             // BF7680 supports backward overlap. Omit only the zero-byte call,
             // after all native header loads, as in the existing raw providers.
             if (count != 0) std::memmove(output, input, count);
@@ -165,25 +181,26 @@ void* assign_native_string_header_00425f40(void* destination, const void* source
 void* concatenate_native_string_headers_004261a0(const void* left, void* output,
     const void* right, NativeStringRawPoolContext& strings) {
     const bool identical = output == left; // 4261C6, before both output stores.
-    clear_header(output);
+    raw_header_put(output, 0, 0);
+    raw_header_put(output, 4, 0);
     if (!identical) {
-        const auto left_length = word(left);
+        const auto left_length = raw_header_word(left);
         resize_native_string_header_0041dd40(output, strings, left_length, true);
-        if (word(left) != 0) {
-            const auto count = word(output); // 4261E3
-            auto* destination = pointer(output, 4); // 4261E5, BEFORE left.data
-            const auto* input = pointer(left, 4); // 4261E9
+        if (raw_header_word(left) != 0) {
+            const auto count = raw_header_word(output); // 4261E3
+            auto* destination = raw_header_pointer(output, 4); // 4261E5, BEFORE left.data
+            const auto* input = raw_header_pointer(left, 4); // 4261E9
             if (count != 0) std::memmove(destination, input, count);
         }
     }
     // C5E830's output-owned bit is zero for all the preceding effects/reads.
-    const auto appended = word(right); // 4261FA, before arming owned output.
+    const auto appended = raw_header_word(right); // 4261FA, before arming owned output.
     try {
         if (appended != 0) {
-            const auto old_length = word(output); // 42620D
+            const auto old_length = raw_header_word(output); // 42620D
             resize_native_string_header_0041dd40(output, strings, old_length + appended, true);
-            const auto* input = pointer(right, 4); // 42621C: current after resize
-            auto* destination = pointer(output, 4); // 42621F
+            const auto* input = raw_header_pointer(right, 4); // 42621C: current after resize
+            auto* destination = raw_header_pointer(output, 4); // 42621F
             std::memmove(at(destination, old_length), input, appended);
         }
     } catch (...) {
