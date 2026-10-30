@@ -1198,3 +1198,32 @@ reload, puborder,overflow andunpublishedfailuredebt. Sidecar0c160 confirms commo
 input/vectorstillarmed; completedtextual1cannotbechainedbeforeoption0. SDKlayout
 406d955 provesonlyprospective4Ballocator/16Bobject layout, no backendadmission.
 All9Textoff/ac60hold remain; fulloption0/loading/consumer/startup stillgated.
+
+Canonical table-registration48f9cae1 nowbinds actualownerallocation/rawstrings
+toexistingAA0D30/checked10hnamesappend with BORROWEDraw8 input/noinputcleanup.
+Privatephase/history/actualvoidreturn authority; BOTHnames/textualquiescence
+beforefastskip/alllifecyclegates; eitherderiveddebt requirescapturedCFF140.
+Primary+independentSource,strict014C,7oldmethods/textualtailinverse and14provider
+pins pass. Localretainedowner→AA0D30→checkedappend/insert+EH link/checks2/2
+11.56s; overlayremoved/cache+projectrestored, canonicalWin32checks2/2 12.46s.
+No newentry/game invocation/newbodycredit; all9Textoff/ac60hold unchanged.
+Actualstartupcaller construction/language/reload/fulloption0/raw16/loadedconsumer/
+Font48/activation/ABI/runtime gates remain. See
+CODEX_CANONICAL_TABLE_REGISTRATION_INTEGRATION.md.
+
+RawA9EC70 Corelookup nowreads actualmap/key with exactcapturedhash/current
+chain/compareoperand epochs, returningborrowednode/null. Primary+independent
+completeSource/65lineASMreview, strict014C, Corecountonce andcanonicalWin32
+checks2/2 pass13.29s. Priorsemantic/insertion/uppercase/resolver unchanged;
+ledgerrecordsqualifiedrawinterfacewithzeroduplicateNativebodycredit.
+Loadedconsumer/realapplicationcaller/fullresolver/loading/raw16/startup remain
+unbound; all9Textoff/ac60hold unchanged. See CODEX_LOCALE_MAP_FIND_INTEGRATION.md.
+
+Raw16fidelity079052: earlyscalarcapture/headerreload/puborder/guard differences
+areclassifiable underexistingvalidserializedWORDdomain; no blanketSDKrejection
+fromthosealone. Overflowstillunresolved: OriginalLAAtrue andconditionallegal
+largeallocationtrace reachesNativefallback/reject versusSDKsaturation/allocate.
+No newsizecap/privatepolicy/prereserve/model admitted. Genuineversionmatched
+callablevendor+heap/EH/ownership binding orvalidcomplete-domain proof remains
+required; read-onlyOriginalimage isnotexecutableprovider. Game-ownedstartup
+language/name/consumerbindings continue independently; fulloption0staysunbound.

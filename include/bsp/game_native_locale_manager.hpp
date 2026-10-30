@@ -38,6 +38,11 @@ public:
         std::uint32_t opaque_other_argument, GameNativeVfsApplication&,
         const GameNativeReadOnlyData&,
         NativeCockpitInterlockedDecrement const volatile&);
+    // Borrow a genuine completed raw8 name through real AA0D30/checked10h
+    // append. Never consume/return it; an old vector-element alias may end at
+    // the lower helper's legitimate growth epoch. Late history is metadata
+    // only. Failure retains graph/no drain or retry; normal return is not load.
+    void register_table_name(const void* borrowed_completed_raw8);
     // Bracket the actual shared drain; no eager/second locale destruction.
     // Root host retains the whole binding graph until successful detach.
     void before_shared_drain(GameSingletonHost&);
