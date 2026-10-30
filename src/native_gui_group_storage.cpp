@@ -11,13 +11,18 @@ GameNativeGuiGroupPoolProcess::GameNativeGuiGroupPoolProcess()
     : pool_(game_native_physical_pool_process().allocator_list_domain_00e188b4(),
         storage_00f8bfa0_) {}
 GameNativeGuiGroupPoolProcess& game_native_gui_group_pool_process() {
-    static GameNativeGuiGroupPoolProcess process;
-    return process;
+    // Same-owner backing follows the existing locale-pool process pattern.
+    // Source allocation and binding construction can fail before CD7440;
+    // only a completed constructor publishes this pointer. No C++ destructor
+    // later unbinds a pool whose real atexit registration returned nonzero.
+    static auto* const process = new GameNativeGuiGroupPoolProcess;
+    return *process;
 }
 int GameNativeGuiGroupPoolProcess::initialize_once_00cd7440() {
     std::lock_guard lock(startup_mutex_);
     if (state_==State::returned) return registration_status_;
-    if (state_==State::threw) throw std::logic_error("GUI Group pool startup previously threw");
+    if (state_!=State::unattempted)
+        throw std::logic_error("GUI Group pool startup cannot replay an entered or retired lifetime");
     state_=State::threw;
     pool_.initialize_00ac7410();
     registration_status_=std::atexit(&GameNativeGuiGroupPoolProcess::destroy_00ce0ae0);
@@ -30,7 +35,13 @@ NativeGuiGroupPool& GameNativeGuiGroupPoolProcess::pool_00f8bfa0() {
     return pool_;
 }
 void GameNativeGuiGroupPoolProcess::destroy_00ce0ae0() noexcept {
-    game_native_gui_group_pool_process().pool_.destroy_00ac71a0();
+    auto& process=game_native_gui_group_pool_process();
+    process.state_=State::retiring;
+    process.pool_.destroy_00ac71a0();
+    process.state_=State::retired;
+}
+bool GameNativeGuiGroupPoolProcess::native_operation_interrupted() const noexcept {
+    return state_==State::threw || state_==State::retiring;
 }
 } // namespace bsp::game
 namespace bsp {
