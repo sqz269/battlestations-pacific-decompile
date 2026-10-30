@@ -1,8 +1,10 @@
 # Raw EMPTY-UNCHANGED coupled integration
 
 The bounded ABA8D0 EMPTY-UNCHANGED library and its typed reference, Widget and
-retirement guards compile and link together. There is no owner/caller yet;
-all eight private raw host choices remain FALSE. This is a new C++ transport,
+retirement guards compile and link together. At this library checkpoint there
+was no owner/caller and all eight private raw host choices remained FALSE.
+The later owner/default-OFF host is recorded separately in
+CODEX_GUI_RAW_EMPTY_UNCHANGED_OWNER_INTEGRATION.md. This is a new C++ transport,
 not an Original thiscall/RET4/FH3/SEH replacement or whole-function acceptance.
 
 Frozen implementation packets are leaf `b14c870650ca536f4364f2838f4a5e6f68b6defe`,

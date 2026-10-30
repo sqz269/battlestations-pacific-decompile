@@ -44285,7 +44285,7 @@
     },
     {
       "id": "codex-raw-empty-unchanged-library",
-      "state": "source_reviewed_coupled_win32_pass_unwired",
+      "state": "integrated_private_owner_build_pass_host_gate_off",
       "worker": "gui_integration_review",
       "source_ready": false,
       "depends_on": [],
@@ -44297,7 +44297,7 @@
         "src/native_gui_text_empty_unchanged_storage.cpp",
         "docs/CODEX_GUI_RAW_EMPTY_UNCHANGED_STORAGE.md"
       ],
-      "notes": "Frozen b14c87065: bounded fully bound EMPTY-UNCHANGED branch, real Ensure/copy/current reads and captured cleanup. Independent Source review accepted; combined Win32 build/checks2/2 pass11.29s. No owner/caller, runtime, whole ABA8D0, vendor body or ABI credit."
+      "notes": "Bounded leaf b14c with shared b656/25bb is composed by retained owner7de99 and default-OFF host422308827. Independent Source reviews accept; combined MSVC Win32 checks2/2 pass12.34s. Fresh private Source/linkage/runtime qualification remains open; all nine raw choices FALSE. No whole caller/content/ABI/vendor-body/production credit."
     },
     {
       "id": "codex-raw-empty-reference-widget",
@@ -44328,7 +44328,7 @@
     },
     {
       "id": "codex-raw-empty-coupled-integration",
-      "state": "source_reviewed_coupled_win32_pass_unwired",
+      "state": "integrated_private_owner_host_build_pass_gate_off",
       "worker": "cc16-progress",
       "source_ready": false,
       "depends_on": [
@@ -44343,7 +44343,39 @@
         "docs/CODEX_GUI_RAW_EMPTY_UNCHANGED_ADMISSION.md",
         "docs/CODEX_GUI_RAW_EMPTY_UNCHANGED_INTEGRATION.md"
       ],
-      "notes": "Coupled8c381cf89: reviewed library plus all shared guards, combined build and existing checks2/2 pass11.29s. No leaf caller; all eight private host choices FALSE. Next owner contract must prove real wide input/return, fixed graph ordering, callback budget and retained Font/Main/Geometry custody before private qualification."
+      "notes": "Original coupled8c381 library/guards checks2/2 pass11.29s; final owner7de99 plus OFF host422308827 checks2/2 pass12.34s. Exact prepool graph, real wide-input/return, used0/fresh arrays, original Main/Font/native custody and sticky pre-scalar/retirement/closing fences are Source-reviewed. All nine choices FALSE; no runtime/whole caller/ABI/production acceptance."
+    },
+    {
+      "id": "codex-raw-empty-owner",
+      "state": "integrated_source_reviews_coupled_build_pass_gate_off",
+      "worker": "gui_integration_review",
+      "source_ready": false,
+      "depends_on": [
+        "codex-raw-empty-coupled-integration"
+      ],
+      "function_addresses": [],
+      "output_files": [
+        "include/bsp/game_native_raw_default_text_owner.hpp",
+        "src/game_native_raw_default_text_owner.cpp",
+        "docs/CODEX_GUI_RAW_EMPTY_UNCHANGED_OWNER.md"
+      ],
+      "notes": "Final7de99 includes held d5 and required post-live PREcompanion/count/scalar fence. Fixed graph/reservation before pools, real4C5E60 input -> fullBOUND EMPTY leaf/fresh Ensure -> raw436430 return -> q -> bound. Source/lifetime reviews accept; whole old CPP/HPP projection38/38,25 direct unchanged; combined Win32 checks2/2 pass12.34s. No runtime/ABI/fullcaller or production credit."
+    },
+    {
+      "id": "codex-raw-empty-host",
+      "state": "integrated_private_host_off_coupled_build_pass",
+      "worker": "cc16-progress",
+      "source_ready": false,
+      "depends_on": [
+        "codex-raw-empty-owner"
+      ],
+      "function_addresses": [],
+      "output_files": [
+        "src/game_native_gui_render_application.cpp",
+        "docs/CODEX_GUI_RAW_EMPTY_UNCHANGED_HOST.md",
+        "docs/CODEX_GUI_RAW_EMPTY_UNCHANGED_OWNER_INTEGRATION.md"
+      ],
+      "notes": "Default-FALSE ninth exclusive choice; actual Font bind-before-prepare, separate owner methods, inherited379 CRT preflight and afterdrain detach. Caller capacity1 perarray satisfies reviewed CLOSED0/0 demand, with exact used0/fresh fencing and no opaque universal bound. Whole oldFALSE host projection and Source review pass; coupled checks2/2 pass12.34s. All nine choices FALSE; fresh private qualification next."
     }
   ],
   "snapshot_after_analysis": {

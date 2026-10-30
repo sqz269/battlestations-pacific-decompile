@@ -1,8 +1,10 @@
 # Private raw EMPTY-UNCHANGED host attachment
 
-Unpublished candidate over main657828a9. Owner implementation, final capacity
-review, independent host review and coupled build remain pending. This document
-does not activate or qualify the candidate.
+Default-OFF host attachment over main657828a9, coupled with final owner7de99
+at422308827. Independent owner/lifetime/host Source reviews accepted the code;
+MSVC Win32 build and existing checks passed 2/2 in 12.34 seconds. This does not
+activate or runtime-qualify the candidate. See the separate owner-integration
+record for frozen commits, reviews and build receipts.
 
 The render-application host adds one default-FALSE private choice and includes
 it in the existing exclusive sum, for nine choices. It binds the real Font
@@ -30,7 +32,7 @@ unused records and failure history at the appropriate stages and retain any
 unexpected usage. A used0 observation is not terminal or native ownership proof.
 
 Source evidence is retained under ignored
-local/cc16_raw_empty_owner_preparation_20261029. No build, game, runtime/CRT
-module qualification, whole caller, ABI, visual or production acceptance is
-claimed for this host candidate. The older dc2c/71db runtime cohorts do not
+local/cc16_raw_empty_owner_preparation_20261029. No game, runtime/CRT module
+qualification, whole caller, ABI, visual or production acceptance is claimed
+for this host candidate. The older dc2c/71db runtime cohorts do not
 qualify its changed source or binary layout. All nine choices stay FALSE.

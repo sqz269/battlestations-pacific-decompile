@@ -974,3 +974,16 @@ follows. The next owner contract must settle fixed graph construction ordering,
 genuine wide input4C5E60/436430, explicit node-call budget, opaque extents and
 Font/Main/Geometry failure/retirement custody before private qualification.
 Frozen reports and proof limits: CODEX_GUI_RAW_EMPTY_UNCHANGED_INTEGRATION.md.
+
+The separate retained EMPTY owner7de99 and default-OFF host422308827 are now
+Source-reviewed and coupled with upstream469375 Movie records/vector work.
+MSVC Win32 build and existing checks2/2 pass12.34s. Real wide4C5E60 input,
+fresh Ensure/EMPTY leaf and raw436430 input return complete before bound.
+The closed0/0 NodeCall demand uses one positive record perarray; used0 remains
+separate from native terminal/count/pool custody. Review closed caught-reentry
+entry/completion gaps and a post-live PREcompanion/count/scalar fence; heldd5
+evidence stays preserved. Whole old ownerCPP/HPP projection38/38 and whole
+hostFALSE projection pass. All NINE raw choices remain FALSE. Fresh private
+Source/linkage/runtime admission is next; olddc2c/71db tests do not qualify this
+layout. No actual runtime, wholecontent/caller, full13/USN21/Page/P4, visual or
+ABI/production credit follows. See CODEX_GUI_RAW_EMPTY_UNCHANGED_OWNER_INTEGRATION.md.
