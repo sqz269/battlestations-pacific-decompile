@@ -20,7 +20,9 @@ All failure or pending debt retains the whole graph, with no native cleanup gues
 The library and all shared checks are now independently Source-reviewed and
 coupled Win32 build-tested; existing checks pass 2/2 in 11.29 seconds. See
 CODEX_GUI_RAW_EMPTY_UNCHANGED_INTEGRATION.md for the frozen commits and receipts.
-No caller selects the pointer. Owner/provider/callback-budget/input-return
-integration and actual qualification remain open. All eight private main
-choices remain FALSE. No whole ABA8D0/content/localisation/glyph/Page/ABI or
-production credit is claimed.
+A separate retained owner and default-OFF host now select the pointer for one
+exclusive fragment mode. Their real wide input/return, callback-budget and
+lifetime composition are independently Source-reviewed and coupled Win32
+build-tested; see CODEX_GUI_RAW_EMPTY_UNCHANGED_OWNER_INTEGRATION.md. Actual
+qualification remains open. All nine private raw choices remain FALSE. No
+whole ABA8D0/content/localisation/glyph/Page/ABI or production credit is claimed.
