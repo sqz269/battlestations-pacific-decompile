@@ -76,7 +76,7 @@ def write_control(path, nonce, pid, created, reason):
         temporary.unlink(missing_ok=True)
 
 
-def verify_waiting_root(pid, created, target, entry_address, expected_entry):
+def verify_waiting_root(pid, created, target, entry_address, expected_entry, expected_job):
     """Read only: independently bind the fixture PID/time/path and native spin."""
     reader = ProcessReader(pid)
     try:
@@ -90,6 +90,11 @@ def verify_waiting_root(pid, created, target, entry_address, expected_entry):
         code = wintypes.DWORD()
         if not reader.api.GetExitCodeProcess(reader.handle, C.byref(code)) or code.value != 259:
             raise RuntimeError("Wrong nonce stopped the fixture root")
+        member = wintypes.BOOL()
+        in_job = g.api(reader.api, "IsProcessInJob", wintypes.BOOL,
+                       wintypes.HANDLE, wintypes.HANDLE, C.POINTER(wintypes.BOOL))
+        if not in_job(reader.handle, expected_job, C.byref(member)) or not member.value:
+            raise RuntimeError("Fixture root is not in the expected owned leaf job")
         observed = reader.read(entry_address, 16)
         if observed != b"\xeb\xfe" + bytes.fromhex(expected_entry)[2:]:
             raise RuntimeError("Independent native entry barrier changed")
@@ -221,10 +226,15 @@ def main():
         g.checked(g.K.SetInformationJobObject(handle, 9, C.byref(limits), C.sizeof(limits)), "fixture job limits")
         jobs.append(handle); return handle
 
-    def active(handle):
+    def accounting(handle):
         data = g.JOB_ACCOUNTING(); count = g.DWORD()
         g.checked(g.K.QueryInformationJobObject(handle, 1, C.byref(data), C.sizeof(data), C.byref(count)), "fixture job accounting")
-        return data.active
+        return {**{name: getattr(data, name) for name, _ in data._fields_},
+                "returned_bytes": count.value, "buffer_bytes": C.sizeof(data),
+                "raw_hex": C.string_at(C.byref(data), C.sizeof(data)).hex()}
+
+    def active(handle):
+        return accounting(handle)["active"]
 
     try:
         token = g.restricted_token("medium-write-locked")
@@ -333,7 +343,7 @@ def main():
                         root_pid, root_created = int(pids[0]), int(created[0])
                         if not 0 < root_pid <= 0xffffffff or not 0 < root_created <= 0xffffffffffffffff:
                             raise RuntimeError("Invalid native helper PID/FILETIME")
-                        verify_waiting_root(root_pid, root_created, target, pe["image_base"] + pe["entry_rva"], entry_bytes)
+                        verify_waiting_root(root_pid, root_created, target, pe["image_base"] + pe["entry_rva"], entry_bytes, root_job)
                         readiness = dict(schema="bsp.dr.fixture-ready.v1", pid=root_pid,
                             process_created_filetime=str(root_created), nonce=stop_nonce, expected_exe=str(target),
                             fixture_only=True, filetime_source="native GetProcessTimes, independently read by parent")
@@ -345,9 +355,14 @@ def main():
                     if (f"nudge_ignored reason=nonce_mismatch pid={root_pid}\n" in client_now and
                             "fixture_wrong_nonce_status=0\n" in helper_now):
                         observed = verify_waiting_root(root_pid, root_created, target,
-                            pe["image_base"] + pe["entry_rva"], entry_bytes)
-                        if active(root_job) != 1:
-                            raise RuntimeError("Wrong nonce changed the guarded leaf job")
+                            pe["image_base"] + pe["entry_rva"], entry_bytes, root_job)
+                        report.update(wrong_nonce_root_job_member=True,
+                            wrong_nonce_job_accounting=[accounting(handle) for handle in jobs],
+                            job_accounting_layout={"dword_bytes": C.sizeof(g.DWORD), "structure_bytes": C.sizeof(g.JOB_ACCOUNTING),
+                                "offsets": {name: getattr(g.JOB_ACCOUNTING, name).offset for name, _ in g.JOB_ACCOUNTING._fields_}})
+                        leaf_active = report["wrong_nonce_job_accounting"][0]["active"]
+                        if leaf_active != 1:
+                            raise RuntimeError(f"Wrong nonce changed the guarded leaf job: active={leaf_active}")
                         report.update(wrong_nonce_ignored=True, wrong_nonce_root_alive=True,
                                       wrong_nonce_native_entry_bytes=observed)
                         request = dict(schema="bsp.dr.fixture-stop.v1", pid=root_pid,
