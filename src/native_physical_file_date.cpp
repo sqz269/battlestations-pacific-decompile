@@ -81,12 +81,12 @@ void* dispatch_build(void* provider, void* output, const void* suffix,
 } // namespace
 
 bool equal_native_string_headers_00435c40(const void* left, const void* right) {
-    const auto left_length = word(left);
-    const auto right_length = word(right);
+    const auto left_length = raw_header_word(left);
+    const auto right_length = raw_header_word(right);
     if (left_length != right_length) return false;
     if (left_length == 0) return true;
-    const auto* right_data = static_cast<const char*>(pointer(right, 4));
-    const auto* left_data = static_cast<const char*>(pointer(left, 4));
+    const auto* right_data = static_cast<const char*>(raw_header_pointer(right, 4));
+    const auto* left_data = static_cast<const char*>(raw_header_pointer(left, 4));
     return _stricmp(left_data, right_data) == 0;
 }
 
