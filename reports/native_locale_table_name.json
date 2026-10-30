@@ -1,0 +1,130 @@
+{
+  "address": "00aa0d30",
+  "source_symbol": "bsp::register_native_locale_table_name_00aa0d30",
+  "status": "source_bridge_isolated_win32_object_compile_only_uncalled",
+  "base_revision": "e00b43c07546ae86780d6b183d7bab2b11043ed6",
+  "owned_files": [
+    "include/bsp/native_locale_table_name.hpp",
+    "src/native_locale_table_name.cpp",
+    "docs/NATIVE_LOCALE_TABLE_NAME.md",
+    "reports/native_locale_table_name.json"
+  ],
+  "original_evidence": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aa0d30\\assembly.txt",
+    "sha256": "652200cfcf6c7bb3029248f50c2578122636de0fb17b45412094e84e6d17f7bd",
+    "complete_instructions": [
+      "00aa0d30 ADD ECX,0x4",
+      "00aa0d33 JMP 0x00450540"
+    ],
+    "source_of_evidence": "existing saved export; no live Ghidra/write",
+    "old_name_preserved": "BSP_Localization_RegisterTableName"
+  },
+  "source_contract": {
+    "calling_convention": "new ordinary C++ void API; explicit additional NativeStringRawPoolContext reference",
+    "address_arithmetic": "uint32(manager)+4 wraps under Win32 static assertions",
+    "callee": "append_native_string_header_vector_00450540(adjusted,0u,actual_name_header8,strings)",
+    "unused_edx_zero": "only current Source helper parameter contract; no Original register/tail-stack equivalence",
+    "borrowed_inputs": [
+      "actual live manager/table-vector header",
+      "actual source native8B name and reached backing",
+      "SAME retained raw string-pool cells and services"
+    ],
+    "no_new": [
+      "local header or copy",
+      "manager/string/pool/provider",
+      "validation or cleanup",
+      "state/publication/getter",
+      "startup/caller",
+      "Native ABI/EAX/FH3/SEH or runtime guarantee"
+    ]
+  },
+  "existing_callee_closure": {
+    "source_dependencies": [
+      {
+        "path": "include/bsp/native_string_vector_append.hpp",
+        "source_revision": "e00b43c07546ae86780d6b183d7bab2b11043ed6",
+        "git_blob_sha256": "fd8913146555084faa9111a2779ef9f8f7a00d520b2fcac555a98045b71a0600"
+      },
+      {
+        "path": "src/native_string_vector_append.cpp",
+        "source_revision": "e00b43c07546ae86780d6b183d7bab2b11043ed6",
+        "git_blob_sha256": "3466e182a77d60aed1f36695c69a3c4433cfe096b7e6709d8cc26e83259ef99f"
+      },
+      {
+        "path": "include/bsp/native_string_uninitialized_fill.hpp",
+        "source_revision": "e00b43c07546ae86780d6b183d7bab2b11043ed6",
+        "git_blob_sha256": "52e930db91770e1f1a114d102de1ec1e3ed7b578bd91b3f61f14c6587bc83d12"
+      },
+      {
+        "path": "src/native_string_uninitialized_fill.cpp",
+        "source_revision": "e00b43c07546ae86780d6b183d7bab2b11043ed6",
+        "git_blob_sha256": "8bdbf32622669bedb77389d165c9ed89f23deb76c68534f71fe9337803c6393f"
+      },
+      {
+        "path": "include/bsp/native_string_vector_insert_one.hpp",
+        "source_revision": "e00b43c07546ae86780d6b183d7bab2b11043ed6",
+        "git_blob_sha256": "d8fa3550e4e4e79239b2884298b918634b5c85cff61abcf8cf232aca918f0a63"
+      },
+      {
+        "path": "src/native_string_vector_insert_one.cpp",
+        "source_revision": "e00b43c07546ae86780d6b183d7bab2b11043ed6",
+        "git_blob_sha256": "3ddd5a305a61e583d9f4605d826338eeee065847bd02c54f5dcd5e29c809ab5b"
+      },
+      {
+        "path": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+        "source_revision": "e00b43c07546ae86780d6b183d7bab2b11043ed6",
+        "git_blob_sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613"
+      },
+      {
+        "path": "src/native_invalid_parameter_noinfo_call.cpp",
+        "source_revision": "e00b43c07546ae86780d6b183d7bab2b11043ed6",
+        "git_blob_sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b"
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "source_revision": "e00b43c07546ae86780d6b183d7bab2b11043ed6",
+        "git_blob_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+      },
+      {
+        "path": "include/bsp/native_string_raw_domain.hpp",
+        "source_revision": "e00b43c07546ae86780d6b183d7bab2b11043ed6",
+        "git_blob_sha256": "4a200823b27a04d0ecae916467946e2ef60d125162d8f215ea1b288ee9b84b5d"
+      }
+    ],
+    "qualification": "existing checked raw append/fill/insert-one and actual pool paths; failures propagate without bridge interception. Qualified BF6713 uses potentially returning current Source _invalid_parameter_noinfo import; Original handler/allocator/CRT equivalence remains unproved. No new vendor-library body analysis or ownership authority."
+  },
+  "validation": {
+    "kind": "single existing-MSVC-infrastructure Win32 translation-unit object compile",
+    "exit_code": 0,
+    "coff_machine": "0x14c",
+    "compile_receipt": "local\\raw_locale_table_name_compile_cc9_20261030\\compile_receipt.json",
+    "compile_receipt_sha256": "7eddb9db7751b23f1568769d83b65d52a826a22d8df0cb666344bf2144fa3dcf",
+    "cpp_sha256_at_compile": "d64ef922320884c97c885b9cc65c5c2b87255c1d735225a39ba5aec6825a110c",
+    "hpp_sha256_at_compile": "ffc79b027057b619f9d5acb8e51c057a09ff0fedcaca16e050c0b9a07924a955",
+    "object_sha256": "dc7d7c568e7499317d0c93d257f638dbb1473d5cece20f5e19ba4dd5660df849",
+    "log_sha256": "9e3421bf3356580556e0d641ea306d987e6e8461062c0d253217b7e3821b0fb2",
+    "new_tests": 0,
+    "probes_or_executables": 0,
+    "full_build_run": false,
+    "games_run": 0,
+    "Ghidra_mutations": 0
+  },
+  "source_files_sha256": {
+    "include/bsp/native_locale_table_name.hpp": "ffc79b027057b619f9d5acb8e51c057a09ff0fedcaca16e050c0b9a07924a955",
+    "src/native_locale_table_name.cpp": "d64ef922320884c97c885b9cc65c5c2b87255c1d735225a39ba5aec6825a110c",
+    "docs/NATIVE_LOCALE_TABLE_NAME.md": "ae4be77e82f43fd30f3b7602c0b0490494b3e0fa1a287f8284c3bbf7cbf6a4b0"
+  },
+  "remaining_integration": [
+    "Root CMake/ledger/metadata and coupled build/review",
+    "genuine canonical raw locale manager construction/publication/lifetime",
+    "raw language/map/parser/sidecar loading and data readiness",
+    "later caller/runtime/ABI/handler equivalence qualifications"
+  ],
+  "not_proven": [
+    "loaded table/lanx vectors",
+    "uppercase/Text admission",
+    "canonical F8BC4C producer",
+    "startup or runtime validation",
+    "whole locale caller/Page/P4/production"
+  ]
+}

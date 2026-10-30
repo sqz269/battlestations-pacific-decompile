@@ -1010,3 +1010,14 @@ font choice or frozen artifact was changed. Prospective v5 evaluator Source
 review is complete; operator permission cannot waive this separate domain
 conflict. Work now advances the genuine raw locale-manager publication/load
 contract required by A9EC30, with semantic LocaleTables substitution excluded.
+
+Three raw locale library entries are Source-reviewed and registered: A9EBA0
+WORD mapping, A9EC30 actual raw8 uppercase loop, and AA0D30 table-name append
+through the existing raw vector/pool helper. Combined Win32 Release build and
+existing checks2/2 pass14.19s. Corrected names/comments/ABI evidence are saved
+in Ghidra and affected exports refreshed. Current CRT/handler and new ordinary
+C++ ABI qualifications remain explicit; none of these bodies was executed.
+Canonical publication/load/lifetime and startup admission remain unbound,
+all nine choices stay FALSE, and frozen ac60 remains held. A separate dormant
+raw constructor/base packet is next; no semantic object or zero-loaded manager
+is a substitute. See CODEX_RAW_LOCALE_BINDING_INTEGRATION.md.

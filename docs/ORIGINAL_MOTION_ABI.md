@@ -167,3 +167,34 @@ request to check expiry/restoration. These fixture settings are not evidence
 about the retail game's thread precision. Live histogram results belong in a
 separate run report; no PC24 classification changes follow from this tool
 update.
+
+
+## Original USN04 live histogram, 2026-10-30 UTC
+
+Original PID13880 had initial/original-entry/main TID85524. A20-hit marker at
+00825F20 saved15 genuine hits across six unit addresses before guard receipt
+IO failed. The complete orphan temp, not the stale published receipt, is the
+source: `local/original-baseline-clock-20261030/launch-orphan-recovered.json`.
+
+| Event TID | Main thread | Same-context x87 CW | Hits |
+| --- | --- | --- | ---: |
+| 10228 | no | 027Fh | 3 |
+| 117204 | no | 027Fh | 3 |
+| 128976 | no | 027Fh | 3 |
+| 100276 | no | 027Fh | 3 |
+| 62112 | no | 027Fh | 1 |
+| 114196 | no | 027Fh | 2 |
+
+All observed entries are non-main at027Fh; no main-thread entry was observed.
+The sample does not establish exclusive worker execution or measure the main
+thread's live CW. None of the hit units equals CSV unit `4225DB20`; collection
+started after that trace, so its per-row precision remains unobserved. These hits cannot be assumed to have24-bit PC24 precision.
+No classification/body changed; cc13 and cc9 received messages1068/1069.
+The run uses the explicitly selected installed modded data/runtime DLLs.
+
+The accompanying schema3 capture has500 successful reads,499 clean clocks and
+one torn row. GameTime advanced24.928272s over24.950430s wall time. Native clock
+cell widths/writers above and the clock-only CLI provide coverage endpoints;
+OnMove frames8134–9626 are application frames, not mission-relative steps.
+Final guard cleanup fields were not persisted after its receipt failure;
+protected original files and EXE/xlive hashes were separately verified unchanged.
