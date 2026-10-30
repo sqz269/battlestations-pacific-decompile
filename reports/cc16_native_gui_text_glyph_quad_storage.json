@@ -1,0 +1,1108 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-gui-text-glyph-quad-storage",
+  "classification": "whole_live_raw_storage_body_with_mandatory_genuine_entered_helper_contracts_not_activation",
+  "baseline": "c8c38e7d768e9ad298161d70d7d25f028434f05b",
+  "utc": "2026-10-30T17:07:53.198667+00:00",
+  "scope": {
+    "owned_files": [
+      "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "src/native_gui_text_glyph_quad_storage.cpp",
+      "docs/CC16_NATIVE_GUI_TEXT_GLYPH_QUAD_STORAGE.md",
+      "reports/cc16_native_gui_text_glyph_quad_storage.json"
+    ],
+    "leased_addresses": [
+      "00ab98f0"
+    ],
+    "old_source_modified": false,
+    "cmake_ledger_shared_owner_or_context_modified": false,
+    "ghidra_mutated": false,
+    "build_test_probe_or_native_execution": false,
+    "native_or_game_process_started": false,
+    "process_control": false,
+    "wrapped_layout_or_ABAED0_scope_changed": false
+  },
+  "analysis_identity": {
+    "configured_project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "read_only_live_function_count": 77632,
+    "autostart_disabled": true,
+    "source_before_assembly": true,
+    "bad_undefined_void_prototype_not_used": true
+  },
+  "original_pe": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "length": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "function": {
+    "entry": "00ab98f0",
+    "end": "00ab9fc2",
+    "physical_span_bytes": 1747,
+    "native_instruction_count": 485,
+    "native_blocks": 37,
+    "native_direct_ordinary_calls": 19,
+    "native_captured_target_calls": 4,
+    "native_body_sha256": "795b76de15e3a52d032bfca739ca1cffe9714a83d7d619fd6aae9302aa13d236",
+    "original_abi": "ECX actualText; ten actual mutableDWORDcallee homes; RET28; incomingEDXunconsumed; observedcallers ignore incidentalreturnregisters",
+    "new_source_symbol": "write_native_gui_text_glyph_quad_storage_00ab98f0",
+    "new_source_signature": "void(void*,volatile uint32_t(&homes)[10],NativeGuiTextGlyphQuadStorageContext&,NativeGuiTextGlyphQuadStorageAcquired&)",
+    "source_coverage": "whole prefix/allordinarybranches/requiredrawchildschedule andthree cleanupactions; valid actualstorage/providers required; OriginalABI/privateframes/fault/FH3/SEH/secondarytransport andconcretebinding unproved"
+  },
+  "shared_consumer_contract": {
+    "peer": "frontend_canonical_authority_closure",
+    "peer_sealed_caller_commit": "0bc258c71f44b0729da801f3aa9b598856d2276f",
+    "peer_required_binding": "write_glyph_quad_00ab98f0(void* captured_actual_text,volatile uint32_t(&actual_homes)[10])",
+    "agreement_evidence": "directworkercoordination inthissession; sharedABIunchanged",
+    "same_float3_at_homes_zero_based": [
+      1,
+      4,
+      5
+    ],
+    "caller_behavior": "Y/Zzeroedoncebeforeemit; Xcopiedfromseparatepenbeforeeachcall; callerrebuilds10homesoneachnormalcall andretainsglyph/stream/index/heightoutsidehomes",
+    "postreturn": "callerreloadscapturedglyph+12 andCURRENTText+1D8; neverfrommutatedhomes0/2/7; penisnotcopiedbackfromposX",
+    "home_reuse": "SAME10wordarray maybereusedonlyafterwholenormalreturn; oldrecordhomeaddressisdiagnosticidentityonly; enteredfailureholdsbacking/noadvance/retry"
+  },
+  "homes": [
+    {
+      "index": 0,
+      "input": "glyph pointer",
+      "effects": [
+        "captureearly actualglyph",
+        "signedbearing DWORD",
+        "unsignedwidth DWORD",
+        "rawright FLOATspill",
+        "firstVertex+1 DWORD"
+      ]
+    },
+    {
+      "index": 1,
+      "input": "actualfloat3pointer",
+      "effects": [
+        "initialYthenXreads",
+        "CURRENTpointer/Xreloadonlylate longreferencearm"
+      ]
+    },
+    {
+      "index": 2,
+      "input": "actualvertexstream",
+      "effects": [
+        "captureearly stream",
+        "firstVertex+2 DWORD"
+      ]
+    },
+    {
+      "index": 3,
+      "input": "actualcurrentindexwriteptr",
+      "effects": [
+        "latecaptureoncebefore6WORDwrites"
+      ]
+    },
+    {
+      "index": 4,
+      "input": "samefloat3ptr",
+      "effects": [
+        "neverread/written"
+      ]
+    },
+    {
+      "index": 5,
+      "input": "samefloat3ptr",
+      "effects": [
+        "neverread/written"
+      ]
+    },
+    {
+      "index": 6,
+      "input": "quadIndexDWORD",
+      "effects": [
+        "onelatevolatileload then2wrappingADDs"
+      ]
+    },
+    {
+      "index": 7,
+      "input": "unsignedfontheightDWORD",
+      "effects": [
+        "zeroextendlowWORDintoDWORD",
+        "rawbottomFLOATspill",
+        "individualFFbytes inNativeorder,repeatedpervertex",
+        "rawallocationword",
+        "capturedchildword",
+        "ADDRESSofhomepassedto005DAD40",
+        "CURRENTwordreadbystate0cleanup"
+      ]
+    },
+    {
+      "index": 8,
+      "input": "firstVertexDWORD",
+      "effects": [
+        "earlycaptureonce"
+      ]
+    },
+    {
+      "index": 9,
+      "input": "unsignedUTF16unitDWORD",
+      "effects": [
+        "CURRENTlowWORDmembershipcomparisons",
+        "CURRENTfullDWORDcapturebeforeAB81C0"
+      ]
+    }
+  ],
+  "operand_effect_contract": {
+    "native_frame_base": "F=entryESP-58; homesF5C..F80; scratchF14..F48",
+    "actual_scratch": "14uninitializedDWORDwords inretainedrecord; F24/F28reusedcoordinate/String/Wide/pivot/offsetstorage; noTypedString/owner/glyph cast",
+    "position_stream_offsets": [
+      "+8buffer",
+      "+Cstride",
+      "+10positionOffset",
+      "+28UVoffset",
+      "signed+34packedColoroffset",
+      "floatColoroffsets+38/+3C/+40/+44"
+    ],
+    "vertex_order": [
+      "TL",
+      "TR",
+      "BR",
+      "BL"
+    ],
+    "firstZ_epoch": "firstoutputposition+8=0 beforebottomFSUBP/FSTP; neverinputfloat3Z reset",
+    "color": "capturedD7A24Cfloatbits forfloatattributes; CURRENTlivehome7DWORD forpackedcolor; individualFFrestorebytes preserved",
+    "indices": "Nativeorderhalf1=q4+1,half0=q4,half3=q4,half2=q4+2,half4=q4+2,half5=q4+3; Wordwrap/low16; norangeguard",
+    "membership": "CURRENTText1B0,1AC,DC,1A4,1A8; NativeactualF8BE50nullpointerarm; lowWORDcodes; noUnicode/defaultglyph policy",
+    "zeroUV": "all4actualmappedUVpairs; homes0/2reloadedAFTERrespective stride reads",
+    "no_snapshot_or_home_restoration": true,
+    "no_new_font_mesh_glyph_material_or_stream_default": true
+  },
+  "x87": {
+    "native_lexical_instruction_count": 78,
+    "source_instruction_count": 78,
+    "source_nonempty_asm_block_counts": [
+      40,
+      2,
+      13,
+      9,
+      14
+    ],
+    "whole_mnemonic_order_matches": true,
+    "native_instructions": [
+      {
+        "address": "00ab9927",
+        "mnemonic": "fild",
+        "instruction": "FILD dword ptr [ESP + 0x5c]"
+      },
+      {
+        "address": "00ab992b",
+        "mnemonic": "fadd",
+        "instruction": "FADD float ptr [EAX]"
+      },
+      {
+        "address": "00ab9936",
+        "mnemonic": "fst",
+        "instruction": "FST float ptr [ESP + 0x18]"
+      },
+      {
+        "address": "00ab993a",
+        "mnemonic": "fld",
+        "instruction": "FLD float ptr [EDI + 0x1d8]"
+      },
+      {
+        "address": "00ab994e",
+        "mnemonic": "fild",
+        "instruction": "FILD dword ptr [ESP + 0x5c]"
+      },
+      {
+        "address": "00ab995f",
+        "mnemonic": "fmulp",
+        "instruction": "FMULP"
+      },
+      {
+        "address": "00ab996b",
+        "mnemonic": "faddp",
+        "instruction": "FADDP"
+      },
+      {
+        "address": "00ab996d",
+        "mnemonic": "fstp",
+        "instruction": "FSTP float ptr [ESP + 0x5c]"
+      },
+      {
+        "address": "00ab9971",
+        "mnemonic": "fld",
+        "instruction": "FLD float ptr [ESP + 0x14]"
+      },
+      {
+        "address": "00ab9975",
+        "mnemonic": "fild",
+        "instruction": "FILD dword ptr [ESP + 0x78]"
+      },
+      {
+        "address": "00ab9984",
+        "mnemonic": "faddp",
+        "instruction": "FADDP"
+      },
+      {
+        "address": "00ab9988",
+        "mnemonic": "fld1",
+        "instruction": "FLD1"
+      },
+      {
+        "address": "00ab998d",
+        "mnemonic": "fadd",
+        "instruction": "FADD ST1,ST0"
+      },
+      {
+        "address": "00ab9994",
+        "mnemonic": "fsubp",
+        "instruction": "FSUBP"
+      },
+      {
+        "address": "00ab9996",
+        "mnemonic": "fstp",
+        "instruction": "FSTP float ptr [ESP + 0x78]"
+      },
+      {
+        "address": "00ab999a",
+        "mnemonic": "fld",
+        "instruction": "FLD float ptr [ESP + 0x18]"
+      },
+      {
+        "address": "00ab999e",
+        "mnemonic": "fld",
+        "instruction": "FLD double ptr [0x00cec380]"
+      },
+      {
+        "address": "00ab99a4",
+        "mnemonic": "fdiv",
+        "instruction": "FDIV ST1,ST0"
+      },
+      {
+        "address": "00ab99a6",
+        "mnemonic": "fxch",
+        "instruction": "FXCH"
+      },
+      {
+        "address": "00ab99a8",
+        "mnemonic": "fstp",
+        "instruction": "FSTP float ptr [ESP + 0x18]"
+      },
+      {
+        "address": "00ab99ac",
+        "mnemonic": "fld",
+        "instruction": "FLD float ptr [ESP + 0x24]"
+      },
+      {
+        "address": "00ab99b0",
+        "mnemonic": "fld",
+        "instruction": "FLD double ptr [0x00cef1b8]"
+      },
+      {
+        "address": "00ab99b6",
+        "mnemonic": "fdiv",
+        "instruction": "FDIV ST1,ST0"
+      },
+      {
+        "address": "00ab99b8",
+        "mnemonic": "fld",
+        "instruction": "FLD float ptr [0x00e12fd4]"
+      },
+      {
+        "address": "00ab99be",
+        "mnemonic": "fld",
+        "instruction": "FLD ST0"
+      },
+      {
+        "address": "00ab99c0",
+        "mnemonic": "fmulp",
+        "instruction": "FMULP ST3"
+      },
+      {
+        "address": "00ab99c2",
+        "mnemonic": "fxch",
+        "instruction": "FXCH ST2"
+      },
+      {
+        "address": "00ab99c4",
+        "mnemonic": "fstp",
+        "instruction": "FSTP float ptr [ESP + 0x1c]"
+      },
+      {
+        "address": "00ab99c8",
+        "mnemonic": "fld",
+        "instruction": "FLD float ptr [ESP + 0x5c]"
+      },
+      {
+        "address": "00ab99cc",
+        "mnemonic": "fdivrp",
+        "instruction": "FDIVRP ST3,ST0"
+      },
+      {
+        "address": "00ab99ce",
+        "mnemonic": "fxch",
+        "instruction": "FXCH ST2"
+      },
+      {
+        "address": "00ab99d0",
+        "mnemonic": "fstp",
+        "instruction": "FSTP float ptr [ESP + 0x24]"
+      },
+      {
+        "address": "00ab99d4",
+        "mnemonic": "fld",
+        "instruction": "FLD float ptr [ESP + 0x78]"
+      },
+      {
+        "address": "00ab99d8",
+        "mnemonic": "fdivrp",
+        "instruction": "FDIVRP ST2,ST0"
+      },
+      {
+        "address": "00ab99ea",
+        "mnemonic": "fmulp",
+        "instruction": "FMULP"
+      },
+      {
+        "address": "00ab99ec",
+        "mnemonic": "fstp",
+        "instruction": "FSTP float ptr [ESP + 0x28]"
+      },
+      {
+        "address": "00ab99f0",
+        "mnemonic": "fld",
+        "instruction": "FLD float ptr [ESP + 0x18]"
+      },
+      {
+        "address": "00ab99f4",
+        "mnemonic": "fstp",
+        "instruction": "FSTP float ptr [ECX]"
+      },
+      {
+        "address": "00ab99f6",
+        "mnemonic": "fld",
+        "instruction": "FLD float ptr [ESP + 0x1c]"
+      },
+      {
+        "address": "00ab99fa",
+        "mnemonic": "fstp",
+        "instruction": "FSTP float ptr [ECX + 0x4]"
+      },
+      {
+        "address": "00ab9dce",
+        "mnemonic": "fld",
+        "instruction": "FLD float ptr [0x00d5c5c0]"
+      },
+      {
+        "address": "00ab9ddd",
+        "mnemonic": "fstp",
+        "instruction": "FSTP float ptr [ESP]"
+      },
+      {
+        "address": "00ab9edb",
+        "mnemonic": "fld",
+        "instruction": "FLD float ptr [EDI + 0x1b8]"
+      },
+      {
+        "address": "00ab9ee5",
+        "mnemonic": "fstp",
+        "instruction": "FSTP float ptr [ESP + 0x24]"
+      },
+      {
+        "address": "00ab9eea",
+        "mnemonic": "fld",
+        "instruction": "FLD float ptr [EDI + 0x1bc]"
+      },
+      {
+        "address": "00ab9ef0",
+        "mnemonic": "fstp",
+        "instruction": "FSTP float ptr [ESP + 0x2c]"
+      },
+      {
+        "address": "00ab9ef4",
+        "mnemonic": "fld",
+        "instruction": "FLD float ptr [ESP + 0x28]"
+      },
+      {
+        "address": "00ab9ef8",
+        "mnemonic": "fadd",
+        "instruction": "FADD float ptr [ESP + 0x1c]"
+      },
+      {
+        "address": "00ab9efc",
+        "mnemonic": "fstp",
+        "instruction": "FSTP float ptr [ESP + 0x34]"
+      },
+      {
+        "address": "00ab9f00",
+        "mnemonic": "fld",
+        "instruction": "FLD float ptr [ESP + 0x2c]"
+      },
+      {
+        "address": "00ab9f04",
+        "mnemonic": "fadd",
+        "instruction": "FADD float ptr [ESP + 0x20]"
+      },
+      {
+        "address": "00ab9f08",
+        "mnemonic": "fstp",
+        "instruction": "FSTP float ptr [ESP + 0x38]"
+      },
+      {
+        "address": "00ab9f0c",
+        "mnemonic": "fld",
+        "instruction": "FLD float ptr [ESP + 0x24]"
+      },
+      {
+        "address": "00ab9f10",
+        "mnemonic": "fsub",
+        "instruction": "FSUB double ptr [0x00d7a220]"
+      },
+      {
+        "address": "00ab9f16",
+        "mnemonic": "fstp",
+        "instruction": "FSTP float ptr [ESP + 0x3c]"
+      },
+      {
+        "address": "00ab9f2d",
+        "mnemonic": "fld",
+        "instruction": "FLD float ptr [ESP + 0x18]"
+      },
+      {
+        "address": "00ab9f35",
+        "mnemonic": "fsub",
+        "instruction": "FSUB double ptr [0x00d7a358]"
+      },
+      {
+        "address": "00ab9f3c",
+        "mnemonic": "fstp",
+        "instruction": "FSTP float ptr [ESP + 0x34]"
+      },
+      {
+        "address": "00ab9f40",
+        "mnemonic": "fld",
+        "instruction": "FLD float ptr [ESP + 0x20]"
+      },
+      {
+        "address": "00ab9f44",
+        "mnemonic": "fsub",
+        "instruction": "FSUB double ptr [0x00d5c7a8]"
+      },
+      {
+        "address": "00ab9f4a",
+        "mnemonic": "fstp",
+        "instruction": "FSTP float ptr [ESP + 0x38]"
+      },
+      {
+        "address": "00ab9f4e",
+        "mnemonic": "fld",
+        "instruction": "FLD float ptr [ESP + 0x24]"
+      },
+      {
+        "address": "00ab9f52",
+        "mnemonic": "fsub",
+        "instruction": "FSUB double ptr [0x00d7a220]"
+      },
+      {
+        "address": "00ab9f58",
+        "mnemonic": "fstp",
+        "instruction": "FSTP float ptr [ESP + 0x3c]"
+      },
+      {
+        "address": "00ab9f62",
+        "mnemonic": "fld",
+        "instruction": "FLD float ptr [ECX]"
+      },
+      {
+        "address": "00ab9f68",
+        "mnemonic": "fsub",
+        "instruction": "FSUB double ptr [0x00d06880]"
+      },
+      {
+        "address": "00ab9f6f",
+        "mnemonic": "fdiv",
+        "instruction": "FDIV double ptr [0x00cec380]"
+      },
+      {
+        "address": "00ab9f75",
+        "mnemonic": "fadd",
+        "instruction": "FADD float ptr [ESP + 0x1c]"
+      },
+      {
+        "address": "00ab9f79",
+        "mnemonic": "fstp",
+        "instruction": "FSTP float ptr [ESP + 0x44]"
+      },
+      {
+        "address": "00ab9f7d",
+        "mnemonic": "fld",
+        "instruction": "FLD float ptr [ESP + 0x44]"
+      },
+      {
+        "address": "00ab9f81",
+        "mnemonic": "fsub",
+        "instruction": "FSUB double ptr [0x00d7a358]"
+      },
+      {
+        "address": "00ab9f87",
+        "mnemonic": "fstp",
+        "instruction": "FSTP float ptr [ESP + 0x44]"
+      },
+      {
+        "address": "00ab9f8b",
+        "mnemonic": "fld",
+        "instruction": "FLD float ptr [ESP + 0x20]"
+      },
+      {
+        "address": "00ab9f8f",
+        "mnemonic": "fsub",
+        "instruction": "FSUB double ptr [0x00d5c7a8]"
+      },
+      {
+        "address": "00ab9f95",
+        "mnemonic": "fstp",
+        "instruction": "FSTP float ptr [ESP + 0x48]"
+      },
+      {
+        "address": "00ab9f99",
+        "mnemonic": "fld",
+        "instruction": "FLD float ptr [ESP + 0x24]"
+      },
+      {
+        "address": "00ab9f9d",
+        "mnemonic": "fsub",
+        "instruction": "FSUB double ptr [0x00d7a220]"
+      },
+      {
+        "address": "00ab9fa3",
+        "mnemonic": "fstp",
+        "instruction": "FSTP float ptr [ESP + 0x4c]"
+      }
+    ],
+    "control_status": "noreset/clear/CWsave-restore/normalization; eachgroupusesambientstate, includinggenuineproviderchanges",
+    "critical_precision": [
+      "FSTrawleftpreservesextendedstackvalueforright arithmetic",
+      "FSTPrawrighthome0 andrawbottomhome7 beforelaterFLD",
+      "explicit+1/-1 retained",
+      "doublewidth/height andCURRENTmutableE12FD4 atNativephases",
+      "firstpositionX/Y FLD/FSTP preserved",
+      "shadowFLD/FSTP preserved",
+      "offsetX/Y spills F24/F28 preserved",
+      "longarmF40FLOATspill,reload,subtract,spill preserved"
+    ],
+    "SSE_moves": "RawDWORD bitcopies or MOVSS withnativewidth/order; noadditionalCPPfloatingarithmetic orfloatreturnhelpers",
+    "proof_limit": "staticmnemonic/operandreview only; no compiledinstruction/status/nativefault/runtime equalityclaim",
+    "branch_predicates": [
+      "parentBYTE1B4!=0",
+      "parentBYTE1B4==0 andCURRENTreferenceDWORD_EC==1",
+      "parentBYTE1B4==0 andCURRENTreferenceDWORD_EC!=1; reference_EC meaningprovisional"
+    ]
+  },
+  "ordinary_direct_call_receipts": [
+    {
+      "site": "00ab9d38",
+      "target": "00ab78a0",
+      "bytes": "e863dbffff",
+      "source_provider": "required.allocate_00ab78a0"
+    },
+    {
+      "site": "00ab9d4f",
+      "target": "00ab9650",
+      "bytes": "e8fcf8ffff",
+      "source_provider": "required.construct_00ab9650"
+    },
+    {
+      "site": "00ab9d70",
+      "target": "005dad40",
+      "bytes": "e8cb0fb2ff",
+      "source_provider": "required.append_005dad40"
+    },
+    {
+      "site": "00ab9d8c",
+      "target": "00aa6720",
+      "bytes": "e88fc9feff",
+      "source_provider": "required.scene_node_00aa6720"
+    },
+    {
+      "site": "00ab9d93",
+      "target": "00ab8530",
+      "bytes": "e898e7ffff",
+      "source_provider": "required.sections_00ab8530"
+    },
+    {
+      "site": "00ab9db2",
+      "target": "00aa6bc0",
+      "bytes": "e809cefeff",
+      "source_provider": "required.listeners_00aa6bc0"
+    },
+    {
+      "site": "00ab9dc9",
+      "target": "00ab8c30",
+      "bytes": "e862eeffff",
+      "source_provider": "required.font_00ab8c30"
+    },
+    {
+      "site": "00ab9e05",
+      "target": "00ab6c30",
+      "bytes": "e826ceffff",
+      "source_provider": "required.shadow_00ab6c30"
+    },
+    {
+      "site": "00ab9e13",
+      "target": "0041e870",
+      "bytes": "e8584a96ff",
+      "source_provider": "genuine.construct_native_string_header_0041e870"
+    },
+    {
+      "site": "00ab9e1f",
+      "target": "00ab8e70",
+      "bytes": "e84cf0ffff",
+      "source_provider": "required.shader_00ab8e70"
+    },
+    {
+      "site": "00ab9e39",
+      "target": "00419cc0",
+      "bytes": "e882fe95ff",
+      "source_provider": "genuine.native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "site": "00ab9e40",
+      "target": "00bd1510",
+      "bytes": "e8cb761100",
+      "source_provider": "genuine.return_native_string_pool_00bd1510"
+    },
+    {
+      "site": "00ab9e51",
+      "target": "00ab81c0",
+      "bytes": "e86ae3ffff",
+      "source_provider": "required.code_unit_00ab81c0"
+    },
+    {
+      "site": "00ab9e61",
+      "target": "00aba8d0",
+      "bytes": "e86a0a0000",
+      "source_provider": "required.content_00aba8d0"
+    },
+    {
+      "site": "00ab9e8a",
+      "target": "00419cc0",
+      "bytes": "e831fe95ff",
+      "source_provider": "genuine.native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "site": "00ab9e91",
+      "target": "00bd1510",
+      "bytes": "e87a761100",
+      "source_provider": "genuine.return_native_string_pool_00bd1510"
+    },
+    {
+      "site": "00ab9e9b",
+      "target": "00aaa5a0",
+      "bytes": "e80007ffff",
+      "source_provider": "required.attach_00aaa5a0"
+    },
+    {
+      "site": "00ab9ecd",
+      "target": "00aa6750",
+      "bytes": "e87ec8feff",
+      "source_provider": "required.position_00aa6750"
+    },
+    {
+      "site": "00ab9fa9",
+      "target": "00aa8240",
+      "bytes": "e892e2feff",
+      "source_provider": "required.position_00aa8240"
+    }
+  ],
+  "captured_virtual_call_receipts": [
+    {
+      "site": "00ab9d87",
+      "slot": "10",
+      "bytes": "ffd0",
+      "operands": "captured referenceNode flags26,parent0",
+      "target_resolution": "caller capturesactualprofile/targetDATA; requiredgenuineprovider consumescapturedselector only, no codewordcall cast"
+    },
+    {
+      "site": "00ab9da5",
+      "slot": "34",
+      "bytes": "ffd0",
+      "operands": "capturedchild value1",
+      "target_resolution": "caller capturesactualprofile/targetDATA; requiredgenuineprovider consumescapturedselector only, no codewordcall cast"
+    },
+    {
+      "site": "00ab9e71",
+      "slot": "50",
+      "bytes": "ffd2",
+      "operands": "capturedchild actualchild+50color4",
+      "target_resolution": "caller capturesactualprofile/targetDATA; requiredgenuineprovider consumescapturedselector only, no codewordcall cast"
+    },
+    {
+      "site": "00ab9ec0",
+      "slot": "30",
+      "bytes": "ffd2",
+      "operands": "capturedchild actualF24pivot2",
+      "target_resolution": "caller capturesactualprofile/targetDATA; requiredgenuineprovider consumescapturedselector only, no codewordcall cast"
+    }
+  ],
+  "cleanup": {
+    "handler": "00cb80c8 -> DEEEFC",
+    "func_info": "00deeefc",
+    "func_info_hex": "2205931903000000e4eede00000000000000000000000000000000000000000001000000",
+    "func_info_sha256": "0d28587e7799bec05a77638df0c853f23d838f16b734dc26364f1dd93a8e7d07",
+    "map": "00deeee4",
+    "map_hex": "ffffffffb080cb00ffffffffb880cb00ffffffffc080cb00",
+    "map_sha256": "65d0a3f7149eae76b82869d7537a60e122dbed34cfd4819907036f4f6c5659d3",
+    "states": [
+      {
+        "state": 0,
+        "parent": -1,
+        "action": "00cb80b0",
+        "action_bytes": "8b4d20e938f6dfff"
+      },
+      {
+        "state": 1,
+        "parent": -1,
+        "action": "00cb80b8",
+        "action_bytes": "8d4dcce9605c76ff"
+      },
+      {
+        "state": 2,
+        "parent": -1,
+        "action": "00cb80c0",
+        "action_bytes": "8d4dcce968e377ff"
+      }
+    ],
+    "effects": [
+      "state0:CURRENTlivehome7->[CB80B3]AB76F0, notcapturedallocationsnapshot",
+      "state1:SAMEactualF24header->genuine41DD20",
+      "state2:SAMEactualF24header->genuine436430"
+    ],
+    "native_epoch_schedule": [
+      "0afterhome7allocationstore/beforeAB9650",
+      "-1beforehome7childstore/005DAD40",
+      "1after41E870return/beforeAB8E70",
+      "-1afterbuffercapture/beforenormalpoolreturn",
+      "2afterAB81C0return/beforeABA8D0, remainsactivecurrent50",
+      "-1afterbuffercapture/beforenormalwidereturn"
+    ],
+    "source_transport": "C++catch advancesparent-1 beforeaction; capturesfailure/phasebeforecleanup; secondaryfailure retained/qualified, no recoverytraversal/replay",
+    "no_inferred_raw_slot_return_on_laterfailure": true,
+    "no_vertex_index_publication_rollback": true
+  },
+  "borrowed_context": {
+    "new_owner_process_manager_bank_or_authority": false,
+    "constants_and_literal": "existingauthenticatedGameNativeReadOnlyData suppliers; references/constantpointermetadata only, no active copied bank",
+    "mutable_scale": "SAME game::GameNativeGuiTextState::vertical_scale_00e12fd4(), distinctfromwidgetE12FC4",
+    "text_pool_empty": "genuineexistingTextprocessF8BDF0pool andF8BE50emptycell backing, notzeroPEruntimeproof ornewF8bank",
+    "strings": "SAMEactualAA8publication/AA4gate/AA0manager viaNativeStringRawPoolContext",
+    "child_node_renderer_font_material": "SAMEretainedactualdomain; allnestedproviderframes preparedbeforeentry/callback; noGuiTextLifetime/GuiWidgetOwner/FontGlyphDatareinterpretation",
+    "source_refs": [
+      {
+        "native_address": "00d7a24c",
+        "bytes": 4,
+        "hex": "0000803f",
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+        "role": "one capturedprefix andfreshshadowalpha",
+        "provenance": "verifiedRO"
+      },
+      {
+        "native_address": "00e12fd4",
+        "bytes": 4,
+        "hex": "0000403f",
+        "sha256": "9a8208635e00348ab64aac2b759e76391fd47089e9a749bbcec770d9eb5c6421",
+        "role": "mutableverticalScale SAMEGameNativeGuiTextState ref",
+        "provenance": "initializedDataPreimageOnly"
+      },
+      {
+        "native_address": "00cec380",
+        "bytes": 8,
+        "hex": "0000000000008e40",
+        "sha256": "567be61e7cefcfaba897e6d95d81a49a884e657b6a67ada1595e794ed90f6ed7",
+        "role": "width normalization andlatepositiondivisor",
+        "provenance": "verifiedRO"
+      },
+      {
+        "native_address": "00cef1b8",
+        "bytes": 8,
+        "hex": "0000000000808640",
+        "sha256": "a8e4956cde576d6c13f666f99704ab75c94011539574ec1e26983f27156ba5fa",
+        "role": "heightnormalization",
+        "provenance": "verifiedRO"
+      },
+      {
+        "native_address": "00d5c5c0",
+        "bytes": 4,
+        "hex": "cdcc4c3d",
+        "sha256": "0b9d79ff0fc4d0a77ef398763bbe45c445501e826219f2b6a1aa709411ab631d",
+        "role": "shadowoffset FLD/FSTP",
+        "provenance": "verifiedRO"
+      },
+      {
+        "native_address": "00ce3800",
+        "bytes": 4,
+        "hex": "0000003f",
+        "sha256": "d99e58435243d9fef9c88273b8d553b4fba4d0baf8009d29eae74fa99e0d9f57",
+        "role": "freshpivot scalar",
+        "provenance": "verifiedRO"
+      },
+      {
+        "native_address": "00d7a358",
+        "bytes": 8,
+        "hex": "00000040e17a843f",
+        "sha256": "595700f5c0ba132c9ede02f9ad9a19cffe697fd8fd52890abb10fd78f47d9aa1",
+        "role": "xsubtract",
+        "provenance": "verifiedRO"
+      },
+      {
+        "native_address": "00d5c7a8",
+        "bytes": 8,
+        "hex": "000000a02c438c3f",
+        "sha256": "473c81abdbb08f957b3d158fec2c9896f29678a2720d7b86bd7dc82452850d6f",
+        "role": "ysubtract",
+        "provenance": "verifiedRO"
+      },
+      {
+        "native_address": "00d7a220",
+        "bytes": 8,
+        "hex": "0000000000005940",
+        "sha256": "00754a39f7de30495780d4c6242f680316f56bf4bf735c3681b3ac1d14f1512e",
+        "role": "zsubtract",
+        "provenance": "verifiedRO"
+      },
+      {
+        "native_address": "00d06880",
+        "bytes": 8,
+        "hex": "0000000000003a40",
+        "sha256": "beecd69557c8ef93fab51123b114ff4c586c10b1042b181274ad124086529bd6",
+        "role": "inputXbias",
+        "provenance": "verifiedRO"
+      },
+      {
+        "native_address": "00cefd78",
+        "bytes": 21,
+        "hex": "477569466f6e7442696c696e6561722e6d73686400",
+        "sha256": "0a69eafbd6247c2dc22a29c6921cc75a72db0701a4d5cecd1ba38d2c11159d44",
+        "role": "shaderliteralGuiFontBilinear.mshd includingNUL",
+        "provenance": "verifiedRO"
+      },
+      {
+        "native_address": "00f8be50",
+        "bytes": 2,
+        "hex": "0000",
+        "sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+        "role": "nativeemptyUTF16 CURRENTgenuineprocessbacking required",
+        "provenance": "loaderZeroPreimageOnly"
+      }
+    ]
+  },
+  "mandatory_required_methods": [
+    "allocate_00ab78a0",
+    "construct_00ab9650",
+    "return_failed_00ab76f0",
+    "append_005dad40",
+    "node_current10",
+    "scene_node_00aa6720",
+    "sections_00ab8530",
+    "child_current34",
+    "listeners_00aa6bc0",
+    "font_00ab8c30",
+    "shadow_00ab6c30",
+    "shader_00ab8e70",
+    "code_unit_00ab81c0",
+    "content_00aba8d0",
+    "child_current50",
+    "attach_00aaa5a0",
+    "child_current30",
+    "position_00aa6750",
+    "position_00aa8240"
+  ],
+  "direct_genuine_source_reuse": [
+    "construct_native_string_header_0041e870",
+    "native_string_pool_get_or_create_00419cc0",
+    "return_native_string_pool_00bd1510",
+    "destroy_native_string_header_0041dd20",
+    "destroy_native_wide_string_header_00436430"
+  ],
+  "required_provider_gates": {
+    "implementations_added_here": 0,
+    "successful_defaults_or_pending_completion": false,
+    "raw_pointer_vector_append": "005DAD40currentlystl_shape/requiredactualrawvectorprovider, no stdvectorprojection",
+    "raw_child_content": "WHOLEactualABA8D0 required; typedpending/domaincontinuation cannotreportordinarysuccess",
+    "raw_default_child": "WHOLEactualAB9650 overgenuinepreparedconstruction/model/renderer/materialcontext; retainrealrawallocationbeforecallbacks",
+    "current_node_child_targets": "pure/stableresolutionofalreadycapturedprofile/target; genuinewholeselectedbody; numericDATAnotcallable",
+    "other_whole_calls": "AA6720,AB8530,AA6BC0,AB8C30,AB6C30,AB8E70,AB81C0,AAA5A0,AA6750,AA8240 andcaptured10/34/50/30 musthavegenuineactualbindings",
+    "whole_frontend_source_ready": false,
+    "activation_ready": false
+  },
+  "existing_body_unchanged": {
+    "source": "src/engine_seg11_35_66_cc13.cpp",
+    "symbol": "bsp::oct18_tail_c::glyph_quad_00ab98f0",
+    "line": 4552,
+    "body_sha256_utf8_logical_lf": "94b24a412393f485682b646c8169250e19a06a7d5336c31ff936685c939b5dc1",
+    "reason_new_interface": "oldbyvalue operands/typedcallbackandcodewordtransport donotprovideactualmutablehomes/currentrawprovidercontract",
+    "duplicate_body_credit": 0
+  },
+  "credit": {
+    "new_raw_supplier_interface": true,
+    "new_original_function_credit": 0,
+    "new_original_instruction_or_byte_credit": 0,
+    "new_vendor_credit": 0,
+    "new_cg_credit": 0,
+    "duplicate_body_credit": 0,
+    "new_data_credit": 0,
+    "build_tested": false,
+    "native_abi_proved": false,
+    "runtime_or_game_proved": false
+  },
+  "validation": {
+    "static_checks": [
+      "supportedPE/full1747Bbodyhash",
+      "bounded485instructionlisting",
+      "19E8directcalltargetbytes and4registerCALLbytes",
+      "3-stateFuncInfo/parent/actions",
+      "78Native/sourcex87mnemonicsequence and40/2/13/9/14groups",
+      "noFPreset/CWstatusrestore",
+      "homes4/5untouched andsinglelatequadindexread",
+      "Nativeoperand/home/spill/reload/effectmanualreview",
+      "Source/providerpaths/hashes/whitespace"
+    ],
+    "not_run": [
+      "compiler",
+      "build",
+      "tests",
+      "probe",
+      "Nativecode",
+      "gameplay",
+      "processcontrol",
+      "Ghidramutation",
+      "activation"
+    ],
+    "primary_integration_required": true
+  },
+  "owned_file_pins": [
+    {
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "sha256": "579b0f21d5f5af10f9cd968b3eef6d59a666f750ece936a6b88d1a044021d10f"
+    },
+    {
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "sha256": "ad5f656ddbccebc3c5d2b243f5d3fe0e01c71b12eeea97e3ef29033aa01e84f3"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_TEXT_GLYPH_QUAD_STORAGE.md",
+      "sha256": "3acd83823d5cabdb0c00ada85956ce649a7c0bec3fdcbb9e5515ef1e141ac802"
+    }
+  ],
+  "provider_pins": [
+    {
+      "path": "config/target.json",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "src/engine_seg11_35_66_cc13.cpp",
+      "sha256": "86d443153ac95f6de31721c79b7bc9c706c4be28487ebfd223736c8fdabfd367"
+    },
+    {
+      "path": "include/bsp/oct18_tail_c.hpp",
+      "sha256": "afd3a4d036494eeec6c1ddd8328bfab2f8fed9db89a509311f79aef87a34e99e"
+    },
+    {
+      "path": "src/cc13_gui2.cpp",
+      "sha256": "7c2cf61c9c7e807d9e3eb0bf94b5f12acce93de7bed9f120f06586a06049dce4"
+    },
+    {
+      "path": "include/bsp/cc13_gui2.hpp",
+      "sha256": "0afa4f4e5d6b02c706796e774d5b1597370aa432cce0dcb6307f55d0a24af5ba"
+    },
+    {
+      "path": "include/bsp/gui_text_glyph_child.hpp",
+      "sha256": "dbb7e982686b7cb5d5ccfcb20a1d6fcef9d652a2603e458f7f6964c51570cb8c"
+    },
+    {
+      "path": "include/bsp/gui_text_glyph_child_runtime.hpp",
+      "sha256": "1ee83daf701f707024c5be7ceb60303dac16dc57054ee8a2afa3f3a314c0698e"
+    },
+    {
+      "path": "src/gui_text_glyph_child_runtime.cpp",
+      "sha256": "27e847751c9ef215ae46f8e96c4e13248a26c9c4d69c32de2519bb5c9fd0a9dd"
+    },
+    {
+      "path": "include/bsp/gui_text_glyph_reference.hpp",
+      "sha256": "a2a6edfa7e1477bc19a46e71c819972b5cb699a426ee2a0383602c6d11bcfc37"
+    },
+    {
+      "path": "src/gui_text_glyph_reference.cpp",
+      "sha256": "d3e2c205c906ea2e6697ea1810f7b268e108a5e2e22ca695f4b625a7333587e6"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a"
+    },
+    {
+      "path": "include/bsp/native_wide_string.hpp",
+      "sha256": "5606f96b372362a6831a1633a583f264fbab4290789481f94f1ba97537f6e051"
+    },
+    {
+      "path": "src/native_wide_string.cpp",
+      "sha256": "158502f1efb91f678011dd971c643d5236eb10bf56da3c9997631a6d8df96e55"
+    },
+    {
+      "path": "include/bsp/game_native_gui_text_state.hpp",
+      "sha256": "7b544feaa7da8a1a4bab5b5f01546d8e4d8b5621d8da37c6b22e4dfbc9d964e0"
+    },
+    {
+      "path": "src/game_native_gui_text_state.cpp",
+      "sha256": "ff10c4e60079ea23117223b10dc9b64bb61715930fa2c1d1b7fff0b81396dd5f"
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278"
+    },
+    {
+      "path": "include/bsp/native_gui_text_default_storage.hpp",
+      "sha256": "411848bea4eb0f79635bfca06493782d40c0b27cb92f713728d52b48648e119f"
+    },
+    {
+      "path": "src/native_gui_text_default_storage.cpp",
+      "sha256": "757647269fba2238edce3723fb7aa870cc4d75c71610d621177a0c581d5a85cf"
+    },
+    {
+      "path": "include/bsp/native_gui_text_storage_construct.hpp",
+      "sha256": "6f142a031781e0c9e5a703abed07967790b4ff8669494330bfffb1bdea9b3876"
+    },
+    {
+      "path": "src/native_gui_text_storage_construct.cpp",
+      "sha256": "d3ae2db948ce9109fea392b6766a6f31b397fcf773256141098c6c49a663d156"
+    },
+    {
+      "path": "include/bsp/native_gui_text_glyph_children.hpp",
+      "sha256": "441e4a25ab536b115d87bdc2de81778eda2dc4d47f61faced68485f1cc4e8b11"
+    },
+    {
+      "path": "src/native_gui_text_glyph_children.cpp",
+      "sha256": "cf9454f0b8e09ccd1fc9eeb7250daca7cccab0ad6b25969fd511b09968018081"
+    }
+  ],
+  "document": "docs/CC16_NATIVE_GUI_TEXT_GLYPH_QUAD_STORAGE.md"
+}
