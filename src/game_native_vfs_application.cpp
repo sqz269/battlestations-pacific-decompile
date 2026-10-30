@@ -171,6 +171,11 @@ NativeStringRawPoolContext& GameNativeVfsApplication::raw_strings() noexcept {
     return impl_->raw_strings;
 }
 
+bool GameNativeVfsApplication::borrows_graph(const GameSingletonHost& host,
+    const GameNativeReadOnlyData& data) const noexcept {
+    return &impl_->singleton_host == &host && &impl_->data == &data;
+}
+
 GameNativeVfsRawServices GameNativeVfsApplication::borrow_raw_services() {
     return runtime().borrow_raw_services();
 }

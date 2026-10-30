@@ -2,9 +2,11 @@
 #include "bsp/game_hosts_singletons.hpp"
 #include "bsp/game_native_locale_pool.hpp"
 #include "bsp/game_native_string_process.hpp"
+#include "bsp/game_native_vfs_application.hpp"
 #include "bsp/native_locale_manager_base_scalar.hpp"
 #include "bsp/native_locale_manager_constructor.hpp"
 #include "bsp/native_locale_manager_retirement.hpp"
+#include "bsp/native_locale_textual_parser_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
 #include <cstddef>
@@ -36,8 +38,21 @@ bool overlaps(const volatile void* a, std::size_t an,
 } // namespace
 
 struct GameNativeLocaleManagerProcess::Impl {
+    struct TextualAttempt {
+        NativeLocaleTextualParserContext context;
+        NativeLocaleTextualParserFrame frame;
+        TextualAttempt* next{};
+        bool entry_attempted{}, call_returned{}, normal_completed{};
+        TextualAttempt(void* receiver, void* input, std::uint32_t other,
+            GameNativeVfsApplication& app, GameNativeLocalePoolProcess& pool_process,
+            const GameNativeReadOnlyData& data,
+            NativeCockpitInterlockedDecrement const volatile& decrement)
+            : context(receiver, input, other, app, pool_process, data, decrement),
+              frame(context) {}
+    };
     enum class Phase { fresh, binding, bound, initializing, initialized,
-        draining, deleting, retired, ended_allocation_retained, detached, failed };
+        draining, deleting, retired, ended_allocation_retained, detached, failed,
+        preparing_textual, parsing_textual };
 
     GameNativeStringProcess& process;
     NativeStringRawPoolContext& strings;
@@ -73,11 +88,25 @@ struct GameNativeLocaleManagerProcess::Impl {
     bool flags_sampled_after_return{};
     unsigned char flags_after_return{};
     bool allocation_released{};
+    bool textual_selected{};
+    bool derived_textual_debt{};
+    void* pending_textual_input{}; // historical identity on failed preparation
+    TextualAttempt* textual_first{};
+    TextualAttempt* textual_last{};
+    TextualAttempt* textual_active{};
 
     explicit Impl(GameNativeLocaleManagerProcess& actual_owner)
         : process(game_native_string_process()), strings(process.raw_context()),
           publication{process.manager_01090aa0(), process.locale_manager_00f8bc4c()},
           owner(actual_owner) {}
+
+    ~Impl() {
+        while (textual_first) {
+            auto* const node = textual_first;
+            textual_first = node->next;
+            delete node; // C++ history only; retained factory never invokes this
+        }
+    }
 
     void poison() noexcept { failed = true; phase = Phase::failed; }
     [[noreturn]] void reject(const char* text) {
@@ -126,6 +155,30 @@ struct GameNativeLocaleManagerProcess::Impl {
             !constructor_entered || !constructor_returned || constructor_result != allocation)
             reject("locale owner requires its actual complete constructor/provider history");
     }
+    void require_textual_quiescent() {
+        if (!textual_selected) return;
+        if (failed || pending_textual_input || textual_active || !derived_textual_debt ||
+            !textual_first || !textual_last)
+            reject("locale textual operation has unresolved preparation/native debt");
+        TextualAttempt* last = nullptr;
+        for (auto* node = textual_first; node; node = node->next) {
+            if (!node->entry_attempted || !node->call_returned || !node->normal_completed ||
+                !node->frame.has_normal_result())
+                reject("locale textual history lacks private normal completion");
+            last = node;
+        }
+        if (last != textual_last)
+            reject("locale textual history lost its fixed append-only tail");
+    }
+    void require_textual_phase(Phase expected) {
+        require_phase(expected);
+        require_fixed_bound();
+        require_constructor_history();
+        if (drain_entered || scalar_entered ||
+            publication.actual_locale_00f8bc4c != allocation ||
+            publication.actual_manager_01090aa0 == nullptr)
+            reject("locale textual operation lost its actual live canonical owner");
+    }
     bool unused() const noexcept {
         return !initialization_entered && !pool_startup_entered && !pool_startup_returned &&
             !pool_process && !pool && !retirement && !allocation_entered &&
@@ -159,6 +212,7 @@ void GameNativeLocaleManagerProcess::bind_once(GameSingletonHost& host) {
     try {
         if (!p.failed && (p.phase == Impl::Phase::bound || p.phase == Impl::Phase::initialized)) {
             p.require_host(host, true); // healthy SAME graph repeat, no claim/effect replay
+            p.require_textual_quiescent();
             return;
         }
         p.require_phase(Impl::Phase::fresh);
@@ -185,6 +239,7 @@ void GameNativeLocaleManagerProcess::initialize_once() {
         if (!p.failed && p.phase == Impl::Phase::initialized) {
             p.require_fixed_bound();
             p.require_constructor_history();
+            p.require_textual_quiescent();
             if (p.publication.actual_locale_00f8bc4c != p.allocation ||
                 p.publication.actual_manager_01090aa0 == nullptr)
                 p.reject("initialized locale publication changed");
@@ -226,6 +281,60 @@ void GameNativeLocaleManagerProcess::initialize_once() {
     } catch (...) { p.poison(); throw; } // retain all actual effects; never free/repair/retry
 }
 
+void GameNativeLocaleManagerProcess::parse_textual_option1(void* input,
+    std::uint32_t other, GameNativeVfsApplication& app,
+    const GameNativeReadOnlyData& data,
+    NativeCockpitInterlockedDecrement const volatile& decrement) {
+    auto& p = *impl_;
+    std::lock_guard lock(p.mutex);
+    try {
+        p.require_phase(Impl::Phase::initialized);
+        p.require_fixed_bound();
+        p.require_constructor_history();
+        p.require_textual_quiescent();
+        p.phase = Impl::Phase::preparing_textual; // BEFORE bookkeeping/providers
+        p.textual_selected = true;
+        p.pending_textual_input = input;
+        p.require_textual_phase(Impl::Phase::preparing_textual);
+        if (!input || !app.borrows_graph(*p.host, data))
+            p.reject("locale textual operation requires its actual host/data/input graph");
+        auto& actual_strings = app.raw_strings();
+        if (&actual_strings.actual_published_01090aa8 != &p.strings.actual_published_01090aa8 ||
+            &actual_strings.actual_small_returns_disabled_01090aa4 !=
+                &p.strings.actual_small_returns_disabled_01090aa4 ||
+            &actual_strings.actual_manager_publication_01090aa0 !=
+                &p.strings.actual_manager_publication_01090aa0)
+            p.reject("locale textual operation requires its SAME actual raw string cells");
+        void* const actual_pool = p.pool_process->pool_storage_00e1768c();
+        p.require_textual_phase(Impl::Phase::preparing_textual);
+        if (actual_pool != p.pool)
+            p.reject("locale textual operation lost its initialized canonical pool");
+
+        auto* const node = new Impl::TextualAttempt(p.allocation, input, other,
+            app, *p.pool_process, data, decrement);
+        // Capture/link normal construction BEFORE any later healthy fence.
+        // These pure Context/Frame constructors do not consume the input.
+        if (p.textual_last) p.textual_last->next = node;
+        else p.textual_first = node;
+        p.textual_last = node;
+        p.textual_active = node;
+        p.require_textual_phase(Impl::Phase::preparing_textual);
+        p.phase = Impl::Phase::parsing_textual;
+        node->entry_attempted = true; // call attempt, not a fabricated input receipt
+        p.derived_textual_debt = true; // conservative even for zero textual records
+        parse_native_locale_textual_option1_00aa0020(node->context, node->frame);
+        node->call_returned = true; // capture actual return even after caught reentry
+        p.require_textual_phase(Impl::Phase::parsing_textual);
+        if (!node->frame.has_normal_result())
+            p.reject("locale textual operation lacks its private normal result");
+        node->normal_completed = true;
+        p.textual_active = nullptr;
+        p.pending_textual_input = nullptr;
+        p.phase = Impl::Phase::initialized; // still initialized-only, never loaded
+        p.require_textual_quiescent();
+    } catch (...) { p.poison(); throw; } // keep every node/provider/native effect
+}
+
 void* GameNativeLocaleManagerProcess::initialized_receiver() {
     auto& p = *impl_;
     std::lock_guard lock(p.mutex);
@@ -233,6 +342,7 @@ void* GameNativeLocaleManagerProcess::initialized_receiver() {
         p.require_phase(Impl::Phase::initialized);
         p.require_fixed_bound();
         p.require_constructor_history();
+        p.require_textual_quiescent();
         if (p.scalar_entered || p.publication.actual_locale_00f8bc4c != p.allocation ||
             p.publication.actual_manager_01090aa0 == nullptr)
             p.reject("locale receiver borrow requires its healthy initialized publication");
@@ -247,6 +357,7 @@ void GameNativeLocaleManagerProcess::before_shared_drain(GameSingletonHost& host
         if (!p.failed && p.phase == Impl::Phase::detached && p.host == &host) return;
         if (p.failed || (p.phase != Impl::Phase::bound && p.phase != Impl::Phase::initialized))
             p.reject("locale cannot enter shared drain from active/failed/ended history");
+        p.require_textual_quiescent();
         p.require_host(host, true);
         p.drain_had_receiver = p.phase == Impl::Phase::initialized;
         if (p.drain_had_receiver) {
@@ -268,12 +379,15 @@ void* GameNativeLocaleManagerProcess::delete_registered_current_profile(void* ca
     std::lock_guard lock(p.mutex);
     try {
         p.require_phase(Impl::Phase::draining);
+        p.require_textual_quiescent();
         p.require_fixed_bound();
         p.require_constructor_history();
         if (!p.drain_entered || !p.drain_had_receiver || p.scalar_entered ||
             p.publication.actual_manager_01090aa0 == nullptr ||
             captured != p.allocation || (profile != 0x00cff140u && profile != 0x00cfea5cu))
             p.reject("locale deletion requires the exact captured owner/current admitted profile");
+        if (p.derived_textual_debt && profile != 0x00cff140u)
+            p.reject("locale textual history requires its genuine derived deletion route");
         p.require_flags_storage(flags);
         p.scalar_entered = true;
         p.captured_profile = profile;
@@ -286,6 +400,7 @@ void* GameNativeLocaleManagerProcess::delete_registered_current_profile(void* ca
         p.scalar_returned = true;
         p.require_phase(Impl::Phase::deleting); // caught recursion cannot complete
         p.require_fixed_bound();
+        p.require_textual_quiescent();
         if (p.scalar_result != captured)
             p.reject("locale scalar did not return its captured address identity");
         // Under the actual PUSH1/stable disjoint control-cell contract, this
@@ -309,6 +424,7 @@ void GameNativeLocaleManagerProcess::after_shared_drain(GameSingletonHost& host)
             (p.phase != Impl::Phase::draining && p.phase != Impl::Phase::retired))
             p.reject("locale shared drain did not complete its supported custody");
         p.require_host(host, true);
+        p.require_textual_quiescent();
         if (p.drain_had_receiver) {
             p.require_constructor_history(); // retained C++ metadata only
             if (p.phase != Impl::Phase::retired || !p.scalar_entered || !p.scalar_returned ||
