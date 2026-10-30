@@ -1135,3 +1135,11 @@ pair. Consume-before-cleanup correction is in finalstrictobject; oldtypedfiles
 unchanged. Exactprimary/independentSourceaccept. JoinedMain87c709+record/formatter
 canonicalWin32build/checks2/2 pass12.77s atedfa5a068. No parser/loader caller or
 runtime/ABI admission; raw16/fullstream/scanner/GUI/ownerloading gates remain.
+
+CapturedWORD bridgea308d7b2 adds genuine dispatch-only BE4320/BE4340 overloads
+and exactnumeric VFS stream_word_entry, avoiding fabricated unrelated DB64/string
+context fields. Full incoming count-pointer DWORD seeds one current+24 read2;
+lowWORD/partial tails remain exactqualifiedSource. Existing4HPP/CPP inverse-exact;
+primary/independentSource+2strictobjects+canonicalWin32checks2/2 pass11.50s.
+No scanner/input/release composition or raw16/fullparser/loading/runtime admission.
+See CODEX_STREAM_WORD_ENTRY_INTEGRATION.md.

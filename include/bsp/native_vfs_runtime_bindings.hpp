@@ -70,6 +70,10 @@ public:
     void invoke_tick(std::uintptr_t captured_entry, void* actual_provider) override;
     std::uint64_t stream_length_entry(std::uintptr_t entry,void* stream);
     std::uint64_t stream_position_entry(std::uintptr_t entry,void* stream);
+    // Consume a captured BE4320/BE4340 entry without re-reading slot40/3C.
+    // Forward the SAME stream/count pointer through this actual dispatcher.
+    std::uint16_t stream_word_entry(std::uintptr_t entry,void* stream,
+        std::uint32_t* optional_actual);
     // Explicit borrowed connection permits constructing the actual recursive
     // manager/archive service graph. Return the previous binding for disposal.
     NativeMpkgProviderContext* bind_mpkg_provider(NativeMpkgProviderContext*) noexcept;

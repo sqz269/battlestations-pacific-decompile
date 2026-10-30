@@ -16,6 +16,7 @@
 #include "bsp/native_mpak_enumeration.hpp"
 #include "bsp/native_raw_inflate_stream.hpp"
 #include "bsp/native_vfs_startup_callbacks.hpp"
+#include "bsp/native_resource_stream_reads.hpp"
 #include <stdexcept>
 namespace bsp {
 namespace {
@@ -163,6 +164,14 @@ std::uint64_t NativeVfsRuntimeBindings::stream_position_entry(std::uintptr_t ent
     case 0x00bf4f40:return position_native_physical_stream_00bf4f40(stream);
     case 0x00bf1080:return position_native_adopted_substream_00bf1080(stream);
     case 0x00bbbe50:return position_native_raw_inflate_stream_00bbbe50(stream);
+    default:unsupported();
+    }
+}
+std::uint16_t NativeVfsRuntimeBindings::stream_word_entry(std::uintptr_t entry,
+    void* stream,std::uint32_t* optional_actual) {
+    switch(entry) {
+    case 0x00be4320:return read_native_stream_word_slot40_00be4320(stream,optional_actual,*this);
+    case 0x00be4340:return read_native_stream_word_slot3c_00be4340(stream,optional_actual,*this);
     default:unsupported();
     }
 }
