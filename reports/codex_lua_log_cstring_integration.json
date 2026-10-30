@@ -1,0 +1,235 @@
+{
+  "status": "integrated_primary_plus_two_independent_full_source_reviews_strict_objects_retained_and_canonical_win32_pass_consumers_unbound",
+  "source_ready": false,
+  "activation": false,
+  "new_tests": 0,
+  "new_native_body_credit": 0,
+  "new_entry_or_game_invoked": false,
+  "log": {
+    "producer_receipt": {
+      "schema": "bsp-raw-lua-log-final-source-v1",
+      "utc": "2026-10-30T22:30:03.382897+00:00",
+      "commit": "3c508c674cf61f017a03bf420e00a55b4c382eb8",
+      "parent": "ca3cce39c7715d38e9d0c23a7bd9025ceb9e9f87",
+      "files": {
+        "include/bsp/native_lua_log_raw.hpp": "741067ea87ad950a06fd79827b15bd1e064759a7d6e0fd88588b21981bf38a42",
+        "src/native_lua_log_raw.cpp": "557f86901efe2db9dfa2eb367ca4ae2406ad2bb5767aa2f48fe7db659d2f2bbb",
+        "docs/NATIVE_LUA_LOG_RAW.md": "f45a0a189d0c7ceb492582fd25b9f8cbf482b5e3c2ed273b68681633c85cc620",
+        "reports/native_lua_log_raw.json": "11b699dee980e950cf8ad91cbbfa1d0ac974f85fe3f73483238c822dfe1b92be"
+      },
+      "exact_four_new_files": true,
+      "tracked_clean": true,
+      "old_provider_legacy_files_unchanged": 10,
+      "compile_count": 1,
+      "compile_receipt_sha256": "7a730173bbb95e60052cdbf45d7637756d6848130f7b648147ff10a2c6cf6122",
+      "object": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_lua_log_raw_frame_20261030\\object_build\\raw_lua_log_object.dir\\Release\\native_lua_log_raw.obj",
+        "bytes": 14372,
+        "sha256": "5d97e79e60fafbd85e55fb9d40028920a6a21a99f5473cb5cbe04705e761373a",
+        "machine": "0x14c"
+      },
+      "symbol_receipt_sha256": "becf9e827e2000a29d13d6bd251860b803d611fff9003ed3c7abfdd33b2822e1",
+      "actual_entry_context_frame_symbols": {
+        "entry": "049 00000000 SECT18 notype ()    External     | ?execute_native_lua_log_0088bec0@bsp@@YAHABVNativeLuaLogRawContext@1@AAVNativeLuaLogRawFrame@1@@Z (int __cdecl bsp::execute_native_lua_log_0088bec0(class bsp::NativeLuaLogRawContext const &,class bsp::NativeLuaLogRawFrame &))",
+        "context_ctor": "048 00000000 SECT4  notype ()    External     | ??0NativeLuaLogRawContext@bsp@@QAE@AAUNativeStringRawPoolContext@1@ADIPBXI@Z (public: __thiscall bsp::NativeLuaLogRawContext::NativeLuaLogRawContext(struct bsp::NativeStringRawPoolContext &,unsigned int const volatile &,void const *,unsigned int))",
+        "frame_ctor": "04A 00000000 SECT5  notype ()    External     | ??0NativeLuaLogRawFrame@bsp@@QAE@ABVNativeLuaLogRawContext@1@@Z (public: __thiscall bsp::NativeLuaLogRawFrame::NativeLuaLogRawFrame(class bsp::NativeLuaLogRawContext const &))"
+      },
+      "genuine_provider_refs": [
+        "resize_native_string_header_0041dd40",
+        "copy_native_crt_bytes_00bf7680",
+        "native_string_pool_get_or_create_00419cc0",
+        "return_native_string_pool_00bd1510"
+      ],
+      "source_ready": false,
+      "callback_or_vm_activated": false,
+      "scope": "ordinary Source body and single OBJECT only; no Native/Lua entry, test/probe/game/link/runtime/ABI claim"
+    },
+    "producer_receipt_sha256": "40289e3cfe647f471e691e9257c5411ff5b8dc7db316c98f6f3def22f3ef36f8",
+    "primary_target_object_rehash": true,
+    "independent_reviews": {
+      "gameplay": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc9\\local\\native_lua_log_raw_review_cc9_20261030\\REVIEW.md",
+        "sha256": "8e9933672de720e6524c94636a0e60b91abeef9f768e18db373b2583f4df12ac"
+      },
+      "gui": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_lua_log_raw_review_gui_20261030\\REVIEW.md",
+        "sha256": "9e6df7eb88e21a5c9723e2d6835aa33ab4fa2f2ab662d6b85d993e4ca0790f15"
+      }
+    }
+  },
+  "peer_Source35_join": {
+    "peer_main": "40004fc456715c3304767bdeb977dad48b2cc212",
+    "joined_head": "45e0ec4426102dd29d7d80d42adc90ed92b865a6",
+    "prior_paths": 16,
+    "unchanged_prior_paths": 15,
+    "one_prior_registry_changed_by_peer": true,
+    "peer_admission": "docs/CC16_NATIVE_GUI_TEXT_HOST_ORIGIN_SOURCE_ADMISSION.md",
+    "primary_scope": "Root read peer admission and exact CMake/negative test delta; peer full primary+independent reviews provide detailed Source evidence; no Root repetition/runtime inheritance"
+  },
+  "actual_symbols": {
+    "log_entry": "?execute_native_lua_log_0088bec0@bsp@@YAHABVNativeLuaLogRawContext@1@AAVNativeLuaLogRawFrame@1@@Z",
+    "log_context_ctor": "??0NativeLuaLogRawContext@bsp@@QAE@AAUNativeStringRawPoolContext@1@ADIPBXI@Z",
+    "log_frame_ctor": "??0NativeLuaLogRawFrame@bsp@@QAE@ABVNativeLuaLogRawContext@1@@Z",
+    "cstring_assign": "?assign_native_string_cstring_0041e350@bsp@@YAPAXPAXPBDAAUNativeStringRawPoolContext@1@ADI@Z"
+  },
+  "build_head": "1fc5862da71c67307b78351fc9b39d5bfaed9af2",
+  "cstring": {
+    "producer_receipt": {
+      "commit": "cd79ec26735a9d4c71cea6549e8703c8a0654619",
+      "base": "ca3cce39c7715d38e9d0c23a7bd9025ceb9e9f87",
+      "sealed_utc": "2026-10-30T22:33:38.829053+00:00",
+      "tracked_clean": true,
+      "exact_four_files": {
+        "include/bsp/native_string_raw_assign_cstring.hpp": {
+          "physical_sha256": "e65d2ef3266799133b4597f9ab694813add2829ad57c415d7284579948e20264",
+          "committed_sha256": "e65d2ef3266799133b4597f9ab694813add2829ad57c415d7284579948e20264",
+          "lines": 18
+        },
+        "src/native_string_raw_assign_cstring.cpp": {
+          "physical_sha256": "a5d6dd11639dd0a445c063dd96b7e94878a6ef353b589ee5bf63f7481ff505be",
+          "committed_sha256": "a5d6dd11639dd0a445c063dd96b7e94878a6ef353b589ee5bf63f7481ff505be",
+          "lines": 61
+        },
+        "docs/NATIVE_STRING_RAW_ASSIGN_CSTRING.md": {
+          "physical_sha256": "9b22bf84a835d0bf198268785de8d4c97e6eda38daff173df3d09da50cd9a303",
+          "committed_sha256": "9b22bf84a835d0bf198268785de8d4c97e6eda38daff173df3d09da50cd9a303",
+          "lines": 30
+        },
+        "reports/native_string_raw_assign_cstring.json": {
+          "physical_sha256": "15bf39d4f096e025b7cc269366b3c76cab4c6249d903d55593e7711f068e1b82",
+          "committed_sha256": "6fd02753f1222650924e3154d73410dfb137c78d1dc1736aefae31c7d9fc9d74",
+          "lines": 39
+        }
+      },
+      "code_reviews": "Root primary and Frame independent actual Code/all32ASM/API acceptance before ONE object; exact e65d2ef3/a5d6dd11 unchanged",
+      "strict_compile_receipt_sha256": "cb597ed08e2441fe982360886a4b13405012db632ec51ca84f7478fc70a74c4c",
+      "actual_object": {
+        "compile_count": 1,
+        "compile_exit": 0,
+        "machine": "014c",
+        "sha256": "28e6687cbc2582fea6716584e6ee54bf7d8eeb9183b457e87e6eec078ef91744"
+      },
+      "provider_preservation_sha256": "6ca52c04c4e8666f0dddadb3060680cbf374f058725ebf685969541d6e74b8ad",
+      "actual_symbols_sha256": "594db86ac6c968a9b97a9a4f2f7a8bcc8701c053c58ed9d228bf10920a5e707b",
+      "artifact_index_sha256": "df9fb2b7d85b431271fb5467dc862307b5645c32740effce739eea3b027ca247",
+      "no_link_test_probe_entry_game_ghidra_mutation": true,
+      "source_ready": false,
+      "VM_startup_abi_runtime_or_vendor_credit": false
+    },
+    "producer_receipt_sha256": "2b8e4cfe412706819338ce0bf2d664154c4736684e65f6604a30afedd4602107",
+    "four_source_Git_hashes": {
+      "include/bsp/native_string_raw_assign_cstring.hpp": "e65d2ef3266799133b4597f9ab694813add2829ad57c415d7284579948e20264",
+      "src/native_string_raw_assign_cstring.cpp": "a5d6dd11639dd0a445c063dd96b7e94878a6ef353b589ee5bf63f7481ff505be",
+      "docs/NATIVE_STRING_RAW_ASSIGN_CSTRING.md": "9b22bf84a835d0bf198268785de8d4c97e6eda38daff173df3d09da50cd9a303",
+      "reports/native_string_raw_assign_cstring.json": "6fd02753f1222650924e3154d73410dfb137c78d1dc1736aefae31c7d9fc9d74"
+    },
+    "target_object_primary_rehash": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc9\\local\\native_string_raw_assign_cstring_validation_cc9_20261030\\objects\\raw_assign_cstring.obj",
+      "sha256": "28e6687cbc2582fea6716584e6ee54bf7d8eeb9183b457e87e6eec078ef91744",
+      "machine": "014C"
+    },
+    "independent_reviews": {
+      "frame": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_string_raw_assign_cstring_review_frame_20261030\\REVIEW.md",
+        "sha256": "9e7437731e2047e08fdbf69eea6d8eb23e45324606e6fb4c40c37fb6af171051"
+      },
+      "gui": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_string_raw_assign_cstring_review_gui_20261030\\REVIEW.md",
+        "sha256": "5a96f1ee625d440230da525be8c2c78b12a8cc965d4caccc9d2beef6fa28c913"
+      }
+    }
+  },
+  "retained_link": {
+    "head": "1fc5862da71c67307b78351fc9b39d5bfaed9af2",
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "existing_checks": "2/2",
+    "ctest_seconds": 11.12,
+    "entry_addresses": {
+      "log_entry": "10300cb0",
+      "log_context_ctor": "10300be0",
+      "log_frame_ctor": "10300c30",
+      "cstring_assign": "10300eb0"
+    },
+    "unforced_actual_providers": {
+      "copy": [
+        {
+          "symbol": "?copy_native_crt_bytes_00bf7680@bsp@@YAPAXPAXPBXIADI@Z",
+          "address": "1047c470",
+          "independently_forced": false
+        }
+      ],
+      "resize": [
+        {
+          "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z",
+          "address": "10301410",
+          "independently_forced": false
+        },
+        {
+          "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAVNativeStringStorage@1@I_N@Z",
+          "address": "103014f0",
+          "independently_forced": false
+        }
+      ],
+      "pool_getter": [
+        {
+          "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@AAVSingletonLifetimeDomain@1@@Z",
+          "address": "10326b20",
+          "independently_forced": false
+        },
+        {
+          "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+          "address": "10326c60",
+          "independently_forced": false
+        }
+      ],
+      "pool_return": [
+        {
+          "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z",
+          "address": "10327110",
+          "independently_forced": false
+        }
+      ]
+    },
+    "log_cpp_handler_and_unwind_table": true,
+    "map_sha256": "371a7087cc6d5b27fe2d9444016e83dc30d4e646236ba105d00cf961bbd8e503",
+    "overlay_sha256": "e7b87c193bd865302aa206956d113b24605868a45ceb6afed2dcf2830691e09b",
+    "executable_sha256": "f9cf64fa20a01407102204c4688d49097b7d313b39c06db3e30f48bfb003674f",
+    "new_entry_execution": false
+  },
+  "provider_preservation": {
+    "baseline_count_after_peer_join": 16,
+    "prior_paths_byte_identical": 15,
+    "only_Root_registry_change": "two_Core_additions_inverse_physical_bytes_exact",
+    "before_peer_join_15_prior_provider_paths_unchanged": true,
+    "peer_only_startup_delta": "11lineSource35registration_and_privateSDKreader_configuration"
+  },
+  "Core_registration_count_each": 1,
+  "restored_canonical_build": {
+    "head": "1fc5862da71c67307b78351fc9b39d5bfaed9af2",
+    "command": "./scripts/build.ps1",
+    "configuration": "Release Win32",
+    "exit_code": 0,
+    "existing_checks": "2/2",
+    "ctest_seconds": 10.25,
+    "include_before_cache_entry_absent": true,
+    "forced_symbols_absent": true,
+    "all_four_forced_entries_absent_from_map": true,
+    "log": "local\\lua_log_cstring_integration_cc16_20261030\\build.log",
+    "log_sha256": "eccc797660c14e85e01e475832ee6d69d01b2facde9a1835f18c170c10f6954b"
+  },
+  "all_nine_raw_text_flags_off": true,
+  "ghidra_annotations": {
+    "address": "0088bec0",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "lock": "ghidra_annotate --apply",
+    "existing_name_and_comments_preserved": true,
+    "prior_values_log": "local\\ghidra-annotations-20261030T223450Z.json",
+    "prior_values_log_sha256": "ba7c7a6a6c9c01546071843d7e8714dd36c7fa08ea70413b96ca1a12d14d45c2",
+    "project_saved": true,
+    "affected_export_force_refreshed": true,
+    "correction": "actualAllocationCopyPoolReturnEffects_notLegacyNoop"
+  },
+  "each_primary_plus_two_independent_source_reviews": true
+}
