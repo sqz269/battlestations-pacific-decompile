@@ -1,0 +1,1392 @@
+{
+  "base": "feb4586baf3a521f137f9d10cb35014da61a1ada",
+  "generated_utc": "2026-10-30T06:59:45.626247+00:00",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "coherent_packet": "two constructor bodies plus one Frame publication getter; eight new files only",
+  "compiler": {
+    "version": "Microsoft C/C++19.51.36244.0 x86",
+    "flags": "/c /std:c++17 /MD /O2 /Gy /fp:strict /EHsc /W4 /WX /FAs",
+    "result": "PASS no warnings; existing retained objects, no recompilation after Source edits because Source remained unchanged"
+  },
+  "native_call_verification": {
+    "checked": 6,
+    "failed": 0,
+    "rows": [
+      {
+        "address": "00517D13",
+        "native": "004F7180",
+        "function": "00517D10",
+        "phase": "whole raw frame"
+      },
+      {
+        "address": "004C1AE6",
+        "native": "00415350",
+        "function": "004C1AC0",
+        "phase": "whole raw getter"
+      },
+      {
+        "address": "004C1B1F",
+        "native": "00BF681B",
+        "function": "004C1AC0",
+        "phase": "whole raw getter"
+      },
+      {
+        "address": "004C1B36",
+        "native": "00517D10",
+        "function": "004C1AC0",
+        "phase": "whole raw getter"
+      },
+      {
+        "address": "004C1B5A",
+        "native": "00415350",
+        "function": "004C1AC0",
+        "phase": "whole raw getter"
+      },
+      {
+        "address": "004C1B61",
+        "native": "00BD0C30",
+        "function": "004C1AC0",
+        "phase": "whole raw getter"
+      }
+    ],
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\call_verification.txt",
+      "bytes": 98,
+      "sha256": "459381770bdcb7e316d82bb9684efd1ddcd7e3cf91b9bb38b25730a7c0186625"
+    }
+  },
+  "evidence": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\compile.cmd",
+      "bytes": 578,
+      "sha256": "deb18121629255babc6be1a9558ae4ff7e36c237551e5cb75c3e6541814cdd56"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\compile.log",
+      "bytes": 41,
+      "sha256": "ab6cf8b030d1aa70e57acb7d5231e9cc4c9de9a5047cf7d66f3465389b0662f3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\vcvars.log",
+      "bytes": 297,
+      "sha256": "1a4df196337e03bcdb59d67050d46e47764dfc64fa184608219d7e229cd9cb3c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\compile_publication.cmd",
+      "bytes": 599,
+      "sha256": "7b4d2fa09ebb1479b5d9eea59310859501db75252d920c61a94ec1ea9cda2977"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\publication_compile.log",
+      "bytes": 40,
+      "sha256": "0ad2db7d59a14eac9c83d02782b0e9989b01b838b56efd131fbd0768cb87d54e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\publication_vcvars.log",
+      "bytes": 297,
+      "sha256": "1a4df196337e03bcdb59d67050d46e47764dfc64fa184608219d7e229cd9cb3c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\native_front_end_frame_construction.obj",
+      "bytes": 1217,
+      "sha256": "dab254e91a8c7ca2bdaa4035495acb6d0c0a3b6972401b9d315a8c70f87397db"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\native_front_end_frame_construction.asm",
+      "bytes": 2944,
+      "sha256": "50108083bc4327566dcb03416cb464a0def3da1e423a60a802d48bd1025a1577"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\native_front_end_frame_publication.obj",
+      "bytes": 3841,
+      "sha256": "2d96825b9d057f965162b8177061c2b0b99ac309f84a4b23731a5f7ebb874ba6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\native_front_end_frame_publication.asm",
+      "bytes": 10909,
+      "sha256": "a9b3a91d82db8452916e7087bd1b4a9c59be62dd95e67bea70b8dc67fe326b08"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\evidence.py",
+      "bytes": 9836,
+      "sha256": "2f49e1d761c8ead7b03dd827b43aaf0439a0a7a39118753c4e42468f7581924b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\evidence.json",
+      "bytes": 52833,
+      "sha256": "ff0a40a8cbffe924600867f735846080ec7ed2885e66db426d65a7fede8cf2b5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\evidence_run.txt",
+      "bytes": 2432,
+      "sha256": "fb1526d81801f1bd1ab01c4663ba711ba48b3ce29caebbc87696cd2b2ce6500d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\write_reports.py",
+      "bytes": 10576,
+      "sha256": "f6c334cb05bc137b58f50c5ab0fb336082563269598c728329a5ce0bf6c3926c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\original_call_rows.json",
+      "bytes": 822,
+      "sha256": "429dc4c26284ea0d8993b6cfe510042934c9303f4e51d6c2d335264e5d3c1448"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\call_verification.txt",
+      "bytes": 98,
+      "sha256": "459381770bdcb7e316d82bb9684efd1ddcd7e3cf91b9bb38b25730a7c0186625"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\target_status.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\target_status_calls.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\live_base.txt",
+      "bytes": 94,
+      "sha256": "857d32ffe020ecf1fd84a79cd0b60b9b31aa6d24dee0a62b353b467629ceb905"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\live_frame.txt",
+      "bytes": 154,
+      "sha256": "d6ce1f183de9932c45d803fd14ef04c16f83bfb84b73f3e0cdc07eeff7a2be59"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\live_getter.txt",
+      "bytes": 977,
+      "sha256": "7e8b8614a3aadfb149d554717c385aacd60df5c3c532d36dbdb7e5ec6cafcc3b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\live_EH_map_info.txt",
+      "bytes": 260,
+      "sha256": "7e664a959c431816663ef7f50f76eadde0dd2673f8f919963927e0e57917558c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\live_EH_actions.txt",
+      "bytes": 142,
+      "sha256": "9f21af902c424e148b3c05072e846ae090919629ed549e9ca5257c4afbbcba8b"
+    }
+  ],
+  "actions": {
+    "strict_object_compile": true,
+    "full_build": false,
+    "link": false,
+    "executable": false,
+    "new_tests": false,
+    "probe": false,
+    "DLL": false,
+    "game": false,
+    "body_execution": false,
+    "CMake": false,
+    "shared_metadata": false,
+    "Ghidra_mutation": false,
+    "guard": false,
+    "caller_activation": false,
+    "semantic_files_changed": false,
+    "peer_changes": false
+  },
+  "credit": {
+    "new_native_body": 0,
+    "duplicate": 0,
+    "vendor": 0,
+    "runtime": 0,
+    "activation": 0
+  },
+  "packet": "cc16-native-front-end-frame-publication",
+  "status": "complete raw normal Source getter with qualified C++ catches; unwired",
+  "owned_addresses": [
+    "004C1AC0"
+  ],
+  "owned_files": [
+    "include/bsp/native_front_end_frame_publication.hpp",
+    "src/native_front_end_frame_publication.cpp",
+    "docs/CC16_NATIVE_FRONT_END_FRAME_PUBLICATION.md",
+    "reports/cc16_native_front_end_frame_publication.json"
+  ],
+  "complete_native_body": {
+    "address": "004C1AC0",
+    "bytes": 202,
+    "instructions": 56,
+    "hex": "64a1000000006aff681350c6005064892500000000a1808de10083ec0c85c00f859600000056e86538f5ff8b701085f6c7442408fc37ce008974240c740b56ff151822ce0083461801c744241800000000833d808de10000754c6864010000e8f74c730083c4048944240485c0c64424180174098bc8e8d5610500eb0233c0c644241800a3808de100a1808de10085c0740583c008eb0233c050e8f137f5ff8bc8e8caf0700085f6740b834618ff56ff151022ce00a1808de1005e8b4c240c64890d0000000083c418c3",
+    "sha256": "d987579c6e67256654c1db7cc0a08f426fa587f794729e3f1529849ea98f28dc",
+    "listing": [
+      "4C1AC0 mov eax, dword ptr fs:[0]",
+      "4C1AC6 push -1",
+      "4C1AC8 push 0xc65013",
+      "4C1ACD push eax",
+      "4C1ACE mov dword ptr fs:[0], esp",
+      "4C1AD5 mov eax, dword ptr [0xe18d80]",
+      "4C1ADA sub esp, 0xc",
+      "4C1ADD test eax, eax",
+      "4C1ADF jne 0x4c1b7b",
+      "4C1AE5 push esi",
+      "4C1AE6 call 0x415350",
+      "4C1AEB mov esi, dword ptr [eax + 0x10]",
+      "4C1AEE test esi, esi",
+      "4C1AF0 mov dword ptr [esp + 8], 0xce37fc",
+      "4C1AF8 mov dword ptr [esp + 0xc], esi",
+      "4C1AFC je 0x4c1b09",
+      "4C1AFE push esi",
+      "4C1AFF call dword ptr [0xce2218]",
+      "4C1B05 add dword ptr [esi + 0x18], 1",
+      "4C1B09 mov dword ptr [esp + 0x18], 0",
+      "4C1B11 cmp dword ptr [0xe18d80], 0",
+      "4C1B18 jne 0x4c1b66",
+      "4C1B1A push 0x164",
+      "4C1B1F call 0xbf681b",
+      "4C1B24 add esp, 4",
+      "4C1B27 mov dword ptr [esp + 4], eax",
+      "4C1B2B test eax, eax",
+      "4C1B2D mov byte ptr [esp + 0x18], 1",
+      "4C1B32 je 0x4c1b3d",
+      "4C1B34 mov ecx, eax",
+      "4C1B36 call 0x517d10",
+      "4C1B3B jmp 0x4c1b3f",
+      "4C1B3D xor eax, eax",
+      "4C1B3F mov byte ptr [esp + 0x18], 0",
+      "4C1B44 mov dword ptr [0xe18d80], eax",
+      "4C1B49 mov eax, dword ptr [0xe18d80]",
+      "4C1B4E test eax, eax",
+      "4C1B50 je 0x4c1b57",
+      "4C1B52 add eax, 8",
+      "4C1B55 jmp 0x4c1b59",
+      "4C1B57 xor eax, eax",
+      "4C1B59 push eax",
+      "4C1B5A call 0x415350",
+      "4C1B5F mov ecx, eax",
+      "4C1B61 call 0xbd0c30",
+      "4C1B66 test esi, esi",
+      "4C1B68 je 0x4c1b75",
+      "4C1B6A add dword ptr [esi + 0x18], -1",
+      "4C1B6E push esi",
+      "4C1B6F call dword ptr [0xce2210]",
+      "4C1B75 mov eax, dword ptr [0xe18d80]",
+      "4C1B7A pop esi",
+      "4C1B7B mov ecx, dword ptr [esp + 0xc]",
+      "4C1B7F mov dword ptr fs:[0], ecx",
+      "4C1B86 add esp, 0x18",
+      "4C1B89 ret"
+    ],
+    "exports": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004c1ac0\\assembly.txt",
+        "bytes": 1618,
+        "sha256": "8a168220b57c0e4ae2cf204c258f18e9e588993fe5f59e17fcc1084547f0776a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004c1ac0\\decompiled.c",
+        "bytes": 2438,
+        "sha256": "b44e155e2db0ec685151554c7c395bc1eb40a3d93aad6a6bb225b534eb2b1d0f"
+      }
+    ]
+  },
+  "native_EH": {
+    "FuncInfo": "00D8D6BC",
+    "map": "00D8D6AC",
+    "map_info_hex": "ffffffff0050c600000000000850c6002205931902000000acd6d800000000000000000000000000000000000000000001000000",
+    "actions_handler_hex": "8d4dece9d8ce7aff8b45e850e89b15f9ff59c3b8bcd6d800e9261bf9ff",
+    "states": [
+      {
+        "state": 0,
+        "previous": -1,
+        "action": "00C65000",
+        "meaning": "411EE0 onEBP-14 guard"
+      },
+      {
+        "state": 1,
+        "previous": 0,
+        "action": "00C65008",
+        "meaning": "BF65AC capturedEBP-18 allocation"
+      }
+    ]
+  },
+  "public_signature": "void* bsp::get_native_front_end_frame_004c1ac0(void* volatile& actual_manager_publication_01090aa0, void* volatile& actual_frame_publication_00e18d80)",
+  "actual_bindings": "Mandatory SAME real distinct stable publication cells as shared singleton/Frame lifetime owners, valid current objects/rawsection+18/provider custody through callbacks; no new globals, copied cells, second manager/domain or authentication",
+  "schedule": [
+    "First volatileFramecapture returned on fastnonnullbranch",
+    "Real manager1, captureactualmanager+10 once, actual8byteguardCE37FC/capturedsection; Enter+counter18increment before outerSourceCPPscope",
+    "RecheckCURRENTFrame; allocate164 matchedCRT insideouterlockscope but beforeinnerconstructorcatch; captureallocation",
+    "InnerSourcecatch coversconditionalactualFramector; freeONLYcapturedallocation thenrethrow",
+    "Publishactualconstructorreturn/null afterinnerCPPscope; CURRENTFramecapture+8/null BEFORErealmanager2",
+    "ActualBD0C30singletonlifetime registration withcapturedadjustedargument; callbackpublicationchangesdonotcausereargumentreload",
+    "Retaincapturedsection fornormalcounterdecrement/Leave; returnfinalCURRENTFrame",
+    "CoveredCPPfailure calls fullactual411EE0 on8byteguard thenrethrows; publication/child effects retained, no rollback/destructor/clear/retry/termination"
+  ],
+  "allocation_domain": "Actualsingleton_lifetime_allocate/free usematchedstd::malloc/_callnewh/std::free for164rawbytes. BF681B/BF65AC mapping is qualified currentSourceCRT, never arbitrary ::new/delete or opaque release.",
+  "guard_layout": {
+    "bytes": 8,
+    "profile_offset": 0,
+    "profile": "00CE37FC",
+    "section_offset": 4,
+    "section_OS_bytes": 24,
+    "counter_offset": "18h",
+    "meaning": "Actualrawguard/section+counter storage, notSystemSingletonCriticalSectionprojection"
+  },
+  "source_provider_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\include\\bsp\\native_singleton_publication.hpp",
+      "bytes": 2293,
+      "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\src\\native_singleton_publication.cpp",
+      "bytes": 4127,
+      "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\include\\bsp\\native_singleton_vector_registration_wrappers.hpp",
+      "bytes": 2373,
+      "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\src\\native_singleton_vector_registration_wrappers.cpp",
+      "bytes": 4283,
+      "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\include\\bsp\\singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\src\\singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\include\\bsp\\native_diagnostic_sink_lifetime.hpp",
+      "bytes": 2420,
+      "sha256": "935960697b2f517ff8f5e0f14899a182182e37d8a10c6ed4f221f34dd9c0c868"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\src\\native_diagnostic_sink_lifetime.cpp",
+      "bytes": 6035,
+      "sha256": "7ef822175d062d799683312c6a8f9618c1771ec013e7424b48eedd66c7968499"
+    }
+  ],
+  "strict_objects": {
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\local\\native_front_end_frame_construction\\native_front_end_frame_publication.obj",
+      "bytes": 3841,
+      "sha256": "2d96825b9d057f965162b8177061c2b0b99ac309f84a4b23731a5f7ebb874ba6"
+    },
+    "MD_directive": true,
+    "normal": {
+      "name": "?get_native_front_end_frame_004c1ac0@bsp@@YAPAXACRAX0@Z",
+      "section": 4,
+      "bytes_through_first_return": 264,
+      "instructions_through_first_return": 89,
+      "publication_load_offsets": [
+        55,
+        181,
+        234
+      ],
+      "publication_store_offset": 177,
+      "manager_call_offsets": [
+        66,
+        198
+      ],
+      "adjust_capture_offset": 192,
+      "leave_offset": 228,
+      "EH_state_stores": [
+        {
+          "offset": 108,
+          "state": 0,
+          "bytes": 4
+        },
+        {
+          "offset": 153,
+          "state": 1,
+          "bytes": 1
+        },
+        {
+          "offset": 185,
+          "state": 0,
+          "bytes": 4
+        }
+      ],
+      "calls": [
+        {
+          "offset": 66,
+          "target": "?get_native_singleton_manager_00415350@bsp@@YAPAXACRAX@Z"
+        },
+        {
+          "offset": 92,
+          "target": "__imp__EnterCriticalSection@4"
+        },
+        {
+          "offset": 142,
+          "target": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+        },
+        {
+          "offset": 162,
+          "target": "?construct_native_front_end_frame_00517d10@bsp@@YAPAXPAX@Z"
+        },
+        {
+          "offset": 198,
+          "target": "?get_native_singleton_manager_00415350@bsp@@YAPAXACRAX@Z"
+        },
+        {
+          "offset": 211,
+          "target": "?register_native_singleton_object_00bd0c30@bsp@@YIXPAX00@Z"
+        },
+        {
+          "offset": 228,
+          "target": "__imp__LeaveCriticalSection@4"
+        },
+        {
+          "offset": 255,
+          "target": "@__security_check_cookie@4"
+        }
+      ],
+      "source_EH_try_rows": [
+        [
+          1,
+          1,
+          2,
+          1,
+          0
+        ],
+        [
+          0,
+          2,
+          3,
+          1,
+          0
+        ]
+      ],
+      "qualified_motion": "Source state1 remains across plain volatile publish/current-read/test and drops beforemanager2; state0 starts afterrecheckCMP. StandardCPPcatchscope valid; NativeSEH/fault epoch equality unproved."
+    },
+    "all_code_sections": [
+      {
+        "index": 4,
+        "name": ".text$mn",
+        "bytes": 311,
+        "flags": "60501020",
+        "hex": "558bec6aff680000000064a1000000005083ec24a10000000033c58945ec535657508d45f464a3000000008965f08b7d0c8b4d08894dd88b0785c00f85ab00000051e80000000083c4048b7010c745d0fc37ce008975d485f6740e56ff15000000008b461840894618833f00c745fc0000000075638d45e0c745e00300000050c745e464010000c745e864010000e80000000083c4048945dcc645fc0185c0740b50e80000000083c404eb0233c0ff75d8890733c98b0785c0c745fc000000008d58080f44d9e80000000083c40433d28bc853e80000000085f6740e8b4e184956894e18ff15000000008b078b4df464890d00000000595f5e5b8b4dec33cde8000000008be55dc38d45d050e80000000083c4046a006a00e800000000ff75dce80000000083c4046a006a00e800000000cccccccccccc",
+        "sha256": "0cf0fb2d4fed95050477c4ee86a0d4a080749a24f2c644268d990cd85f8dd74c",
+        "relocations": [
+          {
+            "offset": 6,
+            "target": "__ehhandler$?get_native_front_end_frame_004c1ac0@bsp@@YAPAXACRAX0@Z",
+            "kind": 6
+          },
+          {
+            "offset": 21,
+            "target": "___security_cookie",
+            "kind": 6
+          },
+          {
+            "offset": 67,
+            "target": "?get_native_singleton_manager_00415350@bsp@@YAPAXACRAX@Z",
+            "kind": 20
+          },
+          {
+            "offset": 94,
+            "target": "__imp__EnterCriticalSection@4",
+            "kind": 6
+          },
+          {
+            "offset": 143,
+            "target": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+            "kind": 20
+          },
+          {
+            "offset": 163,
+            "target": "?construct_native_front_end_frame_00517d10@bsp@@YAPAXPAX@Z",
+            "kind": 20
+          },
+          {
+            "offset": 199,
+            "target": "?get_native_singleton_manager_00415350@bsp@@YAPAXACRAX@Z",
+            "kind": 20
+          },
+          {
+            "offset": 212,
+            "target": "?register_native_singleton_object_00bd0c30@bsp@@YIXPAX00@Z",
+            "kind": 20
+          },
+          {
+            "offset": 230,
+            "target": "__imp__LeaveCriticalSection@4",
+            "kind": 6
+          },
+          {
+            "offset": 256,
+            "target": "@__security_check_cookie@4",
+            "kind": 20
+          },
+          {
+            "offset": 269,
+            "target": "?destroy_native_singleton_guard_00411ee0@bsp@@YAXPAX@Z",
+            "kind": 20
+          },
+          {
+            "offset": 281,
+            "target": "__CxxThrowException@8",
+            "kind": 20
+          },
+          {
+            "offset": 289,
+            "target": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "kind": 20
+          },
+          {
+            "offset": 301,
+            "target": "__CxxThrowException@8",
+            "kind": 20
+          }
+        ],
+        "listing": [
+          {
+            "offset": "0000",
+            "instruction": "push ebp",
+            "relocations": []
+          },
+          {
+            "offset": "0001",
+            "instruction": "mov ebp, esp",
+            "relocations": []
+          },
+          {
+            "offset": "0003",
+            "instruction": "push -1",
+            "relocations": []
+          },
+          {
+            "offset": "0005",
+            "instruction": "push 0",
+            "relocations": [
+              {
+                "offset": 6,
+                "target": "__ehhandler$?get_native_front_end_frame_004c1ac0@bsp@@YAPAXACRAX0@Z",
+                "kind": 6
+              }
+            ]
+          },
+          {
+            "offset": "000A",
+            "instruction": "mov eax, dword ptr fs:[0]",
+            "relocations": []
+          },
+          {
+            "offset": "0010",
+            "instruction": "push eax",
+            "relocations": []
+          },
+          {
+            "offset": "0011",
+            "instruction": "sub esp, 0x24",
+            "relocations": []
+          },
+          {
+            "offset": "0014",
+            "instruction": "mov eax, dword ptr [0]",
+            "relocations": [
+              {
+                "offset": 21,
+                "target": "___security_cookie",
+                "kind": 6
+              }
+            ]
+          },
+          {
+            "offset": "0019",
+            "instruction": "xor eax, ebp",
+            "relocations": []
+          },
+          {
+            "offset": "001B",
+            "instruction": "mov dword ptr [ebp - 0x14], eax",
+            "relocations": []
+          },
+          {
+            "offset": "001E",
+            "instruction": "push ebx",
+            "relocations": []
+          },
+          {
+            "offset": "001F",
+            "instruction": "push esi",
+            "relocations": []
+          },
+          {
+            "offset": "0020",
+            "instruction": "push edi",
+            "relocations": []
+          },
+          {
+            "offset": "0021",
+            "instruction": "push eax",
+            "relocations": []
+          },
+          {
+            "offset": "0022",
+            "instruction": "lea eax, [ebp - 0xc]",
+            "relocations": []
+          },
+          {
+            "offset": "0025",
+            "instruction": "mov dword ptr fs:[0], eax",
+            "relocations": []
+          },
+          {
+            "offset": "002B",
+            "instruction": "mov dword ptr [ebp - 0x10], esp",
+            "relocations": []
+          },
+          {
+            "offset": "002E",
+            "instruction": "mov edi, dword ptr [ebp + 0xc]",
+            "relocations": []
+          },
+          {
+            "offset": "0031",
+            "instruction": "mov ecx, dword ptr [ebp + 8]",
+            "relocations": []
+          },
+          {
+            "offset": "0034",
+            "instruction": "mov dword ptr [ebp - 0x28], ecx",
+            "relocations": []
+          },
+          {
+            "offset": "0037",
+            "instruction": "mov eax, dword ptr [edi]",
+            "relocations": []
+          },
+          {
+            "offset": "0039",
+            "instruction": "test eax, eax",
+            "relocations": []
+          },
+          {
+            "offset": "003B",
+            "instruction": "jne 0xec",
+            "relocations": []
+          },
+          {
+            "offset": "0041",
+            "instruction": "push ecx",
+            "relocations": []
+          },
+          {
+            "offset": "0042",
+            "instruction": "call 0x47",
+            "relocations": [
+              {
+                "offset": 67,
+                "target": "?get_native_singleton_manager_00415350@bsp@@YAPAXACRAX@Z",
+                "kind": 20
+              }
+            ]
+          },
+          {
+            "offset": "0047",
+            "instruction": "add esp, 4",
+            "relocations": []
+          },
+          {
+            "offset": "004A",
+            "instruction": "mov esi, dword ptr [eax + 0x10]",
+            "relocations": []
+          },
+          {
+            "offset": "004D",
+            "instruction": "mov dword ptr [ebp - 0x30], 0xce37fc",
+            "relocations": []
+          },
+          {
+            "offset": "0054",
+            "instruction": "mov dword ptr [ebp - 0x2c], esi",
+            "relocations": []
+          },
+          {
+            "offset": "0057",
+            "instruction": "test esi, esi",
+            "relocations": []
+          },
+          {
+            "offset": "0059",
+            "instruction": "je 0x69",
+            "relocations": []
+          },
+          {
+            "offset": "005B",
+            "instruction": "push esi",
+            "relocations": []
+          },
+          {
+            "offset": "005C",
+            "instruction": "call dword ptr [0]",
+            "relocations": [
+              {
+                "offset": 94,
+                "target": "__imp__EnterCriticalSection@4",
+                "kind": 6
+              }
+            ]
+          },
+          {
+            "offset": "0062",
+            "instruction": "mov eax, dword ptr [esi + 0x18]",
+            "relocations": []
+          },
+          {
+            "offset": "0065",
+            "instruction": "inc eax",
+            "relocations": []
+          },
+          {
+            "offset": "0066",
+            "instruction": "mov dword ptr [esi + 0x18], eax",
+            "relocations": []
+          },
+          {
+            "offset": "0069",
+            "instruction": "cmp dword ptr [edi], 0",
+            "relocations": []
+          },
+          {
+            "offset": "006C",
+            "instruction": "mov dword ptr [ebp - 4], 0",
+            "relocations": []
+          },
+          {
+            "offset": "0073",
+            "instruction": "jne 0xd8",
+            "relocations": []
+          },
+          {
+            "offset": "0075",
+            "instruction": "lea eax, [ebp - 0x20]",
+            "relocations": []
+          },
+          {
+            "offset": "0078",
+            "instruction": "mov dword ptr [ebp - 0x20], 3",
+            "relocations": []
+          },
+          {
+            "offset": "007F",
+            "instruction": "push eax",
+            "relocations": []
+          },
+          {
+            "offset": "0080",
+            "instruction": "mov dword ptr [ebp - 0x1c], 0x164",
+            "relocations": []
+          },
+          {
+            "offset": "0087",
+            "instruction": "mov dword ptr [ebp - 0x18], 0x164",
+            "relocations": []
+          },
+          {
+            "offset": "008E",
+            "instruction": "call 0x93",
+            "relocations": [
+              {
+                "offset": 143,
+                "target": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+                "kind": 20
+              }
+            ]
+          },
+          {
+            "offset": "0093",
+            "instruction": "add esp, 4",
+            "relocations": []
+          },
+          {
+            "offset": "0096",
+            "instruction": "mov dword ptr [ebp - 0x24], eax",
+            "relocations": []
+          },
+          {
+            "offset": "0099",
+            "instruction": "mov byte ptr [ebp - 4], 1",
+            "relocations": []
+          },
+          {
+            "offset": "009D",
+            "instruction": "test eax, eax",
+            "relocations": []
+          },
+          {
+            "offset": "009F",
+            "instruction": "je 0xac",
+            "relocations": []
+          },
+          {
+            "offset": "00A1",
+            "instruction": "push eax",
+            "relocations": []
+          },
+          {
+            "offset": "00A2",
+            "instruction": "call 0xa7",
+            "relocations": [
+              {
+                "offset": 163,
+                "target": "?construct_native_front_end_frame_00517d10@bsp@@YAPAXPAX@Z",
+                "kind": 20
+              }
+            ]
+          },
+          {
+            "offset": "00A7",
+            "instruction": "add esp, 4",
+            "relocations": []
+          },
+          {
+            "offset": "00AA",
+            "instruction": "jmp 0xae",
+            "relocations": []
+          },
+          {
+            "offset": "00AC",
+            "instruction": "xor eax, eax",
+            "relocations": []
+          },
+          {
+            "offset": "00AE",
+            "instruction": "push dword ptr [ebp - 0x28]",
+            "relocations": []
+          },
+          {
+            "offset": "00B1",
+            "instruction": "mov dword ptr [edi], eax",
+            "relocations": []
+          },
+          {
+            "offset": "00B3",
+            "instruction": "xor ecx, ecx",
+            "relocations": []
+          },
+          {
+            "offset": "00B5",
+            "instruction": "mov eax, dword ptr [edi]",
+            "relocations": []
+          },
+          {
+            "offset": "00B7",
+            "instruction": "test eax, eax",
+            "relocations": []
+          },
+          {
+            "offset": "00B9",
+            "instruction": "mov dword ptr [ebp - 4], 0",
+            "relocations": []
+          },
+          {
+            "offset": "00C0",
+            "instruction": "lea ebx, [eax + 8]",
+            "relocations": []
+          },
+          {
+            "offset": "00C3",
+            "instruction": "cmove ebx, ecx",
+            "relocations": []
+          },
+          {
+            "offset": "00C6",
+            "instruction": "call 0xcb",
+            "relocations": [
+              {
+                "offset": 199,
+                "target": "?get_native_singleton_manager_00415350@bsp@@YAPAXACRAX@Z",
+                "kind": 20
+              }
+            ]
+          },
+          {
+            "offset": "00CB",
+            "instruction": "add esp, 4",
+            "relocations": []
+          },
+          {
+            "offset": "00CE",
+            "instruction": "xor edx, edx",
+            "relocations": []
+          },
+          {
+            "offset": "00D0",
+            "instruction": "mov ecx, eax",
+            "relocations": []
+          },
+          {
+            "offset": "00D2",
+            "instruction": "push ebx",
+            "relocations": []
+          },
+          {
+            "offset": "00D3",
+            "instruction": "call 0xd8",
+            "relocations": [
+              {
+                "offset": 212,
+                "target": "?register_native_singleton_object_00bd0c30@bsp@@YIXPAX00@Z",
+                "kind": 20
+              }
+            ]
+          },
+          {
+            "offset": "00D8",
+            "instruction": "test esi, esi",
+            "relocations": []
+          },
+          {
+            "offset": "00DA",
+            "instruction": "je 0xea",
+            "relocations": []
+          },
+          {
+            "offset": "00DC",
+            "instruction": "mov ecx, dword ptr [esi + 0x18]",
+            "relocations": []
+          },
+          {
+            "offset": "00DF",
+            "instruction": "dec ecx",
+            "relocations": []
+          },
+          {
+            "offset": "00E0",
+            "instruction": "push esi",
+            "relocations": []
+          },
+          {
+            "offset": "00E1",
+            "instruction": "mov dword ptr [esi + 0x18], ecx",
+            "relocations": []
+          },
+          {
+            "offset": "00E4",
+            "instruction": "call dword ptr [0]",
+            "relocations": [
+              {
+                "offset": 230,
+                "target": "__imp__LeaveCriticalSection@4",
+                "kind": 6
+              }
+            ]
+          },
+          {
+            "offset": "00EA",
+            "instruction": "mov eax, dword ptr [edi]",
+            "relocations": []
+          },
+          {
+            "offset": "00EC",
+            "instruction": "mov ecx, dword ptr [ebp - 0xc]",
+            "relocations": []
+          },
+          {
+            "offset": "00EF",
+            "instruction": "mov dword ptr fs:[0], ecx",
+            "relocations": []
+          },
+          {
+            "offset": "00F6",
+            "instruction": "pop ecx",
+            "relocations": []
+          },
+          {
+            "offset": "00F7",
+            "instruction": "pop edi",
+            "relocations": []
+          },
+          {
+            "offset": "00F8",
+            "instruction": "pop esi",
+            "relocations": []
+          },
+          {
+            "offset": "00F9",
+            "instruction": "pop ebx",
+            "relocations": []
+          },
+          {
+            "offset": "00FA",
+            "instruction": "mov ecx, dword ptr [ebp - 0x14]",
+            "relocations": []
+          },
+          {
+            "offset": "00FD",
+            "instruction": "xor ecx, ebp",
+            "relocations": []
+          },
+          {
+            "offset": "00FF",
+            "instruction": "call 0x104",
+            "relocations": [
+              {
+                "offset": 256,
+                "target": "@__security_check_cookie@4",
+                "kind": 20
+              }
+            ]
+          },
+          {
+            "offset": "0104",
+            "instruction": "mov esp, ebp",
+            "relocations": []
+          },
+          {
+            "offset": "0106",
+            "instruction": "pop ebp",
+            "relocations": []
+          },
+          {
+            "offset": "0107",
+            "instruction": "ret",
+            "relocations": []
+          },
+          {
+            "offset": "0108",
+            "instruction": "lea eax, [ebp - 0x30]",
+            "relocations": []
+          },
+          {
+            "offset": "010B",
+            "instruction": "push eax",
+            "relocations": []
+          },
+          {
+            "offset": "010C",
+            "instruction": "call 0x111",
+            "relocations": [
+              {
+                "offset": 269,
+                "target": "?destroy_native_singleton_guard_00411ee0@bsp@@YAXPAX@Z",
+                "kind": 20
+              }
+            ]
+          },
+          {
+            "offset": "0111",
+            "instruction": "add esp, 4",
+            "relocations": []
+          },
+          {
+            "offset": "0114",
+            "instruction": "push 0",
+            "relocations": []
+          },
+          {
+            "offset": "0116",
+            "instruction": "push 0",
+            "relocations": []
+          },
+          {
+            "offset": "0118",
+            "instruction": "call 0x11d",
+            "relocations": [
+              {
+                "offset": 281,
+                "target": "__CxxThrowException@8",
+                "kind": 20
+              }
+            ]
+          },
+          {
+            "offset": "011D",
+            "instruction": "push dword ptr [ebp - 0x24]",
+            "relocations": []
+          },
+          {
+            "offset": "0120",
+            "instruction": "call 0x125",
+            "relocations": [
+              {
+                "offset": 289,
+                "target": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+                "kind": 20
+              }
+            ]
+          },
+          {
+            "offset": "0125",
+            "instruction": "add esp, 4",
+            "relocations": []
+          },
+          {
+            "offset": "0128",
+            "instruction": "push 0",
+            "relocations": []
+          },
+          {
+            "offset": "012A",
+            "instruction": "push 0",
+            "relocations": []
+          },
+          {
+            "offset": "012C",
+            "instruction": "call 0x131",
+            "relocations": [
+              {
+                "offset": 301,
+                "target": "__CxxThrowException@8",
+                "kind": 20
+              }
+            ]
+          },
+          {
+            "offset": "0131",
+            "instruction": "int3",
+            "relocations": []
+          },
+          {
+            "offset": "0132",
+            "instruction": "int3",
+            "relocations": []
+          },
+          {
+            "offset": "0133",
+            "instruction": "int3",
+            "relocations": []
+          },
+          {
+            "offset": "0134",
+            "instruction": "int3",
+            "relocations": []
+          },
+          {
+            "offset": "0135",
+            "instruction": "int3",
+            "relocations": []
+          },
+          {
+            "offset": "0136",
+            "instruction": "int3",
+            "relocations": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "name": ".text$x",
+        "bytes": 39,
+        "flags": "60501020",
+        "hex": "90908b5424088d420c8b4acc33c8e8000000008b4af833c8e800000000b800000000e900000000",
+        "sha256": "93dbff7d30dff05cb78fc41049c0fd1bf0adfac182248b581b32c4bbb7fa5e96",
+        "relocations": [
+          {
+            "offset": 15,
+            "target": "@__security_check_cookie@4",
+            "kind": 20
+          },
+          {
+            "offset": 25,
+            "target": "@__security_check_cookie@4",
+            "kind": 20
+          },
+          {
+            "offset": 30,
+            "target": "__ehfuncinfo$?get_native_front_end_frame_004c1ac0@bsp@@YAPAXACRAX0@Z",
+            "kind": 6
+          },
+          {
+            "offset": 35,
+            "target": "___CxxFrameHandler3",
+            "kind": 20
+          }
+        ],
+        "listing": [
+          {
+            "offset": "0000",
+            "instruction": "nop",
+            "relocations": []
+          },
+          {
+            "offset": "0001",
+            "instruction": "nop",
+            "relocations": []
+          },
+          {
+            "offset": "0002",
+            "instruction": "mov edx, dword ptr [esp + 8]",
+            "relocations": []
+          },
+          {
+            "offset": "0006",
+            "instruction": "lea eax, [edx + 0xc]",
+            "relocations": []
+          },
+          {
+            "offset": "0009",
+            "instruction": "mov ecx, dword ptr [edx - 0x34]",
+            "relocations": []
+          },
+          {
+            "offset": "000C",
+            "instruction": "xor ecx, eax",
+            "relocations": []
+          },
+          {
+            "offset": "000E",
+            "instruction": "call 0x13",
+            "relocations": [
+              {
+                "offset": 15,
+                "target": "@__security_check_cookie@4",
+                "kind": 20
+              }
+            ]
+          },
+          {
+            "offset": "0013",
+            "instruction": "mov ecx, dword ptr [edx - 8]",
+            "relocations": []
+          },
+          {
+            "offset": "0016",
+            "instruction": "xor ecx, eax",
+            "relocations": []
+          },
+          {
+            "offset": "0018",
+            "instruction": "call 0x1d",
+            "relocations": [
+              {
+                "offset": 25,
+                "target": "@__security_check_cookie@4",
+                "kind": 20
+              }
+            ]
+          },
+          {
+            "offset": "001D",
+            "instruction": "mov eax, 0",
+            "relocations": [
+              {
+                "offset": 30,
+                "target": "__ehfuncinfo$?get_native_front_end_frame_004c1ac0@bsp@@YAPAXACRAX0@Z",
+                "kind": 6
+              }
+            ]
+          },
+          {
+            "offset": "0022",
+            "instruction": "jmp 0x27",
+            "relocations": [
+              {
+                "offset": 35,
+                "target": "___CxxFrameHandler3",
+                "kind": 20
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "name": ".text$mn",
+        "bytes": 8,
+        "flags": "60501020",
+        "hex": "8b44240483c018c3",
+        "sha256": "d165aaca2e5c95296996caaac7d3c565e9f85fba7d59851f3ab7ed37aa4f92ef",
+        "relocations": [],
+        "listing": [
+          {
+            "offset": "0000",
+            "instruction": "mov eax, dword ptr [esp + 4]",
+            "relocations": []
+          },
+          {
+            "offset": "0004",
+            "instruction": "add eax, 0x18",
+            "relocations": []
+          },
+          {
+            "offset": "0007",
+            "instruction": "ret",
+            "relocations": []
+          }
+        ]
+      }
+    ],
+    "catch_offsets_hex": {
+      "outer": "108",
+      "inner": "11D"
+    },
+    "source_local_homes_hex": {
+      "raw_guard": "EBP-30",
+      "captured_section_guard_field": "EBP-2C",
+      "captured_allocation": "EBP-24",
+      "actual_EH_state": "EBP-4"
+    },
+    "normal_emitter_offsets_hex": {
+      "initialFrame": "37",
+      "manager1": "42",
+      "Enter": "5C",
+      "outerState0": "6C",
+      "allocation": "8E",
+      "state1": "99",
+      "ctor": "A2",
+      "publish": "B1",
+      "CURRENTFrame": "B5",
+      "state0": "B9",
+      "adjust": "C0",
+      "manager2": "C6",
+      "registration": "D3",
+      "Leave": "E4",
+      "finalCURRENT": "EA"
+    },
+    "live_values": "EDI actualFramecelladdress, ESI capturedsection, EBX adjustedFrame BEFOREmanager2; actualcurrent/capture order retained",
+    "auxiliary": "39B compilerEHentry,8B internalcounteraddresshelper,6INT3padding,standardcookie/throw/FH3 refs and compiler/SDKweakCOMDAT__Avx2WmemEnabledWeakValue; noenginepublication/selector invented"
+  },
+  "EH_limits": {
+    "ordinary_CPP": "Explicitinnerctor-onlycatch/outerguardcatch andrealhelperrethrows. Sourceinnertry1..1/catch2; outer0..2/catch3; nativehas2unwindstates.",
+    "actual_state_motion": "Outer state0@6C followsrecheckCMP, still afterEnter/increment. Innerstate1 remainsacrossplainvolatilepublishB1/currentreadB5/test, drops0@B9 beforemanager2. These cannotthrowstandardCPP, soSourceCPPscopecontractpreserved.",
+    "NOT_proved": "OriginalNativeSEH/hardwarefaultcleanup at those exactepochs, FH3/private spills/original no-inputABI/providerregister/throwidentity andsecondary-unwindbehavior. No fakebarrier/helper insertedtoforcecompilerstateplacement.",
+    "inherited_naked_child": "ActualBD0C30 is naked; its realappend/SDKdiagnostic privateframes andCPPexceptiontransport remainqualified. Newordinarygetterhandlers donotprovechildexceptiondeliveryacrossthatassemblyentry; nothrowingstand-in/newtransportproof.",
+    "failure": "No newSourcepolicy. CapturedfreeonlyforcoveredCtorfailure; afterpublish/registrationfailure keepsactualpublication/allocation/child effects. Enterbeforearmingnotartificiallyunlocked."
+  },
+  "no_additional_work": "OnlyoriginalBD0C30singletonlifetimeregistration. No517ED0screenregistration, Pagearrays/currentset/selectors/callabletable/completeFrame scalar lifetime or newowner.",
+  "source_receipts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\include\\bsp\\native_front_end_frame_publication.hpp",
+      "bytes": 1892,
+      "sha256": "b0d35be85ed8448ee1a89d66027e777a0aa4947a49164321c8bce3e628a8aae0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\src\\native_front_end_frame_publication.cpp",
+      "bytes": 3253,
+      "sha256": "0d88f92b07b44eab54283aecea4c7626566c6d165b04d1285cfd3648b5e0a64a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\docs\\CC16_NATIVE_FRONT_END_FRAME_PUBLICATION.md",
+      "bytes": 6788,
+      "sha256": "5733a09b9022c65b6a5e0d5ab76a7c064f1944ec3be10803ff8205b272f19c86"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\include\\bsp\\native_front_end_frame_construction.hpp",
+      "bytes": 1622,
+      "sha256": "cd96bfd81f06f903c973593cde3daddff837d7a75f4649eb007ae4a14a7deb61"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-front-end-frame-construction\\src\\native_front_end_frame_construction.cpp",
+      "bytes": 976,
+      "sha256": "f90858ce1f08c8124d18a53bb51cfc43c46ced96fc8e64636c613a08a037cd9f"
+    }
+  ],
+  "remaining": [
+    "Root independent review/common build/link",
+    "actualcanonicalRootandFrame/GUI/Page/deletinglifetime",
+    "95registry/creators/source dispatch/writers/collector/park/pause/Game",
+    "required meaningful fixture/gameplay and NativeABI/SEH/fault/FP gates"
+  ]
+}
