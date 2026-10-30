@@ -1,0 +1,252 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-gui-text-single-line-independent-review",
+  "classification": "independent_bounded_raw_single_line_Source_review",
+  "reviewed_commit": "0bc258c71f44b0729da801f3aa9b598856d2276f",
+  "owned_files": [
+    "docs/CC16_NATIVE_GUI_TEXT_SINGLE_LINE_INDEPENDENT_REVIEW.md",
+    "reports/cc16_native_gui_text_single_line_independent_review.json"
+  ],
+  "verdict": {
+    "blocking_Source_findings": 0,
+    "findings": [],
+    "ready_for_primary_integration_common_build_assessment": true,
+    "compiled_by_reviewer": false,
+    "actual_caller_admitted": false,
+    "whole_Text_or_frontend_ready": false,
+    "activation": false
+  },
+  "scope": {
+    "production_files": 2,
+    "Native_entry": "00AB9FD0",
+    "Native_end": "00ABA263",
+    "Native_bytes": 660,
+    "Native_instructions": 195,
+    "x87_forms": 22,
+    "full_Source_and_assembly_reviewed": true,
+    "no_extra_catalogue_or_tests": true
+  },
+  "home_and_loop_checks": {
+    "unused_home0_read": false,
+    "current_section_home1_sites": [
+      "00ABA03F",
+      "00ABA18C",
+      "00ABA19E",
+      "00ABA251"
+    ],
+    "home1_static_reads": 4,
+    "actual_EC_reads": "Separate mapvertex*4, mapindex*6, section+10*4 and section+18*2 reads.",
+    "F0_captures": [
+      "first inwidthblock",
+      "second independent capture afteralignment"
+    ],
+    "UTF16": "Zero-extended code-unit NUL loops; no LF/CR split, kerning, copied-string/length bound or new range policy.",
+    "glyph": "CURRENT Font each call; unsigned glyph+12; CURRENT scale after callbacks; captured glyph retained for postquad advance.",
+    "measure": "Cursor step before FILD/FMUL/FADD/FSTP32 Text+114.",
+    "emit": "Next UTF16 before FILD/penFP; counters and cursor wrap asDWORDs; pen spills float32 eachglyph."
+  },
+  "x87_review": {
+    "FNSTCW": "After returned indexmap beforesectionstores.",
+    "width": "FLD32 Text+20; CURRENT Font capture; FMUL64 actualCEC380 underambientCW; height/F0 capture; FLDCW saved|0C00; FISTP64; keep lowDWORD; FLDCW saved only atnativepoint afterreturnedFISTP.",
+    "alignment": "Mode2right/mode1center; FILDsignedwidth; conditional livefloat2^32 unsignedbias; FSUBcurrentmeasure; centerFMUL64half before soleFSTP32, no intermediate spill.",
+    "other_modes": "+0initial pen, no added clamp.",
+    "Native_and_Source_multiset": {
+      "fnstcw": 1,
+      "fld": 1,
+      "fmul": 4,
+      "fldcw": 2,
+      "fistp": 1,
+      "fild": 4,
+      "fadd": 4,
+      "fstp": 3,
+      "fsub": 2
+    },
+    "all22_forms_and_dynamic_paths_checked": true,
+    "no_CppFP_projection_or_extra_spill": true,
+    "no_FP_RAII_reset_mask_or_status_clear": true,
+    "later_provider_CW_status_changes_preserved": true,
+    "generated_code_unmasked_fault_status_private_frame_parity_proved": false
+  },
+  "quad_contract": {
+    "callee": "Required whole00AB98F0, parallel provider not reviewed/reimplemented here.",
+    "ten_homes": [
+      "capturedglyph",
+      "position3pointer",
+      "capturedvertex",
+      "indexwritepointer",
+      "SAMEposition3pointer",
+      "SAMEposition3pointer",
+      "quadindex",
+      "savedFontheight",
+      "firstvertex",
+      "CURRENTUTF16unit"
+    ],
+    "stable_float3_alias_homes": [
+      1,
+      4,
+      5
+    ],
+    "Y_Z_zero_once": true,
+    "X_late_from_separate_pen_eachcall": true,
+    "callee_mutable_homes": [
+      0,
+      2,
+      7
+    ],
+    "parent_glyph_vertex_height_retained_independently": true,
+    "no_parent_state_recovered_from_mutated_homes": true,
+    "all_homes_rebuilt_per_glyph": true,
+    "only_genuine_complete_quad_return_advances": true
+  },
+  "provider_review": {
+    "B73260": "Direct actual rawMesh slot read, no NativeMeshStorage reinterpret.",
+    "B189F0": "Direct actual rawmaterial binding and SAME owners; capture texture0/section material then reread glyph+1C/section material aftercallback.",
+    "observed_maps": [
+      "B49980",
+      "B49B60"
+    ],
+    "observed_unmaps": [
+      "B49C70",
+      "B49A80"
+    ],
+    "existing_actual_mapping_contexts_reused": true,
+    "other_current_targets": "Explicit required genuine operations receive capturedstream/target/operands; no successfulfallback or codeword callcast.",
+    "unmap_and_layout": "Captured indexcurrent10 before capturedvertexcurrent14, then CURRENT section home and capturedMesh toB865A0.",
+    "still_unclosed": [
+      "whole rawB74640",
+      "whole rawFontAD4480",
+      "whole rawAB98F0",
+      "other reached currentstreamtargets",
+      "whole rawB865A0",
+      "genuine F8BE50 role/caller binding"
+    ],
+    "no_fake_payload_default_array_owner_or_typed_reinterpret": true
+  },
+  "failure_contract": {
+    "default_destructor_no_effect": true,
+    "records_phase_maps_partial_geometry_then_propagates": true,
+    "caller_retains_real_graph_and_actual_homes": true,
+    "no_auto_unlock_CW_restore_retry_rollback_or_terminal_policy": true,
+    "ordinary_Source_exception_scope_only": true
+  },
+  "pin_audit": {
+    "new_Source": {
+      "count": 2,
+      "format": "immutable Git blob LF SHA/OID/byte count",
+      "mismatches": []
+    },
+    "inputs": {
+      "count": 27,
+      "format": "immutable Git blob LF SHA/OID/byte count",
+      "mismatches": [],
+      "exact_rows": "Pinned producer report unchanged_supplier_and_evidence_pins"
+    },
+    "exports": {
+      "count": 2,
+      "format": "raw saved-export bytes without normalization",
+      "mismatches": []
+    },
+    "Native_body_and4_PE_preimages_match": true,
+    "Native_instruction_rows": 195,
+    "unused_home0_reads": 0,
+    "section_home1_reads": 4
+  },
+  "source_pins": [
+    {
+      "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "b4aaa584bc70d7be2c97209b4321c949ab27fbfebea561e627d07f492ed0e51a",
+      "git_blob_oid": "be2c9f193e663cfac9d036c1878ad37f7cff640e",
+      "bytes": 8136
+    },
+    {
+      "path": "src/native_gui_text_single_line_storage.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "sha256": "b86b045bde08b7fa7149908218537ace39f18545e5398e96e5c0a883b7270d00",
+      "git_blob_oid": "0f5535dd8c51553512848ee119ef4b35532bbddc",
+      "bytes": 16309
+    }
+  ],
+  "producer_report_pin": {
+    "path": "reports/cc16_native_gui_text_single_line_storage.json",
+    "hash_format": "immutable_git_blob_content_lf",
+    "git_blob_oid": "948e6dedb5d6ecc9629fc7b291d936aab678f578",
+    "sha256": "a4b9536c2729c7abcd4a55d6b15df466d94a3709c23abaa5c54af4ae984432dc",
+    "bytes": 22181
+  },
+  "saved_export_pins": [
+    {
+      "path": "exports/bsp/functions/00ab9fd0/assembly.txt",
+      "hash_format": "raw_saved_export_file_bytes",
+      "sha256": "079f6ad910bdefc081fca92361780e773e9b0113cf99dc255f001814ec443182",
+      "bytes": 6236
+    },
+    {
+      "path": "exports/bsp/functions/00ab9fd0/decompiled.c",
+      "hash_format": "raw_saved_export_file_bytes",
+      "sha256": "7650be6851522538d64a1bf2478c1bb1acb21de90a3cb5ddd6f8e2d82e1bec64",
+      "bytes": 7925
+    }
+  ],
+  "PE_evidence": {
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "body_660B_sha256": "a0e2dd07ffac72765efcbb1242ec201f77f66202a88d649051f3424859a3c52b",
+    "preimages": [
+      {
+        "address": "00CEC380",
+        "bytes_hex": "0000000000008e40",
+        "meaning": "initialdouble960"
+      },
+      {
+        "address": "00CE3978",
+        "bytes_hex": "0000804f",
+        "meaning": "initialfloat2^32"
+      },
+      {
+        "address": "00D7A280",
+        "bytes_hex": "000000000000e03f",
+        "meaning": "initialdoublehalf"
+      },
+      {
+        "address": "00F8BE50",
+        "bytes_hex": "0000",
+        "meaning": "genuine loaderzero preimage, not replacement zero-array or permanent policy"
+      }
+    ]
+  },
+  "validation": {
+    "static_fullSource_listing_FP_contract_review": true,
+    "exact_PE_Git_and_raw_pin_audit": true,
+    "json_parsed": true,
+    "staged_diff_check": true,
+    "owned_review_files_only": true,
+    "Source_edits": false,
+    "CMake_edits": false,
+    "ledger_edits": false,
+    "Ghidra_reads": false,
+    "Ghidra_writes": false,
+    "build": false,
+    "test": false,
+    "probe": false,
+    "execution": false,
+    "process_actions": false,
+    "prior_passed_cohort_receipt_reused_for_newSource": false
+  },
+  "remaining_gates": [
+    "Actual retained caller/provider composition",
+    "Whole quad/Font/model/layout/otherstream targets and F8BE50 role",
+    "Wrappedpath/glyphrecursion/changedText and frontend activation",
+    "Joined build and Original ABI/runtime/FP proof"
+  ],
+  "new_credit": {
+    "original": 0,
+    "vendor": 0,
+    "duplicate_body": 0,
+    "compiler_generated": 0,
+    "abi": 0,
+    "runtime": 0,
+    "gameplay": 0,
+    "activation": 0
+  },
+  "utc": "2026-10-30T16:45:12.280561+00:00"
+}
