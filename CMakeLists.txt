@@ -40,6 +40,14 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_link_libraries 
 if(NOT WIN32 OR NOT MSVC OR NOT CMAKE_SIZEOF_VOID_P EQUAL 4)
   message(FATAL_ERROR "Use MSVC targeting Win32 (scripts/build.ps1). The original is x86.")
 endif()
+# Optional optimized coverage symbols. /DEBUG otherwise changes the linker's
+# REF/ICF defaults, so state both explicitly and retain nonincremental linking.
+# OFF leaves all existing compiler/linker flags untouched.
+option(BSP_COVERAGE_PDB "Emit full optimized PDBs for execution-coverage attribution" OFF)
+if(BSP_COVERAGE_PDB)
+  add_compile_options(/Zi)
+  add_link_options(/DEBUG:FULL /OPT:REF /OPT:ICF /INCREMENTAL:NO)
+endif()
 # Compile each target's files in parallel. Without /MP, cl takes a project's sources one at a time, and
 # bsp_core holds most of them. The count is capped so that the up to three builds scripts/build.ps1
 # admits at once stay near the machine's 32 cores. /MP changes scheduling only, not the object code.
