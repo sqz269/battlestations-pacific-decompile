@@ -1,4 +1,5 @@
-/* PRIVATE FIXTURE ONLY. Application-IAT redirect, never a shell32-wide hook. */
+/* PRIVATE STAGE ONLY. Application-IAT redirect, never a shell32-wide hook.
+ * Image/token/hash/creation-time and fresh-directory gates belong to the creator. */
 #include "dr_api.h"
 #include "drmgr.h"
 #include <string.h>
@@ -9,8 +10,12 @@ static app_pc entry_call_target;
 static uint entry_rva, iat_rva;
 static byte entry_bytes[16];
 static char image_path[MAXIMUM_PATH], documents[MAXIMUM_PATH], log_path[MAXIMUM_PATH], cov_dir[MAXIMUM_PATH];
+static const char *image_name;
 static void *gate_lock;
 static bool admitted, force_failure;
+static bool stop_enabled, intentional_stop;
+static process_id_t expected_pid;
+static uint64 stop_nonce, expected_created_filetime;
 static byte *stub;
 static byte entry_fp[DR_FPSTATE_BUF_SIZE];
 static bool fp_verified;
@@ -42,15 +47,37 @@ static void copy_arg(char *out, const char *in) {
     size_t size = strlen(in); check(size > 0 && size < MAXIMUM_PATH, "argument_length");
     memcpy(out, in, size + 1);
 }
+static int hex_digit(char value) {
+    return value >= '0' && value <= '9' ? value - '0' :
+        value >= 'a' && value <= 'f' ? value - 'a' + 10 :
+        value >= 'A' && value <= 'F' ? value - 'A' + 10 : -1;
+}
 static uint hex(const char *text) {
     uint value = 0; int digit;
-    check(*text != 0, "empty_hex");
+    check(*text != 0 && strlen(text) <= 8, "hex_width");
     for (; *text; ++text) {
-        digit = *text >= '0' && *text <= '9' ? *text - '0' :
-            (*text >= 'a' && *text <= 'f' ? *text - 'a' + 10 : -1);
+        digit = hex_digit(*text);
         check(digit >= 0, "invalid_hex"); value = value * 16 + digit;
     }
     return value;
+}
+static uint64 decimal(const char *text, uint64 limit, const char *reason) {
+    uint64 value = 0; uint digit;
+    check(*text != 0, reason);
+    for (; *text; ++text) {
+        check(*text >= '0' && *text <= '9', reason); digit = *text - '0';
+        check(value <= limit / 10 && (value < limit / 10 || digit <= limit % 10), reason);
+        value = value * 10 + digit;
+    }
+    check(value != 0, reason); return value;
+}
+static uint64 nonce(const char *text) {
+    uint64 value = 0; int digit;
+    check(strlen(text) == 16, "nonce_width");
+    for (; *text; ++text) {
+        digit = hex_digit(*text); check(digit >= 0, "invalid_nonce"); value = (value << 4) | digit;
+    }
+    check(value != 0, "zero_nonce"); return value;
 }
 static bool same_path(const char *left, const char *right) {
     while (*left && *right) {
@@ -64,13 +91,42 @@ static bool same_path(const char *left, const char *right) {
 }
 static void put32(byte *where, uint value) { memcpy(where, &value, 4); }
 
+static void client_exit(void) {
+    record(intentional_stop ? "admission_client_exit intentional_stop=1" :
+                             "admission_client_exit intentional_stop=0");
+}
+static void stop_nudge(void *context, uint64 argument) {
+    file_t file; (void)context;
+    if (!stop_enabled || dr_get_process_id() != expected_pid) {
+        record("nudge_ignored reason=pid_mismatch"); return;
+    }
+    if (argument != stop_nonce) {
+        record("nudge_ignored reason=nonce_mismatch"); return;
+    }
+    dr_mutex_lock(gate_lock);
+    if (!admitted || !fp_verified || !call_verified || intentional_stop) {
+        dr_mutex_unlock(gate_lock); record("nudge_ignored reason=not_ready_or_already_stopping"); return;
+    }
+    file = dr_open_file(log_path, DR_FILE_WRITE_APPEND);
+    if (file == INVALID_FILE) { dr_mutex_unlock(gate_lock); reject("stop_receipt_open"); return; }
+    if (dr_fprintf(file, "controlled_trace_stop pid=%u expected_created_filetime=" UINT64_FORMAT_STRING
+        " reason=nonce_nudge exit_code=0\n", (uint)expected_pid, expected_created_filetime) <= 0) {
+        dr_close_file(file); dr_mutex_unlock(gate_lock); reject("stop_receipt_write"); return;
+    }
+    dr_close_file(file); intentional_stop = true;
+    dr_mutex_unlock(gate_lock);
+    /* No client lock held: full DR cleanup invokes every registered client's
+     * exit callbacks. The creator verifies completed drcov tables and jobs. */
+    dr_exit_process(0);
+}
+
 static void admission(void) {
     byte fp_storage[DR_FPSTATE_BUF_SIZE + DR_FPSTATE_ALIGN];
     byte *fp = (byte *)(((ptr_uint_t)fp_storage + DR_FPSTATE_ALIGN - 1) & ~(DR_FPSTATE_ALIGN - 1));
     size_t fp_size = proc_save_fpstate(fp); /* First call; automatic x87 save is disabled. */
     module_data_t *main_module, *shell;
     app_pc original, current;
-    byte observed[16]; uint old_prot, stub_prot; size_t page_size = dr_page_size();
+    byte observed[16]; uint old_prot, stub_prot = 0; size_t page_size = dr_page_size();
     byte *iat = expected_base + iat_rva;
     byte *page = (byte *)((ptr_uint_t)iat & ~(page_size - 1));
     /* Same stdcall16 stub as original_baseline_guard.hook_bytes: ESI/EDI saved,
@@ -95,13 +151,16 @@ static void admission(void) {
     main_module = dr_get_main_module();
     check(main_module && main_module->start == expected_base && main_module->entry_point == entry &&
         same_path(main_module->full_path, image_path) &&
-        iat_rva + 4 <= (uint)(main_module->end - main_module->start), "image_identity");
+        main_module->end - main_module->start >= sizeof(observed) &&
+        entry_rva <= (uint)(main_module->end - main_module->start) - sizeof(observed) &&
+        iat_rva <= (uint)(main_module->end - main_module->start) - 4 &&
+        entry_call_target >= main_module->start && entry_call_target < main_module->end, "image_identity");
     dr_free_module_data(main_module);
     check(dr_safe_read(entry, sizeof(observed), observed, NULL) && observed[0] == 0xeb && observed[1] == 0xfe &&
         memcmp(observed + 2, entry_bytes + 2, sizeof(observed) - 2) == 0, "independent_entry_barrier");
     {
         char path[MAXIMUM_PATH];
-        int length = dr_snprintf(path, sizeof(path), "%s/drcov.dr_root_probe.exe.%05d.0000.proc.log", cov_dir, dr_get_process_id());
+        int length = dr_snprintf(path, sizeof(path), "%s/drcov.%s.%05d.0000.proc.log", cov_dir, image_name, dr_get_process_id());
         check(length > 0 && length < MAXIMUM_PATH && dr_get_client_base(1), "tracer_not_loaded");
         /* drcov retains an exclusive writer. Query existence without opening
          * its file; this directory was empty/new and the PID is this process. */
@@ -174,8 +233,9 @@ static dr_emit_flags_t entry_app2app(void *context, void *tag, instrlist_t *list
     return DR_EMIT_STORE_TRANSLATIONS;
 }
 static void verify_entry_call(void) {
-    dr_mcontext_t context = {sizeof(context), DR_MC_ALL}; app_pc return_pc;
-    if (!admitted || call_verified) return;
+    dr_mcontext_t context = {sizeof(context), DR_MC_ALL}; app_pc return_pc = NULL;
+    dr_mutex_lock(gate_lock);
+    if (!admitted || call_verified) { dr_mutex_unlock(gate_lock); return; }
     check(fp_verified && dr_get_mcontext(dr_get_current_drcontext(), &context) &&
         dr_safe_read((void *)context.xsp, sizeof(return_pc), &return_pc, NULL) && return_pc == entry + 5,
         "entry_call_runtime_return");
@@ -186,9 +246,11 @@ static void verify_entry_call(void) {
         dr_fprintf(file, "entry_call_target_and_return_verified target=" PFX " stack_return=" PFX "\n",
             entry_call_target, return_pc); dr_close_file(file);
     }
+    dr_mutex_unlock(gate_lock);
 }
 static dr_emit_flags_t bb(void *context, void *tag, instrlist_t *list, instr_t *instruction,
                          bool trace, bool translating, void *user_data) {
+    (void)trace; (void)user_data;
     if (!translating && tag == entry && instruction == instrlist_first_app(list)) {
         dr_insert_clean_call_ex(context, list, instruction, (void *)admission, DR_CLEANCALL_READS_APP_CONTEXT, 0);
         dr_insert_clean_call_ex(context, list, instruction, (void *)admission, DR_CLEANCALL_READS_APP_CONTEXT, 0);
@@ -199,14 +261,29 @@ static dr_emit_flags_t bb(void *context, void *tag, instrlist_t *list, instr_t *
     return DR_EMIT_DEFAULT;
 }
 DR_EXPORT void dr_client_main(client_id_t id, int argc, const char *argv[]) {
-    int i; (void)id;
-    if (argc != 10) dr_exit_process(0xe0000030);
+    int i; const char *scan;
+    if (argc != 10 && argc != 13) dr_exit_process(0xe0000030);
     copy_arg(log_path, argv[1]); copy_arg(documents, argv[2]); copy_arg(image_path, argv[3]);
     expected_base = (app_pc)(ptr_uint_t)hex(argv[4]); entry_rva = hex(argv[5]); iat_rva = hex(argv[6]);
     check(strlen(argv[7]) == 32, "entry_hex_length");
     for (i = 0; i < 16; ++i) { char pair[3] = {argv[7][i * 2], argv[7][i * 2 + 1], 0}; entry_bytes[i] = (byte)hex(pair); }
-    force_failure = !strcmp(argv[8], "1"); entry = expected_base + entry_rva;
+    check(!strcmp(argv[8], "0") || !strcmp(argv[8], "1"), "invalid_force_failure");
+    force_failure = !strcmp(argv[8], "1");
+    check((ptr_uint_t)expected_base == 0x400000 &&
+        (uint64)(ptr_uint_t)expected_base + entry_rva <= 0xffffffffU &&
+        (uint64)(ptr_uint_t)expected_base + iat_rva <= 0xffffffffU, "image_address_width");
+    entry = expected_base + entry_rva;
     copy_arg(cov_dir, argv[9]);
+    image_name = image_path;
+    for (scan = image_path; *scan; ++scan) if (*scan == '/' || *scan == '\\') image_name = scan + 1;
+    check(same_path(image_name, "dr_root_probe.exe") || same_path(image_name, "battlestationspacific.exe"), "unsupported_image_name");
+    stop_enabled = argc == 13;
+    check(stop_enabled || same_path(image_name, "dr_root_probe.exe"), "production_stop_arguments_required");
+    if (stop_enabled) {
+        stop_nonce = nonce(argv[10]); expected_pid = (process_id_t)decimal(argv[11], 0xffffffffU, "invalid_expected_pid");
+        expected_created_filetime = decimal(argv[12], (uint64)-1, "invalid_created_filetime");
+        check(expected_pid == dr_get_process_id(), "expected_pid_mismatch");
+    }
     {
         int displacement; check(entry_bytes[0] == 0xe8, "unsupported_entry_shape");
         memcpy(&displacement, entry_bytes + 1, 4); entry_call_target = entry + 5 + displacement;
@@ -214,5 +291,10 @@ DR_EXPORT void dr_client_main(client_id_t id, int argc, const char *argv[]) {
     gate_lock = dr_mutex_create(); check(gate_lock != NULL, "gate_lock");
     check(drmgr_init() && drmgr_register_bb_app2app_event(entry_app2app, NULL) &&
         drmgr_register_bb_instrumentation_event(NULL, bb, NULL), "bb_callback_registration");
+    if (stop_enabled) {
+        check(drmgr_register_exit_event(client_exit), "exit_callback_registration");
+        dr_register_nudge_event(stop_nudge, id);
+    }
     record("client_ready");
+    if (stop_enabled) record("nudge_stop_ready");
 }

@@ -12,7 +12,7 @@
       "status": "not_traced",
       "planned_start": "native direct USN04 scene argument",
       "planned_game_seconds": 240,
-      "guard_status": "Full private admission fixture passed; production integration and authenticated trace-stop flushing remain under test."
+      "guard_status": "Private admission, authenticated stop, strict trace-flush and integrated backend fixtures passed; original runtime is next."
     },
     "bsp": {
       "id": "USN04-reference-4800-20261030",
@@ -66,12 +66,16 @@
     "Different startup paths and nondeterministic behavior limit a later frontier interpretation.",
     "Traced and untraced long runs had different combat totals despite matching starts and fixed simulation time; cause not established.",
     "Alias, absent-symbol, unresolved-identifier and source-identity buckets overlap.",
-    "1740 is a conservative source-body count; 18041 game-address cells remain unknown."
+    "1740 is a conservative source-body count; 18041 game-address cells remain unknown.",
+    "The 21770-row frozen census includes unknown unreferenced addresses outside the 20892 board target; these denominators differ."
   ],
   "host_adapter_audit": {
     "host_adapter_candidate_record_count": 1233,
     "host_adapter_candidate_address_count": 882,
     "host_adapter_candidates_without_positive_body_hit_count": 471,
     "host_adapter_source_mismatched_record_count": 921
-  }
+  },
+  "census_game_address_rows": 21770,
+  "board_target_at_run": 20892,
+  "executed_body_mappings_outside_board_target": 0
 }
