@@ -473,3 +473,4 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_gam
 target_sources(bsp_core PRIVATE src/native_wide_string_append.cpp)
 target_sources(bsp_core PRIVATE src/native_wide_string_raw_copy.cpp)
 target_sources(bsp_core PRIVATE src/native_lua_type_name.cpp)
+target_sources(bsp_core PRIVATE src/native_wide_string_concat.cpp)
