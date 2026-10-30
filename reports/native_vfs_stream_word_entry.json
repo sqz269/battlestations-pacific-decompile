@@ -1,0 +1,214 @@
+{
+  "schema": "bsp.native-vfs-stream-word-entry.v1",
+  "created_utc": "2026-10-30T16:44:49.725064+00:00",
+  "source_base": "c5b68967354b0b59d7dd960e5ec3ee0f02a1db60",
+  "source_ready": false,
+  "status": "dormant Source bridge; two strict Win32 object compiles passed",
+  "addresses": [
+    "00be4320",
+    "00be4340"
+  ],
+  "original_abi": "ECX actual stream; stacked optional actual-count pointer; AX low WORD; RET4",
+  "new_entries": "dispatch-only overloads plus captured numeric stream_word_entry; no new caller",
+  "source_projection": {
+    "include/bsp/native_resource_stream_reads.hpp": {
+      "base_sha256": "d9f525067a24614f3d60fe9deae8a5ac11223657965d736286d0c90a0a2b4bfb",
+      "current_blob_sha256": "e010505558e8eac350ad479c2cf0dfc123dfc98fae37653a17c16e4f12d89303",
+      "recovered_exact": true,
+      "insertions": [
+        {
+          "at_current_line": 66,
+          "lines": [
+            "",
+            "// Dispatch-only overloads for the same two bodies. No raw string cells or",
+            "// unrelated DB64 empty-storage role are borrowed. The CURRENT raw vptr/slot24",
+            "// reads use fenced byte copies; all pointer-seed/read2/low-WORD rules above",
+            "// still apply. The caller supplies the SAME genuine existing dispatch.",
+            "std::uint16_t __cdecl read_native_stream_word_slot40_00be4320(void* actual_stream,",
+            "    std::uint32_t* optional_actual, NativeAdoptedSubstreamDispatch& same_streams);",
+            "std::uint16_t __cdecl read_native_stream_word_slot3c_00be4340(void* actual_stream,",
+            "    std::uint32_t* optional_actual, NativeAdoptedSubstreamDispatch& same_streams);"
+          ]
+        }
+      ]
+    },
+    "src/native_resource_stream_reads.cpp": {
+      "base_sha256": "5e43a45f0d2ff685fa28a7aed5fb7e16cf4e053bf9d7218aa72f8d51b8b68708",
+      "current_blob_sha256": "b64d7f21b458ebd9681d0dd7bb4ab4ac7eeb6f513c604e0e98b76aa775cf6031",
+      "recovered_exact": true,
+      "insertions": [
+        {
+          "at_current_line": 8,
+          "lines": [
+            "#include <intrin.h>"
+          ]
+        },
+        {
+          "at_current_line": 106,
+          "lines": [
+            "",
+            "std::uint32_t dispatch_raw_word(const void* owner, std::uint32_t offset = 0) noexcept {",
+            "    std::uint32_t value;",
+            "    _ReadWriteBarrier();",
+            "    std::memcpy(&value, static_cast<const unsigned char*>(owner) + offset,",
+            "        sizeof(value));",
+            "    _ReadWriteBarrier();",
+            "    return value;",
+            "}",
+            "",
+            "__declspec(noinline) std::uint16_t __cdecl dispatch_word_scalar(void* stream,",
+            "    std::uint32_t* actual, NativeAdoptedSubstreamDispatch& streams) {",
+            "    std::uint32_t slot = bits(actual);",
+            "    const auto table = dispatch_raw_word(stream);",
+            "    const auto target = dispatch_raw_word(ptr(table), 0x24);",
+            "    streams.source_read(target, stream, &slot, 2u, actual);",
+            "    return static_cast<std::uint16_t>(slot);",
+            "}"
+          ]
+        },
+        {
+          "at_current_line": 135,
+          "lines": [
+            "",
+            "std::uint16_t __cdecl read_native_stream_word_slot40_00be4320(void* actual_stream,",
+            "    std::uint32_t* optional_actual, NativeAdoptedSubstreamDispatch& same_streams) {",
+            "    return dispatch_word_scalar(actual_stream, optional_actual, same_streams);",
+            "}",
+            "",
+            "std::uint16_t __cdecl read_native_stream_word_slot3c_00be4340(void* actual_stream,",
+            "    std::uint32_t* optional_actual, NativeAdoptedSubstreamDispatch& same_streams) {",
+            "    return dispatch_word_scalar(actual_stream, optional_actual, same_streams);",
+            "}"
+          ]
+        }
+      ]
+    },
+    "include/bsp/native_vfs_runtime_bindings.hpp": {
+      "base_sha256": "3c83fb5bed4b54624ff84c65dafc6f48679aefc4bfa5cf0e8f9a6b25669452a8",
+      "current_blob_sha256": "6d5be92ef2b6f608934594554df401b4d2a68af3a9438fe310e1239bedd56436",
+      "recovered_exact": true,
+      "insertions": [
+        {
+          "at_current_line": 73,
+          "lines": [
+            "    // Consume a captured BE4320/BE4340 entry without re-reading slot40/3C.",
+            "    // Forward the SAME stream/count pointer through this actual dispatcher.",
+            "    std::uint16_t stream_word_entry(std::uintptr_t entry,void* stream,",
+            "        std::uint32_t* optional_actual);"
+          ]
+        }
+      ]
+    },
+    "src/native_vfs_runtime_bindings.cpp": {
+      "base_sha256": "46f5f6f39218f781ddcfc58d0d82b0c2c0aa1ae04b4c966b5f72dbc209f5062a",
+      "current_blob_sha256": "eb1062bb438883762922c88e51aea8c4a752f168e9163c53b1f9cf6e0db925cd",
+      "recovered_exact": true,
+      "insertions": [
+        {
+          "at_current_line": 19,
+          "lines": [
+            "#include \"bsp/native_resource_stream_reads.hpp\""
+          ]
+        },
+        {
+          "at_current_line": 170,
+          "lines": [
+            "std::uint16_t NativeVfsRuntimeBindings::stream_word_entry(std::uintptr_t entry,",
+            "    void* stream,std::uint32_t* optional_actual) {",
+            "    switch(entry) {",
+            "    case 0x00be4320:return read_native_stream_word_slot40_00be4320(stream,optional_actual,*this);",
+            "    case 0x00be4340:return read_native_stream_word_slot3c_00be4340(stream,optional_actual,*this);",
+            "    default:unsupported();",
+            "    }",
+            "}"
+          ]
+        }
+      ]
+    }
+  },
+  "doc_blob_sha256": "b49aa832e5c3257c15e414217200f10a1c08b4bb3581002a618be0b0a3e69692",
+  "outside_owned_tracked_changes": [],
+  "native_saved_listing_sha256": {
+    "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00be4320\\assembly.txt": "d9fef509eecd7eb6f8c244b3ad4bdc010f616cd2a9b3c20941f693edfb5b520b",
+    "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00be4340\\assembly.txt": "3e191b100846a6b3abb55504357a5281a4cb50fb1fb4265556d819117ae31613",
+    "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aa0020\\assembly.txt": "a4f39e571230e247f8e30586b4e86e2a7fa33bb0b8c73a89601cd93ab4ed32a7"
+  },
+  "provider_file_sha256": {
+    "include/bsp/native_adopted_substream.hpp": "c64950d42cf17d3c4da39fa7f99931e3e74b4ad3d968d00b8c25f1ddb0c0a8dd",
+    "src/native_adopted_substream.cpp": "53d9dbf526516cedc063269deb23ce144add399bb54bb2aa7f693ced3d8767be",
+    "src/native_physical_stream_open.cpp": "926a6c3b18b48c9242e52c890dcf8bb2c771779f1480fcd7b84b5f506e8e7ea1",
+    "src/native_memory_stream.cpp": "1b55127245d09d5ad2eedfb3e00d02ecbe1b310e8630f4c24e5490273a119fbd",
+    "src/native_raw_inflate_stream.cpp": "53a62985979ad90643e8eae6b0d563f6c9f3419d653f4897bf934c903ac920e2"
+  },
+  "object_checks": {
+    "native_resource_stream_reads": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\build\\native_vfs_stream_word_entry_object\\native_resource_stream_reads.obj",
+      "sha256": "043abe53e77e39684ff038a8c006f580b78311083f9ef6e41326f972a4941544",
+      "machine": "0x014c",
+      "exit_code": 0,
+      "command": "call \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\Tools\\VsDevCmd.bat\" -arch=x86 -host_arch=x64 -no_logo && cl.exe /nologo /std:c++17 /permissive- /W4 /WX /EHsc /MD /O2 /Ob2 /fp:strict /DNDEBUG /DWIN32 /D_WINDOWS /DNOMINMAX /DWIN32_LEAN_AND_MEAN /I include /c src\\native_resource_stream_reads.cpp /Fo\"build\\native_vfs_stream_word_entry_object\\native_resource_stream_reads.obj\"",
+      "log_sha256": "e2c9619f9bec0d49a2f105e7c45b1d319aea3d281186b10f3605b9cecdcd918e",
+      "selected_coff_symbols": [
+        {
+          "name": "?read_native_stream_word_slot40_00be4320@bsp@@YAGPAXPAIAAUNativeResourceStreamReadContext@1@@Z",
+          "section": 46
+        },
+        {
+          "name": "?read_native_stream_word_slot3c_00be4340@bsp@@YAGPAXPAIAAUNativeResourceStreamReadContext@1@@Z",
+          "section": 42
+        },
+        {
+          "name": "?read_native_stream_word_slot40_00be4320@bsp@@YAGPAXPAIAAVNativeAdoptedSubstreamDispatch@1@@Z",
+          "section": 48
+        },
+        {
+          "name": "?read_native_stream_word_slot3c_00be4340@bsp@@YAGPAXPAIAAVNativeAdoptedSubstreamDispatch@1@@Z",
+          "section": 44
+        }
+      ]
+    },
+    "native_vfs_runtime_bindings": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\build\\native_vfs_stream_word_entry_object\\native_vfs_runtime_bindings.obj",
+      "sha256": "3fe98c679e776c2ad4a9f198ddec272624e80accc799c0a07433eeae2d868354",
+      "machine": "0x014c",
+      "exit_code": 0,
+      "command": "call \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\Tools\\VsDevCmd.bat\" -arch=x86 -host_arch=x64 -no_logo && cl.exe /nologo /std:c++17 /permissive- /W4 /WX /EHsc /MD /O2 /Ob2 /fp:strict /DNDEBUG /DWIN32 /D_WINDOWS /DNOMINMAX /DWIN32_LEAN_AND_MEAN /I include /c src\\native_vfs_runtime_bindings.cpp /Fo\"build\\native_vfs_stream_word_entry_object\\native_vfs_runtime_bindings.obj\"",
+      "log_sha256": "6db0a8bb3546b4b1bc687858b10ca3e9dbe11925dc610abf6f42eb32e583ff65",
+      "selected_coff_symbols": [
+        {
+          "name": "?stream_word_entry@NativeVfsRuntimeBindings@bsp@@QAEGIPAXPAI@Z",
+          "section": 130
+        },
+        {
+          "name": "?read_native_stream_word_slot40_00be4320@bsp@@YAGPAXPAIAAVNativeAdoptedSubstreamDispatch@1@@Z",
+          "section": 0
+        },
+        {
+          "name": "?read_native_stream_word_slot3c_00be4340@bsp@@YAGPAXPAIAAVNativeAdoptedSubstreamDispatch@1@@Z",
+          "section": 0
+        }
+      ]
+    }
+  },
+  "invariants": [
+    "FULL optional pointer bits before CURRENT fenced raw vptr then slot24",
+    "one SAME source_read2 with unchanged optional count; low WORD result only",
+    "only captured numeric BE4320 or BE4340; SAME this/stream/count; no slot40/3C reread",
+    "all old ResourceContext overloads/shared typed helpers/other bodies literally recoverable",
+    "no string cells, DB64 role, resolver, callback, byteswap, zero seed, retry or new cleanup"
+  ],
+  "limits": [
+    "genuine captured entry/stream/table/backing/count/provider lifetime and serialized no-invalidating-writer domain remain caller obligations",
+    "compiler fences are not synchronization or a transitive provider-field guarantee",
+    "old provider exceptions/partial reads retained; no parser-wide stream custody or raw16 insertion closure",
+    "ordinary Source ABI; no EAX-highbits/private-alias/FH3/SEH/hardware/Original ABI or vendor-body claim"
+  ],
+  "validation": {
+    "new_tests": false,
+    "probe_executable": false,
+    "full_build": false,
+    "game": false,
+    "ghidra_mutation": false,
+    "canonical_integration": "Root pending"
+  }
+}

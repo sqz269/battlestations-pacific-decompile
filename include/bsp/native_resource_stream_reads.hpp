@@ -63,4 +63,13 @@ std::uint16_t __cdecl read_native_stream_word_slot40_00be4320(void* actual_strea
     std::uint32_t* optional_actual, NativeResourceStreamReadContext& same_reads);
 std::uint16_t __cdecl read_native_stream_word_slot3c_00be4340(void* actual_stream,
     std::uint32_t* optional_actual, NativeResourceStreamReadContext& same_reads);
+
+// Dispatch-only overloads for the same two bodies. No raw string cells or
+// unrelated DB64 empty-storage role are borrowed. The CURRENT raw vptr/slot24
+// reads use fenced byte copies; all pointer-seed/read2/low-WORD rules above
+// still apply. The caller supplies the SAME genuine existing dispatch.
+std::uint16_t __cdecl read_native_stream_word_slot40_00be4320(void* actual_stream,
+    std::uint32_t* optional_actual, NativeAdoptedSubstreamDispatch& same_streams);
+std::uint16_t __cdecl read_native_stream_word_slot3c_00be4340(void* actual_stream,
+    std::uint32_t* optional_actual, NativeAdoptedSubstreamDispatch& same_streams);
 } // namespace bsp
