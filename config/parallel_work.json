@@ -44282,6 +44282,68 @@
       "Original_ABI_compatible": false,
       "new_entry_executed": false,
       "game_validated": false
+    },
+    {
+      "id": "codex-raw-empty-unchanged-library",
+      "state": "source_reviewed_coupled_win32_pass_unwired",
+      "worker": "gui_integration_review",
+      "source_ready": false,
+      "depends_on": [],
+      "function_addresses": [
+        "00aba8d0"
+      ],
+      "output_files": [
+        "include/bsp/native_gui_text_empty_unchanged_storage.hpp",
+        "src/native_gui_text_empty_unchanged_storage.cpp",
+        "docs/CODEX_GUI_RAW_EMPTY_UNCHANGED_STORAGE.md"
+      ],
+      "notes": "Frozen b14c87065: bounded fully bound EMPTY-UNCHANGED branch, real Ensure/copy/current reads and captured cleanup. Independent Source review accepted; combined Win32 build/checks2/2 pass11.29s. No owner/caller, runtime, whole ABA8D0, vendor body or ABI credit."
+    },
+    {
+      "id": "codex-raw-empty-reference-widget",
+      "state": "source_reviewed_coupled_win32_pass_unwired",
+      "worker": "gui_frame_lifetime",
+      "source_ready": false,
+      "depends_on": [],
+      "function_addresses": [],
+      "output_files": [
+        "src/native_gui_text_reference.cpp",
+        "src/native_gui_widget_raw_model_lifetime.cpp",
+        "docs/CODEX_GUI_RAW_EMPTY_REFERENCE_WIDGET.md"
+      ],
+      "notes": "Frozen b656a6c6: immutable typed reservation and metadata regions, six private lexical stages, fresh raw122 diagnostics and strict retirement quiescence. Full NULL Source projections preserved; independent Source review and coupled build pass. No caller or activation."
+    },
+    {
+      "id": "codex-raw-empty-retirement",
+      "state": "source_reviewed_coupled_win32_pass_unwired",
+      "worker": "gameplay_integration_review",
+      "source_ready": false,
+      "depends_on": [],
+      "function_addresses": [],
+      "output_files": [
+        "src/native_gui_text_retirement.cpp",
+        "docs/CODEX_GUI_RAW_EMPTY_RETIREMENT.md"
+      ],
+      "notes": "Frozen25bb811a: own-only q before first native retirement read and after destructor return before original late flags BYTE load. Canonical diagnostic tuples/order unchanged; independent Source review and coupled Win32 build pass. No runtime claim."
+    },
+    {
+      "id": "codex-raw-empty-coupled-integration",
+      "state": "source_reviewed_coupled_win32_pass_unwired",
+      "worker": "cc16-progress",
+      "source_ready": false,
+      "depends_on": [
+        "codex-raw-empty-unchanged-library",
+        "codex-raw-empty-reference-widget",
+        "codex-raw-empty-retirement"
+      ],
+      "function_addresses": [],
+      "output_files": [
+        "include/bsp/native_gui_text_retirement.hpp",
+        "cmake/startup.cmake",
+        "docs/CODEX_GUI_RAW_EMPTY_UNCHANGED_ADMISSION.md",
+        "docs/CODEX_GUI_RAW_EMPTY_UNCHANGED_INTEGRATION.md"
+      ],
+      "notes": "Coupled8c381cf89: reviewed library plus all shared guards, combined build and existing checks2/2 pass11.29s. No leaf caller; all eight private host choices FALSE. Next owner contract must prove real wide input/return, fixed graph ordering, callback budget and retained Font/Main/Geometry custody before private qualification."
     }
   ],
   "snapshot_after_analysis": {

@@ -17,7 +17,10 @@ Lexical nested Ensure/copy admission must remain metadata-only and nonrecursive;
 retirement/scalar/direct flags/late flags require private leaf/input quiescence.
 All failure or pending debt retains the whole graph, with no native cleanup guess.
 
-At this API-only checkpoint no caller selects the pointer. Library/shared checks,
-owner/provider/callback-budget/input-return integration, coupled build and actual
-qualification remain open. All eight private main choices remain FALSE. No whole
-ABA8D0/content/localisation/glyph/Page/ABI/production credit is claimed.
+The library and all shared checks are now independently Source-reviewed and
+coupled Win32 build-tested; existing checks pass 2/2 in 11.29 seconds. See
+CODEX_GUI_RAW_EMPTY_UNCHANGED_INTEGRATION.md for the frozen commits and receipts.
+No caller selects the pointer. Owner/provider/callback-budget/input-return
+integration and actual qualification remain open. All eight private main
+choices remain FALSE. No whole ABA8D0/content/localisation/glyph/Page/ABI or
+production credit is claimed.

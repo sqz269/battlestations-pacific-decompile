@@ -961,3 +961,16 @@ getter/BD1510 can express cleanup without a new generic free API. Typed leaf
 reservation/regions, pending-input/temp retirement custody and spare callback
 budget still need reviewed integration; PREPARED Main admits no generic content
 permission. No forced flags, fake prior nonempty state or new readiness is claimed.
+
+The bounded EMPTY-UNCHANGED library b14c, reference/Widget guards b656 and raw
+retirement guards25bb are independently Source-reviewed and coupled at8c381cf89.
+The MSVC Win32 build and existing checks2/2 pass11.29s. Exact reservation identity,
+fresh Ensure diagnostics and six-stage metadata borrowing are separate from
+strict caller-input/temporary retirement quiescence. Original canonical scalar
+tuples and the actual late flags BYTE load retain their order; complete NULL
+Source projections match the bases. The leaf has no owner/caller or host choice.
+All eight choices remain FALSE, and no runtime/whole ABA8D0/content/ABI credit
+follows. The next owner contract must settle fixed graph construction ordering,
+genuine wide input4C5E60/436430, explicit node-call budget, opaque extents and
+Font/Main/Geometry failure/retirement custody before private qualification.
+Frozen reports and proof limits: CODEX_GUI_RAW_EMPTY_UNCHANGED_INTEGRATION.md.
