@@ -1,6 +1,6 @@
 {
   "schema": "bsp.cc16.gui_timed_producer_implementation.v1",
-  "status": "component_implemented_build_and_actual_Page_consumer_pending_NOT_Main_admitted",
+  "status": "component_Win32_build_and_focused_Source_regression_passed_actual_Page_consumer_pending_NOT_Main_admitted",
   "baseline_Main": "40acabef63ed84dec8deb4d54530ef13a4d4da8d",
   "contract_commit": "f23d66e500fbfa80da93e7b6f05670d9520464e9",
   "contract_report_sha256": "dc5738f7465d222db97ee3421784fd702e442059396bedbae46d859cdea07815",
@@ -165,11 +165,52 @@
     "risk": "Constructor mutates current widget backing then throws: captured allocation freed once, same exception escapes, neither captured nor replacement slot published; no constructor-returned receipt.",
     "Source_only": true,
     "Native_FH3_SEH_or_game_proof": false,
-    "status": "written_not_yet_executed"
+    "status": "passed_in_existing_reconstructed_math_suite"
   },
   "build": {
-    "status": "pending_serialized_Root_slot",
-    "required": "scripts/build.ps1 Win32ReleaseMP2/PCHONcoveragePDBOFF, existing2suites"
+    "status": "passed",
+    "source_commit": "44ee1b9ba4aaa88aae3f6937e2f0c452ba098c3a",
+    "command": "./scripts/build.ps1 -Configuration Release",
+    "target": "MSVC Win32 Release",
+    "MP": 2,
+    "PCH": "ON",
+    "coverage_PDB": "OFF",
+    "existing_suites": "2/2 passed",
+    "total_test_seconds": 12.58,
+    "artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch21\\build.log",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch21\\artifacts\\01_build.log",
+        "bytes": 2645,
+        "sha256": "7d0054f5c7939189076131090ea809c6b2d2c9d3f93b516fbd812525686a4d9f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\CMakeCache.txt",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch21\\artifacts\\02_CMakeCache.txt",
+        "bytes": 19943,
+        "sha256": "1685db07153e0ad413c8e75a1536cf232b943fdc86f5e983cd18cf2abfa3ecb2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\bsp_game.map",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch21\\artifacts\\03_bsp_game.map",
+        "bytes": 11350752,
+        "sha256": "e0ba3914ae161bc78b1beac6ceef572daab31223e2fb96fc1d66deb474158441"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\bsp_game.exe",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch21\\artifacts\\04_bsp_game.exe",
+        "bytes": 7505408,
+        "sha256": "c215df15898d1cee70b3d161e9c93702e742d6883557ef733de4f70a118afbac"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\bsp_math_tests.exe",
+        "retained_path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch21\\artifacts\\05_bsp_math_tests.exe",
+        "bytes": 893952,
+        "sha256": "6955c3b835c0ec8b5261dbe8d434a594a9cab73b0cd44d7b5c82bdabdb427698"
+      }
+    ],
+    "Game_or_probes_executed": false,
+    "reconstructed_math_Source_cleanup_fixture": true
   },
   "consumer": {
     "Page_author": "gui_populated_page_implementation",

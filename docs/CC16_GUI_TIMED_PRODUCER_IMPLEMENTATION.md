@@ -20,7 +20,8 @@ table. The genuine provider must retain each invocation/allocation independently
 One focused case in the existing math suite mutates current backing during ctor
 then throws, checking one captured-block free, the same escape, no publication
 and no completed-constructor receipt. It is Source-only cleanup evidence. At this
-component commit, build/test execution is pending the serialized Root build slot.
+component `44ee1b9ba`, Win32 Release MP2/PCH ON/coverage PDB OFF built successfully.
+Both existing suites passed (12.58s), including this one Source cleanup regression.
 
 The Page author owns raw14h ctor/scalars/backing and actual Page table/delete
 bindings. Current Page has no timer producer; real HUD callers are64DD30/648060/
@@ -29,3 +30,8 @@ admission, producer activation, native FH3/SEH/fault/private-home or game proof.
 Combine the actual supplier/consumer packet and complete review/build gates first.
 
 Evidence: `reports/cc16_gui_timed_producer_implementation.json`.
+
+The build log, cache, map, Game PE and Source fixture executable are frozen under
+`local/function_source_batch21/artifacts`; no Game or manual probe was run for
+this component. Actual Page/client consumer review and common admission remain
+pending. No new Original/vendor/duplicate body credit is claimed.
