@@ -1,0 +1,550 @@
+{
+  "schema_version": 1,
+  "packet": "codex-frontend-frame-native-selection-independent-review",
+  "status": "accepted corrected library Source for joined build; activation and actual caller/provider gates remain closed",
+  "reviewed_source_commit": "2ed82e8ceafef8d47d9e5bf1d4d91cb744777def",
+  "reviewed_metadata_commit": "79644264387fa1cf4a977b155f6603e75cc03830",
+  "original_worker_report": "reports/cc16_frontend_frame_native_selection.json",
+  "input_pin_checks": [
+    {
+      "path": "include/bsp/native_front_end_frame_selection.hpp",
+      "sha256": "706e2dacb42303d0352e24f9e40e6e627954be9c682e87c015653f9ee733d619",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "src/native_front_end_frame_selection.cpp",
+      "sha256": "23521239cc54139f700682d99ccb33b6750cecc3950e7f62c1b487a6ef5eb511",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_publication.hpp",
+      "sha256": "81549e83081937cc498dfb750865ee2ee9de971c034bd2029978146a1a575974",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "src/native_front_end_frame_publication.cpp",
+      "sha256": "72a6ecb29e7622b225dc93d0009ef3e3a4df438d47900dd7813073afb73d38f4",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "include/bsp/native_gui_page_registry.hpp",
+      "sha256": "92f55df728ad8ec45fab8182e60c5ac8c7752883edd76eded997364fa984e6cc",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "src/native_gui_page_registry.cpp",
+      "sha256": "df890ebe7e74d5dddb5b014ca9491a874cef905fb4fa86f4003200a05625b89d",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "include/bsp/native_gui_media_focus_lifetime.hpp",
+      "sha256": "fed651ac9f3e7f0853c4754dd180dc68b1e6432afc9fe64a327caa59e8b81412",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_construction.hpp",
+      "sha256": "cd96bfd81f06f903c973593cde3daddff837d7a75f4649eb007ae4a14a7deb61",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "src/native_front_end_frame_construction.cpp",
+      "sha256": "f90858ce1f08c8124d18a53bb51cfc43c46ced96fc8e64636c613a08a037cd9f",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "include/bsp/native_singleton_publication.hpp",
+      "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "src/native_singleton_publication.cpp",
+      "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "src/native_singleton_vector_registration_wrappers.cpp",
+      "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "docs/CC16_FRONTEND_FRAME_SELECTION_CLOSURE.md",
+      "sha256": "6044383db2b11df36c86d9a5f75c0a94d19ae9654c5eaf22ce08c0d2f0bcb301",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "reports/cc16_frontend_frame_selection_closure.json",
+      "sha256": "39e3f7c02afbaac1a9b647cfc8a97079a7397430e3a72baaf20ec53e79cf958f",
+      "hash_format": "immutable_git_blob_content_lf",
+      "immutable_Git_LF_match": true,
+      "historical_CRLF_only_difference_verified": true
+    },
+    {
+      "path": "config/target.json",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    }
+  ],
+  "saved_export_checks": [
+    {
+      "path": "exports/bsp/functions/00517ed0/assembly.txt",
+      "sha256": "269456cf422ee413fd185670def75d45abc0457a01c839129e2b5c8cad2277cf",
+      "hash_format": "raw_saved_export_file_bytes",
+      "verified": true,
+      "bytes": 7899,
+      "instruction_rows": 276
+    },
+    {
+      "path": "exports/bsp/functions/00517ed0/decompiled.c",
+      "sha256": "c175454b5c1d188f4c80369a763ca6fd7f8d690fe6bdede1939de9c694909f76",
+      "hash_format": "raw_saved_export_file_bytes",
+      "verified": true,
+      "bytes": 4895,
+      "instruction_rows": null
+    },
+    {
+      "path": "exports/bsp/functions/00518250/assembly.txt",
+      "sha256": "11987c2eee96483a2adc9635564af01d23a89ea53e0691f6c11521aab8e1e963",
+      "hash_format": "raw_saved_export_file_bytes",
+      "verified": true,
+      "bytes": 9881,
+      "instruction_rows": 345
+    },
+    {
+      "path": "exports/bsp/functions/00518250/decompiled.c",
+      "sha256": "c4e459b3b62dbc8d1af1a12819d0a464991beeeaf94cd0ecf65ceee0ee9986a5",
+      "hash_format": "raw_saved_export_file_bytes",
+      "verified": true,
+      "bytes": 12938,
+      "instruction_rows": null
+    },
+    {
+      "path": "exports/bsp/functions/004c1ac0/assembly.txt",
+      "sha256": "8a168220b57c0e4ae2cf204c258f18e9e588993fe5f59e17fcc1084547f0776a",
+      "hash_format": "raw_saved_export_file_bytes",
+      "verified": true,
+      "bytes": 1618,
+      "instruction_rows": 56
+    },
+    {
+      "path": "exports/bsp/functions/004c1ac0/decompiled.c",
+      "sha256": "b44e155e2db0ec685151554c7c395bc1eb40a3d93aad6a6bb225b534eb2b1d0f",
+      "hash_format": "raw_saved_export_file_bytes",
+      "verified": true,
+      "bytes": 2438,
+      "instruction_rows": null
+    }
+  ],
+  "independent_PE_EH_check": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "base": "00400000",
+    "static_only": true,
+    "functions": [
+      {
+        "role": "register",
+        "handler": "00c6a8bb",
+        "handler_hex": "b8243dd900e97ec2f8ff",
+        "FuncInfo": "00d93d24",
+        "FuncInfo_words": [
+          "19930522",
+          "00000003",
+          "00d93d0c",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000001"
+        ],
+        "actions": [
+          {
+            "action": "00c6a870",
+            "to": -1,
+            "first25_hex": "8b45d483e0010f840c0000008365d4fe8d4de0e998347bffc3",
+            "flag": 1,
+            "clear_mask": "fe",
+            "header_EBP_offset": -32,
+            "tail": "0041dd20",
+            "decoded_static_match": true
+          },
+          {
+            "action": "00c6a889",
+            "to": -1,
+            "first25_hex": "8b45d483e0020f840c0000008365d4fd8d4de0e97f347bffc3",
+            "flag": 2,
+            "clear_mask": "fd",
+            "header_EBP_offset": -32,
+            "tail": "0041dd20",
+            "decoded_static_match": true
+          },
+          {
+            "action": "00c6a8a2",
+            "to": -1,
+            "first25_hex": "8b45d483e0040f840c0000008365d4fb8d4de8e966347bffc3",
+            "flag": 4,
+            "clear_mask": "fb",
+            "header_EBP_offset": -24,
+            "tail": "0041dd20",
+            "decoded_static_match": true
+          }
+        ]
+      },
+      {
+        "role": "selection",
+        "handler": "00c6a91b",
+        "handler_hex": "b8603dd900e91ec2f8ff",
+        "FuncInfo": "00d93d60",
+        "FuncInfo_words": [
+          "19930522",
+          "00000003",
+          "00d93d48",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000001"
+        ],
+        "actions": [
+          {
+            "action": "00c6a8d0",
+            "to": -1,
+            "first25_hex": "8b45d483e0010f840c0000008365d4fe8d4ddce938347bffc3",
+            "flag": 1,
+            "clear_mask": "fe",
+            "header_EBP_offset": -36,
+            "tail": "0041dd20",
+            "decoded_static_match": true
+          },
+          {
+            "action": "00c6a8e9",
+            "to": -1,
+            "first25_hex": "8b45d483e0020f840c0000008365d4fd8d4de4e91f347bffc3",
+            "flag": 2,
+            "clear_mask": "fd",
+            "header_EBP_offset": -28,
+            "tail": "0041dd20",
+            "decoded_static_match": true
+          },
+          {
+            "action": "00c6a902",
+            "to": -1,
+            "first25_hex": "8b45d483e0040f840c0000008365d4fb8d4dece906347bffc3",
+            "flag": 4,
+            "clear_mask": "fb",
+            "header_EBP_offset": -20,
+            "tail": "0041dd20",
+            "decoded_static_match": true
+          }
+        ]
+      }
+    ]
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "status": "resolved in81f3a296111b1337b2074124c065c66f90cca192",
+      "path": "src/native_front_end_frame_selection.cpp",
+      "line": 48,
+      "issue": "Explicit noexcept/terminate wrapper on secondary raw-string cleanup failure adds unsupported process terminal policy.",
+      "trigger": "GUI getter or AA5840 throws, then real raw41DD20/pool cleanup throws.",
+      "required_change": "Remove only manual noexcept/terminate wrapping; preserve one-shot actual header cleanup and honest unproved secondary Native FH3/SEH qualification.",
+      "resolution": "Manual noexcept/terminate wrapping removed only; direct one-shot real header cleanup can throw under explicitly unproved secondary Native FH3/SEH transport. All outside-helper Source bytes unchanged.",
+      "verified": true
+    }
+  ],
+  "scope": {
+    "owned_files": [
+      "docs/CC16_FRONTEND_FRAME_NATIVE_SELECTION_INDEPENDENT_REVIEW.md",
+      "reports/cc16_frontend_frame_native_selection_independent_review.json"
+    ],
+    "Source_edits": false,
+    "Ghidra_mutations": false,
+    "new_live_queries": 0,
+    "build_tests_probe_game_process_actions": false
+  },
+  "utc": "2026-10-30T15:51:30.907195+00:00",
+  "reviewed_production_files": [
+    "include/bsp/native_front_end_frame_selection.hpp",
+    "src/native_front_end_frame_selection.cpp",
+    "include/bsp/native_front_end_frame_publication.hpp",
+    "src/native_front_end_frame_publication.cpp"
+  ],
+  "whole_listing_scope": {
+    "register_instruction_rows": 276,
+    "selection_instruction_rows": 345,
+    "two_body_total": 621,
+    "getter_instruction_rows": 56,
+    "all_saved_listing_lines_paged": {
+      "00517ed0": 280,
+      "00518250": 347,
+      "004c1ac0": 56
+    },
+    "assembly_gaps": "Saved listing gaps are skipped padding boundaries; no invented reachable body or library credit."
+  },
+  "behavior_review": [
+    {
+      "id": "R1",
+      "result": "pass",
+      "area": "Registration/order",
+      "proof": "Actual raw4F71D0 first, then own+160=4;13/2/2 outer columns and5 inner sets; outer CURRENT name uses outer CURRENT own; inner own reread at each row; returned Page/null publication remains before normal name return."
+    },
+    {
+      "id": "R2",
+      "result": "pass",
+      "area": "Raw string temporary",
+      "proof": "Actual8B raw headers initialized only on reached nonnull names; same first registration scratch for backdrop/panel and distinct title scratch; selection3 distinct headers. NUL scan, real raw41DD40/actual pool cells/current output data-length memcpy precede cleanup arm."
+    },
+    {
+      "id": "R3",
+      "result": "pass",
+      "area": "Initial and final homes",
+      "proof": "Real requestDWORD read for early own comparison; initial commitBYTE gates retirement. Each reached retirement row rereads request before slot. Each acquisition group independently reloads request once. Final commitBYTE then requestDWORD reread before actual own publication. No value range policy."
+    },
+    {
+      "id": "R4",
+      "result": "pass",
+      "area": "Retirement count1",
+      "proof": "Count1 calls genuine GUI getter, reloads actual SLOT after callback, then invokes concrete existing wholeAA31F0 with SAME page_lifetime. AA31F0 removes first matching registry entry then current20/fresh04(flags1), without count decrement."
+    },
+    {
+      "id": "R5",
+      "result": "pass",
+      "area": "Retirement decrement and zero",
+      "proof": "Other count captures actual Page, reads actual volatile CE2220 target at every reached5182CF/51833F/5183AF call, decrements that captured+4, then captures current profile/current00 target at zero and uses required throwing actual provider. Slot clear occurs only after returned retirement, including replacement; no retired Page read follows."
+    },
+    {
+      "id": "R6",
+      "result": "pass",
+      "area": "Acquisition epochs",
+      "proof": "Each slot loads current Page word THEN current name word before branching, including name read for an existing Page. Group-local request/row capture and later current-name loads preserve callback epochs. AA5840 flags are1,0 for registration and1,1 for set acquisition."
+    },
+    {
+      "id": "R7",
+      "result": "pass",
+      "area": "Address arithmetic",
+      "proof": "Win32 pointer/static assertions plus unsigned DWORD index/product arithmetic preserve native wrapping formulas for13/2/2 table/slot layouts. No range clamps, semantic receiver casts, default names or codeword-to-host-callable casts."
+    },
+    {
+      "id": "R8",
+      "result": "pass",
+      "area": "Getter preservation/custody",
+      "proof": "Old two-ref API uses one common unchanged genuine getter schedule. Four metadata-only noexcept callbacks occur after allocation, after construction/before publication, after CURRENT+8 capture/before second manager, and after captured free. Existing fast return emits none. Captured allocation/result/current registration identity remain separate; callback purity/retention are caller proof."
+    },
+    {
+      "id": "R9",
+      "result": "pass with unproved Native failure transport",
+      "area": "EH arm/disarm",
+      "proof": "Installed PE SHA/map/action decode independently confirms three logical header cleanup actions per function, flags1/2/4, each clear-before-tail41DD20. Body arm follows resize/copy; normal disarm precedes pool return; partial publication is not rolled back. This evidence does not prove secondary exception termination or Native FH3/SEH/private-frame parity."
+    }
+  ],
+  "remaining_bindings_and_limits": {
+    "actual_Startup_application_and_canonical_authority_bound": false,
+    "raw95_current_ID_and_slot_domain_supplied": false,
+    "actual_Page_current00_fresh04_throwing_transport_bound": false,
+    "whole_Frame_scalar_destructor_and_both_drains_bound": false,
+    "full_writer_apply_title_position_collector_and_real_callers_bound": false,
+    "changed_Text_and_nonempty_layout_glyph_factories_bound": false,
+    "activation": false,
+    "Page_guard": false,
+    "build_or_existing_suite_result_in_this_review": false,
+    "new_Original_duplicate_vendor_body_or_ABI_runtime_credit": 0
+  },
+  "corrected_Source_verification": {
+    "status": "passed",
+    "selection_CPP_sha256": "77f7fe7e707340912cffc66d1d07dd5c678af896f189cf476ec1cd6c514e4070",
+    "selection_CPP_git_blob": "82687829c7d3f226728ba91928b7887714188f88",
+    "selection_CPP_LF_bytes": 8809,
+    "old_helper": "NativeFrontEndFrameStringTemporary& temporary,\n    NativeStringRawPoolContext& strings) noexcept {\n    // Ordinary C++ secondary cleanup failure, not Original FH3/SEH transport.\n    try {\n        destroy_native_string_header_0041dd20(&temporary, strings);\n    } catch (...) {\n        std::terminate();\n    }\n}\n",
+    "corrected_helper": "NativeFrontEndFrameStringTemporary& temporary,\n    NativeStringRawPoolContext& strings) {\n    // Cleanup may throw; Original secondary FH3/SEH transport is unproved.\n    destroy_native_string_header_0041dd20(&temporary, strings);\n}\n",
+    "outside_helper_exact_byte_identity": true,
+    "no_new_termination_cleanup_retry_ack_or_failure_policy": true,
+    "all4_corrected_Source_and15_input_Git_LF_pins_verified": true,
+    "all6_saved_exports_reverified": true
+  },
+  "corrected_Source_commit": "81f3a296111b1337b2074124c065c66f90cca192",
+  "corrected_pin_checks": [
+    {
+      "path": "include/bsp/native_front_end_frame_selection.hpp",
+      "sha256": "706e2dacb42303d0352e24f9e40e6e627954be9c682e87c015653f9ee733d619",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "0be8f748333d8a47bd9f5bb471c1fadaca9a5928",
+      "bytes": 5524,
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "src/native_front_end_frame_selection.cpp",
+      "sha256": "77f7fe7e707340912cffc66d1d07dd5c678af896f189cf476ec1cd6c514e4070",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "82687829c7d3f226728ba91928b7887714188f88",
+      "bytes": 8809,
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_publication.hpp",
+      "sha256": "81549e83081937cc498dfb750865ee2ee9de971c034bd2029978146a1a575974",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "82575b594f78f58fd433715f4a21407e92f1297a",
+      "bytes": 3679,
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "src/native_front_end_frame_publication.cpp",
+      "sha256": "72a6ecb29e7622b225dc93d0009ef3e3a4df438d47900dd7813073afb73d38f4",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "b1ae284c6ac34e848f83978013dda633f92cfece",
+      "bytes": 4237,
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "include/bsp/native_gui_page_registry.hpp",
+      "sha256": "92f55df728ad8ec45fab8182e60c5ac8c7752883edd76eded997364fa984e6cc",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "src/native_gui_page_registry.cpp",
+      "sha256": "df890ebe7e74d5dddb5b014ca9491a874cef905fb4fa86f4003200a05625b89d",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "include/bsp/native_gui_media_focus_lifetime.hpp",
+      "sha256": "fed651ac9f3e7f0853c4754dd180dc68b1e6432afc9fe64a327caa59e8b81412",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_construction.hpp",
+      "sha256": "cd96bfd81f06f903c973593cde3daddff837d7a75f4649eb007ae4a14a7deb61",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "src/native_front_end_frame_construction.cpp",
+      "sha256": "f90858ce1f08c8124d18a53bb51cfc43c46ced96fc8e64636c613a08a037cd9f",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "include/bsp/native_singleton_publication.hpp",
+      "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "src/native_singleton_publication.cpp",
+      "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "src/native_singleton_vector_registration_wrappers.cpp",
+      "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "docs/CC16_FRONTEND_FRAME_SELECTION_CLOSURE.md",
+      "sha256": "6044383db2b11df36c86d9a5f75c0a94d19ae9654c5eaf22ce08c0d2f0bcb301",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "reports/cc16_frontend_frame_selection_closure.json",
+      "sha256": "39e3f7c02afbaac1a9b647cfc8a97079a7397430e3a72baaf20ec53e79cf958f",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "2ffbe2f9799001dc52aceba57529d4f759677c89",
+      "git_content_bytes": 29690,
+      "historical_working_copy_pin": {
+        "sha256": "fd64d809e8a3e0c2e3a1c47fa8aa7be1a6251cad2208121ef3c3c5adec91f8a2",
+        "hash_format": "raw_working_copy_bytes_crlf",
+        "bytes": 30337,
+        "qualification": "Original disk hash retained from Source packet2ed82e8ce. Primary review established the difference from immutable Git content is CRLF line endings only; this is not the immutable Git LF pin."
+      },
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "config/target.json",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+      "hash_format": "raw_file_bytes_lf",
+      "immutable_Git_LF_match": true
+    }
+  ],
+  "validation": {
+    "all4_production_files_reviewed": true,
+    "all621_selection_registration_plus56_getter_instruction_rows_reviewed": true,
+    "corrected_4_Source_15_input_Git_LF_and6_export_pins": true,
+    "installed_PE_SHA_FuncInfo_maps_and6_action_bodies_independently_verified": true,
+    "one_finding_resolved_no_other_behavior_issue_found": true,
+    "Source_or_address_edits": false,
+    "build_or_tests_or_probe_or_runtime_or_game_process_actions": false,
+    "Ghidra_mutation_or_new_live_query": false,
+    "CMake_or_ledger_change": false,
+    "diff_check": "git diff --cached --check passed; only two owned review evidence files staged",
+    "limitations": "Static Source/listing/PE proof only. Common Win32 build, genuine current Page00/fresh04/raw95/canonical/Frame lifetime/caller binding and all activation/runtime gates remain unproved."
+  },
+  "final_utc": "2026-10-30T15:56:29.141098+00:00"
+}

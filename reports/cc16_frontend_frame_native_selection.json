@@ -1,0 +1,601 @@
+{
+  "schema_version": 1,
+  "packet": "codex-frontend-frame-native-selection",
+  "classification": "actual_raw_frame_source_variants_unbuilt_required_application_bindings",
+  "baseline": {
+    "revision": "8aba68e15cc4344e8dbdac94d77c4ae36a9629c7",
+    "source_main": "eb63c7c17ae1e20f0ad728e2d410a360e1ebc4c1",
+    "prior_receipts_immutable": true
+  },
+  "document": "docs/CC16_FRONTEND_FRAME_NATIVE_SELECTION.md",
+  "owned": {
+    "addresses": [
+      "004C1AC0",
+      "00517ED0",
+      "00518250"
+    ],
+    "files": [
+      "include/bsp/native_front_end_frame_selection.hpp",
+      "src/native_front_end_frame_selection.cpp",
+      "include/bsp/native_front_end_frame_publication.hpp",
+      "src/native_front_end_frame_publication.cpp",
+      "docs/CC16_FRONTEND_FRAME_NATIVE_SELECTION.md",
+      "reports/cc16_frontend_frame_native_selection.json"
+    ]
+  },
+  "implementation_counts": {
+    "production_files": 4,
+    "raw_registration_selection_source_variants": 2,
+    "required_binding_methods": 5,
+    "context_fields": 7,
+    "live_name_base_fields": 3,
+    "volatile_decrement_cell_references": 1,
+    "registration_temporary_headers": 2,
+    "selection_temporary_headers": 3,
+    "old_getter_public_api_preserved": 1,
+    "new_getter_custody_overloads": 1,
+    "getter_common_native_schedule_bodies": 1,
+    "custody_notification_methods": 4,
+    "new_tests": 0,
+    "new_cmake_entries": 0
+  },
+  "implemented": [
+    {
+      "address": "00517ED0",
+      "source": "src/native_front_end_frame_selection.cpp",
+      "function": "register_native_front_end_frame_00517ed0",
+      "native_bytes": 891,
+      "native_instructions": 276,
+      "original_abi": "ECX actual164h Frame; plainRET/current primary+10",
+      "scope": "Whole normal schedule with actual raw receiver/live names/native string-pool and logical cleanup states",
+      "duplicate_existing_semantic_native_credit": 0
+    },
+    {
+      "address": "00518250",
+      "source": "src/native_front_end_frame_selection.cpp",
+      "function": "select_native_front_end_frame_set_00518250",
+      "native_bytes": 1105,
+      "native_instructions": 345,
+      "original_abi": "ECX actual164h Frame; stack requestDWORD/commitBYTE; RET8",
+      "scope": "Whole normal schedule/live homes/two retirement arms/concreteAA31F0/native string-pool acquisition and logical cleanup states",
+      "duplicate_existing_semantic_native_credit": 0
+    },
+    {
+      "address": "004C1AC0",
+      "source": "src/native_front_end_frame_publication.cpp",
+      "function": "get_native_front_end_frame_004c1ac0 (two preserved refs or refs+custody)",
+      "native_bytes": 202,
+      "native_instructions": 56,
+      "scope": "Same private common native-effect body, four noexcept metadata-only observations",
+      "already_admitted_body_credit": 0
+    }
+  ],
+  "context": {
+    "type": "NativeFrontEndFrameSelectionContext",
+    "fields": [
+      "NativeStringRawPoolContext& strings",
+      "NativeFrontEndFrameSelectionBindings& bindings",
+      "NativeGuiPageLifetimeHost& page_lifetime",
+      "volatile uint32_t* const backdrop_name_words_00e08500",
+      "volatile uint32_t* const panel_name_words_00e08604",
+      "volatile uint32_t* const title_name_words_00e0862c",
+      "NativeFrontEndFrameReferenceDecrement const volatile& decrement_00ce2220"
+    ],
+    "required_binding_methods": [
+      "uint32_t register_screen_004f71d0(void* captured_screen)",
+      "void* gui_manager_004c12b0()",
+      "void* load_page_00aa5840(void* actual_manager,const void* actual_name_header8,int32_t screen_flag,uint8_t add_reference)",
+      "const volatile uint32_t* current_page_table(void* captured_page,uint32_t captured_profile)",
+      "void call_page_virtual00(void* captured_page,uint32_t captured_target)"
+    ],
+    "required_bindings_implemented_here": false,
+    "contract": "Genuine actual shared raw95/GUI/Page/string-manager domains, side-effect-free current numeric table lookup, throwing genuine captured-target dispatch. No supplied ID/default bank/semantic page or codeword cast.",
+    "concrete_existing_composition": "remove_and_destroy_native_gui_page_00aa31f0(manager,current_reloaded_page,page_lifetime)",
+    "no_game_or_selector_access": "These exact bodies do not access actualGame/selectors; no extra authority or early getter is added."
+  },
+  "epochs": {
+    "registration": [
+      "Whole raw 4F71D0 current00-ID operation first; preserve its normal ID return before 517ED0 ignores it.",
+      "own+160=4 after returned registration",
+      "Outer current own/current name per column; own reread every row.",
+      "Actual raw8B temporary zero, bytewise C-string measure, real41DD40, copy CURRENT length+1.",
+      "GUI getter/AA5840(header,1,0); actual slot publication before cleanup.",
+      "Native first8B header reused for backdrop/panel, second for title."
+    ],
+    "selection": [
+      "Entry request DWORD then own comparison; initial commit BYTE.",
+      "Retire13x5/2x5/2x5 column-major; request home each row.",
+      "Count1: actual GUI getter, then CURRENT slot reload, then concrete AA31F0.",
+      "Other count: capture CURRENT Page, read CURRENT CE2220 target at reached call, invoke actual+4.",
+      "Returned0 captures CURRENT Page profile/table00 target and calls explicit throwing provider.",
+      "Clear actual slot ONLY after returned retirement, including callback replacement.",
+      "Each acquisition group reloads request independently once.",
+      "SLOT read, then unconditional CURRENT name-cell read, then branch; populated slots still read name.",
+      "Actual AA5840(header,1,1); slot publication before cleanup.",
+      "Final commit BYTE then final request DWORD before own store."
+    ],
+    "decrement_load_sites": [
+      "005182CF",
+      "0051833F",
+      "005183AF"
+    ],
+    "decrement_epoch": "No per-function or context-value cache: volatile target reference read separately after captured Page at every reached call.",
+    "correction_to_prior_closure_prose": "Acquisition assembly first CMP[slot],0, then MOVcurrentname, then branch. It does not load the name before the Page-slot read. Source preserves both ordered loads.",
+    "argument_homes": "Caller-owned const volatile uint32_t& request / const volatile uint8_t& commit; no value/bool copy or range narrowing inside operation."
+  },
+  "temporary_and_eh": {
+    "caller_retained_scratch": [
+      "NativeFrontEndFrameRegistrationScratch{backdrop_panel,title}",
+      "NativeFrontEndFrameSelectionScratch{backdrop,panel,title}"
+    ],
+    "raw_header_bytes": 8,
+    "no_default_initialization": true,
+    "no_automatic_destructor": true,
+    "arm": "After raw resize/memcpy, before actual GUI getter; Source try scope covers getter/load/slot publication.",
+    "normal_disarm": "Before raw41DD20/actual pool return; normal cleanup failure cannot reenter/repeat cleanup.",
+    "ordinary_unwind": "Invoke current-header raw41DD20 once. If cleanup returns, rethrow the original provider exception; if cleanup throws, propagate that cleanup exception. No explicit noexcept/terminate wrapper or new Native secondary-unwind policy.",
+    "earlier_failure": "No invented cleanup for resize/copy failure before native arm; raw scratch and native effects retained by caller.",
+    "no_x87_in_assigned_bodies": true,
+    "ambient_fp_environment_changed": false,
+    "original_private_spill_aliases": false,
+    "secondary_native_fh3_exception_identity_proved": false
+  },
+  "custody": {
+    "interface": "NativeFrontEndFramePublicationCustody",
+    "precondition": "Stable caller-prepared per-invocation and receiver records before getter entry; metadata-only noexcept callbacks; every backing survives callbacks/failure.",
+    "notifications": [
+      {
+        "method": "allocation_returned(void*) noexcept",
+        "epoch": "After existing BF681B returns, including null, before construction."
+      },
+      {
+        "method": "construction_returned(void* captured_allocation,void* constructed_return) noexcept",
+        "epoch": "After construction returns, before publication."
+      },
+      {
+        "method": "lifetime_argument_captured(void* captured_current_plus8) noexcept",
+        "epoch": "After captured CURRENT+8/null is formed, before second manager getter/register."
+      },
+      {
+        "method": "allocation_freed(void*) noexcept",
+        "epoch": "AFTER existing captured-allocation free on constructor failure; identity only."
+      }
+    ],
+    "fast_path": "No new allocation epoch/callback",
+    "old_api": "Preserved two-ref API delegates SAME body with no observer; no genuine provider is replaced by a metadata fallback.",
+    "prohibits": [
+      "Native call",
+      "Metadata allocation during callback",
+      "Publication/raw receiver writes",
+      "retain/count",
+      "Page array initialization",
+      "reentry",
+      "cleanup",
+      "rollback",
+      "reset",
+      "retry",
+      "Early getter"
+    ],
+    "exact_identities_distinct": [
+      "Captured allocation",
+      "Constructed return",
+      "Later CURRENT adjusted registration argument"
+    ],
+    "existing_native_schedule_preserved": [
+      "Initial captured publication fast return",
+      "First manager/captured section",
+      "Section enter and physical+18",
+      "recheck",
+      "Allocation/constructor-free catch",
+      "Publication store",
+      "Capture CURRENT+8 before second manager",
+      "Real BD0C30 registration",
+      "Captured-section decrement/leave",
+      "Real411EE0 failure cleanup",
+      "Final CURRENT-publication return"
+    ]
+  },
+  "read_only_ghidra": {
+    "verified_project_file": "C:/Users/sqz269/bsp.gpr",
+    "verified_project": "bsp",
+    "verified_program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "bsp.py ghidra client target verification checks project_name,current program_path,language,image_base before live request; config uses statedprojectfile.",
+    "mutation": false,
+    "new_exports": false,
+    "count": {
+      "live": 77632,
+      "snapshot": 77632
+    },
+    "protos": [
+      {
+        "address": "004C1AC0",
+        "body": "004C1AC0..004C1B89",
+        "instructions": 56
+      },
+      {
+        "address": "00517ED0",
+        "body": "00517ED0..0051824A",
+        "instructions": 276
+      },
+      {
+        "address": "00518250",
+        "body": "00518250..005186A0",
+        "instructions": 345
+      }
+    ],
+    "handlers": [
+      {
+        "address": "00C6A8BB",
+        "instructions": [
+          "MOV EAX,0x00D93D24",
+          "JMP 0x00BF6B43"
+        ]
+      },
+      {
+        "address": "00C6A91B",
+        "instructions": [
+          "MOV EAX,0x00D93D60",
+          "JMP 0x00BF6B43"
+        ]
+      }
+    ],
+    "unwind_actions": [
+      {
+        "address": "00C6A870",
+        "flag": 1,
+        "clear": "AND [EBP-2C],FFFFFFFE",
+        "header": "EBP-20",
+        "tail": "0041DD20"
+      },
+      {
+        "address": "00C6A889",
+        "flag": 2,
+        "clear": "AND [EBP-2C],FFFFFFFD",
+        "header": "EBP-20",
+        "tail": "0041DD20"
+      },
+      {
+        "address": "00C6A8A2",
+        "flag": 4,
+        "clear": "AND [EBP-2C],FFFFFFFB",
+        "header": "EBP-18",
+        "tail": "0041DD20"
+      },
+      {
+        "address": "00C6A8D0",
+        "flag": 1,
+        "clear": "AND [EBP-2C],FFFFFFFE",
+        "header": "EBP-24",
+        "tail": "0041DD20"
+      },
+      {
+        "address": "00C6A8E9",
+        "flag": 2,
+        "clear": "AND [EBP-2C],FFFFFFFD",
+        "header": "EBP-1C",
+        "tail": "0041DD20"
+      },
+      {
+        "address": "00C6A902",
+        "flag": 4,
+        "clear": "AND [EBP-2C],FFFFFFFB",
+        "header": "EBP-14",
+        "tail": "0041DD20"
+      }
+    ],
+    "eh_map_artifact": "reports/cc16_frontend_frame_native_selection.json#/read_only_ghidra/unwind_actions"
+  },
+  "static_pe_eh": {
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "register": {
+      "funcinfo": "00D93D24",
+      "magic": "19930522",
+      "max_state": 3,
+      "unwind_map": "00D93D0C",
+      "states": [
+        {
+          "to": -1,
+          "action": "00C6A870"
+        },
+        {
+          "to": -1,
+          "action": "00C6A889"
+        },
+        {
+          "to": -1,
+          "action": "00C6A8A2"
+        }
+      ],
+      "flags": 1
+    },
+    "selection": {
+      "funcinfo": "00D93D60",
+      "magic": "19930522",
+      "max_state": 3,
+      "unwind_map": "00D93D48",
+      "states": [
+        {
+          "to": -1,
+          "action": "00C6A8D0"
+        },
+        {
+          "to": -1,
+          "action": "00C6A8E9"
+        },
+        {
+          "to": -1,
+          "action": "00C6A902"
+        }
+      ],
+      "flags": 1
+    },
+    "artifact": "reports/cc16_frontend_frame_native_selection.json#/static_pe_eh",
+    "scope": "Static originalPE loader data, not runtimeEHvalidation."
+  },
+  "validation": {
+    "static_source_listing_review": true,
+    "json_parsed": true,
+    "git_diff_check": true,
+    "owned_files_only": true,
+    "compiled": false,
+    "linked": false,
+    "tests_run": false,
+    "probe": false,
+    "original_or_reconstructed_execution": false,
+    "game_or_process_actions": false,
+    "ghidra_mutation": false,
+    "cmake_or_ledger_changes": false,
+    "common_win32_build": "Primary integrator pending; no inherited passing receipt applies to newSource."
+  },
+  "readiness": {
+    "body_source_present": true,
+    "primary_review_pending": true,
+    "build_pending": true,
+    "whole_frontend_source_ready": false,
+    "root_caller_binding": false,
+    "activation": false,
+    "page_guard": false,
+    "remaining_actual_providers": [
+      "Used Startup app, canonical raw95/current dispatch and custody retention.",
+      "Same current00 Page target/fresh04 throwing binding.",
+      "Whole517D90 reload after getter and primary/secondary scalar/destruction/drain binding.",
+      "Writer/apply/title/position/collector and all actual callers.",
+      "Raw changed ABAED0 -> nonempty ABA8D0/current50; reached Text/Icon/FrameBox actual factory/method graph."
+    ]
+  },
+  "new_credit": {
+    "original_bodies": 0,
+    "vendor": 0,
+    "duplicate_body": 0,
+    "compiler_generated": 0,
+    "abi": 0,
+    "runtime": 0,
+    "gameplay": 0,
+    "activation": 0
+  },
+  "source_hashes": [
+    {
+      "path": "include/bsp/native_front_end_frame_selection.hpp",
+      "sha256": "706e2dacb42303d0352e24f9e40e6e627954be9c682e87c015653f9ee733d619",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "0be8f748333d8a47bd9f5bb471c1fadaca9a5928",
+      "bytes": 5524
+    },
+    {
+      "path": "src/native_front_end_frame_selection.cpp",
+      "sha256": "77f7fe7e707340912cffc66d1d07dd5c678af896f189cf476ec1cd6c514e4070",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "82687829c7d3f226728ba91928b7887714188f88",
+      "bytes": 8809
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_publication.hpp",
+      "sha256": "81549e83081937cc498dfb750865ee2ee9de971c034bd2029978146a1a575974",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "82575b594f78f58fd433715f4a21407e92f1297a",
+      "bytes": 3679
+    },
+    {
+      "path": "src/native_front_end_frame_publication.cpp",
+      "sha256": "72a6ecb29e7622b225dc93d0009ef3e3a4df438d47900dd7813073afb73d38f4",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "b1ae284c6ac34e848f83978013dda633f92cfece",
+      "bytes": 4237
+    }
+  ],
+  "input_hashes": [
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "hash_format": "raw_file_bytes_lf"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "hash_format": "raw_file_bytes_lf"
+    },
+    {
+      "path": "include/bsp/native_gui_page_registry.hpp",
+      "sha256": "92f55df728ad8ec45fab8182e60c5ac8c7752883edd76eded997364fa984e6cc",
+      "hash_format": "raw_file_bytes_lf"
+    },
+    {
+      "path": "src/native_gui_page_registry.cpp",
+      "sha256": "df890ebe7e74d5dddb5b014ca9491a874cef905fb4fa86f4003200a05625b89d",
+      "hash_format": "raw_file_bytes_lf"
+    },
+    {
+      "path": "include/bsp/native_gui_media_focus_lifetime.hpp",
+      "sha256": "fed651ac9f3e7f0853c4754dd180dc68b1e6432afc9fe64a327caa59e8b81412",
+      "hash_format": "raw_file_bytes_lf"
+    },
+    {
+      "path": "include/bsp/native_front_end_frame_construction.hpp",
+      "sha256": "cd96bfd81f06f903c973593cde3daddff837d7a75f4649eb007ae4a14a7deb61",
+      "hash_format": "raw_file_bytes_lf"
+    },
+    {
+      "path": "src/native_front_end_frame_construction.cpp",
+      "sha256": "f90858ce1f08c8124d18a53bb51cfc43c46ced96fc8e64636c613a08a037cd9f",
+      "hash_format": "raw_file_bytes_lf"
+    },
+    {
+      "path": "include/bsp/native_singleton_publication.hpp",
+      "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+      "hash_format": "raw_file_bytes_lf"
+    },
+    {
+      "path": "src/native_singleton_publication.cpp",
+      "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "hash_format": "raw_file_bytes_lf"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "hash_format": "raw_file_bytes_lf"
+    },
+    {
+      "path": "src/native_singleton_vector_registration_wrappers.cpp",
+      "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "hash_format": "raw_file_bytes_lf"
+    },
+    {
+      "path": "docs/CC16_FRONTEND_FRAME_SELECTION_CLOSURE.md",
+      "sha256": "6044383db2b11df36c86d9a5f75c0a94d19ae9654c5eaf22ce08c0d2f0bcb301",
+      "hash_format": "raw_file_bytes_lf"
+    },
+    {
+      "path": "reports/cc16_frontend_frame_selection_closure.json",
+      "sha256": "39e3f7c02afbaac1a9b647cfc8a97079a7397430e3a72baaf20ec53e79cf958f",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "2ffbe2f9799001dc52aceba57529d4f759677c89",
+      "git_content_bytes": 29690,
+      "historical_working_copy_pin": {
+        "sha256": "fd64d809e8a3e0c2e3a1c47fa8aa7be1a6251cad2208121ef3c3c5adec91f8a2",
+        "hash_format": "raw_working_copy_bytes_crlf",
+        "bytes": 30337,
+        "qualification": "Original disk hash retained from Source packet2ed82e8ce. Primary review established the difference from immutable Git content is CRLF line endings only; this is not the immutable Git LF pin."
+      }
+    },
+    {
+      "path": "config/target.json",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "hash_format": "raw_file_bytes_lf"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+      "hash_format": "raw_file_bytes_lf"
+    }
+  ],
+  "saved_export_hashes": [
+    {
+      "path": "exports/bsp/functions/00517ed0/assembly.txt",
+      "sha256": "269456cf422ee413fd185670def75d45abc0457a01c839129e2b5c8cad2277cf",
+      "hash_format": "raw_saved_export_file_bytes"
+    },
+    {
+      "path": "exports/bsp/functions/00517ed0/decompiled.c",
+      "sha256": "c175454b5c1d188f4c80369a763ca6fd7f8d690fe6bdede1939de9c694909f76",
+      "hash_format": "raw_saved_export_file_bytes"
+    },
+    {
+      "path": "exports/bsp/functions/00518250/assembly.txt",
+      "sha256": "11987c2eee96483a2adc9635564af01d23a89ea53e0691f6c11521aab8e1e963",
+      "hash_format": "raw_saved_export_file_bytes"
+    },
+    {
+      "path": "exports/bsp/functions/00518250/decompiled.c",
+      "sha256": "c4e459b3b62dbc8d1af1a12819d0a464991beeeaf94cd0ecf65ceee0ee9986a5",
+      "hash_format": "raw_saved_export_file_bytes"
+    },
+    {
+      "path": "exports/bsp/functions/004c1ac0/assembly.txt",
+      "sha256": "8a168220b57c0e4ae2cf204c258f18e9e588993fe5f59e17fcc1084547f0776a",
+      "hash_format": "raw_saved_export_file_bytes"
+    },
+    {
+      "path": "exports/bsp/functions/004c1ac0/decompiled.c",
+      "sha256": "b44e155e2db0ec685151554c7c395bc1eb40a3d93aad6a6bb225b534eb2b1d0f",
+      "hash_format": "raw_saved_export_file_bytes"
+    }
+  ],
+  "utc": "2026-10-30T15:39:26.8650929Z",
+  "hash_format_qualification": {
+    "source_hashes": "Current four Source pins use immutable Git LF blob bytes/OID/length. Historical2ed/796 raw-file pins and original report versions remain separately retained.",
+    "input_hashes": "Raw LF file bytes except the explicitly corrected closure-report entry, whose primary sha256 is immutable Git blob content. Original CRLF disk hash is retained as qualified historical evidence.",
+    "saved_export_hashes": "Raw read-only saved-export file bytes, without implicit line-ending conversion.",
+    "correction_scope": "Metadata only. No Source, CMake, ledger, Ghidra, build or runtime change."
+  },
+  "historical_source_versions": {
+    "implementation_commit": "2ed82e8ceafef8d47d9e5bf1d4d91cb744777def",
+    "pin_format_commit": "79644264387fa1cf4a977b155f6603e75cc03830",
+    "source_hashes": [
+      {
+        "path": "include/bsp/native_front_end_frame_selection.hpp",
+        "sha256": "706e2dacb42303d0352e24f9e40e6e627954be9c682e87c015653f9ee733d619",
+        "hash_format": "raw_file_bytes_lf"
+      },
+      {
+        "path": "src/native_front_end_frame_selection.cpp",
+        "sha256": "23521239cc54139f700682d99ccb33b6750cecc3950e7f62c1b487a6ef5eb511",
+        "hash_format": "raw_file_bytes_lf"
+      },
+      {
+        "path": "include/bsp/native_front_end_frame_publication.hpp",
+        "sha256": "81549e83081937cc498dfb750865ee2ee9de971c034bd2029978146a1a575974",
+        "hash_format": "raw_file_bytes_lf"
+      },
+      {
+        "path": "src/native_front_end_frame_publication.cpp",
+        "sha256": "72a6ecb29e7622b225dc93d0009ef3e3a4df438d47900dd7813073afb73d38f4",
+        "hash_format": "raw_file_bytes_lf"
+      }
+    ],
+    "superseded_secondary_cleanup_statement": "Invoke current-header raw41DD20 once then rethrow. Secondary cleanup C++ failure terminates; no Original FH3/SEH claim.",
+    "report_pins": [
+      {
+        "commit": "2ed82e8ceafef8d47d9e5bf1d4d91cb744777def",
+        "path": "reports/cc16_frontend_frame_native_selection.json",
+        "hash_format": "immutable_git_blob_content_lf",
+        "git_blob_oid": "1cc1f917ff9bf9e126333b09356f92041ad8b13f",
+        "sha256": "ffabb1dba8865139fd19a10041d1509b6037fdff37758f73c8da625cd1bd00ea",
+        "bytes": 18266
+      },
+      {
+        "commit": "79644264387fa1cf4a977b155f6603e75cc03830",
+        "path": "reports/cc16_frontend_frame_native_selection.json",
+        "hash_format": "immutable_git_blob_content_lf",
+        "git_blob_oid": "cf7196d544b9d1eab6ddf96f52561635c5f00058",
+        "sha256": "1a7d8be21d014fb3f2c16db94556f13b371db563118d993bb614072a38a543a9",
+        "bytes": 20517
+      }
+    ],
+    "qualification": "Historical Source had an unproved explicit noexcept/terminate secondary-cleanup wrapper; preserved for audit, not current transport."
+  },
+  "cleanup_transport_correction": {
+    "parent_source_commit": "2ed82e8ceafef8d47d9e5bf1d4d91cb744777def",
+    "prior_pin_format_commit": "79644264387fa1cf4a977b155f6603e75cc03830",
+    "utc": "2026-10-30T15:54:04.232343+00:00",
+    "scope": "Remove only unwind_header explicit noexcept and terminate catch wrapper; direct once-only real41DD20 cleanup may throw. No Hpp/API/custody/normal-body change.",
+    "normal_body_and_all_other_helpers_byte_identical": true,
+    "header_and_getter_source_unchanged": true,
+    "original_provider_exception": "Rethrown only after cleanup returns.",
+    "cleanup_exception": "Escapes if cleanup itself throws; no retry/cleanup/acknowledgment/termination policy.",
+    "native_fh3_secondary_identity": "Unproved; logical unwind action is not proof of secondary termination.",
+    "fresh_input_pins": {
+      "count": 15,
+      "format": "immutable Git LF bytes matched existing declared SHA",
+      "mismatches": []
+    },
+    "fresh_export_pins": {
+      "count": 6,
+      "format": "raw saved-export file bytes",
+      "mismatches": []
+    },
+    "validation": "Static exact diff/hash and JSON checks only; common build pending Root."
+  }
+}

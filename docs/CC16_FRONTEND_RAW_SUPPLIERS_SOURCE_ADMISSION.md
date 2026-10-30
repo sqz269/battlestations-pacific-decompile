@@ -1,0 +1,44 @@
+# Frontend raw supplier Source admission
+
+Accepted for Main Source publication after primary inspection, three independent reviews and the actual joined Win32 build. Latest tested Source is `ca88e3a776233477b18f84eb46f1db000eee73a5`, including published Main7ac6c4ee6; all registered targets and2/2existing suites pass10.10s. The supplier batch initially passed at36e9846dc2a669d39f669201ba448a03ea15cd89 on published1b5dead2c9c7b32fee92778d0b069173a3db3212, and its eleven inputs remained identical through the subsequent Main joins. Ten production files and one CMake file changed in this supplier batch. No test was added. The full activation goal remains active under the user's existing gameplay authorization.
+
+This admission covers compiled core-library implementations. It supplies no activated frontend caller. The five new normal-body entry names were absent from the resulting game map; compilation into `bsp_core.lib` is distinct from a linked or executed game route. Full frontend readiness and activation remain false, and the Page guard is unchanged.
+
+## Accepted components
+
+- MenuPrompt: whole raw533120 constructor and425D10 getter, owner commit `16991d87c0f5b77b0a0284b44a77b65bd67ca7b8`. Actual290h storage, raw pooled strings, fourteen authenticated borrowed literals, two vectors/seven records/list, current95-word bank and the same E18E6C/manager/feature cells replace no existing authority. Normal captured-buffer return and current-header unwind remain distinct. Publication precedes actual+C registration. Native functions are1646B/513ops and202B/56ops; this grants no Original ABI or extra helper/vendor credit.
+- Frame: whole raw517ED0/518250 plus the existing4C1AC0 getter's preprepared metadata-custody overload. Corrected owner commit is `81f3a296111b1337b2074124c065c66f90cca192`. Real argument homes, current writable name cells, callback slot reloads and both Page retirement arms remain explicit. Four metadata-only notifications preserve captured allocation, construction return and adjusted registration identities. Required genuine current00/raw95/application bindings remain unclosed. The two normal bodies contain621 instructions; the original getter has56.
+- Text: whole normal rawAB8400 glyph-buffer supplier, corrected owner commit `6896c65e34f796e3a7912390ce3293bd9205aa49`. It uses the existing renderer/declaration/stream registry and genuine Mesh companion. Three renderer reads, one late capacity read, two Mesh-home reads, one captured decrement import and vertex/declaration-before-index returns match the110-instruction listing. It adds no Text authority, count, Mesh cast or successful missing-provider fallback.
+
+The producer documents and reports preserve original addresses, Source APIs, actual provider requirements and uncertainty. Existing semantic/equal-only/empty-only implementations remain unchanged. These are further Source counterparts over established body evidence, with zero new Original/vendor/CG/duplicate-body credit in this admission.
+
+## Review and corrections
+
+Primary inspected all ten production files, the three producer documents and all three independent-review documents. Primary paged complete Frame registration/selection, AB8400 and MenuPrompt-getter listings; the independent MenuPrompt reviewer checked the complete constructor/getter listings and its PE literals,70 label calls,74 total constructor calls and three EH maps. Exact immutable Source/provider/export pins were checked; historical CRLF and immutable Git-LF report pins remain separately qualified.
+
+Independent reviews are `e8a0876d85b33722420476be055120836984faed` for Frame, `fadc994d63ab3b32e132b6177a52506422e2d686` for Text, and `8315992d2cfa6aa0b95c47c5a54f222f70ca367b` for MenuPrompt. They found two policy defects, both corrected before the joined build:
+
+1. The new Text diagnostic-frame destructor terminated on entered/failed metadata. The actual owner contract did not require this; the corrected destructor is default/no-op, with explicit caller retention obligations preserved.
+2. Frame's manual exceptional string-cleanup wrapper forced termination on cleanup failure. The corrected helper performs the genuine cleanup once and permits its ordinary Source exception to escape. Native EH action shape does not prove secondary termination.
+
+Normal bodies and getter custody were unchanged by these narrow corrections. Exact Native FH3/SEH/private-frame/fault/provider/secondary-unwind identity remains unproved. Existing factory nonnull/profile and canonical zero-terminal Source qualifications are recorded, not promoted to arbitrary native behavior.
+
+## Actual common build and frozen artifacts
+
+`./scripts/build.ps1 -Configuration Release` passed all targets with MSVC Win32, compiler parallelism2, PCH ON and coverage PDB OFF. There were no compiler warnings/errors. Existing `reconstructed_math` and `tool_tests` passed in0.24s/13.17s,13.46s total. This is compilation and existing-suite proof; no new raw-route fixture, ABI or gameplay result is claimed.
+
+Eleven exact Git-LF Source/CMake inputs and thirteen build artifacts are frozen under `local/function_source_batch24/`. Artifacts include the core library, all five changed implementation objects, PE/map, cache, existing test binary/log and xlive stub. The game PE SHA256 is `011f785893b049a986ae63753a51ff2ee1a951e37d7f92fdfb41674194d3bee4`. The machine-readable receipt is `reports/cc16_frontend_raw_suppliers_common_build.json`.
+
+Main advanced during this batch. The primary then merged published `5e4c2fff1` and built actual combined Source `a3473ebef434542a54a53688100d274ae2ba7166`. All eleven supplier/CMake inputs remained byte-identical. All registered targets and both existing suites passed again,12.16s total, with no compiler warning/error. Its fifteen changed Source/CMake snapshot inputs and thirteen artifacts are separately frozen under `local/function_source_batch24/joined_main/`; no first-pass artifact was overwritten. The combined PE SHA256 is `c3d58547babbf5945aee28154678d512b0780c0cae14ce09ecf399d0bd6df021`. The five entry names remain absent from that game map. At this historical cohort, remote raw-override registration was pending. The common report preserves this cohort and its exact scope.
+
+The first publication attempt encountered another Main advance,704d1282d's raw equality-field correction. It was merged into Source `73b73636ef450eccf961c8e4d26801d8d481cda2` and the actual combined registered targets and2/2suites passed11.40s, with no compiler warning/error. Eleven supplier inputs remain identical. This final cohort has separate fifteen input snapshots/thirteen artifacts under `local/function_source_batch24/joined_704d/`, PE SHA256 `0c4d210f8b1bdd2eb6e1ccf4f8b909bb456c61539a35c61f9abc60de58df89dd`. All previous receipts are preserved; the common report identifies this latest combined build and retains the earlier cohorts. No new caller or execution claim is added.
+
+Main7ac6c4ee6 subsequently completed its own raw-override Game-target registration. The final actual joined Sourceca88e3a776233477b18f84eb46f1db000eee73a5 passed all registered targets and2/2existing suites10.10s without compiler warning/error. Its sixteen input snapshots and fourteen artifacts, including the newly registered Game object, are frozen separately in `local/function_source_batch24/joined_7ac6/`. PE SHA256 is `2731c1eeec4b7499bc0f0c74953420e22b4d6742870c34d9938bfdeeafb04378`. The eleven frontend supplier inputs remain identical and their five normal-body names remain absent from the map. The remote registration is preserved as published; frontend caller and activation gates are unchanged. The common report distinguishes all four immutable cohorts and identifies this final tested tree.
+
+No game/probe execution, Ghidra mutation, process action or replay of old passing cohorts was performed for this batch. Earlier Source/runtime receipts remain immutable and validate their own inputs, not these new raw operations. Unknown oldPID40812 was untouched.
+
+## Remaining activation work
+
+The same Startup-retained frontend application must consume the canonical v3 view, existing manager/Settings Game cells, genuine raw95 producers/current dispatch, exact MenuPrompt adjusted lifetime and member graph, Frame current00/fresh04/primary/secondary lifetime routes, whole writer/apply/title/position/collector and actual InitOnce/title/HUD/loading callers. The already-selected E18E6C borrowed publication remains inside the authenticated E18000 page.
+
+Changed ABAED0/nonempty ABA8D0, raw single-line/wrapped layout and glyph recursion, reached Text/Icon/FrameBox factories and other genuine widget/timer providers remain open. Source library admission does not satisfy populated execution, actual retirement, Original ABI, visual/gameplay or full activation gates. No goal completion is claimed.
