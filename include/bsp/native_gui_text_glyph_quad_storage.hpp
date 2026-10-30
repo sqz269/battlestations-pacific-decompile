@@ -88,6 +88,8 @@ struct NativeGuiTextGlyphQuadStorageContext {
 
 // Fixed, caller-prepared per-invocation scratch/diagnostics, not an owner.
 // locals[] corresponds to Native F14..F48; no blanket initialization occurs.
+// Ordinary DWORD backing permits genuine raw string/wide helper access to the
+// SAME objects; reached native local accesses use explicit volatile views.
 // Its SAME F24/F28 words are coordinates, string/wide headers and pivot/offset
 // storage at different epochs. Every recursive/reached call needs a distinct
 // retained record and genuine nested provider frames. No destructor cleans up.
@@ -96,7 +98,7 @@ struct NativeGuiTextGlyphQuadStorageAcquired final {
     Phase phase{Phase::fresh};
     void* actual_text{};
     const volatile std::uint32_t* home_identity{}; // Identity ONLY after normal return/reuse.
-    volatile std::uint32_t locals[14];
+    std::uint32_t locals[14];
     std::uint32_t captured_glyph{}, captured_stream{}, captured_first_vertex{};
     std::uint32_t first_position{}, captured_white{}, captured_fourth_vertex{};
     void* captured_allocation{};
