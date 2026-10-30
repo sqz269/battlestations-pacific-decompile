@@ -137,4 +137,78 @@ DynEngineStorage* dyn_engine_ensure_00c55f50(
     *context.engine_slot_0109e9fc=engine;
     return engine;
 }
+
+DynEngineStorage* dyn_engine_construct_qualified_00c55ea0(DynEngineStorage& engine,
+    const volatile std::uint32_t* descriptor,const DynEngineRuntimeContext& context,
+    DynProfileRootPartialNodeDelete delete_partial_00bf65ac) {
+    if (!delete_partial_00bf65ac)
+        throw std::invalid_argument("Dyn engine requires a matching raw-allocation partial deleter");
+    at<std::uint32_t>(&engine,0)=0;
+    at<std::uint32_t>(&engine,4)=0;
+    at<std::uint32_t>(&engine,8)=0;
+    // Native E042B4 state0 begins before the 9Ch allocator, after initial zeros.
+    // These are source catch extents; /EHsc may hoist its physical guard.
+    try {
+        auto* const profile_allocation=static_cast<DynProfileStorage*>(
+            allocate(context,sizeof(DynProfileStorage)));
+        auto* profile=profile_allocation;
+        try {
+            if (profile) profile=dyn_profile_construct_00c50310(
+                *profile,context,delete_partial_00bf65ac);
+        } catch (...) {
+            // CC83ED: captured 9Ch only, then the outer current-vector action.
+            delete_partial_00bf65ac(profile_allocation);
+            throw;
+        }
+        // Source profile catch has ended. Native state1 demotes BEFORE this
+        // store; /EHsc may delay physical demotion to the next throwing call.
+        at<DynProfileStorage*>(&engine,0xc)=profile;
+        auto* const task_allocation=static_cast<DynTaskManagerStorage*>(
+            allocate(context,sizeof(DynTaskManagerStorage)));
+        try {
+            auto* tasks=task_allocation;
+            if (tasks) {
+                // C55F16: one live descriptor DWORD AFTER the allocator callback
+                // and within the acquired task scope. Null task skips this read.
+                const std::uint32_t worker_count=*descriptor;
+                tasks=dyn_task_manager_construct_qualified_00c37740(
+                    *tasks,worker_count,context.memory);
+            }
+            at<DynTaskManagerStorage*>(&engine,0x10)=tasks;
+            return &engine;
+        } catch (...) {
+            // CC83F8: captured 358h only; completed profile/Root are not retired.
+            delete_partial_00bf65ac(task_allocation);
+            throw;
+        }
+    } catch (...) {
+        // CC83E5 ->409B10 is the SAME current-data operation as existing A900.
+        release_profile_vector_storage_0040a900(&engine,context.memory);
+        throw;
+    }
+}
+
+DynEngineStorage* dyn_engine_ensure_qualified_00c55f50(
+    const volatile std::uint32_t* descriptor,const DynEngineRuntimeContext& context,
+    DynProfileRootPartialNodeDelete delete_partial_00bf65ac) {
+    auto* const existing=static_cast<DynEngineStorage*>(
+        *static_cast<void* volatile*>(context.engine_slot_0109e9fc));
+    if (existing) return existing;
+    if (!delete_partial_00bf65ac)
+        throw std::invalid_argument("Dyn engine cold ensure requires a matching raw-allocation partial deleter");
+    // Native state-1 at C55F74: allocator exceptions have no captured 14h action.
+    auto* const allocation=static_cast<DynEngineStorage*>(
+        allocate(context,sizeof(DynEngineStorage)));
+    try {
+        auto* engine=allocation;
+        if (engine) engine=dyn_engine_construct_qualified_00c55ea0(
+            *engine,descriptor,context,delete_partial_00bf65ac);
+        *static_cast<void* volatile*>(context.engine_slot_0109e9fc)=engine;
+        return engine;
+    } catch (...) {
+        // CC840D: captured 14h only. Never clear/reload/free current publication.
+        delete_partial_00bf65ac(allocation);
+        throw;
+    }
+}
 } // namespace bsp

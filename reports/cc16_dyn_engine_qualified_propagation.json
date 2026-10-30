@@ -1,0 +1,1358 @@
+{
+  "schema_version": 1,
+  "packet": "codex-dyn-engine-qualified-propagation",
+  "base_main": "02a78bd1fc85cd7e2ff06450d1aa7edeae15ae94",
+  "created_at_utc": "2026-10-30T00:34:21.293901+00:00",
+  "status": "named_qualified_library_propagation_strict_static_proof_passed_old32_code_old8_EH_equal; independent_review_common_build_and_actual_caller_adoption_pending",
+  "sources": [
+    "src/dyn_engine_runtime.cpp"
+  ],
+  "headers": [
+    "include/bsp/dyn_engine_runtime.hpp"
+  ],
+  "documentation": "docs/CC16_DYN_ENGINE_QUALIFIED_PROPAGATION.md",
+  "functions": [
+    {
+      "address": "00C55EA0",
+      "name": "dyn_engine_construct_qualified_00c55ea0",
+      "normal_entry_bytes": 210,
+      "source": "src/dyn_engine_runtime.cpp",
+      "new_interface": "DynEngineStorage*(DynEngineStorage&,const volatile uint32_t*,const DynEngineRuntimeContext&,DynProfileRootPartialNodeDelete)",
+      "original_abi": "stack(engine*,descriptor*); EAX engine; RET8; native175B/57ops",
+      "scope": "Valid-input C++ partial cleanup only; original register/frame/fault/ABI not supplied"
+    },
+    {
+      "address": "00C55F50",
+      "name": "dyn_engine_ensure_qualified_00c55f50",
+      "normal_entry_bytes": 125,
+      "source": "src/dyn_engine_runtime.cpp",
+      "new_interface": "DynEngineStorage*(const volatile uint32_t*,const DynEngineRuntimeContext&,DynProfileRootPartialNodeDelete)",
+      "original_abi": "ECX descriptor; EAX existing/new/null engine; plain RET; native111B/34ops",
+      "scope": "Additive cold path, existing hot publication returns without requalification"
+    }
+  ],
+  "ownership": {
+    "addresses": [
+      "00C55EA0",
+      "00C55F50"
+    ],
+    "files": [
+      "include/bsp/dyn_engine_runtime.hpp",
+      "src/dyn_engine_runtime.cpp",
+      "docs/CC16_DYN_ENGINE_QUALIFIED_PROPAGATION.md",
+      "reports/cc16_dyn_engine_qualified_propagation.json"
+    ]
+  },
+  "inputs": {
+    "readiness_document": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\docs\\CC16_DYN_ENGINE_QUALIFIED_CALLER_READINESS.md",
+      "bytes": 12193,
+      "sha256": "4e70fbb8a89160a1f2e7d702437b371d97de95c8c42c3d176081b8eb68e900d5"
+    },
+    "readiness_report": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\reports\\cc16_dyn_engine_qualified_caller_readiness.json",
+      "bytes": 34975,
+      "sha256": "8a22d2f8a9f7f29ca46c68ef1a47384632cfa569da55025c6c26ab0516bbf36e"
+    },
+    "readiness_baseline": {
+      "commit": "64cd1530ec223a889d8fb88fa32a0c880ab72c6c",
+      "origin": "Exactgitrev-parseHEADofrootcodex-function-source-integration resolvedat taskstart; cleanthen; explicitlyfrozenintegration snapshot, not assumedpublishedmain"
+    },
+    "readiness_source_pins_verified_against_their_own_baseline": [
+      {
+        "path": "include/bsp/dyn_engine_runtime.hpp",
+        "sha256": "2f40e8f9347e6cb454d6cefc016a9143fdc1178d00269769231192d50cb59dcf",
+        "git_blob": "8d84bc29f6aeb0bba575ed649708eb06a7b19c42"
+      },
+      {
+        "path": "src/dyn_engine_runtime.cpp",
+        "sha256": "c8267909406fbe475e6f9ffa0954ce2c03d523e4c8be27bbf53261f9f947d7f2",
+        "git_blob": "b1ee284f064dcc6d18f7470afe7984c303111392"
+      },
+      {
+        "path": "include/bsp/dyn_task_manager.hpp",
+        "sha256": "3c6736d8c7ee289631f9fdebd02f9c0915688389ec29a782357183ee2f54c147",
+        "git_blob": "21f318d383b9a92093da69d5d2293a729a41ec66"
+      },
+      {
+        "path": "src/dyn_task_manager.cpp",
+        "sha256": "0160749d351494d2ac34a08a0c4d98322a6a4aa54ab5db8c35e23931591d75d0",
+        "git_blob": "c1dad1d415af39f9240e7bd48ba0e45020f4980a"
+      },
+      {
+        "path": "include/bsp/game_native_dyn_process.hpp",
+        "sha256": "9e6e6f3c6824250f131366d7805bacc508d3157e1c562cc4cc73269ed339ffa2",
+        "git_blob": "080272fa8a31f66c9a2c85cc2aaa37a4d897bcc8"
+      },
+      {
+        "path": "src/game_native_dyn_process.cpp",
+        "sha256": "54ec1cb0688d099fc46c0e00b79799e19416d3879c5b72258fe4f0b14c21350b",
+        "git_blob": "6b5a81d375fdf645dcc6e4d1831fcbe115728218"
+      },
+      {
+        "path": "include/bsp/native_game_dynamics.hpp",
+        "sha256": "a3e10519df0f4bb2327ee46713069f0aa761630ca1c633f438db09bb41668290",
+        "git_blob": "51b8b01d805789799ee8a8faacacd20ec3cac5a0"
+      },
+      {
+        "path": "include/bsp/native_game_construction.hpp",
+        "sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e",
+        "git_blob": "e83a2b3736edfb4d6fa699526a003861d3805977"
+      },
+      {
+        "path": "src/native_game_construction.cpp",
+        "sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e",
+        "git_blob": "ad55eb59309369dff06d596cbdf3efd1e4c7037a"
+      },
+      {
+        "path": "include/bsp/avoid_zone_dyn_hull.hpp",
+        "sha256": "3fd5fecb9e29d82393c25315ddcd6046119e3c7666d7d5ab97236c79d8e91c45",
+        "git_blob": "483e7f06a925322c85ce375dc30acd4e1541457a"
+      },
+      {
+        "path": "src/native_legacy_sbo_string.cpp",
+        "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+        "git_blob": "f8c0f47406710a7e078d7cf09c0529e3838665c5"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+      },
+      {
+        "path": "include/bsp/cc13_dyn1.hpp",
+        "sha256": "f963de36f8cc8e137a056335510b4e33515ac2533fbd7aeca04da48dec83aece",
+        "git_blob": "bc34d151d032152c947f569828e3f8dba319fb1e"
+      },
+      {
+        "path": "src/cc13_dyn1.cpp",
+        "sha256": "23cdb09bfea0b435577eda510cadcffa37cb78419d3a3795c379fd03bd07286a",
+        "git_blob": "27ec142632130637433b3b64124f70fc36ccd2c5"
+      },
+      {
+        "path": "docs/CC16_DYN_PROFILE_ROOT_QUALIFIED_REVIEW.md",
+        "sha256": "9a496f26a8d01b9e48b322ed410b1fc1cf9483ac5fa115b19682c0f0bc9cd6ed",
+        "git_blob": "8a89cfda30ce9f909f34d12139c8880e9f1489d4"
+      },
+      {
+        "path": "reports/cc16_dyn_profile_root_qualified_review.json",
+        "sha256": "41f09db3e3bb55a5339e274c29d30d6026c7b90a841e4efeafba16639bee79d3",
+        "git_blob": "474bd2aa66f028ec521bb97fd64acda77c0e8088"
+      },
+      {
+        "path": "docs/CC16_DYN_PROFILE_QUALIFIED_BINDING.md",
+        "sha256": "7334022059930239f910abe8b2e5798a9b190165589fc9598c19c62e592211a7",
+        "git_blob": "1acdae7a9312ac3a3edd5ff2a22bed1d0fe2eb76"
+      },
+      {
+        "path": "reports/cc16_dyn_profile_qualified_binding.json",
+        "sha256": "addc2799447d86695609b84060a4f8ff11bb5f30d6c6f1c6ec16793c731da12f",
+        "git_blob": "c6f66a31fca0e7b8c4afbcfe62be8f9dabec778a"
+      }
+    ],
+    "readiness_export_pins_verified": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c55ea0\\assembly.txt",
+        "sha256": "694d5a8a483708c336e169bd0e9cb7cbaa3f6018eaada6520eae4d1bced94300"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c55ea0\\decompiled.c",
+        "sha256": "928d0dc44185e05fc2258bfb39570600a40681bb369a95907ecc622ede9c4dae"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c55f50\\assembly.txt",
+        "sha256": "54a9cf3a4d8642633a4beb9a7ffcc3402b69fa9dc724be6c45baa4a99ee9199d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c55f50\\decompiled.c",
+        "sha256": "207c2101ee0d95c429d9f55c840b77f394def06c83796164418c73a2349bd5c5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c37740\\assembly.txt",
+        "sha256": "d605b052a656d439dac9197b3b607ba7eb7ad32655e23ac037894f8ab9a3c5dd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c37740\\decompiled.c",
+        "sha256": "3607f9d3956acda7f5440890b07c84776bdb8693179291c5740678ee4675c273"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00409b10\\assembly.txt",
+        "sha256": "08794f3b3fac577d34ee6adaabfe27f89730b676fb7ae98135d50575cfb7ca8c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00409b10\\decompiled.c",
+        "sha256": "fe29a845cdd189c9fb12e19ed718c373b80276d481821596e2d41dab728d1a11"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00408e80\\assembly.txt",
+        "sha256": "d034d14ce0afcf3d3165cb5868f75fe3a72e21a5c565cd46fce5950d01cd3965"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00408e80\\decompiled.c",
+        "sha256": "3658c4bd97d8ada2fc02afedea85e857225a63ed22d7e11a25791ac8b98af9e9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0040a900\\assembly.txt",
+        "sha256": "9c02143aea7e575130de04302b27256a6a7a6a7173faf797a41c992bdbbe361a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0040a900\\decompiled.c",
+        "sha256": "2db1285d5108add9900dd96ed8a92ca686315092ce4548f01b88a5434382e6fc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c30930\\assembly.txt",
+        "sha256": "e436a067c28b7f7a4f8c0368c3aa36927e8666f9f67bcda7088c260d83e689c9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c30930\\decompiled.c",
+        "sha256": "215d0d7b72df69fc087ff8fc0b992f546ea9b1e3e35c8663388f54dcc5ca505d"
+      }
+    ],
+    "readiness_local_evidence_verified": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-caller-readiness\\local\\dyn_engine_qualified_caller_readiness\\collect.py",
+        "bytes": 7131,
+        "sha256": "3f98713c28a92279e28e3a2b07e1a5a0c7158812ff4dc98b46fe1c84159d52b7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-caller-readiness\\local\\dyn_engine_qualified_caller_readiness\\write_report.py",
+        "bytes": 16055,
+        "sha256": "9e782c3fff76d719fa195f4ca5ccf779407a5a8cb42460d6c05381a6bf5983f2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-caller-readiness\\local\\dyn_engine_qualified_caller_readiness\\static_evidence.json",
+        "bytes": 14216,
+        "sha256": "73a6433d508eead19f9a86a94c8d277d137d52a5b2c1e3303494ae5f691d7571"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-caller-readiness\\local\\dyn_engine_qualified_caller_readiness\\live_target.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-caller-readiness\\local\\dyn_engine_qualified_caller_readiness\\live_critical_section.txt",
+        "bytes": 45,
+        "sha256": "4a9c9ab664237a2c20acffd74e76af0c75bd244abdff5024a168b1ea2af3cc3e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-caller-readiness\\local\\dyn_engine_qualified_caller_readiness\\live_engine_body.txt",
+        "bytes": 843,
+        "sha256": "b1e510c3912fcb589e1e2b558446c30a5b6f1775a68e05228d93dd2705bb6809"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-caller-readiness\\local\\dyn_engine_qualified_caller_readiness\\live_engine_EH.txt",
+        "bytes": 296,
+        "sha256": "2d1cf03ea9039d10eba2c8d0cb75ba595c15a9503ad3b5e982c0dc7f0ae68ea4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-caller-readiness\\local\\dyn_engine_qualified_caller_readiness\\live_engine_maps.txt",
+        "bytes": 507,
+        "sha256": "fa50559e5c87fb424d4e6c63c3c59b7d2e6a4fdc1b6d79385d15ed124fdbc55c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-caller-readiness\\local\\dyn_engine_qualified_caller_readiness\\live_engine_vector.txt",
+        "bytes": 69,
+        "sha256": "f71fc59269a6504d5b75070f48872e85991874b31f6ce2810ff9027a561b5e34"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-caller-readiness\\local\\dyn_engine_qualified_caller_readiness\\live_ensure_body.txt",
+        "bytes": 535,
+        "sha256": "091406bf6df3712a5ce9cb22343f7ce32ca43dfef95b01f956849511403721e2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-caller-readiness\\local\\dyn_engine_qualified_caller_readiness\\live_profile_vector.txt",
+        "bytes": 69,
+        "sha256": "95ca2f5e1ba815ebc5e28432a9ce0b136c2382dfb076f8c27c959df8cb87d1fd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-caller-readiness\\local\\dyn_engine_qualified_caller_readiness\\live_task_body.txt",
+        "bytes": 839,
+        "sha256": "1be8515b06b8ca7bca4d3e197d15054efb3586aa061f4e10c4fbc4bd94a30df0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-caller-readiness\\local\\dyn_engine_qualified_caller_readiness\\live_task_EH.txt",
+        "bytes": 154,
+        "sha256": "3870b0718c551334d17dbab50ee6ff6ecc6be840dcda83d52e1c6b36152cfa31"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-caller-readiness\\local\\dyn_engine_qualified_caller_readiness\\live_task_maps.txt",
+        "bytes": 260,
+        "sha256": "44901131f73cd49d4b27c2684bbe849af211e3124c7a4feeb26660f5310e15ab"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-caller-readiness\\local\\dyn_engine_qualified_caller_readiness\\live_task_vector.txt",
+        "bytes": 69,
+        "sha256": "ee90ef0f0110c44e44385a641c043793667a6882ecea4e3567609e2a9754e7a8"
+      }
+    ],
+    "baseline_owned_sources": [
+      {
+        "path": "include/bsp/dyn_engine_runtime.hpp",
+        "bytes": 4624,
+        "sha256": "2f40e8f9347e6cb454d6cefc016a9143fdc1178d00269769231192d50cb59dcf",
+        "git_blob": "8d84bc29f6aeb0bba575ed649708eb06a7b19c42"
+      },
+      {
+        "path": "src/dyn_engine_runtime.cpp",
+        "bytes": 5998,
+        "sha256": "c8267909406fbe475e6f9ffa0954ce2c03d523e4c8be27bbf53261f9f947d7f2",
+        "git_blob": "b1ee284f064dcc6d18f7470afe7984c303111392"
+      }
+    ],
+    "current_owned_sources": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\include\\bsp\\dyn_engine_runtime.hpp",
+        "bytes": 7203,
+        "sha256": "a09651ed5813e1ef6ed2c79c1e648e0af5741b65787b80893bb2be813aecc800",
+        "git_blob_current_content": "3ebafb25dc442e94b5dae47eecbda4e6294627de"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\src\\dyn_engine_runtime.cpp",
+        "bytes": 9562,
+        "sha256": "1a1484921ed59ef9c9334a65bb4f9fbcb43ef27e74ca502703516e6ffefd7c67",
+        "git_blob_current_content": "fe118dfb7b5ef18d6df922e4d86bbd9f7f05671b"
+      }
+    ],
+    "current_unchanged_dependencies": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\include\\bsp\\dyn_task_manager.hpp",
+        "bytes": 3559,
+        "sha256": "fa2af4d66164cc2db0bbc01ea45909d6c324dda70c94075239c0eb2a5e25395a",
+        "git_blob": "94ade3902471e36a05bf3c499b4c0833044c64ce",
+        "baseline_blob": "94ade3902471e36a05bf3c499b4c0833044c64ce",
+        "changed": false
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\src\\dyn_task_manager.cpp",
+        "bytes": 8741,
+        "sha256": "602a1d3ce86abfc57546746533443fa1921618c7a809d76893b69d655d21e1b8",
+        "git_blob": "0a57e42b12db9b5545db68da3959e100d9be2ab5",
+        "baseline_blob": "0a57e42b12db9b5545db68da3959e100d9be2ab5",
+        "changed": false
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\include\\bsp\\game_native_dyn_process.hpp",
+        "bytes": 3216,
+        "sha256": "9e6e6f3c6824250f131366d7805bacc508d3157e1c562cc4cc73269ed339ffa2",
+        "git_blob": "080272fa8a31f66c9a2c85cc2aaa37a4d897bcc8",
+        "baseline_blob": "080272fa8a31f66c9a2c85cc2aaa37a4d897bcc8",
+        "changed": false
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\src\\game_native_dyn_process.cpp",
+        "bytes": 9436,
+        "sha256": "54ec1cb0688d099fc46c0e00b79799e19416d3879c5b72258fe4f0b14c21350b",
+        "git_blob": "6b5a81d375fdf645dcc6e4d1831fcbe115728218",
+        "baseline_blob": "6b5a81d375fdf645dcc6e4d1831fcbe115728218",
+        "changed": false
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\include\\bsp\\dyn_profile_scopes.hpp",
+        "bytes": 3616,
+        "sha256": "73ad91c854c772ffda264eb6548b9b0c2513fd7099c8e3169d9526c6724ab3cc",
+        "git_blob": "56f659ea73d06f2b9340d25801e98b40fb0a1fbd",
+        "baseline_blob": "56f659ea73d06f2b9340d25801e98b40fb0a1fbd",
+        "changed": false
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\include\\bsp\\avoid_zone_dyn_hull.hpp",
+        "bytes": 5734,
+        "sha256": "3fd5fecb9e29d82393c25315ddcd6046119e3c7666d7d5ab97236c79d8e91c45",
+        "git_blob": "483e7f06a925322c85ce375dc30acd4e1541457a",
+        "baseline_blob": "483e7f06a925322c85ce375dc30acd4e1541457a",
+        "changed": false
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\include\\bsp\\native_game_construction.hpp",
+        "bytes": 7095,
+        "sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e",
+        "git_blob": "e83a2b3736edfb4d6fa699526a003861d3805977",
+        "baseline_blob": "e83a2b3736edfb4d6fa699526a003861d3805977",
+        "changed": false
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\src\\native_game_construction.cpp",
+        "bytes": 14665,
+        "sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e",
+        "git_blob": "ad55eb59309369dff06d596cbdf3efd1e4c7037a",
+        "baseline_blob": "ad55eb59309369dff06d596cbdf3efd1e4c7037a",
+        "changed": false
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\include\\bsp\\native_game_dynamics.hpp",
+        "bytes": 819,
+        "sha256": "a3e10519df0f4bb2327ee46713069f0aa761630ca1c633f438db09bb41668290",
+        "git_blob": "51b8b01d805789799ee8a8faacacd20ec3cac5a0",
+        "baseline_blob": "51b8b01d805789799ee8a8faacacd20ec3cac5a0",
+        "changed": false
+      }
+    ],
+    "admitted_task_source_and_header_equal237": true,
+    "admitted_task_definition_object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-task-construction-cleanup-review\\local\\dyn-task-construction-cleanup-review\\qualified.obj",
+      "sha256": "2b63f9bce18c14ac5555c7a1fb1fe029884239e2bd1a4490188f4aa3d0e5125e",
+      "current_source_blobs_equal_admitted237": true
+    },
+    "task_review": "e0b04478c60c9c923e0b29f38ab5c1ea98438e07",
+    "task_source": "237e6c51838a56e326b6fe379a3bcaf8826156e2"
+  },
+  "actual_supplier": {
+    "owner": "SameexistingGameNativeDynProcess, retainedthroughusers; no newowner/rebind/globaldefault",
+    "context_supplier": "owner.dynamics().engine ->sameactualmemory,enginecell0109E9FC,profilecell0109E9F8,existingRootname",
+    "raw_supplier": "owner.profile_partial_node_delete_00bf65ac() aftercompletedexplicitstartup",
+    "raw_recognition": "Checks exactactualcontext/allocate/release tuple againstprocess_memory{nullptr,&allocate,&release}; defaultallocate calls::operator new, release calls::operator delete; returns actualunsizedscalar::operator delete. Custom/unmatchedthrows, nofallback.",
+    "sizes_in_same_raw_domain": [
+      "48hRootnode",
+      "9Chprofile",
+      "358htaskstorage",
+      "14hengine"
+    ],
+    "vector_domain": "Actualcontext.memory.release remainsrequiredBF6989vectorservice; opaque customrelease isnotflatrawBF65AC norindependentheapqualification.",
+    "SBO_domain": "ActualNativeLegacySboString uses singleton_lifetime_allocate(malloc/_callnewh) and singleton_lifetime_free(free); do notsubstituteNode/Vectorfreebasedonname/nativealias/commonCRT.",
+    "pointer_alias": "ExistingDynProfileRootPartialNodeDelete and getterDynProfilePartialNodeDelete are samecdeclvoid(void*) type; reusewithoutnewlayout/ctxthunk.",
+    "authentication_limit": "Nonnullpointer/typedcontextdoesnotauthenticatearbitrarymanualcustomcustody. Defaultrecognition isonlythissourceowner/domain, notOriginalCRTbyteidentity orothermodule.",
+    "previous_admitted_proof": "Rootsource equals90e4; defaultsuppliersourceequals1e69. Existingcb53review report retainedinbaseline recordsrealMSVCRTunsizeddelete link-only routing; not rerun/relabelled here.",
+    "new_getter_invocation_or_owner_or_rebind": false,
+    "new_provider_or_global_or_context_field": false,
+    "new_API_authenticates_arbitrary_custom_tuple": false,
+    "required_actual_raw_alias": "DynProfileRootPartialNodeDelete, same cdecl void(void*) type as actual supplier",
+    "required_actual_memory": "Existing context.memory allocator/vector-release service retained through nested cleanup",
+    "raw_and_vector_cleanup_must_return_normally": true,
+    "SBO_domain_substituted": false
+  },
+  "native_evidence": {
+    "configured_project": "C:/Users/sqz269/bsp.gpr",
+    "verified_program": "/battlestationspacific.exe",
+    "original_PE": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "spans": [
+      {
+        "name": "engine_body",
+        "address": "00C55EA0",
+        "bytes": 175,
+        "file_offset": "0x855ea0",
+        "sha256": "4dc9e693b3a7da4d383624ebf132ab3581c16783e7f8b35d1bb3dbaf32d22925",
+        "live_PE_equal": true,
+        "instruction_count": 57,
+        "fresh_live_PE_equal": true
+      },
+      {
+        "name": "ensure_body",
+        "address": "00C55F50",
+        "bytes": 111,
+        "file_offset": "0x855f50",
+        "sha256": "31e51e0ae8d1cb1248bcab63e6a1e29dcb1c5ba0044b08af4039ac8fa184e1b3",
+        "live_PE_equal": true,
+        "instruction_count": 34,
+        "fresh_live_PE_equal": true
+      },
+      {
+        "name": "engine_EH",
+        "address": "00CC83E5",
+        "bytes": 61,
+        "file_offset": "0x8c83e5",
+        "sha256": "6df10aa4650467f5bc3ad9ae9ec162981ad7dfb988eb1886176da0aad3c4390f",
+        "live_PE_equal": true,
+        "fresh_live_PE_equal": true
+      },
+      {
+        "name": "engine_maps",
+        "address": "00E042B4",
+        "bytes": 104,
+        "file_offset": "0xa042b4",
+        "sha256": "90be3bfa830e7a5c24c35836aa9cc185170ecc4b8a520a2052038e1f575bede4",
+        "live_PE_equal": true,
+        "fresh_live_PE_equal": true
+      },
+      {
+        "name": "task_body",
+        "address": "00C37740",
+        "bytes": 174,
+        "file_offset": "0x837740",
+        "sha256": "9f6c357444f48fb6e48ebc0d1e462623eaa011e035e8a05c0f8efabfb6b9f8ca",
+        "live_PE_equal": true,
+        "instruction_count": 58,
+        "fresh_live_PE_equal": false
+      },
+      {
+        "name": "task_EH",
+        "address": "00CC8059",
+        "bytes": 32,
+        "file_offset": "0x8c8059",
+        "sha256": "53e651b9cf30175d13774fa9f161e5b62b5e7b63c6f2bacc9bba9767354256a8",
+        "live_PE_equal": true,
+        "fresh_live_PE_equal": false
+      },
+      {
+        "name": "task_maps",
+        "address": "00E03DE8",
+        "bytes": 52,
+        "file_offset": "0xa03de8",
+        "sha256": "ae7d3e330253d0f9e44b8ed33d335ca7919bd3baefe62dbae4c8a7c10777d769",
+        "live_PE_equal": true,
+        "fresh_live_PE_equal": false
+      },
+      {
+        "name": "engine_vector",
+        "address": "00409B10",
+        "bytes": 14,
+        "file_offset": "0x9b10",
+        "sha256": "d284351658de4cacb6a58e03daed419082ef03123651ce0c933862d5b592c3ae",
+        "live_PE_equal": true,
+        "instruction_count": 7,
+        "fresh_live_PE_equal": true
+      },
+      {
+        "name": "task_vector",
+        "address": "00408E80",
+        "bytes": 14,
+        "file_offset": "0x8e80",
+        "sha256": "3ae682d8c02d4d5a5e1e47c3e22ba064518faea6f326cdf97354c239d55cd5cf",
+        "live_PE_equal": true,
+        "instruction_count": 7,
+        "fresh_live_PE_equal": false
+      },
+      {
+        "name": "profile_vector",
+        "address": "0040A900",
+        "bytes": 14,
+        "file_offset": "0xa900",
+        "sha256": "ff8ba6293e5c4012379de01a5bd9539e6845929eeee123f10f4dec5ecd26c4e7",
+        "live_PE_equal": true,
+        "instruction_count": 7,
+        "fresh_live_PE_equal": true
+      },
+      {
+        "name": "critical_section",
+        "address": "00C30930",
+        "bytes": 8,
+        "file_offset": "0x830930",
+        "sha256": "0cf626e44d0923b5d8fb981c203f36757615e07ec1776628f48c3630d2e6adb6",
+        "live_PE_equal": true,
+        "instruction_count": 3,
+        "fresh_live_PE_equal": false
+      }
+    ],
+    "unwind_maps": [
+      {
+        "owner": "engine",
+        "map_address": "00E042B4",
+        "FuncInfo": "00E042CC",
+        "magic": "19930522",
+        "maxState": 3,
+        "EHflags": 1,
+        "states": [
+          {
+            "state": 0,
+            "previous": -1,
+            "action": "00CC83E5"
+          },
+          {
+            "state": 1,
+            "previous": 0,
+            "action": "00CC83ED"
+          },
+          {
+            "state": 2,
+            "previous": 0,
+            "action": "00CC83F8"
+          }
+        ]
+      },
+      {
+        "owner": "ensure",
+        "map_address": "00E042F0",
+        "FuncInfo": "00E042F8",
+        "magic": "19930522",
+        "maxState": 1,
+        "EHflags": 1,
+        "states": [
+          {
+            "state": 0,
+            "previous": -1,
+            "action": "00CC840D"
+          }
+        ]
+      },
+      {
+        "owner": "task",
+        "map_address": "00E03DE8",
+        "FuncInfo": "00E03DF8",
+        "magic": "19930522",
+        "maxState": 2,
+        "EHflags": 1,
+        "states": [
+          {
+            "state": 0,
+            "previous": -1,
+            "action": "00CC8059"
+          },
+          {
+            "state": 1,
+            "previous": 0,
+            "action": "00CC8064"
+          }
+        ]
+      }
+    ],
+    "key_epochs": [
+      {
+        "address": "00C55ECB",
+        "instruction": "mov dword ptr [esp + 0x18], ebx"
+      },
+      {
+        "address": "00C55EDD",
+        "instruction": "mov byte ptr [esp + 0x14], 1"
+      },
+      {
+        "address": "00C55EF1",
+        "instruction": "mov byte ptr [esp + 0x14], bl"
+      },
+      {
+        "address": "00C55F0B",
+        "instruction": "mov byte ptr [esp + 0x14], 2"
+      },
+      {
+        "address": "00C55F12",
+        "instruction": "mov ecx, dword ptr [esp + 0x20]"
+      },
+      {
+        "address": "00C55F16",
+        "instruction": "mov edx, dword ptr [ecx]"
+      },
+      {
+        "address": "00C55F1F",
+        "instruction": "mov dword ptr [edi + 0x10], eax"
+      },
+      {
+        "address": "00C55F66",
+        "instruction": "mov eax, dword ptr [0x109e9fc]"
+      },
+      {
+        "address": "00C55F7C",
+        "instruction": "mov dword ptr [esp + 4], eax"
+      },
+      {
+        "address": "00C55F82",
+        "instruction": "mov dword ptr [esp + 0x10], 0"
+      },
+      {
+        "address": "00C55F93",
+        "instruction": "mov dword ptr [0x109e9fc], eax"
+      },
+      {
+        "address": "00C55FAA",
+        "instruction": "mov dword ptr [0x109e9fc], eax"
+      },
+      {
+        "address": "00C37771",
+        "instruction": "mov dword ptr [esp + 0x20], ebx"
+      },
+      {
+        "address": "00C37783",
+        "instruction": "mov byte ptr [esp + 0x28], 1"
+      }
+    ],
+    "private_ABIs": {
+      "engine_construct": "Stackengine*,descriptor*; EAXengine; RET8; originalfield/capture registerepochs",
+      "ensure": "ECXdescriptor; EAXexisting/new/null; plainRET",
+      "task": "Stackmanager*,countDWORD; EAXmanager; RET8"
+    },
+    "capture_frame": "OriginalentryESP=E; engine/ensure rawcaptureE-10h; engine/taskfunclets reload originalincomingobject[EBP+4]. Staticoriginalframe derivation; newCpptransportnot provenoriginalABI.",
+    "native_engine_states": 3,
+    "native_ensure_states": 1,
+    "actual_native_frees": "CC83ED/CC83F8/CC840D unconditionally free original captured raw9C/358/14 with BF65AC; CC83E5 reloads original engine then current vector through409B10",
+    "native_vectors_normalized_equal": "409B10 and existing A900 differ only in REL32 displacement; both actual call target BF6989, one current data load/non-null test/no field clear",
+    "fresh_live_spans": 6,
+    "readiness_spans_independently_PE_checked": 11,
+    "Ghidra_writes_or_imports": false
+  },
+  "constructor_source": {
+    "missing_raw_provider": "Rejected before caller data/initial stores; no legacy fallback",
+    "initialization": "Only engine+0/+4/+8 zeros before source outer vector try; +C/+10 remain until respective native stores",
+    "state0_extent": "Outer current-vector catch begins before9C allocation and includes both allocations, child construction, stores/return",
+    "profile_capture": "Const original9C allocation; allocation itself under vector catch only; profile catch only around genuine qualified3arg Root; ends lexically before engine+C store",
+    "profile_then_task": "Store Root child result to engine+C BEFORE358 allocator callback; no profile guard for later task allocation/failure",
+    "task_capture": "Const original358 allocation; catch includes one volatile descriptor DWORD read only when nonnull, real qualified task child, engine+10 store and return",
+    "null_task": "Skips descriptor/child; stores null+10 and returns under acquired task source scope",
+    "raw_free": "Unconditionally apply required actual raw deleter to original captures; never returned child pointer/current publication",
+    "vector_free": "After acquired raw action/rethrow, pass actual original engine to unchanged A900 operation, capture CURRENT data once and release iff nonnull",
+    "real_targets": {
+      "Root": "?dyn_profile_construct_00c50310@bsp@@YAPAUDynProfileStorage@1@AAU21@ABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z",
+      "Task": "?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z"
+    }
+  },
+  "ensure_source": {
+    "first_capture": "One volatile actual engine publication read; nonnull returns before provider validation, descriptor or allocator access",
+    "cold_validation": "Null raw provider rejected before14 allocation; no fallback/default",
+    "raw14_allocation": "Outside captured catch, so allocator exceptions do not acquire its raw free",
+    "guard_extent": "Conditional qualified constructor, actual current publication including null, and return stay inside original capture catch",
+    "publication": "No post-callback fast-path recheck or equality repair; final store overwrites callback publication as native",
+    "failure": "Only original captured14 free/rethrow; no child/vector destructor or current-publication free/clear"
+  },
+  "source_EH": {
+    "constructor": {
+      "magic": "19930522",
+      "maxState": 6,
+      "EHflags": 1,
+      "tryblocks": [
+        {
+          "tryLow": 1,
+          "tryHigh": 1,
+          "catchHigh": 2,
+          "handler": "__catch$?dyn_engine_construct_qualified_00c55ea0@bsp@@YAPAUDynEngineStorage@1@AAU21@PDIABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z$0"
+        },
+        {
+          "tryLow": 3,
+          "tryHigh": 3,
+          "catchHigh": 4,
+          "handler": "__catch$?dyn_engine_construct_qualified_00c55ea0@bsp@@YAPAUDynEngineStorage@1@AAU21@PDIABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z$2"
+        },
+        {
+          "tryLow": 0,
+          "tryHigh": 4,
+          "catchHigh": 5,
+          "handler": "__catch$?dyn_engine_construct_qualified_00c55ea0@bsp@@YAPAUDynEngineStorage@1@AAU21@PDIABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z$4"
+        }
+      ],
+      "unwind_map": "ffffffff000000000000000000000000000000000000000000000000000000000000000000000000ffffffff00000000"
+    },
+    "ensure": {
+      "magic": "19930522",
+      "maxState": 2,
+      "EHflags": 1,
+      "tryblocks": [
+        {
+          "tryLow": 0,
+          "tryHigh": 0,
+          "catchHigh": 1,
+          "handler": "__catch$?dyn_engine_ensure_qualified_00c55f50@bsp@@YAPAUDynEngineStorage@1@PDIABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z$0"
+        }
+      ],
+      "unwind_map": "ffffffff00000000ffffffff00000000"
+    },
+    "constructor_raw_rethrows_reach_outer_vector": true,
+    "original_source_metadata_identity": false,
+    "CPP_only": "Normal C++ catch/rethrow semantics with genuine valid inputs and normal-return cleanup; not native FH3/SEH/fault/private-frame/secondary-cleanup transport"
+  },
+  "emitted_inspection": {
+    "new_code_records": [
+      {
+        "name": "?dyn_engine_construct_qualified_00c55ea0@bsp@@YAPAUDynEngineStorage@1@AAU21@PDIABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z",
+        "begin": 0,
+        "end": 210,
+        "bytes": 210,
+        "sha256": "3cca504136ab744c039e5394d8609fa9d6097fbbed5ebd137fb5b9242331f6e8",
+        "relocations": [
+          {
+            "offset": 6,
+            "type": 6,
+            "target": "__ehhandler$?dyn_engine_construct_qualified_00c55ea0@bsp@@YAPAUDynEngineStorage@1@AAU21@PDIABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z"
+          },
+          {
+            "offset": 24,
+            "type": 6,
+            "target": "___security_cookie"
+          },
+          {
+            "offset": 118,
+            "type": 20,
+            "target": "?dyn_profile_construct_00c50310@bsp@@YAPAUDynProfileStorage@1@AAU21@ABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z"
+          },
+          {
+            "offset": 178,
+            "type": 20,
+            "target": "?dyn_task_manager_construct_qualified_00c37740@bsp@@YAPAUDynTaskManagerStorage@1@AAU21@ABIABUAvoidZoneDynHullMemory@1@@Z"
+          }
+        ]
+      },
+      {
+        "name": "?dyn_engine_ensure_qualified_00c55f50@bsp@@YAPAUDynEngineStorage@1@PDIABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z",
+        "begin": 0,
+        "end": 125,
+        "bytes": 125,
+        "sha256": "61d98a2b0aeef078ed9cf21084638b0cec350247907b6bb054f4559b9b91bf26",
+        "relocations": [
+          {
+            "offset": 6,
+            "type": 6,
+            "target": "__ehhandler$?dyn_engine_ensure_qualified_00c55f50@bsp@@YAPAUDynEngineStorage@1@PDIABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z"
+          },
+          {
+            "offset": 24,
+            "type": 6,
+            "target": "___security_cookie"
+          },
+          {
+            "offset": 95,
+            "type": 20,
+            "target": "?dyn_engine_construct_qualified_00c55ea0@bsp@@YAPAUDynEngineStorage@1@AAU21@PDIABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z"
+          }
+        ]
+      },
+      {
+        "name": "__catch$?dyn_engine_construct_qualified_00c55ea0@bsp@@YAPAUDynEngineStorage@1@AAU21@PDIABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z$0",
+        "begin": 260,
+        "end": 278,
+        "bytes": 18,
+        "sha256": "46405e9181e59674b01da0d9cb2faf293f83407f6907251b69d28139344fe9aa",
+        "relocations": [
+          {
+            "offset": 14,
+            "type": 20,
+            "target": "__CxxThrowException@8"
+          }
+        ]
+      },
+      {
+        "name": "__catch$?dyn_engine_construct_qualified_00c55ea0@bsp@@YAPAUDynEngineStorage@1@AAU21@PDIABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z$2",
+        "begin": 278,
+        "end": 302,
+        "bytes": 24,
+        "sha256": "eaf2c7ccc3f2ba404145bc37a4c561486819ff840ce15161d45ba795b34b22e1",
+        "relocations": [
+          {
+            "offset": 14,
+            "type": 20,
+            "target": "__CxxThrowException@8"
+          }
+        ]
+      },
+      {
+        "name": "__catch$?dyn_engine_construct_qualified_00c55ea0@bsp@@YAPAUDynEngineStorage@1@AAU21@PDIABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z$4",
+        "begin": 210,
+        "end": 260,
+        "bytes": 50,
+        "sha256": "2876764e179a0755c9080cc811d7d68a363a1e3268090d8b1983752a5ff69d70",
+        "relocations": [
+          {
+            "offset": 7,
+            "type": 20,
+            "target": "?release_profile_vector_storage_0040a900@?anonymous@bsp@@YAXPAXABUAvoidZoneDynHullMemory@2@@Z"
+          },
+          {
+            "offset": 19,
+            "type": 20,
+            "target": "__CxxThrowException@8"
+          },
+          {
+            "offset": 24,
+            "type": 6,
+            "target": "??_C@_0DO@OPGJJGAG@Dyn?5engine?5requires?5a?5matching?5r@"
+          },
+          {
+            "offset": 32,
+            "type": 20,
+            "target": "??0invalid_argument@std@@QAE@PBD@Z"
+          },
+          {
+            "offset": 37,
+            "type": 6,
+            "target": "__TI3?AVinvalid_argument@std@@"
+          },
+          {
+            "offset": 46,
+            "type": 20,
+            "target": "__CxxThrowException@8"
+          }
+        ]
+      },
+      {
+        "name": "__catch$?dyn_engine_ensure_qualified_00c55f50@bsp@@YAPAUDynEngineStorage@1@PDIABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z$0",
+        "begin": 125,
+        "end": 176,
+        "bytes": 51,
+        "sha256": "21d48e2c618485742ffcf7dc983ce95407bf46adc38edf8d93488928f420b9b1",
+        "relocations": [
+          {
+            "offset": 14,
+            "type": 20,
+            "target": "__CxxThrowException@8"
+          },
+          {
+            "offset": 19,
+            "type": 6,
+            "target": "??_C@_0EK@NHNDOAEC@Dyn?5engine?5cold?5ensure?5requires?5@"
+          },
+          {
+            "offset": 27,
+            "type": 20,
+            "target": "??0invalid_argument@std@@QAE@PBD@Z"
+          },
+          {
+            "offset": 32,
+            "type": 6,
+            "target": "__TI3?AVinvalid_argument@std@@"
+          },
+          {
+            "offset": 41,
+            "type": 20,
+            "target": "__CxxThrowException@8"
+          }
+        ]
+      },
+      {
+        "name": "__ehhandler$?dyn_engine_construct_qualified_00c55ea0@bsp@@YAPAUDynEngineStorage@1@AAU21@PDIABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z",
+        "begin": 0,
+        "end": 29,
+        "bytes": 29,
+        "sha256": "f6b89918ebb8b9a2796cb5eef52401c48e7d1ff4aa24511b150efff8653570ce",
+        "relocations": [
+          {
+            "offset": 15,
+            "type": 20,
+            "target": "@__security_check_cookie@4"
+          },
+          {
+            "offset": 20,
+            "type": 6,
+            "target": "__ehfuncinfo$?dyn_engine_construct_qualified_00c55ea0@bsp@@YAPAUDynEngineStorage@1@AAU21@PDIABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z"
+          },
+          {
+            "offset": 25,
+            "type": 20,
+            "target": "___CxxFrameHandler3"
+          }
+        ]
+      },
+      {
+        "name": "__ehhandler$?dyn_engine_ensure_qualified_00c55f50@bsp@@YAPAUDynEngineStorage@1@PDIABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z",
+        "begin": 0,
+        "end": 29,
+        "bytes": 29,
+        "sha256": "8afea02d98ad0c01a97364d71172448b65489b675b09649b09075195de9cdd27",
+        "relocations": [
+          {
+            "offset": 15,
+            "type": 20,
+            "target": "@__security_check_cookie@4"
+          },
+          {
+            "offset": 20,
+            "type": 6,
+            "target": "__ehfuncinfo$?dyn_engine_ensure_qualified_00c55f50@bsp@@YAPAUDynEngineStorage@1@PDIABUDynEngineRuntimeContext@1@P6AXPAX@Z@Z"
+          },
+          {
+            "offset": 25,
+            "type": 20,
+            "target": "___CxxFrameHandler3"
+          }
+        ]
+      }
+    ],
+    "constructor_epochs": [
+      {
+        "offset": "2B",
+        "instruction": "cmp dword ptr [ebp + 0x14], 0"
+      },
+      {
+        "offset": "2F",
+        "instruction": "je 0xe9"
+      },
+      {
+        "offset": "40",
+        "instruction": "mov dword ptr [ebp - 4], 0"
+      },
+      {
+        "offset": "47",
+        "instruction": "mov dword ptr [esi], 0"
+      },
+      {
+        "offset": "4D",
+        "instruction": "mov dword ptr [esi + 4], 0"
+      },
+      {
+        "offset": "54",
+        "instruction": "mov dword ptr [esi + 8], 0"
+      },
+      {
+        "offset": "60",
+        "instruction": "call eax"
+      },
+      {
+        "offset": "65",
+        "instruction": "mov dword ptr [ebp - 0x14], eax"
+      },
+      {
+        "offset": "68",
+        "instruction": "mov byte ptr [ebp - 4], 1"
+      },
+      {
+        "offset": "75",
+        "instruction": "call 0x7a"
+      },
+      {
+        "offset": "7D",
+        "instruction": "mov dword ptr [esi + 0xc], eax"
+      },
+      {
+        "offset": "8A",
+        "instruction": "mov dword ptr [ebp - 4], 0"
+      },
+      {
+        "offset": "91",
+        "instruction": "call eax"
+      },
+      {
+        "offset": "95",
+        "instruction": "mov byte ptr [ebp - 4], 3"
+      },
+      {
+        "offset": "9C",
+        "instruction": "mov dword ptr [ebp - 0x18], ecx"
+      },
+      {
+        "offset": "9F",
+        "instruction": "test ecx, ecx"
+      },
+      {
+        "offset": "A1",
+        "instruction": "je 0xbb"
+      },
+      {
+        "offset": "A7",
+        "instruction": "mov eax, dword ptr [eax]"
+      },
+      {
+        "offset": "B1",
+        "instruction": "call 0xb6"
+      },
+      {
+        "offset": "BB",
+        "instruction": "mov dword ptr [esi + 0x10], ecx"
+      },
+      {
+        "offset": "C3",
+        "instruction": "mov dword ptr fs:[0], ecx"
+      }
+    ],
+    "ensure_epochs": [
+      {
+        "offset": "31",
+        "instruction": "mov eax, dword ptr [eax]"
+      },
+      {
+        "offset": "35",
+        "instruction": "jne 0x6b"
+      },
+      {
+        "offset": "37",
+        "instruction": "cmp dword ptr [ebp + 0x10], eax"
+      },
+      {
+        "offset": "3A",
+        "instruction": "je 0x8f"
+      },
+      {
+        "offset": "43",
+        "instruction": "call eax"
+      },
+      {
+        "offset": "48",
+        "instruction": "mov dword ptr [ebp + 0xc], eax"
+      },
+      {
+        "offset": "4B",
+        "instruction": "mov dword ptr [ebp - 4], 0"
+      },
+      {
+        "offset": "54",
+        "instruction": "je 0x66"
+      },
+      {
+        "offset": "5E",
+        "instruction": "call 0x63"
+      },
+      {
+        "offset": "69",
+        "instruction": "mov dword ptr [ecx], eax"
+      },
+      {
+        "offset": "6E",
+        "instruction": "mov dword ptr fs:[0], ecx"
+      }
+    ],
+    "qualification": {
+      "state0_hoisted_before_initial_zeros": true,
+      "profile_store_precedes_physical_demotion": true,
+      "physical_demotion_before_task_allocator": true,
+      "no_Cpp_throwing_call_between_source_scope_boundary_and_demotion": true,
+      "descriptor_value_after_task_allocator_task_guard_and_nonnull_branch": true,
+      "original_initial_store_profile_store_fault_epochs_equal": false
+    },
+    "critical_notes": [
+      "Source state0+40 precedes initial zeros47/4D/54; no valid C++-throwing call before allocator60",
+      "Source profile store7D precedes physical demotion8A, though lexical profile catch ended; demotion precedes next throwing allocator91; no C++-throwing call in interval",
+      "Task state3+95 and captured raw slot-18 at9C precede nonnull branch9F/A1 and sole volatile descriptor wordA7; former profile slot-14 is reused for local count snapshot only after its guard ended",
+      "Source raw task guard remains through +10storeBB and FSrestoreC3; null skips descriptor/task directly toBB",
+      "Ensure read31/branch35 skips cold provider check37, allocation43 and descriptor argument passing; rawcapture48/state0+4B follows allocation and covers child5E/publication69/return",
+      "Ctor cold record50 also contains provider error block; ensure cold51 includes error block/padding; do not mislabel these as extra cleanup actions"
+    ],
+    "no_forced_EHa_or_native_frame": true
+  },
+  "failure_and_retained_state": [
+    {
+      "epoch": "constructor missing provider",
+      "actions": "Source invalid_argument before caller data or initial stores; no native captured cleanup acquired",
+      "qualification": "New API validation boundary, not original invalid-input ABI"
+    },
+    {
+      "epoch": "ensure first publication nonnull",
+      "actions": "Return first captured engine before provider validation/descriptor/allocator; no graph requalification",
+      "qualification": "Caller-side argument evaluation remains outside callee contract"
+    },
+    {
+      "epoch": "cold14 allocation C++ throw",
+      "actions": "No captured14 free; allocator callback/publication effects remain"
+    },
+    {
+      "epoch": "9C allocation C++ throw",
+      "actions": "Current engine-vector conditional release; enclosing ensure captured14 free if called from it"
+    },
+    {
+      "epoch": "qualified Root C++ failure",
+      "actions": "Only acquired child Root/node actions, then original9C raw free, current engine-vector release, enclosing14 raw free",
+      "residue": "Reached profile publication may remain stale; no clear/rollback"
+    },
+    {
+      "epoch": "358 allocation C++ throw",
+      "actions": "Current engine-vector release, enclosing14 raw free; no profile capture remains acquired",
+      "residue": "Completed9C/48h Root remain orphaned/published"
+    },
+    {
+      "epoch": "late descriptor load/store faults",
+      "actions": "Native guarded extent recorded; Source /EHsc hardware/SEH transport is unproved",
+      "qualification": "No original fault/initial-store/profile-store/private-frame identity"
+    },
+    {
+      "epoch": "qualified task C++ failure",
+      "actions": "Admitted task acquired DeleteCS/current queue actions, then original358 raw free, current engine-vector release, enclosing14 raw free",
+      "residue": "Completed profile/Root and partial task handles/worker effects not repaired"
+    },
+    {
+      "epoch": "ensure publication/return extent after child completion",
+      "actions": "Ensure lexical catch frees only original14; no child destructor/current-publication free or clear",
+      "qualification": "Pure stores under valid input do not add a C++ fault bridge; reached callback/native stale effects are not rolled back"
+    }
+  ],
+  "old_emitted_compatibility": {
+    "code_records": 32,
+    "EH_metadata_records": 8,
+    "all_equal": true,
+    "normalization": "Only anonymous-namespace hashes; raw bytes and relocation offset/type/target otherwise exact",
+    "old_API_names_signatures_callers_layouts_unchanged": true,
+    "whole_object_byte_identity_claim": false
+  },
+  "original_call_rows": [
+    {
+      "function": "00c55ea0",
+      "address": "00c55ecf",
+      "native": "00bf681b"
+    },
+    {
+      "function": "00c55ea0",
+      "address": "00c55ee7",
+      "native": "00c50310"
+    },
+    {
+      "function": "00c55ea0",
+      "address": "00c55efd",
+      "native": "00bf681b"
+    },
+    {
+      "function": "00c55ea0",
+      "address": "00c55f1a",
+      "native": "00c37740"
+    },
+    {
+      "function": "00c55f50",
+      "address": "00c55f74",
+      "native": "00bf681b"
+    },
+    {
+      "function": "00c55f50",
+      "address": "00c55f8e",
+      "native": "00c55ea0"
+    },
+    {
+      "function": "00409b10",
+      "address": "00409b17",
+      "native": "00bf6989"
+    }
+  ],
+  "PE_only_unconditional_raw_free_calls": [
+    "00CC83F1",
+    "00CC83FC",
+    "00CC8411"
+  ],
+  "PE_only_native_tail_sites": 3,
+  "validation": {
+    "strict_baseline_and_current_passed": true,
+    "flags": [
+      "/std:c++17",
+      "/MD",
+      "/O2",
+      "/Gy",
+      "/fp:strict",
+      "/EHsc",
+      "/W4",
+      "/WX",
+      "/c",
+      "/FAs"
+    ],
+    "warnings": 0,
+    "direct_report_rows_checked": 7,
+    "direct_report_rows_failed": 0,
+    "separate_PE_raw_free_calls": 3,
+    "separate_PE_tail_sites": 3,
+    "real_qualified_Root_definition_in_same_object": true,
+    "real_qualified_Task_definition_in_admitted_object": true,
+    "no_new_tests_or_runtime_fixtures": true,
+    "common_build_or_link": false,
+    "primary_owns": "Independent review, common build/link, actual application context/supplier selection and retained-failure/caller/runtime admission",
+    "local_artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\local\\dyn-engine-qualified-propagation\\audit.py",
+        "bytes": 12962,
+        "sha256": "57fc461a5ecf22da2c68adc61382c2ec2240e192425147e78ccef29f1d45eea3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\local\\dyn-engine-qualified-propagation\\coff_view.py",
+        "bytes": 2265,
+        "sha256": "9f05aacaa962220e778c9268b39616484e75de9d953e2b7f77f65247036c2acc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\local\\dyn-engine-qualified-propagation\\object_audit.json",
+        "bytes": 13088,
+        "sha256": "3cf81ff640912df8f7ce01b36d4ff3b0772ba35cefb8c7abbc2fa1014274b7dc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\local\\dyn-engine-qualified-propagation\\native_evidence.json",
+        "bytes": 15092,
+        "sha256": "61d0acb222db1eea98347a5eaa9dce2b55c1d5b23d1987f3287cda61d6e6bebb"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\local\\dyn-engine-qualified-propagation\\compile.cmd",
+        "bytes": 797,
+        "sha256": "3dc9483ccb69525ab4e7388d3dda232fbf6a1fd94f699f0bb4e31a9236c7375c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\local\\dyn-engine-qualified-propagation\\compile.log",
+        "bytes": 48,
+        "sha256": "8062d2be60d18d49d2415560343d53f1a65879a6f4e3ee633d03b15344550c9b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\local\\dyn-engine-qualified-propagation\\baseline.obj",
+        "bytes": 18483,
+        "sha256": "49d83eb72bdc631182447fc64529624ead2f0ce34e9e8681235ab0233aa62fb0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\local\\dyn-engine-qualified-propagation\\qualified.obj",
+        "bytes": 23449,
+        "sha256": "ab6e14c5d6c772852d90915da22e657548d25b206798167bbe0254025555ba19"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\local\\dyn-engine-qualified-propagation\\baseline.asm",
+        "bytes": 61586,
+        "sha256": "8f57568047b9c6b4982fca3017bc195305de7a87591d940e6a19b59c15709c7a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\local\\dyn-engine-qualified-propagation\\qualified.asm",
+        "bytes": 78550,
+        "sha256": "f5875ffe1a5fa52fd69b784acb03e50741865b111031cd61717ad65a00df9a88"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\local\\dyn-engine-qualified-propagation\\machine_windows.asm",
+        "bytes": 10202,
+        "sha256": "59ad4009dcc0f28ae97f16fa83de0d849e469e255422ec160ec9bbadb018a7d5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\local\\dyn-engine-qualified-propagation\\original_call_rows.json",
+        "bytes": 751,
+        "sha256": "915160b106b781d74b7618cfee1565edab3658cb9b251debd28b2f1a8d628713"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\local\\dyn-engine-qualified-propagation\\call_verification.txt",
+        "bytes": 95,
+        "sha256": "3c09151692ec46decc7d67e4a0144f66db7db3552b5cc9f7f8a6a088bec578b1"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\local\\dyn-engine-qualified-propagation\\target_status.txt",
+        "bytes": 40,
+        "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\local\\dyn-engine-qualified-propagation\\live_engine_body.txt",
+        "bytes": 843,
+        "sha256": "b1e510c3912fcb589e1e2b558446c30a5b6f1775a68e05228d93dd2705bb6809"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\local\\dyn-engine-qualified-propagation\\live_ensure_body.txt",
+        "bytes": 535,
+        "sha256": "091406bf6df3712a5ce9cb22343f7ce32ca43dfef95b01f956849511403721e2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\local\\dyn-engine-qualified-propagation\\live_engine_EH.txt",
+        "bytes": 296,
+        "sha256": "2d1cf03ea9039d10eba2c8d0cb75ba595c15a9503ad3b5e982c0dc7f0ae68ea4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\local\\dyn-engine-qualified-propagation\\live_engine_maps.txt",
+        "bytes": 507,
+        "sha256": "fa50559e5c87fb424d4e6c63c3c59b7d2e6a4fdc1b6d79385d15ed124fdbc55c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\local\\dyn-engine-qualified-propagation\\live_engine_vector.txt",
+        "bytes": 69,
+        "sha256": "f71fc59269a6504d5b75070f48872e85991874b31f6ce2810ff9027a561b5e34"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\local\\dyn-engine-qualified-propagation\\live_profile_vector.txt",
+        "bytes": 69,
+        "sha256": "95ca2f5e1ba815ebc5e28432a9ce0b136c2382dfb076f8c27c959df8cb87d1fd"
+      }
+    ]
+  },
+  "remaining_limits": [
+    "Actual production/Game call-service/context owner must select and authenticate the same real supplier and handle partial failure; current callers remain normal APIs",
+    "No GameNativeGameRuntime/physics attachment, decoder/renderer/world lifetime, gameplay or guard activation is inferred from library propagation",
+    "Current state0 hoist and delayed profile demotion do not match original initial/profile-store fault epochs; native descriptor/SEH/Win32 externC/FH3/frame/stack and secondary-cleanup transport are unproved",
+    "Completed profile/Root can remain orphaned, reached publication can remain stale/dangling; no repair/retry/automatic destruction or safe continuation license",
+    "Admitted task count0/BOOL/partial-handle/worker ownership gaps and existing Root std::memset/native BF79F0 limitations remain",
+    "Nonnull raw provider does not authenticate arbitrary manual callback/custom-heap custody; genuine matching raw/vector providers must return normally",
+    "No vendor CRT body reconstruction or original binary ABI credit"
+  ],
+  "activity": {
+    "tracked_files": "Only4ownedfiles",
+    "production_callers_changed": false,
+    "Game_context_or_storage_layout_changed": false,
+    "CMake_or_shared_metadata_changed": false,
+    "Ghidra_writes": false,
+    "tests_or_fixtures": false,
+    "full_build_or_link": false,
+    "native_object_executable_games_or_probes_run": false,
+    "DLL_calls": false,
+    "guard_flip": false,
+    "frozen_peer_runtime_trees_touched": false
+  },
+  "abi_compatible": false,
+  "game_validated": false,
+  "credit": {
+    "new_native_bodies": 0,
+    "duplicate_native_bodies": 0,
+    "vendor_bodies": 0,
+    "original_ABI": 0,
+    "fault_transport": 0,
+    "activation": 0,
+    "runtime": 0,
+    "gameplay": 0
+  },
+  "documentation_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-dyn-engine-qualified-propagation\\docs\\CC16_DYN_ENGINE_QUALIFIED_PROPAGATION.md",
+    "bytes": 9035,
+    "sha256": "dad76b06f2f0c4b15650456bcd8de4950a1993d6e0d50fa0c16d3dd405b0a940"
+  }
+}
