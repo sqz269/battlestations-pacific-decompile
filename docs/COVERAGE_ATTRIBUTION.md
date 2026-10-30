@@ -125,8 +125,14 @@ BSP execution claims for unobserved functions. Positive mapped hits remain
 usable as a lower bound. A block-coverage log is still not an instruction-
 retirement trace or an exact tick/window boundary.
 
-C++ names resolve through the wire file's `ident` values, with source-file
-disambiguation and address-suffix evidence where available. Per-address rows
+C++ names resolve through the wire file's `ident` values. A bare leaf name
+alone is insufficient: require an original-address suffix, an exact qualified
+wire identifier, or a matching PDB source/implementation filename. Inventory
+records needing that source check are queried before establishing presence;
+unavailable source identity remains unknown. In particular, MSVC `std::next`
+or `std::to_string` records must not establish execution of a game class's
+similarly named method. Rejected leaf mappings and source-unverified records
+are counted separately. Per-address rows
 retain `ident_via`, wiring state, source, and implementation source. A unique
 heuristic mapping remains a mapping approximation, not an ABI proof. A source
 use behind an OFF switch remains source wiring; it establishes no execution.
