@@ -1,0 +1,285 @@
+{
+  "schema_version": 1,
+  "packet": "codex-hardware-layout-cleanup-policy-audit",
+  "classification": "read_only_supplier_policy_audit_retain_recorded_owning_runtime_qualification",
+  "audit_head": "2214dda4cdb847dc06acd5f9c19481af65947128",
+  "owned_files": [
+    "docs/CC16_HARDWARE_LAYOUT_CLEANUP_POLICY_AUDIT.md",
+    "reports/cc16_hardware_layout_cleanup_policy_audit.json"
+  ],
+  "address_writes": 0,
+  "verdict": {
+    "retain_existing_policy": true,
+    "unsupported_Source_invention_established": false,
+    "production_correction_proposed": false,
+    "scope": "Recorded matched owning-runtime/ABI-bridge fixture domain for a second genuine MSVC C++ exception during raw-slot return in constructor unwind. Not arbitrary game CRT/FH3/SEH or another runtime.",
+    "new_runtime_replay_or_general_game_proof": false
+  },
+  "source_and_existing_evidence_pins": [
+    {
+      "path": "src/native_hardware_layout_factory.cpp",
+      "revision": "2214dda4cdb847dc06acd5f9c19481af65947128",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "276e00d5309f2ebeb158d64f82104f622947d237",
+      "sha256": "782408551d90456e8908c506ea8d53ad4f44ffe8f7840da255e0b35906d956fe",
+      "bytes": 3995
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_factory.hpp",
+      "revision": "2214dda4cdb847dc06acd5f9c19481af65947128",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "846a368f139d929a674a3e58bd566bd9ef017526",
+      "sha256": "9349fc0e2e88249243f1af07b063397d6b220b4a815ac26e19b0a185f00133d3",
+      "bytes": 1755
+    },
+    {
+      "path": "src/native_hardware_layout_pool_allocate.cpp",
+      "revision": "2214dda4cdb847dc06acd5f9c19481af65947128",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "cb6b13098870d5d542b81b43e42f8e8f2195d9fd",
+      "sha256": "4481c2b2b1d2295a57f6788ba49183bf3c5110c82b9842fade07571a680ed46c",
+      "bytes": 5730
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_pool_allocate.hpp",
+      "revision": "2214dda4cdb847dc06acd5f9c19481af65947128",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "8d0582dcc564ac672485f68033dd4fb5396e54b3",
+      "sha256": "1d30076416bdeb623a689e8b75c39b3977f5a413497db17fb4f41dcb5bf941bb",
+      "bytes": 1558
+    },
+    {
+      "path": "docs/NATIVE_HARDWARE_LAYOUT_FACTORY.md",
+      "revision": "2214dda4cdb847dc06acd5f9c19481af65947128",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "4f3b745c5f4d8361c29c9ea827b761b82e9a21cb",
+      "sha256": "c79faf08039c510a7194886158fa511de4e369f5a4f366883f63f08e6fa5e7db",
+      "bytes": 6655
+    },
+    {
+      "path": "reports/native_hardware_layout_factory_audit.json",
+      "revision": "2214dda4cdb847dc06acd5f9c19481af65947128",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "4be3d1e6cdb68d1ddd5a54869a1677daf877145e",
+      "sha256": "fdf91fce50184a382a3eb876513cb64d786707e7fe4ce472e991241fb31fef17",
+      "bytes": 99111
+    }
+  ],
+  "historical_reconstruction_source_pin": {
+    "path": "src/native_hardware_layout_factory.cpp",
+    "revision": "3a4ced54b799a555d3f060cea5c34fe885d419d3",
+    "hash_format": "immutable_git_blob_content_lf",
+    "git_blob_oid": "2dfd295972ff41cae11c4b148258fd3b2266fa5f",
+    "sha256": "594aaed26cf62d183600532c1d88be27174b8a65985fd6e1708b97719f9b54f3",
+    "bytes": 3628
+  },
+  "current_cleanup_region": {
+    "start_symbol": "terminate_cpp_cleanup_exception",
+    "same_region_includes": [
+      "unwind_raw_slot",
+      "RawSlotCleanup"
+    ],
+    "byte_identical_to_reconstruction": true,
+    "bytes": 588,
+    "sha256": "289e782b3212121257b9c34b210cfc6bae01e1ca8bc9a248761f13aba4965ecf",
+    "later_source_delta": "36c0a718 only added optional acquired-before-insertion bookkeeping/stdexcept; original cleanup/filter/guard unchanged.",
+    "existing_policy": "CXX exception codeE06D7363 -> std::terminate during SEH search; nonCXX filter returns CONTINUE_SEARCH; raw cleanup and RAII destructor noexcept. No new policy added by this audit."
+  },
+  "Native_scope": {
+    "configured_project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "target_verified_read_only": true,
+    "factory": {
+      "entry": "00B2F710",
+      "end_inclusive": "00B2F7F6",
+      "bytes": 231,
+      "instructions": 73,
+      "all_read": true
+    },
+    "arm_disarm": "After B606F0 returns, capture rawslot and arm state0 atB2F797; construct B60CB0 if nonnull; disarm before pair/copy/insertion. Allocation failure is outside armed interval; later insertion failure does not return slot.",
+    "action": "CBD800 MOV ECX,[EBP+4]; CBD803 JMP B60260: captured raw-slot local.",
+    "handler": "CBD808 MOV EAX,DF60A8; CBD80D JMP BF6B43. No explicit termination call in factory/action.",
+    "map": {
+      "address": "00DF60A0",
+      "hex": "ffffffff00d8cb00",
+      "states": 1,
+      "to_state": -1,
+      "action": "00CBD800"
+    },
+    "FuncInfo": {
+      "address": "00DF60A8",
+      "hex": "2205931901000000a060df00000000000000000000000000000000000000000001000000",
+      "nTryBlocks": 0
+    },
+    "raw_return_wrapper": "B60260 PUSH ECX; MOV ECX,108FE9C; CALL B60110; RET. Captured slot, existing actual initialized canonical pool; no owner destructor/virtual dispatch.",
+    "static_map_alone_proves_secondary_termination": false,
+    "current_PE_spans": [
+      {
+        "address": "00B2F710",
+        "bytes": 231,
+        "hash_format": "raw_original_PE_span_bytes",
+        "sha256": "18b6e1a4f3f4d8097d1ebb069cc640206dbd30d38f645bf843b66973733e3e46",
+        "matched_historical_primary_pin": true
+      },
+      {
+        "address": "00CBD800",
+        "bytes": 18,
+        "hash_format": "raw_original_PE_span_bytes",
+        "sha256": "0b407fb8d14323e80d204a7f319f9d0d8f2e846cd66fa9d3b95f6427061ffff1",
+        "matched_historical_primary_pin": true
+      },
+      {
+        "address": "00DF60A0",
+        "bytes": 44,
+        "hash_format": "raw_original_PE_span_bytes",
+        "sha256": "979fc6976bc84fc93c31ddc9fd856be6cc275abd7d50510d95b1b1794543eaa6",
+        "matched_historical_primary_pin": true
+      },
+      {
+        "address": "00B60260",
+        "bytes": 12,
+        "hash_format": "raw_original_PE_span_bytes",
+        "sha256": "30c6d752df15f16d223d0e3229bcb75553de93b63b7ba3b904a15650bc9092ab",
+        "matched_historical_primary_pin": true
+      }
+    ],
+    "installed_PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "matched_historical_image": true
+    },
+    "vendor_FH3_body_reconstruction": false
+  },
+  "recorded_runtime_evidence": {
+    "audit": "reports/native_hardware_layout_factory_audit.json",
+    "worker_terminal_case": {
+      "case": "second_exception_during_raw_return",
+      "words": 2470,
+      "events": 19,
+      "exit_code_both": 86,
+      "assertion": "after real EnterCriticalSection; in_flight1 nested_cleanup0 raw_returns1 free31 OSrecursion1 depth0; no slot publication"
+    },
+    "primary_comparison": {
+      "case": "terminal",
+      "words": 2470,
+      "native": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-factory-primary-check\\factory_terminal_native.bin",
+        "bytes": 9880,
+        "sha256": "cfe09eb807975d507b1403d3d97d2a422a1b27834fbcd45ea8fbc6e1959ad2f2"
+      },
+      "host": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-factory-primary-check\\factory_terminal_host.bin",
+        "bytes": 9880,
+        "sha256": "cfe09eb807975d507b1403d3d97d2a422a1b27834fbcd45ea8fbc6e1959ad2f2"
+      },
+      "equal": true
+    },
+    "retained_artifacts_rehashed": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-factory-primary-check\\factory_terminal_host.bin",
+        "bytes": 9880,
+        "sha256": "cfe09eb807975d507b1403d3d97d2a422a1b27834fbcd45ea8fbc6e1959ad2f2",
+        "hash_format": "raw_retained_artifact_file_bytes",
+        "fresh_rehash_matched": true,
+        "artifact_kind": "raw_DWORD_observation_trace_dump_blob_not_executable",
+        "dwords": 2470,
+        "events": 19,
+        "dwords_per_event": 130
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-factory-primary-check\\factory_terminal_native.bin",
+        "bytes": 9880,
+        "sha256": "cfe09eb807975d507b1403d3d97d2a422a1b27834fbcd45ea8fbc6e1959ad2f2",
+        "hash_format": "raw_retained_artifact_file_bytes",
+        "fresh_rehash_matched": true,
+        "artifact_kind": "raw_DWORD_observation_trace_dump_blob_not_executable",
+        "dwords": 2470,
+        "events": 19,
+        "dwords_per_event": 130
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-factory-primary-check\\factory_trace.json",
+        "bytes": 60,
+        "sha256": "42322679916ab9f3473460c25022bff6848ae6e858c94ce89a9aa446ac19f820",
+        "hash_format": "raw_retained_artifact_file_bytes",
+        "fresh_rehash_matched": true,
+        "artifact_kind": "retained_trace_summary_JSON"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_hardware_factory_primary_fixture.txt",
+        "bytes": 660,
+        "sha256": "0f2564c7b02556f66a7b72e0080d90d6f5c1b08f85c9e3617abb95954ad5f53f",
+        "hash_format": "raw_retained_artifact_file_bytes",
+        "fresh_rehash_matched": true,
+        "artifact_kind": "retained_primary_fixture_text_log"
+      }
+    ],
+    "observation": "Both original/current trace dumps:2470DWORD/19events, fixture exit86, in_flight1/nested_cleanup0/raw_returns1/free31 after real EnterCriticalSection; OS recursion1/pool depth0; no second slot publication.",
+    "domain": "Original factory/EH metadata/action and explicit ABI bridges into unchanged Source lookup/allocation/construction/pair/insertion/raw-return APIs, with recorded fixture-owning C++ exception runtime. Factory EH registration operand B2F719 and BF6B43 are declared runtime binding sites, not unmodified game-runtime proof. Deterministic COM fixture writes owner+40 and fails/throws; real D3D driver behavior unproved.",
+    "historical_only": true,
+    "fresh_audit_action": "Rehash retained dump/log/trace and PE spans; inspect Source/static body/metadata only. No execution."
+  },
+  "unavailable_worker_artifacts": [
+    {
+      "relative_path": "local/hardware_factory_check.cpp",
+      "recorded_worker_path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-factory-20260910\\local\\hardware_factory_check.cpp",
+      "worker_available": false,
+      "main_same_relative_available": false
+    },
+    {
+      "relative_path": "local/prepare_hardware_factory.py",
+      "recorded_worker_path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-factory-20260910\\local\\prepare_hardware_factory.py",
+      "worker_available": false,
+      "main_same_relative_available": false
+    },
+    {
+      "relative_path": "local/factory_fixture.log",
+      "recorded_worker_path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-factory-20260910\\local\\factory_fixture.log",
+      "worker_available": false,
+      "main_same_relative_available": false
+    },
+    {
+      "relative_path": "local/hardware_factory_preparation.json",
+      "recorded_worker_path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-factory-20260910\\local\\hardware_factory_preparation.json",
+      "worker_available": false,
+      "main_same_relative_available": false
+    },
+    {
+      "relative_path": "build/hardware-factory-check/factory_trace.json",
+      "recorded_worker_path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-factory-20260910\\build\\hardware-factory-check\\factory_trace.json",
+      "worker_available": false,
+      "main_same_relative_available": false
+    }
+  ],
+  "qualification": {
+    "owning_runtime_bridge_implementation_freshly_inspected": false,
+    "reason": "Original ignored harness source/preparation files unavailable at recorded worker and main-relative paths. Retained primary dumps/log/summary match immutable recorded hashes; no bridge rebuild/replay performed.",
+    "not_claimed": [
+      "general game CRT/FH3/SEH identity",
+      "other compiler/runtime versions",
+      "arbitrary forged exception records or nonCXX fault behavior",
+      "Original binary ABI/private-frame/fault identity",
+      "new611 actual caller adoption/runtime/activation"
+    ],
+    "ordinary_cleanup_rewrite": "Not proposed: direct catch/cleanup/rethrow would change the specifically observed search-time termination/zero nested cleanup outcome in the recorded domain."
+  },
+  "validation": {
+    "read_only": true,
+    "Source_CMake_shared_ledger_or_Ghidra_edits": false,
+    "new_build_tests_game_probe_process_actions": false,
+    "new_test_cases": 0,
+    "all_six53a_files_preserved": true,
+    "staged_diff_check": "passed final owned two-file staged whitespace check before commit"
+  },
+  "credit": {
+    "Original": 0,
+    "vendor": 0,
+    "helper": 0,
+    "body": 0,
+    "ABI": false,
+    "new_runtime": false,
+    "game_or_activation": false
+  },
+  "utc": "2026-10-30T18:55:58.591898+00:00"
+}
