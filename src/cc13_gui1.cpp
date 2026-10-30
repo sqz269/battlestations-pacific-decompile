@@ -265,6 +265,10 @@ void gui_widget_attach_child_00aaa5a0(GuiWidgetHooks& host, void* parent, void* 
 // address is taken from the CURRENT data pointer before 00AD3A80 runs, and the
 // final read reloads the data pointer.
 void* gui_timed_entry_get_or_create_00aa8b00(GuiWidgetHooks& host, void* widget, std::int32_t index) {
+    return gui_timed_entry_get_or_create_00aa8b00(static_cast<GuiTimedEntryHooks&>(host), widget, index);
+}
+
+void* gui_timed_entry_get_or_create_00aa8b00(GuiTimedEntryHooks& host, void* widget, std::int32_t index) {
     void* const array = static_cast<unsigned char*>(widget) + 0x88;
     if (!(index < at<std::int32_t>(widget, 0x8C)))
         host.timed_entry_array_resize_00aa77b0(array, index + 1);       // 00AA8B20
@@ -317,10 +321,24 @@ void* gui_layout_create_widget_of_type_00aa6560(GuiWidgetHooks& host, std::uint3
 // constructor writes +08h widget, +04h 0.0f, +00h vtable 00D5D210, +0Ch 0.0f,
 // +10h 0.0f in that order. Any other index, or a null block: 0.
 void* gui_timed_entry_create_by_index_00ad3a80(GuiWidgetHooks& host, std::int32_t index, void* widget) {
+    return gui_timed_entry_create_by_index_00ad3a80(static_cast<GuiTimedEntryHooks&>(host), index, widget);
+}
+
+void* gui_timed_entry_create_by_index_00ad3a80(GuiTimedEntryHooks& host, std::int32_t index, void* widget) {
     if (index == 0 || index == 1) {
         void* const block = host.operator_new_00bf681b(0x14);          // 00AD3AFF / 00AD3AE7
         if (block == nullptr) return nullptr;                           // 00AD3B15
-        return host.timed_entry_construct_00ac2ed0(block, widget);     // 00AD3B1A
+        void* entry;
+        try {
+            entry = host.timed_entry_construct_00ac2ed0(block, widget); // 00AD3B1A
+        } catch (...) {
+            // Native states0/1 -> CB936B/CB9360: free the captured block,
+            // never a callback's replacement slot/header, then keep the escape.
+            host.free_failed_constructor_00bf65ac(block);
+            throw;
+        }
+        host.timed_entry_construction_returned(entry); // prepared Source custody
+        return entry;
     }
     if (index == 2) {
         void* const block = host.operator_new_00bf681b(0x14);          // 00AD3AAE
@@ -330,6 +348,7 @@ void* gui_timed_entry_create_by_index_00ad3a80(GuiWidgetHooks& host, std::int32_
         at<std::uint32_t>(block, 0x00) = 0x00D5D210;                    // 00AD3AC5, image vtable
         at<float>(block, 0x0C) = 0.0f;                                  // 00AD3ACB
         at<float>(block, 0x10) = 0.0f;                                  // 00AD3AD0
+        host.timed_entry_construction_returned(block); // prepared Source custody
         return block;
     }
     return nullptr;                                                     // 00AD3B2F
