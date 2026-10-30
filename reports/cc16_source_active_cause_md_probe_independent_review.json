@@ -1,0 +1,754 @@
+{
+  "schema_version": 1,
+  "packet": "codex-source-active-cause-md-probe-independent-review",
+  "classification": "Independent replayless metadata/source/import/provenance review of one own-/MD Source identity fixture",
+  "utc": "2026-10-30T20:28:44.921282+00:00",
+  "reviewed_receipt_commit": "874532868f9316c6c98df11f08cfbf8d94180b7b",
+  "prior_MT_receipt_commit": "423fd389c41bffe8e353f677bf56c41db31a9f7b",
+  "prior_design_MT_review_commit": "71ab93e7d4377ae1fdf663704bde68270481451c",
+  "working_HEAD": "71ab93e7d4377ae1fdf663704bde68270481451c",
+  "reviewed_receipt_pins": [
+    {
+      "path": "docs/CC16_SOURCE_ACTIVE_CAUSE_MD_PROBE.md",
+      "revision": "874532868f9316c6c98df11f08cfbf8d94180b7b",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "060665bad4bd2a1d977e93fd3f718b9234e4f422",
+      "sha256": "ccf6d4a2bb3fd7a044ecea31efed2891ccb9d65d4182dec2125ec638546938cb",
+      "bytes": 4014
+    },
+    {
+      "path": "reports/cc16_source_active_cause_md_probe.json",
+      "revision": "874532868f9316c6c98df11f08cfbf8d94180b7b",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "242ab0b770c7718c3a1d60a1e96323d6ba038f0f",
+      "sha256": "0d64c71e7c0891719221e09ac6a54fa298c5e8abd3c0f0cc1fa2c6ebeb9fa1f8",
+      "bytes": 24809
+    }
+  ],
+  "verdict": "Accepted as separate exact-runtime own-MD fixture observation only; no production reader, Native origin, changed96 or activation admission",
+  "actionable_findings": [],
+  "actionable_finding_count": 0,
+  "scope": {
+    "only_two_NEW_review_files": true,
+    "reviewed_target_via_git_show_without_merge": true,
+    "no_Source96_or_other_ancestry_merged_or_cherry_picked": true,
+    "prior71ab93_review_bytes_unchanged": true,
+    "no_behavioral_rerun_or_other_probe": true
+  },
+  "prior_review_preserved_pins": [
+    {
+      "path": "docs/CC16_TEXT_FAILURE_ORIGIN_DESIGN_INDEPENDENT_REVIEW.md",
+      "revision": "71ab93e7d4377ae1fdf663704bde68270481451c",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "1454a3b366b21b2b5cb39b2fe4008ce5460835dd",
+      "sha256": "6c2a9a4c83a376dc932e0b720248ae36dc756a5a040b23ad623ff5af3803d4a3",
+      "bytes": 5728
+    },
+    {
+      "path": "reports/cc16_text_failure_origin_design_independent_review.json",
+      "revision": "71ab93e7d4377ae1fdf663704bde68270481451c",
+      "hash_format": "immutable Git LF blob content",
+      "git_blob": "806a9c4d2365a4050d42e566a3e07785830ebde1",
+      "sha256": "4ee2bbe25a5720cb12d99ff7b22b8f80efca14ab7c0bd0153749016e148296da",
+      "bytes": 47733
+    }
+  ],
+  "Source_derivation": {
+    "baseline_raw_artifact": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_probe_20261030\\source_cause_probe.cpp",
+      "hash_format": "raw_local_artifact_bytes",
+      "bytes": 6042,
+      "sha256": "5ea48a46de348a1fee231f13df67a00e777b0b6844e73a9396b6a8a86ca512b1"
+    },
+    "MD_raw_artifact": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\source_cause_md_probe.cpp",
+      "hash_format": "raw_local_artifact_bytes",
+      "bytes": 7090,
+      "sha256": "a5a73f023faf5720efb82edc8fbc8ffd63605b7d90dd567c5635b6790415ebc6"
+    },
+    "baseline_lines": 122,
+    "MD_lines": 143,
+    "exact_normalized_inverse_restores_frozen_MT_bytes": true,
+    "restored_MT_sha256": "5ea48a46de348a1fee231f13df67a00e777b0b6844e73a9396b6a8a86ca512b1",
+    "three_only_disclosed_hunks": [
+      {
+        "operation": "insert",
+        "MT_before_first_line": 47,
+        "MT_before_last_line": 46,
+        "MD_after_first_line": 47,
+        "MD_after_last_line": 63,
+        "MT_bytes": 0,
+        "MT_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "MD_bytes": 711,
+        "MD_sha256": "ddbdb99dfd34bd188db13ead578d1806580a9a7a7d60fa70cfa9859842de94d8"
+      },
+      {
+        "operation": "replace",
+        "MT_before_first_line": 48,
+        "MT_before_last_line": 48,
+        "MD_after_first_line": 65,
+        "MD_after_last_line": 65,
+        "MT_bytes": 103,
+        "MT_sha256": "70695f53fc92a471bfeb2db881aaba5ba46510592d7741f1e39cc7eee87f04cc",
+        "MD_bytes": 104,
+        "MD_sha256": "7d911e1688e1255af5b750d9873e3aabd0ef9f21a98f2b59b99043e0e977bfe9"
+      },
+      {
+        "operation": "replace",
+        "MT_before_first_line": 120,
+        "MT_before_last_line": 121,
+        "MD_after_first_line": 137,
+        "MD_after_last_line": 142,
+        "MT_bytes": 132,
+        "MT_sha256": "afeee81347beed4691fb607c55e89286ad6c24255b38386101054b0943f8a9ca",
+        "MD_bytes": 468,
+        "MD_sha256": "471857791b3a792e28e5be1368a2ef93db17e100ad827d8c172d38d8e9b5091b"
+      }
+    ],
+    "reviewed_deltas": [
+      "add runtime-module logging helper with GetModuleHandleA/GetModuleFileNameA, no active-exception-state access",
+      "change static/dynamic configuration banners",
+      "after all exception checks/objects finish, log three required loaded modules and optional VCRUNTIME140_1; include provenance failure in final exit status"
+    ],
+    "unchanged_segments": [
+      {
+        "label": "SDK_reader",
+        "bytes": 415,
+        "sha256": "72dc3d9ff9ce707c37795a80df6d5933f4b2fe406e019cb306cca272596f0d47",
+        "exact_raw_byte_identity": true
+      },
+      {
+        "label": "comparison_and_bare_rethrow",
+        "bytes": 215,
+        "sha256": "0af4e6d5e1aa1a7ec8bfbe9e01cf1c5a0c464c0117c160b6bafda98e16ef78e7",
+        "exact_raw_byte_identity": true
+      },
+      {
+        "label": "entire15check_sequence",
+        "bytes": 4183,
+        "sha256": "2e2fd55e1cdcee33ae224478f73478a6d702a82a524d5086dd2a74b89a561697",
+        "exact_raw_byte_identity": true
+      }
+    ],
+    "all_reader_key_compare_barethrow_secondary_capture_checks_unchanged": true,
+    "logging_does_not_interleave_supported_active_catches_or15checks": true,
+    "new_manual_EH_layout_prototype_code_cast_or_vendor_body": false
+  },
+  "runtime_domain": {
+    "configuration": "Win32 PE32 /MD /EHsc",
+    "optimization": "/Od fixture only",
+    "toolset_folder": "14.51.36231",
+    "compiler": "19.51.36244.0",
+    "_MSC_FULL_VER": 195136244,
+    "STL_update": 202604,
+    "Windows_SDK": "10.0.26100.0",
+    "SDK_API_types": "trnsctrl.h __current_exception + ehdata.h EHExceptionRecord/PER_PEXCEPTOBJ/PER_PTHROW",
+    "internal_header_opt_in": "_VCRT_ALLOW_INTERNALS, not _VCRT_BUILD",
+    "imported_DLLs": [
+      "MSVCP140.dll",
+      "KERNEL32.dll",
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll"
+    ],
+    "cause_handler_bindings": {
+      "?__ExceptionPtrCreate@@YAXPAX@Z": "MSVCP140.dll",
+      "?__ExceptionPtrDestroy@@YAXPAX@Z": "MSVCP140.dll",
+      "?__ExceptionPtrCompare@@YA_NPBX0@Z": "MSVCP140.dll",
+      "?__ExceptionPtrCurrentException@@YAXPAX@Z": "MSVCP140.dll",
+      "__current_exception": "VCRUNTIME140.dll",
+      "_CxxThrowException": "VCRUNTIME140.dll",
+      "__CxxFrameHandler3": "VCRUNTIME140.dll"
+    },
+    "same_imported_VCRUNTIME140_for_reader_throw_handler": true,
+    "selected_runtime_exports": [
+      {
+        "name": "_CxxThrowException",
+        "RVA": "00004D40",
+        "forwarded": false
+      },
+      {
+        "name": "__CxxFrameHandler3",
+        "RVA": "00015870",
+        "forwarded": false
+      },
+      {
+        "name": "__current_exception",
+        "RVA": "00002DB0",
+        "forwarded": false
+      }
+    ],
+    "exports_forward_to_other_domain": false,
+    "map_symbols": [
+      " 0001:00000b53       ?__ExceptionPtrCompare@@YA_NPBX0@Z 00401b53 f   msvcprt:MSVCP140.dll",
+      " 0001:00000b59       ?__ExceptionPtrCurrentException@@YAXPAX@Z 00401b59 f   msvcprt:MSVCP140.dll",
+      " 0001:0000183c       ___current_exception       0040283c f   vcruntime:VCRUNTIME140.dll",
+      " 0001:00001842       __CxxThrowException@8      00402842 f   vcruntime:VCRUNTIME140.dll",
+      " 0001:00001848       ___CxxFrameHandler3        00402848 f   vcruntime:VCRUNTIME140.dll"
+    ],
+    "actual_runtime_files": [
+      {
+        "path": "C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140.dll",
+        "bytes": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "file_version": "14.51.36247.0",
+        "product_version": "14.51.36247.0",
+        "machine": "014C",
+        "physical_SysWOW64_corroborated_path": "C:\\Windows\\SysWOW64\\VCRUNTIME140.dll",
+        "physical_corroboration": "same bytes/hash and PE32 x86 as 32bit open of reported System32 module path"
+      },
+      {
+        "path": "C:\\WINDOWS\\SYSTEM32\\MSVCP140.dll",
+        "bytes": 618944,
+        "sha256": "f0cda2a0cf1fe6fbbf579b9098462329d3aaa7513a207af2e0f33b01456e388a",
+        "file_version": "14.51.36247.0",
+        "product_version": "14.51.36247.0",
+        "machine": "014C",
+        "physical_SysWOW64_corroborated_path": "C:\\Windows\\SysWOW64\\MSVCP140.dll",
+        "physical_corroboration": "same bytes/hash and PE32 x86 as 32bit open of reported System32 module path"
+      },
+      {
+        "path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+        "bytes": 1134192,
+        "sha256": "e4f8f92eef00ff6a0c6d418af756a59d5a4b818d0d1de0d96cc193b4d6759432",
+        "file_version": "10.0.26100.9711 (WinBuild.160101.0800)",
+        "product_version": "10.0.26100.9711",
+        "machine": "014C",
+        "physical_SysWOW64_corroborated_path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "physical_corroboration": "same bytes/hash and PE32 x86 as 32bit open of reported System32 module path"
+      }
+    ],
+    "WOW64_file_provenance": "reported System32 paths opened by32bit file-metadata reader; same bytes/014C corroborated at physicalSysWOW64 paths",
+    "loaded_VCRUNTIME140_1": "not loaded, optional",
+    "production_application_module_resolution_measured": false
+  },
+  "compile_receipt": {
+    "command": [
+      "cmd.exe",
+      "/d",
+      "/c",
+      "local\\output\\source_cause_md_probe_20261030\\compile_source_cause_md_probe.cmd"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.9644881000276655,
+    "priority": "NORMAL_PRIORITY_CLASS",
+    "timeout_seconds": 45,
+    "output": ""
+  },
+  "run_receipt": {
+    "command": [
+      "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\source_cause_md_probe.exe"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.06079180003143847,
+    "priority": "NORMAL_PRIORITY_CLASS",
+    "timeout_seconds": 10,
+    "reader_query_outside_current_Cpp_catch": false,
+    "MD_probe_runs": 1
+  },
+  "exact_compile_script": "@echo off\ncall \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvarsall.bat\" x86 -vcvars_ver=14.51 > \"J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\vcvars.log\" 2>&1\nif errorlevel 1 exit /b %errorlevel%\n\"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe\" /nologo /Bv /std:c++20 /EHsc /MD /Od /W4 /D_VCRT_ALLOW_INTERNALS /I\"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\crt\\src\\vcruntime\" \"J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\source_cause_md_probe.cpp\" /Fo\"J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\source_cause_md_probe.obj\" /Fd\"J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\source_cause_md_probe.pdb\" /Fe\"J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\source_cause_md_probe.exe\" /link /MANIFEST:EMBED /INCREMENTAL:NO /MAP:\"J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\source_cause_md_probe.map\" /VERBOSE:LIB > \"J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\compile.log\" 2>&1\nexit /b %errorlevel%\n",
+  "observed": {
+    "checks": [
+      {
+        "name": "SDK_object_matches_actual_caught_reference",
+        "result": "PASS"
+      },
+      {
+        "name": "repeated_reader_same_actual_object",
+        "result": "PASS"
+      },
+      {
+        "name": "reader_has_no_exception_copy_destruction_or_payload_mutation",
+        "result": "PASS"
+      },
+      {
+        "name": "bare_throw_nested_catch_preserves_actual_object",
+        "result": "PASS"
+      },
+      {
+        "name": "bare_throw_reader_no_exception_copy_or_destroy",
+        "result": "PASS"
+      },
+      {
+        "name": "same_object_does_not_equal_call_edge_identity",
+        "result": "PASS"
+      },
+      {
+        "name": "primary_stays_live_after_nested_catch",
+        "result": "PASS"
+      },
+      {
+        "name": "distinct_secondary_object_while_primary_live",
+        "result": "PASS"
+      },
+      {
+        "name": "secondary_does_not_mutate_primary_payload",
+        "result": "PASS"
+      },
+      {
+        "name": "secondary_destroyed_while_primary_stays_live",
+        "result": "PASS"
+      },
+      {
+        "name": "current_exception_two_actual_exception_copies",
+        "result": "PASS"
+      },
+      {
+        "name": "current_exception_snapshots_not_equal",
+        "result": "PASS"
+      },
+      {
+        "name": "diagnostic_copies_not_the_active_object_identity",
+        "result": "PASS"
+      },
+      {
+        "name": "active_primary_survives_diagnostic_snapshot_release",
+        "result": "PASS"
+      },
+      {
+        "name": "all_four_actual_objects_end_once",
+        "result": "PASS"
+      }
+    ],
+    "check_count": 15,
+    "identical_to_423_check_sequence": true,
+    "reader_calls": 7,
+    "outside_supported_Cpp_catch_reader_calls": 0,
+    "reader_exception_copy_or_destruction": 0,
+    "test_payload_mutated_by_reader": false,
+    "SDK_object_matches_actual_caught_reference": true,
+    "repeat_and_bare_throw_same_actual_object": true,
+    "rethrow_record_address_equal_this_run": true,
+    "record_address_equality_required": false,
+    "distinct_secondary_object_while_first_live": true,
+    "secondary_is_not_Native_cleanup_validation": true,
+    "explicit_call_edges_separate": true,
+    "private_cross_invocation_cause_routing_proved": false,
+    "current_exception_captures": 2,
+    "actual_diagnostic_copies": 2,
+    "diagnostic_snapshots_compare_equal": false,
+    "actual_exception_objects_destroyed": 4,
+    "exit_code": 0
+  },
+  "file_metadata_process": {
+    "metadata_command": [
+      "C:/Windows/SysWOW64/WindowsPowerShell/v1.0/powershell.exe",
+      "-NoProfile",
+      "-NonInteractive",
+      "-ExecutionPolicy",
+      "Bypass",
+      "-File",
+      "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\runtime_file_metadata_32.ps1"
+    ],
+    "metadata_exit": 0,
+    "metadata_timeout_seconds": 20,
+    "file_metadata_only_not_probe_run": true,
+    "metadata_attempts": 2,
+    "first_metadata_attempt": "Get-FileHash unavailable in32bit PowerShell; second uses builtin .NET SHA256 on same filebytes; no probe rerun",
+    "is64bitprocess": false,
+    "file_metadata_only": true
+  },
+  "verified_input_pins": {
+    "local_artifact_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\compile.log",
+        "hash_format": "raw_local_artifact_bytes",
+        "bytes": 5958,
+        "sha256": "1dbbaa553170a74f54952c55ba148cb7e58d7c497c8934fc453a8de41925b64e",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\compile_receipt.json",
+        "hash_format": "raw_local_artifact_bytes",
+        "bytes": 297,
+        "sha256": "f246ae66c85cd5303da3831ea54f661e82c766eeab2fd048d14c384f3a541f8b",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\compile_source_cause_md_probe.cmd",
+        "hash_format": "raw_local_artifact_bytes",
+        "bytes": 1603,
+        "sha256": "83e6127f5c5d0accaaa498bfa13a031e340f9176e776f727317872330a90cc69",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\derivation.json",
+        "hash_format": "raw_local_artifact_bytes",
+        "bytes": 490,
+        "sha256": "869c8ef776b7057c99d7da080e1e7e296dbde9cf123e1e7d258c7a421e2ba6f4",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\embedded_manifest.xml",
+        "hash_format": "raw_local_artifact_bytes",
+        "bytes": 381,
+        "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\PE_runtime_imports.json",
+        "hash_format": "raw_local_artifact_bytes",
+        "bytes": 2301,
+        "sha256": "3a01592533c823c87aa5502b273f6ff19a70c1eac25fbdf27f935dfc7bb8d727",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\run.log",
+        "hash_format": "raw_local_artifact_bytes",
+        "bytes": 1668,
+        "sha256": "bbe876e47a0c416fc284dc1bceb6187401d56fcf371f0ad0b3ec1411b8cb45d9",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\run_receipt.json",
+        "hash_format": "raw_local_artifact_bytes",
+        "bytes": 397,
+        "sha256": "e638943e5ad193a7756a4a43a4da277dbee746a621867b9f1fb7d0e77399469e",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\runtime_file_metadata_32.json",
+        "hash_format": "raw_local_artifact_bytes",
+        "bytes": 1382,
+        "sha256": "f16da5cd7ba800012fa5526c4235393851911ebd51ad4e5adc3eea1b49971c26",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\runtime_file_metadata_32.log",
+        "hash_format": "raw_local_artifact_bytes",
+        "bytes": 725,
+        "sha256": "38740af71dda55c04d45ab67b63ba886a8f13faa3c231678130aa00aee76c9a4",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\runtime_file_metadata_32.ps1",
+        "hash_format": "raw_local_artifact_bytes",
+        "bytes": 1200,
+        "sha256": "cfa999b34a36cf9499299f8f7d1f2e586e2bfae08f0c6fa2972ee338660b4f19",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\runtime_file_metadata_32_final.log",
+        "hash_format": "raw_local_artifact_bytes",
+        "bytes": 1384,
+        "sha256": "1909a775871f3d46fe9a054e9330549a57422db60cf5d7962ad62826b2792a45",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\runtime_provenance.json",
+        "hash_format": "raw_local_artifact_bytes",
+        "bytes": 2205,
+        "sha256": "b36184ae5df18f7303bc76b60c53e1325cbe4220a8fb7ee78bf25a55cdd6b450",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\source_cause_md_probe.cpp",
+        "hash_format": "raw_local_artifact_bytes",
+        "bytes": 7090,
+        "sha256": "a5a73f023faf5720efb82edc8fbc8ffd63605b7d90dd567c5635b6790415ebc6",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\source_cause_md_probe.exe",
+        "hash_format": "raw_local_artifact_bytes",
+        "bytes": 14848,
+        "sha256": "4dd2154c23d4b6932446690e292edc99e0fabfc18426e37d32f7573a46287075",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\source_cause_md_probe.map",
+        "hash_format": "raw_local_artifact_bytes",
+        "bytes": 31578,
+        "sha256": "ed8d90ce1be42ad054a8e1306bb12d22dbf28e80c9a2a3df5049bb78b44b057c",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\source_cause_md_probe.obj",
+        "hash_format": "raw_local_artifact_bytes",
+        "bytes": 12045,
+        "sha256": "28126204466e485e2a03111880bb327efe9815c7c9cb7f18dd1e79bb66105cc0",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\VCRUNTIME_exports.json",
+        "hash_format": "raw_local_artifact_bytes",
+        "bytes": 441,
+        "sha256": "a174e392abf15f86f78c9e1280565b1c1e52cadb79d014ed89f950b17c84c10f",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-frontend-canonical-authority-closure\\local\\output\\source_cause_md_probe_20261030\\vcvars.log",
+        "hash_format": "raw_local_artifact_bytes",
+        "bytes": 297,
+        "sha256": "1a4df196337e03bcdb59d67050d46e47764dfc64fa184608219d7e229cd9cb3c",
+        "independently_verified_raw_sha_bytes": true
+      }
+    ],
+    "SDK_source_pins": [
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/exception",
+        "hash_format": "raw_installed_SDK_file_bytes",
+        "bytes": 13765,
+        "sha256": "49c3ebe69f8fd1947c6a05f7de89dd17fc962e4c229b8bf1a5b0d040e5dcb0cb",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/ehdata.h",
+        "hash_format": "raw_installed_SDK_file_bytes",
+        "bytes": 21203,
+        "sha256": "9b1a482479e67e9918726d803f157f00c41ac54f6eee42fb331752ad994940c3",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/ehdata_forceinclude.h",
+        "hash_format": "raw_installed_SDK_file_bytes",
+        "bytes": 9605,
+        "sha256": "2bfa6b2b47050d6a70bca12a6080507a57cdb4e4120958d75f94b8393c23ff4d",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/crt/src/stl/excptptr.cpp",
+        "hash_format": "raw_installed_SDK_file_bytes",
+        "bytes": 25790,
+        "sha256": "1da96022d880a6cefef920ab4066b0b248c18c0453a7a910194e48e0253b6fee",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/crt/src/vcruntime/trnsctrl.h",
+        "hash_format": "raw_installed_SDK_file_bytes",
+        "bytes": 7415,
+        "sha256": "f3fc6e51c56d11da31486793b4629053d7a874b8918cdd14bf7ea7546f7ee918",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/crt/src/vcruntime/ehhelpers.cpp",
+        "hash_format": "raw_installed_SDK_file_bytes",
+        "bytes": 13208,
+        "sha256": "f11f3056bd63e5cc2241d8c97c43f613f9e50a728ffa189316df4794325cf901",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/crt/src/vcruntime/frame.cpp",
+        "hash_format": "raw_installed_SDK_file_bytes",
+        "bytes": 84077,
+        "sha256": "a11ff510d0e0d37bc6ec0214c94514e8fe3127b726ec71ba89009c8f49d9c6ef",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/crt/src/i386/trnsctrl.cpp",
+        "hash_format": "raw_installed_SDK_file_bytes",
+        "bytes": 29655,
+        "sha256": "97eaba1752f55305b719b6f4743d50673d0f7ba1efa9df8a87a26492d4e870d8",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/crt/src/vcruntime/per_thread_data.cpp",
+        "hash_format": "raw_installed_SDK_file_bytes",
+        "bytes": 6825,
+        "sha256": "9a3e101c56b39c654687c8fe519a3fbd7da1b9d090c634b61383b360184a3439",
+        "independently_verified_raw_sha_bytes": true
+      }
+    ],
+    "compiler_link_import_library_header_pins": [
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x86/cl.exe",
+        "hash_format": "raw_installed_toolchain_file_bytes",
+        "bytes": 891752,
+        "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x86/link.exe",
+        "hash_format": "raw_installed_toolchain_file_bytes",
+        "bytes": 3698016,
+        "sha256": "36186698fc03d62a1151e48c55d5c17170b94b4621a2faa11189d08182e11a81",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/msvcprt.lib",
+        "hash_format": "raw_installed_toolchain_file_bytes",
+        "bytes": 5365666,
+        "sha256": "5043c6d473b6f5d0f767df241b4004175ad9b60d01ae4565b7caaea1709ab55f",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/msvcrt.lib",
+        "hash_format": "raw_installed_toolchain_file_bytes",
+        "bytes": 8263656,
+        "sha256": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/vcruntime.lib",
+        "hash_format": "raw_installed_toolchain_file_bytes",
+        "bytes": 400312,
+        "sha256": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/ucrt/x86/ucrt.lib",
+        "hash_format": "raw_installed_toolchain_file_bytes",
+        "bytes": 299244,
+        "sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/crt/src/vcruntime/vcruntime_internal.h",
+        "hash_format": "raw_installed_toolchain_file_bytes",
+        "bytes": 14015,
+        "sha256": "321832ff67f889ebab622fdeea5744d6650266efd0476af468296d941f0728ce",
+        "independently_verified_raw_sha_bytes": true
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/crt/src/vcruntime/internal_shared.h",
+        "hash_format": "raw_installed_toolchain_file_bytes",
+        "bytes": 34477,
+        "sha256": "e4fafa942177aabe0cd8069b1bf1cd74d84a8064a5b01eb4a834f5a47ac4fada",
+        "independently_verified_raw_sha_bytes": true
+      }
+    ]
+  },
+  "runtime_file_provenance": {
+    "reported_module_names_and_paths": "Actual 32bit fixture logs GetModuleFileName System32 paths. Existing file-only32bit metadata receipt opens those paths; reviewer opens only explicit physical SysWOW64 backing with no process execution.",
+    "runtime_file_pins": [
+      {
+        "path": "C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140.dll",
+        "bytes": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "file_version": "14.51.36247.0",
+        "product_version": "14.51.36247.0",
+        "machine": "014C",
+        "physical_SysWOW64_corroborated_path": "C:\\Windows\\SysWOW64\\VCRUNTIME140.dll",
+        "physical_corroboration": "same bytes/hash and PE32 x86 as 32bit open of reported System32 module path"
+      },
+      {
+        "path": "C:\\WINDOWS\\SYSTEM32\\MSVCP140.dll",
+        "bytes": 618944,
+        "sha256": "f0cda2a0cf1fe6fbbf579b9098462329d3aaa7513a207af2e0f33b01456e388a",
+        "file_version": "14.51.36247.0",
+        "product_version": "14.51.36247.0",
+        "machine": "014C",
+        "physical_SysWOW64_corroborated_path": "C:\\Windows\\SysWOW64\\MSVCP140.dll",
+        "physical_corroboration": "same bytes/hash and PE32 x86 as 32bit open of reported System32 module path"
+      },
+      {
+        "path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+        "bytes": 1134192,
+        "sha256": "e4f8f92eef00ff6a0c6d418af756a59d5a4b818d0d1de0d96cc193b4d6759432",
+        "file_version": "10.0.26100.9711 (WinBuild.160101.0800)",
+        "product_version": "10.0.26100.9711",
+        "machine": "014C",
+        "physical_SysWOW64_corroborated_path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "physical_corroboration": "same bytes/hash and PE32 x86 as 32bit open of reported System32 module path"
+      }
+    ],
+    "three_physical_files_sha_bytes_machine_and_version_resource_strings_independently_match": true,
+    "WOW64_corroboration": "Physical SysWOW64 SHA/size/machine014C matches the reported32bit metadata rows for each logged System32 path.",
+    "metadata_attempts": "First file-only metadata read lacked Get-FileHash; second used builtin .NET SHA256. Both retained, no extra fixture execution.",
+    "compiler_SDK_and_runtime_builds_distinguished": "Compiler19.51.36244/toolset14.51.36231/SDK sources versus actualx86VCRUNTIME/MSVCP14.51.36247 DLLs; no exact SDK-source-to-runtime-binary identity inferred.",
+    "actual_production_module_resolution_proved": false
+  },
+  "independent_PE_map_manifest_checks": {
+    "executable_machine": "014C",
+    "PE32": true,
+    "entire_import_table_matches_retained_PE_runtime_imports_JSON": true,
+    "DLL_import_names": [
+      "MSVCP140.dll",
+      "KERNEL32.dll",
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll"
+    ],
+    "selected_cause_handler_import_bindings": {
+      "?__ExceptionPtrCreate@@YAXPAX@Z": "MSVCP140.dll",
+      "?__ExceptionPtrDestroy@@YAXPAX@Z": "MSVCP140.dll",
+      "?__ExceptionPtrCompare@@YA_NPBX0@Z": "MSVCP140.dll",
+      "?__ExceptionPtrCurrentException@@YAXPAX@Z": "MSVCP140.dll",
+      "__current_exception": "VCRUNTIME140.dll",
+      "_CxxThrowException": "VCRUNTIME140.dll",
+      "__CxxFrameHandler3": "VCRUNTIME140.dll"
+    },
+    "same_VCRUNTIME140_import_for_reader_throw_and_FH3": true,
+    "selected_physical_DLL_exports": [
+      {
+        "name": "_CxxThrowException",
+        "RVA": "00004D40",
+        "forwarded": false
+      },
+      {
+        "name": "__CxxFrameHandler3",
+        "RVA": "00015870",
+        "forwarded": false
+      },
+      {
+        "name": "__current_exception",
+        "RVA": "00002DB0",
+        "forwarded": false
+      }
+    ],
+    "all3exports_RVA_and_nonforwarding_independently_verified": true,
+    "all5reported_map_symbol_lines_matched": true,
+    "embedded_RT_MANIFEST_bytes": 381,
+    "embedded_manifest_exact_frozen_XML_match": true,
+    "level": "asInvoker",
+    "runtime_export_code_executed_by_reviewer": false
+  },
+  "receipt_consistency_checks": {
+    "19local_artifacts": true,
+    "9SDK_source_files": true,
+    "8compiler_link_import_library_header_files": true,
+    "3physical_x86_runtime_files": true,
+    "script_exact_normalized_line_endings": true,
+    "compile_run_receipt_JSON_exact": true,
+    "same15PASS_named_check_sequence_as_frozen_MT": true,
+    "summary7reads_2copies_4destructions_0fail": true,
+    "single_MD_compile_single_MD_run_exit0": true,
+    "MT_executable_rerun": false,
+    "reader_key_identity_note": "Actual OBJECT pointer and same fixture runtime, throw-info corroboration. Equal record address was only observed here; record address/type is not cause or Native-origin permission.",
+    "mutation_note": "No measured exception copies/destructions/test-payload mutation from reader; fixture counter/logging is not a general production passivity proof.",
+    "secondary_note": "Distinct live nested Source exception, not Native cleanup-secondary FH3 validation.",
+    "diagnostic_note": "Two current_exception snapshots copy actual objects and compare unequal; diagnostics only, not passive identity."
+  },
+  "withheld_conditions": [
+    "This fresh /MD /EHsc /Od executable is not production bsp_core/application/provider/module-graph execution. Matching configuration is not production runtime binding.",
+    "No general NoThrow or foreign/managed/translated/SEH/other-CRT/Original gameCRT/ABI guarantee; reader can query only proven supported same-runtime active catch/PTD.",
+    "Actual exception-object identity does not distinguish Native versus added host/provider escape. Genuine private leaf/forwarder receipts remain required.",
+    "Private current invocation/cause/site/record/edge/issuer/stage matching and fresh retained history are unimplemented/unproved; public phase/provider_call/flag/type grants no Native authority.",
+    "Fresh/default unknown differs from committed host OR unclassified denial. Committed denial stays sticky for exact cause+edge and cannot later be promoted; fixture did not test this routing.",
+    "Per-header exact arm/disarm/one-shot consumption and secondary replacement/transport remain gated. No Native FH3 secondary cleanup behavior follows from the nested exception case.",
+    "Changed96, actual wrapped/Glyph producer/independent Model resource graph and frontend application remain unadmitted; no guard/activation change."
+  ],
+  "validation": {
+    "read_only_source_metadata_hash_PE_export_and_version_resource_inspection": true,
+    "behavioral_build_tests_probe_game_process_actions": false,
+    "production_Source_registry_CMake_ledger_Ghidra_shared_metadata_edits": false,
+    "Native_body_or_new_helper_recovery": false
+  },
+  "readiness": {
+    "current_MD_fixture_identity_measured": true,
+    "production_active_cause_reader_implemented": false,
+    "Native_origin_closed": false,
+    "changed96_admitted": false,
+    "whole_frontend_ready": false,
+    "Original_ABI_gameCRT_FH3_SEH_proved": false,
+    "game_runtime_activation": false
+  },
+  "credit": {
+    "newOriginal": 0,
+    "newVendor": 0,
+    "newHelper": 0,
+    "newCG": 0,
+    "duplicateBody": 0,
+    "ABI": 0,
+    "Native_exception_origin": 0,
+    "Game_runtime": 0,
+    "activation": 0
+  },
+  "all_production_Native_origin_changed96_wholefrontend_ABI_game_activation_gates_false": true
+}

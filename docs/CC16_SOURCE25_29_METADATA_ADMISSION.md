@@ -1,0 +1,13 @@
+# Source25-29 additive address evidence
+
+The published Source25-29 library integrations now appear in the existing address records and saved Ghidra evidence comments. This update records their actual scope without changing any existing status, Source path, ABI qualification, classification, body count or activation gate.
+
+The frozen draft covers 25 addresses and 64 existing records. Primary verification matched every fresh raw-row preimage and proposal: 31 records gain only `library_source_admission_history`, 22 existing name records gain a strict evidence suffix, and 11 historical variants remain byte-identical. Exactly 53 rows in 24 shards change; all unrelated raw lines, row order and row counts remain unchanged. No new record is added. The draft's 146 frozen build-input comparisons and refreshed Source29 cohort checks are retained in the receipt.
+
+Existing compiler-generated, STL, trivial and vendor classifications are preserved. AD3E70 gains history only on its existing STL tag; no function or name record is invented. Older typed and actual-owner variants of AA7E00/AA7DC0 retain their prior records. Private composed accessor/helper usage gains no additional Original, vendor, compiler-generated, trivial, helper or duplicate-body credit.
+
+The verified target remains `C:/Users/sqz269/bsp.gpr`, program `/battlestationspacific.exe`. Before any annotation or refresh, 75 existing export files for the exact 25 addresses were frozen. Under the Ghidra write lock, every captured live comment/name preimage was rechecked. The official annotation routine was given each exact current name and additive evidence only; zero rename or function creation occurred. All prior comments remain prefixes of the saved comments. The project was saved, the exact affected exports refreshed, and 75 resulting files frozen separately. Older exports/build receipts are untouched.
+
+The metadata index is rebuilt after this update. No production or CMake change, build, test, probe, game run, Native operand/flow mutation or activation is part of this packet. Existing common-build and runtime qualifications remain attached to their original cohorts. Actual game caller binding, ABI equivalence, runtime/gameplay proof and changed-Text96 admission remain open. Full preimage/postimage hashes and retained Ghidra journals are in [cc16_source25_29_metadata_admission.json](../reports/cc16_source25_29_metadata_admission.json).
+
+The fully activated integration goal remains ACTIVE, including the required gameplay checks authorized by the user. Whole wrapped ABA270 and the first coupled AB8530/changed-Text failure-origin repair continue in their separately leased worker packets.
