@@ -1,0 +1,90 @@
+{
+  "packet": "codex-native-lua-type-name",
+  "base": "649a8fd36fb77fb8e397781bf52a1510f2a6536f",
+  "addresses": [
+    "00b68460",
+    "00b68550"
+  ],
+  "status": "source_reviewed_strict_win32_object_compiled_root_integration_pending",
+  "source_ready": false,
+  "context": "immutable SAME rawcells +11actual RO span metadata; no payload read/bank/global/provider",
+  "type_domain": "unsigned DWORD(type)+1 <=9 cases -1..8; all others actual unknown",
+  "bool_literal": {
+    "role_address": "00d62c2c",
+    "extent_including_nul": 5,
+    "exact_text": "bool"
+  },
+  "object_epochs": [
+    "kind+4 once",
+    "kind0 type-1 skips owner/state/index",
+    "kind2 CURRENTowner+0 -> CURRENTstate+4 -> CURRENTindex+8 -> linkedlua_type once",
+    "all other kinds type5 no query",
+    "real raw41E870 no prezero/local cleanup"
+  ],
+  "ownership_failure": "caller-owned output/debt and rawLua/mapping/cells; no implicit issue/rollback/cleanup/retry",
+  "source_hashes": {
+    "include/bsp/native_lua_type_name.hpp": "de12641ba24d17260050420ae4391d407b539b88d73d7a35f7113b4bbb7e9c0e",
+    "src/native_lua_type_name.cpp": "04bbfdfe7fd03e9c6d1b457275c91872de5c414ec8d486f0a7efd3906e24c8f1"
+  },
+  "preservation_sha256": "cedaba40e54286aa442a4ed0a8e61bb1272e433149c6ea81d6a294fc62ec0ff3",
+  "providers_unchanged": {
+    "include/bsp/native_lua_objects.hpp": "18ddc6c301d56244468a29ea15a84f74ddfab41594740a08dc740f6bc13d3c0d",
+    "src/native_lua_objects.cpp": "f2d2a7a0a3d3f1141be23b9b0ca3db9f4d561780ed618a74fd6061d5e6a62bf5",
+    "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+    "src/native_string.cpp": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+    "include/bsp/native_string_pool_storage.hpp": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+    "src/native_string_pool_storage.cpp": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+    "include/bsp/locale_lua_context.hpp": "f382eccce79c771f9a7a01af17de410c0af796de084d36045b6692716173a880",
+    "src/locale_lua_context.cpp": "b9167b95514803f2fdd3e0b6ad6549912bb6b07ae8fd95d5e06e0c48a533a711",
+    "src/cc13_front8.cpp": "a51d86c482a07e589ec2dc598dca29cc38dca8e55304d54b9f279dd422620b62",
+    "cmake/lua.cmake": "0c432ec1026aa6921d876098d29359d34f9463cd894d7adafcb67b954eb7a006"
+  },
+  "contract_sha256": "05091413a88d765f39bb533fff5857b345f047fd5925824bf79bcd2aa9d9c0bd",
+  "saved_assembly_sha256": {
+    "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b68460\\assembly.txt": "b4aab4ac31094d274589e589dd90a90c4d736397af20729d0d773b87a4a474e0",
+    "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b68550\\assembly.txt": "53cd2585cb9478d12e140dc98b5bd97f0ac6c5baee5007d3f6129a66c0aefab4"
+  },
+  "public_lua_headers": {
+    "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\_deps\\lua511-src\\src\\lua.h": "0a69a11d3e176ceb0e0220c4cdeb1c1f3a0e466a347d813e449ff9246afba3a6",
+    "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\_deps\\lua511-src\\src\\luaconf.h": "5c962567aaf250570b772a3dccbfde80e6add621ec04f429120dce83adb0a4d9"
+  },
+  "source_reviews": "Root and Gameplay full Code accepted exactde12641b/04bbfdfe before compile",
+  "limits": [
+    "caller genuine RO provenance/selected backing/rawLua/index and no writer",
+    "C++/Lua nonlocal/currentCRT/FH3/SEH/hardware qualification",
+    "no caller/resolver/raw16/loading/startup/ABI/runtime/production/Native vendor-body credit"
+  ],
+  "no_existing_source_or_tests_probe_game_ghidra_sharedmetadata_edits": true,
+  "strict_object": {
+    "compile_count": 1,
+    "compile_exit": 0,
+    "coff_machine": "014c",
+    "sha256": "aa4024b3b7bd24973ed24dc921db56d1313086253b2e558a74f44a094c4325bd",
+    "artifacts": {
+      "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_lua_type_name_validation_gui_20261030\\objects\\compile.cmd": "0ae4a348c37b1f7ff72332e280f93c1fe81376d17e31bf728d475cc59d2371fe",
+      "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_lua_type_name_validation_gui_20261030\\objects\\compile.log": "f9956a08b1e2982b29708b4e56a47264619ce15f9340d03b4a576c3777a3c701",
+      "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_lua_type_name_validation_gui_20261030\\objects\\compile_command.txt": "ae795ee053b28c5f9848b9dd4641f21b878ca3506cf178ab1ddde9a05f109400",
+      "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_lua_type_name_validation_gui_20261030\\objects\\compile_exit.txt": "9aca8dfce962538fb8131d73f84cada05e4dc79f5a0d3612c511b1150f3e33e2",
+      "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_lua_type_name_validation_gui_20261030\\objects\\symbols.cmd": "2fb9a70e349f73e9d31a209e58e0fdbcc5c9a7976ecbf7eb7f8f4351af2b5904",
+      "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_lua_type_name_validation_gui_20261030\\objects\\symbols.txt": "64471be33ed32c5e99911e128c3a5424ac40d45ed6de90e963309c1e411c9128",
+      "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_lua_type_name_validation_gui_20261030\\objects\\type_name.obj": "aa4024b3b7bd24973ed24dc921db56d1313086253b2e558a74f44a094c4325bd"
+    }
+  },
+  "actual_symbols": {
+    "defined_external_rows": [
+      "05B 00000000 SECT22 notype ()    External     | ?construct_native_lua_type_name_00b68460@bsp@@YAPAXPAXHABVNativeLuaTypeNameContext@1@@Z (void * __cdecl bsp::construct_native_lua_type_name_00b68460(void *,int,class bsp::NativeLuaTypeNameContext const &))",
+      "05E 00000000 SECT20 notype ()    External     | ?construct_native_lua_object_type_name_00b68550@bsp@@YAPAXABUNativeLuaObjectStorage@1@PAXABVNativeLuaTypeNameContext@1@@Z (void * __cdecl bsp::construct_native_lua_object_type_name_00b68550(struct bsp::NativeLuaObjectStorage const &,void *,class bsp::NativeLuaTypeNameContext const &))"
+    ],
+    "decorated_symbols": [
+      "?construct_native_lua_type_name_00b68460@bsp@@YAPAXPAXHABVNativeLuaTypeNameContext@1@@Z",
+      "?construct_native_lua_object_type_name_00b68550@bsp@@YAPAXABUNativeLuaObjectStorage@1@PAXABVNativeLuaTypeNameContext@1@@Z"
+    ],
+    "actual_required_provider_rows": [
+      "068 00000000 UNDEF  notype ()    External     | ?construct_native_string_header_0041e870@bsp@@YAPAXPAXAAUNativeStringRawPoolContext@1@PBD@Z (void * __cdecl bsp::construct_native_string_header_0041e870(void *,struct bsp::NativeStringRawPoolContext &,char const *))",
+      "075 00000000 UNDEF  notype ()    External     | _lua_type"
+    ],
+    "object_sha256": "aa4024b3b7bd24973ed24dc921db56d1313086253b2e558a74f44a094c4325bd",
+    "coff_machine": "014c"
+  },
+  "symbol_receipt_sha256": "75ecce01ce9a467d4a213b5dbe3b7b68e959cbd885609ce6fed6b0f327f18533"
+}
