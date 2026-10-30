@@ -1,0 +1,295 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-single-line-layout-independent-review",
+  "classification": "independent_static_review_corrected_layout_connection_accepted_with_caller_backing_runtime_gates",
+  "initial_reviewed_commit": "e0406dd7e490648a9a97a8322e44adaed631a4dc",
+  "final_reviewed_commit": "220ce76de0ca9eccc22ee834c061be3dc812426e",
+  "baseline_caller": "53a84577241834fa77473caced98fb73141fb0b0",
+  "raw_layout_supplier": "611d95b43051f3d72fbf31c8a336358688609ef2",
+  "owned_files": [
+    "docs/CC16_NATIVE_SINGLE_LINE_LAYOUT_INDEPENDENT_REVIEW.md",
+    "reports/cc16_native_single_line_layout_independent_review.json"
+  ],
+  "verdict": {
+    "ready_for_primary_integration_common_build_assessment": true,
+    "outstanding_Source_findings": 0,
+    "historical_findings_resolved": 1,
+    "other_findings": 0,
+    "compiled_or_executed_by_reviewer": false,
+    "actual_caller_or_frontend_ready": false,
+    "activation": false
+  },
+  "historical_finding": [
+    {
+      "id": "SL-LAYOUT-ORDER-1",
+      "status": "resolved",
+      "initial_commit": "e0406dd7e490648a9a97a8322e44adaed631a4dc",
+      "correction_commit": "220ce76de0ca9eccc22ee834c061be3dc812426e",
+      "issue": "Native ABA250 PUSH mesh precedes ABA251 current-section load. e040 Source read current section before the explicit supplied mesh-home store; exposed logical aliases could observe different read/write order.",
+      "fix": "Only current section-home read moved immediately after explicit mesh-home store; metadata selection/publication beforehand has no Native effects. HPP unchanged; every other CPP byte/asm unchanged e040.",
+      "remaining_limit": "This fixes the known Source operand order. It does not establish Original physical private-stack aliases or actual matched backing."
+    }
+  ],
+  "review_scope": {
+    "production_files": 2,
+    "initial_commit_files_including_CMake_and_new_evidence": 5,
+    "followup_files": 3,
+    "production_diff_read_in_full": true,
+    "new_evidence_doc_and_report_read_in_full": true,
+    "CMake_patch_read": true,
+    "supplier_read_scope": "Exact611 header contract and wholeB865A0 Source; Native caller ABA24A..ABA255 and callee B865A0..B865F4 release/late-mesh prefix. No vendor or broader supplier catalogue.",
+    "new_Native_recovery_credit": 0
+  },
+  "source_schedule": {
+    "caller": [
+      "Both existing unmaps return",
+      "Existing layout boundary and entered marker",
+      "Pure stable preprepared borrowed operands selected by parent identity",
+      "Selected operand address published",
+      "Captured initial mesh pointer word stored to SAME actual volatile DWORD home (Native ABA250 PUSH effect)",
+      "CURRENT parent section home read once AFTER that store (Native ABA251)",
+      "Concrete whole611 with SAME section, live mesh home by reference, rawkey, borrowed context and nullable acquisition output",
+      "Returned marker only after normal whole return"
+    ],
+    "selector": "No Native operand read/work, allocation, reentry, FP operation, reset, new capacity/domain limit, shortage/default/fallback policy. Existing Bindings method is pure metadata selection, no new owner.",
+    "borrowed_operands": "Reference to live mesh WORD, const pointer to genuine writable raw-key backing, const nullable existing acquisition output pointer. No key array/fill, fixed4 cap, typed Section cast, context construction/seed or ownership.",
+    "callee_late_mesh": "Native B865DE reads stacked mesh home only on CURRENTcount0 after any reached B86550 clear, current layout release/current00 and subsequent +50/count rechecks. Source611 line84 reads SAME const volatile reference then; caller passes an lvalue reference, no early by-value read/copy.",
+    "rawkey": "Preserve ordinary initialized/addressable DWORD backing/residue and every reached alias. Callee initializes keycount only, reads count after callbacks, stores descriptor at current index then rereads count; descriptor4 aliases count. No new stream/key domain clamp.",
+    "nullable_acquisition": "Pointer passes unchanged; NULL remains existing allowed observation option. Nonnull follows existing empty-on-entry contract and observes hit/completed owner before insertion, retaining that identity on insertion failure without extra retain/cleanup/rollback. Other-target transport keeps its genuine custody epochs.",
+    "failure_lifetime": "Selected operand pointer is published before actual home/native work. Existing catch retains metadata/home/key/context/nested records/streams/resources and any acquisition; returned flag stays false on throw. Actual caller separately retains backing, residue, reached aliases and genuine contexts through every callback/failure; recursive operations require distinct valid prepared metadata.",
+    "no_new_policy": "No catch, cleanup, retry/reset/advance/rollback/termination, FP reset or default owner is introduced by this caller. Known supplier qualifications remain."
+  },
+  "native_operand_window": {
+    "caller": "ABA24A second unmap returns; ABA24C loads previously captured mesh; ABA250 PUSH; ABA251 reads current section home; ABA255 calls B865A0.",
+    "callee": "B865AF clear; B865BF current decrement; optional B865CF current00; B865D4 +50 recheck; B865D9 currentcount comparison; B865DE late stack mesh read.",
+    "project_program_verified": "Read-only bsp client proto00B865A0 verified BSP project/program before callee listing; no Ghidra edit/export.",
+    "Original_private_alias_proof": "Not inferred. Source models supplied raw homes/backing and corrected observable order; actual matched aliases/backing and broader physical private-stack identity remain caller/runtime proof cuts."
+  },
+  "strict_comparison": {
+    "basis": "53a84577241834fa77473caced98fb73141fb0b0",
+    "only_corrected_layout_block_differs_in_CPP": true,
+    "only_header_include_borrowed_operands_selector_context_and_diagnostic_field": true,
+    "all_other_CPP_Git_LF_bytes_identical": true,
+    "independent_mask": "Entire old/final layout block replaced by identical independently chosen CORRECTED_LAYOUT_BLOCK comment marker.",
+    "outside_block_bytes": 16686,
+    "outside_block_sha256": "b93116d853092d09b024180d27bce3bbc0bc3f42f92031fc6cd91c8fb26c1b2a",
+    "all_five_inline_asm_identical": true,
+    "five_asm_sha256": [
+      "088ae144722bfdf3ee94f78772e1da811e722bae7eb431c5b9f12081a7c417ee",
+      "f3b02ce5df6d86ee96eb05da745ea2d66eff5a91266fffbdb365923588979be9",
+      "2f394ac930bdfa211b605ced8f3cc5f98ce15079a9c1e573fd2fb63a206c58c5",
+      "c1153e46b002384db94f5865ad5382c30581809b8ec9fb2a109a13af490cb473",
+      "83f44dedb88c5832817d758bcc3679e4ff30209f6a23b3c5e76e17cdd95e8f58"
+    ],
+    "direct_Glyph_both_Font_Model_load_home_writes_map_unmap_advance_failure_and_FP_code_unchanged": true,
+    "all_old_Scratch_Context_Acquired_fields_preserved": true,
+    "e040_to220ce_only_current_section_read_move_and_comment": true,
+    "HPP_same_e040_and220ce": true,
+    "CMake_e040_patch_exactly_one_bsp_core_source_registration": true,
+    "CMake_unchanged_in220ce": true,
+    "611_two_production_files_unchanged": true,
+    "current_and_historical_producer_Source_pins_match": true
+  },
+  "current_five_file_pins": [
+    {
+      "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+      "revision": "220ce76de0ca9eccc22ee834c061be3dc812426e",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "32fe59b520f2c49f699f04d665b28235d391fe67",
+      "sha256": "3914309878ae2683fe0fa3a676d373f35d09cc34ca6d82dd83d7044d678453a8",
+      "bytes": 9873
+    },
+    {
+      "path": "src/native_gui_text_single_line_storage.cpp",
+      "revision": "220ce76de0ca9eccc22ee834c061be3dc812426e",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "22427ad2c2c04bf357b2770e075e1c794ee03bf9",
+      "sha256": "ffda6f98ac137a60af72332a3981da2e51a18992097ff359feda8a93028ee048",
+      "bytes": 17311
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "revision": "220ce76de0ca9eccc22ee834c061be3dc812426e",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "59281c74e5074485d61510c7d4f2497bc54ad935",
+      "sha256": "9dc25fa7f076fdcaf0a2291d894d2f332a1be96e6175c8a08c07953e56abd29b",
+      "bytes": 295512
+    },
+    {
+      "path": "docs/CC16_NATIVE_SINGLE_LINE_LAYOUT_COMPOSITION.md",
+      "revision": "220ce76de0ca9eccc22ee834c061be3dc812426e",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "1c30c033ba9bc931f4f06dbd261dd7658975abfb",
+      "sha256": "aeca9a1ff6a370d7fb1c5eeb29b96fb3cc7237578d4e6eee999c14e75bf85f24",
+      "bytes": 4302
+    },
+    {
+      "path": "reports/cc16_native_single_line_layout_composition.json",
+      "revision": "220ce76de0ca9eccc22ee834c061be3dc812426e",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "ada2d13abf55cdd0d19f3380c7456927622aaa9d",
+      "sha256": "099ca72cba4e30e631817d42beed16104587efa34a17ca042b5fda953fa415c8",
+      "bytes": 5540
+    }
+  ],
+  "historical_e040_five_file_pins": [
+    {
+      "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+      "revision": "e0406dd7e490648a9a97a8322e44adaed631a4dc",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "32fe59b520f2c49f699f04d665b28235d391fe67",
+      "sha256": "3914309878ae2683fe0fa3a676d373f35d09cc34ca6d82dd83d7044d678453a8",
+      "bytes": 9873
+    },
+    {
+      "path": "src/native_gui_text_single_line_storage.cpp",
+      "revision": "e0406dd7e490648a9a97a8322e44adaed631a4dc",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "5ccbcc40d9c9317ccebca58fbe201d3fc039b344",
+      "sha256": "04ed35c521a5843a80fef91ef8e24488b5d5bc03c469d9a42c8a1cfd047e68c1",
+      "bytes": 17288
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "revision": "e0406dd7e490648a9a97a8322e44adaed631a4dc",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "59281c74e5074485d61510c7d4f2497bc54ad935",
+      "sha256": "9dc25fa7f076fdcaf0a2291d894d2f332a1be96e6175c8a08c07953e56abd29b",
+      "bytes": 295512
+    },
+    {
+      "path": "docs/CC16_NATIVE_SINGLE_LINE_LAYOUT_COMPOSITION.md",
+      "revision": "e0406dd7e490648a9a97a8322e44adaed631a4dc",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "044d340a3068492badc95003f0aebd77c688be82",
+      "sha256": "16252a57157d5221504fe65c2c6c8312ec541ad5fc2a9e5b4f10feb0529e3fc7",
+      "bytes": 3781
+    },
+    {
+      "path": "reports/cc16_native_single_line_layout_composition.json",
+      "revision": "e0406dd7e490648a9a97a8322e44adaed631a4dc",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "7edb5f58131bc811d49956b89c5c4614f5e5d16a",
+      "sha256": "ae1b6f65af849c818c7763773bc0b0e14c40d60c2d2313032c70e1a1394da25b",
+      "bytes": 4113
+    }
+  ],
+  "baseline53a_Source_pins": [
+    {
+      "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+      "revision": "53a84577241834fa77473caced98fb73141fb0b0",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "9a50b1dc9591d851b3517d1e65b2c5e5c557b807",
+      "sha256": "b7a68ae45274614acc678a0572a3e465876c76a4716d0a33f70c2a58017af26a",
+      "bytes": 8946
+    },
+    {
+      "path": "src/native_gui_text_single_line_storage.cpp",
+      "revision": "53a84577241834fa77473caced98fb73141fb0b0",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "3f9ef7d072c5c190b89f9a966dd2700fd02c2324",
+      "sha256": "937a05a473811134a35e7359c9746e00907cef3f0f560e37379a1bc5069db8fb",
+      "bytes": 16899
+    }
+  ],
+  "unchanged_supplier_pins": [
+    {
+      "path": "include/bsp/native_mesh_section_layout_storage.hpp",
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "9875909104d429eb1144a83d7c2947fc49c6e383",
+      "sha256": "19245d00005b8d543fdcd5b85e71dba091ca158063e38fd86010cfb8e72c8939",
+      "bytes": 6385
+    },
+    {
+      "path": "src/native_mesh_section_layout_storage.cpp",
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "3e473a56ff11e6f1f1b24713e6306f763c78e313",
+      "sha256": "d6f0378634d82d4287cf698dd529e24f3a53b4f1b6b0398647d33c4f956c4115",
+      "bytes": 5775
+    },
+    {
+      "path": "docs/CC16_NATIVE_MESH_SECTION_LAYOUT_STORAGE.md",
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "76088842ebf07edcc9b86b4144d064ecefa57ba2",
+      "sha256": "a50cc363c8c5a5d1afe47d0fe9c4859169f3569752f9340840f0f7a99e5abbb0",
+      "bytes": 12004
+    },
+    {
+      "path": "reports/cc16_native_mesh_section_layout_storage.json",
+      "revision": "611d95b43051f3d72fbf31c8a336358688609ef2",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "7d9f3e950b3fdea27eb7973298e9de5fabaed3b0",
+      "sha256": "11f6144d7de2e18c674a5a51471079d9a4240725e2a5f14211bf79a447698a05",
+      "bytes": 21782
+    }
+  ],
+  "saved_native_listing_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab9fd0\\assembly.txt",
+      "hash_format": "raw_saved_export_file_bytes",
+      "bytes": 6236,
+      "sha256": "079f6ad910bdefc081fca92361780e773e9b0113cf99dc255f001814ec443182"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b865a0\\assembly.txt",
+      "hash_format": "raw_saved_export_file_bytes",
+      "bytes": 1963,
+      "sha256": "8e0972542222311cff0a9107b03831d99eed2b5b9776a567ef9a54d17dddb357"
+    }
+  ],
+  "inherited_cleanup_policy": {
+    "decision": "Retain documented B2F710 owning-runtime qualification; not a new611/caller termination defect.",
+    "audit_commit": "77e25e1f7f594364290b4d383aa87c9d6379d6a3",
+    "audit_pins": [
+      {
+        "path": "docs/CC16_HARDWARE_LAYOUT_CLEANUP_POLICY_AUDIT.md",
+        "revision": "77e25e1f7f594364290b4d383aa87c9d6379d6a3",
+        "hash_format": "immutable_git_blob_content_lf",
+        "git_blob_oid": "53348ca9686b81f7e1bd0686dc0a9cfe5c22468b",
+        "sha256": "aaca2407540388608cea01d52f56d77d58deec63dbdd95a2f43adfbfdf930f89",
+        "bytes": 3407
+      },
+      {
+        "path": "reports/cc16_hardware_layout_cleanup_policy_audit.json",
+        "revision": "77e25e1f7f594364290b4d383aa87c9d6379d6a3",
+        "hash_format": "immutable_git_blob_content_lf",
+        "git_blob_oid": "2091ec44b042710824dd4a82cdb732d7826cca65",
+        "sha256": "1306351b0faaef8eea70859944bfd456cd19f2e5c672d3fbe9203189c1d57225",
+        "bytes": 13395
+      }
+    ],
+    "limit": "Recorded original/current paired trace dumps/log/PE support the captured fixture-owning runtime case. Worker harness source unavailable/no rerun; no general gameCRT/FH3/SEH or current runtime proof."
+  },
+  "build_qualification": {
+    "Root_reports_prior_a27_13_11s_cohort_frozen_separately": true,
+    "prior_pass_applies_to_corrected220ce": false,
+    "new_corrected_common_build": "Root responsibility; pending at review",
+    "reviewer_build_tests_game_probe_process_actions": false
+  },
+  "remaining_gates": [
+    "Actual stable prepared operand/record owner and genuine renderer/stream/scalar/import/factory/resource graph",
+    "Ordinary raw-key backing/residue and all reached alias compatibility; no inferred Original private-stack alias identity",
+    "Nullable observation custody and retained context/backing/resources through partial failure",
+    "Actual Text/Font/Model/resource producers, Startup/frontend/canonical/retirement adoption and runtime/gameplay validation"
+  ],
+  "validation": {
+    "static_only": true,
+    "Source_CMake_shared_ledger_Ghidra_edits_by_reviewer": false,
+    "new_tests": 0,
+    "staged_diff_check": "passed final owned two-file staged whitespace check before commit"
+  },
+  "credit": {
+    "Original": 0,
+    "vendor": 0,
+    "CG": 0,
+    "helper": 0,
+    "duplicate_body": 0,
+    "ABI": false,
+    "new_runtime": false,
+    "activation_or_gameplay": false
+  },
+  "utc": "2026-10-30T19:15:25.267865+00:00"
+}

@@ -312,7 +312,10 @@ void build_native_gui_text_single_line_storage_00ab9fd0(
                 scratch.quad_homes[0] = bits(glyph);
                 scratch.position_bits[0] = scratch.pen_bits; // ABA1F2 after PUSHes
                 location(acquired, Acquired::Boundary::glyph_quad, 0x00aba1f8);
-                context.bindings.write_glyph_quad_00ab98f0(text, scratch.quad_homes);
+                auto& quad_record = context.bindings.prepared_glyph_quad_record(acquired);
+                acquired.selected_glyph_quad_record = &quad_record;
+                write_native_gui_text_glyph_quad_storage_00ab98f0(
+                    text, scratch.quad_homes, context.glyph_quad, quad_record);
                 emit_advance(text, glyph, scratch); // captured glyph, CURRENT scale
                 ++acquired.emitted_units;
                 code_unit = scratch.next_unit;
@@ -331,10 +334,15 @@ void build_native_gui_text_single_line_storage_00ab9fd0(
         acquired.vertex_unmap_entered = true;
         unmap_vertex(vertex, acquired.vertex_unmap_target, context);
         acquired.vertex_unmap_returned = true;
-        void* const final_section = pointer(frame.homes_[1]); // AFTER both unmaps
         location(acquired, Acquired::Boundary::layout, 0x00aba255);
         acquired.layout_entered = true;
-        context.bindings.rebuild_layout_00b865a0(final_section, mesh);
+        auto& layout_operands = context.bindings.prepared_layout_operands(acquired);
+        acquired.selected_layout_operands = &layout_operands;
+        layout_operands.mesh_dword_home = bits(mesh); // Native caller's PUSH mesh.
+        void* const final_section = pointer(frame.homes_[1]); // ABA251, AFTER PUSH mesh and both unmaps.
+        rebuild_native_mesh_section_vertex_layout_storage_00b865a0(final_section,
+            layout_operands.mesh_dword_home, layout_operands.raw_key_home,
+            context.layout, layout_operands.acquired_before_insertion);
         acquired.layout_returned = true;
         require(frame.phase_ == Phase::entered && acquired.phase == Phase::entered &&
             !acquired.failure, "AB9FD0 cannot complete after caught invocation failure");

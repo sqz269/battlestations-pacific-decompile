@@ -1,5 +1,7 @@
 #pragma once
 #include "bsp/native_font_glyph_selection_storage.hpp"
+#include "bsp/native_gui_text_glyph_quad_storage.hpp"
+#include "bsp/native_mesh_section_layout_storage.hpp"
 #include "bsp/native_logical_buffer_mapping.hpp"
 #include "bsp/native_render_context.hpp"
 #include <cstdint>
@@ -10,6 +12,14 @@
 #endif
 
 namespace bsp {
+struct NativeGuiTextSingleLineStorageAcquired;
+// Caller-prepared pure borrows for one layout call. Preserve genuine raw key
+// backing/residue and reached aliases; no array, default key or new owner.
+struct NativeGuiTextSingleLineLayoutOperands {
+    volatile std::uint32_t& mesh_dword_home;
+    void* const raw_key_home;
+    void** const acquired_before_insertion; // Existing nullable factory output.
+};
 // Genuine missing raw operations, not semantic GuiText/Font/Model adapters.
 // Every receiver/table/backing/context belongs to the SAME actual Text resource
 // graph and survives callbacks. No default glyph/font/table/owner is supplied.
@@ -28,13 +38,21 @@ struct NativeGuiTextSingleLineStorageBindings {
         std::uint32_t count, std::uint32_t offset, std::uint32_t readonly_word) = 0;
     virtual void other_index_unmap_10(void*, std::uint32_t captured_target) = 0;
     virtual void other_vertex_unmap_14(void*, std::uint32_t captured_target) = 0;
-    // Whole AB98F0, not a pending/success substitute. Actual mutable callee
-    // homes: glyph,pos3*,vertex,indexptr,pos3*,pos3*,quad,height,first,UTF16.
-    // All three pos3* words alias the SAME retained float3. Callee may mutate
-    // homes (notably0/7), so the caller keeps glyph/height separately.
-    virtual void write_glyph_quad_00ab98f0(void* captured_text,
-        volatile std::uint32_t (&actual_homes)[10]) = 0;
-    virtual void rebuild_layout_00b865a0(void* current_section, void* captured_mesh) = 0;
+    // Pure Source metadata selection tied to this parent identity. Select a
+    // distinct stable already-prepared fresh Glyph record, with genuine nested
+    // provider frames prepared before entry. No operand reads, Native work,
+    // reentry, allocation, record reset/reuse, FP effect or default record.
+    // Caller proves backing for EVERY reached/recursive call and retains ALL
+    // selected history. No fixed count/capacity, shortage or fallback policy is
+    // supplied here. This method is not a Glyph operation implementation.
+    virtual NativeGuiTextGlyphQuadStorageAcquired& prepared_glyph_quad_record(
+        NativeGuiTextSingleLineStorageAcquired& parent) = 0;
+    // Pure metadata selection for this parent: stable already-prepared homes,
+    // key backing and acquisition output in the SAME actual renderer domain.
+    // No operand reads, Native work, allocation, reentry, FP effect, reset,
+    // new capacity/domain limit or shortage/default/fallback policy.
+    virtual NativeGuiTextSingleLineLayoutOperands& prepared_layout_operands(
+        NativeGuiTextSingleLineStorageAcquired& parent) = 0;
 };
 
 struct NativeGuiTextSingleLineStorageContext final {
@@ -48,6 +66,8 @@ struct NativeGuiTextSingleLineStorageContext final {
     // Required retained actual F8BE50 initial-wide-NUL role. This packet makes
     // no replacement zero array or new process owner; binding remains caller proof.
     const volatile std::uint16_t* const empty_wide_00f8be50;
+    NativeGuiTextGlyphQuadStorageContext& glyph_quad; // SAME retained genuine domain
+    NativeMeshSectionLayoutStorageContext& layout; // SAME renderer/stream/factory domain
 };
 
 enum class NativeGuiTextSingleLineStoragePhase : std::uint8_t {
@@ -81,6 +101,10 @@ struct NativeGuiTextSingleLineStorageAcquired final {
     bool vertex_unmap_entered{}, vertex_unmap_returned{};
     bool layout_entered{}, layout_returned{};
     std::exception_ptr failure;
+    // Published BEFORE concrete Glyph entry. Root's record owner separately
+    // retains every selection; completed history must not follow reused homes.
+    NativeGuiTextGlyphQuadStorageAcquired* selected_glyph_quad_record{};
+    NativeGuiTextSingleLineLayoutOperands* selected_layout_operands{};
     NativeGuiTextSingleLineStorageAcquired() = default;
     NativeGuiTextSingleLineStorageAcquired(const NativeGuiTextSingleLineStorageAcquired&) = delete;
     NativeGuiTextSingleLineStorageAcquired& operator=(const NativeGuiTextSingleLineStorageAcquired&) = delete;

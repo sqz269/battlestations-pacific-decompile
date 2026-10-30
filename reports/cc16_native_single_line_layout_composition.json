@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-single-line-layout-composition",
+  "baseline": "53a84577241834fa77473caced98fb73141fb0b0",
+  "raw_layout_supplier": "611d95b43051f3d72fbf31c8a336358688609ef2",
+  "Source_pins": [
+    {
+      "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+      "hash_format": "canonical Git LF index blob content",
+      "git_blob": "32fe59b520f2c49f699f04d665b28235d391fe67",
+      "bytes": 9873,
+      "sha256": "3914309878ae2683fe0fa3a676d373f35d09cc34ca6d82dd83d7044d678453a8"
+    },
+    {
+      "path": "src/native_gui_text_single_line_storage.cpp",
+      "hash_format": "canonical Git LF index blob content",
+      "git_blob": "22427ad2c2c04bf357b2770e075e1c794ee03bf9",
+      "bytes": 17311,
+      "sha256": "ffda6f98ac137a60af72332a3981da2e51a18992097ff359feda8a93028ee048"
+    }
+  ],
+  "strict_comparison": {
+    "baseline": "53a84577241834fa77473caced98fb73141fb0b0",
+    "strict_cpp_one_call_block_only": true,
+    "five_inline_asm_identical": true,
+    "previous_concrete_Glyph_block_and_Font_Model_and_home_writes_identical": true,
+    "new_source_pins": [
+      {
+        "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+        "hash_format": "canonical Git LF index blob content",
+        "git_blob": "32fe59b520f2c49f699f04d665b28235d391fe67",
+        "bytes": 9873,
+        "sha256": "3914309878ae2683fe0fa3a676d373f35d09cc34ca6d82dd83d7044d678453a8"
+      },
+      {
+        "path": "src/native_gui_text_single_line_storage.cpp",
+        "hash_format": "canonical Git LF index blob content",
+        "git_blob": "5ccbcc40d9c9317ccebca58fbe201d3fc039b344",
+        "bytes": 17288,
+        "sha256": "04ed35c521a5843a80fef91ef8e24488b5d5bc03c469d9a42c8a1cfd047e68c1"
+      }
+    ],
+    "strict_header_metadata_seam_only": true,
+    "all_old_Scratch_Context_Acquired_fields_preserved": true
+  },
+  "native_call_site": "00ABA255",
+  "caller_schedule": [
+    "both unmaps return",
+    "existing layout-entered marker",
+    "pure stable preprepared operand metadata selected by parent identity",
+    "selected operand pointer published",
+    "captured mesh written to actual live DWORD home (ABA250 PUSH)",
+    "CURRENT section argument home read AFTER mesh store (ABA251)",
+    "whole raw B865A0 with SAME section/home/rawkey/context/nullable acquisition output",
+    "layout-returned marker only after normal whole return"
+  ],
+  "metadata_contract": {
+    "pure_borrows_only": true,
+    "native_operand_reads_or_Native_work": false,
+    "allocation_reentry_reset_FP_or_default": false,
+    "new_capacity_domain_cap_or_shortage_policy": false,
+    "actual_key_backing": "ordinary initialized/addressable DWORD backing/residue and all reached aliases, not new zero/fixed4 array",
+    "lifetime": "actual caller retains operands/home/key/context/nested records and any acquisition through callbacks/failure; recursive calls have distinct prepared metadata",
+    "native_argument": "mesh home written once at Native PUSH phase, only read by concrete callee at its original late count0 phase"
+  },
+  "field_changes": [
+    "concrete raw layout header include",
+    "borrowed operand struct",
+    "replace Native-operation virtual with pure prepared metadata selector",
+    "append borrowed SAME layout context",
+    "append selected-operand diagnostic pointer"
+  ],
+  "previous_Glyph071_and_Font_Model_scratch_FP_mappings": "unchanged, strict one-block CPP and header reconstruction pass",
+  "existing_supplier_qualifications": "Preserve B2F710 hardware-factory input/private-alias/acquisition/owning-runtime secondary-policy qualifications; this caller introduces no catch/cleanup/termination policy.",
+  "remaining_gates": [
+    "independent caller review",
+    "Root common Win32 build",
+    "actual prepared operand/record owner and genuine provider/resource graph",
+    "actual Startup frontend/canonical/retirement binding",
+    "required gameplay validation"
+  ],
+  "build_performed": false,
+  "new_tests": 0,
+  "game_probe_process_actions": false,
+  "Page_guard_or_activation_change": false,
+  "new_Original_vendor_CG_helper_duplicate_body_ABI_runtime_gameplay_credit": 0,
+  "historical_e040_Source_pins": [
+    {
+      "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+      "hash_format": "canonical Git LF index blob content",
+      "git_blob": "32fe59b520f2c49f699f04d665b28235d391fe67",
+      "bytes": 9873,
+      "sha256": "3914309878ae2683fe0fa3a676d373f35d09cc34ca6d82dd83d7044d678453a8"
+    },
+    {
+      "path": "src/native_gui_text_single_line_storage.cpp",
+      "hash_format": "canonical Git LF index blob content",
+      "git_blob": "5ccbcc40d9c9317ccebca58fbe201d3fc039b344",
+      "bytes": 17288,
+      "sha256": "04ed35c521a5843a80fef91ef8e24488b5d5bc03c469d9a42c8a1cfd047e68c1"
+    }
+  ],
+  "argument_order_followup": {
+    "baseline": "e0406dd7e",
+    "only_current_section_read_moved_after_explicit_mesh_home_store": true,
+    "five_asm_and_every_other_cpp_byte_identical": true,
+    "native_window": [
+      "ABA24A secondunmap CALL",
+      "ABA24C capturedmesh load",
+      "ABA250 PUSH mesh",
+      "ABA251 current section-home load",
+      "ABA255 B865A0 CALL"
+    ],
+    "new_cpp_sha256": "ffda6f98ac137a60af72332a3981da2e51a18992097ff359feda8a93028ee048",
+    "new_cpp_Git_LF_bytes": 17311
+  },
+  "strict_comparison_scope": "Initial e040 strict one-block/header-seam proof remains historical. Followup changes only the section-home read placement/comment; all other CPP bytes and every asm block remain identical."
+}
