@@ -272,9 +272,14 @@ void return_name(void* captured_data, const volatile Word* name, Context& c) {
 }
 template<class Resource>
 void release_creator(Resource*& creator, NativeTextureSurfaceReferenceIncrement target,
-    NativeGuiTextSectionStorageRelease& a, Context& c) {
+    NativeGuiTextSectionStorageRelease& a, Context& c,
+    const NativeGuiTextFailureOriginRuntime* runtime = nullptr, NativeGuiTextFailureOrigin* origin = nullptr) {
     void* const raw = std::exchange(creator, nullptr);
+    if (runtime && origin) origin->host(*runtime, {0, __COUNTER__}, origin, [&] {
     require(raw && target && !a.entered, "main section creator release needs one actual captured obligation");
+    }); else {
+    require(raw && target && !a.entered, "main section creator release needs one actual captured obligation");
+    }
     a.identity = raw; a.captured_decrement = target; a.entered = true;
     a.result = target(static_cast<volatile long*>(at(raw, 4))); a.decremented = true;
     if (a.result == 0) {
@@ -303,96 +308,113 @@ bool NativeGuiTextMainSectionStorageFrame::matches_created_normal(const Context&
 }
 void ensure_native_gui_text_post_constructor_sections_storage_00ab8530(
     NativeGuiTextRawModelReference& reference, Context& c, Frame& f, Acquired& a) {
-    require(&f.context_ == &c && &f.acquired_ == &a, "main section needs SAME installed frame/context/acquisition");
+    auto host = [&](std::uint32_t source, auto&& operation) -> decltype(auto) {
+        if (f.failure_runtime_)
+            return f.failure_origin_.host(*f.failure_runtime_, {0, source}, &f,
+                std::forward<decltype(operation)>(operation));
+        return std::forward<decltype(operation)>(operation)();
+    };
+    auto unknown = [&](std::uint32_t site, std::uint32_t source, auto&& operation) -> decltype(auto) {
+        if (f.failure_runtime_)
+            return f.failure_origin_.unknown(*f.failure_runtime_, {site, source}, &f,
+                std::forward<decltype(operation)>(operation));
+        return std::forward<decltype(operation)>(operation)();
+    };
+    auto host_require = [&](bool condition, const char* reason, std::uint32_t source) {
+        host(source, [&] { require(condition, reason); });
+    };
+    host_require(&f.context_ == &c && &f.acquired_ == &a, "main section needs SAME installed frame/context/acquisition", __COUNTER__);
     try {
-        require(f.phase_ == Phase::fresh, "main section Frame cannot replay"); require_fresh(a);
+        host_require(f.phase_ == Phase::fresh, "main section Frame cannot replay", __COUNTER__); host(__COUNTER__, [&] { require_fresh(a); });
         const Region writes[] = {{&f, sizeof(f)}, {&a, sizeof(a)}};
-        require(valid(writes[0]) && valid(writes[1]) && !(bits(&f) & 3u) && !(bits(&a) & 3u) &&
-            disjoint(writes[0], writes[1]), "main section writable records need separate aligned32bit extents");
+        host_require(valid(writes[0]) && valid(writes[1]) && !(bits(&f) & 3u) && !(bits(&a) & 3u) &&
+            disjoint(writes[0], writes[1]), "main section writable records need separate aligned32bit extents", __COUNTER__);
+        host(__COUNTER__, [&] {
         borrowed(c, [&](Region r) {
-            require(valid(r) && disjoint(writes[0], r) && disjoint(writes[1], r),
-                "main section writes cannot alias known retained provider/record backing");
+            host_require(valid(r) && disjoint(writes[0], r) && disjoint(writes[1], r),
+                "main section writes cannot alias known retained provider/record backing", __COUNTER__);
+        });
         });
         for (const Region native : {Region{c.text.factory.raw_slot, 0x1f8},
             {c.geometry_context.primary.actual, 0x188}, {c.geometry_context.internal188.actual, 0x188},
             {c.geometry.captured_mesh, sizeof(NativeMeshStorage)}})
-            require(valid(native) && disjoint(writes[0], native) && disjoint(writes[1], native),
-                "main section writes cannot alias actual Text/Model/mesh storage");
+            host_require(valid(native) && disjoint(writes[0], native) && disjoint(writes[1], native),
+                "main section writes cannot alias actual Text/Model/mesh storage", __COUNTER__);
         f.phase_ = a.phase = Phase::entered;
         location(a, 0, Acquired::Boundary::admission);
         void* const raw = c.text.factory.raw_slot;
-        authenticate(reference, c, raw); provenance(c, raw); a.destination = raw;
+        host(__COUNTER__, [&] { authenticate(reference, c, raw); }); host(__COUNTER__, [&] { provenance(c, raw); }); a.destination = raw;
         auto& r = c.resources; auto& primary = c.geometry_context.primary; auto& internal = c.geometry_context.internal188;
         location(a, 0, Acquired::Boundary::initial188); // initial188 read; no guessed instruction VA
         a.captured188 = reinterpret_cast<void*>(read(raw, 0x188));
-        require(a.captured188 == internal.actual, "post-constructor sections never allocate or replace constructor188");
+        host_require(a.captured188 == internal.actual, "post-constructor sections never allocate or replace constructor188", __COUNTER__);
         location(a, 0x00ab86cb, Acquired::Boundary::model);
         a.first_primary = reinterpret_cast<void*>(read(raw, 0x4c));
-        require(a.first_primary == primary.actual, "main arm requires CURRENT genuine published primary4C");
-        live_model(a.first_primary, primary);
+        host_require(a.first_primary == primary.actual, "main arm requires CURRENT genuine published primary4C", __COUNTER__);
+        host(__COUNTER__, [&] { live_model(a.first_primary, primary); });
         a.first_geometry = reinterpret_cast<void*>(read(a.first_primary, 0x180)); // B74650
-        require(a.first_geometry, "main arm excludes missing actual379 geometry");
+        host_require(a.first_geometry, "main arm excludes missing actual379 geometry", __COUNTER__);
         a.current_primary = reinterpret_cast<void*>(read(raw, 0x4c)); // AB86E8 reload
-        require(a.current_primary == primary.actual, "main arm rejects foreign CURRENT4C replacement");
-        live_model(a.current_primary, primary);
+        host_require(a.current_primary == primary.actual, "main arm rejects foreign CURRENT4C replacement", __COUNTER__);
+        host(__COUNTER__, [&] { live_model(a.current_primary, primary); });
         a.current_geometry = reinterpret_cast<void*>(read(a.current_primary, 0x180)); // B74640
-        live_mesh(a.current_geometry, c);
+        host(__COUNTER__, [&] { live_mesh(a.current_geometry, c); });
         a.section_count = read(a.current_geometry, 0x58); a.mesh_gate_read = true;
         if (a.section_count == 0) {
             f.created_text_ = raw;
             f.created_mesh_ = a.current_geometry;
             auto& s = a.section;
             location(a, 0x00ab86fe, Acquired::Boundary::section);
-            s.section_creator = r.geometry.create_native_section_00533fa0(s.section);
-            require(s.section_creator, "main arm excludes native null section/fault continuation");
+            s.section_creator = unknown(0x00ab86feu, __COUNTER__, [&]() -> decltype(auto) { return r.geometry.create_native_section_00533fa0(s.section); });
+            host_require(s.section_creator, "main arm excludes native null section/fault continuation", __COUNTER__);
             f.created_section_ = s.section_creator;
             location(a, 0x00ab8708, Acquired::Boundary::append);
-            append_native_mesh_draw_section_00b73c60(*static_cast<NativeMeshStorage*>(a.current_geometry), s.section_creator);
+            unknown(0x00ab8708u, __COUNTER__, [&]() -> decltype(auto) { return append_native_mesh_draw_section_00b73c60(*static_cast<NativeMeshStorage*>(a.current_geometry), s.section_creator); });
             s.appended = true;
             location(a, 0x00ab8716, Acquired::Boundary::name_construct); a.name_construct_entered = true;
-            construct_native_string_header_0041e870(const_cast<Word*>(&f.name_[0]), r.strings, r.guidefault_00d5c25c);
+            unknown(0x00ab8716u, __COUNTER__, [&]() -> decltype(auto) { return construct_native_string_header_0041e870(const_cast<Word*>(&f.name_[0]), r.strings, r.guidefault_00d5c25c); });
             a.name_construct_returned = true; a.native_eh_state = 5;
             location(a, 0x00ab8727, Acquired::Boundary::material);
-            s.material_creator = create_native_material_from_effect_cache_00535320(
+            s.material_creator = unknown(0x00ab8727u, __COUNTER__, [&]() -> decltype(auto) { return create_native_material_from_effect_cache_00535320(
                 const_cast<const Word*>(&f.name_[0]), r.materials.material_slots,
-                r.geometry.actual_owners(), r.effects, s.material);
-            require(s.material_creator && s.material.phase == NativeMaterialFactoryAcquired::Phase::complete &&
-                s.material_creator->effect_7c, "main arm requires real nonnull GuiDefault material/effect");
+                r.geometry.actual_owners(), r.effects, s.material); });
+            host_require(s.material_creator && s.material.phase == NativeMaterialFactoryAcquired::Phase::complete &&
+                s.material_creator->effect_7c, "main arm requires real nonnull GuiDefault material/effect", __COUNTER__);
             f.created_material_ = s.material_creator;
-            r.geometry.register_native_material_creator(s.material, r.materials, r.material_vtable_00d5e520);
+            host(__COUNTER__, [&]() -> decltype(auto) { return r.geometry.register_native_material_creator(s.material, r.materials, r.material_vtable_00d5e520); });
             a.captured_name_data = reinterpret_cast<void*>(f.name_[1]); // AB872E BEFORE disarm
             a.native_eh_state = -1;
             location(a, 0x00ab8750, Acquired::Boundary::name_return); a.name_return_entered = true;
-            return_name(a.captured_name_data, &f.name_[0], c); a.name_cleanup_returned = true;
+            unknown(0x00ab8750u, __COUNTER__, [&]() -> decltype(auto) { return return_name(a.captured_name_data, &f.name_[0], c); }); a.name_cleanup_returned = true;
             location(a, 0x00ab8758, Acquired::Boundary::material_publication);
-            set_native_mesh_section_material_00b864c0(*s.section_creator, r.geometry.actual_owners(), s.material_creator);
+            unknown(0x00ab8758u, __COUNTER__, [&]() -> decltype(auto) { return set_native_mesh_section_material_00b864c0(*s.section_creator, r.geometry.actual_owners(), s.material_creator); });
             s.material_published = true;
             a.pair_decrement = r.model.storage.node.scenes.decrement_00ce2220; // AB875D ONCE
             location(a, 0x00ab8767, Acquired::Boundary::section_release);
-            release_creator(s.section_creator, a.pair_decrement, s.section_release, c);
+            unknown(0x00ab8767u, __COUNTER__, [&]() -> decltype(auto) { return release_creator(s.section_creator, a.pair_decrement, s.section_release, c, f.failure_runtime_, &f.failure_origin_); });
             location(a, 0x00ab8779, Acquired::Boundary::material_release);
-            release_creator(s.material_creator, a.pair_decrement, s.material_release, c);
+            unknown(0x00ab8779u, __COUNTER__, [&]() -> decltype(auto) { return release_creator(s.material_creator, a.pair_decrement, s.material_release, c, f.failure_runtime_, &f.failure_origin_); });
         } else a.creation_skipped = true; // no new creator/credit/name in this branch
         location(a, 0, Acquired::Boundary::parenting); // late15C branch; no guessed instruction VA
         a.parenting_flag = byte(raw, 0x15c); a.parenting_flag_read = true; // actual LATE epoch
-        require(a.parenting_flag == 0, "main arm retains prior effects on reached unsupported nonzero15C");
+        host_require(a.parenting_flag == 0, "main arm retains prior effects on reached unsupported nonzero15C", __COUNTER__);
         a.parenting_receiver = reinterpret_cast<void*>(read(raw, 0x188));
-        require(a.parenting_receiver == internal.actual, "main arm rejects foreign CURRENT188 parenting receiver");
-        live_model(a.parenting_receiver, internal); empty_node(a.parenting_receiver);
+        host_require(a.parenting_receiver == internal.actual, "main arm rejects foreign CURRENT188 parenting receiver", __COUNTER__);
+        host(__COUNTER__, [&] { live_model(a.parenting_receiver, internal); }); host(__COUNTER__, [&] { empty_node(a.parenting_receiver); });
         f.parenting_.parent_argument = 0;
         location(a, 0x00ab879e, Acquired::Boundary::parenting); a.parenting_entered = true;
-        set_native_raw_parent_00b6e680(a.parenting_receiver, f.parenting_, r.parenting, a.parenting);
+        unknown(0x00ab879eu, __COUNTER__, [&]() -> decltype(auto) { return set_native_raw_parent_00b6e680(a.parenting_receiver, f.parenting_, r.parenting, a.parenting); });
         a.parenting_returned = true;
         a.root_flag = byte(raw, 0x15c); a.root_flag_read = true; // FRESH AFTER parenting
-        require(a.root_flag == 0, "main arm retains reached parenting on changed unsupported15C");
+        host_require(a.root_flag == 0, "main arm retains reached parenting on changed unsupported15C", __COUNTER__);
         a.root_receiver = reinterpret_cast<void*>(read(raw, 0x188));
-        require(a.root_receiver == internal.actual, "main arm rejects foreign CURRENT188 root receiver");
-        live_model(a.root_receiver, internal); empty_node(a.root_receiver);
+        host_require(a.root_receiver == internal.actual, "main arm rejects foreign CURRENT188 root receiver", __COUNTER__);
+        host(__COUNTER__, [&] { live_model(a.root_receiver, internal); }); host(__COUNTER__, [&] { empty_node(a.root_receiver); });
         location(a, 0x00ab87b4, Acquired::Boundary::root); a.root_entered = true;
-        propagate_native_node_root_storage_00b6d890(a.root_receiver, nullptr, r.parenting.node.scenes.children);
+        unknown(0x00ab87b4u, __COUNTER__, [&]() -> decltype(auto) { return propagate_native_node_root_storage_00b6d890(a.root_receiver, nullptr, r.parenting.node.scenes.children); });
         a.root_returned = true;
-        require(f.phase_ == Phase::entered && a.phase == Phase::entered && !a.failure,
-            "main section cannot complete after caught reentry or an escaped invocation");
+        host_require(f.phase_ == Phase::entered && a.phase == Phase::entered && !a.failure,
+            "main section cannot complete after caught reentry or an escaped invocation", __COUNTER__);
         f.created_normal_ = f.created_text_ && f.created_mesh_ && f.created_section_ && f.created_material_;
         a.phase = f.phase_ = Phase::complete;
     } catch (...) {
@@ -402,6 +424,19 @@ void ensure_native_gui_text_post_constructor_sections_storage_00ab8530(
         }
         a.phase = f.phase_ = Phase::failed;
         throw; // ALL escapes retain: no inferred native EH, name cleanup, pool rollback or retry.
+    }
+}
+void ensure_native_gui_text_post_constructor_sections_storage_00ab8530(
+    NativeGuiTextRawModelReference& reference, Context& c, Frame& f, Acquired& a,
+    const NativeGuiTextFailureOriginRuntime& runtime) {
+    f.failure_origin_.begin(runtime, &f, 0x00ab8530u);
+    f.failure_runtime_ = &runtime;
+    try {
+        ensure_native_gui_text_post_constructor_sections_storage_00ab8530(reference, c, f, a);
+        f.failure_origin_.complete();
+    } catch (...) {
+        f.failure_origin_.retain_current(runtime); // sticky host survives this unknown fallback
+        throw;
     }
 }
 } // namespace bsp

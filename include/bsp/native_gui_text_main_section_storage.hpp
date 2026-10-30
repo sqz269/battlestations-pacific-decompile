@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/native_gui_text_failure_origin.hpp"
 #include "bsp/native_gui_text_default_widget_lifetime.hpp"
 #include "bsp/native_gui_text_main_geometry_storage.hpp"
 #include "bsp/native_gui_text_primary_model_storage.hpp"
@@ -68,6 +69,7 @@ public:
     NativeGuiTextMainSectionStorageFrame(const NativeGuiTextMainSectionStorageFrame&) = delete;
     NativeGuiTextMainSectionStorageFrame& operator=(const NativeGuiTextMainSectionStorageFrame&) = delete;
     NativeGuiTextMainSectionStoragePhase phase() const noexcept { return phase_; }
+    const NativeGuiTextFailureOrigin& failure_origin() const noexcept { return failure_origin_; }
     // Pure exact constructor-binding/private-phase view, including FRESH.
     // No native payload/provider read, liveness, credit or retirement authority.
     bool matches(const NativeGuiTextMainSectionStorageContext&,
@@ -83,6 +85,10 @@ private:
     friend void ensure_native_gui_text_post_constructor_sections_storage_00ab8530(
         NativeGuiTextRawModelReference&, NativeGuiTextMainSectionStorageContext&,
         NativeGuiTextMainSectionStorageFrame&, NativeGuiTextMainSectionStorageAcquired&);
+    friend void ensure_native_gui_text_post_constructor_sections_storage_00ab8530(
+        NativeGuiTextRawModelReference&, NativeGuiTextMainSectionStorageContext&,
+        NativeGuiTextMainSectionStorageFrame&, NativeGuiTextMainSectionStorageAcquired&,
+        const NativeGuiTextFailureOriginRuntime&);
     NativeGuiTextMainSectionStorageContext& context_;
     NativeGuiTextMainSectionStorageAcquired& acquired_;
     volatile std::uint32_t name_[2];
@@ -93,6 +99,8 @@ private:
     const void* created_section_{};
     const void* created_material_{};
     bool created_normal_{};
+    const NativeGuiTextFailureOriginRuntime* failure_runtime_{};
+    NativeGuiTextFailureOrigin failure_origin_;
 };
 
 // Qualified AB8530 CURRENT-nonnull188 path, main arm AB86CB..AB87B4 ONLY.
@@ -116,4 +124,11 @@ private:
 void ensure_native_gui_text_post_constructor_sections_storage_00ab8530(
     NativeGuiTextRawModelReference&, NativeGuiTextMainSectionStorageContext&,
     NativeGuiTextMainSectionStorageFrame&, NativeGuiTextMainSectionStorageAcquired&);
+// Coupled changed-Text path: SAME qualified own Source runtime and retained
+// Frame. Only concrete added admissions authenticate host cause; all mixed
+// native/provider escapes remain unclassified. No Native issuer is supplied.
+void ensure_native_gui_text_post_constructor_sections_storage_00ab8530(
+    NativeGuiTextRawModelReference&, NativeGuiTextMainSectionStorageContext&,
+    NativeGuiTextMainSectionStorageFrame&, NativeGuiTextMainSectionStorageAcquired&,
+    const NativeGuiTextFailureOriginRuntime&);
 } // namespace bsp
