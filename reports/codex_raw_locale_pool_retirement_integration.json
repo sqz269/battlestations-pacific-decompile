@@ -1,0 +1,203 @@
+{
+  "utc": "2026-10-30T05:32:05.868292+00:00",
+  "scope": "canonical retained Source node-pool owner and raw locale base retirement; no startup caller",
+  "head_before_metadata": "3b53e3ffaa274ec24cf6198265cf43e42ea74af5",
+  "worker_commits": [
+    "c1e76db253095e5217f71f18cfcca19a47e79e27",
+    "aa56020033e2ff98be0efe1ba87b4759b4626f79"
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 MSVC Win32 Release passed exit0",
+    "existing_checks": "2/2 passed",
+    "test_seconds": "14.69",
+    "tests_added": false,
+    "new_body_execution_claim": false,
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "build_log": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\local\\raw_locale_pool_owner_frontier_cc16_20261030\\pool_retirement_coupled_build.log",
+    "bytes": 2369,
+    "sha256": "51a967d004ff77816add90446708f5453256f4335afc5de6376dca0c7a8ed3fb"
+  },
+  "primary_review": "Complete CPP/HPP/docs for both packets reviewed against real providers, Native retirement listing and prior bookend routing.",
+  "pool_peer_review": {
+    "status": "ACCEPT_SOURCE_ONLY",
+    "files": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\raw_locale_pool_binding_review_frame_20261030\\REVIEW.md",
+        "bytes": 3614,
+        "sha256": "bc619a6089d079a7ad2eb25bbfaef68cdfa9192980b660900640f23ea9258f10"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\raw_locale_pool_binding_review_frame_20261030\\pins_final.json",
+        "bytes": 5898,
+        "sha256": "899ad95b7b71d1153943e9730fe994b31dd3590e81aaf829eb46cf3f4fac53fb"
+      }
+    ]
+  },
+  "source_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\src\\game_native_locale_pool.cpp",
+      "bytes": 5830,
+      "sha256": "ef01a5c56a1c61617274c5bcc6021d6785947305e333f4048094f5946aaf73de"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\include\\bsp\\game_native_locale_pool.hpp",
+      "bytes": 1919,
+      "sha256": "969db5c9f80ab1e4b6e5098f43ef1515d0e726fe2aa9e119dfb777cccc989911"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\src\\native_locale_manager_base_retirement.cpp",
+      "bytes": 3475,
+      "sha256": "6debd92e67eba61695a5fc2bd384176bde5181c0841f3b30944fb25250f74e7b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\include\\bsp\\native_locale_manager_base_retirement.hpp",
+      "bytes": 1975,
+      "sha256": "3332d5e49dd229d4a24a90d09e72539db0e616f7bce307e0c947e6c8c722159b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\src\\pool_pool16_cc13.cpp",
+      "bytes": 18874,
+      "sha256": "76a2fc5d1ad2e32c3773a86da635b1c766018f85d9a332f10015842bcddf93c8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\include\\bsp\\pool_pool16_cc13.hpp",
+      "bytes": 5721,
+      "sha256": "d978f4ad6166942062db06d7f495a9dab96743a2d41c69ebf5c9f8a5d95795a0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\src\\game_native_physical_pool.cpp",
+      "bytes": 6623,
+      "sha256": "2cacaa43521df1c3698e633ac5d919f2a34d21f7cb3630589cad07aa4b9f9c90"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\src\\allocator_list.cpp",
+      "bytes": 2682,
+      "sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\src\\native_diagnostic_sink_lifetime.cpp",
+      "bytes": 6035,
+      "sha256": "7ef822175d062d799683312c6a8f9618c1771ec013e7424b48eedd66c7968499"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\src\\native_render_service_base.cpp",
+      "bytes": 11200,
+      "sha256": "5ad0e48f648cdaf3305fd52b58ef068873cf6f1c242683b77053cb1e06206420"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\src\\singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\cmake\\startup.cmake",
+      "bytes": 292273,
+      "sha256": "073665524c4b3f45d13f35eb795fdafc8c7190e87b9df068270933a84f07d0c6"
+    }
+  ],
+  "entries": [
+    {
+      "address": "007365e0",
+      "name": "destroy_native_locale_manager_base_007365e0",
+      "source": "src/native_locale_manager_base_retirement.cpp",
+      "status": "source_reviewed_coupled_win32_pass_explicit_startup_unwired",
+      "original_abi": "ECX actual receiver, no stacked arguments, plain RET, no semantic EAX result.",
+      "documentation": "docs/NATIVE_LOCALE_MANAGER_BASE_RETIREMENT.md",
+      "evidence": "reports/codex_raw_locale_pool_retirement_integration.json; complete primary Source/native schedule review and independent canonical-owner acceptance.",
+      "validation": {
+        "build": "scripts/build.ps1 MSVC Win32 Release passed exit0",
+        "existing_checks": "2/2 passed",
+        "test_seconds": "14.69",
+        "tests_added": false,
+        "new_body_execution_claim": false,
+        "game_validated": false,
+        "abi_compatible": false
+      },
+      "source_ready": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "new_native_body_credit": false,
+      "scope": "qualified_source_owner_and_raw_base_retirement_unwired_startup"
+    },
+    {
+      "address": "00cc8d30",
+      "name": "GameNativeLocalePoolProcess::initialize_once_00cc8d30",
+      "source": "src/game_native_locale_pool.cpp",
+      "status": "source_reviewed_coupled_win32_pass_explicit_startup_unwired",
+      "original_abi": "No explicit stack input; force ECX E1768C then constructor436230, atexit(CD9410), POP ECX/RET. Library EAX bits propagate; Source exposes actual int as new policy.",
+      "documentation": "docs/GAME_NATIVE_LOCALE_POOL.md",
+      "evidence": "reports/codex_raw_locale_pool_retirement_integration.json; complete primary Source/native schedule review and independent canonical-owner acceptance.",
+      "validation": {
+        "build": "scripts/build.ps1 MSVC Win32 Release passed exit0",
+        "existing_checks": "2/2 passed",
+        "test_seconds": "14.69",
+        "tests_added": false,
+        "new_body_execution_claim": false,
+        "game_validated": false,
+        "abi_compatible": false
+      },
+      "source_ready": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "new_native_body_credit": false,
+      "scope": "qualified_source_owner_and_raw_base_retirement_unwired_startup"
+    },
+    {
+      "address": "00cd9410",
+      "name": "GameNativeLocalePoolProcess::destroy_at_exit_00cd9410",
+      "source": "src/game_native_locale_pool.cpp",
+      "status": "source_reviewed_coupled_win32_pass_explicit_startup_unwired",
+      "original_abi": "MOV ECX E1768C; tail JMP435A50; no own RET or stacked argument.",
+      "documentation": "docs/GAME_NATIVE_LOCALE_POOL.md",
+      "evidence": "reports/codex_raw_locale_pool_retirement_integration.json; complete primary Source/native schedule review and independent canonical-owner acceptance.",
+      "validation": {
+        "build": "scripts/build.ps1 MSVC Win32 Release passed exit0",
+        "existing_checks": "2/2 passed",
+        "test_seconds": "14.69",
+        "tests_added": false,
+        "new_body_execution_claim": false,
+        "game_validated": false,
+        "abi_compatible": false
+      },
+      "source_ready": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "new_native_body_credit": false,
+      "scope": "qualified_source_owner_and_raw_base_retirement_unwired_startup"
+    }
+  ],
+  "ghidra_callback_definition": "local/raw_locale_pool_owner_frontier_cc16_20261030/defined_callback.json",
+  "proof_limits": [
+    "One genuine Source pool/list/profile/heap domain and actual atexit result; not Original fixed-address storage or execution of its CRT table.",
+    "Shared-domain lifetime ends before Physical C++ destruction; no global getter change or arbitrary post-window permission.",
+    "Initialization constructs section/table/list only, not slabs, nodes, populated locale or allocated-slot provenance.",
+    "Raw base retirement uses current publication after second manager lookup, clears only on normal unregister return, and keeps captured section/EH ordering.",
+    "Full manager/scalar retirement, loading, canonical F8BC4C host/profile wiring and startup remain open.",
+    "All nine raw Text choices remain FALSE; frozen ac60 hold unchanged; no new tests/probes/game/ABI/runtime/body credit."
+  ],
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved": true,
+    "prior_annotations": "local/ghidra-annotations-20261030T053239Z.json",
+    "defined_callback_range": [
+      "00cd9410",
+      "00cd941a"
+    ],
+    "refreshed_exports": [
+      "007365e0",
+      "00cc8d30",
+      "00cd9410"
+    ],
+    "snapshot_after_function_count_change": {
+      "complete": true,
+      "total_before": 77631,
+      "total_after": 77632,
+      "internal_after": 77190,
+      "callgraph_and_index_rebuilt": true
+    }
+  }
+}
