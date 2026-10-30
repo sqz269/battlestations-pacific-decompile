@@ -1,0 +1,568 @@
+{
+  "schema_version": 1,
+  "packet": "codex-glyph-constructor-slot-origin-audit",
+  "classification": "read-only constructor-phase design and existing-evidence audit; no Source admission",
+  "utc": "2026-10-30T21:50:57.253080+00:00",
+  "baseline": "15310a621205977cfa25402aa14646b7e72e8a10",
+  "separate_host_slice": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+  "owned_files": [
+    "docs/CC16_GLYPH_CONSTRUCTOR_SLOT_ORIGIN_AUDIT.md",
+    "reports/cc16_glyph_constructor_slot_origin_audit.json"
+  ],
+  "read_only_addresses": [
+    "00ab98f0",
+    "00ab9650",
+    "00ab8530"
+  ],
+  "analysis_identity": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_before_listing_batch": "python tools/bsp.py ghidra count; function count77632 unchanged; bsp wrapper verifies target",
+    "new_Ghidra_writes": false,
+    "saved_export_reads_only": true
+  },
+  "findings": [
+    {
+      "id": "CTOR_PHASE_1",
+      "severity": "blocking proposed composition",
+      "finding": "Postconstructor5argAB8530 is the wrong API inside raw93. Raw93 CPP371/NativeAB98D8 calls ctorphase storage_construct85; the later Glyph CPP433/NativeAB9D93 is a separate postconstructor call.",
+      "action": "Use actual raw93 and constructor85 overloads; do not require a completed/bound postconstructor reference while constructor is in flight."
+    },
+    {
+      "id": "CTOR_PHASE_2",
+      "severity": "blocking proposed permission",
+      "finding": "HeaderArm is not constructor-slot permission; public native_eh_state/provider_call and an SDK current object do not prove Native cause. Current Glyph state0 catch reachesAB76F0 on anyCpp escape from an opaque construct call, which may include host work.",
+      "action": "Add a distinct exact slot-home-address arm; host/unknown retain; no Native issuer exists so positive predicate stays false."
+    },
+    {
+      "id": "CTOR_PHASE_3",
+      "severity": "blocking proposed boundary",
+      "finding": "Raw93 Native body has returned before Source completed() checks atCPP372. Waiting for outer construct_00ab9650 normal return leaves added host binding/validation inside constructor slot epoch.",
+      "action": "Private negative-only body-return bridge immediately afterCPP371 beforecompleted(), independently of Origin.complete and public phase."
+    }
+  ],
+  "scope_of_findings": "composition blockers and limitations of existing library contracts, not a regression introduced by8f9; no changes requested to frozen evidence",
+  "source_pins": [
+    {
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "commit": "15310a621205977cfa25402aa14646b7e72e8a10",
+      "format": "exact immutable Git blob bytes; LF Source/text, no working-copy CRLF substitution",
+      "blob_sha1": "acec6947cf7777181a97335456dc5142a1149cae",
+      "bytes": 8477,
+      "sha256": "6a8e8ff45a4415fbdbb81992726f2e9e4fc17c0819fde21c279ac4c3d354b245"
+    },
+    {
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "commit": "15310a621205977cfa25402aa14646b7e72e8a10",
+      "format": "exact immutable Git blob bytes; LF Source/text, no working-copy CRLF substitution",
+      "blob_sha1": "5505123a0d02398d4d4c16873ef87f4f856fb790",
+      "bytes": 19830,
+      "sha256": "f05676b34f28b95194810e4f325cbec759b0ece70b9cb41b38b64efc89d7a96e"
+    },
+    {
+      "path": "include/bsp/native_gui_text_default_storage.hpp",
+      "commit": "15310a621205977cfa25402aa14646b7e72e8a10",
+      "format": "exact immutable Git blob bytes; LF Source/text, no working-copy CRLF substitution",
+      "blob_sha1": "51d97889adc254306247f4ecbdab4361b41533bf",
+      "bytes": 5404,
+      "sha256": "411848bea4eb0f79635bfca06493782d40c0b27cb92f713728d52b48648e119f"
+    },
+    {
+      "path": "src/native_gui_text_default_storage.cpp",
+      "commit": "15310a621205977cfa25402aa14646b7e72e8a10",
+      "format": "exact immutable Git blob bytes; LF Source/text, no working-copy CRLF substitution",
+      "blob_sha1": "766918f8f8e48160ec322045b363b2d9361ae7e4",
+      "bytes": 22565,
+      "sha256": "757647269fba2238edce3723fb7aa870cc4d75c71610d621177a0c581d5a85cf"
+    },
+    {
+      "path": "include/bsp/native_gui_text_storage_construct.hpp",
+      "commit": "15310a621205977cfa25402aa14646b7e72e8a10",
+      "format": "exact immutable Git blob bytes; LF Source/text, no working-copy CRLF substitution",
+      "blob_sha1": "4a426546480d657390ff04d2adbc1f8fe738ec3f",
+      "bytes": 8628,
+      "sha256": "6f142a031781e0c9e5a703abed07967790b4ff8669494330bfffb1bdea9b3876"
+    },
+    {
+      "path": "src/native_gui_text_storage_construct.cpp",
+      "commit": "15310a621205977cfa25402aa14646b7e72e8a10",
+      "format": "exact immutable Git blob bytes; LF Source/text, no working-copy CRLF substitution",
+      "blob_sha1": "702cae62590b20313d953ceb885df8d4a5aed076",
+      "bytes": 32680,
+      "sha256": "d3ae2db948ce9109fea392b6766a6f31b397fcf773256141098c6c49a663d156"
+    },
+    {
+      "path": "include/bsp/native_gui_text_failure_origin.hpp",
+      "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+      "format": "exact immutable Git blob bytes; LF Source/text, no working-copy CRLF substitution",
+      "blob_sha1": "486e60f0d718fd2db3952ccf1834b4606a4624eb",
+      "bytes": 7602,
+      "sha256": "6a60e18b87eb88f502d664423186c555f7545736f6fd4eac40e80d8249d0aa4d"
+    },
+    {
+      "path": "src/native_gui_text_failure_origin.cpp",
+      "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+      "format": "exact immutable Git blob bytes; LF Source/text, no working-copy CRLF substitution",
+      "blob_sha1": "eb0bdc789f0b75ddc829dcae5ad4d16017898278",
+      "bytes": 5461,
+      "sha256": "ef98173370f4bcd4e47855ddcbb9b3ffd4457368da0ab8e4f35130b14bfc006b"
+    },
+    {
+      "path": "include/bsp/native_gui_text_main_section_storage.hpp",
+      "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+      "format": "exact immutable Git blob bytes; LF Source/text, no working-copy CRLF substitution",
+      "blob_sha1": "b5e51a7e4275d4db0b7fc338e818e7aa9f3f2b3f",
+      "bytes": 7926,
+      "sha256": "1c7554fc16cf2432f27f6eef83c8a16bbaaff4531268ee79dfdb52f5efd7104a"
+    },
+    {
+      "path": "src/native_gui_text_main_section_storage.cpp",
+      "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+      "format": "exact immutable Git blob bytes; LF Source/text, no working-copy CRLF substitution",
+      "blob_sha1": "58368eba7e3f5f0513c69956e7d3d75e720899a5",
+      "bytes": 32909,
+      "sha256": "e89c24237751ff554bf57f74223ce44756d1b3b068b4997e03b712f163e348a9"
+    },
+    {
+      "path": "include/bsp/native_gui_text_changed_storage.hpp",
+      "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+      "format": "exact immutable Git blob bytes; LF Source/text, no working-copy CRLF substitution",
+      "blob_sha1": "a7531deb87f433cc115f6a48765622ef109237fe",
+      "bytes": 11813,
+      "sha256": "75a9ebed1b5b9f505ffa2593899d92108c9a687ffdbcc81339f5be888f095b63"
+    },
+    {
+      "path": "src/native_gui_text_changed_storage.cpp",
+      "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+      "format": "exact immutable Git blob bytes; LF Source/text, no working-copy CRLF substitution",
+      "blob_sha1": "87afebe9613ca5cde74452f875afd72202d98083",
+      "bytes": 30553,
+      "sha256": "632288ebfe99bef41e3dcdd2aa3448a0abefa48860b690e2ee5aba2d4acc2517"
+    }
+  ],
+  "existing_evidence_pins": [
+    {
+      "path": "reports/cc16_native_gui_text_glyph_quad_storage.json",
+      "commit": "15310a621205977cfa25402aa14646b7e72e8a10",
+      "format": "exact immutable Git blob bytes; LF Source/text, no working-copy CRLF substitution",
+      "blob_sha1": "25f1de32a95bcdb751068523157befd8e0c1f459",
+      "bytes": 42551,
+      "sha256": "b883d8e032e088dc240bb8768efd4baaf8eadcd421aaebcdfaf73f7c0f1231eb"
+    },
+    {
+      "path": "docs/CC12_NATIVE_GUI_TEXT_RAW_DEFAULT_93.md",
+      "commit": "15310a621205977cfa25402aa14646b7e72e8a10",
+      "format": "exact immutable Git blob bytes; LF Source/text, no working-copy CRLF substitution",
+      "blob_sha1": "9570d3e1417ed81646c999bcc13b9c5e79d8eb29",
+      "bytes": 11418,
+      "sha256": "2484fae3be70cbbf3ce90bc092351de772f72d820b0b7db3d0261bef44004696"
+    },
+    {
+      "path": "reports/cc12_native_gui_text_raw_default_93.json",
+      "commit": "15310a621205977cfa25402aa14646b7e72e8a10",
+      "format": "exact immutable Git blob bytes; LF Source/text, no working-copy CRLF substitution",
+      "blob_sha1": "4e30d673290cc91d50d7af14e90c06e03d2d6b9f",
+      "bytes": 36515,
+      "sha256": "700def83c990859b70466eb2976254c6435ff91243419ad98040215bae7bbc6b"
+    },
+    {
+      "path": "reports/cc12_native_gui_text_raw_sections_85.json",
+      "commit": "15310a621205977cfa25402aa14646b7e72e8a10",
+      "format": "exact immutable Git blob bytes; LF Source/text, no working-copy CRLF substitution",
+      "blob_sha1": "4c5afa302fe8dbae1365e8386ba40b9ba9531521",
+      "bytes": 20804,
+      "sha256": "09df0adaccf84eeada20434703bd1d475dde79dbdd823fa1c29d572ec3ebf97a"
+    },
+    {
+      "path": "docs/CODEX_GUI_TEXT_RAW_MODEL_TRANSPORT.md",
+      "commit": "15310a621205977cfa25402aa14646b7e72e8a10",
+      "format": "exact immutable Git blob bytes; LF Source/text, no working-copy CRLF substitution",
+      "blob_sha1": "5bd7abc9e0c7a28474e004a74f74c156b1eac70e",
+      "bytes": 16596,
+      "sha256": "924e9c5380bfa783bf0c38778e0cef95faa80215697ae00bec1b54c8ed0d14f8"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_TEXT_SINGLE_LINE_STORAGE.md",
+      "commit": "15310a621205977cfa25402aa14646b7e72e8a10",
+      "format": "exact immutable Git blob bytes; LF Source/text, no working-copy CRLF substitution",
+      "blob_sha1": "1fa33fd04f4794641711421664ebcc65a4deb736",
+      "bytes": 14178,
+      "sha256": "fd121c32913b67e09968192422d63ecda4faca94c1a333b98b9152e6d79373fb"
+    },
+    {
+      "path": "reports/cc16_native_vertex_position_storage_independent_review.json",
+      "commit": "15310a621205977cfa25402aa14646b7e72e8a10",
+      "format": "exact immutable Git blob bytes; LF Source/text, no working-copy CRLF substitution",
+      "blob_sha1": "33a04f6187e083b292a73cc59c107671c1c804e7",
+      "bytes": 49323,
+      "sha256": "54c53d4b416a5184600b5d1a35f3572621993f9f830073a333939dc2221a4a84"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_TEXT_FAILURE_ORIGIN_HOST_SLICE.md",
+      "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+      "format": "exact immutable Git blob bytes; LF Source/text, no working-copy CRLF substitution",
+      "blob_sha1": "d853e97e2ea9f07c41945b983cbadb9d4724a6de",
+      "bytes": 10377,
+      "sha256": "ea450188bbc964dcd582ea4b735a6f082f6b7cd59382bb5c965116099a471ea0"
+    },
+    {
+      "path": "reports/cc16_native_gui_text_failure_origin_host_slice.json",
+      "commit": "8f9f9942bfc3bd8f23d385f6269d01375b72511b",
+      "format": "exact immutable Git blob bytes; LF Source/text, no working-copy CRLF substitution",
+      "blob_sha1": "14e77b70ae25adde54c60f783eb749fb3fef2a41",
+      "bytes": 51611,
+      "sha256": "e026a4078eb566cfd7e8ba6c9c65d3d9cb5e060e4168ce275aca5e48b71cb9fa"
+    },
+    {
+      "path": "reports/cc16_native_gui_text_wrapped_storage.json",
+      "commit": "7bb7203c1a135b660eda011a4a22056861d035e9",
+      "format": "exact immutable Git blob bytes; LF Source/text, no working-copy CRLF substitution",
+      "blob_sha1": "5b5572da57297a20dfd8141d34fa4b566d0df1b2",
+      "bytes": 180006,
+      "sha256": "62a70c3897339846240780e50a59f83b43928b1d88e753e7c237b796b7def206"
+    },
+    {
+      "path": "reports/cc16_native_vertex_position_storage.json",
+      "commit": "f7738fe7c757781a3ac15997c80f1930380b8881",
+      "format": "exact immutable Git blob bytes; LF Source/text, no working-copy CRLF substitution",
+      "blob_sha1": "f2ffcb2f431ada81ab5360586b853de7c76f84ae",
+      "bytes": 89938,
+      "sha256": "7d2fa0a4d1e2548c297b020ce93ac0eb6192d7c8802b3d22b739aaa765bc45e9"
+    },
+    {
+      "path": "reports/cc16_native_gui_text_wrapped_position_composition.json",
+      "commit": "0601699dd963d822f272497e193345babf2cad1f",
+      "format": "exact immutable Git blob bytes; LF Source/text, no working-copy CRLF substitution",
+      "blob_sha1": "79caf2320d54f2fbbdd4fafa2b4f597113541cb7",
+      "bytes": 27380,
+      "sha256": "8e9475a0017c3a46d507cf149efcc7085962e767ba1718f52bb71cefcc32ce03"
+    },
+    {
+      "path": "reports/cc16_native_wrapped_vertex_position_composition_independent_review.json",
+      "commit": "15310a621205977cfa25402aa14646b7e72e8a10",
+      "format": "exact immutable Git blob bytes; LF Source/text, no working-copy CRLF substitution",
+      "blob_sha1": "dfb93cd9161875c5a507883802828edf7dcd862a",
+      "bytes": 30903,
+      "sha256": "f39b4474630050f0df9612934104b9afdd460109070e0a9ff496322d16177476"
+    }
+  ],
+  "original_pe": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "format": "installed PE file; no execution",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "matches_immutable_Glyph_baseline": true
+  },
+  "native_ranges": [
+    {
+      "name": "Glyph state0 action",
+      "va": "00cb80b0",
+      "bytes": 8,
+      "sha256": "bc0d1fdba725ced26204885cbe4f6fbf69b164676eda79417fe6fcf87a656ad5",
+      "hex": "8b4d20e938f6dfff"
+    },
+    {
+      "name": "Glyph FuncInfo",
+      "va": "00deeefc",
+      "bytes": 36,
+      "sha256": "0d28587e7799bec05a77638df0c853f23d838f16b734dc26364f1dd93a8e7d07",
+      "hex": "2205931903000000e4eede00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "name": "Glyph unwind map",
+      "va": "00deeee4",
+      "bytes": 24,
+      "sha256": "65d0a3f7149eae76b82869d7537a60e122dbed34cfd4819907036f4f6c5659d3",
+      "hex": "ffffffffb080cb00ffffffffb880cb00ffffffffc080cb00"
+    },
+    {
+      "name": "raw93 FuncInfo/map",
+      "va": "00deee88",
+      "bytes": 92,
+      "sha256": "ffda5d6eae48640feffda394be4e2eee904e21c8edc2accd6d1120075dc84843",
+      "hex": "2205931907000000aceede00000000000000000000000000000000000000000001000000ffffffff4080cb00000000004880cb00010000005680cb00020000006480cb00030000007280cb00040000008080cb00050000008e80cb00"
+    },
+    {
+      "name": "raw93 actions/handler",
+      "va": "00cb8040",
+      "bytes": 102,
+      "sha256": "c2590964b41df7e59bc8f533ef45286298e9175e36014ce74f36d4231b447c9d",
+      "hex": "8b4de0e9e816dfff8b4de081c1ec000000e9dae377ff8b4de081c1f4000000e9bc5c76ff8b4de081c194010000e97eec91ff8b4de081c1a4010000e9b0e377ff8b4de081c1c0010000e9925c76ff8b4de081c1c8010000e9845c76ffb888eede00e99deaf3ff"
+    },
+    {
+      "name": "ctor85 FuncInfo/map",
+      "va": "00deed34",
+      "bytes": 84,
+      "sha256": "0f018a269c614af1d2603728d34dea61d6ea88a3889f3ed3f4f4aff39b9930d2",
+      "hex": "220593190600000058edde00000000000000000000000000000000000000000001000000ffffffff207fcb0000000000287fcb00ffffffff287fcb00ffffffff417fcb00ffffffff497fcb00ffffffff517fcb00"
+    },
+    {
+      "name": "ctor85 actions/handler",
+      "va": "00cb7f20",
+      "bytes": 67,
+      "sha256": "22e6f8d993377ad08ff285d732766fce4aa3e108d3721acef5b1b18558abe9c6",
+      "hex": "8b4de8e998c9ebff8b45e483e0010f840c0000008365e4fe8d4dece9e05d76ffc38b4de8e927b0ebff8d4dece9cf5d76ff8d4dece9c75d76ffb834edde00e9e0ebf3ff"
+    }
+  ],
+  "native_maps": {
+    "Glyph": [
+      {
+        "state": 0,
+        "parent": -1,
+        "action": "00cb80b0"
+      },
+      {
+        "state": 1,
+        "parent": -1,
+        "action": "00cb80b8"
+      },
+      {
+        "state": 2,
+        "parent": -1,
+        "action": "00cb80c0"
+      }
+    ],
+    "raw93": [
+      {
+        "state": 0,
+        "parent": -1,
+        "action": "00cb8040"
+      },
+      {
+        "state": 1,
+        "parent": 0,
+        "action": "00cb8048"
+      },
+      {
+        "state": 2,
+        "parent": 1,
+        "action": "00cb8056"
+      },
+      {
+        "state": 3,
+        "parent": 2,
+        "action": "00cb8064"
+      },
+      {
+        "state": 4,
+        "parent": 3,
+        "action": "00cb8072"
+      },
+      {
+        "state": 5,
+        "parent": 4,
+        "action": "00cb8080"
+      },
+      {
+        "state": 6,
+        "parent": 5,
+        "action": "00cb808e"
+      }
+    ],
+    "constructor85": [
+      {
+        "state": 0,
+        "parent": -1,
+        "action": "00cb7f20"
+      },
+      {
+        "state": 1,
+        "parent": 0,
+        "action": "00cb7f28"
+      },
+      {
+        "state": 2,
+        "parent": -1,
+        "action": "00cb7f28"
+      },
+      {
+        "state": 3,
+        "parent": -1,
+        "action": "00cb7f41"
+      },
+      {
+        "state": 4,
+        "parent": -1,
+        "action": "00cb7f49"
+      },
+      {
+        "state": 5,
+        "parent": -1,
+        "action": "00cb7f51"
+      }
+    ]
+  },
+  "saved_exports": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab98f0\\assembly.txt",
+      "format": "exact saved export on-disk bytes; read only",
+      "bytes": 16685,
+      "sha256": "7165707dcf74507fb24b2d3bfc77de8fa764a33c46fe46ff16aef417efd50bd4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab98f0\\decompiled.c",
+      "format": "exact saved export on-disk bytes; read only",
+      "bytes": 27673,
+      "sha256": "e60343b77713b27a1558718e63f4fa25036734d474cd6eec5ee64bd5fe55e6e6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab98f0\\metadata.json",
+      "format": "exact saved export on-disk bytes; read only",
+      "bytes": 277,
+      "sha256": "9e6f8a9d2057915b9dce2aff06d84f33de58b372d2639ebc7cadfb7831d98bc5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab9650\\assembly.txt",
+      "format": "exact saved export on-disk bytes; read only",
+      "bytes": 4924,
+      "sha256": "e1ce487b311f69edbc6137d3da4c649f83b2abd011967a74239072d221e3cdb5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab9650\\decompiled.c",
+      "format": "exact saved export on-disk bytes; read only",
+      "bytes": 9767,
+      "sha256": "f7a1ac2485063edce1c214f7702f8708c909a72a5d4d31381ab4ed8efad354c4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab9650\\metadata.json",
+      "format": "exact saved export on-disk bytes; read only",
+      "bytes": 268,
+      "sha256": "40b70cbb433dc67164703b96580a77b2baaa2e9458ca26b7b52615193eede3e4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab8530\\assembly.txt",
+      "format": "exact saved export on-disk bytes; read only",
+      "bytes": 5810,
+      "sha256": "887c462778fdc91f8c7335b9ff706d302a6a04f76a109e665d9e0141ac0b6971"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab8530\\decompiled.c",
+      "format": "exact saved export on-disk bytes; read only",
+      "bytes": 7188,
+      "sha256": "c3f6c8be56b48c9ae608e9567af9b88dc5282f351da3001d34f68685b65e17eb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab8530\\metadata.json",
+      "format": "exact saved export on-disk bytes; read only",
+      "bytes": 281,
+      "sha256": "80f30c28bd535ae729c78dea84e4c82e22a051f5f4cb1d94d251f20d6c0aa9b4"
+    }
+  ],
+  "native_order": [
+    "AB9D38allocate",
+    "AB9D3Dhome7=allocation",
+    "AB9D43state0",
+    "AB9D4Factualraw93ifnonnull",
+    "raw93AB98D8ctorphase85",
+    "AB9D68state-1",
+    "AB9D6Chome7=returnedchild",
+    "AB9D70appendADDRESS",
+    "AB9D93separatepostconstructorsections"
+  ],
+  "slot_action": {
+    "action": "00cb80b0",
+    "tail_call_site": "00cb80b3",
+    "target": "00ab76f0",
+    "load": "MOV ECX,[EBP+20] = CURRENT home7",
+    "identity": "actual home ADDRESS and constructor receiver distinct",
+    "allocation_snapshot_is_return_target": false,
+    "consume_before_current_home_read": true,
+    "secondary_stage_is_separate": true
+  },
+  "proposed_api": [
+    "virtual void* NativeGuiTextGlyphQuadStorageCalls::construct_00ab9650(void* actual_allocation, NativeGuiTextGlyphQuadStorageAcquired&, NativeGuiTextFailureConstructorCall&) = 0;",
+    "void* construct_native_gui_text_default_storage_00ab9650(void* actual_destination, NativeGuiTextRawModelDefaultStorageFrame&, NativeGuiTextRawModelDefaultStorageContext&, NativeGuiTextRawModelDefaultStorageAcquired&, NativeGuiTextFailureConstructorCall&);",
+    "void ensure_native_gui_text_sections_storage_00ab8530(void* actual_text, NativeGuiTextRawModelSectionStorageFrame&, NativeGuiTextRawModelSectionStorageContext&, NativeGuiTextRawModelSectionStorageAcquired&, const NativeGuiTextFailureOriginRuntime&);"
+  ],
+  "proposed_scope": [
+    "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+    "src/native_gui_text_glyph_quad_storage.cpp",
+    "include/bsp/native_gui_text_default_storage.hpp",
+    "src/native_gui_text_default_storage.cpp",
+    "include/bsp/native_gui_text_storage_construct.hpp",
+    "src/native_gui_text_storage_construct.cpp",
+    "include/bsp/native_gui_text_failure_origin.hpp",
+    "src/native_gui_text_failure_origin.cpp"
+  ],
+  "proposed_protocol": {
+    "types": [
+      "NativeGuiTextFailureConstructorSlotArm",
+      "NativeGuiTextFailureConstructorCall"
+    ],
+    "header_arm_reused": false,
+    "public_native_flag": false,
+    "slot_arm_fields": [
+      "Glyph invocation identity",
+      "same qualified Source runtime",
+      "actual volatile uint32_t* home7 ADDRESS",
+      "captured constructor receiver",
+      "actual supplier and child invocation",
+      "AB9650callee",
+      "AB98F0/AB9D4Fcaller edge",
+      "current supported-catch SDK actual-object cause",
+      "ordinary primary stage",
+      "still-in-flight negative body boundary"
+    ],
+    "body_return_notification": "private exact raw93 entry, revokes eligibility after ctor85 returns and before completed(); no Native mint/normal credit/Origin.complete",
+    "all_native_permissions_withheld": true,
+    "real_issuer_exists": false,
+    "mixed_provider_is_unknown": true,
+    "host_unknown_is_sticky": true,
+    "diagnostic_exception_ptr_is_identity": false,
+    "old_four_arg_APIs_upgraded": false,
+    "known_old_cleanup_transport": "Existing raw93 terminal/ctor85 noexcept cleanup projection remains an inherited qualification, not Native/FH3 proof or a new policy. No Source change or new cleanup authorization."
+  },
+  "remaining": [
+    "Concrete derived NativeGuiTextGlyphQuadStorageCalls constructor implementation and same-envelope binding not found",
+    "Actual supported Source-runtime catch/PTD/service integration and retention",
+    "Genuine Native cause issuer/operation-edge provenance",
+    "Actual captured receiver vs current slot alias/backing/lifetime proof",
+    "No postconstructor raw122 reference may be fabricated during raw93",
+    "Original FH3/SEH/private stack/secondary transport and game activation unproved"
+  ],
+  "canonical_coordination": {
+    "worker": "/root/frontend_canonical_authority_closure",
+    "independent_analysis_only": true,
+    "agreement": "distinct slot arm; private negative-only raw93 body-return boundary before completed(); actual ctorphase85 vs later Glyph postconstructor85; no derived Calls binding"
+  },
+  "validation": {
+    "production_edits": 0,
+    "CMake_edits": 0,
+    "ledger_edits": 0,
+    "Ghidra_writes": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "game_runs": 0,
+    "process_actions": 0,
+    "prior_receipts_immutable": true,
+    "Source34_getter_caller_evidence_unchanged": true,
+    "exact_installed_PE_EH_bytes_match_historical_evidence": true,
+    "all_current_production_files_unchanged": true
+  },
+  "credit": {
+    "Native": 0,
+    "Original": 0,
+    "new_body": 0,
+    "helper": 0,
+    "vendor": 0,
+    "CG": 0,
+    "duplicate_body": 0,
+    "ABI": 0,
+    "runtime": 0,
+    "activation": 0
+  },
+  "readiness": {
+    "design_scope_finite": true,
+    "implementation_done": false,
+    "production_ready": false,
+    "Native_cleanup_permission": false,
+    "whole_frontend_ready": false
+  },
+  "document_pin": {
+    "path": "docs/CC16_GLYPH_CONSTRUCTOR_SLOT_ORIGIN_AUDIT.md",
+    "format": "authored audit document exact UTF-8 LF on-disk bytes; prospective Git blob bytes",
+    "bytes": 9590,
+    "sha256": "b87d0b6867b7ce84220b24c3e6f127b0997c31296a457cb99860c56f93d6c0db"
+  }
+}
