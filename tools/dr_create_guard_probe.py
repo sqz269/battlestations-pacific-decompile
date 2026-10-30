@@ -14,6 +14,7 @@ import shutil
 import struct
 import subprocess
 import time
+import traceback
 import winreg
 from ctypes import wintypes
 
@@ -431,21 +432,40 @@ def main():
                 raise RuntimeError("Controlled stop left jobs active before cleanup")
             report["controlled_trace_stop_verified"] = True
     except BaseException as exc:
-        report.update(passed=False, error=str(exc))
+        report.update(passed=False, error=str(exc), exception_type=type(exc).__name__,
+                      exception_traceback=traceback.format_exc(), cleanup_pending=True)
+        # Preserve the triggering failure even if a subsequent cleanup check fails.
+        g.write_receipt(root / "result.json", report)
     finally:
         for handle in reversed(jobs):
             g.K.TerminateJobObject(handle, 0xe0000022)
         # Also cover failure between creating the suspended helper and assigning
-        # its job. This PI was returned by our own CreateProcessAsUserW only.
+        # its job. Job termination is asynchronous: reap it before a fallback.
+        # This PI was returned by our own CreateProcessAsUserW only.
+        helper_termination_error = 0
         if pi.hProcess and g.K.WaitForSingleObject(pi.hProcess, 0) != 0:
-            g.checked(g.K.TerminateProcess(pi.hProcess, 0xe0000022), "terminate owned helper")
-            g.checked(g.K.WaitForSingleObject(pi.hProcess, 5000) == 0, "owned helper stopped")
+            if g.K.WaitForSingleObject(pi.hProcess, 5000) != 0:
+                if not g.K.TerminateProcess(pi.hProcess, 0xe0000022):
+                    helper_termination_error = C.get_last_error()
+                if g.K.WaitForSingleObject(pi.hProcess, 5000) != 0:
+                    report.update(passed=False, cleanup_pending=True,
+                                  cleanup_error="Owned helper did not signal after job/process termination")
+                    g.write_receipt(root / "result.json", report)
+                    raise RuntimeError(report["cleanup_error"])
         deadline = time.monotonic() + 10
         while jobs and any(active(handle) for handle in jobs) and time.monotonic() < deadline:
             time.sleep(.05)
         report["final_job_active"] = [active(handle) for handle in jobs]
         if any(report["final_job_active"]):
-            raise RuntimeError("Owned job not empty; refusing source-lock cleanup")
+            report.update(passed=False, cleanup_pending=True,
+                          cleanup_error="Owned job not empty; refusing source-lock cleanup")
+            g.write_receipt(root / "result.json", report)
+            raise RuntimeError(report["cleanup_error"])
+        if helper_termination_error:
+            if helper_termination_error == 5 and g.K.WaitForSingleObject(pi.hProcess, 0) == 0:
+                report["terminated_helper_access_denied_race"] = True
+            else:
+                report.update(passed=False, cleanup_error=f"TerminateProcess error {helper_termination_error}")
         for handle in duplicates:
             g.K.SetHandleInformation(handle, 2, 0)
             g.close(handle)
@@ -460,7 +480,7 @@ def main():
                 final_sink.index_high == sink_info.index_high and final_sink.index_low == sink_info.index_low)
         for handle in (pi.hThread, pi.hProcess, *jobs, token, sink):
             g.close(handle)
-        report.update(protected_fixture_unchanged=source.exists() and g.sha(source) == source_hash,
+        report.update(cleanup_pending=False, protected_fixture_unchanged=source.exists() and g.sha(source) == source_hash,
             target_disk_unchanged=g.sha(target) == report["target_sha256"],
             sdk_disk_unchanged=all(g.sha(dr / path) == value for path, value in sdk_hashes.items()), ended_unix=time.time())
         report["passed"] = bool(report.get("passed") and report["protected_fixture_unchanged"] and report["sdk_disk_unchanged"] and
