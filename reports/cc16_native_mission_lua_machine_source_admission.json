@@ -1,0 +1,748 @@
+{
+  "status": "primary_independent_source_common_build_actual_entry_link_emitted_checks_passed_unactivated",
+  "candidate": "041540774d60ad7b95c59496795b97fb16d807ae",
+  "published_base": "3d861b9ac16576a155de34441993ea68fe393e18",
+  "source_build_head": "c067f502f163510e7f65534b4aff1ef2cc92e3ce",
+  "source_pins": [
+    {
+      "path": "include/bsp/native_mission_lua_machine_storage.hpp",
+      "bytes": 3489,
+      "sha256": "787c3ccc2a7ccda984170757c7a429b84255fd3164c379d637531367dfd54b7a",
+      "git_blob": "4d932436aba4ffef1b6bf68f473368cd6d66340c"
+    },
+    {
+      "path": "src/native_mission_lua_machine_storage.cpp",
+      "bytes": 2887,
+      "sha256": "4189c5e81dd20abf3ae5193df4fe693f91c037d9c935cb73c0537fbc07c6c559",
+      "git_blob": "5b3b7b5b9b5e912ed313cc1e96507df5a6767598"
+    }
+  ],
+  "retained_author_path_or_Git_sha256_checks": 32,
+  "unchanged_dependency_Git_pins": 8,
+  "historical_archive_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\bsp_lua511.lib",
+      "author_historical_sha256": "5c85533230b079a93921c0c445da3da39c0c3f22d02b9a6bac0b7730d6460125",
+      "current_sha256": "5c85533230b079a93921c0c445da3da39c0c3f22d02b9a6bac0b7730d6460125",
+      "unchanged": true,
+      "qualification": "Core changed during current integration; positive current entry link below replaces any old whole-archive identity claim."
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\bsp_core.lib",
+      "author_historical_sha256": "06e9ae9aaa8d5c9d07e3b0329a4e4e8a6cc210cdc12eb3a9a355bf850a92a0e3",
+      "current_sha256": "e657ab2d8fdee8b9459ffe98ec8e9f134c1624f74a288721404010bc59107775",
+      "unchanged": false,
+      "qualification": "Core changed during current integration; positive current entry link below replaces any old whole-archive identity claim."
+    }
+  ],
+  "common_build": {
+    "target": "MSVC Win32 Release",
+    "BSP_CL_MP": 2,
+    "BSP_PCH": "ON",
+    "existing_suites": "2/2",
+    "seconds": 11.83
+  },
+  "emitted": {
+    "constructor": {
+      "symbol": "?construct_native_mission_lua_machine_006b8740@bsp@@YAPAXPAX@Z",
+      "strict_bytes": 123,
+      "common_bytes": 124,
+      "strict_author_code_relocations_exact": true,
+      "common_hex": "558bec568b750857c7069483cf00e800000000680000000050894604e8000000008b46046a646a0650e800000000a10400000083c414bf0000000085c07433906a00508b460450e8000000008b0f8b46045150e8000000008b46046a006a0150e8000000008b470c8d7f0883c42085c075ce5f8bc6c64608015e5dc3",
+      "common_relocations": [
+        [
+          15,
+          20,
+          "_luaL_newstate"
+        ],
+        [
+          20,
+          6,
+          "?lua_machine_panic_006b8720@cc13_seg29@bsp@@YAHPAUlua_State@@@Z"
+        ],
+        [
+          29,
+          20,
+          "_lua_atpanic"
+        ],
+        [
+          42,
+          20,
+          "_lua_gc"
+        ],
+        [
+          47,
+          6,
+          "?libraries@?anonymous@bsp@@3SDULibraryRow@12@D"
+        ],
+        [
+          55,
+          6,
+          "?libraries@?anonymous@bsp@@3SDULibraryRow@12@D"
+        ],
+        [
+          72,
+          20,
+          "_lua_pushcclosure"
+        ],
+        [
+          84,
+          20,
+          "_lua_pushstring"
+        ],
+        [
+          97,
+          20,
+          "_lua_call"
+        ]
+      ],
+      "common_instructions": [
+        {
+          "offset": 0,
+          "hex": "55",
+          "text": "push ebp"
+        },
+        {
+          "offset": 1,
+          "hex": "8bec",
+          "text": "mov ebp, esp"
+        },
+        {
+          "offset": 3,
+          "hex": "56",
+          "text": "push esi"
+        },
+        {
+          "offset": 4,
+          "hex": "8b7508",
+          "text": "mov esi, dword ptr [ebp + 8]"
+        },
+        {
+          "offset": 7,
+          "hex": "57",
+          "text": "push edi"
+        },
+        {
+          "offset": 8,
+          "hex": "c7069483cf00",
+          "text": "mov dword ptr [esi], 0xcf8394"
+        },
+        {
+          "offset": 14,
+          "hex": "e800000000",
+          "text": "call 0x13"
+        },
+        {
+          "offset": 19,
+          "hex": "6800000000",
+          "text": "push 0"
+        },
+        {
+          "offset": 24,
+          "hex": "50",
+          "text": "push eax"
+        },
+        {
+          "offset": 25,
+          "hex": "894604",
+          "text": "mov dword ptr [esi + 4], eax"
+        },
+        {
+          "offset": 28,
+          "hex": "e800000000",
+          "text": "call 0x21"
+        },
+        {
+          "offset": 33,
+          "hex": "8b4604",
+          "text": "mov eax, dword ptr [esi + 4]"
+        },
+        {
+          "offset": 36,
+          "hex": "6a64",
+          "text": "push 0x64"
+        },
+        {
+          "offset": 38,
+          "hex": "6a06",
+          "text": "push 6"
+        },
+        {
+          "offset": 40,
+          "hex": "50",
+          "text": "push eax"
+        },
+        {
+          "offset": 41,
+          "hex": "e800000000",
+          "text": "call 0x2e"
+        },
+        {
+          "offset": 46,
+          "hex": "a104000000",
+          "text": "mov eax, dword ptr [4]"
+        },
+        {
+          "offset": 51,
+          "hex": "83c414",
+          "text": "add esp, 0x14"
+        },
+        {
+          "offset": 54,
+          "hex": "bf00000000",
+          "text": "mov edi, 0"
+        },
+        {
+          "offset": 59,
+          "hex": "85c0",
+          "text": "test eax, eax"
+        },
+        {
+          "offset": 61,
+          "hex": "7433",
+          "text": "je 0x72"
+        },
+        {
+          "offset": 63,
+          "hex": "90",
+          "text": "nop "
+        },
+        {
+          "offset": 64,
+          "hex": "6a00",
+          "text": "push 0"
+        },
+        {
+          "offset": 66,
+          "hex": "50",
+          "text": "push eax"
+        },
+        {
+          "offset": 67,
+          "hex": "8b4604",
+          "text": "mov eax, dword ptr [esi + 4]"
+        },
+        {
+          "offset": 70,
+          "hex": "50",
+          "text": "push eax"
+        },
+        {
+          "offset": 71,
+          "hex": "e800000000",
+          "text": "call 0x4c"
+        },
+        {
+          "offset": 76,
+          "hex": "8b0f",
+          "text": "mov ecx, dword ptr [edi]"
+        },
+        {
+          "offset": 78,
+          "hex": "8b4604",
+          "text": "mov eax, dword ptr [esi + 4]"
+        },
+        {
+          "offset": 81,
+          "hex": "51",
+          "text": "push ecx"
+        },
+        {
+          "offset": 82,
+          "hex": "50",
+          "text": "push eax"
+        },
+        {
+          "offset": 83,
+          "hex": "e800000000",
+          "text": "call 0x58"
+        },
+        {
+          "offset": 88,
+          "hex": "8b4604",
+          "text": "mov eax, dword ptr [esi + 4]"
+        },
+        {
+          "offset": 91,
+          "hex": "6a00",
+          "text": "push 0"
+        },
+        {
+          "offset": 93,
+          "hex": "6a01",
+          "text": "push 1"
+        },
+        {
+          "offset": 95,
+          "hex": "50",
+          "text": "push eax"
+        },
+        {
+          "offset": 96,
+          "hex": "e800000000",
+          "text": "call 0x65"
+        },
+        {
+          "offset": 101,
+          "hex": "8b470c",
+          "text": "mov eax, dword ptr [edi + 0xc]"
+        },
+        {
+          "offset": 104,
+          "hex": "8d7f08",
+          "text": "lea edi, [edi + 8]"
+        },
+        {
+          "offset": 107,
+          "hex": "83c420",
+          "text": "add esp, 0x20"
+        },
+        {
+          "offset": 110,
+          "hex": "85c0",
+          "text": "test eax, eax"
+        },
+        {
+          "offset": 112,
+          "hex": "75ce",
+          "text": "jne 0x40"
+        },
+        {
+          "offset": 114,
+          "hex": "5f",
+          "text": "pop edi"
+        },
+        {
+          "offset": 115,
+          "hex": "8bc6",
+          "text": "mov eax, esi"
+        },
+        {
+          "offset": 117,
+          "hex": "c6460801",
+          "text": "mov byte ptr [esi + 8], 1"
+        },
+        {
+          "offset": 121,
+          "hex": "5e",
+          "text": "pop esi"
+        },
+        {
+          "offset": 122,
+          "hex": "5d",
+          "text": "pop ebp"
+        },
+        {
+          "offset": 123,
+          "hex": "c3",
+          "text": "ret "
+        }
+      ]
+    },
+    "scalar": {
+      "symbol": "?delete_native_mission_lua_machine_006b87c0@bsp@@YAPAXPAXI@Z",
+      "strict_bytes": 52,
+      "common_bytes": 54,
+      "strict_author_code_relocations_exact": true,
+      "common_hex": "558bec568b75088a4608c7069483cf0084c0740c8b460450e80000000083c4048a4d0cf6c101740956e80000000083c4048bc65e5dc3",
+      "common_relocations": [
+        [
+          25,
+          20,
+          "_lua_close"
+        ],
+        [
+          42,
+          20,
+          "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+        ]
+      ],
+      "common_instructions": [
+        {
+          "offset": 0,
+          "hex": "55",
+          "text": "push ebp"
+        },
+        {
+          "offset": 1,
+          "hex": "8bec",
+          "text": "mov ebp, esp"
+        },
+        {
+          "offset": 3,
+          "hex": "56",
+          "text": "push esi"
+        },
+        {
+          "offset": 4,
+          "hex": "8b7508",
+          "text": "mov esi, dword ptr [ebp + 8]"
+        },
+        {
+          "offset": 7,
+          "hex": "8a4608",
+          "text": "mov al, byte ptr [esi + 8]"
+        },
+        {
+          "offset": 10,
+          "hex": "c7069483cf00",
+          "text": "mov dword ptr [esi], 0xcf8394"
+        },
+        {
+          "offset": 16,
+          "hex": "84c0",
+          "text": "test al, al"
+        },
+        {
+          "offset": 18,
+          "hex": "740c",
+          "text": "je 0x20"
+        },
+        {
+          "offset": 20,
+          "hex": "8b4604",
+          "text": "mov eax, dword ptr [esi + 4]"
+        },
+        {
+          "offset": 23,
+          "hex": "50",
+          "text": "push eax"
+        },
+        {
+          "offset": 24,
+          "hex": "e800000000",
+          "text": "call 0x1d"
+        },
+        {
+          "offset": 29,
+          "hex": "83c404",
+          "text": "add esp, 4"
+        },
+        {
+          "offset": 32,
+          "hex": "8a4d0c",
+          "text": "mov cl, byte ptr [ebp + 0xc]"
+        },
+        {
+          "offset": 35,
+          "hex": "f6c101",
+          "text": "test cl, 1"
+        },
+        {
+          "offset": 38,
+          "hex": "7409",
+          "text": "je 0x31"
+        },
+        {
+          "offset": 40,
+          "hex": "56",
+          "text": "push esi"
+        },
+        {
+          "offset": 41,
+          "hex": "e800000000",
+          "text": "call 0x2e"
+        },
+        {
+          "offset": 46,
+          "hex": "83c404",
+          "text": "add esp, 4"
+        },
+        {
+          "offset": 49,
+          "hex": "8bc6",
+          "text": "mov eax, esi"
+        },
+        {
+          "offset": 51,
+          "hex": "5e",
+          "text": "pop esi"
+        },
+        {
+          "offset": 52,
+          "hex": "5d",
+          "text": "pop ebp"
+        },
+        {
+          "offset": 53,
+          "hex": "c3",
+          "text": "ret "
+        }
+      ]
+    }
+  },
+  "normal_shape_qualification": "Common124/54 versus strict123/52 use balanced ordinary EBP frames; exact actual field/call/read/store/loop/free epochs checked; no whole-object byte identity.",
+  "native_disk_blocks_rechecked": 7,
+  "core_link": {
+    "executed": false,
+    "manifest_embedded": true,
+    "entries": {
+      "constructor": {
+        "symbol": "?construct_native_mission_lua_machine_006b8740@bsp@@YAPAXPAX@Z",
+        "address": 4198480,
+        "object": "bsp_core:native_mission_lua_machine_storage.obj"
+      },
+      "scalar": {
+        "symbol": "?delete_native_mission_lua_machine_006b87c0@bsp@@YAPAXPAXI@Z",
+        "address": 4198608,
+        "object": "bsp_core:native_mission_lua_machine_storage.obj"
+      },
+      "_luaL_newstate": {
+        "symbol": "_luaL_newstate",
+        "address": 4242656,
+        "object": "bsp_lua511:lauxlib.obj"
+      },
+      "_lua_atpanic": {
+        "symbol": "_lua_atpanic",
+        "address": 4234224,
+        "object": "bsp_lua511:lapi.obj"
+      },
+      "_lua_gc": {
+        "symbol": "_lua_gc",
+        "address": 4234704,
+        "object": "bsp_lua511:lapi.obj"
+      },
+      "_lua_pushcclosure": {
+        "symbol": "_lua_pushcclosure",
+        "address": 4236272,
+        "object": "bsp_lua511:lapi.obj"
+      },
+      "_lua_pushstring": {
+        "symbol": "_lua_pushstring",
+        "address": 4236704,
+        "object": "bsp_lua511:lapi.obj"
+      },
+      "_lua_call": {
+        "symbol": "_lua_call",
+        "address": 4234256,
+        "object": "bsp_lua511:lapi.obj"
+      },
+      "_lua_close": {
+        "symbol": "_lua_close",
+        "address": 4233120,
+        "object": "bsp_lua511:lstate.obj"
+      },
+      "_lua_gettop": {
+        "symbol": "_lua_gettop",
+        "address": 4235296,
+        "object": "bsp_lua511:lapi.obj"
+      },
+      "_lua_tolstring": {
+        "symbol": "_lua_tolstring",
+        "address": 4238560,
+        "object": "bsp_lua511:lapi.obj"
+      },
+      "_luaopen_base": {
+        "symbol": "_luaopen_base",
+        "address": 4209424,
+        "object": "bsp_lua511:lbaselib.obj"
+      },
+      "_luaopen_table": {
+        "symbol": "_luaopen_table",
+        "address": 4211888,
+        "object": "bsp_lua511:ltablib.obj"
+      },
+      "_luaopen_io": {
+        "symbol": "_luaopen_io",
+        "address": 4216064,
+        "object": "bsp_lua511:liolib.obj"
+      },
+      "_luaopen_os": {
+        "symbol": "_luaopen_os",
+        "address": 4218976,
+        "object": "bsp_lua511:loslib.obj"
+      },
+      "_luaopen_string": {
+        "symbol": "_luaopen_string",
+        "address": 4223440,
+        "object": "bsp_lua511:lstrlib.obj"
+      },
+      "_luaopen_math": {
+        "symbol": "_luaopen_math",
+        "address": 4229072,
+        "object": "bsp_lua511:lmathlib.obj"
+      },
+      "_luaopen_debug": {
+        "symbol": "_luaopen_debug",
+        "address": 4232544,
+        "object": "bsp_lua511:ldblib.obj"
+      },
+      "panic": {
+        "symbol": "?lua_machine_panic_006b8720@cc13_seg29@bsp@@YAHPAUlua_State@@@Z",
+        "address": 4199024,
+        "object": "bsp_core:settings_seg29_cc13.obj"
+      },
+      "allocate": {
+        "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+        "address": 4198896,
+        "object": "bsp_core:singleton_lifetime.obj"
+      },
+      "free": {
+        "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "address": 4198992,
+        "object": "bsp_core:singleton_lifetime.obj"
+      }
+    },
+    "table": [
+      {
+        "name": "",
+        "opener": "_luaopen_base",
+        "address": 4209424
+      },
+      {
+        "name": "table",
+        "opener": "_luaopen_table",
+        "address": 4211888
+      },
+      {
+        "name": "io",
+        "opener": "_luaopen_io",
+        "address": 4216064
+      },
+      {
+        "name": "os",
+        "opener": "_luaopen_os",
+        "address": 4218976
+      },
+      {
+        "name": "string",
+        "opener": "_luaopen_string",
+        "address": 4223440
+      },
+      {
+        "name": "math",
+        "opener": "_luaopen_math",
+        "address": 4229072
+      },
+      {
+        "name": "debug",
+        "opener": "_luaopen_debug",
+        "address": 4232544
+      }
+    ],
+    "table_bytes": 64,
+    "null_terminator_bytes": 8,
+    "strict_common_table_relocations_exact": true,
+    "fourteen_DIR32_relocations": true,
+    "final_PE_both_common_functions_and_all_relocations_exact": true
+  },
+  "frozen_artifacts": [
+    {
+      "path": "local/function_source_batch8/artifacts/native_mission_lua_machine_storage.obj",
+      "bytes": 4020,
+      "sha256": "68a0a4cf980920bea21e078631eaefb80fe80c35e350c15f00da5c25fe116a41",
+      "copied_from": "build/win32/bsp_core.dir/Release/native_mission_lua_machine_storage.obj"
+    },
+    {
+      "path": "local/function_source_batch8/artifacts/settings_seg29_cc13.obj",
+      "bytes": 28873,
+      "sha256": "01015c1e8e2144a6615908c76ba560d8a3e68df49f33775e8610f3f972fc06f9",
+      "copied_from": "build/win32/bsp_core.dir/Release/settings_seg29_cc13.obj"
+    },
+    {
+      "path": "local/function_source_batch8/artifacts/singleton_lifetime.obj",
+      "bytes": 33008,
+      "sha256": "386824ba4b5224ce24dfa43d84dd09b6c8b1fc64e02011998109d91cdc72171f",
+      "copied_from": "build/win32/bsp_core.dir/Release/singleton_lifetime.obj"
+    },
+    {
+      "path": "local/function_source_batch8/artifacts/bsp_game.exe",
+      "bytes": 7497216,
+      "sha256": "20c2d4c770203e7658dc8c399f2b2b9cc3b550e3676e974cbf7b4930fbc6e790",
+      "copied_from": "build/win32/Release/bsp_game.exe"
+    },
+    {
+      "path": "local/function_source_batch8/artifacts/bsp_lua511.lib",
+      "bytes": 455792,
+      "sha256": "5c85533230b079a93921c0c445da3da39c0c3f22d02b9a6bac0b7730d6460125",
+      "copied_from": "build/win32/Release/bsp_lua511.lib"
+    },
+    {
+      "path": "local/function_source_batch8/artifacts/machine_strict.obj",
+      "bytes": 4391,
+      "sha256": "da2a12c12ad604448415f5fb48d838460b63b6555885965ac78208c885dbacb6",
+      "copied_from": "local/function_source_batch8/machine_strict.obj"
+    },
+    {
+      "path": "local/function_source_batch8/artifacts/machine_strict.asm",
+      "bytes": 9459,
+      "sha256": "1a9cd2ea73dc8bdd7d2c8482b921e6a93d6bf0f0192d1e1e6b5404f4273fb72d",
+      "copied_from": "local/function_source_batch8/machine_strict.asm"
+    },
+    {
+      "path": "local/function_source_batch8/artifacts/strict.cmd",
+      "bytes": 430,
+      "sha256": "a65832e1886ab9935fa5c1a2ce94109149b3ff0c3b3fbd7ad4fe9d86e26cf96f",
+      "copied_from": "local/function_source_batch8/strict.cmd"
+    },
+    {
+      "path": "local/function_source_batch8/artifacts/entries_probe.exe",
+      "bytes": 211456,
+      "sha256": "fba020e123bed8b33333e8b3ace1473558c60897e51bcd12ccdf4a4ec0145d43",
+      "copied_from": "local/function_source_batch8/entries_probe.exe"
+    },
+    {
+      "path": "local/function_source_batch8/artifacts/entries_probe.obj",
+      "bytes": 1587,
+      "sha256": "4981dea42195526a6a6208e2d5d45e9d6e9e645dc15a47380b4c0332dbd89eaf",
+      "copied_from": "local/function_source_batch8/entries_probe.obj"
+    },
+    {
+      "path": "local/function_source_batch8/artifacts/entries_probe.map",
+      "bytes": 287390,
+      "sha256": "6f53fbecbade257e046a2c12c7c3594934217a2c943428bd6ee94a848c1a558c",
+      "copied_from": "local/function_source_batch8/entries_probe.map"
+    },
+    {
+      "path": "local/function_source_batch8/artifacts/entries_probe.cpp",
+      "bytes": 437,
+      "sha256": "aa15c26746852fd307c1ecee0af2b60e95a147d66f5b10d0caa4e18bfb3cb620",
+      "copied_from": "local/function_source_batch8/entries_probe.cpp"
+    },
+    {
+      "path": "local/function_source_batch8/artifacts/entries_probe.cmd",
+      "bytes": 871,
+      "sha256": "d522b8a795a146ec0e4fd2c39adfffeb637b369a6b18a936d03d122a11cfc83f",
+      "copied_from": "local/function_source_batch8/entries_probe.cmd"
+    },
+    {
+      "path": "local/function_source_batch8/artifacts/build.log",
+      "bytes": 2635,
+      "sha256": "36b9c5308faf309946480566c9de7118531541446cf317f2dd274281cc857884",
+      "copied_from": "local/function_source_batch8/build.log"
+    },
+    {
+      "path": "local/function_source_batch8/artifacts/link.log",
+      "bytes": 19,
+      "sha256": "48d974da562e4793f8ff5dad5377207422c2b5093bd7c730baf580da948db910",
+      "copied_from": "local/function_source_batch8/link.log"
+    },
+    {
+      "path": "local/function_source_batch8/artifacts/machine_common.txt",
+      "bytes": 14413,
+      "sha256": "dbec32857ab6178f7a7ad7a09aac5618ccdd901a3a95364f612a903ac002fe12",
+      "copied_from": "local/function_source_batch8/machine_common.txt"
+    }
+  ],
+  "limits": [
+    "Raw genuine0Ch backing must have matching canonical malloc/free domain and independently retained VM/callback/provider custody.",
+    "No state-null guard/rollback/retry/automatic close after ctor failure; owns published only at final success. Flags0 closes but leaves stale fields.",
+    "Real linked Lua error/panic/longjmp/finalizer/OOM policy; foreign C++ escape does not prove interpreter reuse/diagnostic close.",
+    "Numerical CF8394 is identity data, not callable table or authentication. No884BE0/8844F0 host adoption,560bindings,queue/payload or full Game closure.",
+    "Public Source transport is distinct from Native register/stack/flags/private ABI/FH3/SEH/fault/terminal behavior. No body or gameplay execution."
+  ],
+  "fixture_tested": false,
+  "abi_compatible": false,
+  "game_validated": false,
+  "activated": false,
+  "new_native_vendor_duplicate_body_credit": 0,
+  "independent_review": "bc0553b17559c63bcf5c33f5b92d56028e4d058d",
+  "independent_review_retained_receipts_checked": 48,
+  "ghidra": {
+    "prior_annotations": "local/ghidra-annotations-20261030T035624Z.json",
+    "names_and_prior_comments_preserved": true,
+    "project_saved": true,
+    "affected_exports_refreshed": true,
+    "index_rebuilt": true
+  }
+}
