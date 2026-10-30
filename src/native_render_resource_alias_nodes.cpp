@@ -4,6 +4,7 @@
 #include <cstring>
 #include <new>
 #include <type_traits>
+#include <intrin.h>
 
 namespace bsp {
 namespace {
@@ -30,6 +31,20 @@ void resize_fresh_header(void* destination, std::uint32_t requested,
 
 void resize_fresh_header(void* destination, std::uint32_t requested, NativeStringRawPoolContext& pool) {
     resize_native_string_header_0041dd40(destination, pool, requested, true);
+}
+
+template<class T> T read_raw(const void* header, std::size_t offset) noexcept {
+    T value;
+    _ReadWriteBarrier();
+    std::memcpy(&value, static_cast<const std::byte*>(header) + offset, sizeof value);
+    _ReadWriteBarrier();
+    return value;
+}
+
+template<class T> void write_raw(void* header, std::size_t offset, T value) noexcept {
+    _ReadWriteBarrier();
+    std::memcpy(static_cast<std::byte*>(header) + offset, &value, sizeof value);
+    _ReadWriteBarrier();
 }
 
 void resize_fresh_header(void* destination, std::uint32_t requested, SizedStoragePool& pool) {
@@ -122,7 +137,20 @@ NativeRenderResourceAliasNode* allocate_native_render_alias_node_004ce6f0(
 }
 
 void construct_native_render_alias_string_0044bcb0(void* d, const void* s, NativeStringRawPoolContext& pool) {
-    construct_alias_string_with_pool(d, s, pool);
+    if (!d) return;
+    const bool same_header = d == s;
+    write_raw<std::uint32_t>(d, 0, 0);
+    write_raw<char*>(d, 4, nullptr);
+    if (same_header) return;
+    resize_fresh_header(d, read_raw<std::uint32_t>(s, 0), pool);
+    if (read_raw<std::uint32_t>(s, 0) != 0) {
+        const auto copied = read_raw<std::uint32_t>(d, 0);
+        auto* current_source = read_raw<char*>(s, 4);
+        auto* current_destination = read_raw<char*>(d, 4);
+        if (copied != 0) {
+            std::memmove(current_destination, current_source, copied);
+        }
+    }
 }
 NativeRenderResourceAliasNode* allocate_native_render_alias_node_004ce6f0(
     NativeRenderResourceAliasNode* next, NativeRenderResourceAliasNode* previous,

@@ -1,0 +1,47 @@
+{
+  "status": "source_correction_independently_reviewed_strict_objects_and_joined_win32_pass",
+  "independent_reviews": ["gui_frame_lifetime_ACCEPT_SOURCE_CODE_exact_five_source_pins", "gameplay_review_f647b54a17f6fd2ccbd57ff7f9204863048f5cfe7a78acbfbff489cb0439c5a1"],
+  "addresses": ["00450540", "00450180", "0044f410"],
+  "source_hashes": {
+    "src/native_string_vector_append.cpp": "81cf03c0ab59a02f770a9697670acc7a7fb5cc0cacc1b072c1e20bc376121020",
+    "src/native_string_vector_insert_one.cpp": "207ce311f98916da8228e3798740bebb17223596f217c176a65c5489de6d9071",
+    "src/native_string_vector_insert.cpp": "5fcdd68faeb35a8259eb04c75fb30ae84b71bb8992341bdcd796dee4496f2e5f"
+  },
+  "inverse_body_projections": 3,
+  "lower_provider_preservation": "seven_unchanged_two_separate_alias_range_corrections",
+  "changed_scope": "local_word_put_helpers_and_includes_only",
+  "strict_objects": {
+    "count": 3,
+    "exit_codes": [0, 0, 0],
+    "machine": "014C",
+    "append_sha256": "05e3b913914fa68de21c39ab67deb04d642a05b30e0cf9c8121c81b4162cbfec",
+    "insert_one_sha256": "61efb5124436b788f2fd4fdccb3484feee24cde07246fa7023c6861587b8d3b1",
+    "insert_sha256": "b4cf6e33a6edc58dc00956583229d8af990e1d06a90863fda76fd19f122ff0bf"
+  },
+  "joined_build": {
+    "base_head": "83c7f6b1af1cfbb794f827390612331a13b6fd94",
+    "tree": "five_qualified_source_files_pinned_in_two_field_reports",
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "existing_checks_passed": 2,
+    "existing_checks_total": 2,
+    "ctest_seconds": 9.95,
+    "log": "local/checked_string_vector_field_qualification_cc16_20261030/build.log"
+  },
+  "latest_joined_build": {
+    "base_head": "6f786fd071665b17554e6e60748192d80601bad8",
+    "five_source_pins_unchanged": true,
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "existing_checks_passed": 2,
+    "existing_checks_total": 2,
+    "ctest_seconds": 10.41,
+    "log": "local/checked_string_vector_field_qualification_cc16_20261030/joined_main_build.log"
+  },
+  "new_tests": 0,
+  "vendor_or_original_body_credit": 0,
+  "transitive_provider_closure": false,
+  "new_canonical_registration_binding": false,
+  "source_ready": false,
+  "runtime": false
+}

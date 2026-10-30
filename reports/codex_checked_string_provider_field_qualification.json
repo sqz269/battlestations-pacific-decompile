@@ -1,0 +1,44 @@
+{
+  "status": "raw_provider_source_reviewed_strict_objects_and_joined_win32_pass",
+  "independent_review": "gui_frame_lifetime_ACCEPT_SOURCE_CODE_exact_five_source_pins",
+  "addresses": ["0048da50", "0044bcb0"],
+  "source_hashes": {
+    "src/native_string_range_assignment.cpp": "96d76995d8c8d24218689f9b61577e213286865b533e7f486107a78255d4d25e",
+    "src/native_render_resource_alias_nodes.cpp": "72f91f5034f07dc8429cb4d0898219b3f823f33684a91dde7af8f725e5865170"
+  },
+  "raw_alias_specialization_schedule_tokens_exact": true,
+  "shared_template_and_typed_overloads_unchanged": true,
+  "whole_file_inverse_projections": 2,
+  "strict_objects": {
+    "count": 2,
+    "exit_codes": [0, 0],
+    "machine": "014C",
+    "alias_sha256": "7af4c0d367a3fb9614264786aa0488a072b17f372c88bed1b44bf4281b5ebd06",
+    "assignment_sha256": "9d3934b4c704ccb2dd6330001dd95bb598e327386b1130de56bc1e940c3179d6"
+  },
+  "joined_build": {
+    "base_head": "83c7f6b1af1cfbb794f827390612331a13b6fd94",
+    "tree": "five_qualified_source_files_pinned_in_two_field_reports",
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "existing_checks_passed": 2,
+    "existing_checks_total": 2,
+    "ctest_seconds": 9.95,
+    "log": "local/checked_string_vector_field_qualification_cc16_20261030/build.log"
+  },
+  "latest_joined_build": {
+    "base_head": "6f786fd071665b17554e6e60748192d80601bad8",
+    "five_source_pins_unchanged": true,
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "existing_checks_passed": 2,
+    "existing_checks_total": 2,
+    "ctest_seconds": 10.41,
+    "log": "local/checked_string_vector_field_qualification_cc16_20261030/joined_main_build.log"
+  },
+  "new_tests": 0,
+  "vendor_or_original_body_credit": 0,
+  "new_canonical_registration_binding": false,
+  "source_ready": false,
+  "runtime": false
+}
