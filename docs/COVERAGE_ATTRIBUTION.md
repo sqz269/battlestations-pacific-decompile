@@ -172,6 +172,40 @@ the absent-record count null.
 
 ## Tables and future count sources
 
+The classic guard's one-shot fallback uses `--original-entry-log`, mutually
+exclusive with `--original-log`. Supply `--original-entry-manifest`, its exact
+`--original-entry-manifest-sha256`, `--original-image`, and the pinned `--index`
+and `--wire`. The target schema is `bsp.original-entry.targets.v1`; the JSONL
+trace schema is `bsp.original-entry.trace.v1`. Image/base/size, manifest, frozen
+index and wire hashes must agree. Targets retain the entire frozen game cohort;
+each byte is checked against a file-backed executable PE section and cannot
+already be INT3. Only unique exact target starts become positives. The range
+mapper is not used: an entry point does not credit overlapping parents, EH
+funclets or undefined ranges.
+
+The header binds run ID, PID and exact integer creation FILETIME. Hit sequences
+must be contiguous, with root PID and thread ID. A qualified terminal must
+confirm native game time at least 240, positive fixed steps, admission, source
+preservation, same-scene verification, empty jobs and an explicitly classified `forced_window_stop`.
+Its reason is `game_time_target`; a forced exit need not have exit code zero.
+Missing, partial or contradictory qualification is rejected. All unhit and
+unselected addresses remain unknown even for a qualified window: function
+interiors can be reached without crossing the catalogued start.
+
+Entry mode keeps BB and dynamic call counts null. `orig_first_entry_sequence`
+is capture-order audit data, not frequency. The frontier ranks by static
+original caller count descending and address, recorded in `frontier_rank_basis`.
+`board_game_functions_executed` retains the all-game scope (21,770 for this
+snapshot); `board_target_functions_executed` and `orig_live` use only the pinned
+20,892 `board_target` flags. All-game and outside-target hit totals are explicit.
+The existing row universe and BSP body attribution are unchanged. This fallback
+measures a lower bound from first observed function entries, not BB coverage.
+
+Host grouping prefers `stand_in_hosts` cached in frozen wire rows. Missing cache
+rows fall back to textual mentions in the current worktree. Every row identifies
+which source was used; `host_grouping` records the current source head and file
+hashes. Fallback grouping is not claimed to describe the frozen BSP build.
+
 `per_original_address` has tri-state `orig_executed` and `bsp_executed`. True
 is an identified hit. False means not observed in the supplied usable logs
 and sufficiently resolved attribution. Null means missing trace, unresolved

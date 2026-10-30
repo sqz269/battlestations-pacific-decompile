@@ -23,6 +23,7 @@ ROOT = Path(__file__).resolve().parents[1]
 LOCAL = ROOT / "local"
 SCENE = "universe/Scenes/missions/USN/usn_19_coralus.scn"
 LAUNCH_SCHEMA = "bsp.original-baseline.drcov.launch.v1"
+ENTRY_LAUNCH_SCHEMA = "bsp.original-baseline.function-entry.launch.v1"
 STOP_SCHEMA = "bsp.original-coverage.stop.v1"
 
 
@@ -86,8 +87,12 @@ def publish_json(path: Path, value: dict) -> str:
 
 
 def receipt_identity(receipt: dict, args, expected: Path) -> int:
-    if receipt.get("schema") != LAUNCH_SCHEMA or receipt.get("admitted") is not True:
-        raise ValueError("launch receipt is not an admitted original drcov launch")
+    method = getattr(args, "tracer_method", "drcov")
+    schema = ENTRY_LAUNCH_SCHEMA if method == "debugger-function-entries" else LAUNCH_SCHEMA
+    if receipt.get("schema") != schema or receipt.get("admitted") is not True:
+        raise ValueError("launch receipt is not an admitted launch for the selected tracer method")
+    if receipt.get("tracer_method", "drcov") != method:
+        raise ValueError("launch receipt tracer_method differs from the explicit observer mode")
     for field in ("root_executable", "root_executable_sha256", "stop_request_path",
                   "run_directory", "stop_nonce", "scene_log_path", "direct_scene_path"):
         if not isinstance(receipt.get(field), str) or not receipt[field]:
@@ -336,6 +341,7 @@ def run(args):
     window = ClockWindow(args.target_game_seconds)
     reader = None
     report = {"schema": "bsp.original-coverage.clock.v1", "pid": args.pid,
+              "tracer_method": getattr(args, "tracer_method", "drcov"),
               "expected_exe": str(expected), "expect_sha256": args.expect_sha256,
               "started_utc": utc_now(), "target_absolute_game_time": args.target_game_seconds,
               "wall_timeout": args.wall_timeout, "poll_seconds": args.poll_seconds,
@@ -405,6 +411,8 @@ def main():
     parser.add_argument("--expected-exe", required=True)
     parser.add_argument("--expect-sha256", required=True, type=str.lower)
     parser.add_argument("--launch-receipt", required=True, type=local_path)
+    parser.add_argument("--tracer-method", choices=("drcov", "debugger-function-entries"),
+                        default="drcov", help="function-entry receipt requires explicit opt-in")
     parser.add_argument("--target-game-seconds", type=float, default=240)
     parser.add_argument("--wall-timeout", type=float, default=3600)
     parser.add_argument("--poll-seconds", type=float, default=0.1)
