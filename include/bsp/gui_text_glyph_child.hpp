@@ -44,4 +44,23 @@ struct GuiTextGlyphChildCallFrame {
 // SAME actual pool bridge, as AB9E8A/AB9E91 does.
 void* construct_gui_text_code_unit_00ab81c0(void* actual_utf16_header,
     std::uint32_t code_unit_word, ActualNativeStringPoolStorage&);
+
+// SAME complete body through the caller's actual AA8/AA4/AA0 raw pool cells.
+// Resolve00419CC0 before allocating4 and again before EVERY nonnull return,
+// including large/disabled returns. The returning getter may throw: this
+// overload does not inherit NativeStringStorage::release's noexcept boundary.
+// Zero length then data BEFORE the first getter; after allocation reread the
+// CURRENT unsigned length/data. Copy one WORD for length>=1; length0 still
+// reads CURRENT data but omits native memcpy(...,0), as other raw wide helpers.
+// Capture CURRENT old data then wrapping length*2+2 BEFORE the returning getter.
+// Capture the by-value argument's lowWORD only AFTER return, then publish the
+// captured allocation, length1, terminator, and reload CURRENT published data
+// for the final code-unit store. Zero and all upper-bit patterns are admitted.
+// Caller retains valid ordinary8B header/backing, actual pool/manager cells and
+// their full lifetime graph through normal return or escape. No typed owner,
+// new pool, local EH/cleanup, retry, rollback or exception-origin inference.
+// This ordinary C++ interface does not expose the original Native stack home;
+// inherited raw-pool/CRT/FH3/fault/secondary-exception and ABI limits remain.
+void* construct_gui_text_code_unit_00ab81c0(void* actual_utf16_header,
+    std::uint32_t code_unit_word, NativeStringRawPoolContext&);
 } // namespace bsp
