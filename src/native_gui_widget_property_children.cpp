@@ -51,9 +51,7 @@ void preflight(NativeGuiWidgetPropertyChildrenRawContext& c, Acquired& a) {
         &node.trees.decrement_00ce2220 == &node.scenes.decrement_00ce2220 &&
         &node.trees.point_lights == &c.models.models.nodes.point_lights &&
         &c.models.models.constants.minimum_00ce4adc == &c.model_constants.negative_bound_00ce4adc &&
-        &c.models.models.constants.maximum_00ce4970 == &c.model_constants.positive_bound_00ce4970 &&
-        c.models.models.raw_name_services &&
-        &c.models.models.raw_name_services->constants == &c.model_constants,
+        &c.models.models.constants.maximum_00ce4970 == &c.model_constants.positive_bound_00ce4970,
         "GUI raw children require SAME raw scene/tree/import/string/constant identities");
 }
 void detach_previous(void* parent, void* child, NativeGuiWidgetPropertyChildrenContext& c) {

@@ -1058,30 +1058,37 @@ void GameNativeGuiPageApplication::Impl::retire_scene(void* actual, Word target)
 
 void GameNativeGuiPageApplication::Impl::release_page_scene(void* actual) {
     require_entry();
-    auto& page = live_page(actual);
-    page.lifetime_calls.push_back(std::make_unique<NativeCalls>());
-    auto& backing = *page.lifetime_calls.back();
-    prepare_calls(backing);
-    if (page.properties) page.properties->scenes.prepare(pages.size() * 4 + widget_records.size() + 1);
-    current_calls = &backing; retiring_page = true;
+    NativeCalls* backing{};
+    retiring_page = true;
     try {
+        auto& page = live_page(actual);
+        page.lifetime_calls.push_back(std::make_unique<NativeCalls>());
+        backing = page.lifetime_calls.back().get();
+        prepare_calls(*backing);
+        if (page.properties) page.properties->scenes.prepare(pages.size() * 4 + widget_records.size() + 1);
+        current_calls = backing;
         require(read(actual) == kPageProfile && table(data, kPageProfile, 0x24)[8] == 0x00aa8320,
             "Page retirement requires genuine current20 AA8320");
         release_native_gui_widget_scene_00aa8320(actual, widget_lifetime);
         page.scene_released = true;
         current_calls = nullptr; retiring_page = false;
-    } catch (...) { backing.failed = true; fail(0x00aa8320); throw; }
+    } catch (...) {
+        if (backing) backing->failed = true;
+        fail(0x00aa8320); throw;
+    }
 }
 void GameNativeGuiPageApplication::Impl::delete_page(void* actual, Word flags) {
     require_entry();
-    auto& page = live_page(actual);
-    page.lifetime_calls.push_back(std::make_unique<NativeCalls>());
-    auto& backing = *page.lifetime_calls.back();
-    prepare_calls(backing);
-    if (page.properties) page.properties->scenes.prepare(pages.size() * 4 + widget_records.size() + 1);
-    auto& scalar = backing.scalar(); scalar.flags = flags;
-    current_calls = &backing; retiring_page = true;
+    NativeCalls* backing{};
+    retiring_page = true;
     try {
+        auto& page = live_page(actual);
+        page.lifetime_calls.push_back(std::make_unique<NativeCalls>());
+        backing = page.lifetime_calls.back().get();
+        prepare_calls(*backing);
+        if (page.properties) page.properties->scenes.prepare(pages.size() * 4 + widget_records.size() + 1);
+        auto& scalar = backing->scalar(); scalar.flags = flags;
+        current_calls = backing;
         require(read(actual) == kPageProfile && table(data, kPageProfile, 8)[1] == 0x00aa38f0,
             "Page scalar requires genuine current04 AA38F0");
         scalar.entered = true;
@@ -1089,7 +1096,10 @@ void GameNativeGuiPageApplication::Impl::delete_page(void* actual, Word flags) {
         scalar.complete = true;
         page.native_retired = true; // metadata only after possible pool return
         current_calls = nullptr; retiring_page = false;
-    } catch (...) { backing.failed = true; fail(0x00aa38f0); throw; }
+    } catch (...) {
+        if (backing) backing->failed = true;
+        fail(0x00aa38f0); throw;
+    }
 }
 
 void GameNativeGuiPageApplication::Impl::bind_providers() {

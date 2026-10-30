@@ -94,11 +94,11 @@
     },
     {
       "path": "src/game_native_gui_page_application.cpp",
-      "bytes": 73124,
-      "sha256": "8a19f239b0968775b33191c8b377e18cf70917dc5fdc9efa1e2e55c2401ff3c6",
-      "lf_bytes": 71870,
-      "lf_sha256": "8e01c77618f4f4cc62e13517e74ed8b591581e9a2d62364eb88ad450b5b7b840",
-      "git_blob": "375befea735f237530c840a351b67e234d6c570a",
+      "bytes": 73317,
+      "sha256": "a3e07cdeb1ba49dcb90dc94bd36bfe1ab4965e9ceaf3a1d0987785dc5f512624",
+      "lf_bytes": 72053,
+      "lf_sha256": "30ea9f4169a4c7192bdbbd0cee89cb26f4ae4738b8941a5c4f1c7070182ebbf6",
+      "git_blob": "97a2990e58c9d91a5e213eaf31c04a69e065e015",
       "role": "component_changed"
     },
     {
@@ -121,11 +121,11 @@
     },
     {
       "path": "src/native_gui_widget_property_children.cpp",
-      "bytes": 14442,
-      "sha256": "3b52509a9cb10abcc4566579622b4248e5f95a0e12dc3f77364132a258b42878",
-      "lf_bytes": 14184,
-      "lf_sha256": "9979019cc7297faae7fa5ffdabe799a4cda730e99029364e365647e6051ec4b2",
-      "git_blob": "b75a3cf15c070bcf4e84d7696eba7f451d4a8327",
+      "bytes": 14316,
+      "sha256": "9972cccbfa83679cc4ad0fd7c36e48350e3724d51a2bca4f7048b8dbb339e77c",
+      "lf_bytes": 14060,
+      "lf_sha256": "28da89eae3bccc34b58dbb9255865b762d7477630c0822203c11604b38633ec4",
+      "git_blob": "c2d74159ed5486a1fc2b9b6248d06ee02ecb2154",
       "role": "component_changed"
     },
     {
@@ -531,8 +531,8 @@
       "include/bsp/native_gui_widget_child_links.hpp",
       "src/native_gui_widget_child_links.cpp"
     ],
-    "bytes": 114686,
-    "sha256": "039162bed6adfa5cbd5b8eadf10f750a13d159ea161cd692b837a65a27f1cced"
+    "bytes": 114617,
+    "sha256": "f60fc97f487069c29c94eca2dbd6a8d9e047ae3cb021808c94e77ae8577044cd"
   },
   "effect_body_comparisons": [
     {
@@ -695,42 +695,42 @@
       "path": "src/game_native_gui_page_application.cpp",
       "marker": "void GameNativeGuiPageApplication::Impl::release_page_scene(",
       "start_line": 1059,
-      "end_line": 1074,
-      "body_lf_sha256": "693674c86b7b0fc48f74233a4285eefc7b193b5939cfcd2272e2891343b4c9ce"
+      "end_line": 1079,
+      "body_lf_sha256": "6ae6e69190e779c770ed20eb8de63a6bd83ccc00a5c8c2c5ef4de68851584280"
     },
     {
       "path": "src/game_native_gui_page_application.cpp",
       "marker": "void GameNativeGuiPageApplication::Impl::delete_page(",
-      "start_line": 1075,
-      "end_line": 1093,
-      "body_lf_sha256": "a64082198c0916c0f670f0aef02b136f2d814fd831de5098e0ebb8fbd8056756"
+      "start_line": 1080,
+      "end_line": 1103,
+      "body_lf_sha256": "87fec2379b65c30194a6c8dd26bcb3c064407de20ba9e55d10ea960300de6c1f"
     },
     {
       "path": "src/game_native_gui_page_application.cpp",
       "marker": "void GameNativeGuiPageApplication::after_native_renderer_drain(",
-      "start_line": 1155,
-      "end_line": 1165,
+      "start_line": 1165,
+      "end_line": 1175,
       "body_lf_sha256": "b2ce30f5f9fde0714ef6074caac97e400cdf292ba748d4d45b38b68eaaa62cde"
     },
     {
       "path": "src/native_gui_widget_property_children.cpp",
       "marker": "void preflight(NativeGuiWidgetPropertyChildrenRawContext&",
       "start_line": 45,
-      "end_line": 58,
-      "body_lf_sha256": "9212c83114eb5050ba3252e63586800bebe85acd304aae775612797a885c5f34"
+      "end_line": 56,
+      "body_lf_sha256": "b87d595cc4299448082b9d981e32e0a363fd1e3d44cf21386b4a0248d6d3a5e1"
     },
     {
       "path": "src/native_gui_widget_property_children.cpp",
       "marker": "void parent_child(Word parent, Word child, NativeGuiWidgetPropertyChildrenRawContext&",
-      "start_line": 75,
-      "end_line": 82,
+      "start_line": 73,
+      "end_line": 80,
       "body_lf_sha256": "bd899014220a8e7ca2068e75cece97b9e1ac2e3734ab76afac55cd38f5ac36c0"
     },
     {
       "path": "src/native_gui_widget_property_children.cpp",
       "marker": "template<class Context> void body(",
-      "start_line": 134,
-      "end_line": 220,
+      "start_line": 132,
+      "end_line": 218,
       "body_lf_sha256": "bd87557c10c97dd11774dc7dcf6aa5122375e137d879a269915b82ac65dfdd2e"
     },
     {
@@ -1110,14 +1110,28 @@
   },
   "documentation_receipt": {
     "path": "docs/CC16_POPULATED_PAGE_IMPLEMENTATION.md",
-    "bytes": 10191,
-    "sha256": "5c5157b21f8b24a4485203c7700b54239fbcdb8e3b6e5938698c2aaa66975623",
-    "lf_bytes": 10146,
-    "lf_sha256": "21c87571e25210ab48255f0656759d21b1004bc9d3c3ac2955dfaa99db92ad4c",
-    "git_blob": "15e70aaf7526de1564848ff7070c577c2fad07bb"
+    "bytes": 10729,
+    "sha256": "0830acebeba1fd3f59a761ede71aff775763fa8101c4fd1f262821ff6857234b",
+    "lf_bytes": 10680,
+    "lf_sha256": "874d3bcb02c3dc8836bdc927b625bed5671e4429d7185bb83536cca38aa61a5d",
+    "git_blob": "deb6ee184bf433ec83b7631b2e3a9a7a737b8991"
   },
   "supplier_final_receipts": {
     "model_domain_metadata_final": "123c726602f7236717b0bb9af8c62c45b667d031",
     "model_domain_source_unchanged_from": "d0d609dbc0c77c74001cadf2648154245da5aa8a"
-  }
+  },
+  "updated_utc": "2026-10-30T13:44:21.183610+00:00",
+  "prior_sealed_candidate": "39cae2bbef4519f416840b5de0dd99f99edeefde",
+  "review_fixes": [
+    {
+      "finding": "unnecessary optional raw_name_services precondition always rejected the born-raw common view",
+      "resolution": "removed ONLY the optional convenience-field gate; explicit raw constructor constants and exact bound-cell/point-light/string/import/canonical-binding identities remain",
+      "source": "src/native_gui_widget_property_children.cpp"
+    },
+    {
+      "finding": "direct Page lifetime frame preparation escaped before Page retained-failure catch",
+      "resolution": "retiring metadata starts before preparation and same catch retains preparation failure before associated Native effects",
+      "source": "src/game_native_gui_page_application.cpp"
+    }
+  ]
 }
