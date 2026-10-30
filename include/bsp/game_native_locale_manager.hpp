@@ -1,10 +1,13 @@
 #pragma once
 
 #include "bsp/native_locale_manager_deletion_lifetime.hpp"
+#include "bsp/native_cockpit_helper_construction.hpp"
 #include <memory>
 
 namespace bsp::game {
 class GameSingletonHost;
+class GameNativeVfsApplication;
+class GameNativeReadOnlyData;
 
 // ONE retained Source graph over actual F8BC4C/AA0/raw strings/E1768C. The
 // factory constructs metadata only; every Native operation is explicit.
@@ -25,6 +28,16 @@ public:
     // Genuine pool startup/status0, matched uninitialized4040 allocation and
     // actual73C960. Failed effects are retained, never rolled back or retried.
     void initialize_once();
+    // Consume one genuinely completed owning raw8 input ONLY at the admitted
+    // parser entry. Retain input on preparation failure and all unresolved
+    // operation/provider history on escape; no cleanup/retry is invented.
+    // App must borrow this host and exact data graph. The decrement cell is
+    // the caller's existing genuine retained renderer import, sampled only by
+    // the scanner at its normal pair release. This grants no loaded permission.
+    void parse_textual_option1(void* completed_owning_input8,
+        std::uint32_t opaque_other_argument, GameNativeVfsApplication&,
+        const GameNativeReadOnlyData&,
+        NativeCockpitInterlockedDecrement const volatile&);
     // Bracket the actual shared drain; no eager/second locale destruction.
     // Root host retains the whole binding graph until successful detach.
     void before_shared_drain(GameSingletonHost&);
