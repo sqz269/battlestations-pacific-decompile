@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-menu-prompt-scalar-independent-review",
+  "classification": "independent_bounded_38byte_scalar_source_review",
+  "reviewed_commit": "c8c38e7d768e9ad298161d70d7d25f028434f05b",
+  "owned_files": [
+    "docs/CC16_NATIVE_MENU_PROMPT_SCALAR_INDEPENDENT_REVIEW.md",
+    "reports/cc16_native_menu_prompt_scalar_independent_review.json"
+  ],
+  "verdict": {
+    "blocking_source_findings": 0,
+    "metadata_findings": 1,
+    "source_ready_for_primary_integration_build_assessment": true,
+    "actual_singleton_map_bound": false,
+    "genuine_Page_list_string_application_bound": false,
+    "activation": false
+  },
+  "reviewed_source": [
+    "include/bsp/native_menu_prompt_lifetime.hpp",
+    "src/native_menu_prompt_lifetime.cpp"
+  ],
+  "native_scope": [
+    {
+      "address": "00532340",
+      "bytes": 8,
+      "instructions": 2,
+      "effect": "SUB ECX,0C; JMP532A00"
+    },
+    {
+      "address": "00532A00",
+      "bytes": 30,
+      "instructions": 11,
+      "effect": "Capture actual receiver; call5321F0; testCURRENTflagsLOWBYTE; bit0free captured identity; return identity"
+    }
+  ],
+  "checks": {
+    "actual_minus_C_DWORD_wrap": true,
+    "same_full_flags_home_forwarded": true,
+    "same_required_host_forwarded": true,
+    "full_existing_destructor_called_first": true,
+    "CURRENT_low_BYTE_read_only_after_normal_destructor_return": true,
+    "no_eager_flag_copy_or_bool": true,
+    "free_captured_allocation_identity": true,
+    "identity_only_return_after_possible_free": true,
+    "no_raw_read_after_free": true,
+    "ordinary_throwing_destructor_and_free_transport": true,
+    "no_added_noexcept_catch_or_termination": true,
+    "no_new_cleanup_retry_rollback_retain_or_fallback": true
+  },
+  "existing_provider": {
+    "function": "bsp::frontend_seg15_22_cc13::menu_prompt_destroy_005321f0",
+    "source": "src/frontend_seg15_22_cc13.cpp:1013",
+    "header": "include/bsp/frontend_seg15_22_cc13.hpp:597",
+    "required_host": "SAME genuine Seg15Host for destructor and free_00bf65ac",
+    "new_host_or_provider_adapter": false,
+    "provider_graph_bound": false,
+    "scope": "Existing whole member provider reused; no new whole-body reconstruction/admission or Native exception proof."
+  },
+  "findings": [
+    {
+      "id": "MPS-R1",
+      "priority": "P2",
+      "kind": "evidence_hash_format",
+      "status": "open_metadata_correction",
+      "file": "reports/cc16_native_menu_prompt_scalar_lifetime.json",
+      "entry": "provider_pins: reports/cc16_native_menu_prompt_construction_publication.json",
+      "finding": "Recorded SHA is historical working-copy CRLF bytes; immutable Git content is LF. Formats are not distinguished in the producer entry.",
+      "Source_behavior_blocker": false,
+      "recommendation": "Preserve recorded CRLF hash as historical qualified evidence, add/use exact immutable Git LF SHA/blob/length and explicit hash formats.",
+      "historical": {
+        "hash_format": "raw_historical_working_copy_crlf",
+        "sha256": "bf9dfd7d0351c8c8eb6c5a5183aa849285c876afab3817662186915150fb930b",
+        "bytes": 41920
+      },
+      "immutable": {
+        "hash_format": "immutable_git_blob_content_lf",
+        "sha256": "7cffc066556df5e12ad9eaa4bb57ffac4de552f08191740fe28aeeb5bcf0014d",
+        "git_blob_oid": "a8d32e5e250605d611260b92979f2857e9afbbf9",
+        "bytes": 40597
+      },
+      "exact_CRLF_expansion_matches_recorded_hash": true
+    }
+  ],
+  "source_and_doc_pins": [
+    {
+      "path": "include/bsp/native_menu_prompt_lifetime.hpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "d2b85c25e67ef8afaaa3eefe8941b90c420216d7",
+      "sha256": "4b012a38e9c8d98eba9f295e5216a1afe93861e1b8ab121e74957ba3b4c454f8",
+      "bytes": 2489
+    },
+    {
+      "path": "src/native_menu_prompt_lifetime.cpp",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "af28be92acfe7530cd3cd0e1cc21337e57cd1228",
+      "sha256": "6bf440c15d61fb3a745089914aa6fd9ba33c897f1a3de8c0a481620fc543c799",
+      "bytes": 1824
+    },
+    {
+      "path": "docs/CC16_NATIVE_MENU_PROMPT_SCALAR_LIFETIME.md",
+      "hash_format": "immutable_git_blob_content_lf",
+      "git_blob_oid": "c41c579ccc571ad450a2571517afa9b528c7b2a5",
+      "sha256": "88bb93f527dea6eaefde42461e2a61dd7dd5788d169e6fec55a93a8ba0f0d3a9",
+      "bytes": 5290
+    }
+  ],
+  "pin_audit": {
+    "owned_Source_doc": 3,
+    "owned_matches_Git_LF": 3,
+    "provider_pins": 10,
+    "provider_matches_Git_LF": 9,
+    "provider_historical_CRLF_matches": 1,
+    "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "whole_native_wrapper_bytes": 38,
+    "whole_native_wrapper_hashes_match": true,
+    "CED3AC_slot00_bytes": "40235300",
+    "profile_data_matches": true
+  },
+  "producer_report_pin": {
+    "path": "reports/cc16_native_menu_prompt_scalar_lifetime.json",
+    "hash_format": "immutable_git_blob_content_lf",
+    "git_blob_oid": "176187365da09eb5a8698b87d70a9373ea2758a3",
+    "sha256": "3bb4cd97412a78df8b0efd8d827058a37b899843d6cab6a35d02137da3ae5086",
+    "bytes": 11047
+  },
+  "validation": {
+    "full2Source_and_13native_instructions_reviewed": true,
+    "required_existing_destructor_provider_call_reviewed": true,
+    "static_PE_and_exact_hash_format_audit": true,
+    "json_parsed": true,
+    "staged_diff_check": true,
+    "owned_review_files_only": true,
+    "Source_edits": false,
+    "CMake_edits": false,
+    "ledger_edits": false,
+    "Ghidra_reads": false,
+    "Ghidra_writes": false,
+    "build": false,
+    "test": false,
+    "probe": false,
+    "execution": false,
+    "process_actions": false
+  },
+  "qualifiers": [
+    "Actual CURRENT CED3AC invocation still needs finite singleton-map binding before activation.",
+    "Real Page/list/record/string/application providers remain unclosed.",
+    "No physical thiscall/tail-JMP/RET4 ABI or Native FH3/SEH/private-frame/fault/runtime proof.",
+    "Existing CG wrapper classifications stay excluded; no new Original/vendor/CG/duplicate-destructor credit."
+  ],
+  "new_credit": {
+    "original": 0,
+    "vendor": 0,
+    "compiler_generated": 0,
+    "duplicate_body": 0,
+    "abi": 0,
+    "runtime": 0,
+    "gameplay": 0,
+    "activation": 0
+  },
+  "utc": "2026-10-30T16:10:39.490634+00:00"
+}
