@@ -1,0 +1,1222 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-renderer-texture-find-storage",
+  "kind": "whole_normal_raw_provider",
+  "utc": "2026-10-31T05:51:34.774705+00:00",
+  "authority": "Root bounded four-new-file/one-address grant; Root registers CPP/reviews/builds",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage",
+  "base_ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+  "scope": {
+    "address": "00b31ac0",
+    "files": [
+      "include/bsp/native_renderer_texture_find_storage.hpp",
+      "src/native_renderer_texture_find_storage.cpp",
+      "docs/CC16_NATIVE_RENDERER_TEXTURE_FIND_STORAGE.md",
+      "reports/cc16_native_renderer_texture_find_storage.json"
+    ],
+    "all_new": true,
+    "existing_production_delta": "NONE",
+    "typed_facade_B319B0_helpers_unchanged": true,
+    "CMake_modified": false
+  },
+  "static_proof": {
+    "base_ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+    "new_Source_pins": [
+      {
+        "path": "include/bsp/native_renderer_texture_find_storage.hpp",
+        "bytes": 4654,
+        "sha256": "a5852add53e7006f05c1ad183fafb54fb7c3af8fca3b16d9a550a8e78dcdc49a",
+        "git_blob": "4e0bf07ef2c80cda888f416f7602f149bc0c88a1",
+        "new_at_base": true,
+        "baseline_ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0"
+      },
+      {
+        "path": "src/native_renderer_texture_find_storage.cpp",
+        "bytes": 6345,
+        "sha256": "9bb4791d3733f98561b21b3a9f517412782f28c8d775079d146fec8110ba8df1",
+        "git_blob": "d2860eb2f1613fb7c7345a95f1491888be28be38",
+        "new_at_base": true,
+        "baseline_ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0"
+      }
+    ],
+    "existing_file_delta": "NONE; all implementation files new at base, legacy typed facade/helpers unchanged",
+    "inverse": "no existing-file transformation; removing only four added packet paths restores base tracked tree (verification recipe only, no deletion executed)",
+    "whole_provider_pins": [
+      {
+        "path": "include/bsp/native_texture_loading_cache.hpp",
+        "bytes": 13322,
+        "sha256": "e1f71c97b0d2d61535964084b66c51379b919bc206ebfbe4710f9058b9544785",
+        "git_blob": "18c2dd4e5eadf17e7c25948be36d73fc4035c093",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "unchanged": true,
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\inputs\\include\\bsp\\native_texture_loading_cache.hpp"
+      },
+      {
+        "path": "src/native_texture_loading_cache.cpp",
+        "bytes": 49969,
+        "sha256": "c8deb2862f324fc88f4f36ac6105adf37562e1dcf2b354ef636852131078ce89",
+        "git_blob": "69498fc3ca130fd58dac603ee2f6bbe9907dc66e",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "unchanged": true,
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\inputs\\src\\native_texture_loading_cache.cpp"
+      },
+      {
+        "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+        "bytes": 2877,
+        "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0",
+        "git_blob": "88060a54f9208f2fee8c0e20c3f32d5fceed02c0",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "unchanged": true,
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\inputs\\include\\bsp\\native_renderer_synchronization_actual.hpp"
+      },
+      {
+        "path": "src/native_renderer_synchronization_actual.cpp",
+        "bytes": 3242,
+        "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a",
+        "git_blob": "55569529ca8f92a70a2ed94771a08ae9cf66a5c5",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "unchanged": true,
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\inputs\\src\\native_renderer_synchronization_actual.cpp"
+      },
+      {
+        "path": "include/bsp/native_string_raw_resize_exact.hpp",
+        "bytes": 1554,
+        "sha256": "a1a3c6be74194e2f5946e13e09bfb26562c3f73d3565b51f96403f0d60b9999c",
+        "git_blob": "2e9e0ae6cb560eba1e7187911f6fea04791b529b",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "unchanged": true,
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\inputs\\include\\bsp\\native_string_raw_resize_exact.hpp"
+      },
+      {
+        "path": "src/native_string_raw_resize_exact.cpp",
+        "bytes": 3979,
+        "sha256": "74bff613a83abda342b5506ff750f46f5c44e191de506480ced504208c81f210",
+        "git_blob": "e05e1c9a86a44a2bba1efe9f46f3151062fab3b6",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "unchanged": true,
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\inputs\\src\\native_string_raw_resize_exact.cpp"
+      },
+      {
+        "path": "include/bsp/native_crt_memcpy.hpp",
+        "bytes": 1954,
+        "sha256": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123",
+        "git_blob": "a62e6ddb9d92e02afd301ed92239b258d53b5f10",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "unchanged": true,
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\inputs\\include\\bsp\\native_crt_memcpy.hpp"
+      },
+      {
+        "path": "src/native_crt_memcpy.cpp",
+        "bytes": 17187,
+        "sha256": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3",
+        "git_blob": "248194cbff651aba4341401f519050447f13b6a0",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "unchanged": true,
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\inputs\\src\\native_crt_memcpy.cpp"
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "bytes": 8771,
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "unchanged": true,
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\inputs\\include\\bsp\\native_string.hpp"
+      },
+      {
+        "path": "src/native_string.cpp",
+        "bytes": 9121,
+        "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+        "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "unchanged": true,
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\inputs\\src\\native_string.cpp"
+      },
+      {
+        "path": "include/bsp/native_string_pool_owner.hpp",
+        "bytes": 5893,
+        "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+        "git_blob": "4a2569e19b6f25c308cba1c3cdb2b2989db2cddd",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "unchanged": true,
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\inputs\\include\\bsp\\native_string_pool_owner.hpp"
+      },
+      {
+        "path": "src/native_string_pool_owner.cpp",
+        "bytes": 8443,
+        "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+        "git_blob": "de3c69b53e00840fab31b41e2195bdc1789b6baf",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "unchanged": true,
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\inputs\\src\\native_string_pool_owner.cpp"
+      },
+      {
+        "path": "include/bsp/native_string_pool_storage.hpp",
+        "bytes": 3113,
+        "sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+        "git_blob": "60b3f627150fa058fac7b8c4c74537cb3aee0a68",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "unchanged": true,
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\inputs\\include\\bsp\\native_string_pool_storage.hpp"
+      },
+      {
+        "path": "src/native_string_pool_storage.cpp",
+        "bytes": 5450,
+        "sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+        "git_blob": "103d6fe4d772bb3078c48fe8bcf3f929a385fdda",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "unchanged": true,
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\inputs\\src\\native_string_pool_storage.cpp"
+      },
+      {
+        "path": "include/bsp/render_fx_cc13.hpp",
+        "bytes": 71325,
+        "sha256": "dc1a781e89d87e94978ca340b56f6bdce91699ef97019f46d4aba95bb5967a79",
+        "git_blob": "f7c8e534a75841046a164a683dcb62f4b3df82cd",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "unchanged": true,
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\inputs\\include\\bsp\\render_fx_cc13.hpp"
+      },
+      {
+        "path": "src/render_fx_cc13.cpp",
+        "bytes": 113286,
+        "sha256": "991fc4f19979f41a9eed1eae93e307dca271954b3172bd551ca086ae6d5c1e07",
+        "git_blob": "8acb23c2b502bf722f003d0aa7da10000fdec679",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "unchanged": true,
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\inputs\\src\\render_fx_cc13.cpp"
+      },
+      {
+        "path": "include/bsp/native_string_raw_cstring_exact.hpp",
+        "bytes": 1484,
+        "sha256": "d951b3068702b7e1dcaca9260c70489d36a68d49b6602349b98ad62d8eab7054",
+        "git_blob": "791265ce3fb03f2572872019a1b3ee10eaaea131",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "unchanged": true,
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\inputs\\include\\bsp\\native_string_raw_cstring_exact.hpp"
+      },
+      {
+        "path": "src/native_string_raw_cstring_exact.cpp",
+        "bytes": 2680,
+        "sha256": "9d07b1cf4dda4e5aea2323b2450b66840a252442b5d09c211d4a921ba3692d2e",
+        "git_blob": "e653b92000a56ccb6a4ce98983a278f62dfda331",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "unchanged": true,
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\inputs\\src\\native_string_raw_cstring_exact.cpp"
+      },
+      {
+        "path": "include/bsp/native_string_raw_header_return.hpp",
+        "bytes": 1330,
+        "sha256": "66804d2209e6875d5a9d723afdab3ab6be12e9f394ba78f3d71778149ef1a335",
+        "git_blob": "8a0ecfda20bf38213c0a8734a8f90400bd095e58",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "unchanged": true,
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\inputs\\include\\bsp\\native_string_raw_header_return.hpp"
+      },
+      {
+        "path": "src/native_string_raw_header_return.cpp",
+        "bytes": 1772,
+        "sha256": "d65b8c9fab58a2b23d512164caefcd9dbdaa18f3d0aadc2ff68422dcf6429d28",
+        "git_blob": "d0d7e952911dfbe7cd4a5ae7b70de5bd2641a3ec",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "unchanged": true,
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\inputs\\src\\native_string_raw_header_return.cpp"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 296702,
+        "sha256": "91d1de5e0df99d75ab2133869f154c0560d969f8ed3b60c999a495ba097f416b",
+        "git_blob": "f5032c4bccf117bf25445331020a0d95aa8e98a4",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "unchanged": true,
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\inputs\\cmake\\startup.cmake"
+      }
+    ],
+    "provider_region_pins": [
+      {
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "path": "include/bsp/native_texture_loading_cache.hpp",
+        "start_line": 189,
+        "end_line": 222,
+        "bytes": 1612,
+        "sha256": "669879bd67f1af8d0498c38613852ced54c928b858572c2a47d26c8e6538d552",
+        "role": "existing context/mandatory actual cache record"
+      },
+      {
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "path": "include/bsp/native_texture_loading_cache.hpp",
+        "start_line": 233,
+        "end_line": 247,
+        "bytes": 1131,
+        "sha256": "04063904e764c6fd97cc2e50d6aed9d2824ce5a54a6f5acdb0f45aaba3115ed9",
+        "role": "raw B30B40 allow_load0 complete domain and existing B319B0 only"
+      },
+      {
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "path": "src/native_texture_loading_cache.cpp",
+        "start_line": 150,
+        "end_line": 182,
+        "bytes": 1446,
+        "sha256": "de3c1aae171bddf0648800eb459ab0e21446f066c1c8898973b97d5112aeb60a",
+        "role": "semantic GuardScope NOT reused"
+      },
+      {
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "path": "src/native_texture_loading_cache.cpp",
+        "start_line": 961,
+        "end_line": 992,
+        "bytes": 1369,
+        "sha256": "934f6670cf11776d84831c6c7b9dff1effb88a0539eae8a24a913cd052d702b4",
+        "role": "existing B319B0 remains unchanged"
+      },
+      {
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+        "start_line": 12,
+        "end_line": 58,
+        "bytes": 2571,
+        "sha256": "90565edc0770f0e19d635cbe7fea523ba5605f8df619b51b6c6009dfba1364d7",
+        "role": "same actual globals/preimages and real guard APIs"
+      },
+      {
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "path": "src/native_string.cpp",
+        "start_line": 139,
+        "end_line": 155,
+        "bytes": 681,
+        "sha256": "75989dbe48c9c4303dffaf9c810b9537b347e43a2621ad24116eb82a3dd02629",
+        "role": "existing raw CURRENT-length lowercase"
+      },
+      {
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "path": "include/bsp/render_fx_cc13.hpp",
+        "start_line": 397,
+        "end_line": 412,
+        "bytes": 941,
+        "sha256": "ccba64d58fb6e938fbb106c7a67720e2b6ebac858e5b5bd901953063b92b2673",
+        "role": "old semantic facade/incorrect receiver-unused note preserved"
+      },
+      {
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "path": "src/render_fx_cc13.cpp",
+        "start_line": 873,
+        "end_line": 885,
+        "bytes": 604,
+        "sha256": "e0cfe654f433315c78dbffa0525533a42f1173efd7b8b3fab7a11e842b752821",
+        "role": "legacy std::string implementation preserved"
+      },
+      {
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "path": "include/bsp/native_string_raw_cstring_exact.hpp",
+        "start_line": 12,
+        "end_line": 30,
+        "bytes": 1265,
+        "sha256": "72cc6ab6ede89af8bb8b149189c5f7c247ecbd9c92cebcc8ae5b40e22753b6b2",
+        "role": "new exact CString availability; not a length-header-copy substitute"
+      },
+      {
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "path": "include/bsp/native_string_raw_header_return.hpp",
+        "start_line": 11,
+        "end_line": 26,
+        "bytes": 1132,
+        "sha256": "d97d18f491d63d0e76ce0f5ae42ec6a085c031f06556bdcafa50f713712bb423",
+        "role": "normal header-return capability; not captured ESI normal cleanup or EH policy"
+      }
+    ],
+    "Source_operand_order": [
+      "const void* const guard_renderer = c.cache.textures.current_renderer_00f8d394",
+      "enter_native_renderer_optional_guard_00b33ad0(",
+      "pointer(homes[0])",
+      "const bool same_header",
+      "live(f.header[0]) = 0",
+      "live(f.header[1]) = 0",
+      "const Word request = word(name)",
+      "live(f.preserve_home) = 1",
+      "resize_native_string_header_0041dd40_exact(",
+      "const Word current_source_length = word(name)",
+      "captured_data = live(f.header[1])",
+      "const Word bytes = live(f.header[0])",
+      "const void* const source = pointer(word(name, 4))",
+      "copy_native_crt_bytes_00bf7680(",
+      "lowercase_native_string_header_004bcc00(",
+      "const Word post_word = homes[1]",
+      "load_native_cached_texture_00b30b40(",
+      "const Word size = live(f.header[0]) + Word{1}",
+      "native_string_pool_get_or_create_00419cc0(",
+      "return_native_string_pool_00bd1510(",
+      "const std::uint8_t exit_mode",
+      "const Word saved_word = live(f.guard_token)",
+      "pointer(live(f.guard_renderer))",
+      "leave_native_renderer_optional_guard_00b33b00(",
+      "return result;"
+    ],
+    "all_Source_order_checks_passed": true,
+    "Native": {
+      "project_verification": {
+        "command": "BSP_GHIDRA_AUTOSTART=0 python tools/bsp.py ghidra count",
+        "live_functions": 77632,
+        "snapshot_functions": 77632,
+        "project_file": "C:/Users/sqz269/bsp.gpr",
+        "project": "bsp",
+        "program_path": "/battlestationspacific.exe",
+        "language": "x86:LE:32:default",
+        "image_base": "00400000"
+      },
+      "PE": {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "bytes": 12223752,
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+      },
+      "exports": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b31ac0\\assembly.txt",
+          "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\native_exports\\00b31ac0\\assembly.txt",
+          "bytes": 2230,
+          "sha256": "5c208f483e3f9128b93705e57f4ef62eda4cb0f452acbb64c21bfce9659e3c96"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b31ac0\\decompiled.c",
+          "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\native_exports\\00b31ac0\\decompiled.c",
+          "bytes": 1833,
+          "sha256": "f75df80102586f00daaede90fcf6259e4d94174d0bafc25743196ea7367bbdb9"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b31ac0\\metadata.json",
+          "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\native_exports\\00b31ac0\\metadata.json",
+          "bytes": 283,
+          "sha256": "86aa7fc3461079af929ed130ad98bb641035505f89f90e6d0edf2af51dea106f"
+        }
+      ],
+      "body": {
+        "start": "00b31ac0",
+        "last_byte": "00b31bc0",
+        "bytes": 257,
+        "sha256": "6363143f39faa9ff41e61049f2dc8dc6e2173cb2b3215412ec77e38e1e646f96",
+        "instruction_count": 77,
+        "x87_or_FP_reset": 0,
+        "instructions": [
+          {
+            "address": "00b31ac0",
+            "bytes": "64a100000000",
+            "mnemonic": "mov",
+            "operand": "eax, dword ptr fs:[0]",
+            "Source_role": "ordinary Source/private ABI prolog/epilog qualification"
+          },
+          {
+            "address": "00b31ac6",
+            "bytes": "6aff",
+            "mnemonic": "push",
+            "operand": "-1",
+            "Source_role": "ordinary Source/private ABI prolog/epilog qualification"
+          },
+          {
+            "address": "00b31ac8",
+            "bytes": "6820dccb00",
+            "mnemonic": "push",
+            "operand": "0xcbdc20",
+            "Source_role": "ordinary Source/private ABI prolog/epilog qualification"
+          },
+          {
+            "address": "00b31acd",
+            "bytes": "50",
+            "mnemonic": "push",
+            "operand": "eax",
+            "Source_role": "ordinary Source/private ABI prolog/epilog qualification"
+          },
+          {
+            "address": "00b31ace",
+            "bytes": "64892500000000",
+            "mnemonic": "mov",
+            "operand": "dword ptr fs:[0], esp",
+            "Source_role": "ordinary Source/private ABI prolog/epilog qualification"
+          },
+          {
+            "address": "00b31ad5",
+            "bytes": "83ec10",
+            "mnemonic": "sub",
+            "operand": "esp, 0x10",
+            "Source_role": "ordinary Source/private ABI prolog/epilog qualification"
+          },
+          {
+            "address": "00b31ad8",
+            "bytes": "803ddcd6080100",
+            "mnemonic": "cmp",
+            "operand": "byte ptr [0x108d6dc], 0",
+            "Source_role": "current entry mode, separately current guard receiver, real enter and AL-only store"
+          },
+          {
+            "address": "00b31adf",
+            "bytes": "55",
+            "mnemonic": "push",
+            "operand": "ebp",
+            "Source_role": "current entry mode, separately current guard receiver, real enter and AL-only store"
+          },
+          {
+            "address": "00b31ae0",
+            "bytes": "56",
+            "mnemonic": "push",
+            "operand": "esi",
+            "Source_role": "current entry mode, separately current guard receiver, real enter and AL-only store"
+          },
+          {
+            "address": "00b31ae1",
+            "bytes": "57",
+            "mnemonic": "push",
+            "operand": "edi",
+            "Source_role": "current entry mode, separately current guard receiver, real enter and AL-only store"
+          },
+          {
+            "address": "00b31ae2",
+            "bytes": "8be9",
+            "mnemonic": "mov",
+            "operand": "ebp, ecx",
+            "Source_role": "current entry mode, separately current guard receiver, real enter and AL-only store"
+          },
+          {
+            "address": "00b31ae4",
+            "bytes": "7413",
+            "mnemonic": "je",
+            "operand": "0xb31af9",
+            "Source_role": "current entry mode, separately current guard receiver, real enter and AL-only store"
+          },
+          {
+            "address": "00b31ae6",
+            "bytes": "8b0d94d3f800",
+            "mnemonic": "mov",
+            "operand": "ecx, dword ptr [0xf8d394]",
+            "Source_role": "current entry mode, separately current guard receiver, real enter and AL-only store"
+          },
+          {
+            "address": "00b31aec",
+            "bytes": "894c2418",
+            "mnemonic": "mov",
+            "operand": "dword ptr [esp + 0x18], ecx",
+            "Source_role": "current entry mode, separately current guard receiver, real enter and AL-only store"
+          },
+          {
+            "address": "00b31af0",
+            "bytes": "e8db1f0000",
+            "mnemonic": "call",
+            "operand": "0xb33ad0",
+            "Source_role": "current entry mode, separately current guard receiver, real enter and AL-only store"
+          },
+          {
+            "address": "00b31af5",
+            "bytes": "88442414",
+            "mnemonic": "mov",
+            "operand": "byte ptr [esp + 0x14], al",
+            "Source_role": "current entry mode, separately current guard receiver, real enter and AL-only store"
+          },
+          {
+            "address": "00b31af9",
+            "bytes": "8b7c242c",
+            "mnemonic": "mov",
+            "operand": "edi, dword ptr [esp + 0x2c]",
+            "Source_role": "late name home, ESI0, alias before zeros, exact current-header resize/copy"
+          },
+          {
+            "address": "00b31afd",
+            "bytes": "33f6",
+            "mnemonic": "xor",
+            "operand": "esi, esi",
+            "Source_role": "late name home, ESI0, alias before zeros, exact current-header resize/copy"
+          },
+          {
+            "address": "00b31aff",
+            "bytes": "8d44240c",
+            "mnemonic": "lea",
+            "operand": "eax, [esp + 0xc]",
+            "Source_role": "late name home, ESI0, alias before zeros, exact current-header resize/copy"
+          },
+          {
+            "address": "00b31b03",
+            "bytes": "3bc7",
+            "mnemonic": "cmp",
+            "operand": "eax, edi",
+            "Source_role": "late name home, ESI0, alias before zeros, exact current-header resize/copy"
+          },
+          {
+            "address": "00b31b05",
+            "bytes": "c744242400000000",
+            "mnemonic": "mov",
+            "operand": "dword ptr [esp + 0x24], 0",
+            "Source_role": "late name home, ESI0, alias before zeros, exact current-header resize/copy"
+          },
+          {
+            "address": "00b31b0d",
+            "bytes": "c744240c00000000",
+            "mnemonic": "mov",
+            "operand": "dword ptr [esp + 0xc], 0",
+            "Source_role": "late name home, ESI0, alias before zeros, exact current-header resize/copy"
+          },
+          {
+            "address": "00b31b15",
+            "bytes": "89742410",
+            "mnemonic": "mov",
+            "operand": "dword ptr [esp + 0x10], esi",
+            "Source_role": "late name home, ESI0, alias before zeros, exact current-header resize/copy"
+          },
+          {
+            "address": "00b31b19",
+            "bytes": "7428",
+            "mnemonic": "je",
+            "operand": "0xb31b43",
+            "Source_role": "late name home, ESI0, alias before zeros, exact current-header resize/copy"
+          },
+          {
+            "address": "00b31b1b",
+            "bytes": "8b07",
+            "mnemonic": "mov",
+            "operand": "eax, dword ptr [edi]",
+            "Source_role": "late name home, ESI0, alias before zeros, exact current-header resize/copy"
+          },
+          {
+            "address": "00b31b1d",
+            "bytes": "6a01",
+            "mnemonic": "push",
+            "operand": "1",
+            "Source_role": "late name home, ESI0, alias before zeros, exact current-header resize/copy"
+          },
+          {
+            "address": "00b31b1f",
+            "bytes": "50",
+            "mnemonic": "push",
+            "operand": "eax",
+            "Source_role": "late name home, ESI0, alias before zeros, exact current-header resize/copy"
+          },
+          {
+            "address": "00b31b20",
+            "bytes": "8d4c2414",
+            "mnemonic": "lea",
+            "operand": "ecx, [esp + 0x14]",
+            "Source_role": "late name home, ESI0, alias before zeros, exact current-header resize/copy"
+          },
+          {
+            "address": "00b31b24",
+            "bytes": "e817c28eff",
+            "mnemonic": "call",
+            "operand": "0x41dd40",
+            "Source_role": "late name home, ESI0, alias before zeros, exact current-header resize/copy"
+          },
+          {
+            "address": "00b31b29",
+            "bytes": "3937",
+            "mnemonic": "cmp",
+            "operand": "dword ptr [edi], esi",
+            "Source_role": "late name home, ESI0, alias before zeros, exact current-header resize/copy"
+          },
+          {
+            "address": "00b31b2b",
+            "bytes": "8b742410",
+            "mnemonic": "mov",
+            "operand": "esi, dword ptr [esp + 0x10]",
+            "Source_role": "late name home, ESI0, alias before zeros, exact current-header resize/copy"
+          },
+          {
+            "address": "00b31b2f",
+            "bytes": "7412",
+            "mnemonic": "je",
+            "operand": "0xb31b43",
+            "Source_role": "late name home, ESI0, alias before zeros, exact current-header resize/copy"
+          },
+          {
+            "address": "00b31b31",
+            "bytes": "8b4c240c",
+            "mnemonic": "mov",
+            "operand": "ecx, dword ptr [esp + 0xc]",
+            "Source_role": "late name home, ESI0, alias before zeros, exact current-header resize/copy"
+          },
+          {
+            "address": "00b31b35",
+            "bytes": "8b5704",
+            "mnemonic": "mov",
+            "operand": "edx, dword ptr [edi + 4]",
+            "Source_role": "late name home, ESI0, alias before zeros, exact current-header resize/copy"
+          },
+          {
+            "address": "00b31b38",
+            "bytes": "51",
+            "mnemonic": "push",
+            "operand": "ecx",
+            "Source_role": "late name home, ESI0, alias before zeros, exact current-header resize/copy"
+          },
+          {
+            "address": "00b31b39",
+            "bytes": "52",
+            "mnemonic": "push",
+            "operand": "edx",
+            "Source_role": "late name home, ESI0, alias before zeros, exact current-header resize/copy"
+          },
+          {
+            "address": "00b31b3a",
+            "bytes": "56",
+            "mnemonic": "push",
+            "operand": "esi",
+            "Source_role": "late name home, ESI0, alias before zeros, exact current-header resize/copy"
+          },
+          {
+            "address": "00b31b3b",
+            "bytes": "e8405b0c00",
+            "mnemonic": "call",
+            "operand": "0xbf7680",
+            "Source_role": "late name home, ESI0, alias before zeros, exact current-header resize/copy"
+          },
+          {
+            "address": "00b31b40",
+            "bytes": "83c40c",
+            "mnemonic": "add",
+            "operand": "esp, 0xc",
+            "Source_role": "late name home, ESI0, alias before zeros, exact current-header resize/copy"
+          },
+          {
+            "address": "00b31b43",
+            "bytes": "8d4c240c",
+            "mnemonic": "lea",
+            "operand": "ecx, [esp + 0xc]",
+            "Source_role": "late name home, ESI0, alias before zeros, exact current-header resize/copy"
+          },
+          {
+            "address": "00b31b47",
+            "bytes": "c644242401",
+            "mnemonic": "mov",
+            "operand": "byte ptr [esp + 0x24], 1",
+            "Source_role": "state1, real lowercase, late post-word home, captured receiver cache+1A74/0/0"
+          },
+          {
+            "address": "00b31b4c",
+            "bytes": "e8afb098ff",
+            "mnemonic": "call",
+            "operand": "0x4bcc00",
+            "Source_role": "state1, real lowercase, late post-word home, captured receiver cache+1A74/0/0"
+          },
+          {
+            "address": "00b31b51",
+            "bytes": "8b442430",
+            "mnemonic": "mov",
+            "operand": "eax, dword ptr [esp + 0x30]",
+            "Source_role": "state1, real lowercase, late post-word home, captured receiver cache+1A74/0/0"
+          },
+          {
+            "address": "00b31b55",
+            "bytes": "6a00",
+            "mnemonic": "push",
+            "operand": "0",
+            "Source_role": "state1, real lowercase, late post-word home, captured receiver cache+1A74/0/0"
+          },
+          {
+            "address": "00b31b57",
+            "bytes": "6a00",
+            "mnemonic": "push",
+            "operand": "0",
+            "Source_role": "state1, real lowercase, late post-word home, captured receiver cache+1A74/0/0"
+          },
+          {
+            "address": "00b31b59",
+            "bytes": "50",
+            "mnemonic": "push",
+            "operand": "eax",
+            "Source_role": "state1, real lowercase, late post-word home, captured receiver cache+1A74/0/0"
+          },
+          {
+            "address": "00b31b5a",
+            "bytes": "8d4c2418",
+            "mnemonic": "lea",
+            "operand": "ecx, [esp + 0x18]",
+            "Source_role": "state1, real lowercase, late post-word home, captured receiver cache+1A74/0/0"
+          },
+          {
+            "address": "00b31b5e",
+            "bytes": "51",
+            "mnemonic": "push",
+            "operand": "ecx",
+            "Source_role": "state1, real lowercase, late post-word home, captured receiver cache+1A74/0/0"
+          },
+          {
+            "address": "00b31b5f",
+            "bytes": "8d8d741a0000",
+            "mnemonic": "lea",
+            "operand": "ecx, [ebp + 0x1a74]",
+            "Source_role": "state1, real lowercase, late post-word home, captured receiver cache+1A74/0/0"
+          },
+          {
+            "address": "00b31b65",
+            "bytes": "e8d6efffff",
+            "mnemonic": "call",
+            "operand": "0xb30b40",
+            "Source_role": "state1, real lowercase, late post-word home, captured receiver cache+1A74/0/0"
+          },
+          {
+            "address": "00b31b6a",
+            "bytes": "85f6",
+            "mnemonic": "test",
+            "operand": "esi, esi",
+            "Source_role": "captured result/state0, captured ESI with current LEN+1 getter/return"
+          },
+          {
+            "address": "00b31b6c",
+            "bytes": "8bf8",
+            "mnemonic": "mov",
+            "operand": "edi, eax",
+            "Source_role": "captured result/state0, captured ESI with current LEN+1 getter/return"
+          },
+          {
+            "address": "00b31b6e",
+            "bytes": "c644242400",
+            "mnemonic": "mov",
+            "operand": "byte ptr [esp + 0x24], 0",
+            "Source_role": "captured result/state0, captured ESI with current LEN+1 getter/return"
+          },
+          {
+            "address": "00b31b73",
+            "bytes": "7417",
+            "mnemonic": "je",
+            "operand": "0xb31b8c",
+            "Source_role": "captured result/state0, captured ESI with current LEN+1 getter/return"
+          },
+          {
+            "address": "00b31b75",
+            "bytes": "8b44240c",
+            "mnemonic": "mov",
+            "operand": "eax, dword ptr [esp + 0xc]",
+            "Source_role": "captured result/state0, captured ESI with current LEN+1 getter/return"
+          },
+          {
+            "address": "00b31b79",
+            "bytes": "6a01",
+            "mnemonic": "push",
+            "operand": "1",
+            "Source_role": "captured result/state0, captured ESI with current LEN+1 getter/return"
+          },
+          {
+            "address": "00b31b7b",
+            "bytes": "83c001",
+            "mnemonic": "add",
+            "operand": "eax, 1",
+            "Source_role": "captured result/state0, captured ESI with current LEN+1 getter/return"
+          },
+          {
+            "address": "00b31b7e",
+            "bytes": "50",
+            "mnemonic": "push",
+            "operand": "eax",
+            "Source_role": "captured result/state0, captured ESI with current LEN+1 getter/return"
+          },
+          {
+            "address": "00b31b7f",
+            "bytes": "56",
+            "mnemonic": "push",
+            "operand": "esi",
+            "Source_role": "captured result/state0, captured ESI with current LEN+1 getter/return"
+          },
+          {
+            "address": "00b31b80",
+            "bytes": "e83b818eff",
+            "mnemonic": "call",
+            "operand": "0x419cc0",
+            "Source_role": "captured result/state0, captured ESI with current LEN+1 getter/return"
+          },
+          {
+            "address": "00b31b85",
+            "bytes": "8bc8",
+            "mnemonic": "mov",
+            "operand": "ecx, eax",
+            "Source_role": "captured result/state0, captured ESI with current LEN+1 getter/return"
+          },
+          {
+            "address": "00b31b87",
+            "bytes": "e884f90900",
+            "mnemonic": "call",
+            "operand": "0xbd1510",
+            "Source_role": "captured result/state0, captured ESI with current LEN+1 getter/return"
+          },
+          {
+            "address": "00b31b8c",
+            "bytes": "803ddcd6080100",
+            "mnemonic": "cmp",
+            "operand": "byte ptr [0x108d6dc], 0",
+            "Source_role": "current exit mode/state-1, full token/guard preimages and real leave"
+          },
+          {
+            "address": "00b31b93",
+            "bytes": "c7442424ffffffff",
+            "mnemonic": "mov",
+            "operand": "dword ptr [esp + 0x24], 0xffffffff",
+            "Source_role": "current exit mode/state-1, full token/guard preimages and real leave"
+          },
+          {
+            "address": "00b31b9b",
+            "bytes": "740e",
+            "mnemonic": "je",
+            "operand": "0xb31bab",
+            "Source_role": "current exit mode/state-1, full token/guard preimages and real leave"
+          },
+          {
+            "address": "00b31b9d",
+            "bytes": "8b542414",
+            "mnemonic": "mov",
+            "operand": "edx, dword ptr [esp + 0x14]",
+            "Source_role": "current exit mode/state-1, full token/guard preimages and real leave"
+          },
+          {
+            "address": "00b31ba1",
+            "bytes": "8b4c2418",
+            "mnemonic": "mov",
+            "operand": "ecx, dword ptr [esp + 0x18]",
+            "Source_role": "current exit mode/state-1, full token/guard preimages and real leave"
+          },
+          {
+            "address": "00b31ba5",
+            "bytes": "52",
+            "mnemonic": "push",
+            "operand": "edx",
+            "Source_role": "current exit mode/state-1, full token/guard preimages and real leave"
+          },
+          {
+            "address": "00b31ba6",
+            "bytes": "e8551f0000",
+            "mnemonic": "call",
+            "operand": "0xb33b00",
+            "Source_role": "current exit mode/state-1, full token/guard preimages and real leave"
+          },
+          {
+            "address": "00b31bab",
+            "bytes": "8b4c241c",
+            "mnemonic": "mov",
+            "operand": "ecx, dword ptr [esp + 0x1c]",
+            "Source_role": "ordinary Source/private ABI prolog/epilog qualification"
+          },
+          {
+            "address": "00b31baf",
+            "bytes": "8bc7",
+            "mnemonic": "mov",
+            "operand": "eax, edi",
+            "Source_role": "ordinary Source/private ABI prolog/epilog qualification"
+          },
+          {
+            "address": "00b31bb1",
+            "bytes": "5f",
+            "mnemonic": "pop",
+            "operand": "edi",
+            "Source_role": "ordinary Source/private ABI prolog/epilog qualification"
+          },
+          {
+            "address": "00b31bb2",
+            "bytes": "5e",
+            "mnemonic": "pop",
+            "operand": "esi",
+            "Source_role": "ordinary Source/private ABI prolog/epilog qualification"
+          },
+          {
+            "address": "00b31bb3",
+            "bytes": "5d",
+            "mnemonic": "pop",
+            "operand": "ebp",
+            "Source_role": "ordinary Source/private ABI prolog/epilog qualification"
+          },
+          {
+            "address": "00b31bb4",
+            "bytes": "64890d00000000",
+            "mnemonic": "mov",
+            "operand": "dword ptr fs:[0], ecx",
+            "Source_role": "ordinary Source/private ABI prolog/epilog qualification"
+          },
+          {
+            "address": "00b31bbb",
+            "bytes": "83c41c",
+            "mnemonic": "add",
+            "operand": "esp, 0x1c",
+            "Source_role": "ordinary Source/private ABI prolog/epilog qualification"
+          },
+          {
+            "address": "00b31bbe",
+            "bytes": "c20800",
+            "mnemonic": "ret",
+            "operand": "8",
+            "Source_role": "ordinary Source/private ABI prolog/epilog qualification"
+          }
+        ],
+        "calls": [
+          {
+            "address": "00b31af0",
+            "bytes": "e8db1f0000",
+            "mnemonic": "call",
+            "operand": "0xb33ad0"
+          },
+          {
+            "address": "00b31b24",
+            "bytes": "e817c28eff",
+            "mnemonic": "call",
+            "operand": "0x41dd40"
+          },
+          {
+            "address": "00b31b3b",
+            "bytes": "e8405b0c00",
+            "mnemonic": "call",
+            "operand": "0xbf7680"
+          },
+          {
+            "address": "00b31b4c",
+            "bytes": "e8afb098ff",
+            "mnemonic": "call",
+            "operand": "0x4bcc00"
+          },
+          {
+            "address": "00b31b65",
+            "bytes": "e8d6efffff",
+            "mnemonic": "call",
+            "operand": "0xb30b40"
+          },
+          {
+            "address": "00b31b80",
+            "bytes": "e83b818eff",
+            "mnemonic": "call",
+            "operand": "0x419cc0"
+          },
+          {
+            "address": "00b31b87",
+            "bytes": "e884f90900",
+            "mnemonic": "call",
+            "operand": "0xbd1510"
+          },
+          {
+            "address": "00b31ba6",
+            "bytes": "e8551f0000",
+            "mnemonic": "call",
+            "operand": "0xb33b00"
+          }
+        ]
+      },
+      "mapped_slot": {
+        "profile": "00d5f0a8",
+        "offset": "68",
+        "address": "00d5f110",
+        "bytes": "c01ab300",
+        "target": "00b31ac0"
+      },
+      "FH3": {
+        "handler": {
+          "address": "00cbdc20",
+          "bytes": "b88465df00e9198ff3ff",
+          "sha256": "31f75dbdb0c515b4853780f8bb986eea3461f42bbdccd62e55a9b306bf9d70ee",
+          "instructions": [
+            {
+              "address": "00cbdc20",
+              "bytes": "b88465df00",
+              "mnemonic": "mov",
+              "operand": "eax, 0xdf6584"
+            },
+            {
+              "address": "00cbdc25",
+              "bytes": "e9198ff3ff",
+              "mnemonic": "jmp",
+              "operand": "0xbf6b43"
+            }
+          ]
+        },
+        "FuncInfo": {
+          "address": "00df6584",
+          "bytes": "22059319020000007465df00000000000000000000000000000000000000000001000000",
+          "sha256": "d81c9b4f21f1802c677884a558148a3e27bd25dbb87781be866a678205d75a6f",
+          "words": [
+            429065506,
+            2,
+            14640500,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ]
+        },
+        "unwind": {
+          "address": "00df6574",
+          "bytes": "ffffffff10dccb000000000018dccb00",
+          "sha256": "76cf5fd647898ed3c3eae507b1b2e3a185a6cb910a20c52842c8cdc943285f8b",
+          "entries": [
+            {
+              "state": 0,
+              "previous": -1,
+              "action": "00cbdc10"
+            },
+            {
+              "state": 1,
+              "previous": 0,
+              "action": "00cbdc18"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "address": "00cbdc10",
+            "bytes": "8d4dece9f834e6ff",
+            "sha256": "7b9dd60186e4d9665170ea4e173a26a639b7368b7611ceb76c781d1e4e78db39",
+            "instructions": [
+              {
+                "address": "00cbdc10",
+                "bytes": "8d4dec",
+                "mnemonic": "lea",
+                "operand": "ecx, [ebp - 0x14]"
+              },
+              {
+                "address": "00cbdc13",
+                "bytes": "e9f834e6ff",
+                "mnemonic": "jmp",
+                "operand": "0xb21110"
+              }
+            ],
+            "role": "guard record EBP-14 ->B21110"
+          },
+          {
+            "address": "00cbdc18",
+            "bytes": "8d4de4e9000176ff",
+            "sha256": "3637537b3ee32fd46ae5bcf098794a3b5093cded6bd043bd567494b839ac93e3",
+            "instructions": [
+              {
+                "address": "00cbdc18",
+                "bytes": "8d4de4",
+                "mnemonic": "lea",
+                "operand": "ecx, [ebp - 0x1c]"
+              },
+              {
+                "address": "00cbdc1b",
+                "bytes": "e9000176ff",
+                "mnemonic": "jmp",
+                "operand": "0x41dd20"
+              }
+            ],
+            "role": "header EBP-1C ->41DD20"
+          }
+        ],
+        "new_CG_vendor_or_helper_credit": 0,
+        "Source_actions_executed": false,
+        "qualification": "frozen evidence, not Native-origin issuer or selected unwind/secondary/private-stack/ABI/fault permission"
+      }
+    },
+    "all_static_checks_passed": true,
+    "compiler_test_probe_Game_Ghidra_mutation": false
+  },
+  "contract": {
+    "receiver": "captured incoming ECX, separate from CURRENT global guard receiver",
+    "homes": "TWO actual volatile DWORD callee homes, name after guard/postword after lowercase",
+    "Frame": "ordinary actual header/guard DWORDs with caller-established authentic preimages; token entry AL-only/full-word exit read; no zeroing",
+    "Context": "genuine cache context + same raw pool/manager/gate context + live feature reference, preprepared/retained/coherent",
+    "Acquired": "mandatory distinct existing NativeTextureCacheAcquired ref with complete nested graph; no null/hot-hit subset",
+    "cache_call": "raw B30B40(captured_receiver+1A74, actualheader, lateword,0,0,realcontext,distinctrecord)",
+    "normal_cleanup": "captured post-resize ESI, CURRENT local LEN+1 before actual getter/real return; NOT CURRENT DATA/41DD20",
+    "exit": "CURRENT mode after buffer return, full token DWORD then saved receiver; consume skipped preimage without repair",
+    "captured_result": "identity-only return after possible later-provider payload end",
+    "no_new_guard_equality_null_count_cap_or_NoThrow": true
+  },
+  "failure": {
+    "transport": "failed diagnostic + current_exception snapshot + barethrow; retain ALL reached caller/frame/cache/guard/header/resource/provider debt",
+    "snapshot_not_origin": true,
+    "Native_issuer": false,
+    "automatic_outer_cleanup": false,
+    "RAII_GuardScope": false,
+    "header_41DD20_substitution": false,
+    "Native_unwind_actions_executed": false,
+    "existing_nested_helper_qualification_not_policy_closure": true
+  },
+  "packet_inverse": {
+    "existing_file_delta": "NONE",
+    "new_file_delta": "four additions only",
+    "recipe": "Compare immutable packet tree to base: exact A status for assigned four paths, no M/D/other paths. The conceptual inverse removes only four additions; no deletion/mutation is run.",
+    "old_provider_Git_blobs_unchanged": true
+  },
+  "verification_reader": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\verify_provider_pins.py",
+    "bytes": 1823,
+    "sha256": "26c0c89e183f296d48dd84ca6f88190cc1ab60857b11839d7a9189d4fb07ebd6",
+    "utf8_lf": "import hashlib,json,subprocess,sys\nfrom pathlib import Path\nroot=Path(sys.argv[1]).resolve();j=json.loads(Path(sys.argv[2]).read_bytes());p=j['static_proof'];ref=sys.argv[3] if len(sys.argv)>3 else None\ndef sha(b):return hashlib.sha256(b).hexdigest()\ndef blob(b):return hashlib.sha1(b'blob '+str(len(b)).encode()+b'\\0'+b).hexdigest()\ndef git(r,path):return subprocess.check_output(['git','show',r+':'+path],cwd=root)\nfor x in p['new_Source_pins']:\n absent=subprocess.run(['git','cat-file','-e',p['base_ref']+':'+x['path']],cwd=root,capture_output=True);assert absent.returncode!=0\n b=git(ref,x['path']) if ref else (root/x['path']).read_bytes();assert len(b)==x['bytes'] and sha(b)==x['sha256'] and blob(b)==x['git_blob'] and b'\\r' not in b\nfor x in p['whole_provider_pins']:\n b=git(x['ref'],x['path']);assert len(b)==x['bytes'] and sha(b)==x['sha256'] and blob(b)==x['git_blob']\nfor x in p['provider_region_pins']:\n b=b''.join(git(x['ref'],x['path']).splitlines(keepends=True)[x['start_line']-1:x['end_line']]);assert len(b)==x['bytes'] and sha(b)==x['sha256']\nq=j['verification_reader'];b=q['utf8_lf'].encode();assert len(b)==q['bytes'] and sha(b)==q['sha256'] and b'\\r' not in b\nif ref:\n rows=subprocess.check_output(['git','diff-tree','--no-commit-id','--name-status','-r',p['base_ref'],ref],cwd=root).decode().splitlines()\n assert sorted(rows)==sorted('A\\t'+x for x in j['scope']['files'])\nelse:\n assert not subprocess.check_output(['git','diff','--name-only',p['base_ref']],cwd=root).strip()\nassert j['credits']['new_Original']==0 and j['readiness']['Native_unwind_permission']==False\nprint(json.dumps(dict(mode=ref or 'worktree',new_Source_files=2,existing_file_delta='NONE',whole_provider_pins=len(p['whole_provider_pins']),region_pins=len(p['provider_region_pins']),raw_embedded_equal=True,passed=True),indent=2))\n",
+    "encoding": "UTF-8 LF no BOM/CR",
+    "raw_embedded_equal": true,
+    "usage": "python verify_provider_pins.py <repo-root> <report-json> [immutable-packet-ref]; stdlib/Git/text only; optional packet ref also proves full four-addition tree delta",
+    "worker_execution": {
+      "exit_code": 0,
+      "result": {
+        "mode": "worktree",
+        "new_Source_files": 2,
+        "existing_file_delta": "NONE",
+        "whole_provider_pins": 21,
+        "region_pins": 10,
+        "raw_embedded_equal": true,
+        "passed": true
+      },
+      "raw_equals_embedded": true,
+      "stdout_bytes": 190,
+      "stdout_sha256": "257f6ef50da53ba3105d492e79ac9111cc7d5e325ca34493b08a7ae2b4fcbab5",
+      "stderr_bytes": 0,
+      "qualification": "static Git/text only, no compiler/behavior/runtime proof"
+    }
+  },
+  "ignored_artifacts": {
+    "root": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031",
+    "Source": "source_frozen/<path>",
+    "providers": "inputs/<path>",
+    "native_exports": "native_exports/00b31ac0/{assembly.txt,decompiled.c,metadata.json}",
+    "native_binaries": [
+      "body_00b31ac0_00b31bc0.bin",
+      "handler_00cbdc20.bin",
+      "funcinfo_00df6584.bin",
+      "unwind_00df6574.bin",
+      "action_00cbdc10.bin",
+      "action_00cbdc18.bin"
+    ],
+    "static_proof": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\static_proof.json",
+      "bytes": 42899,
+      "sha256": "606494d16b8f7b65803eb54b359b0fb702e4ed509ded20977677b1f1ad33e14b"
+    }
+  },
+  "doc_pin": {
+    "path": "docs/CC16_NATIVE_RENDERER_TEXTURE_FIND_STORAGE.md",
+    "bytes": 8783,
+    "sha256": "a748b8cce99b0c9e41232364707c95adb82b5f3ac09af908b61d5afb9a7d9807",
+    "git_blob": "8ad82ad9f8d6270d10ff2490d1e8df073764c067"
+  },
+  "remaining_Icon_gates": [
+    "whole raw AB6120 and its actual argument/iterator/EH/transfer contract",
+    "whole raw AB3CB0 current80 and actual Icon/Model/material/geometry storage",
+    "AB3840/AB3B30 raw consuming/placeholder APIs",
+    "AB5F00 queue insertion/file delivery beyond existing raw AB5700 getter",
+    "genuine current Texture credit/decrement/zero and receiver publication generations",
+    "retained complete ancestor/widget/node/descendant graph and all OTHER transport"
+  ],
+  "verification": {
+    "Source_raw_frozen_pins": true,
+    "whole_normal_77_and_8calls_and_25Source_orders": true,
+    "whole_provider_pins": 21,
+    "region_pins": 10,
+    "FH3_maps_actions": 2,
+    "compiler": false,
+    "tests": false,
+    "probe_or_Game": false,
+    "Ghidra_mutation": false,
+    "independent_review": "pending Root-assigned review",
+    "Root_CPP_registration_common_build": "pending; no compiler receipt claimed"
+  },
+  "readiness": {
+    "static_normal_provider_ready_for_Root_review": true,
+    "Native_unwind_permission": false,
+    "Native_Origin": false,
+    "Original_ABI_private_stack_fault_SEH": false,
+    "complete_retention_publication_adoption": false,
+    "full_Icon": false,
+    "full_frontend": false,
+    "runtime_gameplay": false,
+    "activation": false
+  },
+  "credits": {
+    "new_Original": 0,
+    "duplicate_body": 0,
+    "vendor": 0,
+    "helper": 0,
+    "compiler_generated": 0,
+    "Original_ABI": 0,
+    "Native_Origin": 0,
+    "runtime": 0,
+    "activation": 0
+  }
+}
