@@ -1,7 +1,9 @@
 #include "bsp/native_model_storage_lifetime.hpp"
+#include "bsp/native_matrix_indexed_model_owner.hpp"
 #include "bsp/native_ref_counted.hpp"
 #include <atomic>
 #include <cstddef>
+#include <cstring>
 #include <exception>
 #include <new>
 #include <stdexcept>
@@ -69,7 +71,8 @@ void require_fresh(const NativeModelStorageLifetimeAcquired& a) {
 void require_target(NativeTextureSurfaceReferenceIncrement target) {
     if (!target) throw std::logic_error("raw Model requires the genuine reached decrement target");
 }
-void terminal(void* captured, NativeModelStorageContext& c) {
+template<class Context>
+void terminal(void* captured, Context& c) {
     // The existing owner contract supplies the genuine CURRENT0 family policy.
     // No model/node extent is assumed for an arbitrary retained owner.
     auto& reference = c.node.scenes.owners.resolve_actual(captured);
@@ -120,10 +123,158 @@ private:
     NativeModelStorageIdentityContext& context_;
     NativeModelStorageLifetimeFrame& frame_;
 };
-void destroy_model(void* owner, NativeModelStorageLifetimeFrame& frame,
-    NativeModelStorageContext& c, NativeModelStorageLifetimeAcquired& a) {
-    require_context(c);
-    require_live_slot(owner, c.pool_01090054);
+// Private admissions exist only after the public allocation-family checks.
+// They contain immutable identity/domain associations, never a success flag.
+struct ModelAllocationAdmission {
+    static constexpr std::size_t slot_bytes = NativeModelPool::slot_bytes;
+    void* const owner;
+    NativeModelStorageContext& context;
+};
+struct MatrixAllocationAdmission {
+    static constexpr std::size_t slot_bytes = NativeMatrixIndexedModelPool::slot_bytes;
+    void* const owner;
+    NativeMatrixModelStorageContext& context;
+};
+struct ModelPayloadContext {
+    NativeNodeBaseDestructionContext& node;
+    const NativeNodeRawConstants& constants;
+    const volatile Word& negative_zero_00d7a208;
+};
+ModelPayloadContext payload_context(const ModelAllocationAdmission& a) {
+    return {a.context.node, a.context.constants, a.context.negative_zero_00d7a208};
+}
+ModelPayloadContext payload_context(const MatrixAllocationAdmission& a) {
+    return {a.context.node(), a.context.constants(), a.context.negative_zero_00d7a208()};
+}
+void require_matrix_context(const NativeMatrixModelStorageContext& c) {
+    auto& node = c.node();
+    if (&node.trees.owners != static_cast<NativeRenderActualOwners*>(&node.scenes.owners) ||
+        &node.scenes.decrement_00ce2220 != &node.trees.decrement_00ce2220 ||
+        c.pool_01090390().storage().allocator_00.native_vtable_00 !=
+            NativeMatrixIndexedModelPool::native_vtable)
+        throw std::invalid_argument("raw Matrix requires SAME prepared pool/node/owner/import domain");
+}
+// Matrix free metadata is byte-backed by the real SlabBytes initializer.
+// Fence each representation observation; do not invent uint16_t objects.
+std::uint16_t read_matrix_free_word(const std::byte* address) noexcept {
+    std::atomic_signal_fence(std::memory_order_seq_cst);
+    std::uint16_t value;
+    std::memcpy(&value, address, sizeof(value));
+    std::atomic_signal_fence(std::memory_order_seq_cst);
+    return value;
+}
+void require_live_matrix_slot(void* owner, NativeMatrixIndexedModelPool& pool) {
+    if (!owner || reinterpret_cast<Word>(owner) % 4u != 0)
+        throw std::invalid_argument("raw Matrix requires actual aligned194h pool storage");
+    const auto& storage = pool.storage();
+    const Word slab_index = NativeMatrixIndexedModelPool::live_slab_index(owner);
+    if (!storage.slabs_28 || slab_index >= storage.slab_count_2c)
+        throw std::invalid_argument("raw Matrix requires SAME allocated pool slab");
+    const auto* const slab = storage.slabs_28[slab_index];
+    const Word offset = reinterpret_cast<Word>(owner) - reinterpret_cast<Word>(slab);
+    if (!slab || offset >= NativeMatrixIndexedModelPool::slot_bytes *
+            NativeMatrixIndexedModelPool::slots_per_slab ||
+        offset % NativeMatrixIndexedModelPool::slot_bytes != 0)
+        throw std::invalid_argument("raw Matrix requires exact SAME slab slot identity");
+    const Word count = read_matrix_free_word(slab + 0x32c0);
+    if (count > NativeMatrixIndexedModelPool::slots_per_slab)
+        throw std::invalid_argument("raw Matrix pool has invalid free-count");
+    for (Word index = 0; index < count; ++index) {
+        const auto* const free_index = slab + 0x3280 + index * sizeof(std::uint16_t);
+        if (read_matrix_free_word(free_index) >= NativeMatrixIndexedModelPool::slots_per_slab)
+            throw std::invalid_argument("raw Matrix pool has invalid free-index");
+        if (read_matrix_free_word(free_index) == offset / NativeMatrixIndexedModelPool::slot_bytes)
+            throw std::invalid_argument("raw Matrix cannot use a returned pool slot");
+    }
+}
+MatrixAllocationAdmission admit_matrix(void* owner, NativeMatrixModelStorageContext& c) {
+    require_matrix_context(c);
+    require_live_matrix_slot(owner, c.pool_01090390());
+    return {owner, c};
+}
+struct MatrixBackingRegion { const void* address; std::size_t bytes; };
+bool matrix_regions_disjoint(MatrixBackingRegion left, MatrixBackingRegion right) noexcept {
+    const auto l = static_cast<std::uint64_t>(reinterpret_cast<std::uintptr_t>(left.address));
+    const auto r = static_cast<std::uint64_t>(reinterpret_cast<std::uintptr_t>(right.address));
+    return l + left.bytes <= r || r + right.bytes <= l;
+}
+void require_matrix_backing(const MatrixAllocationAdmission& a, MatrixBackingRegion record) {
+    const MatrixBackingRegion payload{a.owner, NativeMatrixIndexedModelPool::slot_bytes};
+    auto& c = a.context;
+    const MatrixBackingRegion contexts[] = {{&c, sizeof(c)}, {&c.node(), sizeof(c.node())},
+        {&c.node().scenes, sizeof(c.node().scenes)}, {&c.node().trees, sizeof(c.node().trees)}};
+    for (const auto& context : contexts)
+        if (!matrix_regions_disjoint(payload, context))
+            throw std::invalid_argument("raw Matrix allocation must be disjoint from retained context");
+    if (!matrix_regions_disjoint(payload, record))
+        throw std::invalid_argument("raw Matrix allocation must be disjoint from retained diagnostics");
+}
+template<class Allocation, class ConstructAcquired>
+void* construct_model_payload(const Allocation& allocation, const void* name, ConstructAcquired& a) {
+    void* const owner = allocation.owner;
+    auto c = payload_context(allocation);
+    a.started = true;
+    a.actual_model = owner;
+    a.context = &allocation.context;
+    a.active_call_site = 0x00b75038;
+    construct_native_node_00b6f5a0(owner, Allocation::slot_bytes, name,
+        c.node.strings, c.constants);
+    a.node_constructor_returned = true;
+    // Trivial raw Source tail only; no NativeModelTailStorage type conversion.
+    (void)::new (at(owner, 0x174)) ModelTailWords;
+    a.tail_constructed = true;
+    const Word minimum = c.constants.negative_bound_00ce4adc; // B7503D.
+    write(owner, 0, 0x00d62de8);
+    write(owner, 0x174, 0);
+    write(owner, 0x178, minimum);
+    write(owner, 0x17c, c.constants.positive_bound_00ce4970);
+    const Word negative_zero = c.negative_zero_00d7a208;
+    write(owner, 0x180, 0);
+    write(owner, 0x18, negative_zero);
+    write(owner, 0x1c, negative_zero);
+    write(owner, 0x20, negative_zero);
+    write(owner, 0x24, 0); write(owner, 0x28, 0); write(owner, 0x2c, 0);
+    write(owner, 8, 0); write(owner, 0x0c, 0); write(owner, 0x10, 0); write(owner, 0x14, 0);
+    a.complete = true;
+    return owner;
+}
+template<class Allocation>
+void destroy_model_geometry_payload(void* member, const Allocation& allocation,
+    NativeModelStorageMemberAcquired& a) {
+    auto c = payload_context(allocation);
+    a.started = true;
+    void* const captured = pointer(member, 8);
+    a.captured_owner = captured;
+    if (captured) {
+        const auto decrement = c.node.scenes.decrement_00ce2220; // FRESH B74F2F.
+        a.captured_decrement = decrement;
+        require_target(decrement);
+        a.active_call_site = 0x00b74f2f;
+        const long count = decrement(static_cast<volatile long*>(at(captured, 4)));
+        a.decrement_completed = true;
+        if (count == 0) {
+            a.active_call_site = 0x00b74f3f;
+            terminal(captured, c);
+            a.terminal_completed = true;
+        }
+        write(member, 8, 0);
+        a.field_cleared = true;
+    }
+    a.complete = true;
+}
+void selected_geometry_cleanup(const ModelAllocationAdmission& a,
+    NativeModelStorageMemberAcquired& acquired) {
+    destroy_native_model_geometry_storage_00b74f20(at(a.owner, 0x178), a.context, acquired);
+}
+void selected_geometry_cleanup(const MatrixAllocationAdmission& a,
+    NativeModelStorageMemberAcquired& acquired) {
+    destroy_native_matrix_model_geometry_storage_00b74f20(at(a.owner, 0x178), a.context, acquired);
+}
+template<class Allocation>
+void destroy_model_payload(const Allocation& allocation, NativeModelStorageLifetimeFrame& frame,
+    NativeModelStorageLifetimeAcquired& a) {
+    void* const owner = allocation.owner;
+    auto c = payload_context(allocation);
     require_fresh(a);
     a.started = true;
     int state = -1;
@@ -175,8 +326,8 @@ void destroy_model(void* owner, NativeModelStorageLifetimeFrame& frame,
                 a.native_eh_state = state; // consume before the cleanup call.
                 if (action == 1) {
                     a.active_call_site = 0x00cc1c61;
-                    destroy_native_model_geometry_storage_00b74f20(at(owner, 0x178), c,
-                        a.geometry_unwind); // FRESH current CE2220, not saved epoch.
+                    selected_geometry_cleanup(allocation,
+                        a.geometry_unwind); // SAME allocation domain, FRESH current CE2220.
                 } else {
                     a.active_call_site = 0x00cc1c53;
                     destroy_native_raw_node_base_00b6f440(owner, frame.node, c.node, a.node);
@@ -186,7 +337,20 @@ void destroy_model(void* owner, NativeModelStorageLifetimeFrame& frame,
         throw;
     }
 }
+void destroy_model(void* owner, NativeModelStorageLifetimeFrame& frame,
+    NativeModelStorageContext& c, NativeModelStorageLifetimeAcquired& a) {
+    require_context(c);
+    require_live_slot(owner, c.pool_01090054);
+    destroy_model_payload(ModelAllocationAdmission{owner, c}, frame, a);
+}
 } // namespace
+
+NativeMatrixModelStorageContext::NativeMatrixModelStorageContext(
+    NativeNodeBaseDestructionContext& node, NativeMatrixIndexedModelPool& pool,
+    const NativeNodeRawConstants& constants, const volatile Word& negative_zero)
+    : node_(node), pool_(pool), constants_(constants), negative_zero_(negative_zero) {
+    require_matrix_context(*this);
+}
 
 void* construct_native_model_storage_00b75030(void* owner, const void* name,
     NativeModelStorageContext& c, NativeModelStorageConstructAcquired& a) {
@@ -194,30 +358,7 @@ void* construct_native_model_storage_00b75030(void* owner, const void* name,
         throw std::invalid_argument("raw Model construction requires fresh persistent diagnostics");
     require_context(c);
     require_live_slot(owner, c.pool_01090054);
-    a.started = true;
-    a.actual_model = owner;
-    a.context = &c;
-    a.active_call_site = 0x00b75038;
-    construct_native_node_00b6f5a0(owner, NativeModelPool::slot_bytes, name,
-        c.node.strings, c.constants);
-    a.node_constructor_returned = true;
-    // Trivial Source tail lifetime only; default initialization writes no bytes.
-    (void)::new (at(owner, 0x174)) ModelTailWords;
-    a.tail_constructed = true;
-    const Word minimum = c.constants.negative_bound_00ce4adc; // B7503D.
-    write(owner, 0, 0x00d62de8);
-    write(owner, 0x174, 0);
-    write(owner, 0x178, minimum);
-    write(owner, 0x17c, c.constants.positive_bound_00ce4970);
-    const Word negative_zero = c.negative_zero_00d7a208;
-    write(owner, 0x180, 0);
-    write(owner, 0x18, negative_zero);
-    write(owner, 0x1c, negative_zero);
-    write(owner, 0x20, negative_zero);
-    write(owner, 0x24, 0); write(owner, 0x28, 0); write(owner, 0x2c, 0);
-    write(owner, 8, 0); write(owner, 0x0c, 0); write(owner, 0x10, 0); write(owner, 0x14, 0);
-    a.complete = true;
-    return owner;
+    return construct_model_payload(ModelAllocationAdmission{owner, c}, name, a);
 }
 
 void destroy_native_model_geometry_storage_00b74f20(void* member,
@@ -228,25 +369,40 @@ void destroy_native_model_geometry_storage_00b74f20(void* member,
     if (!member || reinterpret_cast<Word>(member) < 0x178u)
         throw std::invalid_argument("raw Model member requires actual model+178");
     require_live_slot(reinterpret_cast<void*>(reinterpret_cast<Word>(member) - 0x178u), c.pool_01090054);
-    a.started = true;
-    void* const captured = pointer(member, 8);
-    a.captured_owner = captured;
-    if (captured) {
-        const auto decrement = c.node.scenes.decrement_00ce2220; // FRESH B74F2F.
-        a.captured_decrement = decrement;
-        require_target(decrement);
-        a.active_call_site = 0x00b74f2f;
-        const long count = decrement(static_cast<volatile long*>(at(captured, 4)));
-        a.decrement_completed = true;
-        if (count == 0) {
-            a.active_call_site = 0x00b74f3f;
-            terminal(captured, c);
-            a.terminal_completed = true;
-        }
-        write(member, 8, 0);
-        a.field_cleared = true;
-    }
-    a.complete = true;
+    void* const owner = reinterpret_cast<void*>(reinterpret_cast<Word>(member) - 0x178u);
+    destroy_model_geometry_payload(member, ModelAllocationAdmission{owner, c}, a);
+}
+
+void* construct_native_matrix_model_prefix_storage_00b75030(void* owner, const void* name,
+    NativeMatrixModelStorageContext& c, NativeMatrixModelStorageConstructAcquired& a) {
+    if (a.started || a.complete || a.actual_model || a.context)
+        throw std::invalid_argument("raw Matrix prefix construction requires fresh persistent diagnostics");
+    const auto allocation = admit_matrix(owner, c);
+    require_matrix_backing(allocation, {&a, sizeof(a)});
+    return construct_model_payload(allocation, name, a);
+}
+void destroy_native_matrix_model_geometry_storage_00b74f20(void* member,
+    NativeMatrixModelStorageContext& c, NativeModelStorageMemberAcquired& a) {
+    if (a.started || a.complete)
+        throw std::invalid_argument("raw Matrix member cleanup requires fresh persistent diagnostics");
+    if (!member || reinterpret_cast<Word>(member) < 0x178u)
+        throw std::invalid_argument("raw Matrix member requires actual Matrix+178");
+    void* const owner = reinterpret_cast<void*>(reinterpret_cast<Word>(member) - 0x178u);
+    const auto allocation = admit_matrix(owner, c);
+    require_matrix_backing(allocation, {&a, sizeof(a)});
+    destroy_model_geometry_payload(member, allocation, a);
+}
+void destroy_native_matrix_model_prefix_storage_00b750c0(void* owner,
+    NativeModelStorageLifetimeFrame& frame, NativeMatrixModelStorageContext& c,
+    NativeModelStorageLifetimeAcquired& a) {
+    if (a.scalar_started)
+        throw std::invalid_argument("raw Matrix prefix destruction cannot use Model scalar deletion");
+    const auto allocation = admit_matrix(owner, c);
+    require_matrix_backing(allocation, {&frame, sizeof(frame)});
+    require_matrix_backing(allocation, {&a, sizeof(a)});
+    if (!matrix_regions_disjoint({&frame, sizeof(frame)}, {&a, sizeof(a)}))
+        throw std::invalid_argument("raw Matrix prefix frame and diagnostics must be disjoint");
+    destroy_model_payload(allocation, frame, a);
 }
 
 namespace {
