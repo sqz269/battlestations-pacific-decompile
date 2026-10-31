@@ -1,7 +1,7 @@
 {
-  "status": "SOURCE_APPLIED_UNCOMPILED_QUALIFIED_S1_V2_PROVIDER_ONLY",
+  "status": "SOURCE_APPLIED_COMPILER_CONST_CORRECTION_PENDING_REBUILD",
   "source_applied": true,
-  "compiler_performed": false,
+  "compiler_performed": true,
   "Core_verified": false,
   "retained_link_performed": false,
   "runtime_performed": false,
@@ -157,5 +157,19 @@
   "Root_application_base": "b6ceea6df258fee74e6a1bda54adbf5d8a93dc4c",
   "Root_primary_review": "PRIMARY_CURRENT_REPLAY_REVIEW.json",
   "independent_v2_review": "b2acbbc097b37fcaf8b7f94dca802666bd7060405d7130db3cc26aea1da71b3a",
-  "canonical_registration": "one deferred bsp_core native_model_resource_storage.cpp; build/Core/link pending"
+  "canonical_registration": "one deferred bsp_core native_model_resource_storage.cpp; build/Core/link pending",
+  "first_compiler_build": {
+    "Source": "6ae358be7f85e4eef21d85fc745b991fb795d277",
+    "exit": 1,
+    "error": "C2664 in added private marker before old unconditional terminate"
+  },
+  "compiler_correction": {
+    "path": "src/native_model_owner.cpp",
+    "change": "remove only new private-failed marker in existing const terminating legacy-virtual helper",
+    "old_helper_literal_exact_to_b6": true,
+    "no_const_cast_signature_schema_or_Native_change": true,
+    "corrected_Source_sha256": "7c26498082983ef38a93f8b6c4c06c8d03cadea553f57e013209dd0099c84d5d",
+    "independent_Frame_check": "accepted actual one-line diff; seal pending",
+    "historical_candidate_hashes": "Source_candidates list pins original reviewed v2, before this one-line compiler correction"
+  }
 }

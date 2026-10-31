@@ -159,7 +159,6 @@ void require_legacy_virtual(const NativeModelOwner& owner, std::uint32_t site) n
         // raw Native failure route. Actual Page normal calls use throwing APIs.
         raw->host.failed = true;
         raw->host.stopped_site = site;
-        NativeModelRawFactsAccess::failed(owner);
         std::terminate();
     }
 }

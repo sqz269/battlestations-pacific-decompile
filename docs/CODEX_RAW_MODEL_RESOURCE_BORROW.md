@@ -34,3 +34,10 @@ Root Source application preserves the accepted eight HCPP postimages exactly.
 One deferred bsp_core registration adds native_model_resource_storage.cpp.
 No provider/Game entry, switch change, new Native/vendor credit or Original
 ABI/runtime/family/Mission readiness is claimed by Source application.
+
+The first actual compiler pass found C2664 in a newly inserted private failure
+marker inside the existing const, unconditionally terminating legacy guard.
+Removing that one marker restores the whole old guard literally, with no
+const-cast, mutable schema, signature, Native operation or terminating-policy
+change. Other entered failure facts remain. Primary and independent one-line
+review accept the correction; a fresh official build remains required.
