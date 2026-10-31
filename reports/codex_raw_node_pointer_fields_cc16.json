@@ -1,5 +1,5 @@
 {
-  "status": "SOURCE_CORE_REVIEWED_QUALIFIED_REPRESENTATION_ONLY_PENDING_FINAL_JOINED_BUILD",
+  "status": "BUILD_TESTED_SOURCE_CORE_REVIEWED_QUALIFIED_REPRESENTATION_ONLY",
   "Source_commit": "aa13b1a2a5c32831490004a17d9080211ce855c5",
   "source_base": "e41d001d45afe1cbe74fde30dcc6722c1cc73ae9",
   "published_Main_join": "4fafe37dd27389e5342de5f1a72438779b1855e2",
@@ -81,10 +81,79 @@
   "Game_or_provider_entry_run": false,
   "strict13_USN12": "open unchanged",
   "deferred": [
-    "final joined Main canonical build",
     "Original private ABI/fault/FH3/SEH/concurrency/volatileIO",
     "genuine family/canonical/S1 issuers and complete E0/Mesh failure transport",
     "real Scene/Mission/VM caller selection and separately gated runtime"
   ],
-  "local_artifacts": "local\\matrix_raw_outer_primary_cc16_20261031\\Q0_actual_Source"
+  "local_artifacts": "local\\matrix_raw_outer_primary_cc16_20261031\\Q0_actual_Source",
+  "final_joined_build": {
+    "Root_Source": "94c76910e86b6217518d5d8bb2fb778ea1d9b6cd",
+    "published_Main_join": "4fafe37dd27389e5342de5f1a72438779b1855e2",
+    "existing2of2_seconds": 12.47,
+    "all_targets": true,
+    "MP": 2,
+    "PCH": "ON",
+    "coverage_PDB": "OFF",
+    "force_roots": 0,
+    "overlay": "cleared",
+    "objects": [
+      {
+        "object": "native_gui_scene_fields.obj",
+        "whole_byte_exact_after_Source60_join": true,
+        "sha256": "c8a29246463661df68d9af9e1734b824d8ce5b325683626eb8852081110a8987"
+      },
+      {
+        "object": "native_instance_group_upload.obj",
+        "whole_byte_exact_after_Source60_join": true,
+        "sha256": "697f63490f8da9dcadeaaa22d313326572d8aad9dfe962591f175fc02477be2c"
+      },
+      {
+        "object": "native_matrix_storage_lifetime.obj",
+        "whole_byte_exact_after_Source60_join": true,
+        "sha256": "639c65027ba228e44dbdfdd3abb04177660ddf3f1c665892653342dc640c4463"
+      },
+      {
+        "object": "native_model_storage_lifetime.obj",
+        "whole_byte_exact_after_Source60_join": true,
+        "sha256": "d6747d0498e8bde6dad5d3773f4293945ecd8bf48193d7d87dcdc72d37092eb4"
+      },
+      {
+        "object": "native_node_base_destruction.obj",
+        "whole_byte_exact_after_Source60_join": true,
+        "sha256": "1c8cc68d1d8d286dc23994180c187b8cd2390b6bd1b31714eb0f67348c4a90b6"
+      },
+      {
+        "object": "native_node_root_propagation.obj",
+        "whole_byte_exact_after_Source60_join": true,
+        "sha256": "13081d593d4fcdd0d2d804f2469feb5053051144b8b989228a65ef761dbd4f37"
+      },
+      {
+        "object": "native_node_scene_attachment.obj",
+        "whole_byte_exact_after_Source60_join": true,
+        "sha256": "1974aacc265e61ded73d63b0c4f71d8febf689d0016f094f4745ff061061be04"
+      },
+      {
+        "object": "native_node_tree_retirement.obj",
+        "whole_byte_exact_after_Source60_join": true,
+        "sha256": "1f869f6d65dad75ef2c1e0ed446839ef24957dec56e00d1c0f1418ecb09a811a"
+      },
+      {
+        "object": "native_plain_node_storage.obj",
+        "whole_byte_exact_after_Source60_join": true,
+        "sha256": "6fb2c70759d96524ee3c095db8808e9a18d1ef03b89bc74ab484dc7cfd646d20"
+      },
+      {
+        "object": "platform_renderer_activation.obj",
+        "whole_byte_exact_after_Source60_join": true,
+        "sha256": "2ed91c59cc1d57ae1a1ecdfcae541b4a7b787dd741d2127e6edab7881ccf00f4"
+      }
+    ],
+    "all_ten_Root_objects_exact": true,
+    "all_nine_raw_flags_false": true,
+    "all_12_Matrix_Plain_requested_map_symbols_absent": true,
+    "new_Game_or_provider_entry": false,
+    "runtime_proof": "none for Q0; Source60 old startup cohort remains separately scoped",
+    "strict13_USN12": "open unchanged"
+  },
+  "integration": "ready for Main normal fast-forward after published4fafe37"
 }

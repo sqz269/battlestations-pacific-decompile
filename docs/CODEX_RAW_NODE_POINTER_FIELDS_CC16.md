@@ -29,8 +29,12 @@ private TU-name mappings plus two constructor-role-paired renderer lambda-name
 mappings. This is code/provider binding, not literal RTTI/whole-object/PE or
 runtime equivalence across worktrees. Generic name stripping supplies no proof.
 
-Published Source60 Main4fafe37 is joined at9e9e93176; final combined compilation
-is the next integration check. Root artifacts are under
+Published Source60 Main4fafe37 is joined at9e9e93176. The final official combined
+build at94c76910e passes every target and existing2/2 in12.47s. All ten frozen
+Root objects remain whole-byte exact; canonical flags/overlay are empty, all nine
+raw switches stay false and all twelve Matrix/Plain requested entries remain
+absent from the game map. No Game/provider entry was invoked. This closed packet
+is ready for normal Main integration. Root artifacts are under
 local/matrix_raw_outer_primary_cc16_20261031/Q0_actual_Source. Complete original
 producer artifacts remain in the constructor worktree local/q0_raw_node_pointer_fields_gui_20261031.
 
