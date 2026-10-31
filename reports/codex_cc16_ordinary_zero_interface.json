@@ -1,8 +1,8 @@
 {
-  "status": "SOURCE_APPLIED_COMPILER_CORE_PENDING",
+  "status": "SOURCE_BUILD_SCOPED_CORE_ADMITTED_FULL_E0_AND_RUNTIME_OPEN",
   "source_applied": true,
-  "compiler_performed": false,
-  "Core_reviewed": false,
+  "compiler_performed": true,
+  "Core_reviewed": true,
   "runtime_performed": false,
   "baseline": "ff7a7fc64730320d33ad59b3103a0c62f98fb4e6",
   "patch_sha256": "832ece0b09eb6e2fdfddd7f3411ae24549fff5adce03b9ed4297eed21f3104e1",
@@ -40,9 +40,91 @@
   "Native_vendor_body_credit": 0,
   "compiler_Core_ABI_and_runtime_not_inferred_from_Source": true,
   "required_later_gates": [
-    "official MSVC Win32 build and existing suites",
-    "actual normal helper/current caller/legacy noexcept Core and EH review",
     "full E0 owning/failure transport and actual Mesh/thread/generation/family/Mission/Palette bindings",
     "required runtime and switch gates; current user authorization already covers work"
-  ]
+  ],
+  "canonical_build": {
+    "Source_head": "f0a39bfda766257937a47f874ea1978f26b5a3d3",
+    "exit": 0,
+    "all_targets": true,
+    "existing_suites": "2/2 11.37 seconds",
+    "receipt_sha256": "53fccfa45d59092796888f8369134106b19fec08222ade41ef22a05f9ff689ed",
+    "PCH": true,
+    "coverage_PDB": false,
+    "symbol_forcing_or_private_overlay": false
+  },
+  "scoped_Core": {
+    "Source": "f0a39bfda766257937a47f874ea1978f26b5a3d3",
+    "objects_compared": 17,
+    "complete_text_sections_exact": 6209,
+    "changed": 10,
+    "added_compiler_handlers": 7,
+    "removed": 0,
+    "comparison": "code+ordered literal symbolic relocations, no anonymous normalization",
+    "all_text_exact_objects": [
+      "native_ambient_lifetime.obj",
+      "native_gui_scene_fields.obj",
+      "native_matrix_storage_lifetime.obj",
+      "native_mesh_owner.obj",
+      "native_model_owner.obj",
+      "native_model_resource_storage.obj",
+      "native_model_storage_lifetime.obj",
+      "native_node_base_destruction.obj",
+      "native_node_tree_retirement.obj",
+      "native_plain_node_storage.obj",
+      "native_render_context.obj",
+      "native_scene_resource_ambient.obj",
+      "native_scene_resource_storage.obj",
+      "platform_renderer_activation.obj"
+    ],
+    "normal_helper": "28B complete code+relocations exact; same borrowed-count decrement/current-zero tail dispatch; no post-disposal access",
+    "queue": "seven changed paths/five new handlers preserve payload and noexcept boundaries; FuncInfo flags5 and genuine FH3/terminate actions",
+    "native_context": "whole object timestamp-only; all299 text/EH/data/relocations otherwise exact",
+    "geometry": "whole149B SSE helper exact; one542\u2192544B execute/catch preserves actual HOME/import/count/receipt/zero/failure order, register allocation/offsets change",
+    "Renderer": "4746 sections exact; full two changed bone/palette bodies/two handlers reviewed; pop-before-terminal and exact-unbind-before-record-delete preserved; both FuncInfo flags5",
+    "peer_reviews": [
+      {
+        "scope": "normal helper, queue/caller hard boundaries and actual-owner/observed release",
+        "role": "independent applied Source Core/EH review",
+        "review_sha256": "a7a6901091c62656e1500b2cf17c4768193c18d2c10f1929edd918b7c029b02e",
+        "pins_sha256": "e519703d0eaf7d7387fc663556556bc7a555f929f06083f67a71dc11c6b524b3",
+        "artifacts_verified_copied": 55,
+        "Root_full_read_review": true,
+        "no_blocking_finding": true
+      },
+      {
+        "scope": "adjacent Model/Matrix/Plain/Node/shared geometry and literal scalar/failure gates",
+        "role": "S1-author expert, independent of normal-interface author",
+        "review_sha256": "a640881f22be6d888d65923c5d71a4ce3d81c504b203b6276bca52de2c82e3a6",
+        "pins_sha256": "e91b7fd91535702c7f663f6bb72d90524ca9df194f5eb2691116f8f983dc1bef",
+        "inputs_and_artifacts_verified_copied": 38,
+        "Root_full_read_review": true,
+        "no_blocking_finding": true
+      }
+    ],
+    "Root_inventory_sha256": "2228cb1db30eac017b6c31e1ac3f2c6ae1d2b5ff784bce2168ce560bb1e2e5e2",
+    "Root_Renderer_FuncInfo_sha256": "ad4ab2974ff523fb6dcb83e930f91222b22d2c1cd9a0a3975dcdebd23a4c2769",
+    "scope_limit": "Not whole-program/PE/RTTI/Original ABI/runtime identity"
+  },
+  "joined_published_Main": {
+    "commit": "ee32fc77f43a2bfff01c2e388a02588a07ce3b09",
+    "Source_head": "10c1042d395e30b6874f2580ccb5981d2902ad04",
+    "Source65_complete_H_CPP_and_author_peer_admission_reader_review": true,
+    "Source65_author_reader_checks": 124,
+    "source65_Core": "8 complete code sections558B/14relocs plus88B EH/4relocs exact under one explicit TU map",
+    "Source65_explicit_TU_map": {
+      "?A0x4c90667b@": "?A0x2712cc06@"
+    },
+    "Source65_Core_receipt_sha256": "b66f976cb0b38de1007508f1b83cd2ca08483611c4ec359a46783fd07be2f84c",
+    "all_targets": true,
+    "existing_suites": "2/2 14.07 seconds",
+    "all17_reviewed_objects_whole_byte_exact": true,
+    "normal_helper_present_Game_map": true,
+    "uncalled_getter_absent_Game_map": true,
+    "canonical_no_overlay_or_forcing": true,
+    "receipt_sha256": "b491cada39f54d0c9c95f642cd9cc3220b4d7a8e80757a291eaad173f295a430"
+  },
+  "all_nine_raw_GUI_flags_false": true,
+  "Main_selects_V3_at_both_sites": true,
+  "new_entry_or_Game_invocation": false
 }

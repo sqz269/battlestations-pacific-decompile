@@ -83,3 +83,8 @@ No Source implementation or activation follows from this readiness review.
 All nine raw GUI switches remain false at the snapshot. Actual caller/thread
 exclusion, whole failure ownership, family bindings and required gameplay
 validation remain technical work within the user's existing authorization.
+
+The separately admitted [normal zero interface prerequisite](CODEX_CC16_ORDINARY_ZERO_INTERFACE.md)
+relaxes only the base/normal-helper exception types. Current concrete callbacks
+and legacy queue/destructor policies remain unchanged; the full owning/family
+bindings above remain required.
