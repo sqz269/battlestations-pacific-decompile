@@ -1,0 +1,78 @@
+{
+  "schema": "bsp-native-string-raw-header-return-v1",
+  "source_base": "7cabc64284b48ce57e5feeee72113c83884fac87",
+  "merged_origin_Main": "2a4390ccda43ad9d40ef90e2bb480b3cb42bf530",
+  "design_sha256": "0408dcd28a9b7f070bbfecc79c7ab9a35c268ae15a48052448dcc976e68cbcbd",
+  "source_sha256": {
+    "include/bsp/native_string_raw_header_return.hpp": "66804d2209e6875d5a9d723afdab3ab6be12e9f394ba78f3d71778149ef1a335",
+    "src/native_string_raw_header_return.cpp": "d65b8c9fab58a2b23d512164caefcd9dbdaa18f3d0aadc2ff68422dcf6429d28"
+  },
+  "actual_source_lines": {
+    "header": 28,
+    "cpp": 50
+  },
+  "whole_leaf": {
+    "address": "0041dd20",
+    "instructions": 12,
+    "bytes": 29,
+    "schedule": "CURRENTDATA+4 first; NULL skipsLEN/cells/services; nonnull capturedDATA/currentLEN+1wrap before genuine rawgetter/return; no postserviceheaderaccess or stores",
+    "original_abi": "ECX actual8B header, plain RET; no uniform semantic result",
+    "ordinary_Source_void_normal_call_only": true
+  },
+  "actual_provider_tuple": {
+    "getter": "native_string_pool_get_or_create_00419cc0(actual AA8 reference, actual raw AA0 reference)",
+    "return": "return_native_string_pool_00bd1510(actualpool,capturedblock,capturedsize,actual AA4 reference)",
+    "virtual_storage_or_semantic_context_substitution": false
+  },
+  "validation": {
+    "actual_Code_reviews": "Root and Frame full Code accepted exact66804d22/d65b8c9f",
+    "same_object_reviews": "Root and Frame full public/helper/directCOFF/relocation inspection accepted qualified normal-call only",
+    "Frame_review_evidence": {
+      "Code": {
+        "path": "J:/PROG/battlestations-pacific-decompile-codex-raw-locale-uppercase/local/native_string_raw_header_return_review_frame_20261031/REVIEW.md",
+        "sha256": "5e5967457b168707e89460e3cf86dfaaf9dd274ce0c211ad2f55e1ba3471c54c"
+      },
+      "same_object": {
+        "path": "J:/PROG/battlestations-pacific-decompile-codex-raw-locale-uppercase/local/native_string_raw_header_return_review_frame_20261031/object_review/OBJECT_REVIEW.md",
+        "sha256": "ed3902d1dfb1f2239abdb3e10def5a0abd8ef09f444e76963cc4ec8a4e6820c7"
+      }
+    },
+    "strict_object_compile_count": 1,
+    "exit_code": 0,
+    "coff_machine": "014C",
+    "object_bytes": 2204,
+    "object_sha256": "606090b5ac41ed3e3f2bad0f951733f983da9d0712fb8548fd0dfe9d4e9f24f8",
+    "compile_receipt": "local/native_string_raw_header_return_gui_20261031/compile_receipt.json",
+    "compile_receipt_sha256": "df0c7b656d1cdbef96b8164fd6942760e09a38749f4721f61344ac2ccb1ccd00",
+    "same_object_inspection": "local/native_string_raw_header_return_gui_20261031/same_object_inspection.json",
+    "same_object_inspection_sha256": "bd1ab221e98c30bb4fed54d48a8663b4b53570fc91910e79b3178ee7abd3e2b0",
+    "public_symbol": "?return_native_string_header_buffer_0041dd20_exact@bsp@@YAXPBXAAUNativeStringRawPoolContext@1@@Z",
+    "only_real_UNDEFs": [
+      "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+      "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z"
+    ],
+    "support_metadata_is_not_a_provider": "__Avx2WmemEnabledWeakValue",
+    "no_configure_link_executable_test_probe_or_entry": true
+  },
+  "preservation_baseline": "local/native_string_raw_header_return_gui_20261031/provider_baseline.json",
+  "immutable_key_integer_commit": "f8da4297048945aa99c262c85bd552093d9959db",
+  "immutable_key_integer_four_files_and24artifacts": true,
+  "limits": [
+    "actual reached header/block/size/ownership and raw cell/pool/manager/allocator/CRT/code/alias/lifetime/synchronization domains required",
+    "getter C++ escape and real return noexcept/CRT/gate partial effects inherited without local recovery or healthy receipt",
+    "no stores/freeheader/reset/birth/owner/Frame/validation/extraEH/terminate/refund/retry",
+    "Pure LEA at Source offset0x21 follows the getter at0x19, using preserved pregetter EDI LEN and EBX DATA. Only private captured uint32 arithmetic is deferred; no header or provider observation is moved or repeated. Root and Frame explicitly accepted this qualified emitted operation; Native flags/privateHOME/stack/fault/ABI equivalence is unproved.",
+    "normal capability only: keycopy/keystring selected-scope and secondary cleanup policy remains pending",
+    "no parent/full-builder/VM/factory/startup/runtime or Native/vendor-body credit"
+  ],
+  "source_ready": false,
+  "source_main_ready": false,
+  "selected_cleanup_policy_ready": false,
+  "native_abi_equivalent": false,
+  "runtime_validated": false,
+  "new_native_body_credit": false,
+  "new_vendor_body_credit": false,
+  "tests_probe_link_executable_or_entry": false,
+  "emitted_arithmetic_qualification": "Pure LEA at Source offset0x21 follows the getter at0x19, using preserved pregetter EDI LEN and EBX DATA. Only private captured uint32 arithmetic is deferred; no header or provider observation is moved or repeated. Root and Frame explicitly accepted this qualified emitted operation; Native flags/privateHOME/stack/fault/ABI equivalence is unproved.",
+  "preservation_evidence": "local/native_string_raw_header_return_gui_20261031/final_preservation.json"
+}
