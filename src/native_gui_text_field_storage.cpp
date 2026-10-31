@@ -560,4 +560,29 @@ void set_native_gui_text_color_storage_00ab6b50(NativeGuiTextReference& referenc
         color_body(raw, rgba, frame, a);
     });
 }
+void set_native_gui_text_color_storage_00ab6b50(void* actual_text,
+    const void* original_rgba, NativeGuiTextFieldStorageFrame& frame, Acquired& a) {
+    require(actual_text && (bits(actual_text) & 3u) == 0,
+        "Raw Text color requires aligned live actual storage");
+    require(a.phase == Acquired::Phase::fresh && a.entry == Acquired::Entry::none &&
+        !a.destination && !a.active_call_site && !a.shader_decrement_entered &&
+        !a.state_entered && !a.color_entered,
+        "Raw Text color requires a fresh retained diagnostic record");
+    const Region scratch[] = {{&frame, sizeof(frame)}, {&a, sizeof(a)}};
+    require(representable(scratch[0]) && representable(scratch[1]) &&
+        (bits(&frame) & 3u) == 0 && separate(scratch[0], scratch[1]),
+        "Raw Text color frame/diagnostics require separate representable backing");
+    separate_scratch({actual_text, 0x1f8}, frame, a);
+    separate_scratch({original_rgba, 16}, frame, a);
+    a.destination = actual_text;
+    a.entry = Acquired::Entry::color;
+    a.phase = Acquired::Phase::entered;
+    try {
+        color_body(actual_text, original_rgba, frame, a);
+        a.phase = Acquired::Phase::complete;
+    } catch (...) {
+        a.phase = Acquired::Phase::failed;
+        throw; // Retain reached fields/backing/diagnostics; no Native-origin inference.
+    }
+}
 } // namespace bsp
