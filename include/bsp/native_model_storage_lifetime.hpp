@@ -14,6 +14,33 @@ struct NativeModelStorageContext {
     const NativeNodeRawConstants& constants;
     const volatile std::uint32_t& negative_zero_00d7a208;
 };
+// Distinct immutable allocation association for the actual Matrix01090390
+// pool. This is never a Model188 context and cannot be retargeted in place.
+class NativeMatrixIndexedModelPool;
+class NativeMatrixModelStorageContext final {
+public:
+    NativeMatrixModelStorageContext(NativeNodeBaseDestructionContext&,
+        NativeMatrixIndexedModelPool&, const NativeNodeRawConstants&,
+        const volatile std::uint32_t& negative_zero_00d7a208);
+    NativeMatrixModelStorageContext(const NativeMatrixModelStorageContext&) = delete;
+    NativeMatrixModelStorageContext& operator=(const NativeMatrixModelStorageContext&) = delete;
+    NativeNodeBaseDestructionContext& node() const noexcept { return node_; }
+    NativeMatrixIndexedModelPool& pool_01090390() const noexcept { return pool_; }
+    const NativeNodeRawConstants& constants() const noexcept { return constants_; }
+    const volatile std::uint32_t& negative_zero_00d7a208() const noexcept { return negative_zero_; }
+private:
+    NativeNodeBaseDestructionContext& node_;
+    NativeMatrixIndexedModelPool& pool_;
+    const NativeNodeRawConstants& constants_;
+    const volatile std::uint32_t& negative_zero_;
+};
+struct NativeMatrixModelStorageConstructAcquired {
+    bool started{}, node_constructor_returned{}, tail_constructed{}, complete{};
+    std::uint32_t active_call_site{};
+    void* actual_model{};
+    NativeMatrixModelStorageContext* context{};
+};
+
 struct NativeModelStorageConstructAcquired {
     bool started{}, node_constructor_returned{}, tail_constructed{}, complete{};
     bool metadata_bound{};
@@ -102,6 +129,28 @@ void* delete_native_model_storage_00b75290(void* actual_model,
     const volatile std::uint32_t& actual_flags_argument,
     NativeModelStorageLifetimeFrame&, NativeModelStorageContext&,
     NativeModelStorageLifetimeAcquired&, const NativeModelStorageHostCompletion&);
+
+// Qualified raw Matrix allocation providers for the shared Model prefix.
+// Each entry authenticates the SAME live194h Matrix slab/current index190 and
+// free-index state; no current profile, DATA184, extent argument or diagnostic
+// success bit selects allocation authority. The raw prefix constructor is only
+// for standalone raw storage: B6F5A0 establishes NativeNodeStorage[0,174), then
+// the SAME private ModelTailWords[174,184) as the existing standalone Model API.
+// Never call it over NativeModelOwner's already prepared NativeModelTailStorage.
+// The outer Matrix layer owns bones[184,190), typed extent completion, persistent
+// frames and all terminal/physical return. These providers never alter bones or
+// index190 and never use Model B75290. Metadata/frames must be disjoint from the
+// full194h allocation and mutable frame/acquired backing must be disjoint.
+// Base normal/selected cleanup keeps the existing raw Source/fault/ABI limits;
+// selected state1 enters the Matrix-qualified member API with a FRESH import.
+void* construct_native_matrix_model_prefix_storage_00b75030(void* actual_matrix,
+    const void* actual_name_header, NativeMatrixModelStorageContext&,
+    NativeMatrixModelStorageConstructAcquired&);
+void destroy_native_matrix_model_geometry_storage_00b74f20(void* actual_member_178,
+    NativeMatrixModelStorageContext&, NativeModelStorageMemberAcquired&);
+void destroy_native_matrix_model_prefix_storage_00b750c0(void* actual_matrix,
+    NativeModelStorageLifetimeFrame&, NativeMatrixModelStorageContext&,
+    NativeModelStorageLifetimeAcquired&);
 
 struct NativeModelStorageIdentityContext {
     NativeModelStorageContext& storage;

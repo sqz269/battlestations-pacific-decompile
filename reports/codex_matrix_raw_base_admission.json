@@ -1,0 +1,231 @@
+{
+  "status": "integrated_qualified_Matrix_raw_base_provider_prerequisite_Source_Core_peer_Win32_link_checked_outer_lifetime_unbound",
+  "base_Main": "b6e50347a",
+  "primary_design": {
+    "verdict": "ACCEPT_DESIGN_V2_QUALIFIED",
+    "full_v1_patch_and_45_line_correction_read": true,
+    "targeted_new_Matrix_byte_access_issue_closed": true,
+    "old_Model_checks_literal_unchanged": true,
+    "current_Main_patch_check": true,
+    "pins": {
+      "V1_TO_V2.patch": "bb9d58d18054f3f0756eca0f2ef60b5a5b57d0920af54e86352e965001f5fa0a",
+      "UNAPPLIED_SOURCE_PLAN.patch": "f0bc15757af652d680797101eff0ee1442df504e3032a03a1cea60bfcc58c0a7",
+      "DESIGN.md": "19f2f3d12c00603f0820451316edc90c2f5dc360b39dd1595ab220f3f89a7432",
+      "pins.json": "600a75ce19d65e99d10068453b07d05eb62754df708d283ab92de7228234560c"
+    },
+    "Source_authorized": false
+  },
+  "independent_design_review_sha256": "57100ec01e12823c815679d1684633879e78afdc611e90f6465799147183c884",
+  "new_native_body_credit": 0,
+  "new_vendor_body_credit": 0,
+  "Original_ABI_compatible": false,
+  "runtime_validated": false,
+  "mission_activation": false,
+  "goal_status": "active",
+  "author_commit": "bc92e9e9bee9e8eb46f629cfc2c96a06bc8bd3d3",
+  "tested_combined_commit": "390870cc16823694025e5bcaa4553385536ad0d1",
+  "actual_Source_review": {
+    "verdict": "ACCEPT_ACTUAL_SOURCE_QUALIFIED",
+    "whole_files": {
+      "include/bsp/native_model_storage_lifetime.hpp": "2d7a4ce61f291ed6aa19134b655ba2ba031f5dc8f7e016906bf8d6f89f7902a4",
+      "src/native_model_storage_lifetime.cpp": "a52ac422268f17e2d4bdb00c005ef5e637c4bf2653515b9227c34913e048a822",
+      "reports/matrix_raw_model_base_providers.json": "af2e579b3d30a834ff74ea30d242137e87a4e5855a793868cdc67d67b11356b3",
+      "docs/MATRIX_RAW_MODEL_BASE_PROVIDERS.md": "d0c6f9a7ce544d8b6fee561ab6ad92294d96de13bd7bde1d77777fa3bd8c8ee1"
+    },
+    "full_actual_diff_lines_read": 431,
+    "full_inverse_check": true,
+    "unchanged_old_Model_checks_and_scalar_paths": true,
+    "shared_normal_and_selected_graph_accepted": true,
+    "compiler_authorized": false,
+    "doc_clarification_accepted": true
+  },
+  "independent_Source_review_sha256": "e6da13084c4ad3e045b4285724f62d47c5f94fff43e91a96f65310e46ab3085e",
+  "first_build": {
+    "source_commit": "bc92e9e9bee9e8eb46f629cfc2c96a06bc8bd3d3",
+    "exit": 0,
+    "wall_seconds": 139.05,
+    "ctest_summary": [
+      "100% tests passed, 0 tests failed out of 2",
+      "Total Test time (real) =  12.61 sec"
+    ],
+    "artifacts": {
+      "canonical_bsp_game.map": "30823bdfdaf6c439f769b1ef682f64d318564ccaa40c3e4635eee8ff0a4d2c99",
+      "canonical_bsp_game.vcxproj": "008933b1bf4943fef6b85d41e703add896bfdde82b7fd1c03439e8a64ab201d9",
+      "canonical_CMakeCache.txt": "173b00591bec5e1664cf6e405b6161ecc7206c7f1bc173f42f04ca235ef83a44",
+      "canonical_native_model_storage_lifetime.obj": "cb7122d7683e6a7f28f13bc1d34fb44961d495d2ad78a25f5b0229020f439f37"
+    },
+    "new_tests": 0,
+    "new_entry_invoked": false
+  },
+  "Source52_joined_build": {
+    "source_commit": "390870cc16823694025e5bcaa4553385536ad0d1",
+    "exit": 0,
+    "wall_seconds": 33.2,
+    "ctest_summary": [
+      "100% tests passed, 0 tests failed out of 2",
+      "Total Test time (real) =  12.33 sec"
+    ],
+    "artifacts": {
+      "joined_bsp_game.map": "15ee0913c8fdfbf5a1f7aa35ea3938851433b6856a93f4e202b5617eb22b19a1",
+      "joined_bsp_game.vcxproj": "008933b1bf4943fef6b85d41e703add896bfdde82b7fd1c03439e8a64ab201d9",
+      "joined_CMakeCache.txt": "173b00591bec5e1664cf6e405b6161ecc7206c7f1bc173f42f04ca235ef83a44",
+      "joined_native_model_storage_lifetime.obj": "cb7122d7683e6a7f28f13bc1d34fb44961d495d2ad78a25f5b0229020f439f37"
+    },
+    "new_tests": 0,
+    "new_entry_invoked": false
+  },
+  "actual_Core": {
+    "verdict": "ACCEPT_ACTUAL_CORE_QUALIFIED",
+    "pins": {
+      "object_sha256": "cb7122d7683e6a7f28f13bc1d34fb44961d495d2ad78a25f5b0229020f439f37",
+      "object_bytes": 63435,
+      "dump_sha256": "7d38080328bc102f266cb1bdaeafe79d6c4ac7221c61ac0c7bc26f14e88e9ce2"
+    },
+    "full_paths_read": [
+      "Matrix context constructor",
+      "all three Matrix public entries and relocations",
+      "Matrix admission/context/live slot/byte WORD/disjoint backing helpers",
+      "shared raw prefix construction for both families",
+      "shared geometry cleanup",
+      "Matrix normal destructor/catches/FH3 cookie handler and relocations",
+      "Matrix selected geometry cleanup and generic canonical terminal"
+    ],
+    "shared_Model_Matrix_geometry_and_destructor_COFF_equality": {
+      "machine": "014C",
+      "checks": [
+        {
+          "payload": "destroy_model_geometry_payload",
+          "bytes": 160,
+          "code_bytes_equal": true,
+          "relocations": 5,
+          "symbolic_relocations_equal_after_only_family_name_normalization": true
+        },
+        {
+          "payload": "destroy_model_payload",
+          "bytes": 602,
+          "code_bytes_equal": true,
+          "relocations": 21,
+          "symbolic_relocations_equal_after_only_family_name_normalization": true
+        }
+      ],
+      "runtime_or_ABI_claim": false
+    },
+    "observations": "Real194 extent; current190 accessor; MOVZX32C0 and two separate3280 observations; capture174 before saved import; current180 after callbacks; consumed cleanup state before Matrix selected member guard/fresh import; genuine raw node cleanup. No finding.",
+    "limitations": "Inherited Source/private ABI/fault/EH qualifications; no runtime/outer Matrix/mission activation proof",
+    "Source52_joined_object_same": true
+  },
+  "independent_Core_review_sha256": "a81bf302c39b81cd8e5d25bbf34210c145864ee39ce7b696dda2a48032adc206",
+  "retained_link": {
+    "mode": "retained_v2",
+    "exit": 0,
+    "wall_seconds": 11.8,
+    "forced_symbols": [
+      "??0NativeMatrixModelStorageContext@bsp@@QAE@AAUNativeNodeBaseDestructionContext@1@AAVNativeMatrixIndexedModelPool@1@ABUNativeNodeRawConstants@1@ADI@Z",
+      "?construct_native_matrix_model_prefix_storage_00b75030@bsp@@YAPAXPAXPBXAAVNativeMatrixModelStorageContext@1@AAUNativeMatrixModelStorageConstructAcquired@1@@Z",
+      "?destroy_native_matrix_model_geometry_storage_00b74f20@bsp@@YAXPAXAAVNativeMatrixModelStorageContext@1@AAUNativeModelStorageMemberAcquired@1@@Z",
+      "?destroy_native_matrix_model_prefix_storage_00b750c0@bsp@@YAXPAXAAUNativeModelStorageLifetimeFrame@1@AAVNativeMatrixModelStorageContext@1@AAUNativeModelStorageLifetimeAcquired@1@@Z"
+    ],
+    "entry_rows": {
+      "??0NativeMatrixModelStorageContext@bsp@@QAE@AAUNativeNodeBaseDestructionContext@1@AAVNativeMatrixIndexedModelPool@1@ABUNativeNodeRawConstants@1@ADI@Z": [
+        "0001:00300210       ??0NativeMatrixModelStorageContext@bsp@@QAE@AAUNativeNodeBaseDestructionContext@1@AAVNativeMatrixIndexedModelPool@1@ABUNativeNodeRawConstants@1@ADI@Z 10301210 f   bsp_core:native_model_storage_lifetime.obj"
+      ],
+      "?construct_native_matrix_model_prefix_storage_00b75030@bsp@@YAPAXPAXPBXAAVNativeMatrixModelStorageContext@1@AAUNativeMatrixModelStorageConstructAcquired@1@@Z": [
+        "0001:003004b0       ?construct_native_matrix_model_prefix_storage_00b75030@bsp@@YAPAXPAXPBXAAVNativeMatrixModelStorageContext@1@AAUNativeMatrixModelStorageConstructAcquired@1@@Z 103014b0 f   bsp_core:native_model_storage_lifetime.obj"
+      ],
+      "?destroy_native_matrix_model_geometry_storage_00b74f20@bsp@@YAXPAXAAVNativeMatrixModelStorageContext@1@AAUNativeModelStorageMemberAcquired@1@@Z": [
+        "0001:00300a80       ?destroy_native_matrix_model_geometry_storage_00b74f20@bsp@@YAXPAXAAVNativeMatrixModelStorageContext@1@AAUNativeModelStorageMemberAcquired@1@@Z 10301a80 f   bsp_core:native_model_storage_lifetime.obj"
+      ],
+      "?destroy_native_matrix_model_prefix_storage_00b750c0@bsp@@YAXPAXAAUNativeModelStorageLifetimeFrame@1@AAVNativeMatrixModelStorageContext@1@AAUNativeModelStorageLifetimeAcquired@1@@Z": [
+        "0001:00300b90       ?destroy_native_matrix_model_prefix_storage_00b750c0@bsp@@YAXPAXAAUNativeModelStorageLifetimeFrame@1@AAVNativeMatrixModelStorageContext@1@AAUNativeModelStorageLifetimeAcquired@1@@Z 10301b90 f   bsp_core:native_model_storage_lifetime.obj"
+      ]
+    },
+    "artifacts": {
+      "retained_v2_bsp_game.map": "d35692924601790024d1e341422b3c336cc17e82f7c08d902d798ddd1763a492",
+      "retained_v2_bsp_game.vcxproj": "afd6107b66caf3283596da03fa927602904bdf17f6a9518f533b0c545fb25dfb",
+      "retained_v2_CMakeCache.txt": "fb00eed3015f6a273766974624fb5b8e8b0a0cc7b011c807078a14ab4b138850",
+      "retained_v2_native_model_storage_lifetime.obj": "cb7122d7683e6a7f28f13bc1d34fb44961d495d2ad78a25f5b0229020f439f37"
+    },
+    "new_tests": 0,
+    "new_entry_invoked": false
+  },
+  "canonical_restoration": {
+    "mode": "restored_v2",
+    "exit": 0,
+    "wall_seconds": 12.22,
+    "forced_symbols": [],
+    "entry_rows": {
+      "??0NativeMatrixModelStorageContext@bsp@@QAE@AAUNativeNodeBaseDestructionContext@1@AAVNativeMatrixIndexedModelPool@1@ABUNativeNodeRawConstants@1@ADI@Z": [],
+      "?construct_native_matrix_model_prefix_storage_00b75030@bsp@@YAPAXPAXPBXAAVNativeMatrixModelStorageContext@1@AAUNativeMatrixModelStorageConstructAcquired@1@@Z": [],
+      "?destroy_native_matrix_model_geometry_storage_00b74f20@bsp@@YAXPAXAAVNativeMatrixModelStorageContext@1@AAUNativeModelStorageMemberAcquired@1@@Z": [],
+      "?destroy_native_matrix_model_prefix_storage_00b750c0@bsp@@YAXPAXAAUNativeModelStorageLifetimeFrame@1@AAVNativeMatrixModelStorageContext@1@AAUNativeModelStorageLifetimeAcquired@1@@Z": []
+    },
+    "artifacts": {
+      "restored_v2_bsp_game.map": "1d20c0469bd9609ac19e4477757f9610fda7a4d743b20692a19af65bf015dbec",
+      "restored_v2_bsp_game.vcxproj": "008933b1bf4943fef6b85d41e703add896bfdde82b7fd1c03439e8a64ab201d9",
+      "restored_v2_CMakeCache.txt": "173b00591bec5e1664cf6e405b6161ecc7206c7f1bc173f42f04ca235ef83a44",
+      "restored_v2_native_model_storage_lifetime.obj": "cb7122d7683e6a7f28f13bc1d34fb44961d495d2ad78a25f5b0229020f439f37"
+    },
+    "new_tests": 0,
+    "new_entry_invoked": false
+  },
+  "direct_unforced_providers": {
+    "direct_unforced_provider_rows": {
+      "?construct_native_node_00b6f5a0@bsp@@YAAAUNativeNodeStorage@1@PAXIPBXAAUNativeStringRawPoolContext@1@ABUNativeNodeRawConstants@1@@Z": [
+        "0001:00443df0       ?construct_native_node_00b6f5a0@bsp@@YAAAUNativeNodeStorage@1@PAXIPBXAAUNativeStringRawPoolContext@1@ABUNativeNodeRawConstants@1@@Z 10444df0 f   bsp_core:native_node_construction.obj"
+      ],
+      "?destroy_native_raw_node_base_00b6f440@bsp@@YAXPAXAAUNativeNodeBaseDestructionFrame@1@AAUNativeNodeBaseDestructionContext@1@AAUNativeNodeBaseDestructionAcquired@1@@Z": [
+        "0001:004456f0       ?destroy_native_raw_node_base_00b6f440@bsp@@YAXPAXAAUNativeNodeBaseDestructionFrame@1@AAUNativeNodeBaseDestructionContext@1@AAUNativeNodeBaseDestructionAcquired@1@@Z 104466f0 f   bsp_core:native_node_base_destruction.obj"
+      ]
+    },
+    "canonical_overlay_empty": true,
+    "new_entry_invoked": false
+  },
+  "preservation": {
+    "reviewed_four_files": {
+      "include/bsp/native_model_storage_lifetime.hpp": "2d7a4ce61f291ed6aa19134b655ba2ba031f5dc8f7e016906bf8d6f89f7902a4",
+      "src/native_model_storage_lifetime.cpp": "a52ac422268f17e2d4bdb00c005ef5e637c4bf2653515b9227c34913e048a822",
+      "reports/matrix_raw_model_base_providers.json": "af2e579b3d30a834ff74ea30d242137e87a4e5855a793868cdc67d67b11356b3",
+      "docs/MATRIX_RAW_MODEL_BASE_PROVIDERS.md": "d0c6f9a7ce544d8b6fee561ab6ad92294d96de13bd7bde1d77777fa3bd8c8ee1"
+    },
+    "unchanged_other_baseline_files": {
+      "include/bsp/native_matrix_indexed_model_owner.hpp": "d5b235ad01df3b8e95da2dad44e055a979796dcb2948458c704bb1bb31e54fe7",
+      "src/native_matrix_indexed_model_owner.cpp": "0935fcab9d6b772dae2afbd9e1ffedf41b92fad5d88270c1aff70f95fb757d41",
+      "include/bsp/native_model_owner.hpp": "d1cfa9b664075d836d9818ed57f4d9c89858b0c0c507c8ca3dce75f727a52a2a",
+      "src/native_model_owner.cpp": "6e774d73c4a5bbd0109e19c271e2ff05a613e389c50ec72bd888c4c49f5ddd2d",
+      "CMakeLists.txt": "d91dfc37714f324e81c34ac3c62dd0c52517336beeca1a3d22a9a9fa020bd55b",
+      "cmake/startup.cmake": "91d1de5e0df99d75ab2133869f154c0560d969f8ed3b60c999a495ba097f416b",
+      "src/game_native_gui_render_application.cpp": "2132e6bf7222381755f375f333d01a68187acff8daddc2d92e5a0788632aec31",
+      "src/game_native_mission_model.inc": "ed4f91ff37398cc690c5657e9160e1d8aae36f4bf8361dd90ef253ee2733fb87"
+    },
+    "nine_Text_flags": {
+      "kRawDefaultTextQualificationCc16Bound": "false",
+      "kRawDefaultSourceEqualQualificationCc16Bound": "false",
+      "kRawPrimaryPrefixQualificationCc16Bound": "false",
+      "kRawPrefixGeometryQualificationCc16Bound": "false",
+      "kRawMainSectionQualificationCc16Bound": "false",
+      "kRawFontMainQualificationCc16Bound": "false",
+      "kRawEmptyUnchangedQualificationCc16Bound": "false",
+      "kRawFontMetadataQualificationCc16Bound": "false",
+      "kRawFontWorkQualificationCc16Bound": "false"
+    },
+    "all_old_reconstruction_lines_retained_exactly": true,
+    "old_names_and_evidence_prefixes_retained": true,
+    "exports": [
+      {
+        "address": "00b75030",
+        "assembly_unchanged": true
+      },
+      {
+        "address": "00b74f20",
+        "assembly_unchanged": true
+      },
+      {
+        "address": "00b750c0",
+        "assembly_unchanged": true
+      }
+    ],
+    "locked_saved_annotation": "20261031T064423Z"
+  },
+  "first_link_configure_failure": "retained configure failed before deferred bsp_game creation; artifacts preserved, canonical restored; corrected root-only double-defer passed without Source changes",
+  "runtime_entry_invoked": false
+}
