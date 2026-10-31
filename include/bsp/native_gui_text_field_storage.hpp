@@ -230,8 +230,10 @@ void set_native_gui_text_color_storage_00ab6b50(NativeGuiTextReference&,
 // checked before entry; they do not authenticate ownership or Native origin.
 //
 // Actual Text has its complete live 1F8 pool-slot backing. Main+4C is a nonnull
-// actual Model even when geometry is empty; each reached current Model has a
-// genuine live NativeModelTailStorage subobject at+174 (not Group capacity at+180).
+// actual Model even when geometry is empty; each reached current Model has
+// genuinely constructed live native field storage through+183, not Group
+// capacity at+180. Geometry reads its actual+180 DWORD directly without a
+// NativeModelTailStorage view; creator/generation/context remain caller proof.
 // Mesh/array/element and actual NativeMaterialStorage/lighting subobjects, all
 // callback-selected generations and the original 16B RGBA stay valid through
 // return/failure. Those opaque lifetimes/disjoint extents remain caller proof.

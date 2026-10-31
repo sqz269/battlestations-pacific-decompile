@@ -1,0 +1,1143 @@
+{
+  "schema_version": 1,
+  "packet": "codex-gui-color-raw-model-geometry-independent-review",
+  "kind": "independent_static_review",
+  "reviewed_commit": "4b59309d9e7475f15efa251d6e6ccd027d3e11fb",
+  "reviewed_parent": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+  "review_worktree": "J:/PROG/battlestations-pacific-decompile-codex-gui-color-raw-model-geometry-review",
+  "review_base": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+  "scope": {
+    "owned_files": [
+      "docs/CC16_NATIVE_GUI_COLOR_RAW_MODEL_GEOMETRY_INDEPENDENT_REVIEW.md",
+      "reports/cc16_native_gui_color_raw_model_geometry_independent_review.json"
+    ],
+    "addresses": [],
+    "production_files": []
+  },
+  "verdict": "no_actionable_Source_findings_within_bounded_conditional_raw_consumer_scope",
+  "actionable_findings": [],
+  "independent_checks": {
+    "packet": "4b59309d9e7475f15efa251d6e6ccd027d3e11fb",
+    "base": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+    "packet_file_pins": [
+      {
+        "path": "include/bsp/native_gui_text_field_storage.hpp",
+        "bytes": 16245,
+        "sha256": "f3b283ea4fe626e91dbc33208f122e6fa8f55d6630b3168fe4573cb1973e425a",
+        "git_blob": "3f5dadf9c546f81ab987af2a52b57207c52e900c",
+        "ref": "4b59309d9e7475f15efa251d6e6ccd027d3e11fb"
+      },
+      {
+        "path": "src/native_gui_text_field_storage.cpp",
+        "bytes": 32691,
+        "sha256": "9df181083d55b69b839f77fd805f1382766e656ffac06968065c2aedb1d6a242",
+        "git_blob": "9a9871cda99482cfeb7bd57b820581b1e616142b",
+        "ref": "4b59309d9e7475f15efa251d6e6ccd027d3e11fb"
+      },
+      {
+        "path": "include/bsp/native_gui_widget_color_storage.hpp",
+        "bytes": 1912,
+        "sha256": "e405a9e466e5250d7a815d8b636448c3a3148c23e818aff1f287430ce8cc6bfd",
+        "git_blob": "43c3f2e7b5affc29f5c367f65a7697dc5535de3c",
+        "ref": "4b59309d9e7475f15efa251d6e6ccd027d3e11fb"
+      },
+      {
+        "path": "src/native_gui_widget_color_storage.cpp",
+        "bytes": 2642,
+        "sha256": "863c5933575bc690a9f07c99f7357078817ce993b44afbc03dd022214a6ecc67",
+        "git_blob": "8191ed6403e796a51aa032b40275df0286094ddd",
+        "ref": "4b59309d9e7475f15efa251d6e6ccd027d3e11fb"
+      },
+      {
+        "path": "docs/CC16_NATIVE_GUI_COLOR_RAW_MODEL_GEOMETRY.md",
+        "bytes": 8484,
+        "sha256": "401fa6e12420659976537781b0431005f17821fa21e437fc1e0dbc2e4e3b8d8b",
+        "git_blob": "7cc35ea747ec3bcfc69847ddcabb5f82d5d3d190",
+        "ref": "4b59309d9e7475f15efa251d6e6ccd027d3e11fb"
+      },
+      {
+        "path": "reports/cc16_native_gui_color_raw_model_geometry.json",
+        "bytes": 80847,
+        "sha256": "b504df8ae0eedd0484475ece1e03cdb5159b25a0d9ebfb1cd5aa7773d5570a73",
+        "git_blob": "167835cb5da38d86f61a0c9faafe70938a495702",
+        "ref": "4b59309d9e7475f15efa251d6e6ccd027d3e11fb"
+      }
+    ],
+    "exact_six_file_scope": true,
+    "base_equals_review_HEAD": true,
+    "manual_whole_file_inverse": {
+      "src/native_gui_text_field_storage.cpp": {
+        "method": "independently hardcoded helper and two call reversals",
+        "whole_inverse_equal": true
+      },
+      "src/native_gui_widget_color_storage.cpp": {
+        "method": "independently hardcoded helper and two call reversals",
+        "whole_inverse_equal": true
+      },
+      "include/bsp/native_gui_text_field_storage.hpp": {
+        "method": "independently hardcoded contract-comment reversal",
+        "whole_inverse_equal": true
+      },
+      "include/bsp/native_gui_widget_color_storage.hpp": {
+        "method": "independently hardcoded contract-comment reversal",
+        "whole_inverse_equal": true
+      }
+    },
+    "seam_count": 8,
+    "state_count": 17,
+    "states": [
+      {
+        "stage": "before",
+        "canonical_map_sha256": "9189c3b557e37d8dd6ac5bc36c57042ceeb8b64cb9cdfbf7c518be5d3794d91a"
+      },
+      {
+        "stage": "after_H1",
+        "canonical_map_sha256": "23f590ff7550073be8e5850df577678aab65e58529cdd23be4b36c23acfb3112"
+      },
+      {
+        "stage": "after_F1",
+        "canonical_map_sha256": "b902c4c64bebf237991f038196f0d48b4ca5b7f0b61e9180bdf491ffe269a139"
+      },
+      {
+        "stage": "after_F2",
+        "canonical_map_sha256": "199b205c54e5d4351654f0e860f6711b352640a7e3a7d50a5b61dc3d99b8cb84"
+      },
+      {
+        "stage": "after_F3",
+        "canonical_map_sha256": "a48a77999a3438bf582ed7eb9a215709f4bc12a354d393aa1d9c23d1e2a00bd1"
+      },
+      {
+        "stage": "after_H2",
+        "canonical_map_sha256": "15b87b1d783ddf1ff7765468f28988407c4ff6825dbc8487da494e20220ebebf"
+      },
+      {
+        "stage": "after_B1",
+        "canonical_map_sha256": "a1a2810b4aab028774a5097afddbbea3cf98984c8c80b001f63d22d277829dba"
+      },
+      {
+        "stage": "after_B2",
+        "canonical_map_sha256": "7d99c337b299ed017b2ef7a6f0ebd7d2852dbbe81d14c26de32af8c9c99d93e0"
+      },
+      {
+        "stage": "after_B3",
+        "canonical_map_sha256": "1d8528f8f02946bce5c801f3e598be06475fb3f7244391976c23ebfb4dff676c"
+      },
+      {
+        "stage": "reverse_B3",
+        "canonical_map_sha256": "7d99c337b299ed017b2ef7a6f0ebd7d2852dbbe81d14c26de32af8c9c99d93e0"
+      },
+      {
+        "stage": "reverse_B2",
+        "canonical_map_sha256": "a1a2810b4aab028774a5097afddbbea3cf98984c8c80b001f63d22d277829dba"
+      },
+      {
+        "stage": "reverse_B1",
+        "canonical_map_sha256": "15b87b1d783ddf1ff7765468f28988407c4ff6825dbc8487da494e20220ebebf"
+      },
+      {
+        "stage": "reverse_H2",
+        "canonical_map_sha256": "a48a77999a3438bf582ed7eb9a215709f4bc12a354d393aa1d9c23d1e2a00bd1"
+      },
+      {
+        "stage": "reverse_F3",
+        "canonical_map_sha256": "199b205c54e5d4351654f0e860f6711b352640a7e3a7d50a5b61dc3d99b8cb84"
+      },
+      {
+        "stage": "reverse_F2",
+        "canonical_map_sha256": "b902c4c64bebf237991f038196f0d48b4ca5b7f0b61e9180bdf491ffe269a139"
+      },
+      {
+        "stage": "reverse_F1",
+        "canonical_map_sha256": "23f590ff7550073be8e5850df577678aab65e58529cdd23be4b36c23acfb3112"
+      },
+      {
+        "stage": "reverse_H1",
+        "canonical_map_sha256": "9189c3b557e37d8dd6ac5bc36c57042ceeb8b64cb9cdfbf7c518be5d3794d91a"
+      }
+    ],
+    "production": [
+      {
+        "path": "include/bsp/native_gui_text_field_storage.hpp",
+        "before": {
+          "path": "include/bsp/native_gui_text_field_storage.hpp",
+          "bytes": 16103,
+          "sha256": "4bfb2f16d53fbd0476835624df067d0381d33ba015b6bc7bd3ca2d9718b77766",
+          "git_blob": "8c757602985deebc86d26586929db284900871db",
+          "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0"
+        },
+        "after": {
+          "path": "include/bsp/native_gui_text_field_storage.hpp",
+          "bytes": 16245,
+          "sha256": "f3b283ea4fe626e91dbc33208f122e6fa8f55d6630b3168fe4573cb1973e425a",
+          "git_blob": "3f5dadf9c546f81ab987af2a52b57207c52e900c",
+          "ref": "4b59309d9e7475f15efa251d6e6ccd027d3e11fb"
+        },
+        "author_frozen_equal": true,
+        "manual_inverse_equal": true
+      },
+      {
+        "path": "src/native_gui_text_field_storage.cpp",
+        "before": {
+          "path": "src/native_gui_text_field_storage.cpp",
+          "bytes": 32505,
+          "sha256": "8d9a1299004c40c57ed59be58a9408cba9e08f3fff32db06b8662f590c9dd4bf",
+          "git_blob": "496ee36bedc050f8ed08e10f2ff824154f888c3c",
+          "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0"
+        },
+        "after": {
+          "path": "src/native_gui_text_field_storage.cpp",
+          "bytes": 32691,
+          "sha256": "9df181083d55b69b839f77fd805f1382766e656ffac06968065c2aedb1d6a242",
+          "git_blob": "9a9871cda99482cfeb7bd57b820581b1e616142b",
+          "ref": "4b59309d9e7475f15efa251d6e6ccd027d3e11fb"
+        },
+        "author_frozen_equal": true,
+        "manual_inverse_equal": true
+      },
+      {
+        "path": "include/bsp/native_gui_widget_color_storage.hpp",
+        "before": {
+          "path": "include/bsp/native_gui_widget_color_storage.hpp",
+          "bytes": 1825,
+          "sha256": "c44b97890659d2bb6103367d03a8866d9bf4b394cf4ff46b5827fb96b6ae1ff7",
+          "git_blob": "68fc7ceb92c92a52712a4981a03a06fc9237343f",
+          "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0"
+        },
+        "after": {
+          "path": "include/bsp/native_gui_widget_color_storage.hpp",
+          "bytes": 1912,
+          "sha256": "e405a9e466e5250d7a815d8b636448c3a3148c23e818aff1f287430ce8cc6bfd",
+          "git_blob": "43c3f2e7b5affc29f5c367f65a7697dc5535de3c",
+          "ref": "4b59309d9e7475f15efa251d6e6ccd027d3e11fb"
+        },
+        "author_frozen_equal": true,
+        "manual_inverse_equal": true
+      },
+      {
+        "path": "src/native_gui_widget_color_storage.cpp",
+        "before": {
+          "path": "src/native_gui_widget_color_storage.cpp",
+          "bytes": 2507,
+          "sha256": "9f5a34ad3a420176737b3f1c68e64c083d13f6d24d43404be238dad2c3ce28d5",
+          "git_blob": "5c416a1f15ba0703d1353739329ca7cdf819ae0b",
+          "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0"
+        },
+        "after": {
+          "path": "src/native_gui_widget_color_storage.cpp",
+          "bytes": 2642,
+          "sha256": "863c5933575bc690a9f07c99f7357078817ce993b44afbc03dd022214a6ecc67",
+          "git_blob": "8191ed6403e796a51aa032b40275df0286094ddd",
+          "ref": "4b59309d9e7475f15efa251d6e6ccd027d3e11fb"
+        },
+        "author_frozen_equal": true,
+        "manual_inverse_equal": true
+      }
+    ],
+    "protected": [
+      {
+        "path": "include/bsp/native_gui_text_field_storage.hpp",
+        "old_asm": 0,
+        "new_asm": 0,
+        "new_data_asm": 0,
+        "old_x87": 0,
+        "new_x87": 0,
+        "fp_forms": [],
+        "old_asm_pins": [],
+        "new_data_asm_pins": [],
+        "counters": [],
+        "noexcept_occurrences": 34,
+        "all_protected": true
+      },
+      {
+        "path": "src/native_gui_text_field_storage.cpp",
+        "old_asm": 3,
+        "new_asm": 4,
+        "new_data_asm": 1,
+        "old_x87": 18,
+        "new_x87": 18,
+        "fp_forms": [
+          [
+            "fld",
+            "dword ptr [eax]"
+          ],
+          [
+            "fmul",
+            "dword ptr [edx]"
+          ],
+          [
+            "fstp",
+            "dword ptr [eax]"
+          ],
+          [
+            "fld",
+            "dword ptr [eax]"
+          ],
+          [
+            "fstp",
+            "dword ptr [edx + 0xc]"
+          ],
+          [
+            "fld",
+            "dword ptr [eax]"
+          ],
+          [
+            "fld",
+            "qword ptr [edx]"
+          ],
+          [
+            "fadd",
+            "st(1), st(0)"
+          ],
+          [
+            "fxch",
+            "st(1)"
+          ],
+          [
+            "fstp",
+            "dword ptr [eax]"
+          ],
+          [
+            "fld",
+            "dword ptr [eax + 4]"
+          ],
+          [
+            "fadd",
+            "st(0), st(1)"
+          ],
+          [
+            "fstp",
+            "dword ptr [eax + 4]"
+          ],
+          [
+            "fadd",
+            "dword ptr [eax + 8]"
+          ],
+          [
+            "fstp",
+            "dword ptr [eax + 8]"
+          ],
+          [
+            "fld",
+            "dword ptr [eax + 0xc]"
+          ],
+          [
+            "fadd",
+            "qword ptr [edx]"
+          ],
+          [
+            "fstp",
+            "dword ptr [eax + 0xc]"
+          ]
+        ],
+        "old_asm_pins": [
+          {
+            "bytes": 265,
+            "sha256": "f2e5d349b299f117e3f11f7339acb753f08e13f1dd6ff626be8d21be1eb8009f"
+          },
+          {
+            "bytes": 126,
+            "sha256": "006d5341ee6fa5f08c03d8db0f1f122fa191913c4dcd910c2140523cd1a2e8c0"
+          },
+          {
+            "bytes": 464,
+            "sha256": "bd23cd5791323ff567d86475612ce7218400bb012cf80a4489d35e6824daa59e"
+          }
+        ],
+        "new_data_asm_pins": [
+          {
+            "bytes": 109,
+            "sha256": "dda9238b734402fbd49efb8d288b70637bad51d7fbec6a5329b7349d7cad64ed"
+          }
+        ],
+        "counters": [],
+        "noexcept_occurrences": 13,
+        "all_protected": true
+      },
+      {
+        "path": "include/bsp/native_gui_widget_color_storage.hpp",
+        "old_asm": 0,
+        "new_asm": 0,
+        "new_data_asm": 0,
+        "old_x87": 0,
+        "new_x87": 0,
+        "fp_forms": [],
+        "old_asm_pins": [],
+        "new_data_asm_pins": [],
+        "counters": [],
+        "noexcept_occurrences": 2,
+        "all_protected": true
+      },
+      {
+        "path": "src/native_gui_widget_color_storage.cpp",
+        "old_asm": 0,
+        "new_asm": 1,
+        "new_data_asm": 1,
+        "old_x87": 0,
+        "new_x87": 0,
+        "fp_forms": [],
+        "old_asm_pins": [],
+        "new_data_asm_pins": [
+          {
+            "bytes": 109,
+            "sha256": "dda9238b734402fbd49efb8d288b70637bad51d7fbec6a5329b7349d7cad64ed"
+          }
+        ],
+        "counters": [],
+        "noexcept_occurrences": 4,
+        "all_protected": true
+      }
+    ],
+    "unchanged_inputs": [
+      {
+        "path": "include/bsp/gui_material_binding.hpp",
+        "bytes": 4787,
+        "sha256": "9d6a380b2ea93fdf8910fa73733229c2a3bac0528f669bf8e655fc3e8f0cdafd",
+        "git_blob": "11dac330582d021b1fc73fc5b530b74501ab3549",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "packet_equal": true,
+        "raw_frozen_equal": true,
+        "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/inputs/include/bsp/gui_material_binding.hpp"
+      },
+      {
+        "path": "src/gui_material_binding.cpp",
+        "bytes": 7617,
+        "sha256": "de3312f993d3180fb7023c9869908a74134370c430bdb8844e20b1cadcac15e2",
+        "git_blob": "fe058317e88a81ba76160f4f7b66f23d3991c367",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "packet_equal": true,
+        "raw_frozen_equal": true,
+        "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/inputs/src/gui_material_binding.cpp"
+      },
+      {
+        "path": "include/bsp/gui_widget_owner.hpp",
+        "bytes": 17870,
+        "sha256": "55bb0101eaee6369f886c6fb6956fad0cd2dea60fcca01db182fdc4cd7ae7add",
+        "git_blob": "ffc873f839f207fec8de12d53b0bbbb0b915befc",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "packet_equal": true,
+        "raw_frozen_equal": true,
+        "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/inputs/include/bsp/gui_widget_owner.hpp"
+      },
+      {
+        "path": "src/gui_widget_owner.cpp",
+        "bytes": 42079,
+        "sha256": "405c324270bd194614898b6c7f7934ab526c30d366fb0dd64933e33db81f2762",
+        "git_blob": "cc31262d504966fbaba9e546f710f44904a6cff5",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "packet_equal": true,
+        "raw_frozen_equal": true,
+        "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/inputs/src/gui_widget_owner.cpp"
+      },
+      {
+        "path": "include/bsp/native_mesh_owner.hpp",
+        "bytes": 9476,
+        "sha256": "f0f4b0d87721717033e823aee5494a280481c6b4a02a7fd2bea51970b46d5636",
+        "git_blob": "e07733e92317d2e38e48a14e9c9121ba0342dab6",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "packet_equal": true,
+        "raw_frozen_equal": true,
+        "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/inputs/include/bsp/native_mesh_owner.hpp"
+      },
+      {
+        "path": "src/native_mesh_owner.cpp",
+        "bytes": 12622,
+        "sha256": "8725dee8119cf400bf58464d6dd2dcb6771502b6edd8f527f65ec3f3c7fe40fe",
+        "git_blob": "148a586af9e2cc2ce8a64c0d7705852797d4634c",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "packet_equal": true,
+        "raw_frozen_equal": true,
+        "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/inputs/src/native_mesh_owner.cpp"
+      },
+      {
+        "path": "include/bsp/native_mesh_section.hpp",
+        "bytes": 9555,
+        "sha256": "c99901d53b195ab67c0da51c7b39657f42b7b60ba1f5509eec200b6ff29f3e2e",
+        "git_blob": "376c7d40d6b124f2b42d333604676ebe2834eac6",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "packet_equal": true,
+        "raw_frozen_equal": true,
+        "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/inputs/include/bsp/native_mesh_section.hpp"
+      },
+      {
+        "path": "src/native_mesh_section.cpp",
+        "bytes": 23109,
+        "sha256": "8f09c61b3ba5ef47c403de9769d24d9d9e6a79c1bb8668430e53fc33587ed876",
+        "git_blob": "58454f0dde681da13d714fc6909f74f2290fcf63",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "packet_equal": true,
+        "raw_frozen_equal": true,
+        "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/inputs/src/native_mesh_section.cpp"
+      },
+      {
+        "path": "include/bsp/native_material_owner.hpp",
+        "bytes": 5986,
+        "sha256": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320",
+        "git_blob": "fee25270c9758390575b4b1500781fc1a7bccdf2",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "packet_equal": true,
+        "raw_frozen_equal": true,
+        "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/inputs/include/bsp/native_material_owner.hpp"
+      },
+      {
+        "path": "src/native_material_owner.cpp",
+        "bytes": 9483,
+        "sha256": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc",
+        "git_blob": "98c7c3495ec76c5a15b13de8c9bc869f7a601958",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "packet_equal": true,
+        "raw_frozen_equal": true,
+        "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/inputs/src/native_material_owner.cpp"
+      },
+      {
+        "path": "include/bsp/native_render_pointer_arrays.hpp",
+        "bytes": 4572,
+        "sha256": "d9cf406a178986114205fe9a154a2b74c0f8dd857b6186d7d840d8fe398ae881",
+        "git_blob": "35eea1520ca112f8990ce892d4bde2c33c8a7fbf",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "packet_equal": true,
+        "raw_frozen_equal": true,
+        "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/inputs/include/bsp/native_render_pointer_arrays.hpp"
+      },
+      {
+        "path": "src/native_render_pointer_arrays.cpp",
+        "bytes": 5346,
+        "sha256": "ac16b7251f6df37193b88d5d92e8288044872bc2df39b71f29ed83c7291b193c",
+        "git_blob": "03baba3d45c252a974c78df5be6abdce79161bdb",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "packet_equal": true,
+        "raw_frozen_equal": true,
+        "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/inputs/src/native_render_pointer_arrays.cpp"
+      },
+      {
+        "path": "include/bsp/gui_native_geometry.hpp",
+        "bytes": 10778,
+        "sha256": "132f61a4e1f2b7cd09d16b4bae2e5c5cd223805d0fcf7592560f46737a6286cf",
+        "git_blob": "6d2c181bb30aeb29dc21f3fb70e797bfc54da139",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "packet_equal": true,
+        "raw_frozen_equal": true,
+        "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/inputs/include/bsp/gui_native_geometry.hpp"
+      },
+      {
+        "path": "src/gui_native_geometry.cpp",
+        "bytes": 30316,
+        "sha256": "1b957f0aa970eec806bd09389aaa4f21157a64013a3a5c721a0065a0a7e5f0bf",
+        "git_blob": "b60d0c7fd032e7f146980d91c6fb578690517b43",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "packet_equal": true,
+        "raw_frozen_equal": true,
+        "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/inputs/src/gui_native_geometry.cpp"
+      },
+      {
+        "path": "include/bsp/native_model_storage_lifetime.hpp",
+        "bytes": 9363,
+        "sha256": "7754b1a3df10ccf79a83899513b48ab4616df9b9f9a5da54400ed7d4fe51ea1f",
+        "git_blob": "319ac5182e317f50e999437b3d300c92d695fbdf",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "packet_equal": true,
+        "raw_frozen_equal": true,
+        "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/inputs/include/bsp/native_model_storage_lifetime.hpp"
+      },
+      {
+        "path": "src/native_model_storage_lifetime.cpp",
+        "bytes": 17638,
+        "sha256": "d9ea114fa0e88f42f5a692adf96014827c32cd5d856a8e228e1ccd0550dd99b0",
+        "git_blob": "7ca6d5ae17001f48426aeed0826f2db496a56f2f",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "packet_equal": true,
+        "raw_frozen_equal": true,
+        "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/inputs/src/native_model_storage_lifetime.cpp"
+      },
+      {
+        "path": "include/bsp/native_model_owner.hpp",
+        "bytes": 9870,
+        "sha256": "d1cfa9b664075d836d9818ed57f4d9c89858b0c0c507c8ca3dce75f727a52a2a",
+        "git_blob": "1ef6610b9534c327e4e58412eb6a0cd5f8a9409e",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "packet_equal": true,
+        "raw_frozen_equal": true,
+        "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/inputs/include/bsp/native_model_owner.hpp"
+      },
+      {
+        "path": "src/native_model_owner.cpp",
+        "bytes": 29717,
+        "sha256": "6e774d73c4a5bbd0109e19c271e2ff05a613e389c50ec72bd888c4c49f5ddd2d",
+        "git_blob": "7c764a3abcd1ffeb713dad482807965574aadb74",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "packet_equal": true,
+        "raw_frozen_equal": true,
+        "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/inputs/src/native_model_owner.cpp"
+      },
+      {
+        "path": "include/bsp/native_group_storage_lifetime.hpp",
+        "bytes": 5985,
+        "sha256": "e76050ec022410905806e8ca1bcb172d6f8ad6a752d67c14b9834d626c7593cd",
+        "git_blob": "258d927f6f33cce80ff143ed752b46c314523f3f",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "packet_equal": true,
+        "raw_frozen_equal": true,
+        "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/inputs/include/bsp/native_group_storage_lifetime.hpp"
+      },
+      {
+        "path": "src/native_group_storage_lifetime.cpp",
+        "bytes": 10100,
+        "sha256": "8da07fea5a190da43214a880d8be19fd81250ff736570c4112e8412e91de0a5d",
+        "git_blob": "01b9e2d917a75f695d415d2db5b4b38f4781027e",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "packet_equal": true,
+        "raw_frozen_equal": true,
+        "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/inputs/src/native_group_storage_lifetime.cpp"
+      },
+      {
+        "path": "include/bsp/gui_page_root.hpp",
+        "bytes": 1764,
+        "sha256": "73a8399381a53554da3c8a581aee37f656baa5a9d6fdeb6281aeef37f5a38e4f",
+        "git_blob": "cf53938a80255dbda1b5162fd9549c8a6e763abe",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "packet_equal": true,
+        "raw_frozen_equal": true,
+        "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/inputs/include/bsp/gui_page_root.hpp"
+      },
+      {
+        "path": "src/gui_page_root.cpp",
+        "bytes": 2462,
+        "sha256": "2ddf108eaf9c6ae91b2b9c16b6a21f4f9f3210625bd507866b310922d35eddbb",
+        "git_blob": "3fef358d9569629ab23aa9fdce3e50b036aa3a54",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "packet_equal": true,
+        "raw_frozen_equal": true,
+        "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/inputs/src/gui_page_root.cpp"
+      },
+      {
+        "path": "include/bsp/native_gui_page_construction.hpp",
+        "bytes": 3168,
+        "sha256": "7c0dbf31a1d433708516fe5e67b7e3129d116a4ec31af07e31ec9ea15e3835a8",
+        "git_blob": "ac2e16414db09fd71ed68b8ce802f4e5695f34aa",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "packet_equal": true,
+        "raw_frozen_equal": true,
+        "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/inputs/include/bsp/native_gui_page_construction.hpp"
+      },
+      {
+        "path": "src/native_gui_page_construction.cpp",
+        "bytes": 4215,
+        "sha256": "066059cba6487f666d38bbacebb8af793dcb8e0b211e51f38ab0c7241eebe185",
+        "git_blob": "1cc63b66183aaa20f129a01975ac6483682599fe",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "packet_equal": true,
+        "raw_frozen_equal": true,
+        "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/inputs/src/native_gui_page_construction.cpp"
+      },
+      {
+        "path": "include/bsp/native_render_context.hpp",
+        "bytes": 10071,
+        "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+        "git_blob": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "packet_equal": true,
+        "raw_frozen_equal": true,
+        "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/inputs/include/bsp/native_render_context.hpp"
+      },
+      {
+        "path": "src/native_render_context.cpp",
+        "bytes": 11471,
+        "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+        "git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "packet_equal": true,
+        "raw_frozen_equal": true,
+        "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/inputs/src/native_render_context.cpp"
+      }
+    ],
+    "Native": {
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "verified_before_batch": true,
+      "functions": [
+        {
+          "start": "00aa6870",
+          "bytes": 122,
+          "sha256": "23665e8cb7052229f2e0a69de2b88d95c637bca88f1609b834faa3258d9dacd5",
+          "instruction_count": 44,
+          "actual_file_offset": 6973552,
+          "rows_exact": true,
+          "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/native/00aa6870.bin"
+        },
+        {
+          "start": "00ab6b50",
+          "bytes": 116,
+          "sha256": "711afa4b9053fa8d1cda10b3cca92c9fc4a2018ee18abcec9b6396d5b2766f06",
+          "instruction_count": 37,
+          "actual_file_offset": 7039824,
+          "rows_exact": true,
+          "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/native/00ab6b50.bin"
+        },
+        {
+          "start": "00b74640",
+          "bytes": 9,
+          "sha256": "b7ff20e1db5330d3267e90ab2878843cad302c39fc4734af86a8a8bf08b133f2",
+          "instruction_count": 2,
+          "actual_file_offset": 7816768,
+          "rows_exact": true,
+          "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/native/00b74640.bin"
+        },
+        {
+          "start": "00b74650",
+          "bytes": 12,
+          "sha256": "d1a5253084bebbfd6425b839fabf5086a1f78f173723121f249d5ace727b64bc",
+          "instruction_count": 4,
+          "actual_file_offset": 7816784,
+          "rows_exact": true,
+          "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/native/00b74650.bin"
+        },
+        {
+          "start": "00b72b40",
+          "bytes": 4,
+          "sha256": "d4d3079e1e2bc80c23488a3e2c1e4850449f45e35fbe39efe7e920ba8e97f0f8",
+          "instruction_count": 2,
+          "actual_file_offset": 7809856,
+          "rows_exact": true,
+          "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/native/00b72b40.bin"
+        },
+        {
+          "start": "00b732c0",
+          "bytes": 13,
+          "sha256": "8dcf736751986acd75e000be99dc03d547d44ca694c404cd7e0d82d5302d3e00",
+          "instruction_count": 4,
+          "actual_file_offset": 7811776,
+          "rows_exact": true,
+          "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/native/00b732c0.bin"
+        },
+        {
+          "start": "00b179f0",
+          "bytes": 6,
+          "sha256": "18126bf420a5b30e2a575d82cb5f7e00eaa3a07965af17c68b8d59713f47b4e3",
+          "instruction_count": 2,
+          "actual_file_offset": 7436784,
+          "rows_exact": true,
+          "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/native/00b179f0.bin"
+        }
+      ],
+      "saved_exports": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aa6870\\assembly.txt",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00aa6870\\assembly.txt",
+          "bytes": 1380,
+          "sha256": "137e97c0e22e209f1d6f65c3a77ac4a03f2f00f44bee58050e651c430693a27e",
+          "kind": "historical_saved_export_raw_bytes",
+          "verified": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aa6870\\decompiled.c",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00aa6870\\decompiled.c",
+          "bytes": 10587,
+          "sha256": "45ce879b9d364635210971c370f0cfc7f793316a69de2c589a00eeca04f0af93",
+          "kind": "historical_saved_export_raw_bytes",
+          "verified": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aa6870\\metadata.json",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00aa6870\\metadata.json",
+          "bytes": 269,
+          "sha256": "facf14f8650fb1a2b832d6b4ea2e18e4a672a39345a78469325dbc25b6b6af1e",
+          "kind": "historical_saved_export_raw_bytes",
+          "verified": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab6b50\\assembly.txt",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00ab6b50\\assembly.txt",
+          "bytes": 1028,
+          "sha256": "059efd208a6f29bcaaffa3e7d02350a3aad5e9ecbeb08fd45689398971ea0230",
+          "kind": "historical_saved_export_raw_bytes",
+          "verified": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab6b50\\decompiled.c",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00ab6b50\\decompiled.c",
+          "bytes": 2801,
+          "sha256": "cd3b72d7a0fbbcd901606fa830789a1a51b3c4c7aff500a46fdb11ddd63e26ec",
+          "kind": "historical_saved_export_raw_bytes",
+          "verified": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab6b50\\metadata.json",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00ab6b50\\metadata.json",
+          "bytes": 267,
+          "sha256": "35990fee25ee374c717bd4b1171d715e466780d514cfbc7a8cf2c5ebc5f26124",
+          "kind": "historical_saved_export_raw_bytes",
+          "verified": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b74640\\assembly.txt",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b74640\\assembly.txt",
+          "bytes": 62,
+          "sha256": "1959a214cd04d94ae7ec1b57be28658079c1f9c9717ac49aceb2b3b86e729e01",
+          "kind": "historical_saved_export_raw_bytes",
+          "verified": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b74640\\decompiled.c",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b74640\\decompiled.c",
+          "bytes": 1028,
+          "sha256": "11a33b54f8d6a576b81a5aef94b714ca8f66f52dd517db96b85c614739c04c56",
+          "kind": "historical_saved_export_raw_bytes",
+          "verified": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b74640\\metadata.json",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b74640\\metadata.json",
+          "bytes": 277,
+          "sha256": "e56af9d3664b8ec87ad54e8a215105a41cb5a2ecf424ccbba4370e6069ddbdd4",
+          "kind": "historical_saved_export_raw_bytes",
+          "verified": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b74650\\assembly.txt",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b74650\\assembly.txt",
+          "bytes": 101,
+          "sha256": "c20b220b2e1ff2fe1e7added2df620922172ec07866afdd9b854409de327a871",
+          "kind": "historical_saved_export_raw_bytes",
+          "verified": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b74650\\decompiled.c",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b74650\\decompiled.c",
+          "bytes": 1723,
+          "sha256": "c6c726ab4ea094e26b3ac4b15d2f7b8c9d2ea9f84c3c4594b6e1aa1478365d37",
+          "kind": "historical_saved_export_raw_bytes",
+          "verified": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b74650\\metadata.json",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b74650\\metadata.json",
+          "bytes": 277,
+          "sha256": "ccabfd61eacedf96d816cbfcf8655cf26412cc385a5d76e86fd881cab5c39841",
+          "kind": "historical_saved_export_raw_bytes",
+          "verified": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b72b40\\assembly.txt",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b72b40\\assembly.txt",
+          "bytes": 57,
+          "sha256": "f2c45d00470e1c378a72a047f9e66e24d8e592c521dc36d7d42b738738fae4f1",
+          "kind": "historical_saved_export_raw_bytes",
+          "verified": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b72b40\\decompiled.c",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b72b40\\decompiled.c",
+          "bytes": 3587,
+          "sha256": "04cd43d4e0e2812a5c227a82b90007cc3ba689e4397575e9244e7f0e6f1928be",
+          "kind": "historical_saved_export_raw_bytes",
+          "verified": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b72b40\\metadata.json",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b72b40\\metadata.json",
+          "bytes": 272,
+          "sha256": "fe93c1a321a69c4f72fefd875cb8876ab98f1edea40c5d29f43b77fb87afea20",
+          "kind": "historical_saved_export_raw_bytes",
+          "verified": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b732c0\\assembly.txt",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b732c0\\assembly.txt",
+          "bytes": 147,
+          "sha256": "f7519931473c8c797d11941389f86af57ca305d7e582780072529d27d459fc2c",
+          "kind": "historical_saved_export_raw_bytes",
+          "verified": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b732c0\\decompiled.c",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b732c0\\decompiled.c",
+          "bytes": 393,
+          "sha256": "ad60b3f050ce3a3b7a369bcb4eba32992e85ba2d36bd8f1a0cac74d953db1a94",
+          "kind": "historical_saved_export_raw_bytes",
+          "verified": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b732c0\\metadata.json",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b732c0\\metadata.json",
+          "bytes": 272,
+          "sha256": "ba449679925ba1a289534523316b52cee71bdd28d637ff452effea6ec2955a48",
+          "kind": "historical_saved_export_raw_bytes",
+          "verified": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b179f0\\assembly.txt",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b179f0\\assembly.txt",
+          "bytes": 51,
+          "sha256": "2f917de60b134aaf431a3860532924dc12914702250d596a16393f2cdd49f45f",
+          "kind": "historical_saved_export_raw_bytes",
+          "verified": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b179f0\\decompiled.c",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b179f0\\decompiled.c",
+          "bytes": 1692,
+          "sha256": "62d45813c4d075fe97aa6ecfab85d197773f99752c6a2370de0b1ced4acc8fbf",
+          "kind": "historical_saved_export_raw_bytes",
+          "verified": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b179f0\\metadata.json",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b179f0\\metadata.json",
+          "bytes": 275,
+          "sha256": "8b2a741118852501b99b05b2d26bb09d9e47574f818a2f25358dbaf0b510b8c6",
+          "kind": "historical_saved_export_raw_bytes",
+          "verified": true
+        }
+      ],
+      "tables": [
+        {
+          "base": "00d5c130",
+          "offset": "50",
+          "cell": "00d5c180",
+          "target": "00aa6870",
+          "bytes": "7068aa00",
+          "qualification": "Installed PE cell only; not live profile/generation proof",
+          "independent_file_offset": 9814400,
+          "verified": true
+        },
+        {
+          "base": "00d5c6c8",
+          "offset": "50",
+          "cell": "00d5c718",
+          "target": "00ab6b50",
+          "bytes": "506bab00",
+          "qualification": "Installed PE cell only; not live profile/generation proof",
+          "independent_file_offset": 9815832,
+          "verified": true
+        }
+      ],
+      "PE": {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "bytes": 12223752,
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+      },
+      "qualification": "offline bytes/decode and saved analysis only; no live object or generation proof"
+    },
+    "producer_reader": {
+      "bytes": 2628,
+      "sha256": "2e607fbd1b6559091ccd9feb026a87cb655a5fb260a9a11c0ed2be3ea9b03c85",
+      "raw_equals_embedded": true,
+      "immutable_mode_result": {
+        "mode": "4b59309d9e7475f15efa251d6e6ccd027d3e11fb",
+        "whole_files": 4,
+        "seams": 8,
+        "states": 17,
+        "unchanged_inputs": 26,
+        "passed": true
+      }
+    },
+    "findings": [],
+    "verdict": "no_actionable_Source_findings_within_bounded_conditional_raw_consumer_scope",
+    "compiler_runtime_actions": false,
+    "production_edits": false
+  },
+  "supplemental_unchanged_node_family_files": [
+    {
+      "path": "include/bsp/native_node_construction.hpp",
+      "bytes": 6451,
+      "sha256": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098",
+      "git_blob": "888b44f3f32e67b930c840740cdabdea10283f1a",
+      "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+      "packet_equal": true,
+      "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/supplement/include/bsp/native_node_construction.hpp",
+      "role": "review-only supplement: genuine NativeNodeStorage object birth, no production change"
+    },
+    {
+      "path": "src/native_node_construction.cpp",
+      "bytes": 14664,
+      "sha256": "87a73019511d3575aa0887a4964a2a8703a5248106fdcff2eddfbb424918dd35",
+      "git_blob": "6a0e74c4cb62f82ec0b1909a807f36b0297f72ab",
+      "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+      "packet_equal": true,
+      "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/supplement/src/native_node_construction.cpp",
+      "role": "review-only supplement: genuine NativeNodeStorage object birth, no production change"
+    }
+  ],
+  "bounded_family_and_provider_regions": [
+    {
+      "role": "raw native NodeStorage placement birth",
+      "path": "src/native_node_construction.cpp",
+      "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+      "first_line": 238,
+      "last_line": 254,
+      "kind": "bounded_region_inclusive_line_bytes",
+      "bytes": 847,
+      "sha256": "359f5df9b2a96fb2da5fabc55cd00fa31c4a5e1f2058f55bf574b475ebd22682",
+      "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/regions/1.bin"
+    },
+    {
+      "role": "private raw ModelTailWords family",
+      "path": "src/native_model_storage_lifetime.cpp",
+      "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+      "first_line": 17,
+      "last_line": 24,
+      "kind": "bounded_region_inclusive_line_bytes",
+      "bytes": 437,
+      "sha256": "a2e293b2c3183ce39075550fc9b2ad6887c7d1c681b89837e7ec8d4fbd63eb89",
+      "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/regions/2.bin"
+    },
+    {
+      "role": "raw Model node/tail construction and actual fields",
+      "path": "src/native_model_storage_lifetime.cpp",
+      "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+      "first_line": 193,
+      "last_line": 219,
+      "kind": "bounded_region_inclusive_line_bytes",
+      "bytes": 1303,
+      "sha256": "4b2af9588238d534f129cb7c2830350e9a0d136250a5bc440957365e211bdcb4",
+      "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/regions/3.bin"
+    },
+    {
+      "role": "distinct typed ModelOwner tail family",
+      "path": "src/native_model_owner.cpp",
+      "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+      "first_line": 54,
+      "last_line": 65,
+      "kind": "bounded_region_inclusive_line_bytes",
+      "bytes": 748,
+      "sha256": "c0d2ccf4c0eacb09a2c36f0a83e9f83767cf4ac0145794c40a51e28975fa337a",
+      "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/regions/4.bin"
+    },
+    {
+      "role": "genuine actual Mesh object birth",
+      "path": "src/native_mesh_owner.cpp",
+      "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+      "first_line": 70,
+      "last_line": 98,
+      "kind": "bounded_region_inclusive_line_bytes",
+      "bytes": 1439,
+      "sha256": "02107abaea22e86b2fd082a847c9e5191b9b39bdcb1f0cc0ff757398b5f355f8",
+      "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/regions/5.bin"
+    },
+    {
+      "role": "genuine actual Section object birth",
+      "path": "src/native_mesh_section.cpp",
+      "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+      "first_line": 325,
+      "last_line": 347,
+      "kind": "bounded_region_inclusive_line_bytes",
+      "bytes": 973,
+      "sha256": "365109a00c1e9eb2efd21ac984869c5bc892f8ca8590685428707c79b8e8a53d",
+      "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/regions/6.bin"
+    },
+    {
+      "role": "genuine actual Material and lighting object birth",
+      "path": "src/native_material_owner.cpp",
+      "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+      "first_line": 50,
+      "last_line": 68,
+      "kind": "bounded_region_inclusive_line_bytes",
+      "bytes": 1006,
+      "sha256": "fdb49e8a487d742059bf4680d94b20aa4c0a9b9050775f445ca86b15295875e9",
+      "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/regions/7.bin"
+    },
+    {
+      "role": "unchanged public typed Model/array getters",
+      "path": "src/gui_widget_owner.cpp",
+      "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+      "first_line": 47,
+      "last_line": 54,
+      "kind": "bounded_region_inclusive_line_bytes",
+      "bytes": 364,
+      "sha256": "f276dacdc5fc0d54187b40617d045e5f916c99a533df33c7867a6406c949d30c",
+      "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/regions/8.bin"
+    },
+    {
+      "role": "unchanged mesh-count and diffuse alias getters",
+      "path": "src/gui_material_binding.cpp",
+      "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+      "first_line": 86,
+      "last_line": 96,
+      "kind": "bounded_region_inclusive_line_bytes",
+      "bytes": 504,
+      "sha256": "b4ac0639ecb5d5aa1a8a866d3f11f5019c10078c2494e086c257e606c70293f1",
+      "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/regions/9.bin"
+    },
+    {
+      "role": "Group ends old tail and starts descriptor family",
+      "path": "src/native_group_storage_lifetime.cpp",
+      "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+      "first_line": 70,
+      "last_line": 88,
+      "kind": "bounded_region_inclusive_line_bytes",
+      "bytes": 1117,
+      "sha256": "34ee4971792bc40256730b764491115c4091da085c00dcb51ee5a3bf052fd556",
+      "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/regions/10.bin"
+    },
+    {
+      "role": "raw Model binding/private destruction-entry phases",
+      "path": "src/native_model_storage_lifetime.cpp",
+      "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+      "first_line": 320,
+      "last_line": 358,
+      "kind": "bounded_region_inclusive_line_bytes",
+      "bytes": 2098,
+      "sha256": "5be510e3f0416b201cf978c1dc2b32634ff4909862894a83978bfc72d13ad41d",
+      "frozen": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/regions/11.bin"
+    }
+  ],
+  "independent_checker": {
+    "path": "local/review_source52.py",
+    "bytes": 13065,
+    "sha256": "ae478216eab9241f3526ecd2584f6c489c31614a3a40631283d7ce887971bb2f",
+    "git_blob": "5871325d9d2acced04b6484b2697d539b32f59bf",
+    "initial_run_context": "baseline review HEAD and raw production files exact Main8a468; target Sources read only through immutable Git",
+    "result_path": "local/output/cc16_native_gui_color_raw_model_geometry_independent_review_20261031/independent_checks.json",
+    "result_bytes": 39402,
+    "result_sha256": "23173aabe9d97ea47dded39e54514858fe5fdb805bd10ffb011f6e4bbdf53f1f",
+    "runtime_or_compiler_test": false
+  },
+  "producer_reader": {
+    "bytes": 2628,
+    "sha256": "2e607fbd1b6559091ccd9feb026a87cb655a5fb260a9a11c0ed2be3ea9b03c85",
+    "raw_equals_embedded": true,
+    "immutable_mode_result": {
+      "mode": "4b59309d9e7475f15efa251d6e6ccd027d3e11fb",
+      "whole_files": 4,
+      "seams": 8,
+      "states": 17,
+      "unchanged_inputs": 26,
+      "passed": true
+    },
+    "utf8_lf": "import hashlib,json,re,subprocess,sys\nfrom pathlib import Path\nroot=Path(sys.argv[1]).resolve(); r=json.loads(Path(sys.argv[2]).read_bytes()); p=r['static_proof']; ref=sys.argv[3] if len(sys.argv)>3 else None\ndef sha(b):return hashlib.sha256(b).hexdigest()\ndef blob(b):return hashlib.sha1(b'blob '+str(len(b)).encode()+b'\\0'+b).hexdigest()\ndef git(v,q):return subprocess.check_output(['git','show',v+':'+q],cwd=root)\ndef actual(q):return git(ref,q) if ref else (root/q).read_bytes()\nold={};new={}\nfor f in p['production']:\n q=f['path'];old[q]=git(p['base'],q);new[q]=actual(q)\n for k,b in [('before',old[q]),('after',new[q])]:\n  a=f[k];assert len(b)==a['bytes'] and sha(b)==a['sha256'] and blob(b)==a['git_blob']\n  z=Path(f['frozen_'+k]);assert z.read_bytes()==b\nwork=dict(old);states=iter(p['seventeen_states'])\ndef state():\n z=next(states);v={q:sha(b) for q,b in sorted(work.items())}\n assert v==z['files'] and sha(json.dumps(v,sort_keys=True,separators=(',',':')).encode())==z['canonical_map_sha256']\nstate()\nfor s in p['seams']:\n q=s['path'];i=s['offset'];a=s['before_utf8_lf'].encode();b=s['after_utf8_lf'].encode()\n assert len(a)==s['before_bytes'] and len(b)==s['after_bytes'] and sha(a)==s['before_sha256'] and sha(b)==s['after_sha256']\n assert sha(work[q])==s['before_step_sha256'] and work[q][i:i+len(a)]==a\n work[q]=work[q][:i]+b+work[q][i+len(a):];assert sha(work[q])==s['after_step_sha256'];state()\nassert work==new\nfor s in reversed(p['seams']):\n q=s['path'];i=s['offset'];a=s['before_utf8_lf'].encode();b=s['after_utf8_lf'].encode()\n assert sha(work[q])==s['after_step_sha256'] and work[q][i:i+len(b)]==b\n work[q]=work[q][:i]+a+work[q][i+len(b):];assert sha(work[q])==s['before_step_sha256'];state()\nassert work==old and not list(states)\nfor z in p['protected']:\n q=z['path'];a=re.findall(rb'__asm\\s*\\{[^}]*\\}',old[q]);b=re.findall(rb'__asm\\s*\\{[^}]*\\}',new[q]);assert [x for x in b if x in a]==a\n fp=lambda v:[m[1].lower() for x in v for m in re.finditer(rb'^\\s*(f[a-z0-9]+)\\b',x,re.I|re.M)]\n assert fp(a)==fp(b) and old[q].count(b'noexcept')==new[q].count(b'noexcept')\n assert [x for x in old[q].splitlines() if b'__COUNTER__' in x]==[x for x in new[q].splitlines() if b'__COUNTER__' in x]\nfor z in p['twenty_six_whole_input_pins']:\n b=git(z['ref'],z['path']);assert b==actual(z['path'])==Path(z['frozen']).read_bytes() and sha(b)==z['sha256'] and blob(b)==z['git_blob']\nx=r['inverse_reader']['utf8_lf'].encode();assert sha(x)==r['inverse_reader']['sha256'] and len(x)==r['inverse_reader']['bytes']\nprint(json.dumps(dict(mode=ref or 'worktree',whole_files=4,seams=8,states=17,unchanged_inputs=26,passed=True)))\n"
+  },
+  "qualifiers": {
+    "existing_noexcept_is_not_Native_NoThrow": true,
+    "public_typed_getter_unchanged": true,
+    "RawModelTailWords_not_NativeModelTailStorage": true,
+    "Group_capacity_not_Model_geometry": true,
+    "genuine_NodeStorage_prefix_required": true,
+    "actual_Mesh_Section_Material_lifetimes_required": true,
+    "actual_current_generation_receipt": false,
+    "creator_context_custody_proven": false,
+    "broader_Glyph_producer_transport_ready": false,
+    "Native_Origin_permission": false,
+    "Original_ABI": false,
+    "hardware_SEH_FH3_unmasked_FP_transport": false,
+    "runtime_gameplay": false
+  },
+  "actions": {
+    "Source_edits": false,
+    "addresses_claimed": false,
+    "compiler": false,
+    "preprocess": false,
+    "build": false,
+    "tests": false,
+    "probe": false,
+    "provider_or_Game": false,
+    "Ghidra_mutation": false,
+    "CMake_or_ledger": false,
+    "original_game_written": false,
+    "static_Git_text_PE_only": true
+  },
+  "document_pin": {
+    "path": "docs/CC16_NATIVE_GUI_COLOR_RAW_MODEL_GEOMETRY_INDEPENDENT_REVIEW.md",
+    "bytes": 8708,
+    "sha256": "46f4e769e44004a0a86af5f0bf733f45fd3181f91d986942faf341ef507811b9",
+    "git_blob": "d77cbb33d8972d8536b234481965a7658549dfeb"
+  }
+}

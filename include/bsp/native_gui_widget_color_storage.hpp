@@ -10,9 +10,10 @@ namespace bsp {
 // new; it does not replace that register/private ABI or provide SEH handling.
 //
 // Require genuinely constructed, live DWORD-aligned actual widget storage
-// through+5F, a nonnull actual Model at+4C with the genuine existing live
-// NativeModelTailStorage subobject at+174 (not a Group's capacity at+180),
-// valid reached mesh/element/material storage and an original readable RGBA
+// through+5F, a nonnull genuinely constructed actual Model at+4C with live
+// native field storage through+183 (not a Group's capacity at+180). Geometry
+// reads its actual+180 DWORD directly, without creating a typed tail view.
+// Require valid reached mesh/element/material storage and an original readable RGBA
 // quartet. Keep the complete independent graph/backing alive through return.
 // Actual object/provider storage is disjoint; RGBA may overlap their live
 // fields, including widget color or material diffuse. Its words are read/stored in order, then read

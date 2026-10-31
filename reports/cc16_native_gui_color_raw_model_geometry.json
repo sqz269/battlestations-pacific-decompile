@@ -1,0 +1,1690 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-gui-color-raw-model-geometry",
+  "source_batch": 52,
+  "kind": "ordinary_Source_raw_Model_geometry_consumer_repair",
+  "generated_utc": "2026-10-31T05:48:50.295727+00:00",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry",
+  "base_ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+  "scope": {
+    "addresses": [
+      "00aa6870",
+      "00ab6b50",
+      "00b74640"
+    ],
+    "production_files": [
+      "include/bsp/native_gui_text_field_storage.hpp",
+      "src/native_gui_text_field_storage.cpp",
+      "include/bsp/native_gui_widget_color_storage.hpp",
+      "src/native_gui_widget_color_storage.cpp"
+    ],
+    "evidence_files": [
+      "docs/CC16_NATIVE_GUI_COLOR_RAW_MODEL_GEOMETRY.md",
+      "reports/cc16_native_gui_color_raw_model_geometry.json"
+    ],
+    "public_signatures_changed": false,
+    "header_comments_only": true,
+    "Native_body_or_vendor_credit": false
+  },
+  "hash_formats": {
+    "Source": "Exact Git object/raw UTF8 LF bytes; zero CR; standard Git blob SHA1",
+    "frozen": "Raw on-disk copies equal specified Git preimages or current postimages",
+    "state": "SHA256 canonical sorted compact JSON map of all four full-file SHA256s",
+    "Native": "Raw installed PE range bytes and saved Ghidra export bytes at author epoch"
+  },
+  "static_proof": {
+    "base": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+    "production": [
+      {
+        "path": "include/bsp/native_gui_text_field_storage.hpp",
+        "before": {
+          "path": "include/bsp/native_gui_text_field_storage.hpp",
+          "bytes": 16103,
+          "sha256": "4bfb2f16d53fbd0476835624df067d0381d33ba015b6bc7bd3ca2d9718b77766",
+          "git_blob": "8c757602985deebc86d26586929db284900871db",
+          "format": "Git/raw UTF8 LF bytes"
+        },
+        "after": {
+          "path": "include/bsp/native_gui_text_field_storage.hpp",
+          "bytes": 16245,
+          "sha256": "f3b283ea4fe626e91dbc33208f122e6fa8f55d6630b3168fe4573cb1973e425a",
+          "git_blob": "3f5dadf9c546f81ab987af2a52b57207c52e900c",
+          "format": "Git/raw UTF8 LF bytes"
+        },
+        "frozen_before": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\before\\include\\bsp\\native_gui_text_field_storage.hpp",
+        "frozen_after": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\after\\include\\bsp\\native_gui_text_field_storage.hpp",
+        "full_forward_reverse": true
+      },
+      {
+        "path": "src/native_gui_text_field_storage.cpp",
+        "before": {
+          "path": "src/native_gui_text_field_storage.cpp",
+          "bytes": 32505,
+          "sha256": "8d9a1299004c40c57ed59be58a9408cba9e08f3fff32db06b8662f590c9dd4bf",
+          "git_blob": "496ee36bedc050f8ed08e10f2ff824154f888c3c",
+          "format": "Git/raw UTF8 LF bytes"
+        },
+        "after": {
+          "path": "src/native_gui_text_field_storage.cpp",
+          "bytes": 32691,
+          "sha256": "9df181083d55b69b839f77fd805f1382766e656ffac06968065c2aedb1d6a242",
+          "git_blob": "9a9871cda99482cfeb7bd57b820581b1e616142b",
+          "format": "Git/raw UTF8 LF bytes"
+        },
+        "frozen_before": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\before\\src\\native_gui_text_field_storage.cpp",
+        "frozen_after": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\after\\src\\native_gui_text_field_storage.cpp",
+        "full_forward_reverse": true
+      },
+      {
+        "path": "include/bsp/native_gui_widget_color_storage.hpp",
+        "before": {
+          "path": "include/bsp/native_gui_widget_color_storage.hpp",
+          "bytes": 1825,
+          "sha256": "c44b97890659d2bb6103367d03a8866d9bf4b394cf4ff46b5827fb96b6ae1ff7",
+          "git_blob": "68fc7ceb92c92a52712a4981a03a06fc9237343f",
+          "format": "Git/raw UTF8 LF bytes"
+        },
+        "after": {
+          "path": "include/bsp/native_gui_widget_color_storage.hpp",
+          "bytes": 1912,
+          "sha256": "e405a9e466e5250d7a815d8b636448c3a3148c23e818aff1f287430ce8cc6bfd",
+          "git_blob": "43c3f2e7b5affc29f5c367f65a7697dc5535de3c",
+          "format": "Git/raw UTF8 LF bytes"
+        },
+        "frozen_before": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\before\\include\\bsp\\native_gui_widget_color_storage.hpp",
+        "frozen_after": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\after\\include\\bsp\\native_gui_widget_color_storage.hpp",
+        "full_forward_reverse": true
+      },
+      {
+        "path": "src/native_gui_widget_color_storage.cpp",
+        "before": {
+          "path": "src/native_gui_widget_color_storage.cpp",
+          "bytes": 2507,
+          "sha256": "9f5a34ad3a420176737b3f1c68e64c083d13f6d24d43404be238dad2c3ce28d5",
+          "git_blob": "5c416a1f15ba0703d1353739329ca7cdf819ae0b",
+          "format": "Git/raw UTF8 LF bytes"
+        },
+        "after": {
+          "path": "src/native_gui_widget_color_storage.cpp",
+          "bytes": 2642,
+          "sha256": "863c5933575bc690a9f07c99f7357078817ce993b44afbc03dd022214a6ecc67",
+          "git_blob": "8191ed6403e796a51aa032b40275df0286094ddd",
+          "format": "Git/raw UTF8 LF bytes"
+        },
+        "frozen_before": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\before\\src\\native_gui_widget_color_storage.cpp",
+        "frozen_after": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\after\\src\\native_gui_widget_color_storage.cpp",
+        "full_forward_reverse": true
+      }
+    ],
+    "seams": [
+      {
+        "id": "H1",
+        "path": "include/bsp/native_gui_text_field_storage.hpp",
+        "offset": 14722,
+        "before_utf8_lf": "// actual Model even when geometry is empty; each reached current Model has a\n// genuine live NativeModelTailStorage subobject at+174 (not Group capacity at+180).\n",
+        "after_utf8_lf": "// actual Model even when geometry is empty; each reached current Model has\n// genuinely constructed live native field storage through+183, not Group\n// capacity at+180. Geometry reads its actual+180 DWORD directly without a\n// NativeModelTailStorage view; creator/generation/context remain caller proof.\n",
+        "before_bytes": 163,
+        "after_bytes": 305,
+        "before_sha256": "2aba151dec323766c2b93d60e2e85c07f31ca38676dab93d89cf92afb833c064",
+        "after_sha256": "3696eda37673b8ac3aa5041dfdc2457f531e7e8b205adc125bac948bf9773ad2",
+        "before_step_sha256": "4bfb2f16d53fbd0476835624df067d0381d33ba015b6bc7bd3ca2d9718b77766",
+        "after_step_sha256": "f3b283ea4fe626e91dbc33208f122e6fa8f55d6630b3168fe4573cb1973e425a"
+      },
+      {
+        "id": "F1",
+        "path": "src/native_gui_text_field_storage.cpp",
+        "offset": 5749,
+        "before_utf8_lf": "const NativeModelTailStorage& model_tail(const void* model) noexcept {\n    return *reinterpret_cast<const NativeModelTailStorage*>(at(model, 0x174));\n}\n",
+        "after_utf8_lf": "// Whole B74640 field access; its native stacked DWORD is unused.\n// Read the captured Model's data word without forming a typed tail view.\nvoid* raw_model_geometry_00b74640(const void* actual_model) noexcept {\n    void* geometry;\n    __asm {\n        mov ecx, actual_model\n        mov eax, dword ptr [ecx + 180h]\n        mov geometry, eax\n    }\n    return geometry;\n}\n",
+        "before_bytes": 152,
+        "after_bytes": 368,
+        "before_sha256": "806df2927c58e88f62f3ab4edb3a3dde4d1eefd283307469f28e5e3972a33670",
+        "after_sha256": "3705146215f1f0f7922b570a87241afecb3f397ead54be951895f25a6f502eeb",
+        "before_step_sha256": "8d9a1299004c40c57ed59be58a9408cba9e08f3fff32db06b8662f590c9dd4bf",
+        "after_step_sha256": "435f03f33ee2d6764fc8e12d2f18947cc274c8514634b9e3ed46a1fdce24bd68"
+      },
+      {
+        "id": "F2",
+        "path": "src/native_gui_text_field_storage.cpp",
+        "offset": 6730,
+        "before_utf8_lf": "    void* mesh = gui_model_geometry_00b74640(model_tail(model), 0);\n",
+        "after_utf8_lf": "    void* mesh = raw_model_geometry_00b74640(model);\n",
+        "before_bytes": 68,
+        "after_bytes": 53,
+        "before_sha256": "bd94a71d49f9033be9eab6619d6a7b20d2c9546a0bcc1054f621ec895a09dedd",
+        "after_sha256": "1d9e8fcdc7e63c0180195f129ed34c74fc83fb96b3c723e905d638055d9acca5",
+        "before_step_sha256": "435f03f33ee2d6764fc8e12d2f18947cc274c8514634b9e3ed46a1fdce24bd68",
+        "after_step_sha256": "48f4675954641b9a426930cb8062f244e774ff4c54aeec67475518ac3dfc4dd7"
+      },
+      {
+        "id": "F3",
+        "path": "src/native_gui_text_field_storage.cpp",
+        "offset": 6952,
+        "before_utf8_lf": "    mesh = gui_model_geometry_00b74640(model_tail(model), 0);\n",
+        "after_utf8_lf": "    mesh = raw_model_geometry_00b74640(model);\n",
+        "before_bytes": 62,
+        "after_bytes": 47,
+        "before_sha256": "9c718a964127237c1a997cefc3a5bffdddb780d045077133a626f3737ce49ce4",
+        "after_sha256": "4c8c5d30898936bc55516a1a6609e545c36728935baf5f9ce2da24f3bdbc8376",
+        "before_step_sha256": "48f4675954641b9a426930cb8062f244e774ff4c54aeec67475518ac3dfc4dd7",
+        "after_step_sha256": "9df181083d55b69b839f77fd805f1382766e656ffac06968065c2aedb1d6a242"
+      },
+      {
+        "id": "H2",
+        "path": "include/bsp/native_gui_widget_color_storage.hpp",
+        "offset": 442,
+        "before_utf8_lf": "// through+5F, a nonnull actual Model at+4C with the genuine existing live\n// NativeModelTailStorage subobject at+174 (not a Group's capacity at+180),\n// valid reached mesh/element/material storage and an original readable RGBA\n",
+        "after_utf8_lf": "// through+5F, a nonnull genuinely constructed actual Model at+4C with live\n// native field storage through+183 (not a Group's capacity at+180). Geometry\n// reads its actual+180 DWORD directly, without creating a typed tail view.\n// Require valid reached mesh/element/material storage and an original readable RGBA\n",
+        "before_bytes": 228,
+        "after_bytes": 315,
+        "before_sha256": "358acb87fc35b74579b75ce359d9fd23a52541a66081f4bce6de11e14df16550",
+        "after_sha256": "927ffcf23f7dae37039eaa16679093151e76fe6351e50c55a0b3af78e16758ea",
+        "before_step_sha256": "c44b97890659d2bb6103367d03a8866d9bf4b394cf4ff46b5827fb96b6ae1ff7",
+        "after_step_sha256": "e405a9e466e5250d7a815d8b636448c3a3148c23e818aff1f287430ce8cc6bfd"
+      },
+      {
+        "id": "B1",
+        "path": "src/native_gui_widget_color_storage.cpp",
+        "offset": 893,
+        "before_utf8_lf": "const NativeModelTailStorage& model_tail(const void* actual_model) noexcept {\n    return *reinterpret_cast<const NativeModelTailStorage*>(\n        static_cast<const std::byte*>(actual_model) + 0x174);\n}\n",
+        "after_utf8_lf": "// Whole B74640 field access; its native stacked DWORD is unused.\n// Read the captured Model's data word without forming a typed tail view.\nvoid* raw_model_geometry_00b74640(const void* actual_model) noexcept {\n    void* geometry;\n    __asm {\n        mov ecx, actual_model\n        mov eax, dword ptr [ecx + 180h]\n        mov geometry, eax\n    }\n    return geometry;\n}\n",
+        "before_bytes": 203,
+        "after_bytes": 368,
+        "before_sha256": "7a2e926aafe411bc124ef37fe962521815abe910991d32ccc2c8bf340aa911a4",
+        "after_sha256": "3705146215f1f0f7922b570a87241afecb3f397ead54be951895f25a6f502eeb",
+        "before_step_sha256": "9f5a34ad3a420176737b3f1c68e64c083d13f6d24d43404be238dad2c3ce28d5",
+        "after_step_sha256": "9f85542cd8e18d4fdaa04d46010949398079ad4f9dc2301ae564a46e89981639"
+      },
+      {
+        "id": "B2",
+        "path": "src/native_gui_widget_color_storage.cpp",
+        "offset": 1943,
+        "before_utf8_lf": "    void* mesh = gui_model_geometry_00b74640(model_tail(model), 0);\n",
+        "after_utf8_lf": "    void* mesh = raw_model_geometry_00b74640(model);\n",
+        "before_bytes": 68,
+        "after_bytes": 53,
+        "before_sha256": "bd94a71d49f9033be9eab6619d6a7b20d2c9546a0bcc1054f621ec895a09dedd",
+        "after_sha256": "1d9e8fcdc7e63c0180195f129ed34c74fc83fb96b3c723e905d638055d9acca5",
+        "before_step_sha256": "9f85542cd8e18d4fdaa04d46010949398079ad4f9dc2301ae564a46e89981639",
+        "after_step_sha256": "07e7fcf7497471660f55f999103231ff7c846e34726a2fc6baf8456fda7b65a2"
+      },
+      {
+        "id": "B3",
+        "path": "src/native_gui_widget_color_storage.cpp",
+        "offset": 2106,
+        "before_utf8_lf": "    mesh = gui_model_geometry_00b74640(model_tail(model), 0);\n",
+        "after_utf8_lf": "    mesh = raw_model_geometry_00b74640(model);\n",
+        "before_bytes": 62,
+        "after_bytes": 47,
+        "before_sha256": "9c718a964127237c1a997cefc3a5bffdddb780d045077133a626f3737ce49ce4",
+        "after_sha256": "4c8c5d30898936bc55516a1a6609e545c36728935baf5f9ce2da24f3bdbc8376",
+        "before_step_sha256": "07e7fcf7497471660f55f999103231ff7c846e34726a2fc6baf8456fda7b65a2",
+        "after_step_sha256": "863c5933575bc690a9f07c99f7357078817ce993b44afbc03dd022214a6ecc67"
+      }
+    ],
+    "seventeen_states": [
+      {
+        "stage": "before",
+        "files": {
+          "include/bsp/native_gui_text_field_storage.hpp": "4bfb2f16d53fbd0476835624df067d0381d33ba015b6bc7bd3ca2d9718b77766",
+          "include/bsp/native_gui_widget_color_storage.hpp": "c44b97890659d2bb6103367d03a8866d9bf4b394cf4ff46b5827fb96b6ae1ff7",
+          "src/native_gui_text_field_storage.cpp": "8d9a1299004c40c57ed59be58a9408cba9e08f3fff32db06b8662f590c9dd4bf",
+          "src/native_gui_widget_color_storage.cpp": "9f5a34ad3a420176737b3f1c68e64c083d13f6d24d43404be238dad2c3ce28d5"
+        },
+        "canonical_map_sha256": "9189c3b557e37d8dd6ac5bc36c57042ceeb8b64cb9cdfbf7c518be5d3794d91a"
+      },
+      {
+        "stage": "after_H1",
+        "files": {
+          "include/bsp/native_gui_text_field_storage.hpp": "f3b283ea4fe626e91dbc33208f122e6fa8f55d6630b3168fe4573cb1973e425a",
+          "include/bsp/native_gui_widget_color_storage.hpp": "c44b97890659d2bb6103367d03a8866d9bf4b394cf4ff46b5827fb96b6ae1ff7",
+          "src/native_gui_text_field_storage.cpp": "8d9a1299004c40c57ed59be58a9408cba9e08f3fff32db06b8662f590c9dd4bf",
+          "src/native_gui_widget_color_storage.cpp": "9f5a34ad3a420176737b3f1c68e64c083d13f6d24d43404be238dad2c3ce28d5"
+        },
+        "canonical_map_sha256": "23f590ff7550073be8e5850df577678aab65e58529cdd23be4b36c23acfb3112"
+      },
+      {
+        "stage": "after_F1",
+        "files": {
+          "include/bsp/native_gui_text_field_storage.hpp": "f3b283ea4fe626e91dbc33208f122e6fa8f55d6630b3168fe4573cb1973e425a",
+          "include/bsp/native_gui_widget_color_storage.hpp": "c44b97890659d2bb6103367d03a8866d9bf4b394cf4ff46b5827fb96b6ae1ff7",
+          "src/native_gui_text_field_storage.cpp": "435f03f33ee2d6764fc8e12d2f18947cc274c8514634b9e3ed46a1fdce24bd68",
+          "src/native_gui_widget_color_storage.cpp": "9f5a34ad3a420176737b3f1c68e64c083d13f6d24d43404be238dad2c3ce28d5"
+        },
+        "canonical_map_sha256": "b902c4c64bebf237991f038196f0d48b4ca5b7f0b61e9180bdf491ffe269a139"
+      },
+      {
+        "stage": "after_F2",
+        "files": {
+          "include/bsp/native_gui_text_field_storage.hpp": "f3b283ea4fe626e91dbc33208f122e6fa8f55d6630b3168fe4573cb1973e425a",
+          "include/bsp/native_gui_widget_color_storage.hpp": "c44b97890659d2bb6103367d03a8866d9bf4b394cf4ff46b5827fb96b6ae1ff7",
+          "src/native_gui_text_field_storage.cpp": "48f4675954641b9a426930cb8062f244e774ff4c54aeec67475518ac3dfc4dd7",
+          "src/native_gui_widget_color_storage.cpp": "9f5a34ad3a420176737b3f1c68e64c083d13f6d24d43404be238dad2c3ce28d5"
+        },
+        "canonical_map_sha256": "199b205c54e5d4351654f0e860f6711b352640a7e3a7d50a5b61dc3d99b8cb84"
+      },
+      {
+        "stage": "after_F3",
+        "files": {
+          "include/bsp/native_gui_text_field_storage.hpp": "f3b283ea4fe626e91dbc33208f122e6fa8f55d6630b3168fe4573cb1973e425a",
+          "include/bsp/native_gui_widget_color_storage.hpp": "c44b97890659d2bb6103367d03a8866d9bf4b394cf4ff46b5827fb96b6ae1ff7",
+          "src/native_gui_text_field_storage.cpp": "9df181083d55b69b839f77fd805f1382766e656ffac06968065c2aedb1d6a242",
+          "src/native_gui_widget_color_storage.cpp": "9f5a34ad3a420176737b3f1c68e64c083d13f6d24d43404be238dad2c3ce28d5"
+        },
+        "canonical_map_sha256": "a48a77999a3438bf582ed7eb9a215709f4bc12a354d393aa1d9c23d1e2a00bd1"
+      },
+      {
+        "stage": "after_H2",
+        "files": {
+          "include/bsp/native_gui_text_field_storage.hpp": "f3b283ea4fe626e91dbc33208f122e6fa8f55d6630b3168fe4573cb1973e425a",
+          "include/bsp/native_gui_widget_color_storage.hpp": "e405a9e466e5250d7a815d8b636448c3a3148c23e818aff1f287430ce8cc6bfd",
+          "src/native_gui_text_field_storage.cpp": "9df181083d55b69b839f77fd805f1382766e656ffac06968065c2aedb1d6a242",
+          "src/native_gui_widget_color_storage.cpp": "9f5a34ad3a420176737b3f1c68e64c083d13f6d24d43404be238dad2c3ce28d5"
+        },
+        "canonical_map_sha256": "15b87b1d783ddf1ff7765468f28988407c4ff6825dbc8487da494e20220ebebf"
+      },
+      {
+        "stage": "after_B1",
+        "files": {
+          "include/bsp/native_gui_text_field_storage.hpp": "f3b283ea4fe626e91dbc33208f122e6fa8f55d6630b3168fe4573cb1973e425a",
+          "include/bsp/native_gui_widget_color_storage.hpp": "e405a9e466e5250d7a815d8b636448c3a3148c23e818aff1f287430ce8cc6bfd",
+          "src/native_gui_text_field_storage.cpp": "9df181083d55b69b839f77fd805f1382766e656ffac06968065c2aedb1d6a242",
+          "src/native_gui_widget_color_storage.cpp": "9f85542cd8e18d4fdaa04d46010949398079ad4f9dc2301ae564a46e89981639"
+        },
+        "canonical_map_sha256": "a1a2810b4aab028774a5097afddbbea3cf98984c8c80b001f63d22d277829dba"
+      },
+      {
+        "stage": "after_B2",
+        "files": {
+          "include/bsp/native_gui_text_field_storage.hpp": "f3b283ea4fe626e91dbc33208f122e6fa8f55d6630b3168fe4573cb1973e425a",
+          "include/bsp/native_gui_widget_color_storage.hpp": "e405a9e466e5250d7a815d8b636448c3a3148c23e818aff1f287430ce8cc6bfd",
+          "src/native_gui_text_field_storage.cpp": "9df181083d55b69b839f77fd805f1382766e656ffac06968065c2aedb1d6a242",
+          "src/native_gui_widget_color_storage.cpp": "07e7fcf7497471660f55f999103231ff7c846e34726a2fc6baf8456fda7b65a2"
+        },
+        "canonical_map_sha256": "7d99c337b299ed017b2ef7a6f0ebd7d2852dbbe81d14c26de32af8c9c99d93e0"
+      },
+      {
+        "stage": "after_B3",
+        "files": {
+          "include/bsp/native_gui_text_field_storage.hpp": "f3b283ea4fe626e91dbc33208f122e6fa8f55d6630b3168fe4573cb1973e425a",
+          "include/bsp/native_gui_widget_color_storage.hpp": "e405a9e466e5250d7a815d8b636448c3a3148c23e818aff1f287430ce8cc6bfd",
+          "src/native_gui_text_field_storage.cpp": "9df181083d55b69b839f77fd805f1382766e656ffac06968065c2aedb1d6a242",
+          "src/native_gui_widget_color_storage.cpp": "863c5933575bc690a9f07c99f7357078817ce993b44afbc03dd022214a6ecc67"
+        },
+        "canonical_map_sha256": "1d8528f8f02946bce5c801f3e598be06475fb3f7244391976c23ebfb4dff676c"
+      },
+      {
+        "stage": "reverse_B3",
+        "files": {
+          "include/bsp/native_gui_text_field_storage.hpp": "f3b283ea4fe626e91dbc33208f122e6fa8f55d6630b3168fe4573cb1973e425a",
+          "include/bsp/native_gui_widget_color_storage.hpp": "e405a9e466e5250d7a815d8b636448c3a3148c23e818aff1f287430ce8cc6bfd",
+          "src/native_gui_text_field_storage.cpp": "9df181083d55b69b839f77fd805f1382766e656ffac06968065c2aedb1d6a242",
+          "src/native_gui_widget_color_storage.cpp": "07e7fcf7497471660f55f999103231ff7c846e34726a2fc6baf8456fda7b65a2"
+        },
+        "canonical_map_sha256": "7d99c337b299ed017b2ef7a6f0ebd7d2852dbbe81d14c26de32af8c9c99d93e0"
+      },
+      {
+        "stage": "reverse_B2",
+        "files": {
+          "include/bsp/native_gui_text_field_storage.hpp": "f3b283ea4fe626e91dbc33208f122e6fa8f55d6630b3168fe4573cb1973e425a",
+          "include/bsp/native_gui_widget_color_storage.hpp": "e405a9e466e5250d7a815d8b636448c3a3148c23e818aff1f287430ce8cc6bfd",
+          "src/native_gui_text_field_storage.cpp": "9df181083d55b69b839f77fd805f1382766e656ffac06968065c2aedb1d6a242",
+          "src/native_gui_widget_color_storage.cpp": "9f85542cd8e18d4fdaa04d46010949398079ad4f9dc2301ae564a46e89981639"
+        },
+        "canonical_map_sha256": "a1a2810b4aab028774a5097afddbbea3cf98984c8c80b001f63d22d277829dba"
+      },
+      {
+        "stage": "reverse_B1",
+        "files": {
+          "include/bsp/native_gui_text_field_storage.hpp": "f3b283ea4fe626e91dbc33208f122e6fa8f55d6630b3168fe4573cb1973e425a",
+          "include/bsp/native_gui_widget_color_storage.hpp": "e405a9e466e5250d7a815d8b636448c3a3148c23e818aff1f287430ce8cc6bfd",
+          "src/native_gui_text_field_storage.cpp": "9df181083d55b69b839f77fd805f1382766e656ffac06968065c2aedb1d6a242",
+          "src/native_gui_widget_color_storage.cpp": "9f5a34ad3a420176737b3f1c68e64c083d13f6d24d43404be238dad2c3ce28d5"
+        },
+        "canonical_map_sha256": "15b87b1d783ddf1ff7765468f28988407c4ff6825dbc8487da494e20220ebebf"
+      },
+      {
+        "stage": "reverse_H2",
+        "files": {
+          "include/bsp/native_gui_text_field_storage.hpp": "f3b283ea4fe626e91dbc33208f122e6fa8f55d6630b3168fe4573cb1973e425a",
+          "include/bsp/native_gui_widget_color_storage.hpp": "c44b97890659d2bb6103367d03a8866d9bf4b394cf4ff46b5827fb96b6ae1ff7",
+          "src/native_gui_text_field_storage.cpp": "9df181083d55b69b839f77fd805f1382766e656ffac06968065c2aedb1d6a242",
+          "src/native_gui_widget_color_storage.cpp": "9f5a34ad3a420176737b3f1c68e64c083d13f6d24d43404be238dad2c3ce28d5"
+        },
+        "canonical_map_sha256": "a48a77999a3438bf582ed7eb9a215709f4bc12a354d393aa1d9c23d1e2a00bd1"
+      },
+      {
+        "stage": "reverse_F3",
+        "files": {
+          "include/bsp/native_gui_text_field_storage.hpp": "f3b283ea4fe626e91dbc33208f122e6fa8f55d6630b3168fe4573cb1973e425a",
+          "include/bsp/native_gui_widget_color_storage.hpp": "c44b97890659d2bb6103367d03a8866d9bf4b394cf4ff46b5827fb96b6ae1ff7",
+          "src/native_gui_text_field_storage.cpp": "48f4675954641b9a426930cb8062f244e774ff4c54aeec67475518ac3dfc4dd7",
+          "src/native_gui_widget_color_storage.cpp": "9f5a34ad3a420176737b3f1c68e64c083d13f6d24d43404be238dad2c3ce28d5"
+        },
+        "canonical_map_sha256": "199b205c54e5d4351654f0e860f6711b352640a7e3a7d50a5b61dc3d99b8cb84"
+      },
+      {
+        "stage": "reverse_F2",
+        "files": {
+          "include/bsp/native_gui_text_field_storage.hpp": "f3b283ea4fe626e91dbc33208f122e6fa8f55d6630b3168fe4573cb1973e425a",
+          "include/bsp/native_gui_widget_color_storage.hpp": "c44b97890659d2bb6103367d03a8866d9bf4b394cf4ff46b5827fb96b6ae1ff7",
+          "src/native_gui_text_field_storage.cpp": "435f03f33ee2d6764fc8e12d2f18947cc274c8514634b9e3ed46a1fdce24bd68",
+          "src/native_gui_widget_color_storage.cpp": "9f5a34ad3a420176737b3f1c68e64c083d13f6d24d43404be238dad2c3ce28d5"
+        },
+        "canonical_map_sha256": "b902c4c64bebf237991f038196f0d48b4ca5b7f0b61e9180bdf491ffe269a139"
+      },
+      {
+        "stage": "reverse_F1",
+        "files": {
+          "include/bsp/native_gui_text_field_storage.hpp": "f3b283ea4fe626e91dbc33208f122e6fa8f55d6630b3168fe4573cb1973e425a",
+          "include/bsp/native_gui_widget_color_storage.hpp": "c44b97890659d2bb6103367d03a8866d9bf4b394cf4ff46b5827fb96b6ae1ff7",
+          "src/native_gui_text_field_storage.cpp": "8d9a1299004c40c57ed59be58a9408cba9e08f3fff32db06b8662f590c9dd4bf",
+          "src/native_gui_widget_color_storage.cpp": "9f5a34ad3a420176737b3f1c68e64c083d13f6d24d43404be238dad2c3ce28d5"
+        },
+        "canonical_map_sha256": "23f590ff7550073be8e5850df577678aab65e58529cdd23be4b36c23acfb3112"
+      },
+      {
+        "stage": "reverse_H1",
+        "files": {
+          "include/bsp/native_gui_text_field_storage.hpp": "4bfb2f16d53fbd0476835624df067d0381d33ba015b6bc7bd3ca2d9718b77766",
+          "include/bsp/native_gui_widget_color_storage.hpp": "c44b97890659d2bb6103367d03a8866d9bf4b394cf4ff46b5827fb96b6ae1ff7",
+          "src/native_gui_text_field_storage.cpp": "8d9a1299004c40c57ed59be58a9408cba9e08f3fff32db06b8662f590c9dd4bf",
+          "src/native_gui_widget_color_storage.cpp": "9f5a34ad3a420176737b3f1c68e64c083d13f6d24d43404be238dad2c3ce28d5"
+        },
+        "canonical_map_sha256": "9189c3b557e37d8dd6ac5bc36c57042ceeb8b64cb9cdfbf7c518be5d3794d91a"
+      }
+    ],
+    "protected": [
+      {
+        "path": "include/bsp/native_gui_text_field_storage.hpp",
+        "all_existing_asm": [],
+        "old_asm_count": 0,
+        "new_asm_count": 0,
+        "existing_x87_forms": [],
+        "new_x87_forms": [],
+        "counter_lines": [],
+        "noexcept_occurrences": 34,
+        "header_noncomment_bytes_unchanged": true
+      },
+      {
+        "path": "src/native_gui_text_field_storage.cpp",
+        "all_existing_asm": [
+          {
+            "bytes": 265,
+            "sha256": "f2e5d349b299f117e3f11f7339acb753f08e13f1dd6ff626be8d21be1eb8009f"
+          },
+          {
+            "bytes": 126,
+            "sha256": "006d5341ee6fa5f08c03d8db0f1f122fa191913c4dcd910c2140523cd1a2e8c0"
+          },
+          {
+            "bytes": 464,
+            "sha256": "bd23cd5791323ff567d86475612ce7218400bb012cf80a4489d35e6824daa59e"
+          }
+        ],
+        "old_asm_count": 3,
+        "new_asm_count": 4,
+        "existing_x87_forms": [
+          "fld",
+          "fmul",
+          "fstp",
+          "fld",
+          "fstp",
+          "fld",
+          "fld",
+          "fadd",
+          "fxch",
+          "fstp",
+          "fld",
+          "fadd",
+          "fstp",
+          "fadd",
+          "fstp",
+          "fld",
+          "fadd",
+          "fstp"
+        ],
+        "new_x87_forms": [
+          "fld",
+          "fmul",
+          "fstp",
+          "fld",
+          "fstp",
+          "fld",
+          "fld",
+          "fadd",
+          "fxch",
+          "fstp",
+          "fld",
+          "fadd",
+          "fstp",
+          "fadd",
+          "fstp",
+          "fld",
+          "fadd",
+          "fstp"
+        ],
+        "counter_lines": [],
+        "noexcept_occurrences": 13,
+        "header_noncomment_bytes_unchanged": false
+      },
+      {
+        "path": "include/bsp/native_gui_widget_color_storage.hpp",
+        "all_existing_asm": [],
+        "old_asm_count": 0,
+        "new_asm_count": 0,
+        "existing_x87_forms": [],
+        "new_x87_forms": [],
+        "counter_lines": [],
+        "noexcept_occurrences": 2,
+        "header_noncomment_bytes_unchanged": true
+      },
+      {
+        "path": "src/native_gui_widget_color_storage.cpp",
+        "all_existing_asm": [],
+        "old_asm_count": 0,
+        "new_asm_count": 1,
+        "existing_x87_forms": [],
+        "new_x87_forms": [],
+        "counter_lines": [],
+        "noexcept_occurrences": 4,
+        "header_noncomment_bytes_unchanged": false
+      }
+    ],
+    "twenty_six_whole_input_pins": [
+      {
+        "path": "include/bsp/gui_material_binding.hpp",
+        "bytes": 4787,
+        "sha256": "9d6a380b2ea93fdf8910fa73733229c2a3bac0528f669bf8e655fc3e8f0cdafd",
+        "git_blob": "11dac330582d021b1fc73fc5b530b74501ab3549",
+        "format": "Git/raw UTF8 LF bytes",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\inputs\\include\\bsp\\gui_material_binding.hpp",
+        "unchanged": true
+      },
+      {
+        "path": "src/gui_material_binding.cpp",
+        "bytes": 7617,
+        "sha256": "de3312f993d3180fb7023c9869908a74134370c430bdb8844e20b1cadcac15e2",
+        "git_blob": "fe058317e88a81ba76160f4f7b66f23d3991c367",
+        "format": "Git/raw UTF8 LF bytes",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\inputs\\src\\gui_material_binding.cpp",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/gui_widget_owner.hpp",
+        "bytes": 17870,
+        "sha256": "55bb0101eaee6369f886c6fb6956fad0cd2dea60fcca01db182fdc4cd7ae7add",
+        "git_blob": "ffc873f839f207fec8de12d53b0bbbb0b915befc",
+        "format": "Git/raw UTF8 LF bytes",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\inputs\\include\\bsp\\gui_widget_owner.hpp",
+        "unchanged": true
+      },
+      {
+        "path": "src/gui_widget_owner.cpp",
+        "bytes": 42079,
+        "sha256": "405c324270bd194614898b6c7f7934ab526c30d366fb0dd64933e33db81f2762",
+        "git_blob": "cc31262d504966fbaba9e546f710f44904a6cff5",
+        "format": "Git/raw UTF8 LF bytes",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\inputs\\src\\gui_widget_owner.cpp",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/native_mesh_owner.hpp",
+        "bytes": 9476,
+        "sha256": "f0f4b0d87721717033e823aee5494a280481c6b4a02a7fd2bea51970b46d5636",
+        "git_blob": "e07733e92317d2e38e48a14e9c9121ba0342dab6",
+        "format": "Git/raw UTF8 LF bytes",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\inputs\\include\\bsp\\native_mesh_owner.hpp",
+        "unchanged": true
+      },
+      {
+        "path": "src/native_mesh_owner.cpp",
+        "bytes": 12622,
+        "sha256": "8725dee8119cf400bf58464d6dd2dcb6771502b6edd8f527f65ec3f3c7fe40fe",
+        "git_blob": "148a586af9e2cc2ce8a64c0d7705852797d4634c",
+        "format": "Git/raw UTF8 LF bytes",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\inputs\\src\\native_mesh_owner.cpp",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/native_mesh_section.hpp",
+        "bytes": 9555,
+        "sha256": "c99901d53b195ab67c0da51c7b39657f42b7b60ba1f5509eec200b6ff29f3e2e",
+        "git_blob": "376c7d40d6b124f2b42d333604676ebe2834eac6",
+        "format": "Git/raw UTF8 LF bytes",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\inputs\\include\\bsp\\native_mesh_section.hpp",
+        "unchanged": true
+      },
+      {
+        "path": "src/native_mesh_section.cpp",
+        "bytes": 23109,
+        "sha256": "8f09c61b3ba5ef47c403de9769d24d9d9e6a79c1bb8668430e53fc33587ed876",
+        "git_blob": "58454f0dde681da13d714fc6909f74f2290fcf63",
+        "format": "Git/raw UTF8 LF bytes",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\inputs\\src\\native_mesh_section.cpp",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/native_material_owner.hpp",
+        "bytes": 5986,
+        "sha256": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320",
+        "git_blob": "fee25270c9758390575b4b1500781fc1a7bccdf2",
+        "format": "Git/raw UTF8 LF bytes",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\inputs\\include\\bsp\\native_material_owner.hpp",
+        "unchanged": true
+      },
+      {
+        "path": "src/native_material_owner.cpp",
+        "bytes": 9483,
+        "sha256": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc",
+        "git_blob": "98c7c3495ec76c5a15b13de8c9bc869f7a601958",
+        "format": "Git/raw UTF8 LF bytes",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\inputs\\src\\native_material_owner.cpp",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/native_render_pointer_arrays.hpp",
+        "bytes": 4572,
+        "sha256": "d9cf406a178986114205fe9a154a2b74c0f8dd857b6186d7d840d8fe398ae881",
+        "git_blob": "35eea1520ca112f8990ce892d4bde2c33c8a7fbf",
+        "format": "Git/raw UTF8 LF bytes",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\inputs\\include\\bsp\\native_render_pointer_arrays.hpp",
+        "unchanged": true
+      },
+      {
+        "path": "src/native_render_pointer_arrays.cpp",
+        "bytes": 5346,
+        "sha256": "ac16b7251f6df37193b88d5d92e8288044872bc2df39b71f29ed83c7291b193c",
+        "git_blob": "03baba3d45c252a974c78df5be6abdce79161bdb",
+        "format": "Git/raw UTF8 LF bytes",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\inputs\\src\\native_render_pointer_arrays.cpp",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/gui_native_geometry.hpp",
+        "bytes": 10778,
+        "sha256": "132f61a4e1f2b7cd09d16b4bae2e5c5cd223805d0fcf7592560f46737a6286cf",
+        "git_blob": "6d2c181bb30aeb29dc21f3fb70e797bfc54da139",
+        "format": "Git/raw UTF8 LF bytes",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\inputs\\include\\bsp\\gui_native_geometry.hpp",
+        "unchanged": true
+      },
+      {
+        "path": "src/gui_native_geometry.cpp",
+        "bytes": 30316,
+        "sha256": "1b957f0aa970eec806bd09389aaa4f21157a64013a3a5c721a0065a0a7e5f0bf",
+        "git_blob": "b60d0c7fd032e7f146980d91c6fb578690517b43",
+        "format": "Git/raw UTF8 LF bytes",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\inputs\\src\\gui_native_geometry.cpp",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/native_model_storage_lifetime.hpp",
+        "bytes": 9363,
+        "sha256": "7754b1a3df10ccf79a83899513b48ab4616df9b9f9a5da54400ed7d4fe51ea1f",
+        "git_blob": "319ac5182e317f50e999437b3d300c92d695fbdf",
+        "format": "Git/raw UTF8 LF bytes",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\inputs\\include\\bsp\\native_model_storage_lifetime.hpp",
+        "unchanged": true
+      },
+      {
+        "path": "src/native_model_storage_lifetime.cpp",
+        "bytes": 17638,
+        "sha256": "d9ea114fa0e88f42f5a692adf96014827c32cd5d856a8e228e1ccd0550dd99b0",
+        "git_blob": "7ca6d5ae17001f48426aeed0826f2db496a56f2f",
+        "format": "Git/raw UTF8 LF bytes",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\inputs\\src\\native_model_storage_lifetime.cpp",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/native_model_owner.hpp",
+        "bytes": 9870,
+        "sha256": "d1cfa9b664075d836d9818ed57f4d9c89858b0c0c507c8ca3dce75f727a52a2a",
+        "git_blob": "1ef6610b9534c327e4e58412eb6a0cd5f8a9409e",
+        "format": "Git/raw UTF8 LF bytes",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\inputs\\include\\bsp\\native_model_owner.hpp",
+        "unchanged": true
+      },
+      {
+        "path": "src/native_model_owner.cpp",
+        "bytes": 29717,
+        "sha256": "6e774d73c4a5bbd0109e19c271e2ff05a613e389c50ec72bd888c4c49f5ddd2d",
+        "git_blob": "7c764a3abcd1ffeb713dad482807965574aadb74",
+        "format": "Git/raw UTF8 LF bytes",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\inputs\\src\\native_model_owner.cpp",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/native_group_storage_lifetime.hpp",
+        "bytes": 5985,
+        "sha256": "e76050ec022410905806e8ca1bcb172d6f8ad6a752d67c14b9834d626c7593cd",
+        "git_blob": "258d927f6f33cce80ff143ed752b46c314523f3f",
+        "format": "Git/raw UTF8 LF bytes",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\inputs\\include\\bsp\\native_group_storage_lifetime.hpp",
+        "unchanged": true
+      },
+      {
+        "path": "src/native_group_storage_lifetime.cpp",
+        "bytes": 10100,
+        "sha256": "8da07fea5a190da43214a880d8be19fd81250ff736570c4112e8412e91de0a5d",
+        "git_blob": "01b9e2d917a75f695d415d2db5b4b38f4781027e",
+        "format": "Git/raw UTF8 LF bytes",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\inputs\\src\\native_group_storage_lifetime.cpp",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/gui_page_root.hpp",
+        "bytes": 1764,
+        "sha256": "73a8399381a53554da3c8a581aee37f656baa5a9d6fdeb6281aeef37f5a38e4f",
+        "git_blob": "cf53938a80255dbda1b5162fd9549c8a6e763abe",
+        "format": "Git/raw UTF8 LF bytes",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\inputs\\include\\bsp\\gui_page_root.hpp",
+        "unchanged": true
+      },
+      {
+        "path": "src/gui_page_root.cpp",
+        "bytes": 2462,
+        "sha256": "2ddf108eaf9c6ae91b2b9c16b6a21f4f9f3210625bd507866b310922d35eddbb",
+        "git_blob": "3fef358d9569629ab23aa9fdce3e50b036aa3a54",
+        "format": "Git/raw UTF8 LF bytes",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\inputs\\src\\gui_page_root.cpp",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/native_gui_page_construction.hpp",
+        "bytes": 3168,
+        "sha256": "7c0dbf31a1d433708516fe5e67b7e3129d116a4ec31af07e31ec9ea15e3835a8",
+        "git_blob": "ac2e16414db09fd71ed68b8ce802f4e5695f34aa",
+        "format": "Git/raw UTF8 LF bytes",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\inputs\\include\\bsp\\native_gui_page_construction.hpp",
+        "unchanged": true
+      },
+      {
+        "path": "src/native_gui_page_construction.cpp",
+        "bytes": 4215,
+        "sha256": "066059cba6487f666d38bbacebb8af793dcb8e0b211e51f38ab0c7241eebe185",
+        "git_blob": "1cc63b66183aaa20f129a01975ac6483682599fe",
+        "format": "Git/raw UTF8 LF bytes",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\inputs\\src\\native_gui_page_construction.cpp",
+        "unchanged": true
+      },
+      {
+        "path": "include/bsp/native_render_context.hpp",
+        "bytes": 10071,
+        "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+        "git_blob": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808",
+        "format": "Git/raw UTF8 LF bytes",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\inputs\\include\\bsp\\native_render_context.hpp",
+        "unchanged": true
+      },
+      {
+        "path": "src/native_render_context.cpp",
+        "bytes": 11471,
+        "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+        "git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c",
+        "format": "Git/raw UTF8 LF bytes",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\inputs\\src\\native_render_context.cpp",
+        "unchanged": true
+      }
+    ],
+    "Native": {
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "verification": "bsp.py ghidra count/proto verified saved target before batch; live77632==snapshot77632; B74640 body74640..74648",
+      "PE": {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "bytes": 12223752,
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+      },
+      "functions": [
+        {
+          "start": "00aa6870",
+          "last_byte": "00aa68e9",
+          "bytes": 122,
+          "instruction_count": 44,
+          "sha256": "23665e8cb7052229f2e0a69de2b88d95c637bca88f1609b834faa3258d9dacd5",
+          "rows": [
+            {
+              "address": "00aa6870",
+              "bytes": "56",
+              "mnemonic": "push",
+              "operand": "esi"
+            },
+            {
+              "address": "00aa6871",
+              "bytes": "8b742408",
+              "mnemonic": "mov",
+              "operand": "esi, dword ptr [esp + 8]"
+            },
+            {
+              "address": "00aa6875",
+              "bytes": "8b06",
+              "mnemonic": "mov",
+              "operand": "eax, dword ptr [esi]"
+            },
+            {
+              "address": "00aa6877",
+              "bytes": "57",
+              "mnemonic": "push",
+              "operand": "edi"
+            },
+            {
+              "address": "00aa6878",
+              "bytes": "8bf9",
+              "mnemonic": "mov",
+              "operand": "edi, ecx"
+            },
+            {
+              "address": "00aa687a",
+              "bytes": "894750",
+              "mnemonic": "mov",
+              "operand": "dword ptr [edi + 0x50], eax"
+            },
+            {
+              "address": "00aa687d",
+              "bytes": "8b4e04",
+              "mnemonic": "mov",
+              "operand": "ecx, dword ptr [esi + 4]"
+            },
+            {
+              "address": "00aa6880",
+              "bytes": "894f54",
+              "mnemonic": "mov",
+              "operand": "dword ptr [edi + 0x54], ecx"
+            },
+            {
+              "address": "00aa6883",
+              "bytes": "8b5608",
+              "mnemonic": "mov",
+              "operand": "edx, dword ptr [esi + 8]"
+            },
+            {
+              "address": "00aa6886",
+              "bytes": "8b4f4c",
+              "mnemonic": "mov",
+              "operand": "ecx, dword ptr [edi + 0x4c]"
+            },
+            {
+              "address": "00aa6889",
+              "bytes": "895758",
+              "mnemonic": "mov",
+              "operand": "dword ptr [edi + 0x58], edx"
+            },
+            {
+              "address": "00aa688c",
+              "bytes": "8b460c",
+              "mnemonic": "mov",
+              "operand": "eax, dword ptr [esi + 0xc]"
+            },
+            {
+              "address": "00aa688f",
+              "bytes": "89475c",
+              "mnemonic": "mov",
+              "operand": "dword ptr [edi + 0x5c], eax"
+            },
+            {
+              "address": "00aa6892",
+              "bytes": "e8b9dd0c00",
+              "mnemonic": "call",
+              "operand": "0xb74650"
+            },
+            {
+              "address": "00aa6897",
+              "bytes": "85c0",
+              "mnemonic": "test",
+              "operand": "eax, eax"
+            },
+            {
+              "address": "00aa6899",
+              "bytes": "744a",
+              "mnemonic": "je",
+              "operand": "0xaa68e5"
+            },
+            {
+              "address": "00aa689b",
+              "bytes": "8b4f4c",
+              "mnemonic": "mov",
+              "operand": "ecx, dword ptr [edi + 0x4c]"
+            },
+            {
+              "address": "00aa689e",
+              "bytes": "6a00",
+              "mnemonic": "push",
+              "operand": "0"
+            },
+            {
+              "address": "00aa68a0",
+              "bytes": "e89bdd0c00",
+              "mnemonic": "call",
+              "operand": "0xb74640"
+            },
+            {
+              "address": "00aa68a5",
+              "bytes": "8bc8",
+              "mnemonic": "mov",
+              "operand": "ecx, eax"
+            },
+            {
+              "address": "00aa68a7",
+              "bytes": "e894c20c00",
+              "mnemonic": "call",
+              "operand": "0xb72b40"
+            },
+            {
+              "address": "00aa68ac",
+              "bytes": "85c0",
+              "mnemonic": "test",
+              "operand": "eax, eax"
+            },
+            {
+              "address": "00aa68ae",
+              "bytes": "7435",
+              "mnemonic": "je",
+              "operand": "0xaa68e5"
+            },
+            {
+              "address": "00aa68b0",
+              "bytes": "8b4f4c",
+              "mnemonic": "mov",
+              "operand": "ecx, dword ptr [edi + 0x4c]"
+            },
+            {
+              "address": "00aa68b3",
+              "bytes": "6a00",
+              "mnemonic": "push",
+              "operand": "0"
+            },
+            {
+              "address": "00aa68b5",
+              "bytes": "6a00",
+              "mnemonic": "push",
+              "operand": "0"
+            },
+            {
+              "address": "00aa68b7",
+              "bytes": "e884dd0c00",
+              "mnemonic": "call",
+              "operand": "0xb74640"
+            },
+            {
+              "address": "00aa68bc",
+              "bytes": "8bc8",
+              "mnemonic": "mov",
+              "operand": "ecx, eax"
+            },
+            {
+              "address": "00aa68be",
+              "bytes": "e8fdc90c00",
+              "mnemonic": "call",
+              "operand": "0xb732c0"
+            },
+            {
+              "address": "00aa68c3",
+              "bytes": "8b4020",
+              "mnemonic": "mov",
+              "operand": "eax, dword ptr [eax + 0x20]"
+            },
+            {
+              "address": "00aa68c6",
+              "bytes": "6a00",
+              "mnemonic": "push",
+              "operand": "0"
+            },
+            {
+              "address": "00aa68c8",
+              "bytes": "8bc8",
+              "mnemonic": "mov",
+              "operand": "ecx, eax"
+            },
+            {
+              "address": "00aa68ca",
+              "bytes": "e821110700",
+              "mnemonic": "call",
+              "operand": "0xb179f0"
+            },
+            {
+              "address": "00aa68cf",
+              "bytes": "8b0e",
+              "mnemonic": "mov",
+              "operand": "ecx, dword ptr [esi]"
+            },
+            {
+              "address": "00aa68d1",
+              "bytes": "8908",
+              "mnemonic": "mov",
+              "operand": "dword ptr [eax], ecx"
+            },
+            {
+              "address": "00aa68d3",
+              "bytes": "8b5604",
+              "mnemonic": "mov",
+              "operand": "edx, dword ptr [esi + 4]"
+            },
+            {
+              "address": "00aa68d6",
+              "bytes": "895004",
+              "mnemonic": "mov",
+              "operand": "dword ptr [eax + 4], edx"
+            },
+            {
+              "address": "00aa68d9",
+              "bytes": "8b4e08",
+              "mnemonic": "mov",
+              "operand": "ecx, dword ptr [esi + 8]"
+            },
+            {
+              "address": "00aa68dc",
+              "bytes": "894808",
+              "mnemonic": "mov",
+              "operand": "dword ptr [eax + 8], ecx"
+            },
+            {
+              "address": "00aa68df",
+              "bytes": "8b560c",
+              "mnemonic": "mov",
+              "operand": "edx, dword ptr [esi + 0xc]"
+            },
+            {
+              "address": "00aa68e2",
+              "bytes": "89500c",
+              "mnemonic": "mov",
+              "operand": "dword ptr [eax + 0xc], edx"
+            },
+            {
+              "address": "00aa68e5",
+              "bytes": "5f",
+              "mnemonic": "pop",
+              "operand": "edi"
+            },
+            {
+              "address": "00aa68e6",
+              "bytes": "5e",
+              "mnemonic": "pop",
+              "operand": "esi"
+            },
+            {
+              "address": "00aa68e7",
+              "bytes": "c20400",
+              "mnemonic": "ret",
+              "operand": "4"
+            }
+          ]
+        },
+        {
+          "start": "00ab6b50",
+          "last_byte": "00ab6bc3",
+          "bytes": 116,
+          "instruction_count": 37,
+          "sha256": "711afa4b9053fa8d1cda10b3cca92c9fc4a2018ee18abcec9b6396d5b2766f06",
+          "rows": [
+            {
+              "address": "00ab6b50",
+              "bytes": "56",
+              "mnemonic": "push",
+              "operand": "esi"
+            },
+            {
+              "address": "00ab6b51",
+              "bytes": "57",
+              "mnemonic": "push",
+              "operand": "edi"
+            },
+            {
+              "address": "00ab6b52",
+              "bytes": "8b7c240c",
+              "mnemonic": "mov",
+              "operand": "edi, dword ptr [esp + 0xc]"
+            },
+            {
+              "address": "00ab6b56",
+              "bytes": "57",
+              "mnemonic": "push",
+              "operand": "edi"
+            },
+            {
+              "address": "00ab6b57",
+              "bytes": "8bf1",
+              "mnemonic": "mov",
+              "operand": "esi, ecx"
+            },
+            {
+              "address": "00ab6b59",
+              "bytes": "e812fdfeff",
+              "mnemonic": "call",
+              "operand": "0xaa6870"
+            },
+            {
+              "address": "00ab6b5e",
+              "bytes": "8b8e88010000",
+              "mnemonic": "mov",
+              "operand": "ecx, dword ptr [esi + 0x188]"
+            },
+            {
+              "address": "00ab6b64",
+              "bytes": "85c9",
+              "mnemonic": "test",
+              "operand": "ecx, ecx"
+            },
+            {
+              "address": "00ab6b66",
+              "bytes": "7457",
+              "mnemonic": "je",
+              "operand": "0xab6bbf"
+            },
+            {
+              "address": "00ab6b68",
+              "bytes": "e8e3da0b00",
+              "mnemonic": "call",
+              "operand": "0xb74650"
+            },
+            {
+              "address": "00ab6b6d",
+              "bytes": "85c0",
+              "mnemonic": "test",
+              "operand": "eax, eax"
+            },
+            {
+              "address": "00ab6b6f",
+              "bytes": "744e",
+              "mnemonic": "je",
+              "operand": "0xab6bbf"
+            },
+            {
+              "address": "00ab6b71",
+              "bytes": "8b8e88010000",
+              "mnemonic": "mov",
+              "operand": "ecx, dword ptr [esi + 0x188]"
+            },
+            {
+              "address": "00ab6b77",
+              "bytes": "6a00",
+              "mnemonic": "push",
+              "operand": "0"
+            },
+            {
+              "address": "00ab6b79",
+              "bytes": "e8c2da0b00",
+              "mnemonic": "call",
+              "operand": "0xb74640"
+            },
+            {
+              "address": "00ab6b7e",
+              "bytes": "8bc8",
+              "mnemonic": "mov",
+              "operand": "ecx, eax"
+            },
+            {
+              "address": "00ab6b80",
+              "bytes": "e8bbbf0b00",
+              "mnemonic": "call",
+              "operand": "0xb72b40"
+            },
+            {
+              "address": "00ab6b85",
+              "bytes": "85c0",
+              "mnemonic": "test",
+              "operand": "eax, eax"
+            },
+            {
+              "address": "00ab6b87",
+              "bytes": "7436",
+              "mnemonic": "je",
+              "operand": "0xab6bbf"
+            },
+            {
+              "address": "00ab6b89",
+              "bytes": "8b8e88010000",
+              "mnemonic": "mov",
+              "operand": "ecx, dword ptr [esi + 0x188]"
+            },
+            {
+              "address": "00ab6b8f",
+              "bytes": "6a00",
+              "mnemonic": "push",
+              "operand": "0"
+            },
+            {
+              "address": "00ab6b91",
+              "bytes": "6a00",
+              "mnemonic": "push",
+              "operand": "0"
+            },
+            {
+              "address": "00ab6b93",
+              "bytes": "e8a8da0b00",
+              "mnemonic": "call",
+              "operand": "0xb74640"
+            },
+            {
+              "address": "00ab6b98",
+              "bytes": "8bc8",
+              "mnemonic": "mov",
+              "operand": "ecx, eax"
+            },
+            {
+              "address": "00ab6b9a",
+              "bytes": "e821c70b00",
+              "mnemonic": "call",
+              "operand": "0xb732c0"
+            },
+            {
+              "address": "00ab6b9f",
+              "bytes": "d98674010000",
+              "mnemonic": "fld",
+              "operand": "dword ptr [esi + 0x174]"
+            },
+            {
+              "address": "00ab6ba5",
+              "bytes": "d84f0c",
+              "mnemonic": "fmul",
+              "operand": "dword ptr [edi + 0xc]"
+            },
+            {
+              "address": "00ab6ba8",
+              "bytes": "8b4020",
+              "mnemonic": "mov",
+              "operand": "eax, dword ptr [eax + 0x20]"
+            },
+            {
+              "address": "00ab6bab",
+              "bytes": "6a00",
+              "mnemonic": "push",
+              "operand": "0"
+            },
+            {
+              "address": "00ab6bad",
+              "bytes": "8bc8",
+              "mnemonic": "mov",
+              "operand": "ecx, eax"
+            },
+            {
+              "address": "00ab6baf",
+              "bytes": "d95c2410",
+              "mnemonic": "fstp",
+              "operand": "dword ptr [esp + 0x10]"
+            },
+            {
+              "address": "00ab6bb3",
+              "bytes": "e8380e0600",
+              "mnemonic": "call",
+              "operand": "0xb179f0"
+            },
+            {
+              "address": "00ab6bb8",
+              "bytes": "d944240c",
+              "mnemonic": "fld",
+              "operand": "dword ptr [esp + 0xc]"
+            },
+            {
+              "address": "00ab6bbc",
+              "bytes": "d9580c",
+              "mnemonic": "fstp",
+              "operand": "dword ptr [eax + 0xc]"
+            },
+            {
+              "address": "00ab6bbf",
+              "bytes": "5f",
+              "mnemonic": "pop",
+              "operand": "edi"
+            },
+            {
+              "address": "00ab6bc0",
+              "bytes": "5e",
+              "mnemonic": "pop",
+              "operand": "esi"
+            },
+            {
+              "address": "00ab6bc1",
+              "bytes": "c20400",
+              "mnemonic": "ret",
+              "operand": "4"
+            }
+          ]
+        },
+        {
+          "start": "00b74640",
+          "last_byte": "00b74648",
+          "bytes": 9,
+          "instruction_count": 2,
+          "sha256": "b7ff20e1db5330d3267e90ab2878843cad302c39fc4734af86a8a8bf08b133f2",
+          "rows": [
+            {
+              "address": "00b74640",
+              "bytes": "8b8180010000",
+              "mnemonic": "mov",
+              "operand": "eax, dword ptr [ecx + 0x180]"
+            },
+            {
+              "address": "00b74646",
+              "bytes": "c20400",
+              "mnemonic": "ret",
+              "operand": "4"
+            }
+          ]
+        },
+        {
+          "start": "00b74650",
+          "last_byte": "00b7465b",
+          "bytes": 12,
+          "instruction_count": 4,
+          "sha256": "d1a5253084bebbfd6425b839fabf5086a1f78f173723121f249d5ace727b64bc",
+          "rows": [
+            {
+              "address": "00b74650",
+              "bytes": "33c0",
+              "mnemonic": "xor",
+              "operand": "eax, eax"
+            },
+            {
+              "address": "00b74652",
+              "bytes": "398180010000",
+              "mnemonic": "cmp",
+              "operand": "dword ptr [ecx + 0x180], eax"
+            },
+            {
+              "address": "00b74658",
+              "bytes": "0f95c0",
+              "mnemonic": "setne",
+              "operand": "al"
+            },
+            {
+              "address": "00b7465b",
+              "bytes": "c3",
+              "mnemonic": "ret",
+              "operand": ""
+            }
+          ]
+        },
+        {
+          "start": "00b72b40",
+          "last_byte": "00b72b43",
+          "bytes": 4,
+          "instruction_count": 2,
+          "sha256": "d4d3079e1e2bc80c23488a3e2c1e4850449f45e35fbe39efe7e920ba8e97f0f8",
+          "rows": [
+            {
+              "address": "00b72b40",
+              "bytes": "8b4158",
+              "mnemonic": "mov",
+              "operand": "eax, dword ptr [ecx + 0x58]"
+            },
+            {
+              "address": "00b72b43",
+              "bytes": "c3",
+              "mnemonic": "ret",
+              "operand": ""
+            }
+          ]
+        },
+        {
+          "start": "00b732c0",
+          "last_byte": "00b732cc",
+          "bytes": 13,
+          "instruction_count": 4,
+          "sha256": "8dcf736751986acd75e000be99dc03d547d44ca694c404cd7e0d82d5302d3e00",
+          "rows": [
+            {
+              "address": "00b732c0",
+              "bytes": "8b4154",
+              "mnemonic": "mov",
+              "operand": "eax, dword ptr [ecx + 0x54]"
+            },
+            {
+              "address": "00b732c3",
+              "bytes": "8b4c2404",
+              "mnemonic": "mov",
+              "operand": "ecx, dword ptr [esp + 4]"
+            },
+            {
+              "address": "00b732c7",
+              "bytes": "8b0488",
+              "mnemonic": "mov",
+              "operand": "eax, dword ptr [eax + ecx*4]"
+            },
+            {
+              "address": "00b732ca",
+              "bytes": "c20400",
+              "mnemonic": "ret",
+              "operand": "4"
+            }
+          ]
+        },
+        {
+          "start": "00b179f0",
+          "last_byte": "00b179f5",
+          "bytes": 6,
+          "instruction_count": 2,
+          "sha256": "18126bf420a5b30e2a575d82cb5f7e00eaa3a07965af17c68b8d59713f47b4e3",
+          "rows": [
+            {
+              "address": "00b179f0",
+              "bytes": "8d4138",
+              "mnemonic": "lea",
+              "operand": "eax, [ecx + 0x38]"
+            },
+            {
+              "address": "00b179f3",
+              "bytes": "c20400",
+              "mnemonic": "ret",
+              "operand": "4"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "address": "00aa6870",
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aa6870\\assembly.txt",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00aa6870\\assembly.txt",
+          "bytes": 1380,
+          "sha256": "137e97c0e22e209f1d6f65c3a77ac4a03f2f00f44bee58050e651c430693a27e",
+          "git_blob": "185f9191dcd15aaf1567d08bf54678a33ab7c29c",
+          "format": "Raw saved export bytes at author epoch"
+        },
+        {
+          "address": "00aa6870",
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aa6870\\decompiled.c",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00aa6870\\decompiled.c",
+          "bytes": 10587,
+          "sha256": "45ce879b9d364635210971c370f0cfc7f793316a69de2c589a00eeca04f0af93",
+          "git_blob": "e17ced1f9a0336137603d1b260e553dcd148150c",
+          "format": "Raw saved export bytes at author epoch"
+        },
+        {
+          "address": "00aa6870",
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aa6870\\metadata.json",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00aa6870\\metadata.json",
+          "bytes": 269,
+          "sha256": "facf14f8650fb1a2b832d6b4ea2e18e4a672a39345a78469325dbc25b6b6af1e",
+          "git_blob": "27d82f7286285b613f2ac775196d563fabb45eea",
+          "format": "Raw saved export bytes at author epoch"
+        },
+        {
+          "address": "00ab6b50",
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab6b50\\assembly.txt",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00ab6b50\\assembly.txt",
+          "bytes": 1028,
+          "sha256": "059efd208a6f29bcaaffa3e7d02350a3aad5e9ecbeb08fd45689398971ea0230",
+          "git_blob": "2c35a2ea40ca99081333b6925569ae2ffce305fb",
+          "format": "Raw saved export bytes at author epoch"
+        },
+        {
+          "address": "00ab6b50",
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab6b50\\decompiled.c",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00ab6b50\\decompiled.c",
+          "bytes": 2801,
+          "sha256": "cd3b72d7a0fbbcd901606fa830789a1a51b3c4c7aff500a46fdb11ddd63e26ec",
+          "git_blob": "3c39e8a7b950dd09fa41b977ae4065451db5e774",
+          "format": "Raw saved export bytes at author epoch"
+        },
+        {
+          "address": "00ab6b50",
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab6b50\\metadata.json",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00ab6b50\\metadata.json",
+          "bytes": 267,
+          "sha256": "35990fee25ee374c717bd4b1171d715e466780d514cfbc7a8cf2c5ebc5f26124",
+          "git_blob": "303b46ba58d6ed3e1900a78e45c7bfed7b7f8674",
+          "format": "Raw saved export bytes at author epoch"
+        },
+        {
+          "address": "00b74640",
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b74640\\assembly.txt",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b74640\\assembly.txt",
+          "bytes": 62,
+          "sha256": "1959a214cd04d94ae7ec1b57be28658079c1f9c9717ac49aceb2b3b86e729e01",
+          "git_blob": "3f6e1e90fff477bd42c7c6c036718d23a3d99182",
+          "format": "Raw saved export bytes at author epoch"
+        },
+        {
+          "address": "00b74640",
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b74640\\decompiled.c",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b74640\\decompiled.c",
+          "bytes": 1028,
+          "sha256": "11a33b54f8d6a576b81a5aef94b714ca8f66f52dd517db96b85c614739c04c56",
+          "git_blob": "aa4e40316ec2f824668e78b1840f532780e7f8c9",
+          "format": "Raw saved export bytes at author epoch"
+        },
+        {
+          "address": "00b74640",
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b74640\\metadata.json",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b74640\\metadata.json",
+          "bytes": 277,
+          "sha256": "e56af9d3664b8ec87ad54e8a215105a41cb5a2ecf424ccbba4370e6069ddbdd4",
+          "git_blob": "989996ffa4f84af2f6418c6b31de3a5740f3703c",
+          "format": "Raw saved export bytes at author epoch"
+        },
+        {
+          "address": "00b74650",
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b74650\\assembly.txt",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b74650\\assembly.txt",
+          "bytes": 101,
+          "sha256": "c20b220b2e1ff2fe1e7added2df620922172ec07866afdd9b854409de327a871",
+          "git_blob": "245eec123ffced0e7605bc28b34267cb959a74fa",
+          "format": "Raw saved export bytes at author epoch"
+        },
+        {
+          "address": "00b74650",
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b74650\\decompiled.c",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b74650\\decompiled.c",
+          "bytes": 1723,
+          "sha256": "c6c726ab4ea094e26b3ac4b15d2f7b8c9d2ea9f84c3c4594b6e1aa1478365d37",
+          "git_blob": "f73506ad8decc717d1e9882b0daeff753d51deee",
+          "format": "Raw saved export bytes at author epoch"
+        },
+        {
+          "address": "00b74650",
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b74650\\metadata.json",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b74650\\metadata.json",
+          "bytes": 277,
+          "sha256": "ccabfd61eacedf96d816cbfcf8655cf26412cc385a5d76e86fd881cab5c39841",
+          "git_blob": "e1829c4fe2c6f6e76ac9fb950e027492c5929794",
+          "format": "Raw saved export bytes at author epoch"
+        },
+        {
+          "address": "00b72b40",
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b72b40\\assembly.txt",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b72b40\\assembly.txt",
+          "bytes": 57,
+          "sha256": "f2c45d00470e1c378a72a047f9e66e24d8e592c521dc36d7d42b738738fae4f1",
+          "git_blob": "1ac81b34740dcc8e582307dbf6a4f8e3a49c0e26",
+          "format": "Raw saved export bytes at author epoch"
+        },
+        {
+          "address": "00b72b40",
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b72b40\\decompiled.c",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b72b40\\decompiled.c",
+          "bytes": 3587,
+          "sha256": "04cd43d4e0e2812a5c227a82b90007cc3ba689e4397575e9244e7f0e6f1928be",
+          "git_blob": "7dfa7096a50742f90c1b65d6328f971f2433caea",
+          "format": "Raw saved export bytes at author epoch"
+        },
+        {
+          "address": "00b72b40",
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b72b40\\metadata.json",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b72b40\\metadata.json",
+          "bytes": 272,
+          "sha256": "fe93c1a321a69c4f72fefd875cb8876ab98f1edea40c5d29f43b77fb87afea20",
+          "git_blob": "f22734fecc8cb449e2ed95d8bdeb7bc0dc7afe10",
+          "format": "Raw saved export bytes at author epoch"
+        },
+        {
+          "address": "00b732c0",
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b732c0\\assembly.txt",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b732c0\\assembly.txt",
+          "bytes": 147,
+          "sha256": "f7519931473c8c797d11941389f86af57ca305d7e582780072529d27d459fc2c",
+          "git_blob": "85cd356edde885cda398427e34cca0f453684f5e",
+          "format": "Raw saved export bytes at author epoch"
+        },
+        {
+          "address": "00b732c0",
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b732c0\\decompiled.c",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b732c0\\decompiled.c",
+          "bytes": 393,
+          "sha256": "ad60b3f050ce3a3b7a369bcb4eba32992e85ba2d36bd8f1a0cac74d953db1a94",
+          "git_blob": "df9c110c8c4c60fa0b2c684e66d95a758f933b6d",
+          "format": "Raw saved export bytes at author epoch"
+        },
+        {
+          "address": "00b732c0",
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b732c0\\metadata.json",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b732c0\\metadata.json",
+          "bytes": 272,
+          "sha256": "ba449679925ba1a289534523316b52cee71bdd28d637ff452effea6ec2955a48",
+          "git_blob": "4e119d903e7d808a5a2b1ccf90f50110a59c883f",
+          "format": "Raw saved export bytes at author epoch"
+        },
+        {
+          "address": "00b179f0",
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b179f0\\assembly.txt",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b179f0\\assembly.txt",
+          "bytes": 51,
+          "sha256": "2f917de60b134aaf431a3860532924dc12914702250d596a16393f2cdd49f45f",
+          "git_blob": "8879ca9bf8926755acbdbc8ed0fd6ba8f4eb2739",
+          "format": "Raw saved export bytes at author epoch"
+        },
+        {
+          "address": "00b179f0",
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b179f0\\decompiled.c",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b179f0\\decompiled.c",
+          "bytes": 1692,
+          "sha256": "62d45813c4d075fe97aa6ecfab85d197773f99752c6a2370de0b1ced4acc8fbf",
+          "git_blob": "e3f422d12abea56d76da477ca31d35db9b524264",
+          "format": "Raw saved export bytes at author epoch"
+        },
+        {
+          "address": "00b179f0",
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b179f0\\metadata.json",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\native\\00b179f0\\metadata.json",
+          "bytes": 275,
+          "sha256": "8b2a741118852501b99b05b2d26bb09d9e47574f818a2f25358dbaf0b510b8c6",
+          "git_blob": "e6ea3138337b989e3baf33c7aadcab46c9d2e710",
+          "format": "Raw saved export bytes at author epoch"
+        }
+      ],
+      "tables": [
+        {
+          "base": "00d5c130",
+          "offset": "50",
+          "cell": "00d5c180",
+          "target": "00aa6870",
+          "bytes": "7068aa00",
+          "qualification": "Installed PE cell only; not live profile/generation proof"
+        },
+        {
+          "base": "00d5c6c8",
+          "offset": "50",
+          "cell": "00d5c718",
+          "target": "00ab6b50",
+          "bytes": "506bab00",
+          "qualification": "Installed PE cell only; not live profile/generation proof"
+        }
+      ]
+    },
+    "all_static_passed": true,
+    "actions": {
+      "compiler": false,
+      "tests": false,
+      "probe": false,
+      "provider": false,
+      "Game": false,
+      "Ghidra_mutation": false
+    }
+  },
+  "inverse_reader": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-color-raw-model-geometry\\local\\output\\cc16_native_gui_color_raw_model_geometry_20261031\\verify_inverse.py",
+    "bytes": 2628,
+    "sha256": "2e607fbd1b6559091ccd9feb026a87cb655a5fb260a9a11c0ed2be3ea9b03c85",
+    "utf8_lf": "import hashlib,json,re,subprocess,sys\nfrom pathlib import Path\nroot=Path(sys.argv[1]).resolve(); r=json.loads(Path(sys.argv[2]).read_bytes()); p=r['static_proof']; ref=sys.argv[3] if len(sys.argv)>3 else None\ndef sha(b):return hashlib.sha256(b).hexdigest()\ndef blob(b):return hashlib.sha1(b'blob '+str(len(b)).encode()+b'\\0'+b).hexdigest()\ndef git(v,q):return subprocess.check_output(['git','show',v+':'+q],cwd=root)\ndef actual(q):return git(ref,q) if ref else (root/q).read_bytes()\nold={};new={}\nfor f in p['production']:\n q=f['path'];old[q]=git(p['base'],q);new[q]=actual(q)\n for k,b in [('before',old[q]),('after',new[q])]:\n  a=f[k];assert len(b)==a['bytes'] and sha(b)==a['sha256'] and blob(b)==a['git_blob']\n  z=Path(f['frozen_'+k]);assert z.read_bytes()==b\nwork=dict(old);states=iter(p['seventeen_states'])\ndef state():\n z=next(states);v={q:sha(b) for q,b in sorted(work.items())}\n assert v==z['files'] and sha(json.dumps(v,sort_keys=True,separators=(',',':')).encode())==z['canonical_map_sha256']\nstate()\nfor s in p['seams']:\n q=s['path'];i=s['offset'];a=s['before_utf8_lf'].encode();b=s['after_utf8_lf'].encode()\n assert len(a)==s['before_bytes'] and len(b)==s['after_bytes'] and sha(a)==s['before_sha256'] and sha(b)==s['after_sha256']\n assert sha(work[q])==s['before_step_sha256'] and work[q][i:i+len(a)]==a\n work[q]=work[q][:i]+b+work[q][i+len(a):];assert sha(work[q])==s['after_step_sha256'];state()\nassert work==new\nfor s in reversed(p['seams']):\n q=s['path'];i=s['offset'];a=s['before_utf8_lf'].encode();b=s['after_utf8_lf'].encode()\n assert sha(work[q])==s['after_step_sha256'] and work[q][i:i+len(b)]==b\n work[q]=work[q][:i]+a+work[q][i+len(b):];assert sha(work[q])==s['before_step_sha256'];state()\nassert work==old and not list(states)\nfor z in p['protected']:\n q=z['path'];a=re.findall(rb'__asm\\s*\\{[^}]*\\}',old[q]);b=re.findall(rb'__asm\\s*\\{[^}]*\\}',new[q]);assert [x for x in b if x in a]==a\n fp=lambda v:[m[1].lower() for x in v for m in re.finditer(rb'^\\s*(f[a-z0-9]+)\\b',x,re.I|re.M)]\n assert fp(a)==fp(b) and old[q].count(b'noexcept')==new[q].count(b'noexcept')\n assert [x for x in old[q].splitlines() if b'__COUNTER__' in x]==[x for x in new[q].splitlines() if b'__COUNTER__' in x]\nfor z in p['twenty_six_whole_input_pins']:\n b=git(z['ref'],z['path']);assert b==actual(z['path'])==Path(z['frozen']).read_bytes() and sha(b)==z['sha256'] and blob(b)==z['git_blob']\nx=r['inverse_reader']['utf8_lf'].encode();assert sha(x)==r['inverse_reader']['sha256'] and len(x)==r['inverse_reader']['bytes']\nprint(json.dumps(dict(mode=ref or 'worktree',whole_files=4,seams=8,states=17,unchanged_inputs=26,passed=True)))\n",
+    "encoding": "Raw UTF8 LF, zero CR bytes"
+  },
+  "call_contract": {
+    "Model_field": "one actual captured Model+180 DWORD per reached B74640; native stacked DWORD unused",
+    "sites": [
+      "00aa68a0",
+      "00aa68b7",
+      "00ab6b79",
+      "00ab6b93"
+    ],
+    "main": "nonnull4C, first capture between RGBA Z read/store, separate current reloads per getter",
+    "shadow": "first188 nullable, then separate current reloads per getter",
+    "FP": "sameText174*CURRENTalpha, material capture WHILE ST0 live, samefloat32spill beforeB179F0 and reload/store+0C",
+    "codeword_callable_cast": false,
+    "new_guard_or_fallback": false,
+    "no_tail_lvalue": true
+  },
+  "family_and_generation": {
+    "raw_Model": "actual B75030 private ModelTailWords, not NativeModelTailStorage",
+    "typed_Model": "actual NativeModelOwner route owns genuine typed tail; not synthesized here",
+    "downstream": "actual NativeMeshStorage/pointer array/NativeMeshSectionStorage/NativeMaterialStorage-lighting objects and real contexts required",
+    "Group": "bind ends old tail, creates SystemAmbientBacklinks178; old view obsolete",
+    "Text188": "AB85AA store precedes canonical bind; preserve published-unbound failure",
+    "widget4C": "AA6720 store then conditional node138 flags&FFFFFFFC",
+    "pending": "private creator/binder/publication/retirement-entry generation and independent custody/tombstone protocol absent",
+    "public_flags_registry_or_profile_prove_generation": false,
+    "forced_Current_equals_ctor": false
+  },
+  "readiness": {
+    "library_Source_ready_for_Root_review": true,
+    "worker_compiled": false,
+    "independent_peer_review": "pending immutable packet",
+    "Root_common_Core_counter_checks": "pending independent integration",
+    "genuine_current_generation_protocol": false,
+    "Glyph_birth_transport_provider_closed": false,
+    "whole_frontend_Source_ready": false,
+    "Native_exception_origin_permission": false,
+    "Original_ABI": false,
+    "runtime": false,
+    "activation": false
+  },
+  "credits": {
+    "new_Original_bodies": 0,
+    "new_vendor_bodies": 0,
+    "new_helpers": 0,
+    "new_CG_bodies": 0,
+    "duplicate_body_credit": 0,
+    "ABI": 0,
+    "runtime": 0,
+    "activation": 0
+  },
+  "actions": {
+    "compiler": false,
+    "tests": false,
+    "probe": false,
+    "provider": false,
+    "Game": false,
+    "Ghidra_mutation": false
+  },
+  "document_pin": {
+    "path": "docs/CC16_NATIVE_GUI_COLOR_RAW_MODEL_GEOMETRY.md",
+    "bytes": 8484,
+    "sha256": "401fa6e12420659976537781b0431005f17821fa21e437fc1e0dbc2e4e3b8d8b",
+    "format": "Exact UTF8 LF bytes"
+  }
+}
