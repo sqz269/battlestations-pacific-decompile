@@ -2499,3 +2499,6 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_cor
 
 # Whole normal raw GUI named-value array reserve; actual caller/queue activation remains gated.
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_gui_named_value_array_reserve_storage.cpp)
+
+# Whole normal raw GUI named-value array append; actual caller/queue activation remains gated.
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_gui_named_value_array_append_storage.cpp)
