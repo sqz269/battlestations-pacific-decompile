@@ -1,6 +1,7 @@
 #pragma once
 #include "bsp/native_model_storage_lifetime.hpp"
 #include "bsp/native_render_pointer_arrays.hpp"
+#include "bsp/native_model_resource_storage.hpp"
 #include <cstdint>
 #include <exception>
 
@@ -18,6 +19,7 @@ private:
     NativeMatrixModelStorageContext& prefix_;
 };
 struct NativeMatrixStorageAccess;
+class NativeMatrixStorageOwner;
 class NativeMatrixStorageFrame final {
 public:
     enum class Phase { fresh, creating, live, destroying, payload_dead, returned, null_result, failed };
@@ -35,6 +37,10 @@ public:
         bool flags_read, scalar_returned, pool_return_entered, pool_returned;
         std::uint8_t flags_low_byte;
         bool prefix_live, bones_live;
+        bool creator_issued, creator_transferred, creator_release_entered;
+        bool creator_release_returned, creator_decrement_completed, disposition_entered;
+        const void* source_owner; // opaque historical identity, never a live receiver borrow
+        bool creator_receiver_ended;
     };
     NativeMatrixStorageFrame() noexcept = default;
     ~NativeMatrixStorageFrame() = default; // metadata only; no native/extent cleanup
@@ -64,7 +70,65 @@ private:
     bool factory_return_entered_{}, factory_return_returned_{};
     bool flags_read_{}, scalar_returned_{}, pool_return_entered_{}, pool_returned_{};
     std::uint8_t flags_low_byte_{};
+    // Issued only by the actual completed B91220. Public progress/count/pool
+    // membership cannot create, transfer or clear any of these private facts.
+    struct CreatorFacts {
+        NativeNodeStorage* node{};
+        std::atomic<std::int32_t>* count{};
+        NativeMatrixStorageOwner* receiver{};
+        const void* receiver_identity{}; // diagnostic identity only; never dereferenced
+        bool issued{}, transferred{}, release_entered{}, release_returned{};
+        bool decrement_completed{}, release_active{}, disposition_entered{};
+        bool receiver_ended{};
+    } creator_;
+    NativeNodeTreeRetirementFrame* creator_release_frame_{};
+    NativeNodeTreeRetirementAcquired creator_release_; // private actual lower-call receipt
+    std::uint32_t geometry_depth_{};
 };
+
+// Specific Source custody receiver for this factory's creator obligation. The
+// private once-only move has NO Native retain/decrement/publication effect.
+// Keep owner/frame/context and all affected records address-stable to actual
+// physical disposition; an interrupted/flags0 owner requires process retention.
+// The actual Frame and Context also outlive the COMPLETE Owner C++ destructor:
+// legal settled end retires its private backpointer in the still-live Frame.
+// No destructor cleanup, generic capability, public receipt setter or canonical
+// is synthesized. Its exact release invokes the genuine full B6F310 provider.
+class NativeMatrixStorageOwner final {
+public:
+    ~NativeMatrixStorageOwner() noexcept;
+    NativeMatrixStorageOwner(const NativeMatrixStorageOwner&) = delete;
+    NativeMatrixStorageOwner& operator=(const NativeMatrixStorageOwner&) = delete;
+    NativeMatrixStorageOwner(NativeMatrixStorageOwner&&) = delete;
+    NativeMatrixStorageOwner& operator=(NativeMatrixStorageOwner&&) = delete;
+    void* capture_current_raw_scene_170();
+    void set_geometry_00b75170(const NativeMatrixStorageGeometryContext&,
+        NativeModelStorageGeometryFrame&, NativeModelStorageGeometryAcquired&);
+    void release_creator_00b6f310(NativeNodeTreeRetirementFrame& actual_argument_frame);
+    void destroy_00b91280();
+    void* delete_00b915a0(const volatile std::uint32_t& actual_flags_home);
+    void return_slot();
+    bool requires_process_retention() const noexcept { return !disposition_complete_; }
+private:
+    friend struct NativeMatrixStorageAccess;
+    friend NativeMatrixStorageOwner transfer_native_matrix_creator(
+        const NativeMatrixStorageContext&, NativeMatrixStorageFrame&);
+    NativeMatrixStorageOwner(const NativeMatrixStorageContext&, NativeMatrixStorageFrame&);
+    const NativeMatrixStorageContext& context_;
+    NativeMatrixStorageFrame& frame_;
+    bool disposition_complete_{};
+};
+
+NativeMatrixStorageOwner transfer_native_matrix_creator(
+    const NativeMatrixStorageContext&, NativeMatrixStorageFrame&);
+// Original factory-frame custody is usable before a Source transfer; after the
+// move only the exact receiver can use creator/disposition entries. Four input
+// Word HOMEs and genuine geometry service backing stay live through callbacks.
+void set_native_matrix_creator_geometry_00b75170(const NativeMatrixStorageContext&,
+    NativeMatrixStorageFrame&, const NativeMatrixStorageGeometryContext&,
+    NativeModelStorageGeometryFrame&, NativeModelStorageGeometryAcquired&);
+void release_native_matrix_creator_00b6f310(const NativeMatrixStorageContext&,
+    NativeMatrixStorageFrame&, NativeNodeTreeRetirementFrame& actual_argument_frame);
 
 // Complete B931F0: actual initialized4B Source pointer HOME is sampled ONLY
 // after a nonnull actual allocation. NULL skips that HOME and the constructor.

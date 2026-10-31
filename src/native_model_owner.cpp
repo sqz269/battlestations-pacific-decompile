@@ -1,11 +1,13 @@
 #include "bsp/native_model_owner.hpp"
 #include "bsp/model_type_bootstrap.hpp"
 #include "bsp/native_ref_counted.hpp"
+#include "bsp/native_model_resource_storage.hpp"
 #include <cstring>
 #include <exception>
 #include <new>
 #include <stdexcept>
 #include <type_traits>
+#include <intrin.h>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native model ownership requires MSVC Win32.
@@ -23,6 +25,40 @@ static_assert(offsetof(NativeModelTailStorage, geometry_180) == 12);
 static_assert(sizeof(NativeNodeStorage) + sizeof(NativeModelTailStorage) == 0x184);
 static_assert(NativeModelPool::slot_slab_index_offset == 0x184);
 static_assert(NativeModelPool::slot_bytes == 0x188);
+
+// No public receipt/progress field can create or revive this raw-return fact.
+// Only the real raw continuation and existing end/failure paths call these.
+class NativeModelRawFactsAccess final {
+public:
+    static void entered(NativeModelOwner& owner) {
+        auto& facts = owner.raw_facts_;
+        if (facts.entered || facts.returned || facts.destruction_entered ||
+            facts.typed_end_entered || facts.failed)
+            throw std::logic_error("raw Model constructor fact cannot replay");
+        facts.entered = true;
+    }
+    static void returned(NativeModelOwner& owner,
+        const NativeNodeRawConstants& constants) noexcept {
+        auto& facts = owner.raw_facts_;
+        facts.node = &owner.storage.node;
+        facts.tail = &owner.storage.model;
+        facts.count = &owner.storage.node.references_04;
+        facts.environment = &owner.environment;
+        facts.binding = owner.raw_lifetime;
+        facts.constants = &constants;
+        facts.sentinel = &owner.environment.constants.unchanged_00d7a260;
+        facts.returned = true;
+    }
+    static void destroying(NativeModelOwner& owner) noexcept {
+        owner.raw_facts_.destruction_entered = true;
+    }
+    static void ended(NativeModelOwner& owner) noexcept {
+        owner.raw_facts_.typed_end_entered = true;
+    }
+    static void failed(NativeModelOwner& owner) noexcept {
+        owner.raw_facts_.failed = true;
+    }
+};
 
 namespace {
 constexpr std::uint32_t model_table = 0x00d62de8u;
@@ -123,6 +159,7 @@ void require_legacy_virtual(const NativeModelOwner& owner, std::uint32_t site) n
         // raw Native failure route. Actual Page normal calls use throwing APIs.
         raw->host.failed = true;
         raw->host.stopped_site = site;
+        NativeModelRawFactsAccess::failed(owner);
         std::terminate();
     }
 }
@@ -164,6 +201,7 @@ void publish_model_phase(NativeModelOwner& owner) noexcept {
     owner.node.scene_attachment.world_changed = model_world_changed;
 }
 void end_tail(NativeModelOwner& owner) noexcept {
+    NativeModelRawFactsAccess::ended(owner);
     owner.storage.model.~NativeModelTailStorage();
     owner.environment.nodes.scenes.forget_destroyed_binding(owner.node.scene_attachment);
     owner.phase = NativeModelOwner::Phase::dead;
@@ -174,11 +212,13 @@ void end_raw_typed_storage(void* context) noexcept {
     if (raw.host.typed_storage_ended) std::terminate();
     // Full raw B6F440 already performed all Native cleanup/profile stores.
     // These existing typed extents/association end without further Native work.
+    NativeModelRawFactsAccess::ended(owner);
     owner.storage.node.~NativeNodeStorage();
     end_tail(owner);
     raw.host.typed_storage_ended = true;
 }
 void record_raw_failure(NativeModelOwner& owner) noexcept {
+    NativeModelRawFactsAccess::failed(owner);
     auto& raw = *owner.raw_lifetime;
     raw.host.failed = true;
     raw.host.stopped_site = raw.terminal.active_call_site;
@@ -247,6 +287,7 @@ NativeModelOwner::NativeModelOwner(void* slot, std::size_t bytes, NativeModelEnv
     try {
         access.nodes.scenes.bind(node.scene_attachment);
     } catch (...) {
+        NativeModelRawFactsAccess::ended(*this);
         storage.model.~NativeModelTailStorage();
         storage.node.~NativeNodeStorage();
         throw;
@@ -254,6 +295,7 @@ NativeModelOwner::NativeModelOwner(void* slot, std::size_t bytes, NativeModelEnv
 }
 NativeModelOwner::~NativeModelOwner() {
     if (phase == Phase::prepared) {
+        NativeModelRawFactsAccess::ended(*this);
         environment.nodes.scenes.forget_destroyed_binding(node.scene_attachment);
         storage.model.~NativeModelTailStorage();
         storage.node.~NativeNodeStorage();
@@ -309,11 +351,13 @@ void* construct_native_model_00b75030(NativeModelOwner& owner, const void* actua
         &constants.positive_bound_00ce4970 != &owner.environment.constants.maximum_00ce4970 ||
         &constants.negative_bound_00ce4adc != &owner.environment.constants.minimum_00ce4adc)
         throw std::logic_error("raw model requires its persistent raw cleanup and shared actual bound cells");
+    NativeModelRawFactsAccess::entered(owner);
     owner.phase = NativeModelOwner::Phase::constructing;
     try {
         construct_native_node_00b6f5a0(&owner.storage.node, NativeModelPool::slot_bytes,
             actual_name_header, name_pool, constants); // B75038; no copied header
     } catch (...) {
+        NativeModelRawFactsAccess::failed(owner);
         end_tail(owner); // B6F5A0 already consumed its own prefix cleanup states.
         throw; // Caller still owns the physical model slot.
     }
@@ -334,6 +378,7 @@ void* construct_native_model_00b75030(NativeModelOwner& owner, const void* actua
     pose_word(node, 0x08, 0); pose_word(node, 0x0c, 0); pose_word(node, 0x10, 0);
     pose_word(node, 0x14, 0);
     owner.phase = NativeModelOwner::Phase::live;
+    NativeModelRawFactsAccess::returned(owner, constants);
     return &owner.storage.node;
 }
 void destroy_native_model_geometry_member_00b74f20(
@@ -344,6 +389,7 @@ void destroy_native_model_00b750c0(NativeModelOwner& owner) {
     require_live(owner);
     if (auto* raw = owner.raw_lifetime) {
         require_raw_terminal_fresh(*raw);
+        NativeModelRawFactsAccess::destroying(owner);
         try {
             destroy_native_model_storage_00b750c0(&owner.storage.node, raw->terminal_frame,
                 raw->storage, raw->terminal, {&owner, end_raw_typed_storage});
@@ -385,6 +431,7 @@ void* delete_native_model_raw_00b75290(NativeModelOwner& owner, const volatile s
     auto* raw = owner.raw_lifetime;
     if (!raw) throw std::logic_error("raw Model scalar requires its immutable raw lifetime binding");
     require_raw_terminal_fresh(*raw);
+    NativeModelRawFactsAccess::destroying(owner);
     try {
         return delete_native_model_storage_00b75290(&owner.storage.node, flags, raw->terminal_frame,
             raw->storage, raw->terminal, {&owner, end_raw_typed_storage});
@@ -570,5 +617,41 @@ void NativeModelReference::release_zero_references() noexcept {
     runtime.unbind(*this); // host identity only; physical slot is already free
     phase_ = Phase::retired;
     disposal.retire(disposal.context, *this);
+}
+NativeModelRawLifetimeBinding& NativeModelReference::require_checked_raw_live() {
+    const auto& facts = owner_.raw_facts_;
+    if (phase_ != Phase::bound || !facts.entered || !facts.returned ||
+        facts.destruction_entered || facts.typed_end_entered || facts.failed ||
+        owner_.phase != NativeModelOwner::Phase::live || !owner_.raw_lifetime)
+        throw std::logic_error("checked raw Model requires its private still-live raw return");
+    auto& raw = *owner_.raw_lifetime;
+    auto* const actual = &owner_.storage.node;
+    if (facts.node != actual || facts.tail != &owner_.storage.model ||
+        facts.count != &actual->references_04 || facts.environment != &owner_.environment ||
+        facts.binding != &raw || facts.constants != &raw.storage.constants ||
+        facts.sentinel != &owner_.environment.constants.unchanged_00d7a260)
+        throw std::logic_error("checked raw Model lost its exact constructor/provider identities");
+    validate_raw_binding(actual, owner_.environment, raw);
+    if (raw.storage.node.scenes.owners.find(actual) != this ||
+        static_cast<void*>(&reference_count) != static_cast<void*>(facts.count))
+        throw std::logic_error("checked raw Model requires its original SAME canonical/count");
+    NativeModelGeometryKernelAccess::require_live_model_slot(actual, raw.storage.pool_01090054);
+    if (reference_count.load(std::memory_order_relaxed) <= 0 || actual->vtable_00 != model_table)
+        throw std::logic_error("checked raw Model requires its positive current live allocation");
+    return raw;
+}
+
+void NativeModelReference::record_checked_raw_failure(std::uint32_t active_site) noexcept {
+    record_raw_failure(owner_);
+    owner_.raw_lifetime->host.stopped_site = active_site;
+}
+
+void* NativeModelReference::capture_current_raw_scene_170() {
+    (void)require_checked_raw_live();
+    SceneResource* captured;
+    _ReadWriteBarrier();
+    std::memcpy(&captured, &owner_.storage.node.scene_170, 4);
+    _ReadWriteBarrier();
+    return static_cast<void*>(captured); // opaque actual identity, never semantic follow
 }
 } // namespace bsp
