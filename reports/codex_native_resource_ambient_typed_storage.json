@@ -1,0 +1,195 @@
+{
+  "schema": 1,
+  "packet": "resource_ambient_typed_carrier_source_frame_20261031",
+  "base_commit": "6408455eff25aa7f6ed2bbafdc1aa2e5918b08e3",
+  "status": "Root_actual_Source_accepted_independent_actual_Source_review_pending",
+  "source_ready": false,
+  "compiler_build_test_probe_runtime_Ghidra_performed": false,
+  "new_Native_or_vendor_body_credit": 0,
+  "plan": {
+    "sha256": "97fc1687fabbe0721d037f3a3eb4ffb359c69b6cd8678127229d4f0feb9c4f87",
+    "design_sha256": "e6e0a85c31237544ee896ec46e7bf52082596bba71a464dba0547e56b068edba",
+    "Root_design": "ACCEPT_QUALIFIED_DESIGN",
+    "independent_design_sha256": "89d9dd38b4b930385b825254f900f7bd2f4ed2d24b191d6a0490bdbb252c24e6"
+  },
+  "addresses": [
+    "00b83c50",
+    "00b82ed0",
+    "00b83410",
+    "00b7c290",
+    "00b7c450",
+    "00b7c7e0",
+    "00b825d0",
+    "00b7bd50",
+    "00b7bf90",
+    "00b7b390",
+    "00b7b620",
+    "00b7bc70",
+    "00b83600",
+    "00b83220",
+    "00b82e90",
+    "00b829d0",
+    "00b82b40",
+    "00b82c60",
+    "00ac59a0"
+  ],
+  "production_files": [
+    {
+      "path": "include/bsp/native_scene_typed_lifetime.hpp",
+      "new_file": true,
+      "before_lf_sha256": null,
+      "candidate_lf_sha256": "8f18ed2de8237cd5bf308d6cd79e2872d38a4a0cea44f6d0619da88e3efdc654",
+      "candidate_lines": 40,
+      "physical_sha256": "8f18ed2de8237cd5bf308d6cd79e2872d38a4a0cea44f6d0619da88e3efdc654",
+      "physical_bytes": 1812,
+      "physical_lines": 40
+    },
+    {
+      "path": "src/native_scene_typed_storage.hpp",
+      "new_file": true,
+      "before_lf_sha256": null,
+      "candidate_lf_sha256": "ed44c4312271d44f46eba9a2fff6ffa94afe0f5359f459d31f24697f1fd4d85c",
+      "candidate_lines": 131,
+      "physical_sha256": "ed44c4312271d44f46eba9a2fff6ffa94afe0f5359f459d31f24697f1fd4d85c",
+      "physical_bytes": 6041,
+      "physical_lines": 131
+    },
+    {
+      "path": "include/bsp/native_ambient_construction.hpp",
+      "new_file": false,
+      "before_lf_sha256": "d6b8a16987e63393dcea801c624330723e460863b21189c442904aecd76d85b1",
+      "candidate_lf_sha256": "df798cae15bcb6c7a5933f5cf0fc791c3f3964a8aeb44eaf4abb3d1fd1870970",
+      "candidate_lines": 22,
+      "physical_sha256": "df798cae15bcb6c7a5933f5cf0fc791c3f3964a8aeb44eaf4abb3d1fd1870970",
+      "physical_bytes": 1141,
+      "physical_lines": 22
+    },
+    {
+      "path": "src/native_ambient_construction.cpp",
+      "new_file": false,
+      "before_lf_sha256": "fc161f8279872e552f4fc96b4952684f578f185051f177230314cfa9217a2de4",
+      "candidate_lf_sha256": "b640b9adb247dace8f5b255c81bd439013b7ec8e97dcc4dba53cbcd248911975",
+      "candidate_lines": 111,
+      "physical_sha256": "b640b9adb247dace8f5b255c81bd439013b7ec8e97dcc4dba53cbcd248911975",
+      "physical_bytes": 4327,
+      "physical_lines": 111
+    },
+    {
+      "path": "include/bsp/native_ambient_lifetime.hpp",
+      "new_file": false,
+      "before_lf_sha256": "8404a2fe88eecd5c0fe810f60267bb5b51470de92aa494331de8aff56ef35ad8",
+      "candidate_lf_sha256": "34b6ff3c98aacb35ee84fcfc2d357b66d4e6fc07abe1b492341ecf6e4157f03f",
+      "candidate_lines": 66,
+      "physical_sha256": "34b6ff3c98aacb35ee84fcfc2d357b66d4e6fc07abe1b492341ecf6e4157f03f",
+      "physical_bytes": 3629,
+      "physical_lines": 66
+    },
+    {
+      "path": "src/native_ambient_lifetime.cpp",
+      "new_file": false,
+      "before_lf_sha256": "930132ef5252acfcaf98843c1703d8ea5815e75b0e5cfd0bd5985ba695870507",
+      "candidate_lf_sha256": "1c34b2bfff824c0c859252e4ebd1182dc484450dcc3c74ab2a29128bd34f7e4a",
+      "candidate_lines": 132,
+      "physical_sha256": "1c34b2bfff824c0c859252e4ebd1182dc484450dcc3c74ab2a29128bd34f7e4a",
+      "physical_bytes": 6171,
+      "physical_lines": 132
+    },
+    {
+      "path": "include/bsp/native_scene_resource_storage.hpp",
+      "new_file": false,
+      "before_lf_sha256": "213994fb6245ec309fcb6e74ebdbdc03234b1a227aed4fd7290aaf7dff498faf",
+      "candidate_lf_sha256": "3b29c1d4e26d394a3701aa6eee5d9bf8d699d85925c9551b62146b7f294b8306",
+      "candidate_lines": 101,
+      "physical_sha256": "3b29c1d4e26d394a3701aa6eee5d9bf8d699d85925c9551b62146b7f294b8306",
+      "physical_bytes": 5274,
+      "physical_lines": 101
+    },
+    {
+      "path": "src/native_scene_resource_storage.cpp",
+      "new_file": false,
+      "before_lf_sha256": "9d838d9142b4c9b2a69c83483e83859d9bd40fd390698ba12dd014bdd6755a9b",
+      "candidate_lf_sha256": "a1eaa80470393902c0ea075e6db0e9f0d634397314164be1dcbd400e4ffc36f9",
+      "candidate_lines": 258,
+      "physical_sha256": "a1eaa80470393902c0ea075e6db0e9f0d634397314164be1dcbd400e4ffc36f9",
+      "physical_bytes": 12599,
+      "physical_lines": 258
+    },
+    {
+      "path": "include/bsp/native_scene_resource_ambient.hpp",
+      "new_file": false,
+      "before_lf_sha256": "7683915eb7fa9f5c1ef49caf783f38f77c1ceb37e65943a9ccd823119649a928",
+      "candidate_lf_sha256": "cda6122fa4154e50b49abc2ba0bcbf3936c7edeb851d5a19cc738193e919cfb0",
+      "candidate_lines": 62,
+      "physical_sha256": "cda6122fa4154e50b49abc2ba0bcbf3936c7edeb851d5a19cc738193e919cfb0",
+      "physical_bytes": 3664,
+      "physical_lines": 62
+    },
+    {
+      "path": "src/native_scene_resource_ambient.cpp",
+      "new_file": false,
+      "before_lf_sha256": "bd776181831a897d04011e7f9b0b284c404362516c2eab29efe28eb2573d2b75",
+      "candidate_lf_sha256": "228edf2d90913991b1151faef4e321887fe0fe6df16ffcc9def0826bbb9b6582",
+      "candidate_lines": 127,
+      "physical_sha256": "228edf2d90913991b1151faef4e321887fe0fe6df16ffcc9def0826bbb9b6582",
+      "physical_bytes": 6065,
+      "physical_lines": 127
+    },
+    {
+      "path": "src/native_scene_registry_storage.cpp",
+      "new_file": false,
+      "before_lf_sha256": "11b1adc42b73e22bc656fc2f06187f511196601d1eaf8d86546388dd489476be",
+      "candidate_lf_sha256": "e8a5700316898b5f8b5f428e02f21b6067be00d0d8d8440b2fb4638ad01247dc",
+      "candidate_lines": 133,
+      "physical_sha256": "e8a5700316898b5f8b5f428e02f21b6067be00d0d8d8440b2fb4638ad01247dc",
+      "physical_bytes": 5256,
+      "physical_lines": 133
+    },
+    {
+      "path": "src/game_native_mission_lighting.inc",
+      "new_file": false,
+      "before_lf_sha256": "a99963abd29bce1b8a857d0351218f64284ab209697998a46a1b05eccbce04d5",
+      "candidate_lf_sha256": "1a978492882816976bfa6a0d802aa11ed52389d0b164d3b31201cf167bf4baa4",
+      "candidate_lines": 277,
+      "physical_sha256": "1a978492882816976bfa6a0d802aa11ed52389d0b164d3b31201cf167bf4baa4",
+      "physical_bytes": 15955,
+      "physical_lines": 277
+    },
+    {
+      "path": "src/native_gui_scene_acquisition_storage.cpp",
+      "new_file": false,
+      "before_lf_sha256": "79286dc355bd6cc8f1db1cf2cf12477ff97642c9279afdadb6d26ab0473a28f3",
+      "candidate_lf_sha256": "1478fb14490888f144dbf5106930cd8004216427dbaee3df388b5bf3d1e676b0",
+      "candidate_lines": 496,
+      "physical_sha256": "1478fb14490888f144dbf5106930cd8004216427dbaee3df388b5bf3d1e676b0",
+      "physical_bytes": 26898,
+      "physical_lines": 496
+    }
+  ],
+  "verification": {
+    "source_freeze_sha256": "058241349eaa7aea21bfadca05e0b714eb2107746dcd926da0b50234d12e7c9a",
+    "all_13_baselines_and_candidates_exact": true,
+    "whole_production_diff_equals_frozen_plan": true,
+    "ambient_asm_inverse_exact": true,
+    "resource_payload_inverse_exact": true,
+    "registry_whole_algorithm_projection_exact": true,
+    "reverse_applicability_exit": 0,
+    "callsite_coverage_sha256": "20fbf2af5c85e292fb25b2cfb9cf93dabee26badcaa6734828f02c22e894bb28",
+    "both_resource_producers_and_sole_nested_ambient_call_updated": true,
+    "all_real_reference_and_scalar_consumers_updated": true
+  },
+  "qualifications": [
+    "MSVC Win32 real4B atomic and exact carrier layout assertions not yet compiled",
+    "volatile byte preimage preservation before original observations; no typed arbitrary-count evaluation",
+    "private constructor-issued records retained with actual acquisition/context; no second count or owner",
+    "late flag byte before Source end and genuine optional free; failed/flags0 physical custody retained",
+    "ordinary Source aliases; no Original private ABI/FH3/SEH/fault/concurrency/current-CRT proof",
+    "full mission Model/Matrix/root/derived/credit/runtime gates remain separate"
+  ],
+  "next_gate": "Root and independent actual Source review; no compiler until explicit later authorization",
+  "doc": "docs/CODEX_NATIVE_RESOURCE_AMBIENT_TYPED_STORAGE.md",
+  "Root_actual_Source_acceptance": {
+    "source_freeze_sha256": "058241349eaa7aea21bfadca05e0b714eb2107746dcd926da0b50234d12e7c9a",
+    "production_diff_sha256": "97fc1687fabbe0721d037f3a3eb4ffb359c69b6cd8678127229d4f0feb9c4f87",
+    "scope": "Actual13Source files equal independently applied reviewed candidate; no compiler or runtime grant."
+  }
+}

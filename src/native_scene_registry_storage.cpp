@@ -1,4 +1,5 @@
 #include "bsp/native_scene_registry_storage.hpp"
+#include "native_scene_typed_storage.hpp"
 #include <new>
 
 namespace bsp {
@@ -8,11 +9,10 @@ void* at(void* p, Word n) noexcept {
     return reinterpret_cast<void*>(reinterpret_cast<Word>(p) + n);
 }
 Word read(const void* p, Word n = 0) noexcept {
-    return *reinterpret_cast<const volatile Word*>(
-        reinterpret_cast<Word>(p) + n);
+    return detail::scene_word(reinterpret_cast<const void*>(reinterpret_cast<Word>(p) + n));
 }
 void write(void* p, Word n, Word v) noexcept {
-    *reinterpret_cast<volatile Word*>(at(p, n)) = v;
+    detail::scene_word(at(p, n), v);
 }
 void* pointer(const void* p, Word n = 0) noexcept {
     return reinterpret_cast<void*>(read(p, n));

@@ -1,4 +1,5 @@
 #include "bsp/native_scene_resource_storage.hpp"
+#include "native_scene_typed_storage.hpp"
 #include "bsp/native_ambient_construction.hpp"
 #include "bsp/native_ref_counted.hpp"
 #include "bsp/native_string_pool_storage.hpp"
@@ -14,10 +15,10 @@ void* at(void* p, Word offset) noexcept {
     return reinterpret_cast<void*>(reinterpret_cast<Word>(p) + offset);
 }
 Word read(const void* p, Word offset = 0) noexcept {
-    return *reinterpret_cast<const volatile Word*>(reinterpret_cast<Word>(p) + offset);
+    return detail::scene_word(reinterpret_cast<const void*>(reinterpret_cast<Word>(p) + offset));
 }
 void write(void* p, Word offset, Word value) noexcept {
-    *reinterpret_cast<volatile Word*>(at(p, offset)) = value;
+    detail::scene_word(at(p, offset), value);
 }
 void* pointer(const void* p, Word offset = 0) noexcept {
     return reinterpret_cast<void*>(read(p, offset));
@@ -48,12 +49,13 @@ void require_slot(Word current, NativeSceneResourceIdentityContext& context,
         throw std::logic_error("scene resource has no binding for the current native slot");
 }
 std::atomic<std::int32_t>& bind_count(void* owner,
-    NativeSceneResourceIdentityContext& context) {
+    NativeSceneResourceIdentityContext& context, NativeSceneResourceAcquired& acquired) {
     if (!owner || reinterpret_cast<Word>(owner) % 4 || context.storage.ambient.owners.find(owner))
         throw std::invalid_argument("scene resource requires aligned unregistered actual storage");
+    detail::NativeSceneTypedStorageAccess::require(owner, context.storage, acquired.typed_resource);
     require_slot(read(owner), context, 0, 0x00bd30e0u);
     require_slot(read(owner), context, 1, 0x00b83410u);
-    auto& count = *std::launder(reinterpret_cast<std::atomic<std::int32_t>*>(at(owner, 4)));
+    auto& count = detail::NativeSceneTypedStorageAccess::count(owner, context.storage, acquired.typed_resource);
     if (count.load(std::memory_order_relaxed) <= 0)
         throw std::invalid_argument("scene resource requires a completed live actual count");
     return count;
@@ -81,9 +83,15 @@ void* construct_native_scene_resource_00b83c50(void* owner,
     NativeSceneResourceConstructFrame& frame, NativeSceneResourceStorageContext& context,
     NativeSceneResourceAcquired& acquired) {
     if (acquired.started || acquired.ambient_reference ||
+        !detail::NativeSceneTypedStorageAccess::fresh(acquired.typed_resource) ||
+        !detail::NativeSceneTypedStorageAccess::fresh(acquired.typed_ambient) ||
         &context.ambient.owners != &context.ambient_identity.registry)
         throw std::invalid_argument("scene constructor needs fresh diagnostics and one actual owner registry");
     acquired.started = true;
+    (void)detail::begin_scene_storage<detail::ActualResource3Ch>(owner);
+    acquired.typed_resource.actual_ = owner;
+    acquired.typed_resource.context_ = &context;
+    acquired.typed_resource.born_ = true;
     int state = -1;
     try {
         write(owner, 0, 0x00ceb130u);
@@ -122,14 +130,15 @@ void* construct_native_scene_resource_00b83c50(void* owner,
         void* creator = nullptr;
         if (allocation) {
             acquired.active_call_site = 0x00b83d09u;
-            creator = construct_native_ambient_00b7c290(allocation, context.one_00d7a24c);
+            creator = construct_native_ambient_00b7c290(allocation, context.one_00d7a24c,
+                acquired.typed_ambient, context.ambient_identity);
         }
         acquired.ambient_creator = creator;
         state = acquired.native_eh_state = 2;
         if (creator) {
             // Explicit host metadata admission, not a recovered native call.
             // No native stores/credits; failure leaves completed raw creator.
-            try { acquired.ambient_reference.emplace(creator, context.ambient_identity); }
+            try { acquired.ambient_reference.emplace(creator, context.ambient_identity, acquired.typed_ambient); }
             catch (...) { acquired.failure = NativeSceneResourceAcquired::Failure::host_metadata_admission; throw; }
         }
         frame.requested_ambient_argument = reinterpret_cast<Word>(creator);
@@ -143,21 +152,24 @@ void* construct_native_scene_resource_00b83c50(void* owner,
         if (count == 0) acquired.active_call_site = 0x00b83d35u;
         terminal_if_zero(creator, count, context);
         acquired.complete = true;
+        acquired.typed_resource.returned_ = true; // Actual constructor-issued fact.
         return owner;
     } catch (...) {
         if (acquired.failure == NativeSceneResourceAcquired::Failure::none)
             acquired.failure = NativeSceneResourceAcquired::Failure::native_call;
         if (state == 3) {
+            detail::NativeSceneTypedStorageAccess::end(acquired.typed_ambient, true);
             try { context.registry_storage.actual_00bf65ac(
                 reinterpret_cast<void*>(frame.name_or_ambient_argument)); }
             catch (...) { std::terminate(); }
         }
         unwind_prefix(owner, state, context);
+        detail::NativeSceneTypedStorageAccess::end(acquired.typed_resource, true);
         throw;
     }
 }
 
-void destroy_native_scene_resource_00b82ed0(void* owner,
+static void destroy_resource_payload(void* owner,
     NativeSceneResourceStorageContext& context) {
     int state = 2;
     write(owner, 0, 0x00d63168u);
@@ -190,17 +202,30 @@ void destroy_native_scene_resource_00b82ed0(void* owner,
     } catch (...) { unwind_prefix(owner, state, context); throw; }
 }
 
+void destroy_native_scene_resource_00b82ed0(void* owner,
+    NativeSceneResourceStorageContext& context, NativeSceneResourceTypedLifetime& typed) {
+    detail::NativeSceneTypedStorageAccess::enter(owner, context, typed);
+    try { destroy_resource_payload(owner, context); }
+    catch (...) { detail::NativeSceneTypedStorageAccess::end(typed, true); throw; }
+    detail::NativeSceneTypedStorageAccess::end(typed, false);
+}
+
 void* delete_native_scene_resource_00b83410(void* owner,
-    const volatile Word& flags, NativeSceneResourceStorageContext& context) {
-    destroy_native_scene_resource_00b82ed0(owner, context);
-    if ((*reinterpret_cast<const volatile unsigned char*>(&flags) & 1u) != 0)
-        context.registry_storage.actual_00bf65ac(owner);
+    const volatile Word& flags, NativeSceneResourceStorageContext& context,
+    NativeSceneResourceTypedLifetime& typed) {
+    detail::NativeSceneTypedStorageAccess::enter(owner, context, typed);
+    try { destroy_resource_payload(owner, context); }
+    catch (...) { detail::NativeSceneTypedStorageAccess::end(typed, true); throw; }
+    const bool release = (*reinterpret_cast<const volatile unsigned char*>(&flags) & 1u) != 0;
+    detail::NativeSceneTypedStorageAccess::end(typed, false);
+    if (release) context.registry_storage.actual_00bf65ac(owner);
     return owner;
 }
 
 NativeSceneResourceReference::NativeSceneResourceReference(void* identity,
-    NativeSceneResourceIdentityContext& context)
-    : RenderCommandReference(bind_count(identity, context)), identity_(identity), context_(context) {
+    NativeSceneResourceIdentityContext& context, NativeSceneResourceAcquired& acquired)
+    : RenderCommandReference(bind_count(identity, context, acquired)), identity_(identity), context_(context),
+      typed_(acquired.typed_resource) {
     context_.storage.ambient.owners.bind(identity_, *this);
 }
 NativeSceneResourceReference::~NativeSceneResourceReference() {
@@ -216,7 +241,7 @@ void* NativeSceneResourceReference::delete_scalar_00b83410(const volatile Word& 
         throw std::logic_error("scene resource deletion requires its live canonical companion");
     phase_ = Phase::destroying;
     void* result;
-    try { result = delete_native_scene_resource_00b83410(identity_, flags, context_.storage); }
+    try { result = delete_native_scene_resource_00b83410(identity_, flags, context_.storage, typed_); }
     catch (...) { retire(); throw; }
     retire();
     return result;

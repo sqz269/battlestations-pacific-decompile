@@ -182,7 +182,7 @@ struct MissionShipLightingGraph {
    check(resource!=nullptr,"mission lighting resource allocation returned null");
    resource_frame.name_or_ambient_argument=bits(&resource_name);
    construct_native_scene_resource_00b83c50(resource,resource_frame,storage_context(),resource_acquired);
-   resource_reference.emplace(resource,identity_context());
+   resource_reference.emplace(resource,identity_context(),resource_acquired);
 
    construct_native_string_header_0041e870(&sun_name,strings,"Mission sun");
    sun_name_live=true;

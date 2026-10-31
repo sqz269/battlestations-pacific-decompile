@@ -1,5 +1,6 @@
 #pragma once
 #include "bsp/native_render_context.hpp"
+#include "bsp/native_scene_typed_lifetime.hpp"
 
 namespace bsp {
 
@@ -15,13 +16,13 @@ namespace bsp {
 // payload byte; stamp D5C104 then CEB130 only AFTER that free returns. The
 // source cleanup projection uses genuine AA6E10 on an escaping C++ failure,
 // without retrying array cleanup. Native FH3/SEH/CRT fault identity is separate.
-void destroy_native_ambient_00b7c450(void* actual_owner);
+void destroy_native_ambient_00b7c450(void* actual_owner, NativeAmbientTypedLifetime&);
 // Read only the CURRENT low byte of the caller-owned flags cell AFTER the
 // complete destructor returns. flags&1 frees the owner; flags0 ends payload
 // lifetime but leaves raw storage. Return numeric identity, possibly freed.
 // Flags may alias still-accessible owner fields, including the array count.
 void* delete_native_ambient_00b7c7e0(void* actual_owner,
-    const volatile std::uint32_t& actual_flags_slot);
+    const volatile std::uint32_t& actual_flags_slot, NativeAmbientTypedLifetime&);
 
 struct NativeAmbientIdentityContext {
     NativeRenderActualOwnerRegistry& registry;
@@ -39,7 +40,8 @@ struct NativeAmbientIdentityContext {
 // and explicit scalar deletion go through this companion, not a second path.
 class NativeAmbientReference final : public RenderCommandReference {
 public:
-    NativeAmbientReference(void* actual_owner, NativeAmbientIdentityContext&);
+    NativeAmbientReference(void* actual_owner, NativeAmbientIdentityContext&,
+        NativeAmbientTypedLifetime&);
     ~NativeAmbientReference() override;
     NativeAmbientReference(const NativeAmbientReference&) = delete;
     NativeAmbientReference& operator=(const NativeAmbientReference&) = delete;
@@ -56,6 +58,7 @@ private:
     enum class Phase { bound, destroying, retired };
     void* const identity_;
     NativeAmbientIdentityContext& context_;
+    NativeAmbientTypedLifetime& typed_;
     Phase phase_{Phase::bound};
     void retire() noexcept;
 };

@@ -347,7 +347,7 @@ void acquire_scene(void* page,
         if (resource) {
             a.failure = NativeGuiSceneAcquisitionAcquired::Failure::host_admission;
             a.host_admission_owner = resource;
-            a.resource_reference.emplace(resource, c.resource);
+            a.resource_reference.emplace(resource, c.resource, a.resource_construct);
             a.failure = NativeGuiSceneAcquisitionAcquired::Failure::none;
         }
         current_scene = pointer(read(page, 0xec)); f.pushed_words[2] = bits(resource);

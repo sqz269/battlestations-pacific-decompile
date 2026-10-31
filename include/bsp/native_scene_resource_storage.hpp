@@ -29,6 +29,8 @@ struct NativeSceneResourceConstructFrame {
     NativeSceneResourceAmbientFrame setter;
 };
 struct NativeSceneResourceAcquired {
+    NativeSceneResourceTypedLifetime typed_resource;
+    NativeAmbientTypedLifetime typed_ambient;
     enum class Failure { none, native_call, host_metadata_admission };
     bool started{};
     bool complete{};
@@ -61,12 +63,12 @@ void* construct_native_scene_resource_00b83c50(void* actual_resource,
 // free/reset then list; captured name block/size return; base CEB130. A surviving
 // ambient's borrowed backlink is deliberately NOT removed by this destructor.
 void destroy_native_scene_resource_00b82ed0(void* actual_resource,
-    NativeSceneResourceStorageContext&);
+    NativeSceneResourceStorageContext&, NativeSceneResourceTypedLifetime&);
 // Complete30B B83410; late low-byte flags read AFTER destructor, same CRT free
 // only for bit0. Return numeric identity; no owner reads after possible free.
 void* delete_native_scene_resource_00b83410(void* actual_resource,
     const volatile std::uint32_t& actual_flags_slot,
-    NativeSceneResourceStorageContext&);
+    NativeSceneResourceStorageContext&, NativeSceneResourceTypedLifetime&);
 
 struct NativeSceneResourceIdentityContext {
     NativeSceneResourceStorageContext& storage;
@@ -78,7 +80,8 @@ struct NativeSceneResourceIdentityContext {
 // metadata survive terminal/explicit deletion; retire without dead owner reads.
 class NativeSceneResourceReference final : public RenderCommandReference {
 public:
-    NativeSceneResourceReference(void*, NativeSceneResourceIdentityContext&);
+    NativeSceneResourceReference(void*, NativeSceneResourceIdentityContext&,
+        NativeSceneResourceAcquired&);
     ~NativeSceneResourceReference() override;
     NativeSceneResourceReference(const NativeSceneResourceReference&) = delete;
     NativeSceneResourceReference& operator=(const NativeSceneResourceReference&) = delete;
@@ -89,6 +92,7 @@ private:
     enum class Phase { bound, destroying, retired };
     void* const identity_;
     NativeSceneResourceIdentityContext& context_;
+    NativeSceneResourceTypedLifetime& typed_;
     Phase phase_{Phase::bound};
     void retire() noexcept;
 };

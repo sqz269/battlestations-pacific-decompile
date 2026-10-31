@@ -1,11 +1,16 @@
 #include "bsp/native_ambient_construction.hpp"
+#include "native_scene_typed_storage.hpp"
 
 namespace bsp {
 
 static_assert(sizeof(void*) == 4, "Native ambient storage requires Win32");
 
 void* construct_native_ambient_00b7c290(
-    void* owner, const void* one_00d7a24c) noexcept {
+    void* owner, const void* one_00d7a24c, NativeAmbientTypedLifetime& typed,
+    NativeAmbientIdentityContext& identity) noexcept {
+    // Fresh retained record is a Source precondition, not a Native value gate.
+    (void)detail::begin_scene_storage<detail::ActualAmbient98h>(owner);
+    typed.actual_ = owner; typed.context_ = &identity; typed.born_ = true;
     float spill[4];
     // Retain the actual MOVSS/DWORD roundtrips and nonascending tail stores.
     // These are bit copies: neither NaNs nor the borrowed constant normalize.
@@ -99,6 +104,7 @@ void* construct_native_ambient_00b7c290(
         mov dword ptr [eax + 90h], ecx
         mov dword ptr [eax + 94h], edx
     }
+    typed.returned_ = true; // Only this actual constructor can issue the fact.
     return owner;
 }
 

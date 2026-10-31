@@ -39,6 +39,10 @@ bool remove_native_ambient_scene_00b7bd50(void* actual_ambient,
 void append_native_ambient_scene_00b7bf90(void* actual_ambient,
     const volatile std::uint32_t& actual_scene_argument);
 
+// Same complete B7BC70 algorithm on raw pointer-slot backing; no pointee
+// dereference or typed pointer-array adoption. Used by actual B7C450.
+void resize_native_ambient_backlinks_00b7bc70(void* actual_ambient, std::int32_t count);
+
 // Complete89B B825D0; native ECX actual3Ch resource, stacked ambient pointer,
 // RET4. Only resource+10 is accessed. Remove its initial currentambient backlink
 // BEFORE capturing current requested cell and current old+10. Changed pointer:
