@@ -1,0 +1,94 @@
+{
+  "schema": "bsp-native-mission-lua-conversions-v1",
+  "source_base": "941a1925e093dd07e79444c5fc39eee138c93647",
+  "design_sha256": "6e1082e6d178a5f2737d01e80b96e324d5c067cfae39215b09cd6f3c3a8ce0cf",
+  "source_files": {
+    "include/bsp/native_mission_lua_conversions.hpp": "956008364278b43595770efb920d1cd0312a2c57a945a6f59a7d9a8d94bcf5c0",
+    "src/native_mission_lua_conversions.cpp": "8de8a19263cc4b654b1b5c0eded83b805b8e96ebd86eeff5cfae8515d05b20ff"
+  },
+  "entries": {
+    "006b8000": {
+      "source_api": "to_boolean_native_mission_lua_006b8000",
+      "native_instructions": 6,
+      "native_bytes": 20,
+      "provider": "lua_toboolean",
+      "return": "bool AL logical0/1; no upper24EAX promise"
+    },
+    "006b8020": {
+      "source_api": "to_float32_native_mission_lua_006b8020",
+      "native_instructions": 6,
+      "native_bytes": 23,
+      "provider": "lua_tonumber",
+      "return": "realST0->FSTPprivateF32->FLDsameF32 via noinline bridge; publiccaller no extra narrowing"
+    },
+    "006b80a0": {
+      "source_api": "to_userdata_native_mission_lua_006b80a0",
+      "native_instructions": 4,
+      "native_bytes": 15,
+      "provider": "lua_touserdata",
+      "return": "actual4B pointer, not ownership"
+    }
+  },
+  "provider_preservation": {
+    "include/bsp/native_mission_lua_type.hpp": "f4687e3fcdc1495e4b3e5caec7f3284e407286706704f24c68a2c13303a90c46",
+    "src/native_mission_lua_type.cpp": "fd6e57257c4826bf0c5010987456f247804330027ad9280cd6cc0607eb26a12a",
+    "include/bsp/native_mission_lua_register.hpp": "b95598224eb920cfa54dc23aa36a32807936889280e03d54a7a1c15eace9952c",
+    "src/native_mission_lua_register.cpp": "b0ca8ad834ed3eaf2a685e6a2bba8432a94154a0ce1fabb9658a9b555509491d",
+    "include/bsp/native_lua_value_string.hpp": "4fbddac3209f00fdaa286126c5d469a8b51642f5a77094fe2193c611f8b3d251",
+    "src/native_lua_value_string.cpp": "2f56b4a90bee384062e7529ab372fdce90404878f147e9de6a47a8c0074d76b2",
+    "include/bsp/settings_seg29_cc13.hpp": "71eac28bfcc7cf1ffdecf63e96e342107450c69bf50a0fd7eabfbd19007a0946",
+    "src/settings_seg29_cc13.cpp": "7a882cf94ad8bc30120e0a953d7cb0af729d017593f31b1929205c266f43df24",
+    "cmake/lua.cmake": "0c432ec1026aa6921d876098d29359d34f9463cd894d7adafcb67b954eb7a006"
+  },
+  "actual_lua_header_sha256": {
+    "lua.h": "0a69a11d3e176ceb0e0220c4cdeb1c1f3a0e466a347d813e449ff9246afba3a6",
+    "luaconf.h": "5c962567aaf250570b772a3dccbfde80e6add621ec04f429120dce83adb0a4d9"
+  },
+  "source_ready": false,
+  "runtime_validated": false,
+  "native_body_credit": false,
+  "vendor_body_credit": false,
+  "domain": [
+    "Genuine raw backing and matching retained linked Source state/stack/code graph/index",
+    "Current state captured once after index; no typed LuaMachine or Original VM adoption",
+    "Actual x87 environment and real instruction effects; no control/default policy",
+    "Ordinary privatefloat/HOME normalization, no Original ABI/fault/nonlocal/parent grant"
+  ],
+  "forbidden": [
+    "F64 snapshot/spill-reload",
+    "C++float cast or SSE narrowing",
+    "CW/SW/MXCSR getter/setter/reset/restore/clear",
+    "State creation/default/validation/ownership/Frame/cleanup",
+    "Post-return payload read or parent/runtime permission"
+  ],
+  "validation": {
+    "actual_code_reviews": [
+      "Root full 95600836/8de8a192 and all 16 Native operations accepted qualified",
+      "Independent Gui full exact design/Source/all 16 Native operations accepted qualified"
+    ],
+    "explicit_single_object_authorization": "Root separate ONE guarded strict MSVC Win32 OBJECT authorization after both Code acceptances",
+    "compile_receipt": {
+      "path": "local/native_mission_lua_conversions_frame_20261031/compile_receipt.json",
+      "sha256": "67974b5764f8de628b53548ba0734516a8b3af5d394e3239345e060b13fd7c52"
+    },
+    "single_object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\build\\native_mission_lua_conversions_object\\native_mission_lua_conversions_object.dir\\Release\\native_mission_lua_conversions.obj",
+      "sha256": "a8cbc95545fab6ad962a6e7e29650045979984cf7aa32b36d4b320d0abba1bee",
+      "bytes": 1955,
+      "coff_machine": "014C"
+    },
+    "object_target_invocations": 1,
+    "same_object_bridge_and_public_caller_proof": {
+      "path": "local/native_mission_lua_conversions_frame_20261031/same_object_inspection.json",
+      "sha256": "7707a8782aad0f00b550d2b98c01c8f7ba0eeb68a084554cc86f56dd18d133b6"
+    },
+    "symbol_receipt": {
+      "path": "local/native_mission_lua_conversions_frame_20261031/symbol_receipt.json",
+      "sha256": "223b78e4646844d7a011c735dd83c91343ed47454e12ffa1751d8407f4264503"
+    },
+    "no_target_module_or_executable_linked": true,
+    "cmake_compiler_detection": "ordinary CMake infrastructure recorded separately",
+    "tests_fp_probe_or_entry": false
+  },
+  "emitted_private_home_qualification": "Public float/userdata tail paths may replace their own Source machine-parameter HOME with captured state; no borrowed machine write or Native index-HOME/physical-private-stack ABI claim."
+}
