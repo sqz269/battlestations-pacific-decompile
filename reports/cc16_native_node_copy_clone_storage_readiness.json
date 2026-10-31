@@ -1,0 +1,3341 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-node-copy-clone-storage-readiness",
+  "kind": "evidence_only_readiness_proposal",
+  "created_utc": "2026-10-31T06:34:52.511931+00:00",
+  "base_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+  "files": [
+    "docs/CC16_NATIVE_NODE_COPY_CLONE_STORAGE_READINESS.md",
+    "reports/cc16_native_node_copy_clone_storage_readiness.json"
+  ],
+  "implementation_ready": false,
+  "source_packet_authorized": false,
+  "native_origin_permission": false,
+  "scope": {
+    "native_entries": [
+      "00b6f150",
+      "00b6f8f0"
+    ],
+    "address_leases": 0,
+    "tracked_files": 2,
+    "source_changes": 0,
+    "compiler_test_probe_game_process_ghidra_writes": 0,
+    "group_clone_excluded": true
+  },
+  "conclusion": "Node is smaller than Group, but a standalone wrapper cannot be called whole or ready without U01..U06. Existing whole helper bodies are available in their genuine domains; no replacement abstract provider/API is proposed.",
+  "native_evidence": {
+    "base_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+    "created_utc": "2026-10-31T06:21:05.057351+00:00",
+    "frozen_root": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031",
+    "config": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "config_git_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+    "verification": "Every bsp ghidra command constructs Client and calls verify(): actual project name, program path, language and image base must match config/target.json.",
+    "pe": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "machine": "014c",
+      "image_base": "00400000"
+    },
+    "queries": [
+      {
+        "id": "verified_count",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "count"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 49,
+        "stdout_sha256": "154dbd7a91135f698c5463e0a7fafee38ac298eab34d0d8a90c871deda0d8801",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\queries\\verified_count.txt"
+      },
+      {
+        "id": "node_copy_proto",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "proto",
+          "00b6f150"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 750,
+        "stdout_sha256": "ccf23e790fb94ca99ccbdb11bffd485dd3a44b0cd905fa035ce7ab67bff41495",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\queries\\node_copy_proto.txt"
+      },
+      {
+        "id": "node_clone_proto",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "proto",
+          "00b6f8f0"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 685,
+        "stdout_sha256": "d18bc8d2b8261149b6dea86bc358434999d8a39c7aa1b41f17ffce2d6e476504",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\queries\\node_clone_proto.txt"
+      },
+      {
+        "id": "copy_live_bytes",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b6f150",
+          "--length",
+          "444"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 2140,
+        "stdout_sha256": "128875fc355c63a416f2554b5468e190918cdd26b49ddb1b7ed9a9764de90b3c",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\queries\\copy_live_bytes.txt"
+      },
+      {
+        "id": "clone_live_bytes",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b6f8f0",
+          "--length",
+          "110"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 531,
+        "stdout_sha256": "5845f4b1e4b5e772080ff43ce0ca1b9dc91db6e52196f685d2e4b16a77187df6",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\queries\\clone_live_bytes.txt"
+      },
+      {
+        "id": "fh3_info_live_bytes",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00dfa968",
+          "--length",
+          "36"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 183,
+        "stdout_sha256": "03c62e7a71d91254ba98f19ad968121794859234f7476c35c4973b4fa4b7590f",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\queries\\fh3_info_live_bytes.txt"
+      },
+      {
+        "id": "fh3_map_live_bytes",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00dfa960",
+          "--length",
+          "8"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 45,
+        "stdout_sha256": "d0ba12b89bc0c071516e25dda047b4d83a037d5056666f481dba5c12e3341e0f",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\queries\\fh3_map_live_bytes.txt"
+      },
+      {
+        "id": "fh3_thunk_live_bytes",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00cc1a48",
+          "--length",
+          "10"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 53,
+        "stdout_sha256": "909780bb64a9676a73c87ccab9370e68428792aa160f023ed6552fe9e1f74c54",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\queries\\fh3_thunk_live_bytes.txt"
+      },
+      {
+        "id": "fh3_action_live_bytes",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00cc1a40",
+          "--length",
+          "8"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 45,
+        "stdout_sha256": "220fdf1cea4cf2016587df7ebe963b5bce7151f3cfb70b94879c7de9f7019d1a",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\queries\\fh3_action_live_bytes.txt"
+      },
+      {
+        "id": "glyph_current10_window",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "disasm",
+          "00ab9d70",
+          "--lines",
+          "10"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 358,
+        "stdout_sha256": "42f8b5f7a0368c9cc403ebd53e057ef6a2cbb70693359716032bf0ec2b76c76b",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\queries\\glyph_current10_window.txt"
+      }
+    ],
+    "native": [
+      {
+        "entry": "00b6f150",
+        "last": "00b6f30b",
+        "bytes": 444,
+        "instruction_rows": 142,
+        "sha256": "e8e0f3595ce3beaf2badd64b9965cdc6fbfd007c4061b07e58c54ca74e89173f",
+        "hex": "5355568b742410578bf933ed39af680100007e5c8d9e640100008d9b000000008b87640100008b0ca88b4308394304894c2414751803c083f8017f05b801000000508bcbe867f3ffff8b4c24148b53048b038d049085c0740289088343040156e88bcc000083c5013baf680100007cb0d987ac0000008b168b5250d99eac000000d9474c6a01d95e4c8b8770010000508bceffd28bae300100008b87300100003be8742f85c0898630010000740a83c00450ff151c22ce0085ed74178d450450ff152022ce0085c075098b55008b028bcdffd08b5c2418f6c320751a8b6f3485ed74138b55008b421056538bcdffd08b6d3c85ed75ed8b5c241c538bcee82ef4ffff8b8fa4000000518bcee830e6ffff8b168b52388d87b0000000508bceffd28b87300100008bae300100003be8742f85c0898630010000740a83c00450ff151c22ce0085ed74178d450450ff152022ce0085c075098b55008b028bcdffd085db74088b83a0000000eb0233c08986a00000008b8f38010000898e38010000d9873c010000d99e3c010000d98740010000d99e40010000d98744010000d99e44010000d98748010000d99e480100008b57485f8956485e5d5bc20c00",
+        "pe_file_offset": 7795024,
+        "pe_section": ".text",
+        "live_bytes_match": true,
+        "saved_assembly_address_map_matches": true,
+        "exports": [
+          {
+            "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b6f150\\assembly.txt",
+            "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\exports\\00b6f150\\assembly.txt",
+            "bytes": 4284,
+            "sha256": "5afa01e51f3de9644366c8f8012932f3794265c9d817eb0ce11cd248b7f8f71f"
+          },
+          {
+            "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b6f150\\decompiled.c",
+            "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\exports\\00b6f150\\decompiled.c",
+            "bytes": 3816,
+            "sha256": "1e2de4a9c6c10a19f9675d44395cc6facbce8d2c4647c869700046fec46b3028"
+          },
+          {
+            "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b6f150\\metadata.json",
+            "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\exports\\00b6f150\\metadata.json",
+            "bytes": 274,
+            "sha256": "076064fef76928054704ada055e4a1ed381799dd8f28bb5328700beb74f76325"
+          }
+        ],
+        "instructions": [
+          {
+            "address": "00b6f150",
+            "size": 1,
+            "bytes_hex": "53",
+            "capstone": "push ebx",
+            "ghidra": "PUSH EBX"
+          },
+          {
+            "address": "00b6f151",
+            "size": 1,
+            "bytes_hex": "55",
+            "capstone": "push ebp",
+            "ghidra": "PUSH EBP"
+          },
+          {
+            "address": "00b6f152",
+            "size": 1,
+            "bytes_hex": "56",
+            "capstone": "push esi",
+            "ghidra": "PUSH ESI"
+          },
+          {
+            "address": "00b6f153",
+            "size": 4,
+            "bytes_hex": "8b742410",
+            "capstone": "mov esi, dword ptr [esp + 0x10]",
+            "ghidra": "MOV ESI,dword ptr [ESP + 0x10]"
+          },
+          {
+            "address": "00b6f157",
+            "size": 1,
+            "bytes_hex": "57",
+            "capstone": "push edi",
+            "ghidra": "PUSH EDI"
+          },
+          {
+            "address": "00b6f158",
+            "size": 2,
+            "bytes_hex": "8bf9",
+            "capstone": "mov edi, ecx",
+            "ghidra": "MOV EDI,ECX"
+          },
+          {
+            "address": "00b6f15a",
+            "size": 2,
+            "bytes_hex": "33ed",
+            "capstone": "xor ebp, ebp",
+            "ghidra": "XOR EBP,EBP"
+          },
+          {
+            "address": "00b6f15c",
+            "size": 6,
+            "bytes_hex": "39af68010000",
+            "capstone": "cmp dword ptr [edi + 0x168], ebp",
+            "ghidra": "CMP dword ptr [EDI + 0x168],EBP"
+          },
+          {
+            "address": "00b6f162",
+            "size": 2,
+            "bytes_hex": "7e5c",
+            "capstone": "jle 0xb6f1c0",
+            "ghidra": "JLE 0x00b6f1c0"
+          },
+          {
+            "address": "00b6f164",
+            "size": 6,
+            "bytes_hex": "8d9e64010000",
+            "capstone": "lea ebx, [esi + 0x164]",
+            "ghidra": "LEA EBX,[ESI + 0x164]"
+          },
+          {
+            "address": "00b6f16a",
+            "size": 6,
+            "bytes_hex": "8d9b00000000",
+            "capstone": "lea ebx, [ebx]",
+            "ghidra": "LEA EBX,[EBX]"
+          },
+          {
+            "address": "00b6f170",
+            "size": 6,
+            "bytes_hex": "8b8764010000",
+            "capstone": "mov eax, dword ptr [edi + 0x164]",
+            "ghidra": "MOV EAX,dword ptr [EDI + 0x164]"
+          },
+          {
+            "address": "00b6f176",
+            "size": 3,
+            "bytes_hex": "8b0ca8",
+            "capstone": "mov ecx, dword ptr [eax + ebp*4]",
+            "ghidra": "MOV ECX,dword ptr [EAX + EBP*0x4]"
+          },
+          {
+            "address": "00b6f179",
+            "size": 3,
+            "bytes_hex": "8b4308",
+            "capstone": "mov eax, dword ptr [ebx + 8]",
+            "ghidra": "MOV EAX,dword ptr [EBX + 0x8]"
+          },
+          {
+            "address": "00b6f17c",
+            "size": 3,
+            "bytes_hex": "394304",
+            "capstone": "cmp dword ptr [ebx + 4], eax",
+            "ghidra": "CMP dword ptr [EBX + 0x4],EAX"
+          },
+          {
+            "address": "00b6f17f",
+            "size": 4,
+            "bytes_hex": "894c2414",
+            "capstone": "mov dword ptr [esp + 0x14], ecx",
+            "ghidra": "MOV dword ptr [ESP + 0x14],ECX"
+          },
+          {
+            "address": "00b6f183",
+            "size": 2,
+            "bytes_hex": "7518",
+            "capstone": "jne 0xb6f19d",
+            "ghidra": "JNZ 0x00b6f19d"
+          },
+          {
+            "address": "00b6f185",
+            "size": 2,
+            "bytes_hex": "03c0",
+            "capstone": "add eax, eax",
+            "ghidra": "ADD EAX,EAX"
+          },
+          {
+            "address": "00b6f187",
+            "size": 3,
+            "bytes_hex": "83f801",
+            "capstone": "cmp eax, 1",
+            "ghidra": "CMP EAX,0x1"
+          },
+          {
+            "address": "00b6f18a",
+            "size": 2,
+            "bytes_hex": "7f05",
+            "capstone": "jg 0xb6f191",
+            "ghidra": "JG 0x00b6f191"
+          },
+          {
+            "address": "00b6f18c",
+            "size": 5,
+            "bytes_hex": "b801000000",
+            "capstone": "mov eax, 1",
+            "ghidra": "MOV EAX,0x1"
+          },
+          {
+            "address": "00b6f191",
+            "size": 1,
+            "bytes_hex": "50",
+            "capstone": "push eax",
+            "ghidra": "PUSH EAX"
+          },
+          {
+            "address": "00b6f192",
+            "size": 2,
+            "bytes_hex": "8bcb",
+            "capstone": "mov ecx, ebx",
+            "ghidra": "MOV ECX,EBX"
+          },
+          {
+            "address": "00b6f194",
+            "size": 5,
+            "bytes_hex": "e867f3ffff",
+            "capstone": "call 0xb6e500",
+            "ghidra": "CALL 0x00b6e500"
+          },
+          {
+            "address": "00b6f199",
+            "size": 4,
+            "bytes_hex": "8b4c2414",
+            "capstone": "mov ecx, dword ptr [esp + 0x14]",
+            "ghidra": "MOV ECX,dword ptr [ESP + 0x14]"
+          },
+          {
+            "address": "00b6f19d",
+            "size": 3,
+            "bytes_hex": "8b5304",
+            "capstone": "mov edx, dword ptr [ebx + 4]",
+            "ghidra": "MOV EDX,dword ptr [EBX + 0x4]"
+          },
+          {
+            "address": "00b6f1a0",
+            "size": 2,
+            "bytes_hex": "8b03",
+            "capstone": "mov eax, dword ptr [ebx]",
+            "ghidra": "MOV EAX,dword ptr [EBX]"
+          },
+          {
+            "address": "00b6f1a2",
+            "size": 3,
+            "bytes_hex": "8d0490",
+            "capstone": "lea eax, [eax + edx*4]",
+            "ghidra": "LEA EAX,[EAX + EDX*0x4]"
+          },
+          {
+            "address": "00b6f1a5",
+            "size": 2,
+            "bytes_hex": "85c0",
+            "capstone": "test eax, eax",
+            "ghidra": "TEST EAX,EAX"
+          },
+          {
+            "address": "00b6f1a7",
+            "size": 2,
+            "bytes_hex": "7402",
+            "capstone": "je 0xb6f1ab",
+            "ghidra": "JZ 0x00b6f1ab"
+          },
+          {
+            "address": "00b6f1a9",
+            "size": 2,
+            "bytes_hex": "8908",
+            "capstone": "mov dword ptr [eax], ecx",
+            "ghidra": "MOV dword ptr [EAX],ECX"
+          },
+          {
+            "address": "00b6f1ab",
+            "size": 4,
+            "bytes_hex": "83430401",
+            "capstone": "add dword ptr [ebx + 4], 1",
+            "ghidra": "ADD dword ptr [EBX + 0x4],0x1"
+          },
+          {
+            "address": "00b6f1af",
+            "size": 1,
+            "bytes_hex": "56",
+            "capstone": "push esi",
+            "ghidra": "PUSH ESI"
+          },
+          {
+            "address": "00b6f1b0",
+            "size": 5,
+            "bytes_hex": "e88bcc0000",
+            "capstone": "call 0xb7be40",
+            "ghidra": "CALL 0x00b7be40"
+          },
+          {
+            "address": "00b6f1b5",
+            "size": 3,
+            "bytes_hex": "83c501",
+            "capstone": "add ebp, 1",
+            "ghidra": "ADD EBP,0x1"
+          },
+          {
+            "address": "00b6f1b8",
+            "size": 6,
+            "bytes_hex": "3baf68010000",
+            "capstone": "cmp ebp, dword ptr [edi + 0x168]",
+            "ghidra": "CMP EBP,dword ptr [EDI + 0x168]"
+          },
+          {
+            "address": "00b6f1be",
+            "size": 2,
+            "bytes_hex": "7cb0",
+            "capstone": "jl 0xb6f170",
+            "ghidra": "JL 0x00b6f170"
+          },
+          {
+            "address": "00b6f1c0",
+            "size": 6,
+            "bytes_hex": "d987ac000000",
+            "capstone": "fld dword ptr [edi + 0xac]",
+            "ghidra": "FLD float ptr [EDI + 0xac]"
+          },
+          {
+            "address": "00b6f1c6",
+            "size": 2,
+            "bytes_hex": "8b16",
+            "capstone": "mov edx, dword ptr [esi]",
+            "ghidra": "MOV EDX,dword ptr [ESI]"
+          },
+          {
+            "address": "00b6f1c8",
+            "size": 3,
+            "bytes_hex": "8b5250",
+            "capstone": "mov edx, dword ptr [edx + 0x50]",
+            "ghidra": "MOV EDX,dword ptr [EDX + 0x50]"
+          },
+          {
+            "address": "00b6f1cb",
+            "size": 6,
+            "bytes_hex": "d99eac000000",
+            "capstone": "fstp dword ptr [esi + 0xac]",
+            "ghidra": "FSTP float ptr [ESI + 0xac]"
+          },
+          {
+            "address": "00b6f1d1",
+            "size": 3,
+            "bytes_hex": "d9474c",
+            "capstone": "fld dword ptr [edi + 0x4c]",
+            "ghidra": "FLD float ptr [EDI + 0x4c]"
+          },
+          {
+            "address": "00b6f1d4",
+            "size": 2,
+            "bytes_hex": "6a01",
+            "capstone": "push 1",
+            "ghidra": "PUSH 0x1"
+          },
+          {
+            "address": "00b6f1d6",
+            "size": 3,
+            "bytes_hex": "d95e4c",
+            "capstone": "fstp dword ptr [esi + 0x4c]",
+            "ghidra": "FSTP float ptr [ESI + 0x4c]"
+          },
+          {
+            "address": "00b6f1d9",
+            "size": 6,
+            "bytes_hex": "8b8770010000",
+            "capstone": "mov eax, dword ptr [edi + 0x170]",
+            "ghidra": "MOV EAX,dword ptr [EDI + 0x170]"
+          },
+          {
+            "address": "00b6f1df",
+            "size": 1,
+            "bytes_hex": "50",
+            "capstone": "push eax",
+            "ghidra": "PUSH EAX"
+          },
+          {
+            "address": "00b6f1e0",
+            "size": 2,
+            "bytes_hex": "8bce",
+            "capstone": "mov ecx, esi",
+            "ghidra": "MOV ECX,ESI"
+          },
+          {
+            "address": "00b6f1e2",
+            "size": 2,
+            "bytes_hex": "ffd2",
+            "capstone": "call edx",
+            "ghidra": "CALL EDX"
+          },
+          {
+            "address": "00b6f1e4",
+            "size": 6,
+            "bytes_hex": "8bae30010000",
+            "capstone": "mov ebp, dword ptr [esi + 0x130]",
+            "ghidra": "MOV EBP,dword ptr [ESI + 0x130]"
+          },
+          {
+            "address": "00b6f1ea",
+            "size": 6,
+            "bytes_hex": "8b8730010000",
+            "capstone": "mov eax, dword ptr [edi + 0x130]",
+            "ghidra": "MOV EAX,dword ptr [EDI + 0x130]"
+          },
+          {
+            "address": "00b6f1f0",
+            "size": 2,
+            "bytes_hex": "3be8",
+            "capstone": "cmp ebp, eax",
+            "ghidra": "CMP EBP,EAX"
+          },
+          {
+            "address": "00b6f1f2",
+            "size": 2,
+            "bytes_hex": "742f",
+            "capstone": "je 0xb6f223",
+            "ghidra": "JZ 0x00b6f223"
+          },
+          {
+            "address": "00b6f1f4",
+            "size": 2,
+            "bytes_hex": "85c0",
+            "capstone": "test eax, eax",
+            "ghidra": "TEST EAX,EAX"
+          },
+          {
+            "address": "00b6f1f6",
+            "size": 6,
+            "bytes_hex": "898630010000",
+            "capstone": "mov dword ptr [esi + 0x130], eax",
+            "ghidra": "MOV dword ptr [ESI + 0x130],EAX"
+          },
+          {
+            "address": "00b6f1fc",
+            "size": 2,
+            "bytes_hex": "740a",
+            "capstone": "je 0xb6f208",
+            "ghidra": "JZ 0x00b6f208"
+          },
+          {
+            "address": "00b6f1fe",
+            "size": 3,
+            "bytes_hex": "83c004",
+            "capstone": "add eax, 4",
+            "ghidra": "ADD EAX,0x4"
+          },
+          {
+            "address": "00b6f201",
+            "size": 1,
+            "bytes_hex": "50",
+            "capstone": "push eax",
+            "ghidra": "PUSH EAX"
+          },
+          {
+            "address": "00b6f202",
+            "size": 6,
+            "bytes_hex": "ff151c22ce00",
+            "capstone": "call dword ptr [0xce221c]",
+            "ghidra": "CALL dword ptr [0x00ce221c]"
+          },
+          {
+            "address": "00b6f208",
+            "size": 2,
+            "bytes_hex": "85ed",
+            "capstone": "test ebp, ebp",
+            "ghidra": "TEST EBP,EBP"
+          },
+          {
+            "address": "00b6f20a",
+            "size": 2,
+            "bytes_hex": "7417",
+            "capstone": "je 0xb6f223",
+            "ghidra": "JZ 0x00b6f223"
+          },
+          {
+            "address": "00b6f20c",
+            "size": 3,
+            "bytes_hex": "8d4504",
+            "capstone": "lea eax, [ebp + 4]",
+            "ghidra": "LEA EAX,[EBP + 0x4]"
+          },
+          {
+            "address": "00b6f20f",
+            "size": 1,
+            "bytes_hex": "50",
+            "capstone": "push eax",
+            "ghidra": "PUSH EAX"
+          },
+          {
+            "address": "00b6f210",
+            "size": 6,
+            "bytes_hex": "ff152022ce00",
+            "capstone": "call dword ptr [0xce2220]",
+            "ghidra": "CALL dword ptr [0x00ce2220]"
+          },
+          {
+            "address": "00b6f216",
+            "size": 2,
+            "bytes_hex": "85c0",
+            "capstone": "test eax, eax",
+            "ghidra": "TEST EAX,EAX"
+          },
+          {
+            "address": "00b6f218",
+            "size": 2,
+            "bytes_hex": "7509",
+            "capstone": "jne 0xb6f223",
+            "ghidra": "JNZ 0x00b6f223"
+          },
+          {
+            "address": "00b6f21a",
+            "size": 3,
+            "bytes_hex": "8b5500",
+            "capstone": "mov edx, dword ptr [ebp]",
+            "ghidra": "MOV EDX,dword ptr [EBP]"
+          },
+          {
+            "address": "00b6f21d",
+            "size": 2,
+            "bytes_hex": "8b02",
+            "capstone": "mov eax, dword ptr [edx]",
+            "ghidra": "MOV EAX,dword ptr [EDX]"
+          },
+          {
+            "address": "00b6f21f",
+            "size": 2,
+            "bytes_hex": "8bcd",
+            "capstone": "mov ecx, ebp",
+            "ghidra": "MOV ECX,EBP"
+          },
+          {
+            "address": "00b6f221",
+            "size": 2,
+            "bytes_hex": "ffd0",
+            "capstone": "call eax",
+            "ghidra": "CALL EAX"
+          },
+          {
+            "address": "00b6f223",
+            "size": 4,
+            "bytes_hex": "8b5c2418",
+            "capstone": "mov ebx, dword ptr [esp + 0x18]",
+            "ghidra": "MOV EBX,dword ptr [ESP + 0x18]"
+          },
+          {
+            "address": "00b6f227",
+            "size": 3,
+            "bytes_hex": "f6c320",
+            "capstone": "test bl, 0x20",
+            "ghidra": "TEST BL,0x20"
+          },
+          {
+            "address": "00b6f22a",
+            "size": 2,
+            "bytes_hex": "751a",
+            "capstone": "jne 0xb6f246",
+            "ghidra": "JNZ 0x00b6f246"
+          },
+          {
+            "address": "00b6f22c",
+            "size": 3,
+            "bytes_hex": "8b6f34",
+            "capstone": "mov ebp, dword ptr [edi + 0x34]",
+            "ghidra": "MOV EBP,dword ptr [EDI + 0x34]"
+          },
+          {
+            "address": "00b6f22f",
+            "size": 2,
+            "bytes_hex": "85ed",
+            "capstone": "test ebp, ebp",
+            "ghidra": "TEST EBP,EBP"
+          },
+          {
+            "address": "00b6f231",
+            "size": 2,
+            "bytes_hex": "7413",
+            "capstone": "je 0xb6f246",
+            "ghidra": "JZ 0x00b6f246"
+          },
+          {
+            "address": "00b6f233",
+            "size": 3,
+            "bytes_hex": "8b5500",
+            "capstone": "mov edx, dword ptr [ebp]",
+            "ghidra": "MOV EDX,dword ptr [EBP]"
+          },
+          {
+            "address": "00b6f236",
+            "size": 3,
+            "bytes_hex": "8b4210",
+            "capstone": "mov eax, dword ptr [edx + 0x10]",
+            "ghidra": "MOV EAX,dword ptr [EDX + 0x10]"
+          },
+          {
+            "address": "00b6f239",
+            "size": 1,
+            "bytes_hex": "56",
+            "capstone": "push esi",
+            "ghidra": "PUSH ESI"
+          },
+          {
+            "address": "00b6f23a",
+            "size": 1,
+            "bytes_hex": "53",
+            "capstone": "push ebx",
+            "ghidra": "PUSH EBX"
+          },
+          {
+            "address": "00b6f23b",
+            "size": 2,
+            "bytes_hex": "8bcd",
+            "capstone": "mov ecx, ebp",
+            "ghidra": "MOV ECX,EBP"
+          },
+          {
+            "address": "00b6f23d",
+            "size": 2,
+            "bytes_hex": "ffd0",
+            "capstone": "call eax",
+            "ghidra": "CALL EAX"
+          },
+          {
+            "address": "00b6f23f",
+            "size": 3,
+            "bytes_hex": "8b6d3c",
+            "capstone": "mov ebp, dword ptr [ebp + 0x3c]",
+            "ghidra": "MOV EBP,dword ptr [EBP + 0x3c]"
+          },
+          {
+            "address": "00b6f242",
+            "size": 2,
+            "bytes_hex": "85ed",
+            "capstone": "test ebp, ebp",
+            "ghidra": "TEST EBP,EBP"
+          },
+          {
+            "address": "00b6f244",
+            "size": 2,
+            "bytes_hex": "75ed",
+            "capstone": "jne 0xb6f233",
+            "ghidra": "JNZ 0x00b6f233"
+          },
+          {
+            "address": "00b6f246",
+            "size": 4,
+            "bytes_hex": "8b5c241c",
+            "capstone": "mov ebx, dword ptr [esp + 0x1c]",
+            "ghidra": "MOV EBX,dword ptr [ESP + 0x1c]"
+          },
+          {
+            "address": "00b6f24a",
+            "size": 1,
+            "bytes_hex": "53",
+            "capstone": "push ebx",
+            "ghidra": "PUSH EBX"
+          },
+          {
+            "address": "00b6f24b",
+            "size": 2,
+            "bytes_hex": "8bce",
+            "capstone": "mov ecx, esi",
+            "ghidra": "MOV ECX,ESI"
+          },
+          {
+            "address": "00b6f24d",
+            "size": 5,
+            "bytes_hex": "e82ef4ffff",
+            "capstone": "call 0xb6e680",
+            "ghidra": "CALL 0x00b6e680"
+          },
+          {
+            "address": "00b6f252",
+            "size": 6,
+            "bytes_hex": "8b8fa4000000",
+            "capstone": "mov ecx, dword ptr [edi + 0xa4]",
+            "ghidra": "MOV ECX,dword ptr [EDI + 0xa4]"
+          },
+          {
+            "address": "00b6f258",
+            "size": 1,
+            "bytes_hex": "51",
+            "capstone": "push ecx",
+            "ghidra": "PUSH ECX"
+          },
+          {
+            "address": "00b6f259",
+            "size": 2,
+            "bytes_hex": "8bce",
+            "capstone": "mov ecx, esi",
+            "ghidra": "MOV ECX,ESI"
+          },
+          {
+            "address": "00b6f25b",
+            "size": 5,
+            "bytes_hex": "e830e6ffff",
+            "capstone": "call 0xb6d890",
+            "ghidra": "CALL 0x00b6d890"
+          },
+          {
+            "address": "00b6f260",
+            "size": 2,
+            "bytes_hex": "8b16",
+            "capstone": "mov edx, dword ptr [esi]",
+            "ghidra": "MOV EDX,dword ptr [ESI]"
+          },
+          {
+            "address": "00b6f262",
+            "size": 3,
+            "bytes_hex": "8b5238",
+            "capstone": "mov edx, dword ptr [edx + 0x38]",
+            "ghidra": "MOV EDX,dword ptr [EDX + 0x38]"
+          },
+          {
+            "address": "00b6f265",
+            "size": 6,
+            "bytes_hex": "8d87b0000000",
+            "capstone": "lea eax, [edi + 0xb0]",
+            "ghidra": "LEA EAX,[EDI + 0xb0]"
+          },
+          {
+            "address": "00b6f26b",
+            "size": 1,
+            "bytes_hex": "50",
+            "capstone": "push eax",
+            "ghidra": "PUSH EAX"
+          },
+          {
+            "address": "00b6f26c",
+            "size": 2,
+            "bytes_hex": "8bce",
+            "capstone": "mov ecx, esi",
+            "ghidra": "MOV ECX,ESI"
+          },
+          {
+            "address": "00b6f26e",
+            "size": 2,
+            "bytes_hex": "ffd2",
+            "capstone": "call edx",
+            "ghidra": "CALL EDX"
+          },
+          {
+            "address": "00b6f270",
+            "size": 6,
+            "bytes_hex": "8b8730010000",
+            "capstone": "mov eax, dword ptr [edi + 0x130]",
+            "ghidra": "MOV EAX,dword ptr [EDI + 0x130]"
+          },
+          {
+            "address": "00b6f276",
+            "size": 6,
+            "bytes_hex": "8bae30010000",
+            "capstone": "mov ebp, dword ptr [esi + 0x130]",
+            "ghidra": "MOV EBP,dword ptr [ESI + 0x130]"
+          },
+          {
+            "address": "00b6f27c",
+            "size": 2,
+            "bytes_hex": "3be8",
+            "capstone": "cmp ebp, eax",
+            "ghidra": "CMP EBP,EAX"
+          },
+          {
+            "address": "00b6f27e",
+            "size": 2,
+            "bytes_hex": "742f",
+            "capstone": "je 0xb6f2af",
+            "ghidra": "JZ 0x00b6f2af"
+          },
+          {
+            "address": "00b6f280",
+            "size": 2,
+            "bytes_hex": "85c0",
+            "capstone": "test eax, eax",
+            "ghidra": "TEST EAX,EAX"
+          },
+          {
+            "address": "00b6f282",
+            "size": 6,
+            "bytes_hex": "898630010000",
+            "capstone": "mov dword ptr [esi + 0x130], eax",
+            "ghidra": "MOV dword ptr [ESI + 0x130],EAX"
+          },
+          {
+            "address": "00b6f288",
+            "size": 2,
+            "bytes_hex": "740a",
+            "capstone": "je 0xb6f294",
+            "ghidra": "JZ 0x00b6f294"
+          },
+          {
+            "address": "00b6f28a",
+            "size": 3,
+            "bytes_hex": "83c004",
+            "capstone": "add eax, 4",
+            "ghidra": "ADD EAX,0x4"
+          },
+          {
+            "address": "00b6f28d",
+            "size": 1,
+            "bytes_hex": "50",
+            "capstone": "push eax",
+            "ghidra": "PUSH EAX"
+          },
+          {
+            "address": "00b6f28e",
+            "size": 6,
+            "bytes_hex": "ff151c22ce00",
+            "capstone": "call dword ptr [0xce221c]",
+            "ghidra": "CALL dword ptr [0x00ce221c]"
+          },
+          {
+            "address": "00b6f294",
+            "size": 2,
+            "bytes_hex": "85ed",
+            "capstone": "test ebp, ebp",
+            "ghidra": "TEST EBP,EBP"
+          },
+          {
+            "address": "00b6f296",
+            "size": 2,
+            "bytes_hex": "7417",
+            "capstone": "je 0xb6f2af",
+            "ghidra": "JZ 0x00b6f2af"
+          },
+          {
+            "address": "00b6f298",
+            "size": 3,
+            "bytes_hex": "8d4504",
+            "capstone": "lea eax, [ebp + 4]",
+            "ghidra": "LEA EAX,[EBP + 0x4]"
+          },
+          {
+            "address": "00b6f29b",
+            "size": 1,
+            "bytes_hex": "50",
+            "capstone": "push eax",
+            "ghidra": "PUSH EAX"
+          },
+          {
+            "address": "00b6f29c",
+            "size": 6,
+            "bytes_hex": "ff152022ce00",
+            "capstone": "call dword ptr [0xce2220]",
+            "ghidra": "CALL dword ptr [0x00ce2220]"
+          },
+          {
+            "address": "00b6f2a2",
+            "size": 2,
+            "bytes_hex": "85c0",
+            "capstone": "test eax, eax",
+            "ghidra": "TEST EAX,EAX"
+          },
+          {
+            "address": "00b6f2a4",
+            "size": 2,
+            "bytes_hex": "7509",
+            "capstone": "jne 0xb6f2af",
+            "ghidra": "JNZ 0x00b6f2af"
+          },
+          {
+            "address": "00b6f2a6",
+            "size": 3,
+            "bytes_hex": "8b5500",
+            "capstone": "mov edx, dword ptr [ebp]",
+            "ghidra": "MOV EDX,dword ptr [EBP]"
+          },
+          {
+            "address": "00b6f2a9",
+            "size": 2,
+            "bytes_hex": "8b02",
+            "capstone": "mov eax, dword ptr [edx]",
+            "ghidra": "MOV EAX,dword ptr [EDX]"
+          },
+          {
+            "address": "00b6f2ab",
+            "size": 2,
+            "bytes_hex": "8bcd",
+            "capstone": "mov ecx, ebp",
+            "ghidra": "MOV ECX,EBP"
+          },
+          {
+            "address": "00b6f2ad",
+            "size": 2,
+            "bytes_hex": "ffd0",
+            "capstone": "call eax",
+            "ghidra": "CALL EAX"
+          },
+          {
+            "address": "00b6f2af",
+            "size": 2,
+            "bytes_hex": "85db",
+            "capstone": "test ebx, ebx",
+            "ghidra": "TEST EBX,EBX"
+          },
+          {
+            "address": "00b6f2b1",
+            "size": 2,
+            "bytes_hex": "7408",
+            "capstone": "je 0xb6f2bb",
+            "ghidra": "JZ 0x00b6f2bb"
+          },
+          {
+            "address": "00b6f2b3",
+            "size": 6,
+            "bytes_hex": "8b83a0000000",
+            "capstone": "mov eax, dword ptr [ebx + 0xa0]",
+            "ghidra": "MOV EAX,dword ptr [EBX + 0xa0]"
+          },
+          {
+            "address": "00b6f2b9",
+            "size": 2,
+            "bytes_hex": "eb02",
+            "capstone": "jmp 0xb6f2bd",
+            "ghidra": "JMP 0x00b6f2bd"
+          },
+          {
+            "address": "00b6f2bb",
+            "size": 2,
+            "bytes_hex": "33c0",
+            "capstone": "xor eax, eax",
+            "ghidra": "XOR EAX,EAX"
+          },
+          {
+            "address": "00b6f2bd",
+            "size": 6,
+            "bytes_hex": "8986a0000000",
+            "capstone": "mov dword ptr [esi + 0xa0], eax",
+            "ghidra": "MOV dword ptr [ESI + 0xa0],EAX"
+          },
+          {
+            "address": "00b6f2c3",
+            "size": 6,
+            "bytes_hex": "8b8f38010000",
+            "capstone": "mov ecx, dword ptr [edi + 0x138]",
+            "ghidra": "MOV ECX,dword ptr [EDI + 0x138]"
+          },
+          {
+            "address": "00b6f2c9",
+            "size": 6,
+            "bytes_hex": "898e38010000",
+            "capstone": "mov dword ptr [esi + 0x138], ecx",
+            "ghidra": "MOV dword ptr [ESI + 0x138],ECX"
+          },
+          {
+            "address": "00b6f2cf",
+            "size": 6,
+            "bytes_hex": "d9873c010000",
+            "capstone": "fld dword ptr [edi + 0x13c]",
+            "ghidra": "FLD float ptr [EDI + 0x13c]"
+          },
+          {
+            "address": "00b6f2d5",
+            "size": 6,
+            "bytes_hex": "d99e3c010000",
+            "capstone": "fstp dword ptr [esi + 0x13c]",
+            "ghidra": "FSTP float ptr [ESI + 0x13c]"
+          },
+          {
+            "address": "00b6f2db",
+            "size": 6,
+            "bytes_hex": "d98740010000",
+            "capstone": "fld dword ptr [edi + 0x140]",
+            "ghidra": "FLD float ptr [EDI + 0x140]"
+          },
+          {
+            "address": "00b6f2e1",
+            "size": 6,
+            "bytes_hex": "d99e40010000",
+            "capstone": "fstp dword ptr [esi + 0x140]",
+            "ghidra": "FSTP float ptr [ESI + 0x140]"
+          },
+          {
+            "address": "00b6f2e7",
+            "size": 6,
+            "bytes_hex": "d98744010000",
+            "capstone": "fld dword ptr [edi + 0x144]",
+            "ghidra": "FLD float ptr [EDI + 0x144]"
+          },
+          {
+            "address": "00b6f2ed",
+            "size": 6,
+            "bytes_hex": "d99e44010000",
+            "capstone": "fstp dword ptr [esi + 0x144]",
+            "ghidra": "FSTP float ptr [ESI + 0x144]"
+          },
+          {
+            "address": "00b6f2f3",
+            "size": 6,
+            "bytes_hex": "d98748010000",
+            "capstone": "fld dword ptr [edi + 0x148]",
+            "ghidra": "FLD float ptr [EDI + 0x148]"
+          },
+          {
+            "address": "00b6f2f9",
+            "size": 6,
+            "bytes_hex": "d99e48010000",
+            "capstone": "fstp dword ptr [esi + 0x148]",
+            "ghidra": "FSTP float ptr [ESI + 0x148]"
+          },
+          {
+            "address": "00b6f2ff",
+            "size": 3,
+            "bytes_hex": "8b5748",
+            "capstone": "mov edx, dword ptr [edi + 0x48]",
+            "ghidra": "MOV EDX,dword ptr [EDI + 0x48]"
+          },
+          {
+            "address": "00b6f302",
+            "size": 1,
+            "bytes_hex": "5f",
+            "capstone": "pop edi",
+            "ghidra": "POP EDI"
+          },
+          {
+            "address": "00b6f303",
+            "size": 3,
+            "bytes_hex": "895648",
+            "capstone": "mov dword ptr [esi + 0x48], edx",
+            "ghidra": "MOV dword ptr [ESI + 0x48],EDX"
+          },
+          {
+            "address": "00b6f306",
+            "size": 1,
+            "bytes_hex": "5e",
+            "capstone": "pop esi",
+            "ghidra": "POP ESI"
+          },
+          {
+            "address": "00b6f307",
+            "size": 1,
+            "bytes_hex": "5d",
+            "capstone": "pop ebp",
+            "ghidra": "POP EBP"
+          },
+          {
+            "address": "00b6f308",
+            "size": 1,
+            "bytes_hex": "5b",
+            "capstone": "pop ebx",
+            "ghidra": "POP EBX"
+          },
+          {
+            "address": "00b6f309",
+            "size": 3,
+            "bytes_hex": "c20c00",
+            "capstone": "ret 0xc",
+            "ghidra": "RET 0xc"
+          }
+        ],
+        "calls": [
+          "00b6f194",
+          "00b6f1b0",
+          "00b6f1e2",
+          "00b6f202",
+          "00b6f210",
+          "00b6f221",
+          "00b6f23d",
+          "00b6f24d",
+          "00b6f25b",
+          "00b6f26e",
+          "00b6f28e",
+          "00b6f29c",
+          "00b6f2ad"
+        ],
+        "x87": [
+          "00b6f1c0",
+          "00b6f1cb",
+          "00b6f1d1",
+          "00b6f1d6",
+          "00b6f2cf",
+          "00b6f2d5",
+          "00b6f2db",
+          "00b6f2e1",
+          "00b6f2e7",
+          "00b6f2ed",
+          "00b6f2f3",
+          "00b6f2f9"
+        ],
+        "sse": []
+      },
+      {
+        "entry": "00b6f8f0",
+        "last": "00b6f95d",
+        "bytes": 110,
+        "instruction_rows": 36,
+        "sha256": "d326cd56d670d39b007fc256aaf11aec2d67846b4e9037f2e210b1a26645c4d1",
+        "hex": "6aff68481acc0064a10000000050648925000000005156578bf9b958ff0801e8ecf1ffff8944240833f63bc689742414740d8d4f54518bc8e873fcffff8bf08b5424208b44241c5250568bcfc7442420ffffffffe807f8ffff8b4c240c5f8bc65e64890d0000000083c410c20800",
+        "pe_file_offset": 7796976,
+        "pe_section": ".text",
+        "live_bytes_match": true,
+        "saved_assembly_address_map_matches": true,
+        "exports": [
+          {
+            "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b6f8f0\\assembly.txt",
+            "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\exports\\00b6f8f0\\assembly.txt",
+            "bytes": 976,
+            "sha256": "9eeb8e3ca5a55ce2a4790ba403e6d79199eabcb41e5d5b7c9f7364da3f20f36b"
+          },
+          {
+            "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b6f8f0\\decompiled.c",
+            "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\exports\\00b6f8f0\\decompiled.c",
+            "bytes": 917,
+            "sha256": "e033caa16e8d44b402cbdb4502bc15e93d43f89b8fc3eee56756f4031599f23b"
+          },
+          {
+            "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b6f8f0\\metadata.json",
+            "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\exports\\00b6f8f0\\metadata.json",
+            "bytes": 261,
+            "sha256": "c25bf7dc77b1f9284b985ff970abeca32bedb11ce886cf42dd2df29ab66519cd"
+          }
+        ],
+        "instructions": [
+          {
+            "address": "00b6f8f0",
+            "size": 2,
+            "bytes_hex": "6aff",
+            "capstone": "push -1",
+            "ghidra": "PUSH -0x1"
+          },
+          {
+            "address": "00b6f8f2",
+            "size": 5,
+            "bytes_hex": "68481acc00",
+            "capstone": "push 0xcc1a48",
+            "ghidra": "PUSH 0xcc1a48"
+          },
+          {
+            "address": "00b6f8f7",
+            "size": 6,
+            "bytes_hex": "64a100000000",
+            "capstone": "mov eax, dword ptr fs:[0]",
+            "ghidra": "MOV EAX,FS:[0x0]"
+          },
+          {
+            "address": "00b6f8fd",
+            "size": 1,
+            "bytes_hex": "50",
+            "capstone": "push eax",
+            "ghidra": "PUSH EAX"
+          },
+          {
+            "address": "00b6f8fe",
+            "size": 7,
+            "bytes_hex": "64892500000000",
+            "capstone": "mov dword ptr fs:[0], esp",
+            "ghidra": "MOV dword ptr FS:[0x0],ESP"
+          },
+          {
+            "address": "00b6f905",
+            "size": 1,
+            "bytes_hex": "51",
+            "capstone": "push ecx",
+            "ghidra": "PUSH ECX"
+          },
+          {
+            "address": "00b6f906",
+            "size": 1,
+            "bytes_hex": "56",
+            "capstone": "push esi",
+            "ghidra": "PUSH ESI"
+          },
+          {
+            "address": "00b6f907",
+            "size": 1,
+            "bytes_hex": "57",
+            "capstone": "push edi",
+            "ghidra": "PUSH EDI"
+          },
+          {
+            "address": "00b6f908",
+            "size": 2,
+            "bytes_hex": "8bf9",
+            "capstone": "mov edi, ecx",
+            "ghidra": "MOV EDI,ECX"
+          },
+          {
+            "address": "00b6f90a",
+            "size": 5,
+            "bytes_hex": "b958ff0801",
+            "capstone": "mov ecx, 0x108ff58",
+            "ghidra": "MOV ECX,0x108ff58"
+          },
+          {
+            "address": "00b6f90f",
+            "size": 5,
+            "bytes_hex": "e8ecf1ffff",
+            "capstone": "call 0xb6eb00",
+            "ghidra": "CALL 0x00b6eb00"
+          },
+          {
+            "address": "00b6f914",
+            "size": 4,
+            "bytes_hex": "89442408",
+            "capstone": "mov dword ptr [esp + 8], eax",
+            "ghidra": "MOV dword ptr [ESP + 0x8],EAX"
+          },
+          {
+            "address": "00b6f918",
+            "size": 2,
+            "bytes_hex": "33f6",
+            "capstone": "xor esi, esi",
+            "ghidra": "XOR ESI,ESI"
+          },
+          {
+            "address": "00b6f91a",
+            "size": 2,
+            "bytes_hex": "3bc6",
+            "capstone": "cmp eax, esi",
+            "ghidra": "CMP EAX,ESI"
+          },
+          {
+            "address": "00b6f91c",
+            "size": 4,
+            "bytes_hex": "89742414",
+            "capstone": "mov dword ptr [esp + 0x14], esi",
+            "ghidra": "MOV dword ptr [ESP + 0x14],ESI"
+          },
+          {
+            "address": "00b6f920",
+            "size": 2,
+            "bytes_hex": "740d",
+            "capstone": "je 0xb6f92f",
+            "ghidra": "JZ 0x00b6f92f"
+          },
+          {
+            "address": "00b6f922",
+            "size": 3,
+            "bytes_hex": "8d4f54",
+            "capstone": "lea ecx, [edi + 0x54]",
+            "ghidra": "LEA ECX,[EDI + 0x54]"
+          },
+          {
+            "address": "00b6f925",
+            "size": 1,
+            "bytes_hex": "51",
+            "capstone": "push ecx",
+            "ghidra": "PUSH ECX"
+          },
+          {
+            "address": "00b6f926",
+            "size": 2,
+            "bytes_hex": "8bc8",
+            "capstone": "mov ecx, eax",
+            "ghidra": "MOV ECX,EAX"
+          },
+          {
+            "address": "00b6f928",
+            "size": 5,
+            "bytes_hex": "e873fcffff",
+            "capstone": "call 0xb6f5a0",
+            "ghidra": "CALL 0x00b6f5a0"
+          },
+          {
+            "address": "00b6f92d",
+            "size": 2,
+            "bytes_hex": "8bf0",
+            "capstone": "mov esi, eax",
+            "ghidra": "MOV ESI,EAX"
+          },
+          {
+            "address": "00b6f92f",
+            "size": 4,
+            "bytes_hex": "8b542420",
+            "capstone": "mov edx, dword ptr [esp + 0x20]",
+            "ghidra": "MOV EDX,dword ptr [ESP + 0x20]"
+          },
+          {
+            "address": "00b6f933",
+            "size": 4,
+            "bytes_hex": "8b44241c",
+            "capstone": "mov eax, dword ptr [esp + 0x1c]",
+            "ghidra": "MOV EAX,dword ptr [ESP + 0x1c]"
+          },
+          {
+            "address": "00b6f937",
+            "size": 1,
+            "bytes_hex": "52",
+            "capstone": "push edx",
+            "ghidra": "PUSH EDX"
+          },
+          {
+            "address": "00b6f938",
+            "size": 1,
+            "bytes_hex": "50",
+            "capstone": "push eax",
+            "ghidra": "PUSH EAX"
+          },
+          {
+            "address": "00b6f939",
+            "size": 1,
+            "bytes_hex": "56",
+            "capstone": "push esi",
+            "ghidra": "PUSH ESI"
+          },
+          {
+            "address": "00b6f93a",
+            "size": 2,
+            "bytes_hex": "8bcf",
+            "capstone": "mov ecx, edi",
+            "ghidra": "MOV ECX,EDI"
+          },
+          {
+            "address": "00b6f93c",
+            "size": 8,
+            "bytes_hex": "c7442420ffffffff",
+            "capstone": "mov dword ptr [esp + 0x20], 0xffffffff",
+            "ghidra": "MOV dword ptr [ESP + 0x20],0xffffffff"
+          },
+          {
+            "address": "00b6f944",
+            "size": 5,
+            "bytes_hex": "e807f8ffff",
+            "capstone": "call 0xb6f150",
+            "ghidra": "CALL 0x00b6f150"
+          },
+          {
+            "address": "00b6f949",
+            "size": 4,
+            "bytes_hex": "8b4c240c",
+            "capstone": "mov ecx, dword ptr [esp + 0xc]",
+            "ghidra": "MOV ECX,dword ptr [ESP + 0xc]"
+          },
+          {
+            "address": "00b6f94d",
+            "size": 1,
+            "bytes_hex": "5f",
+            "capstone": "pop edi",
+            "ghidra": "POP EDI"
+          },
+          {
+            "address": "00b6f94e",
+            "size": 2,
+            "bytes_hex": "8bc6",
+            "capstone": "mov eax, esi",
+            "ghidra": "MOV EAX,ESI"
+          },
+          {
+            "address": "00b6f950",
+            "size": 1,
+            "bytes_hex": "5e",
+            "capstone": "pop esi",
+            "ghidra": "POP ESI"
+          },
+          {
+            "address": "00b6f951",
+            "size": 7,
+            "bytes_hex": "64890d00000000",
+            "capstone": "mov dword ptr fs:[0], ecx",
+            "ghidra": "MOV dword ptr FS:[0x0],ECX"
+          },
+          {
+            "address": "00b6f958",
+            "size": 3,
+            "bytes_hex": "83c410",
+            "capstone": "add esp, 0x10",
+            "ghidra": "ADD ESP,0x10"
+          },
+          {
+            "address": "00b6f95b",
+            "size": 3,
+            "bytes_hex": "c20800",
+            "capstone": "ret 8",
+            "ghidra": "RET 0x8"
+          }
+        ],
+        "calls": [
+          "00b6f90f",
+          "00b6f928",
+          "00b6f944"
+        ],
+        "x87": [],
+        "sse": []
+      }
+    ],
+    "eh": [
+      {
+        "id": "fh3_info_live_bytes",
+        "address": "00dfa968",
+        "bytes": 36,
+        "sha256": "c7cb48287b1741d3b849ac1167e44c029ceecb516b97cdfd1f2835ae701e08b0",
+        "hex": "220593190100000060a9df00000000000000000000000000000000000000000001000000",
+        "pe_file_offset": 10463592,
+        "live_bytes_match": true
+      },
+      {
+        "id": "fh3_map_live_bytes",
+        "address": "00dfa960",
+        "bytes": 8,
+        "sha256": "49a4f291b04219563174f7cffd3dc3b55592ff1dafc1cdc6cb984f4ccb8f3a64",
+        "hex": "ffffffff401acc00",
+        "pe_file_offset": 10463584,
+        "live_bytes_match": true
+      },
+      {
+        "id": "fh3_thunk_live_bytes",
+        "address": "00cc1a48",
+        "bytes": 10,
+        "sha256": "91d6f8bb6b52a7a9ce91cd4f8a19c289b4eccd67ce832cd7c9d74150db62f93b",
+        "hex": "b868a9df00e9f150f3ff",
+        "pe_file_offset": 9181768,
+        "live_bytes_match": true
+      },
+      {
+        "id": "fh3_action_live_bytes",
+        "address": "00cc1a40",
+        "bytes": 8,
+        "sha256": "4533d706629aaa0448826ebc5c304d2210a96543086d310b9cc7b23c2a909c89",
+        "hex": "8b4df0e928cceaff",
+        "pe_file_offset": 9181760,
+        "live_bytes_match": true
+      }
+    ],
+    "counts": {
+      "whole_native_instructions": 178,
+      "copy_calls": 13,
+      "clone_calls": 3,
+      "copy_x87": 12,
+      "copy_sse": 0,
+      "source_pins": 47
+    },
+    "source_pins_location": "top-level source_pins; capture.json retains its historical capture list"
+  },
+  "node_profile": {
+    "address": "00d62c88",
+    "bytes": 88,
+    "hex": "e030bd00d0f8b60090d7b60070f5b600f0f8b600a0d7b60010f3b600b0d7b60090d9b60050e1b60020d8b600b0dab600e0dab60070e8b60010dbb600c0dbb600e0dbb60000dcb600c0e8b60020dcb60080edb60010eeb600",
+    "sha256": "abf911873a8d5a0f1016b627e3be77a3aa83dc97542846f011e901aefaf1c0a9",
+    "pe_file_offset": 9841800,
+    "live_bytes_match": true,
+    "live_stdout_sha256": "428243254bf5342bb2dd03406bdd00a282187ccabe2317147109ad2eb57b5654",
+    "qualification": "Actual PE table data only:10=B6F8F0,38=B6DB10,50=B6ED80. Not a lifetime proof, a callable codeword or permission to replace independently captured current targets after callbacks.",
+    "cells": [
+      {
+        "offset": "00",
+        "cell": "00d62c88",
+        "target": "00bd30e0"
+      },
+      {
+        "offset": "04",
+        "cell": "00d62c8c",
+        "target": "00b6f8d0"
+      },
+      {
+        "offset": "08",
+        "cell": "00d62c90",
+        "target": "00b6d790"
+      },
+      {
+        "offset": "0c",
+        "cell": "00d62c94",
+        "target": "00b6f570"
+      },
+      {
+        "offset": "10",
+        "cell": "00d62c98",
+        "target": "00b6f8f0"
+      },
+      {
+        "offset": "14",
+        "cell": "00d62c9c",
+        "target": "00b6d7a0"
+      },
+      {
+        "offset": "18",
+        "cell": "00d62ca0",
+        "target": "00b6f310"
+      },
+      {
+        "offset": "1c",
+        "cell": "00d62ca4",
+        "target": "00b6d7b0"
+      },
+      {
+        "offset": "20",
+        "cell": "00d62ca8",
+        "target": "00b6d990"
+      },
+      {
+        "offset": "24",
+        "cell": "00d62cac",
+        "target": "00b6e150"
+      },
+      {
+        "offset": "28",
+        "cell": "00d62cb0",
+        "target": "00b6d820"
+      },
+      {
+        "offset": "2c",
+        "cell": "00d62cb4",
+        "target": "00b6dab0"
+      },
+      {
+        "offset": "30",
+        "cell": "00d62cb8",
+        "target": "00b6dae0"
+      },
+      {
+        "offset": "34",
+        "cell": "00d62cbc",
+        "target": "00b6e870"
+      },
+      {
+        "offset": "38",
+        "cell": "00d62cc0",
+        "target": "00b6db10"
+      },
+      {
+        "offset": "3c",
+        "cell": "00d62cc4",
+        "target": "00b6dbc0"
+      },
+      {
+        "offset": "40",
+        "cell": "00d62cc8",
+        "target": "00b6dbe0"
+      },
+      {
+        "offset": "44",
+        "cell": "00d62ccc",
+        "target": "00b6dc00"
+      },
+      {
+        "offset": "48",
+        "cell": "00d62cd0",
+        "target": "00b6e8c0"
+      },
+      {
+        "offset": "4c",
+        "cell": "00d62cd4",
+        "target": "00b6dc20"
+      },
+      {
+        "offset": "50",
+        "cell": "00d62cd8",
+        "target": "00b6ed80"
+      },
+      {
+        "offset": "54",
+        "cell": "00d62cdc",
+        "target": "00b6ee10"
+      }
+    ]
+  },
+  "native_abi": [
+    {
+      "entry": "00b6f150",
+      "receiver": "ECX source captured EDI",
+      "stack": "destination,flags,parent; RET0C",
+      "return": "No explicit meaningful return contract recovered; do not invent one.",
+      "homes": [
+        {
+          "index": 0,
+          "role": "destination initially, then captured light scratch at17F/199; destination already retained inESI"
+        },
+        {
+          "index": 1,
+          "role": "full flags first read223 after first retained130 callback; BL20 only skip test; full captured DWORD forwarded to each reached child"
+        },
+        {
+          "index": 2,
+          "role": "parent first read246 after child loop; capturedEBX used after all later callbacks for current parentA0"
+        }
+      ]
+    },
+    {
+      "entry": "00b6f8f0",
+      "receiver": "ECX source capturedEDI",
+      "stack": "flags,parent; RET8",
+      "return": "captured constructorEAX/resultESI, or0 if allocation0; no extra retain",
+      "homes": "parent read92F BEFORE flags933 after constructor; distinct outgoing3-home copy frame, Native push order parent,flags,result; do not alias parent loop storage or snapshot early."
+    }
+  ],
+  "schedule": [
+    {
+      "range": "00b6f150..00b6f15c",
+      "effect": "Capture destination in ESI, source ECX in EDI. Positive-light counter starts0; source+168 signed test."
+    },
+    {
+      "range": "00b6f164..00b6f1be",
+      "effect": "Destination+164 actual descriptor; source current164/current element. Save light in incoming destination HOME at17F. Current destination capacity/count; grow B6E500 if equal; reload captured light only after reserve. Publish element/count before B7BE40 backlink. Reload signed source count each iteration."
+    },
+    {
+      "range": "00b6f1c0..00b6f1e2",
+      "effect": "FLD sourceAC; load CURRENT destination profile then captured+50 target WHILE ST0 LIVE; FSTP destinationAC. FLD source4C, PUSH1, FSTP destination4C; then CURRENT source170 and captured50 call. No C++ callback/throwing metadata lookup may be inserted while ST0 is live."
+    },
+    {
+      "range": "00b6f1e4..00b6f221",
+      "effect": "FIRST retained130: capture destination old BEFORE source incoming. If different publish incoming, CURRENT CE221C increment if nonnull, CURRENT CE2220 decrement captured old if nonnull, then old CURRENT profile/current0 only when returned EAX==0."
+    },
+    {
+      "range": "00b6f223..00b6f244",
+      "effect": "Read full flags HOME only NOW. Test BL20; if clear capture source current firstchild34. For every child capture current profile+10/target, invoke with SAME captured full flags and destination as parent; ignore returned EAX; reread CURRENT child3C after normal return."
+    },
+    {
+      "range": "00b6f246..00b6f25b",
+      "effect": "Read parent HOME only AFTER all children; capture in EBX and call whole B6E680. Then read CURRENT sourceA4 and call whole B6D890."
+    },
+    {
+      "range": "00b6f260..00b6f26e",
+      "effect": "Fresh CURRENT destination profile+38/target AFTER parenting/root callbacks; pass address source+B0, not a copied matrix; invoke captured38."
+    },
+    {
+      "range": "00b6f270..00b6f2ad",
+      "effect": "SECOND retained130: capture source incoming BEFORE destination old. Publish/retain/release/current0 schedule otherwise same as first assignment, with fresh current import loads and no caching across callback."
+    },
+    {
+      "range": "00b6f2af..00b6f309",
+      "effect": "Use captured parent EBX; if nonnull read CURRENT parentA0 only now, else0; publish destinationA0. Read CURRENT source138, sequential x87 source->destination13C/140/144/148, CURRENT source48; RET0C."
+    },
+    {
+      "range": "00b6f8f0..00b6f91c",
+      "effect": "Establish FH3, capture source EDI; actual0108FF58/B6EB00. Save returned allocation even null, result ESI=0, native state0."
+    },
+    {
+      "range": "00b6f920..00b6f92d",
+      "effect": "Only nonnull allocation: form source+54 address AFTER allocator, pass to existing B6F5A0; capture EAX as result ESI. Null bypasses constructor only."
+    },
+    {
+      "range": "00b6f92f..00b6f944",
+      "effect": "Load parent HOME first, flags HOME second; PUSH parent, flags, captured result. Disarm native state to-1 BEFORE whole B6F150 call. Null result is still passed, without a new guard."
+    },
+    {
+      "range": "00b6f949..00b6f95b",
+      "effect": "Restore FH3 chain and return captured result ESI in EAX, RET8. No extra retain, binding, publication, rollback or automatic failed-copy destruction."
+    }
+  ],
+  "fp_contract": {
+    "copy_x87_forms": 12,
+    "copy_sse_forms": 0,
+    "clone_fp_forms": 0,
+    "arithmetic": "six sequential FLD/FSTP single-precision transfers only",
+    "ambient": "No CW/status/reset or C++ FP policy added; original loads can signal/update ambient status and FSTP rounds. Preserve address/alias/fault epochs. Current50 profile/target read lies between first FLD and FSTP; no C++ call while ST0 live."
+  },
+  "fh3": {
+    "copy_has_local_eh": false,
+    "clone_handler": "00cc1a48",
+    "func_info": "00dfa968",
+    "magic": "19930522",
+    "max_state": 1,
+    "unwind_map": "00dfa960",
+    "unwind_entry": {
+      "state": 0,
+      "to_state": -1,
+      "action": "00cc1a40"
+    },
+    "action": "MOV ECX,[EBP-10]; JMP B6E670",
+    "arm": "allocation saved before state0/constructor; null allocation still arms then skipsctor",
+    "disarm": "B6F93C before B6F944 copy call",
+    "try_blocks": 0,
+    "source_projection": "No new original FH3/private-stack/unwind/fault or secondary-exception permission. Existing raw constructor has separately qualified C++ member cleanup; U06 remains."
+  },
+  "supplier_inventory": [
+    {
+      "id": "S01",
+      "available": true,
+      "api": "allocate_native_node_pool_slot_00b6eb00(void*) / return_native_node_00b6e670(void*,void*)",
+      "files": [
+        "include/bsp/native_node_pool_allocation.hpp",
+        "src/native_node_pool_allocation.cpp"
+      ],
+      "domain": "SAME genuinely initialized0108FF58 actual38h owner, Win32CS/list/CRT; raw178h slot, trailing ID174h,174h payload. No calloc/preimage reset or fabricated pool. Return is explicit captured allocation and does not invoke node destruction."
+    },
+    {
+      "id": "S02",
+      "available": true,
+      "api": "initialize_native_node_pool_00b6e980 / static0108FF58 bind/startup/drain",
+      "files": [
+        "include/bsp/native_node_pool_owner.hpp",
+        "src/native_node_pool_owner.cpp"
+      ],
+      "domain": "Actual38h owner and SAME AllocatorListDomain survive every slot/callback. Startup and drain are separate; clone cannot create/reseed a pool."
+    },
+    {
+      "id": "S03",
+      "available": true,
+      "api": "construct_native_node_00b6f5a0(void*,size_t,const void*,NativeStringRawPoolContext&,const NativeNodeRawConstants&)",
+      "files": [
+        "include/bsp/native_node_construction.hpp",
+        "src/native_node_construction.cpp"
+      ],
+      "domain": "Real aligned slot; ordinary NativeNodeStorage174 C++ lifetime is born at existing materialize boundary AFTER raw prelude. NativeString+54/atomic+4/descriptor+164 are actual subobjects. Caller supplies extent and same actual raw constants/name/pool; raw constructor has existing transient/zero-copy/fault/exception qualifications. It performs its own member cleanup; physical return is separate."
+    },
+    {
+      "id": "S04",
+      "available": true,
+      "api": "native_node_name_00b6d800(const NativeNodeStorage&) / raw source+54 address",
+      "files": [
+        "include/bsp/gui_text_type_dispatch.hpp",
+        "src/gui_text_type_dispatch.cpp"
+      ],
+      "domain": "SAME live actual8h NativeString header, no std::string or name snapshot. Node clone uses LEA directly, after allocation; later source header fields remain current."
+    },
+    {
+      "id": "S05",
+      "available": true,
+      "api": "NativeStringRawPoolContext; resize_native_string_header_0041dd40 / destroy_native_string_header_0041dd20 raw overloads",
+      "files": [
+        "include/bsp/native_string.hpp",
+        "src/native_string.cpp",
+        "include/bsp/native_string_pool_storage.hpp",
+        "src/native_string_pool_storage.cpp"
+      ],
+      "domain": "SAME01090AA8/AA4/AA0 publication refs and genuine419CC0/BD1120/BD1510 transports. Raw getter may throw on allocation AND return; not the historical noexcept semantic release. No copied canonical cells or cleanup-origin assertion."
+    },
+    {
+      "id": "S06",
+      "available": true,
+      "api": "copy_native_node_point_light_links_00b6f150_fragment; reserve_native_node_point_lights_00b6e500; append_native_point_light_backlink_00b7be40",
+      "files": [
+        "include/bsp/native_point_light_links.hpp",
+        "src/native_point_light_links.cpp"
+      ],
+      "domain": "Existing DISTINCT live NativeNodeStorage actual+164 typed descriptor and real linked lights+1E0 descriptors, SAME NativePointLightLinksRuntime allocation/binding provenance. Positive signed loop is implemented, but the fragment accepts no mutable incoming destination HOME and cannot itself reproduce17F/199 scratch overwrite/reload. Its genuine B6E500/B7BE40 leaf APIs remain available; no scratch adapter or fragment change is implemented. Existing extent/distinct/overflow diagnostics remain qualifications, not all-alias raw entry authority. Cannot use fake light bindings or a second array."
+    },
+    {
+      "id": "S07",
+      "available": true,
+      "api": "set_native_node_scene_storage_00b6ed80(void*,Frame&,Context&,Acquired&)",
+      "files": [
+        "include/bsp/native_node_scene_attachment.hpp",
+        "src/native_node_scene_attachment.cpp"
+      ],
+      "domain": "Whole raw current50 normal body, actual node170/real3Ch scene resources, actual owner/import/registry domain. Persistent initialized frame and fresh acquisition per reached invocation; child dispatch and zero terminals require genuine retained providers."
+    },
+    {
+      "id": "S08",
+      "available": true,
+      "api": "set_native_raw_parent_00b6e680(void*,NativeNodeParentingFrame&,NativeNodeParentingContext&,NativeNodeSetParentAcquired&)",
+      "files": [
+        "include/bsp/native_node_parenting_storage.hpp",
+        "src/native_node_parenting_storage.cpp"
+      ],
+      "domain": "WHOLE204B, including nonnull parent. Actual node/group descriptors and current type/attachment/world providers; SAME scene/tree/import domain. Existing null-only functions are separate and insufficient for full flags/parent entry."
+    },
+    {
+      "id": "S09",
+      "available": true,
+      "api": "propagate_native_node_root_storage_00b6d890(void*,void*,NativeNodeSceneChildDispatch&)",
+      "files": [
+        "include/bsp/native_node_root_propagation.hpp",
+        "src/native_node_root_propagation.cpp"
+      ],
+      "domain": "WHOLE164B over actual outer24h/root links and current children; dispatch may reach self with recursion0 or children recursively. No logical root companion substitution."
+    },
+    {
+      "id": "S10",
+      "available": true,
+      "api": "set_raw_local_matrix_00b6db10(void*,const NativeNodeMappedRawTransformProfiles&,const void*)",
+      "files": [
+        "include/bsp/native_node_raw_transform.hpp",
+        "src/native_node_raw_transform.cpp"
+      ],
+      "domain": "Whole raw setter with real matrix source storage, current5C/A0/children. Existing mapped profiles borrow genuine RO aliases before parent entry and admit reachedA0 Node/Model/Group current3C=B6DBC0 only. It does NOT resolve an arbitrary captured current38 target or admit arbitrary OTHER profile."
+    },
+    {
+      "id": "S11",
+      "available": true,
+      "api": "NativeNodeBinding / NativePlainNodeReference raw-pool constructor / delete_native_plain_node_00b6f8d0",
+      "files": [
+        "include/bsp/native_node_construction.hpp",
+        "src/native_node_construction.cpp",
+        "include/bsp/native_plain_node.hpp",
+        "src/native_plain_node.cpp"
+      ],
+      "domain": "Genuine CPPNode family over SAME actual174h prefix/+04, stable CameraTransform/SceneNodeAttachment references, same registered SceneAttachmentRuntime, genuine currentD62C88 table and disposal. Reference creation does not retain/reset count; register-before-use and retirement required. Existing terminal is noexcept and can terminate on invalid/missing graph/throw; this is inherited Source qualification, NOT new Native/FH3/NoThrow permission or arbitrary raw3Ch-scene compatibility."
+    },
+    {
+      "id": "S12",
+      "available": true,
+      "api": "destroy_native_raw_node_base_00b6f440 / NativeNodeTreeRetirementContext",
+      "files": [
+        "include/bsp/native_node_base_destruction.hpp",
+        "src/native_node_base_destruction.cpp",
+        "include/bsp/native_node_tree_retirement.hpp",
+        "src/native_node_tree_retirement.cpp"
+      ],
+      "domain": "Whole raw base destruction/tree bodies exist. Derived allocation terminal/prefix lifetime and exact reached current0 family/extent still need real canonical owner/retained records. No automatic use on partial clone or exception escape."
+    },
+    {
+      "id": "S13",
+      "available": true,
+      "api": "NativeNodeRetainedOwnerBinding + NativeNodeDestructionRuntime::release_retained_owner; NativeRenderActualOwnerRegistry",
+      "files": [
+        "include/bsp/native_node_destruction.hpp",
+        "src/native_node_destruction.cpp",
+        "include/bsp/native_render_context.hpp",
+        "src/native_render_context.cpp"
+      ],
+      "domain": "Existing same+04 binding/actual-owner metadata services; old retained release uses atomic decrement+bound terminal rather than a universal current-cell/OTHER dispatcher. Registry insertion can allocate; publish avoids insertion/rehash only, mutex may throw and invalid capabilities terminate. A lookup does not retain payload or authorize new family. No proof that these APIs already prepare the new clone graph at native epochs."
+    },
+    {
+      "id": "S14",
+      "available": true,
+      "api": "copy_native_gui_text_model_base_00b6f150_fragment / clone_native_gui_widget_model_00b752b0",
+      "files": [
+        "include/bsp/native_gui_text_model_clone.hpp",
+        "src/native_gui_text_model_clone.cpp",
+        "include/bsp/native_gui_widget_model_clone.hpp",
+        "src/native_gui_widget_model_clone.cpp"
+      ],
+      "domain": "Existing genuine normal canonical NativeModelOwner flags26/3E,parent0 stream; positive lights concrete, child recursion skipped by20, typed scene/lifetime/current-slot assumptions explicit. Model188/geometry owner graph separate from arbitrary raw Node/Group/internal188 storage. Byte-exact and not duplicated; does not constitute whole generic B6F150."
+    },
+    {
+      "id": "S15",
+      "available": true,
+      "api": "bind_native_gui_widget_node_00aa6720(void*,NativeNodeStorage*)",
+      "files": [
+        "include/bsp/native_gui_page_construction.hpp",
+        "src/native_gui_page_construction.cpp"
+      ],
+      "domain": "Existing WHOLE21B/6op raw GUI->node bind. Needs genuine actual constructed node lifetime; no new body recovery. Does not produce that node, reference or clone graph."
+    }
+  ],
+  "missing_contracts": [
+    {
+      "id": "U01",
+      "status": "UNREADY",
+      "boundary": "Whole generic B6F150 + raw B6F8F0 Source entries",
+      "reason": "Search finds only old std::string/abstract service facade, Model-only fragment and positive-light fragment. No whole raw implementation all flags/nonnull parent/child recursion. Positive-light fragment has no incoming destinationHOME parameter, so it cannot alone preserve17F/199 despite its genuine leaf dependencies. Neither facade nor typed Model cast is a supplier."
+    },
+    {
+      "id": "U02",
+      "status": "UNREADY",
+      "boundary": "Exact captured destination current50 and later independently-current38 dispatch for newly cloned actual Node",
+      "reason": "Known raw bodies exist (S07/S10). Concrete Page/Model/renderer/mission dispatchers require THEIR genuine existing records/domains; no general clone-family producer/binding found. Profile equality alone is not lifetime/provenance. Retain OTHER captured target transport; no new abstract resolver as a completion substitute."
+    },
+    {
+      "id": "U03",
+      "status": "UNREADY",
+      "boundary": "flags20-clear current-child10 recursion",
+      "reason": "Full flags DWORD captured at223, current child profile+10 each iteration, destination nonnull as requested parent, current successor after return. Existing Model clone supports26/3E,parent0 only; Node/Group/Bone/Quad paths are abstract facades, not concrete recursive raw suppliers. No ready full-family producer and no force20/no caps."
+    },
+    {
+      "id": "U04",
+      "status": "UNREADY",
+      "boundary": "Two retained130 publish/retain/release/current0 sequences",
+      "reason": "Need actual+04 typed storage and SAME current CE221C/CE2220 cells, exact captured old/current0 terminal with real family/extent/custody. Existing binding APIs are genuine but require populated bindings, lifetime hold and matching semantics; no new zero-count/NoThrow/default terminal policy."
+    },
+    {
+      "id": "U05",
+      "status": "UNREADY",
+      "boundary": "Per-recursion frame/acquisition/preimage and complete allocation/CPPNode/reference birth/retirement graph",
+      "reason": "Allocate distinct ordinary actual backing and initialized callee homes/frames before effects where legitimate; late object/metadata birth must obey existing actual prefix lifetime. No fixed capacity/depth policy, automatic failed-local destruction, automatic pool return or metadata failure disguised as Native. NativePlainNodeReference needs its real scene/lifetime/disposal bindings; registry/find is not ownership or arbitrary raw-scene admission."
+    },
+    {
+      "id": "U06",
+      "status": "UNREADY",
+      "boundary": "Native constructor-failure action vs Source/host/cleanup failures",
+      "reason": "Native wrapper state0 action verified, but existing raw constructor and metadata providers have C++ cleanup/throw/terminal qualifications. No positive Origin issuer or permission to classify any C++ escape as original Native ctor failure. Do not add catch-all B6E670 return or Native exception filter; post-disarm copy failure never replays constructor cleanup."
+    }
+  ],
+  "concrete_dispatch_counterexamples": [
+    {
+      "files": [
+        "src/game_native_gui_page_application.cpp"
+      ],
+      "regions": [
+        "R34_page_scene_dispatch",
+        "R35_page_node_admission",
+        "R36_page_parenting_targets"
+      ],
+      "reason": "Private Page graph authenticates only own roots/Models/property camera/directional identities; cannot silently admit a new plain clone."
+    },
+    {
+      "files": [
+        "include/bsp/native_model_storage_node_dispatch.hpp",
+        "src/native_model_storage_node_dispatch.cpp"
+      ],
+      "regions": [
+        "R37_internal188_dispatch_contract",
+        "R38_internal188_actual_admission",
+        "R39_internal188_scene_dispatch"
+      ],
+      "reason": "Per-private-default internal188 Model record/reference/construction/lifetime required; not arbitrary CPPNode or NativeModelOwner."
+    },
+    {
+      "files": [
+        "src/game_native_renderer_gui_scene.inc"
+      ],
+      "regions": [
+        "R40_renderer_scene_dispatch_domain"
+      ],
+      "reason": "Camera/directional realowner dispatcher plus explicit delegate; startup-specific finite prepared frame domain is not a new general clone recursion bound."
+    },
+    {
+      "files": [
+        "src/game_native_gui_render_application.cpp",
+        "src/game_native_mission_scene.inc"
+      ],
+      "regions": [
+        "R41_gui_scene_null_subset",
+        "R42_mission_scene_null_subset"
+      ],
+      "reason": "Explicit null-scene/recursion0 and same canonical owner subsets, not full current50 domain."
+    }
+  ],
+  "candidate": {
+    "smallest_native_scope": [
+      "00b6f150..00b6f30b",
+      "00b6f8f0..00b6f95d"
+    ],
+    "bytes": 554,
+    "instructions": 178,
+    "status": "UNREADY; scope sizing only",
+    "source_file_packet_proposal": null,
+    "cpp_api_proposal": null,
+    "reason": "Do not create an unused raw wrapper or invented abstract callback-only implementation. Establish genuine U02..U06 transport/preparation contracts before authorizing a finite four-file Source/evidence packet. Do not narrow flags,parent,scene,child families or exceptions."
+  },
+  "glyph_caller": {
+    "native_call": "00ab9d87",
+    "flags": "00000026",
+    "parent": "00000000",
+    "receiver": "CURRENT parentText+1B0 then its CURRENT4C; captured receiver profile/10 target before PUSH0/PUSH26",
+    "qualification": "This one caller skips children via bit20; it does not authorize narrowing the whole B6F150/clone entry. Returned clone goes to existing rawAA6720; current10 transport and actual child custody remain external."
+  },
+  "source_search": {
+    "method": "Case-insensitive unprefixed b6f150/b6f8f0 across ALL src and include/bsp at exact base, plus real current-target/clone APIs and concrete dispatcher bodies.",
+    "found": "Model fragment, positive-light fragment, genuine Model clone consumer, abstract std::string Node/Group/Bone/Quad facades, vtable arrays/comments; no whole raw entries.",
+    "ledger_qualification": "Old B6F150 ledger says no-positive-light branch. Current Source HAS positive-light fragment; absence/readiness is decided from current Source, not that stale sentence."
+  },
+  "source_pins": [
+    {
+      "path": "include/bsp/native_node_construction.hpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "888b44f3f32e67b930c840740cdabdea10283f1a",
+      "git_bytes": 6451,
+      "git_sha256": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098",
+      "workspace_bytes": 6451,
+      "workspace_sha256": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\include\\bsp\\native_node_construction.hpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "src/native_node_construction.cpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "6a0e74c4cb62f82ec0b1909a807f36b0297f72ab",
+      "git_bytes": 14664,
+      "git_sha256": "87a73019511d3575aa0887a4964a2a8703a5248106fdcff2eddfbb424918dd35",
+      "workspace_bytes": 14664,
+      "workspace_sha256": "87a73019511d3575aa0887a4964a2a8703a5248106fdcff2eddfbb424918dd35",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\src\\native_node_construction.cpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "include/bsp/native_node_pool_allocation.hpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "c22c6b2961b89d8539353de9d0f55fc15e816871",
+      "git_bytes": 2226,
+      "git_sha256": "ff3bdbc1203c0401f857077ba6b88ccf921682abce593ba4fdc0801b02f94c12",
+      "workspace_bytes": 2226,
+      "workspace_sha256": "ff3bdbc1203c0401f857077ba6b88ccf921682abce593ba4fdc0801b02f94c12",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\include\\bsp\\native_node_pool_allocation.hpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "src/native_node_pool_allocation.cpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "25d913891046b1b35bab675f40f3fd27f6e50e42",
+      "git_bytes": 6659,
+      "git_sha256": "215908bbec7a3b62067978e94f0919c9c092e1083514e7c08d966e01fe811426",
+      "workspace_bytes": 6659,
+      "workspace_sha256": "215908bbec7a3b62067978e94f0919c9c092e1083514e7c08d966e01fe811426",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\src\\native_node_pool_allocation.cpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "include/bsp/native_node_pool_owner.hpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "94dcef0456c86e7636c6f766db05acbe32708bf5",
+      "git_bytes": 2405,
+      "git_sha256": "a0d5dab26a44e7fd32275968e23252209368fee4b9019b188b3f260499007e93",
+      "workspace_bytes": 2405,
+      "workspace_sha256": "a0d5dab26a44e7fd32275968e23252209368fee4b9019b188b3f260499007e93",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\include\\bsp\\native_node_pool_owner.hpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "src/native_node_pool_owner.cpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "fd149fdc194fdf516ed8119f34bd7bda66dc1718",
+      "git_bytes": 6097,
+      "git_sha256": "07d2133d6824276aca55581bb47a2046209bf7d3dd2bf8c93aaa31dc78abffaf",
+      "workspace_bytes": 6097,
+      "workspace_sha256": "07d2133d6824276aca55581bb47a2046209bf7d3dd2bf8c93aaa31dc78abffaf",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\src\\native_node_pool_owner.cpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "include/bsp/native_plain_node.hpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "12f3040f4bcf8c3a155cd114881b130dff5a0ffc",
+      "git_bytes": 4554,
+      "git_sha256": "9e401643412566e47d51caab60a069188e9c5970a95306592808af8a859b3581",
+      "workspace_bytes": 4554,
+      "workspace_sha256": "9e401643412566e47d51caab60a069188e9c5970a95306592808af8a859b3581",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\include\\bsp\\native_plain_node.hpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "src/native_plain_node.cpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "057be391cec4a581c85d7fa662cd5dd0deedabd9",
+      "git_bytes": 5940,
+      "git_sha256": "b90cfa55ab69f235665244fe873be05da5af73972c6bdde1d68e1c22562356c9",
+      "workspace_bytes": 5940,
+      "workspace_sha256": "b90cfa55ab69f235665244fe873be05da5af73972c6bdde1d68e1c22562356c9",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\src\\native_plain_node.cpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "include/bsp/native_point_light_links.hpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "6210c4f083e303758ca992544e05bf1465d8acef",
+      "git_bytes": 4633,
+      "git_sha256": "e106191d74ea6960befb5f36e74e89076efb5fec4122a5b3d87482823dc07ba7",
+      "workspace_bytes": 4633,
+      "workspace_sha256": "e106191d74ea6960befb5f36e74e89076efb5fec4122a5b3d87482823dc07ba7",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\include\\bsp\\native_point_light_links.hpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "src/native_point_light_links.cpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "81d6888bf315c1331f07c47cb1190b5d7098325e",
+      "git_bytes": 9385,
+      "git_sha256": "ba2ecb549d219cbdafc285fefaaf96a2fca462ecaadc0ef56c3879fbeb4e9d3c",
+      "workspace_bytes": 9385,
+      "workspace_sha256": "ba2ecb549d219cbdafc285fefaaf96a2fca462ecaadc0ef56c3879fbeb4e9d3c",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\src\\native_point_light_links.cpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "include/bsp/native_gui_text_model_clone.hpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "62b69af40bac5129b41bacf9602576c27da8f56e",
+      "git_bytes": 4954,
+      "git_sha256": "cccd68d36f97c6609895e6243921a6f1c96eb7b66ae9fee2a04486a2c4bebfa1",
+      "workspace_bytes": 4954,
+      "workspace_sha256": "cccd68d36f97c6609895e6243921a6f1c96eb7b66ae9fee2a04486a2c4bebfa1",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\include\\bsp\\native_gui_text_model_clone.hpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "src/native_gui_text_model_clone.cpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "c8bd261a9dad4dee927b7a044a2587d5ba49407b",
+      "git_bytes": 10596,
+      "git_sha256": "35786eff932745c02eb5a06c6a07c24ecbe978ba744466a301d1d4925f682941",
+      "workspace_bytes": 10596,
+      "workspace_sha256": "35786eff932745c02eb5a06c6a07c24ecbe978ba744466a301d1d4925f682941",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\src\\native_gui_text_model_clone.cpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_model_clone.hpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "0f257e4a05a8874c1c0698ff353ab71918d8af50",
+      "git_bytes": 2539,
+      "git_sha256": "36e1a035e9b1785450cb83314b91e457a89e3b4fb14d0945b3d0f866fb655fd7",
+      "workspace_bytes": 2539,
+      "workspace_sha256": "36e1a035e9b1785450cb83314b91e457a89e3b4fb14d0945b3d0f866fb655fd7",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\include\\bsp\\native_gui_widget_model_clone.hpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "src/native_gui_widget_model_clone.cpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "2b123bea7261a126e57be6a125f0a32e57cd0ce0",
+      "git_bytes": 5679,
+      "git_sha256": "142b07987b5624d6f36a53c77d544b4c4844b22579cdf75ea353c7a34be58dc5",
+      "workspace_bytes": 5679,
+      "workspace_sha256": "142b07987b5624d6f36a53c77d544b4c4844b22579cdf75ea353c7a34be58dc5",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\src\\native_gui_widget_model_clone.cpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "include/bsp/native_node_parenting_storage.hpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "9fc250c04a032769217e67a5aea308bdf6babcae",
+      "git_bytes": 5253,
+      "git_sha256": "099017858da7cd62e7b5260aaac8f53a2451b063469266a1e6119e7ce3cdc3b0",
+      "workspace_bytes": 5253,
+      "workspace_sha256": "099017858da7cd62e7b5260aaac8f53a2451b063469266a1e6119e7ce3cdc3b0",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\include\\bsp\\native_node_parenting_storage.hpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "src/native_node_parenting_storage.cpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "a5a82c3d274d1af7f86efeb59a3939856212bb81",
+      "git_bytes": 10339,
+      "git_sha256": "035ccf45f17b12b553fcc3e451894b67c928de4ae583c7e511a1a99269c113d1",
+      "workspace_bytes": 10339,
+      "workspace_sha256": "035ccf45f17b12b553fcc3e451894b67c928de4ae583c7e511a1a99269c113d1",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\src\\native_node_parenting_storage.cpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "include/bsp/native_node_root_propagation.hpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "e8c16028e1344d467fa95bba08c27cf0d230c0ed",
+      "git_bytes": 1454,
+      "git_sha256": "0fed8a0255b3068472bb0a72e2d41352ce1d10ee7ace03520254ae6d9dfde5d4",
+      "workspace_bytes": 1454,
+      "workspace_sha256": "0fed8a0255b3068472bb0a72e2d41352ce1d10ee7ace03520254ae6d9dfde5d4",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\include\\bsp\\native_node_root_propagation.hpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "src/native_node_root_propagation.cpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "88a1dfe8382a55a6049069da336356273ffda02f",
+      "git_bytes": 3130,
+      "git_sha256": "302f09b2f12d426abd9266fd265532e44bb104827b00d3894744f6a37012d48b",
+      "workspace_bytes": 3130,
+      "workspace_sha256": "302f09b2f12d426abd9266fd265532e44bb104827b00d3894744f6a37012d48b",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\src\\native_node_root_propagation.cpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "include/bsp/native_node_scene_attachment.hpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "b236a5d8ff992022ff795fa6a8c4236e51cad31c",
+      "git_bytes": 5335,
+      "git_sha256": "8b2f6d276fbe92b00c190fadcda44e71e8547c5890bd224ee2de895310658edf",
+      "workspace_bytes": 5335,
+      "workspace_sha256": "8b2f6d276fbe92b00c190fadcda44e71e8547c5890bd224ee2de895310658edf",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\include\\bsp\\native_node_scene_attachment.hpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "src/native_node_scene_attachment.cpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "ab47729989378bd1f4e15e888b7ec2064485bf41",
+      "git_bytes": 9245,
+      "git_sha256": "baaeb437926eb685257868ab3ad4c428aa012ca71dc9378aac9a28245d4dfd6f",
+      "workspace_bytes": 9245,
+      "workspace_sha256": "baaeb437926eb685257868ab3ad4c428aa012ca71dc9378aac9a28245d4dfd6f",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\src\\native_node_scene_attachment.cpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "include/bsp/native_node_raw_transform.hpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "fe8ca945cbddcf071e37b5ee7ade2080942490e2",
+      "git_bytes": 2139,
+      "git_sha256": "99460e5aa96bac3ef0255146992d7e002e2ec5adf07ab71788221ad10c75d4de",
+      "workspace_bytes": 2139,
+      "workspace_sha256": "99460e5aa96bac3ef0255146992d7e002e2ec5adf07ab71788221ad10c75d4de",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\include\\bsp\\native_node_raw_transform.hpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "src/native_node_raw_transform.cpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "cb27dc6bebf4e551e72d003868e57211b2615d40",
+      "git_bytes": 5316,
+      "git_sha256": "092fa6a47756bf5a8a3a18dfbbaecf468898b3c91bc5ee5235bba5a7f078e16c",
+      "workspace_bytes": 5316,
+      "workspace_sha256": "092fa6a47756bf5a8a3a18dfbbaecf468898b3c91bc5ee5235bba5a7f078e16c",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\src\\native_node_raw_transform.cpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "include/bsp/native_node_base_destruction.hpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "1f8f3069c602b970a74d2d921c34dc5e864dc22b",
+      "git_bytes": 4834,
+      "git_sha256": "cd1f22aafdc481b9e54c23dda5634171ac654b570d8ad8757f843bca76883226",
+      "workspace_bytes": 4834,
+      "workspace_sha256": "cd1f22aafdc481b9e54c23dda5634171ac654b570d8ad8757f843bca76883226",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\include\\bsp\\native_node_base_destruction.hpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "src/native_node_base_destruction.cpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "79cf2d8bb81f8044074d4c70d592ee473a763312",
+      "git_bytes": 10425,
+      "git_sha256": "21bb87a236d4888ba5ef0102f3747f4cc53d28462d587dfaa94c1e731a0f055e",
+      "workspace_bytes": 10425,
+      "workspace_sha256": "21bb87a236d4888ba5ef0102f3747f4cc53d28462d587dfaa94c1e731a0f055e",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\src\\native_node_base_destruction.cpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "include/bsp/native_node_tree_retirement.hpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "a95108130a5c2e16ba8eef2a320fb900473cf9d1",
+      "git_bytes": 4571,
+      "git_sha256": "7826147682ef91780670172a270214c5f164ba92696f76c06ecc4d3e8387f07f",
+      "workspace_bytes": 4571,
+      "workspace_sha256": "7826147682ef91780670172a270214c5f164ba92696f76c06ecc4d3e8387f07f",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\include\\bsp\\native_node_tree_retirement.hpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "src/native_node_tree_retirement.cpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "b3d2053bd6b0ee6016e4dac2a41004ef780b273a",
+      "git_bytes": 7016,
+      "git_sha256": "f58325714135577e4a2baefdefea81b45fd1d5bfaa912d83b02d38637466fbf5",
+      "workspace_bytes": 7016,
+      "workspace_sha256": "f58325714135577e4a2baefdefea81b45fd1d5bfaa912d83b02d38637466fbf5",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\src\\native_node_tree_retirement.cpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "include/bsp/native_node_destruction.hpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "d84edd297c4dfb43cb0b5aa630676fb1b245eedc",
+      "git_bytes": 5997,
+      "git_sha256": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833",
+      "workspace_bytes": 5997,
+      "workspace_sha256": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\include\\bsp\\native_node_destruction.hpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "src/native_node_destruction.cpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "471b67cac72f5a45fb6a4789f82d7533fd72f6c9",
+      "git_bytes": 14506,
+      "git_sha256": "2ee6ba84e759958a8f160cb25ad210076203931d4ae4f2e9265529bff5c57269",
+      "workspace_bytes": 14506,
+      "workspace_sha256": "2ee6ba84e759958a8f160cb25ad210076203931d4ae4f2e9265529bff5c57269",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\src\\native_node_destruction.cpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "include/bsp/native_model_storage_node_dispatch.hpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "8c7110b0c08fdcf7882c5c340465a2cbdb2c8fd5",
+      "git_bytes": 5623,
+      "git_sha256": "27b319d3bae80ba4eb426917a9f6b8890c88559a3b88066a70e4f8d7dac30723",
+      "workspace_bytes": 5623,
+      "workspace_sha256": "27b319d3bae80ba4eb426917a9f6b8890c88559a3b88066a70e4f8d7dac30723",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\include\\bsp\\native_model_storage_node_dispatch.hpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "src/native_model_storage_node_dispatch.cpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "af2e73d169989f69455dbf23e116140bbc33018f",
+      "git_bytes": 16044,
+      "git_sha256": "76418809bb56a11118f64f1ba28ee6d068677b0a8314c0dd5a54b9d96d583d08",
+      "workspace_bytes": 16044,
+      "workspace_sha256": "76418809bb56a11118f64f1ba28ee6d068677b0a8314c0dd5a54b9d96d583d08",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\src\\native_model_storage_node_dispatch.cpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "include/bsp/gui_text_type_dispatch.hpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "27b8fcd3c600379641d0389fecf2fbb991d423c5",
+      "git_bytes": 3261,
+      "git_sha256": "4efe3b984c54d4ed6b485cb5885a85d65f06bbc77bbb5592f4fb5d2509512d34",
+      "workspace_bytes": 3261,
+      "workspace_sha256": "4efe3b984c54d4ed6b485cb5885a85d65f06bbc77bbb5592f4fb5d2509512d34",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\include\\bsp\\gui_text_type_dispatch.hpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "src/gui_text_type_dispatch.cpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "e6e4eea1bd86ac1a8d0bc285ee359e0292a70fb6",
+      "git_bytes": 4740,
+      "git_sha256": "0a56deab2a02681a587152cf85a33065db65f2b237ec13be52f97aa46cbd0e3a",
+      "workspace_bytes": 4740,
+      "workspace_sha256": "0a56deab2a02681a587152cf85a33065db65f2b237ec13be52f97aa46cbd0e3a",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\src\\gui_text_type_dispatch.cpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "include/bsp/scene_graph2_cc13.hpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "8e7a0bab5cccf48985aea4747d8115b38b7c5625",
+      "git_bytes": 83431,
+      "git_sha256": "90c17aacfa0decdd1aa75c445275674363f48e39f2b1368821dd1fa2e5898381",
+      "workspace_bytes": 83431,
+      "workspace_sha256": "90c17aacfa0decdd1aa75c445275674363f48e39f2b1368821dd1fa2e5898381",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\include\\bsp\\scene_graph2_cc13.hpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "src/scene_graph2_cc13.cpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "b2aa80e69a29aae55915e9f133637b52b5a860f7",
+      "git_bytes": 91097,
+      "git_sha256": "1ec58b6d03569237c7715102d5bd240b02c181d95259e28b6e886d4bf573a9b9",
+      "workspace_bytes": 91097,
+      "workspace_sha256": "1ec58b6d03569237c7715102d5bd240b02c181d95259e28b6e886d4bf573a9b9",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\src\\scene_graph2_cc13.cpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808",
+      "git_bytes": 10071,
+      "git_sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+      "workspace_bytes": 10071,
+      "workspace_sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\include\\bsp\\native_render_context.hpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c",
+      "git_bytes": 11471,
+      "git_sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+      "workspace_bytes": 11471,
+      "workspace_sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\src\\native_render_context.cpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "include/bsp/native_gui_page_construction.hpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "ac2e16414db09fd71ed68b8ce802f4e5695f34aa",
+      "git_bytes": 3168,
+      "git_sha256": "7c0dbf31a1d433708516fe5e67b7e3129d116a4ec31af07e31ec9ea15e3835a8",
+      "workspace_bytes": 3168,
+      "workspace_sha256": "7c0dbf31a1d433708516fe5e67b7e3129d116a4ec31af07e31ec9ea15e3835a8",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\include\\bsp\\native_gui_page_construction.hpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "src/native_gui_page_construction.cpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "1cc63b66183aaa20f129a01975ac6483682599fe",
+      "git_bytes": 4215,
+      "git_sha256": "066059cba6487f666d38bbacebb8af793dcb8e0b211e51f38ab0c7241eebe185",
+      "workspace_bytes": 4215,
+      "workspace_sha256": "066059cba6487f666d38bbacebb8af793dcb8e0b211e51f38ab0c7241eebe185",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\src\\native_gui_page_construction.cpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "src/game_native_gui_page_application.cpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "996fbbdec1f9160540da07b0842295920734eead",
+      "git_bytes": 72373,
+      "git_sha256": "0f770bd8713656eeb56b77a97109eb7168e1be5d53d96305e4105edbe44b1668",
+      "workspace_bytes": 72373,
+      "workspace_sha256": "0f770bd8713656eeb56b77a97109eb7168e1be5d53d96305e4105edbe44b1668",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\src\\game_native_gui_page_application.cpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "src/game_native_gui_render_application.cpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "eef54bf0e2ef8a5a457756d864b8cb50222d1539",
+      "git_bytes": 59357,
+      "git_sha256": "a5b6be17c269f9486a210716143c17b2375c62e4401139d4d7adf66a39ca00cd",
+      "workspace_bytes": 59357,
+      "workspace_sha256": "a5b6be17c269f9486a210716143c17b2375c62e4401139d4d7adf66a39ca00cd",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\src\\game_native_gui_render_application.cpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "src/game_native_renderer_gui_scene.inc",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "9b682e14a021562855a7e9398228e11cd06dadd9",
+      "git_bytes": 14757,
+      "git_sha256": "b3c4c2270facfe38f2ed85dbe672e1771bcd37cf23dd034e4906a184c3440a4e",
+      "workspace_bytes": 14757,
+      "workspace_sha256": "b3c4c2270facfe38f2ed85dbe672e1771bcd37cf23dd034e4906a184c3440a4e",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\src\\game_native_renderer_gui_scene.inc",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "src/game_native_mission_scene.inc",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "5b7793c2baf78eae579a423db814707024461c4c",
+      "git_bytes": 11151,
+      "git_sha256": "82b7500c526d48b660c2a9005b3d2b9a341725b9cc5e0814d087e1e8e3506d91",
+      "workspace_bytes": 11151,
+      "workspace_sha256": "82b7500c526d48b660c2a9005b3d2b9a341725b9cc5e0814d087e1e8e3506d91",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\src\\game_native_mission_scene.inc",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "18e8628871be4a705c21e223538aa887298b1eac",
+      "git_bytes": 12096,
+      "git_sha256": "458089ee0886fc11fc5a9eec853c1fd985106bde4b3f5e489bf8f88fe1b1ce7b",
+      "workspace_bytes": 12096,
+      "workspace_sha256": "458089ee0886fc11fc5a9eec853c1fd985106bde4b3f5e489bf8f88fe1b1ce7b",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\include\\bsp\\native_gui_text_glyph_quad_storage.hpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "7d8f341eeb4ad5e78f151d53ff81c64ebd5e11d7",
+      "git_bytes": 33022,
+      "git_sha256": "ea0b5505b45fd3a17ba1f7016f4856d883f83644263250123a030cceda2dc34f",
+      "workspace_bytes": 33022,
+      "workspace_sha256": "ea0b5505b45fd3a17ba1f7016f4856d883f83644263250123a030cceda2dc34f",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\src\\native_gui_text_glyph_quad_storage.cpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "config/target.json",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "git_bytes": 455,
+      "git_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "workspace_bytes": 455,
+      "workspace_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\config\\target.json",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "tools/bsp.py",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "2e1fb76a9fd700f079912706d9459c4293f96c86",
+      "git_bytes": 103131,
+      "git_sha256": "0532d1e3fa711fb62d198e6747a4e0eb8978ef7e301de75710afd40d6c1a1339",
+      "workspace_bytes": 103131,
+      "workspace_sha256": "0532d1e3fa711fb62d198e6747a4e0eb8978ef7e301de75710afd40d6c1a1339",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\tools\\bsp.py",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "bd937766a7e4d62c015b2ab44a14a9153fbb4542",
+      "git_bytes": 14518,
+      "git_sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+      "workspace_bytes": 14518,
+      "workspace_sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\tools\\ghidra_export.py",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+      "git_bytes": 8771,
+      "git_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "workspace_bytes": 8771,
+      "workspace_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\include\\bsp\\native_string.hpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+      "git_bytes": 9121,
+      "git_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "workspace_bytes": 9121,
+      "workspace_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\src\\native_string.cpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "60b3f627150fa058fac7b8c4c74537cb3aee0a68",
+      "git_bytes": 3113,
+      "git_sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+      "workspace_bytes": 3113,
+      "workspace_sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\include\\bsp\\native_string_pool_storage.hpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "git_blob": "103d6fe4d772bb3078c48fe8bcf3f929a385fdda",
+      "git_bytes": 5450,
+      "git_sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+      "workspace_bytes": 5450,
+      "workspace_sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\source\\src\\native_string_pool_storage.cpp",
+      "read_claim": "integrity pin only; explicitly inspected regions listed separately"
+    }
+  ],
+  "source_regions": [
+    {
+      "id": "R01_actual174_prefix",
+      "path": "include/bsp/native_node_construction.hpp",
+      "first_line": 20,
+      "last_line": 58,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098",
+      "region_bytes": 1616,
+      "region_sha256": "767b492ed184fb90ccd4da0914f5afa4f3051e4c1f00ffdc1a81a0d026a757d7",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R01_actual174_prefix.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R02_raw_constructor_contract",
+      "path": "include/bsp/native_node_construction.hpp",
+      "first_line": 77,
+      "last_line": 103,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098",
+      "region_bytes": 1717,
+      "region_sha256": "2e916e9e7924773fa26a679294f4e118df102c2b5283a90c4eae5e4da8996630",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R02_raw_constructor_contract.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R03_actual_cpp_birth_boundary",
+      "path": "src/native_node_construction.cpp",
+      "first_line": 60,
+      "last_line": 86,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "87a73019511d3575aa0887a4964a2a8703a5248106fdcff2eddfbb424918dd35",
+      "region_bytes": 917,
+      "region_sha256": "2eba66b6af4757905e9b88f638fa2adc5ed3c3520e4d12a1571436218f7cf8ca",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R03_actual_cpp_birth_boundary.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R04_raw_constructor_schedule_cleanup",
+      "path": "src/native_node_construction.cpp",
+      "first_line": 167,
+      "last_line": 232,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "87a73019511d3575aa0887a4964a2a8703a5248106fdcff2eddfbb424918dd35",
+      "region_bytes": 3479,
+      "region_sha256": "7236a9f145bc63f66594204f6928e7602c5005aff2d81a4ddbde14d79c53a657",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R04_raw_constructor_schedule_cleanup.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R05_node_binding_borrows",
+      "path": "include/bsp/native_node_construction.hpp",
+      "first_line": 111,
+      "last_line": 130,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098",
+      "region_bytes": 995,
+      "region_sha256": "3cbb0fb65f8f7fab3d382fc172c3d7d7375c023cf10f90541534bc8c504fe5ca",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R05_node_binding_borrows.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R06_node_binding_constructors",
+      "path": "src/native_node_construction.cpp",
+      "first_line": 305,
+      "last_line": 322,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "87a73019511d3575aa0887a4964a2a8703a5248106fdcff2eddfbb424918dd35",
+      "region_bytes": 1235,
+      "region_sha256": "24c2b14adaf832babc111ce310db986fbdf9e2d2b3599a5582df79cdc236415e",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R06_node_binding_constructors.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R07_actual_pool_allocate_return",
+      "path": "include/bsp/native_node_pool_allocation.hpp",
+      "first_line": 8,
+      "last_line": 44,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "ff3bdbc1203c0401f857077ba6b88ccf921682abce593ba4fdc0801b02f94c12",
+      "region_bytes": 2156,
+      "region_sha256": "fbedef08b855af9fabaa2d899c5b251c5c4f61fca81bee71269d193933ddda24",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R07_actual_pool_allocate_return.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R08_pool_owner_startup_lifetime",
+      "path": "include/bsp/native_node_pool_owner.hpp",
+      "first_line": 10,
+      "last_line": 45,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "a0d5dab26a44e7fd32275968e23252209368fee4b9019b188b3f260499007e93",
+      "region_bytes": 2085,
+      "region_sha256": "dfcffc526bffe24ea48753bb8779080ff64abc65c5212cf7e589a98d8b5b883a",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R08_pool_owner_startup_lifetime.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R09_name_header_borrow",
+      "path": "include/bsp/gui_text_type_dispatch.hpp",
+      "first_line": 8,
+      "last_line": 11,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "4efe3b984c54d4ed6b485cb5885a85d65f06bbc77bbb5592f4fb5d2509512d34",
+      "region_bytes": 232,
+      "region_sha256": "28c0f3ef2d4bf0dd9bc043b2bd7033b90299b69402bb8804b4737ef5159c4ae0",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R09_name_header_borrow.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R10_name_getter_body",
+      "path": "src/gui_text_type_dispatch.cpp",
+      "first_line": 35,
+      "last_line": 37,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "0a56deab2a02681a587152cf85a33065db65f2b237ec13be52f97aa46cbd0e3a",
+      "region_bytes": 115,
+      "region_sha256": "87164c172d45592a6a2eaa20c25bbe00f3a62e8f1b84d6eed1c621f956e028f3",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R10_name_getter_body.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R11_cppnode_reference_domain",
+      "path": "include/bsp/native_plain_node.hpp",
+      "first_line": 24,
+      "last_line": 79,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "9e401643412566e47d51caab60a069188e9c5970a95306592808af8a859b3581",
+      "region_bytes": 3279,
+      "region_sha256": "b814b23824dbb2400daf44a20c964f86e36f40bfa69d31f97eb0229750c438ab",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R11_cppnode_reference_domain.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R12_cppnode_reference_admission",
+      "path": "src/native_plain_node.cpp",
+      "first_line": 35,
+      "last_line": 64,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "b90cfa55ab69f235665244fe873be05da5af73972c6bdde1d68e1c22562356c9",
+      "region_bytes": 2176,
+      "region_sha256": "1535401cc30e5ca5c64efa9ecb54e4933aa2e9c71af21b53e161047ce0eefba6",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R12_cppnode_reference_admission.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R13_cppnode_terminal",
+      "path": "src/native_plain_node.cpp",
+      "first_line": 106,
+      "last_line": 118,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "b90cfa55ab69f235665244fe873be05da5af73972c6bdde1d68e1c22562356c9",
+      "region_bytes": 587,
+      "region_sha256": "dc08513e820c5da7e235e20c49325a662e50e03337426fe507430bf3e8e6ce15",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R13_cppnode_terminal.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R14_cppnode_delete_failure_boundary",
+      "path": "src/native_plain_node.cpp",
+      "first_line": 11,
+      "last_line": 33,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "b90cfa55ab69f235665244fe873be05da5af73972c6bdde1d68e1c22562356c9",
+      "region_bytes": 1081,
+      "region_sha256": "28abeec12e641974b3d1733dbdaba7203a65888118cf6a7283c2b2367474d703",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R14_cppnode_delete_failure_boundary.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R15_positive_light_api",
+      "path": "include/bsp/native_point_light_links.hpp",
+      "first_line": 56,
+      "last_line": 73,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "e106191d74ea6960befb5f36e74e89076efb5fec4122a5b3d87482823dc07ba7",
+      "region_bytes": 1213,
+      "region_sha256": "133486bc11dd3f0a51ab84e716a57b8ecc5edbd3d4de6582acfde1061445a5ab",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R15_positive_light_api.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R16_positive_light_loop",
+      "path": "src/native_point_light_links.cpp",
+      "first_line": 154,
+      "last_line": 163,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "ba2ecb549d219cbdafc285fefaaf96a2fca462ecaadc0ef56c3879fbeb4e9d3c",
+      "region_bytes": 629,
+      "region_sha256": "0fae7edf9ebb7ce87474ef6317b664e5a4b19e519d97586ca378fa57a1f6e6f3",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R16_positive_light_loop.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R17_model_fragment_explicit_domain",
+      "path": "include/bsp/native_gui_text_model_clone.hpp",
+      "first_line": 16,
+      "last_line": 28,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "cccd68d36f97c6609895e6243921a6f1c96eb7b66ae9fee2a04486a2c4bebfa1",
+      "region_bytes": 955,
+      "region_sha256": "e9364fea698f6b95cee64ab4560d00afd8b36d5a440d8872780f478bce9db4c8",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R17_model_fragment_explicit_domain.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R18_model_fragment_body",
+      "path": "src/native_gui_text_model_clone.cpp",
+      "first_line": 65,
+      "last_line": 112,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "35786eff932745c02eb5a06c6a07c24ecbe978ba744466a301d1d4925f682941",
+      "region_bytes": 2524,
+      "region_sha256": "b621e0243b6a3f0870a3412e48f9b8b346cf1a5c1aca21b10f23b943febd9863",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R18_model_fragment_body.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R19_model_fragment_retained_assignments",
+      "path": "src/native_gui_text_model_clone.cpp",
+      "first_line": 33,
+      "last_line": 63,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "35786eff932745c02eb5a06c6a07c24ecbe978ba744466a301d1d4925f682941",
+      "region_bytes": 1247,
+      "region_sha256": "a91a85f9c27001eb33c69e8a853344d89138624d348cd988b60a52414b054ef0",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R19_model_fragment_retained_assignments.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R20_existing_model_clone_domain",
+      "path": "include/bsp/native_gui_widget_model_clone.hpp",
+      "first_line": 16,
+      "last_line": 49,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "36e1a035e9b1785450cb83314b91e457a89e3b4fb14d0945b3d0f866fb655fd7",
+      "region_bytes": 1939,
+      "region_sha256": "51d8097cfaaed3c1fb5d894e832b9e16fa92849e935cd4eaada2dd73c87ee44b",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R20_existing_model_clone_domain.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R21_existing_model_clone_ctor_bind_order",
+      "path": "src/native_gui_widget_model_clone.cpp",
+      "first_line": 35,
+      "last_line": 81,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "142b07987b5624d6f36a53c77d544b4c4844b22579cdf75ea353c7a34be58dc5",
+      "region_bytes": 2598,
+      "region_sha256": "b68324342043e016bff913b2a34efae31fd86902dbcb253d3b67df6f60a0b787",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R21_existing_model_clone_ctor_bind_order.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R22_raw_parenting_dispatch",
+      "path": "include/bsp/native_node_parenting_storage.hpp",
+      "first_line": 8,
+      "last_line": 56,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "099017858da7cd62e7b5260aaac8f53a2451b063469266a1e6119e7ce3cdc3b0",
+      "region_bytes": 2405,
+      "region_sha256": "2bbcd69737786a1617694c0e7bf423554f08a0403ed1c3e4fce9f164fed3b680",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R22_raw_parenting_dispatch.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R23_whole_raw_parenting_api",
+      "path": "include/bsp/native_node_parenting_storage.hpp",
+      "first_line": 82,
+      "last_line": 96,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "099017858da7cd62e7b5260aaac8f53a2451b063469266a1e6119e7ce3cdc3b0",
+      "region_bytes": 977,
+      "region_sha256": "ab3deaa152e784b77219a8f546df1f8b651fcd4fd9ddac33c430996dde9bf430",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R23_whole_raw_parenting_api.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R24_whole_raw_root_api",
+      "path": "include/bsp/native_node_root_propagation.hpp",
+      "first_line": 5,
+      "last_line": 25,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "0fed8a0255b3068472bb0a72e2d41352ce1d10ee7ace03520254ae6d9dfde5d4",
+      "region_bytes": 1388,
+      "region_sha256": "08cf1a8e440fc2ea1d6dd1b59f51ebce27694754c4abe825d86d0fceee67d8e8",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R24_whole_raw_root_api.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R25_whole_raw_scene_api_context",
+      "path": "include/bsp/native_node_scene_attachment.hpp",
+      "first_line": 8,
+      "last_line": 79,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "8b2f6d276fbe92b00c190fadcda44e71e8547c5890bd224ee2de895310658edf",
+      "region_bytes": 4246,
+      "region_sha256": "647dac5450be027cdb302d35da2f2f556f5a392c15f85fe18b2533f1a9635d20",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R25_whole_raw_scene_api_context.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R26_whole_raw_matrix_domain",
+      "path": "include/bsp/native_node_raw_transform.hpp",
+      "first_line": 10,
+      "last_line": 47,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "99460e5aa96bac3ef0255146992d7e002e2ec5adf07ab71788221ad10c75d4de",
+      "region_bytes": 2001,
+      "region_sha256": "1fb17f483b7122d3a7e6e1df8a131b7cbf5977368f49e6ca7879206cbdfbb613",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R26_whole_raw_matrix_domain.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R27_raw_matrix_mapped_aliases",
+      "path": "src/native_node_raw_transform.cpp",
+      "first_line": 22,
+      "last_line": 45,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "092fa6a47756bf5a8a3a18dfbbaecf468898b3c91bc5ee5235bba5a7f078e16c",
+      "region_bytes": 1300,
+      "region_sha256": "44e297b80e6806f555a80d222501350f8cf63eb7bebb5ab5f699e15c89772477",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R27_raw_matrix_mapped_aliases.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R28_raw_matrix_implementation",
+      "path": "src/native_node_raw_transform.cpp",
+      "first_line": 62,
+      "last_line": 121,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "092fa6a47756bf5a8a3a18dfbbaecf468898b3c91bc5ee5235bba5a7f078e16c",
+      "region_bytes": 2776,
+      "region_sha256": "bc35581c626195b68e60c7ec2317010ca53035c5c16f37befa251a7d9107593f",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R28_raw_matrix_implementation.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R29_raw_base_lifetime_context",
+      "path": "include/bsp/native_node_base_destruction.hpp",
+      "first_line": 8,
+      "last_line": 34,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "cd1f22aafdc481b9e54c23dda5634171ac654b570d8ad8757f843bca76883226",
+      "region_bytes": 1549,
+      "region_sha256": "2ce30d5cdd4429626057ce22504dd0b5da703224481622b5d6839775ac864602",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R29_raw_base_lifetime_context.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R30_raw_base_lifetime_api",
+      "path": "include/bsp/native_node_base_destruction.hpp",
+      "first_line": 73,
+      "last_line": 88,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "cd1f22aafdc481b9e54c23dda5634171ac654b570d8ad8757f843bca76883226",
+      "region_bytes": 1080,
+      "region_sha256": "ebbe6ff75e2ae5ecefea32870a3a76ac73548a7d890b99056f254d91853817f8",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R30_raw_base_lifetime_api.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R31_tree_current0_lifetime_contract",
+      "path": "include/bsp/native_node_tree_retirement.hpp",
+      "first_line": 36,
+      "last_line": 71,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "7826147682ef91780670172a270214c5f164ba92696f76c06ecc4d3e8387f07f",
+      "region_bytes": 2120,
+      "region_sha256": "a101bffbb16ba0f86743ef0212fc9e2a0456d3e5be84e48efca89a2c5af3399a",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R31_tree_current0_lifetime_contract.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R32_retained_binding_type",
+      "path": "include/bsp/native_node_destruction.hpp",
+      "first_line": 12,
+      "last_line": 42,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833",
+      "region_bytes": 1702,
+      "region_sha256": "6e60ec60dc8df1c02277c5c8fe280813bbb2a726301ce775fc0316679b164359",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R32_retained_binding_type.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R33_legacy_retained_binding_release",
+      "path": "src/native_node_destruction.cpp",
+      "first_line": 85,
+      "last_line": 110,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "2ee6ba84e759958a8f160cb25ad210076203931d4ae4f2e9265529bff5c57269",
+      "region_bytes": 1411,
+      "region_sha256": "503baa6fc17ea8ce1a90bd54ff884f121c00ef33ada4d440c079b4569e78077c",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R33_legacy_retained_binding_release.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R34_page_scene_dispatch",
+      "path": "src/game_native_gui_page_application.cpp",
+      "first_line": 234,
+      "last_line": 276,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "0f770bd8713656eeb56b77a97109eb7168e1be5d53d96305e4105edbe44b1668",
+      "region_bytes": 2772,
+      "region_sha256": "9d405d25c89e69e67b5e3a9a63ed4670a8b943ba14c16e64c84ffc7e759a40c8",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R34_page_scene_dispatch.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R35_page_node_admission",
+      "path": "src/game_native_gui_page_application.cpp",
+      "first_line": 958,
+      "last_line": 974,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "0f770bd8713656eeb56b77a97109eb7168e1be5d53d96305e4105edbe44b1668",
+      "region_bytes": 963,
+      "region_sha256": "7f645f2b8660635c3e7a6f5afa5fb380af940342cfad87601b504c9522059cb2",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R35_page_node_admission.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R36_page_parenting_targets",
+      "path": "src/game_native_gui_page_application.cpp",
+      "first_line": 370,
+      "last_line": 401,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "0f770bd8713656eeb56b77a97109eb7168e1be5d53d96305e4105edbe44b1668",
+      "region_bytes": 2016,
+      "region_sha256": "097849dc10773aab2f1a50e5c36c1da1eabc79f482c743133a9222cb017df2d6",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R36_page_parenting_targets.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R37_internal188_dispatch_contract",
+      "path": "include/bsp/native_model_storage_node_dispatch.hpp",
+      "first_line": 31,
+      "last_line": 70,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "27b319d3bae80ba4eb426917a9f6b8890c88559a3b88066a70e4f8d7dac30723",
+      "region_bytes": 2573,
+      "region_sha256": "cec2c6587f7509c700095985df650e62a647766b845787c5de54e26909f24efb",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R37_internal188_dispatch_contract.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R38_internal188_actual_admission",
+      "path": "src/native_model_storage_node_dispatch.cpp",
+      "first_line": 177,
+      "last_line": 205,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "76418809bb56a11118f64f1ba28ee6d068677b0a8314c0dd5a54b9d96d583d08",
+      "region_bytes": 2002,
+      "region_sha256": "8ce392a588547247cb02f20a72020e28436fca9fe95f4ffe6cb615ac3e7b1b13",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R38_internal188_actual_admission.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R39_internal188_scene_dispatch",
+      "path": "src/native_model_storage_node_dispatch.cpp",
+      "first_line": 244,
+      "last_line": 265,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "76418809bb56a11118f64f1ba28ee6d068677b0a8314c0dd5a54b9d96d583d08",
+      "region_bytes": 1286,
+      "region_sha256": "7f645fb39e4dcc0e5f4e7e3893c58cd93f728f088afc6a68d460604bf38e43d7",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R39_internal188_scene_dispatch.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R40_renderer_scene_dispatch_domain",
+      "path": "src/game_native_renderer_gui_scene.inc",
+      "first_line": 145,
+      "last_line": 185,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "b3c4c2270facfe38f2ed85dbe672e1771bcd37cf23dd034e4906a184c3440a4e",
+      "region_bytes": 2059,
+      "region_sha256": "d745e478c1ef7ce5cd619e6afd76499bb9e725a0ddbf3d4166c66e52c5fda7c2",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R40_renderer_scene_dispatch_domain.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R41_gui_scene_null_subset",
+      "path": "src/game_native_gui_render_application.cpp",
+      "first_line": 364,
+      "last_line": 405,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "a5b6be17c269f9486a210716143c17b2375c62e4401139d4d7adf66a39ca00cd",
+      "region_bytes": 2544,
+      "region_sha256": "70f13f23142729011a42792b92cbb5fd43494103bf72b20a77de81061cd600c6",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R41_gui_scene_null_subset.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R42_mission_scene_null_subset",
+      "path": "src/game_native_mission_scene.inc",
+      "first_line": 15,
+      "last_line": 38,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "82b7500c526d48b660c2a9005b3d2b9a341725b9cc5e0814d087e1e8e3506d91",
+      "region_bytes": 1638,
+      "region_sha256": "522d59be670819fb6a65786e0e20946623c6266eaecfdc5a49bee8a15a91bdfa",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R42_mission_scene_null_subset.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R43_old_node_clone_facade",
+      "path": "src/scene_graph2_cc13.cpp",
+      "first_line": 545,
+      "last_line": 551,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "1ec58b6d03569237c7715102d5bd240b02c181d95259e28b6e886d4bf573a9b9",
+      "region_bytes": 346,
+      "region_sha256": "97fe16625976e3bffed14fe42783d23c0ad14d144460cb5305b20dbda7b5f539",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R43_old_node_clone_facade.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R44_old_node_clone_abstract_services",
+      "path": "include/bsp/scene_graph2_cc13.hpp",
+      "first_line": 469,
+      "last_line": 483,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "90c17aacfa0decdd1aa75c445275674363f48e39f2b1368821dd1fa2e5898381",
+      "region_bytes": 886,
+      "region_sha256": "0f2bc39e787a3e5d22337e1a6cd004d586a4eed93466b19cb9fda0ec160d56aa",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R44_old_node_clone_abstract_services.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R45_glyph_actual_current10_source",
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "first_line": 525,
+      "last_line": 534,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "ea0b5505b45fd3a17ba1f7016f4856d883f83644263250123a030cceda2dc34f",
+      "region_bytes": 534,
+      "region_sha256": "3f747694c7a3ec59a77a84e4a10cd0ff254939901d14e8fc14170384327aec39",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R45_glyph_actual_current10_source.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R46_existing_raw_aa6720",
+      "path": "src/native_gui_page_construction.cpp",
+      "first_line": 27,
+      "last_line": 30,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "066059cba6487f666d38bbacebb8af793dcb8e0b211e51f38ab0c7241eebe185",
+      "region_bytes": 218,
+      "region_sha256": "f300b5b063f1c379d5c8764ac654aae9b6dcb33295d2371d2e1688b27925631f",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R46_existing_raw_aa6720.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R47_actual_owner_registry_admission",
+      "path": "include/bsp/native_render_context.hpp",
+      "first_line": 35,
+      "last_line": 97,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+      "region_bytes": 3520,
+      "region_sha256": "e0a749204cf19b2b13ced4e2ea7f94a8849aeb4867b6b56a2bb4094174f63a66",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R47_actual_owner_registry_admission.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R48_actual_owner_registry_mutex_publication",
+      "path": "src/native_render_context.cpp",
+      "first_line": 85,
+      "last_line": 130,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+      "region_bytes": 2529,
+      "region_sha256": "03fb53b8bfcefe1197a89e1fc28154fd6989da5b913b70c567cf8fef4c4c5fc2",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R48_actual_owner_registry_mutex_publication.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R49_actual_pool_context",
+      "path": "include/bsp/native_string.hpp",
+      "first_line": 28,
+      "last_line": 38,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "region_bytes": 494,
+      "region_sha256": "ae221875d0df54779836020cb7d83219e742c0a35bd07a5d6b8f2933c164b200",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R49_actual_pool_context.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R50_actual_header_cleanup_resize_contracts",
+      "path": "include/bsp/native_string.hpp",
+      "first_line": 61,
+      "last_line": 90,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "region_bytes": 2049,
+      "region_sha256": "a9f5b067baabde697a01f212365fb31be3a87efcbd15eff1cbd717ca6b5116af",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R50_actual_header_cleanup_resize_contracts.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R51_bsp_client_target_verification",
+      "path": "tools/bsp.py",
+      "first_line": 967,
+      "last_line": 984,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "0532d1e3fa711fb62d198e6747a4e0eb8978ef7e301de75710afd40d6c1a1339",
+      "region_bytes": 794,
+      "region_sha256": "cc2fc687b74fccee49725ac1306d4f9b2a2f081376cd91270830d32b43e682e1",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R51_bsp_client_target_verification.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    },
+    {
+      "id": "R52_actual_target_verify_implementation",
+      "path": "tools/ghidra_export.py",
+      "first_line": 101,
+      "last_line": 110,
+      "git_commit": "b6e50347a55366ee59564db69ad1ebedcc2df49c",
+      "whole_file_git_sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+      "region_bytes": 574,
+      "region_sha256": "4ce9f7a4d8d4c4d42c54e5f1e797ca401927f93f5ad6604d171081871f8eb011",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\regions\\R52_actual_target_verify_implementation.txt",
+      "read_claim": "inspected contract/implementation region, not a whole-file review"
+    }
+  ],
+  "proof": {
+    "frozen_root": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031",
+    "capture_script": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\capture.py",
+      "bytes": 8113,
+      "sha256": "8bcb5427b5971d76becf4c592b6e364ac4f611a237d6c98ebf1a35428c3e575f"
+    },
+    "reader": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-node-copy-clone-storage-readiness\\local\\output\\cc16_native_node_copy_clone_storage_readiness_20261031\\verify_evidence.py",
+      "utf8": "import hashlib,json,pathlib,struct,subprocess,sys\nr=json.loads(pathlib.Path(sys.argv[1]).read_bytes())\ndef h(b):return hashlib.sha256(b).hexdigest()\nchecks=0\nfor p in r[\"source_pins\"]:\n b=subprocess.check_output([\"git\",\"show\",p[\"commit\"]+\":\"+p[\"path\"]]);assert len(b)==p[\"git_bytes\"] and h(b)==p[\"git_sha256\"];checks+=1\nfor p in r[\"source_regions\"]:\n b=subprocess.check_output([\"git\",\"show\",p[\"git_commit\"]+\":\"+p[\"path\"]]);q=b\"\".join(b.splitlines(keepends=True)[p[\"first_line\"]-1:p[\"last_line\"]]);assert len(q)==p[\"region_bytes\"] and h(q)==p[\"region_sha256\"];checks+=1\npe=pathlib.Path(r[\"native_evidence\"][\"pe\"][\"path\"]).read_bytes();assert h(pe)==r[\"native_evidence\"][\"pe\"][\"sha256\"];checks+=1\nfor p in r[\"native_evidence\"][\"native\"]+r[\"native_evidence\"][\"eh\"]+[r[\"node_profile\"]]:\n b=bytes.fromhex(p[\"hex\"]);assert len(b)==p[\"bytes\"] and h(b)==p[\"sha256\"] and pe[p[\"pe_file_offset\"]:p[\"pe_file_offset\"]+len(b)]==b;checks+=1\n if \"instructions\" in p:assert b==b\"\".join(bytes.fromhex(i[\"bytes_hex\"]) for i in p[\"instructions\"]) and len(p[\"instructions\"])==p[\"instruction_rows\"]\nfor p in r[\"native_evidence\"][\"native\"]:\n for e in p[\"exports\"]:\n  b=pathlib.Path(e[\"frozen_path\"]).read_bytes();assert len(b)==e[\"bytes\"] and h(b)==e[\"sha256\"];checks+=1\nassert r[\"implementation_ready\"] is False and r[\"native_origin_permission\"] is False\nprint(json.dumps({\"checks\":checks,\"source_pins\":len(r[\"source_pins\"]),\"regions\":len(r[\"source_regions\"]),\"native_instructions\":178,\"pass\":True}))\n",
+      "bytes": 1479,
+      "sha256": "4f04b9837773aabaa34cdc335c7d9c9229e8991139ca2fc13d1bb819f52f939c",
+      "scope": "Static Git/region/PE/native-range/frozen-export integrity only; no Native execution/compiler/tests."
+    },
+    "inverse": "No production file delta. All Source pins refer to exact base Git blobs; only assigned two new evidence files may appear in final commit.",
+    "static_verification": {
+      "kind": "static data/integrity only; no compiler/test/probe/Native execution",
+      "reader_exit_code": 0,
+      "reader_stdout_utf8": "{\"checks\": 117, \"source_pins\": 51, \"regions\": 52, \"native_instructions\": 178, \"pass\": true}\r\n",
+      "reader_stdout_bytes": 93,
+      "reader_stdout_sha256": "f4e475bd71678851a3eefd3f6d7889d311a4fd7ee6f0a2728f348528a6efa116",
+      "raw_reader_equals_embedded_utf8": true,
+      "all51_workspace_preimages_unchanged": true,
+      "production_delta_from_base": [],
+      "full_native_map_ranges_and_16_epoch_pins_pass": true,
+      "native_fh3_info_and_action_map_pass": true,
+      "default_node_table_target_data_pass": true
+    }
+  },
+  "credit": {
+    "new_original_bodies": 0,
+    "new_vendor_bodies": 0,
+    "new_compiler_generated_bodies": 0,
+    "duplicate_body_credit": 0,
+    "original_abi": false,
+    "native_unwind": false,
+    "native_origin": false,
+    "runtime": false,
+    "activation": false,
+    "gameplay": false
+  },
+  "document_pin": {
+    "path": "docs/CC16_NATIVE_NODE_COPY_CLONE_STORAGE_READINESS.md",
+    "bytes": 12160,
+    "sha256": "38e36271ad8f8e8f153f1f34140222dacfc7c16c3f22471dc16bdc99cd55f6e1"
+  }
+}
