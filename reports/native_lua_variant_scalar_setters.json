@@ -1,0 +1,89 @@
+{
+  "schema": "bsp-native-lua-variant-scalar-setters-v1",
+  "source_base": "ae5465617c92b4f4db066a2fe368de3e1e262c9a",
+  "entries": {
+    "008869f0": {
+      "source_api": "set_native_lua_variant_signed_number_008869f0",
+      "normal_instructions": 8,
+      "native_bytes": 30,
+      "input": "CURRENT signedDWORD bits after completed clear",
+      "order": [
+        "clear completion",
+        "late fullHOME read",
+        "actual CVTSI2SS/currentMXCSR",
+        "private volatile result-word anchor",
+        "full tag0",
+        "four payload bits"
+      ],
+      "native_eax": "incidental child EAX, unrepresented by Source completion API"
+    },
+    "00886b30": {
+      "source_api": "set_native_lua_variant_pointer_word_00886b30",
+      "normal_instructions": 8,
+      "native_bytes": 26,
+      "order": [
+        "clear completion",
+        "late fullHOME capture",
+        "full tag4",
+        "captured payload",
+        "Source completion/optional actual captured input"
+      ],
+      "native_eax": "captured opaque CURRENT input DWORD, not receiver"
+    }
+  },
+  "source_files": {
+    "include/bsp/native_lua_variant_scalar_setters.hpp": "84147130621b164b4279f7ab49462080a988e932a5accf64b32438c91536edda",
+    "src/native_lua_variant_scalar_setters.cpp": "12350432d7c2842b2437828d11f74506bb1004a5ddb520688d4e7082e71716fb"
+  },
+  "source_ready": false,
+  "runtime_validated": false,
+  "native_body_credit": false,
+  "vendor_body_credit": false,
+  "design_sha256": "c6f7e8ca7037acfe99ee602b1a3874e866c6a2276c2781de4a89711c812f03d9",
+  "actual_provider": "clear_native_lua_variant_00886920_cpp_cleanup",
+  "provider_preservation": {
+    "include/bsp/native_lua_variant_retirement.hpp": "14258135096189f2892e4d896af417ed0c8fb616d5f1659bbc1d9d032f68a7db",
+    "src/native_lua_variant_retirement.cpp": "5db41574abcb3a94fdb9c6f5c8f96f2b7b0c1f0c2a7f438fe64d622980c065ca",
+    "include/bsp/native_lua_variant_tag6.hpp": "33331fe322af7564cfaf4f04995261adb44c5defe0f827785d4b75a56251f596",
+    "src/native_lua_variant_tag6.cpp": "986f954e728e89ea5d4d0b6dbfd4dfa8df08ab428f8ffcad501d12ab85ef38f4"
+  },
+  "noncompletion": "Before any HOME/conversion/tag/payload effect; B30 optional absent",
+  "exception_policy": "Actual C++ escape propagates, no wrapper action/catch/cleanup/retry",
+  "input_home_writes_or_partial_byte_behavior": "None; legal aliases observe only actual clear/tag/payload effects. Optional engagement byte is independent Source result metadata",
+  "fp_policy": "Actual CVTSI2SS under CURRENT MXCSR; no snapshot/reset/mask/restore/default/cast/x87 substitute; real instruction status/exception effects remain",
+  "private_anchor": "volatile Source DWORD contains actual converted bits before tag0; compiler private receiver-parameter slot reuse is not borrowed HOME or Original stack ABI",
+  "validation": {
+    "code_reviews": [
+      "Root exact84147130/12350432 accepted",
+      "Gui exact84147130/12350432 accepted"
+    ],
+    "compile_receipt_sha256": "06d1fc8594f9d8dd943d2773d24887e662e93577ce4916c537c6022fe71e84db",
+    "target_invocations": 1,
+    "exit": 0,
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\build\\native_lua_variant_scalar_setters_object\\native_lua_variant_scalar_setters_object.dir\\Release\\native_lua_variant_scalar_setters.obj",
+      "sha256": "62e4854bcbf87eb73284af9494fffbfa4ca1a496dccd2e0449e6720bf92285e9",
+      "bytes": 4057,
+      "coff_machine": "014C"
+    },
+    "same_object_inspection_sha256": "0c1bfcc66f84c1dd64aac2ad15d8a302f7f867e4dc8bd41ddc58a71b95074709",
+    "symbol_receipt_sha256": "a69e1136923ed3eecbb87d8a46a34835cbd116a55fa6540152e91534f2ed005e",
+    "floating_point_models": [
+      "Strict",
+      "Strict",
+      "Strict",
+      "Strict"
+    ],
+    "actual_cvtsi2ss_before_tag": true,
+    "control_or_alternative_conversion_ops": [],
+    "only_genuine_clear_undefined": true,
+    "tests_link_executable_or_entry": false
+  },
+  "limits": [
+    "Existing full typed/nested/matched allocator/raw-cell/disjoint sufficient metadata domain inherited",
+    "Actual record/HOME/provenance/failure custody remains caller-owned",
+    "No Frame/birth/field repair/tag filter/callback/new provider/ownership grant",
+    "Ordinary Source aggregate/volatile HOME, not Original ABI/private-XMM/stack/FH3/SEH/fault/runtime",
+    "No parent886E00/vector/vendor/VM/startup admission"
+  ]
+}
