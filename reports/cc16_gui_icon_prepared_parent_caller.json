@@ -1,0 +1,617 @@
+{
+  "kind": "Proposed author evidence for exact sealed Source66 V2; ignored preparation only",
+  "baseline_commit": "a6f59bb18bc124d208eea75588333b0931aefa33",
+  "four_source_postimages": [
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "bytes": 11927,
+      "sha256": "cd2726e79c917d705dc11afc2b136ca6db66145530fc914ce42445b6a4a8ea0b"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "bytes": 28669,
+      "sha256": "076c43a63b9f9257107c6ba535477dc24a6f7d0880e43813072d0442af47deaa"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_storage.hpp",
+      "bytes": 8923,
+      "sha256": "36efeb861e01b14348e370d169c9002b8ac436a29b2f9f3be1d5aac8d7976bfc"
+    },
+    {
+      "path": "src/native_gui_icon_storage.cpp",
+      "bytes": 19689,
+      "sha256": "cc847b8f5fb19055a1116376b2d3a8eff181f045695fe73394ba04996728a492"
+    }
+  ],
+  "mechanical_seams": [
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "label": "append_Source_phase",
+      "offset_before": 1341,
+      "old_utf8": "        complete, failed };",
+      "new_utf8": "        complete, failed, prepared_call };",
+      "old_bytes": 27,
+      "new_bytes": 42,
+      "old_sha256": "d59d41abff300a1a97cdf6650050d640ba9e837baa594b9b99c62ae733516a8a",
+      "new_sha256": "d9aaceeee3857e92df087394d77ba172eefd36e63658954800f8abb4a517cf84"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "label": "append_Source_routes",
+      "offset_before": 1924,
+      "old_utf8": "enum class SourceRoute { legacy, prepared_raw_scalar };",
+      "new_utf8": "enum class SourceRoute { legacy, prepared_raw_scalar,\n        prepared_raw_icon_getter, prepared_raw_icon_cancel };",
+      "old_bytes": 55,
+      "new_bytes": 115,
+      "old_sha256": "f74f8a51a77a7707200a959a406f5d5e88e1b40d0bb5b7dabe30b2eb43906e35",
+      "new_sha256": "6683ca567b6c11dd88748021c8bf4d3353b4798d54b8379e27f89e0f151dd662"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "label": "actual_existing_type_forwards",
+      "offset_before": 2217,
+      "old_utf8": "class NativeGuiIconDelayedLoadsRawScalarDispatchContext;\n",
+      "new_utf8": "class NativeGuiIconDelayedLoadsRawScalarDispatchContext;\nclass NativeGuiIconPreparedCancelCall;\nstruct NativeGuiIconStorageContext;\nstruct NativeGuiIconDestroyAcquired;\nstruct NativeGuiWidgetLifetimeContext;\nclass NativeGuiWidgetParentDeleteAttempt;\nclass NativeGuiIconDelayedLoadsGetterStorageAcquired;\n",
+      "old_bytes": 57,
+      "new_bytes": 304,
+      "old_sha256": "bea6d5fb393defd9617591f84bc6caa9c081f49b4303e2ea1a9bbefd0d3cb392",
+      "new_sha256": "e7c5ad1ace581115e3352314bea3fc5e14fc3ad19a039dfa7efc47ea8fd08536"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "label": "cold_real_call_preparation",
+      "offset_before": 6081,
+      "old_utf8": "    bool requires_process_retention() const noexcept;\n",
+      "new_utf8": "    // Explicit cold caller support. Allocates/adopts only Source records before\n    // enclosing Native effects; no getter, HOME store or owner admission here.\n    NativeGuiIconPreparedCancelCall& prepare_icon_cancel_call(void* actual_icon,\n        NativeGuiIconStorageContext&, NativeGuiIconDestroyAcquired&);\n\n    bool requires_process_retention() const noexcept;\n",
+      "old_bytes": 54,
+      "new_bytes": 367,
+      "old_sha256": "0ace13793f773d2a11fba3f035e93d3c8daca26dbc8d0f7eafa1104a9eed2681",
+      "new_sha256": "945f2264f029b930f5e6372dbe746c32334518e0831f0504df93480e0d615993"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "label": "qualify_legacy_record_query",
+      "offset_before": 6448,
+      "old_utf8": "    const NativeGuiIconDelayedLoadsOperation* last_operation() const noexcept;",
+      "new_utf8": "    // Legacy/manager operation only. Prepared calls retain their TWO own records\n    // through NativeGuiIconPreparedCancelCall; they never replace this slot.\n    const NativeGuiIconDelayedLoadsOperation* last_operation() const noexcept;",
+      "old_bytes": 78,
+      "new_bytes": 238,
+      "old_sha256": "94eed971a7bbee62b8a1fbf85dda3ed966305f941efb48f420b57bf3ef4c9347",
+      "new_sha256": "ee2c85920a8619147b124418482774f71483e568dc3669f4495548a3e9c8e7f2"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "label": "private_real_service_friend",
+      "offset_before": 6743,
+      "old_utf8": "private:\n    struct Impl;\n    std::unique_ptr<Impl> impl_;\n};",
+      "new_utf8": "private:\n    friend class NativeGuiIconPreparedCancelCall;\n    struct Impl;\n    std::unique_ptr<Impl> impl_;\n};",
+      "old_bytes": 61,
+      "new_bytes": 111,
+      "old_sha256": "a1a3707844519f3acf7b82300161849cee5f332bd8e86be0222d960e078125f3",
+      "new_sha256": "e1df4087a4b32db615cc01afa9f4887a9d77702390c407cf5f2873b16fdfc25d"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "label": "private_prepared_call_class",
+      "offset_before": 9497,
+      "old_utf8": "} // namespace bsp\n",
+      "new_utf8": "// Explicit cold Source support only. No actual owner/current-holder/Origin\n// authority is created by this service-owned nonmoving call record. Once an\n// invocation enters, provider/disposition debt remains even after normal return;\n// no reset, normal drain admission or retirement/discharge exists here.\nclass NativeGuiIconPreparedCancelCall final {\npublic:\n    ~NativeGuiIconPreparedCancelCall();\n    NativeGuiIconPreparedCancelCall(const NativeGuiIconPreparedCancelCall&) = delete;\n    NativeGuiIconPreparedCancelCall& operator=(const NativeGuiIconPreparedCancelCall&) = delete;\n    NativeGuiIconPreparedCancelCall(NativeGuiIconPreparedCancelCall&&) = delete;\n    NativeGuiIconPreparedCancelCall& operator=(NativeGuiIconPreparedCancelCall&&) = delete;\n    bool entered() const;\n    bool normal_returned() const;\n    bool unknown_escape() const;\n    bool requires_process_retention() const;\n    const NativeGuiIconDelayedLoadsOperation& getter_operation() const;\n    const NativeGuiIconDelayedLoadsOperation& cancel_operation() const;\n    const NativeGuiIconDelayedLoadsGetterStorageAcquired& getter_acquired() const;\n    const NativeGuiWidgetParentDeleteAttempt& base_attempt() const;\nprivate:\n    friend class NativeGuiIconDelayedLoads;\n    friend void destroy_native_gui_icon_prepared_00ab5e70(void*,\n        NativeGuiIconStorageContext&, NativeGuiIconDestroyAcquired&,\n        NativeGuiIconPreparedCancelCall&);\n    friend void* delete_native_gui_icon_prepared_00ab6100(void*,\n        const volatile std::uint32_t&, NativeGuiIconStorageContext&,\n        NativeGuiIconDestroyAcquired&, NativeGuiIconPreparedCancelCall&);\n    struct Impl;\n    explicit NativeGuiIconPreparedCancelCall(std::unique_ptr<Impl>);\n    std::unique_ptr<Impl> impl_;\n    std::unique_ptr<NativeGuiIconPreparedCancelCall> next_;\n    void enter(void*, NativeGuiIconStorageContext&, NativeGuiIconDestroyAcquired&);\n    void stage_owner_push(void* captured_icon);\n    bool prepared_scope_available() const;\n    void push_prepared_scope();\n    void restore_prepared_scope();\n    NativeGuiIconDelayedLoadsStorage* call_getter();\n    void call_cancel(NativeGuiIconDelayedLoadsStorage* captured_getter_result);\n    void call_base(void*, NativeGuiWidgetLifetimeContext&);\n    void normal_return();\n    void note_unknown();\n    void destroy_icon_body_00ab5e70(void*, NativeGuiIconStorageContext&,\n        NativeGuiIconDestroyAcquired&);\n};\n\n} // namespace bsp\n",
+      "old_bytes": 19,
+      "new_bytes": 2430,
+      "old_sha256": "459606a6316233300fe9809f0885a8ba0c3ca5fc8a12a17231786940949b8361",
+      "new_sha256": "2f9349a301ce3bb1fe43bc899b22a9485ad16856f020479743651d0fda539efc"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "label": "genuine_concrete_suppliers",
+      "offset_before": 0,
+      "old_utf8": "#include \"bsp/native_gui_icon_delayed_loads.hpp\"\n",
+      "new_utf8": "#include \"bsp/native_gui_icon_delayed_loads.hpp\"\n#include \"bsp/native_gui_icon_storage.hpp\"\n#include \"bsp/native_gui_icon_delayed_loads_getter_storage.hpp\"\n#include \"bsp/native_gui_icon_delayed_loads_owner_cancel_storage.hpp\"\n#include \"bsp/native_gui_widget_lifetime.hpp\"\n",
+      "old_bytes": 49,
+      "new_bytes": 272,
+      "old_sha256": "7e43ff5a2a80b36829248e7f7a24faa336f07207c6cba6f357d34473febe9c83",
+      "new_sha256": "4ea6ceb998cd965821c6bd178396c97d0e41e05e3235efe2cbd471d409ab6341"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "label": "cold_retained_storage",
+      "offset_before": 2090,
+      "old_utf8": "struct NativeGuiIconDelayedLoads::Impl {",
+      "new_utf8": "// Source metadata only. User-provided constructor leaves BOTH trivial Native\n// frames default-initialized/unseeded. Acquired/Operation defaults are separate.\nstruct NativeGuiIconPreparedCancelCall::Impl {\n    NativeGuiIconDelayedLoads& service;\n    void* const captured_icon;\n    NativeGuiIconStorageContext& storage;\n    NativeGuiIconDestroyAcquired& destruction;\n    NativeGuiIconDelayedLoadsGetterStorageFrame getter_frame;\n    NativeGuiIconDelayedLoadsGetterStorageAcquired getter_acquired;\n    NativeGuiIconDelayedLoadsOwnerCancelStorageFrame cancel_frame;\n    NativeGuiWidgetParentDeleteAttempt base_attempt;\n    std::unique_ptr<Operation> getter_operation;\n    std::unique_ptr<Operation> cancel_operation;\n    bool entered{}, normal_returned{}, unknown{}, owner_home_staged{};\n    // Private Source active-scope linkage only; not Native debt/disposition.\n    NativeGuiIconPreparedCancelCall* active_previous{};\n    bool active_scope_owned{}, saved_service_active{};\n    std::exception_ptr failure;\n    Impl(NativeGuiIconDelayedLoads& s, void* raw, NativeGuiIconStorageContext& c,\n        NativeGuiIconDestroyAcquired& a)\n        : service(s), captured_icon(raw), storage(c), destruction(a),\n          base_attempt(raw, c.lifetime),\n          getter_operation(std::make_unique<Operation>()),\n          cancel_operation(std::make_unique<Operation>()) {\n        getter_operation->kind = Operation::Kind::getter;\n        getter_operation->native_site = 0x00ab5700;\n        getter_operation->source_route = Operation::SourceRoute::prepared_raw_icon_getter;\n        cancel_operation->kind = Operation::Kind::cancel;\n        cancel_operation->native_site = 0x00ab50e0;\n        cancel_operation->source_route = Operation::SourceRoute::prepared_raw_icon_cancel;\n    }\n};\n\nstruct NativeGuiIconDelayedLoads::Impl {",
+      "old_bytes": 40,
+      "new_bytes": 1812,
+      "old_sha256": "e447b3fee72bbe577b1c70950e952cb42f56e227a8423e8323cea7c2fd24226d",
+      "new_sha256": "0693f018d4a687ea2a07ca7daa8c6d2db9b735cde6603b0d981af0390faa4a75"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "label": "append_permanent_metadata_anchor",
+      "offset_before": 4629,
+      "old_utf8": "    std::unique_ptr<NativeGuiIconDelayedRawScalarCallStorage> retained_raw_scalar_call;\n",
+      "new_utf8": "    std::unique_ptr<NativeGuiIconDelayedRawScalarCallStorage> retained_raw_scalar_call;\n    // Source records only; entering any selected node leaves explicit debt.\n    std::unique_ptr<NativeGuiIconPreparedCancelCall> prepared_icon_calls;\n",
+      "old_bytes": 88,
+      "new_bytes": 239,
+      "old_sha256": "c5285f3863e4477009db136c6fd65513dd281275e8ec6e55f9dd5f6ce293e418",
+      "new_sha256": "cefa1596eb359f80569f6afdb823351830cc62779793546ae8d03e24b9b45124"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "label": "private_prepared_active_top",
+      "offset_before": 4794,
+      "old_utf8": "    std::unique_ptr<NativeGuiIconPreparedCancelCall> prepared_icon_calls;\n",
+      "new_utf8": "    std::unique_ptr<NativeGuiIconPreparedCancelCall> prepared_icon_calls;\n    // Current prepared raw-callee scope; legacy active without this is unadmitted.\n    NativeGuiIconPreparedCancelCall* prepared_active_top{};\n",
+      "old_bytes": 74,
+      "new_bytes": 218,
+      "old_sha256": "c3e10ae6841d5d77f43263fa2b35035f23dd312d99861f95718b6060d35742d3",
+      "new_sha256": "89269ff5a5785c402b1c7dbb598e169e8a5860a0b40f96fd3a48618cb3d1da52"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "label": "actual_cold_and_native_epoch_methods",
+      "offset_before": 18011,
+      "old_utf8": "NativeGuiIconDelayedLoads::NativeGuiIconDelayedLoads(NativeStringRawPoolContext& strings,\n    NativeGuiIconDelayedLoadsStorage* volatile& publication)\n",
+      "new_utf8": "NativeGuiIconPreparedCancelCall::NativeGuiIconPreparedCancelCall(std::unique_ptr<Impl> p)\n    : impl_(std::move(p)) {}\nNativeGuiIconPreparedCancelCall::~NativeGuiIconPreparedCancelCall() = default;\nbool NativeGuiIconPreparedCancelCall::entered() const { return impl_->entered; }\nbool NativeGuiIconPreparedCancelCall::normal_returned() const { return impl_->normal_returned; }\nbool NativeGuiIconPreparedCancelCall::unknown_escape() const { return impl_->unknown; }\nbool NativeGuiIconPreparedCancelCall::requires_process_retention() const {\n    return impl_->entered || impl_->unknown; // No normal-disposition receipt here.\n}\nconst NativeGuiIconDelayedLoadsOperation& NativeGuiIconPreparedCancelCall::getter_operation() const {\n    return *impl_->getter_operation;\n}\nconst NativeGuiIconDelayedLoadsOperation& NativeGuiIconPreparedCancelCall::cancel_operation() const {\n    return *impl_->cancel_operation;\n}\nconst NativeGuiIconDelayedLoadsGetterStorageAcquired& NativeGuiIconPreparedCancelCall::getter_acquired() const {\n    return impl_->getter_acquired;\n}\nconst NativeGuiWidgetParentDeleteAttempt& NativeGuiIconPreparedCancelCall::base_attempt() const {\n    return impl_->base_attempt;\n}\nvoid NativeGuiIconPreparedCancelCall::enter(void* raw, NativeGuiIconStorageContext& c,\n    NativeGuiIconDestroyAcquired& a) {\n    const bool prior = impl_->entered || impl_->unknown;\n    impl_->entered = true; // DENIAL/debt before even a late admission can escape.\n    require(!prior, \"prepared Icon call cannot replay entered work\");\n    require(raw == impl_->captured_icon && &c == &impl_->storage && &a == &impl_->destruction,\n        \"prepared Icon call requires its exact retained parent/context/record\");\n    require(&c.delayed == &impl_->service && &c.strings == &impl_->service.impl_->strings &&\n        c.singleton_deletion.gui_icon_delayed_loads == &impl_->service,\n        \"prepared Icon requires its SAME actual service/pool/deletion bindings\");\n    require(prepared_scope_available() && !impl_->service.impl_->failed &&\n        impl_->service.impl_->actual_feature_word != nullptr,\n        \"prepared Icon requires its coherent cold canonical service\");\n    require(!impl_->base_attempt.entered(), \"prepared Icon base attempt is one-shot\");\n}\nvoid NativeGuiIconPreparedCancelCall::stage_owner_push(void* captured) {\n    require(!impl_->owner_home_staged && captured == impl_->captured_icon,\n        \"prepared Icon owner PUSH must occur once for its captured receiver\");\n    static_cast<volatile std::uint32_t&>(impl_->cancel_frame.owner_argument_home) = static_cast<std::uint32_t>(\n        reinterpret_cast<std::uintptr_t>(captured)); // Actual AB5E93, BEFORE getter.\n    impl_->owner_home_staged = true; // No subsequent HOME restage/snapshot.\n}\nbool NativeGuiIconPreparedCancelCall::prepared_scope_available() const {\n    const auto& s = *impl_->service.impl_;\n    auto* const top = s.prepared_active_top;\n    if (!s.active) return top == nullptr;\n    // Legacy/mixed active with no owned prepared top remains unadmitted.\n    return top && top->impl_->active_scope_owned &&\n        &top->impl_->service == &impl_->service;\n}\nvoid NativeGuiIconPreparedCancelCall::push_prepared_scope() {\n    require(!impl_->active_scope_owned && prepared_scope_available(),\n        \"prepared callee cannot reuse its active slot or enter a legacy-mixed scope\");\n    auto& s = *impl_->service.impl_;\n    impl_->active_previous = s.prepared_active_top;\n    impl_->saved_service_active = s.active;\n    impl_->active_scope_owned = true;\n    s.prepared_active_top = this;\n    s.active = true; // Old legacy invoke still rejects mixed-route entry.\n}\nvoid NativeGuiIconPreparedCancelCall::restore_prepared_scope() {\n    // Exact private LIFO owner invariant: this successful push is the current\n    // top, and inner Source scopes restore before any escape reaches this one.\n    // Only pointer/bool stores, no callback/allocation/cleanup or Native effect.\n    auto& s = *impl_->service.impl_;\n    s.prepared_active_top = impl_->active_previous;\n    s.active = impl_->saved_service_active;\n    impl_->active_scope_owned = false; // Slot reusable by this node's next callee;\n    // entered/provider debt and all prior call records remain unchanged.\n}\nNativeGuiIconDelayedLoadsStorage* NativeGuiIconPreparedCancelCall::call_getter() {\n    auto& s = *impl_->service.impl_;\n    require(impl_->entered && impl_->owner_home_staged && prepared_scope_available() && !s.failed,\n        \"prepared Icon getter requires its staged actual caller epoch\");\n    auto& op = *impl_->getter_operation;\n    require(op.phase == Phase::fresh, \"prepared getter record cannot replay\");\n    push_prepared_scope();\n    op.phase = Phase::prepared_call;\n    try {\n        op.raw_call_entered = true;\n        auto* const result = get_native_gui_icon_delayed_loads_storage_00ab5700(\n            s.publication, s.strings.actual_manager_publication_01090aa0,\n            impl_->getter_frame, impl_->getter_acquired);\n        op.actual = result; // Passive return identity only, NEVER registered_identity.\n        op.raw_call_returned = true;\n        op.phase = Phase::complete;\n        restore_prepared_scope();\n        return result;\n    } catch (...) {\n        restore_prepared_scope(); // Restore outer ownership BEFORE diagnostics.\n        op.phase = Phase::failed;\n        s.failed = true;\n        op.failure = s.failure = std::current_exception();\n        throw; // Raw65 retained guard/debt, no Native cleanup permission.\n    }\n}\nvoid NativeGuiIconPreparedCancelCall::call_cancel(NativeGuiIconDelayedLoadsStorage* captured) {\n    auto& s = *impl_->service.impl_;\n    require(impl_->entered && impl_->owner_home_staged && prepared_scope_available() && !s.failed &&\n        impl_->getter_operation->raw_call_returned,\n        \"prepared Icon cancellation requires its normally returned getter epoch\");\n    auto& op = *impl_->cancel_operation;\n    require(op.phase == Phase::fresh, \"prepared cancellation record cannot replay\");\n    op.actual = captured; // Argument identity, not current-holder custody.\n    push_prepared_scope();\n    op.phase = Phase::prepared_call;\n    try {\n        op.raw_call_entered = true;\n        cancel_native_gui_icon_delayed_loads_owner_storage_00ab50e0(\n            captured, impl_->cancel_frame, s.strings, *s.actual_feature_word);\n        op.raw_call_returned = true;\n        op.phase = Phase::complete;\n        restore_prepared_scope();\n    } catch (...) {\n        restore_prepared_scope(); // Restore outer ownership BEFORE diagnostics.\n        op.phase = Phase::failed;\n        s.failed = true;\n        op.failure = s.failure = std::current_exception();\n        throw;\n    }\n}\nvoid NativeGuiIconPreparedCancelCall::call_base(void* raw, NativeGuiWidgetLifetimeContext& c) {\n    destroy_native_gui_widget_base_00aa9730(raw, c, impl_->base_attempt);\n}\nvoid NativeGuiIconPreparedCancelCall::normal_return() {\n    impl_->normal_returned = true; // Does NOT discharge selected-node/provider debt.\n}\nvoid NativeGuiIconPreparedCancelCall::note_unknown() {\n    impl_->unknown = true;\n    impl_->failure = std::current_exception(); // Diagnostics, never origin/identity proof.\n    auto& s = *impl_->service.impl_;\n    s.failure = impl_->failure;\n    s.failed = true; // Sticky selected Source-boundary failure, not Native callee origin.\n    // Do not clear another invocation's active flag or rewrite completed callee records.\n}\nNativeGuiIconPreparedCancelCall& NativeGuiIconDelayedLoads::prepare_icon_cancel_call(\n    void* raw, NativeGuiIconStorageContext& c, NativeGuiIconDestroyAcquired& a) {\n    require(!impl_->active && !impl_->failed && impl_->actual_feature_word != nullptr,\n        \"prepared Icon call requires cold canonical service admission\");\n    require(raw && reinterpret_cast<std::uintptr_t>(raw) % 4u == 0 &&\n        &c.delayed == this && &c.strings == &impl_->strings &&\n        c.singleton_deletion.gui_icon_delayed_loads == this,\n        \"prepared Icon call requires aligned actual storage and SAME real domains\");\n    require(!a.started && a.phase == NativeGuiIconDestroyAcquired::Phase::fresh,\n        \"prepared Icon call requires its fresh genuine retained destruction record\");\n    for (auto* p = impl_->prepared_icon_calls.get(); p; p = p->next_.get())\n        require(&p->impl_->destruction != &a, \"one retained prepared call per destruction record\");\n    auto prepared = std::unique_ptr<NativeGuiIconPreparedCancelCall>(\n        new NativeGuiIconPreparedCancelCall(\n            std::make_unique<NativeGuiIconPreparedCancelCall::Impl>(*this, raw, c, a)));\n    // All metadata allocations/real base-attempt construction finished cold.\n    prepared->next_ = std::move(impl_->prepared_icon_calls);\n    impl_->prepared_icon_calls = std::move(prepared); // Permanent fixed-address anchor.\n    return *impl_->prepared_icon_calls;\n}\n\nNativeGuiIconDelayedLoads::NativeGuiIconDelayedLoads(NativeStringRawPoolContext& strings,\n    NativeGuiIconDelayedLoadsStorage* volatile& publication)\n",
+      "old_bytes": 151,
+      "new_bytes": 8980,
+      "old_sha256": "bebde19b5ca96b63058dac045daf38210607164f44effa853eb770bf3464fd49",
+      "new_sha256": "003728d7f0eeeeecc136c77b4d7db24eacd8ef681b9dacf37cbffdd01c4c8db3"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "label": "negative_selected_debt_old_default_return_preserved",
+      "offset_before": 28178,
+      "old_utf8": "    return impl_->active || impl_->failed || impl_->registered_identity != nullptr;",
+      "new_utf8": "    for (auto* p = impl_->prepared_icon_calls.get(); p; p = p->next_.get())\n        if (p->impl_->entered || p->impl_->unknown) return true;\n    return impl_->active || impl_->failed || impl_->registered_identity != nullptr;",
+      "old_bytes": 83,
+      "new_bytes": 224,
+      "old_sha256": "7ea7b437b7615b32a7e91ecd8e70d5bda34e67affc131b2c19b6d06fdcf947f7",
+      "new_sha256": "2e4428bed2795b76db7a8e7c55055a7cb05a41cc7d20fd7e3b6f746df9bf8e32"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_storage.hpp",
+      "label": "explicit_unselected_throwing_APIs",
+      "offset_before": 8234,
+      "old_utf8": "} // namespace bsp\n",
+      "new_utf8": "// Explicit throwing prepared-only entry points. SAME actual138h storage and\n// live flags HOME; never selected by old/default/noexcept callers. Cold call\n// record must be prepared before ANY enclosing Native profile/state effects.\n// Unknown owns no Native EH permission: retain whole graph without replay.\nvoid destroy_native_gui_icon_prepared_00ab5e70(void*, NativeGuiIconStorageContext&,\n    NativeGuiIconDestroyAcquired&, NativeGuiIconPreparedCancelCall&);\nvoid* delete_native_gui_icon_prepared_00ab6100(void*,\n    const volatile std::uint32_t& actual_flags_home, NativeGuiIconStorageContext&,\n    NativeGuiIconDestroyAcquired&, NativeGuiIconPreparedCancelCall&);\n} // namespace bsp\n",
+      "old_bytes": 19,
+      "new_bytes": 689,
+      "old_sha256": "459606a6316233300fe9809f0885a8ba0c3ca5fc8a12a17231786940949b8361",
+      "new_sha256": "9d63ef038d13abd109e20bb30e82ed9f4d7982255d56d4d2f3a7662113eb883e"
+    },
+    {
+      "path": "src/native_gui_icon_storage.cpp",
+      "label": "connected_whole_Icon_and_base_scope",
+      "offset_before": 15150,
+      "old_utf8": "void destroy_native_gui_icon_00ab5e70(void* raw, NativeGuiIconStorageContext& context,\n",
+      "new_utf8": "void NativeGuiIconPreparedCancelCall::destroy_icon_body_00ab5e70(void* raw,\n    NativeGuiIconStorageContext& context, NativeGuiIconDestroyAcquired& acquired) {\n    void* const captured_receiver = raw;\n    word(captured_receiver) = 0x00d5c4c0;\n    stage_owner_push(captured_receiver); // AB5E93, SAME HOME lives across getter callbacks.\n    acquired.native_eh_state = 2;\n    acquired.phase = NativeGuiIconDestroyAcquired::Phase::delayed_getter;\n    auto* const delayed = call_getter(); // Real65, no old get/invoke/owned filters.\n    acquired.phase = NativeGuiIconDestroyAcquired::Phase::delayed_cancel;\n    call_cancel(delayed); // Real57, no dereference/snapshot/restage of HOME.\n    acquired.native_eh_state = 1;\n    acquired.phase = NativeGuiIconDestroyAcquired::Phase::shader;\n    destroy_native_string_header_0041dd20(at(captured_receiver, 0x104), context.strings);\n    acquired.native_eh_state = 0;\n    acquired.phase = NativeGuiIconDestroyAcquired::Phase::states;\n    destroy_native_gui_icon_states_00ab5850(at(captured_receiver, 0xf0), context);\n    acquired.native_eh_state = -1;\n    acquired.phase = NativeGuiIconDestroyAcquired::Phase::base;\n    call_base(captured_receiver, context.lifetime); // Frame's actual selected3arg AA9730 body.\n}\nvoid destroy_native_gui_icon_prepared_00ab5e70(void* raw,\n    NativeGuiIconStorageContext& context, NativeGuiIconDestroyAcquired& acquired,\n    NativeGuiIconPreparedCancelCall& prepared) {\n    void* const captured_identity = raw;\n    try {\n        prepared.enter(captured_identity, context, acquired); // Before late admission/profile effects.\n        begin_destroy(captured_identity, context, acquired);\n        prepared.destroy_icon_body_00ab5e70(captured_identity, context, acquired);\n        acquired.complete = true;\n        acquired.phase = NativeGuiIconDestroyAcquired::Phase::complete;\n        prepared.normal_return();\n    } catch (...) {\n        prepared.note_unknown(); // Whole selected Icon scope, not just get/cancel.\n        acquired.failure = std::current_exception();\n        acquired.failed = true;\n        acquired.phase = NativeGuiIconDestroyAcquired::Phase::failed;\n        throw; // NEVER old destroy_failed/unwind_icon; retain remaining graph.\n    }\n}\nvoid* delete_native_gui_icon_prepared_00ab6100(void* raw,\n    const volatile Word& actual_flags_home, NativeGuiIconStorageContext& context,\n    NativeGuiIconDestroyAcquired& acquired, NativeGuiIconPreparedCancelCall& prepared) {\n    void* const captured_identity = raw;\n    try {\n        prepared.enter(captured_identity, context, acquired);\n        begin_destroy(captured_identity, context, acquired);\n        prepared.destroy_icon_body_00ab5e70(captured_identity, context, acquired);\n        const auto low = *reinterpret_cast<const volatile unsigned char*>(&actual_flags_home);\n        if ((low & 1u) != 0) { // ONE lateBYTE6108, no incoming/fullDWORD snapshot.\n            acquired.phase = NativeGuiIconDestroyAcquired::Phase::pool_return;\n            free_gui_widget_pool_slot<GuiIconPoolTraits>(captured_identity);\n        }\n        acquired.complete = true;\n        acquired.phase = NativeGuiIconDestroyAcquired::Phase::complete;\n        prepared.normal_return(); // Source metadata only, no raw receiver read after free.\n        return captured_identity;\n    } catch (...) {\n        prepared.note_unknown();\n        acquired.failure = std::current_exception();\n        acquired.failed = true;\n        acquired.phase = NativeGuiIconDestroyAcquired::Phase::failed;\n        throw;\n    }\n}\n\nvoid destroy_native_gui_icon_00ab5e70(void* raw, NativeGuiIconStorageContext& context,\n",
+      "old_bytes": 87,
+      "new_bytes": 3608,
+      "old_sha256": "ad31c373027fdafdcd68807dabe350a686509d805bdfb7feabcaf831f9113972",
+      "new_sha256": "6d20a3cc4e3455fae976c086ad8aef4b2bdcd90f30dea7e772f4fcde7a001225"
+    }
+  ],
+  "protected_old_regions": [
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "needle": "void require_array(",
+      "bytes": 382,
+      "sha256": "82a97e0d571697c96e35ace7a7678e0b8211657e6d10d5a9f15b8e6c0e3895db"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "needle": "template<class F> auto invoke(",
+      "bytes": 1034,
+      "sha256": "1fd731a694cd27fb98b392ce50a502d4a5dd40da2c459f0573088f75c064a548"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "needle": "void require_owned(",
+      "bytes": 277,
+      "sha256": "2433f64664f94bc10266ef4662a45a6571a0a5a5c823d8d4218b314ec28f85ab"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "needle": "NativeGuiIconDelayedLoadsStorage* get()",
+      "bytes": 2421,
+      "sha256": "2a9ece2f7e57cd0b40bcaec6f58fda97130d3fdebe54ccf69c9c2e6f6c201678"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "needle": "void cancel(",
+      "bytes": 1817,
+      "sha256": "5895540ff83f48e90cb65293e30b05532c58e727fd3c0ed5b775fced4b392c58"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "needle": "void* scalar_delete(",
+      "bytes": 1660,
+      "sha256": "0e94bd8bfcda605fef12354ac6f324985503588a2da96f589e234992790ce403"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "needle": "void* NativeGuiIconDelayedLoads::delete_registered_raw_storage_00ab57c0(",
+      "bytes": 2404,
+      "sha256": "238cd2069548433942af0b9979df0bbbd7c66db2940a5080a70b402fd658d252"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "needle": "NativeGuiIconDelayedLoads::~NativeGuiIconDelayedLoads()",
+      "bytes": 124,
+      "sha256": "215e79454411eedef47a14c419cbc3335107980fd97f310a40112f41bc57e7f6"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "needle": "NativeGuiIconDelayedLoadsStorage* NativeGuiIconDelayedLoads::get_00ab5700()",
+      "bytes": 172,
+      "sha256": "3db678d39f29aad7d3c211fdb4ca7ea691540a7603350963ff9a8fa31084390e"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "needle": "void NativeGuiIconDelayedLoads::cancel_owner_00ab50e0(",
+      "bytes": 219,
+      "sha256": "59292cb5b92c55623382352d2aa548d1ab0bbce8fc4b2dd27c427ee03ecb49e6"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "needle": "void* NativeGuiIconDelayedLoads::delete_registered_00ab57c0(",
+      "bytes": 223,
+      "sha256": "5f72e921f170e66fbfa05108b34912d8a8c48c3dfb9b3cf3edb210119195f56c"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "needle": "const NativeGuiIconDelayedLoadsOperation* NativeGuiIconDelayedLoads::last_operation()",
+      "bytes": 139,
+      "sha256": "532ca555cd5ff259a0d00923de9c10d00637dff26ab58872a43b271c88833cb6"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "needle": "const std::exception_ptr& NativeGuiIconDelayedLoads::failure()",
+      "bytes": 104,
+      "sha256": "fb122c21e4e6f970fff6b2deb89b44f299e8aca57ed274a3d22d3d9a23bd67f4"
+    },
+    {
+      "path": "src/native_gui_icon_storage.cpp",
+      "needle": "void begin_destroy(",
+      "bytes": 397,
+      "sha256": "4b0bcfce76bfdcc99869fcc4d8c2bb6c5ba6ea8fe723f337727e2da7ff4d32b6"
+    },
+    {
+      "path": "src/native_gui_icon_storage.cpp",
+      "needle": "void destroy_body(",
+      "bytes": 1072,
+      "sha256": "a0addc030236ad27675baf0d6d9925ec9cdc072f26e55095ea16d2011d0fec1a"
+    },
+    {
+      "path": "src/native_gui_icon_storage.cpp",
+      "needle": "void unwind_icon(",
+      "bytes": 412,
+      "sha256": "9b87426dcd45ef5a28bd30ac50cf5576530e41eb4b5a3c28f96771c11b9b8be8"
+    },
+    {
+      "path": "src/native_gui_icon_storage.cpp",
+      "needle": "void destroy_failed(",
+      "bytes": 341,
+      "sha256": "4f5026a3da6f409003fa6c73bb999a1629e00fd8dbdb36d5443ccdc0c76010ab"
+    },
+    {
+      "path": "src/native_gui_icon_storage.cpp",
+      "needle": "void destroy_native_gui_icon_00ab5e70(",
+      "bytes": 350,
+      "sha256": "8178b083fd22081fd6ca614b730d1bd75b7420fd507982278b97e6ae368d1304"
+    },
+    {
+      "path": "src/native_gui_icon_storage.cpp",
+      "needle": "void* delete_native_gui_icon_00ab6100(",
+      "bytes": 647,
+      "sha256": "80ae1af58cf1191b2bfa4f15334afce31660288f2f8031d262fae2378f864a96"
+    }
+  ],
+  "existing_provider_pins": [
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads_getter_storage.hpp",
+      "commit": "a6f59bb18bc124d208eea75588333b0931aefa33",
+      "bytes": 6233,
+      "sha256": "5a03ce3ed5741a80161ff7d1f0a0c0ec2dcf122867d3306c87a53918ff2a1800",
+      "git_blob": "3b234fbd78a56ed0fe8050d474be3fdc085a67ec"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads_getter_storage.cpp",
+      "commit": "a6f59bb18bc124d208eea75588333b0931aefa33",
+      "bytes": 6259,
+      "sha256": "9ccb3d4e8d809b46a12444531af67b98f1e0badc63cf7e9ac79c84e853bfd70d",
+      "git_blob": "4340f45914bfd92bc9d3ac6338c16e7527b011b2"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads_owner_cancel_storage.hpp",
+      "commit": "a6f59bb18bc124d208eea75588333b0931aefa33",
+      "bytes": 2750,
+      "sha256": "189517667dcd8c2b944a32dd9fd1c043ffefc53d02155220207e513243eef5ba",
+      "git_blob": "aba32efdb9910c7a6c3f94212821f73f53079ef1"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads_owner_cancel_storage.cpp",
+      "commit": "a6f59bb18bc124d208eea75588333b0931aefa33",
+      "bytes": 4666,
+      "sha256": "83caea45c5ebeebbd4cd5c936ea520771e3f3e06f1f1d77851a2f432605832c4",
+      "git_blob": "0870bb3cac4efbf8ce0bb2427d9129d29ee44991"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_pools_cc13.hpp",
+      "commit": "a6f59bb18bc124d208eea75588333b0931aefa33",
+      "bytes": 12674,
+      "sha256": "fd2be32f59443f79787b5006a628b9d0f78597b4d4dff62d09dbc65831c1fed3",
+      "git_blob": "759fba46de564d4d09549b0f3950bf2bbfc4f718"
+    },
+    {
+      "path": "src/native_gui_widget_pools_cc13.cpp",
+      "commit": "a6f59bb18bc124d208eea75588333b0931aefa33",
+      "bytes": 3180,
+      "sha256": "e9fa3a2f4e8d0f644d601aa974bab567f8cd36e5c9ea958ae06aacaca4b5e925",
+      "git_blob": "18a2efa93a00c8e48d79003e8af0ed4fbc5f80b3"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "commit": "a6f59bb18bc124d208eea75588333b0931aefa33",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "commit": "a6f59bb18bc124d208eea75588333b0931aefa33",
+      "bytes": 9121,
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_identity.hpp",
+      "commit": "a6f59bb18bc124d208eea75588333b0931aefa33",
+      "bytes": 3372,
+      "sha256": "27d2f6e7313bf3d15a7b2247e233f2ab7eca110ffe6b1f91097e6e441620c54c",
+      "git_blob": "b1541bc833789a9e3ef81098e4dc587225e06534"
+    },
+    {
+      "path": "src/native_gui_icon_identity.cpp",
+      "commit": "a6f59bb18bc124d208eea75588333b0931aefa33",
+      "bytes": 4230,
+      "sha256": "c7d9af9a64658bc1fd5806e2c13fd578392bb0665b6951bed4eea96408f20d04",
+      "git_blob": "558a6e2505aaffc2acb38e674eb68a2fddd1d74f"
+    },
+    {
+      "path": "include/bsp/game_native_gui_icon_process.hpp",
+      "commit": "a6f59bb18bc124d208eea75588333b0931aefa33",
+      "bytes": 3975,
+      "sha256": "64ea6df52c7f26f2a25fa8f485bb6022116178887d828f031fe8c5b4413db441",
+      "git_blob": "86ea513e79e4b8c15be217b3a5daa744171ea94d"
+    },
+    {
+      "path": "src/game_native_gui_icon_process.cpp",
+      "commit": "a6f59bb18bc124d208eea75588333b0931aefa33",
+      "bytes": 4452,
+      "sha256": "771ae831af661e9420fb8a58d67bd10511456ae83e9764acb3245ded32b71655",
+      "git_blob": "3bf20aa83282178518eb25f098337d6928af3c48"
+    }
+  ],
+  "actual_published_parent_provider": {
+    "class": "bsp::NativeGuiWidgetParentDeleteAttempt",
+    "constructor": "(void* actual_parent, NativeGuiWidgetLifetimeContext&) cold metadata only",
+    "function": "void destroy_native_gui_widget_base_00aa9730(void*, NativeGuiWidgetLifetimeContext&, NativeGuiWidgetParentDeleteAttempt&)",
+    "candidate_H": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_gui_icon_prepared_parent_caller_candidate_v2_20261031\\frame_provider\\candidate\\include\\bsp\\native_gui_widget_lifetime.hpp",
+      "bytes": 10153,
+      "sha256": "eb41bcd6bea8ecff99ab0b1dca322316a12c86a3da54a0229a1a59e2519f336a"
+    },
+    "candidate_CPP": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_gui_icon_prepared_parent_caller_candidate_v2_20261031\\frame_provider\\candidate\\src\\native_gui_widget_lifetime.cpp",
+      "bytes": 19237,
+      "sha256": "4cc4073e96b0441595743d967ae2cbf07eaf313671e63bd99891cbe06fb912b7"
+    },
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_gui_icon_prepared_parent_caller_candidate_v2_20261031\\frame_provider\\manifest.json",
+      "bytes": 3606,
+      "sha256": "70cb59efd28ec124c5dea975bc1827a3e87a18a5581472a554845e90bac67b28"
+    },
+    "actual_body_present": true,
+    "real_published_provider_commit": "aa9415787d9d40935043c46cd78ce4f6e1c9dddf",
+    "published_Main": "a6f59bb18bc124d208eea75588333b0931aefa33",
+    "included_as_required_virtual_overlay": false,
+    "existing_real_body_present_at_baseline": true,
+    "candidate_Source_compiled_here": false,
+    "published_whole_file_pins": [
+      {
+        "path": "include/bsp/native_gui_widget_lifetime.hpp",
+        "commit": "a6f59bb18bc124d208eea75588333b0931aefa33",
+        "git_blob": "3f2e5eaf5756641377cafb0cac7cdb10840bda6f",
+        "bytes": 10153,
+        "sha256": "eb41bcd6bea8ecff99ab0b1dca322316a12c86a3da54a0229a1a59e2519f336a"
+      },
+      {
+        "path": "src/native_gui_widget_lifetime.cpp",
+        "commit": "a6f59bb18bc124d208eea75588333b0931aefa33",
+        "git_blob": "084e85da41c26b91eb83e2f9f865644997b59ab0",
+        "bytes": 19237,
+        "sha256": "4cc4073e96b0441595743d967ae2cbf07eaf313671e63bd99891cbe06fb912b7"
+      }
+    ]
+  },
+  "frozen_V2": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_gui_icon_prepared_parent_caller_candidate_v2_20261031\\manifest.json",
+      "bytes": 11430,
+      "sha256": "a07ecb41ea5af8b48bd8812b2e8fc5481158e77293ed3486f6e2c21e2ff2faa8"
+    },
+    "proposal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_gui_icon_prepared_parent_caller_candidate_v2_20261031\\proposal.json",
+      "bytes": 47818,
+      "sha256": "21a4c35328ad06f59370f8c8cd2c27a0b16d60be119afdf07e2964b864cddadc"
+    },
+    "patch": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_gui_icon_prepared_parent_caller_candidate_v2_20261031\\proposal.patch",
+      "bytes": 23101,
+      "sha256": "f78da43e788f94c9ebafb9aa1da5e640827c3704f70071d05d20831594d29d1c"
+    },
+    "R1_delta": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_gui_icon_prepared_parent_caller_candidate_v2_20261031\\v1_to_v2_active_scope.patch",
+      "bytes": 6946,
+      "sha256": "a001b7657447b0b4c802d41e23059128884af5abf8fe7d25a979c8914b5bab97"
+    },
+    "inverse_proof": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_gui_icon_prepared_parent_caller_candidate_v2_20261031\\static_verification.json",
+      "bytes": 456,
+      "sha256": "f845df75d621da516d03c6da9c20a0b35159bbcfca152843028d92eedda7f1f2"
+    },
+    "metadata_proof": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_gui_icon_prepared_parent_caller_candidate_v2_20261031\\callback_state_proof.json",
+      "bytes": 7583,
+      "sha256": "003a7cf9f51210088337dc79f1207ead9892c8c4a2c15e2dc96c781836d782f9"
+    },
+    "protocol": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_gui_icon_prepared_parent_caller_candidate_v2_20261031\\coupling_protocol.txt",
+      "bytes": 6862,
+      "sha256": "6c3cb6a72d40f1c27f2b77006b00003c6b87a55300541a219621120188d1e6a8"
+    }
+  },
+  "frozen_V1_failed_candidate": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_gui_icon_prepared_parent_caller_candidate_20261031",
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_gui_icon_prepared_parent_caller_candidate_20261031\\manifest.json",
+      "bytes": 6388,
+      "sha256": "3f6024176c7cbfde091c2f209c7aef9c7159357c031c4ee20c2b1fb743d460ef"
+    },
+    "patch": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_gui_icon_prepared_parent_caller_candidate_20261031\\proposal.patch",
+      "bytes": 20972,
+      "sha256": "1b2613f6843995e75a3781c2450326bb1e6c4bd1cfa8e801880a14ed6f2533e5"
+    },
+    "report": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_gui_icon_prepared_parent_caller_candidate_20261031\\proposal.json",
+      "bytes": 38061,
+      "sha256": "1626acd55626a03094b748c311c43913c72b0783da8e4f1c010e750563374ac0"
+    },
+    "finding": "R1: blanket active guards reject a different fresh preprepared synchronous nested node; simply relaxing them leaves unconditional active=false erasing outer ownership.",
+    "files_unchanged": 50,
+    "inventory": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_gui_icon_prepared_parent_caller_candidate_v2_20261031\\v1_frozen_inventory.json",
+      "bytes": 8303,
+      "sha256": "e488142b07c33928515b20def3c96a560a10f847a64eac7e5b00df3c6b8ffd9c"
+    },
+    "prior_proofs_are_not_R1_coverage": true
+  },
+  "actual_Native_inputs": [
+    {
+      "path": "00ab5e70_live_assembly.txt",
+      "bytes": 1125,
+      "sha256": "c8016806627ed5f4fdd06da33342fe2deaf3375540bf76294ba9046fd69f293f",
+      "ops": 38
+    },
+    {
+      "path": "00ab6100_live_assembly.txt",
+      "bytes": 283,
+      "sha256": "084da3ef67ce637cbb7d85ea1d5b43adc5e68042258441fc657a94fbc21db02e",
+      "ops": 11
+    }
+  ],
+  "author_doc": {
+    "path": "docs/CC16_GUI_ICON_PREPARED_PARENT_CALLER.md",
+    "bytes": 2898,
+    "sha256": "37c0a40cbf87cadba8eea044812724a0f756df75303bf5b489d74481281a263b"
+  },
+  "immutable_Git_reader": {
+    "source_utf8": "import argparse,hashlib,json,pathlib,re,subprocess\ndef sha(b):return hashlib.sha256(b).hexdigest()\nap=argparse.ArgumentParser();ap.add_argument('--commit');ap.add_argument('--candidate');ap.add_argument('--report');a=ap.parse_args()\nassert bool(a.commit)!=bool(a.candidate),'choose immutable --commit or explicitly uncommitted --candidate'\ndef git(*x):return subprocess.check_output(['git',*x])\nrp='reports/cc16_gui_icon_prepared_parent_caller.json'\nr=json.loads(git('show',a.commit+':'+rp) if a.commit else pathlib.Path(a.report).read_bytes())\nbase=r['baseline_commit'];checks=0\ndef ok(v):\n global checks\n assert v;checks+=1\ndef read(p):return git('show',a.commit+':'+p) if a.commit else (pathlib.Path(a.candidate)/p).read_bytes()\ndef block(b,needle):\n s=b.decode();start=s.index(needle);j=s.index('{',start);depth=0;state='code'\n while j<len(s):\n  c=s[j];n=s[j:j+2]\n  if state=='line':\n   if c=='\\n':state='code'\n  elif state=='comment':\n   if n=='*/':state='code';j+=1\n  elif state in ('string','char'):\n   if c=='\\\\':j+=1\n   elif c==('\"' if state=='string' else \"'\"):state='code'\n  elif n=='//':state='line';j+=1\n  elif n=='/*':state='comment';j+=1\n  elif c=='\"':state='string'\n  elif c==\"'\":state='char'\n  elif c=='{':depth+=1\n  elif c=='}':\n   depth-=1\n   if depth==0:return s[start:j+1].encode()\n  j+=1\n raise AssertionError(needle)\nfor p in r['four_source_postimages']:\n path=p['path'];before=git('show',base+':'+path);after=read(path)\n ok(len(after)==p['bytes'] and sha(after)==p['sha256'])\n expected=before\n for z in [z for z in r['mechanical_seams'] if z['path']==path]:\n  old=z['old_utf8'].encode();new=z['new_utf8'].encode();ok(expected.count(old)==1);expected=expected.replace(old,new,1)\n ok(expected==after);inverse=after\n for z in reversed([z for z in r['mechanical_seams'] if z['path']==path]):\n  old=z['old_utf8'].encode();new=z['new_utf8'].encode();ok(inverse.count(new)==1);inverse=inverse.replace(new,old,1)\n ok(inverse==before)\n ok(re.findall(rb'__asm\\s*\\{[\\s\\S]*?\\}',before)==re.findall(rb'__asm\\s*\\{[\\s\\S]*?\\}',after))\nfor p in r['protected_old_regions']:\n before=block(git('show',base+':'+p['path']),p['needle']);after=block(read(p['path']),p['needle'])\n ok(before==after and len(after)==p['bytes'] and sha(after)==p['sha256'])\nfor p in r['existing_provider_pins']:\n data=git('show',(a.commit or base)+':'+p['path']);ok(len(data)==p['bytes'] and sha(data)==p['sha256'])\nfor p in r['actual_published_parent_provider']['published_whole_file_pins']:\n data=git('show',(a.commit or base)+':'+p['path']);ok(len(data)==p['bytes'] and sha(data)==p['sha256'])\ndoc=read(r['author_doc']['path']);ok(len(doc)==r['author_doc']['bytes'] and sha(doc)==r['author_doc']['sha256'])\nexpected_paths=sorted([p['path'] for p in r['four_source_postimages']]+[r['author_doc']['path'],rp])\nif a.commit:\n changed=git('diff','--name-only',base,a.commit).decode().splitlines();ok(sorted(changed)==expected_paths)\n def tree(commit):\n  out={}\n  for line in git('ls-tree','-r',commit).splitlines():\n   meta,path=line.split(b'\\t',1);out[path.decode()]=meta.decode()\n  return out\n t0=tree(base);t1=tree(a.commit)\n ok(all(p not in t0 for p in [rp,r['author_doc']['path']]))\n for p in [rp,r['author_doc']['path']]:t1.pop(p)\n for p in r['four_source_postimages']:t1[p['path']]=t0[p['path']]\n ok(t1==t0)\nprint(json.dumps({'pass':True,'checks':checks,'immutable_Git':bool(a.commit),'candidate_only':not bool(a.commit),'four_full_forward_inverse_pairs':True,'protected_old_regions':len(r['protected_old_regions']),'all_old_ASM_exact':True,'published_parent_provider_exact':True,'six_path_recursive_tree_inverse':bool(a.commit),'compiler_Native_runtime_activation_proof':False},indent=2))\n",
+    "bytes": 3674,
+    "sha256": "f3ee2a12a0a2b9b223e4ca5beaefa5f0a8a651b1fbf564973ed374c4bb07e558",
+    "usage": "python verify_immutable_git.py --commit <immutable_author_commit>",
+    "not_yet_run_on_author_commit": true
+  },
+  "APIs": [
+    "NativeGuiIconPreparedCancelCall& NativeGuiIconDelayedLoads::prepare_icon_cancel_call(void*, NativeGuiIconStorageContext&, NativeGuiIconDestroyAcquired&)",
+    "void destroy_native_gui_icon_prepared_00ab5e70(void*, NativeGuiIconStorageContext&, NativeGuiIconDestroyAcquired&, NativeGuiIconPreparedCancelCall&)",
+    "void* delete_native_gui_icon_prepared_00ab6100(void*, const volatile uint32_t&, NativeGuiIconStorageContext&, NativeGuiIconDestroyAcquired&, NativeGuiIconPreparedCancelCall&)"
+  ],
+  "R1_correction": {
+    "scope": "Only Source private prepared-active metadata; no Native read/write, callback, hot allocation/destruction, counter, owner, Origin or disposition authority.",
+    "actual_source": "Service owns private prepared_active_top; each cold permanent node owns active_previous/active_scope_owned/saved_service_active. Each raw65/get and raw57/cancel scope pushes prior(top,active), then restores that exact pair on return or escape before failure diagnostics.",
+    "different_fresh_nodes": "Allowed over the same-service privately owned prepared top; no count/depth/profile cap. Private replay/freshness checks still deny the same node.",
+    "legacy_mixed": "Legacy active without a private prepared top is unadmitted. Prepared scopes keep old active=true, so old legacy invoke guards remain exact and deny mixed callback routes.",
+    "normal_vs_failure": "Popping only releases the private raw-call slot. Entered/provider debt is never reset, normal completion is not failed, sticky failure remains sticky and no record/registered_identity is rewritten.",
+    "LIFO_precondition": "Synchronous Source calls with private nonmoving permanently retained nodes and ordinary C++ unwinding; no foreign/HW/SEH/longjmp continuation or literal Native private-stack/fault/ABI claim.",
+    "proof": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_gui_icon_prepared_parent_caller_candidate_v2_20261031\\callback_state_proof.json",
+      "bytes": 7583,
+      "sha256": "003a7cf9f51210088337dc79f1207ead9892c8c4a2c15e2dc96c781836d782f9"
+    },
+    "proof_summary": {
+      "pass": true,
+      "metadata_static_and_symbolic_checks": 107,
+      "scope": "Source private metadata only; NOT compiler/Native callback/runtime/ABI proof",
+      "different_fresh_nodes_nest": true,
+      "same_node_replay_denied": true,
+      "legacy_mixed_active_denied_both_directions": true,
+      "normal_and_escape_restore_outer_before_diagnostics": true,
+      "cold_unused_debt_false_entered_debt_unchanged": true,
+      "LIFO_induction": "push saves exact prior(top,active), pop restores exact saved pair; fresh private node slot per entered raw scope; no implementation count/depth cap",
+      "v1_files_unchanged": 50,
+      "only_changed_source_paths": [
+        "include/bsp/native_gui_icon_delayed_loads.hpp",
+        "src/native_gui_icon_delayed_loads.cpp"
+      ],
+      "source_delta_details": [
+        {
+          "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+          "v1_bytes": 11817,
+          "v1_sha256": "c32932f6d6c28b6044c4126387c5b9ee4b3439371a5507058046cbc1c1c01be8",
+          "v2_bytes": 11927,
+          "v2_sha256": "cd2726e79c917d705dc11afc2b136ca6db66145530fc914ce42445b6a4a8ea0b"
+        },
+        {
+          "path": "src/native_gui_icon_delayed_loads.cpp",
+          "v1_bytes": 26687,
+          "v1_sha256": "cc4f6872e278287a3b0e31a396432f7ea363b567b1094ceb3094d428a6df6ccf",
+          "v2_bytes": 28669,
+          "v2_sha256": "076c43a63b9f9257107c6ba535477dc24a6f7d0880e43813072d0442af47deaa"
+        }
+      ],
+      "v1_v2_patch_bytes": 6946,
+      "v1_v2_patch_sha256": "a001b7657447b0b4c802d41e23059128884af5abf8fe7d25a979c8914b5bab97",
+      "unchanged_Icon_pair": true,
+      "Native_Origin_ownership_count_disposition_credit": 0
+    },
+    "tight_v1_to_v2_patch": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_gui_icon_prepared_parent_caller_candidate_v2_20261031\\v1_to_v2_active_scope.patch",
+      "bytes": 6946,
+      "sha256": "a001b7657447b0b4c802d41e23059128884af5abf8fe7d25a979c8914b5bab97"
+    },
+    "only_changed_source_paths": [
+      "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "src/native_gui_icon_delayed_loads.cpp"
+    ],
+    "unchanged_Icon_pair": true
+  },
+  "call_and_retention_contract": {
+    "operation_lifetime": "Two cold unique Operations remain owned by each permanent node; no hot allocation/replacement/destruction of legacy impl.operation. Old last_operation retains legacy/manager semantics; const node records observe prepared calls.",
+    "normal_vs_unknown": "normal_returned does not set failed/UNKNOWN or clear entered debt. Any selected UNKNOWN retains graph/records and sticky Source failure, not Native exception-origin truth. Callee normal-return records are not relabeled for later parent escapes.",
+    "source_debt": "Cold unused false; after entered true until genuine disposition which is NOT supplied. No reset/discharge/retirement. Existing normal manager/Host drainage after selected debt is NOT admitted. Legacy/default/cold-unused status return branch exact; no new terminal action.",
+    "A_P_V_T": "registered_identity untouched. actual record fields are identities only; passive A/P/T and unobserved insertionV cannot birth current-holder custody.",
+    "actual_native_order": "Captured receiver -> D5C4C0 -> volatile ownerHOME5E93 -> state2/get65 -> cancel57 SAME HOME -> shader/states -> Frame real3arg base. Scalar then one currentBYTEflags test and real pool return, numeric identity only.",
+    "remaining_gates": [
+      "Root/Glyph immutable V2 source/API/metadata/lifetime review; no tracked Source grant or worker compiler execution.",
+      "The real three-argument AA9730 provider is published at baseline, exact aa941 H/CPP; no overlay/stub remains, and this four-file candidate remains uncompiled.",
+      "Genuine construction/current-generation/registration/disposition receipt and retained production Icon parent/graph/providers remain absent; no current-holder custody from A/P/T.",
+      "Actual outer parent/table(child) dispatch forwarding, caller-owned flagsHOME and all nested attempt lifetimes remain required.",
+      "No normal manager/Host drainage, discharge/reset or retirement is admitted after selected entered debt; physical normal disposition/activation remain NOT READY.",
+      "Original privateStack/alias/fault/EFLAGS/FH3/SEH/Origin/CRT/ABI/runtime/gameplay and asynchronous/foreign/nonlocal-control transfer behavior are unproved.",
+      "Old/default/noexcept/zero-reference/raw-model/application routes remain unselected and unchanged."
+    ]
+  },
+  "enclosing_parent_selected_edge_identity": "External; this packet does not connect Reference/IdentityContext/Dispatch or provide current-holder custody.",
+  "worker_validation": {
+    "frozen_V2_94_checks": true,
+    "frozen_R1_107_Source_metadata_checks": true,
+    "Git_author_commit_reader_not_yet_possible": true,
+    "compiler_tests_Game_Ghidra_CMake_ledger_mutation": false
+  },
+  "existing_default_legacy_noexcept_selected": false,
+  "normal_disposition_activation_ready": false,
+  "Original_vendor_helper_CG_duplicate_ABI_runtime_activation_credit": 0,
+  "tracked_Source_grant_received": false
+}

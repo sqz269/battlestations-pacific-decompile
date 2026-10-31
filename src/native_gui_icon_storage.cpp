@@ -315,6 +315,71 @@ void* create_native_gui_icon_copy_00aa1410(const void* source,
     try { return construct_native_gui_icon_copy_00ab5d30(slot, captured_source, context, acquired); }
     catch (...) { return_failed_slot(slot); throw; }
 }
+void NativeGuiIconPreparedCancelCall::destroy_icon_body_00ab5e70(void* raw,
+    NativeGuiIconStorageContext& context, NativeGuiIconDestroyAcquired& acquired) {
+    void* const captured_receiver = raw;
+    word(captured_receiver) = 0x00d5c4c0;
+    stage_owner_push(captured_receiver); // AB5E93, SAME HOME lives across getter callbacks.
+    acquired.native_eh_state = 2;
+    acquired.phase = NativeGuiIconDestroyAcquired::Phase::delayed_getter;
+    auto* const delayed = call_getter(); // Real65, no old get/invoke/owned filters.
+    acquired.phase = NativeGuiIconDestroyAcquired::Phase::delayed_cancel;
+    call_cancel(delayed); // Real57, no dereference/snapshot/restage of HOME.
+    acquired.native_eh_state = 1;
+    acquired.phase = NativeGuiIconDestroyAcquired::Phase::shader;
+    destroy_native_string_header_0041dd20(at(captured_receiver, 0x104), context.strings);
+    acquired.native_eh_state = 0;
+    acquired.phase = NativeGuiIconDestroyAcquired::Phase::states;
+    destroy_native_gui_icon_states_00ab5850(at(captured_receiver, 0xf0), context);
+    acquired.native_eh_state = -1;
+    acquired.phase = NativeGuiIconDestroyAcquired::Phase::base;
+    call_base(captured_receiver, context.lifetime); // Frame's actual selected3arg AA9730 body.
+}
+void destroy_native_gui_icon_prepared_00ab5e70(void* raw,
+    NativeGuiIconStorageContext& context, NativeGuiIconDestroyAcquired& acquired,
+    NativeGuiIconPreparedCancelCall& prepared) {
+    void* const captured_identity = raw;
+    try {
+        prepared.enter(captured_identity, context, acquired); // Before late admission/profile effects.
+        begin_destroy(captured_identity, context, acquired);
+        prepared.destroy_icon_body_00ab5e70(captured_identity, context, acquired);
+        acquired.complete = true;
+        acquired.phase = NativeGuiIconDestroyAcquired::Phase::complete;
+        prepared.normal_return();
+    } catch (...) {
+        prepared.note_unknown(); // Whole selected Icon scope, not just get/cancel.
+        acquired.failure = std::current_exception();
+        acquired.failed = true;
+        acquired.phase = NativeGuiIconDestroyAcquired::Phase::failed;
+        throw; // NEVER old destroy_failed/unwind_icon; retain remaining graph.
+    }
+}
+void* delete_native_gui_icon_prepared_00ab6100(void* raw,
+    const volatile Word& actual_flags_home, NativeGuiIconStorageContext& context,
+    NativeGuiIconDestroyAcquired& acquired, NativeGuiIconPreparedCancelCall& prepared) {
+    void* const captured_identity = raw;
+    try {
+        prepared.enter(captured_identity, context, acquired);
+        begin_destroy(captured_identity, context, acquired);
+        prepared.destroy_icon_body_00ab5e70(captured_identity, context, acquired);
+        const auto low = *reinterpret_cast<const volatile unsigned char*>(&actual_flags_home);
+        if ((low & 1u) != 0) { // ONE lateBYTE6108, no incoming/fullDWORD snapshot.
+            acquired.phase = NativeGuiIconDestroyAcquired::Phase::pool_return;
+            free_gui_widget_pool_slot<GuiIconPoolTraits>(captured_identity);
+        }
+        acquired.complete = true;
+        acquired.phase = NativeGuiIconDestroyAcquired::Phase::complete;
+        prepared.normal_return(); // Source metadata only, no raw receiver read after free.
+        return captured_identity;
+    } catch (...) {
+        prepared.note_unknown();
+        acquired.failure = std::current_exception();
+        acquired.failed = true;
+        acquired.phase = NativeGuiIconDestroyAcquired::Phase::failed;
+        throw;
+    }
+}
+
 void destroy_native_gui_icon_00ab5e70(void* raw, NativeGuiIconStorageContext& context,
     Destroy& acquired) {
     begin_destroy(raw, context, acquired);

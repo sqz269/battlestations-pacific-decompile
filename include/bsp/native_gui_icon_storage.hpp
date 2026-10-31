@@ -158,4 +158,13 @@ void destroy_native_gui_icon_00ab5e70(void* actual_icon,
 void* delete_native_gui_icon_00ab6100(void* actual_icon,
     const volatile std::uint32_t& actual_flags_slot, NativeGuiIconStorageContext&,
     NativeGuiIconDestroyAcquired&);
+// Explicit throwing prepared-only entry points. SAME actual138h storage and
+// live flags HOME; never selected by old/default/noexcept callers. Cold call
+// record must be prepared before ANY enclosing Native profile/state effects.
+// Unknown owns no Native EH permission: retain whole graph without replay.
+void destroy_native_gui_icon_prepared_00ab5e70(void*, NativeGuiIconStorageContext&,
+    NativeGuiIconDestroyAcquired&, NativeGuiIconPreparedCancelCall&);
+void* delete_native_gui_icon_prepared_00ab6100(void*,
+    const volatile std::uint32_t& actual_flags_home, NativeGuiIconStorageContext&,
+    NativeGuiIconDestroyAcquired&, NativeGuiIconPreparedCancelCall&);
 } // namespace bsp
