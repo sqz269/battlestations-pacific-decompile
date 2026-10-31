@@ -1,0 +1,371 @@
+{
+  "source_Core_commit": "7ae02eae9f0add38452f33b77f3bd9daad03d015",
+  "base_Main": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+  "entries": [
+    {
+      "address": "0041e870",
+      "api": "construct_native_string_header_0041e870_exact",
+      "Original_instructions": 32,
+      "Original_bytes": 83
+    },
+    {
+      "address": "0041dd20",
+      "api": "return_native_string_header_buffer_0041dd20_exact",
+      "Original_instructions": 12,
+      "Original_bytes": 29
+    }
+  ],
+  "Original_instructions": 44,
+  "Original_bytes": 112,
+  "producer_packets": {
+    "cstring_ctor": {
+      "commit": "5f06744b3169c622d112a684728fe21681ecde32",
+      "files": {
+        "include/bsp/native_string_raw_cstring_exact.hpp": {
+          "author_physical_sha256": "d951b3068702b7e1dcaca9260c70489d36a68d49b6602349b98ad62d8eab7054",
+          "Git_blob_sha256": "d951b3068702b7e1dcaca9260c70489d36a68d49b6602349b98ad62d8eab7054",
+          "equal_modulo_CRLF": true
+        },
+        "src/native_string_raw_cstring_exact.cpp": {
+          "author_physical_sha256": "9d07b1cf4dda4e5aea2323b2450b66840a252442b5d09c211d4a921ba3692d2e",
+          "Git_blob_sha256": "9d07b1cf4dda4e5aea2323b2450b66840a252442b5d09c211d4a921ba3692d2e",
+          "equal_modulo_CRLF": true
+        },
+        "docs/CODEX_NATIVE_STRING_RAW_CSTRING_EXACT.md": {
+          "author_physical_sha256": "b449127b7d1ef8261677de8ce4eee41007019f7907f175335319bd4d3b4e6dc0",
+          "Git_blob_sha256": "b449127b7d1ef8261677de8ce4eee41007019f7907f175335319bd4d3b4e6dc0",
+          "equal_modulo_CRLF": true
+        },
+        "reports/codex_native_string_raw_cstring_exact.json": {
+          "author_physical_sha256": "0e3fcd1f765cbb7885dab9cba089a8150fdee19b75771b6e98dbf5b909022d9f",
+          "Git_blob_sha256": "0e3fcd1f765cbb7885dab9cba089a8150fdee19b75771b6e98dbf5b909022d9f",
+          "equal_modulo_CRLF": true
+        }
+      },
+      "receipt_sha256": "ae78b95adfb18287178a33ee6dae68a5414f4a5f3d0250ad08b35f21408d826c",
+      "artifact_index_sha256": "033721f81e7c371a4bc85b624463f13eb4fdad3c7fd077fe3115ce190858790c",
+      "indexed_artifacts_rehashed": 25,
+      "object_sha256": "02e876bbaf75c9d5d8d802d84ea98d125d1d00f40ed8b7598bed302cf2283790",
+      "object_bytes": 1918,
+      "COFF": "014C",
+      "compile_count": 1,
+      "compile_exit": 0,
+      "definition": "?construct_native_string_header_0041e870_exact@bsp@@YAPAXPAXPBXAAUNativeStringRawPoolContext@1@ADI@Z",
+      "direct_real_provider_UNDEFs": [
+        "?copy_native_crt_bytes_00bf7680@bsp@@YAPAXPAXPBXIADI@Z",
+        "?resize_native_string_header_0041dd40_exact@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@IPBXADI@Z"
+      ],
+      "exactly_four_additions": true
+    },
+    "header_return": {
+      "commit": "06347220500fdad2aa31e590fb31d85e7af533ff",
+      "files": {
+        "include/bsp/native_string_raw_header_return.hpp": {
+          "author_physical_sha256": "66804d2209e6875d5a9d723afdab3ab6be12e9f394ba78f3d71778149ef1a335",
+          "Git_blob_sha256": "66804d2209e6875d5a9d723afdab3ab6be12e9f394ba78f3d71778149ef1a335",
+          "equal_modulo_CRLF": true
+        },
+        "src/native_string_raw_header_return.cpp": {
+          "author_physical_sha256": "d65b8c9fab58a2b23d512164caefcd9dbdaa18f3d0aadc2ff68422dcf6429d28",
+          "Git_blob_sha256": "d65b8c9fab58a2b23d512164caefcd9dbdaa18f3d0aadc2ff68422dcf6429d28",
+          "equal_modulo_CRLF": true
+        },
+        "docs/NATIVE_STRING_RAW_HEADER_RETURN.md": {
+          "author_physical_sha256": "404d138672544519a61f0a7ac1d573f7bc546be77361a91577b08b798c4d3d0d",
+          "Git_blob_sha256": "404d138672544519a61f0a7ac1d573f7bc546be77361a91577b08b798c4d3d0d",
+          "equal_modulo_CRLF": true
+        },
+        "reports/native_string_raw_header_return.json": {
+          "author_physical_sha256": "794ae81b22a5390b27d919f4887df47182f73bce5050f6bf8322b58c2deae885",
+          "Git_blob_sha256": "794ae81b22a5390b27d919f4887df47182f73bce5050f6bf8322b58c2deae885",
+          "equal_modulo_CRLF": true
+        }
+      },
+      "receipt_sha256": "f4dccdc79c2f114c36f696465f2855fa76343c30758553247c2efa4a925b1083",
+      "artifact_index_sha256": "9c3059ea4fce258202c664d94c316c7fcc64a78955a526c68a8ac076d472dc21",
+      "indexed_artifacts_rehashed": 24,
+      "object_sha256": "606090b5ac41ed3e3f2bad0f951733f983da9d0712fb8548fd0dfe9d4e9f24f8",
+      "object_bytes": 2204,
+      "COFF": "014C",
+      "compile_count": 1,
+      "compile_exit": 0,
+      "definition": "?return_native_string_header_buffer_0041dd20_exact@bsp@@YAXPBXAAUNativeStringRawPoolContext@1@@Z",
+      "direct_real_provider_UNDEFs": [
+        "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+        "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z"
+      ],
+      "exactly_four_additions": true
+    }
+  },
+  "independent_final_reviews": {
+    "cstring_ctor": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc9\\local\\native_string_raw_cstring_exact_review_cc9_20261031\\FINAL_REVIEW.md",
+      "sha256": "17fadecfac530bdb08bd9e6657008edff205a965f50c0295fb658ed67aee3712",
+      "pins_sha256": "1f1bf98bcb98eec01641de6654359a289d1a50c8a8de1ea0035282a88ad973d3",
+      "index_sha256": "65ea5c0e6bbb7109e70c87fcab76d0f8fdea769bccfda3653acf70c356a82cee",
+      "verdict": "ACCEPT_SOURCE_AND_EMITTED_OPERATION_ONLY"
+    },
+    "header_return": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_string_raw_header_return_review_frame_20261031\\final_review\\FINAL_REVIEW.md",
+      "sha256": "b2d6882f5fa5fb3459e5a381b2d9848821c7bc21539e275bcafd82ae6ff12b8f",
+      "pins_sha256": "77c9153431f11e348ff826863f1a85a6fdc1bb3a59065228c9e528e186b421db",
+      "index_sha256": "53a26687e7f629897d4d104caeee670b52f142e2c51ec5319692ab159414e490",
+      "verdict": "ACCEPT_SOURCE_AND_EMITTED_OPERATION_ONLY"
+    }
+  },
+  "Core_emitted_operations": {
+    "Root_full_Core_public_helpers_allpaths_symbols_and_relocations_read": true,
+    "canonical_Core_objects_unchanged": true,
+    "constructor": {
+      "object_sha256": "bb18fe1df02f130bd4ba674e75e7f2446c16aad443a4aae3cefbd028e68cd07c",
+      "path": "LEN0_09/DATA0_0F; BYTE20/INC22/TEST23; actualDWORD1_HOME2D; exactDD40_3D; CURRENTDATA45/null4A/CURRENTLEN4C/+1_51/realBF55 even0; capturedheaderEAX5E",
+      "qualifications": "privateSourceinputargslotload16 afterzeros; pureSUB35/DEC37 afterprivateHOMEsetup; no Original privateframe/fault/stack/ABI grant"
+    },
+    "header_return": {
+      "object_sha256": "48ff858e9d5be518ba31d42d180d3e8dd0dfd901ae3a7b438449df812912a332",
+      "path": "CURRENTDATA08/test0B/JE0D\u2192nullRET34; nonnullCURRENTLEN10\u2192EDI, capturedDATAEBX; realgetter1A/AA4ADDRESS1F/pureLEA22(savedEDI+1)\u2192realBD28/ADD18_2D\u2192voidRET34",
+      "qualifications": "CoreEBPprologue andprivateargtransport differfromisolatedESP; LEAaftergetter uses pregettercapturedLEN, noheader reread. Normalpotentiallythrowing Sourceonly; no selectedpolicy orNativeprivateABI/fault grant"
+    },
+    "only_four_direct_real_provider_UNDEFs_and_relocations_verified": true,
+    "new_tests": 0,
+    "new_entry_invoked": false
+  },
+  "retained": {
+    "mode": "retained",
+    "source_commit": "7ae02eae9f0add38452f33b77f3bd9daad03d015",
+    "exit": 0,
+    "wall_seconds": 42.62,
+    "ctest_summary": [
+      "100% tests passed, 0 tests failed out of 2",
+      "Total Test time (real) =  20.65 sec"
+    ],
+    "entry_invocation": false,
+    "new_tests": 0,
+    "map_sha256": "2a43009cd10b8b655988550bb83a321a37cfdce69dae8b2ffcdda0bcc3913be7",
+    "project_sha256": "af335bfd5ee38121c4a5fb9915a0350f0eaaf651d4c05623c09b40107651dc4e"
+  },
+  "canonical": {
+    "mode": "canonical",
+    "source_commit": "7ae02eae9f0add38452f33b77f3bd9daad03d015",
+    "exit": 0,
+    "wall_seconds": 39.03,
+    "ctest_summary": [
+      "100% tests passed, 0 tests failed out of 2",
+      "Total Test time (real) =  22.79 sec"
+    ],
+    "entry_invocation": false,
+    "new_tests": 0,
+    "map_sha256": "55aa162102e474dd9e8c7167594e3fc9520741b9a59029ff1790f39d457c3a31",
+    "project_sha256": "008933b1bf4943fef6b85d41e703add896bfdde82b7fd1c03439e8a64ab201d9"
+  },
+  "retained_link": {
+    "mode": "retained",
+    "entry_rows": {
+      "?construct_native_string_header_0041e870_exact@bsp@@YAPAXPAXPBXAAUNativeStringRawPoolContext@1@ADI@Z": [
+        "0001:002ffbe0       ?construct_native_string_header_0041e870_exact@bsp@@YAPAXPAXPBXAAUNativeStringRawPoolContext@1@ADI@Z 10300be0 f   bsp_core:native_string_raw_cstring_exact.obj"
+      ],
+      "?return_native_string_header_buffer_0041dd20_exact@bsp@@YAXPBXAAUNativeStringRawPoolContext@1@@Z": [
+        "0001:002ffc50       ?return_native_string_header_buffer_0041dd20_exact@bsp@@YAXPBXAAUNativeStringRawPoolContext@1@@Z 10300c50 f   bsp_core:native_string_raw_header_return.obj"
+      ]
+    },
+    "direct_real_provider_rows": {
+      "?copy_native_crt_bytes_00bf7680@bsp@@YAPAXPAXPBXIADI@Z": [
+        "0001:0047b240       ?copy_native_crt_bytes_00bf7680@bsp@@YAPAXPAXPBXIADI@Z 1047c240 f   bsp_core:native_crt_memcpy.obj"
+      ],
+      "?resize_native_string_header_0041dd40_exact@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@IPBXADI@Z": [
+        "0001:0047b620       ?resize_native_string_header_0041dd40_exact@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@IPBXADI@Z 1047c620 f   bsp_core:native_string_raw_resize_exact.obj"
+      ],
+      "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z": [
+        "0001:003259f0       ?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z 103269f0 f   bsp_core:native_string_pool_owner.obj"
+      ],
+      "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z": [
+        "0001:00325ea0       ?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z 10326ea0 f   bsp_core:native_string_pool_storage.obj"
+      ]
+    },
+    "unique_forced_entries": 2,
+    "map_sha256": "2a43009cd10b8b655988550bb83a321a37cfdce69dae8b2ffcdda0bcc3913be7",
+    "entry_invoked": false
+  },
+  "canonical_link": {
+    "mode": "canonical",
+    "entry_rows": {
+      "?construct_native_string_header_0041e870_exact@bsp@@YAPAXPAXPBXAAUNativeStringRawPoolContext@1@ADI@Z": [],
+      "?return_native_string_header_buffer_0041dd20_exact@bsp@@YAXPBXAAUNativeStringRawPoolContext@1@@Z": []
+    },
+    "direct_real_provider_rows": {
+      "?copy_native_crt_bytes_00bf7680@bsp@@YAPAXPAXPBXIADI@Z": [],
+      "?resize_native_string_header_0041dd40_exact@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@IPBXADI@Z": [],
+      "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z": [
+        "0001:00325940       ?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z 10326940 f   bsp_core:native_string_pool_owner.obj"
+      ],
+      "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z": [
+        "0001:00325df0       ?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z 10326df0 f   bsp_core:native_string_pool_storage.obj"
+      ]
+    },
+    "unique_forced_entries": 0,
+    "map_sha256": "55aa162102e474dd9e8c7167594e3fc9520741b9a59029ff1790f39d457c3a31",
+    "entry_invoked": false
+  },
+  "preservation": {
+    "base_Main": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+    "repository_paths": {
+      "CMakeLists.txt": "exact inverse of two new Core registrations",
+      "cmake/startup.cmake": "91d1de5e0df99d75ab2133869f154c0560d969f8ed3b60c999a495ba097f416b",
+      "cmake/lua.cmake": "0c432ec1026aa6921d876098d29359d34f9463cd894d7adafcb67b954eb7a006",
+      "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "src/native_string.cpp": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "include/bsp/native_string_pool_owner.hpp": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "src/native_string_pool_owner.cpp": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "include/bsp/native_string_pool_storage.hpp": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+      "src/native_string_pool_storage.cpp": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+      "include/bsp/native_crt_memcpy.hpp": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123",
+      "src/native_crt_memcpy.cpp": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3",
+      "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "src/native_lua_value_string.cpp": "2f56b4a90bee384062e7529ab372fdce90404878f147e9de6a47a8c0074d76b2",
+      "src/settings_seg29_cc13.cpp": "7a882cf94ad8bc30120e0a953d7cb0af729d017593f31b1929205c266f43df24",
+      "include/bsp/native_lua_objects.hpp": "18ddc6c301d56244468a29ea15a84f74ddfab41594740a08dc740f6bc13d3c0d",
+      "src/native_lua_objects.cpp": "f2d2a7a0a3d3f1141be23b9b0ca3db9f4d561780ed618a74fd6061d5e6a62bf5",
+      "src/game_native_gui_render_application.cpp": "2132e6bf7222381755f375f333d01a68187acff8daddc2d92e5a0788632aec31",
+      "include/bsp/native_mission_lua_stack.hpp": "536100cb4d98dc56b22eb13e03fec83852c00e38c96e1f669aae53cf7c91616c",
+      "src/native_mission_lua_stack.cpp": "20d275b2bb694209cb83c8051fcc1c7186602ffe25f16b434398e02344805013",
+      "include/bsp/native_mission_lua_type.hpp": "f4687e3fcdc1495e4b3e5caec7f3284e407286706704f24c68a2c13303a90c46",
+      "src/native_mission_lua_type.cpp": "fd6e57257c4826bf0c5010987456f247804330027ad9280cd6cc0607eb26a12a",
+      "include/bsp/native_mission_lua_predicates.hpp": "5e098fb910d7e1c93a22cd31d1b28b5e23b4c0e3b8cd8deaf592cc5ca75cc44e",
+      "src/native_mission_lua_predicates.cpp": "5982bfe120fab58fb375abd5989e659d800da4e72404fb354237e190de12c748",
+      "include/bsp/native_mission_lua_iteration.hpp": "1e8a94fcbf6f703a5d5501ee4f9bdb7f66ad0771964c79218cb40aeeb7ea1a3f",
+      "src/native_mission_lua_iteration.cpp": "cf4c742d45d8444f29b7ec8a6acf1dad91f75df58d9ccd7d69c55aea32f3d6b6",
+      "include/bsp/native_mission_lua_conversions.hpp": "956008364278b43595770efb920d1cd0312a2c57a945a6f59a7d9a8d94bcf5c0",
+      "src/native_mission_lua_conversions.cpp": "8de8a19263cc4b654b1b5c0eded83b805b8e96ebd86eeff5cfae8515d05b20ff",
+      "include/bsp/native_string_raw_resize_exact.hpp": "a1a3c6be74194e2f5946e13e09bfb26562c3f73d3565b51f96403f0d60b9999c",
+      "src/native_string_raw_resize_exact.cpp": "74bff613a83abda342b5506ff750f46f5c44e191de506480ced504208c81f210",
+      "include/bsp/native_mission_lua_scalar_push.hpp": "cbe55d002c81e52c741509bbeef8e7491f722b6378bb35a4ce30a863e42dd3f5",
+      "src/native_mission_lua_scalar_push.cpp": "34b5615b8b9511c67c58267419d2f36022b62c11cdf9bb552032341b8f0bec5e",
+      "include/bsp/native_mission_lua_to_string.hpp": "1a3344c2714bd888895fd349e3fb8cc9b2fcc2f2114469374eabbf6adc370281",
+      "src/native_mission_lua_to_string.cpp": "231e251f9291f8de0f0c02421139b141a4471873948894433d1bddf59469c9f9",
+      "config/target.json": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "include/bsp/native_lua_variant_retirement.hpp": "14258135096189f2892e4d896af417ed0c8fb616d5f1659bbc1d9d032f68a7db",
+      "src/native_lua_variant_retirement.cpp": "5db41574abcb3a94fdb9c6f5c8f96f2b7b0c1f0c2a7f438fe64d622980c065ca",
+      "include/bsp/native_lua_variant_string_setter.hpp": "203b0675f9de2efb7c0680c2ef9db3ee9fa448dc9a3be5d25104cccca549c5b7",
+      "src/native_lua_variant_string_setter.cpp": "19473eaf782800e6551d12a731f6180aa83fb87ef5d2c06412a14a5e7b4a4c45",
+      "include/bsp/native_mission_lua_caller_info.hpp": "16196bcdc1e72eb93245cb5c9a8e52914a29b8f2166cb3d28681750d646a9446",
+      "src/native_mission_lua_caller_info.cpp": "1dfce8a3e20ea30828460ae9bf021f34bd7c5d343655eb5b9ca61f419cc9b70e",
+      "include/bsp/native_render_batch_keys.hpp": "a3a1ce7ea3eb18f2483454eb7d6f71a6843a808aed313005cdcc3a29f5b12bf1",
+      "src/native_render_batch_keys.cpp": "fe3101c51500415607fc9513a7528853b2285a64d1560bc8684e87b2b05e75e1",
+      "include/bsp/native_mission_lua_integer.hpp": "b3f310241cf7efa77a341ba3217f44302eb789d0aac77f29b9af7cec6f69307b",
+      "src/native_mission_lua_integer.cpp": "e276638c8072f04670d9e5d34c87b538cbaad0bd3701e648ee600ac862250eff",
+      "include/bsp/native_lua_key_integer.hpp": "6883fb0d04a7fc355d2774088d9ccbcc685eda009eef76a767d090a85ac511f1",
+      "src/native_lua_key_integer.cpp": "a5c7ff94443e7b30f5fcb0ce42a4e99308a59b41702692153c46cba8a1ab2bf4"
+    },
+    "actual_Lua_files": {
+      "build/win32/_deps/lua511-src/src/lua.h": "0a69a11d3e176ceb0e0220c4cdeb1c1f3a0e466a347d813e449ff9246afba3a6",
+      "build/win32/_deps/lua511-src/src/lapi.c": "a9f0f87af50f18b4cf0483ded3a6bf41803032bc7ed575bda84359a46c993fe0",
+      "build/win32/_deps/lua511-src/src/luaconf.h": "5c962567aaf250570b772a3dccbfde80e6add621ec04f429120dce83adb0a4d9",
+      "build/win32/_deps/lua511-src/src/llimits.h": "076aaabf0c79176f8d6047905dcf05bd9c2d770085f3adc591f95be294538b9d",
+      "build/win32/_deps/lua511-src/src/lstate.h": "ed9260f52d710316e9eab00bb1e271e1b06689f63cad55988a48a4361df93927",
+      "build/win32/_deps/lua511-src/src/ldebug.c": "5e4cae0e2b7fc313bd7673f01a246232e1218d225eb150422dccac094460aaa6"
+    },
+    "nine_raw_Text_flags": {
+      "kRawDefaultTextQualificationCc16Bound": "false",
+      "kRawDefaultSourceEqualQualificationCc16Bound": "false",
+      "kRawPrimaryPrefixQualificationCc16Bound": "false",
+      "kRawPrefixGeometryQualificationCc16Bound": "false",
+      "kRawMainSectionQualificationCc16Bound": "false",
+      "kRawFontMainQualificationCc16Bound": "false",
+      "kRawEmptyUnchangedQualificationCc16Bound": "false",
+      "kRawFontMetadataQualificationCc16Bound": "false",
+      "kRawFontWorkQualificationCc16Bound": "false"
+    }
+  },
+  "ledger_and_Ghidra": {
+    "all_old_names_evidence_prefixes_and_reconstruction_rows_preserved": true,
+    "qualified_additions": 2,
+    "journal": "local/ghidra-annotations-20261031T041554Z.json",
+    "journal_sha256": "1db4d63db95357ec6165f7c591856c2cb6adbb9177d83d9602925051cba04e21",
+    "old_values_recorded": true,
+    "same_name_appends_applied": true,
+    "bsp_project_saved": true,
+    "two_affected_exports_refreshed_before_after_archived": true,
+    "unchanged_Original_instruction_rows": [
+      32,
+      12
+    ]
+  },
+  "cleanup_policy_frontier": {
+    "Original_policy_readiness": "0d129242e33f8b4553552694e479b3bb2f1c209fb6bec54f6b75915745f49797",
+    "independent_evidence_review": "8ae181ccbf66bc909fc960be80bcccaaf0ae816dbdf55d4d713300bb21cbd649",
+    "result": "Original selected secondary C++ exception resets current+90 and enters current-handler termination; simple replacement propagation rejected. Application scope and genuine current Source-runtime/counter/handler strategy remain held; no Source grant.",
+    "current_Source_CRT_audit": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\source_crt_cleanup_binding_readiness_gui_20261031\\READINESS.md",
+      "sha256": "36e02a8f21e969ef4816bb6552e4867361d43327618af5cc19968d79e8c94802",
+      "pins_sha256": "5b8fa0a1da64bbad8f219c633c229223c1c807a8feb63b3b61f9c51d389b5cc2",
+      "artifact_index_sha256": "d5828ee4263d993259ad0865a08e4d31dd3675cebd57eed50851fe2392e4e75a",
+      "result": "actual current Source unwind route has predecessor demotion and termination, but corresponding processing-throw counter reset is absent. Neither directterminate nor genuine current-unwind candidate closes Original reset/current-handler binding. No narrower terminal/NoThrow contract admitted. Genuine legacy supplier inventory and full application designs remain held.",
+      "Source_authorized": false
+    },
+    "legacy_supplier_inventory": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\legacy_crt_cleanup_supplier_inventory_gui_20261031\\INVENTORY.md",
+      "sha256": "1edd20648db95bd81ab5605d1856045f606bc5454c25d088e1d83af279894dd9",
+      "pins_sha256": "9160ee009b7a22fdb292a3ac62870fc5a0bd5f3da7642d7db821526249f2d0d9",
+      "artifact_index_sha256": "392b4b86bbfd14921f86894afe2759a92578d0abaa800ea316fcb863a2586dd4",
+      "result": "Genuine installed x86 VC80/90/100 candidates; VC80 whole68B filter family matches masked relative targets but has DLL-global termination precedence. VC90/100 show both counter-reset/current-thread-handler roles. Compiler/FuncInfo/ThrowInfo/exception ownership/TLS/handler/load/import-binding compatibility unproved; no Source grant.",
+      "Source_authorized": false
+    },
+    "key_string_application_design": {
+      "sha256": "f0053389db5143ac422bc667aa77f7626a8671ca3a562c24f5d70b0651997b17",
+      "scope": "whole54/161/fixedTEMP/normalDATA-before-disarm/directcurrentLEN-getter-return/latekind1; privateHeader8birth proposed",
+      "Source_grant": false,
+      "gate": "genuinecompiler-runtime-handler binding and complete private-metadata alias/lifetime contract held"
+    }
+  },
+  "limits": "Actual caller retains reached raw8/CString representations, extents/aliases, real pool/publication/gate/manager/allocator/code and feature/CPU/DF/FP/lifetime/synchronization/error domains and incomplete provider debt. No owner/Frame/typebirth/adoption/default/refund/rollback/retry/recoverable-pointer receipt. No parent keycopy/keystring/builder/VM/factory/startup or Original privateABI/FH3/SEH/fault/runtime grant. No new Native/vendor-body credit.",
+  "source_ready": false,
+  "native_abi_equivalent": false,
+  "runtime_validated": false,
+  "new_tests": 0,
+  "new_native_body_credit": false,
+  "new_vendor_body_credit": false,
+  "goal_status": "active",
+  "Source47_joined_canonical": {
+    "Main": "d036f6604393bdc3bf906a7df0718e7d19a70567",
+    "join_commit": "dc6848de175601cdbc671a5c719896f01cc780de",
+    "full_Glyph_HCPP_delta_and_admission_read": true,
+    "seven_borrow_Source_ABI_change_explicit": true,
+    "build": {
+      "mode": "Source47_joined",
+      "source_commit": "dc6848de175601cdbc671a5c719896f01cc780de",
+      "exit": 0,
+      "wall_seconds": 43.51,
+      "ctest_summary": [
+        "100% tests passed, 0 tests failed out of 2",
+        "Total Test time (real) =  19.64 sec"
+      ],
+      "entry_invocation": false,
+      "new_tests": 0,
+      "map_sha256": "43df96d975bc1885b4e8cc29a3e5c43e2ed911c3762e2027f2c676f6a6440e99",
+      "project_sha256": "008933b1bf4943fef6b85d41e703add896bfdde82b7fd1c03439e8a64ab201d9"
+    },
+    "link": {
+      "mode": "Source47_joined",
+      "entry_rows": {
+        "?construct_native_string_header_0041e870_exact@bsp@@YAPAXPAXPBXAAUNativeStringRawPoolContext@1@ADI@Z": [],
+        "?return_native_string_header_buffer_0041dd20_exact@bsp@@YAXPBXAAUNativeStringRawPoolContext@1@@Z": []
+      },
+      "direct_real_provider_rows": {
+        "?copy_native_crt_bytes_00bf7680@bsp@@YAPAXPAXPBXIADI@Z": [],
+        "?resize_native_string_header_0041dd40_exact@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@IPBXADI@Z": [],
+        "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z": [
+          "0001:00325940       ?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z 10326940 f   bsp_core:native_string_pool_owner.obj"
+        ],
+        "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z": [
+          "0001:00325df0       ?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z 10326df0 f   bsp_core:native_string_pool_storage.obj"
+        ]
+      },
+      "unique_forced_entries": 0,
+      "map_sha256": "43df96d975bc1885b4e8cc29a3e5c43e2ed911c3762e2027f2c676f6a6440e99",
+      "entry_invoked": false
+    },
+    "two_Core_objects_47repo_6Lua_unchanged": true,
+    "new_entry_invoked": false
+  }
+}
