@@ -1,6 +1,7 @@
 #include "bsp/native_gui_text_glyph_quad_storage.hpp"
 #include "bsp/native_gui_text_default_storage.hpp"
 #include "bsp/gui_text_factory.hpp"
+#include "bsp/gui_text_style.hpp"
 
 #include "bsp/native_string.hpp"
 #include "bsp/native_string_pool_owner.hpp"
@@ -511,7 +512,12 @@ __declspec(noinline) void write_native_gui_text_glyph_quad_storage_00ab98f0(
         Word shadow_offset;
         prepare_shadow(c, a, shadow_offset);
         boundary(a, 0x00ab9e05, child);
-        c.calls.shadow_00ab6c30(child, 1, 0, shadow_offset, static_cast<volatile Word*>(a.locals) + 7, a);
+        a.shadow_frame_.color_argument = bits(a.locals + 7);
+        a.shadow_frame_.offset_argument = shadow_offset;
+        a.shadow_frame_.position_argument = 0;
+        a.shadow_frame_.enabled_argument = 1;
+        configure_gui_text_shadow_00ab6c30(child, a.shadow_frame_,
+            a.raw93_context_.sections.parenting, a.shadow_acquired_);
         boundary(a, 0x00ab9e13, a.locals + 4);
         const auto construct_shader_header = [&] {
             return construct_native_string_header_0041e870(

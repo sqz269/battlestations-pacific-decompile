@@ -15,6 +15,8 @@ struct NativeGuiTextGlyphQuadStorageAcquired;
 struct NativeGuiTextRawModelDefaultStorageFrame;
 struct NativeGuiTextRawModelDefaultStorageContext;
 struct NativeGuiTextRawModelDefaultStorageAcquired;
+struct NativeGuiTextShadowStorageFrame;
+struct NativeNodeSetParentAcquired;
 
 // Mandatory genuine whole raw providers in ONE retained Text/Model/renderer/
 // font/material/pool/string domain. No implementation/default is provided.
@@ -44,9 +46,6 @@ public:
         std::uint32_t captured_target, std::uint32_t value, NativeGuiTextGlyphQuadStorageAcquired&) = 0;
     // AA6BC0 listener fields use the existing raw leaf directly.
     virtual void font_00ab8c30(void* actual_child, const void* actual_name_header8,
-        NativeGuiTextGlyphQuadStorageAcquired&) = 0;
-    virtual void shadow_00ab6c30(void* actual_child, std::uint32_t enabled,
-        std::uint32_t position, std::uint32_t offset_bits, const volatile std::uint32_t* color4,
         NativeGuiTextGlyphQuadStorageAcquired&) = 0;
     virtual void shader_00ab8e70(void* actual_child, const void* actual_name_header8,
         NativeGuiTextGlyphQuadStorageAcquired&) = 0;
@@ -125,10 +124,14 @@ struct NativeGuiTextGlyphQuadStorageAcquired final {
     // every other reached/recursive Glyph attempt. A shared service Context is
     // allowed only in its genuine common process/lifetime domain. These borrows
     // create no owner, frame backing, Model188 credit or canonical raw122 birth.
-    NativeGuiTextGlyphQuadStorageAcquired(NativeGuiTextRawModelDefaultStorageFrame& f,
+    NativeGuiTextGlyphQuadStorageAcquired(
+        NativeGuiTextRawModelDefaultStorageFrame& f,
         NativeGuiTextRawModelDefaultStorageContext& c,
-        NativeGuiTextRawModelDefaultStorageAcquired& a)
-        : raw93_frame_(f), raw93_context_(c), raw93_acquired_(a) {}
+        NativeGuiTextRawModelDefaultStorageAcquired& a,
+        NativeGuiTextShadowStorageFrame& shadow_frame,
+        NativeNodeSetParentAcquired& shadow_acquired)
+        : raw93_frame_(f), raw93_context_(c), raw93_acquired_(a),
+          shadow_frame_(shadow_frame), shadow_acquired_(shadow_acquired) {}
     NativeGuiTextGlyphQuadStorageAcquired(const NativeGuiTextGlyphQuadStorageAcquired&) = delete;
     NativeGuiTextGlyphQuadStorageAcquired& operator=(const NativeGuiTextGlyphQuadStorageAcquired&) = delete;
 private:
@@ -145,6 +148,9 @@ private:
     NativeGuiTextRawModelDefaultStorageFrame& raw93_frame_;
     NativeGuiTextRawModelDefaultStorageContext& raw93_context_;
     NativeGuiTextRawModelDefaultStorageAcquired& raw93_acquired_;
+    // Distinct fresh shadow records, never the ctor85/recursive parenting backing.
+    NativeGuiTextShadowStorageFrame& shadow_frame_;
+    NativeNodeSetParentAcquired& shadow_acquired_;
 };
 
 // Whole AB98F0..AB9FC2 [1747B/485ops]. Original ECX actual Text; ten physical
