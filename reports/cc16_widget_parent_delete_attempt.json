@@ -1,0 +1,446 @@
+{
+  "schema_version": 1,
+  "packet": "codex-widget-parent-delete-attempt",
+  "parent": "ee32fc77f43a2bfff01c2e388a02588a07ce3b09",
+  "branch": "agent/codex-widget-parent-delete-attempt",
+  "owned_address_coordination_only": "00AA9730",
+  "four_owned_paths": [
+    "include/bsp/native_gui_widget_lifetime.hpp",
+    "src/native_gui_widget_lifetime.cpp",
+    "docs/CC16_WIDGET_PARENT_DELETE_ATTEMPT.md",
+    "reports/cc16_widget_parent_delete_attempt.json"
+  ],
+  "new_evidence_paths": [
+    "docs/CC16_WIDGET_PARENT_DELETE_ATTEMPT.md",
+    "reports/cc16_widget_parent_delete_attempt.json"
+  ],
+  "source_pairs": [
+    {
+      "path": "include/bsp/native_gui_widget_lifetime.hpp",
+      "before": {
+        "bytes": 7899,
+        "sha256": "c9155c508f98bb913ebe8ae71cd6c98e050d86ce25a746a5c8f4909f37242d1a",
+        "git_blob": "3dfab3f1b6a42f2a37f8c84e1d813e4d7201ec20"
+      },
+      "after": {
+        "bytes": 10153,
+        "sha256": "eb41bcd6bea8ecff99ab0b1dca322316a12c86a3da54a0229a1a59e2519f336a",
+        "git_blob": "3f2e5eaf5756641377cafb0cac7cdb10840bda6f"
+      }
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "before": {
+        "bytes": 17866,
+        "sha256": "e8a53199f409248cc89b6d64c326a0b037970703e3b34ca628162a730907df68",
+        "git_blob": "9c8b06d3a4071d57ab1a539eaacdfb2fb810cbd3"
+      },
+      "after": {
+        "bytes": 19237,
+        "sha256": "4cc4073e96b0441595743d967ae2cbf07eaf313671e63bd99891cbe06fb912b7",
+        "git_blob": "084e85da41c26b91eb83e2f9f865644997b59ab0"
+      }
+    }
+  ],
+  "seams": [
+    {
+      "path": "include/bsp/native_gui_widget_lifetime.hpp",
+      "label": "retained_private_Source_attempt",
+      "offset_before": 4873,
+      "old_utf8": "// Exact borrowed raw-container aliases. Same allocation/free domain and actual\n",
+      "new_utf8": "// Retained Source-only attempt for the explicit selected AA9730 route.\n// Construct BEFORE enclosing Native effects with the captured parent identity\n// and SAME context object. Construction reads no Native value and grants no\n// ownership, canonical admission, Origin or cleanup permission. Keep the\n// attempt/context/remaining graph alive through normal return or explicit\n// failure disposition; distinct nested invocations need distinct attempts.\nclass NativeGuiWidgetParentDeleteAttempt final {\npublic:\n    explicit NativeGuiWidgetParentDeleteAttempt(void* actual_parent,\n        NativeGuiWidgetLifetimeContext& context)\n        : actual_parent_(actual_parent), context_(&context) {}\n    ~NativeGuiWidgetParentDeleteAttempt() = default;\n    NativeGuiWidgetParentDeleteAttempt() = delete;\n    NativeGuiWidgetParentDeleteAttempt(const NativeGuiWidgetParentDeleteAttempt&) = delete;\n    NativeGuiWidgetParentDeleteAttempt& operator=(const NativeGuiWidgetParentDeleteAttempt&) = delete;\n    NativeGuiWidgetParentDeleteAttempt(NativeGuiWidgetParentDeleteAttempt&&) = delete;\n    NativeGuiWidgetParentDeleteAttempt& operator=(NativeGuiWidgetParentDeleteAttempt&&) = delete;\n\n    // Source progress/denial only. Inactive/returned never authorizes Native EH.\n    bool entered() const { return entered_; }\n    bool normal_returned() const { return returned_; }\n    bool unknown_escape() const { return unknown_; }\n    bool requires_process_retention() const {\n        return unknown_ || (entered_ && !returned_);\n    }\nprivate:\n    friend void destroy_native_gui_widget_base_00aa9730(void*,\n        NativeGuiWidgetLifetimeContext&, NativeGuiWidgetParentDeleteAttempt&);\n    void* const actual_parent_;\n    NativeGuiWidgetLifetimeContext* const context_;\n    bool entered_{}, returned_{}, unknown_{};\n};\n\n// Exact borrowed raw-container aliases. Same allocation/free domain and actual\n",
+      "old_sha256": "8dd8a008a2c538f95a35bc524ac2612d113bbdbb23ffa6ff1856f46b998224bd",
+      "new_sha256": "61252153ec828fe8332d5d4607a3be8a79503d677bfeef2f3769eb6dd53c21d0",
+      "after_state_sha256": "4b7b46b6689587ffa0f84372f0f178f2c7df209806aaa0412552f5469b044509",
+      "after_state_bytes": 9701
+    },
+    {
+      "path": "include/bsp/native_gui_widget_lifetime.hpp",
+      "label": "explicit_three_argument_overload",
+      "offset_before": 8520,
+      "old_utf8": "void destroy_native_gui_widget_base_00aa9730(void* actual_widget,\n    NativeGuiWidgetLifetimeContext&);\n",
+      "new_utf8": "void destroy_native_gui_widget_base_00aa9730(void* actual_widget,\n    NativeGuiWidgetLifetimeContext&);\n// Explicit selected Source route. Private denial is armed across the WHOLE\n// invocation before the first Native profile store/table admission. Unknown\n// C++ escapes retain/rethrow before legacy unwind; no cleanup/Origin/NoThrow\n// promise, reset, retry, destructor policy or Native value filter is supplied.\nvoid destroy_native_gui_widget_base_00aa9730(void* actual_widget,\n    NativeGuiWidgetLifetimeContext&, NativeGuiWidgetParentDeleteAttempt&);\n",
+      "old_sha256": "380dc9f4c59e3d050c1689eafd8fdb69ac9cf6fe43149794999b3c1dc4c355f6",
+      "new_sha256": "83011da06fb8660b702e2809382780bbc786efe434f0c79075dba1155e093c4f",
+      "after_state_sha256": "eb41bcd6bea8ecff99ab0b1dca322316a12c86a3da54a0229a1a59e2519f336a",
+      "after_state_bytes": 10153
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "label": "private_denial_transport_parameters",
+      "offset_before": 14430,
+      "old_utf8": "template<class Schedule> void destroy_base(void* owner, Schedule& schedule) {",
+      "new_utf8": "template<class Schedule> void destroy_base(void* owner, Schedule& schedule,\n    const bool* selected_parent_entered = nullptr,\n    bool* selected_parent_unknown = nullptr) {",
+      "old_sha256": "c9247e40cfbb1c94d8481e842ca4fab4087723d84cc9310ad35a37efc73e0e4f",
+      "new_sha256": "eb5767be20c9cfc3b4eac584373c7bbdbcf3800993707552ea03b600be11e198",
+      "after_state_sha256": "4ae8afe7f071b930a7a0758d51f10565f2d6a509375c07b719ecc6f0f5946459",
+      "after_state_bytes": 17962
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "label": "actual_catch_denies_before_legacy_unwind",
+      "offset_before": 16700,
+      "old_utf8": "        destroy_native_ref_counted_base_00bd30f0(owner);\n    } catch (...) {\n        schedule.unwind(owner, unwind_state);\n        throw;\n    }\n",
+      "new_utf8": "        destroy_native_ref_counted_base_00bd30f0(owner);\n    } catch (...) {\n        // Only the exact selected overload supplies these private retained\n        // fields. Inspect Source denial BEFORE diagnostics or legacy action;\n        // Native state/phase/provider return never grants cleanup permission.\n        if (selected_parent_entered && *selected_parent_entered) {\n            *selected_parent_unknown = true;\n            throw;\n        }\n        schedule.unwind(owner, unwind_state);\n        throw;\n    }\n",
+      "old_sha256": "20f3e123fb4888e4c058c2bc1531c063a04305b3e291af307bcd804379f32991",
+      "new_sha256": "200cb4af4a58dd3153a596f6bd9f878a79cc45e418c1fadaa4937df1cf9a5d5e",
+      "after_state_sha256": "f6b66899ec4ba47c8eb2bf32dfea0e60604e1f29617db4cda1fc8d187218b170",
+      "after_state_bytes": 18336
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "label": "implemented_selected_entry",
+      "offset_before": 17397,
+      "old_utf8": "void destroy_native_gui_widget_base_00aa9730(void* owner, NativeGuiWidgetLifetimeContext& c) {\n    LegacySchedule schedule{c}; destroy_base(owner, schedule);\n}\n",
+      "new_utf8": "void destroy_native_gui_widget_base_00aa9730(void* owner, NativeGuiWidgetLifetimeContext& c) {\n    LegacySchedule schedule{c}; destroy_base(owner, schedule);\n}\nvoid destroy_native_gui_widget_base_00aa9730(void* owner, NativeGuiWidgetLifetimeContext& c,\n    NativeGuiWidgetParentDeleteAttempt& attempt) {\n    const bool fresh = !attempt.entered_ && !attempt.returned_ && !attempt.unknown_;\n    attempt.entered_ = true; // BEFORE Source admission and the first Native store.\n    try {\n        if (!fresh || attempt.actual_parent_ != owner || attempt.context_ != &c)\n            throw std::logic_error(\"selected widget parent delete requires its fresh SAME retained attempt\");\n        LegacySchedule schedule{c};\n        destroy_base(owner, schedule, &attempt.entered_, &attempt.unknown_);\n        attempt.returned_ = true; // Source normal return, never physical disposal.\n    } catch (...) {\n        attempt.unknown_ = true; // Also covers late admission/schedule failures.\n        throw; // No diagnostics, cleanup, compensation or Native-origin claim.\n    }\n}\n",
+      "old_sha256": "bf3d25c782335c7c17e960d68cdac5feceac5e24b456dbc4c14e3e454ab2734e",
+      "new_sha256": "13037e23515e7db3eb54fc607494d5be170b6ac06a5b4f871b97ee648552d6b8",
+      "after_state_sha256": "4cc4073e96b0441595743d967ae2cbf07eaf313671e63bd99891cbe06fb912b7",
+      "after_state_bytes": 19237
+    }
+  ],
+  "states": [
+    {
+      "path": "include/bsp/native_gui_widget_lifetime.hpp",
+      "stage": "before",
+      "sha256": "c9155c508f98bb913ebe8ae71cd6c98e050d86ce25a746a5c8f4909f37242d1a",
+      "bytes": 7899
+    },
+    {
+      "path": "include/bsp/native_gui_widget_lifetime.hpp",
+      "stage": "retained_private_Source_attempt",
+      "sha256": "4b7b46b6689587ffa0f84372f0f178f2c7df209806aaa0412552f5469b044509",
+      "bytes": 9701
+    },
+    {
+      "path": "include/bsp/native_gui_widget_lifetime.hpp",
+      "stage": "explicit_three_argument_overload",
+      "sha256": "eb41bcd6bea8ecff99ab0b1dca322316a12c86a3da54a0229a1a59e2519f336a",
+      "bytes": 10153
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "stage": "before",
+      "sha256": "e8a53199f409248cc89b6d64c326a0b037970703e3b34ca628162a730907df68",
+      "bytes": 17866
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "stage": "private_denial_transport_parameters",
+      "sha256": "4ae8afe7f071b930a7a0758d51f10565f2d6a509375c07b719ecc6f0f5946459",
+      "bytes": 17962
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "stage": "actual_catch_denies_before_legacy_unwind",
+      "sha256": "f6b66899ec4ba47c8eb2bf32dfea0e60604e1f29617db4cda1fc8d187218b170",
+      "bytes": 18336
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "stage": "implemented_selected_entry",
+      "sha256": "4cc4073e96b0441595743d967ae2cbf07eaf313671e63bd99891cbe06fb912b7",
+      "bytes": 19237
+    }
+  ],
+  "protected_regions": [
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "needle": "void unwind_base(",
+      "bytes": 387,
+      "sha256": "09130ddd1ac5632999789bdb83f5499a35c5cb2b0d0b0b8b6512bc02070ea45e"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "needle": "struct LegacySchedule",
+      "bytes": 2523,
+      "sha256": "2309342fa575829b53c2f7a4635b4265ba2f3b1992d0a7983328ef2e34869e30"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "needle": "struct RawSchedule",
+      "bytes": 1726,
+      "sha256": "1726249a14c680e66de03cd2ebee89e3c43527ef35533af2b5b8d50c3cdd030e"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "needle": "template<class Schedule> void release_scene(",
+      "bytes": 1346,
+      "sha256": "2047533bb1e3bf1686bd9b0391924db64e3085c398b30480590a581183f6cb3d"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "needle": "void release_native_gui_widget_scene_00aa8320(void* owner, NativeGuiWidgetLifetimeContext& c)",
+      "bytes": 161,
+      "sha256": "4563cd512dc55930d3209a6bc176cbd4977420898ef35e5f83cf546ea0361b28"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "needle": "void destroy_native_gui_widget_base_00aa9730(void* owner, NativeGuiWidgetLifetimeContext& c) {",
+      "bytes": 159,
+      "sha256": "8e5cc1edea45e3e4eb304499ba925843084abdc2902d3e0b0243b26da82bde1d"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "needle": "void release_native_gui_widget_scene_00aa8320(void* owner, NativeGuiWidgetRawModelLifetimeContext& c)",
+      "bytes": 224,
+      "sha256": "77d7866a9f5728d7b40c0be9e24b1af4feb0e41c565da157062f0b51fa5cfb89"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "needle": "void destroy_native_gui_widget_base_00aa9730(void* owner, NativeGuiWidgetRawModelLifetimeContext& c)",
+      "bytes": 343,
+      "sha256": "5d956e25db1d20c2bb5a6ae2096d0f68fa899cdaf99906782ca769794486024a"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "needle": "void release_native_gui_text_glyph_00ab73b0(",
+      "bytes": 133,
+      "sha256": "c5045cc72d3bd9c7889d18d3c42e0fa8eab18edd1b365ab127503fcd32610401"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_lifetime.hpp",
+      "needle": "struct NativeGuiWidgetLifetimeContext",
+      "bytes": 387,
+      "sha256": "725e2c5727000d29706ca476a016e2e89a588bf17ab6865dd81f806d00368c49"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_lifetime.hpp",
+      "needle": "class NativeGuiWidgetLifetimeBindings",
+      "bytes": 1408,
+      "sha256": "bbe1a292d14db8970cf632edc65d7cb6da16f1c1ddb1d2caee86a6ab9854dc1f"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_lifetime.hpp",
+      "needle": "class NativeGuiWidgetRawNodeLifetimeBindings",
+      "bytes": 477,
+      "sha256": "caf165780021d0967ae7bdcd5f6d2b98db6127b64b522f5d9ba34acd52b47618"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_lifetime.hpp",
+      "needle": "class NativeGuiTimedStorageCalls",
+      "bytes": 299,
+      "sha256": "e9a09569e7cbcfc417f02b79c985fec54619a2d6ce18b5ea6b0da6c26e78af82"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "label": "whole_normal_destroy_base_kernel",
+      "bytes": 2153,
+      "sha256": "adff12f5b70fb609594035d975b48b481fd451bba613492a6272758d632e90e9"
+    }
+  ],
+  "unchanged_provider_pins": [
+    {
+      "path": "include/bsp/native_gui_widget_raw_model_lifetime.hpp",
+      "bytes": 4599,
+      "sha256": "bc8dd7b7fb8e22be5436857a8a27ed123afafe7543c592e327643d5294eaf988",
+      "git_blob_sha1": "dbffd3f17f0952c4d3ff8c0659ab0f617221eac7"
+    },
+    {
+      "path": "src/native_gui_widget_raw_model_lifetime.cpp",
+      "bytes": 28955,
+      "sha256": "8761415408f767dfa34dbcdf986be942e94f07b42d3f63536a77ce987cbec146",
+      "git_blob_sha1": "4d0e75a0986557607258a53264c06bac084c0a7f"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_base_storage.hpp",
+      "bytes": 1081,
+      "sha256": "35748704f96ed477f2f55f01edf5a8e598f1995955f847343f94327dc495faab",
+      "git_blob_sha1": "61c72c99fab59f5c86da392495d7bae5381607cf"
+    },
+    {
+      "path": "src/native_gui_widget_base_storage.cpp",
+      "bytes": 3008,
+      "sha256": "4ddd5ab1ad4a2b8174d80caf70dba76afa648479e4e8637a56884f2b9db6354d",
+      "git_blob_sha1": "997a33c5ac7bbf7b57e133feb53b91163e7308b5"
+    },
+    {
+      "path": "include/bsp/native_node_destruction.hpp",
+      "bytes": 5997,
+      "sha256": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833",
+      "git_blob_sha1": "d84edd297c4dfb43cb0b5aa630676fb1b245eedc"
+    },
+    {
+      "path": "src/native_node_destruction.cpp",
+      "bytes": 14506,
+      "sha256": "2ee6ba84e759958a8f160cb25ad210076203931d4ae4f2e9265529bff5c57269",
+      "git_blob_sha1": "471b67cac72f5a45fb6a4789f82d7533fd72f6c9"
+    },
+    {
+      "path": "include/bsp/native_ref_counted.hpp",
+      "bytes": 1226,
+      "sha256": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82",
+      "git_blob_sha1": "5ee0a9b036a0acd04fe5a89e3faa8cd22552f200"
+    },
+    {
+      "path": "src/native_ref_counted.cpp",
+      "bytes": 822,
+      "sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9",
+      "git_blob_sha1": "bb26a9f52a9b694165a4b832db8a9dac735d1c52"
+    },
+    {
+      "path": "include/bsp/native_renderer_pointer_array_destroy.hpp",
+      "bytes": 2071,
+      "sha256": "5c89c92aa62d71115d8d5c81353ab235b3317ca265929a656644e849e4d1f0ab",
+      "git_blob_sha1": "b42f1838efe07ece6509247e2c1277690a350e37"
+    },
+    {
+      "path": "src/native_renderer_pointer_array_destroy.cpp",
+      "bytes": 2717,
+      "sha256": "e8fbf2456ac9e3e2a7fb6996d0e991b50c5ea32b184c1d0a13d376cee3956f21",
+      "git_blob_sha1": "699877250b9f72a0039dfe17deb4dde075a09486"
+    },
+    {
+      "path": "include/bsp/native_logical_vertex_owner.hpp",
+      "bytes": 7242,
+      "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c",
+      "git_blob_sha1": "f2c5a72e46f030f049f370eda07de9594a5f3816"
+    },
+    {
+      "path": "src/native_logical_vertex_owner.cpp",
+      "bytes": 25341,
+      "sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba",
+      "git_blob_sha1": "be3c28943b8b96b9c2e6829fb93546654271de62"
+    },
+    {
+      "path": "include/bsp/native_live_effect_manager.hpp",
+      "bytes": 3452,
+      "sha256": "a2209e98f4667a06d74a2e677e86361fec821e676bcff548c80b2554002de597",
+      "git_blob_sha1": "118d05db14a7fead43bc704f803080c0fcc1f893"
+    },
+    {
+      "path": "src/native_live_effect_manager.cpp",
+      "bytes": 2615,
+      "sha256": "7b065ea88da63c8a3408ccf39f69923e685b4f97f6abc454f255b15a217c2747",
+      "git_blob_sha1": "932e05cf8e8868675e97bef46524800fb3ef0db3"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "git_blob_sha1": "4d10f6c53a3b9be4745776df443f340ea1769936"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "git_blob_sha1": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_lifetime_dispatch.hpp",
+      "bytes": 6288,
+      "sha256": "9d2c05097f3880a57bc79a5cd095bee33858a3b0300ed77af887f90fec3e291c",
+      "git_blob_sha1": "bd1b560ee54acf5c4189ecc2a130a406a70049d4"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime_dispatch.cpp",
+      "bytes": 9192,
+      "sha256": "f850db8bbd894bf91a96f730b8783cc7b66cb595c3c2a07973e33d33d9ad4803",
+      "git_blob_sha1": "b68e27db072d9cf5f549d7ed8806faf36474b530"
+    }
+  ],
+  "approved_patch": {
+    "bytes": 5509,
+    "sha256": "6f43f9a7c78eae5b646af7de908ec2a297dd1e7d3477f8e741f9368686158dfb"
+  },
+  "immutable_prior_artifact_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-widget-parent-delete-attempt\\local\\output\\cc16_widget_parent_delete_attempt_20261031\\approved_proposal.json",
+      "bytes": 9884,
+      "sha256": "152c41d9a3a7730acffb2ab2e395173835bdef43e17dda5400e6362b3aa010d6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-widget-parent-delete-attempt\\local\\output\\cc16_widget_parent_delete_attempt_20261031\\approved_static_verification.json",
+      "bytes": 11140,
+      "sha256": "22c4a84e0fe4d0c80a2b083775fae8066bdcff32763000ac6147d7aac0d1903a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-widget-parent-delete-attempt\\local\\output\\cc16_widget_parent_delete_attempt_20261031\\approved_manifest.json",
+      "bytes": 3606,
+      "sha256": "70cb59efd28ec124c5dea975bc1827a3e87a18a5581472a554845e90bac67b28"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-widget-parent-delete-attempt\\local\\output\\cc16_widget_parent_delete_attempt_20261031\\peer_read_only_receipt.json",
+      "bytes": 5498,
+      "sha256": "38011e8659f0404932bac27ca6e57ebae676d0fe0be0fb42eaaafc2418ea63eb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-widget-parent-delete-attempt\\local\\output\\cc16_widget_parent_delete_attempt_20261031\\peer_sealed_receipt.json",
+      "bytes": 791,
+      "sha256": "f65509a52f545da3409832cfd15c8df28e5dfa32a5414bde4ef9c10c325ad159"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-widget-parent-delete-attempt\\local\\output\\cc16_widget_parent_delete_attempt_20261031\\peer_manifest.json",
+      "bytes": 3019,
+      "sha256": "b9df463c1f5149046c8f721b8acdba6bea2d7f0235befcc9580c4831cecc3cd0"
+    }
+  ],
+  "standalone_author_gate": {
+    "Root_primary_zero_finding": true,
+    "Glyph_independent_zero_finding": true,
+    "peer_receipt_original": "J:\\PROG\\battlestations-pacific-decompile-codex-canonical-crt-v3-locale-storage-independent-review\\local\\output\\cc16_gui_icon_parent_coupled_proposal_review_20261031\\widget_provider\\peer_read_only_receipt.json",
+    "peer_receipt_bytes": 5498,
+    "peer_receipt_sha256": "38011e8659f0404932bac27ca6e57ebae676d0fe0be0fb42eaaafc2418ea63eb",
+    "peer_static_checks": 59,
+    "satisfied_before_worktree_lease_materialization": true
+  },
+  "source_contract": {
+    "constructor": "explicit NativeGuiWidgetParentDeleteAttempt(void*, NativeGuiWidgetLifetimeContext&); metadata address/context only",
+    "type": "nondefault/noncopy/nonmove; private entered/returned/unknown; default destructor no policy",
+    "entry": "void destroy_native_gui_widget_base_00aa9730(void*, NativeGuiWidgetLifetimeContext&, NativeGuiWidgetParentDeleteAttempt&)",
+    "arm": "before Source admission/schedule construction/first Native profile store",
+    "catch": "private marker before schedule.unwind/current_exception; UNKNOWN and bare rethrow; no action",
+    "old_routes": "twoarg/rawmodel/default/noexcept/terminal text preserved; internal null pointer legacy behavior unchanged",
+    "normal_body": "2153B entire first-profile-to-final-ref-base kernel exact"
+  },
+  "mandatory_lifetime_conditions": [
+    "cold retained attempt before enclosing Native effects, exact parent/context identity, no Native value/canonical/owner permission",
+    "fresh distinct nonmoving record per entered/nested invocation; no reset/retry/shared active Context/TLS/global",
+    "Source metadata disjoint Native-write/argument/callee-private storage; remaining graph/context/record retained through return/failure disposition",
+    "progress/unknown/retention readers never prove Native origin, physical free or cleanup eligibility"
+  ],
+  "coupled_Icon_and_parent_activation": {
+    "prepared_service_Icon_four_file_proposal": "separate unapproved packet",
+    "actual_enclosing_Dispatcher_Identity_selection": false,
+    "whole_Icon_OWN_failure_suppression_required": true,
+    "final_base_provider_implemented_not_stub": true,
+    "application_selected": false
+  },
+  "document": {
+    "path": "docs\\CC16_WIDGET_PARENT_DELETE_ATTEMPT.md",
+    "bytes": 4338,
+    "sha256": "c3b1d4acf0073d61b4374ce63091b88377556d0d54a892c3603ab913c4b94e2c"
+  },
+  "reader": {
+    "bytes": 5744,
+    "sha256": "849d7892df98c1e25f637070c62b2a6d0fdd6533f08bbdd2751d7c20855531a5",
+    "source_utf8": "import argparse,hashlib,json,pathlib,re,subprocess\nP=argparse.ArgumentParser();P.add_argument('--root',default='.');P.add_argument('--commit');P.add_argument('--worktree',action='store_true');P.add_argument('--output');A=P.parse_args();R=pathlib.Path(A.root).resolve();Q=json.loads((R/'reports/cc16_widget_parent_delete_attempt.json').read_bytes());checks=0\ndef h(b):return hashlib.sha256(b).hexdigest()\ndef git(*a,input=None):return subprocess.check_output(['git',*a],cwd=R,input=input)\ndef ok(v):\n global checks\n assert v;checks+=1\ndef read(p):return (R/p).read_bytes() if A.worktree else git('show',(A.commit or 'HEAD')+':'+p)\ndef block(b,needle):\n s=b.decode();i=s.index(needle);start=i;state='code';depth=0;beg=False\n while i<len(s):\n  c=s[i];n=s[i:i+2]\n  if state=='line':\n   if c=='\\n':state='code'\n  elif state=='comment':\n   if n=='*/':state='code';i+=1\n  elif state in ('str','char'):\n   if c=='\\\\':i+=1\n   elif c==('\"' if state=='str' else \"'\"):state='code'\n  elif n=='//':state='line';i+=1\n  elif n=='/*':state='comment';i+=1\n  elif c=='\"':state='str'\n  elif c==\"'\":state='char'\n  elif c=='{':depth+=1;beg=True\n  elif c=='}':\n   depth-=1\n   if beg and depth==0:return s[start:i+1].encode()\n  i+=1\n raise AssertionError(needle)\nB=Q['parent'];before={};after={};states=[]\nfor x in Q['source_pairs']:\n p=x['path'];a=git('show',B+':'+p);b=read(p);before[p]=a;after[p]=b;ok(len(a)==x['before']['bytes'] and h(a)==x['before']['sha256']);ok(len(b)==x['after']['bytes'] and h(b)==x['after']['sha256']);ok(git('rev-parse',B+':'+p).decode().strip()==x['before']['git_blob']);ok(b'\\r' not in b and not b.startswith(b'\\xef\\xbb\\xbf'))\n f=a;ss=[s for s in Q['seams'] if s['path']==p];states.append({'path':p,'stage':'before','sha256':h(f),'bytes':len(f)})\n for s in ss:\n  i=s['offset_before'];old=s['old_utf8'].encode();new=s['new_utf8'].encode();ok(f[i:i+len(old)]==old and h(old)==s['old_sha256'] and h(new)==s['new_sha256']);f=f[:i]+new+f[i+len(old):];ok(h(f)==s['after_state_sha256'] and len(f)==s['after_state_bytes']);states.append({'path':p,'stage':s['label'],'sha256':h(f),'bytes':len(f)})\n ok(f==b)\n for s in reversed(ss):\n  i=s['offset_before'];old=s['old_utf8'].encode();new=s['new_utf8'].encode();ok(f[i:i+len(new)]==new);f=f[:i]+old+f[i+len(new):]\n ok(f==a);ok(re.findall(rb'__asm\\s*\\{[\\s\\S]*?\\}',a)==re.findall(rb'__asm\\s*\\{[\\s\\S]*?\\}',b));ok(re.findall(rb'\\b__COUNTER__\\b',a)==re.findall(rb'\\b__COUNTER__\\b',b))\nok(states==Q['states'])\nfor x in Q['protected_regions']:\n a=before[x['path']];b=after[x['path']]\n if 'needle' in x:v=block(a,x['needle']);ok(block(b,x['needle'])==v)\n else:\n  aa=block(a,'template<class Schedule> void destroy_base(');bb=block(b,'template<class Schedule> void destroy_base(');start=b'    auto& c = schedule.widget;';end=b'    } catch (...) {';v=aa[aa.index(start):aa.index(end)];ok(bb[bb.index(start):bb.index(end)]==v)\n ok(len(v)==x['bytes'] and h(v)==x['sha256'])\nfor x in Q['unchanged_provider_pins']:\n a=git('show',B+':'+x['path']);b=read(x['path']);ok(a==b and len(b)==x['bytes'] and h(b)==x['sha256']);ok(git('rev-parse',B+':'+x['path']).decode().strip()==x['git_blob_sha1'])\nhpp=after[Q['source_pairs'][0]['path']];cpp=after[Q['source_pairs'][1]['path']];cl=block(hpp,'class NativeGuiWidgetParentDeleteAttempt');entry=block(cpp,'void destroy_native_gui_widget_base_00aa9730(void* owner, NativeGuiWidgetLifetimeContext& c,');normal=block(cpp,'template<class Schedule> void destroy_base(');catch=normal[normal.index(b'    } catch (...) {'):]\nok(cl.count(b'= delete;')==5 and cl.count(b'friend ')==1 and b': actual_parent_(actual_parent), context_(&context) {}' in cl);ok(b'unknown_ || (entered_ && !returned_)' in cl);ok(entry.index(b'attempt.entered_ = true')<entry.index(b'if (!fresh')<entry.index(b'LegacySchedule schedule')<entry.index(b'destroy_base('));ok(catch.index(b'if (selected_parent_entered')<catch.index(b'*selected_parent_unknown = true')<catch.index(b'throw;')<catch.index(b'schedule.unwind'));ok(b'unwind_state' not in catch[:catch.index(b'schedule.unwind')] and b'current_exception' not in catch);ok(b'attempt.unknown_ = false' not in entry and b'attempt.entered_ = false' not in entry and b'current_exception' not in entry)\ndoc=read(Q['new_evidence_paths'][0]);ok(len(doc)==Q['document']['bytes'] and h(doc)==Q['document']['sha256'])\nfor p in Q['new_evidence_paths']:ok(not git('ls-tree',B,'--',p))\ndef tree(c):return {x.split(b'\\t',1)[1]:x.split(b'\\t',1)[0] for x in git('ls-tree','-r','-z',c).split(b'\\0') if x}\nt=tree(B)\nif A.worktree:\n u=dict(t)\n for p in Q['four_owned_paths']:u[p.encode()]=b'100644 blob '+git('hash-object','--stdin',input=read(p)).strip()\n changed=set(git('diff','--name-only',B).decode().splitlines())|set(git('ls-files','--others','--exclude-standard').decode().splitlines());ok(changed==set(Q['four_owned_paths']))\nelse:u=tree(A.commit or 'HEAD')\nok({p.decode() for p in set(t)|set(u) if t.get(p)!=u.get(p)}==set(Q['four_owned_paths']))\nfor x in Q['source_pairs']:u[x['path'].encode()]=t[x['path'].encode()]\nfor p in Q['new_evidence_paths']:u.pop(p.encode())\nok(u==t);ok(Q['Original_Native_vendor_helper_CG_duplicate_ABI_Origin_runtime_activation_credit']==0)\nresult={'pass':True,'checks':checks,'mode':'working-tree' if A.worktree else 'Git-commit','parent':B,'source_pairs':2,'seams':len(Q['seams']),'states':len(states),'protected_regions':len(Q['protected_regions']),'unchanged_provider_pins':len(Q['unchanged_provider_pins']),'normal_kernel_bytes':2153,'full_four_path_recursive_inverse':True,'exact_approved_source':True,'compiler_tests_probe_Game_Ghidra_actions':False,'activation_or_Native_permission':False}\nif A.output:pathlib.Path(A.output).write_text(json.dumps(result,indent=2)+'\\n',encoding='utf-8',newline='\\n')\nprint(json.dumps(result))\n",
+    "usage": "Extract exact UTF8LF reader; python reader.py --root <checkout> --commit <immutable_SHA>; before commit --worktree. Only Git/file reads, optional ignored --output static receipt."
+  },
+  "Original_Native_vendor_helper_CG_duplicate_ABI_Origin_runtime_activation_credit": 0,
+  "worker_actions": {
+    "authorized_four_path_Source_materialization": true,
+    "exact_approved_implementation_unchanged": true,
+    "CMake_ledger_Ghidra": false,
+    "compiler_tests_probe_Game": false,
+    "activation": false
+  },
+  "actual_compile_and_Core_status": "UNCOMPILED; Root official checks deferred. No existing caller/runtime receipt applies to new selected overload.",
+  "materialized_author_static_verification": {
+    "pass": true,
+    "checks": 109,
+    "mode": "working-tree",
+    "parent": "ee32fc77f43a2bfff01c2e388a02588a07ce3b09",
+    "source_pairs": 2,
+    "seams": 5,
+    "states": 7,
+    "protected_regions": 14,
+    "unchanged_provider_pins": 18,
+    "normal_kernel_bytes": 2153,
+    "full_four_path_recursive_inverse": true,
+    "exact_approved_source": true,
+    "compiler_tests_probe_Game_Ghidra_actions": false,
+    "activation_or_Native_permission": false
+  },
+  "hash_formats": "Source/preimages/patch SHA256 exact Git UTF8LF bytes; postimage git_blob uses Git blob SHA1 header. Reader UTF8LF/CR0; no raw normalization. Prior receipts preserve original representations."
+}

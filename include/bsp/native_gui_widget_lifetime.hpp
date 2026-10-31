@@ -85,6 +85,39 @@ struct NativeGuiWidgetLifetimeContext {
     NativeGuiWidgetLifetimeBindings& bindings;
 };
 
+// Retained Source-only attempt for the explicit selected AA9730 route.
+// Construct BEFORE enclosing Native effects with the captured parent identity
+// and SAME context object. Construction reads no Native value and grants no
+// ownership, canonical admission, Origin or cleanup permission. Keep the
+// attempt/context/remaining graph alive through normal return or explicit
+// failure disposition; distinct nested invocations need distinct attempts.
+class NativeGuiWidgetParentDeleteAttempt final {
+public:
+    explicit NativeGuiWidgetParentDeleteAttempt(void* actual_parent,
+        NativeGuiWidgetLifetimeContext& context)
+        : actual_parent_(actual_parent), context_(&context) {}
+    ~NativeGuiWidgetParentDeleteAttempt() = default;
+    NativeGuiWidgetParentDeleteAttempt() = delete;
+    NativeGuiWidgetParentDeleteAttempt(const NativeGuiWidgetParentDeleteAttempt&) = delete;
+    NativeGuiWidgetParentDeleteAttempt& operator=(const NativeGuiWidgetParentDeleteAttempt&) = delete;
+    NativeGuiWidgetParentDeleteAttempt(NativeGuiWidgetParentDeleteAttempt&&) = delete;
+    NativeGuiWidgetParentDeleteAttempt& operator=(NativeGuiWidgetParentDeleteAttempt&&) = delete;
+
+    // Source progress/denial only. Inactive/returned never authorizes Native EH.
+    bool entered() const { return entered_; }
+    bool normal_returned() const { return returned_; }
+    bool unknown_escape() const { return unknown_; }
+    bool requires_process_retention() const {
+        return unknown_ || (entered_ && !returned_);
+    }
+private:
+    friend void destroy_native_gui_widget_base_00aa9730(void*,
+        NativeGuiWidgetLifetimeContext&, NativeGuiWidgetParentDeleteAttempt&);
+    void* const actual_parent_;
+    NativeGuiWidgetLifetimeContext* const context_;
+    bool entered_{}, returned_{}, unknown_{};
+};
+
 // Exact borrowed raw-container aliases. Same allocation/free domain and actual
 // +0/+4/+8 header as the existing renderer pointer arrays; no new container.
 void reserve_native_gui_timed_pointers_00aa6f30(void*, std::int32_t);
@@ -114,6 +147,12 @@ void release_native_gui_widget_scene_00aa8320(void* actual_widget,
     NativeGuiWidgetLifetimeContext&);
 void destroy_native_gui_widget_base_00aa9730(void* actual_widget,
     NativeGuiWidgetLifetimeContext&);
+// Explicit selected Source route. Private denial is armed across the WHOLE
+// invocation before the first Native profile store/table admission. Unknown
+// C++ escapes retain/rethrow before legacy unwind; no cleanup/Origin/NoThrow
+// promise, reset, retry, destructor policy or Native value filter is supplied.
+void destroy_native_gui_widget_base_00aa9730(void* actual_widget,
+    NativeGuiWidgetLifetimeContext&, NativeGuiWidgetParentDeleteAttempt&);
 // Library-only active raw118 base-prefix alternatives. The concrete transport
 // header specifies custody and excluded scene/TRUE188/parent/child/timed arms.
 void release_native_gui_widget_scene_00aa8320(void*, NativeGuiWidgetRawModelLifetimeContext&);

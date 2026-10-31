@@ -294,7 +294,9 @@ template<class Schedule> void release_scene(void* owner, Schedule& schedule) {
     schedule.primary(owner, false);
     schedule.finish_scene();
 }
-template<class Schedule> void destroy_base(void* owner, Schedule& schedule) {
+template<class Schedule> void destroy_base(void* owner, Schedule& schedule,
+    const bool* selected_parent_entered = nullptr,
+    bool* selected_parent_unknown = nullptr) {
     auto& c = schedule.widget;
     word(owner) = 0x00d5c130u;
     int unwind_state = 2;
@@ -343,6 +345,13 @@ template<class Schedule> void destroy_base(void* owner, Schedule& schedule) {
         word(owner) = 0x00d5c104u;
         destroy_native_ref_counted_base_00bd30f0(owner);
     } catch (...) {
+        // Only the exact selected overload supplies these private retained
+        // fields. Inspect Source denial BEFORE diagnostics or legacy action;
+        // Native state/phase/provider return never grants cleanup permission.
+        if (selected_parent_entered && *selected_parent_entered) {
+            *selected_parent_unknown = true;
+            throw;
+        }
         schedule.unwind(owner, unwind_state);
         throw;
     }
@@ -353,6 +362,21 @@ void release_native_gui_widget_scene_00aa8320(void* owner, NativeGuiWidgetLifeti
 }
 void destroy_native_gui_widget_base_00aa9730(void* owner, NativeGuiWidgetLifetimeContext& c) {
     LegacySchedule schedule{c}; destroy_base(owner, schedule);
+}
+void destroy_native_gui_widget_base_00aa9730(void* owner, NativeGuiWidgetLifetimeContext& c,
+    NativeGuiWidgetParentDeleteAttempt& attempt) {
+    const bool fresh = !attempt.entered_ && !attempt.returned_ && !attempt.unknown_;
+    attempt.entered_ = true; // BEFORE Source admission and the first Native store.
+    try {
+        if (!fresh || attempt.actual_parent_ != owner || attempt.context_ != &c)
+            throw std::logic_error("selected widget parent delete requires its fresh SAME retained attempt");
+        LegacySchedule schedule{c};
+        destroy_base(owner, schedule, &attempt.entered_, &attempt.unknown_);
+        attempt.returned_ = true; // Source normal return, never physical disposal.
+    } catch (...) {
+        attempt.unknown_ = true; // Also covers late admission/schedule failures.
+        throw; // No diagnostics, cleanup, compensation or Native-origin claim.
+    }
 }
 void release_native_gui_widget_scene_00aa8320(void* owner, NativeGuiWidgetRawModelLifetimeContext& c) {
     try { RawSchedule schedule(c, false); release_scene(owner, schedule); }
