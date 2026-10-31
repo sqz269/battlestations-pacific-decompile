@@ -1,0 +1,13 @@
+# Raw Model geometry in widget bounds
+
+This packet applies the exact reviewed2270B bounds proposal to published Main `da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5`. The only source change replaces AA70E0's typed tail read with one actually used private rawModel+180 DWORD load. That helper is byte-identical to the current and original Source52 raw color helper. No include/header, public typed getter, provider body or CMake entry changes.
+
+The existing +74 gate and widget+4C capture remain exact. B732C0(index0), all18 x87 forms/SSE/spills and B855B0 are in the unchanged whole suffix. Public noexcept remains unchanged. Native AA70E0 is139B/43ops; B74640 is9B/2ops. The private Source helper is composition, not a new Original/helper/vendor body or duplicate credit.
+
+Raw B75030 creates private ModelTailWords; the separate NativeModelOwner route creates NativeModelTailStorage. A cast at raw+174 did not create that different C++ object. The new read accesses the actual native field representation. Group's +180 is capacity, not Model geometry. Real Model/geometry/element subobjects, current generation, backing, context, scratch/livehalf and custody still require the actual caller's proof; profile/count/registry/public flags alone do not supply it. No new profile/null guard, retained owner, reference/count or replacement value is added.
+
+This is an ordinary MSVCWin32 Source ABI repair. It does not reproduce NativeECX/RET4 or the original twozero argument homes/private stack, register/EFLAGS, hardwarefault, FH3/SEH or unmaskedFP behavior. Existing noexcept is Source syntax, not OriginalNoThrow/Origin authority. No cleanup/retry/rollback/reset/terminal policy is introduced.
+
+The report carries two positional seams/three states, complete Source inverse, old gate/model/math/output fences, ten actual unchanged provider pins, current/historical Source52 helper evidence, Native bytes and a self-contained Git reader. Reader tuple: 4918B SHA256 `3eaabc74945480d6851a4c72e05b8d77c86dbceb7576426098f3ffcde999c917`. Extract `reader.utf8` with UTF8 write_bytes and run with the author commit; immutable mode also proves the full recursive three-path tree inverse. It performs static reads only, no C++/Native/compiler execution.
+
+The Root and Raw peer reviewed the ignored candidate with zero findings (Root39 and independent73+39 checks). Compiler/Core/runtime checks for this packet remain Root's work. This change does not close raw Icon current78/88/80, a production constructor/current holder, normal disposition or activation. New Original/helper/vendor/CG/duplicate credit is zero. No worker build/tests/Game/Ghidra/ledger/CMake changes were performed.

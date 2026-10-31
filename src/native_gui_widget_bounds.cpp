@@ -7,6 +7,19 @@
 #endif
 
 namespace bsp {
+namespace {
+// Same actual captured Model data-word load as the admitted raw color path.
+// No typed tail/Owner lvalue or extra Native/helper credit.
+void* raw_model_geometry_00b74640(const void* actual_model) noexcept {
+    void* geometry;
+    __asm {
+        mov ecx, actual_model
+        mov eax, dword ptr [ecx + 180h]
+        mov geometry, eax
+    }
+    return geometry;
+}
+} // namespace
 
 void refresh_native_gui_widget_local_bounds_00aa70e0(void* widget,
     GuiWidgetBounds& scratch, const volatile double& actual_half_00d7a280) noexcept {
@@ -14,9 +27,7 @@ void refresh_native_gui_widget_local_bounds_00aa70e0(void* widget,
     if (bytes[0x74] == std::byte{0}) return;
     void* model;
     std::memcpy(&model, bytes + 0x4c, sizeof(model));
-    const auto& tail = *reinterpret_cast<const NativeModelTailStorage*>(
-        static_cast<const std::byte*>(model) + 0x174);
-    void* const geometry = gui_model_geometry_00b74640(tail, 0);
+    void* const geometry = raw_model_geometry_00b74640(model);
     void* const element = gui_geometry_element_00b732c0(geometry, 0);
     auto* const output = &scratch;
     const volatile double* const half = &actual_half_00d7a280;
