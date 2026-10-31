@@ -1,0 +1,522 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-text-shader-exact-resize-reconciliation",
+  "utc": "2026-10-31T02:20:08.132975+00:00",
+  "kind": "design reconciliation only; no Source authorization",
+  "Main": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+  "accepted_exact_integration": "18e95b32e8bd736ffb0dad29d0aff429710d24ab",
+  "frozen_ec0b_design_pins": [
+    {
+      "commit": "ec0b21317a4c5293f03447cc6adb0ad0a02b20e8",
+      "path": "docs/CC16_NATIVE_TEXT_SHADER_PRIVATE_CONSUMER_DESIGN.md",
+      "bytes": 14267,
+      "sha256": "4f5085b84c2270c4ffbcad0be4cac7dbdda85da80412e36fc239f11ce52dc4a0",
+      "git_blob": "85a25ef904b80e76179fb2f59e861cd32a5b8c59"
+    },
+    {
+      "commit": "ec0b21317a4c5293f03447cc6adb0ad0a02b20e8",
+      "path": "reports/cc16_native_text_shader_private_consumer_design.json",
+      "bytes": 45931,
+      "sha256": "0e4ef03c4354ea60d578d26410cefe1e458c4fb6e5d2bc9745adbaaef95a2f29",
+      "git_blob": "19d507c2740407efccfbbf67ff00a6db0a1ae6df"
+    }
+  ],
+  "frozen_f5_contract_pins": [
+    {
+      "commit": "f5b5e8a0561836f7858951580b5ebdb4d364e196",
+      "path": "docs/CC16_NATIVE_TEXT_SHADER_RAW_STORAGE_CONTRACT.md",
+      "bytes": 7976,
+      "sha256": "21d1f2cc12ce306e5acc2ecd38cc73c86288d01a37d191cac37f73d8e245444d",
+      "git_blob": "8f456006762679f0e1cdf9c061d9fa9df922335f"
+    },
+    {
+      "commit": "f5b5e8a0561836f7858951580b5ebdb4d364e196",
+      "path": "reports/cc16_native_text_shader_raw_storage_contract.json",
+      "bytes": 19981,
+      "sha256": "572ecc4d7ffc2dfb30c1cb7ffd2f83fa673e790f56d21c127b3ee99945e2e3b3",
+      "git_blob": "9964614cad5396f5f178da213f72593d5187474e"
+    }
+  ],
+  "actual_exact_API_Source_doc_report_pins": [
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "include/bsp/native_string_raw_resize_exact.hpp",
+      "bytes": 1554,
+      "sha256": "a1a3c6be74194e2f5946e13e09bfb26562c3f73d3565b51f96403f0d60b9999c",
+      "git_blob": "2e9e0ae6cb560eba1e7187911f6fea04791b529b"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "src/native_string_raw_resize_exact.cpp",
+      "bytes": 3979,
+      "sha256": "74bff613a83abda342b5506ff750f46f5c44e191de506480ced504208c81f210",
+      "git_blob": "e05e1c9a86a44a2bba1efe9f46f3151062fab3b6"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "docs/NATIVE_STRING_RAW_RESIZE_EXACT.md",
+      "bytes": 4583,
+      "sha256": "142bbe9c7263a753d9a23ddea996023dc1b9ff507870d39181a9f361eb43ff81",
+      "git_blob": "1cf008d840739e3552e4cf73741203df472eb4ef"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "reports/native_string_raw_resize_exact.json",
+      "bytes": 5755,
+      "sha256": "065de87aecd373a2fc36611a660ddf11b0ce05d8692955867a6e511839131138",
+      "git_blob": "654cdbec69fc85d22d39f4cd6f44737be99dba20"
+    }
+  ],
+  "four_exact_files_equal18e": true,
+  "Root_integration_document_pin": {
+    "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+    "path": "docs/CODEX_STRING_RESIZE_SCALAR_PUSH_INTEGRATION.md",
+    "bytes": 5086,
+    "sha256": "a684cfc2c157db06ad697563ab32ae30acf86e218b87ee2b798af93ab64ccb1b",
+    "git_blob": "9ffda7d3871c9fac3318578dc40a5fdc246f2d79"
+  },
+  "current_real_context_owner_copy_API_pins": [
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "include/bsp/native_gui_text_reference.hpp",
+      "bytes": 12718,
+      "sha256": "62224192a6d0fb5043ed68a3f34374ce1bc3584ee1f3bb031c1041b33fdd1827",
+      "git_blob": "492cf04c44cfeae90887bba02c32039f325bc318"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "include/bsp/native_gui_text_shader_storage.hpp",
+      "bytes": 14069,
+      "sha256": "746d87e6274a37f16697df0ae8645c35a2d5b32b9673ae2444d13f461d8bddbf",
+      "git_blob": "35bb10edaf18f2c43bc9ea48f87fb61873139605"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "include/bsp/native_crt_memcpy.hpp",
+      "bytes": 1954,
+      "sha256": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123",
+      "git_blob": "a62e6ddb9d92e02afd301ed92239b258d53b5f10"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "src/native_crt_memcpy.cpp",
+      "bytes": 17187,
+      "sha256": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3",
+      "git_blob": "248194cbff651aba4341401f519050447f13b6a0"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "bytes": 2713,
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "include/bsp/game_native_mutable_crt_data.hpp",
+      "bytes": 3200,
+      "sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+      "git_blob": "ec1a1c9c2a7359031b4b77c2b86ba12cd6f3420e"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "src/game_native_mutable_crt_data.cpp",
+      "bytes": 10114,
+      "sha256": "d9dabf905fd4acf195f72c14e9ae2c7ef457514f4ff6227efffdcbb1f24a0c39",
+      "git_blob": "2c0d73f8164a8b0d4cbbc499801935d1f28c213a"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "include/bsp/game_native_string_process.hpp",
+      "bytes": 6018,
+      "sha256": "68ac5c24794233d13e2b68d7276e703dc62d39bded4b969bfcf7a06361fac697",
+      "git_blob": "d5e1fdd68d64a6e5429068335742f669fd8f1ddd"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "include/bsp/native_gui_text_changed_storage.hpp",
+      "bytes": 11813,
+      "sha256": "75a9ebed1b5b9f505ffa2593899d92108c9a687ffdbcc81339f5be888f095b63",
+      "git_blob": "a7531deb87f433cc115f6a48765622ef109237fe"
+    }
+  ],
+  "precise_Source_line_pins": [
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "include/bsp/native_string_raw_resize_exact.hpp",
+      "line": 28,
+      "text": "void resize_native_string_header_0041dd40_exact(",
+      "utf8_sha256": "03bb2f4b89a2a5058754b2acf4e0c8b85e6bf4f1e7b8aa543d99aebecde9e97b"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "include/bsp/native_string_raw_resize_exact.hpp",
+      "line": 30,
+      "text": "    std::uint32_t request, const void* actual_preserve_byte_home,",
+      "utf8_sha256": "a58a2b4c8d6cb4dac5bf40fabe56796da18afe30768c86149872d0461ab4a22a"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "src/native_string_raw_resize_exact.cpp",
+      "line": 52,
+      "text": "    if (request == initial_length) return;",
+      "utf8_sha256": "2b036851b937a233f37e65b26518119cc7bbe69897f933461268957e59ccb86e"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "src/native_string_raw_resize_exact.cpp",
+      "line": 74,
+      "text": "    if (read_raw<std::uint8_t>(actual_preserve_byte_home, 0u) != 0u) {",
+      "utf8_sha256": "dec671eaafe4cbffbfdc22bb4f8719f0f1c6d851999ccf41164451cb3597cabf"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "src/native_string_raw_resize_exact.cpp",
+      "line": 81,
+      "text": "        copy_native_crt_bytes_00bf7680(new_block, pointer_from_bits(old_data),",
+      "utf8_sha256": "bd6d2675f7d0651edc426b55e1e93f6119dfb81e87232e12402f5e2de12d099a"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "include/bsp/native_crt_memcpy.hpp",
+      "line": 31,
+      "text": "void* __cdecl copy_native_crt_bytes_00bf7680(",
+      "utf8_sha256": "997a5d09804f6ba72c919a11655c1e23aacde367472e3e6e5c89445b75cfcb6f"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "include/bsp/native_gui_text_reference.hpp",
+      "line": 124,
+      "text": "struct NativeGuiTextRawModelReferenceContext {",
+      "utf8_sha256": "d3888c3272863fa1350fb7857da0bff28bfa982528860e75dcc8b1819c1f76c3"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "include/bsp/native_string.hpp",
+      "line": 34,
+      "text": "struct NativeStringRawPoolContext {",
+      "utf8_sha256": "f21ad503c200a750fd7b76ebff6613467a720c2d238d746989a41cb7eb796349"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "line": 13,
+      "text": "// verified .rdata within CE2000..E07B23; committed pages are read-only/non-executable.",
+      "utf8_sha256": "9c12867127e77b7c8a96daeb0eb6b8d1c64fbab2c44b65d4457b16f186a88eed"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "include/bsp/game_native_mutable_crt_data.hpp",
+      "line": 41,
+      "text": "    volatile std::uint32_t& feature_word() const noexcept;",
+      "utf8_sha256": "e2afb72789b847932ae3139ccd62c3fb429f38034502c0d7fb7cdd44116ff7a3"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "include/bsp/game_native_mutable_crt_data.hpp",
+      "line": 64,
+      "text": "    GameNativeReadOnlyData& read_only_data() const noexcept { return *readonly_; }",
+      "utf8_sha256": "e368ed50491500c4931ed88884d8f07d54717631acbd7aa8c6adf6e54ccc1a6f"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "include/bsp/game_native_mutable_crt_data.hpp",
+      "line": 65,
+      "text": "    GameNativeMutableCrtData& mutable_crt_data() const noexcept { return *mutable_; }",
+      "utf8_sha256": "d32ac796bd082e2419834966639cbfd7750178598aa7b2390ce85db3531cf598"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "src/game_native_mutable_crt_data.cpp",
+      "line": 138,
+      "text": "volatile std::uint32_t& GameNativeMutableCrtData::feature_word() const noexcept {",
+      "utf8_sha256": "a52d829132b0ed48aec2d7571d808f595a0f98d942de7ec7dbd53d5e1aeabb6d"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "include/bsp/native_gui_text_changed_storage.hpp",
+      "line": 128,
+      "text": "    const volatile std::uint32_t& actual_feature_word_0109eea4;",
+      "utf8_sha256": "c32f752807569e6ba3adb416bdfd5bf6fb25947108629b8f2ae014550660405a"
+    }
+  ],
+  "four_future_Source_files_still_equal941": [
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "include/bsp/gui_text_resource_names.hpp",
+      "bytes": 5136,
+      "sha256": "c152f46e0b3d838849f26051d0f041658adbeb2b215e0068f0b79fc1929654db",
+      "git_blob": "1d6f35854d47d48e69f0c3e6e9b0c86508869f9f"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "src/gui_text_resource_names.cpp",
+      "bytes": 7191,
+      "sha256": "d824603d96de6b7be9365df03deda9c5906c3d513a38a41633d9299c75796608",
+      "git_blob": "c6dab6b2e625d8fb6f1556037afd6828b4c77b31"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "include/bsp/native_gui_text_shader_storage.hpp",
+      "bytes": 14069,
+      "sha256": "746d87e6274a37f16697df0ae8645c35a2d5b32b9673ae2444d13f461d8bddbf",
+      "git_blob": "35bb10edaf18f2c43bc9ea48f87fb61873139605"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "bytes": 37788,
+      "sha256": "2864664a00d8b3d7237b7d7cefc22bfb2ab584aaf62e9d56fb142f60ffa1b49f",
+      "git_blob": "dbf1955d6dee1f89f253d42b9eee40e3577c438b"
+    }
+  ],
+  "old_facade_byte_unchanged": [
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97"
+    },
+    {
+      "commit": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+      "path": "src/native_string.cpp",
+      "bytes": 9121,
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a"
+    }
+  ],
+  "actual_resize_signature": "void resize_native_string_header_0041dd40_exact(void*,NativeStringRawPoolContext&,uint32_t,const void*actual_preserve_byte_home,const volatile uint32_t&actual_feature_word_0109eea4)",
+  "actual_outer_copy_signature": "void* __cdecl copy_native_crt_bytes_00bf7680(void*,const void*,uint32_t,const volatile uint32_t&)",
+  "revised_exact_public_signature_and_fields": "namespace game { class GameNativeCanonicalDataOwner; }\nNativeGuiTextRawShaderNameStorageInvocation(\n    const NativeGuiTextRawModelReferenceContext&,\n    const NativeGuiTextReferenceFrame&, NativeGuiTextShaderStorageFrame&,\n    const void* actual_input_header8,\n    const game::GameNativeCanonicalDataOwner&);\n// Existing three-argument proposed entry remains unchanged:\nvoid set_native_gui_text_shader_name_storage_00ab8e70(\n    NativeGuiTextRawModelReference&, const void* actual_name_header8,\n    NativeGuiTextRawShaderNameStorageInvocation&);\n// Append private fields to the proposed retained Invocation:\nconst game::GameNativeCanonicalDataOwner* const canonical_data_;\nconst volatile std::uint32_t* const feature_word_0109eea4_;\nstd::uint32_t preserve_home_; // NO initializer; byte0 read by exact callee\n",
+  "operation_recipe_epoch_specification_not_implemented_API": "// Preparation: addresses only, no feature-value read, no new owner/getter lookup.\ncanonical_data_ = &canonical; // shown as bindings; actual implementation uses ctor initializers\nfeature_word_0109eea4_ = &canonical.mutable_crt_data().feature_word();\n// Actual-entry SourceHOST affinity, besides all unchanged ec0b raw122/93/frame checks:\nrequire(&actual_reference.storage_context() == context_);\nrequire(&context_->data == &canonical_data_->read_only_data());\nrequire(feature_word_0109eea4_ == &canonical_data_->mutable_crt_data().feature_word());\n// Native8E7F exact header identity: selfalias skips this block, never late credit.\nif (actual_input_header8 != actual_Text_plus_1C0) {\n    const std::uint32_t request = read_current_DWORD(actual_input_header8, 0); //8E83\n    preserve_home_ = 1u; //8E85 PUSH1 DWORD, same retained byte0 HOME\n    resize_native_string_header_0041dd40_exact(actual_Text_plus_1C0,\n        same_raw_pool_context, request, &preserve_home_, *feature_word_0109eea4_);\n    if (read_current_DWORD(actual_input_header8, 0) != 0u) { //8E8F\n        const std::uint32_t bytes = read_current_DWORD(actual_Text_plus_1C0, 0); //8E94\n        const void* source = pointer_from_current_DWORD(actual_input_header8, 4); //8E96\n        void* destination = pointer_from_current_DWORD(actual_Text_plus_1C0, 4); //8E99\n        copy_native_crt_bytes_00bf7680(destination, source, bytes, *feature_word_0109eea4_); //8E9F, ALWAYS even0\n    }\n}\n// Same late CURRENT1EC8EA7 and ec0b shader_name credit path now follow.\n// read_current_DWORD/pointer spellings above specify epochs, not a newly invented API.\n",
+  "actual_feature_availability": {
+    "RawModelReferenceContext_exposes_feature": false,
+    "RawStringPoolContext_exposes_feature": false,
+    "GameNativeStringProcess_exposes_feature": false,
+    "RO_data_at_can_supply_mutable0109EEA4": false,
+    "existing_changed_context_ref_is_available_via_this_raw122_path": false,
+    "genuine_existing_source": "GameNativeCanonicalDataOwner.mutable_crt_data().feature_word()",
+    "new_required_borrow": "const game::GameNativeCanonicalDataOwner& fifth preparation argument",
+    "preparation_creates_or_looks_up_owner": false,
+    "shader_caller_numeric_global_cast": false,
+    "raw_feature_ref_only_alternative_has_same_owner_affinity_hook": false,
+    "same_RO_owner_and_feature_address_checks_genuinely_available": true,
+    "address_identity_proves_runtime_selector_truth_or_CPU_DF": false
+  },
+  "affinity_checks_SourceHOST_metadata": [
+    "actual Reference.storage_context address equals prepared expected Context",
+    "expected Context.data address equals provided canonical owner.read_only_data address",
+    "stored actual feature pointer equals provided canonical owner.mutable_crt_data.feature_word address",
+    "all existing raw93/refFrame/preparedShaderFrame/current canonical/private credit checks remain"
+  ],
+  "home_contract": {
+    "type": "ordinary std::uint32_t preserve_home_",
+    "initializer": null,
+    "Native_width": "DWORD PUSH1, byte0 is late preserve HOME",
+    "first_capture": "8E83 CURRENT source LEN",
+    "first_store": "8E85 home=1u AFTER request capture on nonself path",
+    "forwarding": "exact address &same retained home to const void* parameter",
+    "mutable_invocation_home_disjoint_from_headers_Text_context_pool_feature_cell_backing": true,
+    "callee_observation": "BYTE read only after actual allocation, equality may not read it",
+    "selfalias_home_access": false,
+    "local_bool_snapshot_substitute_or_cvstrip_allowed": false,
+    "retained_home_implies_recoverable_allocation_or_Original_stack_alias_proof": false
+  },
+  "outer_copy_order": [
+    "CURRENT source LEN test8E8F",
+    "CURRENT destination LEN8E94",
+    "CURRENT source DATA8E96",
+    "CURRENT destination DATA8E99",
+    "actual FOURarg BF8E9F even0 with SAME feature ref"
+  ],
+  "feature_value_sampled_by_constructor_or_parent_body": false,
+  "SourceABI_qualifications": [
+    "extra owner/reference/invocation args, ordinary retained home, source call frames",
+    "no recovered Native EAX/thiscall/RET/private stack/fault register proof",
+    "exact provider pool/CRT/extent/DF/CPU/current selector truth and lifetimes inherited",
+    "preparation/affinity may reject, no new noexcept/destructor cleanup"
+  ],
+  "new_source_seam": {
+    "path": "include/bsp/gui_text_resource_names.hpp",
+    "label": "RNH0 explicit DWORD home header dependency",
+    "exact_before_anchor": "#include \"bsp/native_font_resources.hpp\"\n",
+    "required_change": "Add <cstdint> explicitly for the retained DWORD preserve home; no Source implementation is applied."
+  },
+  "reconciled_original_twelve_seams": [
+    {
+      "path": "include/bsp/gui_text_resource_names.hpp",
+      "label": "RNH1 public retained Invocation and exact raw entry",
+      "exact_before_anchor": "} // namespace bsp\n",
+      "anchor_utf8_sha256": "459606a6316233300fe9809f0885a8ba0c3ca5fc8a12a17231786940949b8361",
+      "character_offset_in_frozen_base": 5117,
+      "required_change": "Insert forward declarations, noncopyable Invocation and exact entry prototype before namespace close; no change to typed API blocks.",
+      "proposal_only_no_replacement_applied": true,
+      "reconciliation": "Use revised five-argument owner-borrow constructor and private owner/feature-pointer/uninitialized DWORD fields; keep raw setter entry three args."
+    },
+    {
+      "path": "src/gui_text_resource_names.cpp",
+      "label": "RNC1 complete raw-service includes",
+      "exact_before_anchor": "#include \"bsp/native_physical_file_date.hpp\"\n",
+      "anchor_utf8_sha256": "10fd0321d898a3a53e898cfe6efbe8fca4f8e278daf4dc4b2fbb28947762a798",
+      "character_offset_in_frozen_base": 43,
+      "required_change": "Add required existing reference/shader/actual-owner declarations and ONLY the separately accepted raw-string-resize-v2 API when available; no provider closure assumed from f5 availability.",
+      "proposal_only_no_replacement_applied": true,
+      "reconciliation": "Include accepted native_string_raw_resize_exact.hpp/native_crt_memcpy.hpp and existing game_native_mutable_crt_data.hpp; no provider/facade body edits."
+    },
+    {
+      "path": "src/gui_text_resource_names.cpp",
+      "label": "RNC2 raw Invocation metadata/preflight/body",
+      "exact_before_anchor": "} // namespace bsp\n",
+      "anchor_utf8_sha256": "459606a6316233300fe9809f0885a8ba0c3ca5fc8a12a17231786940949b8361",
+      "character_offset_in_frozen_base": 7172,
+      "required_change": "Append address-only metadata/admission/body ONLY after Root accepts genuine same-pool resize-v2/zero-count/current-reload transport and actual API. Re-review extra retained provider borrows if required; no guessed adapter or old-helper parity claim. All old functions exact.",
+      "proposal_only_no_replacement_applied": true,
+      "reconciliation": "Bind actual live Reference at entry, perform genuine same-owner SourceHOST affinity; capture sourceLEN8E83 then write preserve DWORD1 at8E85; pass its address to accepted exactresize; outer BF always executes even0 with same feature reference."
+    },
+    {
+      "path": "include/bsp/native_gui_text_shader_storage.hpp",
+      "label": "SH1 Invocation forward declaration",
+      "exact_before_anchor": "struct NativeGuiTextRawFontNameStorageAcquired;\n",
+      "anchor_utf8_sha256": "10fc4b4aa40662ddaa8d85e468a970c57574b90e1f0118865624d0a9b8b9221b",
+      "character_offset_in_frozen_base": 363,
+      "required_change": "Append forward declaration of NativeGuiTextRawShaderNameStorageInvocation.",
+      "proposal_only_no_replacement_applied": true,
+      "reconciliation": "Unchanged private-consumer seam from ec0b; no new issuer/transfer/cleanup policy."
+    },
+    {
+      "path": "include/bsp/native_gui_text_shader_storage.hpp",
+      "label": "SH2 append consumer identity",
+      "exact_before_anchor": "    enum class Consumer { none, font_name, retirement };",
+      "anchor_utf8_sha256": "28a2cc2419a6d42c9107ccc3023f1e3d825fc3445a79e635fdf983d78c9292b8",
+      "character_offset_in_frozen_base": 4214,
+      "required_change": "Append shader_name after retirement; preserve old numeric values0/1/2.",
+      "proposal_only_no_replacement_applied": true,
+      "reconciliation": "Unchanged private-consumer seam from ec0b; no new issuer/transfer/cleanup policy."
+    },
+    {
+      "path": "include/bsp/native_gui_text_shader_storage.hpp",
+      "label": "SH3 append diagnostics pointers",
+      "exact_before_anchor": "        long decrement_result{};\n",
+      "anchor_utf8_sha256": "0fa4310ba67e89706c15c99f962f85b494fb805b7d6ffc8a235e77c2df52442a",
+      "character_offset_in_frozen_base": 6469,
+      "required_change": "Append active_shader_invocation and shader_invocation pointers at CreditProgress tail; diagnostic only.",
+      "proposal_only_no_replacement_applied": true,
+      "reconciliation": "Unchanged private-consumer seam from ec0b; no new issuer/transfer/cleanup policy."
+    },
+    {
+      "path": "include/bsp/native_gui_text_shader_storage.hpp",
+      "label": "SH4 exact friend and private constructor",
+      "exact_before_anchor": "        enum class Stage { opened, no_capture, null_capture, captured,",
+      "anchor_utf8_sha256": "c47554ca2b8e8ba7e253a6a7c9186c78b658da10318b09c5d96a74bde52f0570",
+      "character_offset_in_frozen_base": 9107,
+      "required_change": "Insert exact raw entry friend and new private constructor before Stage; no public constructor/issuer or broad friend.",
+      "proposal_only_no_replacement_applied": true,
+      "reconciliation": "Unchanged private-consumer seam from ec0b; no new issuer/transfer/cleanup policy."
+    },
+    {
+      "path": "include/bsp/native_gui_text_shader_storage.hpp",
+      "label": "SH5 append private token identity",
+      "exact_before_anchor": "        bool active_{};\n        void require_stage(Stage);",
+      "anchor_utf8_sha256": "4e42b3c493d0dbf10b322818c3997f7ef0e279e9da54f1b4696ceaaaf38d7b29",
+      "character_offset_in_frozen_base": 9743,
+      "required_change": "Append const Invocation* shader_invocation_ before require_stage; old fields/prefix unchanged.",
+      "proposal_only_no_replacement_applied": true,
+      "reconciliation": "Unchanged private-consumer seam from ec0b; no new issuer/transfer/cleanup policy."
+    },
+    {
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "label": "SC1 genuine private constructor",
+      "exact_before_anchor": "NativeGuiTextShaderStorageFrame::CreditConsumer::~CreditConsumer() noexcept {",
+      "anchor_utf8_sha256": "92ed5e8d0f9ed12e6d54539c7830f0e4e22381aa0831099fa584b8ae1fc0e92b",
+      "character_offset_in_frozen_base": 30723,
+      "required_change": "Insert shader_name constructor before existing destructor; record active invocation then authenticate same live canonical binding, no1EC read.",
+      "proposal_only_no_replacement_applied": true,
+      "reconciliation": "Unchanged private-consumer seam from ec0b; no new issuer/transfer/cleanup policy."
+    },
+    {
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "label": "SC2 late live-bound reference branch",
+      "exact_before_anchor": "        if (kind_ == Consumer::font_name) {",
+      "anchor_utf8_sha256": "45756a281a48756e12aedfe939c99118496a58356891da3d2001ab3058cdad0f",
+      "character_offset_in_frozen_base": 31429,
+      "required_change": "Extend condition to font_name||shader_name; same capture body/private reservation and retirement branch remain.",
+      "proposal_only_no_replacement_applied": true,
+      "reconciliation": "Unchanged private-consumer seam from ec0b; no new issuer/transfer/cleanup policy."
+    },
+    {
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "label": "SC3 retain nonnull consumer identity",
+      "exact_before_anchor": "        c.retirement_shader = retirement_acquired_ ? &retirement_acquired_->shader : nullptr;\n",
+      "anchor_utf8_sha256": "c2c634bae8d06d75bb804ccaedae0ca6268c118e85ca8ffac6fc480d025e2dc1",
+      "character_offset_in_frozen_base": 33448,
+      "required_change": "Append c.shader_invocation=shader_invocation_; null/no-capture must not overwrite historic nonnull consumer.",
+      "proposal_only_no_replacement_applied": true,
+      "reconciliation": "Unchanged private-consumer seam from ec0b; no new issuer/transfer/cleanup policy."
+    },
+    {
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "label": "SC4 clear active identity after whole completion",
+      "exact_before_anchor": "    frame_.credit_.active_retirement_shader = nullptr;\n",
+      "anchor_utf8_sha256": "fa7535e90081c361af54974aafd519401e135f58749f8f9b07591c79eacca52b",
+      "character_offset_in_frozen_base": 36484,
+      "required_change": "Append active_shader_invocation=nullptr; historical pointer retained, no change to credit accounting or failure retention.",
+      "proposal_only_no_replacement_applied": true,
+      "reconciliation": "Unchanged private-consumer seam from ec0b; no new issuer/transfer/cleanup policy."
+    }
+  ],
+  "Source_seam_ceiling": 13,
+  "future_implementation_Source_files": [
+    "include/bsp/gui_text_resource_names.hpp",
+    "src/gui_text_resource_names.cpp",
+    "include/bsp/native_gui_text_shader_storage.hpp",
+    "src/native_gui_text_shader_storage.cpp"
+  ],
+  "provider_or_typed_body_edits_authorized": false,
+  "credit_constraints": {
+    "minimum_actual_current_private_credit_still_required": true,
+    "late8EA7_not_early_snapshot": true,
+    "different_resize_installed_effect_transfer_available": false,
+    "failure_retention_before_decrement_is_Source_qualification_not_Native_input_filter": true,
+    "postzero_replacement_cleared_LIVE_unconditionally_before_old_credit_returned": true
+  },
+  "readiness": {
+    "actual_accepted_exact_API_available_as_qualified_Source_component": true,
+    "earlier_routing_only_dependency_has_concrete_API_now": true,
+    "all_provider_graph_or_Native_coverage_from_that_API": false,
+    "reconciliation_design_complete": true,
+    "Source_authorized_or_implemented_here": false,
+    "actual_prepared_producer_feature_binding_Glyph_wiring_runtime": false,
+    "arbitrary_replacement_credit_NativeOrigin_OriginalABI_FH3_SEH_privatealiases_Game_activation": false
+  },
+  "actions": {
+    "new_evidence_files": 2,
+    "Source_Ghidra_ledger_CMake_mutations": 0,
+    "compiler_tests_probes_Game_process_actions": 0,
+    "prior_frozen_design_or_facade_provider_modified": false
+  },
+  "credit": {
+    "Native": 0,
+    "Original": 0,
+    "body": 0,
+    "helper": 0,
+    "vendor": 0,
+    "duplicate": 0,
+    "ABI": 0,
+    "runtime": 0,
+    "activation": 0
+  },
+  "document_pin": {
+    "path": "docs/CC16_NATIVE_TEXT_SHADER_EXACT_RESIZE_RECONCILIATION.md",
+    "bytes": 11417,
+    "sha256": "5259f3cd2065a6f7f3dccd6dfb2290f9e292168a7ea3b0c5e20896a23d229b88",
+    "format": "UTF-8 LF no BOM"
+  }
+}
