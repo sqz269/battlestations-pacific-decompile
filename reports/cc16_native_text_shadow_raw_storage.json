@@ -1,0 +1,472 @@
+{
+  "schema": "cc16.native_text_shadow_raw_storage.v1",
+  "kind": "whole raw primitive Source variant; no new Original body credit",
+  "baseline_commit": "941a1925e093dd07e79444c5fc39eee138c93647",
+  "ownership": {
+    "packet": "codex-native-text-shadow-raw-storage",
+    "addresses": [
+      "00AB6C30"
+    ],
+    "files": [
+      "include/bsp/gui_text_style.hpp",
+      "src/gui_text_style.cpp",
+      "docs/CC16_NATIVE_TEXT_SHADOW_RAW_STORAGE.md",
+      "reports/cc16_native_text_shadow_raw_storage.json"
+    ]
+  },
+  "formats": {
+    "source": "exact immutable Git UTF-8 LF bytes; working-copy raw pins separately qualified",
+    "native_exports": "exact raw bytes at this audit epoch, frozen unchanged; later annotations may refresh representations",
+    "native_body": "125-byte installed PE range extraction, not an executable or trace/probe blob",
+    "inverse": "embedded UTF-8 LF script exactly equals local raw bytes; whole-file transformations only"
+  },
+  "native_verification": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "batch": "verified bsp.py ghidra count followed by read-only show --asm; indexed lookup only",
+    "body": {
+      "start": "00AB6C30",
+      "end_inclusive": "00AB6CAC",
+      "ret": "00AB6CAA",
+      "bytes": 125,
+      "instructions": 32,
+      "instruction_rows": [
+        "00ab6c30: MOV EAX,dword ptr [ESP + 0x8] ",
+        "00ab6c34: MOVSS XMM0,dword ptr [ESP + 0xc] ",
+        "00ab6c3a: PUSH ESI ",
+        "00ab6c3b: MOV ESI,ECX ",
+        "00ab6c3d: MOV CL,byte ptr [ESP + 0x8] ",
+        "00ab6c41: TEST CL,CL ",
+        "00ab6c43: MOV dword ptr [ESI + 0x160],EAX ",
+        "00ab6c49: MOV EAX,dword ptr [ESP + 0x14] ",
+        "00ab6c4d: MOV byte ptr [ESI + 0x15c],CL ",
+        "00ab6c53: MOVSS dword ptr [ESI + 0x164],XMM0 ",
+        "00ab6c5b: MOV EDX,dword ptr [EAX] ",
+        "00ab6c5d: MOV dword ptr [ESI + 0x168],EDX ",
+        "00ab6c63: MOV EDX,dword ptr [EAX + 0x4] ",
+        "00ab6c66: MOV dword ptr [ESI + 0x16c],EDX ",
+        "00ab6c6c: MOV EDX,dword ptr [EAX + 0x8] ",
+        "00ab6c6f: MOV dword ptr [ESI + 0x170],EDX ",
+        "00ab6c75: MOV EAX,dword ptr [EAX + 0xc] ",
+        "00ab6c78: MOV dword ptr [ESI + 0x174],EAX ",
+        "00ab6c7e: JZ 0x00ab6c85 ",
+        "00ab6c80: MOV EAX,dword ptr [ESI + 0x4c] ",
+        "00ab6c83: JMP 0x00ab6c87 ",
+        "00ab6c85: XOR EAX,EAX ",
+        "00ab6c87: MOV ECX,dword ptr [ESI + 0x188] ",
+        "00ab6c8d: PUSH EAX ",
+        "00ab6c8e: CALL 0x00b6e680 ",
+        "00ab6c93: CMP byte ptr [ESI + 0x15c],0x0 ",
+        "00ab6c9a: JNZ 0x00ab6ca9 ",
+        "00ab6c9c: MOV ECX,dword ptr [ESI + 0x188] ",
+        "00ab6ca2: PUSH 0x0 ",
+        "00ab6ca4: CALL 0x00b6d890 ",
+        "00ab6ca9: POP ESI ",
+        "00ab6caa: RET 0x10 "
+      ],
+      "x87": 0,
+      "sse": [
+        "00AB6C34 MOVSS XMM0,home",
+        "00AB6C53 MOVSS field,XMM0"
+      ],
+      "body_sha256": "2dce5db3015f953c6f7c5caf9cd1ba06a7560d5ee7c0b5b5e59d4d332c63312f",
+      "body_hex": "8b442408f30f1044240c568bf18a4c240884c98986600100008b442414888e5c010000f30f1186640100008b108996680100008b500489966c0100008b50088996700100008b400c89867401000074058b464ceb0233c08b8e8801000050e8ed790b0080be5c01000000750d8b8e880100006a00e8e76b0b005ec21000",
+      "pe_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "pe_bytes": 12223752,
+      "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "raw_exports": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab6c30\\assembly.txt",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shadow_raw_storage_20261030\\native_exports\\assembly.txt",
+        "format": "exact raw export bytes at proposal epoch; annotations may refresh",
+        "bytes": 1094,
+        "sha256": "4db7fa5290c2cdce1dc2166f6f410a13ee3a49e607f33dd228f8d6ab8190e826"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab6c30\\decompiled.c",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shadow_raw_storage_20261030\\native_exports\\decompiled.c",
+        "format": "exact raw export bytes at proposal epoch; annotations may refresh",
+        "bytes": 1308,
+        "sha256": "5ac59cab0a88fba548acb8115951db646abe22b69f965b9fe69cdbf990de4f4c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab6c30\\metadata.json",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shadow_raw_storage_20261030\\native_exports\\metadata.json",
+        "format": "exact raw export bytes at proposal epoch; annotations may refresh",
+        "bytes": 274,
+        "sha256": "85bdf7d8950ac26c0b69a7f288463bfe72f4ee426b2193b844ba98cb5041749c"
+      }
+    ],
+    "instruction_count_correction": "Earlier proposal communication33 corrected to actual32 listing rows before sealing;125B unchanged; no old published count/credit altered",
+    "direct_calls": [
+      {
+        "site": "00AB6C8E",
+        "target": "00B6E680",
+        "instruction_bytes": "e8ed790b00",
+        "pe_rel32_verified": true
+      },
+      {
+        "site": "00AB6CA4",
+        "target": "00B6D890",
+        "instruction_bytes": "e8e76b0b00",
+        "pe_rel32_verified": true
+      }
+    ],
+    "original_local_eh_actions": [],
+    "original_no_throw_or_fault_proof": false
+  },
+  "source_inputs_before": [
+    {
+      "path": "include/bsp/gui_text_style.hpp",
+      "format": "exact Git UTF8LF blob bytes",
+      "bytes": 2113,
+      "sha256": "d73013ee99f3353f60db8aaee0048c7dae510f734bcc995c64328e98bec7cf34",
+      "git_blob_sha1": "416c4e6ad7783c7b15cd58d8c878538ef6a2c6ed",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shadow_raw_storage_20261030\\source_before\\include\\bsp\\gui_text_style.hpp"
+    },
+    {
+      "path": "src/gui_text_style.cpp",
+      "format": "exact Git UTF8LF blob bytes",
+      "bytes": 7668,
+      "sha256": "9e2b812ad64ad29bb636607dd549761d600dae6a287152f8004693ec32f6f6c3",
+      "git_blob_sha1": "f0ff7585ddd9b187f2482151c33614a6edd60892",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shadow_raw_storage_20261030\\source_before\\src\\gui_text_style.cpp"
+    },
+    {
+      "path": "include/bsp/native_node_parenting_storage.hpp",
+      "format": "exact Git UTF8LF blob bytes",
+      "bytes": 5253,
+      "sha256": "099017858da7cd62e7b5260aaac8f53a2451b063469266a1e6119e7ce3cdc3b0",
+      "git_blob_sha1": "9fc250c04a032769217e67a5aea308bdf6babcae",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shadow_raw_storage_20261030\\source_before\\include\\bsp\\native_node_parenting_storage.hpp"
+    },
+    {
+      "path": "src/native_node_parenting_storage.cpp",
+      "format": "exact Git UTF8LF blob bytes",
+      "bytes": 10339,
+      "sha256": "035ccf45f17b12b553fcc3e451894b67c928de4ae583c7e511a1a99269c113d1",
+      "git_blob_sha1": "a5a82c3d274d1af7f86efeb59a3939856212bb81",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shadow_raw_storage_20261030\\source_before\\src\\native_node_parenting_storage.cpp"
+    },
+    {
+      "path": "include/bsp/native_node_root_propagation.hpp",
+      "format": "exact Git UTF8LF blob bytes",
+      "bytes": 1454,
+      "sha256": "0fed8a0255b3068472bb0a72e2d41352ce1d10ee7ace03520254ae6d9dfde5d4",
+      "git_blob_sha1": "e8c16028e1344d467fa95bba08c27cf0d230c0ed",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shadow_raw_storage_20261030\\source_before\\include\\bsp\\native_node_root_propagation.hpp"
+    },
+    {
+      "path": "src/native_node_root_propagation.cpp",
+      "format": "exact Git UTF8LF blob bytes",
+      "bytes": 3130,
+      "sha256": "302f09b2f12d426abd9266fd265532e44bb104827b00d3894744f6a37012d48b",
+      "git_blob_sha1": "88a1dfe8382a55a6049069da336356273ffda02f",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shadow_raw_storage_20261030\\source_before\\src\\native_node_root_propagation.cpp"
+    },
+    {
+      "path": "include/bsp/native_node_base_destruction.hpp",
+      "format": "exact Git UTF8LF blob bytes",
+      "bytes": 4834,
+      "sha256": "cd1f22aafdc481b9e54c23dda5634171ac654b570d8ad8757f843bca76883226",
+      "git_blob_sha1": "1f8f3069c602b970a74d2d921c34dc5e864dc22b",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shadow_raw_storage_20261030\\source_before\\include\\bsp\\native_node_base_destruction.hpp"
+    },
+    {
+      "path": "include/bsp/native_node_scene_attachment.hpp",
+      "format": "exact Git UTF8LF blob bytes",
+      "bytes": 5335,
+      "sha256": "8b2f6d276fbe92b00c190fadcda44e71e8547c5890bd224ee2de895310658edf",
+      "git_blob_sha1": "b236a5d8ff992022ff795fa6a8c4236e51cad31c",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shadow_raw_storage_20261030\\source_before\\include\\bsp\\native_node_scene_attachment.hpp"
+    }
+  ],
+  "source_transformation": {
+    "before": [
+      {
+        "path": "include/bsp/gui_text_style.hpp",
+        "format": "exact Git UTF8LF blob bytes",
+        "bytes": 2113,
+        "sha256": "d73013ee99f3353f60db8aaee0048c7dae510f734bcc995c64328e98bec7cf34",
+        "git_blob_sha1": "416c4e6ad7783c7b15cd58d8c878538ef6a2c6ed",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shadow_raw_storage_20261030\\source_before\\include\\bsp\\gui_text_style.hpp"
+      },
+      {
+        "path": "src/gui_text_style.cpp",
+        "format": "exact Git UTF8LF blob bytes",
+        "bytes": 7668,
+        "sha256": "9e2b812ad64ad29bb636607dd549761d600dae6a287152f8004693ec32f6f6c3",
+        "git_blob_sha1": "f0ff7585ddd9b187f2482151c33614a6edd60892",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shadow_raw_storage_20261030\\source_before\\src\\gui_text_style.cpp"
+      }
+    ],
+    "after": [
+      {
+        "path": "include/bsp/gui_text_style.hpp",
+        "format": "exact Git UTF-8 LF bytes, disk raw separately qualified",
+        "bytes": 3630,
+        "sha256": "b82596cd3d8b6cec5b3bd345173c6b912a54633a6d73976743c140554cc26b4b",
+        "git_blob_sha1": "989029de04894f890d4a0ce7ff29ad0342d241f0",
+        "working_copy_raw_bytes": 3630,
+        "working_copy_raw_sha256": "b82596cd3d8b6cec5b3bd345173c6b912a54633a6d73976743c140554cc26b4b",
+        "working_copy_CRLF_normalized_equals_git": true,
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shadow_raw_storage_20261030\\source_after\\include\\bsp\\gui_text_style.hpp"
+      },
+      {
+        "path": "src/gui_text_style.cpp",
+        "format": "exact Git UTF-8 LF bytes, disk raw separately qualified",
+        "bytes": 10276,
+        "sha256": "d5e6b32f78db3df2d918913a8121de462125b1b7c8aa3c8341b09ae141745703",
+        "git_blob_sha1": "fa2fc5075f6d8cde14258b2a7469165458d05288",
+        "working_copy_raw_bytes": 10276,
+        "working_copy_raw_sha256": "d5e6b32f78db3df2d918913a8121de462125b1b7c8aa3c8341b09ae141745703",
+        "working_copy_CRLF_normalized_equals_git": true,
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shadow_raw_storage_20261030\\source_after\\src\\gui_text_style.cpp"
+      }
+    ],
+    "seam_count": 4,
+    "seams": [
+      {
+        "id": "H1_RAW_PARENTING_INCLUDE",
+        "path": "include/bsp/gui_text_style.hpp",
+        "operation": "insert UTF-8 LF bytes at exact forward position; inverse removes only these bytes",
+        "offset": 116,
+        "insert_utf8_lf": ".hpp\"\n#include \"bsp/native_node_parenting_storage",
+        "insert_bytes": 49,
+        "insert_sha256": "e47bfdc1ffbee5a1f1d28f121a516fae37e5b6e65f249bdaff9eccfe51a5f15a",
+        "before_step_sha256": "d73013ee99f3353f60db8aaee0048c7dae510f734bcc995c64328e98bec7cf34",
+        "after_step_sha256": "523936cab304cd47acb1441ea13238fbeb4c0e5ec14b54f8ed9fda8ca5f7e5a3"
+      },
+      {
+        "id": "H2_RAW_FRAME_AND_OVERLOAD",
+        "path": "include/bsp/gui_text_style.hpp",
+        "operation": "insert UTF-8 LF bytes at exact forward position; inverse removes only these bytes",
+        "offset": 2143,
+        "insert_utf8_lf": "\n// Ordinary caller-retained Source homes for raw00AB6C30. Offset is the exact\n// MOVSS DWORD payload; color_argument is an actual 32-bit DATA pointer. All\n// four homes and parenting preimages are prepared before entry, without new\n// defaults. Supply a distinct persistent frame/fresh acquisition for reentry.\nstruct NativeGuiTextShadowStorageFrame {\n    volatile std::uint32_t enabled_argument;\n    volatile std::uint32_t position_argument;\n    volatile std::uint32_t offset_argument;\n    volatile std::uint32_t color_argument;\n    NativeNodeParentingFrame parenting;\n};\n\n// Complete raw primitive: CURRENT Text+4C/+188 and the genuine raw node graph,\n// with no typed widget/Model association. Actual Text, DWORD/color backing,\n// frames, acquisitions and the SAME context/recursive providers remain live\n// through callbacks and failure. Incoming homes/frame/acquisition metadata\n// are disjoint from Text, context and reached node backing; the four\n// sequential color reads may overlap Text.\n// Parenting may replace +15C/+188; the optional root call reloads both. Keep\n// every reached generation/partial callee record on escape; no cleanup/retry.\n// Existing callee admission/valid-backing contracts apply. No Native ABI,\n// private-stack alias, FH3/SEH/fault, NoThrow or application/origin claim.\nvoid configure_gui_text_shadow_00ab6c30(void* actual_text,\n    NativeGuiTextShadowStorageFrame&, NativeNodeParentingContext&,\n    NativeNodeSetParentAcquired&);\n",
+        "insert_bytes": 1468,
+        "insert_sha256": "4ec239a157c3f8fc296b26b13efc9482b2176c39171ba85c13d9eccd6b9e21d2",
+        "before_step_sha256": "523936cab304cd47acb1441ea13238fbeb4c0e5ec14b54f8ed9fda8ca5f7e5a3",
+        "after_step_sha256": "b82596cd3d8b6cec5b3bd345173c6b912a54633a6d73976743c140554cc26b4b"
+      },
+      {
+        "id": "C1_REAL_ROOT_INCLUDE",
+        "path": "src/gui_text_style.cpp",
+        "operation": "insert UTF-8 LF bytes at exact forward position; inverse removes only these bytes",
+        "offset": 28,
+        "insert_utf8_lf": ".hpp\"\n#include \"bsp/native_node_root_propagation",
+        "insert_bytes": 48,
+        "insert_sha256": "06c2f4f278c329894c21c6c355ea36aeec55a87f84b5608ca8ae288a1fb44fed",
+        "before_step_sha256": "9e2b812ad64ad29bb636607dd549761d600dae6a287152f8004693ec32f6f6c3",
+        "after_step_sha256": "cb2b2b19b01b740d08b479c506955392d36f3dc48d5caee65f1de1fe91e17ef0"
+      },
+      {
+        "id": "C2_WHOLE_RAW_SHADOW_OVERLOAD",
+        "path": "src/gui_text_style.cpp",
+        "operation": "insert UTF-8 LF bytes at exact forward position; inverse removes only these bytes",
+        "offset": 7697,
+        "insert_utf8_lf": "void configure_gui_text_shadow_00ab6c30(void* actual_text,\n    NativeGuiTextShadowStorageFrame& frame, NativeNodeParentingContext& context,\n    NativeNodeSetParentAcquired& acquired) {\n    auto* text = static_cast<volatile std::uint8_t*>(actual_text);\n    // 6C30/6C34 precede the byte-width enable capture at6C3D. MOVSS moves\n    // payload bits only; no Source floating arithmetic/conversion is needed.\n    const std::uint32_t position = frame.position_argument;\n    const std::uint32_t offset = frame.offset_argument;\n    const std::uint8_t enabled =\n        *reinterpret_cast<const volatile std::uint8_t*>(&frame.enabled_argument);\n    *reinterpret_cast<volatile std::uint32_t*>(text + 0x160) = position;\n    // 6C49 captures the actual color-pointer home AFTER the +160 store.\n    const std::uint32_t color = frame.color_argument;\n    text[0x15c] = enabled;\n    *reinterpret_cast<volatile std::uint32_t*>(text + 0x164) = offset;\n    const auto* rgba = reinterpret_cast<const volatile std::uint32_t*>(\n        static_cast<std::uintptr_t>(color));\n    // Separate current DWORD load/store pairs preserve legal color/Text\n    // overlap. Neither an aggregate copy nor a four-word snapshot is used.\n    const std::uint32_t red = rgba[0];\n    *reinterpret_cast<volatile std::uint32_t*>(text + 0x168) = red;\n    const std::uint32_t green = rgba[1];\n    *reinterpret_cast<volatile std::uint32_t*>(text + 0x16c) = green;\n    const std::uint32_t blue = rgba[2];\n    *reinterpret_cast<volatile std::uint32_t*>(text + 0x170) = blue;\n    const std::uint32_t alpha = rgba[3];\n    *reinterpret_cast<volatile std::uint32_t*>(text + 0x174) = alpha;\n    const std::uint32_t parent = enabled != 0\n        ? *reinterpret_cast<const volatile std::uint32_t*>(text + 0x4c) : 0;\n    const std::uint32_t shadow =\n        *reinterpret_cast<const volatile std::uint32_t*>(text + 0x188);\n    // Native PUSH follows the current+188 capture. The real callee reads its\n    // OLD parent before this exact incoming home; retain its whole frame.\n    frame.parenting.parent_argument = parent;\n    set_native_raw_parent_00b6e680(\n        reinterpret_cast<void*>(static_cast<std::uintptr_t>(shadow)),\n        frame.parenting, context, acquired);\n    if (text[0x15c] == 0) {\n        const std::uint32_t current_shadow =\n            *reinterpret_cast<const volatile std::uint32_t*>(text + 0x188);\n        propagate_native_node_root_storage_00b6d890(\n            reinterpret_cast<void*>(static_cast<std::uintptr_t>(current_shadow)),\n            nullptr, context.node.scenes.children);\n    }\n}\n",
+        "insert_bytes": 2560,
+        "insert_sha256": "a6ba7c06d6f9f6a15697c3b09a733362f64c7ca8a9413f550104d55489fbd362",
+        "before_step_sha256": "cb2b2b19b01b740d08b479c506955392d36f3dc48d5caee65f1de1fe91e17ef0",
+        "after_step_sha256": "d5e6b32f78db3df2d918913a8121de462125b1b7c8aa3c8341b09ae141745703"
+      }
+    ],
+    "whole_forward_and_inverse_equal_immutable_941_and_frozen_preimages": true,
+    "typed_shadow_function_span": {
+      "bytes": 969,
+      "sha256": "356b75e8fc738b727b5366621e93c6a13ea0ee7a7329959f3a0d187a3fd6c55b",
+      "exact_before_after_equal": true
+    },
+    "all_old_asm": {
+      "count": 3,
+      "aggregate_recipe": "SHA256 of NUL-joined exact GitLF regex __asm blocks, no leading/trailing delimiter",
+      "sha256": "e45b35ad0abbe430e7c0a4dc31a7cfdd486e6bbf18ab0447ed813c69ec459ddd",
+      "exact_before_after_equal": true
+    },
+    "source41_continuity": [
+      {
+        "revision": "88990d0d12d1f4cfd2480b3670d4dc5a6b0bda98",
+        "all_8_baseline_source_inputs_equal_941": true
+      },
+      {
+        "revision": "6f282130752fcf70419cdc8f2f0c79c4fda31e25",
+        "all_8_baseline_source_inputs_equal_941": true
+      },
+      {
+        "revision": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "all_8_baseline_source_inputs_equal_941": true
+      }
+    ],
+    "native_direct_calls": [
+      {
+        "site": "00AB6C8E",
+        "target": "00B6E680",
+        "instruction_bytes": "e8ed790b00",
+        "pe_rel32_verified": true
+      },
+      {
+        "site": "00AB6CA4",
+        "target": "00B6D890",
+        "instruction_bytes": "e8e76b0b00",
+        "pe_rel32_verified": true
+      }
+    ]
+  },
+  "inverse_script": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shadow_raw_storage_20261030\\inverse_source.py",
+    "format": "exact UTF-8 LF",
+    "bytes": 1476,
+    "sha256": "b955bf5c42cb02910d7268dd2edad494dae6b2fe53da03c1d5230cb8ad1a8d01",
+    "embedded_utf8_lf": "from pathlib import Path\nimport hashlib, json, subprocess, sys\nroot = Path(sys.argv[1])\nr = json.loads(Path(sys.argv[2]).read_text(encoding=\"utf-8\"))\np = r[\"source_transformation\"]\nh = lambda b: hashlib.sha256(b).hexdigest()\nfiles = {}\nfor pin in p[\"after\"]:\n    b = (root / pin[\"path\"]).read_bytes().replace(b\"\\r\\n\", b\"\\n\")\n    assert h(b) == pin[\"sha256\"]\n    files[pin[\"path\"]] = b\nfor seam in reversed(p[\"seams\"]):\n    path = seam[\"path\"]\n    b = files[path]\n    assert h(b) == seam[\"after_step_sha256\"]\n    added = seam[\"insert_utf8_lf\"].encode(\"utf-8\")\n    assert h(added) == seam[\"insert_sha256\"]\n    at = seam[\"offset\"]\n    assert b[at:at + len(added)] == added\n    b = b[:at] + b[at + len(added):]\n    assert h(b) == seam[\"before_step_sha256\"]\n    files[path] = b\nfor pin in p[\"before\"]:\n    b = files[pin[\"path\"]]\n    assert h(b) == pin[\"sha256\"]\n    assert b == Path(pin[\"frozen_path\"]).read_bytes()\n    original = subprocess.check_output([\"git\", \"show\", r[\"baseline_commit\"] + \":\" + pin[\"path\"]], cwd=root)\n    assert b == original\nfor seam in p[\"seams\"]:\n    path = seam[\"path\"]\n    b = files[path]\n    assert h(b) == seam[\"before_step_sha256\"]\n    at = seam[\"offset\"]\n    b = b[:at] + seam[\"insert_utf8_lf\"].encode(\"utf-8\") + b[at:]\n    assert h(b) == seam[\"after_step_sha256\"]\n    files[path] = b\nfor pin in p[\"after\"]:\n    assert h(files[pin[\"path\"]]) == pin[\"sha256\"]\nprint(\"4 positional seams and both whole-file forward/inverses equal exact pinned Source\")\n",
+    "static_only": true
+  },
+  "source_abi": {
+    "function": "void configure_gui_text_shadow_00ab6c30(void* actual_text, NativeGuiTextShadowStorageFrame&, NativeNodeParentingContext&, NativeNodeSetParentAcquired&)",
+    "frame": "four volatile uint32_t incoming homes enabled/position/offset/color, then existing NativeNodeParentingFrame parenting",
+    "initialization": "no new defaults; caller prepares actual incoming words/full parenting preimages before entry",
+    "actual_parent_home": "frame.parenting.parent_argument written after CURRENT188 capture and immediately before actual parent call; callee OLDparent precedes its request read",
+    "numeric_words": "32-bit DATA pointer/field transport only; no codeword-to-callable cast",
+    "ordinary_source_not_original_abi": true
+  },
+  "ordered_effects": [
+    {
+      "native": [
+        "00AB6C30",
+        "00AB6C34",
+        "00AB6C3D"
+      ],
+      "source": "position DWORD -> offset payload DWORD -> byte-width enable capture"
+    },
+    {
+      "native": [
+        "00AB6C43",
+        "00AB6C49",
+        "00AB6C4D",
+        "00AB6C53"
+      ],
+      "source": "store160 -> CURRENTcolorhome -> store15C exactbyte -> store164 payload"
+    },
+    {
+      "native": [
+        "00AB6C5B",
+        "00AB6C5D",
+        "00AB6C63",
+        "00AB6C66",
+        "00AB6C6C",
+        "00AB6C6F",
+        "00AB6C75",
+        "00AB6C78"
+      ],
+      "source": "four sequential CURRENT color DWORD load/store pairs; Text overlap retained"
+    },
+    {
+      "native": [
+        "00AB6C7E",
+        "00AB6C80",
+        "00AB6C85",
+        "00AB6C87",
+        "00AB6C8D"
+      ],
+      "source": "captured enable determines CURRENT4C-or-null parent; CURRENT188 capture; exact outgoing home store"
+    },
+    {
+      "native": [
+        "00AB6C8E"
+      ],
+      "source": "direct whole set_native_raw_parent_00b6e680 with retained parenting frame/context/fresh acquisition"
+    },
+    {
+      "native": [
+        "00AB6C93",
+        "00AB6C9A",
+        "00AB6C9C",
+        "00AB6CA2",
+        "00AB6CA4"
+      ],
+      "source": "CURRENT15C test after parent callback; onlyzero CURRENT188 reload -> direct whole root withnullptr/SAMEchildren"
+    }
+  ],
+  "genuine_reused_providers": [
+    {
+      "entry": "00B6E680",
+      "signature": "set_native_raw_parent_00b6e680(void*, NativeNodeParentingFrame&, NativeNodeParentingContext&, NativeNodeSetParentAcquired&)",
+      "preserved_contract": "fresh acquisition/same domain; OLD parent before incoming actual home; actual current target bindings/recursive frame graph"
+    },
+    {
+      "entry": "00B6D890",
+      "signature": "propagate_native_node_root_storage_00b6d890(void*, void* captured_requested_outer24, NativeNodeSceneChildDispatch&)",
+      "preserved_contract": "actual root/scene/list graph; exact existing node.scenes.children; prepared retained target records"
+    }
+  ],
+  "retention_and_alias_contract": {
+    "incoming": "allfour actualDWORDhomes ready before entry; frame/acquisition persistent and separate from actualText/context/reachednodes; distinct fresh records for reentry",
+    "color": "actual16B DWORD-backed operand may overlap Text; sequential word loads/stores preserved",
+    "context": "SAME genuine scenes/trees/owners/current imports/current profile resolvers; no fabricated typed association or synthesized preimages",
+    "returned_callbacks": "both lateenable and lateshadow reloads; all reached old/new generations/providers stay live",
+    "on_escape": "retain prior stores/partial hierarchy-root-scene effects and whole provider/acquired graph; no automatic cleanup/retry/rollback",
+    "hidden_aliases": "Source-valid backing/disjointness does not establish Native private-stack aliases/arbitrary invalid addresses/fault identity"
+  },
+  "preservation": {
+    "old_typed_hpp_cpp_whole_inverse": true,
+    "old_typed_shadow_969B_exact": true,
+    "all_old_asm_3_exact": true,
+    "provider_6_source_inputs_unchanged": true,
+    "glyph_origin_pool_source41_untouched": true,
+    "no_new_provider_virtual_or_adapter": true,
+    "no_new_owner_default_bank_or_model_projection": true,
+    "no_new_input_cap_enum_or_finite_value_filter": true,
+    "no_new_noexcept_cleanup_termination_retry_or_origin_policy": true
+  },
+  "gates": {
+    "whole_raw_primitive_source_implemented": true,
+    "conditional_genuine_provider_contract_explicit": true,
+    "worker_compiled_or_ran_behavior": false,
+    "root_build_for_this_packet_received": false,
+    "independent_source_peer_received": false,
+    "actual_application_caller_provider_lifetime_bound": false,
+    "original_register_stack_abi_proved": false,
+    "native_private_alias_fault_fh3_seh_proved": false,
+    "allocator_nothrow_game_crt_proved": false,
+    "native_origin_permission": false,
+    "runtime_or_game_validation": false,
+    "whole_frontend_ready": false,
+    "game_activation": false
+  },
+  "credit": {
+    "new_original_native_bodies": 0,
+    "new_vendor_bodies": 0,
+    "new_private_helpers": 0,
+    "duplicate_native_body_credit": 0,
+    "new_runtime_credit": 0,
+    "one_conditional_raw_source_variant": true
+  },
+  "actions": {
+    "production_files_changed": 2,
+    "new_evidence_files": 2,
+    "cmake_ledger_shared_owner_or_registry_edits": false,
+    "ghidra_mutation": false,
+    "worker_builds_tests_probes_game_process_actions": false,
+    "ignored_static_hash_PE_and_transformation_work_only": true
+  },
+  "local_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shadow_raw_storage_20261030\\baseline_manifest.json",
+      "format": "UTF-8 LF JSON static evidence",
+      "bytes": 7893,
+      "sha256": "49dd4fb59fa10e316395c041842118b4f10cc7ac3759286d9ab8d12d0342a63b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shadow_raw_storage_20261030\\source_transform.json",
+      "format": "UTF-8 LF JSON static evidence",
+      "bytes": 10109,
+      "sha256": "2bcffeec9924da7ad49e2ba3ddb5e1e45b6025800fd792f58e1e9cd2db5fb06e"
+    }
+  ],
+  "document_pin": {
+    "path": "docs/CC16_NATIVE_TEXT_SHADOW_RAW_STORAGE.md",
+    "format": "UTF-8 LF",
+    "bytes": 6754,
+    "sha256": "2d3cc85d4a477468c6e3f0e0a8bc668a4344e00403cfdb762b2a115851e93f6a"
+  }
+}
