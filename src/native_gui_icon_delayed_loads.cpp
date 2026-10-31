@@ -3,6 +3,7 @@
 #include "bsp/native_gui_icon_delayed_loads_getter_storage.hpp"
 #include "bsp/native_gui_icon_delayed_loads_owner_cancel_storage.hpp"
 #include "bsp/native_gui_widget_lifetime.hpp"
+#include "bsp/native_singleton_destruction.hpp"
 #include "bsp/sound_lifetime_access.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <cstring>
