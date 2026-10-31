@@ -1,0 +1,339 @@
+{
+  "kind": "Frozen IGNORED four-path raw AB1680 Source candidate; no tracked author grant",
+  "base_Main": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+  "owned_paths": [
+    "include/bsp/native_gui_icon_state_uv_storage.hpp",
+    "src/native_gui_icon_state_uv_storage.cpp",
+    "docs/CC16_NATIVE_GUI_ICON_STATE_UV_STORAGE.md",
+    "reports/cc16_native_gui_icon_state_uv_storage.json"
+  ],
+  "Source_postimages": [
+    {
+      "path": "include/bsp/native_gui_icon_state_uv_storage.hpp",
+      "bytes": 1990,
+      "sha256": "9998519a4cfca15ee13032876c791146e9aa43db2494d2a8f43f707cca20cb19"
+    },
+    {
+      "path": "src/native_gui_icon_state_uv_storage.cpp",
+      "bytes": 1974,
+      "sha256": "c66b10ab06c1e35f178ce53e5456fbbd1bf57b35ff5617e5ea06663fca0a8bfc"
+    }
+  ],
+  "doc": {
+    "path": "docs/CC16_NATIVE_GUI_ICON_STATE_UV_STORAGE.md",
+    "bytes": 2898,
+    "sha256": "87fb447fefa1c9523924f26d6909df4d69fcc989a7e47cab14785be8a8f93bf2"
+  },
+  "reader": {
+    "bytes": 5173,
+    "sha256": "4b0f874586263c80d83b3e2a43758cb4709afd31273c192127be664ec06a9842",
+    "utf8": "import argparse,pathlib,json,hashlib,re,subprocess\ndef sha(b):return hashlib.sha256(b).hexdigest()\nap=argparse.ArgumentParser();ap.add_argument('--git');ap.add_argument('--candidate');a=ap.parse_args()\nO=pathlib.Path(__file__).resolve().parent;root=pathlib.Path(a.candidate) if a.candidate else O/'candidate'\nrp='reports/cc16_native_gui_icon_state_uv_storage.json'\ndef git(*x):return subprocess.check_output(['git',*x])\ndef read(p):return git('show',a.git+':'+p) if a.git else (root/p).read_bytes()\nr=json.loads(read(rp));checks=[]\ndef ok(x,s):assert x,s;checks.append({'check':s,'passed':True})\ndef match(b,p):return len(b)==p['bytes'] and sha(b)==p['sha256']\nok(match(pathlib.Path(__file__).read_bytes(),r['reader']),'exact self-contained reader bytes')\nok(r['reader']['utf8'].encode()==pathlib.Path(__file__).read_bytes(),'embedded raw reader exact')\nfor p in r['Source_postimages']:\n ok(match(read(p['path']),p),'whole Source postimage '+p['path'])\nok(match(read(r['doc']['path']),r['doc']),'whole candidate document')\nfor p in r['provider_whole_pins']:\n b=git('show',r['base_Main']+':'+p['path']);ok(match(b,p),'real existing provider whole pin '+p['path'])\nfor p in r['owned_paths']:\n q=subprocess.run(['git','cat-file','-e',r['base_Main']+':'+p],stdout=subprocess.PIPE,stderr=subprocess.PIPE)\n ok(q.returncode!=0,'genuine new-path baseline absence '+p)\nnative=r['Native']['assembly_rows']\nok(len(native)==39 and native[-1]['instruction'].lower()=='ret 0x10','whole39-op Native boundary and RET10')\ncode=bytes.fromhex(r['Native']['installed_bytes_hex'])\nok(len(code)==130 and sha(code)==r['Native']['installed_bytes_sha256'],'whole130B installed Native preimage')\nok(r['Native']['one_preimage_hex']=='0000803f','authentic borrowed constant preimage, not a Source default')\ncpp=read('src/native_gui_icon_state_uv_storage.cpp').decode()\nbody=re.search(r'__asm\\s*\\{([\\s\\S]*?)\\}',cpp).group(1)\nsource=[];labels={}\nfor line in body.splitlines():\n line=line.split('//',1)[0].strip()\n if not line:continue\n if line.endswith(':'):labels[line[:-1]]=len(source)\n else:source.append(line)\ndef canonical(t,is_native=False):\n t=t.lower().strip()\n if is_native:\n  t=t.replace('0x00ab16d3','uv_skip_v').replace('0x00ab16ff','uv_done')\n  t=re.sub(r'\\[esp\\s*\\+\\s*0x4\\]','[esi]',t)\n  t=re.sub(r'\\[esp\\s*\\+\\s*0x8\\]','[esi + 4]',t)\n  t=re.sub(r'\\[esp\\s*\\+\\s*0xc\\]','[esi + 8]',t)\n  t=re.sub(r'\\[esp\\s*\\+\\s*0x10\\]','[esi + 12]',t)\n  t=t.replace('[0x00d7a24c]','[edi]')\n t=re.sub(r'\\b([0-9a-f]+)h\\b',lambda m:str(int(m.group(1),16)),t)\n t=re.sub(r'0x([0-9a-f]+)',lambda m:str(int(m.group(1),16)),t)\n return re.sub(r'\\s+','',t).replace('floatptr','dwordptr')\nok([canonical(x) for x in source[:3]]==['movecx,captured_receiver','movesi,argument_homes','movedi,one_address'],'only three Source-ABI address bindings before native sequence')\nok(len(source)==41,'three address bindings plus38 native data/FP instructions')\nmapping=[]\nfor i,n in enumerate(native[:-1]):\n x=source[i+3];ok(canonical(n['instruction'],True)==canonical(x),'exact ordered native operand '+n['address'])\n mapping.append({'Native':n,'Source_asm':x})\nok(labels=={'uv_skip_v':27,'uv_done':41},'branch target/fallthrough positions exact')\nok([x.split()[0] for x in source if x.split()[0] in ['fld','fstp']]==['fld','fstp','fld','fstp'],'all four x87 swap forms and order')\nok(not any(x in cpp for x in ['std::swap','std::bit_cast','memcpy','memset','try {','catch (','noexcept','finit','fninit','fldcw','ldmxcsr','fxrstor']), 'no C++FP/helpers/cleanup/control policy or NoThrow')\nok('std::uint32_t* const argument_homes = &actual_argument_homes[0]' in cpp and 'float* const one_address = &actual_one_00d7a24c' in cpp,'only borrowed addresses, no whole-home/value snapshot')\nok(not re.search(r'\\b(if|for|while|switch)\\s*\\(',cpp),'no runtime domain/range/profile guard')\nok(not any(x in cpp for x in ['GuiIconState&','NativeGuiIconStateStorage*','reinterpret_cast','const_cast','new ','delete ']),'no raw-to-typed owner cast or storage lifetime invention')\ntree=False\nif a.git:\n def alltree(ref):\n  out={}\n  for z in git('ls-tree','-r','--full-tree','-z',ref).split(b'\\0'):\n   if z:\n    d,p=z.split(b'\\t',1);out[p]=d\n  return out\n before=alltree(r['base_Main']);after=alltree(a.git);owned={p.encode() for p in r['owned_paths']}\n ok({p for p in before.keys()|after.keys() if before.get(p)!=after.get(p)}==owned,'exact four author-owned additions')\n for p in owned:after.pop(p)\n ok(after==before,'complete four-path recursive tree inverse')\n tree=True\nresult={'pass':True,'checks':len(checks),'mode':'immutable_Git' if a.git else 'ignored_candidate',\n 'ref':a.git,'whole_Native_rows':39,'Source_native_rows':38,'Source_address_bindings':3,\n 'Native_RET10_is_ordinary_Source_ABI_return_not_literal_binary_equivalence':True,\n 'native_operand_sequence_exact':True,'x87_forms':4,'four_baseline_absences':True,\n 'four_path_recursive_tree_inverse':tree,'compiler_Native_runtime_OriginalABI_activation_proof':False}\n(O/('reader_git_result.json' if a.git else 'reader_candidate_result.json')).write_bytes((json.dumps({'result':result,'checks':checks,'operation_map':mapping},indent=2)+'\\n').encode())\nprint(json.dumps(result,indent=2))\n",
+    "mode": "read-only Source/Git/operand reader, no C++/Native execution"
+  },
+  "API": "void set_native_gui_icon_state_uv_storage_00ab1680(void*, volatile uint32_t (&actual_argument_homes)[4], const volatile float& actual_one_00d7a24c)",
+  "Native": {
+    "entry": "00ab1680",
+    "end_inclusive": "00ab1701",
+    "bytes": 130,
+    "instructions": 39,
+    "provisional40_count_corrected": true,
+    "ECX": "actual already-born40B state",
+    "stack": "four live DWORD by-value float-bit homes; RET10h",
+    "assembly_rows": [
+      {
+        "address": "00ab1680",
+        "instruction": "MOV EAX,dword ptr [ESP + 0x4]"
+      },
+      {
+        "address": "00ab1684",
+        "instruction": "MOV EDX,dword ptr [ESP + 0x8]"
+      },
+      {
+        "address": "00ab1688",
+        "instruction": "MOVSS XMM0,dword ptr [ECX + 0x20]"
+      },
+      {
+        "address": "00ab168d",
+        "instruction": "MOVSS XMM1,dword ptr [0x00d7a24c]"
+      },
+      {
+        "address": "00ab1695",
+        "instruction": "XORPS XMM2,XMM2"
+      },
+      {
+        "address": "00ab1698",
+        "instruction": "MOV dword ptr [ECX + 0xc],EAX"
+      },
+      {
+        "address": "00ab169b",
+        "instruction": "MOV EAX,dword ptr [ESP + 0xc]"
+      },
+      {
+        "address": "00ab169f",
+        "instruction": "MOV dword ptr [ECX + 0x10],EDX"
+      },
+      {
+        "address": "00ab16a2",
+        "instruction": "MOV EDX,dword ptr [ESP + 0x10]"
+      },
+      {
+        "address": "00ab16a6",
+        "instruction": "MOV dword ptr [ECX + 0x14],EAX"
+      },
+      {
+        "address": "00ab16a9",
+        "instruction": "UCOMISS XMM0,XMM1"
+      },
+      {
+        "address": "00ab16ac",
+        "instruction": "LAHF"
+      },
+      {
+        "address": "00ab16ad",
+        "instruction": "TEST AH,0x44"
+      },
+      {
+        "address": "00ab16b0",
+        "instruction": "MOV dword ptr [ECX + 0x18],EDX"
+      },
+      {
+        "address": "00ab16b3",
+        "instruction": "JP 0x00ab16d3"
+      },
+      {
+        "address": "00ab16b5",
+        "instruction": "MOVSS XMM0,dword ptr [ECX + 0x28]"
+      },
+      {
+        "address": "00ab16ba",
+        "instruction": "UCOMISS XMM0,XMM2"
+      },
+      {
+        "address": "00ab16bd",
+        "instruction": "LAHF"
+      },
+      {
+        "address": "00ab16be",
+        "instruction": "TEST AH,0x44"
+      },
+      {
+        "address": "00ab16c1",
+        "instruction": "JP 0x00ab16d3"
+      },
+      {
+        "address": "00ab16c3",
+        "instruction": "FLD float ptr [ECX + 0x18]"
+      },
+      {
+        "address": "00ab16c6",
+        "instruction": "MOVSS XMM0,dword ptr [ECX + 0x10]"
+      },
+      {
+        "address": "00ab16cb",
+        "instruction": "FSTP float ptr [ECX + 0x10]"
+      },
+      {
+        "address": "00ab16ce",
+        "instruction": "MOVSS dword ptr [ECX + 0x18],XMM0"
+      },
+      {
+        "address": "00ab16d3",
+        "instruction": "MOVSS XMM0,dword ptr [ECX + 0x1c]"
+      },
+      {
+        "address": "00ab16d8",
+        "instruction": "UCOMISS XMM0,XMM1"
+      },
+      {
+        "address": "00ab16db",
+        "instruction": "LAHF"
+      },
+      {
+        "address": "00ab16dc",
+        "instruction": "TEST AH,0x44"
+      },
+      {
+        "address": "00ab16df",
+        "instruction": "JP 0x00ab16ff"
+      },
+      {
+        "address": "00ab16e1",
+        "instruction": "MOVSS XMM0,dword ptr [ECX + 0x24]"
+      },
+      {
+        "address": "00ab16e6",
+        "instruction": "UCOMISS XMM0,XMM2"
+      },
+      {
+        "address": "00ab16e9",
+        "instruction": "LAHF"
+      },
+      {
+        "address": "00ab16ea",
+        "instruction": "TEST AH,0x44"
+      },
+      {
+        "address": "00ab16ed",
+        "instruction": "JP 0x00ab16ff"
+      },
+      {
+        "address": "00ab16ef",
+        "instruction": "FLD float ptr [ECX + 0x14]"
+      },
+      {
+        "address": "00ab16f2",
+        "instruction": "MOVSS XMM0,dword ptr [ECX + 0xc]"
+      },
+      {
+        "address": "00ab16f7",
+        "instruction": "FSTP float ptr [ECX + 0xc]"
+      },
+      {
+        "address": "00ab16fa",
+        "instruction": "MOVSS dword ptr [ECX + 0x14],XMM0"
+      },
+      {
+        "address": "00ab16ff",
+        "instruction": "RET 0x10"
+      }
+    ],
+    "installed_bytes_hex": "8b4424048b542408f30f104120f30f100d4ca2d7000f57d289410c8b44240c8951108b5424108941140f2ec19ff6c4448951187a1ef30f1041280f2ec29ff6c4447a10d94118f30f104110d95910f30f114118f30f10411c0f2ec19ff6c4447a1ef30f1041240f2ec29ff6c4447a10d94114f30f10410cd9590cf30f114114c21000",
+    "installed_bytes_sha256": "578a367ea9b511ace7efd0bb23497bc3be84750df7d597fe5748c7cab6970da5",
+    "one_address": "00d7a24c",
+    "one_preimage_hex": "0000803f",
+    "x87_forms": [
+      {
+        "site": "00ab16c3",
+        "mnemonic": "fld",
+        "operand": "dword ptr [ecx + 0x18]"
+      },
+      {
+        "site": "00ab16cb",
+        "mnemonic": "fstp",
+        "operand": "dword ptr [ecx + 0x10]"
+      },
+      {
+        "site": "00ab16ef",
+        "mnemonic": "fld",
+        "operand": "dword ptr [ecx + 0x14]"
+      },
+      {
+        "site": "00ab16f7",
+        "mnemonic": "fstp",
+        "operand": "dword ptr [ecx + 0xc]"
+      }
+    ],
+    "no_callees": true,
+    "no_local_EH": true,
+    "prototype_qualification": "Live prototype view and decompiler inferred parameters are not the Source ABI; whole assembly establishes ECX/four homes/RET10.",
+    "function_name_is_hypothesis": true
+  },
+  "Source_mapping": {
+    "address_bindings": 3,
+    "native_payload_FP_instructions": 38,
+    "Native_RET10": "ordinary C++ function return/Source ABI; not literal Original stack cleanup/register/FLAGS certification",
+    "no_new_Context_Frame_Acquired_owner": "Three required borrowed arguments suffice; array objects are caller-retained real callee homes.",
+    "home_state_aliases": "Allowed where the caller proves valid C++ object/subobject lifetime; native reached reads/stores preserved. Own Source private ABI objects remain separate."
+  },
+  "provider_whole_pins": [
+    {
+      "path": "include/bsp/gui_icon.hpp",
+      "commit": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+      "bytes": 16834,
+      "sha256": "1e2dc70631e3ebea332c8253956c9fbba9571bd2cb9e783d381e5863018f8ca7",
+      "Git_blob": "84b64ce3d68023fd3555e0025db31c07eae9810a"
+    },
+    {
+      "path": "src/gui_icon.cpp",
+      "commit": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+      "bytes": 10301,
+      "sha256": "cef86334d35a1f4b972e3f9e4f9181f51a57089c41b2b17ef860bcaf5433e0af",
+      "Git_blob": "ffe5439e628f35659f94767ebbbc7477867ca7db"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_storage.hpp",
+      "commit": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+      "bytes": 8923,
+      "sha256": "36efeb861e01b14348e370d169c9002b8ac436a29b2f9f3be1d5aac8d7976bfc",
+      "Git_blob": "0a98345600a93dff4fc6c10ce3a0626d93fe9847"
+    },
+    {
+      "path": "src/native_gui_icon_storage.cpp",
+      "commit": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+      "bytes": 19689,
+      "sha256": "cc847b8f5fb19055a1116376b2d3a8eff181f045695fe73394ba04996728a492",
+      "Git_blob": "1d61197d246f8c9789c733fa70919817a1581f73"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_pools_cc13.hpp",
+      "commit": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+      "bytes": 12674,
+      "sha256": "fd2be32f59443f79787b5006a628b9d0f78597b4d4dff62d09dbc65831c1fed3",
+      "Git_blob": "759fba46de564d4d09549b0f3950bf2bbfc4f718"
+    },
+    {
+      "path": "src/native_gui_widget_pools_cc13.cpp",
+      "commit": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+      "bytes": 3180,
+      "sha256": "e9fa3a2f4e8d0f644d601aa974bab567f8cd36e5c9ea958ae06aacaca4b5e925",
+      "Git_blob": "18a2efa93a00c8e48d79003e8af0ed4fbc5f80b3"
+    }
+  ],
+  "constant_provenance": {
+    "pin": {
+      "address": "00d7a24c",
+      "bytes_hex": "0000803f",
+      "DWORD": "3f800000",
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+    },
+    "supply": "SAME existing authenticated read-only GUI one-cell borrow; caller retained, not copied/seeded/new global bank."
+  },
+  "storage_contract": {
+    "actual_state": "Genuine already-born NativeGuiIconStateStorage-compatible40B backing/subobjects; borrowed only, no owner cast or birth.",
+    "arguments": "Four caller-owned addressable DWORD objects, genuine staged input bits; ordinary backing with explicit volatile use is valid. No initializer/default or value projection.",
+    "caller_epoch": "Future AB66C0 must stage its actual PUSH-copy homes, not lend a semantic float4 or cached state."
+  },
+  "preserved_epochs": [
+    "first two homes captured before authored20 read/one load",
+    "store0C then readhome2; store10 then readhome3; store14 before compare and store18 beforeJP",
+    "current authored28 after earlier stores and only reached when ordered equality holds",
+    "FLD18/MOVSS10/FSTP10/MOVSS18 then late authored1C/24 and corresponding14/0C swap"
+  ],
+  "FP_and_exception_qualifiers": [
+    "Exact explicit SSE/x87 forms, no C++ FP or FP-control/status reset; ambient actual CW/MXCSR remains caller state.",
+    "Unmasked exceptions, hardware faults/SEH, compiler prologue/epilogue, Original EFLAGS/stack/register parity and ABI are unproved.",
+    "No noexcept/Native Origin/unwind/cleanup/retry/rollback/terminal policy asserted."
+  ],
+  "reconciliation_reference": {
+    "sealed_receipt": {
+      "path": "reconciliation_reference\\sealed_receipt.json",
+      "bytes": 784,
+      "sha256": "dae99f27a4e80702cf015de982a4c9892fa6f0457f522451e7646e91af41efda"
+    },
+    "manifest": {
+      "path": "reconciliation_reference\\manifest.json",
+      "bytes": 17059,
+      "sha256": "2fd4987b84c6a2185ebbc6d08115515cbef999b180be3eb6f2a51f1d7d6a8b96"
+    },
+    "prior_files_modified": false,
+    "AB3310_AB66C0_ready": false
+  },
+  "four_path_inverse": "Each file is a new addition; base absence proven. Full recursive Git inverse deferred until a real author commit exists.",
+  "existing_Source_delta": [],
+  "credit": {
+    "new_Original": 0,
+    "vendor": 0,
+    "helper": 0,
+    "CG": 0,
+    "duplicate": 0,
+    "OriginalABI": 0,
+    "runtime": 0
+  },
+  "tracked_author_grant": false,
+  "CMake_registered": false,
+  "compiled": false,
+  "Native_Origin": false,
+  "normal_disposition": false,
+  "activation": false,
+  "worker_Game_test_probe_Ghidra_ledger_actions": false
+}
