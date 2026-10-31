@@ -1,0 +1,1782 @@
+{
+  "schema": "cc16-native-gui-named-value-array-reserve-storage-independent-review-v1",
+  "reviewer": "frontend_frame_selection_closure, distinct from frontend_raw95_producer_closure author",
+  "historical_author_commit": "0042f413cce3366ba44ad0de349c114c80b04132",
+  "historical_parent": "3cc47027ed291e48c37efc854fb6de9df88afd9b",
+  "current_reviewed_Root_correction": "a1273c55df5d843dd4523c82c8273b857dae89b1",
+  "scope": "Full sealed4file author packet, exact Root4identifier CPP correction, original whole Native/EH/provider contracts. No held ancestry merge or Source edits.",
+  "verdict": "one historical compile blocker resolved; zero other actionable current Source findings in qualified normal library scope",
+  "findings": [
+    {
+      "severity": "P1",
+      "status": "resolved",
+      "scope": "historical author v1",
+      "issue": "MSVC inline assembly OFFSET reserved-word collision in private helper parameter/reference names",
+      "reported_by": "Root actual compiler C2400, not reviewer compiler",
+      "fix": "a1273c55df5d843dd4523c82c8273b857dae89b1",
+      "exact_inverse_proven": true
+    }
+  ],
+  "current_unresolved_findings": [],
+  "early_review_limitation": "The provisional draft/static review missed MASM OFFSET reserved-word collision. Root actual compiler reported C2400; this receipt preserves that finding and independently verifies the exact correction, without claiming reviewer compilation.",
+  "historical_author_file_pins": [
+    {
+      "path": "include/bsp/native_gui_named_value_array_reserve_storage.hpp",
+      "bytes": 3272,
+      "sha256": "8b4061b26fc5bf5ef6da5fbadcf24ee66f921a894f6fb5f193b635b38aab0c12",
+      "git_blob": "c94cf7a5fc67d0e4c426737e36d7dc3ca4330917",
+      "CR_bytes": 0
+    },
+    {
+      "path": "src/native_gui_named_value_array_reserve_storage.cpp",
+      "bytes": 5438,
+      "sha256": "ddae9ccddcca81faf13a9f4c147ebfece0100bc37e4cb568904a96e35dc6ba9a",
+      "git_blob": "e343154901d7769aa062651eea4dc6c0e8788f68",
+      "CR_bytes": 0
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_NAMED_VALUE_ARRAY_RESERVE_STORAGE.md",
+      "bytes": 8819,
+      "sha256": "be17ae6bdd1ea017c80854f13d38d9d1c49fccfab2df12b5be7f27ea3dbd9f83",
+      "git_blob": "95daa1fbe566db72d794ebca97634dc21219a5e3",
+      "CR_bytes": 0
+    },
+    {
+      "path": "reports/cc16_native_gui_named_value_array_reserve_storage.json",
+      "bytes": 84595,
+      "sha256": "2cff12e06e2633f9bfffec2aa0293ba93d4ae581d64c94b46227a23aceee5404",
+      "git_blob": "2336de8bcaf8f104394fa00c90ec18f7b0e6b0f5",
+      "CR_bytes": 0
+    }
+  ],
+  "corrected_current_Source_pins": [
+    {
+      "path": "include/bsp/native_gui_named_value_array_reserve_storage.hpp",
+      "bytes": 3272,
+      "sha256": "8b4061b26fc5bf5ef6da5fbadcf24ee66f921a894f6fb5f193b635b38aab0c12",
+      "git_blob": "c94cf7a5fc67d0e4c426737e36d7dc3ca4330917"
+    },
+    {
+      "path": "src/native_gui_named_value_array_reserve_storage.cpp",
+      "bytes": 5458,
+      "sha256": "dc8dfc3757b998a06fa72a0628cc7fb7eae80d03741f24d2ec80aa2785e8116e",
+      "git_blob": "aeb2ca5148a6569de484e760391a7d31186b077a"
+    }
+  ],
+  "hash_formats": "SHA256 = exact content; Git blob = Git SHA1 object. Four original packetfiles are UTF8-LF/0CR; corrected Source is exact GitLF and Root workingbytes. Historicalv1 source/66reader/doc/report remain immutable; current RootSource is separate.",
+  "historical_full_tree_inverse": {
+    "base_tree": "23597add7285fc9dde16c521425eaf7a8a006b55",
+    "packet_tree": "cc0bb73b92359e4ac6963b3e3db9390b1fe77691",
+    "inverse_tree": "23597add7285fc9dde16c521425eaf7a8a006b55"
+  },
+  "compiler_correction": {
+    "commit": "a1273c55df5d843dd4523c82c8273b857dae89b1",
+    "Root_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch55\\compiler_identifier_correction.json",
+      "bytes": 751,
+      "sha256": "eac93a661ddde4010c327ccf2e61afc2644a069d5688c23cb95447b7eb54847c"
+    },
+    "Root_receipt_fields": {
+      "author": "0042f413cce3366ba44ad0de349c114c80b04132",
+      "failed_Source_head": "8484df031",
+      "failed_stage": "compilation before tests",
+      "error": "C2400 lines25/34 MASM OFFSET reserved keyword",
+      "failed_log_sha256": "ce1aa099150abc6b93ee65dc7aa3854412e1266cd6509258755b47f369f55927",
+      "path": "src/native_gui_named_value_array_reserve_storage.cpp",
+      "before_sha256": "ddae9ccddcca81faf13a9f4c147ebfece0100bc37e4cb568904a96e35dc6ba9a",
+      "after_sha256": "dc8dfc3757b998a06fa72a0628cc7fb7eae80d03741f24d2ec80aa2785e8116e",
+      "before_bytes": 5438,
+      "after_bytes": 5458,
+      "whole_word_identifier_renames": 4,
+      "inverse_exact": true,
+      "API_epochs_policy_changes": 0,
+      "author_report_remains_historical_compiled_false": true
+    },
+    "scope": "one privateCPP, two parameter names +two asmreferences; no API/normalbodyepoch/lifetime/policy change",
+    "forward_and_reverse_exact": true,
+    "old_source_bytes": 5438,
+    "new_source_bytes": 5458,
+    "reader_epoch": "original66reader executed unchanged against v1; correctedCPP verified separately by whole-word inverse and40 unchanged Sourceepochlines"
+  },
+  "semantics": [
+    {
+      "topic": "request and register/home epochs",
+      "result": "pass",
+      "evidence": "Caller-staged requestedHOME. Signed clamp<1 stores1 and reloads; current signedcapacity gate. Selected register request is distinct from mutable HOME and reloads ONLY after entered copy loop47E8 and entered release loop4821. Both-skipped path retains original clamped capture."
+    },
+    {
+      "topic": "allocation and loops",
+      "result": "pass",
+      "evidence": "Modulo32 12*request is passed as both genuine allocation byte counts, no overflow/cap/null policy. Current initialcount precedes replacement/indexHOME stores. Independent register copyindex and replacement; destinationHOME then state0 even nullskip. Null advances index without birth/copy/replacementHOME reload."
+    },
+    {
+      "topic": "individual C++ slot birth",
+      "result": "qualified pass",
+      "evidence": "Actual pre-existing EntryStorage definition is trivial3scalars/12B with no initializer. Global default placement new WITHOUT()/{} onlyon reached nonnullslot, after currentSourceaddress capture. No field initialization, T[n] birth, owning projection or typed consumer admission."
+    },
+    {
+      "topic": "whole54 and private-home ordering",
+      "result": "qualified pass",
+      "evidence": "Direct actual Source54 ctor with same source/destination and nested HOME/frame/RawPool/livefeature. Native currentSource8 read\u2192replacementHOME reload\u2192dst8store becomes Source54 read/store\u2192return\u2192HOMEreload. Valid only under explicit allFrame/argument/provider disjointness from native writes, no intervening callback. Original private aliases/load/fault order excluded. No hook/fence/Source54 edit."
+    },
+    {
+      "topic": "copy progress",
+      "result": "pass",
+      "evidence": "Registerindex increments modulo32, currentcount read and signedcompare before state-1 and savedindexHOME writes. Savedindex is neither successfully constructed-object count nor an Origin token. Conditional requestHOME reload onlyafter actual enteredloop."
+    },
+    {
+      "topic": "current old-header retirement",
+      "result": "pass",
+      "evidence": "Separate release index/displacement; CURRENTdata each iteration and raw41DD20 DATA-first/currentLEN+1/currentgetter/return, header untouched. Currentcount rechecked. Full29B/12-op AB39F0 normal release equals actual41DD20 after internalbranch rebase; no new destructor body."
+    },
+    {
+      "topic": "free and publication",
+      "result": "pass",
+      "evidence": "CURRENTdescriptorDATA captured at4825 for actualfree; onlyafterfree publish captured replacement and selectedrequest/capacity inthatorder. No freshHOME rereads or countstore. Doesnot claim freeing every earlier snapshot/generation."
+    },
+    {
+      "topic": "EH and failure policy",
+      "result": "qualified pass",
+      "evidence": "Exact handler/FuncInfo/maxState1/state0\u2192-1/action9ops verified. Action reads private operands then calls401130 RET; no partial-entry/blockfree. Source elides no-effect placement work under private-frame/fault exclusion; no RAII/catch/compensation/newnoexcept/retry/Nativefilter/issuer/positiveOrigin. Reached debt/captures require retained callergraph."
+    },
+    {
+      "topic": "scope and providers",
+      "result": "pass",
+      "evidence": "Historical four-addition inverse;27wholefiles/19labelledregions unchanged atauthor. AtcorrectedRoot all effectfulSource/providers/tools/config unchanged; onlystartupCMake differs forintegration. Genuine singletonallocate/free/whole54/raw41DD20/exactresize/BF reused. RawPool/currentfeature/custody/DF/CPU/privatehome/generation/array/caller/failuretransport remain explicit gates."
+    }
+  ],
+  "whole_integrity_pins_historical_and_current": [
+    {
+      "path": "include/bsp/native_gui_named_value_copy_storage.hpp",
+      "format": "Git blob/frozen UTF8-LF content",
+      "historical": {
+        "bytes": 2211,
+        "sha256": "3408c74da34e8e5c45ada5b2e6ad0359b666c4dd45c9f37de6c20c22ef97f20e",
+        "git_blob": "2a23c761fed9860f8929aa91a5a84412ebc60486"
+      },
+      "Root_corrected": {
+        "bytes": 2211,
+        "sha256": "3408c74da34e8e5c45ada5b2e6ad0359b666c4dd45c9f37de6c20c22ef97f20e",
+        "git_blob": "2a23c761fed9860f8929aa91a5a84412ebc60486"
+      },
+      "unchanged_at_corrected_Root": true
+    },
+    {
+      "path": "src/native_gui_named_value_copy_storage.cpp",
+      "format": "Git blob/frozen UTF8-LF content",
+      "historical": {
+        "bytes": 2759,
+        "sha256": "97ca7b966fda1c79f7b81bbd6c8cf2a1d8e0d49365f9e9f7083bebddc796f89c",
+        "git_blob": "577f7c7b16df257e986db5d014e9ad9f30a5f478"
+      },
+      "Root_corrected": {
+        "bytes": 2759,
+        "sha256": "97ca7b966fda1c79f7b81bbd6c8cf2a1d8e0d49365f9e9f7083bebddc796f89c",
+        "git_blob": "577f7c7b16df257e986db5d014e9ad9f30a5f478"
+      },
+      "unchanged_at_corrected_Root": true
+    },
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "format": "Git blob/frozen UTF8-LF content",
+      "historical": {
+        "bytes": 4505,
+        "sha256": "a6fa7dcce062f26c77664364aa3a5e4525ab3ae2fc320016f07524a55e746f6d",
+        "git_blob": "fb8293fbf779f87c01708ffe3c1055e28c46c733"
+      },
+      "Root_corrected": {
+        "bytes": 4505,
+        "sha256": "a6fa7dcce062f26c77664364aa3a5e4525ab3ae2fc320016f07524a55e746f6d",
+        "git_blob": "fb8293fbf779f87c01708ffe3c1055e28c46c733"
+      },
+      "unchanged_at_corrected_Root": true
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "format": "Git blob/frozen UTF8-LF content",
+      "historical": {
+        "bytes": 10345,
+        "sha256": "3773ac03dd39bc78f642ebea942d0e074051814c2a55395b7bc246c703f50997",
+        "git_blob": "bcedf161bdb50667d954ca7f0e113d6842682dbb"
+      },
+      "Root_corrected": {
+        "bytes": 10345,
+        "sha256": "3773ac03dd39bc78f642ebea942d0e074051814c2a55395b7bc246c703f50997",
+        "git_blob": "bcedf161bdb50667d954ca7f0e113d6842682dbb"
+      },
+      "unchanged_at_corrected_Root": true
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "format": "Git blob/frozen UTF8-LF content",
+      "historical": {
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936"
+      },
+      "Root_corrected": {
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936"
+      },
+      "unchanged_at_corrected_Root": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "format": "Git blob/frozen UTF8-LF content",
+      "historical": {
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+      },
+      "Root_corrected": {
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+      },
+      "unchanged_at_corrected_Root": true
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "format": "Git blob/frozen UTF8-LF content",
+      "historical": {
+        "bytes": 8771,
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97"
+      },
+      "Root_corrected": {
+        "bytes": 8771,
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97"
+      },
+      "unchanged_at_corrected_Root": true
+    },
+    {
+      "path": "src/native_string.cpp",
+      "format": "Git blob/frozen UTF8-LF content",
+      "historical": {
+        "bytes": 9121,
+        "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+        "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a"
+      },
+      "Root_corrected": {
+        "bytes": 9121,
+        "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+        "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a"
+      },
+      "unchanged_at_corrected_Root": true
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "format": "Git blob/frozen UTF8-LF content",
+      "historical": {
+        "bytes": 3113,
+        "sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+        "git_blob": "60b3f627150fa058fac7b8c4c74537cb3aee0a68"
+      },
+      "Root_corrected": {
+        "bytes": 3113,
+        "sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+        "git_blob": "60b3f627150fa058fac7b8c4c74537cb3aee0a68"
+      },
+      "unchanged_at_corrected_Root": true
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "format": "Git blob/frozen UTF8-LF content",
+      "historical": {
+        "bytes": 5450,
+        "sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+        "git_blob": "103d6fe4d772bb3078c48fe8bcf3f929a385fdda"
+      },
+      "Root_corrected": {
+        "bytes": 5450,
+        "sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+        "git_blob": "103d6fe4d772bb3078c48fe8bcf3f929a385fdda"
+      },
+      "unchanged_at_corrected_Root": true
+    },
+    {
+      "path": "include/bsp/native_string_raw_resize_exact.hpp",
+      "format": "Git blob/frozen UTF8-LF content",
+      "historical": {
+        "bytes": 1554,
+        "sha256": "a1a3c6be74194e2f5946e13e09bfb26562c3f73d3565b51f96403f0d60b9999c",
+        "git_blob": "2e9e0ae6cb560eba1e7187911f6fea04791b529b"
+      },
+      "Root_corrected": {
+        "bytes": 1554,
+        "sha256": "a1a3c6be74194e2f5946e13e09bfb26562c3f73d3565b51f96403f0d60b9999c",
+        "git_blob": "2e9e0ae6cb560eba1e7187911f6fea04791b529b"
+      },
+      "unchanged_at_corrected_Root": true
+    },
+    {
+      "path": "src/native_string_raw_resize_exact.cpp",
+      "format": "Git blob/frozen UTF8-LF content",
+      "historical": {
+        "bytes": 3979,
+        "sha256": "74bff613a83abda342b5506ff750f46f5c44e191de506480ced504208c81f210",
+        "git_blob": "e05e1c9a86a44a2bba1efe9f46f3151062fab3b6"
+      },
+      "Root_corrected": {
+        "bytes": 3979,
+        "sha256": "74bff613a83abda342b5506ff750f46f5c44e191de506480ced504208c81f210",
+        "git_blob": "e05e1c9a86a44a2bba1efe9f46f3151062fab3b6"
+      },
+      "unchanged_at_corrected_Root": true
+    },
+    {
+      "path": "include/bsp/native_crt_memcpy.hpp",
+      "format": "Git blob/frozen UTF8-LF content",
+      "historical": {
+        "bytes": 1954,
+        "sha256": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123",
+        "git_blob": "a62e6ddb9d92e02afd301ed92239b258d53b5f10"
+      },
+      "Root_corrected": {
+        "bytes": 1954,
+        "sha256": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123",
+        "git_blob": "a62e6ddb9d92e02afd301ed92239b258d53b5f10"
+      },
+      "unchanged_at_corrected_Root": true
+    },
+    {
+      "path": "src/native_crt_memcpy.cpp",
+      "format": "Git blob/frozen UTF8-LF content",
+      "historical": {
+        "bytes": 17187,
+        "sha256": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3",
+        "git_blob": "248194cbff651aba4341401f519050447f13b6a0"
+      },
+      "Root_corrected": {
+        "bytes": 17187,
+        "sha256": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3",
+        "git_blob": "248194cbff651aba4341401f519050447f13b6a0"
+      },
+      "unchanged_at_corrected_Root": true
+    },
+    {
+      "path": "include/bsp/native_resource_reader_buffer.hpp",
+      "format": "Git blob/frozen UTF8-LF content",
+      "historical": {
+        "bytes": 2083,
+        "sha256": "39b7e4ba7f01ff288bd7b929dd51280b335315502e8b7366eeb1405052a1a042",
+        "git_blob": "d1f67ec40259b3c5e9b1742d2a6418e1e33ab2af"
+      },
+      "Root_corrected": {
+        "bytes": 2083,
+        "sha256": "39b7e4ba7f01ff288bd7b929dd51280b335315502e8b7366eeb1405052a1a042",
+        "git_blob": "d1f67ec40259b3c5e9b1742d2a6418e1e33ab2af"
+      },
+      "unchanged_at_corrected_Root": true
+    },
+    {
+      "path": "src/native_resource_reader_buffer.cpp",
+      "format": "Git blob/frozen UTF8-LF content",
+      "historical": {
+        "bytes": 4604,
+        "sha256": "bd770efafd314b290eff66f21f4a835a56498d6878ae86947c3c15422ee2d670",
+        "git_blob": "8b313c6a3b093812cd55fbaf539fbf6c2095a229"
+      },
+      "Root_corrected": {
+        "bytes": 4604,
+        "sha256": "bd770efafd314b290eff66f21f4a835a56498d6878ae86947c3c15422ee2d670",
+        "git_blob": "8b313c6a3b093812cd55fbaf539fbf6c2095a229"
+      },
+      "unchanged_at_corrected_Root": true
+    },
+    {
+      "path": "include/bsp/engine_seg49_64_78_cc13.hpp",
+      "format": "Git blob/frozen UTF8-LF content",
+      "historical": {
+        "bytes": 84516,
+        "sha256": "7830c6cae582c047d21923c9ed49f9084a0c18c21d99c092f69c8e133c41921d",
+        "git_blob": "cd8b8303b75c99d6d929aca2df077bdb974d6879"
+      },
+      "Root_corrected": {
+        "bytes": 84516,
+        "sha256": "7830c6cae582c047d21923c9ed49f9084a0c18c21d99c092f69c8e133c41921d",
+        "git_blob": "cd8b8303b75c99d6d929aca2df077bdb974d6879"
+      },
+      "unchanged_at_corrected_Root": true
+    },
+    {
+      "path": "src/engine_seg49_64_78_cc13.cpp",
+      "format": "Git blob/frozen UTF8-LF content",
+      "historical": {
+        "bytes": 111051,
+        "sha256": "5888a64b1973289ca1eecadbe8bbb1e8718b8b9143421e4a4c617d40bb27433c",
+        "git_blob": "9b71adf3ea032a6bfd7e2ed87ee5dc6d4114cdf7"
+      },
+      "Root_corrected": {
+        "bytes": 111051,
+        "sha256": "5888a64b1973289ca1eecadbe8bbb1e8718b8b9143421e4a4c617d40bb27433c",
+        "git_blob": "9b71adf3ea032a6bfd7e2ed87ee5dc6d4114cdf7"
+      },
+      "unchanged_at_corrected_Root": true
+    },
+    {
+      "path": "include/bsp/engine_services_cc13.hpp",
+      "format": "Git blob/frozen UTF8-LF content",
+      "historical": {
+        "bytes": 70520,
+        "sha256": "c4b20224b3edf65730016e8e0114924c049204c549c3d8f6b4a25e08b2d784aa",
+        "git_blob": "bbf580ba6cf7cc028ad1df8b14ccb7e16c219ed2"
+      },
+      "Root_corrected": {
+        "bytes": 70520,
+        "sha256": "c4b20224b3edf65730016e8e0114924c049204c549c3d8f6b4a25e08b2d784aa",
+        "git_blob": "bbf580ba6cf7cc028ad1df8b14ccb7e16c219ed2"
+      },
+      "unchanged_at_corrected_Root": true
+    },
+    {
+      "path": "src/engine_services_cc13.cpp",
+      "format": "Git blob/frozen UTF8-LF content",
+      "historical": {
+        "bytes": 98874,
+        "sha256": "f59566f6d3fa5e1888d2896cc0a0786dd5596a1bc4d2649d2d8674855c00807c",
+        "git_blob": "a3d01bde7f7408a72f95e1e8aeb0fe6a9ce615ca"
+      },
+      "Root_corrected": {
+        "bytes": 98874,
+        "sha256": "f59566f6d3fa5e1888d2896cc0a0786dd5596a1bc4d2649d2d8674855c00807c",
+        "git_blob": "a3d01bde7f7408a72f95e1e8aeb0fe6a9ce615ca"
+      },
+      "unchanged_at_corrected_Root": true
+    },
+    {
+      "path": "config/target.json",
+      "format": "Git blob/frozen UTF8-LF content",
+      "historical": {
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+      },
+      "Root_corrected": {
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+      },
+      "unchanged_at_corrected_Root": true
+    },
+    {
+      "path": "tools/bsp.py",
+      "format": "Git blob/frozen UTF8-LF content",
+      "historical": {
+        "bytes": 103131,
+        "sha256": "0532d1e3fa711fb62d198e6747a4e0eb8978ef7e301de75710afd40d6c1a1339",
+        "git_blob": "2e1fb76a9fd700f079912706d9459c4293f96c86"
+      },
+      "Root_corrected": {
+        "bytes": 103131,
+        "sha256": "0532d1e3fa711fb62d198e6747a4e0eb8978ef7e301de75710afd40d6c1a1339",
+        "git_blob": "2e1fb76a9fd700f079912706d9459c4293f96c86"
+      },
+      "unchanged_at_corrected_Root": true
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "format": "Git blob/frozen UTF8-LF content",
+      "historical": {
+        "bytes": 14518,
+        "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+        "git_blob": "bd937766a7e4d62c015b2ab44a14a9153fbb4542"
+      },
+      "Root_corrected": {
+        "bytes": 14518,
+        "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+        "git_blob": "bd937766a7e4d62c015b2ab44a14a9153fbb4542"
+      },
+      "unchanged_at_corrected_Root": true
+    },
+    {
+      "path": "CMakeLists.txt",
+      "format": "Git blob/frozen UTF8-LF content",
+      "historical": {
+        "bytes": 30339,
+        "sha256": "620accca24c41c97a16c5842a6058196bbf8bb4dc1be4f5f8a62df6d7b6ce3fc",
+        "git_blob": "0ee46cdd5f70ed5b85827110cb45e1c48fdb63db"
+      },
+      "Root_corrected": {
+        "bytes": 30339,
+        "sha256": "620accca24c41c97a16c5842a6058196bbf8bb4dc1be4f5f8a62df6d7b6ce3fc",
+        "git_blob": "0ee46cdd5f70ed5b85827110cb45e1c48fdb63db"
+      },
+      "unchanged_at_corrected_Root": true
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "format": "Git blob/frozen UTF8-LF content",
+      "historical": {
+        "bytes": 297081,
+        "sha256": "bdccf0e575ffdf99e772e8ea63d974213d9a6bcbb0c8b17f3072f9a4b702ba72",
+        "git_blob": "d61327d3a451212bc39776e5122ef092a292704c"
+      },
+      "Root_corrected": {
+        "bytes": 297322,
+        "sha256": "4dcaf87d798c1acf625a42ef71f1d7b5d6f8b2687cb790a1a29aed51352855ca",
+        "git_blob": "83b3f6719245065ad381e943500860cf1173a1c4"
+      },
+      "unchanged_at_corrected_Root": false
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_NAMED_VALUE_COPY_STORAGE.md",
+      "format": "Git blob/frozen UTF8-LF content",
+      "historical": {
+        "bytes": 7684,
+        "sha256": "e94f49bcf9bd0ad7657012de9edc8c6ff8429e6336c45ddc24a5d8c82916f440",
+        "git_blob": "50d3541ee2afd59b92b680ab999f31b9fd3b364f"
+      },
+      "Root_corrected": {
+        "bytes": 7684,
+        "sha256": "e94f49bcf9bd0ad7657012de9edc8c6ff8429e6336c45ddc24a5d8c82916f440",
+        "git_blob": "50d3541ee2afd59b92b680ab999f31b9fd3b364f"
+      },
+      "unchanged_at_corrected_Root": true
+    },
+    {
+      "path": "reports/cc16_native_gui_named_value_copy_storage.json",
+      "format": "Git blob/frozen UTF8-LF content",
+      "historical": {
+        "bytes": 50371,
+        "sha256": "3bdd2857fe5b0c5dac046fab806c22c867f7a9209c5b25fc671a4b6dd1ad1632",
+        "git_blob": "d05f6c73f65da5d7f8945486dddd959911952303"
+      },
+      "Root_corrected": {
+        "bytes": 50371,
+        "sha256": "3bdd2857fe5b0c5dac046fab806c22c867f7a9209c5b25fc671a4b6dd1ad1632",
+        "git_blob": "d05f6c73f65da5d7f8945486dddd959911952303"
+      },
+      "unchanged_at_corrected_Root": true
+    }
+  ],
+  "Root_nonproduction_differences": [
+    "cmake/startup.cmake"
+  ],
+  "bounded_inspected_provider_regions": [
+    {
+      "id": "P01_whole54_contract",
+      "path": "include/bsp/native_gui_named_value_copy_storage.hpp",
+      "commit": "3cc47027ed291e48c37efc854fb6de9df88afd9b",
+      "first_line": 10,
+      "last_line": 43,
+      "bytes": 2056,
+      "sha256": "50c463998867ba4a4a3351914851eb412ec5a53f140c9317a2f0566583010212",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-array-reserve-storage\\local\\output\\cc16_native_gui_named_value_array_reserve_storage_20261031\\regions\\P01_whole54_contract.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P02_whole54_body",
+      "path": "src/native_gui_named_value_copy_storage.cpp",
+      "commit": "3cc47027ed291e48c37efc854fb6de9df88afd9b",
+      "first_line": 34,
+      "last_line": 62,
+      "bytes": 1792,
+      "sha256": "b207363a2cdf1df457d0ef883ddf15285e8c5b1abbe707d80e60cecc59d4ee15",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-array-reserve-storage\\local\\output\\cc16_native_gui_named_value_array_reserve_storage_20261031\\regions\\P02_whole54_body.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P03_existing_trivial_entry_type",
+      "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "commit": "3cc47027ed291e48c37efc854fb6de9df88afd9b",
+      "first_line": 8,
+      "last_line": 28,
+      "bytes": 928,
+      "sha256": "7f456dfdce1aaaf0507094ffb17b4c12b1784f10cfe1a40f7e7bed1f06261998",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-array-reserve-storage\\local\\output\\cc16_native_gui_named_value_array_reserve_storage_20261031\\regions\\P03_existing_trivial_entry_type.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P04_typed_queue_cancel_array_arithmetic",
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "commit": "3cc47027ed291e48c37efc854fb6de9df88afd9b",
+      "first_line": 121,
+      "last_line": 154,
+      "bytes": 1822,
+      "sha256": "9d83dcc09d9f7a0f1a075b7574dd28f778df27074a804264133f76338ee55e3a",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-array-reserve-storage\\local\\output\\cc16_native_gui_named_value_array_reserve_storage_20261031\\regions\\P04_typed_queue_cancel_array_arithmetic.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P05_real_allocator_declarations",
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "commit": "3cc47027ed291e48c37efc854fb6de9df88afd9b",
+      "first_line": 11,
+      "last_line": 20,
+      "bytes": 494,
+      "sha256": "f93d2916fd9d1bbd375bbe5c6bb274bef2c7644e57ba7c6f7ebf8226f9f3ed09",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-array-reserve-storage\\local\\output\\cc16_native_gui_named_value_array_reserve_storage_20261031\\regions\\P05_real_allocator_declarations.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P06_real_new_handler_free",
+      "path": "src/singleton_lifetime.cpp",
+      "commit": "3cc47027ed291e48c37efc854fb6de9df88afd9b",
+      "first_line": 51,
+      "last_line": 68,
+      "bytes": 618,
+      "sha256": "806555e816a572df751f4255e85cbc55674c744f227d009b04613455bc7308a4",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-array-reserve-storage\\local\\output\\cc16_native_gui_named_value_array_reserve_storage_20261031\\regions\\P06_real_new_handler_free.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P07_raw_return_declaration",
+      "path": "include/bsp/native_string.hpp",
+      "commit": "3cc47027ed291e48c37efc854fb6de9df88afd9b",
+      "first_line": 61,
+      "last_line": 67,
+      "bytes": 420,
+      "sha256": "56bf6b15d2df65a5ae9f0c8994de68908cbe49e5102ced35b964fcf9c019a7cc",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-array-reserve-storage\\local\\output\\cc16_native_gui_named_value_array_reserve_storage_20261031\\regions\\P07_raw_return_declaration.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P08_raw_return_body",
+      "path": "src/native_string.cpp",
+      "commit": "3cc47027ed291e48c37efc854fb6de9df88afd9b",
+      "first_line": 129,
+      "last_line": 139,
+      "bytes": 441,
+      "sha256": "8fb57b1c35886294980cd9857eb2b9d4ec90795c56da332ce587eb04c3799430",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-array-reserve-storage\\local\\output\\cc16_native_gui_named_value_array_reserve_storage_20261031\\regions\\P08_raw_return_body.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P09_current_raw_pool_transport",
+      "path": "src/native_string.cpp",
+      "commit": "3cc47027ed291e48c37efc854fb6de9df88afd9b",
+      "first_line": 22,
+      "last_line": 45,
+      "bytes": 877,
+      "sha256": "7147b90eb479362a45350f21cd4f9058a8e80ba4cfb47ae4b49eccf91f836044",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-array-reserve-storage\\local\\output\\cc16_native_gui_named_value_array_reserve_storage_20261031\\regions\\P09_current_raw_pool_transport.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P10_exact_resize_contract",
+      "path": "include/bsp/native_string_raw_resize_exact.hpp",
+      "commit": "3cc47027ed291e48c37efc854fb6de9df88afd9b",
+      "first_line": 12,
+      "last_line": 32,
+      "bytes": 1361,
+      "sha256": "2bdb093ce530a742fac8801ed068bcc5b78a98716ce9300bd5429d3c657b9b55",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-array-reserve-storage\\local\\output\\cc16_native_gui_named_value_array_reserve_storage_20261031\\regions\\P10_exact_resize_contract.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P11_exact_resize_body",
+      "path": "src/native_string_raw_resize_exact.cpp",
+      "commit": "3cc47027ed291e48c37efc854fb6de9df88afd9b",
+      "first_line": 47,
+      "last_line": 98,
+      "bytes": 2503,
+      "sha256": "4d09aa3445ee38681cd993b19e818737d4d3ed24c9594cf94a7fc32c9aca9300",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-array-reserve-storage\\local\\output\\cc16_native_gui_named_value_array_reserve_storage_20261031\\regions\\P11_exact_resize_body.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P12_genuine_bf_domain",
+      "path": "include/bsp/native_crt_memcpy.hpp",
+      "commit": "3cc47027ed291e48c37efc854fb6de9df88afd9b",
+      "first_line": 10,
+      "last_line": 33,
+      "bytes": 1787,
+      "sha256": "3b35e10fd9244c00a3fe8c85da97d0f4de806b5257d7b7077ab2a601a017bc1f",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-array-reserve-storage\\local\\output\\cc16_native_gui_named_value_array_reserve_storage_20261031\\regions\\P12_genuine_bf_domain.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P13_private_old_raw_entry_copy",
+      "path": "src/native_resource_reader_buffer.cpp",
+      "commit": "3cc47027ed291e48c37efc854fb6de9df88afd9b",
+      "first_line": 41,
+      "last_line": 58,
+      "bytes": 789,
+      "sha256": "84c98b0cb4b935c4fa825ffb8557c4828ba35770c5627a11b13bca15c739ce5d",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-array-reserve-storage\\local\\output\\cc16_native_gui_named_value_array_reserve_storage_20261031\\regions\\P13_private_old_raw_entry_copy.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P14_old_raw_reserve_counterpart",
+      "path": "src/native_resource_reader_buffer.cpp",
+      "commit": "3cc47027ed291e48c37efc854fb6de9df88afd9b",
+      "first_line": 60,
+      "last_line": 90,
+      "bytes": 1503,
+      "sha256": "b8439ebcddff80c08771237c3895587e1e12d0efcffcd87416bc7f5ef2726790",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-array-reserve-storage\\local\\output\\cc16_native_gui_named_value_array_reserve_storage_20261031\\regions\\P14_old_raw_reserve_counterpart.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P15_old_raw_reserve_domain",
+      "path": "include/bsp/native_resource_reader_buffer.hpp",
+      "commit": "3cc47027ed291e48c37efc854fb6de9df88afd9b",
+      "first_line": 14,
+      "last_line": 29,
+      "bytes": 1065,
+      "sha256": "07f42df233187f243f650dc5bc51f9300b86c1628ff4700c222663c38b16fbde",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-array-reserve-storage\\local\\output\\cc16_native_gui_named_value_array_reserve_storage_20261031\\regions\\P15_old_raw_reserve_domain.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P16_old_semantic_array_functions",
+      "path": "src/engine_seg49_64_78_cc13.cpp",
+      "commit": "3cc47027ed291e48c37efc854fb6de9df88afd9b",
+      "first_line": 1324,
+      "last_line": 1359,
+      "bytes": 1454,
+      "sha256": "da8ebeca2b7a3c89c145a90b596c0c1e815793aadd55449b16d6e7bacdbe74a3",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-array-reserve-storage\\local\\output\\cc16_native_gui_named_value_array_reserve_storage_20261031\\regions\\P16_old_semantic_array_functions.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P17_old_append_context_counterpart",
+      "path": "src/engine_services_cc13.cpp",
+      "commit": "3cc47027ed291e48c37efc854fb6de9df88afd9b",
+      "first_line": 818,
+      "last_line": 829,
+      "bytes": 637,
+      "sha256": "3ff277eb26bdd07bc1c2cbf60646f6634b4b482174b1ba52403a8d14faefc9c2",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-array-reserve-storage\\local\\output\\cc16_native_gui_named_value_array_reserve_storage_20261031\\regions\\P17_old_append_context_counterpart.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P18_client_target_check",
+      "path": "tools/bsp.py",
+      "commit": "3cc47027ed291e48c37efc854fb6de9df88afd9b",
+      "first_line": 967,
+      "last_line": 984,
+      "bytes": 794,
+      "sha256": "cc2fc687b74fccee49725ac1306d4f9b2a2f081376cd91270830d32b43e682e1",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-array-reserve-storage\\local\\output\\cc16_native_gui_named_value_array_reserve_storage_20261031\\regions\\P18_client_target_check.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P19_actual_project_program_verify",
+      "path": "tools/ghidra_export.py",
+      "commit": "3cc47027ed291e48c37efc854fb6de9df88afd9b",
+      "first_line": 101,
+      "last_line": 110,
+      "bytes": 574,
+      "sha256": "4ce9f7a4d8d4c4d42c54e5f1e797ca401927f93f5ad6604d171081871f8eb011",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-array-reserve-storage\\local\\output\\cc16_native_gui_named_value_array_reserve_storage_20261031\\regions\\P19_actual_project_program_verify.txt",
+      "independent_match": true
+    }
+  ],
+  "native": {
+    "ranges": [
+      {
+        "id": "wholeAB4720",
+        "VA": "0xab4720",
+        "file_offset": 7030560,
+        "bytes": 298,
+        "sha256": "3cda3562bb7f8db72017b16b22b07b93f79696886f09940aa6cfb064e9d9e5bd",
+        "instructions": 106
+      },
+      {
+        "id": "eh_map_info",
+        "VA": "0xdee6b0",
+        "file_offset": 10413744,
+        "bytes": 44,
+        "sha256": "8e660d226d8103d95c5a7613fc3deb514dcda3c27849dce0efb2177452579110",
+        "instructions": 0
+      },
+      {
+        "id": "eh_thunk",
+        "VA": "0xcb7b37",
+        "file_offset": 9141047,
+        "bytes": 10,
+        "sha256": "637e482c4c52634716329bd9bf5b94ce64373dd8e8e215ee0293389af3df27b0",
+        "instructions": 2
+      },
+      {
+        "id": "eh_action",
+        "VA": "0xcb7b20",
+        "file_offset": 9141024,
+        "bytes": 23,
+        "sha256": "0428b07bc62d8a12109276040ee6470a951baa1b5e426bb8c664a3f0a5dd6a45",
+        "instructions": 9
+      },
+      {
+        "id": "placement_ret",
+        "VA": "0x401130",
+        "file_offset": 4400,
+        "bytes": 1,
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "instructions": 1
+      },
+      {
+        "id": "normal_release",
+        "VA": "0xab39f0",
+        "file_offset": 7027184,
+        "bytes": 29,
+        "sha256": "de59597d8905f1e676586f5fbde15b3b4504f9cc00e0438c81abb5658cb5d976",
+        "instructions": 12
+      },
+      {
+        "id": "existing_release",
+        "VA": "0x41dd20",
+        "file_offset": 122144,
+        "bytes": 29,
+        "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+        "instructions": 12
+      },
+      {
+        "id": "operator_new_thunk",
+        "VA": "0xbf55be",
+        "file_offset": 8345022,
+        "bytes": 5,
+        "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+        "instructions": 1
+      }
+    ],
+    "actual_calls": [
+      [
+        "0xab4764",
+        "0xbf55be"
+      ],
+      [
+        "0xab47ad",
+        "0x41dd40"
+      ],
+      [
+        "0xab47c2",
+        "0xbf7680"
+      ],
+      [
+        "0xab480a",
+        "0x419cc0"
+      ],
+      [
+        "0xab4811",
+        "0xbd1510"
+      ],
+      [
+        "0xab4828",
+        "0xbf6989"
+      ]
+    ],
+    "exports": [
+      {
+        "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab4720\\assembly.txt",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-array-reserve-storage\\local\\output\\cc16_native_gui_named_value_array_reserve_storage_20261031\\exports\\00ab4720\\assembly.txt",
+        "bytes": 3084,
+        "sha256": "bdb3b7e746fffd60e99aa099d3cf099ac6d2f44633b437365d1374141fa47b09",
+        "current_bytes": 3084,
+        "current_sha256": "bdb3b7e746fffd60e99aa099d3cf099ac6d2f44633b437365d1374141fa47b09",
+        "current_equals_seal": true
+      },
+      {
+        "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab4720\\decompiled.c",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-array-reserve-storage\\local\\output\\cc16_native_gui_named_value_array_reserve_storage_20261031\\exports\\00ab4720\\decompiled.c",
+        "bytes": 1862,
+        "sha256": "618b3f7d64d1acf0c92a0d70419f9401d48189e7b4d5f2f122cf61ebd4413e52",
+        "current_bytes": 1862,
+        "current_sha256": "618b3f7d64d1acf0c92a0d70419f9401d48189e7b4d5f2f122cf61ebd4413e52",
+        "current_equals_seal": true
+      },
+      {
+        "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab4720\\metadata.json",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-array-reserve-storage\\local\\output\\cc16_native_gui_named_value_array_reserve_storage_20261031\\exports\\00ab4720\\metadata.json",
+        "bytes": 277,
+        "sha256": "ddb95a7a886d5e33599332efbe42df7d5d10887e31520323a851e25ad6bab014",
+        "current_bytes": 277,
+        "current_sha256": "ddb95a7a886d5e33599332efbe42df7d5d10887e31520323a851e25ad6bab014",
+        "current_equals_seal": true
+      }
+    ],
+    "EH": {
+      "handler": "00cb7b37",
+      "func_info": "00dee6b8",
+      "magic": "19930522",
+      "max_state": 1,
+      "map": "00dee6b0",
+      "state0_to": -1,
+      "action": "00cb7b20",
+      "action_instructions": 9,
+      "target": "00401130",
+      "target_body": "RET",
+      "qualification": "Action still reads saved index/replacement/destination and forms arguments; no actual partial-element/block free. Native EH/private-stack/fault/origin transport is not implemented or authorized."
+    },
+    "normal_release_equivalence": true,
+    "new_live_query": {
+      "bytes": 1439,
+      "sha256": "a13625cb9884b94fc314208eeaa312efc2092b8e280651ad12e580cdc94e7c56"
+    },
+    "AB4670_negative_claim_call_site": [
+      "0xab466c"
+    ]
+  },
+  "historical_producer_reader": {
+    "bytes": 2023,
+    "sha256": "1fedb7f33547cf0193704336a147a2d778db3752a841571eb57aa202a183cba6",
+    "raw_equals_embedded": true,
+    "historical_author_result": {
+      "pass": true,
+      "checks": 66,
+      "native_ops": 106,
+      "native_calls": 6,
+      "source_order_pins": 40,
+      "providers": 27,
+      "regions": 19
+    },
+    "execution": "inspected unchanged file/Git reader only, exact v1 author root; not compiler/runtime test"
+  },
+  "independent_checks": {
+    "kind": "read-only Git/PE/bytes/maps/operands/order/integrity, not compiler/runtime tests",
+    "count": 147,
+    "all_pass": true,
+    "rows": [
+      {
+        "check": "exact sealed parent",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "four additions only",
+        "pass": true,
+        "detail": [
+          [
+            "A",
+            "docs/CC16_NATIVE_GUI_NAMED_VALUE_ARRAY_RESERVE_STORAGE.md"
+          ],
+          [
+            "A",
+            "include/bsp/native_gui_named_value_array_reserve_storage.hpp"
+          ],
+          [
+            "A",
+            "reports/cc16_native_gui_named_value_array_reserve_storage.json"
+          ],
+          [
+            "A",
+            "src/native_gui_named_value_array_reserve_storage.cpp"
+          ]
+        ]
+      },
+      {
+        "check": "packet snapshot include/bsp/native_gui_named_value_array_reserve_storage.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "packet snapshot src/native_gui_named_value_array_reserve_storage.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "packet snapshot docs/CC16_NATIVE_GUI_NAMED_VALUE_ARRAY_RESERVE_STORAGE.md",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "packet snapshot reports/cc16_native_gui_named_value_array_reserve_storage.json",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "exact full four-addition inverse",
+        "pass": true,
+        "detail": {
+          "base": "23597add7285fc9dde16c521425eaf7a8a006b55",
+          "packet": "cc0bb73b92359e4ac6963b3e3db9390b1fe77691",
+          "inverse": "23597add7285fc9dde16c521425eaf7a8a006b55"
+        }
+      },
+      {
+        "check": "whole provider include/bsp/native_gui_named_value_copy_storage.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole provider src/native_gui_named_value_copy_storage.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole provider include/bsp/native_gui_icon_delayed_loads.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole provider src/native_gui_icon_delayed_loads.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole provider include/bsp/singleton_lifetime.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole provider src/singleton_lifetime.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole provider include/bsp/native_string.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole provider src/native_string.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole provider include/bsp/native_string_pool_storage.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole provider src/native_string_pool_storage.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole provider include/bsp/native_string_raw_resize_exact.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole provider src/native_string_raw_resize_exact.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole provider include/bsp/native_crt_memcpy.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole provider src/native_crt_memcpy.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole provider include/bsp/native_resource_reader_buffer.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole provider src/native_resource_reader_buffer.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole provider include/bsp/engine_seg49_64_78_cc13.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole provider src/engine_seg49_64_78_cc13.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole provider include/bsp/engine_services_cc13.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole provider src/engine_services_cc13.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole provider config/target.json",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole provider tools/bsp.py",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole provider tools/ghidra_export.py",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole provider CMakeLists.txt",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole provider cmake/startup.cmake",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole provider docs/CC16_NATIVE_GUI_NAMED_VALUE_COPY_STORAGE.md",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole provider reports/cc16_native_gui_named_value_copy_storage.json",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "all actual production/provider contracts unchanged at corrected Root",
+        "pass": true,
+        "detail": [
+          "cmake/startup.cmake"
+        ]
+      },
+      {
+        "check": "region P01_whole54_contract",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P02_whole54_body",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P03_existing_trivial_entry_type",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P04_typed_queue_cancel_array_arithmetic",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P05_real_allocator_declarations",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P06_real_new_handler_free",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P07_raw_return_declaration",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P08_raw_return_body",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P09_current_raw_pool_transport",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P10_exact_resize_contract",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P11_exact_resize_body",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P12_genuine_bf_domain",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P13_private_old_raw_entry_copy",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P14_old_raw_reserve_counterpart",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P15_old_raw_reserve_domain",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P16_old_semantic_array_functions",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P17_old_append_context_counterpart",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P18_client_target_check",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P19_actual_project_program_verify",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "Root correction is one CPP path only",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "four reserved identifier substitutions and exact inverse",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "corrected exact CPP pin",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "header unchanged at Root correction",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "current Root raw CPP equals corrected GitLF",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "author expected new Source blob include/bsp/native_gui_named_value_array_reserve_storage.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "author expected new Source blob src/native_gui_named_value_array_reserve_storage.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch entry_state",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch initial_request",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch clamp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch clamp_home",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch clamp_reload",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch capacity_test",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch wrap_bytes",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch real_allocate",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch index_register",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch initial_current_count",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch replacement_register",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch replacement_home",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch index_home0",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch copy_gate",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch destination_register",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch destination_home",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch state0",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch null_skip",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch current_source",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch individual_birth",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch whole54",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch nonnull_replacement_reload",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch index_increment",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch current_count_before_homes",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch compare_before_homes",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch disarm",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch saved_index",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch copy_request_reload",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch retire_index",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch retire_current_gate",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch retire_gate",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch retire_current_data",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch raw_return",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch retire_increment",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch retire_current_count",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch retire_request_reload",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch free_current_data",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch real_free",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch publish_captured_replacement",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch publish_captured_capacity",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "all40 epochs ordered in historical and corrected CPP",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole installed PE",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "x86 image base",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "physical range wholeAB4720",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "all decoded rows wholeAB4720",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "physical range eh_map_info",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "physical range eh_thunk",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "all decoded rows eh_thunk",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "physical range eh_action",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "all decoded rows eh_action",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "EH action reads actual3 homes and calls RET target",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "physical range placement_ret",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "all decoded rows placement_ret",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "physical range normal_release",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "all decoded rows normal_release",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "physical range existing_release",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "all decoded rows existing_release",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "physical range operator_new_thunk",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "all decoded rows operator_new_thunk",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole106ops6realcalls/noFP",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "actual normal callees",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "FuncInfo/map exact state0 previous/action",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "selected placement target is RET",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole normalrelease equals existing29B12op release after branch rebase",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "AB4670 lies inside B74640 CALL operand, not destructor entry",
+        "pass": true,
+        "detail": [
+          "0xab466c"
+        ]
+      },
+      {
+        "check": "frozen seal export J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab4720\\assembly.txt",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "frozen seal export J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab4720\\decompiled.c",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "frozen seal export J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab4720\\metadata.json",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "frozen query verified_count",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "frozen query reserve_proto",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "frozen query reserve_live_bytes",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "frozen query eh_map_info",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "frozen query eh_thunk",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "frozen query eh_action",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "frozen query placement_ret",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "frozen query normal_release",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "frozen query existing_release",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "frozen query operator_new_thunk",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "new verified BSP body query matches seal",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "raw2023B verifier equals embeddedLF",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "reader cwd exact immutable author",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "reader author input exact include/bsp/native_gui_named_value_array_reserve_storage.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "reader author input exact src/native_gui_named_value_array_reserve_storage.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "reader author input exact docs/CC16_NATIVE_GUI_NAMED_VALUE_ARRAY_RESERVE_STORAGE.md",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "reader author input exact reports/cc16_native_gui_named_value_array_reserve_storage.json",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "inspected unchanged original verifier66 static checks",
+        "pass": true,
+        "detail": {
+          "result": {
+            "pass": true,
+            "checks": 66,
+            "native_ops": 106,
+            "native_calls": 6,
+            "source_order_pins": 40,
+            "providers": 27,
+            "regions": 19
+          },
+          "exit_code": 0,
+          "stdout_pin": {
+            "bytes": 125,
+            "sha256": "a226c1759482301f955539bfb41d4d36eb464e20709c63c9456e7b592cfc8af7"
+          },
+          "stderr_pin": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      }
+    ]
+  },
+  "artifacts": {
+    "root": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-named-value-array-reserve-storage-review\\local\\output\\cc16_native_gui_named_value_array_reserve_storage_independent_review_20261031",
+    "checks": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-named-value-array-reserve-storage-review\\local\\output\\cc16_native_gui_named_value_array_reserve_storage_independent_review_20261031\\independent_checks.json",
+      "bytes": 52819,
+      "sha256": "e33d50663e682e67454a3f84fa072159fe6c311814001fffce66f64d7a18ddd7"
+    },
+    "inspected_original_reader": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-named-value-array-reserve-storage-review\\local\\output\\cc16_native_gui_named_value_array_reserve_storage_independent_review_20261031\\producer_verify.py",
+      "bytes": 2023,
+      "sha256": "1fedb7f33547cf0193704336a147a2d778db3752a841571eb57aa202a183cba6"
+    },
+    "Root_correction_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-named-value-array-reserve-storage-review\\local\\output\\cc16_native_gui_named_value_array_reserve_storage_independent_review_20261031\\Root_compiler_identifier_correction.json",
+      "bytes": 751,
+      "sha256": "eac93a661ddde4010c327ccf2e61afc2644a069d5688c23cb95447b7eb54847c"
+    },
+    "listing": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-named-value-array-reserve-storage-review\\local\\output\\cc16_native_gui_named_value_array_reserve_storage_independent_review_20261031\\native.asm",
+      "bytes": 5820,
+      "sha256": "3508a8cfbb9acfba70d73b687514e66298ca9f7052e83d53f885d9dc7a26234a"
+    },
+    "current_corrected_CPP": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-named-value-array-reserve-storage-review\\local\\output\\cc16_native_gui_named_value_array_reserve_storage_independent_review_20261031\\corrected\\native_gui_named_value_array_reserve_storage.cpp",
+      "bytes": 5458,
+      "sha256": "dc8dfc3757b998a06fa72a0628cc7fb7eae80d03741f24d2ec80aa2785e8116e"
+    }
+  },
+  "admission": {
+    "qualified_normal_library_Source_ready_for_Root_checks": true,
+    "reviewer_compiled": false,
+    "reviewer_tests_fixtures_probes": false,
+    "reviewer_Native_provider_Game_execution": false,
+    "actual_Core_review_included": false,
+    "typed_array_family_or_queue_admitted": false,
+    "actual_caller_ready": false,
+    "full_Icon_ready": false,
+    "Native_origin_or_unwind_permission": false,
+    "Original_ABI": false,
+    "runtime_validated": false,
+    "activation": false
+  },
+  "remaining_gates": [
+    "Root corrected compilation/common/retained/Core receipts are separate; historicalauthorreport compiled=false is preserved",
+    "Concrete descriptor/individual-slot creator and all actual RawPool/allocator/feature/capturedbuffer lifetimes/serialization/reentry retention; no T[n] or typedcancel/shrink family follows",
+    "Current privateHome/argument/provider backing separation and matched alias/fault exclusions; no Original physicalframe proof",
+    "Parent Origin/cause/secondary cleanup/custody; state0/index/normalreturn are not Nativepermission",
+    "AB4990/AB5F00 and actualarraypublication/delivery/renderer/currentgeneration/fullIcon route",
+    "OriginalECX/RET4/registers/flags/FH3/SEH/unmaskedfault/runtime/gameplay"
+  ],
+  "credit": {
+    "new_original": 0,
+    "new_vendor": 0,
+    "new_helper": 0,
+    "new_compiler_generated": 0,
+    "duplicate_body": 0,
+    "Original_ABI": false,
+    "Native_origin": false,
+    "Native_unwind": false,
+    "runtime": false,
+    "activation": false
+  },
+  "actions": "Only2owned review evidence files are committed; AB4720 reviewlease released. Ignored static artifacts retained. No Source/CMake/ledger/sharedmetadata/Ghidra/install mutations or workercompiler/tests/probe/Native/provider/Game actions.",
+  "review_doc_pin": {
+    "path": "docs\\CC16_NATIVE_GUI_NAMED_VALUE_ARRAY_RESERVE_STORAGE_INDEPENDENT_REVIEW.md",
+    "bytes": 7352,
+    "sha256": "d7dddece450e39b9492be88aeca1d08d678bbed519de2f8461cc0159132214df"
+  }
+}

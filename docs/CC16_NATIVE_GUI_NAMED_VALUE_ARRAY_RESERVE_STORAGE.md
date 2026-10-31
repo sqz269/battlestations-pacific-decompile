@@ -1,0 +1,44 @@
+# Whole normal raw GUI named-value array reserve
+
+This packet implements the complete normal AB4720..AB4849 schedule over the actual12B data/count/capacity descriptor at published base `3cc47027ed291e48c37efc854fb6de9df88afd9b`. It adds four files only; Source54, existing reader-buffer/pair consumers, arrays and the Icon singleton remain unchanged. This is normal raw storage composition, pending independent review, Root registration/build and genuine caller admission—not full Icon or Native runtime readiness.
+
+## Native and Source contracts
+
+Native is ECX actual descriptor, stacked signed requested capacity, RET4 with no recovered stable semantic return:298B/106 instructions,20 blocks/29 edges,6 direct calls,no FP. Ghidra's undefined(void) prototype is not treated as an ABI. The Source API is `reserve_native_gui_named_value_array_storage_00ab4720(actual_header12, frame, strings, feature_ref)`.
+
+The24B ordinary Frame contains requested_capacity_home, replacement_home, copy_index_home, destination_home, native_state_home and nested Source54 copy Frame. None has an initializer. Caller stages the actual requested DWORD at its PUSH epoch and retains the full Frame throughout calls/failure. Saved index/state words are Native locals, not completed-object counts, ownership or cleanup permission. Register captures are separate from mutable homes.
+
+1. State begins-1. Capture signed request; if<1 write1 to its HOME and reload it. Return when CURRENT signed capacity>=that captured request. Allocate wrap32(12*request) through genuine BF55BE→BF681B Source allocation/new-handler service, using the same byte count for native/host storage. No overflow/null/cap policy is added.
+2. Set register index0; read CURRENT count at476E BEFORE saving replacement/index homes. Keep replacement EDI independently. If signed count>0, compute wrap32 index*12 and replacement+offset, save destination HOME, then state0 before the real computed-null skip.
+3. Nonnull slots read CURRENT descriptor data for their source. Placement-default-initialize ONLY the existing trivial `NativeGuiIconDelayedEntryStorage` individual object, with **NO()/{}**, then call the whole Source54 copy. No field write comes from birth; preserve owner+8 preimage until the actual copy. Restore replacement from its HOME only after a nonnull normal copy return. Null skips preserve the prior register capture and still advance the index.
+4. Increment the DWORD index and read/compare CURRENT signed count BEFORE state-1 and saved-index HOME stores. Continue without a depth/count limit. Reload requested HOME at47E8 only if this copy loop ran.
+5. Start the separate retirement loop from0 if CURRENT signed count>0. Every iteration loads CURRENT data and returns the selected old string via real raw41DD20, then advances index/offset and compares CURRENT count. Header length/data/owner are not cleared. Reload requested HOME at4821 only if this loop ran. If both loops skip, retain the original captured clamped request even if an allocator callback changed its HOME.
+6. Read/free CURRENT descriptor data, not an old pointer snapshot. Then publish captured replacement EDI and the selected captured capacity ESI, in that order, **after** free. Do not reload homes after free and never write descriptor count.
+
+## Explicit normal-composition qualification
+
+Native's inlined copy reads CURRENT source+8 at47CA, reloads replacement HOME at47CD, then stores destination+8 at47D1. Whole Source54 contains both tail read/store. This body therefore performs that pure private HOME reload after Source54 returns. It is a permitted **normal commutation only when the entire Frame/HOMEs and active Source argument/provider backing are disjoint from descriptor, records, payload and every Native write extent**, with no intervening callback. No new hook/fence or altered Source54 is introduced. Original private alias observations, physical address/load/fault order and original flags/stack ABI are excluded, not claimed identical.
+
+The body uses raw DWORD addressing, not pointer arithmetic on a fabricated entry array. The actual existing entry type has exactly uint32 length,char*data,constvoid*owner, no DMI/constructor; a static triviality check and default placement new establish the reached **individual** C++ object without value initialization. This does not establish `T[n]`, allocate/bind an owning array, or admit old typed `entries+index` cancellation/shrink logic. The caller still proves actual raw descriptor/source/subobject/preimage/buffer validity and real CRT allocation/free provenance. No cast creates those lifetimes or another owner.
+
+Keep old/new captured backing, raw pool providers and new-handler graph, distinct per-reentry Frame homes and the SAME authenticated live0109EEA4 feature reference through normal completion or explicit incomplete disposition. Only normal nested copy returns permit reuse of its preserve HOME. Source54/resize/BF extents, DF0/CPU, serialization, pool/deletion and active-private-frame exclusion domains are inherited. No copied feature value, new global bank, abstract allocator/virtual resolver, model/semantic-string owner or input filter is supplied.
+
+## Failure and actual destruction
+
+Handler CB7B37 loads FuncInfo DEE6B8 (magic19930522,maxState1), map DEE6B0 state0→-1/actionCB7B20. The9-op action reads saved index/replacement/destination homes to form two placement arguments, calls401130, adjusts stack and returns.401130 itself is RET. These operand reads/private-stack/fault observations matter; they are not an array destructor or a replacement-block free. No partial/completed-entry cleanup or compensating free is invented. Source has no catch, RAII, noexcept, retry, Native filter or positive Origin issuer. Provider escapes retain the reached writes, individual births, allocation/string/copy debt and graph. Frame state is not exception-origin truth.
+
+Normal old-header release uses existing `destroy_native_string_header_0041dd20(raw_header, RawPoolCtx&)`: capture DATA first; if nonnull capture CURRENT LEN+1 with DWORD wrap, call current419CC0/BD1510, leave the header untouched. AB39F0's29B/12-op release has the same decoded schedule after rebasing its internal branch; no duplicate destructor body is added. A selected Native EH action is not replaced by a convenient normal destructor. AB4670 is inside the rel32 operand of AB4630's CALL B74640, not a separate destructor entry.
+
+## Dependencies and unchanged boundaries
+
+Real effectful suppliers are singleton_lifetime_allocate/free, whole Source54 copy, and raw41DD20 header return. Source54 in turn calls existing exact41DD40 and genuine four-argument BF7680 with the same live feature cell. No new Native/vendor/helper/CG body is recovered. The existing raw BF05D0 reserve/private copy_entry and BF0810 NativeStringStorage append are qualified other routes: bool resize, memmove/zero omission or old context/capacity assumptions do not become equivalent through a cast. They remain byte-exact.
+
+AB4990 append, AB5F00 insertion, AB58D0/AB51B0 delivery, current80/full614-opAB3CB0, actual typed queue construction/publication/custody and parent Origin transport remain separate. Successful normal reserve does not activate them or prove original ABI/private-HOME/FH3/SEH/fault/runtime/game behavior.
+
+## Static evidence
+
+Installed PE SHA256 `b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6`; whole298B entry SHA256 `3cda3562bb7f8db72017b16b22b07b93f79696886f09940aa6cfb064e9d9e5bd`. Every live query verifies saved BSP project `C:/Users/sqz269/bsp.gpr`, `/battlestationspacific.exe`, x86:LE:32/base400000. Whole saved exports retain historical metadata dates; live bytes/prototype are separately frozen. PE/live equality and saved-assembly/Capstone boundaries cover all106 instructions and6 calls; EH map/info/thunk/action, RET placement target, allocator thunk and both normal-release bodies are pinned separately.
+
+The report pins both complete new Source files as raw/frozen/expected Git blobs, 27 whole base provider/consumer/tool/config/CMake/admission files, 19 separately labelled inspected regions, 40 Source-order seams and4 base absence proofs. Whole hashes are integrity pins, not whole-file semantic review claims. The embedded reader verifies static Git/raw/frozen/PE/map/order data only. Ignored corpus: `J:\PROG\battlestations-pacific-decompile-codex-native-gui-named-value-array-reserve-storage\local\output\cc16_native_gui_named_value_array_reserve_storage_20261031`.
+
+No worker compiler/tests/probe/game, CMake/application/ledger/Ghidra or old-consumer mutation. Root owns review, new-CPP registration and common checks. Four new paths are the entire delta; removing them restores the base. Zero new Original/vendor/helper/CG/duplicate/ABI/origin/unwind/runtime/activation credit.

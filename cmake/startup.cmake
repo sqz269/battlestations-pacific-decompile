@@ -2496,3 +2496,6 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_cor
 
 # CC16 raw GUI named-value copy constructor storage.
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_gui_named_value_copy_storage.cpp)
+
+# Whole normal raw GUI named-value array reserve; actual caller/queue activation remains gated.
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_gui_named_value_array_reserve_storage.cpp)
