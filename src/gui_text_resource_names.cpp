@@ -4,6 +4,7 @@
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/native_crt_memcpy.hpp"
 #include "bsp/native_gui_text_shader_storage.hpp"
+#include "bsp/native_material_effect_programs.hpp"
 #include "bsp/native_string_raw_domain.hpp"
 #include "bsp/native_string_raw_resize_exact.hpp"
 #include "bsp/native_render_context.hpp"
