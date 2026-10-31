@@ -496,3 +496,7 @@ target_sources(bsp_core PRIVATE src/native_mission_lua_type.cpp)
 target_sources(bsp_core PRIVATE src/native_mission_lua_stack.cpp)
 
 target_sources(bsp_core PRIVATE src/native_mission_lua_predicates.cpp)
+
+target_sources(bsp_core PRIVATE src/native_lua_variant_number_setter.cpp)
+
+target_sources(bsp_core PRIVATE src/native_lua_variant_scalar_setters.cpp)
