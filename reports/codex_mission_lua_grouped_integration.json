@@ -1,0 +1,294 @@
+{
+  "status": "integrated_qualified_whole_stack_and_predicate_leaves_primary_and_independent_source_reviews_two_strict_objects_retained_canonical_and_Main_joined_checked_caller_vm_unbound",
+  "source_ready": false,
+  "activation": false,
+  "new_tests": 0,
+  "new_native_body_credit": 0,
+  "new_vendor_body_credit": 0,
+  "new_entry_or_game_invoked": false,
+  "components": {
+    "stack": {
+      "design_sha256": "28d1ceda000aeabe59289c359792e7eaa4345fb17675dda475d3baea8617c76f",
+      "producer_commit": "44bfbefebae3c87ada89bd821e6c6a7ce460fc0b",
+      "source_pins": {
+        "include/bsp/native_mission_lua_stack.hpp": {
+          "sha256": "536100cb4d98dc56b22eb13e03fec83852c00e38c96e1f669aae53cf7c91616c",
+          "lines": 31
+        },
+        "src/native_mission_lua_stack.cpp": {
+          "sha256": "20d275b2bb694209cb83c8051fcc1c7186602ffe25f16b434398e02344805013",
+          "lines": 57
+        }
+      },
+      "whole_native_instructions": 14,
+      "whole_native_bytes": 53,
+      "strict_object_sha256": "00f55f04e8193c95b54385e653dc92a410873203f49564d23136a9261c8c2b04",
+      "strict_compile_count": 1,
+      "producer_receipt": {
+        "schema": "bsp-native-mission-lua-stack-final-v1",
+        "verdict": "QUALIFIED_SOURCE_ONLY",
+        "commit": "44bfbefebae3c87ada89bd821e6c6a7ce460fc0b",
+        "base": "ae5465617c92b4f4db066a2fe368de3e1e262c9a",
+        "exactly_four_new_files": true,
+        "files": [
+          {
+            "path": "include/bsp/native_mission_lua_stack.hpp",
+            "physical_sha256": "536100cb4d98dc56b22eb13e03fec83852c00e38c96e1f669aae53cf7c91616c",
+            "git_sha256": "536100cb4d98dc56b22eb13e03fec83852c00e38c96e1f669aae53cf7c91616c",
+            "eol_normalized_equal": true
+          },
+          {
+            "path": "src/native_mission_lua_stack.cpp",
+            "physical_sha256": "20d275b2bb694209cb83c8051fcc1c7186602ffe25f16b434398e02344805013",
+            "git_sha256": "20d275b2bb694209cb83c8051fcc1c7186602ffe25f16b434398e02344805013",
+            "eol_normalized_equal": true
+          },
+          {
+            "path": "docs/NATIVE_MISSION_LUA_STACK.md",
+            "physical_sha256": "87f20d4e6fa71b0406f0672d044c676bb6bc91e5ea80bc3b1c54088aa6c58321",
+            "git_sha256": "87f20d4e6fa71b0406f0672d044c676bb6bc91e5ea80bc3b1c54088aa6c58321",
+            "eol_normalized_equal": true
+          },
+          {
+            "path": "reports/native_mission_lua_stack.json",
+            "physical_sha256": "127b2237a5aaeaf6478d45a5445ee4f459d454fbf8d0de5f235df0c4516cb0d5",
+            "git_sha256": "dc1841ccc737d17bce8f26ab7e984cf8562f8165bc855299403c13fe6857d11f",
+            "eol_normalized_equal": true
+          }
+        ],
+        "compile_count": 1,
+        "compile_exit": 0,
+        "object": {
+          "compiles": 1,
+          "exit_code": 0,
+          "machine": "014C",
+          "bytes": 2130,
+          "sha256": "00f55f04e8193c95b54385e653dc92a410873203f49564d23136a9261c8c2b04",
+          "defined_entries": [
+            "?get_top_native_mission_lua_006b7e70@bsp@@YAHPBX@Z",
+            "?set_top_native_mission_lua_006b7e80@bsp@@YAXPBXH@Z",
+            "?push_value_native_mission_lua_006b7e90@bsp@@YAXPBXH@Z",
+            "?remove_native_mission_lua_006b7ea0@bsp@@YAXPBXH@Z"
+          ],
+          "genuine_lua_undefined": [
+            "_lua_gettop",
+            "_lua_settop",
+            "_lua_pushvalue",
+            "_lua_remove"
+          ],
+          "same_object_symbol_receipt": "local/native_mission_lua_stack_validation_cc9_20261030/objects/actual_symbols.json"
+        },
+        "compile_receipt_sha256": "9ac8fbcb4e7e02db593851b78976df0b7de6407f7b3cf554b8f3bc71a326c7cf",
+        "actual_symbols_sha256": "14d3c64548531222795e88b491bb36a53e874e022c9e884c03db7c3359f11173",
+        "provider_preservation_sha256": "b70cc100fb6e0860e533c46c16ac3b8aabc238fb322a4f4f92d1ecb1f5f4df43",
+        "after_compile_preservation_sha256": "d0517c454f477f1f29dd8e424f26074a6bb1bb2e1d8271ef21abbd7d644cae53",
+        "unchanged_repository_provider_count": 9,
+        "unchanged_actual_lua_file_count": 5,
+        "all_prior_tracked_paths_preserved": true,
+        "root_and_independent_actual_code_accepted": true,
+        "source_ready": false,
+        "runtime_validated": false,
+        "native_body_credit": false,
+        "vendor_body_credit": false,
+        "working_tree_status": "",
+        "no_tests_link_executable_or_entry": true,
+        "limits": "Actual linked-Source Lua graph, operation/index/capacity/lifetime domain only; no producer/parent886E00/VM/factory/startup/privateABI/runtime grant."
+      },
+      "producer_receipt_sha256": "a254869c7ea613a7e55ddb23a4ea228473b413a53a60ddd3f6824eb61c1862f1",
+      "independent_final_review": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\raw_mission_lua_stack_review_gui_20261030\\FINAL_REVIEW.md",
+        "sha256": "8f98045a38e4d3d2c5e13c0ff0f2b7131e14fe8b74395d0edcc1d9f2cb45a665",
+        "verdict": "ACCEPT_SOURCE_ONLY"
+      },
+      "primary_review": "local\\mission_lua_grouped_integration_cc16_20261030\\STACK_PRIMARY_REVIEW.md"
+    },
+    "predicates": {
+      "design_sha256": "61f6468b785827c10fbb76a746e204802bb8a0f7d9c8c436e788f73bdfa33000",
+      "source_pins": {
+        "include/bsp/native_mission_lua_predicates.hpp": {
+          "sha256": "5e098fb910d7e1c93a22cd31d1b28b5e23b4c0e3b8cd8deaf592cc5ca75cc44e",
+          "lines": 27
+        },
+        "src/native_mission_lua_predicates.cpp": {
+          "sha256": "5982bfe120fab58fb375abd5989e659d800da4e72404fb354237e190de12c748",
+          "lines": 30
+        }
+      },
+      "whole_native_instructions": 23,
+      "whole_native_bytes": 72,
+      "strict_object_sha256": "2666272bdb97caeed9b55d795b926b4396ab71e6b408d48752683c261ab8ba77",
+      "strict_compile_count": 1,
+      "producer_receipt": {
+        "schema": "bsp-native-mission-lua-predicates-final-v1",
+        "commit": "85b30053b09e83da4cd22f1e6a8492506cb271e6",
+        "base": "ae5465617c92b4f4db066a2fe368de3e1e262c9a",
+        "exactly_four_new_files": [
+          "A\tdocs/NATIVE_MISSION_LUA_PREDICATES.md",
+          "A\tinclude/bsp/native_mission_lua_predicates.hpp",
+          "A\treports/native_mission_lua_predicates.json",
+          "A\tsrc/native_mission_lua_predicates.cpp"
+        ],
+        "files": {
+          "include/bsp/native_mission_lua_predicates.hpp": {
+            "physical_sha256": "5e098fb910d7e1c93a22cd31d1b28b5e23b4c0e3b8cd8deaf592cc5ca75cc44e",
+            "git_sha256": "5e098fb910d7e1c93a22cd31d1b28b5e23b4c0e3b8cd8deaf592cc5ca75cc44e",
+            "physical_equals_git": true
+          },
+          "src/native_mission_lua_predicates.cpp": {
+            "physical_sha256": "5982bfe120fab58fb375abd5989e659d800da4e72404fb354237e190de12c748",
+            "git_sha256": "5982bfe120fab58fb375abd5989e659d800da4e72404fb354237e190de12c748",
+            "physical_equals_git": true
+          },
+          "docs/NATIVE_MISSION_LUA_PREDICATES.md": {
+            "physical_sha256": "ee9ad1ec6e400290540e2fd8c7ddfe3ac189f617016468766b0efc5799b9b4a3",
+            "git_sha256": "ee9ad1ec6e400290540e2fd8c7ddfe3ac189f617016468766b0efc5799b9b4a3",
+            "physical_equals_git": true
+          },
+          "reports/native_mission_lua_predicates.json": {
+            "physical_sha256": "6ccae0e752bca1b0b3b685247b1595d2041156ea0921f9c5aa8be6681228b724",
+            "git_sha256": "6ccae0e752bca1b0b3b685247b1595d2041156ea0921f9c5aa8be6681228b724",
+            "physical_equals_git": true
+          }
+        },
+        "compile_count": 1,
+        "compile_exit": 0,
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_mission_lua_predicates_gui_20261030\\predicates.obj",
+          "sha256": "2666272bdb97caeed9b55d795b926b4396ab71e6b408d48752683c261ab8ba77",
+          "machine": "014C",
+          "bytes": 1542
+        },
+        "compile_receipt_sha256": "d0ca79059edd725e42187d6486f3eb6dbdec673d8fbbb59395b201e368a6b0e3",
+        "actual_symbols_sha256": "a7443330f905347bab8a2441a2de7fc4882dc01d7b2caca09723d9b628ef4f14",
+        "provider_preservation_sha256": "936ee127d7de9648e0a36f09794e0bd1db52f863b1504bafddc99dc3665a624f",
+        "all_prior_tracked_files_unchanged": true,
+        "selected_provider_count": 5,
+        "code_reviews": [
+          "Root exact5e098fb9/5982bfe1 accepted",
+          "Cc9 exact5e098fb9/5982bfe1 accepted"
+        ],
+        "source_ready": false,
+        "runtime_validated": false,
+        "vendor_body_credit": false,
+        "native_body_credit": false,
+        "working_tree_clean": true,
+        "tests_link_executable_probe_or_entry": false,
+        "limits": "Qualified actual linked Source state/index/type domain only; no producer/parent886E00/VM/factory/startup/privateABI/runtime grant."
+      },
+      "producer_receipt_sha256": "4f6cfac957986fd01ec1158af59e2a30e5e8a8ee3164c117dc11b6e032c3844b",
+      "independent_final_review": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc9\\local\\native_mission_lua_predicates_review_cc9_20261030\\FINAL_REVIEW.md",
+        "sha256": "f4bcbdafe3548ef7396386fbcd5a7f53259e90b271957ad9124f4ef723fad580",
+        "verdict": "ACCEPT_SOURCE_ONLY"
+      },
+      "primary_review": "local\\mission_lua_grouped_integration_cc16_20261030\\PREDICATES_PRIMARY_REVIEW.md",
+      "producer_commit": "85b30053b09e83da4cd22f1e6a8492506cb271e6"
+    }
+  },
+  "prior_repository_path_count": 14,
+  "actual_lua_provider_path_count": 5,
+  "joined_main": "ae5465617c92b4f4db066a2fe368de3e1e262c9a",
+  "core_registration_commit": "adb78f9be",
+  "retained": {
+    "suite": "existing2/2 11.08s",
+    "new_entry_count": 7,
+    "new_entry_rows": {
+      "?get_top_native_mission_lua_006b7e70@bsp@@YAHPBX@Z": "0001:002ffbe0       ?get_top_native_mission_lua_006b7e70@bsp@@YAHPBX@Z 10300be0 f   bsp_core:native_mission_lua_stack.obj",
+      "?set_top_native_mission_lua_006b7e80@bsp@@YAXPBXH@Z": "0001:002ffc40       ?set_top_native_mission_lua_006b7e80@bsp@@YAXPBXH@Z 10300c40 f   bsp_core:native_mission_lua_stack.obj",
+      "?push_value_native_mission_lua_006b7e90@bsp@@YAXPBXH@Z": "0001:002ffc00       ?push_value_native_mission_lua_006b7e90@bsp@@YAXPBXH@Z 10300c00 f   bsp_core:native_mission_lua_stack.obj",
+      "?remove_native_mission_lua_006b7ea0@bsp@@YAXPBXH@Z": "0001:002ffc20       ?remove_native_mission_lua_006b7ea0@bsp@@YAXPBXH@Z 10300c20 f   bsp_core:native_mission_lua_stack.obj",
+      "?is_nil_native_mission_lua_006b7ee0@bsp@@YAHPBXH@Z": "0001:002ffc60       ?is_nil_native_mission_lua_006b7ee0@bsp@@YAHPBXH@Z 10300c60 f   bsp_core:native_mission_lua_predicates.obj",
+      "?is_table_native_mission_lua_006b7f00@bsp@@YAHPBXH@Z": "0001:002ffca0       ?is_table_native_mission_lua_006b7f00@bsp@@YAHPBXH@Z 10300ca0 f   bsp_core:native_mission_lua_predicates.obj",
+      "?is_string_native_mission_lua_006b7f60@bsp@@YAHPBXH@Z": "0001:002ffc80       ?is_string_native_mission_lua_006b7f60@bsp@@YAHPBXH@Z 10300c80 f   bsp_core:native_mission_lua_predicates.obj"
+    },
+    "unforced_actual_type_child_row": "0001:0047b230       ?type_native_mission_lua_006b7ec0@bsp@@YAHPBXH@Z 1047c230 f   bsp_core:native_mission_lua_type.obj",
+    "unforced_existing_capi_rows": {
+      "_lua_gettop": "0001:00554ce0       _lua_gettop                10555ce0 f   bsp_lua511:lapi.obj",
+      "_lua_settop": "0001:00555800       _lua_settop                10556800 f   bsp_lua511:lapi.obj",
+      "_lua_pushvalue": "0001:00555300       _lua_pushvalue             10556300 f   bsp_lua511:lapi.obj",
+      "_lua_remove": "0001:00555500       _lua_remove                10556500 f   bsp_lua511:lapi.obj",
+      "_lua_type": "0001:00555b20       _lua_type                  10556b20 f   bsp_lua511:lapi.obj"
+    },
+    "map_sha256": "0b7affc589f51df56c02342a36685046c0fc5090d943d251984a044418be6caa",
+    "overlay_sha256": "064617e25dc2d82075caaab8c5b38e6bb5ed3b2ffd3124b2408bb6baecbab133",
+    "only_seven_new_entries_forced": true,
+    "dependency_rows_not_claimed_previously_absent": true,
+    "entry_invoked": false
+  },
+  "canonical": {
+    "suite": "existing2/2 12.62s",
+    "seven_new_entries_absent_from_project_and_map": true,
+    "overlay_cache_and_project_removed": true,
+    "map_sha256": "d7d9a310ece2811da96f5fddf3a778f26c5d92936981903cf5f05ab0479e4d49",
+    "fourteen_prior_repository_paths_preserved_with_two_core_inverse": {
+      "CMakeLists.txt": "c1e2a4be91db78fedf2beea92af8f0777ab91974cc365e9e25c2cd0e44b080be",
+      "cmake/startup.cmake": "91d1de5e0df99d75ab2133869f154c0560d969f8ed3b60c999a495ba097f416b",
+      "cmake/lua.cmake": "0c432ec1026aa6921d876098d29359d34f9463cd894d7adafcb67b954eb7a006",
+      "src/settings_seg29_cc13.cpp": "7a882cf94ad8bc30120e0a953d7cb0af729d017593f31b1929205c266f43df24",
+      "src/oct18b_nA2_misc.cpp": "9fe5c9fcd7c3b5d972a67e5a37edf3fee9a8e62dacc46cc83ac9d1fc98ff7350",
+      "include/bsp/native_mission_lua_type.hpp": "f4687e3fcdc1495e4b3e5caec7f3284e407286706704f24c68a2c13303a90c46",
+      "src/native_mission_lua_type.cpp": "fd6e57257c4826bf0c5010987456f247804330027ad9280cd6cc0607eb26a12a",
+      "include/bsp/native_mission_lua_register.hpp": "b95598224eb920cfa54dc23aa36a32807936889280e03d54a7a1c15eace9952c",
+      "src/native_mission_lua_register.cpp": "b0ca8ad834ed3eaf2a685e6a2bba8432a94154a0ce1fabb9658a9b555509491d",
+      "include/bsp/native_lua_variant_retirement.hpp": "14258135096189f2892e4d896af417ed0c8fb616d5f1659bbc1d9d032f68a7db",
+      "src/native_lua_variant_retirement.cpp": "5db41574abcb3a94fdb9c6f5c8f96f2b7b0c1f0c2a7f438fe64d622980c065ca",
+      "include/bsp/native_lua_variant_tag6.hpp": "33331fe322af7564cfaf4f04995261adb44c5defe0f827785d4b75a56251f596",
+      "src/native_lua_variant_tag6.cpp": "986f954e728e89ea5d4d0b6dbfd4dfa8df08ab428f8ffcad501d12ab85ef38f4",
+      "src/game_native_gui_render_application.cpp": "2132e6bf7222381755f375f333d01a68187acff8daddc2d92e5a0788632aec31"
+    },
+    "five_actual_lua_provider_paths_unchanged": {
+      "build/win32/_deps/lua511-src/src/lua.h": "0a69a11d3e176ceb0e0220c4cdeb1c1f3a0e466a347d813e449ff9246afba3a6",
+      "build/win32/_deps/lua511-src/src/lapi.c": "a9f0f87af50f18b4cf0483ded3a6bf41803032bc7ed575bda84359a46c993fe0",
+      "build/win32/_deps/lua511-src/src/luaconf.h": "5c962567aaf250570b772a3dccbfde80e6add621ec04f429120dce83adb0a4d9",
+      "build/win32/_deps/lua511-src/src/llimits.h": "076aaabf0c79176f8d6047905dcf05bd9c2d770085f3adc591f95be294538b9d",
+      "build/win32/_deps/lua511-src/src/lstate.h": "ed9260f52d710316e9eab00bb1e271e1b06689f63cad55988a48a4361df93927"
+    },
+    "nine_text_flags": {
+      "kRawDefaultTextQualificationCc16Bound": "false",
+      "kRawDefaultSourceEqualQualificationCc16Bound": "false",
+      "kRawPrimaryPrefixQualificationCc16Bound": "false",
+      "kRawPrefixGeometryQualificationCc16Bound": "false",
+      "kRawMainSectionQualificationCc16Bound": "false",
+      "kRawFontMainQualificationCc16Bound": "false",
+      "kRawEmptyUnchangedQualificationCc16Bound": "false",
+      "kRawFontMetadataQualificationCc16Bound": "false",
+      "kRawFontWorkQualificationCc16Bound": "false"
+    },
+    "entry_invoked": false
+  },
+  "ghidra_annotation": {
+    "journal": "local\\ghidra-annotations-20261030T235636Z.json",
+    "journal_sha256": "4da5064f469b6bf053028937c209d7c4f500855526e6cff68396f89ee71e183d",
+    "all7existing_names_preserved": true,
+    "old_values_journaled_before_mutation": true,
+    "comment_append_only": true,
+    "official_write_lock": true,
+    "project_saved": true,
+    "all7exports_refreshed": true
+  },
+  "ledger_preservation": {
+    "all_prior_reconstruction_records_preserved": true,
+    "seven_distinct_qualified_raw_records": true,
+    "all_old_name_fields_and_evidence_prefixes_preserved": true,
+    "all_unrelated_names_unchanged": true
+  },
+  "peer40_join": {
+    "main": "2fdf739e771cf6a9cb4739c4cf4ad9e2943e5658",
+    "actual_source_head": "1d37d7945dc0db92013519fd743e8681c06a5e40",
+    "standard_joined_check": "scripts/build.ps1 allWin32targets existing2/2 11.91s",
+    "prior_scoped14repo_plus5Lua_preserved_with2Coreinverse": true,
+    "evidence": "local\\mission_lua_grouped_integration_cc16_20261030\\peer40_joined_build.log"
+  },
+  "metadata_only_peer_join_after_test": {
+    "main": "6ce174e8f",
+    "actual_merge_head": "fe45c2c98a4818731a016849f71f58083bd8a4f7",
+    "changed_paths": [
+      "docs/CC16_GLYPH_HEADER_STATES_HOST_UNKNOWN_DESIGN.md",
+      "docs/CC16_NATIVE_GLYPH_CURRENT34_TARGET_CONTRACT.md",
+      "reports/cc16_glyph_header_states_host_unknown_design.json",
+      "reports/cc16_native_glyph_current34_target_contract.json"
+    ],
+    "no_Source_CMake_or_tests_changed": true,
+    "new_build_or_test_claim": false
+  }
+}

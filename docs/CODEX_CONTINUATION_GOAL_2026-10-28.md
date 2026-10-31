@@ -1448,3 +1448,27 @@ nested/VM domains remain. Next DESIGN-ONLY wave: cc9 stack70/80/90/A0, Gui
 predicatesEE0/F00/F60, Frame variant8869F0/B30, disjoint ownership. Predicate
 IsString Native is STRICT type4, not Lua lua_isstring admitting numbers.
 No Source for next wave yet. Goal ACTIVE.
+
+
+Grouped seven wholeLua leaves37ops/125B: stack44bfbefeb (gettop/settop/pushvalue/
+remove) and predicates85b30053 (strictnil0/table5/string4 fullint321/0). Primary
++independent actualSource/finalpins, one014C object each (00f55f04/2666272b),
+actual genuineCAPI/rawtype UNDEFs. Coreonceeachadb78f9be; retained7entries plus
+unforcedrealtype/5LuaCAPI/checks2/2 11.08s, canonicalrestored2/2 12.62s. These
+cohorts areae546; Source40Main2fdf joinedseparately, standardcheckpending. All
+14priorrepo+5actualLua files preserved with2Coreinverse/nineTextOFF. Oldnames/
+evidenceprefixes/typedrecords preserved, sevenqualifiedrawrecords, official
+lockedcommentjournal235636Z/save/7exportsrefreshed. No tests/entry/runtime/
+Native/vendorcredit or rawVM/parentbuilder/factory/startup closure.
+Next3setters actualSource accepted: number9D0 e93/20e6bd40+ff32a280, scalar
+F0/B30 c6f7e8ca/84147130+12350432. Current HOME AFTERreal completedclear,
+noncompletion beforeHOME/stores. F0 is signedDWORD→CVTSI2SS/currentMXCSR→tag0
+(not bool/tag2), B30 captured opaqueinput→tag4/payload and optionalnormalinput
+return (not receiver);9D0 copies all4FLOAT32 bits without conversion. Separate
+ONEauthor object checks authorized after primary+independent Code acceptance;
+SSEactualemitted order/no-mode-write proofpending. Goal ACTIVE.
+
+Source40joined standardallWin32/existing2/2 passed11.91s at1d37d7945. Later
+peer6ce174 addsfourdesign-doc/report paths only, no Source/CMake/testchange
+or extra buildclaim. SevenLua wrappers allMainpublicationgates closed except
+requiredcaller/VM/runtime/activation, which remainopen. Goal ACTIVE.
