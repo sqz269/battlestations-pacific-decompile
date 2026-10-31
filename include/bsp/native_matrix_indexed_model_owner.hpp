@@ -52,6 +52,13 @@ void initialize_native_matrix_indexed_model_type_00cd8570(
 // Four current ID cells (own, model, node, root), never a copied token palette.
 const volatile std::uint32_t* native_matrix_indexed_model_type_ids_010903c8() noexcept;
 
+// B91250 Source projection: opaque token, four CURRENT canonical cells in
+// C8/CC/D0/D4 order with early exit, and semantic AL result 0 or 1.
+// Caller supplies the actual live cells and serializes their lifetime/mutation.
+// Pointer transport is a C++ binding, not the Original physical ABI.
+std::uint8_t native_matrix_indexed_model_is_type_00b91250(
+    std::uint32_t token, const volatile std::uint32_t* actual_type_ids_010903c8);
+
 struct NativeMatrixIndexedModelEnvironment {
     NativeModelEnvironment& base;
     NativeMatrixIndexedModelPool& pool_01090390;
