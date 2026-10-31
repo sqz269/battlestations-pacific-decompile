@@ -1,0 +1,1605 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-gui-icon-delayed-loads-lifetime-storage",
+  "created_utc": "2026-10-31T09:44:40.006879+00:00",
+  "base_commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+  "files": [
+    "include/bsp/native_gui_icon_delayed_loads_lifetime_storage.hpp",
+    "src/native_gui_icon_delayed_loads_lifetime_storage.cpp",
+    "docs/CC16_NATIVE_GUI_ICON_DELAYED_LOADS_LIFETIME_STORAGE.md",
+    "reports/cc16_native_gui_icon_delayed_loads_lifetime_storage.json"
+  ],
+  "source_status": "whole normal game-owned destructor composition plus uncredited CG Source ABI adapter/passive observations; static-only",
+  "compiled": false,
+  "runtime_validated": false,
+  "bound_to_existing_service": false,
+  "feature_or_Operation_preparation_changed": false,
+  "source57_dependency": false,
+  "base_absence": [
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads_lifetime_storage.hpp",
+      "base_commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "absent": true,
+      "git_stdout_hex": ""
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads_lifetime_storage.cpp",
+      "base_commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "absent": true,
+      "git_stdout_hex": ""
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_ICON_DELAYED_LOADS_LIFETIME_STORAGE.md",
+      "base_commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "absent": true,
+      "git_stdout_hex": ""
+    },
+    {
+      "path": "reports/cc16_native_gui_icon_delayed_loads_lifetime_storage.json",
+      "base_commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "absent": true,
+      "git_stdout_hex": ""
+    }
+  ],
+  "new_source_pins": [
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads_lifetime_storage.hpp",
+      "bytes": 7162,
+      "sha256": "d3c197d008cff8e89758fa2458b40a10fb88ea903637a3b731323f4295213c95",
+      "expected_git_blob": "e67d36b0d666ec23ec345e6312cc5bdddfc591aa",
+      "lines": 125,
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\new_source\\include\\bsp\\native_gui_icon_delayed_loads_lifetime_storage.hpp"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads_lifetime_storage.cpp",
+      "bytes": 4209,
+      "sha256": "7326062e3b4cf4c904d62b3cb010c0589ed6b8be336f06ae452d031017e51c7c",
+      "expected_git_blob": "f8ce5bc4ff0f1a2234db310bc771e5520362acbd",
+      "lines": 99,
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\new_source\\src\\native_gui_icon_delayed_loads_lifetime_storage.cpp"
+    }
+  ],
+  "whole_provider_pins": [
+    {
+      "path": "include/bsp/native_gui_named_value_array_resize_storage.hpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "git_blob": "2aeb2185c3b3b76cac51ad841c8da2f4c92d053d",
+      "git_bytes": 2857,
+      "git_sha256": "a850554248f79372ff88681d4d1e91ddeca1e5b4af650267c129437d508754d2",
+      "workspace_bytes": 2857,
+      "workspace_sha256": "a850554248f79372ff88681d4d1e91ddeca1e5b4af650267c129437d508754d2",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\base\\include\\bsp\\native_gui_named_value_array_resize_storage.hpp",
+      "claim": "Whole-file integrity pin; bounded inspected regions labelled separately."
+    },
+    {
+      "path": "src/native_gui_named_value_array_resize_storage.cpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "git_blob": "6336a9db69e0686f4543abb2b8b50c3cab300cad",
+      "git_bytes": 3640,
+      "git_sha256": "3908fd6b1edcc86a9c8893d7deaa929acc0282f4290cb9800a513d97bf84c6d0",
+      "workspace_bytes": 3640,
+      "workspace_sha256": "3908fd6b1edcc86a9c8893d7deaa929acc0282f4290cb9800a513d97bf84c6d0",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\base\\src\\native_gui_named_value_array_resize_storage.cpp",
+      "claim": "Whole-file integrity pin; bounded inspected regions labelled separately."
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_NAMED_VALUE_ARRAY_RESIZE_STORAGE.md",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "git_blob": "780520e8e5f9c62065f3bb52d17db736ca4f87fd",
+      "git_bytes": 8974,
+      "git_sha256": "f0705d4ef4a9235a041fd8bc3eebb9cf0234d396d3a4b858153971870a3be6f9",
+      "workspace_bytes": 8974,
+      "workspace_sha256": "f0705d4ef4a9235a041fd8bc3eebb9cf0234d396d3a4b858153971870a3be6f9",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\base\\docs\\CC16_NATIVE_GUI_NAMED_VALUE_ARRAY_RESIZE_STORAGE.md",
+      "claim": "Whole-file integrity pin; bounded inspected regions labelled separately."
+    },
+    {
+      "path": "reports/cc16_native_gui_named_value_array_resize_storage.json",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "git_blob": "edca80eb1340dc9ffdb89e8879f716d9a9ad24db",
+      "git_bytes": 66467,
+      "git_sha256": "90266e0d46611aa49014687846faa64417bf71842c01f3b141f9715675f3dcd0",
+      "workspace_bytes": 66467,
+      "workspace_sha256": "90266e0d46611aa49014687846faa64417bf71842c01f3b141f9715675f3dcd0",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\base\\reports\\cc16_native_gui_named_value_array_resize_storage.json",
+      "claim": "Whole-file integrity pin; bounded inspected regions labelled separately."
+    },
+    {
+      "path": "include/bsp/native_gui_named_value_array_reserve_storage.hpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "git_blob": "c94cf7a5fc67d0e4c426737e36d7dc3ca4330917",
+      "git_bytes": 3272,
+      "git_sha256": "8b4061b26fc5bf5ef6da5fbadcf24ee66f921a894f6fb5f193b635b38aab0c12",
+      "workspace_bytes": 3272,
+      "workspace_sha256": "8b4061b26fc5bf5ef6da5fbadcf24ee66f921a894f6fb5f193b635b38aab0c12",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\base\\include\\bsp\\native_gui_named_value_array_reserve_storage.hpp",
+      "claim": "Whole-file integrity pin; bounded inspected regions labelled separately."
+    },
+    {
+      "path": "src/native_gui_named_value_array_reserve_storage.cpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "git_blob": "aeb2ca5148a6569de484e760391a7d31186b077a",
+      "git_bytes": 5458,
+      "git_sha256": "dc8dfc3757b998a06fa72a0628cc7fb7eae80d03741f24d2ec80aa2785e8116e",
+      "workspace_bytes": 5458,
+      "workspace_sha256": "dc8dfc3757b998a06fa72a0628cc7fb7eae80d03741f24d2ec80aa2785e8116e",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\base\\src\\native_gui_named_value_array_reserve_storage.cpp",
+      "claim": "Whole-file integrity pin; bounded inspected regions labelled separately."
+    },
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "git_blob": "fb8293fbf779f87c01708ffe3c1055e28c46c733",
+      "git_bytes": 4505,
+      "git_sha256": "a6fa7dcce062f26c77664364aa3a5e4525ab3ae2fc320016f07524a55e746f6d",
+      "workspace_bytes": 4505,
+      "workspace_sha256": "a6fa7dcce062f26c77664364aa3a5e4525ab3ae2fc320016f07524a55e746f6d",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\base\\include\\bsp\\native_gui_icon_delayed_loads.hpp",
+      "claim": "Whole-file integrity pin; bounded inspected regions labelled separately."
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "git_blob": "bcedf161bdb50667d954ca7f0e113d6842682dbb",
+      "git_bytes": 10345,
+      "git_sha256": "3773ac03dd39bc78f642ebea942d0e074051814c2a55395b7bc246c703f50997",
+      "workspace_bytes": 10345,
+      "workspace_sha256": "3773ac03dd39bc78f642ebea942d0e074051814c2a55395b7bc246c703f50997",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\base\\src\\native_gui_icon_delayed_loads.cpp",
+      "claim": "Whole-file integrity pin; bounded inspected regions labelled separately."
+    },
+    {
+      "path": "include/bsp/game_native_gui_icon_process.hpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "git_blob": "edad517eacdc50d3effee7655d58e26545a8bb45",
+      "git_bytes": 3257,
+      "git_sha256": "be7972224e23dd7f4871ae5359c585227c5c31f4028b99d9c3e2e4d4e8b77ae1",
+      "workspace_bytes": 3257,
+      "workspace_sha256": "be7972224e23dd7f4871ae5359c585227c5c31f4028b99d9c3e2e4d4e8b77ae1",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\base\\include\\bsp\\game_native_gui_icon_process.hpp",
+      "claim": "Whole-file integrity pin; bounded inspected regions labelled separately."
+    },
+    {
+      "path": "src/game_native_gui_icon_process.cpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "git_blob": "de4e8cb628c4dd2f16dfdcbd2fb9c7fc2ab3eb35",
+      "git_bytes": 3064,
+      "git_sha256": "cc1d80e034d36fa28899a91473a863807b3c1be29f8c0825d87d35266665316e",
+      "workspace_bytes": 3064,
+      "workspace_sha256": "cc1d80e034d36fa28899a91473a863807b3c1be29f8c0825d87d35266665316e",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\base\\src\\game_native_gui_icon_process.cpp",
+      "claim": "Whole-file integrity pin; bounded inspected regions labelled separately."
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "git_bytes": 4372,
+      "git_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "workspace_bytes": 4372,
+      "workspace_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\base\\include\\bsp\\singleton_lifetime.hpp",
+      "claim": "Whole-file integrity pin; bounded inspected regions labelled separately."
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "git_bytes": 13257,
+      "git_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "workspace_bytes": 13257,
+      "workspace_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\base\\src\\singleton_lifetime.cpp",
+      "claim": "Whole-file integrity pin; bounded inspected regions labelled separately."
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "git_blob": "dc774f7d5ba1b15a117da9d2b5e39113b998f349",
+      "git_bytes": 23310,
+      "git_sha256": "de933f3c758aed5b505b61582845be194396bace2efc88f676e9de462049f686",
+      "workspace_bytes": 23310,
+      "workspace_sha256": "de933f3c758aed5b505b61582845be194396bace2efc88f676e9de462049f686",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\base\\include\\bsp\\native_singleton_destruction.hpp",
+      "claim": "Whole-file integrity pin; bounded inspected regions labelled separately."
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "git_blob": "0c9759b7d908e778dbdc44d8785d8fae226ea75b",
+      "git_bytes": 29984,
+      "git_sha256": "98a476d0aa3d76fa3b79793a6c10dca5ce621b89f9a290eecef23866a483831a",
+      "workspace_bytes": 29984,
+      "workspace_sha256": "98a476d0aa3d76fa3b79793a6c10dca5ce621b89f9a290eecef23866a483831a",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\base\\src\\native_singleton_destruction.cpp",
+      "claim": "Whole-file integrity pin; bounded inspected regions labelled separately."
+    },
+    {
+      "path": "include/bsp/engine_seg49_64_78_cc13.hpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "git_blob": "cd8b8303b75c99d6d929aca2df077bdb974d6879",
+      "git_bytes": 84516,
+      "git_sha256": "7830c6cae582c047d21923c9ed49f9084a0c18c21d99c092f69c8e133c41921d",
+      "workspace_bytes": 84516,
+      "workspace_sha256": "7830c6cae582c047d21923c9ed49f9084a0c18c21d99c092f69c8e133c41921d",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\base\\include\\bsp\\engine_seg49_64_78_cc13.hpp",
+      "claim": "Whole-file integrity pin; bounded inspected regions labelled separately."
+    },
+    {
+      "path": "src/engine_seg49_64_78_cc13.cpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "git_blob": "9b71adf3ea032a6bfd7e2ed87ee5dc6d4114cdf7",
+      "git_bytes": 111051,
+      "git_sha256": "5888a64b1973289ca1eecadbe8bbb1e8718b8b9143421e4a4c617d40bb27433c",
+      "workspace_bytes": 111051,
+      "workspace_sha256": "5888a64b1973289ca1eecadbe8bbb1e8718b8b9143421e4a4c617d40bb27433c",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\base\\src\\engine_seg49_64_78_cc13.cpp",
+      "claim": "Whole-file integrity pin; bounded inspected regions labelled separately."
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "git_blob": "0ea37f57bf4642cf526fad3fb585ac8b7b9d47ad",
+      "git_bytes": 187000,
+      "git_sha256": "a4b3bf1edb199d577fa689349329e044b38f593ecd4c6aa4092be39d0b744fe5",
+      "workspace_bytes": 187000,
+      "workspace_sha256": "a4b3bf1edb199d577fa689349329e044b38f593ecd4c6aa4092be39d0b744fe5",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\base\\src\\game_hosts.cpp",
+      "claim": "Whole-file integrity pin; bounded inspected regions labelled separately."
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+      "git_bytes": 8771,
+      "git_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "workspace_bytes": 8771,
+      "workspace_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\base\\include\\bsp\\native_string.hpp",
+      "claim": "Whole-file integrity pin; bounded inspected regions labelled separately."
+    },
+    {
+      "path": "src/native_string.cpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+      "git_bytes": 9121,
+      "git_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "workspace_bytes": 9121,
+      "workspace_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\base\\src\\native_string.cpp",
+      "claim": "Whole-file integrity pin; bounded inspected regions labelled separately."
+    },
+    {
+      "path": "config/target.json",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "git_bytes": 455,
+      "git_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "workspace_bytes": 455,
+      "workspace_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\base\\config\\target.json",
+      "claim": "Whole-file integrity pin; bounded inspected regions labelled separately."
+    },
+    {
+      "path": "tools/bsp.py",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "git_blob": "2e1fb76a9fd700f079912706d9459c4293f96c86",
+      "git_bytes": 103131,
+      "git_sha256": "0532d1e3fa711fb62d198e6747a4e0eb8978ef7e301de75710afd40d6c1a1339",
+      "workspace_bytes": 103131,
+      "workspace_sha256": "0532d1e3fa711fb62d198e6747a4e0eb8978ef7e301de75710afd40d6c1a1339",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\base\\tools\\bsp.py",
+      "claim": "Whole-file integrity pin; bounded inspected regions labelled separately."
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "git_blob": "bd937766a7e4d62c015b2ab44a14a9153fbb4542",
+      "git_bytes": 14518,
+      "git_sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+      "workspace_bytes": 14518,
+      "workspace_sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\base\\tools\\ghidra_export.py",
+      "claim": "Whole-file integrity pin; bounded inspected regions labelled separately."
+    },
+    {
+      "path": "CMakeLists.txt",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "git_blob": "0ee46cdd5f70ed5b85827110cb45e1c48fdb63db",
+      "git_bytes": 30339,
+      "git_sha256": "620accca24c41c97a16c5842a6058196bbf8bb4dc1be4f5f8a62df6d7b6ce3fc",
+      "workspace_bytes": 30339,
+      "workspace_sha256": "620accca24c41c97a16c5842a6058196bbf8bb4dc1be4f5f8a62df6d7b6ce3fc",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\base\\CMakeLists.txt",
+      "claim": "Whole-file integrity pin; bounded inspected regions labelled separately."
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "git_blob": "84dee0ac5aa532e4e19400aa4ab2c785b17ccd69",
+      "git_bytes": 297561,
+      "git_sha256": "9271a22f7c81877246059f9296141c52984c03dbd900fc5e9c4758f376fca916",
+      "workspace_bytes": 297561,
+      "workspace_sha256": "9271a22f7c81877246059f9296141c52984c03dbd900fc5e9c4758f376fca916",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\base\\cmake\\startup.cmake",
+      "claim": "Whole-file integrity pin; bounded inspected regions labelled separately."
+    }
+  ],
+  "provider_regions": [
+    {
+      "id": "service_internal_publication_ref",
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "first_line": 31,
+      "last_line": 44,
+      "bytes": 761,
+      "sha256": "0c9bf3fbcc72238abc2b04677b755f902db6e187be1ca045b9a122e9a495f1cb",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\regions\\service_internal_publication_ref.txt"
+    },
+    {
+      "id": "service_preparation_and_failure",
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "first_line": 46,
+      "last_line": 75,
+      "bytes": 1315,
+      "sha256": "7ee89abfc5cb567ff476e10f201e61e8427fbe9581e49f7d0af502dc4b596251",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\regions\\service_preparation_and_failure.txt"
+    },
+    {
+      "id": "genuine_owner_producer",
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "first_line": 77,
+      "last_line": 120,
+      "bytes": 2420,
+      "sha256": "9f153d8768ff7e8050c48c2c06e52d5d8cb688aad740342745f10d3f22245b2a",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\regions\\genuine_owner_producer.txt"
+    },
+    {
+      "id": "old_partial_shrink_byvalue_scalar",
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "first_line": 156,
+      "last_line": 189,
+      "bytes": 1665,
+      "sha256": "8e239535ee776777d0e04615b74f5e947543446ff6f285a9af1152a972406c5f",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\regions\\old_partial_shrink_byvalue_scalar.txt"
+    },
+    {
+      "id": "public_byvalue_scalar",
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "first_line": 205,
+      "last_line": 207,
+      "bytes": 222,
+      "sha256": "51d4ca09513f47ed719fb0462d703ee22d02d299af9d2fa8d046cf2092a44b02",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\regions\\public_byvalue_scalar.txt"
+    },
+    {
+      "id": "existing_operation_fields",
+      "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "first_line": 28,
+      "last_line": 43,
+      "bytes": 675,
+      "sha256": "849116772fc14cb992942af8e268ba746cc96164ba565e1cc83590305335894b",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\regions\\existing_operation_fields.txt"
+    },
+    {
+      "id": "process_same_publication_borrow",
+      "path": "src/game_native_gui_icon_process.cpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "first_line": 18,
+      "last_line": 42,
+      "bytes": 1186,
+      "sha256": "5975b5b5c9491a5f1f36f0931edab54c82d63a493e1b1801bbaed69490ff154f",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\regions\\process_same_publication_borrow.txt"
+    },
+    {
+      "id": "process_observational_only_public_api",
+      "path": "include/bsp/game_native_gui_icon_process.hpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "first_line": 41,
+      "last_line": 61,
+      "bytes": 1251,
+      "sha256": "3b901b286ba8ac81b149a1982eda8232977a069ab37e0b371822b74053a1004d",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\regions\\process_observational_only_public_api.txt"
+    },
+    {
+      "id": "actual_free_source_qualification",
+      "path": "src/singleton_lifetime.cpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "first_line": 51,
+      "last_line": 67,
+      "bytes": 617,
+      "sha256": "af9333833943da8372ff429810f8f4509c0b0ea1a3b9dd3421a443c0c4d4270f",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\regions\\actual_free_source_qualification.txt"
+    },
+    {
+      "id": "current_dispatch_service_arm",
+      "path": "src/native_singleton_destruction.cpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "first_line": 99,
+      "last_line": 128,
+      "bytes": 1425,
+      "sha256": "e4233337e4c15e58738716532fa1814869fb6c190b4b4bae18c8dcda10d7fed0",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\regions\\current_dispatch_service_arm.txt"
+    },
+    {
+      "id": "base_semantic_not_raw_volatile_adapter",
+      "path": "src/engine_seg49_64_78_cc13.cpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "first_line": 1250,
+      "last_line": 1254,
+      "bytes": 207,
+      "sha256": "40ffdf7b0e73353206dbb218c38f9daa3a4976655fefea267f9ca379194f6bd0",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\regions\\base_semantic_not_raw_volatile_adapter.txt"
+    },
+    {
+      "id": "host_actual_free_receipt",
+      "path": "src/game_hosts.cpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "first_line": 2134,
+      "last_line": 2144,
+      "bytes": 1022,
+      "sha256": "010811bcee10336eb6fdd823e775341f4cfc6cc260647b9faeedb8a59c03b333",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\regions\\host_actual_free_receipt.txt"
+    },
+    {
+      "id": "noexcept_callback_distinct_contract",
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "first_line": 20,
+      "last_line": 28,
+      "bytes": 469,
+      "sha256": "093998cecfc689868fd275ef842172d8964a6c96b1b36956af2ab5035b938ff1",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\regions\\noexcept_callback_distinct_contract.txt"
+    },
+    {
+      "id": "whole58_contract",
+      "path": "include/bsp/native_gui_named_value_array_resize_storage.hpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "first_line": 7,
+      "last_line": 46,
+      "bytes": 2736,
+      "sha256": "076ff94478573acd96abf5b60d1df8855d7df3a429c9858e5cb41fc5883e52b1",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\regions\\whole58_contract.txt"
+    },
+    {
+      "id": "whole58_body",
+      "path": "src/native_gui_named_value_array_resize_storage.cpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "first_line": 42,
+      "last_line": 85,
+      "bytes": 2474,
+      "sha256": "d23a245bf926fd8f2e4d490df52cb76054ab6836e34f2cad78886c45a7025667",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\regions\\whole58_body.txt"
+    },
+    {
+      "id": "existing55_frame",
+      "path": "include/bsp/native_gui_named_value_array_reserve_storage.hpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "first_line": 7,
+      "last_line": 20,
+      "bytes": 757,
+      "sha256": "b2464ee36b2104ce2d5264192c768d4f09caf108b951062900319760f75d0763",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\regions\\existing55_frame.txt"
+    },
+    {
+      "id": "raw_pool_and_current_return",
+      "path": "src/native_string.cpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "first_line": 22,
+      "last_line": 45,
+      "bytes": 877,
+      "sha256": "7147b90eb479362a45350f21cd4f9058a8e80ba4cfb47ae4b49eccf91f836044",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\regions\\raw_pool_and_current_return.txt"
+    },
+    {
+      "id": "raw_header_return",
+      "path": "src/native_string.cpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "first_line": 129,
+      "last_line": 139,
+      "bytes": 441,
+      "sha256": "8fb57b1c35886294980cd9857eb2b9d4ec90795c56da332ce587eb04c3799430",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\regions\\raw_header_return.txt"
+    },
+    {
+      "id": "raw_pool_contract",
+      "path": "include/bsp/native_string.hpp",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "first_line": 28,
+      "last_line": 38,
+      "bytes": 494,
+      "sha256": "ae221875d0df54779836020cb7d83219e742c0a35bd07a5d6b8f2933c164b200",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\regions\\raw_pool_contract.txt"
+    },
+    {
+      "id": "target_verification",
+      "path": "tools/bsp.py",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "first_line": 967,
+      "last_line": 984,
+      "bytes": 794,
+      "sha256": "cc2fc687b74fccee49725ac1306d4f9b2a2f081376cd91270830d32b43e682e1",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\regions\\target_verification.txt"
+    },
+    {
+      "id": "actual_project_program_verification",
+      "path": "tools/ghidra_export.py",
+      "commit": "b627a9b90d1423f3eabf4a4d8a66a0832d362c19",
+      "first_line": 101,
+      "last_line": 110,
+      "bytes": 574,
+      "sha256": "4ce9f7a4d8d4c4d42c54e5f1e797ca401927f93f5ad6604d171081871f8eb011",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\regions\\actual_project_program_verification.txt"
+    }
+  ],
+  "corrected55_pins": [
+    {
+      "path": "include/bsp/native_gui_named_value_array_reserve_storage.hpp",
+      "commit": "a1273c55df5d843dd4523c82c8273b857dae89b1",
+      "bytes": 3272,
+      "sha256": "8b4061b26fc5bf5ef6da5fbadcf24ee66f921a894f6fb5f193b635b38aab0c12",
+      "git_blob": "c94cf7a5fc67d0e4c426737e36d7dc3ca4330917",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-array-resize-storage\\local\\output\\cc16_native_gui_named_value_array_resize_storage_20261031\\corrected55\\include\\bsp\\native_gui_named_value_array_reserve_storage.hpp",
+      "equals_current_base": true
+    },
+    {
+      "path": "src/native_gui_named_value_array_reserve_storage.cpp",
+      "commit": "a1273c55df5d843dd4523c82c8273b857dae89b1",
+      "bytes": 5458,
+      "sha256": "dc8dfc3757b998a06fa72a0628cc7fb7eae80d03741f24d2ec80aa2785e8116e",
+      "git_blob": "aeb2ca5148a6569de484e760391a7d31186b077a",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-array-resize-storage\\local\\output\\cc16_native_gui_named_value_array_resize_storage_20261031\\corrected55\\src\\native_gui_named_value_array_reserve_storage.cpp",
+      "equals_current_base": true
+    }
+  ],
+  "source_order": [
+    {
+      "id": "state_minus1",
+      "needle": "write_word(&frame.native_state_home, 0u, 0xffffffffu);",
+      "occurrence": 0,
+      "offset": 1851,
+      "line": 60
+    },
+    {
+      "id": "capture_owner",
+      "needle": "const Word owner = bits(actual_owner16);",
+      "occurrence": 0,
+      "offset": 1929,
+      "line": 61
+    },
+    {
+      "id": "saved_owner_push",
+      "needle": "write_word(&frame.saved_owner_home, 0u, owner);",
+      "occurrence": 0,
+      "offset": 1974,
+      "line": 62
+    },
+    {
+      "id": "destroy_identity_observation",
+      "needle": "acquired.captured_identity_bits_ = owner;",
+      "occurrence": 0,
+      "offset": 2049,
+      "line": 63
+    },
+    {
+      "id": "saved_owner_repeat",
+      "needle": "write_word(&frame.saved_owner_home, 0u, owner);",
+      "occurrence": 1,
+      "offset": 2122,
+      "line": 64
+    },
+    {
+      "id": "captured_array_header",
+      "needle": "const Word array_header = owner + 4u;",
+      "occurrence": 0,
+      "offset": 2204,
+      "line": 65
+    },
+    {
+      "id": "state0_before_resize",
+      "needle": "write_word(&frame.native_state_home, 0u, 0u);",
+      "occurrence": 0,
+      "offset": 2280,
+      "line": 66
+    },
+    {
+      "id": "whole58_original0",
+      "needle": "resize_native_gui_named_value_array_storage_00ab4850(pointer_from_word(array_header),",
+      "occurrence": 0,
+      "offset": 2356,
+      "line": 67
+    },
+    {
+      "id": "current_data_after_resize",
+      "needle": "const Word current_data = read_word(pointer_from_word(array_header), 0u);",
+      "occurrence": 0,
+      "offset": 2527,
+      "line": 69
+    },
+    {
+      "id": "backing_free_entered",
+      "needle": "acquired.backing_free_entered_ = true;",
+      "occurrence": 0,
+      "offset": 2614,
+      "line": 70
+    },
+    {
+      "id": "actual_backing_free",
+      "needle": "singleton_lifetime_free(pointer_from_word(current_data));",
+      "occurrence": 0,
+      "offset": 2694,
+      "line": 71
+    },
+    {
+      "id": "backing_free_normal_returned",
+      "needle": "acquired.backing_free_returned_ = true;",
+      "occurrence": 0,
+      "offset": 2756,
+      "line": 72
+    },
+    {
+      "id": "same_publication_clear",
+      "needle": "publication_00f8bd98 = nullptr;",
+      "occurrence": 0,
+      "offset": 2800,
+      "line": 73
+    },
+    {
+      "id": "captured_base_stamp",
+      "needle": "write_word(pointer_from_word(owner), 0u, 0x00ce3818u);",
+      "occurrence": 0,
+      "offset": 2882,
+      "line": 74
+    },
+    {
+      "id": "scalar_identity_capture",
+      "needle": "const Word owner = bits(captured_owner16);",
+      "occurrence": 0,
+      "offset": 3408,
+      "line": 84
+    },
+    {
+      "id": "scalar_identity_observation",
+      "needle": "acquired.captured_identity_bits_ = owner;",
+      "occurrence": 1,
+      "offset": 3482,
+      "line": 85
+    },
+    {
+      "id": "whole_destroy_nested_acquired",
+      "needle": "destroy_native_gui_icon_delayed_loads_storage_00ab5560(pointer_from_word(owner),",
+      "occurrence": 0,
+      "offset": 3528,
+      "line": 86
+    },
+    {
+      "id": "single_late_byte",
+      "needle": "const std::uint8_t tested = read_byte(&actual_flags_home);",
+      "occurrence": 0,
+      "offset": 3721,
+      "line": 89
+    },
+    {
+      "id": "observed_same_byte",
+      "needle": "acquired.tested_flags_byte_ = tested;",
+      "occurrence": 0,
+      "offset": 3804,
+      "line": 90
+    },
+    {
+      "id": "test_reached_observation",
+      "needle": "acquired.flags_test_reached_ = true;",
+      "occurrence": 0,
+      "offset": 3846,
+      "line": 91
+    },
+    {
+      "id": "same_byte_bit0_branch",
+      "needle": "if ((tested & 1u) != 0u) {",
+      "occurrence": 0,
+      "offset": 3887,
+      "line": 92
+    },
+    {
+      "id": "owner_free_entered",
+      "needle": "acquired.owner_free_entered_ = true;",
+      "occurrence": 0,
+      "offset": 3922,
+      "line": 93
+    },
+    {
+      "id": "actual_captured_owner_free",
+      "needle": "singleton_lifetime_free(pointer_from_word(owner));",
+      "occurrence": 0,
+      "offset": 4004,
+      "line": 94
+    },
+    {
+      "id": "owner_free_normal_returned",
+      "needle": "acquired.owner_free_returned_ = true;",
+      "occurrence": 0,
+      "offset": 4063,
+      "line": 95
+    },
+    {
+      "id": "identity_only_return",
+      "needle": "return pointer_from_word(owner);",
+      "occurrence": 0,
+      "offset": 4111,
+      "line": 97
+    }
+  ],
+  "class_shape": {
+    "frame_bytes": 32,
+    "frame_fields": [
+      "native_state_home",
+      "saved_owner_home",
+      "existing24B reserve"
+    ],
+    "native_frame_has_no_DMI": true,
+    "source_observation_classes": 2,
+    "default_fresh_constructors": 2,
+    "deleted_copy_move_operations": 8,
+    "raw_friend_writers": 2,
+    "public_setter_reset_callback_nullable_observer": false,
+    "explicit_getter_noexcept": false,
+    "new_runtime_freshness_guard": false,
+    "scalar_byte_reads": 1,
+    "full_flags_word_reads": 0,
+    "normal_free_sites": 2,
+    "Source_observation_DMI_is_not_Native_home_initialization": true
+  },
+  "design_proposal": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-array-resize-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_contract_audit_20261031\\raw_lifetime_contract.json",
+    "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\design\\raw_lifetime_contract.json",
+    "bytes": 53044,
+    "sha256": "bdf7363838c60490ff544d74777307a6923a0d44526602dbb866528d499dc7cf",
+    "read_in_full": true,
+    "status": "historical read-only design; implemented portion now exactly bounded by Root Source59 grant"
+  },
+  "config": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "queries": [
+    {
+      "id": "verified_count",
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "count"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage",
+      "bytes": 49,
+      "sha256": "154dbd7a91135f698c5463e0a7fafee38ac298eab34d0d8a90c871deda0d8801",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\queries\\verified_count.txt",
+      "exit_code": 0
+    },
+    {
+      "id": "destroy_proto",
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "proto",
+        "00ab5560"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage",
+      "bytes": 690,
+      "sha256": "23a988db86f84672a78383da563c6d2479d0eef6b86f1c325a1f537e1dacc66d",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\queries\\destroy_proto.txt",
+      "exit_code": 0
+    },
+    {
+      "id": "scalar_proto",
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "proto",
+        "00ab57c0"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage",
+      "bytes": 694,
+      "sha256": "3092227789c0e2baff0efce77d07f45ea17d960ed76bc3968948a2ed563b5655",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\queries\\scalar_proto.txt",
+      "exit_code": 0
+    },
+    {
+      "id": "scalar_classification",
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "lookup",
+        "00ab57c0",
+        "--limit",
+        "2"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile",
+      "bytes": 404,
+      "sha256": "4520bcd26a1734645ebff36f4ebc6a77aa3c67ff332675a649b6ecfd91999f01",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\queries\\scalar_classification.txt",
+      "exit_code": 0
+    },
+    {
+      "id": "destroy_bytes",
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00ab5560",
+        "--length",
+        "94"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage",
+      "bytes": 454,
+      "sha256": "c73963a3f8ee045d4347d199145ad720bf0b0cee7ce0f9a00b50a55d401d27ac",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\queries\\destroy_bytes.txt",
+      "exit_code": 0
+    },
+    {
+      "id": "scalar_bytes",
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00ab57c0",
+        "--length",
+        "30"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage",
+      "bytes": 146,
+      "sha256": "16fbf2eedbe8652666e755298a66945f4cd5356fe5ed01a5e2a4e019e7c30974",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\queries\\scalar_bytes.txt",
+      "exit_code": 0
+    },
+    {
+      "id": "eh_handler_bytes",
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00cb7cb8",
+        "--length",
+        "10"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage",
+      "bytes": 53,
+      "sha256": "d7c06d6bb7f8438fe3e7a7b9656e72e0431d0c9715badf025851a14bafa52931",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\queries\\eh_handler_bytes.txt",
+      "exit_code": 0
+    },
+    {
+      "id": "eh_action_bytes",
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00cb7cb0",
+        "--length",
+        "8"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage",
+      "bytes": 45,
+      "sha256": "7340190573b4afc24ee5de2794cfc08325ab0ae965335b9b15b8fb9cd996a03f",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\queries\\eh_action_bytes.txt",
+      "exit_code": 0
+    },
+    {
+      "id": "base_leaf_bytes",
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00ab21c0",
+        "--length",
+        "17"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage",
+      "bytes": 94,
+      "sha256": "b2eb88c916f5491a3223b3074d186d8793d1d10c21122c2fd7c426fa36864231",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\queries\\base_leaf_bytes.txt",
+      "exit_code": 0
+    },
+    {
+      "id": "array_free_thunk_bytes",
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00bf6989",
+        "--length",
+        "5"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage",
+      "bytes": 33,
+      "sha256": "b138fb7180fd8addcf3fbbf119e0507cbf06e17cc05937cd4e52998f3fb0b5f0",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\queries\\array_free_thunk_bytes.txt",
+      "exit_code": 0
+    },
+    {
+      "id": "owner_free_thunk_bytes",
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00bf65ac",
+        "--length",
+        "5"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage",
+      "bytes": 33,
+      "sha256": "3644837c583910bd51d56c2737cdd2ffffa8fbc16c782ca4280e7a7d67977017",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\queries\\owner_free_thunk_bytes.txt",
+      "exit_code": 0
+    },
+    {
+      "id": "funcinfo",
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00dee980",
+        "--length",
+        "36"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage",
+      "bytes": 183,
+      "sha256": "4c474bbbf970f389458c8bb58f0c6e4e39845449c262ac91483771b80fe09b59",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\queries\\funcinfo.txt",
+      "exit_code": 0
+    },
+    {
+      "id": "unwind_map",
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00dee978",
+        "--length",
+        "8"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage",
+      "bytes": 45,
+      "sha256": "36bee861dd0cf4c45b4e6b4a90ec3fc94d77677fb4d9adb9ec927a0483e34644",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\queries\\unwind_map.txt",
+      "exit_code": 0
+    }
+  ],
+  "pe": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "machine": "014c",
+    "image_base": "00400000"
+  },
+  "native": [
+    {
+      "label": "destroy",
+      "entry": "00ab5560",
+      "last": "00ab55bd",
+      "bytes": 94,
+      "sha256": "37dd9a96d30aeba7dd193c0888bdbf7fd4cc395668e6051851d10143520a5c36",
+      "hex": "6aff68b87ccb0064a100000000506489250000000051568bf157897424088d7e046a008bcfc744241800000000e8bef2ffff8b0750e8ef1314008b4c241083c404c70598bdf80000000000c7061838ce005f5e64890d0000000083c410c3",
+      "pe_offset": 7034208,
+      "instruction_count": 27,
+      "instructions": [
+        {
+          "address": "00ab5560",
+          "size": 2,
+          "bytes_hex": "6aff",
+          "asm": "push -1"
+        },
+        {
+          "address": "00ab5562",
+          "size": 5,
+          "bytes_hex": "68b87ccb00",
+          "asm": "push 0xcb7cb8"
+        },
+        {
+          "address": "00ab5567",
+          "size": 6,
+          "bytes_hex": "64a100000000",
+          "asm": "mov eax, dword ptr fs:[0]"
+        },
+        {
+          "address": "00ab556d",
+          "size": 1,
+          "bytes_hex": "50",
+          "asm": "push eax"
+        },
+        {
+          "address": "00ab556e",
+          "size": 7,
+          "bytes_hex": "64892500000000",
+          "asm": "mov dword ptr fs:[0], esp"
+        },
+        {
+          "address": "00ab5575",
+          "size": 1,
+          "bytes_hex": "51",
+          "asm": "push ecx"
+        },
+        {
+          "address": "00ab5576",
+          "size": 1,
+          "bytes_hex": "56",
+          "asm": "push esi"
+        },
+        {
+          "address": "00ab5577",
+          "size": 2,
+          "bytes_hex": "8bf1",
+          "asm": "mov esi, ecx"
+        },
+        {
+          "address": "00ab5579",
+          "size": 1,
+          "bytes_hex": "57",
+          "asm": "push edi"
+        },
+        {
+          "address": "00ab557a",
+          "size": 4,
+          "bytes_hex": "89742408",
+          "asm": "mov dword ptr [esp + 8], esi"
+        },
+        {
+          "address": "00ab557e",
+          "size": 3,
+          "bytes_hex": "8d7e04",
+          "asm": "lea edi, [esi + 4]"
+        },
+        {
+          "address": "00ab5581",
+          "size": 2,
+          "bytes_hex": "6a00",
+          "asm": "push 0"
+        },
+        {
+          "address": "00ab5583",
+          "size": 2,
+          "bytes_hex": "8bcf",
+          "asm": "mov ecx, edi"
+        },
+        {
+          "address": "00ab5585",
+          "size": 8,
+          "bytes_hex": "c744241800000000",
+          "asm": "mov dword ptr [esp + 0x18], 0"
+        },
+        {
+          "address": "00ab558d",
+          "size": 5,
+          "bytes_hex": "e8bef2ffff",
+          "asm": "call 0xab4850"
+        },
+        {
+          "address": "00ab5592",
+          "size": 2,
+          "bytes_hex": "8b07",
+          "asm": "mov eax, dword ptr [edi]"
+        },
+        {
+          "address": "00ab5594",
+          "size": 1,
+          "bytes_hex": "50",
+          "asm": "push eax"
+        },
+        {
+          "address": "00ab5595",
+          "size": 5,
+          "bytes_hex": "e8ef131400",
+          "asm": "call 0xbf6989"
+        },
+        {
+          "address": "00ab559a",
+          "size": 4,
+          "bytes_hex": "8b4c2410",
+          "asm": "mov ecx, dword ptr [esp + 0x10]"
+        },
+        {
+          "address": "00ab559e",
+          "size": 3,
+          "bytes_hex": "83c404",
+          "asm": "add esp, 4"
+        },
+        {
+          "address": "00ab55a1",
+          "size": 10,
+          "bytes_hex": "c70598bdf80000000000",
+          "asm": "mov dword ptr [0xf8bd98], 0"
+        },
+        {
+          "address": "00ab55ab",
+          "size": 6,
+          "bytes_hex": "c7061838ce00",
+          "asm": "mov dword ptr [esi], 0xce3818"
+        },
+        {
+          "address": "00ab55b1",
+          "size": 1,
+          "bytes_hex": "5f",
+          "asm": "pop edi"
+        },
+        {
+          "address": "00ab55b2",
+          "size": 1,
+          "bytes_hex": "5e",
+          "asm": "pop esi"
+        },
+        {
+          "address": "00ab55b3",
+          "size": 7,
+          "bytes_hex": "64890d00000000",
+          "asm": "mov dword ptr fs:[0], ecx"
+        },
+        {
+          "address": "00ab55ba",
+          "size": 3,
+          "bytes_hex": "83c410",
+          "asm": "add esp, 0x10"
+        },
+        {
+          "address": "00ab55bd",
+          "size": 1,
+          "bytes_hex": "c3",
+          "asm": "ret "
+        }
+      ],
+      "calls": [
+        {
+          "address": "00ab558d",
+          "size": 5,
+          "bytes_hex": "e8bef2ffff",
+          "asm": "call 0xab4850"
+        },
+        {
+          "address": "00ab5595",
+          "size": 5,
+          "bytes_hex": "e8ef131400",
+          "asm": "call 0xbf6989"
+        }
+      ]
+    },
+    {
+      "label": "scalar",
+      "entry": "00ab57c0",
+      "last": "00ab57dd",
+      "bytes": 30,
+      "sha256": "ccad096eb8286017beaac45061a030459733433a7d4c0828b9598a8034a033ea",
+      "hex": "568bf1e898fdfffff644240801740956e8d70d140083c4048bc65ec20400",
+      "pe_offset": 7034816,
+      "instruction_count": 11,
+      "instructions": [
+        {
+          "address": "00ab57c0",
+          "size": 1,
+          "bytes_hex": "56",
+          "asm": "push esi"
+        },
+        {
+          "address": "00ab57c1",
+          "size": 2,
+          "bytes_hex": "8bf1",
+          "asm": "mov esi, ecx"
+        },
+        {
+          "address": "00ab57c3",
+          "size": 5,
+          "bytes_hex": "e898fdffff",
+          "asm": "call 0xab5560"
+        },
+        {
+          "address": "00ab57c8",
+          "size": 5,
+          "bytes_hex": "f644240801",
+          "asm": "test byte ptr [esp + 8], 1"
+        },
+        {
+          "address": "00ab57cd",
+          "size": 2,
+          "bytes_hex": "7409",
+          "asm": "je 0xab57d8"
+        },
+        {
+          "address": "00ab57cf",
+          "size": 1,
+          "bytes_hex": "56",
+          "asm": "push esi"
+        },
+        {
+          "address": "00ab57d0",
+          "size": 5,
+          "bytes_hex": "e8d70d1400",
+          "asm": "call 0xbf65ac"
+        },
+        {
+          "address": "00ab57d5",
+          "size": 3,
+          "bytes_hex": "83c404",
+          "asm": "add esp, 4"
+        },
+        {
+          "address": "00ab57d8",
+          "size": 2,
+          "bytes_hex": "8bc6",
+          "asm": "mov eax, esi"
+        },
+        {
+          "address": "00ab57da",
+          "size": 1,
+          "bytes_hex": "5e",
+          "asm": "pop esi"
+        },
+        {
+          "address": "00ab57db",
+          "size": 3,
+          "bytes_hex": "c20400",
+          "asm": "ret 4"
+        }
+      ],
+      "calls": [
+        {
+          "address": "00ab57c3",
+          "size": 5,
+          "bytes_hex": "e898fdffff",
+          "asm": "call 0xab5560"
+        },
+        {
+          "address": "00ab57d0",
+          "size": 5,
+          "bytes_hex": "e8d70d1400",
+          "asm": "call 0xbf65ac"
+        }
+      ]
+    },
+    {
+      "label": "eh_handler",
+      "entry": "00cb7cb8",
+      "last": "00cb7cc1",
+      "bytes": 10,
+      "sha256": "95bd65a49556a6e25b3d26e107d115bd93e7b6fa0c48fb30fe3a42dce0fcd4c8",
+      "hex": "b880e9de00e981eef3ff",
+      "pe_offset": 9141432,
+      "instruction_count": 2,
+      "instructions": [
+        {
+          "address": "00cb7cb8",
+          "size": 5,
+          "bytes_hex": "b880e9de00",
+          "asm": "mov eax, 0xdee980"
+        },
+        {
+          "address": "00cb7cbd",
+          "size": 5,
+          "bytes_hex": "e981eef3ff",
+          "asm": "jmp 0xbf6b43"
+        }
+      ],
+      "calls": []
+    },
+    {
+      "label": "eh_action",
+      "entry": "00cb7cb0",
+      "last": "00cb7cb7",
+      "bytes": 8,
+      "sha256": "d33d47798b0aa32295126bb5a04ed1019ecd58e4873c874c718d418250094567",
+      "hex": "8b4df0e908a5dfff",
+      "pe_offset": 9141424,
+      "instruction_count": 2,
+      "instructions": [
+        {
+          "address": "00cb7cb0",
+          "size": 3,
+          "bytes_hex": "8b4df0",
+          "asm": "mov ecx, dword ptr [ebp - 0x10]"
+        },
+        {
+          "address": "00cb7cb3",
+          "size": 5,
+          "bytes_hex": "e908a5dfff",
+          "asm": "jmp 0xab21c0"
+        }
+      ],
+      "calls": []
+    },
+    {
+      "label": "base_leaf",
+      "entry": "00ab21c0",
+      "last": "00ab21d0",
+      "bytes": 17,
+      "sha256": "bdb84e8db08d046a89eb6bfdc1f905ed4b07e642b11a75d1423a813a3c686fa3",
+      "hex": "c70598bdf80000000000c7011838ce00c3",
+      "pe_offset": 7020992,
+      "instruction_count": 3,
+      "instructions": [
+        {
+          "address": "00ab21c0",
+          "size": 10,
+          "bytes_hex": "c70598bdf80000000000",
+          "asm": "mov dword ptr [0xf8bd98], 0"
+        },
+        {
+          "address": "00ab21ca",
+          "size": 6,
+          "bytes_hex": "c7011838ce00",
+          "asm": "mov dword ptr [ecx], 0xce3818"
+        },
+        {
+          "address": "00ab21d0",
+          "size": 1,
+          "bytes_hex": "c3",
+          "asm": "ret "
+        }
+      ],
+      "calls": []
+    },
+    {
+      "label": "array_free_thunk",
+      "entry": "00bf6989",
+      "last": "00bf698d",
+      "bytes": 5,
+      "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "hex": "e91efcffff",
+      "pe_offset": 8350089,
+      "instruction_count": 1,
+      "instructions": [
+        {
+          "address": "00bf6989",
+          "size": 5,
+          "bytes_hex": "e91efcffff",
+          "asm": "jmp 0xbf65ac"
+        }
+      ],
+      "calls": []
+    },
+    {
+      "label": "owner_free_thunk",
+      "entry": "00bf65ac",
+      "last": "00bf65b0",
+      "bytes": 5,
+      "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "hex": "e917380000",
+      "pe_offset": 8349100,
+      "instruction_count": 1,
+      "instructions": [
+        {
+          "address": "00bf65ac",
+          "size": 5,
+          "bytes_hex": "e917380000",
+          "asm": "jmp 0xbf9dc8"
+        }
+      ],
+      "calls": []
+    }
+  ],
+  "EH_data": [
+    {
+      "label": "funcinfo",
+      "entry": "00dee980",
+      "bytes": 36,
+      "hex": "220593190100000078e9de00000000000000000000000000000000000000000001000000",
+      "sha256": "bd1ee9c43bfd5cda8fb835028f706afb38d5ad285e98bd5a0b3627128649f585",
+      "pe_offset": 10414464
+    },
+    {
+      "label": "unwind_map",
+      "entry": "00dee978",
+      "bytes": 8,
+      "hex": "ffffffffb07ccb00",
+      "sha256": "d7d43c728bf43933617f653527d6a4267f7c989b4506a647e821f5a5b0904922",
+      "pe_offset": 10414456
+    }
+  ],
+  "EH_contract": {
+    "handler": "00cb7cb8",
+    "funcinfo": "00dee980",
+    "funcinfo_hex": "220593190100000078e9de00000000000000000000000000000000000000000001000000",
+    "funcinfo_sha256": "bd1ee9c43bfd5cda8fb835028f706afb38d5ad285e98bd5a0b3627128649f585",
+    "funcinfo_file_offset": 10414464,
+    "magic": "19930522",
+    "max_state": 1,
+    "unwind_map": "00dee978",
+    "map_hex": "ffffffffb07ccb00",
+    "map_sha256": "d7d43c728bf43933617f653527d6a4267f7c989b4506a647e821f5a5b0904922",
+    "map_file_offset": 10414456,
+    "row": "state0 -> -1/actionCB7CB0",
+    "action": "MOVECX,[EBP-10];TAILAB21C0; reads actual saved receiver home",
+    "base_leaf": "clear SAMEF8BD98 then stampCE3818; no normal base-helper CALL from5560",
+    "normal_homes": "state-1 at5560; saved owner PUSH5575/repeated557A; state0 at5585 before resize; no later state-1 store",
+    "Source_limit": "No genuine Native-Origin issuer is present. An arbitrary Source/host/unclassified escape must not run this action by catch-all; normal-only interface retains preceding effects and graph. No new unwind/cleanup/terminal policy."
+  },
+  "exports": [
+    {
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab5560\\assembly.txt",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\exports\\00ab5560\\assembly.txt",
+      "bytes": 743,
+      "sha256": "e1c4fbf0b0c506462bfb8d3c8470a832d8a741788554a400414f8e4bf006ccff"
+    },
+    {
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab5560\\metadata.json",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\exports\\00ab5560\\metadata.json",
+      "bytes": 278,
+      "sha256": "6e728fe06c7ef28b21ce8082a76201177d1758bc8213fb560a230b29538419fb"
+    },
+    {
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab57c0\\assembly.txt",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\exports\\00ab57c0\\assembly.txt",
+      "bytes": 267,
+      "sha256": "f001d2fafef965035f925f37762c801bc920285336964db9a7429bbfe725e85a"
+    },
+    {
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab57c0\\metadata.json",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\exports\\00ab57c0\\metadata.json",
+      "bytes": 279,
+      "sha256": "ca173e87998b81ef77c9abbef87e73f3d4061489479218d8622404bb041bd706"
+    },
+    {
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab21c0\\assembly.txt",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\exports\\00ab21c0\\assembly.txt",
+      "bytes": 97,
+      "sha256": "3ad265aaf08d20c790c8b41e5e0924532c351efcb5b0dd565ab87467b3632265"
+    },
+    {
+      "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab21c0\\metadata.json",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\exports\\00ab21c0\\metadata.json",
+      "bytes": 281,
+      "sha256": "68cc882b518888d956cf11dd3ba7fd46fead519857bea49575f390a613bc61ca"
+    }
+  ],
+  "CG_classification": {
+    "address": "00ab57c0",
+    "name": "CG_scalar_deleting_dtor_00ab57c0",
+    "tag": "cg_scalar_deleting_dtor",
+    "confidence": "high",
+    "high_tag_preserved": true,
+    "name_preserved": true,
+    "Source_role": "necessary uncredited normal Source ABI binding only",
+    "CG_game_owned_unique_helper_credit": 0
+  },
+  "Source_acquisition_contract": {
+    "private_nonmoving": true,
+    "Source_fresh_DMI_separate_from_Native_homes": true,
+    "actual_raw_friends_only_write": true,
+    "public_const_getters_only": true,
+    "no_setter_reset_callback_nullable_default_observer": true,
+    "caller_freshness_precondition_no_runtimeguard": true,
+    "no_ownership_Origin_cleanup_or_retirement_authority": true,
+    "entered_only_on_escape_no_catch": true,
+    "after_drain": "captured identity bits + actual backing/free entered AND normalreturned + reached tested BYTE bit0; never incoming flags/postHOME route inference"
+  },
+  "api": {
+    "destroy_arguments": 6,
+    "scalar_arguments": 7,
+    "Native_frame_bytes": 32,
+    "Native_frame_initializers": false,
+    "separate_scalar_flags_fullDWORD_home": true,
+    "scalar_reads": "one LOWBYTE AFTER whole destroy; same byte recorded/branched; no fullDWORD/postread",
+    "publication": "SAME genuine typed NativeGuiIconDelayedLoadsStorage* volatile&; no void*& adapter/newbank/getter",
+    "actual_owner": "captured16B actual backing, no typed receiver projection/profile/domain gate",
+    "free_return": "captured identity bits only even after free"
+  },
+  "lifetime_and_custody": [
+    "real16B C++ storage/actual producer/manager custody, same rawpool/currentgenerations/canonical publication/feature refs required; profile/number never grants ownership",
+    "existing individual entry lifetimes and actual array backing from genuine55; noT[n]typedarray inference, count/capacity/null/range filter or flags1/count0 narrowing",
+    "all NativeFrame/flags/Source-observation/provider/argument extents retained and disjoint from actualwrittenpayload/owner/array extents under inheritedSourceABI qualifications",
+    "when the actually tested LOWBYTE bit0 is clear, physicalowner remainsCE3818 with count0 but consumed data pointer/capacity untouched; caller owns explicit disposition, noReplay/default newlifecycle",
+    "after possible ownerfree capturedidentity is address-only; no registry/service/Host dereference of consumedowner; preceding resize/free effects survive exceptions",
+    "Nativeunwind/privateEH stackaliases/RMW/EFLAGS/fault/SEH/FH3/Origin/runtime/gameplay/activation remain unproved"
+  ],
+  "future_binding_gates": {
+    "old_service_Host_unchanged": true,
+    "Operation_make_unique_zero_init_remains_unmodified": true,
+    "genuine_feature_owner_forwarding_not_implemented": true,
+    "native_CG_no_credit": true,
+    "new_body_issuer_or_unwind_action": false,
+    "actual_providers_and_retained_graph_required": true
+  },
+  "delta_contract": {
+    "expected_name_status": [
+      [
+        "A",
+        "include/bsp/native_gui_icon_delayed_loads_lifetime_storage.hpp"
+      ],
+      [
+        "A",
+        "src/native_gui_icon_delayed_loads_lifetime_storage.cpp"
+      ],
+      [
+        "A",
+        "docs/CC16_NATIVE_GUI_ICON_DELAYED_LOADS_LIFETIME_STORAGE.md"
+      ],
+      [
+        "A",
+        "reports/cc16_native_gui_icon_delayed_loads_lifetime_storage.json"
+      ]
+    ],
+    "inverse": "Remove exactly four additions; full recursive old tracked tree equals exact base."
+  },
+  "document_pin": {
+    "path": "docs/CC16_NATIVE_GUI_ICON_DELAYED_LOADS_LIFETIME_STORAGE.md",
+    "bytes": 9928,
+    "sha256": "f95ab45d9c02b9d4f75bfe1c5d805119badd2b8479439978097fc8d1d9a24f2c"
+  },
+  "proof": {
+    "frozen_root": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031",
+    "reader": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-lifetime-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_lifetime_storage_20261031\\verify.py",
+      "utf8": "import hashlib,json,pathlib,re,subprocess,sys\nr=json.loads(pathlib.Path(sys.argv[1]).read_bytes());root=pathlib.Path.cwd()\ndef h(b):return hashlib.sha256(b).hexdigest()\ndef git(*a):return subprocess.check_output([\"git\",*a])\nchecks=0\nfor p in r[\"base_absence\"]:\n assert not git(\"ls-tree\",\"--name-only\",p[\"base_commit\"],\"--\",p[\"path\"]);checks+=1\nfor p in r[\"whole_provider_pins\"]:\n b=git(\"show\",p[\"commit\"]+\":\"+p[\"path\"]);assert len(b)==p[\"git_bytes\"] and h(b)==p[\"git_sha256\"];checks+=1\nfor p in r[\"provider_regions\"]:\n b=git(\"show\",p[\"commit\"]+\":\"+p[\"path\"]);q=b\"\".join(b.splitlines(keepends=True)[p[\"first_line\"]-1:p[\"last_line\"]]);assert len(q)==p[\"bytes\"] and h(q)==p[\"sha256\"];checks+=1\nfor p in r[\"corrected55_pins\"]:\n b=git(\"show\",p[\"commit\"]+\":\"+p[\"path\"]);assert len(b)==p[\"bytes\"] and h(b)==p[\"sha256\"] and b==git(\"show\",r[\"base_commit\"]+\":\"+p[\"path\"]);checks+=1\nfor p in r[\"new_source_pins\"]:\n b=(root/p[\"path\"]).read_bytes();assert len(b)==p[\"bytes\"] and h(b)==p[\"sha256\"] and b==pathlib.Path(p[\"frozen_path\"]).read_bytes();checks+=1\np=r[\"design_proposal\"];b=pathlib.Path(p[\"frozen_path\"]).read_bytes();assert len(b)==p[\"bytes\"] and h(b)==p[\"sha256\"];checks+=1\npe=pathlib.Path(r[\"pe\"][\"path\"]).read_bytes();assert h(pe)==r[\"pe\"][\"sha256\"];checks+=1\nfor n in r[\"native\"]+r[\"EH_data\"]:\n b=bytes.fromhex(n[\"hex\"]);assert len(b)==n[\"bytes\"] and h(b)==n[\"sha256\"] and pe[n[\"pe_offset\"]:n[\"pe_offset\"]+len(b)]==b;checks+=1\nfor n in r[\"native\"]:\n z=bytearray(n[\"bytes\"]);covered=set()\n for o in n[\"instructions\"]:\n  a=int(o[\"address\"],16)-int(n[\"entry\"],16);q=bytes.fromhex(o[\"bytes_hex\"]);assert not covered.intersection(range(a,a+len(q)));z[a:a+len(q)]=q;covered.update(range(a,a+len(q)))\n assert bytes(z)==bytes.fromhex(n[\"hex\"]) and len(covered)==n[\"bytes\"] and len(n[\"instructions\"])==n[\"instruction_count\"];checks+=1\nfor p in r[\"exports\"]+r[\"queries\"]:\n b=pathlib.Path(p[\"frozen_path\"]).read_bytes();assert len(b)==p[\"bytes\"] and h(b)==p[\"sha256\"];checks+=1\ns=(root/r[\"new_source_pins\"][1][\"path\"]).read_text();pos=[list(re.finditer(re.escape(x[\"needle\"]),s))[x[\"occurrence\"]].start() for x in r[\"source_order\"]];assert pos==sorted(pos);checks+=1\nq=(root/r[\"new_source_pins\"][0][\"path\"]).read_text();q=re.sub(r\"//[^\\n]*|/\\*.*?\\*/\",\"\",q,flags=re.S)\nassert q.count(\"= delete;\")==8 and q.count(\"= default;\")==2 and q.count(\"friend \")==2 and \"noexcept\" not in q and \"void*&\" not in q;checks+=1\np=r[\"document_pin\"];b=(root/p[\"path\"]).read_bytes();assert len(b)==p[\"bytes\"] and h(b)==p[\"sha256\"];checks+=1\ninverse=None\nif len(sys.argv)>2:\n c=sys.argv[2];assert git(\"rev-parse\",c+\"^\").decode().strip()==r[\"base_commit\"]\n owned={p.encode() for p in r[\"files\"]};b=git(\"ls-tree\",\"-r\",\"-z\",r[\"base_commit\"]);q=git(\"ls-tree\",\"-r\",\"-z\",c)\n restored=b\"\".join(x+b\"\\0\" for x in q.split(b\"\\0\") if x and x.split(b\"\\t\",1)[1] not in owned);assert restored==b\n delta=sorted(tuple(x.split(\"\\t\")) for x in git(\"diff\",\"--name-status\",r[\"base_commit\"],c).decode().splitlines());assert delta==sorted(tuple(x) for x in r[\"delta_contract\"][\"expected_name_status\"]);inverse=True;checks+=1\nassert r[\"compiled\"] is False and r[\"CG_classification\"][\"high_tag_preserved\"] is True and r[\"credit\"][\"new_CG\"]==0 and r[\"credit\"][\"NativeOrigin\"] is False\nprint(json.dumps({\"pass\":True,\"checks\":checks,\"game_dtor_ops\":27,\"CG_adapter_ops\":11,\"provider_files\":len(r[\"whole_provider_pins\"]),\"regions\":len(r[\"provider_regions\"]),\"Source_order_pins\":len(r[\"source_order\"]),\"recursive_inverse\":inverse}))\n",
+      "bytes": 3470,
+      "sha256": "9b4e03a00c13c0ee3bfee70b3d88f16ad146bf0f6b980967f7dd1d6af6017a3a",
+      "usage": "python verify.py reports/cc16_native_gui_icon_delayed_loads_lifetime_storage.json [immutable_packet_commit]",
+      "scope": "static metadata/text/PE/class/order/inverse only; no compiler/Native execution"
+    }
+  },
+  "credit": {
+    "new_Original": 0,
+    "new_vendor": 0,
+    "new_helper": 0,
+    "new_CG": 0,
+    "duplicate": 0,
+    "ABI": false,
+    "NativeOrigin": false,
+    "unwind": false,
+    "runtime": false,
+    "activation": false
+  },
+  "static_verification": {
+    "kind": "static text/Git/PE/class/epoch metadata inspection only; no compiler/test/Native execution",
+    "reader_raw_equals_embedded_utf8": true,
+    "reader_bytes": 3470,
+    "reader_sha256": "9b4e03a00c13c0ee3bfee70b3d88f16ad146bf0f6b980967f7dd1d6af6017a3a",
+    "reader_result": {
+      "pass": true,
+      "checks": 93,
+      "game_dtor_ops": 27,
+      "CG_adapter_ops": 11,
+      "provider_files": 24,
+      "regions": 21,
+      "Source_order_pins": 25,
+      "recursive_inverse": null
+    },
+    "reader_stdout_sha256": "c5fdddbb9289ad890ea35ba2a35e16501c6aff13a65cecd76a8ba50a0c0b4345",
+    "reader_stderr_bytes": 0,
+    "whole_workspace_preimages_unchanged": 24,
+    "new_source_raw_frozen_staged_git_equal": true,
+    "staged_exact_four_additions": true,
+    "recursive_tree_inverse": {
+      "removed_paths": [
+        "include/bsp/native_gui_icon_delayed_loads_lifetime_storage.hpp",
+        "src/native_gui_icon_delayed_loads_lifetime_storage.cpp",
+        "docs/CC16_NATIVE_GUI_ICON_DELAYED_LOADS_LIFETIME_STORAGE.md",
+        "reports/cc16_native_gui_icon_delayed_loads_lifetime_storage.json"
+      ],
+      "equal": true,
+      "base_bytes": 1841916,
+      "base_sha256": "703e266c7fee72c4472bf8f207133c0ba94e87eb2662487d739551a539d28092",
+      "restored_sha256": "703e266c7fee72c4472bf8f207133c0ba94e87eb2662487d739551a539d28092",
+      "qualification": "Checked after staging all four additions. Evidence payload has no old-tree effect; final commit reader/receipt is ignored external evidence."
+    }
+  }
+}
