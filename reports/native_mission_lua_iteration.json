@@ -1,0 +1,51 @@
+{
+  "schema": "bsp-native-mission-lua-iteration-v1",
+  "source_base": "941a1925e093dd07e79444c5fc39eee138c93647",
+  "design_sha256": "433336c8677e32ee6f929d12f7888faeba67e0e0d4969f14d04962691fe76344",
+  "ordinary_cpp_abi_only": true,
+  "source_sha256": {
+    "include/bsp/native_mission_lua_iteration.hpp": "1e8a94fcbf6f703a5d5501ee4f9bdb7f66ad0771964c79218cb40aeeb7ea1a3f",
+    "src/native_mission_lua_iteration.cpp": "cf4c742d45d8444f29b7ec8a6acf1dad91f75df58d9ccd7d69c55aea32f3d6b6"
+  },
+  "actual_source_lines": {"header": 30, "cpp": 51},
+  "whole_leaves": [
+    {"entry": "006B8130", "instructions": 2, "bytes": 8, "provider": "lua_pushnil", "result": "void"},
+    {"entry": "006B85B0", "instructions": 4, "bytes": 15, "provider": "lua_next", "result": "actual signed int unchanged"},
+    {"entry": "006B85F0", "instructions": 5, "bytes": 18, "provider": "lua_settop", "result": "void; incidental Native EAX not represented"}
+  ],
+  "pop_order": "CURRENT state FIRST, uint32 FFFFFFFF-count moduloDWORD, signed bitcopy, actual settop once",
+  "strict_object": {
+    "compiles": 1,
+    "exit_code": 0,
+    "machine": "014C",
+    "bytes": 1802,
+    "sha256": "91f53157d88568a84b841a80b59ff22f0264d3e2f08087ffd7c2f3312ac226ed",
+    "defined_entries": [
+      "?push_nil_native_mission_lua_006b8130@bsp@@YAXPBX@Z",
+      "?next_native_mission_lua_006b85b0@bsp@@YAHPBXH@Z",
+      "?pop_native_mission_lua_006b85f0@bsp@@YAXPBXH@Z"
+    ],
+    "genuine_capi_undefined": ["_lua_pushnil", "_lua_next", "_lua_settop"],
+    "pop_emitted_order": "state load04 before private DWORD NOT07; direct single settop tail transfer0F",
+    "private_argument_rewrite": "ordinary Source by-value slots, not a borrowed mutable HOME or Original private ABI",
+    "receipt": "local/native_mission_lua_iteration_gui_20261031/compile_receipt.json",
+    "symbols": "local/native_mission_lua_iteration_gui_20261031/actual_symbols.json",
+    "disassembly": "local/native_mission_lua_iteration_gui_20261031/disassembly.txt"
+  },
+  "actual_lua_include": "Existing read-only Root build/win32/_deps/lua511-src/src, exact provider hashes retained",
+  "provider_preservation": "local/native_mission_lua_iteration_gui_20261031/provider_preservation.json",
+  "selected_repository_provider_count": 5,
+  "actual_lua_provider_file_count": 3,
+  "all_prior_tracked_files_unchanged": true,
+  "source_ready": false,
+  "runtime_validated": false,
+  "native_body_credit": false,
+  "vendor_body_credit": false,
+  "tests_link_executable_probe_or_entry": false,
+  "limits": [
+    "Caller supplies actual readable machine and genuine linked-Source VM/stack/code/table/key/index/capacity/lifetime/provenance/synchronization",
+    "No guard/default, model cast, count clamp/zero skip/checkstack, Frame/owner, cleanup or restoration",
+    "No Original private HOME, tail/register/stack/FH3/SEH/hardware/ABI or runtime equivalence",
+    "No raw machine producer/adoption, parent886E00, collector/VM/factory/setup/loading/startup grant"
+  ]
+}
