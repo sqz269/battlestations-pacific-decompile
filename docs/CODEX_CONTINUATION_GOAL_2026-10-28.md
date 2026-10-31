@@ -1534,3 +1534,24 @@ scalarpush retains FLD32 FIRST→CURRENTstate→FSTP64→realcdeclcall, boollowB
 and actualCStringNULL/strlen semantics. Gui independent Root integration seal
 in progress for published86d; no new Source/build claim in this metadata-only
 dispatch update. Goal ACTIVE.
+
+
+Exact raw resize3d9a13db +Lua scalar pushes0fe70a75: fourwholeentries81ops/220B,
+Core9439c700 onceeach. Resize latepreserveBYTE afteractualalloc/currentLEN-DATA/
+genuineBF even0/currentfeature/freshgetter-return/DATA-LEN-NUL nowavailable as
+qualifiedSource; oldfacade unchanged/A10notissued. Scalar FLD32 FIRST before
+CURRENTstate/FSTP64 actualargs/realcdeclcall; boollowBYTE0or1/CStringrealNULL-
+strlen semantics. NumericNativeFLOAT32/RET4 correctionappend, oldrecords kept.
+FullSource+Original+independent Code/finaldbbd006d/34b4e92e/all32artifacts;
+ONE014C each9b596b17(1992B)/aad84dc1(3194B), actualCorehelpers+entriesread.
+ResizepureCMOVA/+1/privateSourceargHOME andscalarEBP-vs-ESPprologue limits
+explicit, no privatearithmetic/fault/registerABI claim. Retained2/2 19.43s,
+canonical2/2 18.36s at9439c700;4onlyforced/7realprovidersunforced/normal0forces.
+28priorrepo+5Lua preserved/twoCoreinverse/nineTextOFF. Fourqualifiedrawrecords,
+alloldshardrows/names/evidenceprefixeskept; lockedGhidra015050Z saved/refreshed4.
+No newtests/entry/duplicateNative/vendorbody/parent/VM/factory/startup/runtime.
+Source43Mainjoin pending,separatecohort checkrequired ifSourcechanges.
+NextToString42d2 actual27/38 Codeacceptedboth/ONEobjectauthorized; CallerInfo
+def4ce65 fullRootdesign20ops49B accepted/independentpending; FrameA10V3
+designonlyuses newexactresize andretains private8Bbirth/lateHOME/ownfree gate.
+reports/codex_string_resize_scalar_push_integration.json. Goal ACTIVE.
