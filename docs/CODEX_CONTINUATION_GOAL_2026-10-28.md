@@ -1614,3 +1614,12 @@ Rootkeycopy57ops165B readiness61b7 hasexactselectedD+4→41DD20 action and
 cleanup/secondary-failure contract pending, noSourcegrant or oldsemantic
 model substitution. No new build/entry/NativeABI/runtimeclaim inthis
 metadata-only dispatch update. Goal ACTIVE.
+
+New exactconstructor dependency recorded: named41E870 PRESENTfaçade isnot
+strictcurrentrawtransport (oldresize/strlen/memmove/bytes0skip/unfenced).
+Rootfull32ops83B/readinessf3c652b7 preservescapture-beforezero/actualscan/
+exactresizepreserveHOME/currentDATA-LEN+1/BFeven0; noSourcegrant. This
+affects builderstring-functiontemporaries andkeystring781430. Keycopy
+884EF0 full57ops165B61b7 separatelyneedsselectedD+4headerreturn/secondary
+cleanupcustody contract. Bothareactualtransitivegates, notmissingCRTbody
+or permissiontoalterexistingmodels. Metadata-onlyupdate/no newbuildclaim.
