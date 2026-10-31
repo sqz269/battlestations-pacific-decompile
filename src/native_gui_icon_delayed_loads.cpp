@@ -1,4 +1,8 @@
 #include "bsp/native_gui_icon_delayed_loads.hpp"
+#include "bsp/native_gui_icon_storage.hpp"
+#include "bsp/native_gui_icon_delayed_loads_getter_storage.hpp"
+#include "bsp/native_gui_icon_delayed_loads_owner_cancel_storage.hpp"
+#include "bsp/native_gui_widget_lifetime.hpp"
 #include "bsp/sound_lifetime_access.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <cstring>
@@ -47,6 +51,39 @@ struct NativeGuiIconDelayedLoadsRawScalarDispatchContext::Impl {
           pending(std::make_unique<NativeGuiIconDelayedRawScalarCallStorage>()) {}
 };
 
+// Source metadata only. User-provided constructor leaves BOTH trivial Native
+// frames default-initialized/unseeded. Acquired/Operation defaults are separate.
+struct NativeGuiIconPreparedCancelCall::Impl {
+    NativeGuiIconDelayedLoads& service;
+    void* const captured_icon;
+    NativeGuiIconStorageContext& storage;
+    NativeGuiIconDestroyAcquired& destruction;
+    NativeGuiIconDelayedLoadsGetterStorageFrame getter_frame;
+    NativeGuiIconDelayedLoadsGetterStorageAcquired getter_acquired;
+    NativeGuiIconDelayedLoadsOwnerCancelStorageFrame cancel_frame;
+    NativeGuiWidgetParentDeleteAttempt base_attempt;
+    std::unique_ptr<Operation> getter_operation;
+    std::unique_ptr<Operation> cancel_operation;
+    bool entered{}, normal_returned{}, unknown{}, owner_home_staged{};
+    // Private Source active-scope linkage only; not Native debt/disposition.
+    NativeGuiIconPreparedCancelCall* active_previous{};
+    bool active_scope_owned{}, saved_service_active{};
+    std::exception_ptr failure;
+    Impl(NativeGuiIconDelayedLoads& s, void* raw, NativeGuiIconStorageContext& c,
+        NativeGuiIconDestroyAcquired& a)
+        : service(s), captured_icon(raw), storage(c), destruction(a),
+          base_attempt(raw, c.lifetime),
+          getter_operation(std::make_unique<Operation>()),
+          cancel_operation(std::make_unique<Operation>()) {
+        getter_operation->kind = Operation::Kind::getter;
+        getter_operation->native_site = 0x00ab5700;
+        getter_operation->source_route = Operation::SourceRoute::prepared_raw_icon_getter;
+        cancel_operation->kind = Operation::Kind::cancel;
+        cancel_operation->native_site = 0x00ab50e0;
+        cancel_operation->source_route = Operation::SourceRoute::prepared_raw_icon_cancel;
+    }
+};
+
 struct NativeGuiIconDelayedLoads::Impl {
     NativeStringRawPoolContext& strings;
     NativeGuiIconDelayedLoadsStorage* volatile& publication;
@@ -61,6 +98,10 @@ struct NativeGuiIconDelayedLoads::Impl {
     const volatile std::uint32_t* const actual_feature_word;
     // Own only adopted C++ call storage, never the Native receiver/backing.
     std::unique_ptr<NativeGuiIconDelayedRawScalarCallStorage> retained_raw_scalar_call;
+    // Source records only; entering any selected node leaves explicit debt.
+    std::unique_ptr<NativeGuiIconPreparedCancelCall> prepared_icon_calls;
+    // Current prepared raw-callee scope; legacy active without this is unadmitted.
+    NativeGuiIconPreparedCancelCall* prepared_active_top{};
 
     Impl(NativeStringRawPoolContext& strings_in,
         NativeGuiIconDelayedLoadsStorage* volatile& publication_in)
@@ -309,6 +350,163 @@ void* NativeGuiIconDelayedLoads::delete_registered_raw_storage_00ab57c0(
     }
 }
 
+NativeGuiIconPreparedCancelCall::NativeGuiIconPreparedCancelCall(std::unique_ptr<Impl> p)
+    : impl_(std::move(p)) {}
+NativeGuiIconPreparedCancelCall::~NativeGuiIconPreparedCancelCall() = default;
+bool NativeGuiIconPreparedCancelCall::entered() const { return impl_->entered; }
+bool NativeGuiIconPreparedCancelCall::normal_returned() const { return impl_->normal_returned; }
+bool NativeGuiIconPreparedCancelCall::unknown_escape() const { return impl_->unknown; }
+bool NativeGuiIconPreparedCancelCall::requires_process_retention() const {
+    return impl_->entered || impl_->unknown; // No normal-disposition receipt here.
+}
+const NativeGuiIconDelayedLoadsOperation& NativeGuiIconPreparedCancelCall::getter_operation() const {
+    return *impl_->getter_operation;
+}
+const NativeGuiIconDelayedLoadsOperation& NativeGuiIconPreparedCancelCall::cancel_operation() const {
+    return *impl_->cancel_operation;
+}
+const NativeGuiIconDelayedLoadsGetterStorageAcquired& NativeGuiIconPreparedCancelCall::getter_acquired() const {
+    return impl_->getter_acquired;
+}
+const NativeGuiWidgetParentDeleteAttempt& NativeGuiIconPreparedCancelCall::base_attempt() const {
+    return impl_->base_attempt;
+}
+void NativeGuiIconPreparedCancelCall::enter(void* raw, NativeGuiIconStorageContext& c,
+    NativeGuiIconDestroyAcquired& a) {
+    const bool prior = impl_->entered || impl_->unknown;
+    impl_->entered = true; // DENIAL/debt before even a late admission can escape.
+    require(!prior, "prepared Icon call cannot replay entered work");
+    require(raw == impl_->captured_icon && &c == &impl_->storage && &a == &impl_->destruction,
+        "prepared Icon call requires its exact retained parent/context/record");
+    require(&c.delayed == &impl_->service && &c.strings == &impl_->service.impl_->strings &&
+        c.singleton_deletion.gui_icon_delayed_loads == &impl_->service,
+        "prepared Icon requires its SAME actual service/pool/deletion bindings");
+    require(prepared_scope_available() && !impl_->service.impl_->failed &&
+        impl_->service.impl_->actual_feature_word != nullptr,
+        "prepared Icon requires its coherent cold canonical service");
+    require(!impl_->base_attempt.entered(), "prepared Icon base attempt is one-shot");
+}
+void NativeGuiIconPreparedCancelCall::stage_owner_push(void* captured) {
+    require(!impl_->owner_home_staged && captured == impl_->captured_icon,
+        "prepared Icon owner PUSH must occur once for its captured receiver");
+    static_cast<volatile std::uint32_t&>(impl_->cancel_frame.owner_argument_home) = static_cast<std::uint32_t>(
+        reinterpret_cast<std::uintptr_t>(captured)); // Actual AB5E93, BEFORE getter.
+    impl_->owner_home_staged = true; // No subsequent HOME restage/snapshot.
+}
+bool NativeGuiIconPreparedCancelCall::prepared_scope_available() const {
+    const auto& s = *impl_->service.impl_;
+    auto* const top = s.prepared_active_top;
+    if (!s.active) return top == nullptr;
+    // Legacy/mixed active with no owned prepared top remains unadmitted.
+    return top && top->impl_->active_scope_owned &&
+        &top->impl_->service == &impl_->service;
+}
+void NativeGuiIconPreparedCancelCall::push_prepared_scope() {
+    require(!impl_->active_scope_owned && prepared_scope_available(),
+        "prepared callee cannot reuse its active slot or enter a legacy-mixed scope");
+    auto& s = *impl_->service.impl_;
+    impl_->active_previous = s.prepared_active_top;
+    impl_->saved_service_active = s.active;
+    impl_->active_scope_owned = true;
+    s.prepared_active_top = this;
+    s.active = true; // Old legacy invoke still rejects mixed-route entry.
+}
+void NativeGuiIconPreparedCancelCall::restore_prepared_scope() {
+    // Exact private LIFO owner invariant: this successful push is the current
+    // top, and inner Source scopes restore before any escape reaches this one.
+    // Only pointer/bool stores, no callback/allocation/cleanup or Native effect.
+    auto& s = *impl_->service.impl_;
+    s.prepared_active_top = impl_->active_previous;
+    s.active = impl_->saved_service_active;
+    impl_->active_scope_owned = false; // Slot reusable by this node's next callee;
+    // entered/provider debt and all prior call records remain unchanged.
+}
+NativeGuiIconDelayedLoadsStorage* NativeGuiIconPreparedCancelCall::call_getter() {
+    auto& s = *impl_->service.impl_;
+    require(impl_->entered && impl_->owner_home_staged && prepared_scope_available() && !s.failed,
+        "prepared Icon getter requires its staged actual caller epoch");
+    auto& op = *impl_->getter_operation;
+    require(op.phase == Phase::fresh, "prepared getter record cannot replay");
+    push_prepared_scope();
+    op.phase = Phase::prepared_call;
+    try {
+        op.raw_call_entered = true;
+        auto* const result = get_native_gui_icon_delayed_loads_storage_00ab5700(
+            s.publication, s.strings.actual_manager_publication_01090aa0,
+            impl_->getter_frame, impl_->getter_acquired);
+        op.actual = result; // Passive return identity only, NEVER registered_identity.
+        op.raw_call_returned = true;
+        op.phase = Phase::complete;
+        restore_prepared_scope();
+        return result;
+    } catch (...) {
+        restore_prepared_scope(); // Restore outer ownership BEFORE diagnostics.
+        op.phase = Phase::failed;
+        s.failed = true;
+        op.failure = s.failure = std::current_exception();
+        throw; // Raw65 retained guard/debt, no Native cleanup permission.
+    }
+}
+void NativeGuiIconPreparedCancelCall::call_cancel(NativeGuiIconDelayedLoadsStorage* captured) {
+    auto& s = *impl_->service.impl_;
+    require(impl_->entered && impl_->owner_home_staged && prepared_scope_available() && !s.failed &&
+        impl_->getter_operation->raw_call_returned,
+        "prepared Icon cancellation requires its normally returned getter epoch");
+    auto& op = *impl_->cancel_operation;
+    require(op.phase == Phase::fresh, "prepared cancellation record cannot replay");
+    op.actual = captured; // Argument identity, not current-holder custody.
+    push_prepared_scope();
+    op.phase = Phase::prepared_call;
+    try {
+        op.raw_call_entered = true;
+        cancel_native_gui_icon_delayed_loads_owner_storage_00ab50e0(
+            captured, impl_->cancel_frame, s.strings, *s.actual_feature_word);
+        op.raw_call_returned = true;
+        op.phase = Phase::complete;
+        restore_prepared_scope();
+    } catch (...) {
+        restore_prepared_scope(); // Restore outer ownership BEFORE diagnostics.
+        op.phase = Phase::failed;
+        s.failed = true;
+        op.failure = s.failure = std::current_exception();
+        throw;
+    }
+}
+void NativeGuiIconPreparedCancelCall::call_base(void* raw, NativeGuiWidgetLifetimeContext& c) {
+    destroy_native_gui_widget_base_00aa9730(raw, c, impl_->base_attempt);
+}
+void NativeGuiIconPreparedCancelCall::normal_return() {
+    impl_->normal_returned = true; // Does NOT discharge selected-node/provider debt.
+}
+void NativeGuiIconPreparedCancelCall::note_unknown() {
+    impl_->unknown = true;
+    impl_->failure = std::current_exception(); // Diagnostics, never origin/identity proof.
+    auto& s = *impl_->service.impl_;
+    s.failure = impl_->failure;
+    s.failed = true; // Sticky selected Source-boundary failure, not Native callee origin.
+    // Do not clear another invocation's active flag or rewrite completed callee records.
+}
+NativeGuiIconPreparedCancelCall& NativeGuiIconDelayedLoads::prepare_icon_cancel_call(
+    void* raw, NativeGuiIconStorageContext& c, NativeGuiIconDestroyAcquired& a) {
+    require(!impl_->active && !impl_->failed && impl_->actual_feature_word != nullptr,
+        "prepared Icon call requires cold canonical service admission");
+    require(raw && reinterpret_cast<std::uintptr_t>(raw) % 4u == 0 &&
+        &c.delayed == this && &c.strings == &impl_->strings &&
+        c.singleton_deletion.gui_icon_delayed_loads == this,
+        "prepared Icon call requires aligned actual storage and SAME real domains");
+    require(!a.started && a.phase == NativeGuiIconDestroyAcquired::Phase::fresh,
+        "prepared Icon call requires its fresh genuine retained destruction record");
+    for (auto* p = impl_->prepared_icon_calls.get(); p; p = p->next_.get())
+        require(&p->impl_->destruction != &a, "one retained prepared call per destruction record");
+    auto prepared = std::unique_ptr<NativeGuiIconPreparedCancelCall>(
+        new NativeGuiIconPreparedCancelCall(
+            std::make_unique<NativeGuiIconPreparedCancelCall::Impl>(*this, raw, c, a)));
+    // All metadata allocations/real base-attempt construction finished cold.
+    prepared->next_ = std::move(impl_->prepared_icon_calls);
+    impl_->prepared_icon_calls = std::move(prepared); // Permanent fixed-address anchor.
+    return *impl_->prepared_icon_calls;
+}
+
 NativeGuiIconDelayedLoads::NativeGuiIconDelayedLoads(NativeStringRawPoolContext& strings,
     NativeGuiIconDelayedLoadsStorage* volatile& publication)
     : impl_(std::make_unique<Impl>(strings, publication)) {}
@@ -331,6 +529,8 @@ void* NativeGuiIconDelayedLoads::delete_registered_00ab57c0(void* raw, std::uint
         [&] { return impl_->scalar_delete(raw, flags); });
 }
 bool NativeGuiIconDelayedLoads::requires_process_retention() const noexcept {
+    for (auto* p = impl_->prepared_icon_calls.get(); p; p = p->next_.get())
+        if (p->impl_->entered || p->impl_->unknown) return true;
     return impl_->active || impl_->failed || impl_->registered_identity != nullptr;
 }
 const NativeGuiIconDelayedLoadsOperation* NativeGuiIconDelayedLoads::last_operation() const noexcept {

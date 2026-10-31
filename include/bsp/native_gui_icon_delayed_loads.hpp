@@ -30,7 +30,7 @@ struct NativeGuiIconDelayedLoadsOperation {
     enum class Kind { getter, cancel, scalar_delete };
     enum class Phase { fresh, manager_guard, allocation, publication, registration,
         cancel, shrink, backing_free, publication_clear, base_profile, object_free,
-        complete, failed };
+        complete, failed, prepared_call };
     Kind kind{};
     Phase phase{Phase::fresh};
     std::uint32_t native_site{};
@@ -43,13 +43,20 @@ struct NativeGuiIconDelayedLoadsOperation {
     std::exception_ptr failure;
     // Source-only route/status, never Native phase/Origin/ownership authority.
     // No Native homes are embedded: make_unique<Operation>() stays unchanged.
-    enum class SourceRoute { legacy, prepared_raw_scalar };
+    enum class SourceRoute { legacy, prepared_raw_scalar,
+        prepared_raw_icon_getter, prepared_raw_icon_cancel };
     SourceRoute source_route{SourceRoute::legacy};
     bool raw_call_entered{}, raw_call_returned{};
     NativeGuiIconDelayedLoadsScalarStorageAcquired raw_scalar_acquired;
 };
 
 class NativeGuiIconDelayedLoadsRawScalarDispatchContext;
+class NativeGuiIconPreparedCancelCall;
+struct NativeGuiIconStorageContext;
+struct NativeGuiIconDestroyAcquired;
+struct NativeGuiWidgetLifetimeContext;
+class NativeGuiWidgetParentDeleteAttempt;
+class NativeGuiIconDelayedLoadsGetterStorageAcquired;
 
 // One deferred producer/terminal service for the application's SAME external
 // F8BD98 cell and actual string/01090AA0 manager domain. Constructor admits a
@@ -104,10 +111,18 @@ public:
     void* delete_registered_raw_storage_00ab57c0(void* actual_popped_identity,
         NativeGuiIconDelayedLoadsRawScalarDispatchContext&);
 
+    // Explicit cold caller support. Allocates/adopts only Source records before
+    // enclosing Native effects; no getter, HOME store or owner admission here.
+    NativeGuiIconPreparedCancelCall& prepare_icon_cancel_call(void* actual_icon,
+        NativeGuiIconStorageContext&, NativeGuiIconDestroyAcquired&);
+
     bool requires_process_retention() const noexcept;
+    // Legacy/manager operation only. Prepared calls retain their TWO own records
+    // through NativeGuiIconPreparedCancelCall; they never replace this slot.
     const NativeGuiIconDelayedLoadsOperation* last_operation() const noexcept;
     const std::exception_ptr& failure() const noexcept;
 private:
+    friend class NativeGuiIconPreparedCancelCall;
     struct Impl;
     std::unique_ptr<Impl> impl_;
 };
@@ -156,4 +171,49 @@ bool gui_icon_raw_scalar_denies_manager_cleanup(
     const NativeGuiIconDelayedLoadsRawScalarDispatchContext&);
 void note_gui_icon_raw_scalar_unknown_escape(
     NativeGuiIconDelayedLoadsRawScalarDispatchContext&);
+// Explicit cold Source support only. No actual owner/current-holder/Origin
+// authority is created by this service-owned nonmoving call record. Once an
+// invocation enters, provider/disposition debt remains even after normal return;
+// no reset, normal drain admission or retirement/discharge exists here.
+class NativeGuiIconPreparedCancelCall final {
+public:
+    ~NativeGuiIconPreparedCancelCall();
+    NativeGuiIconPreparedCancelCall(const NativeGuiIconPreparedCancelCall&) = delete;
+    NativeGuiIconPreparedCancelCall& operator=(const NativeGuiIconPreparedCancelCall&) = delete;
+    NativeGuiIconPreparedCancelCall(NativeGuiIconPreparedCancelCall&&) = delete;
+    NativeGuiIconPreparedCancelCall& operator=(NativeGuiIconPreparedCancelCall&&) = delete;
+    bool entered() const;
+    bool normal_returned() const;
+    bool unknown_escape() const;
+    bool requires_process_retention() const;
+    const NativeGuiIconDelayedLoadsOperation& getter_operation() const;
+    const NativeGuiIconDelayedLoadsOperation& cancel_operation() const;
+    const NativeGuiIconDelayedLoadsGetterStorageAcquired& getter_acquired() const;
+    const NativeGuiWidgetParentDeleteAttempt& base_attempt() const;
+private:
+    friend class NativeGuiIconDelayedLoads;
+    friend void destroy_native_gui_icon_prepared_00ab5e70(void*,
+        NativeGuiIconStorageContext&, NativeGuiIconDestroyAcquired&,
+        NativeGuiIconPreparedCancelCall&);
+    friend void* delete_native_gui_icon_prepared_00ab6100(void*,
+        const volatile std::uint32_t&, NativeGuiIconStorageContext&,
+        NativeGuiIconDestroyAcquired&, NativeGuiIconPreparedCancelCall&);
+    struct Impl;
+    explicit NativeGuiIconPreparedCancelCall(std::unique_ptr<Impl>);
+    std::unique_ptr<Impl> impl_;
+    std::unique_ptr<NativeGuiIconPreparedCancelCall> next_;
+    void enter(void*, NativeGuiIconStorageContext&, NativeGuiIconDestroyAcquired&);
+    void stage_owner_push(void* captured_icon);
+    bool prepared_scope_available() const;
+    void push_prepared_scope();
+    void restore_prepared_scope();
+    NativeGuiIconDelayedLoadsStorage* call_getter();
+    void call_cancel(NativeGuiIconDelayedLoadsStorage* captured_getter_result);
+    void call_base(void*, NativeGuiWidgetLifetimeContext&);
+    void normal_return();
+    void note_unknown();
+    void destroy_icon_body_00ab5e70(void*, NativeGuiIconStorageContext&,
+        NativeGuiIconDestroyAcquired&);
+};
+
 } // namespace bsp
