@@ -2535,3 +2535,6 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_cor
 
 # Raw Icon state getter support; existing HIGH STL/CG credit remains unchanged.
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_gui_icon_state_getter_storage.cpp)
+
+# Raw Icon state allocation support; Native exception ABI and callers remain gated.
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_gui_icon_state_allocation_storage.cpp)
