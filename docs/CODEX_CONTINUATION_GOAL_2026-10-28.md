@@ -1599,3 +1599,18 @@ isPRESENT (native_render_batch_keys.hpp): ST0/actualwordaddressECX/lowEAX;
 fallback7456 has64bitpair. B69130narrowedF32bridge notsubstitute. Remaining
 directbridge/design/Originalresult-width-caller-demand admission explicit,
 not missingvendorbody. No newSource/cast/defaultFPpolicy grant.
+
+Next Source-only wave: integer6B8040 design0d1b qualified uint32EAX-bits
+projection acceptedRoot+Game; currentdirectDWORDdemand8afe, fullOriginalwide/
+indirectABI open; realtonumberST0→PRESENTBF7420/currentactualwordaddress,
+NOF32/F64snapshot/cast/lua_tointeger/FPpolicy. Framedrafts fourNEW files.
+Keyinteger7814E0 full27ops84B design1f5e acceptedRoot+Gui: LEN-first gate,
+LEN0noDATAaccess/service/clear, lateHOME; LENnonzero capturedpointer/initial
+length+1 beforeoptionalgetter/return, lateHOME thenDATA0/LEN0/word/kind0.
+Gui drafts fourNEWfiles. NOcompiler beforeactualCode reviews/ONEobject gate.
+Wholebuilder188ops759B addendum5fdb explicitly NOTPROVIDER_CLOSED; current
+Mainleaves present but key/pair/copy/insert/tree/nested/frame/VM/custodyremain.
+Rootkeycopy57ops165B readiness61b7 hasexactselectedD+4→41DD20 action and
+cleanup/secondary-failure contract pending, noSourcegrant or oldsemantic
+model substitution. No new build/entry/NativeABI/runtimeclaim inthis
+metadata-only dispatch update. Goal ACTIVE.
