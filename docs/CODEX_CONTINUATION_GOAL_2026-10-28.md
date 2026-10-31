@@ -1523,3 +1523,14 @@ even0/currentfeatureRef/failurecustody is separateprerequisite; existingresize
 facade unchanged. FrameexactresizeDESIGN andcc9scalarpushDESIGN underway,
 no Sourceauthorizationforthoseyet. reports/codex_mission_lua_iter_convert_integration.json.
 Goal ACTIVE.
+
+Next Source-only wave authorized after BOTH primary and independent full-design
+acceptance: exact raw41DD40 cbbe2f4e (peer d78d373a), Frame; MissionLua
+scalarpush f0780f58 (peer2f54fa1c), Game. BaseMain86d9695ba, four NEW files
+each. Actual Code hashes/reviews must precede any ONE object authorization;
+NO configure/compiler/link/test/entry is authorized yet. Exactresize retains
+lateBYTEHOME/currentfields/genuineBF even0/currentfeature/no localrefund;
+scalarpush retains FLD32 FIRST→CURRENTstate→FSTP64→realcdeclcall, boollowBYTE
+and actualCStringNULL/strlen semantics. Gui independent Root integration seal
+in progress for published86d; no new Source/build claim in this metadata-only
+dispatch update. Goal ACTIVE.
