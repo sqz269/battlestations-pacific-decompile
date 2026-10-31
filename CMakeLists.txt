@@ -500,3 +500,7 @@ target_sources(bsp_core PRIVATE src/native_mission_lua_predicates.cpp)
 target_sources(bsp_core PRIVATE src/native_lua_variant_number_setter.cpp)
 
 target_sources(bsp_core PRIVATE src/native_lua_variant_scalar_setters.cpp)
+
+target_sources(bsp_core PRIVATE src/native_mission_lua_iteration.cpp)
+
+target_sources(bsp_core PRIVATE src/native_mission_lua_conversions.cpp)
