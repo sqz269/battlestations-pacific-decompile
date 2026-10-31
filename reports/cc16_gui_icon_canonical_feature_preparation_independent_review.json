@@ -1,0 +1,921 @@
+{
+  "schema_version": 1,
+  "packet": "codex-gui-icon-canonical-feature-preparation-independent-review",
+  "created_utc": "2026-10-31T10:11:48.069926+00:00",
+  "author_packet": "69e4b0107bc3c1d3de9f2f67e4932d666de842a4",
+  "author_parent": "1f113e1203aae6200f543c0be21b10ca637bea99",
+  "review_worktree_base": "1f113e1203aae6200f543c0be21b10ca637bea99",
+  "verdict": "zero actionable bounded Source/API findings; primary integration/build review only",
+  "findings": [],
+  "source_pairs": [
+    {
+      "path": "src/game_hosts.cpp",
+      "before": {
+        "path": "src/game_hosts.cpp",
+        "bytes": 187000,
+        "sha256": "a4b3bf1edb199d577fa689349329e044b38f593ecd4c6aa4092be39d0b744fe5",
+        "git_blob_sha1": "0ea37f57bf4642cf526fad3fb585ac8b7b9d47ad"
+      },
+      "after": {
+        "path": "src/game_hosts.cpp",
+        "bytes": 187111,
+        "sha256": "e09bddd9f9c1773141faff04883776108aa436abfd24f5611d7a79049a4d0407",
+        "git_blob_sha1": "de57f1564710f7d355fc426759b6b5e866a51aa7"
+      },
+      "commit": "69e4b0107bc3c1d3de9f2f67e4932d666de842a4",
+      "raw_equals_Git_LF": true,
+      "raw_equals_approved_candidate": true
+    },
+    {
+      "path": "include/bsp/game_native_gui_icon_process.hpp",
+      "before": {
+        "path": "include/bsp/game_native_gui_icon_process.hpp",
+        "bytes": 3257,
+        "sha256": "be7972224e23dd7f4871ae5359c585227c5c31f4028b99d9c3e2e4d4e8b77ae1",
+        "git_blob_sha1": "edad517eacdc50d3effee7655d58e26545a8bb45"
+      },
+      "after": {
+        "path": "include/bsp/game_native_gui_icon_process.hpp",
+        "bytes": 3975,
+        "sha256": "64ea6df52c7f26f2a25fa8f485bb6022116178887d828f031fe8c5b4413db441",
+        "git_blob_sha1": "86ea513e79e4b8c15be217b3a5daa744171ea94d"
+      },
+      "commit": "69e4b0107bc3c1d3de9f2f67e4932d666de842a4",
+      "raw_equals_Git_LF": true,
+      "raw_equals_approved_candidate": true
+    },
+    {
+      "path": "src/game_native_gui_icon_process.cpp",
+      "before": {
+        "path": "src/game_native_gui_icon_process.cpp",
+        "bytes": 3064,
+        "sha256": "cc1d80e034d36fa28899a91473a863807b3c1be29f8c0825d87d35266665316e",
+        "git_blob_sha1": "de4e8cb628c4dd2f16dfdcbd2fb9c7fc2ab3eb35"
+      },
+      "after": {
+        "path": "src/game_native_gui_icon_process.cpp",
+        "bytes": 4452,
+        "sha256": "771ae831af661e9420fb8a58d67bd10511456ae83e9764acb3245ded32b71655",
+        "git_blob_sha1": "3bf20aa83282178518eb25f098337d6928af3c48"
+      },
+      "commit": "69e4b0107bc3c1d3de9f2f67e4932d666de842a4",
+      "raw_equals_Git_LF": true,
+      "raw_equals_approved_candidate": true
+    },
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "before": {
+        "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+        "bytes": 4505,
+        "sha256": "a6fa7dcce062f26c77664364aa3a5e4525ab3ae2fc320016f07524a55e746f6d",
+        "git_blob_sha1": "fb8293fbf779f87c01708ffe3c1055e28c46c733"
+      },
+      "after": {
+        "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+        "bytes": 4950,
+        "sha256": "3af86581fd85f019ea9501d6b7a8129960fcdbd8f29870d1590d2a9ec6b03756",
+        "git_blob_sha1": "49ef9bcadde56f0b6013ea7985b76cddee93696e"
+      },
+      "commit": "69e4b0107bc3c1d3de9f2f67e4932d666de842a4",
+      "raw_equals_Git_LF": true,
+      "raw_equals_approved_candidate": true
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "before": {
+        "path": "src/native_gui_icon_delayed_loads.cpp",
+        "bytes": 10345,
+        "sha256": "3773ac03dd39bc78f642ebea942d0e074051814c2a55395b7bc246c703f50997",
+        "git_blob_sha1": "bcedf161bdb50667d954ca7f0e113d6842682dbb"
+      },
+      "after": {
+        "path": "src/native_gui_icon_delayed_loads.cpp",
+        "bytes": 11356,
+        "sha256": "2490cc6f33ee5d5b63149caf580d4c7ee4771462de7223922008afec4e5efb99",
+        "git_blob_sha1": "6416398799f3f1096de4c0b6368e7907658c51f9"
+      },
+      "commit": "69e4b0107bc3c1d3de9f2f67e4932d666de842a4",
+      "raw_equals_Git_LF": true,
+      "raw_equals_approved_candidate": true
+    }
+  ],
+  "seven_path_pins": [
+    {
+      "path": "src/game_hosts.cpp",
+      "bytes": 187111,
+      "sha256": "e09bddd9f9c1773141faff04883776108aa436abfd24f5611d7a79049a4d0407",
+      "git_blob": "de57f1564710f7d355fc426759b6b5e866a51aa7"
+    },
+    {
+      "path": "include/bsp/game_native_gui_icon_process.hpp",
+      "bytes": 3975,
+      "sha256": "64ea6df52c7f26f2a25fa8f485bb6022116178887d828f031fe8c5b4413db441",
+      "git_blob": "86ea513e79e4b8c15be217b3a5daa744171ea94d"
+    },
+    {
+      "path": "src/game_native_gui_icon_process.cpp",
+      "bytes": 4452,
+      "sha256": "771ae831af661e9420fb8a58d67bd10511456ae83e9764acb3245ded32b71655",
+      "git_blob": "3bf20aa83282178518eb25f098337d6928af3c48"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "bytes": 4950,
+      "sha256": "3af86581fd85f019ea9501d6b7a8129960fcdbd8f29870d1590d2a9ec6b03756",
+      "git_blob": "49ef9bcadde56f0b6013ea7985b76cddee93696e"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "bytes": 11356,
+      "sha256": "2490cc6f33ee5d5b63149caf580d4c7ee4771462de7223922008afec4e5efb99",
+      "git_blob": "6416398799f3f1096de4c0b6368e7907658c51f9"
+    },
+    {
+      "path": "docs/CC16_GUI_ICON_CANONICAL_FEATURE_PREPARATION.md",
+      "bytes": 6918,
+      "sha256": "55a04d838168f8d14d7eea86cc51e129ab4aa60c7811b74dfc1487f4d06b91e3",
+      "git_blob": "2e840cb31707137e73b2a6f522ec21d1a2ddb4ef"
+    },
+    {
+      "path": "reports/cc16_gui_icon_canonical_feature_preparation.json",
+      "bytes": 66682,
+      "sha256": "c2fb02feceea957d37a70e4b873f87ab7a113bc4f6bad340d819b2b6dd5b5885",
+      "git_blob": "ae4b40ac14075148d502501f66c0bf579a642be8"
+    }
+  ],
+  "approved_proposal": {
+    "patch_bytes": 8364,
+    "patch_sha256": "fa1947b1af25b7adb8847261c332301256d7ef36f36e30de7b8ada766887aa9b",
+    "review_sha256": "80fdfda6571f35c28e16b1c1d103674a5cf0732780e6375c3e597788ee074391",
+    "static_proof_sha256": "e85365f689e91dc891aad7176aa51ed68ecb1213179c3cbd2746061cd1fb4a22"
+  },
+  "early_proposal_review": {
+    "patch_sha256": "fa1947b1af25b7adb8847261c332301256d7ef36f36e30de7b8ada766887aa9b",
+    "review_sha256": "80fdfda6571f35c28e16b1c1d103674a5cf0732780e6375c3e597788ee074391",
+    "assertions": 344,
+    "findings": [],
+    "no_official_receipt_at_draft_epoch": true
+  },
+  "scope": {
+    "modified_production_paths": 5,
+    "author_evidence_additions": 2,
+    "seams": 12,
+    "protected_regions": 7,
+    "unchanged_whole_inputs": 20,
+    "bounded_Source_binding_sites": 12,
+    "new_Native_callers": 0
+  },
+  "recursive_inverse": {
+    "complete": true,
+    "base_tree": "cd707f66d121ec4dbb3c0047f8b36cea43e0a711",
+    "exact_5M_2A_delta": true,
+    "no_held_ancestry_merge": true
+  },
+  "static_proof": {
+    "sources": [
+      {
+        "path": "src/game_hosts.cpp",
+        "before": {
+          "path": "src/game_hosts.cpp",
+          "bytes": 187000,
+          "sha256": "a4b3bf1edb199d577fa689349329e044b38f593ecd4c6aa4092be39d0b744fe5",
+          "git_blob_sha1": "0ea37f57bf4642cf526fad3fb585ac8b7b9d47ad"
+        },
+        "after": {
+          "path": "src/game_hosts.cpp",
+          "bytes": 187111,
+          "sha256": "e09bddd9f9c1773141faff04883776108aa436abfd24f5611d7a79049a4d0407",
+          "git_blob_sha1": "de57f1564710f7d355fc426759b6b5e866a51aa7"
+        },
+        "base_commit": "1f113e1203aae6200f543c0be21b10ca637bea99",
+        "raw_CR_count": 0,
+        "raw_equals_approved_candidate": true,
+        "frozen_preimage": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\preimages\\src\\game_hosts.cpp",
+        "frozen_postimage": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\postimages\\src\\game_hosts.cpp"
+      },
+      {
+        "path": "include/bsp/game_native_gui_icon_process.hpp",
+        "before": {
+          "path": "include/bsp/game_native_gui_icon_process.hpp",
+          "bytes": 3257,
+          "sha256": "be7972224e23dd7f4871ae5359c585227c5c31f4028b99d9c3e2e4d4e8b77ae1",
+          "git_blob_sha1": "edad517eacdc50d3effee7655d58e26545a8bb45"
+        },
+        "after": {
+          "path": "include/bsp/game_native_gui_icon_process.hpp",
+          "bytes": 3975,
+          "sha256": "64ea6df52c7f26f2a25fa8f485bb6022116178887d828f031fe8c5b4413db441",
+          "git_blob_sha1": "86ea513e79e4b8c15be217b3a5daa744171ea94d"
+        },
+        "base_commit": "1f113e1203aae6200f543c0be21b10ca637bea99",
+        "raw_CR_count": 0,
+        "raw_equals_approved_candidate": true,
+        "frozen_preimage": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\preimages\\include\\bsp\\game_native_gui_icon_process.hpp",
+        "frozen_postimage": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\postimages\\include\\bsp\\game_native_gui_icon_process.hpp"
+      },
+      {
+        "path": "src/game_native_gui_icon_process.cpp",
+        "before": {
+          "path": "src/game_native_gui_icon_process.cpp",
+          "bytes": 3064,
+          "sha256": "cc1d80e034d36fa28899a91473a863807b3c1be29f8c0825d87d35266665316e",
+          "git_blob_sha1": "de4e8cb628c4dd2f16dfdcbd2fb9c7fc2ab3eb35"
+        },
+        "after": {
+          "path": "src/game_native_gui_icon_process.cpp",
+          "bytes": 4452,
+          "sha256": "771ae831af661e9420fb8a58d67bd10511456ae83e9764acb3245ded32b71655",
+          "git_blob_sha1": "3bf20aa83282178518eb25f098337d6928af3c48"
+        },
+        "base_commit": "1f113e1203aae6200f543c0be21b10ca637bea99",
+        "raw_CR_count": 0,
+        "raw_equals_approved_candidate": true,
+        "frozen_preimage": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\preimages\\src\\game_native_gui_icon_process.cpp",
+        "frozen_postimage": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\postimages\\src\\game_native_gui_icon_process.cpp"
+      },
+      {
+        "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+        "before": {
+          "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+          "bytes": 4505,
+          "sha256": "a6fa7dcce062f26c77664364aa3a5e4525ab3ae2fc320016f07524a55e746f6d",
+          "git_blob_sha1": "fb8293fbf779f87c01708ffe3c1055e28c46c733"
+        },
+        "after": {
+          "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+          "bytes": 4950,
+          "sha256": "3af86581fd85f019ea9501d6b7a8129960fcdbd8f29870d1590d2a9ec6b03756",
+          "git_blob_sha1": "49ef9bcadde56f0b6013ea7985b76cddee93696e"
+        },
+        "base_commit": "1f113e1203aae6200f543c0be21b10ca637bea99",
+        "raw_CR_count": 0,
+        "raw_equals_approved_candidate": true,
+        "frozen_preimage": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\preimages\\include\\bsp\\native_gui_icon_delayed_loads.hpp",
+        "frozen_postimage": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\postimages\\include\\bsp\\native_gui_icon_delayed_loads.hpp"
+      },
+      {
+        "path": "src/native_gui_icon_delayed_loads.cpp",
+        "before": {
+          "path": "src/native_gui_icon_delayed_loads.cpp",
+          "bytes": 10345,
+          "sha256": "3773ac03dd39bc78f642ebea942d0e074051814c2a55395b7bc246c703f50997",
+          "git_blob_sha1": "bcedf161bdb50667d954ca7f0e113d6842682dbb"
+        },
+        "after": {
+          "path": "src/native_gui_icon_delayed_loads.cpp",
+          "bytes": 11356,
+          "sha256": "2490cc6f33ee5d5b63149caf580d4c7ee4771462de7223922008afec4e5efb99",
+          "git_blob_sha1": "6416398799f3f1096de4c0b6368e7907658c51f9"
+        },
+        "base_commit": "1f113e1203aae6200f543c0be21b10ca637bea99",
+        "raw_CR_count": 0,
+        "raw_equals_approved_candidate": true,
+        "frozen_preimage": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\preimages\\src\\native_gui_icon_delayed_loads.cpp",
+        "frozen_postimage": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\postimages\\src\\native_gui_icon_delayed_loads.cpp"
+      }
+    ],
+    "seams": [
+      {
+        "id": "H1",
+        "path": "src/game_hosts.cpp",
+        "old_base64": "ICAgIGF1dG8mIHNlcnZpY2UgPSBwcm9jZXNzLnByZXBhcmVfZGVsYXllZF9sb2FkcyhzdHJpbmdzKTsgLy8gQysrIG1ldGFkYXRhIG9ubHkuCg==",
+        "new_base64": "ICAgIGF1dG8mIHNlcnZpY2UgPSBjYW5vbmljYWxfZGF0YV9vd25lcl8KICAgICAgICA/IHByb2Nlc3MucHJlcGFyZV9kZWxheWVkX2xvYWRzKHN0cmluZ3MsIGNhbm9uaWNhbF9kYXRhX293bmVyXy0+Z2V0KCkpCiAgICAgICAgOiBwcm9jZXNzLnByZXBhcmVfZGVsYXllZF9sb2FkcyhzdHJpbmdzKTsgLy8gQysrIG1ldGFkYXRhIG9ubHkuCg==",
+        "before_sha256": "a4b3bf1edb199d577fa689349329e044b38f593ecd4c6aa4092be39d0b744fe5",
+        "after_sha256": "e09bddd9f9c1773141faff04883776108aa436abfd24f5611d7a79049a4d0407",
+        "old_occurrences": 1,
+        "new_occurrences": 1
+      },
+      {
+        "id": "P1",
+        "path": "include/bsp/game_native_gui_icon_process.hpp",
+        "old_base64": "I2luY2x1ZGUgPG1lbW9yeT4K",
+        "new_base64": "I2luY2x1ZGUgPG1lbW9yeT4KI2luY2x1ZGUgPGNzdGRpbnQ+Cg==",
+        "before_sha256": "be7972224e23dd7f4871ae5359c585227c5c31f4028b99d9c3e2e4d4e8b77ae1",
+        "after_sha256": "b4ecfc09095860f2a94f3c60e18cf7278b8f5231c0889d2dc044fb01464644de",
+        "old_occurrences": 1,
+        "new_occurrences": 1
+      },
+      {
+        "id": "P2",
+        "path": "include/bsp/game_native_gui_icon_process.hpp",
+        "old_base64": "bmFtZXNwYWNlIGJzcDo6Z2FtZSB7Cg==",
+        "new_base64": "bmFtZXNwYWNlIGJzcDo6Z2FtZSB7CmNsYXNzIEdhbWVOYXRpdmVDYW5vbmljYWxEYXRhT3duZXI7Cg==",
+        "before_sha256": "b4ecfc09095860f2a94f3c60e18cf7278b8f5231c0889d2dc044fb01464644de",
+        "after_sha256": "f49fefdb99f2fe00fb463b3668433143b8ca243e1f7a9569547946e77aca42a8",
+        "old_occurrences": 1,
+        "new_occurrences": 1
+      },
+      {
+        "id": "P3",
+        "path": "include/bsp/game_native_gui_icon_process.hpp",
+        "old_base64": "ICAgIC8vIG5hdGl2ZSBvcGVyYXRpb24uIFNhbWUtY29udGV4dCByZXBldGl0aW9uIHJldHVybnMgdGhlIFNBTUUgc2VydmljZTsKICAgIC8vIGl0IGRvZXMgbm90IHJlc2V0IGEgcHVibGljYXRpb24sIG9wZXJhdGlvbiwgZmFpbHVyZSBvciByZWdpc3RyYXRpb24uCiAgICBOYXRpdmVHdWlJY29uRGVsYXllZExvYWRzJiBwcmVwYXJlX2RlbGF5ZWRfbG9hZHMoTmF0aXZlU3RyaW5nUmF3UG9vbENvbnRleHQmKTsK",
+        "new_base64": "ICAgIC8vIG5hdGl2ZSBvcGVyYXRpb24uIFNhbWUtY29udGV4dCBsZWdhY3kgcmVwZXRpdGlvbiByZXR1cm5zIHRoZSBTQU1FIHNlcnZpY2U7CiAgICAvLyBpdCBkb2VzIG5vdCByZXNldCBhIHB1YmxpY2F0aW9uLCBvcGVyYXRpb24sIGZhaWx1cmUgb3IgcmVnaXN0cmF0aW9uLgogICAgTmF0aXZlR3VpSWNvbkRlbGF5ZWRMb2FkcyYgcHJlcGFyZV9kZWxheWVkX2xvYWRzKE5hdGl2ZVN0cmluZ1Jhd1Bvb2xDb250ZXh0Jik7CiAgICAvLyBFeHBsaWNpdCBjYW5vbmljYWwgcHJlcGFyYXRpb24gYm9ycm93cyB0aGUgU0FNRSBwZXJtYW5lbnQgb3duZXIgYW5kIGl0cwogICAgLy8gYWN0dWFsIGZlYXR1cmUtd29yZCByZWZlcmVuY2UsIHdpdGhvdXQgcmVhZGluZyB0aGUgY3VycmVudCBmZWF0dXJlIHZhbHVlLgogICAgLy8gUmVwZXRpdGlvbiByZXF1aXJlcyBpZGVudGljYWwgY29udGV4dC9vd25lci9hZGRyZXNzLiBDcm9zc2luZyBiZXR3ZWVuCiAgICAvLyBsZWdhY3kgYWJzZW5jZSBhbmQgY2Fub25pY2FsIHByZXBhcmF0aW9uIG5ldmVyIHByb21vdGVzIG9yIHJlc2V0cyBhIHNlcnZpY2UuCiAgICBOYXRpdmVHdWlJY29uRGVsYXllZExvYWRzJiBwcmVwYXJlX2RlbGF5ZWRfbG9hZHMoTmF0aXZlU3RyaW5nUmF3UG9vbENvbnRleHQmLAogICAgICAgIGNvbnN0IEdhbWVOYXRpdmVDYW5vbmljYWxEYXRhT3duZXImKTsK",
+        "before_sha256": "f49fefdb99f2fe00fb463b3668433143b8ca243e1f7a9569547946e77aca42a8",
+        "after_sha256": "e5b0570b079836c971d7205c6fc0a8a48463bc68c9c40280f9de2c6abaf57b97",
+        "old_occurrences": 1,
+        "new_occurrences": 1
+      },
+      {
+        "id": "P4",
+        "path": "include/bsp/game_native_gui_icon_process.hpp",
+        "old_base64": "ICAgIHN0ZDo6dW5pcXVlX3B0cjxOYXRpdmVHdWlJY29uRGVsYXllZExvYWRzPiBkZWxheWVkX2xvYWRzXzsK",
+        "new_base64": "ICAgIHN0ZDo6dW5pcXVlX3B0cjxOYXRpdmVHdWlJY29uRGVsYXllZExvYWRzPiBkZWxheWVkX2xvYWRzXzsKICAgIC8vIEFwcGVuZC1vbmx5IHByZXBhcmF0aW9uIG1ldGFkYXRhOyBubyBwdWJsaWNhdGlvbiBvciBOYXRpdmUgcGVybWlzc2lvbi4KICAgIGNvbnN0IEdhbWVOYXRpdmVDYW5vbmljYWxEYXRhT3duZXIqIGJvcnJvd2VkX2Nhbm9uaWNhbF9vd25lcl97fTsKICAgIGNvbnN0IHZvbGF0aWxlIHN0ZDo6dWludDMyX3QqIGJvcnJvd2VkX2ZlYXR1cmVfd29yZF97fTsK",
+        "before_sha256": "e5b0570b079836c971d7205c6fc0a8a48463bc68c9c40280f9de2c6abaf57b97",
+        "after_sha256": "64ea6df52c7f26f2a25fa8f485bb6022116178887d828f031fe8c5b4413db441",
+        "old_occurrences": 1,
+        "new_occurrences": 1
+      },
+      {
+        "id": "P5",
+        "path": "src/game_native_gui_icon_process.cpp",
+        "old_base64": "I2luY2x1ZGUgImJzcC9uYXRpdmVfZ3VpX2ljb25fZGVsYXllZF9sb2Fkcy5ocHAiCg==",
+        "new_base64": "I2luY2x1ZGUgImJzcC9uYXRpdmVfZ3VpX2ljb25fZGVsYXllZF9sb2Fkcy5ocHAiCiNpbmNsdWRlICJic3AvZ2FtZV9uYXRpdmVfbXV0YWJsZV9jcnRfZGF0YS5ocHAiCg==",
+        "before_sha256": "cc1d80e034d36fa28899a91473a863807b3c1be29f8c0825d87d35266665316e",
+        "after_sha256": "f37cef95785b3d89b72ed3c919005b818e849da8ce283d9f2b0a3eeb3764579d",
+        "old_occurrences": 1,
+        "new_occurrences": 1
+      },
+      {
+        "id": "P6",
+        "path": "src/game_native_gui_icon_process.cpp",
+        "old_base64": "ICAgICAgICBpZiAoYm9ycm93ZWRfc3RyaW5nc18gIT0gJnN0cmluZ3MpCiAgICAgICAgICAgIHRocm93IHN0ZDo6bG9naWNfZXJyb3IoIkdVSSBJY29uIGRlbGF5ZWQgcHJvY2VzcyBjYW5ub3QgcmV0YXJnZXQgaXRzIGNhbm9uaWNhbCByYXcgc3RyaW5nL21hbmFnZXIgY29udGV4dCIpOwogICAgICAgIHJldHVybiAqZGVsYXllZF9sb2Fkc187Cg==",
+        "new_base64": "ICAgICAgICBpZiAoYm9ycm93ZWRfc3RyaW5nc18gIT0gJnN0cmluZ3MpCiAgICAgICAgICAgIHRocm93IHN0ZDo6bG9naWNfZXJyb3IoIkdVSSBJY29uIGRlbGF5ZWQgcHJvY2VzcyBjYW5ub3QgcmV0YXJnZXQgaXRzIGNhbm9uaWNhbCByYXcgc3RyaW5nL21hbmFnZXIgY29udGV4dCIpOwogICAgICAgIGlmIChib3Jyb3dlZF9jYW5vbmljYWxfb3duZXJfIHx8IGJvcnJvd2VkX2ZlYXR1cmVfd29yZF8pCiAgICAgICAgICAgIHRocm93IHN0ZDo6bG9naWNfZXJyb3IoIkdVSSBJY29uIGRlbGF5ZWQgbGVnYWN5IHByZXBhcmF0aW9uIGNhbm5vdCByZXVzZSBhIGNhbm9uaWNhbCBmZWF0dXJlIGJpbmRpbmciKTsKICAgICAgICByZXR1cm4gKmRlbGF5ZWRfbG9hZHNfOwo=",
+        "before_sha256": "f37cef95785b3d89b72ed3c919005b818e849da8ce283d9f2b0a3eeb3764579d",
+        "after_sha256": "35b2c29137b8e5b6ca3f7abd3dcb4c669653b760bad4670a78fec1fd3862e4a1",
+        "old_occurrences": 1,
+        "new_occurrences": 1
+      },
+      {
+        "id": "P7",
+        "path": "src/game_native_gui_icon_process.cpp",
+        "old_base64": "TmF0aXZlR3VpSWNvbkRlbGF5ZWRMb2FkcyYgR2FtZU5hdGl2ZUd1aUljb25Qcm9jZXNzOjpkZWxheWVkX2xvYWRzKCkgewo=",
+        "new_base64": "TmF0aXZlR3VpSWNvbkRlbGF5ZWRMb2FkcyYgR2FtZU5hdGl2ZUd1aUljb25Qcm9jZXNzOjpwcmVwYXJlX2RlbGF5ZWRfbG9hZHMoCiAgICBOYXRpdmVTdHJpbmdSYXdQb29sQ29udGV4dCYgc3RyaW5ncywgY29uc3QgR2FtZU5hdGl2ZUNhbm9uaWNhbERhdGFPd25lciYgY2Fub25pY2FsX293bmVyKSB7CiAgICAvLyBUYWtpbmcgdGhlIGFkZHJlc3MgYmluZHMgdGhlIGF1dGhlbnRpYyBjZWxsOyBpdCBkb2VzIG5vdCByZWFkIGl0cyB2YWx1ZS4KICAgIGNvbnN0IHZvbGF0aWxlIHN0ZDo6dWludDMyX3QqIGNvbnN0IGZlYXR1cmUgPQogICAgICAgICZjYW5vbmljYWxfb3duZXIubXV0YWJsZV9jcnRfZGF0YSgpLmZlYXR1cmVfd29yZCgpOwogICAgaWYgKGRlbGF5ZWRfbG9hZHNfKSB7CiAgICAgICAgaWYgKGJvcnJvd2VkX3N0cmluZ3NfICE9ICZzdHJpbmdzIHx8IGJvcnJvd2VkX2Nhbm9uaWNhbF9vd25lcl8gIT0gJmNhbm9uaWNhbF9vd25lciB8fAogICAgICAgICAgICBib3Jyb3dlZF9mZWF0dXJlX3dvcmRfICE9IGZlYXR1cmUpCiAgICAgICAgICAgIHRocm93IHN0ZDo6bG9naWNfZXJyb3IoIkdVSSBJY29uIGRlbGF5ZWQgY2Fub25pY2FsIHByZXBhcmF0aW9uIHJlcXVpcmVzIGl0cyBTQU1FIGNvbnRleHQsIG93bmVyIGFuZCBmZWF0dXJlIGFkZHJlc3MiKTsKICAgICAgICByZXR1cm4gKmRlbGF5ZWRfbG9hZHNfOwogICAgfQogICAgLy8gQ29tcGxldGUgcG90ZW50aWFsbHkgdGhyb3dpbmcgbWV0YWRhdGEgYWxsb2NhdGlvbi9hZG1pc3Npb24gYmVmb3JlCiAgICAvLyBwdWJsaXNoaW5nIGFueSBuZXcgYm9ycm93LiBObyBnZXR0ZXIgb3IgbmF0aXZlIG9wZXJhdGlvbiBpcyBlbnRlcmVkLgogICAgYXV0byBwcmVwYXJlZCA9IHN0ZDo6bWFrZV91bmlxdWU8TmF0aXZlR3VpSWNvbkRlbGF5ZWRMb2Fkcz4oCiAgICAgICAgc3RyaW5ncywgcHVibGljYXRpb25fMDBmOGJkOThfLCAqZmVhdHVyZSk7CiAgICBib3Jyb3dlZF9zdHJpbmdzXyA9ICZzdHJpbmdzOwogICAgYm9ycm93ZWRfY2Fub25pY2FsX293bmVyXyA9ICZjYW5vbmljYWxfb3duZXI7CiAgICBib3Jyb3dlZF9mZWF0dXJlX3dvcmRfID0gZmVhdHVyZTsKICAgIGRlbGF5ZWRfbG9hZHNfID0gc3RkOjptb3ZlKHByZXBhcmVkKTsKICAgIHJldHVybiAqZGVsYXllZF9sb2Fkc187Cn0KCk5hdGl2ZUd1aUljb25EZWxheWVkTG9hZHMmIEdhbWVOYXRpdmVHdWlJY29uUHJvY2Vzczo6ZGVsYXllZF9sb2FkcygpIHsK",
+        "before_sha256": "35b2c29137b8e5b6ca3f7abd3dcb4c669653b760bad4670a78fec1fd3862e4a1",
+        "after_sha256": "771ae831af661e9420fb8a58d67bd10511456ae83e9764acb3245ded32b71655",
+        "old_occurrences": 1,
+        "new_occurrences": 1
+      },
+      {
+        "id": "S1",
+        "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+        "old_base64": "ICAgIE5hdGl2ZUd1aUljb25EZWxheWVkTG9hZHMoTmF0aXZlU3RyaW5nUmF3UG9vbENvbnRleHQmLAogICAgICAgIE5hdGl2ZUd1aUljb25EZWxheWVkTG9hZHNTdG9yYWdlKiB2b2xhdGlsZSYgcHVibGljYXRpb25fMDBmOGJkOTgpOwo=",
+        "new_base64": "ICAgIE5hdGl2ZUd1aUljb25EZWxheWVkTG9hZHMoTmF0aXZlU3RyaW5nUmF3UG9vbENvbnRleHQmLAogICAgICAgIE5hdGl2ZUd1aUljb25EZWxheWVkTG9hZHNTdG9yYWdlKiB2b2xhdGlsZSYgcHVibGljYXRpb25fMDBmOGJkOTgpOwogICAgLy8gRXhwbGljaXQgcHJlcGFyYXRpb24tb25seSBib3Jyb3cgb2YgdGhlIHJlYWwgbGl2ZSBjYW5vbmljYWwgZmVhdHVyZSBjZWxsLgogICAgLy8gTm8gY3VycmVudCB2YWx1ZSBpcyByZWFkIGFuZCBubyBuYXRpdmUgb3BlcmF0aW9uL2V4dHJhIHJvdXRlIGlzIHNlbGVjdGVkLgogICAgLy8gVGhlIGxlZ2FjeSBvdmVybG9hZCByZXRhaW5zIGV4cGxpY2l0IGFic2VuY2UsIHdpdGhvdXQgYSBmYWxsYmFjayBmZWF0dXJlLgogICAgTmF0aXZlR3VpSWNvbkRlbGF5ZWRMb2FkcyhOYXRpdmVTdHJpbmdSYXdQb29sQ29udGV4dCYsCiAgICAgICAgTmF0aXZlR3VpSWNvbkRlbGF5ZWRMb2Fkc1N0b3JhZ2UqIHZvbGF0aWxlJiBwdWJsaWNhdGlvbl8wMGY4YmQ5OCwKICAgICAgICBjb25zdCB2b2xhdGlsZSBzdGQ6OnVpbnQzMl90JiBhY3R1YWxfZmVhdHVyZV93b3JkXzAxMDllZWE0KTsK",
+        "before_sha256": "a6fa7dcce062f26c77664364aa3a5e4525ab3ae2fc320016f07524a55e746f6d",
+        "after_sha256": "3af86581fd85f019ea9501d6b7a8129960fcdbd8f29870d1590d2a9ec6b03756",
+        "old_occurrences": 1,
+        "new_occurrences": 1
+      },
+      {
+        "id": "S2",
+        "path": "src/native_gui_icon_delayed_loads.cpp",
+        "old_base64": "ICAgIHN0ZDo6ZXhjZXB0aW9uX3B0ciBmYWlsdXJlOwoKICAgIEltcGwoTmF0aXZlU3RyaW5nUmF3UG9vbENvbnRleHQmIHN0cmluZ3NfaW4sCg==",
+        "new_base64": "ICAgIHN0ZDo6ZXhjZXB0aW9uX3B0ciBmYWlsdXJlOwogICAgLy8gUHJlcGFyYXRpb24tb25seSBpbW11dGFibGUgYm9ycm93LCBhcHBlbmRlZCBhZnRlciB0aGUgY29tcGxldGUgb2xkIHByZWZpeC4KICAgIC8vIE51bGwgbWVhbnMgdGhlIGV4cGxpY2l0IGxlZ2FjeSByb3V0ZTsgaXQgbmV2ZXIgc3VwcGxpZXMgYSBmYWxsYmFjayB2YWx1ZS4KICAgIGNvbnN0IHZvbGF0aWxlIHN0ZDo6dWludDMyX3QqIGNvbnN0IGFjdHVhbF9mZWF0dXJlX3dvcmQ7CgogICAgSW1wbChOYXRpdmVTdHJpbmdSYXdQb29sQ29udGV4dCYgc3RyaW5nc19pbiwK",
+        "before_sha256": "3773ac03dd39bc78f642ebea942d0e074051814c2a55395b7bc246c703f50997",
+        "after_sha256": "9152635ceea2440789514a29e55489a8a6b9f71cbd6120173a7237b8e20f8a7e",
+        "old_occurrences": 1,
+        "new_occurrences": 1
+      },
+      {
+        "id": "S3",
+        "path": "src/native_gui_icon_delayed_loads.cpp",
+        "old_base64": "ICAgIEltcGwoTmF0aXZlU3RyaW5nUmF3UG9vbENvbnRleHQmIHN0cmluZ3NfaW4sCiAgICAgICAgTmF0aXZlR3VpSWNvbkRlbGF5ZWRMb2Fkc1N0b3JhZ2UqIHZvbGF0aWxlJiBwdWJsaWNhdGlvbl9pbikKICAgICAgICA6IHN0cmluZ3Moc3RyaW5nc19pbiksIHB1YmxpY2F0aW9uKHB1YmxpY2F0aW9uX2luKSB7CiAgICAgICAgcmVxdWlyZShwdWJsaWNhdGlvbiA9PSBudWxscHRyLCAiUmF3IEljb24gZGVsYXllZCBwcm9kdWNlciByZXF1aXJlcyBpdHMgZnJlc2ggY2Fub25pY2FsIG51bGwgcHVibGljYXRpb24iKTsKICAgIH0K",
+        "new_base64": "ICAgIEltcGwoTmF0aXZlU3RyaW5nUmF3UG9vbENvbnRleHQmIHN0cmluZ3NfaW4sCiAgICAgICAgTmF0aXZlR3VpSWNvbkRlbGF5ZWRMb2Fkc1N0b3JhZ2UqIHZvbGF0aWxlJiBwdWJsaWNhdGlvbl9pbikKICAgICAgICA6IEltcGwoc3RyaW5nc19pbiwgcHVibGljYXRpb25faW4sIG51bGxwdHIpIHt9CiAgICBJbXBsKE5hdGl2ZVN0cmluZ1Jhd1Bvb2xDb250ZXh0JiBzdHJpbmdzX2luLAogICAgICAgIE5hdGl2ZUd1aUljb25EZWxheWVkTG9hZHNTdG9yYWdlKiB2b2xhdGlsZSYgcHVibGljYXRpb25faW4sCiAgICAgICAgY29uc3Qgdm9sYXRpbGUgc3RkOjp1aW50MzJfdCYgZmVhdHVyZV9pbikKICAgICAgICA6IEltcGwoc3RyaW5nc19pbiwgcHVibGljYXRpb25faW4sICZmZWF0dXJlX2luKSB7fQogICAgSW1wbChOYXRpdmVTdHJpbmdSYXdQb29sQ29udGV4dCYgc3RyaW5nc19pbiwKICAgICAgICBOYXRpdmVHdWlJY29uRGVsYXllZExvYWRzU3RvcmFnZSogdm9sYXRpbGUmIHB1YmxpY2F0aW9uX2luLAogICAgICAgIGNvbnN0IHZvbGF0aWxlIHN0ZDo6dWludDMyX3QqIGZlYXR1cmVfaW4pCiAgICAgICAgOiBzdHJpbmdzKHN0cmluZ3NfaW4pLCBwdWJsaWNhdGlvbihwdWJsaWNhdGlvbl9pbiksIGFjdHVhbF9mZWF0dXJlX3dvcmQoZmVhdHVyZV9pbikgewogICAgICAgIHJlcXVpcmUocHVibGljYXRpb24gPT0gbnVsbHB0ciwgIlJhdyBJY29uIGRlbGF5ZWQgcHJvZHVjZXIgcmVxdWlyZXMgaXRzIGZyZXNoIGNhbm9uaWNhbCBudWxsIHB1YmxpY2F0aW9uIik7CiAgICB9Cg==",
+        "before_sha256": "9152635ceea2440789514a29e55489a8a6b9f71cbd6120173a7237b8e20f8a7e",
+        "after_sha256": "5bd3989d0156c80d15be014e3e234ea50fe6cfc59e51534e01fa64a9ad410246",
+        "old_occurrences": 1,
+        "new_occurrences": 1
+      },
+      {
+        "id": "S4",
+        "path": "src/native_gui_icon_delayed_loads.cpp",
+        "old_base64": "ICAgIDogaW1wbF8oc3RkOjptYWtlX3VuaXF1ZTxJbXBsPihzdHJpbmdzLCBwdWJsaWNhdGlvbikpIHt9Cg==",
+        "new_base64": "ICAgIDogaW1wbF8oc3RkOjptYWtlX3VuaXF1ZTxJbXBsPihzdHJpbmdzLCBwdWJsaWNhdGlvbikpIHt9Ck5hdGl2ZUd1aUljb25EZWxheWVkTG9hZHM6Ok5hdGl2ZUd1aUljb25EZWxheWVkTG9hZHMoTmF0aXZlU3RyaW5nUmF3UG9vbENvbnRleHQmIHN0cmluZ3MsCiAgICBOYXRpdmVHdWlJY29uRGVsYXllZExvYWRzU3RvcmFnZSogdm9sYXRpbGUmIHB1YmxpY2F0aW9uLAogICAgY29uc3Qgdm9sYXRpbGUgc3RkOjp1aW50MzJfdCYgYWN0dWFsX2ZlYXR1cmVfd29yZF8wMTA5ZWVhNCkKICAgIDogaW1wbF8oc3RkOjptYWtlX3VuaXF1ZTxJbXBsPihzdHJpbmdzLCBwdWJsaWNhdGlvbiwgYWN0dWFsX2ZlYXR1cmVfd29yZF8wMTA5ZWVhNCkpIHt9Cg==",
+        "before_sha256": "5bd3989d0156c80d15be014e3e234ea50fe6cfc59e51534e01fa64a9ad410246",
+        "after_sha256": "2490cc6f33ee5d5b63149caf580d4c7ee4771462de7223922008afec4e5efb99",
+        "old_occurrences": 1,
+        "new_occurrences": 1
+      }
+    ],
+    "protected_regions": [
+      {
+        "kind": "bounded protected region bytes, unchanged in candidate",
+        "path": "src/native_gui_icon_delayed_loads.cpp",
+        "label": "service_invoke_guards_failure_and_owned_domain",
+        "bytes": 1321,
+        "sha256": "bb2f401e64b37b9c007ae544bde8bc0f6cfa12a93f7c7434b96086ab68f89b4c",
+        "data_base64": "ICAgIHRlbXBsYXRlPGNsYXNzIEY+IGF1dG8gaW52b2tlKE9wZXJhdGlvbjo6S2luZCBraW5kLCBzdGQ6OnVpbnQzMl90IGVudHJ5LCBGJiYgYm9keSkgLT4gZGVjbHR5cGUoYm9keSgpKSB7CiAgICAgICAgcmVxdWlyZSghYWN0aXZlICYmICFmYWlsZWQsICJSYXcgSWNvbiBkZWxheWVkIHNlcnZpY2UgY2Fubm90IHJlZW50ZXIgb3IgcmVwbGF5IGEgZmFpbGVkIGNhbGwiKTsKICAgICAgICBhdXRvIGZyZXNoID0gc3RkOjptYWtlX3VuaXF1ZTxPcGVyYXRpb24+KCk7CiAgICAgICAgZnJlc2gtPmtpbmQgPSBraW5kOwogICAgICAgIGZyZXNoLT5uYXRpdmVfc2l0ZSA9IGVudHJ5OwogICAgICAgIG9wZXJhdGlvbiA9IHN0ZDo6bW92ZShmcmVzaCk7IC8vIFByaW9yIGNvbXBsZXRlZCBmcmFtZSBvd25zIG5vIG5hdGl2ZSBlZmZlY3QuCiAgICAgICAgYWN0aXZlID0gdHJ1ZTsKICAgICAgICB0cnkgewogICAgICAgICAgICBpZiBjb25zdGV4cHIgKHN0ZDo6aXNfdm9pZF92PGRlY2x0eXBlKGJvZHkoKSk+KSB7CiAgICAgICAgICAgICAgICBib2R5KCk7CiAgICAgICAgICAgICAgICBvcGVyYXRpb24tPnBoYXNlID0gUGhhc2U6OmNvbXBsZXRlOwogICAgICAgICAgICAgICAgYWN0aXZlID0gZmFsc2U7CiAgICAgICAgICAgIH0gZWxzZSB7CiAgICAgICAgICAgICAgICBhdXRvIHJlc3VsdCA9IGJvZHkoKTsKICAgICAgICAgICAgICAgIG9wZXJhdGlvbi0+cGhhc2UgPSBQaGFzZTo6Y29tcGxldGU7CiAgICAgICAgICAgICAgICBhY3RpdmUgPSBmYWxzZTsKICAgICAgICAgICAgICAgIHJldHVybiByZXN1bHQ7CiAgICAgICAgICAgIH0KICAgICAgICB9IGNhdGNoICguLi4pIHsKICAgICAgICAgICAgb3BlcmF0aW9uLT5mYWlsdXJlID0gZmFpbHVyZSA9IHN0ZDo6Y3VycmVudF9leGNlcHRpb24oKTsKICAgICAgICAgICAgb3BlcmF0aW9uLT5waGFzZSA9IFBoYXNlOjpmYWlsZWQ7CiAgICAgICAgICAgIGZhaWxlZCA9IHRydWU7CiAgICAgICAgICAgIGFjdGl2ZSA9IGZhbHNlOwogICAgICAgICAgICB0aHJvdzsKICAgICAgICB9CiAgICB9CiAgICB2b2lkIHJlcXVpcmVfb3duZWQoTmF0aXZlR3VpSWNvbkRlbGF5ZWRMb2Fkc1N0b3JhZ2UqIHJhdykgY29uc3QgewogICAgICAgIHJlcXVpcmUocmF3ICYmIHJhdyA9PSByZWdpc3RlcmVkX2lkZW50aXR5ICYmIHJhdy0+bmF0aXZlX3Z0YWJsZV8wMCA9PSAweDAwZDVjNGI4LAogICAgICAgICAgICAiUmF3IEljb24gZGVsYXllZCBjYWxsIHJlcXVpcmVzIGl0cyBzYW1lIGFjdHVhbCByZWdpc3RlcmVkIEQ1QzRCOCBvd25lciIpOwogICAgICAgIHJlcXVpcmVfYXJyYXkoKnJhdyk7CiAgICB9Cg=="
+      },
+      {
+        "kind": "bounded protected region bytes, unchanged in candidate",
+        "path": "src/native_gui_icon_delayed_loads.cpp",
+        "label": "service_all_native_operation_bodies",
+        "bytes": 5912,
+        "sha256": "85f43384b477fbddc5ad930f4fd396591b3f07b66316fdd562cbb7aeb358b94d",
+        "data_base64": "ICAgIE5hdGl2ZUd1aUljb25EZWxheWVkTG9hZHNTdG9yYWdlKiBnZXQoKSB7CiAgICAgICAgYXV0byogY29uc3QgaW5pdGlhbCA9IHB1YmxpY2F0aW9uOyAvLyBBQjU3MTU7IGZhc3QgcmV0dXJuIHVzZXMgdGhpcyBjYXB0dXJlLgogICAgICAgIGlmIChpbml0aWFsKSB7CiAgICAgICAgICAgIHJlcXVpcmVfb3duZWQoaW5pdGlhbCk7CiAgICAgICAgICAgIG9wZXJhdGlvbi0+YWN0dWFsID0gaW5pdGlhbDsKICAgICAgICAgICAgcmV0dXJuIGluaXRpYWw7CiAgICAgICAgfQogICAgICAgIHJlcXVpcmUoIXJlZ2lzdGVyZWRfaWRlbnRpdHksICJSYXcgSWNvbiBkZWxheWVkIHB1YmxpY2F0aW9uIHdhcyBjbGVhcmVkIGJlZm9yZSBpdHMgcmVnaXN0ZXJlZCBvd25lciByZXRpcmVkIik7CiAgICAgICAgU291bmRMaWZldGltZUFjY2VzcyBsaWZldGltZShzdHJpbmdzLmFjdHVhbF9tYW5hZ2VyX3B1YmxpY2F0aW9uXzAxMDkwYWEwKTsKICAgICAgICBvcGVyYXRpb24tPnBoYXNlID0gUGhhc2U6Om1hbmFnZXJfZ3VhcmQ7CiAgICAgICAgb3BlcmF0aW9uLT5uYXRpdmVfc2l0ZSA9IDB4MDBhYjU3MjU7CiAgICAgICAgdHJ5IHsKICAgICAgICAgICAgQ2FwdHVyZWRTb3VuZExpZmV0aW1lU2VjdGlvbiBzZWN0aW9uKGxpZmV0aW1lKTsgLy8gU2FtZSBmaXJzdCBtYW5hZ2VyL3NlY3Rpb24uCiAgICAgICAgICAgIG9wZXJhdGlvbi0+Z3VhcmRfZW50ZXJlZCA9IHRydWU7CiAgICAgICAgICAgIGlmICghcHVibGljYXRpb24pIHsgLy8gQUI1NzRDLCByZWNoZWNrIG9ubHkgYWZ0ZXIgZW50ZXJpbmcgY2FwdHVyZWQgc2VjdGlvbi4KICAgICAgICAgICAgICAgIG9wZXJhdGlvbi0+cGhhc2UgPSBQaGFzZTo6YWxsb2NhdGlvbjsKICAgICAgICAgICAgICAgIG9wZXJhdGlvbi0+bmF0aXZlX3NpdGUgPSAweDAwYWI1NzU2OwogICAgICAgICAgICAgICAgdm9pZCogcmF3ID0gc2luZ2xldG9uX2xpZmV0aW1lX2FsbG9jYXRlKHtTaW5nbGV0b25BbGxvY2F0aW9uS2luZDo6b2JqZWN0LCAweDEwLCAweDEwfSk7CiAgICAgICAgICAgICAgICBvcGVyYXRpb24tPmFsbG9jYXRlZCA9IHJhdzsKICAgICAgICAgICAgICAgIGF1dG8qIGNyZWF0ZWQgPSByYXcgPyA6Om5ldyAocmF3KSBOYXRpdmVHdWlJY29uRGVsYXllZExvYWRzU3RvcmFnZXsKICAgICAgICAgICAgICAgICAgICAweDAwZDVjNGI4LCBudWxscHRyLCAwLCAwfSA6IG51bGxwdHI7CiAgICAgICAgICAgICAgICBvcGVyYXRpb24tPmFjdHVhbCA9IGNyZWF0ZWQ7CiAgICAgICAgICAgICAgICBvcGVyYXRpb24tPnBoYXNlID0gUGhhc2U6OnB1YmxpY2F0aW9uOwogICAgICAgICAgICAgICAgb3BlcmF0aW9uLT5uYXRpdmVfc2l0ZSA9IDB4MDBhYjU3NzU7CiAgICAgICAgICAgICAgICBwdWJsaWNhdGlvbiA9IGNyZWF0ZWQ7CiAgICAgICAgICAgICAgICByZWdpc3RlcmVkX2lkZW50aXR5ID0gY3JlYXRlZDsgLy8gQm9ycm93LCBpbmNsdWRpbmcgYSBsYXRlciByZWdpc3RyYXRpb24gZmFpbHVyZS4KICAgICAgICAgICAgICAgIG9wZXJhdGlvbi0+cGhhc2UgPSBQaGFzZTo6cmVnaXN0cmF0aW9uOwogICAgICAgICAgICAgICAgb3BlcmF0aW9uLT5uYXRpdmVfc2l0ZSA9IDB4MDBhYjU3N2E7CiAgICAgICAgICAgICAgICBhdXRvIG1hbmFnZXIgPSBsaWZldGltZS5nZXRfbWFuYWdlcl8wMDQxNTM1MCgpOwogICAgICAgICAgICAgICAgb3BlcmF0aW9uLT5uYXRpdmVfc2l0ZSA9IDB4MDBhYjU3ODg7CiAgICAgICAgICAgICAgICBtYW5hZ2VyLnJlZ2lzdGVyX29iamVjdChwdWJsaWNhdGlvbik7IC8vIFJlbG9hZCBjdXJyZW50IHB1YmxpY2F0aW9uIGFmdGVyIGdldHRlci4KICAgICAgICAgICAgICAgIG9wZXJhdGlvbi0+cmVnaXN0cmF0aW9uX3JldHVybmVkID0gdHJ1ZTsKICAgICAgICAgICAgfQogICAgICAgIH0gY2F0Y2ggKC4uLikgewogICAgICAgICAgICAvLyBUaGUgZXhpc3RpbmcgY2FwdHVyZWQtc2VjdGlvbiBoZWxwZXIgY29tcGxldGVkIGl0cyBuYXRpdmUgZ3VhcmQKICAgICAgICAgICAgLy8gY2xlYW51cCB3aGlsZSB1bndpbmRpbmcuIE5vIHB1YmxpY2F0aW9uL2FsbG9jYXRpb24gcm9sbGJhY2suCiAgICAgICAgICAgIG9wZXJhdGlvbi0+Z3VhcmRfY2xlYW51cF9jb21wbGV0ZWQgPSBvcGVyYXRpb24tPmd1YXJkX2VudGVyZWQ7CiAgICAgICAgICAgIHRocm93OwogICAgICAgIH0KICAgICAgICBvcGVyYXRpb24tPmd1YXJkX2NsZWFudXBfY29tcGxldGVkID0gdHJ1ZTsKICAgICAgICBvcGVyYXRpb24tPm5hdGl2ZV9zaXRlID0gMHgwMGFiNTc5YzsKICAgICAgICBhdXRvKiByZXN1bHQgPSBwdWJsaWNhdGlvbjsgLy8gU2xvdyByZXR1cm4gcmVsb2FkcyBBRlRFUiBjYXB0dXJlZC1zZWN0aW9uIGxlYXZlLgogICAgICAgIGlmIChyZXN1bHQpIHJlcXVpcmVfb3duZWQocmVzdWx0KTsKICAgICAgICByZXR1cm4gcmVzdWx0OwogICAgfQogICAgdm9pZCBjYW5jZWwoTmF0aXZlR3VpSWNvbkRlbGF5ZWRMb2Fkc1N0b3JhZ2UmIHN0b3JhZ2UsIGNvbnN0IHZvaWQqIG93bmVyKSB7CiAgICAgICAgcmVxdWlyZV9vd25lZCgmc3RvcmFnZSk7CiAgICAgICAgb3BlcmF0aW9uLT5hY3R1YWwgPSAmc3RvcmFnZTsKICAgICAgICBvcGVyYXRpb24tPmNhbmNlbF9vd25lciA9IG93bmVyOwogICAgICAgIG9wZXJhdGlvbi0+cGhhc2UgPSBQaGFzZTo6Y2FuY2VsOwogICAgICAgIHN0ZDo6aW50MzJfdCBpbmRleCA9IDA7CiAgICAgICAgLy8gQUI1MEU2J3MgcmVhbCBjb3VudCBnYXRlIGlzIHJlYWNoZWQgZXZlbiBmb3IgYSBmcmVzaCBlbXB0eSBzaW5nbGV0b24uCiAgICAgICAgd2hpbGUgKGluZGV4IDwgc3RvcmFnZS5jb3VudF8wOCkgewogICAgICAgICAgICBhdXRvKiBlbnRyeSA9IHN0b3JhZ2UuZW50cmllc18wNCArIGluZGV4OwogICAgICAgICAgICBpZiAoZW50cnktPm93bmVyXzA4ICE9IG93bmVyKSB7CiAgICAgICAgICAgICAgICArK2luZGV4OyAvLyBBQjUxOTI7IHJlbW92ZWQgZW50cmllcyBkbyBub3QgYWR2YW5jZSB0aGlzIGluZGV4LgogICAgICAgICAgICAgICAgY29udGludWU7CiAgICAgICAgICAgIH0KICAgICAgICAgICAgaWYgKGluZGV4ICE9IHN0b3JhZ2UuY291bnRfMDggLSAxKSB7CiAgICAgICAgICAgICAgICBhdXRvKiBzb3VyY2UgPSBzdG9yYWdlLmVudHJpZXNfMDQgKyBzdG9yYWdlLmNvdW50XzA4IC0gMTsKICAgICAgICAgICAgICAgIGF1dG8qIGRlc3RpbmF0aW9uID0gc3RvcmFnZS5lbnRyaWVzXzA0ICsgaW5kZXg7CiAgICAgICAgICAgICAgICBpZiAoc291cmNlICE9IGRlc3RpbmF0aW9uKSB7CiAgICAgICAgICAgICAgICAgICAgb3BlcmF0aW9uLT5uYXRpdmVfc2l0ZSA9IDB4MDBhYjUxM2M7CiAgICAgICAgICAgICAgICAgICAgcmVzaXplX25hdGl2ZV9zdHJpbmdfaGVhZGVyXzAwNDFkZDQwKGRlc3RpbmF0aW9uLCBzdHJpbmdzLCBzb3VyY2UtPmxlbmd0aF8wMCwgdHJ1ZSk7CiAgICAgICAgICAgICAgICAgICAgLy8gTmF0aXZlIHRlc3RzIENVUlJFTlQgc291cmNlIGxlbmd0aCwgdGhlbiBjb3BpZXMgQ1VSUkVOVAogICAgICAgICAgICAgICAgICAgIC8vIGRlc3RpbmF0aW9uIGxlbmd0aCBmcm9tIGZyZXNoIHNvdXJjZS9kZXN0aW5hdGlvbiBidWZmZXJzLgogICAgICAgICAgICAgICAgICAgIGlmIChzb3VyY2UtPmxlbmd0aF8wMCkgewogICAgICAgICAgICAgICAgICAgICAgICBjb25zdCBhdXRvIGJ5dGVzID0gZGVzdGluYXRpb24tPmxlbmd0aF8wMDsKICAgICAgICAgICAgICAgICAgICAgICAgaWYgKGJ5dGVzKSBzdGQ6Om1lbWNweShkZXN0aW5hdGlvbi0+Y2hhcmFjdGVyc18wNCwgc291cmNlLT5jaGFyYWN0ZXJzXzA0LCBieXRlcyk7CiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgZGVzdGluYXRpb24tPm93bmVyXzA4ID0gc291cmNlLT5vd25lcl8wODsgLy8gQUI1MTU5LCBhZnRlciBzdHJpbmcgY2FsbGJhY2tzLgogICAgICAgICAgICB9CiAgICAgICAgICAgIGF1dG8qIHRhaWwgPSBzdG9yYWdlLmVudHJpZXNfMDQgKyBzdG9yYWdlLmNvdW50XzA4IC0gMTsgLy8gTmF0aXZlIHJlbG9hZC4KICAgICAgICAgICAgb3BlcmF0aW9uLT5uYXRpdmVfc2l0ZSA9IDB4MDBhYjUxN2M7CiAgICAgICAgICAgIGRlc3Ryb3lfbmF0aXZlX3N0cmluZ19oZWFkZXJfMDA0MWRkMjAodGFpbCwgc3RyaW5ncyk7CiAgICAgICAgICAgIHN0b3JhZ2UuY291bnRfMDggPSBzdG9yYWdlLmNvdW50XzA4IC0gMTsgLy8gQUZURVIgcmVsZWFzZSwgQUI1MTg4LgogICAgICAgIH0KICAgIH0KICAgIHZvaWQqIHNjYWxhcl9kZWxldGUodm9pZCogcmF3LCBzdGQ6OnVpbnQzMl90IGZsYWdzKSB7CiAgICAgICAgYXV0byogc3RvcmFnZSA9IHN0YXRpY19jYXN0PE5hdGl2ZUd1aUljb25EZWxheWVkTG9hZHNTdG9yYWdlKj4ocmF3KTsKICAgICAgICByZXF1aXJlX293bmVkKHN0b3JhZ2UpOwogICAgICAgIG9wZXJhdGlvbi0+YWN0dWFsID0gc3RvcmFnZTsKICAgICAgICBvcGVyYXRpb24tPmZsYWdzID0gZmxhZ3M7CiAgICAgICAgb3BlcmF0aW9uLT5waGFzZSA9IFBoYXNlOjpzaHJpbms7CiAgICAgICAgb3BlcmF0aW9uLT5uYXRpdmVfc2l0ZSA9IDB4MDBhYjU1OGQ7CiAgICAgICAgLy8gUmVhY2hlZCBBQjQ4NTAoMCkgc2hyaW5rIGFybTogZGVjcmVtZW50IEJFRk9SRSBlYWNoIHRhaWwncyBzdHJpbmcKICAgICAgICAvLyByZWxlYXNlLCByZWxvYWQgY3VycmVudCBjb3VudC9iYWNraW5nIGFmdGVyIGNhbGxiYWNrcywgdGhlbiBzdG9yZTAuCiAgICAgICAgd2hpbGUgKHN0b3JhZ2UtPmNvdW50XzA4ID4gMCkgewogICAgICAgICAgICBzdG9yYWdlLT5jb3VudF8wOCA9IHN0b3JhZ2UtPmNvdW50XzA4IC0gMTsKICAgICAgICAgICAgYXV0byogdGFpbCA9IHN0b3JhZ2UtPmVudHJpZXNfMDQgKyBzdG9yYWdlLT5jb3VudF8wODsKICAgICAgICAgICAgZGVzdHJveV9uYXRpdmVfc3RyaW5nX2hlYWRlcl8wMDQxZGQyMCh0YWlsLCBzdHJpbmdzKTsKICAgICAgICB9CiAgICAgICAgc3RvcmFnZS0+Y291bnRfMDggPSAwOwogICAgICAgIG9wZXJhdGlvbi0+cGhhc2UgPSBQaGFzZTo6YmFja2luZ19mcmVlOwogICAgICAgIG9wZXJhdGlvbi0+bmF0aXZlX3NpdGUgPSAweDAwYWI1NTk1OwogICAgICAgIG9wZXJhdGlvbi0+YmFja2luZ19mcmVlX3N0YXJ0ZWQgPSB0cnVlOwogICAgICAgIHNpbmdsZXRvbl9saWZldGltZV9mcmVlKHN0b3JhZ2UtPmVudHJpZXNfMDQpOyAvLyBEbyBub3QgY2xlYXIgY29uc3VtZWQgcmF3IHBvaW50ZXIvY2FwYWNpdHkuCiAgICAgICAgb3BlcmF0aW9uLT5waGFzZSA9IFBoYXNlOjpwdWJsaWNhdGlvbl9jbGVhcjsKICAgICAgICBvcGVyYXRpb24tPm5hdGl2ZV9zaXRlID0gMHgwMGFiNTVhMTsKICAgICAgICBwdWJsaWNhdGlvbiA9IG51bGxwdHI7IC8vIEN1cnJlbnQgY2VsbCBjbGVhcmVkIGV2ZW4gd2hlbiBpdCBkaWZmZXJzIGZyb20gcG9wcGVkIG93bmVyLgogICAgICAgIG9wZXJhdGlvbi0+cGhhc2UgPSBQaGFzZTo6YmFzZV9wcm9maWxlOwogICAgICAgIG9wZXJhdGlvbi0+bmF0aXZlX3NpdGUgPSAweDAwYWI1NWFiOwogICAgICAgIHN0b3JhZ2UtPm5hdGl2ZV92dGFibGVfMDAgPSAweDAwY2UzODE4OwogICAgICAgIGlmIChmbGFncyAmIDF1KSB7CiAgICAgICAgICAgIG9wZXJhdGlvbi0+cGhhc2UgPSBQaGFzZTo6b2JqZWN0X2ZyZWU7CiAgICAgICAgICAgIG9wZXJhdGlvbi0+bmF0aXZlX3NpdGUgPSAweDAwYWI1N2QwOwogICAgICAgICAgICBvcGVyYXRpb24tPm9iamVjdF9mcmVlX3N0YXJ0ZWQgPSB0cnVlOwogICAgICAgICAgICBzaW5nbGV0b25fbGlmZXRpbWVfZnJlZShzdG9yYWdlKTsKICAgICAgICB9CiAgICAgICAgcmVnaXN0ZXJlZF9pZGVudGl0eSA9IG51bGxwdHI7IC8vIE5vIGFjY2VzcyB0byBjb25zdW1lZCBzdG9yYWdlIGZvbGxvd3MuCiAgICAgICAgcmV0dXJuIHJhdzsKICAgIH0="
+      },
+      {
+        "kind": "bounded protected region bytes, unchanged in candidate",
+        "path": "src/native_gui_icon_delayed_loads.cpp",
+        "label": "service_destructor_and_all_entry_wrappers",
+        "bytes": 1150,
+        "sha256": "94595a4a3712445fd492052fb871839ed31873d68d5ffeaeb85de661fe39c111",
+        "data_base64": "TmF0aXZlR3VpSWNvbkRlbGF5ZWRMb2Fkczo6fk5hdGl2ZUd1aUljb25EZWxheWVkTG9hZHMoKSBub2V4Y2VwdCB7CiAgICBpZiAocmVxdWlyZXNfcHJvY2Vzc19yZXRlbnRpb24oKSkgc3RkOjp0ZXJtaW5hdGUoKTsKfQpOYXRpdmVHdWlJY29uRGVsYXllZExvYWRzU3RvcmFnZSogTmF0aXZlR3VpSWNvbkRlbGF5ZWRMb2Fkczo6Z2V0XzAwYWI1NzAwKCkgewogICAgcmV0dXJuIGltcGxfLT5pbnZva2UoT3BlcmF0aW9uOjpLaW5kOjpnZXR0ZXIsIDB4MDBhYjU3MDAsIFsmXSB7IHJldHVybiBpbXBsXy0+Z2V0KCk7IH0pOwp9CnZvaWQgTmF0aXZlR3VpSWNvbkRlbGF5ZWRMb2Fkczo6Y2FuY2VsX293bmVyXzAwYWI1MGUwKE5hdGl2ZUd1aUljb25EZWxheWVkTG9hZHNTdG9yYWdlJiBzdG9yYWdlLAogICAgY29uc3Qgdm9pZCogb3duZXIpIHsKICAgIGltcGxfLT5pbnZva2UoT3BlcmF0aW9uOjpLaW5kOjpjYW5jZWwsIDB4MDBhYjUwZTAsIFsmXSB7IGltcGxfLT5jYW5jZWwoc3RvcmFnZSwgb3duZXIpOyB9KTsKfQp2b2lkKiBOYXRpdmVHdWlJY29uRGVsYXllZExvYWRzOjpkZWxldGVfcmVnaXN0ZXJlZF8wMGFiNTdjMCh2b2lkKiByYXcsIHN0ZDo6dWludDMyX3QgZmxhZ3MpIHsKICAgIHJldHVybiBpbXBsXy0+aW52b2tlKE9wZXJhdGlvbjo6S2luZDo6c2NhbGFyX2RlbGV0ZSwgMHgwMGFiNTdjMCwKICAgICAgICBbJl0geyByZXR1cm4gaW1wbF8tPnNjYWxhcl9kZWxldGUocmF3LCBmbGFncyk7IH0pOwp9CmJvb2wgTmF0aXZlR3VpSWNvbkRlbGF5ZWRMb2Fkczo6cmVxdWlyZXNfcHJvY2Vzc19yZXRlbnRpb24oKSBjb25zdCBub2V4Y2VwdCB7CiAgICByZXR1cm4gaW1wbF8tPmFjdGl2ZSB8fCBpbXBsXy0+ZmFpbGVkIHx8IGltcGxfLT5yZWdpc3RlcmVkX2lkZW50aXR5ICE9IG51bGxwdHI7Cn0KY29uc3QgTmF0aXZlR3VpSWNvbkRlbGF5ZWRMb2Fkc09wZXJhdGlvbiogTmF0aXZlR3VpSWNvbkRlbGF5ZWRMb2Fkczo6bGFzdF9vcGVyYXRpb24oKSBjb25zdCBub2V4Y2VwdCB7CiAgICByZXR1cm4gaW1wbF8tPm9wZXJhdGlvbi5nZXQoKTsKfQpjb25zdCBzdGQ6OmV4Y2VwdGlvbl9wdHImIE5hdGl2ZUd1aUljb25EZWxheWVkTG9hZHM6OmZhaWx1cmUoKSBjb25zdCBub2V4Y2VwdCB7IHJldHVybiBpbXBsXy0+ZmFpbHVyZTsgfQ=="
+      },
+      {
+        "kind": "bounded protected region bytes, unchanged in candidate",
+        "path": "src/game_native_gui_icon_process.cpp",
+        "label": "process_status_publication_and_permanent_owner",
+        "bytes": 1501,
+        "sha256": "69374e9ec452b4042aaecfca3cb4e2ab07c72735df96f34d260ef823341fa139",
+        "data_base64": "TmF0aXZlR3VpSWNvbkRlbGF5ZWRMb2FkcyYgR2FtZU5hdGl2ZUd1aUljb25Qcm9jZXNzOjpkZWxheWVkX2xvYWRzKCkgewogICAgaWYgKCFkZWxheWVkX2xvYWRzXykKICAgICAgICB0aHJvdyBzdGQ6OmxvZ2ljX2Vycm9yKCJHVUkgSWNvbiBkZWxheWVkIHByb2Nlc3MgcmVxdWlyZXMgc3VjY2Vzc2Z1bCBtZXRhZGF0YSBwcmVwYXJhdGlvbiIpOwogICAgcmV0dXJuICpkZWxheWVkX2xvYWRzXzsKfQoKTmF0aXZlR3VpSWNvbkRlbGF5ZWRMb2Fkc1N0b3JhZ2UqIEdhbWVOYXRpdmVHdWlJY29uUHJvY2Vzczo6cHVibGljYXRpb25fMDBmOGJkOTgoKSBjb25zdCBub2V4Y2VwdCB7CiAgICByZXR1cm4gcHVibGljYXRpb25fMDBmOGJkOThfOwp9CgpHYW1lTmF0aXZlR3VpSWNvblByb2Nlc3M6OkRlbGF5ZWRMb2Fkc1N0YXR1cwpHYW1lTmF0aXZlR3VpSWNvblByb2Nlc3M6OmRlbGF5ZWRfbG9hZHNfc3RhdHVzKCkgY29uc3Qgbm9leGNlcHQgewogICAgaWYgKCFkZWxheWVkX2xvYWRzXykgcmV0dXJuIERlbGF5ZWRMb2Fkc1N0YXR1czo6dW5wcmVwYXJlZDsKICAgIGlmIChkZWxheWVkX2xvYWRzXy0+ZmFpbHVyZSgpKSByZXR1cm4gRGVsYXllZExvYWRzU3RhdHVzOjpmYWlsZWRfb3BlcmF0aW9uOwogICAgY29uc3QgYXV0byogY29uc3Qgb3BlcmF0aW9uID0gZGVsYXllZF9sb2Fkc18tPmxhc3Rfb3BlcmF0aW9uKCk7CiAgICBpZiAob3BlcmF0aW9uICYmIG9wZXJhdGlvbi0+cGhhc2UgIT0gTmF0aXZlR3VpSWNvbkRlbGF5ZWRMb2Fkc09wZXJhdGlvbjo6UGhhc2U6OmNvbXBsZXRlKQogICAgICAgIHJldHVybiBEZWxheWVkTG9hZHNTdGF0dXM6OmluY29tcGxldGVfb3BlcmF0aW9uOwogICAgLy8gVGhlIGxvdy1sZXZlbCBzZXJ2aWNlIGFsc28gcmV0YWlucyBvcmRpbmFyeSByZWdpc3RlcmVkIG93bmVycy4gU3VjaAogICAgLy8gY3VzdG9keSBpcyBub3QgZXZpZGVuY2Ugb2YgYSBmYWlsZWQvYWN0aXZlIG9wZXJhdGlvbiBvciBhbiBfRXhpdCBkZW1hbmQuCiAgICByZXR1cm4gZGVsYXllZF9sb2Fkc18tPnJlcXVpcmVzX3Byb2Nlc3NfcmV0ZW50aW9uKCkKICAgICAgICA/IERlbGF5ZWRMb2Fkc1N0YXR1czo6cmVnaXN0ZXJlZF9vd25lciA6IERlbGF5ZWRMb2Fkc1N0YXR1czo6aWRsZTsKfQoKR2FtZU5hdGl2ZUd1aUljb25Qcm9jZXNzJiBnYW1lX25hdGl2ZV9ndWlfaWNvbl9wcm9jZXNzKCkgewogICAgLy8gUmV0YWluZWQgbWV0YWRhdGEgb25seSwgbWF0Y2hpbmcgdGhlIGV4aXN0aW5nIEdVSSBUZXh0IHN0YXRlIHBhdHRlcm4uCiAgICAvLyBTaGFyZWQgbmF0aXZlIGRyYWluIG93bnMgcmVnaXN0ZXJlZCBwYXlsb2FkIGRlbGV0aW9uLiBObyBDKysgYXRleGl0CiAgICAvLyBjYWxsYmFjayBjb21wZXRlcyB3aXRoIGl0IG9yIGRyb3BzIGEgc2VydmljZSB3aG9zZSBncmFwaCBpcyByZXRhaW5lZC4KICAgIHN0YXRpYyBhdXRvKiBjb25zdCBwcm9jZXNzID0gbmV3IEdhbWVOYXRpdmVHdWlJY29uUHJvY2VzczsKICAgIHJldHVybiAqcHJvY2VzczsKfQ=="
+      },
+      {
+        "kind": "bounded protected region bytes, unchanged in candidate",
+        "path": "src/game_hosts.cpp",
+        "label": "Host_address_affinity",
+        "bytes": 204,
+        "sha256": "10a1942940677b7bbd6dea11a7536ca00ef32efea12ec68d039420db03bec7aa",
+        "data_base64": "ICAgIGlmIChjYW5vbmljYWxfZGF0YV9vd25lcl8gJiYKICAgICAgICAmY2Fub25pY2FsX2RhdGFfb3duZXJfLT5nZXQoKS5yZWFkX29ubHlfZGF0YSgpICE9IG5hdGl2ZV9kYXRhXykKICAgICAgICB0aHJvdyBzdGQ6OmxvZ2ljX2Vycm9yKCJTdGFydHVwIEhvc3QgY2Fub25pY2FsIG93bmVyIG11c3Qgc3VwcGx5IGl0cyBTQU1FIHJlYWQtb25seSBkYXRhIik7"
+      },
+      {
+        "kind": "bounded protected region bytes, unchanged in candidate",
+        "path": "src/game_hosts.cpp",
+        "label": "Host_native_preparation_suffix",
+        "bytes": 2088,
+        "sha256": "ff4859f18bcac0030aaf0e451170788ade1d9bd62de1e815bf79841d8350317c",
+        "data_base64": "ICAgIHNpbmdsZXRvbnNfLT5uYXRpdmVfZGVsZXRpb25fYmluZGluZ3MoKS5ndWlfaWNvbl9kZWxheWVkX2xvYWRzID0gJnNlcnZpY2U7CiAgICBuYXRpdmVfZ3VpX2ljb25fcHJvY2Vzc18gPSAmcHJvY2VzczsgLy8gQ29tbWl0IHN0YWJsZSBib3Jyb3dzIGJlZm9yZSBvYnNlcnZhdGlvbnMvbG9nZ2luZy4KICAgIGlmIChwcm9jZXNzLmRlbGF5ZWRfbG9hZHNfc3RhdHVzKCkgIT0gR2FtZU5hdGl2ZUd1aUljb25Qcm9jZXNzOjpEZWxheWVkTG9hZHNTdGF0dXM6OmlkbGUgfHwKICAgICAgICBwcm9jZXNzLnB1YmxpY2F0aW9uXzAwZjhiZDk4KCkpCiAgICAgICAgdGhyb3cgc3RkOjpsb2dpY19lcnJvcigiR1VJIEljb24gbWV0YWRhdGEgcHJlcGFyYXRpb24gZW50ZXJlZCB1bmV4cGVjdGVkIG5hdGl2ZSBjdXN0b2R5Iik7CiAgICBsb2dfLm5vdGUoIm5hdGl2ZSBHVUkgSWNvbiBwcm9jZXNzOiBtZXRhZGF0YV9wcmVwYXJlZCBpZGxlPTEgcHVibGljYXRpb249bnVsbCBkZWxldGlvbl9ib3VuZD0xIik7CiAgICBpZiBjb25zdGV4cHIgKGtHdWlJY29uRGVsYXllZExpZmVjeWNsZVF1YWxpZmljYXRpb25DYzE2Qm91bmQpIHsKICAgICAgICB0cnkgewogICAgICAgICAgICAvLyBTZXJ2aWNlL2Rpc3BhdGNoZXIvcHJvdmlkZXJzIGFyZSBzdGFibGUgYmVmb3JlIHRoaXMgZ2VudWluZSBnZXR0ZXIuCiAgICAgICAgICAgIC8vIE5ldmVyIGRlc3Ryb3kvdW5yZWdpc3RlciB0aGlzIGJvcnJvd2VkIHJlc3VsdDogYWN0dWFsIGRyYWluIG93bnMgaXQuCiAgICAgICAgICAgIGF1dG8qIGNvbnN0IGFjdHVhbCA9IHNlcnZpY2UuZ2V0XzAwYWI1NzAwKCk7CiAgICAgICAgICAgIG5hdGl2ZV9ndWlfaWNvbl9xdWFsaWZpY2F0aW9uX2lkZW50aXR5XyA9IGFjdHVhbDsKICAgICAgICAgICAgY29uc3QgYXV0byogY29uc3Qgb3BlcmF0aW9uID0gc2VydmljZS5sYXN0X29wZXJhdGlvbigpOwogICAgICAgICAgICBpZiAoIWFjdHVhbCB8fCBwcm9jZXNzLnB1YmxpY2F0aW9uXzAwZjhiZDk4KCkgIT0gYWN0dWFsIHx8CiAgICAgICAgICAgICAgICBwcm9jZXNzLmRlbGF5ZWRfbG9hZHNfc3RhdHVzKCkgIT0gR2FtZU5hdGl2ZUd1aUljb25Qcm9jZXNzOjpEZWxheWVkTG9hZHNTdGF0dXM6OnJlZ2lzdGVyZWRfb3duZXIgfHwKICAgICAgICAgICAgICAgICFvcGVyYXRpb24gfHwgb3BlcmF0aW9uLT5raW5kICE9IE5hdGl2ZUd1aUljb25EZWxheWVkTG9hZHNPcGVyYXRpb246OktpbmQ6OmdldHRlciB8fAogICAgICAgICAgICAgICAgb3BlcmF0aW9uLT5waGFzZSAhPSBOYXRpdmVHdWlJY29uRGVsYXllZExvYWRzT3BlcmF0aW9uOjpQaGFzZTo6Y29tcGxldGUgfHwKICAgICAgICAgICAgICAgIG9wZXJhdGlvbi0+YWN0dWFsICE9IGFjdHVhbCB8fCBvcGVyYXRpb24tPmFsbG9jYXRlZCAhPSBhY3R1YWwgfHwKICAgICAgICAgICAgICAgICFvcGVyYXRpb24tPmd1YXJkX2VudGVyZWQgfHwgIW9wZXJhdGlvbi0+Z3VhcmRfY2xlYW51cF9jb21wbGV0ZWQgfHwKICAgICAgICAgICAgICAgICFvcGVyYXRpb24tPnJlZ2lzdHJhdGlvbl9yZXR1cm5lZCkKICAgICAgICAgICAgICAgIHRocm93IHN0ZDo6bG9naWNfZXJyb3IoIkdVSSBJY29uIHF1YWxpZmljYXRpb24gcmVxdWlyZXMgb25lIGNvbXBsZXRlZCBhY3R1YWwgZ2V0dGVyL3JlZ2lzdHJhdGlvbiIpOwogICAgICAgICAgICBsb2dfLm5vdGUoIm5hdGl2ZSBHVUkgSWNvbiBxdWFsaWZpY2F0aW9uOiBhY3R1YWxfZ2V0dGVyX3JlZ2lzdGVyZWQgZ3VhcmRfY29tcGxldGVkPTEgY3VzdG9keT1tYW5hZ2VyIik7CiAgICAgICAgfSBjYXRjaCAoLi4uKSB7CiAgICAgICAgICAgIHRyeSB7IGxvZ18ubm90ZSgibmF0aXZlIEdVSSBJY29uIHF1YWxpZmljYXRpb24gaW50ZXJydXB0ZWQ7IHJldGFpbmluZyB0aGUgZW50aXJlIHByb3ZpZGVyIGdyYXBoIHVudGlsIGV4aXQiKTsgbG9nXy5jbG9zZSgpOyB9CiAgICAgICAgICAgIGNhdGNoICguLi4pIHsgc3RkOjpmcHV0cygiYnNwX2dhbWU6IEdVSSBJY29uIHF1YWxpZmljYXRpb24gcmVxdWlyZXMgcHJvY2VzcyBleGl0XG4iLCBzdGRlcnIpOyB9CiAgICAgICAgICAgIHN0ZDo6X0V4aXQoMSk7CiAgICAgICAgfQogICAgfQp9"
+      },
+      {
+        "kind": "bounded protected region bytes, unchanged in candidate",
+        "path": "src/game_hosts.cpp",
+        "label": "Host_exit_and_drain_policy",
+        "bytes": 2346,
+        "sha256": "d35a9bc6f2d3dbb927380260556646239ad1166f69c22d68bb98a5fcee981b28",
+        "data_base64": "dm9pZCBHYW1lU3RhcnR1cEhvc3Q6OmV4aXRfaWZfbmF0aXZlX2d1aV9pY29uX2ludGVycnVwdGVkKCkgbm9leGNlcHQgewogICAgaWYgKCFuYXRpdmVfZ3VpX2ljb25fcHJvY2Vzc18pIHJldHVybjsKICAgIHVzaW5nIFN0YXR1cyA9IEdhbWVOYXRpdmVHdWlJY29uUHJvY2Vzczo6RGVsYXllZExvYWRzU3RhdHVzOwogICAgY29uc3QgYXV0byBzdGF0dXMgPSBuYXRpdmVfZ3VpX2ljb25fcHJvY2Vzc18tPmRlbGF5ZWRfbG9hZHNfc3RhdHVzKCk7CiAgICBpZiAoc3RhdHVzID09IFN0YXR1czo6aWRsZSB8fCBzdGF0dXMgPT0gU3RhdHVzOjpyZWdpc3RlcmVkX293bmVyKSByZXR1cm47CiAgICB0cnkgewogICAgICAgIGxvZ18ubm90ZSgibmF0aXZlIEdVSSBJY29uIG9wZXJhdGlvbiBpbnRlcnJ1cHRlZDsgcmV0YWluaW5nIHRoZSBlbnRpcmUgcHJvdmlkZXIgZ3JhcGggdW50aWwgZXhpdCIpOwogICAgICAgIGxvZ18uY2xvc2UoKTsKICAgIH0gY2F0Y2ggKC4uLikgeyBzdGQ6OmZwdXRzKCJic3BfZ2FtZTogbmF0aXZlIEdVSSBJY29uIHJlcXVpcmVzIHByb2Nlc3MgcmV0ZW50aW9uXG4iLCBzdGRlcnIpOyB9CiAgICBzdGQ6Ol9FeGl0KDEpOwp9Cgp2b2lkIEdhbWVTdGFydHVwSG9zdDo6dmVyaWZ5X25hdGl2ZV9ndWlfaWNvbl9hZnRlcl9kcmFpbigpIHsKICAgIGlmICghbmF0aXZlX2d1aV9pY29uX3Byb2Nlc3NfKSByZXR1cm47CiAgICBpZiAoIXNpbmdsZXRvbnNfIHx8CiAgICAgICAgbmF0aXZlX2d1aV9pY29uX3Byb2Nlc3NfLT5kZWxheWVkX2xvYWRzX3N0YXR1cygpICE9IEdhbWVOYXRpdmVHdWlJY29uUHJvY2Vzczo6RGVsYXllZExvYWRzU3RhdHVzOjppZGxlIHx8CiAgICAgICAgbmF0aXZlX2d1aV9pY29uX3Byb2Nlc3NfLT5wdWJsaWNhdGlvbl8wMGY4YmQ5OCgpIHx8CiAgICAgICAgc2luZ2xldG9uc18tPm1hbmFnZXJfcHVibGljYXRpb25fMDEwOTBhYTAoKSB8fAogICAgICAgIHNpbmdsZXRvbnNfLT5uYXRpdmVfZGVsZXRpb25fYmluZGluZ3MoKS5ndWlfaWNvbl9kZWxheWVkX2xvYWRzICE9CiAgICAgICAgICAgICZuYXRpdmVfZ3VpX2ljb25fcHJvY2Vzc18tPmRlbGF5ZWRfbG9hZHMoKSkKICAgICAgICB0aHJvdyBzdGQ6OmxvZ2ljX2Vycm9yKCJHVUkgSWNvbiByZXF1aXJlcyBpZGxlL251bGwgcHVibGljYXRpb24gYW5kIHRoZSBTQU1FIGRlbGV0aW9uIHNlcnZpY2UgYWZ0ZXIgZnVsbCBkcmFpbiIpOwogICAgbG9nXy5ub3RlKCJuYXRpdmUgR1VJIEljb24gcHJvY2VzczogYWZ0ZXJfZnVsbF9kcmFpbiBpZGxlPTEgcHVibGljYXRpb249bnVsbCBtYW5hZ2VyPW51bGwgZGVsZXRpb25fYm91bmQ9MSIpOwogICAgaWYgKG5hdGl2ZV9ndWlfaWNvbl9xdWFsaWZpY2F0aW9uX2lkZW50aXR5XyAmJiAhbmF0aXZlX2d1aV9pY29uX3F1YWxpZmljYXRpb25fcmV0aXJlZF8pIHsKICAgICAgICAvLyBUaGUgb3BlcmF0aW9uIGlzIGluZGVwZW5kZW50IHJldGFpbmVkIG1ldGFkYXRhLiBDb21wYXJlIGFkZHJlc3NlcyBvbmx5OwogICAgICAgIC8vIHRoZSBwb3BwZWQvZnJlZWQgbmF0aXZlIG93bmVyIG11c3QgbmV2ZXIgYmUgZGVyZWZlcmVuY2VkIGhlcmUuCiAgICAgICAgY29uc3QgYXV0byogY29uc3Qgb3BlcmF0aW9uID0gbmF0aXZlX2d1aV9pY29uX3Byb2Nlc3NfLT5kZWxheWVkX2xvYWRzKCkubGFzdF9vcGVyYXRpb24oKTsKICAgICAgICBpZiAoIW9wZXJhdGlvbiB8fCBvcGVyYXRpb24tPmtpbmQgIT0gTmF0aXZlR3VpSWNvbkRlbGF5ZWRMb2Fkc09wZXJhdGlvbjo6S2luZDo6c2NhbGFyX2RlbGV0ZSB8fAogICAgICAgICAgICBvcGVyYXRpb24tPnBoYXNlICE9IE5hdGl2ZUd1aUljb25EZWxheWVkTG9hZHNPcGVyYXRpb246OlBoYXNlOjpjb21wbGV0ZSB8fAogICAgICAgICAgICBvcGVyYXRpb24tPmFjdHVhbCAhPSBuYXRpdmVfZ3VpX2ljb25fcXVhbGlmaWNhdGlvbl9pZGVudGl0eV8gfHwgb3BlcmF0aW9uLT5mbGFncyAhPSAxdSB8fAogICAgICAgICAgICAhb3BlcmF0aW9uLT5iYWNraW5nX2ZyZWVfc3RhcnRlZCB8fCAhb3BlcmF0aW9uLT5vYmplY3RfZnJlZV9zdGFydGVkKQogICAgICAgICAgICB0aHJvdyBzdGQ6OmxvZ2ljX2Vycm9yKCJHVUkgSWNvbiBxdWFsaWZpY2F0aW9uIHJlcXVpcmVzIGFjdHVhbCBwb3BwZWQtb3duZXIgZmxhZ3MxIHJldGlyZW1lbnQiKTsKICAgICAgICBuYXRpdmVfZ3VpX2ljb25fcXVhbGlmaWNhdGlvbl9yZXRpcmVkXyA9IHRydWU7CiAgICAgICAgbG9nXy5ub3RlKCJuYXRpdmUgR1VJIEljb24gcXVhbGlmaWNhdGlvbjogcmV0aXJlZF9ieV9hY3R1YWxfcGFyZW50X2RyYWluIGZsYWdzPTEgYmFja2luZ19mcmVlPXJldHVybmVkIG9iamVjdF9mcmVlPXJldHVybmVkIik7CiAgICB9Cn0K"
+      }
+    ],
+    "unchanged_input_pins": [
+      {
+        "path": "include/bsp/game_hosts.hpp",
+        "bytes": 48172,
+        "sha256": "ae1d6b5909a6a6076d2b952bbb09400b9642155399ff9733e6f718fa81dd80ea",
+        "git_blob_sha1": "9d9a565de531c08c159b6cc0d54cb19a21a92175",
+        "kind": "whole unchanged context/provider/caller Git/raw pin; not all are compilation dependencies",
+        "commit": "1f113e1203aae6200f543c0be21b10ca637bea99",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\dependencies\\include\\bsp\\game_hosts.hpp"
+      },
+      {
+        "path": "src/game_main.cpp",
+        "bytes": 81511,
+        "sha256": "3851a814b2028a7851998b7043033a5943b38ec49b34cbe57b74860564c05cc6",
+        "git_blob_sha1": "a721bf0114dd6715f0a8b494ac799c77b9fbf472",
+        "kind": "whole unchanged context/provider/caller Git/raw pin; not all are compilation dependencies",
+        "commit": "1f113e1203aae6200f543c0be21b10ca637bea99",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\dependencies\\src\\game_main.cpp"
+      },
+      {
+        "path": "include/bsp/game_native_mutable_crt_data.hpp",
+        "bytes": 3200,
+        "sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+        "git_blob_sha1": "ec1a1c9c2a7359031b4b77c2b86ba12cd6f3420e",
+        "kind": "whole unchanged context/provider/caller Git/raw pin; not all are compilation dependencies",
+        "commit": "1f113e1203aae6200f543c0be21b10ca637bea99",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\dependencies\\include\\bsp\\game_native_mutable_crt_data.hpp"
+      },
+      {
+        "path": "src/game_native_mutable_crt_data.cpp",
+        "bytes": 10114,
+        "sha256": "d9dabf905fd4acf195f72c14e9ae2c7ef457514f4ff6227efffdcbb1f24a0c39",
+        "git_blob_sha1": "2c0d73f8164a8b0d4cbbc499801935d1f28c213a",
+        "kind": "whole unchanged context/provider/caller Git/raw pin; not all are compilation dependencies",
+        "commit": "1f113e1203aae6200f543c0be21b10ca637bea99",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\dependencies\\src\\game_native_mutable_crt_data.cpp"
+      },
+      {
+        "path": "include/bsp/game_native_readonly_data.hpp",
+        "bytes": 2713,
+        "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+        "git_blob_sha1": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+        "kind": "whole unchanged context/provider/caller Git/raw pin; not all are compilation dependencies",
+        "commit": "1f113e1203aae6200f543c0be21b10ca637bea99",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\dependencies\\include\\bsp\\game_native_readonly_data.hpp"
+      },
+      {
+        "path": "include/bsp/game_native_data_bootstrap.hpp",
+        "bytes": 4111,
+        "sha256": "13e7a4a85d6096f3f0b4be04fce0d065d5e196c4119d914ae2af268026c7642a",
+        "git_blob_sha1": "0fff23e432b46cab3978466f0f13f69bbdf4f144",
+        "kind": "whole unchanged context/provider/caller Git/raw pin; not all are compilation dependencies",
+        "commit": "1f113e1203aae6200f543c0be21b10ca637bea99",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\dependencies\\include\\bsp\\game_native_data_bootstrap.hpp"
+      },
+      {
+        "path": "include/bsp/game_native_string_process.hpp",
+        "bytes": 6018,
+        "sha256": "68ac5c24794233d13e2b68d7276e703dc62d39bded4b969bfcf7a06361fac697",
+        "git_blob_sha1": "d5e1fdd68d64a6e5429068335742f669fd8f1ddd",
+        "kind": "whole unchanged context/provider/caller Git/raw pin; not all are compilation dependencies",
+        "commit": "1f113e1203aae6200f543c0be21b10ca637bea99",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\dependencies\\include\\bsp\\game_native_string_process.hpp"
+      },
+      {
+        "path": "src/game_native_string_process.cpp",
+        "bytes": 2120,
+        "sha256": "baee34f67bf3948f0a92e05ebd2fc27d16b90727adc8ad4c8f6414dd16f77d6a",
+        "git_blob_sha1": "d5916015af98534a5c1915968a757510cc45b583",
+        "kind": "whole unchanged context/provider/caller Git/raw pin; not all are compilation dependencies",
+        "commit": "1f113e1203aae6200f543c0be21b10ca637bea99",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\dependencies\\src\\game_native_string_process.cpp"
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "bytes": 8771,
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "git_blob_sha1": "3b7af4c6508cfc1df81e913108b5162208685e97",
+        "kind": "whole unchanged context/provider/caller Git/raw pin; not all are compilation dependencies",
+        "commit": "1f113e1203aae6200f543c0be21b10ca637bea99",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\dependencies\\include\\bsp\\native_string.hpp"
+      },
+      {
+        "path": "include/bsp/native_string_raw_domain.hpp",
+        "bytes": 1376,
+        "sha256": "4a200823b27a04d0ecae916467946e2ef60d125162d8f215ea1b288ee9b84b5d",
+        "git_blob_sha1": "3878977631e343e98f22b4a96f4767d97a5b4cc6",
+        "kind": "whole unchanged context/provider/caller Git/raw pin; not all are compilation dependencies",
+        "commit": "1f113e1203aae6200f543c0be21b10ca637bea99",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\dependencies\\include\\bsp\\native_string_raw_domain.hpp"
+      },
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "bytes": 23310,
+        "sha256": "de933f3c758aed5b505b61582845be194396bace2efc88f676e9de462049f686",
+        "git_blob_sha1": "dc774f7d5ba1b15a117da9d2b5e39113b998f349",
+        "kind": "whole unchanged context/provider/caller Git/raw pin; not all are compilation dependencies",
+        "commit": "1f113e1203aae6200f543c0be21b10ca637bea99",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\dependencies\\include\\bsp\\native_singleton_destruction.hpp"
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "bytes": 29984,
+        "sha256": "98a476d0aa3d76fa3b79793a6c10dca5ce621b89f9a290eecef23866a483831a",
+        "git_blob_sha1": "0c9759b7d908e778dbdc44d8785d8fae226ea75b",
+        "kind": "whole unchanged context/provider/caller Git/raw pin; not all are compilation dependencies",
+        "commit": "1f113e1203aae6200f543c0be21b10ca637bea99",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\dependencies\\src\\native_singleton_destruction.cpp"
+      },
+      {
+        "path": "include/bsp/native_gui_icon_storage.hpp",
+        "bytes": 8253,
+        "sha256": "622aaaefad6bfb4100f272f56207bcd5387710b8840092291c5615c0c49f8662",
+        "git_blob_sha1": "e9a622c225834efd751c92c5a9db5dddddd0bc94",
+        "kind": "whole unchanged context/provider/caller Git/raw pin; not all are compilation dependencies",
+        "commit": "1f113e1203aae6200f543c0be21b10ca637bea99",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\dependencies\\include\\bsp\\native_gui_icon_storage.hpp"
+      },
+      {
+        "path": "src/native_gui_icon_storage.cpp",
+        "bytes": 16168,
+        "sha256": "bfbc913bf7baf77c96875cef95f6ed503bb3690f66b7fa7c42e09584c76bbb5c",
+        "git_blob_sha1": "8e8ca499a6a500ef2d7cb1ccff3dba56afa184d4",
+        "kind": "whole unchanged context/provider/caller Git/raw pin; not all are compilation dependencies",
+        "commit": "1f113e1203aae6200f543c0be21b10ca637bea99",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\dependencies\\src\\native_gui_icon_storage.cpp"
+      },
+      {
+        "path": "src/gui_icon_runtime.cpp",
+        "bytes": 34774,
+        "sha256": "0db2eb09669e97d431fc9bd6c117afccdeb852ac8e53c2d22173feb20f4fc753",
+        "git_blob_sha1": "a3d277e9c9a8a582161727de6c57dde9c8675ddb",
+        "kind": "whole unchanged context/provider/caller Git/raw pin; not all are compilation dependencies",
+        "commit": "1f113e1203aae6200f543c0be21b10ca637bea99",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\dependencies\\src\\gui_icon_runtime.cpp"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "git_blob_sha1": "4d10f6c53a3b9be4745776df443f340ea1769936",
+        "kind": "whole unchanged context/provider/caller Git/raw pin; not all are compilation dependencies",
+        "commit": "1f113e1203aae6200f543c0be21b10ca637bea99",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\dependencies\\include\\bsp\\singleton_lifetime.hpp"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "git_blob_sha1": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+        "kind": "whole unchanged context/provider/caller Git/raw pin; not all are compilation dependencies",
+        "commit": "1f113e1203aae6200f543c0be21b10ca637bea99",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\dependencies\\src\\singleton_lifetime.cpp"
+      },
+      {
+        "path": "include/bsp/native_gui_named_value_array_reserve_storage.hpp",
+        "bytes": 3272,
+        "sha256": "8b4061b26fc5bf5ef6da5fbadcf24ee66f921a894f6fb5f193b635b38aab0c12",
+        "git_blob_sha1": "c94cf7a5fc67d0e4c426737e36d7dc3ca4330917",
+        "kind": "whole unchanged context/provider/caller Git/raw pin; not all are compilation dependencies",
+        "commit": "1f113e1203aae6200f543c0be21b10ca637bea99",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\dependencies\\include\\bsp\\native_gui_named_value_array_reserve_storage.hpp"
+      },
+      {
+        "path": "include/bsp/native_gui_icon_delayed_loads_owner_cancel_storage.hpp",
+        "bytes": 2750,
+        "sha256": "189517667dcd8c2b944a32dd9fd1c043ffefc53d02155220207e513243eef5ba",
+        "git_blob_sha1": "aba32efdb9910c7a6c3f94212821f73f53079ef1",
+        "kind": "whole unchanged context/provider/caller Git/raw pin; not all are compilation dependencies",
+        "commit": "1f113e1203aae6200f543c0be21b10ca637bea99",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\dependencies\\include\\bsp\\native_gui_icon_delayed_loads_owner_cancel_storage.hpp"
+      },
+      {
+        "path": "src/native_gui_icon_delayed_loads_owner_cancel_storage.cpp",
+        "bytes": 4666,
+        "sha256": "83caea45c5ebeebbd4cd5c936ea520771e3f3e06f1f1d77851a2f432605832c4",
+        "git_blob_sha1": "0870bb3cac4efbf8ce0bb2427d9129d29ee44991",
+        "kind": "whole unchanged context/provider/caller Git/raw pin; not all are compilation dependencies",
+        "commit": "1f113e1203aae6200f543c0be21b10ca637bea99",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\dependencies\\src\\native_gui_icon_delayed_loads_owner_cancel_storage.cpp"
+      }
+    ],
+    "caller_and_binding_sites": [
+      {
+        "kind": "actual canonical producer call",
+        "path": "src/game_main.cpp",
+        "first_line": 1120,
+        "last_line": 1122,
+        "needle": "const auto& owner = bsp::game::GameNativeCanonicalDataOwner::initialize",
+        "bytes": 254,
+        "sha256": "f25f53d8fdb1e9fa53ee2ac036aef92294f8d043720f88cee3ff6971d16f7495",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\binding_sites\\01.bin"
+      },
+      {
+        "kind": "actual caller-retained owner binding",
+        "path": "src/game_main.cpp",
+        "first_line": 1122,
+        "last_line": 1124,
+        "needle": "canonical_data_owner.emplace(owner);",
+        "bytes": 190,
+        "sha256": "b34ed991b432165b6ba066631cce5ba26fee66f28cc999ce9fff18105fcc09e6",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\binding_sites\\02.bin"
+      },
+      {
+        "kind": "sole actual canonical Host construction",
+        "path": "src/game_main.cpp",
+        "first_line": 1333,
+        "last_line": 1335,
+        "needle": "log, instance, options, canonical_data_owner.value().get()); }",
+        "bytes": 178,
+        "sha256": "c3437c7619b08a0dce764b95723b472d0e5a2ce0248a230a1e6bd4ffca075d57",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\binding_sites\\03.bin"
+      },
+      {
+        "kind": "actual canonical Host delegation",
+        "path": "src/game_hosts.cpp",
+        "first_line": 1970,
+        "last_line": 1972,
+        "needle": ": GameStartupHost(log, instance, options, &canonical_data_owner.read_only_data(),",
+        "bytes": 268,
+        "sha256": "034929e375ba3143af4c1930e2181a5a9d9a63dfc173b5f08da45e90e0ff1888",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\binding_sites\\04.bin"
+      },
+      {
+        "kind": "unchanged actual RO-affinity binding check",
+        "path": "src/game_hosts.cpp",
+        "first_line": 1979,
+        "last_line": 1981,
+        "needle": "&canonical_data_owner_->get().read_only_data() != native_data_)",
+        "bytes": 205,
+        "sha256": "62ef9f9b43cdc1d8378e1b191f2f3cdb98f41ef521fa87286f5e48507d685c0f",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\binding_sites\\05.bin"
+      },
+      {
+        "kind": "new explicit canonical preparation call",
+        "path": "src/game_hosts.cpp",
+        "first_line": 2081,
+        "last_line": 2083,
+        "needle": "? process.prepare_delayed_loads(strings, canonical_data_owner_->get())",
+        "bytes": 193,
+        "sha256": "b38ebf75ef240b374d12fb5229bd7b27b249588f6e209b44b0fe3837d3faee43",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\binding_sites\\06.bin"
+      },
+      {
+        "kind": "preserved explicit legacy absence call",
+        "path": "src/game_hosts.cpp",
+        "first_line": 2082,
+        "last_line": 2084,
+        "needle": ": process.prepare_delayed_loads(strings); // C++ metadata only.",
+        "bytes": 230,
+        "sha256": "bd6456399ef0874efb75fa25acecc9eabec47dde3ae870a716173c8ed0e46ad8",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\binding_sites\\07.bin"
+      },
+      {
+        "kind": "preserved legacy service construction",
+        "path": "src/game_native_gui_icon_process.cpp",
+        "first_line": 30,
+        "last_line": 32,
+        "needle": "auto prepared = std::make_unique<NativeGuiIconDelayedLoads>(strings, publication_00f8bd98_);",
+        "bytes": 209,
+        "sha256": "20d0b0683db071e5b7361d40ad202492324ee9b579b695e67c9f8151e5745c09",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\binding_sites\\08.bin"
+      },
+      {
+        "kind": "actual canonical feature ADDRESS binding",
+        "path": "src/game_native_gui_icon_process.cpp",
+        "first_line": 40,
+        "last_line": 42,
+        "needle": "&canonical_owner.mutable_crt_data().feature_word();",
+        "bytes": 136,
+        "sha256": "68ce20e5a96e3609255932aa162a901df7eb1c83cca6c048907a98f90901a9e3",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\binding_sites\\09.bin"
+      },
+      {
+        "kind": "new required reference service construction",
+        "path": "src/game_native_gui_icon_process.cpp",
+        "first_line": 50,
+        "last_line": 52,
+        "needle": "strings, publication_00f8bd98_, *feature);",
+        "bytes": 150,
+        "sha256": "739e6616a4490e44829e429fb144487037d60a137a534414ba37142a424dc471",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\binding_sites\\10.bin"
+      },
+      {
+        "kind": "preserved legacy Impl construction",
+        "path": "src/native_gui_icon_delayed_loads.cpp",
+        "first_line": 204,
+        "last_line": 206,
+        "needle": ": impl_(std::make_unique<Impl>(strings, publication)) {}",
+        "bytes": 212,
+        "sha256": "cf2d518b4c5a1bd799198e1ea350bd526f8f0046b1d200502852b01e3feb2dd5",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\binding_sites\\11.bin"
+      },
+      {
+        "kind": "new required reference Impl construction",
+        "path": "src/native_gui_icon_delayed_loads.cpp",
+        "first_line": 208,
+        "last_line": 210,
+        "needle": ": impl_(std::make_unique<Impl>(strings, publication, actual_feature_word_0109eea4)) {}",
+        "bytes": 222,
+        "sha256": "8453ba5faa8463c75b602a93b01b3006a62ffdb48c3604f39e7d1037843ee43e",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation\\local\\output\\cc16_gui_icon_canonical_feature_preparation_20261031\\binding_sites\\12.bin"
+      }
+    ],
+    "approved_raw_candidates_equal": true,
+    "all_complete_forward_reverse_inverses": true,
+    "all_raw_git_preimages_equal": true,
+    "production_diff_paths": [
+      "src/game_hosts.cpp",
+      "include/bsp/game_native_gui_icon_process.hpp",
+      "src/game_native_gui_icon_process.cpp",
+      "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "src/native_gui_icon_delayed_loads.cpp"
+    ]
+  },
+  "constructor_and_domain_review": {
+    "Game_owner_complete_type": "existing game_native_mutable_crt_data.hpp",
+    "canonical_feature": "same live0109EEA4 address/ref; no value sample",
+    "Core_dependency": "const volatile uint32_t reference/pointer only; no Game include/type/global getter",
+    "legacy": "old public signatures retained; explicit nullptr absence; no fallback",
+    "strict_repeat": "same raw context OBJECT, canonical OWNER and feature ADDRESS; both mode crossings reject",
+    "commit": "all potentially throwing metadata allocation/admission before nonthrowing borrow/service publication",
+    "Host": "existing immutable optional owner and SAME RO address affinity; real direct conditional forwarding",
+    "Cpp_interfaces": "new overloads/private layouts; compiler/link/layout not tested",
+    "Source_target_registration": "Game Process in bsp_game; existing feature accessor in bsp_core; Source observation only",
+    "old_policies": "seven exact protected regions; no operation/allocation/domain/retention/destructor/Host exit rewrite"
+  },
+  "author_documentation": {
+    "path": "docs/CC16_GUI_ICON_CANONICAL_FEATURE_PREPARATION.md",
+    "bytes": 6918,
+    "sha256": "55a04d838168f8d14d7eea86cc51e129ab4aa60c7811b74dfc1487f4d06b91e3",
+    "git_blob_sha1": "2e840cb31707137e73b2a6f522ec21d1a2ddb4ef"
+  },
+  "author_reader": {
+    "bytes": 1797,
+    "sha256": "f0fe949bcb059e217239041632ce043cd53d05250e724ce40cabcf1283929d95",
+    "raw_equals_report_and_doc_block": true,
+    "inspected_before_execution": true,
+    "modes": [
+      {
+        "mode": "working",
+        "argv": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation-independent-review\\local\\output\\cc16_gui_icon_canonical_feature_preparation_independent_review_20261031\\author_verify_source60.py",
+          "--root",
+          "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation"
+        ],
+        "result": {
+          "complete_source_pairs": 5,
+          "seams": 12,
+          "protected_regions": 7,
+          "unchanged_inputs": 20,
+          "binding_sites": 12,
+          "checks": 45,
+          "passed": true
+        },
+        "stderr": ""
+      },
+      {
+        "mode": "sealedGit",
+        "argv": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation-independent-review\\local\\output\\cc16_gui_icon_canonical_feature_preparation_independent_review_20261031\\author_verify_source60.py",
+          "--root",
+          "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation",
+          "--rev",
+          "69e4b0107bc3c1d3de9f2f67e4932d666de842a4"
+        ],
+        "result": {
+          "complete_source_pairs": 5,
+          "seams": 12,
+          "protected_regions": 7,
+          "unchanged_inputs": 20,
+          "binding_sites": 12,
+          "checks": 45,
+          "passed": true
+        },
+        "stderr": ""
+      }
+    ]
+  },
+  "independent_static_evidence": {
+    "assertions": 439,
+    "failed": 0,
+    "artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation-independent-review\\local\\output\\cc16_gui_icon_canonical_feature_preparation_independent_review_20261031\\author_reader_results.json",
+        "bytes": 1444,
+        "sha256": "3732bc5ab34cc8c7074360519b711c74c391d874f8e2bf5a9068e77ece32183b",
+        "format": "UTF-8 LF static evidence; no executable"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation-independent-review\\local\\output\\cc16_gui_icon_canonical_feature_preparation_independent_review_20261031\\author_verify_source60.py",
+        "bytes": 1797,
+        "sha256": "f0fe949bcb059e217239041632ce043cd53d05250e724ce40cabcf1283929d95",
+        "format": "UTF-8 LF static evidence; no executable"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation-independent-review\\local\\output\\cc16_gui_icon_canonical_feature_preparation_independent_review_20261031\\checks.json",
+        "bytes": 46655,
+        "sha256": "400f43b9ac3c879d16bb1e07361793f936f34a7c9fd1e9759daee535be0fead0",
+        "format": "UTF-8 LF static evidence; no executable"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-canonical-feature-preparation-independent-review\\local\\output\\cc16_gui_icon_canonical_feature_preparation_independent_review_20261031\\verify_independent.py",
+        "bytes": 10296,
+        "sha256": "cdb940340e4c38619a56135de7cb2e2b8f55229748b8e0a6928aafee543d8b32",
+        "format": "UTF-8 LF static evidence; no executable"
+      }
+    ]
+  },
+  "not_added": [
+    "raw frames",
+    "raw59 Acq",
+    "raw method selection",
+    "flags activation",
+    "feature sample",
+    "fallback feature value",
+    "public feature getter",
+    "Core Game dependency",
+    "CMake or Native/ledger/Ghidra mutation",
+    "Operation default-init change"
+  ],
+  "qualification": {
+    "Cxx_overload_and_private_layout_change": true,
+    "Original_CRT_CPU_initialization_proven": false,
+    "ownership_Origin_issuer_or_Native_permission": false,
+    "Original_ABI_private_home_flags_fault_FH3_SEH": false,
+    "array_family_generation_custody_or_provider_runtime": false,
+    "DelayedTextureLoad_activation": false,
+    "new_Original_vendor_helper_CG_body_ABI_runtime_credit": false,
+    "remaining": "Root compiler/link/independent admission; future raw homes/default-init and actual59 free/flags observations; genuine request/delivery/runtime gates"
+  },
+  "additional_gates": {
+    "compiler_link_layout_Core": false,
+    "Original_CRT_CPU_initialization": false,
+    "0109DE1C_controller_and_used_callees_closed": false,
+    "NativeOrigin": false,
+    "ownership_generation_custody": false,
+    "array_family": false,
+    "FH3_SEH_private_stack_register_fault_EFLAGS_ABI": false,
+    "Source59_method_frame_Acq_actual_flags_binding": false,
+    "provider_request_delivery_FullIcon_runtime": false,
+    "DelayedTextureLoad_activation": false,
+    "gameplay": false
+  },
+  "credit": {
+    "Original": 0,
+    "vendor": 0,
+    "helper": 0,
+    "CG": 0,
+    "body": 0,
+    "duplicate": 0,
+    "ABI": false,
+    "runtime": false,
+    "activation": false
+  },
+  "document_pin": {
+    "path": "docs/CC16_GUI_ICON_CANONICAL_FEATURE_PREPARATION_INDEPENDENT_REVIEW.md",
+    "bytes": 7530,
+    "sha256": "23184a25b41f1e676f3e2058bf29c2b27f30f7e9ae9f8fe7e633d35da46ee843",
+    "format": "Git LF == raw working bytes; UTF-8; zero CR"
+  },
+  "actions": "Only two tracked peer evidence files and ignored static artifacts. Git/file/hash/metadata comparisons only. No Source/CMake/ledger/Ghidra/build/compiler/tests/probe/provider/Native/Game action and no push."
+}
