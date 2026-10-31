@@ -1,5 +1,6 @@
 #include "bsp/game_native_gui_icon_process.hpp"
 #include "bsp/native_gui_icon_delayed_loads.hpp"
+#include "bsp/game_native_mutable_crt_data.hpp"
 #include <stdexcept>
 #include <utility>
 
@@ -20,6 +21,8 @@ NativeGuiIconDelayedLoads& GameNativeGuiIconProcess::prepare_delayed_loads(
     if (delayed_loads_) {
         if (borrowed_strings_ != &strings)
             throw std::logic_error("GUI Icon delayed process cannot retarget its canonical raw string/manager context");
+        if (borrowed_canonical_owner_ || borrowed_feature_word_)
+            throw std::logic_error("GUI Icon delayed legacy preparation cannot reuse a canonical feature binding");
         return *delayed_loads_;
     }
     // The genuine constructor admits the null cell and retains references;
@@ -28,6 +31,28 @@ NativeGuiIconDelayedLoads& GameNativeGuiIconProcess::prepare_delayed_loads(
     auto prepared = std::make_unique<NativeGuiIconDelayedLoads>(strings, publication_00f8bd98_);
     borrowed_strings_ = &strings;
     delayed_loads_ = std::move(prepared); // Nonthrowing coherent preparation commit.
+    return *delayed_loads_;
+}
+
+NativeGuiIconDelayedLoads& GameNativeGuiIconProcess::prepare_delayed_loads(
+    NativeStringRawPoolContext& strings, const GameNativeCanonicalDataOwner& canonical_owner) {
+    // Taking the address binds the authentic cell; it does not read its value.
+    const volatile std::uint32_t* const feature =
+        &canonical_owner.mutable_crt_data().feature_word();
+    if (delayed_loads_) {
+        if (borrowed_strings_ != &strings || borrowed_canonical_owner_ != &canonical_owner ||
+            borrowed_feature_word_ != feature)
+            throw std::logic_error("GUI Icon delayed canonical preparation requires its SAME context, owner and feature address");
+        return *delayed_loads_;
+    }
+    // Complete potentially throwing metadata allocation/admission before
+    // publishing any new borrow. No getter or native operation is entered.
+    auto prepared = std::make_unique<NativeGuiIconDelayedLoads>(
+        strings, publication_00f8bd98_, *feature);
+    borrowed_strings_ = &strings;
+    borrowed_canonical_owner_ = &canonical_owner;
+    borrowed_feature_word_ = feature;
+    delayed_loads_ = std::move(prepared);
     return *delayed_loads_;
 }
 
