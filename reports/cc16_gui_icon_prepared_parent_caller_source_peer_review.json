@@ -1,0 +1,307 @@
+{
+  "schema_version": 1,
+  "packet": "codex-gui-icon-prepared-parent-caller-source-peer",
+  "created_utc": "2026-10-31T17:01:56.642286+00:00",
+  "final_review_baseline": "af3f19a0f2600422cd79072fe3dca2d06a7669ea",
+  "historical_author": "95a04c77f8747e7bd7129e9b420846e618c9ba39",
+  "published_source_baseline": "a6f59bb18bc124d208eea75588333b0931aefa33",
+  "owned_paths": [
+    "docs/CC16_GUI_ICON_PREPARED_PARENT_CALLER_SOURCE_PEER_REVIEW.md",
+    "reports/cc16_gui_icon_prepared_parent_caller_source_peer_review.json"
+  ],
+  "verdict": {
+    "remaining_actionable_CPP_semantic_findings_in_corrected_Source": 0,
+    "initial_complete_type_compile_blocker": "reported by Root C2027; resolved by exact direct include in af3f19",
+    "final_link_and_Core_admission": "separate Root-owned integration/rerun; not certified here",
+    "Source_only_static": true,
+    "production_caller_custody_disposition_or_activation_ready": false
+  },
+  "historical_and_final_six_file_pins": [
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "historical_author": {
+        "bytes": 11927,
+        "sha256": "cd2726e79c917d705dc11afc2b136ca6db66145530fc914ce42445b6a4a8ea0b"
+      },
+      "corrected_Root": {
+        "bytes": 11927,
+        "sha256": "cd2726e79c917d705dc11afc2b136ca6db66145530fc914ce42445b6a4a8ea0b"
+      },
+      "unchanged": true
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "historical_author": {
+        "bytes": 28669,
+        "sha256": "076c43a63b9f9257107c6ba535477dc24a6f7d0880e43813072d0442af47deaa"
+      },
+      "corrected_Root": {
+        "bytes": 28717,
+        "sha256": "3bebb1d9e60fdf94456b5152658fee0d29189c8ddf780202bead119174090019"
+      },
+      "unchanged": false
+    },
+    {
+      "path": "include/bsp/native_gui_icon_storage.hpp",
+      "historical_author": {
+        "bytes": 8923,
+        "sha256": "36efeb861e01b14348e370d169c9002b8ac436a29b2f9f3be1d5aac8d7976bfc"
+      },
+      "corrected_Root": {
+        "bytes": 8923,
+        "sha256": "36efeb861e01b14348e370d169c9002b8ac436a29b2f9f3be1d5aac8d7976bfc"
+      },
+      "unchanged": true
+    },
+    {
+      "path": "src/native_gui_icon_storage.cpp",
+      "historical_author": {
+        "bytes": 19689,
+        "sha256": "cc847b8f5fb19055a1116376b2d3a8eff181f045695fe73394ba04996728a492"
+      },
+      "corrected_Root": {
+        "bytes": 19689,
+        "sha256": "cc847b8f5fb19055a1116376b2d3a8eff181f045695fe73394ba04996728a492"
+      },
+      "unchanged": true
+    },
+    {
+      "path": "docs/CC16_GUI_ICON_PREPARED_PARENT_CALLER.md",
+      "historical_author": {
+        "bytes": 2898,
+        "sha256": "37c0a40cbf87cadba8eea044812724a0f756df75303bf5b489d74481281a263b"
+      },
+      "corrected_Root": {
+        "bytes": 2898,
+        "sha256": "37c0a40cbf87cadba8eea044812724a0f756df75303bf5b489d74481281a263b"
+      },
+      "unchanged": true
+    },
+    {
+      "path": "reports/cc16_gui_icon_prepared_parent_caller.json",
+      "historical_author": {
+        "bytes": 54796,
+        "sha256": "8ae6b80c93513baceec737e1e931e2f8d835467ee960937085286d30d88bc063"
+      },
+      "corrected_Root": {
+        "bytes": 54796,
+        "sha256": "8ae6b80c93513baceec737e1e931e2f8d835467ee960937085286d30d88bc063"
+      },
+      "unchanged": true
+    }
+  ],
+  "Root_supplemental_correction": {
+    "added_bytes": 48,
+    "literal_utf8": "#include \"bsp/native_singleton_destruction.hpp\"\n",
+    "final_CPP_bytes": 28717,
+    "final_CPP_sha256": "3bebb1d9e60fdf94456b5152658fee0d29189c8ddf780202bead119174090019",
+    "inverse_author_CPP_sha256": "076c43a63b9f9257107c6ba535477dc24a6f7d0880e43813072d0442af47deaa",
+    "only_changed_file": true
+  },
+  "complete_binding_header_pin": {
+    "path": "include/bsp/native_singleton_destruction.hpp",
+    "bytes": 23882,
+    "sha256": "9dfa24bc4e6f9a44a0f62ac464989b288d7270d7bd0f0804c5c5659612b047db",
+    "real_struct_and_member_present": true
+  },
+  "resolved_finding": {
+    "reported_by": "Root official compiler",
+    "code": "C2027",
+    "sites_in_historical_CPP": [
+      382,
+      495
+    ],
+    "cause": "NativeSingletonDeletionBindings incomplete at new service member access",
+    "correction_commit": "af3f19a0f2600422cd79072fe3dca2d06a7669ea",
+    "one_include_only": true,
+    "other_five_author_files_exact": true,
+    "earlier_static_review_did_not_identify_include_dependency": true
+  },
+  "reused_V2_proof": {
+    "independent_mechanical_integrity_checks": 208,
+    "four_historical_Source_files_equal_frozen_V2": true,
+    "prior_receipt_sha256": "4283d95377dc4841ebacf273c99ad19b8640401eed998c15a7ede0bae0fbde0a",
+    "prior_mechanical_sha256": "3d2b1d4313c7e52c3e62bd7d3f3c5a73a603444c4eb18e644daaffa91903fe1d",
+    "actual_Cpp_nesting_and_unknown_path_review_reused": true,
+    "R1_resolved_for_prepared_synchronous_scope": true
+  },
+  "historical_reader": {
+    "bytes": 3674,
+    "sha256": "f3ee2a12a0a2b9b223e4ca5beaefa5f0a8a651b1fbf564973ed374c4bb07e558",
+    "full_source_inspected_before_execution": true,
+    "target_commit": "95a04c77f8747e7bd7129e9b420846e618c9ba39",
+    "actual_result": {
+      "pass": true,
+      "checks": 83,
+      "immutable_Git": true,
+      "candidate_only": false,
+      "four_full_forward_inverse_pairs": true,
+      "protected_old_regions": 19,
+      "all_old_ASM_exact": true,
+      "published_parent_provider_exact": true,
+      "six_path_recursive_tree_inverse": true,
+      "compiler_Native_runtime_activation_proof": false
+    },
+    "raw_result_bytes": 341,
+    "raw_result_sha256": "087b60ecd848e5a8cf1a3f6fef0cce59ae55971188445676807064d705a091e3",
+    "not_a_corrected_final_cpp_or_compilation_check": true
+  },
+  "corrected_Source_supplemental_checks": {
+    "final_six_path_tree_inverse": true,
+    "single48B_include_inverse": true,
+    "final_CPP28717_3bebb_pin_explicit": true,
+    "all_other_five_author_paths_unchanged": true,
+    "twelve_final_provider_pins": [
+      {
+        "path": "include/bsp/native_gui_icon_delayed_loads_getter_storage.hpp",
+        "commit": "a6f59bb18bc124d208eea75588333b0931aefa33",
+        "bytes": 6233,
+        "sha256": "5a03ce3ed5741a80161ff7d1f0a0c0ec2dcf122867d3306c87a53918ff2a1800",
+        "git_blob": "3b234fbd78a56ed0fe8050d474be3fdc085a67ec",
+        "corrected_Root_exact": true
+      },
+      {
+        "path": "src/native_gui_icon_delayed_loads_getter_storage.cpp",
+        "commit": "a6f59bb18bc124d208eea75588333b0931aefa33",
+        "bytes": 6259,
+        "sha256": "9ccb3d4e8d809b46a12444531af67b98f1e0badc63cf7e9ac79c84e853bfd70d",
+        "git_blob": "4340f45914bfd92bc9d3ac6338c16e7527b011b2",
+        "corrected_Root_exact": true
+      },
+      {
+        "path": "include/bsp/native_gui_icon_delayed_loads_owner_cancel_storage.hpp",
+        "commit": "a6f59bb18bc124d208eea75588333b0931aefa33",
+        "bytes": 2750,
+        "sha256": "189517667dcd8c2b944a32dd9fd1c043ffefc53d02155220207e513243eef5ba",
+        "git_blob": "aba32efdb9910c7a6c3f94212821f73f53079ef1",
+        "corrected_Root_exact": true
+      },
+      {
+        "path": "src/native_gui_icon_delayed_loads_owner_cancel_storage.cpp",
+        "commit": "a6f59bb18bc124d208eea75588333b0931aefa33",
+        "bytes": 4666,
+        "sha256": "83caea45c5ebeebbd4cd5c936ea520771e3f3e06f1f1d77851a2f432605832c4",
+        "git_blob": "0870bb3cac4efbf8ce0bb2427d9129d29ee44991",
+        "corrected_Root_exact": true
+      },
+      {
+        "path": "include/bsp/native_gui_widget_pools_cc13.hpp",
+        "commit": "a6f59bb18bc124d208eea75588333b0931aefa33",
+        "bytes": 12674,
+        "sha256": "fd2be32f59443f79787b5006a628b9d0f78597b4d4dff62d09dbc65831c1fed3",
+        "git_blob": "759fba46de564d4d09549b0f3950bf2bbfc4f718",
+        "corrected_Root_exact": true
+      },
+      {
+        "path": "src/native_gui_widget_pools_cc13.cpp",
+        "commit": "a6f59bb18bc124d208eea75588333b0931aefa33",
+        "bytes": 3180,
+        "sha256": "e9fa3a2f4e8d0f644d601aa974bab567f8cd36e5c9ea958ae06aacaca4b5e925",
+        "git_blob": "18a2efa93a00c8e48d79003e8af0ed4fbc5f80b3",
+        "corrected_Root_exact": true
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "commit": "a6f59bb18bc124d208eea75588333b0931aefa33",
+        "bytes": 8771,
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+        "corrected_Root_exact": true
+      },
+      {
+        "path": "src/native_string.cpp",
+        "commit": "a6f59bb18bc124d208eea75588333b0931aefa33",
+        "bytes": 9121,
+        "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+        "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+        "corrected_Root_exact": true
+      },
+      {
+        "path": "include/bsp/native_gui_icon_identity.hpp",
+        "commit": "a6f59bb18bc124d208eea75588333b0931aefa33",
+        "bytes": 3372,
+        "sha256": "27d2f6e7313bf3d15a7b2247e233f2ab7eca110ffe6b1f91097e6e441620c54c",
+        "git_blob": "b1541bc833789a9e3ef81098e4dc587225e06534",
+        "corrected_Root_exact": true
+      },
+      {
+        "path": "src/native_gui_icon_identity.cpp",
+        "commit": "a6f59bb18bc124d208eea75588333b0931aefa33",
+        "bytes": 4230,
+        "sha256": "c7d9af9a64658bc1fd5806e2c13fd578392bb0665b6951bed4eea96408f20d04",
+        "git_blob": "558a6e2505aaffc2acb38e674eb68a2fddd1d74f",
+        "corrected_Root_exact": true
+      },
+      {
+        "path": "include/bsp/game_native_gui_icon_process.hpp",
+        "commit": "a6f59bb18bc124d208eea75588333b0931aefa33",
+        "bytes": 3975,
+        "sha256": "64ea6df52c7f26f2a25fa8f485bb6022116178887d828f031fe8c5b4413db441",
+        "git_blob": "86ea513e79e4b8c15be217b3a5daa744171ea94d",
+        "corrected_Root_exact": true
+      },
+      {
+        "path": "src/game_native_gui_icon_process.cpp",
+        "commit": "a6f59bb18bc124d208eea75588333b0931aefa33",
+        "bytes": 4452,
+        "sha256": "771ae831af661e9420fb8a58d67bd10511456ae83e9764acb3245ded32b71655",
+        "git_blob": "3bf20aa83282178518eb25f098337d6928af3c48",
+        "corrected_Root_exact": true
+      }
+    ]
+  },
+  "build_evidence_scope": {
+    "captured_Root_logs": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch66\\icon_first_compile_failure.log",
+        "bytes": 2383,
+        "sha256": "d59c6f14c0440f8abbcb819488f64d6f9b8a59362b7dcc991ebc76cd54440edf"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch66\\icon_second_link_failure.log",
+        "bytes": 54536,
+        "sha256": "d181bb438ed1dde7835ac650d5417161e6f83c1ba5c19f9316e5280e49b20562"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch66\\icon_compile_correction.json",
+        "bytes": 596,
+        "sha256": "5a7adb4a64976f16b55991b1821f1f6c70a329f6028f83faf7903397b838098a"
+      }
+    ],
+    "Root_reported_after_include_service_compile": "passed compilation, then nonGame link closure failed",
+    "Root_reported_followup": "Move existing game_native_gui_text_process.cpp/state.cpp ownership to bsp_core; no bodies/stubs changed",
+    "worker_did_not_run_compiler_or_verify_final_official_link": true
+  },
+  "normal_Unknown_default_contract": [
+    "Only explicit preprepared Source paths; legacy mixing remains gated and existing invoke/impl.operation/default absence/noexcept bodies are unchanged.",
+    "Each distinct fresh node has cold permanent Frames/Acqs/two Operations/base attempt; previous top/active are saved and restored LIFO on normal or C++ escape before diagnostics.",
+    "Owner HOME is staged once before raw65 callbacks and forwarded live to raw57; Icon OWN catch and actual selected3arg base catch deny cleanup on UNKNOWN.",
+    "No registered_identity assignment from A/P/T or presumed V; active stack and Source phase are not Native origin/custody authority.",
+    "Cold-unused adds no new debt; entered/provider debt survives normal return; no synthetic disposition, reset, normal manager/Host drainage or new terminal policy."
+  ],
+  "remaining_gates": [
+    "Root official all-target link/Core/admission and separate CMake closure integration.",
+    "Actual production construction/current generation, parent/Reference/selected Dispatcher/Identity transport, queue/string/pool custody and matched disposition.",
+    "Ordinary serialized synchronous C++ private-LIFO and retained/disjoint metadata preconditions; no foreign/HW/SEH/longjmp/Original stack/fault/EFLAGS ABI claim.",
+    "Full CRT/Native Origin/EH/NoThrow/runtime/gameplay activation remain unproved and unselected."
+  ],
+  "worker_actions": {
+    "tracked_writes": "exactly two peer review files",
+    "Source_CMake_ledger_Ghidra_mutations": false,
+    "compiler_tests_probes_provider_Game": false,
+    "Original_Native_vendor_helper_CG_duplicate_ABI_Origin_custody_runtime_activation_credit": 0
+  },
+  "document": {
+    "path": "docs/CC16_GUI_ICON_PREPARED_PARENT_CALLER_SOURCE_PEER_REVIEW.md",
+    "bytes": 3841,
+    "sha256": "1ed346c3847dade1ae8522d031551b1b5bd1d91063afc28e10b00d7de78364d8"
+  },
+  "proof_files": [
+    "input_pins.json",
+    "corrected_Source_verification.json",
+    "historical_immutable_reader.py",
+    "historical_83_reader_result.json",
+    "prior_v2/peer_read_only_receipt.json"
+  ],
+  "hash_format": "UTF-8 LF review files; raw/staged/committed Git equality required"
+}
