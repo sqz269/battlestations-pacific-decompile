@@ -1,0 +1,13 @@
+# Matrix raw Model-base providers
+
+This prerequisite gives the raw Matrix allocation its own prefix, geometry-member and base-destructor entries. It authenticates the genuine194h MATRIX slab, index190 and live free-index metadata before sharing existing Model payload algorithms. Existing188h Model entry checks and its scalar B74750 return stay separate. Selected base cleanup carries the same family into the separately checked member entry with a fresh decrement import.
+
+The first design used typed WORD reads over byte-backed Matrix free metadata. Independent review caught that issue; v2 uses fenced memcpy observations only for the new Matrix checks. Existing Model validators, reference admission and scalar paths remain unchanged. Both full design and actual Source reviews passed. All registered MSVC Win32 Release targets and both existing suites passed12.61s atbc92e9e9, then12.33s after joining Source52 at390870cc1. The same63,435-byte I386 Core object cb7122d7 passed primary and independent emitted-graph/relocation review. Matrix and Model member payload160B/5relocations and full destructor+catch602B/21relocations have identical code bytes and symbolic relocations after only allocation-type-name normalization.
+
+The standalone raw prefix establishes NativeNodeStorage174 and private ModelTailWords10. It must not be called over prepared NativeModelOwner/MatrixOwner typed tails. These providers neither access bone fields nor return a slot. Matrix outer destruction/scalar flags, typed completion, canonical reference, palette and mission assembly remain later work. Genuine retained providers, readable storage, disjoint metadata and serialized lifetimes remain caller obligations.
+
+A temporary four-root link check retained the context constructor and all three providers; the genuine raw Node constructor/base destructor resolved unforced. Canonical cache/project/map are restored with zero forced entries and unchanged Core. The first temporary configure failed before deferred target creation; its artifacts and restoration were preserved, then the corrected local overlay passed. No new test or entry invocation was added.
+
+Existing names/evidence prefixes and every old reconstruction line are retained; three qualified transport records were added. Locked annotation064423Z saved the correct BSP project/program, refreshed three exports and preserved their Original assembly.
+
+No startup switch or lifetime selection is enabled. This is qualified ordinary Source transport, with inherited private-ABI/fault/SEH/current-cleanup limits and zero new Native/vendor-body credit. The ongoing goal remains active.
