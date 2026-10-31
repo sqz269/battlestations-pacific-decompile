@@ -12,6 +12,8 @@ namespace bsp {
 struct NativeStringRawPoolContext;
 class NativeGuiTextPool;
 class NativeGuiWidgetResolvedPositionData;
+struct NativeGuiWidgetTransformBindings;
+struct NativeGuiWidgetTransformScratch;
 struct NativeGuiTextGlyphQuadStorageAcquired;
 struct NativeGuiTextRawModelDefaultStorageFrame;
 struct NativeGuiTextRawModelDefaultStorageContext;
@@ -97,6 +99,10 @@ struct NativeGuiTextGlyphQuadStorageContext {
     // Prepared from the SAME authenticated RO mapping BEFORE parent entry.
     // Retain binding/mapping through calls; metadata stays separate from payload.
     const NativeGuiWidgetResolvedPositionData& resolved_position_data;
+    // Prepared genuine RO D7A24C/D7A208 and SAME process E12FC4 refs, not
+    // Text E12FD4. Retain bindings/dispatch/profiles through return or failure;
+    // actual current receiver/profile/generation/custody remain caller proof.
+    NativeGuiWidgetTransformBindings& pivot_transform_bindings;
 };
 
 // Fixed, caller-prepared per-invocation scratch/diagnostics, not an owner.
@@ -135,10 +141,12 @@ struct NativeGuiTextGlyphQuadStorageAcquired final {
         NativeGuiTextShadowStorageFrame& shadow_frame,
         NativeNodeSetParentAcquired& shadow_acquired,
         NativeGuiTextFieldStorageFrame& color_frame,
-        NativeGuiTextFieldStorageAcquired& color_acquired)
+        NativeGuiTextFieldStorageAcquired& color_acquired,
+        NativeGuiWidgetTransformScratch& pivot_scratch)
         : raw93_frame_(f), raw93_context_(c), raw93_acquired_(a),
           shadow_frame_(shadow_frame), shadow_acquired_(shadow_acquired),
-          color_frame_(color_frame), color_acquired_(color_acquired) {}
+          color_frame_(color_frame), color_acquired_(color_acquired),
+          pivot_scratch_(pivot_scratch) {}
     NativeGuiTextGlyphQuadStorageAcquired(const NativeGuiTextGlyphQuadStorageAcquired&) = delete;
     NativeGuiTextGlyphQuadStorageAcquired& operator=(const NativeGuiTextGlyphQuadStorageAcquired&) = delete;
 private:
@@ -163,6 +171,9 @@ private:
     // The OTHER target path does not inspect or enter these borrowed records.
     NativeGuiTextFieldStorageFrame& color_frame_;
     NativeGuiTextFieldStorageAcquired& color_acquired_;
+    // Distinct initialized stable 1DCh preimage, including unwritten holes;
+    // never ctor/DEFAULT geometry, live operand/provider or recursive backing.
+    NativeGuiWidgetTransformScratch& pivot_scratch_;
 };
 
 // Whole AB98F0..AB9FC2 [1747B/485ops]. Original ECX actual Text; ten physical

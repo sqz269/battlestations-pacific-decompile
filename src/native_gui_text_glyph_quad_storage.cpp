@@ -1,5 +1,6 @@
 #include "bsp/native_gui_text_glyph_quad_storage.hpp"
 #include "bsp/native_gui_widget_resolved_position.hpp"
+#include "bsp/native_gui_widget_transform.hpp"
 #include "bsp/native_gui_text_field_storage.hpp"
 #include "bsp/native_gui_text_default_storage.hpp"
 #include "bsp/gui_text_factory.hpp"
@@ -438,6 +439,8 @@ __declspec(noinline) void write_native_gui_text_glyph_quad_storage_00ab98f0(
     NativeGuiTextGlyphQuadStorageAcquired& a) {
     const auto* const failure_runtime = c.failure_runtime;
     NativeGuiTextPool& prepared_text_pool = c.actual_text_pool_companion_00f8bdf0;
+    NativeGuiWidgetTransformBindings& prepared_pivot_bindings = c.pivot_transform_bindings;
+    NativeGuiWidgetTransformScratch& prepared_pivot_scratch = a.pivot_scratch_;
     if (failure_runtime) {
         a.failure_origin_.begin(*failure_runtime, &a, 0x00ab98f0u);
         a.failure_origin_.host(*failure_runtime, {0, __COUNTER__}, &a, [&] {
@@ -626,7 +629,13 @@ __declspec(noinline) void write_native_gui_text_glyph_quad_storage_00ab98f0(
         }
         current(a, bits(child), 0x30);
         boundary(a, 0x00ab9ec0, child);
-        c.calls.child_current30(child, a.captured_profile, a.captured_target, static_cast<volatile Word*>(a.locals) + 4, a);
+        if (a.captured_profile == 0x00d5c6c8u && a.captured_target == 0x00a9e0b0u) {
+            set_native_gui_widget_pivot_00a9e0b0(child,
+                static_cast<volatile Word*>(a.locals) + 4,
+                prepared_pivot_scratch, prepared_pivot_bindings);
+        } else {
+            c.calls.child_current30(child, a.captured_profile, a.captured_target, static_cast<volatile Word*>(a.locals) + 4, a);
+        }
         void* const reference = pointer(word(text, 0x1b0));
         boundary(a, 0x00ab9ecd, reference);
         (void)get_native_gui_widget_resolved_position_00aa6750(
