@@ -1500,3 +1500,26 @@ Source41Maina9e960964 joined atd84e50af0: allWin32/existing2/2
 21.14s; all3setterCoreentryinstructions unchanged, currentcanonicalforced/new
 entriesabsent;12priorpaths/SDK+2Coreinverse exact. Earlier105cohort receipts
 kept separately. No Rootexecution/Origin/ABI/runtime grant. Goal ACTIVE.
+
+
+Six MissionLua iteration/conversion leaves27ops/99B integrated from6d3cfcbf/8cbf9cd2,
+Core726938ec0 onceeach. CURRENT machine+4 eachcall; PopstateFIRST beforemodulo
+FFFFFFFF-count/realsettop even0; Nextfullsignedint; BoolALonly; userdatapointer;
+numberrealcdeclST0→privateFSTP32→FLDsame withpublictail/noextra narrowing.
+Primary+independentfullSource/finalpins/all40artifacts andONE014C per module
+91f53157/a8cbc955 accepted. CoreEBPiterationprologuediffersisolatedESP but
+state06→NOT09→settop10 order preserved; conversionsrealcall0A→FSTP12→FLD15.
+Commonretained2/2 21.01s/canonical2/2 20.53s at726938; sixentriesforcedonly,
+sixrealLuaCAPIunforced; canonical0forced/newrowsabsent. MSBuildForceSymbolReferences
+parsercorrectedafterarchive/no rebuild/retest. Source42c54165b94 joinedbcadb5e33:
+allWin32/existing2/2 20.28s/currentcanonical0forced; bothCoreobjsunchanged.
+14priorrepo+5actualLua preserved/twoCoreinverse/nineTextOFF. Existing names,
+evidenceprefixes and priorrecords preserved, sixqualifiedrawrecords appended;
+lockedGhidrajournal012329Z/savedbsp.gpr/6exportsrefreshed. No newtest/entry/
+runtime/Native-or-vendorcredit or wholebuilder/VM/factory/startup/ABI grant.
+Stringsetter559ffaproviderclosedconclusionWITHDRAWN bysuperseding242c97df:
+exactraw41DD40 latepreserveHOME/fencedCURRENTfields/unconditionalactualBF7680
+even0/currentfeatureRef/failurecustody is separateprerequisite; existingresize
+facade unchanged. FrameexactresizeDESIGN andcc9scalarpushDESIGN underway,
+no Sourceauthorizationforthoseyet. reports/codex_mission_lua_iter_convert_integration.json.
+Goal ACTIVE.
