@@ -1,0 +1,723 @@
+{
+  "schema_version": 1,
+  "packet": "codex-renderer-texture-find-storage-independent-review",
+  "kind": "independent_static_review",
+  "reviewed_commit": "34ba625b8d763518afdd493bfc5ad0a3681b7874",
+  "reviewed_parent": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+  "review_base": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-codex-renderer-texture-find-storage-review",
+  "owned_files": [
+    "docs/CC16_NATIVE_RENDERER_TEXTURE_FIND_STORAGE_INDEPENDENT_REVIEW.md",
+    "reports/cc16_native_renderer_texture_find_storage_independent_review.json"
+  ],
+  "owned_addresses": [],
+  "verdict": "no_actionable_findings_within_conditional_whole_normal_Source_body_scope",
+  "actionable_findings": [],
+  "independent_checks": {
+    "reviewed_commit": "34ba625b8d763518afdd493bfc5ad0a3681b7874",
+    "base": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+    "packet_pins": [
+      {
+        "path": "include/bsp/native_renderer_texture_find_storage.hpp",
+        "bytes": 4654,
+        "sha256": "a5852add53e7006f05c1ad183fafb54fb7c3af8fca3b16d9a550a8e78dcdc49a",
+        "git_blob": "4e0bf07ef2c80cda888f416f7602f149bc0c88a1"
+      },
+      {
+        "path": "src/native_renderer_texture_find_storage.cpp",
+        "bytes": 6345,
+        "sha256": "9bb4791d3733f98561b21b3a9f517412782f28c8d775079d146fec8110ba8df1",
+        "git_blob": "d2860eb2f1613fb7c7345a95f1491888be28be38"
+      },
+      {
+        "path": "docs/CC16_NATIVE_RENDERER_TEXTURE_FIND_STORAGE.md",
+        "bytes": 8783,
+        "sha256": "a748b8cce99b0c9e41232364707c95adb82b5f3ac09af908b61d5afb9a7d9807",
+        "git_blob": "8ad82ad9f8d6270d10ff2490d1e8df073764c067"
+      },
+      {
+        "path": "reports/cc16_native_renderer_texture_find_storage.json",
+        "bytes": 53546,
+        "sha256": "0f3150cadbf9aaacfde4c12118d77b3c15637922938529ab69982d09373e6ee7",
+        "git_blob": "ab123aba929736a0f9825c9939ab062a57f03ab5"
+      }
+    ],
+    "four_additions_exact": true,
+    "existing_file_delta": "NONE",
+    "conceptual_inverse": "remove exactly four additions; no deletion run",
+    "new_Source_raw_Git_frozen_equal": true,
+    "independent_Source_operand_order": [
+      {
+        "marker": "void* const renderer = actual_renderer;",
+        "byte_offset": 1504
+      },
+      {
+        "marker": "if (c.cache.synchronization_0108d6dc.mode_00 != 0)",
+        "byte_offset": 1723
+      },
+      {
+        "marker": "const void* const guard_renderer = c.cache.textures.current_renderer_00f8d394;",
+        "byte_offset": 1798
+      },
+      {
+        "marker": "live(f.guard_renderer) = bits(guard_renderer);",
+        "byte_offset": 1889
+      },
+      {
+        "marker": "enter_native_renderer_optional_guard_00b33ad0(",
+        "byte_offset": 2048
+      },
+      {
+        "marker": "*reinterpret_cast<volatile std::uint8_t*>(&f.guard_token) = entered;",
+        "byte_offset": 2174
+      },
+      {
+        "marker": "const void* const name = pointer(homes[0]);",
+        "byte_offset": 2344
+      },
+      {
+        "marker": "Word captured_data = 0;",
+        "byte_offset": 2456
+      },
+      {
+        "marker": "const bool same_header = static_cast<const void*>(f.header) == name;",
+        "byte_offset": 2510
+      },
+      {
+        "marker": "a.native_eh_state = 0;",
+        "byte_offset": 2597
+      },
+      {
+        "marker": "live(f.header[0]) = 0;",
+        "byte_offset": 2663
+      },
+      {
+        "marker": "live(f.header[1]) = 0;",
+        "byte_offset": 2704
+      },
+      {
+        "marker": "if (!same_header)",
+        "byte_offset": 2745
+      },
+      {
+        "marker": "const Word request = word(name);",
+        "byte_offset": 2777
+      },
+      {
+        "marker": "live(f.preserve_home) = 1;",
+        "byte_offset": 2851
+      },
+      {
+        "marker": "resize_native_string_header_0041dd40_exact(f.header, c.strings, request,",
+        "byte_offset": 2974
+      },
+      {
+        "marker": "&f.preserve_home, c.feature_word_0109eea4);",
+        "byte_offset": 3063
+      },
+      {
+        "marker": "const Word current_source_length = word(name);",
+        "byte_offset": 3157
+      },
+      {
+        "marker": "captured_data = live(f.header[1]);",
+        "byte_offset": 3241
+      },
+      {
+        "marker": "if (current_source_length != 0)",
+        "byte_offset": 3372
+      },
+      {
+        "marker": "const Word bytes = live(f.header[0]);",
+        "byte_offset": 3422
+      },
+      {
+        "marker": "const void* const source = pointer(word(name, 4));",
+        "byte_offset": 3510
+      },
+      {
+        "marker": "copy_native_crt_bytes_00bf7680(pointer(captured_data), source, bytes,",
+        "byte_offset": 3651
+      },
+      {
+        "marker": "a.native_eh_state = 1;",
+        "byte_offset": 3871
+      },
+      {
+        "marker": "lowercase_native_string_header_004bcc00(f.header);",
+        "byte_offset": 3990
+      },
+      {
+        "marker": "const Word post_word = homes[1];",
+        "byte_offset": 4049
+      },
+      {
+        "marker": "void* const result = load_native_cached_texture_00b30b40(",
+        "byte_offset": 4202
+      },
+      {
+        "marker": "pointer(bits(renderer) + 0x1a74u), f.header, post_word, 0, 0,",
+        "byte_offset": 4272
+      },
+      {
+        "marker": "c.cache, &a.cache_);",
+        "byte_offset": 4346
+      },
+      {
+        "marker": "a.result = result;",
+        "byte_offset": 4408
+      },
+      {
+        "marker": "a.native_eh_state = 0;",
+        "byte_offset": 4489
+      },
+      {
+        "marker": "if (captured_data != 0)",
+        "byte_offset": 4567
+      },
+      {
+        "marker": "const Word size = live(f.header[0]) + Word{1};",
+        "byte_offset": 4605
+      },
+      {
+        "marker": "native_string_pool_get_or_create_00419cc0(",
+        "byte_offset": 4805
+      },
+      {
+        "marker": "return_native_string_pool_00bd1510(pool, pointer(captured_data), size,",
+        "byte_offset": 5024
+      },
+      {
+        "marker": "c.strings.actual_small_returns_disabled_01090aa4);",
+        "byte_offset": 5111
+      },
+      {
+        "marker": "const std::uint8_t exit_mode = c.cache.synchronization_0108d6dc.mode_00;",
+        "byte_offset": 5259
+      },
+      {
+        "marker": "a.native_eh_state = -1;",
+        "byte_offset": 5350
+      },
+      {
+        "marker": "if (exit_mode != 0)",
+        "byte_offset": 5436
+      },
+      {
+        "marker": "const Word saved_word = live(f.guard_token);",
+        "byte_offset": 5470
+      },
+      {
+        "marker": "const void* const guard_renderer = pointer(live(f.guard_renderer));",
+        "byte_offset": 5548
+      },
+      {
+        "marker": "leave_native_renderer_optional_guard_00b33b00(guard_renderer, saved_word,",
+        "byte_offset": 5727
+      },
+      {
+        "marker": "a.phase = NativeRendererTextureFindStorageAcquired::Phase::complete;",
+        "byte_offset": 5913
+      },
+      {
+        "marker": "return result;",
+        "byte_offset": 5990
+      }
+    ],
+    "normal_body_contract_checks": true,
+    "catch_only_failed_snapshot_barethrow": true,
+    "mandatory_cache_reference_flags_0_0": true,
+    "actual_two_volatile_homes": true,
+    "providers": [
+      {
+        "path": "include/bsp/native_texture_loading_cache.hpp",
+        "bytes": 13322,
+        "sha256": "e1f71c97b0d2d61535964084b66c51379b919bc206ebfbe4710f9058b9544785",
+        "git_blob": "18c2dd4e5eadf17e7c25948be36d73fc4035c093",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "raw_Git_frozen_equal": true,
+        "frozen": "local/output/cc16_native_renderer_texture_find_storage_independent_review_20261031/providers/include/bsp/native_texture_loading_cache.hpp"
+      },
+      {
+        "path": "src/native_texture_loading_cache.cpp",
+        "bytes": 49969,
+        "sha256": "c8deb2862f324fc88f4f36ac6105adf37562e1dcf2b354ef636852131078ce89",
+        "git_blob": "69498fc3ca130fd58dac603ee2f6bbe9907dc66e",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "raw_Git_frozen_equal": true,
+        "frozen": "local/output/cc16_native_renderer_texture_find_storage_independent_review_20261031/providers/src/native_texture_loading_cache.cpp"
+      },
+      {
+        "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+        "bytes": 2877,
+        "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0",
+        "git_blob": "88060a54f9208f2fee8c0e20c3f32d5fceed02c0",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "raw_Git_frozen_equal": true,
+        "frozen": "local/output/cc16_native_renderer_texture_find_storage_independent_review_20261031/providers/include/bsp/native_renderer_synchronization_actual.hpp"
+      },
+      {
+        "path": "src/native_renderer_synchronization_actual.cpp",
+        "bytes": 3242,
+        "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a",
+        "git_blob": "55569529ca8f92a70a2ed94771a08ae9cf66a5c5",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "raw_Git_frozen_equal": true,
+        "frozen": "local/output/cc16_native_renderer_texture_find_storage_independent_review_20261031/providers/src/native_renderer_synchronization_actual.cpp"
+      },
+      {
+        "path": "include/bsp/native_string_raw_resize_exact.hpp",
+        "bytes": 1554,
+        "sha256": "a1a3c6be74194e2f5946e13e09bfb26562c3f73d3565b51f96403f0d60b9999c",
+        "git_blob": "2e9e0ae6cb560eba1e7187911f6fea04791b529b",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "raw_Git_frozen_equal": true,
+        "frozen": "local/output/cc16_native_renderer_texture_find_storage_independent_review_20261031/providers/include/bsp/native_string_raw_resize_exact.hpp"
+      },
+      {
+        "path": "src/native_string_raw_resize_exact.cpp",
+        "bytes": 3979,
+        "sha256": "74bff613a83abda342b5506ff750f46f5c44e191de506480ced504208c81f210",
+        "git_blob": "e05e1c9a86a44a2bba1efe9f46f3151062fab3b6",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "raw_Git_frozen_equal": true,
+        "frozen": "local/output/cc16_native_renderer_texture_find_storage_independent_review_20261031/providers/src/native_string_raw_resize_exact.cpp"
+      },
+      {
+        "path": "include/bsp/native_crt_memcpy.hpp",
+        "bytes": 1954,
+        "sha256": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123",
+        "git_blob": "a62e6ddb9d92e02afd301ed92239b258d53b5f10",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "raw_Git_frozen_equal": true,
+        "frozen": "local/output/cc16_native_renderer_texture_find_storage_independent_review_20261031/providers/include/bsp/native_crt_memcpy.hpp"
+      },
+      {
+        "path": "src/native_crt_memcpy.cpp",
+        "bytes": 17187,
+        "sha256": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3",
+        "git_blob": "248194cbff651aba4341401f519050447f13b6a0",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "raw_Git_frozen_equal": true,
+        "frozen": "local/output/cc16_native_renderer_texture_find_storage_independent_review_20261031/providers/src/native_crt_memcpy.cpp"
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "bytes": 8771,
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "raw_Git_frozen_equal": true,
+        "frozen": "local/output/cc16_native_renderer_texture_find_storage_independent_review_20261031/providers/include/bsp/native_string.hpp"
+      },
+      {
+        "path": "src/native_string.cpp",
+        "bytes": 9121,
+        "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+        "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "raw_Git_frozen_equal": true,
+        "frozen": "local/output/cc16_native_renderer_texture_find_storage_independent_review_20261031/providers/src/native_string.cpp"
+      },
+      {
+        "path": "include/bsp/native_string_pool_owner.hpp",
+        "bytes": 5893,
+        "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+        "git_blob": "4a2569e19b6f25c308cba1c3cdb2b2989db2cddd",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "raw_Git_frozen_equal": true,
+        "frozen": "local/output/cc16_native_renderer_texture_find_storage_independent_review_20261031/providers/include/bsp/native_string_pool_owner.hpp"
+      },
+      {
+        "path": "src/native_string_pool_owner.cpp",
+        "bytes": 8443,
+        "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+        "git_blob": "de3c69b53e00840fab31b41e2195bdc1789b6baf",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "raw_Git_frozen_equal": true,
+        "frozen": "local/output/cc16_native_renderer_texture_find_storage_independent_review_20261031/providers/src/native_string_pool_owner.cpp"
+      },
+      {
+        "path": "include/bsp/native_string_pool_storage.hpp",
+        "bytes": 3113,
+        "sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+        "git_blob": "60b3f627150fa058fac7b8c4c74537cb3aee0a68",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "raw_Git_frozen_equal": true,
+        "frozen": "local/output/cc16_native_renderer_texture_find_storage_independent_review_20261031/providers/include/bsp/native_string_pool_storage.hpp"
+      },
+      {
+        "path": "src/native_string_pool_storage.cpp",
+        "bytes": 5450,
+        "sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+        "git_blob": "103d6fe4d772bb3078c48fe8bcf3f929a385fdda",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "raw_Git_frozen_equal": true,
+        "frozen": "local/output/cc16_native_renderer_texture_find_storage_independent_review_20261031/providers/src/native_string_pool_storage.cpp"
+      },
+      {
+        "path": "include/bsp/render_fx_cc13.hpp",
+        "bytes": 71325,
+        "sha256": "dc1a781e89d87e94978ca340b56f6bdce91699ef97019f46d4aba95bb5967a79",
+        "git_blob": "f7c8e534a75841046a164a683dcb62f4b3df82cd",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "raw_Git_frozen_equal": true,
+        "frozen": "local/output/cc16_native_renderer_texture_find_storage_independent_review_20261031/providers/include/bsp/render_fx_cc13.hpp"
+      },
+      {
+        "path": "src/render_fx_cc13.cpp",
+        "bytes": 113286,
+        "sha256": "991fc4f19979f41a9eed1eae93e307dca271954b3172bd551ca086ae6d5c1e07",
+        "git_blob": "8acb23c2b502bf722f003d0aa7da10000fdec679",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "raw_Git_frozen_equal": true,
+        "frozen": "local/output/cc16_native_renderer_texture_find_storage_independent_review_20261031/providers/src/render_fx_cc13.cpp"
+      },
+      {
+        "path": "include/bsp/native_string_raw_cstring_exact.hpp",
+        "bytes": 1484,
+        "sha256": "d951b3068702b7e1dcaca9260c70489d36a68d49b6602349b98ad62d8eab7054",
+        "git_blob": "791265ce3fb03f2572872019a1b3ee10eaaea131",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "raw_Git_frozen_equal": true,
+        "frozen": "local/output/cc16_native_renderer_texture_find_storage_independent_review_20261031/providers/include/bsp/native_string_raw_cstring_exact.hpp"
+      },
+      {
+        "path": "src/native_string_raw_cstring_exact.cpp",
+        "bytes": 2680,
+        "sha256": "9d07b1cf4dda4e5aea2323b2450b66840a252442b5d09c211d4a921ba3692d2e",
+        "git_blob": "e653b92000a56ccb6a4ce98983a278f62dfda331",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "raw_Git_frozen_equal": true,
+        "frozen": "local/output/cc16_native_renderer_texture_find_storage_independent_review_20261031/providers/src/native_string_raw_cstring_exact.cpp"
+      },
+      {
+        "path": "include/bsp/native_string_raw_header_return.hpp",
+        "bytes": 1330,
+        "sha256": "66804d2209e6875d5a9d723afdab3ab6be12e9f394ba78f3d71778149ef1a335",
+        "git_blob": "8a0ecfda20bf38213c0a8734a8f90400bd095e58",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "raw_Git_frozen_equal": true,
+        "frozen": "local/output/cc16_native_renderer_texture_find_storage_independent_review_20261031/providers/include/bsp/native_string_raw_header_return.hpp"
+      },
+      {
+        "path": "src/native_string_raw_header_return.cpp",
+        "bytes": 1772,
+        "sha256": "d65b8c9fab58a2b23d512164caefcd9dbdaa18f3d0aadc2ff68422dcf6429d28",
+        "git_blob": "d0d7e952911dfbe7cd4a5ae7b70de5bd2641a3ec",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "raw_Git_frozen_equal": true,
+        "frozen": "local/output/cc16_native_renderer_texture_find_storage_independent_review_20261031/providers/src/native_string_raw_header_return.cpp"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 296702,
+        "sha256": "91d1de5e0df99d75ab2133869f154c0560d969f8ed3b60c999a495ba097f416b",
+        "git_blob": "f5032c4bccf117bf25445331020a0d95aa8e98a4",
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "raw_Git_frozen_equal": true,
+        "frozen": "local/output/cc16_native_renderer_texture_find_storage_independent_review_20261031/providers/cmake/startup.cmake"
+      }
+    ],
+    "provider_regions": [
+      {
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "path": "include/bsp/native_texture_loading_cache.hpp",
+        "start_line": 189,
+        "end_line": 222,
+        "bytes": 1612,
+        "sha256": "669879bd67f1af8d0498c38613852ced54c928b858572c2a47d26c8e6538d552",
+        "role": "existing context/mandatory actual cache record",
+        "independently_checked": true
+      },
+      {
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "path": "include/bsp/native_texture_loading_cache.hpp",
+        "start_line": 233,
+        "end_line": 247,
+        "bytes": 1131,
+        "sha256": "04063904e764c6fd97cc2e50d6aed9d2824ce5a54a6f5acdb0f45aaba3115ed9",
+        "role": "raw B30B40 allow_load0 complete domain and existing B319B0 only",
+        "independently_checked": true
+      },
+      {
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "path": "src/native_texture_loading_cache.cpp",
+        "start_line": 150,
+        "end_line": 182,
+        "bytes": 1446,
+        "sha256": "de3c1aae171bddf0648800eb459ab0e21446f066c1c8898973b97d5112aeb60a",
+        "role": "semantic GuardScope NOT reused",
+        "independently_checked": true
+      },
+      {
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "path": "src/native_texture_loading_cache.cpp",
+        "start_line": 961,
+        "end_line": 992,
+        "bytes": 1369,
+        "sha256": "934f6670cf11776d84831c6c7b9dff1effb88a0539eae8a24a913cd052d702b4",
+        "role": "existing B319B0 remains unchanged",
+        "independently_checked": true
+      },
+      {
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+        "start_line": 12,
+        "end_line": 58,
+        "bytes": 2571,
+        "sha256": "90565edc0770f0e19d635cbe7fea523ba5605f8df619b51b6c6009dfba1364d7",
+        "role": "same actual globals/preimages and real guard APIs",
+        "independently_checked": true
+      },
+      {
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "path": "src/native_string.cpp",
+        "start_line": 139,
+        "end_line": 155,
+        "bytes": 681,
+        "sha256": "75989dbe48c9c4303dffaf9c810b9537b347e43a2621ad24116eb82a3dd02629",
+        "role": "existing raw CURRENT-length lowercase",
+        "independently_checked": true
+      },
+      {
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "path": "include/bsp/render_fx_cc13.hpp",
+        "start_line": 397,
+        "end_line": 412,
+        "bytes": 941,
+        "sha256": "ccba64d58fb6e938fbb106c7a67720e2b6ebac858e5b5bd901953063b92b2673",
+        "role": "old semantic facade/incorrect receiver-unused note preserved",
+        "independently_checked": true
+      },
+      {
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "path": "src/render_fx_cc13.cpp",
+        "start_line": 873,
+        "end_line": 885,
+        "bytes": 604,
+        "sha256": "e0cfe654f433315c78dbffa0525533a42f1173efd7b8b3fab7a11e842b752821",
+        "role": "legacy std::string implementation preserved",
+        "independently_checked": true
+      },
+      {
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "path": "include/bsp/native_string_raw_cstring_exact.hpp",
+        "start_line": 12,
+        "end_line": 30,
+        "bytes": 1265,
+        "sha256": "72cc6ab6ede89af8bb8b149189c5f7c247ecbd9c92cebcc8ae5b40e22753b6b2",
+        "role": "new exact CString availability; not a length-header-copy substitute",
+        "independently_checked": true
+      },
+      {
+        "ref": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+        "path": "include/bsp/native_string_raw_header_return.hpp",
+        "start_line": 11,
+        "end_line": 26,
+        "bytes": 1132,
+        "sha256": "d97d18f491d63d0e76ce0f5ae42ec6a085c031f06556bdcafa50f713712bb423",
+        "role": "normal header-return capability; not captured ESI normal cleanup or EH policy",
+        "independently_checked": true
+      }
+    ],
+    "Native": {
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "verified_before_batch": true,
+      "PE": {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "bytes": 12223752,
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+      },
+      "body": {
+        "start": "00b31ac0",
+        "bytes": 257,
+        "sha256": "6363143f39faa9ff41e61049f2dc8dc6e2173cb2b3215412ec77e38e1e646f96",
+        "ops": 77,
+        "calls": 8,
+        "independent_row_decode_exact": true,
+        "actual_PE_offset": 7543488
+      },
+      "saved_exports": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b31ac0\\assembly.txt",
+          "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\native_exports\\00b31ac0\\assembly.txt",
+          "bytes": 2230,
+          "sha256": "5c208f483e3f9128b93705e57f4ef62eda4cb0f452acbb64c21bfce9659e3c96",
+          "kind": "historical_frozen_saved_export_bytes",
+          "verified": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b31ac0\\decompiled.c",
+          "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\native_exports\\00b31ac0\\decompiled.c",
+          "bytes": 1833,
+          "sha256": "f75df80102586f00daaede90fcf6259e4d94174d0bafc25743196ea7367bbdb9",
+          "kind": "historical_frozen_saved_export_bytes",
+          "verified": true
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b31ac0\\metadata.json",
+          "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-renderer-texture-find-storage\\local\\output\\cc16_native_renderer_texture_find_storage_20261031\\native_exports\\00b31ac0\\metadata.json",
+          "bytes": 283,
+          "sha256": "86aa7fc3461079af929ed130ad98bb641035505f89f90e6d0edf2af51dea106f",
+          "kind": "historical_frozen_saved_export_bytes",
+          "verified": true
+        }
+      ],
+      "mapped_slot": {
+        "profile": "00d5f0a8",
+        "offset": "68",
+        "address": "00d5f110",
+        "bytes": "c01ab300",
+        "target": "00b31ac0",
+        "actual_PE_offset": 9826576
+      },
+      "FH3_blobs": [
+        {
+          "role": "handler",
+          "address": "00cbdc20",
+          "bytes": 10,
+          "sha256": "31f75dbdb0c515b4853780f8bb986eea3461f42bbdccd62e55a9b306bf9d70ee",
+          "pe_offset": 9165856,
+          "frozen": "local/output/cc16_native_renderer_texture_find_storage_independent_review_20261031/native/handler.bin",
+          "evidence_only": true
+        },
+        {
+          "role": "FuncInfo",
+          "address": "00df6584",
+          "bytes": 36,
+          "sha256": "d81c9b4f21f1802c677884a558148a3e27bd25dbb87781be866a678205d75a6f",
+          "pe_offset": 10446212,
+          "frozen": "local/output/cc16_native_renderer_texture_find_storage_independent_review_20261031/native/FuncInfo.bin",
+          "evidence_only": true
+        },
+        {
+          "role": "unwind",
+          "address": "00df6574",
+          "bytes": 16,
+          "sha256": "76cf5fd647898ed3c3eae507b1b2e3a185a6cb910a20c52842c8cdc943285f8b",
+          "pe_offset": 10446196,
+          "frozen": "local/output/cc16_native_renderer_texture_find_storage_independent_review_20261031/native/unwind.bin",
+          "evidence_only": true
+        },
+        {
+          "role": "action_0",
+          "address": "00cbdc10",
+          "bytes": 8,
+          "sha256": "7b9dd60186e4d9665170ea4e173a26a639b7368b7611ceb76c781d1e4e78db39",
+          "pe_offset": 9165840,
+          "frozen": "local/output/cc16_native_renderer_texture_find_storage_independent_review_20261031/native/action_0.bin",
+          "evidence_only": true
+        },
+        {
+          "role": "action_1",
+          "address": "00cbdc18",
+          "bytes": 8,
+          "sha256": "3637537b3ee32fd46ae5bcf098794a3b5093cded6bd043bd567494b839ac93e3",
+          "pe_offset": 9165848,
+          "frozen": "local/output/cc16_native_renderer_texture_find_storage_independent_review_20261031/native/action_1.bin",
+          "evidence_only": true
+        }
+      ],
+      "unwind_entries": [
+        [
+          -1,
+          "00cbdc10"
+        ],
+        [
+          0,
+          "00cbdc18"
+        ]
+      ],
+      "FH3_authority": false
+    },
+    "producer_reader": {
+      "bytes": 1823,
+      "sha256": "26c0c89e183f296d48dd84ca6f88190cc1ab60857b11839d7a9189d4fb07ebd6",
+      "raw_equals_embedded": true,
+      "immutable_result": {
+        "mode": "34ba625b8d763518afdd493bfc5ad0a3681b7874",
+        "new_Source_files": 2,
+        "existing_file_delta": "NONE",
+        "whole_provider_pins": 21,
+        "region_pins": 10,
+        "raw_embedded_equal": true,
+        "passed": true
+      }
+    },
+    "actionable_findings": [],
+    "verdict": "no_actionable_findings_within_conditional_whole_normal_Source_body_scope",
+    "actual_renderer68_producer": false,
+    "Icon_activation": false,
+    "Native_unwind_permission": false,
+    "compiler_runtime_or_Ghidra_actions": false
+  },
+  "independent_checker": {
+    "path": "local/review_source53.py",
+    "bytes": 11128,
+    "sha256": "24776ce44421d96374219cc89a28d9e1eea244aaebbe37791af386935910a9fc",
+    "git_blob": "95f3d6a4a5d771a1b4b93172cfd1f7a2808667cb",
+    "result_path": "local/output/cc16_native_renderer_texture_find_storage_independent_review_20261031/independent_checks.json",
+    "result_bytes": 25057,
+    "result_sha256": "1a74516b210f0ac99653169127109fac8391b0979532744ef0a47a4b22df3c3f",
+    "qualification": "read-only immutable Git/source/PE check; no C++ or provider execution"
+  },
+  "producer_reader": {
+    "bytes": 1823,
+    "sha256": "26c0c89e183f296d48dd84ca6f88190cc1ab60857b11839d7a9189d4fb07ebd6",
+    "raw_equals_embedded": true,
+    "immutable_result": {
+      "mode": "34ba625b8d763518afdd493bfc5ad0a3681b7874",
+      "new_Source_files": 2,
+      "existing_file_delta": "NONE",
+      "whole_provider_pins": 21,
+      "region_pins": 10,
+      "raw_embedded_equal": true,
+      "passed": true
+    },
+    "utf8_lf": "import hashlib,json,subprocess,sys\nfrom pathlib import Path\nroot=Path(sys.argv[1]).resolve();j=json.loads(Path(sys.argv[2]).read_bytes());p=j['static_proof'];ref=sys.argv[3] if len(sys.argv)>3 else None\ndef sha(b):return hashlib.sha256(b).hexdigest()\ndef blob(b):return hashlib.sha1(b'blob '+str(len(b)).encode()+b'\\0'+b).hexdigest()\ndef git(r,path):return subprocess.check_output(['git','show',r+':'+path],cwd=root)\nfor x in p['new_Source_pins']:\n absent=subprocess.run(['git','cat-file','-e',p['base_ref']+':'+x['path']],cwd=root,capture_output=True);assert absent.returncode!=0\n b=git(ref,x['path']) if ref else (root/x['path']).read_bytes();assert len(b)==x['bytes'] and sha(b)==x['sha256'] and blob(b)==x['git_blob'] and b'\\r' not in b\nfor x in p['whole_provider_pins']:\n b=git(x['ref'],x['path']);assert len(b)==x['bytes'] and sha(b)==x['sha256'] and blob(b)==x['git_blob']\nfor x in p['provider_region_pins']:\n b=b''.join(git(x['ref'],x['path']).splitlines(keepends=True)[x['start_line']-1:x['end_line']]);assert len(b)==x['bytes'] and sha(b)==x['sha256']\nq=j['verification_reader'];b=q['utf8_lf'].encode();assert len(b)==q['bytes'] and sha(b)==q['sha256'] and b'\\r' not in b\nif ref:\n rows=subprocess.check_output(['git','diff-tree','--no-commit-id','--name-status','-r',p['base_ref'],ref],cwd=root).decode().splitlines()\n assert sorted(rows)==sorted('A\\t'+x for x in j['scope']['files'])\nelse:\n assert not subprocess.check_output(['git','diff','--name-only',p['base_ref']],cwd=root).strip()\nassert j['credits']['new_Original']==0 and j['readiness']['Native_unwind_permission']==False\nprint(json.dumps(dict(mode=ref or 'worktree',new_Source_files=2,existing_file_delta='NONE',whole_provider_pins=len(p['whole_provider_pins']),region_pins=len(p['provider_region_pins']),raw_embedded_equal=True,passed=True),indent=2))\n"
+  },
+  "qualifications": {
+    "actual_two_volatile_homes_and_authentic_frame_preimages_required": true,
+    "genuine_cache_rawpool_guard_import_feature_alias_lifetime": true,
+    "diagnostics_are_not_authority": true,
+    "mandatory_fresh_cache_acquisition_and_transitive_backing": true,
+    "all_nested_helper_limits_preserved": true,
+    "Native_unwind_permission": false,
+    "selected_cleanup_or_secondary_policy": false,
+    "Original_private_ABI": false,
+    "hardware_SEH_unmasked_FP_fault_identity": false,
+    "current_generation_retention_publication": false,
+    "genuine_renderer68_producer": false,
+    "RawIcon_or_FullIcon": false,
+    "frontend_activation": false,
+    "runtime_gameplay": false
+  },
+  "actions": {
+    "Source_edits": false,
+    "addresses_claimed": false,
+    "compiler": false,
+    "preprocess": false,
+    "build": false,
+    "tests": false,
+    "probe_or_provider_or_Game": false,
+    "Ghidra_mutation": false,
+    "CMake_or_ledger": false,
+    "original_game_write": false,
+    "static_Git_text_PE_only": true
+  },
+  "credits": {
+    "additional_Native": 0,
+    "vendor_or_duplicate_helper": 0,
+    "Original_ABI": 0,
+    "runtime": 0,
+    "activation": 0
+  },
+  "document_pin": {
+    "path": "docs/CC16_NATIVE_RENDERER_TEXTURE_FIND_STORAGE_INDEPENDENT_REVIEW.md",
+    "bytes": 9662,
+    "sha256": "ceae36c2cba1955173a7fe91ac009cbe876a02264b4c8ec38367c59e8a0b4e42",
+    "git_blob": "e6ee694d45e2f0ed73adfeb6ab419d26c3c32b34"
+  }
+}
