@@ -21,9 +21,16 @@ bool has_geometry_00b74650(const void* actual_model) noexcept {
     return current_pointer(actual_model, 0x180) != nullptr;
 }
 
-const NativeModelTailStorage& model_tail(const void* actual_model) noexcept {
-    return *reinterpret_cast<const NativeModelTailStorage*>(
-        static_cast<const std::byte*>(actual_model) + 0x174);
+// Whole B74640 field access; its native stacked DWORD is unused.
+// Read the captured Model's data word without forming a typed tail view.
+void* raw_model_geometry_00b74640(const void* actual_model) noexcept {
+    void* geometry;
+    __asm {
+        mov ecx, actual_model
+        mov eax, dword ptr [ecx + 180h]
+        mov geometry, eax
+    }
+    return geometry;
 }
 } // namespace
 
@@ -44,10 +51,10 @@ void set_native_gui_widget_color_storage_00aa6870(void* actual_widget,
 
     if (!has_geometry_00b74650(model)) return;
     model = current_pointer(actual_widget, 0x4c);
-    void* mesh = gui_model_geometry_00b74640(model_tail(model), 0);
+    void* mesh = raw_model_geometry_00b74640(model);
     if (gui_mesh_element_count_00b72b40(mesh) == 0) return;
     model = current_pointer(actual_widget, 0x4c);
-    mesh = gui_model_geometry_00b74640(model_tail(model), 0);
+    mesh = raw_model_geometry_00b74640(model);
     void* const element = gui_geometry_element_00b732c0(mesh, 0);
     void* const material = current_pointer(element, 0x20);
     auto* const diffuse = reinterpret_cast<volatile std::uint32_t*>(

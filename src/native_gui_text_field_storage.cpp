@@ -103,8 +103,16 @@ Word current_target(void* raw, unsigned slot, Word& profile,
     separate_scratch({table, 0x84}, frame, a);
     return table[slot / 4]; // Numeric selector, never a numeric host call.
 }
-const NativeModelTailStorage& model_tail(const void* model) noexcept {
-    return *reinterpret_cast<const NativeModelTailStorage*>(at(model, 0x174));
+// Whole B74640 field access; its native stacked DWORD is unused.
+// Read the captured Model's data word without forming a typed tail view.
+void* raw_model_geometry_00b74640(const void* actual_model) noexcept {
+    void* geometry;
+    __asm {
+        mov ecx, actual_model
+        mov eax, dword ptr [ecx + 180h]
+        mov geometry, eax
+    }
+    return geometry;
 }
 bool has_geometry_00b74650(const void* model) noexcept {
     return read(model, 0x180) != 0; // Genuine whole B74650 field read.
@@ -120,12 +128,12 @@ void color_body(void* raw, const void* original_rgba,
     if (!has_geometry_00b74650(model)) return;
     model = pointer(read(raw, 0x188));
     a.active_call_site = 0x00ab6b79;
-    void* mesh = gui_model_geometry_00b74640(model_tail(model), 0);
+    void* mesh = raw_model_geometry_00b74640(model);
     a.active_call_site = 0x00ab6b80;
     if (!gui_mesh_element_count_00b72b40(mesh)) return;
     model = pointer(read(raw, 0x188));
     a.active_call_site = 0x00ab6b93;
-    mesh = gui_model_geometry_00b74640(model_tail(model), 0);
+    mesh = raw_model_geometry_00b74640(model);
     a.active_call_site = 0x00ab6b9a;
     void* const element = gui_geometry_element_00b732c0(mesh, 0);
 
