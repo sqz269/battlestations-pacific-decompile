@@ -1,0 +1,264 @@
+{
+  "schema_version": 1,
+  "packet": "codex-widget-parent-delete-attempt-independent-review",
+  "created_utc": "2026-10-31T16:01:48.055071+00:00",
+  "review_baseline": "ee32fc77f43a2bfff01c2e388a02588a07ce3b09",
+  "author_commit": "aa9415787d9d40935043c46cd78ce4f6e1c9dddf",
+  "owned_paths": [
+    "docs/CC16_WIDGET_PARENT_DELETE_ATTEMPT_INDEPENDENT_REVIEW.md",
+    "reports/cc16_widget_parent_delete_attempt_independent_review.json"
+  ],
+  "verdict": {
+    "actionable_Source_findings": 0,
+    "standalone_provider_self_contained": true,
+    "Root_compilation_still_required": true,
+    "coupled_Icon_acceptance": false,
+    "actual_selected_child_or_application_activation": false
+  },
+  "author_four_paths": [
+    {
+      "path": "include/bsp/native_gui_widget_lifetime.hpp",
+      "bytes": 10153,
+      "sha256": "eb41bcd6bea8ecff99ab0b1dca322316a12c86a3da54a0229a1a59e2519f336a"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "bytes": 19237,
+      "sha256": "4cc4073e96b0441595743d967ae2cbf07eaf313671e63bd99891cbe06fb912b7"
+    },
+    {
+      "path": "docs/CC16_WIDGET_PARENT_DELETE_ATTEMPT.md",
+      "bytes": 4338,
+      "sha256": "c3b1d4acf0073d61b4374ce63091b88377556d0d54a892c3603ab913c4b94e2c"
+    },
+    {
+      "path": "reports/cc16_widget_parent_delete_attempt.json",
+      "bytes": 30025,
+      "sha256": "29ab667628c82cba353003fda6cef443b1ef66f4e5c6b597244595a050136c47"
+    }
+  ],
+  "author_delta": {
+    "modified_Source": 2,
+    "added_evidence": 2,
+    "exact_parent": true,
+    "exact_four_path_tree_inverse": true
+  },
+  "implementation_reuse": {
+    "whole_HCPP_equal_previous_candidate": true,
+    "prior59_static_checks_reused": true,
+    "author54_proof_preserved": true,
+    "five_seams_seven_states_fourteen_regions_equal_prior_proofs": true,
+    "normal_kernel_bytes": 2153,
+    "normal_kernel_sha256": "adff12f5b70fb609594035d975b48b481fd451bba613492a6272758d632e90e9",
+    "old_bodies_not_re_reviewed_as_new_reconstruction": true
+  },
+  "prior_review_pins": [
+    {
+      "path": "peer_read_only_receipt.json",
+      "bytes": 5498,
+      "sha256": "38011e8659f0404932bac27ca6e57ebae676d0fe0be0fb42eaaafc2418ea63eb"
+    },
+    {
+      "path": "peer_static_verification.json",
+      "bytes": 13671,
+      "sha256": "036fb285575cbd87c7098450812549eeee688a71006d489e352a78a06ecf19bc"
+    },
+    {
+      "path": "peer_sealed_receipt.json",
+      "bytes": 791,
+      "sha256": "f65509a52f545da3409832cfd15c8df28e5dfa32a5414bde4ef9c10c325ad159"
+    },
+    {
+      "path": "peer_manifest.json",
+      "bytes": 3019,
+      "sha256": "b9df463c1f5149046c8f721b8acdba6bea2d7f0235befcc9580c4831cecc3cd0"
+    }
+  ],
+  "reader": {
+    "bytes": 5744,
+    "sha256": "849d7892df98c1e25f637070c62b2a6d0fdd6533f08bbdd2751d7c20855531a5",
+    "complete_source_inspected_before_execution": true,
+    "actual_immutable_Git_result": {
+      "pass": true,
+      "checks": 108,
+      "mode": "Git-commit",
+      "parent": "ee32fc77f43a2bfff01c2e388a02588a07ce3b09",
+      "source_pairs": 2,
+      "seams": 5,
+      "states": 7,
+      "protected_regions": 14,
+      "unchanged_provider_pins": 18,
+      "normal_kernel_bytes": 2153,
+      "full_four_path_recursive_inverse": true,
+      "exact_approved_source": true,
+      "compiler_tests_probe_Game_Ghidra_actions": false,
+      "activation_or_Native_permission": false
+    },
+    "working_report_exact_Git_preflight": true,
+    "working_report_sha256": "29ab667628c82cba353003fda6cef443b1ef66f4e5c6b597244595a050136c47",
+    "transport_qualification": "Nested ignored-root Git path resolution hit Windows path-length handling; inspected unchanged reader is run at the actual author checkout root after exact working-report/Git pin equality."
+  },
+  "unchanged_provider_pins": [
+    {
+      "path": "include/bsp/native_gui_widget_raw_model_lifetime.hpp",
+      "bytes": 4599,
+      "sha256": "bc8dd7b7fb8e22be5436857a8a27ed123afafe7543c592e327643d5294eaf988",
+      "git_blob_sha1": "dbffd3f17f0952c4d3ff8c0659ab0f617221eac7",
+      "author_Git_equal_base": true
+    },
+    {
+      "path": "src/native_gui_widget_raw_model_lifetime.cpp",
+      "bytes": 28955,
+      "sha256": "8761415408f767dfa34dbcdf986be942e94f07b42d3f63536a77ce987cbec146",
+      "git_blob_sha1": "4d0e75a0986557607258a53264c06bac084c0a7f",
+      "author_Git_equal_base": true
+    },
+    {
+      "path": "include/bsp/native_gui_widget_base_storage.hpp",
+      "bytes": 1081,
+      "sha256": "35748704f96ed477f2f55f01edf5a8e598f1995955f847343f94327dc495faab",
+      "git_blob_sha1": "61c72c99fab59f5c86da392495d7bae5381607cf",
+      "author_Git_equal_base": true
+    },
+    {
+      "path": "src/native_gui_widget_base_storage.cpp",
+      "bytes": 3008,
+      "sha256": "4ddd5ab1ad4a2b8174d80caf70dba76afa648479e4e8637a56884f2b9db6354d",
+      "git_blob_sha1": "997a33c5ac7bbf7b57e133feb53b91163e7308b5",
+      "author_Git_equal_base": true
+    },
+    {
+      "path": "include/bsp/native_node_destruction.hpp",
+      "bytes": 5997,
+      "sha256": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833",
+      "git_blob_sha1": "d84edd297c4dfb43cb0b5aa630676fb1b245eedc",
+      "author_Git_equal_base": true
+    },
+    {
+      "path": "src/native_node_destruction.cpp",
+      "bytes": 14506,
+      "sha256": "2ee6ba84e759958a8f160cb25ad210076203931d4ae4f2e9265529bff5c57269",
+      "git_blob_sha1": "471b67cac72f5a45fb6a4789f82d7533fd72f6c9",
+      "author_Git_equal_base": true
+    },
+    {
+      "path": "include/bsp/native_ref_counted.hpp",
+      "bytes": 1226,
+      "sha256": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82",
+      "git_blob_sha1": "5ee0a9b036a0acd04fe5a89e3faa8cd22552f200",
+      "author_Git_equal_base": true
+    },
+    {
+      "path": "src/native_ref_counted.cpp",
+      "bytes": 822,
+      "sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9",
+      "git_blob_sha1": "bb26a9f52a9b694165a4b832db8a9dac735d1c52",
+      "author_Git_equal_base": true
+    },
+    {
+      "path": "include/bsp/native_renderer_pointer_array_destroy.hpp",
+      "bytes": 2071,
+      "sha256": "5c89c92aa62d71115d8d5c81353ab235b3317ca265929a656644e849e4d1f0ab",
+      "git_blob_sha1": "b42f1838efe07ece6509247e2c1277690a350e37",
+      "author_Git_equal_base": true
+    },
+    {
+      "path": "src/native_renderer_pointer_array_destroy.cpp",
+      "bytes": 2717,
+      "sha256": "e8fbf2456ac9e3e2a7fb6996d0e991b50c5ea32b184c1d0a13d376cee3956f21",
+      "git_blob_sha1": "699877250b9f72a0039dfe17deb4dde075a09486",
+      "author_Git_equal_base": true
+    },
+    {
+      "path": "include/bsp/native_logical_vertex_owner.hpp",
+      "bytes": 7242,
+      "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c",
+      "git_blob_sha1": "f2c5a72e46f030f049f370eda07de9594a5f3816",
+      "author_Git_equal_base": true
+    },
+    {
+      "path": "src/native_logical_vertex_owner.cpp",
+      "bytes": 25341,
+      "sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba",
+      "git_blob_sha1": "be3c28943b8b96b9c2e6829fb93546654271de62",
+      "author_Git_equal_base": true
+    },
+    {
+      "path": "include/bsp/native_live_effect_manager.hpp",
+      "bytes": 3452,
+      "sha256": "a2209e98f4667a06d74a2e677e86361fec821e676bcff548c80b2554002de597",
+      "git_blob_sha1": "118d05db14a7fead43bc704f803080c0fcc1f893",
+      "author_Git_equal_base": true
+    },
+    {
+      "path": "src/native_live_effect_manager.cpp",
+      "bytes": 2615,
+      "sha256": "7b065ea88da63c8a3408ccf39f69923e685b4f97f6abc454f255b15a217c2747",
+      "git_blob_sha1": "932e05cf8e8868675e97bef46524800fb3ef0db3",
+      "author_Git_equal_base": true
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "git_blob_sha1": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "author_Git_equal_base": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "git_blob_sha1": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "author_Git_equal_base": true
+    },
+    {
+      "path": "include/bsp/native_gui_widget_lifetime_dispatch.hpp",
+      "bytes": 6288,
+      "sha256": "9d2c05097f3880a57bc79a5cd095bee33858a3b0300ed77af887f90fec3e291c",
+      "git_blob_sha1": "bd1b560ee54acf5c4189ecc2a130a406a70049d4",
+      "author_Git_equal_base": true
+    },
+    {
+      "path": "src/native_gui_widget_lifetime_dispatch.cpp",
+      "bytes": 9192,
+      "sha256": "f850db8bbd894bf91a96f730b8783cc7b66cb595c3c2a07973e33d33d9ad4803",
+      "git_blob_sha1": "b68e27db072d9cf5f549d7ed8806faf36474b530",
+      "author_Git_equal_base": true
+    }
+  ],
+  "private_capability_review": [
+    "Exact actual3arg friend only; private entered/unknown pointers supplied solely by it to TU-private helper.",
+    "Pure fresh snapshot occurs before entered arm; throwing admission/schedule/first Native store follow arm.",
+    "Inner catch denial precedes legacy unwind and diagnostics; outer catch covers early admission/schedule/body escapes.",
+    "UNKNOWN never resets and dominates retention even if an enclosing normal return is later observed.",
+    "Immutable parent/Context bindings and Source observations grant no Native birth/generation/custody/Origin or cleanup authority.",
+    "Old Context layouts, public old2arg/rawmodel routes and existing noexcept/terminal policies preserved; Source additions do not prove binary ABI identity."
+  ],
+  "remaining_gates": [
+    "Root official compilation/Core and integration evidence are separate; this worker performed no compiler or runtime actions.",
+    "Actual producer/backing/custody/CRT/current-generation and selected enclosing child Dispatcher/Identity transport remain separately required.",
+    "Coupled Icon/service immutable v1 has a confirmed same-service synchronous nested-active blocker; that proposal is not approved here and revision review is pending.",
+    "No actual caller/application selection, Origin cleanup issuer, Native FH3/SEH/foreign-fault/NoThrow, Original private-stack/EFLAGS/ABI or runtime credit is established."
+  ],
+  "worker_actions": {
+    "tracked_writes": "only the two independent-review metadata files",
+    "Source_CMake_ledger_Ghidra_mutation": false,
+    "compiler_link_test_probe_provider_Game": false,
+    "Native_vendor_helper_CG_duplicate_OriginalABI_Origin_runtime_activation_credit": 0
+  },
+  "document": {
+    "path": "docs/CC16_WIDGET_PARENT_DELETE_ATTEMPT_INDEPENDENT_REVIEW.md",
+    "bytes": 3851,
+    "sha256": "de44d8a09802ff13eaf0986719f249114d475b200ba2aa69426a4aac4bd87d9a"
+  },
+  "ignored_evidence_root": "local/output/cc16_widget_parent_delete_attempt_independent_review_20261031",
+  "proof_files": [
+    "author_pins.json",
+    "author_Git_delta.txt",
+    "independent_Git_verification.json",
+    "author_reader.py",
+    "author_reader_result.json",
+    "prior_standalone/peer_static_verification.json"
+  ],
+  "hash_format": "UTF-8 LF; working raw bytes must equal staged and committed Git blobs"
+}
