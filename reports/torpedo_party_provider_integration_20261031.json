@@ -1,0 +1,41 @@
+{
+  "packet": "torpedo-party-provider-integration-20261031",
+  "phase": "source_checkpoint_before_compilation",
+  "baseline": "c5fdfae562f2711d7d7accb3351d1c828a6d904a",
+  "applied_design_patch_sha256": "076f9f66b639305eb68f8482155b3ca6fe2815d1503b1a1ce1b2a5f8c53ead87",
+  "source_files": [
+    "include/bsp/torpedo_release_orders.hpp",
+    "src/torpedo_release_orders.cpp",
+    "src/game_hosts_units.cpp"
+  ],
+  "addresses": [
+    "007C0D90",
+    "007EEF30",
+    "007EEF96",
+    "00927F10"
+  ],
+  "host_contract": "existing live issuer reference; existing virtuals/defaults unchanged",
+  "guard_order": "post999: leader; mode==2 skips; slot==8 skips; reached raw party byte nonzero skips",
+  "provider": "same MissionHost participant owner borrowed through Frame and ShipAI",
+  "availability": "try success consumes raw!=0; missing owner/byte throws concrete Source logic_error",
+  "failure_effects": "prior rack/pending/999 effects retained; no retry/rollback/local catch; existing WinMain summary/cleanup is not process retention",
+  "retained_limits": [
+    "registry leader unknown/empty=>true approximation",
+    "threshold and other host fidelity inputs",
+    "activation and Native ABI/error transport unproved"
+  ],
+  "flags": {
+    "kReleaseOrderLeaderBlockBound": false,
+    "kPlaneIssueThresholdZeroCc13Bound": false,
+    "kMovetoTargetSpeedClassCc13Bound": false
+  },
+  "new_api": false,
+  "new_counters": false,
+  "new_tests": 0,
+  "new_builds": 0,
+  "new_runtime_runs": 0,
+  "ghidra_writes": 0,
+  "native_function_credit": 0,
+  "vendor_body_credit": 0,
+  "created_utc": "2026-10-31T06:01:27.162384+00:00"
+}
