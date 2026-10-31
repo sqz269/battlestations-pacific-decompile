@@ -118,6 +118,11 @@ public:
         }
     }
 private:
+    // Glyph uses this friendship only to READ its escaped header-edge metadata.
+    // It adds no Native issuer, setter or public failure-origin service.
+    friend void write_native_gui_text_glyph_quad_storage_00ab98f0(void*,
+        volatile std::uint32_t (&)[10], NativeGuiTextGlyphQuadStorageContext&,
+        NativeGuiTextGlyphQuadStorageAcquired&);
     friend class NativeGuiTextFailureHeaderArm;
     friend class NativeGuiTextFailureConstructorSlotArm;
     friend class NativeGuiTextFailureConstructorCall;

@@ -270,18 +270,43 @@ void current(Acquired& a, Word receiver, Word slot) noexcept {
     a.captured_target = word(a.captured_profile, slot);
 }
 void normal_string_return(Acquired& a, NativeStringRawPoolContext& strings,
-    Word getter_site, Word return_site, bool wide) {
+    Word getter_site, Word return_site, bool wide,
+    NativeGuiTextFailureHeaderArm* actual_arm,
+    NativeGuiTextFailureOrigin* actual_origin,
+    const NativeGuiTextFailureOriginRuntime* captured_runtime) {
     const Word data = static_cast<volatile Word*>(a.locals)[5]; // F28, capture before getter.
     a.native_eh_state = -1; // Native TEST data, then disarm before length/getter.
-    if (data == 0) return;
+    if (captured_runtime) actual_arm->normal_return_entered();
+    if (data == 0) {
+        if (captured_runtime) actual_arm->returned(); // normal path only; no free/disposition claim
+        return;
+    }
     const Word length = static_cast<volatile Word*>(a.locals)[4];
     const Word bytes = wide ? length * 2u + 2u : length + 1u;
-    boundary(a, getter_site, nullptr);
-    auto* const pool = native_string_pool_get_or_create_00419cc0(
-        strings.actual_published_01090aa8, strings.actual_manager_publication_01090aa0);
-    boundary(a, return_site, pool);
-    return_native_string_pool_00bd1510(pool, pointer(data), bytes,
-        strings.actual_small_returns_disabled_01090aa4);
+    try {
+        boundary(a, getter_site, nullptr);
+        const auto get_current_pool = [&] {
+            return native_string_pool_get_or_create_00419cc0(
+                strings.actual_published_01090aa8, strings.actual_manager_publication_01090aa0);
+        };
+        auto* const pool = captured_runtime
+            ? actual_origin->unknown(*captured_runtime,
+                {getter_site, wide ? 0x47483234u : 0x47483133u}, &strings, get_current_pool)
+            : get_current_pool();
+        boundary(a, return_site, pool);
+        if (captured_runtime)
+            actual_origin->unknown(*captured_runtime,
+                {return_site, wide ? 0x47483235u : 0x47483134u}, &strings, [&] {
+                    return_native_string_pool_00bd1510(pool, pointer(data), bytes,
+                        strings.actual_small_returns_disabled_01090aa4);
+                });
+        else return_native_string_pool_00bd1510(pool, pointer(data), bytes,
+            strings.actual_small_returns_disabled_01090aa4);
+        if (captured_runtime) actual_arm->returned(); // call returned; AA4 may suppress the return
+    } catch (...) {
+        if (captured_runtime) actual_arm->return_failed();
+        throw; // no retry, rescan, extra return or cleanup
+    }
 }
 
 void prepare_shadow(NativeGuiTextGlyphQuadStorageContext& c, Acquired& a, Word& offset) {
@@ -485,21 +510,51 @@ __declspec(noinline) void write_native_gui_text_glyph_quad_storage_00ab98f0(
         boundary(a, 0x00ab9e05, child);
         c.calls.shadow_00ab6c30(child, 1, 0, shadow_offset, static_cast<volatile Word*>(a.locals) + 7, a);
         boundary(a, 0x00ab9e13, a.locals + 4);
-        void* const shader_argument = construct_native_string_header_0041e870(
-            a.locals + 4, c.strings, c.shader_name_00cefd78);
+        const auto construct_shader_header = [&] {
+            return construct_native_string_header_0041e870(
+                a.locals + 4, c.strings, c.shader_name_00cefd78);
+        };
+        void* const shader_argument = failure_runtime
+            ? a.failure_origin_.unknown(*failure_runtime, {0x00ab9e13u, 0x47483131u},
+                &c.strings, construct_shader_header)
+            : construct_shader_header();
         a.native_eh_state = 1;
-        boundary(a, 0x00ab9e1f, child); c.calls.shader_00ab8e70(child, shader_argument, a);
-        normal_string_return(a, c.strings, 0x00ab9e39, 0x00ab9e40, false);
+        if (failure_runtime) a.narrow_header_arm_.arm(a.failure_origin_, a.locals + 4, 1);
+        boundary(a, 0x00ab9e1f, child);
+        if (failure_runtime)
+            a.failure_origin_.unknown(*failure_runtime, {0x00ab9e1fu, 0x47483132u}, &c.calls,
+                [&] { c.calls.shader_00ab8e70(child, shader_argument, a); });
+        else c.calls.shader_00ab8e70(child, shader_argument, a);
+        normal_string_return(a, c.strings, 0x00ab9e39, 0x00ab9e40, false,
+            failure_runtime ? &a.narrow_header_arm_ : nullptr,
+            failure_runtime ? &a.failure_origin_ : nullptr, failure_runtime);
         const Word current_code_unit = homes[9];
         boundary(a, 0x00ab9e51, a.locals + 4);
-        void* const content_argument = construct_gui_text_code_unit_00ab81c0(
-            a.locals + 4, current_code_unit, c.strings);
+        const auto construct_content_header = [&] {
+            return construct_gui_text_code_unit_00ab81c0(a.locals + 4, current_code_unit, c.strings);
+        };
+        void* const content_argument = failure_runtime
+            ? a.failure_origin_.unknown(*failure_runtime, {0x00ab9e51u, 0x47483231u},
+                &c.strings, construct_content_header)
+            : construct_content_header();
         a.native_eh_state = 2;
-        boundary(a, 0x00ab9e61, child); c.calls.content_00aba8d0(child, content_argument, a);
+        if (failure_runtime) a.wide_header_arm_.arm(a.failure_origin_, a.locals + 4, 2);
+        boundary(a, 0x00ab9e61, child);
+        if (failure_runtime)
+            a.failure_origin_.unknown(*failure_runtime, {0x00ab9e61u, 0x47483232u}, &c.calls,
+                [&] { c.calls.content_00aba8d0(child, content_argument, a); });
+        else c.calls.content_00aba8d0(child, content_argument, a);
         current(a, bits(child), 0x50);
         boundary(a, 0x00ab9e71, child);
-        c.calls.child_current50(child, a.captured_profile, a.captured_target, pointer(bits(child) + 0x50), a);
-        normal_string_return(a, c.strings, 0x00ab9e8a, 0x00ab9e91, true);
+        if (failure_runtime)
+            a.failure_origin_.unknown(*failure_runtime, {0x00ab9e71u, 0x47483233u}, &c.calls, [&] {
+                c.calls.child_current50(child, a.captured_profile, a.captured_target,
+                    pointer(bits(child) + 0x50), a);
+            });
+        else c.calls.child_current50(child, a.captured_profile, a.captured_target, pointer(bits(child) + 0x50), a);
+        normal_string_return(a, c.strings, 0x00ab9e8a, 0x00ab9e91, true,
+            failure_runtime ? &a.wide_header_arm_ : nullptr,
+            failure_runtime ? &a.failure_origin_ : nullptr, failure_runtime);
         boundary(a, 0x00ab9e9b, actual_text); c.calls.attach_00aaa5a0(actual_text, child, 0, a);
         volatile Word* const scratch = a.locals;
         const volatile float* const pivot = &c.pivot_00ce3800;
@@ -523,11 +578,33 @@ __declspec(noinline) void write_native_gui_text_glyph_quad_storage_00ab98f0(
         a.phase = Acquired::Phase::complete;
     } catch (...) {
         bool constructor_permit = false;
+        bool header_permit = false;
         if (failure_runtime) {
             a.failure_origin_.retain_current(*failure_runtime);
             if (a.native_eh_state == 0)
                 constructor_permit = a.constructor_slot_.consume_proven_primary(
                     a.failure_origin_, *failure_runtime, a.constructor_call_, &homes[7]);
+            else if (a.native_eh_state == 1 || a.native_eh_state == 2) {
+                const auto current_cause = failure_runtime->read_current_catch();
+                const auto& escaped = a.failure_origin_.escaped_; // private READ only
+                const bool exact_header_edge =
+                    a.failure_origin_.runtime_ == failure_runtime &&
+                    a.failure_origin_.supplier_ == &a &&
+                    a.failure_origin_.entry_ == 0x00ab98f0u &&
+                    escaped.supplier == &c.calls &&
+                    escaped.stage == NativeGuiTextFailureOrigin::Stage::ordinary &&
+                    ((a.native_eh_state == 1 && escaped.site.native == 0x00ab9e1fu &&
+                        escaped.site.source == 0x47483132u) ||
+                     (a.native_eh_state == 2 &&
+                        ((escaped.site.native == 0x00ab9e61u && escaped.site.source == 0x47483232u) ||
+                         (escaped.site.native == 0x00ab9e71u && escaped.site.source == 0x47483233u))));
+                if (exact_header_edge) {
+                    auto& arm = a.native_eh_state == 1 ? a.narrow_header_arm_ : a.wide_header_arm_;
+                    // HeaderArm alone authenticates current cause; Glyph is NOT Cause's friend.
+                    header_permit = arm.consume_proven_primary(a.failure_origin_, current_cause,
+                        a.locals + 4, static_cast<std::uint32_t>(a.native_eh_state));
+                }
+            }
         }
         a.escaped_call_site = a.active_call_site;
         a.escaped_eh_state = a.native_eh_state;
@@ -535,9 +612,11 @@ __declspec(noinline) void write_native_gui_text_glyph_quad_storage_00ab98f0(
         a.phase = Acquired::Phase::failed;
         const int state = a.native_eh_state;
         a.native_eh_state = -1;
-        // Qualified state0 cannot reach cleanup for HOST/UNKNOWN or body-returned.
-        // Legacy states1/2 retain their historical, separately gated projection.
-        if (state >= 0 && (state != 0 || !failure_runtime || constructor_permit)) {
+        // Keep the state0 predicate exact; qualified header actions also require their own arm.
+        // No Native issuer exists: all qualified HOST/UNKNOWN header actions stay withheld.
+        // Null-runtime legacy retains its historical, separately unadmitted projection.
+        if (state >= 0 && (state != 0 || !failure_runtime || constructor_permit) &&
+            (state == 0 || !failure_runtime || header_permit)) {
             a.cleanup_entered = true;
             try {
                 if (state == 0) {
@@ -550,10 +629,24 @@ __declspec(noinline) void write_native_gui_text_glyph_quad_storage_00ab98f0(
                     else return_gui_text_failed_slot_00ab76f0(current_slot, prepared_text_pool);
                 } else if (state == 1) {
                     boundary(a, 0x00cb80bb, a.locals + 4);
-                    destroy_native_string_header_0041dd20(a.locals + 4, c.strings);
+                    if (failure_runtime) {
+                        try {
+                            a.failure_origin_.unknown(*failure_runtime, {0x00cb80bbu, 0x47483135u}, &c.strings,
+                                [&] { destroy_native_string_header_0041dd20(a.locals + 4, c.strings); },
+                                NativeGuiTextFailureOrigin::Stage::cleanup_secondary);
+                            a.narrow_header_arm_.returned(); // action returned only; no free proof
+                        } catch (...) { a.narrow_header_arm_.return_failed(); throw; }
+                    } else destroy_native_string_header_0041dd20(a.locals + 4, c.strings);
                 } else {
                     boundary(a, 0x00cb80c3, a.locals + 4);
-                    destroy_native_wide_string_header_00436430(a.locals + 4, c.strings);
+                    if (failure_runtime) {
+                        try {
+                            a.failure_origin_.unknown(*failure_runtime, {0x00cb80c3u, 0x47483236u}, &c.strings,
+                                [&] { destroy_native_wide_string_header_00436430(a.locals + 4, c.strings); },
+                                NativeGuiTextFailureOrigin::Stage::cleanup_secondary);
+                            a.wide_header_arm_.returned(); // action returned only; no free proof
+                        } catch (...) { a.wide_header_arm_.return_failed(); throw; }
+                    } else destroy_native_wide_string_header_00436430(a.locals + 4, c.strings);
                 }
                 a.cleanup_returned = true;
             } catch (...) { a.cleanup_failed = true; throw; }

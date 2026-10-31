@@ -131,6 +131,9 @@ private:
     NativeGuiTextFailureOrigin failure_origin_;
     NativeGuiTextFailureConstructorSlotArm constructor_slot_;
     NativeGuiTextFailureConstructorCall constructor_call_;
+    // SAME F24 address has two sequential lifetimes; never reset/reuse an arm.
+    NativeGuiTextFailureHeaderArm narrow_header_arm_;
+    NativeGuiTextFailureHeaderArm wide_header_arm_;
 };
 
 // Whole AB98F0..AB9FC2 [1747B/485ops]. Original ECX actual Text; ten physical

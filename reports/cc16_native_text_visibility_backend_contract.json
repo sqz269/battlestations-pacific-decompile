@@ -1,0 +1,645 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-text-visibility-backend-contract",
+  "base_commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+  "scope": {
+    "owned_files": [
+      "docs/CC16_NATIVE_TEXT_VISIBILITY_BACKEND_CONTRACT.md",
+      "reports/cc16_native_text_visibility_backend_contract.json"
+    ],
+    "addresses": [],
+    "design_only": true,
+    "no_Glyph_or_other_production_Source_CMake_ledger_mutation": true
+  },
+  "existing_interface": "bsp::NativeGuiWidgetVisibilityBindings, exactly3 operational virtual methods plus inherited virtual destructor",
+  "method_inventory": [
+    {
+      "method": "current_table",
+      "signature": "const volatile uint32_t* current_table(void* actual_widget,uint32_t captured_profile)",
+      "consumer_epoch": "Core already read actual current profile at that inner+38/+3C site. Return THAT profile data, no second receiver-profile load. Data view remains stable across call.",
+      "available_public_APIs": [
+        {
+          "api": "NativeGuiTextRawModelReference::storage_context() const",
+          "supplies": "SAME completed rawText owners/data/construction/retirement identities; requires real bound companion supplied by producer, not cast from actual_widget."
+        },
+        {
+          "api": "GameNativeReadOnlyData::data_at(original_address,bytes) const",
+          "supplies": "section/mapping-validated data at captured originalVA, for zero4B/profile spans >=40h; may throw; PREPARATION ONLY, not a new live-table lookup."
+        },
+        {
+          "api": "NativeRenderActualOwnerRegistry::find / resolve_actual",
+          "supplies": "canonical companion association via mutex lookup; null prepared entries unavailable, no retain/quiescence/storage-kind proof. PREPARATION only, not live pure resolver body."
+        },
+        {
+          "api": "NativeGuiGroupReference::actual_identity()/lifetime_context()",
+          "supplies": "existing genuine Group metadata identities when the actual Group producer supplies that reference; not a generic hierarchy accessor."
+        }
+      ],
+      "permitted_live_work": "Consume prevalidated, retained actual profile-data views from a genuine prepared scope. No owners.find/data_at/hash/lock/throwing admission/new binding/native callback, no default table or profile whitelist. This is a requirement, not an implemented algorithm.",
+      "missing_supplier": "No public operation-scope borrow currently lends all reached root/parent/child GUI widget references and dynamic captured-profile views under the SAME producer lifetime. A RawText reference alone authenticates only its own birth context, not every traversal edge/replacement.",
+      "minimum_producer_borrow": "Real completed raw93/raw122 producer must lend the already-bound reference/frame/context and existing GUI hierarchy/domain ownership for the full AA8530/AA8450 operation, including legitimate profile/parent/list mutations, plus prevalidated RO views covering actual edges. No new registry/owner/type-domain boolean.",
+      "ready_as_complete_method": false
+    },
+    {
+      "method": "call_visibility_38",
+      "signature": "uint8_t call_visibility_38(void* actual_widget,uint32_t captured_target)",
+      "consumer_epoch": "Called ONLY when core captured target !=A9E0D0. Preserve supplied target and raw AL byte; ancestor AND/parent-link reload is done by core after return.",
+      "core_handled_base": {
+        "target": "00a9e0d0",
+        "api": "native_gui_widget_is_visible_00a9e0d0(widget,&context.actual_zero_00d7a218)",
+        "ABI": "Source explicit fastcall: ECX widget, EDX genuine borrowed zero, uint32 EAX0/1, RET0. No backend substitute needed."
+      },
+      "available_public_target": {
+        "target": "00aa38e0",
+        "api": "bsp::oct18_tail_c::gui_layer_visible_00aa38e0(const void*)",
+        "Source_declaration": "std::uint8_t __fastcall ... (const void* layer)",
+        "Source_definition": "__declspec(naked) std::uint8_t __fastcall gui_layer_visible_00aa38e0(const void*) {\n    __asm { mov al, byte ptr [ecx + 0f5h] }\n    __asm { ret }\n}\n",
+        "native": "MOV AL,[ECX+F5];RET0,7B/2ops, live=PE",
+        "named_Source_adapter": "return bsp::oct18_tail_c::gui_layer_visible_00aa38e0(actual_widget);",
+        "adapter_contract": "MSVC Win32 named __fastcall call puts sole actual_widget in ECX and consumes raw uint8 AL. No EDX/stack argument/dummy/RET-pop, no bool conversion, no ordinary cdecl/stack-only pointer adapter and no Original codeword invocation. Declaration/definition/listing agree; no new emitted-code/probe/global ABI proof.",
+        "primitive_ready_given_genuine_receiver_scope": true
+      },
+      "missing_supplier": "No public general Source target-dispatch service for every OTHER captured+38 target in an unrestricted genuine traversed hierarchy. Private Page::Widgets is not borrowable or Text-capable. No proved closed target set permits a new Layer-only/default guard.",
+      "minimum_producer_borrow": "Existing real hierarchy producer must supply its actual non-base returning Source dispatch and family contexts for each reached captured target, or prove actual scope using genuine references; do not synthesize bool/noop/default/error callbacks.",
+      "ready_as_complete_method": false
+    },
+    {
+      "method": "call_visibility_changed_3c",
+      "signature": "void call_visibility_changed_3c(void* actual_widget,uint32_t captured_target,uint8_t visible)",
+      "consumer_epoch": "Core captured CURRENT+3C after native before/after computation. Call THAT target with same widget/byte; no fresh profile read or unknown-target no-op.",
+      "core_handled_base": {
+        "target": "00a9e100",
+        "api": "native_gui_widget_visibility_changed_00a9e100(widget,nullptr,visible)",
+        "ABI": "genuine exact RET4 only for actual A9E100; Source fastcall ECX/unusedEDX, third DWORD stack. Not a fallback."
+      },
+      "public_but_unusable_candidate": {
+        "target": "00ab6120",
+        "api": "oct18_tail_c::icon_visibility_changed_00ab6120(void*,uint8_t,void*volatile& actualF8D394,const IconVisibilityBindings&)",
+        "body_available": true,
+        "permitted_supplier": false,
+        "why": "Actual body invokes numeric-vtable function pointers through c_virtual for F8D394 receiver+68 and icon+80. AGENTS forbids using Original codewords as Source functions; public body/status alone is not an approved supplier. IconVisibilityBindings has no concrete initializer/producer in scoped search.",
+        "exact_c_virtual": "template<class R, class... Args> R c_virtual(void* p, CWord slot, Args... args) {\n    const auto table = c_read<const unsigned char*>(p);\n    const auto target = c_read<R (__thiscall*)(void*, Args...)>(table, slot);\n    return target(p, args...);\n}\n",
+        "icon_body": "void icon_visibility_changed_00ab6120(void* icon, std::uint8_t visible,\n    void* volatile& image_f8d394, const IconVisibilityBindings& b) {\n    CWord index = 0, offset = 0;\n    const auto valid = [&]() {\n        const CWord begin = c_read<CWord>(icon, 0xf4);\n        return begin && index < static_cast<CWord>(static_cast<std::int32_t>(\n            c_read<CWord>(icon, 0xf8) - begin) >> 6);\n    };\n    const auto check = [&]() { if (!valid()) b.checked_iterator_bf6713(); };\n    const auto state = [&]() { return c_at(c_read<void*>(icon, 0xf4), offset); };\n    while (valid()) {\n        check();\n        if (c_read<std::uint8_t>(state(), 0x3c) && visible) {\n            void* const renderer = image_f8d394;\n            check();\n            void* const texture = c_virtual<void*>(renderer, 0x68, c_at(state(), 4), CWord{0});\n            check();\n            auto argument = c_string_copy(static_cast<TailNativeString*>(c_at(state(), 4)), b.strings);\n            if (texture) {\n                b.apply_00ab3840(icon, argument, texture); // consumes name\n                c_release_ref(texture);\n            } else {\n                void* const delayed = b.delayed_singleton_00ab5700();\n                b.request_00ab5f00(delayed, argument, icon); // consumes name\n            }\n        } else {\n            check();\n            if (c_read<std::uint8_t>(state(), 0x3d) && !visible) {\n                check();\n                b.placeholder_00ab3b30(state());\n                if (index == static_cast<CWord>(static_cast<std::int32_t>(c_read<std::int16_t>(icon, 0xec))))\n                    c_virtual<void>(icon, 0x80, index);\n            }\n        }\n        ++index; offset += 0x40;\n    }\n}\n",
+        "helper_source_sha256": "cfd75265bc97cfbcd80909e97ba226916524d1666a4d0ecedb74a260c9540032"
+      },
+      "missing_supplier": "No permitted public general non-base+3C Source dispatcher/context exists in the scoped Text backend. Existing private Page binding only accepts baseA9E100, which core already handles.",
+      "minimum_producer_borrow": "Real derived-widget producer must lend the actual ABI-safe Source callback/context. For existing AB6120 body this additionally needs genuine Source dispatch for captured inner F8D394+68/icon+80, real by-value string/texture/delayed-load/placeholder/iterator services and retained state/operation backing; not c_virtual, typed-owner cast, fake bindings, new globals or new callback type.",
+      "ready_as_complete_method": false
+    }
+  ],
+  "prerequisite_inventory": [
+    {
+      "requirement": "Completed RawText metadata birth before primary bind",
+      "existing_API": "construct_native_gui_text_default_storage_00ab9650 + bind_native_gui_text_raw_model_reference[_reserved]",
+      "exact_order": "raw93 normally completes; producer binds/publishes SAME raw122 while +4C=0,+70=0 and GUIhead empty; THEN AA6720 may install primary clone and later AA8530 may run. No late fresh/default bind after +4C becomes nonnull.",
+      "birth_preflight_source": "    require(raw_word(0x188) == bits(m.actual) && !raw_word(0x4c) && !raw_word(0x70) &&\n        !raw_word(0x6c) && head && read(head) == bits(head) &&\n        *reinterpret_cast<const volatile Word*>(bits(head) + 4) == bits(head) &&\n        !raw_word(0x88) && !raw_word(0x8c) && !raw_word(0x90) &&\n        !raw_word(0x180) && !raw_word(0x184) && !raw_word(0x18c) && !raw_word(0x190) &&\n        !raw_word(0x198) && !raw_word(0x19c) && !raw_word(0x1a0) && !raw_word(0x1ec) &&\n        !raw_word(0xec) && !raw_word(0xf0) && !raw_word(0xf4) && !raw_word(0xf8) &&\n        !raw_word(0x1a4) && !raw_word(0x1a8) && !raw_word(0x1c0) && !raw_word(0x1c4) &&\n        !raw_word(0x1c8) && !raw_word(0x1cc) &&\n        !native_gui_widget_is_kind_of_00a9e070(native_gui_text_descriptor_00ab6a30(\n            t.base.actual_text_descriptor_00f8be28), t.base.actual_base_lineage_00f8bc88),\n        \"Raw Text binding admits DEFAULT payload and CURRENT ordinary lineage comparisons only\");",
+      "birth_preflight_sha256": "b2fceb9557e321acba781c3334766d6649bf7985e17c40d0b45b1917533a42c4",
+      "missing": "Glyph has no concrete constructor producer/public borrow forwarding that genuine bound reference/context to a Text visibility backend.",
+      "ready": false
+    },
+    {
+      "requirement": "Authenticated RO zero/profile views retained throughout",
+      "existing_API": "reference.storage_context().data.data_at(...) during real preparation",
+      "facts": "Borrow D7A218 float from same canonical original-data service; prevalidate/retain table views, never copy/reseed zero/profile bank. data_at canthrow and checks mappings, so do not call as unqualified live/pure handler work.",
+      "primitive_available": true,
+      "whole_scope_prepared": false
+    },
+    {
+      "requirement": "GUI hierarchy references/links through callbacks",
+      "existing_API": "RawText reference owns its own context; genuine Group reference exposes identity/lifetime; Page/Timed ownership remains in private actual producer",
+      "facts": "No public generic producer operation-scope borrow covers every current+70 ancestor/circular GUI child/list node and callback-induced profile/head/next changes. NativeRenderActualOwnerRegistry holds metadata associations, not node/widget lifetimes or a GUI-kind classifier. No new native retain/count/guard/snapshot may replace this.",
+      "ready": false
+    },
+    {
+      "requirement": "CURRENT primary +4C and full B6DA70 node hierarchy after propagation",
+      "existing_APIs": [
+        {
+          "api": "GameNativeModelClient::resolve_actual_model(actual)",
+          "actual_definition": "src/game_native_model_domain.inc: filters SAME client/actual/registered then returns real NativeModelReference or throws",
+          "qualified_accessor": "reference.model_owner().storage.node is the actual NativeNodeStorage view, not a raw-pointer\u2192owner cast",
+          "limits": "only that client Model family; lookup/no hold, canthrow, not generic nodes/GUI scope or after-callback liveness guarantee; preparation use only"
+        },
+        {
+          "api": "reference.storage_context().construction_context.lifetime.nodes.attachments.find_actual_node(actual_key)",
+          "actual_definition": "GeneratedModelLifetimeRuntime scans already-bound nodes and scene_attachment().pointer_key",
+          "limits": "association pointer/no hold/absent=null; declared noexcept not new general NoThrow/storage-prefix proof. It does not turn arbitrary raw+4C into a typed owner."
+        }
+      ],
+      "core_epoch": "Existing raw setter reloads widget+4C and +75 AFTER AA8450 callbacks, then FLD1/FLDZ-FSTP and B6DA70. That tail has no binding hook for fresh host lookup/admission; genuine producer domain must already cover current/replacement node and +34/+3C descendants.",
+      "independent_Model188": "Text+188 raw85 record/NativeModelStorageReference is independently retained shadow/internal Model; not primary+4C, not a default replacement.",
+      "minimum_borrow": "Real clone/bind producer lends actual primary node/base identity and operation-wide current/replacement-node custody in same existing registry/lifetime domain. No snapshot initial node, no Model188 cast/substitution, new owner or per-node Native retain.",
+      "ready": false
+    }
+  ],
+  "actual_Text_default": {
+    "profile": "00d5c6c8",
+    "34": "00aa8530",
+    "38": "00a9e0d0",
+    "3c": "00a9e100",
+    "proof": "594 immutable audit; not runtime profile/target or empty-tree guarantee"
+  },
+  "Layer_native_ABI_verification": {
+    "target_configuration": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "regions": [
+      {
+        "address": "00aa38e0",
+        "bytes": 7,
+        "file_offset": 6961376,
+        "sha256": "c1ed50b6bffeb3136ae0e9a7d22522bb3801ff443f2f97a34c5525c19c995d0a",
+        "hex": "8a81f5000000c3",
+        "live_equals_PE": true
+      },
+      {
+        "address": "00d5be38",
+        "bytes": 64,
+        "file_offset": 9813560,
+        "sha256": "e0603f3e718cd4b4f13f470629e6c07b8fc6771e010c4b7c44432d56364bfbd6",
+        "hex": "e030bd00f038aa00803fac00b038aa00209d6f00903fac00504cac00304dac002083aa00a0e0a9000068aa00e057ac00b0e0a9005044ac00e038aa0000e1a900",
+        "live_equals_PE": true
+      }
+    ],
+    "getter_instructions": [
+      {
+        "address": "00aa38e0",
+        "mnemonic": "MOV",
+        "operands": "AL,byte ptr [ECX + 0xf5]"
+      },
+      {
+        "address": "00aa38e6",
+        "mnemonic": "RET",
+        "operands": ""
+      }
+    ],
+    "Layer_slots": {
+      "34": "00ac4450",
+      "38": "00aa38e0",
+      "3c": "00a9e100"
+    },
+    "live_pins": [
+      {
+        "path": "live_getter_aa38e0_7.txt",
+        "bytes": 41,
+        "sha256": "819b3d7a6792cf924005d8ac7c962471c85f67e95da23e86f387306fad0b9a82"
+      },
+      {
+        "path": "live_layer_getter_assembly.txt",
+        "bytes": 57,
+        "sha256": "981f7c8956eb80ec498f85ee2b3949fdb612d1f152cf8c9ed7809877e613c2f7"
+      },
+      {
+        "path": "live_layer_getter_proto.txt",
+        "bytes": 658,
+        "sha256": "42adc36a76e7c5fe1d28feaf2302ba9c7e5c5dd54431ff6e04b34d7dcf197495"
+      },
+      {
+        "path": "live_layer_profile_d5be38_64.txt",
+        "bytes": 308,
+        "sha256": "bddc34485739736e290b419500563551c16e62e9096462df43649309d34bc287"
+      },
+      {
+        "path": "live_status.txt",
+        "bytes": 40,
+        "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+      }
+    ],
+    "bsp_verified_client": true,
+    "Ghidra_mutation_or_native_execution": false
+  },
+  "preparation_boundary": {
+    "before_native_entry": [
+      "Actual producer owns address-stable completed raw122/ref/frame and independent Model188 graph; raw122 birth occurs post93/preAA6720.",
+      "Perform allowed owners/data/model/attachment metadata validation while preparing a real retained invocation/domain scope; maythrow, no Native-origin authority.",
+      "Resolve/retain genuine storage/reference/provider lifetimes and prevalidated RO views that cover actual callback-mutated edges, not a snapshot-only or profile whitelist."
+    ],
+    "inside_binding_methods": [
+      "current_table consumes prepared stable views only: no added Native read/reentry in that pure lookup. Do not insert mutex/hash/data_at/owners.find/bind/model lookup/throwing admission into current_table or any live-FP interval. Genuine selected +38/+3C Source bodies still perform their prescribed Native effects/callbacks at the correct epochs.",
+      "Preserve uint8 AL/visible semantics; do not bool-normalize, reread current profile/target, invoke data codeword or default to base."
+    ],
+    "after_failure": "Keep all actual widget/list/node/Model/metadata/provider/literal backing under genuine producer disposition; no automatic retire/rollback/retry/new terminal or NoThrow rule."
+  },
+  "no_complete_class_or_Source_patch": {
+    "why": "At least one genuine supplier is missing for each complete method/operation scope. Do not construct a backend with unsupported/noop/throw stubs merely to satisfy vtable.",
+    "hypothesized_owner_registry_callback_types_added": false,
+    "backend_class_implementation_proposed": false,
+    "Source_patch_authorized": false,
+    "conditional_outer_current34": "Once real backend exists,594 captured_target==AA8530\u2192rawbody, OTHER\u2192existingchild_current34(capturedprofile,target,...), no outervtable reread/typeguard/default/codewordcall; unchanged proposal only."
+  },
+  "minimum_next_contracts": [
+    {
+      "id": "producer_birth_borrow",
+      "needed": "Actual Glyph constructor producer publicly forwards its already-bound genuine raw93/raw122 reference/frame/storage_context, born before primary-node bind. No ad-hoc late binding, cast or fake admission."
+    },
+    {
+      "id": "operation_domain_borrow",
+      "needed": "Actual GUI/clone owner lends existing completed widget references/list-node/current-and-replacement-primary-node hierarchy/provider domain for the whole recursive operation, including legal callback mutations and failure retention. Existing point-lookups do not provide this scope."
+    },
+    {
+      "id": "derived_Source_dispatch",
+      "needed": "Real captured-target+38/+3C Source services for all reached nonbase families; use verified Layer getter for AA38E0, keep AB6120 unavailable until numeric inner calls have genuine Source dispatch/contexts. No new callback type/global bank."
+    },
+    {
+      "id": "pure_views_preparation",
+      "needed": "Producer supplies prevalidated retained Original-profile views/zero from existing data_at during preparation, sufficient for actual edges without a runtime whitelist/narrowing. Method only consumes those views."
+    }
+  ],
+  "readiness": {
+    "current_table_complete": false,
+    "call_visibility_38_complete": false,
+    "call_visibility_changed_3c_complete": false,
+    "Layer_getter_named_fastcall_adapter_primitive_available": true,
+    "Text_base38_3C_already_concrete_in_core": true,
+    "whole_backend_ready": false,
+    "fully_connected_Source_patch_ready": false,
+    "runtime_OriginalABI_FH3_fault_Origin_retirement_recursive_custody_activation_proven": false
+  },
+  "source_inputs": [
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "docs/CC16_NATIVE_GLYPH_CURRENT34_TARGET_CONTRACT.md",
+      "git_blob": "2c0d15c5525e844b6ecbf39e1df5578711c80bdc",
+      "bytes": 8979,
+      "sha256": "19e915b6b15514a4e559b3962d0c93859945351e79365bcc8b367cdbda1270bb"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "reports/cc16_native_glyph_current34_target_contract.json",
+      "git_blob": "2277aaeefd2c2fd34be4695de09339249c9002a0",
+      "bytes": 52575,
+      "sha256": "fdb308139226a11b9d71a910f707da353ef249422c58f7e02757d6d27ba8515c"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "include/bsp/native_gui_widget_visibility.hpp",
+      "git_blob": "ae8ed1f5c51582dc293a3740535c70e83b34c675",
+      "bytes": 3037,
+      "sha256": "e45b5295ad86616f7184bbae7d1868c5a5a4cf8b193f6ceec6b0b27cdfd042fd"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "src/native_gui_widget_visibility.cpp",
+      "git_blob": "6a2b4f36bb0a47d9ecf6b3b96af02f71b6a8d3d5",
+      "bytes": 4749,
+      "sha256": "fc17949662d6cbe0630c0974f796def8ac1c8571323f5dc1e7605397c0957520"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "include/bsp/native_gui_text_reference.hpp",
+      "git_blob": "492cf04c44cfeae90887bba02c32039f325bc318",
+      "bytes": 12718,
+      "sha256": "62224192a6d0fb5043ed68a3f34374ce1bc3584ee1f3bb031c1041b33fdd1827"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "src/native_gui_text_reference.cpp",
+      "git_blob": "f3a8e3a5c855acc668fb526d6de781621cfdb8c2",
+      "bytes": 58312,
+      "sha256": "0fb188e79dbc014db098d01e3afff14a5e07f1671a33db063d2e126e5af4257e"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "include/bsp/native_gui_text_default_storage.hpp",
+      "git_blob": "2eb5db69eff0b68c093a5006e13eb2d490e821b7",
+      "bytes": 6352,
+      "sha256": "7a23774d66bb90e59712407d58fd3356640da3f77f1c087bf766b77d3748141a"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "include/bsp/native_gui_text_storage_construct.hpp",
+      "git_blob": "736c02913b09a1de5f606362747305a2a4a36318",
+      "bytes": 9641,
+      "sha256": "681a44709442353f716f2ead0377804df61cbc659ec7fc7dcc3a7a05c56ec5b2"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "include/bsp/native_model_storage_lifetime.hpp",
+      "git_blob": "319ac5182e317f50e999437b3d300c92d695fbdf",
+      "bytes": 9363,
+      "sha256": "7754b1a3df10ccf79a83899513b48ab4616df9b9f9a5da54400ed7d4fe51ea1f"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+      "bytes": 2713,
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "src/game_native_readonly_data.cpp",
+      "git_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e",
+      "bytes": 7167,
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "include/bsp/native_render_context.hpp",
+      "git_blob": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808",
+      "bytes": 10071,
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "src/native_render_context.cpp",
+      "git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c",
+      "bytes": 11471,
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "include/bsp/render_command_queue.hpp",
+      "git_blob": "4f0f5ca5a87b59f7d05349a36619a4459e874e8d",
+      "bytes": 10656,
+      "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "include/bsp/oct18_tail_c.hpp",
+      "git_blob": "e7a8ecbce80f7ed0443b4429cf95f6fc11bb53be",
+      "bytes": 22684,
+      "sha256": "afd3a4d036494eeec6c1ddd8328bfab2f8fed9db89a509311f79aef87a34e99e"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "src/engine_seg11_35_66_cc13.cpp",
+      "git_blob": "d3ac98e5caad5a78a3eed116c6833435f26ad1a4",
+      "bytes": 206645,
+      "sha256": "86d443153ac95f6de31721c79b7bc9c706c4be28487ebfd223736c8fdabfd367"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "include/bsp/game_native_gui_page_application.hpp",
+      "git_blob": "4abf6219f61e37b4e6c9ceb2777bd69aa7f7d8df",
+      "bytes": 2945,
+      "sha256": "7ad6d366ec92695ede58d8f44deeee6b6874f8c344788f626aab286495d83221"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "src/game_native_gui_page_application.cpp",
+      "git_blob": "996fbbdec1f9160540da07b0842295920734eead",
+      "bytes": 72373,
+      "sha256": "0f770bd8713656eeb56b77a97109eb7168e1be5d53d96305e4105edbe44b1668"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "include/bsp/game_native_model_domain.hpp",
+      "git_blob": "5d8bc4a64c104cbeee4a0d6280719f6209bbb182",
+      "bytes": 3144,
+      "sha256": "6feef900ac2a2093856da5a88e8ec7eadd6923d7d9eaa5cb8353a13be323e128"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "src/game_native_model_domain.inc",
+      "git_blob": "000f2395134b994791d4284d279ffead14c9d317",
+      "bytes": 15824,
+      "sha256": "ff8788d41c4e4b34b302910cc3c52d3593b232fc409d229a3b4999cbaef242ed"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "src/game_native_renderer_application.cpp",
+      "git_blob": "c7ac9206b53f7fdf8e5c4e53a17cf3b3f6e4231f",
+      "bytes": 80905,
+      "sha256": "ca5482dcb5566b9ccf14aebd2ec0b78f1e547bf5ab4e5268e2922fb207277d3e"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "include/bsp/native_model_owner.hpp",
+      "git_blob": "1ef6610b9534c327e4e58412eb6a0cd5f8a9409e",
+      "bytes": 9870,
+      "sha256": "d1cfa9b664075d836d9818ed57f4d9c89858b0c0c507c8ca3dce75f727a52a2a"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "include/bsp/native_gui_group_identity.hpp",
+      "git_blob": "78935045d86006ff11adc7ef949f417443e8a981",
+      "bytes": 3927,
+      "sha256": "6e251cf75959a850d2a763840cbd798be33d8d7c14a4979e73287378645ff527"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "include/bsp/generated_model_lifetime.hpp",
+      "git_blob": "c314469d47cdb65e654789b22704f26f3ca9e76d",
+      "bytes": 12600,
+      "sha256": "bb6171641666552aea3fcaa9757d13074f229e79d5793a3b044b980f4a3d3ef9"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "src/generated_model_lifetime.cpp",
+      "git_blob": "297ae8b38490a70378d5d0a420617e0d586b9659",
+      "bytes": 15899,
+      "sha256": "5dbceb02880773799cab052f2c3e154e0d36add2b01d611501be2dd1b01e8d0d"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "include/bsp/native_node_destruction.hpp",
+      "git_blob": "d84edd297c4dfb43cb0b5aa630676fb1b245eedc",
+      "bytes": 5997,
+      "sha256": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "include/bsp/native_gui_widget_lifetime.hpp",
+      "git_blob": "3dfab3f1b6a42f2a37f8c84e1d813e4d7201ec20",
+      "bytes": 7899,
+      "sha256": "c9155c508f98bb913ebe8ae71cd6c98e050d86ce25a746a5c8f4909f37242d1a"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "include/bsp/native_gui_page_construction.hpp",
+      "git_blob": "ac2e16414db09fd71ed68b8ce802f4e5695f34aa",
+      "bytes": 3168,
+      "sha256": "7c0dbf31a1d433708516fe5e67b7e3129d116a4ec31af07e31ec9ea15e3835a8"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "src/native_gui_page_construction.cpp",
+      "git_blob": "1cc63b66183aaa20f129a01975ac6483682599fe",
+      "bytes": 4215,
+      "sha256": "066059cba6487f666d38bbacebb8af793dcb8e0b211e51f38ab0c7241eebe185"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "include/bsp/native_node_visibility_factor.hpp",
+      "git_blob": "7558f743057f32c926a71246c823b7b4480df797",
+      "bytes": 610,
+      "sha256": "a9dbeb5021d7d4fc847c6e80ea62dc9d795eacad98e482e74805b5e30059893b"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "src/native_node_visibility_factor.cpp",
+      "git_blob": "c8c7227766bef0ccb77d47061bacc236e48e7514",
+      "bytes": 1251,
+      "sha256": "6457b37af40da9249a5c2eac739421039318aa9d766209b1a0c1dda853e46fdd"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "include/bsp/game_native_gui_icon_process.hpp",
+      "git_blob": "edad517eacdc50d3effee7655d58e26545a8bb45",
+      "bytes": 3257,
+      "sha256": "be7972224e23dd7f4871ae5359c585227c5c31f4028b99d9c3e2e4d4e8b77ae1"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "cmake/startup.cmake",
+      "git_blob": "1b7ac6e32dc85c906d4602b8429240c9d0b3bfee",
+      "bytes": 295643,
+      "sha256": "ff5ad30937cb8c0a80d18a971e86f439380ba118077f3f7d3edd54704fc61330"
+    },
+    {
+      "commit": "594d5b6fc33cf66dcbdf249c0038562dc72821b7",
+      "path": "config/target.json",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    }
+  ],
+  "source_line_pins": [
+    {
+      "path": "include/bsp/native_gui_widget_visibility.hpp",
+      "line": 13,
+      "text": "    virtual const volatile std::uint32_t* current_table(void* actual_widget,",
+      "sha256": "2ee4accdd2d48a71e42b10d78fb20eb981455cf5cca59b6c84147167730627aa"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_visibility.hpp",
+      "line": 15,
+      "text": "    virtual std::uint8_t call_visibility_38(void* actual_widget,",
+      "sha256": "9e10e64d4dee9153ed710c65c4fcc09a37ccee08500542fca5ffe1191d12667d"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_visibility.hpp",
+      "line": 17,
+      "text": "    virtual void call_visibility_changed_3c(void* actual_widget,",
+      "sha256": "aad00ac55978f4cd1686a67a638117e5ae715c62cb4d3cb78d3715ffc742ebd8"
+    },
+    {
+      "path": "src/native_gui_widget_visibility.cpp",
+      "line": 34,
+      "text": "    return context.bindings.call_visibility_38(widget, entry);",
+      "sha256": "add767952daf6ae69db1270d3b1a04ab45318e3b4a93d4478f13bd9a4f60c459"
+    },
+    {
+      "path": "src/native_gui_widget_visibility.cpp",
+      "line": 40,
+      "text": "    else context.bindings.call_visibility_changed_3c(widget, entry, value);",
+      "sha256": "b139fbe302d0bebbc8c197ef63a12ae0aa3b3701251a36a3fb0fab7ab72c3466"
+    },
+    {
+      "path": "include/bsp/oct18_tail_c.hpp",
+      "line": 12,
+      "text": "std::uint8_t __fastcall gui_layer_visible_00aa38e0(const void* layer);",
+      "sha256": "c624c15980253e4e92d78dfb6efdabe99ff07dd7b194759d294bb6b937e7be7a"
+    },
+    {
+      "path": "src/engine_seg11_35_66_cc13.cpp",
+      "line": 2790,
+      "text": "__declspec(naked) std::uint8_t __fastcall gui_layer_visible_00aa38e0(const void*) {",
+      "sha256": "2b423c8392832ab9090e2a06011ca2212bb12b025b84dca872e74554db6d495d"
+    },
+    {
+      "path": "src/engine_seg11_35_66_cc13.cpp",
+      "line": 2857,
+      "text": "    const auto target = c_read<R (__thiscall*)(void*, Args...)>(table, slot);",
+      "sha256": "a4e0024425335c996d1f943d6462557ca6ca9a8463940186f9dae1f9866d833e"
+    },
+    {
+      "path": "src/native_gui_text_reference.cpp",
+      "line": 661,
+      "text": "    require(raw_word(0x188) == bits(m.actual) && !raw_word(0x4c) && !raw_word(0x70) &&",
+      "sha256": "77cbaabe0043eed94586bc06b0c60a4be8f7274c8327b31f437cf4c9b91af7d4"
+    },
+    {
+      "path": "src/game_native_model_domain.inc",
+      "line": 241,
+      "text": "NativeModelReference& GameNativeModelClient::resolve_actual_model(void* actual) {",
+      "sha256": "157962f646e390369ad22cb85b8045d4852f38b1d2819541308b4ff8f0107460"
+    },
+    {
+      "path": "include/bsp/native_model_owner.hpp",
+      "line": 159,
+      "text": "    NativeModelOwner& model_owner() noexcept { return owner_; }",
+      "sha256": "94a5ab946c8eea4d846b1f9805971b05904fd7d015c78ca100bf62833ff42605"
+    },
+    {
+      "path": "include/bsp/generated_model_lifetime.hpp",
+      "line": 85,
+      "text": "    GeneratedModelNodeLifetime* find_actual_node(std::uint32_t pointer_key) const noexcept;",
+      "sha256": "fcbd25acc5702b194d117d05b395d48597f4b149b39f5469b1874312702fce31"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "line": 95,
+      "text": "    const std::lock_guard<std::mutex> lock(impl_->mutex);",
+      "sha256": "bd5c53c6c55ffdbf99bf20a7f12e2b27e6f08c69eb7e6dae461052fbdd94b25f"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "line": 104,
+      "text": "    const std::lock_guard<std::mutex> lock(impl_->mutex);",
+      "sha256": "bd5c53c6c55ffdbf99bf20a7f12e2b27e6f08c69eb7e6dae461052fbdd94b25f"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "line": 114,
+      "text": "    const std::lock_guard<std::mutex> lock(impl_->mutex);",
+      "sha256": "bd5c53c6c55ffdbf99bf20a7f12e2b27e6f08c69eb7e6dae461052fbdd94b25f"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "line": 134,
+      "text": "    const std::lock_guard<std::mutex> lock(impl_->mutex);",
+      "sha256": "bd5c53c6c55ffdbf99bf20a7f12e2b27e6f08c69eb7e6dae461052fbdd94b25f"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "line": 142,
+      "text": "    const std::lock_guard<std::mutex> lock(impl_->mutex);",
+      "sha256": "bd5c53c6c55ffdbf99bf20a7f12e2b27e6f08c69eb7e6dae461052fbdd94b25f"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "line": 155,
+      "text": "    const std::lock_guard<std::mutex> lock(impl_->mutex);",
+      "sha256": "bd5c53c6c55ffdbf99bf20a7f12e2b27e6f08c69eb7e6dae461052fbdd94b25f"
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "line": 137,
+      "text": "const void* GameNativeReadOnlyData::data_at(std::uintptr_t address,std::size_t bytes) const {",
+      "sha256": "07511eea7412db27e127a977bebdaf54fcb6f8c5ee08086e93b8db3db1062887"
+    }
+  ],
+  "validation": {
+    "public_API_bodies_read_not_just_names": true,
+    "no_fresh_build_test_probe_Game_process_or_Ghidra_mutation": true,
+    "all_base_Source_inputs_unchanged": true,
+    "no_full_Source_inverse_or_implementation_claim": true,
+    "git_diff_check": true
+  },
+  "credits": {
+    "new_original_body": 0,
+    "new_helper": 0,
+    "vendor": 0,
+    "duplicate_body": 0,
+    "compiler_generated": 0,
+    "Original_ABI": 0,
+    "Native_runtime": 0,
+    "activation": 0
+  },
+  "document": {
+    "path": "docs/CC16_NATIVE_TEXT_VISIBILITY_BACKEND_CONTRACT.md",
+    "bytes": 11599,
+    "sha256": "84046d3434b4f767af1cc859cffc8f07506b7e37ce180dbc5bbe4171b52edc8f"
+  }
+}
