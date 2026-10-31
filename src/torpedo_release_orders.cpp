@@ -172,25 +172,25 @@ ReleaseOrderIssueResult torpedo_issue_release_orders_007c0d90(
         }
     }
     if constexpr (kReleaseOrderLeaderBlockBound) {
-        // 007EEF96-007EEFC3, the leader block's four guards.
-        LeaderBlockInputs lb;
-        lb.unit_present = true;   // EBP is the 007C0F00 PUSH EBP unit
-        lb.unit_is_flight_leader = host.issuer_is_flight_leader_007eef9c();
-        lb.attack_mode_370 = host.attack_mode_370();
-        lb.party_slot_1b0 = host.issuer_party_slot_1b0();
-        lb.party_slot_ai_held = lb.party_slot_1b0 != kNoPartySlot_007eefb4 &&
-                                host.party_slot_byte_9_00927f10(lb.party_slot_1b0);
-        if (release_orders_leader_block_007eef96(lb)) {
-            out.leader_block_ran = true;
-            // 007EEFC5-007EEFEE: every ctl+3D0h member but the issuer, 007BCBE0(1).
-            const int members = host.controlled_unit_count();
-            for (int i = 0; i < members; ++i) {
-                if (host.controlled_unit_is_issuer(i)) continue;   // 007EEFD9 JE
-                const int written = release_order_count_007bcbe0(
-                    host.read_set_inputs(i, kLeaderBlockOrderCount_007eefdb));
-                host.write_release_order_count(i, written);
-                if (written > 0) ++out.leader_block_raised;
-            }
+        // 007EEF96-007EEFC3 runs after the 999 loop (also when that loop was
+        // skipped). The represented Source producer supplies a live issuer.
+        // Preserve the native short-circuit reads: no later hook is sampled
+        // when an earlier guard fails. Mode is equality with 2, not an order.
+        if (!host.issuer_is_flight_leader_007eef9c()) return out;
+        if (host.attack_mode_370() == 2) return out;
+        const int party_slot = host.issuer_party_slot_1b0();
+        if (party_slot == kNoPartySlot_007eefb4) return out;
+        if (host.party_slot_byte_9_00927f10(party_slot)) return out;
+
+        out.leader_block_ran = true;
+        // 007EEFC5-007EEFEE: every ctl+3D0h member but the issuer, 007BCBE0(1).
+        const int members = host.controlled_unit_count();
+        for (int i = 0; i < members; ++i) {
+            if (host.controlled_unit_is_issuer(i)) continue;   // 007EEFD9 JE
+            const int written = release_order_count_007bcbe0(
+                host.read_set_inputs(i, kLeaderBlockOrderCount_007eefdb));
+            host.write_release_order_count(i, written);
+            if (written > 0) ++out.leader_block_raised;
         }
     }
     return out;

@@ -152,6 +152,7 @@
 #include "bsp/moveonpath_task_cc13.hpp"
 #include "bsp/leg_altitude_manager_cc13.hpp"   // packet cc13-legmgr1
 #include "bsp/game_hosts_ship_ai.hpp"
+#include "bsp/session_participant_pools.hpp"
 #include "bsp/unit_hull_extents.hpp"
 
 #include "bsp/camera_affine.hpp"
@@ -26045,13 +26046,27 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         int issuer_party_slot_1b0() override {
                             return slot_.current_roles_01ac[1];
                         }
-                        // SUBSTITUTION: 00927F10 reads +9 of the party slot record,
-                        // which this host does not reach from here. A non-8 slot is
-                        // taken as player-held (+9 = 0, the player records 004BB2D0
-                        // clears), the same reading the gunnery host uses without
-                        // its participant pools. UNCERTAIN which record SP slot 0 is.
-                        bool party_slot_byte_9_00927f10(int /*slot*/) override {
-                            return false;
+                        // Reached only after the preceding 007EEF96 guards, after
+                        // the 999 loop. Borrow the same persistent MissionHost
+                        // participant owner that the frame bound through ShipAI.
+                        // try's bool is availability; only its raw output supplies
+                        // the native TEST AL result. An unavailable Source input
+                        // ends this operation through the existing exception path;
+                        // preceding rack/pending/999 effects are not rolled back.
+                        bool party_slot_byte_9_00927f10(int slot) override {
+                            const bsp::SessionParticipantPools* const participants =
+                                owner_.ship_ai != nullptr
+                                    ? owner_.ship_ai->session_participants() : nullptr;
+                            if (participants == nullptr) {
+                                throw std::logic_error(
+                                    "Torpedo 00927F10 participant owner is unbound");
+                            }
+                            std::uint8_t raw_09 = 0;
+                            if (!participants->try_ai_held_00927f10(slot, raw_09)) {
+                                throw std::logic_error(
+                                    "Torpedo 00927F10 participant byte +9 is unavailable");
+                            }
+                            return raw_09 != 0;
                         }
                         bool controlled_unit_is_issuer(int index) override {
                             return controlled(index) == &slot_;   // 007EEFD7 CMP ECX,EBP
