@@ -1,0 +1,340 @@
+{
+  "status": "integrated_three_qualified_setters_primary_and_independent_reviews_two_author_objects_Core_emitted_operations_retained_canonical_checked_caller_unbound",
+  "source_ready": false,
+  "activation": false,
+  "new_tests": 0,
+  "new_native_body_credit": 0,
+  "new_vendor_body_credit": 0,
+  "new_entry_or_game_invoked": false,
+  "scope": "whole008869D0/008869F0/00886B30, eightNativeinstructions each; ordinary Source interfaces",
+  "source_pins": {
+    "number": {
+      "include/bsp/native_lua_variant_number_setter.hpp": {
+        "sha256": "20e6bd4071f9b7fe3f4876322294b26d210962966718d2e82286028a7b151072",
+        "lines": 29
+      },
+      "src/native_lua_variant_number_setter.cpp": {
+        "sha256": "ff32a2805f771dcebfc1859e4e152860b6c8d602ae4b84b4b306f088c19fdbac",
+        "lines": 49
+      }
+    },
+    "scalar": {
+      "include/bsp/native_lua_variant_scalar_setters.hpp": {
+        "sha256": "84147130621b164b4279f7ab49462080a988e932a5accf64b32438c91536edda",
+        "lines": 44
+      },
+      "src/native_lua_variant_scalar_setters.cpp": {
+        "sha256": "12350432d7c2842b2437828d11f74506bb1004a5ddb520688d4e7082e71716fb",
+        "lines": 77
+      }
+    }
+  },
+  "primary_review": "local\\lua_variant_setters_integration_cc16_20261031\\PRIMARY_REVIEWS.md",
+  "producer_checks": {
+    "number": {
+      "producer_receipt": {
+        "schema": "bsp-native-lua-variant-number-setter-final-v1",
+        "verdict": "QUALIFIED_SOURCE_ONLY",
+        "commit": "452bf10d52d2f3cbd21316b73c2af4571a50923c",
+        "base": "44bfbefebae3c87ada89bd821e6c6a7ce460fc0b",
+        "exactly_four_new_files": true,
+        "files": [
+          {
+            "path": "include/bsp/native_lua_variant_number_setter.hpp",
+            "physical_sha256": "20e6bd4071f9b7fe3f4876322294b26d210962966718d2e82286028a7b151072",
+            "git_sha256": "20e6bd4071f9b7fe3f4876322294b26d210962966718d2e82286028a7b151072",
+            "eol_normalized_equal": true
+          },
+          {
+            "path": "src/native_lua_variant_number_setter.cpp",
+            "physical_sha256": "ff32a2805f771dcebfc1859e4e152860b6c8d602ae4b84b4b306f088c19fdbac",
+            "git_sha256": "ff32a2805f771dcebfc1859e4e152860b6c8d602ae4b84b4b306f088c19fdbac",
+            "eol_normalized_equal": true
+          },
+          {
+            "path": "docs/NATIVE_LUA_VARIANT_NUMBER_SETTER.md",
+            "physical_sha256": "98bf4a636aa995b59717bdf9ee91083299c796e07ed83a0edcc587bb852dc15e",
+            "git_sha256": "98bf4a636aa995b59717bdf9ee91083299c796e07ed83a0edcc587bb852dc15e",
+            "eol_normalized_equal": true
+          },
+          {
+            "path": "reports/native_lua_variant_number_setter.json",
+            "physical_sha256": "92addb81f2e98dfc5c1ca1d7a5c92df7167f7dabb620d8417be3ea8ca23249ba",
+            "git_sha256": "4c6a5d4ed7daf5f122d086a4096461c4b6130832bcfce05dcffe0f873fc8ada9",
+            "eol_normalized_equal": true
+          }
+        ],
+        "compile_count": 1,
+        "compile_exit": 0,
+        "object": {
+          "compiles": 1,
+          "exit_code": 0,
+          "machine": "014C",
+          "bytes": 2313,
+          "sha256": "2c0c0035dd0b9296929259cea1bbc27372c79a6ad15a0ac2811c3e744ce23a9f",
+          "defined_entry": "?set_native_lua_variant_number_008869d0_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXPBXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "genuine_clear_undefined": "?clear_native_lua_variant_00886920_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z",
+          "same_object_symbol_receipt": "local/native_lua_variant_number_setter_validation_cc9_20261030/objects/actual_symbols.json",
+          "same_object_inspection_receipt": "local/native_lua_variant_number_setter_validation_cc9_20261030/objects/inspection_receipt.json"
+        },
+        "compile_receipt_sha256": "91eceacd462a87e61500f52cf43fb8ee9a1177d7d35550506b4d0dc7b15c311b",
+        "actual_symbols_sha256": "0ffc80105856856496d1af8f4850f34cdfebe9506ab9f9a5d2b1ba5ff5c14c8b",
+        "same_object_disassembly_sha256": "2cb521766af867a54c2fe497ab6198d33cf0056956e8fc062b232b29873780c8",
+        "same_object_inspection_sha256": "abe97b078b87bc7c6a6cd1dc8a3aebda7cdd7be0c8e6b6fce9148eeada83149d",
+        "provider_preservation_sha256": "367a6667ff783c5752298405a638e916a80955ed823b396c9c00f5b190f89000",
+        "after_compile_preservation_sha256": "c33127c8e831379cfb2d0614f75214735e979394880ce63a67cb7103923a5057",
+        "unchanged_provider_count": 9,
+        "all_prior_tracked_paths_preserved": true,
+        "root_and_independent_actual_code_accepted": true,
+        "source_ready": false,
+        "runtime_validated": false,
+        "native_body_credit": false,
+        "vendor_body_credit": false,
+        "working_tree_status": "",
+        "no_tests_link_executable_or_entry": true,
+        "limits": "Actual initialized HOME and typed/nested/provider/backing domain only; enum Source completion, no Native EAX/private ABI/parent886E00/vector/VM/factory/startup/runtime grant."
+      },
+      "producer_receipt_sha256": "2fc716bc00e42c82455a1a8543ffd21aeadda6a7da5838551cc48c39d797481f",
+      "root_hashes": {
+        "include/bsp/native_lua_variant_number_setter.hpp": "20e6bd4071f9b7fe3f4876322294b26d210962966718d2e82286028a7b151072",
+        "src/native_lua_variant_number_setter.cpp": "ff32a2805f771dcebfc1859e4e152860b6c8d602ae4b84b4b306f088c19fdbac",
+        "docs/NATIVE_LUA_VARIANT_NUMBER_SETTER.md": "98bf4a636aa995b59717bdf9ee91083299c796e07ed83a0edcc587bb852dc15e",
+        "reports/native_lua_variant_number_setter.json": "4c6a5d4ed7daf5f122d086a4096461c4b6130832bcfce05dcffe0f873fc8ada9"
+      },
+      "same_object_inspection": {
+        "schema": "bsp-same-object-number-setter-inspection-v1",
+        "object_sha256": "2c0c0035dd0b9296929259cea1bbc27372c79a6ad15a0ac2811c3e744ce23a9f",
+        "disassembly_sha256": "2cb521766af867a54c2fe497ab6198d33cf0056956e8fc062b232b29873780c8",
+        "entry_offsets": {
+          "actual_clear_call": "12",
+          "actual_result_test": "1A",
+          "noncompletion_jne_to_return": "1C ->30",
+          "home_address_load_after_completed_branch": "1E",
+          "current_home_4B_read": "22",
+          "full_tag0_store": "24",
+          "captured_payload_4B_store": "2B",
+          "source_completed_return_value": "2E",
+          "return": "31"
+        },
+        "no_extra_numeric_conversion_or_float_arithmetic": true,
+        "receiver_stores_only": "tag+4 and payload+8; no separate HOME write or cleanup call",
+        "scope": "Static same-object inspection only; ordinary Source completion/domain, not Native runtime/ABI"
+      }
+    },
+    "scalar": {
+      "producer_receipt": {
+        "schema": "bsp-native-lua-variant-scalar-setters-final-v1",
+        "utc": "2026-10-31T00:17:09.229004+00:00",
+        "commit": "da47a1a016639f5f84c03e8f3ee4fe50cdb8e455",
+        "base": "ae5465617c92b4f4db066a2fe368de3e1e262c9a",
+        "exact_four_new_files": {
+          "include/bsp/native_lua_variant_scalar_setters.hpp": {
+            "physical_sha256": "84147130621b164b4279f7ab49462080a988e932a5accf64b32438c91536edda",
+            "git_blob_sha256": "84147130621b164b4279f7ab49462080a988e932a5accf64b32438c91536edda"
+          },
+          "src/native_lua_variant_scalar_setters.cpp": {
+            "physical_sha256": "12350432d7c2842b2437828d11f74506bb1004a5ddb520688d4e7082e71716fb",
+            "git_blob_sha256": "12350432d7c2842b2437828d11f74506bb1004a5ddb520688d4e7082e71716fb"
+          },
+          "docs/NATIVE_LUA_VARIANT_SCALAR_SETTERS.md": {
+            "physical_sha256": "9338e6c17de561e38822723d2933bc277c4ffc0eb00fc98dc953666bb2689d6d",
+            "git_blob_sha256": "9338e6c17de561e38822723d2933bc277c4ffc0eb00fc98dc953666bb2689d6d"
+          },
+          "reports/native_lua_variant_scalar_setters.json": {
+            "physical_sha256": "87f4028306752c6613cd0ffc68928bb1bb18fce1bce33b7700bad755688e606f",
+            "git_blob_sha256": "87f4028306752c6613cd0ffc68928bb1bb18fce1bce33b7700bad755688e606f"
+          }
+        },
+        "all_prior_tracked_files_unchanged": true,
+        "provider_sha256_unchanged": {
+          "include/bsp/native_lua_variant_retirement.hpp": "14258135096189f2892e4d896af417ed0c8fb616d5f1659bbc1d9d032f68a7db",
+          "src/native_lua_variant_retirement.cpp": "5db41574abcb3a94fdb9c6f5c8f96f2b7b0c1f0c2a7f438fe64d622980c065ca",
+          "include/bsp/native_lua_variant_tag6.hpp": "33331fe322af7564cfaf4f04995261adb44c5defe0f827785d4b75a56251f596",
+          "src/native_lua_variant_tag6.cpp": "986f954e728e89ea5d4d0b6dbfd4dfa8df08ab428f8ffcad501d12ab85ef38f4"
+        },
+        "intrinsic_header_sha256": "6c30762cf69f112244617f72ea7f9ef933b673c3cc8afd1866158f0143fd263c",
+        "working_tree_clean": true,
+        "actual_code_reviews": [
+          "Root84147130/12350432 accepted",
+          "Gui84147130/12350432 accepted"
+        ],
+        "compile_count": 1,
+        "compile_exit": 0,
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\build\\native_lua_variant_scalar_setters_object\\native_lua_variant_scalar_setters_object.dir\\Release\\native_lua_variant_scalar_setters.obj",
+          "sha256": "62e4854bcbf87eb73284af9494fffbfa4ca1a496dccd2e0449e6720bf92285e9",
+          "bytes": 4057,
+          "coff_machine": "014C"
+        },
+        "compile_receipt_sha256": "06d1fc8594f9d8dd943d2773d24887e662e93577ce4916c537c6022fe71e84db",
+        "same_object_inspection_sha256": "0c1bfcc66f84c1dd64aac2ad15d8a302f7f867e4dc8bd41ddc58a71b95074709",
+        "symbol_receipt_sha256": "a69e1136923ed3eecbb87d8a46a34835cbd116a55fa6540152e91534f2ed005e",
+        "actual_cvtsi2ss_after_home_before_tag": true,
+        "control_mode_instructions": [],
+        "private_anchor": "compiler Source receiver-parameter slot reused for private conversion scratch; no borrowed HOME write or Native stack ABI claim",
+        "b30_normal_value": "actual late captured input bits, optional absent on child stop, never receiver",
+        "source_ready": false,
+        "native_or_vendor_body_credit": false,
+        "target_kind": "OBJECT only; standard CMake configuration and commands captured separately",
+        "target_link_tests_fp_probe_or_entry": false,
+        "limits": "Inherited full typed/nested/HOME/provider/backing domain; no record birth/Frame/cleanup/wholebuilder/VM/startup/runtime admission"
+      },
+      "producer_receipt_sha256": "a51f7610c79915c679c059c91f31891c0b23e8a66e1b6be71f673d4d1759edb5",
+      "root_hashes": {
+        "include/bsp/native_lua_variant_scalar_setters.hpp": "84147130621b164b4279f7ab49462080a988e932a5accf64b32438c91536edda",
+        "src/native_lua_variant_scalar_setters.cpp": "12350432d7c2842b2437828d11f74506bb1004a5ddb520688d4e7082e71716fb",
+        "docs/NATIVE_LUA_VARIANT_SCALAR_SETTERS.md": "9338e6c17de561e38822723d2933bc277c4ffc0eb00fc98dc953666bb2689d6d",
+        "reports/native_lua_variant_scalar_setters.json": "87f4028306752c6613cd0ffc68928bb1bb18fce1bce33b7700bad755688e606f"
+      },
+      "same_object_inspection": {
+        "schema": "bsp-scalar-setters-same-object-order-v1",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\build\\native_lua_variant_scalar_setters_object\\native_lua_variant_scalar_setters_object.dir\\Release\\native_lua_variant_scalar_setters.obj",
+          "sha256": "62e4854bcbf87eb73284af9494fffbfa4ca1a496dccd2e0449e6720bf92285e9",
+          "bytes": 4057,
+          "coff_machine": "014C"
+        },
+        "disassembly_sha256": "3a8773635a6834f5b30ca71c1c44387c28fd50ab31b64da82ccfdf6bfb8ee24f",
+        "symbols_sha256": "7e8239b39aec0c186898124114ca90eff8fc6ab9235c2663e4e1dfffc6b25a97",
+        "only_external_undefined": [
+          "027 00000000 UNDEF  notype ()    External     | ?clear_native_lua_variant_00886920_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z (enum bsp::NativeLuaVariantRetirementResult __cdecl bsp::clear_native_lua_variant_00886920_cpp_cleanup(void *,struct bsp::NativeStringRawPoolContext &,struct bsp::NativeLuaVariantRetirementOperation &,struct bsp::NativeLuaVariantCppCleanupBacking const &))"
+        ],
+        "project_sha256": "a859a210927d16421ef4b9fdb3360e1fc919a2fabefd063c1dc7011984ed86e7",
+        "floating_point_models": [
+          "Strict",
+          "Strict",
+          "Strict",
+          "Strict"
+        ],
+        "f0": {
+          "child_call": "11",
+          "completed_test_branch": "19/1B ->43 on stop",
+          "late_home_pointer_then_value": "1D/20",
+          "actual_cvtsi2ss": "25",
+          "private_float_spill": "29",
+          "private_volatile_word_anchor": "31/34",
+          "tag0": "37",
+          "payload": "3E",
+          "order_verified": true,
+          "borrowed_input_home_written": false,
+          "private_scratch_note": "[EBP+8] is compiler-reused ordinary Source receiver parameter slot/private conversion scratch, NOT borrowed actual_input_home; physical stack aliases excluded"
+        },
+        "b30": {
+          "child_call": "11",
+          "completed_test_branch": "1B/1D ->2B for completed",
+          "noncompletion_result_and_disengagement": "23/25 before return2A, no HOME read",
+          "late_home_pointer_then_value": "2B/2E",
+          "tag4": "30",
+          "payload": "37",
+          "actual_captured_input_in_optional": "44",
+          "optional_engagement": "47",
+          "result_metadata_separate_from_raw_home_receiver": true,
+          "borrowed_input_home_written": false
+        },
+        "forbidden_control_or_alternative_conversion_ops": [],
+        "source_helper_or_sdk_optional_comdats": "present static metadata-only; neither entry calls them or an allocator",
+        "normal_or_target_invocation": false,
+        "no_new_compile": true
+      }
+    }
+  },
+  "retained": {
+    "suite": "existing2/2 12.87s on original retained configuration",
+    "three_new_entry_rows": {
+      "?set_native_lua_variant_number_008869d0_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXPBXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z": "0001:002ffbe0       ?set_native_lua_variant_number_008869d0_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXPBXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z 10300be0 f   bsp_core:native_lua_variant_number_setter.obj",
+      "?set_native_lua_variant_signed_number_008869f0@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXADIAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z": "0001:002ffc70       ?set_native_lua_variant_signed_number_008869f0@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXADIAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z 10300c70 f   bsp_core:native_lua_variant_scalar_setters.obj",
+      "?set_native_lua_variant_pointer_word_00886b30@bsp@@YA?AUNativeLuaVariantPointerSetResult@1@PAXADIAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z": "0001:002ffc20       ?set_native_lua_variant_pointer_word_00886b30@bsp@@YA?AUNativeLuaVariantPointerSetResult@1@PAXADIAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z 10300c20 f   bsp_core:native_lua_variant_scalar_setters.obj"
+    },
+    "unforced_actual_clear_row": "0001:0047bd00       ?clear_native_lua_variant_00886920_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z 1047cd00 f   bsp_core:native_lua_variant_retirement.obj",
+    "map_sha256": "9a27304ae228e4a5711b2125f3f591d9cbfd854e4c708bac2a75a5e9d362d8ad",
+    "overlay_sha256": "247bdf57cb06473a8de27be3216d395457c56439fc16ff802a5b9a9c365b4c77",
+    "only_three_new_entries_forced": true,
+    "focused_map_recovery_after_number_prologue_guard": true,
+    "recovery_target": "bsp_game only, sameSource/config; no tests rerun",
+    "new_Source_or_compile_policy_change": false,
+    "number_guard_limit": "number prologue differs; semantic order is verified separately; no all3byteidentityclaim",
+    "entry_invoked": false
+  },
+  "canonical_tested_suite": "existing2/2 12.64s",
+  "Core_emitted_operation_proof": {
+    "core_scalar_object_sha256": "cab960d176622b4210f372a08b69bd36b5cad0629871da08ff78782202923d29",
+    "core_number_object_sha256": "1a0abd7fab28e610979482e9ee3a9883eff26b52b6e1c696d9194520107ef9e5",
+    "two_scalar_entry_instructions_identical_to_author": {
+      "set_native_lua_variant_signed_number_008869f0": true,
+      "set_native_lua_variant_pointer_word_00886b30": true
+    },
+    "number_entry_prologue_differs_from_author": true,
+    "number_manual_order_verified": {
+      "clear_call": "11",
+      "completed_test_branch": "19/1B->2E",
+      "current_home": "20",
+      "tag0": "22",
+      "captured_payload": "29",
+      "normal_completion": "2C"
+    },
+    "number_no_fp_or_numeric_conversion": true,
+    "f0_actual_cvtsi2ss_after_home_before_tag": true,
+    "mode_writes_absent": true,
+    "entire_object_binary_identity_claimed": false,
+    "entry_invoked": false
+  },
+  "existing_repository_provider_path_count": 12,
+  "actual_sdk_header_count": 1,
+  "Source_main_before_common": "105ccc0eabe6cad430f4da53f14719711513fae3",
+  "receipt_recovery": "Overstrict number-entry byte-equality guard failed for different compiler prologue; no Source change. Focused bsp_game retained-link recovery then focused canonical restore only, no repeated tests. Final map equals tested canonical except link timestamp; Coreobjects unchanged/no PEbinaryidentity.",
+  "Core_registration_commit": "7602bf32b",
+  "canonical": {
+    "suite": "existing2/2 12.64s before focused recovery",
+    "final_focused_restore_only": true,
+    "no_repeated_tests": true,
+    "final_map_equal_to_tested_except_link_timestamp": true,
+    "whole_PE_binary_identity_claimed": false,
+    "tested_map_sha256": "37b1496cfa6f78218f010fa01e8e6fefb64a0c89ca153fee5b1aa3a194abdf37",
+    "final_map_sha256": "9b6a50123cb6c5881d8d0d8c063f17e600f58a80814b8beb495f0ce3e918b1cd",
+    "final_exe_sha256": "befa1ac1f6a160236073542e552ee68ddaa470e92d9af127d7e4366ef0f26058",
+    "overlay_cache_project_and_three_new_entries_absent": true,
+    "twelve_repository_paths_preserved_with_two_core_inverse": true,
+    "actual_sdk_header_unchanged": true,
+    "two_common_Core_objects_unchanged_since_emitted_inspection": true,
+    "nine_raw_text_flags": {
+      "kRawDefaultTextQualificationCc16Bound": "false",
+      "kRawDefaultSourceEqualQualificationCc16Bound": "false",
+      "kRawPrimaryPrefixQualificationCc16Bound": "false",
+      "kRawPrefixGeometryQualificationCc16Bound": "false",
+      "kRawMainSectionQualificationCc16Bound": "false",
+      "kRawFontMainQualificationCc16Bound": "false",
+      "kRawEmptyUnchangedQualificationCc16Bound": "false",
+      "kRawFontMetadataQualificationCc16Bound": "false",
+      "kRawFontWorkQualificationCc16Bound": "false"
+    },
+    "entry_invoked": false
+  },
+  "ghidra_annotation": {
+    "journal": "local\\ghidra-annotations-20261031T004114Z.json",
+    "journal_sha256": "ad99d3fc5c59d2dc268384751111794edc5caa4b41aea92631ab6fbc0c265071",
+    "old_values_journaled_before_mutation": true,
+    "all_three_names_preserved": true,
+    "official_write_lock": true,
+    "comments_append_only": true,
+    "project_saved": true,
+    "three_exports_refreshed": true
+  },
+  "ledger_preservation": {
+    "three_distinct_qualified_raw_records": true,
+    "all_prior_reconstruction_records_preserved": true,
+    "all_name_fields_and_evidence_prefixes_preserved": true,
+    "all_unrelated_names_unchanged": true
+  },
+  "independent_final_reviews": {
+    "number": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_lua_variant_number_setter_review_frame_20261031\\REVIEW.md",
+      "sha256": "cde10e76afb8b12bd81694fa96a4c0432f491b4dfedfe91f1bf8f4d6b88898fd",
+      "verdict": "ACCEPT_SOURCE_AND_STATIC_OPERATION_ONLY"
+    },
+    "scalar": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\native_lua_variant_scalar_setters_review_gui_20261030\\FINAL_REVIEW.md",
+      "sha256": "7cf56c06d8d4c2e58b0f9008491bd27d0fbd3eb98d05b9edc300460307d0395a",
+      "verdict": "ACCEPT_SOURCE_AND_STATIC_OPERATION_ONLY"
+    }
+  }
+}
