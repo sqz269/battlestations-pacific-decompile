@@ -1,0 +1,1074 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-glyph-raw-model-transport-readiness",
+  "utc": "2026-10-31T04:28:50.289536+00:00",
+  "kind": "evidence_only_conditional_transport_cut",
+  "base": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+  "prior_designs": [
+    {
+      "commit": "c180f23c3b1d55af24ed715b5fb62c2384c86d35",
+      "path": "docs/CC16_NATIVE_GLYPH_WIDGET_LIFETIME_PREPARATION_DESIGN.md",
+      "bytes": 9385,
+      "sha256": "cf58319fde36f2d1c53d609ed0b3c7a15ce63fcc4ef2cacad96b320f26b70fd7",
+      "git_blob": "f9850922e9cf9551151b83d0f8a3a4023dda323b"
+    },
+    {
+      "commit": "c180f23c3b1d55af24ed715b5fb62c2384c86d35",
+      "path": "reports/cc16_native_glyph_widget_lifetime_preparation_design.json",
+      "bytes": 68234,
+      "sha256": "3063b0acd0e4d8a28180be97d7b7585620003ca4e3748bca4e9fc304dd7c35b3",
+      "git_blob": "3c381c72a7abe73722f2b6797627e73763c75e32"
+    },
+    {
+      "commit": "f6af05dbb867c39e62ab75caca1484dfbb6ee17d",
+      "path": "docs/CC16_NATIVE_GLYPH_RETAINED_CHILD_PREPARATION_DESIGN.md",
+      "bytes": 13573,
+      "sha256": "9f669328732df56a67929900af7c1e88f392c72bab7b35845d3401db9b2bce63",
+      "git_blob": "aaf8c92496c2fa1fe3166bd632f5dead27eadce9"
+    },
+    {
+      "commit": "f6af05dbb867c39e62ab75caca1484dfbb6ee17d",
+      "path": "reports/cc16_native_glyph_retained_child_preparation_design.json",
+      "bytes": 83973,
+      "sha256": "9fd85013aa07687b10bbed2553c40a14e37c2759c45237c55033bb8addafbf7e",
+      "git_blob": "bfefe1bd6d8f20e987d14bd5f3a7a8700b71b76a"
+    }
+  ],
+  "actual_candidate17_files": [
+    {
+      "path": "include/bsp/native_gui_text_glyph_birth.hpp",
+      "role": "neutral private constructor-history/publication-receipt types; no owner or Native origin",
+      "part": "original c180 birth12",
+      "proposed_new": true,
+      "exists_at_base": false,
+      "whole_file_pin": null,
+      "qualification": "proposed new neutral birth file; no fabricated implementation/preimage"
+    },
+    {
+      "path": "src/native_gui_text_glyph_birth.cpp",
+      "role": "neutral private constructor-history/publication-receipt types; no owner or Native origin",
+      "part": "original c180 birth12",
+      "proposed_new": true,
+      "exists_at_base": false,
+      "whole_file_pin": null,
+      "qualification": "proposed new neutral birth file; no fabricated implementation/preimage"
+    },
+    {
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "role": "actual pool9D38 history and postdisarm canonical-birth call; mandatory per-Glyph prepared publication borrow",
+      "part": "original c180 birth12",
+      "proposed_new": false,
+      "exists_at_base": true,
+      "whole_file_sha256": "8e3475ad8bce88973b64ff9c0758ebda380b5baede302c7b926526b0e92fe783"
+    },
+    {
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "role": "actual pool9D38 history and postdisarm canonical-birth call; mandatory per-Glyph prepared publication borrow",
+      "part": "original c180 birth12",
+      "proposed_new": false,
+      "exists_at_base": true,
+      "whole_file_sha256": "52746b908db84c9275dc45aa9eb1c8fa01740fe63f7a716c9ff3e37a7a6f07b5"
+    },
+    {
+      "path": "include/bsp/native_gui_text_default_storage.hpp",
+      "role": "actual raw93 entry/prefix-ready/whole-Source-success/failure epochs",
+      "part": "original c180 birth12",
+      "proposed_new": false,
+      "exists_at_base": true,
+      "whole_file_sha256": "7a23774d66bb90e59712407d58fd3356640da3f77f1c087bf766b77d3748141a"
+    },
+    {
+      "path": "src/native_gui_text_default_storage.cpp",
+      "role": "actual raw93 entry/prefix-ready/whole-Source-success/failure epochs",
+      "part": "original c180 birth12",
+      "proposed_new": false,
+      "exists_at_base": true,
+      "whole_file_sha256": "6ed36cf3cad97ef089be15302827995d3bc6f303f5df3a3eb122b970dde67d09"
+    },
+    {
+      "path": "include/bsp/native_gui_text_reference.hpp",
+      "role": "observed real ordinary/reserved binder overloads and independent successful-publication receipt",
+      "part": "original c180 birth12",
+      "proposed_new": false,
+      "exists_at_base": true,
+      "whole_file_sha256": "62224192a6d0fb5043ed68a3f34374ce1bc3584ee1f3bb031c1041b33fdd1827"
+    },
+    {
+      "path": "src/native_gui_text_reference.cpp",
+      "role": "observed real ordinary/reserved binder overloads and independent successful-publication receipt",
+      "part": "original c180 birth12",
+      "proposed_new": false,
+      "exists_at_base": true,
+      "whole_file_sha256": "0fb188e79dbc014db098d01e3afff14a5e07f1671a33db063d2e126e5af4257e"
+    },
+    {
+      "path": "include/bsp/native_gui_text_default_widget_lifetime.hpp",
+      "role": "alternate genuine non-AA1380 record in existing widget-lifetime class, preserving old factory domain",
+      "part": "original c180 birth12",
+      "proposed_new": false,
+      "exists_at_base": true,
+      "whole_file_sha256": "6689bd2ad16f3518e7356abea646dd10f37bb3d609f23453ca479dee10ed5672"
+    },
+    {
+      "path": "src/native_gui_text_default_widget_lifetime.cpp",
+      "role": "alternate genuine non-AA1380 record in existing widget-lifetime class, preserving old factory domain",
+      "part": "original c180 birth12",
+      "proposed_new": false,
+      "exists_at_base": true,
+      "whole_file_sha256": "a9a0804f232966546ad7f17ce8d8b6fa81937f26531d831ecd79a3d8bb62d88b"
+    },
+    {
+      "path": "include/bsp/game_native_raw_default_text_owner.hpp",
+      "role": "real per-Glyph retained child graph preparation/borrow/selection in existing producer domain",
+      "part": "original c180 birth12",
+      "proposed_new": false,
+      "exists_at_base": true,
+      "whole_file_sha256": "92715898e34550625339a8658568e31aee5dbb5b8901d92379a273e816558c83"
+    },
+    {
+      "path": "src/game_native_raw_default_text_owner.cpp",
+      "role": "real per-Glyph retained child graph preparation/borrow/selection in existing producer domain",
+      "part": "original c180 birth12",
+      "proposed_new": false,
+      "exists_at_base": true,
+      "whole_file_sha256": "b0c6a8e39b0756e98960a9f21894a0b25ea7b1a437891edaa86b6f893289d25b"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_raw_model_lifetime.hpp",
+      "role": "separate proposed strongly typed Glyph Context/slots and overload declarations",
+      "part": "additional actual transport connection",
+      "proposed_new": false,
+      "exists_at_base": true,
+      "whole_file_sha256": "bc8dd7b7fb8e22be5436857a8a27ed123afafe7543c592e327643d5294eaf988"
+    },
+    {
+      "path": "src/native_gui_widget_raw_model_lifetime.cpp",
+      "role": "real nonfactory preparation/authentication/current binding/custody contract; old Factory path unchanged",
+      "part": "additional actual transport connection",
+      "proposed_new": false,
+      "exists_at_base": true,
+      "whole_file_sha256": "8761415408f767dfa34dbcdf986be942e94f07b42d3f63536a77ce987cbec146"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "role": "new typed raw wrappers/policy reusing existing schedules; old wrappers/default reject limits unchanged",
+      "part": "additional actual transport connection",
+      "proposed_new": false,
+      "exists_at_base": true,
+      "whole_file_sha256": "e8a53199f409248cc89b6d64c326a0b037970703e3b34ca628162a730907df68"
+    },
+    {
+      "path": "include/bsp/native_gui_text_retirement.hpp",
+      "role": "fixed typed prepared Glyph transport borrow distinct from existing FactoryPrefix",
+      "part": "additional actual transport connection",
+      "proposed_new": false,
+      "exists_at_base": true,
+      "whole_file_sha256": "b18d121ea1111a6b70ec0dd7922aaf5c8e60226fb1cbadc25a73c04eefb842d2"
+    },
+    {
+      "path": "src/native_gui_text_retirement.cpp",
+      "role": "actual raw118 base-return connection to that same prepared Glyph transport",
+      "part": "additional actual transport connection",
+      "proposed_new": false,
+      "exists_at_base": true,
+      "whole_file_sha256": "4974b355bd9dcf0aee5a2cdb8f9c3c2c1d9d47a828741113aa8183367e100ae8"
+    }
+  ],
+  "Source_authoring_grant": false,
+  "exact_whole_file_pins": [
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "bytes": 10679,
+      "sha256": "8e3475ad8bce88973b64ff9c0758ebda380b5baede302c7b926526b0e92fe783",
+      "git_blob": "a0eb6b9681b8e651df3fed6907298b08f974653e",
+      "raw_Git_equal": true,
+      "frozen_whole_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\whole_git_and_raw\\include\\bsp\\native_gui_text_glyph_quad_storage.hpp",
+      "kind": "EXACT WHOLE FILE, not a region witness"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "bytes": 29447,
+      "sha256": "52746b908db84c9275dc45aa9eb1c8fa01740fe63f7a716c9ff3e37a7a6f07b5",
+      "git_blob": "0d96c73d7b60fba9a6742b67a1c4beeff2827591",
+      "raw_Git_equal": true,
+      "frozen_whole_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\whole_git_and_raw\\src\\native_gui_text_glyph_quad_storage.cpp",
+      "kind": "EXACT WHOLE FILE, not a region witness"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "include/bsp/native_gui_text_default_storage.hpp",
+      "bytes": 6352,
+      "sha256": "7a23774d66bb90e59712407d58fd3356640da3f77f1c087bf766b77d3748141a",
+      "git_blob": "2eb5db69eff0b68c093a5006e13eb2d490e821b7",
+      "raw_Git_equal": true,
+      "frozen_whole_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\whole_git_and_raw\\include\\bsp\\native_gui_text_default_storage.hpp",
+      "kind": "EXACT WHOLE FILE, not a region witness"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_text_default_storage.cpp",
+      "bytes": 26698,
+      "sha256": "6ed36cf3cad97ef089be15302827995d3bc6f303f5df3a3eb122b970dde67d09",
+      "git_blob": "47f32c0fb30dc7ebfaeb83ce2480ec88f59d3039",
+      "raw_Git_equal": true,
+      "frozen_whole_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\whole_git_and_raw\\src\\native_gui_text_default_storage.cpp",
+      "kind": "EXACT WHOLE FILE, not a region witness"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "include/bsp/native_gui_text_reference.hpp",
+      "bytes": 12718,
+      "sha256": "62224192a6d0fb5043ed68a3f34374ce1bc3584ee1f3bb031c1041b33fdd1827",
+      "git_blob": "492cf04c44cfeae90887bba02c32039f325bc318",
+      "raw_Git_equal": true,
+      "frozen_whole_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\whole_git_and_raw\\include\\bsp\\native_gui_text_reference.hpp",
+      "kind": "EXACT WHOLE FILE, not a region witness"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_text_reference.cpp",
+      "bytes": 58312,
+      "sha256": "0fb188e79dbc014db098d01e3afff14a5e07f1671a33db063d2e126e5af4257e",
+      "git_blob": "f3a8e3a5c855acc668fb526d6de781621cfdb8c2",
+      "raw_Git_equal": true,
+      "frozen_whole_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\whole_git_and_raw\\src\\native_gui_text_reference.cpp",
+      "kind": "EXACT WHOLE FILE, not a region witness"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "include/bsp/native_gui_text_default_widget_lifetime.hpp",
+      "bytes": 6623,
+      "sha256": "6689bd2ad16f3518e7356abea646dd10f37bb3d609f23453ca479dee10ed5672",
+      "git_blob": "2c2c6e782b2953cbe671bf60a092e3b9cf6210dd",
+      "raw_Git_equal": true,
+      "frozen_whole_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\whole_git_and_raw\\include\\bsp\\native_gui_text_default_widget_lifetime.hpp",
+      "kind": "EXACT WHOLE FILE, not a region witness"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_text_default_widget_lifetime.cpp",
+      "bytes": 20580,
+      "sha256": "a9a0804f232966546ad7f17ce8d8b6fa81937f26531d831ecd79a3d8bb62d88b",
+      "git_blob": "fe970d12216473b80796f96656e605e359afe53b",
+      "raw_Git_equal": true,
+      "frozen_whole_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\whole_git_and_raw\\src\\native_gui_text_default_widget_lifetime.cpp",
+      "kind": "EXACT WHOLE FILE, not a region witness"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "include/bsp/game_native_raw_default_text_owner.hpp",
+      "bytes": 9406,
+      "sha256": "92715898e34550625339a8658568e31aee5dbb5b8901d92379a273e816558c83",
+      "git_blob": "532566845cd8434126f0869464a0deb7c1ec2e2f",
+      "raw_Git_equal": true,
+      "frozen_whole_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\whole_git_and_raw\\include\\bsp\\game_native_raw_default_text_owner.hpp",
+      "kind": "EXACT WHOLE FILE, not a region witness"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/game_native_raw_default_text_owner.cpp",
+      "bytes": 132021,
+      "sha256": "b0c6a8e39b0756e98960a9f21894a0b25ea7b1a437891edaa86b6f893289d25b",
+      "git_blob": "8e3d47af9f936b938afa27821afd5b3b6b8071ef",
+      "raw_Git_equal": true,
+      "frozen_whole_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\whole_git_and_raw\\src\\game_native_raw_default_text_owner.cpp",
+      "kind": "EXACT WHOLE FILE, not a region witness"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "include/bsp/native_gui_widget_raw_model_lifetime.hpp",
+      "bytes": 4599,
+      "sha256": "bc8dd7b7fb8e22be5436857a8a27ed123afafe7543c592e327643d5294eaf988",
+      "git_blob": "dbffd3f17f0952c4d3ff8c0659ab0f617221eac7",
+      "raw_Git_equal": true,
+      "frozen_whole_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\whole_git_and_raw\\include\\bsp\\native_gui_widget_raw_model_lifetime.hpp",
+      "kind": "EXACT WHOLE FILE, not a region witness"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_widget_raw_model_lifetime.cpp",
+      "bytes": 28955,
+      "sha256": "8761415408f767dfa34dbcdf986be942e94f07b42d3f63536a77ce987cbec146",
+      "git_blob": "4d0e75a0986557607258a53264c06bac084c0a7f",
+      "raw_Git_equal": true,
+      "frozen_whole_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\whole_git_and_raw\\src\\native_gui_widget_raw_model_lifetime.cpp",
+      "kind": "EXACT WHOLE FILE, not a region witness"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "bytes": 17866,
+      "sha256": "e8a53199f409248cc89b6d64c326a0b037970703e3b34ca628162a730907df68",
+      "git_blob": "9c8b06d3a4071d57ab1a539eaacdfb2fb810cbd3",
+      "raw_Git_equal": true,
+      "frozen_whole_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\whole_git_and_raw\\src\\native_gui_widget_lifetime.cpp",
+      "kind": "EXACT WHOLE FILE, not a region witness"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "include/bsp/native_gui_text_retirement.hpp",
+      "bytes": 8057,
+      "sha256": "b18d121ea1111a6b70ec0dd7922aaf5c8e60226fb1cbadc25a73c04eefb842d2",
+      "git_blob": "ef7effbb29056d3852b8bcc3009d3f7acfa4ebb2",
+      "raw_Git_equal": true,
+      "frozen_whole_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\whole_git_and_raw\\include\\bsp\\native_gui_text_retirement.hpp",
+      "kind": "EXACT WHOLE FILE, not a region witness"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_text_retirement.cpp",
+      "bytes": 37908,
+      "sha256": "4974b355bd9dcf0aee5a2cdb8f9c3c2c1d9d47a828741113aa8183367e100ae8",
+      "git_blob": "8dd0bf44f58dc474bb458b0d1cb3d4ad0b54fc54",
+      "raw_Git_equal": true,
+      "frozen_whole_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\whole_git_and_raw\\src\\native_gui_text_retirement.cpp",
+      "kind": "EXACT WHOLE FILE, not a region witness"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "include/bsp/native_gui_widget_lifetime.hpp",
+      "bytes": 7899,
+      "sha256": "c9155c508f98bb913ebe8ae71cd6c98e050d86ce25a746a5c8f4909f37242d1a",
+      "git_blob": "3dfab3f1b6a42f2a37f8c84e1d813e4d7201ec20",
+      "raw_Git_equal": true,
+      "frozen_whole_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\whole_git_and_raw\\include\\bsp\\native_gui_widget_lifetime.hpp",
+      "kind": "EXACT WHOLE FILE, not a region witness"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "include/bsp/native_model_storage_dispatch.hpp",
+      "bytes": 4578,
+      "sha256": "c7668cfa7baedd21695427d5e67c5aeee155aa1deca7ea1c1f6df7367a14fed2",
+      "git_blob": "3cedaf1f8ec893298daab624fcdc59cba21e39fa",
+      "raw_Git_equal": true,
+      "frozen_whole_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\whole_git_and_raw\\include\\bsp\\native_model_storage_dispatch.hpp",
+      "kind": "EXACT WHOLE FILE, not a region witness"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_model_storage_dispatch.cpp",
+      "bytes": 12599,
+      "sha256": "7e77fc6d29bee3e8f177213a2f40bb8c29b0da05e12acd5c138a9dff1ffe45d8",
+      "git_blob": "f9d249b369064ef13a511592b81cd19cae151ae6",
+      "raw_Git_equal": true,
+      "frozen_whole_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\whole_git_and_raw\\src\\native_model_storage_dispatch.cpp",
+      "kind": "EXACT WHOLE FILE, not a region witness"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "include/bsp/native_model_storage_lifetime.hpp",
+      "bytes": 9363,
+      "sha256": "7754b1a3df10ccf79a83899513b48ab4616df9b9f9a5da54400ed7d4fe51ea1f",
+      "git_blob": "319ac5182e317f50e999437b3d300c92d695fbdf",
+      "raw_Git_equal": true,
+      "frozen_whole_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\whole_git_and_raw\\include\\bsp\\native_model_storage_lifetime.hpp",
+      "kind": "EXACT WHOLE FILE, not a region witness"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_model_storage_lifetime.cpp",
+      "bytes": 17638,
+      "sha256": "d9ea114fa0e88f42f5a692adf96014827c32cd5d856a8e228e1ccd0550dd99b0",
+      "git_blob": "7ca6d5ae17001f48426aeed0826f2db496a56f2f",
+      "raw_Git_equal": true,
+      "frozen_whole_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\whole_git_and_raw\\src\\native_model_storage_lifetime.cpp",
+      "kind": "EXACT WHOLE FILE, not a region witness"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "include/bsp/native_node_tree_retirement.hpp",
+      "bytes": 4571,
+      "sha256": "7826147682ef91780670172a270214c5f164ba92696f76c06ecc4d3e8387f07f",
+      "git_blob": "a95108130a5c2e16ba8eef2a320fb900473cf9d1",
+      "raw_Git_equal": true,
+      "frozen_whole_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\whole_git_and_raw\\include\\bsp\\native_node_tree_retirement.hpp",
+      "kind": "EXACT WHOLE FILE, not a region witness"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_node_tree_retirement.cpp",
+      "bytes": 7016,
+      "sha256": "f58325714135577e4a2baefdefea81b45fd1d5bfaa912d83b02d38637466fbf5",
+      "git_blob": "b3d2053bd6b0ee6016e4dac2a41004ef780b273a",
+      "raw_Git_equal": true,
+      "frozen_whole_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\whole_git_and_raw\\src\\native_node_tree_retirement.cpp",
+      "kind": "EXACT WHOLE FILE, not a region witness"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "include/bsp/native_gui_text_primary_prefix_lifetime.hpp",
+      "bytes": 6510,
+      "sha256": "e9abef5c40b565853974e587dbf44b0b4ac7c2bd42ce714e1fc94e3a5a5e254f",
+      "git_blob": "0482eb8629b0f4d8c45b003c81036f2374442051",
+      "raw_Git_equal": true,
+      "frozen_whole_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\whole_git_and_raw\\include\\bsp\\native_gui_text_primary_prefix_lifetime.hpp",
+      "kind": "EXACT WHOLE FILE, not a region witness"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_text_primary_prefix_lifetime.cpp",
+      "bytes": 21593,
+      "sha256": "41fc15aceddf8c9088f39808c233b3d45a578307459016a3201f4053fc0f2eb3",
+      "git_blob": "8aa160089cc35d9facdc2bd215bac29afda0c45a",
+      "raw_Git_equal": true,
+      "frozen_whole_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\whole_git_and_raw\\src\\native_gui_text_primary_prefix_lifetime.cpp",
+      "kind": "EXACT WHOLE FILE, not a region witness"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/game_native_gui_render_application.cpp",
+      "bytes": 59357,
+      "sha256": "a5b6be17c269f9486a210716143c17b2375c62e4401139d4d7adf66a39ca00cd",
+      "git_blob": "eef54bf0e2ef8a5a457756d864b8cb50222d1539",
+      "raw_Git_equal": true,
+      "frozen_whole_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\whole_git_and_raw\\src\\game_native_gui_render_application.cpp",
+      "kind": "EXACT WHOLE FILE, not a region witness"
+    }
+  ],
+  "separate_bounded_region_pins": [
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "include/bsp/native_gui_widget_raw_model_lifetime.hpp",
+      "first_line": 6,
+      "last_line": 35,
+      "bytes": 1272,
+      "sha256": "fa7e183722563da8678e3e1430a31a1b42014f004bf45b8401d76d93a42b1262",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_widget_raw_model_lifetime.hpp.L6-L35.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "fixed primary/internal routes and Factory-specific Context"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "include/bsp/native_gui_widget_raw_model_lifetime.hpp",
+      "first_line": 37,
+      "last_line": 85,
+      "bytes": 3164,
+      "sha256": "56d984868281d0e5afa635541b91dd0ac9e245085889cf0cbfab677af593229b",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_widget_raw_model_lifetime.hpp.L37-L85.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "first-domain API/wrappers/limits"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_widget_raw_model_lifetime.cpp",
+      "first_line": 119,
+      "last_line": 144,
+      "bytes": 1983,
+      "sha256": "ada4320975813a448f2cd5fdfa7aa538e9cf7bd4e2904fe500578639c86d43d4",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_widget_raw_model_lifetime.cpp.L119-L144.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "borrowed() literally follows Factory context and exact Model backing"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_widget_raw_model_lifetime.cpp",
+      "first_line": 203,
+      "last_line": 219,
+      "bytes": 1349,
+      "sha256": "927a5be9691681cdaa761b698ccdefc67a2af804a4897fe3e9ccdaba96cc70ef",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_widget_raw_model_lifetime.cpp.L203-L219.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "fresh exact tree/node dispatch and records"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_widget_raw_model_lifetime.cpp",
+      "first_line": 222,
+      "last_line": 249,
+      "bytes": 2209,
+      "sha256": "5f09df53e52ac99cf760531827e7eda52c292e341c46cdd740483c8f690522fb",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_widget_raw_model_lifetime.cpp.L222-L249.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "old slots bind/termination and Factory pre-pool condition"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_widget_raw_model_lifetime.cpp",
+      "first_line": 250,
+      "last_line": 278,
+      "bytes": 2197,
+      "sha256": "b73d67d800cd78f158ed8897e0f330f6b5c7c69a166a9e79b6b2f6743ed2db82",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_widget_raw_model_lifetime.cpp.L250-L278.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "independent exact primary/internal record domains and scratch separation"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_widget_raw_model_lifetime.cpp",
+      "first_line": 284,
+      "last_line": 298,
+      "bytes": 1099,
+      "sha256": "b89e27dc87b3b00c9096e4160f38f27ecc8fb8d6256558267619cefb5608140a",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_widget_raw_model_lifetime.cpp.L284-L298.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "actual Factory authenticator and raw118 base-entry evidence"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_widget_raw_model_lifetime.cpp",
+      "first_line": 300,
+      "last_line": 345,
+      "bytes": 3265,
+      "sha256": "2bf7cca50cce48e1afe895dace480bbb20f32d73448a820c6424b890e7c0b27b",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_widget_raw_model_lifetime.cpp.L300-L345.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "empty/default domain and staged ended-metadata helpers"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_widget_raw_model_lifetime.cpp",
+      "first_line": 346,
+      "last_line": 370,
+      "bytes": 1547,
+      "sha256": "4ffd1fc0a0de1528bc5c41fb0757a2709060741416ddaa9f1c0f25d2c0c1e08a",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_widget_raw_model_lifetime.cpp.L346-L370.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "one receiver scene/base epochs; complete/active semantics"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_widget_raw_model_lifetime.cpp",
+      "first_line": 374,
+      "last_line": 412,
+      "bytes": 3328,
+      "sha256": "1bc91157bf7f34c44bc73c2b8862499acb01f2a13ca66c41de578119720b24de",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_widget_raw_model_lifetime.cpp.L374-L412.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "actual first-credit Model admission, real B6DFA0 and normal-return marker"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_widget_raw_model_lifetime.cpp",
+      "first_line": 414,
+      "last_line": 430,
+      "bytes": 873,
+      "sha256": "6faf6a42d7878302b327f607bc7939b5261eeea2aa6d5165369ae0a59fc1d860",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_widget_raw_model_lifetime.cpp.L414-L430.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "poison/retain and unconditional TRUE Text188 Glyph rejection"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "first_line": 37,
+      "last_line": 53,
+      "bytes": 894,
+      "sha256": "18ec2f6263345fe63a9bb0a1555577476fb9c4850e7becd81499f0b0572701fc",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_widget_lifetime.cpp.L37-L53.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "legacy semantic GeneratedModelNode binding is not raw Model C++ subobject proof"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "first_line": 189,
+      "last_line": 191,
+      "bytes": 134,
+      "sha256": "369256faebad979839beedb08ba8c0779ae3faeea3e7d5f6c98f21791670b138",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_widget_lifetime.cpp.L189-L191.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "old Legacy Glyph schedule"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "first_line": 245,
+      "last_line": 269,
+      "bytes": 1728,
+      "sha256": "0c1e73edf7c48dadeb5458c73791aa76801ef9eebe07067ede518feac94e0da9",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_widget_lifetime.cpp.L245-L269.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "RawSchedule explicit child/parent/timed/Glyph rejection and LIVE4C clear"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "first_line": 270,
+      "last_line": 295,
+      "bytes": 1345,
+      "sha256": "68f898fdf4ccf0bfc571e2fe694b177105a5e881ed14962d07735538c55243be",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_widget_lifetime.cpp.L270-L295.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "shared existing scene schedule, late class target, iterator reload and same-schedule recursion"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "first_line": 297,
+      "last_line": 349,
+      "bytes": 2320,
+      "sha256": "2debdf660b1539e756e5a427bac25b72fca522b1fdd16320663030a8ca7c0f2f",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_widget_lifetime.cpp.L297-L349.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "shared base schedule and existing unwind policy"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "first_line": 351,
+      "last_line": 371,
+      "bytes": 1082,
+      "sha256": "b2033a95661624a92e0fdfa62bba7fa89de56ac76054dd32792b72f4a77c6f22",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_widget_lifetime.cpp.L351-L371.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "actual public wrappers are in this third Source file"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_text_default_widget_lifetime.cpp",
+      "first_line": 154,
+      "last_line": 203,
+      "bytes": 3397,
+      "sha256": "46a28ac9d9df3d9222ca648d8a1fa1d3570d5e170e876cf73aabfc31c322e07a",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_text_default_widget_lifetime.cpp.L154-L203.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "factory allocation/constructing/complete binding and independent disposed-first checks"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_text_default_widget_lifetime.cpp",
+      "first_line": 206,
+      "last_line": 239,
+      "bytes": 2253,
+      "sha256": "9a2519319f03b2cabbcb9cf3eab05f05d631a5ee1555fcf144e73f0e424cbd66",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_text_default_widget_lifetime.cpp.L206-L239.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "actual prefix state and original empty/populated branch constraints"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_text_default_widget_lifetime.cpp",
+      "first_line": 242,
+      "last_line": 279,
+      "bytes": 2145,
+      "sha256": "8d0f424accea9baf3878dd1d45b1a15cff8970e31ab1bef12f901a12a25ac299",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_text_default_widget_lifetime.cpp.L242-L279.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "owner pre-scalar/default limits and exact-record raw transport admission"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_text_default_widget_lifetime.cpp",
+      "first_line": 297,
+      "last_line": 338,
+      "bytes": 2543,
+      "sha256": "8afec523c2c8c1e1f5536fe4c88601941f48f682726d3f9d52e60708a37965e8",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_text_default_widget_lifetime.cpp.L297-L338.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "real class query and unavailable child/timed dispatch routes"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "include/bsp/native_gui_text_reference.hpp",
+      "first_line": 117,
+      "last_line": 171,
+      "bytes": 3489,
+      "sha256": "af7ef92802f60dc096685df0e3b7c574c8345729255323d6473c9235723c86ad",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_text_reference.hpp.L117-L171.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "raw122 Context/frame binding and inherited fixed noexcept disposal callback"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_text_reference.cpp",
+      "first_line": 602,
+      "last_line": 680,
+      "bytes": 6364,
+      "sha256": "206ddb284c834451a09b3207f71ab7c6d1eb2f7b0843852c17f6ce98e765d97b",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_text_reference.cpp.L602-L680.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "raw122 genuine completed raw93/internal188/provider preflight"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_text_reference.cpp",
+      "first_line": 810,
+      "last_line": 826,
+      "bytes": 890,
+      "sha256": "085b80be14f68517c9ded7945f63235e26c0871e6430753f1d66a1956e9c4229",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_text_reference.cpp.L810-L826.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "retired/unbound then saved disposal LAST"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_text_reference.cpp",
+      "first_line": 828,
+      "last_line": 858,
+      "bytes": 1564,
+      "sha256": "3e00da98cbbd4a2623bdc293e21ec7758ce072176a319310aa4131f2896f4d88",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_text_reference.cpp.L828-L858.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "zero path: observed zero/current0 then actual current04 literal1 and inherited terminal policy"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_text_reference.cpp",
+      "first_line": 860,
+      "last_line": 876,
+      "bytes": 1003,
+      "sha256": "8cf063b50bae1c95dc3ee4481fb56a9b0b8c524ea4077599921fd1ae89d2358c",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_text_reference.cpp.L860-L876.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "direct scalar distinct phase/flags/count behavior and failure retention"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "include/bsp/native_gui_text_retirement.hpp",
+      "first_line": 107,
+      "last_line": 137,
+      "bytes": 2136,
+      "sha256": "41596f29010822f372ff3ec311f7936288530dbc982a51ed96109b3a4549e558",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_text_retirement.hpp.L107-L137.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "actual raw retirement Context and independent Model custody warning"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_text_retirement.cpp",
+      "first_line": 339,
+      "last_line": 345,
+      "bytes": 460,
+      "sha256": "f4867530c2becaadb4e0005ff0ac911fd471cfd16c552cf5b71e425eb14a09ac",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_text_retirement.cpp.L339-L345.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "existing factory-prefix versus legacy base-return route"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_gui_text_retirement.cpp",
+      "first_line": 477,
+      "last_line": 517,
+      "bytes": 2066,
+      "sha256": "aabb52ac830a6ed9867909a582d3121b95ec7e81a51e40fb02e50f0a7288373f",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_gui_text_retirement.cpp.L477-L517.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "actual raw118 current188 after shader callback, clear, later members/base-entry order"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "include/bsp/native_model_storage_lifetime.hpp",
+      "first_line": 89,
+      "last_line": 104,
+      "bytes": 1114,
+      "sha256": "16a3e54422a98468aadbb68cc3e0124e1d21c3717290c2eecf11b8c09d399940",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_model_storage_lifetime.hpp.L89-L104.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "late LOW BYTE flags0 payload end versus physical slot return"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_model_storage_dispatch.cpp",
+      "first_line": 143,
+      "last_line": 174,
+      "bytes": 1966,
+      "sha256": "05d7f20fb3b27e9db6056e0d0a98a32b74612836075171370488da0070e62927",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_model_storage_dispatch.cpp.L143-L174.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "completed scalar metadata versus pool-return relation and genuine fresh current18 body"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "include/bsp/native_node_tree_retirement.hpp",
+      "first_line": 35,
+      "last_line": 77,
+      "bytes": 2562,
+      "sha256": "0df7d9d044b370356609eeea5de435953dfe042fcc1467d99c88475dfe55bc9e",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_node_tree_retirement.hpp.L35-L77.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "required genuine target/count/recursive-frame contracts and existing whole bodies"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/native_node_tree_retirement.cpp",
+      "first_line": 38,
+      "last_line": 65,
+      "bytes": 1284,
+      "sha256": "deaea6a682dee33b154539158a16249c7e0fb2686baeace8826b9846fee895a6",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\native_node_tree_retirement.cpp.L38-L65.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "actual B6DFA0 parent/root/current18 schedule; complete is metadata only"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/game_native_raw_default_text_owner.cpp",
+      "first_line": 735,
+      "last_line": 749,
+      "bytes": 1251,
+      "sha256": "de26530a39987d4c93c38f6c8c40c39946711d23c451557364d206b0575e0413",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\game_native_raw_default_text_owner.cpp.L735-L749.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "genuine unused Source graph"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/game_native_raw_default_text_owner.cpp",
+      "first_line": 751,
+      "last_line": 773,
+      "bytes": 1911,
+      "sha256": "269a63855b6009e0538d52ef01b8a12324d7a088a563fb6ed0859052a48a9af4",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\game_native_raw_default_text_owner.cpp.L751-L773.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "interruption retention is not native settlement"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/game_native_raw_default_text_owner.cpp",
+      "first_line": 775,
+      "last_line": 796,
+      "bytes": 1930,
+      "sha256": "ec07bd454e2e9dbfc8def8dcaf6218c94726cefaf72ac4bbb8e3bdd8c4de2e97",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\game_native_raw_default_text_owner.cpp.L775-L796.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "primary Model actual disposal/flags/pool/dispatch/geometry settlement"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/game_native_raw_default_text_owner.cpp",
+      "first_line": 1235,
+      "last_line": 1269,
+      "bytes": 2611,
+      "sha256": "be4c09e580fa16f6d5bd92d00496c4319ede7da070b988a63408886aa3421708",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\game_native_raw_default_text_owner.cpp.L1235-L1269.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "owner overall custody requires real Text and internal Model physical-return facts"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/game_native_raw_default_text_owner.cpp",
+      "first_line": 1271,
+      "last_line": 1297,
+      "bytes": 1830,
+      "sha256": "9900cc3c47b6ea16357fb1b28cc6107d091f4dcb67fcc4aff88ad41c3456995a",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\game_native_raw_default_text_owner.cpp.L1271-L1297.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "owner requires-retention query preserves healthy versus interrupted/retired-unsettled distinction"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/game_native_raw_default_text_owner.cpp",
+      "first_line": 1932,
+      "last_line": 1982,
+      "bytes": 3136,
+      "sha256": "78a0ce32e1a78dd1702d58035062aa40362e6caea9a7683f329856bfd70dbff0",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\game_native_raw_default_text_owner.cpp.L1932-L1982.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "existing root retirement domain and sole unpublished creator admission"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/game_native_raw_default_text_owner.cpp",
+      "first_line": 1994,
+      "last_line": 2022,
+      "bytes": 1846,
+      "sha256": "e78ad6aa45bfcedaacdd88e2af65abd36d798369970c9b047abf88d17b979674",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\game_native_raw_default_text_owner.cpp.L1994-L2022.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "actual owner close requires custody and parent drain"
+    },
+    {
+      "commit": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+      "path": "src/game_native_gui_render_application.cpp",
+      "first_line": 905,
+      "last_line": 949,
+      "bytes": 2323,
+      "sha256": "df0b183130c1eea0376bce61205f9912e9f3d73ac0a75e444d98b97170171e8d",
+      "frozen_region_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\bounded_regions\\game_native_gui_render_application.cpp.L905-L949.bin",
+      "kind": "BOUNDED REGION ONLY; whole-file hash is separate",
+      "meaning": "existing incomplete/retirement/close exit policy remains unchanged"
+    }
+  ],
+  "reviewed034c_transport_comparison": [
+    {
+      "commit": "034c220aadff22651de5051be2f0f28bdb44142f",
+      "path": "include/bsp/native_gui_widget_raw_model_lifetime.hpp",
+      "bytes": 4599,
+      "sha256": "bc8dd7b7fb8e22be5436857a8a27ed123afafe7543c592e327643d5294eaf988",
+      "git_blob": "dbffd3f17f0952c4d3ff8c0659ab0f617221eac7",
+      "equal_base66e": true
+    },
+    {
+      "commit": "034c220aadff22651de5051be2f0f28bdb44142f",
+      "path": "src/native_gui_widget_raw_model_lifetime.cpp",
+      "bytes": 28955,
+      "sha256": "8761415408f767dfa34dbcdf986be942e94f07b42d3f63536a77ce987cbec146",
+      "git_blob": "4d0e75a0986557607258a53264c06bac084c0a7f",
+      "equal_base66e": true
+    },
+    {
+      "commit": "034c220aadff22651de5051be2f0f28bdb44142f",
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "bytes": 17866,
+      "sha256": "e8a53199f409248cc89b6d64c326a0b037970703e3b34ca628162a730907df68",
+      "git_blob": "9c8b06d3a4071d57ab1a539eaacdfb2fb810cbd3",
+      "equal_base66e": true
+    },
+    {
+      "commit": "034c220aadff22651de5051be2f0f28bdb44142f",
+      "path": "include/bsp/native_gui_text_retirement.hpp",
+      "bytes": 8057,
+      "sha256": "b18d121ea1111a6b70ec0dd7922aaf5c8e60226fb1cbadc25a73c04eefb842d2",
+      "git_blob": "ef7effbb29056d3852b8bcc3009d3f7acfa4ebb2",
+      "equal_base66e": true
+    },
+    {
+      "commit": "034c220aadff22651de5051be2f0f28bdb44142f",
+      "path": "src/native_gui_text_retirement.cpp",
+      "bytes": 37908,
+      "sha256": "4974b355bd9dcf0aee5a2cdb8f9c3c2c1d9d47a828741113aa8183367e100ae8",
+      "git_blob": "8dd0bf44f58dc474bb458b0d1cb3d4ad0b54fc54",
+      "equal_base66e": true
+    }
+  ],
+  "current_factory_barriers": {
+    "Context_is_Factory_record": true,
+    "bind_exact_ctor188_and_two_routes": true,
+    "active_raw118_base_only": true,
+    "empty_unattached_first_credit_only": true,
+    "TRUE_Glyph_raw_route_always_rejects": true,
+    "old_API_guards_default_domain_required_byte_unchanged": true
+  },
+  "proposed_typed_shape": {
+    "names_are_proposals_not_implemented": true,
+    "separate_Glyph_Context_and_slots_no_FactoryAcq_or_public_mode": true,
+    "reuse_existing_scene_base_schedules": true,
+    "new_actual_raw118_connection_requires_retirement_HCPP": true,
+    "no_Source_ready_claim_from_context_presence": true,
+    "genuine_recursive_child_timed_parent_providers_exist": false,
+    "existing_same_Schedule_recursion_does_not_supply_distinct_invocations": true
+  },
+  "CURRENT_binding_contract": [
+    "actual reached captured operand/edge",
+    "real Source creator/publication generation",
+    "same actual live canonical reference/count",
+    "actual C++ subobject family",
+    "same context/provider/geometry/node/tree backing",
+    "real current credit/physical-slot custody",
+    "distinct genuine retained call histories"
+  ],
+  "current_replacement": {
+    "general_real_binding_protocol_available": false,
+    "ctor188_address_registry_snapshot_alone_suffices": false,
+    "force_CURRENT_equals_constructor_as_Native_rule": false,
+    "finite_Source_admission_fail_retain_is_general_Native_coverage": false,
+    "no_invented_virtual_provider_table_issuer_or_callee_body": true
+  },
+  "actual_raw122_events": {
+    "direct_scalar": "bound->retiring, real flags/current04 preflight, no added decrement, bare failure rethrow",
+    "zero": "bound->zero_dispatch; SAME observed-zero/current0 BD30E0; actual current04 literal1->retiring; inherited terminal failure policy",
+    "completion": "retired then owner-unbind then saved disposal LAST",
+    "required_new_private_Glyph_events": [
+      "actual direct-scalar entry",
+      "actual zero-scalar entry/current selector/flags identity",
+      "real whole normal return",
+      "independent tombstone BEFORE companion destruction"
+    ],
+    "metadata_validate_before_scalar_zero": true,
+    "ended_payload_or_disposed_reference_following_allowed": false,
+    "old_NoThrow_callback_secondary_termination_exit_policy_changed": false
+  },
+  "custody": {
+    "normal_scene_complete_is_physical_return": false,
+    "normal_B6DFA0_can_leave_live_Model": true,
+    "flags0_can_end_payload_without_slot_return": true,
+    "retired_companion_or_tombstone_is_physical_return": false,
+    "false_requires_retention_is_close_permission": false,
+    "existing_owner_settlement_flags_pool_dispatch_geometry_checks_preserved": true,
+    "metadata_history_retention_distinct_from_Native_custody": true,
+    "queries_weakened": false
+  },
+  "historical_seven_borrow_color_pins": [
+    {
+      "commit": "0dc17c8934d1869eab92c11ecb05e4e0fa780da4",
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "bytes": 11288,
+      "sha256": "7f327720df25cde3d156afa7220ce99caff0b1c5920ea2d7abeea0814cbec5f8",
+      "git_blob": "da2e215cbd9c92b36d90dba6c95546de2dfe52be",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\historical_0dc\\include\\bsp\\native_gui_text_glyph_quad_storage.hpp",
+      "kind": "HISTORICAL separate seven-borrow/color caller packet; not transplanted into base"
+    },
+    {
+      "commit": "0dc17c8934d1869eab92c11ecb05e4e0fa780da4",
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "bytes": 32415,
+      "sha256": "0b4a9aa487ad5892e2bdc33ff172e277df3305994776a47c869cb189510e5714",
+      "git_blob": "e0816fe48a952f32e053bda9b793b251324a7d78",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\historical_0dc\\src\\native_gui_text_glyph_quad_storage.cpp",
+      "kind": "HISTORICAL separate seven-borrow/color caller packet; not transplanted into base"
+    },
+    {
+      "commit": "0dc17c8934d1869eab92c11ecb05e4e0fa780da4",
+      "path": "docs/CC16_NATIVE_GLYPH_COLOR_DIRECT_CALLER.md",
+      "bytes": 8225,
+      "sha256": "b8291c1fb59f60a7cbd64276cbe0660e2eba98e5198eacdd71425a51c703ed8b",
+      "git_blob": "307fe63711cea06bd2944624d726ab7b4da40468",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\historical_0dc\\docs\\CC16_NATIVE_GLYPH_COLOR_DIRECT_CALLER.md",
+      "kind": "HISTORICAL separate seven-borrow/color caller packet; not transplanted into base"
+    },
+    {
+      "commit": "0dc17c8934d1869eab92c11ecb05e4e0fa780da4",
+      "path": "reports/cc16_native_glyph_color_direct_caller.json",
+      "bytes": 61352,
+      "sha256": "a0f4fc18e31134c56d03858d60c153745e6c8284ce9697856a4319fa7056b0d2",
+      "git_blob": "622eaa1fcc954ec54e9ebf1d60527ac07c100c9d",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-raw-model-transport-readiness\\local\\output\\cc16_native_glyph_raw_model_transport_readiness_20261030\\historical_0dc\\reports\\cc16_native_glyph_color_direct_caller.json",
+      "kind": "HISTORICAL separate seven-borrow/color caller packet; not transplanted into base"
+    }
+  ],
+  "separate_late_birth_reconciliation": {
+    "commit": "0aee4fcba1b325d07378a7b4bec06fd3a2079f76",
+    "pins": [
+      {
+        "commit": "0aee4fcba1b325d07378a7b4bec06fd3a2079f76",
+        "path": "docs/CC16_NATIVE_GLYPH_SEVEN_BORROW_BIRTH_RECONCILIATION.md",
+        "bytes": 14234,
+        "sha256": "d82016a5dc1e35da00b0dda83737841c73c87c4dbdb1fc4f624a12b4b2753d15",
+        "git_blob": "5e934ac7db5088d14082263684b2bb5205cb9ae6"
+      },
+      {
+        "commit": "0aee4fcba1b325d07378a7b4bec06fd3a2079f76",
+        "path": "reports/cc16_native_glyph_seven_borrow_birth_reconciliation.json",
+        "bytes": 63520,
+        "sha256": "d12858ac554ebe30337bc5b4644b64f541f7e4f371ae82abbac17b7075d4e8c8",
+        "git_blob": "7a6fe4ed52eb9c454f3405f7fdd2658821179641"
+      }
+    ],
+    "status": "immutable separate evidence pinned",
+    "planned_files": [
+      "docs/CC16_NATIVE_GLYPH_SEVEN_BORROW_BIRTH_RECONCILIATION.md",
+      "reports/cc16_native_glyph_seven_borrow_birth_reconciliation.json"
+    ],
+    "current_parent_inputs_constructed_only_at_reached_epochs": true,
+    "preallocated_backing_is_constructed_Cpp_object": false,
+    "current_Glyph_H25_blanket_contract_requires_explicit_narrow_future_change": true,
+    "historical_contract_silently_reinterpreted": false,
+    "Glyph_header_already_in17_candidate": true,
+    "closes_this_transport": false
+  },
+  "readiness": {
+    "actual_general_CURRENT_binding": false,
+    "populated_child_timed_parent": false,
+    "complete_retirement_postsections_CString_provider": false,
+    "Native_Origin_cleanup_permission": false,
+    "Original_ABI_FH3_SEH_NoThrow": false,
+    "runtime_flags_changed": false,
+    "runtime_gameplay_activation": false
+  },
+  "actions": {
+    "evidence_files_only": [
+      "docs/CC16_NATIVE_GLYPH_RAW_MODEL_TRANSPORT_READINESS.md",
+      "reports/cc16_native_glyph_raw_model_transport_readiness.json"
+    ],
+    "Source_address_CMake_ledger_Ghidra_mutations": false,
+    "compiler_build_tests_probes_Game_runtime": false,
+    "original_game_saved_analysis_untouched": true,
+    "reconstruction_vendor_activation_credit": 0
+  },
+  "document_pin": {
+    "path": "docs/CC16_NATIVE_GLYPH_RAW_MODEL_TRANSPORT_READINESS.md",
+    "bytes": 13693,
+    "sha256": "b84a94605b6acc0bb7c7b28167deab528184d41c9bf769dcf00e9dc0834eeaf9"
+  }
+}
