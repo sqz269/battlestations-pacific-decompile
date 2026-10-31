@@ -42,6 +42,8 @@ constexpr std::array<DWORD,3> mutable_pages{0x00e15000,0x00e16000,0x0109e000};
 constexpr DWORD handoff_magic=0x48534442; // BDSH, source protocol only
 constexpr DWORD handoff_version_v1=1;
 constexpr DWORD handoff_version_v2=2;
+constexpr DWORD handoff_version_v3=3;
+constexpr DWORD locale_control_page_v3=0x0109d000;
 constexpr LONG state_pending=0;
 constexpr LONG state_ready=1;
 constexpr LONG state_claimed=2;
@@ -61,6 +63,13 @@ struct HandoffRecord {
     DWORD mutable_roles;
 };
 static_assert(sizeof(HandoffRecord) <= 0x1000);
+// V1/V2 keep their exact40B prefix and never inspect this V3-only tail.
+struct HandoffRecordV3 {
+    HandoffRecord legacy;
+    DWORD locale_control_page;
+};
+static_assert(sizeof(HandoffRecord)==40);
+static_assert(sizeof(HandoffRecordV3)==44);
 
 HANDLE as_handle(void* value) noexcept { return static_cast<HANDLE>(value); }
 HandoffRecord* as_record(void* value) noexcept { return static_cast<HandoffRecord*>(value); }
@@ -68,11 +77,18 @@ std::uintptr_t band_address(std::size_t slot) noexcept {
     return slot<ro_band_count ? first_band+slot*band_bytes :
         slot==19 ? 0x00e10000 : 0x01090000;
 }
+bool is_canonical_plan(GameNativeDataPlan plan) {
+    return plan==GameNativeDataPlan::CanonicalCrtV2 || plan==GameNativeDataPlan::CanonicalCrtV3;
+}
+SIZE_T mapped_record_bytes(GameNativeDataPlan plan) {
+    return plan==GameNativeDataPlan::CanonicalCrtV3 ? sizeof(HandoffRecordV3) : sizeof(HandoffRecord);
+}
 DWORD plan_version(GameNativeDataPlan plan) noexcept {
+    if (plan==GameNativeDataPlan::CanonicalCrtV3) return handoff_version_v3;
     return plan==GameNativeDataPlan::CanonicalCrtV2 ? handoff_version_v2 : handoff_version_v1;
 }
 std::uint32_t plan_mask(std::uint32_t ro_mask,GameNativeDataPlan plan) {
-    if (plan==GameNativeDataPlan::CanonicalCrtV2) {
+    if (is_canonical_plan(plan)) {
         if (!is_canonical_ro_mask(ro_mask))
             throw std::invalid_argument("Canonical CRT plan requires the exact game RO bands");
         return ro_mask|mutable_mask;
@@ -84,6 +100,13 @@ bool record_plan_matches(const HandoffRecord& record,GameNativeDataPlan plan) no
     if (plan==GameNativeDataPlan::ReadOnlyV1)
         return record.mutable_page[0]==0 && record.mutable_page[1]==0 &&
             record.mutable_page[2]==0 && record.mutable_roles==0;
+    if (plan==GameNativeDataPlan::CanonicalCrtV3) {
+        const auto* extended=reinterpret_cast<const HandoffRecordV3*>(&record);
+        return record.mutable_page[0]==mutable_pages[0] &&
+            record.mutable_page[1]==mutable_pages[1] &&
+            record.mutable_page[2]==mutable_pages[2] && record.mutable_roles==0xf &&
+            extended->locale_control_page==locale_control_page_v3;
+    }
     return record.mutable_page[0]==mutable_pages[0] &&
         record.mutable_page[1]==mutable_pages[1] &&
         record.mutable_page[2]==mutable_pages[2] && record.mutable_roles==0x7;
@@ -219,7 +242,7 @@ void GameNativeDataReservation::transfer_to(std::array<void*,19>& destination,
 }
 void GameNativeDataReservation::transfer_ro_subset(std::array<void*,19>& destination,
     std::uint32_t expected_mask) {
-    if (!handoff_view_ || plan_!=GameNativeDataPlan::CanonicalCrtV2 ||
+    if (!handoff_view_ || !is_canonical_plan(plan_) ||
         !is_canonical_ro_mask(expected_mask) || mask_!=(expected_mask|mutable_mask))
         throw std::invalid_argument("Canonical RO subset does not match the handoff");
     for (std::size_t i=0;i<ro_band_count;++i) {
@@ -234,7 +257,7 @@ void GameNativeDataReservation::transfer_ro_subset(std::array<void*,19>& destina
     mask_&=~expected_mask;
 }
 void GameNativeDataReservation::transfer_mutable_subset(std::array<void*,2>& destination) {
-    if (!handoff_view_ || plan_!=GameNativeDataPlan::CanonicalCrtV2 || mask_!=mutable_mask)
+    if (!handoff_view_ || !is_canonical_plan(plan_) || mask_!=mutable_mask)
         throw std::invalid_argument("Canonical mutable subset does not match the handoff");
     for (std::size_t i=0;i<2;++i) if (!bands_[19+i] || destination[i] ||
         !exact_reservation(GetCurrentProcess(),band_address(19+i)))
@@ -253,7 +276,7 @@ GameNativeDataReservation accept_native_data_handoff(
     DWORD flags=0;
     if (!GetHandleInformation(mapping,&flags) || !(flags & HANDLE_FLAG_INHERIT))
         throw std::invalid_argument("Native-data handoff handle was not inherited");
-    void* const view=MapViewOfFile(mapping,FILE_MAP_READ|FILE_MAP_WRITE,0,0,sizeof(HandoffRecord));
+    void* const view=MapViewOfFile(mapping,FILE_MAP_READ|FILE_MAP_WRITE,0,0,mapped_record_bytes(plan));
     if (!view) throw std::invalid_argument("Native-data handoff mapping is unavailable");
     auto* record=as_record(view);
     if (record->magic!=handoff_magic || !record_plan_matches(*record,plan) ||
@@ -300,14 +323,17 @@ GameNativeDataBootstrapChild::GameNativeDataBootstrapChild(
     if (!mapping) throw std::runtime_error("Cannot create native-data handoff section");
     handoff_handle_=mapping;
     try {
-        handoff_view_=MapViewOfFile(mapping,FILE_MAP_READ|FILE_MAP_WRITE,0,0,sizeof(HandoffRecord));
+        handoff_view_=MapViewOfFile(mapping,FILE_MAP_READ|FILE_MAP_WRITE,0,0,mapped_record_bytes(plan_));
         if (!handoff_view_) throw std::runtime_error("Cannot map native-data handoff section");
         auto* record=as_record(handoff_view_);
         record->magic=handoff_magic; record->version=plan_version(plan_);
         record->parent_pid=GetCurrentProcessId(); record->band_mask=mask_;
         for (std::size_t i=0;i<mutable_pages.size();++i)
-            record->mutable_page[i]=plan_==GameNativeDataPlan::CanonicalCrtV2 ? mutable_pages[i] : 0;
-        record->mutable_roles=plan_==GameNativeDataPlan::CanonicalCrtV2 ? 0x7 : 0;
+            record->mutable_page[i]=is_canonical_plan(plan_) ? mutable_pages[i] : 0;
+        record->mutable_roles=plan_==GameNativeDataPlan::CanonicalCrtV3 ? 0xf :
+            plan_==GameNativeDataPlan::CanonicalCrtV2 ? 0x7 : 0;
+        if (plan_==GameNativeDataPlan::CanonicalCrtV3)
+            reinterpret_cast<HandoffRecordV3*>(record)->locale_control_page=locale_control_page_v3;
         record->state=state_pending;
 
         SIZE_T attribute_bytes=0;

@@ -9,7 +9,7 @@
 namespace bsp::game {
 class GameNativeMutableCrtData;
 class GameNativeCanonicalDataOwner;
-enum class GameNativeDataPlan { ReadOnlyV1, CanonicalCrtV2 };
+enum class GameNativeDataPlan { ReadOnlyV1, CanonicalCrtV2, CanonicalCrtV3 };
 namespace detail {
 std::uint32_t native_data_band_mask(const GameNativeDataSpan*, std::size_t);
 }

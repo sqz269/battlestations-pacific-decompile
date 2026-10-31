@@ -9,6 +9,7 @@
 
 namespace bsp::game {
 class GameNativeDataReservation;
+enum class GameNativeDataPlan;
 
 // Layouts of the four recovered cells only. The remainder of each committed
 // page is image data, not an initialized host service or callable CRT state.
@@ -40,6 +41,9 @@ public:
     NativeCrtFailureBlock& failure_block() const noexcept;
     volatile std::uint32_t& feature_word() const noexcept;
     volatile std::uint32_t& debugger_hook() const noexcept;
+    // Explicit V3 storage borrow only. Taking this reference reads no cell value.
+    // V1/V2 have no locale-control role and receive no fallback reference.
+    const volatile std::int32_t& locale_changed_0109de1c() const;
 private:
     friend class GameNativeCanonicalDataOwner;
     GameNativeMutableCrtData(const std::filesystem::path&,
@@ -47,12 +51,15 @@ private:
     void initialize(const std::filesystem::path&);
     void verify_pages() const;
     std::array<void*,2> reservations_{};
+    const GameNativeDataPlan plan_;
 };
 
 // Unique, intentionally non-destructed process owner. initialize() consumes a
-// v2 inherited capability once and publishes only after checked parent ACK.
+// declared canonical capability once and publishes only after checked readiness ACK.
 // Borrowed references remain valid through CRT/atexit/thread teardown; the OS
-// reclaims both the RO D6 pair and the three writable pages at process exit.
+// reclaims the owned RO bands and mutable reservations at process exit;
+// V2 has three writable pages, while explicit V3 adds the locale-control page.
+// No locale setter is supplied.
 class GameNativeCanonicalDataOwner final {
 public:
     static const GameNativeCanonicalDataOwner& initialize(
