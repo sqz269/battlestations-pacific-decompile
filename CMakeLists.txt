@@ -518,3 +518,7 @@ target_sources(bsp_core PRIVATE src/native_lua_variant_string_setter.cpp)
 target_sources(bsp_core PRIVATE src/native_mission_lua_integer.cpp)
 
 target_sources(bsp_core PRIVATE src/native_lua_key_integer.cpp)
+
+target_sources(bsp_core PRIVATE src/native_string_raw_cstring_exact.cpp)
+
+target_sources(bsp_core PRIVATE src/native_string_raw_header_return.cpp)

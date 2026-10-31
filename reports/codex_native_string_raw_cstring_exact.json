@@ -1,0 +1,235 @@
+{
+  "schema": "bsp-native-string-raw-cstring-exact-qualified-source-object-v1",
+  "stage": "frozen_Code_and_ONE_object_Root_and_Game_FULL_emitted_reviews_accepted_Core_and_caller_admission_separate",
+  "execution_base_merge": "9d54264245ea8a971559ec27d26879dc8c8cb4ba",
+  "published_Main_joined": "88eb7ea72a3a07c26821568b705c0cb22a5e5684",
+  "sealed_integer_commit_retained": "ffa78254c57a1a2c7b336209eb43010d941b5e83",
+  "owned_exactly_four_new_files": [
+    "include/bsp/native_string_raw_cstring_exact.hpp",
+    "src/native_string_raw_cstring_exact.cpp",
+    "docs/CODEX_NATIVE_STRING_RAW_CSTRING_EXACT.md",
+    "reports/codex_native_string_raw_cstring_exact.json"
+  ],
+  "Source_checkpoint": {
+    "include/bsp/native_string_raw_cstring_exact.hpp": {
+      "lines": 31,
+      "sha256": "d951b3068702b7e1dcaca9260c70489d36a68d49b6602349b98ad62d8eab7054"
+    },
+    "src/native_string_raw_cstring_exact.cpp": {
+      "lines": 81,
+      "sha256": "9d07b1cf4dda4e5aea2323b2450b66840a252442b5d09c211d4a921ba3692d2e"
+    },
+    "docs/CODEX_NATIVE_STRING_RAW_CSTRING_EXACT.md": {
+      "lines": 19,
+      "sha256": "b449127b7d1ef8261677de8ce4eee41007019f7907f175335319bd4d3b4e6dc0"
+    }
+  },
+  "API": "void* construct_native_string_header_0041e870_exact(void*,const void*,NativeStringRawPoolContext&,const volatile std::uint32_t&)",
+  "design": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\local\\raw_cstring_constructor_exact_design_primary_20261031\\DESIGN.md",
+    "sha256": "79e971323a472793626aac97eea6463cab913ef37bbd63b7cc10b64811a0b3d3",
+    "independent_review_path": "J:\\PROG\\battlestations-pacific-decompile-cc9\\local\\raw_cstring_constructor_exact_design_review_cc9_20261031\\REVIEW.md",
+    "independent_review_sha256": "a177ea0afce5dcdee46818977c7f78ab5348e075a938ec935d7d716b48494835"
+  },
+  "Original": {
+    "address": "0041e870",
+    "instructions": 32,
+    "bytes": 83,
+    "assembly_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0041e870\\assembly.txt",
+    "assembly_sha256": "7948b44e30d7cf603428d70b7e21974716b8c7fe211cc6a6673d76bb498b8565",
+    "ABI": "ECXheader, stackedCString, capturedheaderEAX, RET4; no local EH action"
+  },
+  "analysis_target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "observed_program_from_brief": "/battlestationspacific.exe",
+    "live_function_count_before_listing": 77632,
+    "saved_listing_full_read": "python tools/bsp.py show 0041e870 --asm --lines 60"
+  },
+  "ordered_epochs": [
+    "ordinary Source byvalue input/header identities before effects; emitted input private-slot load16 after zeros is an explicit private-frame timing normalization",
+    "fenced LEN0 then DATA0",
+    "capture actual BYTE -> increment uint32 cursor -> test captured BYTE through NUL",
+    "wrapped cursor-start-1 request",
+    "actual private DWORD1 HOME -> exactDD40 SAMEheader/context/actualfeature reference",
+    "after actual normal resize: CURRENT DATA -> NULL skip suffix",
+    "nonnull CURRENT LEN+1 wrapping -> genuineBF(capturedDATA,capturedINPUT,count,SAMEfeature) even wrapped0",
+    "return capturedheader independently of copy EAX"
+  ],
+  "actual_providers": [
+    "resize_native_string_header_0041dd40_exact",
+    "copy_native_crt_bytes_00bf7680"
+  ],
+  "old_provider_CMake_paths_unchanged": {
+    "include/bsp/native_string_raw_resize_exact.hpp": {
+      "physical_sha256": "a1a3c6be74194e2f5946e13e09bfb26562c3f73d3565b51f96403f0d60b9999c",
+      "base_Git_blob_sha256": "a1a3c6be74194e2f5946e13e09bfb26562c3f73d3565b51f96403f0d60b9999c",
+      "unchanged_modulo_CRLF": true
+    },
+    "src/native_string_raw_resize_exact.cpp": {
+      "physical_sha256": "74bff613a83abda342b5506ff750f46f5c44e191de506480ced504208c81f210",
+      "base_Git_blob_sha256": "74bff613a83abda342b5506ff750f46f5c44e191de506480ced504208c81f210",
+      "unchanged_modulo_CRLF": true
+    },
+    "include/bsp/native_string_pool_storage.hpp": {
+      "physical_sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+      "base_Git_blob_sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+      "unchanged_modulo_CRLF": true
+    },
+    "src/native_string_pool_storage.cpp": {
+      "physical_sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+      "base_Git_blob_sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+      "unchanged_modulo_CRLF": true
+    },
+    "include/bsp/native_crt_memcpy.hpp": {
+      "physical_sha256": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123",
+      "base_Git_blob_sha256": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123",
+      "unchanged_modulo_CRLF": true
+    },
+    "src/native_crt_memcpy.cpp": {
+      "physical_sha256": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3",
+      "base_Git_blob_sha256": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3",
+      "unchanged_modulo_CRLF": true
+    },
+    "include/bsp/native_string.hpp": {
+      "physical_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "base_Git_blob_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "unchanged_modulo_CRLF": true
+    },
+    "src/native_string.cpp": {
+      "physical_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "base_Git_blob_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "unchanged_modulo_CRLF": true
+    },
+    "CMakeLists.txt": {
+      "physical_sha256": "9c26596c314bffe62ba64f9c76b1c499aa3d71e78c1215e0d6962aac69e52c22",
+      "base_Git_blob_sha256": "9c26596c314bffe62ba64f9c76b1c499aa3d71e78c1215e0d6962aac69e52c22",
+      "unchanged_modulo_CRLF": true
+    },
+    "cmake/startup.cmake": {
+      "physical_sha256": "91d1de5e0df99d75ab2133869f154c0560d969f8ed3b60c999a495ba097f416b",
+      "base_Git_blob_sha256": "91d1de5e0df99d75ab2133869f154c0560d969f8ed3b60c999a495ba097f416b",
+      "unchanged_modulo_CRLF": true
+    },
+    "cmake/lua.cmake": {
+      "physical_sha256": "0c432ec1026aa6921d876098d29359d34f9463cd894d7adafcb67b954eb7a006",
+      "base_Git_blob_sha256": "0c432ec1026aa6921d876098d29359d34f9463cd894d7adafcb67b954eb7a006",
+      "unchanged_modulo_CRLF": true
+    }
+  },
+  "immutable_integer_four_files_unchanged": {
+    "include/bsp/native_mission_lua_integer.hpp": {
+      "physical_sha256": "b3f310241cf7efa77a341ba3217f44302eb789d0aac77f29b9af7cec6f69307b",
+      "frozen_Git_blob_sha256": "b3f310241cf7efa77a341ba3217f44302eb789d0aac77f29b9af7cec6f69307b",
+      "unchanged_modulo_CRLF": true
+    },
+    "src/native_mission_lua_integer.cpp": {
+      "physical_sha256": "e276638c8072f04670d9e5d34c87b538cbaad0bd3701e648ee600ac862250eff",
+      "frozen_Git_blob_sha256": "e276638c8072f04670d9e5d34c87b538cbaad0bd3701e648ee600ac862250eff",
+      "unchanged_modulo_CRLF": true
+    },
+    "docs/NATIVE_MISSION_LUA_INTEGER.md": {
+      "physical_sha256": "48bb84c837197a8e20b0222c59c83e962d194ee1ec068ef451bcb00e49a0e49a",
+      "frozen_Git_blob_sha256": "48bb84c837197a8e20b0222c59c83e962d194ee1ec068ef451bcb00e49a0e49a",
+      "unchanged_modulo_CRLF": true
+    },
+    "reports/native_mission_lua_integer.json": {
+      "physical_sha256": "c526f91cfffe0b1d88ad975750243bed351e7a7aa7ef3e1ba143e96abcfe5f1b",
+      "frozen_Git_blob_sha256": "84c32d9d53ca1491241e2a46aa56bc8b07d2d1fd025091d1a614ef0c91026df5",
+      "unchanged_modulo_CRLF": true
+    }
+  },
+  "immutable_integer_output_receipt_and_index_unchanged": true,
+  "actual_Lua_files_preserved": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\build\\win32\\_deps\\lua511-src\\src",
+    "files": {
+      "lua.h": "0a69a11d3e176ceb0e0220c4cdeb1c1f3a0e466a347d813e449ff9246afba3a6",
+      "luaconf.h": "5c962567aaf250570b772a3dccbfde80e6add621ec04f429120dce83adb0a4d9",
+      "lapi.c": "a9f0f87af50f18b4cf0483ded3a6bf41803032bc7ed575bda84359a46c993fe0"
+    }
+  },
+  "raw_access": "fenced memcpy1/4 only for raw byte/field accesses; wrapped uint32 addresses; no typed raw DWORD/header lvalues or semantic projection",
+  "real_payload_copy": "genuine BF7680 even count0; no host strlen/memcpy payload copy/memmove, old facade, stale field/count or feature-content preload",
+  "caller_domain": "established actual raw8/CString/HOME/pool/cells/manager/allocator/code/feature/CPU/FP/DF/extents/alias/lifetimes and all reached lower error/nonlocal/fault domains",
+  "escape_policy": "propagate; no local EH/free/refund/cleanup/retry/rollback or fabricated recoverable-pointer receipt; caller retains partial/unpublished allocation and pool/header/copy debt; later caller cleanup arms only after actual normal constructor return",
+  "private_ABI_limits": "ordinary Source parameters/DWORD preserve HOME/prologue/pure arithmetic and pointer projection, not Original __thiscall/RET4/FH3/SEH/fault/runtime identity",
+  "Code_review": {
+    "Root": "ACCEPT_SOURCE_CODE_QUALIFIED d951b306/9d07b1cf full31HPP/81CPP",
+    "independent_Game": "ACCEPT_SOURCE_CODE_QUALIFIED_SOURCE_ONLY d951b306/9d07b1cf full31HPP/81CPP; CODE_REVIEW SHA7ea0f604e117ce429897b090469657cfa5a43fbe49dee89c3d2b38aefa777370"
+  },
+  "required_later_gates": [
+    "independent final four-file/blob/artifact pin review",
+    "Root Core registration/common checks",
+    "genuine caller retained failure custody and own cleanup armed only after actual normal constructor return",
+    "key-string/builder/VM/startup and Original ABI/FH3/SEH/fault/runtime remain separate"
+  ],
+  "old_Source_CMake_ledger_Ghidra_mutation": false,
+  "owner_Frame_birth_validation_or_cleanup_added": false,
+  "source_ready": false,
+  "runtime_validated": false,
+  "native_abi_equivalent": false,
+  "key_string_builder_VM_startup_or_parent_closure": false,
+  "new_native_body_credit": false,
+  "new_vendor_body_credit": false,
+  "same_object_validation": {
+    "compile_receipt": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_string_raw_cstring_exact_frame_20261031\\compile_receipt.json",
+    "compile_receipt_sha256": "1be28bc906d34d0d56a03d32a58808f183e2fdf11fb4aa024e08ba8c99e0811c",
+    "compile_invocations": 1,
+    "compile_exit": 0,
+    "warnings": 0,
+    "errors": 0,
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\build\\native_string_raw_cstring_exact_object\\native_string_raw_cstring_exact_object.dir\\Release\\native_string_raw_cstring_exact.obj",
+      "archive": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_string_raw_cstring_exact_frame_20261031\\objects\\native_string_raw_cstring_exact.obj",
+      "bytes": 1918,
+      "sha256": "02e876bbaf75c9d5d8d802d84ea98d125d1d00f40ed8b7598bed302cf2283790",
+      "machine": "014C"
+    },
+    "actual_compile_command_sha256": "de2afe4806ca2b95f3417cc698e6abbf2d43e791af57972656a67205e6aee0a9",
+    "inspection_sha256": "2fc7ed3a5c4fcea70101f41288c5c8e50337dac58639d28cc26e12ad6c0daa4b",
+    "full_public_and_five_helpers_checked": true,
+    "undefined_genuine_providers": [
+      "?copy_native_crt_bytes_00bf7680@bsp@@YAPAXPAXPBXIADI@Z",
+      "?resize_native_string_header_0041dd40_exact@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@IPBXADI@Z"
+    ],
+    "undefined_ordinary_compiler_support": [],
+    "epochs": [
+      "06 load captured header into ESI",
+      "09 LEN0 then0F DATA0",
+      "16 load unchanged ordinary input byvalue Source private argument into EDI;19 scan cursor",
+      "20 one actual BYTE ->22 increment32 ->23 test captured AL ->25 loop through zero",
+      "27 actual feature ADDRESS push,2A address of private DWORD preserve HOME;2D store DWORD1;34 push HOME",
+      "35 SUB(cursor,start),37 DEC wrapping request;38 push request;39 SAMEcontext;3C capturedheader",
+      "3D genuine exactDD40,42 ordinary20B argument cleanup",
+      "45 CURRENT DATA;48 test;4A NULL skip to epilogue",
+      "4C CURRENT LEN;4E SAME actualfeature ADDRESS push;51 increment32;52 count;53 capturedinput;54 captureddata",
+      "55 genuine BF call without zero-count gate;5A ordinary16B cleanup",
+      "5E EAX=capturedheader independently of BF result;64 ordinaryRET"
+    ],
+    "normalizations": [
+      "Source header/input are ordinary stable byvalue identities. Compiler loads input's private argument slot at16 after LEN0/DATA0, unlike Original early EDI capture. This qualifies private argument/frame/fault timing and does not admit caller aliases of the active Source private frame; ordinary header/CString backing overlap still follows the exact reached stores and byte reads.",
+      "Pure wrapped request arithmetic SUB35/DEC37 follows private DWORD1 HOME initialization; it uses already captured cursor/start and does not reorder any raw field, scan byte or provider access.",
+      "Pure LEN+1 INC51 follows an actual-reference ADDRESS push4E, without reading feature contents. Current DATA-before-LEN and all provider operands remain exact.",
+      "Ordinary EBP prologue, private DWORD HOME/cdecl20B-and16B argument transport, preserved-register choice/alignment NOP and RET differ from Original ECX/RET4/private flags/fault PCs; no ABI/runtime identity."
+    ],
+    "Root_and_Game_review_gates": {
+      "object_sha256": "02e876bbaf75c9d5d8d802d84ea98d125d1d00f40ed8b7598bed302cf2283790",
+      "Source_header_sha256": "d951b3068702b7e1dcaca9260c70489d36a68d49b6602349b98ad62d8eab7054",
+      "Source_CPP_sha256": "9d07b1cf4dda4e5aea2323b2450b66840a252442b5d09c211d4a921ba3692d2e",
+      "Root": {
+        "accepted": true,
+        "verdict": "ACCEPT_SAME_OBJECT_QUALIFIED; full public/allhelpers/symbols/all2relocs read; private input-load16 and pure request SUB35/DEC37 scheduling explicitly qualified; no repair/recompile"
+      },
+      "Game": {
+        "accepted": true,
+        "verdict": "ACCEPT_EMITTED_OPERATION_ONLY; full public/helpers/direct COFF/two real providers and relocs/no EH; private input load16 and pure SUB35/DEC37 scheduling explicitly qualified",
+        "object_review_path": "J:/PROG/battlestations-pacific-decompile-cc9/local/native_string_raw_cstring_exact_review_cc9_20261031/object_review.json",
+        "object_review_sha256": "de14a706ea2e7508b5710615623e97e0c4690e97142889c5ae7885188111004f"
+      }
+    },
+    "method": "established repository OBJECT Release properties, MSBuild ClCompile-only; no configuration/probe/link/test/entry"
+  },
+  "compile_invocations": 1,
+  "configure_link_test_probe_entry_or_game_run": false,
+  "post_compile_Source_provider_CMake_Lua_and_all24_own_integer_artifacts_unchanged": true
+}
