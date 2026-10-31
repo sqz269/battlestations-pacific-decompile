@@ -1,0 +1,454 @@
+{
+  "schema": "cc16.native_glyph_shadow_direct_caller_independent_review.v1",
+  "verdict": "ACCEPTED_BOUNDED_STATIC_SOURCE_REVIEW_NO_ACTIONABLE_FINDINGS_GATES_HELD",
+  "findings": [],
+  "actionable_finding_count": 0,
+  "reviewed_author": "3c13c4d82c6da51e6646d7ea3ce114c67dcc9df4",
+  "exact_author_parent": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+  "only_four_author_files_verified": true,
+  "packet_pins": [
+    {
+      "revision": "3c13c4d82c6da51e6646d7ea3ce114c67dcc9df4",
+      "path": "docs/CC16_NATIVE_GLYPH_SHADOW_DIRECT_CALLER.md",
+      "format": "exact immutable Git UTF8LF bytes",
+      "bytes": 6983,
+      "sha256": "c2cc2fee25f1adac513cd82d8820a21159bd8e4ca1f1afdd8e84da58b3b3ffde",
+      "git_blob_sha1": "2003ccefe29c90cfb366c9fe560f447f62af5a6e",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_glyph_shadow_direct_caller_independent_review_20261030\\author_packet\\docs\\CC16_NATIVE_GLYPH_SHADOW_DIRECT_CALLER.md"
+    },
+    {
+      "revision": "3c13c4d82c6da51e6646d7ea3ce114c67dcc9df4",
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "format": "exact immutable Git UTF8LF bytes",
+      "bytes": 10679,
+      "sha256": "8e3475ad8bce88973b64ff9c0758ebda380b5baede302c7b926526b0e92fe783",
+      "git_blob_sha1": "a0eb6b9681b8e651df3fed6907298b08f974653e",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_glyph_shadow_direct_caller_independent_review_20261030\\author_packet\\include\\bsp\\native_gui_text_glyph_quad_storage.hpp"
+    },
+    {
+      "revision": "3c13c4d82c6da51e6646d7ea3ce114c67dcc9df4",
+      "path": "reports/cc16_native_glyph_shadow_direct_caller.json",
+      "format": "exact immutable Git UTF8LF bytes",
+      "bytes": 30980,
+      "sha256": "cdbe7e2ba33cb98f978a5b11b931167d59308d757767d1d6c2d7fcbe76f83b99",
+      "git_blob_sha1": "c8fe94168cf889c4ab4ff933ebba64129d88df60",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_glyph_shadow_direct_caller_independent_review_20261030\\author_packet\\reports\\cc16_native_glyph_shadow_direct_caller.json"
+    },
+    {
+      "revision": "3c13c4d82c6da51e6646d7ea3ce114c67dcc9df4",
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "format": "exact immutable Git UTF8LF bytes",
+      "bytes": 29447,
+      "sha256": "52746b908db84c9275dc45aa9eb1c8fa01740fe63f7a716c9ff3e37a7a6f07b5",
+      "git_blob_sha1": "0d96c73d7b60fba9a6742b67a1c4beeff2827591",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_glyph_shadow_direct_caller_independent_review_20261030\\author_packet\\src\\native_gui_text_glyph_quad_storage.cpp"
+    }
+  ],
+  "ownership": {
+    "packet": "codex-native-glyph-shadow-direct-caller-independent-review",
+    "addresses": [],
+    "files": [
+      "docs/CC16_NATIVE_GLYPH_SHADOW_DIRECT_CALLER_INDEPENDENT_REVIEW.md",
+      "reports/cc16_native_glyph_shadow_direct_caller_independent_review.json"
+    ]
+  },
+  "related_authorship_qualification": "reviewer authored271119 design/33d primitive; this is independent review of other-author3c13 caller only; provider independent review/build remains separate",
+  "source_review": {
+    "six_seams": 6,
+    "forward_reverse": [
+      {
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "seams": 4,
+        "whole_forward_reverse_all_intermediates_and_4_author_raw_Git_frozen_copies_equal": true
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "seams": 2,
+        "whole_forward_reverse_all_intermediates_and_4_author_raw_Git_frozen_copies_equal": true
+      }
+    ],
+    "only_shadow_virtual_removed": true,
+    "constructor_3to5refs_old3bindings_no_noexcept_default": true,
+    "append2refs_after_complete_Source42prefix": true,
+    "same_child_and_four_real_homes": true,
+    "exact_homes_order": [
+      "color=bits(a.locals+7)",
+      "offset=existing_shadow_offset_DWORD",
+      "position0",
+      "enabled1"
+    ],
+    "unchanged_existing9E05_boundary": true,
+    "actual_call": "configure_gui_text_shadow_00ab6c30(child, a.shadow_frame_, a.raw93_context_.sections.parenting, a.shadow_acquired_)",
+    "genuine_existing_type_context_route": true,
+    "no_automatic_backing_selection_guard_owner_native_work_or_policy": true,
+    "private_Origin_Cause_friend_writers_unchanged": true
+  },
+  "script_verification": {
+    "raw_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-shadow-caller\\local\\output\\cc16_native_glyph_shadow_direct_caller_20261030\\inverse.py",
+    "materialized_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_glyph_shadow_direct_caller_independent_review_20261030\\embedded_inverse.py",
+    "format": "exact UTF8LF",
+    "bytes": 1117,
+    "sha256": "b83d4426710571eb32cf441bbdb8bbf838b153298c0d85bd3451518979fbdfac",
+    "raw_and_embedded_and_materialized_equal": true,
+    "script_inspected_read_only_git_files_hash_transformation_only": true,
+    "executed_exact_sealed_argument": "3c13c4d82c6da51e6646d7ea3ce114c67dcc9df4",
+    "execution_exit_code": 0,
+    "restored_before_hpp_sha256": "2c1a08c5dab06953176ffeb99893e75b44453278d74a5996b316a8ae3eef9f68",
+    "restored_before_cpp_sha256": "c602171ad6ecb845bd7b7251cf8b6d7f80806dcb865398107f397d9df52c700e",
+    "independent_own_forward_reverse_all_intermediates_also_verified": true,
+    "no_Cpp_behavioral_test_or_probe": true
+  },
+  "direct_contract_file_pins": [
+    {
+      "revision": "271119c50318e0efc6d2e8b526281d3d44b9b7b8",
+      "path": "docs/CC16_NATIVE_GLYPH_SHADOW_CALLER_CONTRACT.md",
+      "bytes": 8384,
+      "sha256": "e904e36d2720d4ece9824cb466f0b99b135bbc544d5393270d47372b7c8f5eae",
+      "git_blob": "1b6004c9d5330f5f0e4601aeb1c33f739c757ee7"
+    },
+    {
+      "revision": "271119c50318e0efc6d2e8b526281d3d44b9b7b8",
+      "path": "reports/cc16_native_glyph_shadow_caller_contract.json",
+      "bytes": 24958,
+      "sha256": "d355d50b32be9ec2059311f399768681a9db335c8ceb5bb7dd0b9e1fa9bbc73b",
+      "git_blob": "074a29b6cedd301dbfb066846ec7183d7432bec0"
+    }
+  ],
+  "nested15_contract_input_pins": [
+    {
+      "revision": "1fc25e4dd34b7eddf466119e63fe0ebcc3cffb34",
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "format": "exact immutable Git UTF-8 LF bytes",
+      "bytes": 10450,
+      "sha256": "2c1a08c5dab06953176ffeb99893e75b44453278d74a5996b316a8ae3eef9f68",
+      "git_blob_sha1": "c0be674b4d15bf2a1aa2363037094fa403181f4e",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_glyph_shadow_caller_contract_20261030\\1fc25e4d\\include\\bsp\\native_gui_text_glyph_quad_storage.hpp"
+    },
+    {
+      "revision": "1fc25e4dd34b7eddf466119e63fe0ebcc3cffb34",
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "format": "exact immutable Git UTF-8 LF bytes",
+      "bytes": 29172,
+      "sha256": "c602171ad6ecb845bd7b7251cf8b6d7f80806dcb865398107f397d9df52c700e",
+      "git_blob_sha1": "fedbb22e83160bdad544747017bfc0ecc7ad688c",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_glyph_shadow_caller_contract_20261030\\1fc25e4d\\src\\native_gui_text_glyph_quad_storage.cpp"
+    },
+    {
+      "revision": "1fc25e4dd34b7eddf466119e63fe0ebcc3cffb34",
+      "path": "docs/CC16_NATIVE_GLYPH_RAW93_DIRECT_CALLER.md",
+      "format": "exact immutable Git UTF-8 LF bytes",
+      "bytes": 3162,
+      "sha256": "b0fa3d541a4f854eeaf598490a8cbe91c4654224f7ff352467db9432c1397d1e",
+      "git_blob_sha1": "c744678b70f01dc572669d7507e1800d506d07c6",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_glyph_shadow_caller_contract_20261030\\1fc25e4d\\docs\\CC16_NATIVE_GLYPH_RAW93_DIRECT_CALLER.md"
+    },
+    {
+      "revision": "1fc25e4dd34b7eddf466119e63fe0ebcc3cffb34",
+      "path": "reports/cc16_native_glyph_raw93_direct_caller.json",
+      "format": "exact immutable Git UTF-8 LF bytes",
+      "bytes": 10719,
+      "sha256": "03ff86034937256f2e182ec7664bc1a01770c2a02cb2dc779c29843d139e20cd",
+      "git_blob_sha1": "90d988c1aa05740f453d39ae2c87e38838de8eae",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_glyph_shadow_caller_contract_20261030\\1fc25e4d\\reports\\cc16_native_glyph_raw93_direct_caller.json"
+    },
+    {
+      "revision": "1fc25e4dd34b7eddf466119e63fe0ebcc3cffb34",
+      "path": "include/bsp/native_gui_text_default_storage.hpp",
+      "format": "exact immutable Git UTF-8 LF bytes",
+      "bytes": 6352,
+      "sha256": "7a23774d66bb90e59712407d58fd3356640da3f77f1c087bf766b77d3748141a",
+      "git_blob_sha1": "2eb5db69eff0b68c093a5006e13eb2d490e821b7",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_glyph_shadow_caller_contract_20261030\\1fc25e4d\\include\\bsp\\native_gui_text_default_storage.hpp"
+    },
+    {
+      "revision": "1fc25e4dd34b7eddf466119e63fe0ebcc3cffb34",
+      "path": "include/bsp/native_gui_text_storage_construct.hpp",
+      "format": "exact immutable Git UTF-8 LF bytes",
+      "bytes": 9641,
+      "sha256": "681a44709442353f716f2ead0377804df61cbc659ec7fc7dcc3a7a05c56ec5b2",
+      "git_blob_sha1": "736c02913b09a1de5f606362747305a2a4a36318",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_glyph_shadow_caller_contract_20261030\\1fc25e4d\\include\\bsp\\native_gui_text_storage_construct.hpp"
+    },
+    {
+      "revision": "1fc25e4dd34b7eddf466119e63fe0ebcc3cffb34",
+      "path": "src/native_gui_text_storage_construct.cpp",
+      "format": "exact immutable Git UTF-8 LF bytes",
+      "bytes": 37007,
+      "sha256": "a4c2c5e06dfa78d0dba7769900cb7a8302f7567c70f77707262246088326db60",
+      "git_blob_sha1": "88fa09e70019fa61d59652c5434666b8db4931b2",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_glyph_shadow_caller_contract_20261030\\1fc25e4d\\src\\native_gui_text_storage_construct.cpp"
+    },
+    {
+      "revision": "33d604f86a39c690a2ef4345952deb232b5e6da0",
+      "path": "include/bsp/gui_text_style.hpp",
+      "format": "exact immutable Git UTF-8 LF bytes",
+      "bytes": 3630,
+      "sha256": "b82596cd3d8b6cec5b3bd345173c6b912a54633a6d73976743c140554cc26b4b",
+      "git_blob_sha1": "989029de04894f890d4a0ce7ff29ad0342d241f0",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_glyph_shadow_caller_contract_20261030\\33d604f8\\include\\bsp\\gui_text_style.hpp"
+    },
+    {
+      "revision": "33d604f86a39c690a2ef4345952deb232b5e6da0",
+      "path": "src/gui_text_style.cpp",
+      "format": "exact immutable Git UTF-8 LF bytes",
+      "bytes": 10276,
+      "sha256": "d5e6b32f78db3df2d918913a8121de462125b1b7c8aa3c8341b09ae141745703",
+      "git_blob_sha1": "fa2fc5075f6d8cde14258b2a7469165458d05288",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_glyph_shadow_caller_contract_20261030\\33d604f8\\src\\gui_text_style.cpp"
+    },
+    {
+      "revision": "33d604f86a39c690a2ef4345952deb232b5e6da0",
+      "path": "docs/CC16_NATIVE_TEXT_SHADOW_RAW_STORAGE.md",
+      "format": "exact immutable Git UTF-8 LF bytes",
+      "bytes": 6754,
+      "sha256": "2d3cc85d4a477468c6e3f0e0a8bc668a4344e00403cfdb762b2a115851e93f6a",
+      "git_blob_sha1": "6829dd51e87e5ebdf78bf3004813df66767f6d48",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_glyph_shadow_caller_contract_20261030\\33d604f8\\docs\\CC16_NATIVE_TEXT_SHADOW_RAW_STORAGE.md"
+    },
+    {
+      "revision": "33d604f86a39c690a2ef4345952deb232b5e6da0",
+      "path": "reports/cc16_native_text_shadow_raw_storage.json",
+      "format": "exact immutable Git UTF-8 LF bytes",
+      "bytes": 28386,
+      "sha256": "1f567e1534a8526c221fc5d5a5a8ffb9cdb61747224a0f0958d0e89e91a75ee8",
+      "git_blob_sha1": "6c7c83419a1291ca71a1a16e75826d68f82c77c9",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_glyph_shadow_caller_contract_20261030\\33d604f8\\reports\\cc16_native_text_shadow_raw_storage.json"
+    },
+    {
+      "revision": "33d604f86a39c690a2ef4345952deb232b5e6da0",
+      "path": "include/bsp/native_node_parenting_storage.hpp",
+      "format": "exact immutable Git UTF-8 LF bytes",
+      "bytes": 5253,
+      "sha256": "099017858da7cd62e7b5260aaac8f53a2451b063469266a1e6119e7ce3cdc3b0",
+      "git_blob_sha1": "9fc250c04a032769217e67a5aea308bdf6babcae",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_glyph_shadow_caller_contract_20261030\\33d604f8\\include\\bsp\\native_node_parenting_storage.hpp"
+    },
+    {
+      "revision": "33d604f86a39c690a2ef4345952deb232b5e6da0",
+      "path": "src/native_node_parenting_storage.cpp",
+      "format": "exact immutable Git UTF-8 LF bytes",
+      "bytes": 10339,
+      "sha256": "035ccf45f17b12b553fcc3e451894b67c928de4ae583c7e511a1a99269c113d1",
+      "git_blob_sha1": "a5a82c3d274d1af7f86efeb59a3939856212bb81",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_glyph_shadow_caller_contract_20261030\\33d604f8\\src\\native_node_parenting_storage.cpp"
+    },
+    {
+      "revision": "33d604f86a39c690a2ef4345952deb232b5e6da0",
+      "path": "include/bsp/native_node_root_propagation.hpp",
+      "format": "exact immutable Git UTF-8 LF bytes",
+      "bytes": 1454,
+      "sha256": "0fed8a0255b3068472bb0a72e2d41352ce1d10ee7ace03520254ae6d9dfde5d4",
+      "git_blob_sha1": "e8c16028e1344d467fa95bba08c27cf0d230c0ed",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_glyph_shadow_caller_contract_20261030\\33d604f8\\include\\bsp\\native_node_root_propagation.hpp"
+    },
+    {
+      "revision": "33d604f86a39c690a2ef4345952deb232b5e6da0",
+      "path": "src/native_node_root_propagation.cpp",
+      "format": "exact immutable Git UTF-8 LF bytes",
+      "bytes": 3130,
+      "sha256": "302f09b2f12d426abd9266fd265532e44bb104827b00d3894744f6a37012d48b",
+      "git_blob_sha1": "88a1dfe8382a55a6049069da336356273ffda02f",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_glyph_shadow_caller_contract_20261030\\33d604f8\\src\\native_node_root_propagation.cpp"
+    }
+  ],
+  "supplier_2pins_equal_bedbb_33d_and_author_untouched": [
+    {
+      "revision": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+      "path": "include/bsp/gui_text_style.hpp",
+      "bytes": 3630,
+      "sha256": "b82596cd3d8b6cec5b3bd345173c6b912a54633a6d73976743c140554cc26b4b",
+      "git_blob": "989029de04894f890d4a0ce7ff29ad0342d241f0"
+    },
+    {
+      "revision": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+      "path": "src/gui_text_style.cpp",
+      "bytes": 10276,
+      "sha256": "d5e6b32f78db3df2d918913a8121de462125b1b7c8aa3c8341b09ae141745703",
+      "git_blob": "fa2fc5075f6d8cde14258b2a7469165458d05288"
+    }
+  ],
+  "independently_located_preserved_regions": [
+    {
+      "name": "entire prepare_shadow including all asm",
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "bytes": 672,
+      "sha256": "2f97f7b6837f8050f146fb05d65bf543e994de7f5d2cc7f1a67621c882e2e08d",
+      "independently_located_before_and_after_offsets": {
+        "before": 11367,
+        "after": 11401
+      }
+    },
+    {
+      "name": "pool GPA/actual constructor/provider/invoke/currenthome7/disarm/append",
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "bytes": 2348,
+      "sha256": "12ed89d193155e3d9ee4caaeead3183d3aa7cbfdab6011c58b5a67066dbd9c38",
+      "independently_located_before_and_after_offsets": {
+        "before": 16851,
+        "after": 16885
+      }
+    },
+    {
+      "name": "literal listener and following store",
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "bytes": 276,
+      "sha256": "0dd228e76eace64cc800f38535ee3a465d32e31c610d659ece8a50f516e892fd",
+      "independently_located_before_and_after_offsets": {
+        "before": 19777,
+        "after": 19811
+      }
+    },
+    {
+      "name": "entire shader/codeunit/content/current50 normal header epoch",
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "bytes": 2731,
+      "sha256": "974c11ff85151c86811798a83d6878584d96f256cdc7583e3357091740538cde",
+      "independently_located_before_and_after_offsets": {
+        "before": 20432,
+        "after": 20707
+      }
+    },
+    {
+      "name": "complete catch/currenthome7 permit/actions/secondary path",
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "bytes": 4893,
+      "sha256": "ca79e53fb9c75a9771c161d5814be214c23dc85e371162f4e7e6dd8387cfd30c",
+      "independently_located_before_and_after_offsets": {
+        "before": 24259,
+        "after": 24534
+      }
+    },
+    {
+      "name": "complete Source42 private Origin/header/raw93 member prefix",
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "bytes": 623,
+      "sha256": "9ad54506372ca6c571b0b00c98d61b7b489576103cc3f22a4126fc305d3e7ba1",
+      "independently_located_before_and_after_offsets": {
+        "before": 8178,
+        "after": 8220
+      }
+    },
+    {
+      "name": "prepare call and existing boundary before new home staging",
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "bytes": 113,
+      "sha256": "cc29c33a7034ee488425f5e5dc7d099a620e56960998169d7a680b758e0120f9",
+      "independently_located_before_and_after_offsets": {
+        "before": 20212,
+        "after": 20246
+      }
+    }
+  ],
+  "asm_and_counter": {
+    "asm_blocks": 22,
+    "x87_forms": 78,
+    "all22_ordered_digests_and_NUL_joined_aggregate_equal": true,
+    "aggregate_sha256": "0d95d0c8aa5c4123c75ee603d24d1bb9ad0a8b0430d13d73c70c19d25c74faed",
+    "three_counter_text_lines_order": [
+      "a.failure_origin_.host(*failure_runtime, {0, __COUNTER__}, &a, [&] {",
+      "&a.raw93_acquired_, {0x00ab9d4fu, __COUNTER__}, a.constructor_call_);",
+      "a.failure_origin_.unknown(*failure_runtime, {0x00cb80b3u, __COUNTER__}, &prepared_text_pool,"
+    ],
+    "actual_expanded_counter_ids_verified_by_this_worker": false,
+    "Root_actual_compiler_preprocessing_gate_held": true
+  },
+  "native": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_bsp_count_before_batch": 77632,
+    "installed_PE_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_PE_bytes": 12223752,
+    "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "regions_independently_equal_installed_PE_hex_hash_and_frozen": [
+      {
+        "label": "actual_shadow_caller_window",
+        "start": "00AB9DCE",
+        "end_inclusive": "00AB9E09",
+        "bytes": 60,
+        "hex": "d905c0c5d5000f57c08d4424305051d91c246a00f30f1144243cf30f11442440f30f11442444f30f10054ca2d700538bcef30f1144244ce826ceffff",
+        "sha256": "71f2c7ca159162c0fe87bb2b8d14c1780d6f954d372dc4dd67e5e57ae9542374",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_glyph_shadow_caller_contract_20261030\\00ab9dce_60B.bin",
+        "format": "raw installed PE range extraction; not executable/trace/probe",
+        "installed_PE_and_contract_frozen_independently_reverified": true
+      },
+      {
+        "label": "captured_enable_EBX_one",
+        "start": "00AB9D9D",
+        "end_inclusive": "00AB9DA1",
+        "bytes": 5,
+        "hex": "bb01000000",
+        "sha256": "acbf03e6cad1037d9cd0893590d07ac8acf36b5657ddcf4a0c42e3390057201d",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_glyph_shadow_caller_contract_20261030\\00ab9d9d_5B.bin",
+        "format": "raw installed PE range extraction; not executable/trace/probe",
+        "installed_PE_and_contract_frozen_independently_reverified": true
+      },
+      {
+        "label": "whole_raw_shadow_helper",
+        "start": "00AB6C30",
+        "end_inclusive": "00AB6CAC",
+        "bytes": 125,
+        "hex": "8b442408f30f1044240c568bf18a4c240884c98986600100008b442414888e5c010000f30f1186640100008b108996680100008b500489966c0100008b50088996700100008b400c89867401000074058b464ceb0233c08b8e8801000050e8ed790b0080be5c01000000750d8b8e880100006a00e8e76b0b005ec21000",
+        "sha256": "2dce5db3015f953c6f7c5caf9cd1ba06a7560d5ee7c0b5b5e59d4d332c63312f",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_glyph_shadow_caller_contract_20261030\\00ab6c30_125B.bin",
+        "format": "raw installed PE range extraction; not executable/trace/probe",
+        "installed_PE_and_contract_frozen_independently_reverified": true
+      }
+    ],
+    "direct9E05_rel32_AB6C30_independently_verified": true,
+    "extract_format": "raw PE range bytes, not executable/trace/probe"
+  },
+  "qualifications": {
+    "ordinary_home_staging": "after unchanged prepare_shadow returns; preserve existing spill value and Source asm; not Native PUSH-before-FSTP physical timing/private-stack/fault proof",
+    "records": "fresh distinct mandatory caller-retained pair and genuine SAME context; preparation/actualcurrenttarget/object lifetime/recursive provider graph remain obligations",
+    "history": "after actual normal return locals can be reused; completed pointer is diagnostic, not old color payload/replay authority",
+    "failure_origin": "direct Source/public progress/constructor negative receipt do not mint Native cause or cleanup permission; HOSTUNKNOWN/nullruntime/secondary qualifications unchanged",
+    "source_ABI": "intentional Calls vtable/acquisition arity change; no aggregate/binary compatibility claim",
+    "provider_baseline": "RootSource43 provider receipts separate; not Source44 compiler/retained/ABI/runtime evidence; no reviewer compiler execution"
+  },
+  "gates": {
+    "bounded_static_Source44_peer_complete": true,
+    "ready_for_Root_compiler_preprocessing_review": true,
+    "Source43_Main_admission_publication_still_Root_integration_prerequisite": true,
+    "Source44_compiler_actual_counter_retained_checked_by_this_worker": false,
+    "genuine_prepared_producer_frame_context_current_target_lifetime_bound": false,
+    "actual_canonical_birth": false,
+    "Native_positive_origin_or_wholeEH": false,
+    "Original_private_stack_fh3_seh_fault_fp_runtime": false,
+    "gameplay_activation_wholefrontend_ready": false
+  },
+  "credit": {
+    "new_Native": 0,
+    "new_Original": 0,
+    "new_helper": 0,
+    "new_vendor": 0,
+    "duplicate": 0,
+    "ABI": 0,
+    "runtime": 0,
+    "activation": 0
+  },
+  "actions": {
+    "new_owned_review_files": 2,
+    "Source_edits_or_ancestry_merge": false,
+    "address_claims": false,
+    "CMake_ledger_sharedmetadata_Ghidra_mutation": false,
+    "worker_Cpp_compiler_tests_probes_game_process_actions": false,
+    "only_static_readers_hashes_PE_transforms": true
+  },
+  "formats": {
+    "packet_source_pins": "exact immutable Git UTF8LF bytes/GitSHA1 blobs, raw and four frozen per-file copies equal; no normalization",
+    "contract_pins": "two contract files plus15 nested inputs separately verified over exact declared Git/frozen bytes",
+    "inverse": "1117 rawUTF8LF bytes; embedded decoded bytes equal; no CR/BOM conversion"
+  },
+  "local_independent_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_glyph_shadow_direct_caller_independent_review_20261030\\independent_checks.json",
+    "format": "UTF8LF static JSON",
+    "bytes": 18141,
+    "sha256": "1565e7df7f89c2194d00f77c5ebe6b1bbdbbd801f072182816c5baa6ce6cb4cd"
+  },
+  "document_pin": {
+    "path": "docs/CC16_NATIVE_GLYPH_SHADOW_DIRECT_CALLER_INDEPENDENT_REVIEW.md",
+    "format": "UTF8LF",
+    "bytes": 6048,
+    "sha256": "dd8a337ef2fa82b617799dc76264644ba92a7425a863442eeee2e56888177b12"
+  }
+}
