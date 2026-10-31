@@ -18,20 +18,20 @@ Word bits(const void* pointer) {
 void* pointer_from_word(Word value) {
     return reinterpret_cast<void*>(static_cast<std::uintptr_t>(value));
 }
-Word read_word(const void* base, Word offset) {
+Word read_word(const void* base, Word byte_offset) {
     Word value;
     __asm {
         mov eax, base
-        mov edx, offset
+        mov edx, byte_offset
         mov eax, dword ptr [eax + edx]
         mov value, eax
     }
     return value;
 }
-void write_word(void* base, Word offset, Word value) {
+void write_word(void* base, Word byte_offset, Word value) {
     __asm {
         mov eax, base
-        mov edx, offset
+        mov edx, byte_offset
         mov ecx, value
         mov dword ptr [eax + edx], ecx
     }
