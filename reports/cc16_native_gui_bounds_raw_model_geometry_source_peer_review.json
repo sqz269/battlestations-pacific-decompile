@@ -1,0 +1,359 @@
+{
+  "kind": "Independent immutable-Git Source peer; raw Model bounds correction only",
+  "verdict": {
+    "actionable_Source_findings": 0,
+    "Source_accepted_with_existing_qualifications": true,
+    "build_Core_ABI_runtime_activation_claimed": false
+  },
+  "author_commit": "561a384e4d28c9f0112c5f4827cc4c35976bbaff",
+  "actual_published_parent": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+  "three_author_full_Git_pins": [
+    {
+      "path": "src/native_gui_widget_bounds.cpp",
+      "bytes": 2270,
+      "sha256": "5d71a176da977be99df0f01d4522494f48fcde0f4c6070e96dbf739dde4839ba",
+      "Git_blob": "8209ffd4e341a7c570fc1edc47240d3ced302045"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_BOUNDS_RAW_MODEL_GEOMETRY.md",
+      "bytes": 2667,
+      "sha256": "11446840336344cc263f242beddc4e60403a5fa2ee989260f46150ec3fa5e7cf",
+      "Git_blob": "2eda241ff33cc552e5a01cb60bcf236237090207"
+    },
+    {
+      "path": "reports/cc16_native_gui_bounds_raw_model_geometry.json",
+      "bytes": 18076,
+      "sha256": "1221dcc5778c0d7e7f6a2a1748078528d540934ecbaed2d5cbf831ae58586979",
+      "Git_blob": "ab971e38b1272a97a5061f6dd5866fb311906daf"
+    }
+  ],
+  "actual_Git_reader": {
+    "source": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-bounds-raw-model-geometry-peer\\local\\output\\cc16_native_gui_bounds_raw_model_geometry_source_peer_20261031\\reader_FROM_ACTUAL_GIT_REPORT.py",
+      "bytes": 4918,
+      "sha256": "3eaabc74945480d6851a4c72e05b8d77c86dbceb7576426098f3ffcde999c917"
+    },
+    "full_result": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-bounds-raw-model-geometry-peer\\local\\output\\cc16_native_gui_bounds_raw_model_geometry_source_peer_20261031\\actual_reader_git_result.json",
+      "bytes": 4535,
+      "sha256": "6e02dedfcc721f50b48d2fad15acfcaa52d5561923a1fae4a150463336d91190"
+    },
+    "result": {
+      "all_passed": true,
+      "checks": 39,
+      "mode": "immutable_Git",
+      "ref": "561a384e4d28c9f0112c5f4827cc4c35976bbaff",
+      "base_Main": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+      "three_path_tree_inverse": true,
+      "reader_sha256": "3eaabc74945480d6851a4c72e05b8d77c86dbceb7576426098f3ffcde999c917",
+      "Source_after": {
+        "path": "src/native_gui_widget_bounds.cpp",
+        "bytes": 2270,
+        "sha256": "5d71a176da977be99df0f01d4522494f48fcde0f4c6070e96dbf739dde4839ba",
+        "Git_blob_sha1": "8209ffd4e341a7c570fc1edc47240d3ced302045"
+      },
+      "no_Cpp_Native_provider_compiler_runtime_execution": true
+    },
+    "working37_is_not_actual39": true
+  },
+  "independent_static_proof": {
+    "Source_findings": 0,
+    "independent_checks": 34,
+    "checks": [
+      {
+        "check": "exact published parent",
+        "pass": true
+      },
+      {
+        "check": "actual immutable full pin src/native_gui_widget_bounds.cpp",
+        "pass": true
+      },
+      {
+        "check": "actual immutable full pin docs/CC16_NATIVE_GUI_BOUNDS_RAW_MODEL_GEOMETRY.md",
+        "pass": true
+      },
+      {
+        "check": "actual immutable full pin reports/cc16_native_gui_bounds_raw_model_geometry.json",
+        "pass": true
+      },
+      {
+        "check": "actual preimage equals ignored full old Source",
+        "pass": true
+      },
+      {
+        "check": "actual CPP equals complete independent73-check candidate",
+        "pass": true
+      },
+      {
+        "check": "two exact original positional seams",
+        "pass": true
+      },
+      {
+        "check": "all original fences exact",
+        "pass": true
+      },
+      {
+        "check": "independent forward B1_used_private_raw_field_leaf",
+        "pass": true
+      },
+      {
+        "check": "state B1_used_private_raw_field_leaf",
+        "pass": true
+      },
+      {
+        "check": "independent forward B2_actual_bound_geometry_site",
+        "pass": true
+      },
+      {
+        "check": "state B2_actual_bound_geometry_site",
+        "pass": true
+      },
+      {
+        "check": "whole independent forward",
+        "pass": true
+      },
+      {
+        "check": "independent reverse B2_actual_bound_geometry_site",
+        "pass": true
+      },
+      {
+        "check": "independent reverse B1_used_private_raw_field_leaf",
+        "pass": true
+      },
+      {
+        "check": "whole independent inverse",
+        "pass": true
+      },
+      {
+        "check": "exact used private Source52 helper",
+        "pass": true
+      },
+      {
+        "check": "one genuine field-load call; false tail family absent",
+        "pass": true
+      },
+      {
+        "check": "actual unchanged provider include/bsp/native_gui_widget_bounds.hpp",
+        "pass": true
+      },
+      {
+        "check": "actual unchanged provider include/bsp/gui_widget_owner.hpp",
+        "pass": true
+      },
+      {
+        "check": "actual unchanged provider src/gui_widget_owner.cpp",
+        "pass": true
+      },
+      {
+        "check": "actual unchanged provider include/bsp/native_gui_widget_load_hooks.hpp",
+        "pass": true
+      },
+      {
+        "check": "actual unchanged provider src/native_gui_widget_load_hooks.cpp",
+        "pass": true
+      },
+      {
+        "check": "actual unchanged provider src/native_gui_widget_color_storage.cpp",
+        "pass": true
+      },
+      {
+        "check": "actual unchanged provider src/native_gui_text_field_storage.cpp",
+        "pass": true
+      },
+      {
+        "check": "actual unchanged provider include/bsp/native_model_storage_lifetime.hpp",
+        "pass": true
+      },
+      {
+        "check": "actual unchanged provider src/native_model_storage_lifetime.cpp",
+        "pass": true
+      },
+      {
+        "check": "actual unchanged provider docs/CC16_NATIVE_GUI_COLOR_RAW_MODEL_GEOMETRY.md",
+        "pass": true
+      },
+      {
+        "check": "current/historical full Source52 current",
+        "pass": true
+      },
+      {
+        "check": "current/historical full Source52 historical",
+        "pass": true
+      },
+      {
+        "check": "whole-tree exact three-path changed set",
+        "pass": true
+      },
+      {
+        "check": "independent complete recursive three-path inverse",
+        "pass": true
+      },
+      {
+        "check": "actual report-extracted39 Git reader, not working37",
+        "pass": true
+      },
+      {
+        "check": "no tracked worker Source mutation before evidence",
+        "pass": true
+      }
+    ],
+    "actual_author_reader_checks": 39,
+    "full_three_path_tree_inverse": true,
+    "prior_ignored73_plus_original39_reused_by_exact_CPP": true,
+    "compiler_Native_Origin_runtime_activation_proof": false
+  },
+  "prior_ignored_review": {
+    "sealed_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-bounds-raw-model-geometry-peer\\local\\output\\cc16_native_gui_bounds_raw_model_geometry_source_peer_20261031\\prior_ignored_peer_sealed_receipt.json",
+      "bytes": 748,
+      "sha256": "e1f38f051700b95363c9a851b47942f45fa606e08e76fab8277da99a504cbfe6"
+    },
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-bounds-raw-model-geometry-peer\\local\\output\\cc16_native_gui_bounds_raw_model_geometry_source_peer_20261031\\prior_peer\\peer_read_only_receipt.json",
+      "bytes": 3847,
+      "sha256": "544fbdaccdca9e7ce43a39b19f9c5ba84c0d12482b440b70507ff88dabf0d77f"
+    },
+    "own_checks": 73,
+    "original_text_reader_checks": 39,
+    "reused_through_exact_complete_CPP_identity": true
+  },
+  "old_math_asm": {
+    "bytes": 980,
+    "sha256": "cc9415b4ea0a4342fb8bf634f6d793690c478ec244bdf086358916b8bb3651ff",
+    "new_math_asm_byte_identical": true
+  },
+  "original_fences": [
+    {
+      "name": "gate_current4C_capture",
+      "bytes": 173,
+      "sha256": "f84779ff3eb5c16289bc8c9a07314d6c033526c5361d5fd2ecb6f8e469254fe0",
+      "utf8": "    auto* const bytes = static_cast<std::byte*>(widget);\n    if (bytes[0x74] == std::byte{0}) return;\n    void* model;\n    std::memcpy(&model, bytes + 0x4c, sizeof(model));\n"
+    },
+    {
+      "name": "element_math_set_bounds_and_function_end",
+      "bytes": 1267,
+      "sha256": "1a7197db25e7c1f0a3a3a5f81b2b30e28a010af674df4d17fe1d0f071bfbf04c",
+      "utf8": "    void* const element = gui_geometry_element_00b732c0(geometry, 0);\n    auto* const output = &scratch;\n    const volatile double* const half = &actual_half_00d7a280;\n    float width_spill, height_spill;\n    __asm {\n        mov esi, widget\n        mov edx, output\n        mov eax, half\n        fld dword ptr [esi + 20h]\n        fld qword ptr [eax]\n        xorps xmm0, xmm0\n        // AA710B is DC C9: ST1 *= ST0, retaining the double half in ST0.\n        fmul st(1), st(0)\n        fxch st(1)\n        movss dword ptr [edx + 8], xmm0\n        fstp dword ptr [edx]\n        fld dword ptr [esi + 24h]\n        // AA711E is D8 C9: ST0 *= ST1, again retaining the half below it.\n        fmul st(0), st(1)\n        fstp dword ptr [edx + 4]\n        fld dword ptr [esi + 20h]\n        fstp width_spill\n        fld dword ptr [esi + 24h]\n        fstp height_spill\n        fld height_spill\n        fld width_spill\n        fcomip st(0), st(1)\n        fstp st(0)\n        jbe select_height\n        movss xmm0, width_spill\n        jmp selected\n    select_height:\n        movss xmm0, height_spill\n    selected:\n        movss height_spill, xmm0\n        fmul height_spill\n        fstp dword ptr [edx + 0ch]\n    }\n    set_gui_element_bounds_00b855b0(element, scratch);\n}\n\n} // namespace bsp\n"
+    }
+  ],
+  "Source52_current_and_historical_helper": {
+    "historical_commit": "4b59309d9e7475f15efa251d6e6ccd027d3e11fb",
+    "current_helper_bytes": 227,
+    "current_helper_sha256": "c3ac727cf9fd589388187ed154669376ad7399cb2da319052cf87c6e80eaa1e2",
+    "historical_helper_same_bytes": true,
+    "current_whole_color": {
+      "path": "src/native_gui_widget_color_storage.cpp",
+      "bytes": 2642,
+      "sha256": "863c5933575bc690a9f07c99f7357078817ce993b44afbc03dd022214a6ecc67"
+    },
+    "historical_whole_color": {
+      "path": "src/native_gui_widget_color_storage.cpp",
+      "bytes": 2642,
+      "sha256": "863c5933575bc690a9f07c99f7357078817ce993b44afbc03dd022214a6ecc67"
+    },
+    "helper_utf8": "void* raw_model_geometry_00b74640(const void* actual_model) noexcept {\n    void* geometry;\n    __asm {\n        mov ecx, actual_model\n        mov eax, dword ptr [ecx + 180h]\n        mov geometry, eax\n    }\n    return geometry;\n}",
+    "helper_pin": {
+      "path": "Source52_helper.txt",
+      "bytes": 227,
+      "sha256": "c3ac727cf9fd589388187ed154669376ad7399cb2da319052cf87c6e80eaa1e2",
+      "Git_blob_sha1": "ba7bdb1ff966e10e888cc592252ec8c81e656dee"
+    }
+  },
+  "unchanged_ten_provider_pins": [
+    {
+      "path": "include/bsp/native_gui_widget_bounds.hpp",
+      "bytes": 1535,
+      "sha256": "d7d8349042c5b76045a4472d790793ab63f1711506cc2996aba65af5f978d9b5",
+      "Git_blob_sha1": "35d4c30bdbe7da31f5510f6cb093bcb799ace244"
+    },
+    {
+      "path": "include/bsp/gui_widget_owner.hpp",
+      "bytes": 17870,
+      "sha256": "55bb0101eaee6369f886c6fb6956fad0cd2dea60fcca01db182fdc4cd7ae7add",
+      "Git_blob_sha1": "ffc873f839f207fec8de12d53b0bbbb0b915befc"
+    },
+    {
+      "path": "src/gui_widget_owner.cpp",
+      "bytes": 42079,
+      "sha256": "405c324270bd194614898b6c7f7934ab526c30d366fb0dd64933e33db81f2762",
+      "Git_blob_sha1": "cc31262d504966fbaba9e546f710f44904a6cff5"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_load_hooks.hpp",
+      "bytes": 1564,
+      "sha256": "7e94569623ca49f509f1a6ad2177cd74831e7e33a4fe9990ec6bee0e275ea022",
+      "Git_blob_sha1": "8bf9aef35e17124dbbc45ec1efb0490f70bbb270"
+    },
+    {
+      "path": "src/native_gui_widget_load_hooks.cpp",
+      "bytes": 1107,
+      "sha256": "34ae7ff13a92059c044217df95c01876e621be975e5cfccafd304da1b89c1551",
+      "Git_blob_sha1": "26086ecbcd28a1e7e97d403475c2164856f08135"
+    },
+    {
+      "path": "src/native_gui_widget_color_storage.cpp",
+      "bytes": 2642,
+      "sha256": "863c5933575bc690a9f07c99f7357078817ce993b44afbc03dd022214a6ecc67",
+      "Git_blob_sha1": "8191ed6403e796a51aa032b40275df0286094ddd"
+    },
+    {
+      "path": "src/native_gui_text_field_storage.cpp",
+      "bytes": 32691,
+      "sha256": "9df181083d55b69b839f77fd805f1382766e656ffac06968065c2aedb1d6a242",
+      "Git_blob_sha1": "9a9871cda99482cfeb7bd57b820581b1e616142b"
+    },
+    {
+      "path": "include/bsp/native_model_storage_lifetime.hpp",
+      "bytes": 14784,
+      "sha256": "475185110180e4c04f1178003f4bb9ce872bdeea89a62695918374c81860b95d",
+      "Git_blob_sha1": "93dcb17f833a3ff1d03e52ed8fdd08ebae625788"
+    },
+    {
+      "path": "src/native_model_storage_lifetime.cpp",
+      "bytes": 28252,
+      "sha256": "847364b137eb066fb46f639b8c785949e0e33f9ca4903099c1e03f4f97925342",
+      "Git_blob_sha1": "1a3cbcae0a95d645b7b357f1f66661c6797a2f83"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_COLOR_RAW_MODEL_GEOMETRY.md",
+      "bytes": 8484,
+      "sha256": "401fa6e12420659976537781b0431005f17821fa21e437fc1e0dbc2e4e3b8d8b",
+      "Git_blob_sha1": "7cc35ea747ec3bcfc69847ddcabb5f82d5d3d190"
+    }
+  ],
+  "manual_acceptance": [
+    "private ModelTailWords current field representation; no typed-tail lifetime invention",
+    "whole original gate/current4C capture and normal B732C0/math/B855B0/noexcept preserved",
+    "real Model/mesh/element current-generation and backing/subobject/custody remain caller proof",
+    "no new OriginalFLAGS/privateStack/Native Origin/NoThrow; no current78/88/80 or normal disposition/activation"
+  ],
+  "ABI_and_lifetime_limits": [
+    "Ordinary MSVCWin32 Source ABI and conditional normal-domain composition only; no OriginalECX/RET4/private-stack-home equivalence",
+    "Native pushes two0homes before B74640/B732C0; this Source-only load change grants no physical-stack alias/EFLAGS/hardwarefault/FH3/SEH/unmaskedFP parity",
+    "Existing public noexcept remains Source syntax, not OriginalNoThrow. No exception/cleanup/rollback/reset/terminal policy added",
+    "Does NOT close raw Icon current78/current88/current80, actual production construction or normal disposition"
+  ],
+  "credit_and_activation_gates": {
+    "new_Original": false,
+    "new_helper": false,
+    "vendor": false,
+    "CG": false,
+    "duplicate": false,
+    "OriginalABI": false,
+    "NativeOrigin": false,
+    "NoThrow": false,
+    "Icon78_88_80_closed": false,
+    "production_activation": false,
+    "runtime": false
+  },
+  "peer_doc": {
+    "path": "docs\\CC16_NATIVE_GUI_BOUNDS_RAW_MODEL_GEOMETRY_SOURCE_PEER_REVIEW.md",
+    "bytes": 2034,
+    "sha256": "b89b55075ae33de97a63c59358c63ffcc3f4272840f71d4dba2e7b5a7fdeb809"
+  },
+  "worker_actions": {
+    "owned_only_two_evidence_files": true,
+    "production_Source_CMake_Ghidra_ledger": false,
+    "compiler_Cpp_provider_tests_probes_Game": false
+  }
+}
