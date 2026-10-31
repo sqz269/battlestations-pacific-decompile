@@ -122,6 +122,12 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
         }
         break;
     case 0x00d5c4b8:
+        if (bindings.gui_icon_raw_scalar_dispatch != nullptr) {
+            // Real captured-profile/PUSH flags transport; never a codeword call.
+            (void)dispatch_prepared_gui_icon_delayed_scalar(owner, flags,
+                *bindings.gui_icon_raw_scalar_dispatch, bindings.gui_icon_delayed_loads);
+            return;
+        }
         if (bindings.gui_icon_delayed_loads != nullptr) {
             bindings.gui_icon_delayed_loads->delete_registered_00ab57c0(owner, flags);
             return;
@@ -725,11 +731,32 @@ __declspec(naked) void __fastcall destroy_manager_body(
 }
 } // namespace
 
+void* dispatch_prepared_gui_icon_delayed_scalar(void* owner,
+    std::uint32_t actual_pushed_flags_value,
+    NativeGuiIconDelayedLoadsRawScalarDispatchContext& context,
+    NativeGuiIconDelayedLoads* actual_service_binding) {
+    context.arm_before_source_dispatch(); // Even missing/mismatched admission DENIES cleanup.
+    if (!actual_service_binding || !context.matches_service(actual_service_binding))
+        throw std::logic_error("prepared raw Icon caller requires its SAME real deletion service");
+    // Logical Source ABI home of actual PUSH1 at manager696, before destroy.
+    // No callback/provider runs between that PUSH transport and this staging;
+    // Original physical private-stack aliases/addresses are not claimed.
+    context.stage_actual_pushed_flags(actual_pushed_flags_value);
+    void* const result = actual_service_binding->delete_registered_raw_storage_00ab57c0(owner, context);
+    context.disarm_after_normal_source_return();
+    return result;
+}
+
 __declspec(noinline) void __fastcall destroy_native_singleton_manager_00bd0400(
     void* owner, const NativeSingletonDeletionBindings& bindings) {
     try {
         destroy_manager_body(owner, bindings);
     } catch (...) {
+        if (bindings.gui_icon_raw_scalar_dispatch &&
+            gui_icon_raw_scalar_denies_manager_cleanup(*bindings.gui_icon_raw_scalar_dispatch)) {
+            note_gui_icon_raw_scalar_unknown_escape(*bindings.gui_icon_raw_scalar_dispatch);
+            throw; // Selected unknown Source escape: retain graph, never run Native cleanup.
+        }
         // Native FuncInfoDFF490: state0 -> -1, CC5450 -> BD0220.
         clear_native_singleton_storage_00bd0220(owner, nullptr);
         throw;

@@ -1,5 +1,6 @@
 #pragma once
 #include "bsp/native_string.hpp"
+#include "bsp/native_gui_icon_delayed_loads_lifetime_storage.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <exception>
@@ -40,7 +41,15 @@ struct NativeGuiIconDelayedLoadsOperation {
     bool guard_entered{}, guard_cleanup_completed{}, registration_returned{};
     bool backing_free_started{}, object_free_started{};
     std::exception_ptr failure;
+    // Source-only route/status, never Native phase/Origin/ownership authority.
+    // No Native homes are embedded: make_unique<Operation>() stays unchanged.
+    enum class SourceRoute { legacy, prepared_raw_scalar };
+    SourceRoute source_route{SourceRoute::legacy};
+    bool raw_call_entered{}, raw_call_returned{};
+    NativeGuiIconDelayedLoadsScalarStorageAcquired raw_scalar_acquired;
 };
+
+class NativeGuiIconDelayedLoadsRawScalarDispatchContext;
 
 // One deferred producer/terminal service for the application's SAME external
 // F8BD98 cell and actual string/01090AA0 manager domain. Constructor admits a
@@ -86,6 +95,15 @@ public:
     // the completed CE3818 physical allocation; this service no longer borrows it.
     void* delete_registered_00ab57c0(void* popped_actual, std::uint32_t flags);
 
+    // Explicit metadata-only admission. Canonical feature presence alone never
+    // selects this route. Prepare before the parent's Native effect scope.
+    std::unique_ptr<NativeGuiIconDelayedLoadsRawScalarDispatchContext>
+        prepare_raw_scalar_dispatch();
+    // Actual caller transport must arm/stage the retained context first. No
+    // flags-value argument or delegation from the old by-value method exists.
+    void* delete_registered_raw_storage_00ab57c0(void* actual_popped_identity,
+        NativeGuiIconDelayedLoadsRawScalarDispatchContext&);
+
     bool requires_process_retention() const noexcept;
     const NativeGuiIconDelayedLoadsOperation* last_operation() const noexcept;
     const std::exception_ptr& failure() const noexcept;
@@ -93,4 +111,49 @@ private:
     struct Impl;
     std::unique_ptr<Impl> impl_;
 };
+// Source-only cold call storage/denial context. It owns no Native allocation,
+// registration, count or permission. Addresses of Native homes never move.
+// Fresh Source metadata may initialize; Frame32/flags stay unwritten until the
+// actual raw/caller stores. No reset/replay or NoThrow promise is supplied.
+class NativeGuiIconDelayedLoadsRawScalarDispatchContext final {
+public:
+    ~NativeGuiIconDelayedLoadsRawScalarDispatchContext();
+    NativeGuiIconDelayedLoadsRawScalarDispatchContext(
+        const NativeGuiIconDelayedLoadsRawScalarDispatchContext&) = delete;
+    NativeGuiIconDelayedLoadsRawScalarDispatchContext& operator=(
+        const NativeGuiIconDelayedLoadsRawScalarDispatchContext&) = delete;
+    NativeGuiIconDelayedLoadsRawScalarDispatchContext(
+        NativeGuiIconDelayedLoadsRawScalarDispatchContext&&) = delete;
+    NativeGuiIconDelayedLoadsRawScalarDispatchContext& operator=(
+        NativeGuiIconDelayedLoadsRawScalarDispatchContext&&) = delete;
+    bool unknown_escape_debt() const;
+private:
+    friend class NativeGuiIconDelayedLoads;
+    friend void* dispatch_prepared_gui_icon_delayed_scalar(void*, std::uint32_t,
+        NativeGuiIconDelayedLoadsRawScalarDispatchContext&, NativeGuiIconDelayedLoads*);
+    friend bool gui_icon_raw_scalar_denies_manager_cleanup(
+        const NativeGuiIconDelayedLoadsRawScalarDispatchContext&);
+    friend void note_gui_icon_raw_scalar_unknown_escape(
+        NativeGuiIconDelayedLoadsRawScalarDispatchContext&);
+    struct Impl;
+    explicit NativeGuiIconDelayedLoadsRawScalarDispatchContext(std::unique_ptr<Impl>);
+    void arm_before_source_dispatch();
+    bool matches_service(const NativeGuiIconDelayedLoads*) const;
+    void stage_actual_pushed_flags(std::uint32_t);
+    void disarm_after_normal_source_return();
+    std::unique_ptr<Impl> impl_;
+};
+
+// Concrete D5C4B8 caller transport, not an observer/provider callback. Value is
+// the actual PUSH flags at this Source caller boundary; its retained logical
+// Source ABI HOME is not an Original physical stack/alias compatibility claim.
+void* dispatch_prepared_gui_icon_delayed_scalar(void* actual_popped_identity,
+    std::uint32_t actual_pushed_flags_value,
+    NativeGuiIconDelayedLoadsRawScalarDispatchContext&, NativeGuiIconDelayedLoads*);
+// These only DENY false cleanup or record retained unknown Source debt. An
+// inactive marker never mints Native permission for any other/legacy scope.
+bool gui_icon_raw_scalar_denies_manager_cleanup(
+    const NativeGuiIconDelayedLoadsRawScalarDispatchContext&);
+void note_gui_icon_raw_scalar_unknown_escape(
+    NativeGuiIconDelayedLoadsRawScalarDispatchContext&);
 } // namespace bsp

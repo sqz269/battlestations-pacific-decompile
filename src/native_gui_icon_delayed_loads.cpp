@@ -28,6 +28,25 @@ void require_array(const NativeGuiIconDelayedLoadsStorage& storage) {
 }
 } // namespace
 
+// C++ metadata storage only. User-provided constructor deliberately omits the
+// trivial Native homes: new T() must not value-zero their preimages.
+struct NativeGuiIconDelayedRawScalarCallStorage {
+    NativeGuiIconDelayedLoadsDestroyStorageFrame native_frame;
+    std::uint32_t flags_home;
+    std::unique_ptr<Operation> prepared_operation;
+    NativeGuiIconDelayedRawScalarCallStorage()
+        : prepared_operation(std::make_unique<Operation>()) {}
+};
+
+struct NativeGuiIconDelayedLoadsRawScalarDispatchContext::Impl {
+    NativeGuiIconDelayedLoads* const expected_service;
+    std::unique_ptr<NativeGuiIconDelayedRawScalarCallStorage> pending;
+    bool armed{}, unknown_debt{}; // Source DENIAL only, never Native permission.
+    explicit Impl(NativeGuiIconDelayedLoads& service)
+        : expected_service(&service),
+          pending(std::make_unique<NativeGuiIconDelayedRawScalarCallStorage>()) {}
+};
+
 struct NativeGuiIconDelayedLoads::Impl {
     NativeStringRawPoolContext& strings;
     NativeGuiIconDelayedLoadsStorage* volatile& publication;
@@ -40,6 +59,8 @@ struct NativeGuiIconDelayedLoads::Impl {
     // Preparation-only immutable borrow, appended after the complete old prefix.
     // Null means the explicit legacy route; it never supplies a fallback value.
     const volatile std::uint32_t* const actual_feature_word;
+    // Own only adopted C++ call storage, never the Native receiver/backing.
+    std::unique_ptr<NativeGuiIconDelayedRawScalarCallStorage> retained_raw_scalar_call;
 
     Impl(NativeStringRawPoolContext& strings_in,
         NativeGuiIconDelayedLoadsStorage* volatile& publication_in)
@@ -199,6 +220,94 @@ struct NativeGuiIconDelayedLoads::Impl {
         return raw;
     }
 };
+
+NativeGuiIconDelayedLoadsRawScalarDispatchContext::NativeGuiIconDelayedLoadsRawScalarDispatchContext(
+    std::unique_ptr<Impl> prepared) : impl_(std::move(prepared)) {}
+NativeGuiIconDelayedLoadsRawScalarDispatchContext::~NativeGuiIconDelayedLoadsRawScalarDispatchContext() = default;
+bool NativeGuiIconDelayedLoadsRawScalarDispatchContext::unknown_escape_debt() const {
+    return impl_->unknown_debt;
+}
+void NativeGuiIconDelayedLoadsRawScalarDispatchContext::arm_before_source_dispatch() {
+    const bool prior_debt = impl_->armed || impl_->unknown_debt;
+    impl_->armed = true; // BEFORE even a late admission error can escape.
+    require(!prior_debt, "prepared raw Icon dispatch cannot reenter or replay Source debt");
+}
+bool NativeGuiIconDelayedLoadsRawScalarDispatchContext::matches_service(
+    const NativeGuiIconDelayedLoads* service) const {
+    return impl_->expected_service == service;
+}
+void NativeGuiIconDelayedLoadsRawScalarDispatchContext::stage_actual_pushed_flags(
+    std::uint32_t flags) {
+    require(impl_->pending != nullptr, "prepared raw Icon dispatch was already consumed");
+    // Actual caller PUSH transport, before destroy. Never an early flags read.
+    impl_->pending->flags_home = flags;
+}
+void NativeGuiIconDelayedLoadsRawScalarDispatchContext::disarm_after_normal_source_return() {
+    impl_->armed = false; // No throwing action or subsequent target precedes it.
+}
+bool gui_icon_raw_scalar_denies_manager_cleanup(
+    const NativeGuiIconDelayedLoadsRawScalarDispatchContext& context) {
+    return context.impl_->armed;
+}
+void note_gui_icon_raw_scalar_unknown_escape(
+    NativeGuiIconDelayedLoadsRawScalarDispatchContext& context) {
+    context.impl_->unknown_debt = true; // Never classify the exception as Native.
+}
+
+std::unique_ptr<NativeGuiIconDelayedLoadsRawScalarDispatchContext>
+NativeGuiIconDelayedLoads::prepare_raw_scalar_dispatch() {
+    require(!impl_->active && !impl_->failed,
+        "raw Icon dispatch preparation requires an idle nonfailed service");
+    require(impl_->actual_feature_word != nullptr,
+        "raw Icon dispatch preparation requires the genuine canonical feature borrow");
+    // Only metadata/address admission. No home, owner, publication or feature
+    // value is read. Complete all allocation before any caller Native effects.
+    auto prepared = std::make_unique<NativeGuiIconDelayedLoadsRawScalarDispatchContext::Impl>(*this);
+    return std::unique_ptr<NativeGuiIconDelayedLoadsRawScalarDispatchContext>(
+        new NativeGuiIconDelayedLoadsRawScalarDispatchContext(std::move(prepared)));
+}
+void* NativeGuiIconDelayedLoads::delete_registered_raw_storage_00ab57c0(
+    void* raw, NativeGuiIconDelayedLoadsRawScalarDispatchContext& context) {
+    require(context.impl_->armed && context.impl_->expected_service == this,
+        "raw Icon scalar requires its actual armed caller context");
+    require(!impl_->active && !impl_->failed,
+        "raw Icon scalar cannot reenter or replay a failed service");
+    require(impl_->actual_feature_word != nullptr && context.impl_->pending &&
+        context.impl_->pending->prepared_operation,
+        "raw Icon scalar requires its cold canonical prepared operation");
+    require(raw && raw == impl_->registered_identity,
+        "raw Icon scalar requires its actual registered Source construction history");
+    // No require_array/profile/count/capacity or flags-value input filter.
+    // Adopt before raw entry; unique_ptr moves keep home/acquisition addresses.
+    auto adopted = std::move(context.impl_->pending);
+    impl_->operation = std::move(adopted->prepared_operation);
+    impl_->retained_raw_scalar_call = std::move(adopted);
+    auto& operation = *impl_->operation;
+    auto& call = *impl_->retained_raw_scalar_call;
+    operation.kind = Operation::Kind::scalar_delete;
+    operation.native_site = 0x00ab57c0;
+    operation.actual = impl_->registered_identity; // Genuine typed history, no cast.
+    operation.source_route = Operation::SourceRoute::prepared_raw_scalar;
+    impl_->active = true;
+    try {
+        operation.raw_call_entered = true; // Source entry status, NOT Origin.
+        void* const result = scalar_delete_native_gui_icon_delayed_loads_storage_00ab57c0(
+            raw, call.flags_home, call.native_frame, operation.raw_scalar_acquired,
+            impl_->strings, impl_->publication, *impl_->actual_feature_word);
+        operation.raw_call_returned = true;
+        // As with legacy flags0 completion, physical custody stays explicit.
+        impl_->registered_identity = nullptr;
+        operation.phase = Phase::complete;
+        impl_->active = false;
+        return result; // Captured address only; no receiver/pointee access.
+    } catch (...) {
+        operation.failure = impl_->failure = std::current_exception();
+        operation.phase = Phase::failed;
+        impl_->failed = true;
+        impl_->active = false;
+        throw; // No Native unwind/cleanup/compensation; retain adopted storage.
+    }
+}
 
 NativeGuiIconDelayedLoads::NativeGuiIconDelayedLoads(NativeStringRawPoolContext& strings,
     NativeGuiIconDelayedLoadsStorage* volatile& publication)
