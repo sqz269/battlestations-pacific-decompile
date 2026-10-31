@@ -3,6 +3,8 @@
 #include "bsp/platform_renderer_activation.hpp"
 #include "bsp/system_lighting_owners.hpp"
 #include <stdexcept>
+#include <cstring>
+#include <intrin.h>
 
 namespace bsp {
 namespace {
@@ -10,10 +12,12 @@ using Word = std::uint32_t;
 Word bits(const volatile void* p) noexcept { return reinterpret_cast<Word>(p); }
 void* ptr(Word p) noexcept { return reinterpret_cast<void*>(p); }
 Word read(Word p, Word offset = 0) noexcept {
-    return *reinterpret_cast<const volatile Word*>(p + offset);
+    Word value;
+    _ReadWriteBarrier(); std::memcpy(&value, ptr(p + offset), 4); _ReadWriteBarrier();
+    return value;
 }
 void write(Word p, Word offset, Word value) noexcept {
-    *reinterpret_cast<volatile Word*>(p + offset) = value;
+    _ReadWriteBarrier(); std::memcpy(ptr(p + offset), &value, 4); _ReadWriteBarrier();
 }
 Word target(Word node, Word offset, NativeNodeTreeRetirementContext& context) {
     const Word profile = read(node);

@@ -2,6 +2,8 @@
 #include "bsp/native_vfs_date_route.hpp"
 
 #include <stdexcept>
+#include <cstring>
+#include <intrin.h>
 #include <exception>
 
 namespace bsp {
@@ -16,6 +18,18 @@ void* at(void* p, Word offset) noexcept {
 }
 volatile Word& word(void* p, Word offset) noexcept {
     return *static_cast<volatile Word*>(at(p, offset));
+}
+// Raw B72220 only: byte representations of the actual root/node cells.
+// Leave the unrelated typed renderer helpers and algorithms unchanged.
+Word raw_root_word(const void* p, Word offset) noexcept {
+    Word value;
+    _ReadWriteBarrier();
+    std::memcpy(&value, reinterpret_cast<const void*>(reinterpret_cast<Word>(p) + offset), 4);
+    _ReadWriteBarrier();
+    return value;
+}
+void raw_root_put(void* p, Word offset, Word value) noexcept {
+    _ReadWriteBarrier(); std::memcpy(at(p, offset), &value, 4); _ReadWriteBarrier();
 }
 void* pointer(void* p, Word offset) noexcept {
     return reinterpret_cast<void*>(word(p, offset));
@@ -121,11 +135,11 @@ void refresh_native_renderer_activation_00b24fb0(void* renderer,
 }
 
 void unlink_native_raw_root_node_00b72220(void* root, void* node) noexcept {
-    void* const next = pointer(node, 0x3c);
-    if (next) word(next, 0x40) = word(node, 0x40);
-    void* const previous = pointer(node, 0x40);
-    if (previous) word(previous, 0x3c) = word(node, 0x3c);
-    else word(root, 0x0c) = word(node, 0x3c);
+    void* const next = reinterpret_cast<void*>(raw_root_word(node, 0x3c));
+    if (next) raw_root_put(next, 0x40, raw_root_word(node, 0x40));
+    void* const previous = reinterpret_cast<void*>(raw_root_word(node, 0x40));
+    if (previous) raw_root_put(previous, 0x3c, raw_root_word(node, 0x3c));
+    else raw_root_put(root, 0x0c, raw_root_word(node, 0x3c));
 }
 
 void clear_native_raw_node_root_00b6d890_null(void* node) noexcept {

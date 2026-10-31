@@ -6,6 +6,8 @@
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/platform_renderer_activation.hpp"
 #include <exception>
+#include <cstring>
+#include <intrin.h>
 #include <stdexcept>
 
 namespace bsp {
@@ -14,10 +16,12 @@ using Word = std::uint32_t;
 Word bits(const volatile void* p) noexcept { return reinterpret_cast<Word>(p); }
 void* ptr(Word p) noexcept { return reinterpret_cast<void*>(p); }
 Word read(Word p, Word offset = 0) noexcept {
-    return *reinterpret_cast<const volatile Word*>(p + offset);
+    Word value;
+    _ReadWriteBarrier(); std::memcpy(&value, ptr(p + offset), 4); _ReadWriteBarrier();
+    return value;
 }
 void write(Word p, Word offset, Word value) noexcept {
-    *reinterpret_cast<volatile Word*>(p + offset) = value;
+    _ReadWriteBarrier(); std::memcpy(ptr(p + offset), &value, 4); _ReadWriteBarrier();
 }
 void require_same_domain(const NativeNodeBaseDestructionContext& context) {
     if (&context.trees.owners != static_cast<NativeRenderActualOwners*>(&context.scenes.owners) ||

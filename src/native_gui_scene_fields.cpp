@@ -1,5 +1,7 @@
 #include "bsp/native_gui_scene_fields.hpp"
 #include <stdexcept>
+#include <cstring>
+#include <intrin.h>
 
 namespace bsp {
 namespace {
@@ -8,11 +10,14 @@ void* at(void* p, Word offset) noexcept {
     return reinterpret_cast<void*>(reinterpret_cast<Word>(p) + offset);
 }
 void* pointer(const void* p, Word offset) noexcept {
-    return *reinterpret_cast<void* const volatile*>(
-        reinterpret_cast<Word>(p) + offset);
+    void* value;
+    _ReadWriteBarrier();
+    std::memcpy(&value, reinterpret_cast<const void*>(reinterpret_cast<Word>(p) + offset), 4);
+    _ReadWriteBarrier();
+    return value;
 }
 void put(void* p, Word offset, void* value) noexcept {
-    *reinterpret_cast<void* volatile*>(at(p, offset)) = value;
+    _ReadWriteBarrier(); std::memcpy(at(p, offset), &value, 4); _ReadWriteBarrier();
 }
 }
 

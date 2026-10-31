@@ -11,6 +11,7 @@
 #include "bsp/scene_attachment.hpp"
 #include <cstddef>
 #include <cstring>
+#include <intrin.h>
 #include <exception>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -114,7 +115,11 @@ void* __fastcall native_node_point_light_array_00b6dc50(void* node) noexcept {
     return offset(node, 0x164);
 }
 SceneResource* __fastcall native_scene_lighting_owner_00b72110(const void* scene) noexcept {
-    return read<SceneResource*>(scene, 0x1c);
+    Word captured;
+    _ReadWriteBarrier();
+    std::memcpy(&captured, static_cast<const std::byte*>(scene) + 0x1c, 4);
+    _ReadWriteBarrier();
+    return reinterpret_cast<SceneResource*>(captured); // opaque actual identity only
 }
 void __fastcall set_native_section_instance_count_00b85590(void* section, void*, Word count) noexcept {
     *reinterpret_cast<volatile Word*>(offset(section, 0x1c)) = count;
