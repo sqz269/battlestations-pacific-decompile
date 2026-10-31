@@ -1,0 +1,27 @@
+{
+  "status": "source_only_pending_root_and_independent_actual_source_review",
+  "baseline_commit": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+  "design_commit": "ac423cbf0ea00095e9531760ffe547ee88f0d740",
+  "design_sha256": "b458999aa1d4865758ad35ce1c0055a7cde3d0e2f97491231966542811124036",
+  "address": "00B91250",
+  "api": "std::uint8_t native_matrix_indexed_model_is_type_00b91250(std::uint32_t, const volatile std::uint32_t*)",
+  "original_body": {
+    "bytes": 40,
+    "instructions": 12,
+    "result": "AL 0/1 only",
+    "stack_cleanup": "RET 4"
+  },
+  "semantics": "Opaque uint32 token; actual CURRENT canonical C8/CC/D0/D4 cells; ordered volatile loads and early exit; zero/repeated values valid.",
+  "caller_obligations": "Genuine canonical cells, valid live storage/read access, serialized mutation/access; volatile is not synchronization.",
+  "private_callback": "Exact binding.context conversion and require_matrix_slot(owner,0x0c,0x00b91250) retained before shared helper !=0.",
+  "abi": "Qualified private C++ Source projection; no Original physical ABI, upper-EAX, hardware-fault/SEH, or binary replacement compatibility claim.",
+  "new_guards_initialization_snapshots_or_token_restrictions": false,
+  "owner_lifetime_layout_scene_or_renderer_changes": false,
+  "cmake_dependencies_or_test_changes": false,
+  "new_native_body_credit": 0,
+  "vendor_body_credit": 0,
+  "derived_family_or_runtime_readiness_granted": false,
+  "compiler_build_link_test_probe_entry_run": false,
+  "ghidra_metadata_or_ledger_changed": false,
+  "source_commit_created": false
+}

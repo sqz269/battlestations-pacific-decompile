@@ -308,9 +308,8 @@ bool matrix_is_type(SceneAttachmentRuntime&, SceneNodeAttachment& binding,
     auto& owner = *static_cast<NativeMatrixIndexedModelOwner*>(binding.context);
     require_matrix_slot(owner, 0x0c, 0x00b91250);
     // B91250 compares exactly four live cells; no guessed base fallback.
-    for (unsigned i = 0; i != 4; ++i)
-        if (owner.environment.type_ids_010903c8[i] == token) return true;
-    return false;
+    return native_matrix_indexed_model_is_type_00b91250(
+        token, owner.environment.type_ids_010903c8) != 0;
 }
 void matrix_attach_scene(SceneAttachmentRuntime& runtime, SceneNodeAttachment& binding,
     SceneResource* scene, bool recurse) {
@@ -374,6 +373,13 @@ void initialize_native_matrix_indexed_model_type_00cd8570(TypeIdCounterLifetime&
 }
 const volatile std::uint32_t* native_matrix_indexed_model_type_ids_010903c8() noexcept {
     return matrix_type_010903c8.ids;
+}
+
+std::uint8_t native_matrix_indexed_model_is_type_00b91250(
+    std::uint32_t token, const volatile std::uint32_t* actual_type_ids_010903c8) {
+    for (unsigned i = 0; i != 4; ++i)
+        if (actual_type_ids_010903c8[i] == token) return std::uint8_t{1};
+    return std::uint8_t{0};
 }
 
 NativeMatrixIndexedModelOwner::NativeMatrixIndexedModelOwner(void* slot, std::size_t bytes,

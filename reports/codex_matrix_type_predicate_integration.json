@@ -1,0 +1,172 @@
+{
+  "status": "integrated_Source_peer_strict_and_Core_reviewed_standard_Win32_pass_derived_caller_unbound",
+  "base_Main": "8a468fd4451ac86fbccc4f2dc42ab0bd29d652f0",
+  "address": "00b91250",
+  "Source_change": "Expose existing four-current-cell predicate as public uint8 function; prior logical callback retains its guard and delegates",
+  "primary_review": {
+    "verdict": "ACCEPT_ACTUAL_SOURCE_QUALIFIED",
+    "full_diff_lines_read": 108,
+    "three_production_hunks_only": true,
+    "whole_files": {
+      "include/bsp/native_matrix_indexed_model_owner.hpp": "d5b235ad01df3b8e95da2dad44e055a979796dcb2948458c704bb1bb31e54fe7",
+      "src/native_matrix_indexed_model_owner.cpp": "0935fcab9d6b772dae2afbd9e1ffedf41b92fad5d88270c1aff70f95fb757d41",
+      "docs/OCT31_MATRIX_INDEXED_MODEL_TYPE_PREDICATE_EXPOSURE.md": "f1bbcef62ab45c13d13084a256612911886622ce35c77cfd64f922c28a6ce48d",
+      "reports/oct31_matrix_indexed_model_type_predicate_exposure.json": "b9f3863236c0f2ff8f8ed5a7b3795735f49afc96c9fb3d2de00e3a8065b36f60"
+    },
+    "semantic_scope": "four ordered CURRENT volatile cells, early uint8 0/1, exact prior callback guard before delegation",
+    "limits": [
+      "ordinary Source ABI only",
+      "genuine live cells/serialization required",
+      "no upper EAX/Original physical ABI/fault/SEH/runtime proof",
+      "no derived-gate or lifetime readiness",
+      "zero new body credit"
+    ],
+    "compiler_authorized": false
+  },
+  "readiness_seals": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc9\\local\\mission_upload_actual_scene_readiness_cc9_20261031\\READINESS.md",
+      "sha256": "f204180e2b29bcb72a5bef5a8e7dc751726ba0fdbd8f570c102a0d5ace988aa1",
+      "snapshot": "mission_READINESS.md"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc9\\local\\mission_upload_actual_scene_readiness_cc9_20261031\\pins.json",
+      "sha256": "d6d504673774f729dcb3146278521aa9b4a6b2f98c926c3342974bbe1ecef1b6",
+      "snapshot": "mission_pins.json"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\mission_model_actual_scene_lifetime_readiness_frame_20261031\\REPORT.md",
+      "sha256": "b594b67409281a3bd5985588765c6fb3e7f731f440da848ec1d98179325328c9",
+      "snapshot": "frame_REPORT.md"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\mission_model_actual_scene_lifetime_readiness_frame_20261031\\pins.json",
+      "sha256": "6720275a7538a3e94b671ffba8b1ccb34a91b32f33c9b7fb99c00e1f971c9eba",
+      "snapshot": "frame_pins.json"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-constructor\\local\\matrix_type_predicate_design_review_gui_20261031\\REVIEW.md",
+      "sha256": "92beff1c0d57beaf0c67fd8aac556b8097f44d70480effa8670e43b131421ac5",
+      "snapshot": "design_review_REVIEW.md"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-legacy-integration-audit\\local\\legacy_branch_integration_audit_20261031\\REPORT.md",
+      "sha256": "5881ccfe6c0377abed8ebc1699fe3ca4e98d32c00b9be712ba04853d29631eae",
+      "snapshot": "legacy_branch_REPORT.md",
+      "fully_read": true
+    }
+  ],
+  "mission_attachment_ready": false,
+  "Original_ABI_compatible": false,
+  "game_validated": false,
+  "new_native_body_credit": 0,
+  "new_vendor_body_credit": 0,
+  "new_tests": 0,
+  "goal_status": "active",
+  "independent_Source_review": {
+    "worker": "gui_integration_review",
+    "full_header_lines": 134,
+    "full_source_lines": 543,
+    "full_diff_lines": 108,
+    "verdict": "ACCEPT_ACTUAL_SOURCE_CODE_QUALIFIED",
+    "four_file_hashes_equal_primary": true,
+    "seal_sha256": "f4377e2a91127c78825d1d4764955089bea3827d02c5b41f5d8c606cefce3fa8",
+    "pins_sha256": "fca33f5d0dd8f660c11e4a960b47b7bc03270413d0ae9f1a76d773d76ec940e5"
+  },
+  "scope": {
+    "cmake_changed": false,
+    "new_translation_units": 0,
+    "new_dependencies": 0,
+    "renderer_gates_changed": false,
+    "new_tests": 0
+  },
+  "strict_object": {
+    "verdict": "ACCEPT_SAME_STRICT_OBJECT_QUALIFIED",
+    "object_bytes": 66585,
+    "hashes": {
+      "native_matrix_indexed_model_owner.obj": "72f0d115061ab87ccd3ba568e5c4b2c1fea3a81af4f3a7253aebc09c7564cc43",
+      "object_dump.txt": "e63deab32a2b2ebec7559ba768b198936a62a57267c97d064e776a55216224e1",
+      "invocation.json": "d5e2c7d9e9d008d9544137906a33bdeae7b01683e6cfdbb1c49afc8f5a0391c1",
+      "result.json": "d0644df9ba798a32b7651bd37fa026afd761ad28782d64813cab539a875d301d",
+      "compile.log": "67073445232d0210fc497a3668843fbb7f1bdfcbd3a3ca7f2ca1a7cbcb96f4d2"
+    },
+    "public_leaf": "33 bytes; ordered compare at10 indexed0..3, early AL1 at1e/AL0at1b, no calls/speculative loads",
+    "private_callback": "Whole0..70 read: context+18 then actualD63590/profile+0c=B91250 guard before current descriptor pointer/ordered loop; compiler inlines shared loop, retains real logic_error throw arm and relocs",
+    "additional_full_dependencies_read": [
+      "matrix_current_table",
+      "require_matrix_slot"
+    ],
+    "Original_physical_ABI_fault_runtime_proof": false,
+    "new_native_body_credit": 0,
+    "independent_verdict": "ACCEPT_QUALIFIED_SOURCE_AND_EMITTED_OPERATION_ONLY"
+  },
+  "legacy_S11_followup": {
+    "verdict": "HELD_as_is",
+    "report_sha256": "33355ef9da9f11fa4db2ffed0be2427d60a6ee147882eea375c7c7113594eb40",
+    "findings": "OFF callback/log/result observables change; party false placeholder discards raw-byte availability. Genuine MissionHost/Frame/ShipAI participant owner exists. Query-only forwarding may preserve unavailable; bool consumer adaptation remains held.",
+    "Source_changes_authorized": false
+  },
+  "author_commit": "7fc5518c549e1adc65b3e16a0616862325e6c73d",
+  "tested_Core_commit": "b34fba6346fee58d9eeb0bcac235f5e40bcfe5d2",
+  "build": {
+    "source_commit": "b34fba6346fee58d9eeb0bcac235f5e40bcfe5d2",
+    "exit": 0,
+    "wall_seconds": 111.31,
+    "ctest_summary": [
+      "100% tests passed, 0 tests failed out of 2",
+      "Total Test time (real) =  19.27 sec"
+    ],
+    "artifacts": {
+      "canonical_bsp_game.map": "bc3aea4e5d590a606fd1304146bbb9ef469d11c9ac3306a8e7019b57b59e78d9",
+      "canonical_bsp_game.vcxproj": "008933b1bf4943fef6b85d41e703add896bfdde82b7fd1c03439e8a64ab201d9",
+      "canonical_CMakeCache.txt": "173b00591bec5e1664cf6e405b6161ecc7206c7f1bc173f42f04ca235ef83a44",
+      "canonical_native_matrix_indexed_model_owner.obj": "85271630079240d8fc1af64e91a5e62e18ece8095aa878256c60f42d31961e8b"
+    },
+    "new_tests": 0,
+    "new_entry_invocation": false
+  },
+  "actual_Core": {
+    "core_sha256": "85271630079240d8fc1af64e91a5e62e18ece8095aa878256c60f42d31961e8b",
+    "bytes": 59573,
+    "forced_entries": [],
+    "entry_invoked": false,
+    "dump_sha256": "deb5537a8a728bf09ca89d746f3e4b7f5482135523689a15f902aa6363fed3df"
+  },
+  "actual_Core_full_relevant_paths_review": "public35B/private112B/table78B/guard125B and all scoped relocations read; guard before inlined four-cell loop; no finding",
+  "preservation": {
+    "unchanged_files": {
+      "CMakeLists.txt": "d91dfc37714f324e81c34ac3c62dd0c52517336beeca1a3d22a9a9fa020bd55b",
+      "cmake/startup.cmake": "91d1de5e0df99d75ab2133869f154c0560d969f8ed3b60c999a495ba097f416b",
+      "src/game_native_gui_render_application.cpp": "2132e6bf7222381755f375f333d01a68187acff8daddc2d92e5a0788632aec31",
+      "src/game_native_mission_command.inc": "1cb19983764f08882635473e692d3b02d478517ec7d6abc3782bc037a3f82b76"
+    },
+    "reviewed_four_files": {
+      "include/bsp/native_matrix_indexed_model_owner.hpp": "d5b235ad01df3b8e95da2dad44e055a979796dcb2948458c704bb1bb31e54fe7",
+      "src/native_matrix_indexed_model_owner.cpp": "0935fcab9d6b772dae2afbd9e1ffedf41b92fad5d88270c1aff70f95fb757d41",
+      "docs/OCT31_MATRIX_INDEXED_MODEL_TYPE_PREDICATE_EXPOSURE.md": "f1bbcef62ab45c13d13084a256612911886622ce35c77cfd64f922c28a6ce48d",
+      "reports/oct31_matrix_indexed_model_type_predicate_exposure.json": "b9f3863236c0f2ff8f8ed5a7b3795735f49afc96c9fb3d2de00e3a8065b36f60"
+    },
+    "all_passed": true
+  },
+  "metadata_preservation": {
+    "old_name_and_evidence_prefix_retained": true,
+    "all_old_reconstruction_rows_retained": true,
+    "assembly_unchanged": true,
+    "after_exports": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b91250\\assembly.txt",
+        "sha256": "47300619f142673e7293b3c5f4db1aa1025f53d5cc29e48f908a6c8a83bac820"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b91250\\decompiled.c",
+        "sha256": "84c804287eb3847f7ccdb12cd551de5fdf53b880dd1008eb252139b9622fce41"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b91250\\metadata.json",
+        "sha256": "00989f5c1c2d711b6051e5167668ca8bcc4344401552a1ba15d47212df359837"
+      }
+    ],
+    "locked_annotation_journal": "local/ghidra-annotations-20261031T054344Z.json"
+  },
+  "independent_object_review_sha256": "93992b3db5c7b1d35b3cc2bf72b5b9d21f44eb009c417b5617b819b5463de366"
+}
