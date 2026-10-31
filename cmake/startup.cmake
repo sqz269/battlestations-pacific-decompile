@@ -2541,3 +2541,6 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_cor
 
 # Raw Icon state range lifetime support; caller/cleanup authority remains qualified.
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_gui_icon_state_range_lifetime_storage.cpp)
+
+# Raw Icon state assignment supplier; actual growth/caller activation remains gated.
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_gui_icon_state_assignment_storage.cpp)
