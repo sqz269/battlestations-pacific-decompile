@@ -1,0 +1,153 @@
+{
+  "kind": "ignored AB1520 normal allocation decisions plus qualified Source SDK error projection, no tracked author grant",
+  "base": "672a6cc2fd7dba2b69a0e449e542f9d1c15a81fa",
+  "current_provider_crosscheck": "4adaf3be42fe8cd6c50a5657b6b87636f05fe4d2",
+  "owned_paths": [
+    "include/bsp/native_gui_icon_state_allocation_storage.hpp",
+    "src/native_gui_icon_state_allocation_storage.cpp",
+    "docs/CC16_NATIVE_GUI_ICON_STATE_ALLOCATION_STORAGE.md",
+    "reports/cc16_native_gui_icon_state_allocation_storage.json"
+  ],
+  "postimages": [
+    {
+      "path": "include/bsp/native_gui_icon_state_allocation_storage.hpp",
+      "bytes": 1688,
+      "sha256": "d39f6a350387a10e67578206a4c9e46cfdfca53220ae44a262896ec20e4ecfd5"
+    },
+    {
+      "path": "src/native_gui_icon_state_allocation_storage.cpp",
+      "bytes": 724,
+      "sha256": "eb3186aa17f10573ba7fd88a50f0507f2c9ffbbdcdc3c23f43f7d942a90fd8a3"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_ICON_STATE_ALLOCATION_STORAGE.md",
+      "bytes": 2727,
+      "sha256": "4bd9e4fb63d4633d15ef52a2e1aabfc057775102e15c875af1b42a1c70aa203d"
+    }
+  ],
+  "reader": {
+    "bytes": 7429,
+    "sha256": "52f8dac7f08364c0d4cefe809698db59d16920097bae72f1e5c1fd1c088c02e0",
+    "utf8": "import argparse,hashlib,json,pathlib,re,subprocess\nfrom capstone import Cs,CS_ARCH_X86,CS_MODE_32\nap=argparse.ArgumentParser();ap.add_argument('--candidate');ap.add_argument('--commit');a=ap.parse_args()\nD=pathlib.Path(__file__).resolve().parent;C=pathlib.Path(a.candidate) if a.candidate else D/'candidate'\nP='reports/cc16_native_gui_icon_state_allocation_storage.json';checks=[]\ndef g(*args):return subprocess.check_output(['git',*args])\ndef sha(b):return hashlib.sha256(b).hexdigest()\ndef ck(n,v):\n    assert v,n\n    checks.append({'check':n,'passed':True})\ndef read(p):return g('show',a.commit+':'+p) if a.commit else (C/p).read_bytes()\nr=json.loads(read(P))\nck('exact raw embedded reader',pathlib.Path(__file__).read_bytes()==r['reader']['utf8'].encode())\nfor p in r['postimages']:\n    b=read(p['path']);ck('whole new postimage '+p['path'],len(b)==p['bytes'] and sha(b)==p['sha256'])\nfor p in r['provider_whole_pins']:\n    b=g('show',r['base']+':'+p['path']);ck('genuine existing provider '+p['path'],len(b)==p['bytes'] and sha(b)==p['sha256'])\nfor q in r['provider_verbatim_regions']:\n    b=b''.join(g('show',r['base']+':'+q['path']).splitlines(keepends=True)[q['start_line']-1:q['end_line_inclusive']])\n    ck('exact provider contract/copy-usage quote '+q['path']+str(q['start_line']),len(b)==q['bytes'] and sha(b)==q['sha256'] and b.decode()==q['verbatim_utf8'])\nb=bytes.fromhex(r['Native']['hex']);ins=list(Cs(CS_ARCH_X86,CS_MODE_32).disasm(b,0xab1520))\nck('whole81B25row Native preimage',len(b)==81 and sha(b)==r['Native']['sha256'] and len(ins)==25)\nck('one real allocation versus separate exception operations',[(i.address,i.op_str) for i in ins if i.mnemonic=='call']==[(0xab152d,'0xbf681b'),(0xab1555,'0xbf6340'),(0xab156c,'0xbf6885')])\nck('zero count still real allocation0 path',[(i.address,i.mnemonic,i.op_str) for i in ins if 0xab1523<=i.address<=0xab152d]==[(0xab1523,'test','ecx, ecx'),(0xab1525,'ja','0xab1539'),(0xab1527,'xor','ecx, ecx'),(0xab1529,'shl','ecx, 6'),(0xab152c,'push','ecx'),(0xab152d,'call','0xbf681b')])\nck('unsigned UINTMAX divide and Native64 quotient threshold',[(i.address,i.mnemonic,i.op_str) for i in ins if 0xab1539<=i.address<=0xab1543]==[(0xab1539,'or','eax, 0xffffffff'),(0xab153c,'xor','edx, edx'),(0xab153e,'div','ecx'),(0xab1540,'cmp','eax, 0x40'),(0xab1543,'jae','0xab1529')])\nck('Native plain RET and ten separate exception rows',bytes(next(i for i in ins if i.address==0xab1538).bytes)==b'\\xc3' and len([i for i in ins if i.address>=0xab1545])==10)\nh=read(r['owned_paths'][0]).decode();c=read(r['owned_paths'][1]).decode();clean=re.sub(r'//[^\\n]*','',c)\nck('ordinary one-DWORD API no new Context/Frame/callback','void* allocate_native_gui_icon_state_backing_00ab1520(std::uint32_t count_ecx)' in h and 'void* allocate_native_gui_icon_state_backing_00ab1520(std::uint32_t count_ecx)' in c and not any(x in clean for x in ['struct ','class ','virtual','Frame','Context','std::function']))\nck('full count captured once by value',c.count('const std::uint32_t count = count_ecx;')==1 and clean.count('count_ecx')==2)\nck('only exact guarded Native predicate no new input cap',re.findall(r'\\bif\\s*\\(([^)]*)\\)',clean)==['count != 0 && 0xffffffffu / count < 0x40u'])\nck('Source SDK bad_alloc error projection explicit',c.count('throw std::bad_alloc();')==1 and 'Qualified Source SDK error, not Native EH layout.' in c)\nck('literal DWORD shift followed by genuine matching size transport','const std::uint32_t bytes = count << 6;' in c and 'return singleton_lifetime_allocate({SingletonAllocationKind::object, bytes, bytes});' in c)\nck('no zero success shortcut or typed birth',not any(x in clean for x in ['nullptr','return 0','return {};','NativeGuiIconStateStorage','std::vector','std::string','new ','new[','delete ','malloc(','calloc(','memcpy','memset']))\nck('no compensating cleanup/NoThrow/Origin or invented native exception objects',not any(x in clean for x in ['catch','try {','noexcept','noreturn','Origin','reinterpret_cast','0xd6923c','0xe03cc0','BF6340','BF6885']))\nck('no FP/reset operations',not any(x in clean for x in ['float','double','__asm','finit','fldcw','ldmxcsr']))\nck('Native type/exception ABI qualification retained',all(x in h for x in ['Native BF6340 exception','D6923C vtable','E03CC0 ThrowInfo','BF6885','Source error projection','no state/subobject/T[n] lifetime']))\nck('existing high STL role retained and credit0',r['original_name']=='STL_allocator_allocate_00ab1520' and r['new_Original_vendor_helper_CG_duplicate_credit']==0)\nck('normal Source support separate from Native exception-layout projection',r['normal_Source_decisions_ready'] is True and r['Native_exception_object_or_throw_ABI_reconstructed'] is False and r['Original_ABI_Origin_runtime_activation'] is False)\nck('UINTMAX/64 threshold is native03FFFFFF, not a new cap',0xffffffff//64==0x03ffffff and (0x03ffffff<<6)==0xffffffc0 and 0xffffffff//0x04000000==63)\nck('zero arithmetic is0 without division',0<<6==0)\n\ndef tree(rev):\n    out={}\n    for raw in g('ls-tree','-r','-z',rev).split(b'\\0'):\n        if raw:\n            m,p=raw.split(b'\\t',1);mode,kind,oid=m.decode().split();out[p.decode()]=(mode,kind,oid)\n    return out\ndef treehash(items):\n    root={}\n    for p,v in items.items():\n        n=root;parts=p.split('/')\n        for s in parts[:-1]:n=n.setdefault(s,{})\n        n[parts[-1]]=v\n    def rec(n):\n        z=[]\n        for k,v in n.items():\n            if isinstance(v,dict):z.append((k+'/',b'40000 '+k.encode()+b'\\0'+bytes.fromhex(rec(v))))\n            else:z.append((k,v[0].lstrip('0').encode()+b' '+k.encode()+b'\\0'+bytes.fromhex(v[2])))\n        b=b''.join(v for _,v in sorted(z,key=lambda x:x[0].encode()))\n        return hashlib.sha1(b'tree '+str(len(b)).encode()+b'\\0'+b).hexdigest()\n    return rec(root)\nbefore=tree(r['base']);after=dict(before)\nck('complete base tree recomputed',treehash(before)==g('rev-parse',r['base']+'^{tree}').decode().strip())\nfor p in r['owned_paths']:\n    ck('genuine new path absent '+p,p not in before)\n    b=read(p);after[p]=('100644','blob',hashlib.sha1(b'blob '+str(len(b)).encode()+b'\\0'+b).hexdigest())\nrestored=dict(after)\nfor p in r['owned_paths']:restored.pop(p)\nck('full four-addition map inverse',restored==before)\nck('full recursive four-path inverse',treehash(restored)==g('rev-parse',r['base']+'^{tree}').decode().strip())\nif a.commit:\n    parent=g('show','-s','--format=%P',a.commit).decode().strip();old=tree(parent);new=tree(a.commit)\n    ck('actual author exactly one parent',len(parent.split())==1)\n    ck('actual author exactly four additions',{p for p in old.keys()|new.keys() if old.get(p)!=new.get(p)}==set(r['owned_paths']) and all(p not in old for p in r['owned_paths']))\n    for p in r['provider_whole_pins']:ck('actual provider unchanged '+p['path'],g('show',parent+':'+p['path'])==g('show',r['base']+':'+p['path']))\n    for p in r['owned_paths']:new.pop(p)\n    ck('actual full recursive inverse',new==old and treehash(new)==g('rev-parse',parent+'^{tree}').decode().strip())\nprint(json.dumps({'pass':True,'checks':len(checks),'mode':'immutable Git' if a.commit else 'ignored candidate','whole_Native_bytes':81,'whole_Native_rows':25,'normal_rows_including_ABI':15,'Native_exception_rows_projected_to_Source_SDK_not_reconstructed':10,'base_tree':treehash(before),'virtual_four_addition_tree':treehash(after),'full_inverse_tree':treehash(restored),'Original_ABI_Origin_runtime_activation':False,'new_credit':0}))\n"
+  },
+  "Native": {
+    "address": "00ab1520",
+    "end": "00ab1570",
+    "physical_bytes": 81,
+    "physical_instructions": 25,
+    "sha256": "a559dd425261afee9dcd6674b6046b08fa8fff205574d4dec2c7eef94a3bbd87",
+    "calls": [
+      {
+        "site": "00ab152d",
+        "operand": "0xbf681b"
+      },
+      {
+        "site": "00ab1555",
+        "operand": "0xbf6340"
+      },
+      {
+        "site": "00ab156c",
+        "operand": "0xbf6885"
+      }
+    ],
+    "hex": "83ec1085c9771233c9c1e10651e8e952140083c40483c410c383c8ff33d2f7f183f84073e48d0424508d4c2408c744240400000000e8e64d140068c03ce0008d4c240851c744240c3c92d600e814531400",
+    "input": "ECX captured uint32 count",
+    "normal_result": "EAX allocation pointer; ordinary Source ABI proposed",
+    "zero_count": "real allocation(0), never shortcut",
+    "overflow": "Native BF6340/BadAlloc vtableD6923C/ThrowInfoE03CC0/BF6885 are operand evidence, not reconstructed Source exception ABI"
+  },
+  "original_name": "STL_allocator_allocate_00ab1520",
+  "original_high_tag": "stl_shape; preserve existing classification and name, no metadata change",
+  "provider_whole_pins": [
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "Git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "Git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_storage.hpp",
+      "bytes": 8923,
+      "sha256": "36efeb861e01b14348e370d169c9002b8ac436a29b2f9f3be1d5aac8d7976bfc",
+      "Git_blob": "0a98345600a93dff4fc6c10ce3a0626d93fe9847"
+    },
+    {
+      "path": "src/native_gui_icon_storage.cpp",
+      "bytes": 19689,
+      "sha256": "cc847b8f5fb19055a1116376b2d3a8eff181f045695fe73394ba04996728a492",
+      "Git_blob": "1d61197d246f8c9789c733fa70919817a1581f73"
+    }
+  ],
+  "provider_verbatim_regions": [
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "start_line": 11,
+      "end_line_inclusive": 19,
+      "bytes": 448,
+      "sha256": "aa6b528e6d6bc790697afab2cfb13a1f5e5a55a5a736c0de4af0b1c456fb2020",
+      "verbatim_utf8": "// Explicit host allocation boundary: native object sizes are evidence, while\n// host_bytes allocates the reconstructed C++ type. The returned bytes are raw.\nenum class SingletonAllocationKind { manager, pointer_slots, critical_section, object };\nstruct SingletonAllocationRequest {\n    SingletonAllocationKind kind;\n    std::size_t native_bytes;\n    std::size_t host_bytes;\n};\nvoid* singleton_lifetime_allocate(const SingletonAllocationRequest&);\n"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "start_line": 51,
+      "end_line_inclusive": 63,
+      "bytes": 535,
+      "sha256": "d9861349e1cad70ffc1f48fcdba47be75a59db437dfb4ada2757429d0b66b3f8",
+      "verbatim_utf8": "void* singleton_lifetime_allocate(const SingletonAllocationRequest& request) {\n    // 00BF681B: malloc, call the CRT new handler with the allocation size on\n    // failure, retry if it returns nonzero, otherwise throw bad_alloc. Host\n    // layout requires host_bytes; native_bytes retains the explicit ABI boundary.\n    for (;;) {\n        if (void* result = std::malloc(request.host_bytes)) {\n            return result;\n        }\n        if (_callnewh(request.host_bytes) == 0) {\n            throw std::bad_alloc();\n        }\n    }\n}\n"
+    },
+    {
+      "path": "src/native_gui_icon_storage.cpp",
+      "start_line": 194,
+      "end_line_inclusive": 198,
+      "bytes": 330,
+      "sha256": "34bc175ebfb3115a1f7d2bc0347f4a8ff2e8d3446cbe462c84fad834e193df63",
+      "verbatim_utf8": "    if (!size) return;\n    if (size > 0x03ffffff) throw std::length_error(\"Icon stock vector exceeds its native record limit\");\n    const auto bytes = static_cast<std::size_t>(size) * 0x40;\n    auto* const allocated = static_cast<std::byte*>(singleton_lifetime_allocate(\n        {SingletonAllocationKind::object, bytes, bytes}));\n"
+    }
+  ],
+  "actual_provider": {
+    "header": "include/bsp/singleton_lifetime.hpp:19",
+    "definition": "src/singleton_lifetime.cpp:51",
+    "signature": "void* singleton_lifetime_allocate(const SingletonAllocationRequest&)",
+    "request": "existing Kind::object; native_bytes==host_bytes==captured uint32 count<<6",
+    "contract": "raw malloc/currentSDK _callnewh retry then currentSDK std::bad_alloc; no zeroing or object birth; provider qualifications inherited"
+  },
+  "Native_normal_decision_map": [
+    {
+      "sites": "1523/1525/1527",
+      "meaning": "zero count bypasses DIV, still real allocation0"
+    },
+    {
+      "sites": "1539/153C/153E/1540/1543",
+      "meaning": "unsigned UINTMAX/count comparison with64"
+    },
+    {
+      "sites": "1529/152C/152D",
+      "meaning": "captured DWORD shift6, allocation of same byte count"
+    },
+    {
+      "sites": "1532/1535/1538",
+      "meaning": "normal ABI cleanup/RET, ordinary Source pointer return"
+    }
+  ],
+  "Native_exception_projection": {
+    "Native_rows": 10,
+    "sites": "1545..156C",
+    "operands": "zero exception argument/scratch, BF6340, ThrowInfoE03CC0, vtableD6923C, BF6885",
+    "Source": "throw std::bad_alloc() using current selected SDK",
+    "Native_exception_type_layout_throwinfo_private_HOME_Origin_reconstructed": false
+  },
+  "normal_Source_decisions_ready": true,
+  "Native_exception_object_or_throw_ABI_reconstructed": false,
+  "new_Frame_Context_callback_owner_or_array_birth": false,
+  "Source_private_domain": "Win32 pointer/size_t4; real current CRT/new-handler/module/control lifetime, private request/control backing separate from callback-visible data; no state/vector/custody admission",
+  "remaining": "AB6070/AB59E0 growth, genuine caller/state birth and custody, exact copy/BF0/private-HOME domain, Native Origin/ABI/runtime/activation",
+  "Original_ABI_Origin_runtime_activation": false,
+  "new_Original_vendor_helper_CG_duplicate_credit": 0,
+  "tracked_Source_CMake_ledger_Ghidra_compiler_tests_probes_Game_actions": false
+}
