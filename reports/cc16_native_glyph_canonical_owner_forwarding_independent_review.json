@@ -1,0 +1,437 @@
+{
+  "schema_version": 1,
+  "kind": "independent_Source48_canonical_owner_forwarding_review",
+  "reviewed_ref": "13f81452c1953061ce1073ea25a29ba06bf9498c",
+  "reviewed_parent": "2a4390ccda43ad9d40ef90e2bb480b3cb42bf530",
+  "approved_design": "80e839e9d95120b0e5c513ec3836cd217a3d7187",
+  "reviewer_worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow",
+  "verdict": "NO_ACTIONABLE_FINDINGS_IN_APPROVED_OWNER_FORWARDING_SOURCE_PATCH",
+  "findings": [],
+  "scope": {
+    "author_files": [
+      "docs/CC16_NATIVE_GLYPH_CANONICAL_OWNER_FORWARDING.md",
+      "include/bsp/game_hosts.hpp",
+      "reports/cc16_native_glyph_canonical_owner_forwarding.json",
+      "src/game_hosts.cpp",
+      "src/game_main.cpp"
+    ],
+    "review_files": [
+      "docs/CC16_NATIVE_GLYPH_CANONICAL_OWNER_FORWARDING_INDEPENDENT_REVIEW.md",
+      "reports/cc16_native_glyph_canonical_owner_forwarding_independent_review.json"
+    ],
+    "implementation_edits": false,
+    "ancestry_merge": false,
+    "address_writes": false
+  },
+  "hash_formats": {
+    "Source": "Exact Git object UTF8 LF bytes; standard Git blob SHA1",
+    "raw_frozen": "On-disk byte snapshots independently equal their matching Git objects",
+    "Main_export_witness": "117 literal bytes; terminal LF intentionally excluded",
+    "historical": "Source46 Glyph five-borrow pin and80e design retain their original epochs; Source47 seven-borrow current graph is separate"
+  },
+  "packet_pins": [
+    {
+      "path": "docs/CC16_NATIVE_GLYPH_CANONICAL_OWNER_FORWARDING.md",
+      "bytes": 5670,
+      "sha256": "8f9a4a0e8ca5ea070a562cf258789155eb0eee487236f7680e01fb3281af35df",
+      "git_blob": "edd7617b1fb2c7a78810b5325ec7254351511ea2",
+      "format": "Git UTF8 LF bytes"
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "bytes": 48172,
+      "sha256": "ae1d6b5909a6a6076d2b952bbb09400b9642155399ff9733e6f718fa81dd80ea",
+      "git_blob": "9d9a565de531c08c159b6cc0d54cb19a21a92175",
+      "format": "Git UTF8 LF bytes"
+    },
+    {
+      "path": "reports/cc16_native_glyph_canonical_owner_forwarding.json",
+      "bytes": 32901,
+      "sha256": "948714710d72f4835da4d29d2a6bed5dd351a41862b4574623f09508d84575fb",
+      "git_blob": "6aa7c22e148403b45fb431e7740e9d2929c3b4e9",
+      "format": "Git UTF8 LF bytes"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "bytes": 187000,
+      "sha256": "a4b3bf1edb199d577fa689349329e044b38f593ecd4c6aa4092be39d0b744fe5",
+      "git_blob": "0ea37f57bf4642cf526fad3fb585ac8b7b9d47ad",
+      "format": "Git UTF8 LF bytes"
+    },
+    {
+      "path": "src/game_main.cpp",
+      "bytes": 81511,
+      "sha256": "3851a814b2028a7851998b7043033a5943b38ec49b34cbe57b74860564c05cc6",
+      "git_blob": "a721bf0114dd6715f0a8b494ac799c77b9fbf472",
+      "format": "Git UTF8 LF bytes"
+    }
+  ],
+  "three_file_inverses": [
+    {
+      "before": {
+        "path": "src/game_main.cpp",
+        "bytes": 81290,
+        "sha256": "761ca1dfc2e54c2daa129a25811b86a8bb3f4771b5a18a26498ce11a8d94dc7b",
+        "git_blob": "4371f58bb28daa984bccea95ed0147f923ac59ff",
+        "format": "Git UTF8 LF bytes"
+      },
+      "after": {
+        "path": "src/game_main.cpp",
+        "bytes": 81511,
+        "sha256": "3851a814b2028a7851998b7043033a5943b38ec49b34cbe57b74860564c05cc6",
+        "git_blob": "a721bf0114dd6715f0a8b494ac799c77b9fbf472",
+        "format": "Git UTF8 LF bytes"
+      },
+      "Git_raw_frozen_exact": true
+    },
+    {
+      "before": {
+        "path": "include/bsp/game_hosts.hpp",
+        "bytes": 47507,
+        "sha256": "67a5164b1b20061f0f1353783c12cfcb92cc7392b37e04ec87371577425f7f58",
+        "git_blob": "867d8b7032fc7531bfaa4f2c43c649988b8e0710",
+        "format": "Git UTF8 LF bytes"
+      },
+      "after": {
+        "path": "include/bsp/game_hosts.hpp",
+        "bytes": 48172,
+        "sha256": "ae1d6b5909a6a6076d2b952bbb09400b9642155399ff9733e6f718fa81dd80ea",
+        "git_blob": "9d9a565de531c08c159b6cc0d54cb19a21a92175",
+        "format": "Git UTF8 LF bytes"
+      },
+      "Git_raw_frozen_exact": true
+    },
+    {
+      "before": {
+        "path": "src/game_hosts.cpp",
+        "bytes": 186067,
+        "sha256": "6403dacc40b04fe9df818e5fa1e175609b876d54a51dbeae9a7e2ef69856cff6",
+        "git_blob": "f0ddd36fa94585e7be5ec76fe894e6d90d4951eb",
+        "format": "Git UTF8 LF bytes"
+      },
+      "after": {
+        "path": "src/game_hosts.cpp",
+        "bytes": 187000,
+        "sha256": "a4b3bf1edb199d577fa689349329e044b38f593ecd4c6aa4092be39d0b744fe5",
+        "git_blob": "0ea37f57bf4642cf526fad3fb585ac8b7b9d47ad",
+        "format": "Git UTF8 LF bytes"
+      },
+      "Git_raw_frozen_exact": true
+    }
+  ],
+  "ten_seams": [
+    {
+      "index": 1,
+      "path": "src/game_main.cpp",
+      "label": "M1 direct standard reference/optional includes",
+      "before_sha256": "761ca1dfc2e54c2daa129a25811b86a8bb3f4771b5a18a26498ce11a8d94dc7b",
+      "after_sha256": "cf1740da7a8278111c66754d8234988d428a0f00282f02eb7b84b362f24d5d35",
+      "passed": true
+    },
+    {
+      "index": 2,
+      "path": "src/game_main.cpp",
+      "label": "M2 outer value-held actual canonical-owner borrow",
+      "before_sha256": "cf1740da7a8278111c66754d8234988d428a0f00282f02eb7b84b362f24d5d35",
+      "after_sha256": "818ff59e9ac5a161998430bef021051cf8178a67233292d8ae141a27053e9dbb",
+      "passed": true
+    },
+    {
+      "index": 3,
+      "path": "src/game_main.cpp",
+      "label": "M3 retain EXACT initialize return before unchanged exports",
+      "before_sha256": "818ff59e9ac5a161998430bef021051cf8178a67233292d8ae141a27053e9dbb",
+      "after_sha256": "bd60d33689c011867222ae7c3db0a0545720be84e2da242a953c4312f7528b18",
+      "passed": true
+    },
+    {
+      "index": 4,
+      "path": "src/game_main.cpp",
+      "label": "M4 sole existing Host allocation uses required owner overload",
+      "before_sha256": "bd60d33689c011867222ae7c3db0a0545720be84e2da242a953c4312f7528b18",
+      "after_sha256": "3851a814b2028a7851998b7043033a5943b38ec49b34cbe57b74860564c05cc6",
+      "passed": true
+    },
+    {
+      "index": 5,
+      "path": "include/bsp/game_hosts.hpp",
+      "label": "H1 existing canonical-owner type forward declaration",
+      "before_sha256": "67a5164b1b20061f0f1353783c12cfcb92cc7392b37e04ec87371577425f7f58",
+      "after_sha256": "68d70d5366979b5a867c19fb0fe471491f46448cc18517ddc849a790aa5dabf6",
+      "passed": true
+    },
+    {
+      "index": 6,
+      "path": "include/bsp/game_hosts.hpp",
+      "label": "H2 required public overload; exact legacy signature retained",
+      "before_sha256": "68d70d5366979b5a867c19fb0fe471491f46448cc18517ddc849a790aa5dabf6",
+      "after_sha256": "83b5ebbe9189b2b91795e7ff40ded611a3191700c0b9a2954b8f184fa8528f7f",
+      "passed": true
+    },
+    {
+      "index": 7,
+      "path": "include/bsp/game_hosts.hpp",
+      "label": "H3 private value-borrow alias and one common constructor",
+      "before_sha256": "83b5ebbe9189b2b91795e7ff40ded611a3191700c0b9a2954b8f184fa8528f7f",
+      "after_sha256": "a5807eaca0f5dda6f8fb45d7c46b620db579593d7fe851705ee79b9cae39e1a1",
+      "passed": true
+    },
+    {
+      "index": 8,
+      "path": "include/bsp/game_hosts.hpp",
+      "label": "H4 immutable retained binding after existing RO member",
+      "before_sha256": "a5807eaca0f5dda6f8fb45d7c46b620db579593d7fe851705ee79b9cae39e1a1",
+      "after_sha256": "ae1d6b5909a6a6076d2b952bbb09400b9642155399ff9733e6f718fa81dd80ea",
+      "passed": true
+    },
+    {
+      "index": 9,
+      "path": "src/game_hosts.cpp",
+      "label": "C1 actual owner definition for RO address access only",
+      "before_sha256": "6403dacc40b04fe9df818e5fa1e175609b876d54a51dbeae9a7e2ef69856cff6",
+      "after_sha256": "b329f8cc5ed99f31462814825e987ba1dcb7c07f1400821e3d47d6c439d9975c",
+      "passed": true
+    },
+    {
+      "index": 10,
+      "path": "src/game_hosts.cpp",
+      "label": "C2 two delegating overloads/common initializer/affinity before old body",
+      "before_sha256": "b329f8cc5ed99f31462814825e987ba1dcb7c07f1400821e3d47d6c439d9975c",
+      "after_sha256": "a4b3bf1edb199d577fa689349329e044b38f593ecd4c6aa4092be39d0b744fe5",
+      "passed": true
+    }
+  ],
+  "embedded_reader": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_glyph_canonical_owner_forwarding_independent_review_20261031\\verify_source48_inverse.py",
+    "bytes": 2003,
+    "sha256": "dad9740989955b73dd4dad119117b436e37f6c0f1914d3f41fee67371b4ce7a8",
+    "raw_equals_embedded": true,
+    "result": {
+      "ref": "13f81452c1953061ce1073ea25a29ba06bf9498c",
+      "full_forward_reverse_files": 3,
+      "seams": 10,
+      "all_intermediates_Git_raw_frozen_equal": true,
+      "whole_old_body_prefix_inverse_and_unique_content": true
+    }
+  },
+  "old_constructor_body": {
+    "bytes": 3805,
+    "sha256": "b4ca24bdfd288e706afeb9b912f0b9320d4fdf8356c61082635245b400784ea1",
+    "complete_braced_body_inverse": true,
+    "new_guard_bytes": 206,
+    "new_common_body_bytes": 4011,
+    "unique_old_content": true
+  },
+  "Main_control_error_witnesses": [
+    {
+      "label": "all enclosing/early-return conditions before outer borrow",
+      "bytes": 5488,
+      "sha256": "4e9efc451bfc6f884bef3ed8f00ed03e4b12c4fa5aca2f657cf85b1f98518bb7",
+      "unchanged": true
+    },
+    {
+      "label": "initialization catch/error2, qualifications, pool body/failures, options, game-root and unique_ptr declaration",
+      "bytes": 13564,
+      "sha256": "fe2cde8b919a69c7d7bdda1a746f67c78980a8aa9ac7b0b62653a10801691cf4",
+      "unchanged": true
+    },
+    {
+      "label": "Host error1 and subsequent WinMain call setup",
+      "bytes": 663,
+      "sha256": "f1b58d2e101f4805e645e10f3e87279cd50216d374bafeb3686be9bd4c98dfbf",
+      "unchanged": true
+    }
+  ],
+  "unchanged_exports": {
+    "bytes": 117,
+    "sha256": "c39ab1a521fa4efd5b7f71f1ed72d4338ecaccec318b154e702c7afbf8e1c760",
+    "terminal_newline_not_in_witness": true
+  },
+  "eleven_input_pins": [
+    {
+      "path": "src/game_main.cpp",
+      "bytes": 81290,
+      "sha256": "761ca1dfc2e54c2daa129a25811b86a8bb3f4771b5a18a26498ce11a8d94dc7b",
+      "git_blob": "4371f58bb28daa984bccea95ed0147f923ac59ff",
+      "format": "Git UTF8 LF bytes",
+      "ref": "2a4390ccda43ad9d40ef90e2bb480b3cb42bf530",
+      "unchanged_at_packet": false,
+      "preimage": true
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "bytes": 47507,
+      "sha256": "67a5164b1b20061f0f1353783c12cfcb92cc7392b37e04ec87371577425f7f58",
+      "git_blob": "867d8b7032fc7531bfaa4f2c43c649988b8e0710",
+      "format": "Git UTF8 LF bytes",
+      "ref": "2a4390ccda43ad9d40ef90e2bb480b3cb42bf530",
+      "unchanged_at_packet": false,
+      "preimage": true
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "bytes": 186067,
+      "sha256": "6403dacc40b04fe9df818e5fa1e175609b876d54a51dbeae9a7e2ef69856cff6",
+      "git_blob": "f0ddd36fa94585e7be5ec76fe894e6d90d4951eb",
+      "format": "Git UTF8 LF bytes",
+      "ref": "2a4390ccda43ad9d40ef90e2bb480b3cb42bf530",
+      "unchanged_at_packet": false,
+      "preimage": true
+    },
+    {
+      "path": "include/bsp/game_native_mutable_crt_data.hpp",
+      "bytes": 3200,
+      "sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+      "git_blob": "ec1a1c9c2a7359031b4b77c2b86ba12cd6f3420e",
+      "format": "Git UTF8 LF bytes",
+      "ref": "2a4390ccda43ad9d40ef90e2bb480b3cb42bf530",
+      "unchanged_at_packet": true,
+      "preimage": false
+    },
+    {
+      "path": "src/game_native_mutable_crt_data.cpp",
+      "bytes": 10114,
+      "sha256": "d9dabf905fd4acf195f72c14e9ae2c7ef457514f4ff6227efffdcbb1f24a0c39",
+      "git_blob": "2c0d73f8164a8b0d4cbbc499801935d1f28c213a",
+      "format": "Git UTF8 LF bytes",
+      "ref": "2a4390ccda43ad9d40ef90e2bb480b3cb42bf530",
+      "unchanged_at_packet": true,
+      "preimage": false
+    },
+    {
+      "path": "include/bsp/game_native_raw_default_text_owner.hpp",
+      "bytes": 9406,
+      "sha256": "92715898e34550625339a8658568e31aee5dbb5b8901d92379a273e816558c83",
+      "git_blob": "532566845cd8434126f0869464a0deb7c1ec2e2f",
+      "format": "Git UTF8 LF bytes",
+      "ref": "2a4390ccda43ad9d40ef90e2bb480b3cb42bf530",
+      "unchanged_at_packet": true,
+      "preimage": false
+    },
+    {
+      "path": "src/game_native_raw_default_text_owner.cpp",
+      "bytes": 132021,
+      "sha256": "b0c6a8e39b0756e98960a9f21894a0b25ea7b1a437891edaa86b6f893289d25b",
+      "git_blob": "8e3d47af9f936b938afa27821afd5b3b6b8071ef",
+      "format": "Git UTF8 LF bytes",
+      "ref": "2a4390ccda43ad9d40ef90e2bb480b3cb42bf530",
+      "unchanged_at_packet": true,
+      "preimage": false
+    },
+    {
+      "path": "src/game_native_gui_render_application.cpp",
+      "bytes": 59357,
+      "sha256": "a5b6be17c269f9486a210716143c17b2375c62e4401139d4d7adf66a39ca00cd",
+      "git_blob": "eef54bf0e2ef8a5a457756d864b8cb50222d1539",
+      "format": "Git UTF8 LF bytes",
+      "ref": "2a4390ccda43ad9d40ef90e2bb480b3cb42bf530",
+      "unchanged_at_packet": true,
+      "preimage": false
+    },
+    {
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "bytes": 10679,
+      "sha256": "8e3475ad8bce88973b64ff9c0758ebda380b5baede302c7b926526b0e92fe783",
+      "git_blob": "a0eb6b9681b8e651df3fed6907298b08f974653e",
+      "format": "Git UTF8 LF bytes",
+      "ref": "2a4390ccda43ad9d40ef90e2bb480b3cb42bf530",
+      "unchanged_at_packet": true,
+      "preimage": false
+    },
+    {
+      "path": "docs/CC16_NATIVE_GLYPH_CANONICAL_OWNER_FORWARDING_READINESS.md",
+      "bytes": 8749,
+      "sha256": "0ae8d8e2248acb720c59819338f20f80dd72ca290d22f2006de4bb4749940468",
+      "git_blob": "867291e79c080cb798225acc3a1ba03911f8308c",
+      "format": "Git UTF8 LF bytes",
+      "ref": "80e839e9d95120b0e5c513ec3836cd217a3d7187",
+      "unchanged_at_packet": null,
+      "preimage": null
+    },
+    {
+      "path": "reports/cc16_native_glyph_canonical_owner_forwarding_readiness.json",
+      "bytes": 28691,
+      "sha256": "c5614637266056ca6c90bca7e310948977cde786f5f076cf59db9434b7b71ca7",
+      "git_blob": "e4fddd4b32e4a719e3d4a1be49bd5be6717efd96",
+      "format": "Git UTF8 LF bytes",
+      "ref": "80e839e9d95120b0e5c513ec3836cd217a3d7187",
+      "unchanged_at_packet": null,
+      "preimage": null
+    }
+  ],
+  "inventory": {
+    "Host_make_unique": 1,
+    "CanonicalOwner_initialize": 1,
+    "RawDefaultOwner_make_unique": 1,
+    "RawDefaultOwner_allocation_file": "src/game_native_gui_render_application.cpp"
+  },
+  "semantic_review": {
+    "Main_initialize_dominates_host": true,
+    "exact_returned_object_borrowed": true,
+    "ACK_before_permanent_release_store_return": true,
+    "legacy_absence_preserved": true,
+    "common_body_order_unchanged": true,
+    "optional_member_pre_BODY_only": true,
+    "no_feature_VALUE_read_added": true
+  },
+  "detailed_qualifications": {
+    "Main": "initialize/emplace dominates sole Host call; error2/error1 and ONE allocation unchanged",
+    "lifetime": "existing ACK/pending.release/process_owner.store/return proves intentionally retained original object; wrapper nonowning",
+    "Host": "legacy explicit absence; required const-ref overload; private common constructor; immutable optional before old BODY",
+    "construction": "Earlier base/default/options/member metadata construction remains possible before late-declared canonical member",
+    "affinity": "ADDRESS only; no feature VALUE or process provenance/Native capability proof",
+    "consumer": "No checked getter, RawOwner/Glyph/GUI-render preparation or concrete producer supplied",
+    "historical_inputs": "Old five-borrow Glyph header is historical author input, not Source47 current header",
+    "EH": "New ordinary Source logic_error guard does not grant Native origin, NoThrow, FH3/SEH or cleanup authority"
+  },
+  "static_artifact": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_glyph_canonical_owner_forwarding_independent_review_20261031\\independent_checks.json",
+    "bytes": 13707,
+    "sha256": "7a0f98b229330b9f16ef19e742d420fd6db212f2233eb96b3b33335e5f18d713",
+    "format": "Raw UTF8 LF JSON"
+  },
+  "doc_pin": {
+    "path": "docs/CC16_NATIVE_GLYPH_CANONICAL_OWNER_FORWARDING_INDEPENDENT_REVIEW.md",
+    "bytes": 5569,
+    "sha256": "33b7072f9798d4028d45832bc10ebab3bb1a08c69d178987831f11c3c5013ead",
+    "format": "Git UTF8 LF bytes"
+  },
+  "actions": {
+    "Source_edits": false,
+    "compiler": false,
+    "tests": false,
+    "provider": false,
+    "probe": false,
+    "Game": false,
+    "Ghidra_mutation": false
+  },
+  "readiness": {
+    "finite_Source_patch_ready_for_Root_build": true,
+    "Root_Source48_compiler_verified": false,
+    "actual_child_preparation_consumer": false,
+    "actual_seven_borrow_Glyph_producer": false,
+    "whole_frontend_Source_ready": false,
+    "Native_origin": false,
+    "Original_ABI": false,
+    "runtime": false,
+    "activation": false
+  },
+  "credits": {
+    "new_Original_bodies": 0,
+    "vendor_bodies": 0,
+    "helpers": 0,
+    "duplicate_body_credit": 0,
+    "ABI": 0,
+    "runtime": 0,
+    "activation": 0
+  },
+  "remaining": {
+    "RawDefaultTextOwner_constructor_and_GUIrender_consumer_changed": false,
+    "actual_child_preparation_caller": false,
+    "Source47_seven_borrow_graph_ready": false,
+    "CString_providers_parent_transport_disposal_postsections": false,
+    "Native_origin_cleanup_NoThrow_Original_FH3_SEH": false,
+    "runtime_flags_changed": false,
+    "runtime_gameplay_activation": false
+  }
+}
