@@ -1,5 +1,4 @@
 #include "bsp/native_ambient_lifetime.hpp"
-#include "bsp/lighting_configuration_apply.hpp"
 #include "bsp/native_scene_resource_ambient.hpp"
 #include "native_scene_typed_storage.hpp"
 #include "bsp/native_gui_widget_base_storage.hpp"
@@ -104,22 +103,6 @@ NativeAmbientReference::NativeAmbientReference(void* identity, NativeAmbientIden
 }
 NativeAmbientReference::~NativeAmbientReference() {
     if (phase_ != Phase::retired) std::terminate();
-}
-LightingAmbientFields borrow_native_ambient_lighting_fields(
-    void* actual, NativeRenderActualOwnerRegistry& registry) {
-    // The RTTI query is on genuine C++ canonical metadata, never native bytes.
-    auto* const canonical = dynamic_cast<NativeAmbientReference*>(registry.find(actual));
-    if (!canonical || canonical->phase_ != NativeAmbientReference::Phase::bound ||
-        canonical->identity_ != actual || &canonical->context_.registry != &registry)
-        throw std::logic_error("ambient fields require their same live canonical companion");
-    // Validate this resolved canonical's OWN constructor-issued facts before
-    // forming carrier/member references. count() returns an address, not a load.
-    auto& count = detail::NativeSceneTypedStorageAccess::count(
-        actual, canonical->context_, canonical->typed_);
-    if (&canonical->reference_count != &count)
-        throw std::logic_error("ambient fields require the same actual count binding");
-    auto& owner = *std::launder(static_cast<detail::ActualAmbient98h*>(actual));
-    return {owner.ambient_18, owner.ambient_mode3_28, owner.ambient_cube_38};
 }
 bool NativeAmbientReference::retired() const noexcept { return phase_ == Phase::retired; }
 void NativeAmbientReference::retire() noexcept {
