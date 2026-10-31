@@ -1,0 +1,54 @@
+{
+  "schema": "bsp-native-mission-lua-predicates-v1",
+  "source_base": "ae5465617c92b4f4db066a2fe368de3e1e262c9a",
+  "design_sha256": "61f6468b785827c10fbb76a746e204802bb8a0f7d9c8c436e788f73bdfa33000",
+  "ordinary_cpp_abi_only": true,
+  "source_sha256": {
+    "include/bsp/native_mission_lua_predicates.hpp": "5e098fb910d7e1c93a22cd31d1b28b5e23b4c0e3b8cd8deaf592cc5ca75cc44e",
+    "src/native_mission_lua_predicates.cpp": "5982bfe120fab58fb375abd5989e659d800da4e72404fb354237e190de12c748"
+  },
+  "actual_source_lines": {"header": 27, "cpp": 30},
+  "whole_leaves": [
+    {"entry": "006B7EE0", "instructions": 7, "bytes": 22, "comparison": 0, "result": "full int32 1 or 0"},
+    {"entry": "006B7F00", "instructions": 8, "bytes": 25, "comparison": 5, "result": "full int32 1 or 0"},
+    {"entry": "006B7F60", "instructions": 8, "bytes": 25, "comparison": 4, "result": "full int32 1 or 0; number3 rejected"}
+  ],
+  "original_abi": "ECX actual machine, stacked index captured to EDX before CURRENT machine+4, actual A675A0, full EAX0/1, RET4; not reproduced as a private/binary interface",
+  "dependency": {
+    "api": "type_native_mission_lua_006b7ec0",
+    "producer_commit": "068b945f0182b408c9900dd69f9e0a56a556ecf9",
+    "source_hpp_sha256": "f4687e3fcdc1495e4b3e5caec7f3284e407286706704f24c68a2c13303a90c46",
+    "source_cpp_sha256": "fd6e57257c4826bf0c5010987456f247804330027ad9280cd6cc0607eb26a12a",
+    "calls_per_predicate": 1
+  },
+  "schedule": "Capture by-value index, actual raw type child once with SAME machine/index, compare actual result to0/5/4, return explicit int32 1/0",
+  "strict_object": {
+    "compiles": 1,
+    "exit_code": 0,
+    "machine": "014C",
+    "bytes": 1542,
+    "sha256": "2666272bdb97caeed9b55d795b926b4396ab71e6b408d48752683c261ab8ba77",
+    "defined_entries": [
+      "?is_nil_native_mission_lua_006b7ee0@bsp@@YAHPBXH@Z",
+      "?is_table_native_mission_lua_006b7f00@bsp@@YAHPBXH@Z",
+      "?is_string_native_mission_lua_006b7f60@bsp@@YAHPBXH@Z"
+    ],
+    "sole_genuine_child_undefined": "?type_native_mission_lua_006b7ec0@bsp@@YAHPBXH@Z",
+    "receipt": "local/native_mission_lua_predicates_gui_20261030/compile_receipt.json",
+    "same_object_symbols": "local/native_mission_lua_predicates_gui_20261030/actual_symbols.json"
+  },
+  "all_prior_tracked_files_unchanged": true,
+  "selected_provider_count": 5,
+  "provider_preservation": "local/native_mission_lua_predicates_gui_20261030/provider_preservation.json",
+  "source_ready": false,
+  "runtime_validated": false,
+  "vendor_body_credit": false,
+  "native_body_credit": false,
+  "tests_link_executable_probe_or_entry": false,
+  "limits": [
+    "Genuine retained raw machine and linked-Source state/stack/code/index/provenance/synchronization domain remain caller obligations",
+    "No lua_isstring widening, model cast, new state read, default/guard, Frame, owner or cleanup",
+    "Ordinary child composition does not reproduce Original private ABI, argument-home alias, EH/SEH/hardware or runtime behavior",
+    "No parent886E00, raw machine producer/adoption, VM/factory/setup, loading or startup grant"
+  ]
+}

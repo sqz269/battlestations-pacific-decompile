@@ -1,0 +1,81 @@
+{
+  "schema": "bsp-native-mission-lua-stack-v1",
+  "name": "raw_mission_lua_stack_wrappers",
+  "source_base": "ae5465617c92b4f4db066a2fe368de3e1e262c9a",
+  "ordinary_cpp_abi_only": true,
+  "source_ready": false,
+  "runtime_validated": false,
+  "vendor_body_credit": false,
+  "native_body_credit": false,
+  "design_sha256": "28d1ceda000aeabe59289c359792e7eaa4345fb17675dda475d3baea8617c76f",
+  "source_sha256": {
+    "include/bsp/native_mission_lua_stack.hpp": "536100cb4d98dc56b22eb13e03fec83852c00e38c96e1f669aae53cf7c91616c",
+    "src/native_mission_lua_stack.cpp": "20d275b2bb694209cb83c8051fcc1c7186602ffe25f16b434398e02344805013"
+  },
+  "actual_source_lines": {
+    "header": 31,
+    "cpp": 57
+  },
+  "whole_leaves": [
+    {
+      "entry": "006B7E70",
+      "instructions": 2,
+      "bytes": 8,
+      "capi": "lua_gettop",
+      "source_name": "get_top_native_mission_lua_006b7e70",
+      "result": "actual signed int unchanged"
+    },
+    {
+      "entry": "006B7E80",
+      "instructions": 4,
+      "bytes": 15,
+      "capi": "lua_settop",
+      "source_name": "set_top_native_mission_lua_006b7e80",
+      "result": "void"
+    },
+    {
+      "entry": "006B7E90",
+      "instructions": 4,
+      "bytes": 15,
+      "capi": "lua_pushvalue",
+      "source_name": "push_value_native_mission_lua_006b7e90",
+      "result": "void"
+    },
+    {
+      "entry": "006B7EA0",
+      "instructions": 4,
+      "bytes": 15,
+      "capi": "lua_remove",
+      "source_name": "remove_native_mission_lua_006b7ea0",
+      "result": "void"
+    }
+  ],
+  "schedule": "Each CURRENT state load uses private fenced memcpy4; indexed arguments captured BEFORE it; genuine C API once with no cross-call cache or post-call payload read",
+  "strict_object": {
+    "compiles": 1,
+    "exit_code": 0,
+    "machine": "014C",
+    "bytes": 2130,
+    "sha256": "00f55f04e8193c95b54385e653dc92a410873203f49564d23136a9261c8c2b04",
+    "defined_entries": [
+      "?get_top_native_mission_lua_006b7e70@bsp@@YAHPBX@Z",
+      "?set_top_native_mission_lua_006b7e80@bsp@@YAXPBXH@Z",
+      "?push_value_native_mission_lua_006b7e90@bsp@@YAXPBXH@Z",
+      "?remove_native_mission_lua_006b7ea0@bsp@@YAXPBXH@Z"
+    ],
+    "genuine_lua_undefined": [
+      "_lua_gettop",
+      "_lua_settop",
+      "_lua_pushvalue",
+      "_lua_remove"
+    ],
+    "same_object_symbol_receipt": "local/native_mission_lua_stack_validation_cc9_20261030/objects/actual_symbols.json"
+  },
+  "provider_preservation": "local/native_mission_lua_stack_validation_cc9_20261030/provider_preservation.json",
+  "limits": [
+    "Caller retains genuine machine and matching linked-Source Lua graph with valid operation/index/capacity/lifetime/synchronization",
+    "No model cast, validation/default, checkstack, Frame, owner, cleanup, pcall, stack restoration or retry",
+    "No parent886E00, producer/factory/table/VM/setup/loaded/startup/privateABI/runtime grant"
+  ],
+  "tests_probes_native_or_game_entry": false
+}
