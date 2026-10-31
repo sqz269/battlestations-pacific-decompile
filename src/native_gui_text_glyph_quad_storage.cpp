@@ -1,4 +1,5 @@
 #include "bsp/native_gui_text_glyph_quad_storage.hpp"
+#include "bsp/native_gui_text_default_storage.hpp"
 #include "bsp/gui_text_factory.hpp"
 
 #include "bsp/native_string.hpp"
@@ -471,15 +472,17 @@ __declspec(noinline) void write_native_gui_text_glyph_quad_storage_00ab98f0(
         a.native_eh_state = 0;
         if (failure_runtime)
             a.constructor_slot_.arm(a.failure_origin_, *failure_runtime, &homes[7], allocation,
-                &c.calls, {0x00ab9d4fu, __COUNTER__}, a.constructor_call_);
+                &a.raw93_acquired_, {0x00ab9d4fu, __COUNTER__}, a.constructor_call_);
         void* child = nullptr;
         if (allocation) {
             boundary(a, 0x00ab9d4f, allocation);
             if (failure_runtime)
                 child = a.constructor_call_.invoke([&] {
-                    return c.calls.construct_00ab9650(allocation, a, a.constructor_call_);
+                    return construct_native_gui_text_default_storage_00ab9650(allocation,
+                        a.raw93_frame_, a.raw93_context_, a.raw93_acquired_, a.constructor_call_);
                 });
-            else child = c.calls.construct_00ab9650(allocation, a);
+            else child = construct_native_gui_text_default_storage_00ab9650(allocation,
+                a.raw93_frame_, a.raw93_context_, a.raw93_acquired_);
         }
         a.captured_child = child;
         a.native_eh_state = -1;
