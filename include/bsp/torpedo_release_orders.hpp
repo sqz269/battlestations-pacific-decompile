@@ -206,9 +206,13 @@ struct TorpedoReleaseOrderHost {
     // 007BCBFD / 007BCC09: the store itself.
     virtual void write_release_order_count(int index, int count) = 0;
 
-    // Read only under kReleaseOrderLeaderBlockBound (007EEF96-007EEFEE). Not
-    // pure, so an existing host compiles unchanged; the defaults answer "no
-    // issuing unit", which skips the block.
+    // Read only under kReleaseOrderLeaderBlockBound (007EEF96-007EEFEE).
+    // Source producer contract: this host represents a live issuing unit;
+    // the production binding holds its GameUnitSlot by reference. The nullable
+    // native EBP arm is outside that represented producer domain. These are
+    // not pure virtuals; the existing defaults and signatures stay unchanged.
+    // The default leader answer skips the block. Each later hook is read only
+    // after the preceding native guard passes, after the 999 loop.
     // 007EEF96 EBP != 0 and 007EEF9C 007B8AD0: the issuing unit leads its flight.
     virtual bool issuer_is_flight_leader_007eef9c() { return false; }
     // 007EEFA5 ctl+370h, the attack mode.
@@ -218,6 +222,9 @@ struct TorpedoReleaseOrderHost {
     // 007EEFBC 00927F10(unit+1B0h). The name BSP_PartySlot_IsAiHeld is a
     // HYPOTHESIS: the function returns byte +9 of the slot record at
     // [00E188A8]+18CCh+slot*4, and what that byte means was not read.
+    // This bool is the native raw-byte != 0 test, not availability. A concrete
+    // provider must report an unavailable Source input through its error
+    // boundary rather than returning false. The legacy default stays true.
     virtual bool party_slot_byte_9_00927f10(int /*slot*/) { return true; }
     // 007EEFD7 CMP ECX,EBP: the controlled unit at `index` is the issuer.
     virtual bool controlled_unit_is_issuer(int /*index*/) { return true; }
