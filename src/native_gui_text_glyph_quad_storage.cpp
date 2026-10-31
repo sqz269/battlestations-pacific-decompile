@@ -1,4 +1,5 @@
 #include "bsp/native_gui_text_glyph_quad_storage.hpp"
+#include "bsp/gui_text_factory.hpp"
 
 #include "bsp/native_string.hpp"
 #include "bsp/native_string_pool_owner.hpp"
@@ -382,6 +383,7 @@ __declspec(noinline) void write_native_gui_text_glyph_quad_storage_00ab98f0(
     void* actual_text, volatile Word (&homes)[10], NativeGuiTextGlyphQuadStorageContext& c,
     NativeGuiTextGlyphQuadStorageAcquired& a) {
     const auto* const failure_runtime = c.failure_runtime;
+    NativeGuiTextPool& prepared_text_pool = c.actual_text_pool_companion_00f8bdf0;
     if (failure_runtime) {
         a.failure_origin_.begin(*failure_runtime, &a, 0x00ab98f0u);
         a.failure_origin_.host(*failure_runtime, {0, __COUNTER__}, &a, [&] {
@@ -423,8 +425,22 @@ __declspec(noinline) void write_native_gui_text_glyph_quad_storage_00ab98f0(
         clear_uv_home(a.captured_stream, &homes[2]);
         clear_uv(a.captured_stream, a.captured_fourth_vertex);
 
-        boundary(a, 0x00ab9d38, c.actual_text_pool_00f8bdf0);
-        void* const allocation = c.calls.allocate_00ab78a0(c.actual_text_pool_00f8bdf0, a);
+        void* const actual_pool_receiver = c.actual_text_pool_00f8bdf0; // Native AB9D33 role
+        boundary(a, 0x00ab9d38, actual_pool_receiver);
+        const auto require_pool_affinity = [&] {
+            if (static_cast<void*>(&prepared_text_pool.storage()) != actual_pool_receiver)
+                throw std::invalid_argument("Glyph Text pool companion must borrow the SAME actual F8BDF0 storage");
+        };
+        void* const allocation = [&]() -> void* {
+            if (failure_runtime) {
+                a.failure_origin_.host(*failure_runtime, {0x00ab9d33u, 0x47504131u}, &prepared_text_pool,
+                    require_pool_affinity); // GPA1: actual Source address-affinity check
+                return a.failure_origin_.unknown(*failure_runtime, {0x00ab9d38u, 0x47504132u}, &prepared_text_pool,
+                    [&] { return prepared_text_pool.allocate_raw_slot_00ab78a0(); }); // GPA2: mixed real allocation
+            }
+            require_pool_affinity();
+            return prepared_text_pool.allocate_raw_slot_00ab78a0();
+        }();
         a.captured_allocation = allocation;
         homes[7] = bits(allocation);
         a.native_eh_state = 0;
@@ -528,10 +544,10 @@ __declspec(noinline) void write_native_gui_text_glyph_quad_storage_00ab98f0(
                     void* const current_slot = pointer(homes[7]);
                     boundary(a, 0x00cb80b3, current_slot);
                     if (failure_runtime)
-                        a.failure_origin_.unknown(*failure_runtime, {0x00cb80b3u, __COUNTER__}, &c.calls,
-                            [&] { c.calls.return_failed_00ab76f0(current_slot, a); },
+                        a.failure_origin_.unknown(*failure_runtime, {0x00cb80b3u, __COUNTER__}, &prepared_text_pool,
+                            [&] { return_gui_text_failed_slot_00ab76f0(current_slot, prepared_text_pool); },
                             NativeGuiTextFailureOrigin::Stage::cleanup_secondary);
-                    else c.calls.return_failed_00ab76f0(current_slot, a);
+                    else return_gui_text_failed_slot_00ab76f0(current_slot, prepared_text_pool);
                 } else if (state == 1) {
                     boundary(a, 0x00cb80bb, a.locals + 4);
                     destroy_native_string_header_0041dd20(a.locals + 4, c.strings);
