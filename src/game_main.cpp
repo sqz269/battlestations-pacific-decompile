@@ -384,7 +384,7 @@ int run_bootstrap_parent(const bsp::game::GameExecutableOptions& options) {
     const auto child_path = own_executable();
     bsp::game::GameNativeDataBootstrapChild child(child_path, child_arguments(),
         native_data_spans.data(), selected_native_data_span_count(),
-        bsp::game::GameNativeDataPlan::CanonicalCrtV2);
+        bsp::game::GameNativeDataPlan::CanonicalCrtV3);
     child.reserve_and_resume();
     child.wait_for_mapping(30000);
     const HANDLE process = static_cast<HANDLE>(child.process_handle());
@@ -1117,7 +1117,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
     try {
         auto reservation = bsp::game::accept_native_data_handoff(
             native_data_spans.data(), selected_native_data_span_count(),
-            bsp::game::GameNativeDataPlan::CanonicalCrtV2);
+            bsp::game::GameNativeDataPlan::CanonicalCrtV3);
         const auto& owner = bsp::game::GameNativeCanonicalDataOwner::initialize(original_image,
             native_data_spans.data(), selected_native_data_span_count(), std::move(reservation));
         canonical_data_owner.emplace(owner);
