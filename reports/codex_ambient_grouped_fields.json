@@ -1,6 +1,6 @@
 {
-  "schema": 2,
-  "status": "HELD_PRODUCTION_CANDIDATE_STRICT_REFERENCE_GATE_OPEN",
+  "schema": 3,
+  "status": "QUALIFIED_CPP_LIFETIME_SOURCE_FIX_ADMITTED_STRICT13_OPEN",
   "base_Main": "0111f93803a2eaa38af81af4a97b67509a380936",
   "design_sha256": "ef405fcb41ec276e61242f1e3d69c0311526540e871dc580073b3893425f2eab",
   "patch_sha256": "10435d7bf96f71b7c34f2c0d0bb4f278f56cffb3ceb60250c8870ec53d8a0126",
@@ -14,7 +14,7 @@
   "compiler_build_test_runtime_performed": true,
   "Original_ABI_or_concurrency_proof": false,
   "new_switch_or_activation": false,
-  "MSD_field_configuration_ready": false,
+  "MSD_field_configuration_ready": true,
   "goal": "active",
   "candidate_production": {
     "src/native_scene_typed_storage.hpp": "f7a6b99e1473ba3c258cd5ee4f34bb8aed8786dc0a90993134b31ef4fab78c16",
@@ -25,9 +25,7 @@
   "candidate_commit": "056b5fc6e759ccb83a8def9137c52e12052fa82e",
   "preserved_candidate_ref": "held/cc16-ambient-grouped-fields-20261031",
   "preserved_candidate_head": "078aa0fd3c9f59323b8f9ced122f0311ec1956a8",
-  "active_production_admitted": false,
-  "active_production_restored_to_Main": "2ca74d4cd7a42ba8399a1ce08f684ea8c093cbac",
-  "active_production_tree_equals_published_Main": true,
+  "active_production_admitted": true,
   "candidate_standard_Win32_builds": [
     {
       "source": "056b5fc6e",
@@ -46,12 +44,14 @@
     }
   ],
   "candidate_Core": {
-    "all_eight_field_related_objects_exact_across_builds": true,
     "existing_Native_constructor_ASM500_bytes_exact": true,
     "configuration_entire_object_exact": true,
     "retained_constructor_and_borrow_roots": 2,
     "restored_forced_roots": 0,
-    "Original393byte_body_not_relabelled500": true
+    "Original393byte_body_not_relabelled500": true,
+    "first_three_builds_all8_objects_byte_exact": true,
+    "final_Source57_joined_all8_exact_except_COFF_timestamp": true,
+    "final_configuration_object_whole_exact": true
   },
   "candidate_MSD": {
     "scope": "Current diagnostic MSD graph, source_HDR_diagnostic and host_attach_skip retained; no raw-root/full-Matrix/full-scene/Original ABI/visual proof.",
@@ -340,7 +340,7 @@
     "no_new_runtime_or_ABI_proof_claim": true
   },
   "evidence_root": "local/ambient_grouped_fields_primary_cc16_20261031",
-  "decision": "Hold active four-file candidate until reference discrepancy explained/closed. Preserve Source/Core/MSD acceptance separately; strict13 remains NOTPASS. No flag flip or full activation.",
+  "decision": "Admit exactfourfileSource correctnessfix with Source/Core/targetbuild and requiredMSD proof. NON-switchSourceadmission doesnotassertstrict13pass: USN12causeunproved, controlinconclusive, allfailureevidencepreserved, noactivation/scopewidening.",
   "new_tests": 0,
   "active_Main_restore_build": {
     "head": "078aa0fd3c9f59323b8f9ced122f0311ec1956a8",
@@ -353,5 +353,215 @@
       "100% tests passed, 0 tests failed out of 2",
       "Total Test time (real) =  11.85 sec"
     ]
+  },
+  "actual_production": {
+    "src/native_scene_typed_storage.hpp": "f7a6b99e1473ba3c258cd5ee4f34bb8aed8786dc0a90993134b31ef4fab78c16",
+    "include/bsp/native_ambient_lifetime.hpp": "bf831033288383f5f592c89f800ed8cdee6939efc84c3b9e63d4051c47763a14",
+    "src/native_ambient_lifetime.cpp": "c4fc3cf193a1009f52a050513537a12425d6441dd85fc2733ef400568279555f",
+    "src/game_native_mission_lighting.inc": "6306cccbc0cb61ef489f85b8f2af1ba2fa59f80799378098f5bfb694f7be2769"
+  },
+  "active_production_admission_scope": "Reviewed C++ grouped-field birth/current-canonical borrow only; no switch flip or runtime-equivalence/OriginalABI/fullactivation proof",
+  "historical_hold_receipt": "ba4b87a3fd974fdd7dc8b99dfa5fdd808fc17828; historical restore was superseded by qualifiedSource admission",
+  "admission_parent_Main": "fe3e7cd2a19d83787dc11c011494948f8df36aa3",
+  "Source_field_configuration_ready": true,
+  "MSD_ready_scope": "Reviewed current diagnosticMSD fieldconfiguration only; allRawstartup/fullscene gates remainfalse/open",
+  "qualified_Source57_joined_build": {
+    "parent_Main": "fe3e7cd2a19d83787dc11c011494948f8df36aa3",
+    "production": "exactfourfile reviewedfield fix +reviewedSource57",
+    "exit": 0,
+    "started_utc": "2026-10-31T10:36:54.5975999Z",
+    "finished_utc": "2026-10-31T10:37:25.9120004Z",
+    "no_new_tests": true,
+    "existing_checks": [
+      "100% tests passed, 0 tests failed out of 2",
+      "Total Test time (real) =  12.11 sec"
+    ]
+  },
+  "qualified_Source57_joined_integrity": {
+    "source_parent_Main": "fe3e7cd2a19d83787dc11c011494948f8df36aa3",
+    "all_eight_objects_exact": false,
+    "all_eight_objects_exact_except_COFF_timestamp": true,
+    "objects": [
+      {
+        "object": "native_ambient_construction",
+        "sha256": "280938dc6d48e0d03721a2d1298b332e6b74ed954f59f45ee35a571c0014b577",
+        "identical_to_runtime_source_Core": false,
+        "identical_except_COFF_timestamp_4_through_7": true,
+        "changed_byte_offsets": [
+          4,
+          5
+        ]
+      },
+      {
+        "object": "native_ambient_lifetime",
+        "sha256": "b671410bf5f5058c21e8a2e3720ab47a2c93a24339a268325e96a267b18f329d",
+        "identical_to_runtime_source_Core": false,
+        "identical_except_COFF_timestamp_4_through_7": true,
+        "changed_byte_offsets": [
+          4,
+          5
+        ]
+      },
+      {
+        "object": "native_scene_resource_storage",
+        "sha256": "0fd1422292c003a6a2c304815d910c79e72248005aa6bf08fc58441ea8dd1334",
+        "identical_to_runtime_source_Core": false,
+        "identical_except_COFF_timestamp_4_through_7": true,
+        "changed_byte_offsets": [
+          4,
+          5
+        ]
+      },
+      {
+        "object": "native_scene_resource_ambient",
+        "sha256": "177f0c7e8dd05c6c0f66d96b471b4cabeaeaa675afe7aabef02470aac85c8a22",
+        "identical_to_runtime_source_Core": false,
+        "identical_except_COFF_timestamp_4_through_7": true,
+        "changed_byte_offsets": [
+          4,
+          5
+        ]
+      },
+      {
+        "object": "native_scene_registry_storage",
+        "sha256": "b45f938744069d4ca95b2285ad4e2a84f2ea37cf1afd6663f5fc2b1cf9de9e69",
+        "identical_to_runtime_source_Core": false,
+        "identical_except_COFF_timestamp_4_through_7": true,
+        "changed_byte_offsets": [
+          4,
+          5
+        ]
+      },
+      {
+        "object": "native_gui_scene_acquisition_storage",
+        "sha256": "b51f5f84928b02597c343b798f44c93838349d6a9dba6296ce2e437dd71c7f39",
+        "identical_to_runtime_source_Core": false,
+        "identical_except_COFF_timestamp_4_through_7": true,
+        "changed_byte_offsets": [
+          4,
+          5
+        ]
+      },
+      {
+        "object": "game_native_renderer_application",
+        "sha256": "87680462e9802f1429da6133ade284a44f66954aa6b6189f36e1a3d7ea241229",
+        "identical_to_runtime_source_Core": false,
+        "identical_except_COFF_timestamp_4_through_7": true,
+        "changed_byte_offsets": [
+          4,
+          5
+        ]
+      },
+      {
+        "object": "lighting_configuration_apply",
+        "sha256": "1ceaf8ceb748e9f17913bea8100a5121cb9cf103597c582a60c310620ccf048f",
+        "identical_to_runtime_source_Core": true,
+        "identical_except_COFF_timestamp_4_through_7": true,
+        "changed_byte_offsets": []
+      }
+    ],
+    "artifacts": {
+      "build/win32/Release/bsp_game.exe": "f14cc4ac967ddaf9afb2705f207c692e2b008a8d7f91dd8a173ad36576ae69cc",
+      "build/win32/Release/xlive_stub.dll": "ddf2c2a86d96f37819147c38991a74ef5c5946ce625e7b4e7914f8382aa13f87",
+      "build/win32/bsp_game.map": "4c0d10b0b477446e785fd15512b3b831e08e0b07611d7cb3e12ea7d31d3b4d20",
+      "build/win32/bsp_game.vcxproj": "008933b1bf4943fef6b85d41e703add896bfdde82b7fd1c03439e8a64ab201d9",
+      "build/win32/CMakeCache.txt": "173b00591bec5e1664cf6e405b6161ecc7206c7f1bc173f42f04ca235ef83a44",
+      "build/win32/Testing/Temporary/LastTest.log": "237414b2e1058a3ae29266de53e5cb3e54170f1f82f218cf873c9335ad29bad9"
+    },
+    "all_nine_flags_false": true,
+    "canonical_no_INCLUDES": true,
+    "Source57_cancel_unreached_absent_from_map": true,
+    "PE_sections": [
+      {
+        "section": ".text",
+        "same_loaded_section_after_debug_only_masks": true,
+        "before": {
+          "sha256": "1f7762fcfc0415f95093cbdbecdde432dececafba2b23f40f39df8195279129b",
+          "RVA": 4096,
+          "virtual_size": 5915067,
+          "raw_size": 5915136
+        },
+        "after": {
+          "sha256": "1f7762fcfc0415f95093cbdbecdde432dececafba2b23f40f39df8195279129b",
+          "RVA": 4096,
+          "virtual_size": 5915067,
+          "raw_size": 5915136
+        }
+      },
+      {
+        "section": ".rsrc",
+        "same_loaded_section_after_debug_only_masks": true,
+        "before": {
+          "sha256": "c0e60f4cf71ce8b294eac670489c92beafa1edf04d20118117733be630f674db",
+          "RVA": 7376896,
+          "virtual_size": 480,
+          "raw_size": 512
+        },
+        "after": {
+          "sha256": "c0e60f4cf71ce8b294eac670489c92beafa1edf04d20118117733be630f674db",
+          "RVA": 7376896,
+          "virtual_size": 480,
+          "raw_size": 512
+        }
+      },
+      {
+        "section": ".data",
+        "same_loaded_section_after_debug_only_masks": true,
+        "before": {
+          "sha256": "35550385979ea50e6c944711095c5308567acab9e624650c56bd59ab10296a79",
+          "RVA": 7262208,
+          "virtual_size": 114080,
+          "raw_size": 78848
+        },
+        "after": {
+          "sha256": "35550385979ea50e6c944711095c5308567acab9e624650c56bd59ab10296a79",
+          "RVA": 7262208,
+          "virtual_size": 114080,
+          "raw_size": 78848
+        }
+      },
+      {
+        "section": ".reloc",
+        "same_loaded_section_after_debug_only_masks": true,
+        "before": {
+          "sha256": "4e31bb019e781b9afc5cd59400d11db64c95a691c3d42f6497243738b149c97e",
+          "RVA": 7380992,
+          "virtual_size": 207004,
+          "raw_size": 207360
+        },
+        "after": {
+          "sha256": "4e31bb019e781b9afc5cd59400d11db64c95a691c3d42f6497243738b149c97e",
+          "RVA": 7380992,
+          "virtual_size": 207004,
+          "raw_size": 207360
+        }
+      },
+      {
+        "section": ".rdata",
+        "same_loaded_section_after_debug_only_masks": true,
+        "before": {
+          "sha256": "ca550b9080d7c22ed25d6aacf7bab1454104bd7fd6f2562daedd82e983fd547d",
+          "RVA": 5922816,
+          "virtual_size": 1336860,
+          "raw_size": 1337344
+        },
+        "after": {
+          "sha256": "ca550b9080d7c22ed25d6aacf7bab1454104bd7fd6f2562daedd82e983fd547d",
+          "RVA": 5922816,
+          "virtual_size": 1336860,
+          "raw_size": 1337344
+        }
+      }
+    ],
+    "PE_debug_only_masks": [],
+    "all_loaded_sections_equal_after_debug_metadata_only_masks": true,
+    "runtime_receipt_source": "b49686b291bf7549ee1bd971d6e9d98adc5954dd",
+    "no_new_runtime_or_ABI_proof_claim": true
+  },
+  "actual_working_Git_blob_checks": {
+    "src/native_scene_typed_storage.hpp": true,
+    "include/bsp/native_ambient_lifetime.hpp": true,
+    "src/native_ambient_lifetime.cpp": true,
+    "src/game_native_mission_lighting.inc": true
   }
 }
