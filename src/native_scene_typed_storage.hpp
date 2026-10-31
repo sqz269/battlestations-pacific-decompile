@@ -31,7 +31,9 @@ struct ActualAmbient98h {
     std::atomic<std::int32_t> count;
     SystemAmbientBacklinks backlinks;
     SceneWord scalar;
-    SceneWord lighting[32];
+    SystemLightingWords4 ambient_18;
+    SystemLightingWords4 ambient_mode3_28;
+    std::array<SystemLightingWords4, 6> ambient_cube_38;
 };
 static_assert(sizeof(void*) == 4);
 static_assert(sizeof(std::atomic<std::int32_t>) == 4);
@@ -77,7 +79,16 @@ static_assert(sizeof(SystemAmbientBacklinks) == 12);
 static_assert(offsetof(SystemAmbientBacklinks, count_04) == 4);
 static_assert(offsetof(SystemAmbientBacklinks, capacity_08) == 8);
 static_assert(offsetof(ActualAmbient98h, scalar) == 0x14);
-static_assert(offsetof(ActualAmbient98h, lighting) == 0x18);
+static_assert(offsetof(ActualAmbient98h, ambient_18) == 0x18);
+static_assert(offsetof(ActualAmbient98h, ambient_mode3_28) == 0x28);
+static_assert(offsetof(ActualAmbient98h, ambient_cube_38) == 0x38);
+static_assert(sizeof(SystemLightingWords4) == 0x10 && alignof(SystemLightingWords4) == 4);
+static_assert(sizeof(decltype(ActualAmbient98h::ambient_cube_38)) == 0x60);
+static_assert(alignof(decltype(ActualAmbient98h::ambient_cube_38)) == 4);
+static_assert(std::is_standard_layout_v<SystemLightingWords4>);
+static_assert(std::is_standard_layout_v<decltype(ActualAmbient98h::ambient_cube_38)>);
+static_assert(std::is_trivially_copyable_v<SystemLightingWords4>);
+static_assert(std::is_trivially_copyable_v<decltype(ActualAmbient98h::ambient_cube_38)>);
 static_assert(std::is_standard_layout_v<ActualResource3Ch>);
 static_assert(std::is_standard_layout_v<ActualAmbient98h>);
 static_assert(!std::is_trivially_copyable_v<ActualResource3Ch>);
@@ -98,8 +109,10 @@ static_assert(offsetof(SystemAmbientBacklinks, capacity_08) == offsetof(SystemAm
 static_assert(sizeof(SystemAmbientBacklinks) == offsetof(SystemAmbientBacklinks, capacity_08) + sizeof(std::int32_t));
 static_assert(std::is_trivially_copyable_v<SystemAmbientBacklinks>);
 static_assert(offsetof(ActualAmbient98h, scalar) == offsetof(ActualAmbient98h, backlinks) + sizeof(SystemAmbientBacklinks));
-static_assert(offsetof(ActualAmbient98h, lighting) == offsetof(ActualAmbient98h, scalar) + sizeof(SceneWord));
-static_assert(sizeof(ActualAmbient98h) == offsetof(ActualAmbient98h, lighting) + sizeof(decltype(ActualAmbient98h::lighting)));
+static_assert(offsetof(ActualAmbient98h, ambient_18) == offsetof(ActualAmbient98h, scalar) + sizeof(SceneWord));
+static_assert(offsetof(ActualAmbient98h, ambient_mode3_28) == offsetof(ActualAmbient98h, ambient_18) + sizeof(SystemLightingWords4));
+static_assert(offsetof(ActualAmbient98h, ambient_cube_38) == offsetof(ActualAmbient98h, ambient_mode3_28) + sizeof(SystemLightingWords4));
+static_assert(sizeof(ActualAmbient98h) == offsetof(ActualAmbient98h, ambient_cube_38) + sizeof(decltype(ActualAmbient98h::ambient_cube_38)));
 static_assert(offsetof(ActualResource3Ch, count) + offsetof(SceneAtomic, _Storage) + offsetof(SceneAtomicStorage, _Value) == 4);
 static_assert(offsetof(ActualAmbient98h, count) + offsetof(SceneAtomic, _Storage) + offsetof(SceneAtomicStorage, _Value) == 4);
 static_assert(std::is_nothrow_default_constructible_v<ActualResource3Ch>);
@@ -136,7 +149,9 @@ inline void restore_scene_members(ActualAmbient98h& owner,
     restore_actual_subobject(owner.count._Storage._Value, preimage + 4);
     restore_actual_subobject(owner.backlinks, preimage + 8);
     restore_actual_subobject(owner.scalar, preimage + 0x14);
-    restore_actual_subobject(owner.lighting, preimage + 0x18);
+    restore_actual_subobject(owner.ambient_18, preimage + 0x18);
+    restore_actual_subobject(owner.ambient_mode3_28, preimage + 0x28);
+    restore_actual_subobject(owner.ambient_cube_38, preimage + 0x38);
 }
 
 template<class T> T* begin_scene_storage(void* owner) noexcept {

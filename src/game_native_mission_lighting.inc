@@ -123,19 +123,10 @@ struct MissionShipLightingGraph {
  static SystemLightingWords4 color(float r,float g,float b) noexcept {
   return {float_bits(r),float_bits(g),float_bits(b),float_bits(1.0f)};
  }
- static LightingAmbientFields ambient_fields(void* actual) {
-  auto* raw=static_cast<unsigned char*>(actual);
-  // Start trivial typed field lifetimes AFTER B7C290, without initializing or
-  // enlarging the 98h native allocation. Placement default initialization
-  // preserves every native word, including the untouched mode3 preimage.
-  return {*::new(raw+0x18) SystemLightingWords4,
-      *::new(raw+0x28) SystemLightingWords4,
-      *::new(raw+0x38) std::array<SystemLightingWords4,6>};
- }
  void configure_owners() {
   void* const actual_ambient=get<void*>(resource,0x10);
-  check(actual_ambient && resource_acquired.ambient_reference && sun_owner,
-      "mission lighting requires completed native ambient and sun owners");
+  check(actual_ambient && sun_owner,
+      "mission lighting requires current ambient and completed sun owners");
   // Explicit source HDR illumination diagnostic for this linear backbuffer
   // view: ON11 clear-air authored diffuse/AO remains very dark, so these
   // genuine configuration inputs apply 8x the preceding ON10 illumination.
@@ -159,7 +150,8 @@ struct MissionShipLightingGraph {
   LightingDirectionalFields directional{light.diffuse_184,light.specular_194,
       light.base_diffuse_1a4,light.diffuse_mode3_1b4,light.base_specular_1c4,
       light.diffuse_scale_1d8,light.specular_scale_1dc,light.direction_1e0};
-  apply_lighting_configuration_004bacd0(ambient_fields(actual_ambient),directional,
+  apply_lighting_configuration_004bacd0(
+      borrow_native_ambient_lighting_fields(actual_ambient,owners),directional,
       &configuration,global_fields);
   check(light.shadow_174==nullptr,"mission sun unexpectedly acquired a shadow owner");
  }
