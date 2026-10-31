@@ -1574,3 +1574,28 @@ authorized butauthorwaitingthisToStringMainhandoff. A10V380b1/peerfc244a9a
 designaccepted; actual40/10965b9/1c11 primaryCodeaccepted/Framepeerpending,
 NO A10 compilerauthorized. No parent/VM/startup/runtime/ABI/bodycredit grant.
 reports/codex_mission_lua_to_string_integration.json. Goal ACTIVE.
+
+
+A10stringcd836+CallerInfo26a3: whole76ops220B+selectedfreeaction, Core595bd7a.
+Source44e1b683c joined BEFOREfirstcommons. Realclear gate/tag1-before-new8/
+NULLnoHOME/lateHOME/privateHeader8birth+zeros/self/exactresize+currentouterBF/
+capturedallocpub/freeSAVED8ONLY+barethrow allqualified. SourceCMP-afterzeros
+and noEHdemotion before noexceptpub explicit; noNativeflags/FH3/faultidentity.
+CallerInfoexactzero/no secondread, ANYnonzero secondCURRENT/genuineSourceDebug/
+actualcanonicalquery/fullint unchanged; genuinecaller/crossstatei_ci required.
+FullSource+Original/finals82d50+f149/all50artifacts/ONE014C each0d4e5787B/
+c1a751283B; RootfullCore+directCore88B EH verified. Retained2/2 12.45s,
+canonical2/2 12.80s same595bd7a;2onlyforced/7genuineprovidersunforced/normal0.
+37priorrepo+6Lua/twoCoreinverse/nineTextOFF; oldnames/prefixes/allshardrows
+kept/2qualifiedadds/locked023503Zsaved2exports. Frontieravailabilityupdated,
+historical559ffa preservedwithdrawn. No test/entry/VM/parent/startup/runtime/
+privateABI/Native-vendorbodycredit. 6B8040readiness5ops20B correction: Lua
+tonumberST0→separateBF7420CRTboundary, NOT lua_tointeger/STLbodyproof;
+genuineconversionABI/resultwidth/control gatepending, no Source/castshortcut.
+reports/codex_lua_string_caller_info_integration.json. Goal ACTIVE.
+
+6B8040availability refinement: genuineSource native_crt_truncate_st0_00bf7420
+isPRESENT (native_render_batch_keys.hpp): ST0/actualwordaddressECX/lowEAX;
+fallback7456 has64bitpair. B69130narrowedF32bridge notsubstitute. Remaining
+directbridge/design/Originalresult-width-caller-demand admission explicit,
+not missingvendorbody. No newSource/cast/defaultFPpolicy grant.
