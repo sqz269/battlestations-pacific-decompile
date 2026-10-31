@@ -30,4 +30,16 @@ struct alignas(4) NativeGuiWidgetTransformScratch { std::byte bytes[0x1dc]; };
 // rollback, logical GuiWidgetOwner, application installation or game claim.
 void recompose_native_gui_widget_transform_00aa7220(void* actual_widget,
     NativeGuiWidgetTransformScratch&,NativeGuiWidgetTransformBindings&);
+
+// A9E0B0[23]: original ECX widget, stack pair, RET4. Sequential x87
+// pair[0] -> widget+18, then pair[1] -> widget+1C, then SAME raw AA7220.
+// The pair may overlap widget; the second load observes the first store.
+// Caller retains the initialized scratch preimage and genuine bindings above,
+// disjoint from live widget/input/provider extents, through return or failure.
+// An escape retains reached stores/scratch/provider debt, without new cleanup.
+// New four-argument Source ABI; no original stack/fault/EAX-result, general
+// slot38 provider, Native-origin permission or application-installation claim.
+void set_native_gui_widget_pivot_00a9e0b0(void* actual_widget,
+    const volatile void* actual_pair2, NativeGuiWidgetTransformScratch&,
+    NativeGuiWidgetTransformBindings&);
 } // namespace bsp

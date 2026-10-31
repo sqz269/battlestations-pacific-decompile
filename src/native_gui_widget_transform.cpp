@@ -126,4 +126,18 @@ void recompose_native_gui_widget_transform_00aa7220(void* widget,
     const Word target=word(reinterpret_cast<void*>(captured_vtable),0x38); // AA7459
     bindings.dispatch.call_virtual38(target,current_receiver,final); // AA745C
 }
+
+void set_native_gui_widget_pivot_00a9e0b0(void* actual_widget,
+    const volatile void* actual_pair2, NativeGuiWidgetTransformScratch& scratch,
+    NativeGuiWidgetTransformBindings& bindings) {
+    __asm {
+        mov ecx,actual_widget
+        mov eax,actual_pair2
+        fld dword ptr [eax] // A9E0B4
+        fstp dword ptr [ecx+18h] // A9E0B6
+        fld dword ptr [eax+4] // A9E0B9
+        fstp dword ptr [ecx+1ch] // A9E0BC
+    }
+    recompose_native_gui_widget_transform_00aa7220(actual_widget,scratch,bindings); // A9E0BF
+}
 } // namespace bsp

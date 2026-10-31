@@ -1,0 +1,531 @@
+{
+  "schema": "cc16_native_gui_widget_pivot_raw_storage_v1",
+  "packet": "codex-gui-widget-pivot-raw-storage",
+  "base_commit": "7a06afff214abcb5bca15609dfee47b9b64e115a",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-codex-gui-widget-pivot-raw-storage",
+  "source_address": "00a9e0b0",
+  "source_files": [
+    {
+      "path": "include/bsp/native_gui_widget_transform.hpp",
+      "before": {
+        "bytes": 1688,
+        "sha256": "7ce3ccf33392eeff3e603aa43edd941a94d5cdb23d655d70a722bdb60773354d",
+        "git_blob": "2c5c6575ee34f29be8585b680b8085799e67bce7",
+        "cr_bytes": 0,
+        "lf_bytes": 33
+      },
+      "after": {
+        "bytes": 2478,
+        "sha256": "8dad778892b62bc27de08907eff18db3badd061a3a0d67711694aeb7df783642",
+        "git_blob": "250c06e7fe1c5db8572a06b65f98aae47cb3cec2",
+        "cr_bytes": 0,
+        "lf_bytes": 45
+      },
+      "frozen_before": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/before_include__bsp__native_gui_widget_transform.hpp",
+      "frozen_after": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/after_include__bsp__native_gui_widget_transform.hpp",
+      "baseline_base64": "I3ByYWdtYSBvbmNlCiNpbmNsdWRlIDxjc3RkZGVmPgojaW5jbHVkZSA8Y3N0ZGludD4KCm5hbWVzcGFjZSBic3AgewovLyBBQTc0NUMgdXNlcyB0aGUgc2xvdDM4IHRhcmdldCByZWFkIGZyb20gdGhlIEVBUkxJRVIgY2FwdHVyZWQgdnRhYmxlIGFuZAovLyB0aGUgQ1VSUkVOVCB3aWRnZXQrNEMgcmVjZWl2ZXIuIFRoZSBiaW5kaW5nIG11c3QgaW1wbGVtZW50IHRoYXQgZXhhY3QgdGFyZ2V0Ci8vIG9uIGFjdHVhbCBzdG9yYWdlOyBubyBsb2dpY2FsIG93bmVyLCBmYWxsYmFjayB0YXJnZXQgb3Igbm8tb3AgaXMgc3VwcGxpZWQuCmNsYXNzIE5hdGl2ZUd1aVdpZGdldFRyYW5zZm9ybURpc3BhdGNoIHsKcHVibGljOgogICAgdmlydHVhbCB+TmF0aXZlR3VpV2lkZ2V0VHJhbnNmb3JtRGlzcGF0Y2goKSA9IGRlZmF1bHQ7CiAgICB2aXJ0dWFsIHZvaWQgY2FsbF92aXJ0dWFsMzgoc3RkOjp1aW50MzJfdCBhY3R1YWxfdGFyZ2V0LAogICAgICAgIHZvaWQqIGFjdHVhbF9yZWNlaXZlcixjb25zdCB2b2lkKiBhY3R1YWxfbWF0cml4KSA9IDA7Cn07CnN0cnVjdCBOYXRpdmVHdWlXaWRnZXRUcmFuc2Zvcm1CaW5kaW5ncyB7CiAgICBjb25zdCB2b2xhdGlsZSBmbG9hdCYgb25lXzAwZDdhMjRjOwogICAgY29uc3Qgdm9sYXRpbGUgZmxvYXQmIG5lZ2F0aXZlX3plcm9fMDBkN2EyMDg7CiAgICBjb25zdCB2b2xhdGlsZSBmbG9hdCYgeV9zY2FsZV8wMGUxMmZjNDsKICAgIE5hdGl2ZUd1aVdpZGdldFRyYW5zZm9ybURpc3BhdGNoJiBkaXNwYXRjaDsKfTsKLy8gRXhhY3QxRENoLWJ5dGUgbG9jYWwgcmVnaW9uLCBiZWdpbm5pbmcgYXQgbmF0aXZlIEVTUCs4IGFmdGVyIEVTSS9FREkgc2F2ZXMuCi8vIEluaXRpYWxpemVkIGNhbGxlci1vd25lZCBwcmVpbWFnZSB3aXRoIGEgc3RhYmxlIGFkZHJlc3M7IGJ5dGVzIEMuLkYsCi8vIEQwLi5EMyBhbmQgRDguLkRCIHJlbWFpbiB1bndyaXR0ZW4uIFNldmVuNDBoIG1hdHJpY2VzIG9jY3VweSB0aGlzIHJlZ2lvbi4Kc3RydWN0IGFsaWduYXMoNCkgTmF0aXZlR3VpV2lkZ2V0VHJhbnNmb3JtU2NyYXRjaCB7IHN0ZDo6Ynl0ZSBieXRlc1sweDFkY107IH07Ci8vIENvbXBsZXRlIEFBNzIyMFs1ODNdIG5vcm1hbCBib2R5OyBvcmlnaW5hbCBFQ1ggYWN0dWFsIHdpZGdldCwgUkVULgovLyBSZWFkcyBhY3R1YWwgd2lkZ2V0KzBDLi4yQyw0OCw0QzsgY2FwdHVyZXMgKm5vZGUgYmVmb3JlIG1hdHJpeCBwcm92aWRlcnMsCi8vIHJlbG9hZHMgd2lkZ2V0KzRDIGFmdGVyd2FyZCwgdGhlbiByZWFkcyBjYXB0dXJlZC12dGFibGUrMzguIFByZXNlcnZlcyBuYXRpdmUKLy8geDg3L1NTRSBhcml0aG1ldGljLCByYXcgbWF0cml4IGFsaWFzZXMgYW5kIGJvcnJvd2VkLWdsb2JhbCByZWFkIG9yZGVyLgovLyBOZXcgQysrIHNjcmF0Y2gvYmluZGluZ3MgQUJJOyBubyBudWxsIHZhbGlkYXRpb24sIGV4Y2VwdGlvbiB0cmFuc2xhdGlvbiwKLy8gcm9sbGJhY2ssIGxvZ2ljYWwgR3VpV2lkZ2V0T3duZXIsIGFwcGxpY2F0aW9uIGluc3RhbGxhdGlvbiBvciBnYW1lIGNsYWltLgp2b2lkIHJlY29tcG9zZV9uYXRpdmVfZ3VpX3dpZGdldF90cmFuc2Zvcm1fMDBhYTcyMjAodm9pZCogYWN0dWFsX3dpZGdldCwKICAgIE5hdGl2ZUd1aVdpZGdldFRyYW5zZm9ybVNjcmF0Y2gmLE5hdGl2ZUd1aVdpZGdldFRyYW5zZm9ybUJpbmRpbmdzJik7Cn0gLy8gbmFtZXNwYWNlIGJzcAo=",
+      "raw_git_frozen_before_equal": true
+    },
+    {
+      "path": "src/native_gui_widget_transform.cpp",
+      "before": {
+        "bytes": 5290,
+        "sha256": "8f2bbaa84a9b44d90ce4ae89ccdc616118b7a358fb3be90220573ac3ef7eafad",
+        "git_blob": "22580dc3ab8ec1a633b15794fe8bc7750d98cd26",
+        "cr_bytes": 0,
+        "lf_bytes": 129
+      },
+      "after": {
+        "bytes": 5822,
+        "sha256": "39c87d3fd8136d2802ea4c6def1fba8f0df853c8c4f82d778ab512bb65a45d40",
+        "git_blob": "e7c655c4cd800c67f970cad69bba9f48c11850a9",
+        "cr_bytes": 0,
+        "lf_bytes": 143
+      },
+      "frozen_before": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/before_src__native_gui_widget_transform.cpp",
+      "frozen_after": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/after_src__native_gui_widget_transform.cpp",
+      "baseline_base64": "I2luY2x1ZGUgImJzcC9uYXRpdmVfZ3VpX3dpZGdldF90cmFuc2Zvcm0uaHBwIgojaW5jbHVkZSAiYnNwL25hdGl2ZV9jYW1lcmFfbWF0cml4X21hdGguaHBwIgojaW5jbHVkZSAiYnNwL25hdGl2ZV9wYXJ0aWNsZV9heGlhbF9sb2FkaW5nLmhwcCIKI2luY2x1ZGUgPG5ldz4KCiNpZiAhZGVmaW5lZChfTVNDX1ZFUikgfHwgIWRlZmluZWQoX01fSVg4NikKI2Vycm9yIE5hdGl2ZSBHVUkgd2lkZ2V0IHRyYW5zZm9ybSByZXF1aXJlcyBNU1ZDIFdpbjMyLgojZW5kaWYKbmFtZXNwYWNlIGJzcCB7Cm5hbWVzcGFjZSB7CnVzaW5nIFdvcmQ9c3RkOjp1aW50MzJfdDsKdm9pZCogYXQoY29uc3Qgdm9pZCogcCxXb3JkIG9mZnNldD0wKSBub2V4Y2VwdCB7CiAgICByZXR1cm4gcmVpbnRlcnByZXRfY2FzdDx2b2lkKj4ocmVpbnRlcnByZXRfY2FzdDxXb3JkPihwKStvZmZzZXQpOwp9CldvcmQgd29yZChjb25zdCB2b2lkKiBwLFdvcmQgb2Zmc2V0PTApIG5vZXhjZXB0IHsKICAgIHJldHVybiAqc3RhdGljX2Nhc3Q8Y29uc3Qgdm9sYXRpbGUgV29yZCo+KGF0KHAsb2Zmc2V0KSk7Cn0KfSAvLyBuYW1lc3BhY2UKdm9pZCByZWNvbXBvc2VfbmF0aXZlX2d1aV93aWRnZXRfdHJhbnNmb3JtXzAwYWE3MjIwKHZvaWQqIHdpZGdldCwKICAgIE5hdGl2ZUd1aVdpZGdldFRyYW5zZm9ybVNjcmF0Y2gmIHNjcmF0Y2gsTmF0aXZlR3VpV2lkZ2V0VHJhbnNmb3JtQmluZGluZ3MmIGJpbmRpbmdzKSB7CiAgICB2b2lkKiBjb25zdCB3b3Jrc3BhY2U9c2NyYXRjaC5ieXRlczsKICAgIGNvbnN0IHZvbGF0aWxlIGZsb2F0KiBjb25zdCBvbmU9JmJpbmRpbmdzLm9uZV8wMGQ3YTI0YzsKICAgIGNvbnN0IHZvbGF0aWxlIGZsb2F0KiBjb25zdCBuZWdhdGl2ZV96ZXJvPSZiaW5kaW5ncy5uZWdhdGl2ZV96ZXJvXzAwZDdhMjA4OwogICAgY29uc3Qgdm9sYXRpbGUgZmxvYXQqIGNvbnN0IHlfc2NhbGU9JmJpbmRpbmdzLnlfc2NhbGVfMDBlMTJmYzQ7CiAgICBXb3JkIGNhcHR1cmVkX3Z0YWJsZTsKICAgIC8vIEVCWCBpcyB0aGUgb3JpZ2luYWwgRVNQIGFmdGVyIGJvdGggc2F2ZWQgcmVnaXN0ZXJzIChzY3JhdGNoLTgpLiBCZWZvcmUKICAgIC8vIG5hdGl2ZSBBQTcyQzEgUFVTSCBFREksIGl0cyBFU1AtcmVsYXRpdmUgb3BlcmFuZHMgdGhlcmVmb3JlIGFkZCBmb3VyLgogICAgLy8gVGhlIHktc2NhbGUgc3RheXMgbGl2ZSBpbiBTVDAgdW50aWwgQUE3MkM0OyBkbyBub3Qgc3BpbGwvcmVsb2FkIGl0LgogICAgX19hc20gewogICAgICAgIG1vdiBlc2ksd2lkZ2V0CiAgICAgICAgbW92IGVieCx3b3Jrc3BhY2UKICAgICAgICBzdWIgZWJ4LDgKICAgICAgICBtb3YgZWN4LG9uZQogICAgICAgIG1vdnNzIHhtbTEsZHdvcmQgcHRyIFtlY3hdIC8vIEFBNzIyNgogICAgICAgIGZsZCBkd29yZCBwdHIgW2VzaSsxMGhdCiAgICAgICAgbW92c3MgeG1tMixkd29yZCBwdHIgW2VzaSswY2hdCiAgICAgICAgbW92IGVjeCx5X3NjYWxlCiAgICAgICAgZmxkIGR3b3JkIHB0ciBbZWN4XSAvLyBBQTcyMzkKICAgICAgICBtb3ZzcyB4bW0zLGR3b3JkIHB0ciBbZXNpKzE0aF0KICAgICAgICBmbGQgc3QoMCkKICAgICAgICBtb3YgZWN4LG5lZ2F0aXZlX3plcm8KICAgICAgICBtb3ZzcyB4bW0wLGR3b3JkIHB0ciBbZWN4XSAvLyBBQTcyNDYKICAgICAgICBmbXVscCBzdCgyKSxzdCgwKQogICAgICAgIHN1YnNzIHhtbTAsZHdvcmQgcHRyIFtlc2krNDhoXQogICAgICAgIG1vdiBlYXgsZHdvcmQgcHRyIFtlc2krNGNoXSAvLyBBQTcyNTUgY2FwdHVyZXMgbm9kZQogICAgICAgIGZ4Y2ggc3QoMSkKICAgICAgICBtb3ZzcyBkd29yZCBwdHIgW2VieCswYzhoXSx4bW0yCiAgICAgICAgZnN0cCBkd29yZCBwdHIgW2VieCswZGNoXQogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzhdLHhtbTAKICAgICAgICB4b3JwcyB4bW0wLHhtbTAKICAgICAgICBmbGQgZHdvcmQgcHRyIFtlc2krMThoXQogICAgICAgIG1vdnNzIHhtbTIsZHdvcmQgcHRyIFtlYngrMGRjaF0KICAgICAgICBmY2hzCiAgICAgICAgZm11bCBkd29yZCBwdHIgW2VzaSsyMGhdCiAgICAgICAgbW92c3MgZHdvcmQgcHRyIFtlYngrMGNjaF0seG1tMgogICAgICAgIG1vdnNzIHhtbTIsZHdvcmQgcHRyIFtlc2krMjhoXQogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzE4aF0seG1tMgogICAgICAgIGZzdHAgZHdvcmQgcHRyIFtlYngrMGNoXQogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzBkMGhdLHhtbTMKICAgICAgICBmbGQgZHdvcmQgcHRyIFtlc2krMWNoXQogICAgICAgIG1vdnNzIHhtbTIsZHdvcmQgcHRyIFtlYngrMGNoXQogICAgICAgIG1vdnNzIHhtbTMsZHdvcmQgcHRyIFtlc2krMmNoXQogICAgICAgIGZjaHMKICAgICAgICBmbXVsIGR3b3JkIHB0ciBbZXNpKzI0aF0KICAgICAgICBtb3ZzcyBkd29yZCBwdHIgW2VieCs4OGhdLHhtbTIKICAgICAgICBtb3YgZWRpLGR3b3JkIHB0ciBbZWF4XSAvLyBBQTcyQzIgY2FwdHVyZXMgdGhpcyBub2RlJ3MgdnRhYmxlCiAgICAgICAgZm11bHAgc3QoMSksc3QoMCkKICAgICAgICBtb3ZzcyBkd29yZCBwdHIgW2VieCs5OGhdLHhtbTEKICAgICAgICBtb3ZzcyBkd29yZCBwdHIgW2VieCs5Y2hdLHhtbTAKICAgICAgICBtb3ZzcyBkd29yZCBwdHIgW2VieCswYTBoXSx4bW0wCiAgICAgICAgZnN0cCBkd29yZCBwdHIgW2VieCsxMGhdCiAgICAgICAgbW92c3MgZHdvcmQgcHRyIFtlYngrMGE0aF0seG1tMAogICAgICAgIG1vdnNzIHhtbTIsZHdvcmQgcHRyIFtlYngrMTBoXQogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzBhOGhdLHhtbTAKICAgICAgICBtb3ZzcyBkd29yZCBwdHIgW2VieCswYWNoXSx4bW0xCiAgICAgICAgbW92c3MgZHdvcmQgcHRyIFtlYngrMGIwaF0seG1tMAogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzBiNGhdLHhtbTAKICAgICAgICBtb3ZzcyBkd29yZCBwdHIgW2VieCswYjhoXSx4bW0wCiAgICAgICAgbW92c3MgZHdvcmQgcHRyIFtlYngrMGJjaF0seG1tMAogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzBjMGhdLHhtbTEKICAgICAgICBtb3ZzcyBkd29yZCBwdHIgW2VieCswYzRoXSx4bW0wCiAgICAgICAgbW92c3MgZHdvcmQgcHRyIFtlYngrMGQ0aF0seG1tMQogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzFjaF0seG1tMAogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzIwaF0seG1tMAogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzI0aF0seG1tMAogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzI4aF0seG1tMAogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzJjaF0seG1tMwogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzMwaF0seG1tMAogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzM0aF0seG1tMAogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzM4aF0seG1tMAogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzNjaF0seG1tMAogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzQwaF0seG1tMQogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzQ0aF0seG1tMAogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzQ4aF0seG1tMAogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzRjaF0seG1tMAogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzUwaF0seG1tMAogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzU0aF0seG1tMQogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzU4aF0seG1tMQogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzVjaF0seG1tMAogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzYwaF0seG1tMAogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzY0aF0seG1tMAogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzY4aF0seG1tMAogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzZjaF0seG1tMQogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzcwaF0seG1tMAogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4Kzc0aF0seG1tMAogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4Kzc4aF0seG1tMAogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzdjaF0seG1tMAogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzgwaF0seG1tMQogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4Kzg0aF0seG1tMAogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzhjaF0seG1tMgogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4KzkwaF0seG1tMAogICAgICAgIG1vdnNzIGR3b3JkIHB0ciBbZWJ4Kzk0aF0seG1tMQogICAgICAgIG1vdiBjYXB0dXJlZF92dGFibGUsZWRpCiAgICB9CiAgICAvLyBEZWZhdWx0IGluaXRpYWxpemF0aW9uIHN0YXJ0cyB0aGUgYXJyYXkgbGlmZXRpbWUgd2l0aG91dCBjbGVhcmluZyBieXRlcy4KICAgIGF1dG8qIGNvbnN0IHJvdGF0aW9uPTo6bmV3KGF0KHdvcmtzcGFjZSwweDE1YykpIENhbWVyYU1hdHJpeDsKICAgIGNvbnN0IGZsb2F0JiBhbmdsZT0qc3RhdGljX2Nhc3Q8Y29uc3QgZmxvYXQqPih3b3Jrc3BhY2UpOwogICAgYnVpbGRfZ3VpX3JvdGF0aW9uX3pfMDBiNjQ3ODAoKnJvdGF0aW9uLGFuZ2xlLG5lZ2F0aXZlX3plcm8sb25lKTsgLy8gQUE3NDIzCiAgICB2b2lkKiBjb25zdCBmaXJzdD1tdWx0aXBseV9uYXRpdmVfY2FtZXJhX21hdHJpY2VzXzAwNDEzOTIwKAogICAgICAgIGF0KHdvcmtzcGFjZSwweDUwKSxudWxscHRyLGF0KHdvcmtzcGFjZSwweDE5YyksYXQod29ya3NwYWNlLDB4MTApKTsgLy8gQUE3NDQyCiAgICB2b2lkKiBjb25zdCBzZWNvbmQ9bXVsdGlwbHlfbmF0aXZlX2NhbWVyYV9tYXRyaWNlc18wMDQxMzkyMCgKICAgICAgICBmaXJzdCxudWxscHRyLGF0KHdvcmtzcGFjZSwweDExYykscm90YXRpb24pOyAvLyBBQTc0NDkKICAgIHZvaWQqIGNvbnN0IGZpbmFsPW11bHRpcGx5X25hdGl2ZV9jYW1lcmFfbWF0cmljZXNfMDA0MTM5MjAoCiAgICAgICAgc2Vjb25kLG51bGxwdHIsYXQod29ya3NwYWNlLDB4ZGMpLGF0KHdvcmtzcGFjZSwweDkwKSk7IC8vIEFBNzQ1MAogICAgdm9pZCogY29uc3QgY3VycmVudF9yZWNlaXZlcj1yZWludGVycHJldF9jYXN0PHZvaWQqPih3b3JkKHdpZGdldCwweDRjKSk7IC8vIEFBNzQ1NQogICAgY29uc3QgV29yZCB0YXJnZXQ9d29yZChyZWludGVycHJldF9jYXN0PHZvaWQqPihjYXB0dXJlZF92dGFibGUpLDB4MzgpOyAvLyBBQTc0NTkKICAgIGJpbmRpbmdzLmRpc3BhdGNoLmNhbGxfdmlydHVhbDM4KHRhcmdldCxjdXJyZW50X3JlY2VpdmVyLGZpbmFsKTsgLy8gQUE3NDVDCn0KfSAvLyBuYW1lc3BhY2UgYnNwCg==",
+      "raw_git_frozen_before_equal": true
+    }
+  ],
+  "seams": [
+    {
+      "id": "P1",
+      "path": "include/bsp/native_gui_widget_transform.hpp",
+      "byte_offset": 1669,
+      "before_line": 33,
+      "inserted": {
+        "bytes": 790,
+        "sha256": "67ed79107e8a8ed6eec59be55ad7ab4a355f05fbf491f0ff41d17b0605ebcebf",
+        "git_blob": "a35ac3c5b6f21b3f0b431fe3d44e9b79e2518162",
+        "cr_bytes": 0,
+        "lf_bytes": 12
+      },
+      "inserted_base64": "Ci8vIEE5RTBCMFsyM106IG9yaWdpbmFsIEVDWCB3aWRnZXQsIHN0YWNrIHBhaXIsIFJFVDQuIFNlcXVlbnRpYWwgeDg3Ci8vIHBhaXJbMF0gLT4gd2lkZ2V0KzE4LCB0aGVuIHBhaXJbMV0gLT4gd2lkZ2V0KzFDLCB0aGVuIFNBTUUgcmF3IEFBNzIyMC4KLy8gVGhlIHBhaXIgbWF5IG92ZXJsYXAgd2lkZ2V0OyB0aGUgc2Vjb25kIGxvYWQgb2JzZXJ2ZXMgdGhlIGZpcnN0IHN0b3JlLgovLyBDYWxsZXIgcmV0YWlucyB0aGUgaW5pdGlhbGl6ZWQgc2NyYXRjaCBwcmVpbWFnZSBhbmQgZ2VudWluZSBiaW5kaW5ncyBhYm92ZSwKLy8gZGlzam9pbnQgZnJvbSBsaXZlIHdpZGdldC9pbnB1dC9wcm92aWRlciBleHRlbnRzLCB0aHJvdWdoIHJldHVybiBvciBmYWlsdXJlLgovLyBBbiBlc2NhcGUgcmV0YWlucyByZWFjaGVkIHN0b3Jlcy9zY3JhdGNoL3Byb3ZpZGVyIGRlYnQsIHdpdGhvdXQgbmV3IGNsZWFudXAuCi8vIE5ldyBmb3VyLWFyZ3VtZW50IFNvdXJjZSBBQkk7IG5vIG9yaWdpbmFsIHN0YWNrL2ZhdWx0L0VBWC1yZXN1bHQsIGdlbmVyYWwKLy8gc2xvdDM4IHByb3ZpZGVyLCBOYXRpdmUtb3JpZ2luIHBlcm1pc3Npb24gb3IgYXBwbGljYXRpb24taW5zdGFsbGF0aW9uIGNsYWltLgp2b2lkIHNldF9uYXRpdmVfZ3VpX3dpZGdldF9waXZvdF8wMGE5ZTBiMCh2b2lkKiBhY3R1YWxfd2lkZ2V0LAogICAgY29uc3Qgdm9sYXRpbGUgdm9pZCogYWN0dWFsX3BhaXIyLCBOYXRpdmVHdWlXaWRnZXRUcmFuc2Zvcm1TY3JhdGNoJiwKICAgIE5hdGl2ZUd1aVdpZGdldFRyYW5zZm9ybUJpbmRpbmdzJik7Cg==",
+      "anchor_base64": "fSAvLyBuYW1lc3BhY2UgYnNwCg==",
+      "forward_equal": true,
+      "inverse_equal": true
+    },
+    {
+      "id": "P2",
+      "path": "src/native_gui_widget_transform.cpp",
+      "byte_offset": 5271,
+      "before_line": 129,
+      "inserted": {
+        "bytes": 532,
+        "sha256": "ba9b443481ff085c37deebed2824262b9c04b2f73ef013ddd3c40b6f57b7eb05",
+        "git_blob": "9522ecf9510cbd44478ae06d6456873e14b9fea3",
+        "cr_bytes": 0,
+        "lf_bytes": 14
+      },
+      "inserted_base64": "CnZvaWQgc2V0X25hdGl2ZV9ndWlfd2lkZ2V0X3Bpdm90XzAwYTllMGIwKHZvaWQqIGFjdHVhbF93aWRnZXQsCiAgICBjb25zdCB2b2xhdGlsZSB2b2lkKiBhY3R1YWxfcGFpcjIsIE5hdGl2ZUd1aVdpZGdldFRyYW5zZm9ybVNjcmF0Y2gmIHNjcmF0Y2gsCiAgICBOYXRpdmVHdWlXaWRnZXRUcmFuc2Zvcm1CaW5kaW5ncyYgYmluZGluZ3MpIHsKICAgIF9fYXNtIHsKICAgICAgICBtb3YgZWN4LGFjdHVhbF93aWRnZXQKICAgICAgICBtb3YgZWF4LGFjdHVhbF9wYWlyMgogICAgICAgIGZsZCBkd29yZCBwdHIgW2VheF0gLy8gQTlFMEI0CiAgICAgICAgZnN0cCBkd29yZCBwdHIgW2VjeCsxOGhdIC8vIEE5RTBCNgogICAgICAgIGZsZCBkd29yZCBwdHIgW2VheCs0XSAvLyBBOUUwQjkKICAgICAgICBmc3RwIGR3b3JkIHB0ciBbZWN4KzFjaF0gLy8gQTlFMEJDCiAgICB9CiAgICByZWNvbXBvc2VfbmF0aXZlX2d1aV93aWRnZXRfdHJhbnNmb3JtXzAwYWE3MjIwKGFjdHVhbF93aWRnZXQsc2NyYXRjaCxiaW5kaW5ncyk7IC8vIEE5RTBCRgp9Cg==",
+      "anchor_base64": "fSAvLyBuYW1lc3BhY2UgYnNwCg==",
+      "forward_equal": true,
+      "inverse_equal": true
+    }
+  ],
+  "intermediate_states": [
+    {
+      "stage": "before",
+      "file_sha256": {
+        "include/bsp/native_gui_widget_transform.hpp": "7ce3ccf33392eeff3e603aa43edd941a94d5cdb23d655d70a722bdb60773354d",
+        "src/native_gui_widget_transform.cpp": "8f2bbaa84a9b44d90ce4ae89ccdc616118b7a358fb3be90220573ac3ef7eafad"
+      },
+      "canonical_hash_map_sha256": "2b09d52e60ba2f239f3a0e5af13f9628f74f057117921bd82f8062a5d1549fef"
+    },
+    {
+      "stage": "after_P1",
+      "file_sha256": {
+        "include/bsp/native_gui_widget_transform.hpp": "8dad778892b62bc27de08907eff18db3badd061a3a0d67711694aeb7df783642",
+        "src/native_gui_widget_transform.cpp": "8f2bbaa84a9b44d90ce4ae89ccdc616118b7a358fb3be90220573ac3ef7eafad"
+      },
+      "canonical_hash_map_sha256": "148b8e06fa829c8a08b7cab65d5167b5921ab388b57690a79cffab54d543cae5"
+    },
+    {
+      "stage": "after_P2",
+      "file_sha256": {
+        "include/bsp/native_gui_widget_transform.hpp": "8dad778892b62bc27de08907eff18db3badd061a3a0d67711694aeb7df783642",
+        "src/native_gui_widget_transform.cpp": "39c87d3fd8136d2802ea4c6def1fba8f0df853c8c4f82d778ab512bb65a45d40"
+      },
+      "canonical_hash_map_sha256": "3860a8df4b2ef31b2e7ba2391f63316ba58f709e711a5ccd25a29b598348f786"
+    },
+    {
+      "stage": "reverse_P2",
+      "file_sha256": {
+        "include/bsp/native_gui_widget_transform.hpp": "8dad778892b62bc27de08907eff18db3badd061a3a0d67711694aeb7df783642",
+        "src/native_gui_widget_transform.cpp": "8f2bbaa84a9b44d90ce4ae89ccdc616118b7a358fb3be90220573ac3ef7eafad"
+      },
+      "canonical_hash_map_sha256": "148b8e06fa829c8a08b7cab65d5167b5921ab388b57690a79cffab54d543cae5"
+    },
+    {
+      "stage": "reverse_P1",
+      "file_sha256": {
+        "include/bsp/native_gui_widget_transform.hpp": "7ce3ccf33392eeff3e603aa43edd941a94d5cdb23d655d70a722bdb60773354d",
+        "src/native_gui_widget_transform.cpp": "8f2bbaa84a9b44d90ce4ae89ccdc616118b7a358fb3be90220573ac3ef7eafad"
+      },
+      "canonical_hash_map_sha256": "2b09d52e60ba2f239f3a0e5af13f9628f74f057117921bd82f8062a5d1549fef"
+    }
+  ],
+  "whole_file_witnesses": [
+    {
+      "path": "include/bsp/gui_widget_attach.hpp",
+      "kind": "whole_file_bytes",
+      "bytes": 1474,
+      "sha256": "e4bf892e530f8b1e19e585bb0f1447b19e9be771219228886508eda5130cfb17",
+      "git_blob": "a8352c5702e62cee8a39ab60356d8d2916c3537e",
+      "cr_bytes": 0,
+      "lf_bytes": 27,
+      "frozen": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/witness_include__bsp__gui_widget_attach.hpp",
+      "baseline_git_raw_equal": true
+    },
+    {
+      "path": "src/gui_widget_attach.cpp",
+      "kind": "whole_file_bytes",
+      "bytes": 2845,
+      "sha256": "d20b38ff1e90e4c78c4f1b20ef9c05f841cad2e7cdc1f462c401f2c40215af03",
+      "git_blob": "3a93e16b5ef0af7047ea9efd40939fee8221bcc8",
+      "cr_bytes": 0,
+      "lf_bytes": 61,
+      "frozen": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/witness_src__gui_widget_attach.cpp",
+      "baseline_git_raw_equal": true
+    },
+    {
+      "path": "include/bsp/native_gui_frame_box_constructed_storage.hpp",
+      "kind": "whole_file_bytes",
+      "bytes": 6263,
+      "sha256": "3dc47a86b2249ccbf0d499fe8144307c1efad42f9a7ecae5c2fbc3e9c0a7fec8",
+      "git_blob": "a795e1271a0d206ff033794ca79c5d25ee7c3f15",
+      "cr_bytes": 0,
+      "lf_bytes": 109,
+      "frozen": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/witness_include__bsp__native_gui_frame_box_constructed_storage.hpp",
+      "baseline_git_raw_equal": true
+    },
+    {
+      "path": "src/native_gui_frame_box_constructed_storage.cpp",
+      "kind": "whole_file_bytes",
+      "bytes": 12490,
+      "sha256": "6747e90c88152960cc80961eaa4c4c90999a08e51e0d771674f00a7e646eb6d9",
+      "git_blob": "9280b269b6ecf9114b6ed1f0fe42e4cfed4bc3c2",
+      "cr_bytes": 0,
+      "lf_bytes": 231,
+      "frozen": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/witness_src__native_gui_frame_box_constructed_storage.cpp",
+      "baseline_git_raw_equal": true
+    },
+    {
+      "path": "include/bsp/native_node_raw_transform.hpp",
+      "kind": "whole_file_bytes",
+      "bytes": 2139,
+      "sha256": "99460e5aa96bac3ef0255146992d7e002e2ec5adf07ab71788221ad10c75d4de",
+      "git_blob": "fe8ca945cbddcf071e37b5ee7ade2080942490e2",
+      "cr_bytes": 0,
+      "lf_bytes": 47,
+      "frozen": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/witness_include__bsp__native_node_raw_transform.hpp",
+      "baseline_git_raw_equal": true
+    },
+    {
+      "path": "src/native_node_raw_transform.cpp",
+      "kind": "whole_file_bytes",
+      "bytes": 5316,
+      "sha256": "092fa6a47756bf5a8a3a18dfbbaecf468898b3c91bc5ee5235bba5a7f078e16c",
+      "git_blob": "cb27dc6bebf4e551e72d003868e57211b2615d40",
+      "cr_bytes": 0,
+      "lf_bytes": 121,
+      "frozen": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/witness_src__native_node_raw_transform.cpp",
+      "baseline_git_raw_equal": true
+    },
+    {
+      "path": "include/bsp/native_camera_matrix_copy.hpp",
+      "kind": "whole_file_bytes",
+      "bytes": 606,
+      "sha256": "70e741350edb66be14fc9d1b981181fe5ecf8c536f33eab47221469d8d3f1a7a",
+      "git_blob": "4cee0aa171c5abcebc575b159710a76c643c5d42",
+      "cr_bytes": 0,
+      "lf_bytes": 12,
+      "frozen": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/witness_include__bsp__native_camera_matrix_copy.hpp",
+      "baseline_git_raw_equal": true
+    },
+    {
+      "path": "src/native_camera_matrix_copy.cpp",
+      "kind": "whole_file_bytes",
+      "bytes": 1626,
+      "sha256": "31840777adef31ac0717e7bc4cb148ecd9aa45be8e5d2d52eb79f3c8a00a708d",
+      "git_blob": "d0e2c74f342f4efabaa540e9da9ad7f048e6a816",
+      "cr_bytes": 0,
+      "lf_bytes": 50,
+      "frozen": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/witness_src__native_camera_matrix_copy.cpp",
+      "baseline_git_raw_equal": true
+    },
+    {
+      "path": "include/bsp/native_camera_matrix_math.hpp",
+      "kind": "whole_file_bytes",
+      "bytes": 1803,
+      "sha256": "1a3d64ca2fb309bc24aaa36278b2f7be38e086c4faef36ad674a5c888cc93f1d",
+      "git_blob": "f275ed7c75903f61a87f4a7226406c817bffaebc",
+      "cr_bytes": 0,
+      "lf_bytes": 32,
+      "frozen": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/witness_include__bsp__native_camera_matrix_math.hpp",
+      "baseline_git_raw_equal": true
+    },
+    {
+      "path": "src/native_camera_matrix_math.cpp",
+      "kind": "whole_file_bytes",
+      "bytes": 23218,
+      "sha256": "ca793757d2bb262ae48cf09a29be44462714da585b430db68c5b3e9262277fa0",
+      "git_blob": "48414ad27eb574e1377594aaceca2baa96c1df55",
+      "cr_bytes": 0,
+      "lf_bytes": 618,
+      "frozen": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/witness_src__native_camera_matrix_math.cpp",
+      "baseline_git_raw_equal": true
+    },
+    {
+      "path": "include/bsp/native_particle_axial_loading.hpp",
+      "kind": "whole_file_bytes",
+      "bytes": 2796,
+      "sha256": "32bc421933d557541a5676f4a569ffd261763bde4ff404745e3953c724a1e497",
+      "git_blob": "2bb917a4ed52cad537c37c6f349ad6c802a7e856",
+      "cr_bytes": 0,
+      "lf_bytes": 45,
+      "frozen": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/witness_include__bsp__native_particle_axial_loading.hpp",
+      "baseline_git_raw_equal": true
+    },
+    {
+      "path": "src/native_particle_axial_loading.cpp",
+      "kind": "whole_file_bytes",
+      "bytes": 14024,
+      "sha256": "d90b8b4f6f760f376f7308a0aab722158074bc27c4befdf3873182a008cdeb5d",
+      "git_blob": "73fc528e2bc96020f256ee1e22e832831d9947a6",
+      "cr_bytes": 0,
+      "lf_bytes": 331,
+      "frozen": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/witness_src__native_particle_axial_loading.cpp",
+      "baseline_git_raw_equal": true
+    },
+    {
+      "path": "include/bsp/game_native_gui_text_state.hpp",
+      "kind": "whole_file_bytes",
+      "bytes": 3899,
+      "sha256": "7b544feaa7da8a1a4bab5b5f01546d8e4d8b5621d8da37c6b22e4dfbc9d964e0",
+      "git_blob": "c2f420b227592ab4ac84c680467f5142bf9e026a",
+      "cr_bytes": 0,
+      "lf_bytes": 71,
+      "frozen": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/witness_include__bsp__game_native_gui_text_state.hpp",
+      "baseline_git_raw_equal": true
+    },
+    {
+      "path": "src/game_native_gui_text_state.cpp",
+      "kind": "whole_file_bytes",
+      "bytes": 1821,
+      "sha256": "ff10c4e60079ea23117223b10dc9b64bb61715930fa2c1d1b7fff0b81396dd5f",
+      "git_blob": "4aeb220bed382de390912a2320ad1ca4adb4bf65",
+      "cr_bytes": 0,
+      "lf_bytes": 43,
+      "frozen": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/witness_src__game_native_gui_text_state.cpp",
+      "baseline_git_raw_equal": true
+    },
+    {
+      "path": "include/bsp/native_gui_widget_resolved_setter.hpp",
+      "kind": "whole_file_bytes",
+      "bytes": 2905,
+      "sha256": "f2b163215c4cb2db3154f983a64f0b96b56b73958d201dde6b12053cc48cfd7a",
+      "git_blob": "5ee5d91929ce399f7500e0232f8f76b1ff4cf19d",
+      "cr_bytes": 0,
+      "lf_bytes": 53,
+      "frozen": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/witness_include__bsp__native_gui_widget_resolved_setter.hpp",
+      "baseline_git_raw_equal": true
+    },
+    {
+      "path": "src/native_gui_widget_resolved_setter.cpp",
+      "kind": "whole_file_bytes",
+      "bytes": 5064,
+      "sha256": "305c47a4d41426775a134e1517a3eef62d2248d4e05c04046eedebd39aaab937",
+      "git_blob": "649a8651b68909f94293109ff2fa7a1c9bfcf5be",
+      "cr_bytes": 0,
+      "lf_bytes": 143,
+      "frozen": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/witness_src__native_gui_widget_resolved_setter.cpp",
+      "baseline_git_raw_equal": true
+    },
+    {
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "kind": "whole_file_bytes",
+      "bytes": 11288,
+      "sha256": "7f327720df25cde3d156afa7220ce99caff0b1c5920ea2d7abeea0814cbec5f8",
+      "git_blob": "da2e215cbd9c92b36d90dba6c95546de2dfe52be",
+      "cr_bytes": 0,
+      "lf_bytes": 188,
+      "frozen": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/witness_include__bsp__native_gui_text_glyph_quad_storage.hpp",
+      "baseline_git_raw_equal": true
+    },
+    {
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "kind": "whole_file_bytes",
+      "bytes": 32415,
+      "sha256": "0b4a9aa487ad5892e2bdc33ff172e277df3305994776a47c869cb189510e5714",
+      "git_blob": "e0816fe48a952f32e053bda9b793b251324a7d78",
+      "cr_bytes": 0,
+      "lf_bytes": 715,
+      "frozen": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/witness_src__native_gui_text_glyph_quad_storage.cpp",
+      "baseline_git_raw_equal": true
+    }
+  ],
+  "native_evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "bsp.py ghidra proto 0x00a9e0b0 completed before the read-only listing batch; Client verifies configured project/program",
+    "live_function_name": "BSP_GuiWidget_SetPivot",
+    "live_instruction_count": 7,
+    "live_body": "00a9e0b0..00a9e0c6",
+    "original_abi": "ECX actual widget; [ESP+4] actual pair; RET4; no recovered semantic EAX result",
+    "saved_assembly": [
+      {
+        "address": "00a9e0b0",
+        "kind": "whole_saved_assembly_file_bytes",
+        "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00a9e0b0/assembly.txt",
+        "bytes": 233,
+        "sha256": "3ad8e5741ffb0054cb23d2dac890dcf26cf2840d5d6317ce4b69738738c01410",
+        "git_blob": "b0a568f46dcfa9c3c5f031c36e7343a814b5ac9d",
+        "cr_bytes": 0,
+        "lf_bytes": 7,
+        "frozen": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/native_00a9e0b0_assembly.txt",
+        "instruction_lines": 7
+      },
+      {
+        "address": "00aa7220",
+        "kind": "whole_saved_assembly_file_bytes",
+        "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00aa7220/assembly.txt",
+        "bytes": 4030,
+        "sha256": "ab5e08f50dc441a0bdf62f14dbce4b23974a35eb5d16380eb0d036f901ba6b37",
+        "git_blob": "91a2c3193a6e30290c536a29a35f12d2108ff188",
+        "cr_bytes": 0,
+        "lf_bytes": 109,
+        "frozen": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/native_00aa7220_assembly.txt",
+        "instruction_lines": 109
+      },
+      {
+        "address": "00b64780",
+        "kind": "whole_saved_assembly_file_bytes",
+        "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00b64780/assembly.txt",
+        "bytes": 1348,
+        "sha256": "79f54f36c48ef7abcf3d04812db57c55cc2bd2fd200c83b62c8f57e569e854ea",
+        "git_blob": "bbef305817d49fdedc93d029a94e78960052ef9a",
+        "cr_bytes": 0,
+        "lf_bytes": 36,
+        "frozen": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/native_00b64780_assembly.txt",
+        "instruction_lines": 36
+      },
+      {
+        "address": "00413920",
+        "kind": "whole_saved_assembly_file_bytes",
+        "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00413920/assembly.txt",
+        "bytes": 8906,
+        "sha256": "8f705b749fd35dbde2b12284ec28cae882b698d7fdf01fb9ef6bfb2e144bfd1d",
+        "git_blob": "31b9bafaa6b4a350830d66905d7c68bb1fb6f91e",
+        "cr_bytes": 0,
+        "lf_bytes": 290,
+        "frozen": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/native_00413920_assembly.txt",
+        "instruction_lines": 290
+      },
+      {
+        "address": "00b6db10",
+        "kind": "whole_saved_assembly_file_bytes",
+        "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00b6db10/assembly.txt",
+        "bytes": 665,
+        "sha256": "368c27b67810cb8bb04ddf504f277e8652cbdbd9572380e30d43333d4320e345",
+        "git_blob": "0bfc999aa0f44011f87da04c3e1caa3c3d0aac82",
+        "cr_bytes": 0,
+        "lf_bytes": 22,
+        "frozen": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/native_00b6db10_assembly.txt",
+        "instruction_lines": 22
+      },
+      {
+        "address": "004134f0",
+        "kind": "whole_saved_assembly_file_bytes",
+        "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/004134f0/assembly.txt",
+        "bytes": 1295,
+        "sha256": "0249aebb87e9a06a48e94dee4e157455fcb55fa5db5cb824beb4d67867f86336",
+        "git_blob": "d69e2d1aac2bf673dc6629e17a9ce1ab6c1058ae",
+        "cr_bytes": 0,
+        "lf_bytes": 35,
+        "frozen": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/native_004134f0_assembly.txt",
+        "instruction_lines": 35
+      },
+      {
+        "address": "00b6dbc0",
+        "kind": "whole_saved_assembly_file_bytes",
+        "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00b6dbc0/assembly.txt",
+        "bytes": 252,
+        "sha256": "3b314e16a28910913cca6e37011c28e0614da93574af1536bc0e8e82d67a70a6",
+        "git_blob": "44ff8de0ec37ca968223ded3600b2be69f9f64c3",
+        "cr_bytes": 0,
+        "lf_bytes": 8,
+        "frozen": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/native_00b6dbc0_assembly.txt",
+        "instruction_lines": 8
+      },
+      {
+        "address": "00b6da30",
+        "kind": "whole_saved_assembly_file_bytes",
+        "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00b6da30/assembly.txt",
+        "bytes": 566,
+        "sha256": "18998ada60e9e8e063e955415c86dc14c32fb6a911144d2f4bc501fa2e0b08b6",
+        "git_blob": "498f982075a4aa5b5140778cba210a26a8bfc6f5",
+        "cr_bytes": 0,
+        "lf_bytes": 19,
+        "frozen": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/native_00b6da30_assembly.txt",
+        "instruction_lines": 19
+      }
+    ],
+    "native_pivot_listing": [
+      "00a9e0b0: MOV EAX,dword ptr [ESP + 0x4]",
+      "00a9e0b4: FLD float ptr [EAX]",
+      "00a9e0b6: FSTP float ptr [ECX + 0x18]",
+      "00a9e0b9: FLD float ptr [EAX + 0x4]",
+      "00a9e0bc: FSTP float ptr [ECX + 0x1c]",
+      "00a9e0bf: CALL 0x00aa7220",
+      "00a9e0c4: RET 0x4"
+    ],
+    "pe": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "image_base": "00400000"
+    },
+    "ranges": [
+      {
+        "start": "00a9e0b0",
+        "end_inclusive": "00a9e0c6",
+        "length": 23,
+        "pe_file_offset": 6938800,
+        "sha256": "5c65b9395eff65c752e12759b4aa684f0e1a60b9ec182578799a404fe14cb877",
+        "hex": "8b442404d900d95918d94004d9591ce85c910000c20400",
+        "frozen": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/native_00a9e0b0_23.bin"
+      },
+      {
+        "start": "00aa7220",
+        "end_inclusive": "00aa7466",
+        "length": 583,
+        "pe_file_offset": 6976032,
+        "sha256": "f219011d985624f1d43316fce088e885359fff01ef7155e7b27ef8271e9c0d2f",
+        "hex": "81ecdc010000f30f100d4ca2d700568bf1d94610f30f10560cd905c42fe100f30f105e14d9c0f30f100508a2d700decaf30f5c46488b464cd9c9f30f119424c4000000d99c24d8000000f30f114424040f57c0d94618f30f109424d8000000d9e0d84e20f30f119424c8000000f30f105628f30f11542414d95c2408f30f119c24cc000000d9461cf30f10542408f30f105e2cd9e0d84e24f30f11942484000000578b38dec9f30f118c2498000000f30f1184249c000000f30f118424a0000000d95c2410f30f118424a4000000f30f10542410f30f118424a8000000f30f118c24ac000000f30f118424b0000000f30f118424b4000000f30f118424b8000000f30f118424bc000000f30f118c24c0000000f30f118424c4000000f30f118c24d4000000f30f1144241cf30f11442420f30f11442424f30f11442428f30f115c242cf30f11442430f30f11442434f30f11442438f30f1144243cf30f114c2440f30f11442444f30f11442448f30f1144244cf30f11442450f30f114c2454f30f114c2458f30f1144245cf30f11442460f30f11442464f30f11442468f30f114c246cf30f11442470f30f11442474f30f11442478f30f1144247cf30f118c2480000000f30f11842484000000f30f1194248c000000f30f11842490000000f30f118c24940000008d8c2498000000518d9424e8000000528d5424108d8c246c010000e858d30b00508d842430010000508d4c2428518d9424b8010000528d4c2470e8d9c496ff8bc8e8d2c496ff8bc8e8cbc496ff8b4e4c508b4738ffd05f5e81c4dc010000c3",
+        "frozen": "local/output/cc16_native_gui_widget_pivot_raw_storage_20261030/native_00aa7220_583.bin"
+      }
+    ],
+    "table_cell": {
+      "address": "00d5c6f8",
+      "table_base": "00d5c6c8",
+      "offset": "30",
+      "bytes": 4,
+      "pe_file_offset": 9815800,
+      "hex": "b0e0a900",
+      "target": "00a9e0b0",
+      "meaning": "installed PE table cell only; not current live object/profile/generation proof"
+    }
+  },
+  "checks": {
+    "two_source_insertions_only": true,
+    "four_sequential_x87_memory_operations_exact": true,
+    "no_pair_snapshot": true,
+    "old_whole_transform_pair_recovered_by_inverse": true,
+    "old_typed_facade_and_providers_whole_file_equal": true,
+    "all_five_state_hashes_recorded": true,
+    "native_pivot_whole_7_ops_23_bytes": true,
+    "same_raw_recompose_called_once_after_second_store": true,
+    "no_guard_noexcept_owner_frame_cleanup_counter_added": true,
+    "no_glyph_source_wiring": true,
+    "git_diff_check_pass": true
+  },
+  "contract": {
+    "signature": "void set_native_gui_widget_pivot_00a9e0b0(void*, const volatile void*, NativeGuiWidgetTransformScratch&, NativeGuiWidgetTransformBindings&)",
+    "pair_alias": "The second FLD occurs after the first FSTP; pair==widget+14h observes the newly stored widget+18h at pair+4h.",
+    "scratch": "Caller-retained initialized stable 1DCh preimage; preserve C..F/D0..D3/D8..DB holes and disjoint private/provider extents; no automatic scratch allocation here.",
+    "constants": "Actual held RO D7A24C and D7A208 refs and SAME live GameNativeGuiTextState E12FC4 ref, never Text E12FD4 or copied values.",
+    "dispatch": "Actual target and raw receiver forwarded by existing AA7220. Concrete ConstructedTransformDispatch admits only captured B6DB10; its reached current notification domain remains Node/Model/Group with actual B6DBC0.",
+    "callee_epochs": "AA7255 captures node; AA72C2 captures its vtable; AA7423/7442/7449/7450 invoke existing matrix providers; AA7455 reloads CURRENT widget+4C; AA7459 reads slot38 from EARLIER vtable; AA745C dispatches.",
+    "failure": "No new catch/destructor/rollback/retry/reset/cleanup/NoThrow. Reached raw stores, scratch and genuine provider obligations survive an escape under existing caller retention contracts.",
+    "remaining": "Actual storage/subobject/publication-generation/custody, reached notification domains and all borrowed lifetime/affinity remain caller proofs; no Raw122/Factory/CurrentModel projection or public Native authority is created."
+  },
+  "qualifications": {
+    "new_source_four_arg_abi": true,
+    "original_ecx_stack_ret4_compatible": false,
+    "original_physical_stack_or_alias_privacy_proven": false,
+    "original_fault_timing_or_unmasked_fp_proven": false,
+    "semantic_eax_result_proven": false,
+    "general_slot38_or_other_profile_provider_closed": false,
+    "glyph_current30_wired": false,
+    "genuine_per_glyph_provider_ready": false,
+    "native_exception_origin_permission": false,
+    "native_activation": false,
+    "game_runtime_validation": false,
+    "additional_native_reconstruction_credit": 0,
+    "vendor_or_duplicate_helper_credit": 0
+  },
+  "execution": {
+    "worker_compiler_run": false,
+    "worker_build_run": false,
+    "worker_tests_run": false,
+    "worker_probe_run": false,
+    "worker_game_run": false,
+    "ghidra_mutations": false,
+    "cmake_or_ledger_changes": false,
+    "original_game_written": false,
+    "static_mechanical_reader_run": "worktree then sealed Git target; not a compiled/runtime test"
+  },
+  "reader_py": "import base64,hashlib,json,pathlib,subprocess,sys\np=pathlib.Path(sys.argv[1]);r=json.loads(p.read_text(encoding=\"utf-8\"));rev=sys.argv[2] if len(sys.argv)>2 else None\nsha=lambda b:hashlib.sha256(b).hexdigest()\ngit=lambda spec:subprocess.check_output([\"git\",\"show\",spec])\nold={};new={}\nfor f in r[\"source_files\"]:\n q=f[\"path\"];b=base64.b64decode(f[\"baseline_base64\"]);assert git(r[\"base_commit\"]+\":\"+q)==b\n assert sha(b)==f[\"before\"][\"sha256\"]\n frozen=pathlib.Path(f[\"frozen_before\"])\n if frozen.exists():assert frozen.read_bytes()==b\n old[q]=b;new[q]=git(rev+\":\"+q) if rev else pathlib.Path(q).read_bytes()\n assert sha(new[q])==f[\"after\"][\"sha256\"]\nstate=old.copy();stages=iter(r[\"intermediate_states\"])\ndef check_state():\n w=next(stages);h={q:sha(b) for q,b in sorted(state.items())}\n assert h==w[\"file_sha256\"] and sha(json.dumps(h,sort_keys=True,separators=(\",\",\":\")).encode())==w[\"canonical_hash_map_sha256\"]\ncheck_state()\nfor s in r[\"seams\"]:\n q=s[\"path\"];a=s[\"byte_offset\"];b=base64.b64decode(s[\"inserted_base64\"]);assert sha(b)==s[\"inserted\"][\"sha256\"]\n assert state[q][a:]==base64.b64decode(s[\"anchor_base64\"])\n state[q]=state[q][:a]+b+state[q][a:]\n check_state()\nassert state==new\nfor s in reversed(r[\"seams\"]):\n q=s[\"path\"];a=s[\"byte_offset\"];b=base64.b64decode(s[\"inserted_base64\"]);assert state[q][a:a+len(b)]==b\n state[q]=state[q][:a]+state[q][a+len(b):]\n check_state()\nassert state==old\nassert not list(stages)\nfor w in r[\"whole_file_witnesses\"]:\n q=w[\"path\"];b=git(r[\"base_commit\"]+\":\"+q);a=git(rev+\":\"+q) if rev else pathlib.Path(q).read_bytes()\n assert a==b and sha(b)==w[\"sha256\"]\n frozen=pathlib.Path(w[\"frozen\"])\n if frozen.exists():assert frozen.read_bytes()==b\nprint(\"PASS: two forward/reverse whole-file inverses; Git/raw/frozen preimages; unchanged whole-file witnesses\")\n"
+}
