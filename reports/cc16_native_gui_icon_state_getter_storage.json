@@ -1,0 +1,93 @@
+{
+  "kind": "ignored whole raw state-getter Source support; excluded HIGH STL/CG credit",
+  "base": "672a6cc2fd7dba2b69a0e449e542f9d1c15a81fa",
+  "owned_paths": [
+    "include/bsp/native_gui_icon_state_getter_storage.hpp",
+    "src/native_gui_icon_state_getter_storage.cpp",
+    "docs/CC16_NATIVE_GUI_ICON_STATE_GETTER_STORAGE.md",
+    "reports/cc16_native_gui_icon_state_getter_storage.json"
+  ],
+  "Source_postimages": [
+    {
+      "path": "include/bsp/native_gui_icon_state_getter_storage.hpp",
+      "bytes": 1728,
+      "sha256": "aad3104e3eaf30cdd01b6e72c96204c31748eba75f6944708fb1505416dbf56f"
+    },
+    {
+      "path": "src/native_gui_icon_state_getter_storage.cpp",
+      "bytes": 1618,
+      "sha256": "80b325ff9f7a8eb15f84a84ed547aae2d75c0d8ac62145cd3e861bd247b992e5"
+    }
+  ],
+  "doc": {
+    "path": "docs/CC16_NATIVE_GUI_ICON_STATE_GETTER_STORAGE.md",
+    "bytes": 2590,
+    "sha256": "ba68ef32f62d41e90124aa59abaa81931e1f92753e6319f36b0a74718981c6f2"
+  },
+  "reader": {
+    "bytes": 4542,
+    "sha256": "d691c21ff9c0be79fb195e5428e998f451cdb4953b7bf74c092d93063f721887",
+    "utf8": "import argparse,pathlib,json,hashlib,re,subprocess\nfrom capstone import Cs,CS_ARCH_X86,CS_MODE_32\nap=argparse.ArgumentParser();ap.add_argument('--candidate');a=ap.parse_args();D=pathlib.Path(__file__).resolve().parent;C=pathlib.Path(a.candidate) if a.candidate else D/'candidate';r=json.loads((C/'reports/cc16_native_gui_icon_state_getter_storage.json').read_bytes());checks=[]\ndef sh(b):return hashlib.sha256(b).hexdigest()\ndef ok(v,s):assert v,s;checks.append({'check':s,'passed':True})\ndef git(*x):return subprocess.check_output(['git',*x])\nok(pathlib.Path(__file__).read_bytes()==r['reader']['utf8'].encode(),'exact raw report-embedded static reader')\nfor p in r['Source_postimages']+[r['doc']]:\n b=(C/p['path']).read_bytes();ok(len(b)==p['bytes'] and sh(b)==p['sha256'],'whole proposed postimage '+p['path'])\nfor p in r['provider_whole_pins']:\n b=git('show',r['base']+':'+p['path']);ok(len(b)==p['bytes'] and sh(b)==p['sha256'],'genuine unchanged existing provider '+p['path'])\nfor p in r['owned_paths']:\n q=subprocess.run(['git','cat-file','-e',r['base']+':'+p],stdout=subprocess.PIPE,stderr=subprocess.PIPE);ok(q.returncode!=0,'new path baseline absence '+p)\nb=bytes.fromhex(r['Native']['hex']);native=list(Cs(CS_ARCH_X86,CS_MODE_32).disasm(b,0xab1230));ok(len(b)==45 and sh(b)==r['Native']['sha256'] and len(native)==19 and native[-1].address==0xab125a and bytes(native[-1].bytes)==bytes.fromhex('c20400'),'whole45B19ops/RET4 through125C')\ns=(C/'src/native_gui_icon_state_getter_storage.cpp').read_text();blocks=re.findall(r'__asm\\s*\\{([\\s\\S]*?)\\}',s);ok(len(blocks)==2,'two asm regions with explicit real validation boundary');ops=[];labels=[]\nfor block in blocks:\n part=[];lab={}\n for line in block.splitlines():\n  line=line.split('//',1)[0].strip()\n  if not line:continue\n  if line.endswith(':'):lab[line[:-1]]=len(part)\n  else:part.append(line)\n ops.append(part);labels.append(lab)\ndef canon(s):\n s=s.lower();s=re.sub(r'0x([0-9a-f]+)',lambda m:str(int(m[1],16)),s);return re.sub(r'\\s+','',s)\nok(ops[0][:2]==['mov ecx, captured_vector','mov edx, index_address'] and ops[1][:2]==['mov esi, captured_vector','mov edi, captured_index'],'address/value bindings do not resample Native payload')\nmeta=['mov captured_index, edi','mov validation_required, 1','jmp state_get_first_phase_done','mov validation_required, 0','mov result, eax'];semantic=[x for p in ops for x in p[2:] if x not in meta];excluded={0xab1230,0xab1238,0xab124b,0xab1258,0xab1259,0xab125a};mapped=[]\nfor i in native:\n if i.address in excluded:continue\n text=i.mnemonic+' '+i.op_str\n if i.address==0xab1239:text='mov edi, dword ptr [edx]'\n if i.address==0xab123d:text='jz state_get_validate'\n if i.address==0xab1249:text='jb state_get_valid'\n mapped.append((i.address,text))\nok(len(mapped)==13 and len(semantic)==13,'all13 non-ABI data/branch operations once')\nfor (address,text),actual in zip(mapped,semantic):ok(canon(text)==canon(actual),'exact Native operand '+hex(address))\nok(ops[0][labels[0]['state_get_validate']]=='mov validation_required, 1' and ops[0][labels[0]['state_get_valid']]=='mov validation_required, 0' and labels[0]['state_get_first_phase_done']==len(ops[0]),'actual validation/skip CFG targets')\nok(ops[0].index('mov captured_index, edi')<ops[0].index('jz state_get_validate'),'late capturedindex assigned before null validation branch')\nok('if (validation_required)\\n        invoke_native_invalid_parameter_00bf6713();' in s and s.index('invoke_native_invalid_parameter_00bf6713();')>s.index('__asm') and s.index('invoke_native_invalid_parameter_00bf6713();')<s.rindex('__asm'),'genuine existing zeroargument service between load phases')\nok(ops[1][-2:]==['add eax, dword ptr [esi + 4]','mov result, eax'],'final CURRENT first04 reload, not initial captured pointer')\nclean=re.sub(r'//[^\\n]*','',s);ok(clean.count('index_address = &actual_index_home')==1 and ops[0].count('mov edi, dword ptr [edx]')==1,'index home captured once/no reread after provider')\nok(not any(x in clean for x in ['std::vector','NativeGuiIconStateStorage','reinterpret_cast','try {','catch (','noexcept','noreturn','new ','delete ','nullptr','throw ']),'no typedvector/state/guard/default/cleanup/NoThrow/terminal/cast')\nok(re.findall(r'\\bif\\s*\\(([^)]*)\\)',clean)==['validation_required'],'only actual Native-derived validation selection')\nprint(json.dumps({'pass':True,'checks':len(checks),'whole_Native_bytes':45,'whole_Native_ops':19,'non_ABI_ops':13,'real_validation_service':True,'new_Original_CG_vendor_credit':0,'compiler_OriginalABI_runtime_activation':False}))\n"
+  },
+  "Native": {
+    "address": "00ab1230",
+    "end": "00ab125c",
+    "bytes": 45,
+    "instructions": 19,
+    "hex": "568bf18b4e0485c9578b7c240c740c8b46082bc1c1f8063bf87205e8c35414008bc7c1e0060346045f5ec20400",
+    "sha256": "2dfd67e63267bd4e561089b9acc53bece8dec5f627339a34b375c7aac6bc287c",
+    "source_provider_call_site": "00ab124b ->00bf6713",
+    "NoThrow_OriginalABI_CG_credit": false
+  },
+  "provider_whole_pins": [
+    {
+      "path": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+      "bytes": 1471,
+      "sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+      "Git_blob_sha1": "4984c27fa603fe05a308d701c54dafba6110de7e"
+    },
+    {
+      "path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "bytes": 1089,
+      "sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+      "Git_blob_sha1": "bf2a25c5f28d9eb10d37f7099faf9adaabb0a97d"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_storage.hpp",
+      "bytes": 8923,
+      "sha256": "36efeb861e01b14348e370d169c9002b8ac436a29b2f9f3be1d5aac8d7976bfc",
+      "Git_blob_sha1": "0a98345600a93dff4fc6c10ce3a0626d93fe9847"
+    },
+    {
+      "path": "src/native_gui_icon_storage.cpp",
+      "bytes": 19689,
+      "sha256": "cc847b8f5fb19055a1116376b2d3a8eff181f045695fe73394ba04996728a492",
+      "Git_blob_sha1": "1d61197d246f8c9789c733fa70919817a1581f73"
+    },
+    {
+      "path": "include/bsp/gui_icon.hpp",
+      "bytes": 16834,
+      "sha256": "1e2dc70631e3ebea332c8253956c9fbba9571bd2cb9e783d381e5863018f8ca7",
+      "Git_blob_sha1": "84b64ce3d68023fd3555e0025db31c07eae9810a"
+    },
+    {
+      "path": "src/gui_icon.cpp",
+      "bytes": 10301,
+      "sha256": "cef86334d35a1f4b972e3f9e4f9181f51a57089c41b2b17ef860bcaf5433e0af",
+      "Git_blob_sha1": "ffe5439e628f35659f94767ebbbc7477867ca7db"
+    }
+  ],
+  "original_name_tag_preserved": "STL_inst_00ab1230 / stl_instantiation HIGH; no ledger/name/tag/bodycount changes",
+  "API": "void* get_native_gui_icon_state_storage_00ab1230(void*,const volatile uint32_t&)",
+  "body_support_ready_for_static_review": true,
+  "actual_validation_provider": "invoke_native_invalid_parameter_00bf6713() from existing native_invalid_parameter_noinfo_call HCPP",
+  "provider_runtime_domain": "actual linked Source SDK zeroarg invalid-parameter policy, not original BF66EF encoded-global/Watson/debugger delivery",
+  "storage": "actual0x10byte vectorF0/currentfirst04/currentlast08; proxy00/end0C untouched; no T[n] or returnedstate dereference",
+  "late_home_captured_once_current_first_reloaded_after_validation": true,
+  "DWORD_subtraction_SAR6_unsigned_compare_shift_add_wrap": true,
+  "four_path_addition_inverse_proof": "addition_inverse.json, generated in ignored private index after this report",
+  "remaining_prerequisites": "AB24B0 then AB2600/default80; actual callers/custody/disposition and runtime unbound",
+  "new_Original_native_vendor_helper_CG_duplicate_credit": 0,
+  "Source_tracked_CMake_Ghidra_ledger_compiler_tests_probes_Game_actions": false,
+  "OriginalABI_NoThrow_Origin_runtime_activation": false
+}
