@@ -2511,3 +2511,6 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_cor
 
 # Raw Matrix outer/factory lifetime provider; actual caller activation remains gated.
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_matrix_storage_lifetime.cpp)
+
+# Raw Plain factory/scalar lifetime provider; actual caller activation remains gated.
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_plain_node_storage.cpp)
