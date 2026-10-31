@@ -2,9 +2,9 @@
   "schema": 1,
   "packet": "resource_ambient_typed_carrier_source_frame_20261031",
   "base_commit": "6408455eff25aa7f6ed2bbafdc1aa2e5918b08e3",
-  "status": "Root_actual_Source_accepted_independent_actual_Source_review_pending",
+  "status": "SDK_member_restore_v2_correction_proposed_Source_and_compiler_gates_pending",
   "source_ready": false,
-  "compiler_build_test_probe_runtime_Ghidra_performed": false,
+  "author_compiler_build_test_probe_runtime_Ghidra_performed": false,
   "new_Native_or_vendor_body_credit": 0,
   "plan": {
     "sha256": "97fc1687fabbe0721d037f3a3eb4ffb359c69b6cd8678127229d4f0feb9c4f87",
@@ -33,7 +33,7 @@
     "00b82c60",
     "00ac59a0"
   ],
-  "production_files": [
+  "v1_production_files": [
     {
       "path": "include/bsp/native_scene_typed_lifetime.hpp",
       "new_file": true,
@@ -165,7 +165,7 @@
       "physical_lines": 496
     }
   ],
-  "verification": {
+  "v1_verification": {
     "source_freeze_sha256": "058241349eaa7aea21bfadca05e0b714eb2107746dcd926da0b50234d12e7c9a",
     "all_13_baselines_and_candidates_exact": true,
     "whole_production_diff_equals_frozen_plan": true,
@@ -191,5 +191,33 @@
     "source_freeze_sha256": "058241349eaa7aea21bfadca05e0b714eb2107746dcd926da0b50234d12e7c9a",
     "production_diff_sha256": "97fc1687fabbe0721d037f3a3eb4ffb359c69b6cd8678127229d4f0feb9c4f87",
     "scope": "Actual13Source files equal independently applied reviewed candidate; no compiler or runtime grant."
+  },
+  "v1_compiler_gate": {
+    "reported_by_Root": true,
+    "outcome": "FAILED_BEFORE_TESTS",
+    "elapsed_seconds": 8.84,
+    "failed_assertions": [
+      "atomic_trivially_copyable",
+      "ActualResource3Ch_trivially_copyable",
+      "ActualAmbient98h_trivially_copyable"
+    ],
+    "evidence": "Root preserved failed_v1 canonical log/artifacts; not rerun by correction author."
+  },
+  "sdk_member_restore_v2": {
+    "base_commit": "f634d2d33fe2cbc427cac9e59d2684bc35d251fe",
+    "atomic_header_sha256": "2f24fbb8dceb9dccc86f9a61493301ae3aa99ee572e2c4227428992a32e713f4",
+    "route": "Restore only real trivial subobjects; atomic count through live public _Storage._Value int32 member.",
+    "false_v1_assumption_preserved_as_history": true,
+    "whole_atomic_or_carrier_copy": false,
+    "arbitrary_typed_count_preload": false,
+    "new_count_or_atomic_store": false,
+    "Source_or_compiler_authority": false,
+    "target_gates": [
+      "exact member type/offset/address/full4B state",
+      "all restore destinations trivially copyable",
+      "complete nonoverlapping byte coverage",
+      "same count/name/constant epochs and provider-free transient sequence",
+      "fresh Root and independent Source/design then emitted-operation review"
+    ]
   }
 }

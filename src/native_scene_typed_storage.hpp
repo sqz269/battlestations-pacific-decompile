@@ -7,6 +7,8 @@
 #include <cstring>
 #include <intrin.h>
 #include <new>
+#include <limits>
+#include <utility>
 #include <stdexcept>
 #include <type_traits>
 
@@ -34,7 +36,35 @@ struct ActualAmbient98h {
 static_assert(sizeof(void*) == 4);
 static_assert(sizeof(std::atomic<std::int32_t>) == 4);
 static_assert(alignof(std::atomic<std::int32_t>) == 4);
-static_assert(std::is_trivially_copyable_v<std::atomic<std::int32_t>>);
+// This installed atomic is NOT trivially copyable. The qualified route uses
+// only its actual public integral subobject, never an atomic/class roundtrip.
+using SceneAtomic = std::atomic<std::int32_t>;
+using SceneAtomicStorage = std::remove_reference_t<decltype(std::declval<SceneAtomic&>()._Storage)>;
+using SceneAtomicValue = std::remove_reference_t<decltype(std::declval<SceneAtomic&>()._Storage._Value)>;
+static_assert(!std::is_trivially_copyable_v<SceneAtomic>);
+static_assert(std::is_same_v<SceneAtomicValue, std::int32_t>);
+static_assert(std::is_same_v<std::make_unsigned_t<SceneAtomicValue>, SceneWord>);
+static_assert(std::numeric_limits<unsigned char>::digits == 8);
+static_assert(sizeof(SceneWord) == 4 && std::numeric_limits<SceneWord>::digits == 32);
+static_assert(std::is_standard_layout_v<SceneAtomic>);
+static_assert(std::is_standard_layout_v<SceneAtomicStorage>);
+static_assert(std::is_trivially_copyable_v<SceneAtomicStorage>);
+static_assert(std::is_trivially_copyable_v<SceneAtomicValue>);
+static_assert(sizeof(SceneAtomic) == 4 && sizeof(SceneAtomicStorage) == 4);
+static_assert(sizeof(SceneAtomicValue) == 4);
+static_assert(alignof(SceneAtomic) == 4 && alignof(SceneAtomicStorage) == 4);
+static_assert(alignof(SceneAtomicValue) == 4);
+static_assert(offsetof(SceneAtomic, _Storage) == 0);
+static_assert(offsetof(SceneAtomicStorage, _Value) == 0);
+static_assert(std::has_unique_object_representations_v<SceneAtomicValue>);
+static_assert(std::numeric_limits<SceneAtomicValue>::digits == 31);
+static_assert((std::numeric_limits<SceneAtomicValue>::min)() == (-2147483647 - 1));
+static_assert((std::numeric_limits<SceneAtomicValue>::max)() == 2147483647);
+// SDK active ABI: atomic -> integral facade -> 4B storage -> _Storage._Value.
+// The live int32 member occupies EVERY atomic byte, with no additional state.
+// Existing write(owner,4,1) addresses exactly this member. SceneWord is its
+// corresponding unsigned type; positive1 has the same representation. Raw
+// Interlocked consumers retain the existing qualified MSVC address contract.
 static_assert(sizeof(ActualResource3Ch) == 0x3c && alignof(ActualResource3Ch) == 4);
 static_assert(offsetof(ActualResource3Ch, count) == 4);
 static_assert(offsetof(ActualResource3Ch, name) == 8);
@@ -50,8 +80,28 @@ static_assert(offsetof(ActualAmbient98h, scalar) == 0x14);
 static_assert(offsetof(ActualAmbient98h, lighting) == 0x18);
 static_assert(std::is_standard_layout_v<ActualResource3Ch>);
 static_assert(std::is_standard_layout_v<ActualAmbient98h>);
-static_assert(std::is_trivially_copyable_v<ActualResource3Ch>);
-static_assert(std::is_trivially_copyable_v<ActualAmbient98h>);
+static_assert(!std::is_trivially_copyable_v<ActualResource3Ch>);
+static_assert(!std::is_trivially_copyable_v<ActualAmbient98h>);
+// Literal complete byte coverage: no omitted padding or overlapping restores.
+static_assert(offsetof(ActualResource3Ch, profile) == 0);
+static_assert(offsetof(ActualResource3Ch, count) == sizeof(SceneWord));
+static_assert(offsetof(ActualResource3Ch, name) == offsetof(ActualResource3Ch, count) + sizeof(SceneAtomicValue));
+static_assert(offsetof(ActualResource3Ch, ambient) == offsetof(ActualResource3Ch, name) + sizeof(decltype(ActualResource3Ch::name)));
+static_assert(offsetof(ActualResource3Ch, registry) == offsetof(ActualResource3Ch, ambient) + sizeof(SceneWord));
+static_assert(sizeof(ActualResource3Ch) == offsetof(ActualResource3Ch, registry) + sizeof(decltype(ActualResource3Ch::registry)));
+static_assert(offsetof(ActualAmbient98h, profile) == 0);
+static_assert(offsetof(ActualAmbient98h, count) == sizeof(SceneWord));
+static_assert(offsetof(ActualAmbient98h, backlinks) == offsetof(ActualAmbient98h, count) + sizeof(SceneAtomicValue));
+static_assert(offsetof(SystemAmbientBacklinks, begin_00) == 0);
+static_assert(offsetof(SystemAmbientBacklinks, count_04) == sizeof(decltype(SystemAmbientBacklinks::begin_00)));
+static_assert(offsetof(SystemAmbientBacklinks, capacity_08) == offsetof(SystemAmbientBacklinks, count_04) + sizeof(std::int32_t));
+static_assert(sizeof(SystemAmbientBacklinks) == offsetof(SystemAmbientBacklinks, capacity_08) + sizeof(std::int32_t));
+static_assert(std::is_trivially_copyable_v<SystemAmbientBacklinks>);
+static_assert(offsetof(ActualAmbient98h, scalar) == offsetof(ActualAmbient98h, backlinks) + sizeof(SystemAmbientBacklinks));
+static_assert(offsetof(ActualAmbient98h, lighting) == offsetof(ActualAmbient98h, scalar) + sizeof(SceneWord));
+static_assert(sizeof(ActualAmbient98h) == offsetof(ActualAmbient98h, lighting) + sizeof(decltype(ActualAmbient98h::lighting)));
+static_assert(offsetof(ActualResource3Ch, count) + offsetof(SceneAtomic, _Storage) + offsetof(SceneAtomicStorage, _Value) == 4);
+static_assert(offsetof(ActualAmbient98h, count) + offsetof(SceneAtomic, _Storage) + offsetof(SceneAtomicStorage, _Value) == 4);
 static_assert(std::is_nothrow_default_constructible_v<ActualResource3Ch>);
 static_assert(std::is_nothrow_default_constructible_v<ActualAmbient98h>);
 static_assert(std::is_trivially_destructible_v<ActualResource3Ch>);
@@ -65,7 +115,33 @@ inline SceneWord scene_word(const void* p) noexcept {
 inline void scene_word(void* p, SceneWord value) noexcept {
     _ReadWriteBarrier(); std::memcpy(p, &value, 4); _ReadWriteBarrier();
 }
+template<class T> void restore_actual_subobject(T& destination,
+    const unsigned char* preimage) noexcept {
+    static_assert(std::is_trivially_copyable_v<T>);
+    // Bind/address the live scalar/array/member; do not read its typed value.
+    auto* const bytes = reinterpret_cast<volatile unsigned char*>(&destination);
+    for (std::size_t i = 0; i != sizeof(T); ++i) bytes[i] = preimage[i];
+}
+inline void restore_scene_members(ActualResource3Ch& owner,
+    const unsigned char* preimage) noexcept {
+    restore_actual_subobject(owner.profile, preimage);
+    restore_actual_subobject(owner.count._Storage._Value, preimage + 4);
+    restore_actual_subobject(owner.name, preimage + 8);
+    restore_actual_subobject(owner.ambient, preimage + 0x10);
+    restore_actual_subobject(owner.registry, preimage + 0x14);
+}
+inline void restore_scene_members(ActualAmbient98h& owner,
+    const unsigned char* preimage) noexcept {
+    restore_actual_subobject(owner.profile, preimage);
+    restore_actual_subobject(owner.count._Storage._Value, preimage + 4);
+    restore_actual_subobject(owner.backlinks, preimage + 8);
+    restore_actual_subobject(owner.scalar, preimage + 0x14);
+    restore_actual_subobject(owner.lighting, preimage + 0x18);
+}
+
 template<class T> T* begin_scene_storage(void* owner) noexcept {
+    // Save raw bytes only. Restore real trivial subobjects individually;
+    // the atomic object and carrier are never copied as complete objects.
     // No evaluation of an arbitrary count/pointer preimage as a C++ value.
     // The SDK atomic default constructor may transiently write its base.
     unsigned char preimage[sizeof(T)];
@@ -74,9 +150,8 @@ template<class T> T* begin_scene_storage(void* owner) noexcept {
     for (std::size_t i = 0; i != sizeof(T); ++i) preimage[i] = source[i];
     _ReadWriteBarrier();
     auto* result = ::new (owner) T;
-    auto* const destination = static_cast<volatile unsigned char*>(owner);
     _ReadWriteBarrier();
-    for (std::size_t i = 0; i != sizeof(T); ++i) destination[i] = preimage[i];
+    restore_scene_members(*result, preimage);
     _ReadWriteBarrier();
     return result;
 }

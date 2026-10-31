@@ -3,13 +3,19 @@
 The actual3Ch scene resource and nested98h ambient now begin real MSVC Win32
 carrier lifetimes before their existing raw constructors. Canonical references
 borrow the carriers' sole atomic count at+4. This applies the reviewed97fc1687
-proposal; it adds no Native body credit, count, resource owner or runtime switch.
+proposal followed by the reviewed SDK-member correction; it adds no Native
+body credit, count, resource owner or runtime switch.
 
 The private carriers contain the exact Native fields, including the ambient's
 real12B SystemAmbientBacklinks and resource's ten registry DWORDs. They contain
 no host lighting tail or semantic SceneResource. Byte preimages are saved,
 default construction may transiently write the atomic, and every byte is
-restored before the original Native observations. Volatile byte loops and
+restored through actual trivially-copyable members before the original Native
+observations. The installed atomic/carriers are NOT trivially copyable: count
+bytes are restored only through the real public int32 `_Storage._Value` member.
+Target assertions will verify its type/offset/full4B representation and complete
+nonoverlapping field coverage. No arbitrary typed count preload is performed.
+Volatile byte loops and
 barriers introduce no provider callback, FP conversion or DF-dependent string
 copy in that interval. Resource count1 remains before name-pointer capture;
 the complete ambient assembly still captures its constant before owner stores.
@@ -44,10 +50,12 @@ ordinary Source domain. Existing destructor secondary-failure boundaries are
 not a new runtime binding. Model/Matrix lifetime, derived/root/child dispatch,
 credits, mission activation and Root runtime gates remain separate.
 
-Source verification: all13 production baselines/candidates match the frozen
+V1 Source verification at f634d2d33: all13 production baselines/candidates
+match the frozen
 proposal, the full production diff equals it, and reverse applicability passes.
 Ambient assembly, resource payload and whole registry algorithm projection
 are inverse-exact. Both producers and every changed Source call site are
-covered. No compiler, build, test, probe or Native entry ran for this packet.
-Target layout/traits, emitted operations/providers and actual Source review
-remain explicit gates for Root's later validation.
+covered. Root's first canonical build failed the v1 trivial-copy assertions
+before tests; that evidence is retained. No author compiler/probe/Native entry
+ran. The SDK-member correction requires fresh Source review and explicit later
+compiler/emitted-operation validation; it is not an assert-deletion workaround.
