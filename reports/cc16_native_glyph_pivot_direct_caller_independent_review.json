@@ -1,0 +1,957 @@
+{
+  "schema_version": 1,
+  "kind": "independent_Source51_Glyph_pivot_caller_and_Root_Core_review",
+  "reviewed_ref": "1ce6f7b2a09789a2b74f26954932ab80d574bcd4",
+  "reviewed_parent": "7411009ed6f1024b32442c64df91af8394120ee7",
+  "verdict": "NO_ACTIONABLE_FINDINGS_IN_BOUNDED_SOURCE_AND_STATIC_CORE_SCOPE",
+  "findings": [],
+  "scope": {
+    "author_files": [
+      "docs/CC16_NATIVE_GLYPH_PIVOT_DIRECT_CALLER.md",
+      "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "reports/cc16_native_glyph_pivot_direct_caller.json",
+      "src/native_gui_text_glyph_quad_storage.cpp"
+    ],
+    "review_files": [
+      "docs/CC16_NATIVE_GLYPH_PIVOT_DIRECT_CALLER_INDEPENDENT_REVIEW.md",
+      "reports/cc16_native_glyph_pivot_direct_caller_independent_review.json"
+    ],
+    "implementation_edits": false,
+    "ancestry_merge": false,
+    "address_writes": false
+  },
+  "hash_formats": {
+    "Source": "Exact immutable Git UTF8 LF bytes/blobSHA1",
+    "frozen": "Raw before/after and input copies equal specified Git objects",
+    "regions": "Precisely bounded bytes at baseline/packet offsets; full file inverse also covers trailing whitespace",
+    "states": "SHA256 canonical sorted compact JSON map of both full-file SHA256s",
+    "Native": "Raw installed PE and historical frozen saved-export bytes",
+    "Core": "Root compiled I386 object/clip/COFF raw bytes; independently parsed by reviewer, no compiler execution"
+  },
+  "packet_pins": [
+    {
+      "path": "docs/CC16_NATIVE_GLYPH_PIVOT_DIRECT_CALLER.md",
+      "bytes": 11056,
+      "sha256": "6c485969b7fa8b31a8582bd4885ef8adfd39309604182a2f0396ef9d3efbea3d",
+      "git_blob": "8068e352d7d4065c445ec34955fbd39a44b1a085",
+      "format": "Exact Git UTF8 LF bytes"
+    },
+    {
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "bytes": 12096,
+      "sha256": "458089ee0886fc11fc5a9eec853c1fd985106bde4b3f5e489bf8f88fe1b1ce7b",
+      "git_blob": "18e8628871be4a705c21e223538aa887298b1eac",
+      "format": "Exact Git UTF8 LF bytes"
+    },
+    {
+      "path": "reports/cc16_native_glyph_pivot_direct_caller.json",
+      "bytes": 132557,
+      "sha256": "401cbdad82ff8d7c2ed96c797962a12dc3285bed5247124f4e06bb7d99063a2d",
+      "git_blob": "8a6346cdacdb602089029d1b0873756f89b889be",
+      "format": "Exact Git UTF8 LF bytes"
+    },
+    {
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "bytes": 33022,
+      "sha256": "ea0b5505b45fd3a17ba1f7016f4856d883f83644263250123a030cceda2dc34f",
+      "git_blob": "7d8f341eeb4ad5e78f151d53ff81c64ebd5e11d7",
+      "format": "Exact Git UTF8 LF bytes"
+    }
+  ],
+  "Source_inverses": [
+    {
+      "before": {
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "bytes": 11409,
+        "sha256": "16fd2ce228678d59eab37c39c8198bd853a71a8edf9abd60e4a72812090d7182",
+        "git_blob": "c26cd36ff6b12eca02dd9ecf2e66c4f0120065ad",
+        "format": "Exact Git UTF8 LF bytes"
+      },
+      "after": {
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "bytes": 12096,
+        "sha256": "458089ee0886fc11fc5a9eec853c1fd985106bde4b3f5e489bf8f88fe1b1ce7b",
+        "git_blob": "18e8628871be4a705c21e223538aa887298b1eac",
+        "format": "Exact Git UTF8 LF bytes"
+      },
+      "full_Git_raw_frozen": true
+    },
+    {
+      "before": {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "bytes": 32506,
+        "sha256": "9994095288b2334043f38026738b61bf43903d77bdc7eb2bf2f80b64069cb627",
+        "git_blob": "17cd2e0dc9adb744f6fdbbdc36d3bfaf269cd095",
+        "format": "Exact Git UTF8 LF bytes"
+      },
+      "after": {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "bytes": 33022,
+        "sha256": "ea0b5505b45fd3a17ba1f7016f4856d883f83644263250123a030cceda2dc34f",
+        "git_blob": "7d8f341eeb4ad5e78f151d53ff81c64ebd5e11d7",
+        "format": "Exact Git UTF8 LF bytes"
+      },
+      "full_Git_raw_frozen": true
+    }
+  ],
+  "eight_seams": [
+    {
+      "id": "H1_TRANSFORM_FORWARD_DECLARATIONS",
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "offset": 305,
+      "before_step": "16fd2ce228678d59eab37c39c8198bd853a71a8edf9abd60e4a72812090d7182",
+      "after_step": "3614fb9abeb1987a2ed58e3fb62ed491cdd69e039a5ae43aa02c6889ccd98b0f",
+      "passed": true
+    },
+    {
+      "id": "H2_REQUIRED_CONTEXT_BINDINGS_TAIL",
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "offset": 5723,
+      "before_step": "3614fb9abeb1987a2ed58e3fb62ed491cdd69e039a5ae43aa02c6889ccd98b0f",
+      "after_step": "2acfd29561de4cbd0757d369d74fee3baf775b7d721a2f555bf5e0568684699d",
+      "passed": true
+    },
+    {
+      "id": "H3_REQUIRED_EIGHTH_ACQUISITION_BORROW",
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "offset": 8296,
+      "before_step": "2acfd29561de4cbd0757d369d74fee3baf775b7d721a2f555bf5e0568684699d",
+      "after_step": "ba30a18a442e23a0effbab10937fced87e4bd18718f77962fa0aacca60d3f0aa",
+      "passed": true
+    },
+    {
+      "id": "H4_APPEND_INITIALIZER_AFTER_OLD_SEVEN",
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "offset": 8551,
+      "before_step": "ba30a18a442e23a0effbab10937fced87e4bd18718f77962fa0aacca60d3f0aa",
+      "after_step": "6a2c2e496060b257059a412682e6fdae99529c6a14b4b9240fe36daec3d5f494",
+      "passed": true
+    },
+    {
+      "id": "H5_PRIVATE_SCRATCH_TAIL_AFTER_COMPLETE_PREFIX",
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "offset": 10181,
+      "before_step": "6a2c2e496060b257059a412682e6fdae99529c6a14b4b9240fe36daec3d5f494",
+      "after_step": "458089ee0886fc11fc5a9eec853c1fd985106bde4b3f5e489bf8f88fe1b1ce7b",
+      "passed": true
+    },
+    {
+      "id": "C1_EXISTING_TRANSFORM_HEADER",
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "offset": 54,
+      "before_step": "9994095288b2334043f38026738b61bf43903d77bdc7eb2bf2f80b64069cb627",
+      "after_step": "a6261e112b1d51d25bfff8568e9e3cf6ebcd69254adca163b921e6cb32e176d4",
+      "passed": true
+    },
+    {
+      "id": "C2_PREENTRY_STABLE_METADATA_BORROWS",
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "offset": 16618,
+      "before_step": "a6261e112b1d51d25bfff8568e9e3cf6ebcd69254adca163b921e6cb32e176d4",
+      "after_step": "fff33908bfe1561b201d9bd95b87834b6830898e84c51409b1ecce1e077509a3",
+      "passed": true
+    },
+    {
+      "id": "C3_CAPTURED_KNOWN_PIVOT_OTHER_FORWARDING",
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "offset": 27182,
+      "before_step": "fff33908bfe1561b201d9bd95b87834b6830898e84c51409b1ecce1e077509a3",
+      "after_step": "ea0b5505b45fd3a17ba1f7016f4856d883f83644263250123a030cceda2dc34f",
+      "passed": true
+    }
+  ],
+  "seventeen_states": [
+    {
+      "stage": "baseline",
+      "file_sha256": {
+        "include/bsp/native_gui_text_glyph_quad_storage.hpp": "16fd2ce228678d59eab37c39c8198bd853a71a8edf9abd60e4a72812090d7182",
+        "src/native_gui_text_glyph_quad_storage.cpp": "9994095288b2334043f38026738b61bf43903d77bdc7eb2bf2f80b64069cb627"
+      },
+      "canonical_hash_map_sha256": "fa0bdb272a268cb3dd4c98caf0fb87ccd744f8d1b8635dae573d464770f8d9c3",
+      "passed": true
+    },
+    {
+      "stage": "forward_H1_TRANSFORM_FORWARD_DECLARATIONS",
+      "file_sha256": {
+        "include/bsp/native_gui_text_glyph_quad_storage.hpp": "3614fb9abeb1987a2ed58e3fb62ed491cdd69e039a5ae43aa02c6889ccd98b0f",
+        "src/native_gui_text_glyph_quad_storage.cpp": "9994095288b2334043f38026738b61bf43903d77bdc7eb2bf2f80b64069cb627"
+      },
+      "canonical_hash_map_sha256": "dd57911da2171453001804a469a223d5477beb4e0e7a5cb6051841a47585c5a7",
+      "passed": true
+    },
+    {
+      "stage": "forward_H2_REQUIRED_CONTEXT_BINDINGS_TAIL",
+      "file_sha256": {
+        "include/bsp/native_gui_text_glyph_quad_storage.hpp": "2acfd29561de4cbd0757d369d74fee3baf775b7d721a2f555bf5e0568684699d",
+        "src/native_gui_text_glyph_quad_storage.cpp": "9994095288b2334043f38026738b61bf43903d77bdc7eb2bf2f80b64069cb627"
+      },
+      "canonical_hash_map_sha256": "dbcdd0baeed5028a045a456a7dd466bc5889df5d725621249c61563e2277bca2",
+      "passed": true
+    },
+    {
+      "stage": "forward_H3_REQUIRED_EIGHTH_ACQUISITION_BORROW",
+      "file_sha256": {
+        "include/bsp/native_gui_text_glyph_quad_storage.hpp": "ba30a18a442e23a0effbab10937fced87e4bd18718f77962fa0aacca60d3f0aa",
+        "src/native_gui_text_glyph_quad_storage.cpp": "9994095288b2334043f38026738b61bf43903d77bdc7eb2bf2f80b64069cb627"
+      },
+      "canonical_hash_map_sha256": "5b5cf750a677944925468ac49f3e2e7dd4eef1ae53f6bdc4790c3fe0da80cc96",
+      "passed": true
+    },
+    {
+      "stage": "forward_H4_APPEND_INITIALIZER_AFTER_OLD_SEVEN",
+      "file_sha256": {
+        "include/bsp/native_gui_text_glyph_quad_storage.hpp": "6a2c2e496060b257059a412682e6fdae99529c6a14b4b9240fe36daec3d5f494",
+        "src/native_gui_text_glyph_quad_storage.cpp": "9994095288b2334043f38026738b61bf43903d77bdc7eb2bf2f80b64069cb627"
+      },
+      "canonical_hash_map_sha256": "b6d4b4124daad649832d7454a38595c0b28d7772b299e11b379f35c4618a9511",
+      "passed": true
+    },
+    {
+      "stage": "forward_H5_PRIVATE_SCRATCH_TAIL_AFTER_COMPLETE_PREFIX",
+      "file_sha256": {
+        "include/bsp/native_gui_text_glyph_quad_storage.hpp": "458089ee0886fc11fc5a9eec853c1fd985106bde4b3f5e489bf8f88fe1b1ce7b",
+        "src/native_gui_text_glyph_quad_storage.cpp": "9994095288b2334043f38026738b61bf43903d77bdc7eb2bf2f80b64069cb627"
+      },
+      "canonical_hash_map_sha256": "0d3ec219cace06f3dbbef0f4a6203105f59d28149229067783bf109c8b288079",
+      "passed": true
+    },
+    {
+      "stage": "forward_C1_EXISTING_TRANSFORM_HEADER",
+      "file_sha256": {
+        "include/bsp/native_gui_text_glyph_quad_storage.hpp": "458089ee0886fc11fc5a9eec853c1fd985106bde4b3f5e489bf8f88fe1b1ce7b",
+        "src/native_gui_text_glyph_quad_storage.cpp": "a6261e112b1d51d25bfff8568e9e3cf6ebcd69254adca163b921e6cb32e176d4"
+      },
+      "canonical_hash_map_sha256": "9fbc7c96464d01caaa44026a19c758b7ec909614ddf0b16a78d9f6a3f283fbf5",
+      "passed": true
+    },
+    {
+      "stage": "forward_C2_PREENTRY_STABLE_METADATA_BORROWS",
+      "file_sha256": {
+        "include/bsp/native_gui_text_glyph_quad_storage.hpp": "458089ee0886fc11fc5a9eec853c1fd985106bde4b3f5e489bf8f88fe1b1ce7b",
+        "src/native_gui_text_glyph_quad_storage.cpp": "fff33908bfe1561b201d9bd95b87834b6830898e84c51409b1ecce1e077509a3"
+      },
+      "canonical_hash_map_sha256": "8909dc1b32713fd7e1973d7dcfdb4921039b09d1a5f9c4a7c09d20222cda1e6d",
+      "passed": true
+    },
+    {
+      "stage": "forward_C3_CAPTURED_KNOWN_PIVOT_OTHER_FORWARDING",
+      "file_sha256": {
+        "include/bsp/native_gui_text_glyph_quad_storage.hpp": "458089ee0886fc11fc5a9eec853c1fd985106bde4b3f5e489bf8f88fe1b1ce7b",
+        "src/native_gui_text_glyph_quad_storage.cpp": "ea0b5505b45fd3a17ba1f7016f4856d883f83644263250123a030cceda2dc34f"
+      },
+      "canonical_hash_map_sha256": "7cfc862d76ebb3e93edbe89e4eb224ae2f759445c6067d40a64732d44bb240b5",
+      "passed": true
+    },
+    {
+      "stage": "reverse_C3_CAPTURED_KNOWN_PIVOT_OTHER_FORWARDING",
+      "file_sha256": {
+        "include/bsp/native_gui_text_glyph_quad_storage.hpp": "458089ee0886fc11fc5a9eec853c1fd985106bde4b3f5e489bf8f88fe1b1ce7b",
+        "src/native_gui_text_glyph_quad_storage.cpp": "fff33908bfe1561b201d9bd95b87834b6830898e84c51409b1ecce1e077509a3"
+      },
+      "canonical_hash_map_sha256": "8909dc1b32713fd7e1973d7dcfdb4921039b09d1a5f9c4a7c09d20222cda1e6d",
+      "passed": true
+    },
+    {
+      "stage": "reverse_C2_PREENTRY_STABLE_METADATA_BORROWS",
+      "file_sha256": {
+        "include/bsp/native_gui_text_glyph_quad_storage.hpp": "458089ee0886fc11fc5a9eec853c1fd985106bde4b3f5e489bf8f88fe1b1ce7b",
+        "src/native_gui_text_glyph_quad_storage.cpp": "a6261e112b1d51d25bfff8568e9e3cf6ebcd69254adca163b921e6cb32e176d4"
+      },
+      "canonical_hash_map_sha256": "9fbc7c96464d01caaa44026a19c758b7ec909614ddf0b16a78d9f6a3f283fbf5",
+      "passed": true
+    },
+    {
+      "stage": "reverse_C1_EXISTING_TRANSFORM_HEADER",
+      "file_sha256": {
+        "include/bsp/native_gui_text_glyph_quad_storage.hpp": "458089ee0886fc11fc5a9eec853c1fd985106bde4b3f5e489bf8f88fe1b1ce7b",
+        "src/native_gui_text_glyph_quad_storage.cpp": "9994095288b2334043f38026738b61bf43903d77bdc7eb2bf2f80b64069cb627"
+      },
+      "canonical_hash_map_sha256": "0d3ec219cace06f3dbbef0f4a6203105f59d28149229067783bf109c8b288079",
+      "passed": true
+    },
+    {
+      "stage": "reverse_H5_PRIVATE_SCRATCH_TAIL_AFTER_COMPLETE_PREFIX",
+      "file_sha256": {
+        "include/bsp/native_gui_text_glyph_quad_storage.hpp": "6a2c2e496060b257059a412682e6fdae99529c6a14b4b9240fe36daec3d5f494",
+        "src/native_gui_text_glyph_quad_storage.cpp": "9994095288b2334043f38026738b61bf43903d77bdc7eb2bf2f80b64069cb627"
+      },
+      "canonical_hash_map_sha256": "b6d4b4124daad649832d7454a38595c0b28d7772b299e11b379f35c4618a9511",
+      "passed": true
+    },
+    {
+      "stage": "reverse_H4_APPEND_INITIALIZER_AFTER_OLD_SEVEN",
+      "file_sha256": {
+        "include/bsp/native_gui_text_glyph_quad_storage.hpp": "ba30a18a442e23a0effbab10937fced87e4bd18718f77962fa0aacca60d3f0aa",
+        "src/native_gui_text_glyph_quad_storage.cpp": "9994095288b2334043f38026738b61bf43903d77bdc7eb2bf2f80b64069cb627"
+      },
+      "canonical_hash_map_sha256": "5b5cf750a677944925468ac49f3e2e7dd4eef1ae53f6bdc4790c3fe0da80cc96",
+      "passed": true
+    },
+    {
+      "stage": "reverse_H3_REQUIRED_EIGHTH_ACQUISITION_BORROW",
+      "file_sha256": {
+        "include/bsp/native_gui_text_glyph_quad_storage.hpp": "2acfd29561de4cbd0757d369d74fee3baf775b7d721a2f555bf5e0568684699d",
+        "src/native_gui_text_glyph_quad_storage.cpp": "9994095288b2334043f38026738b61bf43903d77bdc7eb2bf2f80b64069cb627"
+      },
+      "canonical_hash_map_sha256": "dbcdd0baeed5028a045a456a7dd466bc5889df5d725621249c61563e2277bca2",
+      "passed": true
+    },
+    {
+      "stage": "reverse_H2_REQUIRED_CONTEXT_BINDINGS_TAIL",
+      "file_sha256": {
+        "include/bsp/native_gui_text_glyph_quad_storage.hpp": "3614fb9abeb1987a2ed58e3fb62ed491cdd69e039a5ae43aa02c6889ccd98b0f",
+        "src/native_gui_text_glyph_quad_storage.cpp": "9994095288b2334043f38026738b61bf43903d77bdc7eb2bf2f80b64069cb627"
+      },
+      "canonical_hash_map_sha256": "dd57911da2171453001804a469a223d5477beb4e0e7a5cb6051841a47585c5a7",
+      "passed": true
+    },
+    {
+      "stage": "reverse_H1_TRANSFORM_FORWARD_DECLARATIONS",
+      "file_sha256": {
+        "include/bsp/native_gui_text_glyph_quad_storage.hpp": "16fd2ce228678d59eab37c39c8198bd853a71a8edf9abd60e4a72812090d7182",
+        "src/native_gui_text_glyph_quad_storage.cpp": "9994095288b2334043f38026738b61bf43903d77bdc7eb2bf2f80b64069cb627"
+      },
+      "canonical_hash_map_sha256": "fa0bdb272a268cb3dd4c98caf0fb87ccd744f8d1b8635dae573d464770f8d9c3",
+      "passed": true
+    }
+  ],
+  "embedded_reader": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-pivot-direct-caller-review\\local\\output\\cc16_native_glyph_pivot_direct_caller_independent_review_20261031\\verify_source51_inverse.py",
+    "bytes": 2329,
+    "sha256": "d74aa5857cddfd6951f9157bbbef2fa0162a2008465879211cfb5e020d4bb5a6",
+    "raw_equals_embedded": true,
+    "stdout": "PASS: eight seams; two complete Git/raw/frozen inverses; 17 states; protected regions; unchanged inputs; 22 asm/three counter lines"
+  },
+  "ten_protected_regions": [
+    {
+      "role": "entire unchanged Calls interface including OTHER current30 transport",
+      "bytes": 2428,
+      "sha256": "afc0ea3b14dffb7d2b5942e37590cfa0cc3c8fea55df8950a1fae282c1483026",
+      "packet_end": 3967,
+      "file_bytes": 12096,
+      "unchanged": true
+    },
+    {
+      "role": "all old Context binding declarations and order",
+      "bytes": 1509,
+      "sha256": "befc8b2e75372458df38909f7466c58e355f38e96ca9a4cd64809e1f5b220bb8",
+      "packet_end": 5794,
+      "file_bytes": 12096,
+      "unchanged": true
+    },
+    {
+      "role": "old seven constructor parameter declarations as exact prefix",
+      "bytes": 426,
+      "sha256": "762ab28008fb9536ae6eae34382d4adf0cbfab2c4378aa82b8b2d0fe8956d324",
+      "packet_end": 8353,
+      "file_bytes": 12096,
+      "unchanged": true
+    },
+    {
+      "role": "old seven constructor initializer expressions as exact prefix",
+      "bytes": 208,
+      "sha256": "645dc74f14b143098959d352a0000f50ce02c7c20882d63c5d2edae2b78dde8d",
+      "packet_end": 8619,
+      "file_bytes": 12096,
+      "unchanged": true
+    },
+    {
+      "role": "whole old private friend/Origin/arms/seven-binding prefix",
+      "bytes": 1366,
+      "sha256": "0a7f168ddbb2eccce381eeab81b52a667edfbb7860fd33f1d670132fab9c193c",
+      "packet_end": 10237,
+      "file_bytes": 12096,
+      "unchanged": true
+    },
+    {
+      "role": "complete normal-body prefix including constructor/pool/header/color before pivot",
+      "bytes": 9191,
+      "sha256": "79aedfc802bfe72634e06aa32638d2ae1f5e02b4c74b19c2e98fb0f18c0b245a",
+      "packet_end": 26680,
+      "file_bytes": 33022,
+      "unchanged": true
+    },
+    {
+      "role": "exact attach/pivot FP/address/capture/boundary before selected call",
+      "bytes": 502,
+      "sha256": "df0387b062938757565e8ea82ba16f5ad86da482fa5c64ebbda22f79f140fd1d",
+      "packet_end": 27182,
+      "file_bytes": 33022,
+      "unchanged": true
+    },
+    {
+      "role": "CURRENT parent reload and whole Source49 getter/FP/catch suffix",
+      "bytes": 5418,
+      "sha256": "a039472551abeb588e0840506b3de39ffa152c6b71b5c74174876ea619b4afcd",
+      "packet_end": 33022,
+      "file_bytes": 33022,
+      "unchanged": true
+    },
+    {
+      "role": "entire unchanged whole-entry catch through EOF",
+      "bytes": 4913,
+      "sha256": "77e3ee9f1907bbff412611226752539fc0e3b25d9085126388009f7e8b986737",
+      "packet_end": 33022,
+      "file_bytes": 33022,
+      "unchanged": true
+    },
+    {
+      "role": "current profile/target capture helper",
+      "bytes": 209,
+      "sha256": "ee5bda263817d6f0aa7f2e8b6f537afbb3b0eaa1d38d2125499ad4ddb6969f82",
+      "packet_end": 10969,
+      "file_bytes": 33022,
+      "unchanged": true
+    }
+  ],
+  "preserved": {
+    "asm_blocks": 22,
+    "x87_forms": 78,
+    "NUL_join_sha256": "0d95d0c8aa5c4123c75ee603d24d1bb9ad0a8b0430d13d73c70c19d25c74faed",
+    "counter_source_lines": [
+      "        a.failure_origin_.host(*failure_runtime, {0, __COUNTER__}, &a, [&] {",
+      "                &a.raw93_acquired_, {0x00ab9d4fu, __COUNTER__}, a.constructor_call_);",
+      "                        a.failure_origin_.unknown(*failure_runtime, {0x00cb80b3u, __COUNTER__}, &prepared_text_pool,"
+    ],
+    "OTHER_statement_tokens_exact": true,
+    "Acq_refs_old": 7,
+    "Acq_refs_new": 8
+  },
+  "thirty_nine_input_pins": [
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 296702,
+      "sha256": "91d1de5e0df99d75ab2133869f154c0560d969f8ed3b60c999a495ba097f416b",
+      "git_blob": "f5032c4bccf117bf25445331020a0d95aa8e98a4",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_GLYPH_RESOLVED_POSITION_DIRECT_CALLER.md",
+      "bytes": 7194,
+      "sha256": "4e97395b523c2cd1bad7eeba8d449e0760d6956e9becdf1fb4a1790edb3840f3",
+      "git_blob": "378fad1c3707db5623b2d226c80a3d3830b5c795",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_WIDGET_PIVOT_RAW_STORAGE.md",
+      "bytes": 9112,
+      "sha256": "3c439d8952e60f23ad58d5bda499d1994a42b9e87aa0222025a408f757eaa762",
+      "git_blob": "eec621e231184e709428338b32977cabb9880d6a",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/game_native_gui_text_state.hpp",
+      "bytes": 3899,
+      "sha256": "7b544feaa7da8a1a4bab5b5f01546d8e4d8b5621d8da37c6b22e4dfbc9d964e0",
+      "git_blob": "c2f420b227592ab4ac84c680467f5142bf9e026a",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "bytes": 2713,
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/gui_text_style.hpp",
+      "bytes": 3630,
+      "sha256": "b82596cd3d8b6cec5b3bd345173c6b912a54633a6d73976743c140554cc26b4b",
+      "git_blob": "989029de04894f890d4a0ce7ff29ad0342d241f0",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/gui_widget_attach.hpp",
+      "bytes": 1474,
+      "sha256": "e4bf892e530f8b1e19e585bb0f1447b19e9be771219228886508eda5130cfb17",
+      "git_blob": "a8352c5702e62cee8a39ab60356d8d2916c3537e",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_camera_matrix_copy.hpp",
+      "bytes": 606,
+      "sha256": "70e741350edb66be14fc9d1b981181fe5ecf8c536f33eab47221469d8d3f1a7a",
+      "git_blob": "4cee0aa171c5abcebc575b159710a76c643c5d42",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_camera_matrix_math.hpp",
+      "bytes": 1803,
+      "sha256": "1a3d64ca2fb309bc24aaa36278b2f7be38e086c4faef36ad674a5c888cc93f1d",
+      "git_blob": "f275ed7c75903f61a87f4a7226406c817bffaebc",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_gui_frame_box_constructed_storage.hpp",
+      "bytes": 6263,
+      "sha256": "3dc47a86b2249ccbf0d499fe8144307c1efad42f9a7ecae5c2fbc3e9c0a7fec8",
+      "git_blob": "a795e1271a0d206ff033794ca79c5d25ee7c3f15",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_gui_text_default_storage.hpp",
+      "bytes": 6352,
+      "sha256": "7a23774d66bb90e59712407d58fd3356640da3f77f1c087bf766b77d3748141a",
+      "git_blob": "2eb5db69eff0b68c093a5006e13eb2d490e821b7",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_gui_text_failure_origin.hpp",
+      "bytes": 12778,
+      "sha256": "ec32e9f8df302d8754e95abd1f11204e14ebb582e082090faec63cee74d84075",
+      "git_blob": "5bc46604c9cf760dea3868b3c4864c60ddc09852",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_gui_text_field_storage.hpp",
+      "bytes": 16103,
+      "sha256": "4bfb2f16d53fbd0476835624df067d0381d33ba015b6bc7bd3ca2d9718b77766",
+      "git_blob": "8c757602985deebc86d26586929db284900871db",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+      "bytes": 9873,
+      "sha256": "3914309878ae2683fe0fa3a676d373f35d09cc34ca6d82dd83d7044d678453a8",
+      "git_blob": "32fe59b520f2c49f699f04d665b28235d391fe67",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_gui_text_wrapped_storage.hpp",
+      "bytes": 10525,
+      "sha256": "197ded43a11ce27f3d24ae3fdd0a375f565ebaa7c5a97ab9df219d6dfb922170",
+      "git_blob": "f025b748c662a9b7731e166c1d600b882327c96e",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_gui_widget_resolved_position.hpp",
+      "bytes": 2378,
+      "sha256": "17672fb9b31bbfec5faea2568e62edc0b2fe88a431348a5abab3980eb3a601ca",
+      "git_blob": "f6b05430f5846c6cd09d1c242a6fe2e34d388c8c",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_gui_widget_resolved_setter.hpp",
+      "bytes": 2905,
+      "sha256": "f2b163215c4cb2db3154f983a64f0b96b56b73958d201dde6b12053cc48cfd7a",
+      "git_blob": "5ee5d91929ce399f7500e0232f8f76b1ff4cf19d",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_gui_widget_transform.hpp",
+      "bytes": 2478,
+      "sha256": "8dad778892b62bc27de08907eff18db3badd061a3a0d67711694aeb7df783642",
+      "git_blob": "250c06e7fe1c5db8572a06b65f98aae47cb3cec2",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_node_raw_transform.hpp",
+      "bytes": 2139,
+      "sha256": "99460e5aa96bac3ef0255146992d7e002e2ec5adf07ab71788221ad10c75d4de",
+      "git_blob": "fe8ca945cbddcf071e37b5ee7ade2080942490e2",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_particle_axial_loading.hpp",
+      "bytes": 2796,
+      "sha256": "32bc421933d557541a5676f4a569ffd261763bde4ff404745e3953c724a1e497",
+      "git_blob": "2bb917a4ed52cad537c37c6f349ad6c802a7e856",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "reports/cc16_native_glyph_resolved_position_direct_caller.json",
+      "bytes": 59510,
+      "sha256": "38323600394617c86f47bafa0ce4b8d57992ec3207e232cad40a0e62c2e5f99e",
+      "git_blob": "27adb1e5416d6a621bbc61a53eceefd2aa12c23f",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "reports/cc16_native_gui_widget_pivot_raw_storage.json",
+      "bytes": 38059,
+      "sha256": "d19f5b3983f077acf30268c86143f89d1ef232bfbfd2da5ce69b06f5b594aaad",
+      "git_blob": "b1f31dbbde5029dc7aa68a13dba82b8864bfb3c6",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "src/game_native_gui_text_state.cpp",
+      "bytes": 1821,
+      "sha256": "ff10c4e60079ea23117223b10dc9b64bb61715930fa2c1d1b7fff0b81396dd5f",
+      "git_blob": "4aeb220bed382de390912a2320ad1ca4adb4bf65",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "bytes": 7167,
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+      "git_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "src/gui_text_style.cpp",
+      "bytes": 10276,
+      "sha256": "d5e6b32f78db3df2d918913a8121de462125b1b7c8aa3c8341b09ae141745703",
+      "git_blob": "fa2fc5075f6d8cde14258b2a7469165458d05288",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "src/gui_widget_attach.cpp",
+      "bytes": 2845,
+      "sha256": "d20b38ff1e90e4c78c4f1b20ef9c05f841cad2e7cdc1f462c401f2c40215af03",
+      "git_blob": "3a93e16b5ef0af7047ea9efd40939fee8221bcc8",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_camera_matrix_copy.cpp",
+      "bytes": 1626,
+      "sha256": "31840777adef31ac0717e7bc4cb148ecd9aa45be8e5d2d52eb79f3c8a00a708d",
+      "git_blob": "d0e2c74f342f4efabaa540e9da9ad7f048e6a816",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_camera_matrix_math.cpp",
+      "bytes": 23218,
+      "sha256": "ca793757d2bb262ae48cf09a29be44462714da585b430db68c5b3e9262277fa0",
+      "git_blob": "48414ad27eb574e1377594aaceca2baa96c1df55",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_gui_frame_box_constructed_storage.cpp",
+      "bytes": 12490,
+      "sha256": "6747e90c88152960cc80961eaa4c4c90999a08e51e0d771674f00a7e646eb6d9",
+      "git_blob": "9280b269b6ecf9114b6ed1f0fe42e4cfed4bc3c2",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_gui_text_default_storage.cpp",
+      "bytes": 26698,
+      "sha256": "6ed36cf3cad97ef089be15302827995d3bc6f303f5df3a3eb122b970dde67d09",
+      "git_blob": "47f32c0fb30dc7ebfaeb83ce2480ec88f59d3039",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_gui_text_failure_origin.cpp",
+      "bytes": 11627,
+      "sha256": "aacd70ec3d609de1b8a544884fd4d844d51b684a96194a0f95a62b9c843fc8c1",
+      "git_blob": "6226f079539631f02df8b9665e1ec4a213d91455",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_gui_text_field_storage.cpp",
+      "bytes": 32505,
+      "sha256": "8d9a1299004c40c57ed59be58a9408cba9e08f3fff32db06b8662f590c9dd4bf",
+      "git_blob": "496ee36bedc050f8ed08e10f2ff824154f888c3c",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_gui_text_single_line_storage.cpp",
+      "bytes": 17311,
+      "sha256": "ffda6f98ac137a60af72332a3981da2e51a18992097ff359feda8a93028ee048",
+      "git_blob": "22427ad2c2c04bf357b2770e075e1c794ee03bf9",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_gui_text_wrapped_storage.cpp",
+      "bytes": 31992,
+      "sha256": "f60c97736444be3c30e0eba45373988630a5e90f997384a4298e19b2da072614",
+      "git_blob": "de5ba745a33858d0eb3359fbb0ac96a59f117319",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_gui_widget_resolved_position.cpp",
+      "bytes": 2784,
+      "sha256": "385c4fd6a50d75e7734cce7442923d5cf6dfc1830a444d49257d9cae2fc04457",
+      "git_blob": "bf65a9da0a9264cf39b80ecc092c4cb48d01fe12",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_gui_widget_resolved_setter.cpp",
+      "bytes": 5064,
+      "sha256": "305c47a4d41426775a134e1517a3eef62d2248d4e05c04046eedebd39aaab937",
+      "git_blob": "649a8651b68909f94293109ff2fa7a1c9bfcf5be",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_gui_widget_transform.cpp",
+      "bytes": 5822,
+      "sha256": "39c87d3fd8136d2802ea4c6def1fba8f0df853c8c4f82d778ab512bb65a45d40",
+      "git_blob": "e7c655c4cd800c67f970cad69bba9f48c11850a9",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_node_raw_transform.cpp",
+      "bytes": 5316,
+      "sha256": "092fa6a47756bf5a8a3a18dfbbaecf468898b3c91bc5ee5235bba5a7f078e16c",
+      "git_blob": "cb27dc6bebf4e551e72d003868e57211b2615d40",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_particle_axial_loading.cpp",
+      "bytes": 14024,
+      "sha256": "d90b8b4f6f760f376f7308a0aab722158074bc27c4befdf3873182a008cdeb5d",
+      "git_blob": "73fc528e2bc96020f256ee1e22e832831d9947a6",
+      "format": "Exact Git UTF8 LF bytes",
+      "ref": "7411009ed6f1024b32442c64df91af8394120ee7",
+      "unchanged": true
+    }
+  ],
+  "Native": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_before_batch": true,
+    "PE": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "image_base": "00400000"
+    },
+    "ranges": [
+      {
+        "start": "00ab98f0",
+        "bytes": 1747,
+        "sha256": "795b76de15e3a52d032bfca739ca1cffe9714a83d7d619fd6aae9302aa13d236",
+        "instruction_count": 485
+      },
+      {
+        "start": "00ab9ea0",
+        "bytes": 50,
+        "sha256": "496aa210f277883f2ff4aa107c3fb2db4e5577ba976ceb3518b9f18349321d0b",
+        "instruction_count": 13
+      },
+      {
+        "start": "00a9e0b0",
+        "bytes": 23,
+        "sha256": "5c65b9395eff65c752e12759b4aa684f0e1a60b9ec182578799a404fe14cb877",
+        "instruction_count": 7
+      },
+      {
+        "start": "00aa7220",
+        "bytes": 583,
+        "sha256": "f219011d985624f1d43316fce088e885359fff01ef7155e7b27ef8271e9c0d2f",
+        "instruction_count": 109
+      }
+    ],
+    "table_cell": {
+      "address": "00d5c6f8",
+      "table": "00d5c6c8",
+      "offset": "30h",
+      "bytes": 4,
+      "pe_offset": 9815800,
+      "hex": "b0e0a900",
+      "target": "00a9e0b0",
+      "qualification": "installed PE cell, not live object/profile/generation authentication"
+    },
+    "exports": [
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00ab98f0/assembly.txt",
+        "bytes": 16685,
+        "frozen_sha256": "7165707dcf74507fb24b2d3bfc77de8fa764a33c46fe46ff16aef417efd50bd4",
+        "current_sha256": "7165707dcf74507fb24b2d3bfc77de8fa764a33c46fe46ff16aef417efd50bd4",
+        "current_equal": true
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00a9e0b0/assembly.txt",
+        "bytes": 233,
+        "frozen_sha256": "3ad8e5741ffb0054cb23d2dac890dcf26cf2840d5d6317ce4b69738738c01410",
+        "current_sha256": "3ad8e5741ffb0054cb23d2dac890dcf26cf2840d5d6317ce4b69738738c01410",
+        "current_equal": true
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00aa7220/assembly.txt",
+        "bytes": 4030,
+        "frozen_sha256": "ab5e08f50dc441a0bdf62f14dbce4b23974a35eb5d16380eb0d036f901ba6b37",
+        "current_sha256": "ab5e08f50dc441a0bdf62f14dbce4b23974a35eb5d16380eb0d036f901ba6b37",
+        "current_equal": true
+      }
+    ]
+  },
+  "Root_Core": {
+    "Source": "866a16b973e4dc04f400c7ec78300e0de40b2c08",
+    "Source_pair_equal_author": true,
+    "machine": "014C I386",
+    "object_bytes": 77958,
+    "object_sha256": "9031d3dafb91601a32ca76b9301d80c42aad1f7060c38d13d8abb797d5c5dac7",
+    "symbol": "?write_native_gui_text_glyph_quad_storage_00ab98f0@bsp@@YAXPAXAAY09$$CCIAAUNativeGuiTextGlyphQuadStorageContext@1@AAUNativeGuiTextGlyphQuadStorageAcquired@1@@Z",
+    "section": 132,
+    "pivot_relocation": {
+      "offset": 2193,
+      "kind": 20,
+      "symbol": "?set_native_gui_widget_pivot_00a9e0b0@bsp@@YAXPAXPDXAAUNativeGuiWidgetTransformScratch@1@AAUNativeGuiWidgetTransformBindings@1@@Z"
+    },
+    "getter_relocation": {
+      "offset": 2261,
+      "kind": 20,
+      "symbol": "?get_native_gui_widget_resolved_position_00aa6750@bsp@@YAPAXPAX0ABVNativeGuiWidgetResolvedPositionData@1@@Z"
+    },
+    "entry": "Context48->EBP-50,Acq1DC->EBP-34 at3D/40/43/4F; metadata identity only",
+    "known": "CMP862/87E; bindings885/SAMEF24LEA888/scratch88B/child88F; direct890/REL891",
+    "OTHER": "same Calls virtual branch89A/call8AF; no scratch contents read",
+    "suffix": "CURRENTparent8B9 after both arms; Data44push8CF/getter8D4/EAXdiscard8D9",
+    "no_added_FP_in_scoped_metadata_or_staging": true,
+    "artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-pivot-direct-caller-review\\local\\output\\cc16_native_glyph_pivot_direct_caller_independent_review_20261031\\Root_core\\actual_core.obj",
+        "bytes": 77958,
+        "sha256": "9031d3dafb91601a32ca76b9301d80c42aad1f7060c38d13d8abb797d5c5dac7",
+        "format": "Root frozen raw bytes; reviewer static copy"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-pivot-direct-caller-review\\local\\output\\cc16_native_glyph_pivot_direct_caller_independent_review_20261031\\Root_core\\coff.json",
+        "bytes": 1519,
+        "sha256": "ff0d0e416101a5f080c00830080b9ae5a1b18d1efcb45f748f98310b0483c195",
+        "format": "Root frozen raw bytes; reviewer static copy"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-pivot-direct-caller-review\\local\\output\\cc16_native_glyph_pivot_direct_caller_independent_review_20261031\\Root_core\\entry_metadata.asm",
+        "bytes": 2308,
+        "sha256": "95dbf9b9dcc688e1a5247d704314e5698c68f2ba4b40c08c0b0d8bfe1890bf94",
+        "format": "Root frozen raw bytes; reviewer static copy"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-pivot-direct-caller-review\\local\\output\\cc16_native_glyph_pivot_direct_caller_independent_review_20261031\\Root_core\\pivot_and_position.asm",
+        "bytes": 3319,
+        "sha256": "1e27694958c16b6c63f3e799c3009d1061a3cef7355e99fb2e4e19ddf8a61fd0",
+        "format": "Root frozen raw bytes; reviewer static copy"
+      }
+    ],
+    "compiler_execution_by_reviewer": false,
+    "ABI_runtime_activation": false
+  },
+  "semantic_review": {
+    "known": "captured D5C6C8 AND A9E0B0 only; SAME child/F24/scratch/bindings",
+    "OTHER": "same virtual statement tokens/args; no new native payload/scratch reads",
+    "entry": "two prepared reference identities only, outside active FP and before callbacks",
+    "preparation": "real initialized distinct1DC preimage/holes; genuine D7A24C/D7A208/E12FC4/profiles held before entry",
+    "guard": "no new false affinity/admission guard; caller proof remains explicit",
+    "provider": "unchanged finite B6DB10/NodeModelGroup/current3C route, not arbitrary provider closure",
+    "suffix": "CURRENT parent reload and entire Source49 getter/FP/catch suffix exact",
+    "API": "Context appended binding and Acq8 scratch ref after old7/private prefix; no owner/destructor/reset",
+    "epoch": "Source52 color repair separate, not inferred present"
+  },
+  "Root_receipts_attribution": {
+    "reported_by_Root_only": true,
+    "common_seconds": 21.42,
+    "retained_seconds": 20.14,
+    "restored_canonical_seconds": 18.66,
+    "actual_counter_values": [
+      0,
+      1,
+      2
+    ],
+    "reviewer_executed_compiler_or_build": false
+  },
+  "static_artifact": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-pivot-direct-caller-review\\local\\output\\cc16_native_glyph_pivot_direct_caller_independent_review_20261031\\independent_checks.json",
+    "bytes": 37521,
+    "sha256": "97756326d5471d4399bb219fc138c005a198b337d52bebdd584a17fcab30aadb",
+    "format": "Raw UTF8 LF JSON"
+  },
+  "doc_pin": {
+    "path": "docs/CC16_NATIVE_GLYPH_PIVOT_DIRECT_CALLER_INDEPENDENT_REVIEW.md",
+    "bytes": 6433,
+    "sha256": "38d62447d99e1467f7b83c696653a192eba07dc5e07721d14ea0d11850ef49c0",
+    "format": "Git UTF8 LF bytes"
+  },
+  "actions": {
+    "Source_edits": false,
+    "compiler": false,
+    "tests": false,
+    "probe": false,
+    "provider": false,
+    "Game": false,
+    "Ghidra_mutation": false
+  },
+  "readiness": {
+    "bounded_Source_and_static_Core_review_passed": true,
+    "actual_producer": false,
+    "genuine_general_provider": false,
+    "actual_current_generation_custody": false,
+    "whole_frontend_Source_ready": false,
+    "Native_Origin": false,
+    "Original_ABI": false,
+    "runtime": false,
+    "activation": false
+  },
+  "credits": {
+    "additional_Native": 0,
+    "vendor_or_duplicate_helper": 0,
+    "Original_ABI": 0,
+    "runtime": 0,
+    "activation": 0
+  }
+}
