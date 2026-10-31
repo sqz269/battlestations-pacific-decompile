@@ -30,9 +30,9 @@ payload-end facts. The existing constructor has no demonstrated defect in its
 audited MSVC Win32/installed-atomic domain. This prerequisite does not publish a
 canonical or select a producer. Real scalar action/credit custody, all eight direct
 construction sites, external/prepared issuers, early ordinary-zero failure
-transport and complete owning synchronization remain required. Official compilation
-and retained-link checks pass; final independent Core and joined integration
-admission for the additive provider are pending at this checkpoint.
+transport and complete owning synchronization remain required. Official compilation,
+actual Core, retained-link and final joined-build checks pass for the additive
+provider. Those checks do not admit the remaining owning composition.
 
 The real Mission factory cannot consume S1 by substituting its new accessors.
 `GameNativeModelDomain::make_mission_client` supplies `raw_storage=nullptr`;
