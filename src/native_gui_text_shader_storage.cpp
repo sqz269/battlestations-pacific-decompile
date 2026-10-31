@@ -549,6 +549,26 @@ NativeGuiTextShaderStorageFrame::CreditConsumer::CreditConsumer(
         throw;
     }
 }
+NativeGuiTextShaderStorageFrame::CreditConsumer::CreditConsumer(
+    NativeGuiTextShaderStorageFrame& frame, NativeGuiTextRawModelReference& reference,
+    const NativeGuiTextRawShaderNameStorageInvocation& invocation)
+    : frame_(frame), kind_(Consumer::shader_name), shader_invocation_(&invocation) {
+    try {
+        require(!frame_.credit_.failed && !frame_.active_consumer_ && !frame_.retirement_started_ &&
+            frame_.credit_.producer != RawPhase::entered && frame_.prepared_raw_context_ &&
+            frame_.prepared_reference_frame_,
+            "Raw Shader-name consumer requires stable credited preparation and no active/failed operation");
+        frame_.credit_.active_consumer = kind_;
+        frame_.credit_.active_shader_invocation = shader_invocation_;
+        frame_.authenticate_bound_reference(reference); // SAME live canonical graph; NO1EC/import/credit issue
+        frame_.active_consumer_ = this;
+        frame_.credit_.active = true;
+        active_ = true;
+    } catch (...) {
+        frame_.credit_.failed = true;
+        throw;
+    }
+}
 NativeGuiTextShaderStorageFrame::CreditConsumer::~CreditConsumer() noexcept {
     if (active_) fail();
 }
@@ -563,7 +583,7 @@ void NativeGuiTextShaderStorageFrame::CreditConsumer::capture(void* captured) {
     try {
         // The late operand itself came from Original's reached read. Recheck
         // live canonical metadata here, before any Effect terminal can run.
-        if (kind_ == Consumer::font_name) {
+        if (kind_ == Consumer::font_name || kind_ == Consumer::shader_name) {
             require(frame_.credit_.reference != nullptr,
                 "Raw font-name shader capture requires its canonical reference identity");
             frame_.authenticate_bound_reference(*frame_.credit_.reference);
@@ -598,6 +618,7 @@ void NativeGuiTextShaderStorageFrame::CreditConsumer::capture(void* captured) {
         c.retirement_context = retirement_context_;
         c.retirement_acquired = retirement_acquired_;
         c.retirement_shader = retirement_acquired_ ? &retirement_acquired_->shader : nullptr;
+        c.shader_invocation = shader_invocation_;
         stage_ = Stage::captured; // irreversible reservation BEFORE CE2220
     } catch (...) { fail(); throw; }
 }
@@ -665,6 +686,7 @@ void NativeGuiTextShaderStorageFrame::CreditConsumer::complete() {
     frame_.credit_.active_retirement_context = nullptr;
     frame_.credit_.active_retirement_acquired = nullptr;
     frame_.credit_.active_retirement_shader = nullptr;
+    frame_.credit_.active_shader_invocation = nullptr;
 }
 void NativeGuiTextShaderStorageFrame::CreditConsumer::fail() noexcept {
     frame_.credit_.failed = true;

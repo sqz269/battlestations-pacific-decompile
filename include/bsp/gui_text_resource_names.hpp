@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 #include "bsp/gui_text_lifetime.hpp"
 #include "bsp/font_registry_startup.hpp"
 #include "bsp/native_font_resources.hpp"
@@ -88,4 +89,54 @@ bool set_gui_text_font_name_00ab8c30(GuiTextLifetime&, const std::string&,
 // serialized; the legacy cell is live state, not an immutable registry promise.
 // FontRegistryStartup's compatibility vector/resources are
 // never substituted for its stable descriptor or the actual typed/image Font.
+// Retained Source invocation for the whole raw AB8E70 body. Preparation is
+// address-only and may precede raw122 birth; actual entry alone binds the live
+// canonical reference. All borrows, this record and its failed graph stay live.
+// Entered records remain retained, including completed historical consumers.
+// The ordinary DWORD preserve home is deliberately uninitialized until8E85.
+// This is a new Source ABI, not Original stack/privacy/alias/FH3/SEH proof.
+namespace game { class GameNativeCanonicalDataOwner; }
+class NativeGuiTextRawModelReference;
+struct NativeGuiTextRawModelReferenceContext;
+struct NativeGuiTextReferenceFrame;
+struct NativeGuiTextShaderStorageFrame;
+class NativeGuiTextRawShaderNameStorageInvocation final {
+public:
+    enum class Phase { fresh, entered, complete, failed };
+    NativeGuiTextRawShaderNameStorageInvocation(
+        const NativeGuiTextRawModelReferenceContext&,
+        const NativeGuiTextReferenceFrame&, NativeGuiTextShaderStorageFrame&,
+        const void* actual_input_header8, const game::GameNativeCanonicalDataOwner&);
+    NativeGuiTextRawShaderNameStorageInvocation(const NativeGuiTextRawShaderNameStorageInvocation&) = delete;
+    NativeGuiTextRawShaderNameStorageInvocation& operator=(const NativeGuiTextRawShaderNameStorageInvocation&) = delete;
+    NativeGuiTextRawShaderNameStorageInvocation(NativeGuiTextRawShaderNameStorageInvocation&&) = delete;
+    NativeGuiTextRawShaderNameStorageInvocation& operator=(NativeGuiTextRawShaderNameStorageInvocation&&) = delete;
+    Phase phase() const;
+    bool requires_process_retention() const;
+private:
+    friend void set_native_gui_text_shader_name_storage_00ab8e70(
+        NativeGuiTextRawModelReference&, const void*, NativeGuiTextRawShaderNameStorageInvocation&);
+    const NativeGuiTextRawModelReferenceContext* const context_;
+    const NativeGuiTextReferenceFrame* const reference_frame_;
+    NativeGuiTextShaderStorageFrame& shader_;
+    const void* const input_;
+    const NativeGuiTextRawModelReference* reference_{};
+    void* actual_text_{};
+    Phase phase_{Phase::fresh};
+    bool failed_{};
+    const game::GameNativeCanonicalDataOwner* const canonical_data_;
+    const volatile std::uint32_t* const feature_word_0109eea4_;
+    std::uint32_t preserve_home_;
+};
+// SAME genuine completed raw93/canonical122, reserved credited ShaderFrame,
+// actual input header, raw pool and canonical mutable feature-cell backing.
+// Header self-alias skips only copy. CURRENT1EC capture requires its genuine
+// private outstanding credit; arbitrary resize-installed replacement credit
+// has no transfer API and is retained/rejected before decrement. The terminal
+// callback's later replacement is still cleared by the LIVE post-call store.
+// Failed invocation/provider debt stays retained: no disposal/retry/rollback,
+// public credit/Native issuer, new NoThrow or Original/runtime permission.
+void set_native_gui_text_shader_name_storage_00ab8e70(
+    NativeGuiTextRawModelReference&, const void* actual_name_header8,
+    NativeGuiTextRawShaderNameStorageInvocation&);
 } // namespace bsp
