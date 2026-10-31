@@ -5,6 +5,7 @@
 #include <cstdlib>
 
 namespace bsp {
+class NativeMeshStorageFrame;
 
 // The actual storage representing native 0108FFF8, in the same shared
 // AllocatorListDomain as the other native pools. No second list or slot state.
@@ -62,6 +63,10 @@ int initialize_static_native_mesh_pool_00cd7e40(
     NativeMeshPoolAtexit register_atexit = &std::atexit);
 void destroy_static_native_mesh_pool_00ce0e40();
 void* allocate_native_mesh_slot_00b73b60();
+// Additive low-lifecycle issuer. Captures the actual static receiver here and
+// records only its real allocation continuation in this private retained frame.
+// No prior raw address/receipt is accepted; the legacy overload is unchanged.
+void* allocate_native_mesh_slot_00b73b60(NativeMeshStorageFrame&);
 // Native 00B72F70 receives the slot in ECX and supplies one stack argument to
 // the actual pool at 0108FFF8. This exposes an ordinary new C++ interface.
 void return_native_mesh_slot_00b72f70(void* slot);

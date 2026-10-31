@@ -2523,3 +2523,6 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_cor
 
 # Whole normal raw Icon delayed getter support; actual callers remain gated.
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_gui_icon_delayed_loads_getter_storage.cpp)
+
+# Private raw Mesh allocation and payload lifetime facts; caller activation remains gated.
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_mesh_storage_lifetime.cpp)

@@ -1,6 +1,7 @@
 # CC16 remaining binding gaps
 
-Source snapshot: published Main `ff7a7fc64730320d33ad59b3103a0c62f98fb4e6`.
+Source snapshot: published Main `a6f59bb18bc124d208eea75588333b0931aefa33`,
+with the reviewed Mesh low-provider Source integration in progress.
 S1's scoped Source/Core/link/build admission is recorded in
 [the Model/Matrix integration record](CODEX_RAW_MODEL_RESOURCE_BORROW.md).
 The continuing goal still includes the full handoff's bindings, switch gates
@@ -13,10 +14,25 @@ allocation can reuse that returned slot. Exact `(identity, reference)` erasure
 is payload-free metadata, but its mutex does not reserve the physical
 generation. Current GUI factories construct before `bind` checks duplicates;
 the existing `prepare_binding` is not consumed by those paths. Trim/destroy
-also require their actual caller's quiescence. The reviewed Source does not
-yet prove exclusion across all participating callers and failure exits. This
-is a missing proof, not an observed concurrent race. Full scalar order stays
-intact; moving a throwing unbind before pool return would change failure order.
+also require their actual caller's quiescence. A qualified alternative design
+can retain the old C++ record while a genuine new allocation replaces its active
+address entry. It requires private old normal payload-end and new allocation/birth
+issuers, nonmoving records through complete outer calls, and exact-record retirement
+which leaves a newer active record intact. Whole-pool serialization is not
+logically required by that conditional design. Current registry, owning lists,
+resolvers and all producer/failure paths must still consume it together. No race
+is claimed observed. Full scalar order stays intact; moving a throwing unbind
+before pool return would change failure order.
+
+The separately reviewed [Mesh low provider](CODEX_CC16_MESH_STORAGE_LOW_PROVIDER.md)
+adds genuine static/explicit-pool allocation, common constructor-return and normal
+payload-end facts. The existing constructor has no demonstrated defect in its
+audited MSVC Win32/installed-atomic domain. This prerequisite does not publish a
+canonical or select a producer. Real scalar action/credit custody, all eight direct
+construction sites, external/prepared issuers, early ordinary-zero failure
+transport and complete owning synchronization remain required. Official compilation,
+actual Core, retained-link and final joined-build checks pass for the additive
+provider. Those checks do not admit the remaining owning composition.
 
 The real Mission factory cannot consume S1 by substituting its new accessors.
 `GameNativeModelDomain::make_mission_client` supplies `raw_storage=nullptr`;
@@ -72,7 +88,13 @@ The existing USN12 diagnostic proposal also remains unapplied. Independent
 review found an omitted geometry-load cache invalidation, missing immutable
 joins from each retained clearance writer to its actual query/cache/geometry
 epochs, and no selected-group/segment identity from list-nonempty status.
-The stronger causal trace requires a separate complete amendment. The historical
+The stronger causal trace now has a concrete surviving-Mission design amendment.
+The actual Mission Impl owns the diagnostic arena before its Frame owner; Frame
+and AI borrow it. Child replacement permanently invalidates the same session,
+and export reads the parent directly. Independent review of that new design and
+a complete unapplied Source/inverse with actual compiler/Core checks remain
+required. The earlier independent Source-ASM review found seventeen feasible
+observation windows, not emitted proof. The historical
 four-field experiment retains twelve matching pairs and its failed USN12 pair; its
 separate baseline control is inconclusive. The qualified non-switch lifetime
 Source admission remains published. Neither endpoint danger zero nor a new

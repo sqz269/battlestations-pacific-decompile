@@ -1,4 +1,5 @@
 #include "bsp/native_mesh_pool.hpp"
+#include "bsp/native_mesh_storage_lifetime.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -240,6 +241,18 @@ void destroy_static_native_mesh_pool_00ce0e40() {
 }
 void* allocate_native_mesh_slot_00b73b60() {
     return require_static_pool().allocate_slot_00b73a10();
+}
+void* allocate_native_mesh_slot_00b73b60(NativeMeshStorageFrame& frame) {
+    frame.begin_allocation(true); // freshness failure does not arm this catch
+    try {
+        auto& receiver = require_static_pool(); // may throw BEFORE allocation entry
+        frame.enter_pool_allocation(receiver);
+        void* const actual = receiver.allocate_slot_00b73a10();
+        return frame.allocation_normal_return(actual);
+    } catch (...) {
+        frame.record_failure(); // no unlock, return, cleanup or fabricated receipt
+        throw;
+    }
 }
 void return_native_mesh_slot_00b72f70(void* slot) {
     require_static_pool().return_slot_00b72da0(slot);
