@@ -1,0 +1,788 @@
+{
+  "schema_version": 1,
+  "kind": "Independent immutable Git Source peer review; Source support only",
+  "verdict": {
+    "actionable_Source_findings": 0,
+    "static_Source_accepted_with_qualifications": true,
+    "compiler_result_claimed": false,
+    "runtime_activation_or_normal_disposition_admitted": false
+  },
+  "author_commit": "dd8d893f1b02c61c7bd3c61c0353438a65e9844f",
+  "actual_published_parent": "a8e0fa59bcfbe028599b6295b8bb655d9c33b3d7",
+  "author_four_full_Git_pins": [
+    {
+      "path": "include/bsp/native_gui_icon_identity.hpp",
+      "bytes": 4357,
+      "sha256": "5ec6c0ca2f5dbb7ffc2e10bef861d8030e3e6d31ab0bdb69eeedabdd5d0bdc93",
+      "Git_blob": "c7b2f166b398c0cc7a5cfae4c4d8052cf1ec14c7"
+    },
+    {
+      "path": "src/native_gui_icon_identity.cpp",
+      "bytes": 5822,
+      "sha256": "bce98c1945240c91a05293da8fbf8eed319094f37c59acae105d570c32b4e15b",
+      "Git_blob": "60724973a2b927db0e77a9ad5a6219dd3f1f1922"
+    },
+    {
+      "path": "docs/CC16_GUI_ICON_IDENTITY_PREPARED_COLD.md",
+      "bytes": 3472,
+      "sha256": "944895d545c33e3f1222822d3d2ab163f45cb7246bfb063bd13fde621ed14275",
+      "Git_blob": "27d051dd2cef54d380ff38aca7827c0aad9e2285"
+    },
+    {
+      "path": "reports/cc16_gui_icon_identity_prepared_cold.json",
+      "bytes": 49969,
+      "sha256": "0ccff33e9c8bd7da7580683e8979fc3cec46f5e09e8f71d66033b717ba79d2e3",
+      "Git_blob": "2562c4aec4f8abc9d710490ead01e468c2e9670c"
+    }
+  ],
+  "prior_ignored_independent_review": {
+    "sealed_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-identity-prepared-cold-peer\\local\\output\\cc16_gui_icon_identity_prepared_cold_source_peer_20261031\\prior_ignored_peer_sealed_receipt.json",
+      "bytes": 748,
+      "sha256": "f2672f426ea573b6a73e6950b84a5e93531c95187ebfdf9b4b6ea7f61e8076ac"
+    },
+    "read_only_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-identity-prepared-cold-peer\\local\\output\\cc16_gui_icon_identity_prepared_cold_source_peer_20261031\\prior_ignored_peer\\peer_read_only_receipt.json",
+      "bytes": 3973,
+      "sha256": "4bb9d0b995f759d17a5c368abc7f412b32df234bf41105b980b8178a6e2baaea"
+    },
+    "own_static_checks": 136,
+    "original_exact_reader_replay": 89,
+    "reused_because_actual_two_Source_postimages_equal_prior_full_candidates": true
+  },
+  "actual_immutable_Git_author_reader": {
+    "source": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-identity-prepared-cold-peer\\local\\output\\cc16_gui_icon_identity_prepared_cold_source_peer_20261031\\reader_FROM_IMMUTABLE_GIT_REPORT.py",
+      "bytes": 7377,
+      "sha256": "57e60c98883950ba6b9a0504b362e3b13abf01507589c1f835f237859c12c910"
+    },
+    "extracted_from_report_Git_blob": "2562c4aec4f8abc9d710490ead01e468c2e9670c",
+    "result": {
+      "all_passed": true,
+      "mode": "immutable_Git",
+      "ref": "dd8d893f1b02c61c7bd3c61c0353438a65e9844f",
+      "base": "a8e0fa59bcfbe028599b6295b8bb655d9c33b3d7",
+      "checks": 121,
+      "full_four_path_tree_inverse": true,
+      "reader_sha256": "57e60c98883950ba6b9a0504b362e3b13abf01507589c1f835f237859c12c910",
+      "report_sha256": "0ccff33e9c8bd7da7580683e8979fc3cec46f5e09e8f71d66033b717ba79d2e3",
+      "Source_after_pins": [
+        {
+          "path": "include/bsp/native_gui_icon_identity.hpp",
+          "bytes": 4357,
+          "sha256": "5ec6c0ca2f5dbb7ffc2e10bef861d8030e3e6d31ab0bdb69eeedabdd5d0bdc93",
+          "Git_blob_sha1": "c7b2f166b398c0cc7a5cfae4c4d8052cf1ec14c7"
+        },
+        {
+          "path": "src/native_gui_icon_identity.cpp",
+          "bytes": 5822,
+          "sha256": "bce98c1945240c91a05293da8fbf8eed319094f37c59acae105d570c32b4e15b",
+          "Git_blob_sha1": "60724973a2b927db0e77a9ad5a6219dd3f1f1922"
+        }
+      ],
+      "no_CPP_Native_provider_compiler_runtime_execution": true
+    },
+    "full_result_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-identity-prepared-cold-peer\\local\\output\\cc16_gui_icon_identity_prepared_cold_source_peer_20261031\\actual_author_reader_git_result.json",
+      "bytes": 14751,
+      "sha256": "bb54c40dba5d04913e5eb4ddccd5fd36d496d0406ae1c0c0594f02817dc94057"
+    },
+    "working119_is_not_the_actual121_receipt": true
+  },
+  "independent_Git_review": {
+    "all_passed": true,
+    "independent_checks": 75,
+    "checks": [
+      {
+        "check": "actual immutable parent exactly published a8",
+        "passed": true
+      },
+      {
+        "check": "exact four author-owned paths",
+        "passed": true
+      },
+      {
+        "check": "actual full Git pin include/bsp/native_gui_icon_identity.hpp",
+        "passed": true
+      },
+      {
+        "check": "actual full Git pin src/native_gui_icon_identity.cpp",
+        "passed": true
+      },
+      {
+        "check": "actual full Git pin docs/CC16_GUI_ICON_IDENTITY_PREPARED_COLD.md",
+        "passed": true
+      },
+      {
+        "check": "actual full Git pin reports/cc16_gui_icon_identity_prepared_cold.json",
+        "passed": true
+      },
+      {
+        "check": "all seven approved seam contents and positions exact",
+        "passed": true
+      },
+      {
+        "check": "all twelve approved protected witness tuples exact",
+        "passed": true
+      },
+      {
+        "check": "actual a8 identity preimage equals previously reviewed a6 preimage include/bsp/native_gui_icon_identity.hpp",
+        "passed": true
+      },
+      {
+        "check": "actual full Source equals prior independent136-check candidate include/bsp/native_gui_icon_identity.hpp",
+        "passed": true
+      },
+      {
+        "check": "independent exact forward H1_forward",
+        "passed": true
+      },
+      {
+        "check": "independent exact forward H2_cold_API",
+        "passed": true
+      },
+      {
+        "check": "independent exact forward H3_private_append",
+        "passed": true
+      },
+      {
+        "check": "independent whole forward include/bsp/native_gui_icon_identity.hpp",
+        "passed": true
+      },
+      {
+        "check": "independent exact reverse H3_private_append",
+        "passed": true
+      },
+      {
+        "check": "independent exact reverse H2_cold_API",
+        "passed": true
+      },
+      {
+        "check": "independent exact reverse H1_forward",
+        "passed": true
+      },
+      {
+        "check": "independent whole reverse include/bsp/native_gui_icon_identity.hpp",
+        "passed": true
+      },
+      {
+        "check": "actual a8 identity preimage equals previously reviewed a6 preimage src/native_gui_icon_identity.cpp",
+        "passed": true
+      },
+      {
+        "check": "actual full Source equals prior independent136-check candidate src/native_gui_icon_identity.cpp",
+        "passed": true
+      },
+      {
+        "check": "independent exact forward C1_direct_include",
+        "passed": true
+      },
+      {
+        "check": "independent exact forward C2_cold_method",
+        "passed": true
+      },
+      {
+        "check": "independent exact forward C3_pending_denial",
+        "passed": true
+      },
+      {
+        "check": "independent exact forward C4_actual_call",
+        "passed": true
+      },
+      {
+        "check": "independent whole forward src/native_gui_icon_identity.cpp",
+        "passed": true
+      },
+      {
+        "check": "independent exact reverse C4_actual_call",
+        "passed": true
+      },
+      {
+        "check": "independent exact reverse C3_pending_denial",
+        "passed": true
+      },
+      {
+        "check": "independent exact reverse C2_cold_method",
+        "passed": true
+      },
+      {
+        "check": "independent exact reverse C1_direct_include",
+        "passed": true
+      },
+      {
+        "check": "independent whole reverse src/native_gui_icon_identity.cpp",
+        "passed": true
+      },
+      {
+        "check": "historical and actual17 inventories mapped by same paths",
+        "passed": true
+      },
+      {
+        "check": "actual published17 pin include/bsp/native_gui_icon_identity.hpp",
+        "passed": true
+      },
+      {
+        "check": "actual published17 pin src/native_gui_icon_identity.cpp",
+        "passed": true
+      },
+      {
+        "check": "actual published17 pin include/bsp/native_gui_icon_storage.hpp",
+        "passed": true
+      },
+      {
+        "check": "actual published17 pin src/native_gui_icon_storage.cpp",
+        "passed": true
+      },
+      {
+        "check": "actual published17 pin include/bsp/native_gui_widget_lifetime_dispatch.hpp",
+        "passed": true
+      },
+      {
+        "check": "actual published17 pin src/native_gui_widget_lifetime_dispatch.cpp",
+        "passed": true
+      },
+      {
+        "check": "actual published17 pin include/bsp/native_gui_widget_lifetime.hpp",
+        "passed": true
+      },
+      {
+        "check": "actual published17 pin src/native_gui_widget_lifetime.cpp",
+        "passed": true
+      },
+      {
+        "check": "actual published17 pin include/bsp/game_native_gui_icon_process.hpp",
+        "passed": true
+      },
+      {
+        "check": "actual published17 pin src/game_native_gui_icon_process.cpp",
+        "passed": true
+      },
+      {
+        "check": "actual published17 pin include/bsp/native_gui_icon_delayed_loads.hpp",
+        "passed": true
+      },
+      {
+        "check": "actual published17 pin src/native_gui_icon_delayed_loads.cpp",
+        "passed": true
+      },
+      {
+        "check": "actual published17 pin src/game_native_gui_page_application.cpp",
+        "passed": true
+      },
+      {
+        "check": "actual published17 pin src/game_hosts.cpp",
+        "passed": true
+      },
+      {
+        "check": "actual published17 pin include/bsp/game_hosts.hpp",
+        "passed": true
+      },
+      {
+        "check": "actual published17 pin include/bsp/native_gui_anim_icon_storage.hpp",
+        "passed": true
+      },
+      {
+        "check": "actual published17 pin src/native_gui_anim_icon_storage.cpp",
+        "passed": true
+      },
+      {
+        "check": "13 historical inputs unchanged; exactly four v2 current files differ",
+        "passed": true
+      },
+      {
+        "check": "actual15 nonowned dependencies are exact17 minus two edited identity files",
+        "passed": true
+      },
+      {
+        "check": "actual author leaves dependency exact include/bsp/native_gui_icon_storage.hpp",
+        "passed": true
+      },
+      {
+        "check": "actual author leaves dependency exact src/native_gui_icon_storage.cpp",
+        "passed": true
+      },
+      {
+        "check": "actual author leaves dependency exact include/bsp/native_gui_widget_lifetime_dispatch.hpp",
+        "passed": true
+      },
+      {
+        "check": "actual author leaves dependency exact src/native_gui_widget_lifetime_dispatch.cpp",
+        "passed": true
+      },
+      {
+        "check": "actual author leaves dependency exact include/bsp/native_gui_widget_lifetime.hpp",
+        "passed": true
+      },
+      {
+        "check": "actual author leaves dependency exact src/native_gui_widget_lifetime.cpp",
+        "passed": true
+      },
+      {
+        "check": "actual author leaves dependency exact include/bsp/game_native_gui_icon_process.hpp",
+        "passed": true
+      },
+      {
+        "check": "actual author leaves dependency exact src/game_native_gui_icon_process.cpp",
+        "passed": true
+      },
+      {
+        "check": "actual author leaves dependency exact include/bsp/native_gui_icon_delayed_loads.hpp",
+        "passed": true
+      },
+      {
+        "check": "actual author leaves dependency exact src/native_gui_icon_delayed_loads.cpp",
+        "passed": true
+      },
+      {
+        "check": "actual author leaves dependency exact src/game_native_gui_page_application.cpp",
+        "passed": true
+      },
+      {
+        "check": "actual author leaves dependency exact src/game_hosts.cpp",
+        "passed": true
+      },
+      {
+        "check": "actual author leaves dependency exact include/bsp/game_hosts.hpp",
+        "passed": true
+      },
+      {
+        "check": "actual author leaves dependency exact include/bsp/native_gui_anim_icon_storage.hpp",
+        "passed": true
+      },
+      {
+        "check": "actual author leaves dependency exact src/native_gui_anim_icon_storage.cpp",
+        "passed": true
+      },
+      {
+        "check": "complete historical a07 manifest embedded exact",
+        "passed": true
+      },
+      {
+        "check": "other current v2 file equals historical include/bsp/native_gui_icon_delayed_loads.hpp",
+        "passed": true
+      },
+      {
+        "check": "complete current28717CPP singleton include inverse to historical28669CPP",
+        "passed": true
+      },
+      {
+        "check": "other current v2 file equals historical include/bsp/native_gui_icon_storage.hpp",
+        "passed": true
+      },
+      {
+        "check": "other current v2 file equals historical src/native_gui_icon_storage.cpp",
+        "passed": true
+      },
+      {
+        "check": "independent exact whole-tree changed set four paths",
+        "passed": true
+      },
+      {
+        "check": "independent full recursive four-path tree inverse",
+        "passed": true
+      },
+      {
+        "check": "actual extracted original reader121 immutable-Git pass, not working119",
+        "passed": true
+      },
+      {
+        "check": "reader actual exact author commit and tree inverse",
+        "passed": true
+      },
+      {
+        "check": "no tracked worker Source mutation",
+        "passed": true
+      }
+    ],
+    "author_commit": "dd8d893f1b02c61c7bd3c61c0353438a65e9844f",
+    "actual_parent": "a8e0fa59bcfbe028599b6295b8bb655d9c33b3d7",
+    "actual_author_reader_checks": 121,
+    "prior_ignored_review_reused_checks": 136,
+    "prior_ignored_original_reader_checks": 89,
+    "Source_after_exact_prior_review": true,
+    "historical17_current17_changed_paths": [
+      "include/bsp/native_gui_icon_storage.hpp",
+      "src/native_gui_icon_storage.cpp",
+      "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "src/native_gui_icon_delayed_loads.cpp"
+    ],
+    "actual_nonowned15_exact": true,
+    "all_four_path_tree_inverse": true,
+    "Source_findings": 0,
+    "worker_compiler_Game_Ghidra_newtests": false
+  },
+  "historical_and_current_dependencies": {
+    "historical_a6f": "a6f59bb18bc124d208eea75588333b0931aefa33",
+    "historical17_pins": [
+      {
+        "path": "include/bsp/native_gui_icon_identity.hpp",
+        "bytes": 3372,
+        "sha256": "27d2f6e7313bf3d15a7b2247e233f2ab7eca110ffe6b1f91097e6e441620c54c",
+        "Git_blob_sha1": "b1541bc833789a9e3ef81098e4dc587225e06534"
+      },
+      {
+        "path": "src/native_gui_icon_identity.cpp",
+        "bytes": 4230,
+        "sha256": "c7d9af9a64658bc1fd5806e2c13fd578392bb0665b6951bed4eea96408f20d04",
+        "Git_blob_sha1": "558a6e2505aaffc2acb38e674eb68a2fddd1d74f"
+      },
+      {
+        "path": "include/bsp/native_gui_icon_storage.hpp",
+        "bytes": 8253,
+        "sha256": "622aaaefad6bfb4100f272f56207bcd5387710b8840092291c5615c0c49f8662",
+        "Git_blob_sha1": "e9a622c225834efd751c92c5a9db5dddddd0bc94"
+      },
+      {
+        "path": "src/native_gui_icon_storage.cpp",
+        "bytes": 16168,
+        "sha256": "bfbc913bf7baf77c96875cef95f6ed503bb3690f66b7fa7c42e09584c76bbb5c",
+        "Git_blob_sha1": "8e8ca499a6a500ef2d7cb1ccff3dba56afa184d4"
+      },
+      {
+        "path": "include/bsp/native_gui_widget_lifetime_dispatch.hpp",
+        "bytes": 6288,
+        "sha256": "9d2c05097f3880a57bc79a5cd095bee33858a3b0300ed77af887f90fec3e291c",
+        "Git_blob_sha1": "bd1b560ee54acf5c4189ecc2a130a406a70049d4"
+      },
+      {
+        "path": "src/native_gui_widget_lifetime_dispatch.cpp",
+        "bytes": 9192,
+        "sha256": "f850db8bbd894bf91a96f730b8783cc7b66cb595c3c2a07973e33d33d9ad4803",
+        "Git_blob_sha1": "b68e27db072d9cf5f549d7ed8806faf36474b530"
+      },
+      {
+        "path": "include/bsp/native_gui_widget_lifetime.hpp",
+        "bytes": 10153,
+        "sha256": "eb41bcd6bea8ecff99ab0b1dca322316a12c86a3da54a0229a1a59e2519f336a",
+        "Git_blob_sha1": "3f2e5eaf5756641377cafb0cac7cdb10840bda6f"
+      },
+      {
+        "path": "src/native_gui_widget_lifetime.cpp",
+        "bytes": 19237,
+        "sha256": "4cc4073e96b0441595743d967ae2cbf07eaf313671e63bd99891cbe06fb912b7",
+        "Git_blob_sha1": "084e85da41c26b91eb83e2f9f865644997b59ab0"
+      },
+      {
+        "path": "include/bsp/game_native_gui_icon_process.hpp",
+        "bytes": 3975,
+        "sha256": "64ea6df52c7f26f2a25fa8f485bb6022116178887d828f031fe8c5b4413db441",
+        "Git_blob_sha1": "86ea513e79e4b8c15be217b3a5daa744171ea94d"
+      },
+      {
+        "path": "src/game_native_gui_icon_process.cpp",
+        "bytes": 4452,
+        "sha256": "771ae831af661e9420fb8a58d67bd10511456ae83e9764acb3245ded32b71655",
+        "Git_blob_sha1": "3bf20aa83282178518eb25f098337d6928af3c48"
+      },
+      {
+        "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+        "bytes": 8671,
+        "sha256": "c90af3cb31bb60f3c48f4146fe5b61bd0372e7f017906c8491bdb705401e2374",
+        "Git_blob_sha1": "da74313bf9fb8d144c0cb37bbd54156f8b2c185f"
+      },
+      {
+        "path": "src/native_gui_icon_delayed_loads.cpp",
+        "bytes": 17409,
+        "sha256": "42a3ea48aba347a4adfb807e9bc84b95ee4edf33efc66312a2a1f13b6f0dfcf1",
+        "Git_blob_sha1": "68b15fd9b445bb8057b0c57602ce9bf2b6b1a1a0"
+      },
+      {
+        "path": "src/game_native_gui_page_application.cpp",
+        "bytes": 72373,
+        "sha256": "0f770bd8713656eeb56b77a97109eb7168e1be5d53d96305e4105edbe44b1668",
+        "Git_blob_sha1": "996fbbdec1f9160540da07b0842295920734eead"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "bytes": 191046,
+        "sha256": "90eba0c691b64c3ab96cc391af3a4eb55e0f174f8acd2a7c83bb72e25c8da78a",
+        "Git_blob_sha1": "044b4ea5102fc8882856b632e775809a2db7f5b0"
+      },
+      {
+        "path": "include/bsp/game_hosts.hpp",
+        "bytes": 48628,
+        "sha256": "d9b6f5aba28876194548d789ef79ebd3f85ddd47c292fe716dce13edc9e4b919",
+        "Git_blob_sha1": "06f58246fe25f488a0f29847a413c846da2bbbd0"
+      },
+      {
+        "path": "include/bsp/native_gui_anim_icon_storage.hpp",
+        "bytes": 4575,
+        "sha256": "744842b474ecd5ac956a1e7ec154c1c7c05e9571d0827f2f4c664c753e531165",
+        "Git_blob_sha1": "df3773feae18b154e15ea4efce7aa6802cdd6a76"
+      },
+      {
+        "path": "src/native_gui_anim_icon_storage.cpp",
+        "bytes": 7130,
+        "sha256": "6844c4dc961db7bc710ed71791f2de53b58de3ba19f27c14ec36083804b0bd24",
+        "Git_blob_sha1": "43fdfd1aad79ca80703cec61e0483ba29a1e5c52"
+      }
+    ],
+    "actual_published_a8_17_pins": [
+      {
+        "path": "include/bsp/native_gui_icon_identity.hpp",
+        "bytes": 3372,
+        "sha256": "27d2f6e7313bf3d15a7b2247e233f2ab7eca110ffe6b1f91097e6e441620c54c",
+        "Git_blob_sha1": "b1541bc833789a9e3ef81098e4dc587225e06534"
+      },
+      {
+        "path": "src/native_gui_icon_identity.cpp",
+        "bytes": 4230,
+        "sha256": "c7d9af9a64658bc1fd5806e2c13fd578392bb0665b6951bed4eea96408f20d04",
+        "Git_blob_sha1": "558a6e2505aaffc2acb38e674eb68a2fddd1d74f"
+      },
+      {
+        "path": "include/bsp/native_gui_icon_storage.hpp",
+        "bytes": 8923,
+        "sha256": "36efeb861e01b14348e370d169c9002b8ac436a29b2f9f3be1d5aac8d7976bfc",
+        "Git_blob_sha1": "0a98345600a93dff4fc6c10ce3a0626d93fe9847"
+      },
+      {
+        "path": "src/native_gui_icon_storage.cpp",
+        "bytes": 19689,
+        "sha256": "cc847b8f5fb19055a1116376b2d3a8eff181f045695fe73394ba04996728a492",
+        "Git_blob_sha1": "1d61197d246f8c9789c733fa70919817a1581f73"
+      },
+      {
+        "path": "include/bsp/native_gui_widget_lifetime_dispatch.hpp",
+        "bytes": 6288,
+        "sha256": "9d2c05097f3880a57bc79a5cd095bee33858a3b0300ed77af887f90fec3e291c",
+        "Git_blob_sha1": "bd1b560ee54acf5c4189ecc2a130a406a70049d4"
+      },
+      {
+        "path": "src/native_gui_widget_lifetime_dispatch.cpp",
+        "bytes": 9192,
+        "sha256": "f850db8bbd894bf91a96f730b8783cc7b66cb595c3c2a07973e33d33d9ad4803",
+        "Git_blob_sha1": "b68e27db072d9cf5f549d7ed8806faf36474b530"
+      },
+      {
+        "path": "include/bsp/native_gui_widget_lifetime.hpp",
+        "bytes": 10153,
+        "sha256": "eb41bcd6bea8ecff99ab0b1dca322316a12c86a3da54a0229a1a59e2519f336a",
+        "Git_blob_sha1": "3f2e5eaf5756641377cafb0cac7cdb10840bda6f"
+      },
+      {
+        "path": "src/native_gui_widget_lifetime.cpp",
+        "bytes": 19237,
+        "sha256": "4cc4073e96b0441595743d967ae2cbf07eaf313671e63bd99891cbe06fb912b7",
+        "Git_blob_sha1": "084e85da41c26b91eb83e2f9f865644997b59ab0"
+      },
+      {
+        "path": "include/bsp/game_native_gui_icon_process.hpp",
+        "bytes": 3975,
+        "sha256": "64ea6df52c7f26f2a25fa8f485bb6022116178887d828f031fe8c5b4413db441",
+        "Git_blob_sha1": "86ea513e79e4b8c15be217b3a5daa744171ea94d"
+      },
+      {
+        "path": "src/game_native_gui_icon_process.cpp",
+        "bytes": 4452,
+        "sha256": "771ae831af661e9420fb8a58d67bd10511456ae83e9764acb3245ded32b71655",
+        "Git_blob_sha1": "3bf20aa83282178518eb25f098337d6928af3c48"
+      },
+      {
+        "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+        "bytes": 11927,
+        "sha256": "cd2726e79c917d705dc11afc2b136ca6db66145530fc914ce42445b6a4a8ea0b",
+        "Git_blob_sha1": "08ddcf3c37fcf3b70dc4880fbba29f8c2b9d6267"
+      },
+      {
+        "path": "src/native_gui_icon_delayed_loads.cpp",
+        "bytes": 28717,
+        "sha256": "3bebb1d9e60fdf94456b5152658fee0d29189c8ddf780202bead119174090019",
+        "Git_blob_sha1": "d7eed63795d703683c1f06c6cbc04c00dfbbec7c"
+      },
+      {
+        "path": "src/game_native_gui_page_application.cpp",
+        "bytes": 72373,
+        "sha256": "0f770bd8713656eeb56b77a97109eb7168e1be5d53d96305e4105edbe44b1668",
+        "Git_blob_sha1": "996fbbdec1f9160540da07b0842295920734eead"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "bytes": 191046,
+        "sha256": "90eba0c691b64c3ab96cc391af3a4eb55e0f174f8acd2a7c83bb72e25c8da78a",
+        "Git_blob_sha1": "044b4ea5102fc8882856b632e775809a2db7f5b0"
+      },
+      {
+        "path": "include/bsp/game_hosts.hpp",
+        "bytes": 48628,
+        "sha256": "d9b6f5aba28876194548d789ef79ebd3f85ddd47c292fe716dce13edc9e4b919",
+        "Git_blob_sha1": "06f58246fe25f488a0f29847a413c846da2bbbd0"
+      },
+      {
+        "path": "include/bsp/native_gui_anim_icon_storage.hpp",
+        "bytes": 4575,
+        "sha256": "744842b474ecd5ac956a1e7ec154c1c7c05e9571d0827f2f4c664c753e531165",
+        "Git_blob_sha1": "df3773feae18b154e15ea4efce7aa6802cdd6a76"
+      },
+      {
+        "path": "src/native_gui_anim_icon_storage.cpp",
+        "bytes": 7130,
+        "sha256": "6844c4dc961db7bc710ed71791f2de53b58de3ba19f27c14ec36083804b0bd24",
+        "Git_blob_sha1": "43fdfd1aad79ca80703cec61e0483ba29a1e5c52"
+      }
+    ],
+    "actual_current_nonowned15_pins": [
+      {
+        "path": "include/bsp/native_gui_icon_storage.hpp",
+        "bytes": 8923,
+        "sha256": "36efeb861e01b14348e370d169c9002b8ac436a29b2f9f3be1d5aac8d7976bfc",
+        "Git_blob_sha1": "0a98345600a93dff4fc6c10ce3a0626d93fe9847"
+      },
+      {
+        "path": "src/native_gui_icon_storage.cpp",
+        "bytes": 19689,
+        "sha256": "cc847b8f5fb19055a1116376b2d3a8eff181f045695fe73394ba04996728a492",
+        "Git_blob_sha1": "1d61197d246f8c9789c733fa70919817a1581f73"
+      },
+      {
+        "path": "include/bsp/native_gui_widget_lifetime_dispatch.hpp",
+        "bytes": 6288,
+        "sha256": "9d2c05097f3880a57bc79a5cd095bee33858a3b0300ed77af887f90fec3e291c",
+        "Git_blob_sha1": "bd1b560ee54acf5c4189ecc2a130a406a70049d4"
+      },
+      {
+        "path": "src/native_gui_widget_lifetime_dispatch.cpp",
+        "bytes": 9192,
+        "sha256": "f850db8bbd894bf91a96f730b8783cc7b66cb595c3c2a07973e33d33d9ad4803",
+        "Git_blob_sha1": "b68e27db072d9cf5f549d7ed8806faf36474b530"
+      },
+      {
+        "path": "include/bsp/native_gui_widget_lifetime.hpp",
+        "bytes": 10153,
+        "sha256": "eb41bcd6bea8ecff99ab0b1dca322316a12c86a3da54a0229a1a59e2519f336a",
+        "Git_blob_sha1": "3f2e5eaf5756641377cafb0cac7cdb10840bda6f"
+      },
+      {
+        "path": "src/native_gui_widget_lifetime.cpp",
+        "bytes": 19237,
+        "sha256": "4cc4073e96b0441595743d967ae2cbf07eaf313671e63bd99891cbe06fb912b7",
+        "Git_blob_sha1": "084e85da41c26b91eb83e2f9f865644997b59ab0"
+      },
+      {
+        "path": "include/bsp/game_native_gui_icon_process.hpp",
+        "bytes": 3975,
+        "sha256": "64ea6df52c7f26f2a25fa8f485bb6022116178887d828f031fe8c5b4413db441",
+        "Git_blob_sha1": "86ea513e79e4b8c15be217b3a5daa744171ea94d"
+      },
+      {
+        "path": "src/game_native_gui_icon_process.cpp",
+        "bytes": 4452,
+        "sha256": "771ae831af661e9420fb8a58d67bd10511456ae83e9764acb3245ded32b71655",
+        "Git_blob_sha1": "3bf20aa83282178518eb25f098337d6928af3c48"
+      },
+      {
+        "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+        "bytes": 11927,
+        "sha256": "cd2726e79c917d705dc11afc2b136ca6db66145530fc914ce42445b6a4a8ea0b",
+        "Git_blob_sha1": "08ddcf3c37fcf3b70dc4880fbba29f8c2b9d6267"
+      },
+      {
+        "path": "src/native_gui_icon_delayed_loads.cpp",
+        "bytes": 28717,
+        "sha256": "3bebb1d9e60fdf94456b5152658fee0d29189c8ddf780202bead119174090019",
+        "Git_blob_sha1": "d7eed63795d703683c1f06c6cbc04c00dfbbec7c"
+      },
+      {
+        "path": "src/game_native_gui_page_application.cpp",
+        "bytes": 72373,
+        "sha256": "0f770bd8713656eeb56b77a97109eb7168e1be5d53d96305e4105edbe44b1668",
+        "Git_blob_sha1": "996fbbdec1f9160540da07b0842295920734eead"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "bytes": 191046,
+        "sha256": "90eba0c691b64c3ab96cc391af3a4eb55e0f174f8acd2a7c83bb72e25c8da78a",
+        "Git_blob_sha1": "044b4ea5102fc8882856b632e775809a2db7f5b0"
+      },
+      {
+        "path": "include/bsp/game_hosts.hpp",
+        "bytes": 48628,
+        "sha256": "d9b6f5aba28876194548d789ef79ebd3f85ddd47c292fe716dce13edc9e4b919",
+        "Git_blob_sha1": "06f58246fe25f488a0f29847a413c846da2bbbd0"
+      },
+      {
+        "path": "include/bsp/native_gui_anim_icon_storage.hpp",
+        "bytes": 4575,
+        "sha256": "744842b474ecd5ac956a1e7ec154c1c7c05e9571d0827f2f4c664c753e531165",
+        "Git_blob_sha1": "df3773feae18b154e15ea4efce7aa6802cdd6a76"
+      },
+      {
+        "path": "src/native_gui_anim_icon_storage.cpp",
+        "bytes": 7130,
+        "sha256": "6844c4dc961db7bc710ed71791f2de53b58de3ba19f27c14ec36083804b0bd24",
+        "Git_blob_sha1": "43fdfd1aad79ca80703cec61e0483ba29a1e5c52"
+      }
+    ],
+    "thirteen_unchanged_four_changed_paths": [
+      "include/bsp/native_gui_icon_storage.hpp",
+      "src/native_gui_icon_storage.cpp",
+      "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "src/native_gui_icon_delayed_loads.cpp"
+    ],
+    "historical_complete_a07_manifest": {
+      "path": "historical/dependency_v2/manifest.json",
+      "bytes": 11430,
+      "sha256": "a07ecb41ea5af8b48bd8812b2e8fc5481158e77293ed3486f6e2c21e2ff2faa8"
+    },
+    "current_v2_four_pins": [
+      {
+        "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+        "bytes": 11927,
+        "sha256": "cd2726e79c917d705dc11afc2b136ca6db66145530fc914ce42445b6a4a8ea0b",
+        "Git_blob_sha1": "08ddcf3c37fcf3b70dc4880fbba29f8c2b9d6267"
+      },
+      {
+        "path": "src/native_gui_icon_delayed_loads.cpp",
+        "bytes": 28717,
+        "sha256": "3bebb1d9e60fdf94456b5152658fee0d29189c8ddf780202bead119174090019",
+        "Git_blob_sha1": "d7eed63795d703683c1f06c6cbc04c00dfbbec7c"
+      },
+      {
+        "path": "include/bsp/native_gui_icon_storage.hpp",
+        "bytes": 8923,
+        "sha256": "36efeb861e01b14348e370d169c9002b8ac436a29b2f9f3be1d5aac8d7976bfc",
+        "Git_blob_sha1": "0a98345600a93dff4fc6c10ce3a0626d93fe9847"
+      },
+      {
+        "path": "src/native_gui_icon_storage.cpp",
+        "bytes": 19689,
+        "sha256": "cc847b8f5fb19055a1116376b2d3a8eff181f045695fe73394ba04996728a492",
+        "Git_blob_sha1": "1d61197d246f8c9789c733fa70919817a1581f73"
+      }
+    ],
+    "current_CPP_include_correction": {
+      "line_utf8": "#include \"bsp/native_singleton_destruction.hpp\"\n",
+      "bytes": 48,
+      "only_one_line_removed_to_match_whole_historical_CPP": true
+    },
+    "complete_include_inverse_to_historical_CPP": true,
+    "other_three_current_v2_files_equal_historical": true,
+    "no_false_all_four_current_CPP_equality": true
+  },
+  "manual_Source_contract": {
+    "preparation": "Only after completed constructor/bind and established retained custody, with exact identity_/context_.storage/destruction_.",
+    "pending_or_failed": "One-shot negative mark before late admission; pending scalar denied before entry; nested denial prevents pointer commit; no old fallback/retry/cleanup.",
+    "normal_commit": "Pointer published only after genuine normal preparation and bound-phase recheck.",
+    "selected_scalar": "SAME actual flags reference, storage and private acquired; real v2 call only when explicitly prepared; exact old default alternative and complete catch/retire suffix.",
+    "old_zero_noexcept": "Body/policy exact; not a newly admitted Native throwing transport or NoThrow authority.",
+    "retention": "Even normal registry retire leaves permanent acquired/provider borrow and entered debt. No discharge/reset/current-holder disposition.",
+    "outer_parent": "Production/Dispatcher/Identity placement and genuine enclosing selected parent admission remain absent; inner final-base support does not close that edge."
+  },
+  "limits": [
+    "Ordinary Source C++ layout changes are not Original binary ABI.",
+    "No Native Origin, fault/SEH/FH3/CRT/NoThrow or allocator/current-holder authority issued.",
+    "No physical normal disposition, manager/Host drain, runtime selection, activation or gameplay claim.",
+    "Root official compiler/Core/link/default-startup receipts remain separate; peer executed no compiler."
+  ],
+  "peer_doc": {
+    "path": "docs\\CC16_GUI_ICON_IDENTITY_PREPARED_COLD_SOURCE_PEER_REVIEW.md",
+    "bytes": 2377,
+    "sha256": "5b78a0c31847e3dfcc97d8321047220c52702919544f5624299560ca14aec8d2"
+  },
+  "worker_actions": {
+    "owned_files_only_two_evidence_files": true,
+    "production_Source_CMake_ledger_Ghidra": false,
+    "compiler_Cpp_provider_tests_probes_Game": false
+  },
+  "new_Original_vendor_helper_CG_duplicate_ABI_Origin_runtime_activation_credit": 0
+}
