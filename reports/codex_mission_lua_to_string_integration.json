@@ -1,0 +1,196 @@
+{
+  "schema": "bsp-cc16-mission-lua-to-string-integration-v1",
+  "producer_commit": "da2998dcd5c9aae0947c97310839d256d3c18973",
+  "Core_registration_commit": "37126b060e3df1e7743ac2396f5b6211928870a9",
+  "address": "006b8060",
+  "whole_Original_instructions": 5,
+  "whole_Original_bytes": 17,
+  "behavior": "Captured signedindex then fenced CURRENT machine+4 once; real lua_tolstring(state,index,nullptr) once with actual NULL optionallength sink; actual borrowedconstchar* including NULL unchanged.",
+  "frozen_producer": {
+    "commit": "da2998dcd5c9aae0947c97310839d256d3c18973",
+    "files": {
+      "include/bsp/native_mission_lua_to_string.hpp": {
+        "author_physical_sha256": "1a3344c2714bd888895fd349e3fb8cc9b2fcc2f2114469374eabbf6adc370281",
+        "Root_physical_sha256": "1a3344c2714bd888895fd349e3fb8cc9b2fcc2f2114469374eabbf6adc370281",
+        "git_blob_sha256": "1a3344c2714bd888895fd349e3fb8cc9b2fcc2f2114469374eabbf6adc370281",
+        "equal_modulo_CRLF": true
+      },
+      "src/native_mission_lua_to_string.cpp": {
+        "author_physical_sha256": "231e251f9291f8de0f0c02421139b141a4471873948894433d1bddf59469c9f9",
+        "Root_physical_sha256": "231e251f9291f8de0f0c02421139b141a4471873948894433d1bddf59469c9f9",
+        "git_blob_sha256": "231e251f9291f8de0f0c02421139b141a4471873948894433d1bddf59469c9f9",
+        "equal_modulo_CRLF": true
+      },
+      "docs/NATIVE_MISSION_LUA_TO_STRING.md": {
+        "author_physical_sha256": "2b78416c4dd82402e58e09b22c105dcb9d149a392c70bbed16df7ab7d81529f4",
+        "Root_physical_sha256": "2b78416c4dd82402e58e09b22c105dcb9d149a392c70bbed16df7ab7d81529f4",
+        "git_blob_sha256": "2b78416c4dd82402e58e09b22c105dcb9d149a392c70bbed16df7ab7d81529f4",
+        "equal_modulo_CRLF": true
+      },
+      "reports/native_mission_lua_to_string.json": {
+        "author_physical_sha256": "68f7fb1b5c24ec35f4e7bbc7acd6844c379693d3e431146e3c908b22291c24b1",
+        "Root_physical_sha256": "68f7fb1b5c24ec35f4e7bbc7acd6844c379693d3e431146e3c908b22291c24b1",
+        "git_blob_sha256": "68f7fb1b5c24ec35f4e7bbc7acd6844c379693d3e431146e3c908b22291c24b1",
+        "equal_modulo_CRLF": true
+      }
+    },
+    "receipt_sha256": "0a718dc0b354c4584d0971887f151f4ac75de061410018104a74637aeed16574",
+    "index_sha256": "94797faea5bc3cb79ddaca3ae57da2561cad7cee021e0566c6ac0357bb517fb3",
+    "indexed_artifacts_rehashed": 22,
+    "object": {
+      "sha256": "1a38a9731e947878dd36e743b95be9f5e0b9658b91d1168526862da1f7c181ab",
+      "bytes": 1188,
+      "coff_machine": "014C"
+    },
+    "compile_count": 1,
+    "compile_exit": 0,
+    "defined_entry": "?to_string_native_mission_lua_006b8060@bsp@@YAPBDPBXH@Z",
+    "only_Lua_UNDEF": "_lua_tolstring",
+    "independent_final_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc9\\local\\native_mission_lua_to_string_review_cc9_20261031\\FINAL_REVIEW.md",
+      "sha256": "e926441c0b8a9075657addd4cec6cc47c18d16b64884e37742a0ecf761c88de7"
+    },
+    "ordinary_Source_only": true,
+    "entry_executed": false
+  },
+  "retained": {
+    "mode": "retained",
+    "source_commit": "37126b060e3df1e7743ac2396f5b6211928870a9",
+    "exit": 0,
+    "wall_seconds": 33.15,
+    "ctest_summary": [
+      "100% tests passed, 0 tests failed out of 2",
+      "Total Test time (real) =  14.75 sec"
+    ],
+    "entry_execution": false,
+    "new_tests": 0,
+    "map_sha256": "43a80d0ca743278c54a8b5b87a12af644776dde0305bb44e683157838ff29b9a",
+    "project_sha256": "a54a00f8b50a6f81ac619a6a95c47c1d8413eb883c09c792553ab0da19a15e12"
+  },
+  "canonical_after_Source43_join": {
+    "mode": "canonical",
+    "source_commit": "d9c8eb6392bdb3bfc94305bfa6d718ab2e9288cc",
+    "exit": 0,
+    "wall_seconds": 37.46,
+    "ctest_summary": [
+      "100% tests passed, 0 tests failed out of 2",
+      "Total Test time (real) =  13.92 sec"
+    ],
+    "entry_execution": false,
+    "new_tests": 0,
+    "map_sha256": "16eb470c57f6a0ae68184f4d2ce5b2dc317381a74d4f90eff87601ebf5646adb",
+    "project_sha256": "302b5747c6ed493ffc39169d5533f54dad90e9e7293d02585db8f61511947cdb"
+  },
+  "Source43_remote_Main": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+  "Source43_review": "Root read complete Style HPP/CPP production delta and admission document; existing peer Source/object reviews and runtime/origin/activation gates preserved; newSource joined before firstcanonical",
+  "retained_link": {
+    "mode": "retained",
+    "entry_rows": {
+      "?to_string_native_mission_lua_006b8060@bsp@@YAPBDPBXH@Z": [
+        "0001:002ffbe0       ?to_string_native_mission_lua_006b8060@bsp@@YAPBDPBXH@Z 10300be0 f   bsp_core:native_mission_lua_to_string.obj"
+      ]
+    },
+    "unforced_genuine_provider_rows": {
+      "_lua_tolstring": [
+        "0001:005558c0       _lua_tolstring             105568c0 f   bsp_lua511:lapi.obj"
+      ]
+    },
+    "unique_forced_entries": 1,
+    "map_sha256": "43a80d0ca743278c54a8b5b87a12af644776dde0305bb44e683157838ff29b9a",
+    "entry_invoked": false
+  },
+  "canonical_link": {
+    "mode": "canonical",
+    "entry_rows": {
+      "?to_string_native_mission_lua_006b8060@bsp@@YAPBDPBXH@Z": []
+    },
+    "unforced_genuine_provider_rows": {},
+    "unique_forced_entries": 0,
+    "map_sha256": "16eb470c57f6a0ae68184f4d2ce5b2dc317381a74d4f90eff87601ebf5646adb",
+    "entry_invoked": false
+  },
+  "Core_emitted_operations": {
+    "Core_object_sha256": "5012b5f629e7e149e1cafd6578720e277ada31d77c884ed12a4f232f024ff11f",
+    "Root_full_public_and_helper_disassembly_read": true,
+    "Core_sequence": "EBP prologue; CURRENTstate06\u2192actualNULLlengthPUSH09\u2192privateSourceindex0B\u2192realcall0F\u2192ADD12_14/POP_EBP/RET18 withEAXunchanged",
+    "isolated_object_difference": "authorESP/currentstate04/NULL07/index09/call0E/ADD12_13/RET16; prologue/privateSourceparam differences qualified; no instructionbyteidentity required",
+    "Core_object_unchanged_after_Source43_join": true,
+    "entry_executed": false
+  },
+  "preservation": {
+    "repository_paths": {
+      "CMakeLists.txt": "exact after inverse of one new Core registration",
+      "cmake/startup.cmake": "91d1de5e0df99d75ab2133869f154c0560d969f8ed3b60c999a495ba097f416b",
+      "cmake/lua.cmake": "0c432ec1026aa6921d876098d29359d34f9463cd894d7adafcb67b954eb7a006",
+      "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "src/native_string.cpp": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "include/bsp/native_string_pool_owner.hpp": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "src/native_string_pool_owner.cpp": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "include/bsp/native_string_pool_storage.hpp": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+      "src/native_string_pool_storage.cpp": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+      "include/bsp/native_crt_memcpy.hpp": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123",
+      "src/native_crt_memcpy.cpp": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3",
+      "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "src/native_lua_value_string.cpp": "2f56b4a90bee384062e7529ab372fdce90404878f147e9de6a47a8c0074d76b2",
+      "src/settings_seg29_cc13.cpp": "7a882cf94ad8bc30120e0a953d7cb0af729d017593f31b1929205c266f43df24",
+      "include/bsp/native_lua_objects.hpp": "18ddc6c301d56244468a29ea15a84f74ddfab41594740a08dc740f6bc13d3c0d",
+      "src/native_lua_objects.cpp": "f2d2a7a0a3d3f1141be23b9b0ca3db9f4d561780ed618a74fd6061d5e6a62bf5",
+      "src/game_native_gui_render_application.cpp": "2132e6bf7222381755f375f333d01a68187acff8daddc2d92e5a0788632aec31",
+      "include/bsp/native_mission_lua_stack.hpp": "536100cb4d98dc56b22eb13e03fec83852c00e38c96e1f669aae53cf7c91616c",
+      "src/native_mission_lua_stack.cpp": "20d275b2bb694209cb83c8051fcc1c7186602ffe25f16b434398e02344805013",
+      "include/bsp/native_mission_lua_type.hpp": "f4687e3fcdc1495e4b3e5caec7f3284e407286706704f24c68a2c13303a90c46",
+      "src/native_mission_lua_type.cpp": "fd6e57257c4826bf0c5010987456f247804330027ad9280cd6cc0607eb26a12a",
+      "include/bsp/native_mission_lua_predicates.hpp": "5e098fb910d7e1c93a22cd31d1b28b5e23b4c0e3b8cd8deaf592cc5ca75cc44e",
+      "src/native_mission_lua_predicates.cpp": "5982bfe120fab58fb375abd5989e659d800da4e72404fb354237e190de12c748",
+      "include/bsp/native_mission_lua_iteration.hpp": "1e8a94fcbf6f703a5d5501ee4f9bdb7f66ad0771964c79218cb40aeeb7ea1a3f",
+      "src/native_mission_lua_iteration.cpp": "cf4c742d45d8444f29b7ec8a6acf1dad91f75df58d9ccd7d69c55aea32f3d6b6",
+      "include/bsp/native_mission_lua_conversions.hpp": "956008364278b43595770efb920d1cd0312a2c57a945a6f59a7d9a8d94bcf5c0",
+      "src/native_mission_lua_conversions.cpp": "8de8a19263cc4b654b1b5c0eded83b805b8e96ebd86eeff5cfae8515d05b20ff",
+      "include/bsp/native_string_raw_resize_exact.hpp": "a1a3c6be74194e2f5946e13e09bfb26562c3f73d3565b51f96403f0d60b9999c",
+      "src/native_string_raw_resize_exact.cpp": "74bff613a83abda342b5506ff750f46f5c44e191de506480ced504208c81f210",
+      "include/bsp/native_mission_lua_scalar_push.hpp": "cbe55d002c81e52c741509bbeef8e7491f722b6378bb35a4ce30a863e42dd3f5",
+      "src/native_mission_lua_scalar_push.cpp": "34b5615b8b9511c67c58267419d2f36022b62c11cdf9bb552032341b8f0bec5e"
+    },
+    "actual_Lua_files": {
+      "build/win32/_deps/lua511-src/src/lua.h": "0a69a11d3e176ceb0e0220c4cdeb1c1f3a0e466a347d813e449ff9246afba3a6",
+      "build/win32/_deps/lua511-src/src/lapi.c": "a9f0f87af50f18b4cf0483ded3a6bf41803032bc7ed575bda84359a46c993fe0",
+      "build/win32/_deps/lua511-src/src/luaconf.h": "5c962567aaf250570b772a3dccbfde80e6add621ec04f429120dce83adb0a4d9",
+      "build/win32/_deps/lua511-src/src/llimits.h": "076aaabf0c79176f8d6047905dcf05bd9c2d770085f3adc591f95be294538b9d",
+      "build/win32/_deps/lua511-src/src/lstate.h": "ed9260f52d710316e9eab00bb1e271e1b06689f63cad55988a48a4361df93927"
+    },
+    "nine_raw_Text_flags": {
+      "kRawDefaultTextQualificationCc16Bound": "false",
+      "kRawDefaultSourceEqualQualificationCc16Bound": "false",
+      "kRawPrimaryPrefixQualificationCc16Bound": "false",
+      "kRawPrefixGeometryQualificationCc16Bound": "false",
+      "kRawMainSectionQualificationCc16Bound": "false",
+      "kRawFontMainQualificationCc16Bound": "false",
+      "kRawEmptyUnchangedQualificationCc16Bound": "false",
+      "kRawFontMetadataQualificationCc16Bound": "false",
+      "kRawFontWorkQualificationCc16Bound": "false"
+    },
+    "base_Main": "18e95b32e8bd736ffb0dad29d0aff429710d24ab"
+  },
+  "qualification": "Caller retains genuine actual machine backing and matching live linked-Source VM/state/stack/code/index/capacity graph, capturedstate lifetime and rooted borrowed-string lifetime through subsequent reads/mutation/GC/reentry/serialization. No semantic LuaMachine cast, fake owner, state creation/cache/default, Context/Frame, wrapper strlen/type/length query/filter/copy/cleanup/pcall/restore/retry. Real conversion/GC/index relocation/null/error/nonlocal/fault effects inherited. Private Source parameter-home normalization is not Original physical HOME/ECX/EDX/RET4/interpreter ABI/FH3/SEH/hardware/runtime or parent886E00/VM/factory/loading/startup proof. Prior names/evidenceprefixes/typedrecords/providers preserved; no new Native/vendor-body credit.",
+  "independent_final_review": "e926441c0b8a9075657addd4cec6cc47c18d16b64884e37742a0ecf761c88de7",
+  "ledger_and_Ghidra": {
+    "old_name_evidence_prefix_and_all_prior_shard_rows_preserved": true,
+    "one_qualified_raw_addition": true,
+    "journal": "local/ghidra-annotations-20261031T020738Z.json",
+    "journal_sha256": "92662e4996acf80206804a5804f5921d7adcdda95d192fc6dee00b8c9e22bd60",
+    "old_values_recorded": true,
+    "same_name_append_applied": true,
+    "annotator_policy": "append evidence to saved previous comments; journal.after is requested evidence, not full final comment",
+    "project_saved": true,
+    "export_refreshed": true
+  },
+  "local_cohort": "local/mission_lua_to_string_integration_cc16_20261031",
+  "source_ready": false,
+  "runtime_validated": false,
+  "native_abi_equivalent": false,
+  "new_tests": 0,
+  "new_native_body_credit": false,
+  "new_vendor_body_credit": false,
+  "goal_status": "active"
+}

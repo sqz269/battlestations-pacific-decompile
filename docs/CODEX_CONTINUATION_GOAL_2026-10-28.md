@@ -1555,3 +1555,22 @@ NextToString42d2 actual27/38 Codeacceptedboth/ONEobjectauthorized; CallerInfo
 def4ce65 fullRootdesign20ops49B accepted/independentpending; FrameA10V3
 designonlyuses newexactresize andretains private8Bbirth/lateHOME/ownfree gate.
 reports/codex_string_resize_scalar_push_integration.json. Goal ACTIVE.
+
+
+ToString006B8060 whole5ops17B fromda2998dc, Core37126 once: capturedindex,
+CURRENT+4, actualNULLlengthsink, realtolstring once/actualborrowedpointer.
+Root+GamefullCode/finale926/all22artifacts/ONE014C1188B1a38a973; RootfullCore
+EBPstate06/NULL09/privateindex0B/call0F/add12_14/RET18 accepted; privateSource
+param-HOME/prologue differs isolatedESP, no OriginalHOMEalias/ABI claim.
+Retained37126 allWin32/existing2/2 14.75s/oneonlyforced/unforcedrealAPI;
+Source43Main589c3ca4 joined BEFOREfirstcanonical: d9c8eb63 allWin32/existing
+2/2 13.92s/normal0forced/newrowabsent. ActualCoreobjectunchanged.32priorrepo+
+5Lua preserved/oneCoreinverse/nineTextOFF. Oldname/prefix/alloldshardrecords
+preserved, onequalifiedrawrecord; locked020738Z savedbsp.gpr/refreshedexport.
+Earlier18e resize/scalarcohort19.43/18.36 staysfrozen; Source43 haditsown
+combined18e canonical13.83s, no priorcohort replay or new Rootentry.
+CallerInfodef4ce65/peer45ae19 qualifieddesignacceptedboth, Source-onlydraft
+authorized butauthorwaitingthisToStringMainhandoff. A10V380b1/peerfc244a9a
+designaccepted; actual40/10965b9/1c11 primaryCodeaccepted/Framepeerpending,
+NO A10 compilerauthorized. No parent/VM/startup/runtime/ABI/bodycredit grant.
+reports/codex_mission_lua_to_string_integration.json. Goal ACTIVE.
