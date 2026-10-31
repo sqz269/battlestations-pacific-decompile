@@ -1,0 +1,125 @@
+{
+  "schema": "bsp-native-mission-lua-caller-info-v1",
+  "source_base": "3b75927b7470e58dc7b61efa8968ec7f6699957e",
+  "design_sha256": "def4ce65bdc3e02f48d078e39c975f853de11dec5f6c8542cf71bf79f5fa9150",
+  "source_sha256": {
+    "include/bsp/native_mission_lua_caller_info.hpp": "16196bcdc1e72eb93245cb5c9a8e52914a29b8f2166cb3d28681750d646a9446",
+    "src/native_mission_lua_caller_info.cpp": "1dfce8a3e20ea30828460ae9bf021f34bd7c5d343655eb5b9ca61f419cc9b70e"
+  },
+  "actual_source_lines": {
+    "header": 37,
+    "cpp": 54
+  },
+  "whole_leaf": {
+    "address": "006b86b0",
+    "instructions": 20,
+    "bytes": 49,
+    "schedule": "capture level/record/receiver; CURRENT state -> genuine getstack; ==0 actualzero immediate; ANYnonzero second CURRENT state -> genuine getinfo with SAME record/actual canonical query -> unchanged full int",
+    "original_abi": "ECX receiver, stacked level/record, ESI/EDI capture; custom Lua ECX/EDX/stack interfaces; RET8 with actual EAX result",
+    "ordinary_Source_API_only": true
+  },
+  "actual_query_role": {
+    "address": "00cf8398",
+    "extent": 5,
+    "verified_hex": "6e536c7500",
+    "caller_supplies_genuine_immutable_mapping_content_extent_provenance": true,
+    "new_literal_global_or_arbitrary_query_customization": false
+  },
+  "actual_Source_Debug_traits": {
+    "genuinely_live_public_linked_type_required": true,
+    "size": 100,
+    "alignment": 4,
+    "short_src_offset": 36,
+    "short_src_extent": 60,
+    "i_ci_offset": 96,
+    "new_record_birth_zeroing_or_Native_cast": false
+  },
+  "actual_providers": {
+    "public_declarations": "lua.h330/331",
+    "public_record": "lua.h343..355, LUA_IDSIZE60",
+    "getstack": "ldebug.c84..104",
+    "getinfo": "ldebug.c232..258",
+    "vendor_body_reconstruction": false
+  },
+  "validation": {
+    "actual_Code_reviews": "Root and independent Gameplay full Code/design/all20Original ops accepted exact frozen sources before ONE object",
+    "strict_object": {
+      "sha256": "c1a75d3c44c4f486ebd755f651c7ea60a9018bfbe16ebdf75aa1752ee1f972db",
+      "bytes": 1283,
+      "coff_machine": "014C",
+      "compile_count": 1,
+      "exit_code": 0,
+      "flags": [
+        "/nologo",
+        "/std:c++17",
+        "/permissive-",
+        "/W4",
+        "/WX",
+        "/EHsc",
+        "/MD",
+        "/O2",
+        "/Ob2",
+        "/fp:strict",
+        "/DNDEBUG",
+        "/DWIN32",
+        "/D_WINDOWS",
+        "/c"
+      ]
+    },
+    "same_object_inspection": {
+      "object_sha256": "c1a75d3c44c4f486ebd755f651c7ea60a9018bfbe16ebdf75aa1752ee1f972db",
+      "bytes": 1283,
+      "coff_machine": "014C",
+      "defined_public_entry": "?get_caller_info_native_mission_lua_006b86b0@bsp@@YAHPBXHPAUlua_Debug@@PBD@Z",
+      "only_genuine_Lua_UNDEFs": [
+        "_lua_getinfo",
+        "_lua_getstack"
+      ],
+      "independent_COFF_section_symbol_relocation_parsing": true,
+      "entry_bytes": "568b7424088b4604ff742410ff74241050e80000000083c40c85c075025ec38b4604ff742410ff74241850e80000000083c40c5ec3",
+      "relocations": {
+        "18": "_lua_getstack",
+        "44": "_lua_getinfo"
+      },
+      "first_call": "receiver captured ESI; firstCURRENTstate+05; SAMErecord/level/state pushes; actualgetstack+11; ADD12+16; TESTfullEAX+19/JNE+1B",
+      "zero_path": "POP/RET+1D..1E keeps actual EAX0; no secondstate/querypayload/recordwrite",
+      "nonzero_path": "freshCURRENTstate+1F; SAMErecord+22/queryparameter+26/state+2A; actualgetinfo+2B; ADD12+30; POP/RET+33..34 with full EAX unchanged",
+      "Source_normalization": "Source by-value parameter homes/captures, not Original physical argument-home alias or private ABI proof",
+      "no_cache_positive_filter_bool_conversion_record_birth_default_or_cleanup": true,
+      "compiled_Debug_layout_asserts": {
+        "size": 100,
+        "align": 4,
+        "short_src_offset": 36,
+        "short_src_extent": 60,
+        "i_ci_offset": 96
+      },
+      "same_object_disassembly_sha256": "542b18bb1e5e50b85950e0de2557211e4801ad38206fa9b1437f1b77529c1278",
+      "same_object_symbols_sha256": "1d1d7010452961e17655acaa5729e89235d76cf2879221c6ce64735199fdebdf",
+      "entry_or_runtime_invoked": false
+    },
+    "compile_receipt": "local/native_mission_lua_caller_info_gui_20261031/compile_receipt.json",
+    "object_inspection": "local/native_mission_lua_caller_info_gui_20261031/object_inspection.json"
+  },
+  "preservation_baseline": "local/native_mission_lua_caller_info_gui_20261031/provider_baseline.json",
+  "limits": [
+    "matching live Source VM/frame/code graph and real Source lua_Debug lifetime required at each reached call",
+    "first-call i_ci must remain valid for whichever CURRENT state is reread; no equality guard/cache/repair",
+    "real canonical query and borrowed record strings retain actual mapping/rooted consumer lifetimes",
+    "no default record/constructor/Frame/cleanup/pcall/retry/stack restore or post-read",
+    "no Original debug/privateHOME/interpreter ABI/FH3/fault or parent886E00/producer/VM/factory/startup/runtime admission"
+  ],
+  "source_ready": false,
+  "native_abi_equivalent": false,
+  "runtime_validated": false,
+  "new_native_body_credit": false,
+  "new_vendor_body_credit": false,
+  "tests_probe_link_executable_or_entry": false,
+  "provider_preservation": {
+    "repository_files": 9,
+    "actual_Lua_files": 4,
+    "all_unchanged": true,
+    "all_old_tracked_files_preserved": true,
+    "baseline_sha256": "7bccda6dbbb9901ffb0735b6db9fd9c44efa9ffc082fa2c70a7ab682e0368caf",
+    "after_compile_receipt_sha256": "5e174187df66ac6c95cd9bcfea751290d5b3a9aa7752a307000c772054dd35cc"
+  }
+}
