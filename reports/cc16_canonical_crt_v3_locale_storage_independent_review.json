@@ -1,0 +1,963 @@
+{
+  "schema_version": 1,
+  "packet": "codex-canonical-crt-v3-locale-storage-independent-review",
+  "created_utc": "2026-10-31T11:20:49.714569+00:00",
+  "reviewed_commit": "632c11710db5951e0e103dc8281a3fb46477b345",
+  "source_base": "a536cbd9cd3ad081825ecc8d1a6606232ca6c75e",
+  "historical_proposal_base": "71573f30e00445140ab9bba7c74eaadd8250f392",
+  "review_paths": [
+    "docs/CC16_CANONICAL_CRT_V3_LOCALE_STORAGE_INDEPENDENT_REVIEW.md",
+    "reports/cc16_canonical_crt_v3_locale_storage_independent_review.json"
+  ],
+  "review_scope": "four support files only; no Main selection or locale setter/provider closure",
+  "findings": [],
+  "result": "zero actionable bounded Source findings; static support composition only",
+  "author_inputs": [
+    {
+      "path": "docs/CC16_CANONICAL_CRT_V3_LOCALE_STORAGE.md",
+      "bytes": 9942,
+      "sha256": "94ebc7e3f3403288986b26721a604700a15bd929ea9454ec27293f1c63b74102",
+      "git_blob_sha1": "f4c64c2b86de0a346d68ce61d9cb404203b00a7f"
+    },
+    {
+      "path": "include/bsp/game_native_data_bootstrap.hpp",
+      "bytes": 4127,
+      "sha256": "34b22a2c6b984d13ddb70f0dd85f932f05e724d61bcddfb737c748a8b40e0b2d",
+      "git_blob_sha1": "1368863b58a7acd47101b5fba37ef62960a5c1ac"
+    },
+    {
+      "path": "include/bsp/game_native_mutable_crt_data.hpp",
+      "bytes": 3609,
+      "sha256": "1f8489c542ebdd443c3e2c9f36311e42fc5914475c0261ba3d4e515dc8c4d106",
+      "git_blob_sha1": "383dee0c20131bf36a215b03db943c0295e7d47a"
+    },
+    {
+      "path": "reports/cc16_canonical_crt_v3_locale_storage.json",
+      "bytes": 47273,
+      "sha256": "addc6f1fabed43bac1eb3cca2aaaea6ff06b22c808d0e269523eefc2e3a48a24",
+      "git_blob_sha1": "868d46e96f10e67cc69d423e12756dc18ee3909f"
+    },
+    {
+      "path": "src/game_native_data_bootstrap.cpp",
+      "bytes": 24755,
+      "sha256": "271523201d9d6868e5efdad5e3bc8759dd613771ea1b9c11b5d8b7795246dae9",
+      "git_blob_sha1": "d3ef19117cb0b309ea815a372164e9c7afbe8737"
+    },
+    {
+      "path": "src/game_native_mutable_crt_data.cpp",
+      "bytes": 11526,
+      "sha256": "ae568947d0080cf26bb2624ce3750beb069a93db72dcb7efc1065dd7e88f766b",
+      "git_blob_sha1": "de36874d2cc2136143f6dea109a61095206ee847"
+    }
+  ],
+  "sources": [
+    {
+      "path": "include/bsp/game_native_data_bootstrap.hpp",
+      "before_bytes": 4111,
+      "before_sha256": "13e7a4a85d6096f3f0b4be04fce0d065d5e196c4119d914ae2af268026c7642a",
+      "before_blob": "0fff23e432b46cab3978466f0f13f69bbdf4f144",
+      "after_bytes": 4127,
+      "after_sha256": "34b22a2c6b984d13ddb70f0dd85f932f05e724d61bcddfb737c748a8b40e0b2d",
+      "after_blob": "1368863b58a7acd47101b5fba37ef62960a5c1ac"
+    },
+    {
+      "path": "src/game_native_data_bootstrap.cpp",
+      "before_bytes": 23472,
+      "before_sha256": "380bf1ebc8ba9691f19fd2ae33ce167cdf5b33e9095f9fc4f5d172489e2f879d",
+      "before_blob": "b37fe02f39f358a9f2a9ac48b4dcd367ec95c1d0",
+      "after_bytes": 24755,
+      "after_sha256": "271523201d9d6868e5efdad5e3bc8759dd613771ea1b9c11b5d8b7795246dae9",
+      "after_blob": "d3ef19117cb0b309ea815a372164e9c7afbe8737"
+    },
+    {
+      "path": "include/bsp/game_native_mutable_crt_data.hpp",
+      "before_bytes": 3200,
+      "before_sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+      "before_blob": "ec1a1c9c2a7359031b4b77c2b86ba12cd6f3420e",
+      "after_bytes": 3609,
+      "after_sha256": "1f8489c542ebdd443c3e2c9f36311e42fc5914475c0261ba3d4e515dc8c4d106",
+      "after_blob": "383dee0c20131bf36a215b03db943c0295e7d47a"
+    },
+    {
+      "path": "src/game_native_mutable_crt_data.cpp",
+      "before_bytes": 10114,
+      "before_sha256": "d9dabf905fd4acf195f72c14e9ae2c7ef457514f4ff6227efffdcbb1f24a0c39",
+      "before_blob": "2c0d73f8164a8b0d4cbbc499801935d1f28c213a",
+      "after_bytes": 11526,
+      "after_sha256": "ae568947d0080cf26bb2624ce3750beb069a93db72dcb7efc1065dd7e88f766b",
+      "after_blob": "de36874d2cc2136143f6dea109a61095206ee847"
+    }
+  ],
+  "seams": [
+    {
+      "id": "B01",
+      "path": "include/bsp/game_native_data_bootstrap.hpp",
+      "old_base64": "ZW51bSBjbGFzcyBHYW1lTmF0aXZlRGF0YVBsYW4geyBSZWFkT25seVYxLCBDYW5vbmljYWxDcnRWMiB9Ow==",
+      "new_base64": "ZW51bSBjbGFzcyBHYW1lTmF0aXZlRGF0YVBsYW4geyBSZWFkT25seVYxLCBDYW5vbmljYWxDcnRWMiwgQ2Fub25pY2FsQ3J0VjMgfTs=",
+      "before_sha256": "13e7a4a85d6096f3f0b4be04fce0d065d5e196c4119d914ae2af268026c7642a",
+      "after_sha256": "34b22a2c6b984d13ddb70f0dd85f932f05e724d61bcddfb737c748a8b40e0b2d"
+    },
+    {
+      "id": "B02",
+      "path": "src/game_native_data_bootstrap.cpp",
+      "old_base64": "Y29uc3RleHByIERXT1JEIGhhbmRvZmZfdmVyc2lvbl92Mj0yOw==",
+      "new_base64": "Y29uc3RleHByIERXT1JEIGhhbmRvZmZfdmVyc2lvbl92Mj0yOwpjb25zdGV4cHIgRFdPUkQgaGFuZG9mZl92ZXJzaW9uX3YzPTM7CmNvbnN0ZXhwciBEV09SRCBsb2NhbGVfY29udHJvbF9wYWdlX3YzPTB4MDEwOWQwMDA7",
+      "before_sha256": "380bf1ebc8ba9691f19fd2ae33ce167cdf5b33e9095f9fc4f5d172489e2f879d",
+      "after_sha256": "0caeaa5197bfb51c5c5c75494d662f6e13e3a55e1948a5646c38bbd71c083b70"
+    },
+    {
+      "id": "B03",
+      "path": "src/game_native_data_bootstrap.cpp",
+      "old_base64": "c3RhdGljX2Fzc2VydChzaXplb2YoSGFuZG9mZlJlY29yZCkgPD0gMHgxMDAwKTs=",
+      "new_base64": "c3RhdGljX2Fzc2VydChzaXplb2YoSGFuZG9mZlJlY29yZCkgPD0gMHgxMDAwKTsKLy8gVjEvVjIga2VlcCB0aGVpciBleGFjdDQwQiBwcmVmaXggYW5kIG5ldmVyIGluc3BlY3QgdGhpcyBWMy1vbmx5IHRhaWwuCnN0cnVjdCBIYW5kb2ZmUmVjb3JkVjMgewogICAgSGFuZG9mZlJlY29yZCBsZWdhY3k7CiAgICBEV09SRCBsb2NhbGVfY29udHJvbF9wYWdlOwp9OwpzdGF0aWNfYXNzZXJ0KHNpemVvZihIYW5kb2ZmUmVjb3JkKT09NDApOwpzdGF0aWNfYXNzZXJ0KHNpemVvZihIYW5kb2ZmUmVjb3JkVjMpPT00NCk7",
+      "before_sha256": "0caeaa5197bfb51c5c5c75494d662f6e13e3a55e1948a5646c38bbd71c083b70",
+      "after_sha256": "edf2ee18ee3b1a956b4acfa57d81a78d17761d8bfd0527993ee06f8cb7e87dad"
+    },
+    {
+      "id": "B04",
+      "path": "src/game_native_data_bootstrap.cpp",
+      "old_base64": "RFdPUkQgcGxhbl92ZXJzaW9uKEdhbWVOYXRpdmVEYXRhUGxhbiBwbGFuKSBub2V4Y2VwdCB7CiAgICByZXR1cm4gcGxhbj09R2FtZU5hdGl2ZURhdGFQbGFuOjpDYW5vbmljYWxDcnRWMiA/IGhhbmRvZmZfdmVyc2lvbl92MiA6IGhhbmRvZmZfdmVyc2lvbl92MTsKfQ==",
+      "new_base64": "Ym9vbCBpc19jYW5vbmljYWxfcGxhbihHYW1lTmF0aXZlRGF0YVBsYW4gcGxhbikgewogICAgcmV0dXJuIHBsYW49PUdhbWVOYXRpdmVEYXRhUGxhbjo6Q2Fub25pY2FsQ3J0VjIgfHwgcGxhbj09R2FtZU5hdGl2ZURhdGFQbGFuOjpDYW5vbmljYWxDcnRWMzsKfQpTSVpFX1QgbWFwcGVkX3JlY29yZF9ieXRlcyhHYW1lTmF0aXZlRGF0YVBsYW4gcGxhbikgewogICAgcmV0dXJuIHBsYW49PUdhbWVOYXRpdmVEYXRhUGxhbjo6Q2Fub25pY2FsQ3J0VjMgPyBzaXplb2YoSGFuZG9mZlJlY29yZFYzKSA6IHNpemVvZihIYW5kb2ZmUmVjb3JkKTsKfQpEV09SRCBwbGFuX3ZlcnNpb24oR2FtZU5hdGl2ZURhdGFQbGFuIHBsYW4pIG5vZXhjZXB0IHsKICAgIGlmIChwbGFuPT1HYW1lTmF0aXZlRGF0YVBsYW46OkNhbm9uaWNhbENydFYzKSByZXR1cm4gaGFuZG9mZl92ZXJzaW9uX3YzOwogICAgcmV0dXJuIHBsYW49PUdhbWVOYXRpdmVEYXRhUGxhbjo6Q2Fub25pY2FsQ3J0VjIgPyBoYW5kb2ZmX3ZlcnNpb25fdjIgOiBoYW5kb2ZmX3ZlcnNpb25fdjE7Cn0=",
+      "before_sha256": "edf2ee18ee3b1a956b4acfa57d81a78d17761d8bfd0527993ee06f8cb7e87dad",
+      "after_sha256": "c0f2a1b3975f92a72d15bfd0689c45f3838f80d26ef2343030b1a81ed1279478"
+    },
+    {
+      "id": "B05",
+      "path": "src/game_native_data_bootstrap.cpp",
+      "old_base64": "ICAgIGlmIChwbGFuPT1HYW1lTmF0aXZlRGF0YVBsYW46OkNhbm9uaWNhbENydFYyKSB7CiAgICAgICAgaWYgKCFpc19jYW5vbmljYWxfcm9fbWFzayhyb19tYXNrKSk=",
+      "new_base64": "ICAgIGlmIChpc19jYW5vbmljYWxfcGxhbihwbGFuKSkgewogICAgICAgIGlmICghaXNfY2Fub25pY2FsX3JvX21hc2socm9fbWFzaykp",
+      "before_sha256": "c0f2a1b3975f92a72d15bfd0689c45f3838f80d26ef2343030b1a81ed1279478",
+      "after_sha256": "d4e5873edd67df4d36d6e5a271eca4624ce51b755c5ac17ecec2bca7bf19e72f"
+    },
+    {
+      "id": "B06",
+      "path": "src/game_native_data_bootstrap.cpp",
+      "old_base64": "ICAgIHJldHVybiByZWNvcmQubXV0YWJsZV9wYWdlWzBdPT1tdXRhYmxlX3BhZ2VzWzBdICYmCiAgICAgICAgcmVjb3JkLm11dGFibGVfcGFnZVsxXT09bXV0YWJsZV9wYWdlc1sxXSAmJgogICAgICAgIHJlY29yZC5tdXRhYmxlX3BhZ2VbMl09PW11dGFibGVfcGFnZXNbMl0gJiYgcmVjb3JkLm11dGFibGVfcm9sZXM9PTB4Nzs=",
+      "new_base64": "ICAgIGlmIChwbGFuPT1HYW1lTmF0aXZlRGF0YVBsYW46OkNhbm9uaWNhbENydFYzKSB7CiAgICAgICAgY29uc3QgYXV0byogZXh0ZW5kZWQ9cmVpbnRlcnByZXRfY2FzdDxjb25zdCBIYW5kb2ZmUmVjb3JkVjMqPigmcmVjb3JkKTsKICAgICAgICByZXR1cm4gcmVjb3JkLm11dGFibGVfcGFnZVswXT09bXV0YWJsZV9wYWdlc1swXSAmJgogICAgICAgICAgICByZWNvcmQubXV0YWJsZV9wYWdlWzFdPT1tdXRhYmxlX3BhZ2VzWzFdICYmCiAgICAgICAgICAgIHJlY29yZC5tdXRhYmxlX3BhZ2VbMl09PW11dGFibGVfcGFnZXNbMl0gJiYgcmVjb3JkLm11dGFibGVfcm9sZXM9PTB4ZiAmJgogICAgICAgICAgICBleHRlbmRlZC0+bG9jYWxlX2NvbnRyb2xfcGFnZT09bG9jYWxlX2NvbnRyb2xfcGFnZV92MzsKICAgIH0KICAgIHJldHVybiByZWNvcmQubXV0YWJsZV9wYWdlWzBdPT1tdXRhYmxlX3BhZ2VzWzBdICYmCiAgICAgICAgcmVjb3JkLm11dGFibGVfcGFnZVsxXT09bXV0YWJsZV9wYWdlc1sxXSAmJgogICAgICAgIHJlY29yZC5tdXRhYmxlX3BhZ2VbMl09PW11dGFibGVfcGFnZXNbMl0gJiYgcmVjb3JkLm11dGFibGVfcm9sZXM9PTB4Nzs=",
+      "before_sha256": "d4e5873edd67df4d36d6e5a271eca4624ce51b755c5ac17ecec2bca7bf19e72f",
+      "after_sha256": "0a5ac0e01d4d9a3726aa41d79a030a329fa26fbf13336fb248d6854fd74a19f5"
+    },
+    {
+      "id": "B07",
+      "path": "src/game_native_data_bootstrap.cpp",
+      "old_base64": "ICAgIGlmICghaGFuZG9mZl92aWV3XyB8fCBwbGFuXyE9R2FtZU5hdGl2ZURhdGFQbGFuOjpDYW5vbmljYWxDcnRWMiB8fAogICAgICAgICFpc19jYW5vbmljYWxfcm9fbWFzayhleHBlY3RlZF9tYXNrKQ==",
+      "new_base64": "ICAgIGlmICghaGFuZG9mZl92aWV3XyB8fCAhaXNfY2Fub25pY2FsX3BsYW4ocGxhbl8pIHx8CiAgICAgICAgIWlzX2Nhbm9uaWNhbF9yb19tYXNrKGV4cGVjdGVkX21hc2sp",
+      "before_sha256": "0a5ac0e01d4d9a3726aa41d79a030a329fa26fbf13336fb248d6854fd74a19f5",
+      "after_sha256": "c3e78320d3f3801886cbafecd00e851829671ff045f7f6f9522d4ab0eacd55d3"
+    },
+    {
+      "id": "B08",
+      "path": "src/game_native_data_bootstrap.cpp",
+      "old_base64": "ICAgIGlmICghaGFuZG9mZl92aWV3XyB8fCBwbGFuXyE9R2FtZU5hdGl2ZURhdGFQbGFuOjpDYW5vbmljYWxDcnRWMiB8fCBtYXNrXyE9bXV0YWJsZV9tYXNrKQ==",
+      "new_base64": "ICAgIGlmICghaGFuZG9mZl92aWV3XyB8fCAhaXNfY2Fub25pY2FsX3BsYW4ocGxhbl8pIHx8IG1hc2tfIT1tdXRhYmxlX21hc2sp",
+      "before_sha256": "c3e78320d3f3801886cbafecd00e851829671ff045f7f6f9522d4ab0eacd55d3",
+      "after_sha256": "0c82869a203e42b96825e18d17adc1ea031dc3c415be98c82f3adc9c4bf1877a"
+    },
+    {
+      "id": "B09",
+      "path": "src/game_native_data_bootstrap.cpp",
+      "old_base64": "ICAgIHZvaWQqIGNvbnN0IHZpZXc9TWFwVmlld09mRmlsZShtYXBwaW5nLEZJTEVfTUFQX1JFQUR8RklMRV9NQVBfV1JJVEUsMCwwLHNpemVvZihIYW5kb2ZmUmVjb3JkKSk7",
+      "new_base64": "ICAgIHZvaWQqIGNvbnN0IHZpZXc9TWFwVmlld09mRmlsZShtYXBwaW5nLEZJTEVfTUFQX1JFQUR8RklMRV9NQVBfV1JJVEUsMCwwLG1hcHBlZF9yZWNvcmRfYnl0ZXMocGxhbikpOw==",
+      "before_sha256": "0c82869a203e42b96825e18d17adc1ea031dc3c415be98c82f3adc9c4bf1877a",
+      "after_sha256": "98b5b141e52dd554186060448d7038a5feceb7bc5adb2177834f11d07cabb1db"
+    },
+    {
+      "id": "B10",
+      "path": "src/game_native_data_bootstrap.cpp",
+      "old_base64": "ICAgICAgICBoYW5kb2ZmX3ZpZXdfPU1hcFZpZXdPZkZpbGUobWFwcGluZyxGSUxFX01BUF9SRUFEfEZJTEVfTUFQX1dSSVRFLDAsMCxzaXplb2YoSGFuZG9mZlJlY29yZCkpOw==",
+      "new_base64": "ICAgICAgICBoYW5kb2ZmX3ZpZXdfPU1hcFZpZXdPZkZpbGUobWFwcGluZyxGSUxFX01BUF9SRUFEfEZJTEVfTUFQX1dSSVRFLDAsMCxtYXBwZWRfcmVjb3JkX2J5dGVzKHBsYW5fKSk7",
+      "before_sha256": "98b5b141e52dd554186060448d7038a5feceb7bc5adb2177834f11d07cabb1db",
+      "after_sha256": "c6ecc59e0a0c32002bb7d98686d889be5bda75ed170df34d8ce328801bd15e54"
+    },
+    {
+      "id": "B11",
+      "path": "src/game_native_data_bootstrap.cpp",
+      "old_base64": "ICAgICAgICAgICAgcmVjb3JkLT5tdXRhYmxlX3BhZ2VbaV09cGxhbl89PUdhbWVOYXRpdmVEYXRhUGxhbjo6Q2Fub25pY2FsQ3J0VjIgPyBtdXRhYmxlX3BhZ2VzW2ldIDogMDsKICAgICAgICByZWNvcmQtPm11dGFibGVfcm9sZXM9cGxhbl89PUdhbWVOYXRpdmVEYXRhUGxhbjo6Q2Fub25pY2FsQ3J0VjIgPyAweDcgOiAwOw==",
+      "new_base64": "ICAgICAgICAgICAgcmVjb3JkLT5tdXRhYmxlX3BhZ2VbaV09aXNfY2Fub25pY2FsX3BsYW4ocGxhbl8pID8gbXV0YWJsZV9wYWdlc1tpXSA6IDA7CiAgICAgICAgcmVjb3JkLT5tdXRhYmxlX3JvbGVzPXBsYW5fPT1HYW1lTmF0aXZlRGF0YVBsYW46OkNhbm9uaWNhbENydFYzID8gMHhmIDoKICAgICAgICAgICAgcGxhbl89PUdhbWVOYXRpdmVEYXRhUGxhbjo6Q2Fub25pY2FsQ3J0VjIgPyAweDcgOiAwOwogICAgICAgIGlmIChwbGFuXz09R2FtZU5hdGl2ZURhdGFQbGFuOjpDYW5vbmljYWxDcnRWMykKICAgICAgICAgICAgcmVpbnRlcnByZXRfY2FzdDxIYW5kb2ZmUmVjb3JkVjMqPihyZWNvcmQpLT5sb2NhbGVfY29udHJvbF9wYWdlPWxvY2FsZV9jb250cm9sX3BhZ2VfdjM7",
+      "before_sha256": "c6ecc59e0a0c32002bb7d98686d889be5bda75ed170df34d8ce328801bd15e54",
+      "after_sha256": "271523201d9d6868e5efdad5e3bc8759dd613771ea1b9c11b5d8b7795246dae9"
+    },
+    {
+      "id": "M01",
+      "path": "include/bsp/game_native_mutable_crt_data.hpp",
+      "old_base64": "Y2xhc3MgR2FtZU5hdGl2ZURhdGFSZXNlcnZhdGlvbjs=",
+      "new_base64": "Y2xhc3MgR2FtZU5hdGl2ZURhdGFSZXNlcnZhdGlvbjsKZW51bSBjbGFzcyBHYW1lTmF0aXZlRGF0YVBsYW47",
+      "before_sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+      "after_sha256": "6f6f36fbc55c151f73791f939dd3202de377482c51cab548c688ff6990921e86"
+    },
+    {
+      "id": "M02",
+      "path": "include/bsp/game_native_mutable_crt_data.hpp",
+      "old_base64": "ICAgIHZvbGF0aWxlIHN0ZDo6dWludDMyX3QmIGRlYnVnZ2VyX2hvb2soKSBjb25zdCBub2V4Y2VwdDs=",
+      "new_base64": "ICAgIHZvbGF0aWxlIHN0ZDo6dWludDMyX3QmIGRlYnVnZ2VyX2hvb2soKSBjb25zdCBub2V4Y2VwdDsKICAgIC8vIEV4cGxpY2l0IFYzIHN0b3JhZ2UgYm9ycm93IG9ubHkuIFRha2luZyB0aGlzIHJlZmVyZW5jZSByZWFkcyBubyBjZWxsIHZhbHVlLgogICAgLy8gVjEvVjIgaGF2ZSBubyBsb2NhbGUtY29udHJvbCByb2xlIGFuZCByZWNlaXZlIG5vIGZhbGxiYWNrIHJlZmVyZW5jZS4KICAgIGNvbnN0IHZvbGF0aWxlIHN0ZDo6aW50MzJfdCYgbG9jYWxlX2NoYW5nZWRfMDEwOWRlMWMoKSBjb25zdDs=",
+      "before_sha256": "6f6f36fbc55c151f73791f939dd3202de377482c51cab548c688ff6990921e86",
+      "after_sha256": "6decc0ce8268ed5a8676b1c24d42b69d9f6e37caacec645cd643dd52e898b928"
+    },
+    {
+      "id": "M03",
+      "path": "include/bsp/game_native_mutable_crt_data.hpp",
+      "old_base64": "ICAgIHN0ZDo6YXJyYXk8dm9pZCosMj4gcmVzZXJ2YXRpb25zX3t9Ow==",
+      "new_base64": "ICAgIHN0ZDo6YXJyYXk8dm9pZCosMj4gcmVzZXJ2YXRpb25zX3t9OwogICAgY29uc3QgR2FtZU5hdGl2ZURhdGFQbGFuIHBsYW5fOw==",
+      "before_sha256": "6decc0ce8268ed5a8676b1c24d42b69d9f6e37caacec645cd643dd52e898b928",
+      "after_sha256": "80398e18c20a2dfe93c6125996b025483d65cb90cdff5dfd18c7d2afb367e955"
+    },
+    {
+      "id": "M04",
+      "path": "include/bsp/game_native_mutable_crt_data.hpp",
+      "old_base64": "Ly8gdjIgaW5oZXJpdGVkIGNhcGFiaWxpdHkgb25jZSBhbmQgcHVibGlzaGVzIG9ubHkgYWZ0ZXIgY2hlY2tlZCBwYXJlbnQgQUNLLg==",
+      "new_base64": "Ly8gZGVjbGFyZWQgY2Fub25pY2FsIGNhcGFiaWxpdHkgb25jZSBhbmQgcHVibGlzaGVzIG9ubHkgYWZ0ZXIgY2hlY2tlZCByZWFkaW5lc3MgQUNLLg==",
+      "before_sha256": "80398e18c20a2dfe93c6125996b025483d65cb90cdff5dfd18c7d2afb367e955",
+      "after_sha256": "663853abfacdb3369bdf2b7fe25c031d195f73632e804b025c53542010a2afea"
+    },
+    {
+      "id": "M05",
+      "path": "include/bsp/game_native_mutable_crt_data.hpp",
+      "old_base64": "Ly8gcmVjbGFpbXMgYm90aCB0aGUgUk8gRDYgcGFpciBhbmQgdGhlIHRocmVlIHdyaXRhYmxlIHBhZ2VzIGF0IHByb2Nlc3MgZXhpdC4=",
+      "new_base64": "Ly8gcmVjbGFpbXMgdGhlIG93bmVkIFJPIGJhbmRzIGFuZCBtdXRhYmxlIHJlc2VydmF0aW9ucyBhdCBwcm9jZXNzIGV4aXQ7Ci8vIFYyIGhhcyB0aHJlZSB3cml0YWJsZSBwYWdlcywgd2hpbGUgZXhwbGljaXQgVjMgYWRkcyB0aGUgbG9jYWxlLWNvbnRyb2wgcGFnZS4KLy8gTm8gbG9jYWxlIHNldHRlciBpcyBzdXBwbGllZC4=",
+      "before_sha256": "663853abfacdb3369bdf2b7fe25c031d195f73632e804b025c53542010a2afea",
+      "after_sha256": "1f8489c542ebdd443c3e2c9f36311e42fc5914475c0261ba3d4e515dc8c4d106"
+    },
+    {
+      "id": "M06",
+      "path": "src/game_native_mutable_crt_data.cpp",
+      "old_base64": "Y29uc3RleHByIHN0ZDo6dWludHB0cl90IHplcm9fcGFnZT0weDAxMDllMDAwOw==",
+      "new_base64": "Y29uc3RleHByIHN0ZDo6dWludHB0cl90IHplcm9fcGFnZT0weDAxMDllMDAwOwpjb25zdGV4cHIgc3RkOjp1aW50cHRyX3QgbG9jYWxlX2NvbnRyb2xfcGFnZV92Mz0weDAxMDlkMDAwOw==",
+      "before_sha256": "d9dabf905fd4acf195f72c14e9ae2c7ef457514f4ff6227efffdcbb1f24a0c39",
+      "after_sha256": "cbc1657ab5111b896ded8e2dfd1153b9b71cb9efc2901851953198cd5b51c92e"
+    },
+    {
+      "id": "M07",
+      "path": "src/game_native_mutable_crt_data.cpp",
+      "old_base64": "ICAgIEdhbWVOYXRpdmVEYXRhUmVzZXJ2YXRpb24mIHJlc2VydmF0aW9uKSB7CiAgICAodm9pZClwYXRoOwogICAgcmVzZXJ2YXRpb24udHJhbnNmZXJfbXV0YWJsZV9zdWJzZXQocmVzZXJ2YXRpb25zXyk7",
+      "new_base64": "ICAgIEdhbWVOYXRpdmVEYXRhUmVzZXJ2YXRpb24mIHJlc2VydmF0aW9uKSA6IHBsYW5fKHJlc2VydmF0aW9uLnBsYW5fKSB7CiAgICAodm9pZClwYXRoOwogICAgcmVzZXJ2YXRpb24udHJhbnNmZXJfbXV0YWJsZV9zdWJzZXQocmVzZXJ2YXRpb25zXyk7",
+      "before_sha256": "cbc1657ab5111b896ded8e2dfd1153b9b71cb9efc2901851953198cd5b51c92e",
+      "after_sha256": "63e643fd9071c7e4388bc6e8d0ecd0eef26f9f3cf02b0703bc9c78f728150673"
+    },
+    {
+      "id": "M08",
+      "path": "src/game_native_mutable_crt_data.cpp",
+      "old_base64": "ICAgICAgICAvLyBFeGFjdCBQRSAuZGF0YSByYXcgb2Zmc2V0cyBmb3IgdGhlIGNvbXBsZXRlIHR3byBpbml0aWFsaXplZCBwYWdlcy4=",
+      "new_base64": "ICAgICAgICBpZiAocGxhbl89PUdhbWVOYXRpdmVEYXRhUGxhbjo6Q2Fub25pY2FsQ3J0VjMgJiYKICAgICAgICAgICAgVmlydHVhbEFsbG9jKHJlaW50ZXJwcmV0X2Nhc3Q8dm9pZCo+KGxvY2FsZV9jb250cm9sX3BhZ2VfdjMpLHBhZ2VfYnl0ZXMsCiAgICAgICAgICAgICAgICBNRU1fQ09NTUlULFBBR0VfUkVBRFdSSVRFKSE9cmVpbnRlcnByZXRfY2FzdDx2b2lkKj4obG9jYWxlX2NvbnRyb2xfcGFnZV92MykpCiAgICAgICAgICAgIHRocm93IHN0ZDo6cnVudGltZV9lcnJvcigiQ2Fubm90IGNvbW1pdCBjYW5vbmljYWwgQ1JUIFYzIGxvY2FsZS1jb250cm9sIHBhZ2UiKTsKICAgICAgICAvLyBFeGFjdCBQRSAuZGF0YSByYXcgb2Zmc2V0cyBmb3IgdGhlIGNvbXBsZXRlIHR3byBpbml0aWFsaXplZCBwYWdlcy4=",
+      "before_sha256": "63e643fd9071c7e4388bc6e8d0ecd0eef26f9f3cf02b0703bc9c78f728150673",
+      "after_sha256": "0eab075a709ea6a833422799d6274e2d123b17776e90557212cb7875c9865618"
+    },
+    {
+      "id": "M09",
+      "path": "src/game_native_mutable_crt_data.cpp",
+      "old_base64": "ICAgICAgICB2ZXJpZnlfcGFnZXMoKTsKICAgICAgICBpZiAoY29va2llKCkhPTB4YmI0MGU2NGU=",
+      "new_base64": "ICAgICAgICBpZiAocGxhbl89PUdhbWVOYXRpdmVEYXRhUGxhbjo6Q2Fub25pY2FsQ3J0VjMpIHsKICAgICAgICAgICAgLy8gU3VwcG9ydGVkIFBFIHZpcnR1YWwgdGFpbDogdmFsaWRhdGUgdGhlIGZ1bGwgbG9hZGVyIHByZWltYWdlIE9OQ0UuCiAgICAgICAgICAgIC8vIFN1YnNlcXVlbnQgbGl2ZSB2YWx1ZXMsIGluY2x1ZGluZzEsIGFyZSBuZXZlciByZXNldCBvciByZXZhbGlkYXRlZCBhczAuCiAgICAgICAgICAgIGF1dG8qIGNvbnN0IGxvY2FsZV9ieXRlcz1yZWludGVycHJldF9jYXN0PEJZVEUqPihsb2NhbGVfY29udHJvbF9wYWdlX3YzKTsKICAgICAgICAgICAgc3RkOjptZW1zZXQobG9jYWxlX2J5dGVzLDAscGFnZV9ieXRlcyk7CiAgICAgICAgICAgIGlmIChzdGQ6OmFueV9vZihsb2NhbGVfYnl0ZXMsbG9jYWxlX2J5dGVzK3BhZ2VfYnl0ZXMsW10oQllURSBiKXtyZXR1cm4gYiE9MDt9KSkKICAgICAgICAgICAgICAgIHRocm93IHN0ZDo6cnVudGltZV9lcnJvcigiQ2Fub25pY2FsIENSVCBWMyBsb2NhbGUtY29udHJvbCBwYWdlIHdhcyBub3QgemVyby1maWxsZWQiKTsKICAgICAgICB9CiAgICAgICAgdmVyaWZ5X3BhZ2VzKCk7CiAgICAgICAgaWYgKGNvb2tpZSgpIT0weGJiNDBlNjRl",
+      "before_sha256": "0eab075a709ea6a833422799d6274e2d123b17776e90557212cb7875c9865618",
+      "after_sha256": "58ebbaa8078ec6dcb368dfcce8c0870a87222d10792c7e64d2a87ffe8afb1fac"
+    },
+    {
+      "id": "M10",
+      "path": "src/game_native_mutable_crt_data.cpp",
+      "old_base64": "ICAgIHJlcXVpcmVfcGFnZSh6ZXJvX3BhZ2UsMHgwMTA5MDAwMCxQQUdFX1JFQURXUklURSk7Cn0=",
+      "new_base64": "ICAgIHJlcXVpcmVfcGFnZSh6ZXJvX3BhZ2UsMHgwMTA5MDAwMCxQQUdFX1JFQURXUklURSk7CiAgICBpZiAocGxhbl89PUdhbWVOYXRpdmVEYXRhUGxhbjo6Q2Fub25pY2FsQ3J0VjMpCiAgICAgICAgcmVxdWlyZV9wYWdlKGxvY2FsZV9jb250cm9sX3BhZ2VfdjMsMHgwMTA5MDAwMCxQQUdFX1JFQURXUklURSk7Cn0=",
+      "before_sha256": "58ebbaa8078ec6dcb368dfcce8c0870a87222d10792c7e64d2a87ffe8afb1fac",
+      "after_sha256": "e89a7a6ae8b7f6294d9282f51d7238668188661ac34df4b5ea58871b491b02d7"
+    },
+    {
+      "id": "M11",
+      "path": "src/game_native_mutable_crt_data.cpp",
+      "old_base64": "R2FtZU5hdGl2ZUNhbm9uaWNhbERhdGFPd25lcjo6R2FtZU5hdGl2ZUNhbm9uaWNhbERhdGFPd25lcihjb25zdCBzdGQ6OmZpbGVzeXN0ZW06OnBhdGgmIHBhdGgs",
+      "new_base64": "Y29uc3Qgdm9sYXRpbGUgc3RkOjppbnQzMl90JiBHYW1lTmF0aXZlTXV0YWJsZUNydERhdGE6OmxvY2FsZV9jaGFuZ2VkXzAxMDlkZTFjKCkgY29uc3QgewogICAgaWYgKHBsYW5fIT1HYW1lTmF0aXZlRGF0YVBsYW46OkNhbm9uaWNhbENydFYzKQogICAgICAgIHRocm93IHN0ZDo6bG9naWNfZXJyb3IoIkNhbm9uaWNhbCBDUlQgbG9jYWxlLWNvbnRyb2wgYm9ycm93IHJlcXVpcmVzIGV4cGxpY2l0IFYzIik7CiAgICByZXR1cm4gKnJlaW50ZXJwcmV0X2Nhc3Q8Y29uc3Qgdm9sYXRpbGUgc3RkOjppbnQzMl90Kj4oMHgwMTA5ZGUxYyk7Cn0KCkdhbWVOYXRpdmVDYW5vbmljYWxEYXRhT3duZXI6OkdhbWVOYXRpdmVDYW5vbmljYWxEYXRhT3duZXIoY29uc3Qgc3RkOjpmaWxlc3lzdGVtOjpwYXRoJiBwYXRoLA==",
+      "before_sha256": "e89a7a6ae8b7f6294d9282f51d7238668188661ac34df4b5ea58871b491b02d7",
+      "after_sha256": "ae568947d0080cf26bb2624ce3750beb069a93db72dcb7efc1065dd7e88f766b"
+    }
+  ],
+  "protected_regions": [
+    {
+      "path": "src/game_native_data_bootstrap.cpp",
+      "label": "existing_finish_ACK_cancel_CAS",
+      "bytes": 575,
+      "sha256": "eac7f03123541d016b44d59cb2773b7f9b4362298dfc040e6dcaa979bc7441c3",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-canonical-crt-v3-locale-storage\\local\\output\\cc16_canonical_crt_v3_locale_storage_20261031\\existing_finish_ACK_cancel_CAS.protected.bin",
+      "data_base64": "Ym9vbCBHYW1lTmF0aXZlRGF0YVJlc2VydmF0aW9uOjpmaW5pc2goYm9vbCBtYXBwZWQpIG5vZXhjZXB0IHsKICAgIGlmICghaGFuZG9mZl92aWV3XykgcmV0dXJuIGZhbHNlOwogICAgYXV0byogcmVjb3JkPWFzX3JlY29yZChoYW5kb2ZmX3ZpZXdfKTsKICAgIC8vIFRoZSBwYXJlbnQgbWF5IGhhdmUgY2FuY2VsbGVkIGEgdGltZWQtb3V0IGhhbmRvZmYuIE5ldmVyIG92ZXJ3cml0ZSB0aGF0CiAgICAvLyBkZWNpc2lvbiB3aXRoIGEgbGF0ZSBzdWNjZXNzIGFja25vd2xlZGdlbWVudC4KICAgIGNvbnN0IGJvb2wgYWNjZXB0ZWQ9SW50ZXJsb2NrZWRDb21wYXJlRXhjaGFuZ2UoJnJlY29yZC0+c3RhdGUsCiAgICAgICAgbWFwcGVkID8gc3RhdGVfbWFwcGVkIDogc3RhdGVfZmFpbGVkLHN0YXRlX2NsYWltZWQpPT1zdGF0ZV9jbGFpbWVkOwogICAgVW5tYXBWaWV3T2ZGaWxlKGhhbmRvZmZfdmlld18pOwogICAgQ2xvc2VIYW5kbGUoYXNfaGFuZGxlKGhhbmRvZmZfaGFuZGxlXykpOwogICAgaGFuZG9mZl92aWV3Xz1udWxscHRyOyBoYW5kb2ZmX2hhbmRsZV89bnVsbHB0cjsKICAgIHJldHVybiBhY2NlcHRlZDsKfQo="
+    },
+    {
+      "path": "src/game_native_data_bootstrap.cpp",
+      "label": "existing_parent_wait_timeout_policy",
+      "bytes": 1946,
+      "sha256": "d434eb2ec4ca48c53f330a8344692b2c90df4cc693606bf3f12781f205be23c3",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-canonical-crt-v3-locale-storage\\local\\output\\cc16_canonical_crt_v3_locale_storage_20261031\\existing_parent_wait_timeout_policy.protected.bin",
+      "data_base64": "dm9pZCBHYW1lTmF0aXZlRGF0YUJvb3RzdHJhcENoaWxkOjp3YWl0X2Zvcl9tYXBwaW5nKHN0ZDo6dWludDMyX3QgdGltZW91dF9tcykgewogICAgaWYgKCFyZXN1bWVkXyB8fCAhcHJvY2Vzc18pIHRocm93IHN0ZDo6bG9naWNfZXJyb3IoIk5hdGl2ZS1kYXRhIGNoaWxkIHdhcyBub3QgcmVzdW1lZCIpOwogICAgY29uc3QgVUxPTkdMT05HIGRlYWRsaW5lPUdldFRpY2tDb3VudDY0KCkrdGltZW91dF9tczsKICAgIGZvciAoOzspIHsKICAgICAgICBhdXRvKiBjb25zdCByZWNvcmQ9YXNfcmVjb3JkKGhhbmRvZmZfdmlld18pOwogICAgICAgIGNvbnN0IExPTkcgc3RhdGU9SW50ZXJsb2NrZWRDb21wYXJlRXhjaGFuZ2UoJnJlY29yZC0+c3RhdGUsc3RhdGVfcGVuZGluZyxzdGF0ZV9wZW5kaW5nKTsKICAgICAgICBpZiAoc3RhdGU9PXN0YXRlX21hcHBlZCkgeyBtYXBwaW5nX2NvbmZpcm1lZF89dHJ1ZTsgcmV0dXJuOyB9CiAgICAgICAgaWYgKHN0YXRlPT1zdGF0ZV9mYWlsZWQpIHsgZmFpbF9jaGlsZCgpOyB0aHJvdyBzdGQ6OnJ1bnRpbWVfZXJyb3IoIk5hdGl2ZS1kYXRhIGNoaWxkIHJlamVjdGVkIHRoZSBoYW5kb2ZmIG9yIG1hcHBpbmcgZmFpbGVkIik7IH0KICAgICAgICBpZiAoV2FpdEZvclNpbmdsZU9iamVjdChhc19oYW5kbGUocHJvY2Vzc18pLDApPT1XQUlUX09CSkVDVF8wKSB7CiAgICAgICAgICAgIC8vIEEgZmFzdCBjaGlsZCBjYW4gcHVibGlzaCB0aGUgcmVzdWx0IGFuZCBleGl0IGFmdGVyIHRoZSBmaXJzdAogICAgICAgICAgICAvLyBzdGF0ZSByZWFkLiBQcm9jZXNzIGV4aXQgbWFrZXMgdGhpcyBzZWNvbmQgcmVhZCBmaW5hbC4KICAgICAgICAgICAgY29uc3QgTE9ORyBmaW5hbF9zdGF0ZT1JbnRlcmxvY2tlZENvbXBhcmVFeGNoYW5nZSgKICAgICAgICAgICAgICAgICZyZWNvcmQtPnN0YXRlLHN0YXRlX3BlbmRpbmcsc3RhdGVfcGVuZGluZyk7CiAgICAgICAgICAgIGlmIChmaW5hbF9zdGF0ZT09c3RhdGVfbWFwcGVkKSB7IG1hcHBpbmdfY29uZmlybWVkXz10cnVlOyByZXR1cm47IH0KICAgICAgICAgICAgaWYgKGZpbmFsX3N0YXRlPT1zdGF0ZV9mYWlsZWQpCiAgICAgICAgICAgICAgICB0aHJvdyBzdGQ6OnJ1bnRpbWVfZXJyb3IoIk5hdGl2ZS1kYXRhIGNoaWxkIHJlamVjdGVkIHRoZSBoYW5kb2ZmIG9yIG1hcHBpbmcgZmFpbGVkIik7CiAgICAgICAgICAgIERXT1JEIGNvZGU9MDsKICAgICAgICAgICAgR2V0RXhpdENvZGVQcm9jZXNzKGFzX2hhbmRsZShwcm9jZXNzXyksJmNvZGUpOwogICAgICAgICAgICB0aHJvdyBzdGQ6OnJ1bnRpbWVfZXJyb3IoIk5hdGl2ZS1kYXRhIGNoaWxkIGV4aXRlZCBiZWZvcmUgbWFwcGVyIGhhbmRvZmYgY29tcGxldGVkIChleGl0ICIgKwogICAgICAgICAgICAgICAgc3RkOjp0b19zdHJpbmcoY29kZSkgKyAiKSIpOwogICAgICAgIH0KICAgICAgICBjb25zdCBhdXRvIG5vdz1HZXRUaWNrQ291bnQ2NCgpOwogICAgICAgIGlmIChub3c+PWRlYWRsaW5lKSB7CiAgICAgICAgICAgIC8vIEF0b21pY2FsbHkgZGVjaWRlIHRpbWVvdXQgYWdhaW5zdCB0aGUgY2hpbGQncyBmaW5hbCBBQ0suIElmIHRoZQogICAgICAgICAgICAvLyBzdGF0ZSBjaGFuZ2VkIG1lYW53aGlsZSwgcmUtZXZhbHVhdGUgaXQgYmVmb3JlIHRlcm1pbmF0aW5nLgogICAgICAgICAgICBpZiAoSW50ZXJsb2NrZWRDb21wYXJlRXhjaGFuZ2UoJnJlY29yZC0+c3RhdGUsc3RhdGVfZmFpbGVkLHN0YXRlKSE9c3RhdGUpCiAgICAgICAgICAgICAgICBjb250aW51ZTsKICAgICAgICAgICAgZmFpbF9jaGlsZCgpOwogICAgICAgICAgICB0aHJvdyBzdGQ6OnJ1bnRpbWVfZXJyb3IoIk5hdGl2ZS1kYXRhIGNoaWxkIGhhbmRvZmYgdGltZWQgb3V0Iik7CiAgICAgICAgfQogICAgICAgIFNsZWVwKHN0YXRpY19jYXN0PERXT1JEPihzdGQ6Om1pbjxVTE9OR0xPTkc+KDEwLGRlYWRsaW5lLW5vdykpKTsKICAgIH0KfQo="
+    },
+    {
+      "path": "src/game_native_mutable_crt_data.cpp",
+      "label": "existing_joint_cookie_ACK_publication_rollback",
+      "bytes": 3113,
+      "sha256": "fa72920d2f81813f08565b2a01214030489c132e6390cd168b17fc84f8bba2f1",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-canonical-crt-v3-locale-storage\\local\\output\\cc16_canonical_crt_v3_locale_storage_20261031\\existing_joint_cookie_ACK_publication_rollback.protected.bin",
+      "data_base64": "R2FtZU5hdGl2ZUNhbm9uaWNhbERhdGFPd25lcjo6R2FtZU5hdGl2ZUNhbm9uaWNhbERhdGFPd25lcihjb25zdCBzdGQ6OmZpbGVzeXN0ZW06OnBhdGgmIHBhdGgsCiAgICBjb25zdCBHYW1lTmF0aXZlRGF0YVNwYW4qIHNwYW5zLHN0ZDo6c2l6ZV90IGNvdW50LEdhbWVOYXRpdmVEYXRhUmVzZXJ2YXRpb24mIHJlc2VydmF0aW9uKSB7CiAgICAvLyBSZWFkLW9ubHkgYW5kIG11dGFibGUgY29uc3RydWN0b3JzIGVhY2ggb3duIHJvbGxiYWNrIG9uY2UgdGhlaXIgZGlzam9pbnQKICAgIC8vIHN1YnNldCBoYXMgdHJhbnNmZXJyZWQuIFRoZSBjYXBhYmlsaXR5IG93bnMgYW55IHN1YnNldCBub3QgeWV0IHRyYW5zZmVycmVkLgogICAgcmVhZG9ubHlfLnJlc2V0KG5ldyBHYW1lTmF0aXZlUmVhZE9ubHlEYXRhKHBhdGgsc3BhbnMsY291bnQscmVzZXJ2YXRpb24sdHJ1ZSkpOwogICAgbXV0YWJsZV8ucmVzZXQobmV3IEdhbWVOYXRpdmVNdXRhYmxlQ3J0RGF0YShwYXRoLHJlc2VydmF0aW9uKSk7CiAgICAvLyBCb3RoIG93bmVycyBub3cgaGF2ZSB0aGVpciBhbGxvY2F0aW9uIGJhc2VzOyBvbmx5IG5vdyBtYXkgYSBzdWJwYWdlIGNvbW1pdC4KICAgIHJlYWRvbmx5Xy0+aW5pdGlhbGl6ZShwYXRoLHNwYW5zLGNvdW50LG51bGxwdHIsZmFsc2UsdHJ1ZSk7CiAgICBtdXRhYmxlXy0+aW5pdGlhbGl6ZShwYXRoKTsKICAgIHZlcmlmeV9qb2ludCgpOwogICAgYnNwOjppbml0aWFsaXplX25hdGl2ZV9jcnRfY2Fub25pY2FsX3NlY3VyaXR5X2Nvb2tpZV8wMGMxODE1ZSgpOwogICAgaWYgKChtdXRhYmxlXy0+Y29va2llKCkgXiBtdXRhYmxlXy0+Y29tcGxlbWVudCgpKSE9MHhmZmZmZmZmZnUgfHwKICAgICAgICBtdXRhYmxlXy0+Y29va2llKCk9PTB4YmI0MGU2NGUpCiAgICAgICAgdGhyb3cgc3RkOjpydW50aW1lX2Vycm9yKCJDYW5vbmljYWwgQ1JUIGNvb2tpZSBpbml0aWFsaXphdGlvbiBkaWQgbm90IHB1Ymxpc2ggaXRzIGNvbXBsZW1lbnQiKTsKICAgIG11dGFibGVfLT52ZXJpZnlfcGFnZXMoKTsKfQp2b2lkIEdhbWVOYXRpdmVDYW5vbmljYWxEYXRhT3duZXI6OnZlcmlmeV9qb2ludCgpIGNvbnN0IHsKICAgIG11dGFibGVfLT52ZXJpZnlfcGFnZXMoKTsKICAgIGNvbnN0IGF1dG8mIHBhaXI9ZXhjZXB0aW9uX3BhaXIoKTsKICAgIGlmIChwYWlyLnJlY29yZCE9MHgwMTA5ZTU2OCB8fCBwYWlyLmNvbnRleHQhPTB4MDEwOWU1YzApCiAgICAgICAgdGhyb3cgc3RkOjpydW50aW1lX2Vycm9yKCJDYW5vbmljYWwgQ1JUIEQ2IGV4Y2VwdGlvbiBwYWlyIGRvZXMgbm90IHBvaW50IGludG8gdGhlIGZhaWx1cmUgYmxvY2siKTsKICAgIHJlcXVpcmVfcGFnZSgweDAwZDZlMDAwLDB4MDBkNjAwMDAsUEFHRV9SRUFET05MWSk7CiAgICBpZiAocmVpbnRlcnByZXRfY2FzdDxzdGQ6OnVpbnRwdHJfdD4oJm11dGFibGVfLT5mYWlsdXJlX2Jsb2NrKCkuY29udGV4dCkhPXBhaXIuY29udGV4dCkKICAgICAgICB0aHJvdyBzdGQ6OnJ1bnRpbWVfZXJyb3IoIkNhbm9uaWNhbCBDUlQgZXhjZXB0aW9uIGNvbnRleHQgcmVsYXRpb25zaGlwIGlzIGludmFsaWQiKTsKfQpjb25zdCBOYXRpdmVDcnRFeGNlcHRpb25QYWlyJiBHYW1lTmF0aXZlQ2Fub25pY2FsRGF0YU93bmVyOjpleGNlcHRpb25fcGFpcigpIGNvbnN0IHsKICAgIHJldHVybiAqc3RhdGljX2Nhc3Q8Y29uc3QgTmF0aXZlQ3J0RXhjZXB0aW9uUGFpcio+KHJlYWRvbmx5Xy0+ZGF0YV9hdCgweDAwZDZlMWNjLDgpKTsKfQp2b2lkIEdhbWVOYXRpdmVDYW5vbmljYWxEYXRhT3duZXI6OlJvbGxiYWNrRGVsZXRlOjpvcGVyYXRvcigpKAogICAgR2FtZU5hdGl2ZUNhbm9uaWNhbERhdGFPd25lciogb3duZXIpIGNvbnN0IG5vZXhjZXB0IHsgZGVsZXRlIG93bmVyOyB9CmNvbnN0IEdhbWVOYXRpdmVDYW5vbmljYWxEYXRhT3duZXImIEdhbWVOYXRpdmVDYW5vbmljYWxEYXRhT3duZXI6OmluaXRpYWxpemUoCiAgICBjb25zdCBzdGQ6OmZpbGVzeXN0ZW06OnBhdGgmIHBhdGgsY29uc3QgR2FtZU5hdGl2ZURhdGFTcGFuKiBzcGFucyxzdGQ6OnNpemVfdCBjb3VudCwKICAgIEdhbWVOYXRpdmVEYXRhUmVzZXJ2YXRpb24mJiByZXNlcnZhdGlvbikgewogICAgLy8gVGhlIEFQSSBjb25zdW1lcyBpdHMgaW5jb21pbmcgY2FwYWJpbGl0eSBldmVuIGlmIGEgZHVwbGljYXRlIHByb2Nlc3MKICAgIC8vIG93bmVyIG9yIGFuIGVhcmx5IGNvbnN0cnVjdG9yIGZhaWx1cmUgaXMgcmVwb3J0ZWQgdG8gYSBjYXRjaGluZyBjYWxsZXIuCiAgICBHYW1lTmF0aXZlRGF0YVJlc2VydmF0aW9uIG93bmVkKHN0ZDo6bW92ZShyZXNlcnZhdGlvbikpOwogICAgaWYgKHByb2Nlc3NfY2xhaW0udGVzdF9hbmRfc2V0KHN0ZDo6bWVtb3J5X29yZGVyX2FjcV9yZWwpKQogICAgICAgIHRocm93IHN0ZDo6bG9naWNfZXJyb3IoIkNhbm9uaWNhbCBDUlQgcHJvY2VzcyBvd25lciBhbHJlYWR5IGNsYWltZWQiKTsKICAgIHRyeSB7CiAgICAgICAgLy8gQWxsIGhlYXAgb3duZXJzaGlwIG1ldGFkYXRhIGV4aXN0cyBiZWZvcmUgdGhlIHN1Y2Nlc3MgQUNLLiBUaGUKICAgICAgICAvLyByZW1haW5pbmcgcHVibGljYXRpb24gaXMgcG9pbnRlciByZWxlYXNlIGFuZCBhbiBhdG9taWMgc3RvcmUgb25seS4KICAgICAgICBzdGQ6OnVuaXF1ZV9wdHI8R2FtZU5hdGl2ZUNhbm9uaWNhbERhdGFPd25lcixSb2xsYmFja0RlbGV0ZT4gcGVuZGluZygKICAgICAgICAgICAgbmV3IEdhbWVOYXRpdmVDYW5vbmljYWxEYXRhT3duZXIocGF0aCxzcGFucyxjb3VudCxvd25lZCkpOwogICAgICAgIGlmICghb3duZWQuZmluaXNoKHRydWUpKQogICAgICAgICAgICB0aHJvdyBzdGQ6OnJ1bnRpbWVfZXJyb3IoIkNhbm9uaWNhbCBDUlQgcGFyZW50IGNhbmNlbGxlZCByZWFkaW5lc3MgQUNLIik7CiAgICAgICAgYXV0byogY29uc3QgcGVybWFuZW50PXBlbmRpbmcucmVsZWFzZSgpOwogICAgICAgIHByb2Nlc3Nfb3duZXIuc3RvcmUocGVybWFuZW50LHN0ZDo6bWVtb3J5X29yZGVyX3JlbGVhc2UpOwogICAgICAgIHJldHVybiAqcGVybWFuZW50OwogICAgfSBjYXRjaCAoLi4uKSB7CiAgICAgICAgcHJvY2Vzc19jbGFpbS5jbGVhcihzdGQ6Om1lbW9yeV9vcmRlcl9yZWxlYXNlKTsKICAgICAgICB0aHJvdzsKICAgIH0KfQo="
+    },
+    {
+      "path": "src/game_native_mutable_crt_data.cpp",
+      "label": "existing_allocation_base_rollback",
+      "bytes": 377,
+      "sha256": "830a480486d50ae057970c588653118f206952b02497cd5ca1179a6600cede41",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-canonical-crt-v3-locale-storage\\local\\output\\cc16_canonical_crt_v3_locale_storage_20261031\\existing_allocation_base_rollback.protected.bin",
+      "data_base64": "dm9pZCByZWxlYXNlX293bmVkKHN0ZDo6YXJyYXk8dm9pZCosMj4mIGJhbmRzKSBub2V4Y2VwdCB7CiAgICAvLyBUaGVzZSBleGFjdCBhbGxvY2F0aW9uIGJhc2VzIGVudGVyZWQgb25seSB0aHJvdWdoIHRoZSBjaGVja2VkIHRyYW5zZmVyLgogICAgLy8gQSBjb21taXR0ZWQgc3VicGFnZSBzcGxpdHMgVmlydHVhbFF1ZXJ5IHJlZ2lvbnM7IE1FTV9SRVNFUlZFIGlkZW50aXR5IGlzCiAgICAvLyBkZWxpYmVyYXRlbHkgbm90IGNvbnN1bHRlZCBhZnRlciB0cmFuc2Zlci4KICAgIGZvciAoYXV0byYgYmFuZDpiYW5kcykgaWYgKGJhbmQpIHsKICAgICAgICBWaXJ0dWFsRnJlZShiYW5kLDAsTUVNX1JFTEVBU0UpOwogICAgICAgIGJhbmQ9bnVsbHB0cjsKICAgIH0KfQo="
+    },
+    {
+      "path": "src/game_native_mutable_crt_data.cpp",
+      "label": "existing_page_range_protection_check",
+      "bytes": 707,
+      "sha256": "2170e7e79bcd49ee81a63a17fc7f8216f9864627fcdce524ec30b2912c319a34",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-canonical-crt-v3-locale-storage\\local\\output\\cc16_canonical_crt_v3_locale_storage_20261031\\existing_page_range_protection_check.protected.bin",
+      "data_base64": "dm9pZCByZXF1aXJlX3BhZ2Uoc3RkOjp1aW50cHRyX3QgcGFnZSxzdGQ6OnVpbnRwdHJfdCBhbGxvY2F0aW9uLERXT1JEIHByb3RlY3Rpb24pIHsKICAgIE1FTU9SWV9CQVNJQ19JTkZPUk1BVElPTiBpbmZve307CiAgICBpZiAoVmlydHVhbFF1ZXJ5KHJlaW50ZXJwcmV0X2Nhc3Q8dm9pZCo+KHBhZ2UpLCZpbmZvLHNpemVvZihpbmZvKSkhPXNpemVvZihpbmZvKSB8fAogICAgICAgIHJlaW50ZXJwcmV0X2Nhc3Q8c3RkOjp1aW50cHRyX3Q+KGluZm8uQmFzZUFkZHJlc3MpPnBhZ2UgfHwKICAgICAgICBwYWdlLXJlaW50ZXJwcmV0X2Nhc3Q8c3RkOjp1aW50cHRyX3Q+KGluZm8uQmFzZUFkZHJlc3MpPmluZm8uUmVnaW9uU2l6ZSB8fAogICAgICAgIHBhZ2VfYnl0ZXM+aW5mby5SZWdpb25TaXplLShwYWdlLXJlaW50ZXJwcmV0X2Nhc3Q8c3RkOjp1aW50cHRyX3Q+KGluZm8uQmFzZUFkZHJlc3MpKSB8fAogICAgICAgIGluZm8uQWxsb2NhdGlvbkJhc2UhPXJlaW50ZXJwcmV0X2Nhc3Q8dm9pZCo+KGFsbG9jYXRpb24pIHx8CiAgICAgICAgaW5mby5TdGF0ZSE9TUVNX0NPTU1JVCB8fAogICAgICAgIGluZm8uUHJvdGVjdCE9cHJvdGVjdGlvbiB8fCBpbmZvLlR5cGUhPU1FTV9QUklWQVRFKQogICAgICAgIHRocm93IHN0ZDo6cnVudGltZV9lcnJvcigiQ2Fub25pY2FsIENSVCBwYWdlIHByb3RlY3Rpb24gb3Igb3duZXJzaGlwIGNoYW5nZWQiKTsKfQo="
+    }
+  ],
+  "unchanged_inputs": [
+    {
+      "path": "src/game_main.cpp",
+      "commit": "a536cbd9cd3ad081825ecc8d1a6606232ca6c75e",
+      "bytes": 81511,
+      "sha256": "3851a814b2028a7851998b7043033a5943b38ec49b34cbe57b74860564c05cc6",
+      "git_blob_sha1": "a721bf0114dd6715f0a8b494ac799c77b9fbf472",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-canonical-crt-v3-locale-storage\\local\\output\\cc16_canonical_crt_v3_locale_storage_20261031\\unchanged_inputs\\src\\game_main.cpp",
+      "claim": "whole unchanged integrity only; bounded relevant caller/provider sites inspected"
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "commit": "a536cbd9cd3ad081825ecc8d1a6606232ca6c75e",
+      "bytes": 2713,
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "git_blob_sha1": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-canonical-crt-v3-locale-storage\\local\\output\\cc16_canonical_crt_v3_locale_storage_20261031\\unchanged_inputs\\include\\bsp\\game_native_readonly_data.hpp",
+      "claim": "whole unchanged integrity only; bounded relevant caller/provider sites inspected"
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "commit": "a536cbd9cd3ad081825ecc8d1a6606232ca6c75e",
+      "bytes": 7167,
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+      "git_blob_sha1": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-canonical-crt-v3-locale-storage\\local\\output\\cc16_canonical_crt_v3_locale_storage_20261031\\unchanged_inputs\\src\\game_native_readonly_data.cpp",
+      "claim": "whole unchanged integrity only; bounded relevant caller/provider sites inspected"
+    },
+    {
+      "path": "include/bsp/native_crt_canonical_cookie_initialization.hpp",
+      "commit": "a536cbd9cd3ad081825ecc8d1a6606232ca6c75e",
+      "bytes": 976,
+      "sha256": "df7aca083dc0d4ad22092b57d110a06db1288be386592d0035facf7696be0c8a",
+      "git_blob_sha1": "62319f3ec9c1da349e97846cb2cf739c9d698984",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-canonical-crt-v3-locale-storage\\local\\output\\cc16_canonical_crt_v3_locale_storage_20261031\\unchanged_inputs\\include\\bsp\\native_crt_canonical_cookie_initialization.hpp",
+      "claim": "whole unchanged integrity only; bounded relevant caller/provider sites inspected"
+    },
+    {
+      "path": "src/native_crt_canonical_cookie_initialization.cpp",
+      "commit": "a536cbd9cd3ad081825ecc8d1a6606232ca6c75e",
+      "bytes": 2739,
+      "sha256": "f10d09d31935cc999c39aea63a2313cf6d376f020e03f925b7aeacc83d3f3dee",
+      "git_blob_sha1": "4e75adcbc7efded610e595754b33c598d661ad7e",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-canonical-crt-v3-locale-storage\\local\\output\\cc16_canonical_crt_v3_locale_storage_20261031\\unchanged_inputs\\src\\native_crt_canonical_cookie_initialization.cpp",
+      "claim": "whole unchanged integrity only; bounded relevant caller/provider sites inspected"
+    },
+    {
+      "path": "include/bsp/native_crt_stricmp.hpp",
+      "commit": "a536cbd9cd3ad081825ecc8d1a6606232ca6c75e",
+      "bytes": 2299,
+      "sha256": "f09ff088480b1db82a49dc5d185956062fd5118e3cb7b70e008c04726a59b92f",
+      "git_blob_sha1": "5744ec041f3292e4f03f54084ee774f1bd902bb6",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-canonical-crt-v3-locale-storage\\local\\output\\cc16_canonical_crt_v3_locale_storage_20261031\\unchanged_inputs\\include\\bsp\\native_crt_stricmp.hpp",
+      "claim": "whole unchanged integrity only; bounded relevant caller/provider sites inspected"
+    },
+    {
+      "path": "src/native_crt_stricmp.cpp",
+      "commit": "a536cbd9cd3ad081825ecc8d1a6606232ca6c75e",
+      "bytes": 912,
+      "sha256": "e706069c71de1de114a98ed21cc37832fc0a3f1c00bb52ef8992e2f7422d1c8d",
+      "git_blob_sha1": "bcf4db4d62e597a98919db01f4517179606414af",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-canonical-crt-v3-locale-storage\\local\\output\\cc16_canonical_crt_v3_locale_storage_20261031\\unchanged_inputs\\src\\native_crt_stricmp.cpp",
+      "claim": "whole unchanged integrity only; bounded relevant caller/provider sites inspected"
+    }
+  ],
+  "semantic_regions": [
+    {
+      "path": "src/game_native_data_bootstrap.cpp",
+      "label": "V3_wire",
+      "first_line": 43,
+      "last_line": 73,
+      "bytes": 957,
+      "sha256": "21ef50b8f8b8d556d013b12c9d4a627ab3f40afa14daa08eacc2941e9ea69971"
+    },
+    {
+      "path": "src/game_native_data_bootstrap.cpp",
+      "label": "version_role_match",
+      "first_line": 79,
+      "last_line": 116,
+      "bytes": 1826,
+      "sha256": "e329ff632090edad1dbbea954ce846ae027778fcaa12febcf0eb4138353040a3"
+    },
+    {
+      "path": "src/game_native_data_bootstrap.cpp",
+      "label": "subset_transfer_admission",
+      "first_line": 243,
+      "last_line": 270,
+      "bytes": 1461,
+      "sha256": "4246f24f1bcc9b40d80bbaf7599b4dc469b67a4e8d3eb1fbe93b7593a0e0c872"
+    },
+    {
+      "path": "src/game_native_data_bootstrap.cpp",
+      "label": "child_accept_version_before_claim",
+      "first_line": 271,
+      "last_line": 315,
+      "bytes": 2431,
+      "sha256": "9399bbe35a314e71eb7b99e2d8c1facc3aadf625ab17dedf0a3372470e40343d"
+    },
+    {
+      "path": "src/game_native_data_bootstrap.cpp",
+      "label": "parent_view_and_record",
+      "first_line": 316,
+      "last_line": 342,
+      "bytes": 1766,
+      "sha256": "8cec76fde73834bd05ba6220c4e7ef8e88fb0580f53686ccf3b88c5af68e294e"
+    },
+    {
+      "path": "src/game_native_mutable_crt_data.cpp",
+      "label": "immutable_plan_and_init",
+      "first_line": 76,
+      "last_line": 128,
+      "bytes": 3452,
+      "sha256": "1cfe5e8e9ffc7638c771ce016135dd83165705dd85eeca0c2417f53029063a92"
+    },
+    {
+      "path": "src/game_native_mutable_crt_data.cpp",
+      "label": "post_init_validation_live_view",
+      "first_line": 130,
+      "last_line": 165,
+      "bytes": 1862,
+      "sha256": "b6a34dee395cb8d069f7db0f2605aa917d97d64f45f932b4eea9daf1ba88b174"
+    },
+    {
+      "path": "src/game_native_mutable_crt_data.cpp",
+      "label": "unchanged_owner_lifecycle",
+      "first_line": 166,
+      "last_line": 219,
+      "bytes": 3138,
+      "sha256": "fadedeb55c62c35275977971989afb9be485cbbcf2925114bc496c2b0b3c7d04"
+    }
+  ],
+  "Main_sites": [
+    {
+      "path": "src/game_main.cpp",
+      "label": "run_bootstrap_parent",
+      "first_line": 382,
+      "last_line": 390,
+      "actual_plan_line": 387,
+      "bytes": 526,
+      "sha256": "aa0c2717fe21c3664cb8f9caefb7681ef9f879ac77d11bb23219d8ddfbeabc8a",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-canonical-crt-v3-locale-storage\\local\\output\\cc16_canonical_crt_v3_locale_storage_20261031\\run_bootstrap_parent.plan_site.bin",
+      "plan": "CanonicalCrtV2 unchanged"
+    },
+    {
+      "path": "src/game_main.cpp",
+      "label": "WinMain",
+      "first_line": 1117,
+      "last_line": 1125,
+      "actual_plan_line": 1120,
+      "bytes": 566,
+      "sha256": "6382505873b5965afe39f35c82c3bea7fd29df44c5c6fee57ddbf8397d17d609",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-canonical-crt-v3-locale-storage\\local\\output\\cc16_canonical_crt_v3_locale_storage_20261031\\WinMain.plan_site.bin",
+      "plan": "CanonicalCrtV2 unchanged"
+    }
+  ],
+  "author_added_paths": [
+    "docs/CC16_CANONICAL_CRT_V3_LOCALE_STORAGE.md",
+    "reports/cc16_canonical_crt_v3_locale_storage.json"
+  ],
+  "independent_static_proof": {
+    "passed": true,
+    "checks": 220,
+    "assertions": [
+      "exact_parent",
+      "isolated_review_base",
+      "approved4source_count",
+      "22seams_count",
+      "include/bsp/game_native_data_bootstrap.hpp:historical_base",
+      "include/bsp/game_native_data_bootstrap.hpp:before_length_hash",
+      "include/bsp/game_native_data_bootstrap.hpp:before_author_frozen",
+      "include/bsp/game_native_data_bootstrap.hpp:before_LF_raw",
+      "include/bsp/game_native_data_bootstrap.hpp:before_gitblob",
+      "include/bsp/game_native_data_bootstrap.hpp:after_length_hash",
+      "include/bsp/game_native_data_bootstrap.hpp:after_author_frozen",
+      "include/bsp/game_native_data_bootstrap.hpp:after_LF_raw",
+      "include/bsp/game_native_data_bootstrap.hpp:after_gitblob",
+      "include/bsp/game_native_data_bootstrap.hpp:proposal_candidate",
+      "B01:prehash",
+      "B01:unique_pre",
+      "B01:posthash",
+      "include/bsp/game_native_data_bootstrap.hpp:full_forward",
+      "B01:unique_reverse",
+      "B01:reverse_hash",
+      "include/bsp/game_native_data_bootstrap.hpp:whole_inverse",
+      "src/game_native_data_bootstrap.cpp:historical_base",
+      "src/game_native_data_bootstrap.cpp:before_length_hash",
+      "src/game_native_data_bootstrap.cpp:before_author_frozen",
+      "src/game_native_data_bootstrap.cpp:before_LF_raw",
+      "src/game_native_data_bootstrap.cpp:before_gitblob",
+      "src/game_native_data_bootstrap.cpp:after_length_hash",
+      "src/game_native_data_bootstrap.cpp:after_author_frozen",
+      "src/game_native_data_bootstrap.cpp:after_LF_raw",
+      "src/game_native_data_bootstrap.cpp:after_gitblob",
+      "src/game_native_data_bootstrap.cpp:proposal_candidate",
+      "B02:prehash",
+      "B02:unique_pre",
+      "B02:posthash",
+      "B03:prehash",
+      "B03:unique_pre",
+      "B03:posthash",
+      "B04:prehash",
+      "B04:unique_pre",
+      "B04:posthash",
+      "B05:prehash",
+      "B05:unique_pre",
+      "B05:posthash",
+      "B06:prehash",
+      "B06:unique_pre",
+      "B06:posthash",
+      "B07:prehash",
+      "B07:unique_pre",
+      "B07:posthash",
+      "B08:prehash",
+      "B08:unique_pre",
+      "B08:posthash",
+      "B09:prehash",
+      "B09:unique_pre",
+      "B09:posthash",
+      "B10:prehash",
+      "B10:unique_pre",
+      "B10:posthash",
+      "B11:prehash",
+      "B11:unique_pre",
+      "B11:posthash",
+      "src/game_native_data_bootstrap.cpp:full_forward",
+      "B11:unique_reverse",
+      "B11:reverse_hash",
+      "B10:unique_reverse",
+      "B10:reverse_hash",
+      "B09:unique_reverse",
+      "B09:reverse_hash",
+      "B08:unique_reverse",
+      "B08:reverse_hash",
+      "B07:unique_reverse",
+      "B07:reverse_hash",
+      "B06:unique_reverse",
+      "B06:reverse_hash",
+      "B05:unique_reverse",
+      "B05:reverse_hash",
+      "B04:unique_reverse",
+      "B04:reverse_hash",
+      "B03:unique_reverse",
+      "B03:reverse_hash",
+      "B02:unique_reverse",
+      "B02:reverse_hash",
+      "src/game_native_data_bootstrap.cpp:whole_inverse",
+      "include/bsp/game_native_mutable_crt_data.hpp:historical_base",
+      "include/bsp/game_native_mutable_crt_data.hpp:before_length_hash",
+      "include/bsp/game_native_mutable_crt_data.hpp:before_author_frozen",
+      "include/bsp/game_native_mutable_crt_data.hpp:before_LF_raw",
+      "include/bsp/game_native_mutable_crt_data.hpp:before_gitblob",
+      "include/bsp/game_native_mutable_crt_data.hpp:after_length_hash",
+      "include/bsp/game_native_mutable_crt_data.hpp:after_author_frozen",
+      "include/bsp/game_native_mutable_crt_data.hpp:after_LF_raw",
+      "include/bsp/game_native_mutable_crt_data.hpp:after_gitblob",
+      "include/bsp/game_native_mutable_crt_data.hpp:proposal_candidate",
+      "M01:prehash",
+      "M01:unique_pre",
+      "M01:posthash",
+      "M02:prehash",
+      "M02:unique_pre",
+      "M02:posthash",
+      "M03:prehash",
+      "M03:unique_pre",
+      "M03:posthash",
+      "M04:prehash",
+      "M04:unique_pre",
+      "M04:posthash",
+      "M05:prehash",
+      "M05:unique_pre",
+      "M05:posthash",
+      "include/bsp/game_native_mutable_crt_data.hpp:full_forward",
+      "M05:unique_reverse",
+      "M05:reverse_hash",
+      "M04:unique_reverse",
+      "M04:reverse_hash",
+      "M03:unique_reverse",
+      "M03:reverse_hash",
+      "M02:unique_reverse",
+      "M02:reverse_hash",
+      "M01:unique_reverse",
+      "M01:reverse_hash",
+      "include/bsp/game_native_mutable_crt_data.hpp:whole_inverse",
+      "src/game_native_mutable_crt_data.cpp:historical_base",
+      "src/game_native_mutable_crt_data.cpp:before_length_hash",
+      "src/game_native_mutable_crt_data.cpp:before_author_frozen",
+      "src/game_native_mutable_crt_data.cpp:before_LF_raw",
+      "src/game_native_mutable_crt_data.cpp:before_gitblob",
+      "src/game_native_mutable_crt_data.cpp:after_length_hash",
+      "src/game_native_mutable_crt_data.cpp:after_author_frozen",
+      "src/game_native_mutable_crt_data.cpp:after_LF_raw",
+      "src/game_native_mutable_crt_data.cpp:after_gitblob",
+      "src/game_native_mutable_crt_data.cpp:proposal_candidate",
+      "M06:prehash",
+      "M06:unique_pre",
+      "M06:posthash",
+      "M07:prehash",
+      "M07:unique_pre",
+      "M07:posthash",
+      "M08:prehash",
+      "M08:unique_pre",
+      "M08:posthash",
+      "M09:prehash",
+      "M09:unique_pre",
+      "M09:posthash",
+      "M10:prehash",
+      "M10:unique_pre",
+      "M10:posthash",
+      "M11:prehash",
+      "M11:unique_pre",
+      "M11:posthash",
+      "src/game_native_mutable_crt_data.cpp:full_forward",
+      "M11:unique_reverse",
+      "M11:reverse_hash",
+      "M10:unique_reverse",
+      "M10:reverse_hash",
+      "M09:unique_reverse",
+      "M09:reverse_hash",
+      "M08:unique_reverse",
+      "M08:reverse_hash",
+      "M07:unique_reverse",
+      "M07:reverse_hash",
+      "M06:unique_reverse",
+      "M06:reverse_hash",
+      "src/game_native_mutable_crt_data.cpp:whole_inverse",
+      "existing_finish_ACK_cancel_CAS:hash",
+      "existing_finish_ACK_cancel_CAS:both_epochs",
+      "existing_finish_ACK_cancel_CAS:raw",
+      "existing_parent_wait_timeout_policy:hash",
+      "existing_parent_wait_timeout_policy:both_epochs",
+      "existing_parent_wait_timeout_policy:raw",
+      "existing_joint_cookie_ACK_publication_rollback:hash",
+      "existing_joint_cookie_ACK_publication_rollback:both_epochs",
+      "existing_joint_cookie_ACK_publication_rollback:raw",
+      "existing_allocation_base_rollback:hash",
+      "existing_allocation_base_rollback:both_epochs",
+      "existing_allocation_base_rollback:raw",
+      "existing_page_range_protection_check:hash",
+      "existing_page_range_protection_check:both_epochs",
+      "existing_page_range_protection_check:raw",
+      "src/game_main.cpp:unchanged",
+      "src/game_main.cpp:input_hash",
+      "src/game_main.cpp:input_frozen",
+      "include/bsp/game_native_readonly_data.hpp:unchanged",
+      "include/bsp/game_native_readonly_data.hpp:input_hash",
+      "include/bsp/game_native_readonly_data.hpp:input_frozen",
+      "src/game_native_readonly_data.cpp:unchanged",
+      "src/game_native_readonly_data.cpp:input_hash",
+      "src/game_native_readonly_data.cpp:input_frozen",
+      "include/bsp/native_crt_canonical_cookie_initialization.hpp:unchanged",
+      "include/bsp/native_crt_canonical_cookie_initialization.hpp:input_hash",
+      "include/bsp/native_crt_canonical_cookie_initialization.hpp:input_frozen",
+      "src/native_crt_canonical_cookie_initialization.cpp:unchanged",
+      "src/native_crt_canonical_cookie_initialization.cpp:input_hash",
+      "src/native_crt_canonical_cookie_initialization.cpp:input_frozen",
+      "include/bsp/native_crt_stricmp.hpp:unchanged",
+      "include/bsp/native_crt_stricmp.hpp:input_hash",
+      "include/bsp/native_crt_stricmp.hpp:input_frozen",
+      "src/native_crt_stricmp.cpp:unchanged",
+      "src/native_crt_stricmp.cpp:input_hash",
+      "src/native_crt_stricmp.cpp:input_frozen",
+      "Main_whole_historical",
+      "Main_two_explicit_V2_only",
+      "run_bootstrap_parent:region",
+      "WinMain:region",
+      "approved_patch:frozen_pin",
+      "historical_proposal:frozen_pin",
+      "historical_readiness:frozen_pin",
+      "page_preimage:frozen_pin",
+      "whole_recursive_tree_inverse",
+      "exact4M2A_scope",
+      "diff_check",
+      "reader3313_hash",
+      "reader_doc_equal",
+      "all_runtime_gates_false",
+      "Original_PE_pin",
+      "PE_signature",
+      "one_data_section",
+      "whole_page_virtual_zero_tail",
+      "DE1C_in_page",
+      "frozen_initial_zeros",
+      "entire_owner_ctor_joint_initialize_suffix",
+      "reservation_dtor_move_ACK_suffix"
+    ],
+    "seam_states": [
+      {
+        "id": "B01",
+        "path": "include/bsp/game_native_data_bootstrap.hpp",
+        "sha256": "34b22a2c6b984d13ddb70f0dd85f932f05e724d61bcddfb737c748a8b40e0b2d",
+        "bytes": 4127
+      },
+      {
+        "id": "B02",
+        "path": "src/game_native_data_bootstrap.cpp",
+        "sha256": "0caeaa5197bfb51c5c5c75494d662f6e13e3a55e1948a5646c38bbd71c083b70",
+        "bytes": 23561
+      },
+      {
+        "id": "B03",
+        "path": "src/game_native_data_bootstrap.cpp",
+        "sha256": "edf2ee18ee3b1a956b4acfa57d81a78d17761d8bfd0527993ee06f8cb7e87dad",
+        "bytes": 23805
+      },
+      {
+        "id": "B04",
+        "path": "src/game_native_data_bootstrap.cpp",
+        "sha256": "c0f2a1b3975f92a72d15bfd0689c45f3838f80d26ef2343030b1a81ed1279478",
+        "bytes": 24190
+      },
+      {
+        "id": "B05",
+        "path": "src/game_native_data_bootstrap.cpp",
+        "sha256": "d4e5873edd67df4d36d6e5a271eca4624ce51b755c5ac17ecec2bca7bf19e72f",
+        "bytes": 24173
+      },
+      {
+        "id": "B06",
+        "path": "src/game_native_data_bootstrap.cpp",
+        "sha256": "0a5ac0e01d4d9a3726aa41d79a030a329fa26fbf13336fb248d6854fd74a19f5",
+        "bytes": 24578
+      },
+      {
+        "id": "B07",
+        "path": "src/game_native_data_bootstrap.cpp",
+        "sha256": "c3e78320d3f3801886cbafecd00e851829671ff045f7f6f9522d4ab0eacd55d3",
+        "bytes": 24562
+      },
+      {
+        "id": "B08",
+        "path": "src/game_native_data_bootstrap.cpp",
+        "sha256": "0c82869a203e42b96825e18d17adc1ea031dc3c415be98c82f3adc9c4bf1877a",
+        "bytes": 24546
+      },
+      {
+        "id": "B09",
+        "path": "src/game_native_data_bootstrap.cpp",
+        "sha256": "98b5b141e52dd554186060448d7038a5feceb7bc5adb2177834f11d07cabb1db",
+        "bytes": 24550
+      },
+      {
+        "id": "B10",
+        "path": "src/game_native_data_bootstrap.cpp",
+        "sha256": "c6ecc59e0a0c32002bb7d98686d889be5bda75ed170df34d8ce328801bd15e54",
+        "bytes": 24555
+      },
+      {
+        "id": "B11",
+        "path": "src/game_native_data_bootstrap.cpp",
+        "sha256": "271523201d9d6868e5efdad5e3bc8759dd613771ea1b9c11b5d8b7795246dae9",
+        "bytes": 24755
+      },
+      {
+        "id": "M01",
+        "path": "include/bsp/game_native_mutable_crt_data.hpp",
+        "sha256": "6f6f36fbc55c151f73791f939dd3202de377482c51cab548c688ff6990921e86",
+        "bytes": 3231
+      },
+      {
+        "id": "M02",
+        "path": "include/bsp/game_native_mutable_crt_data.hpp",
+        "sha256": "6decc0ce8268ed5a8676b1c24d42b69d9f6e37caacec645cd643dd52e898b928",
+        "bytes": 3456
+      },
+      {
+        "id": "M03",
+        "path": "include/bsp/game_native_mutable_crt_data.hpp",
+        "sha256": "80398e18c20a2dfe93c6125996b025483d65cb90cdff5dfd18c7d2afb367e955",
+        "bytes": 3492
+      },
+      {
+        "id": "M04",
+        "path": "include/bsp/game_native_mutable_crt_data.hpp",
+        "sha256": "663853abfacdb3369bdf2b7fe25c031d195f73632e804b025c53542010a2afea",
+        "bytes": 3501
+      },
+      {
+        "id": "M05",
+        "path": "include/bsp/game_native_mutable_crt_data.hpp",
+        "sha256": "1f8489c542ebdd443c3e2c9f36311e42fc5914475c0261ba3d4e515dc8c4d106",
+        "bytes": 3609
+      },
+      {
+        "id": "M06",
+        "path": "src/game_native_mutable_crt_data.cpp",
+        "sha256": "cbc1657ab5111b896ded8e2dfd1153b9b71cb9efc2901851953198cd5b51c92e",
+        "bytes": 10174
+      },
+      {
+        "id": "M07",
+        "path": "src/game_native_mutable_crt_data.cpp",
+        "sha256": "63e643fd9071c7e4388bc6e8d0ecd0eef26f9f3cf02b0703bc9c78f728150673",
+        "bytes": 10201
+      },
+      {
+        "id": "M08",
+        "path": "src/game_native_mutable_crt_data.cpp",
+        "sha256": "0eab075a709ea6a833422799d6274e2d123b17776e90557212cb7875c9865618",
+        "bytes": 10528
+      },
+      {
+        "id": "M09",
+        "path": "src/game_native_mutable_crt_data.cpp",
+        "sha256": "58ebbaa8078ec6dcb368dfcce8c0870a87222d10792c7e64d2a87ffe8afb1fac",
+        "bytes": 11096
+      },
+      {
+        "id": "M10",
+        "path": "src/game_native_mutable_crt_data.cpp",
+        "sha256": "e89a7a6ae8b7f6294d9282f51d7238668188661ac34df4b5ea58871b491b02d7",
+        "bytes": 11219
+      },
+      {
+        "id": "M11",
+        "path": "src/game_native_mutable_crt_data.cpp",
+        "sha256": "ae568947d0080cf26bb2624ce3750beb069a93db72dcb7efc1065dd7e88f766b",
+        "bytes": 11526
+      }
+    ],
+    "whole4file_inverses": true,
+    "whole_recursive_author_tree_inverse": true,
+    "scope": "4M2A author; 2A review only",
+    "broader_unchanged_regions": [
+      "entire GameNativeCanonicalDataOwner constructor/joint/initialize suffix166..219",
+      "GameNativeDataReservation destructor/move/finish ACK range before transfer_to"
+    ]
+  },
+  "author_reader": {
+    "inspected_before_execution": true,
+    "bytes": 3313,
+    "sha256": "55588c5558dd580f70f8ee52463799c32a047b8e526672d18e69f34190c987e3",
+    "raw_doc_report_equal": true,
+    "sealed_mode_result": {
+      "passed": true,
+      "checks": 25,
+      "pairs": 4,
+      "seams": 22,
+      "protected_regions": 5,
+      "unchanged_inputs": 7,
+      "Main_sites": 2,
+      "recursive_inverse": true
+    }
+  },
+  "protocol_review": {
+    "enum": "appended CanonicalCrtV3; old0/1 retained",
+    "V1_V2": "same40B records/views; no new tail access",
+    "V3": "44B nested first-member legacy40B; DWORD locale_control_page at40, value0109D000; version3; role bits0xF including new0x8; existing4096B section",
+    "admission": "explicit selected plan; version mismatch returns before any tail access; old3 descriptor matches plus V3-only extra descriptor/roles",
+    "custody": "same canonicalRO mask and two64K mutable allocation bases E10000/1090000; D000 is not a new allocation-band owner",
+    "map_view": "40 for V1/V2,44 only V3; both parent and child use selected size"
+  },
+  "lifecycle_review": {
+    "plan": "private const enum captured before existing transfer_mutable_subset; public const live accessor only",
+    "birth": "both readonly/mutable subset transfers precede initialization/commit; no content commit during subset transfer",
+    "initialization": "V3-only D000 MEM_COMMIT/PAGE_READWRITE in same1090000 allocation; whole4K initial zero seed/check from supported PE tail; done only during private owner initialization",
+    "later_one": "verify_pages checks ownership/protection only; no later zero assumption/reset/reseed",
+    "joint_ACK": "entire existing owner constructor/joint/cookie/verify/finish(true)/permanent publication and process_claim.clear failure code byte-equal",
+    "rollback": "reservation retains untransferred subsets, owners release transferred allocation bases; no D000 subpage release/double ownership",
+    "parent_wait": "existing timeout/cancel/CAS/close/terminate/wait policy unchanged, no new policy",
+    "live_view": "const volatile int32_t& at0109DE1C; V2 rejects with metadata error; no cell value read/default/writable setter; not noexcept"
+  },
+  "Native_provenance": {
+    "Ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_PID": 47268,
+    "commands": [
+      "bsp.py ghidra ensure --status",
+      "bsp.py ghidra bytes 00c02865 --length 10",
+      "bsp.py ghidra xrefs 0109de1c --limit 32"
+    ],
+    "known_static_refs": 25,
+    "known_static_writes": 1,
+    "known_static_reads": 24,
+    "write_PE_equal": true,
+    "known_writer": "Original _setlocale at 00c02865 stores full DWORD1; no inferred dynamic-write completeness",
+    "mapping": "0109D000 whole4K lies beyond .data raw end and within virtual tail; initial-zero-only",
+    "mutations": false,
+    "provider_or_setter_closure": false
+  },
+  "PE_proof": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "data_section": {
+      "name": ".data",
+      "VA": 14712832,
+      "virtual_bytes": 2719452,
+      "raw_bytes": 65536,
+      "raw_offset": 10518528
+    },
+    "page": "0109D000",
+    "whole_page_virtual_zero_tail": true,
+    "initial4096_zero_sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+    "qualification": "initial loader storage only; no lasting ASCII domain or current value sample"
+  },
+  "limitations": [
+    "No Main selection: both exact existing sites387/1120 stay CanonicalCrtV2; no optional token patch or automatic upgrade.",
+    "New explicit V3 wire and private Source layout/API require actual MSVC Win32 validation; no drop-in Original ABI claim.",
+    "Known Ghidra static writer count is not a proof of all possible dynamic writes. Source setter/full BF7EEC LocaleUpdate/PTD/handler and used comparator provider remain unclosed.",
+    "No Source62 compiler/Core/link, controlled V3 handoff/startup, tests/probes/provider/Game or runtime execution by this review.",
+    "No OriginalCRT/CPU, Native Origin, private alias/register/fault/EFLAGS/FH3/SEH, ownership admission, activation or gameplay credit."
+  ],
+  "runtime_claims": {
+    "compiled": false,
+    "Core_inspected": false,
+    "startup_exercised": false,
+    "Main_V3_selected": false,
+    "setter_provider_closed": false,
+    "Original_ABI": false,
+    "Native_Origin": false,
+    "runtime": false,
+    "activation": false,
+    "gameplay": false
+  },
+  "credit": {
+    "Original": 0,
+    "vendor": 0,
+    "helper": 0,
+    "CG": 0,
+    "body": 0,
+    "duplicate": 0
+  },
+  "frozen_corpus": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-canonical-crt-v3-locale-storage-independent-review\\local\\output\\cc16_canonical_crt_v3_locale_storage_independent_review_20261031",
+    "manifest_bytes": 7800,
+    "manifest_sha256": "061f67c3157eac75351f927f39bfb8a67c9d68aa5cfd0d2e75f33096fb5ab5aa",
+    "artifacts": 45
+  },
+  "reader": {
+    "bytes": 2400,
+    "sha256": "bc532c822d5cbf311cd3973e191b1a34c4638381f578a856b76b6f878f62fb48",
+    "utf8": "import argparse,base64,hashlib,json,subprocess\nfrom pathlib import Path\np=argparse.ArgumentParser();p.add_argument('--root',default='.');p.add_argument('--review-rev');a=p.parse_args();root=Path(a.root).resolve()\nr=json.loads((root/'reports/cc16_canonical_crt_v3_locale_storage_independent_review.json').read_bytes());g=lambda *v:subprocess.check_output(['git','-C',str(root),*v]);h=lambda b:hashlib.sha256(b).hexdigest();get=lambda rev,p:g('show',rev+':'+p);n=0\nA=r['reviewed_commit'];B=r['source_base'];assert g('rev-parse',A+'^').decode().strip()==B\nfor s in r['sources']:\n before=get(B,s['path']);after=get(A,s['path']);assert h(before)==s['before_sha256'] and h(after)==s['after_sha256'];q=before;ss=[x for x in r['seams'] if x['path']==s['path']]\n for x in ss:\n  old=base64.b64decode(x['old_base64']);new=base64.b64decode(x['new_base64']);assert h(q)==x['before_sha256'] and q.count(old)==1;q=q.replace(old,new,1);assert h(q)==x['after_sha256']\n assert q==after\n for x in reversed(ss):\n  old=base64.b64decode(x['old_base64']);new=base64.b64decode(x['new_base64']);assert q.count(new)==1;q=q.replace(new,old,1);assert h(q)==x['before_sha256']\n assert q==before;n+=1\nfor x in r['protected_regions']:\n b=base64.b64decode(x['data_base64']);assert h(b)==x['sha256'] and get(B,x['path']).count(b)==get(A,x['path']).count(b)==1;n+=1\nfor x in r['unchanged_inputs']:\n b=get(A,x['path']);assert b==get(B,x['path']) and h(b)==x['sha256'];n+=1\nmain=get(A,'src/game_main.cpp');assert main.count(b'GameNativeDataPlan::CanonicalCrtV2')==2 and b'CanonicalCrtV3' not in main;n+=1\nbefore=g('ls-tree','-r','-z',B);bm={x.split(b'\\t',1)[1]:x for x in before.split(b'\\0') if x};mods={x['path'].encode() for x in r['sources']};adds={x.encode() for x in r['author_added_paths']};restored=[]\nfor x in g('ls-tree','-r','-z',A).split(b'\\0'):\n if not x:continue\n path=x.split(b'\\t',1)[1]\n if path not in adds:restored.append(bm[path] if path in mods else x)\nassert b'\\0'.join(restored)+b'\\0'==before;n+=1\nassert r['findings']==[] and not any(r['runtime_claims'].values());n+=1\nif a.review_rev:\n assert g('rev-parse',a.review_rev+'^').decode().strip()==B;assert sorted(g('diff','--name-status',B,a.review_rev).decode().splitlines())==sorted('A\\t'+x for x in r['review_paths']);n+=1\nprint(json.dumps({'passed':True,'checks':n,'four_full_inverses':True,'author_tree_inverse':True,'review_scope_checked':bool(a.review_rev)}))\n",
+    "side_effects": "Git/file/text/hash checks only; no Source mutation/compilation or target execution",
+    "working_result": {
+      "passed": true,
+      "checks": 19,
+      "four_full_inverses": true,
+      "author_tree_inverse": true,
+      "review_scope_checked": false
+    }
+  },
+  "actions": {
+    "tracked_changes": "only2 new review files",
+    "Source_edits": false,
+    "CMake_ledger_Ghidra_mutations": false,
+    "compiler_build_test_probe_provider_Game": false,
+    "Main_publication_push": false
+  },
+  "document_pin": {
+    "path": "docs/CC16_CANONICAL_CRT_V3_LOCALE_STORAGE_INDEPENDENT_REVIEW.md",
+    "bytes": 8243,
+    "sha256": "996c23e64e7190d037e737136dbf30dd1e7b9942715233d7fb9fadb3712642c8"
+  }
+}
