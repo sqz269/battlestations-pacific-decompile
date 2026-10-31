@@ -1,0 +1,312 @@
+{
+  "kind": "Root Source75 raw Icon forward range lifetime admission",
+  "author": "3d7698fd1d40f3ee48bc5a79d1831cd6982c8f61",
+  "actual_parent": "88a6327684bc7d379163012e09a8b6c6c8037f68",
+  "CMake": "c9e67c791878501aaafcf35188b1e6f4a502ead7",
+  "historical_candidate_base": "672a6cc2fd7dba2b69a0e449e542f9d1c15a81fa",
+  "Root_full_H_CPP_doc_6866reader_Native_callee_contract_review": true,
+  "Native": {
+    "bytes": 35,
+    "instructions": 15,
+    "unused_selfmov_no_data_effect": true,
+    "ECX_unused": true,
+    "RET8_vs_Source_cdecl_separate": true
+  },
+  "static": {
+    "candidate31_passed": true,
+    "actual_immutable36_passed": true,
+    "actual_parent88a_asserted": true,
+    "exact_four_postimages": true,
+    "fresh_full_four_addition_inverse": true,
+    "unchanged_genuine_providers": 2,
+    "independent_candidate_checks": 51,
+    "independent_reader_checks": 31,
+    "independent_source_findings": 0,
+    "independent_final_git_findings": 0
+  },
+  "build": {
+    "command": "./scripts/build.ps1 -Configuration Release",
+    "Win32": true,
+    "seconds": 34.5743555,
+    "all_targets_two_existing_suites": true,
+    "MP": 2,
+    "PCH": "ON",
+    "coverage_PDB": "OFF",
+    "inputs": 506,
+    "outputs": 20,
+    "forcing": 0,
+    "new_tests": 0,
+    "new_Game_runs": 0,
+    "prior10_whole_objects_unchanged": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_gui_media_focus_lifetime.obj",
+        "whole_equal": true
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj",
+        "whole_equal": true
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_gui_manager_application.obj",
+        "whole_equal": true
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_singletons.obj",
+        "whole_equal": true
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_gui_icon_state_selection_storage.obj",
+        "whole_equal": true
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_gui_icon_state_getter_storage.obj",
+        "whole_equal": true
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_invalid_parameter_noinfo_call.obj",
+        "whole_equal": true
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_gui_icon_state_allocation_storage.obj",
+        "whole_equal": true
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/singleton_lifetime.obj",
+        "whole_equal": true
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts.obj",
+        "whole_equal": true
+      }
+    ]
+  },
+  "Core": {
+    "actual_object": {
+      "object_bytes": 1708,
+      "object_sha256": "6e4148a9b6f3bb60cadb85c8656bf9c5f12e9b5776fd8805423d307080d76abc",
+      "section": 4,
+      "code_bytes": 43,
+      "ops": 23,
+      "code_sha256": "817848b0af2713d3a3f1f939b75173522e7b8b6256eb35da9ab413e07318998a",
+      "relocs": [
+        {
+          "offset": 24,
+          "symbol_index": 12,
+          "target": {
+            "name": "?destroy_native_gui_icon_state_00ab3280@bsp@@YAXPAXAAUNativeGuiIconStorageContext@1@@Z",
+            "value": 0,
+            "section": 0,
+            "type": 32,
+            "storage": 2,
+            "aux_count": 0,
+            "aux_hex": ""
+          },
+          "type": 20
+        }
+      ],
+      "local_EH": [],
+      "normal_Game_map": false,
+      "Root_full_manual_Code_review": "all43B23ops read; first/end once, emptybranch, actualdtorREL32+18, after-normalreturn+40/capturedend, noLocalEH"
+    },
+    "Root_entire43B23ops_read": true,
+    "sole_dtor_REL32_offset": "0x18",
+    "first_end_captures": "0x08/0x0a",
+    "empty_compare_branch": "0x0d/0x0f",
+    "same_context": "EBX0x12/push0x15",
+    "call_then_DWORD40_advance_then_captured_end_compare": "CALL0x17 -> ADD0x1c -> CMP0x22",
+    "local_EH": false,
+    "new_entry_normal_Game_map": false,
+    "new_entry_archive_present": true,
+    "independent_all43bytes_COFF_Capstone_dumpbin_match": true,
+    "independent_Core_findings": 0,
+    "independent_final_Git_Core_artifacts": 32,
+    "unrelated_compiler38byte_section_excluded": true
+  },
+  "behavior": [
+    "Captureactualfirst/endhomes oncebeforeanyrelease; homechangesinsidecallbacksdo notreplacecaptures",
+    "Unequalcursor callsactualexistingAB3280 SAMEcontext thenuint32wrap40; emptyincluding0_0callsnone",
+    "NoNullskip/countcap/endreread/typedT[n]/newFrame/Acquired/callback/owner/catch/cleanup/NoThrow/terminalpolicy",
+    "ExistingrawDtoralignednonnullstate/registry/texture/currentname/rawpool/lifetime/exception-secondaryterminatepolicies inheritedexactly"
+  ],
+  "evidence": [
+    {
+      "path": "local/function_source_batch75/common/manifest.json",
+      "size": 159143,
+      "sha256": "2e698572a0d4e0b428cb091f5fbe21b5b7cb6e0c6398603486a93bd6cc64944b"
+    },
+    {
+      "path": "local/function_source_batch75/Root_Core.json",
+      "size": 827,
+      "sha256": "30dbb9851898d0ab66aad60925ef370557ab92d89521ebf11b1ebba3151aa2eb"
+    },
+    {
+      "path": "local/function_source_batch75/Root_Core.txt",
+      "size": 1066,
+      "sha256": "5e22dc46d2b6c3930209bd0c7adfca8d8d95185c7ef223c0b285800192012834"
+    },
+    {
+      "path": "local/function_source_batch75/archive_entry.txt",
+      "size": 119,
+      "sha256": "e4d6959552b48689a82edd2ef4c213de10063270ecd40d9affd66c66ffc82053"
+    },
+    {
+      "path": "local/function_source_batch75/candidate_peer/peer_receipt.json",
+      "size": 7875,
+      "sha256": "bac8044646389a0120a3b408d7a64ceb76f9e81f954e391d93dd758ce9cca419"
+    },
+    {
+      "path": "local/function_source_batch75/actual_peer/immutable_review.json",
+      "size": 2848,
+      "sha256": "f156423b64845f81349d658abfaee3dbc694336e2c22c658a4aa03c47e0b2b01"
+    },
+    {
+      "path": "local/function_source_batch75/actual_peer/Core/compiled_review.json",
+      "size": 9597,
+      "sha256": "d342e9326497bae91d050eeb2543dbcd23e80e1c6a284c4d74a5afda7d984087"
+    }
+  ],
+  "qualification": {
+    "actual_individual_states_and_legal_home_aliases": true,
+    "borrowed_graph_backing_providers_alive_through_escapes": true,
+    "private_control_spill_separate": true,
+    "Original_register_stack_FLAGS_fault_FH3_SEH_ABI": false,
+    "Native_NoThrow_Origin": false,
+    "typed_array_owner_custody_disposition": false,
+    "actual_growth_caller_activation": false,
+    "Native_catch_permission_from_normal_return": false,
+    "gameplay": false
+  },
+  "classification": "Original HIGH STL_DestroyRange name/tag unchanged, Source support only",
+  "credits": {
+    "new_Original": 0,
+    "vendor": 0,
+    "helper": 0,
+    "CG": 0,
+    "duplicate_body": 0,
+    "Origin": 0,
+    "Original_ABI": 0,
+    "runtime": 0
+  },
+  "artifacts": [
+    {
+      "path": "local/function_source_batch75/common_build.log",
+      "size": 2645,
+      "sha256": "0fb6384d1c8761512ddfe35338f42c46d802d16375d131df3c634b16a9f35e7e",
+      "retained_path": "local/function_source_batch75/common/artifacts/local/function_source_batch75/common_build.log"
+    },
+    {
+      "path": "build/win32/CMakeCache.txt",
+      "size": 19943,
+      "sha256": "1685db07153e0ad413c8e75a1536cf232b943fdc86f5e983cd18cf2abfa3ecb2",
+      "retained_path": "local/function_source_batch75/common/artifacts/build/win32/CMakeCache.txt"
+    },
+    {
+      "path": "build/win32/bsp_core.vcxproj",
+      "size": 3499162,
+      "sha256": "8e5948d021d47cc600dd447d3614c15f91ba7f2f1f0bb2352bff4205e31c5133",
+      "retained_path": "local/function_source_batch75/common/artifacts/build/win32/bsp_core.vcxproj"
+    },
+    {
+      "path": "build/win32/bsp_game.vcxproj",
+      "size": 275058,
+      "sha256": "ad7220e570aa1861229402a71b00e4d413ba5612be917b54455b474b6694fb9e",
+      "retained_path": "local/function_source_batch75/common/artifacts/build/win32/bsp_game.vcxproj"
+    },
+    {
+      "path": "build/win32/bsp_game.map",
+      "size": 11495697,
+      "sha256": "3be0942b21dee5891d592459380f3a6620160f492820af9bfd1c75ca71d66f2f",
+      "retained_path": "local/function_source_batch75/common/artifacts/build/win32/bsp_game.map"
+    },
+    {
+      "path": "build/win32/Release/bsp_game.exe",
+      "size": 7552000,
+      "sha256": "b629302f6fa9cb4cfba298aca0398d345baad5636a7ba21f2e10e3b4ce774982",
+      "retained_path": "local/function_source_batch75/common/artifacts/build/win32/Release/bsp_game.exe"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "size": 105463202,
+      "sha256": "9ebf5fe2de4be21e89e994d04f54f5ae0f34edef0388d1b70f491e05c3fdcf82",
+      "retained_path": "local/function_source_batch75/common/artifacts/build/win32/Release/bsp_core.lib"
+    },
+    {
+      "path": "build/win32/Testing/Temporary/LastTest.log",
+      "size": 1658,
+      "sha256": "7ec41a2e0cf0987db0ad3fe41f42a5ce09ee4a422608801efbcd5540bb8277a7",
+      "retained_path": "local/function_source_batch75/common/artifacts/build/win32/Testing/Temporary/LastTest.log"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_gui_media_focus_lifetime.obj",
+      "size": 15183,
+      "sha256": "79e7eb4c7beed9098ee054d167d283336749358b35d2e4fb1e26483e92ef9230",
+      "retained_path": "local/function_source_batch75/common/artifacts/build/win32/bsp_core.dir/Release/native_gui_media_focus_lifetime.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj",
+      "size": 33124,
+      "sha256": "8cdeb8854bf2d7cfe7e885817bb93dfd43883523c40860471bf834591f54a911",
+      "retained_path": "local/function_source_batch75/common/artifacts/build/win32/bsp_core.dir/Release/native_singleton_destruction.obj"
+    },
+    {
+      "path": "build/win32/bsp_game.dir/Release/game_native_gui_manager_application.obj",
+      "size": 42113,
+      "sha256": "a7c268891ecc42b9ef0b57ea22634752d104d9730af5ef330aefeb12493398b4",
+      "retained_path": "local/function_source_batch75/common/artifacts/build/win32/bsp_game.dir/Release/game_native_gui_manager_application.obj"
+    },
+    {
+      "path": "build/win32/bsp_game.dir/Release/game_hosts_singletons.obj",
+      "size": 91132,
+      "sha256": "56685b76174966d1963f0d3162ffb83de894b480092b8666923a77edcfd6825d",
+      "retained_path": "local/function_source_batch75/common/artifacts/build/win32/bsp_game.dir/Release/game_hosts_singletons.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_gui_icon_state_selection_storage.obj",
+      "size": 1761,
+      "sha256": "86b6836845377e02883e8edd466ff41c609f1e88f5a6bb207d186bc9c4feda8c",
+      "retained_path": "local/function_source_batch75/common/artifacts/build/win32/bsp_core.dir/Release/native_gui_icon_state_selection_storage.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_gui_icon_state_getter_storage.obj",
+      "size": 1472,
+      "sha256": "5020f8ee50baf11e97afbfcacce27e022d54e6c117bd075d1318806cd1606823",
+      "retained_path": "local/function_source_batch75/common/artifacts/build/win32/bsp_core.dir/Release/native_gui_icon_state_getter_storage.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_invalid_parameter_noinfo_call.obj",
+      "size": 1354,
+      "sha256": "8424b751fd62db8aa59158c4c8b96ec80e8b069e483d3010ade93e1366c4a14e",
+      "retained_path": "local/function_source_batch75/common/artifacts/build/win32/bsp_core.dir/Release/native_invalid_parameter_noinfo_call.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_gui_icon_state_allocation_storage.obj",
+      "size": 7067,
+      "sha256": "3f23def456c749d87602b1ce7c976b84cf7bc81d3609e4381743476bb1a9bd3c",
+      "retained_path": "local/function_source_batch75/common/artifacts/build/win32/bsp_core.dir/Release/native_gui_icon_state_allocation_storage.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/singleton_lifetime.obj",
+      "size": 33008,
+      "sha256": "386824ba4b5224ce24dfa43d84dd09b6c8b1fc64e02011998109d91cdc72171f",
+      "retained_path": "local/function_source_batch75/common/artifacts/build/win32/bsp_core.dir/Release/singleton_lifetime.obj"
+    },
+    {
+      "path": "build/win32/bsp_game.dir/Release/game_hosts.obj",
+      "size": 1177726,
+      "sha256": "1b4b4b44685f1e98952bffd99d5d5cf69c3bcdb629896ae7b63ac3e5868ee91f",
+      "retained_path": "local/function_source_batch75/common/artifacts/build/win32/bsp_game.dir/Release/game_hosts.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_gui_icon_state_range_lifetime_storage.obj",
+      "size": 1708,
+      "sha256": "6e4148a9b6f3bb60cadb85c8656bf9c5f12e9b5776fd8805423d307080d76abc",
+      "retained_path": "local/function_source_batch75/common/artifacts/build/win32/bsp_core.dir/Release/native_gui_icon_state_range_lifetime_storage.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_gui_icon_storage.obj",
+      "size": 47320,
+      "sha256": "c6cb8d6a82a9ba3f9ba763e577fa26cb770e56329353f626326febd226307940",
+      "retained_path": "local/function_source_batch75/common/artifacts/build/win32/bsp_core.dir/Release/native_gui_icon_storage.obj"
+    }
+  ]
+}
