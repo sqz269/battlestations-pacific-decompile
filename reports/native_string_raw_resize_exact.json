@@ -1,0 +1,93 @@
+{
+  "schema": "bsp-native-string-raw-resize-exact-v1",
+  "source_base": "86d9695ba61d817227e7c0308e433dd09c2164ea",
+  "native_address": "0041dd40",
+  "native_instructions": 65,
+  "native_bytes": 164,
+  "native_abi": "ECX raw8 header, captured DWORD request and low-BYTE preserve HOME, RET8; no specified EAX",
+  "source_api": "resize_native_string_header_0041dd40_exact",
+  "source_return": "ordinary void, no fabricated result receipt",
+  "source_files": {
+    "include/bsp/native_string_raw_resize_exact.hpp": {
+      "sha256": "a1a3c6be74194e2f5946e13e09bfb26562c3f73d3565b51f96403f0d60b9999c",
+      "lines": 32
+    },
+    "src/native_string_raw_resize_exact.cpp": {
+      "sha256": "74bff613a83abda342b5506ff750f46f5c44e191de506480ced504208c81f210",
+      "lines": 98
+    }
+  },
+  "design_sha256": "cbbe2f4eefd104532d131c3bbb7589bdfb55496686b1db8949822b0a7b4df317",
+  "peer_v2_sha256": "242c97df8d08a542b99501ac73a5a8d92b5f7fb26387a87e9e38f534e6394969",
+  "ordered_epochs": [
+    "initialLEN; captured request compare; equal return before pointer/HOME/provider",
+    "request0: captured oldDATA; nonnull initialLEN+1/getter/return; DATA0 then LEN0",
+    "nonzero: freshgetter then realallocate(request+1 DWORDwrap); capture actual output",
+    "late actual preserveBYTE HOME after allocation",
+    "preserve: CURRENT LEN; unsignedmin; CURRENT DATA; realBF7680 ALWAYS even0 SAMEfeatureRef",
+    "fresh CURRENT oldDATA; nonnull CURRENT LEN+1 captured BEFORE a newgetter and realreturn",
+    "publish captured newDATA then captured requestLEN then NUL at wrapped newBlock+request"
+  ],
+  "providers": {
+    "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+    "src/native_string.cpp": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+    "include/bsp/native_string_pool_owner.hpp": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+    "src/native_string_pool_owner.cpp": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+    "include/bsp/native_string_pool_storage.hpp": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+    "src/native_string_pool_storage.cpp": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+    "include/bsp/native_crt_memcpy.hpp": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123",
+    "src/native_crt_memcpy.cpp": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3"
+  },
+  "real_lower_calls": [
+    "native_string_pool_get_or_create_00419cc0(raw AA8,raw AA0)",
+    "allocate_native_string_pool_00bd1120",
+    "copy_native_crt_bytes_00bf7680(SAME actual feature ref)",
+    "return_native_string_pool_00bd1510(SAME actual AA4 ref)"
+  ],
+  "existing_tracked_projection": "exact",
+  "source_ready": false,
+  "runtime_validated": false,
+  "native_abi_equivalent": false,
+  "vendor_body_credit": false,
+  "native_body_credit": false,
+  "no_local": [
+    "Frame",
+    "EH/catch/destructor",
+    "refund/rollback/retry",
+    "validation/healthyfence",
+    "typebirth/owner/semantic adapter",
+    "copy-zero/null/self skip",
+    "feature pre-read/default",
+    "allocation-null conversion"
+  ],
+  "failure_custody": "Caller retains real allocator/pool/backing/context/code and its incomplete attempt; no inspectable unpublished-pointer receipt or cleanup/retry authority is fabricated. Existing lower typed/payload/deletion/CRT/extent/DF/CPU and ordinary alias/private-ABI/fault domains remain inherited.",
+  "validation": {
+    "actual_code_reviews": [
+      "Root full exact32/98/cbbe/all65 Native accepted qualified",
+      "Independent Game full exact32/98/cbbe/V2/all65 Native accepted qualified"
+    ],
+    "explicit_authorization": "Root separate ONE guarded strict MSVC Win32 OBJECT after both Code acceptances",
+    "compile_receipt": {
+      "path": "local/native_string_raw_resize_exact_frame_20261031/compile_receipt.json",
+      "sha256": "41b1e553508140e42dbbce5233b927210479d854f43c63319688f26df3006cb8"
+    },
+    "single_object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\build\\native_string_raw_resize_exact_object\\native_string_raw_resize_exact_object.dir\\Release\\native_string_raw_resize_exact.obj",
+      "sha256": "aad84dc1237a82503003bed13f430ce2a9f988581cb23ed699fc14d895c71cf7",
+      "bytes": 3194,
+      "coff_machine": "014C"
+    },
+    "object_target_invocations": 1,
+    "symbol_receipt_sha256": "76c93d429c8f0ab69f7eb2b12aa8cb37de776ef9c520f06439b8b01096295261",
+    "same_object_inspection_sha256": "089501140e57b82f28c27ea1fbd34889690b15f07651bfb5028b54f564bf1ef7",
+    "emitted_scope": "ordinary field/provider epochs; explicit private-arithmetic and Source parameter-HOME qualifications, no instruction-for-instruction ABI/fault proof",
+    "target_module_or_executable_linked": false,
+    "cmake_detection": "ordinary compiler-detection infrastructure separately recorded",
+    "tests_probe_or_entry": false
+  },
+  "emitted_private_arithmetic_and_home_qualification": [
+    "Compiler schedules pure unsigned min selection after DATA load; both memory reads remain LEN-before-DATA and selected count precedes copy call. No instruction-for-instruction private arithmetic/fault-register equivalence claimed.",
+    "Compiler computes +1 after getters from already captured initial/current lengths, with no new header read across the getter. Private Source cached operand and saved-register lifetimes remain outside unsupported private-frame aliases.",
+    "Public Source request parameter HOME [EBP+10h] is reused for the captured allocation after request is retained in EBX. Actual preserve BYTE HOME pointer [EBP+14h] and actual feature-reference [EBP+18h] are separate."
+  ]
+}
