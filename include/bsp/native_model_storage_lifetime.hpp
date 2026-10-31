@@ -34,6 +34,50 @@ private:
     const NativeNodeRawConstants& constants_;
     const volatile std::uint32_t& negative_zero_;
 };
+// Immutable checked Matrix association; no default/fabricated admission.
+class NativeMatrixModelAllocation final {
+public:
+    NativeMatrixModelAllocation(const NativeMatrixModelAllocation&) = delete;
+    NativeMatrixModelAllocation& operator=(const NativeMatrixModelAllocation&) = delete;
+    void* actual() const noexcept { return actual_; }
+    NativeMatrixModelStorageContext& context() const noexcept { return *context_; }
+private:
+    friend NativeMatrixModelAllocation admit_native_matrix_model_allocation(
+        void*, NativeMatrixModelStorageContext&);
+    NativeMatrixModelAllocation(void*, NativeMatrixModelStorageContext&) noexcept;
+    void* const actual_;
+    NativeMatrixModelStorageContext* const context_;
+};
+NativeMatrixModelAllocation admit_native_matrix_model_allocation(
+    void* actual_matrix, NativeMatrixModelStorageContext&);
+
+struct NativeMatrixModelStorageConstructAcquired;
+// Private constructor-issued C++ facts, not a native credit or public receipt.
+// Default destruction does not perform native or typed-storage cleanup.
+class NativeMatrixModelPrefixExtent final {
+public:
+    NativeMatrixModelPrefixExtent() noexcept = default;
+    NativeMatrixModelPrefixExtent(const NativeMatrixModelPrefixExtent&) = delete;
+    NativeMatrixModelPrefixExtent& operator=(const NativeMatrixModelPrefixExtent&) = delete;
+    bool live() const noexcept { return node_ != nullptr && tail_ != nullptr && !ended_; }
+private:
+    friend void* construct_native_matrix_model_prefix_storage_00b75030(
+        const NativeMatrixModelAllocation&, const void*,
+        NativeMatrixModelStorageConstructAcquired&, NativeMatrixModelPrefixExtent&);
+    friend void end_native_matrix_model_prefix_extent(NativeMatrixModelPrefixExtent&);
+    NativeNodeStorage* node_{};
+    void* tail_{};
+    bool ended_{};
+};
+// Revalidates the real allocation, performs the existing complete raw prefix
+// construction, then issues facts for its ACTUAL Node/private-tail objects.
+void* construct_native_matrix_model_prefix_storage_00b75030(
+    const NativeMatrixModelAllocation&, const void* actual_name_header,
+    NativeMatrixModelStorageConstructAcquired&, NativeMatrixModelPrefixExtent&);
+// No-store C++ extent completion only. Caller has consumed the real base
+// cleanup and every late borrow (including flags); no native cleanup/replay.
+void end_native_matrix_model_prefix_extent(NativeMatrixModelPrefixExtent&);
+
 struct NativeMatrixModelStorageConstructAcquired {
     bool started{}, node_constructor_returned{}, tail_constructed{}, complete{};
     std::uint32_t active_call_site{};
