@@ -2672,7 +2672,7 @@
   "canonical_forcing": 0,
   "two_changed_Source_bytes": true,
   "Main_V3_sites": 2,
-  "Main_compiled_call_arguments": "PENDING",
+  "Main_compiled_call_arguments": "PASS both actual enum2 argument setups with COFF relocations and independent dumpbin byte checks",
   "Source61_objects_whole_byte_unchanged": [
     "build/win32/bsp_core.dir/Release/native_gui_icon_delayed_loads.obj",
     "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj",
@@ -2763,5 +2763,158 @@
     ],
     "Original_ABI_Origin_raw_fullgameplay_credit": 0
   },
-  "V3_storage_runtime": true
+  "V3_storage_runtime": true,
+  "ship_data_SourceHost": {
+    "classification": "Fresh genuine eight-span ship-data V3 storage startup/drain; no mission gameplay/locale API/new raw selection",
+    "Source_head": "2d47e316819c1f8168a7bc93ff23703d95d24317",
+    "compiled_Source_head": "52623ff8e00d85241d47de983ddcff232287a2ff",
+    "metadata_only_head_difference": true,
+    "exe": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\bsp_game.exe",
+      "size": 7547392,
+      "mtime_utc": "2026-10-31T13:23:46.6814995Z",
+      "sha256": "76ac0e170f8d157a27828b72e4165ba8aed84e937d92abddc3651c268091860a",
+      "build_checkout": {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration",
+        "head": "2d47e316819c1f8168a7bc93ff23703d95d24317",
+        "dirty": false
+      }
+    },
+    "launcher_exit_code": 0,
+    "child_exit_code": 0,
+    "drain": {
+      "no_force_stop": true,
+      "waited_seconds": 0,
+      "natural_completed": true,
+      "timed_out": false,
+      "forced_stop_requested_pids": [],
+      "retained_pids": []
+    },
+    "window_device_created": true,
+    "device_hr": "0x00000000",
+    "back_buffer": "1600x900",
+    "frames_presented": 0,
+    "presents_skipped": 1,
+    "loop_finished": true,
+    "Icon_manager_drained": true,
+    "device_api_COM_final": [
+      0,
+      0
+    ],
+    "concrete_Host_methods": 126,
+    "unimplemented_Host_methods": 41,
+    "all_unimplemented_called": true,
+    "artifacts": [
+      {
+        "path": "local/function_source_batch64/ship_data_host/source_host.log",
+        "bytes": 102334,
+        "sha256": "ffd4f55c515cd083531eff4d2f66c6b2699e4ea3ae8498af1956e7e4fdc40b51",
+        "retained_path": "local/function_source_batch64/ship_data_host/artifacts/01_source_host.log"
+      },
+      {
+        "path": "local/function_source_batch64/ship_data_host/source_host.log.manifest.json",
+        "bytes": 3289,
+        "sha256": "265442429c88a3d59bea6f3051453a1451d4e4c19751f0dc9b72c09d5beb6303",
+        "retained_path": "local/function_source_batch64/ship_data_host/artifacts/02_source_host.log.manifest.json"
+      },
+      {
+        "path": "local/function_source_batch64/ship_data_host/wrapper.log",
+        "bytes": 394,
+        "sha256": "74a0ee28ec9f227e56524f1e0ad808f98a8a09d16c6f4a0d1b6df6e944dbaab0",
+        "retained_path": "local/function_source_batch64/ship_data_host/artifacts/03_wrapper.log"
+      },
+      {
+        "path": "local/function_source_batch64/ship_data_host/personal/Battlestations-Pacific/options.txt",
+        "bytes": 226,
+        "sha256": "f871b61acf20319045e8d07b87f69d66d9562308920456537d0103200e2a6b4c",
+        "retained_path": "local/function_source_batch64/ship_data_host/artifacts/04_options.txt"
+      },
+      {
+        "path": "local/function_source_batch64/ship_data_host/settings_preimage.json",
+        "bytes": 521,
+        "sha256": "53f31f97eb2ef05f2c0f8d2c25557c0f77b4d8418f9e5837f1d9932fd9da62ef",
+        "retained_path": "local/function_source_batch64/ship_data_host/artifacts/05_settings_preimage.json"
+      },
+      {
+        "path": "local/function_source_batch64/ship_data_host/variant.json",
+        "bytes": 175,
+        "sha256": "22689690b1d6a4d9d4200130a9e2f3958f4130049434131fd630fae1054fd7a0",
+        "retained_path": "local/function_source_batch64/ship_data_host/artifacts/06_variant.json"
+      },
+      {
+        "path": "build/win32/Release/xlive_stub.dll",
+        "bytes": 32768,
+        "sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3",
+        "retained_path": "local/function_source_batch64/ship_data_host/artifacts/07_xlive_stub.dll"
+      }
+    ],
+    "Original_ABI_Origin_raw_fullgameplay_credit": 0
+  },
+  "eight_span_V3_storage_runtime": true,
+  "actual_Main_review": {
+    "receipt": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch61\\core_review\\source64_main\\read_only_receipt.json",
+    "receipt_sha256": "821cfe6637ed99edd3bdc45ef51b5bf5392e2969d99b77be073c62bcae1f9ee8",
+    "object": {
+      "path": "main.obj",
+      "bytes": 546775,
+      "sha256": "c2e2abb16c81e56ac16d2fca1e94ce9855cff74685c271e80f871260836a2c91"
+    },
+    "Source": {
+      "bytes": 81511,
+      "sha256": "a89f3ffff3dc501f280478fca1efa632945fce49eecadf865f30dcbc18df7efc"
+    },
+    "calls": [
+      {
+        "label": "parent_V3_constructor",
+        "section": 1319,
+        "call_offset": 178,
+        "call_relocation": {
+          "offset": 179,
+          "offset_hex": "0x0B3",
+          "symbol_index": 3576,
+          "type": 20,
+          "type_name": "REL32",
+          "symbol": "??0GameNativeDataBootstrapChild@game@bsp@@QAE@ABVpath@filesystem@std@@ABV?$basic_string@_WU?$char_traits@_W@std@@V?$allocator@_W@2@@5@PBUGameNativeDataSpan@12@IW4GameNativeDataPlan@12@@Z"
+        },
+        "clip_first": 35,
+        "clip_last": 178,
+        "clip_bytes": 3590,
+        "clip_sha256": "a1cb367b6584d0200218bf767a20f7da8dfb917ca857e5b793ddd3949fa21487",
+        "reviewed_range": [
+          "0x61",
+          "0xb7"
+        ],
+        "push2_offset": "0x9e",
+        "dumpbin_bytes_exact": true,
+        "no_stack_cleanup_between_mode_push_and_call": true
+      },
+      {
+        "label": "child_V3_accept",
+        "section": 1402,
+        "call_offset": 3027,
+        "call_relocation": {
+          "offset": 3028,
+          "offset_hex": "0xBD4",
+          "symbol_index": 3575,
+          "type": 20,
+          "type_name": "REL32",
+          "symbol": "?accept_native_data_handoff@game@bsp@@YA?AVGameNativeDataReservation@12@PBUGameNativeDataSpan@12@IW4GameNativeDataPlan@12@@Z"
+        },
+        "clip_first": 2885,
+        "clip_last": 3027,
+        "clip_bytes": 2971,
+        "clip_sha256": "a870935c9ffc5416c71e3172586d1fcfb0521254c17ce02272918ca962175616",
+        "reviewed_range": [
+          "0xbbb",
+          "0xbd8"
+        ],
+        "push2_offset": "0xbc4",
+        "dumpbin_bytes_exact": true,
+        "no_stack_cleanup_between_mode_push_and_call": true
+      }
+    ],
+    "result": "both actual argument setups pass full enum2 to resolved plan-typed targets",
+    "findings": [],
+    "scope": "two complete argument-setup-to-call clips+COFFrelocs+independentdumpbin byte equality; no wholeMain/support/PE/runtime re-audit"
+  }
 }
