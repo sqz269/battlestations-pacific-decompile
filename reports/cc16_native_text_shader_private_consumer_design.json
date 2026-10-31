@@ -1,0 +1,852 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-text-shader-private-consumer-design",
+  "utc": "2026-10-31T01:27:02.820367+00:00",
+  "kind": "design/evidence only, no Source implementation or admission",
+  "reviewed_base": "941a1925e093dd07e79444c5fc39eee138c93647",
+  "published_comparison": "a9e960964271db5bb0449101d9988c8c030b638b",
+  "contract": "f5b5e8a0561836f7858951580b5ebdb4d364e196",
+  "contract_pins": [
+    {
+      "commit": "f5b5e8a0561836f7858951580b5ebdb4d364e196",
+      "path": "docs/CC16_NATIVE_TEXT_SHADER_RAW_STORAGE_CONTRACT.md",
+      "bytes": 7976,
+      "sha256": "21d1f2cc12ce306e5acc2ecd38cc73c86288d01a37d191cac37f73d8e245444d",
+      "git_blob": "8f456006762679f0e1cdf9c061d9fa9df922335f"
+    },
+    {
+      "commit": "f5b5e8a0561836f7858951580b5ebdb4d364e196",
+      "path": "reports/cc16_native_text_shader_raw_storage_contract.json",
+      "bytes": 19981,
+      "sha256": "572ecc4d7ffc2dfb30c1cb7ffd2f83fa673e790f56d21c127b3ee99945e2e3b3",
+      "git_blob": "9964614cad5396f5f178da213f72593d5187474e"
+    }
+  ],
+  "all16_Source_plus_one_doc_inputs_rehashed_and_equal941_a9": [
+    {
+      "path": "include/bsp/gui_text_resource_names.hpp",
+      "format": "immutable Git blob bytes; source/doc UTF-8 LF",
+      "git_blob_sha1": "1d6f35854d47d48e69f0c3e6e9b0c86508869f9f",
+      "sha256": "c152f46e0b3d838849f26051d0f041658adbeb2b215e0068f0b79fc1929654db",
+      "bytes": 5136,
+      "working_copy_raw_sha256": "c152f46e0b3d838849f26051d0f041658adbeb2b215e0068f0b79fc1929654db",
+      "working_copy_raw_bytes": 5136,
+      "working_copy_CRLF_normalized_equals_git": true,
+      "audit_commit": "88990d0d12d1f4cfd2480b3670d4dc5a6b0bda98",
+      "equal_at_published_a9_and_reviewed941": true
+    },
+    {
+      "path": "src/gui_text_resource_names.cpp",
+      "format": "immutable Git blob bytes; source/doc UTF-8 LF",
+      "git_blob_sha1": "c6dab6b2e625d8fb6f1556037afd6828b4c77b31",
+      "sha256": "d824603d96de6b7be9365df03deda9c5906c3d513a38a41633d9299c75796608",
+      "bytes": 7191,
+      "working_copy_raw_sha256": "d824603d96de6b7be9365df03deda9c5906c3d513a38a41633d9299c75796608",
+      "working_copy_raw_bytes": 7191,
+      "working_copy_CRLF_normalized_equals_git": true,
+      "audit_commit": "88990d0d12d1f4cfd2480b3670d4dc5a6b0bda98",
+      "equal_at_published_a9_and_reviewed941": true
+    },
+    {
+      "path": "include/bsp/native_gui_text_shader_storage.hpp",
+      "format": "immutable Git blob bytes; source/doc UTF-8 LF",
+      "git_blob_sha1": "35bb10edaf18f2c43bc9ea48f87fb61873139605",
+      "sha256": "746d87e6274a37f16697df0ae8645c35a2d5b32b9673ae2444d13f461d8bddbf",
+      "bytes": 14069,
+      "working_copy_raw_sha256": "746d87e6274a37f16697df0ae8645c35a2d5b32b9673ae2444d13f461d8bddbf",
+      "working_copy_raw_bytes": 14069,
+      "working_copy_CRLF_normalized_equals_git": true,
+      "audit_commit": "88990d0d12d1f4cfd2480b3670d4dc5a6b0bda98",
+      "equal_at_published_a9_and_reviewed941": true
+    },
+    {
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "format": "immutable Git blob bytes; source/doc UTF-8 LF",
+      "git_blob_sha1": "dbf1955d6dee1f89f253d42b9eee40e3577c438b",
+      "sha256": "2864664a00d8b3d7237b7d7cefc22bfb2ab584aaf62e9d56fb142f60ffa1b49f",
+      "bytes": 37788,
+      "working_copy_raw_sha256": "2864664a00d8b3d7237b7d7cefc22bfb2ab584aaf62e9d56fb142f60ffa1b49f",
+      "working_copy_raw_bytes": 37788,
+      "working_copy_CRLF_normalized_equals_git": true,
+      "audit_commit": "88990d0d12d1f4cfd2480b3670d4dc5a6b0bda98",
+      "equal_at_published_a9_and_reviewed941": true
+    },
+    {
+      "path": "include/bsp/native_gui_text_field_storage.hpp",
+      "format": "immutable Git blob bytes; source/doc UTF-8 LF",
+      "git_blob_sha1": "cb67db1bae62fa1e20c8dc85b2d791939761d795",
+      "sha256": "ae32fa79cb78a8df9b2d8ee89b9930a4358db6e4d2045bbc2d894dd4e480e29c",
+      "bytes": 14343,
+      "working_copy_raw_sha256": "ae32fa79cb78a8df9b2d8ee89b9930a4358db6e4d2045bbc2d894dd4e480e29c",
+      "working_copy_raw_bytes": 14343,
+      "working_copy_CRLF_normalized_equals_git": true,
+      "audit_commit": "88990d0d12d1f4cfd2480b3670d4dc5a6b0bda98",
+      "equal_at_published_a9_and_reviewed941": true
+    },
+    {
+      "path": "src/native_gui_text_field_storage.cpp",
+      "format": "immutable Git blob bytes; source/doc UTF-8 LF",
+      "git_blob_sha1": "77befd8c28ae3c289aff1ea202f43e2832642082",
+      "sha256": "70c6b9180077424b5e6d457a82b47024722bd14ea9ba5c5d8da2b2bda2bf2441",
+      "bytes": 31161,
+      "working_copy_raw_sha256": "70c6b9180077424b5e6d457a82b47024722bd14ea9ba5c5d8da2b2bda2bf2441",
+      "working_copy_raw_bytes": 31161,
+      "working_copy_CRLF_normalized_equals_git": true,
+      "audit_commit": "88990d0d12d1f4cfd2480b3670d4dc5a6b0bda98",
+      "equal_at_published_a9_and_reviewed941": true
+    },
+    {
+      "path": "include/bsp/native_gui_text_reference.hpp",
+      "format": "immutable Git blob bytes; source/doc UTF-8 LF",
+      "git_blob_sha1": "492cf04c44cfeae90887bba02c32039f325bc318",
+      "sha256": "62224192a6d0fb5043ed68a3f34374ce1bc3584ee1f3bb031c1041b33fdd1827",
+      "bytes": 12718,
+      "working_copy_raw_sha256": "62224192a6d0fb5043ed68a3f34374ce1bc3584ee1f3bb031c1041b33fdd1827",
+      "working_copy_raw_bytes": 12718,
+      "working_copy_CRLF_normalized_equals_git": true,
+      "audit_commit": "88990d0d12d1f4cfd2480b3670d4dc5a6b0bda98",
+      "equal_at_published_a9_and_reviewed941": true
+    },
+    {
+      "path": "src/native_gui_text_reference.cpp",
+      "format": "immutable Git blob bytes; source/doc UTF-8 LF",
+      "git_blob_sha1": "f3a8e3a5c855acc668fb526d6de781621cfdb8c2",
+      "sha256": "0fb188e79dbc014db098d01e3afff14a5e07f1671a33db063d2e126e5af4257e",
+      "bytes": 58312,
+      "working_copy_raw_sha256": "0fb188e79dbc014db098d01e3afff14a5e07f1671a33db063d2e126e5af4257e",
+      "working_copy_raw_bytes": 58312,
+      "working_copy_CRLF_normalized_equals_git": true,
+      "audit_commit": "88990d0d12d1f4cfd2480b3670d4dc5a6b0bda98",
+      "equal_at_published_a9_and_reviewed941": true
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "format": "immutable Git blob bytes; source/doc UTF-8 LF",
+      "git_blob_sha1": "3b7af4c6508cfc1df81e913108b5162208685e97",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "bytes": 8771,
+      "working_copy_raw_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "working_copy_raw_bytes": 8771,
+      "working_copy_CRLF_normalized_equals_git": true,
+      "audit_commit": "88990d0d12d1f4cfd2480b3670d4dc5a6b0bda98",
+      "equal_at_published_a9_and_reviewed941": true
+    },
+    {
+      "path": "src/native_string.cpp",
+      "format": "immutable Git blob bytes; source/doc UTF-8 LF",
+      "git_blob_sha1": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "bytes": 9121,
+      "working_copy_raw_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "working_copy_raw_bytes": 9121,
+      "working_copy_CRLF_normalized_equals_git": true,
+      "audit_commit": "88990d0d12d1f4cfd2480b3670d4dc5a6b0bda98",
+      "equal_at_published_a9_and_reviewed941": true
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "format": "immutable Git blob bytes; source/doc UTF-8 LF",
+      "git_blob_sha1": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808",
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+      "bytes": 10071,
+      "working_copy_raw_sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+      "working_copy_raw_bytes": 10071,
+      "working_copy_CRLF_normalized_equals_git": true,
+      "audit_commit": "88990d0d12d1f4cfd2480b3670d4dc5a6b0bda98",
+      "equal_at_published_a9_and_reviewed941": true
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "format": "immutable Git blob bytes; source/doc UTF-8 LF",
+      "git_blob_sha1": "cac68c258f191a798e3c5e8e2316370402f17a9c",
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+      "bytes": 11471,
+      "working_copy_raw_sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+      "working_copy_raw_bytes": 11471,
+      "working_copy_CRLF_normalized_equals_git": true,
+      "audit_commit": "88990d0d12d1f4cfd2480b3670d4dc5a6b0bda98",
+      "equal_at_published_a9_and_reviewed941": true
+    },
+    {
+      "path": "include/bsp/native_material_effect_owner.hpp",
+      "format": "immutable Git blob bytes; source/doc UTF-8 LF",
+      "git_blob_sha1": "686ca21aa41acad2ec9499ac10e5843594907f8a",
+      "sha256": "197df420b08345803c36b5ef20cfaa725ccfa02c8ccc4a3fbfb76adada7bdedf",
+      "bytes": 8745,
+      "working_copy_raw_sha256": "197df420b08345803c36b5ef20cfaa725ccfa02c8ccc4a3fbfb76adada7bdedf",
+      "working_copy_raw_bytes": 8745,
+      "working_copy_CRLF_normalized_equals_git": true,
+      "audit_commit": "88990d0d12d1f4cfd2480b3670d4dc5a6b0bda98",
+      "equal_at_published_a9_and_reviewed941": true
+    },
+    {
+      "path": "src/native_material_effect_owner.cpp",
+      "format": "immutable Git blob bytes; source/doc UTF-8 LF",
+      "git_blob_sha1": "031935c6b8cf1eb8cebdb5c02fbaf95e052b91d8",
+      "sha256": "1a19bafced64bda09691cdbd0d7254ce000afb976144fb1cb01936377d16698b",
+      "bytes": 11972,
+      "working_copy_raw_sha256": "1a19bafced64bda09691cdbd0d7254ce000afb976144fb1cb01936377d16698b",
+      "working_copy_raw_bytes": 11972,
+      "working_copy_CRLF_normalized_equals_git": true,
+      "audit_commit": "88990d0d12d1f4cfd2480b3670d4dc5a6b0bda98",
+      "equal_at_published_a9_and_reviewed941": true
+    },
+    {
+      "path": "include/bsp/native_texture_surface_getter.hpp",
+      "format": "immutable Git blob bytes; source/doc UTF-8 LF",
+      "git_blob_sha1": "99dea4ccdfb98725c3ded24718de5243f1401a28",
+      "sha256": "958bab84aaa61abb9cceeb290805bf51faec2010543f46ace4b28385fb182d87",
+      "bytes": 1851,
+      "working_copy_raw_sha256": "958bab84aaa61abb9cceeb290805bf51faec2010543f46ace4b28385fb182d87",
+      "working_copy_raw_bytes": 1851,
+      "working_copy_CRLF_normalized_equals_git": true,
+      "audit_commit": "88990d0d12d1f4cfd2480b3670d4dc5a6b0bda98",
+      "equal_at_published_a9_and_reviewed941": true
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "format": "immutable Git blob bytes; source/doc UTF-8 LF",
+      "git_blob_sha1": "60b3f627150fa058fac7b8c4c74537cb3aee0a68",
+      "sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+      "bytes": 3113,
+      "working_copy_raw_sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+      "working_copy_raw_bytes": 3113,
+      "working_copy_CRLF_normalized_equals_git": true,
+      "audit_commit": "88990d0d12d1f4cfd2480b3670d4dc5a6b0bda98",
+      "equal_at_published_a9_and_reviewed941": true
+    },
+    {
+      "path": "docs/GUI_TEXT_RESOURCE_NAMES.md",
+      "format": "immutable Git blob bytes; source/doc UTF-8 LF",
+      "git_blob_sha1": "34aae219dfeb97a665a796dfec65164ee54f93af",
+      "sha256": "2752996c26419813a395007876f33b2aeb42a516c1d12838b628a5b790810dd0",
+      "bytes": 6757,
+      "working_copy_raw_sha256": "2752996c26419813a395007876f33b2aeb42a516c1d12838b628a5b790810dd0",
+      "working_copy_raw_bytes": 6757,
+      "working_copy_CRLF_normalized_equals_git": true,
+      "audit_commit": "88990d0d12d1f4cfd2480b3670d4dc5a6b0bda98",
+      "equal_at_published_a9_and_reviewed941": true
+    }
+  ],
+  "four_frozen_Source_preimages": [
+    {
+      "commit": "941a1925e093dd07e79444c5fc39eee138c93647",
+      "path": "include/bsp/gui_text_resource_names.hpp",
+      "bytes": 5136,
+      "sha256": "c152f46e0b3d838849f26051d0f041658adbeb2b215e0068f0b79fc1929654db",
+      "git_blob": "1d6f35854d47d48e69f0c3e6e9b0c86508869f9f",
+      "frozen_before": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-pool-caller\\local\\output\\cc16_native_text_shader_private_consumer_design_20261030\\before_include__bsp__gui_text_resource_names.hpp",
+      "frozen_equals_Git": true,
+      "Source_file_modified": false
+    },
+    {
+      "commit": "941a1925e093dd07e79444c5fc39eee138c93647",
+      "path": "src/gui_text_resource_names.cpp",
+      "bytes": 7191,
+      "sha256": "d824603d96de6b7be9365df03deda9c5906c3d513a38a41633d9299c75796608",
+      "git_blob": "c6dab6b2e625d8fb6f1556037afd6828b4c77b31",
+      "frozen_before": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-pool-caller\\local\\output\\cc16_native_text_shader_private_consumer_design_20261030\\before_src__gui_text_resource_names.cpp",
+      "frozen_equals_Git": true,
+      "Source_file_modified": false
+    },
+    {
+      "commit": "941a1925e093dd07e79444c5fc39eee138c93647",
+      "path": "include/bsp/native_gui_text_shader_storage.hpp",
+      "bytes": 14069,
+      "sha256": "746d87e6274a37f16697df0ae8645c35a2d5b32b9673ae2444d13f461d8bddbf",
+      "git_blob": "35bb10edaf18f2c43bc9ea48f87fb61873139605",
+      "frozen_before": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-pool-caller\\local\\output\\cc16_native_text_shader_private_consumer_design_20261030\\before_include__bsp__native_gui_text_shader_storage.hpp",
+      "frozen_equals_Git": true,
+      "Source_file_modified": false
+    },
+    {
+      "commit": "941a1925e093dd07e79444c5fc39eee138c93647",
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "bytes": 37788,
+      "sha256": "2864664a00d8b3d7237b7d7cefc22bfb2ab584aaf62e9d56fb142f60ffa1b49f",
+      "git_blob": "dbf1955d6dee1f89f253d42b9eee40e3577c438b",
+      "frozen_before": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-pool-caller\\local\\output\\cc16_native_text_shader_private_consumer_design_20261030\\before_src__native_gui_text_shader_storage.cpp",
+      "frozen_equals_Git": true,
+      "Source_file_modified": false
+    }
+  ],
+  "exact_existing_function_witnesses_to_preserve": [
+    {
+      "path": "src/gui_text_resource_names.cpp",
+      "begin_literal": "void set_gui_text_shader_name_00ab8e70(",
+      "bytes": 392,
+      "sha256": "c660ea8997a4fa5a6bbca2d14d1d9ef15a889273ca759afef523bb7741b80673",
+      "proposal_requires_function_bytes_unchanged": true
+    },
+    {
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "begin_literal": "void NativeGuiTextShaderStorageFrame::begin_raw(",
+      "bytes": 624,
+      "sha256": "58fe29089957f6f9d1988c13033cfbe66115291dce855061e7b185b932ef58ea",
+      "proposal_requires_function_bytes_unchanged": true
+    },
+    {
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "begin_literal": "void NativeGuiTextShaderStorageFrame::complete_raw(",
+      "bytes": 2327,
+      "sha256": "6870dae78f07629db7827b5019336cd55933e447cdceca75666572f0db6551a7",
+      "proposal_requires_function_bytes_unchanged": true
+    },
+    {
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "begin_literal": "bool ensure_native_gui_text_font_shader_storage_00ab8ce0(NativeGuiTextRawModelReference&",
+      "bytes": 594,
+      "sha256": "403313f1328fc452526b5e1c6e69d82892010a541dbc069efccfa546232c6b82",
+      "proposal_requires_function_bytes_unchanged": true
+    },
+    {
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "begin_literal": "void NativeGuiTextShaderStorageFrame::CreditConsumer::slot_cleared(",
+      "bytes": 329,
+      "sha256": "2d6385e6edf6f66dd62dc7cd9cf6d3f5a2b185b17b8cd878b68f92a4a00d293f",
+      "proposal_requires_function_bytes_unchanged": true
+    },
+    {
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "begin_literal": "void NativeGuiTextShaderStorageFrame::CreditConsumer::finish_without_capture(",
+      "bytes": 314,
+      "sha256": "7213884d58d50e0c834ad195bc42ac564831227b99f97a4e41bf3be947cd4000",
+      "proposal_requires_function_bytes_unchanged": true
+    },
+    {
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "begin_literal": "void NativeGuiTextShaderStorageFrame::CreditConsumer::fail(",
+      "bytes": 287,
+      "sha256": "3ff87f78c1c949dbe97eba79b193dee3684095b7bd38aff6806837da6c4a5889",
+      "proposal_requires_function_bytes_unchanged": true
+    }
+  ],
+  "precise_Source_line_pins": [
+    {
+      "commit": "941a1925e093dd07e79444c5fc39eee138c93647",
+      "path": "include/bsp/native_gui_text_shader_storage.hpp",
+      "line": 81,
+      "text": "    enum class Consumer { none, font_name, retirement };",
+      "utf8_sha256": "28a2cc2419a6d42c9107ccc3023f1e3d825fc3445a79e635fdf983d78c9292b8"
+    },
+    {
+      "commit": "941a1925e093dd07e79444c5fc39eee138c93647",
+      "path": "include/bsp/native_gui_text_shader_storage.hpp",
+      "line": 125,
+      "text": "    class CreditConsumer final {",
+      "utf8_sha256": "6e8ec3d0f74eeccbaee0d9b4504f8fbe2e3df25d5fba14501397236e246290ba"
+    },
+    {
+      "commit": "941a1925e093dd07e79444c5fc39eee138c93647",
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "line": 416,
+      "text": "void NativeGuiTextShaderStorageFrame::authenticate_bound_reference(",
+      "utf8_sha256": "219fdf68a1ec4631aac926866529b653203e911df98ebc27f831183c178066b7"
+    },
+    {
+      "commit": "941a1925e093dd07e79444c5fc39eee138c93647",
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "line": 421,
+      "text": "        c.owners.find(raw) == &reference && c.font_shader_frame == this &&",
+      "utf8_sha256": "11454761086e8e1cbcf742d0aa4eacb06c6b309312334f9684f6deff19eb500d"
+    },
+    {
+      "commit": "941a1925e093dd07e79444c5fc39eee138c93647",
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "line": 436,
+      "text": "void NativeGuiTextShaderStorageFrame::begin_raw(NativeGuiTextRawModelReference& reference,",
+      "utf8_sha256": "0ee5ecb98e1ad8ef4d4ef2866746535d9b0dedc406e3d0f738133631de82c967"
+    },
+    {
+      "commit": "941a1925e093dd07e79444c5fc39eee138c93647",
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "line": 440,
+      "text": "            credit_.producer == RawPhase::fresh && credit_.credit == CreditPhase::none &&",
+      "utf8_sha256": "9b36fbfe7f29423c8aa5583a8d5436b54ab39b9d9a1eaad85a6206b9c33a0da4"
+    },
+    {
+      "commit": "941a1925e093dd07e79444c5fc39eee138c93647",
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "line": 450,
+      "text": "void NativeGuiTextShaderStorageFrame::complete_raw(NativeGuiTextRawModelReference& reference,",
+      "utf8_sha256": "205a53824d4a1e7b188cff6ceb65b7b1235e358dbaa3ac61286578403bc8f23b"
+    },
+    {
+      "commit": "941a1925e093dd07e79444c5fc39eee138c93647",
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "line": 479,
+      "text": "        credit_.effect = raw_evidence_.result;",
+      "utf8_sha256": "1c114b85fec3f469dbaf29faf4e4a8eddf80ceab94617b64d4b410f00f7df2e2"
+    },
+    {
+      "commit": "941a1925e093dd07e79444c5fc39eee138c93647",
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "line": 561,
+      "text": "void NativeGuiTextShaderStorageFrame::CreditConsumer::capture(void* captured) {",
+      "utf8_sha256": "997b1865cf63a1b6ad53005f2aeb82a47463f4a048547000bee2812f7151123f"
+    },
+    {
+      "commit": "941a1925e093dd07e79444c5fc39eee138c93647",
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "line": 587,
+      "text": "            frame_.credit_.effect == captured && frame_.credit_.reference &&",
+      "utf8_sha256": "e646db1d587f143aa5b2a5777f82bdda31c774420120ce6a33fc188c0f827b50"
+    },
+    {
+      "commit": "941a1925e093dd07e79444c5fc39eee138c93647",
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "line": 581,
+      "text": "                \"Null Text1EC cannot complete an outstanding private shader credit\");",
+      "utf8_sha256": "b7d72f673ee7c3eb4156a2b8319747cb543e181d722bba4e074a324672f82a29"
+    },
+    {
+      "commit": "941a1925e093dd07e79444c5fc39eee138c93647",
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "line": 635,
+      "text": "void NativeGuiTextShaderStorageFrame::CreditConsumer::slot_cleared() {",
+      "utf8_sha256": "82819fdbbeaf39e5e26f3c1581ebfca6236e58aa29488c3d862a57a355a9c225"
+    },
+    {
+      "commit": "941a1925e093dd07e79444c5fc39eee138c93647",
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "line": 642,
+      "text": "void NativeGuiTextShaderStorageFrame::CreditConsumer::finish_without_capture() {",
+      "utf8_sha256": "438aecc697e2bf9eedd07655616042a261a6a3c321c5ca76377ff99474245ea5"
+    },
+    {
+      "commit": "941a1925e093dd07e79444c5fc39eee138c93647",
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "line": 650,
+      "text": "void NativeGuiTextShaderStorageFrame::CreditConsumer::complete() {",
+      "utf8_sha256": "d70a3f981803597dab68a9de2fa7d78ee183118df5eba365c8314cfeb9d7a22f"
+    },
+    {
+      "commit": "941a1925e093dd07e79444c5fc39eee138c93647",
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "line": 669,
+      "text": "void NativeGuiTextShaderStorageFrame::CreditConsumer::fail() noexcept {",
+      "utf8_sha256": "9f80cf4f263bdf605a598c9699abb88457ab6a25ba393a5dc793b49b7fd04c4b"
+    },
+    {
+      "commit": "941a1925e093dd07e79444c5fc39eee138c93647",
+      "path": "include/bsp/native_string.hpp",
+      "line": 80,
+      "text": "// A zero-byte native memcpy is omitted, as in the existing NativeString API.",
+      "utf8_sha256": "1e12a725d24f8b04cc1566421b534a0ecd542acaa4c4e5f6d02139d9f19b9bd6"
+    },
+    {
+      "commit": "941a1925e093dd07e79444c5fc39eee138c93647",
+      "path": "src/native_string.cpp",
+      "line": 89,
+      "text": "        const auto current_length = read_header<std::uint32_t>(actual_header, 0);",
+      "utf8_sha256": "c68e141708de0aac8bc0c0c687fe16ac8293d9698ffd0c48e012f42f886021ad"
+    },
+    {
+      "commit": "941a1925e093dd07e79444c5fc39eee138c93647",
+      "path": "src/native_string.cpp",
+      "line": 93,
+      "text": "        if (copied != 0) {",
+      "utf8_sha256": "3c845a2327cfcf275403d2aa9873eb12cbbd4d4dd4c032d49e88c40429ff55fb"
+    },
+    {
+      "commit": "941a1925e093dd07e79444c5fc39eee138c93647",
+      "path": "src/gui_text_resource_names.cpp",
+      "line": 91,
+      "text": "void set_gui_text_shader_name_00ab8e70(GuiTextLifetime& lifetime,",
+      "utf8_sha256": "ad92bcf816be8526379ad797ae6775a6a4d16051570bd0682c68b379e09ca268"
+    }
+  ],
+  "Native": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "bsp_readonly_verified_count": 77632,
+    "complete_103B_40op_PE_body_reverified": {
+      "start": "00AB8E70",
+      "end_inclusive": "00AB8ED6",
+      "end_exclusive": "00AB8ED7",
+      "ret": "00AB8ED4",
+      "bytes": 103,
+      "instruction_count": 40,
+      "pe_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "pe_bytes": 12223752,
+      "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "image_base": "0x400000",
+      "body_hex": "53568bd9578b7c24108db3c00100003bf774248b076a01508bcee8b14e96ff833f0074138b0e8b57048b4604515250e8dce7130083c40c8bb3ec01000085f674208d4e0451ff152022ce0085c075088b168b028bceffd0c783ec010000000000005f5e5bc20400",
+      "body_sha256": "8e61e22e4a7fca5f40c51b832b32eb1990df894acc48b2adacfdb96e444b4a8f",
+      "frozen_body_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-header-states\\local\\output\\cc16_native_text_shader_raw_storage_contract_20261030\\00ab8e70_103B.bin",
+      "x87_instruction_count": 0,
+      "sse_instruction_count": 0
+    },
+    "complete_listing": [
+      "00ab8e70: PUSH EBX ",
+      "00ab8e71: PUSH ESI ",
+      "00ab8e72: MOV EBX,ECX ",
+      "00ab8e74: PUSH EDI ",
+      "00ab8e75: MOV EDI,dword ptr [ESP + 0x10] ",
+      "00ab8e79: LEA ESI,[EBX + 0x1c0] ",
+      "00ab8e7f: CMP ESI,EDI ",
+      "00ab8e81: JZ 0x00ab8ea7 ",
+      "00ab8e83: MOV EAX,dword ptr [EDI] ",
+      "00ab8e85: PUSH 0x1 ",
+      "00ab8e87: PUSH EAX ",
+      "00ab8e88: MOV ECX,ESI ",
+      "00ab8e8a: CALL 0x0041dd40 ",
+      "00ab8e8f: CMP dword ptr [EDI],0x0 ",
+      "00ab8e92: JZ 0x00ab8ea7 ",
+      "00ab8e94: MOV ECX,dword ptr [ESI] ",
+      "00ab8e96: MOV EDX,dword ptr [EDI + 0x4] ",
+      "00ab8e99: MOV EAX,dword ptr [ESI + 0x4] ",
+      "00ab8e9c: PUSH ECX ",
+      "00ab8e9d: PUSH EDX ",
+      "00ab8e9e: PUSH EAX ",
+      "00ab8e9f: CALL 0x00bf7680 ",
+      "00ab8ea4: ADD ESP,0xc ",
+      "00ab8ea7: MOV ESI,dword ptr [EBX + 0x1ec] ",
+      "00ab8ead: TEST ESI,ESI ",
+      "00ab8eaf: JZ 0x00ab8ed1 ",
+      "00ab8eb1: LEA ECX,[ESI + 0x4] ",
+      "00ab8eb4: PUSH ECX ",
+      "00ab8eb5: CALL dword ptr [0x00ce2220] ",
+      "00ab8ebb: TEST EAX,EAX ",
+      "00ab8ebd: JNZ 0x00ab8ec7 ",
+      "00ab8ebf: MOV EDX,dword ptr [ESI] ",
+      "00ab8ec1: MOV EAX,dword ptr [EDX] ",
+      "00ab8ec3: MOV ECX,ESI ",
+      "00ab8ec5: CALL EAX ",
+      "00ab8ec7: MOV dword ptr [EBX + 0x1ec],0x0 ",
+      "00ab8ed1: POP EDI ",
+      "00ab8ed2: POP ESI ",
+      "00ab8ed3: POP EBX ",
+      "00ab8ed4: RET 0x4 "
+    ],
+    "frozen_contract_exports_reverified_current_epoch_separate": [
+      {
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab8e70\\assembly.txt",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-header-states\\local\\output\\cc16_native_text_shader_raw_storage_contract_20261030\\native_exports\\assembly.txt",
+        "format": "exact raw export bytes at contract audit epoch; later annotations may refresh shared representation",
+        "sha256": "b3e64461078345e67dc0d66d5ac7ed1ed5acf459bec6307bc4881fd1b8ff1b64",
+        "bytes": 1082,
+        "frozen_contract_export_independently_rehashed": true,
+        "current_bytes": 1082,
+        "current_sha256": "b3e64461078345e67dc0d66d5ac7ed1ed5acf459bec6307bc4881fd1b8ff1b64",
+        "current_raw_equals_contract_epoch": true
+      },
+      {
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab8e70\\decompiled.c",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-header-states\\local\\output\\cc16_native_text_shader_raw_storage_contract_20261030\\native_exports\\decompiled.c",
+        "format": "exact raw export bytes at contract audit epoch; later annotations may refresh shared representation",
+        "sha256": "59fe7446f46d7c034900d8e8b8dca41ab0cbac0f314d8bbd84ad772585218626",
+        "bytes": 1472,
+        "frozen_contract_export_independently_rehashed": true,
+        "current_bytes": 1472,
+        "current_sha256": "59fe7446f46d7c034900d8e8b8dca41ab0cbac0f314d8bbd84ad772585218626",
+        "current_raw_equals_contract_epoch": true
+      },
+      {
+        "source_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab8e70\\metadata.json",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-header-states\\local\\output\\cc16_native_text_shader_raw_storage_contract_20261030\\native_exports\\metadata.json",
+        "format": "exact raw export bytes at contract audit epoch; later annotations may refresh shared representation",
+        "sha256": "5823f22288f75844ed08deb4e93d4444a3888b215db4060f6e36740072cd0bb8",
+        "bytes": 290,
+        "frozen_contract_export_independently_rehashed": true,
+        "current_bytes": 290,
+        "current_sha256": "5823f22288f75844ed08deb4e93d4444a3888b215db4060f6e36740072cd0bb8",
+        "current_raw_equals_contract_epoch": true
+      }
+    ]
+  },
+  "exact_proposed_public_API": "class NativeGuiTextRawModelReference;\nstruct NativeGuiTextRawModelReferenceContext;\nstruct NativeGuiTextReferenceFrame;\nstruct NativeGuiTextShaderStorageFrame;\nclass NativeGuiTextRawShaderNameStorageInvocation final {\npublic:\n    enum class Phase { fresh, entered, complete, failed };\n    NativeGuiTextRawShaderNameStorageInvocation(\n        const NativeGuiTextRawModelReferenceContext&,\n        const NativeGuiTextReferenceFrame&, NativeGuiTextShaderStorageFrame&,\n        const void* actual_input_header8);\n    NativeGuiTextRawShaderNameStorageInvocation(const NativeGuiTextRawShaderNameStorageInvocation&) = delete;\n    NativeGuiTextRawShaderNameStorageInvocation& operator=(const NativeGuiTextRawShaderNameStorageInvocation&) = delete;\n    NativeGuiTextRawShaderNameStorageInvocation(NativeGuiTextRawShaderNameStorageInvocation&&) = delete;\n    NativeGuiTextRawShaderNameStorageInvocation& operator=(NativeGuiTextRawShaderNameStorageInvocation&&) = delete;\n    Phase phase() const;\n    bool requires_process_retention() const;\nprivate:\n    friend void set_native_gui_text_shader_name_storage_00ab8e70(\n        NativeGuiTextRawModelReference&, const void*, NativeGuiTextRawShaderNameStorageInvocation&);\n    const NativeGuiTextRawModelReferenceContext* const context_;\n    const NativeGuiTextReferenceFrame* const reference_frame_;\n    NativeGuiTextShaderStorageFrame& shader_;\n    const void* const input_;\n    const NativeGuiTextRawModelReference* reference_{}; // bound only by actual entry\n    void* actual_text_{}; // reached binding/history; diagnostic after failure\n    Phase phase_{Phase::fresh};\n    bool failed_{}; // sticky; public diagnostics cannot reset it\n};\nvoid set_native_gui_text_shader_name_storage_00ab8e70(\n    NativeGuiTextRawModelReference&, const void* actual_name_header8,\n    NativeGuiTextRawShaderNameStorageInvocation&);\n",
+  "exact_proposed_private_friend_constructor": "// Inside CreditConsumer private scope ONLY:\nfriend void set_native_gui_text_shader_name_storage_00ab8e70(\n    NativeGuiTextRawModelReference&, const void*, NativeGuiTextRawShaderNameStorageInvocation&);\nCreditConsumer(NativeGuiTextShaderStorageFrame&, NativeGuiTextRawModelReference&,\n    const NativeGuiTextRawShaderNameStorageInvocation&);\n// Append Consumer::shader_name and two CreditProgress pointers; append token pointer.\n",
+  "later_cross_stream_string_provider_prerequisite": {
+    "source": "Root-reported external cc16-progress IPC1214; routing-only, not independently accepted API/evidence",
+    "reported_text": "Root string setter NOT provider closed: exact raw41DD40 late-preserve/BF zero-count/current-field gap now explicit prerequisite.",
+    "external_ignored_packet": "local/raw_string_resize_v2_design_frame_20261031",
+    "frozen_f5_historical_inputs_or_claims_rewritten": false,
+    "existing_raw_signature": "void resize_native_string_header_0041dd40(void*,NativeStringRawPoolContext&,uint32_t,bool)",
+    "current_Source_proven_facts": [
+      "resize_header<true> reads current header length after allocation",
+      "preserve current data read/copy omitted for copied==0",
+      "RawStringPoolAccess.release gets current pool after receiving data/size arguments"
+    ],
+    "existing_signature_or_availability_proves_all_Native_resize_epochs": false,
+    "concrete_accepted_v2_signature_or_retained_frame_API_available_here": false,
+    "same_pool_transport_zero_count_current_reload_acceptance_required_before_authoring": true,
+    "extra_provider_borrows_require_actual_Invocation_signature_review": true,
+    "new_body_or_adapter_or_signature_invented": false
+  },
+  "public_record_properties": {
+    "address_only_prebirth_Context_refFrame_ShaderFrame_input_storage": true,
+    "actual_live_RawReference_bound_only_at_actual_entry": true,
+    "private_one_shot_and_sticky_failed": true,
+    "noncopyable_nonmoving": true,
+    "new_noexcept_or_destructor_cleanup": false,
+    "public_diagnostics_are_credit_or_Native_capability": false,
+    "services_resolved_from_same_actual_reference_context": true
+  },
+  "private_consumer_extension": {
+    "new_kind": "shader_name appended after old values0/1/2",
+    "genuine_new_credit_issuer": false,
+    "new_exact_entry_friend_only": true,
+    "entire_ShaderFrame_RawProducer_or_foreign_friends_added": false,
+    "exact_friend_has_full_Consumer_private_capability_but_setter_direct_token_writes_forbidden": true,
+    "credit_issuer_remains_unchanged_complete_raw_only": true,
+    "active_and_historical_invocation_pointer_tails": true,
+    "late_capture_joins_live_bound_font_branch_not_retirement": true,
+    "finish_without_capture_still_font_only": true,
+    "same_existing_stage_accounting_and_failure_retention": true,
+    "no_early_slot_or_import_sample": true
+  },
+  "actual_transition_table": [
+    {
+      "point": "constructor",
+      "Invocation": "fresh/address-only",
+      "credit": "none issued",
+      "operation": "Store Context/ReferenceFrame/ShaderFrame/input-storage addresses; no raw122 object required yet, no native read."
+    },
+    {
+      "point": "actual entry",
+      "Invocation": "fresh -> entered, bind once to SAME live RawReference",
+      "credit": "open shader_name token; record active identity",
+      "operation": "Validate exact immutable preparation/canonical context/reference frame and complete93/provider graph. No1EC capture."
+    },
+    {
+      "point": "resize/copy",
+      "Invocation": "entered",
+      "credit": "opened, not reserved",
+      "operation": "Execute same self-alias/length/resize/current reload order; escapes poison/retain invocation and token."
+    },
+    {
+      "point": "8EA7",
+      "Invocation": "entered",
+      "credit": "opened -> null_capture OR captured/reserved",
+      "operation": "Capture CURRENT1EC exactly once; authenticate same bound graph and actual private outstanding credit only now."
+    },
+    {
+      "point": "null late slot",
+      "Invocation": "entered -> complete after whole normal return",
+      "credit": "null_capture -> complete only with no outstanding/reserved credit",
+      "operation": "No CE2220 sample/call, no zero dispatch, no slot clear; preserve previous nonnull history."
+    },
+    {
+      "point": "8EB5 current import",
+      "Invocation": "entered",
+      "credit": "captured -> decrement_entered -> decremented",
+      "operation": "Sample CURRENT CE2220 after capture, pass captured+04, record actual return. No fetch_sub substitution."
+    },
+    {
+      "point": "nonzero decrement",
+      "Invocation": "entered",
+      "credit": "decremented",
+      "operation": "Skip terminal, proceed to LIVE1EC clear; do not read count/profile again."
+    },
+    {
+      "point": "zero decrement",
+      "Invocation": "entered",
+      "credit": "decremented -> zero_entered -> zero_returned",
+      "operation": "Existing actual-owner zero dispatcher consumes current profile/terminal of captured object, no extra decrement/callback."
+    },
+    {
+      "point": "8EC7",
+      "Invocation": "entered",
+      "credit": "decremented or zero_returned -> cleared/returned",
+      "operation": "Unconditional LIVE Text1EC=0, including terminal replacement; only AFTER store call slot_cleared. Never compare-clear or touch freed captured payload."
+    },
+    {
+      "point": "whole normal completion",
+      "Invocation": "entered -> complete",
+      "credit": "complete clears active pointer, preserves historical shader invocation",
+      "operation": "Private sticky/reentry checks then complete, no new ownership/free/ABI claim."
+    },
+    {
+      "point": "any entered escape/reentry",
+      "Invocation": "failed permanently",
+      "credit": "fail, preserve credit phase/operands and invocation histories",
+      "operation": "Bare rethrow, no rollback/cleanup/NoThrow/terminal/count repair/reset or synthesized success."
+    }
+  ],
+  "replacement_credit_cases": [
+    {
+      "case": "null current slot, no outstanding private credit",
+      "result": "admitted null path",
+      "basis": "existing capture null contract; no count/clear"
+    },
+    {
+      "case": "null current slot, outstanding/reserved credit remains",
+      "result": "Source admission failure/retention before decrement",
+      "basis": "no authority to forget the produced credit"
+    },
+    {
+      "case": "current nonnull equals this frame\u2019s actual outstanding privately issued effect with same binding",
+      "result": "can reserve/decrement and follow actual result",
+      "basis": "private complete_raw issuance + late capture graph auth; not pointer equality alone"
+    },
+    {
+      "case": "resize/copy callback installed a different effect, even a registered canonical owner",
+      "result": "matching replacement credit unavailable in current API; fail/retain before decrement",
+      "basis": "raw122 pins one frame; producer is one-shot/excludes active consumer; owner registry is not a Text-credit transfer receipt"
+    },
+    {
+      "case": "terminal callback installs replacement after captured shader zero",
+      "result": "Native live slot still cleared unconditionally, captured old credit returned afterward",
+      "basis": "never authenticate/consume/release replacement, never reread freed old shader; callback owner must independently retain its replacement custody"
+    }
+  ],
+  "new_Source_seams_maximum": 12,
+  "proposed_source_seams": [
+    {
+      "path": "include/bsp/gui_text_resource_names.hpp",
+      "label": "RNH1 public retained Invocation and exact raw entry",
+      "exact_before_anchor": "} // namespace bsp\n",
+      "anchor_utf8_sha256": "459606a6316233300fe9809f0885a8ba0c3ca5fc8a12a17231786940949b8361",
+      "character_offset_in_frozen_base": 5117,
+      "required_change": "Insert forward declarations, noncopyable Invocation and exact entry prototype before namespace close; no change to typed API blocks.",
+      "proposal_only_no_replacement_applied": true
+    },
+    {
+      "path": "src/gui_text_resource_names.cpp",
+      "label": "RNC1 complete raw-service includes",
+      "exact_before_anchor": "#include \"bsp/native_physical_file_date.hpp\"\n",
+      "anchor_utf8_sha256": "10fd0321d898a3a53e898cfe6efbe8fca4f8e278daf4dc4b2fbb28947762a798",
+      "character_offset_in_frozen_base": 43,
+      "required_change": "Add required existing reference/shader/actual-owner declarations and ONLY the separately accepted raw-string-resize-v2 API when available; no provider closure assumed from f5 availability.",
+      "proposal_only_no_replacement_applied": true
+    },
+    {
+      "path": "src/gui_text_resource_names.cpp",
+      "label": "RNC2 raw Invocation metadata/preflight/body",
+      "exact_before_anchor": "} // namespace bsp\n",
+      "anchor_utf8_sha256": "459606a6316233300fe9809f0885a8ba0c3ca5fc8a12a17231786940949b8361",
+      "character_offset_in_frozen_base": 7172,
+      "required_change": "Append address-only metadata/admission/body ONLY after Root accepts genuine same-pool resize-v2/zero-count/current-reload transport and actual API. Re-review extra retained provider borrows if required; no guessed adapter or old-helper parity claim. All old functions exact.",
+      "proposal_only_no_replacement_applied": true
+    },
+    {
+      "path": "include/bsp/native_gui_text_shader_storage.hpp",
+      "label": "SH1 Invocation forward declaration",
+      "exact_before_anchor": "struct NativeGuiTextRawFontNameStorageAcquired;\n",
+      "anchor_utf8_sha256": "10fc4b4aa40662ddaa8d85e468a970c57574b90e1f0118865624d0a9b8b9221b",
+      "character_offset_in_frozen_base": 363,
+      "required_change": "Append forward declaration of NativeGuiTextRawShaderNameStorageInvocation.",
+      "proposal_only_no_replacement_applied": true
+    },
+    {
+      "path": "include/bsp/native_gui_text_shader_storage.hpp",
+      "label": "SH2 append consumer identity",
+      "exact_before_anchor": "    enum class Consumer { none, font_name, retirement };",
+      "anchor_utf8_sha256": "28a2cc2419a6d42c9107ccc3023f1e3d825fc3445a79e635fdf983d78c9292b8",
+      "character_offset_in_frozen_base": 4214,
+      "required_change": "Append shader_name after retirement; preserve old numeric values0/1/2.",
+      "proposal_only_no_replacement_applied": true
+    },
+    {
+      "path": "include/bsp/native_gui_text_shader_storage.hpp",
+      "label": "SH3 append diagnostics pointers",
+      "exact_before_anchor": "        long decrement_result{};\n",
+      "anchor_utf8_sha256": "0fa4310ba67e89706c15c99f962f85b494fb805b7d6ffc8a235e77c2df52442a",
+      "character_offset_in_frozen_base": 6469,
+      "required_change": "Append active_shader_invocation and shader_invocation pointers at CreditProgress tail; diagnostic only.",
+      "proposal_only_no_replacement_applied": true
+    },
+    {
+      "path": "include/bsp/native_gui_text_shader_storage.hpp",
+      "label": "SH4 exact friend and private constructor",
+      "exact_before_anchor": "        enum class Stage { opened, no_capture, null_capture, captured,",
+      "anchor_utf8_sha256": "c47554ca2b8e8ba7e253a6a7c9186c78b658da10318b09c5d96a74bde52f0570",
+      "character_offset_in_frozen_base": 9107,
+      "required_change": "Insert exact raw entry friend and new private constructor before Stage; no public constructor/issuer or broad friend.",
+      "proposal_only_no_replacement_applied": true
+    },
+    {
+      "path": "include/bsp/native_gui_text_shader_storage.hpp",
+      "label": "SH5 append private token identity",
+      "exact_before_anchor": "        bool active_{};\n        void require_stage(Stage);",
+      "anchor_utf8_sha256": "4e42b3c493d0dbf10b322818c3997f7ef0e279e9da54f1b4696ceaaaf38d7b29",
+      "character_offset_in_frozen_base": 9743,
+      "required_change": "Append const Invocation* shader_invocation_ before require_stage; old fields/prefix unchanged.",
+      "proposal_only_no_replacement_applied": true
+    },
+    {
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "label": "SC1 genuine private constructor",
+      "exact_before_anchor": "NativeGuiTextShaderStorageFrame::CreditConsumer::~CreditConsumer() noexcept {",
+      "anchor_utf8_sha256": "92ed5e8d0f9ed12e6d54539c7830f0e4e22381aa0831099fa584b8ae1fc0e92b",
+      "character_offset_in_frozen_base": 30723,
+      "required_change": "Insert shader_name constructor before existing destructor; record active invocation then authenticate same live canonical binding, no1EC read.",
+      "proposal_only_no_replacement_applied": true
+    },
+    {
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "label": "SC2 late live-bound reference branch",
+      "exact_before_anchor": "        if (kind_ == Consumer::font_name) {",
+      "anchor_utf8_sha256": "45756a281a48756e12aedfe939c99118496a58356891da3d2001ab3058cdad0f",
+      "character_offset_in_frozen_base": 31429,
+      "required_change": "Extend condition to font_name||shader_name; same capture body/private reservation and retirement branch remain.",
+      "proposal_only_no_replacement_applied": true
+    },
+    {
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "label": "SC3 retain nonnull consumer identity",
+      "exact_before_anchor": "        c.retirement_shader = retirement_acquired_ ? &retirement_acquired_->shader : nullptr;\n",
+      "anchor_utf8_sha256": "c2c634bae8d06d75bb804ccaedae0ca6268c118e85ca8ffac6fc480d025e2dc1",
+      "character_offset_in_frozen_base": 33448,
+      "required_change": "Append c.shader_invocation=shader_invocation_; null/no-capture must not overwrite historic nonnull consumer.",
+      "proposal_only_no_replacement_applied": true
+    },
+    {
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "label": "SC4 clear active identity after whole completion",
+      "exact_before_anchor": "    frame_.credit_.active_retirement_shader = nullptr;\n",
+      "anchor_utf8_sha256": "fa7535e90081c361af54974aafd519401e135f58749f8f9b07591c79eacca52b",
+      "character_offset_in_frozen_base": 36484,
+      "required_change": "Append active_shader_invocation=nullptr; historical pointer retained, no change to credit accounting or failure retention.",
+      "proposal_only_no_replacement_applied": true
+    }
+  ],
+  "later_new_implementation_evidence_files_maximum": 2,
+  "Root_approval_scope": "Two-file conditional design only; no Source authorization in this packet",
+  "acceptance": [
+    "Final immutable base and four before blobs must match frozen941",
+    "Separate raw-string-resize-v2/same-pool/zero-count/current-field provider API/evidence must be accepted first; IPC1214 is routing-only",
+    "Exact12 or fewer authorized seams/full4file forward+reverse inverses/all intermediates",
+    "Old typed setter/raw producer/old enum values/font+retirement bodies outside finite additions exact",
+    "Full103B40op/current reload/selfalias/decrement/terminal/liveclear epochs preserved",
+    "No typed inputfilter, snapshot credit, private issuer writes, public capability or fake owner/terminal callback",
+    "Different resize-installed effect remains explicit missing-credit Source admission failure/retention before decrement",
+    "Independent Source review and official build/common checks belong to later Root implementation"
+  ],
+  "readiness": {
+    "finite_conditional_static_extension_design_complete": true,
+    "raw_Source_extension_implemented": false,
+    "raw_string_resize_v2_provider_accepted": false,
+    "whole_raw_setter_Source_packet_ready": false,
+    "actual_producer_or_Glyph_wiring": false,
+    "arbitrary_resize_replacement_credit_available": false,
+    "new_Native_origin_permission": false,
+    "OriginalABI_FH3_SEH_CRT_NoThrow_runtime_Game_activation": false
+  },
+  "actions": {
+    "new_design_files": 2,
+    "production_Source_address_CMake_ledger_Ghidra_mutations": 0,
+    "build_tests_probes_Game_process_control": 0,
+    "bsp_readonly_verification_queries": 1,
+    "Source_preimages_only_copied_to_ignored_local": true,
+    "prior_frozen_evidence_modified": false
+  },
+  "credit": {
+    "Native": 0,
+    "Original": 0,
+    "body": 0,
+    "helper": 0,
+    "vendor": 0,
+    "duplicate": 0,
+    "ABI": 0,
+    "runtime": 0,
+    "activation": 0
+  },
+  "document_pin": {
+    "path": "docs/CC16_NATIVE_TEXT_SHADER_PRIVATE_CONSUMER_DESIGN.md",
+    "bytes": 14267,
+    "sha256": "4f5085b84c2270c4ffbcad0be4cac7dbdda85da80412e36fc239f11ce52dc4a0",
+    "format": "UTF-8 LF no BOM"
+  }
+}
