@@ -1,0 +1,335 @@
+{
+  "kind": "independent immutable-Git Source peer; no compiled/runtime verdict",
+  "verdict": "zero actionable bounded Source findings",
+  "author_commit": "4951174ec2d584bfc99e3f3c6d19c6051b9a1f9c",
+  "published_author_parent": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+  "peer_owned_paths": [
+    "docs/CC16_NATIVE_GUI_ICON_STATE_UV_STORAGE_SOURCE_PEER_REVIEW.md",
+    "reports/cc16_native_gui_icon_state_uv_storage_source_peer_review.json"
+  ],
+  "author_full_pins": [
+    {
+      "path": "include/bsp/native_gui_icon_state_uv_storage.hpp",
+      "bytes": 1990,
+      "sha256": "9998519a4cfca15ee13032876c791146e9aa43db2494d2a8f43f707cca20cb19",
+      "Git_blob_sha1": "8d73dfd013c6e181b27075f1af5ef62e9b7ad950",
+      "format": "immutable GitLF; unchanged frozen candidate"
+    },
+    {
+      "path": "src/native_gui_icon_state_uv_storage.cpp",
+      "bytes": 1974,
+      "sha256": "c66b10ab06c1e35f178ce53e5456fbbd1bf57b35ff5617e5ea06663fca0a8bfc",
+      "Git_blob_sha1": "6c3bbd8e5661e66982c747b3fa8970c49615fa13",
+      "format": "immutable GitLF; unchanged frozen candidate"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_ICON_STATE_UV_STORAGE.md",
+      "bytes": 2898,
+      "sha256": "87fb447fefa1c9523924f26d6909df4d69fcc989a7e47cab14785be8a8f93bf2",
+      "Git_blob_sha1": "0a578d2d07e1c15998b77d50b0ce2ddad5e19e00",
+      "format": "immutable GitLF; unchanged frozen candidate"
+    },
+    {
+      "path": "reports/cc16_native_gui_icon_state_uv_storage.json",
+      "bytes": 16775,
+      "sha256": "088e81c38eb74a21f3e4a98be32b0dfd0c112d5655f7653fd9b0268ec11c6a03",
+      "Git_blob_sha1": "05fb44817da68173630be086cdf4352ec8ef1453",
+      "format": "immutable GitLF; unchanged frozen candidate"
+    }
+  ],
+  "provider_whole_pins": [
+    {
+      "path": "include/bsp/gui_icon.hpp",
+      "commit": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+      "bytes": 16834,
+      "sha256": "1e2dc70631e3ebea332c8253956c9fbba9571bd2cb9e783d381e5863018f8ca7",
+      "Git_blob": "84b64ce3d68023fd3555e0025db31c07eae9810a"
+    },
+    {
+      "path": "src/gui_icon.cpp",
+      "commit": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+      "bytes": 10301,
+      "sha256": "cef86334d35a1f4b972e3f9e4f9181f51a57089c41b2b17ef860bcaf5433e0af",
+      "Git_blob": "ffe5439e628f35659f94767ebbbc7477867ca7db"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_storage.hpp",
+      "commit": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+      "bytes": 8923,
+      "sha256": "36efeb861e01b14348e370d169c9002b8ac436a29b2f9f3be1d5aac8d7976bfc",
+      "Git_blob": "0a98345600a93dff4fc6c10ce3a0626d93fe9847"
+    },
+    {
+      "path": "src/native_gui_icon_storage.cpp",
+      "commit": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+      "bytes": 19689,
+      "sha256": "cc847b8f5fb19055a1116376b2d3a8eff181f045695fe73394ba04996728a492",
+      "Git_blob": "1d61197d246f8c9789c733fa70919817a1581f73"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_pools_cc13.hpp",
+      "commit": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+      "bytes": 12674,
+      "sha256": "fd2be32f59443f79787b5006a628b9d0f78597b4d4dff62d09dbc65831c1fed3",
+      "Git_blob": "759fba46de564d4d09549b0f3950bf2bbfc4f718"
+    },
+    {
+      "path": "src/native_gui_widget_pools_cc13.cpp",
+      "commit": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+      "bytes": 3180,
+      "sha256": "e9fa3a2f4e8d0f644d601aa974bab567f8cd36e5c9ea958ae06aacaca4b5e925",
+      "Git_blob": "18a2efa93a00c8e48d79003e8af0ed4fbc5f80b3"
+    }
+  ],
+  "doc": {
+    "path": "docs/CC16_NATIVE_GUI_ICON_STATE_UV_STORAGE_SOURCE_PEER_REVIEW.md",
+    "bytes": 2097,
+    "sha256": "026f0f35bda77b5112818cbd85916742ecc50ab54cd749f318e641fe6c8346a8"
+  },
+  "reader": {
+    "bytes": 1839,
+    "sha256": "865e9e9dcece0df5b4105c79caa6ca1b8d6dd0450caf3fe14e89e5414639ca5a",
+    "utf8": "import argparse,pathlib,json,hashlib,subprocess\nap=argparse.ArgumentParser();ap.add_argument('--git',required=True);a=ap.parse_args()\ndef g(*x):return subprocess.check_output(['git',*x])\ndef b(c,p):return g('show',c+':'+p)\ndef sh(x):return hashlib.sha256(x).hexdigest()\nrp='reports/cc16_native_gui_icon_state_uv_storage_source_peer_review.json'\nr=json.loads(b(a.git,rp));n=0\ndef ok(x,s):\n global n\n assert x,s\n n+=1\nok(g('rev-parse',a.git+'^').decode().strip()==r['author_commit'],'peer exact author parent')\nfor p in r['author_full_pins']:\n x=b(r['author_commit'],p['path']);ok(len(x)==p['bytes'] and sh(x)==p['sha256'],'author full pin '+p['path'])\nfor p in r['provider_whole_pins']:\n x=b(r['author_commit'],p['path']);ok(len(x)==p['bytes'] and sh(x)==p['sha256'],'provider '+p['path'])\nx=b(a.git,r['doc']['path']);ok(len(x)==r['doc']['bytes'] and sh(x)==r['doc']['sha256'],'peer document')\nok(pathlib.Path(__file__).read_bytes()==r['reader']['utf8'].encode(),'actual Git report-extracted peer reader')\ndef tree(c):\n out={}\n for z in g('ls-tree','-rz',c).split(b'\\0'):\n  if z:\n   v,p=z.split(b'\\t',1);out[p]=v\n return out\nold,new=tree(r['published_author_parent']),tree(r['author_commit'])\nowned={p['path'].encode() for p in r['author_full_pins']}\nok({p for p in old.keys()|new.keys() if old.get(p)!=new.get(p)}==owned,'author exact4 additions')\nfor p in owned:new.pop(p)\nok(new==old,'author whole-tree inverse')\nold,new=tree(r['author_commit']),tree(a.git)\nowned={p.encode() for p in r['peer_owned_paths']}\nok({p for p in old.keys()|new.keys() if old.get(p)!=new.get(p)}==owned,'peer exact2 additions')\nfor p in owned:new.pop(p)\nok(new==old,'peer whole-tree inverse')\nprint(json.dumps({'pass':True,'checks':n,'git':a.git,'author_four_path_inverse':True,'peer_two_path_inverse':True,'compiler_runtime_activation_claim':False},indent=2))\n",
+    "mode": "extract from actual peer Git report; --git PEER_COMMIT"
+  },
+  "fresh_checks": [
+    {
+      "check": "Prior own immutable87-check review exact",
+      "passed": true
+    },
+    {
+      "check": "Prior87+64 proof passed/no finding",
+      "passed": true
+    },
+    {
+      "check": "Prior sealed proof independent_review_receipt.json",
+      "passed": true
+    },
+    {
+      "check": "Prior sealed proof review_notes.md",
+      "passed": true
+    },
+    {
+      "check": "Prior sealed proof own_operand_map.json",
+      "passed": true
+    },
+    {
+      "check": "Prior sealed proof manifest.json",
+      "passed": true
+    },
+    {
+      "check": "Exact author published parent",
+      "passed": true
+    },
+    {
+      "check": "Exactly four new approved paths",
+      "passed": true
+    },
+    {
+      "check": "Actual Git equals already-reviewed frozen candidate include/bsp/native_gui_icon_state_uv_storage.hpp",
+      "passed": true
+    },
+    {
+      "check": "Explicit GitLF/zeroCR include/bsp/native_gui_icon_state_uv_storage.hpp",
+      "passed": true
+    },
+    {
+      "check": "Actual Git equals already-reviewed frozen candidate src/native_gui_icon_state_uv_storage.cpp",
+      "passed": true
+    },
+    {
+      "check": "Explicit GitLF/zeroCR src/native_gui_icon_state_uv_storage.cpp",
+      "passed": true
+    },
+    {
+      "check": "Actual Git equals already-reviewed frozen candidate docs/CC16_NATIVE_GUI_ICON_STATE_UV_STORAGE.md",
+      "passed": true
+    },
+    {
+      "check": "Explicit GitLF/zeroCR docs/CC16_NATIVE_GUI_ICON_STATE_UV_STORAGE.md",
+      "passed": true
+    },
+    {
+      "check": "Actual Git equals already-reviewed frozen candidate reports/cc16_native_gui_icon_state_uv_storage.json",
+      "passed": true
+    },
+    {
+      "check": "Explicit GitLF/zeroCR reports/cc16_native_gui_icon_state_uv_storage.json",
+      "passed": true
+    },
+    {
+      "check": "Unchanged actual author provider include/bsp/gui_icon.hpp",
+      "passed": true
+    },
+    {
+      "check": "Unchanged actual author provider src/gui_icon.cpp",
+      "passed": true
+    },
+    {
+      "check": "Unchanged actual author provider include/bsp/native_gui_icon_storage.hpp",
+      "passed": true
+    },
+    {
+      "check": "Unchanged actual author provider src/native_gui_icon_storage.cpp",
+      "passed": true
+    },
+    {
+      "check": "Unchanged actual author provider include/bsp/native_gui_widget_pools_cc13.hpp",
+      "passed": true
+    },
+    {
+      "check": "Unchanged actual author provider src/native_gui_widget_pools_cc13.cpp",
+      "passed": true
+    },
+    {
+      "check": "Reader extracted FROM actual Git report exact",
+      "passed": true
+    },
+    {
+      "check": "Own actual immutable-Git replay66 checks",
+      "passed": true
+    },
+    {
+      "check": "Own66 replay result byte-identical to sealed author",
+      "passed": true
+    },
+    {
+      "check": "Author manifest exact eight artifacts",
+      "passed": true
+    },
+    {
+      "check": "Actual author artifact actual_reader_stdout.txt",
+      "passed": true
+    },
+    {
+      "check": "Actual author artifact author_Git_receipt.json",
+      "passed": true
+    },
+    {
+      "check": "Actual author artifact commit_message.txt",
+      "passed": true
+    },
+    {
+      "check": "Actual author artifact materialization_receipt.json",
+      "passed": true
+    },
+    {
+      "check": "Actual author artifact materialize_exact.py",
+      "passed": true
+    },
+    {
+      "check": "Actual author artifact reader_FROM_ACTUAL_GIT_REPORT.py",
+      "passed": true
+    },
+    {
+      "check": "Actual author artifact reader_git_result.json",
+      "passed": true
+    },
+    {
+      "check": "Actual author artifact seal_Git_receipt.py",
+      "passed": true
+    },
+    {
+      "check": "Sealed author Git receipt exact",
+      "passed": true
+    },
+    {
+      "check": "Independent complete author-tree delta",
+      "passed": true
+    },
+    {
+      "check": "Independent complete recursive four-addition inverse",
+      "passed": true
+    },
+    {
+      "check": "Historical ignored-candidate labels preserved, not current Root build claims",
+      "passed": true
+    }
+  ],
+  "fresh_check_count": 38,
+  "prior_review": {
+    "checks": 87,
+    "isolated_reader_checks": 64,
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-identity-prepared-cold\\local\\output\\cc16_native_gui_icon_state_uv_independent_review_20261031\\independent_review_receipt.json",
+      "bytes": 12279,
+      "sha256": "93ee678a8f9cf4835e529a463445d2de085d60b127bf23e4884b19df2b65c005"
+    },
+    "seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-identity-prepared-cold\\local\\output\\cc16_native_gui_icon_state_uv_independent_review_20261031\\seal.json",
+      "bytes": 1370,
+      "sha256": "9f97df144ea842f2f1323862c7c1b2481ec904143cf2bdae8aa534dad50312df"
+    },
+    "manual_coverage": [
+      "Full H/CPP/doc/report contracts and inspected reader",
+      "All39 Native rows against own installedPE decode, and all38 ordered Source operands/labels",
+      "Entryhome0/1 captures, State20+one capture before first store, store0C->home2->store10->home3->store14->compare->store18 order",
+      "Current28/1C/24 reads and both swaps retain UCOMISS/LAHF/TEST44/JP ordered-equality, signed-zero/NaN behavior and four actual x87 conversions",
+      "Raw NativeGuiIconStateStorage has real uint32_t UV arrays, not semantic stdstringGuiIconState; incoming homes require a genuine four-DWORD array object and valid C++ aliases"
+    ],
+    "immutable_byte_identity_reuse": true
+  },
+  "actual_author_reader": {
+    "bytes": 5173,
+    "sha256": "4b0f874586263c80d83b3e2a43758cb4709afd31273c192127be664ec06a9842",
+    "result": {
+      "pass": true,
+      "checks": 66,
+      "mode": "immutable_Git",
+      "ref": "4951174ec2d584bfc99e3f3c6d19c6051b9a1f9c",
+      "whole_Native_rows": 39,
+      "Source_native_rows": 38,
+      "Source_address_bindings": 3,
+      "Native_RET10_is_ordinary_Source_ABI_return_not_literal_binary_equivalence": true,
+      "native_operand_sequence_exact": true,
+      "x87_forms": 4,
+      "four_baseline_absences": true,
+      "four_path_recursive_tree_inverse": true,
+      "compiler_Native_runtime_OriginalABI_activation_proof": false
+    },
+    "result_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-state-uv-storage-source-peer\\local\\output\\cc16_native_gui_icon_state_uv_storage_source_peer_20261031\\reader_git_result.json",
+      "bytes": 13209,
+      "sha256": "3a49f423ccf2108c7051d125cdf52e6938d6df46879f47dbb9411d01e8573231"
+    }
+  },
+  "author_artifacts": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-state-uv-storage-source\\local\\output\\cc16_native_gui_icon_state_uv_source_20261031\\artifact_manifest.json",
+      "bytes": 2519,
+      "sha256": "657394134cee87de3ebe2e79acabc272e16b53c4cc9284d6308ef92935507343"
+    },
+    "all_eight_checked": true,
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-state-uv-storage-source\\local\\output\\cc16_native_gui_icon_state_uv_source_20261031\\author_Git_receipt.json",
+      "bytes": 3454,
+      "sha256": "9a1aee9fbb47d4929f236611c6cab6452c6a13702a3e238d086526af9f2d0f58"
+    }
+  },
+  "Native": {
+    "bytes": 130,
+    "instructions": 39,
+    "last_RET_start": "00ab16ff",
+    "end_inclusive": "00ab1701",
+    "data_FP_statements": 38,
+    "Source_address_binds": 3,
+    "x87_forms": 4,
+    "actual_installedPE_equal_frozen": true,
+    "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "one_preimage": "0000803f"
+  },
+  "Native_no_new_queries": "reused own frozen installed-PE decode and operand map through four exact candidate postimages",
+  "historical_labels": "author doc/report still say ignored proposal/no tracked author grant; immutable Source commit now exists, Root build/Core not certified here",
+  "qualifications": [
+    "Ordinary new Source three-argument/void ABI, not NativeECX/fourstackhomes/RET10 or incidental register/FLAGS result proof",
+    "Source private parameters/control/spill backing is disjoint from borrowed objects; original private-stack alias/hardwarefault/unmaskedFP/SEH/FH3/NoThrow equivalence not established",
+    "Raw40B backing/subobject birth, valid volatile array views, retained SAME real readonly one-cell and all lifetimes remain actualcaller obligations",
+    "No current parameter/frame/counter/default bank/owner/Acquired/provenance issuer invented; no explicit runtime input filter",
+    "FutureAB66C0 must stage real homes at reached PUSH-copy epochs; rawA4/copy/texture/pool/custody/current caller/production activation are not closed by this leaf",
+    "Existing semantic body/helper/vendor/original credit is not duplicated. No emitted compiler evidence, tests or runtime execution"
+  ],
+  "findings": [],
+  "new_Original_vendor_helper_CG_duplicate_credit": 0,
+  "worker_compiler_tests_probes_Game_provider_Ghidra_ledger_CMake_actions": false,
+  "actual_Core_OriginalABI_NoThrow_Origin_runtime_activation_claimed": false
+}
