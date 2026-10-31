@@ -1,0 +1,108 @@
+{
+  "schema": "bsp-native-lua-key-integer-v1",
+  "source_base": "d51e4be7c4b990b253b399d8b7c8cb278acbfecb",
+  "design_sha256": "1f5e1b59a0601913e8cba2c65ed6bfb6f1fa8ee8adc5fa5d5e9e71c61eb1b919",
+  "independent_design_review_sha256": "d70225daf7946d3f0fbf10a28b5e23c659f2ba0bd220892547cb143cecc3cc64",
+  "source_sha256": {
+    "include/bsp/native_lua_key_integer.hpp": "6883fb0d04a7fc355d2774088d9ccbcc685eda009eef76a767d090a85ac511f1",
+    "src/native_lua_key_integer.cpp": "a5c7ff94443e7b30f5fcb0ce42a4e99308a59b41702692153c46cba8a1ab2bf4"
+  },
+  "actual_source_lines": {
+    "header": 30,
+    "cpp": 72
+  },
+  "whole_leaf": {
+    "address": "007814e0",
+    "instructions": 27,
+    "bytes": 84,
+    "original_abi": "ECX key16, stacked DWORD input, RET4; no uniform incidental result is supplied",
+    "ordinary_Source_void_API_only": true,
+    "length_zero_arm": "initialLEN0: no DATA-field read/services/clear; lateHOME -> number+0C -> kind0",
+    "length_nonzero_arm": "CURRENTDATA; nonnull capturedinitialLEN+1 and block before realgetter/return; NULL skipsservices; lateHOME -> DATA0 -> LEN0 -> capturedword+0C -> kind0"
+  },
+  "actual_provider_tuple": {
+    "getter": "native_string_pool_get_or_create_00419cc0(actual AA8 reference, actual raw AA0 reference)",
+    "return": "return_native_string_pool_00bd1510(actualpool,capturedblock,capturedsize,actual AA4 reference)",
+    "semantic_context_or_006EE020_substitution": false
+  },
+  "validation": {
+    "actual_Code_reviews": "Root and independent Gameplay full30HPP/72CPP/design/all27Original ops accepted before explicit exactly ONE-object gate",
+    "strict_object": {
+      "sha256": "b9a9421100cbe1ac5e264da5e49f7c70b7efe83b42197db320435ed7107df320",
+      "bytes": 2493,
+      "coff_machine": "014C",
+      "compile_count": 1,
+      "exit_code": 0,
+      "flags": [
+        "/nologo",
+        "/std:c++17",
+        "/permissive-",
+        "/W4",
+        "/WX",
+        "/EHsc",
+        "/MD",
+        "/O2",
+        "/Ob2",
+        "/fp:strict",
+        "/DNDEBUG",
+        "/DWIN32",
+        "/D_WINDOWS",
+        "/c"
+      ]
+    },
+    "same_object_inspection": {
+      "object_sha256": "b9a9421100cbe1ac5e264da5e49f7c70b7efe83b42197db320435ed7107df320",
+      "bytes": 2493,
+      "coff_machine": "014C",
+      "defined_public_entry": "?set_native_lua_key_integer_007814e0@bsp@@YAXPAXPBXAAUNativeStringRawPoolContext@1@@Z",
+      "only_genuine_provider_UNDEFs": [
+        "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+        "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z"
+      ],
+      "defined_compiler_support_data": [
+        "__Avx2WmemEnabledWeakValue"
+      ],
+      "independent_COFF_section_symbol_relocation_parsing": true,
+      "entry_bytes": "53578b7c240c8b5f0485db75088b4424108b00eb3e558b6f0885ed7421568b74241cff7608ff36e800000000ff76048d4b01515550e80000000083c4185e8b4424148b00c7470800000000c74704000000005d89470cc707000000005f5bc3",
+      "relocations": {
+        "40": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z",
+        "54": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z"
+      },
+      "initial_gate": "LEN+4 -> EBX+06, TEST+09/JNE+0B",
+      "LEN_zero_arm": "late HOME+11 -> JMP+13 to input+0C store+53 then kind0+56; no DATA-field access, field clear or services",
+      "LEN_nonzero_arm": "DATA+8 -> EBP+16, NULL branch+1B skips services; actual RawCtx AA0-address+22/AA8-address+25 -> getter+27; AA4-address+2C -> return+35; no AA4 gate value read",
+      "arithmetic_normalization": "captured initial LEN remains in real cdecl callee-saved EBX from+06; pure uint32 LEA(initialLEN+1) is emitted+2F AFTER getter+27, never a header reread. Captured DATA EBP survives. Root explicitly accepted this Source arithmetic scheduling; no Native flags/private-home/stack/fault/ABI identity claimed.",
+      "post_services": "late HOME+42 -> DATA0+44 -> LEN0+4B -> input+53 -> kind0+56; normal combined cdecl cleanup ADD18h+3A and balanced callee-saved restores",
+      "getter_escape": "no wrapper HOME/stores have occurred; provider side effects/custody and lower noexcept limits remain",
+      "full_disassembly_sha256": "9a12911164f472c4c63a7d57ec174bffbea03571cd3ddc23378cc6605c18456d",
+      "symbols_sha256": "fefa441ce5eaf16a196679b4efb1a6b53ad7a1c1493531c72883de977d0b9dc8",
+      "relocations_dump_sha256": "61a13e4bfe39ae3d872e4b6528cf8cbf15efeb85d3e67a29cfcf6ed7c05bc02d",
+      "Source_repair_or_second_compile": false,
+      "entry_or_runtime_invoked": false
+    },
+    "Root_emitted_acceptance": "ACCEPT_SAME_OBJECT_QUALIFIED; deferred pure LEA of captured original LEN accepted, no repair/recompile",
+    "compile_receipt": "local/native_lua_key_integer_gui_20261031/compile_receipt.json"
+  },
+  "preservation_baseline": "local/native_lua_key_integer_gui_20261031/provider_baseline.json",
+  "limits": [
+    "actual initialized/reached key16 and HOME backing/representations, same raw cells/pool/manager/allocator/code and synchronization required",
+    "role-sensitive ordinary aliases follow initial length/captured pointer and late HOME epochs",
+    "getter escape stops before wrapper HOME/stores; lower noexcept/CRT/gate limits and partial effects retained",
+    "no birth/owner/Frame/guard/catch/cleanup/refund/retry or whole-builder/VM/privateABI/runtime grant"
+  ],
+  "source_ready": false,
+  "native_abi_equivalent": false,
+  "runtime_validated": false,
+  "new_native_body_credit": false,
+  "new_vendor_body_credit": false,
+  "tests_probe_link_executable_or_entry": false,
+  "preservation": {
+    "baseline_repository_files": 11,
+    "additional_cmake_lua": true,
+    "actual_Lua_files": 3,
+    "all_unchanged": true,
+    "old_tracked_paths_preserved": true,
+    "baseline_sha256": "49df1a402dc02c39d09757f2e51d96676c8a31eb2e3fabdfaf10d6fa767a1eba",
+    "after_compile_preservation_sha256": "d51dbf0dfc1f4119432ea6eb415fb525238b4893e39b7c5d7c6e5a29e6c75308"
+  }
+}

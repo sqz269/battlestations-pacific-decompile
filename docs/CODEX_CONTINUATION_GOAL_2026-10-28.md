@@ -1623,3 +1623,8 @@ affects builderstring-functiontemporaries andkeystring781430. Keycopy
 884EF0 full57ops165B61b7 separatelyneedsselectedD+4headerreturn/secondary
 cleanupcustody contract. Bothareactualtransitivegates, notmissingCRTbody
 or permissiontoalterexistingmodels. Metadata-onlyupdate/no newbuildclaim.
+
+
+Integer/key-integer batch: exactffa78254/f8da4297, eightfiles/48artifacts, independentf9874218/a12ab23f, ONE014Ceach. Coree81933d83 afterMain88ebSource45 join passed allWin32/existing2/2 retained19.15s (2onlyforced/4realproviders) and canonical21.08s (0forces/newrowsabsent/Coreobjsunchanged). FullCore controlflow/providers read; lowEAX/privateindex-tail and purecapturedLEN LEA qualifications explicit.43repo+6Lua/twoCoreinverse/nineTextOFF; oldhistory kept+2qualifiedrecords/locked032743Zsaved2exports. Goal ACTIVE; no newentry/test/ABI/runtime/Native-vendorcredit. Separateexact41E870 Source-only31/81 draft has Root+independentfullCodeacceptance, separateONEobjectauthorized/emittedpending; DD20 exactheader-return design only, keycopy secondarycleanup/custody stillpending.
+
+Source46Main2a4390cc joined98adf4588; fullHCPP/admission read, combinedcanonical allWin32/existing2/2 20.24s with0forces/newrowsabsent, twoLuaCoreobjects/43repo+6Lua unchanged. Separate12ops29B exactDD20 design0408dcd2 hasRootindependentacceptance andfourfileSource-onlyauthorization; actualCode/anycompiler/selectedsecondarypolicy gates remain separate.
