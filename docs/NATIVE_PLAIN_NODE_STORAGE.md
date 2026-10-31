@@ -1,8 +1,8 @@
 # Raw Plain node factory/scalar storage proposal
 
 Source applied after full primary and independent proposal review. The exact
-HCPP is registered in bsp_core; compiler/Core and retained-link proof remain
-pending. No Native/provider/Game entry has run, and no additional Native/vendor
+HCPP is registered in bsp_core and passes actual Core/retained-link review.
+No Native/provider/Game entry has run, and no additional Native/vendor
 body, Original ABI or runtime credit is supplied.
 
 Context borrows the genuine initialized0108FF58 pool and SAME actual raw Node
@@ -56,9 +56,12 @@ actual completed effects/returns are recorded before final Source health checks.
 
 Root and independent peer reviewed all four files and the full forward/inverse
 patch (80681962/ae1e1b33); all17 actual provider/CMakeLists pins were exact.
-Future exact standard Core proof must show no Node/NativeString completion
-payload reads/stores/helper cleanup, actual late DWORD/BYTE HOME epochs and
-captured-slot/late-flags/type-end/pool order. Traits are uncompiled obligations.
+Actual standard Core proof now covers no Node/NativeString completion payload
+reads/stores/helper cleanup, late DWORD/BYTE HOME epochs and captured-slot/late-
+flags/type-end/pool order. The compiled31B type-end valid path only updates
+private frame facts, with no payload access or helper call. Primary and peer
+reviews accept the complete emitted factory/scalar/return/selected/guard graph;
+all52 indexed function ranges, bytes and relocations bind to the actual object.
 
 Raw base pointer-representation Q0 and canonical throwing E0 (including Mesh/
 resource/ambient and Mission palette handoff) remain separate qualifications and
@@ -69,3 +72,16 @@ old Plain APIs and all earlier seals are unchanged.
 
 Independent proposal review1acdb890; Source application and build evidence are
 retained in local/plain_raw_primary_cc16_20261031. Startup flags stay unchanged.
+
+Standard MSVC Win32 Release builds pass both existing suites: canonical11.02s,
+five-public-root retained12.21s, restored canonical12.24s. MP2/PCH ON/coveragePDB
+OFF. The27953B Plain COFF014C object SHA6fb2c707 is byte-exact across all three
+builds; both Matrix/Model provider objects remain exact too. All five requested
+public symbols link; restored canonical has zero forces and all five absent.
+The seven Matrix retained symbols are absent too. No provider entry was invoked.
+
+Independent actual-Core reviewa435ed45/pins15c7845a retains the exact Source
+secondary propagation/private-metadata-store qualifications. Canonical source
+registration occurs once, and no local overlay remains. Joined Main publication
+and final combined build remain integration work; canonical18/54/zero, family/
+Mission selection and Original ABI/runtime are not established by these builds.
