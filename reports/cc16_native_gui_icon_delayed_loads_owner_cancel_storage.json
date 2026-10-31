@@ -1,0 +1,1550 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-gui-icon-delayed-loads-owner-cancel-storage",
+  "created_utc": "2026-10-31T08:39:57.498384+00:00",
+  "base_commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+  "files": [
+    "include/bsp/native_gui_icon_delayed_loads_owner_cancel_storage.hpp",
+    "src/native_gui_icon_delayed_loads_owner_cancel_storage.cpp",
+    "docs/CC16_NATIVE_GUI_ICON_DELAYED_LOADS_OWNER_CANCEL_STORAGE.md",
+    "reports/cc16_native_gui_icon_delayed_loads_owner_cancel_storage.json"
+  ],
+  "source_status": "whole_normal_raw_cancel_unbuilt_pending_review",
+  "compiled": false,
+  "runtime_validated": false,
+  "bound_to_existing_service": false,
+  "typed_array_or_queue_admitted": false,
+  "full_icon_ready": false,
+  "source56_dependency": false,
+  "base_absence": [
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads_owner_cancel_storage.hpp",
+      "base_commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "git_ls_tree_stdout_hex": "",
+      "absent": true
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads_owner_cancel_storage.cpp",
+      "base_commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "git_ls_tree_stdout_hex": "",
+      "absent": true
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_ICON_DELAYED_LOADS_OWNER_CANCEL_STORAGE.md",
+      "base_commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "git_ls_tree_stdout_hex": "",
+      "absent": true
+    },
+    {
+      "path": "reports/cc16_native_gui_icon_delayed_loads_owner_cancel_storage.json",
+      "base_commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "git_ls_tree_stdout_hex": "",
+      "absent": true
+    }
+  ],
+  "new_source_pins": [
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads_owner_cancel_storage.hpp",
+      "bytes": 2750,
+      "sha256": "189517667dcd8c2b944a32dd9fd1c043ffefc53d02155220207e513243eef5ba",
+      "expected_git_blob": "aba32efdb9910c7a6c3f94212821f73f53079ef1",
+      "lines": 50,
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\new_source\\include\\bsp\\native_gui_icon_delayed_loads_owner_cancel_storage.hpp"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads_owner_cancel_storage.cpp",
+      "bytes": 4666,
+      "sha256": "83caea45c5ebeebbd4cd5c936ea520771e3f3e06f1f1d77851a2f432605832c4",
+      "expected_git_blob": "0870bb3cac4efbf8ce0bb2427d9129d29ee44991",
+      "lines": 90,
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\new_source\\src\\native_gui_icon_delayed_loads_owner_cancel_storage.cpp"
+    }
+  ],
+  "whole_provider_pins": [
+    {
+      "path": "include/bsp/native_string_raw_resize_exact.hpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "git_blob": "2e9e0ae6cb560eba1e7187911f6fea04791b529b",
+      "git_bytes": 1554,
+      "git_sha256": "a1a3c6be74194e2f5946e13e09bfb26562c3f73d3565b51f96403f0d60b9999c",
+      "workspace_bytes": 1554,
+      "workspace_sha256": "a1a3c6be74194e2f5946e13e09bfb26562c3f73d3565b51f96403f0d60b9999c",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\base\\include\\bsp\\native_string_raw_resize_exact.hpp",
+      "read_claim": "whole-file integrity pin; inspected regions separately labelled"
+    },
+    {
+      "path": "src/native_string_raw_resize_exact.cpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "git_blob": "e05e1c9a86a44a2bba1efe9f46f3151062fab3b6",
+      "git_bytes": 3979,
+      "git_sha256": "74bff613a83abda342b5506ff750f46f5c44e191de506480ced504208c81f210",
+      "workspace_bytes": 3979,
+      "workspace_sha256": "74bff613a83abda342b5506ff750f46f5c44e191de506480ced504208c81f210",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\base\\src\\native_string_raw_resize_exact.cpp",
+      "read_claim": "whole-file integrity pin; inspected regions separately labelled"
+    },
+    {
+      "path": "include/bsp/native_crt_memcpy.hpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "git_blob": "a62e6ddb9d92e02afd301ed92239b258d53b5f10",
+      "git_bytes": 1954,
+      "git_sha256": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123",
+      "workspace_bytes": 1954,
+      "workspace_sha256": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\base\\include\\bsp\\native_crt_memcpy.hpp",
+      "read_claim": "whole-file integrity pin; inspected regions separately labelled"
+    },
+    {
+      "path": "src/native_crt_memcpy.cpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "git_blob": "248194cbff651aba4341401f519050447f13b6a0",
+      "git_bytes": 17187,
+      "git_sha256": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3",
+      "workspace_bytes": 17187,
+      "workspace_sha256": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\base\\src\\native_crt_memcpy.cpp",
+      "read_claim": "whole-file integrity pin; inspected regions separately labelled"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+      "git_bytes": 8771,
+      "git_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "workspace_bytes": 8771,
+      "workspace_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\base\\include\\bsp\\native_string.hpp",
+      "read_claim": "whole-file integrity pin; inspected regions separately labelled"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+      "git_bytes": 9121,
+      "git_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "workspace_bytes": 9121,
+      "workspace_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\base\\src\\native_string.cpp",
+      "read_claim": "whole-file integrity pin; inspected regions separately labelled"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "git_blob": "60b3f627150fa058fac7b8c4c74537cb3aee0a68",
+      "git_bytes": 3113,
+      "git_sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+      "workspace_bytes": 3113,
+      "workspace_sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\base\\include\\bsp\\native_string_pool_storage.hpp",
+      "read_claim": "whole-file integrity pin; inspected regions separately labelled"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "git_blob": "103d6fe4d772bb3078c48fe8bcf3f929a385fdda",
+      "git_bytes": 5450,
+      "git_sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+      "workspace_bytes": 5450,
+      "workspace_sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\base\\src\\native_string_pool_storage.cpp",
+      "read_claim": "whole-file integrity pin; inspected regions separately labelled"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "git_blob": "fb8293fbf779f87c01708ffe3c1055e28c46c733",
+      "git_bytes": 4505,
+      "git_sha256": "a6fa7dcce062f26c77664364aa3a5e4525ab3ae2fc320016f07524a55e746f6d",
+      "workspace_bytes": 4505,
+      "workspace_sha256": "a6fa7dcce062f26c77664364aa3a5e4525ab3ae2fc320016f07524a55e746f6d",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\base\\include\\bsp\\native_gui_icon_delayed_loads.hpp",
+      "read_claim": "whole-file integrity pin; inspected regions separately labelled"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "git_blob": "bcedf161bdb50667d954ca7f0e113d6842682dbb",
+      "git_bytes": 10345,
+      "git_sha256": "3773ac03dd39bc78f642ebea942d0e074051814c2a55395b7bc246c703f50997",
+      "workspace_bytes": 10345,
+      "workspace_sha256": "3773ac03dd39bc78f642ebea942d0e074051814c2a55395b7bc246c703f50997",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\base\\src\\native_gui_icon_delayed_loads.cpp",
+      "read_claim": "whole-file integrity pin; inspected regions separately labelled"
+    },
+    {
+      "path": "include/bsp/game_native_gui_icon_process.hpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "git_blob": "edad517eacdc50d3effee7655d58e26545a8bb45",
+      "git_bytes": 3257,
+      "git_sha256": "be7972224e23dd7f4871ae5359c585227c5c31f4028b99d9c3e2e4d4e8b77ae1",
+      "workspace_bytes": 3257,
+      "workspace_sha256": "be7972224e23dd7f4871ae5359c585227c5c31f4028b99d9c3e2e4d4e8b77ae1",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\base\\include\\bsp\\game_native_gui_icon_process.hpp",
+      "read_claim": "whole-file integrity pin; inspected regions separately labelled"
+    },
+    {
+      "path": "src/game_native_gui_icon_process.cpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "git_blob": "de4e8cb628c4dd2f16dfdcbd2fb9c7fc2ab3eb35",
+      "git_bytes": 3064,
+      "git_sha256": "cc1d80e034d36fa28899a91473a863807b3c1be29f8c0825d87d35266665316e",
+      "workspace_bytes": 3064,
+      "workspace_sha256": "cc1d80e034d36fa28899a91473a863807b3c1be29f8c0825d87d35266665316e",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\base\\src\\game_native_gui_icon_process.cpp",
+      "read_claim": "whole-file integrity pin; inspected regions separately labelled"
+    },
+    {
+      "path": "include/bsp/gui_render.hpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "git_blob": "bbc498c6f5d94cc2f62209b4ab4510ee9c1ed71f",
+      "git_bytes": 12980,
+      "git_sha256": "1a5d5ce5642bd091a1c6f918406df034e1934b697867ee348578d515062e4608",
+      "workspace_bytes": 12980,
+      "workspace_sha256": "1a5d5ce5642bd091a1c6f918406df034e1934b697867ee348578d515062e4608",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\base\\include\\bsp\\gui_render.hpp",
+      "read_claim": "whole-file integrity pin; inspected regions separately labelled"
+    },
+    {
+      "path": "src/gui_render.cpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "git_blob": "8f71f23c73c8f451e2a5578d81847b753057ebfa",
+      "git_bytes": 15219,
+      "git_sha256": "7fe53fbb71a329bff6bb1b425a66e200ba230a24a3215b6ccc54e6931e687cfd",
+      "workspace_bytes": 15219,
+      "workspace_sha256": "7fe53fbb71a329bff6bb1b425a66e200ba230a24a3215b6ccc54e6931e687cfd",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\base\\src\\gui_render.cpp",
+      "read_claim": "whole-file integrity pin; inspected regions separately labelled"
+    },
+    {
+      "path": "include/bsp/game_native_gui_icon_application.hpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "git_blob": "2359922f79654081681117cd4a9527dab191c8c6",
+      "git_bytes": 3879,
+      "git_sha256": "1986292b1374fd31b0b3d0b84d6f86df46a327b1555a6dcad15fbe85c1375fdd",
+      "workspace_bytes": 3879,
+      "workspace_sha256": "1986292b1374fd31b0b3d0b84d6f86df46a327b1555a6dcad15fbe85c1375fdd",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\base\\include\\bsp\\game_native_gui_icon_application.hpp",
+      "read_claim": "whole-file integrity pin; inspected regions separately labelled"
+    },
+    {
+      "path": "src/game_native_gui_icon_application.cpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "git_blob": "65a9378a2d68d1eb25a43ed72179607d0267ec0e",
+      "git_bytes": 28057,
+      "git_sha256": "62f96bcdbeb553005f1fe26039be64c43198417a9f4931e9fc3813e180e69565",
+      "workspace_bytes": 28057,
+      "workspace_sha256": "62f96bcdbeb553005f1fe26039be64c43198417a9f4931e9fc3813e180e69565",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\base\\src\\game_native_gui_icon_application.cpp",
+      "read_claim": "whole-file integrity pin; inspected regions separately labelled"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "git_bytes": 4372,
+      "git_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "workspace_bytes": 4372,
+      "workspace_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\base\\include\\bsp\\singleton_lifetime.hpp",
+      "read_claim": "whole-file integrity pin; inspected regions separately labelled"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "git_bytes": 13257,
+      "git_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "workspace_bytes": 13257,
+      "workspace_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\base\\src\\singleton_lifetime.cpp",
+      "read_claim": "whole-file integrity pin; inspected regions separately labelled"
+    },
+    {
+      "path": "config/target.json",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "git_bytes": 455,
+      "git_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "workspace_bytes": 455,
+      "workspace_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\base\\config\\target.json",
+      "read_claim": "whole-file integrity pin; inspected regions separately labelled"
+    },
+    {
+      "path": "tools/bsp.py",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "git_blob": "2e1fb76a9fd700f079912706d9459c4293f96c86",
+      "git_bytes": 103131,
+      "git_sha256": "0532d1e3fa711fb62d198e6747a4e0eb8978ef7e301de75710afd40d6c1a1339",
+      "workspace_bytes": 103131,
+      "workspace_sha256": "0532d1e3fa711fb62d198e6747a4e0eb8978ef7e301de75710afd40d6c1a1339",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\base\\tools\\bsp.py",
+      "read_claim": "whole-file integrity pin; inspected regions separately labelled"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "git_blob": "bd937766a7e4d62c015b2ab44a14a9153fbb4542",
+      "git_bytes": 14518,
+      "git_sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+      "workspace_bytes": 14518,
+      "workspace_sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\base\\tools\\ghidra_export.py",
+      "read_claim": "whole-file integrity pin; inspected regions separately labelled"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "git_blob": "0ee46cdd5f70ed5b85827110cb45e1c48fdb63db",
+      "git_bytes": 30339,
+      "git_sha256": "620accca24c41c97a16c5842a6058196bbf8bb4dc1be4f5f8a62df6d7b6ce3fc",
+      "workspace_bytes": 30339,
+      "workspace_sha256": "620accca24c41c97a16c5842a6058196bbf8bb4dc1be4f5f8a62df6d7b6ce3fc",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\base\\CMakeLists.txt",
+      "read_claim": "whole-file integrity pin; inspected regions separately labelled"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "git_blob": "83b3f6719245065ad381e943500860cf1173a1c4",
+      "git_bytes": 297322,
+      "git_sha256": "4dcaf87d798c1acf625a42ef71f1d7b5d6f8b2687cb790a1a29aed51352855ca",
+      "workspace_bytes": 297322,
+      "workspace_sha256": "4dcaf87d798c1acf625a42ef71f1d7b5d6f8b2687cb790a1a29aed51352855ca",
+      "frozen_git_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\base\\cmake\\startup.cmake",
+      "read_claim": "whole-file integrity pin; inspected regions separately labelled"
+    }
+  ],
+  "provider_regions": [
+    {
+      "id": "P01_exact_resize_contract",
+      "path": "include/bsp/native_string_raw_resize_exact.hpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 12,
+      "last_line": 32,
+      "bytes": 1361,
+      "sha256": "2bdb093ce530a742fac8801ed068bcc5b78a98716ce9300bd5429d3c657b9b55",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P01_exact_resize_contract.txt"
+    },
+    {
+      "id": "P02_exact_resize_normal_body",
+      "path": "src/native_string_raw_resize_exact.cpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 47,
+      "last_line": 98,
+      "bytes": 2503,
+      "sha256": "4d09aa3445ee38681cd993b19e818737d4d3ed24c9594cf94a7fc32c9aca9300",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P02_exact_resize_normal_body.txt"
+    },
+    {
+      "id": "P03_genuine_bf_contract",
+      "path": "include/bsp/native_crt_memcpy.hpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 10,
+      "last_line": 33,
+      "bytes": 1787,
+      "sha256": "3b35e10fd9244c00a3fe8c85da97d0f4de806b5257d7b7077ab2a601a017bc1f",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P03_genuine_bf_contract.txt"
+    },
+    {
+      "id": "P04_genuine_bf_entry",
+      "path": "src/native_crt_memcpy.cpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 12,
+      "last_line": 32,
+      "bytes": 728,
+      "sha256": "718bbd74f9d6430f2d6794c82feea7be04cbc68ca56c8c5dc9c3ab3d31f40df3",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P04_genuine_bf_entry.txt"
+    },
+    {
+      "id": "P05_actual_raw_pool_cells",
+      "path": "include/bsp/native_string.hpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 28,
+      "last_line": 38,
+      "bytes": 494,
+      "sha256": "ae221875d0df54779836020cb7d83219e742c0a35bd07a5d6b8f2933c164b200",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P05_actual_raw_pool_cells.txt"
+    },
+    {
+      "id": "P06_raw_header_return_contract",
+      "path": "include/bsp/native_string.hpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 61,
+      "last_line": 67,
+      "bytes": 420,
+      "sha256": "56bf6b15d2df65a5ae9f0c8994de68908cbe49e5102ced35b964fcf9c019a7cc",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P06_raw_header_return_contract.txt"
+    },
+    {
+      "id": "P07_raw_header_return_body",
+      "path": "src/native_string.cpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 129,
+      "last_line": 139,
+      "bytes": 441,
+      "sha256": "8fb57b1c35886294980cd9857eb2b9d4ec90795c56da332ce587eb04c3799430",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P07_raw_header_return_body.txt"
+    },
+    {
+      "id": "P08_current_raw_pool_transport",
+      "path": "src/native_string.cpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 22,
+      "last_line": 45,
+      "bytes": 877,
+      "sha256": "7147b90eb479362a45350f21cd4f9058a8e80ba4cfb47ae4b49eccf91f836044",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P08_current_raw_pool_transport.txt"
+    },
+    {
+      "id": "P09_existing_raw_individual_entry_type",
+      "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 8,
+      "last_line": 28,
+      "bytes": 928,
+      "sha256": "7f456dfdce1aaaf0507094ffb17b4c12b1784f10cfe1a40f7e7bed1f06261998",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P09_existing_raw_individual_entry_type.txt"
+    },
+    {
+      "id": "P10_existing_service_qualification",
+      "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 45,
+      "last_line": 64,
+      "bytes": 1344,
+      "sha256": "b89722719898d16a80bc76405ab4f0645c53da548279f66797a89fe5e7526701",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P10_existing_service_qualification.txt"
+    },
+    {
+      "id": "P11_old_cancel_body",
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 121,
+      "last_line": 154,
+      "bytes": 1822,
+      "sha256": "9d83dcc09d9f7a0f1a075b7574dd28f778df27074a804264133f76338ee55e3a",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P11_old_cancel_body.txt"
+    },
+    {
+      "id": "P12_old_scalar_separate",
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 155,
+      "last_line": 190,
+      "bytes": 1674,
+      "sha256": "e7faf865c1da3cba516bd111e3126a75b3b2e6fceba7d876b7e60312adfe824d",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P12_old_scalar_separate.txt"
+    },
+    {
+      "id": "P13_existing_process_borrow",
+      "path": "src/game_native_gui_icon_process.cpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 18,
+      "last_line": 42,
+      "bytes": 1186,
+      "sha256": "5975b5b5c9491a5f1f36f0931edab54c82d63a493e1b1801bbaed69490ff154f",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P13_existing_process_borrow.txt"
+    },
+    {
+      "id": "P14_old_semantic_cancel",
+      "path": "src/gui_render.cpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 389,
+      "last_line": 399,
+      "bytes": 246,
+      "sha256": "c6b61ec60e16ea5f8069711ce3d1a8321cfbadeca302f2ebb5ce3fe630ae08f6",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P14_old_semantic_cancel.txt"
+    },
+    {
+      "id": "P15_pool_bridge_noexcept_limit",
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 32,
+      "last_line": 51,
+      "bytes": 1235,
+      "sha256": "4861337d9bd79d0b088d8d1151c1169b1ee3d388e5c5b30c628c54147ab6a9eb",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P15_pool_bridge_noexcept_limit.txt"
+    },
+    {
+      "id": "P16_real_allocator_domain",
+      "path": "src/singleton_lifetime.cpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 51,
+      "last_line": 68,
+      "bytes": 618,
+      "sha256": "806555e816a572df751f4255e85cbc55674c744f227d009b04613455bc7308a4",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P16_real_allocator_domain.txt"
+    },
+    {
+      "id": "P17_client_target_verify",
+      "path": "tools/bsp.py",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 967,
+      "last_line": 984,
+      "bytes": 794,
+      "sha256": "cc2fc687b74fccee49725ac1306d4f9b2a2f081376cd91270830d32b43e682e1",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P17_client_target_verify.txt"
+    },
+    {
+      "id": "P18_actual_project_program_verify",
+      "path": "tools/ghidra_export.py",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 101,
+      "last_line": 110,
+      "bytes": 574,
+      "sha256": "4ce9f7a4d8d4c4d42c54e5f1e797ca401927f93f5ad6604d171081871f8eb011",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P18_actual_project_program_verify.txt"
+    }
+  ],
+  "source_order": [
+    {
+      "id": "captured_owner",
+      "needle": "void* const owner = actual_delayed_owner16;",
+      "offset": 1245,
+      "line": 41
+    },
+    {
+      "id": "index_register0",
+      "needle": "Word index = 0u;",
+      "offset": 1325,
+      "line": 42
+    },
+    {
+      "id": "initial_current_count",
+      "needle": "const Word initial_count = read_word(owner, 8u);",
+      "offset": 1401,
+      "line": 43
+    },
+    {
+      "id": "saved_index0_even_empty",
+      "needle": "write_word(&frame.saved_index_home, 0u, 0u);",
+      "offset": 1478,
+      "line": 44
+    },
+    {
+      "id": "initial_signed_gate",
+      "needle": "if (signed_word(initial_count) <= 0) return;",
+      "offset": 1557,
+      "line": 45
+    },
+    {
+      "id": "independent_displacement0",
+      "needle": "Word displacement = 0u;",
+      "offset": 1606,
+      "line": 46
+    },
+    {
+      "id": "iteration_current_data",
+      "needle": "const Word iteration_data = read_word(owner, 4u);",
+      "offset": 1706,
+      "line": 48
+    },
+    {
+      "id": "iteration_current_owner_home",
+      "needle": "const Word owner_argument = read_word(&frame.owner_argument_home, 0u);",
+      "offset": 1781,
+      "line": 49
+    },
+    {
+      "id": "entry_owner_compare_operand",
+      "needle": "const Word entry_owner = read_word(pointer_from_word(iteration_data + displacement), 8u);",
+      "offset": 1869,
+      "line": 50
+    },
+    {
+      "id": "unmatched",
+      "needle": "if (entry_owner != owner_argument) {",
+      "offset": 1967,
+      "line": 51
+    },
+    {
+      "id": "unmatched_index_increment",
+      "needle": "++index;",
+      "offset": 2016,
+      "line": 52
+    },
+    {
+      "id": "unmatched_saved_home",
+      "needle": "write_word(&frame.saved_index_home, 0u, index);",
+      "offset": 2089,
+      "line": 53
+    },
+    {
+      "id": "unmatched_displacement",
+      "needle": "displacement += 12u;",
+      "offset": 2149,
+      "line": 54
+    },
+    {
+      "id": "matched_sentinel",
+      "needle": "} else if (index != 0xffffffffu) {",
+      "offset": 2178,
+      "line": 55
+    },
+    {
+      "id": "matched_current_count",
+      "needle": "const Word matched_count = read_word(owner, 8u);",
+      "offset": 2265,
+      "line": 56
+    },
+    {
+      "id": "last_slot_skip",
+      "needle": "if (index != matched_count - 1u) {",
+      "offset": 2337,
+      "line": 57
+    },
+    {
+      "id": "assignment_one_current_data",
+      "needle": "const Word assignment_data = read_word(owner, 4u);",
+      "offset": 2388,
+      "line": 58
+    },
+    {
+      "id": "captured_source",
+      "needle": "const Word source = assignment_data + matched_count * 12u - 12u;",
+      "offset": 2474,
+      "line": 59
+    },
+    {
+      "id": "captured_destination",
+      "needle": "const Word destination = assignment_data + displacement;",
+      "offset": 2555,
+      "line": 60
+    },
+    {
+      "id": "self_skip_string_only",
+      "needle": "if (destination != source) {",
+      "offset": 2628,
+      "line": 61
+    },
+    {
+      "id": "current_source_request",
+      "needle": "const Word request = read_word(pointer_from_word(source), 0u);",
+      "offset": 2711,
+      "line": 62
+    },
+    {
+      "id": "full_home1",
+      "needle": "write_word(&frame.preserve_home, 0u, 1u);",
+      "offset": 2794,
+      "line": 63
+    },
+    {
+      "id": "exact_resize",
+      "needle": "resize_native_string_header_0041dd40_exact(pointer_from_word(destination),",
+      "offset": 2876,
+      "line": 64
+    },
+    {
+      "id": "current_source_len_gate",
+      "needle": "if (read_word(pointer_from_word(source), 0u) != 0u) {",
+      "offset": 3066,
+      "line": 66
+    },
+    {
+      "id": "current_destination_len",
+      "needle": "const Word count = read_word(pointer_from_word(destination), 0u);",
+      "offset": 3161,
+      "line": 67
+    },
+    {
+      "id": "current_source_data",
+      "needle": "const Word source_data = read_word(pointer_from_word(source), 4u);",
+      "offset": 3251,
+      "line": 68
+    },
+    {
+      "id": "current_destination_data",
+      "needle": "const Word destination_data = read_word(pointer_from_word(destination), 4u);",
+      "offset": 3342,
+      "line": 69
+    },
+    {
+      "id": "genuine_bf_even0",
+      "needle": "(void)copy_native_crt_bytes_00bf7680(pointer_from_word(destination_data),",
+      "offset": 3521,
+      "line": 71
+    },
+    {
+      "id": "late_source8",
+      "needle": "const Word value = read_word(pointer_from_word(source), 8u);",
+      "offset": 3749,
+      "line": 75
+    },
+    {
+      "id": "store8_even_self",
+      "needle": "write_word(pointer_from_word(destination), 8u, value);",
+      "offset": 3840,
+      "line": 76
+    },
+    {
+      "id": "fresh_tail_count_first",
+      "needle": "const Word tail_count = read_word(owner, 8u);",
+      "offset": 3935,
+      "line": 78
+    },
+    {
+      "id": "fresh_tail_data_second",
+      "needle": "const Word tail_data = read_word(owner, 4u);",
+      "offset": 4025,
+      "line": 79
+    },
+    {
+      "id": "fresh_tail_address",
+      "needle": "const Word tail = tail_data + tail_count * 12u - 12u;",
+      "offset": 4098,
+      "line": 80
+    },
+    {
+      "id": "raw_return",
+      "needle": "destroy_native_string_header_0041dd20(pointer_from_word(tail), strings);",
+      "offset": 4164,
+      "line": 81
+    },
+    {
+      "id": "current_count_after_return",
+      "needle": "const Word current_count = read_word(owner, 8u);",
+      "offset": 4249,
+      "line": 82
+    },
+    {
+      "id": "decrement_after_return",
+      "needle": "write_word(owner, 8u, current_count - 1u);",
+      "offset": 4334,
+      "line": 83
+    },
+    {
+      "id": "saved_index_reload_not_displacement",
+      "needle": "index = read_word(&frame.saved_index_home, 0u);",
+      "offset": 4389,
+      "line": 84
+    },
+    {
+      "id": "common_current_signed_compare",
+      "needle": "if (signed_word(index) >= signed_word(read_word(owner, 8u))) break;",
+      "offset": 4562,
+      "line": 87
+    }
+  ],
+  "design_proposal": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-named-value-copy-storage-review\\local\\output\\cc16_gui_icon_raw_cancel_contract_audit_20261031\\raw_cancel_contract.json",
+    "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\design\\raw_cancel_contract.json",
+    "bytes": 9380,
+    "sha256": "84892c380a095b1c244dacffcc01acd11d721b8fec8d6cfb203668511bda170a",
+    "qualification": "historical read-only artifact read in full; no current admission inferred"
+  },
+  "config": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "queries": [
+    {
+      "id": "verified_count",
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "count"
+      ],
+      "exit_code": 0,
+      "stdout_bytes": 49,
+      "stdout_sha256": "154dbd7a91135f698c5463e0a7fafee38ac298eab34d0d8a90c871deda0d8801",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\queries\\verified_count.txt"
+    },
+    {
+      "id": "cancel_proto",
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "proto",
+        "00ab50e0"
+      ],
+      "exit_code": 0,
+      "stdout_bytes": 749,
+      "stdout_sha256": "a54cedbb3486099d9339a076db180d95deabf05346984232d7991f7ca653439c",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\queries\\cancel_proto.txt"
+    },
+    {
+      "id": "cancel_live_bytes",
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00ab50e0",
+        "--length",
+        "205"
+      ],
+      "exit_code": 0,
+      "stdout_bytes": 989,
+      "stdout_sha256": "79feb3dace6a169ab37779928920691f44060a7494a091c6868823f3be47a919",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\queries\\cancel_live_bytes.txt"
+    },
+    {
+      "id": "padding_live_bytes",
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00ab50fa",
+        "--length",
+        "6"
+      ],
+      "exit_code": 0,
+      "stdout_bytes": 37,
+      "stdout_sha256": "5c5d6664bd5470514af4bdef74a02e246eaf9b57e7f92e83169bfee46681b0ed",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\queries\\padding_live_bytes.txt"
+    }
+  ],
+  "pe": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "machine": "014c",
+    "image_base": "00400000"
+  },
+  "native": {
+    "entry": "00ab50e0",
+    "last": "00ab51ac",
+    "bytes": 205,
+    "defined_opcode_bytes": 199,
+    "sha256": "2b2b32fa7f28fd12e4cfcef9c6081fae307530491355cbaca5acea1dddc1fa7b",
+    "hex": "515333c08bd9394308894424040f8eb500000055565733edeb068d9b000000008b4b048b542418395429080f858100000083f8ff0f84820000008b4b088d51ff3bc2743b8b43048d0c498d7488f48d3c283bfe74248b166a01528bcfe8ff8b96ff833e0074138b078b4e048b5704505152e82a25140083c40c8b46088947088b43088b53048d0c408d448af48b480485c974158b006a0183c0015051e83f4b96ff8bc8e888c31100834308ff8b442410eb0a83c0018944241083c50c3b43080f8c5bffffff5f5e5d5b59c20400",
+    "pe_file_offset": 7033056,
+    "live_bytes_match": true,
+    "instruction_rows": 74,
+    "blocks": 16,
+    "edges": 23,
+    "instructions": [
+      {
+        "address": "00ab50e0",
+        "size": 1,
+        "bytes_hex": "51",
+        "capstone": "push ecx",
+        "ghidra": "PUSH ECX"
+      },
+      {
+        "address": "00ab50e1",
+        "size": 1,
+        "bytes_hex": "53",
+        "capstone": "push ebx",
+        "ghidra": "PUSH EBX"
+      },
+      {
+        "address": "00ab50e2",
+        "size": 2,
+        "bytes_hex": "33c0",
+        "capstone": "xor eax, eax",
+        "ghidra": "XOR EAX,EAX"
+      },
+      {
+        "address": "00ab50e4",
+        "size": 2,
+        "bytes_hex": "8bd9",
+        "capstone": "mov ebx, ecx",
+        "ghidra": "MOV EBX,ECX"
+      },
+      {
+        "address": "00ab50e6",
+        "size": 3,
+        "bytes_hex": "394308",
+        "capstone": "cmp dword ptr [ebx + 8], eax",
+        "ghidra": "CMP dword ptr [EBX + 0x8],EAX"
+      },
+      {
+        "address": "00ab50e9",
+        "size": 4,
+        "bytes_hex": "89442404",
+        "capstone": "mov dword ptr [esp + 4], eax",
+        "ghidra": "MOV dword ptr [ESP + 0x4],EAX"
+      },
+      {
+        "address": "00ab50ed",
+        "size": 6,
+        "bytes_hex": "0f8eb5000000",
+        "capstone": "jle 0xab51a8",
+        "ghidra": "JLE 0x00ab51a8"
+      },
+      {
+        "address": "00ab50f3",
+        "size": 1,
+        "bytes_hex": "55",
+        "capstone": "push ebp",
+        "ghidra": "PUSH EBP"
+      },
+      {
+        "address": "00ab50f4",
+        "size": 1,
+        "bytes_hex": "56",
+        "capstone": "push esi",
+        "ghidra": "PUSH ESI"
+      },
+      {
+        "address": "00ab50f5",
+        "size": 1,
+        "bytes_hex": "57",
+        "capstone": "push edi",
+        "ghidra": "PUSH EDI"
+      },
+      {
+        "address": "00ab50f6",
+        "size": 2,
+        "bytes_hex": "33ed",
+        "capstone": "xor ebp, ebp",
+        "ghidra": "XOR EBP,EBP"
+      },
+      {
+        "address": "00ab50f8",
+        "size": 2,
+        "bytes_hex": "eb06",
+        "capstone": "jmp 0xab5100",
+        "ghidra": "JMP 0x00ab5100"
+      },
+      {
+        "address": "00ab5100",
+        "size": 3,
+        "bytes_hex": "8b4b04",
+        "capstone": "mov ecx, dword ptr [ebx + 4]",
+        "ghidra": "MOV ECX,dword ptr [EBX + 0x4]"
+      },
+      {
+        "address": "00ab5103",
+        "size": 4,
+        "bytes_hex": "8b542418",
+        "capstone": "mov edx, dword ptr [esp + 0x18]",
+        "ghidra": "MOV EDX,dword ptr [ESP + 0x18]"
+      },
+      {
+        "address": "00ab5107",
+        "size": 4,
+        "bytes_hex": "39542908",
+        "capstone": "cmp dword ptr [ecx + ebp + 8], edx",
+        "ghidra": "CMP dword ptr [ECX + EBP*0x1 + 0x8],EDX"
+      },
+      {
+        "address": "00ab510b",
+        "size": 6,
+        "bytes_hex": "0f8581000000",
+        "capstone": "jne 0xab5192",
+        "ghidra": "JNZ 0x00ab5192"
+      },
+      {
+        "address": "00ab5111",
+        "size": 3,
+        "bytes_hex": "83f8ff",
+        "capstone": "cmp eax, -1",
+        "ghidra": "CMP EAX,-0x1"
+      },
+      {
+        "address": "00ab5114",
+        "size": 6,
+        "bytes_hex": "0f8482000000",
+        "capstone": "je 0xab519c",
+        "ghidra": "JZ 0x00ab519c"
+      },
+      {
+        "address": "00ab511a",
+        "size": 3,
+        "bytes_hex": "8b4b08",
+        "capstone": "mov ecx, dword ptr [ebx + 8]",
+        "ghidra": "MOV ECX,dword ptr [EBX + 0x8]"
+      },
+      {
+        "address": "00ab511d",
+        "size": 3,
+        "bytes_hex": "8d51ff",
+        "capstone": "lea edx, [ecx - 1]",
+        "ghidra": "LEA EDX,[ECX + -0x1]"
+      },
+      {
+        "address": "00ab5120",
+        "size": 2,
+        "bytes_hex": "3bc2",
+        "capstone": "cmp eax, edx",
+        "ghidra": "CMP EAX,EDX"
+      },
+      {
+        "address": "00ab5122",
+        "size": 2,
+        "bytes_hex": "743b",
+        "capstone": "je 0xab515f",
+        "ghidra": "JZ 0x00ab515f"
+      },
+      {
+        "address": "00ab5124",
+        "size": 3,
+        "bytes_hex": "8b4304",
+        "capstone": "mov eax, dword ptr [ebx + 4]",
+        "ghidra": "MOV EAX,dword ptr [EBX + 0x4]"
+      },
+      {
+        "address": "00ab5127",
+        "size": 3,
+        "bytes_hex": "8d0c49",
+        "capstone": "lea ecx, [ecx + ecx*2]",
+        "ghidra": "LEA ECX,[ECX + ECX*0x2]"
+      },
+      {
+        "address": "00ab512a",
+        "size": 4,
+        "bytes_hex": "8d7488f4",
+        "capstone": "lea esi, [eax + ecx*4 - 0xc]",
+        "ghidra": "LEA ESI,[EAX + ECX*0x4 + -0xc]"
+      },
+      {
+        "address": "00ab512e",
+        "size": 3,
+        "bytes_hex": "8d3c28",
+        "capstone": "lea edi, [eax + ebp]",
+        "ghidra": "LEA EDI,[EAX + EBP*0x1]"
+      },
+      {
+        "address": "00ab5131",
+        "size": 2,
+        "bytes_hex": "3bfe",
+        "capstone": "cmp edi, esi",
+        "ghidra": "CMP EDI,ESI"
+      },
+      {
+        "address": "00ab5133",
+        "size": 2,
+        "bytes_hex": "7424",
+        "capstone": "je 0xab5159",
+        "ghidra": "JZ 0x00ab5159"
+      },
+      {
+        "address": "00ab5135",
+        "size": 2,
+        "bytes_hex": "8b16",
+        "capstone": "mov edx, dword ptr [esi]",
+        "ghidra": "MOV EDX,dword ptr [ESI]"
+      },
+      {
+        "address": "00ab5137",
+        "size": 2,
+        "bytes_hex": "6a01",
+        "capstone": "push 1",
+        "ghidra": "PUSH 0x1"
+      },
+      {
+        "address": "00ab5139",
+        "size": 1,
+        "bytes_hex": "52",
+        "capstone": "push edx",
+        "ghidra": "PUSH EDX"
+      },
+      {
+        "address": "00ab513a",
+        "size": 2,
+        "bytes_hex": "8bcf",
+        "capstone": "mov ecx, edi",
+        "ghidra": "MOV ECX,EDI"
+      },
+      {
+        "address": "00ab513c",
+        "size": 5,
+        "bytes_hex": "e8ff8b96ff",
+        "capstone": "call 0x41dd40",
+        "ghidra": "CALL 0x0041dd40"
+      },
+      {
+        "address": "00ab5141",
+        "size": 3,
+        "bytes_hex": "833e00",
+        "capstone": "cmp dword ptr [esi], 0",
+        "ghidra": "CMP dword ptr [ESI],0x0"
+      },
+      {
+        "address": "00ab5144",
+        "size": 2,
+        "bytes_hex": "7413",
+        "capstone": "je 0xab5159",
+        "ghidra": "JZ 0x00ab5159"
+      },
+      {
+        "address": "00ab5146",
+        "size": 2,
+        "bytes_hex": "8b07",
+        "capstone": "mov eax, dword ptr [edi]",
+        "ghidra": "MOV EAX,dword ptr [EDI]"
+      },
+      {
+        "address": "00ab5148",
+        "size": 3,
+        "bytes_hex": "8b4e04",
+        "capstone": "mov ecx, dword ptr [esi + 4]",
+        "ghidra": "MOV ECX,dword ptr [ESI + 0x4]"
+      },
+      {
+        "address": "00ab514b",
+        "size": 3,
+        "bytes_hex": "8b5704",
+        "capstone": "mov edx, dword ptr [edi + 4]",
+        "ghidra": "MOV EDX,dword ptr [EDI + 0x4]"
+      },
+      {
+        "address": "00ab514e",
+        "size": 1,
+        "bytes_hex": "50",
+        "capstone": "push eax",
+        "ghidra": "PUSH EAX"
+      },
+      {
+        "address": "00ab514f",
+        "size": 1,
+        "bytes_hex": "51",
+        "capstone": "push ecx",
+        "ghidra": "PUSH ECX"
+      },
+      {
+        "address": "00ab5150",
+        "size": 1,
+        "bytes_hex": "52",
+        "capstone": "push edx",
+        "ghidra": "PUSH EDX"
+      },
+      {
+        "address": "00ab5151",
+        "size": 5,
+        "bytes_hex": "e82a251400",
+        "capstone": "call 0xbf7680",
+        "ghidra": "CALL 0x00bf7680"
+      },
+      {
+        "address": "00ab5156",
+        "size": 3,
+        "bytes_hex": "83c40c",
+        "capstone": "add esp, 0xc",
+        "ghidra": "ADD ESP,0xc"
+      },
+      {
+        "address": "00ab5159",
+        "size": 3,
+        "bytes_hex": "8b4608",
+        "capstone": "mov eax, dword ptr [esi + 8]",
+        "ghidra": "MOV EAX,dword ptr [ESI + 0x8]"
+      },
+      {
+        "address": "00ab515c",
+        "size": 3,
+        "bytes_hex": "894708",
+        "capstone": "mov dword ptr [edi + 8], eax",
+        "ghidra": "MOV dword ptr [EDI + 0x8],EAX"
+      },
+      {
+        "address": "00ab515f",
+        "size": 3,
+        "bytes_hex": "8b4308",
+        "capstone": "mov eax, dword ptr [ebx + 8]",
+        "ghidra": "MOV EAX,dword ptr [EBX + 0x8]"
+      },
+      {
+        "address": "00ab5162",
+        "size": 3,
+        "bytes_hex": "8b5304",
+        "capstone": "mov edx, dword ptr [ebx + 4]",
+        "ghidra": "MOV EDX,dword ptr [EBX + 0x4]"
+      },
+      {
+        "address": "00ab5165",
+        "size": 3,
+        "bytes_hex": "8d0c40",
+        "capstone": "lea ecx, [eax + eax*2]",
+        "ghidra": "LEA ECX,[EAX + EAX*0x2]"
+      },
+      {
+        "address": "00ab5168",
+        "size": 4,
+        "bytes_hex": "8d448af4",
+        "capstone": "lea eax, [edx + ecx*4 - 0xc]",
+        "ghidra": "LEA EAX,[EDX + ECX*0x4 + -0xc]"
+      },
+      {
+        "address": "00ab516c",
+        "size": 3,
+        "bytes_hex": "8b4804",
+        "capstone": "mov ecx, dword ptr [eax + 4]",
+        "ghidra": "MOV ECX,dword ptr [EAX + 0x4]"
+      },
+      {
+        "address": "00ab516f",
+        "size": 2,
+        "bytes_hex": "85c9",
+        "capstone": "test ecx, ecx",
+        "ghidra": "TEST ECX,ECX"
+      },
+      {
+        "address": "00ab5171",
+        "size": 2,
+        "bytes_hex": "7415",
+        "capstone": "je 0xab5188",
+        "ghidra": "JZ 0x00ab5188"
+      },
+      {
+        "address": "00ab5173",
+        "size": 2,
+        "bytes_hex": "8b00",
+        "capstone": "mov eax, dword ptr [eax]",
+        "ghidra": "MOV EAX,dword ptr [EAX]"
+      },
+      {
+        "address": "00ab5175",
+        "size": 2,
+        "bytes_hex": "6a01",
+        "capstone": "push 1",
+        "ghidra": "PUSH 0x1"
+      },
+      {
+        "address": "00ab5177",
+        "size": 3,
+        "bytes_hex": "83c001",
+        "capstone": "add eax, 1",
+        "ghidra": "ADD EAX,0x1"
+      },
+      {
+        "address": "00ab517a",
+        "size": 1,
+        "bytes_hex": "50",
+        "capstone": "push eax",
+        "ghidra": "PUSH EAX"
+      },
+      {
+        "address": "00ab517b",
+        "size": 1,
+        "bytes_hex": "51",
+        "capstone": "push ecx",
+        "ghidra": "PUSH ECX"
+      },
+      {
+        "address": "00ab517c",
+        "size": 5,
+        "bytes_hex": "e83f4b96ff",
+        "capstone": "call 0x419cc0",
+        "ghidra": "CALL 0x00419cc0"
+      },
+      {
+        "address": "00ab5181",
+        "size": 2,
+        "bytes_hex": "8bc8",
+        "capstone": "mov ecx, eax",
+        "ghidra": "MOV ECX,EAX"
+      },
+      {
+        "address": "00ab5183",
+        "size": 5,
+        "bytes_hex": "e888c31100",
+        "capstone": "call 0xbd1510",
+        "ghidra": "CALL 0x00bd1510"
+      },
+      {
+        "address": "00ab5188",
+        "size": 4,
+        "bytes_hex": "834308ff",
+        "capstone": "add dword ptr [ebx + 8], -1",
+        "ghidra": "ADD dword ptr [EBX + 0x8],-0x1"
+      },
+      {
+        "address": "00ab518c",
+        "size": 4,
+        "bytes_hex": "8b442410",
+        "capstone": "mov eax, dword ptr [esp + 0x10]",
+        "ghidra": "MOV EAX,dword ptr [ESP + 0x10]"
+      },
+      {
+        "address": "00ab5190",
+        "size": 2,
+        "bytes_hex": "eb0a",
+        "capstone": "jmp 0xab519c",
+        "ghidra": "JMP 0x00ab519c"
+      },
+      {
+        "address": "00ab5192",
+        "size": 3,
+        "bytes_hex": "83c001",
+        "capstone": "add eax, 1",
+        "ghidra": "ADD EAX,0x1"
+      },
+      {
+        "address": "00ab5195",
+        "size": 4,
+        "bytes_hex": "89442410",
+        "capstone": "mov dword ptr [esp + 0x10], eax",
+        "ghidra": "MOV dword ptr [ESP + 0x10],EAX"
+      },
+      {
+        "address": "00ab5199",
+        "size": 3,
+        "bytes_hex": "83c50c",
+        "capstone": "add ebp, 0xc",
+        "ghidra": "ADD EBP,0xc"
+      },
+      {
+        "address": "00ab519c",
+        "size": 3,
+        "bytes_hex": "3b4308",
+        "capstone": "cmp eax, dword ptr [ebx + 8]",
+        "ghidra": "CMP EAX,dword ptr [EBX + 0x8]"
+      },
+      {
+        "address": "00ab519f",
+        "size": 6,
+        "bytes_hex": "0f8c5bffffff",
+        "capstone": "jl 0xab5100",
+        "ghidra": "JL 0x00ab5100"
+      },
+      {
+        "address": "00ab51a5",
+        "size": 1,
+        "bytes_hex": "5f",
+        "capstone": "pop edi",
+        "ghidra": "POP EDI"
+      },
+      {
+        "address": "00ab51a6",
+        "size": 1,
+        "bytes_hex": "5e",
+        "capstone": "pop esi",
+        "ghidra": "POP ESI"
+      },
+      {
+        "address": "00ab51a7",
+        "size": 1,
+        "bytes_hex": "5d",
+        "capstone": "pop ebp",
+        "ghidra": "POP EBP"
+      },
+      {
+        "address": "00ab51a8",
+        "size": 1,
+        "bytes_hex": "5b",
+        "capstone": "pop ebx",
+        "ghidra": "POP EBX"
+      },
+      {
+        "address": "00ab51a9",
+        "size": 1,
+        "bytes_hex": "59",
+        "capstone": "pop ecx",
+        "ghidra": "POP ECX"
+      },
+      {
+        "address": "00ab51aa",
+        "size": 3,
+        "bytes_hex": "c20400",
+        "capstone": "ret 4",
+        "ghidra": "RET 0x4"
+      }
+    ],
+    "calls": [
+      {
+        "address": "00ab513c",
+        "size": 5,
+        "bytes_hex": "e8ff8b96ff",
+        "capstone": "call 0x41dd40",
+        "ghidra": "CALL 0x0041dd40"
+      },
+      {
+        "address": "00ab5151",
+        "size": 5,
+        "bytes_hex": "e82a251400",
+        "capstone": "call 0xbf7680",
+        "ghidra": "CALL 0x00bf7680"
+      },
+      {
+        "address": "00ab517c",
+        "size": 5,
+        "bytes_hex": "e83f4b96ff",
+        "capstone": "call 0x419cc0",
+        "ghidra": "CALL 0x00419cc0"
+      },
+      {
+        "address": "00ab5183",
+        "size": 5,
+        "bytes_hex": "e888c31100",
+        "capstone": "call 0xbd1510",
+        "ghidra": "CALL 0x00bd1510"
+      }
+    ],
+    "fp_forms": 0,
+    "local_eh": false,
+    "exports": [
+      {
+        "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab50e0\\assembly.txt",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\exports\\00ab50e0\\assembly.txt",
+        "bytes": 2150,
+        "sha256": "ffb7962d324f33d4c4695a5b7f3029bd5d1f507e2791e75c224696fef5dad0c4"
+      },
+      {
+        "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab50e0\\decompiled.c",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\exports\\00ab50e0\\decompiled.c",
+        "bytes": 1821,
+        "sha256": "fdd8f4109ceaa1d12bcf234cd00104f4d54e4d36377fc59656f71de2851e513b"
+      },
+      {
+        "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab50e0\\metadata.json",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\exports\\00ab50e0\\metadata.json",
+        "bytes": 282,
+        "sha256": "3d64d808bf30240580e2a385ce3e102c79049525f5cbe391cbfa21edbc912ff9"
+      }
+    ],
+    "abi": "ECX containingactual16Bowner, one stacked ownerDWORD HOME, RET4; no Source semantic EAX identity claim"
+  },
+  "unreachable_padding": {
+    "entry": "00ab50fa",
+    "last": "00ab50ff",
+    "bytes": 6,
+    "hex": "8d9b00000000",
+    "sha256": "9c0c14b32f072e4754db06cf03a739a0bc15ee7771300256e607504f53b3c43a",
+    "pe_file_offset": 7033082,
+    "live_bytes_match": true,
+    "disassembly": "lea ebx,[ebx]",
+    "reachable": false,
+    "reason": "50F8 unconditional JMP5100 skips all6B; not an executed Source effect"
+  },
+  "api": {
+    "symbol": "bsp::cancel_native_gui_icon_delayed_loads_owner_storage_00ab50e0",
+    "signature": "void(void*,NativeGuiIconDelayedLoadsOwnerCancelStorageFrame&,NativeStringRawPoolContext&,const volatile uint32_t&)",
+    "frame_bytes": 12,
+    "homes_no_initializers": true,
+    "homes": [
+      "owner_argument_home(caller staged)",
+      "saved_index_home",
+      "preserve_home"
+    ],
+    "captures": "owner identity, register index, register displacement are separate; reload saved index after return does not recompute displacement",
+    "owner_accesses": "DATA+4/count+8 only; no vtable/cap/profile",
+    "no_cleanup_authority": true,
+    "no_native_origin": true
+  },
+  "dependencies": [
+    {
+      "symbol": "resize_native_string_header_0041dd40_exact",
+      "native_call": "00ab513c",
+      "contract": "CURRENTsrcLEN then full HOME1, address borrowed/read BYTE after allocation, same feature REF"
+    },
+    {
+      "symbol": "copy_native_crt_bytes_00bf7680",
+      "native_call": "00ab5151",
+      "contract": "CURRENTsrcLEN gates; capturedCURRENTdstLEN/srcDATA/dstDATA; actual call even dstcount0, samefeature"
+    },
+    {
+      "symbol": "destroy_native_string_header_0041dd20(raw,RawPoolCtx&)",
+      "native_calls": [
+        "00ab517c",
+        "00ab5183"
+      ],
+      "contract": "actual fresh tail, DATA-first/nonNullCURRENTLEN+1/currentgetter/return; no headerclear, no selectedEH permission"
+    }
+  ],
+  "lifetime_and_custody": {
+    "type_birth": "none; existing real individual entry lifetimes required, no T[n] claim",
+    "input_homes": "owner mutable eachiteration, savedindex mutable after callbacks, preserve actualDWORDaddress",
+    "required": "genuine owner/publication/records/buffers/subobjects/preimages/provenance, pool/newhandler/deletion/feature/DFCPU/extents/serialization; Frame/arguments/providers separated from all writes",
+    "failure": "no local EH/cleanup/NoThrow/compensation/Origin; current count decrement withheld if rawreturn escapes"
+  },
+  "unchanged_existing_route": {
+    "path": "src/native_gui_icon_delayed_loads.cpp",
+    "symbol": "Impl::cancel",
+    "qualification": "bool resize/stdmemcpy-ifbytes/typed indexing/byvalueowner remain exact old domain; no binding to new primitive"
+  },
+  "remaining_gates": [
+    "Root peer/registration/common build",
+    "genuine callerFrame/sourceOwnerHOME/canonicalfeature/provenance and entry-array family/custody",
+    "oldscalar flags/currentcount timing",
+    "AB5F00/delivery/current80/fullIcon",
+    "parent Origin/privateABI/fault/SEH/runtime/game proof"
+  ],
+  "delta_contract": {
+    "expected_name_status": [
+      [
+        "A",
+        "include/bsp/native_gui_icon_delayed_loads_owner_cancel_storage.hpp"
+      ],
+      [
+        "A",
+        "src/native_gui_icon_delayed_loads_owner_cancel_storage.cpp"
+      ],
+      [
+        "A",
+        "docs/CC16_NATIVE_GUI_ICON_DELAYED_LOADS_OWNER_CANCEL_STORAGE.md"
+      ],
+      [
+        "A",
+        "reports/cc16_native_gui_icon_delayed_loads_owner_cancel_storage.json"
+      ]
+    ],
+    "inverse": "Remove four additions; all old tracked bytes equal exact base."
+  },
+  "document_pin": {
+    "path": "docs/CC16_NATIVE_GUI_ICON_DELAYED_LOADS_OWNER_CANCEL_STORAGE.md",
+    "bytes": 7917,
+    "sha256": "2366a70867aafb8870ea08e45e7b7b8058cb81b0eeb27943ea81cb2cb61fbd8c"
+  },
+  "proof": {
+    "frozen_root": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031",
+    "reader": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\verify.py",
+      "utf8": "import hashlib,json,pathlib,subprocess,sys\nr=json.loads(pathlib.Path(sys.argv[1]).read_bytes());root=pathlib.Path.cwd()\ndef h(b):return hashlib.sha256(b).hexdigest()\nchecks=0\nfor p in r[\"base_absence\"]:\n assert subprocess.check_output([\"git\",\"ls-tree\",\"--name-only\",p[\"base_commit\"],\"--\",p[\"path\"]])==b\"\";checks+=1\nfor p in r[\"whole_provider_pins\"]:\n b=subprocess.check_output([\"git\",\"show\",p[\"commit\"]+\":\"+p[\"path\"]]);assert len(b)==p[\"git_bytes\"] and h(b)==p[\"git_sha256\"];checks+=1\nfor p in r[\"provider_regions\"]:\n b=subprocess.check_output([\"git\",\"show\",p[\"commit\"]+\":\"+p[\"path\"]]);q=b\"\".join(b.splitlines(keepends=True)[p[\"first_line\"]-1:p[\"last_line\"]]);assert len(q)==p[\"bytes\"] and h(q)==p[\"sha256\"];checks+=1\nfor p in r[\"new_source_pins\"]:\n b=(root/p[\"path\"]).read_bytes();assert len(b)==p[\"bytes\"] and h(b)==p[\"sha256\"] and b==pathlib.Path(p[\"frozen_path\"]).read_bytes();checks+=1\np=r[\"design_proposal\"];b=pathlib.Path(p[\"frozen_path\"]).read_bytes();assert len(b)==p[\"bytes\"] and h(b)==p[\"sha256\"];checks+=1\npe=pathlib.Path(r[\"pe\"][\"path\"]).read_bytes();assert h(pe)==r[\"pe\"][\"sha256\"];checks+=1\nn=r[\"native\"];b=bytes.fromhex(n[\"hex\"]);assert len(b)==205 and h(b)==n[\"sha256\"] and pe[n[\"pe_file_offset\"]:n[\"pe_file_offset\"]+205]==b;checks+=1\np=r[\"unreachable_padding\"];q=bytes.fromhex(p[\"hex\"]);assert len(q)==6 and h(q)==p[\"sha256\"] and pe[p[\"pe_file_offset\"]:p[\"pe_file_offset\"]+6]==q;checks+=1\nz=bytearray(205);covered=set()\nfor o in n[\"instructions\"]:\n a=int(o[\"address\"],16)-int(n[\"entry\"],16);q=bytes.fromhex(o[\"bytes_hex\"]);z[a:a+len(q)]=q;covered.update(range(a,a+len(q)))\na=int(p[\"entry\"],16)-int(n[\"entry\"],16);z[a:a+6]=bytes.fromhex(p[\"hex\"]);covered.update(range(a,a+6));assert bytes(z)==b and len(covered)==205 and len(n[\"instructions\"])==74;checks+=1\nfor p in n[\"exports\"]:\n q=pathlib.Path(p[\"frozen_path\"]).read_bytes();assert len(q)==p[\"bytes\"] and h(q)==p[\"sha256\"];checks+=1\ns=(root/r[\"new_source_pins\"][1][\"path\"]).read_text();ps=[s.index(x[\"needle\"]) for x in r[\"source_order\"]];assert ps==sorted(ps);checks+=1\np=r[\"document_pin\"];b=(root/p[\"path\"]).read_bytes();assert len(b)==p[\"bytes\"] and h(b)==p[\"sha256\"];checks+=1\nassert r[\"compiled\"] is False and r[\"credit\"][\"native_origin\"] is False\nprint(json.dumps({\"pass\":True,\"checks\":checks,\"native_ops\":74,\"padding_bytes\":6,\"native_calls\":4,\"source_order_pins\":len(r[\"source_order\"]),\"providers\":len(r[\"whole_provider_pins\"]),\"regions\":len(r[\"provider_regions\"])}))\n",
+      "bytes": 2445,
+      "sha256": "b61cffc94eae70d0a4e06210b8e7a67145d81b483403d95037b0a02159d46d1c"
+    },
+    "scope": "read-only static integrity/padding/map/order, no Native/compiler/test execution"
+  },
+  "credit": {
+    "new_original": 0,
+    "new_vendor": 0,
+    "new_helper": 0,
+    "new_compiler_generated": 0,
+    "duplicate_body": 0,
+    "original_abi": false,
+    "native_origin": false,
+    "native_unwind": false,
+    "runtime": false,
+    "activation": false
+  },
+  "static_verification": {
+    "kind": "static metadata/text/PE inspection only; no compiler, tests or Native execution",
+    "reader_raw_equals_embedded_utf8": true,
+    "reader_bytes": 2445,
+    "reader_sha256": "b61cffc94eae70d0a4e06210b8e7a67145d81b483403d95037b0a02159d46d1c",
+    "reader_result": {
+      "pass": true,
+      "checks": 57,
+      "native_ops": 74,
+      "padding_bytes": 6,
+      "native_calls": 4,
+      "source_order_pins": 38,
+      "providers": 23,
+      "regions": 18
+    },
+    "reader_stdout_sha256": "17b20bc49d9d6035d2a3ffb92726a20d1a8316bb4d08926f5895697efb15667e",
+    "reader_stderr_bytes": 0,
+    "whole_workspace_preimages_unchanged": 23,
+    "new_source_raw_frozen_staged_git_equal": true,
+    "staged_exact_four_additions": true,
+    "recursive_tree_inverse": {
+      "removed_paths": [
+        "include/bsp/native_gui_icon_delayed_loads_owner_cancel_storage.hpp",
+        "src/native_gui_icon_delayed_loads_owner_cancel_storage.cpp",
+        "docs/CC16_NATIVE_GUI_ICON_DELAYED_LOADS_OWNER_CANCEL_STORAGE.md",
+        "reports/cc16_native_gui_icon_delayed_loads_owner_cancel_storage.json"
+      ],
+      "equal": true,
+      "base_bytes": 1840512,
+      "base_sha256": "af4ba265804ed0284c20539b81c3a3bbea455f041fceedb84309ef626770b780",
+      "restored_sha256": "af4ba265804ed0284c20539b81c3a3bbea455f041fceedb84309ef626770b780",
+      "qualification": "Checked after staging all four additions; evidence payload has no old-tree effect. Final commit/tree receipt is ignored external evidence."
+    }
+  }
+}
