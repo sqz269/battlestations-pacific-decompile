@@ -2587,7 +2587,162 @@
   "Root_full_approved223linepatch_author72lineDoc_reader25_peerDoc_reader20_verified": true,
   "independent_static_assertions": 220,
   "Main_V3_selected": false,
-  "Core_and_V2_startup": "PENDING",
+  "Core_and_V2_startup": "Changed-path MSVC Win32 Core review PASS; existing V2 default startup PASS; V3 runtime unselected",
   "new_tests": 0,
-  "Original_Native_vendor_CG_ABI_Origin_runtime_activation_credit": 0
+  "Original_Native_vendor_CG_ABI_Origin_runtime_activation_credit": 0,
+  "fresh_default_V2_SourceHost": {
+    "classification": "Fresh private existing-V2 SourceHost handoff/startup/drain regression only; V3 unselected, no visual/fullgameplay/newraw proof",
+    "Source_head": "7e5558f926be30499913690be1a3f9e69fe3d867",
+    "compiled_Source_head": "78b1818e860df3c54f2ddc8f1d241ac2cc4f36ea",
+    "metadata_only_head_difference": true,
+    "exe": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\bsp_game.exe",
+      "size": 7541248,
+      "mtime_utc": "2026-10-31T12:44:27.2868719Z",
+      "sha256": "e15dcf1a3eb84fa1fa311def789bd5fb00ac0437578b15fc8bd44b9f3b59b5c3",
+      "build_checkout": {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration",
+        "head": "7e5558f926be30499913690be1a3f9e69fe3d867",
+        "dirty": false
+      }
+    },
+    "manifest": {
+      "path": "local/function_source_batch62/default_V2_host/source_host.log.manifest.json",
+      "exit_code": 0,
+      "launcher_exit_code": 0,
+      "drain": {
+        "no_force_stop": true,
+        "waited_seconds": 0,
+        "natural_completed": true,
+        "timed_out": false,
+        "forced_stop_requested_pids": [],
+        "retained_pids": []
+      },
+      "slot": 0,
+      "affinity_core": 2
+    },
+    "window_device_created": true,
+    "device_hr": "0x00000000",
+    "back_buffer": "1600x900",
+    "frames": 1,
+    "frames_presented": 0,
+    "presents_skipped": 1,
+    "loop_finished": true,
+    "canonical_GUI_Icon_and_manager_drained": true,
+    "renderer_COM_final_counts": {
+      "device": 0,
+      "api": 0
+    },
+    "Host_methods": {
+      "concrete": 126,
+      "unimplemented": 41,
+      "all_unimplemented_invoked": true
+    },
+    "original54_artifacts_preserved": true,
+    "settings_preimage": {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch54\\default_host\\artifacts\\personal\\Battlestations-Pacific\\options.txt",
+      "target": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch62\\default_V2_host\\personal\\Battlestations-Pacific\\options.txt",
+      "bytes": 226,
+      "sha256": "f871b61acf20319045e8d07b87f69d66d9562308920456537d0103200e2a6b4c",
+      "original54_preserved": true
+    },
+    "artifacts": [
+      {
+        "path": "local/function_source_batch62/default_V2_host/source_host.log",
+        "bytes": 100063,
+        "sha256": "64c2c2022b7a86566b17ecce025af9965df9d5047c4d1deb91888b822ba16ae0",
+        "retained_path": "local/function_source_batch62/default_V2_host/artifacts/01_source_host.log"
+      },
+      {
+        "path": "local/function_source_batch62/default_V2_host/source_host.log.manifest.json",
+        "bytes": 3253,
+        "sha256": "d383a4a0c66dcd58cd410084974ca895d2df68b1fdc035408d01a9440b87c0b7",
+        "retained_path": "local/function_source_batch62/default_V2_host/artifacts/02_source_host.log.manifest.json"
+      },
+      {
+        "path": "local/function_source_batch62/default_V2_host/wrapper.log",
+        "bytes": 395,
+        "sha256": "ae9c08ed36aba2249328191dc47bfdc91bd1589e65f9685b0e8081551f806bdd",
+        "retained_path": "local/function_source_batch62/default_V2_host/artifacts/03_wrapper.log"
+      },
+      {
+        "path": "local/function_source_batch62/default_V2_host/personal/Battlestations-Pacific/options.txt",
+        "bytes": 226,
+        "sha256": "f871b61acf20319045e8d07b87f69d66d9562308920456537d0103200e2a6b4c",
+        "retained_path": "local/function_source_batch62/default_V2_host/artifacts/04_options.txt"
+      },
+      {
+        "path": "local/function_source_batch62/default_V2_host/settings_preimage.json",
+        "bytes": 522,
+        "sha256": "0e8604da61827ccfb555df4be2f8c80099767dd861bd9d8995830315b77a9fbd",
+        "retained_path": "local/function_source_batch62/default_V2_host/artifacts/05_settings_preimage.json"
+      },
+      {
+        "path": "build/win32/Release/xlive_stub.dll",
+        "bytes": 32768,
+        "sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3",
+        "retained_path": "local/function_source_batch62/default_V2_host/artifacts/06_xlive_stub.dll"
+      }
+    ],
+    "new_raw_methods_selected": false,
+    "new_Native_Origin_Original_ABI_visual_fullgameplay_activation_credit": 0,
+    "scope_limit": "Existing V2 startup is exercised after four V3-support Source changes. Both Main sites still select V2; no V3 handoff/page/accessor/setter/fullLocale/OriginalCRT/ABI/raw method activation proof."
+  },
+  "Game_or_provider_entries_executed": "One official DEFAULT SourceHost frames1 startup run; raw new APIs unselected",
+  "actual_compiled_review": {
+    "receipt": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch62\\core_review\\read_only_receipt.json",
+    "receipt_sha256": "f36ba3fc9b3f5d8377e87eacbb4257bb11ee489f39a0d2345bed523ade841528",
+    "manifest_sha256": "426e13116ab161e7f774d124f4fac31a7d21804ae594f50ba6e60da277f1e977",
+    "verified_frozen_artifacts": 186,
+    "whole_COMDAT_bodies": 20,
+    "independent_dumpbin_code_bytes": 9387,
+    "manual_full_normal_bodies": [
+      "accept_handoff",
+      "is_canonical_plan",
+      "mapped_record_bytes",
+      "plan_version",
+      "plan_mask",
+      "record_plan_matches",
+      "transfer_ro",
+      "transfer_mutable",
+      "finish_ACK",
+      "mutable_ctor",
+      "mutable_initialize",
+      "verify_pages",
+      "locale_accessor",
+      "require_page",
+      "owner_ctor",
+      "owner_initialize_ACK_publish",
+      "verify_joint",
+      "mutable_destructor"
+    ],
+    "manual_bounded_changed_graphs": {
+      "bootstrap_ctor": [
+        "0000..01D6 version/view/descriptor/state writer; later existing filesystem/process setup captured but outside independent new-path claim"
+      ],
+      "reserve_resume": [
+        "0000..016D validation/two-base reservations/ready/resume",
+        "037A..03A8 normal success continuation"
+      ]
+    },
+    "focused_assertions": {
+      "passed": true,
+      "count": 11,
+      "names": [
+        "record_version_before_tail",
+        "view40_or44_only",
+        "tail_writer_V3_guard",
+        "immutable_plan_before_transfer",
+        "D000_commit_V3_guard",
+        "D000_seed_V3_guard",
+        "one_initial_D000_bytecheck",
+        "accessor_metadata_then_address_only",
+        "same_two_base_release_loop",
+        "ACK_before_publication",
+        "20_whole_dumpbin_cover"
+      ]
+    },
+    "findings": [],
+    "scope": "Changed protocol/storage paths only; unrelated filesystem/process diagnostics and whole historical code identity not asserted. V3 runtime/locale setter/full provider/Original ABI/Origin/gameplay unproved."
+  }
 }
