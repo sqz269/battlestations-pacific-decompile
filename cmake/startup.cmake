@@ -2509,6 +2509,9 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_cor
 # Whole normal raw GUI named-value array resize; actual caller/queue activation remains gated.
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_gui_named_value_array_resize_storage.cpp)
 
+# Whole normal raw Icon delayed-load lifetime and uncredited scalar adapter; caller activation remains gated.
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_gui_icon_delayed_loads_lifetime_storage.cpp)
+
 # Raw Matrix outer/factory lifetime provider; actual caller activation remains gated.
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_matrix_storage_lifetime.cpp)
 
