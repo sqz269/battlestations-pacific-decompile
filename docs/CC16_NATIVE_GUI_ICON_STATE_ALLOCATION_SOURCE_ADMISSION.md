@@ -1,0 +1,11 @@
+# Raw Icon allocation Source admission
+
+Source74 captures one full count DWORD, preserves allocation0 for count0, and uses the Native UINT32_MAX/count<40h overflow decision. Valid/zero counts request count<<6 raw bytes through the existing singleton allocator with its existing object role and matching native/host sizes. No empty shortcut, extra cap, callback, Context, Frame, owner, typed array/state birth, field seed or cleanup is added.
+
+Four-addition author81dd5f101 is on actualcb879042b; CMakef25723b5 adds one Source entry. The worker proposal used672a6cc2. Root read the complete H/CPP/doc/7429-byte reader, all81B/25 Native rows and the actual allocator contract/copy usage. Candidate36 and immutable author43 checks pass, with current four providers equal and a fresh four-path inverse. Independent proposal and actual Git peers find no qualified issue and preserve the historical/fresh-tree distinction.
+
+Official MSVC Win32 Release passes all targets and both existing suites in27.79seconds, retaining495 inputs/17 outputs with MP2/PCH ON/coverage PDB OFF and no forcing. Seven prior objects remain whole-byte exact. Root read the entire100B/35-op main and24B/6-op SDK constructor. The independent compiled peer matches those plus the existing90B/37-op allocator against COFF, Capstone and dumpbin:214B/78ops, zero ordinary findings,28 retained artifacts. The main has no local EH and is absent from the normal Game map.
+
+The SDK bad_alloc constructor/typeinfo/CxxThrow arm is an explicit Source error projection of ten Native exception rows. It does not reconstruct Native BF6340/BF6885 scratch, vtableD6923C, ThrowInfoE03CC0, encoded handler policy, Original OOM/flags/fault/stack/FH3/SEH ABI or Native Origin/NoThrow. SDK XORPS/MOVQ initialize data and supply no FP-environment identity proof. Existing malloc/new-handler/retry behavior is inherited.
+
+Existing high-STL/vendor naming and zero Native/vendor/helper/CG/duplicate-body credit remain. Raw bytes are not a state lifetime, custody or disposition receipt. Actual growth/fill/current80 consumers remain separate and this leaf has no Game activation claim. No new tests/probes or leaf-specific Game run. See reports/cc16_native_gui_icon_state_allocation_source_admission.json for exact source/build/object/peer evidence.
