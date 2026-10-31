@@ -1,5 +1,5 @@
 {
-  "status": "SOURCE_APPLIED_UNCOMPILED_QUALIFIED_PROVIDER_ONLY",
+  "status": "BUILD_TESTED_RETAINED_LINK_REVIEWED_QUALIFIED_PROVIDER_ONLY",
   "base": "5a677b3ef8dac37ae7fe00c028b7988475e7380b",
   "functions": [
     "00B931F0",
@@ -15,9 +15,9 @@
   "old_Model188": "whole baseline inverse exact; validator/reference/scalar/receipt literal projections verified",
   "metadata": "private nonmoving frame; no actual-header/status late reads after return",
   "Source_authorized": true,
-  "compiler_or_runtime_run": false,
-  "no_store_emission_proved": false,
-  "future_proof": "exact standard Win32 Core build plus same-object no-store/header-init/HOME/flags/reloc review after Source gates",
+  "compiler_or_runtime_run": true,
+  "no_store_emission_proved": true,
+  "future_proof": "Joined published Main build and final integration; canonical caller and Original runtime remain separate",
   "runtime_policy": "existing qualified Source secondary projection only; no Original FH3/CRT equivalence",
   "deferred": [
     "canonical raw Matrix publication/normal dispatch",
@@ -27,5 +27,47 @@
   ],
   "new_native_body_credit": 0,
   "vendor_body_credit": 0,
-  "Source_applied": true
+  "Source_applied": true,
+  "Source_applied_commit": "fcf0fd74c922782138f4a01673d9d88161a2e3d6",
+  "Root_Source_merge": "583921c048d7395f8b30336dbde614d2614e9871",
+  "canonical_registration": "cmake/startup.cmake single deferred bsp_core source; overlay cleared",
+  "canonical_build": {
+    "existing_suites": "2/2",
+    "seconds": 11.63,
+    "MP": 2,
+    "PCH": "ON",
+    "coverage_PDB": "OFF"
+  },
+  "retained_link": {
+    "roots": 7,
+    "all_map_present": true,
+    "entry_invoked": false,
+    "existing_suites": "2/2",
+    "seconds": 11.4
+  },
+  "restored_canonical_link": {
+    "forced_roots": 0,
+    "all_seven_map_absent": true,
+    "entry_invoked": false,
+    "existing_suites": "2/2",
+    "seconds": 11.23
+  },
+  "objects": {
+    "model": {
+      "bytes": 66254,
+      "sha256": "d6747d0498e8bde6dad5d3773f4293945ecd8bf48193d7d87dcdc72d37092eb4",
+      "old_functions": 111,
+      "old_code_and_relocations_exact": 111,
+      "added": 7
+    },
+    "matrix": {
+      "bytes": 31396,
+      "sha256": "639c65027ba228e44dbdfdd3abb04177660ddf3f1c665892653342dc640c4463"
+    }
+  },
+  "independent_Core_review": "fb47fb8ce728bc4e5c948f6dcd74d3f3af7c7b793a90313feddd76799aaa7549",
+  "local_artifacts": "local/matrix_raw_outer_primary_cc16_20261031",
+  "game_runtime_run": false,
+  "startup_switch_changed": false,
+  "compiler_scope": "MSVC Win32 Release compilation/link and existing suites only; no provider/game invocation"
 }

@@ -1,8 +1,8 @@
-# Raw Matrix outer/factory lifetime (Source applied, uncompiled)
+# Raw Matrix outer/factory lifetime (compiled qualified provider)
 
-This six-file packet applies the accepted proposal in the isolated author
-worktree. Only Source application was authorized; no compiler/configure, link,
-test, probe, entry, CMake, ledger or Ghidra operation ran for this packet.
+The exact six-file author packet fcf0fd74 was reviewed and merged at
+583921c04. Its provider is now registered in bsp_core. Standard MSVC Win32
+Release builds and both existing suites pass; no provider/game entry was run.
 It adds no Native/vendor-body credit and supplies no Original issuer/private
 ABI, FH3/processingThrow/current-handler, SEH/fault or runtime equivalence.
 
@@ -39,11 +39,14 @@ Contexts/frame/diagnostics are disjoint from the full194h payload; Header/HOME
 aliases retain the inherited ordinary Source backing/lifetime obligations.
 
 The no-store bridge statically requires real NodeStorage, NativeString, private
-tail and bones destruction to be trivial. These assertions have NOT been
-compiled here. Root must compile the exact accepted candidate and inspect the
-SAME Core helper/constructor/scalar paths for no payload/helper cleanup effects,
-no header value-init writes, exact delayed HOME and late flags order. A trait
-or declaration alone is not the requested emitted no-store proof.
+tail and bones destruction to be trivial. These assertions compile. Primary
+and independent actual-object review found no blocking issue: all111 old Model
+functions retain exact code and relocations; seven additions supply the new
+bridge. Valid extent ends access private token metadata only, with no payload
+access or cleanup calls. Both emitted constructors add no placement-init writes
+or190 store; factory NULL precedes the name HOME; scalar flags precede typed
+ends and the SAME pool return. No post-return payload read occurs. This emitted
+proof applies to the archived qualified Source objects, not Original ABI.
 
 The selected-secondary branches explicitly retain the existing qualified
 Source catch/terminate projection, with no new NoThrow input restriction.
@@ -54,3 +57,18 @@ All old Model188 validator/reference/scalar paths stay unchanged. Palette raw
 B866C0/deferred HOME/acquisition/B6F8D0/18/54 binding, raw B75170 setter, canonical
 Matrix consumer publication and Mission/family/root/resource selection are
 separate next packets. No existing legacy route or startup flag is redirected.
+
+The canonical registered build passes existing2/2 (11.63s). A separate retained
+link passes with all seven requested public/bridge symbols present; restoring
+normal linker flags passes existing2/2 with all seven absent from the game map.
+The Model and Matrix objects remain byte-exact across overlay, canonical,
+retained and restored builds: d6747d04 (66254B) and639c6502 (31396B). The local
+pre-registration overlay is cleared, the tracked Matrix source occurs once,
+and canonical flags contain no forced symbols. MP2/PCH ON/coveragePDB OFF.
+No new tests, runtime activation or Native/vendor credit accompany this proof.
+
+Primary artifacts: local/matrix_raw_outer_primary_cc16_20261031; independent
+actual-Core review fb47fb8c with pins9589bb62. These local artifacts retain
+whole object hashes, code/relocation clips, projects, cache, maps, build logs
+and link receipts. Original private HOME/FH3/SEH/runtime and full canonical
+family/Mission binding remain outside this provider admission.
