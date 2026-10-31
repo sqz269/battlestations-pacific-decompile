@@ -1,4 +1,5 @@
 #include "bsp/gui_text_style.hpp"
+#include "bsp/native_node_root_propagation.hpp"
 #include <cstring>
 #include <stdexcept>
 
@@ -158,5 +159,50 @@ void set_gui_text_state80_00ab7200(GuiTextStyleBinding& binding, std::int32_t st
     copy_word(color[2], selected->b); copy_word(color[3], selected->a);
     if (state == 1) brighten(color);
     set_gui_text_color50_00ab6b50(binding, color);
+}
+void configure_gui_text_shadow_00ab6c30(void* actual_text,
+    NativeGuiTextShadowStorageFrame& frame, NativeNodeParentingContext& context,
+    NativeNodeSetParentAcquired& acquired) {
+    auto* text = static_cast<volatile std::uint8_t*>(actual_text);
+    // 6C30/6C34 precede the byte-width enable capture at6C3D. MOVSS moves
+    // payload bits only; no Source floating arithmetic/conversion is needed.
+    const std::uint32_t position = frame.position_argument;
+    const std::uint32_t offset = frame.offset_argument;
+    const std::uint8_t enabled =
+        *reinterpret_cast<const volatile std::uint8_t*>(&frame.enabled_argument);
+    *reinterpret_cast<volatile std::uint32_t*>(text + 0x160) = position;
+    // 6C49 captures the actual color-pointer home AFTER the +160 store.
+    const std::uint32_t color = frame.color_argument;
+    text[0x15c] = enabled;
+    *reinterpret_cast<volatile std::uint32_t*>(text + 0x164) = offset;
+    const auto* rgba = reinterpret_cast<const volatile std::uint32_t*>(
+        static_cast<std::uintptr_t>(color));
+    // Separate current DWORD load/store pairs preserve legal color/Text
+    // overlap. Neither an aggregate copy nor a four-word snapshot is used.
+    const std::uint32_t red = rgba[0];
+    *reinterpret_cast<volatile std::uint32_t*>(text + 0x168) = red;
+    const std::uint32_t green = rgba[1];
+    *reinterpret_cast<volatile std::uint32_t*>(text + 0x16c) = green;
+    const std::uint32_t blue = rgba[2];
+    *reinterpret_cast<volatile std::uint32_t*>(text + 0x170) = blue;
+    const std::uint32_t alpha = rgba[3];
+    *reinterpret_cast<volatile std::uint32_t*>(text + 0x174) = alpha;
+    const std::uint32_t parent = enabled != 0
+        ? *reinterpret_cast<const volatile std::uint32_t*>(text + 0x4c) : 0;
+    const std::uint32_t shadow =
+        *reinterpret_cast<const volatile std::uint32_t*>(text + 0x188);
+    // Native PUSH follows the current+188 capture. The real callee reads its
+    // OLD parent before this exact incoming home; retain its whole frame.
+    frame.parenting.parent_argument = parent;
+    set_native_raw_parent_00b6e680(
+        reinterpret_cast<void*>(static_cast<std::uintptr_t>(shadow)),
+        frame.parenting, context, acquired);
+    if (text[0x15c] == 0) {
+        const std::uint32_t current_shadow =
+            *reinterpret_cast<const volatile std::uint32_t*>(text + 0x188);
+        propagate_native_node_root_storage_00b6d890(
+            reinterpret_cast<void*>(static_cast<std::uintptr_t>(current_shadow)),
+            nullptr, context.node.scenes.children);
+    }
 }
 } // namespace bsp
