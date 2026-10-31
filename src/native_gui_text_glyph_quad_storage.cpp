@@ -1,4 +1,5 @@
 #include "bsp/native_gui_text_glyph_quad_storage.hpp"
+#include "bsp/native_gui_widget_resolved_position.hpp"
 #include "bsp/native_gui_text_field_storage.hpp"
 #include "bsp/native_gui_text_default_storage.hpp"
 #include "bsp/gui_text_factory.hpp"
@@ -628,7 +629,8 @@ __declspec(noinline) void write_native_gui_text_glyph_quad_storage_00ab98f0(
         c.calls.child_current30(child, a.captured_profile, a.captured_target, static_cast<volatile Word*>(a.locals) + 4, a);
         void* const reference = pointer(word(text, 0x1b0));
         boundary(a, 0x00ab9ecd, reference);
-        c.calls.position_00aa6750(reference, static_cast<volatile Word*>(a.locals) + 1, a);
+        (void)get_native_gui_widget_resolved_position_00aa6750(
+            reference, a.locals + 1, c.resolved_position_data);
         volatile Word* target;
         prepare_position(text, homes, c, a, target);
         boundary(a, 0x00ab9fa9, child); c.calls.position_00aa8240(child, target, a);

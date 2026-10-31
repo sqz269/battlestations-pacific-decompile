@@ -11,6 +11,7 @@
 namespace bsp {
 struct NativeStringRawPoolContext;
 class NativeGuiTextPool;
+class NativeGuiWidgetResolvedPositionData;
 struct NativeGuiTextGlyphQuadStorageAcquired;
 struct NativeGuiTextRawModelDefaultStorageFrame;
 struct NativeGuiTextRawModelDefaultStorageContext;
@@ -62,8 +63,6 @@ public:
     virtual void child_current30(void* actual_child, std::uint32_t captured_profile,
         std::uint32_t captured_target, const volatile std::uint32_t* actual_pivot2,
         NativeGuiTextGlyphQuadStorageAcquired&) = 0;
-    virtual void position_00aa6750(void* actual_reference, volatile std::uint32_t* actual_output3,
-        NativeGuiTextGlyphQuadStorageAcquired&) = 0;
     virtual void position_00aa8240(void* actual_child, const volatile std::uint32_t* actual_input3,
         NativeGuiTextGlyphQuadStorageAcquired&) = 0;
 };
@@ -95,6 +94,9 @@ struct NativeGuiTextGlyphQuadStorageContext {
     // entry. Retain it, its storage/list/CRT domain and every pending slot.
     // No owner/startup/getter or Native permission is created by this reference.
     NativeGuiTextPool& actual_text_pool_companion_00f8bdf0;
+    // Prepared from the SAME authenticated RO mapping BEFORE parent entry.
+    // Retain binding/mapping through calls; metadata stays separate from payload.
+    const NativeGuiWidgetResolvedPositionData& resolved_position_data;
 };
 
 // Fixed, caller-prepared per-invocation scratch/diagnostics, not an owner.
