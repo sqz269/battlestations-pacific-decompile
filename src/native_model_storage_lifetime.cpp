@@ -405,6 +405,38 @@ void destroy_native_matrix_model_prefix_storage_00b750c0(void* owner,
     destroy_model_payload(allocation, frame, a);
 }
 
+NativeMatrixModelAllocation::NativeMatrixModelAllocation(void* actual,
+    NativeMatrixModelStorageContext& context) noexcept : actual_(actual), context_(&context) {}
+NativeMatrixModelAllocation admit_native_matrix_model_allocation(void* actual,
+    NativeMatrixModelStorageContext& context) {
+    (void)admit_matrix(actual, context);
+    return NativeMatrixModelAllocation(actual, context);
+}
+void* construct_native_matrix_model_prefix_storage_00b75030(
+    const NativeMatrixModelAllocation& allocation, const void* name,
+    NativeMatrixModelStorageConstructAcquired& acquired,
+    NativeMatrixModelPrefixExtent& extent) {
+    if (extent.node_ || extent.tail_ || extent.ended_)
+        throw std::invalid_argument("Matrix prefix requires a fresh extent token");
+    const auto admitted = admit_matrix(allocation.actual(), allocation.context());
+    require_matrix_backing(admitted, {&extent, sizeof(extent)});
+    void* const result = construct_native_matrix_model_prefix_storage_00b75030(
+        allocation.actual(), name, allocation.context(), acquired);
+    // Issued ONLY after this genuine constructor created both exact types.
+    extent.node_ = std::launder(static_cast<NativeNodeStorage*>(result));
+    extent.tail_ = at(result, 0x174);
+    return result;
+}
+void end_native_matrix_model_prefix_extent(NativeMatrixModelPrefixExtent& extent) {
+    static_assert(std::is_trivially_destructible_v<NativeNodeStorage>);
+    static_assert(std::is_trivially_destructible_v<NativeString>);
+    static_assert(std::is_trivially_destructible_v<ModelTailWords>);
+    if (!extent.live()) throw std::logic_error("Matrix prefix extent cannot be ended twice");
+    extent.ended_ = true; // consume before the trivial no-store completions
+    static_cast<ModelTailWords*>(extent.tail_)->~ModelTailWords();
+    extent.node_->~NativeNodeStorage();
+}
+
 namespace {
 void require_completion(const NativeModelStorageHostCompletion& completion) {
     if (!completion.context || !completion.end_typed_storage)
