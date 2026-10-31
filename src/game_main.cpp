@@ -31,6 +31,8 @@
 #include <filesystem>
 #include <fstream>
 #include <memory>
+#include <functional>
+#include <optional>
 #include <string>
 #include <exception>
 #include <stdexcept>
@@ -1109,6 +1111,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
             crash_test_frame);
     }
 
+    std::optional<std::reference_wrapper<const bsp::game::GameNativeCanonicalDataOwner>> canonical_data_owner;
     bsp::game::GameNativeReadOnlyData* native_data = nullptr;
     volatile std::uint32_t* native_crt_feature = nullptr;
     try {
@@ -1117,6 +1120,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
             bsp::game::GameNativeDataPlan::CanonicalCrtV2);
         const auto& owner = bsp::game::GameNativeCanonicalDataOwner::initialize(original_image,
             native_data_spans.data(), selected_native_data_span_count(), std::move(reservation));
+        canonical_data_owner.emplace(owner);
         native_data = &owner.read_only_data();
         native_crt_feature = &owner.mutable_crt_data().feature_word();
         log.notef("native-data handoff mapped verified original image %s",
@@ -1327,7 +1331,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
 
     std::unique_ptr<bsp::game::GameStartupHost> host;
     try { host = std::make_unique<bsp::game::GameStartupHost>(
-        log, instance, options, native_data); }
+        log, instance, options, canonical_data_owner.value().get()); }
     catch (const std::exception& failure) {
         std::fprintf(stderr, "bsp_game: startup host failed: %s\n", failure.what());
         log.notef("startup host failed: %s", failure.what());

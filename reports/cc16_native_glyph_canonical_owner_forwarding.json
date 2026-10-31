@@ -1,0 +1,406 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-glyph-canonical-owner-forwarding",
+  "utc": "2026-10-31T03:52:12.492865+00:00",
+  "kind": "Source48_bounded_actual_forwarding_only",
+  "base": "2a4390ccda43ad9d40ef90e2bb480b3cb42bf530",
+  "approved_design": "80e839e9d95120b0e5c513ec3836cd217a3d7187",
+  "approved_design_pins": [
+    {
+      "commit": "80e839e9d95120b0e5c513ec3836cd217a3d7187",
+      "path": "docs/CC16_NATIVE_GLYPH_CANONICAL_OWNER_FORWARDING_READINESS.md",
+      "bytes": 8749,
+      "sha256": "0ae8d8e2248acb720c59819338f20f80dd72ca290d22f2006de4bb4749940468",
+      "git_blob": "867291e79c080cb798225acc3a1ba03911f8308c"
+    },
+    {
+      "commit": "80e839e9d95120b0e5c513ec3836cd217a3d7187",
+      "path": "reports/cc16_native_glyph_canonical_owner_forwarding_readiness.json",
+      "bytes": 28691,
+      "sha256": "c5614637266056ca6c90bca7e310948977cde786f5f076cf59db9434b7b71ca7",
+      "git_blob": "e4fddd4b32e4a719e3d4a1be49bd5be6717efd96"
+    }
+  ],
+  "three_Source_files": [
+    {
+      "path": "src/game_main.cpp",
+      "before": {
+        "commit": "2a4390ccda43ad9d40ef90e2bb480b3cb42bf530",
+        "bytes": 81290,
+        "sha256": "761ca1dfc2e54c2daa129a25811b86a8bb3f4771b5a18a26498ce11a8d94dc7b",
+        "git_blob": "4371f58bb28daa984bccea95ed0147f923ac59ff"
+      },
+      "after": {
+        "bytes": 81511,
+        "sha256": "3851a814b2028a7851998b7043033a5943b38ec49b34cbe57b74860564c05cc6",
+        "git_blob": "a721bf0114dd6715f0a8b494ac799c77b9fbf472"
+      },
+      "frozen_before_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-canonical-forwarding\\local\\output\\cc16_native_glyph_canonical_owner_forwarding_20261030\\before\\src\\game_main.cpp",
+      "frozen_after_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-canonical-forwarding\\local\\output\\cc16_native_glyph_canonical_owner_forwarding_20261030\\after\\src\\game_main.cpp",
+      "raw_Git_before_and_frozen_after_exact": true
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "before": {
+        "commit": "2a4390ccda43ad9d40ef90e2bb480b3cb42bf530",
+        "bytes": 47507,
+        "sha256": "67a5164b1b20061f0f1353783c12cfcb92cc7392b37e04ec87371577425f7f58",
+        "git_blob": "867d8b7032fc7531bfaa4f2c43c649988b8e0710"
+      },
+      "after": {
+        "bytes": 48172,
+        "sha256": "ae1d6b5909a6a6076d2b952bbb09400b9642155399ff9733e6f718fa81dd80ea",
+        "git_blob": "9d9a565de531c08c159b6cc0d54cb19a21a92175"
+      },
+      "frozen_before_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-canonical-forwarding\\local\\output\\cc16_native_glyph_canonical_owner_forwarding_20261030\\before\\include\\bsp\\game_hosts.hpp",
+      "frozen_after_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-canonical-forwarding\\local\\output\\cc16_native_glyph_canonical_owner_forwarding_20261030\\after\\include\\bsp\\game_hosts.hpp",
+      "raw_Git_before_and_frozen_after_exact": true
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "before": {
+        "commit": "2a4390ccda43ad9d40ef90e2bb480b3cb42bf530",
+        "bytes": 186067,
+        "sha256": "6403dacc40b04fe9df818e5fa1e175609b876d54a51dbeae9a7e2ef69856cff6",
+        "git_blob": "f0ddd36fa94585e7be5ec76fe894e6d90d4951eb"
+      },
+      "after": {
+        "bytes": 187000,
+        "sha256": "a4b3bf1edb199d577fa689349329e044b38f593ecd4c6aa4092be39d0b744fe5",
+        "git_blob": "0ea37f57bf4642cf526fad3fb585ac8b7b9d47ad"
+      },
+      "frozen_before_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-canonical-forwarding\\local\\output\\cc16_native_glyph_canonical_owner_forwarding_20261030\\before\\src\\game_hosts.cpp",
+      "frozen_after_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-canonical-forwarding\\local\\output\\cc16_native_glyph_canonical_owner_forwarding_20261030\\after\\src\\game_hosts.cpp",
+      "raw_Git_before_and_frozen_after_exact": true
+    }
+  ],
+  "ten_exact_seams": [
+    {
+      "index": 1,
+      "path": "src/game_main.cpp",
+      "label": "M1 direct standard reference/optional includes",
+      "offset": 1151,
+      "before": "I2luY2x1ZGUgPG1lbW9yeT4K",
+      "after": "I2luY2x1ZGUgPG1lbW9yeT4KI2luY2x1ZGUgPGZ1bmN0aW9uYWw+CiNpbmNsdWRlIDxvcHRpb25hbD4K",
+      "before_sha256": "f2d0cd50e2d8ae34f9d5066b2f0015b38875cdd0260240b44b15f2948be7700e",
+      "after_sha256": "439536cc11702cefd5b536d85e768b764cc79ebb426b65408e54329845b1ca2d",
+      "full_file_before_sha256": "761ca1dfc2e54c2daa129a25811b86a8bb3f4771b5a18a26498ce11a8d94dc7b",
+      "full_file_after_sha256": "cf1740da7a8278111c66754d8234988d428a0f00282f02eb7b84b362f24d5d35",
+      "frozen_intermediate_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-canonical-forwarding\\local\\output\\cc16_native_glyph_canonical_owner_forwarding_20261030\\intermediate\\01_game_main.cpp"
+    },
+    {
+      "index": 2,
+      "path": "src/game_main.cpp",
+      "label": "M2 outer value-held actual canonical-owner borrow",
+      "offset": 64614,
+      "before": "ICAgIGJzcDo6Z2FtZTo6R2FtZU5hdGl2ZVJlYWRPbmx5RGF0YSogbmF0aXZlX2RhdGEgPSBudWxscHRyOwo=",
+      "after": "ICAgIHN0ZDo6b3B0aW9uYWw8c3RkOjpyZWZlcmVuY2Vfd3JhcHBlcjxjb25zdCBic3A6OmdhbWU6OkdhbWVOYXRpdmVDYW5vbmljYWxEYXRhT3duZXI+PiBjYW5vbmljYWxfZGF0YV9vd25lcjsKICAgIGJzcDo6Z2FtZTo6R2FtZU5hdGl2ZVJlYWRPbmx5RGF0YSogbmF0aXZlX2RhdGEgPSBudWxscHRyOwo=",
+      "before_sha256": "41a7398fd7c7ae02802cec6dedd0b472156996f2ccddb198d0eb74d7df0f550e",
+      "after_sha256": "5670bf8620e41ffdd17459287df2b9bbe9fc95da0fe3b05749767dcc3bbb4010",
+      "full_file_before_sha256": "cf1740da7a8278111c66754d8234988d428a0f00282f02eb7b84b362f24d5d35",
+      "full_file_after_sha256": "818ff59e9ac5a161998430bef021051cf8178a67233292d8ae141a27053e9dbb",
+      "frozen_intermediate_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-canonical-forwarding\\local\\output\\cc16_native_glyph_canonical_owner_forwarding_20261030\\intermediate\\02_game_main.cpp"
+    },
+    {
+      "index": 3,
+      "path": "src/game_main.cpp",
+      "label": "M3 retain EXACT initialize return before unchanged exports",
+      "offset": 65150,
+      "before": "ICAgICAgICAgICAgbmF0aXZlX2RhdGFfc3BhbnMuZGF0YSgpLCBzZWxlY3RlZF9uYXRpdmVfZGF0YV9zcGFuX2NvdW50KCksIHN0ZDo6bW92ZShyZXNlcnZhdGlvbikpOwogICAgICAgIG5hdGl2ZV9kYXRhID0gJm93bmVyLnJlYWRfb25seV9kYXRhKCk7",
+      "after": "ICAgICAgICAgICAgbmF0aXZlX2RhdGFfc3BhbnMuZGF0YSgpLCBzZWxlY3RlZF9uYXRpdmVfZGF0YV9zcGFuX2NvdW50KCksIHN0ZDo6bW92ZShyZXNlcnZhdGlvbikpOwogICAgICAgIGNhbm9uaWNhbF9kYXRhX293bmVyLmVtcGxhY2Uob3duZXIpOwogICAgICAgIG5hdGl2ZV9kYXRhID0gJm93bmVyLnJlYWRfb25seV9kYXRhKCk7",
+      "before_sha256": "b2368f9f1e7b8f1035f7d5958f456d13e13d652b83c81ae9450e78ce8cf0e98d",
+      "after_sha256": "d05bfc7aa26fcb964408b13603b3b554565864f111bc78a96b5007cd3aeaf984",
+      "full_file_before_sha256": "818ff59e9ac5a161998430bef021051cf8178a67233292d8ae141a27053e9dbb",
+      "full_file_after_sha256": "bd60d33689c011867222ae7c3db0a0545720be84e2da242a953c4312f7528b18",
+      "frozen_intermediate_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-canonical-forwarding\\local\\output\\cc16_native_glyph_canonical_owner_forwarding_20261030\\intermediate\\03_game_main.cpp"
+    },
+    {
+      "index": 4,
+      "path": "src/game_main.cpp",
+      "label": "M4 sole existing Host allocation uses required owner overload",
+      "offset": 79159,
+      "before": "ICAgICAgICBsb2csIGluc3RhbmNlLCBvcHRpb25zLCBuYXRpdmVfZGF0YSk7IH0=",
+      "after": "ICAgICAgICBsb2csIGluc3RhbmNlLCBvcHRpb25zLCBjYW5vbmljYWxfZGF0YV9vd25lci52YWx1ZSgpLmdldCgpKTsgfQ==",
+      "before_sha256": "b2d10d5f32a4d17a5ef4eddfa653481574acb545e81d1e316ed64854f5078bf9",
+      "after_sha256": "2e98ef42fd2fb9ecfdf2c17198068dc27e2762981a386ab999a4b32f0975ffa7",
+      "full_file_before_sha256": "bd60d33689c011867222ae7c3db0a0545720be84e2da242a953c4312f7528b18",
+      "full_file_after_sha256": "3851a814b2028a7851998b7043033a5943b38ec49b34cbe57b74860564c05cc6",
+      "frozen_intermediate_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-canonical-forwarding\\local\\output\\cc16_native_glyph_canonical_owner_forwarding_20261030\\intermediate\\04_game_main.cpp"
+    },
+    {
+      "index": 5,
+      "path": "include/bsp/game_hosts.hpp",
+      "label": "H1 existing canonical-owner type forward declaration",
+      "offset": 2846,
+      "before": "Y2xhc3MgR2FtZU5hdGl2ZVJlYWRPbmx5RGF0YTsK",
+      "after": "Y2xhc3MgR2FtZU5hdGl2ZVJlYWRPbmx5RGF0YTsKY2xhc3MgR2FtZU5hdGl2ZUNhbm9uaWNhbERhdGFPd25lcjsK",
+      "before_sha256": "9c2c78f8fd339b95cc10001c0b9c1ec4bec216d65c5f8eb8b5b144c0020403ce",
+      "after_sha256": "dc9c1cf6c4ae65696fea8bd13a15cf832c361f9ff83a13fda9217b638479f92e",
+      "full_file_before_sha256": "67a5164b1b20061f0f1353783c12cfcb92cc7392b37e04ec87371577425f7f58",
+      "full_file_after_sha256": "68d70d5366979b5a867c19fb0fe471491f46448cc18517ddc849a790aa5dabf6",
+      "frozen_intermediate_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-canonical-forwarding\\local\\output\\cc16_native_glyph_canonical_owner_forwarding_20261030\\intermediate\\05_game_hosts.hpp"
+    },
+    {
+      "index": 6,
+      "path": "include/bsp/game_hosts.hpp",
+      "label": "H2 required public overload; exact legacy signature retained",
+      "offset": 34039,
+      "before": "ICAgIEdhbWVTdGFydHVwSG9zdChHYW1lSG9zdExvZyYgbG9nLCBISU5TVEFOQ0UgaW5zdGFuY2UsIGNvbnN0IEdhbWVFeGVjdXRhYmxlT3B0aW9ucyYgb3B0aW9ucywKICAgICAgICBHYW1lTmF0aXZlUmVhZE9ubHlEYXRhKiBuYXRpdmVfZGF0YSA9IG51bGxwdHIpOwo=",
+      "after": "ICAgIEdhbWVTdGFydHVwSG9zdChHYW1lSG9zdExvZyYgbG9nLCBISU5TVEFOQ0UgaW5zdGFuY2UsIGNvbnN0IEdhbWVFeGVjdXRhYmxlT3B0aW9ucyYgb3B0aW9ucywKICAgICAgICBHYW1lTmF0aXZlUmVhZE9ubHlEYXRhKiBuYXRpdmVfZGF0YSA9IG51bGxwdHIpOwogICAgR2FtZVN0YXJ0dXBIb3N0KEdhbWVIb3N0TG9nJiBsb2csIEhJTlNUQU5DRSBpbnN0YW5jZSwgY29uc3QgR2FtZUV4ZWN1dGFibGVPcHRpb25zJiBvcHRpb25zLAogICAgICAgIGNvbnN0IEdhbWVOYXRpdmVDYW5vbmljYWxEYXRhT3duZXImIGNhbm9uaWNhbF9kYXRhX293bmVyKTsK",
+      "before_sha256": "c621eb3976a10b0830ab6d1eca156617768ddd6d075c0f558e7cb5fcab0d8864",
+      "after_sha256": "09464b85990349d03b55ffddf6057db5a9e63faed475094fb9c187cb9438231d",
+      "full_file_before_sha256": "68d70d5366979b5a867c19fb0fe471491f46448cc18517ddc849a790aa5dabf6",
+      "full_file_after_sha256": "83b5ebbe9189b2b91795e7ff40ded611a3191700c0b9a2954b8f184fa8528f7f",
+      "frozen_intermediate_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-canonical-forwarding\\local\\output\\cc16_native_glyph_canonical_owner_forwarding_20261030\\intermediate\\06_game_hosts.hpp"
+    },
+    {
+      "index": 7,
+      "path": "include/bsp/game_hosts.hpp",
+      "label": "H3 private value-borrow alias and one common constructor",
+      "offset": 38279,
+      "before": "cHJpdmF0ZToKICAgIC8vIERlY2xhcmVkIGJlZm9yZSBhbGwgcG90ZW50aWFsIGJvcnJvd2Vyczo=",
+      "after": "cHJpdmF0ZToKICAgIHVzaW5nIENhbm9uaWNhbERhdGFCb3Jyb3cgPSBzdGQ6OnJlZmVyZW5jZV93cmFwcGVyPGNvbnN0IEdhbWVOYXRpdmVDYW5vbmljYWxEYXRhT3duZXI+OwogICAgR2FtZVN0YXJ0dXBIb3N0KEdhbWVIb3N0TG9nJiwgSElOU1RBTkNFLCBjb25zdCBHYW1lRXhlY3V0YWJsZU9wdGlvbnMmLAogICAgICAgIEdhbWVOYXRpdmVSZWFkT25seURhdGEqLCBzdGQ6Om9wdGlvbmFsPENhbm9uaWNhbERhdGFCb3Jyb3c+KTsKICAgIC8vIERlY2xhcmVkIGJlZm9yZSBhbGwgcG90ZW50aWFsIGJvcnJvd2Vyczo=",
+      "before_sha256": "b45457d4b8d1c94ad68b8f4f8954ac878e6267db2f918b8d2613f7c945a700e0",
+      "after_sha256": "de5a61d12a62e6348b81ef32de3cb78fea08f0803419ff1626a12e2bbb050c9e",
+      "full_file_before_sha256": "83b5ebbe9189b2b91795e7ff40ded611a3191700c0b9a2954b8f184fa8528f7f",
+      "full_file_after_sha256": "a5807eaca0f5dda6f8fb45d7c46b620db579593d7fe851705ee79b9cae39e1a1",
+      "frozen_intermediate_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-canonical-forwarding\\local\\output\\cc16_native_glyph_canonical_owner_forwarding_20261030\\intermediate\\07_game_hosts.hpp"
+    },
+    {
+      "index": 8,
+      "path": "include/bsp/game_hosts.hpp",
+      "label": "H4 immutable retained binding after existing RO member",
+      "offset": 43236,
+      "before": "ICAgIEdhbWVOYXRpdmVSZWFkT25seURhdGEqIG5hdGl2ZV9kYXRhX3t9Owo=",
+      "after": "ICAgIEdhbWVOYXRpdmVSZWFkT25seURhdGEqIG5hdGl2ZV9kYXRhX3t9OwogICAgLy8gUmVxdWlyZWQgY2Fub25pY2FsIHJvdXRlIHJldGFpbnMgdGhlIGFjdHVhbCBwcm9jZXNzIG93bmVyLiBMZWdhY3kgUk8tb25seQogICAgLy8gY29uc3RydWN0aW9uIGhhcyBleHBsaWNpdCBhYnNlbmNlLCBuZXZlciBhIGNhbm9uaWNhbCBmYWxsYmFjayBvciBnZXR0ZXIuCiAgICBjb25zdCBzdGQ6Om9wdGlvbmFsPENhbm9uaWNhbERhdGFCb3Jyb3c+IGNhbm9uaWNhbF9kYXRhX293bmVyXzsK",
+      "before_sha256": "4a1fcf0b159a1939447b842d7c956b75132961d247200596e7fee76b9b0db185",
+      "after_sha256": "811860787d4e31d1db0cfd31be10a3cd938b170b6c07c8dafbe4387e54b68058",
+      "full_file_before_sha256": "a5807eaca0f5dda6f8fb45d7c46b620db579593d7fe851705ee79b9cae39e1a1",
+      "full_file_after_sha256": "ae1d6b5909a6a6076d2b952bbb09400b9642155399ff9733e6f718fa81dd80ea",
+      "frozen_intermediate_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-canonical-forwarding\\local\\output\\cc16_native_glyph_canonical_owner_forwarding_20261030\\intermediate\\08_game_hosts.hpp"
+    },
+    {
+      "index": 9,
+      "path": "src/game_hosts.cpp",
+      "label": "C1 actual owner definition for RO address access only",
+      "offset": 263,
+      "before": "I2luY2x1ZGUgImJzcC9nYW1lX2hvc3RzLmhwcCIK",
+      "after": "I2luY2x1ZGUgImJzcC9nYW1lX2hvc3RzLmhwcCIKI2luY2x1ZGUgImJzcC9nYW1lX25hdGl2ZV9tdXRhYmxlX2NydF9kYXRhLmhwcCIK",
+      "before_sha256": "fcfdd733d666ce81df442f912ad0662d6a658304c3509b4576a6bda28eb31f72",
+      "after_sha256": "981f6b06ceef4ec794d90441cb4c9e74dbcae85ee05d002bf8e89d111816e679",
+      "full_file_before_sha256": "6403dacc40b04fe9df818e5fa1e175609b876d54a51dbeae9a7e2ef69856cff6",
+      "full_file_after_sha256": "b329f8cc5ed99f31462814825e987ba1dcb7c07f1400821e3d47d6c439d9975c",
+      "frozen_intermediate_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-canonical-forwarding\\local\\output\\cc16_native_glyph_canonical_owner_forwarding_20261030\\intermediate\\09_game_hosts.cpp"
+    },
+    {
+      "index": 10,
+      "path": "src/game_hosts.cpp",
+      "label": "C2 two delegating overloads/common initializer/affinity before old body",
+      "offset": 93718,
+      "before": "R2FtZVN0YXJ0dXBIb3N0OjpHYW1lU3RhcnR1cEhvc3QoR2FtZUhvc3RMb2cmIGxvZywgSElOU1RBTkNFIGluc3RhbmNlLAogICAgY29uc3QgR2FtZUV4ZWN1dGFibGVPcHRpb25zJiBvcHRpb25zLCBHYW1lTmF0aXZlUmVhZE9ubHlEYXRhKiBuYXRpdmVfZGF0YSkKICAgIDogbG9nXyhsb2cpLCBpbnN0YW5jZV8oaW5zdGFuY2UpLCBvcHRpb25zXyhvcHRpb25zKSwgbmF0aXZlX2RhdGFfKG5hdGl2ZV9kYXRhKSB7",
+      "after": "R2FtZVN0YXJ0dXBIb3N0OjpHYW1lU3RhcnR1cEhvc3QoR2FtZUhvc3RMb2cmIGxvZywgSElOU1RBTkNFIGluc3RhbmNlLAogICAgY29uc3QgR2FtZUV4ZWN1dGFibGVPcHRpb25zJiBvcHRpb25zLCBHYW1lTmF0aXZlUmVhZE9ubHlEYXRhKiBuYXRpdmVfZGF0YSkKICAgIDogR2FtZVN0YXJ0dXBIb3N0KGxvZywgaW5zdGFuY2UsIG9wdGlvbnMsIG5hdGl2ZV9kYXRhLCBzdGQ6Om51bGxvcHQpIHt9CgpHYW1lU3RhcnR1cEhvc3Q6OkdhbWVTdGFydHVwSG9zdChHYW1lSG9zdExvZyYgbG9nLCBISU5TVEFOQ0UgaW5zdGFuY2UsCiAgICBjb25zdCBHYW1lRXhlY3V0YWJsZU9wdGlvbnMmIG9wdGlvbnMsIGNvbnN0IEdhbWVOYXRpdmVDYW5vbmljYWxEYXRhT3duZXImIGNhbm9uaWNhbF9kYXRhX293bmVyKQogICAgOiBHYW1lU3RhcnR1cEhvc3QobG9nLCBpbnN0YW5jZSwgb3B0aW9ucywgJmNhbm9uaWNhbF9kYXRhX293bmVyLnJlYWRfb25seV9kYXRhKCksCiAgICAgICAgICBzdGQ6Om9wdGlvbmFsPENhbm9uaWNhbERhdGFCb3Jyb3c+e3N0ZDo6Y3JlZihjYW5vbmljYWxfZGF0YV9vd25lcil9KSB7fQoKR2FtZVN0YXJ0dXBIb3N0OjpHYW1lU3RhcnR1cEhvc3QoR2FtZUhvc3RMb2cmIGxvZywgSElOU1RBTkNFIGluc3RhbmNlLAogICAgY29uc3QgR2FtZUV4ZWN1dGFibGVPcHRpb25zJiBvcHRpb25zLCBHYW1lTmF0aXZlUmVhZE9ubHlEYXRhKiBuYXRpdmVfZGF0YSwKICAgIHN0ZDo6b3B0aW9uYWw8Q2Fub25pY2FsRGF0YUJvcnJvdz4gY2Fub25pY2FsX2RhdGFfb3duZXIpCiAgICA6IGxvZ18obG9nKSwgaW5zdGFuY2VfKGluc3RhbmNlKSwgb3B0aW9uc18ob3B0aW9ucyksIG5hdGl2ZV9kYXRhXyhuYXRpdmVfZGF0YSksCiAgICAgIGNhbm9uaWNhbF9kYXRhX293bmVyXyhjYW5vbmljYWxfZGF0YV9vd25lcikgewogICAgaWYgKGNhbm9uaWNhbF9kYXRhX293bmVyXyAmJgogICAgICAgICZjYW5vbmljYWxfZGF0YV9vd25lcl8tPmdldCgpLnJlYWRfb25seV9kYXRhKCkgIT0gbmF0aXZlX2RhdGFfKQogICAgICAgIHRocm93IHN0ZDo6bG9naWNfZXJyb3IoIlN0YXJ0dXAgSG9zdCBjYW5vbmljYWwgb3duZXIgbXVzdCBzdXBwbHkgaXRzIFNBTUUgcmVhZC1vbmx5IGRhdGEiKTsK",
+      "before_sha256": "720f486c1455924b97b3ebbd5fc7baeed7cd7aca129a58d6311251b18e9e93c2",
+      "after_sha256": "96db7bd319ea33528d97b07ac120f884eff8add25e29b0853b93c6d5c2ff3fd8",
+      "full_file_before_sha256": "b329f8cc5ed99f31462814825e987ba1dcb7c07f1400821e3d47d6c439d9975c",
+      "full_file_after_sha256": "a4b3bf1edb199d577fa689349329e044b38f593ecd4c6aa4092be39d0b744fe5",
+      "frozen_intermediate_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-canonical-forwarding\\local\\output\\cc16_native_glyph_canonical_owner_forwarding_20261030\\intermediate\\10_game_hosts.cpp"
+    }
+  ],
+  "inverse": {
+    "script": "from pathlib import Path\nimport base64,hashlib,json,subprocess,sys\nr=Path(sys.argv[1]); ref=sys.argv[2] if len(sys.argv)>2 else 'WORKTREE'\ndef g(*a): return subprocess.check_output(['git',*a],cwd=r)\ndef h(b): return hashlib.sha256(b).hexdigest()\ndef read(p): return (r/p).read_bytes() if ref=='WORKTREE' else g('show',ref+':'+p)\nd=json.loads(read('reports/cc16_native_glyph_canonical_owner_forwarding.json'))\nb={x['path']:g('show',d['base']+':'+x['path']) for x in d['three_Source_files']}\na={p:read(p) for p in b}; c=dict(b)\nfor x in d['three_Source_files']:\n p=x['path']; assert h(b[p])==x['before']['sha256'] and h(a[p])==x['after']['sha256']\n assert Path(x['frozen_before_path']).read_bytes()==b[p]\n assert Path(x['frozen_after_path']).read_bytes()==a[p]\nfor s in d['ten_exact_seams']:\n p=s['path']; o=s['offset']; old=base64.b64decode(s['before']); new=base64.b64decode(s['after'])\n assert h(c[p])==s['full_file_before_sha256'] and c[p][o:o+len(old)]==old\n assert h(old)==s['before_sha256'] and h(new)==s['after_sha256']\n c[p]=c[p][:o]+new+c[p][o+len(old):]\n assert h(c[p])==s['full_file_after_sha256'] and Path(s['frozen_intermediate_path']).read_bytes()==c[p]\nassert c==a\nfor s in reversed(d['ten_exact_seams']):\n p=s['path']; o=s['offset']; old=base64.b64decode(s['before']); new=base64.b64decode(s['after'])\n assert h(c[p])==s['full_file_after_sha256'] and c[p][o:o+len(new)]==new\n c[p]=c[p][:o]+old+c[p][o+len(new):]\n assert h(c[p])==s['full_file_before_sha256']\nassert c==b\nw=d['old_constructor_body']; old=base64.b64decode(w['complete_before_base64']); guard=base64.b64decode(w['added_guard_prefix_base64'])\npost=a['src/game_hosts.cpp'][w['common_body_offset']:w['common_body_offset']+w['common_body_bytes']]\nassert post==b'{'+guard+old[1:] and h(old)==w['sha256']\nassert a['src/game_hosts.cpp'].count(old[1:-1])==1\nprint(json.dumps({'ref':ref,'full_forward_reverse_files':3,'seams':10,'all_intermediates_Git_raw_frozen_equal':True,'whole_old_body_prefix_inverse_and_unique_content':True}))\n",
+    "script_bytes": 2003,
+    "script_sha256": "dad9740989955b73dd4dad119117b436e37f6c0f1914d3f41fee67371b4ce7a8",
+    "frozen_raw_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-canonical-forwarding\\local\\output\\cc16_native_glyph_canonical_owner_forwarding_20261030\\inverse_check.py",
+    "scope": "complete three-file forward/reverse, ten intermediates, raw/Git/frozen and whole old-body prefix inverse"
+  },
+  "input_preimage_and_unchanged_supplier_pins": [
+    {
+      "commit": "2a4390ccda43ad9d40ef90e2bb480b3cb42bf530",
+      "path": "src/game_main.cpp",
+      "bytes": 81290,
+      "sha256": "761ca1dfc2e54c2daa129a25811b86a8bb3f4771b5a18a26498ce11a8d94dc7b",
+      "git_blob": "4371f58bb28daa984bccea95ed0147f923ac59ff",
+      "approved_Source48_preimage": true,
+      "worker_unchanged": false
+    },
+    {
+      "commit": "2a4390ccda43ad9d40ef90e2bb480b3cb42bf530",
+      "path": "include/bsp/game_hosts.hpp",
+      "bytes": 47507,
+      "sha256": "67a5164b1b20061f0f1353783c12cfcb92cc7392b37e04ec87371577425f7f58",
+      "git_blob": "867d8b7032fc7531bfaa4f2c43c649988b8e0710",
+      "approved_Source48_preimage": true,
+      "worker_unchanged": false
+    },
+    {
+      "commit": "2a4390ccda43ad9d40ef90e2bb480b3cb42bf530",
+      "path": "src/game_hosts.cpp",
+      "bytes": 186067,
+      "sha256": "6403dacc40b04fe9df818e5fa1e175609b876d54a51dbeae9a7e2ef69856cff6",
+      "git_blob": "f0ddd36fa94585e7be5ec76fe894e6d90d4951eb",
+      "approved_Source48_preimage": true,
+      "worker_unchanged": false
+    },
+    {
+      "commit": "2a4390ccda43ad9d40ef90e2bb480b3cb42bf530",
+      "path": "include/bsp/game_native_mutable_crt_data.hpp",
+      "bytes": 3200,
+      "sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+      "git_blob": "ec1a1c9c2a7359031b4b77c2b86ba12cd6f3420e",
+      "approved_Source48_preimage": false,
+      "worker_unchanged": true
+    },
+    {
+      "commit": "2a4390ccda43ad9d40ef90e2bb480b3cb42bf530",
+      "path": "src/game_native_mutable_crt_data.cpp",
+      "bytes": 10114,
+      "sha256": "d9dabf905fd4acf195f72c14e9ae2c7ef457514f4ff6227efffdcbb1f24a0c39",
+      "git_blob": "2c0d73f8164a8b0d4cbbc499801935d1f28c213a",
+      "approved_Source48_preimage": false,
+      "worker_unchanged": true
+    },
+    {
+      "commit": "2a4390ccda43ad9d40ef90e2bb480b3cb42bf530",
+      "path": "include/bsp/game_native_raw_default_text_owner.hpp",
+      "bytes": 9406,
+      "sha256": "92715898e34550625339a8658568e31aee5dbb5b8901d92379a273e816558c83",
+      "git_blob": "532566845cd8434126f0869464a0deb7c1ec2e2f",
+      "approved_Source48_preimage": false,
+      "worker_unchanged": true
+    },
+    {
+      "commit": "2a4390ccda43ad9d40ef90e2bb480b3cb42bf530",
+      "path": "src/game_native_raw_default_text_owner.cpp",
+      "bytes": 132021,
+      "sha256": "b0c6a8e39b0756e98960a9f21894a0b25ea7b1a437891edaa86b6f893289d25b",
+      "git_blob": "8e3d47af9f936b938afa27821afd5b3b6b8071ef",
+      "approved_Source48_preimage": false,
+      "worker_unchanged": true
+    },
+    {
+      "commit": "2a4390ccda43ad9d40ef90e2bb480b3cb42bf530",
+      "path": "src/game_native_gui_render_application.cpp",
+      "bytes": 59357,
+      "sha256": "a5b6be17c269f9486a210716143c17b2375c62e4401139d4d7adf66a39ca00cd",
+      "git_blob": "eef54bf0e2ef8a5a457756d864b8cb50222d1539",
+      "approved_Source48_preimage": false,
+      "worker_unchanged": true
+    },
+    {
+      "commit": "2a4390ccda43ad9d40ef90e2bb480b3cb42bf530",
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "bytes": 10679,
+      "sha256": "8e3475ad8bce88973b64ff9c0758ebda380b5baede302c7b926526b0e92fe783",
+      "git_blob": "a0eb6b9681b8e651df3fed6907298b08f974653e",
+      "approved_Source48_preimage": false,
+      "worker_unchanged": true
+    }
+  ],
+  "old_constructor_body": {
+    "bytes": 3805,
+    "sha256": "b4ca24bdfd288e706afeb9b912f0b9320d4fdf8356c61082635245b400784ea1",
+    "complete_before_base64": "ewogICAgewogICAgICAgIC8vIEhhcm5lc3Mgb25seTogdGhlIHNjcmVlbiB0aGUgd2luZG93IG9wZW5zIG9uIChHYW1lRXhlY3V0YWJsZU9wdGlvbnM6OndpbmRvd19tb25pdG9yKS4KICAgICAgICBzdGQ6OnN0cmluZyBzcGVjID0gb3B0aW9uc18ud2luZG93X21vbml0b3I7CiAgICAgICAgaWYgKHNwZWMuZW1wdHkoKSkgewogICAgICAgICAgICBjaGFyIGVudlsyNTZde307CiAgICAgICAgICAgIGlmIChHZXRFbnZpcm9ubWVudFZhcmlhYmxlQSgiQlNQX1dJTkRPV19NT05JVE9SIiwgZW52LCBzaXplb2YoZW52KSkgPiAwKSBzcGVjID0gZW52OwogICAgICAgIH0KICAgICAgICBzdGQ6OnN0cmluZyBkZXNjcmlwdGlvbjsKICAgICAgICBpZiAocmVzb2x2ZV93aW5kb3dfb3JpZ2luKHNwZWMsIHdpbmRvd19vcmlnaW5feF8sIHdpbmRvd19vcmlnaW5feV8sIHdpbmRvd19tb25pdG9yX3dpZHRoXywKICAgICAgICAgICAgICAgIHdpbmRvd19tb25pdG9yX2hlaWdodF8sIGRlc2NyaXB0aW9uKSkgewogICAgICAgICAgICB3aW5kb3dfbW9uaXRvcl9ub3RlXyA9ICJ3aW5kb3cgbW9uaXRvciAiICsgZGVzY3JpcHRpb24gKyAiOiBvcmlnaW4gIiArCiAgICAgICAgICAgICAgICBzdGQ6OnRvX3N0cmluZyh3aW5kb3dfb3JpZ2luX3hfKSArICIsIiArIHN0ZDo6dG9fc3RyaW5nKHdpbmRvd19vcmlnaW5feV8pOwogICAgICAgIH0gZWxzZSB7CiAgICAgICAgICAgIHdpbmRvd19vcmlnaW5feF8gPSAwOwogICAgICAgICAgICB3aW5kb3dfb3JpZ2luX3lfID0gMDsKICAgICAgICAgICAgd2luZG93X21vbml0b3Jfd2lkdGhfID0gR2V0U3lzdGVtTWV0cmljcyhTTV9DWFNDUkVFTik7CiAgICAgICAgICAgIHdpbmRvd19tb25pdG9yX2hlaWdodF8gPSBHZXRTeXN0ZW1NZXRyaWNzKFNNX0NZU0NSRUVOKTsKICAgICAgICAgICAgd2luZG93X21vbml0b3Jfbm90ZV8gPSAid2luZG93IG1vbml0b3IgJyIgKyBzcGVjICsgIicgbm90IGhvbm91cmVkOiAiICsgZGVzY3JpcHRpb247CiAgICAgICAgfQogICAgfQogICAgYXV0byBzaW5nbGV0b25zID0gc3RkOjptYWtlX3VuaXF1ZTxHYW1lU2luZ2xldG9uSG9zdD4obG9nXyk7CiAgICAvLyBSZXByZXNlbnRlZCBDUlQgdGFibGUgb3JkZXI6IENFMkJBQyAtPiBDQ0Q2QTAgcHJlY2VkZXMgQ0UzMDU0IC0+IENEMkQ4MC4KICAgIC8vIEtlZXAgY29udGV4dC9wdWJsaWNhdGlvbiBjZWxscyBhbGl2ZSBpZiBsYXRlciBzb3VyY2UgY29uc3RydWN0aW9uIGZhaWxzLgogICAgc2luZ2xldG9ucy0+b2JzZXJ2ZXJzKCkuaW5pdGlhbGl6ZV9kaXNwYXRjaF8wMGNjZDZhMCgpOwogICAgaWYoIW5hdGl2ZV9kYXRhXyl0aHJvdyBzdGQ6OnJ1bnRpbWVfZXJyb3IoIk5hdGl2ZSBzZXR0aW5ncyByZXF1aXJlIHJldGFpbmVkIHZlcmlmaWVkIGRhdGEiKTsKICAgIHRyeSB7CiAgICAgICAgc2V0dGluZ3NfcHJvY2Vzc189JmdhbWVfbmF0aXZlX3NldHRpbmdzX3Byb2Nlc3MoKm5hdGl2ZV9kYXRhXyk7CiAgICAgICAgY29uc3QgYXV0byByZWdpc3RyYXRpb249c2V0dGluZ3NfcHJvY2Vzc18tPmluaXRpYWxpemVfb25jZSgpOwogICAgICAgIGNvcHlfbmF0aXZlX2dhbWVfc2V0dGluZ3NfcmVhZF92aWV3KHNldHRpbmdzX3Byb2Nlc3NfLT5zZXR0aW5ncygpLHt9LHNldHRpbmdzX3ZpZXdfKTsKICAgICAgICBsb2dfLm5vdGVmKCJuYXRpdmUgc2V0dGluZ3MgQ1JUIG93bmVycyBpbml0aWFsaXplZDogc3RvcmFnZT1yYXdCQ2gvcmF3MENoIGF0ZXhpdD0lZC8lZC8lZC8lZCBvbmxpbmU9cHJvY2Vzc19jZWxsIGlucHV0PXByb2Nlc3NfY2VsbCIsCiAgICAgICAgICAgIHJlZ2lzdHJhdGlvblswXSxyZWdpc3RyYXRpb25bMV0scmVnaXN0cmF0aW9uWzJdLHJlZ2lzdHJhdGlvblszXSk7CiAgICB9Y2F0Y2goLi4uKXsKICAgICAgICBsb2dfLm5vdGUoIm5hdGl2ZSBzZXR0aW5ncyBDUlQgY29uc3RydWN0aW9uIGludGVycnVwdGVkOyByZXRhaW5pbmcgcHJvY2VzcyBjb250ZXh0cyBhbmQgcGFydGlhbCBvd25lcnNoaXAiKTtsb2dfLmNsb3NlKCk7c3RkOjpfRXhpdCgxKTsKICAgIH0KICAgIC8vIFRoZSByZXByZXNlbnRlZCBDUlQgZW50cmllcyB0aGVuIHJlYWNoIENFMzBDMC9DRDM5MTAgYW5kIENFMzBDNC9DRDM5NDAuCiAgICAvLyBUaGVzZSBhcmUgcHJvY2VzcyBvd25lcnMsIHdpdGggcmVhbCBDUlQgc2h1dGRvd24gY2FsbGJhY2tzLCBub3QgbWVtYmVycwogICAgLy8gb2YgR2FtZVN0YXJ0dXBIb3N0LiBUaGUgbmF0aXZlIGluaXRpYWxpemVyIHRhYmxlIGlnbm9yZXMgcmV0dXJuZWQgc3RhdHVzLgogICAgY29uc3QgaW50IGRlc3Ryb3lfcmVnaXN0cmF0aW9uID0gaW5pdGlhbGl6ZV9nYW1lX3BlbmRpbmdfZGVzdHJveV9vd25lcl8wMGNkMzkxMCgpOwogICAgY29uc3QgaW50IGtpbGxfcmVnaXN0cmF0aW9uID0gaW5pdGlhbGl6ZV9nYW1lX3BlbmRpbmdfa2lsbF9vd25lcl8wMGNkMzk0MCgpOwogICAgY29uc3QgYXV0byYgcGVuZGluZyA9IGdhbWVfcGVuZGluZ19lbnRpdHlfb3duZXJzKCk7CiAgICBsb2dfLm5vdGVmKCJwZW5kaW5nIGVudGl0eSBDUlQgb3duZXJzIGluaXRpYWxpemVkOiBkZXN0cm95PSVzIGtpbGw9JXMgIgogICAgICAgICJjb3VudHM9JXUvJXUgYXRleGl0PSVkLyVkIHN0b3JhZ2U9cHJvY2Vzc19yYXcyNGgiLAogICAgICAgIHBlbmRpbmcuZGVzdHJveV8wMGY4OTlhOC5oZWFkXzA0ICE9IG51bGxwdHIgPyAicHJlc2VudCIgOiAibnVsbCIsCiAgICAgICAgcGVuZGluZy5raWxsXzAwZjg5OWI0LmhlYWRfMDQgIT0gbnVsbHB0ciA/ICJwcmVzZW50IiA6ICJudWxsIiwKICAgICAgICBwZW5kaW5nLmRlc3Ryb3lfMDBmODk5YTguY291bnRfMDgsIHBlbmRpbmcua2lsbF8wMGY4OTliNC5jb3VudF8wOCwKICAgICAgICBkZXN0cm95X3JlZ2lzdHJhdGlvbiwga2lsbF9yZWdpc3RyYXRpb24pOwogICAgLy8gTGF0ZXIgcmVwcmVzZW50ZWQgQ1JUIHN1YnNldDogQ0Q2RTE2Li5DRDZGMDMuIFRoZSBvd25lciByZXRhaW5zIHRoZQogICAgLy8gdmVyaWZpZWQgdGFibGVzLCByZWFsIGxvY2tzIGFuZCBpbW11dGFibGUgSVBDIHdvcmtlciBiaW5kaW5nIHVudGlsIGV4aXQuCiAgICBjb25zdCBhdXRvIG9ubGluZV9yb290ID0gb3B0aW9uc18uZ2FtZV9yb290LmVtcHR5KCkgPyBzdGQ6OmZpbGVzeXN0ZW06OmN1cnJlbnRfcGF0aCgpCiAgICAgICAgOiBzdGQ6OmZpbGVzeXN0ZW06OmFic29sdXRlKHN0ZDo6ZmlsZXN5c3RlbTo6cGF0aChvcHRpb25zXy5nYW1lX3Jvb3QpKTsKICAgIGF1dG8mIG9ubGluZV9wcm9jZXNzID0gZ2FtZV9uYXRpdmVfb25saW5lX3Byb2Nlc3MoCiAgICAgICAgb25saW5lX3Jvb3QgLyAiYmF0dGxlc3RhdGlvbnNwYWNpZmljLmV4ZSIsIHswLCAwfSk7CiAgICBjb25zdCBhdXRvIG9ubGluZV9yZWdpc3RyYXRpb24gPSBvbmxpbmVfcHJvY2Vzcy5pbml0aWFsaXplX29uY2UoKTsKICAgIGxvZ18ubm90ZWYoIm5hdGl2ZSBvbmxpbmUgQ1JUIHByb2Nlc3MgaW5pdGlhbGl6ZWQ6IHRhYmxlcz0yMDA5ODAgZml4ZWQ9NTY4ICIKICAgICAgICAiYXRleGl0PSVkLyVkLyVkLyVkLyVkLyVkIHByZWltYWdlcz1jdXJyZW50X3Byb2Nlc3MgaXBjX3N0YWNrPWV4cGxpY2l0X3plcm8gd29ya2VyX2JpbmRpbmc9cGVybWFuZW50IiwKICAgICAgICBvbmxpbmVfcmVnaXN0cmF0aW9uWzBdLCBvbmxpbmVfcmVnaXN0cmF0aW9uWzFdLCBvbmxpbmVfcmVnaXN0cmF0aW9uWzJdLAogICAgICAgIG9ubGluZV9yZWdpc3RyYXRpb25bM10sIG9ubGluZV9yZWdpc3RyYXRpb25bNF0sIG9ubGluZV9yZWdpc3RyYXRpb25bNV0pOwogICAgc2luZ2xldG9uc18gPSBzaW5nbGV0b25zLnJlbGVhc2UoKTsKfQ==",
+    "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-canonical-forwarding\\local\\output\\cc16_native_glyph_canonical_owner_forwarding_20261030\\old_constructor_complete_body.bin",
+    "added_guard_prefix_base64": "CiAgICBpZiAoY2Fub25pY2FsX2RhdGFfb3duZXJfICYmCiAgICAgICAgJmNhbm9uaWNhbF9kYXRhX293bmVyXy0+Z2V0KCkucmVhZF9vbmx5X2RhdGEoKSAhPSBuYXRpdmVfZGF0YV8pCiAgICAgICAgdGhyb3cgc3RkOjpsb2dpY19lcnJvcigiU3RhcnR1cCBIb3N0IGNhbm9uaWNhbCBvd25lciBtdXN0IHN1cHBseSBpdHMgU0FNRSByZWFkLW9ubHkgZGF0YSIpOwo=",
+    "common_body_offset": 94630,
+    "common_body_bytes": 4011,
+    "contiguous_unique_old_content": true,
+    "whole_braced_body_exact_after_removing_ONLY_new_guard": true,
+    "old_body_statement_scope_order_and_lifetime_unchanged": true
+  },
+  "unchanged_Main_regions": [
+    {
+      "path": "src/game_main.cpp",
+      "base_first_line": 1007,
+      "base_last_line": 1111,
+      "label": "all enclosing/early-return conditions before outer borrow",
+      "bytes": 5488,
+      "sha256": "4e9efc451bfc6f884bef3ed8f00ed03e4b12c4fa5aca2f657cf85b1f98518bb7",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-canonical-forwarding\\local\\output\\cc16_native_glyph_canonical_owner_forwarding_20261030\\witnesses\\Main_L1007-L1111.bin",
+      "actual_block_unchanged": true
+    },
+    {
+      "path": "src/game_main.cpp",
+      "base_first_line": 1124,
+      "base_last_line": 1328,
+      "label": "initialization catch/error2, qualifications, pool body/failures, options, game-root and unique_ptr declaration",
+      "bytes": 13564,
+      "sha256": "fe2cde8b919a69c7d7bdda1a746f67c78980a8aa9ac7b0b62653a10801691cf4",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-canonical-forwarding\\local\\output\\cc16_native_glyph_canonical_owner_forwarding_20261030\\witnesses\\Main_L1124-L1328.bin",
+      "actual_block_unchanged": true
+    },
+    {
+      "path": "src/game_main.cpp",
+      "base_first_line": 1331,
+      "base_last_line": 1348,
+      "label": "Host error1 and subsequent WinMain call setup",
+      "bytes": 663,
+      "sha256": "f1b58d2e101f4805e645e10f3e87279cd50216d374bafeb3686be9bd4c98dfbf",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-canonical-forwarding\\local\\output\\cc16_native_glyph_canonical_owner_forwarding_20261030\\witnesses\\Main_L1331-L1348.bin",
+      "actual_block_unchanged": true
+    }
+  ],
+  "unchanged_export": {
+    "bytes": 117,
+    "sha256": "c39ab1a521fa4efd5b7f71f1ed72d4338ecaccec318b154e702c7afbf8e1c760",
+    "actual_exact": true
+  },
+  "actual_Main": {
+    "existing_make_unique_count": 1,
+    "existing_initialize_count": 1,
+    "initialize_success_dominates_all_Host_reaching_paths": true,
+    "bootstrap_parent_has_no_Host": true,
+    "new_conditional_heap_scope_lookup_or_error_policy": false,
+    "all_existing_exports_and_boundaries_unchanged": true
+  },
+  "actual_Host": {
+    "old_public_signature": "GameStartupHost(GameHostLog&, HINSTANCE, const GameExecutableOptions&, GameNativeReadOnlyData* = nullptr)",
+    "new_public_signature": "GameStartupHost(GameHostLog&, HINSTANCE, const GameExecutableOptions&, const GameNativeCanonicalDataOwner&)",
+    "private_common_constructor": "old arguments plus explicit optional CanonicalDataBorrow",
+    "immutable_member": "const std::optional<CanonicalDataBorrow> canonical_data_owner_",
+    "old_explicit_member_init_order": [
+      "log_",
+      "instance_",
+      "options_",
+      "native_data_"
+    ],
+    "new_binding_initialized_after_native_data_at_declaration_position": true,
+    "initialized_before_all_old_BODY_effects": true,
+    "initialized_before_all_Cpp_metadata_options_member_allocation": false,
+    "address_affinity_only": true,
+    "feature_or_native_field_VALUE_read_added": false,
+    "legacy_absence_is_canonical_permission": false,
+    "checked_getter_bind_reset_public_flag_added": false,
+    "Source_layout_and_overload_ABI_changed": true,
+    "Original_ABI_claim": false
+  },
+  "remaining": {
+    "RawDefaultTextOwner_constructor_and_GUIrender_consumer_changed": false,
+    "actual_child_preparation_caller": false,
+    "Source47_seven_borrow_graph_ready": false,
+    "CString_providers_parent_transport_disposal_postsections": false,
+    "Native_origin_cleanup_NoThrow_Original_FH3_SEH": false,
+    "runtime_flags_changed": false,
+    "runtime_gameplay_activation": false
+  },
+  "actions": {
+    "production_files_changed": [
+      "src/game_main.cpp",
+      "include/bsp/game_hosts.hpp",
+      "src/game_hosts.cpp"
+    ],
+    "new_evidence_files": [
+      "docs/CC16_NATIVE_GLYPH_CANONICAL_OWNER_FORWARDING.md",
+      "reports/cc16_native_glyph_canonical_owner_forwarding.json"
+    ],
+    "address_lease": false,
+    "owner_initialize_ACK_store_accessor_destructor_process_changes": false,
+    "RawOwner_Glyph_CMake_ledger_Ghidra_original_game_saved_analysis_changes": false,
+    "worker_compiler_build_tests_probes_Game_runtime": false
+  },
+  "document_pin": {
+    "path": "docs/CC16_NATIVE_GLYPH_CANONICAL_OWNER_FORWARDING.md",
+    "bytes": 5670,
+    "sha256": "8f9a4a0e8ca5ea070a562cf258789155eb0eee487236f7680e01fb3281af35df"
+  }
+}

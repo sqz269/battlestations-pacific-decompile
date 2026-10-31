@@ -2,6 +2,7 @@
 // and docs/GAME_EXECUTABLE.md. No native behaviour is invented here: whatever is not
 // reconstructed is routed through GameHostLog::unimplemented with its native call site.
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_native_mutable_crt_data.hpp"
 #include "bsp/platform_control_messages.hpp"
 #include "bsp/platform_text_messages.hpp"
 #include "bsp/window_close_transport.hpp"
@@ -1963,7 +1964,22 @@ const bool& GameStartupHost::gui_sse2_conversion() const noexcept {
 
 GameStartupHost::GameStartupHost(GameHostLog& log, HINSTANCE instance,
     const GameExecutableOptions& options, GameNativeReadOnlyData* native_data)
-    : log_(log), instance_(instance), options_(options), native_data_(native_data) {
+    : GameStartupHost(log, instance, options, native_data, std::nullopt) {}
+
+GameStartupHost::GameStartupHost(GameHostLog& log, HINSTANCE instance,
+    const GameExecutableOptions& options, const GameNativeCanonicalDataOwner& canonical_data_owner)
+    : GameStartupHost(log, instance, options, &canonical_data_owner.read_only_data(),
+          std::optional<CanonicalDataBorrow>{std::cref(canonical_data_owner)}) {}
+
+GameStartupHost::GameStartupHost(GameHostLog& log, HINSTANCE instance,
+    const GameExecutableOptions& options, GameNativeReadOnlyData* native_data,
+    std::optional<CanonicalDataBorrow> canonical_data_owner)
+    : log_(log), instance_(instance), options_(options), native_data_(native_data),
+      canonical_data_owner_(canonical_data_owner) {
+    if (canonical_data_owner_ &&
+        &canonical_data_owner_->get().read_only_data() != native_data_)
+        throw std::logic_error("Startup Host canonical owner must supply its SAME read-only data");
+
     {
         // Harness only: the screen the window opens on (GameExecutableOptions::window_monitor).
         std::string spec = options_.window_monitor;

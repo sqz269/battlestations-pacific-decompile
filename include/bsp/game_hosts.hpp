@@ -78,6 +78,7 @@ const CameraAxesCrtAccess& application_camera_axes_crt() noexcept;
 // stays independent of the VFS types.
 class GameVfsHost;
 class GameNativeReadOnlyData;
+class GameNativeCanonicalDataOwner;
 class GameNativeSettingsApplication;
 class GameNativeSettingsProcess;
 class GameScriptHost;
@@ -682,6 +683,8 @@ class GameStartupHost final : public StartupHost {
 public:
     GameStartupHost(GameHostLog& log, HINSTANCE instance, const GameExecutableOptions& options,
         GameNativeReadOnlyData* native_data = nullptr);
+    GameStartupHost(GameHostLog& log, HINSTANCE instance, const GameExecutableOptions& options,
+        const GameNativeCanonicalDataOwner& canonical_data_owner);
     ~GameStartupHost() override;
 
     long com_initialize() override;
@@ -745,6 +748,9 @@ public:
     void* volatile& input_backend_publication() noexcept { return input_backend_00f8bbf4_; }
 
 private:
+    using CanonicalDataBorrow = std::reference_wrapper<const GameNativeCanonicalDataOwner>;
+    GameStartupHost(GameHostLog&, HINSTANCE, const GameExecutableOptions&,
+        GameNativeReadOnlyData*, std::optional<CanonicalDataBorrow>);
     // Declared before all potential borrowers: its engaged bool also survives
     // their reverse-order member destruction. Disengaged has no exposed value.
     mutable std::optional<bool> gui_sse2_conversion_;
@@ -829,6 +835,9 @@ private:
     std::string window_monitor_note_;
     // The entrypoint retains adopted numeric data beyond this host's drain.
     GameNativeReadOnlyData* native_data_{};
+    // Required canonical route retains the actual process owner. Legacy RO-only
+    // construction has explicit absence, never a canonical fallback or getter.
+    const std::optional<CanonicalDataBorrow> canonical_data_owner_;
 
     // 008F823D: actual CoCreateInstance output, released explicitly at 008F82CA.
     // The denied branch calls CRT exit before this release; no destructor cleanup.
