@@ -1,4 +1,5 @@
 #include "bsp/native_gui_icon_identity.hpp"
+#include "bsp/native_gui_icon_delayed_loads.hpp"
 #include "bsp/native_ref_counted.hpp"
 #include <exception>
 #include <new>
@@ -57,12 +58,40 @@ void NativeGuiIconReference::retire() noexcept {
     // Opaque key only; native payload may already be in the returned pool slot.
     context_.storage.actual_owners.unbind(identity_, *this);
 }
+void NativeGuiIconReference::prepare_cold_delete_call() {
+    const bool fresh = phase_ == Phase::bound && !cold_delete_preparation_entered_;
+    cold_delete_preparation_entered_ = true; // Before even late Source admission.
+    try {
+        if (!fresh)
+            throw std::logic_error("Icon cold deletion preparation requires its retained fresh bound reference");
+        auto& prepared = context_.storage.delayed.prepare_icon_cancel_call(
+            identity_, context_.storage, destruction_);
+        // Preparation owns no Native work. A nested Source denial cannot be
+        // swallowed into a successful preparation/pointer publication.
+        if (phase_ != Phase::bound)
+            throw std::logic_error("Icon cold deletion preparation lost its exclusive Source scope");
+        prepared_delete_call_ = &prepared; // Publish only after normal preparation.
+    } catch (...) {
+        phase_ = Phase::failed; // Source denial only; leave destruction_ untouched.
+        throw; // Caller retains the already constructed graph; no cleanup/retry.
+    }
+}
 void* NativeGuiIconReference::delete_scalar_00ab6100(const volatile Word& flags) {
     if (phase_ != Phase::bound)
         throw std::logic_error("Icon scalar deletion cannot replay entered or retired work");
+    if (cold_delete_preparation_entered_ && !prepared_delete_call_) {
+        phase_ = Phase::failed; // Reject an in-progress/failed explicit cold route.
+        throw std::logic_error("Icon scalar deletion requires its completed cold preparation");
+    }
     phase_ = Phase::destroying;
     void* result;
-    try { result = delete_native_gui_icon_00ab6100(identity_, flags, context_.storage, destruction_); }
+    try {
+        if (prepared_delete_call_)
+            result = delete_native_gui_icon_prepared_00ab6100(
+                identity_, flags, context_.storage, destruction_, *prepared_delete_call_);
+        else
+            result = delete_native_gui_icon_00ab6100(identity_, flags, context_.storage, destruction_);
+    }
     catch (...) {
         phase_ = Phase::failed;
         destruction_.failed = true;

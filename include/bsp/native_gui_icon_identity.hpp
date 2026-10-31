@@ -3,6 +3,7 @@
 #include "bsp/native_gui_widget_pools_cc13.hpp"
 
 namespace bsp {
+class NativeGuiIconPreparedCancelCall;
 struct NativeGuiIconIdentityContext {
     NativeGuiIconStorageContext& storage;
     // SAME initialized F8BDA0 process pool used by AA1410/AB6100.
@@ -43,6 +44,16 @@ public:
     // Already-observed zero only: genuine CURRENT0 BD30E0 -> CURRENT4 AB6100(1).
     // No protective retain, deferred callback, resurrection or extra decrement.
     void release_zero_references() noexcept override;
+    // Explicit Source-only opt-in, AFTER this reference's constructor and
+    // registry bind return. Caller must already retain this nonmoving reference,
+    // its SAME context/service and complete Native graph before this may throw.
+    // Prepares the service-owned node against EXACT private destruction_ cold,
+    // before any enclosing Native effect. No getter/count/owner/Origin issued.
+    // One attempt only; failure blocks later deletion without legacy fallback.
+    // The node permanently borrows destruction_: keep this object/acquired and
+    // service graph alive even after normal scalar return/registry retirement.
+    // No reset, normal disposition or outer-parent transport follows from it.
+    void prepare_cold_delete_call();
     // Direct native scalar has NO count gate. Borrow stable/disjoint flags;
     // low byte is read only after full dtor. Flags0 retires payload metadata
     // but leaves physical storage with caller; flags1 returns its original slot.
@@ -56,6 +67,9 @@ private:
     NativeGuiIconIdentityContext& context_;
     Phase phase_{Phase::bound};
     NativeGuiIconDestroyAcquired destruction_;
+    // Source metadata only; old constructor/bind and Native acquisition stay exact.
+    bool cold_delete_preparation_entered_{};
+    NativeGuiIconPreparedCancelCall* prepared_delete_call_{};
     void retire() noexcept;
 };
 } // namespace bsp

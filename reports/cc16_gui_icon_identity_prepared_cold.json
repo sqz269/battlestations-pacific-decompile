@@ -1,0 +1,671 @@
+{
+  "schema_version": 1,
+  "kind": "bounded ordinary Source-only cold Icon identity support; unselected and no activation",
+  "base_Main": "a8e0fa59bcfbe028599b6295b8bb655d9c33b3d7",
+  "owned_paths": [
+    "include/bsp/native_gui_icon_identity.hpp",
+    "src/native_gui_icon_identity.cpp",
+    "docs/CC16_GUI_ICON_IDENTITY_PREPARED_COLD.md",
+    "reports/cc16_gui_icon_identity_prepared_cold.json"
+  ],
+  "Source_pairs": [
+    {
+      "path": "include/bsp/native_gui_icon_identity.hpp",
+      "before": {
+        "path": "include/bsp/native_gui_icon_identity.hpp",
+        "bytes": 3372,
+        "sha256": "27d2f6e7313bf3d15a7b2247e233f2ab7eca110ffe6b1f91097e6e441620c54c",
+        "Git_blob_sha1": "b1541bc833789a9e3ef81098e4dc587225e06534"
+      },
+      "after": {
+        "path": "include/bsp/native_gui_icon_identity.hpp",
+        "bytes": 4357,
+        "sha256": "5ec6c0ca2f5dbb7ffc2e10bef861d8030e3e6d31ab0bdb69eeedabdd5d0bdc93",
+        "Git_blob_sha1": "c7b2f166b398c0cc7a5cfae4c4d8052cf1ec14c7"
+      }
+    },
+    {
+      "path": "src/native_gui_icon_identity.cpp",
+      "before": {
+        "path": "src/native_gui_icon_identity.cpp",
+        "bytes": 4230,
+        "sha256": "c7d9af9a64658bc1fd5806e2c13fd578392bb0665b6951bed4eea96408f20d04",
+        "Git_blob_sha1": "558a6e2505aaffc2acb38e674eb68a2fddd1d74f"
+      },
+      "after": {
+        "path": "src/native_gui_icon_identity.cpp",
+        "bytes": 5822,
+        "sha256": "bce98c1945240c91a05293da8fbf8eed319094f37c59acae105d570c32b4e15b",
+        "Git_blob_sha1": "60724973a2b927db0e77a9ad5a6219dd3f1f1922"
+      }
+    }
+  ],
+  "seams": [
+    {
+      "id": "H1_forward",
+      "path": "include/bsp/native_gui_icon_identity.hpp",
+      "offset_in_step_preimage": 105,
+      "old_utf8": "namespace bsp {\n",
+      "new_utf8": "namespace bsp {\nclass NativeGuiIconPreparedCancelCall;\n",
+      "before_sha256": "27d2f6e7313bf3d15a7b2247e233f2ab7eca110ffe6b1f91097e6e441620c54c",
+      "after_sha256": "2071bc0e4b3348cd4eb71093ff21f291312bca63caabd4dd4e9404bf5cb0f576"
+    },
+    {
+      "id": "H2_cold_API",
+      "path": "include/bsp/native_gui_icon_identity.hpp",
+      "offset_in_step_preimage": 2591,
+      "old_utf8": "    // Direct native scalar has NO count gate. Borrow stable/disjoint flags;\n",
+      "new_utf8": "    // Explicit Source-only opt-in, AFTER this reference's constructor and\n    // registry bind return. Caller must already retain this nonmoving reference,\n    // its SAME context/service and complete Native graph before this may throw.\n    // Prepares the service-owned node against EXACT private destruction_ cold,\n    // before any enclosing Native effect. No getter/count/owner/Origin issued.\n    // One attempt only; failure blocks later deletion without legacy fallback.\n    // The node permanently borrows destruction_: keep this object/acquired and\n    // service graph alive even after normal scalar return/registry retirement.\n    // No reset, normal disposition or outer-parent transport follows from it.\n    void prepare_cold_delete_call();\n    // Direct native scalar has NO count gate. Borrow stable/disjoint flags;\n",
+      "before_sha256": "2071bc0e4b3348cd4eb71093ff21f291312bca63caabd4dd4e9404bf5cb0f576",
+      "after_sha256": "a363384c5b5c2dfd52a0d7b11d3e0110b1d371742876aaa39a58c6c1b0417fd7"
+    },
+    {
+      "id": "H3_private_append",
+      "path": "include/bsp/native_gui_icon_identity.hpp",
+      "offset_in_step_preimage": 4068,
+      "old_utf8": "    NativeGuiIconDestroyAcquired destruction_;\n",
+      "new_utf8": "    NativeGuiIconDestroyAcquired destruction_;\n    // Source metadata only; old constructor/bind and Native acquisition stay exact.\n    bool cold_delete_preparation_entered_{};\n    NativeGuiIconPreparedCancelCall* prepared_delete_call_{};\n",
+      "before_sha256": "a363384c5b5c2dfd52a0d7b11d3e0110b1d371742876aaa39a58c6c1b0417fd7",
+      "after_sha256": "5ec6c0ca2f5dbb7ffc2e10bef861d8030e3e6d31ab0bdb69eeedabdd5d0bdc93"
+    },
+    {
+      "id": "C1_direct_include",
+      "path": "src/native_gui_icon_identity.cpp",
+      "offset_in_step_preimage": 0,
+      "old_utf8": "#include \"bsp/native_gui_icon_identity.hpp\"\n",
+      "new_utf8": "#include \"bsp/native_gui_icon_identity.hpp\"\n#include \"bsp/native_gui_icon_delayed_loads.hpp\"\n",
+      "before_sha256": "c7d9af9a64658bc1fd5806e2c13fd578392bb0665b6951bed4eea96408f20d04",
+      "after_sha256": "b2a7ba2590c8a27b7b3f0d1750af834c257d80403883f186f5e4f1eea8faae03"
+    },
+    {
+      "id": "C2_cold_method",
+      "path": "src/native_gui_icon_identity.cpp",
+      "offset_in_step_preimage": 3102,
+      "old_utf8": "void* NativeGuiIconReference::delete_scalar_00ab6100(const volatile Word& flags) {\n",
+      "new_utf8": "void NativeGuiIconReference::prepare_cold_delete_call() {\n    const bool fresh = phase_ == Phase::bound && !cold_delete_preparation_entered_;\n    cold_delete_preparation_entered_ = true; // Before even late Source admission.\n    try {\n        if (!fresh)\n            throw std::logic_error(\"Icon cold deletion preparation requires its retained fresh bound reference\");\n        auto& prepared = context_.storage.delayed.prepare_icon_cancel_call(\n            identity_, context_.storage, destruction_);\n        // Preparation owns no Native work. A nested Source denial cannot be\n        // swallowed into a successful preparation/pointer publication.\n        if (phase_ != Phase::bound)\n            throw std::logic_error(\"Icon cold deletion preparation lost its exclusive Source scope\");\n        prepared_delete_call_ = &prepared; // Publish only after normal preparation.\n    } catch (...) {\n        phase_ = Phase::failed; // Source denial only; leave destruction_ untouched.\n        throw; // Caller retains the already constructed graph; no cleanup/retry.\n    }\n}\nvoid* NativeGuiIconReference::delete_scalar_00ab6100(const volatile Word& flags) {\n",
+      "before_sha256": "b2a7ba2590c8a27b7b3f0d1750af834c257d80403883f186f5e4f1eea8faae03",
+      "after_sha256": "224358d5d9ce0d77f818077e1de8aa99907b9deb073e98a52b3679d788c379cd"
+    },
+    {
+      "id": "C3_pending_denial",
+      "path": "src/native_gui_icon_identity.cpp",
+      "offset_in_step_preimage": 4285,
+      "old_utf8": "        throw std::logic_error(\"Icon scalar deletion cannot replay entered or retired work\");\n    phase_ = Phase::destroying;\n",
+      "new_utf8": "        throw std::logic_error(\"Icon scalar deletion cannot replay entered or retired work\");\n    if (cold_delete_preparation_entered_ && !prepared_delete_call_) {\n        phase_ = Phase::failed; // Reject an in-progress/failed explicit cold route.\n        throw std::logic_error(\"Icon scalar deletion requires its completed cold preparation\");\n    }\n    phase_ = Phase::destroying;\n",
+      "before_sha256": "224358d5d9ce0d77f818077e1de8aa99907b9deb073e98a52b3679d788c379cd",
+      "after_sha256": "c6a1b8c685243ed460bf0edd9030ff98e6fa9f979ceb217d3022ea1b7d10db7a"
+    },
+    {
+      "id": "C4_actual_call",
+      "path": "src/native_gui_icon_identity.cpp",
+      "offset_in_step_preimage": 4686,
+      "old_utf8": "    try { result = delete_native_gui_icon_00ab6100(identity_, flags, context_.storage, destruction_); }\n",
+      "new_utf8": "    try {\n        if (prepared_delete_call_)\n            result = delete_native_gui_icon_prepared_00ab6100(\n                identity_, flags, context_.storage, destruction_, *prepared_delete_call_);\n        else\n            result = delete_native_gui_icon_00ab6100(identity_, flags, context_.storage, destruction_);\n    }\n",
+      "before_sha256": "c6a1b8c685243ed460bf0edd9030ff98e6fa9f979ceb217d3022ea1b7d10db7a",
+      "after_sha256": "bce98c1945240c91a05293da8fbf8eed319094f37c59acae105d570c32b4e15b"
+    }
+  ],
+  "intermediate_states": [
+    {
+      "id": "H1_forward",
+      "path": "include/bsp/native_gui_icon_identity.hpp",
+      "bytes": 3411,
+      "sha256": "2071bc0e4b3348cd4eb71093ff21f291312bca63caabd4dd4e9404bf5cb0f576"
+    },
+    {
+      "id": "H2_cold_API",
+      "path": "include/bsp/native_gui_icon_identity.hpp",
+      "bytes": 4165,
+      "sha256": "a363384c5b5c2dfd52a0d7b11d3e0110b1d371742876aaa39a58c6c1b0417fd7"
+    },
+    {
+      "id": "H3_private_append",
+      "path": "include/bsp/native_gui_icon_identity.hpp",
+      "bytes": 4357,
+      "sha256": "5ec6c0ca2f5dbb7ffc2e10bef861d8030e3e6d31ab0bdb69eeedabdd5d0bdc93"
+    },
+    {
+      "id": "C1_direct_include",
+      "path": "src/native_gui_icon_identity.cpp",
+      "bytes": 4279,
+      "sha256": "b2a7ba2590c8a27b7b3f0d1750af834c257d80403883f186f5e4f1eea8faae03"
+    },
+    {
+      "id": "C2_cold_method",
+      "path": "src/native_gui_icon_identity.cpp",
+      "bytes": 5347,
+      "sha256": "224358d5d9ce0d77f818077e1de8aa99907b9deb073e98a52b3679d788c379cd"
+    },
+    {
+      "id": "C3_pending_denial",
+      "path": "src/native_gui_icon_identity.cpp",
+      "bytes": 5604,
+      "sha256": "c6a1b8c685243ed460bf0edd9030ff98e6fa9f979ceb217d3022ea1b7d10db7a"
+    },
+    {
+      "id": "C4_actual_call",
+      "path": "src/native_gui_icon_identity.cpp",
+      "bytes": 5822,
+      "sha256": "bce98c1945240c91a05293da8fbf8eed319094f37c59acae105d570c32b4e15b"
+    }
+  ],
+  "per_file_state_count": 9,
+  "protected_witnesses": [
+    {
+      "signature": "Word profile(",
+      "bytes": 84,
+      "sha256": "06d40375557167013c918ba80a0ccd5b0c5f69c8c613c82515385dff6180179d",
+      "old_and_new_identical": true
+    },
+    {
+      "signature": "void require_slot(",
+      "bytes": 351,
+      "sha256": "0c531bc7a3a043cb7eaa2f40d5a17e1c9fe637a7315cfe71c57573ced7875bfc",
+      "old_and_new_identical": true
+    },
+    {
+      "signature": "std::atomic<std::int32_t>& count(",
+      "bytes": 934,
+      "sha256": "5a8bd890a360be2c22ec0df4977e86a59d3ca886eca5c5337d8cf923fb2351ac",
+      "old_and_new_identical": true
+    },
+    {
+      "signature": "void delete_vslot04(",
+      "bytes": 401,
+      "sha256": "035d15c03c2abf5ad7bda331318f972ce8a34be73b5898773cfe69e0b05ec3a0",
+      "old_and_new_identical": true
+    },
+    {
+      "signature": "NativeGuiIconReference::NativeGuiIconReference(",
+      "bytes": 244,
+      "sha256": "8b004e3d469fc3dc27a4ad26d0ea3821e88dceed895913bf71933cda77b95d07",
+      "old_and_new_identical": true
+    },
+    {
+      "signature": "NativeGuiIconReference::~NativeGuiIconReference()",
+      "bytes": 105,
+      "sha256": "d5219cab640fc84419bb203d66ee0eae41b488eb864121ff5ebc2fe793145c98",
+      "old_and_new_identical": true
+    },
+    {
+      "signature": "bool NativeGuiIconReference::retired()",
+      "bytes": 90,
+      "sha256": "c4b7a1fe01a1aa7afa47184acb18604ac28b50b1fa899e160aade2004bcb387c",
+      "old_and_new_identical": true
+    },
+    {
+      "signature": "bool NativeGuiIconReference::failed()",
+      "bytes": 88,
+      "sha256": "21bad2690e947c6e74168c41d18f0278e608bd3d8bea207fc39328dc8d748812",
+      "old_and_new_identical": true
+    },
+    {
+      "signature": "void NativeGuiIconReference::retire()",
+      "bytes": 221,
+      "sha256": "78151621342085983749a3c4e5569fe197105926eedac790dc44bd9f0e8f89ad",
+      "old_and_new_identical": true
+    },
+    {
+      "signature": "void NativeGuiIconReference::release_zero_references()",
+      "bytes": 411,
+      "sha256": "db67c90a13e5b1c24a0b37c565a59e422730ffef2d4b28a4e92ef48c860ce3ad",
+      "old_and_new_identical": true
+    },
+    {
+      "label": "scalar_existing_phase_guard",
+      "bytes": 126,
+      "sha256": "7e30c944502977a85cd5c1003a4ab125a002adabb7e96219b453294368e8b426",
+      "old_and_new_identical": true
+    },
+    {
+      "label": "scalar_catch_retire_return",
+      "bytes": 383,
+      "sha256": "44fd0fa1c8d24e9350ade19979f6941e567367a5f8a89664afc036992c3eb665",
+      "old_and_new_identical": true
+    }
+  ],
+  "doc": {
+    "path": "docs/CC16_GUI_ICON_IDENTITY_PREPARED_COLD.md",
+    "bytes": 3472,
+    "sha256": "944895d545c33e3f1222822d3d2ab163f45cb7246bfb063bd13fde621ed14275",
+    "Git_blob_sha1": "27d051dd2cef54d380ff38aca7827c0aad9e2285"
+  },
+  "reader": {
+    "bytes": 7377,
+    "sha256": "57e60c98883950ba6b9a0504b362e3b13abf01507589c1f835f237859c12c910",
+    "utf8": "from pathlib import Path\nimport subprocess,json,hashlib,sys\nrepo=Path.cwd();working=len(sys.argv)>1 and sys.argv[1]=='--working';ref='HEAD' if working or len(sys.argv)<2 else sys.argv[1]\nreport_path='reports/cc16_gui_icon_identity_prepared_cold.json'\nsha=lambda b:hashlib.sha256(b).hexdigest()\ndef git(*args):return subprocess.check_output(['git','-C',str(repo),*args])\ndef blob(path,rev):return git('show',rev+':'+path)\ndef read(path):return (repo/path).read_bytes() if working else blob(path,ref)\nr=json.loads(read(report_path));base=r['base_Main'];checks=[]\ndef check(ok,label):\n    assert ok,label\n    checks.append({'check':label,'passed':True})\ndef match(data,p):return len(data)==p['bytes'] and sha(data)==p['sha256']\ncheck(match(Path(__file__).read_bytes(),r['reader']),'Extracted reader raw bytes equal embedded immutable reader tuple')\ncheck(r['reader']['utf8'].encode()==Path(__file__).read_bytes(),'Embedded reader byte-identical UTF8LF')\ncheck(len(r['seams'])==7 and len(r['intermediate_states'])==7,'Exact7seams/9per-file states')\nsources={}\nfor p in r['Source_pairs']:\n    path=p['path'];a=blob(path,base);b=read(path);sources[path]=(a,b)\n    check(match(a,p['before']) and match(b,p['after']),'Full Git/raw source pair '+path)\n    check(b'\\r' not in a+b,'Exact GitLF format '+path)\n    current=a;seams=[s for s in r['seams'] if s['path']==path]\n    for s in seams:\n        old=s['old_utf8'].encode();new=s['new_utf8'].encode();at=s['offset_in_step_preimage']\n        check(sha(current)==s['before_sha256'] and current.count(old)==1 and current[at:at+len(old)]==old,'Forward exact positional preimage '+s['id'])\n        current=current[:at]+new+current[at+len(old):]\n        check(sha(current)==s['after_sha256'],'Forward intermediate '+s['id'])\n    check(current==b,'Whole source forward '+path)\n    for s in reversed(seams):\n        old=s['old_utf8'].encode();new=s['new_utf8'].encode();at=s['offset_in_step_preimage']\n        check(current[at:at+len(new)]==new,'Reverse exact positional postimage '+s['id'])\n        current=current[:at]+old+current[at+len(new):]\n        check(sha(current)==s['before_sha256'],'Reverse intermediate '+s['id'])\n    check(current==a,'Whole source inverse '+path)\ndef body(data,sig):\n    t=data.decode();lo=t.index(sig);i=t.index('{',lo)+1;depth=1\n    while depth:\n        if t[i]=='{':depth+=1\n        elif t[i]=='}':depth-=1\n        i+=1\n    return t[lo:i].encode()\na,b=sources['src/native_gui_icon_identity.cpp']\nfor w in r['protected_witnesses']:\n    if 'signature' in w:\n        aa=body(a,w['signature']);bb=body(b,w['signature']);check(aa==bb and match(bb,w),'Protected whole old body '+w['signature'])\n    else:\n        if w['label']=='scalar_existing_phase_guard':region=b'    if (phase_ != Phase::bound)\\n        throw std::logic_error(\"Icon scalar deletion cannot replay entered or retired work\");\\n'\n        else:\n            lo=a.index(b'    catch (...) {',a.index(b'void* NativeGuiIconReference::delete_scalar_00ab6100'));region=a[lo:a.index(b'void NativeGuiIconReference::release_zero_references()')]\n        check(b.count(region)==1 and match(region,w),'Protected scalar region '+w['label'])\nmethod=body(b,'void NativeGuiIconReference::prepare_cold_delete_call()')\ncheck(method.index(b'cold_delete_preparation_entered_ = true')<method.index(b'if (!fresh)'),'Negative preparation mark before Source admission')\ncheck(method.index(b'prepare_icon_cancel_call(')<method.index(b'prepared_delete_call_ = &prepared'),'Genuine preparer before pointer commit')\ncheck(method.count(b'identity_, context_.storage, destruction_')==1,'Exact private identity/storage/acquired borrows')\ncheck(b'std::current_exception' not in method and b'phase_ = Phase::failed' in method,'Cold failure denies without Native acquired mutation/diagnostic copy')\nscalar=body(b,'void* NativeGuiIconReference::delete_scalar_00ab6100(')\ncheck(scalar.index(b'if (cold_delete_preparation_entered_ && !prepared_delete_call_)')<scalar.index(b'phase_ = Phase::destroying'),'Pending explicit route denied before Native entry')\ncheck(scalar.count(b'delete_native_gui_icon_prepared_00ab6100(')==scalar.count(b'delete_native_gui_icon_00ab6100(')==1,'One real v2 call and one exact legacy default call')\ncheck(scalar.index(b'if (prepared_delete_call_)')<scalar.index(b'delete_native_gui_icon_prepared_00ab6100(')<scalar.index(b'else\\n            result = delete_native_gui_icon_00ab6100('),'Selected v2 branch only; no failure fallback')\nfor p in r['historical']['a6f_17_Source_pins']:\n    check(match(blob(p['path'],r['historical']['a6f_Main']),p),'Historical a6f source pin '+p['path'])\nfor p in r['published_base_17_Source_pins']:\n    check(match(blob(p['path'],base),p),'Actual published a8 source pin '+p['path'])\nfor p in r['published_nonowned_15_dependencies']:\n    check(match(read(p['path']),p),'Current packet preserves real published dependency '+p['path'])\nh=r['historical']['v2_manifest'];raw=h['utf8'].encode();check(match(raw,h),'Included self-contained11430B historical dependency manifest')\nhm=json.loads(raw);check(hm['four_postimages']==r['historical']['v2_four_Source_pins'],'Historical manifest four tuples exact')\nfor p in r['published_v2_four_Source_pins']:\n    cur=blob(p['path'],base);check(match(cur,p),'Actual published v2 provider '+p['path'])\n    old=next(q for q in r['historical']['v2_four_Source_pins'] if q['path']==p['path'])\n    if p['path']=='src/native_gui_icon_delayed_loads.cpp':\n        line=r['v2_include_correction']['line_utf8'].encode();check(cur.count(line)==1 and match(cur.replace(line,b'',1),old),'Only48B include correction inverses full historical serviceCPP')\n    else:check(match(cur,old),'Other published v2 provider exactly historical '+p['path'])\ncheck(match(read(r['doc']['path']),r['doc']),'Exact owned author document')\ncheck(all(not v for v in r['credit_and_activation_gates'].values()),'No Original/helper/vendor/CG/duplicate/ABI/Origin/runtime/activation credit')\ntree_inverse=False\nif not working:\n    def tree(rev):\n        result={}\n        for z in git('ls-tree','-r','--full-tree','-z',rev).split(b'\\0'):\n            if z:\n                desc,path=z.split(b'\\t',1);result[path.decode()]=desc.decode()\n        return result\n    before=tree(base);after=tree(ref);owned=set(r['owned_paths'])\n    changed={p for p in before.keys()|after.keys() if before.get(p)!=after.get(p)}\n    check(changed==owned,'Exactly4 owned paths differ from exact published base tree')\n    for p in owned:\n        if p in before:after[p]=before[p]\n        else:after.pop(p)\n    check(after==before,'Complete four-path recursive tree inverse equals exact published base tree')\n    tree_inverse=True\nresult={'all_passed':True,'mode':'working' if working else 'immutable_Git','ref':ref,'base':base,'checks':len(checks),'full_four_path_tree_inverse':tree_inverse,'reader_sha256':sha(Path(__file__).read_bytes()),'report_sha256':sha(read(report_path)),'Source_after_pins':[p['after']|{'path':p['path']} for p in r['Source_pairs']],'no_CPP_Native_provider_compiler_runtime_execution':True}\ntarget=repo/'local/output/cc16_gui_icon_identity_prepared_cold_20261031'/('reader_working_result.json' if working else 'reader_git_result.json');target.parent.mkdir(parents=True,exist_ok=True);target.write_text(json.dumps({'result':result,'checks':checks},indent=2)+'\\n',encoding='utf-8',newline='\\n')\nprint(json.dumps(result,indent=2))\n",
+    "format": "raw UTF8LF; extract with write_bytes"
+  },
+  "historical": {
+    "a6f_Main": "a6f59bb18bc124d208eea75588333b0931aefa33",
+    "proposal_patch": {
+      "bytes": 4570,
+      "sha256": "b624395579ad34f7cf3447be0f28d989b0bbe3b9918bc27008fed17c6c05fc65"
+    },
+    "proposal_report": {
+      "path": "historical/proposal_report.json",
+      "bytes": 9587,
+      "sha256": "4c13bb0f851f613869e28120671c9ec375f00751d216a322a40f3849f8b4dee1",
+      "Git_blob_sha1": "07cb3ec8d4341e0f47e912d3186c060af3d7aac2"
+    },
+    "proposal_manifest": {
+      "path": "historical/proposal_manifest.json",
+      "bytes": 5870,
+      "sha256": "becc6338527ab487f1e7bf75205b1318e95aa57c3bbd47c71de28f02f417ceed",
+      "Git_blob_sha1": "72be6a8a8ef788ccd975fe2bc835f4142b5fcc22"
+    },
+    "a6f_17_Source_pins": [
+      {
+        "path": "include/bsp/native_gui_icon_identity.hpp",
+        "bytes": 3372,
+        "sha256": "27d2f6e7313bf3d15a7b2247e233f2ab7eca110ffe6b1f91097e6e441620c54c",
+        "Git_blob_sha1": "b1541bc833789a9e3ef81098e4dc587225e06534"
+      },
+      {
+        "path": "src/native_gui_icon_identity.cpp",
+        "bytes": 4230,
+        "sha256": "c7d9af9a64658bc1fd5806e2c13fd578392bb0665b6951bed4eea96408f20d04",
+        "Git_blob_sha1": "558a6e2505aaffc2acb38e674eb68a2fddd1d74f"
+      },
+      {
+        "path": "include/bsp/native_gui_icon_storage.hpp",
+        "bytes": 8253,
+        "sha256": "622aaaefad6bfb4100f272f56207bcd5387710b8840092291c5615c0c49f8662",
+        "Git_blob_sha1": "e9a622c225834efd751c92c5a9db5dddddd0bc94"
+      },
+      {
+        "path": "src/native_gui_icon_storage.cpp",
+        "bytes": 16168,
+        "sha256": "bfbc913bf7baf77c96875cef95f6ed503bb3690f66b7fa7c42e09584c76bbb5c",
+        "Git_blob_sha1": "8e8ca499a6a500ef2d7cb1ccff3dba56afa184d4"
+      },
+      {
+        "path": "include/bsp/native_gui_widget_lifetime_dispatch.hpp",
+        "bytes": 6288,
+        "sha256": "9d2c05097f3880a57bc79a5cd095bee33858a3b0300ed77af887f90fec3e291c",
+        "Git_blob_sha1": "bd1b560ee54acf5c4189ecc2a130a406a70049d4"
+      },
+      {
+        "path": "src/native_gui_widget_lifetime_dispatch.cpp",
+        "bytes": 9192,
+        "sha256": "f850db8bbd894bf91a96f730b8783cc7b66cb595c3c2a07973e33d33d9ad4803",
+        "Git_blob_sha1": "b68e27db072d9cf5f549d7ed8806faf36474b530"
+      },
+      {
+        "path": "include/bsp/native_gui_widget_lifetime.hpp",
+        "bytes": 10153,
+        "sha256": "eb41bcd6bea8ecff99ab0b1dca322316a12c86a3da54a0229a1a59e2519f336a",
+        "Git_blob_sha1": "3f2e5eaf5756641377cafb0cac7cdb10840bda6f"
+      },
+      {
+        "path": "src/native_gui_widget_lifetime.cpp",
+        "bytes": 19237,
+        "sha256": "4cc4073e96b0441595743d967ae2cbf07eaf313671e63bd99891cbe06fb912b7",
+        "Git_blob_sha1": "084e85da41c26b91eb83e2f9f865644997b59ab0"
+      },
+      {
+        "path": "include/bsp/game_native_gui_icon_process.hpp",
+        "bytes": 3975,
+        "sha256": "64ea6df52c7f26f2a25fa8f485bb6022116178887d828f031fe8c5b4413db441",
+        "Git_blob_sha1": "86ea513e79e4b8c15be217b3a5daa744171ea94d"
+      },
+      {
+        "path": "src/game_native_gui_icon_process.cpp",
+        "bytes": 4452,
+        "sha256": "771ae831af661e9420fb8a58d67bd10511456ae83e9764acb3245ded32b71655",
+        "Git_blob_sha1": "3bf20aa83282178518eb25f098337d6928af3c48"
+      },
+      {
+        "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+        "bytes": 8671,
+        "sha256": "c90af3cb31bb60f3c48f4146fe5b61bd0372e7f017906c8491bdb705401e2374",
+        "Git_blob_sha1": "da74313bf9fb8d144c0cb37bbd54156f8b2c185f"
+      },
+      {
+        "path": "src/native_gui_icon_delayed_loads.cpp",
+        "bytes": 17409,
+        "sha256": "42a3ea48aba347a4adfb807e9bc84b95ee4edf33efc66312a2a1f13b6f0dfcf1",
+        "Git_blob_sha1": "68b15fd9b445bb8057b0c57602ce9bf2b6b1a1a0"
+      },
+      {
+        "path": "src/game_native_gui_page_application.cpp",
+        "bytes": 72373,
+        "sha256": "0f770bd8713656eeb56b77a97109eb7168e1be5d53d96305e4105edbe44b1668",
+        "Git_blob_sha1": "996fbbdec1f9160540da07b0842295920734eead"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "bytes": 191046,
+        "sha256": "90eba0c691b64c3ab96cc391af3a4eb55e0f174f8acd2a7c83bb72e25c8da78a",
+        "Git_blob_sha1": "044b4ea5102fc8882856b632e775809a2db7f5b0"
+      },
+      {
+        "path": "include/bsp/game_hosts.hpp",
+        "bytes": 48628,
+        "sha256": "d9b6f5aba28876194548d789ef79ebd3f85ddd47c292fe716dce13edc9e4b919",
+        "Git_blob_sha1": "06f58246fe25f488a0f29847a413c846da2bbbd0"
+      },
+      {
+        "path": "include/bsp/native_gui_anim_icon_storage.hpp",
+        "bytes": 4575,
+        "sha256": "744842b474ecd5ac956a1e7ec154c1c7c05e9571d0827f2f4c664c753e531165",
+        "Git_blob_sha1": "df3773feae18b154e15ea4efce7aa6802cdd6a76"
+      },
+      {
+        "path": "src/native_gui_anim_icon_storage.cpp",
+        "bytes": 7130,
+        "sha256": "6844c4dc961db7bc710ed71791f2de53b58de3ba19f27c14ec36083804b0bd24",
+        "Git_blob_sha1": "43fdfd1aad79ca80703cec61e0483ba29a1e5c52"
+      }
+    ],
+    "v2_manifest": {
+      "path": "historical/dependency_v2/manifest.json",
+      "bytes": 11430,
+      "sha256": "a07ecb41ea5af8b48bd8812b2e8fc5481158e77293ed3486f6e2c21e2ff2faa8",
+      "utf8": "{\n  \"kind\": \"FROZEN ignored Source66 V2 R1 correction; no tracked Source/activation grant\",\n  \"baseline\": \"a6f59bb18bc124d208eea75588333b0931aefa33\",\n  \"real_parent_provider_commit\": \"aa9415787d9d40935043c46cd78ce4f6e1c9dddf\",\n  \"v1_directory\": \"J:\\\\PROG\\\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\\\local\\\\output\\\\cc16_gui_icon_prepared_parent_caller_candidate_20261031\",\n  \"v1_status\": \"historical failed R1 candidate; all 50 files unchanged\",\n  \"v1_manifest_sha256\": \"3f6024176c7cbfde091c2f209c7aef9c7159357c031c4ee20c2b1fb743d460ef\",\n  \"four_postimages\": [\n    {\n      \"path\": \"include/bsp/native_gui_icon_delayed_loads.hpp\",\n      \"bytes\": 11927,\n      \"sha256\": \"cd2726e79c917d705dc11afc2b136ca6db66145530fc914ce42445b6a4a8ea0b\"\n    },\n    {\n      \"path\": \"src/native_gui_icon_delayed_loads.cpp\",\n      \"bytes\": 28669,\n      \"sha256\": \"076c43a63b9f9257107c6ba535477dc24a6f7d0880e43813072d0442af47deaa\"\n    },\n    {\n      \"path\": \"include/bsp/native_gui_icon_storage.hpp\",\n      \"bytes\": 8923,\n      \"sha256\": \"36efeb861e01b14348e370d169c9002b8ac436a29b2f9f3be1d5aac8d7976bfc\"\n    },\n    {\n      \"path\": \"src/native_gui_icon_storage.cpp\",\n      \"bytes\": 19689,\n      \"sha256\": \"cc847b8f5fb19055a1116376b2d3a8eff181f045695fe73394ba04996728a492\"\n    }\n  ],\n  \"full_four_pair_forward_inverse_checks\": 94,\n  \"Source_private_metadata_static_symbolic_checks\": 107,\n  \"full_candidate_patch\": {\n    \"path\": \"proposal.patch\",\n    \"bytes\": 23101,\n    \"sha256\": \"f78da43e788f94c9ebafb9aa1da5e640827c3704f70071d05d20831594d29d1c\"\n  },\n  \"tight_v1_to_v2_delta\": {\n    \"path\": \"v1_to_v2_active_scope.patch\",\n    \"bytes\": 6946,\n    \"sha256\": \"a001b7657447b0b4c802d41e23059128884af5abf8fe7d25a979c8914b5bab97\"\n  },\n  \"changed_from_v1_paths\": [\n    \"include/bsp/native_gui_icon_delayed_loads.hpp\",\n    \"src/native_gui_icon_delayed_loads.cpp\"\n  ],\n  \"Icon_pair_and_v1_50_files_exact\": true,\n  \"normal_disposition_activation_ready\": false,\n  \"tracked_status_clean\": true,\n  \"compiler_Native_runtime_Origin_ABI_gameplay_proof\": false,\n  \"ignored_files\": [\n    {\n      \"path\": \"00ab5e70_live_assembly.txt\",\n      \"bytes\": 1125,\n      \"sha256\": \"c8016806627ed5f4fdd06da33342fe2deaf3375540bf76294ba9046fd69f293f\"\n    },\n    {\n      \"path\": \"00ab6100_live_assembly.txt\",\n      \"bytes\": 283,\n      \"sha256\": \"084da3ef67ce637cbb7d85ea1d5b43adc5e68042258441fc657a94fbc21db02e\"\n    },\n    {\n      \"path\": \"baseline\\\\include\\\\bsp\\\\native_gui_icon_delayed_loads.hpp\",\n      \"bytes\": 8671,\n      \"sha256\": \"c90af3cb31bb60f3c48f4146fe5b61bd0372e7f017906c8491bdb705401e2374\"\n    },\n    {\n      \"path\": \"baseline\\\\include\\\\bsp\\\\native_gui_icon_storage.hpp\",\n      \"bytes\": 8253,\n      \"sha256\": \"622aaaefad6bfb4100f272f56207bcd5387710b8840092291c5615c0c49f8662\"\n    },\n    {\n      \"path\": \"baseline\\\\src\\\\native_gui_icon_delayed_loads.cpp\",\n      \"bytes\": 17409,\n      \"sha256\": \"42a3ea48aba347a4adfb807e9bc84b95ee4edf33efc66312a2a1f13b6f0dfcf1\"\n    },\n    {\n      \"path\": \"baseline\\\\src\\\\native_gui_icon_storage.cpp\",\n      \"bytes\": 16168,\n      \"sha256\": \"bfbc913bf7baf77c96875cef95f6ed503bb3690f66b7fa7c42e09584c76bbb5c\"\n    },\n    {\n      \"path\": \"baseline.json\",\n      \"bytes\": 1872,\n      \"sha256\": \"5ee536e4cfa28655ae7b9de01f0c19b3191f43dd80699ee45596d035dd1d9439\"\n    },\n    {\n      \"path\": \"build_candidate.py\",\n      \"bytes\": 6018,\n      \"sha256\": \"f5704142228f6033c7c1be94c815efc05d64965bb6a1d23f215aa164a6bab83b\"\n    },\n    {\n      \"path\": \"build_report.py\",\n      \"bytes\": 9566,\n      \"sha256\": \"a1d5735f41f3741b3c5954e4fc58269f4df6060b5d57bc9d0533a3b01985292f\"\n    },\n    {\n      \"path\": \"callback_state_proof.json\",\n      \"bytes\": 7583,\n      \"sha256\": \"003a7cf9f51210088337dc79f1207ead9892c8c4a2c15e2dc96c781836d782f9\"\n    },\n    {\n      \"path\": \"candidate\\\\include\\\\bsp\\\\native_gui_icon_delayed_loads.hpp\",\n      \"bytes\": 11927,\n      \"sha256\": \"cd2726e79c917d705dc11afc2b136ca6db66145530fc914ce42445b6a4a8ea0b\"\n    },\n    {\n      \"path\": \"candidate\\\\include\\\\bsp\\\\native_gui_icon_storage.hpp\",\n      \"bytes\": 8923,\n      \"sha256\": \"36efeb861e01b14348e370d169c9002b8ac436a29b2f9f3be1d5aac8d7976bfc\"\n    },\n    {\n      \"path\": \"candidate\\\\src\\\\native_gui_icon_delayed_loads.cpp\",\n      \"bytes\": 28669,\n      \"sha256\": \"076c43a63b9f9257107c6ba535477dc24a6f7d0880e43813072d0442af47deaa\"\n    },\n    {\n      \"path\": \"candidate\\\\src\\\\native_gui_icon_storage.cpp\",\n      \"bytes\": 19689,\n      \"sha256\": \"cc847b8f5fb19055a1116376b2d3a8eff181f045695fe73394ba04996728a492\"\n    },\n    {\n      \"path\": \"coupling_protocol.txt\",\n      \"bytes\": 6862,\n      \"sha256\": \"6c3cb6a72d40f1c27f2b77006b00003c6b87a55300541a219621120188d1e6a8\"\n    },\n    {\n      \"path\": \"frame_provider\\\\candidate\\\\include\\\\bsp\\\\native_gui_widget_lifetime.hpp\",\n      \"bytes\": 10153,\n      \"sha256\": \"eb41bcd6bea8ecff99ab0b1dca322316a12c86a3da54a0229a1a59e2519f336a\"\n    },\n    {\n      \"path\": \"frame_provider\\\\candidate\\\\src\\\\native_gui_widget_lifetime.cpp\",\n      \"bytes\": 19237,\n      \"sha256\": \"4cc4073e96b0441595743d967ae2cbf07eaf313671e63bd99891cbe06fb912b7\"\n    },\n    {\n      \"path\": \"frame_provider\\\\coupling_contract.txt\",\n      \"bytes\": 3092,\n      \"sha256\": \"44691189c126138f563db615cc497366bb1c541f1093336277b6ffc02a09f164\"\n    },\n    {\n      \"path\": \"frame_provider\\\\create_proposal.py\",\n      \"bytes\": 6768,\n      \"sha256\": \"e9f00bf25acdc80e6cd1431f27f6c3b35ce70b97c12a3fe6e5a2d79efe65fee5\"\n    },\n    {\n      \"path\": \"frame_provider\\\\preimages\\\\include\\\\bsp\\\\native_gui_widget_lifetime.hpp\",\n      \"bytes\": 7899,\n      \"sha256\": \"c9155c508f98bb913ebe8ae71cd6c98e050d86ce25a746a5c8f4909f37242d1a\"\n    },\n    {\n      \"path\": \"frame_provider\\\\preimages\\\\src\\\\native_gui_widget_lifetime.cpp\",\n      \"bytes\": 17866,\n      \"sha256\": \"e8a53199f409248cc89b6d64c326a0b037970703e3b34ca628162a730907df68\"\n    },\n    {\n      \"path\": \"frame_provider\\\\proposal.json\",\n      \"bytes\": 9884,\n      \"sha256\": \"152c41d9a3a7730acffb2ab2e395173835bdef43e17dda5400e6362b3aa010d6\"\n    },\n    {\n      \"path\": \"frame_provider\\\\proposal.patch\",\n      \"bytes\": 5509,\n      \"sha256\": \"6f43f9a7c78eae5b646af7de908ec2a297dd1e7d3477f8e741f9368686158dfb\"\n    },\n    {\n      \"path\": \"frame_provider\\\\seal.py\",\n      \"bytes\": 4737,\n      \"sha256\": \"22abcc9c1c667396121eea305c3229a78dac2031599a22f572105c9bf0388f76\"\n    },\n    {\n      \"path\": \"frame_provider\\\\static_verification.json\",\n      \"bytes\": 11140,\n      \"sha256\": \"22c4a84e0fe4d0c80a2b083775fae8066bdcff32763000ac6147d7aac0d1903a\"\n    },\n    {\n      \"path\": \"frame_provider\\\\verify.py\",\n      \"bytes\": 7051,\n      \"sha256\": \"601af7c2dfacf100bfb7da6686404e954bb0a60dd0e6ed78223b1204f20b27f7\"\n    },\n    {\n      \"path\": \"new_call_impl.txt\",\n      \"bytes\": 1772,\n      \"sha256\": \"00a2ce7c25d1d93dc89e6c3a12f0e1f10c5e83ff98f17fba6973d69b99db5b02\"\n    },\n    {\n      \"path\": \"new_icon_methods.txt\",\n      \"bytes\": 3522,\n      \"sha256\": \"09d31801eda3cb2bc029891a767028be0cb247d45dc210aceb39ec36c1cfff6c\"\n    },\n    {\n      \"path\": \"new_service_header.txt\",\n      \"bytes\": 2411,\n      \"sha256\": \"05192e0efd182772d0b7ab9295d0b5e1e45b8c0b40828156a4c0d2259a06e1ac\"\n    },\n    {\n      \"path\": \"new_service_methods.txt\",\n      \"bytes\": 8830,\n      \"sha256\": \"0a46cab8bf3626eedf9d56e1d4c35f97e761636f29135b4be7afb06294a3e856\"\n    },\n    {\n      \"path\": \"postimages.json\",\n      \"bytes\": 658,\n      \"sha256\": \"2b6a5e54aedc1d5ee7d93e9ffcef2ad55ee38737dd6e4e465b732ded12fe0af9\"\n    },\n    {\n      \"path\": \"proposal.json\",\n      \"bytes\": 47818,\n      \"sha256\": \"21a4c35328ad06f59370f8c8cd2c27a0b16d60be119afdf07e2964b864cddadc\"\n    },\n    {\n      \"path\": \"proposal.patch\",\n      \"bytes\": 23101,\n      \"sha256\": \"f78da43e788f94c9ebafb9aa1da5e640827c3704f70071d05d20831594d29d1c\"\n    },\n    {\n      \"path\": \"protected_regions.json\",\n      \"bytes\": 4126,\n      \"sha256\": \"efe1dd11314889cdb36576aef7e20d4fc5b33d266b0e2bdc6efd37e162b05613\"\n    },\n    {\n      \"path\": \"providers\\\\include\\\\bsp\\\\game_native_gui_icon_process.hpp\",\n      \"bytes\": 3975,\n      \"sha256\": \"64ea6df52c7f26f2a25fa8f485bb6022116178887d828f031fe8c5b4413db441\"\n    },\n    {\n      \"path\": \"providers\\\\include\\\\bsp\\\\native_gui_icon_delayed_loads_getter_storage.hpp\",\n      \"bytes\": 6233,\n      \"sha256\": \"5a03ce3ed5741a80161ff7d1f0a0c0ec2dcf122867d3306c87a53918ff2a1800\"\n    },\n    {\n      \"path\": \"providers\\\\include\\\\bsp\\\\native_gui_icon_delayed_loads_owner_cancel_storage.hpp\",\n      \"bytes\": 2750,\n      \"sha256\": \"189517667dcd8c2b944a32dd9fd1c043ffefc53d02155220207e513243eef5ba\"\n    },\n    {\n      \"path\": \"providers\\\\include\\\\bsp\\\\native_gui_icon_identity.hpp\",\n      \"bytes\": 3372,\n      \"sha256\": \"27d2f6e7313bf3d15a7b2247e233f2ab7eca110ffe6b1f91097e6e441620c54c\"\n    },\n    {\n      \"path\": \"providers\\\\include\\\\bsp\\\\native_gui_widget_pools_cc13.hpp\",\n      \"bytes\": 12674,\n      \"sha256\": \"fd2be32f59443f79787b5006a628b9d0f78597b4d4dff62d09dbc65831c1fed3\"\n    },\n    {\n      \"path\": \"providers\\\\include\\\\bsp\\\\native_string.hpp\",\n      \"bytes\": 8771,\n      \"sha256\": \"d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414\"\n    },\n    {\n      \"path\": \"providers\\\\src\\\\game_native_gui_icon_process.cpp\",\n      \"bytes\": 4452,\n      \"sha256\": \"771ae831af661e9420fb8a58d67bd10511456ae83e9764acb3245ded32b71655\"\n    },\n    {\n      \"path\": \"providers\\\\src\\\\native_gui_icon_delayed_loads_getter_storage.cpp\",\n      \"bytes\": 6259,\n      \"sha256\": \"9ccb3d4e8d809b46a12444531af67b98f1e0badc63cf7e9ac79c84e853bfd70d\"\n    },\n    {\n      \"path\": \"providers\\\\src\\\\native_gui_icon_delayed_loads_owner_cancel_storage.cpp\",\n      \"bytes\": 4666,\n      \"sha256\": \"83caea45c5ebeebbd4cd5c936ea520771e3f3e06f1f1d77851a2f432605832c4\"\n    },\n    {\n      \"path\": \"providers\\\\src\\\\native_gui_icon_identity.cpp\",\n      \"bytes\": 4230,\n      \"sha256\": \"c7d9af9a64658bc1fd5806e2c13fd578392bb0665b6951bed4eea96408f20d04\"\n    },\n    {\n      \"path\": \"providers\\\\src\\\\native_gui_widget_pools_cc13.cpp\",\n      \"bytes\": 3180,\n      \"sha256\": \"e9fa3a2f4e8d0f644d601aa974bab567f8cd36e5c9ea958ae06aacaca4b5e925\"\n    },\n    {\n      \"path\": \"providers\\\\src\\\\native_string.cpp\",\n      \"bytes\": 9121,\n      \"sha256\": \"31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43\"\n    },\n    {\n      \"path\": \"seal_candidate.py\",\n      \"bytes\": 3577,\n      \"sha256\": \"71b21eef7a285d7f72538e700b40fed692955884cbf8891e8691dacbc1566b3a\"\n    },\n    {\n      \"path\": \"seams.json\",\n      \"bytes\": 26888,\n      \"sha256\": \"8e48c8473ec5bd1d58aa49079f7448fd0261604d8532644b2dcc4981c1de3348\"\n    },\n    {\n      \"path\": \"static_verification.json\",\n      \"bytes\": 456,\n      \"sha256\": \"f845df75d621da516d03c6da9c20a0b35159bbcfca152843028d92eedda7f1f2\"\n    },\n    {\n      \"path\": \"v1_frozen_inventory.json\",\n      \"bytes\": 8303,\n      \"sha256\": \"e488142b07c33928515b20def3c96a560a10f847a64eac7e5b00df3c6b8ffd9c\"\n    },\n    {\n      \"path\": \"v1_to_v2_active_scope.patch\",\n      \"bytes\": 6946,\n      \"sha256\": \"a001b7657447b0b4c802d41e23059128884af5abf8fe7d25a979c8914b5bab97\"\n    },\n    {\n      \"path\": \"v2_review_notes.txt\",\n      \"bytes\": 2669,\n      \"sha256\": \"5fb0712cf265b7afc49a3dd87795343f17e5edaa10640162140150f1bc479179\"\n    },\n    {\n      \"path\": \"verify_active_scope.py\",\n      \"bytes\": 7421,\n      \"sha256\": \"164f011030735783e63d5769d0570f0a9a316b67b89f5a1fbceb30f17a766808\"\n    },\n    {\n      \"path\": \"verify_candidate.py\",\n      \"bytes\": 7647,\n      \"sha256\": \"2ff51e984099fe1da260224fd691be718a9b636ff3b34f2d2eba2a1c73eea47b\"\n    }\n  ],\n  \"file_count_excluding_manifest\": 54\n}\n"
+    },
+    "v2_four_Source_pins": [
+      {
+        "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+        "bytes": 11927,
+        "sha256": "cd2726e79c917d705dc11afc2b136ca6db66145530fc914ce42445b6a4a8ea0b"
+      },
+      {
+        "path": "src/native_gui_icon_delayed_loads.cpp",
+        "bytes": 28669,
+        "sha256": "076c43a63b9f9257107c6ba535477dc24a6f7d0880e43813072d0442af47deaa"
+      },
+      {
+        "path": "include/bsp/native_gui_icon_storage.hpp",
+        "bytes": 8923,
+        "sha256": "36efeb861e01b14348e370d169c9002b8ac436a29b2f9f3be1d5aac8d7976bfc"
+      },
+      {
+        "path": "src/native_gui_icon_storage.cpp",
+        "bytes": 19689,
+        "sha256": "cc847b8f5fb19055a1116376b2d3a8eff181f045695fe73394ba04996728a492"
+      }
+    ]
+  },
+  "published_base_17_Source_pins": [
+    {
+      "path": "include/bsp/native_gui_icon_identity.hpp",
+      "bytes": 3372,
+      "sha256": "27d2f6e7313bf3d15a7b2247e233f2ab7eca110ffe6b1f91097e6e441620c54c",
+      "Git_blob_sha1": "b1541bc833789a9e3ef81098e4dc587225e06534"
+    },
+    {
+      "path": "src/native_gui_icon_identity.cpp",
+      "bytes": 4230,
+      "sha256": "c7d9af9a64658bc1fd5806e2c13fd578392bb0665b6951bed4eea96408f20d04",
+      "Git_blob_sha1": "558a6e2505aaffc2acb38e674eb68a2fddd1d74f"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_storage.hpp",
+      "bytes": 8923,
+      "sha256": "36efeb861e01b14348e370d169c9002b8ac436a29b2f9f3be1d5aac8d7976bfc",
+      "Git_blob_sha1": "0a98345600a93dff4fc6c10ce3a0626d93fe9847"
+    },
+    {
+      "path": "src/native_gui_icon_storage.cpp",
+      "bytes": 19689,
+      "sha256": "cc847b8f5fb19055a1116376b2d3a8eff181f045695fe73394ba04996728a492",
+      "Git_blob_sha1": "1d61197d246f8c9789c733fa70919817a1581f73"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_lifetime_dispatch.hpp",
+      "bytes": 6288,
+      "sha256": "9d2c05097f3880a57bc79a5cd095bee33858a3b0300ed77af887f90fec3e291c",
+      "Git_blob_sha1": "bd1b560ee54acf5c4189ecc2a130a406a70049d4"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime_dispatch.cpp",
+      "bytes": 9192,
+      "sha256": "f850db8bbd894bf91a96f730b8783cc7b66cb595c3c2a07973e33d33d9ad4803",
+      "Git_blob_sha1": "b68e27db072d9cf5f549d7ed8806faf36474b530"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_lifetime.hpp",
+      "bytes": 10153,
+      "sha256": "eb41bcd6bea8ecff99ab0b1dca322316a12c86a3da54a0229a1a59e2519f336a",
+      "Git_blob_sha1": "3f2e5eaf5756641377cafb0cac7cdb10840bda6f"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "bytes": 19237,
+      "sha256": "4cc4073e96b0441595743d967ae2cbf07eaf313671e63bd99891cbe06fb912b7",
+      "Git_blob_sha1": "084e85da41c26b91eb83e2f9f865644997b59ab0"
+    },
+    {
+      "path": "include/bsp/game_native_gui_icon_process.hpp",
+      "bytes": 3975,
+      "sha256": "64ea6df52c7f26f2a25fa8f485bb6022116178887d828f031fe8c5b4413db441",
+      "Git_blob_sha1": "86ea513e79e4b8c15be217b3a5daa744171ea94d"
+    },
+    {
+      "path": "src/game_native_gui_icon_process.cpp",
+      "bytes": 4452,
+      "sha256": "771ae831af661e9420fb8a58d67bd10511456ae83e9764acb3245ded32b71655",
+      "Git_blob_sha1": "3bf20aa83282178518eb25f098337d6928af3c48"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "bytes": 11927,
+      "sha256": "cd2726e79c917d705dc11afc2b136ca6db66145530fc914ce42445b6a4a8ea0b",
+      "Git_blob_sha1": "08ddcf3c37fcf3b70dc4880fbba29f8c2b9d6267"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "bytes": 28717,
+      "sha256": "3bebb1d9e60fdf94456b5152658fee0d29189c8ddf780202bead119174090019",
+      "Git_blob_sha1": "d7eed63795d703683c1f06c6cbc04c00dfbbec7c"
+    },
+    {
+      "path": "src/game_native_gui_page_application.cpp",
+      "bytes": 72373,
+      "sha256": "0f770bd8713656eeb56b77a97109eb7168e1be5d53d96305e4105edbe44b1668",
+      "Git_blob_sha1": "996fbbdec1f9160540da07b0842295920734eead"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "bytes": 191046,
+      "sha256": "90eba0c691b64c3ab96cc391af3a4eb55e0f174f8acd2a7c83bb72e25c8da78a",
+      "Git_blob_sha1": "044b4ea5102fc8882856b632e775809a2db7f5b0"
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "bytes": 48628,
+      "sha256": "d9b6f5aba28876194548d789ef79ebd3f85ddd47c292fe716dce13edc9e4b919",
+      "Git_blob_sha1": "06f58246fe25f488a0f29847a413c846da2bbbd0"
+    },
+    {
+      "path": "include/bsp/native_gui_anim_icon_storage.hpp",
+      "bytes": 4575,
+      "sha256": "744842b474ecd5ac956a1e7ec154c1c7c05e9571d0827f2f4c664c753e531165",
+      "Git_blob_sha1": "df3773feae18b154e15ea4efce7aa6802cdd6a76"
+    },
+    {
+      "path": "src/native_gui_anim_icon_storage.cpp",
+      "bytes": 7130,
+      "sha256": "6844c4dc961db7bc710ed71791f2de53b58de3ba19f27c14ec36083804b0bd24",
+      "Git_blob_sha1": "43fdfd1aad79ca80703cec61e0483ba29a1e5c52"
+    }
+  ],
+  "published_nonowned_15_dependencies": [
+    {
+      "path": "include/bsp/native_gui_icon_storage.hpp",
+      "bytes": 8923,
+      "sha256": "36efeb861e01b14348e370d169c9002b8ac436a29b2f9f3be1d5aac8d7976bfc",
+      "Git_blob_sha1": "0a98345600a93dff4fc6c10ce3a0626d93fe9847"
+    },
+    {
+      "path": "src/native_gui_icon_storage.cpp",
+      "bytes": 19689,
+      "sha256": "cc847b8f5fb19055a1116376b2d3a8eff181f045695fe73394ba04996728a492",
+      "Git_blob_sha1": "1d61197d246f8c9789c733fa70919817a1581f73"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_lifetime_dispatch.hpp",
+      "bytes": 6288,
+      "sha256": "9d2c05097f3880a57bc79a5cd095bee33858a3b0300ed77af887f90fec3e291c",
+      "Git_blob_sha1": "bd1b560ee54acf5c4189ecc2a130a406a70049d4"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime_dispatch.cpp",
+      "bytes": 9192,
+      "sha256": "f850db8bbd894bf91a96f730b8783cc7b66cb595c3c2a07973e33d33d9ad4803",
+      "Git_blob_sha1": "b68e27db072d9cf5f549d7ed8806faf36474b530"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_lifetime.hpp",
+      "bytes": 10153,
+      "sha256": "eb41bcd6bea8ecff99ab0b1dca322316a12c86a3da54a0229a1a59e2519f336a",
+      "Git_blob_sha1": "3f2e5eaf5756641377cafb0cac7cdb10840bda6f"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "bytes": 19237,
+      "sha256": "4cc4073e96b0441595743d967ae2cbf07eaf313671e63bd99891cbe06fb912b7",
+      "Git_blob_sha1": "084e85da41c26b91eb83e2f9f865644997b59ab0"
+    },
+    {
+      "path": "include/bsp/game_native_gui_icon_process.hpp",
+      "bytes": 3975,
+      "sha256": "64ea6df52c7f26f2a25fa8f485bb6022116178887d828f031fe8c5b4413db441",
+      "Git_blob_sha1": "86ea513e79e4b8c15be217b3a5daa744171ea94d"
+    },
+    {
+      "path": "src/game_native_gui_icon_process.cpp",
+      "bytes": 4452,
+      "sha256": "771ae831af661e9420fb8a58d67bd10511456ae83e9764acb3245ded32b71655",
+      "Git_blob_sha1": "3bf20aa83282178518eb25f098337d6928af3c48"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "bytes": 11927,
+      "sha256": "cd2726e79c917d705dc11afc2b136ca6db66145530fc914ce42445b6a4a8ea0b",
+      "Git_blob_sha1": "08ddcf3c37fcf3b70dc4880fbba29f8c2b9d6267"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "bytes": 28717,
+      "sha256": "3bebb1d9e60fdf94456b5152658fee0d29189c8ddf780202bead119174090019",
+      "Git_blob_sha1": "d7eed63795d703683c1f06c6cbc04c00dfbbec7c"
+    },
+    {
+      "path": "src/game_native_gui_page_application.cpp",
+      "bytes": 72373,
+      "sha256": "0f770bd8713656eeb56b77a97109eb7168e1be5d53d96305e4105edbe44b1668",
+      "Git_blob_sha1": "996fbbdec1f9160540da07b0842295920734eead"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "bytes": 191046,
+      "sha256": "90eba0c691b64c3ab96cc391af3a4eb55e0f174f8acd2a7c83bb72e25c8da78a",
+      "Git_blob_sha1": "044b4ea5102fc8882856b632e775809a2db7f5b0"
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "bytes": 48628,
+      "sha256": "d9b6f5aba28876194548d789ef79ebd3f85ddd47c292fe716dce13edc9e4b919",
+      "Git_blob_sha1": "06f58246fe25f488a0f29847a413c846da2bbbd0"
+    },
+    {
+      "path": "include/bsp/native_gui_anim_icon_storage.hpp",
+      "bytes": 4575,
+      "sha256": "744842b474ecd5ac956a1e7ec154c1c7c05e9571d0827f2f4c664c753e531165",
+      "Git_blob_sha1": "df3773feae18b154e15ea4efce7aa6802cdd6a76"
+    },
+    {
+      "path": "src/native_gui_anim_icon_storage.cpp",
+      "bytes": 7130,
+      "sha256": "6844c4dc961db7bc710ed71791f2de53b58de3ba19f27c14ec36083804b0bd24",
+      "Git_blob_sha1": "43fdfd1aad79ca80703cec61e0483ba29a1e5c52"
+    }
+  ],
+  "historical_to_published_changed_paths": [
+    "include/bsp/native_gui_icon_storage.hpp",
+    "src/native_gui_icon_storage.cpp",
+    "include/bsp/native_gui_icon_delayed_loads.hpp",
+    "src/native_gui_icon_delayed_loads.cpp"
+  ],
+  "published_v2_four_Source_pins": [
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "bytes": 11927,
+      "sha256": "cd2726e79c917d705dc11afc2b136ca6db66145530fc914ce42445b6a4a8ea0b",
+      "Git_blob_sha1": "08ddcf3c37fcf3b70dc4880fbba29f8c2b9d6267"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "bytes": 28717,
+      "sha256": "3bebb1d9e60fdf94456b5152658fee0d29189c8ddf780202bead119174090019",
+      "Git_blob_sha1": "d7eed63795d703683c1f06c6cbc04c00dfbbec7c"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_storage.hpp",
+      "bytes": 8923,
+      "sha256": "36efeb861e01b14348e370d169c9002b8ac436a29b2f9f3be1d5aac8d7976bfc",
+      "Git_blob_sha1": "0a98345600a93dff4fc6c10ce3a0626d93fe9847"
+    },
+    {
+      "path": "src/native_gui_icon_storage.cpp",
+      "bytes": 19689,
+      "sha256": "cc847b8f5fb19055a1116376b2d3a8eff181f045695fe73394ba04996728a492",
+      "Git_blob_sha1": "1d61197d246f8c9789c733fa70919817a1581f73"
+    }
+  ],
+  "v2_include_correction": {
+    "line_utf8": "#include \"bsp/native_singleton_destruction.hpp\"\n",
+    "bytes": 48,
+    "only_one_line_removed_to_match_whole_historical_CPP": true
+  },
+  "prior_review_provenance": {
+    "Root_full_patch_contract_review": "zero findings; exact isolated89-check replay/result c8c8498228f95e25f5ea38c2a578377f952ce325b42f9f48694a956759cc4798",
+    "Raw95_ignored_independent_review": "136 own checks + exact89 replay; sealed receipt748B/f2672f426ea573b6a73e6950b84a5e93531c95187ebfdf9b4b6ea7f61e8076ac; no Source/activation grant inferred",
+    "historical_author_integration": "proposal only; this packet changes no reviewed Source byte"
+  },
+  "contract": {
+    "new_API": "void NativeGuiIconReference::prepare_cold_delete_call()",
+    "placement": "AFTER completed ctor/bind and real retained ownership; BEFORE enclosing Native effects, no constructor-time borrow",
+    "affinity": "exact private identity_/context_.storage/destruction_; provider enforces same service/strings/deletion arm and fresh destruction record",
+    "one_shot": "private negative marker before admission; failure sticky failed/rethrow; no legacy fallback, retry, reset or cleanup",
+    "selection": "prepared pointer selects actual v2 scalar; else exact old legacy statement; flagsHOME not read early",
+    "retention": "service-owned node permanently borrows destruction_. Reference/acquired/full graph survive normal prepared return and retire/unbind too",
+    "noexcept": "old zero-count callback remains exact Source noexcept/termination; not newly admitted Native failure transport"
+  },
+  "Source_ABI_limits": [
+    "two appended private Source metadata fields change C++ layout, not Native storage",
+    "no owner/currentholder/Original ABI/NoThrow/Origin capability issued",
+    "actual production reference/context construction and enclosing parent3arg selection absent",
+    "normal v2 node disposition deliberately absent; no disposal acknowledgment invented"
+  ],
+  "deferred_Root_checks": {
+    "compiler": true,
+    "actual_Core": true,
+    "retained_link": true,
+    "default_startup": true
+  },
+  "credit_and_activation_gates": {
+    "new_Original_body_credit": false,
+    "vendor": false,
+    "helper": false,
+    "CG": false,
+    "duplicate": false,
+    "OriginalABI": false,
+    "NativeOrigin": false,
+    "normal_disposition": false,
+    "production_default_selection": false,
+    "runtime_activation": false,
+    "gameplay": false
+  },
+  "worker_actions": {
+    "Source_changes_only_exact_two_files": true,
+    "CMake": false,
+    "shared_ledger": false,
+    "Ghidra": false,
+    "compiler": false,
+    "new_tests": false,
+    "provider_or_Game_execution": false
+  }
+}
