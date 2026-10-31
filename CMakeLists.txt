@@ -510,3 +510,7 @@ target_sources(bsp_core PRIVATE src/native_mission_lua_scalar_push.cpp)
 target_sources(bsp_core PRIVATE src/native_string_raw_resize_exact.cpp)
 
 target_sources(bsp_core PRIVATE src/native_mission_lua_to_string.cpp)
+
+target_sources(bsp_core PRIVATE src/native_mission_lua_caller_info.cpp)
+
+target_sources(bsp_core PRIVATE src/native_lua_variant_string_setter.cpp)
