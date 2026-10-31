@@ -1,0 +1,15 @@
+# Actual resource and ambient storage admission
+
+The actual3Ch resource and nested98h ambient now establish real Source carriers before their existing constructors. The sole actual atomic+4 is borrowed through private constructor-issued records retained by both mission lighting and GUI AC59A0. Full raw backlink/registry backing algorithms, selected cleanup, late scalar flags, extent end and optional real free remain coupled.
+
+The first compiler gate at f634d2d33 failed three invalid positive whole-atomic/carrier trivial-copy assertions before tests. Its log, receipt and possibly stale objects are preserved as failure evidence. The accepted correction c7a6f4862 uses the installed MSVC14.51 C++17 public int32 atomic member and individually trivial fields; atomic/carriers remain nontrivially-copyable. No arbitrary typed count preload, second count or atomic.store is introduced. Exact type/offset/full4B state and complete3Ch/98h/12B coverage assertions passed compilation.
+
+All registered Win32 Release targets and both existing suites passed at c7a6f4862 (10.59s). Primary and independent Source reviews accepted the exact corrected header and both real producers. The six canonical I386 objects are pinned in the report. The emitted constructors save every byte, default-initialize count0, then restore real fields with byte MOV loops before any Native observation; no provider/callback/FP/DF/control-mode operation occurs in that transient interval. Resource Native count1 precedes name-cell capture; ambient constant capture precedes Native owner stores. End is metadata-only, flags BYTE is read before end/free, and references retire without dead-payload reads.
+
+Primary and independent six-object critical Core graph reviews accepted with qualifications; the independent review and exact object/dump hashes are sealed in the report. Nine public roots passed a temporary retained link, with ten genuine direct helpers unforced. Canonical cache/project/map are restored with zero forced entries and all six Core objects unchanged. No new test or Native/provider/game entry ran.
+
+Two emitted comparison timings remain explicit: resource self-address CMP follows header zeros, and registry-list captured-head CMP follows count0. Operands are captured with no intervening callback, preserving the ordinary Source branch behavior. Literal original comparison order, incidental flags, hardware faults/private-stack/ABI/SEH or concurrent-observer equivalence is not proved.
+
+All old names/evidence prefixes and unrelated shard lines are retained. Locked annotation073630Z saved the correct BSP program and refreshed six exports; all six Original assembly files remain identical. Reconstruction ledgers and credit totals are unchanged.
+
+This closes the coupled carrier/provider prerequisite only. Matrix outer/factory/palette/raw-setter, actual Mission/family/root/child selection and credits, and fresh required activation/runtime gates remain separate. No startup switch changed, all nine Text flags stay false, and new Native/vendor-body credit is zero. The ongoing goal remains active.
