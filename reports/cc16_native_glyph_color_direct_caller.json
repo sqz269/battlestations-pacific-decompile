@@ -1,0 +1,1405 @@
+{
+  "schema_version": 1,
+  "kind": "bounded_source_caller_composition",
+  "packet": "codex-native-glyph-color-direct-caller",
+  "source_batch": 47,
+  "generated_utc": "2026-10-31T03:46:38.581977+00:00",
+  "authorization": "Root explicit Source47 approval; four files/address only, actual compiler/peer integration reserved to Root",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-native-glyph-color-direct-caller",
+  "branch": "agent/codex-native-glyph-color-direct-caller",
+  "baseline_ref": "8c565019f33d4edb1b8bd45055ac4d1c9cf27c2c",
+  "scope": {
+    "address": "00ab98f0",
+    "native_call_site": "00ab9e71",
+    "files": [
+      "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "src/native_gui_text_glyph_quad_storage.cpp",
+      "docs/CC16_NATIVE_GLYPH_COLOR_DIRECT_CALLER.md",
+      "reports/cc16_native_glyph_color_direct_caller.json"
+    ],
+    "source_seam_count": 6,
+    "new_native_body_recovery": false,
+    "Source46_files_modified": false
+  },
+  "static_proof": {
+    "baseline_ref": "8c565019f33d4edb1b8bd45055ac4d1c9cf27c2c",
+    "published_ref": "2a4390ccda43ad9d40ef90e2bb480b3cb42bf530",
+    "source45_ref": "88eb7ea72a3a07c26821568b705c0cb22a5e5684",
+    "primitive_ref": "03c8e5539cc58ccb773520501c5ae6b245f570c2",
+    "readiness_ref": "75b43874dc1215ba1caf5c82c8186bcf9a81962c",
+    "sources": [
+      {
+        "baseline": {
+          "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+          "bytes": 10679,
+          "sha256": "8e3475ad8bce88973b64ff9c0758ebda380b5baede302c7b926526b0e92fe783",
+          "git_blob": "a0eb6b9681b8e651df3fed6907298b08f974653e",
+          "ref": "8c565019f33d4edb1b8bd45055ac4d1c9cf27c2c"
+        },
+        "packet": {
+          "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+          "bytes": 11288,
+          "sha256": "7f327720df25cde3d156afa7220ce99caff0b1c5920ea2d7abeea0814cbec5f8",
+          "git_blob": "da2e215cbd9c92b36d90dba6c95546de2dfe52be"
+        },
+        "published_baseline_ref": "2a4390ccda43ad9d40ef90e2bb480b3cb42bf530",
+        "published_baseline_equal": true,
+        "source45_ref": "88eb7ea72a3a07c26821568b705c0cb22a5e5684",
+        "source45_equal": true
+      },
+      {
+        "baseline": {
+          "path": "src/native_gui_text_glyph_quad_storage.cpp",
+          "bytes": 29447,
+          "sha256": "52746b908db84c9275dc45aa9eb1c8fa01740fe63f7a716c9ff3e37a7a6f07b5",
+          "git_blob": "0d96c73d7b60fba9a6742b67a1c4beeff2827591",
+          "ref": "8c565019f33d4edb1b8bd45055ac4d1c9cf27c2c"
+        },
+        "packet": {
+          "path": "src/native_gui_text_glyph_quad_storage.cpp",
+          "bytes": 32415,
+          "sha256": "0b4a9aa487ad5892e2bdc33ff172e277df3305994776a47c869cb189510e5714",
+          "git_blob": "e0816fe48a952f32e053bda9b793b251324a7d78"
+        },
+        "published_baseline_ref": "2a4390ccda43ad9d40ef90e2bb480b3cb42bf530",
+        "published_baseline_equal": true,
+        "source45_ref": "88eb7ea72a3a07c26821568b705c0cb22a5e5684",
+        "source45_equal": true
+      }
+    ],
+    "whole_file_inverses": [
+      {
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "steps": 3,
+        "forward_exact": true,
+        "reverse_exact": true,
+        "frozen_before_equal_git": true,
+        "frozen_after_equal_worktree": true,
+        "full_restored_sha256": "8e3475ad8bce88973b64ff9c0758ebda380b5baede302c7b926526b0e92fe783",
+        "full_final_sha256": "7f327720df25cde3d156afa7220ce99caff0b1c5920ea2d7abeea0814cbec5f8"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "steps": 3,
+        "forward_exact": true,
+        "reverse_exact": true,
+        "frozen_before_equal_git": true,
+        "frozen_after_equal_worktree": true,
+        "full_restored_sha256": "52746b908db84c9275dc45aa9eb1c8fa01740fe63f7a716c9ff3e37a7a6f07b5",
+        "full_final_sha256": "0b4a9aa487ad5892e2bdc33ff172e277df3305994776a47c869cb189510e5714"
+      }
+    ],
+    "source_seams": [
+      {
+        "id": "H1_EXISTING_FIELD_TYPE_FORWARD_DECLARATIONS",
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "offset": 503,
+        "before_utf8_lf": "struct NativeGuiTextShadowStorageFrame;\n",
+        "after_utf8_lf": "struct NativeGuiTextShadowStorageFrame;\nstruct NativeGuiTextFieldStorageFrame;\nstruct NativeGuiTextFieldStorageAcquired;\n",
+        "before_bytes": 40,
+        "after_bytes": 121,
+        "before_sha256": "8e1bc70c482d57749ac66d5a5bd20b9825e43b4666080fe48c4f26af10d73ab7",
+        "after_sha256": "2d58140801a3851666cd1705880ed62e4475abf51edd4211de1fc63333789975",
+        "before_step_sha256": "8e3475ad8bce88973b64ff9c0758ebda380b5baede302c7b926526b0e92fe783",
+        "after_step_sha256": "a32b6ac791d07659f063c7c2648568b18c71fca550a2589942488d5b82534f98"
+      },
+      {
+        "id": "H2_APPEND_TWO_REQUIRED_BORROWS_PRESERVE_OLD_FIVE",
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "offset": 7688,
+        "before_utf8_lf": "        NativeNodeSetParentAcquired& shadow_acquired)\n        : raw93_frame_(f), raw93_context_(c), raw93_acquired_(a),\n          shadow_frame_(shadow_frame), shadow_acquired_(shadow_acquired) {}\n",
+        "after_utf8_lf": "        NativeNodeSetParentAcquired& shadow_acquired,\n        NativeGuiTextFieldStorageFrame& color_frame,\n        NativeGuiTextFieldStorageAcquired& color_acquired)\n        : raw93_frame_(f), raw93_context_(c), raw93_acquired_(a),\n          shadow_frame_(shadow_frame), shadow_acquired_(shadow_acquired),\n          color_frame_(color_frame), color_acquired_(color_acquired) {}\n",
+        "before_bytes": 196,
+        "after_bytes": 378,
+        "before_sha256": "aea59ad4f2d8ef0a95b067d0ca38eff1e1f97acbdae0ef1efb7e1bd447c6c378",
+        "after_sha256": "669f2c22153ddd71408d02f073a72662bec034fb3b9d246b193c0fe56f3a2969",
+        "before_step_sha256": "a32b6ac791d07659f063c7c2648568b18c71fca550a2589942488d5b82534f98",
+        "after_step_sha256": "26c059c412c82c2da053205ebeae2ddb75ce26e4d8636d031472447daa7b8e11"
+      },
+      {
+        "id": "H3_APPEND_PRIVATE_COLOR_REFERENCES",
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "offset": 9242,
+        "before_utf8_lf": "    NativeNodeSetParentAcquired& shadow_acquired_;\n",
+        "after_utf8_lf": "    NativeNodeSetParentAcquired& shadow_acquired_;\n    // Fresh retained color scratch for this invocation, separate from the live\n    // F24/F28 header, actual homes and every constructor/shadow/provider graph.\n    // The OTHER target path does not inspect or enter these borrowed records.\n    NativeGuiTextFieldStorageFrame& color_frame_;\n    NativeGuiTextFieldStorageAcquired& color_acquired_;\n",
+        "before_bytes": 51,
+        "after_bytes": 397,
+        "before_sha256": "73b9c51c1ede81016ed7b716c9e8c57de6059bd0242132f002ae0c59641bba0c",
+        "after_sha256": "5fca125bcc5b8a69b04a721a603fbc57e879fac40fb68644d85e46f639f04b78",
+        "before_step_sha256": "26c059c412c82c2da053205ebeae2ddb75ce26e4d8636d031472447daa7b8e11",
+        "after_step_sha256": "7f327720df25cde3d156afa7220ce99caff0b1c5920ea2d7abeea0814cbec5f8"
+      },
+      {
+        "id": "C1_CONCRETE_FIELD_INTERFACE_INCLUDE",
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "offset": 0,
+        "before_utf8_lf": "#include \"bsp/native_gui_text_glyph_quad_storage.hpp\"\n",
+        "after_utf8_lf": "#include \"bsp/native_gui_text_glyph_quad_storage.hpp\"\n#include \"bsp/native_gui_text_field_storage.hpp\"\n",
+        "before_bytes": 54,
+        "after_bytes": 103,
+        "before_sha256": "776524d1ca58a2a174023c8d472c205031e22a4440325030db86d4904596752e",
+        "after_sha256": "b7498848bdbc5b5abc1692d696d811e0c26ca41ac7b8e4a5772aa023d865f112",
+        "before_step_sha256": "52746b908db84c9275dc45aa9eb1c8fa01740fe63f7a716c9ff3e37a7a6f07b5",
+        "after_step_sha256": "758c8bb1a5e371f12bc4f913377c7c12a663cc068ac80ea214a540ed340cdaff"
+      },
+      {
+        "id": "C2_KNOWN_BRANCH_ADDRESS_ONLY_SCRATCH_CHECK",
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "offset": 9181,
+        "before_utf8_lf": "void current(Acquired& a, Word receiver, Word slot) noexcept {",
+        "after_utf8_lf": "// Source metadata ranges only. No Native pointer-home/field value is read.\nstruct ColorScratchRange { const volatile void* address; std::size_t bytes; };\nbool color_scratch_range_valid(ColorScratchRange r) {\n    const auto first = static_cast<std::uint64_t>(reinterpret_cast<std::uintptr_t>(r.address));\n    return r.address && first + r.bytes <=\n        static_cast<std::uint64_t>(static_cast<Word>(-1)) + 1u;\n}\nbool color_scratch_ranges_disjoint(ColorScratchRange a, ColorScratchRange b) {\n    const auto first = static_cast<std::uint64_t>(reinterpret_cast<std::uintptr_t>(a.address));\n    const auto second = static_cast<std::uint64_t>(reinterpret_cast<std::uintptr_t>(b.address));\n    return first + a.bytes <= second || second + b.bytes <= first;\n}\nvoid require_color_scratch(const ColorScratchRange (&scratch)[2],\n    const ColorScratchRange* live, std::size_t live_count) {\n    if (!color_scratch_range_valid(scratch[0]) || !color_scratch_range_valid(scratch[1]) ||\n        !color_scratch_ranges_disjoint(scratch[0], scratch[1]))\n        throw std::invalid_argument(\"Glyph color scratch requires separate live Source objects\");\n    for (std::size_t i = 0; i != live_count; ++i) {\n        if (!color_scratch_range_valid(live[i]) ||\n            !color_scratch_ranges_disjoint(scratch[0], live[i]) ||\n            !color_scratch_ranges_disjoint(scratch[1], live[i]))\n            throw std::invalid_argument(\"Glyph color scratch overlaps retained caller backing\");\n    }\n}\n\nvoid current(Acquired& a, Word receiver, Word slot) noexcept {",
+        "before_bytes": 62,
+        "after_bytes": 1539,
+        "before_sha256": "adf9c60a4fdae64a33a78cdd82875319472e893f9dfdd57e61a90dc3ffa2e5a8",
+        "after_sha256": "1bc5e2834366655ea089cea571224dffd8315e3201627bbbf54d979d6cb3ad36",
+        "before_step_sha256": "758c8bb1a5e371f12bc4f913377c7c12a663cc068ac80ea214a540ed340cdaff",
+        "after_step_sha256": "ef37af3e53772f9fac086680ac4354b134d3d1f9653e093f1564c5a4e2b3d590"
+      },
+      {
+        "id": "C3_CAPTURED_KNOWN_PAIR_DIRECT_OTHER_PRESERVED_UNKNOWN",
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "offset": 24352,
+        "before_utf8_lf": "        if (failure_runtime)\n            a.failure_origin_.unknown(*failure_runtime, {0x00ab9e71u, 0x47483233u}, &c.calls, [&] {\n                c.calls.child_current50(child, a.captured_profile, a.captured_target,\n                    pointer(bits(child) + 0x50), a);\n            });\n        else c.calls.child_current50(child, a.captured_profile, a.captured_target, pointer(bits(child) + 0x50), a);\n",
+        "after_utf8_lf": "        const auto dispatch_current_color = [&] {\n            if (a.captured_profile == 0x00d5c6c8u && a.captured_target == 0x00ab6b50u) {\n                const ColorScratchRange scratch[] = {\n                    {&a.color_frame_, sizeof(a.color_frame_)},\n                    {&a.color_acquired_, sizeof(a.color_acquired_)}};\n                const ColorScratchRange live[] = {\n                    {homes, sizeof(homes)}, {&a, sizeof(a)}, {&c, sizeof(c)},\n                    {actual_text, 0x1f8},\n                    {&a.raw93_frame_, sizeof(a.raw93_frame_)},\n                    {&a.raw93_context_, sizeof(a.raw93_context_)},\n                    {&a.raw93_acquired_, sizeof(a.raw93_acquired_)},\n                    {&a.raw93_frame_.sections, sizeof(a.raw93_frame_.sections)},\n                    {&a.raw93_frame_.sections.locals[0], sizeof(a.raw93_frame_.sections.locals)},\n                    {&a.raw93_frame_.sections.arguments[0], sizeof(a.raw93_frame_.sections.arguments)},\n                    {&a.raw93_frame_.sections.parenting, sizeof(a.raw93_frame_.sections.parenting)},\n                    {&a.shadow_frame_, sizeof(a.shadow_frame_)},\n                    {&a.shadow_acquired_, sizeof(a.shadow_acquired_)}};\n                require_color_scratch(scratch, live, sizeof(live) / sizeof(live[0]));\n                set_native_gui_text_color_storage_00ab6b50(child, pointer(bits(child) + 0x50),\n                    a.color_frame_, a.color_acquired_);\n            } else {\n                c.calls.child_current50(child, a.captured_profile, a.captured_target,\n                    pointer(bits(child) + 0x50), a);\n            }\n        };\n        if (failure_runtime)\n            a.failure_origin_.unknown(*failure_runtime, {0x00ab9e71u, 0x47483233u}, &c.calls,\n                dispatch_current_color);\n        else dispatch_current_color();\n",
+        "before_bytes": 400,
+        "after_bytes": 1842,
+        "before_sha256": "688a4cdf0bc4eb78602f4b659130e128c7e19f26dc4ff05f2252ed4865d67739",
+        "after_sha256": "bf01d8cfff7e2b9addd044670379212d9f9e9639b0aa663b0348fdbb19b28d6b",
+        "before_step_sha256": "ef37af3e53772f9fac086680ac4354b134d3d1f9653e093f1564c5a4e2b3d590",
+        "after_step_sha256": "0b4a9aa487ad5892e2bdc33ff172e277df3305994776a47c869cb189510e5714"
+      }
+    ],
+    "preserved": {
+      "asm_blocks": [
+        {
+          "index": 0,
+          "bytes": 20,
+          "sha256": "73661f71c743cc3fb79313192f7f92fff69a3108fd9f3c87ee2868f11e4621bc"
+        },
+        {
+          "index": 1,
+          "bytes": 20,
+          "sha256": "5408819a1be75a39eb20fda0077db6eaf19317ae7cee9c6801a6e02fbabb6ce0"
+        },
+        {
+          "index": 2,
+          "bytes": 40,
+          "sha256": "403d37335f94cb7f2eb0cc07d699f75501a793dc9249c734eb504210b67a9c05"
+        },
+        {
+          "index": 3,
+          "bytes": 25,
+          "sha256": "4cfca19d58417feaa9619815e356ab03d50f9ef92030f5dd6cbb8dc3dcf4423d"
+        },
+        {
+          "index": 4,
+          "bytes": 20,
+          "sha256": "73661f71c743cc3fb79313192f7f92fff69a3108fd9f3c87ee2868f11e4621bc"
+        },
+        {
+          "index": 5,
+          "bytes": 20,
+          "sha256": "5408819a1be75a39eb20fda0077db6eaf19317ae7cee9c6801a6e02fbabb6ce0"
+        },
+        {
+          "index": 6,
+          "bytes": 20,
+          "sha256": "e2103adfae893eadfa492aeb23e46505f9862ba955ee724a2845562982535b33"
+        },
+        {
+          "index": 7,
+          "bytes": 40,
+          "sha256": "1c57b99fd173dfa20b8ec347aa19e0e64b6098e88efd3431fca8d40e18a17b81"
+        },
+        {
+          "index": 8,
+          "bytes": 20,
+          "sha256": "73661f71c743cc3fb79313192f7f92fff69a3108fd9f3c87ee2868f11e4621bc"
+        },
+        {
+          "index": 9,
+          "bytes": 20,
+          "sha256": "5408819a1be75a39eb20fda0077db6eaf19317ae7cee9c6801a6e02fbabb6ce0"
+        },
+        {
+          "index": 10,
+          "bytes": 41,
+          "sha256": "16cd8a59c773d2321e28ee6aac64e967503ff9b685ebeebe2ab576282535726d"
+        },
+        {
+          "index": 11,
+          "bytes": 25,
+          "sha256": "4cfca19d58417feaa9619815e356ab03d50f9ef92030f5dd6cbb8dc3dcf4423d"
+        },
+        {
+          "index": 12,
+          "bytes": 20,
+          "sha256": "73661f71c743cc3fb79313192f7f92fff69a3108fd9f3c87ee2868f11e4621bc"
+        },
+        {
+          "index": 13,
+          "bytes": 20,
+          "sha256": "5408819a1be75a39eb20fda0077db6eaf19317ae7cee9c6801a6e02fbabb6ce0"
+        },
+        {
+          "index": 14,
+          "bytes": 20,
+          "sha256": "e2103adfae893eadfa492aeb23e46505f9862ba955ee724a2845562982535b33"
+        },
+        {
+          "index": 15,
+          "bytes": 38,
+          "sha256": "27995ae30f627d47c1cd5a065d0f53127e545275171fd002f44340de754f5730"
+        },
+        {
+          "index": 16,
+          "bytes": 2313,
+          "sha256": "714fdcfc5f68cedd436b0e9fdf83d396dc0d4e715db23c176357d2969610b00d"
+        },
+        {
+          "index": 17,
+          "bytes": 387,
+          "sha256": "9ce18789320aa3bf9909b48cc1b08a1895119219cd1daa4f8636537be51032c0"
+        },
+        {
+          "index": 18,
+          "bytes": 587,
+          "sha256": "35fa85271991a7200c040d5b96b2be6810b948e10b5a4e278dc53ecae2cb4f17"
+        },
+        {
+          "index": 19,
+          "bytes": 447,
+          "sha256": "dbb48da7ca320520556f1179c85980425ed9ae72be39633e0dd06167841a0a59"
+        },
+        {
+          "index": 20,
+          "bytes": 740,
+          "sha256": "c70abbdfd02e8a8bfd0a5b2fd154f7ce70feab152774807bed80664bb75da1f1"
+        },
+        {
+          "index": 21,
+          "bytes": 205,
+          "sha256": "30e0c6bbdb860f8a0a66220d67a28ebc627012f5ba6856178ed9b3789daec1b6"
+        }
+      ],
+      "asm_block_count": 22,
+      "asm_nul_join_no_trailing_nul_sha256": "0d95d0c8aa5c4123c75ee603d24d1bb9ad0a8b0430d13d73c70c19d25c74faed",
+      "x87_forms_count": 78,
+      "x87_forms": [
+        {
+          "block": 16,
+          "form": "fild",
+          "operand": "dword ptr [edx]"
+        },
+        {
+          "block": 16,
+          "form": "fadd",
+          "operand": "dword ptr [ecx]"
+        },
+        {
+          "block": 16,
+          "form": "fst",
+          "operand": "dword ptr [esi + 4]"
+        },
+        {
+          "block": 16,
+          "form": "fld",
+          "operand": "dword ptr [ebx + 1d8h]"
+        },
+        {
+          "block": 16,
+          "form": "fild",
+          "operand": "dword ptr [edx]"
+        },
+        {
+          "block": 16,
+          "form": "fmulp",
+          "operand": "st(1), st(0)"
+        },
+        {
+          "block": 16,
+          "form": "faddp",
+          "operand": "st(1), st(0)"
+        },
+        {
+          "block": 16,
+          "form": "fstp",
+          "operand": "dword ptr [edx]"
+        },
+        {
+          "block": 16,
+          "form": "fld",
+          "operand": "dword ptr [esi]"
+        },
+        {
+          "block": 16,
+          "form": "fild",
+          "operand": "dword ptr [edx + 1ch]"
+        },
+        {
+          "block": 16,
+          "form": "faddp",
+          "operand": "st(1), st(0)"
+        },
+        {
+          "block": 16,
+          "form": "fld1",
+          "operand": ""
+        },
+        {
+          "block": 16,
+          "form": "fadd",
+          "operand": "st(1), st(0)"
+        },
+        {
+          "block": 16,
+          "form": "fsubp",
+          "operand": "st(1), st(0)"
+        },
+        {
+          "block": 16,
+          "form": "fstp",
+          "operand": "dword ptr [edx + 1ch]"
+        },
+        {
+          "block": 16,
+          "form": "fld",
+          "operand": "dword ptr [esi + 4]"
+        },
+        {
+          "block": 16,
+          "form": "fld",
+          "operand": "qword ptr [edi]"
+        },
+        {
+          "block": 16,
+          "form": "fdiv",
+          "operand": "st(1), st(0)"
+        },
+        {
+          "block": 16,
+          "form": "fxch",
+          "operand": "st(1)"
+        },
+        {
+          "block": 16,
+          "form": "fstp",
+          "operand": "dword ptr [esi + 4]"
+        },
+        {
+          "block": 16,
+          "form": "fld",
+          "operand": "dword ptr [esi + 10h]"
+        },
+        {
+          "block": 16,
+          "form": "fld",
+          "operand": "qword ptr [edi]"
+        },
+        {
+          "block": 16,
+          "form": "fdiv",
+          "operand": "st(1), st(0)"
+        },
+        {
+          "block": 16,
+          "form": "fld",
+          "operand": "dword ptr [edi]"
+        },
+        {
+          "block": 16,
+          "form": "fld",
+          "operand": "st(0)"
+        },
+        {
+          "block": 16,
+          "form": "fmulp",
+          "operand": "st(3), st(0)"
+        },
+        {
+          "block": 16,
+          "form": "fxch",
+          "operand": "st(2)"
+        },
+        {
+          "block": 16,
+          "form": "fstp",
+          "operand": "dword ptr [esi + 8]"
+        },
+        {
+          "block": 16,
+          "form": "fld",
+          "operand": "dword ptr [edx]"
+        },
+        {
+          "block": 16,
+          "form": "fdivrp",
+          "operand": "st(3), st(0)"
+        },
+        {
+          "block": 16,
+          "form": "fxch",
+          "operand": "st(2)"
+        },
+        {
+          "block": 16,
+          "form": "fstp",
+          "operand": "dword ptr [esi + 10h]"
+        },
+        {
+          "block": 16,
+          "form": "fld",
+          "operand": "dword ptr [edx + 1ch]"
+        },
+        {
+          "block": 16,
+          "form": "fdivrp",
+          "operand": "st(2), st(0)"
+        },
+        {
+          "block": 16,
+          "form": "fmulp",
+          "operand": "st(1), st(0)"
+        },
+        {
+          "block": 16,
+          "form": "fstp",
+          "operand": "dword ptr [esi + 14h]"
+        },
+        {
+          "block": 16,
+          "form": "fld",
+          "operand": "dword ptr [esi + 4]"
+        },
+        {
+          "block": 16,
+          "form": "fstp",
+          "operand": "dword ptr [ecx]"
+        },
+        {
+          "block": 16,
+          "form": "fld",
+          "operand": "dword ptr [esi + 8]"
+        },
+        {
+          "block": 16,
+          "form": "fstp",
+          "operand": "dword ptr [ecx + 4]"
+        },
+        {
+          "block": 17,
+          "form": "fld",
+          "operand": "dword ptr [eax]"
+        },
+        {
+          "block": 17,
+          "form": "fstp",
+          "operand": "dword ptr [edx]"
+        },
+        {
+          "block": 18,
+          "form": "fld",
+          "operand": "dword ptr [eax + 1b8h]"
+        },
+        {
+          "block": 18,
+          "form": "fstp",
+          "operand": "dword ptr [edx + 10h]"
+        },
+        {
+          "block": 18,
+          "form": "fld",
+          "operand": "dword ptr [eax + 1bch]"
+        },
+        {
+          "block": 18,
+          "form": "fstp",
+          "operand": "dword ptr [edx + 14h]"
+        },
+        {
+          "block": 18,
+          "form": "fld",
+          "operand": "dword ptr [edx + 10h]"
+        },
+        {
+          "block": 18,
+          "form": "fadd",
+          "operand": "dword ptr [edx + 4]"
+        },
+        {
+          "block": 18,
+          "form": "fstp",
+          "operand": "dword ptr [edx + 1ch]"
+        },
+        {
+          "block": 18,
+          "form": "fld",
+          "operand": "dword ptr [edx + 14h]"
+        },
+        {
+          "block": 18,
+          "form": "fadd",
+          "operand": "dword ptr [edx + 8]"
+        },
+        {
+          "block": 18,
+          "form": "fstp",
+          "operand": "dword ptr [edx + 20h]"
+        },
+        {
+          "block": 18,
+          "form": "fld",
+          "operand": "dword ptr [edx + 0ch]"
+        },
+        {
+          "block": 18,
+          "form": "fsub",
+          "operand": "qword ptr [eax]"
+        },
+        {
+          "block": 18,
+          "form": "fstp",
+          "operand": "dword ptr [edx + 24h]"
+        },
+        {
+          "block": 19,
+          "form": "fld",
+          "operand": "dword ptr [edx + 4]"
+        },
+        {
+          "block": 19,
+          "form": "fsub",
+          "operand": "qword ptr [eax]"
+        },
+        {
+          "block": 19,
+          "form": "fstp",
+          "operand": "dword ptr [edx + 1ch]"
+        },
+        {
+          "block": 19,
+          "form": "fld",
+          "operand": "dword ptr [edx + 8]"
+        },
+        {
+          "block": 19,
+          "form": "fsub",
+          "operand": "qword ptr [eax]"
+        },
+        {
+          "block": 19,
+          "form": "fstp",
+          "operand": "dword ptr [edx + 20h]"
+        },
+        {
+          "block": 19,
+          "form": "fld",
+          "operand": "dword ptr [edx + 0ch]"
+        },
+        {
+          "block": 19,
+          "form": "fsub",
+          "operand": "qword ptr [eax]"
+        },
+        {
+          "block": 19,
+          "form": "fstp",
+          "operand": "dword ptr [edx + 24h]"
+        },
+        {
+          "block": 20,
+          "form": "fld",
+          "operand": "dword ptr [ecx]"
+        },
+        {
+          "block": 20,
+          "form": "fsub",
+          "operand": "qword ptr [eax]"
+        },
+        {
+          "block": 20,
+          "form": "fdiv",
+          "operand": "qword ptr [eax]"
+        },
+        {
+          "block": 20,
+          "form": "fadd",
+          "operand": "dword ptr [edx + 4]"
+        },
+        {
+          "block": 20,
+          "form": "fstp",
+          "operand": "dword ptr [edx + 2ch]"
+        },
+        {
+          "block": 20,
+          "form": "fld",
+          "operand": "dword ptr [edx + 2ch]"
+        },
+        {
+          "block": 20,
+          "form": "fsub",
+          "operand": "qword ptr [eax]"
+        },
+        {
+          "block": 20,
+          "form": "fstp",
+          "operand": "dword ptr [edx + 2ch]"
+        },
+        {
+          "block": 20,
+          "form": "fld",
+          "operand": "dword ptr [edx + 8]"
+        },
+        {
+          "block": 20,
+          "form": "fsub",
+          "operand": "qword ptr [eax]"
+        },
+        {
+          "block": 20,
+          "form": "fstp",
+          "operand": "dword ptr [edx + 30h]"
+        },
+        {
+          "block": 20,
+          "form": "fld",
+          "operand": "dword ptr [edx + 0ch]"
+        },
+        {
+          "block": 20,
+          "form": "fsub",
+          "operand": "qword ptr [eax]"
+        },
+        {
+          "block": 20,
+          "form": "fstp",
+          "operand": "dword ptr [edx + 34h]"
+        }
+      ],
+      "three_counter_source_lines": [
+        "        a.failure_origin_.host(*failure_runtime, {0, __COUNTER__}, &a, [&] {",
+        "                &a.raw93_acquired_, {0x00ab9d4fu, __COUNTER__}, a.constructor_call_);",
+        "                        a.failure_origin_.unknown(*failure_runtime, {0x00cb80b3u, __COUNTER__}, &prepared_text_pool,"
+      ],
+      "counter_token_count": 3,
+      "actual_preprocessed_counter_values": "Root compiler/PCH check required; not executed here",
+      "normal_return_through_whole_catch_suffix": {
+        "bytes": 6221,
+        "sha256": "0e73e24078a3feaa5976467006c30bde8b5e302d82db73f993c2b3a73ff46dcf",
+        "unchanged": true
+      },
+      "current_profile_target_reader": {
+        "bytes": 209,
+        "sha256": "ee5bda263817d6f0aa7f2e8b6f537afbb3b0eaa1d38d2125499ad4ddb6969f82",
+        "unchanged": true
+      },
+      "OTHER_virtual_declaration": {
+        "bytes": 203,
+        "sha256": "f5e9049585e36e6108309b5c0cbf68655e2a7ada10313938b8b99da5df31c793",
+        "unchanged": true
+      },
+      "old_private_reference_prefix": {
+        "bytes": 377,
+        "sha256": "2e0100b7824f8125264a02374ccbfa1d0488e3126f762e06cb9848c2075a8be8",
+        "unchanged": true
+      },
+      "old_constructor_parameter_prefix": [
+        "NativeGuiTextRawModelDefaultStorageFrame& f",
+        "NativeGuiTextRawModelDefaultStorageContext& c",
+        "NativeGuiTextRawModelDefaultStorageAcquired& a",
+        "NativeGuiTextShadowStorageFrame& shadow_frame",
+        "NativeNodeSetParentAcquired& shadow_acquired"
+      ],
+      "new_constructor_parameter_count": 7,
+      "old_five_parameter_bindings_preserved": true,
+      "constructor_noexcept_added": false
+    },
+    "unchanged_provider_files": [
+      {
+        "path": "include/bsp/native_gui_text_field_storage.hpp",
+        "bytes": 16103,
+        "sha256": "4bfb2f16d53fbd0476835624df067d0381d33ba015b6bc7bd3ca2d9718b77766",
+        "git_blob": "8c757602985deebc86d26586929db284900871db",
+        "baseline_equal": true,
+        "published_equal": true,
+        "primitive_equal": true
+      },
+      {
+        "path": "src/native_gui_text_field_storage.cpp",
+        "bytes": 32505,
+        "sha256": "8d9a1299004c40c57ed59be58a9408cba9e08f3fff32db06b8662f590c9dd4bf",
+        "git_blob": "496ee36bedc050f8ed08e10f2ff824154f888c3c",
+        "baseline_equal": true,
+        "published_equal": true,
+        "primitive_equal": true
+      },
+      {
+        "path": "include/bsp/native_gui_text_default_storage.hpp",
+        "bytes": 6352,
+        "sha256": "7a23774d66bb90e59712407d58fd3356640da3f77f1c087bf766b77d3748141a",
+        "git_blob": "2eb5db69eff0b68c093a5006e13eb2d490e821b7",
+        "baseline_equal": true,
+        "published_equal": true,
+        "primitive_equal": false
+      },
+      {
+        "path": "src/native_gui_text_default_storage.cpp",
+        "bytes": 26698,
+        "sha256": "6ed36cf3cad97ef089be15302827995d3bc6f303f5df3a3eb122b970dde67d09",
+        "git_blob": "47f32c0fb30dc7ebfaeb83ce2480ec88f59d3039",
+        "baseline_equal": true,
+        "published_equal": true,
+        "primitive_equal": false
+      },
+      {
+        "path": "include/bsp/native_gui_text_failure_origin.hpp",
+        "bytes": 12778,
+        "sha256": "ec32e9f8df302d8754e95abd1f11204e14ebb582e082090faec63cee74d84075",
+        "git_blob": "5bc46604c9cf760dea3868b3c4864c60ddc09852",
+        "baseline_equal": true,
+        "published_equal": true,
+        "primitive_equal": false
+      },
+      {
+        "path": "src/native_gui_text_failure_origin.cpp",
+        "bytes": 11627,
+        "sha256": "aacd70ec3d609de1b8a544884fd4d844d51b684a96194a0f95a62b9c843fc8c1",
+        "git_blob": "6226f079539631f02df8b9665e1ec4a213d91455",
+        "baseline_equal": true,
+        "published_equal": true,
+        "primitive_equal": false
+      },
+      {
+        "path": "include/bsp/gui_text_style.hpp",
+        "bytes": 3630,
+        "sha256": "b82596cd3d8b6cec5b3bd345173c6b912a54633a6d73976743c140554cc26b4b",
+        "git_blob": "989029de04894f890d4a0ce7ff29ad0342d241f0",
+        "baseline_equal": true,
+        "published_equal": true,
+        "primitive_equal": false
+      },
+      {
+        "path": "src/gui_text_style.cpp",
+        "bytes": 10276,
+        "sha256": "d5e6b32f78db3df2d918913a8121de462125b1b7c8aa3c8341b09ae141745703",
+        "git_blob": "fa2fc5075f6d8cde14258b2a7469165458d05288",
+        "baseline_equal": true,
+        "published_equal": true,
+        "primitive_equal": false
+      },
+      {
+        "path": "include/bsp/native_gui_text_storage_construct.hpp",
+        "bytes": 9641,
+        "sha256": "681a44709442353f716f2ead0377804df61cbc659ec7fc7dcc3a7a05c56ec5b2",
+        "git_blob": "736c02913b09a1de5f606362747305a2a4a36318",
+        "baseline_equal": true,
+        "published_equal": true,
+        "primitive_equal": false
+      },
+      {
+        "path": "src/native_gui_text_storage_construct.cpp",
+        "bytes": 37007,
+        "sha256": "a4c2c5e06dfa78d0dba7769900cb7a8302f7567c70f77707262246088326db60",
+        "git_blob": "88fa09e70019fa61d59652c5434666b8db4931b2",
+        "baseline_equal": true,
+        "published_equal": true,
+        "primitive_equal": false
+      }
+    ],
+    "related_evidence": [
+      {
+        "path": "docs/CC16_NATIVE_TEXT_COLOR_RAW_STORAGE.md",
+        "bytes": 4770,
+        "sha256": "47b05b6653366df48c50721c81e9e2e85a647d09147ac5f12c6cd9a70a875daf",
+        "git_blob": "a2bfc73696c0752682c4d76ab023808f9d8cc3c4",
+        "ref": "03c8e5539cc58ccb773520501c5ae6b245f570c2"
+      },
+      {
+        "path": "reports/cc16_native_text_color_raw_storage.json",
+        "bytes": 21950,
+        "sha256": "5628a0930a5a0f75a47c0c9edc0f4e56855ae2f80b50e8da70f7a1f13c8e3855",
+        "git_blob": "22a8b391e01775d31e3c789a0442842b10aa2c7b",
+        "ref": "03c8e5539cc58ccb773520501c5ae6b245f570c2"
+      },
+      {
+        "path": "docs/CC16_NATIVE_TEXT_COLOR_RAW_STORAGE_READINESS.md",
+        "bytes": 7091,
+        "sha256": "7dc9de26da08397206760455f59a811b66c2eb854db7adb74f5a27f7f68969d1",
+        "git_blob": "372b921bee0f2fbc8296496809b4a3a2bd7f6135",
+        "ref": "75b43874dc1215ba1caf5c82c8186bcf9a81962c"
+      },
+      {
+        "path": "reports/cc16_native_text_color_raw_storage_readiness.json",
+        "bytes": 39698,
+        "sha256": "0bedc5daf543211a71d6c8c5f062fd866fbd012949a1e326c762bc142819ba3a",
+        "git_blob": "6eaddb9b15b319a58b2f120e7c9e99221b00de18",
+        "ref": "75b43874dc1215ba1caf5c82c8186bcf9a81962c"
+      }
+    ],
+    "native": {
+      "project_verification": {
+        "tool": "python tools/bsp.py ghidra count",
+        "BSP_GHIDRA_AUTOSTART": "0",
+        "live_functions": 77632,
+        "snapshot_functions": 77632,
+        "project_file": "C:/Users/sqz269/bsp.gpr",
+        "project": "bsp",
+        "program_path": "/battlestationspacific.exe",
+        "language": "x86:LE:32:default",
+        "image_base": "00400000",
+        "config": {
+          "path": "config/target.json",
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+          "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+        }
+      },
+      "pe": {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "bytes": 12223752,
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "image_base": "00400000"
+      },
+      "full_glyph_body": {
+        "start": "00ab98f0",
+        "last_byte": "00ab9fc2",
+        "bytes": 1747,
+        "sha256": "795b76de15e3a52d032bfca739ca1cffe9714a83d7d619fd6aae9302aa13d236",
+        "saved_listing_rows": 485,
+        "recovery_credit": 0
+      },
+      "vtable_slot": {
+        "profile": "00d5c6c8",
+        "offset": "50",
+        "address": "00d5c718",
+        "bytes": "506bab00",
+        "target": "00ab6b50",
+        "sha256": "4c477dd634423311b8a07c2bf083f7c513e9fe3b93a0151181bb32ce1a2dcd9c"
+      },
+      "window": {
+        "start": "00ab9e61",
+        "last_byte": "00ab9e95",
+        "bytes": 53,
+        "sha256": "d51f2dcfd1be3761669c1ff0981a27802bb1fb0b9f345bfc9da115e77aa82bc1",
+        "instruction_count": 19,
+        "rows": [
+          {
+            "address": "00ab9e61",
+            "assembly": "CALL 0x00aba8d0"
+          },
+          {
+            "address": "00ab9e66",
+            "assembly": "MOV EDX,dword ptr [ESI]"
+          },
+          {
+            "address": "00ab9e68",
+            "assembly": "MOV EDX,dword ptr [EDX + 0x50]"
+          },
+          {
+            "address": "00ab9e6b",
+            "assembly": "LEA EAX,[ESI + 0x50]"
+          },
+          {
+            "address": "00ab9e6e",
+            "assembly": "PUSH EAX"
+          },
+          {
+            "address": "00ab9e6f",
+            "assembly": "MOV ECX,ESI"
+          },
+          {
+            "address": "00ab9e71",
+            "assembly": "CALL EDX"
+          },
+          {
+            "address": "00ab9e73",
+            "assembly": "MOV EAX,dword ptr [ESP + 0x28]"
+          },
+          {
+            "address": "00ab9e77",
+            "assembly": "TEST EAX,EAX"
+          },
+          {
+            "address": "00ab9e79",
+            "assembly": "MOV dword ptr [ESP + 0x54],EBP"
+          },
+          {
+            "address": "00ab9e7d",
+            "assembly": "JZ 0x00ab9e96"
+          },
+          {
+            "address": "00ab9e7f",
+            "assembly": "MOV ECX,dword ptr [ESP + 0x24]"
+          },
+          {
+            "address": "00ab9e83",
+            "assembly": "PUSH EBX"
+          },
+          {
+            "address": "00ab9e84",
+            "assembly": "LEA ECX,[ECX + ECX*0x1 + 0x2]"
+          },
+          {
+            "address": "00ab9e88",
+            "assembly": "PUSH ECX"
+          },
+          {
+            "address": "00ab9e89",
+            "assembly": "PUSH EAX"
+          },
+          {
+            "address": "00ab9e8a",
+            "assembly": "CALL 0x00419cc0"
+          },
+          {
+            "address": "00ab9e8f",
+            "assembly": "MOV ECX,EAX"
+          },
+          {
+            "address": "00ab9e91",
+            "assembly": "CALL 0x00bd1510"
+          }
+        ],
+        "decoded": [
+          {
+            "address": "00ab9e61",
+            "bytes": "e86a0a0000",
+            "mnemonic": "call",
+            "operand": "0xaba8d0"
+          },
+          {
+            "address": "00ab9e66",
+            "bytes": "8b16",
+            "mnemonic": "mov",
+            "operand": "edx, dword ptr [esi]"
+          },
+          {
+            "address": "00ab9e68",
+            "bytes": "8b5250",
+            "mnemonic": "mov",
+            "operand": "edx, dword ptr [edx + 0x50]"
+          },
+          {
+            "address": "00ab9e6b",
+            "bytes": "8d4650",
+            "mnemonic": "lea",
+            "operand": "eax, [esi + 0x50]"
+          },
+          {
+            "address": "00ab9e6e",
+            "bytes": "50",
+            "mnemonic": "push",
+            "operand": "eax"
+          },
+          {
+            "address": "00ab9e6f",
+            "bytes": "8bce",
+            "mnemonic": "mov",
+            "operand": "ecx, esi"
+          },
+          {
+            "address": "00ab9e71",
+            "bytes": "ffd2",
+            "mnemonic": "call",
+            "operand": "edx"
+          },
+          {
+            "address": "00ab9e73",
+            "bytes": "8b442428",
+            "mnemonic": "mov",
+            "operand": "eax, dword ptr [esp + 0x28]"
+          },
+          {
+            "address": "00ab9e77",
+            "bytes": "85c0",
+            "mnemonic": "test",
+            "operand": "eax, eax"
+          },
+          {
+            "address": "00ab9e79",
+            "bytes": "896c2454",
+            "mnemonic": "mov",
+            "operand": "dword ptr [esp + 0x54], ebp"
+          },
+          {
+            "address": "00ab9e7d",
+            "bytes": "7417",
+            "mnemonic": "je",
+            "operand": "0xab9e96"
+          },
+          {
+            "address": "00ab9e7f",
+            "bytes": "8b4c2424",
+            "mnemonic": "mov",
+            "operand": "ecx, dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "00ab9e83",
+            "bytes": "53",
+            "mnemonic": "push",
+            "operand": "ebx"
+          },
+          {
+            "address": "00ab9e84",
+            "bytes": "8d4c0902",
+            "mnemonic": "lea",
+            "operand": "ecx, [ecx + ecx + 2]"
+          },
+          {
+            "address": "00ab9e88",
+            "bytes": "51",
+            "mnemonic": "push",
+            "operand": "ecx"
+          },
+          {
+            "address": "00ab9e89",
+            "bytes": "50",
+            "mnemonic": "push",
+            "operand": "eax"
+          },
+          {
+            "address": "00ab9e8a",
+            "bytes": "e831fe95ff",
+            "mnemonic": "call",
+            "operand": "0x419cc0"
+          },
+          {
+            "address": "00ab9e8f",
+            "bytes": "8bc8",
+            "mnemonic": "mov",
+            "operand": "ecx, eax"
+          },
+          {
+            "address": "00ab9e91",
+            "bytes": "e87a761100",
+            "mnemonic": "call",
+            "operand": "0xbd1510"
+          }
+        ],
+        "call_rows": [
+          {
+            "address": "00ab9e61",
+            "assembly": "CALL 0x00aba8d0"
+          },
+          {
+            "address": "00ab9e71",
+            "assembly": "CALL EDX"
+          },
+          {
+            "address": "00ab9e8a",
+            "assembly": "CALL 0x00419cc0"
+          },
+          {
+            "address": "00ab9e91",
+            "assembly": "CALL 0x00bd1510"
+          }
+        ]
+      },
+      "exports": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab98f0\\assembly.txt",
+          "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-glyph-color-direct-caller\\local\\output\\cc16_native_glyph_color_direct_caller_20261031\\native_exports\\00ab98f0\\assembly.txt",
+          "bytes": 16685,
+          "sha256": "7165707dcf74507fb24b2d3bfc77de8fa764a33c46fe46ff16aef417efd50bd4"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab98f0\\decompiled.c",
+          "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-glyph-color-direct-caller\\local\\output\\cc16_native_glyph_color_direct_caller_20261031\\native_exports\\00ab98f0\\decompiled.c",
+          "bytes": 74933,
+          "sha256": "3186a7148dfadbc6e170fc79deb50cc1d9980f95232f6f7dc68d95e0744ac810"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab98f0\\metadata.json",
+          "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-glyph-color-direct-caller\\local\\output\\cc16_native_glyph_color_direct_caller_20261031\\native_exports\\00ab98f0\\metadata.json",
+          "bytes": 277,
+          "sha256": "0ebabf895ad3d19bd981d7f18df7f4f705354f4d88fcaf6b6a2668d22dd313d6"
+        }
+      ],
+      "metadata": {
+        "address": "00ab98f0",
+        "name": "BSP_TextContext_WriteGlyphQuad",
+        "isThunk": false,
+        "isExternal": false,
+        "name_source": "live get_function_by_address",
+        "project": "bsp",
+        "program_path": "/battlestationspacific.exe",
+        "utc": "2026-10-31T00:37:02.248929+00:00"
+      }
+    },
+    "all_static_checks_passed": true,
+    "build_test_runtime_actions_executed": false
+  },
+  "dispatch_contract": {
+    "captured_selector_only": {
+      "profile": "00d5c6c8",
+      "target": "00ab6b50",
+      "conjunction": true,
+      "table_rescan": false,
+      "numeric_code_call": false
+    },
+    "known_call": "set_native_gui_text_color_storage_00ab6b50(child, pointer(bits(child) + 0x50), a.color_frame_, a.color_acquired_)",
+    "known_input": "SAME original child+50 pointer; child/input alias retained, no color snapshot",
+    "OTHER": "unchanged child_current50 virtual, captured pair and original arguments; no new scratch inspection/check on OTHER",
+    "origin": {
+      "mode": "unchanged unknown",
+      "site": [
+        "00ab9e71",
+        "47483233"
+      ],
+      "supplier": "&c.calls",
+      "supplier_meaning": "dispatch boundary identity, not evidence that the opaque method executes on known arm",
+      "null_runtime": "same dispatch callable in existing legacy path; state1/2 failure-EH remains separately unadmitted",
+      "native_permission_issued": false,
+      "unknown_or_sticky_denial_cannot_consume_header_permit": true
+    },
+    "header": "same ordinary F24/F28 live wide header across content/color; untouched normal string return and whole catch suffix",
+    "constructor_api": {
+      "old_parameter_count": 5,
+      "new_parameter_count": 7,
+      "old_five_exact_prefix": true,
+      "old_five_bindings_preserved": true,
+      "appended_parameters": [
+        "NativeGuiTextFieldStorageFrame& color_frame",
+        "NativeGuiTextFieldStorageAcquired& color_acquired"
+      ],
+      "private_refs_appended_after_old_prefix": true,
+      "new_noexcept": false,
+      "binary_layout_or_Original_ABI_claim": false
+    },
+    "known_only_metadata_preflight": {
+      "scratch": [
+        "&a.color_frame_ / sizeof(a.color_frame_)",
+        "&a.color_acquired_ / sizeof(a.color_acquired_)"
+      ],
+      "scratch_nonnull_representable_mutually_separate": true,
+      "separate_each_from_live": [
+        {
+          "region": "homes",
+          "extent": "sizeof(homes)",
+          "qualification": "ten volatile incoming DWORDs"
+        },
+        {
+          "region": "GlyphAcquired",
+          "extent": "sizeof(a)",
+          "qualification": "entire record, live F24/F28 and Origin/constructor/header state"
+        },
+        {
+          "region": "GlyphContext",
+          "extent": "sizeof(c)",
+          "qualification": "shared context object, no value read"
+        },
+        {
+          "region": "actual_text",
+          "extent": "0x1f8",
+          "qualification": "full parent Text storage"
+        },
+        {
+          "region": "raw93_frame_",
+          "extent": "sizeof(a.raw93_frame_)",
+          "qualification": "whole prepared raw93 frame"
+        },
+        {
+          "region": "raw93_context_",
+          "extent": "sizeof(a.raw93_context_)",
+          "qualification": "same raw93 context object"
+        },
+        {
+          "region": "raw93_acquired_",
+          "extent": "sizeof(a.raw93_acquired_)",
+          "qualification": "fresh retained raw93 record"
+        },
+        {
+          "region": "raw93_frame_.sections",
+          "extent": "sizeof(a.raw93_frame_.sections)",
+          "qualification": "actual section frame reference backing"
+        },
+        {
+          "region": "sections.locals",
+          "extent": "sizeof(a.raw93_frame_.sections.locals)",
+          "qualification": "actual section local backing"
+        },
+        {
+          "region": "sections.arguments",
+          "extent": "sizeof(a.raw93_frame_.sections.arguments)",
+          "qualification": "actual section homes"
+        },
+        {
+          "region": "sections.parenting",
+          "extent": "sizeof(a.raw93_frame_.sections.parenting)",
+          "qualification": "actual section parenting frame"
+        },
+        {
+          "region": "shadow_frame_",
+          "extent": "sizeof(a.shadow_frame_)",
+          "qualification": "retained raw-shadow frame"
+        },
+        {
+          "region": "shadow_acquired_",
+          "extent": "sizeof(a.shadow_acquired_)",
+          "qualification": "retained NodeSetParent record"
+        }
+      ],
+      "live_region_count": 13,
+      "live_regions_mutually_checked": false,
+      "Native_value_or_home_reads": false,
+      "Model_or_profile_lookup": false,
+      "FP": false,
+      "allocation_or_reentry_on_valid_path": false,
+      "OTHER_checks": false,
+      "raw_primitive_additional_checks": "fresh diagnostic shape, alignment, representability, scratch vs full child Text1F8 and original RGBA16; no fake reference admission",
+      "failure": "existing unknown scope handles any metadata escape; no Native-origin assertion. Raw preflight remains fresh/none; entered escape failed/barethrow."
+    }
+  },
+  "producer_and_parent_contract": {
+    "scoped_search": {
+      "argv": [
+        "rg",
+        "-n",
+        "write_native_gui_text_glyph_quad_storage_00ab98f0|NativeGuiTextGlyphQuadStorageAcquired\\(",
+        "include",
+        "src",
+        "tests"
+      ],
+      "bytes": 1243,
+      "sha256": "e1a81dd6491177c0da8ac0ff9c528781dd4160330ea7eb5c530c7fb8f73b6aa7",
+      "utf8": "src\\native_gui_text_glyph_quad_storage.cpp:435:__declspec(noinline) void write_native_gui_text_glyph_quad_storage_00ab98f0(\nsrc\\native_gui_text_single_line_storage.cpp:317:                write_native_gui_text_glyph_quad_storage_00ab98f0(\nsrc\\native_gui_text_wrapped_storage.cpp:729:                        write_native_gui_text_glyph_quad_storage_00ab98f0(text,\ninclude\\bsp\\native_gui_text_failure_origin.hpp:123:    friend void write_native_gui_text_glyph_quad_storage_00ab98f0(void*,\ninclude\\bsp\\native_gui_text_failure_origin.hpp:183:    friend void write_native_gui_text_glyph_quad_storage_00ab98f0(void*,\ninclude\\bsp\\native_gui_text_failure_origin.hpp:214:    friend void write_native_gui_text_glyph_quad_storage_00ab98f0(void*,\ninclude\\bsp\\native_gui_text_glyph_quad_storage.hpp:129:    NativeGuiTextGlyphQuadStorageAcquired(\ninclude\\bsp\\native_gui_text_glyph_quad_storage.hpp:140:    NativeGuiTextGlyphQuadStorageAcquired(const NativeGuiTextGlyphQuadStorageAcquired&) = delete;\ninclude\\bsp\\native_gui_text_glyph_quad_storage.hpp:143:    friend void write_native_gui_text_glyph_quad_storage_00ab98f0(void*,\ninclude\\bsp\\native_gui_text_glyph_quad_storage.hpp:173:void write_native_gui_text_glyph_quad_storage_00ab98f0(void* actual_text,\n",
+      "conclusion": "No concrete GlyphAcquired constructor call found in include/src/tests; only declared/deleted constructor and direct body/parent selectors"
+    },
+    "parent_input_pins": [
+      {
+        "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+        "bytes": 9873,
+        "sha256": "3914309878ae2683fe0fa3a676d373f35d09cc34ca6d82dd83d7044d678453a8",
+        "git_blob": "32fe59b520f2c49f699f04d665b28235d391fe67",
+        "baseline_equal": true
+      },
+      {
+        "path": "src/native_gui_text_single_line_storage.cpp",
+        "bytes": 17311,
+        "sha256": "ffda6f98ac137a60af72332a3981da2e51a18992097ff359feda8a93028ee048",
+        "git_blob": "22427ad2c2c04bf357b2770e075e1c794ee03bf9",
+        "baseline_equal": true
+      },
+      {
+        "path": "include/bsp/native_gui_text_wrapped_storage.hpp",
+        "bytes": 10525,
+        "sha256": "197ded43a11ce27f3d24ae3fdd0a375f565ebaa7c5a97ab9df219d6dfb922170",
+        "git_blob": "f025b748c662a9b7731e166c1d600b882327c96e",
+        "baseline_equal": true
+      },
+      {
+        "path": "src/native_gui_text_wrapped_storage.cpp",
+        "bytes": 31992,
+        "sha256": "f60c97736444be3c30e0eba45373988630a5e90f997384a4298e19b2da072614",
+        "git_blob": "de5ba745a33858d0eb3359fbb0ac96a59f117319",
+        "baseline_equal": true
+      }
+    ],
+    "fresh_per_invocation_seven_borrows_required": true,
+    "historical_design_to_reconcile": "f6af05dbb867c39e62ab75caca1484dfbb6ee17d five-borrow preparation design is not this seven-borrow producer implementation",
+    "whole_graph_storage_birth": "Genuine child Text and current AA6870 base +4C Model even with no geometry; CURRENT188 ModelTail+174 distinct Group180, actual Material/array typed raw subobjects under leaf contracts. Profile is not birth/owner proof.",
+    "retain": "all actual caller, frame/acquired, pool, constructor, hierarchy, renderer and callee resources through normal return/failure disposition; historical identities do not grant dead-object reads",
+    "opaque_transitive_separation_remains_caller_proof": true,
+    "full_type_search": {
+      "argv": [
+        "rg",
+        "-n",
+        "NativeGuiTextGlyphQuadStorageAcquired",
+        "include",
+        "src",
+        "tests"
+      ],
+      "bytes": 3435,
+      "sha256": "47f2eac944824126ffa2ba0db67b23dffaebda6278fb3e3a68e86e331e69ff70",
+      "utf8": "src\\native_gui_text_glyph_quad_storage.cpp:19:using Acquired = NativeGuiTextGlyphQuadStorageAcquired;\nsrc\\native_gui_text_glyph_quad_storage.cpp:437:    NativeGuiTextGlyphQuadStorageAcquired& a) {\ninclude\\bsp\\native_gui_text_failure_origin.hpp:18:struct NativeGuiTextGlyphQuadStorageAcquired;\ninclude\\bsp\\native_gui_text_failure_origin.hpp:125:        NativeGuiTextGlyphQuadStorageAcquired&);\ninclude\\bsp\\native_gui_text_failure_origin.hpp:185:        NativeGuiTextGlyphQuadStorageAcquired&);\ninclude\\bsp\\native_gui_text_failure_origin.hpp:216:        NativeGuiTextGlyphQuadStorageAcquired&);\ninclude\\bsp\\native_gui_text_glyph_quad_storage.hpp:14:struct NativeGuiTextGlyphQuadStorageAcquired;\ninclude\\bsp\\native_gui_text_glyph_quad_storage.hpp:40:        NativeGuiTextGlyphQuadStorageAcquired&) = 0;\ninclude\\bsp\\native_gui_text_glyph_quad_storage.hpp:43:        NativeGuiTextGlyphQuadStorageAcquired&) = 0;\ninclude\\bsp\\native_gui_text_glyph_quad_storage.hpp:45:        NativeGuiTextGlyphQuadStorageAcquired&) = 0;\ninclude\\bsp\\native_gui_text_glyph_quad_storage.hpp:46:    virtual void sections_00ab8530(void* actual_child, NativeGuiTextGlyphQuadStorageAcquired&) = 0;\ninclude\\bsp\\native_gui_text_glyph_quad_storage.hpp:48:        std::uint32_t captured_target, std::uint32_t value, NativeGuiTextGlyphQuadStorageAcquired&) = 0;\ninclude\\bsp\\native_gui_text_glyph_quad_storage.hpp:51:        NativeGuiTextGlyphQuadStorageAcquired&) = 0;\ninclude\\bsp\\native_gui_text_glyph_quad_storage.hpp:53:        NativeGuiTextGlyphQuadStorageAcquired&) = 0;\ninclude\\bsp\\native_gui_text_glyph_quad_storage.hpp:56:        NativeGuiTextGlyphQuadStorageAcquired&) = 0;\ninclude\\bsp\\native_gui_text_glyph_quad_storage.hpp:59:        NativeGuiTextGlyphQuadStorageAcquired&) = 0;\ninclude\\bsp\\native_gui_text_glyph_quad_storage.hpp:61:        std::uint32_t flag, NativeGuiTextGlyphQuadStorageAcquired&) = 0;\ninclude\\bsp\\native_gui_text_glyph_quad_storage.hpp:64:        NativeGuiTextGlyphQuadStorageAcquired&) = 0;\ninclude\\bsp\\native_gui_text_glyph_quad_storage.hpp:66:        NativeGuiTextGlyphQuadStorageAcquired&) = 0;\ninclude\\bsp\\native_gui_text_glyph_quad_storage.hpp:68:        NativeGuiTextGlyphQuadStorageAcquired&) = 0;\ninclude\\bsp\\native_gui_text_glyph_quad_storage.hpp:107:struct NativeGuiTextGlyphQuadStorageAcquired final {\ninclude\\bsp\\native_gui_text_glyph_quad_storage.hpp:129:    NativeGuiTextGlyphQuadStorageAcquired(\ninclude\\bsp\\native_gui_text_glyph_quad_storage.hpp:140:    NativeGuiTextGlyphQuadStorageAcquired(const NativeGuiTextGlyphQuadStorageAcquired&) = delete;\ninclude\\bsp\\native_gui_text_glyph_quad_storage.hpp:141:    NativeGuiTextGlyphQuadStorageAcquired& operator=(const NativeGuiTextGlyphQuadStorageAcquired&) = delete;\ninclude\\bsp\\native_gui_text_glyph_quad_storage.hpp:145:        NativeGuiTextGlyphQuadStorageAcquired&);\ninclude\\bsp\\native_gui_text_glyph_quad_storage.hpp:175:    NativeGuiTextGlyphQuadStorageAcquired&);\ninclude\\bsp\\native_gui_text_single_line_storage.hpp:48:    virtual NativeGuiTextGlyphQuadStorageAcquired& prepared_glyph_quad_record(\ninclude\\bsp\\native_gui_text_single_line_storage.hpp:106:    NativeGuiTextGlyphQuadStorageAcquired* selected_glyph_quad_record{};\ninclude\\bsp\\native_gui_text_wrapped_storage.hpp:51:    virtual NativeGuiTextGlyphQuadStorageAcquired& prepared_glyph_quad_record(\ninclude\\bsp\\native_gui_text_wrapped_storage.hpp:104:    NativeGuiTextGlyphQuadStorageAcquired* selected_quad{};\n",
+      "conclusion": "All occurrences are declarations, deleted copy/assignment, type aliases/signatures, friend/API references and abstract prepared-record selectors; no concrete constructed GlyphAcquired producer in this scope."
+    }
+  },
+  "inverse_reader": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-glyph-color-direct-caller\\local\\output\\cc16_native_glyph_color_direct_caller_20261031\\verify_source47_inverse.py",
+    "bytes": 3199,
+    "sha256": "0a02fda5520bd5b6caaa1fc5224bd4eac0b42a3c8e908974b9d7b5d821ded403",
+    "encoding": "UTF-8 LF, no BOM, no CR",
+    "utf8_lf": "import hashlib, json, re, subprocess, sys\nfrom pathlib import Path\nroot=Path(sys.argv[1]).resolve()\nreport=json.loads(Path(sys.argv[2]).read_bytes())\npacket_ref=sys.argv[3] if len(sys.argv)>3 else None\np=report['static_proof']\ndef sha(b): return hashlib.sha256(b).hexdigest()\ndef blob(b): return hashlib.sha1(b'blob '+str(len(b)).encode()+b'\\0'+b).hexdigest()\ndef git(ref,path): return subprocess.check_output(['git','show',ref+':'+path],cwd=root)\ndef load(path): return git(packet_ref,path) if packet_ref else (root/path).read_bytes()\nreader=report['inverse_reader']['utf8_lf'].encode('utf-8')\nassert len(reader)==report['inverse_reader']['bytes']\nassert sha(reader)==report['inverse_reader']['sha256'] and b'\\r' not in reader\nchecks=[]\nfor f in p['sources']:\n    path=f['packet']['path']; old=git(p['baseline_ref'],path); new=load(path)\n    assert old==git(p['published_ref'],path)==git(p['source45_ref'],path)\n    for b,k in [(old,'baseline'),(new,'packet')]:\n        q=f[k]; assert len(b)==q['bytes'] and sha(b)==q['sha256'] and blob(b)==q['git_blob']\n    steps=[s for s in p['source_seams'] if s['path']==path]\n    work=old\n    for s in steps:\n        a=s['before_utf8_lf'].encode(); b=s['after_utf8_lf'].encode()\n        assert len(a)==s['before_bytes'] and len(b)==s['after_bytes']\n        assert sha(a)==s['before_sha256'] and sha(b)==s['after_sha256']\n        assert sha(work)==s['before_step_sha256'] and work.count(a)==1 and work.index(a)==s['offset']\n        work=work.replace(a,b,1); assert sha(work)==s['after_step_sha256']\n    assert work==new\n    for s in reversed(steps):\n        a=s['before_utf8_lf'].encode(); b=s['after_utf8_lf'].encode()\n        assert sha(work)==s['after_step_sha256'] and work.count(b)==1\n        work=work.replace(b,a,1); assert sha(work)==s['before_step_sha256']\n    assert work==old\n    checks.append(dict(path=path,forward_exact=True,reverse_exact=True,sha256=sha(new)))\ncpp='src/native_gui_text_glyph_quad_storage.cpp'\nold=git(p['baseline_ref'],cpp); new=load(cpp)\na=re.findall(rb'__asm[ \\t\\r\\n]*\\{[^}]*\\}',old)\nb=re.findall(rb'__asm[ \\t\\r\\n]*\\{[^}]*\\}',new)\nassert a==b and len(b)==22\nassert sha(b'\\0'.join(b))==p['preserved']['asm_nul_join_no_trailing_nul_sha256']\nforms=[]\nfor block in b:\n    forms += [m[1].lower() for m in re.finditer(rb'^[ \\t]*(f[a-z0-9]+)\\b(.*)',block,re.I|re.M)]\nassert len(forms)==78\nassert [l for l in old.splitlines() if b'__COUNTER__' in l]==[l for l in new.splitlines() if b'__COUNTER__' in l]\nassert old.count(b'__COUNTER__')==new.count(b'__COUNTER__')==3\nmarker=b'        normal_string_return(a, c.strings, 0x00ab9e8a, 0x00ab9e91, true,\\n'\nassert old[old.index(marker):]==new[new.index(marker):]\nfor f in p['unchanged_provider_files']:\n    actual=load(f['path']); assert actual==git(p['baseline_ref'],f['path'])==git(p['published_ref'],f['path'])\n    assert sha(actual)==f['sha256'] and blob(actual)==f['git_blob']\nassert report['credits']['new_original_bodies']==0 and report['readiness']['activation']==False\nprint(json.dumps(dict(source_mode=packet_ref or 'worktree',whole_file_checks=checks,asm_blocks=22,\n x87_forms=78,counter_source_tokens=3,provider_files=len(p['unchanged_provider_files']),passed=True),indent=2))\n",
+    "raw_equals_embedded": true,
+    "LF_count": 54,
+    "CR_count": 0,
+    "usage": "python verify_source47_inverse.py <repo-root> <report-json-path> [immutable-packet-ref]; packet-ref selects git-show files, otherwise worktree. Uses only stdlib/Git/text; no build/test/probe.",
+    "worker_execution": {
+      "exit_code": 0,
+      "source_mode": "worktree",
+      "passed": true,
+      "raw_and_embedded_bytes_equal": true,
+      "qualification": "Observed execution of raw reader against this report and working Source; byte equality gives the embedded recipe. Static Git/text only, no compile/test/probe."
+    }
+  },
+  "ignored_evidence": {
+    "root": "J:\\PROG\\battlestations-pacific-decompile-codex-native-glyph-color-direct-caller\\local\\output\\cc16_native_glyph_color_direct_caller_20261031",
+    "source_native_proof": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-glyph-color-direct-caller\\local\\output\\cc16_native_glyph_color_direct_caller_20261031\\source_native_proof.json",
+      "bytes": 37908,
+      "sha256": "4142ef472a6d8f723bea772295566c7fff7cfdb4518b46b001ece593e94c0600"
+    },
+    "frozen_before": "source_before/<path>",
+    "frozen_after": "source_after/<path>",
+    "native_window_binary": "native_window_00ab9e61_00ab9e95.bin",
+    "native_window_disassembly": "native_window_00ab9e61_00ab9e95.txt",
+    "source_seams": "source_seams.json",
+    "native_exports": "native_exports/00ab98f0/{assembly.txt,decompiled.c,metadata.json}",
+    "proof_generator": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-glyph-color-direct-caller\\local\\output\\cc16_native_glyph_color_direct_caller_20261031\\seal_source47.py",
+      "bytes": 13027,
+      "sha256": "a91bd8b5fd759222e2136f74fd8a97b1e9f0fd100e141d422b09ef37bb6e0f0c"
+    }
+  },
+  "doc_pin": {
+    "path": "docs/CC16_NATIVE_GLYPH_COLOR_DIRECT_CALLER.md",
+    "bytes": 8225,
+    "sha256": "b8291c1fb59f60a7cbd64276cbe0660e2eba98e5198eacdd71425a51c703ed8b",
+    "git_blob": "307fe63711cea06bd2944624d726ab7b4da40468"
+  },
+  "verification": {
+    "whole_file_forward_reverse": "passed two files, all six exact seams",
+    "asm_x87": "22 blocks/78 forms byte-identical",
+    "source_counter_tokens": "three exact in order; actual compiler/PCH-expanded identities pending Root",
+    "read_only_native_PE_source_text": true,
+    "worker_compiled": false,
+    "worker_ran_tests": false,
+    "worker_ran_game_or_probe": false,
+    "Ghidra_mutation": false,
+    "independent_peer_review": "pending Root-assigned peer, no result claimed",
+    "Root_common_retained_canonical_checks": "pending for this caller packet; prior Source46 receipts do not test Source47"
+  },
+  "credits": {
+    "new_original_bodies": 0,
+    "new_vendor_bodies": 0,
+    "new_compiler_generated_bodies": 0,
+    "new_helpers": 0,
+    "duplicate_body_credit": 0,
+    "Original_ABI": 0,
+    "Native_exception_origin": 0,
+    "runtime": 0,
+    "activation": 0
+  },
+  "readiness": {
+    "static_packet_ready_for_Root_review_build": true,
+    "actual_seven_borrow_producer": false,
+    "genuine_OTHER_transports_closed": false,
+    "Native_exception_cleanup_permission": false,
+    "Original_ABI_FH3_SEH_fault": false,
+    "emitted_opcode_register_parity": false,
+    "runtime_gameplay": false,
+    "whole_frontend_source_ready": false,
+    "activation": false
+  },
+  "remaining_gates": [
+    "Root qualified MSVC Win32 common/retained/canonical build and full forced-header/PCH counter comparison",
+    "Independent immutable Source47 review",
+    "Actual seven-borrow per-invocation producer/current object and complete transitive storage/lifetime/custody proof",
+    "Genuine OTHER target transport and remaining content/current/renderer/hierarchy suppliers",
+    "Original ABI/private stack/FH3/SEH/fault and recursive/secondary failure qualifications",
+    "No Native issuer exists; qualified unknown is denial and legacy state1/2 EH projection remains unadmitted",
+    "Runtime/gameplay and full front-end activation"
+  ]
+}

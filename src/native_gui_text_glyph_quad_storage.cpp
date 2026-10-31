@@ -1,4 +1,5 @@
 #include "bsp/native_gui_text_glyph_quad_storage.hpp"
+#include "bsp/native_gui_text_field_storage.hpp"
 #include "bsp/native_gui_text_default_storage.hpp"
 #include "bsp/gui_text_factory.hpp"
 #include "bsp/gui_text_style.hpp"
@@ -266,6 +267,31 @@ void boundary(Acquired& a, Word site, void* receiver) noexcept {
     a.active_call_site = site;
     a.captured_receiver = receiver;
 }
+// Source metadata ranges only. No Native pointer-home/field value is read.
+struct ColorScratchRange { const volatile void* address; std::size_t bytes; };
+bool color_scratch_range_valid(ColorScratchRange r) {
+    const auto first = static_cast<std::uint64_t>(reinterpret_cast<std::uintptr_t>(r.address));
+    return r.address && first + r.bytes <=
+        static_cast<std::uint64_t>(static_cast<Word>(-1)) + 1u;
+}
+bool color_scratch_ranges_disjoint(ColorScratchRange a, ColorScratchRange b) {
+    const auto first = static_cast<std::uint64_t>(reinterpret_cast<std::uintptr_t>(a.address));
+    const auto second = static_cast<std::uint64_t>(reinterpret_cast<std::uintptr_t>(b.address));
+    return first + a.bytes <= second || second + b.bytes <= first;
+}
+void require_color_scratch(const ColorScratchRange (&scratch)[2],
+    const ColorScratchRange* live, std::size_t live_count) {
+    if (!color_scratch_range_valid(scratch[0]) || !color_scratch_range_valid(scratch[1]) ||
+        !color_scratch_ranges_disjoint(scratch[0], scratch[1]))
+        throw std::invalid_argument("Glyph color scratch requires separate live Source objects");
+    for (std::size_t i = 0; i != live_count; ++i) {
+        if (!color_scratch_range_valid(live[i]) ||
+            !color_scratch_ranges_disjoint(scratch[0], live[i]) ||
+            !color_scratch_ranges_disjoint(scratch[1], live[i]))
+            throw std::invalid_argument("Glyph color scratch overlaps retained caller backing");
+    }
+}
+
 void current(Acquired& a, Word receiver, Word slot) noexcept {
     a.captured_receiver = pointer(receiver);
     a.captured_profile = word(receiver, 0);
@@ -555,12 +581,35 @@ __declspec(noinline) void write_native_gui_text_glyph_quad_storage_00ab98f0(
         else c.calls.content_00aba8d0(child, content_argument, a);
         current(a, bits(child), 0x50);
         boundary(a, 0x00ab9e71, child);
-        if (failure_runtime)
-            a.failure_origin_.unknown(*failure_runtime, {0x00ab9e71u, 0x47483233u}, &c.calls, [&] {
+        const auto dispatch_current_color = [&] {
+            if (a.captured_profile == 0x00d5c6c8u && a.captured_target == 0x00ab6b50u) {
+                const ColorScratchRange scratch[] = {
+                    {&a.color_frame_, sizeof(a.color_frame_)},
+                    {&a.color_acquired_, sizeof(a.color_acquired_)}};
+                const ColorScratchRange live[] = {
+                    {homes, sizeof(homes)}, {&a, sizeof(a)}, {&c, sizeof(c)},
+                    {actual_text, 0x1f8},
+                    {&a.raw93_frame_, sizeof(a.raw93_frame_)},
+                    {&a.raw93_context_, sizeof(a.raw93_context_)},
+                    {&a.raw93_acquired_, sizeof(a.raw93_acquired_)},
+                    {&a.raw93_frame_.sections, sizeof(a.raw93_frame_.sections)},
+                    {&a.raw93_frame_.sections.locals[0], sizeof(a.raw93_frame_.sections.locals)},
+                    {&a.raw93_frame_.sections.arguments[0], sizeof(a.raw93_frame_.sections.arguments)},
+                    {&a.raw93_frame_.sections.parenting, sizeof(a.raw93_frame_.sections.parenting)},
+                    {&a.shadow_frame_, sizeof(a.shadow_frame_)},
+                    {&a.shadow_acquired_, sizeof(a.shadow_acquired_)}};
+                require_color_scratch(scratch, live, sizeof(live) / sizeof(live[0]));
+                set_native_gui_text_color_storage_00ab6b50(child, pointer(bits(child) + 0x50),
+                    a.color_frame_, a.color_acquired_);
+            } else {
                 c.calls.child_current50(child, a.captured_profile, a.captured_target,
                     pointer(bits(child) + 0x50), a);
-            });
-        else c.calls.child_current50(child, a.captured_profile, a.captured_target, pointer(bits(child) + 0x50), a);
+            }
+        };
+        if (failure_runtime)
+            a.failure_origin_.unknown(*failure_runtime, {0x00ab9e71u, 0x47483233u}, &c.calls,
+                dispatch_current_color);
+        else dispatch_current_color();
         normal_string_return(a, c.strings, 0x00ab9e8a, 0x00ab9e91, true,
             failure_runtime ? &a.wide_header_arm_ : nullptr,
             failure_runtime ? &a.failure_origin_ : nullptr, failure_runtime);

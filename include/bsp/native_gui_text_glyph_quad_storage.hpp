@@ -16,6 +16,8 @@ struct NativeGuiTextRawModelDefaultStorageFrame;
 struct NativeGuiTextRawModelDefaultStorageContext;
 struct NativeGuiTextRawModelDefaultStorageAcquired;
 struct NativeGuiTextShadowStorageFrame;
+struct NativeGuiTextFieldStorageFrame;
+struct NativeGuiTextFieldStorageAcquired;
 struct NativeNodeSetParentAcquired;
 
 // Mandatory genuine whole raw providers in ONE retained Text/Model/renderer/
@@ -129,9 +131,12 @@ struct NativeGuiTextGlyphQuadStorageAcquired final {
         NativeGuiTextRawModelDefaultStorageContext& c,
         NativeGuiTextRawModelDefaultStorageAcquired& a,
         NativeGuiTextShadowStorageFrame& shadow_frame,
-        NativeNodeSetParentAcquired& shadow_acquired)
+        NativeNodeSetParentAcquired& shadow_acquired,
+        NativeGuiTextFieldStorageFrame& color_frame,
+        NativeGuiTextFieldStorageAcquired& color_acquired)
         : raw93_frame_(f), raw93_context_(c), raw93_acquired_(a),
-          shadow_frame_(shadow_frame), shadow_acquired_(shadow_acquired) {}
+          shadow_frame_(shadow_frame), shadow_acquired_(shadow_acquired),
+          color_frame_(color_frame), color_acquired_(color_acquired) {}
     NativeGuiTextGlyphQuadStorageAcquired(const NativeGuiTextGlyphQuadStorageAcquired&) = delete;
     NativeGuiTextGlyphQuadStorageAcquired& operator=(const NativeGuiTextGlyphQuadStorageAcquired&) = delete;
 private:
@@ -151,6 +156,11 @@ private:
     // Distinct fresh shadow records, never the ctor85/recursive parenting backing.
     NativeGuiTextShadowStorageFrame& shadow_frame_;
     NativeNodeSetParentAcquired& shadow_acquired_;
+    // Fresh retained color scratch for this invocation, separate from the live
+    // F24/F28 header, actual homes and every constructor/shadow/provider graph.
+    // The OTHER target path does not inspect or enter these borrowed records.
+    NativeGuiTextFieldStorageFrame& color_frame_;
+    NativeGuiTextFieldStorageAcquired& color_acquired_;
 };
 
 // Whole AB98F0..AB9FC2 [1747B/485ops]. Original ECX actual Text; ten physical
