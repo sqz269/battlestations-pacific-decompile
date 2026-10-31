@@ -1,0 +1,72 @@
+{
+  "schema": "bsp-native-mission-lua-scalar-push-v1",
+  "source_base": "86d9695ba61d817227e7c0308e433dd09c2164ea",
+  "source_sha256": {
+    "include/bsp/native_mission_lua_scalar_push.hpp": "cbe55d002c81e52c741509bbeef8e7491f722b6378bb35a4ce30a863e42dd3f5",
+    "src/native_mission_lua_scalar_push.cpp": "34b5615b8b9511c67c58267419d2f36022b62c11cdf9bb552032341b8f0bec5e"
+  },
+  "actual_source_lines": {
+    "header": 32,
+    "cpp": 69
+  },
+  "ordinary_cpp_abi_only": true,
+  "source_ready": false,
+  "runtime_validated": false,
+  "native_body_credit": false,
+  "vendor_body_credit": false,
+  "design_sha256": "f0780f5877525d62bd0e1a2bd07c3b0f384f39aa12104bbbf469f35ccaa2c089",
+  "whole_leaves": [
+    {
+      "entry": "006B80C0",
+      "instructions": 6,
+      "bytes": 20,
+      "schedule": "CURRENTstate before lowBYTE normalization0/1 then actualpushboolean",
+      "result": "void"
+    },
+    {
+      "entry": "006B80E0",
+      "instructions": 6,
+      "bytes": 21,
+      "schedule": "FLD32actualHOME before CURRENTstate before FSTP64actual8Bargarea, statepush, realcdeclpushnumber, normal12Bcleanup",
+      "result": "void"
+    },
+    {
+      "entry": "006B8120",
+      "instructions": 4,
+      "bytes": 15,
+      "schedule": "CaptureCStringptr before CURRENTstate before actualpushstring, NULL/strlen delegated",
+      "result": "void"
+    }
+  ],
+  "numeric_traits": [
+    "Win32 pointers/uintptr4, float4/double8 IEEE",
+    "lua_Number exactly double, real function type cdecl",
+    "One bounded fenced noinline assembly region, no helperwhileST0live or implicitCpp widening"
+  ],
+  "strict_object": {
+    "compiles": 1,
+    "exit_code": 0,
+    "machine": "014C",
+    "bytes": 1992,
+    "sha256": "9b596b171ab4f78b3a4732d03326d5326924b7637469df29546a29511ee6f1c9",
+    "defined_entries": [
+      "?push_boolean_native_mission_lua_006b80c0@bsp@@YAXPBXE@Z",
+      "?push_number_native_mission_lua_006b80e0@bsp@@YAXPBX0@Z",
+      "?push_string_native_mission_lua_006b8120@bsp@@YAXPBXPBD@Z"
+    ],
+    "genuine_lua_undefined": [
+      "_lua_pushnumber",
+      "_lua_pushstring",
+      "_lua_pushboolean"
+    ],
+    "symbol_receipt": "local/native_mission_lua_scalar_push_validation_cc9_20261031/objects/actual_symbols.json",
+    "emitted_operation_receipt": "local/native_mission_lua_scalar_push_validation_cc9_20261031/objects/inspection_receipt.json"
+  },
+  "provider_preservation": "local/native_mission_lua_scalar_push_validation_cc9_20261031/provider_preservation.json",
+  "limits": [
+    "Genuine matching linked-Source state/stack/code/capacity/provenance/lifetimes/FP environment required",
+    "No model/default/Frame/owner/checkstack/cleanup/pcall/rollback/retry or post-read",
+    "No Original privateHOME/ABI/fault or parent886E00/VM/factory/startup/runtime grant"
+  ],
+  "tests_probes_native_or_game_entry": false
+}
