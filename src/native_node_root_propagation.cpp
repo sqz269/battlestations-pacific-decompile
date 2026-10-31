@@ -4,6 +4,8 @@
 #include "bsp/native_instance_group_upload.hpp"
 #include "bsp/platform_renderer_activation.hpp"
 #include <cstddef>
+#include <cstring>
+#include <intrin.h>
 #include <cstdint>
 #include <stdexcept>
 
@@ -12,15 +14,21 @@ namespace {
 using Word = std::uint32_t;
 static_assert(sizeof(void*) == 4);
 Word word(const void* value, Word offset = 0) noexcept {
-    return *reinterpret_cast<const volatile Word*>(
-        static_cast<const std::byte*>(value) + offset);
+    Word result;
+    _ReadWriteBarrier();
+    std::memcpy(&result, static_cast<const std::byte*>(value) + offset, 4);
+    _ReadWriteBarrier();
+    return result;
 }
 void* pointer(const void* value, Word offset) noexcept {
     return reinterpret_cast<void*>(word(value, offset));
 }
 Word address(const void* value) noexcept { return reinterpret_cast<Word>(value); }
 void publish(void* value, Word offset, const void* identity) noexcept {
-    *reinterpret_cast<volatile Word*>(static_cast<std::byte*>(value) + offset) = address(identity);
+    const Word captured = address(identity);
+    _ReadWriteBarrier();
+    std::memcpy(static_cast<std::byte*>(value) + offset, &captured, 4);
+    _ReadWriteBarrier();
 }
 const volatile Word* attachment_slot(void* node, NativeNodeSceneChildDispatch& dispatch) {
     const volatile Word* const profile = dispatch.resolve_profile(word(node));

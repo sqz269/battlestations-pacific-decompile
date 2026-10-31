@@ -1,14 +1,22 @@
 #include "bsp/native_node_scene_attachment.hpp"
 #include "bsp/system_lighting_owners.hpp"
 #include <stdexcept>
+#include <cstring>
+#include <intrin.h>
 
 namespace bsp {
 namespace {
 using Word = std::uint32_t;
 Word bits(const volatile void* p) noexcept { return reinterpret_cast<Word>(p); }
 void* ptr(Word p) noexcept { return reinterpret_cast<void*>(p); }
-Word read(Word p, Word n = 0) noexcept { return *reinterpret_cast<const volatile Word*>(p + n); }
-void write(Word p, Word n, Word v) noexcept { *reinterpret_cast<volatile Word*>(p + n) = v; }
+Word read(Word p, Word n = 0) noexcept {
+    Word value;
+    _ReadWriteBarrier(); std::memcpy(&value, ptr(p + n), 4); _ReadWriteBarrier();
+    return value;
+}
+void write(Word p, Word n, Word v) noexcept {
+    _ReadWriteBarrier(); std::memcpy(ptr(p + n), &v, 4); _ReadWriteBarrier();
+}
 volatile long* count(Word p) noexcept { return reinterpret_cast<volatile long*>(p + 4u); }
 SystemAmbientBacklinks& array(Word object) noexcept {
     return *reinterpret_cast<SystemAmbientBacklinks*>(object + 0x178u);
