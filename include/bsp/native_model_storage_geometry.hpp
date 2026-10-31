@@ -12,6 +12,7 @@ struct NativeModelStorageGeometryScalars {
     std::uint8_t first_read{}, sentinel_read{}, first_stored{}, second_read{}, second_stored{};
 };
 class NativeModelStorageGeometryFrame;
+class NativeModelGeometryKernelAccess;
 struct NativeModelStorageGeometryAcquired {
     NativeModelStorageGeometryPhase phase{NativeModelStorageGeometryPhase::fresh};
     std::uint32_t active_call_site{};
@@ -24,13 +25,22 @@ struct NativeModelStorageGeometryAcquired {
     bool geometry_published{}, increment_completed{}, decrement_completed{}, terminal_completed{};
     NativeTextureSurfaceReferenceIncrement captured_increment{}, captured_decrement{};
     NativeModelStorageGeometryScalars scalars;
+    // Explicit Source family/issuer metadata; never a fabricated Model context.
+    const void* issuer{};
+    const void* context_identity{};
+    const void* service_identity{};
+    const volatile std::uint32_t* sentinel_home{};
+    NativeNodeBaseDestructionContext* node_context{};
+    bool native_returned{}, source_poisoned{};
 };
 
 // Immutable Source views of FOUR initialized caller DWORDs. Original entry
 // ESP+4 is unused, +8 is geometry, +C/+10 are the two scalar arguments.
 // Taking these addresses reads none of their values. Backing stays live and
 // mutable through callbacks; no by-value geometry/scalar snapshot is staged.
-// Explicit operand aliases, including accessible Model bytes, are allowed.
+// Genuine Word homes remain supported. Advertised accessible pointer/float
+// representation aliases use the qualified MSVC4B transfer, never a typed
+// Word evaluation or a new object/view placed over those bytes.
 // Frame/context/diagnostics themselves must not alias operands or native data.
 class NativeModelStorageGeometryFrame final {
 public:
@@ -49,6 +59,8 @@ private:
     const volatile std::uint32_t* const scalar_178_argument_;
     const volatile std::uint32_t* const scalar_17c_argument_;
     NativeModelStorageGeometryPhase phase_{NativeModelStorageGeometryPhase::fresh};
+    bool poisoned_{};
+    friend class NativeModelGeometryKernelAccess;
     friend void set_native_model_geometry_storage_00b75170(void*, NativeModelStorageGeometryFrame&,
         NativeModelStorageGeometryContext&, NativeModelStorageGeometryAcquired&);
 };

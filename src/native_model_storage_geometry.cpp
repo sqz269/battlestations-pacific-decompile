@@ -1,7 +1,10 @@
 #include "bsp/native_model_storage_geometry.hpp"
+#include "bsp/native_model_resource_storage.hpp"
 #include <atomic>
 #include <cstddef>
+#include <cstring>
 #include <exception>
+#include <intrin.h>
 #include <stdexcept>
 #include <type_traits>
 
@@ -20,10 +23,16 @@ void* at(void* p, Word offset) noexcept {
     return reinterpret_cast<void*>(reinterpret_cast<Word>(p) + offset);
 }
 Word read(const void* p, Word offset = 0) noexcept {
-    return *reinterpret_cast<const volatile Word*>(reinterpret_cast<Word>(p) + offset);
+    Word value;
+    _ReadWriteBarrier();
+    std::memcpy(&value, reinterpret_cast<const void*>(reinterpret_cast<Word>(p) + offset), 4);
+    _ReadWriteBarrier();
+    return value;
 }
 void write(void* p, Word offset, Word value) noexcept {
-    *static_cast<volatile Word*>(at(p, offset)) = value;
+    _ReadWriteBarrier();
+    std::memcpy(at(p, offset), &value, 4);
+    _ReadWriteBarrier();
 }
 void require_model(void* model, NativeModelStorageContext& c) {
     if (&c.node.trees.owners != static_cast<NativeRenderActualOwners*>(&c.node.scenes.owners) ||
@@ -60,8 +69,8 @@ void require_model(void* model, NativeModelStorageContext& c) {
 void require_target(NativeTextureSurfaceReferenceIncrement target) {
     if (!target) throw std::logic_error("raw Model geometry requires the genuine reached import");
 }
-void terminal(void* captured, NativeModelStorageContext& c) {
-    auto& reference = c.node.scenes.owners.resolve_actual(captured);
+void terminal(void* captured, NativeNodeBaseDestructionContext& node) {
+    auto& reference = node.scenes.owners.resolve_actual(captured);
     if (static_cast<void*>(&reference.reference_count) != at(captured, 4) ||
         reference.reference_count.load(std::memory_order_relaxed) != 0)
         throw std::logic_error("raw Model geometry terminal requires SAME observed-zero actual count");
@@ -144,16 +153,47 @@ bool NativeModelStorageGeometryFrame::requires_process_retention() const noexcep
 void set_native_model_geometry_storage_00b75170(void* model,
     NativeModelStorageGeometryFrame& frame, NativeModelStorageGeometryContext& c,
     NativeModelStorageGeometryAcquired& a) {
-    if (frame.phase_ != Phase::fresh || a.phase != Phase::fresh || a.frame || a.context || a.actual_model)
-        throw std::invalid_argument("raw Model geometry requires fresh retained frame/acquisition");
+    NativeModelGeometryKernelAccess::require_fresh(frame, a);
     require_model(model, c.storage); // qualified metadata/pool admission, no argument/import reads.
+    NativeModelGeometryKernelAccess::execute(model, frame, c.storage.node,
+        c.unchanged_00d7a260, a, &c, &c.storage, &c, &c);
+}
+void NativeModelGeometryKernelAccess::require_fresh(
+    NativeModelStorageGeometryFrame& frame, NativeModelStorageGeometryAcquired& a) {
+    if (frame.phase_ != Phase::fresh || frame.poisoned_ || a.phase != Phase::fresh ||
+        a.frame || a.context || a.actual_model || a.issuer || a.context_identity ||
+        a.service_identity || a.sentinel_home || a.node_context) {
+        // A rejected same-frame callback poisons the owning invocation even if
+        // its caller catches the rejection. Diagnostics cannot clear this fact.
+        if (frame.phase_ == Phase::entered) frame.poisoned_ = true;
+        throw std::invalid_argument("raw Model geometry requires fresh retained frame/acquisition");
+    }
+}
+void NativeModelGeometryKernelAccess::execute(void* model,
+    NativeModelStorageGeometryFrame& frame, NativeNodeBaseDestructionContext& node,
+    const volatile Word& unchanged, NativeModelStorageGeometryAcquired& a,
+    const void* issuer, const void* context_identity, const void* service_identity,
+    NativeModelStorageGeometryContext* legacy_context) {
     frame.phase_ = a.phase = Phase::entered;
     a.actual_model = model;
-    a.context = &c;
+    a.context = legacy_context;
     a.frame = &frame;
+    a.issuer = issuer;
+    a.context_identity = context_identity;
+    a.service_identity = service_identity;
+    a.sentinel_home = &unchanged;
+    a.node_context = &node;
     try {
         a.active_call_site = 0x00b75170;
-        const Word requested_bits = *frame.geometry_argument_; // FIRST actual operand capture.
+        const volatile Word* const geometry_home = frame.geometry_argument_;
+        Word requested_bits;
+        // FIRST actual operand capture. One qualified x86 4B representation
+        // transfer; no typed Word evaluation over a pointer/float alias.
+        __asm {
+            mov eax, geometry_home
+            mov eax, dword ptr [eax]
+            mov requested_bits, eax
+        }
         void* const requested = reinterpret_cast<void*>(requested_bits);
         a.captured_requested = requested;
         a.requested_captured = true;
@@ -167,7 +207,7 @@ void set_native_model_geometry_storage_00b75170(void* model,
             a.geometry_published = true;
             if (requested) {
                 // Current target is sampled only AFTER publication, at B75190.
-                const auto increment = c.storage.node.scenes.increment_00ce221c;
+                const auto increment = node.scenes.increment_00ce221c;
                 a.captured_increment = increment;
                 a.active_call_site = 0x00b75190;
                 require_target(increment);
@@ -176,7 +216,7 @@ void set_native_model_geometry_storage_00b75170(void* model,
             }
             if (previous) {
                 // A preceding increment callback may replace this current cell.
-                const auto decrement = c.storage.node.scenes.decrement_00ce2220;
+                const auto decrement = node.scenes.decrement_00ce2220;
                 a.captured_decrement = decrement;
                 a.active_call_site = 0x00b7519e;
                 require_target(decrement);
@@ -184,19 +224,31 @@ void set_native_model_geometry_storage_00b75170(void* model,
                 a.decrement_completed = true;
                 if (count == 0) {
                     a.active_call_site = 0x00b751ae;
-                    terminal(previous, c.storage);
+                    terminal(previous, node);
                     a.terminal_completed = true;
                 }
             }
         }
         // No further read or store of Model180. Even identity reaches scalars.
         // Passing addresses here reads neither scalar nor the sentinel value.
-        scalar_tail(model, frame.scalar_178_argument_, &c.unchanged_00d7a260,
+        scalar_tail(model, frame.scalar_178_argument_, &unchanged,
             frame.scalar_17c_argument_, &a.scalars, &a.active_call_site);
+        a.native_returned = true;
+        if (frame.poisoned_) {
+            a.source_poisoned = true;
+            throw std::logic_error("raw Model geometry owning invocation was poisoned");
+        }
         frame.phase_ = a.phase = Phase::complete;
     } catch (...) {
         frame.phase_ = a.phase = Phase::failed;
         throw; // No unwind action/rollback exists in B75170.
     }
+}
+void NativeModelGeometryKernelAccess::reject_returned(
+    NativeModelStorageGeometryFrame& frame, NativeModelStorageGeometryAcquired& a) {
+    frame.poisoned_ = true;
+    frame.phase_ = a.phase = Phase::failed;
+    a.source_poisoned = true;
+    throw std::logic_error("raw Model geometry issuer failed during the completed Native body");
 }
 } // namespace bsp

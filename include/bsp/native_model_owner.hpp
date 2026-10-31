@@ -7,6 +7,10 @@
 
 namespace bsp {
 class ModelTypeBootstrap;
+class NativeModelRawFactsAccess;
+class NativeModelGeometryKernelAccess;
+class NativeModelStorageGeometryFrame;
+struct NativeModelStorageGeometryAcquired;
 
 // Exactly model+174..183 in the actual 188h pool slot. No initializers erase
 // allocation preimages; the pool's slab index at +184 is a separate object.
@@ -94,6 +98,18 @@ public:
     Phase phase{Phase::prepared}; // host lifetime bookkeeping, not a native word
     NativeModelRawLifetimeBinding* const raw_lifetime;
 private:
+    friend class NativeModelRawFactsAccess;
+    friend class NativeModelReference;
+    struct RawConstructionFacts {
+        NativeNodeStorage* node{};
+        NativeModelTailStorage* tail{};
+        std::atomic<std::int32_t>* count{};
+        NativeModelEnvironment* environment{};
+        NativeModelRawLifetimeBinding* binding{};
+        const NativeNodeRawConstants* constants{};
+        const volatile std::uint32_t* sentinel{};
+        bool entered{}, returned{}, destruction_entered{}, typed_end_entered{}, failed{};
+    } raw_facts_;
     NativeModelOwner(void*, std::size_t, NativeModelEnvironment&, NativeModelRawLifetimeBinding*);
 };
 
@@ -169,6 +185,13 @@ public:
         NativeNodeTreeRetirementFrame&, NativeNodeTreeRetirementAcquired&);
     void remove_raw_scene_virtual54_00b6ee10(std::uint32_t captured_target,
         NativeNodeSceneAttachmentFrame&, NativeNodeSceneAttachmentAcquired&);
+    // Positive-live S1 only. Copies the genuine scene_170 member representation;
+    // returns opaque actual3Ch identity, with no scene dereference or retain.
+    void* capture_current_raw_scene_170();
+    // Same original canonical/private raw-return facts; four caller homes stay
+    // late and the complete existing raw kernel owns every Native operation.
+    void set_raw_geometry_00b75170(NativeModelStorageGeometryFrame&,
+        NativeModelStorageGeometryAcquired&);
 private:
     enum class Phase { bound, destroying, retired, failed };
     NativeModelOwner& owner_;
@@ -180,5 +203,7 @@ private:
     static void shrink_lights(void*) noexcept;
     class RawDeleteCalls;
     void delete_raw_scalar_00b75290(const volatile std::uint32_t&);
+    NativeModelRawLifetimeBinding& require_checked_raw_live();
+    void record_checked_raw_failure(std::uint32_t active_site) noexcept;
 };
 } // namespace bsp
