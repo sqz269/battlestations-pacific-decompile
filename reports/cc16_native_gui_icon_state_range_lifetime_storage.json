@@ -1,0 +1,98 @@
+{
+  "kind": "ignored genuine raw AB57E0 forward range lifetime Source support, no tracked author grant",
+  "base": "672a6cc2fd7dba2b69a0e449e542f9d1c15a81fa",
+  "current_provider_base": "cb879042b23afc501d85a55b3961452dcee7ffce",
+  "owned_paths": [
+    "include/bsp/native_gui_icon_state_range_lifetime_storage.hpp",
+    "src/native_gui_icon_state_range_lifetime_storage.cpp",
+    "docs/CC16_NATIVE_GUI_ICON_STATE_RANGE_LIFETIME_STORAGE.md",
+    "reports/cc16_native_gui_icon_state_range_lifetime_storage.json"
+  ],
+  "postimages": [
+    {
+      "path": "include/bsp/native_gui_icon_state_range_lifetime_storage.hpp",
+      "bytes": 2239,
+      "sha256": "b1b8a26717810e7cf42cb6c03b60e12ff28ca506a19f6bdef430a8c2ee0a0a1a"
+    },
+    {
+      "path": "src/native_gui_icon_state_range_lifetime_storage.cpp",
+      "bytes": 754,
+      "sha256": "f6633254c8648e78b0c040fb22a8e0714ec733cc00c7afc9858ce47b73a99d16"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_ICON_STATE_RANGE_LIFETIME_STORAGE.md",
+      "bytes": 2462,
+      "sha256": "21ae5717851495cd74990467f220c211ccc571944b23950bcecef7b43aed681f"
+    }
+  ],
+  "reader": {
+    "bytes": 6866,
+    "sha256": "f4ad049a562f26f10672ee79875b89a62f57b13c30abd14e41b88b384e8e6de9",
+    "utf8": "import argparse,hashlib,json,pathlib,re,subprocess\nfrom capstone import Cs,CS_ARCH_X86,CS_MODE_32\nap=argparse.ArgumentParser();ap.add_argument('--candidate');ap.add_argument('--commit');a=ap.parse_args()\nD=pathlib.Path(__file__).resolve().parent;C=pathlib.Path(a.candidate) if a.candidate else D/'candidate';checks=[]\nP='reports/cc16_native_gui_icon_state_range_lifetime_storage.json'\ndef g(*args):return subprocess.check_output(['git',*args])\ndef sha(b):return hashlib.sha256(b).hexdigest()\ndef ck(n,v):\n    assert v,n\n    checks.append({'check':n,'passed':True})\ndef read(p):return g('show',a.commit+':'+p) if a.commit else (C/p).read_bytes()\nr=json.loads(read(P))\nck('exact raw report reader',pathlib.Path(__file__).read_bytes()==r['reader']['utf8'].encode())\nfor p in r['postimages']:\n    b=read(p['path']);ck('whole frozen postimage '+p['path'],len(b)==p['bytes'] and sha(b)==p['sha256'])\nfor p in r['provider_whole_pins']:\n    b=g('show',r['base']+':'+p['path']);ck('genuine existing provider '+p['path'],len(b)==p['bytes'] and sha(b)==p['sha256'])\nfor q in r['callee_contract_verbatim']:\n    b=b''.join(g('show',r['base']+':'+q['path']).splitlines(keepends=True)[q['start_line']-1:q['end_line_inclusive']])\n    ck('exact callee/domain quote '+q['path']+str(q['start_line']),len(b)==q['bytes'] and sha(b)==q['sha256'] and b.decode()==q['verbatim_utf8'])\nb=bytes.fromhex(r['Native']['hex']);ins=list(Cs(CS_ARCH_X86,CS_MODE_32).disasm(b,0xab57e0))\nck('whole35B15-op Native preimage',len(b)==35 and sha(b)==r['Native']['sha256'] and len(ins)==15)\nck('capture first before end from two actual Native homes',[(i.address,i.op_str) for i in ins if i.mnemonic=='mov' and 'esp' in i.op_str]==[(0xab57e1,'esi, dword ptr [esp + 8]'),(0xab57e6,'edi, dword ptr [esp + 0x10]')])\nck('only actual raw destructor call',[(i.address,i.op_str) for i in ins if i.mnemonic=='call']==[(0xab57f2,'0xab3280')])\nck('DWORD40 advance and captured-end compares',[(i.address,i.mnemonic,i.op_str) for i in ins if i.address in (0xab57ea,0xab57f7,0xab57fa)]==[(0xab57ea,'cmp','esi, edi'),(0xab57f7,'add','esi, 0x40'),(0xab57fa,'cmp','esi, edi')])\nck('actual empty and repeated branch targets',[(i.address,i.op_str) for i in ins if i.mnemonic in ['je','jne']]==[(0xab57ec,'0xab57fe'),(0xab57fc,'0xab57f0')])\nck('Native unused selfmov is preserved as no data effect and RET8 ABI excluded',any(i.address==0xab57ee and i.mnemonic=='mov' and i.op_str=='edi, edi' for i in ins) and bytes(ins[-1].bytes)==bytes.fromhex('c20800'))\nh=read(r['owned_paths'][0]).decode();c=read(r['owned_paths'][1]).decode();clean=re.sub(r'//[^\\n]*','',c)\nck('two actual volatile homes and genuine existing context','const volatile std::uint32_t (&actual_argument_homes)[2]' in h and 'NativeGuiIconStorageContext& context' in h)\nck('exact capture order once and no home mutation',re.findall(r'actual_argument_homes\\[([^]]+)\\]',clean)==['0','1'] and c.index('current = actual_argument_homes[0];')<c.index('end = actual_argument_homes[1];'))\nck('only equality loop, no added input/feature/domain condition',re.findall(r'\\bwhile\\s*\\(([^)]*)\\)',clean)==['current != end'] and re.search(r'\\bif\\s*\\(',clean) is None)\nck('direct whole genuine raw dtor with SAME context exactly once',c.count('destroy_native_gui_icon_state_00ab3280(reinterpret_cast<void*>(current), context);')==1)\nck('callee normal return before cursor wrap advance',c.index('destroy_native_gui_icon_state_00ab3280(')<c.index('current += 0x40u;') and 'std::uint32_t current' in c)\nck('no Frame/Acquired/owner/callback/array projection',not any(x in clean for x in ['struct ','class ','Frame','Acquired','virtual','std::function','NativeGuiIconStateStorage','std::vector','std::string','new ','delete ']))\nck('no new catch/NoThrow/cleanup/retry/terminal/FP policy',not any(x in clean for x in ['catch','try {','throw','noexcept','noreturn','std::terminate','std::_Exit','float','double','finit','fldcw','ldmxcsr']))\nck('ordinary void interface has no Native incidental return receipt','void destroy_native_gui_icon_state_range_storage_00ab57e0(' in h and 'return ' not in clean)\nck('inherited callee policy and Source lifetime qualifiers explicit',all(x in h for x in ['terminates on a secondary failure','wrapper adds no catch','Retain all lifetimes','Source control/spill storage']))\nck('no Native exception-origin/ABI/runtime credit',r['Original_ABI_Origin_runtime_activation'] is False and r['new_Original_vendor_helper_CG_duplicate_credit']==0)\n\ndef tree(rev):\n    out={}\n    for raw in g('ls-tree','-r','-z',rev).split(b'\\0'):\n        if raw:\n            m,p=raw.split(b'\\t',1);mode,kind,oid=m.decode().split();out[p.decode()]=(mode,kind,oid)\n    return out\ndef treehash(items):\n    root={}\n    for p,v in items.items():\n        n=root;parts=p.split('/')\n        for s in parts[:-1]:n=n.setdefault(s,{})\n        n[parts[-1]]=v\n    def rec(n):\n        z=[]\n        for k,v in n.items():\n            if isinstance(v,dict):z.append((k+'/',b'40000 '+k.encode()+b'\\0'+bytes.fromhex(rec(v))))\n            else:z.append((k,v[0].lstrip('0').encode()+b' '+k.encode()+b'\\0'+bytes.fromhex(v[2])))\n        b=b''.join(v for _,v in sorted(z,key=lambda x:x[0].encode()))\n        return hashlib.sha1(b'tree '+str(len(b)).encode()+b'\\0'+b).hexdigest()\n    return rec(root)\nbefore=tree(r['base']);after=dict(before)\nck('complete base tree recomputed',treehash(before)==g('rev-parse',r['base']+'^{tree}').decode().strip())\nfor p in r['owned_paths']:\n    ck('genuinely absent new path '+p,p not in before)\n    b=read(p);after[p]=('100644','blob',hashlib.sha1(b'blob '+str(len(b)).encode()+b'\\0'+b).hexdigest())\nrestored=dict(after)\nfor p in r['owned_paths']:restored.pop(p)\nck('full four-addition map inverse',restored==before)\nck('full recursive four-addition inverse',treehash(restored)==g('rev-parse',r['base']+'^{tree}').decode().strip())\nif a.commit:\n    parent=g('show','-s','--format=%P',a.commit).decode().strip();old=tree(parent);new=tree(a.commit)\n    ck('actual one parent',len(parent.split())==1)\n    ck('actual exact four additions',{p for p in old.keys()|new.keys() if old.get(p)!=new.get(p)}==set(r['owned_paths']) and all(p not in old for p in r['owned_paths']))\n    for p in r['provider_whole_pins']:ck('actual callee/provider unchanged '+p['path'],g('show',parent+':'+p['path'])==g('show',r['base']+':'+p['path']))\n    for p in r['owned_paths']:new.pop(p)\n    ck('actual full recursive inverse',new==old and treehash(new)==g('rev-parse',parent+'^{tree}').decode().strip())\nprint(json.dumps({'pass':True,'checks':len(checks),'mode':'immutable Git' if a.commit else 'ignored candidate','whole_Native_bytes':35,'whole_Native_ops':15,'base_tree':treehash(before),'virtual_four_addition_tree':treehash(after),'full_inverse_tree':treehash(restored),'callee_policy_inherited_not_Native_Origin':True,'Original_ABI_Origin_runtime_activation':False,'new_credit':0}))\n"
+  },
+  "Native": {
+    "address": "00ab57e0",
+    "bytes": 35,
+    "physical_rows": 15,
+    "sha256": "184e8bef28181aaf233c2c89889d533f16db9bed0413f00d60694ef01ad8c2a9",
+    "calls": [
+      {
+        "site": "00ab57f2",
+        "target": "0xab3280"
+      }
+    ],
+    "hex": "568b742408578b7c24103bf774108bff8bcee889daffff83c6403bf775f25f5ec20800",
+    "input": "ECX unused; two first/end incoming DWORD homes captured once",
+    "normal_result": "undefined/incidental EAX; ordinary Source void",
+    "RET": "8"
+  },
+  "provider_whole_pins": [
+    {
+      "path": "include/bsp/native_gui_icon_storage.hpp",
+      "bytes": 8923,
+      "sha256": "36efeb861e01b14348e370d169c9002b8ac436a29b2f9f3be1d5aac8d7976bfc"
+    },
+    {
+      "path": "src/native_gui_icon_storage.cpp",
+      "bytes": 19689,
+      "sha256": "cc847b8f5fb19055a1116376b2d3a8eff181f045695fe73394ba04996728a492"
+    }
+  ],
+  "callee_contract_verbatim": [
+    {
+      "path": "include/bsp/native_gui_icon_storage.hpp",
+      "start_line": 105,
+      "end_line_inclusive": 115,
+      "bytes": 708,
+      "sha256": "a19d924236df79b509aef27e5fc00e69e510c9784f9f8a014e023f1064eab48c",
+      "verbatim_utf8": "// AB3A70 ECX destination40h, source stack, RET4/EAX same. Real raw string\n// resize/copy then native field order and a single actual texture+04 increment.\n// AB3280 ECX actual state, RET: release CURRENT texture, clear only after its\n// terminal returns, then release CURRENT name. Name unwind also runs if texture\n// release throws. Headers are not silently repaired or cleared on name release.\n// Textures are actual live canonical owners in this SAME registry; no host ptr.\nvoid* copy_native_gui_icon_state_00ab3a70(void* actual_destination,\n    const void* actual_source, NativeGuiIconStorageContext&);\nvoid destroy_native_gui_icon_state_00ab3280(void* actual_state,\n    NativeGuiIconStorageContext&);\n\n"
+    },
+    {
+      "path": "src/native_gui_icon_storage.cpp",
+      "start_line": 153,
+      "end_line_inclusive": 167,
+      "bytes": 662,
+      "sha256": "f90d06372d84aad2590b6478f41f587fb8b6be7202be374ae253566956118c87",
+      "verbatim_utf8": "void destroy_native_gui_icon_state_00ab3280(void* raw, NativeGuiIconStorageContext& context) {\n    require_storage(raw);\n    try {\n        if (void* const texture = pointer(raw)) {\n            release_native_render_actual_owner(context.actual_owners, texture);\n            word(raw) = 0; // AB32C2, after terminal, before reloading name.\n        }\n    } catch (...) {\n        // AB3280 native state0 owns the name even when texture0 throws.\n        try { destroy_native_string_header_0041dd20(at(raw, 4), context.strings); }\n        catch (...) { std::terminate(); }\n        throw;\n    }\n    destroy_native_string_header_0041dd20(at(raw, 4), context.strings);\n}\n"
+    }
+  ],
+  "Native_Source_map": {
+    "57E1": "first home capture",
+    "57E6": "end home capture",
+    "57EA/57EC": "empty equality compare/exit",
+    "57EE": "alignment selfmov, no data effect",
+    "57F0/57F2": "direct actual raw AB3280 SAMEcontext in Source ABI",
+    "57F7": "DWORD cursor+=40h",
+    "57FA/57FC": "captured-end compare/repeat",
+    "57E0/57E5/57FE/57FF/5800": "ordinary Source ABI instead of save/restore/RET8"
+  },
+  "actual_existing_callee": "destroy_native_gui_icon_state_00ab3280(void*,NativeGuiIconStorageContext&), src/native_gui_icon_storage.cpp153; whole Source policy inherited including existing name-on-texture-escape/secondary termination",
+  "new_Frame_Acquired_callback_owner_array_family_or_cleanup": false,
+  "Native_local_EH": false,
+  "body_Source_support_ready": true,
+  "unknown_escape": "caller retains genuine graph/providers; no new Origin/Native cleanup permission",
+  "caller_graph_ready": false,
+  "Original_ABI_Origin_runtime_activation": false,
+  "new_Original_vendor_helper_CG_duplicate_credit": 0,
+  "Source_CMake_ledger_Ghidra_compiler_tests_probes_Game_actions": false
+}
