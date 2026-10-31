@@ -2493,3 +2493,6 @@ cmake_language(DEFER CALL include "${CMAKE_SOURCE_DIR}/cmake/native_data_placeme
 
 # CC16 raw renderer texture lookup storage provider.
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_renderer_texture_find_storage.cpp)
+
+# CC16 raw GUI named-value copy constructor storage.
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_gui_named_value_copy_storage.cpp)
