@@ -2526,3 +2526,6 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_cor
 
 # Private raw Mesh allocation and payload lifetime facts; caller activation remains gated.
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_mesh_storage_lifetime.cpp)
+
+# Raw resolved Icon-state UV supplier; production callers remain gated.
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_gui_icon_state_uv_storage.cpp)
