@@ -4932,5 +4932,357 @@
     "Source54_reviewed_object_byte_identical": true,
     "new_game_probe_provider_entries": 0,
     "new_ABI_Native_runtime_activation_credit": 0
+  },
+  "default_SourceHost_regression": {
+    "classification": "default reconstructed SourceHost startup/one-frame/natural shutdown regression only",
+    "command": "./tools/run_game.ps1 -Slots 8 -NoForceStop -Log local/function_source_batch54/default_host/source_host.log -- --frames 1 --difficulty 1 --settings-personal-root <fresh private local/function_source_batch54/default_host/personal> --window-monitor smallest --window-resolution fit --present-interval immediate",
+    "manifest": {
+      "started_utc": "2026-10-31T07:59:13.1900611Z",
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration",
+      "owner": "battlestations-pacific-decompile-codex-function-source-integration",
+      "slot": 0,
+      "instance_tag": "slot0",
+      "affinity_core": 2,
+      "log": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch54\\default_host\\source_host.log",
+      "launcher": {
+        "game_root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+        "xlive_dll": "build\\win32\\Release\\xlive_stub.dll",
+        "no_force_stop": true,
+        "game_args": [
+          "--frames",
+          "1",
+          "--difficulty",
+          "1",
+          "--settings-personal-root",
+          "J:/PROG/battlestations-pacific-decompile-codex-function-source-integration/local/function_source_batch54/default_host/personal",
+          "--window-monitor",
+          "smallest",
+          "--window-resolution",
+          "fit",
+          "--present-interval",
+          "immediate"
+        ],
+        "exe": "build\\win32\\Release\\bsp_game.exe"
+      },
+      "arguments": [
+        "--game-root",
+        "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+        "--xlive-dll",
+        "build\\win32\\Release\\xlive_stub.dll",
+        "--log",
+        "local/function_source_batch54/default_host/source_host.log",
+        "--instance-tag",
+        "slot0",
+        "--affinity-core",
+        "2",
+        "--frames",
+        "1",
+        "--difficulty",
+        "1",
+        "--settings-personal-root",
+        "J:/PROG/battlestations-pacific-decompile-codex-function-source-integration/local/function_source_batch54/default_host/personal",
+        "--window-monitor",
+        "smallest",
+        "--window-resolution",
+        "fit",
+        "--present-interval",
+        "immediate"
+      ],
+      "difficulty": {
+        "value": "1",
+        "source": "caller"
+      },
+      "env": {},
+      "exe": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\bsp_game.exe",
+        "size": 7539712,
+        "mtime_utc": "2026-10-31T07:47:17.5946216Z",
+        "sha256": "5976456db5378b8d00524671944f7860b8d831221da48ac713f9bb7ab6a7b421",
+        "build_checkout": {
+          "root": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration",
+          "head": "ce6a340c9e457505fe74be64d6d5f65d14f69bf1",
+          "dirty": false
+        }
+      },
+      "host": {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration",
+        "head": "ce6a340c9e457505fe74be64d6d5f65d14f69bf1",
+        "dirty": false
+      },
+      "inputs": [
+        {
+          "option": "--xlive-dll",
+          "arg_index": 3,
+          "value": "build\\win32\\Release\\xlive_stub.dll",
+          "source": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\xlive_stub.dll",
+          "archived": "xlive_stub.dll",
+          "sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3"
+        }
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-10-31T07:59:23.3033874Z",
+      "launcher_exit_code": 0,
+      "drain": {
+        "no_force_stop": true,
+        "waited_seconds": 0,
+        "natural_completed": true,
+        "timed_out": false,
+        "forced_stop_requested_pids": [],
+        "retained_pids": []
+      }
+    },
+    "exe_matches_joined_build": true,
+    "window_device_created": true,
+    "device_hr": "0x00000000",
+    "back_buffer": "1600x900",
+    "frames_presented": 0,
+    "presents_skipped": 1,
+    "loop_finished": true,
+    "canonical_GUI_Icon_and_manager_drained": true,
+    "renderer_COM_final_counts": {
+      "device": 0,
+      "api": 0
+    },
+    "Host_methods": {
+      "concrete": 126,
+      "unimplemented": 41,
+      "unimplemented_called": 41,
+      "unimplemented_rows": [
+        {
+          "method": "PlatformWindowHost::initialize_power_policy",
+          "address": "00bed223",
+          "calls": 1
+        },
+        {
+          "method": "Phase 5 online_manager_initialize",
+          "address": "0073dc7c",
+          "calls": 1
+        },
+        {
+          "method": "Phase 4 renderer_resources",
+          "address": "00b14a10",
+          "calls": 1
+        },
+        {
+          "method": "GuiManagerResources::renderer_load_texture",
+          "address": "00aa5e60",
+          "calls": 2
+        },
+        {
+          "method": "GuiLayoutHost::bind_page_root_scene_node",
+          "address": "00aa6720",
+          "calls": 5
+        },
+        {
+          "method": "GuiLayoutHost::allocate_model_slot",
+          "address": "00b74eb0",
+          "calls": 24
+        },
+        {
+          "method": "GuiLayoutHost::create_widget_node",
+          "address": "00b75030",
+          "calls": 24
+        },
+        {
+          "method": "GuiLayoutHost::set_node_parent",
+          "address": "00b6e680",
+          "calls": 24
+        },
+        {
+          "method": "GuiLayoutHost::widget_vtable_74",
+          "address": "00aaade8",
+          "calls": 24
+        },
+        {
+          "method": "GuiLayoutHost::widget_vtable_78",
+          "address": "00aaae5b",
+          "calls": 24
+        },
+        {
+          "method": "GuiLayoutHost::derived_property_reader",
+          "address": "00aaa710",
+          "calls": 5
+        },
+        {
+          "method": "GuiLayoutHost::propagate_root_registration",
+          "address": "00b6d890",
+          "calls": 5
+        },
+        {
+          "method": "GuiFrameBox::read_properties",
+          "address": "00ad08e0",
+          "calls": 5
+        },
+        {
+          "method": "StartupSingleton::register_lifetime",
+          "address": "00bd0c30",
+          "calls": 1
+        },
+        {
+          "method": "DecalTable::load_vertex_format",
+          "address": "00740454",
+          "calls": 1
+        },
+        {
+          "method": "DecalTable::load_texture",
+          "address": "00740b90",
+          "calls": 1
+        },
+        {
+          "method": "DecalTable::load_shader",
+          "address": "00740c50",
+          "calls": 1
+        },
+        {
+          "method": "ProfileReset::xenon_state_is_two",
+          "address": "00f8abe8",
+          "calls": 2
+        },
+        {
+          "method": "TitleInit::load_texture_atlas",
+          "address": "00af0060",
+          "calls": 1
+        },
+        {
+          "method": "TitleInit::create_attract_screen",
+          "address": "00689d90",
+          "calls": 1
+        },
+        {
+          "method": "TitleInit::attract_screen_init",
+          "address": "00689d90+4h",
+          "calls": 1
+        },
+        {
+          "method": "PressStartScreen::clear_page_context",
+          "address": "00518d60",
+          "calls": 1
+        },
+        {
+          "method": "TitleInit::sign_in_state_valid",
+          "address": "0067c8f0",
+          "calls": 1
+        },
+        {
+          "method": "TitleInit::reset_sign_in_state",
+          "address": "00a40020",
+          "calls": 1
+        },
+        {
+          "method": "TitleInit::rebind_primary_input",
+          "address": "0067c970",
+          "calls": 1
+        },
+        {
+          "method": "TitleInit::movie_screen_commit",
+          "address": "004f83b0",
+          "calls": 1
+        },
+        {
+          "method": "FrontEndFrame::render_queue_retained",
+          "address": "00b1bf90",
+          "calls": 1
+        },
+        {
+          "method": "FrontEndFrame::renderer_begin_frame",
+          "address": "00f8d394+0ch",
+          "calls": 1
+        },
+        {
+          "method": "TitleScreen::update_title_owner",
+          "address": "00f8bbf4+4h",
+          "calls": 1
+        },
+        {
+          "method": "XenonSystemManager::sign_in_phase",
+          "address": "00a3e500",
+          "calls": 2
+        },
+        {
+          "method": "XenonSystemManager::profile_change_pending",
+          "address": "00a3e3b0",
+          "calls": 2
+        },
+        {
+          "method": "PressStartScreen::primary_device",
+          "address": "004ba6d0",
+          "calls": 2
+        },
+        {
+          "method": "XenonSystemManager::sign_in_blocked",
+          "address": "00f8abe8+3e8",
+          "calls": 2
+        },
+        {
+          "method": "PressStartScreen::frontend_tail_event",
+          "address": "00427190",
+          "calls": 2
+        },
+        {
+          "method": "FrontEndFrame::gui_set_enabled",
+          "address": "00aa0e00",
+          "calls": 1
+        },
+        {
+          "method": "FrontEndFrame::gui_update",
+          "address": "00aa4f80",
+          "calls": 1
+        },
+        {
+          "method": "FrontEndFrame::game_render",
+          "address": "004ca440",
+          "calls": 1
+        },
+        {
+          "method": "FrontEndFrame::game_finish_render_frame",
+          "address": "004ca1f0",
+          "calls": 1
+        },
+        {
+          "method": "GuiText::create_glyph_buffers",
+          "address": "00ab8400",
+          "calls": 2
+        },
+        {
+          "method": "GuiText::ensure_draw_sections",
+          "address": "00ab8530",
+          "calls": 2
+        },
+        {
+          "method": "ApplicationShutdownHost::singleton_teardown",
+          "address": "00737f80",
+          "calls": 1
+        }
+      ]
+    },
+    "artifacts": [
+      {
+        "path": "local/function_source_batch54/default_host/source_host.log",
+        "bytes": 100090,
+        "sha256": "08028ef582bda044d2c2f3b3194682061e2c28bdd2cd5b07f31fa0d7505c4d71",
+        "retained_path": "local/function_source_batch54/default_host/artifacts/source_host.log"
+      },
+      {
+        "path": "local/function_source_batch54/default_host/source_host.log.manifest.json",
+        "bytes": 3241,
+        "sha256": "d4897d319d5c931bc07695f072d2c6473cdfd928d4c680fb710d669eb27bc4f1",
+        "retained_path": "local/function_source_batch54/default_host/artifacts/source_host.log.manifest.json"
+      },
+      {
+        "path": "local/function_source_batch54/default_host/wrapper.log",
+        "bytes": 392,
+        "sha256": "68b45f9f5885f1ba1a4dda2c4993c6f4024eafbc22a6c022b952df4db26223a9",
+        "retained_path": "local/function_source_batch54/default_host/artifacts/wrapper.log"
+      },
+      {
+        "path": "local/function_source_batch54/default_host/personal/Battlestations-Pacific/options.txt",
+        "bytes": 226,
+        "sha256": "f871b61acf20319045e8d07b87f69d66d9562308920456537d0103200e2a6b4c",
+        "retained_path": "local/function_source_batch54/default_host/artifacts/personal/Battlestations-Pacific/options.txt"
+      }
+    ],
+    "Source54_constructor_or_new_reserved_paths_invoked": false,
+    "new_Original_ABI_unwind_Origin_gameplay_activation_credit": 0,
+    "scope_limit": "No visual/present/gameplay validation, no new constructor invocation, no new NativeOrigin/unwind permission. All existing unimplemented Host rows remain explicit. No force kill or original installation modification requested."
   }
 }
