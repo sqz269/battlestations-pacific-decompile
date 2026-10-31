@@ -2679,8 +2679,89 @@
     "build/win32/bsp_game.dir/Release/game_hosts.obj"
   ],
   "Source62_objects_whole_byte_unchanged": true,
-  "default_startup": "PENDING",
+  "default_startup": "Fresh V3 storage startup PASS; natural exits and drain; locale accessor and raw cold method uncalled",
   "new_tests": 0,
   "locale_accessor_runtime": false,
-  "Original_CRT_CPU_ABI_Origin_raw_fullgameplay_credit": 0
+  "Original_CRT_CPU_ABI_Origin_raw_fullgameplay_credit": 0,
+  "fresh_default_SourceHost": {
+    "classification": "Fresh genuine V3 parent/child storage startup/drain; no locale API or new raw selection",
+    "Source_head": "e8bc43c8b36dbce6e6ddc7ef9d9340f0a7df98a3",
+    "compiled_Source_head": "52623ff8e00d85241d47de983ddcff232287a2ff",
+    "metadata_only_head_difference": true,
+    "exe": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\bsp_game.exe",
+      "size": 7547392,
+      "mtime_utc": "2026-10-31T13:23:46.6814995Z",
+      "sha256": "76ac0e170f8d157a27828b72e4165ba8aed84e937d92abddc3651c268091860a",
+      "build_checkout": {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration",
+        "head": "e8bc43c8b36dbce6e6ddc7ef9d9340f0a7df98a3",
+        "dirty": false
+      }
+    },
+    "launcher_exit_code": 0,
+    "child_exit_code": 0,
+    "drain": {
+      "no_force_stop": true,
+      "waited_seconds": 0,
+      "natural_completed": true,
+      "timed_out": false,
+      "forced_stop_requested_pids": [],
+      "retained_pids": []
+    },
+    "window_device_created": true,
+    "device_hr": "0x00000000",
+    "back_buffer": "1600x900",
+    "frames_presented": 0,
+    "presents_skipped": 1,
+    "loop_finished": true,
+    "Icon_manager_drained": true,
+    "device_api_COM_final": [
+      0,
+      0
+    ],
+    "concrete_Host_methods": 126,
+    "unimplemented_Host_methods": 41,
+    "all_unimplemented_called": true,
+    "artifacts": [
+      {
+        "path": "local/function_source_batch64/default_host/source_host.log",
+        "bytes": 100053,
+        "sha256": "af7f34aca44584cd97dbacfd37cd303389ea8e249f1485611f0863e390f63bd3",
+        "retained_path": "local/function_source_batch64/default_host/artifacts/01_source_host.log"
+      },
+      {
+        "path": "local/function_source_batch64/default_host/source_host.log.manifest.json",
+        "bytes": 3241,
+        "sha256": "94113b8f0bbf43666ae57446766f620565f43250942208ce964c2be7ec4a4561",
+        "retained_path": "local/function_source_batch64/default_host/artifacts/02_source_host.log.manifest.json"
+      },
+      {
+        "path": "local/function_source_batch64/default_host/wrapper.log",
+        "bytes": 392,
+        "sha256": "4cb30e143927d0d2e258217921cfb976fcfa5026762c5a0e76ba4ce61841a256",
+        "retained_path": "local/function_source_batch64/default_host/artifacts/03_wrapper.log"
+      },
+      {
+        "path": "local/function_source_batch64/default_host/personal/Battlestations-Pacific/options.txt",
+        "bytes": 226,
+        "sha256": "f871b61acf20319045e8d07b87f69d66d9562308920456537d0103200e2a6b4c",
+        "retained_path": "local/function_source_batch64/default_host/artifacts/04_options.txt"
+      },
+      {
+        "path": "local/function_source_batch64/default_host/settings_preimage.json",
+        "bytes": 519,
+        "sha256": "1f2438a03140e074a216473d0633332be4087250cf4c078dbb26adce07f83522",
+        "retained_path": "local/function_source_batch64/default_host/artifacts/05_settings_preimage.json"
+      },
+      {
+        "path": "build/win32/Release/xlive_stub.dll",
+        "bytes": 32768,
+        "sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3",
+        "retained_path": "local/function_source_batch64/default_host/artifacts/06_xlive_stub.dll"
+      }
+    ],
+    "Original_ABI_Origin_raw_fullgameplay_credit": 0
+  },
+  "V3_storage_runtime": true
 }
