@@ -223,4 +223,30 @@ void apply_native_gui_text_state_color_storage_00ab7200(NativeGuiTextReference&,
 void set_native_gui_text_color_storage_00ab6b50(NativeGuiTextReference&,
     const void* original_rgba, NativeGuiTextFieldStorageContext&,
     NativeGuiTextFieldStorageFrame&, NativeGuiTextFieldStorageAcquired&);
+
+// Same whole AB6B50 body over genuinely constructed actual Text storage.
+// This entry needs no legacy canonical Reference, Font or current-table Context.
+// Only Source diagnostic freshness/alignment and known scratch separation are
+// checked before entry; they do not authenticate ownership or Native origin.
+//
+// Actual Text has its complete live 1F8 pool-slot backing. Main+4C is a nonnull
+// actual Model even when geometry is empty; each reached current Model has a
+// genuine live NativeModelTailStorage subobject at+174 (not Group capacity at+180).
+// Mesh/array/element and actual NativeMaterialStorage/lighting subobjects, all
+// callback-selected generations and the original 16B RGBA stay valid through
+// return/failure. Those opaque lifetimes/disjoint extents remain caller proof.
+// RGBA may alias Text/material fields, including this Text's own+50; its words
+// are read at their existing epochs, never snapshotted. Frame/Acquired are
+// separate from each other, Text, input and every reached resource/provider.
+// Supply a fresh retained acquisition and a distinct persistent frame per call.
+//
+// destination/entry/phase are published before the SAME body; normal Native
+// skips complete normally, entered C++ escape marks failed and rethrows. No
+// automatic cleanup/reset/retry follows. shadow_alpha preserves the exact
+// x87 float32 spill/reload; physical Native argument-home/private-stack aliases,
+// Original ABI/FH3/SEH/fault/NoThrow/secondary behavior remain unproved. This is
+// a conditional Source primitive, not a Glyph current50 dispatcher/producer.
+void set_native_gui_text_color_storage_00ab6b50(void* actual_text,
+    const void* original_rgba, NativeGuiTextFieldStorageFrame&,
+    NativeGuiTextFieldStorageAcquired&);
 } // namespace bsp

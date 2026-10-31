@@ -1,0 +1,658 @@
+{
+  "schema": "cc16.native_glyph_widget_lifetime_preparation_design.v1",
+  "date": "2026-10-31 UTC",
+  "packet": "codex-native-glyph-widget-lifetime-preparation-design",
+  "Source_base": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+  "Source42_published": "c54165b94cae85893c7d6dfbfb18056d0a388cbb",
+  "prior_preparation_audit": "39e78f8b5642430642a5dd74bcf57ccd55e9e33f",
+  "post_sections_audit": "e35d542299334c50e6c097ba5ed3e912b8b29649",
+  "scope": {
+    "owned_files": [
+      "docs/CC16_NATIVE_GLYPH_WIDGET_LIFETIME_PREPARATION_DESIGN.md",
+      "reports/cc16_native_glyph_widget_lifetime_preparation_design.json"
+    ],
+    "addresses": [],
+    "Source_authoring": false,
+    "branch_merge": false,
+    "Native_recovery_queries_writes_build_tests_probe_game": false,
+    "Source44_Glyph_files_readonly": true
+  },
+  "result": {
+    "actual_AA9390_widget_identity_hook_required": false,
+    "existing_factory_record_reusable_by_progress_flags": false,
+    "whole_Glyph_lifetime_backend_ready": false,
+    "real_per_Glyph_preparer_available": false,
+    "postconstructor_sections_Glyph_domain_ready": false,
+    "finite_source_birth_extension_selected": true,
+    "implementation_or_activation_authorized": false,
+    "direct_normal_raw93_or_raw122_calls_DefaultWidget_authenticate": false
+  },
+  "actual_findings": [
+    {
+      "path": "src/native_gui_widget_base_storage.cpp",
+      "lines": [
+        36,
+        75
+      ],
+      "finding": "AA9390 receives only actualraw/type/one. It initializes prefix/fields and invokes genuine sentinel allocation, but has no widget-lifetime context or binding call. Do not synthesize an identity callback. Real raw93 entry can record custody before the allocator; partial base prefix is not admitted for widget dispatch."
+    },
+    {
+      "path": "src/native_gui_text_default_storage.cpp",
+      "lines": [
+        324,
+        337,
+        402,
+        403,
+        415,
+        417,
+        431,
+        460
+      ],
+      "finding": "Source preflight precedes started/destination, then AA9390. Derived-prefix-ready is402 before whole raw85. body_returned415 is a private negative Native-failure frontier, NOT whole Source completion; completion checks and complete417 come later, and actual wrapper normal return is the Source success event."
+    },
+    {
+      "path": "src/native_gui_text_default_widget_lifetime.cpp",
+      "lines": [
+        97,
+        125,
+        169,
+        190,
+        226,
+        240,
+        324,
+        337
+      ],
+      "finding": "Default binding literally requires FactoryContext/FactoryAcq and same graph. Authentication uses real AA1380 constructing/complete progress; separate current fields/empty-ring requirements exclude primary/children/timed/glyph/content/shader. A history-only change cannot admit populated Glyph behavior."
+    },
+    {
+      "path": "src/native_gui_text_reference.cpp",
+      "lines": [
+        602,
+        680,
+        777,
+        807
+      ],
+      "finding": "Raw122 accepts genuine completed93/188/B75170 and same coherent pool/provider/type/count graph, without any FactoryAcq condition. It calls direct genuine base predicates, not WidgetLifetime virtuals. It requires initial4Cnull; ordinary bind/publish can throw host metadata failures and imply no Native failed-constructor return."
+    },
+    {
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "lines": [
+        470,
+        498
+      ],
+      "finding": "Earliest safe added binding seam is after captured child/state-1/normal_disarm/home7=child, before append publishes child and before clone/AA6720. A host binder while state0 remains armed could be mistaken for constructor escape on the legacy route."
+    },
+    {
+      "path": "include/bsp/native_gui_text_reference.hpp",
+      "lines": [
+        124,
+        134
+      ],
+      "finding": "ReferenceContext.construction is const. Keep constructor history complete/frozen after success and an INDEPENDENT mutable publication receipt; no const_cast or mutable-constructor-history workaround."
+    },
+    {
+      "path": "include/bsp/native_gui_widget_raw_model_lifetime.hpp",
+      "lines": [
+        28,
+        35
+      ],
+      "finding": "RawWidgetModelLifetimeContext concretely requires DefaultWidgetRecord+DefaultWidgetLifetime. Current implementation authenticates factory118 and explicitly rejects Glyph. Merely introducing a sibling adapter is not a usable replacement."
+    }
+  ],
+  "selected_design": {
+    "approach": "Finite non-factory birth record variant in the existing Text/widget domains, coupled to actual per-Glyph preparation and binding. Prefer an alternate strong typed record/bind path on the existing widget-lifetime class over a standalone unused sibling. Preserve AA1380 records and admission unchanged; no public kind boolean or writable completion flag is authority.",
+    "prepared_borrows": "Existing NativeGuiTextDefaultFactoryStorageContext15-23 can be reused AS A BORROW BUNDLE ONLY: process, publication context, raw93 Acquired, scalar/reference frame, companion storage and disposal. Constructing this bundle does not mean AA1380 was called. New Glyph record supplies the private real source history instead of any FactoryAcq.",
+    "producer": "Prepare a distinct nonmoving raw93 Frame/Context/Acquired, real Model188 graph/geometry/material/string/node/renderer providers, publication context/frame/companion/disposal and lifetime record for each selected Glyph invocation. Use existing owner/service roots; add a genuine child-record preparation/borrow entry, without exposing private Attempt, sharing fresh records, adding a global owner or allocating a second Native Text slot.",
+    "selection": "Bind publication/lifetime borrows on EACH retained Glyph acquired record during genuine preparation, not shared Glyph Context. Existing parent selectors only select already-prepared records. No hot-path metadata allocation/lookup, record count/depth cap, exhaustion fallback or reset is supplied.",
+    "constructor_history": "Private noncopying Source record tied to exact Glyph invocation, real pool companion, actual allocation, raw93 Frame/Context/Acquired and static caller site. Only designated actual wholeGlyph pool path and actual raw93 entry/body may advance it. Public Acquired progress remains necessary diagnostics, never issuer.",
+    "publication_receipt": "Separate private mutable receipt bound to the immutable completed constructor witness and the exact actual ReferenceContext/Frame/companion/disposal; only a real ordinary/reserved binder path records success after placement construction and owners.bind/publish return. Existing publication diagnostic flags are not authority.",
+    "include_boundary": "Keep neutral metadata declarations separate from DefaultWidgetLifetime header to avoid the existing Lifetime ->Factory ->Reference ->DefaultStorage include cycle. Exact identifiers/signatures and Source44 constructor shape are deferred to Root implementation review.",
+    "before_callbacks": "Expected graph/record aliases are prepared before entry. At actual pool/ctor epochs only fixed private Source metadata is recorded, without extra Native reads/effects, FP, allocator, lock, lookup or reentry. This is a required implementation property, not a new public noexcept/general-NoThrow assertion.",
+    "invalid_or_failed": "Never reset/replace an entered history. Failed/mismatched/reentered paths do not issue a birth receipt. Retain the real reached graph; do not add cancellation, rollback, automatic Native cleanup, AB76F0 replay, shortage or termination policy."
+  },
+  "real_source_epochs": [
+    {
+      "epoch": "prepared",
+      "issuer": "actual per-invocation graph preparer",
+      "meaning": "Expected identities and complete retained backing only; no claim of allocation, Native construction or publication."
+    },
+    {
+      "epoch": "pool entering/normal return at9D38",
+      "issuer": "actual wholeGlyph genuine prepared Text pool call",
+      "meaning": "Publish existing operation custody before its callback; record actual normal result after exactly one genuine allocation. NULL records no child birth, preserving the existing Native null path."
+    },
+    {
+      "epoch": "raw93 actual entry",
+      "issuer": "real4/5arg raw overload",
+      "meaning": "Match the same observed allocation and exact triplet. Leave existing ConstructorCall.bind_once solely at actual5arg entry. Prefix dispatch remains unavailable during AA9390."
+    },
+    {
+      "epoch": "derived prefix ready402",
+      "issuer": "real constructor body after native derived fields",
+      "meaning": "If a genuine constructor-phase consumer needs identity, use this private event rather than public base/derived flags. Do not insert any callback into AA9390."
+    },
+    {
+      "epoch": "whole Source completion",
+      "issuer": "actual wrapper normal completion after complete417 and its existing qualified completion",
+      "meaning": "Record genuine completed raw85/internal188+host graph validation. body_returned415 alone is insufficient."
+    },
+    {
+      "epoch": "caller disarmed preappend gap",
+      "issuer": "wholeGlyph after state-1/normal_disarm/home7 publication",
+      "meaning": "For the genuine nonnull completed child only, call actual metadata binder before append/clone/AA6720 can publish or change the default receiver. Preserve all existing Native statement order and null behavior."
+    },
+    {
+      "epoch": "actual raw122 binder return",
+      "issuer": "genuine binder after existing preflight+placement+bind/publish",
+      "meaning": "Independent successful-publication receipt. Failed preflight/bind/publish retains completed graph/reservation; not Native ctor failure. No copied count or extra retain."
+    },
+    {
+      "epoch": "retirement/disposal later",
+      "issuer": "future genuine actual scalar/disposal path only",
+      "meaning": "An independent tombstone must precede companion destruction before any adapter can dereference it again. This design does not authorize or implement populated retirement/cleanup."
+    }
+  ],
+  "binding_method_inventory": [
+    {
+      "method": "current_table",
+      "actual_Default": "CPP281-295; authenticates factory and empty branches, returns genuine captured-profile-selected RO table",
+      "needed_Glyph": "Private actual birth/current-liveness admission plus same authenticated RO aliases; preserve captured selector and stable pure metadata contract, no new host lookup on live FP/callback edges. Populated domain not supplied."
+    },
+    {
+      "method": "call_class_query_0c",
+      "actual_Default": "CPP297-322; real A9E070/AB83D0 and actual lineage, then rejects true canonical Text descriptor legacy188 branch",
+      "needed_Glyph": "Keep real target/descriptor semantics. Source birth does not permit legacy188 or substitutefalse. Genuine raw Model lifetime transport remains required."
+    },
+    {
+      "method": "call_child_scene_20",
+      "actual_Default": "CPP324-328 alwaysrejects",
+      "needed_Glyph": "Real captured child/current20 target, complete RawModel/node/scene graph and retained invocation; no successful supplier in this adapter."
+    },
+    {
+      "method": "call_child_delete_04",
+      "actual_Default": "CPP329-333 alwaysrejects",
+      "needed_Glyph": "Actual matching child canonical raw122/current target and exact flags home through genuine scalar body, with independent disposition; no typed pointer projection/default dispatcher."
+    },
+    {
+      "method": "call_timed_delete_00",
+      "actual_Default": "CPP334-338 alwaysrejects",
+      "needed_Glyph": "Actual timed family/current target plus prepared backing/free service if reached. Source93 zero fields do not authorize a general nonempty timed domain."
+    },
+    {
+      "method": "remove_all_00a9bd50",
+      "actual_Default": "CPP339-361 genuine finite captured AA9390+64ring/pointercell removal",
+      "needed_Glyph": "Receiver/liveness authentication from the new genuine record and actual same list/allocator provenance; do not copy/reselect a header or invent iteration bounds."
+    }
+  ],
+  "finite_proposed_Source_files": [
+    {
+      "role": "neutral private constructor-history/publication-receipt types; no owner or Native origin",
+      "candidate_files": [
+        "include/bsp/native_gui_text_glyph_birth.hpp",
+        "src/native_gui_text_glyph_birth.cpp"
+      ],
+      "new": true
+    },
+    {
+      "role": "actual pool9D38 history and postdisarm canonical-birth call; mandatory per-Glyph prepared publication borrow",
+      "candidate_files": [
+        "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "src/native_gui_text_glyph_quad_storage.cpp"
+      ],
+      "constraint": "Wait Source44 ownership release/current baseline; do not edit in this design."
+    },
+    {
+      "role": "actual raw93 entry/prefix-ready/whole-Source-success/failure epochs",
+      "candidate_files": [
+        "include/bsp/native_gui_text_default_storage.hpp",
+        "src/native_gui_text_default_storage.cpp"
+      ]
+    },
+    {
+      "role": "observed real ordinary/reserved binder overloads and independent successful-publication receipt",
+      "candidate_files": [
+        "include/bsp/native_gui_text_reference.hpp",
+        "src/native_gui_text_reference.cpp"
+      ]
+    },
+    {
+      "role": "alternate genuine non-AA1380 record in existing widget-lifetime class, preserving old factory domain",
+      "candidate_files": [
+        "include/bsp/native_gui_text_default_widget_lifetime.hpp",
+        "src/native_gui_text_default_widget_lifetime.cpp"
+      ]
+    },
+    {
+      "role": "real per-Glyph retained child graph preparation/borrow/selection in existing producer domain",
+      "candidate_files": [
+        "include/bsp/game_native_raw_default_text_owner.hpp",
+        "src/game_native_raw_default_text_owner.cpp"
+      ],
+      "constraint": "Separate child-record mode with genuine graph, not reuse/reset of the ONE factory Attempt. Exact public entry is a Root design choice; no implementation declared ready."
+    }
+  ],
+  "separate_remaining_current_graph_cut": {
+    "raw_widget_transport": [
+      "include/bsp/native_gui_widget_raw_model_lifetime.hpp",
+      "src/native_gui_widget_raw_model_lifetime.cpp"
+    ],
+    "reason": "Context and authentication are FactoryRecord-specific; raw118 first-domain and reject_glyph cannot simply accept a different lifetime class or receipt. Needs explicit nonfactory actual current188/4C routes/retirement proof.",
+    "post_sections": "e35 actual postconstructor body/admission must accept the real CURRENT188/4C/geometry/flag matrix with genuine matching records. Neither original constructor188 nor this Source birth receipt proves ownership of a replacement current object.",
+    "populated_backend": "Alternate record is only an honest birth/identity extension. Do not remove DEFAULT branch gates or fill methods with throwing/successful placeholders and claim full Glyph readiness. Couple it to the real reached producer/consumer domain; otherwise keep backend false."
+  },
+  "capability_limits": [
+    "Source construction/publication evidence only, distinct from Native exception-origin permission. No Native issuer, cleanup eligibility or SlotArm/ConstructorCall postconstructor reuse.",
+    "No pool/slab/retirement ownership from a receipt, no refcount copy/retain, no canonical global bank or process authority.",
+    "Existing reserved publication eliminates insertion/rehash only; mutex/host failures and invalid-capability terminal qualifications remain. Receipt supplies neither authentic reservation nor hidden allocator guarantees.",
+    "No automatic graph cleanup, extra Native allocation, AA1380 fake history, destructor replay, retry, rollback or new terminal/noexcept policy.",
+    "Actual valid alias/backing/private scratch and all recursive/current receiver generations remain caller proof; Original ABI/FH3/SEH/fault/secondary/foreign-runtime/runtime/gameplay/activation remain false.",
+    "After normal wholeGlyph return the parent reuses its ten homes; historical records retain identity only. New birth history never follows home7 values after reuse."
+  ],
+  "next_decision": "Root should authorize a COUPLED actual per-Glyph prepared-child/birth record + true operation-hook/binder/lifetime-record extension after Source44 closes, not an unused history/adapter alone. Full populated transport/postsections/current-node binding remains a distinct real gate; no additional Native body recovery is needed for this birth investigation.",
+  "evidence": {
+    "inputs": [
+      {
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "path": "include/bsp/native_gui_widget_lifetime.hpp",
+        "bytes": 7899,
+        "sha256": "c9155c508f98bb913ebe8ae71cd6c98e050d86ce25a746a5c8f4909f37242d1a",
+        "git_blob": "3dfab3f1b6a42f2a37f8c84e1d813e4d7201ec20",
+        "CR_bytes": 0,
+        "LF_bytes": 131
+      },
+      {
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "path": "include/bsp/native_gui_text_default_widget_lifetime.hpp",
+        "bytes": 6623,
+        "sha256": "6689bd2ad16f3518e7356abea646dd10f37bb3d609f23453ca479dee10ed5672",
+        "git_blob": "2c2c6e782b2953cbe671bf60a092e3b9cf6210dd",
+        "CR_bytes": 0,
+        "LF_bytes": 114
+      },
+      {
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "path": "src/native_gui_text_default_widget_lifetime.cpp",
+        "bytes": 20580,
+        "sha256": "a9a0804f232966546ad7f17ce8d8b6fa81937f26531d831ecd79a3d8bb62d88b",
+        "git_blob": "fe970d12216473b80796f96656e605e359afe53b",
+        "CR_bytes": 0,
+        "LF_bytes": 362
+      },
+      {
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "path": "include/bsp/native_gui_text_default_storage.hpp",
+        "bytes": 6352,
+        "sha256": "7a23774d66bb90e59712407d58fd3356640da3f77f1c087bf766b77d3748141a",
+        "git_blob": "2eb5db69eff0b68c093a5006e13eb2d490e821b7",
+        "CR_bytes": 0,
+        "LF_bytes": 109
+      },
+      {
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "path": "src/native_gui_text_default_storage.cpp",
+        "bytes": 26698,
+        "sha256": "6ed36cf3cad97ef089be15302827995d3bc6f303f5df3a3eb122b970dde67d09",
+        "git_blob": "47f32c0fb30dc7ebfaeb83ce2480ec88f59d3039",
+        "CR_bytes": 0,
+        "LF_bytes": 461
+      },
+      {
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "path": "include/bsp/native_gui_text_reference.hpp",
+        "bytes": 12718,
+        "sha256": "62224192a6d0fb5043ed68a3f34374ce1bc3584ee1f3bb031c1041b33fdd1827",
+        "git_blob": "492cf04c44cfeae90887bba02c32039f325bc318",
+        "CR_bytes": 0,
+        "LF_bytes": 215
+      },
+      {
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "path": "src/native_gui_text_reference.cpp",
+        "bytes": 58312,
+        "sha256": "0fb188e79dbc014db098d01e3afff14a5e07f1671a33db063d2e126e5af4257e",
+        "git_blob": "f3a8e3a5c855acc668fb526d6de781621cfdb8c2",
+        "CR_bytes": 0,
+        "LF_bytes": 879
+      },
+      {
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "path": "include/bsp/native_gui_text_default_factory_storage.hpp",
+        "bytes": 4809,
+        "sha256": "1587babdcc646f3b91b15b688a27338ea7d1e5038db3e92a7fd6738fb8924cd0",
+        "git_blob": "c375df0e72f3bbb01134ad99a1cab4dbc0bc9cd7",
+        "CR_bytes": 0,
+        "LF_bytes": 83
+      },
+      {
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "bytes": 10450,
+        "sha256": "2c1a08c5dab06953176ffeb99893e75b44453278d74a5996b316a8ae3eef9f68",
+        "git_blob": "c0be674b4d15bf2a1aa2363037094fa403181f4e",
+        "CR_bytes": 0,
+        "LF_bytes": 172
+      },
+      {
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "bytes": 29172,
+        "sha256": "c602171ad6ecb845bd7b7251cf8b6d7f80806dcb865398107f397d9df52c700e",
+        "git_blob": "fedbb22e83160bdad544747017bfc0ecc7ad688c",
+        "CR_bytes": 0,
+        "LF_bytes": 660
+      },
+      {
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "path": "include/bsp/native_gui_widget_raw_model_lifetime.hpp",
+        "bytes": 4599,
+        "sha256": "bc8dd7b7fb8e22be5436857a8a27ed123afafe7543c592e327643d5294eaf988",
+        "git_blob": "dbffd3f17f0952c4d3ff8c0659ab0f617221eac7",
+        "CR_bytes": 0,
+        "LF_bytes": 86
+      },
+      {
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "path": "src/native_gui_widget_raw_model_lifetime.cpp",
+        "bytes": 28955,
+        "sha256": "8761415408f767dfa34dbcdf986be942e94f07b42d3f63536a77ce987cbec146",
+        "git_blob": "4d0e75a0986557607258a53264c06bac084c0a7f",
+        "CR_bytes": 0,
+        "LF_bytes": 432
+      },
+      {
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "path": "include/bsp/native_gui_widget_base_storage.hpp",
+        "bytes": 1081,
+        "sha256": "35748704f96ed477f2f55f01edf5a8e598f1995955f847343f94327dc495faab",
+        "git_blob": "61c72c99fab59f5c86da392495d7bae5381607cf",
+        "CR_bytes": 0,
+        "LF_bytes": 23
+      },
+      {
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "path": "src/native_gui_widget_base_storage.cpp",
+        "bytes": 3008,
+        "sha256": "4ddd5ab1ad4a2b8174d80caf70dba76afa648479e4e8637a56884f2b9db6354d",
+        "git_blob": "997a33c5ac7bbf7b57e133feb53b91163e7308b5",
+        "CR_bytes": 0,
+        "LF_bytes": 76
+      },
+      {
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "path": "include/bsp/game_native_raw_default_text_owner.hpp",
+        "bytes": 9406,
+        "sha256": "92715898e34550625339a8658568e31aee5dbb5b8901d92379a273e816558c83",
+        "git_blob": "532566845cd8434126f0869464a0deb7c1ec2e2f",
+        "CR_bytes": 0,
+        "LF_bytes": 140
+      },
+      {
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "path": "src/game_native_raw_default_text_owner.cpp",
+        "bytes": 132021,
+        "sha256": "b0c6a8e39b0756e98960a9f21894a0b25ea7b1a437891edaa86b6f893289d25b",
+        "git_blob": "8e3d47af9f936b938afa27821afd5b3b6b8071ef",
+        "CR_bytes": 0,
+        "LF_bytes": 2024
+      },
+      {
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "path": "include/bsp/native_gui_text_storage_construct.hpp",
+        "bytes": 9641,
+        "sha256": "681a44709442353f716f2ead0377804df61cbc659ec7fc7dcc3a7a05c56ec5b2",
+        "git_blob": "736c02913b09a1de5f606362747305a2a4a36318",
+        "CR_bytes": 0,
+        "LF_bytes": 175
+      },
+      {
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "path": "src/native_gui_text_storage_construct.cpp",
+        "bytes": 37007,
+        "sha256": "a4c2c5e06dfa78d0dba7769900cb7a8302f7567c70f77707262246088326db60",
+        "git_blob": "88fa09e70019fa61d59652c5434666b8db4931b2",
+        "CR_bytes": 0,
+        "LF_bytes": 653
+      },
+      {
+        "commit": "39e78f8b5642430642a5dd74bcf57ccd55e9e33f",
+        "path": "docs/CC16_NATIVE_GLYPH_CHILD_PREPARATION_AUDIT.md",
+        "bytes": 12302,
+        "sha256": "60cac2bb87c2181bb72f7030c1ae9247d248fd9ee77cc809bdb5951ec9b128a6",
+        "git_blob": "8275c3f10ea7721874cd6f1e7c70aa9405b2e978",
+        "CR_bytes": 0,
+        "LF_bytes": 45
+      },
+      {
+        "commit": "39e78f8b5642430642a5dd74bcf57ccd55e9e33f",
+        "path": "reports/cc16_native_glyph_child_preparation_audit.json",
+        "bytes": 49182,
+        "sha256": "692f4955b81b58e6fc4dc426033090897b0f53dac8b47d1dd66177f923d6db31",
+        "git_blob": "0548fe6ba87047028135593b1cdb583b846844f5",
+        "CR_bytes": 0,
+        "LF_bytes": 996
+      },
+      {
+        "commit": "e35d542299334c50e6c097ba5ed3e912b8b29649",
+        "path": "docs/CC16_NATIVE_GLYPH_SECTIONS_CALLER_READINESS.md",
+        "bytes": 9580,
+        "sha256": "3632736bdf4d8bf7a42f9518c5e47f501dbecabb6370c4cee52dae71df2c4ead",
+        "git_blob": "fae9c67a932918d75bff4c974435e5a4c595c382",
+        "CR_bytes": 0,
+        "LF_bytes": 40
+      },
+      {
+        "commit": "e35d542299334c50e6c097ba5ed3e912b8b29649",
+        "path": "reports/cc16_native_glyph_sections_caller_readiness.json",
+        "bytes": 33559,
+        "sha256": "fbb0cc2ecf341ba2b18d15917a49f115fe35d9500e3fe5de4c7f1ae50718c438",
+        "git_blob": "a3ad7c3f3061b666004c8f2508832ba7589e5818",
+        "CR_bytes": 0,
+        "LF_bytes": 648
+      }
+    ],
+    "exact_Source_regions": {
+      "lifetime_interface": {
+        "path": "include/bsp/native_gui_widget_lifetime.hpp",
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "first_line": 8,
+        "last_line": 34,
+        "bytes": 1729,
+        "sha256": "76ab07cc469420534b20d90ed878a2a5aada70b655e626a26fe1077e95b1482a",
+        "text": "// Required bindings for CURRENT raw widget/entry dispatch and the MSVC list\n// remove specialization. No logical GuiWidgetOwner/GuiLayoutWidget conversion.\n// Lookup is side-effect-free; returned actual tables remain live across calls.\n// Numeric entries identify source implementations and are never invoked as code.\nclass NativeGuiWidgetLifetimeBindings {\npublic:\n    virtual ~NativeGuiWidgetLifetimeBindings() = default;\n    virtual const volatile std::uint32_t* current_table(void* actual_owner,\n        std::uint32_t captured_profile) = 0;\n    virtual bool call_class_query_0c(void* actual_widget,\n        std::uint32_t captured_target, std::uint32_t descriptor) = 0;\n    virtual void call_child_scene_20(void* actual_child,\n        std::uint32_t captured_target) = 0;\n    // Native AA9730 passes flags1 regardless of reference count. The real\n    // derived destructor MUST detach itself from the parent's SAME +64 list.\n    // The caller reloads head/count and supplies no fallback erase/decrement.\n    virtual void call_child_delete_04(void* actual_child,\n        std::uint32_t captured_target, std::uint32_t flags) = 0;\n    virtual void call_timed_delete_00(void* actual_entry,\n        std::uint32_t captured_target, std::uint32_t flags) = 0;\n    // Complete A9BD50 library contract: ECX actual {opaque,head,count} list,\n    // stack address of pointer cell. Capture *cell and initial end, remove ALL\n    // equal node+8 values with original iterator checks, unlink/free each\n    // matching 0Ch node and decrement CURRENT count. Preserve other payloads,\n    // allocator word and sentinel. No successful default implementation.\n    virtual void remove_all_00a9bd50(void* actual_list, const void* pointer_cell) = 0;\n};\n"
+      },
+      "lifetime_context": {
+        "path": "include/bsp/native_gui_widget_lifetime.hpp",
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "first_line": 80,
+        "last_line": 86,
+        "bytes": 389,
+        "sha256": "0b6775d7dc0d9d189d811fbe0e69bc3d5fa7f3e32ee310cd793ac748f4182762",
+        "text": "struct NativeGuiWidgetLifetimeContext {\n    NativeNodeDestructionRuntime& nodes; // existing ACTUAL node companions only\n    const volatile std::uint32_t* actual_base_table_00d5c130; // at least9 DWORDs\n    const volatile std::uint32_t (&actual_base_lineage_00f8bc88)[2];\n    const volatile std::uint32_t& actual_text_descriptor_00f8be28;\n    NativeGuiWidgetLifetimeBindings& bindings;\n};\n"
+      },
+      "factory_specific_record": {
+        "path": "include/bsp/native_gui_text_default_widget_lifetime.hpp",
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "first_line": 5,
+        "last_line": 17,
+        "bytes": 683,
+        "sha256": "ec59b0bd4d58bea4b1cbd01f5b45b097d002a2d0e5c879a8c51ccc6f97a5c950",
+        "text": "// One independent publication history, supplied by the retained owner. These\n// are diagnostics/admission markers, not native ownership or copied counts.\nstruct NativeGuiTextDefaultWidgetPublicationState final {\n    NativeGuiTextRawModelReference* reference{};\n    bool bind_entered{}, bind_complete{}, bind_failed{};\n    bool scalar_entered{}, scalar_returned{}, scalar_failed{};\n    bool companion_disposal_entered{}, disposed{};\n};\nstruct NativeGuiTextDefaultWidgetLifetimeRecord final {\n    NativeGuiTextDefaultFactoryStorageContext& factory_context;\n    const NativeGuiTextDefaultFactoryStorageAcquired& factory;\n    NativeGuiTextDefaultWidgetPublicationState& publication;\n};\n"
+      },
+      "default_bind": {
+        "path": "src/native_gui_text_default_widget_lifetime.cpp",
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "first_line": 97,
+        "last_line": 125,
+        "bytes": 1937,
+        "sha256": "3a26dabd476f712818dd89cfe1fc8649d82655d6d1013fe8755c32468d04a1c4",
+        "text": "void NativeGuiTextDefaultWidgetLifetime::bind(NativeGuiTextDefaultWidgetLifetimeRecord& r) {\n    Call call; call.operation = Op::bind;\n    begin(call);\n    try {\n        require(!acquired_.bound && !record_, \"DEFAULT widget record binding is once only\");\n        auto& f = r.factory_context;\n        auto& p = f.publication;\n        auto& c = f.construction;\n        auto& s = r.publication;\n        require(&f.process == &process_ && &p.data == &data_ && &p.owners == &registry_ &&\n            &p.construction == &c && &p.construction_context.lifetime == &context_ &&\n            &p.retirement.base == &context_ &&\n            &p.retirement.resources == &p.construction_context.sections &&\n            &p.retirement.model == &c.sections.model &&\n            &p.retirement.glyphs.nodes == &context_.nodes &&\n            &p.retirement.glyphs.children == this &&\n            &p.construction_context.sections.model.storage.node.trees.point_lights ==\n                &context_.nodes.point_lights,\n            \"DEFAULT widget binding requires EXACT factory/raw93/raw122/188/base/glyph identities\");\n        require(r.factory.phase == NativeGuiTextDefaultFactoryStorageAcquired::Phase::fresh &&\n            !r.factory.started && !r.factory.complete && !r.factory.raw_slot &&\n            !c.started && !c.complete && !c.destination &&\n            !s.reference && !s.bind_entered && !s.bind_complete && !s.bind_failed &&\n            !s.scalar_entered && !s.scalar_returned && !s.scalar_failed &&\n            !s.companion_disposal_entered && !s.disposed,\n            \"DEFAULT widget record must bind before factory/publication/scalar entry\");\n        require(f.companion_storage && f.companion_storage_bytes >= sizeof(NativeGuiTextRawModelReference) &&\n            f.disposal.retire && ((f.disposal.context != nullptr) == (f.disposal.context_bytes != 0)),\n            \"DEFAULT widget binding requires the real prepared raw122 storage/disposal\");\n"
+      },
+      "default_authenticate": {
+        "path": "src/native_gui_text_default_widget_lifetime.cpp",
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "first_line": 153,
+        "last_line": 204,
+        "bytes": 3475,
+        "sha256": "bdadef0119474a3d99b7c50039b64d6d643ae919586640010e1bda445f80b939",
+        "text": "NativeGuiTextDefaultWidgetLifetime::Admission\nNativeGuiTextDefaultWidgetLifetime::authenticate(void* actual) {\n    auto& r = record();\n    auto& f = r.factory_context;\n    const auto& a = r.factory;\n    const auto& c = f.construction;\n    const auto& s = r.publication;\n    const auto& scalar = f.reference_frame.scalar;\n    // Independent records FIRST. In particular never inspect the diagnostic\n    // reference pointer after placement destruction, nor an ended raw payload.\n    require(!s.bind_failed && !s.scalar_failed && !s.companion_disposal_entered && !s.disposed &&\n        !s.scalar_returned && !c.base_lifetime_ended && !scalar.complete &&\n        !scalar.pool_returned && !scalar.destructor_returned &&\n        !scalar.destruction.complete && !scalar.destruction.base_returned &&\n        a.phase != NativeGuiTextDefaultFactoryStorageAcquired::Phase::failed && !a.failure,\n        \"DEFAULT widget dispatch rejects failed/disposing/ended/returned metadata\");\n    require(actual && a.started && a.allocation_returned && a.raw_slot == actual &&\n        a.prepared_context == &f && a.construction_record == &c &&\n        a.actual_pool == &f.publication.retirement.actual_pool_00f8bdf0 &&\n        c.started && c.destination == actual && c.base_complete && c.derived_complete &&\n        context_.actual_base_table_00d5c130 == base_ && &context_.bindings == this,\n        \"DEFAULT widget receiver is not its SAME actual factory/raw93 allocation\");\n    if (!s.bind_entered) {\n        require(!s.bind_complete && !s.reference && !s.scalar_entered &&\n            a.phase == NativeGuiTextDefaultFactoryStorageAcquired::Phase::constructing &&\n            a.boundary == NativeGuiTextDefaultFactoryStorageAcquired::Boundary::constructor_call &&\n            a.constructor_entered && !a.constructor_returned && !c.complete &&\n            registry_.find(actual) == nullptr,\n            \"DEFAULT widget constructor prefix requires genuine pre-raw122 factory/raw93 entry\");\n        return Admission::construction;\n    }\n    require(s.bind_complete && s.reference &&\n        a.phase == NativeGuiTextDefaultFactoryStorageAcquired::Phase::complete && a.complete &&\n        a.constructor_returned && a.constructor_result == actual && c.complete &&\n        !c.exception_cleanup_started && !c.consumed_cleanup_actions &&\n        static_cast<void*>(s.reference) == f.companion_storage &&\n        registry_.find(actual) == s.reference,\n        \"DEFAULT widget dispatch requires its SAME completed canonical raw122 binding\");\n    // The companion is known alive by the owner's independent disposal marker.\n    const auto phase = s.reference->phase();\n    require(phase == NativeGuiTextRawModelReference::Phase::bound ||\n        (s.scalar_entered && phase == NativeGuiTextRawModelReference::Phase::retiring),\n        \"DEFAULT widget reference is not in an admitted bound/scalar phase\");\n    require(s.reference->storage() == actual && &s.reference->storage_context() == &f.publication,\n        \"DEFAULT widget reference borrows a different producer/lifetime graph\");\n    if (phase == NativeGuiTextRawModelReference::Phase::bound && !s.scalar_entered) {\n        require(!scalar.started && !scalar.destructor_entered && !scalar.destruction.started,\n            \"DEFAULT widget bound metadata hides an entered scalar operation\");\n        return Admission::bound;\n    }\n    require(s.scalar_entered, \"DEFAULT widget retiring prefix lacks its owner scalar entry\");\n    return Admission::retiring;\n"
+      },
+      "default_empty_domain": {
+        "path": "src/native_gui_text_default_widget_lifetime.cpp",
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "first_line": 226,
+        "last_line": 240,
+        "bytes": 1191,
+        "sha256": "bfbed9515458fa89b94754472ac4b3fab7e25bc8fd81fd78abc6542d65af003f",
+        "text": "void NativeGuiTextDefaultWidgetLifetime::require_empty_branches(void* actual) {\n    // No188 read here: its lifetime can be partial in constructor cleanup.\n    require(!read(actual, 0x4c) && !read(actual, 0x70) && !read(actual, 0x6c) &&\n        !read(actual, 0x88) && !read(actual, 0x8c) && !read(actual, 0x90) &&\n        !read(actual, 0x180) && !read(actual, 0x184) && !read(actual, 0x18c) && !read(actual, 0x190) &&\n        !read(actual, 0x198) && !read(actual, 0x19c) && !read(actual, 0x1a0) && !read(actual, 0x1ec) &&\n        !read(actual, 0xec) && !read(actual, 0xf0) && !read(actual, 0xf4) && !read(actual, 0xf8) &&\n        !read(actual, 0x1a4) && !read(actual, 0x1a8) &&\n        !read(actual, 0x1c0) && !read(actual, 0x1c4) && !read(actual, 0x1c8) && !read(actual, 0x1cc),\n        \"DEFAULT widget excludes primary/parent/children/timed/glyph/content/shader arms\");\n    void* const head = reinterpret_cast<void*>(read(actual, 0x68));\n    require(head && !(reinterpret_cast<std::uintptr_t>(head) & 3u) &&\n        read(head) == reinterpret_cast<Word>(head) && read(head, 4) == reinterpret_cast<Word>(head),\n        \"DEFAULT widget requires its genuine finite empty AA9390 list ring\");\n}\n"
+      },
+      "actual_methods": {
+        "path": "src/native_gui_text_default_widget_lifetime.cpp",
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "first_line": 281,
+        "last_line": 361,
+        "bytes": 4650,
+        "sha256": "10b14128d1b06fe978a6fecbd097b77f07ce4f2e0b5679c1c98c983a6b6df2e0",
+        "text": "const volatile Word* NativeGuiTextDefaultWidgetLifetime::current_table(void* actual, Word profile) {\n    Call call; call.operation = Op::table; call.receiver = actual; call.profile = profile;\n    begin(call);\n    try {\n        const auto admission = authenticate(actual);\n        (void)active_profile(actual, admission);\n        require_empty_branches(actual);\n        require(profile == base_profile || profile == text_profile,\n            \"DEFAULT widget lookup rejects foreign captured profiles\");\n        // Return the ACTUAL table alias selected by the captured profile.\n        // AA8320 captures its class CELL address, reads descriptor, THEN target.\n        const volatile Word* const result = profile == base_profile ? base_ : text_;\n        finish();\n        return result;\n    } catch (...) { fail(); throw; }\n}\nbool NativeGuiTextDefaultWidgetLifetime::call_class_query_0c(void* actual, Word target, Word descriptor) {\n    Call call; call.operation = Op::class_query; call.receiver = actual;\n    call.target = target; call.descriptor = descriptor;\n    begin(call);\n    try {\n        const auto admission = authenticate(actual);\n        (void)active_profile(actual, admission);\n        require_empty_branches(actual);\n        require(target == 0x00a9e070 || target == 0x00ab83d0,\n            \"DEFAULT widget query rejects an unsupported captured target\");\n        acquired_.current.body_entered = true;\n        // No current table-target reload, ID snapshot, fixed tag or zero case.\n        const bool result = target == 0x00a9e070 ?\n            native_gui_widget_is_kind_of_00a9e070(descriptor, context_.actual_base_lineage_00f8bc88) :\n            gui_text_matches_type0c_00ab83d0(descriptor, text_lineage_);\n        acquired_.current.result = result;\n        acquired_.current.body_returned = true;\n        // Separate admission AFTER the genuine predicate. The caller's Text\n        // descriptor provenance is this canonical cell; no188 read is safe or\n        // needed to reject the unsupported legacy AA8320 Text-release branch.\n        if (result && descriptor ==\n            native_gui_text_descriptor_00ab6a30(context_.actual_text_descriptor_00f8be28))\n            reject(\"TRUE canonical Text-descriptor lifetime dispatch would enter legacy188 cleanup\");\n        finish();\n        return result; // Other descriptor/base queries keep the genuine answer.\n    } catch (...) { fail(); throw; }\n}\nvoid NativeGuiTextDefaultWidgetLifetime::call_child_scene_20(void* actual, Word target) {\n    Call call; call.operation = Op::child_scene; call.receiver = actual; call.target = target;\n    begin(call);\n    reject(\"DEFAULT widget child-scene dispatch is outside its admitted lifetime\");\n}\nvoid NativeGuiTextDefaultWidgetLifetime::call_child_delete_04(void* actual, Word target, Word flags) {\n    Call call; call.operation = Op::child_delete; call.receiver = actual; call.target = target; call.flags = flags;\n    begin(call);\n    reject(\"DEFAULT widget child scalar dispatch is unsupported; owner uses canonical raw122 directly\");\n}\nvoid NativeGuiTextDefaultWidgetLifetime::call_timed_delete_00(void* actual, Word target, Word flags) {\n    Call call; call.operation = Op::timed_delete; call.receiver = actual; call.target = target; call.flags = flags;\n    begin(call);\n    reject(\"DEFAULT widget timed-entry dispatch is outside its admitted lifetime\");\n}\nvoid NativeGuiTextDefaultWidgetLifetime::remove_all_00a9bd50(void* list, const void* pointer_cell) {\n    Call call; call.operation = Op::remove_all; call.receiver = list; call.pointer_cell = pointer_cell;\n    begin(call);\n    try {\n        auto& r = record();\n        void* const actual = r.factory.raw_slot;\n        const auto admission = authenticate(actual);\n        (void)active_profile(actual, admission);\n        require(list == at(actual, 0x64) && pointer_cell &&\n            !(reinterpret_cast<std::uintptr_t>(pointer_cell) & 3u),\n            \"DEFAULT remove-all requires its CAPTURED owned AA9390 list and real pointer-cell\");\n        require_empty_branches(actual);\n        auto* const captured_list = static_cast<NativeEffectDeletionListStorage*>(list);\n        const void* const captured_cell = pointer_cell;\n        acquired_.current.body_entered = true;\n        // The real body captures initial head THEN payload, preserves native\n        // reload/unlink/free/count order and the opaque allocator word. Never\n        // reselect Text+64 or inspect list/payload after this call.\n        remove_native_gui_widget_list_value_00a9bd50(*captured_list, captured_cell);\n        acquired_.current.body_returned = true;\n        finish();\n    } catch (...) { fail(); throw; }\n}\n"
+      },
+      "AA9390_whole_source": {
+        "path": "src/native_gui_widget_base_storage.cpp",
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "first_line": 36,
+        "last_line": 75,
+        "bytes": 1821,
+        "sha256": "7c06732528cb7e32c340ab28830395740fd3eab09c595357b66d1e99ca4ff072",
+        "text": "NativeGuiTextIdentityPrefix* construct_native_gui_widget_base_00aa9390(\n    void* raw, Word type, const volatile Word& actual_one_00d7a24c) {\n    auto* const prefix = ::new (raw) NativeGuiTextIdentityPrefix{0x00ceb130, 1};\n    const Word first_one = actual_one_00d7a24c; // AA93BF, before D5C130.\n    prefix->native_vtable_00 = 0x00d5c130;\n    for (const auto offset : {0x0cu, 0x10u, 0x14u, 0x18u, 0x1cu, 0x20u, 0x24u})\n        word(raw, offset) = 0;\n    word(raw, 0x28) = first_one;\n    word(raw, 0x2c) = first_one;\n    for (const auto offset : {0x30u, 0x34u, 0x38u, 0x3cu, 0x40u, 0x44u, 0x48u, 0x4cu})\n        word(raw, offset) = 0;\n    for (const auto offset : {0x50u, 0x54u, 0x58u, 0x5cu})\n        word(raw, offset) = first_one;\n    word(raw, 0x60) = type;\n    void* sentinel;\n    try {\n        sentinel = allocate_native_gui_widget_list_sentinel_00a9b720();\n    } catch (...) {\n        // DEDC28 -> state 0 at DEDC20 -> CB73B0 -> AA6E10. This preserves\n        // source C++ allocation-failure cleanup, not native FH3/SEH identity.\n        destroy_native_gui_ref_base_00aa6e10(raw);\n        throw;\n    }\n    const Word second_one = actual_one_00d7a24c; // AA944E, before +68.\n    word(raw, 0x68) = reinterpret_cast<Word>(sentinel);\n    word(raw, 0x6c) = 0;\n    word(raw, 0x70) = 0;\n    for (const auto offset : {0x74u, 0x75u, 0x76u, 0x77u, 0x78u, 0x79u, 0x84u})\n        byte(raw, offset) = 0;\n    for (const auto offset : {0x7cu, 0x80u, 0x88u, 0x8cu, 0x90u, 0x94u, 0xa4u, 0xa8u, 0xacu})\n        word(raw, offset) = 0;\n    for (const auto offset : {0xb0u, 0xb4u, 0xb8u, 0xbcu, 0xc0u})\n        word(raw, offset) = second_one;\n    byte(raw, 0xd4) = 0;\n    word(raw, 0xd8) = 0;\n    word(raw, 0xdc) = 0;\n    word(raw, 0xe0) = 0;\n    word(raw, 0xc4) = 0; // Deliberately the last field write, AA94FB.\n    return prefix;\n}\n"
+      },
+      "raw93_started_base": {
+        "path": "src/native_gui_text_default_storage.cpp",
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "first_line": 324,
+        "last_line": 337,
+        "bytes": 668,
+        "sha256": "5af7fe3ff68d48754fd967e44d44306fb34f35fc3dc993c53665cbbd93db1dbe",
+        "text": "template<class Frame, class Context, class Acquired, class BodyReturned = NoBodyReturn>\nvoid* construct_default(void* raw, Frame& f, Context& c, Acquired& a, BodyReturned body_returned = {}) {\n    source_host(a, __COUNTER__, [&] { preflight(raw, f, c, a); });\n    a.started = true;\n    a.destination = raw;\n    try {\n        provider(a);\n        a.active_call_site = 0x00ab9671;\n        source_unknown(a, 0x00ab9671u, __COUNTER__, [&] {\n            construct_native_gui_widget_base_00aa9390(raw, 3, c.one_00d7a24c);\n        });\n        a.base_complete = true;\n        word(raw) = 0x00d5c6c8; // AB9678\n        a.native_eh_state = 0; // AB967E, AFTER the derived stamp\n"
+      },
+      "raw93_prefix_and_complete": {
+        "path": "src/native_gui_text_default_storage.cpp",
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "first_line": 397,
+        "last_line": 422,
+        "bytes": 1468,
+        "sha256": "86e10d1c14a4d4c426c9200d95be99920ac4d1a014212ab04bbabf89117dc41e",
+        "text": "        word(raw, 0x14c) = 0;\n        word(raw, 0x148) = one;\n        word(raw, 0x150) = 0;\n        word(raw, 0x154) = 0;\n        word(raw, 0x158) = disabled_alpha;\n        a.derived_complete = true;\n        a.sections_entered = true;\n        a.active_call_site = 0x00ab98d8;\n        if constexpr (std::is_same_v<Acquired, NativeGuiTextRawModelDefaultStorageAcquired>) {\n            const auto t = failure_transport(a);\n            if (t.runtime)\n                t.origin->child(*t.runtime, {0x00ab98d8u, __COUNTER__}, &a.sections,\n                    0x00ab8530u, a.sections.failure_origin(), [&] {\n                        ensure_native_gui_text_sections_storage_00ab8530(\n                            raw, f.sections, c.sections, a.sections, *t.runtime);\n                    });\n            else ensure_native_gui_text_sections_storage_00ab8530(raw, f.sections, c.sections, a.sections);\n        } else ensure_native_gui_text_sections_storage_00ab8530(raw, f.sections, c.sections, a.sections);\n        body_returned(); // PRIVATE negative frontier IMMEDIATELY after actual ctor85 normal return\n        source_host(a, __COUNTER__, [&] { completed(raw, c, a); });\n        a.complete = true;\n        return raw;\n    } catch (...) {\n        // AA9390 failure is outer state-1 and its own provider already cleans\n        // the failed base prefix. After successful base construction, unwind\n        // only the represented Text subobjects/base, never independent creators.\n"
+      },
+      "raw93_real_wrappers": {
+        "path": "src/native_gui_text_default_storage.cpp",
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "first_line": 431,
+        "last_line": 460,
+        "bytes": 1680,
+        "sha256": "57825c13f01596e16927d79e471330b82a3f08693990bc363f522ba04176682f",
+        "text": "void* construct_native_gui_text_default_storage_00ab9650(void* raw,\n    NativeGuiTextRawModelDefaultStorageFrame& f, NativeGuiTextRawModelDefaultStorageContext& c,\n    NativeGuiTextRawModelDefaultStorageAcquired& a) {\n    try { return construct_default(raw, f, c, a); }\n    catch (...) {\n        if (!a.started) a.failure = decltype(a.failure)::host_metadata;\n        throw;\n    }\n}\nvoid* construct_native_gui_text_default_storage_00ab9650(void* raw,\n    NativeGuiTextRawModelDefaultStorageFrame& f, NativeGuiTextRawModelDefaultStorageContext& c,\n    NativeGuiTextRawModelDefaultStorageAcquired& a, NativeGuiTextFailureConstructorCall& call) {\n    // Unprepared envelopes have no qualified catch service. Never query a CRT\n    // to discover that domain, nor run any cleanup on this pre-entry rejection.\n    if (!call.runtime_) throw std::invalid_argument(\"Constructor envelope requires its SAME qualified Source runtime\");\n    call.bind_once(raw, a.failure_origin_, &a); // before Source preflight/Native work; invalidation is sticky\n    if (!a.failure_runtime_) a.failure_runtime_ = call.runtime_; // never replace a retained service\n    a.failure_origin_.begin(*a.failure_runtime_, &a, 0x00ab9650u);\n    try {\n        void* const result = construct_default(raw, f, c, a, [&] {\n            call.body_returned(a.failure_origin_, &a); // not whole Source completion or raw122 birth\n        });\n        a.failure_origin_.complete();\n        return result;\n    } catch (...) {\n        a.failure_origin_.retain_current(*a.failure_runtime_); // sticky HOST/UNKNOWN, before diagnostic flag\n        if (!a.started) a.failure = decltype(a.failure)::host_metadata;\n        throw;\n    }\n}\n"
+      },
+      "raw93_completion_admission": {
+        "path": "src/native_gui_text_default_storage.cpp",
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "first_line": 290,
+        "last_line": 299,
+        "bytes": 732,
+        "sha256": "9c55d91566432c9f9de0c73589da4a37dd94edb56aee0f248c39e0eb7e6b33e7",
+        "text": "void completed(void* raw, NativeGuiTextRawModelDefaultStorageContext& c,\n    NativeGuiTextRawModelDefaultStorageAcquired& a) {\n    a.failure = decltype(a.failure)::host_metadata;\n    source_host(a, __COUNTER__, [&] { raw_base_admission(raw, c); });\n    source_host(a, __COUNTER__, [&] { require(word(raw) == 0x00d5c6c8 && a.sections.complete &&\n        a.sections.model.reference && a.sections.model.construction.complete &&\n        a.sections.model.association.phase == NativeModelStorageGeometryPhase::complete &&\n        word(raw, 0x188) == reinterpret_cast<Word>(a.sections.model.actual),\n        \"Raw Text DEFAULT completion requires its genuine completed internal Model graph\"); });\n    a.failure = decltype(a.failure)::none;\n"
+      },
+      "prepared_graph_bundle": {
+        "path": "include/bsp/native_gui_text_default_factory_storage.hpp",
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "first_line": 10,
+        "last_line": 23,
+        "bytes": 784,
+        "sha256": "62ea291f7dbf2341cf3484ca31fbbf98a8eaa1a7ab7f1720083c50012cb23429",
+        "text": "// Prepared caller-owned DEFAULT graph. All fields borrow existing domains;\n// this creates no Text process, pool, Model, NodeBinding or SceneResource owner.\n// publication and its constructor/retirement graph ALREADY have stable storage\n// before entry. In particular publication.construction is exactly construction,\n// and publication.retirement.model is construction.sections.model.\nstruct NativeGuiTextDefaultFactoryStorageContext final {\n    game::GameNativeGuiTextProcess& process;\n    NativeGuiTextRawModelReferenceContext& publication;\n    NativeGuiTextRawModelDefaultStorageAcquired& construction;\n    NativeGuiTextReferenceFrame& reference_frame;\n    void* companion_storage;\n    std::size_t companion_storage_bytes;\n    NativeGuiTextRawModelReferenceDisposal disposal;\n};\n"
+      },
+      "Raw_reference_const_constructor": {
+        "path": "include/bsp/native_gui_text_reference.hpp",
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "first_line": 119,
+        "last_line": 134,
+        "bytes": 792,
+        "sha256": "78b9b0860a6b1b62cf3c148047b11fb6037fb2967f1ca05581d8d5e2bca52d30",
+        "text": "struct NativeGuiTextRawModelReferenceDisposal {\n    void* context;\n    std::size_t context_bytes;\n    void (*retire)(void*, NativeGuiTextRawModelReference&) noexcept;\n};\nstruct NativeGuiTextRawModelReferenceContext {\n    NativeRenderActualOwnerRegistry& owners;\n    game::GameNativeReadOnlyData& data;\n    NativeGuiTextRawModelDefaultStorageContext& construction_context;\n    NativeGuiTextRawModelDefaultStorageFrame& construction_frame;\n    const NativeGuiTextRawModelDefaultStorageAcquired& construction;\n    NativeGuiTextRawModelRetirementContext& retirement;\n    // Optional concrete future producer backing, fixed before bind. Reserve\n    // its known extents without authorizing a shader/header ownership domain.\n    const NativeGuiTextShaderStorageFrame* const font_shader_frame{};\n};\n"
+      },
+      "actual_binder_preflight": {
+        "path": "src/native_gui_text_reference.cpp",
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "first_line": 602,
+        "last_line": 680,
+        "bytes": 6364,
+        "sha256": "206ddb284c834451a09b3207f71ab7c6d1eb2f7b0843852c17f6ce98e765d97b",
+        "text": "Admission preflight(void* companion, void* raw, NativeGuiTextRawModelReferenceContext& c,\n    NativeGuiTextReferenceFrame& frame, NativeGuiTextRawModelReferenceDisposal disposal) {\n    require(companion && bits(companion) % alignof(NativeGuiTextRawModelReference) == 0 &&\n        raw && bits(raw) % 4 == 0 && disposal.retire &&\n        ((disposal.context != nullptr) == (disposal.context_bytes != 0)),\n        \"Raw Text binding requires aligned separate companion/Text and explicit sized disposal\");\n    const auto* profile = static_cast<const volatile Word*>(c.data.data_at(text_profile, 8));\n    const Region writes[] = {{raw, 0x1f8}, {companion, sizeof(NativeGuiTextRawModelReference)}, {&frame, sizeof(frame)}};\n    for (std::size_t i = 0; i != 3; ++i) {\n        require(representable(writes[i]), \"Raw Text binding caller regions require valid extents\");\n        for (std::size_t j = i + 1; j != 3; ++j)\n            require(disjoint(writes[i], writes[j]), \"Raw Text/companion/scalar frame must be separate\");\n    }\n    known_borrowed(c, profile, disposal, [&](Region borrowed) {\n        for (const auto region : writes)\n            require(disjoint(region, borrowed), \"Raw Text binding writes cannot alias the retained producer graph\");\n    });\n    fresh_shader_binding(c, frame);\n    fresh_empty_binding(c, frame);\n    const auto& a = c.construction;\n    auto& p = c.construction_context;\n    auto& f = c.construction_frame.sections;\n    auto& t = c.retirement;\n    auto& r = t.resources;\n    auto& m = t.model;\n    auto& node = r.model.storage.node;\n    require(a.started && a.complete && a.base_complete && a.derived_complete && a.sections_entered &&\n        !a.exception_cleanup_started && !a.base_lifetime_ended && !a.consumed_cleanup_actions &&\n        a.failure == decltype(a.failure)::none && a.native_eh_state == 6 && a.destination == raw &&\n        a.sections.started && a.sections.complete && !a.sections.exception_cleanup_started &&\n        a.sections.failure == decltype(a.failure)::none && &a.sections.model == &m &&\n        a.sections.model_registered && a.sections.model_constructed && a.sections.shadow_published &&\n        m.actual && m.reference && !m.reference->retired() && m.construction.complete &&\n        m.construction.metadata_bound && m.construction.actual_model == m.actual &&\n        m.construction.context == &r.model.storage && !m.lifetime.started && !m.lifetime.scalar_started &&\n        !m.release.started && m.association.phase == NativeModelStorageGeometryPhase::complete &&\n        m.association.actual_model == m.actual && m.association.context == &r.association &&\n        m.association.frame == &f.association && f.association.phase() == NativeModelStorageGeometryPhase::complete &&\n        fresh(frame.scalar), \"Raw Text binding requires the SAME genuine completed93/raw Model/B75170 records\");\n    require(&p.sections == &r && &p.lifetime == &t.base && &r.association.storage == &r.model.storage &&\n        &r.parenting.node == &node && &c.owners == &r.geometry.actual_owners() &&\n        &r.materials.retained_owners == &c.owners && &node.scenes.owners == &c.owners &&\n        &node.trees.owners == &c.owners && &node.trees.point_lights == &t.base.nodes.point_lights &&\n        &t.glyphs.nodes == &t.base.nodes && &t.glyphs.children == &t.base.bindings &&\n        t.base.nodes.uses_raw_name_pool() && &t.base.nodes.require_raw_name_pool() == &r.strings &&\n        &node.strings == &r.strings && same_native_string_raw_pool_cells(r.strings, r.string_process.raw_context()) &&\n        same_native_string_storage_raw_pool_cells(r.material_strings, r.strings) &&\n        &node.scenes.decrement_00ce2220 == &node.trees.decrement_00ce2220 && node.trees.decrement_00ce2220 &&\n        &r.effects.effects.owners.actual_owners() == &c.owners &&\n        &r.effects.effects.owners.string_storage() == &r.material_strings &&\n        &r.effects.strings == &r.material_strings && &r.materials.parameter_names == &r.material_strings &&\n        &r.effects.effects.construction.strings == &r.material_strings && r.effects.effects.cache == &r.effects &&\n        t.base.actual_base_table_00d5c130 && &p.state == &game::game_native_gui_text_state() &&\n        &t.actual_pool_00f8bdf0 == &game::game_native_gui_text_process().pool_00f8bdf0() &&\n        &t.base.actual_base_lineage_00f8bc88 == &game::game_native_gui_text_process().element_lineage_00f8bc88() &&\n        &t.base.actual_text_descriptor_00f8be28 == &game::game_native_gui_text_process().text_lineage_00f8be28()[0],\n        \"Raw Text binding must preserve the actual93/118 Model/pool/import/type/point-light/provider identities\");\n    auto raw_word = [&](Word offset) { return *reinterpret_cast<const volatile Word*>(bits(raw) + offset); };\n    void* const head = reinterpret_cast<void*>(raw_word(0x68));\n    require(raw_word(0x188) == bits(m.actual) && !raw_word(0x4c) && !raw_word(0x70) &&\n        !raw_word(0x6c) && head && read(head) == bits(head) &&\n        *reinterpret_cast<const volatile Word*>(bits(head) + 4) == bits(head) &&\n        !raw_word(0x88) && !raw_word(0x8c) && !raw_word(0x90) &&\n        !raw_word(0x180) && !raw_word(0x184) && !raw_word(0x18c) && !raw_word(0x190) &&\n        !raw_word(0x198) && !raw_word(0x19c) && !raw_word(0x1a0) && !raw_word(0x1ec) &&\n        !raw_word(0xec) && !raw_word(0xf0) && !raw_word(0xf4) && !raw_word(0xf8) &&\n        !raw_word(0x1a4) && !raw_word(0x1a8) && !raw_word(0x1c0) && !raw_word(0x1c4) &&\n        !raw_word(0x1c8) && !raw_word(0x1cc) &&\n        !native_gui_widget_is_kind_of_00a9e070(native_gui_text_descriptor_00ab6a30(\n            t.base.actual_text_descriptor_00f8be28), t.base.actual_base_lineage_00f8bc88),\n        \"Raw Text binding admits DEFAULT payload and CURRENT ordinary lineage comparisons only\");\n    require(read(raw) == text_profile && bits(profile) == text_profile &&\n        profile[0] == zero_target && profile[1] == scalar_target &&\n        &c.owners.resolve_actual(m.actual) == &*m.reference,\n        \"Raw Text binding requires the genuine current profile aliases and SAME canonical internal Model\");\n    auto& count = *std::launder(reinterpret_cast<std::atomic<std::int32_t>*>(bits(raw) + 4));\n    require(count.load(std::memory_order_relaxed) > 0 && !c.owners.find(raw),\n        \"Raw Text binding needs live positive actual+04 and an unregistered actual identity\");\n    return {profile, count};\n"
+      },
+      "actual_binders": {
+        "path": "src/native_gui_text_reference.cpp",
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "first_line": 777,
+        "last_line": 810,
+        "bytes": 2189,
+        "sha256": "fd9b86b0b1f3e5469b3d084a1af4ac7e2e0f5dcb4221e61a5500e3e4a4be2c95",
+        "text": "NativeGuiTextRawModelReference& bind_native_gui_text_raw_model_reference(void* companion, void* raw,\n    NativeGuiTextRawModelReferenceContext& context, NativeGuiTextReferenceFrame& frame,\n    NativeGuiTextRawModelReferenceDisposal disposal) {\n    const auto admission = preflight(companion, raw, context, frame, disposal);\n    return *::new (companion) NativeGuiTextRawModelReference(raw, context, frame,\n        disposal, admission.profile, admission.count);\n}\nNativeGuiTextRawModelReference::NativeGuiTextRawModelReference(void* raw,\n    NativeGuiTextRawModelReferenceContext& context, NativeGuiTextReferenceFrame& frame,\n    NativeGuiTextRawModelReferenceDisposal disposal, const volatile Word* profile,\n    std::atomic<std::int32_t>& count)\n    : RenderCommandReference(count), identity_(raw), context_(context), frame_(frame),\n      disposal_(disposal), profile_(profile) {\n    context_.owners.bind(identity_, *this); // transactional metadata only, no retain\n}\nNativeGuiTextRawModelReference& bind_native_gui_text_raw_model_reference_reserved(\n    void* companion, void* raw, NativeGuiTextRawModelReferenceContext& context,\n    NativeGuiTextReferenceFrame& frame, NativeGuiTextRawModelReferenceDisposal disposal,\n    NativeRenderActualOwnerRegistry::BindingAdmission& reservation) {\n    const auto admission = preflight(companion, raw, context, frame, disposal);\n    return *::new (companion) NativeGuiTextRawModelReference(raw, context, frame,\n        disposal, admission.profile, admission.count, reservation);\n}\nNativeGuiTextRawModelReference::NativeGuiTextRawModelReference(void* raw,\n    NativeGuiTextRawModelReferenceContext& context, NativeGuiTextReferenceFrame& frame,\n    NativeGuiTextRawModelReferenceDisposal disposal, const volatile Word* profile,\n    std::atomic<std::int32_t>& count,\n    NativeRenderActualOwnerRegistry::BindingAdmission& reservation)\n    : RenderCommandReference(count), identity_(raw), context_(context), frame_(frame),\n      disposal_(disposal), profile_(profile) {\n    context_.owners.publish(std::move(reservation), *this);\n}\nNativeGuiTextRawModelReference::~NativeGuiTextRawModelReference() {\n    if (phase_ != Phase::retired) std::terminate();\n"
+      },
+      "actual_caller_birth_window": {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "first_line": 470,
+        "last_line": 498,
+        "bytes": 1416,
+        "sha256": "b3f72780b0ae66a139f9fc24e600054e4736ddaef0ab6ccb0eb2c8d519f2f40e",
+        "text": "        a.captured_allocation = allocation;\n        homes[7] = bits(allocation);\n        a.native_eh_state = 0;\n        if (failure_runtime)\n            a.constructor_slot_.arm(a.failure_origin_, *failure_runtime, &homes[7], allocation,\n                &a.raw93_acquired_, {0x00ab9d4fu, __COUNTER__}, a.constructor_call_);\n        void* child = nullptr;\n        if (allocation) {\n            boundary(a, 0x00ab9d4f, allocation);\n            if (failure_runtime)\n                child = a.constructor_call_.invoke([&] {\n                    return construct_native_gui_text_default_storage_00ab9650(allocation,\n                        a.raw93_frame_, a.raw93_context_, a.raw93_acquired_, a.constructor_call_);\n                });\n            else child = construct_native_gui_text_default_storage_00ab9650(allocation,\n                a.raw93_frame_, a.raw93_context_, a.raw93_acquired_);\n        }\n        a.captured_child = child;\n        a.native_eh_state = -1;\n        if (failure_runtime) a.constructor_slot_.normal_disarm(a.constructor_call_);\n        homes[7] = bits(child);\n        a.child_append_entered = true;\n        boundary(a, 0x00ab9d70, pointer(text + 0x194));\n        c.calls.append_005dad40(pointer(text + 0x194), &homes[7], a);\n        a.child_append_returned = true;\n\n        Word node = word(word(text, 0x1b0), 0x4c);\n        current(a, node, 0x10);\n        boundary(a, 0x00ab9d87, pointer(node));\n"
+      },
+      "raw_model_concrete_factory_tie": {
+        "path": "include/bsp/native_gui_widget_raw_model_lifetime.hpp",
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "first_line": 28,
+        "last_line": 35,
+        "bytes": 334,
+        "sha256": "afe4081e83a5b5dc8d8b79869f11b895fc6a2ca3eafad81f21199297d8d5e020",
+        "text": "struct NativeGuiWidgetRawModelLifetimeContext {\n    NativeGuiTextDefaultWidgetLifetimeRecord& text;\n    NativeGuiTextDefaultWidgetLifetime& authentication;\n    NativeGuiWidgetLifetimeContext& widget;\n    NativeGuiWidgetRawModelRoute& primary;\n    NativeGuiWidgetRawModelRoute& internal188;\n    NativeGuiWidgetRawModelSlots& slots;\n};\n"
+      },
+      "raw_model_authentication": {
+        "path": "src/native_gui_widget_raw_model_lifetime.cpp",
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "first_line": 280,
+        "last_line": 309,
+        "bytes": 2063,
+        "sha256": "2111e45d5faccc2aa4dc8cd4efd326dfbda6c427a44cdc652917051d3912c5c5",
+        "text": "NativeGuiWidgetRawModelLifetimeContext& NativeGuiWidgetRawModelSlots::context() {\n    require(context_ && acquired_.bound && !acquired_.poisoned, \"raw widget slots are unbound/poisoned\");\n    return *context_;\n}\nvoid NativeGuiWidgetRawModelSlots::authenticate(void* actual) {\n    auto& c = context();\n    const Region text{actual, 0x1f8};\n    require(actual && !(bits(actual) & 3u) && valid(text) &&\n        disjoint(text, {this, sizeof(*this)}) && disjoint(text, {&acquired_, sizeof(acquired_)}),\n        \"raw Text cannot overlap transport diagnostics before receiver authentication\");\n    borrowed(c, [&](Region r) { require(disjoint(text, r), \"raw Text cannot overlap known provider backing\"); });\n    for (auto* route : {&c.primary, &c.internal188})\n        if (route->record.actual) require(disjoint(text, {route->record.actual, 0x188}),\n            \"Text and independent raw Model slots must be separate\");\n    c.authentication.require_raw_model_transport_receiver(actual, c.text);\n    const auto& d = c.text.factory_context.reference_frame.scalar.destruction;\n    require(c.text.publication.scalar_entered && d.started && d.destination == actual &&\n        d.base_entered && !d.base_returned && d.native_eh_state == -1,\n        \"raw widget transport requires genuine current raw118 base-entry records\");\n}\nvoid NativeGuiWidgetRawModelSlots::require_domain(void* actual) {\n    require_empty_quiescent(context().text.factory_context.publication);\n    // FIRST domain only. No188 read: raw118 may have retired that Model already.\n    require(!read(actual, 0x70) && !read(actual, 0x6c) &&\n        !read(actual, 0x88) && !read(actual, 0x8c) && !read(actual, 0x90) &&\n        !read(actual, 0x180) && !read(actual, 0x184) &&\n        !read(actual, 0x18c) && !read(actual, 0x190) &&\n        !read(actual, 0x198) && !read(actual, 0x19c) && !read(actual, 0x1a0) &&\n        !read(actual, 0xec) && !read(actual, 0xf0) && !read(actual, 0xf4) && !read(actual, 0xf8) &&\n        !read(actual, 0x1a4) && !read(actual, 0x1a8) && !read(actual, 0x1c0) && !read(actual, 0x1c4),\n"
+      },
+      "raw_model_reject_glyph": {
+        "path": "src/native_gui_widget_raw_model_lifetime.cpp",
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "first_line": 424,
+        "last_line": 430,
+        "bytes": 373,
+        "sha256": "846df020d6439c0abb45240c7b46304e777eea6e3858cc246eb8e660269f89d3",
+        "text": "void NativeGuiWidgetRawModelSlots::reject_glyph(\n    NativeGuiWidgetRawModelLifetimeContext& c, void* actual) {\n    require(&context() == &c, \"raw glyph rejection requires SAME bound context\");\n    acquired_.glyph = Phase::entered;\n    acquired_.active = true;\n    authenticate(actual);\n    reject(\"TRUE Text188 cleanup is outside this first raw widget transport domain\");\n"
+      },
+      "owner_scope": {
+        "path": "include/bsp/game_native_raw_default_text_owner.hpp",
+        "commit": "bedbb8cdc03e027c16ea6596d0738036347d3809",
+        "first_line": 15,
+        "last_line": 20,
+        "bytes": 365,
+        "sha256": "b4ef5c110307dd9ae19329542e79f81da46f3da7b18fca32ad57b968e4906399",
+        "text": "// Retained owner of ONE unpublished private DEFAULT Text lifecycle, with an\n// explicit optional primary-prefix and private geometry Source paths. No raw Text\n// pointer/reference/credit is exposed. Source composition, not an AA1380 ABI,\n// child factory, layout/content adapter or renderer/frontend activation.\nclass GameNativeRawDefaultTextOwner final {\npublic:\n"
+      }
+    },
+    "AA9390_has_no_lifetime_context_or_binding": true,
+    "four_constructor_provider_files_2059_equal_bedbb": true
+  },
+  "credit": {
+    "new_Native_bodies_helpers_vendor_CG_duplicate": 0,
+    "new_ABI_runtime_activation": 0,
+    "Source_or_runtime_implementation_claim": false
+  },
+  "document": {
+    "path": "docs/CC16_NATIVE_GLYPH_WIDGET_LIFETIME_PREPARATION_DESIGN.md",
+    "bytes": 9385,
+    "sha256": "cf58319fde36f2d1c53d609ed0b3c7a15ce63fcc4ef2cacad96b320f26b70fd7",
+    "encoding": "UTF-8 LF"
+  }
+}
