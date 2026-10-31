@@ -72,3 +72,13 @@ actual-Core review fb47fb8c with pins9589bb62. These local artifacts retain
 whole object hashes, code/relocation clips, projects, cache, maps, build logs
 and link receipts. Original private HOME/FH3/SEH/runtime and full canonical
 family/Mission binding remain outside this provider admission.
+
+Final Root join1a70a1d99 includes published Mainc705fd80 (Source59 and qualified
+field admission). The official all-target canonical build passes existing2/2
+in11.87s; all three provider objects remain byte-exact, zero force roots/overlay,
+and all seven Matrix/five Plain requested symbols are absent from the game map.
+Joined Source59's seven function code/relocation graphs also match under an
+explicit five-helper private TU-name bijection; whole-object/PE identity is not
+claimed across worktrees. No game/provider entry or startup switch was changed.
+The original strict13 USN12 discrepancy remains open and unchanged. This clean
+reviewed provider batch is ready for serialized Main integration.

@@ -1,4 +1,4 @@
-# Raw Plain node factory/scalar storage proposal
+# Raw Plain node factory/scalar storage
 
 Source applied after full primary and independent proposal review. The exact
 HCPP is registered in bsp_core and passes actual Core/retained-link review.
@@ -82,6 +82,16 @@ The seven Matrix retained symbols are absent too. No provider entry was invoked.
 
 Independent actual-Core reviewa435ed45/pins15c7845a retains the exact Source
 secondary propagation/private-metadata-store qualifications. Canonical source
-registration occurs once, and no local overlay remains. Joined Main publication
-and final combined build remain integration work; canonical18/54/zero, family/
+registration occurs once, and no local overlay remains. The final joined Main
+compilation is recorded below; canonical18/54/zero, family/
 Mission selection and Original ABI/runtime are not established by these builds.
+
+Final Root join1a70a1d99 includes published Mainc705fd80 (Source59 and qualified
+field admission). The official all-target canonical build passes existing2/2
+in11.87s; all three provider objects remain byte-exact, zero force roots/overlay,
+and all seven Matrix/five Plain requested symbols are absent from the game map.
+Joined Source59's seven function code/relocation graphs also match under an
+explicit five-helper private TU-name bijection; whole-object/PE identity is not
+claimed across worktrees. No game/provider entry or startup switch was changed.
+The original strict13 USN12 discrepancy remains open and unchanged. This clean
+reviewed provider batch is ready for serialized Main integration.
