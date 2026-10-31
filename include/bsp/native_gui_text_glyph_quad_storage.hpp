@@ -12,6 +12,9 @@ namespace bsp {
 struct NativeStringRawPoolContext;
 class NativeGuiTextPool;
 struct NativeGuiTextGlyphQuadStorageAcquired;
+struct NativeGuiTextRawModelDefaultStorageFrame;
+struct NativeGuiTextRawModelDefaultStorageContext;
+struct NativeGuiTextRawModelDefaultStorageAcquired;
 
 // Mandatory genuine whole raw providers in ONE retained Text/Model/renderer/
 // font/material/pool/string domain. No implementation/default is provided.
@@ -27,11 +30,7 @@ class NativeGuiTextGlyphQuadStorageCalls {
 public:
     virtual ~NativeGuiTextGlyphQuadStorageCalls() = default;
     // AB78A0 uses the SAME prepared Text pool companion directly.
-    virtual void* construct_00ab9650(void* actual_allocation, NativeGuiTextGlyphQuadStorageAcquired&) = 0;
-    // Qualified used route MUST forward this SAME retained envelope to actual raw93.
-    // No adapter/default implementation or Native-origin capability is supplied.
-    virtual void* construct_00ab9650(void* actual_allocation, NativeGuiTextGlyphQuadStorageAcquired&,
-        NativeGuiTextFailureConstructorCall&) = 0;
+    // AB9650 uses the actual per-Glyph retained raw constructor triplet directly.
     // Guarded AB76F0 uses that SAME companion; this is not cleanup permission.
     virtual void append_005dad40(void* actual_vector, volatile std::uint32_t* actual_child_home,
         NativeGuiTextGlyphQuadStorageAcquired&) = 0;
@@ -121,7 +120,15 @@ struct NativeGuiTextGlyphQuadStorageAcquired final {
     bool child_append_entered{}, child_append_returned{}, cleanup_entered{}, cleanup_returned{};
     bool cleanup_failed{};
     std::exception_ptr failure;
-    NativeGuiTextGlyphQuadStorageAcquired() noexcept = default;
+    // Mandatory existing-type borrows prepared for THIS invocation before entry.
+    // Frame/acquisition/operand backing must be fresh, stable and disjoint from
+    // every other reached/recursive Glyph attempt. A shared service Context is
+    // allowed only in its genuine common process/lifetime domain. These borrows
+    // create no owner, frame backing, Model188 credit or canonical raw122 birth.
+    NativeGuiTextGlyphQuadStorageAcquired(NativeGuiTextRawModelDefaultStorageFrame& f,
+        NativeGuiTextRawModelDefaultStorageContext& c,
+        NativeGuiTextRawModelDefaultStorageAcquired& a)
+        : raw93_frame_(f), raw93_context_(c), raw93_acquired_(a) {}
     NativeGuiTextGlyphQuadStorageAcquired(const NativeGuiTextGlyphQuadStorageAcquired&) = delete;
     NativeGuiTextGlyphQuadStorageAcquired& operator=(const NativeGuiTextGlyphQuadStorageAcquired&) = delete;
 private:
@@ -134,6 +141,10 @@ private:
     // SAME F24 address has two sequential lifetimes; never reset/reuse an arm.
     NativeGuiTextFailureHeaderArm narrow_header_arm_;
     NativeGuiTextFailureHeaderArm wide_header_arm_;
+    // Append genuine borrows after the complete existing private arm prefix.
+    NativeGuiTextRawModelDefaultStorageFrame& raw93_frame_;
+    NativeGuiTextRawModelDefaultStorageContext& raw93_context_;
+    NativeGuiTextRawModelDefaultStorageAcquired& raw93_acquired_;
 };
 
 // Whole AB98F0..AB9FC2 [1747B/485ops]. Original ECX actual Text; ten physical

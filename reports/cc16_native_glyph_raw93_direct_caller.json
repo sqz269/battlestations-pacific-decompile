@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "classification": "static actual raw93 Glyph caller composition; concrete producer and activation remain gated",
+  "Source_base": "941a1925e093dd07e79444c5fc39eee138c93647",
+  "Source41_published": "a9e960964271db5bb0449101d9988c8c030b638b",
+  "approved_contract": "994f4dcb844056651e7e9e55a9c0c75e1b4aac44",
+  "contract_admitted": "846e6c281",
+  "files": [
+    {
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "before_bytes": 9767,
+      "after_bytes": 10450,
+      "before_sha256": "0119dfc3ca2b14ab6c2fbd526f11758b355c2f6d832d556346930af090ef3756",
+      "after_sha256": "2c1a08c5dab06953176ffeb99893e75b44453278d74a5996b316a8ae3eef9f68",
+      "before_git_blob": "5e2b0a64e46003077ba634c011ec8ce03f5a3605",
+      "frozen_before": "local/function_source_batch42/baseline/native_gui_text_glyph_quad_storage.hpp",
+      "frozen_after": "local/function_source_batch42/source_after/native_gui_text_glyph_quad_storage.hpp",
+      "seams": [
+        {
+          "before_line": 15,
+          "after_line": 15,
+          "before_utf8": "",
+          "after_utf8": "struct NativeGuiTextRawModelDefaultStorageFrame;\nstruct NativeGuiTextRawModelDefaultStorageContext;\nstruct NativeGuiTextRawModelDefaultStorageAcquired;\n",
+          "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "after_sha256": "03ac86cfd8af7a8286b5687fa496ed3932973b51317aed1fe594c93842f3df56"
+        },
+        {
+          "before_line": 30,
+          "after_line": 33,
+          "before_utf8": "    virtual void* construct_00ab9650(void* actual_allocation, NativeGuiTextGlyphQuadStorageAcquired&) = 0;\n    // Qualified used route MUST forward this SAME retained envelope to actual raw93.\n    // No adapter/default implementation or Native-origin capability is supplied.\n    virtual void* construct_00ab9650(void* actual_allocation, NativeGuiTextGlyphQuadStorageAcquired&,\n        NativeGuiTextFailureConstructorCall&) = 0;\n",
+          "after_utf8": "    // AB9650 uses the actual per-Glyph retained raw constructor triplet directly.\n",
+          "before_sha256": "8e60ccb17357a5191aab88ca9eb69ddf7f639e50e35c25e9f4694d7c8bfeb510",
+          "after_sha256": "119ad0a03e804e3bc908fe050a07d77fabbe3289d600a994ffa781615144aaf8"
+        },
+        {
+          "before_line": 124,
+          "after_line": 123,
+          "before_utf8": "    NativeGuiTextGlyphQuadStorageAcquired() noexcept = default;\n",
+          "after_utf8": "    // Mandatory existing-type borrows prepared for THIS invocation before entry.\n    // Frame/acquisition/operand backing must be fresh, stable and disjoint from\n    // every other reached/recursive Glyph attempt. A shared service Context is\n    // allowed only in its genuine common process/lifetime domain. These borrows\n    // create no owner, frame backing, Model188 credit or canonical raw122 birth.\n    NativeGuiTextGlyphQuadStorageAcquired(NativeGuiTextRawModelDefaultStorageFrame& f,\n        NativeGuiTextRawModelDefaultStorageContext& c,\n        NativeGuiTextRawModelDefaultStorageAcquired& a)\n        : raw93_frame_(f), raw93_context_(c), raw93_acquired_(a) {}\n",
+          "before_sha256": "66bf06c73ab7733b1a17aa5632d6414180bba4ef9993852711fd95099f073dac",
+          "after_sha256": "20f18da7bae1589c92971498d2bf93400c1ee6bde9a8f09652b8ffa498f34ed0"
+        },
+        {
+          "before_line": 137,
+          "after_line": 144,
+          "before_utf8": "",
+          "after_utf8": "    // Append genuine borrows after the complete existing private arm prefix.\n    NativeGuiTextRawModelDefaultStorageFrame& raw93_frame_;\n    NativeGuiTextRawModelDefaultStorageContext& raw93_context_;\n    NativeGuiTextRawModelDefaultStorageAcquired& raw93_acquired_;\n",
+          "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "after_sha256": "2a73e90353f1871b4056fc873cbc46c59d6c262f37d2a90d6e9ce1ac2db258c9"
+        }
+      ],
+      "full_forward_reverse": true
+    },
+    {
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "before_bytes": 28923,
+      "after_bytes": 29172,
+      "before_sha256": "0132d2de8772e6b84eca73112ddef372054232d90f7ad6d0925aa4f4ab34c1b2",
+      "after_sha256": "c602171ad6ecb845bd7b7251cf8b6d7f80806dcb865398107f397d9df52c700e",
+      "before_git_blob": "7e6f1c1062ebf13f3648f04e52e8fb2c82be6ef5",
+      "frozen_before": "local/function_source_batch42/baseline/native_gui_text_glyph_quad_storage.cpp",
+      "frozen_after": "local/function_source_batch42/source_after/native_gui_text_glyph_quad_storage.cpp",
+      "seams": [
+        {
+          "before_line": 2,
+          "after_line": 2,
+          "before_utf8": "",
+          "after_utf8": "#include \"bsp/native_gui_text_default_storage.hpp\"\n",
+          "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "after_sha256": "5987a7b28606c4bf55ab675778ae416b48062bbc62c328c2716f8cc5481fecf2"
+        },
+        {
+          "before_line": 474,
+          "after_line": 475,
+          "before_utf8": "                &c.calls, {0x00ab9d4fu, __COUNTER__}, a.constructor_call_);\n",
+          "after_utf8": "                &a.raw93_acquired_, {0x00ab9d4fu, __COUNTER__}, a.constructor_call_);\n",
+          "before_sha256": "a2fa80cc6dab25d03f280339b10f7fee594063b388c6db5947510d43b066dc51",
+          "after_sha256": "c1cc51b3fce88b8b8a057d801933671887ba76dd364f01357e873d5fd16aaedd"
+        },
+        {
+          "before_line": 480,
+          "after_line": 481,
+          "before_utf8": "                    return c.calls.construct_00ab9650(allocation, a, a.constructor_call_);\n",
+          "after_utf8": "                    return construct_native_gui_text_default_storage_00ab9650(allocation,\n                        a.raw93_frame_, a.raw93_context_, a.raw93_acquired_, a.constructor_call_);\n",
+          "before_sha256": "3d762de842f61a9afcfb7a2787c60d7ee29db4b239eb56f9b1b5acdfe87802c8",
+          "after_sha256": "19d467f4e1a298896a1023f64916cc8b45b3c75f6a68a57f9e3d3045abd1f3b8"
+        },
+        {
+          "before_line": 482,
+          "after_line": 484,
+          "before_utf8": "            else child = c.calls.construct_00ab9650(allocation, a);\n",
+          "after_utf8": "            else child = construct_native_gui_text_default_storage_00ab9650(allocation,\n                a.raw93_frame_, a.raw93_context_, a.raw93_acquired_);\n",
+          "before_sha256": "c418cfab4489a427c51b7837f29b6908e8b509dc359c48b809efd51b50407ee2",
+          "after_sha256": "ba5fd14d3e2a36e69f76afcbf82e891a83c232e4a9d06021c27fe2160a669b53"
+        }
+      ],
+      "full_forward_reverse": true
+    }
+  ],
+  "baseline_input_pins": [
+    {
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "bytes": 9767,
+      "sha256": "0119dfc3ca2b14ab6c2fbd526f11758b355c2f6d832d556346930af090ef3756",
+      "retained_path": "local/function_source_batch42/baseline/native_gui_text_glyph_quad_storage.hpp"
+    },
+    {
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "bytes": 28923,
+      "sha256": "0132d2de8772e6b84eca73112ddef372054232d90f7ad6d0925aa4f4ab34c1b2",
+      "retained_path": "local/function_source_batch42/baseline/native_gui_text_glyph_quad_storage.cpp"
+    },
+    {
+      "path": "include/bsp/native_gui_text_default_storage.hpp",
+      "bytes": 6352,
+      "sha256": "7a23774d66bb90e59712407d58fd3356640da3f77f1c087bf766b77d3748141a",
+      "retained_path": "local/function_source_batch42/baseline/native_gui_text_default_storage.hpp"
+    },
+    {
+      "path": "src/native_gui_text_default_storage.cpp",
+      "bytes": 26698,
+      "sha256": "6ed36cf3cad97ef089be15302827995d3bc6f303f5df3a3eb122b970dde67d09",
+      "retained_path": "local/function_source_batch42/baseline/native_gui_text_default_storage.cpp"
+    },
+    {
+      "path": "include/bsp/native_gui_text_failure_origin.hpp",
+      "bytes": 12778,
+      "sha256": "ec32e9f8df302d8754e95abd1f11204e14ebb582e082090faec63cee74d84075",
+      "retained_path": "local/function_source_batch42/baseline/native_gui_text_failure_origin.hpp"
+    },
+    {
+      "path": "src/native_gui_text_failure_origin.cpp",
+      "bytes": 11627,
+      "sha256": "aacd70ec3d609de1b8a544884fd4d844d51b684a96194a0f95a62b9c843fc8c1",
+      "retained_path": "local/function_source_batch42/baseline/native_gui_text_failure_origin.cpp"
+    },
+    {
+      "path": "include/bsp/native_gui_text_storage_construct.hpp",
+      "bytes": 9641,
+      "sha256": "681a44709442353f716f2ead0377804df61cbc659ec7fc7dcc3a7a05c56ec5b2",
+      "retained_path": "local/function_source_batch42/baseline/native_gui_text_storage_construct.hpp"
+    },
+    {
+      "path": "src/native_gui_text_storage_construct.cpp",
+      "bytes": 37007,
+      "sha256": "a4c2c5e06dfa78d0dba7769900cb7a8302f7567c70f77707262246088326db60",
+      "retained_path": "local/function_source_batch42/baseline/native_gui_text_storage_construct.cpp"
+    }
+  ],
+  "checks": {
+    "whole_file_forward_reverse": 2,
+    "seams": 8,
+    "asm_blocks_identical": 22,
+    "x87_forms_identical": 78,
+    "existing_counter_tokens": 3,
+    "pool_GPA_block_unchanged": true,
+    "normal_disarm_home7_append_and_all_later_operations_unchanged": true,
+    "entire_Glyph_catch_unchanged": true,
+    "Source41_private_arms_prefix_unchanged": true,
+    "six_raw93_raw85_Origin_provider_files_unchanged": true,
+    "no_Cause_friend_Native_issuer_reset_guard_new_frame_or_constructor_provider_stub": true
+  },
+  "Source_ABI_changes": [
+    "two constructor virtuals removed",
+    "Glyph acquisition requires three existing-type borrows",
+    "three private reference fields appended after old arms",
+    "new constructor adds no noexcept promise"
+  ],
+  "constructor_edges": {
+    "native_site": "00ab9d4f",
+    "qualified": "existing five-argument actual raw93 inside SAME ConstructorCall.invoke",
+    "legacy": "existing four-argument actual raw93; EH remains separately unadmitted",
+    "provider": "address of SAME borrowed raw93 Acquired",
+    "private_bind_once_and_body_returned": "unchanged real callee only",
+    "null_allocation": "skips both raw93 overloads and their preflight"
+  },
+  "readiness": {
+    "static_direct_caller": true,
+    "concrete_prepared_Glyph_producer": false,
+    "post93_raw122_birth": false,
+    "Native_positive_origin": false,
+    "whole_Native_EH": false,
+    "Original_ABI": false,
+    "runtime": false,
+    "gameplay": false,
+    "activation": false
+  },
+  "credits": {
+    "complete_Native_function": 0,
+    "Original_vendor_CG_helper_trivial_duplicate_new_body": 0,
+    "ABI_runtime_activation": 0
+  },
+  "build_or_execution_by_author": false,
+  "new_tests": 0
+}

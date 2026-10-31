@@ -1,0 +1,996 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-glyph-child-preparation-audit",
+  "utc": "2026-10-31T01:00:24.825729+00:00",
+  "published_Main": "a9e960964271db5bb0449101d9988c8c030b638b",
+  "baseline_unchanged_raw_API": "757b1338d12bf994cbb196141676c373095ab4d1",
+  "conclusion": "Public building blocks exist and one private real graph exists; no public genuine per-Glyph producer/birth/lifetime path exists.",
+  "findings": [
+    {
+      "id": "P1",
+      "kind": "existing concrete preparation pattern",
+      "path": "src/game_native_raw_default_text_owner.cpp",
+      "lines": "242-289,1123-1181,1195-1202",
+      "fact": "Private retained Attempt already assembles exact raw triple, independent188, dispatchers, operand frames, raw122 storage/history."
+    },
+    {
+      "id": "P2",
+      "kind": "actual producer interface cut",
+      "path": "include/bsp/game_native_raw_default_text_owner.hpp",
+      "lines": "16-19,private Impl",
+      "fact": "Closed ONE DEFAULT owner exposes neither actual Text nor raw triple/per-Glyph preparation."
+    },
+    {
+      "id": "P3",
+      "kind": "lifetime admission cut",
+      "path": "src/native_gui_text_default_widget_lifetime.cpp",
+      "lines": "116-124,169-191",
+      "fact": "Genuine adapter authenticates real AA1380 factory history; raw93/Glyph allocation alone cannot supply it."
+    },
+    {
+      "id": "P4",
+      "kind": "reusable lower-level binding",
+      "path": "src/native_gui_text_reference.cpp",
+      "lines": "602-682,777-807",
+      "fact": "Raw122 preflight checks exact raw93/188/B75170/default graph without factory record; separate post93 placement birth can be reused once actual provider exists."
+    },
+    {
+      "id": "P5",
+      "kind": "per-record mapping unavailable",
+      "fact": "Only pure selector declarations/two call sites and GlyphCalls declaration exist in audited tracked scope. Distinct whole graph required per selected record."
+    }
+  ],
+  "source_pins": [
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/game_native_raw_default_text_owner.hpp",
+      "bytes": 9406,
+      "sha256": "92715898e34550625339a8658568e31aee5dbb5b8901d92379a273e816558c83",
+      "git_blob": "532566845cd8434126f0869464a0deb7c1ec2e2f"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/game_native_raw_default_text_owner.cpp",
+      "bytes": 132021,
+      "sha256": "b0c6a8e39b0756e98960a9f21894a0b25ea7b1a437891edaa86b6f893289d25b",
+      "git_blob": "8e3d47af9f936b938afa27821afd5b3b6b8071ef"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_gui_text_storage_construct.hpp",
+      "bytes": 9641,
+      "sha256": "681a44709442353f716f2ead0377804df61cbc659ec7fc7dcc3a7a05c56ec5b2",
+      "git_blob": "736c02913b09a1de5f606362747305a2a4a36318"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_gui_text_storage_construct.cpp",
+      "bytes": 37007,
+      "sha256": "a4c2c5e06dfa78d0dba7769900cb7a8302f7567c70f77707262246088326db60",
+      "git_blob": "88fa09e70019fa61d59652c5434666b8db4931b2"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_gui_text_default_storage.hpp",
+      "bytes": 6352,
+      "sha256": "7a23774d66bb90e59712407d58fd3356640da3f77f1c087bf766b77d3748141a",
+      "git_blob": "2eb5db69eff0b68c093a5006e13eb2d490e821b7"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_gui_text_default_storage.cpp",
+      "bytes": 26698,
+      "sha256": "6ed36cf3cad97ef089be15302827995d3bc6f303f5df3a3eb122b970dde67d09",
+      "git_blob": "47f32c0fb30dc7ebfaeb83ce2480ec88f59d3039"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_gui_text_reference.hpp",
+      "bytes": 12718,
+      "sha256": "62224192a6d0fb5043ed68a3f34374ce1bc3584ee1f3bb031c1041b33fdd1827",
+      "git_blob": "492cf04c44cfeae90887bba02c32039f325bc318"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_gui_text_reference.cpp",
+      "bytes": 58312,
+      "sha256": "0fb188e79dbc014db098d01e3afff14a5e07f1671a33db063d2e126e5af4257e",
+      "git_blob": "f3a8e3a5c855acc668fb526d6de781621cfdb8c2"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_gui_text_default_widget_lifetime.hpp",
+      "bytes": 6623,
+      "sha256": "6689bd2ad16f3518e7356abea646dd10f37bb3d609f23453ca479dee10ed5672",
+      "git_blob": "2c2c6e782b2953cbe671bf60a092e3b9cf6210dd"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_gui_text_default_widget_lifetime.cpp",
+      "bytes": 20580,
+      "sha256": "a9a0804f232966546ad7f17ce8d8b6fa81937f26531d831ecd79a3d8bb62d88b",
+      "git_blob": "fe970d12216473b80796f96656e605e359afe53b"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_gui_text_default_factory_storage.hpp",
+      "bytes": 4809,
+      "sha256": "1587babdcc646f3b91b15b688a27338ea7d1e5038db3e92a7fd6738fb8924cd0",
+      "git_blob": "c375df0e72f3bbb01134ad99a1cab4dbc0bc9cd7"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_gui_text_default_factory_storage.cpp",
+      "bytes": 9890,
+      "sha256": "0b97742d0e583fe07aa78650b11add009bf411714ac275c01c65260dc57ff834",
+      "git_blob": "2030545c00812ae683f1bb7d58e6b34c3c00bf24"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_gui_text_retirement.hpp",
+      "bytes": 8057,
+      "sha256": "b18d121ea1111a6b70ec0dd7922aaf5c8e60226fb1cbadc25a73c04eefb842d2",
+      "git_blob": "ef7effbb29056d3852b8bcc3009d3f7acfa4ebb2"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_model_storage_geometry.hpp",
+      "bytes": 5087,
+      "sha256": "c42a2f4108b83a2a938ec8cf77eabc598d378bd07b6245c63adf370b54a040b9",
+      "git_blob": "073b6ac3c63ae7a03d212dac49251574a386e0e8"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_model_storage_geometry.cpp",
+      "bytes": 10123,
+      "sha256": "cdbfdcbd885c63690b4d7a6c88d72e96ecf56e9c78eb9cf323c0f7400304e833",
+      "git_blob": "d26825ce8ec95a8d9d21b444cc2f877ea5e380ce"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_node_parenting_storage.hpp",
+      "bytes": 5253,
+      "sha256": "099017858da7cd62e7b5260aaac8f53a2451b063469266a1e6119e7ce3cdc3b0",
+      "git_blob": "9fc250c04a032769217e67a5aea308bdf6babcae"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_model_storage_lifetime.hpp",
+      "bytes": 9363,
+      "sha256": "7754b1a3df10ccf79a83899513b48ab4616df9b9f9a5da54400ed7d4fe51ea1f",
+      "git_blob": "319ac5182e317f50e999437b3d300c92d695fbdf"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_model_storage_dispatch.hpp",
+      "bytes": 4578,
+      "sha256": "c7668cfa7baedd21695427d5e67c5aeee155aa1deca7ea1c1f6df7367a14fed2",
+      "git_blob": "3cedaf1f8ec893298daab624fcdc59cba21e39fa"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_model_storage_dispatch.cpp",
+      "bytes": 12599,
+      "sha256": "7e77fc6d29bee3e8f177213a2f40bb8c29b0da05e12acd5c138a9dff1ffe45d8",
+      "git_blob": "f9d249b369064ef13a511592b81cd19cae151ae6"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_model_storage_node_dispatch.hpp",
+      "bytes": 5623,
+      "sha256": "27b319d3bae80ba4eb426917a9f6b8890c88559a3b88066a70e4f8d7dac30723",
+      "git_blob": "8c7110b0c08fdcf7882c5c340465a2cbdb2c8fd5"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_model_storage_node_dispatch.cpp",
+      "bytes": 16044,
+      "sha256": "76418809bb56a11118f64f1ba28ee6d068677b0a8314c0dd5a54b9d96d583d08",
+      "git_blob": "af2e73d169989f69455dbf23e116140bbc33018f"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_render_context.hpp",
+      "bytes": 10071,
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+      "git_blob": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_render_context.cpp",
+      "bytes": 11471,
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+      "git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+      "bytes": 9873,
+      "sha256": "3914309878ae2683fe0fa3a676d373f35d09cc34ca6d82dd83d7044d678453a8",
+      "git_blob": "32fe59b520f2c49f699f04d665b28235d391fe67"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_gui_text_single_line_storage.cpp",
+      "bytes": 17311,
+      "sha256": "ffda6f98ac137a60af72332a3981da2e51a18992097ff359feda8a93028ee048",
+      "git_blob": "22427ad2c2c04bf357b2770e075e1c794ee03bf9"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_gui_text_wrapped_storage.hpp",
+      "bytes": 10525,
+      "sha256": "197ded43a11ce27f3d24ae3fdd0a375f565ebaa7c5a97ab9df219d6dfb922170",
+      "git_blob": "f025b748c662a9b7731e166c1d600b882327c96e"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_gui_text_wrapped_storage.cpp",
+      "bytes": 31992,
+      "sha256": "f60c97736444be3c30e0eba45373988630a5e90f997384a4298e19b2da072614",
+      "git_blob": "de5ba745a33858d0eb3359fbb0ac96a59f117319"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "bytes": 9767,
+      "sha256": "0119dfc3ca2b14ab6c2fbd526f11758b355c2f6d832d556346930af090ef3756",
+      "git_blob": "5e2b0a64e46003077ba634c011ec8ce03f5a3605"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "bytes": 28923,
+      "sha256": "0132d2de8772e6b84eca73112ddef372054232d90f7ad6d0925aa4f4ab34c1b2",
+      "git_blob": "7e6f1c1062ebf13f3648f04e52e8fb2c82be6ef5"
+    }
+  ],
+  "all_non_Glyph_27_examined_Source_files_equal757": [
+    "include/bsp/game_native_raw_default_text_owner.hpp",
+    "src/game_native_raw_default_text_owner.cpp",
+    "include/bsp/native_gui_text_storage_construct.hpp",
+    "src/native_gui_text_storage_construct.cpp",
+    "include/bsp/native_gui_text_default_storage.hpp",
+    "src/native_gui_text_default_storage.cpp",
+    "include/bsp/native_gui_text_reference.hpp",
+    "src/native_gui_text_reference.cpp",
+    "include/bsp/native_gui_text_default_widget_lifetime.hpp",
+    "src/native_gui_text_default_widget_lifetime.cpp",
+    "include/bsp/native_gui_text_default_factory_storage.hpp",
+    "src/native_gui_text_default_factory_storage.cpp",
+    "include/bsp/native_gui_text_retirement.hpp",
+    "include/bsp/native_model_storage_geometry.hpp",
+    "src/native_model_storage_geometry.cpp",
+    "include/bsp/native_node_parenting_storage.hpp",
+    "include/bsp/native_model_storage_lifetime.hpp",
+    "include/bsp/native_model_storage_dispatch.hpp",
+    "src/native_model_storage_dispatch.cpp",
+    "include/bsp/native_model_storage_node_dispatch.hpp",
+    "src/native_model_storage_node_dispatch.cpp",
+    "include/bsp/native_render_context.hpp",
+    "src/native_render_context.cpp",
+    "include/bsp/native_gui_text_single_line_storage.hpp",
+    "src/native_gui_text_single_line_storage.cpp",
+    "include/bsp/native_gui_text_wrapped_storage.hpp",
+    "src/native_gui_text_wrapped_storage.cpp"
+  ],
+  "precise_Source_line_pins": [
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_gui_text_storage_construct.hpp",
+      "line": 97,
+      "text": "struct NativeGuiTextRawModelSectionStorageContext {",
+      "utf8_sha256": "d0f6ed0424d24d0c6ac21117962e6af95144d7827c5fd3ce98f96417069de73a"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_gui_text_storage_construct.hpp",
+      "line": 114,
+      "text": "struct NativeGuiTextRawModelSectionStorageFrame {",
+      "utf8_sha256": "ca1bfd22faafe1b07594b4b2f2b99888fc7d92f2dd312a6171d86e496bd43750"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_gui_text_storage_construct.hpp",
+      "line": 119,
+      "text": "    NativeGuiTextRawModelSectionStorageFrame(volatile std::uint32_t (&l)[4],",
+      "utf8_sha256": "697501e477e4e614244745afe1a0dcdf792bc97e84ef0a44a605781115cb74ff"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_gui_text_storage_construct.hpp",
+      "line": 123,
+      "text": "struct NativeGuiTextRawModelRecord {",
+      "utf8_sha256": "69cfe9198b93e58a4a8cbb7c30a44784ebd99f4edbea2631ebb13edf5507b7f5"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_gui_text_default_storage.hpp",
+      "line": 61,
+      "text": "struct NativeGuiTextRawModelDefaultStorageContext {",
+      "utf8_sha256": "d82ed5361dca5d31bee1c912c6e5b2ae3d36f10fc586952288ed826b243fc005"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_gui_text_default_storage.hpp",
+      "line": 70,
+      "text": "struct NativeGuiTextRawModelDefaultStorageFrame {",
+      "utf8_sha256": "d8b229614261075f864e4c13d9c56f956be1214df557dd728b65a8415dc8f08f"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_gui_text_default_storage.hpp",
+      "line": 73,
+      "text": "struct NativeGuiTextRawModelDefaultStorageAcquired {",
+      "utf8_sha256": "d8c5deb7057498ea4c0acdd2c6f87bdfb84b93735bba05bcb8528d1351993c94"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_gui_text_reference.hpp",
+      "line": 124,
+      "text": "struct NativeGuiTextRawModelReferenceContext {",
+      "utf8_sha256": "d3888c3272863fa1350fb7857da0bff28bfa982528860e75dcc8b1819c1f76c3"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_gui_text_reference.cpp",
+      "line": 602,
+      "text": "Admission preflight(void* companion, void* raw, NativeGuiTextRawModelReferenceContext& c,",
+      "utf8_sha256": "68a2cfd720deb93f5843142bbc8e6fe7c793d49b671ba7e1d97c16b2110b492e"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_gui_text_reference.cpp",
+      "line": 777,
+      "text": "NativeGuiTextRawModelReference& bind_native_gui_text_raw_model_reference(void* companion, void* raw,",
+      "utf8_sha256": "3ec537b63dc4f489342b62168e6d35c1b9997a63b2a33e6783112b11631d46d8"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_gui_text_reference.cpp",
+      "line": 792,
+      "text": "NativeGuiTextRawModelReference& bind_native_gui_text_raw_model_reference_reserved(",
+      "utf8_sha256": "b45d6027555a16875d9dcb898d2e92db2b3ab873693acec64b22159511a26616"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/game_native_raw_default_text_owner.hpp",
+      "line": 15,
+      "text": "// Retained owner of ONE unpublished private DEFAULT Text lifecycle, with an",
+      "utf8_sha256": "4377032a7aa4fcfb623bff7260ab538c122b879fbe9920a908079afea635f6ac"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/game_native_raw_default_text_owner.hpp",
+      "line": 58,
+      "text": "    void prepare_metadata_in_ready_renderer(std::size_t model_call_capacity);",
+      "utf8_sha256": "fbc412256b4ef75efd42ad2f33b4061368e8e63775331fa91cd1c467ba098b3c"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/game_native_raw_default_text_owner.hpp",
+      "line": 96,
+      "text": "    bool construct_default_in_open_shader_cache();",
+      "utf8_sha256": "d8b4788b19893fb13e234cfb1f0c89fa8c21ba97e2af8de158280170f6153fc1"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/game_native_raw_default_text_owner.cpp",
+      "line": 242,
+      "text": "struct GameNativeRawDefaultTextOwner::Impl::Attempt {",
+      "utf8_sha256": "6e3936551ce5c6b3e781d59c51223ef31eb2a5a6daefc0473d7dd85c7c585eac"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/game_native_raw_default_text_owner.cpp",
+      "line": 1123,
+      "text": "GameNativeRawDefaultTextOwner::Impl::Attempt::Attempt(Services& s, std::size_t capacity)",
+      "utf8_sha256": "72ed43e315dc5ef3c4a9ceb6f1f7f8dd4edf2ed147667b0c26918fc7309cf401"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/game_native_raw_default_text_owner.cpp",
+      "line": 1195,
+      "text": "void GameNativeRawDefaultTextOwner::Impl::Attempt::bind() {",
+      "utf8_sha256": "1214d444537ddcf41f0dbf3d45aae24defaabc076cc75c14682c4e5ab15a51cd"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/game_native_raw_default_text_owner.cpp",
+      "line": 1206,
+      "text": "void GameNativeRawDefaultTextOwner::Impl::Services::prepare(std::size_t capacity) {",
+      "utf8_sha256": "12f8a02d33daa0d07bce31506210bcc8ba4e39e7529e23803e38c38003e1f789"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/game_native_raw_default_text_owner.cpp",
+      "line": 245,
+      "text": "    NativeGuiTextRawModelDefaultStorageAcquired construction;",
+      "utf8_sha256": "743e979294f350321b6f5341f6401f13a6d00cd149e0ce527f071d4e7a161c16"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/game_native_raw_default_text_owner.cpp",
+      "line": 284,
+      "text": "    alignas(NativeGuiTextRawModelReference) std::byte companion[sizeof(NativeGuiTextRawModelReference)];",
+      "utf8_sha256": "688af3a308e1468eb497c978e78ca1dad5be299f66a46581920d5e2f1f9c5ce2"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_gui_text_default_widget_lifetime.cpp",
+      "line": 97,
+      "text": "void NativeGuiTextDefaultWidgetLifetime::bind(NativeGuiTextDefaultWidgetLifetimeRecord& r) {",
+      "utf8_sha256": "83b7388431e158f9e6bfc9eda83c40d45c2370122c77b8687e5dcc1ebbee2aba"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_gui_text_default_widget_lifetime.cpp",
+      "line": 116,
+      "text": "        require(r.factory.phase == NativeGuiTextDefaultFactoryStorageAcquired::Phase::fresh &&",
+      "utf8_sha256": "9d3e8933af1949691a33e77451c45117f104686c2bc741dd892c48a0d3b0dc29"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_gui_text_default_widget_lifetime.cpp",
+      "line": 169,
+      "text": "    require(actual && a.started && a.allocation_returned && a.raw_slot == actual &&",
+      "utf8_sha256": "8a9e4f95fa2839eec4bdbe278eed940458d10545a6a3681e61407930e328eaf2"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_gui_text_default_widget_lifetime.cpp",
+      "line": 181,
+      "text": "            \"DEFAULT widget constructor prefix requires genuine pre-raw122 factory/raw93 entry\");",
+      "utf8_sha256": "5bd5770fdb76cfb1b89201d90f811720b4948bd8ffaf69f1c8ba357eea7d74e1"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_gui_text_default_widget_lifetime.cpp",
+      "line": 185,
+      "text": "        a.phase == NativeGuiTextDefaultFactoryStorageAcquired::Phase::complete && a.complete &&",
+      "utf8_sha256": "d6396c90a47aa91f2205a0a5ee5c6066488c5ff2bf1b86e051b1addfe5cc7c45"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_gui_text_storage_construct.cpp",
+      "line": 452,
+      "text": "void prepare_model(void* raw, NativeGuiTextRawModelSectionStorageContext&,",
+      "utf8_sha256": "cef2ab075aacf00dd8ddc1211e26f5834d87d44385fd44223df6f667e7dd49b1"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_gui_text_storage_construct.cpp",
+      "line": 477,
+      "text": "    a.model.reference.emplace(a.model.actual, c.model, a.model.construction,",
+      "utf8_sha256": "28d5533ad202aa6820586664bd1296885a254f5f9434c00429162da227f91eba"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_gui_text_storage_construct.cpp",
+      "line": 576,
+      "text": "            word(text, 0x188) = reinterpret_cast<Word>(raw); // AB85AA before name release",
+      "utf8_sha256": "0a87cab7a3ffc7a5e2606af1b9290c6d8aec81461ca43c25fccbc854c12dcbb5"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_model_storage_dispatch.hpp",
+      "line": 12,
+      "text": "struct NativeModelStorageDispatchContext {",
+      "utf8_sha256": "d863fc9a01b8647eb9e99b76185da912fd26aa328f790276a132bd57e6301b51"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_model_storage_dispatch.hpp",
+      "line": 52,
+      "text": "    void bind(NativeModelStorageDispatchContext&);",
+      "utf8_sha256": "87c6d330e81f8a19bb63549c618322ff3f2c35483d52e54ce83d7576a7da84e3"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_model_storage_node_dispatch.hpp",
+      "line": 55,
+      "text": "    void bind(NativeModelStorageNodeDispatchContext&);",
+      "utf8_sha256": "2b1e191ffa4bdf2cfe367dd153cda73caa97838294baab143e90be67914e514f"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_model_storage_geometry.cpp",
+      "line": 136,
+      "text": "NativeModelStorageGeometryFrame::~NativeModelStorageGeometryFrame() noexcept {",
+      "utf8_sha256": "77539e968676d95d34239fc2ef45b46140807ef75a8bbd71374cb46134c999e8"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_model_storage_geometry.cpp",
+      "line": 141,
+      "text": "    return phase_ == Phase::entered || phase_ == Phase::failed;",
+      "utf8_sha256": "52c9cfec62bb8b0dbfad778f4f2edbf345c4a30dea8d856451fc7e2e2bb13a0d"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_render_context.hpp",
+      "line": 83,
+      "text": "    [[nodiscard]] BindingAdmission prepare_binding(void* raw_identity);",
+      "utf8_sha256": "586ee4abbbf893333475ee64bfcc96cba796efcaedff201ff9a3072e8903cbfb"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_render_context.cpp",
+      "line": 63,
+      "text": "NativeRenderActualOwnerRegistry::BindingAdmission::~BindingAdmission() noexcept { cancel(); }",
+      "utf8_sha256": "0533c96f4514eb400863ccdbed22f8e1c4c105a7b3cea31a2cf9e8fc73782377"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_render_context.cpp",
+      "line": 101,
+      "text": "NativeRenderActualOwnerRegistry::prepare_binding(void* identity) {",
+      "utf8_sha256": "3049824e258595dd10fcd2d631fb1c98bfa16ee92a9cdae5b563517f18980d27"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_render_context.cpp",
+      "line": 111,
+      "text": "void NativeRenderActualOwnerRegistry::publish(BindingAdmission&& admission,",
+      "utf8_sha256": "6820940b31bb34f13a2ed10455bb7067de23ed04a1cb7c6d6a8a30f474c72896"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+      "line": 48,
+      "text": "    virtual NativeGuiTextGlyphQuadStorageAcquired& prepared_glyph_quad_record(",
+      "utf8_sha256": "91b89ac44b06497410c92052b59e09f0f54e6b9ae7931cd077f000c23987d4b4"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_gui_text_single_line_storage.cpp",
+      "line": 315,
+      "text": "                auto& quad_record = context.bindings.prepared_glyph_quad_record(acquired);",
+      "utf8_sha256": "bf67ad217141101125861a6284b2b941d3c59f82c40178d2d2061567a17d353c"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "include/bsp/native_gui_text_wrapped_storage.hpp",
+      "line": 51,
+      "text": "    virtual NativeGuiTextGlyphQuadStorageAcquired& prepared_glyph_quad_record(",
+      "utf8_sha256": "91b89ac44b06497410c92052b59e09f0f54e6b9ae7931cd077f000c23987d4b4"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "path": "src/native_gui_text_wrapped_storage.cpp",
+      "line": 726,
+      "text": "                        auto& quad_record = c.bindings.prepared_glyph_quad_record(a);",
+      "utf8_sha256": "399f5e6d578ff397b18c929796aa5a4a1965e2d8b90e1e970e2f15ef95b87ec4"
+    }
+  ],
+  "prior_constructor_API_pins": [
+    {
+      "commit": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+      "path": "include/bsp/native_gui_text_default_storage.hpp",
+      "bytes": 6352,
+      "sha256": "7a23774d66bb90e59712407d58fd3356640da3f77f1c087bf766b77d3748141a",
+      "git_blob": "2eb5db69eff0b68c093a5006e13eb2d490e821b7"
+    },
+    {
+      "commit": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+      "path": "include/bsp/native_gui_text_storage_construct.hpp",
+      "bytes": 9641,
+      "sha256": "681a44709442353f716f2ead0377804df61cbc659ec7fc7dcc3a7a05c56ec5b2",
+      "git_blob": "736c02913b09a1de5f606362747305a2a4a36318"
+    }
+  ],
+  "separate_content_contract_pins": [
+    {
+      "commit": "fdeeeb6ca46fc972c73f2f21f5a814c76d747496",
+      "path": "docs/CC16_NATIVE_GLYPH_CONTENT_CALL_CONTRACT.md",
+      "bytes": 14252,
+      "sha256": "fb5f095783624d59e85ca069ac4fb17be6a5346d5f254e4e4740c53953347f17",
+      "git_blob": "6451a9b534a9eead2784fdddffdd65f0c35b7c95"
+    },
+    {
+      "commit": "fdeeeb6ca46fc972c73f2f21f5a814c76d747496",
+      "path": "reports/cc16_native_glyph_content_call_contract.json",
+      "bytes": 56329,
+      "sha256": "ba54ce43c3137b23eeed906bc1b5037e3310ed756fa4e93997233ea9982cdb57",
+      "git_blob": "920feae7f5d47fc9007a4f65cc8263b9669ae79d"
+    }
+  ],
+  "separate_raw93_caller_contract_routing_pins": [
+    {
+      "commit": "994f4dcb844056651e7e9e55a9c0c75e1b4aac44",
+      "path": "docs/CC16_NATIVE_GLYPH_RAW93_CALLER_CONTRACT.md",
+      "bytes": 7961,
+      "sha256": "5fef16ecc23e76afe6e47da9f186153dfacbc3954bb4b5260b558614ba8e748b",
+      "git_blob": "7e3bd8abf597cf0215252680fcd7a7efa3ade3d0"
+    },
+    {
+      "commit": "994f4dcb844056651e7e9e55a9c0c75e1b4aac44",
+      "path": "reports/cc16_native_glyph_raw93_caller_contract.json",
+      "bytes": 52022,
+      "sha256": "72b44c3bd9aff76a9cfdb2eac6abf886c8ec7031ba1a227fe22ae2c0e5d11a6a",
+      "git_blob": "ae1a8a90867f8abb9b97cc46dab5492a31a75d50"
+    }
+  ],
+  "raw93_contract_independently_reviewed_in_this_audit": false,
+  "static_direct_caller_with_mandatory_borrows_can_be_separate_from_missing_producer": true,
+  "tracked_provider_searches": [
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "scope": [
+        "include",
+        "src",
+        "tests"
+      ],
+      "literal": "NativeGuiTextRawModelDefaultStorageContext",
+      "matching_lines": [
+        "a9e960964271db5bb0449101d9988c8c030b638b:include/bsp/native_gui_text_default_storage.hpp:61:struct NativeGuiTextRawModelDefaultStorageContext {",
+        "a9e960964271db5bb0449101d9988c8c030b638b:include/bsp/native_gui_text_default_storage.hpp:85:        NativeGuiTextRawModelDefaultStorageFrame&, NativeGuiTextRawModelDefaultStorageContext&,",
+        "a9e960964271db5bb0449101d9988c8c030b638b:include/bsp/native_gui_text_default_storage.hpp:101:    NativeGuiTextRawModelDefaultStorageFrame&, NativeGuiTextRawModelDefaultStorageContext&,",
+        "a9e960964271db5bb0449101d9988c8c030b638b:include/bsp/native_gui_text_default_storage.hpp:107:    NativeGuiTextRawModelDefaultStorageFrame&, NativeGuiTextRawModelDefaultStorageContext&,",
+        "a9e960964271db5bb0449101d9988c8c030b638b:include/bsp/native_gui_text_failure_origin.hpp:20:struct NativeGuiTextRawModelDefaultStorageContext;",
+        "a9e960964271db5bb0449101d9988c8c030b638b:include/bsp/native_gui_text_failure_origin.hpp:218:        NativeGuiTextRawModelDefaultStorageFrame&, NativeGuiTextRawModelDefaultStorageContext&,",
+        "a9e960964271db5bb0449101d9988c8c030b638b:include/bsp/native_gui_text_reference.hpp:127:    NativeGuiTextRawModelDefaultStorageContext& construction_context;",
+        "a9e960964271db5bb0449101d9988c8c030b638b:src/game_native_raw_default_text_owner.cpp:272:    NativeGuiTextRawModelDefaultStorageContext default_context;",
+        "a9e960964271db5bb0449101d9988c8c030b638b:src/native_gui_text_default_storage.cpp:133:void raw_base_admission(void* raw, NativeGuiTextRawModelDefaultStorageContext& c) {",
+        "a9e960964271db5bb0449101d9988c8c030b638b:src/native_gui_text_default_storage.cpp:153:    NativeGuiTextRawModelDefaultStorageContext& c, NativeGuiTextRawModelDefaultStorageAcquired& a) {",
+        "a9e960964271db5bb0449101d9988c8c030b638b:src/native_gui_text_default_storage.cpp:228:void before_base(void* raw, NativeGuiTextRawModelDefaultStorageContext& c,",
+        "a9e960964271db5bb0449101d9988c8c030b638b:src/native_gui_text_default_storage.cpp:290:void completed(void* raw, NativeGuiTextRawModelDefaultStorageContext& c,",
+        "a9e960964271db5bb0449101d9988c8c030b638b:src/native_gui_text_default_storage.cpp:304:void failed(void* raw, NativeGuiTextRawModelDefaultStorageContext& c,",
+        "a9e960964271db5bb0449101d9988c8c030b638b:src/native_gui_text_default_storage.cpp:432:    NativeGuiTextRawModelDefaultStorageFrame& f, NativeGuiTextRawModelDefaultStorageContext& c,",
+        "a9e960964271db5bb0449101d9988c8c030b638b:src/native_gui_text_default_storage.cpp:441:    NativeGuiTextRawModelDefaultStorageFrame& f, NativeGuiTextRawModelDefaultStorageContext& c,"
+      ],
+      "output_sha256": "429f9da6794bc8a00d9d5ec34f7bd3823a28c14d804dfde1903d6b71a9de54b2"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "scope": [
+        "include",
+        "src",
+        "tests"
+      ],
+      "literal": "NativeGuiTextRawModelDefaultStorageAcquired",
+      "matching_lines": [
+        "a9e960964271db5bb0449101d9988c8c030b638b:include/bsp/native_gui_text_default_factory_storage.hpp:18:    NativeGuiTextRawModelDefaultStorageAcquired& construction;",
+        "a9e960964271db5bb0449101d9988c8c030b638b:include/bsp/native_gui_text_default_factory_storage.hpp:39:    NativeGuiTextRawModelDefaultStorageAcquired* construction_record{};",
+        "a9e960964271db5bb0449101d9988c8c030b638b:include/bsp/native_gui_text_default_storage.hpp:73:struct NativeGuiTextRawModelDefaultStorageAcquired {",
+        "a9e960964271db5bb0449101d9988c8c030b638b:include/bsp/native_gui_text_default_storage.hpp:86:        NativeGuiTextRawModelDefaultStorageAcquired&, NativeGuiTextFailureConstructorCall&);",
+        "a9e960964271db5bb0449101d9988c8c030b638b:include/bsp/native_gui_text_default_storage.hpp:102:    NativeGuiTextRawModelDefaultStorageAcquired&);",
+        "a9e960964271db5bb0449101d9988c8c030b638b:include/bsp/native_gui_text_default_storage.hpp:108:    NativeGuiTextRawModelDefaultStorageAcquired&, NativeGuiTextFailureConstructorCall&);",
+        "a9e960964271db5bb0449101d9988c8c030b638b:include/bsp/native_gui_text_failure_origin.hpp:21:struct NativeGuiTextRawModelDefaultStorageAcquired;",
+        "a9e960964271db5bb0449101d9988c8c030b638b:include/bsp/native_gui_text_failure_origin.hpp:219:        NativeGuiTextRawModelDefaultStorageAcquired&, NativeGuiTextFailureConstructorCall&);",
+        "a9e960964271db5bb0449101d9988c8c030b638b:include/bsp/native_gui_text_reference.hpp:129:    const NativeGuiTextRawModelDefaultStorageAcquired& construction;",
+        "a9e960964271db5bb0449101d9988c8c030b638b:src/game_native_raw_default_text_owner.cpp:245:    NativeGuiTextRawModelDefaultStorageAcquired construction;",
+        "a9e960964271db5bb0449101d9988c8c030b638b:src/native_gui_text_default_factory_storage.cpp:91:        produced.failure == NativeGuiTextRawModelDefaultStorageAcquired::Failure::none &&",
+        "a9e960964271db5bb0449101d9988c8c030b638b:src/native_gui_text_default_factory_storage.cpp:93:        produced.sections.failure == NativeGuiTextRawModelDefaultStorageAcquired::Failure::none &&",
+        "a9e960964271db5bb0449101d9988c8c030b638b:src/native_gui_text_default_storage.cpp:21:    static const NativeGuiTextFailureOriginRuntime* runtime(NativeGuiTextRawModelDefaultStorageAcquired& a) noexcept { return a.failure_runtime_; }",
+        "a9e960964271db5bb0449101d9988c8c030b638b:src/native_gui_text_default_storage.cpp:22:    static NativeGuiTextFailureOrigin& origin(NativeGuiTextRawModelDefaultStorageAcquired& a) noexcept { return a.failure_origin_; }",
+        "a9e960964271db5bb0449101d9988c8c030b638b:src/native_gui_text_default_storage.cpp:31:FailureTransport failure_transport(NativeGuiTextRawModelDefaultStorageAcquired& a) noexcept {",
+        "a9e960964271db5bb0449101d9988c8c030b638b:src/native_gui_text_default_storage.cpp:153:    NativeGuiTextRawModelDefaultStorageContext& c, NativeGuiTextRawModelDefaultStorageAcquired& a) {",
+        "a9e960964271db5bb0449101d9988c8c030b638b:src/native_gui_text_default_storage.cpp:229:    NativeGuiTextRawModelDefaultStorageAcquired& a) {",
+        "a9e960964271db5bb0449101d9988c8c030b638b:src/native_gui_text_default_storage.cpp:268:        if constexpr (std::is_same_v<Acquired, NativeGuiTextRawModelDefaultStorageAcquired>) {",
+        "a9e960964271db5bb0449101d9988c8c030b638b:src/native_gui_text_default_storage.cpp:286:void provider(NativeGuiTextRawModelDefaultStorageAcquired& a) noexcept {",
+        "a9e960964271db5bb0449101d9988c8c030b638b:src/native_gui_text_default_storage.cpp:291:    NativeGuiTextRawModelDefaultStorageAcquired& a) {",
+        "a9e960964271db5bb0449101d9988c8c030b638b:src/native_gui_text_default_storage.cpp:305:    NativeGuiTextRawModelDefaultStorageAcquired& a) {",
+        "a9e960964271db5bb0449101d9988c8c030b638b:src/native_gui_text_default_storage.cpp:405:        if constexpr (std::is_same_v<Acquired, NativeGuiTextRawModelDefaultStorageAcquired>) {",
+        "a9e960964271db5bb0449101d9988c8c030b638b:src/native_gui_text_default_storage.cpp:433:    NativeGuiTextRawModelDefaultStorageAcquired& a) {",
+        "a9e960964271db5bb0449101d9988c8c030b638b:src/native_gui_text_default_storage.cpp:442:    NativeGuiTextRawModelDefaultStorageAcquired& a, NativeGuiTextFailureConstructorCall& call) {"
+      ],
+      "output_sha256": "e2e088356b62eae34727a72bafc102aca7633a1f674bf86f833a3f3d40f145d2"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "scope": [
+        "include",
+        "src",
+        "tests"
+      ],
+      "literal": "NativeGuiTextGlyphQuadStorageCalls",
+      "matching_lines": [
+        "a9e960964271db5bb0449101d9988c8c030b638b:include/bsp/native_gui_text_glyph_quad_storage.hpp:26:class NativeGuiTextGlyphQuadStorageCalls {",
+        "a9e960964271db5bb0449101d9988c8c030b638b:include/bsp/native_gui_text_glyph_quad_storage.hpp:28:    virtual ~NativeGuiTextGlyphQuadStorageCalls() = default;",
+        "a9e960964271db5bb0449101d9988c8c030b638b:include/bsp/native_gui_text_glyph_quad_storage.hpp:76:    NativeGuiTextGlyphQuadStorageCalls& calls;"
+      ],
+      "output_sha256": "40939f31d144b15d88096fdffefb522cd7afec2a7c953eb5a68fe5651b2d2e6e"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "scope": [
+        "include",
+        "src",
+        "tests"
+      ],
+      "literal": "prepared_glyph_quad_record",
+      "matching_lines": [
+        "a9e960964271db5bb0449101d9988c8c030b638b:include/bsp/native_gui_text_single_line_storage.hpp:48:    virtual NativeGuiTextGlyphQuadStorageAcquired& prepared_glyph_quad_record(",
+        "a9e960964271db5bb0449101d9988c8c030b638b:include/bsp/native_gui_text_wrapped_storage.hpp:51:    virtual NativeGuiTextGlyphQuadStorageAcquired& prepared_glyph_quad_record(",
+        "a9e960964271db5bb0449101d9988c8c030b638b:src/native_gui_text_single_line_storage.cpp:315:                auto& quad_record = context.bindings.prepared_glyph_quad_record(acquired);",
+        "a9e960964271db5bb0449101d9988c8c030b638b:src/native_gui_text_wrapped_storage.cpp:726:                        auto& quad_record = c.bindings.prepared_glyph_quad_record(a);"
+      ],
+      "output_sha256": "932a074ec51b0764fc38aa7a62674c40048749a1e8771132640817565888795a"
+    },
+    {
+      "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+      "scope": [
+        "include",
+        "src",
+        "tests"
+      ],
+      "literal": "bind_native_gui_text_raw_model_reference_reserved",
+      "matching_lines": [
+        "a9e960964271db5bb0449101d9988c8c030b638b:include/bsp/native_gui_text_reference.hpp:162:    friend NativeGuiTextRawModelReference& bind_native_gui_text_raw_model_reference_reserved(void*, void*,",
+        "a9e960964271db5bb0449101d9988c8c030b638b:include/bsp/native_gui_text_reference.hpp:211:NativeGuiTextRawModelReference& bind_native_gui_text_raw_model_reference_reserved(",
+        "a9e960964271db5bb0449101d9988c8c030b638b:src/native_gui_text_reference.cpp:792:NativeGuiTextRawModelReference& bind_native_gui_text_raw_model_reference_reserved("
+      ],
+      "output_sha256": "08af40d6404c4c997b014c947a088d59eec21748ff077f6c8959fe7b69e7d068"
+    }
+  ],
+  "Native_evidence": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "bsp_verified_readonly_count_before_targeted_listing_batch": 77632,
+    "saved_listing_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab98f0\\assembly.txt",
+        "frozen_worker_copy": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-pool-caller\\local\\output\\cc16_native_glyph_child_preparation_20261030\\00ab98f0_assembly.txt",
+        "bytes": 16685,
+        "sha256": "7165707dcf74507fb24b2d3bfc77de8fa764a33c46fe46ff16aef417efd50bd4",
+        "listing_instructions": 485,
+        "scope_read": "targeted child allocation/constructor/postconstructor window"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab8530\\assembly.txt",
+        "frozen_worker_copy": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-pool-caller\\local\\output\\cc16_native_glyph_child_preparation_20261030\\00ab8530_assembly.txt",
+        "bytes": 5810,
+        "sha256": "887c462778fdc91f8c7335b9ff706d302a6a04f76a109e665d9e0141ac0b6971",
+        "listing_instructions": 208,
+        "scope_read": "targeted ctor-phase initial188/B75170 prefix, not new whole-body review"
+      }
+    ],
+    "targeted_instruction_rows": [
+      {
+        "entry": "00ab98f0",
+        "address": "00ab9d33",
+        "instruction": "00ab9d33: MOV ECX,0xf8bdf0 "
+      },
+      {
+        "entry": "00ab98f0",
+        "address": "00ab9d38",
+        "instruction": "00ab9d38: CALL 0x00ab78a0 "
+      },
+      {
+        "entry": "00ab98f0",
+        "address": "00ab9d3d",
+        "instruction": "00ab9d3d: MOV dword ptr [ESP + 0x78],EAX "
+      },
+      {
+        "entry": "00ab98f0",
+        "address": "00ab9d43",
+        "instruction": "00ab9d43: MOV dword ptr [ESP + 0x54],0x0 "
+      },
+      {
+        "entry": "00ab98f0",
+        "address": "00ab9d4f",
+        "instruction": "00ab9d4f: CALL 0x00ab9650 "
+      },
+      {
+        "entry": "00ab98f0",
+        "address": "00ab9d54",
+        "instruction": "00ab9d54: MOV ESI,EAX "
+      },
+      {
+        "entry": "00ab98f0",
+        "address": "00ab9d68",
+        "instruction": "00ab9d68: MOV dword ptr [ESP + 0x58],EBP "
+      },
+      {
+        "entry": "00ab98f0",
+        "address": "00ab9d6c",
+        "instruction": "00ab9d6c: MOV dword ptr [ESP + 0x7c],ESI "
+      },
+      {
+        "entry": "00ab98f0",
+        "address": "00ab9d70",
+        "instruction": "00ab9d70: CALL 0x005dad40 "
+      },
+      {
+        "entry": "00ab98f0",
+        "address": "00ab9d8c",
+        "instruction": "00ab9d8c: CALL 0x00aa6720 "
+      },
+      {
+        "entry": "00ab98f0",
+        "address": "00ab9d93",
+        "instruction": "00ab9d93: CALL 0x00ab8530 "
+      },
+      {
+        "entry": "00ab8530",
+        "address": "00ab8560",
+        "instruction": "00ab8560: MOV ECX,0x184 "
+      },
+      {
+        "entry": "00ab8530",
+        "address": "00ab8565",
+        "instruction": "00ab8565: CALL 0x00b74eb0 "
+      },
+      {
+        "entry": "00ab8530",
+        "address": "00ab859b",
+        "instruction": "00ab859b: CALL 0x00b75030 "
+      },
+      {
+        "entry": "00ab8530",
+        "address": "00ab85aa",
+        "instruction": "00ab85aa: MOV dword ptr [ESI + 0x188],EAX "
+      },
+      {
+        "entry": "00ab8530",
+        "address": "00ab8618",
+        "instruction": "00ab8618: FST float ptr [ESP + 0x4] "
+      },
+      {
+        "entry": "00ab8530",
+        "address": "00ab8620",
+        "instruction": "00ab8620: FSTP float ptr [ESP] "
+      },
+      {
+        "entry": "00ab8530",
+        "address": "00ab8623",
+        "instruction": "00ab8623: PUSH EBX "
+      },
+      {
+        "entry": "00ab8530",
+        "address": "00ab8624",
+        "instruction": "00ab8624: PUSH 0x0 "
+      },
+      {
+        "entry": "00ab8530",
+        "address": "00ab8626",
+        "instruction": "00ab8626: CALL 0x00b75170 "
+      }
+    ],
+    "installed_PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "installed_PE_targeted_ranges": [
+      {
+        "name": "Glyph child birth ordering",
+        "address": "00ab9d33",
+        "bytes": 101,
+        "sha256": "68667a6da2a0b4307ada0c5a4c1c79588843b418cc1e6511a40cf086296b689b",
+        "hex": "b9f0bdf800e863dbffff8944247885c0c744245400000000740b8bc8e8fcf8ffff8bf0eb0233f68d44247883cdff508d8f94010000896c24588974247ce8cb0fb2ff8b8fb00100008b494c8b118b42106a006a26ffd0508bcee88fc9feff8bcee898e7ffff"
+      },
+      {
+        "name": "ctor85 initial188 and association operands",
+        "address": "00ab8530",
+        "bytes": 251,
+        "sha256": "e23bebfad77da797ee765374febc3bcdc57c305061cc373ed2351414e7342e05",
+        "hex": "6aff68597fcb0064a100000000506489250000000083ec1053555633db8bf1895c240c399e88010000570f856b010000b984010000e846c90b008bf8897c241485ff895c2428742a68c45ed1008d4c241ce8ea6296ff8d442418bb01000000508bcfc644242c01895c2414e890ca0b00eb0233c083cffff6c301898688010000897c2428741f8b4c241c85c974178b4424186a0183c0015051e8f21696ff8bc8e83b8f11008b868801000083a038010000fcb9bc000000e874b50b008944241485c0c744242803000000740b8bc8e86db70b008bd8eb0233dbd90560a2d7008b8e8801000083ec08d9542404897c2430d91c24536a00e845cb0b00"
+      }
+    ],
+    "Source_canonical_insertions_are_Native_instructions": false,
+    "new_body_credit": false
+  },
+  "retained_stage_ownership": [
+    {
+      "stage": "pre-entry stable backing",
+      "owner": "real enclosing frontend retained producer, not parent selector stack",
+      "objects": [
+        "each GlyphAcquired",
+        "raw93 Acquired and nested RawModelRecord",
+        "locals[4]/arguments[4]/ParentingFrame",
+        "RawSectionFrame/association view",
+        "RawDefaultFrame/Context",
+        "per-Model tree/node dispatch records/providers/call backing",
+        "RawRetirementContext/raw122 Context/ReferenceFrame/aligned companion/disposal backing"
+      ],
+      "effect": "addresses/metadata only; no Text or Model allocation, no Native reads from future slots"
+    },
+    {
+      "stage": "pre-pool one-shot binding",
+      "owner": "same installed child record",
+      "objects": [
+        "tree_dispatch.bind(tree_record)",
+        "node_dispatch.bind(node_record)",
+        "genuine raw widget lifetime binding",
+        "all immutable context/reference aliases"
+      ],
+      "effect": "requires exact still-null Model actual and empty optional canonical reference; no fake factory progress"
+    },
+    {
+      "stage": "reached Glyph allocation/raw93",
+      "owner": "same retained child record",
+      "objects": [
+        "existing actual pool allocation at9D38",
+        "same captured destination/raw93 triple",
+        "same constructor envelope"
+      ],
+      "effect": "existing raw93 caller contract owns exact seam; no second factory/allocation"
+    },
+    {
+      "stage": "ctor85 internal188 birth",
+      "owner": "raw93 Acquired.sections.model",
+      "objects": [
+        "existing Model slot",
+        "construction/lifetime/reference/association/tree state"
+      ],
+      "effect": "record exists first; Source fills actual after allocation, constructs, publishes Text188, then emplaces same canonical Model reference before B75170"
+    },
+    {
+      "stage": "post93 raw122 birth",
+      "owner": "same child record and registry",
+      "objects": [
+        "same raw93 result/triple",
+        "already prepared raw122 Context/ReferenceFrame/aligned companion/disposal",
+        "optional matching caller-retained Text reservation"
+      ],
+      "effect": "full Source93 completion first; default+4C==0 admission requires birth before primary AA6720; no retain/Native Origin credit"
+    },
+    {
+      "stage": "normal/failure custody",
+      "owner": "same actual enclosing retained producer",
+      "objects": [
+        "all child records and every selected historical attempt",
+        "both physical Text/Model slots and unfinished operations"
+      ],
+      "effect": "no Graph destruction on entered failure, reset, retry, automatic return/disposal or dead-field rediscovery"
+    }
+  ],
+  "minimal_real_preparation_contract": {
+    "new_native_owner_process_or_helper_body_needed": false,
+    "concrete_per_Glyph_child_preparer_and_genuine_birth_lifetime_binding_needed": true,
+    "public_frame_constructors_available": true,
+    "public_raw122_bind_available": true,
+    "private_Attempt_is_public_borrow_API": false,
+    "current_DefaultWidgetLifetime_admits_nonAA1380_Glyph_history": false,
+    "per_selected_Glyph_identity_maps_existing_raw_Frame_Context_Acquired": true,
+    "each_writable_attempt_and_internal188_provider_graph_distinct": true,
+    "shared_readonly_ready_domains_may_be_borrowed": true,
+    "pure_parent_selector_can_allocate_or_prepare_at_reached_call": false,
+    "counterfeit_factory_flags_or_prebirth_CXX_reference_allowed": false,
+    "exact_raw93_forwarding_Interface_owned_by_separate_contract": true,
+    "post93_binding_before_AA6720_required_by_DEFAULT4C_zero": true
+  },
+  "reservation_limits": {
+    "minimal_path": "ordinary existing raw122 bind after full93 Source completion",
+    "Text_reserved_path_optional_existing_API": true,
+    "Text_identity_known_before_actual9D38_allocation": false,
+    "same_retained_lvalue_token_and_registry_required": true,
+    "unused_existing_token_destructor_cancels": "existing contract, not a proposed new failure policy; retain through entered failure",
+    "ctor85_current_internal_Model_bind_is_ordinary_optional_emplace": true,
+    "automatic_Model_reservation_consumption_available_there": false
+  },
+  "readiness": {
+    "preparation_routing_audit_complete": true,
+    "genuine_per_Glyph_producer_available": false,
+    "raw_triple_borrows_alone_make_provider_or_binding_ready": false,
+    "Source_implementation_done": false,
+    "Native_positive_issuer_OriginalABI_FH3_SEH_failed_disposition_runtime_Game_activation": false
+  },
+  "actions": {
+    "new_evidence_files": 2,
+    "production_Source_address_CMake_ledger_Ghidra_mutations": 0,
+    "build_tests_probes_Game_process_control": 0,
+    "bsp_readonly_verification_queries": 1,
+    "prior_evidence_modified": false
+  },
+  "credit": {
+    "Native": 0,
+    "Original": 0,
+    "body": 0,
+    "helper": 0,
+    "vendor": 0,
+    "duplicate": 0,
+    "ABI": 0,
+    "runtime": 0,
+    "activation": 0
+  },
+  "document_pin": {
+    "path": "docs/CC16_NATIVE_GLYPH_CHILD_PREPARATION_AUDIT.md",
+    "bytes": 12302,
+    "sha256": "60cac2bb87c2181bb72f7030c1ae9247d248fd9ee77cc809bdb5951ec9b128a6",
+    "format": "UTF-8 LF no BOM"
+  }
+}

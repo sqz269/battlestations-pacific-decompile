@@ -1,0 +1,613 @@
+{
+  "schema": "cc16.native_glyph_raw93_caller_contract.v1",
+  "date": "2026-10-30",
+  "packet": "codex-native-glyph-raw93-caller-contract",
+  "analysis_checkout_head": "b64943f9cd29fcd60ee208533c9fb326d13d88f6",
+  "immutable_refs": {
+    "ctor2059": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+    "caller335": "335625058ab5090b969a3e8dc5a72aa0846317cf",
+    "tested757": "757b1338d12bf994cbb196141676c373095ab4d1",
+    "root307": "30707aab4d6b7873e416eaf9e77860e23f477d2d",
+    "published40": "2fdf739e771cf6a9cb4739c4cf4ad9e2943e5658",
+    "published41": "a9e960964271db5bb0449101d9988c8c030b638b"
+  },
+  "scope": {
+    "owned_files": [
+      "docs/CC16_NATIVE_GLYPH_RAW93_CALLER_CONTRACT.md",
+      "reports/cc16_native_glyph_raw93_caller_contract.json"
+    ],
+    "addresses": [],
+    "design_only": true,
+    "source_edits": false,
+    "ancestry_import": false,
+    "native_recovery_or_Ghidra_actions": false,
+    "build_tests_probe_game_process_actions": false
+  },
+  "readiness": {
+    "existing_whole_real_raw93_body": true,
+    "selected_finite_static_direct_call_shape": true,
+    "new_native_body_needed": false,
+    "caller_patch_implemented": false,
+    "concrete_per_glyph_record_preparer_found": false,
+    "fully_connected_child_supplier": false,
+    "raw122_birth_closed": false,
+    "native_exception_permission": false,
+    "frontend_activation": false
+  },
+  "mandatory_borrow_proposal": {
+    "carrier": "EACH retained NativeGuiTextGlyphQuadStorageAcquired, not the shared Context",
+    "members": [
+      {
+        "type": "NativeGuiTextRawModelDefaultStorageFrame&",
+        "name": "raw93_frame_"
+      },
+      {
+        "type": "NativeGuiTextRawModelDefaultStorageContext&",
+        "name": "raw93_context_"
+      },
+      {
+        "type": "NativeGuiTextRawModelDefaultStorageAcquired&",
+        "name": "raw93_acquired_"
+      }
+    ],
+    "constructor": "Replace the default constructor with three required existing-type reference parameters; bind references without reads/preflight. Preserve deleted copy operations and add no noexcept promise.",
+    "layout": "Append references after Source41 private header-arm tail; keep all prior native scratch/diagnostic/Origin/envelope/arm fields unchanged.",
+    "preparation": "Genuine retained producer prepares the existing triplet and all referenced backing before wholeGlyph entry and constructs that Glyph acquired record. Existing parent prepared_glyph_quad_record selects already-prepared metadata only. No lookup/selector/host validation/allocation is added at AB9D4F.",
+    "freshness": "A distinct real frame, Acquired and operand set per entered/recursive invocation. No shared fresh record, reset, bounded pool, shortage/default/retry policy. Context services may be shared only under their actual stable/reentrant contracts.",
+    "retention": "Keep triplet, raw85 locals/arguments/parenting, independent Model188 records/reference and providers/constants/global authorities through callbacks, entered failure, parent normal return and actual later disposal/credit/physical-slot custody. No automatic-local failed graph.",
+    "no_prebind": "Required borrows do not authenticate entry, publish a reference, reserve registry identity or issue Native provenance. Private fields are never set by caller preparation."
+  },
+  "calls": {
+    "qualified": "child = a.constructor_call_.invoke([&] { return construct_native_gui_text_default_storage_00ab9650(allocation, a.raw93_frame_, a.raw93_context_, a.raw93_acquired_, a.constructor_call_); });",
+    "legacy": "child = construct_native_gui_text_default_storage_00ab9650(allocation, a.raw93_frame_, a.raw93_context_, a.raw93_acquired_);",
+    "receiver": "One actual captured allocation from existing real pool/AB78A0 path; no AA1380/factory/reallocation. NULL keeps existing skipped-constructor path and causes no raw93 preflight.",
+    "argument_evaluation": "Fixed ordinary reference bindings add no Native operand read, callback, allocation, current-target reload or FP operation. New C++ signatures do not claim Original ECX/EAX ABI compatibility.",
+    "supplier": "Deliberately change Source41 arm provider from &c.calls to &a.raw93_acquired_. SAME existing invoke enters that direct retained supplier. Actual raw93.bind_once validates active provider, exact receiver/runtime/invocation/home/site/stage and enters its own acquired-record edge. Same supplier address across these edges is allowed; parent and callee Origin objects stay distinct, and enter retains parent_supplier.",
+    "private_entry": "ONLY actual qualified5arg entry performs bind_once and Origin.begin. No caller prebind/private setter/replacement envelope. Preserve {0x00ab9d4fu, __COUNTER__} token and actual state0/home arm epoch.",
+    "return_frontier": "Actual raw93 body_returned occurs immediately after whole raw85 normal return, before completed() host validation. Preserve exact negative frontier; later metadata/bind failures cannot regain constructor-failure eligibility.",
+    "native_order": [
+      "capture allocation",
+      "homes[7]=allocation",
+      "EH state0",
+      "existing qualified arm, direct supplier identity",
+      "one constructor call if nonnull",
+      "capture child",
+      "EH state=-1",
+      "same normal_disarm",
+      "homes[7]=child",
+      "append ADDRESS of current home7",
+      "existing node clone/AA6720/sections/current34/remaining operations"
+    ]
+  },
+  "type_and_producer_cut": {
+    "frame": "RawDefaultFrame references real RawSectionFrame: locals[4], arguments[4], noncopying geometry frame bound to those SAME argument DWORDs and genuine parenting frame. Preserve original raw85 FSTP/argument aliases.",
+    "context": "Existing raw93 sections/lifetime/SAME Text state/constants plus coherent real raw85 Model/storage/node/pools, renderer/geometry, material/string/effect-cache and parenting services. Exact existing preflight remains authority; no copied checks or weaker admission.",
+    "acquired": "RawDefaultAcquired contains real raw85 Acquired and independent Model188 construction/lifetime/optional NativeModelStorageReference/association/release metadata. It is not Text storage or a Text122 companion.",
+    "by_value_alternative": "Glyph currently owns no nested raw93 records. A real Acquired subobject could hold state, but does not create the nondefault frame/context/backing and moves real Model-reference lifetime into Glyph metadata. Select explicit externally retained borrows; no tested construction/alias/disposal claim follows from type availability.",
+    "existing_parent_interface": "SingleLine and Wrapped already select distinct fresh retained Glyph records before wholeGlyph entry. The shared Glyph Context cannot carry one shared constructor frame/Acquired. Only abstract selectors and their consumers were found in include/src/tests.",
+    "private_owner": "GameNativeRawDefaultTextOwner public contract is ONE unpublished DEFAULT lifecycle, not a public Glyph factory/record borrow; do not cast/expose private attempt state or fabricate factory progress.",
+    "raw122": "Separate genuine bind_native_gui_text_raw_model_reference[_reserved] birth must occur post93/pre-AA6720, using real Context/Frame/companion/disposal/actual identity. Reserved overload additionally needs authentic same-identity preconstruction BindingAdmission; locking may throw and existing invalid-capability terminal qualifications remain. No binder is inserted here.",
+    "factory_lifetime": "Raw93 completion is not genuine AA1380 FactoryAcquired progress and alone cannot authenticate the default-widget lifetime bridge.",
+    "FC1": "Existing raw93 writes FC1. Wrapped/recursive child behavior remains genuine; no forced FC0/mode/count/depth restriction."
+  },
+  "failure_and_proof_gates": {
+    "qualified": "Use SAME captured qualified Runtime and ConstructorCall. HOST/UNKNOWN/unclassified/unsupported-origin retains graph; entered/provider_call never mints permission. No Native issuer/setter exists.",
+    "preserve": "Source41 full catch/header arms/secondary cause routing, state0 current-home7 failed-return operand, private real-entry bind/body_returned, all actual pool/custody effects. Do not substitute captured allocation, replay cleanup or add termination/retry/rollback.",
+    "legacy": "Four-argument historical projection remains separately unadmitted for Native EH/ABI/fault behavior.",
+    "remaining": [
+      "real prepared child-record producer/root and its coherent recursive graph",
+      "distinct raw122 Text reference birth and independent Model188 credit/retirement",
+      "actual other-target/provider contracts",
+      "Original register ABI/FH3/SEH/fault/foreign-runtime/secondary behavior",
+      "Native origin issuer and runtime/gameplay/activation"
+    ]
+  },
+  "finite_future_packet": {
+    "authorization": "Design only; Root must approve and assign implementation.",
+    "suggested_files": [
+      "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "src/native_gui_text_glyph_quad_storage.cpp",
+      "new caller document",
+      "new caller report"
+    ],
+    "header_seams": [
+      "three existing-type forward declarations",
+      "remove exactly two opaque constructor methods and their own comment",
+      "replace default Acquired constructor with required three-reference constructor",
+      "append three private references after Source41 tail; preserve old fields/copy deletion"
+    ],
+    "cpp_seams": [
+      "include real default_storage header",
+      "arm &c.calls -> &a.raw93_acquired_, SAME Site/counter",
+      "qualified expression -> direct5arg inside SAME invoke lambda",
+      "legacy expression -> direct4arg"
+    ],
+    "inverse": "Undo only those seams; complete H/CPP must byte-match published Source41 a9e96096 pinned below. This is a future requirement, not an inverse claim for unimplemented code.",
+    "unchanged": [
+      "all actual operands/homes/native read/write order/pool effects",
+      "Source41 whole catches/header arms/constructor protocol outside deliberate supplier identity",
+      "all22 asm blocks/78 historical x87 forms/spills/ambient FP",
+      "all3 __COUNTER__ occurrences/order",
+      "all unrelated calls/statements and raw93/raw85/private-Origin implementations",
+      "no CMake/app/registry/owner/ledger changes"
+    ]
+  },
+  "evidence": {
+    "inputs": [
+      {
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "git_blob": "5e2b0a64e46003077ba634c011ec8ce03f5a3605",
+        "bytes": 9767,
+        "sha256": "0119dfc3ca2b14ab6c2fbd526f11758b355c2f6d832d556346930af090ef3756",
+        "CR_bytes": 0,
+        "LF_bytes": 161
+      },
+      {
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "git_blob": "7e6f1c1062ebf13f3648f04e52e8fb2c82be6ef5",
+        "bytes": 28923,
+        "sha256": "0132d2de8772e6b84eca73112ddef372054232d90f7ad6d0925aa4f4ab34c1b2",
+        "CR_bytes": 0,
+        "LF_bytes": 657
+      },
+      {
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "path": "include/bsp/native_gui_text_default_storage.hpp",
+        "git_blob": "2eb5db69eff0b68c093a5006e13eb2d490e821b7",
+        "bytes": 6352,
+        "sha256": "7a23774d66bb90e59712407d58fd3356640da3f77f1c087bf766b77d3748141a",
+        "CR_bytes": 0,
+        "LF_bytes": 109
+      },
+      {
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "path": "src/native_gui_text_default_storage.cpp",
+        "git_blob": "47f32c0fb30dc7ebfaeb83ce2480ec88f59d3039",
+        "bytes": 26698,
+        "sha256": "6ed36cf3cad97ef089be15302827995d3bc6f303f5df3a3eb122b970dde67d09",
+        "CR_bytes": 0,
+        "LF_bytes": 461
+      },
+      {
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "path": "include/bsp/native_gui_text_storage_construct.hpp",
+        "git_blob": "736c02913b09a1de5f606362747305a2a4a36318",
+        "bytes": 9641,
+        "sha256": "681a44709442353f716f2ead0377804df61cbc659ec7fc7dcc3a7a05c56ec5b2",
+        "CR_bytes": 0,
+        "LF_bytes": 175
+      },
+      {
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "path": "src/native_gui_text_storage_construct.cpp",
+        "git_blob": "88fa09e70019fa61d59652c5434666b8db4931b2",
+        "bytes": 37007,
+        "sha256": "a4c2c5e06dfa78d0dba7769900cb7a8302f7567c70f77707262246088326db60",
+        "CR_bytes": 0,
+        "LF_bytes": 653
+      },
+      {
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "path": "include/bsp/native_gui_text_failure_origin.hpp",
+        "git_blob": "5bc46604c9cf760dea3868b3c4864c60ddc09852",
+        "bytes": 12778,
+        "sha256": "ec32e9f8df302d8754e95abd1f11204e14ebb582e082090faec63cee74d84075",
+        "CR_bytes": 0,
+        "LF_bytes": 250
+      },
+      {
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "path": "src/native_gui_text_failure_origin.cpp",
+        "git_blob": "6226f079539631f02df8b9665e1ec4a213d91455",
+        "bytes": 11627,
+        "sha256": "aacd70ec3d609de1b8a544884fd4d844d51b684a96194a0f95a62b9c843fc8c1",
+        "CR_bytes": 0,
+        "LF_bytes": 179
+      },
+      {
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+        "git_blob": "32fe59b520f2c49f699f04d665b28235d391fe67",
+        "bytes": 9873,
+        "sha256": "3914309878ae2683fe0fa3a676d373f35d09cc34ca6d82dd83d7044d678453a8",
+        "CR_bytes": 0,
+        "LF_bytes": 175
+      },
+      {
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "path": "src/native_gui_text_single_line_storage.cpp",
+        "git_blob": "22427ad2c2c04bf357b2770e075e1c794ee03bf9",
+        "bytes": 17311,
+        "sha256": "ffda6f98ac137a60af72332a3981da2e51a18992097ff359feda8a93028ee048",
+        "CR_bytes": 0,
+        "LF_bytes": 358
+      },
+      {
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "path": "include/bsp/native_gui_text_wrapped_storage.hpp",
+        "git_blob": "f025b748c662a9b7731e166c1d600b882327c96e",
+        "bytes": 10525,
+        "sha256": "197ded43a11ce27f3d24ae3fdd0a375f565ebaa7c5a97ab9df219d6dfb922170",
+        "CR_bytes": 0,
+        "LF_bytes": 178
+      },
+      {
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "path": "src/native_gui_text_wrapped_storage.cpp",
+        "git_blob": "de5ba745a33858d0eb3359fbb0ac96a59f117319",
+        "bytes": 31992,
+        "sha256": "f60c97736444be3c30e0eba45373988630a5e90f997384a4298e19b2da072614",
+        "CR_bytes": 0,
+        "LF_bytes": 790
+      },
+      {
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "path": "include/bsp/native_gui_text_reference.hpp",
+        "git_blob": "492cf04c44cfeae90887bba02c32039f325bc318",
+        "bytes": 12718,
+        "sha256": "62224192a6d0fb5043ed68a3f34374ce1bc3584ee1f3bb031c1041b33fdd1827",
+        "CR_bytes": 0,
+        "LF_bytes": 215
+      },
+      {
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "path": "include/bsp/game_native_raw_default_text_owner.hpp",
+        "git_blob": "532566845cd8434126f0869464a0deb7c1ec2e2f",
+        "bytes": 9406,
+        "sha256": "92715898e34550625339a8658568e31aee5dbb5b8901d92379a273e816558c83",
+        "CR_bytes": 0,
+        "LF_bytes": 140
+      },
+      {
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "path": "include/bsp/native_model_storage_geometry.hpp",
+        "git_blob": "073b6ac3c63ae7a03d212dac49251574a386e0e8",
+        "bytes": 5087,
+        "sha256": "c42a2f4108b83a2a938ec8cf77eabc598d378bd07b6245c63adf370b54a040b9",
+        "CR_bytes": 0,
+        "LF_bytes": 85
+      },
+      {
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "path": "include/bsp/native_model_storage_lifetime.hpp",
+        "git_blob": "319ac5182e317f50e999437b3d300c92d695fbdf",
+        "bytes": 9363,
+        "sha256": "7754b1a3df10ccf79a83899513b48ab4616df9b9f9a5da54400ed7d4fe51ea1f",
+        "CR_bytes": 0,
+        "LF_bytes": 165
+      },
+      {
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "path": "src/native_model_storage_lifetime.cpp",
+        "git_blob": "7ca6d5ae17001f48426aeed0826f2db496a56f2f",
+        "bytes": 17638,
+        "sha256": "d9ea114fa0e88f42f5a692adf96014827c32cd5d856a8e228e1ccd0550dd99b0",
+        "CR_bytes": 0,
+        "LF_bytes": 364
+      },
+      {
+        "commit": "335625058ab5090b969a3e8dc5a72aa0846317cf",
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "git_blob": "5525e0908e840139386b02cf1cf0b56857ed5610",
+        "bytes": 9581,
+        "sha256": "b80eab62fd47d54572fde1273713b736a23ae4f1b537dede95b90f32a1f9c75e",
+        "CR_bytes": 0,
+        "LF_bytes": 158
+      },
+      {
+        "commit": "335625058ab5090b969a3e8dc5a72aa0846317cf",
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "git_blob": "20e02b69514fb1d7c43994c40e335fa0df5bd7b4",
+        "bytes": 23130,
+        "sha256": "815bf54b7d58657722c629d8c58c6099c3b53c7416d5dbcb06e6c4e38f2c5b6b",
+        "CR_bytes": 0,
+        "LF_bytes": 564
+      },
+      {
+        "commit": "757b1338d12bf994cbb196141676c373095ab4d1",
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "git_blob": "5525e0908e840139386b02cf1cf0b56857ed5610",
+        "bytes": 9581,
+        "sha256": "b80eab62fd47d54572fde1273713b736a23ae4f1b537dede95b90f32a1f9c75e",
+        "CR_bytes": 0,
+        "LF_bytes": 158
+      },
+      {
+        "commit": "757b1338d12bf994cbb196141676c373095ab4d1",
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "git_blob": "20e02b69514fb1d7c43994c40e335fa0df5bd7b4",
+        "bytes": 23130,
+        "sha256": "815bf54b7d58657722c629d8c58c6099c3b53c7416d5dbcb06e6c4e38f2c5b6b",
+        "CR_bytes": 0,
+        "LF_bytes": 564
+      },
+      {
+        "commit": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+        "path": "include/bsp/native_gui_text_default_storage.hpp",
+        "git_blob": "2eb5db69eff0b68c093a5006e13eb2d490e821b7",
+        "bytes": 6352,
+        "sha256": "7a23774d66bb90e59712407d58fd3356640da3f77f1c087bf766b77d3748141a",
+        "CR_bytes": 0,
+        "LF_bytes": 109
+      },
+      {
+        "commit": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+        "path": "src/native_gui_text_default_storage.cpp",
+        "git_blob": "47f32c0fb30dc7ebfaeb83ce2480ec88f59d3039",
+        "bytes": 26698,
+        "sha256": "6ed36cf3cad97ef089be15302827995d3bc6f303f5df3a3eb122b970dde67d09",
+        "CR_bytes": 0,
+        "LF_bytes": 461
+      },
+      {
+        "commit": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+        "path": "include/bsp/native_gui_text_storage_construct.hpp",
+        "git_blob": "736c02913b09a1de5f606362747305a2a4a36318",
+        "bytes": 9641,
+        "sha256": "681a44709442353f716f2ead0377804df61cbc659ec7fc7dcc3a7a05c56ec5b2",
+        "CR_bytes": 0,
+        "LF_bytes": 175
+      },
+      {
+        "commit": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+        "path": "src/native_gui_text_storage_construct.cpp",
+        "git_blob": "88fa09e70019fa61d59652c5434666b8db4931b2",
+        "bytes": 37007,
+        "sha256": "a4c2c5e06dfa78d0dba7769900cb7a8302f7567c70f77707262246088326db60",
+        "CR_bytes": 0,
+        "LF_bytes": 653
+      },
+      {
+        "commit": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+        "path": "include/bsp/native_gui_text_failure_origin.hpp",
+        "git_blob": "1863acded67119b6e16ab9e26b72b06475742067",
+        "bytes": 12422,
+        "sha256": "05244d307d0cbdb80b83f59c1b188acbed3f9422204e22c10ec56a36b6934704",
+        "CR_bytes": 0,
+        "LF_bytes": 245
+      },
+      {
+        "commit": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+        "path": "src/native_gui_text_failure_origin.cpp",
+        "git_blob": "6226f079539631f02df8b9665e1ec4a213d91455",
+        "bytes": 11627,
+        "sha256": "aacd70ec3d609de1b8a544884fd4d844d51b684a96194a0f95a62b9c843fc8c1",
+        "CR_bytes": 0,
+        "LF_bytes": 179
+      },
+      {
+        "commit": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+        "path": "docs/CC16_GLYPH_CONSTRUCTOR_SLOT_HOST_UNKNOWN.md",
+        "git_blob": "b85908b1681daa9b02a6bb0ecbb0b7ad01748f70",
+        "bytes": 9132,
+        "sha256": "296f77be8573742ed042698c61a470b704c0ab4941bf50341f67a1f7e2f95a90",
+        "CR_bytes": 0,
+        "LF_bytes": 39
+      },
+      {
+        "commit": "2059c68fefc976951d2a455ee3c1ee7250c3e525",
+        "path": "reports/cc16_glyph_constructor_slot_host_unknown.json",
+        "git_blob": "5028957d6c74ba4d1c96d667149d1a0805bdea8a",
+        "bytes": 98451,
+        "sha256": "9494230347907caa8c2b74ddee0b71bfb77a04f7823457a59239334c4d869a96",
+        "CR_bytes": 0,
+        "LF_bytes": 1436
+      }
+    ],
+    "semantic_regions": {
+      "two_opaque_operations": {
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "first_line": 27,
+        "last_line": 36,
+        "UTF8_LF_sha256": "1f67e995048e0e41ade79432aa0c35d4c8e448204661dae41b42099a9891ef65",
+        "text": "public:\n    virtual ~NativeGuiTextGlyphQuadStorageCalls() = default;\n    // AB78A0 uses the SAME prepared Text pool companion directly.\n    virtual void* construct_00ab9650(void* actual_allocation, NativeGuiTextGlyphQuadStorageAcquired&) = 0;\n    // Qualified used route MUST forward this SAME retained envelope to actual raw93.\n    // No adapter/default implementation or Native-origin capability is supplied.\n    virtual void* construct_00ab9650(void* actual_allocation, NativeGuiTextGlyphQuadStorageAcquired&,\n        NativeGuiTextFailureConstructorCall&) = 0;\n    // Guarded AB76F0 uses that SAME companion; this is not cleanup permission.\n    virtual void append_005dad40(void* actual_vector, volatile std::uint32_t* actual_child_home,\n"
+      },
+      "glyph_record": {
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "first_line": 103,
+        "last_line": 139,
+        "UTF8_LF_sha256": "de96330afcf3be138036dec1d45566b34aaa1bcfd2a5c2aa3a50967e58156c07",
+        "text": "// SAME objects; reached native local accesses use explicit volatile views.\n// Its SAME F24/F28 words are coordinates, string/wide headers and pivot/offset\n// storage at different epochs. Every recursive/reached call needs a distinct\n// retained record and genuine nested provider frames. No destructor cleans up.\nstruct NativeGuiTextGlyphQuadStorageAcquired final {\n    enum class Phase { fresh, entered, complete, failed };\n    Phase phase{Phase::fresh};\n    void* actual_text{};\n    const volatile std::uint32_t* home_identity{}; // Identity ONLY after normal return/reuse.\n    std::uint32_t locals[14];\n    std::uint32_t captured_glyph{}, captured_stream{}, captured_first_vertex{};\n    std::uint32_t first_position{}, captured_white{}, captured_fourth_vertex{};\n    void* captured_allocation{};\n    void* captured_child{};\n    void* captured_receiver{};\n    std::uint32_t captured_profile{}, captured_target{};\n    std::uint32_t active_call_site{}, escaped_call_site{};\n    std::int32_t native_eh_state{-1}, escaped_eh_state{-1};\n    bool child_append_entered{}, child_append_returned{}, cleanup_entered{}, cleanup_returned{};\n    bool cleanup_failed{};\n    std::exception_ptr failure;\n    NativeGuiTextGlyphQuadStorageAcquired() noexcept = default;\n    NativeGuiTextGlyphQuadStorageAcquired(const NativeGuiTextGlyphQuadStorageAcquired&) = delete;\n    NativeGuiTextGlyphQuadStorageAcquired& operator=(const NativeGuiTextGlyphQuadStorageAcquired&) = delete;\nprivate:\n    friend void write_native_gui_text_glyph_quad_storage_00ab98f0(void*,\n        volatile std::uint32_t (&)[10], NativeGuiTextGlyphQuadStorageContext&,\n        NativeGuiTextGlyphQuadStorageAcquired&);\n    NativeGuiTextFailureOrigin failure_origin_;\n    NativeGuiTextFailureConstructorSlotArm constructor_slot_;\n    NativeGuiTextFailureConstructorCall constructor_call_;\n    // SAME F24 address has two sequential lifetimes; never reset/reuse an arm.\n    NativeGuiTextFailureHeaderArm narrow_header_arm_;\n    NativeGuiTextFailureHeaderArm wide_header_arm_;\n};\n\n// Whole AB98F0..AB9FC2 [1747B/485ops]. Original ECX actual Text; ten physical\n"
+      },
+      "actual_call_and_postreturn": {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "first_line": 469,
+        "last_line": 498,
+        "UTF8_LF_sha256": "50f50d414c6a1d0b80a0228bd0e305c50996e64d90da7e2de26bdda9ad03bd9c",
+        "text": "        a.captured_allocation = allocation;\n        homes[7] = bits(allocation);\n        a.native_eh_state = 0;\n        if (failure_runtime)\n            a.constructor_slot_.arm(a.failure_origin_, *failure_runtime, &homes[7], allocation,\n                &c.calls, {0x00ab9d4fu, __COUNTER__}, a.constructor_call_);\n        void* child = nullptr;\n        if (allocation) {\n            boundary(a, 0x00ab9d4f, allocation);\n            if (failure_runtime)\n                child = a.constructor_call_.invoke([&] {\n                    return c.calls.construct_00ab9650(allocation, a, a.constructor_call_);\n                });\n            else child = c.calls.construct_00ab9650(allocation, a);\n        }\n        a.captured_child = child;\n        a.native_eh_state = -1;\n        if (failure_runtime) a.constructor_slot_.normal_disarm(a.constructor_call_);\n        homes[7] = bits(child);\n        a.child_append_entered = true;\n        boundary(a, 0x00ab9d70, pointer(text + 0x194));\n        c.calls.append_005dad40(pointer(text + 0x194), &homes[7], a);\n        a.child_append_returned = true;\n\n        Word node = word(word(text, 0x1b0), 0x4c);\n        current(a, node, 0x10);\n        boundary(a, 0x00ab9d87, pointer(node));\n        void* const cloned = c.calls.node_current10(pointer(node), a.captured_profile, a.captured_target, 0x26, 0, a);\n        boundary(a, 0x00ab9d8c, child); c.calls.scene_node_00aa6720(child, cloned, a);\n        boundary(a, 0x00ab9d93, child); c.calls.sections_00ab8530(child, a);\n"
+      },
+      "source41_cleanup_gate": {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "first_line": 615,
+        "last_line": 626,
+        "UTF8_LF_sha256": "b11c1b184ba6716c63eee81bc22ce62da2b66b2741532b573917e2e45442c620",
+        "text": "        // Keep the state0 predicate exact; qualified header actions also require their own arm.\n        // No Native issuer exists: all qualified HOST/UNKNOWN header actions stay withheld.\n        // Null-runtime legacy retains its historical, separately unadmitted projection.\n        if (state >= 0 && (state != 0 || !failure_runtime || constructor_permit) &&\n            (state == 0 || !failure_runtime || header_permit)) {\n            a.cleanup_entered = true;\n            try {\n                if (state == 0) {\n                    void* const current_slot = pointer(homes[7]);\n                    boundary(a, 0x00cb80b3, current_slot);\n                    if (failure_runtime)\n                        a.failure_origin_.unknown(*failure_runtime, {0x00cb80b3u, __COUNTER__}, &prepared_text_pool,\n"
+      },
+      "real_context": {
+        "path": "include/bsp/native_gui_text_default_storage.hpp",
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "first_line": 61,
+        "last_line": 76,
+        "UTF8_LF_sha256": "68fbfc9ab20d5841bd3ebe1d69b06ba255f6401f2da4f89643a15eeb615b9d99",
+        "text": "struct NativeGuiTextRawModelDefaultStorageContext {\n    NativeGuiTextRawModelSectionStorageContext& sections;\n    NativeGuiWidgetLifetimeContext& lifetime;\n    game::GameNativeGuiTextState& state;\n    const volatile std::uint32_t& shadow_offset_00d5c5c0;\n    const volatile std::uint32_t& normal_rgb_00ce3e18;\n    const volatile std::uint32_t& one_00d7a24c;\n    const volatile std::uint32_t& disabled_alpha_00ce3800;\n};\nstruct NativeGuiTextRawModelDefaultStorageFrame {\n    NativeGuiTextRawModelSectionStorageFrame& sections;\n};\nstruct NativeGuiTextRawModelDefaultStorageAcquired {\n    using Failure = NativeGuiTextSectionStorageAcquired::Failure;\n    bool started{}, complete{}, base_complete{}, derived_complete{}, sections_entered{};\n    bool exception_cleanup_started{}, base_lifetime_ended{};\n"
+      },
+      "real_acquired": {
+        "path": "include/bsp/native_gui_text_default_storage.hpp",
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "first_line": 73,
+        "last_line": 108,
+        "UTF8_LF_sha256": "a8fdeef28b35356c7102a90aaf378cf929fd93f81404ea0fe57e327b4582ad3d",
+        "text": "struct NativeGuiTextRawModelDefaultStorageAcquired {\n    using Failure = NativeGuiTextSectionStorageAcquired::Failure;\n    bool started{}, complete{}, base_complete{}, derived_complete{}, sections_entered{};\n    bool exception_cleanup_started{}, base_lifetime_ended{};\n    std::int32_t native_eh_state{-1};\n    std::uint32_t active_call_site{}, consumed_cleanup_actions{};\n    void* destination{};\n    Failure failure{Failure::none};\n    NativeGuiTextRawModelSectionStorageAcquired sections;\nprivate:\n    friend struct NativeGuiTextRawModelDefaultFailureAccess;\n    friend void* construct_native_gui_text_default_storage_00ab9650(void*,\n        NativeGuiTextRawModelDefaultStorageFrame&, NativeGuiTextRawModelDefaultStorageContext&,\n        NativeGuiTextRawModelDefaultStorageAcquired&, NativeGuiTextFailureConstructorCall&);\n    const NativeGuiTextFailureOriginRuntime* failure_runtime_{};\n    NativeGuiTextFailureOrigin failure_origin_;\n};\n// Same default stores/native schedule, qualified raw internal188 transport.\n// Extra85 host_metadata failure propagates WITHOUT outer Native unwind; retain\n// Text and all independent creators. No future AA1380 failed-slot return may\n// classify that state as ordinary Native constructor failure.\n// The lifetime borrows canonical initialized Text/Element cells and SAME real\n// string/point-light providers as the raw Model node context. A genuine CURRENT\n// base-lineage Text match rejects (zero is ordinary). Reauthenticate DEFAULT\n// empty branches after callbacks before cleanup. Admission failure preserves\n// reached state, including interrupted cleanup; no automatic retry/slot return.\n// Native private stack/FH3/SEH/binary ABI remain outside this Source interface.\nvoid* construct_native_gui_text_default_storage_00ab9650(void* actual_destination,\n    NativeGuiTextRawModelDefaultStorageFrame&, NativeGuiTextRawModelDefaultStorageContext&,\n    NativeGuiTextRawModelDefaultStorageAcquired&);\n// Constructor-slot qualified negative route. SAME retained envelope/runtime;\n// HOST and UNKNOWN retain Text, Model188, reservations, slots and nested backing.\n// No Native cleanup/slot permission, body/ref/normal-return or ABI credit.\nvoid* construct_native_gui_text_default_storage_00ab9650(void* actual_destination,\n    NativeGuiTextRawModelDefaultStorageFrame&, NativeGuiTextRawModelDefaultStorageContext&,\n    NativeGuiTextRawModelDefaultStorageAcquired&, NativeGuiTextFailureConstructorCall&);\n"
+      },
+      "real_section_context_frame": {
+        "path": "include/bsp/native_gui_text_storage_construct.hpp",
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "first_line": 97,
+        "last_line": 137,
+        "UTF8_LF_sha256": "2e15cc4801fdb2157a670e534e658a290eba1ff5565389d4687c9ef13227f39e",
+        "text": "struct NativeGuiTextRawModelSectionStorageContext {\n    NativeModelStorageIdentityContext& model;\n    NativeModelStorageGeometryContext& association;\n    GuiNativeGeometryOwners& geometry;\n    NativeMaterialDestructionAccess& materials;\n    NativeStringStorage& material_strings;\n    NativeStringRawPoolContext& strings;\n    game::GameNativeStringProcess& string_process;\n    NativeMaterialEffectCacheContext& effects;\n    NativeNodeParentingContext& parenting;\n    const volatile std::uint32_t* material_vtable_00d5e520;\n    const char* shadow_00d15ec4;\n    const char* guidefault_00d5c25c;\n};\n// The four B75170 operands have real DWORD lifetimes. AB8618/8620 spill\n// DIRECTLY to arguments[3]/[2], then PUSH EBX/0 publish [1]/[0]. No float\n// snapshot, wrong-type reference or temporary operand frame is introduced.\nstruct NativeGuiTextRawModelSectionStorageFrame {\n    volatile std::uint32_t (&locals)[4];\n    volatile std::uint32_t (&arguments)[4];\n    NativeModelStorageGeometryFrame association;\n    NativeNodeParentingFrame& parenting;\n    NativeGuiTextRawModelSectionStorageFrame(volatile std::uint32_t (&l)[4],\n        volatile std::uint32_t (&args)[4], NativeNodeParentingFrame& p) noexcept\n        : locals(l), arguments(args), association(args[0], args[1], args[2], args[3]), parenting(p) {}\n};\nstruct NativeGuiTextRawModelRecord {\n    // Independent of Text/companion storage. Keep through credits, entered\n    // failure and any unreturned Model physical slot (also completed flags0).\n    void* actual{};\n    NativeModelStorageConstructAcquired construction;\n    NativeModelStorageLifetimeFrame lifetime_frame{};\n    NativeModelStorageLifetimeAcquired lifetime;\n    std::optional<NativeModelStorageReference> reference;\n    NativeModelStorageGeometryAcquired association;\n    NativeNodeTreeRetirementFrame release_frame{};\n    NativeNodeTreeRetirementAcquired release;\n};\nstruct NativeGuiTextRawModelSectionStorageAcquired {\n    using Failure = NativeGuiTextSectionStorageAcquired::Failure;\n    bool started{}, complete{}, exception_cleanup_started{};\n"
+      },
+      "independent_model188": {
+        "path": "include/bsp/native_gui_text_storage_construct.hpp",
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "first_line": 123,
+        "last_line": 134,
+        "UTF8_LF_sha256": "7ff2d750d7fd2018b379e93ab637ab3c4a0b96d3896bd4d7a446480e4965ea89",
+        "text": "struct NativeGuiTextRawModelRecord {\n    // Independent of Text/companion storage. Keep through credits, entered\n    // failure and any unreturned Model physical slot (also completed flags0).\n    void* actual{};\n    NativeModelStorageConstructAcquired construction;\n    NativeModelStorageLifetimeFrame lifetime_frame{};\n    NativeModelStorageLifetimeAcquired lifetime;\n    std::optional<NativeModelStorageReference> reference;\n    NativeModelStorageGeometryAcquired association;\n    NativeNodeTreeRetirementFrame release_frame{};\n    NativeNodeTreeRetirementAcquired release;\n};\n"
+      },
+      "real_raw93_entry": {
+        "path": "src/native_gui_text_default_storage.cpp",
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "first_line": 443,
+        "last_line": 461,
+        "UTF8_LF_sha256": "c2c192a6ecff79e861c587d25357135604b2bd8491e0e6e35b6e875b17412a62",
+        "text": "    // Unprepared envelopes have no qualified catch service. Never query a CRT\n    // to discover that domain, nor run any cleanup on this pre-entry rejection.\n    if (!call.runtime_) throw std::invalid_argument(\"Constructor envelope requires its SAME qualified Source runtime\");\n    call.bind_once(raw, a.failure_origin_, &a); // before Source preflight/Native work; invalidation is sticky\n    if (!a.failure_runtime_) a.failure_runtime_ = call.runtime_; // never replace a retained service\n    a.failure_origin_.begin(*a.failure_runtime_, &a, 0x00ab9650u);\n    try {\n        void* const result = construct_default(raw, f, c, a, [&] {\n            call.body_returned(a.failure_origin_, &a); // not whole Source completion or raw122 birth\n        });\n        a.failure_origin_.complete();\n        return result;\n    } catch (...) {\n        a.failure_origin_.retain_current(*a.failure_runtime_); // sticky HOST/UNKNOWN, before diagnostic flag\n        if (!a.started) a.failure = decltype(a.failure)::host_metadata;\n        throw;\n    }\n}\n} // namespace bsp\n"
+      },
+      "body_returned_before_host_complete": {
+        "path": "src/native_gui_text_default_storage.cpp",
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "first_line": 408,
+        "last_line": 424,
+        "UTF8_LF_sha256": "2f9cd4d08899b7eb74eecc4d71844ffd1810fb9b1df22724a0dcf54b9106fdef",
+        "text": "                t.origin->child(*t.runtime, {0x00ab98d8u, __COUNTER__}, &a.sections,\n                    0x00ab8530u, a.sections.failure_origin(), [&] {\n                        ensure_native_gui_text_sections_storage_00ab8530(\n                            raw, f.sections, c.sections, a.sections, *t.runtime);\n                    });\n            else ensure_native_gui_text_sections_storage_00ab8530(raw, f.sections, c.sections, a.sections);\n        } else ensure_native_gui_text_sections_storage_00ab8530(raw, f.sections, c.sections, a.sections);\n        body_returned(); // PRIVATE negative frontier IMMEDIATELY after actual ctor85 normal return\n        source_host(a, __COUNTER__, [&] { completed(raw, c, a); });\n        a.complete = true;\n        return raw;\n    } catch (...) {\n        // AA9390 failure is outer state-1 and its own provider already cleans\n        // the failed base prefix. After successful base construction, unwind\n        // only the represented Text subobjects/base, never independent creators.\n        failed(raw, c, a);\n        throw;\n"
+      },
+      "actual_private_bind": {
+        "path": "src/native_gui_text_failure_origin.cpp",
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "first_line": 111,
+        "last_line": 134,
+        "UTF8_LF_sha256": "2b2dcbc60606e35e24f7387a425af2ef5cfdade7c910ad8433474951e69d6869",
+        "text": "bool NativeGuiTextFailureConstructorCall::bind_once(void* receiver,\n    NativeGuiTextFailureOrigin& origin, const void* record) noexcept {\n    if (!valid_ || phase_ != Phase::calling || bound_ || !record || receiver != receiver_ ||\n        !invocation_ || !runtime_ || !slot_ || !home_ || callee_record_ ||\n        slot_->phase_ != NativeGuiTextFailureConstructorSlotArm::Phase::armed ||\n        slot_->invocation_ != invocation_ || slot_->runtime_ != runtime_ || slot_->home_ != home_ ||\n        slot_->receiver_ != receiver_ || slot_->provider_ != provider_ ||\n        invocation_->runtime_ != runtime_ || invocation_->active_.supplier != provider_ ||\n        invocation_->active_.site.native != caller_edge_.native ||\n        invocation_->active_.site.source != caller_edge_.source ||\n        invocation_->active_.stage != NativeGuiTextFailureOrigin::Stage::ordinary) {\n        valid_ = false; return false; // no reset, replacement or admission policy\n    }\n    bound_ = true; callee_record_ = record; callee_origin_ = &origin; callee_entry_ = 0x00ab9650u;\n    invocation_->enter({caller_edge_, record, NativeGuiTextFailureOrigin::Stage::ordinary});\n    return true;\n}\nvoid NativeGuiTextFailureConstructorCall::body_returned(\n    const NativeGuiTextFailureOrigin& origin, const void* record) noexcept {\n    if (!valid_ || !bound_ || phase_ != Phase::calling || native_body_returned_ ||\n        callee_origin_ != &origin || callee_record_ != record || origin.runtime_ != runtime_ ||\n        origin.supplier_ != record || origin.entry_ != 0x00ab9650u) valid_ = false;\n    native_body_returned_ = true; // PRIVATE negative frontier; never completes an Origin\n}\n"
+      },
+      "negative_return_frontier": {
+        "path": "src/native_gui_text_failure_origin.cpp",
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "first_line": 128,
+        "last_line": 141,
+        "UTF8_LF_sha256": "51905cd27f42d111f8b2cf54ea93d4c5b1bd76edb2dcfd26e5b9555b8319baef",
+        "text": "void NativeGuiTextFailureConstructorCall::body_returned(\n    const NativeGuiTextFailureOrigin& origin, const void* record) noexcept {\n    if (!valid_ || !bound_ || phase_ != Phase::calling || native_body_returned_ ||\n        callee_origin_ != &origin || callee_record_ != record || origin.runtime_ != runtime_ ||\n        origin.supplier_ != record || origin.entry_ != 0x00ab9650u) valid_ = false;\n    native_body_returned_ = true; // PRIVATE negative frontier; never completes an Origin\n}\nvoid NativeGuiTextFailureConstructorCall::failed() {\n    const auto current = runtime_->read_current_catch(); // before any diagnostic exception_ptr\n    if (!failure_committed_) { escaped_cause_ = current; failure_committed_ = true; }\n    if (bound_ && callee_origin_)\n        invocation_->adopt(escaped_cause_, *callee_origin_, callee_record_, 0x00ab9650u);\n    else invocation_->commit(NativeGuiTextFailureOrigin::Verdict::unclassified, escaped_cause_);\n    phase_ = Phase::failed;\n"
+      },
+      "parent_singleline_selector": {
+        "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "first_line": 38,
+        "last_line": 51,
+        "UTF8_LF_sha256": "e7f3fcd7ce070db1393b6f2f48f95461157ce0db2664eeb0ba95436d6a0093cd",
+        "text": "        std::uint32_t count, std::uint32_t offset, std::uint32_t readonly_word) = 0;\n    virtual void other_index_unmap_10(void*, std::uint32_t captured_target) = 0;\n    virtual void other_vertex_unmap_14(void*, std::uint32_t captured_target) = 0;\n    // Pure Source metadata selection tied to this parent identity. Select a\n    // distinct stable already-prepared fresh Glyph record, with genuine nested\n    // provider frames prepared before entry. No operand reads, Native work,\n    // reentry, allocation, record reset/reuse, FP effect or default record.\n    // Caller proves backing for EVERY reached/recursive call and retains ALL\n    // selected history. No fixed count/capacity, shortage or fallback policy is\n    // supplied here. This method is not a Glyph operation implementation.\n    virtual NativeGuiTextGlyphQuadStorageAcquired& prepared_glyph_quad_record(\n        NativeGuiTextSingleLineStorageAcquired& parent) = 0;\n    // Pure metadata selection for this parent: stable already-prepared homes,\n    // key backing and acquisition output in the SAME actual renderer domain.\n"
+      },
+      "parent_singleline_entry": {
+        "path": "src/native_gui_text_single_line_storage.cpp",
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "first_line": 312,
+        "last_line": 323,
+        "UTF8_LF_sha256": "4ae43fc3848af141250eabd92a4d2605caa1bdc287b97edb60d8a68e76e03401",
+        "text": "                scratch.quad_homes[0] = bits(glyph);\n                scratch.position_bits[0] = scratch.pen_bits; // ABA1F2 after PUSHes\n                location(acquired, Acquired::Boundary::glyph_quad, 0x00aba1f8);\n                auto& quad_record = context.bindings.prepared_glyph_quad_record(acquired);\n                acquired.selected_glyph_quad_record = &quad_record;\n                write_native_gui_text_glyph_quad_storage_00ab98f0(\n                    text, scratch.quad_homes, context.glyph_quad, quad_record);\n                emit_advance(text, glyph, scratch); // captured glyph, CURRENT scale\n                ++acquired.emitted_units;\n                code_unit = scratch.next_unit;\n            } while (code_unit != 0);\n        }\n"
+      },
+      "parent_wrapped_selector": {
+        "path": "include/bsp/native_gui_text_wrapped_storage.hpp",
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "first_line": 42,
+        "last_line": 54,
+        "UTF8_LF_sha256": "5e8b75e2f2a2df8807b3faf9b0a915665995d4a19d36ea95359c6c6cab526f68",
+        "text": "        std::uint32_t count, std::uint32_t offset, std::uint32_t readonly_word) = 0;\n    virtual void* other_index_map_0c(void*, std::uint32_t captured_target,\n        std::uint32_t count, std::uint32_t offset, std::uint32_t readonly_word) = 0;\n    virtual void other_index_unmap_10(void*, std::uint32_t captured_target) = 0;\n    virtual void other_vertex_unmap_14(void*, std::uint32_t captured_target) = 0;\n    // Pure metadata selection, tied to THIS parent. Distinct already-prepared\n    // retained whole Glyph record with genuine nested frames for EVERY reached\n    // call/recursion. No operand reads, Native work, reentry, allocation, FP\n    // effect, reset/reuse, shortage/default/capacity or fallback policy.\n    virtual NativeGuiTextGlyphQuadStorageAcquired& prepared_glyph_quad_record(\n        NativeGuiTextWrappedStorageAcquired& parent) = 0;\n    // Pure metadata selection ONLY, like the Glyph record selector above.\n    // Distinct fresh already-prepared retained record for EVERY reached whole\n"
+      },
+      "parent_wrapped_entry": {
+        "path": "src/native_gui_text_wrapped_storage.cpp",
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "first_line": 723,
+        "last_line": 734,
+        "UTF8_LF_sha256": "4200db9eac166e18684ca02a895966ee7657c93d280ffea4b120b81819a1b6cc",
+        "text": "                        f.quad_homes_[0] = f.ebp_;\n                        store(&s, wPosition, pen); // Native ABA727, after all ten PUSHes\n                        location(a, Boundary::glyph_record, 0x00aba730);\n                        auto& quad_record = c.bindings.prepared_glyph_quad_record(a);\n                        a.selected_quad = &quad_record;\n                        location(a, Boundary::glyph_quad, 0x00aba730);\n                        write_native_gui_text_glyph_quad_storage_00ab98f0(text,\n                            f.quad_homes_, c.glyph_quad, quad_record);\n                        store(&s, wIndices, load(&s, wIndices) + 12u);\n                        f.esi_ += 4u;\n                        const Word is_space = unit(pointer(f.ebx_)) == 0x20;\n                        location(a, Boundary::advance, 0x00aba743);\n"
+      },
+      "separate_reserved_birth": {
+        "path": "include/bsp/native_gui_text_reference.hpp",
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "first_line": 199,
+        "last_line": 214,
+        "UTF8_LF_sha256": "15a90e45cba5ae600b99682ad9fafa0bc15874f6075d6645998d1097745bd071",
+        "text": "// RESERVED birth for this same RawModel/DEFAULT path only. Reserve the SAME\n// actual Text identity in context.owners before Native construction; all\n// existing postconstruction preflight/current-profile/count checks still run.\n// The authentic caller-owned token stays an lvalue: publish consumes it only\n// on success, without insertion/rehash, retain or Native cleanup. Locking may\n// throw; invalid capabilities/aliases/counts retain publish's terminal contract.\n// Keep the token/registry alive and serialized, with stable token backing\n// separate from the actual Text, companion and every reached writable region.\n// A C++ escape leaves the completed raw object, producer graph and reservation\n// with the caller for explicit disposition; no companion disposal or Native\n// failed-constructor return is implied. All ordinary lifetime contracts above\n// still apply. This does not classify any escape as a Native exception.\nNativeGuiTextRawModelReference& bind_native_gui_text_raw_model_reference_reserved(\n    void* companion_storage, void* actual_text, NativeGuiTextRawModelReferenceContext&,\n    NativeGuiTextReferenceFrame&, NativeGuiTextRawModelReferenceDisposal,\n    NativeRenderActualOwnerRegistry::BindingAdmission& caller_reservation);\n"
+      },
+      "owner_scope": {
+        "path": "include/bsp/game_native_raw_default_text_owner.hpp",
+        "commit": "a9e960964271db5bb0449101d9988c8c030b638b",
+        "first_line": 15,
+        "last_line": 20,
+        "UTF8_LF_sha256": "b4ef5c110307dd9ae19329542e79f81da46f3da7b18fca32ad57b968e4906399",
+        "text": "// Retained owner of ONE unpublished private DEFAULT Text lifecycle, with an\n// explicit optional primary-prefix and private geometry Source paths. No raw Text\n// pointer/reference/credit is exposed. Source composition, not an AA1380 ABI,\n// child factory, layout/content adapter or renderer/frontend activation.\nclass GameNativeRawDefaultTextOwner final {\npublic:\n"
+      }
+    },
+    "searches": [
+      {
+        "argv": [
+          "git",
+          "grep",
+          "-n",
+          "-F",
+          "prepared_glyph_quad_record",
+          "a9e960964271db5bb0449101d9988c8c030b638b",
+          "--",
+          "include",
+          "src",
+          "tests"
+        ],
+        "matches": [
+          "a9e960964271db5bb0449101d9988c8c030b638b:include/bsp/native_gui_text_single_line_storage.hpp:48:    virtual NativeGuiTextGlyphQuadStorageAcquired& prepared_glyph_quad_record(",
+          "a9e960964271db5bb0449101d9988c8c030b638b:include/bsp/native_gui_text_wrapped_storage.hpp:51:    virtual NativeGuiTextGlyphQuadStorageAcquired& prepared_glyph_quad_record(",
+          "a9e960964271db5bb0449101d9988c8c030b638b:src/native_gui_text_single_line_storage.cpp:315:                auto& quad_record = context.bindings.prepared_glyph_quad_record(acquired);",
+          "a9e960964271db5bb0449101d9988c8c030b638b:src/native_gui_text_wrapped_storage.cpp:726:                        auto& quad_record = c.bindings.prepared_glyph_quad_record(a);"
+        ]
+      },
+      {
+        "argv": [
+          "git",
+          "grep",
+          "-n",
+          "-F",
+          "construct_00ab9650(",
+          "a9e960964271db5bb0449101d9988c8c030b638b",
+          "--",
+          "include",
+          "src",
+          "tests"
+        ],
+        "matches": [
+          "a9e960964271db5bb0449101d9988c8c030b638b:include/bsp/native_gui_text_glyph_quad_storage.hpp:30:    virtual void* construct_00ab9650(void* actual_allocation, NativeGuiTextGlyphQuadStorageAcquired&) = 0;",
+          "a9e960964271db5bb0449101d9988c8c030b638b:include/bsp/native_gui_text_glyph_quad_storage.hpp:33:    virtual void* construct_00ab9650(void* actual_allocation, NativeGuiTextGlyphQuadStorageAcquired&,",
+          "a9e960964271db5bb0449101d9988c8c030b638b:src/engine_seg11_35_66_cc13.cpp:4607:    void* child = allocation ? b.construct_00ab9650(allocation) : nullptr;",
+          "a9e960964271db5bb0449101d9988c8c030b638b:src/native_gui_text_glyph_quad_storage.cpp:480:                    return c.calls.construct_00ab9650(allocation, a, a.constructor_call_);",
+          "a9e960964271db5bb0449101d9988c8c030b638b:src/native_gui_text_glyph_quad_storage.cpp:482:            else child = c.calls.construct_00ab9650(allocation, a);"
+        ]
+      }
+    ],
+    "checks": {
+      "four_raw93_raw85_files_2059_equal41": true,
+      "four_parent_files_757_equal41": true,
+      "two_caller_files_335_equal757": true,
+      "worktree_production_files_equal_own_HEAD": true,
+      "asm_blocks_22_source40_equal_source41": true,
+      "NUL_joined_asm_sha256": "0d95d0c8aa5c4123c75ee603d24d1bb9ad0a8b0430d13d73c70c19d25c74faed",
+      "asm_recipe": "regex rb\"__asm[ \\t\\r\\n]*\\{[^}]*\\}\", join raw matches by one NUL, no trailing separator",
+      "source41_counter_tokens": 3,
+      "native_proof": "Reuse pinned qualified2059 whole-body evidence; no new native listing or ABI proof claimed."
+    }
+  },
+  "credit": {
+    "new_original_native_bodies": 0,
+    "new_native_helper_vendor_CG_duplicate_credit": 0,
+    "new_ABI_runtime_gameplay_activation_credit": 0,
+    "build_test_fixture_claim": false
+  },
+  "next": "After Root approval, implement only mandatory existing-type borrows/direct call/provider identity on Source41. Separate producer audit closes real metadata preparation/lifetime/birth; no new Native recovery is needed for this raw93 call.",
+  "document": {
+    "path": "docs/CC16_NATIVE_GLYPH_RAW93_CALLER_CONTRACT.md",
+    "bytes": 7961,
+    "sha256": "5fef16ecc23e76afe6e47da9f186153dfacbc3954bb4b5260b558614ba8e748b",
+    "encoding": "UTF-8 LF"
+  }
+}
