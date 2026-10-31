@@ -1,0 +1,357 @@
+{
+  "schema": 2,
+  "status": "HELD_PRODUCTION_CANDIDATE_STRICT_REFERENCE_GATE_OPEN",
+  "base_Main": "0111f93803a2eaa38af81af4a97b67509a380936",
+  "design_sha256": "ef405fcb41ec276e61242f1e3d69c0311526540e871dc580073b3893425f2eab",
+  "patch_sha256": "10435d7bf96f71b7c34f2c0d0bb4f278f56cffb3ceb60250c8870ec53d8a0126",
+  "primary_full155line_and19line_review": true,
+  "independent_design_verdict": "qualified accepted; Source/Core and constructor independent seals collected",
+  "current_receiver": "Captured current resource+10 via SAME actual registry; resolved final canonical OWN context/private record/count address; no creator-context shortcut.",
+  "borrow_window": "Caller retains actual current association/canonical/acquisition/context under external quiescence through synchronous field/FP configuration; lookup drops its metadata lock. No retain/release added.",
+  "configuration_kernel_and_inputs_unchanged": true,
+  "Native_B7C290_ASM_and_count_lifetime_code_unchanged": true,
+  "no_new_Native_or_vendor_body_credit": 0,
+  "compiler_build_test_runtime_performed": true,
+  "Original_ABI_or_concurrency_proof": false,
+  "new_switch_or_activation": false,
+  "MSD_field_configuration_ready": false,
+  "goal": "active",
+  "candidate_production": {
+    "src/native_scene_typed_storage.hpp": "f7a6b99e1473ba3c258cd5ee4f34bb8aed8786dc0a90993134b31ef4fab78c16",
+    "include/bsp/native_ambient_lifetime.hpp": "bf831033288383f5f592c89f800ed8cdee6939efc84c3b9e63d4051c47763a14",
+    "src/native_ambient_lifetime.cpp": "c4fc3cf193a1009f52a050513537a12425d6441dd85fc2733ef400568279555f",
+    "src/game_native_mission_lighting.inc": "6306cccbc0cb61ef489f85b8f2af1ba2fa59f80799378098f5bfb694f7be2769"
+  },
+  "candidate_commit": "056b5fc6e759ccb83a8def9137c52e12052fa82e",
+  "preserved_candidate_ref": "held/cc16-ambient-grouped-fields-20261031",
+  "preserved_candidate_head": "078aa0fd3c9f59323b8f9ced122f0311ec1956a8",
+  "active_production_admitted": false,
+  "active_production_restored_to_Main": "2ca74d4cd7a42ba8399a1ce08f684ea8c093cbac",
+  "active_production_tree_equals_published_Main": true,
+  "candidate_standard_Win32_builds": [
+    {
+      "source": "056b5fc6e",
+      "existing_suites": "2/2",
+      "seconds": 11.62
+    },
+    {
+      "source": "b49686b2",
+      "existing_suites": "2/2",
+      "seconds": 11.76
+    },
+    {
+      "source": "078aa0fd",
+      "existing_suites": "2/2",
+      "seconds": 13.93
+    }
+  ],
+  "candidate_Core": {
+    "all_eight_field_related_objects_exact_across_builds": true,
+    "existing_Native_constructor_ASM500_bytes_exact": true,
+    "configuration_entire_object_exact": true,
+    "retained_constructor_and_borrow_roots": 2,
+    "restored_forced_roots": 0,
+    "Original393byte_body_not_relabelled500": true
+  },
+  "candidate_MSD": {
+    "scope": "Current diagnostic MSD graph, source_HDR_diagnostic and host_attach_skip retained; no raw-root/full-Matrix/full-scene/Original ABI/visual proof.",
+    "checks": {
+      "natural_exit0": true,
+      "frozen_PE": true,
+      "source_b496": true,
+      "mission1600": true,
+      "lighting_empty": true,
+      "preload179": true,
+      "renderer_joined": true,
+      "COM_drained": true,
+      "presented1899": true,
+      "start_frame36": true,
+      "configuration_preload_lighting_scene_renderer_COM_order": true
+    },
+    "accepted_scoped_runtime": true,
+    "raw_host_metric": "host methods 1080 concrete, 469 unimplemented",
+    "called_unimplemented_rows": 469,
+    "called_unimplemented_rows_file_sha256": "323b0baf2ef2d576198e33ea239d1b6d0e091aa7e9afc867e57e1949414a2b07",
+    "probe": {
+      "startup_frame": 36,
+      "mission_line": 1187
+    },
+    "probe_qualification": "First logged draw= token only; not proof of first actual Original RNG instruction/call. No front-end movement in this packet.",
+    "events": {
+      "native mission lighting ready:": [
+        {
+          "line": 4686,
+          "text": "native mission lighting ready: outer=39863F70 resource=3970FD68 ambient=20718A30 sun=39CDBED8 first_light=1 configuration=004BACD0 illumination=source_HDR_diagnostic captured_scale_ambient=1 ambient_cube=8.00,8.96,10.24 diffuse=11.20,10.88,9.60 specular=1.92,1.92,1.92 shadow=null"
+        }
+      ],
+      "native mission preload rows released:": [
+        {
+          "line": 30135,
+          "text": "native mission preload rows released: application=00654A4C rows=179"
+        }
+      ],
+      "native mission lighting retired:": [
+        {
+          "line": 30515,
+          "text": "native mission lighting retired: outer_lighting=null resource=retired ambient=retired sun=retired registry=empty"
+        }
+      ],
+      "native mission ship closed:": [
+        {
+          "line": 30529,
+          "text": "native mission ship closed: last_mission_frame=1600 camera=retired scene=retired models=retired foliage=retired resources=retired"
+        }
+      ],
+      "native renderer after raw drain:": [
+        {
+          "line": 30532,
+          "text": "native renderer after raw drain: owner=null lua=null definitions=null system=null entry_cache=null queue=null worker=joined"
+        }
+      ],
+      "native renderer final COM release:": [
+        {
+          "line": 32113,
+          "text": "native renderer final COM release: device=1 api=1"
+        }
+      ],
+      "summary window_created=": [
+        {
+          "line": 30541,
+          "text": "summary window_created=1 device_created=1 device_hr=0x00000000 back_buffer=1600x900 frames_presented=1899 presents_skipped=1 loop_finished=1 exit_code=0"
+        }
+      ],
+      "host methods ": [
+        {
+          "line": 30558,
+          "text": "host methods 1080 concrete, 469 unimplemented"
+        }
+      ]
+    },
+    "manifest_sha256": "252b60d55c665ca8c4cc7ee22eca114021fc5c67d84cc50ca9c6e685b340e7c1",
+    "log_sha256": "31b38448b826613b7c18b019fb2768cc79fa9f95822243daa888786c42d71c4e"
+  },
+  "MSD_admission_scope": "candidate diagnostic graph only; source_HDR_diagnostic and host_attach_skip retained; not production/fullscene/ABI/visual proof",
+  "reference13": {
+    "terminal_pairs": 13,
+    "strict_passes": 12,
+    "all13_strict_pass": false,
+    "all13_logged_gameplay_identical": true,
+    "all13_ordered_shutdown_start_frame36_match": true,
+    "first_logged_draw_observed_equal_pairs": 10,
+    "first_logged_draw_both_unobserved": [
+      "bsm01",
+      "usn02",
+      "lomp06"
+    ],
+    "explicit_symmetric_bounds_aided_controls": [
+      "jm06",
+      "usn21",
+      "ijn18",
+      "lomp10",
+      "lomp06"
+    ],
+    "all26_runs_natural_exit0": true,
+    "cohort_peak_manifests": 3,
+    "no_new_masks_or_replacement_runs": true,
+    "USN12": {
+      "strict_pair_exit": 1,
+      "only_changed_rows": {
+        "Montpelier_clear_37c": [
+          10000.0,
+          2041.1
+        ],
+        "Columbia_clear_37c": [
+          10000.0,
+          1556.4
+        ]
+      },
+      "real_control_consumers": true,
+      "final_danger0_not_a_waiver": true,
+      "10_AI_search_consumer_tool_sources_unchanged": true,
+      "known_uninitialized_searcher_bounds_mechanism": "supported, current branch/raw-preimage cause unproved",
+      "original_failure_preserved": true
+    },
+    "one_separate_baseline_only_control": {
+      "same_baseline_PE": true,
+      "strict_pair_exit": 0,
+      "natural_exit0": true,
+      "interpretation": "INCONCLUSIVE; does not reproduce the variance or close causal attribution; no automatic further control"
+    }
+  },
+  "independent_seals": {
+    "Core": {
+      "file": "peer_Core_REVIEW.md",
+      "sha256": "0d461c937be3967ddccd3e35f7ecefa734f508e443a518ed009cda9c394a32fa"
+    },
+    "constructor_Core": {
+      "file": "Frame_ctor_REVIEW.md",
+      "sha256": "94d37d5f61b6613c0f6027b4bad0c9eaac2fcf1ee88f5cd050d57a0ee03cf16d"
+    },
+    "final_runtime": {
+      "file": "final_runtime_peer_REVIEW.md",
+      "sha256": "669c2c18647975061d9fb76c2b06cf1c7ebb07907702a4e435568fc4e232f533"
+    },
+    "USN12_diagnostic": {
+      "file": "USN12_diagnostic_peer_REVIEW.md",
+      "sha256": "d1502aad0c37c69620d1fa8212fa1ff325cfdc5e720c70604a4f120064f469af"
+    }
+  },
+  "joined_Source56_integrity": {
+    "source": "078aa0fd3c9f59323b8f9ced122f0311ec1956a8",
+    "all_eight_objects_exact": true,
+    "objects": [
+      {
+        "object": "native_ambient_construction",
+        "sha256": "f5512c10cae9ae3750a6b7c9f7897015e99c5596ca774f657e3f7cfd12ec7e19",
+        "identical_to_runtime_source_Core": true
+      },
+      {
+        "object": "native_ambient_lifetime",
+        "sha256": "8d901b254acd6739fb3c844e760277be2ccf123aeaeb3be0e82a7506b60ca8ea",
+        "identical_to_runtime_source_Core": true
+      },
+      {
+        "object": "native_scene_resource_storage",
+        "sha256": "04e01ece2a07d9061f4088522baed0f1f01adadfc2925f47e645e7ecda317356",
+        "identical_to_runtime_source_Core": true
+      },
+      {
+        "object": "native_scene_resource_ambient",
+        "sha256": "e70624830cc69b721c12c5abe481b65c7ce770dd8816da42774e25f023c0855f",
+        "identical_to_runtime_source_Core": true
+      },
+      {
+        "object": "native_scene_registry_storage",
+        "sha256": "76a9bfb6eb5d47219511adc7d383869decf5a10766196863a4825bad6f7b081c",
+        "identical_to_runtime_source_Core": true
+      },
+      {
+        "object": "native_gui_scene_acquisition_storage",
+        "sha256": "30c544755090037ca4385ceede6a339a8461d255e5e9b6ae8edacc9674dc7d8e",
+        "identical_to_runtime_source_Core": true
+      },
+      {
+        "object": "game_native_renderer_application",
+        "sha256": "e8b57837cd1e9f023e21506578963e3112e8bb5a7a0b6f527dd1ada66b700c8b",
+        "identical_to_runtime_source_Core": true
+      },
+      {
+        "object": "lighting_configuration_apply",
+        "sha256": "1ceaf8ceb748e9f17913bea8100a5121cb9cf103597c582a60c310620ccf048f",
+        "identical_to_runtime_source_Core": true
+      }
+    ],
+    "artifacts": {
+      "build/win32/Release/bsp_game.exe": "bd3f177777152e39da70f05f35a101b7c54b887d4ca3e475380a679025aad6fb",
+      "build/win32/Release/xlive_stub.dll": "ddf2c2a86d96f37819147c38991a74ef5c5946ce625e7b4e7914f8382aa13f87",
+      "build/win32/bsp_game.map": "db39011d50af2d9a650ada77f9142aea04e88a472ea74efc73c1736f10f41cee",
+      "build/win32/bsp_game.vcxproj": "008933b1bf4943fef6b85d41e703add896bfdde82b7fd1c03439e8a64ab201d9",
+      "build/win32/CMakeCache.txt": "173b00591bec5e1664cf6e405b6161ecc7206c7f1bc173f42f04ca235ef83a44",
+      "build/win32/Testing/Temporary/LastTest.log": "ad63c6d77abd302b159d76ea0822476de6c84d59101fad33049497a505746060"
+    },
+    "all_nine_flags_false": true,
+    "canonical_no_INCLUDES": true,
+    "Source56_append_unreached_absent_from_map": true,
+    "PE_sections": [
+      {
+        "section": ".rdata",
+        "same_loaded_section_after_debug_only_masks": true,
+        "before": {
+          "sha256": "ca550b9080d7c22ed25d6aacf7bab1454104bd7fd6f2562daedd82e983fd547d",
+          "RVA": 5922816,
+          "virtual_size": 1336860,
+          "raw_size": 1337344
+        },
+        "after": {
+          "sha256": "ca550b9080d7c22ed25d6aacf7bab1454104bd7fd6f2562daedd82e983fd547d",
+          "RVA": 5922816,
+          "virtual_size": 1336860,
+          "raw_size": 1337344
+        }
+      },
+      {
+        "section": ".reloc",
+        "same_loaded_section_after_debug_only_masks": true,
+        "before": {
+          "sha256": "4e31bb019e781b9afc5cd59400d11db64c95a691c3d42f6497243738b149c97e",
+          "RVA": 7380992,
+          "virtual_size": 207004,
+          "raw_size": 207360
+        },
+        "after": {
+          "sha256": "4e31bb019e781b9afc5cd59400d11db64c95a691c3d42f6497243738b149c97e",
+          "RVA": 7380992,
+          "virtual_size": 207004,
+          "raw_size": 207360
+        }
+      },
+      {
+        "section": ".rsrc",
+        "same_loaded_section_after_debug_only_masks": true,
+        "before": {
+          "sha256": "c0e60f4cf71ce8b294eac670489c92beafa1edf04d20118117733be630f674db",
+          "RVA": 7376896,
+          "virtual_size": 480,
+          "raw_size": 512
+        },
+        "after": {
+          "sha256": "c0e60f4cf71ce8b294eac670489c92beafa1edf04d20118117733be630f674db",
+          "RVA": 7376896,
+          "virtual_size": 480,
+          "raw_size": 512
+        }
+      },
+      {
+        "section": ".data",
+        "same_loaded_section_after_debug_only_masks": true,
+        "before": {
+          "sha256": "35550385979ea50e6c944711095c5308567acab9e624650c56bd59ab10296a79",
+          "RVA": 7262208,
+          "virtual_size": 114080,
+          "raw_size": 78848
+        },
+        "after": {
+          "sha256": "35550385979ea50e6c944711095c5308567acab9e624650c56bd59ab10296a79",
+          "RVA": 7262208,
+          "virtual_size": 114080,
+          "raw_size": 78848
+        }
+      },
+      {
+        "section": ".text",
+        "same_loaded_section_after_debug_only_masks": true,
+        "before": {
+          "sha256": "1f7762fcfc0415f95093cbdbecdde432dececafba2b23f40f39df8195279129b",
+          "RVA": 4096,
+          "virtual_size": 5915067,
+          "raw_size": 5915136
+        },
+        "after": {
+          "sha256": "1f7762fcfc0415f95093cbdbecdde432dececafba2b23f40f39df8195279129b",
+          "RVA": 4096,
+          "virtual_size": 5915067,
+          "raw_size": 5915136
+        }
+      }
+    ],
+    "PE_debug_only_masks": [],
+    "all_loaded_sections_equal_after_debug_metadata_only_masks": true,
+    "runtime_receipt_source": "b49686b291bf7549ee1bd971d6e9d98adc5954dd",
+    "no_new_runtime_or_ABI_proof_claim": true
+  },
+  "evidence_root": "local/ambient_grouped_fields_primary_cc16_20261031",
+  "decision": "Hold active four-file candidate until reference discrepancy explained/closed. Preserve Source/Core/MSD acceptance separately; strict13 remains NOTPASS. No flag flip or full activation.",
+  "new_tests": 0,
+  "active_Main_restore_build": {
+    "head": "078aa0fd3c9f59323b8f9ced122f0311ec1956a8",
+    "active_production_tree": "exact origin/main 2ca74d4cd, candidate changes restored",
+    "exit": 0,
+    "started_utc": "2026-10-31T10:16:48.1568224Z",
+    "finished_utc": "2026-10-31T10:17:19.9227861Z",
+    "no_new_tests": true,
+    "existing_checks": [
+      "100% tests passed, 0 tests failed out of 2",
+      "Total Test time (real) =  11.85 sec"
+    ]
+  }
+}
