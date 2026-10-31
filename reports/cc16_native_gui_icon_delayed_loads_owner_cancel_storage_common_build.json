@@ -4088,5 +4088,189 @@
     "frozen_common_project_entry_unforced": true,
     "frozen_common_map_entry_absent": true
   },
-  "publication": "ready locally; Main held for coordinated frozen-build field gameplay corpus"
+  "publication": "Ready for coordinated origin/main publication; shared frozen-build window explicitly released; active ambient-field candidate remains held",
+  "joined_metadata_only_Main": {
+    "joined_published_Main": "ba4b87a3fd974fdd7dc8b99dfa5fdd808fc17828",
+    "combined_head": "b1f6e209d50d1464e4566cbcf12b17614f3a50b4",
+    "Main_changes": [
+      "docs/CODEX_AMBIENT_GROUPED_FIELDS.md",
+      "reports/codex_ambient_grouped_fields.json"
+    ],
+    "Main_scope": "Only held-field evidence documentation; active field candidate restored and remains unaccepted",
+    "previous_finite_inputs": 313,
+    "all_previous_finite_inputs_byte_identical": true,
+    "canonical_build_artifacts_verified_byte_identical": [
+      {
+        "path": "build/win32/CMakeCache.txt",
+        "bytes": 19943,
+        "sha256": "1685db07153e0ad413c8e75a1536cf232b943fdc86f5e983cd18cf2abfa3ecb2"
+      },
+      {
+        "path": "build/win32/bsp_game.vcxproj",
+        "bytes": 277506,
+        "sha256": "10b0730a508a6ed1fe61c39ccca84e904c9f39a1801648ec61d3c80d6c9c1b76"
+      },
+      {
+        "path": "build/win32/bsp_game.map",
+        "bytes": 11470586,
+        "sha256": "4d10aefddfe3a920fe3d25056f89921db60438d4d5accdd1648519d12802e59c"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 7539712,
+        "sha256": "1b7710344fd0fd1cefaea3dba00ac3b6d09a61bd03c498244b8e7fbc921701cb"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 105058392,
+        "sha256": "e11a8cd7b18027eddf373649ad35e722b18e1e130ff5b903133143ef0e2aac3f"
+      },
+      {
+        "path": "build/win32/Release/bsp_math_tests.exe",
+        "bytes": 890880,
+        "sha256": "91be0fa96814ef836627e995dcb6631e8ce4d03e6c3876220ed71d6415a95795"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 1658,
+        "sha256": "a24fe408705d992727df21d987c394037b00aa59bc407a8b48703d4922196166"
+      }
+    ],
+    "Source57_object_byte_identical": true,
+    "build_reused": "Existing completed common/retained/canonical official build and two suites; no production input or build artifact changed by documentation-only Main join",
+    "Original_ABI_runtime_activation": false
+  },
+  "canonical_Source56_vs57_PE_static_isolation": {
+    "baseline": {
+      "path": "build/win32/Release/bsp_game.exe",
+      "bytes": 7539712,
+      "sha256": "77e2561525e095603d484dddc2f84dc3bac8c015fd5b09da3760f6b135bcbbc8",
+      "retained_path": "local/function_source_batch56/canonical_restored/artifacts/05_bsp_game.exe"
+    },
+    "current": {
+      "path": "build/win32/Release/bsp_game.exe",
+      "bytes": 7539712,
+      "sha256": "1b7710344fd0fd1cefaea3dba00ac3b6d09a61bd03c498244b8e7fbc921701cb",
+      "retained_path": "local/function_source_batch57/canonical_restored/artifacts/05_bsp_game.exe"
+    },
+    "sections": [
+      {
+        "section": ".text",
+        "unchanged": true,
+        "old": {
+          "bytes": 5915136,
+          "sha256": "c345cd95e6eca8b674c314609f0e2bac89ea4a11d5a61d20debe5ad203460bc5",
+          "execute": true,
+          "write": false,
+          "discardable": false
+        },
+        "new": {
+          "bytes": 5915136,
+          "sha256": "c345cd95e6eca8b674c314609f0e2bac89ea4a11d5a61d20debe5ad203460bc5",
+          "execute": true,
+          "write": false,
+          "discardable": false
+        }
+      },
+      {
+        "section": ".rdata",
+        "unchanged": false,
+        "old": {
+          "bytes": 1336832,
+          "sha256": "aa68243c11835d6d57e26b656ee8cd8856a9f2ae0df744dbaf80be7cd47979ca",
+          "execute": false,
+          "write": false,
+          "discardable": false
+        },
+        "new": {
+          "bytes": 1336832,
+          "sha256": "a5b9ec5a82be0554b4519f2a247fe1d39faf4090460f5d3915838ba7cb6cb087",
+          "execute": false,
+          "write": false,
+          "discardable": false
+        }
+      },
+      {
+        "section": ".data",
+        "unchanged": true,
+        "old": {
+          "bytes": 78848,
+          "sha256": "ee52192196ebedd34ca1e86457f78c0fe4b61c830fa62875060ec06bd47260df",
+          "execute": false,
+          "write": true,
+          "discardable": false
+        },
+        "new": {
+          "bytes": 78848,
+          "sha256": "ee52192196ebedd34ca1e86457f78c0fe4b61c830fa62875060ec06bd47260df",
+          "execute": false,
+          "write": true,
+          "discardable": false
+        }
+      },
+      {
+        "section": ".rsrc",
+        "unchanged": true,
+        "old": {
+          "bytes": 512,
+          "sha256": "c0e60f4cf71ce8b294eac670489c92beafa1edf04d20118117733be630f674db",
+          "execute": false,
+          "write": false,
+          "discardable": false
+        },
+        "new": {
+          "bytes": 512,
+          "sha256": "c0e60f4cf71ce8b294eac670489c92beafa1edf04d20118117733be630f674db",
+          "execute": false,
+          "write": false,
+          "discardable": false
+        }
+      },
+      {
+        "section": ".reloc",
+        "unchanged": true,
+        "old": {
+          "bytes": 207360,
+          "sha256": "ce013f0d82b09a21d6440d77cfe91b9fad5c1ce6b4be339802da119ccb9f1699",
+          "execute": false,
+          "write": false,
+          "discardable": true
+        },
+        "new": {
+          "bytes": 207360,
+          "sha256": "ce013f0d82b09a21d6440d77cfe91b9fad5c1ce6b4be339802da119ccb9f1699",
+          "execute": false,
+          "write": false,
+          "discardable": true
+        }
+      }
+    ],
+    "all_executable_and_writable_sections_byte_identical": true,
+    "scope": "static comparison of canonical Source56 and57; notruntime orfieldregressionproof",
+    "readonly_difference": {
+      "changed_bytes": 2,
+      "file_offsets_hex": [
+        "0x69bbc4",
+        "0x69bbc5"
+      ],
+      "classifications": [
+        "debug-directory timestamp"
+      ],
+      "all_readonly_differences_are_known_debug_identity_metadata": true,
+      "old_debug_entries": [
+        {
+          "type": 13,
+          "bytes": 884,
+          "file_offset": 7023992
+        }
+      ],
+      "new_debug_entries": [
+        {
+          "type": 13,
+          "bytes": 884,
+          "file_offset": 7023992
+        }
+      ]
+    }
+  }
 }
