@@ -8,6 +8,7 @@
 #include "bsp/native_resource_support.hpp"
 #include <memory>
 #include <optional>
+#include <vector>
 
 namespace bsp {
 class ActualNativeStringPoolStorage;
@@ -146,6 +147,11 @@ public:
     GameNativeLocaleManagerProcess& prepare_locale_manager();
 
 private:
+    friend class GameNativeGuiManagerApplication;
+    NativeGuiSelectedManagerDeleteAttempt& prepare_gui_manager_delete_attempt(
+        NativeGuiMediaFocusLifetimeContext&);
+    void finish_gui_manager_delete_attempt(NativeGuiSelectedManagerDeleteAttempt&);
+    void shutdown_selected(NativeGuiSelectedManagerDeleteAttempt&);
     void retire_vfs_after_drain() noexcept;
     GameHostLog& log_;
     void* volatile& manager_publication_01090aa0_; // canonical process cell
@@ -178,5 +184,12 @@ private:
     // Append after every established member. Retain failed preparation too so
     // fallback shutdown cannot bypass the real owner's pre-drain fence.
     GameNativeLocaleManagerProcess* locale_manager_process_{};
+    // Born/adopted after the GUI Impl constructor; retained through fallback
+    // shutdown, both catches, Host _Exit and normal acknowledgement. Old records
+    // never reset. Clearing only the completed private routing borrow is not
+    // Native custody/normal-disposition authority.
+    std::vector<std::unique_ptr<NativeGuiSelectedManagerDeleteAttempt>> selected_gui_attempts_;
+    NativeGuiSelectedManagerDeleteAttempt* pending_selected_gui_attempt_{};
+
 };
 } // namespace bsp::game

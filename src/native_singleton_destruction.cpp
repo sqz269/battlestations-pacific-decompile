@@ -96,7 +96,7 @@ __declspec(naked) void __cdecl current_crt_invalid_parameter() {
 
 // Concrete recovered slot-zero targets. No original numeric address is
 // invoked as a source vtable and no generic destructor callback is supplied.
-__declspec(noinline) void __fastcall delete_current_profile(void* owner,
+__declspec(noinline) void __fastcall delete_legacy_current_profile(void* owner,
     const NativeSingletonDeletionBindings& bindings, std::uint32_t profile,
     std::uint32_t flags) {
     // The finite Source dispatcher admits both the recovered Native profile
@@ -648,8 +648,31 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
     throw std::logic_error("raw singleton deletion requires a recovered profile and its actual bindings");
 }
 
+// A genuine born Source view: no reinterpretation/copy of the binding object.
+// The old entry's converting adapter contains only actual references/nulls.
+struct SingletonManagerInvocationView {
+    const NativeSingletonDeletionBindings& bindings;
+    NativeGuiSelectedManagerDeleteAttempt* const selected;
+    NativeGuiMediaFocusLifetimeContext* const gui_context;
+    SingletonManagerInvocationView(const NativeSingletonDeletionBindings& actual)
+        : bindings(actual), selected(nullptr), gui_context(nullptr) {}
+    SingletonManagerInvocationView(const NativeSingletonDeletionBindings& actual,
+        NativeGuiSelectedManagerDeleteAttempt& attempt, NativeGuiMediaFocusLifetimeContext& context)
+        : bindings(actual), selected(&attempt), gui_context(&context) {}
+};
+__declspec(noinline) void __fastcall delete_current_profile(void* owner,
+    const SingletonManagerInvocationView& invocation, std::uint32_t profile,
+    std::uint32_t flags) {
+    if (invocation.selected && profile == 0x00d5bfcc) {
+        (void)scalar_delete_native_gui_manager_00aa6540_fragment(owner, flags,
+            *invocation.gui_context, *invocation.selected);
+        return;
+    }
+    delete_legacy_current_profile(owner, invocation.bindings, profile, flags);
+}
+
 __declspec(naked) void __fastcall destroy_manager_body(
-    void*, const NativeSingletonDeletionBindings&) {
+    void*, const SingletonManagerInvocationView&) {
     __asm {
         // Replace native FH3 registration/scratch with24bytes of padding.
         // The source outer scope owns EH. Its stable binding replaces the
@@ -760,6 +783,26 @@ __declspec(noinline) void __fastcall destroy_native_singleton_manager_00bd0400(
         // Native FuncInfoDFF490: state0 -> -1, CC5450 -> BD0220.
         clear_native_singleton_storage_00bd0220(owner, nullptr);
         throw;
+    }
+}
+
+__declspec(noinline) void __fastcall destroy_native_singleton_manager_00bd0400(
+    void* owner, const NativeSingletonDeletionBindings& bindings,
+    NativeGuiSelectedManagerDeleteAttempt& selected) {
+    auto* const captured_context = selected.context_; // immutable address, once before callbacks
+    const bool fresh = !selected.core_entered_;
+    selected.core_entered_ = true; // BEFORE every throwing admission and Native effect
+    try {
+        if (!fresh || !selected.cold_bound_ || !selected.host_entered_ || selected.unknown_ ||
+            selected.bindings_ != &bindings || !selected.receiver_bound_ ||
+            selected.outer_receiver_ != owner || bindings.native_gui != captured_context)
+            throw std::logic_error("selected shared drain requires its actual cold bound invocation");
+        const SingletonManagerInvocationView invocation{bindings, selected, *captured_context};
+        destroy_manager_body(owner, invocation);
+        selected.core_returned_ = true; // observation only, no fence/discharge
+    } catch (...) {
+        selected.unknown_ = true;
+        throw; // SAME captured attempt; NEVER the legacy BD0220 catch
     }
 }
 

@@ -12,6 +12,7 @@
 
 #include "bsp/native_gameplay_effect_construction.hpp"
 #include "bsp/native_singleton_vector_leaves.hpp"
+#include "bsp/native_gui_media_focus_lifetime.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
 namespace bsp::game {
@@ -173,6 +174,8 @@ GameNativeLocaleManagerProcess& GameSingletonHost::prepare_locale_manager() {
 }
 
 void GameSingletonHost::shutdown() {
+    auto* const selected = pending_selected_gui_attempt_; // capture before callbacks
+    if (selected) { shutdown_selected(*selected); return; }
     auto* const locale = locale_manager_process_;
     if (locale != nullptr) locale->before_shared_drain(*this);
     void* const manager = manager_publication_01090aa0_;
@@ -202,4 +205,72 @@ void GameSingletonHost::shutdown() {
         game_resource_factory_publication_00e19b90_ == nullptr ? "null" : "non-null",
         game_resource_factory_alias_00f8d31c_);
 }
+NativeGuiSelectedManagerDeleteAttempt& GameSingletonHost::prepare_gui_manager_delete_attempt(
+    NativeGuiMediaFocusLifetimeContext& context) {
+    auto owned = std::unique_ptr<NativeGuiSelectedManagerDeleteAttempt>(
+        new NativeGuiSelectedManagerDeleteAttempt(*this, context, deletion_bindings_));
+    auto* const selected = owned.get();
+    selected_gui_attempts_.push_back(std::move(owned)); // actual stable adoption BEFORE bind
+    if (pending_selected_gui_attempt_ || deletion_bindings_.native_gui != &context)
+        throw std::logic_error("selected GUI drain requires its unchanged actual singleton host/context");
+    selected->cold_bound_ = true;
+    pending_selected_gui_attempt_ = selected; // publish only the retained record
+    return *selected;
+}
+
+void GameSingletonHost::shutdown_selected(NativeGuiSelectedManagerDeleteAttempt& selected) {
+    const bool fresh = !selected.host_entered_;
+    selected.host_entered_ = true; // before admission, callbacks and Native effects
+    try {
+        if (!fresh || selected.unknown_ || !selected.cold_bound_ || selected.host_ != this ||
+            selected.bindings_ != &deletion_bindings_ || pending_selected_gui_attempt_ != &selected)
+            throw std::logic_error("selected singleton shutdown requires its actual fresh retained attempt");
+
+    auto* const locale = locale_manager_process_;
+    if (locale != nullptr) locale->before_shared_drain(*this);
+    void* const manager = manager_publication_01090aa0_;
+    if (manager == nullptr) {
+        retire_vfs_after_drain();
+        if (locale != nullptr) {
+            locale->after_shared_drain(*this);
+            locale_manager_process_ = nullptr;
+        }
+        selected.host_returned_ = true;
+        return;
+    }
+    selected.outer_receiver_ = manager;
+    selected.receiver_bound_ = true;
+    const std::uint32_t registered = count_native_singleton_slots_00bcf910(manager, nullptr);
+    destroy_native_singleton_manager_00bd0400(manager, deletion_bindings_, selected);
+    retire_vfs_after_drain();
+    observers_->record_after_singleton_drain();
+    singleton_lifetime_free(manager);
+    manager_publication_01090aa0_ = nullptr;
+    if (locale != nullptr) {
+        locale->after_shared_drain(*this);
+        locale_manager_process_ = nullptr;
+    }
+    log_.notef("singleton lifetime drained: registered_slots=%u effect_publication=%s "
+        "manager_publication=%s factory_publication=%s factory_alias=%p "
+        "storage=raw14h/raw10h/raw8h", registered,
+        effect_publication_00f87664_ == nullptr ? "null" : "non-null",
+        manager_publication_01090aa0_ == nullptr ? "null" : "non-null",
+        game_resource_factory_publication_00e19b90_ == nullptr ? "null" : "non-null",
+        game_resource_factory_alias_00f8d31c_);
+    selected.host_returned_ = true; // only after ALL actual shutdown work/logging returns
+    } catch (...) {
+        selected.unknown_ = true;
+        throw; // no new cleanup/terminal policy; real Host catch retains/exits
+    }
+}
+
+void GameSingletonHost::finish_gui_manager_delete_attempt(NativeGuiSelectedManagerDeleteAttempt& selected) {
+    if (pending_selected_gui_attempt_ != &selected || selected.host_ != this ||
+        selected.unknown_ || !selected.host_returned_ ||
+        (selected.receiver_bound_ && !selected.core_returned_))
+        throw std::logic_error("selected manager normal mark requires complete shutdown and real after-drain fence");
+    selected.source_fence_returned_ = true; // Source observation, never Native custody credit
+    pending_selected_gui_attempt_ = nullptr; // private consumed routing borrow only
+}
+
 } // namespace bsp::game

@@ -45,6 +45,9 @@ struct GameNativeGuiManagerApplication::Impl {
     Phase phase{Phase::prepared};
     PageLifetimeBinding* page_binding{};
     bool page_binding_used{};
+    NativeGuiSelectedManagerDeleteAttempt* selected_manager_delete{}; // owned by real singleton host
+    bool selected_preparation_started{};
+    bool selected_preparation_failed{};
     Impl(GameHostLog& l, GameSingletonHost& s, GameNativeReadOnlyData& data,
         NativeRenderActualOwners& resources, NativeStringRawPoolContext& strings)
         : log(l), singletons(s),
@@ -91,6 +94,21 @@ NativePlatformFocusOwnersContext& GameNativeGuiManagerApplication::context() noe
     return impl_->owners;
 }
 
+void GameNativeGuiManagerApplication::prepare_cold_selected_manager_delete() {
+    auto& p = *impl_; // Impl is already completely constructed and owned.
+    const bool fresh = !p.selected_preparation_started;
+    p.selected_preparation_started = true; // sticky before throwing cold admission
+    try {
+        if (!fresh || p.selected_manager_delete || p.phase != Impl::Phase::published ||
+            p.singletons.native_deletion_bindings().native_gui != &p.lifetime)
+            throw std::logic_error("GUI selected drain prepares once against the genuine published context");
+        p.selected_manager_delete = &p.singletons.prepare_gui_manager_delete_attempt(p.lifetime);
+    } catch (...) {
+        p.selected_preparation_failed = true;
+        throw; // actual Host pre-drain retention fence, no cold Native cleanup
+    }
+}
+
 std::unique_ptr<GameNativeGuiManagerApplication::PageLifetimeBinding>
 GameNativeGuiManagerApplication::bind_page_lifetime_host(NativeGuiPageLifetimeHost& provider) {
     auto& p = *impl_;
@@ -125,15 +143,23 @@ void GameNativeGuiManagerApplication::release_page_lifetime_binding(PageLifetime
 }
 
 bool GameNativeGuiManagerApplication::requires_process_retention() const noexcept {
+    if (impl_->selected_preparation_failed) return true;
+    if (impl_->selected_manager_delete &&
+        impl_->selected_manager_delete->requires_source_retention()) return true;
     return impl_->phase == Impl::Phase::constructing || impl_->phase == Impl::Phase::failed;
 }
 
 void GameNativeGuiManagerApplication::after_singleton_drain() {
     auto& p = *impl_;
+    if (p.selected_manager_delete && p.phase == Impl::Phase::drained &&
+        p.selected_manager_delete->requires_source_retention())
+        throw std::logic_error("selected GUI drain cannot replay an incomplete Source fence");
     if (p.phase == Impl::Phase::prepared || p.phase == Impl::Phase::drained) return;
     if (p.phase != Impl::Phase::published || p.gui_00f8bc5c)
         throw std::logic_error("native GUI manager survived or interrupted the shared drain");
     p.phase = Impl::Phase::drained;
     p.log.note("native GUI manager drained: 00aa6540/00aa6340 cleared 00f8bc5c");
+    if (p.selected_manager_delete)
+        p.singletons.finish_gui_manager_delete_attempt(*p.selected_manager_delete);
 }
 } // namespace bsp::game

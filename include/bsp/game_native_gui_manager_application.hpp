@@ -6,6 +6,7 @@ class NativeRenderActualOwners;
 struct NativeStringRawPoolContext;
 struct NativePlatformFocusOwnersContext;
 struct NativeGuiPageLifetimeHost;
+class NativeGuiSelectedManagerDeleteAttempt;
 }
 
 namespace bsp::game {
@@ -72,6 +73,8 @@ public:
     // page virtual calls separately. Unbound calls retain their rejection.
     // No page load, native call, table replacement or ownership transfer occurs.
     std::unique_ptr<PageLifetimeBinding> bind_page_lifetime_host(NativeGuiPageLifetimeHost&);
+    // Explicit cold metadata preparation only; no default caller or Native effect.
+    void prepare_cold_selected_manager_delete();
     bool requires_process_retention() const noexcept;
     // After the shared raw drain: the drain's 00AA0FF0 must have cleared the cell.
     void after_singleton_drain();

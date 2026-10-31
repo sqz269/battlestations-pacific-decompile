@@ -13,6 +13,7 @@ struct NativeProfileHintsOwnerContext;
 struct NativePlatformFocusOwnersContext;
 struct NativePlatformConstructionContext;
 struct NativeGuiMediaFocusLifetimeContext;
+class NativeGuiSelectedManagerDeleteAttempt;
 struct NativeParticleClockShutdownContext;
 struct NativeParticleModelManagerAccess;
 struct NativeResourceRegistryDeleteBindings;
@@ -350,6 +351,11 @@ static_assert(sizeof(NativeSingletonDeletionBindings) == 228);
 // FH3 stack-slot aliases, SEH/hardware-fault and caller ABI are not preserved.
 void __fastcall destroy_native_singleton_manager_00bd0400(
     void* owner, const NativeSingletonDeletionBindings& bindings);
+// Selected negative-only Source route. Caller owns the bound attempt and graph
+// across both catches and the later actual shutdown/Host acknowledgement fence.
+void __fastcall destroy_native_singleton_manager_00bd0400(void* owner,
+    const NativeSingletonDeletionBindings& bindings, NativeGuiSelectedManagerDeleteAttempt&);
+
 
 // Full00412440[31]: test low flags bit0 before rewriting CE3818; optionally
 // free captured owner; EAX captured address bits, RET4. Native ECX owner,

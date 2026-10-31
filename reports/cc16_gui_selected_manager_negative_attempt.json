@@ -1,0 +1,727 @@
+{
+  "kind": "selected_manager_negative_attempt_Source_only_author_packet",
+  "author_base": "672a6cc2fd7dba2b69a0e449e542f9d1c15a81fa",
+  "historical_proposal_base": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+  "author_base_tree": "d70d16c2b5bcd3f002a14c0d15633b4aa807fe58",
+  "expected_paths": [
+    "include/bsp/native_gui_media_focus_lifetime.hpp",
+    "src/native_gui_media_focus_lifetime.cpp",
+    "include/bsp/native_singleton_destruction.hpp",
+    "src/native_singleton_destruction.cpp",
+    "include/bsp/game_native_gui_manager_application.hpp",
+    "src/game_native_gui_manager_application.cpp",
+    "include/bsp/game_hosts_singletons.hpp",
+    "src/game_hosts_singletons.cpp",
+    "docs/CC16_GUI_SELECTED_MANAGER_NEGATIVE_ATTEMPT.md",
+    "reports/cc16_gui_selected_manager_negative_attempt.json"
+  ],
+  "Source_status": "V1_R1_noncompilable_V2_exact_corrected_static_uncompiled",
+  "document": {
+    "path": "docs/CC16_GUI_SELECTED_MANAGER_NEGATIVE_ATTEMPT.md",
+    "size": 2876,
+    "sha256": "c7df2cbafcfec0560c87009f64160ebdea7e69ad8d99c38fb2596a10b485241e"
+  },
+  "static_proof": {
+    "sources": [
+      {
+        "path": "include/bsp/native_gui_media_focus_lifetime.hpp",
+        "before_size": 3213,
+        "before_sha256": "fed651ac9f3e7f0853c4754dd180dc68b1e6432afc9fe64a327caa59e8b81412",
+        "before_blob": "889f22292bd5b039b0a18f46856a61a3804f7e58",
+        "after_size": 5715,
+        "after_sha256": "f88f410cfe26d7ae0f0efdd27b40b1fb0daee5d9ae93d679b5bf2782af97ade9",
+        "historical_before_sha256": "fed651ac9f3e7f0853c4754dd180dc68b1e6432afc9fe64a327caa59e8b81412"
+      },
+      {
+        "path": "src/native_gui_media_focus_lifetime.cpp",
+        "before_size": 6502,
+        "before_sha256": "06744c0d69116b56681e74ed0f92d97a0b3d583455b66ea2d458a1a0cea0c749",
+        "before_blob": "202bba8d1764aa52aa2479492d6eb58aeca0fbee",
+        "after_size": 7786,
+        "after_sha256": "9a23076e50ca6e7094fe6d44d1e512571022e36213a11615f76ea6b63205b2a0",
+        "historical_before_sha256": "06744c0d69116b56681e74ed0f92d97a0b3d583455b66ea2d458a1a0cea0c749"
+      },
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "before_size": 23882,
+        "before_sha256": "9dfa24bc4e6f9a44a0f62ac464989b288d7270d7bd0f0804c5c5659612b047db",
+        "before_blob": "b7f283a23c300641dde315971ff99bea37e9df1c",
+        "after_size": 24254,
+        "after_sha256": "7b16cc4b6169fd537f5b12e0e98ff22c248012bc5d10a72cf0a55e9a87028731",
+        "historical_before_sha256": "9dfa24bc4e6f9a44a0f62ac464989b288d7270d7bd0f0804c5c5659612b047db"
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "before_size": 31652,
+        "before_sha256": "5bf40d18ce2cb8e8987aebcbc17d3d002c3bcc7d989b2bc65076f1f87b992954",
+        "before_blob": "94d8ffb24dce9e1dfe2b9deb78e3f2f42bb08bc0",
+        "after_size": 34081,
+        "after_sha256": "be363ce041d5b5c9c59a1bd08bc6417e9acc35a283860281a496fb4f3cc6b99a",
+        "historical_before_sha256": "5bf40d18ce2cb8e8987aebcbc17d3d002c3bcc7d989b2bc65076f1f87b992954"
+      },
+      {
+        "path": "include/bsp/game_native_gui_manager_application.hpp",
+        "before_size": 4256,
+        "before_sha256": "0e0b45171c310df86edd5689cdd0ab07be06d42e302e9cf1ff98c42c7c5ccf83",
+        "before_blob": "850bf2b182b82148cfba43176206b3cf1beeabdc",
+        "after_size": 4434,
+        "after_sha256": "5ed14e457159033be78d10a12ba3f4c0ece54d7a7cf2083ee8c5538a55142fd5",
+        "historical_before_sha256": "0e0b45171c310df86edd5689cdd0ab07be06d42e302e9cf1ff98c42c7c5ccf83"
+      },
+      {
+        "path": "src/game_native_gui_manager_application.cpp",
+        "before_size": 6856,
+        "before_sha256": "a3bc4aa99e159228c3366f77c4bfb00fc33cfb7e6688d1faf260ffbadb3a3219",
+        "before_blob": "349ec0018cbd5ee5e1017ba0a2429259d113b0e5",
+        "after_size": 8404,
+        "after_sha256": "975e7837875dbf7ff307b0f2d68025f1796c5023808615a930d1e3f4597ebebc",
+        "historical_before_sha256": "a3bc4aa99e159228c3366f77c4bfb00fc33cfb7e6688d1faf260ffbadb3a3219"
+      },
+      {
+        "path": "include/bsp/game_hosts_singletons.hpp",
+        "before_size": 10732,
+        "before_sha256": "a047bfe45fd98e2586c30b4a87d5124bfadf1d29af198140544bb2f7652481bd",
+        "before_blob": "f149240ef3390bd0e138802061135aefcf1a2e55",
+        "after_size": 11540,
+        "after_sha256": "05d2e3b5d33447553362c91fdd2e8d7bdf3bb3c02e3c28043dbaf4cb1fc45ec9",
+        "historical_before_sha256": "a047bfe45fd98e2586c30b4a87d5124bfadf1d29af198140544bb2f7652481bd"
+      },
+      {
+        "path": "src/game_hosts_singletons.cpp",
+        "before_size": 10557,
+        "before_sha256": "be179a72d97447dcd59620d05a791ac48cea74ab4ccf2468b0445d10c961b38e",
+        "before_blob": "4a09a311654e49a588572535cb4b7d5f32ee09e1",
+        "after_size": 14375,
+        "after_sha256": "93b11909a820cab0d72e1283c1ff02604a2ec8839cbfce62c32745538688a4e4",
+        "historical_before_sha256": "be179a72d97447dcd59620d05a791ac48cea74ab4ccf2468b0445d10c961b38e"
+      }
+    ],
+    "seams": [
+      {
+        "file": "include/bsp/native_gui_media_focus_lifetime.hpp",
+        "label": "attempt_forward_types",
+        "offset": 91,
+        "before": "struct NativeStringRawPoolContext;",
+        "after": "struct NativeStringRawPoolContext;\nstruct NativeSingletonDeletionBindings;\nnamespace game { class GameSingletonHost; class GameNativeGuiManagerApplication; }",
+        "before_sha256": "fed651ac9f3e7f0853c4754dd180dc68b1e6432afc9fe64a327caa59e8b81412",
+        "after_sha256": "0e09ae5020db831382ab0f74f0e8436f6e21f9b259e9302883519816be9f8425"
+      },
+      {
+        "file": "include/bsp/native_gui_media_focus_lifetime.hpp",
+        "label": "retained_attempt_type",
+        "offset": 1077,
+        "before": "// Complete A4C510[72]",
+        "after": "// Negative-only Source record for one explicitly prepared complete shared drain.\n// The real singleton host owns it before publication; it cannot copy, reset or\n// mint Native origin/cleanup permission. Inner normal returns do not finish it.\nclass NativeGuiSelectedManagerDeleteAttempt final {\npublic:\n    NativeGuiSelectedManagerDeleteAttempt(const NativeGuiSelectedManagerDeleteAttempt&) = delete;\n    NativeGuiSelectedManagerDeleteAttempt& operator=(const NativeGuiSelectedManagerDeleteAttempt&) = delete;\n    NativeGuiSelectedManagerDeleteAttempt(NativeGuiSelectedManagerDeleteAttempt&&) = delete;\n    NativeGuiSelectedManagerDeleteAttempt& operator=(NativeGuiSelectedManagerDeleteAttempt&&) = delete;\n    bool requires_source_retention() const {\n        return unknown_ || (host_entered_ && !source_fence_returned_);\n    }\nprivate:\n    friend class game::GameSingletonHost;\n    friend class game::GameNativeGuiManagerApplication;\n    friend void __fastcall destroy_native_singleton_manager_00bd0400(void*,\n        const NativeSingletonDeletionBindings&, NativeGuiSelectedManagerDeleteAttempt&);\n    friend void* scalar_delete_native_gui_manager_00aa6540_fragment(void*,\n        std::uint32_t, NativeGuiMediaFocusLifetimeContext&, NativeGuiSelectedManagerDeleteAttempt&);\n    NativeGuiSelectedManagerDeleteAttempt(game::GameSingletonHost& host,\n        NativeGuiMediaFocusLifetimeContext& context, const NativeSingletonDeletionBindings& bindings)\n        : host_(&host), context_(&context), bindings_(&bindings) {}\n    game::GameSingletonHost* const host_;\n    NativeGuiMediaFocusLifetimeContext* const context_;\n    const NativeSingletonDeletionBindings* const bindings_;\n    void* outer_receiver_{}; // bound only from the real shutdown's reached capture\n    bool cold_bound_{};\n    bool host_entered_{};\n    bool receiver_bound_{};\n    bool core_entered_{};\n    bool core_returned_{};\n    bool scalar_entered_{};\n    bool scalar_returned_{};\n    bool unknown_{};\n    bool host_returned_{};\n    bool source_fence_returned_{};\n};\n\n// Complete A4C510[72]",
+        "before_sha256": "0e09ae5020db831382ab0f74f0e8436f6e21f9b259e9302883519816be9f8425",
+        "after_sha256": "9abf6396364344b3712b66f1553aa9380524227553f95293e5568a180b0696f4"
+      },
+      {
+        "file": "include/bsp/native_gui_media_focus_lifetime.hpp",
+        "label": "selected_scalar_declaration",
+        "offset": 5354,
+        "before": "} // namespace bsp",
+        "after": "// Explicit selected Source adapter; ordinary flags transport is unchanged.\n// The SAME retained attempt is captured before any callback, never rediscovered.\nvoid* scalar_delete_native_gui_manager_00aa6540_fragment(void* actual_owner,\n    std::uint32_t flags, NativeGuiMediaFocusLifetimeContext&,\n    NativeGuiSelectedManagerDeleteAttempt&);\n} // namespace bsp",
+        "before_sha256": "9abf6396364344b3712b66f1553aa9380524227553f95293e5568a180b0696f4",
+        "after_sha256": "f88f410cfe26d7ae0f0efdd27b40b1fb0daee5d9ae93d679b5bf2782af97ade9"
+      },
+      {
+        "file": "src/native_gui_media_focus_lifetime.cpp",
+        "label": "selected_admission_exception_definition",
+        "offset": 302,
+        "before": "#include <exception>",
+        "after": "#include <exception>\n#include <stdexcept>",
+        "before_sha256": "06744c0d69116b56681e74ed0f92d97a0b3d583455b66ea2d458a1a0cea0c749",
+        "after_sha256": "7dc9e23c213808a6fca17d9026475760a8466cc1857c93cc790830d8778b4690"
+      },
+      {
+        "file": "src/native_gui_media_focus_lifetime.cpp",
+        "label": "cleanup_captured_negative_borrow",
+        "offset": 1770,
+        "before": "    ~GuiCleanup() noexcept { if (state >= 0) unwind_gui(owner, context, state); }",
+        "after": "    NativeGuiSelectedManagerDeleteAttempt* const selected = nullptr;\n    ~GuiCleanup() noexcept {\n        if (state >= 0 && selected == nullptr) unwind_gui(owner, context, state);\n    }",
+        "before_sha256": "7dc9e23c213808a6fca17d9026475760a8466cc1857c93cc790830d8778b4690",
+        "after_sha256": "94a7fae0eaa392af6b220e18edeee9e238b57cf87976724949fa60f28db45874"
+      },
+      {
+        "file": "src/native_gui_media_focus_lifetime.cpp",
+        "label": "one_shared_gui_normal_kernel",
+        "offset": 4724,
+        "before": "void destroy_native_gui_manager_00aa6340_fragment(void* owner,\n    NativeGuiMediaFocusLifetimeContext& context) {\n    word(owner) = 0x00d5bfcc;\n    Word cursor = word(owner, 0x18);\n    const bool invalid_initial = cursor > word(owner, 0x1c);\n    void* const vector = at(owner, 0x14);\n    GuiCleanup cleanup{owner, context};\n    if (invalid_initial) _invalid_parameter_noinfo();\n    for (;;) {\n        const Word end = word(vector, 8);\n        if (word(vector, 4) > end) _invalid_parameter_noinfo();\n        // CMP ESI,ESI makes AA6392 unreachable; preserve the captured end.\n        if (cursor == end) break;\n        if (cursor >= word(vector, 8)) _invalid_parameter_noinfo();\n        context.pages.call_current_page_virtual_20(pointer(reinterpret_cast<void*>(cursor)));\n        if (cursor >= word(vector, 8)) _invalid_parameter_noinfo();\n        if (void* page = pointer(reinterpret_cast<void*>(cursor))) {\n            context.pages.call_current_page_virtual_04(page, 1);\n        }\n        if (cursor >= word(vector, 8)) _invalid_parameter_noinfo();\n        cursor += 4;\n    }\n    release_native_gui_resource_slot_0041da80(at(owner, 0x28), context.owners.actual_resources);\n    cleanup.state = 3;\n    destroy_native_gui_string_list_00aa5b20(at(owner, 0x34), context.strings);\n    cleanup.state = 2;\n    release_native_gui_resource_slot_0041da80(at(owner, 0x2c), context.owners.actual_resources);\n    destroy_native_gui_page_vector_004c8020(vector);\n    cleanup.state = 0;\n    destroy_native_gui_tree_00aa5260(at(owner, 8));\n    destroy_native_gui_base_00aa0ff0(owner, context.owners);\n    cleanup.state = -1;\n}\n",
+        "after": "namespace {\nvoid destroy_gui_manager_body(void* owner, NativeGuiMediaFocusLifetimeContext& context,\n    NativeGuiSelectedManagerDeleteAttempt* const selected) {\n    word(owner) = 0x00d5bfcc;\n    Word cursor = word(owner, 0x18);\n    const bool invalid_initial = cursor > word(owner, 0x1c);\n    void* const vector = at(owner, 0x14);\n    GuiCleanup cleanup{owner, context, 4, selected};\n    if (invalid_initial) _invalid_parameter_noinfo();\n    for (;;) {\n        const Word end = word(vector, 8);\n        if (word(vector, 4) > end) _invalid_parameter_noinfo();\n        // CMP ESI,ESI makes AA6392 unreachable; preserve the captured end.\n        if (cursor == end) break;\n        if (cursor >= word(vector, 8)) _invalid_parameter_noinfo();\n        context.pages.call_current_page_virtual_20(pointer(reinterpret_cast<void*>(cursor)));\n        if (cursor >= word(vector, 8)) _invalid_parameter_noinfo();\n        if (void* page = pointer(reinterpret_cast<void*>(cursor))) {\n            context.pages.call_current_page_virtual_04(page, 1);\n        }\n        if (cursor >= word(vector, 8)) _invalid_parameter_noinfo();\n        cursor += 4;\n    }\n    release_native_gui_resource_slot_0041da80(at(owner, 0x28), context.owners.actual_resources);\n    cleanup.state = 3;\n    destroy_native_gui_string_list_00aa5b20(at(owner, 0x34), context.strings);\n    cleanup.state = 2;\n    release_native_gui_resource_slot_0041da80(at(owner, 0x2c), context.owners.actual_resources);\n    destroy_native_gui_page_vector_004c8020(vector);\n    cleanup.state = 0;\n    destroy_native_gui_tree_00aa5260(at(owner, 8));\n    destroy_native_gui_base_00aa0ff0(owner, context.owners);\n    cleanup.state = -1;\n}\n} // namespace\n\nvoid destroy_native_gui_manager_00aa6340_fragment(void* owner,\n    NativeGuiMediaFocusLifetimeContext& context) {\n    destroy_gui_manager_body(owner, context, nullptr);\n}\n",
+        "before_sha256": "94a7fae0eaa392af6b220e18edeee9e238b57cf87976724949fa60f28db45874",
+        "after_sha256": "f3961b0bda77f1f502eb36e1b2961871ed9bd9b635354f0e5547b87e63e581d8"
+      },
+      {
+        "file": "src/native_gui_media_focus_lifetime.cpp",
+        "label": "selected_scalar_real_normal_and_unknown",
+        "offset": 6855,
+        "before": "} // namespace bsp",
+        "after": "void* scalar_delete_native_gui_manager_00aa6540_fragment(void* owner,\n    Word flags, NativeGuiMediaFocusLifetimeContext& context,\n    NativeGuiSelectedManagerDeleteAttempt& selected) {\n    selected.scalar_entered_ = true; // negative only; never a freshness/Native permit\n    try {\n        if (!selected.host_entered_ || !selected.core_entered_ || selected.core_returned_ ||\n            selected.host_returned_ || selected.source_fence_returned_ || selected.unknown_ ||\n            selected.context_ != &context)\n            throw std::logic_error(\"selected GUI scalar requires its captured real drain attempt\");\n        destroy_gui_manager_body(owner, context, &selected);\n        if (flags & 1u) singleton_lifetime_free(owner);\n        selected.scalar_returned_ = true; // does NOT finish the outer invocation\n        return owner;\n    } catch (...) {\n        selected.unknown_ = true;\n        throw;\n    }\n}\n} // namespace bsp",
+        "before_sha256": "f3961b0bda77f1f502eb36e1b2961871ed9bd9b635354f0e5547b87e63e581d8",
+        "after_sha256": "9a23076e50ca6e7094fe6d44d1e512571022e36213a11615f76ea6b63205b2a0"
+      },
+      {
+        "file": "include/bsp/native_singleton_destruction.hpp",
+        "label": "selected_outer_forward_type",
+        "offset": 390,
+        "before": "struct NativeGuiMediaFocusLifetimeContext;",
+        "after": "struct NativeGuiMediaFocusLifetimeContext;\nclass NativeGuiSelectedManagerDeleteAttempt;",
+        "before_sha256": "9dfa24bc4e6f9a44a0f62ac464989b288d7270d7bd0f0804c5c5659612b047db",
+        "after_sha256": "68352d4ce59f88dcf56b7c23ff038508e225684218aedfb2e1ae6f9a7acd10a0"
+      },
+      {
+        "file": "include/bsp/native_singleton_destruction.hpp",
+        "label": "selected_outer_overload",
+        "offset": 23087,
+        "before": "void __fastcall destroy_native_singleton_manager_00bd0400(\n    void* owner, const NativeSingletonDeletionBindings& bindings);",
+        "after": "void __fastcall destroy_native_singleton_manager_00bd0400(\n    void* owner, const NativeSingletonDeletionBindings& bindings);\n// Selected negative-only Source route. Caller owns the bound attempt and graph\n// across both catches and the later actual shutdown/Host acknowledgement fence.\nvoid __fastcall destroy_native_singleton_manager_00bd0400(void* owner,\n    const NativeSingletonDeletionBindings& bindings, NativeGuiSelectedManagerDeleteAttempt&);\n",
+        "before_sha256": "68352d4ce59f88dcf56b7c23ff038508e225684218aedfb2e1ae6f9a7acd10a0",
+        "after_sha256": "7b16cc4b6169fd537f5b12e0e98ff22c248012bc5d10a72cf0a55e9a87028731"
+      },
+      {
+        "file": "src/native_singleton_destruction.cpp",
+        "label": "unchanged_legacy_dispatch_body_new_internal_name",
+        "offset": 4437,
+        "before": "__declspec(noinline) void __fastcall delete_current_profile(void* owner,",
+        "after": "__declspec(noinline) void __fastcall delete_legacy_current_profile(void* owner,",
+        "before_sha256": "5bf40d18ce2cb8e8987aebcbc17d3d002c3bcc7d989b2bc65076f1f87b992954",
+        "after_sha256": "fffa8d6bf44b9051ed36a9b708b92197de2e32eb75a6f33b4942f81df0f5d9ba"
+      },
+      {
+        "file": "src/native_singleton_destruction.cpp",
+        "label": "genuine_captured_view_and_existing_asm_route",
+        "offset": 26314,
+        "before": "__declspec(naked) void __fastcall destroy_manager_body(\n    void*, const NativeSingletonDeletionBindings&) {",
+        "after": "// A genuine born Source view: no reinterpretation/copy of the binding object.\n// The old entry's converting adapter contains only actual references/nulls.\nstruct SingletonManagerInvocationView {\n    const NativeSingletonDeletionBindings& bindings;\n    NativeGuiSelectedManagerDeleteAttempt* const selected;\n    NativeGuiMediaFocusLifetimeContext* const gui_context;\n    SingletonManagerInvocationView(const NativeSingletonDeletionBindings& actual)\n        : bindings(actual), selected(nullptr), gui_context(nullptr) {}\n    SingletonManagerInvocationView(const NativeSingletonDeletionBindings& actual,\n        NativeGuiSelectedManagerDeleteAttempt& attempt, NativeGuiMediaFocusLifetimeContext& context)\n        : bindings(actual), selected(&attempt), gui_context(&context) {}\n};\n__declspec(noinline) void __fastcall delete_current_profile(void* owner,\n    const SingletonManagerInvocationView& invocation, std::uint32_t profile,\n    std::uint32_t flags) {\n    if (invocation.selected && profile == 0x00d5bfcc) {\n        (void)scalar_delete_native_gui_manager_00aa6540_fragment(owner, flags,\n            *invocation.gui_context, *invocation.selected);\n        return;\n    }\n    delete_legacy_current_profile(owner, invocation.bindings, profile, flags);\n}\n\n__declspec(naked) void __fastcall destroy_manager_body(\n    void*, const SingletonManagerInvocationView&) {",
+        "before_sha256": "fffa8d6bf44b9051ed36a9b708b92197de2e32eb75a6f33b4942f81df0f5d9ba",
+        "after_sha256": "52987fb21b00be5917ed4ee49439250b5200efe5f096828a172e665484d8443a"
+      },
+      {
+        "file": "src/native_singleton_destruction.cpp",
+        "label": "outer_selected_catch_denies_bd0220",
+        "offset": 31616,
+        "before": "__declspec(naked) void* __fastcall delete_native_singleton_base_00412440(",
+        "after": "__declspec(noinline) void __fastcall destroy_native_singleton_manager_00bd0400(\n    void* owner, const NativeSingletonDeletionBindings& bindings,\n    NativeGuiSelectedManagerDeleteAttempt& selected) {\n    auto* const captured_context = selected.context_; // immutable address, once before callbacks\n    const bool fresh = !selected.core_entered_;\n    selected.core_entered_ = true; // BEFORE every throwing admission and Native effect\n    try {\n        if (!fresh || !selected.cold_bound_ || !selected.host_entered_ || selected.unknown_ ||\n            selected.bindings_ != &bindings || !selected.receiver_bound_ ||\n            selected.outer_receiver_ != owner || bindings.native_gui != captured_context)\n            throw std::logic_error(\"selected shared drain requires its actual cold bound invocation\");\n        const SingletonManagerInvocationView invocation{bindings, selected, *captured_context};\n        destroy_manager_body(owner, invocation);\n        selected.core_returned_ = true; // observation only, no fence/discharge\n    } catch (...) {\n        selected.unknown_ = true;\n        throw; // SAME captured attempt; NEVER the legacy BD0220 catch\n    }\n}\n\n__declspec(naked) void* __fastcall delete_native_singleton_base_00412440(",
+        "before_sha256": "52987fb21b00be5917ed4ee49439250b5200efe5f096828a172e665484d8443a",
+        "after_sha256": "be363ce041d5b5c9c59a1bd08bc6417e9acc35a283860281a496fb4f3cc6b99a"
+      },
+      {
+        "file": "include/bsp/game_native_gui_manager_application.hpp",
+        "label": "game_attempt_forward",
+        "offset": 156,
+        "before": "struct NativeGuiPageLifetimeHost;",
+        "after": "struct NativeGuiPageLifetimeHost;\nclass NativeGuiSelectedManagerDeleteAttempt;",
+        "before_sha256": "0e0b45171c310df86edd5689cdd0ab07be06d42e302e9cf1ff98c42c7c5ccf83",
+        "after_sha256": "39f2412704f1d62014cbbf87f84e6ad0564bb1a2714bcd14b6e5d2b11aef0291"
+      },
+      {
+        "file": "include/bsp/game_native_gui_manager_application.hpp",
+        "label": "game_explicit_cold_preparation_api",
+        "offset": 3970,
+        "before": "    bool requires_process_retention() const noexcept;",
+        "after": "    // Explicit cold metadata preparation only; no default caller or Native effect.\n    void prepare_cold_selected_manager_delete();\n    bool requires_process_retention() const noexcept;",
+        "before_sha256": "39f2412704f1d62014cbbf87f84e6ad0564bb1a2714bcd14b6e5d2b11aef0291",
+        "after_sha256": "5ed14e457159033be78d10a12ba3f4c0ece54d7a7cf2083ee8c5538a55142fd5"
+      },
+      {
+        "file": "src/game_native_gui_manager_application.cpp",
+        "label": "game_nonowning_borrow_after_complete_prefix",
+        "offset": 2120,
+        "before": "    bool page_binding_used{};",
+        "after": "    bool page_binding_used{};\n    NativeGuiSelectedManagerDeleteAttempt* selected_manager_delete{}; // owned by real singleton host\n    bool selected_preparation_started{};\n    bool selected_preparation_failed{};",
+        "before_sha256": "a3bc4aa99e159228c3366f77c4bfb00fc33cfb7e6688d1faf260ffbadb3a3219",
+        "after_sha256": "9756d963466f728c3ca7e2de524346a17fe6ec41d2d3600c954d08ca78f55d86"
+      },
+      {
+        "file": "src/game_native_gui_manager_application.cpp",
+        "label": "actual_cold_preparer_not_constructor_borrow",
+        "offset": 4751,
+        "before": "std::unique_ptr<GameNativeGuiManagerApplication::PageLifetimeBinding>\nGameNativeGuiManagerApplication::bind_page_lifetime_host",
+        "after": "void GameNativeGuiManagerApplication::prepare_cold_selected_manager_delete() {\n    auto& p = *impl_; // Impl is already completely constructed and owned.\n    const bool fresh = !p.selected_preparation_started;\n    p.selected_preparation_started = true; // sticky before throwing cold admission\n    try {\n        if (!fresh || p.selected_manager_delete || p.phase != Impl::Phase::published ||\n            p.singletons.native_deletion_bindings().native_gui != &p.lifetime)\n            throw std::logic_error(\"GUI selected drain prepares once against the genuine published context\");\n        p.selected_manager_delete = &p.singletons.prepare_gui_manager_delete_attempt(p.lifetime);\n    } catch (...) {\n        p.selected_preparation_failed = true;\n        throw; // actual Host pre-drain retention fence, no cold Native cleanup\n    }\n}\n\nstd::unique_ptr<GameNativeGuiManagerApplication::PageLifetimeBinding>\nGameNativeGuiManagerApplication::bind_page_lifetime_host",
+        "before_sha256": "9756d963466f728c3ca7e2de524346a17fe6ec41d2d3600c954d08ca78f55d86",
+        "after_sha256": "830da45e9994fbf3ee6a152a70b1b5d3c771da63b39b9cf240e1cff979440ef5"
+      },
+      {
+        "file": "src/game_native_gui_manager_application.cpp",
+        "label": "existing_host_retention_fence_reads_actual_attempt",
+        "offset": 7221,
+        "before": "bool GameNativeGuiManagerApplication::requires_process_retention() const noexcept {\n    return impl_->phase == Impl::Phase::constructing || impl_->phase == Impl::Phase::failed;\n}",
+        "after": "bool GameNativeGuiManagerApplication::requires_process_retention() const noexcept {\n    if (impl_->selected_preparation_failed) return true;\n    if (impl_->selected_manager_delete &&\n        impl_->selected_manager_delete->requires_source_retention()) return true;\n    return impl_->phase == Impl::Phase::constructing || impl_->phase == Impl::Phase::failed;\n}",
+        "before_sha256": "830da45e9994fbf3ee6a152a70b1b5d3c771da63b39b9cf240e1cff979440ef5",
+        "after_sha256": "7eff27d0138b14e55490ebac8196030ca53216ce8f698594b5f33e0d729b47ae"
+      },
+      {
+        "file": "src/game_native_gui_manager_application.cpp",
+        "label": "after_drain_sticky_incomplete_fence",
+        "offset": 7646,
+        "before": "    auto& p = *impl_;\n    if (p.phase == Impl::Phase::prepared || p.phase == Impl::Phase::drained) return;",
+        "after": "    auto& p = *impl_;\n    if (p.selected_manager_delete && p.phase == Impl::Phase::drained &&\n        p.selected_manager_delete->requires_source_retention())\n        throw std::logic_error(\"selected GUI drain cannot replay an incomplete Source fence\");\n    if (p.phase == Impl::Phase::prepared || p.phase == Impl::Phase::drained) return;",
+        "before_sha256": "7eff27d0138b14e55490ebac8196030ca53216ce8f698594b5f33e0d729b47ae",
+        "after_sha256": "f295608c87ed6af861f943d5c94c18225b3df9d228596546d1236b3967c7dbf8"
+      },
+      {
+        "file": "src/game_native_gui_manager_application.cpp",
+        "label": "only_real_after_drain_boundary_finishes",
+        "offset": 8176,
+        "before": "    p.log.note(\"native GUI manager drained: 00aa6540/00aa6340 cleared 00f8bc5c\");",
+        "after": "    p.log.note(\"native GUI manager drained: 00aa6540/00aa6340 cleared 00f8bc5c\");\n    if (p.selected_manager_delete)\n        p.singletons.finish_gui_manager_delete_attempt(*p.selected_manager_delete);",
+        "before_sha256": "f295608c87ed6af861f943d5c94c18225b3df9d228596546d1236b3967c7dbf8",
+        "after_sha256": "975e7837875dbf7ff307b0f2d68025f1796c5023808615a930d1e3f4597ebebc"
+      },
+      {
+        "file": "include/bsp/game_hosts_singletons.hpp",
+        "label": "owned_attempt_vector_definition",
+        "offset": 316,
+        "before": "#include <optional>",
+        "after": "#include <optional>\n#include <vector>",
+        "before_sha256": "a047bfe45fd98e2586c30b4a87d5124bfadf1d29af198140544bb2f7652481bd",
+        "after_sha256": "25a90baa205304b19d6efbc77d29113a03234dd33b5ba304cc47baf6515b86a0"
+      },
+      {
+        "file": "include/bsp/game_hosts_singletons.hpp",
+        "label": "private_real_owner_preparation_and_fence",
+        "offset": 8479,
+        "before": "private:\n    void retire_vfs_after_drain() noexcept;",
+        "after": "private:\n    friend class GameNativeGuiManagerApplication;\n    NativeGuiSelectedManagerDeleteAttempt& prepare_gui_manager_delete_attempt(\n        NativeGuiMediaFocusLifetimeContext&);\n    void finish_gui_manager_delete_attempt(NativeGuiSelectedManagerDeleteAttempt&);\n    void shutdown_selected(NativeGuiSelectedManagerDeleteAttempt&);\n    void retire_vfs_after_drain() noexcept;",
+        "before_sha256": "25a90baa205304b19d6efbc77d29113a03234dd33b5ba304cc47baf6515b86a0",
+        "after_sha256": "66d417b2bb432214b4b1343e77efc2698d0ac23ead7b84dd261d964c5742a7aa"
+      },
+      {
+        "file": "include/bsp/game_hosts_singletons.hpp",
+        "label": "real_host_owns_retained_attempts_after_old_prefix",
+        "offset": 10986,
+        "before": "    GameNativeLocaleManagerProcess* locale_manager_process_{};",
+        "after": "    GameNativeLocaleManagerProcess* locale_manager_process_{};\n    // Born/adopted after the GUI Impl constructor; retained through fallback\n    // shutdown, both catches, Host _Exit and normal acknowledgement. Old records\n    // never reset. Clearing only the completed private routing borrow is not\n    // Native custody/normal-disposition authority.\n    std::vector<std::unique_ptr<NativeGuiSelectedManagerDeleteAttempt>> selected_gui_attempts_;\n    NativeGuiSelectedManagerDeleteAttempt* pending_selected_gui_attempt_{};\n",
+        "before_sha256": "66d417b2bb432214b4b1343e77efc2698d0ac23ead7b84dd261d964c5742a7aa",
+        "after_sha256": "05d2e3b5d33447553362c91fdd2e8d7bdf3bb3c02e3c28043dbaf4cb1fc45ec9"
+      },
+      {
+        "file": "src/game_hosts_singletons.cpp",
+        "label": "complete_attempt_type_for_actual_host",
+        "offset": 522,
+        "before": "#include \"bsp/native_singleton_vector_leaves.hpp\"",
+        "after": "#include \"bsp/native_singleton_vector_leaves.hpp\"\n#include \"bsp/native_gui_media_focus_lifetime.hpp\"",
+        "before_sha256": "be179a72d97447dcd59620d05a791ac48cea74ab4ccf2468b0445d10c961b38e",
+        "after_sha256": "5549b4dfff1369e67c05c6ce7560aef561cd4c36fc2495e5e016097a52730bcb"
+      },
+      {
+        "file": "src/game_hosts_singletons.cpp",
+        "label": "default_absent_legacy_body_unchanged_after_selection_prefix",
+        "offset": 9209,
+        "before": "void GameSingletonHost::shutdown() {\n",
+        "after": "void GameSingletonHost::shutdown() {\n    auto* const selected = pending_selected_gui_attempt_; // capture before callbacks\n    if (selected) { shutdown_selected(*selected); return; }\n",
+        "before_sha256": "5549b4dfff1369e67c05c6ce7560aef561cd4c36fc2495e5e016097a52730bcb",
+        "after_sha256": "2efca0c9f9cddb4d404b4428837cd1498d0569275afb94b568cc8ec4921f51e6"
+      },
+      {
+        "file": "src/game_hosts_singletons.cpp",
+        "label": "owned_cold_adoption_full_shutdown_and_private_finish",
+        "offset": 10729,
+        "before": "} // namespace bsp::game",
+        "after": "NativeGuiSelectedManagerDeleteAttempt& GameSingletonHost::prepare_gui_manager_delete_attempt(\n    NativeGuiMediaFocusLifetimeContext& context) {\n    auto owned = std::unique_ptr<NativeGuiSelectedManagerDeleteAttempt>(\n        new NativeGuiSelectedManagerDeleteAttempt(*this, context, deletion_bindings_));\n    auto* const selected = owned.get();\n    selected_gui_attempts_.push_back(std::move(owned)); // actual stable adoption BEFORE bind\n    if (pending_selected_gui_attempt_ || deletion_bindings_.native_gui != &context)\n        throw std::logic_error(\"selected GUI drain requires its unchanged actual singleton host/context\");\n    selected->cold_bound_ = true;\n    pending_selected_gui_attempt_ = selected; // publish only the retained record\n    return *selected;\n}\n\nvoid GameSingletonHost::shutdown_selected(NativeGuiSelectedManagerDeleteAttempt& selected) {\n    const bool fresh = !selected.host_entered_;\n    selected.host_entered_ = true; // before admission, callbacks and Native effects\n    try {\n        if (!fresh || selected.unknown_ || !selected.cold_bound_ || selected.host_ != this ||\n            selected.bindings_ != &deletion_bindings_ || pending_selected_gui_attempt_ != &selected)\n            throw std::logic_error(\"selected singleton shutdown requires its actual fresh retained attempt\");\n\n    auto* const locale = locale_manager_process_;\n    if (locale != nullptr) locale->before_shared_drain(*this);\n    void* const manager = manager_publication_01090aa0_;\n    if (manager == nullptr) {\n        retire_vfs_after_drain();\n        if (locale != nullptr) {\n            locale->after_shared_drain(*this);\n            locale_manager_process_ = nullptr;\n        }\n        selected.host_returned_ = true;\n        return;\n    }\n    selected.outer_receiver_ = manager;\n    selected.receiver_bound_ = true;\n    const std::uint32_t registered = count_native_singleton_slots_00bcf910(manager, nullptr);\n    destroy_native_singleton_manager_00bd0400(manager, deletion_bindings_, selected);\n    retire_vfs_after_drain();\n    observers_->record_after_singleton_drain();\n    singleton_lifetime_free(manager);\n    manager_publication_01090aa0_ = nullptr;\n    if (locale != nullptr) {\n        locale->after_shared_drain(*this);\n        locale_manager_process_ = nullptr;\n    }\n    log_.notef(\"singleton lifetime drained: registered_slots=%u effect_publication=%s \"\n        \"manager_publication=%s factory_publication=%s factory_alias=%p \"\n        \"storage=raw14h/raw10h/raw8h\", registered,\n        effect_publication_00f87664_ == nullptr ? \"null\" : \"non-null\",\n        manager_publication_01090aa0_ == nullptr ? \"null\" : \"non-null\",\n        game_resource_factory_publication_00e19b90_ == nullptr ? \"null\" : \"non-null\",\n        game_resource_factory_alias_00f8d31c_);\n    selected.host_returned_ = true; // only after ALL actual shutdown work/logging returns\n    } catch (...) {\n        selected.unknown_ = true;\n        throw; // no new cleanup/terminal policy; real Host catch retains/exits\n    }\n}\n\nvoid GameSingletonHost::finish_gui_manager_delete_attempt(NativeGuiSelectedManagerDeleteAttempt& selected) {\n    if (pending_selected_gui_attempt_ != &selected || selected.host_ != this ||\n        selected.unknown_ || !selected.host_returned_ ||\n        (selected.receiver_bound_ && !selected.core_returned_))\n        throw std::logic_error(\"selected manager normal mark requires complete shutdown and real after-drain fence\");\n    selected.source_fence_returned_ = true; // Source observation, never Native custody credit\n    pending_selected_gui_attempt_ = nullptr; // private consumed routing borrow only\n}\n\n} // namespace bsp::game",
+        "before_sha256": "2efca0c9f9cddb4d404b4428837cd1498d0569275afb94b568cc8ec4921f51e6",
+        "after_sha256": "93b11909a820cab0d72e1283c1ff02604a2ec8839cbfce62c32745538688a4e4"
+      }
+    ],
+    "protected_regions": [
+      {
+        "label": "actual_no_page_owner",
+        "size": 635,
+        "sha256": "32aebae5020aaee59713f68eea61bc1e574468f0ee1c695002da02afaf3ccba8"
+      },
+      {
+        "label": "actual_page_host_interface",
+        "size": 257,
+        "sha256": "39e0ab00a045189337c814f369f11a09f72fcdd89c3d808f3253b10f2303580d"
+      },
+      {
+        "label": "actual_media_context",
+        "size": 170,
+        "sha256": "c40af32aef8180c73485a7456a08cafc96220de474ea27dd0ea62a8bee0e8479"
+      },
+      {
+        "label": "legacy_unwind_gui",
+        "size": 751,
+        "sha256": "a53ee894e722b4abd79e0f65ff497f778409132988c4e02fbffc648e16f43d8e"
+      },
+      {
+        "label": "legacy_default_gui_scalar",
+        "size": 270,
+        "sha256": "c1ff7419cfdaa007073e1f18f30f2d1087e84e350ba950d9e6e00bceac92d33b"
+      },
+      {
+        "label": "whole_gui_normal_kernel_ctor_inverse",
+        "size": 1499,
+        "sha256": "094d6dd94528774d4697e34bffa960e7b4e8bec9bbaf286cf0c89184573f0295"
+      },
+      {
+        "label": "whole_legacy_profile_dispatch_body",
+        "size": 21694,
+        "sha256": "e230bfe45b5855c014c13e08b6bb348e6d6cc5356072bc5d13c80ef399766027"
+      },
+      {
+        "label": "whole_legacy_outer_catch",
+        "size": 705,
+        "sha256": "5cd168fc5c448c77144869b4c60060c84d085ebed0cb8aaa4aee55ca0ab78d31"
+      },
+      {
+        "label": "whole_asm_0",
+        "size": 39,
+        "sha256": "9911e98a7152cb85d503cb76ea48b00772d6d4ac191b70c65c65b1a6cb4d4a9d"
+      },
+      {
+        "label": "whole_asm_1",
+        "size": 2208,
+        "sha256": "1454d1d4a5d6d8a485c42b77fc3539b68c527512042dae2473abd0943ac10301"
+      },
+      {
+        "label": "whole_asm_2",
+        "size": 287,
+        "sha256": "2b95f2d4112a9aac5233489bb1b674470e402ae8683fff45e5d204e6cba4206e"
+      },
+      {
+        "label": "whole_asm_3",
+        "size": 752,
+        "sha256": "c0e03d187380c2a002d99c88b804cff7f8a98e59c9bba1903619e5cabe7c1d40"
+      },
+      {
+        "label": "bindings_layout_and_all_228B_members",
+        "size": 13231,
+        "sha256": "cd0c241240afd263d39282dd964e6d1c9da13b965b962a0ada6d59336f560340"
+      },
+      {
+        "label": "host_default_destructor",
+        "size": 212,
+        "sha256": "ba93c3c5ccbed9039d12f486b106f27492c09cf9e201f845fd83f260c84ea984"
+      },
+      {
+        "label": "whole_default_shutdown_prefix_inverse",
+        "size": 1338,
+        "sha256": "593a7f7bc2da7b411a0d77e33f0ebe92a4568868747dd18637abf578cd662d96"
+      },
+      {
+        "label": "whole_selected_shutdown_schedule_inverse",
+        "size": 1330,
+        "sha256": "f43dc52f9b04b8fb8c7bca7f13d92c8ce58df263973b78e28d1fe282abb6b4ec"
+      },
+      {
+        "label": "game_manager_old_~GameNativeGuiManagerApplication()",
+        "size": 300,
+        "sha256": "ff281cec56f6d50b05047bb804e3b66ff3ae34f99ce2d9c84332fc5d4ab67324"
+      },
+      {
+        "label": "game_manager_old_get_004c12b0()",
+        "size": 971,
+        "sha256": "93381150b4651e83fb9004753157c0acca4c4d2df2667a7f6505530d4910ce1e"
+      },
+      {
+        "label": "game_manager_old_bind_page_lifetime_host(",
+        "size": 1027,
+        "sha256": "03f4c01d17965f14bdc506d27513c0f7750dc1322721af31474e0a36b5e2afac"
+      },
+      {
+        "label": "game_manager_old_release_page_lifetime_binding(",
+        "size": 394,
+        "sha256": "f488d2d3777ba5d0d1345f17a82353088b350df9c6b795d7d9c8db3a04eca9ef"
+      }
+    ],
+    "asm_blocks": 4,
+    "source_binding_size_assert": 228,
+    "unchanged_input_pins": [
+      {
+        "kind": "whole_file",
+        "path": "include/bsp/game_hosts.hpp",
+        "base": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+        "size": 48628,
+        "sha256": "d9b6f5aba28876194548d789ef79ebd3f85ddd47c292fe716dce13edc9e4b919",
+        "git_blob": "06f58246fe25f488a0f29847a413c846da2bbbd0",
+        "current_root_equal": true
+      },
+      {
+        "kind": "whole_file",
+        "path": "src/game_hosts.cpp",
+        "base": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+        "size": 191046,
+        "sha256": "90eba0c691b64c3ab96cc391af3a4eb55e0f174f8acd2a7c83bb72e25c8da78a",
+        "git_blob": "044b4ea5102fc8882856b632e775809a2db7f5b0",
+        "current_root_equal": true
+      },
+      {
+        "kind": "whole_file",
+        "path": "include/bsp/game_native_renderer_application.hpp",
+        "base": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+        "size": 20750,
+        "sha256": "35d3649c491e263cb0c6752bf637d70af3135a9bae12e375ed9d12bbecd26bd5",
+        "git_blob": "dc90eb7264b1a84b06d9658d359864b96cc60a2c",
+        "current_root_equal": true
+      },
+      {
+        "kind": "whole_file",
+        "path": "src/game_native_renderer_application.cpp",
+        "base": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+        "size": 80905,
+        "sha256": "ca5482dcb5566b9ccf14aebd2ec0b78f1e547bf5ab4e5268e2922fb207277d3e",
+        "git_blob": "c7ac9206b53f7fdf8e5c4e53a17cf3b3f6e4231f",
+        "current_root_equal": true
+      },
+      {
+        "kind": "whole_file",
+        "path": "include/bsp/game_native_gui_page_application.hpp",
+        "base": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+        "size": 2945,
+        "sha256": "7ad6d366ec92695ede58d8f44deeee6b6874f8c344788f626aab286495d83221",
+        "git_blob": "4abf6219f61e37b4e6c9ceb2777bd69aa7f7d8df",
+        "current_root_equal": true
+      },
+      {
+        "kind": "whole_file",
+        "path": "src/game_native_gui_page_application.cpp",
+        "base": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+        "size": 72373,
+        "sha256": "0f770bd8713656eeb56b77a97109eb7168e1be5d53d96305e4105edbe44b1668",
+        "git_blob": "996fbbdec1f9160540da07b0842295920734eead",
+        "current_root_equal": true
+      },
+      {
+        "kind": "whole_file",
+        "path": "include/bsp/native_gui_widget_lifetime.hpp",
+        "base": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+        "size": 10153,
+        "sha256": "eb41bcd6bea8ecff99ab0b1dca322316a12c86a3da54a0229a1a59e2519f336a",
+        "git_blob": "3f2e5eaf5756641377cafb0cac7cdb10840bda6f",
+        "current_root_equal": true
+      },
+      {
+        "kind": "whole_file",
+        "path": "src/native_gui_widget_lifetime.cpp",
+        "base": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+        "size": 19237,
+        "sha256": "4cc4073e96b0441595743d967ae2cbf07eaf313671e63bd99891cbe06fb912b7",
+        "git_blob": "084e85da41c26b91eb83e2f9f865644997b59ab0",
+        "current_root_equal": true
+      },
+      {
+        "kind": "whole_file",
+        "path": "include/bsp/native_gui_layer_lifetime.hpp",
+        "base": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+        "size": 4093,
+        "sha256": "dbf0d44346d847bd4c2daa86b73cdb6ec175e2553ad113ef8bbeffc444f631dd",
+        "git_blob": "2477f2e27bb3d0fa2c59042d91f0b41a2a9be73a",
+        "current_root_equal": true
+      },
+      {
+        "kind": "whole_file",
+        "path": "src/native_gui_layer_lifetime.cpp",
+        "base": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+        "size": 4457,
+        "sha256": "d6d789179cd68cbd1bf66a6ebf2b1aeb4c2c29fc03155b3be335ebfdb22cf7d0",
+        "git_blob": "5ceefd2a5021f3d9df7ce50bc5c78722be5a2b15",
+        "current_root_equal": true
+      },
+      {
+        "kind": "whole_file",
+        "path": "include/bsp/native_singleton_vector_leaves.hpp",
+        "base": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+        "size": 3101,
+        "sha256": "18ccc9155d016d979489e00a900628816bd31a013815c299b9b8b565878c7d8b",
+        "git_blob": "5087fa92c116349ad0738e9a12c4c88afbe44a3e",
+        "current_root_equal": true
+      },
+      {
+        "kind": "whole_file",
+        "path": "src/native_singleton_vector_leaves.cpp",
+        "base": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+        "size": 3538,
+        "sha256": "366628d6ec54de3f643b5fff299d16092a2c085a8e0715d4a9b0a6cdb2ed89ad",
+        "git_blob": "f9d0693c2cdeff2e2c952bed2767c71fa0d09a0a",
+        "current_root_equal": true
+      },
+      {
+        "kind": "whole_file",
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "base": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+        "size": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+        "current_root_equal": true
+      },
+      {
+        "kind": "whole_file",
+        "path": "src/singleton_lifetime.cpp",
+        "base": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+        "size": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+        "current_root_equal": true
+      },
+      {
+        "kind": "whole_file",
+        "path": "include/bsp/native_platform_focus_owners.hpp",
+        "base": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+        "size": 4708,
+        "sha256": "0738ee83b33d44ee79852f115e79515a85d653452d70fc920ab63e3675c51865",
+        "git_blob": "5d8de2a99377eca1b22b24ccd0f016f1b5441cf4",
+        "current_root_equal": true
+      },
+      {
+        "kind": "whole_file",
+        "path": "src/native_platform_focus_owners.cpp",
+        "base": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+        "size": 10371,
+        "sha256": "efff43cee498b710d53d4b2380e4ae89791dc578371d35b2be29327b0fedfe73",
+        "git_blob": "451ff6e886f73c7e15e4b30366a59ed1c2054a0b",
+        "current_root_equal": true
+      },
+      {
+        "kind": "whole_file",
+        "path": "include/bsp/native_string_pool_storage.hpp",
+        "base": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+        "size": 3113,
+        "sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+        "git_blob": "60b3f627150fa058fac7b8c4c74537cb3aee0a68",
+        "current_root_equal": true
+      },
+      {
+        "kind": "whole_file",
+        "path": "src/native_string_pool_storage.cpp",
+        "base": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+        "size": 5450,
+        "sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+        "git_blob": "103d6fe4d772bb3078c48fe8bcf3f929a385fdda",
+        "current_root_equal": true
+      },
+      {
+        "kind": "whole_file",
+        "path": "include/bsp/game_native_locale_manager.hpp",
+        "base": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+        "size": 4092,
+        "sha256": "42dec9cccba35990c919428d7a02b663dfbd2e21f9ca3a345a87f7e80c2fcb13",
+        "git_blob": "a0a8374de9cce69892b19537731d70482af0979d",
+        "current_root_equal": true
+      },
+      {
+        "kind": "whole_file",
+        "path": "src/game_native_locale_manager.cpp",
+        "base": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+        "size": 30338,
+        "sha256": "e9869bf1841514522558e013e847d59212bceb65abb948b7037b89079f867341",
+        "git_blob": "debdabd2260fe02c9d9f007fb1a6b5640d1871ea",
+        "current_root_equal": true
+      },
+      {
+        "kind": "whole_file",
+        "path": "include/bsp/game_observer_runtime.hpp",
+        "base": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+        "size": 1967,
+        "sha256": "8022cbbd226696c9f94c4c1bc7e16be9c9cf1dbac7ca38e27c54e5161e703ba6",
+        "git_blob": "4afa2c892ea3bc20956d6a5d1e10dcda48eec2e1",
+        "current_root_equal": true
+      },
+      {
+        "kind": "whole_file",
+        "path": "src/game_observer_runtime.cpp",
+        "base": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+        "size": 2390,
+        "sha256": "d17a0b51f3c6d991c90dcff85efeaa40b73226d6ef23fb2ca8197f313482d0d1",
+        "git_blob": "6f4eb45612b3e4ec24cfc3fe3f991a81cad8d066",
+        "current_root_equal": true
+      },
+      {
+        "kind": "whole_file",
+        "path": "include/bsp/game_native_vfs_runtime.hpp",
+        "base": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+        "size": 10066,
+        "sha256": "9aac7e73eb21744bf0951ba60c78454ef90c4d2884830a32d35a3d15d886f38b",
+        "git_blob": "ad324163ac7e8e1267b9d4220208423a42e72061",
+        "current_root_equal": true
+      },
+      {
+        "kind": "whole_file",
+        "path": "src/game_native_vfs_runtime.cpp",
+        "base": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+        "size": 36878,
+        "sha256": "4420a276eb28c22c334bad1707c520d15f46b7f129dff34bd70ca27cb63ce893",
+        "git_blob": "4495accb0c1db159cd48df84dec7896dc2e16b2b",
+        "current_root_equal": true
+      },
+      {
+        "kind": "whole_file",
+        "path": "include/bsp/game_native_string_process.hpp",
+        "base": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+        "size": 6018,
+        "sha256": "68ac5c24794233d13e2b68d7276e703dc62d39bded4b969bfcf7a06361fac697",
+        "git_blob": "d5e1fdd68d64a6e5429068335742f669fd8f1ddd",
+        "current_root_equal": true
+      },
+      {
+        "kind": "whole_file",
+        "path": "src/game_native_string_process.cpp",
+        "base": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+        "size": 2120,
+        "sha256": "baee34f67bf3948f0a92e05ebd2fc27d16b90727adc8ad4c8f6414dd16f77d6a",
+        "git_blob": "d5916015af98534a5c1915968a757510cc45b583",
+        "current_root_equal": true
+      },
+      {
+        "kind": "whole_file",
+        "path": "include/bsp/native_string.hpp",
+        "base": "da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5",
+        "size": 8771,
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+        "current_root_equal": true
+      }
+    ]
+  },
+  "v2_manifest": {
+    "size": 10973,
+    "sha256": "2690e13197d45c3c86b609466c724f81feecc11308c6dbc81f9f275994d9c42e",
+    "utf8": "{\n  \"kind\": \"frozen_ignored_selected_manager_negative_attempt_proposal\",\n  \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n  \"validated_root\": \"672a6cc2fd7dba2b69a0e449e542f9d1c15a81fa\",\n  \"origin_main\": \"672a6cc2fd7dba2b69a0e449e542f9d1c15a81fa\",\n  \"artifacts\": [\n    {\n      \"path\": \"actual_shutdown_callers.txt\",\n      \"size\": 471,\n      \"sha256\": \"1fabb541833aaf4f6e96cde696c9045bd2c885eb66c0d19ec2f30e5f9f0681d8\"\n    },\n    {\n      \"path\": \"CALL_CONTRACT.md\",\n      \"size\": 9880,\n      \"sha256\": \"b7e6a316a8bad9f03b33feb6efbbd4d7e4c4a0d2f61afc6250b04537b3aa3fab\"\n    },\n    {\n      \"path\": \"candidate/include/bsp/game_hosts_singletons.hpp\",\n      \"size\": 11540,\n      \"sha256\": \"05d2e3b5d33447553362c91fdd2e8d7bdf3bb3c02e3c28043dbaf4cb1fc45ec9\"\n    },\n    {\n      \"path\": \"candidate/include/bsp/game_native_gui_manager_application.hpp\",\n      \"size\": 4434,\n      \"sha256\": \"5ed14e457159033be78d10a12ba3f4c0ece54d7a7cf2083ee8c5538a55142fd5\"\n    },\n    {\n      \"path\": \"candidate/include/bsp/native_gui_media_focus_lifetime.hpp\",\n      \"size\": 5715,\n      \"sha256\": \"f88f410cfe26d7ae0f0efdd27b40b1fb0daee5d9ae93d679b5bf2782af97ade9\"\n    },\n    {\n      \"path\": \"candidate/include/bsp/native_singleton_destruction.hpp\",\n      \"size\": 24254,\n      \"sha256\": \"7b16cc4b6169fd537f5b12e0e98ff22c248012bc5d10a72cf0a55e9a87028731\"\n    },\n    {\n      \"path\": \"candidate/src/game_hosts_singletons.cpp\",\n      \"size\": 14375,\n      \"sha256\": \"93b11909a820cab0d72e1283c1ff02604a2ec8839cbfce62c32745538688a4e4\"\n    },\n    {\n      \"path\": \"candidate/src/game_native_gui_manager_application.cpp\",\n      \"size\": 8404,\n      \"sha256\": \"975e7837875dbf7ff307b0f2d68025f1796c5023808615a930d1e3f4597ebebc\"\n    },\n    {\n      \"path\": \"candidate/src/native_gui_media_focus_lifetime.cpp\",\n      \"size\": 7786,\n      \"sha256\": \"9a23076e50ca6e7094fe6d44d1e512571022e36213a11615f76ea6b63205b2a0\"\n    },\n    {\n      \"path\": \"candidate/src/native_singleton_destruction.cpp\",\n      \"size\": 34081,\n      \"sha256\": \"be363ce041d5b5c9c59a1bd08bc6417e9acc35a283860281a496fb4f3cc6b99a\"\n    },\n    {\n      \"path\": \"candidate.patch\",\n      \"size\": 21045,\n      \"sha256\": \"69e47cbbdb1baed5c08d375b6bffe287aac66b2dc7e64064c4768bcb5c1b3b88\"\n    },\n    {\n      \"path\": \"checker_result.json\",\n      \"size\": 27535,\n      \"sha256\": \"ca8bbf6bd5956cebb15359bf00c30fb7a2a24d7f662b11737eb5ea5aec60a9f3\"\n    },\n    {\n      \"path\": \"make_proposal.py\",\n      \"size\": 19765,\n      \"sha256\": \"17952ea6fe656bc75ec4822d072422ecedd84274a64426a39c3c368b2d6d5c92\"\n    },\n    {\n      \"path\": \"preimage/include/bsp/game_hosts_singletons.hpp\",\n      \"size\": 10732,\n      \"sha256\": \"a047bfe45fd98e2586c30b4a87d5124bfadf1d29af198140544bb2f7652481bd\"\n    },\n    {\n      \"path\": \"preimage/include/bsp/game_native_gui_manager_application.hpp\",\n      \"size\": 4256,\n      \"sha256\": \"0e0b45171c310df86edd5689cdd0ab07be06d42e302e9cf1ff98c42c7c5ccf83\"\n    },\n    {\n      \"path\": \"preimage/include/bsp/native_gui_media_focus_lifetime.hpp\",\n      \"size\": 3213,\n      \"sha256\": \"fed651ac9f3e7f0853c4754dd180dc68b1e6432afc9fe64a327caa59e8b81412\"\n    },\n    {\n      \"path\": \"preimage/include/bsp/native_singleton_destruction.hpp\",\n      \"size\": 23882,\n      \"sha256\": \"9dfa24bc4e6f9a44a0f62ac464989b288d7270d7bd0f0804c5c5659612b047db\"\n    },\n    {\n      \"path\": \"preimage/src/game_hosts_singletons.cpp\",\n      \"size\": 10557,\n      \"sha256\": \"be179a72d97447dcd59620d05a791ac48cea74ab4ccf2468b0445d10c961b38e\"\n    },\n    {\n      \"path\": \"preimage/src/game_native_gui_manager_application.cpp\",\n      \"size\": 6856,\n      \"sha256\": \"a3bc4aa99e159228c3366f77c4bfb00fc33cfb7e6688d1faf260ffbadb3a3219\"\n    },\n    {\n      \"path\": \"preimage/src/native_gui_media_focus_lifetime.cpp\",\n      \"size\": 6502,\n      \"sha256\": \"06744c0d69116b56681e74ed0f92d97a0b3d583455b66ea2d458a1a0cea0c749\"\n    },\n    {\n      \"path\": \"preimage/src/native_singleton_destruction.cpp\",\n      \"size\": 31652,\n      \"sha256\": \"5bf40d18ce2cb8e8987aebcbc17d3d002c3bcc7d989b2bc65076f1f87b992954\"\n    },\n    {\n      \"path\": \"prepare_v2.py\",\n      \"size\": 3346,\n      \"sha256\": \"32ae23c17b31fa7e2ace4f835b17c0b810ca89fd643b130f584e153860a0f212\"\n    },\n    {\n      \"path\": \"proposal.json\",\n      \"size\": 37712,\n      \"sha256\": \"427bd8dc4f65971b7ae16b68cc5786d6c9d65a8fd0638b342a4dc7b6acc5ca41\"\n    },\n    {\n      \"path\": \"provider_pins.json\",\n      \"size\": 11345,\n      \"sha256\": \"c5b31caa5bb03c9df3f294a27c7d613afe6185f5d4a01d135ffbe8c1e787d6ea\"\n    },\n    {\n      \"path\": \"providers/include/bsp/game_hosts.hpp\",\n      \"size\": 48628,\n      \"sha256\": \"d9b6f5aba28876194548d789ef79ebd3f85ddd47c292fe716dce13edc9e4b919\"\n    },\n    {\n      \"path\": \"providers/include/bsp/game_native_gui_page_application.hpp\",\n      \"size\": 2945,\n      \"sha256\": \"7ad6d366ec92695ede58d8f44deeee6b6874f8c344788f626aab286495d83221\"\n    },\n    {\n      \"path\": \"providers/include/bsp/game_native_locale_manager.hpp\",\n      \"size\": 4092,\n      \"sha256\": \"42dec9cccba35990c919428d7a02b663dfbd2e21f9ca3a345a87f7e80c2fcb13\"\n    },\n    {\n      \"path\": \"providers/include/bsp/game_native_renderer_application.hpp\",\n      \"size\": 20750,\n      \"sha256\": \"35d3649c491e263cb0c6752bf637d70af3135a9bae12e375ed9d12bbecd26bd5\"\n    },\n    {\n      \"path\": \"providers/include/bsp/game_native_string_process.hpp\",\n      \"size\": 6018,\n      \"sha256\": \"68ac5c24794233d13e2b68d7276e703dc62d39bded4b969bfcf7a06361fac697\"\n    },\n    {\n      \"path\": \"providers/include/bsp/game_native_vfs_runtime.hpp\",\n      \"size\": 10066,\n      \"sha256\": \"9aac7e73eb21744bf0951ba60c78454ef90c4d2884830a32d35a3d15d886f38b\"\n    },\n    {\n      \"path\": \"providers/include/bsp/game_observer_runtime.hpp\",\n      \"size\": 1967,\n      \"sha256\": \"8022cbbd226696c9f94c4c1bc7e16be9c9cf1dbac7ca38e27c54e5161e703ba6\"\n    },\n    {\n      \"path\": \"providers/include/bsp/native_gui_layer_lifetime.hpp\",\n      \"size\": 4093,\n      \"sha256\": \"dbf0d44346d847bd4c2daa86b73cdb6ec175e2553ad113ef8bbeffc444f631dd\"\n    },\n    {\n      \"path\": \"providers/include/bsp/native_gui_widget_lifetime.hpp\",\n      \"size\": 10153,\n      \"sha256\": \"eb41bcd6bea8ecff99ab0b1dca322316a12c86a3da54a0229a1a59e2519f336a\"\n    },\n    {\n      \"path\": \"providers/include/bsp/native_platform_focus_owners.hpp\",\n      \"size\": 4708,\n      \"sha256\": \"0738ee83b33d44ee79852f115e79515a85d653452d70fc920ab63e3675c51865\"\n    },\n    {\n      \"path\": \"providers/include/bsp/native_singleton_vector_leaves.hpp\",\n      \"size\": 3101,\n      \"sha256\": \"18ccc9155d016d979489e00a900628816bd31a013815c299b9b8b565878c7d8b\"\n    },\n    {\n      \"path\": \"providers/include/bsp/native_string.hpp\",\n      \"size\": 8771,\n      \"sha256\": \"d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414\"\n    },\n    {\n      \"path\": \"providers/include/bsp/native_string_pool_storage.hpp\",\n      \"size\": 3113,\n      \"sha256\": \"0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02\"\n    },\n    {\n      \"path\": \"providers/include/bsp/singleton_lifetime.hpp\",\n      \"size\": 4372,\n      \"sha256\": \"56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f\"\n    },\n    {\n      \"path\": \"providers/src/game_hosts.cpp\",\n      \"size\": 191046,\n      \"sha256\": \"90eba0c691b64c3ab96cc391af3a4eb55e0f174f8acd2a7c83bb72e25c8da78a\"\n    },\n    {\n      \"path\": \"providers/src/game_native_gui_page_application.cpp\",\n      \"size\": 72373,\n      \"sha256\": \"0f770bd8713656eeb56b77a97109eb7168e1be5d53d96305e4105edbe44b1668\"\n    },\n    {\n      \"path\": \"providers/src/game_native_locale_manager.cpp\",\n      \"size\": 30338,\n      \"sha256\": \"e9869bf1841514522558e013e847d59212bceb65abb948b7037b89079f867341\"\n    },\n    {\n      \"path\": \"providers/src/game_native_renderer_application.cpp\",\n      \"size\": 80905,\n      \"sha256\": \"ca5482dcb5566b9ccf14aebd2ec0b78f1e547bf5ab4e5268e2922fb207277d3e\"\n    },\n    {\n      \"path\": \"providers/src/game_native_string_process.cpp\",\n      \"size\": 2120,\n      \"sha256\": \"baee34f67bf3948f0a92e05ebd2fc27d16b90727adc8ad4c8f6414dd16f77d6a\"\n    },\n    {\n      \"path\": \"providers/src/game_native_vfs_runtime.cpp\",\n      \"size\": 36878,\n      \"sha256\": \"4420a276eb28c22c334bad1707c520d15f46b7f129dff34bd70ca27cb63ce893\"\n    },\n    {\n      \"path\": \"providers/src/game_observer_runtime.cpp\",\n      \"size\": 2390,\n      \"sha256\": \"d17a0b51f3c6d991c90dcff85efeaa40b73226d6ef23fb2ca8197f313482d0d1\"\n    },\n    {\n      \"path\": \"providers/src/native_gui_layer_lifetime.cpp\",\n      \"size\": 4457,\n      \"sha256\": \"d6d789179cd68cbd1bf66a6ebf2b1aeb4c2c29fc03155b3be335ebfdb22cf7d0\"\n    },\n    {\n      \"path\": \"providers/src/native_gui_widget_lifetime.cpp\",\n      \"size\": 19237,\n      \"sha256\": \"4cc4073e96b0441595743d967ae2cbf07eaf313671e63bd99891cbe06fb912b7\"\n    },\n    {\n      \"path\": \"providers/src/native_platform_focus_owners.cpp\",\n      \"size\": 10371,\n      \"sha256\": \"efff43cee498b710d53d4b2380e4ae89791dc578371d35b2be29327b0fedfe73\"\n    },\n    {\n      \"path\": \"providers/src/native_singleton_vector_leaves.cpp\",\n      \"size\": 3538,\n      \"sha256\": \"366628d6ec54de3f643b5fff299d16092a2c085a8e0715d4a9b0a6cdb2ed89ad\"\n    },\n    {\n      \"path\": \"providers/src/native_string_pool_storage.cpp\",\n      \"size\": 5450,\n      \"sha256\": \"359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a\"\n    },\n    {\n      \"path\": \"providers/src/singleton_lifetime.cpp\",\n      \"size\": 13257,\n      \"sha256\": \"97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62\"\n    },\n    {\n      \"path\": \"regions/actual_Host_drain_catch.txt\",\n      \"size\": 2138,\n      \"sha256\": \"1295313301b798512f9648b2ecae661f3c3174ddaaf5b1451a5d762379d494a3\"\n    },\n    {\n      \"path\": \"regions/actual_Host_retention_and_after_drain.txt\",\n      \"size\": 3390,\n      \"sha256\": \"b29542d2a92187f1bde9b33a190aa08dd6abb816dd3f24181dffb5bac10aca31\"\n    },\n    {\n      \"path\": \"regions/actual_Page_raw_notification.txt\",\n      \"size\": 5597,\n      \"sha256\": \"2c45f8bacf4544a0e4a0669be98b0996d436d5af6baf10b0ba57b5ff84b5c363\"\n    },\n    {\n      \"path\": \"regions/actual_Page_raw_timed_admission.txt\",\n      \"size\": 1099,\n      \"sha256\": \"9e40780469ab1de6ed12b78080e01340e3170f608f49fcf632a28fbb557fce60\"\n    },\n    {\n      \"path\": \"regions/actual_renderer_shutdown_delegate.txt\",\n      \"size\": 1074,\n      \"sha256\": \"fa0c947d50e5cf091d7f2f07090c2effe63fe9c19a5adb88b6688cc0d9ef3dde\"\n    },\n    {\n      \"path\": \"seal_proposal.py\",\n      \"size\": 16199,\n      \"sha256\": \"509148e9dafa1832d5095f9cb18e42e8c8e6c902082b9ff4d0605330c54a2c62\"\n    },\n    {\n      \"path\": \"source_delta.json\",\n      \"size\": 397,\n      \"sha256\": \"b092d98f9acbdf84f23ffab6e3147c71331830f09d9c8ea02db38ff217684800\"\n    },\n    {\n      \"path\": \"v1_integrity.json\",\n      \"size\": 10573,\n      \"sha256\": \"7cdeb1bb4220bce3bc3354f918ca8aaf29d325d46e76dd4d0c2b5a8a298d5b69\"\n    },\n    {\n      \"path\": \"v1_to_v2_source.patch\",\n      \"size\": 476,\n      \"sha256\": \"28c34f47e26fba4fb6b2cd8d4921c90d95c34a4bb212e42fc947bd0de3ce6529\"\n    },\n    {\n      \"path\": \"verify_proposal.py\",\n      \"size\": 10993,\n      \"sha256\": \"53f1f745e770423f1b914bd70280b362acbf5e964d4ca9fe6838ea27fc9e5014\"\n    }\n  ]\n}\n"
+  },
+  "v2_dependencies": {
+    "size": 11345,
+    "sha256": "c5b31caa5bb03c9df3f294a27c7d613afe6185f5d4a01d135ffbe8c1e787d6ea",
+    "utf8": "{\n  \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n  \"current_root\": \"672a6cc2fd7dba2b69a0e449e542f9d1c15a81fa\",\n  \"origin_main\": \"672a6cc2fd7dba2b69a0e449e542f9d1c15a81fa\",\n  \"whole_files\": [\n    {\n      \"kind\": \"whole_file\",\n      \"path\": \"include/bsp/game_hosts.hpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"size\": 48628,\n      \"sha256\": \"d9b6f5aba28876194548d789ef79ebd3f85ddd47c292fe716dce13edc9e4b919\",\n      \"git_blob\": \"06f58246fe25f488a0f29847a413c846da2bbbd0\",\n      \"current_root_equal\": true\n    },\n    {\n      \"kind\": \"whole_file\",\n      \"path\": \"src/game_hosts.cpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"size\": 191046,\n      \"sha256\": \"90eba0c691b64c3ab96cc391af3a4eb55e0f174f8acd2a7c83bb72e25c8da78a\",\n      \"git_blob\": \"044b4ea5102fc8882856b632e775809a2db7f5b0\",\n      \"current_root_equal\": true\n    },\n    {\n      \"kind\": \"whole_file\",\n      \"path\": \"include/bsp/game_native_renderer_application.hpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"size\": 20750,\n      \"sha256\": \"35d3649c491e263cb0c6752bf637d70af3135a9bae12e375ed9d12bbecd26bd5\",\n      \"git_blob\": \"dc90eb7264b1a84b06d9658d359864b96cc60a2c\",\n      \"current_root_equal\": true\n    },\n    {\n      \"kind\": \"whole_file\",\n      \"path\": \"src/game_native_renderer_application.cpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"size\": 80905,\n      \"sha256\": \"ca5482dcb5566b9ccf14aebd2ec0b78f1e547bf5ab4e5268e2922fb207277d3e\",\n      \"git_blob\": \"c7ac9206b53f7fdf8e5c4e53a17cf3b3f6e4231f\",\n      \"current_root_equal\": true\n    },\n    {\n      \"kind\": \"whole_file\",\n      \"path\": \"include/bsp/game_native_gui_page_application.hpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"size\": 2945,\n      \"sha256\": \"7ad6d366ec92695ede58d8f44deeee6b6874f8c344788f626aab286495d83221\",\n      \"git_blob\": \"4abf6219f61e37b4e6c9ceb2777bd69aa7f7d8df\",\n      \"current_root_equal\": true\n    },\n    {\n      \"kind\": \"whole_file\",\n      \"path\": \"src/game_native_gui_page_application.cpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"size\": 72373,\n      \"sha256\": \"0f770bd8713656eeb56b77a97109eb7168e1be5d53d96305e4105edbe44b1668\",\n      \"git_blob\": \"996fbbdec1f9160540da07b0842295920734eead\",\n      \"current_root_equal\": true\n    },\n    {\n      \"kind\": \"whole_file\",\n      \"path\": \"include/bsp/native_gui_widget_lifetime.hpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"size\": 10153,\n      \"sha256\": \"eb41bcd6bea8ecff99ab0b1dca322316a12c86a3da54a0229a1a59e2519f336a\",\n      \"git_blob\": \"3f2e5eaf5756641377cafb0cac7cdb10840bda6f\",\n      \"current_root_equal\": true\n    },\n    {\n      \"kind\": \"whole_file\",\n      \"path\": \"src/native_gui_widget_lifetime.cpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"size\": 19237,\n      \"sha256\": \"4cc4073e96b0441595743d967ae2cbf07eaf313671e63bd99891cbe06fb912b7\",\n      \"git_blob\": \"084e85da41c26b91eb83e2f9f865644997b59ab0\",\n      \"current_root_equal\": true\n    },\n    {\n      \"kind\": \"whole_file\",\n      \"path\": \"include/bsp/native_gui_layer_lifetime.hpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"size\": 4093,\n      \"sha256\": \"dbf0d44346d847bd4c2daa86b73cdb6ec175e2553ad113ef8bbeffc444f631dd\",\n      \"git_blob\": \"2477f2e27bb3d0fa2c59042d91f0b41a2a9be73a\",\n      \"current_root_equal\": true\n    },\n    {\n      \"kind\": \"whole_file\",\n      \"path\": \"src/native_gui_layer_lifetime.cpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"size\": 4457,\n      \"sha256\": \"d6d789179cd68cbd1bf66a6ebf2b1aeb4c2c29fc03155b3be335ebfdb22cf7d0\",\n      \"git_blob\": \"5ceefd2a5021f3d9df7ce50bc5c78722be5a2b15\",\n      \"current_root_equal\": true\n    },\n    {\n      \"kind\": \"whole_file\",\n      \"path\": \"include/bsp/native_singleton_vector_leaves.hpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"size\": 3101,\n      \"sha256\": \"18ccc9155d016d979489e00a900628816bd31a013815c299b9b8b565878c7d8b\",\n      \"git_blob\": \"5087fa92c116349ad0738e9a12c4c88afbe44a3e\",\n      \"current_root_equal\": true\n    },\n    {\n      \"kind\": \"whole_file\",\n      \"path\": \"src/native_singleton_vector_leaves.cpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"size\": 3538,\n      \"sha256\": \"366628d6ec54de3f643b5fff299d16092a2c085a8e0715d4a9b0a6cdb2ed89ad\",\n      \"git_blob\": \"f9d0693c2cdeff2e2c952bed2767c71fa0d09a0a\",\n      \"current_root_equal\": true\n    },\n    {\n      \"kind\": \"whole_file\",\n      \"path\": \"include/bsp/singleton_lifetime.hpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"size\": 4372,\n      \"sha256\": \"56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f\",\n      \"git_blob\": \"4d10f6c53a3b9be4745776df443f340ea1769936\",\n      \"current_root_equal\": true\n    },\n    {\n      \"kind\": \"whole_file\",\n      \"path\": \"src/singleton_lifetime.cpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"size\": 13257,\n      \"sha256\": \"97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62\",\n      \"git_blob\": \"fcfa61ad06f35ef7ca3dd03077fa321a38eccd15\",\n      \"current_root_equal\": true\n    },\n    {\n      \"kind\": \"whole_file\",\n      \"path\": \"include/bsp/native_platform_focus_owners.hpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"size\": 4708,\n      \"sha256\": \"0738ee83b33d44ee79852f115e79515a85d653452d70fc920ab63e3675c51865\",\n      \"git_blob\": \"5d8de2a99377eca1b22b24ccd0f016f1b5441cf4\",\n      \"current_root_equal\": true\n    },\n    {\n      \"kind\": \"whole_file\",\n      \"path\": \"src/native_platform_focus_owners.cpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"size\": 10371,\n      \"sha256\": \"efff43cee498b710d53d4b2380e4ae89791dc578371d35b2be29327b0fedfe73\",\n      \"git_blob\": \"451ff6e886f73c7e15e4b30366a59ed1c2054a0b\",\n      \"current_root_equal\": true\n    },\n    {\n      \"kind\": \"whole_file\",\n      \"path\": \"include/bsp/native_string_pool_storage.hpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"size\": 3113,\n      \"sha256\": \"0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02\",\n      \"git_blob\": \"60b3f627150fa058fac7b8c4c74537cb3aee0a68\",\n      \"current_root_equal\": true\n    },\n    {\n      \"kind\": \"whole_file\",\n      \"path\": \"src/native_string_pool_storage.cpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"size\": 5450,\n      \"sha256\": \"359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a\",\n      \"git_blob\": \"103d6fe4d772bb3078c48fe8bcf3f929a385fdda\",\n      \"current_root_equal\": true\n    },\n    {\n      \"kind\": \"whole_file\",\n      \"path\": \"include/bsp/game_native_locale_manager.hpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"size\": 4092,\n      \"sha256\": \"42dec9cccba35990c919428d7a02b663dfbd2e21f9ca3a345a87f7e80c2fcb13\",\n      \"git_blob\": \"a0a8374de9cce69892b19537731d70482af0979d\",\n      \"current_root_equal\": true\n    },\n    {\n      \"kind\": \"whole_file\",\n      \"path\": \"src/game_native_locale_manager.cpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"size\": 30338,\n      \"sha256\": \"e9869bf1841514522558e013e847d59212bceb65abb948b7037b89079f867341\",\n      \"git_blob\": \"debdabd2260fe02c9d9f007fb1a6b5640d1871ea\",\n      \"current_root_equal\": true\n    },\n    {\n      \"kind\": \"whole_file\",\n      \"path\": \"include/bsp/game_observer_runtime.hpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"size\": 1967,\n      \"sha256\": \"8022cbbd226696c9f94c4c1bc7e16be9c9cf1dbac7ca38e27c54e5161e703ba6\",\n      \"git_blob\": \"4afa2c892ea3bc20956d6a5d1e10dcda48eec2e1\",\n      \"current_root_equal\": true\n    },\n    {\n      \"kind\": \"whole_file\",\n      \"path\": \"src/game_observer_runtime.cpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"size\": 2390,\n      \"sha256\": \"d17a0b51f3c6d991c90dcff85efeaa40b73226d6ef23fb2ca8197f313482d0d1\",\n      \"git_blob\": \"6f4eb45612b3e4ec24cfc3fe3f991a81cad8d066\",\n      \"current_root_equal\": true\n    },\n    {\n      \"kind\": \"whole_file\",\n      \"path\": \"include/bsp/game_native_vfs_runtime.hpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"size\": 10066,\n      \"sha256\": \"9aac7e73eb21744bf0951ba60c78454ef90c4d2884830a32d35a3d15d886f38b\",\n      \"git_blob\": \"ad324163ac7e8e1267b9d4220208423a42e72061\",\n      \"current_root_equal\": true\n    },\n    {\n      \"kind\": \"whole_file\",\n      \"path\": \"src/game_native_vfs_runtime.cpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"size\": 36878,\n      \"sha256\": \"4420a276eb28c22c334bad1707c520d15f46b7f129dff34bd70ca27cb63ce893\",\n      \"git_blob\": \"4495accb0c1db159cd48df84dec7896dc2e16b2b\",\n      \"current_root_equal\": true\n    },\n    {\n      \"kind\": \"whole_file\",\n      \"path\": \"include/bsp/game_native_string_process.hpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"size\": 6018,\n      \"sha256\": \"68ac5c24794233d13e2b68d7276e703dc62d39bded4b969bfcf7a06361fac697\",\n      \"git_blob\": \"d5e1fdd68d64a6e5429068335742f669fd8f1ddd\",\n      \"current_root_equal\": true\n    },\n    {\n      \"kind\": \"whole_file\",\n      \"path\": \"src/game_native_string_process.cpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"size\": 2120,\n      \"sha256\": \"baee34f67bf3948f0a92e05ebd2fc27d16b90727adc8ad4c8f6414dd16f77d6a\",\n      \"git_blob\": \"d5916015af98534a5c1915968a757510cc45b583\",\n      \"current_root_equal\": true\n    },\n    {\n      \"kind\": \"whole_file\",\n      \"path\": \"include/bsp/native_string.hpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"size\": 8771,\n      \"sha256\": \"d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414\",\n      \"git_blob\": \"3b7af4c6508cfc1df81e913108b5162208685e97\",\n      \"current_root_equal\": true\n    }\n  ],\n  \"bounded_regions\": [\n    {\n      \"kind\": \"bounded_line_region\",\n      \"path\": \"src/game_hosts.cpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"start_line\": 2211,\n      \"end_line\": 2249,\n      \"size\": 2138,\n      \"sha256\": \"1295313301b798512f9648b2ecae661f3c3174ddaaf5b1451a5d762379d494a3\"\n    },\n    {\n      \"kind\": \"bounded_line_region\",\n      \"path\": \"src/game_hosts.cpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"start_line\": 2351,\n      \"end_line\": 2420,\n      \"size\": 3390,\n      \"sha256\": \"b29542d2a92187f1bde9b33a190aa08dd6abb816dd3f24181dffb5bac10aca31\"\n    },\n    {\n      \"kind\": \"bounded_line_region\",\n      \"path\": \"src/game_native_renderer_application.cpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"start_line\": 1311,\n      \"end_line\": 1329,\n      \"size\": 1074,\n      \"sha256\": \"fa0c947d50e5cf091d7f2f07090c2effe63fe9c19a5adb88b6688cc0d9ef3dde\"\n    },\n    {\n      \"kind\": \"bounded_line_region\",\n      \"path\": \"src/game_native_gui_page_application.cpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"start_line\": 590,\n      \"end_line\": 682,\n      \"size\": 5597,\n      \"sha256\": \"2c45f8bacf4544a0e4a0669be98b0996d436d5af6baf10b0ba57b5ff84b5c363\"\n    },\n    {\n      \"kind\": \"bounded_line_region\",\n      \"path\": \"src/game_native_gui_page_application.cpp\",\n      \"base\": \"da99ff56f61c3d1d57683ac1c0b1b2d1782d8ae5\",\n      \"start_line\": 1109,\n      \"end_line\": 1125,\n      \"size\": 1099,\n      \"sha256\": \"9e40780469ab1de6ed12b78080e01340e3170f608f49fcf632a28fbb557fce60\"\n    }\n  ],\n  \"all_current_root_equal\": true\n}\n"
+  },
+  "historical_v1_manifest": {
+    "size": 10369,
+    "sha256": "ef147e4d134f82a050fad57a41bbf1626b1c778585886fe5a8ebe1de18fba4ed",
+    "frozen_unchanged_files": 58,
+    "compilable": false
+  },
+  "v2_peer": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-bounds-raw-model-geometry\\local\\output\\cc16_gui_selected_manager_negative_attempt_peer_20261031\\peer_sealed_receipt.json",
+    "size": 1324,
+    "sha256": "a31ae9debac63a8a56791655f0d64ec3f029d57566e56b540e35d7362250f35b",
+    "utf8": "{\n  \"verdict\": \"R1 fixed in sealed V2; zero remaining actionable bounded Source findings\",\n  \"report\": {\n    \"path\": \"J:\\\\PROG\\\\battlestations-pacific-decompile-codex-native-gui-bounds-raw-model-geometry\\\\local\\\\output\\\\cc16_gui_selected_manager_negative_attempt_peer_20261031\\\\independent_review_receipt.json\",\n    \"bytes\": 10882,\n    \"sha256\": \"93f1f299ed2f1031e85a82d8e9b551451292ff2a4ad8ef73d0fd664dc66aa92d\"\n  },\n  \"manual_review\": {\n    \"path\": \"J:\\\\PROG\\\\battlestations-pacific-decompile-codex-native-gui-bounds-raw-model-geometry\\\\local\\\\output\\\\cc16_gui_selected_manager_negative_attempt_peer_20261031\\\\MANUAL_REVIEW.md\",\n    \"bytes\": 3779,\n    \"sha256\": \"280322abbb85df54863ee0e92ab3e26662a2759dcf98a1813ae823eb53a34765\"\n  },\n  \"manifest\": {\n    \"path\": \"J:\\\\PROG\\\\battlestations-pacific-decompile-codex-native-gui-bounds-raw-model-geometry\\\\local\\\\output\\\\cc16_gui_selected_manager_negative_attempt_peer_20261031\\\\peer_manifest.json\",\n    \"bytes\": 44833,\n    \"sha256\": \"a0d28addaca062fe04a8c5c157504996efc642d73b70e014d4f97eb66f18e1ed\"\n  },\n  \"V1_own_checks\": 240,\n  \"V1_author_textual_checks\": 169,\n  \"V1_blocked\": true,\n  \"V2_own_checks\": 213,\n  \"V2_author_textual_checks\": 238,\n  \"R1_fixed\": true,\n  \"remaining_actionable_findings\": 0,\n  \"compiled_or_authorized_or_activated\": false,\n  \"tracked_clean\": true\n}\n",
+    "scope": "qualified Source-only zero remaining after R1; not compilation or activation"
+  },
+  "reader": {
+    "size": 10702,
+    "sha256": "dcd80e4d7e1bd652078ce697a8add5a9e72470c00c7134868feb2bf0e99efac9",
+    "utf8": "from pathlib import Path\nimport sys,json,hashlib,subprocess,re\nBASE=\"672a6cc2fd7dba2b69a0e449e542f9d1c15a81fa\"\nREPORT=\"reports/cc16_gui_selected_manager_negative_attempt.json\"\nDOC=\"docs/CC16_GUI_SELECTED_MANAGER_NEGATIVE_ATTEMPT.md\"\ndef g(*args):return subprocess.check_output([\"git\",*args])\ndef h(b):return hashlib.sha256(b).hexdigest()\ndef blobid(b):return hashlib.sha1(b\"blob \"+str(len(b)).encode()+b\"\\0\"+b).hexdigest()\nchecks=[]\ndef ck(name,value):\n checks.append((name,bool(value)))\n if not value:raise AssertionError(name)\ndef tree(rev):\n out={}\n for raw in g(\"ls-tree\",\"-r\",\"-z\",rev).split(b\"\\0\"):\n  if raw:\n   meta,path=raw.split(b\"\\t\",1);mode,kind,oid=meta.decode().split();out[path.decode()]=(mode,kind,oid)\n return out\ndef treehash(items):\n root={}\n for path,(mode,kind,oid) in items.items():\n  node=root;parts=path.split(\"/\")\n  for part in parts[:-1]:node=node.setdefault(part,{})\n  node[parts[-1]]=(mode,kind,oid)\n def build(node):\n  entries=[]\n  for name,value in node.items():\n   if isinstance(value,dict):entries.append((name+\"/\",b\"40000 \"+name.encode()+b\"\\0\"+bytes.fromhex(build(value))))\n   else:entries.append((name,value[0].lstrip(\"0\").encode()+b\" \"+name.encode()+b\"\\0\"+bytes.fromhex(value[2])))\n  data=b\"\".join(v for k,v in sorted(entries,key=lambda x:x[0].encode()))\n  return hashlib.sha1(b\"tree \"+str(len(data)).encode()+b\"\\0\"+data).hexdigest()\n return build(root)\nif len(sys.argv)<2:raise SystemExit(\"usage: reader AUTHOR_COMMIT | --prepared CANDIDATE_ROOT\")\nprepared=sys.argv[1]==\"--prepared\"\nif prepared:\n root=Path(sys.argv[2]).resolve();read=lambda f:(root/f).read_bytes();target=None\nelse:\n target=g(\"rev-parse\",sys.argv[1]+\"^{commit}\").decode().strip()\n ck(\"one_exact_author_parent\",g(\"show\",\"-s\",\"--format=%P\",target).decode().strip()==BASE)\n read=lambda f:g(\"show\",target+\":\"+f)\nr=json.loads(read(REPORT));ck(\"author_base\",r[\"author_base\"]==BASE)\nck(\"reader_self_pin\",len(Path(__file__).read_bytes())==r[\"reader\"][\"size\"] and h(Path(__file__).read_bytes())==r[\"reader\"][\"sha256\"])\nck(\"doc_pin\",h(read(DOC))==r[\"document\"][\"sha256\"])\npre={};post={}\nfor x in r[\"static_proof\"][\"sources\"]:\n f=x[\"path\"];a=g(\"show\",BASE+\":\"+f);b=read(f);pre[f]=a;post[f]=b\n ck(\"before_\"+f,len(a)==x[\"before_size\"] and h(a)==x[\"before_sha256\"])\n ck(\"after_\"+f,len(b)==x[\"after_size\"] and h(b)==x[\"after_sha256\"])\n s=a.decode();seq=[q for q in r[\"static_proof\"][\"seams\"] if q[\"file\"]==f]\n for q in seq:\n  ck(\"seam_before_\"+q[\"label\"],h(s.encode())==q[\"before_sha256\"] and s[q[\"offset\"]:q[\"offset\"]+len(q[\"before\"])]==q[\"before\"])\n  s=s[:q[\"offset\"]]+q[\"after\"]+s[q[\"offset\"]+len(q[\"before\"]):]\n  ck(\"seam_after_\"+q[\"label\"],h(s.encode())==q[\"after_sha256\"])\n ck(\"whole_forward_\"+f,s.encode()==b)\n for q in reversed(seq):\n  ck(\"reverse_seam_\"+q[\"label\"],s[q[\"offset\"]:q[\"offset\"]+len(q[\"after\"])]==q[\"after\"])\n  s=s[:q[\"offset\"]]+q[\"before\"]+s[q[\"offset\"]+len(q[\"after\"]):]\n ck(\"whole_inverse_\"+f,s.encode()==a)\nS={f:b.decode() for f,b in pre.items()};T={f:b.decode() for f,b in post.items()}\n# Minimal C++ brace scanner: skips ordinary comments/string/character literals.\ndef close(s,start):\n depth=0;i=start;mode=None\n while i<len(s):\n  c=s[i];n=s[i:i+2]\n  if mode=='line':\n   if c=='\\n':mode=None\n  elif mode=='block':\n   if n=='*/':mode=None;i+=1\n  elif mode in ('\"',\"'\"):\n   if c=='\\\\':i+=1\n   elif c==mode:mode=None\n  elif n=='//':mode='line';i+=1\n  elif n=='/*':mode='block';i+=1\n  elif c in ('\"',\"'\"):mode=c\n  elif c=='{':depth+=1\n  elif c=='}':\n   depth-=1\n   if depth==0:return i+1\n  i+=1\n raise AssertionError('unbalanced C++ block')\ndef fn(s,needle,body=False):\n i=s.index(needle);a=s.index('{',i);z=close(s,a);return s[a:z] if body else s[i:z]\nS={f:b.decode() for f,b in pre.items()};T={f:b.decode() for f,b in post.items()};w=[]\ndef witness(label,before,after):\n ck('protected_'+label,before==after);w.append(dict(label=label,size=len(before.encode()),sha256=h(before.encode())))\nm='src/native_gui_media_focus_lifetime.cpp';n='src/native_singleton_destruction.cpp';q='src/game_hosts_singletons.cpp';a='src/game_native_gui_manager_application.cpp'\nwitness('actual_no_page_owner',fn(S[a],'struct NoPageOwner'),fn(T[a],'struct NoPageOwner'))\nwitness('actual_page_host_interface',fn(S['include/bsp/native_gui_media_focus_lifetime.hpp'],'struct NativeGuiPageLifetimeHost'),fn(T['include/bsp/native_gui_media_focus_lifetime.hpp'],'struct NativeGuiPageLifetimeHost'))\nwitness('actual_media_context',fn(S['include/bsp/native_gui_media_focus_lifetime.hpp'],'struct NativeGuiMediaFocusLifetimeContext'),fn(T['include/bsp/native_gui_media_focus_lifetime.hpp'],'struct NativeGuiMediaFocusLifetimeContext'))\nwitness('legacy_unwind_gui',fn(S[m],'void unwind_gui('),fn(T[m],'void unwind_gui('))\nwitness('legacy_default_gui_scalar',fn(S[m],'void* scalar_delete_native_gui_manager_00aa6540_fragment('),fn(T[m],'void* scalar_delete_native_gui_manager_00aa6540_fragment('))\nb=fn(S[m],'void destroy_native_gui_manager_00aa6340_fragment(',True);c=fn(T[m],'void destroy_gui_manager_body(',True).replace('GuiCleanup cleanup{owner, context, 4, selected};','GuiCleanup cleanup{owner, context};')\nwitness('whole_gui_normal_kernel_ctor_inverse',b,c)\nwitness('whole_legacy_profile_dispatch_body',fn(S[n],'void __fastcall delete_current_profile(',True),fn(T[n],'void __fastcall delete_legacy_current_profile(',True))\nwitness('whole_legacy_outer_catch',fn(S[n],'void __fastcall destroy_native_singleton_manager_00bd0400('),fn(T[n],'void __fastcall destroy_native_singleton_manager_00bd0400('))\ndef asm(s):\n r=[]\n for match in re.finditer(r'__asm\\s*\\{',s):\n  a=s.index('{',match.start());r.append(s[match.start():close(s,a)])\n return r\noldasm=asm(S[n]);newasm=asm(T[n]);ck('all_asm_count_same',len(oldasm)==len(newasm))\nfor i,(b,c) in enumerate(zip(oldasm,newasm)):witness('whole_asm_'+str(i),b,c)\nwitness('bindings_layout_and_all_228B_members',fn(S['include/bsp/native_singleton_destruction.hpp'],'struct NativeSingletonDeletionBindings'),fn(T['include/bsp/native_singleton_destruction.hpp'],'struct NativeSingletonDeletionBindings'))\nwitness('host_default_destructor',fn(S[q],'GameSingletonHost::~GameSingletonHost()'),fn(T[q],'GameSingletonHost::~GameSingletonHost()'))\nb=fn(S[q],'void GameSingletonHost::shutdown()',True);c=fn(T[q],'void GameSingletonHost::shutdown()',True).replace('    auto* const selected = pending_selected_gui_attempt_; // capture before callbacks\\n    if (selected) { shutdown_selected(*selected); return; }\\n','')\nwitness('whole_default_shutdown_prefix_inverse',b,c)\nsel=fn(T[q],'void GameSingletonHost::shutdown_selected(',True)\nbegin=sel.index('    auto* const locale = locale_manager_process_;');end=sel.index('    selected.host_returned_ = true; // only after ALL')\nc=sel[begin:end].replace('    selected.outer_receiver_ = manager;\\n    selected.receiver_bound_ = true;\\n','').replace('destroy_native_singleton_manager_00bd0400(manager, deletion_bindings_, selected);','destroy_native_singleton_manager_00bd0400(manager, deletion_bindings_);').replace('        selected.host_returned_ = true;\\n','')\nwitness('whole_selected_shutdown_schedule_inverse',b[1:-1].strip(),c.strip())\nfor needle in ['GameNativeGuiManagerApplication::~GameNativeGuiManagerApplication()','void* GameNativeGuiManagerApplication::get_004c12b0()','GameNativeGuiManagerApplication::bind_page_lifetime_host(','void GameNativeGuiManagerApplication::release_page_lifetime_binding(']:\n witness('game_manager_old_'+needle.split('::')[-1],fn(S[a],needle),fn(T[a],needle))\nck(\"protected_pinset\",w==r[\"static_proof\"][\"protected_regions\"])\nck(\"all_four_asm\",len(oldasm)==len(newasm)==4)\nck(\"R1_explicit_old_state4_fourth_pointer\",\"GuiCleanup cleanup{owner, context, 4, selected};\" in T[m])\nck(\"binding_228_assert\",\"static_assert(sizeof(NativeSingletonDeletionBindings) == 228);\" in T[\"include/bsp/native_singleton_destruction.hpp\"])\nck(\"no_new_terminal_calls\",sum(s.count(\"std::terminate(\")+s.count(\"std::_Exit(\") for s in T.values())==sum(s.count(\"std::terminate(\")+s.count(\"std::_Exit(\") for s in S.values()))\nck(\"no_new_noexcept_tokens\",sum(s.count(\"noexcept\") for s in T.values())==sum(s.count(\"noexcept\") for s in S.values()))\nfor label in [\"v2_manifest\",\"v2_dependencies\"]:\n p=r[label];data=p[\"utf8\"].encode();ck(label+\"_complete_pin\",len(data)==p[\"size\"] and h(data)==p[\"sha256\"])\nmanifest=json.loads(r[\"v2_manifest\"][\"utf8\"])\nmanifestmap={x[\"path\"]:x for x in manifest[\"artifacts\"]}\nfor x in r[\"static_proof\"][\"sources\"]:\n ck(\"complete_manifest_source_\"+x[\"path\"],manifestmap[\"candidate/\"+x[\"path\"]][\"sha256\"]==x[\"after_sha256\"])\ndeps=json.loads(r[\"v2_dependencies\"][\"utf8\"])\nfor x in deps[\"whole_files\"]:\n a=g(\"show\",BASE+\":\"+x[\"path\"]);ck(\"actual_base_provider_\"+x[\"path\"],len(a)==x[\"size\"] and h(a)==x[\"sha256\"])\n if not prepared:ck(\"author_provider_unchanged_\"+x[\"path\"],read(x[\"path\"])==a)\nfor x in deps[\"bounded_regions\"]:\n a=g(\"show\",BASE+\":\"+x[\"path\"]);b=b\"\".join(a.splitlines(keepends=True)[x[\"start_line\"]-1:x[\"end_line\"]]);ck(\"provider_line_region_\"+x[\"path\"]+str(x[\"start_line\"]),len(b)==x[\"size\"] and h(b)==x[\"sha256\"])\nexpected=set(pre)|{DOC,REPORT};before=tree(BASE);ck(\"base_tree_recomputed\",treehash(before)==g(\"rev-parse\",BASE+\"^{tree}\").decode().strip())\nif prepared:\n after=dict(before)\n for f in expected:after[f]=(\"100644\",\"blob\",blobid(read(f)))\n ck(\"prepared_exact_ten_files\",{p.relative_to(root).as_posix() for p in root.rglob(\"*\") if p.is_file()}==expected)\nelse:\n after=tree(target);ck(\"author_tree_recomputed\",treehash(after)==g(\"rev-parse\",target+\"^{tree}\").decode().strip())\nchanged={f for f in set(before)|set(after) if before.get(f)!=after.get(f)}\nck(\"exact_ten_path_diff\",changed==expected)\nck(\"eight_modifications_two_additions\",all(f in before for f in pre) and DOC not in before and REPORT not in before)\nrestored=dict(after)\nfor f in pre:restored[f]=before[f]\nfor f in [DOC,REPORT]:restored.pop(f)\nck(\"full_recursive_inverse_map\",restored==before)\nck(\"full_recursive_inverse_tree\",treehash(restored)==g(\"rev-parse\",BASE+\"^{tree}\").decode().strip())\n# New cold method has no production caller in this author packet.\nck(\"cold_method_only_decl_and_definition\",sum(b.decode().count(\"prepare_cold_selected_manager_delete(\") for b in post.values())==2)\nresult=dict(kind=\"read_only_byte_Git_inspection_not_compilation\",mode=\"ignored_preparation\" if prepared else \"immutable_author_Git\",author_base=BASE,target=target,checks=len(checks),passed=sum(v for k,v in checks),whole_pairs=8,seams=len(r[\"static_proof\"][\"seams\"]),protected=len(w),asm_blocks=4,changed_paths=10,base_tree=treehash(before),candidate_tree=treehash(after),full_recursive_inverse=True,immutable_author_commit_verified=not prepared,compiled=False,runtime_selected=False)\nprint(json.dumps(result,sort_keys=True))\n"
+  },
+  "qualification": {
+    "cold_default_caller": false,
+    "Native_Origin": false,
+    "Native_NoThrow": false,
+    "Original_ABI": false,
+    "FP_full_closure": false,
+    "arbitrary_same_host_recursive_shutdown": false,
+    "fresh_nested_producer": false,
+    "complete_outer_Host_lifetime_admission": false,
+    "provider_custody": false,
+    "runtime_activation": false,
+    "gameplay": false
+  },
+  "credits": {
+    "new_Native": 0,
+    "vendor": 0,
+    "helper": 0,
+    "CG": 0,
+    "duplicate_body": 0
+  },
+  "ownership": "real singleton host adopts before bind; post-construction GUI Impl borrow; same captured attempt/view; selected GUI and outer catches both deny; final Source mark only after full shutdown/log and existing after-drain Source fence; records retained",
+  "routing": "literal ASM instruction text and old OTHER/default bodies; changed private Source view parameter and C++ routing symbol/relocations, no object identity claim",
+  "authoring_status": "ignored preparation only; tracked authorization absent at preparation"
+}

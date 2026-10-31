@@ -5,6 +5,8 @@
 namespace bsp {
 struct NativePlatformFocusOwnersContext;
 struct NativeStringRawPoolContext;
+struct NativeSingletonDeletionBindings;
+namespace game { class GameSingletonHost; class GameNativeGuiManagerApplication; }
 
 // One operation for each native page virtual call. The provider must dispatch
 // the CURRENT profile of the supplied actual page. D5BE38 selects AA8320 at
@@ -22,6 +24,44 @@ struct NativeGuiMediaFocusLifetimeContext {
     NativePlatformFocusOwnersContext& owners;
     NativeStringRawPoolContext& strings;
     NativeGuiPageLifetimeHost& pages;
+};
+
+// Negative-only Source record for one explicitly prepared complete shared drain.
+// The real singleton host owns it before publication; it cannot copy, reset or
+// mint Native origin/cleanup permission. Inner normal returns do not finish it.
+class NativeGuiSelectedManagerDeleteAttempt final {
+public:
+    NativeGuiSelectedManagerDeleteAttempt(const NativeGuiSelectedManagerDeleteAttempt&) = delete;
+    NativeGuiSelectedManagerDeleteAttempt& operator=(const NativeGuiSelectedManagerDeleteAttempt&) = delete;
+    NativeGuiSelectedManagerDeleteAttempt(NativeGuiSelectedManagerDeleteAttempt&&) = delete;
+    NativeGuiSelectedManagerDeleteAttempt& operator=(NativeGuiSelectedManagerDeleteAttempt&&) = delete;
+    bool requires_source_retention() const {
+        return unknown_ || (host_entered_ && !source_fence_returned_);
+    }
+private:
+    friend class game::GameSingletonHost;
+    friend class game::GameNativeGuiManagerApplication;
+    friend void __fastcall destroy_native_singleton_manager_00bd0400(void*,
+        const NativeSingletonDeletionBindings&, NativeGuiSelectedManagerDeleteAttempt&);
+    friend void* scalar_delete_native_gui_manager_00aa6540_fragment(void*,
+        std::uint32_t, NativeGuiMediaFocusLifetimeContext&, NativeGuiSelectedManagerDeleteAttempt&);
+    NativeGuiSelectedManagerDeleteAttempt(game::GameSingletonHost& host,
+        NativeGuiMediaFocusLifetimeContext& context, const NativeSingletonDeletionBindings& bindings)
+        : host_(&host), context_(&context), bindings_(&bindings) {}
+    game::GameSingletonHost* const host_;
+    NativeGuiMediaFocusLifetimeContext* const context_;
+    const NativeSingletonDeletionBindings* const bindings_;
+    void* outer_receiver_{}; // bound only from the real shutdown's reached capture
+    bool cold_bound_{};
+    bool host_entered_{};
+    bool receiver_bound_{};
+    bool core_entered_{};
+    bool core_returned_{};
+    bool scalar_entered_{};
+    bool scalar_returned_{};
+    bool unknown_{};
+    bool host_returned_{};
+    bool source_fence_returned_{};
 };
 
 // Complete A4C510[72]: ECX list header (unused0/head4/count8), RET. Detach
@@ -58,4 +98,9 @@ void destroy_native_gui_manager_00aa6340_fragment(void* actual_owner,
 // ECX owner, DWORD flags, RET4/EAX original receiver; bit0 chooses final free.
 void* scalar_delete_native_gui_manager_00aa6540_fragment(void* actual_owner,
     std::uint32_t flags, NativeGuiMediaFocusLifetimeContext&);
+// Explicit selected Source adapter; ordinary flags transport is unchanged.
+// The SAME retained attempt is captured before any callback, never rediscovered.
+void* scalar_delete_native_gui_manager_00aa6540_fragment(void* actual_owner,
+    std::uint32_t flags, NativeGuiMediaFocusLifetimeContext&,
+    NativeGuiSelectedManagerDeleteAttempt&);
 } // namespace bsp

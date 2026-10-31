@@ -9,6 +9,7 @@
 #include <Windows.h>
 #include <cstdlib>
 #include <exception>
+#include <stdexcept>
 
 namespace bsp {
 namespace {
@@ -43,7 +44,10 @@ struct GuiCleanup {
     void* owner;
     NativeGuiMediaFocusLifetimeContext& context;
     int state = 4;
-    ~GuiCleanup() noexcept { if (state >= 0) unwind_gui(owner, context, state); }
+    NativeGuiSelectedManagerDeleteAttempt* const selected = nullptr;
+    ~GuiCleanup() noexcept {
+        if (state >= 0 && selected == nullptr) unwind_gui(owner, context, state);
+    }
 };
 }
 
@@ -115,13 +119,14 @@ void destroy_native_gui_string_list_00aa5b20(void* header,
     word(header, 4) = 0;
 }
 
-void destroy_native_gui_manager_00aa6340_fragment(void* owner,
-    NativeGuiMediaFocusLifetimeContext& context) {
+namespace {
+void destroy_gui_manager_body(void* owner, NativeGuiMediaFocusLifetimeContext& context,
+    NativeGuiSelectedManagerDeleteAttempt* const selected) {
     word(owner) = 0x00d5bfcc;
     Word cursor = word(owner, 0x18);
     const bool invalid_initial = cursor > word(owner, 0x1c);
     void* const vector = at(owner, 0x14);
-    GuiCleanup cleanup{owner, context};
+    GuiCleanup cleanup{owner, context, 4, selected};
     if (invalid_initial) _invalid_parameter_noinfo();
     for (;;) {
         const Word end = word(vector, 8);
@@ -148,11 +153,35 @@ void destroy_native_gui_manager_00aa6340_fragment(void* owner,
     destroy_native_gui_base_00aa0ff0(owner, context.owners);
     cleanup.state = -1;
 }
+} // namespace
+
+void destroy_native_gui_manager_00aa6340_fragment(void* owner,
+    NativeGuiMediaFocusLifetimeContext& context) {
+    destroy_gui_manager_body(owner, context, nullptr);
+}
 
 void* scalar_delete_native_gui_manager_00aa6540_fragment(void* owner,
     Word flags, NativeGuiMediaFocusLifetimeContext& context) {
     destroy_native_gui_manager_00aa6340_fragment(owner, context);
     if (flags & 1u) singleton_lifetime_free(owner);
     return owner;
+}
+void* scalar_delete_native_gui_manager_00aa6540_fragment(void* owner,
+    Word flags, NativeGuiMediaFocusLifetimeContext& context,
+    NativeGuiSelectedManagerDeleteAttempt& selected) {
+    selected.scalar_entered_ = true; // negative only; never a freshness/Native permit
+    try {
+        if (!selected.host_entered_ || !selected.core_entered_ || selected.core_returned_ ||
+            selected.host_returned_ || selected.source_fence_returned_ || selected.unknown_ ||
+            selected.context_ != &context)
+            throw std::logic_error("selected GUI scalar requires its captured real drain attempt");
+        destroy_gui_manager_body(owner, context, &selected);
+        if (flags & 1u) singleton_lifetime_free(owner);
+        selected.scalar_returned_ = true; // does NOT finish the outer invocation
+        return owner;
+    } catch (...) {
+        selected.unknown_ = true;
+        throw;
+    }
 }
 } // namespace bsp
