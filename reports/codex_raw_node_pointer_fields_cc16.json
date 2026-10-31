@@ -1,0 +1,90 @@
+{
+  "status": "SOURCE_CORE_REVIEWED_QUALIFIED_REPRESENTATION_ONLY_PENDING_FINAL_JOINED_BUILD",
+  "Source_commit": "aa13b1a2a5c32831490004a17d9080211ce855c5",
+  "source_base": "e41d001d45afe1cbe74fde30dcc6722c1cc73ae9",
+  "published_Main_join": "4fafe37dd27389e5342de5f1a72438779b1855e2",
+  "Root_joined_Source": "9e9e9317652bad42a980fb9586ea8d735b4153d5",
+  "Source_files": [
+    {
+      "path": "src/native_node_scene_attachment.cpp",
+      "baseline_exact": true,
+      "candidate_exact": true,
+      "sha256": "a9282dbc45dba89a162023b0e594f251aabf1daaa9b00d3f856ce47a9dec7e55"
+    },
+    {
+      "path": "src/native_node_root_propagation.cpp",
+      "baseline_exact": true,
+      "candidate_exact": true,
+      "sha256": "1637ebadccbcb1666b1a81b1d513982eb0b3a6ca2df844556465ab75528cc3b8"
+    },
+    {
+      "path": "src/native_node_tree_retirement.cpp",
+      "baseline_exact": true,
+      "candidate_exact": true,
+      "sha256": "5737edb8f5f4acf648b75aa538950abba2b5299692820e38bdcbe826504c9b21"
+    },
+    {
+      "path": "src/native_node_base_destruction.cpp",
+      "baseline_exact": true,
+      "candidate_exact": true,
+      "sha256": "5f0f70ded6fee0c3326d756a3b91dcf16c8e6928a828188138ac24c281f6168a"
+    },
+    {
+      "path": "src/native_gui_scene_fields.cpp",
+      "baseline_exact": true,
+      "candidate_exact": true,
+      "sha256": "3cbee28fff0eb6748faca214a9434601b49f0ecd9fbd1156e00e9ca55a750216"
+    },
+    {
+      "path": "src/platform_renderer_activation.cpp",
+      "baseline_exact": true,
+      "candidate_exact": true,
+      "sha256": "3e7afa4ff88ad915685cff25e6c1998a83682acd0e8dc9479bd5fafbab95e968"
+    },
+    {
+      "path": "src/native_instance_group_upload.cpp",
+      "baseline_exact": true,
+      "candidate_exact": true,
+      "sha256": "c5e63f2c1d6b2b3bf64fa85fd711088f16bdfadc6378a4ad37cb621a7f27ba51"
+    }
+  ],
+  "Source_inverse_exact": true,
+  "producer_builds_existing2of2_seconds": [
+    11.97,
+    12.88
+  ],
+  "Root_build_existing2of2_seconds": 12.49,
+  "MP": 2,
+  "PCH": "ON",
+  "coverage_PDB": "OFF",
+  "Core": {
+    "literal_matched_sections": 250,
+    "complete_code_relocations_exact": 228,
+    "changed": 22,
+    "added": 2,
+    "removed_unused": 1,
+    "new_undefineds": 0,
+    "before_after_same_worktree_no_name_mapping_needed": true,
+    "Root_after_sections_bound_to_producer": 252,
+    "cross_worktree_maps": "seven private TU names + two actual constructor-role paired lambda names; no literalRTTI/wholeobject/PE identity",
+    "Root_Model_Matrix_Plain_whole_objects_exact": true
+  },
+  "independent_Source_review": "18b3b481270cc44e69a7eb88bdaa1b72d173c2a64f6098df9084e6d34531260b",
+  "independent_Core_review": "605ac28bed55c38a001840008d9e43f5be0b8897ba177344deba2eadf322d8ba",
+  "proposal_author_expert_Core_review": "23668e577892fa8f60f1f19f732f898115ade6b01ed7a92b678300aa6b6b0cef",
+  "expert_review_is_independent_Source_authorship": false,
+  "diagnostic_exclusions_and_unowned_Source_preserved": true,
+  "original_secondary_cleanup_policy_unchanged": true,
+  "new_Native_vendor_body_credit": 0,
+  "startup_flags_changed": false,
+  "new_tests": 0,
+  "Game_or_provider_entry_run": false,
+  "strict13_USN12": "open unchanged",
+  "deferred": [
+    "final joined Main canonical build",
+    "Original private ABI/fault/FH3/SEH/concurrency/volatileIO",
+    "genuine family/canonical/S1 issuers and complete E0/Mesh failure transport",
+    "real Scene/Mission/VM caller selection and separately gated runtime"
+  ],
+  "local_artifacts": "local\\matrix_raw_outer_primary_cc16_20261031\\Q0_actual_Source"
+}
