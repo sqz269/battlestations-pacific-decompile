@@ -1,0 +1,48 @@
+{
+  "status": "SOURCE_APPLIED_COMPILER_CORE_PENDING",
+  "source_applied": true,
+  "compiler_performed": false,
+  "Core_reviewed": false,
+  "runtime_performed": false,
+  "baseline": "ff7a7fc64730320d33ad59b3103a0c62f98fb4e6",
+  "patch_sha256": "832ece0b09eb6e2fdfddd7f3411ae24549fff5adce03b9ed4297eed21f3104e1",
+  "Source_files": [
+    {
+      "path": "include/bsp/render_command_queue.hpp",
+      "before_bytes": 10656,
+      "before_sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+      "after_bytes": 10896,
+      "after_sha256": "40a849eddfd0a8b9af7ba6a0b68da1acd7de7978915ddd969f184dcea4ae46a6"
+    },
+    {
+      "path": "src/render_command_queue.cpp",
+      "before_bytes": 10448,
+      "before_sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+      "after_bytes": 10439,
+      "after_sha256": "592da7bb943731bf97dff9a4a0875784ca5cefd490afaed0a44232aa6eeec39f"
+    }
+  ],
+  "independent_Source_review": {
+    "decision": "ACCEPT_QUALIFIED_SOURCE_PREREQUISITE_ONLY",
+    "Root_full_read_review_and_two_files_patch": true,
+    "review_sha256": "d200beeb2a6cc2e09645e778a9c7678af566c0df94ab7ac5b4cdca435302d8ba",
+    "review_pins_sha256": "87679dd7571c9b24e2156eb4e72598d561bb5b7c28e9cb78440a6b0b20b40a5e",
+    "verified_copied_artifacts": 21,
+    "verified_snapshot_sources": 189,
+    "E0_raw_activation_runtime_or_ABI_proven": false
+  },
+  "Root_full_tree_inverse": "PRIMARY_UNAPPLIED_SOURCE_REPLAY.json",
+  "baseline_frozen_objects": 17,
+  "Source_scope": "Only base zero and normal helper exception specifications plus scoped policy comment; all bodies/member declarations/current concrete and queue/destructor policies literal",
+  "Cxx17_function_type_change": true,
+  "current_other_explicit_noexcept_occurrences": 124,
+  "new_throwing_companion_or_raw_activation": false,
+  "Native_vendor_body_credit": 0,
+  "compiler_Core_ABI_and_runtime_not_inferred_from_Source": true,
+  "required_later_gates": [
+    "official MSVC Win32 build and existing suites",
+    "actual normal helper/current caller/legacy noexcept Core and EH review",
+    "full E0 owning/failure transport and actual Mesh/thread/generation/family/Mission/Palette bindings",
+    "required runtime and switch gates; current user authorization already covers work"
+  ]
+}

@@ -12,13 +12,16 @@ struct SceneResource;
 // companions borrow the owner's actual count; diagnostic objects own a count
 // initialized to one. A borrowed binding neither initializes nor retains its
 // word and has no second live count. The terminal callback may dispose this
-// interface and reenter the queue, but must not throw.
+// interface and reenter the queue. The base normal interface permits ordinary
+// C++ escape; its caller owns failure retention. Existing concrete companions
+// and queue/destructor callers retain their explicit noexcept policies. A
+// throwing raw companion requires separate complete owning-transport admission.
 class RenderCommandReference {
 private:
     std::optional<std::atomic<std::int32_t>> owned_reference_count_;
 public:
     std::atomic<std::int32_t>& reference_count;
-    virtual void release_zero_references() noexcept = 0;
+    virtual void release_zero_references() = 0;
     virtual ~RenderCommandReference() = default;
     RenderCommandReference() noexcept
         : owned_reference_count_(std::in_place, 1), reference_count(*owned_reference_count_) {}
@@ -28,7 +31,7 @@ public:
     RenderCommandReference& operator=(const RenderCommandReference&) = delete;
 };
 void retain_render_command_reference(RenderCommandReference&) noexcept;
-void release_render_command_reference(RenderCommandReference&) noexcept;
+void release_render_command_reference(RenderCommandReference&);
 // Publish new pointer, retain it, release old pointer. Identity does nothing.
 void assign_render_command_reference(RenderCommandReference*&,
     RenderCommandReference*) noexcept;

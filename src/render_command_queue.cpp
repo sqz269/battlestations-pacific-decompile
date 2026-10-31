@@ -24,7 +24,7 @@ RenderCommandDiagnosticString* diagnostic_for(RenderCommand& command,
 void retain_render_command_reference(RenderCommandReference& reference) noexcept {
     reference.reference_count.fetch_add(1, std::memory_order_seq_cst);
 }
-void release_render_command_reference(RenderCommandReference& reference) noexcept {
+void release_render_command_reference(RenderCommandReference& reference) {
     if (reference.reference_count.fetch_sub(1, std::memory_order_seq_cst) == 1)
         reference.release_zero_references();
 }
