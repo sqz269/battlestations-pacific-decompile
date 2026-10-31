@@ -28,6 +28,7 @@ constexpr DWORD image_bytes=12223752;
 constexpr std::uintptr_t first_page=0x00e15000;
 constexpr std::uintptr_t second_page=0x00e16000;
 constexpr std::uintptr_t zero_page=0x0109e000;
+constexpr std::uintptr_t locale_control_page_v3=0x0109d000;
 constexpr std::size_t page_bytes=0x1000;
 constexpr std::array<BYTE,32> image_sha256{
     0xb6,0x82,0xa8,0x2c,0x52,0xf8,0x1f,0x95,0x7b,0x2c,0x70,0x22,0x20,0x77,0x30,0x5a,
@@ -73,7 +74,7 @@ std::atomic<GameNativeCanonicalDataOwner*> process_owner{};
 } // namespace
 
 GameNativeMutableCrtData::GameNativeMutableCrtData(const std::filesystem::path& path,
-    GameNativeDataReservation& reservation) {
+    GameNativeDataReservation& reservation) : plan_(reservation.plan_) {
     (void)path;
     reservation.transfer_mutable_subset(reservations_);
 }
@@ -92,6 +93,10 @@ void GameNativeMutableCrtData::initialize(const std::filesystem::path& path) {
             if (VirtualAlloc(address,page_bytes,MEM_COMMIT,PAGE_READWRITE)!=address)
                 throw std::runtime_error("Cannot commit canonical CRT page");
         }
+        if (plan_==GameNativeDataPlan::CanonicalCrtV3 &&
+            VirtualAlloc(reinterpret_cast<void*>(locale_control_page_v3),page_bytes,
+                MEM_COMMIT,PAGE_READWRITE)!=reinterpret_cast<void*>(locale_control_page_v3))
+            throw std::runtime_error("Cannot commit canonical CRT V3 locale-control page");
         // Exact PE .data raw offsets for the complete two initialized pages.
         std::memcpy(reinterpret_cast<void*>(first_page),bytes.data()+0x00a15000,page_bytes);
         std::memcpy(reinterpret_cast<void*>(second_page),bytes.data()+0x00a16000,page_bytes);
@@ -103,6 +108,14 @@ void GameNativeMutableCrtData::initialize(const std::filesystem::path& path) {
         const auto* zeros=reinterpret_cast<const BYTE*>(zero_page);
         if (std::any_of(zeros,zeros+page_bytes,[](BYTE b){return b!=0;}))
             throw std::runtime_error("Canonical CRT virtual page was not zero-filled");
+        if (plan_==GameNativeDataPlan::CanonicalCrtV3) {
+            // Supported PE virtual tail: validate the full loader preimage ONCE.
+            // Subsequent live values, including1, are never reset or revalidated as0.
+            auto* const locale_bytes=reinterpret_cast<BYTE*>(locale_control_page_v3);
+            std::memset(locale_bytes,0,page_bytes);
+            if (std::any_of(locale_bytes,locale_bytes+page_bytes,[](BYTE b){return b!=0;}))
+                throw std::runtime_error("Canonical CRT V3 locale-control page was not zero-filled");
+        }
         verify_pages();
         if (cookie()!=0xbb40e64e || complement()!=0x44bf19b1 ||
             nlg_descriptor().signature!=0x19930520 ||
@@ -122,6 +135,8 @@ void GameNativeMutableCrtData::verify_pages() const {
     require_page(first_page,0x00e10000,PAGE_READWRITE);
     require_page(second_page,0x00e10000,PAGE_READWRITE);
     require_page(zero_page,0x01090000,PAGE_READWRITE);
+    if (plan_==GameNativeDataPlan::CanonicalCrtV3)
+        require_page(locale_control_page_v3,0x01090000,PAGE_READWRITE);
 }
 volatile std::uint32_t& GameNativeMutableCrtData::cookie() const noexcept {
     return *reinterpret_cast<volatile std::uint32_t*>(0x00e15590);
@@ -140,6 +155,12 @@ volatile std::uint32_t& GameNativeMutableCrtData::feature_word() const noexcept 
 }
 volatile std::uint32_t& GameNativeMutableCrtData::debugger_hook() const noexcept {
     return *reinterpret_cast<volatile std::uint32_t*>(0x0109eea8);
+}
+
+const volatile std::int32_t& GameNativeMutableCrtData::locale_changed_0109de1c() const {
+    if (plan_!=GameNativeDataPlan::CanonicalCrtV3)
+        throw std::logic_error("Canonical CRT locale-control borrow requires explicit V3");
+    return *reinterpret_cast<const volatile std::int32_t*>(0x0109de1c);
 }
 
 GameNativeCanonicalDataOwner::GameNativeCanonicalDataOwner(const std::filesystem::path& path,
