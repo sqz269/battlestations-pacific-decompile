@@ -1495,3 +1495,8 @@ factory/startup grant. NextDESIGNSsealed: stringsetter886A10 559ffa12/56ops
 raw426060 not silent substitute. Iteration433336c8 state-FIRSTPop before
 moduloFFFFFFFF-count; conversions6e1082e6 directST0/FSTP32+FLD32/no F64
 snapshot/defaultFENV. No Sourceauthorizednextdesignwaveyet. Goal ACTIVE.
+
+Source41Maina9e960964 joined atd84e50af0: allWin32/existing2/2
+21.14s; all3setterCoreentryinstructions unchanged, currentcanonicalforced/new
+entriesabsent;12priorpaths/SDK+2Coreinverse exact. Earlier105cohort receipts
+kept separately. No Rootexecution/Origin/ABI/runtime grant. Goal ACTIVE.
