@@ -1,0 +1,131 @@
+{
+  "schema": "bsp-native-lua-variant-string-setter-v1",
+  "source_base": "589c3ca4ff2ec49ede5bbd74de19af668e352aab",
+  "required_resize_published_main": "18e95b32e8bd736ffb0dad29d0aff429710d24ab",
+  "design_v3_sha256": "80b1caa664a688f62af519276288ec62f503b26fc9edec9cab181ddec5ae458c",
+  "historical_withdrawn_design_sha256": "559ffa128f27ea1c9132677bc33c61a2e609ff3fcf668c8f53e1ee6c49d9af2c",
+  "v2_correction_sha256": "242c97df8d08a542b99501ac73a5a8d92b5f7fb26387a87e9e38f534e6394969",
+  "native_address": "00886a10",
+  "native_instructions": 56,
+  "native_bytes": 171,
+  "native_abi": "ECX receiver; incoming source-header pointer HOME read late; RET4; captured ESI allocation publication; no receiver-EAX promise",
+  "source_api": "set_native_lua_variant_string_00886a10_cpp_cleanup",
+  "source_return": "actual Source body completion enum, no new frame/retirability receipt",
+  "actual_source": {
+    "include/bsp/native_lua_variant_string_setter.hpp": {
+      "sha256": "65b9a96ca13b5cef6d31748ad6cbab39e4fd37ebccee1403779631903fd4bf45",
+      "lines": 40
+    },
+    "src/native_lua_variant_string_setter.cpp": {
+      "sha256": "1c11faa6de35dd57a3343a952672286280f0f73fc88423f92a5c302641d632d4",
+      "lines": 109
+    }
+  },
+  "selected_action": {
+    "handler": "00c973cb",
+    "descriptor": "00dc98a8",
+    "max_state": 1,
+    "map": "00dc98a0",
+    "state0_predecessor": -1,
+    "action": "00c973c0",
+    "effect": "free captured saved allocation8 ONLY; no string/pool action"
+  },
+  "ordered_epochs": [
+    "real clear SAME tuple/noncompletion before effects",
+    "tag1 BEFORE matched allocation8; immediately capture real output; NULL payload0 with no HOME/birth/copy",
+    "nonnull CURRENT source-pointer HOME once; compare before private Header8 default placement birth WITHOUT initializer; LEN0/DATA0 including self",
+    "nonself CURRENT sourceLEN; actual private preserve1 HOME; exact raw resize SAMEfeature",
+    "CURRENT sourceLEN gate; then CURRENT dstLEN/sourceDATA/dstDATA; genuineBF even count0",
+    "constructor_cpp_escape: captured8 free ONLY/barethrow; normal: captured allocation payload publication"
+  ],
+  "provider_sha256": {
+    "include/bsp/native_lua_variant_retirement.hpp": "14258135096189f2892e4d896af417ed0c8fb616d5f1659bbc1d9d032f68a7db",
+    "src/native_lua_variant_retirement.cpp": "5db41574abcb3a94fdb9c6f5c8f96f2b7b0c1f0c2a7f438fe64d622980c065ca",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "include/bsp/native_string_raw_resize_exact.hpp": "a1a3c6be74194e2f5946e13e09bfb26562c3f73d3565b51f96403f0d60b9999c",
+    "src/native_string_raw_resize_exact.cpp": "74bff613a83abda342b5506ff750f46f5c44e191de506480ced504208c81f210",
+    "include/bsp/native_crt_memcpy.hpp": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123",
+    "src/native_crt_memcpy.cpp": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3",
+    "CMakeLists.txt": "88095a8438f7cad94d82095ac246ae6bdb5dddc97ee34bfa4b13078554b5637f",
+    "config/target.json": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+  },
+  "private_header_birth": "fresh aligned8 only; two uint32 fields/no DMIs/bases/resource destructor; use global placement result; no root/vector type birth",
+  "failure_custody": "Keep actual caller/root/pool/heap/context/HOME/feature/code/operation/backing graph and partial/unpublished debt. Freed header identity grants no peek/retire/retry/shutdown permission; normal completion does not assert tag1 survived callbacks.",
+  "strict_object": {
+    "compile_count": 1,
+    "exit_code": 0,
+    "flags": [
+      "/nologo",
+      "/std:c++17",
+      "/permissive-",
+      "/W4",
+      "/WX",
+      "/EHsc",
+      "/MD",
+      "/O2",
+      "/Ob2",
+      "/fp:strict",
+      "/DNDEBUG",
+      "/DWIN32",
+      "/D_WINDOWS",
+      "/c"
+    ],
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc9\\local\\native_lua_variant_string_setter_cc9_20261031\\objects\\variant_string_setter.obj",
+      "sha256": "0d4e235dde174cbde9509ccb13b0d8a5b8090c9f052298d997d05b4f27d1ae1d",
+      "bytes": 5787,
+      "coff_machine": "014C"
+    },
+    "actual_symbols_sha256": "972f0f48025fad3cc543cb45908532cbc1fd4122e9a176230e530ea50176f540",
+    "inspection_receipt_sha256": "45b27fe61b841931788f870a932fdc3e74ef3f4e6f03fdd598cef799fa9841eb",
+    "coff_analysis_sha256": "02782c18ef55c3493a7e7c3ed41be1978b66b1acec18358e247bd62dd284d182",
+    "entire_public_helpers_catch_and_eh_metadata_read": true,
+    "new_native_or_abi_claim": false
+  },
+  "source_ready": false,
+  "runtime_validated": false,
+  "native_abi_equivalent": false,
+  "new_native_or_vendor_body_credit": false,
+  "tests_probe_link_executable_or_entry": false,
+  "emitted_qualified_normalizations": [
+    "Source compares captured allocation/source pointers before birth/zeros. Compiler pureCMP_AC follows zero stores9F/A5; captured pointer values cannot change through freshHeader8 stores; identity still zeros then skips. No field/provider observation reordered, no Original private flags/fault timing equivalence.",
+    "Header8 default-no-initializer birth is a Source lifetime operation with static traits/offsets and no added runtime value writes. Compiler elides public placement call; this is not raw-store type-birth proof for arbitrary backing.",
+    "Generated state0 assignment93 arms eligible constructor C++ call points C2/DE; clear4D and allocate7D remain initial state-1. No explicit demotion appears before normal no-throw publicationE6. Lexical Source try ends before publication; /EHsc compiler lifetime normalization does not establish Native FH3/hardware/SEH/fault protected-region identity.",
+    "Captured allocation remains private Source ESI/savedHOME and is independent of child/BF EAX. Native/Source stack-HOME alias substitution is not supplied."
+  ],
+  "generated_eh": {
+    "section": ".xdata$x",
+    "bytes": 88,
+    "funcinfo_offset": 52,
+    "magic": "19930522",
+    "max_state": 2,
+    "unwind_map_offset": 16,
+    "unwind_rows": [
+      {
+        "to_state": -1,
+        "action": null
+      },
+      {
+        "to_state": -1,
+        "action": null
+      }
+    ],
+    "try_block_offset": 32,
+    "try_low": 0,
+    "try_high": 0,
+    "catch_high": 1,
+    "handler_count": 1,
+    "catch_all_adjectives": 64,
+    "catch_object": 0,
+    "handler_public_offset": 263,
+    "eh_flags": 1
+  },
+  "actual_code_reviews": [
+    "Root full40HPP/109CPP/all56/ownEH accepted65b9/1c11 before ONEobject",
+    "Frame independent full40HPP/109CPP/all56/ownEH accepted65b9/1c11 before ONEobject"
+  ],
+  "emitted_review_checkpoint": "Root full public/helpers/catch read; pureCMP scheduling accepted; actual EH metadata final acceptance pending",
+  "emitted_review": "Root final full existing-object and independently parsed COFF EH metadata ACCEPT_EMITTED_OPERATION_ONLY; both private timing normalizations explicitly qualified",
+  "root_final_emitted_acceptance_sha256": "586b1e5cd84108928e40787d8b2fe952f558e344719813b39331b2a04e4ca3bc"
+}
