@@ -1,0 +1,80 @@
+{
+  "status": "qualified_consumed_Source_peer_reviewed_standard_Win32_pass_dormant_OFF",
+  "base_Main": "c5fdfae562f2711d7d7accb3351d1c828a6d904a",
+  "primary_Source_review": {
+    "verdict": "ACCEPT_ACTUAL_SOURCE_QUALIFIED",
+    "whole_files": {
+      "include/bsp/torpedo_release_orders.hpp": "0b2c43f5fcce133e46a74d49bb21f27a5ecc0df37ba155f647401fd6e335d163",
+      "src/torpedo_release_orders.cpp": "2510666df86174f3605d038258e458f4cd3f455b4303c47486edd3300e084a8e",
+      "src/game_hosts_units.cpp": "03747ddf4714cac769ab65b5d4426db95d0975ab8d6e63982678ebd31b9be2dc",
+      "docs/TORPEDO_PARTY_PROVIDER_INTEGRATION_20261031.md": "02b6e7cafa3203992a631eb3c4132ddd010b6bede1ec067319d75e69a8d42127",
+      "reports/torpedo_party_provider_integration_20261031.json": "b532d2b3c2d0d8f7eae05ce55b16fb449e2d5850df5e33a7200f74ad4adf8fcf"
+    },
+    "full_actual_production_diff_read": true,
+    "full_doc_report_read": true,
+    "full_inverse_check_passed": true,
+    "semantic_scope": "existingliveissuer/post999NativeorderedONshortcircuit/SAMEowneravailable raw!=0/missingSourceerror/prior effects remain",
+    "OFF_flags_unchanged": true,
+    "no_API_defaults_or_counter_changes": true,
+    "Original_ABI_runtime_activation_proof": false,
+    "compiler_authorized": false
+  },
+  "new_native_body_credit": 0,
+  "new_vendor_body_credit": 0,
+  "Original_ABI_compatible": false,
+  "runtime_validated": false,
+  "activation_granted": false,
+  "goal_status": "active",
+  "author_commit": "7d03bbfb725bdb3f551ea020463dd702f05f5c62",
+  "tested_merge_commit": "984488fd6d7300b19bf7306157e3cb42bd32f3be",
+  "independent_Source_review_sha256": "1b80905f516c9c93caf75746503b56fb1eac98457d18d36eaea458913153cfcc",
+  "build": {
+    "source_commit": "984488fd6d7300b19bf7306157e3cb42bd32f3be",
+    "exit": 0,
+    "wall_seconds": 35.52,
+    "ctest_summary": [
+      "100% tests passed, 0 tests failed out of 2",
+      "Total Test time (real) =  13.32 sec"
+    ],
+    "artifacts": {
+      "canonical_bsp_game.map": "eb80d0127c42225fd7b45c51f44c8f067f9e4dbc85965d389c712f88880517b6",
+      "canonical_bsp_game.vcxproj": "008933b1bf4943fef6b85d41e703add896bfdde82b7fd1c03439e8a64ab201d9",
+      "canonical_CMakeCache.txt": "173b00591bec5e1664cf6e405b6161ecc7206c7f1bc173f42f04ca235ef83a44",
+      "canonical_torpedo_release_orders.obj": "4be998aebf02343f724122290cc4458aee94006009813688d34dc30034d1eee2",
+      "canonical_game_hosts_units.obj": "adc3d13115cc6fa7299df422176f612b83f5a4c20a06e153bedc94b52d41fb78"
+    },
+    "new_tests": 0,
+    "new_entry_invocation": false
+  },
+  "OFF_emitted_helper": {
+    "complete_OFF_helper_equal": true,
+    "instruction_rows": 103,
+    "baseline_text_sha256": "7e51b40c7f6ac906f4e956caff30c1460109d869575dbcae0060a6f93c56cdd0",
+    "canonical_text_sha256": "7e51b40c7f6ac906f4e956caff30c1460109d869575dbcae0060a6f93c56cdd0",
+    "runtime_identity_claim": false,
+    "forced_entries": []
+  },
+  "preservation": {
+    "unchanged_providers_build_and_render_files": {
+      "src/strike_release_ver_cc13.cpp": "0af5a4211168cfd79c53074bfe5406195c56eda7929a6cc53fc900182ba3e62b",
+      "src/session_participant_pools.cpp": "36091d4d0720dd6f461b3a1988e108bf90a653f8eb1d9f4b304a9e2fc3ed96a9",
+      "src/game_hosts_ship_ai.cpp": "3664fef9b9b6fca9e45993ae0a3e21c7d9a6db2da6fd5b5a8050cecb6707040a",
+      "CMakeLists.txt": "d91dfc37714f324e81c34ac3c62dd0c52517336beeca1a3d22a9a9fa020bd55b",
+      "cmake/startup.cmake": "91d1de5e0df99d75ab2133869f154c0560d969f8ed3b60c999a495ba097f416b",
+      "src/game_native_gui_render_application.cpp": "2132e6bf7222381755f375f333d01a68187acff8daddc2d92e5a0788632aec31"
+    },
+    "reviewed_five_files": {
+      "include/bsp/torpedo_release_orders.hpp": "0b2c43f5fcce133e46a74d49bb21f27a5ecc0df37ba155f647401fd6e335d163",
+      "src/torpedo_release_orders.cpp": "2510666df86174f3605d038258e458f4cd3f455b4303c47486edd3300e084a8e",
+      "src/game_hosts_units.cpp": "03747ddf4714cac769ab65b5d4426db95d0975ab8d6e63982678ebd31b9be2dc",
+      "docs/TORPEDO_PARTY_PROVIDER_INTEGRATION_20261031.md": "02b6e7cafa3203992a631eb3c4132ddd010b6bede1ec067319d75e69a8d42127",
+      "reports/torpedo_party_provider_integration_20261031.json": "b532d2b3c2d0d8f7eae05ce55b16fb449e2d5850df5e33a7200f74ad4adf8fcf"
+    },
+    "three_OFF_flags": {
+      "kReleaseOrderLeaderBlockBound": "false",
+      "kPlaneIssueThresholdZeroCc13Bound": "false",
+      "kMovetoTargetSpeedClassCc13Bound": "false"
+    }
+  },
+  "ON_emitted_or_runtime_validated": false
+}
