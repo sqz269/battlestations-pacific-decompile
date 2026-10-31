@@ -64,6 +64,12 @@ class NativeGuiIconDelayedLoads final {
 public:
     NativeGuiIconDelayedLoads(NativeStringRawPoolContext&,
         NativeGuiIconDelayedLoadsStorage* volatile& publication_00f8bd98);
+    // Explicit preparation-only borrow of the real live canonical feature cell.
+    // No current value is read and no native operation/extra route is selected.
+    // The legacy overload retains explicit absence, without a fallback feature.
+    NativeGuiIconDelayedLoads(NativeStringRawPoolContext&,
+        NativeGuiIconDelayedLoadsStorage* volatile& publication_00f8bd98,
+        const volatile std::uint32_t& actual_feature_word_0109eea4);
     ~NativeGuiIconDelayedLoads() noexcept;
     NativeGuiIconDelayedLoads(const NativeGuiIconDelayedLoads&) = delete;
     NativeGuiIconDelayedLoads& operator=(const NativeGuiIconDelayedLoads&) = delete;

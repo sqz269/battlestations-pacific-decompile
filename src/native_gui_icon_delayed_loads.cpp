@@ -37,10 +37,21 @@ struct NativeGuiIconDelayedLoads::Impl {
     std::unique_ptr<Operation> operation;
     bool active{}, failed{};
     std::exception_ptr failure;
+    // Preparation-only immutable borrow, appended after the complete old prefix.
+    // Null means the explicit legacy route; it never supplies a fallback value.
+    const volatile std::uint32_t* const actual_feature_word;
 
     Impl(NativeStringRawPoolContext& strings_in,
         NativeGuiIconDelayedLoadsStorage* volatile& publication_in)
-        : strings(strings_in), publication(publication_in) {
+        : Impl(strings_in, publication_in, nullptr) {}
+    Impl(NativeStringRawPoolContext& strings_in,
+        NativeGuiIconDelayedLoadsStorage* volatile& publication_in,
+        const volatile std::uint32_t& feature_in)
+        : Impl(strings_in, publication_in, &feature_in) {}
+    Impl(NativeStringRawPoolContext& strings_in,
+        NativeGuiIconDelayedLoadsStorage* volatile& publication_in,
+        const volatile std::uint32_t* feature_in)
+        : strings(strings_in), publication(publication_in), actual_feature_word(feature_in) {
         require(publication == nullptr, "Raw Icon delayed producer requires its fresh canonical null publication");
     }
     template<class F> auto invoke(Operation::Kind kind, std::uint32_t entry, F&& body) -> decltype(body()) {
@@ -192,6 +203,10 @@ struct NativeGuiIconDelayedLoads::Impl {
 NativeGuiIconDelayedLoads::NativeGuiIconDelayedLoads(NativeStringRawPoolContext& strings,
     NativeGuiIconDelayedLoadsStorage* volatile& publication)
     : impl_(std::make_unique<Impl>(strings, publication)) {}
+NativeGuiIconDelayedLoads::NativeGuiIconDelayedLoads(NativeStringRawPoolContext& strings,
+    NativeGuiIconDelayedLoadsStorage* volatile& publication,
+    const volatile std::uint32_t& actual_feature_word_0109eea4)
+    : impl_(std::make_unique<Impl>(strings, publication, actual_feature_word_0109eea4)) {}
 NativeGuiIconDelayedLoads::~NativeGuiIconDelayedLoads() noexcept {
     if (requires_process_retention()) std::terminate();
 }

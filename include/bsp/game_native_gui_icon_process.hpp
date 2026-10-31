@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <cstdint>
 
 namespace bsp {
 struct NativeStringRawPoolContext;
@@ -8,6 +9,7 @@ class NativeGuiIconDelayedLoads;
 }
 
 namespace bsp::game {
+class GameNativeCanonicalDataOwner;
 // Sole typed Source backing for the recovered F8BD98 publication. The
 // supported Original PE supplies a loader-zero DWORD; this is not storage at
 // that VA, a replacement object layout, or an Original callable publication.
@@ -31,9 +33,15 @@ public:
     // borrowed once; another context object is rejected, even with aliases.
     // Successful preparation publishes that borrow and service together.
     // Allocation/admission failure leaves both unprepared and invokes no
-    // native operation. Same-context repetition returns the SAME service;
+    // native operation. Same-context legacy repetition returns the SAME service;
     // it does not reset a publication, operation, failure or registration.
     NativeGuiIconDelayedLoads& prepare_delayed_loads(NativeStringRawPoolContext&);
+    // Explicit canonical preparation borrows the SAME permanent owner and its
+    // actual feature-word reference, without reading the current feature value.
+    // Repetition requires identical context/owner/address. Crossing between
+    // legacy absence and canonical preparation never promotes or resets a service.
+    NativeGuiIconDelayedLoads& prepare_delayed_loads(NativeStringRawPoolContext&,
+        const GameNativeCanonicalDataOwner&);
     // Pure existing-service access; rejects before preparation. This is not
     // permission to replay an interrupted operation or use expired providers.
     NativeGuiIconDelayedLoads& delayed_loads();
@@ -59,6 +67,9 @@ private:
     NativeGuiIconDelayedLoadsStorage* volatile publication_00f8bd98_{};
     NativeStringRawPoolContext* borrowed_strings_{};
     std::unique_ptr<NativeGuiIconDelayedLoads> delayed_loads_;
+    // Append-only preparation metadata; no publication or Native permission.
+    const GameNativeCanonicalDataOwner* borrowed_canonical_owner_{};
+    const volatile std::uint32_t* borrowed_feature_word_{};
 };
 
 GameNativeGuiIconProcess& game_native_gui_icon_process();

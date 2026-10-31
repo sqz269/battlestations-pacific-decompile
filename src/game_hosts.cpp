@@ -2078,7 +2078,9 @@ void GameStartupHost::prepare_native_gui_icon_process() {
         &strings.actual_manager_publication_01090aa0 !=
             &singletons_->manager_publication_01090aa0())
         throw std::logic_error("GUI Icon process requires permanent canonical string cells and one host");
-    auto& service = process.prepare_delayed_loads(strings); // C++ metadata only.
+    auto& service = canonical_data_owner_
+        ? process.prepare_delayed_loads(strings, canonical_data_owner_->get())
+        : process.prepare_delayed_loads(strings); // C++ metadata only.
     singletons_->native_deletion_bindings().gui_icon_delayed_loads = &service;
     native_gui_icon_process_ = &process; // Commit stable borrows before observations/logging.
     if (process.delayed_loads_status() != GameNativeGuiIconProcess::DelayedLoadsStatus::idle ||
