@@ -1,0 +1,93 @@
+{
+  "schema": "bsp-native-mission-lua-to-string-v1",
+  "source_base": "bb80cded4d7da580dafde4cb4e14df9ae1aea6e6",
+  "design_sha256": "42d2c96d1217633a1c7593831289a67ae1952ec7e65e24c117d75a43d48ce89b",
+  "source_sha256": {
+    "include/bsp/native_mission_lua_to_string.hpp": "1a3344c2714bd888895fd349e3fb8cc9b2fcc2f2114469374eabbf6adc370281",
+    "src/native_mission_lua_to_string.cpp": "231e251f9291f8de0f0c02421139b141a4471873948894433d1bddf59469c9f9"
+  },
+  "actual_source_lines": {
+    "header": 27,
+    "cpp": 38
+  },
+  "whole_leaf": {
+    "address": "006b8060",
+    "instructions": 5,
+    "bytes": 17,
+    "schedule": "captured signed index FIRST; CURRENT raw machine+4 once; actual NULL length sink; one genuine linked lua_tolstring; unchanged borrowed const-char pointer including real NULL",
+    "original_abi": "ECX machine, EDX captured stacked index, PUSH NULL length; actual lua_tolstring; RET4 with EAX pointer",
+    "ordinary_Source_API_only": true
+  },
+  "actual_provider": {
+    "declaration": "lua.h149",
+    "implementation_interface": "lapi.c339..354",
+    "callee_classification": "00a67810 lua511 lua_tolstring; vendor body excluded from reconstruction"
+  },
+  "validation": {
+    "actual_Code_reviews": "Root and independent Gameplay full Code/design/all5Original ops accepted exact frozen sources before ONE object",
+    "strict_object": {
+      "sha256": "1a38a9731e947878dd36e743b95be9f5e0b9658b91d1168526862da1f7c181ab",
+      "bytes": 1188,
+      "coff_machine": "014C",
+      "compile_count": 1,
+      "exit_code": 0,
+      "flags": [
+        "/nologo",
+        "/std:c++17",
+        "/permissive-",
+        "/W4",
+        "/WX",
+        "/EHsc",
+        "/MD",
+        "/O2",
+        "/Ob2",
+        "/fp:strict",
+        "/DNDEBUG",
+        "/DWIN32",
+        "/D_WINDOWS",
+        "/c"
+      ]
+    },
+    "same_object_inspection": {
+      "object_sha256": "1a38a9731e947878dd36e743b95be9f5e0b9658b91d1168526862da1f7c181ab",
+      "bytes": 1188,
+      "coff_machine": "014C",
+      "defined_public_entry": "?to_string_native_mission_lua_006b8060@bsp@@YAPBDPBXH@Z",
+      "only_genuine_Lua_UNDEF": "_lua_tolstring",
+      "independent_COFF_section_symbol_relocation_parsing": true,
+      "entry_bytes": "8b4424048b40046a00ff74240c50e80000000083c40cc3",
+      "relocations": {
+        "15": "_lua_tolstring"
+      },
+      "schedule": "CURRENTstate+04; actual NULL length PUSH0+07; by-value Source index parameter push+09; statepush+0D; genuine call+0E; ADD12+13; RET+16 with EAX pointer unchanged",
+      "Source_normalization": "Source index value lives in its ordinary parameter slot; no proof of Original physical index-home read order/aliases. Source Code captures by value before decoding state.",
+      "full_entry_no_strlen_type_default_owner_or_new_observation": true,
+      "same_object_disassembly_sha256": "71c2ace56c832bedc589cd56ebcf4d4efd5c0c0c2263ea4483fb9159bee1e013",
+      "same_object_symbols_sha256": "cbd6904a71cbd5a37b58b87f3fad3b78396b18a2f41147c8baf6c0466781cad7",
+      "entry_or_runtime_invoked": false
+    },
+    "compile_receipt": "local/native_mission_lua_to_string_gui_20261031/compile_receipt.json",
+    "object_inspection": "local/native_mission_lua_to_string_gui_20261031/object_inspection.json"
+  },
+  "preservation_baseline": "local/native_mission_lua_to_string_gui_20261031/provider_baseline.json",
+  "limits": [
+    "matching retained genuine linked-Source VM/state/stack/code/index/capacity/raw backing required",
+    "returned string remains borrowed; rooted Source and mutation/GC/reentry lifetime cover every consumer read",
+    "no output length/strlen/type guard/copy/default/Frame/owner/cleanup/pcall/rollback/retry or post-read",
+    "no Original privateHOME/interpreter ABI/FH3/fault, parent886E00/VM/factory/startup or runtime admission"
+  ],
+  "source_ready": false,
+  "native_abi_equivalent": false,
+  "runtime_validated": false,
+  "new_native_body_credit": false,
+  "new_vendor_body_credit": false,
+  "tests_probe_link_executable_or_entry": false,
+  "provider_preservation": {
+    "repository_files": 9,
+    "actual_Lua_files": 3,
+    "all_unchanged": true,
+    "all_old_tracked_files_preserved": true,
+    "baseline_sha256": "696383b5299be83c7cb01ea9f53b68102a6e1c60a99d8424f918de9e2a91b373",
+    "after_compile_receipt_sha256": "77ced51002de2dcea7bbed71b57603593e7ace8fbb3d364fd0d9ca6e2ef6671f"
+  }
+}
