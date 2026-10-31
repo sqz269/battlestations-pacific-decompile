@@ -1,0 +1,276 @@
+{
+  "kind": "ignored genuine whole raw AB3C10 assignment Source proposal, no tracked author grant",
+  "base": "88a6327684bc7d379163012e09a8b6c6c8037f68",
+  "owned_paths": [
+    "include/bsp/native_gui_icon_state_assignment_storage.hpp",
+    "src/native_gui_icon_state_assignment_storage.cpp",
+    "docs/CC16_NATIVE_GUI_ICON_STATE_ASSIGNMENT_STORAGE.md",
+    "reports/cc16_native_gui_icon_state_assignment_storage.json"
+  ],
+  "postimages": [
+    {
+      "path": "include/bsp/native_gui_icon_state_assignment_storage.hpp",
+      "bytes": 2583,
+      "sha256": "cf18ec9c1bdee90a23f5cb6818d8445ca1915f5f0c35d69d8185d213b6fb91b5"
+    },
+    {
+      "path": "src/native_gui_icon_state_assignment_storage.cpp",
+      "bytes": 4015,
+      "sha256": "35d262189141f820f1d7e9f9ab87d4847cf8381087e8e02b6b06814421bc1efb"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_ICON_STATE_ASSIGNMENT_STORAGE.md",
+      "bytes": 3083,
+      "sha256": "eb4a645a4048b52aaf86ee8bea55b26db2cdcff4eda821389e8b8dcb07687bc1"
+    }
+  ],
+  "reader": {
+    "bytes": 9895,
+    "sha256": "125313deab91ea2ac582e10fc418eb1384d9e1a7d07c8e6b1515794ed37d8a20",
+    "utf8": "import argparse,hashlib,json,pathlib,re,subprocess\nfrom capstone import Cs,CS_ARCH_X86,CS_MODE_32\nap=argparse.ArgumentParser();ap.add_argument('--candidate');ap.add_argument('--commit');a=ap.parse_args()\nD=pathlib.Path(__file__).resolve().parent;C=pathlib.Path(a.candidate) if a.candidate else D/'candidate';checks=[]\nP='reports/cc16_native_gui_icon_state_assignment_storage.json'\ndef g(*args):return subprocess.check_output(['git',*args])\ndef sha(b):return hashlib.sha256(b).hexdigest()\ndef ck(n,v):\n    assert v,n\n    checks.append({'check':n,'passed':True})\ndef read(p):return g('show',a.commit+':'+p) if a.commit else (C/p).read_bytes()\nr=json.loads(read(P))\nck('exact report-embedded reader',pathlib.Path(__file__).read_bytes()==r['reader']['utf8'].encode())\nfor p in r['postimages']:\n    b=read(p['path']);ck('whole Source/evidence postimage '+p['path'],len(b)==p['bytes'] and sha(b)==p['sha256'])\nfor p in r['provider_whole_pins']:\n    b=g('show',r['base']+':'+p['path']);ck('existing genuine/semantic-preserved provider '+p['path'],len(b)==p['bytes'] and sha(b)==p['sha256'])\nfor q in r['helper_and_domain_verbatim']:\n    b=b''.join(g('show',r['base']+':'+q['path']).splitlines(keepends=True)[q['start_line']-1:q['end_line_inclusive']])\n    ck('exact helper/domain quote '+q['path']+str(q['start_line']),len(b)==q['bytes'] and sha(b)==q['sha256'] and b.decode()==q['verbatim_utf8'])\nb=bytes.fromhex(r['Native']['hex']);ins=list(Cs(CS_ARCH_X86,CS_MODE_32).disasm(b,0xab3c10))\nck('whole154B61ops Native preimage',len(b)==154 and sha(b)==r['Native']['sha256'] and len(ins)==61)\nck('two Native string calls no reftraffic callees',[(i.address,i.op_str) for i in ins if i.mnemonic=='call']==[(0xab3c2f,'0x41dd40'),(0xab3c45,'0xbf7680')])\nck('Native eight x87 forms and RET4',[i.mnemonic for i in ins if i.mnemonic.startswith('f')]==['fld','fstp']*4 and bytes(ins[-1].bytes)==bytes.fromhex('c20400'))\nh=read(r['owned_paths'][0]).decode();c=read(r['owned_paths'][1]).decode();blocks=re.findall(r'__asm\\s*\\{([\\s\\S]*?)\\}',c);ck('four explicit asm operand regions',len(blocks)==4)\nops=[];labels=[]\nfor block in blocks:\n    part=[];lab={}\n    for line in block.splitlines():\n        line=line.split('//',1)[0].strip()\n        if not line:continue\n        if line.endswith(':'):lab[line[:-1]]=len(part)\n        else:part.append(line)\n    ops.append(part);labels.append(lab)\ndef canon(s):\n    s=s.lower();s=re.sub(r'\\b([0-9a-f]+)h\\b',lambda m:str(int(m[1],16)),s);s=re.sub(r'0x([0-9a-f]+)',lambda m:str(int(m[1],16)),s);return re.sub(r'\\s+','',s)\nprefix=[x for i,x in enumerate(ops[0]) if i not in [5,6,7,8,12,13,14]]\nwant=[]\nfor i in ins:\n    if 0xab3c14<=i.address<=0xab3c26:\n        text=i.mnemonic+' '+i.op_str\n        if i.address==0xab3c14:text='mov edi, actual_source'\n        elif i.address==0xab3c1a:text='mov esi, actual_destination'\n        elif i.address in [0xab3c1f,0xab3c22]:text=text.replace('ebp','edx')\n        elif i.address==0xab3c26:text='jz assign_self_name'\n        want.append((i.address,text))\nck('eight original prefix operands/carriers represented',len(prefix)==len(want)==8)\nfor (addr,text),actual in zip(want,prefix):ck('ordered early Native operand '+hex(addr),canon(text)==canon(actual))\nck('all pointer carriers captured once before header compare',ops[0][5:9]==['mov captured_source, edi','mov captured_destination, esi','mov source_header, ebx','mov destination_header, edx'])\nck('self flag branch skips strings only',ops[0][labels[0]['assign_self_name']]=='mov name_required, 0' and labels[0]['assign_name_phase_done']==len(ops[0]) and ops[0][12:14]==['mov name_required, 1','jmp assign_name_phase_done'])\nck('late sourceLEN captured using current source header',ops[1]==['mov ebx, source_header','mov ecx, dword ptr [ebx]','mov request_word, ecx'])\nck('ordinary genuine preserve DWORD reference no volatile backing cast','std::uint32_t& actual_preserve_home' in h and 'const_cast' not in c and 'volatile std::uint32_t& actual_preserve_home' not in h)\nck('current LEN capture before full reached preserveHOME1 before resize',c.index('mov request_word, ecx')<c.index('static_cast<volatile std::uint32_t&>(actual_preserve_home) = 1;')<c.index('resize_native_string_header_0041dd40_exact('))\nck('one exact existing resize with same ordinary home/pool/feature',c.count('resize_native_string_header_0041dd40_exact(')==1 and 'destination_header, strings,\\n            request_word, &actual_preserve_home, actual_feature_word_0109eea4);' in c)\npost=ops[2][2:7];expected=[]\nfor i in ins:\n    if 0xab3c34<=i.address<=0xab3c3f:\n        text=i.mnemonic+' '+i.op_str\n        if i.address==0xab3c37:text='jz assign_no_outer_copy'\n        elif i.address in [0xab3c39,0xab3c3f]:text=text.replace('ebp','esi')\n        expected.append((i.address,text))\nck('five late current gate/data operands represented',len(post)==len(expected)==5)\nfor (addr,text),actual in zip(expected,post):ck('ordered late Native operand '+hex(addr),canon(text)==canon(actual))\nck('outer call captures full count/source/destination without rereads',ops[2][7:10]==['mov copy_count, edx','mov outer_source_data, eax','mov outer_destination_data, ecx'])\nck('outer Native sourceLEN branch only; count0 not suppressed',ops[2][labels[2]['assign_no_outer_copy']]=='mov outer_copy_required, 0' and labels[2]['assign_outer_phase_done']==len(ops[2]) and c.count('copy_native_crt_bytes_00bf7680(')==1 and 'outer_source_data, copy_count, actual_feature_word_0109eea4);' in c)\ntail=[x for x in ops[3][2:] if x!='mov captured_result, eax'];native_tail=[i for i in ins if 0xab3c4d<=i.address<=0xab3ca1 and i.address!=0xab3ca0]\nck('all29 Native tail operations once including self',len(tail)==len(native_tail)==29)\nfor i,actual in zip(native_tail,tail):ck('ordered actual tail operand '+hex(i.address),canon(i.mnemonic+' '+i.op_str)==canon(actual))\nck('eight Source x87 forms keep actual instruction order',[x.split()[0] for x in ops[3] if x.split()[0] in ['fld','fstp']]==['fld','fstp']*4)\nck('result captured at zero-relative-depth between float pairs',ops[3].index('fstp dword ptr [esi + 2ch]')<ops[3].index('mov eax, esi')<ops[3].index('mov captured_result, eax')<ops[3].index('fld dword ptr [edi + 30h]') and 'return captured_result;' in c)\nclean=re.sub(r'//[^\\n]*','',c)\nck('only two Native-derived C++ branch carriers',re.findall(r'\\bif\\s*\\(([^)]*)\\)',clean)==['name_required','outer_copy_required'])\nck('tail is unconditional and all C++ calls precede its first FLD',c.index('copy_native_crt_bytes_00bf7680(')<c.index('mov edi, captured_source')<c.index('fld dword ptr [edi + 2ch]'))\nck('no FP reset/new cleanup/refcount/owner/semantic projection',not any(x in clean for x in ['std::string','GuiIconState','NativeGuiIconStateStorage','reinterpret_cast','const_cast','try {','catch','noexcept','std::terminate','fetch_add','fetch_sub','Interlocked','memcpy(','memmove(','finit','fldcw','ldmxcsr','new ','delete ']))\nck('no EBP register clobber/private-stack replica','ebp' not in '\\n'.join(x.lower() for p in ops for x in p) and not any('esp' in x.lower() for p in ops for x in p))\nck('no new Source Frame/Context/callback/typebank','struct ' not in clean and 'class ' not in clean and 'virtual' not in clean and 'std::function' not in clean)\nck('all credit and Native ABI/Origin/runtime remain qualified',r['new_Original_vendor_helper_CG_duplicate_credit']==0 and r['Original_ABI_Origin_NoThrow_runtime_activation'] is False)\n\ndef tree(rev):\n    out={}\n    for raw in g('ls-tree','-r','-z',rev).split(b'\\0'):\n        if raw:\n            m,p=raw.split(b'\\t',1);mode,kind,oid=m.decode().split();out[p.decode()]=(mode,kind,oid)\n    return out\ndef treehash(items):\n    root={}\n    for p,v in items.items():\n        n=root;parts=p.split('/')\n        for s in parts[:-1]:n=n.setdefault(s,{})\n        n[parts[-1]]=v\n    def rec(n):\n        z=[]\n        for k,v in n.items():\n            if isinstance(v,dict):z.append((k+'/',b'40000 '+k.encode()+b'\\0'+bytes.fromhex(rec(v))))\n            else:z.append((k,v[0].lstrip('0').encode()+b' '+k.encode()+b'\\0'+bytes.fromhex(v[2])))\n        b=b''.join(v for _,v in sorted(z,key=lambda x:x[0].encode()))\n        return hashlib.sha1(b'tree '+str(len(b)).encode()+b'\\0'+b).hexdigest()\n    return rec(root)\nbefore=tree(r['base']);after=dict(before);ck('full base tree recomputed',treehash(before)==g('rev-parse',r['base']+'^{tree}').decode().strip())\nfor p in r['owned_paths']:\n    ck('new path absent '+p,p not in before);b=read(p);after[p]=('100644','blob',hashlib.sha1(b'blob '+str(len(b)).encode()+b'\\0'+b).hexdigest())\nrestored=dict(after)\nfor p in r['owned_paths']:restored.pop(p)\nck('full four-addition inverse map',restored==before);ck('full recursive inverse tree',treehash(restored)==g('rev-parse',r['base']+'^{tree}').decode().strip())\nif a.commit:\n    parent=g('show','-s','--format=%P',a.commit).decode().strip();old=tree(parent);new=tree(a.commit)\n    ck('actual single parent',len(parent.split())==1);ck('actual exactly four additions',{p for p in old.keys()|new.keys() if old.get(p)!=new.get(p)}==set(r['owned_paths']) and all(p not in old for p in r['owned_paths']))\n    for p in r['provider_whole_pins']:ck('actual provider unchanged '+p['path'],g('show',parent+':'+p['path'])==g('show',r['base']+':'+p['path']))\n    for p in r['owned_paths']:new.pop(p)\n    ck('actual full recursive inverse',new==old and treehash(new)==g('rev-parse',parent+'^{tree}').decode().strip())\nprint(json.dumps({'pass':True,'checks':len(checks),'mode':'immutable Git' if a.commit else 'ignored candidate','whole_Native_bytes':154,'whole_Native_ops':61,'exact_data_carrier_ops_mapped':43,'genuine_call_frame_operations_represented_in_Source_ABI':9,'private_register_save_restore_RET_ops_excluded':9,'x87_forms':8,'base_tree':treehash(before),'virtual_four_addition_tree':treehash(after),'full_inverse_tree':treehash(restored),'Original_ABI_Origin_runtime_activation':False,'new_credit':0}))\n"
+  },
+  "Native": {
+    "address": "00ab3c10",
+    "bytes": 154,
+    "physical_rows": 61,
+    "sha256": "0f78702907c90040115056f19db5962521ac31fc760b63d8d07e27dae0b9db03",
+    "calls": [
+      {
+        "site": "00ab3c2f",
+        "target": "0x41dd40"
+      },
+      {
+        "site": "00ab3c45",
+        "target": "0xbf7680"
+      }
+    ],
+    "hex": "535556578b7c24148b078bf18d5f048d6e043beb890674258b0b6a01518bcde80ca196ff833b0074148b55008b43048b4d04525051e8363a140083c40c8b570c89560c8b47108946108b4f14894e148b57188956188b471c89461c8b4f20894e208b57248956248b4728894628d9472cd95e2c8bc6d94730d95e30d94734d95e34d94738d95e388a4f3c884e3c8a573d5f88563d5e5d5bc20400",
+    "ABI": "ECXactualdest, one source-pointerDWORD stack home, EAXcaptureddest, RET4",
+    "local_EH": false,
+    "x87_forms": 8
+  },
+  "provider_whole_pins": [
+    {
+      "path": "include/bsp/native_string_raw_resize_exact.hpp",
+      "bytes": 1554,
+      "sha256": "a1a3c6be74194e2f5946e13e09bfb26562c3f73d3565b51f96403f0d60b9999c",
+      "Git_blob": "2e9e0ae6cb560eba1e7187911f6fea04791b529b"
+    },
+    {
+      "path": "src/native_string_raw_resize_exact.cpp",
+      "bytes": 3979,
+      "sha256": "74bff613a83abda342b5506ff750f46f5c44e191de506480ced504208c81f210",
+      "Git_blob": "e05e1c9a86a44a2bba1efe9f46f3151062fab3b6"
+    },
+    {
+      "path": "include/bsp/native_crt_memcpy.hpp",
+      "bytes": 1954,
+      "sha256": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123",
+      "Git_blob": "a62e6ddb9d92e02afd301ed92239b258d53b5f10"
+    },
+    {
+      "path": "src/native_crt_memcpy.cpp",
+      "bytes": 17187,
+      "sha256": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3",
+      "Git_blob": "248194cbff651aba4341401f519050447f13b6a0"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "Git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_storage.hpp",
+      "bytes": 8923,
+      "sha256": "36efeb861e01b14348e370d169c9002b8ac436a29b2f9f3be1d5aac8d7976bfc",
+      "Git_blob": "0a98345600a93dff4fc6c10ce3a0626d93fe9847"
+    },
+    {
+      "path": "src/native_gui_icon_storage.cpp",
+      "bytes": 19689,
+      "sha256": "cc847b8f5fb19055a1116376b2d3a8eff181f045695fe73394ba04996728a492",
+      "Git_blob": "1d61197d246f8c9789c733fa70919817a1581f73"
+    },
+    {
+      "path": "include/bsp/engine_seg49_64_78_cc13.hpp",
+      "bytes": 84516,
+      "sha256": "7830c6cae582c047d21923c9ed49f9084a0c18c21d99c092f69c8e133c41921d",
+      "Git_blob": "cd8b8303b75c99d6d929aca2df077bdb974d6879"
+    },
+    {
+      "path": "src/engine_seg49_64_78_cc13.cpp",
+      "bytes": 111051,
+      "sha256": "5888a64b1973289ca1eecadbe8bbb1e8718b8b9143421e4a4c617d40bb27433c",
+      "Git_blob": "9b71adf3ea032a6bfd7e2ed87ee5dc6d4114cdf7"
+    },
+    {
+      "path": "include/bsp/gui_icon.hpp",
+      "bytes": 16834,
+      "sha256": "1e2dc70631e3ebea332c8253956c9fbba9571bd2cb9e783d381e5863018f8ca7",
+      "Git_blob": "84b64ce3d68023fd3555e0025db31c07eae9810a"
+    },
+    {
+      "path": "include/bsp/game_native_mutable_crt_data.hpp",
+      "bytes": 3609,
+      "sha256": "1f8489c542ebdd443c3e2c9f36311e42fc5914475c0261ba3d4e515dc8c4d106",
+      "Git_blob": "383dee0c20131bf36a215b03db943c0295e7d47a"
+    },
+    {
+      "path": "src/game_native_mutable_crt_data.cpp",
+      "bytes": 11526,
+      "sha256": "ae568947d0080cf26bb2624ce3750beb069a93db72dcb7efc1065dd7e88f766b",
+      "Git_blob": "de36874d2cc2136143f6dea109a61095206ee847"
+    },
+    {
+      "path": "src/game_native_gui_icon_process.cpp",
+      "bytes": 4452,
+      "sha256": "771ae831af661e9420fb8a58d67bd10511456ae83e9764acb3245ded32b71655",
+      "Git_blob": "3bf20aa83282178518eb25f098337d6928af3c48"
+    }
+  ],
+  "helper_and_domain_verbatim": [
+    {
+      "path": "include/bsp/native_string_raw_resize_exact.hpp",
+      "start_line": 11,
+      "end_line_inclusive": 31,
+      "bytes": 1343,
+      "sha256": "9c32c3f2168d969b6d918546503004cb00277227beb5c11d1f9d671e90c75d4c",
+      "verbatim_utf8": "\n// Whole 0041DD40 normal body against actual raw8 {LEN+0, DATA+4} storage.\n// Capture request; equality returns before DATA, HOME or any provider use.\n// Nonzero resize reads the actual preserve BYTE HOME only AFTER allocation.\n// Preserve always invokes genuine BF7680, including count0, with the SAME\n// actual canonical feature cell. Do not substitute a by-value bool facade.\n//\n// Caller supplies genuine raw backing, a live reached preserve BYTE HOME,\n// actual AA8/AA4/AA0 pool cells and the real current feature-word reference.\n// Inherit the getter/deletion binding, pool/CRT, copy extent/DF/CPU and lifetime\n// domains. No semantic NativeString, new owner, Frame or type birth is added.\n//\n// No local EH, refund, rollback, retry, validation or failure cleanup. An escape\n// may retain unpublished allocation and changed pool/header/copy debt; caller\n// retains those actual domains and an incomplete attempt, without a fabricated\n// recoverable-pointer receipt. Ordinary Source void completion is not Native\n// EAX, __thiscall/RET8, private-HOME/FH3/SEH/fault or parent/runtime permission.\nvoid resize_native_string_header_0041dd40_exact(\n    void* actual_header, NativeStringRawPoolContext& context,\n    std::uint32_t request, const void* actual_preserve_byte_home,\n    const volatile std::uint32_t& actual_feature_word_0109eea4);\n"
+    },
+    {
+      "path": "src/native_string_raw_resize_exact.cpp",
+      "start_line": 47,
+      "end_line_inclusive": 103,
+      "bytes": 2503,
+      "sha256": "4d09aa3445ee38681cd993b19e818737d4d3ed24c9594cf94a7fc32c9aca9300",
+      "verbatim_utf8": "void resize_native_string_header_0041dd40_exact(\n    void* actual_header, NativeStringRawPoolContext& context,\n    std::uint32_t request, const void* actual_preserve_byte_home,\n    const volatile std::uint32_t& actual_feature_word_0109eea4) {\n    const auto initial_length = read_raw<std::uint32_t>(actual_header, 0u);\n    if (request == initial_length) return;\n\n    if (request == 0u) {\n        const auto old_data = read_raw<std::uint32_t>(actual_header, 4u);\n        if (old_data != 0u) {\n            const std::uint32_t old_size = initial_length + 1u;\n            auto* const pool = current_pool(context);\n            return_native_string_pool_00bd1510(pool, pointer_from_bits(old_data),\n                old_size, context.actual_small_returns_disabled_01090aa4);\n        }\n        write_raw<std::uint32_t>(actual_header, 4u, 0u);\n        write_raw<std::uint32_t>(actual_header, 0u, 0u);\n        return;\n    }\n\n    auto* const allocation_pool = current_pool(context);\n    void* const new_block = allocate_native_string_pool_00bd1120(\n        allocation_pool, request + 1u);\n    const auto new_data = static_cast<std::uint32_t>(\n        reinterpret_cast<std::uintptr_t>(new_block));\n\n    // DD95 reads this actual BYTE HOME after the real allocation returns.\n    if (read_raw<std::uint8_t>(actual_preserve_byte_home, 0u) != 0u) {\n        const auto current_length = read_raw<std::uint32_t>(actual_header, 0u);\n        const auto copied = request > current_length ? current_length : request;\n        const auto old_data = read_raw<std::uint32_t>(actual_header, 4u);\n        // Native calls BF7680 even when copied==0. The real provider owns its\n        // current feature/overlap/zero behavior; retain the captured allocation\n        // independently of its returned EAX.\n        copy_native_crt_bytes_00bf7680(new_block, pointer_from_bits(old_data),\n            copied, actual_feature_word_0109eea4);\n    }\n\n    const auto old_data = read_raw<std::uint32_t>(actual_header, 4u);\n    if (old_data != 0u) {\n        const std::uint32_t old_size =\n            read_raw<std::uint32_t>(actual_header, 0u) + 1u;\n        auto* const pool = current_pool(context);\n        return_native_string_pool_00bd1510(pool, pointer_from_bits(old_data),\n            old_size, context.actual_small_returns_disabled_01090aa4);\n    }\n\n    write_raw<std::uint32_t>(actual_header, 4u, new_data);\n    write_raw<std::uint32_t>(actual_header, 0u, request);\n    write_raw<std::uint8_t>(new_block, request, 0u);\n}\n} // namespace bsp\n"
+    },
+    {
+      "path": "include/bsp/native_crt_memcpy.hpp",
+      "start_line": 10,
+      "end_line_inclusive": 32,
+      "bytes": 1722,
+      "sha256": "46f009c157e36feadc3370f7557a3f5e5e938a2fbadbbe1e7ce41787e6165688",
+      "verbatim_utf8": "// Complete00BF7680 _memcpy behavior:711definedB/247instructions/22ranges,\n// 869Bphysicalspan includes120Bsixtables and38Bskippedpadding. Correct library\n// name retained even though the actual body supports backward overlap.\n// Native cdecl(D,S,DWORDcount), EAX originalD, plainRET/caller12cleanup.\n// This new Source interface borrows the actual stable canonical0109EEA4 cell\n// as its fourth argument; caller removes16bytes. No feature state is created.\n// Read the current cell ONLYafterforward-direction and unsignedsize>=256;\n// nonzero/matchingpointerlowbits selects restored-frame actualC0C82B tail.\n// Scalarzero still follows the native return path without buffer reads;\n// equal pointers still copy. Unaligned/unrolled/tail and backwardSTD/REP/CLD\n// schedules remain. No stdmemmove/BF87delegate/copycallback/validation/guard.\n// Requires DF0, valid readable/writable nonwrapping extents excluding active\n// argument/return/provider frames and nativecode/tables. Actual SSE2 CPU/OS\n// support must hold when selected; canonical cell truth/lifetime belong to\n// the caller. PEvirtualzero/Ghidra0 does not establish runtimeflag truth.\n// Preserves EBP/ESI/EDI and untouchedEBX; EAX/ECX/EDX/arithmeticflags volatile.\n// Eight proven selector ladders replace16Native indexedjumps, retaining\n// material copyaccess order and partial writes. A backward fault between\n// STD/CLD can exposeDF1. No fault recovery or exception conversion is added.\n// Source extraargument/privateframes, flags, Native table/code/faultPC,\n// Original ABI/FH3/SEH/heap/runtime/game identity remain qualified.\nvoid* __cdecl copy_native_crt_bytes_00bf7680(\n    void* actual_destination, const void* actual_source, std::uint32_t byte_count,\n"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "start_line": 34,
+      "end_line_inclusive": 38,
+      "bytes": 230,
+      "sha256": "1b5bd1d470bdf87cc57b6d98339bd2c5500f9600e81f70b8dca02af2fce04d6c",
+      "verbatim_utf8": "struct NativeStringRawPoolContext {\n    NativeStringPoolStorage* volatile& actual_published_01090aa8;\n    volatile std::uint32_t& actual_small_returns_disabled_01090aa4;\n    void* volatile& actual_manager_publication_01090aa0;\n};\n"
+    },
+    {
+      "path": "include/bsp/game_native_mutable_crt_data.hpp",
+      "start_line": 34,
+      "end_line_inclusive": 43,
+      "bytes": 547,
+      "sha256": "3d5ef4a9922082ebd6c746ed79cef35a5e7a6cbffb3b6e82c8280a2e0220181e",
+      "verbatim_utf8": "    ~GameNativeMutableCrtData() noexcept;\n    GameNativeMutableCrtData(const GameNativeMutableCrtData&) = delete;\n    GameNativeMutableCrtData& operator=(const GameNativeMutableCrtData&) = delete;\n\n    volatile std::uint32_t& cookie() const noexcept;\n    volatile std::uint32_t& complement() const noexcept;\n    NativeCrtNlgDescriptor& nlg_descriptor() const noexcept;\n    NativeCrtFailureBlock& failure_block() const noexcept;\n    volatile std::uint32_t& feature_word() const noexcept;\n    volatile std::uint32_t& debugger_hook() const noexcept;\n"
+    },
+    {
+      "path": "src/game_native_mutable_crt_data.cpp",
+      "start_line": 153,
+      "end_line_inclusive": 155,
+      "bytes": 151,
+      "sha256": "3873244358a5f2ea80072e9f4b01c6ff4e94d7a6b6eacd539fa7c4da5ebfc5b1",
+      "verbatim_utf8": "volatile std::uint32_t& GameNativeMutableCrtData::feature_word() const noexcept {\n    return *reinterpret_cast<volatile std::uint32_t*>(0x0109eea4);\n}\n"
+    },
+    {
+      "path": "src/game_native_gui_icon_process.cpp",
+      "start_line": 34,
+      "end_line_inclusive": 42,
+      "bytes": 419,
+      "sha256": "589d7e602f4bfcb4101e709f2849128430b333f9021ab9a113579c66ae0c7408",
+      "verbatim_utf8": "    return *delayed_loads_;\n}\n\nNativeGuiIconDelayedLoads& GameNativeGuiIconProcess::prepare_delayed_loads(\n    NativeStringRawPoolContext& strings, const GameNativeCanonicalDataOwner& canonical_owner) {\n    // Taking the address binds the authentic cell; it does not read its value.\n    const volatile std::uint32_t* const feature =\n        &canonical_owner.mutable_crt_data().feature_word();\n    if (delayed_loads_) {\n"
+    },
+    {
+      "path": "src/engine_seg49_64_78_cc13.cpp",
+      "start_line": 1271,
+      "end_line_inclusive": 1284,
+      "bytes": 487,
+      "sha256": "beff71c18f4191acc7cbd68815bbb731b1a47804da03d0a1ad50cf55e6514029",
+      "verbatim_utf8": "void gui_icon_state_assign_00ab3c10(GuiIconState& out, const GuiIconState& in)\n{\n    // `*param_1 = *param_2` on the texture word with no Interlocked call either way.\n    out.texture = in.texture;\n    if (&out != &in) out.texture_name = in.texture_name;\n    out.resolved_uv = in.resolved_uv;\n    out.authored_uv = in.authored_uv;\n    out.pivot_x = in.pivot_x;\n    out.pivot_y = in.pivot_y;\n    out.size = in.size;\n    out.load_pending = in.load_pending;\n    out.flag_3d = in.flag_3d;\n}\n\n"
+    },
+    {
+      "path": "include/bsp/gui_icon.hpp",
+      "start_line": 79,
+      "end_line_inclusive": 88,
+      "bytes": 428,
+      "sha256": "ba37dc9fdb8dfd27b1fe2a068e36dc7019aeca6ab6209d0c1f33df12a6fa0f98",
+      "verbatim_utf8": "struct GuiIconState {\n    // +00h. The reference-counted texture. Null until resolved; 00AB3B30 puts\n    // the transparent placeholder here when DelayedTextureLoad is set.\n    void* texture{nullptr};\n\n    // +04h length, +08h data: a native eight-byte string (see\n    // include/bsp/native_string.hpp) holding the `Texture` key's value.\n    // 00AB66C0 deep-copies the caller's string into it.\n    std::string texture_name{};\n\n"
+    }
+  ],
+  "schedule": [
+    {
+      "phase": "entry/self",
+      "Native": "3C14 captures source;3C18 source textureDWORD read BEFORE3C1A dest capture. LEA both+4, CMPheaders3C22, store captured texture3C24 then JZ3C26. ZEROtexture retain/release/lookup.",
+      "Source_obligation": "capture actual addresses once, preserve early comparison/texture-store order; self skips strings only, not tail; no header zeroing."
+    },
+    {
+      "phase": "resize",
+      "Native": "nonself CURRENTsrcLEN3C28; full PUSH1 home3C2A; captured request push3C2C; CALL41DD40@3C2F.",
+      "Source_obligation": "caller ordinary uint32 preserveHOME has real lifetime/preimage; write1 ONLY after requested LEN capture on nonself; direct existing exact resize with its ACTUAL HOME address/raw pool/same live feature. No bool or volatile-backing const_cast."
+    },
+    {
+      "phase": "outer BF",
+      "Native": "CURRENTsrcLEN gate3C34; ifnonzero CURRENTdstLEN3C39 then CURRENTsrcDATA3C3C then CURRENTdstDATA3C3F; CALLBF7680@3C45 even if captured count0; count isdstLEN notsrcLEN/no+1.",
+      "Source_obligation": "late ordered captures; call genuine BF4 with SAME live canonical feature ref, ignore result; preserve overlap/zero and actual callback changes, no copied header or memmove facade."
+    },
+    {
+      "phase": "DWORDtail",
+      "Native": "source+0C,+10,+14,+18,+1C,+20,+24,+28 each read then corresponding dest store3C4D..3C7A.",
+      "Source_obligation": "eight sequential volatile Native accesses, no aggregate/stdstring/state snapshot or bulk assignment."
+    },
+    {
+      "phase": "x87/return",
+      "Native": "four sequential FLDfloat/FSTPfloat pairs +2C,+30,+34,+38; EAX=ESI at3C83 BETWEENpair1 and2.",
+      "Source_obligation": "literal8x87 forms also on self; native ambient CW/status, no C++float copies/FPreset/callback whileST0live. Capture result carrier at same zero-relative-depth epoch; ordinary Source return uses captured dst later."
+    },
+    {
+      "phase": "bytes",
+      "Native": "readCURRENTsrc3C thenwriteDst3C; readCURRENTsrc3D thenprivate POPEDI thenwriteDst3D; padding3E/3F untouched; RET4/EAXcapturedDst.",
+      "Source_obligation": "ordered byte accesses; ABI/private stack/FLAGS/fault timing excluded, no new ownership or normal-disposition receipt."
+    }
+  ],
+  "exception_windows": [
+    {
+      "window": "before string calls",
+      "effects": "texture replacement already occurs even self; no old/source texture ref traffic or rollback",
+      "policy": "memory/fault/private ABI not proved"
+    },
+    {
+      "window": "exact resize escape",
+      "effects": "preserveHOME1 and texture store precede real pool/getter/alloc/copy/return; helper may leave header/pool/unpublished allocation debt",
+      "policy": "inherit genuine provider qualification; no local catch or fabricated recoverable-pointer receipt; caller retains domains/unfinished graph"
+    },
+    {
+      "window": "outer BF escape/fault",
+      "effects": "resize already normally returned; UV/float/byte tail not yet run",
+      "policy": "inherit DF0/extents/SSE2/current feature/module domain; no refund/cleanup/Origin"
+    },
+    {
+      "window": "tail hardware FP/memory exception",
+      "effects": "partial sequential fields may already be written; self still executes x87 pairs",
+      "policy": "ambient CW/status untouched; no FPreset/SEH translation/NoThrow promise; no C++callback with relativeST0live"
+    }
+  ],
+  "Source_ABI": {
+    "signature": "void* assign_native_gui_icon_state_storage_00ab3c10(void* actual_destination, const void* actual_source, std::uint32_t& actual_preserve_home, NativeStringRawPoolContext& strings, const volatile std::uint32_t& actual_feature_word_0109eea4);",
+    "new_Frame_Context_callback_owner": false,
+    "preserve_home": "ordinary caller-retained DWORD object, explicit volatile view for reached full1store; helper reads same backing/address; no const_cast",
+    "first_region": "Native EBPname-destination carrier maps EDX; parameter/private pointer captures are Source ABI",
+    "tail": "all29 literal Native data/FP/return-carrier/BYTE operations with same relative stack depth, no C++call",
+    "mapped_data_carrier_ops": 43,
+    "logical_call_frame_ops": 9,
+    "excluded_save_restore_RET_ops": 9
+  },
+  "body_Source_support_ready": true,
+  "actual_caller_feature_home_and_graph_preparation_ready": false,
+  "semantic_original_route": "engine_seg49_64_78_cc13::gui_icon_state_assign_00ab3c10(GuiIconState&,const&) remains byte-identical and uncast",
+  "Original_ABI_Origin_NoThrow_runtime_activation": false,
+  "new_Original_vendor_helper_CG_duplicate_credit": 0,
+  "tracked_Source_CMake_ledger_Ghidra_compiler_tests_probes_Game_actions": false
+}
