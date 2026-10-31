@@ -3,6 +3,7 @@
 #include "bsp/native_scene_typed_lifetime.hpp"
 
 namespace bsp {
+struct LightingAmbientFields;
 
 // Complete B7C450[99B] and B7C7E0[30B] over the SAME actual 98h allocation
 // constructed by B7C290. New source ABI; no enlarged ambient/SceneResource
@@ -55,6 +56,8 @@ public:
     void* delete_scalar_00b7c7e0(const volatile std::uint32_t& actual_flags_slot);
     bool retired() const noexcept;
 private:
+    friend LightingAmbientFields borrow_native_ambient_lighting_fields(
+        void* captured_actual_ambient, NativeRenderActualOwnerRegistry&);
     enum class Phase { bound, destroying, retired };
     void* const identity_;
     NativeAmbientIdentityContext& context_;
@@ -62,5 +65,16 @@ private:
     Phase phase_{Phase::bound};
     void retire() noexcept;
 };
+
+// Resolve the captured CURRENT resource+10 identity through the SAME canonical
+// registry. Require that final ambient companion's OWN live constructor record
+// and context; the resource's original ambient creator is not the authority.
+// Borrow the already-live grouped fields: no placement birth, native read/write,
+// retain, release or profile fallback. This view does not extend any lifetime.
+// Keep actual owner, canonical/context/record and registry stable and externally
+// quiescent through synchronous use; registry lookup releases its metadata lock.
+// Propagate admission/lookup failures; this is not a noexcept cleanup operation.
+LightingAmbientFields borrow_native_ambient_lighting_fields(
+    void* captured_actual_ambient, NativeRenderActualOwnerRegistry&);
 
 } // namespace bsp
