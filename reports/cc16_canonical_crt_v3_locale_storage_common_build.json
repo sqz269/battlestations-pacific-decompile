@@ -5379,7 +5379,87 @@
       }
     ],
     "Main_V3_selected": false,
-    "startup": "Fresh joined default V2 startup pending; Q0 changes actual loaded code",
-    "Original_ABI_rawactivation_credit": 0
+    "startup": "Fresh joined DEFAULT V2 startup PASS; natural exits and drain; V3 unselected",
+    "Original_ABI_rawactivation_credit": 0,
+    "fresh_default_V2_SourceHost": {
+      "classification": "Fresh joined Q0 and Source62 DEFAULT V2 startup/drain; no V3 or new raw selection",
+      "Source_head": "1090fc4b689a9029361ae3ac22aff82314a9ecae",
+      "compiled_Source_head": "b06fa8e5a16174d0579c1d69018f29b72f655507",
+      "metadata_only_head_difference": true,
+      "exe": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\bsp_game.exe",
+        "size": 7541248,
+        "mtime_utc": "2026-10-31T13:15:42.3499640Z",
+        "sha256": "9f9ccea1d1646b4cf64b1f44d0abecd69f798ec61edc5bc9b53c8305c693343a",
+        "build_checkout": {
+          "root": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration",
+          "head": "1090fc4b689a9029361ae3ac22aff82314a9ecae",
+          "dirty": false
+        }
+      },
+      "launcher_exit_code": 0,
+      "child_exit_code": 0,
+      "drain": {
+        "no_force_stop": true,
+        "waited_seconds": 0,
+        "natural_completed": true,
+        "timed_out": false,
+        "forced_stop_requested_pids": [],
+        "retained_pids": []
+      },
+      "window_device_created": true,
+      "device_hr": "0x00000000",
+      "back_buffer": "1600x900",
+      "frames_presented": 0,
+      "presents_skipped": 1,
+      "loop_finished": true,
+      "Icon_manager_drained": true,
+      "device_api_COM_final": [
+        0,
+        0
+      ],
+      "concrete_Host_methods": 126,
+      "unimplemented_Host_methods": 41,
+      "all_unimplemented_called": true,
+      "artifacts": [
+        {
+          "path": "local/function_source_batch62/joined_Q0/default_V2_host/source_host.log",
+          "bytes": 100096,
+          "sha256": "fadc8dd6d5ecf0b2671a7e95afd505a8c058d9f746ebf545c75a3f58b4854d76",
+          "retained_path": "local/function_source_batch62/joined_Q0/default_V2_host/artifacts/01_source_host.log"
+        },
+        {
+          "path": "local/function_source_batch62/joined_Q0/default_V2_host/source_host.log.manifest.json",
+          "bytes": 3294,
+          "sha256": "9da0c30361bf4ed6e278413f56665e8c166a2f491313a1b4071f2122f8f87f80",
+          "retained_path": "local/function_source_batch62/joined_Q0/default_V2_host/artifacts/02_source_host.log.manifest.json"
+        },
+        {
+          "path": "local/function_source_batch62/joined_Q0/default_V2_host/wrapper.log",
+          "bytes": 405,
+          "sha256": "b575d442450d42f282cf8852bab2a9ef8828092e0132028a4b45d9f2b3332452",
+          "retained_path": "local/function_source_batch62/joined_Q0/default_V2_host/artifacts/03_wrapper.log"
+        },
+        {
+          "path": "local/function_source_batch62/joined_Q0/default_V2_host/personal/Battlestations-Pacific/options.txt",
+          "bytes": 226,
+          "sha256": "f871b61acf20319045e8d07b87f69d66d9562308920456537d0103200e2a6b4c",
+          "retained_path": "local/function_source_batch62/joined_Q0/default_V2_host/artifacts/04_options.txt"
+        },
+        {
+          "path": "local/function_source_batch62/joined_Q0/default_V2_host/settings_preimage.json",
+          "bytes": 533,
+          "sha256": "a61a19686ad94c61e663d71e367487c87b6d4f2986a23a7d94bd77112ecf65b3",
+          "retained_path": "local/function_source_batch62/joined_Q0/default_V2_host/artifacts/05_settings_preimage.json"
+        },
+        {
+          "path": "build/win32/Release/xlive_stub.dll",
+          "bytes": 32768,
+          "sha256": "f11299db80cd48a355c9db2bf3de5ebc4707ba46d38d0ae5e8eb0da616f87fb3",
+          "retained_path": "local/function_source_batch62/joined_Q0/default_V2_host/artifacts/06_xlive_stub.dll"
+        }
+      ],
+      "Original_ABI_Origin_raw_V3_fullgameplay_credit": 0
+    }
   }
 }
