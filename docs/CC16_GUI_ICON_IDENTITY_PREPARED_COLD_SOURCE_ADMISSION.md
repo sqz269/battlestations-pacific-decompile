@@ -51,3 +51,13 @@ borrowing this reference's acquired record after normal scalar return and
 registry retirement, so the complete graph must remain retained. Original ABI,
 Native exception origin, runtime activation and gameplay remain open. Existing
 AB6100 credit is reused; new Original/vendor/helper/body credit is zero.
+
+Published Mesh Main9d3b62688 was joined atba44d9e775. Root read the complete
+new Mesh Source, pool/CMake changes and scoped admission before joining. The
+combined official build passes all targets and both suites (11.91seconds),
+with454 declared inputs,17 captured artifacts, all eight upstream Git paths
+exact and canonical settings retained. The nine reviewed objects are identical
+when only the four-byte COFF timestamp is excluded: four are whole equal and
+five differ only in that timestamp. This directly preserves the reviewed code,
+EH, relocations and other object bytes; it supplies no PE or runtime identity.
+No entry or game ran for this join.
