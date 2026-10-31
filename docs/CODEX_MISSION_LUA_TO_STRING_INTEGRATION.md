@@ -1,0 +1,15 @@
+# Qualified mission Lua ToString integration
+
+Whole006B8060 (five Original instructions/17 bytes) is available as ordinary Source API to_string_native_mission_lua_006b8060. It captures a signed index, reads CURRENT raw machine+4 once, calls real lua_tolstring with actual NULL optional-length sink once and returns the actual borrowed pointer, including NULL, unchanged. No wrapper strlen/length output/query/filter/default/copy/owner is added. Real provider conversion/GC/index relocation and errors remain inherited; caller retains matching Source VM/stack/code/index/capacity and rooted borrowed-string lifetimes.
+
+Producer da2998dc adds exactly four files; all Git/physical bytes and22 indexed artifacts match. Root and independent Game accepted full27HPP/38CPP against design42d2/all5Original ops/actualLua API before one authorized strict014C object. Existing object1a38a973 is1188B, one public definition and sole genuine _lua_tolstring UNDEF. Independent final e926441c verifies all pins. No reviewer compiler or entry ran.
+
+Core registration37126b06 adds the translation unit once. Root read full actual Core entry/helper: EBP prologue, state06, NULLlength09, privateSourceindex0B, realcall0F, ADD12_14/POP/RET18 withEAX unchanged. Isolated author ESP prologue uses04/07/09/0E/13/16. These are qualified ordinary Source parameter-home transports; physical Original index-home ordering/aliases, register/interpreter/private ABI, FH3/SEH/hardware/fault and runtime identity remain unproved.
+
+Retained all-target Release Win32 and both existing CTests passed14.75s at37126b06, before Source43 join; only the new entry is forced and actual lua_tolstring resolves unforced. Its archived project/map and frozen Core object remain separate. Source43 Main589c3ca4 was then read and joined before the FIRST canonical build. Combined canonical Source d9c8eb63 built all targets and passed existing2/2 in13.92s, with no forced entry/new-wrapper row. The actual ToString Core object remains byte-identical. No unchanged prejoin canonical suite was replayed and no new test or Lua/Native/game/probe entry was added.
+
+Thirty-two prior repository paths and five actual Lua files are preserved, with only the inverse of one new Core registration required. All nine raw Text flags remain false. Prior names/evidence prefixes and reconstruction rows remain; the qualified raw record and locked Ghidra append/save/export are completed separately in the report. The peer Shadow primitive's genuine caller/frame/provider/Native-origin/runtime/activation gates remain open. This leaf issues no parent886E00, VM/factory/loading/startup, Native/vendor-body credit or runtime permission. The continuing goal stays active.
+
+Evidence: reports/codex_mission_lua_to_string_integration.json; local/mission_lua_to_string_integration_cc16_20261031.
+
+Completion evidence: all prior reconstruction shard rows and the old name/evidence prefix are preserved, with one qualified raw addition. Locked journal20261031T020738Z saved prior values, applied the same-name append, saved bsp.gpr and refreshed the export. No Origin, private ABI or runtime gate changed.
