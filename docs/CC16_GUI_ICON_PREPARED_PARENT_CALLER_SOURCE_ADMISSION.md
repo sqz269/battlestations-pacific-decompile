@@ -64,3 +64,10 @@ additional Original/vendor/helper/body credit are not established.
 
 The common-build report pins the input and artifact cohorts. Existing Native
 AB5E70/AB6100 bodies were already credited; this adds no duplicate credit.
+
+The parent requirement is context-specific. The implemented Page/Group base phase
+already uses raw failure notification without the plain-binding Native unwind.
+Its manager cleanup boundaries remain separate. See
+[the current failure-boundary record](CC16_GUI_PAGE_PARENT_FAILURE_BOUNDARIES.md)
+for the exact coverage and remaining selected-manager requirement; a blanket
+three-argument guard prerequisite does not apply to every Page/Group context.

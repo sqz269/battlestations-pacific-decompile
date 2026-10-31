@@ -61,3 +61,10 @@ when only the four-byte COFF timestamp is excluded: four are whole equal and
 five differ only in that timestamp. This directly preserves the reviewed code,
 EH, relocations and other object bytes; it supplies no PE or runtime identity.
 No entry or game ran for this join.
+
+The parent requirement is context-specific. The implemented Page/Group base phase
+already uses raw failure notification without the plain-binding Native unwind.
+Its manager cleanup boundaries remain separate. See
+[the current failure-boundary record](CC16_GUI_PAGE_PARENT_FAILURE_BOUNDARIES.md)
+for the exact coverage and remaining selected-manager requirement; a blanket
+three-argument guard prerequisite does not apply to every Page/Group context.
