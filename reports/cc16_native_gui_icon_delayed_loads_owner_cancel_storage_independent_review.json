@@ -1,0 +1,1374 @@
+{
+  "schema": "cc16-native-gui-icon-delayed-loads-owner-cancel-storage-independent-review-v1",
+  "reviewer": "frontend_frame_selection_closure, distinct from frontend_raw95_producer_closure implementation author; reviewer previously wrote design audit, not this Source",
+  "reviewed_author_commit": "5bc32d2a0901975357e1b0e3d9f1baf0f63bf87c",
+  "exact_parent": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+  "Root_head_at_check": "2ca74d4cd7a42ba8399a1ce08f684ea8c093cbac",
+  "scope": "entire4file immutablepacket, complete2Source+authorDoc/report, wholeNative74definedops/205Bphysical and required actualprovidercontracts; no held ancestry merge",
+  "verdict": "zero_actionable_findings_in_qualified_normal_library_Source_scope",
+  "findings": [],
+  "reviewed_file_pins": [
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads_owner_cancel_storage.hpp",
+      "bytes": 2750,
+      "sha256": "189517667dcd8c2b944a32dd9fd1c043ffefc53d02155220207e513243eef5ba",
+      "git_blob": "aba32efdb9910c7a6c3f94212821f73f53079ef1",
+      "CR_bytes": 0
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads_owner_cancel_storage.cpp",
+      "bytes": 4666,
+      "sha256": "83caea45c5ebeebbd4cd5c936ea520771e3f3e06f1f1d77851a2f432605832c4",
+      "git_blob": "0870bb3cac4efbf8ce0bb2427d9129d29ee44991",
+      "CR_bytes": 0
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_ICON_DELAYED_LOADS_OWNER_CANCEL_STORAGE.md",
+      "bytes": 7917,
+      "sha256": "2366a70867aafb8870ea08e45e7b7b8058cb81b0eeb27943ea81cb2cb61fbd8c",
+      "git_blob": "f4d45b0e51331e0cc38ce50c059ae9e45a4511e7",
+      "CR_bytes": 0
+    },
+    {
+      "path": "reports/cc16_native_gui_icon_delayed_loads_owner_cancel_storage.json",
+      "bytes": 64184,
+      "sha256": "70c1fe6e4d6514eaa06ad954083147d77f56931d956b45f97ad6fa33b93726da",
+      "git_blob": "1f41a761f318921bc10abcc507a7f30831cd5ea4",
+      "CR_bytes": 0
+    }
+  ],
+  "hash_formats": "SHA256 is exact content; Gitblob is GitSHA1. All4packetfiles UTF8-LF/0CR; Git/raw/frozen and historical/current representations separatelylabelled.",
+  "four_addition_full_tree_inverse": {
+    "base_tree": "a90018e91a3bc216ccba22689541fc5af138e8d1",
+    "packet_tree": "d96eec2e945d432d311c4b1b53347a6ea0b7e3e1",
+    "inverse_tree": "a90018e91a3bc216ccba22689541fc5af138e8d1"
+  },
+  "semantics": [
+    {
+      "topic": "entry and real input homes",
+      "result": "pass",
+      "evidence": "Captured actual16B receiver; registerindex0, CURRENTcount before savedindexHOME0 even empty/negative return. Each iteration CURRENTdata then CURRENTownerHOME then entry+8. No byvalue owner snapshot or profile/capacity access."
+    },
+    {
+      "topic": "sentinel and index/displacement",
+      "result": "pass",
+      "evidence": "Matched indexFFFFFFFF takes actual no-removal path to commoncompare. Unmatched increments registerindex modulo32, savesHOME, increments displacement12. After removal load CURRENTsavedindexHOME without deriving displacement from it. Signed commoncompare uses another CURRENTcount."
+    },
+    {
+      "topic": "actual assignment",
+      "result": "pass",
+      "evidence": "Match captures CURRENTcount, then one CURRENTdata for source tail and destination. Lastindex skipsassignment; self skips stringcalls only. Nonself reads sourceLEN then fullpreserveDWORD1/sameHOMEaddress/exact41DD40. Never54constructor/headerzero/placementbirth."
+    },
+    {
+      "topic": "current copy and alias behavior",
+      "result": "pass",
+      "evidence": "Afterresize CURRENTsourceLEN alone gates; separately capture CURRENTdstLEN/srcDATA/dstDATA inNativeorder; real BF even destinationcount0. LateCURRENTsource+8 read/store afterBF or skippedcalls preserves supported self/header/payload aliases. SameactualcanonicalfeatureCELL goes to bothproviders."
+    },
+    {
+      "topic": "tail return and count",
+      "result": "pass",
+      "evidence": "Fresh CURRENTcount THEN CURRENTdata recomputes wrappingtail. Genuine raw41DD20 DATAfirst/nullskip/currentLEN+1/currentgetter/return leavesheaderunchanged. CURRENTcount decremented onlyafter successfulreturn, then savedindexHOME restored. An escape withholds subsequentcount/indexeffects."
+    },
+    {
+      "topic": "source backing and failure",
+      "result": "qualified pass",
+      "evidence": "Individualgenuineentry/containingobject/descriptor/buffer lifetimes and allcallback/custody/generation/RawPool/feature/DF/CPU/extents/privateframe separation remaincallerproofs. No T[n], owner/canonicalvalue inference, guard/filter, RAII/catch/noexcept/cleanup/retry/Origin issuer. OriginalprivateABI/fault/EFLAGS/FH3/runtime absent."
+    },
+    {
+      "topic": "integrated old service",
+      "result": "pass",
+      "evidence": "Oldboolresize/stdmemcpy+zerosuppression/typedpointer/byvalueowner route remainsbyteexact/unbound. Newleaf suppliesnarrowusedgenuineproviders withnoSource56dependency; oldscalarbyvalueflags/currentcount andrealcallerSourceFrame/feature routes remainseparate."
+    }
+  ],
+  "whole_historical_and_current_provider_integrity": [
+    {
+      "path": "include/bsp/native_string_raw_resize_exact.hpp",
+      "historical": {
+        "bytes": 1554,
+        "sha256": "a1a3c6be74194e2f5946e13e09bfb26562c3f73d3565b51f96403f0d60b9999c",
+        "git_blob": "2e9e0ae6cb560eba1e7187911f6fea04791b529b"
+      },
+      "current_Root": {
+        "bytes": 1554,
+        "sha256": "a1a3c6be74194e2f5946e13e09bfb26562c3f73d3565b51f96403f0d60b9999c",
+        "git_blob": "2e9e0ae6cb560eba1e7187911f6fea04791b529b"
+      },
+      "same": true
+    },
+    {
+      "path": "src/native_string_raw_resize_exact.cpp",
+      "historical": {
+        "bytes": 3979,
+        "sha256": "74bff613a83abda342b5506ff750f46f5c44e191de506480ced504208c81f210",
+        "git_blob": "e05e1c9a86a44a2bba1efe9f46f3151062fab3b6"
+      },
+      "current_Root": {
+        "bytes": 3979,
+        "sha256": "74bff613a83abda342b5506ff750f46f5c44e191de506480ced504208c81f210",
+        "git_blob": "e05e1c9a86a44a2bba1efe9f46f3151062fab3b6"
+      },
+      "same": true
+    },
+    {
+      "path": "include/bsp/native_crt_memcpy.hpp",
+      "historical": {
+        "bytes": 1954,
+        "sha256": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123",
+        "git_blob": "a62e6ddb9d92e02afd301ed92239b258d53b5f10"
+      },
+      "current_Root": {
+        "bytes": 1954,
+        "sha256": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123",
+        "git_blob": "a62e6ddb9d92e02afd301ed92239b258d53b5f10"
+      },
+      "same": true
+    },
+    {
+      "path": "src/native_crt_memcpy.cpp",
+      "historical": {
+        "bytes": 17187,
+        "sha256": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3",
+        "git_blob": "248194cbff651aba4341401f519050447f13b6a0"
+      },
+      "current_Root": {
+        "bytes": 17187,
+        "sha256": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3",
+        "git_blob": "248194cbff651aba4341401f519050447f13b6a0"
+      },
+      "same": true
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "historical": {
+        "bytes": 8771,
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97"
+      },
+      "current_Root": {
+        "bytes": 8771,
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97"
+      },
+      "same": true
+    },
+    {
+      "path": "src/native_string.cpp",
+      "historical": {
+        "bytes": 9121,
+        "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+        "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a"
+      },
+      "current_Root": {
+        "bytes": 9121,
+        "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+        "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a"
+      },
+      "same": true
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "historical": {
+        "bytes": 3113,
+        "sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+        "git_blob": "60b3f627150fa058fac7b8c4c74537cb3aee0a68"
+      },
+      "current_Root": {
+        "bytes": 3113,
+        "sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+        "git_blob": "60b3f627150fa058fac7b8c4c74537cb3aee0a68"
+      },
+      "same": true
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "historical": {
+        "bytes": 5450,
+        "sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+        "git_blob": "103d6fe4d772bb3078c48fe8bcf3f929a385fdda"
+      },
+      "current_Root": {
+        "bytes": 5450,
+        "sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+        "git_blob": "103d6fe4d772bb3078c48fe8bcf3f929a385fdda"
+      },
+      "same": true
+    },
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "historical": {
+        "bytes": 4505,
+        "sha256": "a6fa7dcce062f26c77664364aa3a5e4525ab3ae2fc320016f07524a55e746f6d",
+        "git_blob": "fb8293fbf779f87c01708ffe3c1055e28c46c733"
+      },
+      "current_Root": {
+        "bytes": 4505,
+        "sha256": "a6fa7dcce062f26c77664364aa3a5e4525ab3ae2fc320016f07524a55e746f6d",
+        "git_blob": "fb8293fbf779f87c01708ffe3c1055e28c46c733"
+      },
+      "same": true
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "historical": {
+        "bytes": 10345,
+        "sha256": "3773ac03dd39bc78f642ebea942d0e074051814c2a55395b7bc246c703f50997",
+        "git_blob": "bcedf161bdb50667d954ca7f0e113d6842682dbb"
+      },
+      "current_Root": {
+        "bytes": 10345,
+        "sha256": "3773ac03dd39bc78f642ebea942d0e074051814c2a55395b7bc246c703f50997",
+        "git_blob": "bcedf161bdb50667d954ca7f0e113d6842682dbb"
+      },
+      "same": true
+    },
+    {
+      "path": "include/bsp/game_native_gui_icon_process.hpp",
+      "historical": {
+        "bytes": 3257,
+        "sha256": "be7972224e23dd7f4871ae5359c585227c5c31f4028b99d9c3e2e4d4e8b77ae1",
+        "git_blob": "edad517eacdc50d3effee7655d58e26545a8bb45"
+      },
+      "current_Root": {
+        "bytes": 3257,
+        "sha256": "be7972224e23dd7f4871ae5359c585227c5c31f4028b99d9c3e2e4d4e8b77ae1",
+        "git_blob": "edad517eacdc50d3effee7655d58e26545a8bb45"
+      },
+      "same": true
+    },
+    {
+      "path": "src/game_native_gui_icon_process.cpp",
+      "historical": {
+        "bytes": 3064,
+        "sha256": "cc1d80e034d36fa28899a91473a863807b3c1be29f8c0825d87d35266665316e",
+        "git_blob": "de4e8cb628c4dd2f16dfdcbd2fb9c7fc2ab3eb35"
+      },
+      "current_Root": {
+        "bytes": 3064,
+        "sha256": "cc1d80e034d36fa28899a91473a863807b3c1be29f8c0825d87d35266665316e",
+        "git_blob": "de4e8cb628c4dd2f16dfdcbd2fb9c7fc2ab3eb35"
+      },
+      "same": true
+    },
+    {
+      "path": "include/bsp/gui_render.hpp",
+      "historical": {
+        "bytes": 12980,
+        "sha256": "1a5d5ce5642bd091a1c6f918406df034e1934b697867ee348578d515062e4608",
+        "git_blob": "bbc498c6f5d94cc2f62209b4ab4510ee9c1ed71f"
+      },
+      "current_Root": {
+        "bytes": 12980,
+        "sha256": "1a5d5ce5642bd091a1c6f918406df034e1934b697867ee348578d515062e4608",
+        "git_blob": "bbc498c6f5d94cc2f62209b4ab4510ee9c1ed71f"
+      },
+      "same": true
+    },
+    {
+      "path": "src/gui_render.cpp",
+      "historical": {
+        "bytes": 15219,
+        "sha256": "7fe53fbb71a329bff6bb1b425a66e200ba230a24a3215b6ccc54e6931e687cfd",
+        "git_blob": "8f71f23c73c8f451e2a5578d81847b753057ebfa"
+      },
+      "current_Root": {
+        "bytes": 15219,
+        "sha256": "7fe53fbb71a329bff6bb1b425a66e200ba230a24a3215b6ccc54e6931e687cfd",
+        "git_blob": "8f71f23c73c8f451e2a5578d81847b753057ebfa"
+      },
+      "same": true
+    },
+    {
+      "path": "include/bsp/game_native_gui_icon_application.hpp",
+      "historical": {
+        "bytes": 3879,
+        "sha256": "1986292b1374fd31b0b3d0b84d6f86df46a327b1555a6dcad15fbe85c1375fdd",
+        "git_blob": "2359922f79654081681117cd4a9527dab191c8c6"
+      },
+      "current_Root": {
+        "bytes": 3879,
+        "sha256": "1986292b1374fd31b0b3d0b84d6f86df46a327b1555a6dcad15fbe85c1375fdd",
+        "git_blob": "2359922f79654081681117cd4a9527dab191c8c6"
+      },
+      "same": true
+    },
+    {
+      "path": "src/game_native_gui_icon_application.cpp",
+      "historical": {
+        "bytes": 28057,
+        "sha256": "62f96bcdbeb553005f1fe26039be64c43198417a9f4931e9fc3813e180e69565",
+        "git_blob": "65a9378a2d68d1eb25a43ed72179607d0267ec0e"
+      },
+      "current_Root": {
+        "bytes": 28057,
+        "sha256": "62f96bcdbeb553005f1fe26039be64c43198417a9f4931e9fc3813e180e69565",
+        "git_blob": "65a9378a2d68d1eb25a43ed72179607d0267ec0e"
+      },
+      "same": true
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "historical": {
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936"
+      },
+      "current_Root": {
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936"
+      },
+      "same": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "historical": {
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+      },
+      "current_Root": {
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+      },
+      "same": true
+    },
+    {
+      "path": "config/target.json",
+      "historical": {
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+      },
+      "current_Root": {
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+      },
+      "same": true
+    },
+    {
+      "path": "tools/bsp.py",
+      "historical": {
+        "bytes": 103131,
+        "sha256": "0532d1e3fa711fb62d198e6747a4e0eb8978ef7e301de75710afd40d6c1a1339",
+        "git_blob": "2e1fb76a9fd700f079912706d9459c4293f96c86"
+      },
+      "current_Root": {
+        "bytes": 103131,
+        "sha256": "0532d1e3fa711fb62d198e6747a4e0eb8978ef7e301de75710afd40d6c1a1339",
+        "git_blob": "2e1fb76a9fd700f079912706d9459c4293f96c86"
+      },
+      "same": true
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "historical": {
+        "bytes": 14518,
+        "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+        "git_blob": "bd937766a7e4d62c015b2ab44a14a9153fbb4542"
+      },
+      "current_Root": {
+        "bytes": 14518,
+        "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+        "git_blob": "bd937766a7e4d62c015b2ab44a14a9153fbb4542"
+      },
+      "same": true
+    },
+    {
+      "path": "CMakeLists.txt",
+      "historical": {
+        "bytes": 30339,
+        "sha256": "620accca24c41c97a16c5842a6058196bbf8bb4dc1be4f5f8a62df6d7b6ce3fc",
+        "git_blob": "0ee46cdd5f70ed5b85827110cb45e1c48fdb63db"
+      },
+      "current_Root": {
+        "bytes": 30339,
+        "sha256": "620accca24c41c97a16c5842a6058196bbf8bb4dc1be4f5f8a62df6d7b6ce3fc",
+        "git_blob": "0ee46cdd5f70ed5b85827110cb45e1c48fdb63db"
+      },
+      "same": true
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "historical": {
+        "bytes": 297322,
+        "sha256": "4dcaf87d798c1acf625a42ef71f1d7b5d6f8b2687cb790a1a29aed51352855ca",
+        "git_blob": "83b3f6719245065ad381e943500860cf1173a1c4"
+      },
+      "current_Root": {
+        "bytes": 297561,
+        "sha256": "9271a22f7c81877246059f9296141c52984c03dbd900fc5e9c4758f376fca916",
+        "git_blob": "84dee0ac5aa532e4e19400aa4ab2c785b17ccd69"
+      },
+      "same": false
+    }
+  ],
+  "current_Root_nonproduction_differences": [
+    "cmake/startup.cmake"
+  ],
+  "bounded_inspected_provider_regions": [
+    {
+      "id": "P01_exact_resize_contract",
+      "path": "include/bsp/native_string_raw_resize_exact.hpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 12,
+      "last_line": 32,
+      "bytes": 1361,
+      "sha256": "2bdb093ce530a742fac8801ed068bcc5b78a98716ce9300bd5429d3c657b9b55",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P01_exact_resize_contract.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P02_exact_resize_normal_body",
+      "path": "src/native_string_raw_resize_exact.cpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 47,
+      "last_line": 98,
+      "bytes": 2503,
+      "sha256": "4d09aa3445ee38681cd993b19e818737d4d3ed24c9594cf94a7fc32c9aca9300",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P02_exact_resize_normal_body.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P03_genuine_bf_contract",
+      "path": "include/bsp/native_crt_memcpy.hpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 10,
+      "last_line": 33,
+      "bytes": 1787,
+      "sha256": "3b35e10fd9244c00a3fe8c85da97d0f4de806b5257d7b7077ab2a601a017bc1f",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P03_genuine_bf_contract.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P04_genuine_bf_entry",
+      "path": "src/native_crt_memcpy.cpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 12,
+      "last_line": 32,
+      "bytes": 728,
+      "sha256": "718bbd74f9d6430f2d6794c82feea7be04cbc68ca56c8c5dc9c3ab3d31f40df3",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P04_genuine_bf_entry.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P05_actual_raw_pool_cells",
+      "path": "include/bsp/native_string.hpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 28,
+      "last_line": 38,
+      "bytes": 494,
+      "sha256": "ae221875d0df54779836020cb7d83219e742c0a35bd07a5d6b8f2933c164b200",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P05_actual_raw_pool_cells.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P06_raw_header_return_contract",
+      "path": "include/bsp/native_string.hpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 61,
+      "last_line": 67,
+      "bytes": 420,
+      "sha256": "56bf6b15d2df65a5ae9f0c8994de68908cbe49e5102ced35b964fcf9c019a7cc",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P06_raw_header_return_contract.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P07_raw_header_return_body",
+      "path": "src/native_string.cpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 129,
+      "last_line": 139,
+      "bytes": 441,
+      "sha256": "8fb57b1c35886294980cd9857eb2b9d4ec90795c56da332ce587eb04c3799430",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P07_raw_header_return_body.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P08_current_raw_pool_transport",
+      "path": "src/native_string.cpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 22,
+      "last_line": 45,
+      "bytes": 877,
+      "sha256": "7147b90eb479362a45350f21cd4f9058a8e80ba4cfb47ae4b49eccf91f836044",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P08_current_raw_pool_transport.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P09_existing_raw_individual_entry_type",
+      "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 8,
+      "last_line": 28,
+      "bytes": 928,
+      "sha256": "7f456dfdce1aaaf0507094ffb17b4c12b1784f10cfe1a40f7e7bed1f06261998",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P09_existing_raw_individual_entry_type.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P10_existing_service_qualification",
+      "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 45,
+      "last_line": 64,
+      "bytes": 1344,
+      "sha256": "b89722719898d16a80bc76405ab4f0645c53da548279f66797a89fe5e7526701",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P10_existing_service_qualification.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P11_old_cancel_body",
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 121,
+      "last_line": 154,
+      "bytes": 1822,
+      "sha256": "9d83dcc09d9f7a0f1a075b7574dd28f778df27074a804264133f76338ee55e3a",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P11_old_cancel_body.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P12_old_scalar_separate",
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 155,
+      "last_line": 190,
+      "bytes": 1674,
+      "sha256": "e7faf865c1da3cba516bd111e3126a75b3b2e6fceba7d876b7e60312adfe824d",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P12_old_scalar_separate.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P13_existing_process_borrow",
+      "path": "src/game_native_gui_icon_process.cpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 18,
+      "last_line": 42,
+      "bytes": 1186,
+      "sha256": "5975b5b5c9491a5f1f36f0931edab54c82d63a493e1b1801bbaed69490ff154f",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P13_existing_process_borrow.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P14_old_semantic_cancel",
+      "path": "src/gui_render.cpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 389,
+      "last_line": 399,
+      "bytes": 246,
+      "sha256": "c6b61ec60e16ea5f8069711ce3d1a8321cfbadeca302f2ebb5ce3fe630ae08f6",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P14_old_semantic_cancel.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P15_pool_bridge_noexcept_limit",
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 32,
+      "last_line": 51,
+      "bytes": 1235,
+      "sha256": "4861337d9bd79d0b088d8d1151c1169b1ee3d388e5c5b30c628c54147ab6a9eb",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P15_pool_bridge_noexcept_limit.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P16_real_allocator_domain",
+      "path": "src/singleton_lifetime.cpp",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 51,
+      "last_line": 68,
+      "bytes": 618,
+      "sha256": "806555e816a572df751f4255e85cbc55674c744f227d009b04613455bc7308a4",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P16_real_allocator_domain.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P17_client_target_verify",
+      "path": "tools/bsp.py",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 967,
+      "last_line": 984,
+      "bytes": 794,
+      "sha256": "cc2fc687b74fccee49725ac1306d4f9b2a2f081376cd91270830d32b43e682e1",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P17_client_target_verify.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P18_actual_project_program_verify",
+      "path": "tools/ghidra_export.py",
+      "commit": "c0f56d13bc936b3dcb217e70373d6087f0410da7",
+      "first_line": 101,
+      "last_line": 110,
+      "bytes": 574,
+      "sha256": "4ce9f7a4d8d4c4d42c54e5f1e797ca401927f93f5ad6604d171081871f8eb011",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\regions\\P18_actual_project_program_verify.txt",
+      "independent_match": true
+    }
+  ],
+  "historical_design_input": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-named-value-copy-storage-review\\local\\output\\cc16_gui_icon_raw_cancel_contract_audit_20261031\\raw_cancel_contract.json",
+    "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\design\\raw_cancel_contract.json",
+    "bytes": 9380,
+    "sha256": "84892c380a095b1c244dacffcc01acd11d721b8fec8d6cfb203668511bda170a",
+    "qualification": "historical read-only artifact read in full; no current admission inferred"
+  },
+  "native": {
+    "bytes": 205,
+    "actual_instructions": 74,
+    "actual_opcode_bytes": 199,
+    "unreachable_padding": {
+      "entry": "00ab50fa",
+      "last": "00ab50ff",
+      "bytes": 6,
+      "hex": "8d9b00000000",
+      "sha256": "9c0c14b32f072e4754db06cf03a739a0bc15ee7771300256e607504f53b3c43a",
+      "pe_file_offset": 7033082,
+      "live_bytes_match": true,
+      "disassembly": "lea ebx,[ebx]",
+      "reachable": false,
+      "reason": "50F8 unconditional JMP5100 skips all6B; not an executed Source effect"
+    },
+    "body_sha256": "2b2b32fa7f28fd12e4cfcef9c6081fae307530491355cbaca5acea1dddc1fa7b",
+    "exports": [
+      {
+        "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab50e0\\assembly.txt",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\exports\\00ab50e0\\assembly.txt",
+        "bytes": 2150,
+        "sha256": "ffb7962d324f33d4c4695a5b7f3029bd5d1f507e2791e75c224696fef5dad0c4",
+        "current_bytes": 2150,
+        "current_sha256": "ffb7962d324f33d4c4695a5b7f3029bd5d1f507e2791e75c224696fef5dad0c4",
+        "current_equals_seal": true
+      },
+      {
+        "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab50e0\\decompiled.c",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\exports\\00ab50e0\\decompiled.c",
+        "bytes": 1821,
+        "sha256": "fdd8f4109ceaa1d12bcf234cd00104f4d54e4d36377fc59656f71de2851e513b",
+        "current_bytes": 1821,
+        "current_sha256": "fdd8f4109ceaa1d12bcf234cd00104f4d54e4d36377fc59656f71de2851e513b",
+        "current_equals_seal": true
+      },
+      {
+        "shared_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab50e0\\metadata.json",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_20261031\\exports\\00ab50e0\\metadata.json",
+        "bytes": 282,
+        "sha256": "3d64d808bf30240580e2a385ce3e102c79049525f5cbe391cbfa21edbc912ff9",
+        "current_bytes": 282,
+        "current_sha256": "3d64d808bf30240580e2a385ce3e102c79049525f5cbe391cbfa21edbc912ff9",
+        "current_equals_seal": true
+      }
+    ],
+    "new_verified_live_bytes": {
+      "bytes": 989,
+      "sha256": "79feb3dace6a169ab37779928920691f44060a7494a091c6868823f3be47a919"
+    }
+  },
+  "inspected_producer_reader": {
+    "bytes": 2445,
+    "sha256": "b61cffc94eae70d0a4e06210b8e7a67145d81b483403d95037b0a02159d46d1c",
+    "raw_equals_embedded": true,
+    "result": {
+      "pass": true,
+      "checks": 57,
+      "native_ops": 74,
+      "padding_bytes": 6,
+      "native_calls": 4,
+      "source_order_pins": 38,
+      "providers": 23,
+      "regions": 18
+    },
+    "kind": "inspected file/Git/PE static reads only, notcompiler/runtime"
+  },
+  "independent_checks": {
+    "count": 116,
+    "allpass": true,
+    "rows": [
+      {
+        "check": "exact published authorparent",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "four additions only",
+        "pass": true,
+        "detail": [
+          [
+            "A",
+            "docs/CC16_NATIVE_GUI_ICON_DELAYED_LOADS_OWNER_CANCEL_STORAGE.md"
+          ],
+          [
+            "A",
+            "include/bsp/native_gui_icon_delayed_loads_owner_cancel_storage.hpp"
+          ],
+          [
+            "A",
+            "reports/cc16_native_gui_icon_delayed_loads_owner_cancel_storage.json"
+          ],
+          [
+            "A",
+            "src/native_gui_icon_delayed_loads_owner_cancel_storage.cpp"
+          ]
+        ]
+      },
+      {
+        "check": "exact packet snapshot include/bsp/native_gui_icon_delayed_loads_owner_cancel_storage.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "exact packet snapshot src/native_gui_icon_delayed_loads_owner_cancel_storage.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "exact packet snapshot docs/CC16_NATIVE_GUI_ICON_DELAYED_LOADS_OWNER_CANCEL_STORAGE.md",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "exact packet snapshot reports/cc16_native_gui_icon_delayed_loads_owner_cancel_storage.json",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "exact four addition recursive inverse",
+        "pass": true,
+        "detail": {
+          "base": "a90018e91a3bc216ccba22689541fc5af138e8d1",
+          "packet": "d96eec2e945d432d311c4b1b53347a6ea0b7e3e1",
+          "inverse": "a90018e91a3bc216ccba22689541fc5af138e8d1"
+        }
+      },
+      {
+        "check": "whole historical include/bsp/native_string_raw_resize_exact.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole historical src/native_string_raw_resize_exact.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole historical include/bsp/native_crt_memcpy.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole historical src/native_crt_memcpy.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole historical include/bsp/native_string.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole historical src/native_string.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole historical include/bsp/native_string_pool_storage.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole historical src/native_string_pool_storage.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole historical include/bsp/native_gui_icon_delayed_loads.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole historical src/native_gui_icon_delayed_loads.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole historical include/bsp/game_native_gui_icon_process.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole historical src/game_native_gui_icon_process.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole historical include/bsp/gui_render.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole historical src/gui_render.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole historical include/bsp/game_native_gui_icon_application.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole historical src/game_native_gui_icon_application.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole historical include/bsp/singleton_lifetime.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole historical src/singleton_lifetime.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole historical config/target.json",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole historical tools/bsp.py",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole historical tools/ghidra_export.py",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole historical CMakeLists.txt",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole historical cmake/startup.cmake",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "actual current effectful providers unchanged",
+        "pass": true,
+        "detail": [
+          "cmake/startup.cmake"
+        ]
+      },
+      {
+        "check": "region P01_exact_resize_contract",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P02_exact_resize_normal_body",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P03_genuine_bf_contract",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P04_genuine_bf_entry",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P05_actual_raw_pool_cells",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P06_raw_header_return_contract",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P07_raw_header_return_body",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P08_current_raw_pool_transport",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P09_existing_raw_individual_entry_type",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P10_existing_service_qualification",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P11_old_cancel_body",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P12_old_scalar_separate",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P13_existing_process_borrow",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P14_old_semantic_cancel",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P15_pool_bridge_noexcept_limit",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P16_real_allocator_domain",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P17_client_target_verify",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P18_actual_project_program_verify",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch captured_owner",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch index_register0",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch initial_current_count",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch saved_index0_even_empty",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch initial_signed_gate",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch independent_displacement0",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch iteration_current_data",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch iteration_current_owner_home",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch entry_owner_compare_operand",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch unmatched",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch unmatched_index_increment",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch unmatched_saved_home",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch unmatched_displacement",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch matched_sentinel",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch matched_current_count",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch last_slot_skip",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch assignment_one_current_data",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch captured_source",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch captured_destination",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch self_skip_string_only",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch current_source_request",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch full_home1",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch exact_resize",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch current_source_len_gate",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch current_destination_len",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch current_source_data",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch current_destination_data",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch genuine_bf_even0",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch late_source8",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch store8_even_self",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch fresh_tail_count_first",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch fresh_tail_data_second",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch fresh_tail_address",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch raw_return",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch current_count_after_return",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch decrement_after_return",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch saved_index_reload_not_displacement",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "epoch common_current_signed_compare",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "38 epochs ordered",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "assignment not construction/localpolicy",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "savedindex restore without displacement recompute",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "new Source raw/frozen/Git include/bsp/native_gui_icon_delayed_loads_owner_cancel_storage.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "new Source raw/frozen/Git src/native_gui_icon_delayed_loads_owner_cancel_storage.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "historical complete cancel proposal frozen",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "proposal original remains exact",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "installed PE",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "x86 target image base",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole205B physical identity",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "actual6B padding pin",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "all74 actual opcode rows/199bytes",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "padding unreachable unconditionaljump",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "4genuine calls/no localEHFP",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "frozen export J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab50e0\\assembly.txt",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "frozen export J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab50e0\\decompiled.c",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "frozen export J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab50e0\\metadata.json",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "frozen verified query verified_count",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "frozen verified query cancel_proto",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "frozen verified query cancel_live_bytes",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "frozen verified query padding_live_bytes",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "new verified BSP bytes match seal",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "2445B reader raw=embeddedLF",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "reader cwd exact authorseal",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "reader actualinput sealed include/bsp/native_gui_icon_delayed_loads_owner_cancel_storage.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "reader actualinput sealed src/native_gui_icon_delayed_loads_owner_cancel_storage.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "reader actualinput sealed docs/CC16_NATIVE_GUI_ICON_DELAYED_LOADS_OWNER_CANCEL_STORAGE.md",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "reader actualinput sealed reports/cc16_native_gui_icon_delayed_loads_owner_cancel_storage.json",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "inspected original reader57 static checks",
+        "pass": true,
+        "detail": {
+          "result": {
+            "pass": true,
+            "checks": 57,
+            "native_ops": 74,
+            "padding_bytes": 6,
+            "native_calls": 4,
+            "source_order_pins": 38,
+            "providers": 23,
+            "regions": 18
+          },
+          "stdout": {
+            "bytes": 144,
+            "sha256": "17b20bc49d9d6035d2a3ffb92726a20d1a8316bb4d08926f5895697efb15667e"
+          },
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "exit_code": 0
+        }
+      }
+    ],
+    "kind": "read-only Git/PE/bytes/operands/padding/order/integrity; not compiler/runtime tests"
+  },
+  "artifacts": {
+    "root": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage-review\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_independent_review_20261031",
+    "checks": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage-review\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_independent_review_20261031\\independent_checks.json",
+      "bytes": 41594,
+      "sha256": "f580fb7b7e8630d3e85084d3b418b920c941c86917c270881547903972652e26"
+    },
+    "reader": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage-review\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_independent_review_20261031\\producer_verify.py",
+      "bytes": 2445,
+      "sha256": "b61cffc94eae70d0a4e06210b8e7a67145d81b483403d95037b0a02159d46d1c"
+    },
+    "native_listing": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage-review\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_independent_review_20261031\\native.asm",
+      "bytes": 3798,
+      "sha256": "5decdc59a756ed07ecc41f37c2e380be4b42b8528802c86319d289db4b215add"
+    },
+    "fresh_verified_live_bytes": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-owner-cancel-storage-review\\local\\output\\cc16_native_gui_icon_delayed_loads_owner_cancel_storage_independent_review_20261031\\independent_live_bytes.txt",
+      "bytes": 989,
+      "sha256": "79feb3dace6a169ab37779928920691f44060a7494a091c6868823f3be47a919"
+    }
+  },
+  "admission": {
+    "qualified_library_Source_ready_for_Root_checks": true,
+    "reviewer_compiled_or_tested": false,
+    "actual_Core_review_included": false,
+    "Native_provider_Game_execution": false,
+    "bound_to_existing_service_or_real_caller": false,
+    "typed_array_or_queue_family": false,
+    "Original_ABI": false,
+    "Native_origin_or_cleanup_permission": false,
+    "runtime_validated": false,
+    "full_Icon_or_activation": false
+  },
+  "remaining_gates": [
+    "RootnewCPPregistration/common/retained/actualCore receipts separate from Source/staticreview",
+    "Actual16B/individualentries/buffers/currentgeneration/publication/custody/lifetimes and caller-stagedmutableowner/savedindex/preserve homes withsamecanonicalfeature/RawPool providers",
+    "PrivateFrame/HOME/activeSourceargument/provider separation, actualBFextents/DF0/reachedCPU/newhandler/deletion/serialization andmatchedAliasproofs",
+    "Realexistingservice/destructorcaller binding; oldbyvalueowner andscalarbyvalueflag/currentcount timing notimplicitlyclosed",
+    "NativeOrigin/cause/secondarycleanup/Originalregister/RET4/EFLAGS/privateframe/fault/FH3/SEH/runtime, typedqueue/request/delivery/current80/renderer/fullIcon"
+  ],
+  "credit": {
+    "new_original": 0,
+    "new_vendor": 0,
+    "new_helper": 0,
+    "new_compiler_generated": 0,
+    "duplicate_body": 0,
+    "Original_ABI": false,
+    "Native_origin": false,
+    "Native_unwind": false,
+    "runtime": false,
+    "activation": false
+  },
+  "actions": "Onlytwoownedreviewfiles committed; AB50E0/fileleases released. No Source/CMake/sharedmetadata/ledger/Ghidra/install changes, compiler/tests/probe/Native/provider/Game execution. Ignoredstaticartifacts retained.",
+  "review_doc_pin": {
+    "path": "docs\\CC16_NATIVE_GUI_ICON_DELAYED_LOADS_OWNER_CANCEL_STORAGE_INDEPENDENT_REVIEW.md",
+    "bytes": 6971,
+    "sha256": "dea5874fd7d6c627993250fa532b6ace9a01f24f37a933bfa66f295fc327f20a"
+  }
+}
