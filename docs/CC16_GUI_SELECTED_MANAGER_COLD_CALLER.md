@@ -1,0 +1,11 @@
+# Actual Host selection of the manager negative attempt
+
+The existing successful Host startup now calls the cold preparation after frontend GUI startup returns. Main already owns the fully constructed Host; the assigned GUI Impl and genuine0073BC19 getter have both returned. The existing GUI switch and nullable-member guard preserve absent-manager paths. No extra Native getter, flag, synthetic owner or bank is added.
+
+Normal WinMain drains singletons before the C++ destructor. Both successful exits of the central drain now perform the existing GUI after-drain acknowledgement after complete shutdown/verification and, when present, factory closure. This completes the Source fence before the later destructor retention check. The old destructor acknowledgement remains idempotent. Both new calls use the existing catch/_Exit policy.
+
+Cold failure remains sticky in Source70's real retained graph; startup exceptions propagate to Main's still-owned Host and its existing retention fence. Earlier failures before the new call keep their old unselected behavior. The retained record, raw Page failure notification and dual cleanup denial are unchanged. Consumption of the private routing borrow is not custody or normal-disposition credit.
+
+The author base is published4adaf3be42fe8cd6c50a5657b6b87636f05fe4d2. Historical proposal4182f5ab used the same Source preimage and20 provider files; the whole trees differ after Source71. This packet applies exactly three additive seams to one Source file. The report embeds complete historical pins,11 bounded regions and a self-contained immutable reader with the full three-path recursive inverse.
+
+This selects protection for the existing actual warm GUI path, without selecting raw Icons or changing the Page flag. Raw Icon, arbitrary recursive/fresh nested invocation, whole provider/string/queue custody, Native Origin/NoThrow, Original FH3/SEH/ABI/FP and gameplay domains remain unadmitted. The new acknowledgement adds earlier Source postflight/log epochs, not an Original Native schedule claim. No compilation or runtime validation is claimed for this author packet; Root owns build/Core and authorized Game checks. New Native/vendor/helper/CG/duplicate-body credit is zero.

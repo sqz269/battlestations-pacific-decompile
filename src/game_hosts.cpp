@@ -2221,6 +2221,9 @@ void GameStartupHost::drain_native_singletons() {
             else singletons_->shutdown();
             if (native_gui_icon_raw_scalar_dispatch_) verify_native_gui_icon_raw_scalar_after_drain();
             else verify_native_gui_icon_after_drain();
+            if constexpr (kGuiManagerCc15Bound) {
+                if (native_gui_manager_) native_gui_manager_->after_singleton_drain();
+            }
             return;
         }
         if (startup_factories_phase_ != StartupFactoriesPhase::live)
@@ -2239,6 +2242,9 @@ void GameStartupHost::drain_native_singletons() {
         native_startup_factories_->after_native_drain();
         native_startup_factories_.reset();
         startup_factories_phase_ = StartupFactoriesPhase::closed;
+        if constexpr (kGuiManagerCc15Bound) {
+            if (native_gui_manager_) native_gui_manager_->after_singleton_drain();
+        }
     } catch (...) {
         startup_factories_phase_ = StartupFactoriesPhase::failed;
         try { log_.note("native singleton/factory drain incomplete; retaining the entire provider graph until exit"); log_.close(); }
@@ -3261,6 +3267,9 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     }
     frontend_->run_font_and_gui_startup_0073bae0(language_font_path_008d4890(
         settings_host_->language_catalog(), settings_view_.gameplay.language_index_04));
+    if constexpr (kGuiManagerCc15Bound) {
+        if (native_gui_manager_) native_gui_manager_->prepare_cold_selected_manager_delete();
+    }
     initialize_native_gui_render();
     // 0073E14B follows the retail-stubbed After InitGui checkpoint. Borrow the
     // canonical host cell and its shared raw lifetime domain; an earlier
