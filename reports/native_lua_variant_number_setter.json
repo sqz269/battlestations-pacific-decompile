@@ -1,0 +1,48 @@
+{
+  "schema": "bsp-native-lua-variant-number-setter-v1",
+  "name": "set_native_lua_variant_number_008869d0_cpp_cleanup",
+  "source_base": "44bfbefebae3c87ada89bd821e6c6a7ce460fc0b",
+  "source_sha256": {
+    "include/bsp/native_lua_variant_number_setter.hpp": "20e6bd4071f9b7fe3f4876322294b26d210962966718d2e82286028a7b151072",
+    "src/native_lua_variant_number_setter.cpp": "ff32a2805f771dcebfc1859e4e152860b6c8d602ae4b84b4b306f088c19fdbac"
+  },
+  "actual_source_lines": {
+    "header": 29,
+    "cpp": 49
+  },
+  "ordinary_cpp_abi_only": true,
+  "source_ready": false,
+  "runtime_validated": false,
+  "native_body_credit": false,
+  "vendor_body_credit": false,
+  "native_entry": "008869D0..008869ED",
+  "native_instructions": 8,
+  "native_bytes": 30,
+  "design_sha256": "e93c51ea1dff6b3bd9d7e37c96b36d8241639bcc2da36aad2b5fdae03191240b",
+  "schedule": [
+    "Capture receiver and actual4B HOME address",
+    "Real clear_cpp_cleanup SAMEtuple; propagate actual noncompletion before HOME/store",
+    "Fenced CURRENT4B HOME capture",
+    "Fenced fullDWORD tag0",
+    "Fenced captured32bits payload+8; explicit Source completed enum"
+  ],
+  "native_result": "No EAX receiver assignment; Source enum is qualified completion only",
+  "strict_object": {
+    "compiles": 1,
+    "exit_code": 0,
+    "machine": "014C",
+    "bytes": 2313,
+    "sha256": "2c0c0035dd0b9296929259cea1bbc27372c79a6ad15a0ac2811c3e744ce23a9f",
+    "defined_entry": "?set_native_lua_variant_number_008869d0_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXPBXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z",
+    "genuine_clear_undefined": "?clear_native_lua_variant_00886920_cpp_cleanup@bsp@@YA?AW4NativeLuaVariantRetirementResult@1@PAXAAUNativeStringRawPoolContext@1@AAUNativeLuaVariantRetirementOperation@1@ABUNativeLuaVariantCppCleanupBacking@1@@Z",
+    "same_object_symbol_receipt": "local/native_lua_variant_number_setter_validation_cc9_20261030/objects/actual_symbols.json",
+    "same_object_inspection_receipt": "local/native_lua_variant_number_setter_validation_cc9_20261030/objects/inspection_receipt.json"
+  },
+  "provider_preservation": "local/native_lua_variant_number_setter_validation_cc9_20261030/provider_preservation.json",
+  "limits": [
+    "Genuine initialized/live HOME and legal aliases; typed receiver/nested/provider/backing domain inherited",
+    "No float snapshot/conversion/x87/Frame/cleanup/typebirth/default/repair/retry",
+    "No Native private HOME/ABI/fault or parent886E00/vector/copy/VM/factory/startup/runtime grant"
+  ],
+  "tests_probes_native_or_game_entry": false
+}
