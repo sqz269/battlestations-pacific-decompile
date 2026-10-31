@@ -1,0 +1,405 @@
+{
+  "kind": "Root raw Icon state-selection Source71 admission",
+  "Source_author": "a050eca4c10c71a8fb1565199360613cc26768be",
+  "actual_author_base": "4182f5ab83578b5018e9cfb477ab53a3890d99fa",
+  "CMake_commit": "03d0feec41e7a0561efd787ad1fb402262a95ebc",
+  "frozen_worker_candidate_base": "672a6cc2fd7dba2b69a0e449e542f9d1c15a81fa",
+  "Source_scope": "exact four additions, then one deferred bsp_core Source inclusion; historical ignored/proposal wording remains historical",
+  "Root_independent_review": {
+    "full_Header_Source_Doc_reader_Native": true,
+    "worker_static77_replayed": true,
+    "actual_Git42_and_embedded77_replayed": true,
+    "fresh_full_four_path_inverse": true,
+    "whole_current_provider_files": 15,
+    "full_Normal_Native_bytes": 154,
+    "full_Normal_Native_ops": 46,
+    "non_ABI_Native_ops": 39,
+    "original_RET0C_starts": "00ab17a7",
+    "full_ESI_not_SI_forwarded": true,
+    "ratio_home_overwrite_epoch_preserved": true,
+    "current80_capture_before114_110": true
+  },
+  "third_worker_Source_peer": {
+    "verdict": "zero actionable qualified Source findings",
+    "own_checks": 23,
+    "actual_Root_Git_checks": 42,
+    "actual_author_extracted_reader_checks": 77,
+    "full_four_path_recursive_inverse": true,
+    "receipt_size": 4990,
+    "receipt_sha256": "dba52bb803c4f32be11de00eb4b9882f14d455405429e700e633c6779a966e4b",
+    "manifest_sha256": "ab3b5f085b5fbfe36eb2b6373966b9f0236cdc05037502fa6c187294e25c8d37",
+    "artifacts": 16,
+    "Root_full_receipt_read": true,
+    "worker_build_Core_runtime_claim": false
+  },
+  "build": {
+    "command": "./scripts/build.ps1 -Configuration Release",
+    "Win32": true,
+    "MP": 2,
+    "PCH": "ON",
+    "coverage_PDB": "OFF",
+    "seconds": 29.8455884,
+    "all_targets_and_two_existing_suites": true,
+    "inputs": 481,
+    "retained_outputs": 13,
+    "forcing": 0,
+    "new_tests": 0,
+    "new_Game_runs": 0,
+    "prior4_objects_whole_equal": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_gui_media_focus_lifetime.obj",
+        "whole_equal": true
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj",
+        "whole_equal": true
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_gui_manager_application.obj",
+        "whole_equal": true
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_singletons.obj",
+        "whole_equal": true
+      }
+    ]
+  },
+  "Core": {
+    "object": {
+      "path": "build/win32/bsp_core.dir/Release/native_gui_icon_state_selection_storage.obj",
+      "size": 1761,
+      "sha256": "86b6836845377e02883e8edd466ff41c609f1e88f5a6bb207d186bc9c4feda8c",
+      "retained_path": "local/function_source_batch71/common/artifacts/build/win32/bsp_core.dir/Release/native_gui_icon_state_selection_storage.obj"
+    },
+    "Root_full_code_bytes": 222,
+    "Root_full_instructions": 73,
+    "Root_actual_Native_mapping": {
+      "kind": "Root actual compiled object full39nonABINative operand/branch mapping",
+      "rows": [
+        {
+          "Native": "0xab1710",
+          "Source_object": "0x24",
+          "mnemonic": "xorps",
+          "operands": "xmm0, xmm0"
+        },
+        {
+          "Native": "0xab1713",
+          "Source_object": "0x27",
+          "mnemonic": "movss",
+          "operands": "xmm1, dword ptr [ebx + 8]"
+        },
+        {
+          "Native": "0xab1719",
+          "Source_object": "0x2c",
+          "mnemonic": "comiss",
+          "operands": "xmm0, xmm1"
+        },
+        {
+          "Native": "0xab171c",
+          "Source_object": "0x2f",
+          "mnemonic": "ja",
+          "operands": "0x3d"
+        },
+        {
+          "Native": "0xab171e",
+          "Source_object": "0x31",
+          "mnemonic": "movss",
+          "operands": "xmm0, dword ptr [edx]"
+        },
+        {
+          "Native": "0xab1726",
+          "Source_object": "0x35",
+          "mnemonic": "comiss",
+          "operands": "xmm1, xmm0"
+        },
+        {
+          "Native": "0xab1729",
+          "Source_object": "0x38",
+          "mnemonic": "ja",
+          "operands": "0x3d"
+        },
+        {
+          "Native": "0xab172b",
+          "Source_object": "0x3a",
+          "mnemonic": "movaps",
+          "operands": "xmm0, xmm1"
+        },
+        {
+          "Native": "0xab172f",
+          "Source_object": "0x3d",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [ebx]"
+        },
+        {
+          "Native": "0xab1733",
+          "Source_object": "0x3f",
+          "mnemonic": "cmp",
+          "operands": "si, word ptr [ecx + 0xec]"
+        },
+        {
+          "Native": "0xab173b",
+          "Source_object": "0x46",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [ebx + 4]"
+        },
+        {
+          "Native": "0xab173f",
+          "Source_object": "0x49",
+          "mnemonic": "movss",
+          "operands": "dword ptr [ebx + 8], xmm0"
+        },
+        {
+          "Native": "0xab1745",
+          "Source_object": "0x4e",
+          "mnemonic": "je",
+          "operands": "0x79"
+        },
+        {
+          "Native": "0xab1747",
+          "Source_object": "0x50",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ecx + 0xf4]"
+        },
+        {
+          "Native": "0xab174d",
+          "Source_object": "0x56",
+          "mnemonic": "test",
+          "operands": "edx, edx"
+        },
+        {
+          "Native": "0xab174f",
+          "Source_object": "0x58",
+          "mnemonic": "jne",
+          "operands": "0x5e"
+        },
+        {
+          "Native": "0xab1751",
+          "Source_object": "0x5a",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "Native": "0xab1753",
+          "Source_object": "0x5c",
+          "mnemonic": "jmp",
+          "operands": "0x69"
+        },
+        {
+          "Native": "0xab1755",
+          "Source_object": "0x5e",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0xf8]"
+        },
+        {
+          "Native": "0xab175b",
+          "Source_object": "0x64",
+          "mnemonic": "sub",
+          "operands": "eax, edx"
+        },
+        {
+          "Native": "0xab175d",
+          "Source_object": "0x66",
+          "mnemonic": "sar",
+          "operands": "eax, 6"
+        },
+        {
+          "Native": "0xab1760",
+          "Source_object": "0x69",
+          "mnemonic": "movsx",
+          "operands": "edx, si"
+        },
+        {
+          "Native": "0xab1763",
+          "Source_object": "0x6c",
+          "mnemonic": "cmp",
+          "operands": "edx, eax"
+        },
+        {
+          "Native": "0xab1765",
+          "Source_object": "0x6e",
+          "mnemonic": "jb",
+          "operands": "0x94"
+        },
+        {
+          "Native": "0xab1767",
+          "Source_object": "0x70",
+          "mnemonic": "cmp",
+          "operands": "byte ptr [ecx + 0x100], 0"
+        },
+        {
+          "Native": "0xab176e",
+          "Source_object": "0x77",
+          "mnemonic": "je",
+          "operands": "0x94"
+        },
+        {
+          "Native": "0xab1770",
+          "Source_object": "0x79",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [ecx + 0x110], edi"
+        },
+        {
+          "Native": "0xab1776",
+          "Source_object": "0x7f",
+          "mnemonic": "jne",
+          "operands": "0x94"
+        },
+        {
+          "Native": "0xab1778",
+          "Source_object": "0x81",
+          "mnemonic": "fld",
+          "operands": "dword ptr [ebx + 8]"
+        },
+        {
+          "Native": "0xab177c",
+          "Source_object": "0x84",
+          "mnemonic": "fld",
+          "operands": "dword ptr [ecx + 0x114]"
+        },
+        {
+          "Native": "0xab1782",
+          "Source_object": "0x8a",
+          "mnemonic": "fucompi",
+          "operands": "st(1)"
+        },
+        {
+          "Native": "0xab1784",
+          "Source_object": "0x8c",
+          "mnemonic": "fstp",
+          "operands": "st(0)"
+        },
+        {
+          "Native": "0xab1786",
+          "Source_object": "0x8e",
+          "mnemonic": "lahf",
+          "operands": ""
+        },
+        {
+          "Native": "0xab1787",
+          "Source_object": "0x8f",
+          "mnemonic": "test",
+          "operands": "ah, 0x44"
+        },
+        {
+          "Native": "0xab178a",
+          "Source_object": "0x92",
+          "mnemonic": "jnp",
+          "operands": "0xb9"
+        },
+        {
+          "Native": "0xab178c",
+          "Source_object": "0x94",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx]"
+        },
+        {
+          "Native": "0xab178e",
+          "Source_object": "0x96",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [eax + 0x80]"
+        },
+        {
+          "Native": "0xab1795",
+          "Source_object": "0xa2",
+          "mnemonic": "movss",
+          "operands": "dword ptr [ecx + 0x114], xmm0"
+        },
+        {
+          "Native": "0xab179d",
+          "Source_object": "0xaa",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + 0x110], edi"
+        }
+      ],
+      "passed": 39,
+      "object_code_bytes": 222,
+      "object_ops": 73,
+      "CodeRelocs": 0,
+      "local_EH": false,
+      "captured_full_ESI_at_hex9c": true,
+      "captured_target_at_hex9f": true,
+      "stores114_at_hexa2_and110_at_hexaa": true,
+      "real_virtual_provider_call_at_hexd7": true,
+      "Source_parameterhomes_privateABI_different": true,
+      "Original_ABI_Origin_runtime": false
+    },
+    "CodeRelocs": 0,
+    "local_EH": false,
+    "compiled_static_archive_entry": true,
+    "normal_Game_map_entry": false,
+    "compiler_generated38byte_vendor_ctor_excluded": true
+  },
+  "evidence": [
+    {
+      "path": "local/function_source_batch71/common/manifest.json",
+      "size": 148957,
+      "sha256": "db9ec48f19ac658e2ed2e9c5ba11046d688b4a286dd2d9c1fa4ea07104c95ac3"
+    },
+    {
+      "path": "local/function_source_batch71/actual_Git_verification.json",
+      "size": 504,
+      "sha256": "26d76d015d77ee5ff1dd672317673af813f141aee2c367e29352d9a9180a848f"
+    },
+    {
+      "path": "local/function_source_batch71/verify_actual_Git.py",
+      "size": 3608,
+      "sha256": "14ab864e25733ccdc97569fbc01feb59737cdbaa5593515c1a29821b425d376b"
+    },
+    {
+      "path": "local/function_source_batch71/Root_Core.txt",
+      "size": 3582,
+      "sha256": "5fd4a5426b9d1b4a938847839ed888d4706fb25ecbf6612f1676efa850541298"
+    },
+    {
+      "path": "local/function_source_batch71/Root_Core.json",
+      "size": 345,
+      "sha256": "6d5efe6856f4e2db154d886b72c454ffdcc0f3cab04621407165016ddcd7f25c"
+    },
+    {
+      "path": "local/function_source_batch71/archive_entry.txt",
+      "size": 116,
+      "sha256": "1e0d4c68b6aaba3da0a10909c4b61a2a6f983c69e718f34914e236ab3b2e8249"
+    },
+    {
+      "path": "local/ghidra-annotations-20261031T194305Z.json",
+      "size": 2957,
+      "sha256": "e772b1ef8fbedecd6c878828671e8ceaf843760a42ec5ef9a92dfcef29fca0e0"
+    }
+  ],
+  "annotation": {
+    "address": "00ab1710",
+    "same_existing_descriptive_name": "BSP_GuiIcon_SelectState",
+    "old_values_preserved": true,
+    "write_lock_tool": "tools/ghidra_annotate.py --apply --addresses 00ab1710",
+    "saved_existing_project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "affected_export_refreshed": true,
+    "index_rebuilt": true,
+    "old_listing_only_note_explicitly_historical": true,
+    "Native_code_or_prototype_change": false
+  },
+  "qualification": {
+    "ordinary_Source_ABI": true,
+    "actual_Icon_three_HOME_array_onecell_context_borrows": true,
+    "Source_parameter_control_spill_homes_separate": true,
+    "Original_register_stack_RET_FLAGS_fault_ABI": false,
+    "Native_unmasked_FP_full_EH_SEH_NoThrow_Origin": false,
+    "default80_executor": false,
+    "actual_current88_caller": false,
+    "production_record_binding": false,
+    "provider_custody_and_normal_disposition": false,
+    "runtime_activation": false,
+    "gameplay": false
+  },
+  "credits": {
+    "new_Native": 0,
+    "vendor": 0,
+    "helper": 0,
+    "CG": 0,
+    "duplicate_semantic_body": 0,
+    "Origin": 0,
+    "Original_ABI": 0,
+    "runtime": 0
+  },
+  "next": "Review and activate real post-GUI-startup cold manager caller with central-drain acknowledgement; continue independent raw default80 prerequisite and counted-fill bodies"
+}
