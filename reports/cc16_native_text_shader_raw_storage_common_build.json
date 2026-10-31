@@ -1,0 +1,1646 @@
+{
+  "schema_version": 1,
+  "classification": "whole raw Text Shader-name setter Source, private captured-credit consumer; real producer and activation remain gated",
+  "packet": "4cbe5ceb4fdfeea60b5c5a11de5342cea003ad58",
+  "Source_head": "adbf07d333f5e4c28e2411bf11a38747edb0f19d",
+  "baseline_Main": "bed142dbf2f3c3fe757ee40d3a02a2c8e5a73f34",
+  "command": "./scripts/build.ps1 -Configuration Release",
+  "exit_code": 0,
+  "target": "MSVC Win32 Release",
+  "MP": 2,
+  "PCH": "ON",
+  "coverage_PDB": "OFF",
+  "checks": {
+    "all_registered_targets_built": true,
+    "both_existing_suites_passed": true,
+    "total_test_seconds": 14.61,
+    "compiler_warnings_errors": false,
+    "previous_Source_inputs": 132,
+    "unchanged_previous_inputs": 131,
+    "changed_previous_inputs": [
+      "CMakeLists.txt"
+    ],
+    "six_Glyph_caller_provider_objects_unchanged": [
+      "build/win32/bsp_core.dir/Release/native_gui_text_glyph_quad_storage.obj",
+      "build/win32/bsp_core.dir/Release/gui_text_style.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_text_failure_origin.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_text_default_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_node_parenting_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_node_root_propagation.obj"
+    ],
+    "numeric_native_CALL_rows_checked": 2,
+    "numeric_native_CALL_failures": 0
+  },
+  "Source_inputs": [
+    {
+      "path": "include/bsp/native_gui_text_failure_origin.hpp",
+      "bytes": 12778,
+      "sha256": "ec32e9f8df302d8754e95abd1f11204e14ebb582e082090faec63cee74d84075",
+      "git_blob": "5bc46604c9cf760dea3868b3c4864c60ddc09852",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_gui_text_failure_origin.hpp"
+    },
+    {
+      "path": "src/native_gui_text_failure_origin.cpp",
+      "bytes": 11627,
+      "sha256": "aacd70ec3d609de1b8a544884fd4d844d51b684a96194a0f95a62b9c843fc8c1",
+      "git_blob": "6226f079539631f02df8b9665e1ec4a213d91455",
+      "retained_path": "local/function_source_batch45/inputs/src/native_gui_text_failure_origin.cpp"
+    },
+    {
+      "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+      "bytes": 10679,
+      "sha256": "8e3475ad8bce88973b64ff9c0758ebda380b5baede302c7b926526b0e92fe783",
+      "git_blob": "a0eb6b9681b8e651df3fed6907298b08f974653e",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_gui_text_glyph_quad_storage.hpp"
+    },
+    {
+      "path": "src/native_gui_text_glyph_quad_storage.cpp",
+      "bytes": 29447,
+      "sha256": "52746b908db84c9275dc45aa9eb1c8fa01740fe63f7a716c9ff3e37a7a6f07b5",
+      "git_blob": "0d96c73d7b60fba9a6742b67a1c4beeff2827591",
+      "retained_path": "local/function_source_batch45/inputs/src/native_gui_text_glyph_quad_storage.cpp"
+    },
+    {
+      "path": "include/bsp/native_gui_text_default_storage.hpp",
+      "bytes": 6352,
+      "sha256": "7a23774d66bb90e59712407d58fd3356640da3f77f1c087bf766b77d3748141a",
+      "git_blob": "2eb5db69eff0b68c093a5006e13eb2d490e821b7",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_gui_text_default_storage.hpp"
+    },
+    {
+      "path": "include/bsp/native_gui_text_storage_construct.hpp",
+      "bytes": 9641,
+      "sha256": "681a44709442353f716f2ead0377804df61cbc659ec7fc7dcc3a7a05c56ec5b2",
+      "git_blob": "736c02913b09a1de5f606362747305a2a4a36318",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_gui_text_storage_construct.hpp"
+    },
+    {
+      "path": "src/native_gui_text_default_storage.cpp",
+      "bytes": 26698,
+      "sha256": "6ed36cf3cad97ef089be15302827995d3bc6f303f5df3a3eb122b970dde67d09",
+      "git_blob": "47f32c0fb30dc7ebfaeb83ce2480ec88f59d3039",
+      "retained_path": "local/function_source_batch45/inputs/src/native_gui_text_default_storage.cpp"
+    },
+    {
+      "path": "src/native_gui_text_storage_construct.cpp",
+      "bytes": 37007,
+      "sha256": "a4c2c5e06dfa78d0dba7769900cb7a8302f7567c70f77707262246088326db60",
+      "git_blob": "88fa09e70019fa61d59652c5434666b8db4931b2",
+      "retained_path": "local/function_source_batch45/inputs/src/native_gui_text_storage_construct.cpp"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 296702,
+      "sha256": "91d1de5e0df99d75ab2133869f154c0560d969f8ed3b60c999a495ba097f416b",
+      "git_blob": "f5032c4bccf117bf25445331020a0d95aa8e98a4",
+      "retained_path": "local/function_source_batch45/inputs/cmake/startup.cmake"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 30057,
+      "sha256": "9c26596c314bffe62ba64f9c76b1c499aa3d71e78c1215e0d6962aac69e52c22",
+      "git_blob": "47842f55695c7c090cf3b6bcaf84e8626936d01b",
+      "retained_path": "local/function_source_batch45/inputs/CMakeLists.txt"
+    },
+    {
+      "path": "tests/math_tests.cpp",
+      "bytes": 224028,
+      "sha256": "2345ee250b579646bb4efd0091e0b246ac0fb1fa89d6ab3c3fde2a3a462a1151",
+      "git_blob": "d33c4e5aa47ec11421c0c42a812462f26357371f",
+      "retained_path": "local/function_source_batch45/inputs/tests/math_tests.cpp"
+    },
+    {
+      "path": "docs/CC16_GLYPH_CONSTRUCTOR_SLOT_HOST_UNKNOWN.md",
+      "bytes": 9132,
+      "sha256": "296f77be8573742ed042698c61a470b704c0ab4941bf50341f67a1f7e2f95a90",
+      "git_blob": "b85908b1681daa9b02a6bb0ecbb0b7ad01748f70",
+      "retained_path": "local/function_source_batch45/inputs/docs/CC16_GLYPH_CONSTRUCTOR_SLOT_HOST_UNKNOWN.md"
+    },
+    {
+      "path": "reports/cc16_glyph_constructor_slot_host_unknown.json",
+      "bytes": 98451,
+      "sha256": "9494230347907caa8c2b74ddee0b71bfb77a04f7823457a59239334c4d869a96",
+      "git_blob": "5028957d6c74ba4d1c96d667149d1a0805bdea8a",
+      "retained_path": "local/function_source_batch45/inputs/reports/cc16_glyph_constructor_slot_host_unknown.json"
+    },
+    {
+      "path": "include/bsp/gui_text_glyph_child.hpp",
+      "bytes": 3706,
+      "sha256": "42d4ad6a32778b97583f74efac51853072943c2aa9929df44b0f57189c78b895",
+      "git_blob": "72410e701afcfa72b1b4f5518a68e6a7fc76b1e1",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/gui_text_glyph_child.hpp"
+    },
+    {
+      "path": "src/gui_text_glyph_child.cpp",
+      "bytes": 4709,
+      "sha256": "c4e494d1ffdaf20257d8e5a77bebf352925ba3be53d0f595a5e58f6a8dcdc6f4",
+      "git_blob": "cda642f5f5ecd3b86bdadf98c897a5f6e1cd8874",
+      "retained_path": "local/function_source_batch45/inputs/src/gui_text_glyph_child.cpp"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_string.hpp"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "bytes": 3113,
+      "sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+      "git_blob": "60b3f627150fa058fac7b8c4c74537cb3aee0a68",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_string_pool_storage.hpp"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "bytes": 5450,
+      "sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+      "git_blob": "103d6fe4d772bb3078c48fe8bcf3f929a385fdda",
+      "retained_path": "local/function_source_batch45/inputs/src/native_string_pool_storage.cpp"
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "bytes": 5893,
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "git_blob": "4a2569e19b6f25c308cba1c3cdb2b2989db2cddd",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_string_pool_owner.hpp"
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "bytes": 8443,
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "git_blob": "de3c69b53e00840fab31b41e2195bdc1789b6baf",
+      "retained_path": "local/function_source_batch45/inputs/src/native_string_pool_owner.cpp"
+    },
+    {
+      "path": "include/bsp/native_wide_string.hpp",
+      "bytes": 5239,
+      "sha256": "5606f96b372362a6831a1633a583f264fbab4290789481f94f1ba97537f6e051",
+      "git_blob": "ca3887e0d34038a9e799ebdead68b0db55f16108",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_wide_string.hpp"
+    },
+    {
+      "path": "src/native_wide_string.cpp",
+      "bytes": 10671,
+      "sha256": "158502f1efb91f678011dd971c643d5236eb10bf56da3c9997631a6d8df96e55",
+      "git_blob": "7b9df08e026a67a9dbab9c6c8df74676fd43645d",
+      "retained_path": "local/function_source_batch45/inputs/src/native_wide_string.cpp"
+    },
+    {
+      "path": "include/bsp/native_wide_string_raw_copy.hpp",
+      "bytes": 943,
+      "sha256": "2e3cc1084d0f0893a0abd67866a4e1505872e790665c2a97e9845f85b7fa4836",
+      "git_blob": "f5f5b3c8c6bb5f951d4ea9ca95c8376ba956a3b4",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_wide_string_raw_copy.hpp"
+    },
+    {
+      "path": "src/native_wide_string_raw_copy.cpp",
+      "bytes": 2320,
+      "sha256": "3089c374bf1b39ea2d8b73ec4713c77bf343fd2f751e775f91a1654bb2a42688",
+      "git_blob": "6ddef14b9ce6e96594c50b8289af1946ac6a2a6f",
+      "retained_path": "local/function_source_batch45/inputs/src/native_wide_string_raw_copy.cpp"
+    },
+    {
+      "path": "docs/CC16_NATIVE_CODE_UNIT_RAW_POOL.md",
+      "bytes": 7745,
+      "sha256": "12403e21cccbef167e919ad46d8f8df60d5323b0a5c195237f37187126dc8fec",
+      "git_blob": "5644d39d953b3263a9e11ac4997ccc51e05776ad",
+      "retained_path": "local/function_source_batch45/inputs/docs/CC16_NATIVE_CODE_UNIT_RAW_POOL.md"
+    },
+    {
+      "path": "reports/cc16_native_code_unit_raw_pool.json",
+      "bytes": 40701,
+      "sha256": "6f2f6b5507bdfac61b049632188461fb5b349aa48248aed4d0578ebdd9a5d6c0",
+      "git_blob": "d3084672022f8ff4f1f4fce53c16c438d39b7b81",
+      "retained_path": "local/function_source_batch45/inputs/reports/cc16_native_code_unit_raw_pool.json"
+    },
+    {
+      "path": "docs/CC16_NATIVE_CODE_UNIT_RAW_POOL_INDEPENDENT_REVIEW.md",
+      "bytes": 5408,
+      "sha256": "bab8cdea20c80ee5972ed314fde828bdecdbea15c21533d4dd6ef4ef9c6bca54",
+      "git_blob": "11e1024958832ac05bd86390d364df42e2a334e0",
+      "retained_path": "local/function_source_batch45/inputs/docs/CC16_NATIVE_CODE_UNIT_RAW_POOL_INDEPENDENT_REVIEW.md"
+    },
+    {
+      "path": "reports/cc16_native_code_unit_raw_pool_independent_review.json",
+      "bytes": 30343,
+      "sha256": "9e09d29c62281664fddc158eb176c1f97c67581bdde0d53ab5bb98800d99c1af",
+      "git_blob": "8c7911cafec541dd58243299078522c648e7e943",
+      "retained_path": "local/function_source_batch45/inputs/reports/cc16_native_code_unit_raw_pool_independent_review.json"
+    },
+    {
+      "path": "docs/CC16_GLYPH_CONSTRUCTOR_SLOT_HOST_UNKNOWN_INDEPENDENT_REVIEW.md",
+      "bytes": 7999,
+      "sha256": "aed89ae808b2062faf036c7bc1e71200ff00093000c129694c098ea167c44f54",
+      "git_blob": "5e731f5c3bc8a030759617172a6c6bfff08db5e2",
+      "retained_path": "local/function_source_batch45/inputs/docs/CC16_GLYPH_CONSTRUCTOR_SLOT_HOST_UNKNOWN_INDEPENDENT_REVIEW.md"
+    },
+    {
+      "path": "reports/cc16_glyph_constructor_slot_host_unknown_independent_review.json",
+      "bytes": 25352,
+      "sha256": "163ca8f6efe214e3373ac99747c388c9cc7acfe2d32db3c1f3b96cfb94bda2e8",
+      "git_blob": "9a76907037516976b56e4f66dc8fbbaaf821cedf",
+      "retained_path": "local/function_source_batch45/inputs/reports/cc16_glyph_constructor_slot_host_unknown_independent_review.json"
+    },
+    {
+      "path": "include/bsp/native_lua_log_raw.hpp",
+      "bytes": 3969,
+      "sha256": "741067ea87ad950a06fd79827b15bd1e064759a7d6e0fd88588b21981bf38a42",
+      "git_blob": "0a21716e2a0770d26870e348c1a113cec117380b",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_lua_log_raw.hpp"
+    },
+    {
+      "path": "src/native_lua_log_raw.cpp",
+      "bytes": 5068,
+      "sha256": "557f86901efe2db9dfa2eb367ca4ae2406ad2bb5767aa2f48fe7db659d2f2bbb",
+      "git_blob": "d9492865ba7d1bde7e484d31720c7d017842b5b8",
+      "retained_path": "local/function_source_batch45/inputs/src/native_lua_log_raw.cpp"
+    },
+    {
+      "path": "include/bsp/native_string_raw_assign_cstring.hpp",
+      "bytes": 839,
+      "sha256": "e65d2ef3266799133b4597f9ab694813add2829ad57c415d7284579948e20264",
+      "git_blob": "837166a905db246de4f3be11cf665e8d67052624",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_string_raw_assign_cstring.hpp"
+    },
+    {
+      "path": "src/native_string_raw_assign_cstring.cpp",
+      "bytes": 2142,
+      "sha256": "a5d6dd11639dd0a445c063dd96b7e94878a6ef353b589ee5bf63f7481ff505be",
+      "git_blob": "f0b0d7b5c0b641c74d6a9c47c106ee4ecd163704",
+      "retained_path": "local/function_source_batch45/inputs/src/native_string_raw_assign_cstring.cpp"
+    },
+    {
+      "path": "docs/CODEX_LUA_LOG_CSTRING_INTEGRATION.md",
+      "bytes": 3798,
+      "sha256": "9a27f0f5566d106dfe7776f8b30652829c2447e5c27be0777a9fa362953ca269",
+      "git_blob": "d299182ca4e1d44bfb1ae9beabab8d4092306699",
+      "retained_path": "local/function_source_batch45/inputs/docs/CODEX_LUA_LOG_CSTRING_INTEGRATION.md"
+    },
+    {
+      "path": "reports/codex_lua_log_cstring_integration.json",
+      "bytes": 12316,
+      "sha256": "bea8bf9197ed871244939cf05f334014313a87431c147462ff803b65d8259ded",
+      "git_blob": "2fa59ccfbe40b0c7643534c4863723b6aedf921d",
+      "retained_path": "local/function_source_batch45/inputs/reports/codex_lua_log_cstring_integration.json"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GLYPH_CODE_UNIT_RAW_POOL_CALLER.md",
+      "bytes": 6267,
+      "sha256": "e5e7815914a0982992db0f605a774223c0eff886b2223f379eafe67e79fff833",
+      "git_blob": "382fe165319985e8070ffd9ad7ae73d04aa17533",
+      "retained_path": "local/function_source_batch45/inputs/docs/CC16_NATIVE_GLYPH_CODE_UNIT_RAW_POOL_CALLER.md"
+    },
+    {
+      "path": "reports/cc16_native_glyph_code_unit_raw_pool_caller.json",
+      "bytes": 31337,
+      "sha256": "8c03b89714700a0cf90b1639b0ff56fe7379ffda8672b8b2f8c7070237416137",
+      "git_blob": "06685e0fd0f78791a8dc0d438ba83a9573d6388c",
+      "retained_path": "local/function_source_batch45/inputs/reports/cc16_native_glyph_code_unit_raw_pool_caller.json"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GLYPH_CODE_UNIT_RAW_POOL_CALLER_INDEPENDENT_REVIEW.md",
+      "bytes": 5833,
+      "sha256": "15cef2d20e4d1c8bd104b612a245bc2d5d51b939218743cba431cdea9962fa47",
+      "git_blob": "a72fa0a226e4b515bcda20e86bc657fb5f7f920a",
+      "retained_path": "local/function_source_batch45/inputs/docs/CC16_NATIVE_GLYPH_CODE_UNIT_RAW_POOL_CALLER_INDEPENDENT_REVIEW.md"
+    },
+    {
+      "path": "reports/cc16_native_glyph_code_unit_raw_pool_caller_independent_review.json",
+      "bytes": 27538,
+      "sha256": "5eae82ce5a503d61986886a79be9d26986a3b4dd69491c7d31236747b1c61491",
+      "git_blob": "2c48153db7978bc0aa0d42bce20b4900ca6eea2d",
+      "retained_path": "local/function_source_batch45/inputs/reports/cc16_native_glyph_code_unit_raw_pool_caller_independent_review.json"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GLYPH_CALL_PROVIDER_FRONTIER.md",
+      "bytes": 10698,
+      "sha256": "68b00d8881e716b14182e12f759f1decbdd427c91eac60f93d637b65a3c3115c",
+      "git_blob": "cce1b1b2a9dabc5343ca8c5720c4b1105daa7a0d",
+      "retained_path": "local/function_source_batch45/inputs/docs/CC16_NATIVE_GLYPH_CALL_PROVIDER_FRONTIER.md"
+    },
+    {
+      "path": "reports/cc16_native_glyph_call_provider_frontier.json",
+      "bytes": 59254,
+      "sha256": "f9049602fb4fb8f3cb42c2a483c83d7e429076177bdd98ae86f6a64b32fab68b",
+      "git_blob": "0e26d7a9c692ca0d35ff31853759cfd01d9c664f",
+      "retained_path": "local/function_source_batch45/inputs/reports/cc16_native_glyph_call_provider_frontier.json"
+    },
+    {
+      "path": "include/bsp/native_lua_variant_tag6.hpp",
+      "bytes": 1047,
+      "sha256": "33331fe322af7564cfaf4f04995261adb44c5defe0f827785d4b75a56251f596",
+      "git_blob": "da22be6a8ad82ccb961c3474953e5e78f01091d1",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_lua_variant_tag6.hpp"
+    },
+    {
+      "path": "src/native_lua_variant_tag6.cpp",
+      "bytes": 1197,
+      "sha256": "986f954e728e89ea5d4d0b6dbfd4dfa8df08ab428f8ffcad501d12ab85ef38f4",
+      "git_blob": "02732dbf6430dbc688c2ad925481e7267cbded08",
+      "retained_path": "local/function_source_batch45/inputs/src/native_lua_variant_tag6.cpp"
+    },
+    {
+      "path": "docs/CODEX_LUA_VARIANT_TAG6_INTEGRATION.md",
+      "bytes": 2747,
+      "sha256": "a622f28a93de83f2edde0a06675f0760a08abf0b7a4a00c1108b659fd0a8f2c0",
+      "git_blob": "5c20c9e7f4286f052a525b3483fbed140454b085",
+      "retained_path": "local/function_source_batch45/inputs/docs/CODEX_LUA_VARIANT_TAG6_INTEGRATION.md"
+    },
+    {
+      "path": "reports/codex_lua_variant_tag6_integration.json",
+      "bytes": 7920,
+      "sha256": "f3748086e280ef958a2360a82fe5a579e69dc34cb0a99e9b89daad182470e85f",
+      "git_blob": "7b65040602d80abcd659f18d72e29589e0251e8b",
+      "retained_path": "local/function_source_batch45/inputs/reports/codex_lua_variant_tag6_integration.json"
+    },
+    {
+      "path": "include/bsp/cc13_gui1.hpp",
+      "bytes": 21485,
+      "sha256": "649ac778ac9b6c1600ab1322e81d83dda1f259b67545bf942f62f7958adddff8",
+      "git_blob": "7fd9819d04c9dc9a13c761e0176480ed6f588446",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/cc13_gui1.hpp"
+    },
+    {
+      "path": "src/cc13_gui1.cpp",
+      "bytes": 35349,
+      "sha256": "3b60069c4991f51ac3a8ed5076cffb9c0abf5af97dd9c171773c2e99952b8798",
+      "git_blob": "7f0ee9d08b5f0b90350d956f0bd2b5b79d714291",
+      "retained_path": "local/function_source_batch45/inputs/src/cc13_gui1.cpp"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GLYPH_LISTENER_DIRECT_CALLER.md",
+      "bytes": 6510,
+      "sha256": "4e64ee3060354f2fa306784c75f7361bf1ad20c8aa2328827ab6ba0ac963c5dc",
+      "git_blob": "5e3eeaffa0ba8f0426f2a0512472659ba5065def",
+      "retained_path": "local/function_source_batch45/inputs/docs/CC16_NATIVE_GLYPH_LISTENER_DIRECT_CALLER.md"
+    },
+    {
+      "path": "reports/cc16_native_glyph_listener_direct_caller.json",
+      "bytes": 33890,
+      "sha256": "9f5922e367950c10c2490fe2774af1e40124fd57a7163079cdb931eb35f5e633",
+      "git_blob": "4da5bf700b32d6ad7b3ca012e88e3dbe13b50f6f",
+      "retained_path": "local/function_source_batch45/inputs/reports/cc16_native_glyph_listener_direct_caller.json"
+    },
+    {
+      "path": "include/bsp/gui_text_factory.hpp",
+      "bytes": 3689,
+      "sha256": "5aad1ef48c9c29b28ffd17178f20446ab8277508dd39a0b69cf23760adcfb657",
+      "git_blob": "7f4fdee0750a70754668a19a4fb17ac3f2a716f3",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/gui_text_factory.hpp"
+    },
+    {
+      "path": "src/gui_text_factory.cpp",
+      "bytes": 10917,
+      "sha256": "bde7d1a4130a2ba7d71381143daa58c26d050200638bd7f4f8a60b35579b03c8",
+      "git_blob": "4f361c10e8680f3984db49948a726819ef52c488",
+      "retained_path": "local/function_source_batch45/inputs/src/gui_text_factory.cpp"
+    },
+    {
+      "path": "include/bsp/game_native_gui_text_process.hpp",
+      "bytes": 7271,
+      "sha256": "dbadef0978a9bfca2fb48533ea3d0f4f309ab38a679f348843744348ac633f52",
+      "git_blob": "c5396f5a44125e4912a8cdc69d09f7677be55c11",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/game_native_gui_text_process.hpp"
+    },
+    {
+      "path": "src/game_native_gui_text_process.cpp",
+      "bytes": 11028,
+      "sha256": "01ce505d584e1fdd98165e4fe17459d1c8af78bf1f0ce10262bd45591302f5f0",
+      "git_blob": "302873adc7eae6b67f6e9c48c3623ef6b901fb03",
+      "retained_path": "local/function_source_batch45/inputs/src/game_native_gui_text_process.cpp"
+    },
+    {
+      "path": "include/bsp/allocator_list.hpp",
+      "bytes": 2192,
+      "sha256": "5344cbd4fe4ea86a4206c24f08e2407eea3055f03947f677c46b3a635d4f1570",
+      "git_blob": "e3cfca6ec4c44d5aa20ee8e6870a5c4f02cd784a",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/allocator_list.hpp"
+    },
+    {
+      "path": "src/allocator_list.cpp",
+      "bytes": 2682,
+      "sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732",
+      "git_blob": "185d612496c4d9deb3b8233e565b1bc82a6f0e70",
+      "retained_path": "local/function_source_batch45/inputs/src/allocator_list.cpp"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/singleton_lifetime.hpp"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "retained_path": "local/function_source_batch45/inputs/src/singleton_lifetime.cpp"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GLYPH_POOL_BORROW_CONTRACT.md",
+      "bytes": 12681,
+      "sha256": "2df1ff50d2be376c6803e6952e1ef25c1f73404ed015c240f7ee1987e638131f",
+      "git_blob": "f9a9426b88f247bfbab766203a0f5c74ecbae239",
+      "retained_path": "local/function_source_batch45/inputs/docs/CC16_NATIVE_GLYPH_POOL_BORROW_CONTRACT.md"
+    },
+    {
+      "path": "reports/cc16_native_glyph_pool_borrow_contract.json",
+      "bytes": 54459,
+      "sha256": "1144b2aa459012c14cd62c4db9fa0152770622c591cf67bc0822a588f303743d",
+      "git_blob": "0dae34d1e00b7fcc65d7ed4ec814221467717a42",
+      "retained_path": "local/function_source_batch45/inputs/reports/cc16_native_glyph_pool_borrow_contract.json"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GLYPH_POOL_DIRECT_CALLER.md",
+      "bytes": 7856,
+      "sha256": "5a66920dfd73c32286a6818a54c239685482d403352dcf9e47c459f66050f708",
+      "git_blob": "2a395b606b78bcc9317e83a25560aaff871201fa",
+      "retained_path": "local/function_source_batch45/inputs/docs/CC16_NATIVE_GLYPH_POOL_DIRECT_CALLER.md"
+    },
+    {
+      "path": "reports/cc16_native_glyph_pool_direct_caller.json",
+      "bytes": 26963,
+      "sha256": "e9ea8b1f7b3870b3f28b4b4d94a3787ab4d9e2fd43aa75c894526bd4221495ce",
+      "git_blob": "0ba2caa0805ca867839c352f9a9e7ea1eb0ea952",
+      "retained_path": "local/function_source_batch45/inputs/reports/cc16_native_glyph_pool_direct_caller.json"
+    },
+    {
+      "path": "include/bsp/native_lua_variant_slot0.hpp",
+      "bytes": 5033,
+      "sha256": "d07608ad7eced7695383120269922b31ed694010be1be628f8c42bf8bc861e02",
+      "git_blob": "482f60847d56fdd1ba1bf30901db3b0db53e0116",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_lua_variant_slot0.hpp"
+    },
+    {
+      "path": "src/native_lua_variant_slot0.cpp",
+      "bytes": 4516,
+      "sha256": "9bca14979276e2753fe275b4800f7f1a37ad3c2de4d3091a0d7d8e0eb763ce22",
+      "git_blob": "d9c8193361420f34385e7fab9bd3c254cefe75d9",
+      "retained_path": "local/function_source_batch45/inputs/src/native_lua_variant_slot0.cpp"
+    },
+    {
+      "path": "include/bsp/native_lua_variant_record_storage.hpp",
+      "bytes": 1231,
+      "sha256": "4fc512334233a12060ba1d4488499e29b116f3ccfa732a1630686e233877b59f",
+      "git_blob": "3ebce4ecd90d1f809ead2acc460743a80c583f89",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_lua_variant_record_storage.hpp"
+    },
+    {
+      "path": "src/native_lua_variant_record_storage.cpp",
+      "bytes": 1196,
+      "sha256": "64f050b32085e00eb0f0f3fd3d455106827e40a72b3219b6ad69561426ddba2e",
+      "git_blob": "5a844e6e85a3e26b762f284b47505c580d899505",
+      "retained_path": "local/function_source_batch45/inputs/src/native_lua_variant_record_storage.cpp"
+    },
+    {
+      "path": "docs/CODEX_LUA_VARIANT_SLOT0_INTEGRATION.md",
+      "bytes": 3315,
+      "sha256": "ad8df0525924e34772523d4bbbd96254e10d8bfe8c21d980be48aa805e2e5e28",
+      "git_blob": "ce69e5f7be148a5fcfc96849cd07648dee3fee46",
+      "retained_path": "local/function_source_batch45/inputs/docs/CODEX_LUA_VARIANT_SLOT0_INTEGRATION.md"
+    },
+    {
+      "path": "reports/codex_lua_variant_slot0_integration.json",
+      "bytes": 8480,
+      "sha256": "875acf9cc2421bae2ecb74f0205c6b43eeeebf2d0d0ecdac76d9ba5fd845b7a7",
+      "git_blob": "0716860b1cce240c582a077a9961812b94679487",
+      "retained_path": "local/function_source_batch45/inputs/reports/codex_lua_variant_slot0_integration.json"
+    },
+    {
+      "path": "docs/CODEX_LUA_VARIANT_RECORD_STORAGE_INTEGRATION.md",
+      "bytes": 2674,
+      "sha256": "6fb55441570ad3bf48047684cd1df9b3315963452b118adb74c99d04e6fb3ced",
+      "git_blob": "661a4286f73b3d45961fff3de56add9cd7edea03",
+      "retained_path": "local/function_source_batch45/inputs/docs/CODEX_LUA_VARIANT_RECORD_STORAGE_INTEGRATION.md"
+    },
+    {
+      "path": "reports/codex_lua_variant_record_storage_integration.json",
+      "bytes": 7848,
+      "sha256": "3f44bd622fbccdaeef7071b0af5e360a7051cb7bb4b1f71e33e1c4dd6af4eb77",
+      "git_blob": "541376f9bb3bdda9f38463604d173f698901c252",
+      "retained_path": "local/function_source_batch45/inputs/reports/codex_lua_variant_record_storage_integration.json"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GLYPH_POOL_DIRECT_CALLER_INDEPENDENT_REVIEW.md",
+      "bytes": 6813,
+      "sha256": "0b33a3385d3b35da808db9a3b641ab4eb70e17b131a7eee7473c1162cde16e86",
+      "git_blob": "ebac3c8ab1459fdb6bb4ed816bc1ef9ad4a121db",
+      "retained_path": "local/function_source_batch45/inputs/docs/CC16_NATIVE_GLYPH_POOL_DIRECT_CALLER_INDEPENDENT_REVIEW.md"
+    },
+    {
+      "path": "reports/cc16_native_glyph_pool_direct_caller_independent_review.json",
+      "bytes": 36369,
+      "sha256": "cfef7fdc10a3b7085e644677d5f7ca295498e06914c3149cbf4abbdc8cfd6f80",
+      "git_blob": "15844c12224ffd9b26ba5aab50ea6e08d0b0b4af",
+      "retained_path": "local/function_source_batch45/inputs/reports/cc16_native_glyph_pool_direct_caller_independent_review.json"
+    },
+    {
+      "path": "include/bsp/native_mission_lua_type.hpp",
+      "bytes": 1060,
+      "sha256": "f4687e3fcdc1495e4b3e5caec7f3284e407286706704f24c68a2c13303a90c46",
+      "git_blob": "ae4ffabc74a45c1b8e202d35659bc59b0c190284",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_mission_lua_type.hpp"
+    },
+    {
+      "path": "src/native_mission_lua_type.cpp",
+      "bytes": 897,
+      "sha256": "fd6e57257c4826bf0c5010987456f247804330027ad9280cd6cc0607eb26a12a",
+      "git_blob": "fa993ee3c61a8f721633711fc6e840fdea1e9f47",
+      "retained_path": "local/function_source_batch45/inputs/src/native_mission_lua_type.cpp"
+    },
+    {
+      "path": "docs/CODEX_MISSION_LUA_TYPE_INTEGRATION.md",
+      "bytes": 2807,
+      "sha256": "290f2a28e7acb4fbfe92bb3d26f3c4577bc38f64383583356f593353a65b39be",
+      "git_blob": "80599098b98129954e8500b5b51ea98b0830439a",
+      "retained_path": "local/function_source_batch45/inputs/docs/CODEX_MISSION_LUA_TYPE_INTEGRATION.md"
+    },
+    {
+      "path": "reports/codex_mission_lua_type_integration.json",
+      "bytes": 8867,
+      "sha256": "3ef60d079ef6a46874b039bf9911055b2dc4df973aabeb736f3190b0b9332b0b",
+      "git_blob": "054ac0aae7f9aa66acc4dc35f75980e5369978ad",
+      "retained_path": "local/function_source_batch45/inputs/reports/codex_mission_lua_type_integration.json"
+    },
+    {
+      "path": "docs/CC16_GLYPH_HEADER_STATES_HOST_UNKNOWN.md",
+      "bytes": 8691,
+      "sha256": "35e54ac769f815802a3402e21c23e189d3450c7eb78736d060e3f6357f2c53b3",
+      "git_blob": "c642d895dec7219f7a42315c55a287d710e60711",
+      "retained_path": "local/function_source_batch45/inputs/docs/CC16_GLYPH_HEADER_STATES_HOST_UNKNOWN.md"
+    },
+    {
+      "path": "reports/cc16_glyph_header_states_host_unknown.json",
+      "bytes": 44657,
+      "sha256": "f928f624fadf761263b282dd2117a772e967c727571d7d7a461fa1382805d912",
+      "git_blob": "91b823305bc51b57478d362f59e06e92604b9ec9",
+      "retained_path": "local/function_source_batch45/inputs/reports/cc16_glyph_header_states_host_unknown.json"
+    },
+    {
+      "path": "docs/CC16_GLYPH_HEADER_STATES_HOST_UNKNOWN_DESIGN.md",
+      "bytes": 12112,
+      "sha256": "2198e7737e72bc00b0a0897e09e659ec988d3b14c23f261e4dc44102c4c485df",
+      "git_blob": "efc2080a0ac340938956b601a2563065c8cf2f89",
+      "retained_path": "local/function_source_batch45/inputs/docs/CC16_GLYPH_HEADER_STATES_HOST_UNKNOWN_DESIGN.md"
+    },
+    {
+      "path": "reports/cc16_glyph_header_states_host_unknown_design.json",
+      "bytes": 29359,
+      "sha256": "38b68071308fda89c1d03c399f4c216ffe9233f023d5932a3a9ab21f8859313a",
+      "git_blob": "c5f8a9b2c4a119012f7647b708f982af9bf99c86",
+      "retained_path": "local/function_source_batch45/inputs/reports/cc16_glyph_header_states_host_unknown_design.json"
+    },
+    {
+      "path": "docs/CC16_GLYPH_HEADER_STATES_HOST_UNKNOWN_DESIGN_INDEPENDENT_REVIEW.md",
+      "bytes": 11835,
+      "sha256": "e827ea56821495b4fa39d03805d85e7c8ddf5ee3d26060af2c83d5e2d9260a64",
+      "git_blob": "b7ea39718d1b0467498742cf18be534f883346c0",
+      "retained_path": "local/function_source_batch45/inputs/docs/CC16_GLYPH_HEADER_STATES_HOST_UNKNOWN_DESIGN_INDEPENDENT_REVIEW.md"
+    },
+    {
+      "path": "reports/cc16_glyph_header_states_host_unknown_design_independent_review.json",
+      "bytes": 44021,
+      "sha256": "f3f8e5d2a7f1b645b8dc7389fa630504a188677a6ffc869f5489d547b017e2c1",
+      "git_blob": "038bd630767258ac098ea0a24725d6658cff6955",
+      "retained_path": "local/function_source_batch45/inputs/reports/cc16_glyph_header_states_host_unknown_design_independent_review.json"
+    },
+    {
+      "path": "include/bsp/native_mission_lua_stack.hpp",
+      "bytes": 1404,
+      "sha256": "536100cb4d98dc56b22eb13e03fec83852c00e38c96e1f669aae53cf7c91616c",
+      "git_blob": "8bb2c753e27372a9ad25622c24d7402e5b41dee8",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_mission_lua_stack.hpp"
+    },
+    {
+      "path": "src/native_mission_lua_stack.cpp",
+      "bytes": 1664,
+      "sha256": "20d275b2bb694209cb83c8051fcc1c7186602ffe25f16b434398e02344805013",
+      "git_blob": "00be390add2a55326a3a15bcf28fe72afeca88b9",
+      "retained_path": "local/function_source_batch45/inputs/src/native_mission_lua_stack.cpp"
+    },
+    {
+      "path": "include/bsp/native_mission_lua_predicates.hpp",
+      "bytes": 1110,
+      "sha256": "5e098fb910d7e1c93a22cd31d1b28b5e23b4c0e3b8cd8deaf592cc5ca75cc44e",
+      "git_blob": "0be935fe9257f27eead257eae71eb26467034261",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_mission_lua_predicates.hpp"
+    },
+    {
+      "path": "src/native_mission_lua_predicates.cpp",
+      "bytes": 1121,
+      "sha256": "5982bfe120fab58fb375abd5989e659d800da4e72404fb354237e190de12c748",
+      "git_blob": "837d9b6ceffbe011d1b142500158c1d7d906214c",
+      "retained_path": "local/function_source_batch45/inputs/src/native_mission_lua_predicates.cpp"
+    },
+    {
+      "path": "docs/CODEX_MISSION_LUA_GROUPED_INTEGRATION.md",
+      "bytes": 3154,
+      "sha256": "80f1f102d43571df64d69e8ae68d487d5d41b47b48a4ced9d558afcf8a0099ca",
+      "git_blob": "66c45ec8a740d637cff05c0780bfd13005aae39d",
+      "retained_path": "local/function_source_batch45/inputs/docs/CODEX_MISSION_LUA_GROUPED_INTEGRATION.md"
+    },
+    {
+      "path": "reports/codex_mission_lua_grouped_integration.json",
+      "bytes": 16800,
+      "sha256": "25f1764db824bf6c829a9f8d99538123d3599b820cfca18b2ccdc39206a0cbd6",
+      "git_blob": "e96ec6ddf160df6bc0076464b2206cb9828c75c2",
+      "retained_path": "local/function_source_batch45/inputs/reports/codex_mission_lua_grouped_integration.json"
+    },
+    {
+      "path": "include/bsp/native_lua_variant_number_setter.hpp",
+      "bytes": 1294,
+      "sha256": "20e6bd4071f9b7fe3f4876322294b26d210962966718d2e82286028a7b151072",
+      "git_blob": "89a2ba301462008606e71aaffaa01f33e7ca6db9",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_lua_variant_number_setter.hpp"
+    },
+    {
+      "path": "src/native_lua_variant_number_setter.cpp",
+      "bytes": 1531,
+      "sha256": "ff32a2805f771dcebfc1859e4e152860b6c8d602ae4b84b4b306f088c19fdbac",
+      "git_blob": "28dfdb8090954714e08589365c9ab94c4c483c35",
+      "retained_path": "local/function_source_batch45/inputs/src/native_lua_variant_number_setter.cpp"
+    },
+    {
+      "path": "include/bsp/native_lua_variant_scalar_setters.hpp",
+      "bytes": 2255,
+      "sha256": "84147130621b164b4279f7ab49462080a988e932a5accf64b32438c91536edda",
+      "git_blob": "378eb827faf7e6df0a90e45dbe523c97c8a1c6b4",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_lua_variant_scalar_setters.hpp"
+    },
+    {
+      "path": "src/native_lua_variant_scalar_setters.cpp",
+      "bytes": 3264,
+      "sha256": "12350432d7c2842b2437828d11f74506bb1004a5ddb520688d4e7082e71716fb",
+      "git_blob": "d1caf492ec13dd29ee7132cc5b5c86485e0941df",
+      "retained_path": "local/function_source_batch45/inputs/src/native_lua_variant_scalar_setters.cpp"
+    },
+    {
+      "path": "docs/CODEX_LUA_VARIANT_SETTERS_INTEGRATION.md",
+      "bytes": 4868,
+      "sha256": "5c17caf83b70cb6b7e5fa9e1fe3e28ffcb19fd57171912ea73447fc065377934",
+      "git_blob": "7e7a30a69e74d01711073ecf4fe9cfc1065fd77c",
+      "retained_path": "local/function_source_batch45/inputs/docs/CODEX_LUA_VARIANT_SETTERS_INTEGRATION.md"
+    },
+    {
+      "path": "reports/codex_lua_variant_setters_integration.json",
+      "bytes": 22420,
+      "sha256": "e9fbabb114d73997e8460db1b7e866d0f608f3b40fad2a4d3b2e6cee13436841",
+      "git_blob": "ea2a054303ca659996ac21f8ae211a8c4d003c36",
+      "retained_path": "local/function_source_batch45/inputs/reports/codex_lua_variant_setters_integration.json"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GLYPH_RAW93_CALLER_CONTRACT.md",
+      "bytes": 7961,
+      "sha256": "5fef16ecc23e76afe6e47da9f186153dfacbc3954bb4b5260b558614ba8e748b",
+      "git_blob": "7e3bd8abf597cf0215252680fcd7a7efa3ade3d0",
+      "retained_path": "local/function_source_batch45/inputs/docs/CC16_NATIVE_GLYPH_RAW93_CALLER_CONTRACT.md"
+    },
+    {
+      "path": "reports/cc16_native_glyph_raw93_caller_contract.json",
+      "bytes": 52022,
+      "sha256": "72b44c3bd9aff76a9cfdb2eac6abf886c8ec7031ba1a227fe22ae2c0e5d11a6a",
+      "git_blob": "ae1a8a90867f8abb9b97cc46dab5492a31a75d50",
+      "retained_path": "local/function_source_batch45/inputs/reports/cc16_native_glyph_raw93_caller_contract.json"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GLYPH_RAW93_DIRECT_CALLER.md",
+      "bytes": 3162,
+      "sha256": "b0fa3d541a4f854eeaf598490a8cbe91c4654224f7ff352467db9432c1397d1e",
+      "git_blob": "c744678b70f01dc572669d7507e1800d506d07c6",
+      "retained_path": "local/function_source_batch45/inputs/docs/CC16_NATIVE_GLYPH_RAW93_DIRECT_CALLER.md"
+    },
+    {
+      "path": "reports/cc16_native_glyph_raw93_direct_caller.json",
+      "bytes": 10719,
+      "sha256": "03ff86034937256f2e182ec7664bc1a01770c2a02cb2dc779c29843d139e20cd",
+      "git_blob": "90d988c1aa05740f453d39ae2c87e38838de8eae",
+      "retained_path": "local/function_source_batch45/inputs/reports/cc16_native_glyph_raw93_direct_caller.json"
+    },
+    {
+      "path": "include/bsp/gui_text_style.hpp",
+      "bytes": 3630,
+      "sha256": "b82596cd3d8b6cec5b3bd345173c6b912a54633a6d73976743c140554cc26b4b",
+      "git_blob": "989029de04894f890d4a0ce7ff29ad0342d241f0",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/gui_text_style.hpp"
+    },
+    {
+      "path": "src/gui_text_style.cpp",
+      "bytes": 10276,
+      "sha256": "d5e6b32f78db3df2d918913a8121de462125b1b7c8aa3c8341b09ae141745703",
+      "git_blob": "fa2fc5075f6d8cde14258b2a7469165458d05288",
+      "retained_path": "local/function_source_batch45/inputs/src/gui_text_style.cpp"
+    },
+    {
+      "path": "include/bsp/native_node_parenting_storage.hpp",
+      "bytes": 5253,
+      "sha256": "099017858da7cd62e7b5260aaac8f53a2451b063469266a1e6119e7ce3cdc3b0",
+      "git_blob": "9fc250c04a032769217e67a5aea308bdf6babcae",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_node_parenting_storage.hpp"
+    },
+    {
+      "path": "src/native_node_parenting_storage.cpp",
+      "bytes": 10339,
+      "sha256": "035ccf45f17b12b553fcc3e451894b67c928de4ae583c7e511a1a99269c113d1",
+      "git_blob": "a5a82c3d274d1af7f86efeb59a3939856212bb81",
+      "retained_path": "local/function_source_batch45/inputs/src/native_node_parenting_storage.cpp"
+    },
+    {
+      "path": "include/bsp/native_node_root_propagation.hpp",
+      "bytes": 1454,
+      "sha256": "0fed8a0255b3068472bb0a72e2d41352ce1d10ee7ace03520254ae6d9dfde5d4",
+      "git_blob": "e8c16028e1344d467fa95bba08c27cf0d230c0ed",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_node_root_propagation.hpp"
+    },
+    {
+      "path": "src/native_node_root_propagation.cpp",
+      "bytes": 3130,
+      "sha256": "302f09b2f12d426abd9266fd265532e44bb104827b00d3894744f6a37012d48b",
+      "git_blob": "88a1dfe8382a55a6049069da336356273ffda02f",
+      "retained_path": "local/function_source_batch45/inputs/src/native_node_root_propagation.cpp"
+    },
+    {
+      "path": "include/bsp/native_node_base_destruction.hpp",
+      "bytes": 4834,
+      "sha256": "cd1f22aafdc481b9e54c23dda5634171ac654b570d8ad8757f843bca76883226",
+      "git_blob": "1f8f3069c602b970a74d2d921c34dc5e864dc22b",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_node_base_destruction.hpp"
+    },
+    {
+      "path": "include/bsp/native_node_scene_attachment.hpp",
+      "bytes": 5335,
+      "sha256": "8b2f6d276fbe92b00c190fadcda44e71e8547c5890bd224ee2de895310658edf",
+      "git_blob": "b236a5d8ff992022ff795fa6a8c4236e51cad31c",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_node_scene_attachment.hpp"
+    },
+    {
+      "path": "docs/CC16_NATIVE_TEXT_SHADOW_RAW_STORAGE.md",
+      "bytes": 6754,
+      "sha256": "2d3cc85d4a477468c6e3f0e0a8bc668a4344e00403cfdb762b2a115851e93f6a",
+      "git_blob": "6829dd51e87e5ebdf78bf3004813df66767f6d48",
+      "retained_path": "local/function_source_batch45/inputs/docs/CC16_NATIVE_TEXT_SHADOW_RAW_STORAGE.md"
+    },
+    {
+      "path": "reports/cc16_native_text_shadow_raw_storage.json",
+      "bytes": 28386,
+      "sha256": "1f567e1534a8526c221fc5d5a5a8ffb9cdb61747224a0f0958d0e89e91a75ee8",
+      "git_blob": "6c7c83419a1291ca71a1a16e75826d68f82c77c9",
+      "retained_path": "local/function_source_batch45/inputs/reports/cc16_native_text_shadow_raw_storage.json"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GLYPH_RAW93_DIRECT_CALLER_SOURCE_ADMISSION.md",
+      "bytes": 3921,
+      "sha256": "d4fb2a8fc18177f7746ce91b9a2bce2b6ef1a2b030522355eac1411f8c37b13e",
+      "git_blob": "2d0da87691e5cc6f0149a0f27f9d202164af51de",
+      "retained_path": "local/function_source_batch45/inputs/docs/CC16_NATIVE_GLYPH_RAW93_DIRECT_CALLER_SOURCE_ADMISSION.md"
+    },
+    {
+      "path": "reports/cc16_native_glyph_raw93_direct_caller_common_build.json",
+      "bytes": 63035,
+      "sha256": "f5457780bbc4ef618b3cfc5bda2d8635a91f5f5cb60f570343f2ae50458eeeb7",
+      "git_blob": "ffe6405d87ff3341380a3b436888ff2239b0d600",
+      "retained_path": "local/function_source_batch45/inputs/reports/cc16_native_glyph_raw93_direct_caller_common_build.json"
+    },
+    {
+      "path": "include/bsp/native_mission_lua_conversions.hpp",
+      "bytes": 1794,
+      "sha256": "956008364278b43595770efb920d1cd0312a2c57a945a6f59a7d9a8d94bcf5c0",
+      "git_blob": "69605fca254566d25cd5d941eaa761571548c672",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_mission_lua_conversions.hpp"
+    },
+    {
+      "path": "src/native_mission_lua_conversions.cpp",
+      "bytes": 2226,
+      "sha256": "8de8a19263cc4b654b1b5c0eded83b805b8e96ebd86eeff5cfae8515d05b20ff",
+      "git_blob": "ba7ee6e8372037144265b06e77b3372774ec1843",
+      "retained_path": "local/function_source_batch45/inputs/src/native_mission_lua_conversions.cpp"
+    },
+    {
+      "path": "include/bsp/native_mission_lua_iteration.hpp",
+      "bytes": 1393,
+      "sha256": "1e8a94fcbf6f703a5d5501ee4f9bdb7f66ad0771964c79218cb40aeeb7ea1a3f",
+      "git_blob": "264a50e906efba01b401f0b232c0a8b186f1227c",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_mission_lua_iteration.hpp"
+    },
+    {
+      "path": "src/native_mission_lua_iteration.cpp",
+      "bytes": 1607,
+      "sha256": "cf4c742d45d8444f29b7ec8a6acf1dad91f75df58d9ccd7d69c55aea32f3d6b6",
+      "git_blob": "b078915ff2a649b8ff6b277f49afa95c5ddce2b1",
+      "retained_path": "local/function_source_batch45/inputs/src/native_mission_lua_iteration.cpp"
+    },
+    {
+      "path": "docs/CODEX_MISSION_LUA_ITER_CONVERT_INTEGRATION.md",
+      "bytes": 5058,
+      "sha256": "a38dc306d56214cf926124c2db5907bada07d7825ed2c82159259551d2eddc41",
+      "git_blob": "f5ef637d78760feb8b281f39239c22761aa9f9f8",
+      "retained_path": "local/function_source_batch45/inputs/docs/CODEX_MISSION_LUA_ITER_CONVERT_INTEGRATION.md"
+    },
+    {
+      "path": "reports/codex_mission_lua_iter_convert_integration.json",
+      "bytes": 18092,
+      "sha256": "36bfae31ee6af488bf523110ebbb92280713919599626c06f1b42aa40277d1b5",
+      "git_blob": "bdc20e4dca34e832efb6b44b638911c31154ab61",
+      "retained_path": "local/function_source_batch45/inputs/reports/codex_mission_lua_iter_convert_integration.json"
+    },
+    {
+      "path": "include/bsp/native_mission_lua_scalar_push.hpp",
+      "bytes": 1497,
+      "sha256": "cbe55d002c81e52c741509bbeef8e7491f722b6378bb35a4ce30a863e42dd3f5",
+      "git_blob": "74c314e98bc9a7f4fe0848b5783d1009d35bc056",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_mission_lua_scalar_push.hpp"
+    },
+    {
+      "path": "src/native_mission_lua_scalar_push.cpp",
+      "bytes": 2129,
+      "sha256": "34b5615b8b9511c67c58267419d2f36022b62c11cdf9bb552032341b8f0bec5e",
+      "git_blob": "f57912e36d5d0433765c88e936338232dd97eb4f",
+      "retained_path": "local/function_source_batch45/inputs/src/native_mission_lua_scalar_push.cpp"
+    },
+    {
+      "path": "include/bsp/native_string_raw_resize_exact.hpp",
+      "bytes": 1554,
+      "sha256": "a1a3c6be74194e2f5946e13e09bfb26562c3f73d3565b51f96403f0d60b9999c",
+      "git_blob": "2e9e0ae6cb560eba1e7187911f6fea04791b529b",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_string_raw_resize_exact.hpp"
+    },
+    {
+      "path": "src/native_string_raw_resize_exact.cpp",
+      "bytes": 3979,
+      "sha256": "74bff613a83abda342b5506ff750f46f5c44e191de506480ced504208c81f210",
+      "git_blob": "e05e1c9a86a44a2bba1efe9f46f3151062fab3b6",
+      "retained_path": "local/function_source_batch45/inputs/src/native_string_raw_resize_exact.cpp"
+    },
+    {
+      "path": "docs/CODEX_STRING_RESIZE_SCALAR_PUSH_INTEGRATION.md",
+      "bytes": 5086,
+      "sha256": "a684cfc2c157db06ad697563ab32ae30acf86e218b87ee2b798af93ab64ccb1b",
+      "git_blob": "9ffda7d3871c9fac3318578dc40a5fdc246f2d79",
+      "retained_path": "local/function_source_batch45/inputs/docs/CODEX_STRING_RESIZE_SCALAR_PUSH_INTEGRATION.md"
+    },
+    {
+      "path": "reports/codex_string_resize_scalar_push_integration.json",
+      "bytes": 20501,
+      "sha256": "8c0b636f515cf78253b468fa001cc94bc55ab8d1526adfb1067a71b7d8cf9df2",
+      "git_blob": "0bb85308673599365c0474a84717d100cf10c4eb",
+      "retained_path": "local/function_source_batch45/inputs/reports/codex_string_resize_scalar_push_integration.json"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GLYPH_SHADOW_DIRECT_CALLER.md",
+      "bytes": 6983,
+      "sha256": "c2cc2fee25f1adac513cd82d8820a21159bd8e4ca1f1afdd8e84da58b3b3ffde",
+      "git_blob": "2003ccefe29c90cfb366c9fe560f447f62af5a6e",
+      "retained_path": "local/function_source_batch45/inputs/docs/CC16_NATIVE_GLYPH_SHADOW_DIRECT_CALLER.md"
+    },
+    {
+      "path": "reports/cc16_native_glyph_shadow_direct_caller.json",
+      "bytes": 30980,
+      "sha256": "cdbe7e2ba33cb98f978a5b11b931167d59308d757767d1d6c2d7fcbe76f83b99",
+      "git_blob": "c8fe94168cf889c4ab4ff933ebba64129d88df60",
+      "retained_path": "local/function_source_batch45/inputs/reports/cc16_native_glyph_shadow_direct_caller.json"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GLYPH_SHADOW_CALLER_CONTRACT.md",
+      "bytes": 8384,
+      "sha256": "e904e36d2720d4ece9824cb466f0b99b135bbc544d5393270d47372b7c8f5eae",
+      "git_blob": "1b6004c9d5330f5f0e4601aeb1c33f739c757ee7",
+      "retained_path": "local/function_source_batch45/inputs/docs/CC16_NATIVE_GLYPH_SHADOW_CALLER_CONTRACT.md"
+    },
+    {
+      "path": "reports/cc16_native_glyph_shadow_caller_contract.json",
+      "bytes": 24958,
+      "sha256": "d355d50b32be9ec2059311f399768681a9db335c8ceb5bb7dd0b9e1fa9bbc73b",
+      "git_blob": "074a29b6cedd301dbfb066846ec7183d7432bec0",
+      "retained_path": "local/function_source_batch45/inputs/reports/cc16_native_glyph_shadow_caller_contract.json"
+    },
+    {
+      "path": "docs/CC16_NATIVE_TEXT_SHADOW_RAW_STORAGE_SOURCE_ADMISSION.md",
+      "bytes": 5123,
+      "sha256": "32132abd66d2683da0c903ddf91d01c94bb38b09d0f2d5cc62bc61bbd24a2116",
+      "git_blob": "564b3ecc24bfc2eba17c8f0782445e2acc453161",
+      "retained_path": "local/function_source_batch45/inputs/docs/CC16_NATIVE_TEXT_SHADOW_RAW_STORAGE_SOURCE_ADMISSION.md"
+    },
+    {
+      "path": "reports/cc16_native_text_shadow_raw_storage_common_build.json",
+      "bytes": 169639,
+      "sha256": "5f0f6d78590163a9af9dbb69ddbe3eae561b7c029d0a0204357368eee49f80a5",
+      "git_blob": "061b844e1703638b45dcdd08a3c9fc98bfd206a7",
+      "retained_path": "local/function_source_batch45/inputs/reports/cc16_native_text_shadow_raw_storage_common_build.json"
+    },
+    {
+      "path": "include/bsp/native_mission_lua_to_string.hpp",
+      "bytes": 1216,
+      "sha256": "1a3344c2714bd888895fd349e3fb8cc9b2fcc2f2114469374eabbf6adc370281",
+      "git_blob": "e17d8a8a6872d8ad03b74693c274aae842b25672",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_mission_lua_to_string.hpp"
+    },
+    {
+      "path": "src/native_mission_lua_to_string.cpp",
+      "bytes": 1029,
+      "sha256": "231e251f9291f8de0f0c02421139b141a4471873948894433d1bddf59469c9f9",
+      "git_blob": "eda232e2a03ecebf2f684ddd197b45b04fc631ad",
+      "retained_path": "local/function_source_batch45/inputs/src/native_mission_lua_to_string.cpp"
+    },
+    {
+      "path": "docs/CODEX_MISSION_LUA_TO_STRING_INTEGRATION.md",
+      "bytes": 3134,
+      "sha256": "dca63576191234599b68848ad6251f9bf77607316360078a64952099042f713b",
+      "git_blob": "b7cdfc30a281b75e8c2295209feaf317923315d4",
+      "retained_path": "local/function_source_batch45/inputs/docs/CODEX_MISSION_LUA_TO_STRING_INTEGRATION.md"
+    },
+    {
+      "path": "reports/codex_mission_lua_to_string_integration.json",
+      "bytes": 12486,
+      "sha256": "752a40c39909f4d3d61def6654fdf91d33c1a630fd30854d3777a37f29895a54",
+      "git_blob": "94232a18569ec73e332e6a2d885969e2dfd94f3a",
+      "retained_path": "local/function_source_batch45/inputs/reports/codex_mission_lua_to_string_integration.json"
+    },
+    {
+      "path": "include/bsp/gui_text_resource_names.hpp",
+      "bytes": 8234,
+      "sha256": "c01cfed2296778a58c5c4ec300e53606246a522b7d698a85ab6558ffa407aa15",
+      "git_blob": "0cd222306933edb5e65724694885a3e15f0e3f42",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/gui_text_resource_names.hpp"
+    },
+    {
+      "path": "src/gui_text_resource_names.cpp",
+      "bytes": 7191,
+      "sha256": "d824603d96de6b7be9365df03deda9c5906c3d513a38a41633d9299c75796608",
+      "git_blob": "c6dab6b2e625d8fb6f1556037afd6828b4c77b31",
+      "retained_path": "local/function_source_batch45/inputs/src/gui_text_resource_names.cpp"
+    },
+    {
+      "path": "include/bsp/native_gui_text_shader_storage.hpp",
+      "bytes": 14714,
+      "sha256": "862554f5cbef13c87597d7bfc35a108e9d562590bd9af6f7d0c291cf23938425",
+      "git_blob": "4f7019e815fc7d35bab1f95f9238eb1b20039ca4",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_gui_text_shader_storage.hpp"
+    },
+    {
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "bytes": 53482,
+      "sha256": "307e06e5aa5adcbec3532cb02b841edad521edf8e65678759ba2e6113d86afc2",
+      "git_blob": "5cf4e0943c1a84f2fda9b40ea009a34adc64ed73",
+      "retained_path": "local/function_source_batch45/inputs/src/native_gui_text_shader_storage.cpp"
+    },
+    {
+      "path": "docs/CC16_NATIVE_TEXT_SHADER_RAW_STORAGE.md",
+      "bytes": 8896,
+      "sha256": "df9e1e38499dd6b849b0f9af36493dca608b2647b2ae6673df77c48ead340bbe",
+      "git_blob": "ba63167895055b43819e9a487c1db8db17b670af",
+      "retained_path": "local/function_source_batch45/inputs/docs/CC16_NATIVE_TEXT_SHADER_RAW_STORAGE.md"
+    },
+    {
+      "path": "reports/cc16_native_text_shader_raw_storage.json",
+      "bytes": 75096,
+      "sha256": "ddf7faa443f920dccc6942b3aedba48d96e2ec1e772c3456edbfb5e52e889b8f",
+      "git_blob": "57ccd8d83c251b61679b8b6f500e5a4645088142",
+      "retained_path": "local/function_source_batch45/inputs/reports/cc16_native_text_shader_raw_storage.json"
+    },
+    {
+      "path": "docs/CC16_NATIVE_TEXT_SHADER_PRIVATE_CONSUMER_DESIGN.md",
+      "bytes": 14267,
+      "sha256": "4f5085b84c2270c4ffbcad0be4cac7dbdda85da80412e36fc239f11ce52dc4a0",
+      "git_blob": "85a25ef904b80e76179fb2f59e861cd32a5b8c59",
+      "retained_path": "local/function_source_batch45/inputs/docs/CC16_NATIVE_TEXT_SHADER_PRIVATE_CONSUMER_DESIGN.md"
+    },
+    {
+      "path": "reports/cc16_native_text_shader_private_consumer_design.json",
+      "bytes": 45931,
+      "sha256": "0e4ef03c4354ea60d578d26410cefe1e458c4fb6e5d2bc9745adbaaef95a2f29",
+      "git_blob": "19d507c2740407efccfbbf67ff00a6db0a1ae6df",
+      "retained_path": "local/function_source_batch45/inputs/reports/cc16_native_text_shader_private_consumer_design.json"
+    },
+    {
+      "path": "docs/CC16_NATIVE_TEXT_SHADER_EXACT_RESIZE_RECONCILIATION.md",
+      "bytes": 11417,
+      "sha256": "5259f3cd2065a6f7f3dccd6dfb2290f9e292168a7ea3b0c5e20896a23d229b88",
+      "git_blob": "13e51094e8d81d02edcaa0315564c5233e80f3c1",
+      "retained_path": "local/function_source_batch45/inputs/docs/CC16_NATIVE_TEXT_SHADER_EXACT_RESIZE_RECONCILIATION.md"
+    },
+    {
+      "path": "reports/cc16_native_text_shader_exact_resize_reconciliation.json",
+      "bytes": 28801,
+      "sha256": "14aedf63617fb2a9fd90b398d69f30909dfb8bd7922f1f1186afdab5f09edf82",
+      "git_blob": "a23d6779c181dfcfd9c3e6651f8ab80651b04a50",
+      "retained_path": "local/function_source_batch45/inputs/reports/cc16_native_text_shader_exact_resize_reconciliation.json"
+    },
+    {
+      "path": "include/bsp/native_lua_variant_string_setter.hpp",
+      "bytes": 1937,
+      "sha256": "203b0675f9de2efb7c0680c2ef9db3ee9fa448dc9a3be5d25104cccca549c5b7",
+      "git_blob": "f89e734f5bd37cd6c6f45dabfc9fd7d2e8840ccc",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_lua_variant_string_setter.hpp"
+    },
+    {
+      "path": "src/native_lua_variant_string_setter.cpp",
+      "bytes": 4034,
+      "sha256": "19473eaf782800e6551d12a731f6180aa83fb87ef5d2c06412a14a5e7b4a4c45",
+      "git_blob": "745399d55acb21b55a3521d2cda326ded83fbefc",
+      "retained_path": "local/function_source_batch45/inputs/src/native_lua_variant_string_setter.cpp"
+    },
+    {
+      "path": "include/bsp/native_mission_lua_caller_info.hpp",
+      "bytes": 1781,
+      "sha256": "16196bcdc1e72eb93245cb5c9a8e52914a29b8f2166cb3d28681750d646a9446",
+      "git_blob": "ab31f3f0dc12c5d29ed08a409b7a82559162430e",
+      "retained_path": "local/function_source_batch45/inputs/include/bsp/native_mission_lua_caller_info.hpp"
+    },
+    {
+      "path": "src/native_mission_lua_caller_info.cpp",
+      "bytes": 2021,
+      "sha256": "1dfce8a3e20ea30828460ae9bf021f34bd7c5d343655eb5b9ca61f419cc9b70e",
+      "git_blob": "b6beccff578309a3bce3484ff7995277b7218626",
+      "retained_path": "local/function_source_batch45/inputs/src/native_mission_lua_caller_info.cpp"
+    },
+    {
+      "path": "docs/CODEX_LUA_STRING_CALLER_INFO_INTEGRATION.md",
+      "bytes": 4850,
+      "sha256": "06a6ba063fb2cafba8882200f02fec16577754697d42590698b94483a3d36fdb",
+      "git_blob": "9f2ec6567bea83c0575689b3cabfc211932bad58",
+      "retained_path": "local/function_source_batch45/inputs/docs/CODEX_LUA_STRING_CALLER_INFO_INTEGRATION.md"
+    },
+    {
+      "path": "reports/codex_lua_string_caller_info_integration.json",
+      "bytes": 21814,
+      "sha256": "5228d8ade5c89efcb5633d17948b99c34d22026c0cbd9723a4129f6d62a665d1",
+      "git_blob": "e421a0c671a0af1c19507c8c913dcc515960ab56",
+      "retained_path": "local/function_source_batch45/inputs/reports/codex_lua_string_caller_info_integration.json"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "local/function_source_batch45/build.log",
+      "bytes": 2662,
+      "sha256": "5e31225613ba3189049277cb5f7f98ecbc0b02d5e892b41bb77efb0bb163141f",
+      "retained_path": "local/function_source_batch45/artifacts/01_build.log"
+    },
+    {
+      "path": "local/function_source_batch45/failed_build_01.log",
+      "bytes": 5393,
+      "sha256": "ffa5e7f2bf51a02bb2639f53d04df9794f8c1f6374e1d44bdcf24b2a5a3fc7d5",
+      "retained_path": "local/function_source_batch45/artifacts/02_failed_build_01.log"
+    },
+    {
+      "path": "local/function_source_batch45/failed_build_02.log",
+      "bytes": 54643,
+      "sha256": "5f5238cef7d1aa6ce0459f38b6e50df36eb6e04bb4aa26c26079a200b577f7d6",
+      "retained_path": "local/function_source_batch45/artifacts/03_failed_build_02.log"
+    },
+    {
+      "path": "local/function_source_batch45/primary_review/checks.json",
+      "bytes": 493,
+      "sha256": "63472c1d58f8835d3835e7345a61e1914c79883bc7fa75bad48175572c6f7276",
+      "retained_path": "local/function_source_batch45/artifacts/04_checks.json"
+    },
+    {
+      "path": "local/function_source_batch45/primary_review/preflight.json",
+      "bytes": 503,
+      "sha256": "c94d53a99d47e867248f6610dbcbf1f731be349c94690bd6d14b48309ea382ff",
+      "retained_path": "local/function_source_batch45/artifacts/05_preflight.json"
+    },
+    {
+      "path": "local/function_source_batch45/primary_review/inverse.py",
+      "bytes": 1642,
+      "sha256": "e4be8bc5dbbaff065c5f83a68e0c8d2f5de4ced5d5ff4bf135bae002aad7d9ef",
+      "retained_path": "local/function_source_batch45/artifacts/06_inverse.py"
+    },
+    {
+      "path": "local/function_source_batch45/primary_review/inverse.log",
+      "bytes": 147,
+      "sha256": "0c44ab9bd0801d15b1e90e8cfad787526d378aded662fc8260e951d8e863c36f",
+      "retained_path": "local/function_source_batch45/artifacts/07_inverse.log"
+    },
+    {
+      "path": "local/function_source_batch45/tu_correction/checks.json",
+      "bytes": 1231,
+      "sha256": "35bf09556c1a83ebda46ef466f701513dd0015f36a64697cd136c50106418a75",
+      "retained_path": "local/function_source_batch45/artifacts/08_checks.json"
+    },
+    {
+      "path": "local/function_source_batch45/relocate_raw_shader.py",
+      "bytes": 2693,
+      "sha256": "ecdb4fee0842e6f22dee6aba170e3250824eb513f392ab353ea1feb8a3473234",
+      "retained_path": "local/function_source_batch45/artifacts/09_relocate_raw_shader.py"
+    },
+    {
+      "path": "local/function_source_batch45/native_call_claims.json",
+      "bytes": 274,
+      "sha256": "3f4323c8f049a442a0856becaea1b3f699a2fd118a2aa2c2bd5ff312bed9edc5",
+      "retained_path": "local/function_source_batch45/artifacts/10_native_call_claims.json"
+    },
+    {
+      "path": "local/function_source_batch45/native_call_claims.log",
+      "bytes": 86,
+      "sha256": "d1bb34a365ba09a82b117149979d9bdfc6f265582194eca28454261a319cb818",
+      "retained_path": "local/function_source_batch45/artifacts/11_native_call_claims.log"
+    },
+    {
+      "path": "build/win32/CMakeCache.txt",
+      "bytes": 19943,
+      "sha256": "1685db07153e0ad413c8e75a1536cf232b943fdc86f5e983cd18cf2abfa3ecb2",
+      "retained_path": "local/function_source_batch45/artifacts/12_CMakeCache.txt"
+    },
+    {
+      "path": "build/win32/bsp_game.vcxproj",
+      "bytes": 277506,
+      "sha256": "10b0730a508a6ed1fe61c39ccca84e904c9f39a1801648ec61d3c80d6c9c1b76",
+      "retained_path": "local/function_source_batch45/artifacts/13_bsp_game.vcxproj"
+    },
+    {
+      "path": "build/win32/bsp_game.map",
+      "bytes": 11461078,
+      "sha256": "15b5d7c49affb33b68b212b970b1f13669cc7f4bbbc88555c1b28d01ac1c66d3",
+      "retained_path": "local/function_source_batch45/artifacts/14_bsp_game.map"
+    },
+    {
+      "path": "build/win32/Release/bsp_game.exe",
+      "bytes": 7537152,
+      "sha256": "5d9d4845e27c7f73b8a9050a8b8a3bb49f53f7d072aff825f167d3725125f06b",
+      "retained_path": "local/function_source_batch45/artifacts/15_bsp_game.exe"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 104975268,
+      "sha256": "eef2b89d3dc1218ac7c6acc5f9e629441dcb3a565a6c58bd1ee042d0ce6f8499",
+      "retained_path": "local/function_source_batch45/artifacts/16_bsp_core.lib"
+    },
+    {
+      "path": "build/win32/Release/bsp_math_tests.exe",
+      "bytes": 890880,
+      "sha256": "f1e7bc017c358cc4407e37a2393c5fa4767a83364a3af17b307803350e6093e8",
+      "retained_path": "local/function_source_batch45/artifacts/17_bsp_math_tests.exe"
+    },
+    {
+      "path": "build/win32/Testing/Temporary/LastTest.log",
+      "bytes": 1658,
+      "sha256": "6f321eecd896cb398ee77179d1d9eb51a6bb412ea3788ac90a012e4bb785c206",
+      "retained_path": "local/function_source_batch45/artifacts/18_LastTest.log"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_gui_text_glyph_quad_storage.obj",
+      "bytes": 75455,
+      "sha256": "d4e51e20b6b5e14418de991c6128d1500f94f6fce1415dd4307c4bee2509dee8",
+      "retained_path": "local/function_source_batch45/artifacts/19_native_gui_text_glyph_quad_storage.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/gui_text_style.obj",
+      "bytes": 20925,
+      "sha256": "8c66aa7afe258259db91360ecafef93908ebcb56a7dfd6e076d14687494515cd",
+      "retained_path": "local/function_source_batch45/artifacts/20_gui_text_style.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_gui_text_failure_origin.obj",
+      "bytes": 9183,
+      "sha256": "6f7d77a2fdb586ed10c6824d1349b3abd75899ee70e5679eae38833046e27304",
+      "retained_path": "local/function_source_batch45/artifacts/21_native_gui_text_failure_origin.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_gui_text_default_storage.obj",
+      "bytes": 104874,
+      "sha256": "8c31461fc88864780fb48646d35f14a4a49dacd8f72792cf6c6137466bd6a12a",
+      "retained_path": "local/function_source_batch45/artifacts/22_native_gui_text_default_storage.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_node_parenting_storage.obj",
+      "bytes": 15298,
+      "sha256": "d3aedeeef91df4b1711aae4edbd684bbc14684cce97061af84d54acff1deaccf",
+      "retained_path": "local/function_source_batch45/artifacts/23_native_node_parenting_storage.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_node_root_propagation.obj",
+      "bytes": 8442,
+      "sha256": "b28416d8b820f3bca86b9a9fd1e47304cc7f3269fc882eb3e733bcab8ea38f69",
+      "retained_path": "local/function_source_batch45/artifacts/24_native_node_root_propagation.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_mission_lua_to_string.obj",
+      "bytes": 1507,
+      "sha256": "3b1c63b0969b73002ee0643bc3a57d2dd9b8e9e07d51a4091c8a68f37ccfbcd2",
+      "retained_path": "local/function_source_batch45/artifacts/25_native_mission_lua_to_string.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/gui_text_resource_names.obj",
+      "bytes": 36134,
+      "sha256": "83693fd10dde077bd96a77e021c55c9cf088ece4f1e353d89cecb5bdf11eaeb9",
+      "retained_path": "local/function_source_batch45/artifacts/26_gui_text_resource_names.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_gui_text_shader_storage.obj",
+      "bytes": 91984,
+      "sha256": "22811ff904d1e25ced62b6ae6279666050094bd2f6f180312363b145073bd3ec",
+      "retained_path": "local/function_source_batch45/artifacts/27_native_gui_text_shader_storage.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_string_raw_resize_exact.obj",
+      "bytes": 3171,
+      "sha256": "e1071b4c6edf18fbed6646b40097accc7c5cf7a422f4ce68d63189a1c46707cd",
+      "retained_path": "local/function_source_batch45/artifacts/28_native_string_raw_resize_exact.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_crt_memcpy.obj",
+      "bytes": 2327,
+      "sha256": "4650e1f936ae4f0b674b12c899e7ef06689bde63157dcba8f930a7458edc79f7",
+      "retained_path": "local/function_source_batch45/artifacts/29_native_crt_memcpy.obj"
+    }
+  ],
+  "primary_review": {
+    "packet": "4cbe5ceb4fdfeea60b5c5a11de5342cea003ad58",
+    "mode": "after_import",
+    "whole_Git_raw_frozen_forward_reverse_files": 4,
+    "seams": 13,
+    "inverse_raw_embedded_bytes": 1642,
+    "design_provider_context_pins": 25,
+    "preserved_function_witnesses": 7,
+    "Native_installed_bytes": 103,
+    "Native_instructions": 40,
+    "Native_no_x87_SSE": true,
+    "Root_full_four_file_production_delta_doc_APIs_read": true,
+    "no_new_Original_body_ABI_runtime_activation_credit": true
+  },
+  "supplemental_TU_correction": {
+    "parent": "2a5a8cfd09d088dd8397a961b9ef80f5f03e0db0",
+    "classification": "TU ownership correction only; same raw implementation and logic_error behavior",
+    "files": [
+      {
+        "path": "src/gui_text_resource_names.cpp",
+        "before_bytes": 21584,
+        "before_sha256": "d0823b0b612f20aa8e34c1ea5843e574799d10a83a53ecafa1f3f9b643184867",
+        "after_bytes": 7191,
+        "after_sha256": "d824603d96de6b7be9365df03deda9c5906c3d513a38a41633d9299c75796608"
+      },
+      {
+        "path": "src/native_gui_text_shader_storage.cpp",
+        "before_bytes": 39002,
+        "before_sha256": "986a21feee8d155cf6466b01a409894d879701856c0114f64b9e0de6f2388279",
+        "after_bytes": 53482,
+        "after_sha256": "307e06e5aa5adcbec3532cb02b841edad521edf8e65678759ba2e6113d86afc2"
+      }
+    ],
+    "raw_block_bytes": 13998,
+    "raw_block_sha256": "752f34c836906e0f71fde2cc0b68572901aa788d57062ad35b25648ce8706e5d",
+    "moved_block_bytes": 14261,
+    "moved_block_sha256": "535f63a5076638245cec9e4e3cf85199dff4a42352106350c0b2b20523a4e968",
+    "require_calls_renamed": 12,
+    "original_typed_TU_exact_prepacket": true,
+    "raw_block_inverse_exact": true,
+    "shader_TU_inverse_exact": true,
+    "new_Native_runtime_credit": 0
+  },
+  "readiness": {
+    "whole_valid_storage_Source": true,
+    "actual_current_Model_Effect_lifetimes_canonical122_and_private_credit_caller": false,
+    "Original_ABI": false,
+    "Native_origin": false,
+    "runtime_gameplay_activation": false
+  },
+  "credit": {
+    "new_complete_Native_body": 0,
+    "Original_ABI_runtime_activation": 0
+  },
+  "new_tests": 0,
+  "entry_game_probe_executed": false,
+  "retained_link": {
+    "Source_head": "adbf07d333f5e4c28e2411bf11a38747edb0f19d",
+    "cohort": "retained_link",
+    "all_Source_inputs_unchanged": true,
+    "Source_input_count": 148,
+    "command": "./scripts/build.ps1 -Configuration Release",
+    "exit_code": 0,
+    "target": "MSVC Win32 Release",
+    "MP": 2,
+    "PCH": "ON",
+    "coverage_PDB": "OFF",
+    "both_suites_passed": true,
+    "total_seconds": 12.92,
+    "no_compiler_warnings_errors": true,
+    "forced_entries": [
+      "?set_native_gui_text_shader_name_storage_00ab8e70@bsp@@YAXAAVNativeGuiTextRawModelReference@1@PBXAAVNativeGuiTextRawShaderNameStorageInvocation@1@@Z"
+    ],
+    "entries_present": {
+      "?set_native_gui_text_shader_name_storage_00ab8e70@bsp@@YAXAAVNativeGuiTextRawModelReference@1@PBXAAVNativeGuiTextRawShaderNameStorageInvocation@1@@Z": "10301680",
+      "?resize_native_string_header_0041dd40_exact@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@IPBXADI@Z": "1047d5c0",
+      "?copy_native_crt_bytes_00bf7680@bsp@@YAPAXPAXPBXIADI@Z": "1047d1e0",
+      "?dispatch_native_render_actual_owner_zero@bsp@@YAXAAVNativeRenderActualOwners@1@PAX@Z": "10408b40",
+      "??0CreditConsumer@NativeGuiTextShaderStorageFrame@bsp@@AAE@AAU12@AAVNativeGuiTextRawModelReference@2@ABVNativeGuiTextRawShaderNameStorageInvocation@2@@Z": "10300be0",
+      "??0CreditConsumer@NativeGuiTextShaderStorageFrame@bsp@@AAE@AAU12@PAXAAUNativeGuiTextRawModelRetirementContext@2@AAUNativeGuiTextRetirementAcquired@2@@Z": "10300d20",
+      "?slot_cleared@CreditConsumer@NativeGuiTextShaderStorageFrame@bsp@@QAEXXZ": "103025d0"
+    },
+    "all_real_suppliers_unforced": true,
+    "entry_absent_initial_canonical_map": true,
+    "all_frozen_Core_objects_unchanged": true,
+    "artifacts": [
+      {
+        "path": "local/function_source_batch45/retained_link/build.log",
+        "bytes": 4216,
+        "sha256": "0e655ed93dc23d867df6e3c7b1b7e1d4dedb2c248686beee6c7c38b18d69e646",
+        "retained_path": "local/function_source_batch45/retained_link/artifacts/01_build.log"
+      },
+      {
+        "path": "build/win32/CMakeCache.txt",
+        "bytes": 20180,
+        "sha256": "9f577982ba8973b5b4a6a5053252f02ca6ceb576f93d291f6f64652ac3c78ffd",
+        "retained_path": "local/function_source_batch45/retained_link/artifacts/02_CMakeCache.txt"
+      },
+      {
+        "path": "build/win32/bsp_game.vcxproj",
+        "bytes": 278874,
+        "sha256": "f5a6b31e40f1138f0408549ab1241f7820983abecd75ea3fccfe29d4d3d5ec00",
+        "retained_path": "local/function_source_batch45/retained_link/artifacts/03_bsp_game.vcxproj"
+      },
+      {
+        "path": "build/win32/bsp_game.map",
+        "bytes": 11468187,
+        "sha256": "2b8748c3d4658153211f14910789708fa6e74e6827c17d3ae20319b242729a69",
+        "retained_path": "local/function_source_batch45/retained_link/artifacts/04_bsp_game.map"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 7544320,
+        "sha256": "39fa1b384323d211bf963fb3589d54a9a1fd2191fe7a7688cfdf0ef28c457c6e",
+        "retained_path": "local/function_source_batch45/retained_link/artifacts/05_bsp_game.exe"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 104975268,
+        "sha256": "eef2b89d3dc1218ac7c6acc5f9e629441dcb3a565a6c58bd1ee042d0ce6f8499",
+        "retained_path": "local/function_source_batch45/retained_link/artifacts/06_bsp_core.lib"
+      },
+      {
+        "path": "build/win32/Release/bsp_math_tests.exe",
+        "bytes": 890880,
+        "sha256": "f1e7bc017c358cc4407e37a2393c5fa4767a83364a3af17b307803350e6093e8",
+        "retained_path": "local/function_source_batch45/retained_link/artifacts/07_bsp_math_tests.exe"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 1658,
+        "sha256": "8bde8e005855c4f2b40ecd99fae6a66ef4a68d207da9a9d25e77823447890f25",
+        "retained_path": "local/function_source_batch45/retained_link/artifacts/08_LastTest.log"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/gui_text_resource_names.obj",
+        "bytes": 36134,
+        "sha256": "83693fd10dde077bd96a77e021c55c9cf088ece4f1e353d89cecb5bdf11eaeb9",
+        "retained_path": "local/function_source_batch45/retained_link/artifacts/09_gui_text_resource_names.obj"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_gui_text_shader_storage.obj",
+        "bytes": 91984,
+        "sha256": "22811ff904d1e25ced62b6ae6279666050094bd2f6f180312363b145073bd3ec",
+        "retained_path": "local/function_source_batch45/retained_link/artifacts/10_native_gui_text_shader_storage.obj"
+      },
+      {
+        "path": "local/function_source_batch45/retained_link/retain_shader.cmake",
+        "bytes": 403,
+        "sha256": "8dfb427c0117620dbe6b122af88e0615a3151140254c85762baebbcbe7b86aed",
+        "retained_path": "local/function_source_batch45/retained_link/artifacts/11_retain_shader.cmake"
+      },
+      {
+        "path": "local/function_source_batch45/retained_link/forced_symbols.json",
+        "bytes": 160,
+        "sha256": "7502d80389ae86810079c5710bde640f1afdb66289ac3d8b6953f7e5ca0d1e71",
+        "retained_path": "local/function_source_batch45/retained_link/artifacts/12_forced_symbols.json"
+      },
+      {
+        "path": "local/function_source_batch45/retained_link/configure.log",
+        "bytes": 253,
+        "sha256": "5ed3f57559eea226a61bc802dc7c602e2dc36755b1eacd3095ee3097f45997ff",
+        "retained_path": "local/function_source_batch45/retained_link/artifacts/13_configure.log"
+      }
+    ],
+    "entry_game_probe_executed": false,
+    "Original_ABI_runtime_activation": false
+  },
+  "canonical_restored": {
+    "Source_head": "adbf07d333f5e4c28e2411bf11a38747edb0f19d",
+    "cohort": "canonical_restored",
+    "all_Source_inputs_unchanged": true,
+    "Source_input_count": 148,
+    "command": "./scripts/build.ps1 -Configuration Release",
+    "exit_code": 0,
+    "target": "MSVC Win32 Release",
+    "MP": 2,
+    "PCH": "ON",
+    "coverage_PDB": "OFF",
+    "both_suites_passed": true,
+    "total_seconds": 12.88,
+    "no_compiler_warnings_errors": true,
+    "forced_entries": [],
+    "entries_present": {},
+    "all_real_suppliers_unforced": true,
+    "entry_absent_initial_canonical_map": true,
+    "all_frozen_Core_objects_unchanged": true,
+    "artifacts": [
+      {
+        "path": "local/function_source_batch45/canonical_restored/build.log",
+        "bytes": 4216,
+        "sha256": "2ab015c4c1b3aa4e68255b2394ec1805df40e4b5b25c84c209a84e209f8e37fe",
+        "retained_path": "local/function_source_batch45/canonical_restored/artifacts/01_build.log"
+      },
+      {
+        "path": "build/win32/CMakeCache.txt",
+        "bytes": 19943,
+        "sha256": "1685db07153e0ad413c8e75a1536cf232b943fdc86f5e983cd18cf2abfa3ecb2",
+        "retained_path": "local/function_source_batch45/canonical_restored/artifacts/02_CMakeCache.txt"
+      },
+      {
+        "path": "build/win32/bsp_game.vcxproj",
+        "bytes": 277506,
+        "sha256": "10b0730a508a6ed1fe61c39ccca84e904c9f39a1801648ec61d3c80d6c9c1b76",
+        "retained_path": "local/function_source_batch45/canonical_restored/artifacts/03_bsp_game.vcxproj"
+      },
+      {
+        "path": "build/win32/bsp_game.map",
+        "bytes": 11461078,
+        "sha256": "8abe7d4114f2f947fc2d40a63ee9610df1e38079a03124e52bcaa89922bd08d0",
+        "retained_path": "local/function_source_batch45/canonical_restored/artifacts/04_bsp_game.map"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 7537152,
+        "sha256": "4498d63e61464d66070f8acdab9c3936560beaaba593979cb29e65e794d35abb",
+        "retained_path": "local/function_source_batch45/canonical_restored/artifacts/05_bsp_game.exe"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 104975268,
+        "sha256": "eef2b89d3dc1218ac7c6acc5f9e629441dcb3a565a6c58bd1ee042d0ce6f8499",
+        "retained_path": "local/function_source_batch45/canonical_restored/artifacts/06_bsp_core.lib"
+      },
+      {
+        "path": "build/win32/Release/bsp_math_tests.exe",
+        "bytes": 890880,
+        "sha256": "f1e7bc017c358cc4407e37a2393c5fa4767a83364a3af17b307803350e6093e8",
+        "retained_path": "local/function_source_batch45/canonical_restored/artifacts/07_bsp_math_tests.exe"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 1658,
+        "sha256": "e75fb2263bf5be4825f1627782cd56094ba5ab5da8ad0422d0982e8c2c40092f",
+        "retained_path": "local/function_source_batch45/canonical_restored/artifacts/08_LastTest.log"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/gui_text_resource_names.obj",
+        "bytes": 36134,
+        "sha256": "83693fd10dde077bd96a77e021c55c9cf088ece4f1e353d89cecb5bdf11eaeb9",
+        "retained_path": "local/function_source_batch45/canonical_restored/artifacts/09_gui_text_resource_names.obj"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_gui_text_shader_storage.obj",
+        "bytes": 91984,
+        "sha256": "22811ff904d1e25ced62b6ae6279666050094bd2f6f180312363b145073bd3ec",
+        "retained_path": "local/function_source_batch45/canonical_restored/artifacts/10_native_gui_text_shader_storage.obj"
+      }
+    ],
+    "entry_game_probe_executed": false,
+    "Original_ABI_runtime_activation": false
+  },
+  "independent_review": {
+    "original": "edd4a015c175f8add6982c8846c279dd529adb28",
+    "admitted": "2f08f6fb6",
+    "full_document_read": true,
+    "immutable_Git_pins_independently_checked": 41,
+    "Root_compiler_and_link_findings_resolved": 2,
+    "remaining_actionable_Source_findings": 0,
+    "original_and_final_full_file_raw_inverse_and_preservation_verified": true,
+    "reviewer_did_not_compile_or_execute_provider": true,
+    "pins": [
+      {
+        "path": "docs/CC16_NATIVE_TEXT_SHADER_RAW_STORAGE_INDEPENDENT_REVIEW.md",
+        "bytes": 8426,
+        "sha256": "728974532e9f5579cb4d65567d2fd3c79779176c77ab4c9eae4bbbd19fa05f9d"
+      },
+      {
+        "path": "reports/cc16_native_text_shader_raw_storage_independent_review.json",
+        "bytes": 39769,
+        "sha256": "9be83feff6d0c26d0509f8cd1396d7fa7c5e2053f59b61dce1a0b0de0b51d900"
+      }
+    ]
+  },
+  "actual_Core_independent_review": {
+    "status": "pending separate focused followup",
+    "required_before_Original_ABI_or_activation_claim": true,
+    "compile_and_retained_link_not_Original_ABI_or_runtime_proof": true
+  },
+  "metadata": {
+    "ledger": {
+      "qualified_raw_entry_fragments_added": 1,
+      "complete_Native_function_records_added": 0,
+      "all_old_records_status_names_evidence_prefixes_preserved": true,
+      "new_Original_vendor_CG_helper_trivial_duplicate_ABI_runtime_gameplay_credit": 0,
+      "files": [
+        {
+          "path": "config/names/00ab0000.jsonl",
+          "before_sha256": "23b5e6feeea6a34d50cdf4dd686383b840552f0e2b508989b2982c702335c0cd",
+          "after_sha256": "e2b9ddcce58407b227fd7e24eaff993b2c8d3b6fd282e577eb22e3f6c71f6aaa",
+          "rows_before": 180,
+          "rows_after": 180
+        },
+        {
+          "path": "config/reconstruction/00ab0000.jsonl",
+          "before_sha256": "55314dee9a4813b8c21610aa44489834eee01752ffc55777deea4555000c68c7",
+          "after_sha256": "ceecf533563e510c9432e6e44366aaf2ff99ee8ca9ce57c688072cf730b4bcf6",
+          "rows_before": 265,
+          "rows_after": 266
+        }
+      ],
+      "exports_before": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab8e70\\assembly.txt",
+          "bytes": 1082,
+          "sha256": "b3e64461078345e67dc0d66d5ac7ed1ed5acf459bec6307bc4881fd1b8ff1b64",
+          "retained_path": "local/function_source_batch45/native_exports_before/00ab8e70/assembly.txt"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab8e70\\decompiled.c",
+          "bytes": 1472,
+          "sha256": "59fe7446f46d7c034900d8e8b8dca41ab0cbac0f314d8bbd84ad772585218626",
+          "retained_path": "local/function_source_batch45/native_exports_before/00ab8e70/decompiled.c"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab8e70\\metadata.json",
+          "bytes": 290,
+          "sha256": "5823f22288f75844ed08deb4e93d4444a3888b215db4060f6e36740072cd0bb8",
+          "retained_path": "local/function_source_batch45/native_exports_before/00ab8e70/metadata.json"
+        }
+      ]
+    },
+    "Ghidra": {
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "official_write_lock": true,
+      "old_name_comments_preserved": true,
+      "comment_appends": 1,
+      "renames": 0,
+      "project_saved": true,
+      "exports_after": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab8e70\\assembly.txt",
+          "bytes": 1082,
+          "sha256": "b3e64461078345e67dc0d66d5ac7ed1ed5acf459bec6307bc4881fd1b8ff1b64",
+          "retained_path": "local/function_source_batch45/native_exports_after/assembly.txt"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab8e70\\decompiled.c",
+          "bytes": 1472,
+          "sha256": "59fe7446f46d7c034900d8e8b8dca41ab0cbac0f314d8bbd84ad772585218626",
+          "retained_path": "local/function_source_batch45/native_exports_after/decompiled.c"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab8e70\\metadata.json",
+          "bytes": 290,
+          "sha256": "5823f22288f75844ed08deb4e93d4444a3888b215db4060f6e36740072cd0bb8",
+          "retained_path": "local/function_source_batch45/native_exports_after/metadata.json"
+        }
+      ]
+    },
+    "localpins": [
+      {
+        "path": "local/function_source_batch45/Ghidra_comments_before.json",
+        "bytes": 1021,
+        "sha256": "2f431edc9ac71c6d9e82055e38810fb1b77349bfcbb21e4b9e0fea2efba50bb6"
+      },
+      {
+        "path": "local/function_source_batch45/Ghidra_comments_after.json",
+        "bytes": 4150,
+        "sha256": "b95f92c275577c2b1137242e3d058f2afd8ab4dd7225da8e1a4df68b9253a3c3"
+      },
+      {
+        "path": "local/function_source_batch45/metadata_checks.json",
+        "bytes": 1897,
+        "sha256": "9ae4a6f6fddf3622f38d0b2b49b116d6831ff10c488847fb6c0bf9f9203f41fa"
+      },
+      {
+        "path": "local/function_source_batch45/peer_primary_pins.json",
+        "bytes": 9488,
+        "sha256": "ca19629ac49ddeae35910be7625f8c20cd53db1a76cfd562436adeec7b5a97cf"
+      },
+      {
+        "path": "local/function_source_batch45/tu_correction/checks.json",
+        "bytes": 1231,
+        "sha256": "35bf09556c1a83ebda46ef466f701513dd0015f36a64697cd136c50106418a75"
+      },
+      {
+        "path": "local/ghidra-annotations-20261031T030447Z.json",
+        "bytes": 4262,
+        "sha256": "4f2b8376e71e67d0d763ed36a2387010e2e2fb877a857e056fe6cec807d9e025"
+      }
+    ]
+  },
+  "publication_cohort": {
+    "tested_Source": "adbf07d333f5e4c28e2411bf11a38747edb0f19d",
+    "upstream_Main": "d24496bd45452e309cdc000aa0719f82d576c685",
+    "upstream_metadata_only_joined": true,
+    "all148_current_Git_inputs_equal_tested_cohort": true,
+    "code_after_last_test": false,
+    "additional_build_required": false
+  },
+  "transitive_provider_debt": {
+    "named_0041e870_not_exact_raw_transport": true,
+    "this_setter_uses_exact_0041dd40_directly": true,
+    "other_issuer_and_future_producer_paths_not_upgraded": true
+  },
+  "admission_document": "docs/CC16_NATIVE_TEXT_SHADER_RAW_STORAGE_SOURCE_ADMISSION.md"
+}

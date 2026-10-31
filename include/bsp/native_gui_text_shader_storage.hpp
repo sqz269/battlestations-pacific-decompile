@@ -11,6 +11,7 @@ namespace bsp {
 struct NativeGuiTextRawFontNameStorageContext;
 class NativeGuiTextRawFontNameStorageFrame;
 struct NativeGuiTextRawFontNameStorageAcquired;
+class NativeGuiTextRawShaderNameStorageInvocation;
 // Reached unknown current renderer48 targets require a genuine body. Numeric
 // profile/target values are selectors, never callable host addresses. The
 // provider receives retained acquisition backing BEFORE any nested effects.
@@ -78,7 +79,7 @@ struct NativeGuiTextShaderStorageFrame final {
 
     enum class RawPhase { fresh, entered, complete, failed };
     enum class CreditPhase { none, outstanding, reserved, returned };
-    enum class Consumer { none, font_name, retirement };
+    enum class Consumer { none, font_name, retirement, shader_name };
     // A value snapshot of private metadata, never an ownership capability.
     // None of these values may be supplied back to authorize an operation.
     struct CreditProgress {
@@ -113,12 +114,14 @@ struct NativeGuiTextShaderStorageFrame final {
         const NativeGuiTextRetirementShader* retirement_shader{};
         NativeTextureSurfaceReferenceIncrement captured_decrement{};
         long decrement_result{};
+        const NativeGuiTextRawShaderNameStorageInvocation* active_shader_invocation{};
+        const NativeGuiTextRawShaderNameStorageInvocation* shader_invocation{};
     };
     CreditProgress credit_progress() const noexcept;
     bool matches_credit_backing(const NativeGuiTextShaderStorageContext&,
         const NativeGuiTextReferenceFrame&) const noexcept;
 
-    // Only the two genuine outer bodies below can construct this token. Their
+    // Only the exact genuine outer friends below can construct this token. Their
     // typed private-body policy carries it to Original's reached epochs; no
     // public entry can construct a token or manufacture issuance/completion.
     // State is retained IN ShaderFrame. A local token owns no native credit.
@@ -159,6 +162,10 @@ struct NativeGuiTextShaderStorageFrame final {
             const NativeGuiTextRawFontNameStorageAcquired&);
         CreditConsumer(NativeGuiTextShaderStorageFrame&, void* actual_text,
             NativeGuiTextRawModelRetirementContext&, NativeGuiTextRetirementAcquired&);
+        friend void set_native_gui_text_shader_name_storage_00ab8e70(
+            NativeGuiTextRawModelReference&, const void*, NativeGuiTextRawShaderNameStorageInvocation&);
+        CreditConsumer(NativeGuiTextShaderStorageFrame&, NativeGuiTextRawModelReference&,
+            const NativeGuiTextRawShaderNameStorageInvocation&);
         enum class Stage { opened, no_capture, null_capture, captured,
             decrement_entered, decremented, zero_entered, zero_returned, cleared, complete, failed };
         NativeGuiTextShaderStorageFrame& frame_;
@@ -170,6 +177,7 @@ struct NativeGuiTextShaderStorageFrame final {
         NativeGuiTextRetirementAcquired* retirement_acquired_{};
         Stage stage_{Stage::opened};
         bool active_{};
+        const NativeGuiTextRawShaderNameStorageInvocation* shader_invocation_{};
         void require_stage(Stage);
     };
     ~NativeGuiTextShaderStorageFrame() noexcept;
