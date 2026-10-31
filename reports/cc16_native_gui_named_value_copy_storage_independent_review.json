@@ -1,0 +1,1157 @@
+{
+  "schema": "cc16-native-gui-named-value-copy-storage-independent-review-v1",
+  "reviewer": "frontend_frame_selection_closure, distinct from frontend_raw95_producer_closure author",
+  "reviewed_commit": "0532babd2a35151e6ec5421aee230061939f47ef",
+  "exact_parent": "095128205fbfc1e2c6f9fa761352cef92fa65724",
+  "scope": "sealed four-file Source54 packet; full2 Source files, whole author doc/report and relevant genuine provider contracts; read-only static Native/PE/Git integrity checks",
+  "verdict": "zero_actionable_findings_within_bounded_source_scope",
+  "findings": [],
+  "admission": {
+    "library_Source_ready_for_Root_common_build": true,
+    "compiler_executed_by_reviewer": false,
+    "test_or_fixture_executed_by_reviewer": false,
+    "Native_or_provider_executed": false,
+    "actual_caller_ready": false,
+    "full_icon_ready": false,
+    "original_ABI": false,
+    "Native_origin": false,
+    "runtime_validated": false,
+    "activation": false
+  },
+  "reviewed_file_pins": [
+    {
+      "path": "include/bsp/native_gui_named_value_copy_storage.hpp",
+      "bytes": 2211,
+      "sha256": "3408c74da34e8e5c45ada5b2e6ad0359b666c4dd45c9f37de6c20c22ef97f20e",
+      "git_blob": "2a23c761fed9860f8929aa91a5a84412ebc60486",
+      "CR_bytes": 0
+    },
+    {
+      "path": "src/native_gui_named_value_copy_storage.cpp",
+      "bytes": 2759,
+      "sha256": "97ca7b966fda1c79f7b81bbd6c8cf2a1d8e0d49365f9e9f7083bebddc796f89c",
+      "git_blob": "577f7c7b16df257e986db5d014e9ad9f30a5f478",
+      "CR_bytes": 0
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_NAMED_VALUE_COPY_STORAGE.md",
+      "bytes": 7684,
+      "sha256": "e94f49bcf9bd0ad7657012de9edc8c6ff8429e6336c45ddc24a5d8c82916f440",
+      "git_blob": "50d3541ee2afd59b92b680ab999f31b9fd3b364f",
+      "CR_bytes": 0
+    },
+    {
+      "path": "reports/cc16_native_gui_named_value_copy_storage.json",
+      "bytes": 50371,
+      "sha256": "3bdd2857fe5b0c5dac046fab806c22c867f7a9209c5b25fc671a4b6dd1ad1632",
+      "git_blob": "d05f6c73f65da5d7f8945486dddd959911952303",
+      "CR_bytes": 0
+    }
+  ],
+  "hash_format": "Git blob content / UTF8-LF; all four files have0 CR bytes. SHA256 is content digest, git_blob is Git SHA1 object identity. Historical frozen/live export representations separately qualified.",
+  "delta_and_inverse": {
+    "base_tree": "51fe66e594f25681e6efb357aabc280281c7f884",
+    "packet_tree": "2a356b60d14646180bed39bdeb8dd321259f0973",
+    "inverse_tree": "51fe66e594f25681e6efb357aabc280281c7f884"
+  },
+  "whole_integrity_pins": [
+    {
+      "path": "include/bsp/native_string_raw_resize_exact.hpp",
+      "format": "Git blob / frozen UTF8-LF bytes",
+      "bytes": 1554,
+      "sha256": "a1a3c6be74194e2f5946e13e09bfb26562c3f73d3565b51f96403f0d60b9999c",
+      "git_blob": "2e9e0ae6cb560eba1e7187911f6fea04791b529b",
+      "unchanged_at_packet": true
+    },
+    {
+      "path": "src/native_string_raw_resize_exact.cpp",
+      "format": "Git blob / frozen UTF8-LF bytes",
+      "bytes": 3979,
+      "sha256": "74bff613a83abda342b5506ff750f46f5c44e191de506480ced504208c81f210",
+      "git_blob": "e05e1c9a86a44a2bba1efe9f46f3151062fab3b6",
+      "unchanged_at_packet": true
+    },
+    {
+      "path": "include/bsp/native_crt_memcpy.hpp",
+      "format": "Git blob / frozen UTF8-LF bytes",
+      "bytes": 1954,
+      "sha256": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123",
+      "git_blob": "a62e6ddb9d92e02afd301ed92239b258d53b5f10",
+      "unchanged_at_packet": true
+    },
+    {
+      "path": "src/native_crt_memcpy.cpp",
+      "format": "Git blob / frozen UTF8-LF bytes",
+      "bytes": 17187,
+      "sha256": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3",
+      "git_blob": "248194cbff651aba4341401f519050447f13b6a0",
+      "unchanged_at_packet": true
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "format": "Git blob / frozen UTF8-LF bytes",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+      "unchanged_at_packet": true
+    },
+    {
+      "path": "src/native_string.cpp",
+      "format": "Git blob / frozen UTF8-LF bytes",
+      "bytes": 9121,
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+      "unchanged_at_packet": true
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "format": "Git blob / frozen UTF8-LF bytes",
+      "bytes": 3113,
+      "sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02",
+      "git_blob": "60b3f627150fa058fac7b8c4c74537cb3aee0a68",
+      "unchanged_at_packet": true
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "format": "Git blob / frozen UTF8-LF bytes",
+      "bytes": 5450,
+      "sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a",
+      "git_blob": "103d6fe4d772bb3078c48fe8bcf3f929a385fdda",
+      "unchanged_at_packet": true
+    },
+    {
+      "path": "include/bsp/native_resource_reader_buffer.hpp",
+      "format": "Git blob / frozen UTF8-LF bytes",
+      "bytes": 2083,
+      "sha256": "39b7e4ba7f01ff288bd7b929dd51280b335315502e8b7366eeb1405052a1a042",
+      "git_blob": "d1f67ec40259b3c5e9b1742d2a6418e1e33ab2af",
+      "unchanged_at_packet": true
+    },
+    {
+      "path": "src/native_resource_reader_buffer.cpp",
+      "format": "Git blob / frozen UTF8-LF bytes",
+      "bytes": 4604,
+      "sha256": "bd770efafd314b290eff66f21f4a835a56498d6878ae86947c3c15422ee2d670",
+      "git_blob": "8b313c6a3b093812cd55fbaf539fbf6c2095a229",
+      "unchanged_at_packet": true
+    },
+    {
+      "path": "include/bsp/native_filestore_request.hpp",
+      "format": "Git blob / frozen UTF8-LF bytes",
+      "bytes": 6239,
+      "sha256": "97531623574597ced253eae5b31429cdf420cac3a076647caf928d2fdc8c817b",
+      "git_blob": "ec89ae14f13073ac3e1d735a3240ae1983729807",
+      "unchanged_at_packet": true
+    },
+    {
+      "path": "src/native_filestore_request.cpp",
+      "format": "Git blob / frozen UTF8-LF bytes",
+      "bytes": 18470,
+      "sha256": "67decb82627642141abd26b650b21094cf75b35e6f4cb3db5dbce25cc28a1107",
+      "git_blob": "d1f0333aff82fed9975f9c27ec1e59bdb68dedc8",
+      "unchanged_at_packet": true
+    },
+    {
+      "path": "include/bsp/engine_services_cc13.hpp",
+      "format": "Git blob / frozen UTF8-LF bytes",
+      "bytes": 70520,
+      "sha256": "c4b20224b3edf65730016e8e0114924c049204c549c3d8f6b4a25e08b2d784aa",
+      "git_blob": "bbf580ba6cf7cc028ad1df8b14ccb7e16c219ed2",
+      "unchanged_at_packet": true
+    },
+    {
+      "path": "src/engine_services_cc13.cpp",
+      "format": "Git blob / frozen UTF8-LF bytes",
+      "bytes": 98874,
+      "sha256": "f59566f6d3fa5e1888d2896cc0a0786dd5596a1bc4d2649d2d8674855c00807c",
+      "git_blob": "a3d01bde7f7408a72f95e1e8aeb0fe6a9ce615ca",
+      "unchanged_at_packet": true
+    },
+    {
+      "path": "include/bsp/engine_seg49_64_78_cc13.hpp",
+      "format": "Git blob / frozen UTF8-LF bytes",
+      "bytes": 84516,
+      "sha256": "7830c6cae582c047d21923c9ed49f9084a0c18c21d99c092f69c8e133c41921d",
+      "git_blob": "cd8b8303b75c99d6d929aca2df077bdb974d6879",
+      "unchanged_at_packet": true
+    },
+    {
+      "path": "src/engine_seg49_64_78_cc13.cpp",
+      "format": "Git blob / frozen UTF8-LF bytes",
+      "bytes": 111051,
+      "sha256": "5888a64b1973289ca1eecadbe8bbb1e8718b8b9143421e4a4c617d40bb27433c",
+      "git_blob": "9b71adf3ea032a6bfd7e2ed87ee5dc6d4114cdf7",
+      "unchanged_at_packet": true
+    },
+    {
+      "path": "include/bsp/sound_cc13.hpp",
+      "format": "Git blob / frozen UTF8-LF bytes",
+      "bytes": 29478,
+      "sha256": "1df1164a903d0323417a5bd89b797781ff946493432c578944a451289c2937d9",
+      "git_blob": "fa93c35f1ec7134ba4a9801e09f3ba69998f50a5",
+      "unchanged_at_packet": true
+    },
+    {
+      "path": "src/sound_cc13.cpp",
+      "format": "Git blob / frozen UTF8-LF bytes",
+      "bytes": 42778,
+      "sha256": "0b5bc56cabfb7a8a40999166394b9fa8531b62545a577b9370f09192c39870de",
+      "git_blob": "300dc720ea2972fe9da1918992af2ea141741f56",
+      "unchanged_at_packet": true
+    },
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "format": "Git blob / frozen UTF8-LF bytes",
+      "bytes": 4505,
+      "sha256": "a6fa7dcce062f26c77664364aa3a5e4525ab3ae2fc320016f07524a55e746f6d",
+      "git_blob": "fb8293fbf779f87c01708ffe3c1055e28c46c733",
+      "unchanged_at_packet": true
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "format": "Git blob / frozen UTF8-LF bytes",
+      "bytes": 10345,
+      "sha256": "3773ac03dd39bc78f642ebea942d0e074051814c2a55395b7bc246c703f50997",
+      "git_blob": "bcedf161bdb50667d954ca7f0e113d6842682dbb",
+      "unchanged_at_packet": true
+    },
+    {
+      "path": "config/target.json",
+      "format": "Git blob / frozen UTF8-LF bytes",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "unchanged_at_packet": true
+    },
+    {
+      "path": "tools/bsp.py",
+      "format": "Git blob / frozen UTF8-LF bytes",
+      "bytes": 103131,
+      "sha256": "0532d1e3fa711fb62d198e6747a4e0eb8978ef7e301de75710afd40d6c1a1339",
+      "git_blob": "2e1fb76a9fd700f079912706d9459c4293f96c86",
+      "unchanged_at_packet": true
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "format": "Git blob / frozen UTF8-LF bytes",
+      "bytes": 14518,
+      "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+      "git_blob": "bd937766a7e4d62c015b2ab44a14a9153fbb4542",
+      "unchanged_at_packet": true
+    },
+    {
+      "path": "CMakeLists.txt",
+      "format": "Git blob / frozen UTF8-LF bytes",
+      "bytes": 30339,
+      "sha256": "620accca24c41c97a16c5842a6058196bbf8bb4dc1be4f5f8a62df6d7b6ce3fc",
+      "git_blob": "0ee46cdd5f70ed5b85827110cb45e1c48fdb63db",
+      "unchanged_at_packet": true
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "format": "Git blob / frozen UTF8-LF bytes",
+      "bytes": 296702,
+      "sha256": "91d1de5e0df99d75ab2133869f154c0560d969f8ed3b60c999a495ba097f416b",
+      "git_blob": "f5032c4bccf117bf25445331020a0d95aa8e98a4",
+      "unchanged_at_packet": true
+    }
+  ],
+  "bounded_inspected_provider_regions": [
+    {
+      "id": "P01_exact_resize_contract",
+      "path": "include/bsp/native_string_raw_resize_exact.hpp",
+      "commit": "095128205fbfc1e2c6f9fa761352cef92fa65724",
+      "first_line": 12,
+      "last_line": 32,
+      "bytes": 1361,
+      "sha256": "2bdb093ce530a742fac8801ed068bcc5b78a98716ce9300bd5429d3c657b9b55",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-copy-storage\\local\\output\\cc16_native_gui_named_value_copy_storage_20261031\\regions\\P01_exact_resize_contract.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P02_exact_resize_body",
+      "path": "src/native_string_raw_resize_exact.cpp",
+      "commit": "095128205fbfc1e2c6f9fa761352cef92fa65724",
+      "first_line": 47,
+      "last_line": 98,
+      "bytes": 2503,
+      "sha256": "4d09aa3445ee38681cd993b19e818737d4d3ed24c9594cf94a7fc32c9aca9300",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-copy-storage\\local\\output\\cc16_native_gui_named_value_copy_storage_20261031\\regions\\P02_exact_resize_body.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P03_genuine_bf_contract",
+      "path": "include/bsp/native_crt_memcpy.hpp",
+      "commit": "095128205fbfc1e2c6f9fa761352cef92fa65724",
+      "first_line": 10,
+      "last_line": 33,
+      "bytes": 1787,
+      "sha256": "3b35e10fd9244c00a3fe8c85da97d0f4de806b5257d7b7077ab2a601a017bc1f",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-copy-storage\\local\\output\\cc16_native_gui_named_value_copy_storage_20261031\\regions\\P03_genuine_bf_contract.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P04_genuine_bf_source_entry",
+      "path": "src/native_crt_memcpy.cpp",
+      "commit": "095128205fbfc1e2c6f9fa761352cef92fa65724",
+      "first_line": 12,
+      "last_line": 32,
+      "bytes": 728,
+      "sha256": "718bbd74f9d6430f2d6794c82feea7be04cbc68ca56c8c5dc9c3ab3d31f40df3",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-copy-storage\\local\\output\\cc16_native_gui_named_value_copy_storage_20261031\\regions\\P04_genuine_bf_source_entry.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P05_raw_pool_cells",
+      "path": "include/bsp/native_string.hpp",
+      "commit": "095128205fbfc1e2c6f9fa761352cef92fa65724",
+      "first_line": 28,
+      "last_line": 38,
+      "bytes": 494,
+      "sha256": "ae221875d0df54779836020cb7d83219e742c0a35bd07a5d6b8f2933c164b200",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-copy-storage\\local\\output\\cc16_native_gui_named_value_copy_storage_20261031\\regions\\P05_raw_pool_cells.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P06_old_noexcept_bridge_qualification",
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "commit": "095128205fbfc1e2c6f9fa761352cef92fa65724",
+      "first_line": 32,
+      "last_line": 51,
+      "bytes": 1235,
+      "sha256": "4861337d9bd79d0b088d8d1151c1169b1ee3d388e5c5b30c628c54147ab6a9eb",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-copy-storage\\local\\output\\cc16_native_gui_named_value_copy_storage_20261031\\regions\\P06_old_noexcept_bridge_qualification.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P07_old_private_entry_copy",
+      "path": "src/native_resource_reader_buffer.cpp",
+      "commit": "095128205fbfc1e2c6f9fa761352cef92fa65724",
+      "first_line": 41,
+      "last_line": 58,
+      "bytes": 789,
+      "sha256": "84c98b0cb4b935c4fa825ffb8557c4828ba35770c5627a11b13bca15c739ce5d",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-copy-storage\\local\\output\\cc16_native_gui_named_value_copy_storage_20261031\\regions\\P07_old_private_entry_copy.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P08_old_public_pending_pair_copy",
+      "path": "src/native_filestore_request.cpp",
+      "commit": "095128205fbfc1e2c6f9fa761352cef92fa65724",
+      "first_line": 159,
+      "last_line": 170,
+      "bytes": 489,
+      "sha256": "5c6a612b763975710a35a05400a8bb392793f8c23ba95a285d76ccc94c6275eb",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-copy-storage\\local\\output\\cc16_native_gui_named_value_copy_storage_20261031\\regions\\P08_old_public_pending_pair_copy.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P09_old_pending_copy_key",
+      "path": "src/native_filestore_request.cpp",
+      "commit": "095128205fbfc1e2c6f9fa761352cef92fa65724",
+      "first_line": 40,
+      "last_line": 55,
+      "bytes": 585,
+      "sha256": "cf1e46c53a16d6c0d2a016ff55380af5b791f48fe5d44a8fec396cd91c85c349",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-copy-storage\\local\\output\\cc16_native_gui_named_value_copy_storage_20261031\\regions\\P09_old_pending_copy_key.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P10_old_semantic_named_copy",
+      "path": "src/engine_seg49_64_78_cc13.cpp",
+      "commit": "095128205fbfc1e2c6f9fa761352cef92fa65724",
+      "first_line": 1310,
+      "last_line": 1316,
+      "bytes": 162,
+      "sha256": "deaabc99ac1db544d1c101ef1cbf4dbafc6885cb4a393db21053600aebc55319",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-copy-storage\\local\\output\\cc16_native_gui_named_value_copy_storage_20261031\\regions\\P10_old_semantic_named_copy.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P11_old_semantic_array_copy_consumer",
+      "path": "src/engine_seg49_64_78_cc13.cpp",
+      "commit": "095128205fbfc1e2c6f9fa761352cef92fa65724",
+      "first_line": 1324,
+      "last_line": 1359,
+      "bytes": 1454,
+      "sha256": "da8ebeca2b7a3c89c145a90b596c0c1e815793aadd55449b16d6e7bacdbe74a3",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-copy-storage\\local\\output\\cc16_native_gui_named_value_copy_storage_20261031\\regions\\P11_old_semantic_array_copy_consumer.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P12_old_semantic_named_types",
+      "path": "include/bsp/engine_seg49_64_78_cc13.hpp",
+      "commit": "095128205fbfc1e2c6f9fa761352cef92fa65724",
+      "first_line": 691,
+      "last_line": 706,
+      "bytes": 791,
+      "sha256": "3872ef3b7b4de4f712fb8b456048e72742f51e8764923cc16398f8fbed69c5db",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-copy-storage\\local\\output\\cc16_native_gui_named_value_copy_storage_20261031\\regions\\P12_old_semantic_named_types.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P13_other_qualified_pair",
+      "path": "src/engine_services_cc13.cpp",
+      "commit": "095128205fbfc1e2c6f9fa761352cef92fa65724",
+      "first_line": 763,
+      "last_line": 775,
+      "bytes": 619,
+      "sha256": "c866d002dc370ad63dddeb1b7cd931f372da58b0805c40bd595d45a33ac78687",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-copy-storage\\local\\output\\cc16_native_gui_named_value_copy_storage_20261031\\regions\\P13_other_qualified_pair.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P14_other_sound_pair",
+      "path": "src/sound_cc13.cpp",
+      "commit": "095128205fbfc1e2c6f9fa761352cef92fa65724",
+      "first_line": 520,
+      "last_line": 535,
+      "bytes": 582,
+      "sha256": "a2ac7609a8c26badcaded6ba5af73cd76c31dba5f14e8cb52909b22c9c505043",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-copy-storage\\local\\output\\cc16_native_gui_named_value_copy_storage_20261031\\regions\\P14_other_sound_pair.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P15_queue_excludes_insertion_delivery",
+      "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "commit": "095128205fbfc1e2c6f9fa761352cef92fa65724",
+      "first_line": 55,
+      "last_line": 62,
+      "bytes": 652,
+      "sha256": "4697564a512f7bbb086fd0a7597c74c8ea4949719d033c9e5c004d5314c1734c",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-copy-storage\\local\\output\\cc16_native_gui_named_value_copy_storage_20261031\\regions\\P15_queue_excludes_insertion_delivery.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P16_client_verification",
+      "path": "tools/bsp.py",
+      "commit": "095128205fbfc1e2c6f9fa761352cef92fa65724",
+      "first_line": 967,
+      "last_line": 984,
+      "bytes": 794,
+      "sha256": "cc2fc687b74fccee49725ac1306d4f9b2a2f081376cd91270830d32b43e682e1",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-copy-storage\\local\\output\\cc16_native_gui_named_value_copy_storage_20261031\\regions\\P16_client_verification.txt",
+      "independent_match": true
+    },
+    {
+      "id": "P17_project_program_verification",
+      "path": "tools/ghidra_export.py",
+      "commit": "095128205fbfc1e2c6f9fa761352cef92fa65724",
+      "first_line": 101,
+      "last_line": 110,
+      "bytes": 574,
+      "sha256": "4ce9f7a4d8d4c4d42c54e5f1e797ca401927f93f5ad6604d171081871f8eb011",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-copy-storage\\local\\output\\cc16_native_gui_named_value_copy_storage_20261031\\regions\\P17_project_program_verification.txt",
+      "independent_match": true
+    }
+  ],
+  "semantics": [
+    {
+      "topic": "constructor versus assignment",
+      "verdict": "pass",
+      "evidence": "Capture destination/source identities and equality. LEN0 then DATA0 precede identity branch. Self performs both zero stores, skips both callees/home store, finally CURRENT+8 read/write. No old-buffer return."
+    },
+    {
+      "topic": "actual preserve argument home",
+      "verdict": "pass",
+      "evidence": "Nonself CURRENTsourceLEN captured once, then complete DWORD1 store in caller-retained Frame. Exact resize receives identical &frame.preserve_home, not bool/by-value BYTE. Its equality return and allocation-before-BYTE read remain genuine provider effects."
+    },
+    {
+      "topic": "callback reload and zero-count copy",
+      "verdict": "pass",
+      "evidence": "After resize normal return reread CURRENTsourceLEN; nonzero gates CURRENTdstLEN then CURRENTsrcDATA then CURRENTdstDATA. All three captured separately. Direct genuine BF executes even CURRENTdstLEN0. No +1, data relookup, zero suppression or size clamp."
+    },
+    {
+      "topic": "late opaque value and aliases",
+      "verdict": "pass",
+      "evidence": "CURRENTsrc+8 loaded only after real BF returns (or directly on skipped branches), then dst+8 stored. No whole-record or payload snapshot; legal self/partial-header/data aliases follow reached raw writes, under actual backing and existing provider contracts."
+    },
+    {
+      "topic": "genuine domains",
+      "verdict": "qualified pass",
+      "evidence": "Same nonowning raw AA8/AA4/AA0 context and authenticated live canonical0109EEA4 reference go to real exactresize/BF endpoints. Field representation helpers are4B memcpy/barrier operations; DATA word conversion is not codeword invocation. No semantic owner projection/default or hot getter."
+    },
+    {
+      "topic": "Source exception/custody boundary",
+      "verdict": "qualified pass",
+      "evidence": "No local catch/cleanup/retry/rollback/noexcept/issuer/phase. Escapes retain reached effects and caller backing/debt. Existing bridge noexcept/recreation-failure domain remains historical supplier qualification, not Original NoThrow/FH3 proof."
+    },
+    {
+      "topic": "Source ABI and pure comparison",
+      "verdict": "qualified pass",
+      "evidence": "Source captures equality before stores, preserving normal behavior. No emitted CMP placement, Native EFLAGS/fault/private-stack alias or register/RET4 equivalence claimed. Native EAX returns captured destination; new ordinary Source void* return expresses identity."
+    },
+    {
+      "topic": "scope and previous routes",
+      "verdict": "pass",
+      "evidence": "Only four new files. Exact inverse tree proves all old files unchanged;25 pinned files/17 inspected regions confirm approximate/private/semantic copies retain qualifications. No actual Icon/array/queue/caller, origin, runtime or activation admission."
+    }
+  ],
+  "native": {
+    "physical_pe_file_offset": 7030416,
+    "bytes": 72,
+    "instructions": 28,
+    "calls": 2,
+    "no_local_EH_or_FP": true,
+    "body_sha256": "3635fdac9c7c223f2d2b4ffd439615634a36ef8cc4b1cf688f91801acb24f3f5",
+    "assembly_path": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-named-value-copy-storage-review\\local\\output\\cc16_native_gui_named_value_copy_storage_independent_review_20261031\\native.asm",
+    "assembly_pin": {
+      "bytes": 1325,
+      "sha256": "729d24d937fbe1fa4b8b7fee268d02818c5bc734bedd44f7d4b992d32faf79a2"
+    },
+    "exports": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab4690\\assembly.txt",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-copy-storage\\local\\output\\cc16_native_gui_named_value_copy_storage_20261031\\exports\\00ab4690\\assembly.txt",
+        "bytes": 779,
+        "sha256": "005c28ed21a5ca1e7bc529bf0035b49ff5c2e28286458094df065dfbba7896be",
+        "current_bytes": 779,
+        "current_sha256": "005c28ed21a5ca1e7bc529bf0035b49ff5c2e28286458094df065dfbba7896be",
+        "current_equals_seal_epoch": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab4690\\decompiled.c",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-copy-storage\\local\\output\\cc16_native_gui_named_value_copy_storage_20261031\\exports\\00ab4690\\decompiled.c",
+        "bytes": 523,
+        "sha256": "a598e7fb123187979d5d761605fb342d34f802559c04c7bd885c21a70de1533d",
+        "current_bytes": 523,
+        "current_sha256": "a598e7fb123187979d5d761605fb342d34f802559c04c7bd885c21a70de1533d",
+        "current_equals_seal_epoch": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab4690\\metadata.json",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-copy-storage\\local\\output\\cc16_native_gui_named_value_copy_storage_20261031\\exports\\00ab4690\\metadata.json",
+        "bytes": 278,
+        "sha256": "deba09d47275ca2272174ab10b6782f9b4ffc1576c22b1de4c1abbac3a87510e",
+        "current_bytes": 278,
+        "current_sha256": "deba09d47275ca2272174ab10b6782f9b4ffc1576c22b1de4c1abbac3a87510e",
+        "current_equals_seal_epoch": true
+      }
+    ],
+    "queries": [
+      {
+        "id": "verified_count",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "count"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 49,
+        "stdout_sha256": "154dbd7a91135f698c5463e0a7fafee38ac298eab34d0d8a90c871deda0d8801",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-copy-storage\\local\\output\\cc16_native_gui_named_value_copy_storage_20261031\\queries\\verified_count.txt"
+      },
+      {
+        "id": "proto",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "proto",
+          "00ab4690"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 686,
+        "stdout_sha256": "fd3ef628b1a16901882f9cafe39e28dca62b14178082d2e37cef7629ea934c36",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-copy-storage\\local\\output\\cc16_native_gui_named_value_copy_storage_20261031\\queries\\proto.txt"
+      },
+      {
+        "id": "live_bytes",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00ab4690",
+          "--length",
+          "72"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 353,
+        "stdout_sha256": "ba5ae5344f6cfa2577f1d092a0e4c6934c70d03e0e773dd5bd4299d5aab98db4",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-named-value-copy-storage\\local\\output\\cc16_native_gui_named_value_copy_storage_20261031\\queries\\live_bytes.txt"
+      }
+    ]
+  },
+  "producer_readonly_verifier": {
+    "bytes": 1912,
+    "sha256": "cc74765ebabde74542a435d23da472385a40ac5fe813620d0a3d3e58ed5c7f47",
+    "raw_equals_embedded": true,
+    "result": {
+      "pass": true,
+      "checks": 55,
+      "native_ops": 28,
+      "native_calls": 2,
+      "source_order_pins": 17,
+      "providers": 25,
+      "regions": 17
+    },
+    "execution": "unchanged inspected reader, exact sealed author cwd, reads/Git only"
+  },
+  "independent_static_checks": {
+    "count": 89,
+    "all_pass": true,
+    "checks": [
+      {
+        "check": "exact sealed parent",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "four additions only",
+        "pass": true,
+        "detail": [
+          [
+            "A",
+            "docs/CC16_NATIVE_GUI_NAMED_VALUE_COPY_STORAGE.md"
+          ],
+          [
+            "A",
+            "include/bsp/native_gui_named_value_copy_storage.hpp"
+          ],
+          [
+            "A",
+            "reports/cc16_native_gui_named_value_copy_storage.json"
+          ],
+          [
+            "A",
+            "src/native_gui_named_value_copy_storage.cpp"
+          ]
+        ]
+      },
+      {
+        "check": "packet snapshot include/bsp/native_gui_named_value_copy_storage.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "packet snapshot src/native_gui_named_value_copy_storage.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "packet snapshot docs/CC16_NATIVE_GUI_NAMED_VALUE_COPY_STORAGE.md",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "packet snapshot reports/cc16_native_gui_named_value_copy_storage.json",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "full four-addition inverse recovers exact base Git tree",
+        "pass": true,
+        "detail": {
+          "base_tree": "51fe66e594f25681e6efb357aabc280281c7f884",
+          "packet_tree": "2a356b60d14646180bed39bdeb8dd321259f0973",
+          "inverse_tree": "51fe66e594f25681e6efb357aabc280281c7f884"
+        }
+      },
+      {
+        "check": "whole old file include/bsp/native_string_raw_resize_exact.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole old file src/native_string_raw_resize_exact.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole old file include/bsp/native_crt_memcpy.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole old file src/native_crt_memcpy.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole old file include/bsp/native_string.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole old file src/native_string.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole old file include/bsp/native_string_pool_storage.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole old file src/native_string_pool_storage.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole old file include/bsp/native_resource_reader_buffer.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole old file src/native_resource_reader_buffer.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole old file include/bsp/native_filestore_request.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole old file src/native_filestore_request.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole old file include/bsp/engine_services_cc13.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole old file src/engine_services_cc13.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole old file include/bsp/engine_seg49_64_78_cc13.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole old file src/engine_seg49_64_78_cc13.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole old file include/bsp/sound_cc13.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole old file src/sound_cc13.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole old file include/bsp/native_gui_icon_delayed_loads.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole old file src/native_gui_icon_delayed_loads.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole old file config/target.json",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole old file tools/bsp.py",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole old file tools/ghidra_export.py",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole old file CMakeLists.txt",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole old file cmake/startup.cmake",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P01_exact_resize_contract",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P02_exact_resize_body",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P03_genuine_bf_contract",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P04_genuine_bf_source_entry",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P05_raw_pool_cells",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P06_old_noexcept_bridge_qualification",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P07_old_private_entry_copy",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P08_old_public_pending_pair_copy",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P09_old_pending_copy_key",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P10_old_semantic_named_copy",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P11_old_semantic_array_copy_consumer",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P12_old_semantic_named_types",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P13_other_qualified_pair",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P14_other_sound_pair",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P15_queue_excludes_insertion_delivery",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P16_client_verification",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "region P17_project_program_verification",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch identity_capture",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch source_capture",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch compare",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch len_zero",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch data_zero",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch branch",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch request",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch home_one",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch exact_resize",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch current_source_gate",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch current_dst_count",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch current_src_data",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch current_dst_data",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch genuine_bf",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch late_tail",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch tail_store",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "source epoch return_identity",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "17 separate source epochs ordered",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "installed PE full identity",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "physical PE signature",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "actual x86 imageBase and independently located body",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "whole72 native bytes",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "all28 independently decoded instruction boundaries and bytes",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "exact two real callees",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "no FP or local exception chain",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "actual return4 and captured EAX identity",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "seal-epoch export J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab4690\\assembly.txt",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "seal-epoch export J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab4690\\decompiled.c",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "seal-epoch export J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab4690\\metadata.json",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "query receipt verified_count",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "query receipt proto",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "query receipt live_bytes",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "independent verified BSP live bytes equal seal receipt",
+        "pass": true,
+        "detail": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-named-value-copy-storage-review\\local\\output\\cc16_native_gui_named_value_copy_storage_independent_review_20261031\\independent_live_bytes.txt",
+          "bytes": 353,
+          "sha256": "ba5ae5344f6cfa2577f1d092a0e4c6934c70d03e0e773dd5bd4299d5aab98db4"
+        }
+      },
+      {
+        "check": "raw reader equals embedded UTF8-LF",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "author cwd exact sealed commit",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "author reader input exact include/bsp/native_gui_named_value_copy_storage.hpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "author reader input exact src/native_gui_named_value_copy_storage.cpp",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "author reader input exact docs/CC16_NATIVE_GUI_NAMED_VALUE_COPY_STORAGE.md",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "author reader input exact reports/cc16_native_gui_named_value_copy_storage.json",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "check": "inspected unchanged producer reader55 static checks",
+        "pass": true,
+        "detail": {
+          "exit_code": 0,
+          "result": {
+            "pass": true,
+            "checks": 55,
+            "native_ops": 28,
+            "native_calls": 2,
+            "source_order_pins": 17,
+            "providers": 25,
+            "regions": 17
+          },
+          "stdout": {
+            "bytes": 124,
+            "sha256": "a86b63a085b48f55053614a5225438f5378273aebefb3e02ffc02509638397fd"
+          },
+          "stderr": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      }
+    ],
+    "extra_checks": [
+      {
+        "check": "exact Source Git blob include/bsp/native_gui_named_value_copy_storage.hpp",
+        "pass": true,
+        "observed_blob": "2a23c761fed9860f8929aa91a5a84412ebc60486"
+      },
+      {
+        "check": "exact Source Git blob src/native_gui_named_value_copy_storage.cpp",
+        "pass": true,
+        "observed_blob": "577f7c7b16df257e986db5d014e9ad9f30a5f478"
+      },
+      {
+        "check": "all28 operand texts match independent Capstone decode",
+        "pass": true
+      },
+      {
+        "check": "no new local EH/NoThrow/ownership/approximate copy and uninitialized DWORD Frame",
+        "pass": true
+      }
+    ],
+    "extra_count": 4,
+    "kind": "Git/PE/hash/operand/order verification only, not compiler/runtime tests"
+  },
+  "static_artifacts": {
+    "root": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-named-value-copy-storage-review\\local\\output\\cc16_native_gui_named_value_copy_storage_independent_review_20261031",
+    "checks": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-named-value-copy-storage-review\\local\\output\\cc16_native_gui_named_value_copy_storage_independent_review_20261031\\independent_checks.json",
+      "bytes": 35221,
+      "sha256": "ee8c94e443cca823094e5c94dde742f08fdf32cc640d3bdc0b7f81bdb594b8a4"
+    },
+    "reader": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-named-value-copy-storage-review\\local\\output\\cc16_native_gui_named_value_copy_storage_independent_review_20261031\\producer_verify.py",
+      "bytes": 1912,
+      "sha256": "cc74765ebabde74542a435d23da472385a40ac5fe813620d0a3d3e58ed5c7f47"
+    },
+    "native_listing": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-named-value-copy-storage-review\\local\\output\\cc16_native_gui_named_value_copy_storage_independent_review_20261031\\native.asm",
+      "bytes": 1325,
+      "sha256": "729d24d937fbe1fa4b8b7fee268d02818c5bc734bedd44f7d4b992d32faf79a2"
+    },
+    "independent_live_bytes": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-named-value-copy-storage-review\\local\\output\\cc16_native_gui_named_value_copy_storage_independent_review_20261031\\independent_live_bytes.txt",
+      "bytes": 353,
+      "sha256": "ba5ae5344f6cfa2577f1d092a0e4c6934c70d03e0e773dd5bd4299d5aab98db4"
+    }
+  },
+  "remaining_gates": [
+    "Root registration/common build and a distinct actual-Core receipt if requested; producer seal reports compiled=false",
+    "Concrete actual12B creator/caller; caller-retained per-invocation ordinary HOME, canonical feature provenance and genuine pool/context/buffer lifetime",
+    "Existing exactresize/getter/new-handler/deletion/partialfailure/copy debt contracts; BF DF0, reached CPU/OS support, valid nonwrapping extents and excluded active private/provider-frame copies",
+    "Parent failure-origin/custody/secondary exception transport; no Native issuer or cleanup authority",
+    "AB4990/AB4720, insertion/delivery, renderer/current generation and full Icon graph remain separate",
+    "Original ECX/stack/EAX/RET4/private HOME/flags/fault/FH3/SEH/gameplay proof"
+  ],
+  "credit": {
+    "new_original": 0,
+    "new_vendor": 0,
+    "new_helper": 0,
+    "new_compiler_generated": 0,
+    "duplicate_body": 0,
+    "Original_ABI": false,
+    "Native_origin": false,
+    "runtime": false,
+    "activation": false
+  },
+  "actions": "No Source/CMake/shared metadata/ledger/Ghidra/install mutations. Only two owned review evidence files are committed; ignored static evidence is retained separately. No compiler/test/probe/Native/provider/Game actions.",
+  "review_document_pin": {
+    "path": "docs\\CC16_NATIVE_GUI_NAMED_VALUE_COPY_STORAGE_INDEPENDENT_REVIEW.md",
+    "bytes": 5619,
+    "sha256": "ec4fa702253d334edc07124dff03382eee5c2d529a04879b716873aef01cf9d8"
+  }
+}
