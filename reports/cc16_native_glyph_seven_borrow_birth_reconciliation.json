@@ -1,0 +1,1317 @@
+{
+  "schema_version": 1,
+  "packet": "codex-glyph-seven-borrow-birth-reconciliation",
+  "kind": "evidence_only_design_reconciliation",
+  "utc": "2026-10-31T04:23:44.123446+00:00",
+  "authority": "Root explicit two-new-file EVIDENCE ONLY grant; no Source implementation grant",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation",
+  "base_ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+  "effective_Source47": "0dc17c8934d1869eab92c11ecb05e4e0fa780da4",
+  "input_proof": {
+    "base_ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+    "effective_Glyph_ref": "0dc17c8934d1869eab92c11ecb05e4e0fa780da4",
+    "Source47_separately_pinned_not_assumed_in_66e": true,
+    "historical_c180": "c180f23c3b1d55af24ed715b5fb62c2384c86d35",
+    "historical_f6af": "f6af05dbb867c39e62ab75caca1484dfbb6ee17d",
+    "whole_input_pins": [
+      {
+        "ref": "0dc17c8934d1869eab92c11ecb05e4e0fa780da4",
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "role": "effective immutable Source47; separately pinned, not assumed present in published66e",
+        "bytes": 11288,
+        "sha256": "7f327720df25cde3d156afa7220ce99caff0b1c5920ea2d7abeea0814cbec5f8",
+        "git_blob": "da2e215cbd9c92b36d90dba6c95546de2dfe52be",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\0dc17c893\\include\\bsp\\native_gui_text_glyph_quad_storage.hpp"
+      },
+      {
+        "ref": "0dc17c8934d1869eab92c11ecb05e4e0fa780da4",
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "role": "effective immutable Source47; separately pinned, not assumed present in published66e",
+        "bytes": 32415,
+        "sha256": "0b4a9aa487ad5892e2bdc33ff172e277df3305994776a47c869cb189510e5714",
+        "git_blob": "e0816fe48a952f32e053bda9b793b251324a7d78",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\0dc17c893\\src\\native_gui_text_glyph_quad_storage.cpp"
+      },
+      {
+        "ref": "0dc17c8934d1869eab92c11ecb05e4e0fa780da4",
+        "path": "docs/CC16_NATIVE_GLYPH_COLOR_DIRECT_CALLER.md",
+        "role": "effective immutable Source47; separately pinned, not assumed present in published66e",
+        "bytes": 8225,
+        "sha256": "b8291c1fb59f60a7cbd64276cbe0660e2eba98e5198eacdd71425a51c703ed8b",
+        "git_blob": "307fe63711cea06bd2944624d726ab7b4da40468",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\0dc17c893\\docs\\CC16_NATIVE_GLYPH_COLOR_DIRECT_CALLER.md"
+      },
+      {
+        "ref": "0dc17c8934d1869eab92c11ecb05e4e0fa780da4",
+        "path": "reports/cc16_native_glyph_color_direct_caller.json",
+        "role": "effective immutable Source47; separately pinned, not assumed present in published66e",
+        "bytes": 61352,
+        "sha256": "a0f4fc18e31134c56d03858d60c153745e6c8284ce9697856a4319fa7056b0d2",
+        "git_blob": "622eaa1fcc954ec54e9ebf1d60527ac07c100c9d",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\0dc17c893\\reports\\cc16_native_glyph_color_direct_caller.json"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "include/bsp/native_gui_text_field_storage.hpp",
+        "role": "actual published66e Source, unchanged",
+        "bytes": 16103,
+        "sha256": "4bfb2f16d53fbd0476835624df067d0381d33ba015b6bc7bd3ca2d9718b77766",
+        "git_blob": "8c757602985deebc86d26586929db284900871db",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\66e92f0d0\\include\\bsp\\native_gui_text_field_storage.hpp",
+        "working_base_equal": true
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "include/bsp/gui_text_resource_names.hpp",
+        "role": "actual published66e Source, unchanged",
+        "bytes": 8234,
+        "sha256": "c01cfed2296778a58c5c4ec300e53606246a522b7d698a85ab6558ffa407aa15",
+        "git_blob": "0cd222306933edb5e65724694885a3e15f0e3f42",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\66e92f0d0\\include\\bsp\\gui_text_resource_names.hpp",
+        "working_base_equal": true
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "include/bsp/native_gui_text_shader_storage.hpp",
+        "role": "actual published66e Source, unchanged",
+        "bytes": 14714,
+        "sha256": "862554f5cbef13c87597d7bfc35a108e9d562590bd9af6f7d0c291cf23938425",
+        "git_blob": "4f7019e815fc7d35bab1f95f9238eb1b20039ca4",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\66e92f0d0\\include\\bsp\\native_gui_text_shader_storage.hpp",
+        "working_base_equal": true
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "include/bsp/native_gui_text_default_storage.hpp",
+        "role": "actual published66e Source, unchanged",
+        "bytes": 6352,
+        "sha256": "7a23774d66bb90e59712407d58fd3356640da3f77f1c087bf766b77d3748141a",
+        "git_blob": "2eb5db69eff0b68c093a5006e13eb2d490e821b7",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\66e92f0d0\\include\\bsp\\native_gui_text_default_storage.hpp",
+        "working_base_equal": true
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "include/bsp/native_gui_text_reference.hpp",
+        "role": "actual published66e Source, unchanged",
+        "bytes": 12718,
+        "sha256": "62224192a6d0fb5043ed68a3f34374ce1bc3584ee1f3bb031c1041b33fdd1827",
+        "git_blob": "492cf04c44cfeae90887bba02c32039f325bc318",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\66e92f0d0\\include\\bsp\\native_gui_text_reference.hpp",
+        "working_base_equal": true
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "include/bsp/native_gui_text_default_widget_lifetime.hpp",
+        "role": "actual published66e Source, unchanged",
+        "bytes": 6623,
+        "sha256": "6689bd2ad16f3518e7356abea646dd10f37bb3d609f23453ca479dee10ed5672",
+        "git_blob": "2c2c6e782b2953cbe671bf60a092e3b9cf6210dd",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\66e92f0d0\\include\\bsp\\native_gui_text_default_widget_lifetime.hpp",
+        "working_base_equal": true
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "include/bsp/native_gui_text_default_factory_storage.hpp",
+        "role": "actual published66e Source, unchanged",
+        "bytes": 4809,
+        "sha256": "1587babdcc646f3b91b15b688a27338ea7d1e5038db3e92a7fd6738fb8924cd0",
+        "git_blob": "c375df0e72f3bbb01134ad99a1cab4dbc0bc9cd7",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\66e92f0d0\\include\\bsp\\native_gui_text_default_factory_storage.hpp",
+        "working_base_equal": true
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "include/bsp/game_native_raw_default_text_owner.hpp",
+        "role": "actual published66e Source, unchanged",
+        "bytes": 9406,
+        "sha256": "92715898e34550625339a8658568e31aee5dbb5b8901d92379a273e816558c83",
+        "git_blob": "532566845cd8434126f0869464a0deb7c1ec2e2f",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\66e92f0d0\\include\\bsp\\game_native_raw_default_text_owner.hpp",
+        "working_base_equal": true
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "include/bsp/native_gui_widget_raw_model_lifetime.hpp",
+        "role": "actual published66e Source, unchanged",
+        "bytes": 4599,
+        "sha256": "bc8dd7b7fb8e22be5436857a8a27ed123afafe7543c592e327643d5294eaf988",
+        "git_blob": "dbffd3f17f0952c4d3ff8c0659ab0f617221eac7",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\66e92f0d0\\include\\bsp\\native_gui_widget_raw_model_lifetime.hpp",
+        "working_base_equal": true
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+        "role": "actual published66e Source, unchanged",
+        "bytes": 9873,
+        "sha256": "3914309878ae2683fe0fa3a676d373f35d09cc34ca6d82dd83d7044d678453a8",
+        "git_blob": "32fe59b520f2c49f699f04d665b28235d391fe67",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\66e92f0d0\\include\\bsp\\native_gui_text_single_line_storage.hpp",
+        "working_base_equal": true
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "include/bsp/native_gui_text_wrapped_storage.hpp",
+        "role": "actual published66e Source, unchanged",
+        "bytes": 10525,
+        "sha256": "197ded43a11ce27f3d24ae3fdd0a375f565ebaa7c5a97ab9df219d6dfb922170",
+        "git_blob": "f025b748c662a9b7731e166c1d600b882327c96e",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\66e92f0d0\\include\\bsp\\native_gui_text_wrapped_storage.hpp",
+        "working_base_equal": true
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "include/bsp/game_native_mutable_crt_data.hpp",
+        "role": "actual published66e Source, unchanged",
+        "bytes": 3200,
+        "sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+        "git_blob": "ec1a1c9c2a7359031b4b77c2b86ba12cd6f3420e",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\66e92f0d0\\include\\bsp\\game_native_mutable_crt_data.hpp",
+        "working_base_equal": true
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "role": "actual published66e Source, unchanged",
+        "bytes": 10679,
+        "sha256": "8e3475ad8bce88973b64ff9c0758ebda380b5baede302c7b926526b0e92fe783",
+        "git_blob": "a0eb6b9681b8e651df3fed6907298b08f974653e",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\66e92f0d0\\include\\bsp\\native_gui_text_glyph_quad_storage.hpp",
+        "working_base_equal": true
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/native_gui_text_field_storage.cpp",
+        "role": "actual published66e Source, unchanged",
+        "bytes": 32505,
+        "sha256": "8d9a1299004c40c57ed59be58a9408cba9e08f3fff32db06b8662f590c9dd4bf",
+        "git_blob": "496ee36bedc050f8ed08e10f2ff824154f888c3c",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\66e92f0d0\\src\\native_gui_text_field_storage.cpp",
+        "working_base_equal": true
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/native_gui_text_shader_storage.cpp",
+        "role": "actual published66e Source, unchanged",
+        "bytes": 53482,
+        "sha256": "307e06e5aa5adcbec3532cb02b841edad521edf8e65678759ba2e6113d86afc2",
+        "git_blob": "5cf4e0943c1a84f2fda9b40ea009a34adc64ed73",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\66e92f0d0\\src\\native_gui_text_shader_storage.cpp",
+        "working_base_equal": true
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/native_gui_text_default_storage.cpp",
+        "role": "actual published66e Source, unchanged",
+        "bytes": 26698,
+        "sha256": "6ed36cf3cad97ef089be15302827995d3bc6f303f5df3a3eb122b970dde67d09",
+        "git_blob": "47f32c0fb30dc7ebfaeb83ce2480ec88f59d3039",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\66e92f0d0\\src\\native_gui_text_default_storage.cpp",
+        "working_base_equal": true
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/native_gui_text_reference.cpp",
+        "role": "actual published66e Source, unchanged",
+        "bytes": 58312,
+        "sha256": "0fb188e79dbc014db098d01e3afff14a5e07f1671a33db063d2e126e5af4257e",
+        "git_blob": "f3a8e3a5c855acc668fb526d6de781621cfdb8c2",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\66e92f0d0\\src\\native_gui_text_reference.cpp",
+        "working_base_equal": true
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/native_gui_text_default_widget_lifetime.cpp",
+        "role": "actual published66e Source, unchanged",
+        "bytes": 20580,
+        "sha256": "a9a0804f232966546ad7f17ce8d8b6fa81937f26531d831ecd79a3d8bb62d88b",
+        "git_blob": "fe970d12216473b80796f96656e605e359afe53b",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\66e92f0d0\\src\\native_gui_text_default_widget_lifetime.cpp",
+        "working_base_equal": true
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/game_native_raw_default_text_owner.cpp",
+        "role": "actual published66e Source, unchanged",
+        "bytes": 132021,
+        "sha256": "b0c6a8e39b0756e98960a9f21894a0b25ea7b1a437891edaa86b6f893289d25b",
+        "git_blob": "8e3d47af9f936b938afa27821afd5b3b6b8071ef",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\66e92f0d0\\src\\game_native_raw_default_text_owner.cpp",
+        "working_base_equal": true
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/native_gui_widget_raw_model_lifetime.cpp",
+        "role": "actual published66e Source, unchanged",
+        "bytes": 28955,
+        "sha256": "8761415408f767dfa34dbcdf986be942e94f07b42d3f63536a77ce987cbec146",
+        "git_blob": "4d0e75a0986557607258a53264c06bac084c0a7f",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\66e92f0d0\\src\\native_gui_widget_raw_model_lifetime.cpp",
+        "working_base_equal": true
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/native_gui_text_single_line_storage.cpp",
+        "role": "actual published66e Source, unchanged",
+        "bytes": 17311,
+        "sha256": "ffda6f98ac137a60af72332a3981da2e51a18992097ff359feda8a93028ee048",
+        "git_blob": "22427ad2c2c04bf357b2770e075e1c794ee03bf9",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\66e92f0d0\\src\\native_gui_text_single_line_storage.cpp",
+        "working_base_equal": true
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/native_gui_text_wrapped_storage.cpp",
+        "role": "actual published66e Source, unchanged",
+        "bytes": 31992,
+        "sha256": "f60c97736444be3c30e0eba45373988630a5e90f997384a4298e19b2da072614",
+        "git_blob": "de5ba745a33858d0eb3359fbb0ac96a59f117319",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\66e92f0d0\\src\\native_gui_text_wrapped_storage.cpp",
+        "working_base_equal": true
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/native_string.cpp",
+        "role": "actual published66e Source, unchanged",
+        "bytes": 9121,
+        "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+        "git_blob": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\66e92f0d0\\src\\native_string.cpp",
+        "working_base_equal": true
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "role": "actual published66e Source, unchanged",
+        "bytes": 29447,
+        "sha256": "52746b908db84c9275dc45aa9eb1c8fa01740fe63f7a716c9ff3e37a7a6f07b5",
+        "git_blob": "0d96c73d7b60fba9a6742b67a1c4beeff2827591",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\66e92f0d0\\src\\native_gui_text_glyph_quad_storage.cpp",
+        "working_base_equal": true
+      },
+      {
+        "ref": "c180f23c3b1d55af24ed715b5fb62c2384c86d35",
+        "path": "docs/CC16_NATIVE_GLYPH_WIDGET_LIFETIME_PREPARATION_DESIGN.md",
+        "role": "historical design immutable; five-borrow wording not rewritten",
+        "bytes": 9385,
+        "sha256": "cf58319fde36f2d1c53d609ed0b3c7a15ce63fcc4ef2cacad96b320f26b70fd7",
+        "git_blob": "f9850922e9cf9551151b83d0f8a3a4023dda323b",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\c180f23c3\\docs\\CC16_NATIVE_GLYPH_WIDGET_LIFETIME_PREPARATION_DESIGN.md"
+      },
+      {
+        "ref": "c180f23c3b1d55af24ed715b5fb62c2384c86d35",
+        "path": "reports/cc16_native_glyph_widget_lifetime_preparation_design.json",
+        "role": "historical design immutable; five-borrow wording not rewritten",
+        "bytes": 68234,
+        "sha256": "3063b0acd0e4d8a28180be97d7b7585620003ca4e3748bca4e9fc304dd7c35b3",
+        "git_blob": "3c381c72a7abe73722f2b6797627e73763c75e32",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\c180f23c3\\reports\\cc16_native_glyph_widget_lifetime_preparation_design.json"
+      },
+      {
+        "ref": "f6af05dbb867c39e62ab75caca1484dfbb6ee17d",
+        "path": "docs/CC16_NATIVE_GLYPH_RETAINED_CHILD_PREPARATION_DESIGN.md",
+        "role": "historical design immutable; five-borrow wording not rewritten",
+        "bytes": 13573,
+        "sha256": "9f669328732df56a67929900af7c1e88f392c72bab7b35845d3401db9b2bce63",
+        "git_blob": "aaf8c92496c2fa1fe3166bd632f5dead27eadce9",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\f6af05dbb\\docs\\CC16_NATIVE_GLYPH_RETAINED_CHILD_PREPARATION_DESIGN.md"
+      },
+      {
+        "ref": "f6af05dbb867c39e62ab75caca1484dfbb6ee17d",
+        "path": "reports/cc16_native_glyph_retained_child_preparation_design.json",
+        "role": "historical design immutable; five-borrow wording not rewritten",
+        "bytes": 83973,
+        "sha256": "9fd85013aa07687b10bbed2553c40a14e37c2759c45237c55033bb8addafbf7e",
+        "git_blob": "bfefe1bd6d8f20e987d14bd5f3a7a8700b71b76a",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\inputs\\f6af05dbb\\reports\\cc16_native_glyph_retained_child_preparation_design.json"
+      }
+    ],
+    "region_pins": [
+      {
+        "ref": "0dc17c8934d1869eab92c11ecb05e4e0fa780da4",
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "start_line": 23,
+        "end_line": 32,
+        "bytes": 754,
+        "sha256": "e648b4bd45b08f6f0779cb0351b66b5bf2f69ec7b65bd4f82a9716910073fff3",
+        "role": "strict existing pre-entry nested-object wording needs explicit late-birth decision"
+      },
+      {
+        "ref": "0dc17c8934d1869eab92c11ecb05e4e0fa780da4",
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "start_line": 33,
+        "end_line": 69,
+        "bytes": 2581,
+        "sha256": "cfc69dd2c0ddbfed71e97f83e144cd7a0aeaefb8051a45024389204ffad6042e",
+        "role": "all13 abstract operation methods"
+      },
+      {
+        "ref": "0dc17c8934d1869eab92c11ecb05e4e0fa780da4",
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "start_line": 75,
+        "end_line": 99,
+        "bytes": 1283,
+        "sha256": "2960b4dfa0725f1006d8193a1fe7cab288b426d85bf8c13743ab370f94b10014",
+        "role": "actual borrowed Context"
+      },
+      {
+        "ref": "0dc17c8934d1869eab92c11ecb05e4e0fa780da4",
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "start_line": 123,
+        "end_line": 166,
+        "bytes": 2734,
+        "sha256": "d541fc433198677a55c052e0aa80e4bfa42034503cd825341c01bb85300b68cc",
+        "role": "actual seven-ref constructor/private prefix"
+      },
+      {
+        "ref": "0dc17c8934d1869eab92c11ecb05e4e0fa780da4",
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "start_line": 269,
+        "end_line": 299,
+        "bytes": 1689,
+        "sha256": "b600bc4b89040a5e13bc934084bfccf60825b8cd2cc7923753a02b8353b66ddf",
+        "role": "address-only known scratch helper"
+      },
+      {
+        "ref": "0dc17c8934d1869eab92c11ecb05e4e0fa780da4",
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "start_line": 480,
+        "end_line": 518,
+        "bytes": 2182,
+        "sha256": "2c497323434d6302a1379cf01e9cd98baa6c1ce836c234a8d9426e0ce26fef50",
+        "role": "actual pool/raw93/qualified envelope events"
+      },
+      {
+        "ref": "0dc17c8934d1869eab92c11ecb05e4e0fa780da4",
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "start_line": 511,
+        "end_line": 526,
+        "bytes": 807,
+        "sha256": "f957a4d869284d36955f535604e115fe8d30781d5738b5d44e508fde5d74ab36",
+        "role": "post-disarm home7 before append"
+      },
+      {
+        "ref": "0dc17c8934d1869eab92c11ecb05e4e0fa780da4",
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "start_line": 526,
+        "end_line": 538,
+        "bytes": 910,
+        "sha256": "a4f95340f33ff4f12071107bcea12b6bc55430ee4705684b4b6ec9ca6351900e",
+        "role": "current node/callbacks then late Font pointer"
+      },
+      {
+        "ref": "0dc17c8934d1869eab92c11ecb05e4e0fa780da4",
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "start_line": 548,
+        "end_line": 567,
+        "bytes": 1161,
+        "sha256": "b92f7c470aec7c7a9599cae0d7abca33ed8a47202e499da90b655e01429620ae",
+        "role": "actual shader input result/state1/call/return"
+      },
+      {
+        "ref": "0dc17c8934d1869eab92c11ecb05e4e0fa780da4",
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "start_line": 583,
+        "end_line": 617,
+        "bytes": 2240,
+        "sha256": "f7c1c05422aa1c82c66ac8aca12427fb009fbae273e67091901d5ab8be63b79a",
+        "role": "known target13-region check versus unchanged OTHER"
+      },
+      {
+        "ref": "0dc17c8934d1869eab92c11ecb05e4e0fa780da4",
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "start_line": 638,
+        "end_line": 707,
+        "bytes": 4718,
+        "sha256": "a779932a8c74212f182efc0d22d6162f3186aa73cde1ccbb1af952d82189e000",
+        "role": "existing whole catch guard tail, no Native issuer"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "include/bsp/native_gui_text_field_storage.hpp",
+        "start_line": 155,
+        "end_line": 202,
+        "bytes": 3502,
+        "sha256": "0b8063766dce57863ba57f19285383f297db37cc861b1c3bed35bc54199ba328",
+        "role": "immutable input-bound RawFontFrame"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/native_gui_text_field_storage.cpp",
+        "start_line": 427,
+        "end_line": 458,
+        "bytes": 1989,
+        "sha256": "cff06fd9b081a6fa42d5e3929ce8e2b9d8d1b3ef705ea5e28056695a53154c0e",
+        "role": "Font ctor stores addresses/binds Acq; inherited terminal destructor conditions"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/native_gui_text_field_storage.cpp",
+        "start_line": 469,
+        "end_line": 496,
+        "bytes": 2042,
+        "sha256": "e1dfe8c09df904dde759eebfa72115b2f863e8a03d1caed958c2a16800a15332",
+        "role": "real raw Font entry/private credit"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "include/bsp/gui_text_resource_names.hpp",
+        "start_line": 93,
+        "end_line": 141,
+        "bytes": 3003,
+        "sha256": "96f43bebc4a1df40229e5d7a2693f4e963c960b71b88c34f2e2cc0d3b03f8cce",
+        "role": "ShaderInvocation immutable borrows and qualified API"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "include/bsp/native_gui_text_shader_storage.hpp",
+        "start_line": 28,
+        "end_line": 39,
+        "bytes": 709,
+        "sha256": "c65e31b8b4af0346d984f92e0a8a506adba891f385f32bfbc979af29acb48d1e",
+        "role": "real Shader Context"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "include/bsp/native_gui_text_shader_storage.hpp",
+        "start_line": 64,
+        "end_line": 78,
+        "bytes": 936,
+        "sha256": "aa7a6d3cf979c87e588a0a75188347248ed1ac9df86c3d431a00a55b8e199a61",
+        "role": "pure raw ShaderFrame preparation"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/native_gui_text_shader_storage.cpp",
+        "start_line": 857,
+        "end_line": 899,
+        "bytes": 3330,
+        "sha256": "747be2c0c0b5ae1f669cfa3d2f4531b30cbeae4403dc230ac22d6e965c82e542",
+        "role": "non-noexcept Invocation ctor and actual reference binding"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/native_gui_text_shader_storage.cpp",
+        "start_line": 902,
+        "end_line": 930,
+        "bytes": 1999,
+        "sha256": "4e21be7c214139c7516ed0c3db6e6da58c7cf6e2474890606df0b4bf0940f4bc",
+        "role": "current shader private credit/replacement restrictions"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "include/bsp/native_gui_text_default_storage.hpp",
+        "start_line": 61,
+        "end_line": 108,
+        "bytes": 2974,
+        "sha256": "05299a400795e0a5029c2209ce8e75a10acbc5f445bc49e84976f58b0f3a6750",
+        "role": "actual raw93 triplet/APIs"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/native_gui_text_default_storage.cpp",
+        "start_line": 290,
+        "end_line": 304,
+        "bytes": 961,
+        "sha256": "c3d01423cb5da893bbbf8d10f9d32177bd063785adccbd907e1a29e4470109e9",
+        "role": "completion authenticates actual internal188"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/native_gui_text_default_storage.cpp",
+        "start_line": 325,
+        "end_line": 344,
+        "bytes": 827,
+        "sha256": "f38caee822ec62dcc2761b38a5d9b0b52e8c88747f8e1eaa3d91212c5af37885",
+        "role": "actual base construction/derived stamp"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/native_gui_text_default_storage.cpp",
+        "start_line": 400,
+        "end_line": 461,
+        "bytes": 3376,
+        "sha256": "a0c3a0aabb47af609b442a36913bf4e9443c808879f3b3cc790b8a01c4460d1c",
+        "role": "402prefix/415negative/417complete/real bind_once/wrapper completion"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "include/bsp/native_gui_text_reference.hpp",
+        "start_line": 121,
+        "end_line": 140,
+        "bytes": 1104,
+        "sha256": "fe2dffa3feb6d3268b3f930632224c42782f4cef84b28236681aeb9b9dbb1cfa",
+        "role": "const construction witness requires separate mutable receipt"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/native_gui_text_reference.cpp",
+        "start_line": 627,
+        "end_line": 680,
+        "bytes": 4847,
+        "sha256": "a7323e7b7aa55159749d169f398bc07b4042c6cae41962e3b77fde3282a3cc9b",
+        "role": "actual Raw122 completed93/internal188/DEFAULT predicates"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/native_gui_text_reference.cpp",
+        "start_line": 777,
+        "end_line": 810,
+        "bytes": 2189,
+        "sha256": "fd9b86b0b1f3e5469b3d084a1af4ac7e2e0f5dcb4221e61a5500e3e4a4be2c95",
+        "role": "ordinary/reserved placement and bind/publish"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/native_gui_text_reference.cpp",
+        "start_line": 819,
+        "end_line": 837,
+        "bytes": 1004,
+        "sha256": "b990ee143e3a75caf4a713a88ad6f1e78a20ef7a188249d4819e3c5df081122f",
+        "role": "saved disposal LAST"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "include/bsp/native_gui_text_default_widget_lifetime.hpp",
+        "start_line": 5,
+        "end_line": 16,
+        "bytes": 680,
+        "sha256": "6f96de922bda0cfe434a3cda8ff36a06c636d26050652f50829a79dd9240595a",
+        "role": "factory record/public diagnostics"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "include/bsp/native_gui_text_default_widget_lifetime.hpp",
+        "start_line": 38,
+        "end_line": 90,
+        "bytes": 3231,
+        "sha256": "d5a3d4ec2505369aa88aa806bceac39b21ab6893403d270ca3af9198b1c20e6e",
+        "role": "existing Lifetime interface and private record"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/native_gui_text_default_widget_lifetime.cpp",
+        "start_line": 155,
+        "end_line": 213,
+        "bytes": 3812,
+        "sha256": "af62658456a153755301c5af67b4dcf98636f302f3bcb9739cfae69410c597b4",
+        "role": "literal AA1380-only authentication"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/native_gui_text_default_widget_lifetime.cpp",
+        "start_line": 214,
+        "end_line": 240,
+        "bytes": 1809,
+        "sha256": "2859bf83bfcf64f2f5064d5eaf25a2afc8831f5b8603d32994cd8990a8f7fb5d",
+        "role": "current prefix/empty-domain restrictions"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "include/bsp/native_gui_text_default_factory_storage.hpp",
+        "start_line": 10,
+        "end_line": 23,
+        "bytes": 784,
+        "sha256": "62ea291f7dbf2341cf3484ca31fbbf98a8eaa1a7ab7f1720083c50012cb23429",
+        "role": "existing context usable as borrow bundle only"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "include/bsp/game_native_raw_default_text_owner.hpp",
+        "start_line": 15,
+        "end_line": 69,
+        "bytes": 4008,
+        "sha256": "60a9fc8b5154e6700c07740e0a3eb895c543a7d92b1a5071f4ceb77b4cffa5ba",
+        "role": "owner preparation bounds, not child factory"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/game_native_raw_default_text_owner.cpp",
+        "start_line": 135,
+        "end_line": 184,
+        "bytes": 3270,
+        "sha256": "ea5da2ff2bc7464d58cb24b62a94627f397bebf119ad22efe265512c4f839b57",
+        "role": "real shared Services roots"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/game_native_raw_default_text_owner.cpp",
+        "start_line": 242,
+        "end_line": 304,
+        "bytes": 3392,
+        "sha256": "aa05e7d4085d33e4261f518928174ffa47bc0f316ef62a79ae4e17ce3d5879ab",
+        "role": "private Attempt graph and factory-specific disposal"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/game_native_raw_default_text_owner.cpp",
+        "start_line": 1123,
+        "end_line": 1193,
+        "bytes": 6012,
+        "sha256": "9342946973e855a6157b7a1c39d8855286199740feaf2aea26695ee9983e5225",
+        "role": "actual creator/subobject graph"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/game_native_raw_default_text_owner.cpp",
+        "start_line": 1195,
+        "end_line": 1214,
+        "bytes": 1323,
+        "sha256": "760ea1ec3df8dd9cd907ff18b4ffaa8a2402ce201d8e63515b77d45a03ccc622",
+        "role": "installation/bind order and one-time Services prepare"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "include/bsp/native_gui_widget_raw_model_lifetime.hpp",
+        "start_line": 25,
+        "end_line": 37,
+        "bytes": 521,
+        "sha256": "3c28edd179a66e6d46582b0283f52e11d98b98980f4f76cbe6572848ff2fd1dc",
+        "role": "additional transport still requires old Text factory record"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/native_gui_widget_raw_model_lifetime.cpp",
+        "start_line": 294,
+        "end_line": 310,
+        "bytes": 1231,
+        "sha256": "3f7477b72633748362ab9e4d8fa1a0f70d97dc7478dd32023816bf262312b8be",
+        "role": "factory/raw118 admission and restrictions"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/native_gui_widget_raw_model_lifetime.cpp",
+        "start_line": 424,
+        "end_line": 431,
+        "bytes": 375,
+        "sha256": "32f463b957460ee5518ecac27cf69e32b5df829be05407d7e2b011c95b9e61ee",
+        "role": "Glyph rejection remains"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "include/bsp/native_gui_text_single_line_storage.hpp",
+        "start_line": 42,
+        "end_line": 52,
+        "bytes": 842,
+        "sha256": "8da9f648e3fb5557c00a38c20a167653f53368ebe75b6f4da93f105190a4bbf2",
+        "role": "pure prepared-record selector requirement"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "include/bsp/native_gui_text_wrapped_storage.hpp",
+        "start_line": 46,
+        "end_line": 56,
+        "bytes": 842,
+        "sha256": "4fc48c71184816c3873676ecaf0cdf79d26f37862ebbf9b454b12070e7f79c7f",
+        "role": "pure prepared-record selector requirement"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "include/bsp/game_native_mutable_crt_data.hpp",
+        "start_line": 31,
+        "end_line": 65,
+        "bytes": 1818,
+        "sha256": "1e4e5da8c02ebbcd1495a07f70a973ad355665b553d5af840c930260a205c417",
+        "role": "feature/canonical accessor qualifiers"
+      },
+      {
+        "ref": "66e92f0d07bfb78dc1578044c9812cbc76deec57",
+        "path": "src/native_string.cpp",
+        "start_line": 176,
+        "end_line": 194,
+        "bytes": 810,
+        "sha256": "ed36ef52f7977f6f12bf02940a4896da4595f3e4975431f7c223ab6ead482244",
+        "role": "published66e old CString facade; not a new supplier proof"
+      }
+    ],
+    "actual_constructor": {
+      "published66e_five": [
+        "NativeGuiTextRawModelDefaultStorageFrame& f",
+        "NativeGuiTextRawModelDefaultStorageContext& c",
+        "NativeGuiTextRawModelDefaultStorageAcquired& a",
+        "NativeGuiTextShadowStorageFrame& shadow_frame",
+        "NativeNodeSetParentAcquired& shadow_acquired"
+      ],
+      "Source47_seven": [
+        "NativeGuiTextRawModelDefaultStorageFrame& f",
+        "NativeGuiTextRawModelDefaultStorageContext& c",
+        "NativeGuiTextRawModelDefaultStorageAcquired& a",
+        "NativeGuiTextShadowStorageFrame& shadow_frame",
+        "NativeNodeSetParentAcquired& shadow_acquired",
+        "NativeGuiTextFieldStorageFrame& color_frame",
+        "NativeGuiTextFieldStorageAcquired& color_acquired"
+      ],
+      "old_five_exact_prefix": true
+    },
+    "Source47_thirteen_regions": [
+      {
+        "region": "homes",
+        "extent": "sizeof(homes)",
+        "qualification": "ten volatile incoming DWORDs"
+      },
+      {
+        "region": "GlyphAcquired",
+        "extent": "sizeof(a)",
+        "qualification": "entire record, live F24/F28 and Origin/constructor/header state"
+      },
+      {
+        "region": "GlyphContext",
+        "extent": "sizeof(c)",
+        "qualification": "shared context object, no value read"
+      },
+      {
+        "region": "actual_text",
+        "extent": "0x1f8",
+        "qualification": "full parent Text storage"
+      },
+      {
+        "region": "raw93_frame_",
+        "extent": "sizeof(a.raw93_frame_)",
+        "qualification": "whole prepared raw93 frame"
+      },
+      {
+        "region": "raw93_context_",
+        "extent": "sizeof(a.raw93_context_)",
+        "qualification": "same raw93 context object"
+      },
+      {
+        "region": "raw93_acquired_",
+        "extent": "sizeof(a.raw93_acquired_)",
+        "qualification": "fresh retained raw93 record"
+      },
+      {
+        "region": "raw93_frame_.sections",
+        "extent": "sizeof(a.raw93_frame_.sections)",
+        "qualification": "actual section frame reference backing"
+      },
+      {
+        "region": "sections.locals",
+        "extent": "sizeof(a.raw93_frame_.sections.locals)",
+        "qualification": "actual section local backing"
+      },
+      {
+        "region": "sections.arguments",
+        "extent": "sizeof(a.raw93_frame_.sections.arguments)",
+        "qualification": "actual section homes"
+      },
+      {
+        "region": "sections.parenting",
+        "extent": "sizeof(a.raw93_frame_.sections.parenting)",
+        "qualification": "actual section parenting frame"
+      },
+      {
+        "region": "shadow_frame_",
+        "extent": "sizeof(a.shadow_frame_)",
+        "qualification": "retained raw-shadow frame"
+      },
+      {
+        "region": "shadow_acquired_",
+        "extent": "sizeof(a.shadow_acquired_)",
+        "qualification": "retained NodeSetParent record"
+      }
+    ],
+    "call_inventory": {
+      "Native_main_body": [
+        {
+          "address": "00ab9d38",
+          "operation": "CALL 0x00ab78a0",
+          "indirect": false
+        },
+        {
+          "address": "00ab9d4f",
+          "operation": "CALL 0x00ab9650",
+          "indirect": false
+        },
+        {
+          "address": "00ab9d70",
+          "operation": "CALL 0x005dad40",
+          "indirect": false
+        },
+        {
+          "address": "00ab9d87",
+          "operation": "CALL EAX",
+          "indirect": true
+        },
+        {
+          "address": "00ab9d8c",
+          "operation": "CALL 0x00aa6720",
+          "indirect": false
+        },
+        {
+          "address": "00ab9d93",
+          "operation": "CALL 0x00ab8530",
+          "indirect": false
+        },
+        {
+          "address": "00ab9da5",
+          "operation": "CALL EAX",
+          "indirect": true
+        },
+        {
+          "address": "00ab9db2",
+          "operation": "CALL 0x00aa6bc0",
+          "indirect": false
+        },
+        {
+          "address": "00ab9dc9",
+          "operation": "CALL 0x00ab8c30",
+          "indirect": false
+        },
+        {
+          "address": "00ab9e05",
+          "operation": "CALL 0x00ab6c30",
+          "indirect": false
+        },
+        {
+          "address": "00ab9e13",
+          "operation": "CALL 0x0041e870",
+          "indirect": false
+        },
+        {
+          "address": "00ab9e1f",
+          "operation": "CALL 0x00ab8e70",
+          "indirect": false
+        },
+        {
+          "address": "00ab9e39",
+          "operation": "CALL 0x00419cc0",
+          "indirect": false
+        },
+        {
+          "address": "00ab9e40",
+          "operation": "CALL 0x00bd1510",
+          "indirect": false
+        },
+        {
+          "address": "00ab9e51",
+          "operation": "CALL 0x00ab81c0",
+          "indirect": false
+        },
+        {
+          "address": "00ab9e61",
+          "operation": "CALL 0x00aba8d0",
+          "indirect": false
+        },
+        {
+          "address": "00ab9e71",
+          "operation": "CALL EDX",
+          "indirect": true
+        },
+        {
+          "address": "00ab9e8a",
+          "operation": "CALL 0x00419cc0",
+          "indirect": false
+        },
+        {
+          "address": "00ab9e91",
+          "operation": "CALL 0x00bd1510",
+          "indirect": false
+        },
+        {
+          "address": "00ab9e9b",
+          "operation": "CALL 0x00aaa5a0",
+          "indirect": false
+        },
+        {
+          "address": "00ab9ec0",
+          "operation": "CALL EDX",
+          "indirect": true
+        },
+        {
+          "address": "00ab9ecd",
+          "operation": "CALL 0x00aa6750",
+          "indirect": false
+        },
+        {
+          "address": "00ab9fa9",
+          "operation": "CALL 0x00aa8240",
+          "indirect": false
+        }
+      ],
+      "Native_direct": 19,
+      "Native_indirect": 4,
+      "Source_abstract_declarations": [
+        "    virtual void append_005dad40(void* actual_vector, volatile std::uint32_t* actual_child_home,\n        NativeGuiTextGlyphQuadStorageAcquired&) = 0;",
+        "    virtual void* node_current10(void* actual_node, std::uint32_t captured_profile,\n        std::uint32_t captured_target, std::uint32_t flags, std::uint32_t parent,\n        NativeGuiTextGlyphQuadStorageAcquired&) = 0;",
+        "    virtual void scene_node_00aa6720(void* actual_child, void* actual_node,\n        NativeGuiTextGlyphQuadStorageAcquired&) = 0;",
+        "    virtual void sections_00ab8530(void* actual_child, NativeGuiTextGlyphQuadStorageAcquired&) = 0;",
+        "    virtual void child_current34(void* actual_child, std::uint32_t captured_profile,\n        std::uint32_t captured_target, std::uint32_t value, NativeGuiTextGlyphQuadStorageAcquired&) = 0;",
+        "    virtual void font_00ab8c30(void* actual_child, const void* actual_name_header8,\n        NativeGuiTextGlyphQuadStorageAcquired&) = 0;",
+        "    virtual void shader_00ab8e70(void* actual_child, const void* actual_name_header8,\n        NativeGuiTextGlyphQuadStorageAcquired&) = 0;",
+        "    virtual void content_00aba8d0(void* actual_child, const void* actual_utf16_header8,\n        NativeGuiTextGlyphQuadStorageAcquired&) = 0;",
+        "    virtual void child_current50(void* actual_child, std::uint32_t captured_profile,\n        std::uint32_t captured_target, const void* actual_color4,\n        NativeGuiTextGlyphQuadStorageAcquired&) = 0;",
+        "    virtual void attach_00aaa5a0(void* actual_parent, void* actual_child,\n        std::uint32_t flag, NativeGuiTextGlyphQuadStorageAcquired&) = 0;",
+        "    virtual void child_current30(void* actual_child, std::uint32_t captured_profile,\n        std::uint32_t captured_target, const volatile std::uint32_t* actual_pivot2,\n        NativeGuiTextGlyphQuadStorageAcquired&) = 0;",
+        "    virtual void position_00aa6750(void* actual_reference, volatile std::uint32_t* actual_output3,\n        NativeGuiTextGlyphQuadStorageAcquired&) = 0;",
+        "    virtual void position_00aa8240(void* actual_child, const volatile std::uint32_t* actual_input3,\n        NativeGuiTextGlyphQuadStorageAcquired&) = 0;"
+      ],
+      "Source_abstract_count": 13,
+      "Source_call_occurrences": {
+        "append_005dad40": 1,
+        "node_current10": 1,
+        "scene_node_00aa6720": 1,
+        "sections_00ab8530": 1,
+        "child_current34": 1,
+        "font_00ab8c30": 1,
+        "shader_00ab8e70": 2,
+        "content_00aba8d0": 2,
+        "child_current50": 1,
+        "attach_00aaa5a0": 1,
+        "child_current30": 1,
+        "position_00aa6750": 1,
+        "position_00aa8240": 1
+      },
+      "Calls_subclass_search": {
+        "args": [
+          "rg",
+          "-n",
+          "public[ \\t]+NativeGuiTextGlyphQuadStorageCalls",
+          "include",
+          "src",
+          "tests"
+        ],
+        "exit_code": 1,
+        "stdout": "",
+        "stderr": "",
+        "qualification": "published66e scoped include/src/tests search; no provider minted by absence"
+      }
+    },
+    "Native_evidence": {
+      "project_verification": {
+        "command": "BSP_GHIDRA_AUTOSTART=0 python tools/bsp.py ghidra count",
+        "live_functions": 77632,
+        "snapshot_functions": 77632,
+        "project_file": "C:/Users/sqz269/bsp.gpr",
+        "project": "bsp",
+        "program_path": "/battlestationspacific.exe",
+        "language": "x86:LE:32:default",
+        "image_base": "00400000",
+        "mutation": false
+      },
+      "PE": {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "bytes": 12223752,
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+      },
+      "prior_whole_Glyph_pin": {
+        "start": "00ab98f0",
+        "last_byte": "00ab9fc2",
+        "bytes": 1747,
+        "sha256": "795b76de15e3a52d032bfca739ca1cffe9714a83d7d619fd6aae9302aa13d236",
+        "saved_listing_rows": 485,
+        "recovery_credit": 0
+      },
+      "frozen_exports": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\native_exports\\00ab98f0\\assembly.txt",
+          "bytes": 16685,
+          "sha256": "7165707dcf74507fb24b2d3bfc77de8fa764a33c46fe46ff16aef417efd50bd4",
+          "epoch": "immutable0dc snapshot; no current annotation identity asserted"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\native_exports\\00ab98f0\\decompiled.c",
+          "bytes": 74933,
+          "sha256": "3186a7148dfadbc6e170fc79deb50cc1d9980f95232f6f7dc68d95e0744ac810",
+          "epoch": "immutable0dc snapshot; no current annotation identity asserted"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\native_exports\\00ab98f0\\metadata.json",
+          "bytes": 277,
+          "sha256": "0ebabf895ad3d19bd981d7f18df7f4f705354f4d88fcaf6b6a2668d22dd313d6",
+          "epoch": "immutable0dc snapshot; no current annotation identity asserted"
+        }
+      ]
+    },
+    "all_read_only_checks_passed": true
+  },
+  "seven_borrow_change": {
+    "fresh_owned_before_GlyphAcquired": [
+      "NativeGuiTextFieldStorageFrame",
+      "NativeGuiTextFieldStorageAcquired"
+    ],
+    "old_five_preserved": true,
+    "mandatory_references": 7,
+    "public_eighth_mode_or_permission": false,
+    "per_invocation_recursion_distinct": true,
+    "historical_f6af_unchanged": true
+  },
+  "proposed_neutral_API": {
+    "files": [
+      "include/bsp/native_gui_text_glyph_birth.hpp",
+      "src/native_gui_text_glyph_birth.cpp"
+    ],
+    "types": [
+      "NativeGuiTextGlyphBirth: noncopying private constructor history",
+      "NativeGuiTextGlyphPublication: separate mutable private binder/disposal receipt"
+    ],
+    "address_only_preparation": "Actual Glyph acquisition/Context, same real pool companion, existing DefaultFactoryStorageContext as graph borrow bundle only; never FactoryAcquired proof",
+    "private_prepared_link": "once only after stable installed complete child graph; preserves seven-ref constructor; no public completion or Native issuer",
+    "actual_events": [
+      {
+        "issuer": "wholeGlyph",
+        "event": "pool_enter/pool_returned",
+        "epoch": "actual9D38 after actual9D33 affinity",
+        "qualification": "actual result only, no new pool effect; null gives no birth and preserves Native flow"
+      },
+      {
+        "issuer": "actual raw93",
+        "event": "raw93_entered",
+        "epoch": "real entry after qualified bind_once",
+        "qualification": "actual triplet/allocation/supplier; no fake legacy envelope"
+      },
+      {
+        "issuer": "actual raw93",
+        "event": "prefix_ready",
+        "epoch": "CPP402 after real derived stores",
+        "qualification": "no callback in AA9390 or partial-prefix dispatch"
+      },
+      {
+        "issuer": "actual raw93",
+        "event": "source_returned",
+        "epoch": "after CPP417 and whole wrapper/qualified Origin.complete",
+        "qualification": "CPP415 negative body_returned is not success"
+      },
+      {
+        "issuer": "wholeGlyph",
+        "event": "post_disarm_ready",
+        "epoch": "captured child,state-1,normal_disarm,home7 then BEFORE append9D70",
+        "qualification": "also before clone/AA6720; no cleanup rearm"
+      },
+      {
+        "issuer": "actual observed raw122 binder",
+        "event": "bound",
+        "epoch": "after genuine preflight/placement/bind or publish normal return",
+        "qualification": "same initial count and current predicates; failures retain completed graph/reservation"
+      },
+      {
+        "issuer": "actual saved-disposal route",
+        "event": "tombstoned",
+        "epoch": "before ONLY companion destruction",
+        "qualification": "independent metadata; no ended-payload read/new cleanup/terminal policy"
+      }
+    ],
+    "friend_closure": [
+      "actual wholeGlyph implementation",
+      "actual observed raw93 overloads/implementation hooks",
+      "actual observed ordinary/reserved raw122 binder overloads",
+      "existing DefaultWidgetLifetime read-side",
+      "actual binder-installed disposal route"
+    ],
+    "observer_overload_candidates": [
+      "existing raw93 entry with additional NativeGuiTextGlyphBirth&; preserve real four/five-argument and qualified bind_once protocol",
+      "bind_native_gui_text_raw_model_reference(existing arguments, NativeGuiTextGlyphPublication&)",
+      "bind_native_gui_text_raw_model_reference_reserved(existing arguments including genuine BindingAdmission&, NativeGuiTextGlyphPublication&)"
+    ],
+    "Source_history_is_not_Origin": true,
+    "public_progress_or_snapshot_not_authority": true,
+    "const_construction_not_cast_mutated": true,
+    "new_Native_effects": false,
+    "new_blanket_NoThrow": false
+  },
+  "lifetime_alternate": {
+    "class_name": "NativeGuiTextDefaultWidgetLifetime",
+    "proposed": "strongly typed Glyph record + bind overload, same prepared Context; old factory admission unchanged",
+    "record_borrows": [
+      "existing graph-borrow bundle only",
+      "private birth history",
+      "independent private publication/tombstone receipt"
+    ],
+    "AA9390_identity_hook": false,
+    "empty_domain_widening": false,
+    "populated_provider_supplied": false
+  },
+  "owner_preparation": {
+    "existing_domain": "GameNativeRawDefaultTextOwner::Impl::GlyphChild candidate inside real Services retained history",
+    "method": "prepare_glyph_child_metadata_before_entry(const GameNativeCanonicalDataOwner&, NativeGuiTextGlyphQuadStorageContext&, size_t model_node_call_capacity)",
+    "roots": "same real renderer/VFS/strings/GUI process/pool borrow/node/geometry/material/Font/effect roots",
+    "new_owner_process_bank_or_factory": false,
+    "repeat_Services_prepare_or_export": false,
+    "helper_extent_not_Glyph_cap": true,
+    "independent_constructor188": "exact construction.sections.model authenticated by raw93 and raw122, independent of later CURRENT188/4C",
+    "late_storage": [
+      "retained aligned ordinary backing for actual input-bound RawFontFrame",
+      "retained aligned ordinary backing for actual RawShaderInvocation"
+    ],
+    "no_automatic_Native_disposal": true
+  },
+  "late_object_birth": {
+    "Font": {
+      "argument_epoch": "9DC9 after CURRENT parent1B0 then+1C8, after earlier callbacks",
+      "actual_type": "NativeGuiTextRawFontNameStorageFrame",
+      "immutable_input": true,
+      "constructor": "existing noexcept; binds/poisons Acquired on address metadata; no input value read",
+      "destructor": "existing noexcept/terminal restrictions require genuine settlement, not a safe automatic failed local",
+      "birth": "once into preallocated retained backing at actual input epoch"
+    },
+    "Shader": {
+      "argument_epoch": "real9E13 constructor return -> state1/header arm ->9E1F",
+      "actual_type": "NativeGuiTextRawShaderNameStorageInvocation",
+      "immutable_input": true,
+      "constructor": "NOT declared noexcept; actual body stores addresses including same canonical feature-cell reference, never feature value",
+      "birth": "once into preallocated retained backing with actual returned argument"
+    },
+    "disallowed": [
+      "early input/length/data sampling",
+      "heap allocation inside reached interval",
+      "retarget/rebind/reset",
+      "automatic failed-local destruction",
+      "new default/null/credit policy",
+      "new noexcept wrapper"
+    ],
+    "existing_blanket_header_contract": "Source47 Glyph H25 all nested frames before entry is not satisfied by raw bytes; explicit narrow future contract/API edit required",
+    "Source48": "independent upstream real canonical-owner ref forwarding only; no eager getter, feature sample or initialization"
+  },
+  "conditional_Source_cut": {
+    "core_twelve": [
+      {
+        "path": "include/bsp/native_gui_text_glyph_birth.hpp",
+        "role": "new neutral private history/receipt"
+      },
+      {
+        "path": "src/native_gui_text_glyph_birth.cpp",
+        "role": "new neutral private history/receipt"
+      },
+      {
+        "path": "include/bsp/native_gui_text_glyph_quad_storage.hpp",
+        "role": "actual pool/disarm hooks, seven-borrow graph link and late-object contract"
+      },
+      {
+        "path": "src/native_gui_text_glyph_quad_storage.cpp",
+        "role": "actual pool/disarm hooks, seven-borrow graph link and late-object contract"
+      },
+      {
+        "path": "include/bsp/native_gui_text_default_storage.hpp",
+        "role": "real entry/prefix/whole-success hooks"
+      },
+      {
+        "path": "src/native_gui_text_default_storage.cpp",
+        "role": "real entry/prefix/whole-success hooks"
+      },
+      {
+        "path": "include/bsp/native_gui_text_reference.hpp",
+        "role": "observed genuine binder overloads"
+      },
+      {
+        "path": "src/native_gui_text_reference.cpp",
+        "role": "observed genuine binder overloads"
+      },
+      {
+        "path": "include/bsp/native_gui_text_default_widget_lifetime.hpp",
+        "role": "strong Glyph record/bind alternate"
+      },
+      {
+        "path": "src/native_gui_text_default_widget_lifetime.cpp",
+        "role": "strong Glyph record/bind alternate"
+      },
+      {
+        "path": "include/bsp/game_native_raw_default_text_owner.hpp",
+        "role": "actual retained child preparation/graph/custody"
+      },
+      {
+        "path": "src/game_native_raw_default_text_owner.cpp",
+        "role": "actual retained child preparation/graph/custody"
+      }
+    ],
+    "ready": false,
+    "authorized": false,
+    "additional_pair_pending_independent_audit": [
+      "include/bsp/native_gui_widget_raw_model_lifetime.hpp",
+      "src/native_gui_widget_raw_model_lifetime.cpp"
+    ],
+    "final_scope_not_forced_to_twelve": true
+  },
+  "remaining_API_decisions": [
+    "exact neutral constructor/private-link and narrow friend/observer signatures after Root review",
+    "actual Glyph prepared-graph forwarding to late raw Font/Shader operations and genuine bound canonical reference",
+    "explicit pre-entry backing versus reached object-birth contract, including lifetimes/destruction disposition",
+    "added-host binder admission/Origin edge/counter qualification without Native cleanup permission",
+    "alternate record admission and actual saved-disposal prevalidation/tombstone route",
+    "additional raw-widget Model Context/current replacement domains after independent audit",
+    "actual parent selector/Calls producer and genuine populated/postsections/retirement providers"
+  ],
+  "open_gates": [
+    "actual parent/Calls producer absent",
+    "raw-widget Model transport factory record/raw118/Glyph rejection",
+    "genuine CURRENT188/4C/geometry/flag replacement generations",
+    "populated child/timed/scalar hierarchy and retirement",
+    "postconstructor sections domain",
+    "CString actual whole provider admission not supplied by this receipt",
+    "arbitrary replacement shader credit/current callback custody",
+    "Original ABI/private stack/FH3/SEH/fault/FP status/secondary exceptions",
+    "Origin permission remains absent; unknown is denial",
+    "runtime/gameplay and activation"
+  ],
+  "verification_reader": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\verify_reconciliation.py",
+    "bytes": 1361,
+    "sha256": "8546afacaac9b6ba9d68f95f51660f5322da6fe028c65ce22eabf9bb819cd654",
+    "utf8_lf": "import hashlib,json,subprocess,sys\nfrom pathlib import Path\nroot=Path(sys.argv[1]).resolve();j=json.loads(Path(sys.argv[2]).read_bytes());p=j['input_proof']\ndef sha(b):return hashlib.sha256(b).hexdigest()\ndef blob(b):return hashlib.sha1(b'blob '+str(len(b)).encode()+b'\\0'+b).hexdigest()\ndef git(r,path):return subprocess.check_output(['git','show',r+':'+path],cwd=root)\ndata={}\nfor x in p['whole_input_pins']:\n b=git(x['ref'],x['path']);assert len(b)==x['bytes'] and sha(b)==x['sha256'] and blob(b)==x['git_blob'];data[x['ref']+':'+x['path']]=b\nfor x in p['region_pins']:\n lines=data[x['ref']+':'+x['path']].splitlines(keepends=True);b=b''.join(lines[x['start_line']-1:x['end_line']]);assert len(b)==x['bytes'] and sha(b)==x['sha256']\nq=j['verification_reader'];b=q['utf8_lf'].encode();assert len(b)==q['bytes'] and sha(b)==q['sha256'] and b'\\r' not in b\nassert len(p['actual_constructor']['Source47_seven'])==7 and p['actual_constructor']['Source47_seven'][:5]==p['actual_constructor']['published66e_five']\nassert len(p['Source47_thirteen_regions'])==13 and len(p['call_inventory']['Native_main_body'])==23\nassert j['readiness']['coupled_core_Source_authorized']==False and j['readiness']['activation']==False\nprint(json.dumps(dict(whole_pins=len(p['whole_input_pins']),region_pins=len(p['region_pins']),raw_embedded_reader_equal=True,passed=True),indent=2))\n",
+    "encoding": "UTF-8 LF no BOM/CR",
+    "raw_embedded_equal": true,
+    "usage": "python verify_reconciliation.py <repo-root> <report-json-path>; stdlib/Git/text only",
+    "worker_execution": {
+      "exit_code": 0,
+      "result": {
+        "whole_pins": 32,
+        "region_pins": 44,
+        "raw_embedded_reader_equal": true,
+        "passed": true
+      },
+      "stdout_bytes": 105,
+      "stdout_sha256": "040d5d87e74c68880045d9f0d80c3b14d01f9a6189b82d3a9445a8edbd9da2c4",
+      "stderr_bytes": 0,
+      "raw_equals_embedded": true,
+      "qualification": "only independent Git/text pin checks, no compiler/runtime"
+    }
+  },
+  "ignored_artifacts": {
+    "root": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031",
+    "input_proof": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-glyph-seven-borrow-birth-reconciliation\\local\\output\\cc16_glyph_seven_borrow_birth_reconciliation_20261031\\input_proof.json",
+      "bytes": 46796,
+      "sha256": "5ae8a20e46d0e9a0c50c5c1c39ace9a84570871782670bf385ccfc6eb020e875"
+    },
+    "frozen_inputs": "inputs/<ref-prefix>/<path>",
+    "Native_snapshots": "native_exports/00ab98f0"
+  },
+  "doc_pin": {
+    "path": "docs/CC16_NATIVE_GLYPH_SEVEN_BORROW_BIRTH_RECONCILIATION.md",
+    "bytes": 14234,
+    "sha256": "d82016a5dc1e35da00b0dda83737841c73c87c4dbdb1fc4f624a12b4b2753d15",
+    "git_blob": "5e934ac7db5088d14082263684b2bb5205cb9ae6"
+  },
+  "actions": {
+    "tracked_evidence_files": 2,
+    "address_leases": 0,
+    "Source_changes": 0,
+    "CMake_changes": 0,
+    "ledger_changes": 0,
+    "Ghidra_mutations": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "Game_actions": 0,
+    "Native_runtime": 0,
+    "memory_writes": 0
+  },
+  "readiness": {
+    "evidence_ready_for_Root_review": true,
+    "coupled_core_Source_ready": false,
+    "coupled_core_Source_authorized": false,
+    "actual_producer": false,
+    "populated_or_replacement_transport": false,
+    "Origin_Native_permission": false,
+    "activation": false
+  },
+  "credit": {
+    "new_Original": 0,
+    "vendor": 0,
+    "helper": 0,
+    "compiler_generated": 0,
+    "duplicate_body": 0,
+    "Original_ABI": 0,
+    "runtime": 0,
+    "activation": 0
+  }
+}
