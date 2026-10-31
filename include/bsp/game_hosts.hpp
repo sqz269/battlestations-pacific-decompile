@@ -56,6 +56,7 @@ struct IGameExplorer;
 #include "bsp/winmain_startup.hpp"
 
 namespace bsp {
+class NativeGuiIconDelayedLoadsRawScalarDispatchContext;
 struct NativeInputActionRecordCalls;
 struct NativeRendererParametersOwner;
 class XInputLibrary;
@@ -770,6 +771,10 @@ private:
     void exit_if_native_lua_interrupted() noexcept;
     void exit_if_native_renderer_incomplete() noexcept;
     void prepare_native_gui_icon_process();
+    // Explicit Source-only cold admission, NOT called by default preparation.
+    // Requires separate Root activation review; no feature-presence selection.
+    void prepare_native_gui_icon_raw_scalar_dispatch();
+    void verify_native_gui_icon_raw_scalar_after_drain();
     void exit_if_native_gui_icon_interrupted() noexcept;
     void verify_native_gui_icon_after_drain();
     void drain_native_singletons();
@@ -874,6 +879,8 @@ private:
     GameSingletonHost* singletons_{};   // survives menu teardown through 008F8449
     // Permanently retained metadata; the SAME deletion arm survives fallback drain.
     GameNativeGuiIconProcess* native_gui_icon_process_{};
+    std::unique_ptr<::bsp::NativeGuiIconDelayedLoadsRawScalarDispatchContext>
+        native_gui_icon_raw_scalar_dispatch_{};
     // Address-only diagnostic identity; native ownership stays in the manager.
     void* native_gui_icon_qualification_identity_{};
     bool native_gui_icon_qualification_retired_{};

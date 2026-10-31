@@ -2111,6 +2111,53 @@ void GameStartupHost::prepare_native_gui_icon_process() {
     }
 }
 
+void GameStartupHost::prepare_native_gui_icon_raw_scalar_dispatch() {
+    // This method has NO default caller. Source60 canonical preparation alone
+    // leaves the binding null and all legacy bodies/selection unchanged.
+    if (!singletons_ || !native_gui_icon_process_ || native_gui_icon_raw_scalar_dispatch_ ||
+        singletons_->native_deletion_bindings().gui_icon_raw_scalar_dispatch)
+        throw std::logic_error("raw Icon scalar dispatch requires fresh explicit Host admission");
+    auto& service = native_gui_icon_process_->delayed_loads();
+    if (singletons_->native_deletion_bindings().gui_icon_delayed_loads != &service)
+        throw std::logic_error("raw Icon scalar dispatch requires its SAME prepared process service");
+    auto prepared = service.prepare_raw_scalar_dispatch(); // Cold metadata only.
+    native_gui_icon_raw_scalar_dispatch_ = std::move(prepared);
+    singletons_->native_deletion_bindings().gui_icon_raw_scalar_dispatch =
+        native_gui_icon_raw_scalar_dispatch_.get(); // Commit only after complete preparation.
+}
+
+void GameStartupHost::verify_native_gui_icon_raw_scalar_after_drain() {
+    if (!native_gui_icon_raw_scalar_dispatch_ || !native_gui_icon_process_ || !singletons_ ||
+        native_gui_icon_raw_scalar_dispatch_->unknown_escape_debt() ||
+        native_gui_icon_process_->delayed_loads_status() != GameNativeGuiIconProcess::DelayedLoadsStatus::idle ||
+        native_gui_icon_process_->publication_00f8bd98() || singletons_->manager_publication_01090aa0() ||
+        singletons_->native_deletion_bindings().gui_icon_delayed_loads != &native_gui_icon_process_->delayed_loads() ||
+        singletons_->native_deletion_bindings().gui_icon_raw_scalar_dispatch != native_gui_icon_raw_scalar_dispatch_.get())
+        throw std::logic_error("raw Icon scalar drain requires SAME context/service and completed graph");
+    if (native_gui_icon_qualification_identity_ && !native_gui_icon_qualification_retired_) {
+        const auto* const operation = native_gui_icon_process_->delayed_loads().last_operation();
+        if (!operation || operation->kind != NativeGuiIconDelayedLoadsOperation::Kind::scalar_delete ||
+            operation->phase != NativeGuiIconDelayedLoadsOperation::Phase::complete ||
+            operation->source_route != NativeGuiIconDelayedLoadsOperation::SourceRoute::prepared_raw_scalar ||
+            !operation->raw_call_entered || !operation->raw_call_returned)
+            throw std::logic_error("raw Icon scalar qualification requires its actual completed invocation");
+        const auto expected = static_cast<std::uint32_t>(
+            reinterpret_cast<std::uintptr_t>(native_gui_icon_qualification_identity_)); // Opaque address only.
+        const auto& scalar = operation->raw_scalar_acquired;
+        const auto& destruction = scalar.destruction();
+        if (scalar.captured_identity_bits() != expected || destruction.captured_identity_bits() != expected ||
+            !destruction.backing_free_entered() || !destruction.backing_free_returned() ||
+            !scalar.flags_test_reached() || (scalar.tested_flags_byte() & 1u) == 0u ||
+            !scalar.owner_free_entered() || !scalar.owner_free_returned())
+            throw std::logic_error("raw Icon scalar qualification requires observed returned free calls");
+        // No incoming flags proof, post-HOME read or dead-owner dereference.
+        // Tested bit0 clear does NOT retire/free the physical CE3818 object.
+        native_gui_icon_qualification_retired_ = true;
+        log_.notef("native GUI Icon qualification: source_raw_retired=1 tested_byte=%u backing_free=returned owner_free=returned",
+            static_cast<unsigned>(scalar.tested_flags_byte()));
+    }
+}
+
 void GameStartupHost::exit_if_native_gui_icon_interrupted() noexcept {
     if (!native_gui_icon_process_) return;
     using Status = GameNativeGuiIconProcess::DelayedLoadsStatus;
@@ -2172,7 +2219,8 @@ void GameStartupHost::drain_native_singletons() {
         if (!native_startup_factories_) {
             if (native_renderer_) native_renderer_->drain_singletons();
             else singletons_->shutdown();
-            verify_native_gui_icon_after_drain();
+            if (native_gui_icon_raw_scalar_dispatch_) verify_native_gui_icon_raw_scalar_after_drain();
+            else verify_native_gui_icon_after_drain();
             return;
         }
         if (startup_factories_phase_ != StartupFactoriesPhase::live)
@@ -2183,7 +2231,8 @@ void GameStartupHost::drain_native_singletons() {
             native_startup_factories_->retire_before_native_drain();
             singletons_->shutdown();
         }
-        verify_native_gui_icon_after_drain();
+        if (native_gui_icon_raw_scalar_dispatch_) verify_native_gui_icon_raw_scalar_after_drain();
+        else verify_native_gui_icon_after_drain();
         startup_factories_phase_ = StartupFactoriesPhase::retired;
         // Renderer closure has returned and detached its borrow, including
         // any prepared-phase return; all provider objects are still alive.

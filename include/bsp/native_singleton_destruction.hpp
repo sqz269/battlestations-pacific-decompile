@@ -54,6 +54,7 @@ struct NativePakRegistryContext;
 class NativeObserverLifetime;
 class NativeWeakOwnerDomain;
 class NativeGuiIconDelayedLoads;
+class NativeGuiIconDelayedLoadsRawScalarDispatchContext;
 struct NativeObserverDispatchOwner;
 namespace game { class GameSoundRuntime; }
 
@@ -297,6 +298,9 @@ struct NativeSingletonDeletionBindings {
     // CFF140/CFEA5C borrow the real retained locale owner. Core knows only this
     // typed interface; no Game symbol or default/fallback provider is linked.
     NativeLocaleManagerDeletionLifetime* locale_manager{};
+    // Explicit Source caller selection only; null preserves exact legacy.
+    // Owned by the retained Host, never selected from feature presence.
+    NativeGuiIconDelayedLoadsRawScalarDispatchContext* gui_icon_raw_scalar_dispatch{};
 };
 static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
 static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);
@@ -331,8 +335,12 @@ static_assert(offsetof(NativeSingletonDeletionBindings, avoid_manager) == 204);
 static_assert(offsetof(NativeSingletonDeletionBindings, actual_loading_queue_publication_00e18d4c) == 208);
 static_assert(offsetof(NativeSingletonDeletionBindings, movie_factory) == 216);
 static_assert(offsetof(NativeSingletonDeletionBindings, locale_manager) == 220);
-static_assert(sizeof(NativeSingletonDeletionBindings) == 224);
+static_assert(offsetof(NativeSingletonDeletionBindings, gui_icon_raw_scalar_dispatch) == 224);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 228);
 
+// Exception paragraph below is the legacy/default contract. A selected prepared
+// raw edge still armed on an unknown Source escape instead retains/rethrows
+// without Native cleanup.
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting
 // with flags1, then reread live count. After drain release actual +10 section,
