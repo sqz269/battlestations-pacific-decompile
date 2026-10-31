@@ -1,0 +1,216 @@
+{
+  "schema": "bsp-native-mission-lua-integer-qualified-source-object-v1",
+  "stage": "frozen_actual_Code_and_ONE_object_static_operations_reviewed_Root_Core_integration_and_genuine_caller_binding_separate",
+  "base_Main": "d51e4be7c4b990b253b399d8b7c8cb278acbfecb",
+  "owned_new_files": [
+    "include/bsp/native_mission_lua_integer.hpp",
+    "src/native_mission_lua_integer.cpp",
+    "docs/NATIVE_MISSION_LUA_INTEGER.md",
+    "reports/native_mission_lua_integer.json"
+  ],
+  "Source_checkpoint": {
+    "include/bsp/native_mission_lua_integer.hpp": {
+      "lines": 24,
+      "sha256": "b3f310241cf7efa77a341ba3217f44302eb789d0aac77f29b9af7cec6f69307b"
+    },
+    "src/native_mission_lua_integer.cpp": {
+      "lines": 61,
+      "sha256": "e276638c8072f04670d9e5d34c87b538cbaad0bd3701e648ee600ac862250eff"
+    },
+    "docs/NATIVE_MISSION_LUA_INTEGER.md": {
+      "lines": 19,
+      "sha256": "48bb84c837197a8e20b0222c59c83e962d194ee1ec068ef451bcb00e49a0e49a"
+    }
+  },
+  "API": "std::uint32_t to_integer_bits_native_mission_lua_006b8040(const void* actual_machine, std::int32_t index, const volatile std::uint32_t& actual_conversion_word_0109eea4)",
+  "Original": {
+    "address": "006b8040",
+    "instructions": 5,
+    "bytes": 20,
+    "assembly_path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\006b8040\\assembly.txt",
+    "assembly_sha256": "8a2e04a73d08c0323d11a3a35ea01643abcf7a90312d25f91f511b71ee617948",
+    "live_bytes_sha256": "e6bbef274a8f3ff25473f4adbb1dbf57df9e98a1c66ba506e853e16bd08e7ea2",
+    "complete_schedule": [
+      "stacked index -> EDX",
+      "CURRENT rawmachine+4 -> ECX",
+      "lua_tonumber -> ST0",
+      "BF7420 conversion",
+      "RET4"
+    ],
+    "old_name_tag": "STL_inst/stl_instantiation; provisional gameglue correction only, no mutation",
+    "inferred_proto": "undefined STL_inst_006b8040(void); not recovered return-width evidence"
+  },
+  "design": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\raw_mission_lua_integer_design_frame_20261031\\DESIGN.md",
+    "sha256": "0d1b992ca7b09f1e4fb13668ea808621dd3577b0b488afdf42783d9efb32695b",
+    "Root_acceptance": "ACCEPT_DESIGN_QUALIFIED_LOW_EAX_SOURCE_ONLY",
+    "independent_Game_design_review": "3fae25fb87a39819f1db4fda62077f4edb4faa5dbfc536291f121f3a97d68d43"
+  },
+  "bounded_caller_demand": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc9\\local\\raw_mission_lua_integer_caller_demand_cc9_20261031\\READINESS.md",
+    "sha256": "8afe0d11e7c7e628178e6a1ac1b184f19e394e24797389deea3a08474caba72c",
+    "pins_sha256": "55d3ac53332e6a97dc22c3195acafdfc7d9e5eb19980461943e60c45a52b8953",
+    "index_sha256": "17264648f9be23eb7c9ba3beba611f932c71e3cea22ad7ba5a6e8c41a9f0944b",
+    "visible_demand": "one DWORD EAX only at observed direct site; unknown indirect/fullABI not proved"
+  },
+  "Source_schedule": [
+    "capture ordinary index",
+    "fenced raw memcpy4 CURRENT machine+4 -> genuine linked-Source lua_State*",
+    "private noinline single asm region: push index/state -> real cdecl lua_tonumber",
+    "ADD ESP,8 while preserving actual ST0",
+    "actual canonical word ADDRESS -> ECX, no value pre-read",
+    "existing native_crt_truncate_st0_00bf7420 -> capture actual EAX bits",
+    "return uint32 bit pattern, no payload reread"
+  ],
+  "qualified_result": "explicit low-EAX bit projection for observed one-DWORD consumer; Original signedness/range/full-width/high-EDX/unseen-indirect ABI not recovered",
+  "existing_providers_unchanged": {
+    "include/bsp/native_render_batch_keys.hpp": {
+      "physical_sha256": "a3a1ce7ea3eb18f2483454eb7d6f71a6843a808aed313005cdcc3a29f5b12bf1",
+      "base_Git_blob_sha256": "a3a1ce7ea3eb18f2483454eb7d6f71a6843a808aed313005cdcc3a29f5b12bf1",
+      "unchanged_modulo_CRLF": true
+    },
+    "src/native_render_batch_keys.cpp": {
+      "physical_sha256": "fe3101c51500415607fc9513a7528853b2285a64d1560bc8684e87b2b05e75e1",
+      "base_Git_blob_sha256": "fe3101c51500415607fc9513a7528853b2285a64d1560bc8684e87b2b05e75e1",
+      "unchanged_modulo_CRLF": true
+    },
+    "src/native_lua_value_string.cpp": {
+      "physical_sha256": "2f56b4a90bee384062e7529ab372fdce90404878f147e9de6a47a8c0074d76b2",
+      "base_Git_blob_sha256": "2f56b4a90bee384062e7529ab372fdce90404878f147e9de6a47a8c0074d76b2",
+      "unchanged_modulo_CRLF": true
+    },
+    "src/native_mission_lua_conversions.cpp": {
+      "physical_sha256": "8de8a19263cc4b654b1b5c0eded83b805b8e96ebd86eeff5cfae8515d05b20ff",
+      "base_Git_blob_sha256": "8de8a19263cc4b654b1b5c0eded83b805b8e96ebd86eeff5cfae8515d05b20ff",
+      "unchanged_modulo_CRLF": true
+    },
+    "CMakeLists.txt": {
+      "physical_sha256": "9c26596c314bffe62ba64f9c76b1c499aa3d71e78c1215e0d6962aac69e52c22",
+      "base_Git_blob_sha256": "9c26596c314bffe62ba64f9c76b1c499aa3d71e78c1215e0d6962aac69e52c22",
+      "unchanged_modulo_CRLF": true
+    },
+    "cmake/startup.cmake": {
+      "physical_sha256": "91d1de5e0df99d75ab2133869f154c0560d969f8ed3b60c999a495ba097f416b",
+      "base_Git_blob_sha256": "91d1de5e0df99d75ab2133869f154c0560d969f8ed3b60c999a495ba097f416b",
+      "unchanged_modulo_CRLF": true
+    },
+    "cmake/lua.cmake": {
+      "physical_sha256": "0c432ec1026aa6921d876098d29359d34f9463cd894d7adafcb67b954eb7a006",
+      "base_Git_blob_sha256": "0c432ec1026aa6921d876098d29359d34f9463cd894d7adafcb67b954eb7a006",
+      "unchanged_modulo_CRLF": true
+    }
+  },
+  "actual_Lua_files": {
+    "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\build\\win32\\_deps\\lua511-src\\src\\lua.h": {
+      "sha256": "0a69a11d3e176ceb0e0220c4cdeb1c1f3a0e466a347d813e449ff9246afba3a6",
+      "line_pins": "lua_Number99; actual lua_tonumber146; lua_tointeger147 exists but is NOT reached"
+    },
+    "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\build\\win32\\_deps\\lua511-src\\src\\luaconf.h": {
+      "sha256": "5c962567aaf250570b772a3dccbfde80e6add621ec04f429120dce83adb0a4d9",
+      "line_pins": "503-504 actual double selection; integer ptrdiff_t is not wrapper contract"
+    },
+    "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\build\\win32\\_deps\\lua511-src\\src\\lapi.c": {
+      "sha256": "a9f0f87af50f18b4cf0483ded3a6bf41803032bc7ed575bda84359a46c993fe0",
+      "line_pins": "309-316 existing actual tonumber contract; no vendor-body reconstruction"
+    }
+  },
+  "provider_body_policy": "reuse present genuine linked Lua API and existing ST0 CRT converter; no new vendor-body read, reconstruction or credit",
+  "caller_domain": "genuine raw machine, matching live Source Lua state/stack/code/index/capacity/error graph, actual canonical mutable word/CPU-OS-feature truth/FP controls-status/serialization/lifetime; no Original numeric-address or nonnull-pointer adoption",
+  "private_ABI_limits": "ordinary extra argument/private HOME transport, not Original ECX/EDX/RET4, unknown result-width, interpreter, FH3/SEH/fault timing or ABI identity",
+  "FP_policy": "all real input/mode paths; no F32/F64 snapshot, C++ cast, lua_tointeger/B69130 delegation, helper while ST0 live, mode pre-read/reset/default/save/restore/clamp or status policy",
+  "failure_policy": "inherit genuine Lua/provider error/nonlocal/exception/hardware domain; no catch, owner, Frame, type birth, cleanup, rollback, retry or stack recovery",
+  "Code_review": {
+    "Root": "ACCEPT_SOURCE_CODE_QUALIFIED_LOW_EAX_BITS_ONLY",
+    "independent_Game": "ACCEPT_SOURCE_CODE_QUALIFIED_LOW_EAX_SOURCE_ONLY b3f31024/e276638c; full24HPP/61CPP"
+  },
+  "required_later_gates": [
+    "independent final four-file/object pin review",
+    "Root CMake/Core registration and common checks",
+    "genuine caller/VM/word/CPU/FP/lifetime binding",
+    "unknown Original signed/wide/high-EDX/indirect/private ABI remains unproved"
+  ],
+  "CMake_ledger_Ghidra_or_existing_Source_edits": false,
+  "source_ready": false,
+  "runtime_validated": false,
+  "native_abi_equivalent": false,
+  "parent_builder_factory_VM_startup_admitted": false,
+  "new_native_body_credit": false,
+  "new_vendor_body_credit": false,
+  "same_object_validation": {
+    "compile_receipt": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_mission_lua_integer_frame_20261031\\compile_receipt.json",
+    "compile_receipt_sha256": "c0538a6aef0e11e6ae40bf684fa400577cc41ff75b1cebd5ea55c41f287a1c5f",
+    "single_compile_exit": 0,
+    "single_compile_warnings": 0,
+    "single_compile_errors": 0,
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\build\\native_mission_lua_integer_object\\native_mission_lua_integer_object.dir\\Release\\native_mission_lua_integer.obj",
+      "archive": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_mission_lua_integer_frame_20261031\\objects\\native_mission_lua_integer.obj",
+      "bytes": 1308,
+      "sha256": "aa7d692e94ed5327ee544882fdb0de60c33974e683d46d161073dbda4f09033c",
+      "coff_machine": "014C"
+    },
+    "actual_compile_command": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_mission_lua_integer_frame_20261031\\actual_compile_command.txt",
+    "actual_compile_command_sha256": "ec47340210b0d4dfa2db390fd6b748a22ace02ed315ce4860ec5ef8c8b85a1c4",
+    "execution": "established CMake-generated OBJECT project Release ClCompile properties, copied locally; CustomBuild/ZERO_CHECK removed; MSBuild ClCompile target only; no configure/probe/link/test/entry",
+    "inspection": "J:\\PROG\\battlestations-pacific-decompile-codex-raw-locale-uppercase\\local\\native_mission_lua_integer_frame_20261031\\same_object_inspection.json",
+    "inspection_sha256": "605a7e6705c0e5722cfcc29def1078cde23b0f87ce7a2938fab485eead329a20",
+    "public": {
+      "symbol": "?to_integer_bits_native_mission_lua_006b8040@bsp@@YAIPBXHADI@Z",
+      "bytes_hex": "558bec8b45088b40048945085de900000000",
+      "relocations": [
+        {
+          "offset": 14,
+          "symbol": "?current_integer_bits@?A0x10475885@bsp@@YAIPAUlua_State@@HPDI@Z",
+          "type": 20
+        }
+      ],
+      "operations": [
+        "03 load ordinary machine pointer",
+        "06 CURRENT raw machine+4 load",
+        "09 replace private Source machine-argument slot with captured state",
+        "0D tail-jump to private bridge, unchanged ordinary index and actual word-address slots"
+      ]
+    },
+    "private_bridge": {
+      "symbol": "?current_integer_bits@?A0x10475885@bsp@@YAIPAUlua_State@@HPDI@Z",
+      "bytes_hex": "558bec51ff750cff7508e80000000083c4088b4d10e8000000008945fc8b45fc8be55dc3",
+      "relocations": [
+        {
+          "offset": 11,
+          "symbol": "_lua_tonumber",
+          "type": 20
+        },
+        {
+          "offset": 22,
+          "symbol": "?native_crt_truncate_st0_00bf7420@bsp@@YIHPDI@Z",
+          "type": 20
+        }
+      ],
+      "operations": [
+        "04 push unchanged ordinary index slot",
+        "07 push captured state",
+        "0A real cdecl lua_tonumber -> ST0",
+        "0F ADD ESP,8 balances Lua arguments",
+        "12 actual conversion-word ADDRESS from private slot -> ECX, no word-value read",
+        "15 direct real existing fastcall BF7420 call consumes ST0",
+        "1A capture EAX bits -> private uint32 scratch;1D reload unchanged bits",
+        "20 restore ESP;22 pop EBP;23 ordinary RET"
+      ]
+    },
+    "undefined_genuine_providers": [
+      "?native_crt_truncate_st0_00bf7420@bsp@@YIHPDI@Z",
+      "_lua_tonumber"
+    ],
+    "undefined_ordinary_compiler_support": [],
+    "Root_review": "ACCEPT_SAME_OBJECT_QUALIFIED_LOW_EAX_BITS_ONLY aa7d692e/1308B; full public/private/helper and relocations read",
+    "independent_Game_final_static_review": "pending final four-file freeze; actual Code acceptance already complete",
+    "normalizations": [
+      "Source index is an ordinary stable byvalue argument; compiler keeps it in its private slot and pushes it after public CURRENT-state load. This does not prove Original stacked-index physical read/fault epoch or permit caller alias of the private Source frame.",
+      "Public tail transport replaces its own machine-argument slot with captured Source state; this is private ordinary ABI transport, not caller-owned header/word mutation.",
+      "Private EBP prologue/local uint32 result scratch and cdecl public argument cleanup differ from Original ECX/EDX/RET4; no signed/wide/high-EDX/unseen-indirect ABI recovered."
+    ]
+  },
+  "compile_invocations": 1,
+  "configure_probe_link_test_entry_interpreter_or_game_run": false,
+  "Source_provider_CMake_Lua_hashes_unchanged_after_compile": true
+}
