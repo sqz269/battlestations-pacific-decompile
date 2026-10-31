@@ -1,0 +1,841 @@
+{
+  "schema": "cc16.native_text_shader_raw_storage_independent_review.v1",
+  "verdict": "ACCEPTED_CORRECTED_SOURCE_BOTH_ROOT_INTEGRATION_FINDINGS_RESOLVED_NO_REMAINING_ACTIONABLE_FINDING",
+  "reviewed_author": "4cbe5ceb4fdfeea60b5c5a11de5342cea003ad58",
+  "exact_author_parent": "e1b683c6bf804fd102bc17072a23dca32b76b858",
+  "final_corrected_Source": "adbf07d333f5e4c28e2411bf11a38747edb0f19d",
+  "findings": [
+    {
+      "id": "P1-complete-ProgramsContext",
+      "severity": "P1",
+      "origin": "Root first official compiler run, then independent source visibility/correction verification",
+      "against": "4cbe5ceb4fdfeea60b5c5a11de5342cea003ad58",
+      "problem": "new ResourceNames CPP accesses NativeMaterialEffectProgramsContext members without its complete-definition include",
+      "status": "resolved",
+      "intermediate_fix": "2a5a8cfd09d088dd8397a961b9ef80f5f03e0db0",
+      "final_resolution": "raw definitions moved to dedicated ShaderStorage TU where existing native_material_effect_programs.hpp supplies the complete type"
+    },
+    {
+      "id": "P1-legacy-TU-link-closure",
+      "severity": "P1",
+      "origin": "Root second official link run, then independent exact TU correction verification",
+      "against": "2a5a8cfd09d088dd8397a961b9ef80f5f03e0db0",
+      "problem": "new raw definitions in legacy gui_text_resource_names.obj pull raw game-owned state/process suppliers into old math_tests/mission_probe targets",
+      "status": "resolved",
+      "final_fix": "adbf07d333f5e4c28e2411bf11a38747edb0f19d",
+      "resolution": "restore full7191B legacy CPP; relocate raw definitions to existing dedicated ShaderStorage TU; no fake provider, extra owner or original-target game supplier linkage"
+    }
+  ],
+  "remaining_actionable_findings": [],
+  "original_packet_pins": [
+    {
+      "revision": "4cbe5ceb4fdfeea60b5c5a11de5342cea003ad58",
+      "path": "docs/CC16_NATIVE_TEXT_SHADER_RAW_STORAGE.md",
+      "bytes": 8896,
+      "sha256": "df9e1e38499dd6b849b0f9af36493dca608b2647b2ae6673df77c48ead340bbe",
+      "git_blob_sha1": "ba63167895055b43819e9a487c1db8db17b670af",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shader_raw_storage_independent_review_20261031\\author_packet\\docs\\CC16_NATIVE_TEXT_SHADER_RAW_STORAGE.md",
+      "format": "exact immutable GitUTF8LF bytes"
+    },
+    {
+      "revision": "4cbe5ceb4fdfeea60b5c5a11de5342cea003ad58",
+      "path": "include/bsp/gui_text_resource_names.hpp",
+      "bytes": 8234,
+      "sha256": "c01cfed2296778a58c5c4ec300e53606246a522b7d698a85ab6558ffa407aa15",
+      "git_blob_sha1": "0cd222306933edb5e65724694885a3e15f0e3f42",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shader_raw_storage_independent_review_20261031\\author_packet\\include\\bsp\\gui_text_resource_names.hpp",
+      "format": "exact immutable GitUTF8LF bytes"
+    },
+    {
+      "revision": "4cbe5ceb4fdfeea60b5c5a11de5342cea003ad58",
+      "path": "include/bsp/native_gui_text_shader_storage.hpp",
+      "bytes": 14714,
+      "sha256": "862554f5cbef13c87597d7bfc35a108e9d562590bd9af6f7d0c291cf23938425",
+      "git_blob_sha1": "4f7019e815fc7d35bab1f95f9238eb1b20039ca4",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shader_raw_storage_independent_review_20261031\\author_packet\\include\\bsp\\native_gui_text_shader_storage.hpp",
+      "format": "exact immutable GitUTF8LF bytes"
+    },
+    {
+      "revision": "4cbe5ceb4fdfeea60b5c5a11de5342cea003ad58",
+      "path": "reports/cc16_native_text_shader_raw_storage.json",
+      "bytes": 75096,
+      "sha256": "ddf7faa443f920dccc6942b3aedba48d96e2ec1e772c3456edbfb5e52e889b8f",
+      "git_blob_sha1": "57ccd8d83c251b61679b8b6f500e5a4645088142",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shader_raw_storage_independent_review_20261031\\author_packet\\reports\\cc16_native_text_shader_raw_storage.json",
+      "format": "exact immutable GitUTF8LF bytes"
+    },
+    {
+      "revision": "4cbe5ceb4fdfeea60b5c5a11de5342cea003ad58",
+      "path": "src/gui_text_resource_names.cpp",
+      "bytes": 21533,
+      "sha256": "73cdf04aefcdb472f758439fcb6dbabf74adf62ec315a62c4b67f654867d334c",
+      "git_blob_sha1": "ab16cce914033ea09687338ae60a3b10612cad8e",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shader_raw_storage_independent_review_20261031\\author_packet\\src\\gui_text_resource_names.cpp",
+      "format": "exact immutable GitUTF8LF bytes"
+    },
+    {
+      "revision": "4cbe5ceb4fdfeea60b5c5a11de5342cea003ad58",
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "bytes": 39002,
+      "sha256": "986a21feee8d155cf6466b01a409894d879701856c0114f64b9e0de6f2388279",
+      "git_blob_sha1": "b29a358b0f1832a915ae3f51753b93b935925165",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shader_raw_storage_independent_review_20261031\\author_packet\\src\\native_gui_text_shader_storage.cpp",
+      "format": "exact immutable GitUTF8LF bytes"
+    }
+  ],
+  "final_Source_pins": [
+    {
+      "commit": "adbf07d333f5e4c28e2411bf11a38747edb0f19d",
+      "path": "include/bsp/gui_text_resource_names.hpp",
+      "bytes": 8234,
+      "sha256": "c01cfed2296778a58c5c4ec300e53606246a522b7d698a85ab6558ffa407aa15",
+      "git_blob_sha1": "0cd222306933edb5e65724694885a3e15f0e3f42",
+      "unchanged_from_author": true
+    },
+    {
+      "commit": "adbf07d333f5e4c28e2411bf11a38747edb0f19d",
+      "path": "include/bsp/native_gui_text_shader_storage.hpp",
+      "bytes": 14714,
+      "sha256": "862554f5cbef13c87597d7bfc35a108e9d562590bd9af6f7d0c291cf23938425",
+      "git_blob_sha1": "4f7019e815fc7d35bab1f95f9238eb1b20039ca4",
+      "unchanged_from_author": true
+    },
+    {
+      "commit": "adbf07d333f5e4c28e2411bf11a38747edb0f19d",
+      "path": "src/gui_text_resource_names.cpp",
+      "bytes": 7191,
+      "sha256": "d824603d96de6b7be9365df03deda9c5906c3d513a38a41633d9299c75796608",
+      "git_blob_sha1": "c6dab6b2e625d8fb6f1556037afd6828b4c77b31",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shader_raw_storage_independent_review_20261031\\Root_final\\src\\gui_text_resource_names.cpp"
+    },
+    {
+      "commit": "adbf07d333f5e4c28e2411bf11a38747edb0f19d",
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "bytes": 53482,
+      "sha256": "307e06e5aa5adcbec3532cb02b841edad521edf8e65678759ba2e6113d86afc2",
+      "git_blob_sha1": "5cf4e0943c1a84f2fda9b40ea009a34adc64ed73",
+      "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shader_raw_storage_independent_review_20261031\\Root_final\\src\\native_gui_text_shader_storage.cpp"
+    }
+  ],
+  "ownership": {
+    "packet": "codex-native-text-shader-raw-storage-independent-review",
+    "addresses": [],
+    "files": [
+      "docs/CC16_NATIVE_TEXT_SHADER_RAW_STORAGE_INDEPENDENT_REVIEW.md",
+      "reports/cc16_native_text_shader_raw_storage_independent_review.json"
+    ]
+  },
+  "original_thirteen_edit_proof": {
+    "four_file_checks": [
+      {
+        "path": "include/bsp/gui_text_resource_names.hpp",
+        "before": {
+          "commit": "e1b683c6bf804fd102bc17072a23dca32b76b858",
+          "path": "include/bsp/gui_text_resource_names.hpp",
+          "bytes": 5136,
+          "sha256": "c152f46e0b3d838849f26051d0f041658adbeb2b215e0068f0b79fc1929654db",
+          "git_blob": "1d6f35854d47d48e69f0c3e6e9b0c86508869f9f"
+        },
+        "after": {
+          "bytes": 8234,
+          "sha256": "c01cfed2296778a58c5c4ec300e53606246a522b7d698a85ab6558ffa407aa15",
+          "git_blob": "0cd222306933edb5e65724694885a3e15f0e3f42"
+        },
+        "immutableGit_authorraw_frozen_equal": true
+      },
+      {
+        "path": "src/gui_text_resource_names.cpp",
+        "before": {
+          "commit": "e1b683c6bf804fd102bc17072a23dca32b76b858",
+          "path": "src/gui_text_resource_names.cpp",
+          "bytes": 7191,
+          "sha256": "d824603d96de6b7be9365df03deda9c5906c3d513a38a41633d9299c75796608",
+          "git_blob": "c6dab6b2e625d8fb6f1556037afd6828b4c77b31"
+        },
+        "after": {
+          "bytes": 21533,
+          "sha256": "73cdf04aefcdb472f758439fcb6dbabf74adf62ec315a62c4b67f654867d334c",
+          "git_blob": "ab16cce914033ea09687338ae60a3b10612cad8e"
+        },
+        "immutableGit_authorraw_frozen_equal": true
+      },
+      {
+        "path": "include/bsp/native_gui_text_shader_storage.hpp",
+        "before": {
+          "commit": "e1b683c6bf804fd102bc17072a23dca32b76b858",
+          "path": "include/bsp/native_gui_text_shader_storage.hpp",
+          "bytes": 14069,
+          "sha256": "746d87e6274a37f16697df0ae8645c35a2d5b32b9673ae2444d13f461d8bddbf",
+          "git_blob": "35bb10edaf18f2c43bc9ea48f87fb61873139605"
+        },
+        "after": {
+          "bytes": 14714,
+          "sha256": "862554f5cbef13c87597d7bfc35a108e9d562590bd9af6f7d0c291cf23938425",
+          "git_blob": "4f7019e815fc7d35bab1f95f9238eb1b20039ca4"
+        },
+        "immutableGit_authorraw_frozen_equal": true
+      },
+      {
+        "path": "src/native_gui_text_shader_storage.cpp",
+        "before": {
+          "commit": "e1b683c6bf804fd102bc17072a23dca32b76b858",
+          "path": "src/native_gui_text_shader_storage.cpp",
+          "bytes": 37788,
+          "sha256": "2864664a00d8b3d7237b7d7cefc22bfb2ab584aaf62e9d56fb142f60ffa1b49f",
+          "git_blob": "dbf1955d6dee1f89f253d42b9eee40e3577c438b"
+        },
+        "after": {
+          "bytes": 39002,
+          "sha256": "986a21feee8d155cf6466b01a409894d879701856c0114f64b9e0de6f2388279",
+          "git_blob": "b29a358b0f1832a915ae3f51753b93b935925165"
+        },
+        "immutableGit_authorraw_frozen_equal": true
+      }
+    ],
+    "all_intermediates": [
+      {
+        "index": 1,
+        "path": "include/bsp/gui_text_resource_names.hpp",
+        "label": "RNH0 explicit fixed-width type include",
+        "offset": 0,
+        "full_file_before_sha256": "c152f46e0b3d838849f26051d0f041658adbeb2b215e0068f0b79fc1929654db",
+        "full_file_after_sha256": "435cbc78a8e684097b0f3f11a1211a5244199225aa173333334265e0f5b642f7",
+        "frozen_intermediate_equal": true
+      },
+      {
+        "index": 2,
+        "path": "include/bsp/gui_text_resource_names.hpp",
+        "label": "RNH1 retained five-borrow Invocation and exact entry",
+        "offset": 5136,
+        "full_file_before_sha256": "435cbc78a8e684097b0f3f11a1211a5244199225aa173333334265e0f5b642f7",
+        "full_file_after_sha256": "c01cfed2296778a58c5c4ec300e53606246a522b7d698a85ab6558ffa407aa15",
+        "frozen_intermediate_equal": true
+      },
+      {
+        "index": 3,
+        "path": "src/gui_text_resource_names.cpp",
+        "label": "RNC1 existing exact provider/canonical service includes",
+        "offset": 43,
+        "full_file_before_sha256": "d824603d96de6b7be9365df03deda9c5906c3d513a38a41633d9299c75796608",
+        "full_file_after_sha256": "9f345dd15e58e15ba35e68fc4ec8ae43191842a4d7b0eebfc1caeea9a3379647",
+        "frozen_intermediate_equal": true
+      },
+      {
+        "index": 4,
+        "path": "src/gui_text_resource_names.cpp",
+        "label": "RNC2 whole retained raw setter/admission and metadata",
+        "offset": 7516,
+        "full_file_before_sha256": "9f345dd15e58e15ba35e68fc4ec8ae43191842a4d7b0eebfc1caeea9a3379647",
+        "full_file_after_sha256": "73cdf04aefcdb472f758439fcb6dbabf74adf62ec315a62c4b67f654867d334c",
+        "frozen_intermediate_equal": true
+      },
+      {
+        "index": 5,
+        "path": "include/bsp/native_gui_text_shader_storage.hpp",
+        "label": "SH1 Invocation forward declaration",
+        "offset": 363,
+        "full_file_before_sha256": "746d87e6274a37f16697df0ae8645c35a2d5b32b9673ae2444d13f461d8bddbf",
+        "full_file_after_sha256": "1b7ec6f071c76252de06aa0764b206cfc94c8064d0ce124fa09f1f3724e3e52f",
+        "frozen_intermediate_equal": true
+      },
+      {
+        "index": 6,
+        "path": "include/bsp/native_gui_text_shader_storage.hpp",
+        "label": "SH2 append consumer preserving old enum values",
+        "offset": 4265,
+        "full_file_before_sha256": "1b7ec6f071c76252de06aa0764b206cfc94c8064d0ce124fa09f1f3724e3e52f",
+        "full_file_after_sha256": "7832da2366ab7645d2b76780963887afcf4eb89b6cddd717e9a7df9ebde0c5a4",
+        "frozen_intermediate_equal": true
+      },
+      {
+        "index": 7,
+        "path": "include/bsp/native_gui_text_shader_storage.hpp",
+        "label": "SH3 append two diagnostic invocation pointers",
+        "offset": 6533,
+        "full_file_before_sha256": "7832da2366ab7645d2b76780963887afcf4eb89b6cddd717e9a7df9ebde0c5a4",
+        "full_file_after_sha256": "8a2a4cd7ba077c8e819e565d7441a3ddd0592ed599425ba9fd8941a184949f34",
+        "frozen_intermediate_equal": true
+      },
+      {
+        "index": 8,
+        "path": "include/bsp/native_gui_text_shader_storage.hpp",
+        "label": "SH4 exact private friend/constructor and corrected friend-count comment",
+        "offset": 6928,
+        "full_file_before_sha256": "8a2a4cd7ba077c8e819e565d7441a3ddd0592ed599425ba9fd8941a184949f34",
+        "full_file_after_sha256": "0dfa0740a285ffe5e89cc831045a85687e10213f27f9741c24f0d2e8691f77f2",
+        "frozen_intermediate_equal": true
+      },
+      {
+        "index": 9,
+        "path": "include/bsp/native_gui_text_shader_storage.hpp",
+        "label": "SH5 append private token identity",
+        "offset": 10307,
+        "full_file_before_sha256": "0dfa0740a285ffe5e89cc831045a85687e10213f27f9741c24f0d2e8691f77f2",
+        "full_file_after_sha256": "862554f5cbef13c87597d7bfc35a108e9d562590bd9af6f7d0c291cf23938425",
+        "frozen_intermediate_equal": true
+      },
+      {
+        "index": 10,
+        "path": "src/native_gui_text_shader_storage.cpp",
+        "label": "SC1 genuine private shader-name consumer constructor",
+        "offset": 30723,
+        "full_file_before_sha256": "2864664a00d8b3d7237b7d7cefc22bfb2ab584aaf62e9d56fb142f60ffa1b49f",
+        "full_file_after_sha256": "a9157be7263e82be22d5925f3e12c4e7164e200560b9511bf7ae723b2bc59218",
+        "frozen_intermediate_equal": true
+      },
+      {
+        "index": 11,
+        "path": "src/native_gui_text_shader_storage.cpp",
+        "label": "SC2 late live canonical capture branch",
+        "offset": 32504,
+        "full_file_before_sha256": "a9157be7263e82be22d5925f3e12c4e7164e200560b9511bf7ae723b2bc59218",
+        "full_file_after_sha256": "3ccdea03a9d0bad82145381e47cbdb18e42eb3e47d385342149e9aa6200b63cd",
+        "frozen_intermediate_equal": true
+      },
+      {
+        "index": 12,
+        "path": "src/native_gui_text_shader_storage.cpp",
+        "label": "SC3 record actual nonnull invocation history",
+        "offset": 34557,
+        "full_file_before_sha256": "3ccdea03a9d0bad82145381e47cbdb18e42eb3e47d385342149e9aa6200b63cd",
+        "full_file_after_sha256": "59c9447f777094e2c519d02e094b001de0dfc7e0993591733f492d40f6b08345",
+        "frozen_intermediate_equal": true
+      },
+      {
+        "index": 13,
+        "path": "src/native_gui_text_shader_storage.cpp",
+        "label": "SC4 clear active identity only after actual completion",
+        "offset": 37643,
+        "full_file_before_sha256": "59c9447f777094e2c519d02e094b001de0dfc7e0993591733f492d40f6b08345",
+        "full_file_after_sha256": "986a21feee8d155cf6466b01a409894d879701856c0114f64b9e0de6f2388279",
+        "frozen_intermediate_equal": true
+      }
+    ],
+    "whole_four_inverses_Git_raw_frozen_equal": true,
+    "script": {
+      "bytes": 1642,
+      "sha256": "e4be8bc5dbbaff065c5f83a68e0c8d2f5de4ced5d5ff4bf135bae002aad7d9ef",
+      "raw_embedded_materialized_equal": true,
+      "materialized_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shader_raw_storage_independent_review_20261031\\embedded_inverse.py"
+    },
+    "sealed_script_execution": {
+      "argument": "4cbe5ceb4fdfeea60b5c5a11de5342cea003ad58",
+      "exit_code": 0,
+      "restored_four_files_13steps": true,
+      "static_textual_reader_only": true
+    }
+  },
+  "include_correction": {
+    "correction": "2a5a8cfd09d088dd8397a961b9ef80f5f03e0db0",
+    "against_author": "4cbe5ceb4fdfeea60b5c5a11de5342cea003ad58",
+    "only_complete_ProgramsContext_include": true,
+    "other3Source_files_equal": true,
+    "path": "src/gui_text_resource_names.cpp",
+    "bytes": 21584,
+    "sha256": "d0823b0b612f20aa8e34c1ea5843e574799d10a83a53ecafa1f3f9b643184867",
+    "git_blob_sha1": "f292c5951f1799ccfaedec2eb6db6e65bab51183",
+    "subsequent_link_TUclosure_issue_Root_reported_open": true
+  },
+  "final_TU_correction": {
+    "Root_final_correction": "adbf07d333f5e4c28e2411bf11a38747edb0f19d",
+    "exact_parent": "2a5a8cfd09d088dd8397a961b9ef80f5f03e0db0",
+    "original_author": "4cbe5ceb4fdfeea60b5c5a11de5342cea003ad58",
+    "original_base": "e1b683c6bf804fd102bc17072a23dca32b76b858",
+    "only_2CPP_in_Root_correction": true,
+    "headers_unchanged_from_author": true,
+    "legacy_ResourceNamesCPP_exact_full_e1b_prepacket": true,
+    "legacy_bytes": 7191,
+    "moved_original_raw_block_bytes": 13998,
+    "moved_original_raw_block_sha256": "752f34c836906e0f71fde2cc0b68572901aa788d57062ad35b25648ce8706e5d",
+    "only12_raw_require_calls_renamed": true,
+    "unique_helper_exact_stdlogic_error_preserved": true,
+    "inverse_restores_entire13998B_original_raw_block": true,
+    "strip_only_movedblock_and5includes_restores_full_original_author_ShaderCPP": true,
+    "five_includes": [
+      "#include \"bsp/gui_text_resource_names.hpp\"",
+      "#include \"bsp/game_native_mutable_crt_data.hpp\"",
+      "#include \"bsp/native_crt_memcpy.hpp\"",
+      "#include \"bsp/native_string_raw_resize_exact.hpp\"",
+      "#include \"bsp/native_render_context.hpp\""
+    ],
+    "ProgramsContext_complete_definition_available_existing_ShaderTU_include": true,
+    "current_files": [
+      {
+        "commit": "adbf07d333f5e4c28e2411bf11a38747edb0f19d",
+        "path": "src/gui_text_resource_names.cpp",
+        "bytes": 7191,
+        "sha256": "d824603d96de6b7be9365df03deda9c5906c3d513a38a41633d9299c75796608",
+        "git_blob_sha1": "c6dab6b2e625d8fb6f1556037afd6828b4c77b31",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shader_raw_storage_independent_review_20261031\\Root_final\\src\\gui_text_resource_names.cpp"
+      },
+      {
+        "commit": "adbf07d333f5e4c28e2411bf11a38747edb0f19d",
+        "path": "src/native_gui_text_shader_storage.cpp",
+        "bytes": 53482,
+        "sha256": "307e06e5aa5adcbec3532cb02b841edad521edf8e65678759ba2e6113d86afc2",
+        "git_blob_sha1": "5cf4e0943c1a84f2fda9b40ea009a34adc64ed73",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shader_raw_storage_independent_review_20261031\\Root_final\\src\\native_gui_text_shader_storage.cpp"
+      }
+    ],
+    "Root_build_confirmation_pending_at_check": true
+  },
+  "preserved_existing_functions": [
+    {
+      "path": "src/gui_text_resource_names.cpp",
+      "begin_literal": "void set_gui_text_shader_name_00ab8e70(",
+      "bytes": 392,
+      "sha256": "c660ea8997a4fa5a6bbca2d14d1d9ef15a889273ca759afef523bb7741b80673",
+      "proposal_requires_function_bytes_unchanged": true,
+      "actual_complete_block_byte_identical": true,
+      "independently_located_offsets": {
+        "before": 4347,
+        "after": 4691
+      }
+    },
+    {
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "begin_literal": "void NativeGuiTextShaderStorageFrame::begin_raw(",
+      "bytes": 624,
+      "sha256": "58fe29089957f6f9d1988c13033cfbe66115291dce855061e7b185b932ef58ea",
+      "proposal_requires_function_bytes_unchanged": true,
+      "actual_complete_block_byte_identical": true,
+      "independently_located_offsets": {
+        "before": 24032,
+        "after": 24032
+      }
+    },
+    {
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "begin_literal": "void NativeGuiTextShaderStorageFrame::complete_raw(",
+      "bytes": 2327,
+      "sha256": "6870dae78f07629db7827b5019336cd55933e447cdceca75666572f0db6551a7",
+      "proposal_requires_function_bytes_unchanged": true,
+      "actual_complete_block_byte_identical": true,
+      "independently_located_offsets": {
+        "before": 24657,
+        "after": 24657
+      }
+    },
+    {
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "begin_literal": "bool ensure_native_gui_text_font_shader_storage_00ab8ce0(NativeGuiTextRawModelReference&",
+      "bytes": 594,
+      "sha256": "403313f1328fc452526b5e1c6e69d82892010a541dbc069efccfa546232c6b82",
+      "proposal_requires_function_bytes_unchanged": true,
+      "actual_complete_block_byte_identical": true,
+      "independently_located_offsets": {
+        "before": 37174,
+        "after": 38388
+      }
+    },
+    {
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "begin_literal": "void NativeGuiTextShaderStorageFrame::CreditConsumer::slot_cleared(",
+      "bytes": 329,
+      "sha256": "2d6385e6edf6f66dd62dc7cd9cf6d3f5a2b185b17b8cd878b68f92a4a00d293f",
+      "proposal_requires_function_bytes_unchanged": true,
+      "actual_complete_block_byte_identical": true,
+      "independently_located_offsets": {
+        "before": 34950,
+        "after": 36109
+      }
+    },
+    {
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "begin_literal": "void NativeGuiTextShaderStorageFrame::CreditConsumer::finish_without_capture(",
+      "bytes": 314,
+      "sha256": "7213884d58d50e0c834ad195bc42ac564831227b99f97a4e41bf3be947cd4000",
+      "proposal_requires_function_bytes_unchanged": true,
+      "actual_complete_block_byte_identical": true,
+      "independently_located_offsets": {
+        "before": 35280,
+        "after": 36439
+      }
+    },
+    {
+      "path": "src/native_gui_text_shader_storage.cpp",
+      "begin_literal": "void NativeGuiTextShaderStorageFrame::CreditConsumer::fail(",
+      "bytes": 287,
+      "sha256": "3ff87f78c1c949dbe97eba79b193dee3684095b7bd38aff6806837da6c4a5889",
+      "proposal_requires_function_bytes_unchanged": true,
+      "actual_complete_block_byte_identical": true,
+      "independently_located_offsets": {
+        "before": 36541,
+        "after": 37755
+      }
+    }
+  ],
+  "whole_old_typed_namespace": {
+    "bytes": 7010,
+    "sha256": "1d1256ade5e50d86089ed6321ffff0b7702957ce6a40856e0a1d3402d5385781",
+    "unchanged": true,
+    "independently_located_offsets": {
+      "before": 162,
+      "after": 506
+    }
+  },
+  "accepted_provider_context_owner_copy_pins": [
+    {
+      "commit": "e1b683c6bf804fd102bc17072a23dca32b76b858",
+      "path": "include/bsp/native_string_raw_resize_exact.hpp",
+      "bytes": 1554,
+      "sha256": "a1a3c6be74194e2f5946e13e09bfb26562c3f73d3565b51f96403f0d60b9999c",
+      "git_blob": "2e9e0ae6cb560eba1e7187911f6fea04791b529b",
+      "equal_reviewed589_and_e2b": true,
+      "worker_unchanged": true,
+      "approved_Source45_preimage_only": false
+    },
+    {
+      "commit": "e1b683c6bf804fd102bc17072a23dca32b76b858",
+      "path": "src/native_string_raw_resize_exact.cpp",
+      "bytes": 3979,
+      "sha256": "74bff613a83abda342b5506ff750f46f5c44e191de506480ced504208c81f210",
+      "git_blob": "e05e1c9a86a44a2bba1efe9f46f3151062fab3b6",
+      "equal_reviewed589_and_e2b": true,
+      "worker_unchanged": true,
+      "approved_Source45_preimage_only": false
+    },
+    {
+      "commit": "e1b683c6bf804fd102bc17072a23dca32b76b858",
+      "path": "docs/NATIVE_STRING_RAW_RESIZE_EXACT.md",
+      "bytes": 4583,
+      "sha256": "142bbe9c7263a753d9a23ddea996023dc1b9ff507870d39181a9f361eb43ff81",
+      "git_blob": "1cf008d840739e3552e4cf73741203df472eb4ef",
+      "equal_reviewed589_and_e2b": true,
+      "worker_unchanged": true,
+      "approved_Source45_preimage_only": false
+    },
+    {
+      "commit": "e1b683c6bf804fd102bc17072a23dca32b76b858",
+      "path": "reports/native_string_raw_resize_exact.json",
+      "bytes": 5755,
+      "sha256": "065de87aecd373a2fc36611a660ddf11b0ce05d8692955867a6e511839131138",
+      "git_blob": "654cdbec69fc85d22d39f4cd6f44737be99dba20",
+      "equal_reviewed589_and_e2b": true,
+      "worker_unchanged": true,
+      "approved_Source45_preimage_only": false
+    },
+    {
+      "commit": "e1b683c6bf804fd102bc17072a23dca32b76b858",
+      "path": "include/bsp/native_gui_text_reference.hpp",
+      "bytes": 12718,
+      "sha256": "62224192a6d0fb5043ed68a3f34374ce1bc3584ee1f3bb031c1041b33fdd1827",
+      "git_blob": "492cf04c44cfeae90887bba02c32039f325bc318",
+      "equal_reviewed589_and_e2b": true,
+      "worker_unchanged": true,
+      "approved_Source45_preimage_only": false
+    },
+    {
+      "commit": "e1b683c6bf804fd102bc17072a23dca32b76b858",
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+      "equal_reviewed589_and_e2b": true,
+      "worker_unchanged": true,
+      "approved_Source45_preimage_only": false
+    },
+    {
+      "commit": "e1b683c6bf804fd102bc17072a23dca32b76b858",
+      "path": "include/bsp/native_gui_text_shader_storage.hpp",
+      "bytes": 14069,
+      "sha256": "746d87e6274a37f16697df0ae8645c35a2d5b32b9673ae2444d13f461d8bddbf",
+      "git_blob": "35bb10edaf18f2c43bc9ea48f87fb61873139605",
+      "equal_reviewed589_and_e2b": true,
+      "worker_unchanged": false,
+      "approved_Source45_preimage_only": true
+    },
+    {
+      "commit": "e1b683c6bf804fd102bc17072a23dca32b76b858",
+      "path": "include/bsp/native_crt_memcpy.hpp",
+      "bytes": 1954,
+      "sha256": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123",
+      "git_blob": "a62e6ddb9d92e02afd301ed92239b258d53b5f10",
+      "equal_reviewed589_and_e2b": true,
+      "worker_unchanged": true,
+      "approved_Source45_preimage_only": false
+    },
+    {
+      "commit": "e1b683c6bf804fd102bc17072a23dca32b76b858",
+      "path": "src/native_crt_memcpy.cpp",
+      "bytes": 17187,
+      "sha256": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3",
+      "git_blob": "248194cbff651aba4341401f519050447f13b6a0",
+      "equal_reviewed589_and_e2b": true,
+      "worker_unchanged": true,
+      "approved_Source45_preimage_only": false
+    },
+    {
+      "commit": "e1b683c6bf804fd102bc17072a23dca32b76b858",
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "bytes": 2713,
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+      "equal_reviewed589_and_e2b": true,
+      "worker_unchanged": true,
+      "approved_Source45_preimage_only": false
+    },
+    {
+      "commit": "e1b683c6bf804fd102bc17072a23dca32b76b858",
+      "path": "include/bsp/game_native_mutable_crt_data.hpp",
+      "bytes": 3200,
+      "sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+      "git_blob": "ec1a1c9c2a7359031b4b77c2b86ba12cd6f3420e",
+      "equal_reviewed589_and_e2b": true,
+      "worker_unchanged": true,
+      "approved_Source45_preimage_only": false
+    },
+    {
+      "commit": "e1b683c6bf804fd102bc17072a23dca32b76b858",
+      "path": "src/game_native_mutable_crt_data.cpp",
+      "bytes": 10114,
+      "sha256": "d9dabf905fd4acf195f72c14e9ae2c7ef457514f4ff6227efffdcbb1f24a0c39",
+      "git_blob": "2c0d73f8164a8b0d4cbbc499801935d1f28c213a",
+      "equal_reviewed589_and_e2b": true,
+      "worker_unchanged": true,
+      "approved_Source45_preimage_only": false
+    },
+    {
+      "commit": "e1b683c6bf804fd102bc17072a23dca32b76b858",
+      "path": "include/bsp/game_native_string_process.hpp",
+      "bytes": 6018,
+      "sha256": "68ac5c24794233d13e2b68d7276e703dc62d39bded4b969bfcf7a06361fac697",
+      "git_blob": "d5e1fdd68d64a6e5429068335742f669fd8f1ddd",
+      "equal_reviewed589_and_e2b": true,
+      "worker_unchanged": true,
+      "approved_Source45_preimage_only": false
+    },
+    {
+      "commit": "e1b683c6bf804fd102bc17072a23dca32b76b858",
+      "path": "include/bsp/native_gui_text_changed_storage.hpp",
+      "bytes": 11813,
+      "sha256": "75a9ebed1b5b9f505ffa2593899d92108c9a687ffdbcc81339f5be888f095b63",
+      "git_blob": "a7531deb87f433cc115f6a48765622ef109237fe",
+      "equal_reviewed589_and_e2b": true,
+      "worker_unchanged": true,
+      "approved_Source45_preimage_only": false
+    },
+    {
+      "commit": "e1b683c6bf804fd102bc17072a23dca32b76b858",
+      "path": "include/bsp/native_render_context.hpp",
+      "bytes": 10071,
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+      "git_blob": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808",
+      "worker_unchanged": true
+    },
+    {
+      "commit": "e1b683c6bf804fd102bc17072a23dca32b76b858",
+      "path": "src/native_render_context.cpp",
+      "bytes": 11471,
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+      "git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c",
+      "worker_unchanged": true
+    },
+    {
+      "commit": "e1b683c6bf804fd102bc17072a23dca32b76b858",
+      "path": "src/native_gui_text_field_storage.cpp",
+      "bytes": 31161,
+      "sha256": "70c6b9180077424b5e6d457a82b47024722bd14ea9ba5c5d8da2b2bda2bf2441",
+      "git_blob": "77befd8c28ae3c289aff1ea202f43e2832642082",
+      "worker_unchanged": true
+    },
+    {
+      "commit": "e1b683c6bf804fd102bc17072a23dca32b76b858",
+      "path": "src/native_gui_text_retirement.cpp",
+      "bytes": 37908,
+      "sha256": "4974b355bd9dcf0aee5a2cdb8f9c3c2c1d9d47a828741113aa8183367e100ae8",
+      "git_blob": "8dd0bf44f58dc474bb458b0d1cb3d4ad0b54fc54",
+      "worker_unchanged": true
+    },
+    {
+      "commit": "e1b683c6bf804fd102bc17072a23dca32b76b858",
+      "path": "docs/CODEX_STRING_RESIZE_SCALAR_PUSH_INTEGRATION.md",
+      "bytes": 5086,
+      "sha256": "a684cfc2c157db06ad697563ab32ae30acf86e218b87ee2b798af93ab64ccb1b",
+      "git_blob": "9ffda7d3871c9fac3318578dc40a5fdc246f2d79",
+      "worker_unchanged": true
+    }
+  ],
+  "historical_design_contract_pins": [
+    {
+      "commit": "ec0b21317a4c5293f03447cc6adb0ad0a02b20e8",
+      "path": "docs/CC16_NATIVE_TEXT_SHADER_PRIVATE_CONSUMER_DESIGN.md",
+      "bytes": 14267,
+      "sha256": "4f5085b84c2270c4ffbcad0be4cac7dbdda85da80412e36fc239f11ce52dc4a0",
+      "git_blob": "85a25ef904b80e76179fb2f59e861cd32a5b8c59"
+    },
+    {
+      "commit": "ec0b21317a4c5293f03447cc6adb0ad0a02b20e8",
+      "path": "reports/cc16_native_text_shader_private_consumer_design.json",
+      "bytes": 45931,
+      "sha256": "0e4ef03c4354ea60d578d26410cefe1e458c4fb6e5d2bc9745adbaaef95a2f29",
+      "git_blob": "19d507c2740407efccfbbf67ff00a6db0a1ae6df"
+    },
+    {
+      "commit": "e2b4bdb5447b620fb9114e6ad213b175cf7d8ced",
+      "path": "docs/CC16_NATIVE_TEXT_SHADER_EXACT_RESIZE_RECONCILIATION.md",
+      "bytes": 11417,
+      "sha256": "5259f3cd2065a6f7f3dccd6dfb2290f9e292168a7ea3b0c5e20896a23d229b88",
+      "git_blob": "13e51094e8d81d02edcaa0315564c5233e80f3c1"
+    },
+    {
+      "commit": "e2b4bdb5447b620fb9114e6ad213b175cf7d8ced",
+      "path": "reports/cc16_native_text_shader_exact_resize_reconciliation.json",
+      "bytes": 28801,
+      "sha256": "14aedf63617fb2a9fd90b398d69f30909dfb8bd7922f1f1186afdab5f09edf82",
+      "git_blob": "a23d6779c181dfcfd9c3e6651f8ab80651b04a50"
+    },
+    {
+      "commit": "f5b5e8a0561836f7858951580b5ebdb4d364e196",
+      "path": "docs/CC16_NATIVE_TEXT_SHADER_RAW_STORAGE_CONTRACT.md",
+      "bytes": 7976,
+      "sha256": "21d1f2cc12ce306e5acc2ecd38cc73c86288d01a37d191cac37f73d8e245444d",
+      "git_blob": "8f456006762679f0e1cdf9c061d9fa9df922335f"
+    },
+    {
+      "commit": "f5b5e8a0561836f7858951580b5ebdb4d364e196",
+      "path": "reports/cc16_native_text_shader_raw_storage_contract.json",
+      "bytes": 19981,
+      "sha256": "572ecc4d7ffc2dfb30c1cb7ffd2f83fa673e790f56d21c127b3ee99945e2e3b3",
+      "git_blob": "9964614cad5396f5f178da213f72593d5187474e"
+    }
+  ],
+  "Native": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "bsp_count_verified_before_batch": 77632,
+    "bytes": 103,
+    "rows": 40,
+    "body_sha256": "8e61e22e4a7fca5f40c51b832b32eb1990df894acc48b2adacfdb96e444b4a8f",
+    "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "frozen_exports": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab8e70\\assembly.txt",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-text-shader-raw-setter\\local\\output\\cc16_native_text_shader_raw_storage_20261030\\native_exports\\assembly.txt",
+        "bytes": 1082,
+        "sha256": "b3e64461078345e67dc0d66d5ac7ed1ed5acf459bec6307bc4881fd1b8ff1b64"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab8e70\\decompiled.c",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-text-shader-raw-setter\\local\\output\\cc16_native_text_shader_raw_storage_20261030\\native_exports\\decompiled.c",
+        "bytes": 1472,
+        "sha256": "59fe7446f46d7c034900d8e8b8dca41ab0cbac0f314d8bbd84ad772585218626"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00ab8e70\\metadata.json",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-codex-text-shader-raw-setter\\local\\output\\cc16_native_text_shader_raw_storage_20261030\\native_exports\\metadata.json",
+        "bytes": 290,
+        "sha256": "5823f22288f75844ed08deb4e93d4444a3888b215db4060f6e36740072cd0bb8"
+      }
+    ],
+    "direct_calls": [
+      {
+        "site": "00AB8E8A",
+        "target": "0041DD40",
+        "verified_rel32": true
+      },
+      {
+        "site": "00AB8E9F",
+        "target": "00BF7680",
+        "verified_rel32": true
+      }
+    ],
+    "later_Root_admission_annotation_save": "030447Z; historical snapshots retained; current shared representations may refresh",
+    "new_body_recovery_or_execution": false
+  },
+  "actual_code_review": {
+    "five_borrow_preparer_address_only_no_unborn_reference": true,
+    "canonical_ROowner_feature_ADDRESS_affinity_no_VALUE_or_new_owner": true,
+    "ordinary_preserve_DWORD_uninitialized_and_selfalias_untouched": true,
+    "nonself_currentLEN_then1_then_actual_HOMEaddress_exactresize": true,
+    "outer_current_dstLEN_srcDATA_dstDATA_order_and_realBF4_even0": true,
+    "new_friend_only_exact_entry_no_issuer_or_token_private_write": true,
+    "setter_observations": [
+      "capture",
+      "decrement_entered",
+      "decrement_returned",
+      "zero_entered",
+      "zero_returned",
+      "slot_cleared",
+      "complete",
+      "fail"
+    ],
+    "old_enum_0_1_2_plus_shader3": true,
+    "late1EC_reauth_genuine_credit_reserve_before_current_import": true,
+    "actual_plus04_decrement_actual_result_zero_ownerdispatcher": true,
+    "liveclear_after_callback_evenreplacement_thenoldcreditreturned": true,
+    "null_no_credit_distinct_no_fake_return": true,
+    "different_resize_effect_no_transfer_failretain_Sourcequalification": true,
+    "sticky_reentry_and_failed_state_cannot_complete": true,
+    "retention_after_any_entry_including_complete_historical_is_intentional": true,
+    "no_native_origin_no_new_cleanup_retry_nothrow_termination": true
+  },
+  "Root_execution_reports": {
+    "executed_by_Root_not_peer": true,
+    "initial_compile_issue": "incomplete ProgramsContext, corrected2a5a then superseded by finalTUplacement",
+    "second_link_issue": "legacy TU raw closure, correctedadbf",
+    "corrected_common": "alltargets/2suites14.61s;148inputs29artifacts reported byRoot",
+    "retained_rawsetter_only": "alltargets/2suites12.92s reported byRoot",
+    "canonical_restored": "alltargets/2suites12.88s reported byRoot; Sourceadbf unchanged/6Glyphobjects preserved",
+    "common_admission_receipt_owns_artifact_build_attribution": true,
+    "reviewer_did_not_run_or_recount_these": true
+  },
+  "scope_qualifications": {
+    "Cplusplusfriend": "new exact function has full nested token capability; actual code only uses legitimate constructor/public observations; old friend bodies unchanged",
+    "Source_domain": "genuine actual reference/current lifetimes and private producer credit required; markers/snapshots/registeredpointer alone not proof",
+    "copy_and_failure": "inherit pool/DF/CPU/feature/extent and partial unpublishedallocation debt; Invocation retention is not a recoverable-pointer/disposal receipt",
+    "Origin_ABI": "no positive Native cause or Original thiscall/RET/privateHOME/FH3/SEH/fault equivalence",
+    "replacement": "pre-capture differentEffect unsupported transfer; postterminalreplacement stillliteralLIVEclear/oldcreditonly"
+  },
+  "readiness": {
+    "independent_corrected_static_Source_peer_complete": true,
+    "Root_reported_compile_link_common_checks_pass": true,
+    "actual_prepared_producer_Glyph_wiring": false,
+    "arbitrary_replacement_credit_transfer": false,
+    "general_terminal_lifetime_custody_coverage": false,
+    "Native_positive_origin_or_wholeEH": false,
+    "Original_privateABI_fault_game_runtime_activation": false,
+    "whole_frontend_ready": false
+  },
+  "actions": {
+    "new_owned_review_files": 2,
+    "Source_or_ancestry_merge": false,
+    "CMake_ledger_Ghidra_mutations": false,
+    "compiler_tests_probes_provider_Game_execution_by_peer": false
+  },
+  "credit": {
+    "new_Native_Original_helper_vendor_duplicate_ABI_runtime_activation": 0
+  },
+  "proof_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shader_raw_storage_independent_review_20261031\\independent_checks.json",
+      "format": "UTF8LF static JSON reader evidence",
+      "bytes": 27245,
+      "sha256": "35503635e4ebfeba0c7655f4325e0d655e8859143ff4da3e3c01cbfd7eaeb443"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shader_raw_storage_independent_review_20261031\\include_correction.json",
+      "format": "UTF8LF static JSON reader evidence",
+      "bytes": 480,
+      "sha256": "8bbfc2c675fd1bddbc69b492dadb0edc1fed1d61d6b5d483eab09803f96d18ea"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-text-raw-shadow\\local\\output\\cc16_native_text_shader_raw_storage_independent_review_20261031\\tu_correction_checks.json",
+      "format": "UTF8LF static JSON reader evidence",
+      "bytes": 2317,
+      "sha256": "624ec23024da9cfd2a74e866273d525b00d23c053a4f6b34c3722fcbe3e1ba99"
+    }
+  ],
+  "formats": {
+    "Source_and_designs": "exact immutable GitUTF8LF bytes/GitSHA1 blobs; working raw/frozen equality checked",
+    "inverse_script": "1642 exactrawUTF8LF bytes, embedded decoded bytes equal",
+    "Native_exports": "historical exactraw author/reviewepoch bytes; no normalization or frozen rewrite",
+    "native_region": "raw installedPE extraction, not executable/trace/probe"
+  },
+  "document_pin": {
+    "path": "docs/CC16_NATIVE_TEXT_SHADER_RAW_STORAGE_INDEPENDENT_REVIEW.md",
+    "format": "UTF8LF",
+    "bytes": 8426,
+    "sha256": "728974532e9f5579cb4d65567d2fd3c79779176c77ab4c9eae4bbbd19fa05f9d"
+  }
+}
