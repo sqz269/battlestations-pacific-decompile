@@ -2520,3 +2520,6 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_cor
 
 # Checked raw Model/Matrix resource issuer and shared geometry provider; callers remain gated.
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_model_resource_storage.cpp)
+
+# Whole normal raw Icon delayed getter support; actual callers remain gated.
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_gui_icon_delayed_loads_getter_storage.cpp)

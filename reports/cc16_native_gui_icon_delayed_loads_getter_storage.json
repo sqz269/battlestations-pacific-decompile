@@ -1,0 +1,644 @@
+{
+  "schema_version": 1,
+  "packet": "Source65 whole normal raw Icon delayed getter support; exact reviewed candidate materialization",
+  "parent": "a75c2001aa78aaa848fc76133a46dd742f975293",
+  "branch": "agent/codex-native-gui-icon-delayed-loads-getter-storage",
+  "owned_address_coordination_only": "00ab5700",
+  "four_owned_paths": [
+    "include/bsp/native_gui_icon_delayed_loads_getter_storage.hpp",
+    "src/native_gui_icon_delayed_loads_getter_storage.cpp",
+    "docs/CC16_NATIVE_GUI_ICON_DELAYED_LOADS_GETTER_STORAGE.md",
+    "reports/cc16_native_gui_icon_delayed_loads_getter_storage.json"
+  ],
+  "Git_preimages": "All four paths absent at exact published parent; no old file modified",
+  "source_postimages": [
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads_getter_storage.hpp",
+      "bytes": 6233,
+      "sha256": "5a03ce3ed5741a80161ff7d1f0a0c0ec2dcf122867d3306c87a53918ff2a1800",
+      "git_blob": "3b234fbd78a56ed0fe8050d474be3fdc085a67ec",
+      "Git_base_absent": true
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads_getter_storage.cpp",
+      "bytes": 6259,
+      "sha256": "9ccb3d4e8d809b46a12444531af67b98f1e0badc63cf7e9ac79c84e853bfd70d",
+      "git_blob": "4340f45914bfd92bc9d3ac6338c16e7527b011b2",
+      "Git_base_absent": true
+    }
+  ],
+  "document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\docs\\CC16_NATIVE_GUI_ICON_DELAYED_LOADS_GETTER_STORAGE.md",
+    "bytes": 8224,
+    "sha256": "c15ae171632b2ce5d5f0a59bebbf8a7f173a120548fa08fd655de609bb7da6b3"
+  },
+  "unchanged_provider_pins": [
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 8671,
+      "sha256": "c90af3cb31bb60f3c48f4146fe5b61bd0372e7f017906c8491bdb705401e2374",
+      "git_blob": "da74313bf9fb8d144c0cb37bbd54156f8b2c185f"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 17409,
+      "sha256": "42a3ea48aba347a4adfb807e9bc84b95ee4edf33efc66312a2a1f13b6f0dfcf1",
+      "git_blob": "68b15fd9b445bb8057b0c57602ce9bf2b6b1a1a0"
+    },
+    {
+      "path": "include/bsp/game_native_gui_icon_process.hpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 3975,
+      "sha256": "64ea6df52c7f26f2a25fa8f485bb6022116178887d828f031fe8c5b4413db441",
+      "git_blob": "86ea513e79e4b8c15be217b3a5daa744171ea94d"
+    },
+    {
+      "path": "src/game_native_gui_icon_process.cpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 4452,
+      "sha256": "771ae831af661e9420fb8a58d67bd10511456ae83e9764acb3245ded32b71655",
+      "git_blob": "3bf20aa83282178518eb25f098337d6928af3c48"
+    },
+    {
+      "path": "include/bsp/native_singleton_publication.hpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 2293,
+      "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+      "git_blob": "efb55fd128088fa594c8f4c71a26017b9023c5ce"
+    },
+    {
+      "path": "src/native_singleton_publication.cpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 4127,
+      "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "git_blob": "2478972b6f3df07e9fb6c66e7ac04eebafa69bb8"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 2373,
+      "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "git_blob": "9379a2a6cd97f13fabc2554b0b539363b85a5da2"
+    },
+    {
+      "path": "src/native_singleton_vector_registration_wrappers.cpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 4283,
+      "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "git_blob": "4096dfcf1c693f3c509c8db5f1cfb621e523b0d0"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_reserve_construct.hpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 1845,
+      "sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
+      "git_blob": "658de06b21b30d7733ba2c4836371a05c44c377a"
+    },
+    {
+      "path": "src/native_singleton_vector_reserve_construct.cpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 3731,
+      "sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+      "git_blob": "e1e3c2b5e4c1eca61f6a3033a649eab2b85e0ff6"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+    },
+    {
+      "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 2420,
+      "sha256": "935960697b2f517ff8f5e0f14899a182182e37d8a10c6ed4f221f34dd9c0c868",
+      "git_blob": "ae4dfc7a92d936c985d8c2d2c960076d562bc56c"
+    },
+    {
+      "path": "src/native_diagnostic_sink_lifetime.cpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 6035,
+      "sha256": "7ef822175d062d799683312c6a8f9618c1771ec013e7424b48eedd66c7968499",
+      "git_blob": "c52cbdfdca19f5a9838053444ecf819307cc5c98"
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 10071,
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+      "git_blob": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 11471,
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+      "git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97"
+    },
+    {
+      "path": "include/bsp/gui_widgets_cc13.hpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 92980,
+      "sha256": "2a889c7f79cdfa87e99283c4b0286eed4911845410425a38918cb39aeecb63b7",
+      "git_blob": "a69f853d6015aa99b2efaaa0bb71f497052c8292"
+    },
+    {
+      "path": "src/gui_widgets_cc13.cpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 75116,
+      "sha256": "20312bdde0d2a577300c6431ea53a54aaaaf6c05c3c6670dc655c20864bb74da",
+      "git_blob": "4511ee034957d5d2322c36deae1ee9618ac847bb"
+    },
+    {
+      "path": "include/bsp/native_renderer_worker_lifetime.hpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 2431,
+      "sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+      "git_blob": "484cbc12dfe5be998ee8e92c71afb59a57a806f4"
+    },
+    {
+      "path": "src/native_renderer_worker_lifetime.cpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 6911,
+      "sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+      "git_blob": "5212269531c2f191f6feb01f6b00b9cdf53afa21"
+    },
+    {
+      "path": "include/bsp/random_threads.hpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 1446,
+      "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+      "git_blob": "72b34c51801ffceaefff525a4eddbe152c3ee1e2"
+    }
+  ],
+  "own_integer_asm_blocks": [
+    {
+      "bytes": 127,
+      "sha256": "5b8f6781cc4436e6bce4933dfdac8686002340dbd4546014d9adfd1feaa15051"
+    },
+    {
+      "bytes": 107,
+      "sha256": "1de569c723689a8d903683ff3987cae78fdab8e4dea0ccb669bf25ce50c86573"
+    }
+  ],
+  "Native_normal_entry": {
+    "entry": "00ab5700",
+    "end_inclusive": "00ab57b1",
+    "listing_utf8": "00ab5700: MOV EAX,FS:[0x0] \n00ab5706: PUSH -0x1 \n00ab5708: PUSH 0xcb7cd8 \n00ab570d: PUSH EAX \n00ab570e: MOV dword ptr FS:[0x0],ESP \n00ab5715: MOV EAX,[0x00f8bd98] \n00ab571a: SUB ESP,0x8 \n00ab571d: PUSH EDI \n00ab571e: XOR EDI,EDI \n00ab5720: CMP EAX,EDI \n00ab5722: JNZ 0x00ab57a2 \n00ab5724: PUSH ESI \n00ab5725: CALL 0x00415350 \n00ab572a: MOV ESI,dword ptr [EAX + 0x10] \n00ab572d: CMP ESI,EDI \n00ab572f: MOV dword ptr [ESP + 0x8],0xce37fc \n00ab5737: MOV dword ptr [ESP + 0xc],ESI \n00ab573b: JZ 0x00ab5748 \n00ab573d: PUSH ESI \n00ab573e: CALL dword ptr [0x00ce2218] \n00ab5744: ADD dword ptr [ESI + 0x18],0x1 \n00ab5748: MOV dword ptr [ESP + 0x18],EDI \n00ab574c: CMP dword ptr [0x00f8bd98],EDI \n00ab5752: JNZ 0x00ab578d \n00ab5754: PUSH 0x10 \n00ab5756: CALL 0x00bf681b \n00ab575b: ADD ESP,0x4 \n00ab575e: CMP EAX,EDI \n00ab5760: JZ 0x00ab5773 \n00ab5762: MOV dword ptr [EAX],0xd5c4b8 \n00ab5768: MOV dword ptr [EAX + 0x4],EDI \n00ab576b: MOV dword ptr [EAX + 0x8],EDI \n00ab576e: MOV dword ptr [EAX + 0xc],EDI \n00ab5771: JMP 0x00ab5775 \n00ab5773: XOR EAX,EAX \n00ab5775: MOV [0x00f8bd98],EAX \n00ab577a: CALL 0x00415350 \n00ab577f: MOV ECX,dword ptr [0x00f8bd98] \n00ab5785: PUSH ECX \n00ab5786: MOV ECX,EAX \n00ab5788: CALL 0x00bd0c30 \n00ab578d: CMP ESI,EDI \n00ab578f: JZ 0x00ab579c \n00ab5791: ADD dword ptr [ESI + 0x18],-0x1 \n00ab5795: PUSH ESI \n00ab5796: CALL dword ptr [0x00ce2210] \n00ab579c: MOV EAX,[0x00f8bd98] \n00ab57a1: POP ESI \n00ab57a2: MOV ECX,dword ptr [ESP + 0xc] \n00ab57a6: POP EDI \n00ab57a7: MOV dword ptr FS:[0x0],ECX \n00ab57ae: ADD ESP,0x14 \n00ab57b1: RET \n",
+    "installed_PE_hex": "64a1000000006aff68d87ccb005064892500000000a198bdf80083ec085733ff3bc7757e56e826fc95ff8b70103bf7c7442408fc37ce008974240c740b56ff151822ce0083461801897c2418393d98bdf80075396a10e8c010140083c4043bc77411c700b8c4d50089780489780889780ceb0233c0a398bdf800e8d1fb95ff8b0d98bdf800518bc8e8a3b411003bf7740b834618ff56ff151022ce00a198bdf8005e8b4c240c5f64890d0000000083c414c3",
+    "installed_PE_sha256": "3f5a4a824d50334da2c460ea0bf53ec1ec6b781d1d21c781e1cdcd43f8005181",
+    "bytes": 178,
+    "ops": 53,
+    "calls_direct": 4,
+    "calls_Win32_IAT": 2,
+    "FP_instructions": 0,
+    "prior_verified_program": {
+      "saved_project_file_from_current_config": "C:/Users/sqz269/bsp.gpr",
+      "expected_live_project": "bsp",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "live_queries_through_bsp_client_verify": true,
+      "wrapper_fact": "Every ghidra disasm/bytes/proto used bsp.client(); Client.verify read live list_project_files/get_current_program_info and checked project_name, path, language and base before query. Successful queries imply those checks passed. No independent live locator-path API is asserted.",
+      "configured_saved_project_file_exists": true,
+      "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "binary_bytes": 12223752,
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "PE_machine": "014c",
+      "worker_Ghidra_mutation": false
+    },
+    "scope": "Whole NORMAL schedule; Original EH prologue/epilogue/register/privateStack/fault/flags ABI explicitly not reproduced"
+  },
+  "full53_instruction_roles": [
+    {
+      "address": "00ab5700",
+      "Native": "MOV EAX,FS:[0x0] ",
+      "Source_role": "Original FS/EH prologue: compiler Source ABI only"
+    },
+    {
+      "address": "00ab5706",
+      "Native": "PUSH -0x1 ",
+      "Source_role": "Original -1 EH home: no Native EH authority"
+    },
+    {
+      "address": "00ab5708",
+      "Native": "PUSH 0xcb7cd8 ",
+      "Source_role": "Original handler address: no Source action installed"
+    },
+    {
+      "address": "00ab570d",
+      "Native": "PUSH EAX ",
+      "Source_role": "Original saved FS frame: compiler Source ABI"
+    },
+    {
+      "address": "00ab570e",
+      "Native": "MOV dword ptr FS:[0x0],ESP ",
+      "Source_role": "Original FS registration: compiler Source ABI"
+    },
+    {
+      "address": "00ab5715",
+      "Native": "MOV EAX,[0x00f8bd98] ",
+      "Source_role": "initial publication capture"
+    },
+    {
+      "address": "00ab571a",
+      "Native": "SUB ESP,0x8 ",
+      "Source_role": "ordinary external8B Frame, not literal ESP subtraction"
+    },
+    {
+      "address": "00ab571d",
+      "Native": "PUSH EDI ",
+      "Source_role": "ordinary C++ preserved registers"
+    },
+    {
+      "address": "00ab571e",
+      "Native": "XOR EDI,EDI ",
+      "Source_role": "Native zero constant/null role"
+    },
+    {
+      "address": "00ab5720",
+      "Native": "CMP EAX,EDI ",
+      "Source_role": "captured initial null decision"
+    },
+    {
+      "address": "00ab5722",
+      "Native": "JNZ 0x00ab57a2 ",
+      "Source_role": "captured fast return branch"
+    },
+    {
+      "address": "00ab5724",
+      "Native": "PUSH ESI ",
+      "Source_role": "ordinary C++ preserved register"
+    },
+    {
+      "address": "00ab5725",
+      "Native": "CALL 0x00415350 ",
+      "Source_role": "first genuine manager getter"
+    },
+    {
+      "address": "00ab572a",
+      "Native": "MOV ESI,dword ptr [EAX + 0x10] ",
+      "Source_role": "CURRENT first manager+10 section capture"
+    },
+    {
+      "address": "00ab572d",
+      "Native": "CMP ESI,EDI ",
+      "Source_role": "captured section null decision, EFLAGS/private-fault order excluded"
+    },
+    {
+      "address": "00ab572f",
+      "Native": "MOV dword ptr [ESP + 0x8],0xce37fc ",
+      "Source_role": "guard profile ordinary volatile view store"
+    },
+    {
+      "address": "00ab5737",
+      "Native": "MOV dword ptr [ESP + 0xc],ESI ",
+      "Source_role": "guard captured-section ordinary volatile view store"
+    },
+    {
+      "address": "00ab573b",
+      "Native": "JZ 0x00ab5748 ",
+      "Source_role": "captured section skip-enter branch"
+    },
+    {
+      "address": "00ab573d",
+      "Native": "PUSH ESI ",
+      "Source_role": "genuine Win32 API argument"
+    },
+    {
+      "address": "00ab573e",
+      "Native": "CALL dword ptr [0x00ce2218] ",
+      "Source_role": "real EnterCriticalSection"
+    },
+    {
+      "address": "00ab5744",
+      "Native": "ADD dword ptr [ESI + 0x18],0x1 ",
+      "Source_role": "single actual counter+18 ADD1"
+    },
+    {
+      "address": "00ab5748",
+      "Native": "MOV dword ptr [ESP + 0x18],EDI ",
+      "Source_role": "passive reached-state0 only, no Original EH home/permit"
+    },
+    {
+      "address": "00ab574c",
+      "Native": "CMP dword ptr [0x00f8bd98],EDI ",
+      "Source_role": "current publication recheck"
+    },
+    {
+      "address": "00ab5752",
+      "Native": "JNZ 0x00ab578d ",
+      "Source_role": "skip creation if current nonnull"
+    },
+    {
+      "address": "00ab5754",
+      "Native": "PUSH 0x10 ",
+      "Source_role": "actual allocation native16/host16 request"
+    },
+    {
+      "address": "00ab5756",
+      "Native": "CALL 0x00bf681b ",
+      "Source_role": "genuine singleton_lifetime_allocate"
+    },
+    {
+      "address": "00ab575b",
+      "Native": "ADD ESP,0x4 ",
+      "Source_role": "ordinary Source call ABI"
+    },
+    {
+      "address": "00ab575e",
+      "Native": "CMP EAX,EDI ",
+      "Source_role": "captured allocation null decision"
+    },
+    {
+      "address": "00ab5760",
+      "Native": "JZ 0x00ab5773 ",
+      "Source_role": "null allocation skip all object stores"
+    },
+    {
+      "address": "00ab5762",
+      "Native": "MOV dword ptr [EAX],0xd5c4b8 ",
+      "Source_role": "actual profile DWORD store after individual default placement birth"
+    },
+    {
+      "address": "00ab5768",
+      "Native": "MOV dword ptr [EAX + 0x4],EDI ",
+      "Source_role": "actual entries pointer zero store"
+    },
+    {
+      "address": "00ab576b",
+      "Native": "MOV dword ptr [EAX + 0x8],EDI ",
+      "Source_role": "actual count zero store"
+    },
+    {
+      "address": "00ab576e",
+      "Native": "MOV dword ptr [EAX + 0xc],EDI ",
+      "Source_role": "actual capacity zero store"
+    },
+    {
+      "address": "00ab5771",
+      "Native": "JMP 0x00ab5775 ",
+      "Source_role": "structured creation branch join"
+    },
+    {
+      "address": "00ab5773",
+      "Native": "XOR EAX,EAX ",
+      "Source_role": "nullable created result"
+    },
+    {
+      "address": "00ab5775",
+      "Native": "MOV [0x00f8bd98],EAX ",
+      "Source_role": "same actual publication store includingnull"
+    },
+    {
+      "address": "00ab577a",
+      "Native": "CALL 0x00415350 ",
+      "Source_role": "second genuine manager getter"
+    },
+    {
+      "address": "00ab577f",
+      "Native": "MOV ECX,dword ptr [0x00f8bd98] ",
+      "Source_role": "CURRENT publication capture AFTER second getter"
+    },
+    {
+      "address": "00ab5785",
+      "Native": "PUSH ECX ",
+      "Source_role": "pushed argument observation, not actual insertion receipt"
+    },
+    {
+      "address": "00ab5786",
+      "Native": "MOV ECX,EAX ",
+      "Source_role": "genuine raw __fastcall manager receiver"
+    },
+    {
+      "address": "00ab5788",
+      "Native": "CALL 0x00bd0c30 ",
+      "Source_role": "existing genuine BD0C30"
+    },
+    {
+      "address": "00ab578d",
+      "Native": "CMP ESI,EDI ",
+      "Source_role": "FIRST captured section normal-exit decision, not guard-home reread"
+    },
+    {
+      "address": "00ab578f",
+      "Native": "JZ 0x00ab579c ",
+      "Source_role": "skip normal leave if capturednull"
+    },
+    {
+      "address": "00ab5791",
+      "Native": "ADD dword ptr [ESI + 0x18],-0x1 ",
+      "Source_role": "single actual counter+18 ADD-1"
+    },
+    {
+      "address": "00ab5795",
+      "Native": "PUSH ESI ",
+      "Source_role": "FIRST captured section to genuine Win32 API"
+    },
+    {
+      "address": "00ab5796",
+      "Native": "CALL dword ptr [0x00ce2210] ",
+      "Source_role": "real LeaveCriticalSection"
+    },
+    {
+      "address": "00ab579c",
+      "Native": "MOV EAX,[0x00f8bd98] ",
+      "Source_role": "late current publication capture AFTER leave"
+    },
+    {
+      "address": "00ab57a1",
+      "Native": "POP ESI ",
+      "Source_role": "ordinary C++ preserved register"
+    },
+    {
+      "address": "00ab57a2",
+      "Native": "MOV ECX,dword ptr [ESP + 0xc] ",
+      "Source_role": "Original FS/EH epilogue: compiler Source ABI"
+    },
+    {
+      "address": "00ab57a6",
+      "Native": "POP EDI ",
+      "Source_role": "ordinary C++ preserved register"
+    },
+    {
+      "address": "00ab57a7",
+      "Native": "MOV dword ptr FS:[0x0],ECX ",
+      "Source_role": "Original FS restoration: compiler Source ABI"
+    },
+    {
+      "address": "00ab57ae",
+      "Native": "ADD ESP,0x14 ",
+      "Source_role": "Original stack restoration: compiler Source ABI"
+    },
+    {
+      "address": "00ab57b1",
+      "Native": "RET ",
+      "Source_role": "ordinary Source return, not Original no-input RET ABI"
+    }
+  ],
+  "immutable_prior_artifact_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_getter_storage_20261031\\approved_candidate\\manifest.json",
+      "bytes": 1935,
+      "sha256": "44e2630cf3fff4ce0b09dcba857f68b024958b06242666ad69785d585ec489f1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_getter_storage_20261031\\approved_candidate\\normal_getter_candidate.json",
+      "bytes": 29964,
+      "sha256": "1be68d9a4eb546b37f443870797f85ead9ea655ce3c31648e250737bf91ba293"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_getter_storage_20261031\\approved_candidate\\candidate_new_sources.patch",
+      "bytes": 12928,
+      "sha256": "bd61b87d296f10afaed2d4f3529ed0914e71066e67ab6062cd9b0e598456ac3c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_getter_storage_20261031\\approved_candidate\\verify_candidate.py",
+      "bytes": 5765,
+      "sha256": "ff3467e3d6206b278c1bd2f7e2d807a47d28b97a030720ce5e31d110ea9f1f9c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_getter_storage_20261031\\approved_candidate\\static_candidate_receipt.json",
+      "bytes": 443,
+      "sha256": "4109fae911693796feffc8ffe117ef4924e63871d6035dd7d02d5e602879f10e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_getter_storage_20261031\\candidate_peer\\read_only_review_receipt.json",
+      "bytes": 8189,
+      "sha256": "e51dc6320b87b8ebb4928bc0ac83d642291bc61a01c2bff86fadcd220cc30d1c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_getter_storage_20261031\\candidate_peer\\manifest.json",
+      "bytes": 7082,
+      "sha256": "f505797d8fc9356190444899ee6fa86deed3751078b433b9f52022045f8fd497"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_getter_storage_20261031\\candidate_peer\\independent_static_proof.json",
+      "bytes": 27785,
+      "sha256": "99827fe7b7324f0b1a6d930da189222aea22f5faf99b10c46aeb69197cee463a"
+    }
+  ],
+  "prior_static_reviews": {
+    "candidate_author_static_checks": 83,
+    "independent_candidate_checks": 102,
+    "independent_candidate_findings": 0,
+    "independent_tracked_Git_peer": "pending after this author commit",
+    "Root_and_peer_conditional_author_review": "satisfied before worktree/lease/materialization; exact approved H6233/CPP6259 preserved"
+  },
+  "Source_API": {
+    "return": "NativeGuiIconDelayedLoadsStorage* (copied identity, no Owner/liveness capability)",
+    "inputs": [
+      "SAME NativeGuiIconDelayedLoadsStorage* volatile& actual F8BD98",
+      "SAME void* volatile& actual manager publication01090AA0",
+      "caller-retained ordinary no-DMI Frame8 guard words",
+      "fresh nonmoving private passive Acquired"
+    ],
+    "feature_or_rawpool_adapter": "No feature used by Native getter. Existing NativeStringRawPoolContext.actual_manager_publication_01090aa0 already gives the needed real manager-cell ref. No fake RawPool or fallback cell is needed. Service Impl can forward both its current private references without adding public process writable getter."
+  },
+  "retained_guard_choice": {
+    "backing": "two ordinary uint32_t fields, no DMI; explicit volatile views for modeled stores; actual8B not full Original stack image",
+    "fresh_record": "Source-only default metadata separate from frame preimages; nonmoving/private writer/const observation/no reset or Native issuer",
+    "fast_path": "no guard read/write; skipped preimages untouched",
+    "slow_path": "first manager section capture; profile then section guard stores; realEnter then actual+18 increment; passive state0 only",
+    "normal_exit": "captured FIRST section, not current guard+4; actual+18 decrement then realLeave; only after that slow current return",
+    "escape": "any escaping C++ records UNKNOWN/rethrows, no local RAII/native action/free/rollback/termination. Retain remaining reached graph and possibly held lock/depth debt; do not undo genuine callee effects. Hardware/foreign/fault/SEH still outside Source ABI."
+  },
+  "identity_obligations": {
+    "I": "initial captured publication, returned unchanged fast",
+    "A": "actual allocation if reached; null branch retained, nonnull individual existing16B Storage birth then four volatile stores",
+    "P": "CURRENT publication loaded after second manager getter and pushed to registration",
+    "V": "value actually appended by BD0C30/BD0BC0 after own current argument/bounds/validation/growth schedule; NOT observed or authenticated by this entry",
+    "T": "late CURRENT publication after normal first-section leave, returned unchanged slow",
+    "equality": "No A/P/V/T equality is imposed or inferred; all return identities/null preserved without require_owned/require_array/profile/count/cap guards",
+    "private_observations": "A/P/T plus reached phases only. No V/registered-owner receipt or replacement custody factory. Pointer-only observations/returns never trigger pointee reads/keeps/authentication."
+  },
+  "actual_owner_registry_findings": [
+    "Existing Core service registered_identity records its own created storage and is not a replacement-holder receipt",
+    "Game process owns genuine publication privately and offers value/status only; forward existing Impl cell byref later, no new writable process getter/bank",
+    "Native BD0C30 returnsvoid/raw manager-vector append; no construction/custody receipt, duplicate-check/retain or registry authority",
+    "NativeRenderActualOwnerRegistry bind/publish requires RenderCommandReference count alias actual+04 and positive atomic; this singleton actual+04 is entries pointer. Reservation cannot make a valid singleton companion; no fake reference/count/wrapper registry is proposed"
+  ],
+  "ordinary_storage_preconditions": [
+    "exact live/distinct actual publication and manager cells; no independent mapped/global authority",
+    "Frame8 and Acquired objects constructed ordinary backing, mutually disjoint from Source argument homes, both actual cells and OTHER Native write/payload/callee-private extents; no value-initFrame or copied canonical cell",
+    "fresh retained per invocation; current/failed record never reused; no hot acquisition or metadata allocation",
+    "manager raw+10 read, real section object/counter+18 and new allocation backing valid at every reached access with actual compatible manager/CRT/SDK providers",
+    "nonnull allocation supports individual existing16B trivial Storage birth without()/{} then exactfour stores; no T[n]/logical owner projection",
+    "pointer-only A/P/T identity copies need no new getter-side owner admission/liveness check; later consumer separately supplies current generation/pointee/array/graph custody",
+    "unknown/failure disposition retains remaining native effect debt and providers without replay; Source callee cleanup already performed is not undone",
+    "Original stack/privatealias/flags/fault/CRT/RTTI/SEH/FH3/provider-exception/Origin identity and runtime/gameplay remain unproved"
+  ],
+  "existing_credit_and_old_support": {
+    "credited_body": "src/gui_widgets_cc13.cpp gui_icon_delayed_loads_00ab5700 remains byte-exact; zero additional Original/duplicate body credit",
+    "legacy_core": "old get/invoke/require_owned/require_array and service/Host/default/noexcept paths unchanged",
+    "normal_provider_reuse": "get_native_singleton_manager_00415350, singleton_lifetime_allocate16, raw BD0C30 and genuine Windows Enter/Leave imports; no numeric codeword invocation",
+    "genuine_EH_leaf": "destroy_native_singleton_guard_00411ee0 already available, but no call as normal replacement or unknown-escape action",
+    "inherited_qualifications": "manager constructor/getter and registration retain existing qualified Source exception/counter/SDKinvalid-handler behavior. New wrapper supplies no positive Native exception proof"
+  },
+  "separate_activation_gates": [
+    "cold actual two-Operation getter/cancel metadata and raw57 ownerHOME staged at5E93 before getter, per-parent retained custody",
+    "genuine current16B/individual12B/backend lifetime for cancellation and actual Owner generation coupling",
+    "whole Icon negative scope and its final AA9730 prepared base; enclosing exact selected AA9730 parent attempt/table(child) scope owned independently by Frame",
+    "No new throwing route through existing noexcept terminal/zero/reference paths",
+    "existing runtime/Origin/throwing/Original ABI and full gameplay gates"
+  ],
+  "new_Source_facts": [
+    "four mandatory references to same typed publication/same raw manager cell/ordinary8B frame/fresh passive private record",
+    "ordinary Frame no-DMI and explicit volatile views; fresh Source metadata does not zero Native preimages",
+    "nonnull fast captured return unfiltered; slow first section capture/normal leave and late current return exact",
+    "nonnull allocation individual existing16B trivial Storage birth without()/{} then four volatile stores; no T[n] credit",
+    "unknown escaping Source C++ only records/rethrows; caller must retain remaining lock/depth/graph debt without inferred Native cleanup",
+    "A/P/T observations not current-holder or actual appended-V receipt; no replacement owner/custody factory",
+    "old semantic facade, Core service, getter/cancel/scalar/default/noexcept/application calls and support byte exact"
+  ],
+  "Original_vendor_helper_CG_duplicate_ABI_runtime_activation_credit": 0,
+  "compiler_or_Game_executed_by_worker": false,
+  "worker_actions": {
+    "four_path_Source_authoring_authorized": true,
+    "lease_address_and_four_paths_before_materialization": true,
+    "only_reviewed_candidate_bytes_materialized": true,
+    "CMake_ledger_Ghidra_existingSource_edits": false,
+    "compiler_tests_probe_Game": false,
+    "activation": false
+  },
+  "compile_and_integration_status": "UNCOMPILED new files; Root owns CMake registration and common/retained/Core checks after author and immutable Git peer. Existing Source61/other Main compiler results are not new getter receipts.",
+  "reader": {
+    "bytes": 5436,
+    "sha256": "e9154163d44179123390988f65f3496b213a99490b72a9a63ae7672fd400bd1e",
+    "source_utf8": "import argparse,hashlib,json,pathlib,re,subprocess\nP=argparse.ArgumentParser();P.add_argument('--root',default='.');P.add_argument('--commit');P.add_argument('--worktree',action='store_true');P.add_argument('--output');A=P.parse_args();R=pathlib.Path(A.root).resolve();Q=json.loads((R/'reports/cc16_native_gui_icon_delayed_loads_getter_storage.json').read_bytes());checks=0\n\ndef h(b):return hashlib.sha256(b).hexdigest()\ndef git(*a,input=None):return subprocess.check_output(['git',*a],cwd=R,input=input)\ndef ok(v):\n global checks\n assert v;checks+=1\n\ndef read(p):return (R/p).read_bytes() if A.worktree else git('show',(A.commit or 'HEAD')+':'+p)\nB=Q['parent'];ok(B=='a75c2001aa78aaa848fc76133a46dd742f975293')\nfor p in Q['four_owned_paths']:ok(not git('ls-tree',B,'--',p))\nfor x in Q['source_postimages']:\n b=read(x['path']);ok(len(b)==x['bytes'] and h(b)==x['sha256']);ok(b'\\r' not in b and not b.startswith(b'\\xef\\xbb\\xbf'))\nok(Q['source_postimages'][0]['sha256']=='5a03ce3ed5741a80161ff7d1f0a0c0ec2dcf122867d3306c87a53918ff2a1800');ok(Q['source_postimages'][1]['sha256']=='9ccb3d4e8d809b46a12444531af67b98f1e0badc63cf7e9ac79c84e853bfd70d')\nfor x in Q['unchanged_provider_pins']:\n a=git('show',B+':'+x['path']);b=read(x['path']);ok(a==b and len(b)==x['bytes'] and h(b)==x['sha256']);ok(git('rev-parse',B+':'+x['path']).decode().strip()==x['git_blob'])\nN=Q['Native_normal_entry'];rows=re.findall(r'^([0-9a-f]{8}):\\s+(.*)$',N['listing_utf8'],re.M);ok(len(rows)==53)\nfor x,y in zip(Q['full53_instruction_roles'],rows):ok((x['address'],x['Native'])==y)\nok(len(bytes.fromhex(N['installed_PE_hex']))==178 and h(bytes.fromhex(N['installed_PE_hex']))==N['installed_PE_sha256']);ok(len([x for x in rows if x[1].startswith('CALL 0x')])==4 and len([x for x in rows if x[1].startswith('CALL dword')])==2)\nC=read(Q['source_postimages'][1]['path']).decode();H=read(Q['source_postimages'][0]['path']).decode();S=re.sub(r'//[^\\n]*','',C);head=re.sub(r'//[^\\n]*','',H)\nok(S.count('= publication;')==4 and S.count('publication = created;')==1);ok(S.count('frame.guard_section_home')==1 and S.count('frame.guard_profile_home')==1)\norder=['get_native_singleton_manager_00415350(manager_publication)','read_word(first_manager, 0x10)','live(frame.guard_profile_home) = 0x00ce37fc','live(frame.guard_section_home) = bits(captured_section)','EnterCriticalSection(','adjust_depth(captured_section, 1u)','a.state0_reached = true','auto* const rechecked = publication;','singleton_lifetime_allocate({','? ::new (allocation) NativeGuiIconDelayedLoadsStorage : nullptr','created->native_vtable_00 = 0x00d5c4b8','created->entries_04 = nullptr','created->count_08 = 0','created->capacity_0c = 0','publication = created;','void* const second_manager = get_native_singleton_manager_00415350(manager_publication)','auto* const pushed_argument = publication;','register_native_singleton_object_00bd0c30(second_manager, nullptr, pushed_argument)','adjust_depth(captured_section, 0xffffffffu)','LeaveCriticalSection(','auto* const result = publication;'];ok([S.index(x) for x in order]==sorted(S.index(x) for x in order))\nok('std::uint32_t guard_profile_home;' in head and 'std::uint32_t guard_section_home;' in head and 'sizeof(NativeGuiIconDelayedLoadsGetterStorageFrame) == 8' in head);ok(head.count('= delete;')==4 and 'Observation observation_{};' in head and 'const Observation& observation() const' in head)\ncatch=re.search(r'catch\\s*\\(\\.\\.\\.\\)\\s*\\{([\\s\\S]*?)\\n    \\}',S).group(1);ok('unknown_source_escape' in catch and 'throw;' in catch and not any(x in catch for x in ['LeaveCriticalSection','destroy_','free(','terminate(','delete ']));ok(not any(x in S for x in ['require_owned','require_array','std::make_unique','std::lock_guard','CapturedSoundLifetimeSection','singleton_lifetime_free','destroy_native_singleton_guard_00411ee0','noexcept']))\nasm=re.findall(rb'__asm\\s*\\{[\\s\\S]*?\\}',C.encode());ok([{'bytes':len(x),'sha256':h(x)} for x in asm]==Q['own_integer_asm_blocks']);ok(not re.search(rb'\\b(?:fld|fstp|fild|fistp|fninit|fldcw|movss|movsd)\\b',b''.join(asm),re.I))\ndoc=read(Q['four_owned_paths'][2]);ok(len(doc)==Q['document']['bytes'] and h(doc)==Q['document']['sha256'])\ndef tree(c):return {x.split(b'\\t',1)[1]:x.split(b'\\t',1)[0] for x in git('ls-tree','-r','-z',c).split(b'\\0') if x}\nt=tree(B)\nif A.worktree:\n u=dict(t)\n for p in Q['four_owned_paths']:u[p.encode()]=b'100644 blob '+git('hash-object','--stdin',input=read(p)).strip()\n changed=set(git('diff','--name-only',B).decode().splitlines())|set(git('ls-files','--others','--exclude-standard').decode().splitlines());ok(changed==set(Q['four_owned_paths']))\nelse:u=tree(A.commit or 'HEAD')\nok({p.decode() for p in set(t)|set(u) if t.get(p)!=u.get(p)}==set(Q['four_owned_paths']))\nfor p in Q['four_owned_paths']:u.pop(p.encode())\nok(u==t);ok(Q['Original_vendor_helper_CG_duplicate_ABI_runtime_activation_credit']==0 and not Q['compiler_or_Game_executed_by_worker'])\nresult={'pass':True,'checks':checks,'mode':'working-tree' if A.worktree else 'Git-commit','parent':B,'four_paths_additions_only':True,'full_recursive_tree_inverse':True,'exact_reviewed_H_CPP':True,'unchanged_provider_pins':len(Q['unchanged_provider_pins']),'Native_ops':53,'Native_bytes':178,'own_integer_asm_blocks':2,'compiler_tests_probes_Game_Ghidra_actions':False,'activation_or_Native_permission':False}\nif A.output:pathlib.Path(A.output).write_bytes((json.dumps(result,indent=2)+'\\n').encode())\nprint(json.dumps(result))\n",
+    "usage": "Extract reader.source_utf8 UTF8 LF; python reader.py --root <checkout> --commit <packet_SHA>; before commit --worktree. Reads Git/files only; optional ignored --output writes static receipt."
+  },
+  "materialized_author_static_verification": {
+    "pass": true,
+    "checks": 125,
+    "mode": "working-tree",
+    "parent": "a75c2001aa78aaa848fc76133a46dd742f975293",
+    "four_paths_additions_only": true,
+    "full_recursive_tree_inverse": true,
+    "exact_reviewed_H_CPP": true,
+    "unchanged_provider_pins": 22,
+    "Native_ops": 53,
+    "Native_bytes": 178,
+    "own_integer_asm_blocks": 2,
+    "compiler_tests_probes_Game_Ghidra_actions": false,
+    "activation_or_Native_permission": false,
+    "qualification": "Read-only Source/Git/text checks only, not compiler/runtime/Native behavior tests"
+  }
+}

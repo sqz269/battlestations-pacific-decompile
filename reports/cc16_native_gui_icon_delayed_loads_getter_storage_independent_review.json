@@ -1,0 +1,393 @@
+{
+  "schema_version": 1,
+  "packet": "codex-native-icon-getter-storage-independent-review",
+  "reviewed_author_commit": "e050f8c23d0dafc874d4650df55061bec5490192",
+  "exact_parent": "a75c2001aa78aaa848fc76133a46dd742f975293",
+  "review_worktree_parent": "a75c2001aa78aaa848fc76133a46dd742f975293",
+  "verdict": {
+    "actionable_Source_findings": 0,
+    "findings": [],
+    "scope": "uncompiled isolated normal library Source primitive only",
+    "service_or_hierarchy_activation_ready": false,
+    "Original_ABI_Native_Origin_runtime_approved": false
+  },
+  "author_four_exact_Git_pins": [
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads_getter_storage.hpp",
+      "bytes": 6233,
+      "sha256": "5a03ce3ed5741a80161ff7d1f0a0c0ec2dcf122867d3306c87a53918ff2a1800",
+      "git_blob_sha1": "3b234fbd78a56ed0fe8050d474be3fdc085a67ec"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads_getter_storage.cpp",
+      "bytes": 6259,
+      "sha256": "9ccb3d4e8d809b46a12444531af67b98f1e0badc63cf7e9ac79c84e853bfd70d",
+      "git_blob_sha1": "4340f45914bfd92bc9d3ac6338c16e7527b011b2"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_ICON_DELAYED_LOADS_GETTER_STORAGE.md",
+      "bytes": 8224,
+      "sha256": "c15ae171632b2ce5d5f0a59bebbf8a7f173a120548fa08fd655de609bb7da6b3",
+      "git_blob_sha1": "74a4316a2c9461dbce26d30c1876c327c34a9297"
+    },
+    {
+      "path": "reports/cc16_native_gui_icon_delayed_loads_getter_storage.json",
+      "bytes": 36737,
+      "sha256": "998ea83e1e208fcc3b148847bdd6da16aaf24d2c8d10bdb1d2724ad05baaada1",
+      "git_blob_sha1": "4036767e2bea90164b0116c737f351737dce0d4b"
+    }
+  ],
+  "prior_candidate_full_body_Native_review": {
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-getter-storage-review\\local\\output\\cc16_native_icon_getter_storage_independent_review_20261031\\prior_read_only_review_receipt.json",
+      "bytes": 8189,
+      "sha256": "e51dc6320b87b8ebb4928bc0ac83d642291bc61a01c2bff86fadcd220cc30d1c"
+    },
+    "proof": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-getter-storage-review\\local\\output\\cc16_native_icon_getter_storage_independent_review_20261031\\prior_independent_static_proof.json",
+      "bytes": 27785,
+      "sha256": "99827fe7b7324f0b1a6d930da189222aea22f5faf99b10c46aeb69197cee463a"
+    },
+    "checks": 102,
+    "findings": 0,
+    "complete_body_reread_after_exact_byte_match": false,
+    "fresh_Native_queries_for_final_Git_peer": false,
+    "Native_entry": "00AB5700",
+    "end_exclusive": "00AB57B2",
+    "bytes": 178,
+    "ops": 53,
+    "calls_direct": 4,
+    "calls_Win32_IAT": 2
+  },
+  "independent_Git_verification": {
+    "checks": 109,
+    "all_passed": true,
+    "full_recursive_four_addition_inverse": true,
+    "all22_genuine_providers_match_prior_19_plus3": true,
+    "eight_immutable_prior_artifacts_match": true,
+    "whole53_roles_and_Native_bytes_preserved": true,
+    "both_integer_ASM_blocks_preserved": true,
+    "proof": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-getter-storage-review\\local\\output\\cc16_native_icon_getter_storage_independent_review_20261031\\independent_Git_proof.json",
+      "bytes": 24666,
+      "sha256": "ad5585560826e54aaa903c62ef7acbb0c279c87764a248fc92daf71a9bc65053"
+    },
+    "reader": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-getter-storage-review\\local\\output\\cc16_native_icon_getter_storage_independent_review_20261031\\independent_Git_reader.py",
+      "bytes": 6259,
+      "sha256": "e8601bce12653fdff7d74280f4fc72b6b401245008d84c21f908623c9f3fc13d"
+    }
+  },
+  "same_provider_pins": [
+    {
+      "path": "include/bsp/native_gui_icon_delayed_loads.hpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 8671,
+      "sha256": "c90af3cb31bb60f3c48f4146fe5b61bd0372e7f017906c8491bdb705401e2374",
+      "git_blob": "da74313bf9fb8d144c0cb37bbd54156f8b2c185f"
+    },
+    {
+      "path": "src/native_gui_icon_delayed_loads.cpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 17409,
+      "sha256": "42a3ea48aba347a4adfb807e9bc84b95ee4edf33efc66312a2a1f13b6f0dfcf1",
+      "git_blob": "68b15fd9b445bb8057b0c57602ce9bf2b6b1a1a0"
+    },
+    {
+      "path": "include/bsp/game_native_gui_icon_process.hpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 3975,
+      "sha256": "64ea6df52c7f26f2a25fa8f485bb6022116178887d828f031fe8c5b4413db441",
+      "git_blob": "86ea513e79e4b8c15be217b3a5daa744171ea94d"
+    },
+    {
+      "path": "src/game_native_gui_icon_process.cpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 4452,
+      "sha256": "771ae831af661e9420fb8a58d67bd10511456ae83e9764acb3245ded32b71655",
+      "git_blob": "3bf20aa83282178518eb25f098337d6928af3c48"
+    },
+    {
+      "path": "include/bsp/native_singleton_publication.hpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 2293,
+      "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+      "git_blob": "efb55fd128088fa594c8f4c71a26017b9023c5ce"
+    },
+    {
+      "path": "src/native_singleton_publication.cpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 4127,
+      "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "git_blob": "2478972b6f3df07e9fb6c66e7ac04eebafa69bb8"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 2373,
+      "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "git_blob": "9379a2a6cd97f13fabc2554b0b539363b85a5da2"
+    },
+    {
+      "path": "src/native_singleton_vector_registration_wrappers.cpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 4283,
+      "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "git_blob": "4096dfcf1c693f3c509c8db5f1cfb621e523b0d0"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_reserve_construct.hpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 1845,
+      "sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
+      "git_blob": "658de06b21b30d7733ba2c4836371a05c44c377a"
+    },
+    {
+      "path": "src/native_singleton_vector_reserve_construct.cpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 3731,
+      "sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+      "git_blob": "e1e3c2b5e4c1eca61f6a3033a649eab2b85e0ff6"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+    },
+    {
+      "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 2420,
+      "sha256": "935960697b2f517ff8f5e0f14899a182182e37d8a10c6ed4f221f34dd9c0c868",
+      "git_blob": "ae4dfc7a92d936c985d8c2d2c960076d562bc56c"
+    },
+    {
+      "path": "src/native_diagnostic_sink_lifetime.cpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 6035,
+      "sha256": "7ef822175d062d799683312c6a8f9618c1771ec013e7424b48eedd66c7968499",
+      "git_blob": "c52cbdfdca19f5a9838053444ecf819307cc5c98"
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 10071,
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+      "git_blob": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 11471,
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+      "git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97"
+    },
+    {
+      "path": "include/bsp/gui_widgets_cc13.hpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 92980,
+      "sha256": "2a889c7f79cdfa87e99283c4b0286eed4911845410425a38918cb39aeecb63b7",
+      "git_blob": "a69f853d6015aa99b2efaaa0bb71f497052c8292"
+    },
+    {
+      "path": "src/gui_widgets_cc13.cpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 75116,
+      "sha256": "20312bdde0d2a577300c6431ea53a54aaaaf6c05c3c6670dc655c20864bb74da",
+      "git_blob": "4511ee034957d5d2322c36deae1ee9618ac847bb"
+    },
+    {
+      "path": "include/bsp/native_renderer_worker_lifetime.hpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 2431,
+      "sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+      "git_blob": "484cbc12dfe5be998ee8e92c71afb59a57a806f4"
+    },
+    {
+      "path": "src/native_renderer_worker_lifetime.cpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 6911,
+      "sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+      "git_blob": "5212269531c2f191f6feb01f6b00b9cdf53afa21"
+    },
+    {
+      "path": "include/bsp/random_threads.hpp",
+      "commit": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "bytes": 1446,
+      "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+      "git_blob": "72b34c51801ffceaefff525a4eddbe152c3ee1e2"
+    }
+  ],
+  "prior_artifact_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_getter_storage_20261031\\approved_candidate\\manifest.json",
+      "bytes": 1935,
+      "sha256": "44e2630cf3fff4ce0b09dcba857f68b024958b06242666ad69785d585ec489f1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_getter_storage_20261031\\approved_candidate\\normal_getter_candidate.json",
+      "bytes": 29964,
+      "sha256": "1be68d9a4eb546b37f443870797f85ead9ea655ce3c31648e250737bf91ba293"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_getter_storage_20261031\\approved_candidate\\candidate_new_sources.patch",
+      "bytes": 12928,
+      "sha256": "bd61b87d296f10afaed2d4f3529ed0914e71066e67ab6062cd9b0e598456ac3c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_getter_storage_20261031\\approved_candidate\\verify_candidate.py",
+      "bytes": 5765,
+      "sha256": "ff3467e3d6206b278c1bd2f7e2d807a47d28b97a030720ce5e31d110ea9f1f9c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_getter_storage_20261031\\approved_candidate\\static_candidate_receipt.json",
+      "bytes": 443,
+      "sha256": "4109fae911693796feffc8ffe117ef4924e63871d6035dd7d02d5e602879f10e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_getter_storage_20261031\\candidate_peer\\read_only_review_receipt.json",
+      "bytes": 8189,
+      "sha256": "e51dc6320b87b8ebb4928bc0ac83d642291bc61a01c2bff86fadcd220cc30d1c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_getter_storage_20261031\\candidate_peer\\manifest.json",
+      "bytes": 7082,
+      "sha256": "f505797d8fc9356190444899ee6fa86deed3751078b433b9f52022045f8fd497"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-delayed-loads-getter-storage\\local\\output\\cc16_native_gui_icon_delayed_loads_getter_storage_20261031\\candidate_peer\\independent_static_proof.json",
+      "bytes": 27785,
+      "sha256": "99827fe7b7324f0b1a6d930da189222aea22f5faf99b10c46aeb69197cee463a"
+    }
+  ],
+  "author_reader": {
+    "complete_source_inspected_before_execution": true,
+    "bytes": 5436,
+    "sha256": "e9154163d44179123390988f65f3496b213a99490b72a9a63ae7672fd400bd1e",
+    "format": "exact UTF8LF/CR0",
+    "execution": "read-only Git mode; explicit output confined to reviewer ignored folder",
+    "result": {
+      "pass": true,
+      "checks": 124,
+      "mode": "Git-commit",
+      "parent": "a75c2001aa78aaa848fc76133a46dd742f975293",
+      "four_paths_additions_only": true,
+      "full_recursive_tree_inverse": true,
+      "exact_reviewed_H_CPP": true,
+      "unchanged_provider_pins": 22,
+      "Native_ops": 53,
+      "Native_bytes": 178,
+      "own_integer_asm_blocks": 2,
+      "compiler_tests_probes_Game_Ghidra_actions": false,
+      "activation_or_Native_permission": false
+    },
+    "result_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-getter-storage-review\\local\\output\\cc16_native_icon_getter_storage_independent_review_20261031\\author_sealed_Git_reader_result.json",
+      "bytes": 429,
+      "sha256": "66bf8dbb9ebcb608cb4df754fd3278e22bbe5f76e1dd6646d263a7d94b3072c1"
+    },
+    "author_working_tree125": "separate immutable working mode, not this124-check run"
+  },
+  "qualified_normal_contract": {
+    "Source_API": {
+      "return": "NativeGuiIconDelayedLoadsStorage* (copied identity, no Owner/liveness capability)",
+      "inputs": [
+        "SAME NativeGuiIconDelayedLoadsStorage* volatile& actual F8BD98",
+        "SAME void* volatile& actual manager publication01090AA0",
+        "caller-retained ordinary no-DMI Frame8 guard words",
+        "fresh nonmoving private passive Acquired"
+      ],
+      "feature_or_rawpool_adapter": "No feature used by Native getter. Existing NativeStringRawPoolContext.actual_manager_publication_01090aa0 already gives the needed real manager-cell ref. No fake RawPool or fallback cell is needed. Service Impl can forward both its current private references without adding public process writable getter."
+    },
+    "retained_guard_choice": {
+      "backing": "two ordinary uint32_t fields, no DMI; explicit volatile views for modeled stores; actual8B not full Original stack image",
+      "fresh_record": "Source-only default metadata separate from frame preimages; nonmoving/private writer/const observation/no reset or Native issuer",
+      "fast_path": "no guard read/write; skipped preimages untouched",
+      "slow_path": "first manager section capture; profile then section guard stores; realEnter then actual+18 increment; passive state0 only",
+      "normal_exit": "captured FIRST section, not current guard+4; actual+18 decrement then realLeave; only after that slow current return",
+      "escape": "any escaping C++ records UNKNOWN/rethrows, no local RAII/native action/free/rollback/termination. Retain remaining reached graph and possibly held lock/depth debt; do not undo genuine callee effects. Hardware/foreign/fault/SEH still outside Source ABI."
+    },
+    "identity_obligations": {
+      "I": "initial captured publication, returned unchanged fast",
+      "A": "actual allocation if reached; null branch retained, nonnull individual existing16B Storage birth then four volatile stores",
+      "P": "CURRENT publication loaded after second manager getter and pushed to registration",
+      "V": "value actually appended by BD0C30/BD0BC0 after own current argument/bounds/validation/growth schedule; NOT observed or authenticated by this entry",
+      "T": "late CURRENT publication after normal first-section leave, returned unchanged slow",
+      "equality": "No A/P/V/T equality is imposed or inferred; all return identities/null preserved without require_owned/require_array/profile/count/cap guards",
+      "private_observations": "A/P/T plus reached phases only. No V/registered-owner receipt or replacement custody factory. Pointer-only observations/returns never trigger pointee reads/keeps/authentication."
+    },
+    "actual_owner_registry_findings": [
+      "Existing Core service registered_identity records its own created storage and is not a replacement-holder receipt",
+      "Game process owns genuine publication privately and offers value/status only; forward existing Impl cell byref later, no new writable process getter/bank",
+      "Native BD0C30 returnsvoid/raw manager-vector append; no construction/custody receipt, duplicate-check/retain or registry authority",
+      "NativeRenderActualOwnerRegistry bind/publish requires RenderCommandReference count alias actual+04 and positive atomic; this singleton actual+04 is entries pointer. Reservation cannot make a valid singleton companion; no fake reference/count/wrapper registry is proposed"
+    ],
+    "ordinary_storage_preconditions": [
+      "exact live/distinct actual publication and manager cells; no independent mapped/global authority",
+      "Frame8 and Acquired objects constructed ordinary backing, mutually disjoint from Source argument homes, both actual cells and OTHER Native write/payload/callee-private extents; no value-initFrame or copied canonical cell",
+      "fresh retained per invocation; current/failed record never reused; no hot acquisition or metadata allocation",
+      "manager raw+10 read, real section object/counter+18 and new allocation backing valid at every reached access with actual compatible manager/CRT/SDK providers",
+      "nonnull allocation supports individual existing16B trivial Storage birth without()/{} then exactfour stores; no T[n]/logical owner projection",
+      "pointer-only A/P/T identity copies need no new getter-side owner admission/liveness check; later consumer separately supplies current generation/pointee/array/graph custody",
+      "unknown/failure disposition retains remaining native effect debt and providers without replay; Source callee cleanup already performed is not undone",
+      "Original stack/privatealias/flags/fault/CRT/RTTI/SEH/FH3/provider-exception/Origin identity and runtime/gameplay remain unproved"
+    ],
+    "existing_credit_and_old_support": {
+      "credited_body": "src/gui_widgets_cc13.cpp gui_icon_delayed_loads_00ab5700 remains byte-exact; zero additional Original/duplicate body credit",
+      "legacy_core": "old get/invoke/require_owned/require_array and service/Host/default/noexcept paths unchanged",
+      "normal_provider_reuse": "get_native_singleton_manager_00415350, singleton_lifetime_allocate16, raw BD0C30 and genuine Windows Enter/Leave imports; no numeric codeword invocation",
+      "genuine_EH_leaf": "destroy_native_singleton_guard_00411ee0 already available, but no call as normal replacement or unknown-escape action",
+      "inherited_qualifications": "manager constructor/getter and registration retain existing qualified Source exception/counter/SDKinvalid-handler behavior. New wrapper supplies no positive Native exception proof"
+    },
+    "separate_activation_gates": [
+      "cold actual two-Operation getter/cancel metadata and raw57 ownerHOME staged at5E93 before getter, per-parent retained custody",
+      "genuine current16B/individual12B/backend lifetime for cancellation and actual Owner generation coupling",
+      "whole Icon negative scope and its final AA9730 prepared base; enclosing exact selected AA9730 parent attempt/table(child) scope owned independently by Frame",
+      "No new throwing route through existing noexcept terminal/zero/reference paths",
+      "existing runtime/Origin/throwing/Original ABI and full gameplay gates"
+    ]
+  },
+  "compile_and_integration_status": "UNCOMPILED new files; Root owns CMake registration and common/retained/Core checks after author and immutable Git peer. Existing Source61/other Main compiler results are not new getter receipts.",
+  "Source_API_changes": "new ordinary four-reference interface; Frame8 has no DMI; private passive Acquired noncopy/nonmove. No existing API or body changed. Not Original no-input cdecl/EAX/RET compatibility.",
+  "remaining_gates": [
+    "Root actual Source65 CMake/common/retained/compiler/Core and integration checks",
+    "used service/parent/whole-Icon contexts and fresh adopted records, exact staged owner HOME, actual current-holder/subobject/generation/custody",
+    "qualified CRT/new-handler/current SDK/Win32/throwing behavior and retained entered failure debt",
+    "Original FH3/SEH/private-stack/EFLAGS/fault/NativeOrigin/ABI/runtime/gameplay remain unproved"
+  ],
+  "documentation": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-codex-native-icon-getter-storage-review\\docs\\CC16_NATIVE_GUI_ICON_DELAYED_LOADS_GETTER_STORAGE_INDEPENDENT_REVIEW.md",
+    "bytes": 4579,
+    "sha256": "d497cf681f30fd79911396bf99129b6dff267c94c796570401400a92cdb2da95"
+  },
+  "reviewer_actions": {
+    "tracked_paths_owned": [
+      "docs\\CC16_NATIVE_GUI_ICON_DELAYED_LOADS_GETTER_STORAGE_INDEPENDENT_REVIEW.md",
+      "reports/cc16_native_gui_icon_delayed_loads_getter_storage_independent_review.json"
+    ],
+    "production_Source_CMake_ledger_Ghidra_writes": false,
+    "Native_address_ownership": [],
+    "compiler_behavioral_tests_probes_provider_Game_execution": false,
+    "new_Native_analysis": false,
+    "held_branch_merge": false,
+    "application_selection": false,
+    "Original_vendor_helper_CG_duplicate_ABI_runtime_activation_credit": 0
+  },
+  "hash_formats": "SHA256 exact bytes. Git blob SHA1 includes git blob header. Immutable author/candidate Source and embedded reader are UTF8LF/CR0; no raw normalization."
+}
