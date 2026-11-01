@@ -13,6 +13,8 @@
 #include <optional>
 
 namespace bsp {
+class NativePostEffectParentDomain;
+class NativePostEffectParentFrame;
 class ActualNativeStringPoolStorage;
 struct NativeTracelineRenderAccess;
 
@@ -134,6 +136,9 @@ public:
     void reset_after_host_quiescence() noexcept;
 private:
     friend class NativePostEffectModelFrame;
+    friend class NativePostEffectParentDomain;
+    friend class NativePostEffectParentFrame;
+    void parent_source_retired(NativePostEffectParentFrame&, RenderCommandReference&) noexcept;
     friend class NativeMeshCanonicalAccess;
     void prepare_legacy(NativePostEffect20ConstructionContext&);
     void cancel_preparation_legacy() noexcept;
@@ -170,6 +175,7 @@ private:
     Phase phase_{Phase::idle};
     NativePostEffect20ConstructionAcquired acquired_;
     const NativePostEffectOrdinaryLifetimeBinding* ordinary_lifetime_{};
+    NativePostEffectParentFrame* parent_frame_{}; // authentic cold issuer only
     std::optional<NativePostEffectModelFrame> model_frame_;
     std::optional<NativeMeshCanonicalProducerFrame> mesh_frame_;
     std::optional<NativeMaterialFactoryAcquired> material_factory_;

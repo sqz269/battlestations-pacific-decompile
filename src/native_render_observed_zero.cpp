@@ -1,6 +1,7 @@
 #include "bsp/native_render_observed_zero.hpp"
 #include "bsp/native_model_owner.hpp"
 #include "bsp/native_post_effect_model_lifetime.hpp"
+#include "bsp/native_post_effect_parent_lifetime.hpp"
 #include <exception>
 #include <new>
 #include <utility>
@@ -46,6 +47,7 @@ void NativeRenderObservedZeroAccess::fail_frame(NativeRenderObservedZeroFrame& f
     for(auto* n=frame.head_;n;n=n->next_) {
         if(n->mesh_) NativeMeshCanonicalAccess::fail_observed_outer(*n->mesh_);
         if(n->model_) n->model_->record_source_failure();
+        if(n->parent_) n->parent_->record_source_failure();
     }
 }
 bool NativeRenderObservedZeroAccess::end_frame(NativeRenderObservedZeroFrame& frame,
@@ -61,6 +63,7 @@ bool NativeRenderObservedZeroAccess::end_frame(NativeRenderObservedZeroFrame& fr
         n->frame_=nullptr;
         if(n->mesh_) NativeMeshCanonicalAccess::release_observed_outer(*n->mesh_);
         if(n->model_) n->model_->release_observed_zero_hold(false);
+        if(n->parent_) n->parent_->release_observed_zero_hold(false);
     }
     return true;
 }
@@ -70,10 +73,14 @@ NativeRenderObservedZeroAccess::CppCountUse::CppCountUse(RenderCommandReference&
     } else if (auto* frame = reference.ordinary_model_) {
         frame->begin_cpp_count_use(static_cast<NativeModelReference&>(reference));
         model_ = frame;
+    } else if (auto* frame = reference.ordinary_parent_) {
+        frame->begin_cpp_count_use(reference);
+        parent_ = frame;
     }
 }
 NativeRenderObservedZeroAccess::CppCountUse::~CppCountUse() noexcept {
     if (model_) model_->end_cpp_count_use(); // external metadata only
+    if (parent_) parent_->end_cpp_count_use(); // external metadata only
 }
 void NativeRenderObservedZeroAccess::release_ordinary(RenderCommandReference& reference) {
     const CppCountUse use(reference);
@@ -98,6 +105,10 @@ void NativeRenderObservedZeroAccess::invoke(RenderCommandReference& reference, v
         auto& model=static_cast<NativeModelReference&>(reference);
         frame->hold_observed_zero(outer,model);
         frame->invoke_observed_zero(actual, model);
+        return;
+    } else if (auto* frame = reference.ordinary_parent_) {
+        frame->hold_observed_zero(outer, reference);
+        frame->invoke_observed_zero(actual, reference);
         return;
     }
     reference.release_zero_references(); // exact legacy virtual policy
