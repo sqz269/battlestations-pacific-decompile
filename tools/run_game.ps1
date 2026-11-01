@@ -69,16 +69,58 @@ $GameArgs = @($GameArgs | Where-Object { $_ -ne '--' })
 
 function Initialize-BspWindowedSettings([string[]]$Arguments,
     [string]$DocumentsRoot = [Environment]::GetFolderPath('MyDocuments')) {
+    function Read-SimpleBspOptions([string]$Path, [bool]$RequireWindowed) {
+        # The game reads raw bytes and whitespace tokens, not independent lines.
+        # Admit only complete generated-options records; reject ambiguous native
+        # syntax/encoding rather than mistake it for a windowed setting.
+        $bytes = [IO.File]::ReadAllBytes($Path)
+        if (@($bytes | Where-Object { $_ -gt 126 -or ($_ -lt 32 -and $_ -notin @(9, 10, 13)) }).Count) {
+            throw "Options must be ASCII without BOM/NUL/control bytes for a windowed validation launch: $Path"
+        }
+        $text = [Text.Encoding]::ASCII.GetString($bytes)
+        $numericKeys = [Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal)
+        foreach ($key in @('Fullscreen', 'HiResShadow', 'NoLOD', 'VSync', 'Vsync', 'ShaderModel', 'Antialias',
+            'Clouds', 'Foliage', 'Shadow', 'Reflection', 'TextureDetail', 'ObjectDetail', 'SoundEnabled', 'Firewall', 'HardwareReported')) {
+            $null = $numericKeys.Add($key)
+        }
+        $seenFullscreen = 0
+        foreach ($line in [regex]::Split($text, '\r\n|\n|\r')) {
+            $trimmed = $line.Trim([char[]]" `t")
+            if (-not $trimmed) { continue }
+            $words = @($trimmed -split '[ \t,]+')
+            if ($words[0] -ceq 'Language') {
+                if ($words.Count -ne 2 -or $words[1] -cnotmatch '^[A-Za-z0-9_.-]+$') {
+                    throw "Ambiguous Language options record; no game was launched: $Path"
+                }
+                continue
+            }
+            $arity = if ($words[0] -ceq 'Resolution') { 3 } elseif ($numericKeys.Contains($words[0])) { 2 } else { 0 }
+            if (-not $arity -or $words.Count -ne $arity) {
+                throw "Options require one complete generated key/value record per line, without quotes/comments or extra tokens: $Path"
+            }
+            for ($word = 1; $word -lt $words.Count; $word++) {
+                $value = 0
+                if ($words[$word] -cnotmatch '^[+-]?[0-9]+$' -or -not [int]::TryParse($words[$word], [ref]$value)) {
+                    throw "Options require complete Int32 values; no game was launched: $Path"
+                }
+            }
+            if ($words[0] -ceq 'Fullscreen') {
+                $seenFullscreen++
+                if ($RequireWindowed -and $value -ne 0) { throw "Refusing nonzero Fullscreen in $Path" }
+            }
+        }
+        if ($RequireWindowed -and -not $seenFullscreen) { throw "Explicit Fullscreen 0 is required in $Path" }
+        return $text
+    }
     $personalRoots = @()
     for ($i = 0; $i -lt $Arguments.Count; $i++) {
-        if ($Arguments[$i] -eq '--settings-personal-root') {
+        if ($Arguments[$i] -ceq '--settings-personal-root') {
             if ($i + 1 -ge $Arguments.Count -or $Arguments[$i + 1].StartsWith('--')) {
                 throw '--settings-personal-root requires a path; no game was launched'
             }
             $personalRoots += $Arguments[++$i]
-        } elseif ($Arguments[$i] -match '^--settings-personal-root=(.*)$') {
-            if (-not $Matches[1]) { throw '--settings-personal-root requires a path' }
-            $personalRoots += $Matches[1]
+        } elseif ($Arguments[$i] -match '^--settings-personal-root(?:=|$)') {
+            throw 'The game supports only exact --settings-personal-root followed by a separate path'
         }
     }
     if ($personalRoots.Count -gt 1) { throw 'Repeated --settings-personal-root is ambiguous; no game was launched' }
@@ -90,19 +132,20 @@ function Initialize-BspWindowedSettings([string[]]$Arguments,
     $seedSource = $null
     $backup = $null
     if ($private) {
-        [IO.Directory]::CreateDirectory((Split-Path $options -Parent)) | Out-Null
         if (-not (Test-Path -LiteralPath $options -PathType Leaf)) {
             if (Test-Path -LiteralPath $documentsOptions -PathType Leaf) {
-                Copy-Item -LiteralPath $documentsOptions -Destination $options
+                $seedText = Read-SimpleBspOptions $documentsOptions $false
                 $seedSource = $documentsOptions
             } else {
-                [IO.File]::WriteAllText($options, "Fullscreen 0`r`n", [Text.UTF8Encoding]::new($false))
+                $seedText = "Fullscreen 0`r`n"
                 $seedSource = 'windowed-only defaults'
             }
+            [IO.Directory]::CreateDirectory((Split-Path $options -Parent)) | Out-Null
+            [IO.File]::WriteAllText($options, $seedText, [Text.UTF8Encoding]::new($false))
         }
-        $original = [IO.File]::ReadAllText($options)
-        $windowed = if ([regex]::IsMatch($original, '(?mi)^[\t ]*Fullscreen[\t ]+[^\r\n]*')) {
-            [regex]::Replace($original, '(?mi)^[\t ]*Fullscreen[\t ]+[^\r\n]*', 'Fullscreen 0')
+        $original = Read-SimpleBspOptions $options $false
+        $windowed = if ([regex]::IsMatch($original, '(?mi)^[\t ]*Fullscreen[\t ,]+[^\r\n]*')) {
+            [regex]::Replace($original, '(?mi)^[\t ]*Fullscreen[\t ,]+[^\r\n]*', 'Fullscreen 0')
         } else { $original.TrimEnd("`r", "`n") + "`r`nFullscreen 0`r`n" }
         if ($windowed -cne $original) {
             $backup = $options + '.pre-windowed-' + [Guid]::NewGuid().ToString('N') + '.bak'
@@ -113,10 +156,7 @@ function Initialize-BspWindowedSettings([string[]]$Arguments,
     if (-not (Test-Path -LiteralPath $options -PathType Leaf)) {
         throw "Windowed launch requires Fullscreen 0 in $options; options-absent validation must be coordinated without launching fullscreen"
     }
-    $fullscreen = @([regex]::Matches([IO.File]::ReadAllText($options), '(?mi)^[\t ]*Fullscreen[\t ]+(\S+)'))
-    if (-not $fullscreen.Count -or @($fullscreen | Where-Object { $_.Groups[1].Value -ne '0' }).Count) {
-        throw "Refusing fullscreen/unspecified launch: require Fullscreen 0 in $options; Documents settings were not modified"
-    }
+    $null = Read-SimpleBspOptions $options $true
     [ordered]@{ options_path = $options; private_root = $private; fullscreen = 0
         seed_source = $seedSource; backup = $backup
         sha256 = (Get-FileHash -LiteralPath $options -Algorithm SHA256).Hash.ToLower()

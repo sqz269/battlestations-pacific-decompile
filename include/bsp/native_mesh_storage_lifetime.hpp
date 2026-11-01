@@ -81,6 +81,9 @@ private:
 
     NativeMeshStorageContext& context_;
     NativeMeshCanonicalRecord* canonical_record_{};
+    // Borrowed only from that record's genuine once-only whole scalar action.
+    // Cleared after canonical retirement/notices/health/catch, not at leaf return.
+    NativeMeshPayloadReleaseReceiver* payload_receiver_{};
     NativeMeshPool* raw_unwind_receiver_{};
     bool raw_unwind_selected_{}, raw_unwind_wrapper_entered_{};
     bool raw_unwind_getter_returned_{}, raw_unwind_pool_entered_{}, raw_unwind_pool_returned_{};

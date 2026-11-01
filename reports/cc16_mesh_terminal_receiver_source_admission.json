@@ -1,0 +1,138 @@
+{
+  "status": "QUALIFIED_MESH_TERMINAL_RECEIVER_SOURCE_SUPPORT_ADMISSION",
+  "addresses": [
+    "00b73c10",
+    "00b73e60",
+    "00b74280"
+  ],
+  "reviewed_baseline": "30450192f9242d03fcb8f68d63a3167005e80b0a",
+  "joined_main": "773add4dec8bb4ea95588ec45682b7a836bbe4ef",
+  "source_files": [
+    {
+      "path": "include/bsp/native_mesh_owner.hpp",
+      "before_bytes": 10671,
+      "before_sha256": "41abd28689d771ece2bcbb752c088b2a8641ea4b0865f2f0e8c755bed965b899",
+      "candidate_bytes": 11182,
+      "candidate_sha256": "bc1cae1439c8be4a1b48d39440a202383e36f737417610af0b9b6c815895d237",
+      "LF_before_after": true
+    },
+    {
+      "path": "src/native_mesh_owner.cpp",
+      "before_bytes": 15097,
+      "before_sha256": "b9d889fe6305ed1afb652b352cf3bb390f4577167d395de5333ceec2a6d5b925",
+      "candidate_bytes": 16574,
+      "candidate_sha256": "6f7fc0d7ab2296dcef7f953dd3351374385e829780ca64026254d051ce4ef03f",
+      "LF_before_after": true
+    },
+    {
+      "path": "include/bsp/native_mesh_canonical.hpp",
+      "before_bytes": 10550,
+      "before_sha256": "24dd07866cfde64390be9d02f55cd91b78325bb0243f580a15daf8522b65600e",
+      "candidate_bytes": 11174,
+      "candidate_sha256": "cf5313284943b456a7d5f30bf9dd44e38a3d5745968e8832562ae8969e00e4a0",
+      "LF_before_after": true
+    },
+    {
+      "path": "src/native_mesh_canonical.cpp",
+      "before_bytes": 31634,
+      "before_sha256": "35c6f4aea60ea549d894ecf11fc19d7a603aed675b4fd2e69945803ab1ae1929",
+      "candidate_bytes": 38963,
+      "candidate_sha256": "b8307df48b05a40932a9be9c074969a8b946d49a0c19f97163b129f3517215f7",
+      "LF_before_after": true
+    },
+    {
+      "path": "include/bsp/native_mesh_storage_lifetime.hpp",
+      "before_bytes": 6895,
+      "before_sha256": "7c1b45e0171efc9546eeafb22d4dfce92b2b877b20f771232c261c4cc915b9c3",
+      "candidate_bytes": 7117,
+      "candidate_sha256": "20df3ada538821e131025dd8357e864d0e6ef5b17470ebfe06e90b8c2096967e",
+      "LF_before_after": true
+    },
+    {
+      "path": "src/native_mesh_storage_lifetime.cpp",
+      "before_bytes": 12071,
+      "before_sha256": "00e5e9f4946290faea12c6a1a1e02432c1d7775cff3abeacee92f99c41ff07f9",
+      "candidate_bytes": 12302,
+      "candidate_sha256": "324e93574ef8e31da577f6478333bb5a47e58fd85518ca81b8366fa91e97617a",
+      "LF_before_after": true
+    }
+  ],
+  "forward_sha256": "ea10705b4ce3eed83e73715678457ee413e86b536423fd626a00681cb8a7fa86",
+  "inverse_sha256": "a7887627ecf1f4791494b628f6c7d8fe1e00a6752fa056e088d882594daf9ff2",
+  "behavior": "The genuine canonical record retains fresh per-reached child release observations through the whole selected Mesh payload/scalar/canonical tail and actual ancestor ownership; legacy/null bodies remain protected.",
+  "gates": {
+    "source": {
+      "path": "local\\mesh_generation_primary_cc16_20261031\\Mesh_terminal_receivers_Source_peer\\REVIEW.md",
+      "review_sha256": "9a4cdffe8f3ce4c1ed0004412ad0b75fe4d6f98e030a243f8deb223a63250493",
+      "seal_sha256": "f0bdef769980bae61962a25b5b96fcd3bca532ee1d105c9786ae10ae26e95701",
+      "authorship": "Independent Source6 review"
+    },
+    "canonical_Code": {
+      "path": "local\\mesh_generation_primary_cc16_20261031\\Mesh_terminal_canonical_Core_peer\\REVIEW.md",
+      "review_sha256": "a1ed12b3644e380aa4759223b5a36f92d55b01620f362e578f0e01ff61074614",
+      "seal_sha256": "9f8da61e4695dca11ba3578f9b9fff800f6bda05211b2458e46d84cd259ff6af",
+      "authorship": "Independent of Source6 author; canonical receiver/heap/EH/preflight slice"
+    },
+    "Owner_Low_Code": {
+      "path": "local\\mesh_generation_primary_cc16_20261031\\Mesh_terminal_Owner_Low_Core_peer\\REVIEW.md",
+      "review_sha256": "f7d54f5b6ff0a176b612a3b9c04f708ae30b752c5db41a5976be22597566e1d8",
+      "seal_sha256": "98bf196a195dc329387f89dbe60a747e6a0e23ab8c05b2f70c60ac603804085b",
+      "authorship": "Independent of Source6 author; prior Raw4 authorship separate"
+    }
+  },
+  "build": {
+    "path": "local\\mesh_generation_primary_cc16_20261031\\Mesh_terminal_receivers_join_773_Root\\BUILD_RECEIPT.json",
+    "sha256": "570d5af2c281271c732b11064d519bebafc8adf29d3b210dbff3f494bf04e58f",
+    "official_exit": 0,
+    "configuration": "MSVC Win32 Release MP2 PCHON coveragePDBOFF",
+    "existing_suites": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "test_seconds": 28.02,
+    "observed_inputs": 6618,
+    "tools": 6,
+    "archive_bytes": 107446066,
+    "archive_sha256": "54949cc3f494fc487db9214ade23ecc98c8b7bf11de279248401d73d651bdef7",
+    "complete_focal_members": 3
+  },
+  "transfer": {
+    "path": "local\\mesh_generation_primary_cc16_20261031\\Mesh_terminal_receivers_join_773_Root\\JOIN_TRANSFER.json",
+    "sha256": "b28ff8f63d7d9e1b85ddbdee5e00ef74d023108692c599c6e78aac580455fe25",
+    "Source6_whole_exact": true,
+    "Owner_Low_objects_whole_exact": true,
+    "Canonical_only_COFF_timestamp_bytes4_to7_differ": true,
+    "every_other_Canonical_byte_exact": true,
+    "Canonical_whole_object_identity_claim": false
+  },
+  "normal_link": {
+    "path": "local\\mesh_generation_primary_cc16_20261031\\Mesh_terminal_receivers_join_773_Root\\link\\LINK_RECEIPT.json",
+    "sha256": "2dc1b6301c88d7867c1fffb174a59e81c640bf4fbf3ff32b48399bd3c7090b41",
+    "normally_mapped_functions": 7,
+    "forcing_off": true,
+    "execution": false,
+    "new_public_Native_roots": 0
+  },
+  "private_layout": {
+    "Native_BC_payload_and_BC_pool_word_unchanged": true,
+    "HOST_Frame_bytes_before": 76,
+    "HOST_Frame_bytes_after": 80,
+    "new_HOST_receiver_pointer_offset": 8,
+    "HOST_record_bytes_after": 344,
+    "Node_bytes": 40
+  },
+  "horizon": "Node Common Invocation ends at helper return; record-owned observation/hold storage, longer receiver.active interval and actual ancestor/whole-graph owning fences retain the remaining tail. Inactive counters are not quiescence.",
+  "destruction": "Domain/record destructors do not enforce failed-graph retention. Common frame destruction can end C++ holds; real owners must retain unresolved/failed graphs and establish genuine preflight/drain before metadata destruction.",
+  "qualifications": [
+    "New node allocation/new-handler/exception and C++ layout/stack/EH/HOME effects are observable; no Original equivalence inferred.",
+    "No new Native count initialization/sample/repair, retain, decrement/resolve, family lookup, synthetic terminal Section scope or quota.",
+    "Actual GUI/Parent/clone/Section/Material/provider/Host/worker bindings and all-Domain action ordering remain open.",
+    "Full lower/all-eight/B107F0/LogicalVertex/Origin, strict OFF/ON and runtime/gameplay remain open."
+  ],
+  "Original_ABI_FH3_SEH_HOME_FP_DF_fault_concurrency_proof": false,
+  "raw_GUI_switches_enabled": 0,
+  "new_tests": 0,
+  "new_native_vendor_credit": 0,
+  "Game_executed": false,
+  "goal": "ACTIVE"
+}
