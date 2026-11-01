@@ -165,6 +165,15 @@ public:
     // release ordinary returned references before the shared renderer drain;
     // its own fallback reference follows the native cache cleanup schedule.
     NativeTextureCacheContext& texture_cache() noexcept;
+    // Source admission for raw AEEAF0's captured B319B0 dispatch. Receiver is
+    // captured BEFORE concat; native profile-address/slot64 AFTER concat.
+    // The known actual normal B32410 birth is independent of the mutable
+    // F8D394 publication. Requires this SAME RO owner/live ready application.
+    // No receiver/profile/slot reread, observation, retain or factory occurs.
+    // Retain application/cache/acquired graph through atlas retirement/drain.
+    NativeTextureCacheContext& atlas_parser_texture_cache_for(
+        void* captured_receiver, std::uint32_t captured_profile_address,
+        std::uint32_t captured_slot64, const GameNativeReadOnlyData&);
     // Ready-only captured slot+08 dispatch for this application's canonical
     // D61948 owners and B3FA90 target. Borrow the SAME loading graph; caller
     // supplies explicit output preimages and retains the acquired frame.

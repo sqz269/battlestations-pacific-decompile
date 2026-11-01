@@ -462,6 +462,9 @@ struct GameNativeRendererApplication::Impl {
     NativeStringRawPoolContext& raw;
     CanonicalProfiles profiles;
     void* volatile renderer{};
+    // Source metadata, set ONLY after the genuine B32410 normal constructor.
+    // It never follows later writes to the mutable F8D394 publication.
+    void* normal_renderer_birth_for_atlas{};
     void* volatile lua_publication{};
     // Preserve the Win32 slot while borrowing the one live Native-global cell.
     void* volatile& system_publication{native_shader_system_registry_cell_0108fe94()};
@@ -768,6 +771,21 @@ const NativeCockpitViewportReleaseContext& GameNativeRendererApplication::cockpi
 }
 NativeTextureCacheContext& GameNativeRendererApplication::texture_cache() noexcept {
     return impl_->texture_loading.cache;
+}
+NativeTextureCacheContext& GameNativeRendererApplication::atlas_parser_texture_cache_for(
+    void* captured_receiver, U captured_profile_address, U captured_slot64,
+    const GameNativeReadOnlyData& data) {
+    auto& p=*impl_;
+    check(p.phase==Impl::Phase::ready,
+        "raw atlas texture load requires the ready application renderer");
+    check(p.normal_renderer_birth_for_atlas &&
+        captured_receiver==p.normal_renderer_birth_for_atlas,
+        "raw atlas texture load requires this normal Source-created renderer");
+    check(&data==&p.profiles.data,
+        "raw atlas texture load requires this renderer's read-only data owner");
+    check(captured_profile_address==0x00d5f0a8u && captured_slot64==0x00b319b0u,
+        "raw atlas texture load requires captured D5F0A8/B319B0 dispatch");
+    return p.texture_loading.cache;
 }
 void GameNativeRendererApplication::reload_activation_texture_2d(void* resource,
     std::uint32_t target, NativeTextureReloadOutputs outputs,
@@ -1168,6 +1186,7 @@ void GameNativeRendererApplication::construct() {
         std::memset(storage,0,0x1d94);
         NativeLuaServiceBindings::Activation activation(p.lua_services.binding());
         construct_native_renderer_00b32410(storage,&p.constructor);
+        p.normal_renderer_birth_for_atlas=storage;
         p.retained_api=get<IDirect3D9*>(storage,0x1990);
         check(p.retained_api!=nullptr,"native renderer factory is null");p.retained_api->AddRef();
         const auto* worker=get<NativeRendererControlWorkerStorage*>(storage,0x1970);

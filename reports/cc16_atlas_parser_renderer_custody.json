@@ -1,0 +1,84 @@
+{
+  "base_commit": "2a094149a200654ea7ddf63226483c2a72bcba35",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-atlas-parser-storage-20261101",
+  "branch": "agent/codex-atlas-parser-storage-20261101",
+  "scope": "ignored Source-only candidate; ordinary NORMAL payload",
+  "saved_project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "Source_peer": 0,
+  "verification": {
+    "source_inspection": true,
+    "bounded_source_integrity_checks": true,
+    "independent_peer_review": 0,
+    "compilation": 0,
+    "fixtures": 0,
+    "native_execution": 0,
+    "original_ABI": 0,
+    "gameplay": 0,
+    "startup": 0,
+    "activation": 0
+  },
+  "tracked_source_changes": 0,
+  "cmake_changes": 0,
+  "ledger_changes": 0,
+  "ghidra_mutations": 0,
+  "new_tests": 0,
+  "builds": 0,
+  "Game_runs": 0,
+  "deployments": 0,
+  "commits": 0,
+  "pushes": 0,
+  "gate_changes": [],
+  "frozen_source_pins": "FROZEN_SOURCE_PINS.json",
+  "original_export_pins": "ORIGINAL_EXPORT_PINS.json",
+  "addresses": [],
+  "kind": "bounded actual parent caller/provider closure; no new Native body credit",
+  "source_interface": "GameNativeRendererApplication::atlas_parser_texture_cache_for(void*,uint32,uint32,const GameNativeReadOnlyData&) -> SAME NativeTextureCacheContext&",
+  "finite_seams": [
+    "one header accessor declaration",
+    "one private Impl Source pointer",
+    "one pointer store immediately after actual B32410 normal return",
+    "one concrete accessor body"
+  ],
+  "preimages": [
+    {
+      "path": "include/bsp/game_native_renderer_application.hpp",
+      "bytes": 21927,
+      "sha256": "3d0253665a101d6d61e602024ee09b5ffa3fd01bea2915b5c798644f9b149f0b"
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "bytes": 83765,
+      "sha256": "9a2c2631e4146c6eed3dc6dcb30e6815d5b8ee990ed407546dc51e246d3f6c3f"
+    }
+  ],
+  "finite_seam_inverse": "renderer_custody/finite_seam_inverse.json",
+  "evidence": [
+    "Birth pointer is the real actual1D94h allocation passed to existing B32410, recorded only after normal return.",
+    "The immutable birth pointer is independent of mutable F8D394 publication.",
+    "Ready/live application, SAME RO object, known actual birth identity, captured D5F0A8/B319B0 are required.",
+    "Accessor rereads no publication/receiver/profile/slot/count and returns only its existing actual cache.",
+    "LiveD5F10C bytes b0 19 b3 00."
+  ],
+  "uncertainties": [
+    "Borrower must retain whole actual renderer/cache/owner/provider graph through failed debt and full shared drain.",
+    "No manager/process-host role, atlas birth, cache acquisition, factory, token, registry observation or activation is supplied."
+  ],
+  "candidate_pins": [
+    {
+      "path": "renderer_custody/candidate/docs/CC16_ATLAS_PARSER_RENDERER_CUSTODY.md",
+      "bytes": 2645,
+      "sha256": "05374f7f7eb14a2f554f57f0fc3fd37485ab54f002133be6f1190faf884425b8"
+    },
+    {
+      "path": "renderer_custody/candidate/include/bsp/game_native_renderer_application.hpp",
+      "bytes": 22599,
+      "sha256": "44292d38f0ea296d8a006d5c10bbf19ca36ccbaec27891315c7282f8015548e5"
+    },
+    {
+      "path": "renderer_custody/candidate/src/game_native_renderer_application.cpp",
+      "bytes": 84853,
+      "sha256": "986a9f60899138be24fb07dd7020d07d86e0a3ce0a6159673fcd77d73dfe8d27"
+    }
+  ]
+}
