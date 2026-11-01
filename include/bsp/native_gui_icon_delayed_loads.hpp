@@ -43,7 +43,7 @@ struct NativeGuiIconDelayedLoadsOperation {
     std::exception_ptr failure;
     // Source-only route/status, never Native phase/Origin/ownership authority.
     // No Native homes are embedded: make_unique<Operation>() stays unchanged.
-    enum class SourceRoute { legacy, prepared_raw_scalar,
+    enum class SourceRoute { legacy, prepared_raw_scalar, prepared_raw_getter,
         prepared_raw_icon_getter, prepared_raw_icon_cancel };
     SourceRoute source_route{SourceRoute::legacy};
     bool raw_call_entered{}, raw_call_returned{};
@@ -52,6 +52,7 @@ struct NativeGuiIconDelayedLoadsOperation {
 
 class NativeGuiIconDelayedLoadsRawScalarDispatchContext;
 class NativeGuiIconPreparedCancelCall;
+class NativeGuiIconPreparedGetterCall;
 struct NativeGuiIconStorageContext;
 struct NativeGuiIconDestroyAcquired;
 struct NativeGuiWidgetLifetimeContext;
@@ -93,6 +94,10 @@ public:
     // Native no-input RET/EAX borrowed singleton. Actual captured manager section,
     // raw10h allocation/profile, publication then second manager lookup/BD0C30.
     NativeGuiIconDelayedLoadsStorage* get_00ab5700();
+    // Cold independent raw getter record. No publication read, getter call,
+    // owner admission or cancellation/destruction record borrow. Same process
+    // cells/code and returned native graph remain caller-held through drain.
+    NativeGuiIconPreparedGetterCall& prepare_raw_getter_call();
     // Native ECX singleton, raw owner stack, RET4; owner remains opaque.
     void cancel_owner_00ab50e0(NativeGuiIconDelayedLoadsStorage&, const void* raw_owner);
     // Native ECX popped singleton, flags DWORD low byte, RET4/EAX same address.
@@ -123,8 +128,27 @@ public:
     const std::exception_ptr& failure() const noexcept;
 private:
     friend class NativeGuiIconPreparedCancelCall;
+    friend class NativeGuiIconPreparedGetterCall;
     struct Impl;
     std::unique_ptr<Impl> impl_;
+};
+
+// One service-owned no-input raw AB5700 invocation. Its own Frame/Acquired/
+// Operation are distinct from every legacy/cancel/get record. Return identity
+// never promotes registered_identity or grants Native class/owner/cleanup.
+class NativeGuiIconPreparedGetterCall final {
+public:
+    ~NativeGuiIconPreparedGetterCall();
+    NativeGuiIconPreparedGetterCall(const NativeGuiIconPreparedGetterCall&) = delete;
+    NativeGuiIconPreparedGetterCall& operator=(const NativeGuiIconPreparedGetterCall&) = delete;
+    NativeGuiIconDelayedLoadsStorage* call_getter();
+    const NativeGuiIconDelayedLoadsOperation& operation() const noexcept;
+private:
+    friend class NativeGuiIconDelayedLoads;
+    explicit NativeGuiIconPreparedGetterCall(NativeGuiIconDelayedLoads&);
+    struct Impl;
+    std::unique_ptr<Impl> impl_;
+    std::unique_ptr<NativeGuiIconPreparedGetterCall> next_;
 };
 // Source-only cold call storage/denial context. It owns no Native allocation,
 // registration, count or permission. Addresses of Native homes never move.

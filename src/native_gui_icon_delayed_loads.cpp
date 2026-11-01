@@ -52,6 +52,20 @@ struct NativeGuiIconDelayedLoadsRawScalarDispatchContext::Impl {
           pending(std::make_unique<NativeGuiIconDelayedRawScalarCallStorage>()) {}
 };
 
+struct NativeGuiIconPreparedGetterCall::Impl {
+    NativeGuiIconDelayedLoads& service;
+    NativeGuiIconDelayedLoadsGetterStorageFrame frame;
+    NativeGuiIconDelayedLoadsGetterStorageAcquired acquired;
+    std::unique_ptr<Operation> operation;
+    bool entered{}, returned{}, unknown{};
+    explicit Impl(NativeGuiIconDelayedLoads& s)
+        : service(s), operation(std::make_unique<Operation>()) {
+        operation->kind = Operation::Kind::getter;
+        operation->source_route = Operation::SourceRoute::prepared_raw_getter;
+        operation->native_site = 0x00ab5700;
+    } // Trivial Native frame is deliberately default-initialized, never seeded.
+};
+
 // Source metadata only. User-provided constructor leaves BOTH trivial Native
 // frames default-initialized/unseeded. Acquired/Operation defaults are separate.
 struct NativeGuiIconPreparedCancelCall::Impl {
@@ -99,6 +113,8 @@ struct NativeGuiIconDelayedLoads::Impl {
     const volatile std::uint32_t* const actual_feature_word;
     // Own only adopted C++ call storage, never the Native receiver/backing.
     std::unique_ptr<NativeGuiIconDelayedRawScalarCallStorage> retained_raw_scalar_call;
+    std::unique_ptr<NativeGuiIconPreparedGetterCall> prepared_getter_calls;
+    Operation* last_prepared_getter_operation{}; // Source history, no Native owner.
     // Source records only; entering any selected node leaves explicit debt.
     std::unique_ptr<NativeGuiIconPreparedCancelCall> prepared_icon_calls;
     // Current prepared raw-callee scope; legacy active without this is unadmitted.
@@ -123,6 +139,7 @@ struct NativeGuiIconDelayedLoads::Impl {
         fresh->kind = kind;
         fresh->native_site = entry;
         operation = std::move(fresh); // Prior completed frame owns no native effect.
+        last_prepared_getter_operation = nullptr;
         active = true;
         try {
             if constexpr (std::is_void_v<decltype(body())>) {
@@ -517,6 +534,46 @@ NativeGuiIconDelayedLoads::NativeGuiIconDelayedLoads(NativeStringRawPoolContext&
     : impl_(std::make_unique<Impl>(strings, publication, actual_feature_word_0109eea4)) {}
 NativeGuiIconDelayedLoads::~NativeGuiIconDelayedLoads() noexcept {
     if (requires_process_retention()) std::terminate();
+    while (impl_->prepared_getter_calls) {
+        auto old = std::move(impl_->prepared_getter_calls);
+        impl_->prepared_getter_calls = std::move(old->next_);
+    }
+}
+NativeGuiIconPreparedGetterCall::NativeGuiIconPreparedGetterCall(NativeGuiIconDelayedLoads& service)
+    : impl_(std::make_unique<Impl>(service)) {}
+NativeGuiIconPreparedGetterCall::~NativeGuiIconPreparedGetterCall() = default;
+const NativeGuiIconDelayedLoadsOperation& NativeGuiIconPreparedGetterCall::operation() const noexcept {
+    return *impl_->operation;
+}
+NativeGuiIconPreparedGetterCall& NativeGuiIconDelayedLoads::prepare_raw_getter_call() {
+    require(!impl_->active && !impl_->failed && !impl_->prepared_active_top,
+        "raw getter preparation requires the serialized idle same service");
+    auto fresh = std::unique_ptr<NativeGuiIconPreparedGetterCall>(new NativeGuiIconPreparedGetterCall(*this));
+    auto& result = *fresh;
+    fresh->next_ = std::move(impl_->prepared_getter_calls);
+    impl_->prepared_getter_calls = std::move(fresh);
+    return result;
+}
+NativeGuiIconDelayedLoadsStorage* NativeGuiIconPreparedGetterCall::call_getter() {
+    auto& node = *impl_; auto& s = *node.service.impl_;
+    require(!node.entered && !s.active && !s.failed && !s.prepared_active_top,
+        "independent raw getter requires a fresh serialized top-level call");
+    auto& op = *node.operation;
+    node.entered = true; s.active = true;
+    s.last_prepared_getter_operation = &op;
+    op.phase = Phase::prepared_call; op.raw_call_entered = true;
+    try {
+        auto* const result = get_native_gui_icon_delayed_loads_storage_00ab5700(
+            s.publication, s.strings.actual_manager_publication_01090aa0, node.frame, node.acquired);
+        op.actual = result; // Passive identity only; NEVER registered_identity.
+        op.raw_call_returned = true; op.phase = Phase::complete;
+        node.returned = true; s.active = false;
+        return result;
+    } catch (...) {
+        op.phase = Phase::failed; op.failure = s.failure = std::current_exception();
+        node.unknown = true; s.failed = true; s.active = false;
+        throw; // Retain guard/publication/registration debt; no cleanup/repair.
+    }
 }
 NativeGuiIconDelayedLoadsStorage* NativeGuiIconDelayedLoads::get_00ab5700() {
     return impl_->invoke(Operation::Kind::getter, 0x00ab5700, [&] { return impl_->get(); });
@@ -530,12 +587,20 @@ void* NativeGuiIconDelayedLoads::delete_registered_00ab57c0(void* raw, std::uint
         [&] { return impl_->scalar_delete(raw, flags); });
 }
 bool NativeGuiIconDelayedLoads::requires_process_retention() const noexcept {
+    bool reached_raw_getter = false;
+    for (auto* p = impl_->prepared_getter_calls.get(); p; p = p->next_.get()) {
+        if (p->impl_->unknown || (p->impl_->entered && !p->impl_->returned)) return true;
+        reached_raw_getter = reached_raw_getter || p->impl_->entered;
+    }
+    // Conservative lifetime DENIAL, never registration/class/ownership proof.
+    // Do not discard a service with a raw-getter history and live publication.
+    if (reached_raw_getter && impl_->publication != nullptr) return true;
     for (auto* p = impl_->prepared_icon_calls.get(); p; p = p->next_.get())
         if (p->impl_->entered || p->impl_->unknown) return true;
     return impl_->active || impl_->failed || impl_->registered_identity != nullptr;
 }
 const NativeGuiIconDelayedLoadsOperation* NativeGuiIconDelayedLoads::last_operation() const noexcept {
-    return impl_->operation.get();
+    return impl_->last_prepared_getter_operation ? impl_->last_prepared_getter_operation : impl_->operation.get();
 }
 const std::exception_ptr& NativeGuiIconDelayedLoads::failure() const noexcept { return impl_->failure; }
 } // namespace bsp

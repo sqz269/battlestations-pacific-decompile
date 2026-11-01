@@ -20,6 +20,7 @@ struct NativeFileAccessLogLifetimeBindings;
 struct SingletonLifetimeCallbacks;
 class NativeVfsEnumerationDuplicateLog;
 class NativeFileStoreCompletionDispatch;
+class NativeGuiIconDelayedRequestFileInvocation;
 class NativeVfsRuntimeBindings;
 struct NativeVfsNameResolutionContext;
 struct NativeVfsDateRouteContext;
@@ -142,6 +143,11 @@ public:
     // Requires a bound completion dispatcher and a previously created FileStore.
     // Resolve/request frames are retained together if a nested call fails.
     bool request_file_store(const char* path, std::uint32_t native_callback);
+    // Cold Source-only preparation for the whole raw Icon request. Fresh
+    // Runtime-owned node/context/resolver/request backing, no Native call or
+    // name copy. Caller retains this Runtime through actual I/O/callback last-
+    // use and shared drain; normal phase is not a quiescence/owner certificate.
+    NativeGuiIconDelayedRequestFileInvocation& prepare_icon_delayed_request_file_call();
     std::uint32_t file_store_request_failure_site() const noexcept;
     // BDD600 normalizes the actual mutable header, probes with D683E8 and
     // replaces it on success. Copy its final spelling back on TRUE and FALSE.
