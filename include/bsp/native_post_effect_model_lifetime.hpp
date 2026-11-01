@@ -95,7 +95,12 @@ private:
     void begin_constructor();
     void finish_constructor() noexcept;
     void record_source_failure() noexcept;
+    // Genuine never-entered/normal-NULL attempt only; no detach/cancel.
+    void preflight_cancel_without_native_payload();
     void cancel_without_native_payload();
+    // No hold drain; actual complete caller/worker quiescence is external.
+    // Failure marks this private Source graph, never another caller head.
+    void preflight_close_at_quiescence();
     void close_at_quiescence();
     bool requires_process_retention() const noexcept;
     void wrapper_entered();

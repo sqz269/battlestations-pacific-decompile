@@ -692,7 +692,7 @@ void NativePostEffectModelFrame::recursive_home_returned(void* actual,
     // actual callee returned. The original erase/walk retains no HOME address.
     f.home_state.store(HomeState::ready,std::memory_order_release);
 }
-void NativePostEffectModelFrame::cancel_without_native_payload() {
+void NativePostEffectModelFrame::preflight_cancel_without_native_payload() {
     require(!impl_->allocator_started || (impl_->allocation_returned && !impl_->allocation),
         "entered/unknown Model allocation cannot be cold-cancelled");
     require(!impl_->owner_returned && !impl_->owner && !impl_->reference &&
@@ -700,6 +700,9 @@ void NativePostEffectModelFrame::cancel_without_native_payload() {
         exact_.outer_calls_.load(std::memory_order_acquire) == 0 &&
         exact_.borrows_.load(std::memory_order_acquire) == 0,
         "Model cold cancellation requires no typed/key/call/borrow");
+}
+void NativePostEffectModelFrame::cancel_without_native_payload() {
+    preflight_cancel_without_native_payload();
     impl_->shared.owners.cancel_exact_record_without_payload(exact_);
     impl_->attached = false;
     if (impl_->retained) {
@@ -709,7 +712,7 @@ void NativePostEffectModelFrame::cancel_without_native_payload() {
     impl_->closed = true;
     impl_->state.store(ModelState::closed,std::memory_order_release);
 }
-void NativePostEffectModelFrame::close_at_quiescence() {
+void NativePostEffectModelFrame::preflight_close_at_quiescence() {
     // Entry already requires genuine graph/Block quiescence through ALL outer
     // calls and saved canonical users. Reject every independent active/failure
     // obligation BEFORE unlinking any retained caller metadata.
@@ -737,7 +740,15 @@ void NativePostEffectModelFrame::close_at_quiescence() {
             !active(impl_->terminal.geometry_unwind.observed_zero_frame) &&
             !active(impl_->geometry_frame.observed_zero_frame_),
             "ordinary Model cannot unlink an actually active caller frame");
+        // At the independent full-use fence, only this actual attached
+        // zero hold may remain. Do not drain it to discover an extra caller.
+        const unsigned retained_hold=observed_zero_hold_.frame_?1u:0u;
+        require(exact_.outer_calls_.load(std::memory_order_acquire)==retained_hold,
+            "ordinary Model preflight requires only its retained zero hold");
     } catch (...) { record_source_failure(); throw; }
+}
+void NativePostEffectModelFrame::close_at_quiescence() {
+    preflight_close_at_quiescence();
     // Only the retained-hold contribution to outer_calls/context.active is
     // discharged here, at the caller's real independent quiescence fence.
     if (observed_zero_hold_.frame_)
