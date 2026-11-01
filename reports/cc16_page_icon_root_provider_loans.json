@@ -1,0 +1,153 @@
+{
+  "packet": "Source147 Page/Icon existing-owner provider loans",
+  "base_Main": "8cc923dda2fc4f62cdee74e9308ce61e6c16cb93",
+  "scope": "five existing Source paths plus this report and doc; no new TU, Native body, binding or activation",
+  "data_roles": [
+    "00F8C2C1",
+    "00E17BF0"
+  ],
+  "Native_body_credit": 0,
+  "vendor_body_credit": 0,
+  "operations": [
+    {
+      "API": "GameNativeTextureAtlasApplication::empty_atlas_stem_00f8c2c1() const noexcept",
+      "ownership": "distinct appended char[1] initial-NUL in SAME permanent process owner",
+      "preserves": "old role declarations, scratch backing/extent and existing one-attempt lifecycle; no F8C270 alias"
+    },
+    {
+      "API": "GameNativeVfsApplication::borrow_null_pattern_00e17bf0() const noexcept",
+      "ownership": "direct loan of SAME Impl::constants initial-image snapshot",
+      "effects": "no new copy/literal/global, Native read, I/O or phase transition"
+    },
+    {
+      "API": "GameNativeRendererApplication::startup_preload_effect_cache()",
+      "ownership": "SAME already-owned startup-preload effects/cache/samplers",
+      "guards": "existing ready renderer + existing completed-ready startup preload/effects, then existing native_effect_cache domain/idle checks",
+      "effects": "no busy-before-ready change, new graph, acquisition or cache bracket"
+    }
+  ],
+  "initial_image": {
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "bytes": 12223752,
+    "F8C2C1": "one initial00 byte, .data virtual tail zero fill, no file byte",
+    "E17BF0": "one initial00 file byte at A17BF0",
+    "Root_authorization_sha256": "1b7e0fcc3163ad43d6dea38f2bac775138e65997f7646d1447ce35698aa53a4f"
+  },
+  "validation": {
+    "strict_3TUs": [
+      {
+        "status": "passed",
+        "exitCode": 0,
+        "seconds": 3.3232288,
+        "TU": "src/game_native_texture_atlas_application.cpp",
+        "registered_target": "bsp_game",
+        "machine": "014c",
+        "flags": "/c /std:c++17 /EHsc /MD /O2 /fp:strict /W4 /WX",
+        "sourceSHA256": "2de33c405942690829114d72bf55fe729556f90812f39aa0f6b97b5dd119e501",
+        "objectSHA256": "bf9f1ac7cb4be66402a5936b6ec4a401e415092a30db5adfbf5bec3442d85115",
+        "objectBytes": 182220,
+        "executable_or_probe": false
+      },
+      {
+        "status": "passed",
+        "exitCode": 0,
+        "seconds": 4.0807208,
+        "TU": "src/game_native_vfs_application.cpp",
+        "registered_target": "bsp_game",
+        "machine": "014c",
+        "flags": "/c /std:c++17 /EHsc /MD /O2 /fp:strict /W4 /WX",
+        "sourceSHA256": "2769c4a467b8c1faf192a3fcb4fb76db30e0d196743ecc9f0d5fc4c7ad12a634",
+        "objectSHA256": "bdf7971f0d8e82e0ef0fe4842044a1fbc8f81d5f2c498b123b68757e186fb3a1",
+        "objectBytes": 67488,
+        "executable_or_probe": false
+      },
+      {
+        "status": "passed",
+        "exitCode": 0,
+        "seconds": 6.4264916,
+        "TU": "src/game_native_renderer_application.cpp",
+        "registered_target": "bsp_game",
+        "machine": "014c",
+        "flags": "/c /std:c++17 /EHsc /MD /O2 /fp:strict /W4 /WX",
+        "sourceSHA256": "53de4c3d690ea80da0ef1277e7c1d5df46723aad519b2853d1b5c52ed700c254",
+        "objectSHA256": "fdcbe87df436b6547263f5a8566198a92ac77b589fb31c557f036d5963ce0e76",
+        "objectBytes": 2599893,
+        "executable_or_probe": false
+      }
+    ],
+    "strict_total_seconds": 13.8304412,
+    "official_registered": {
+      "status": "passed",
+      "exitCode": 0,
+      "seconds": 130.0423789,
+      "command": "./scripts/build.ps1",
+      "configuration": "Release",
+      "platform": "Win32",
+      "actual_target": "bsp_game",
+      "affected_TUs": 3,
+      "captured_inputs_unchanged": true,
+      "CMake_changed": false,
+      "new_tests_probes_Game": false
+    },
+    "existing_checks": [
+      {
+        "name": "reconstructed_math",
+        "seconds": 0.3,
+        "passed": true
+      },
+      {
+        "name": "tool_tests",
+        "seconds": 16.96,
+        "passed": true
+      }
+    ],
+    "actual_target": "bsp_game EXE",
+    "project_membership_once": 3,
+    "actual_link_read_input_once": 3,
+    "objects": [
+      {
+        "TU": "src/game_native_texture_atlas_application.cpp",
+        "machine": "014c",
+        "bytes": 167396,
+        "sha256": "cdcd9ef88bf3aebc9a9ed4361d6d4feb4e873c6414948a9d0d096d195eb8e1f3"
+      },
+      {
+        "TU": "src/game_native_vfs_application.cpp",
+        "machine": "014c",
+        "bytes": 60273,
+        "sha256": "e748eb2423c4cb4eb23464a9d7c8cfd59fdbb12a57f462b61307f6ad9d7095f7"
+      },
+      {
+        "TU": "src/game_native_renderer_application.cpp",
+        "machine": "014c",
+        "bytes": 2346576,
+        "sha256": "6103b9e49a41a997082a368b28cc35c6a3d6ef76fbe6fcb3d91f2d60220b2e66"
+      }
+    ]
+  },
+  "emitted_scope": {
+    "selected_sections": 4,
+    "bytes": 599,
+    "operations": 194,
+    "methods": "existing atlas constructor/process-role initialization plus two new out-of-line loans",
+    "new_Source_byte_offset": "24h; compiled process owner allocation28h, not Original layout/capacity",
+    "unused_inline_atlas_getter": "no emitted body; Source contract only",
+    "map_qualification": "new out-of-line loan methods and standalone atlas constructor have no exact definitions; existing process-role creation has one; no dummy anchor, runtime or PE-retention claim"
+  },
+  "follow_on": [
+    "five initialized private-input families",
+    "captured dimension adapter",
+    "Root144 supplier/142 completion/Lua synchronous caller scopes",
+    "Runtime callback/actual pending/queued/thread/Font last-use closure"
+  ],
+  "all_nine_existing_gates_held": true,
+  "CMake_registration_edit": false,
+  "Page_Host_frontend_ledger_Ghidra_edits": false,
+  "new_tests_probes_Game": false,
+  "exclusions": [
+    "Original VA/live alias or static capacity",
+    "Original register/layout/ABI/Origin",
+    "FH3/SEH/fault/x87/vendor proof",
+    "retention/last-use/cleanup permission from loan or normal return"
+  ]
+}

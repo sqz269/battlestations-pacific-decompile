@@ -53,6 +53,10 @@ public:
     // this application and GameSingletonHost alive through every consumer and
     // the shared singleton drain.
     NativeStringRawPoolContext& raw_strings() noexcept;
+    // Address-only loan of this SAME constants owner's verified E17BF0
+    // initial-image NUL snapshot. No new copy or mutable Original VA alias.
+    // Retain this application through every borrower and the shared drain.
+    const char* borrow_null_pattern_00e17bf0() const noexcept;
     // Own/borrow ONE stable raw BEE390 context over this same raw pool, the
     // runtime's actual null role/current-locale binding and SAME canonical
     // owner's live feature reference. Cold C++ metadata allocation only.

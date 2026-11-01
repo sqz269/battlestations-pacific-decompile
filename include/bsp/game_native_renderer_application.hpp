@@ -32,6 +32,7 @@ struct NativeCockpitViewportReleaseContext;
 struct NativeRenderResourcesLifetimeContext;
 class NativeRenderResourcesConstructionAcquired;
 struct NativeShaderBinaryCacheContext;
+struct NativeMaterialEffectCacheContext;
 struct NativeShaderBinaryCacheOperation;
 struct NativeShaderDescriptorStorage;
 struct NativeShaderDescriptorReadContext;
@@ -313,6 +314,11 @@ public:
     // domain. Borrowing performs no load or cache mutation. Keep this renderer
     // and any new loading composition alive through the actual native drain.
     NativeEffectRegistryDestructionContext& effect_registry_domain();
+    // Ready-only loan of the SAME completed startup-preload effect/sampler
+    // graph. No new graph, acquisition or shader-cache bracket is created.
+    // Borrow before entry; retain this renderer through all borrowers,
+    // interrupted work and actual pending/queued last use through drain.
+    NativeMaterialEffectCacheContext& startup_preload_effect_cache();
     // Full B43B00 over a caller-owned initialized110h descriptor. The caller
     // keeps descriptor/name/operation alive and retires descriptor children
     // before this graph. Unknown native stack inputs are never synthesized.

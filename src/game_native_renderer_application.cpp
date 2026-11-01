@@ -718,6 +718,13 @@ NativeEffectRegistryDestructionContext& GameNativeRendererApplication::effect_re
     check(impl_->phase==Impl::Phase::ready,"effect registry domain requires the ready application renderer");
     return impl_->effects;
 }
+NativeMaterialEffectCacheContext& GameNativeRendererApplication::startup_preload_effect_cache() {
+    auto& p=*impl_;
+    check(p.phase==Impl::Phase::ready && p.startup_preload &&
+        p.startup_preload->phase==StartupShaderPreload::Phase::ready && p.startup_preload->effects,
+        "startup preload effect cache requires the ready renderer and completed preload");
+    return p.startup_preload->effects->native_effect_cache();
+}
 GameNativeMaterialCompilerSources GameNativeRendererApplication::material_compiler_sources() {
     check(impl_->phase==Impl::Phase::ready,"material compiler sources require the ready application renderer");
     return impl_->compiler_owners.borrowed_sources();

@@ -72,6 +72,9 @@ public:
 
     void* volatile& atlas_publication_00f8c26c() noexcept { return atlas_publication_; }
     const char* empty_name_00f8c270() const noexcept { return empty_name_; }
+    // Distinct initial-NUL F8C2C1 role in this SAME permanent process owner.
+    // It aliases neither the F8C270 empty name nor F8C2C8 scratch.
+    const char* empty_atlas_stem_00f8c2c1() const noexcept { return empty_atlas_stem_; }
     char* shared_line_scratch_00f8c2c8() noexcept { return scratch_.get(); }
     std::size_t source_line_scratch_extent() const noexcept { return scratch_extent_; }
 
@@ -140,6 +143,9 @@ private:
     bool bind_attempted_{};
     std::exception_ptr bind_failure_;
     Impl* graph_{}; // intentionally permanent; never destructs partial Native debt
+    // Appended Source storage preserves the earlier role declarations.
+    // Original F8C2C1 begins in the supported PE virtual .data zero tail.
+    char empty_atlas_stem_[1]{};
 };
 } // namespace game
 } // namespace bsp

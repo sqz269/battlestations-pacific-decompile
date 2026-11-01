@@ -177,6 +177,10 @@ NativeStringRawPoolContext& GameNativeVfsApplication::raw_strings() noexcept {
     return impl_->raw_strings;
 }
 
+const char* GameNativeVfsApplication::borrow_null_pattern_00e17bf0() const noexcept {
+    return impl_->constants.null_pattern_00e17bf0();
+}
+
 NativePathCanonicalizerRawContext& GameNativeVfsApplication::raw_canonicalizer_for_atlas(
     const GameNativeCanonicalDataOwner& canonical_owner) {
     auto& p = *impl_;
