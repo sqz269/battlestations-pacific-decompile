@@ -9,6 +9,9 @@
 namespace bsp {
 struct NativeRefCountedDeleteCalls;
 struct NativeHardwareLayoutConstructContext;
+class NativeMeshSectionLifetimeFrame;
+class NativeMeshSectionLifetimeCall;
+class NativeRenderObservedZeroFrame;
 
 using NativeMeshSectionLayoutReferenceOperation = long (__stdcall*)(volatile long*);
 
@@ -60,6 +63,41 @@ struct NativeMeshSectionLayoutStorageContext {
     NativeMeshSectionLayoutStorageFactoryCalls* source_factory{};
 };
 
+// REQUIRED actual Source transport for the owning overloads below. This is
+// called only after THAT invocation's real decrement returned zero and its
+// CURRENT profile/00 target were captured. Execute the SAME whole BD30E0 with
+// context.scalar_delete, or SAME bindings.other_reference_current00 body.
+// Privately bind the supplied persistent receiver to the genuine provider's
+// actual owning graph/invocation. Interface presence, a prepared Call and a
+// normal transport return issue no Native count/zero/death/collection fact.
+// No implementation/default is supplied here. Actual Common/provider binding
+// remains required; replacing the raw provider with generic dispatch is invalid.
+class NativeMeshSectionLayoutStorageLifetimeCalls {
+public:
+    virtual ~NativeMeshSectionLayoutStorageLifetimeCalls() = default;
+    virtual void call_reference_current00(void* captured_reference,
+        std::uint32_t captured_profile, std::uint32_t captured_target,
+        const NativeMeshSectionLayoutStorageContext& same_context,
+        NativeRenderObservedZeroFrame& same_persistent_receiver) = 0;
+};
+
+// Private connection from a genuine owning Frame/Call to the raw kernels.
+// This class exposes no generic observer/token factory or Native operation.
+class NativeMeshSectionLayoutStorageAccess final {
+private:
+    friend class NativeMeshSectionLifetimeFrame;
+    static void clear(NativeMeshSectionLifetimeFrame&,
+        NativeMeshSectionLifetimeCall&, void* captured_actual_section,
+        const NativeMeshSectionLayoutStorageContext&,
+        NativeMeshSectionLayoutStorageLifetimeCalls&);
+    static void rebuild(NativeMeshSectionLifetimeFrame&,
+        NativeMeshSectionLifetimeCall&, void* captured_actual_section,
+        const volatile std::uint32_t& actual_mesh_dword_home,
+        void* actual_key_home, const NativeMeshSectionLayoutStorageContext&,
+        void** acquired_before_insertion,
+        NativeMeshSectionLayoutStorageLifetimeCalls&);
+};
+
 // WholeB86550..B8659E [79B/36ops], ECX actual section, plainRET. Signed current
 // +4C controls the loop; each captured nonnull stream is decremented through
 // CURRENT CE2220, CURRENT profile/current00 is captured only at zero, then SAME
@@ -103,6 +141,25 @@ void rebuild_native_mesh_section_vertex_layout_storage_00b865a0(
     const volatile std::uint32_t& actual_mesh_dword_home,
     void* actual_key_home, const NativeMeshSectionLayoutStorageContext&,
     void** acquired_before_insertion);
+
+// Selected owning Source overloads. Reserve Call with the SAME actual outer
+// SourceScope BEFORE effects; keep that scope through all postcall/health/catch
+// and the actual caller tail. Frame supplies its privately born actual Section.
+// Each reached nonnull release reserves a distinct nonmoving dynamic receiver;
+// no fixed stream/count quota or pre-read list is imposed. Native mesh/key/
+// output homes, current imports, aliases and all OTHER providers above remain
+// the genuine existing ones. Actual lifetime_calls implementation is REQUIRED
+// and must meet its whole-provider/retention obligation; none is bound here.
+void clear_native_mesh_section_vertex_streams_storage_00b86550(
+    NativeMeshSectionLifetimeFrame&, NativeMeshSectionLifetimeCall&,
+    const NativeMeshSectionLayoutStorageContext&,
+    NativeMeshSectionLayoutStorageLifetimeCalls& actual_lifetime_calls);
+void rebuild_native_mesh_section_vertex_layout_storage_00b865a0(
+    NativeMeshSectionLifetimeFrame&, NativeMeshSectionLifetimeCall&,
+    const volatile std::uint32_t& actual_mesh_dword_home,
+    void* actual_key_home, const NativeMeshSectionLayoutStorageContext&,
+    void** acquired_before_insertion,
+    NativeMeshSectionLayoutStorageLifetimeCalls& actual_lifetime_calls);
 
 // No local cleanup/retry/rollback/termination or implicit destructor is added.
 // Caller retains actual section/mesh/key/slot/target/renderer/import/context and

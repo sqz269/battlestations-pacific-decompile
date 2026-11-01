@@ -9,6 +9,9 @@ class NativeMeshSectionLifetimeCall;
 class NativeMeshSectionLifetimeIssuer;
 class NativeRenderObservedZeroAccess;
 class GuiNativeGeometryOwners;
+class NativeMeshSectionLayoutStorageAccess;
+class NativeMeshSectionLayoutStorageLifetimeCalls;
+struct NativeMeshSectionLayoutStorageContext;
 
 // Actual outer Source last-use scope. Forward this SAME nonmoving scope through
 // leaf providers; keep it through postcall/health/catch and the real caller tail.
@@ -84,6 +87,7 @@ private:
     friend class NativeMeshSectionReference;
     friend class NativeRenderObservedZeroAccess;
     friend class GuiNativeGeometryOwners; // authentic existing clone raw-return catch only
+    friend class NativeMeshSectionLayoutStorageAccess;
     friend NativeMeshSectionStorage* create_native_mesh_section_00533fa0(NativeMeshSectionLifetimeFrame&,Call&);
     friend NativeMeshSectionStorage* create_native_mesh_section_clone_00b85ef0(NativeMeshSectionLifetimeFrame&,Call&,const NativeMeshSectionStorage&);
     friend void release_native_mesh_section_creator(NativeMeshSectionLifetimeFrame&,Call&,long (__stdcall*)(volatile long*));
@@ -99,10 +103,15 @@ private:
     friend void clear_native_mesh_section_vertex_streams_00b86550(NativeMeshSectionLifetimeFrame&,Call&);
     friend void clear_native_mesh_section_resources_00b86390(NativeMeshSectionLifetimeFrame&,Call&);
     friend void rebuild_native_mesh_section_vertex_layout_00b865a0(NativeMeshSectionLifetimeFrame&,Call&,void*,NativeMeshSectionLayoutServices&);
+    friend void clear_native_mesh_section_vertex_streams_storage_00b86550(NativeMeshSectionLifetimeFrame&,Call&,
+        const NativeMeshSectionLayoutStorageContext&,NativeMeshSectionLayoutStorageLifetimeCalls&);
+    friend void rebuild_native_mesh_section_vertex_layout_storage_00b865a0(NativeMeshSectionLifetimeFrame&,Call&,
+        const volatile std::uint32_t&,void*,const NativeMeshSectionLayoutStorageContext&,void**,
+        NativeMeshSectionLayoutStorageLifetimeCalls&);
 
     enum class Operation : std::uint32_t { create=1, copy, material, stream, layout,
         generator, append, indexed, clear_streams, clear_resources, rebuild,
-        direct_payload, scalar, creator, reference };
+        direct_payload, scalar, creator, reference, clear_storage, rebuild_storage };
     explicit NativeMeshSectionLifetimeFrame(NativeMeshSectionLifetimeDomain&);
     void prepare_after_link();
     void require_owned(bool,const char*) const;
@@ -126,6 +135,8 @@ private:
     void end_call_activity(Call&) noexcept;
     void fail_call_owned(Call&) noexcept;
     void release_child(Call&,NativeRenderActualOwners&,void*,std::size_t);
+    void release_storage_child(Call&,void*,const NativeMeshSectionLayoutStorageContext&,
+        NativeMeshSectionLayoutStorageLifetimeCalls&);
     void preflight_close() const;
     class OperationScope;
     class PayloadScope;
@@ -142,6 +153,9 @@ private:
     void publish_after_native_constructor();
     NativeMeshSectionStorage* produce(Call&,const NativeMeshSectionStorage*);
     void mutate(Call&,std::uint32_t,void*,std::int32_t,NativeMeshSectionLayoutServices*);
+    void mutate_storage(Call&,std::uint32_t,const volatile std::uint32_t*,void*,
+        const NativeMeshSectionLayoutStorageContext&,void**,
+        NativeMeshSectionLayoutStorageLifetimeCalls&);
     void release_creator(Call&,long (__stdcall*)(volatile long*));
     void release_reference(Call&);
     NativeMeshSectionStorage* scalar(Call&,const void*);

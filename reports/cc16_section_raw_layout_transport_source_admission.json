@@ -1,0 +1,138 @@
+{
+  "status": "QUALIFIED_UNSELECTED_RAW_LAYOUT_SOURCE_SUPPORT_ADMISSION",
+  "original_addresses": [
+    "00b86550..00b8659e",
+    "00b865a0..00b8664e"
+  ],
+  "reviewed_source_baseline": "fb8207800531c5fcf3d1ced8686104f38a46065b",
+  "joined_main": "fbd7c3e8acd0db5e3edd6bd7deb6e10af316176c",
+  "source_files": [
+    {
+      "path": "include/bsp/native_mesh_section_lifetime.hpp",
+      "before": {
+        "sha256": "4741ad7a524f015dfb695e4a1b77db181cc65a467f147225c35882a53af26937",
+        "bytes": 10706
+      },
+      "after": {
+        "sha256": "49b95ec9996c8f21f527fbe890b26a42c01617f219995317acb18aeb99b5cc71",
+        "bytes": 11754
+      },
+      "before_copy": "before/include/bsp/native_mesh_section_lifetime.hpp",
+      "after_copy": "after/include/bsp/native_mesh_section_lifetime.hpp"
+    },
+    {
+      "path": "src/native_mesh_section_lifetime.cpp",
+      "before": {
+        "sha256": "5c6cd6867c73e4204d3c208edb19031811467a1171842c49471850c5038be41e",
+        "bytes": 41118
+      },
+      "after": {
+        "sha256": "2d33a47ecdedba81196fcf6b3789c1c1ce1ad24a34d5e052ea3e52ec6b56f7ca",
+        "bytes": 47579
+      },
+      "before_copy": "before/src/native_mesh_section_lifetime.cpp",
+      "after_copy": "after/src/native_mesh_section_lifetime.cpp"
+    },
+    {
+      "path": "include/bsp/native_mesh_section_layout_storage.hpp",
+      "before": {
+        "sha256": "2bb597ecde029d9e9d614742e79826493173c77d7ea399e3092b5852698e03ae",
+        "bytes": 7201
+      },
+      "after": {
+        "sha256": "3df677ed6ec37d54f485c61fbd909c4457d3ac19f23da8c6a9f5667f8e263c03",
+        "bytes": 10549
+      },
+      "before_copy": "before/include/bsp/native_mesh_section_layout_storage.hpp",
+      "after_copy": "after/include/bsp/native_mesh_section_layout_storage.hpp"
+    },
+    {
+      "path": "src/native_mesh_section_layout_storage.cpp",
+      "before": {
+        "sha256": "e4eb85cdc0f1c91b31fda2e2e94c6bcf048e2c446156817bf893f3023e8391d0",
+        "bytes": 5980
+      },
+      "after": {
+        "sha256": "906786912b27aee101cbc398dfc882269d91230ba1d614b03cf17db574351087",
+        "bytes": 10106
+      },
+      "before_copy": "before/src/native_mesh_section_layout_storage.cpp",
+      "after_copy": "after/src/native_mesh_section_layout_storage.cpp"
+    }
+  ],
+  "forward_sha256": "9405738ef22dbf7e042f56502381b9d5bb06dd7300ba1267798f723bb457aafa",
+  "inverse_sha256": "ce31cfe9734b4f8462da2ac8a54dc90faa71281da9f686fc76c9d37f25e59dc8",
+  "behavior": "Selected owning raw-storage layout overloads preserve mutable Mesh/key/output homes, current imports/targets, signed mutable counts and aliases, with fresh dynamic Call-owned observations through the real outer SourceScope.",
+  "required_provider": "NativeMeshSectionLayoutStorageLifetimeCalls is pure required transport with NO implementation/default; genuine whole BD30E0/scalar or OTHER body and authentic Common receiver consumption remain UNBOUND.",
+  "gates": {
+    "source": {
+      "path": "local\\mesh_generation_primary_cc16_20261031\\Section_raw_layout_Source_peer\\REVIEW.md",
+      "review_sha256": "7e1f4a4272106e1eb4bc97936a7ddf08a6f310bb5433109aec99d5036c4a27aa",
+      "seal_sha256": "4e2bb4989b8b59c25c2e0fa93048393386426e3d46449f03351b0bcff5221aec",
+      "authorship": "Independent of Source4 author"
+    },
+    "raw_Code": {
+      "path": "local\\mesh_generation_primary_cc16_20261031\\Section_raw_layout_Raw_Core_peer\\REVIEW.md",
+      "review_sha256": "d5b628a30ce0a8430ad0e7f3f4892f7bc53283d0d1302d3e7d7a38170878fd38",
+      "seal_sha256": "e2c3e503f84fcbc500ab223d17fb7199677b5f00e8baff2ca8b664b8abb9115e",
+      "authorship": "Source4 author expert slice; separately independent Source gate"
+    },
+    "lifetime_Code": {
+      "path": "local\\mesh_generation_primary_cc16_20261031\\Section_raw_layout_Lifetime_Core_peer\\REVIEW.md",
+      "review_sha256": "28fcb2d339643d56e4a92768b00a04e3bb481f688d08bc02d5d2b2c510e31476",
+      "seal_sha256": "0b9e8457a4a06ccfc1e9533b4e2df833422daedd84a0230f6f676563cef73caa",
+      "authorship": "Did not author Source4; prior Section03 baseline and Mesh6 authorship disclosed"
+    }
+  },
+  "build": {
+    "receipt_path": "local\\mesh_generation_primary_cc16_20261031\\Section_raw_layout_join_fbd_Root\\BUILD_RECEIPT.json",
+    "receipt_sha256": "c198f74a2262519fee70398b162711febc415fcac3c833b5c9c2e5565ad7dacf",
+    "configuration": "MSVC Win32 Release MP2 PCHON coveragePDBOFF",
+    "official_exit": 0,
+    "existing_suites": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "test_seconds": 14.91,
+    "inputs": 6616,
+    "tools": 6,
+    "archive_bytes": 107401418,
+    "archive_sha256": "8a02c0e0ddb44549a2cfb7838ea158bd70cbcf99b0cd00551d2aeddd22f2aaed",
+    "focal_complete_members": 3
+  },
+  "joined_Code_transfer": {
+    "path": "local\\mesh_generation_primary_cc16_20261031\\Section_raw_layout_join_fbd_Root\\JOIN_TRANSFER.json",
+    "sha256": "f155eef435e9065988ea0bbaafaaa5e74bfa57a2dc8fc847fe348b88bdadd8ff",
+    "raw_and_Native_kernel_objects_whole_exact": true,
+    "Lifetime_only_COFF_header_timestamp_bytes_4_to_7_differ": true,
+    "all_other_Lifetime_bytes_exact": true,
+    "Lifetime_whole_object_identity_claim": false
+  },
+  "retained_link": {
+    "path": "local\\mesh_generation_primary_cc16_20261031\\Section_raw_layout_retained_link_Root\\RESULT.json",
+    "sha256": "24ad4054bfb6352705b672629cf42543f7477ccab71727fb67fd48469014f338",
+    "baseline": "30450192f9242d03fcb8f68d63a3167005e80b0a plus reviewed Source4",
+    "public_roots": 2,
+    "normal": 0,
+    "temporary": 2,
+    "Source4_objects3_archive_exact_through_both_stages": true,
+    "forcing_restored_off": true,
+    "execution": false,
+    "current_join_transfer": "Historical link evidence stays historical; both entry bodies/relocations and closure code transfer unchanged, with only Lifetime COFF timestamp differing."
+  },
+  "precision": "zero_provider_entered denotes prelookup zero-route entry; it does not prove actual provider virtual-call entry or consumption.",
+  "allocation_qualification": "Fresh external node allocation/new-handler/exception behavior occurs after actual operand capture and before CURRENT import sampling; it is not Original allocation/fault/stack/FP/DF equivalence.",
+  "remaining": [
+    "Genuine actual lifetime-provider/Common binding and all supported OTHER bodies",
+    "Captured-import borrowed Section credit, creator export and current-incarnation/caller-loan bridges",
+    "Parent/GUI/clone/Model/Mesh/Icon/late-virtual50 actual forwarding and temporary Material receiver",
+    "Independent whole-graph Native/caller/worker quiescence and non-draining all-owner preflight",
+    "Full lower/all-eight/B107F0/LogicalVertex/Origin and strict OFF/ON/runtime/gameplay checks"
+  ],
+  "Original_ABI_FH3_SEH_HOME_FP_DF_fault_concurrency_proof": false,
+  "raw_GUI_switches_enabled": 0,
+  "new_tests": 0,
+  "new_native_vendor_credit": 0,
+  "runtime_executed": false,
+  "goal": "ACTIVE"
+}

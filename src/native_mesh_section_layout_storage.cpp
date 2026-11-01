@@ -1,4 +1,5 @@
 #include "bsp/native_mesh_section_layout_storage.hpp"
+#include "bsp/native_mesh_section_lifetime.hpp"
 
 #include "bsp/native_hardware_layout_factory.hpp"
 #include "bsp/native_mesh_remaining_fields.hpp"
@@ -123,5 +124,79 @@ __declspec(noinline) void rebuild_native_mesh_section_vertex_layout_storage_00b8
         : c.bindings.other_renderer_layout_current40(
             captured_renderer, call.profile, call.target, actual_key_home, acquired_before_insertion);
     store(section + 0x50u, bits(layout));
+}
+// Selected owning composition. Keep the protected raw overloads above intact;
+// only the actual reached release uses the Call-owned dynamic receiver seam.
+void NativeMeshSectionLayoutStorageAccess::clear(NativeMeshSectionLifetimeFrame& frame,
+    NativeMeshSectionLifetimeCall& call,void* captured_actual_section,
+    const NativeMeshSectionLayoutStorageContext& c,
+    NativeMeshSectionLayoutStorageLifetimeCalls& lifetime_calls){
+    const Word section=bits(captured_actual_section);
+    Word index=0;
+    if(signed_word(load(section+0x4cu))>0){
+        Word slot=section+0x3cu;
+        do{
+            const Word captured_stream=load(slot);
+            if(captured_stream!=0){
+                frame.release_storage_child(call,pointer(captured_stream),c,lifetime_calls);
+                store(slot,0); // Includes callback replacement, AFTER return.
+            }
+            index+=1u;slot+=4u;
+        }while(signed_word(index)<signed_word(load(section+0x4cu)));
+    }
+    store(section+0x4cu,0);
+}
+void NativeMeshSectionLayoutStorageAccess::rebuild(NativeMeshSectionLifetimeFrame& frame,
+    NativeMeshSectionLifetimeCall& call,void* captured_actual_section,
+    const volatile std::uint32_t& actual_mesh_dword_home,void* actual_key_home,
+    const NativeMeshSectionLayoutStorageContext& c,void** acquired_before_insertion,
+    NativeMeshSectionLayoutStorageLifetimeCalls& lifetime_calls){
+    const Word section=bits(captured_actual_section);
+    if(load(section+0x50u)!=0){
+        clear(frame,call,captured_actual_section,c,lifetime_calls);
+        const Word captured_layout=load(section+0x50u); // AFTER whole clear.
+        if(captured_layout!=0){
+            frame.release_storage_child(call,pointer(captured_layout),c,lifetime_calls);
+            store(section+0x50u,0);
+        }
+        if(load(section+0x50u)!=0)return;
+    }
+    if(load(section+0x4cu)==0){
+        const Word current_mesh=actual_mesh_dword_home;
+        void* const captured_stream=native_mesh_vertex_stream_unchecked_00b73260(pointer(current_mesh),0);
+        const auto increment=c.increment_00ce221c;
+        increment(reinterpret_cast<volatile long*>(static_cast<std::uintptr_t>(bits(captured_stream)+4u)));
+        const Word current_index=load(section+0x4cu); // AFTER increment call.
+        store(section+0x3cu+current_index*4u,bits(captured_stream));
+        store(section+0x4cu,load(section+0x4cu)+1u); // AFTER possibly aliased append.
+    }
+    const Word key=bits(actual_key_home);
+    Word index=0;
+    const auto initial_count=signed_word(load(section+0x4cu)); // CMP first.
+    store(key+0x10u,0);
+    if(initial_count>0){
+        Word slot=section+0x3cu;
+        do{
+            const Word captured_stream=load(slot);
+            const auto target=current(captured_stream,0x24u,c);
+            void* const descriptor=target.target==0x00b48ce0u
+                ?native_logical_vertex_stream_get_declaration_00b48ce0(pointer(captured_stream))
+                :c.bindings.other_stream_descriptor_current24(pointer(captured_stream),target.profile,target.target);
+            const Word current_key_index=load(key+0x10u); // AFTER callback.
+            store(key+current_key_index*4u,bits(descriptor));
+            store(key+0x10u,load(key+0x10u)+1u); // AFTER possibly aliased store.
+            index+=1u;slot+=4u;
+        }while(signed_word(index)<signed_word(load(section+0x4cu)));
+    }
+    void* const captured_renderer=c.actual_renderer_00f8d394;
+    const auto target=current(bits(captured_renderer),0x40u,c);
+    void* const layout=target.target==0x00b2f710u
+        ?(c.source_factory
+            ?c.source_factory->create_layout_00b2f710(captured_renderer,target.profile,
+                actual_key_home,c.hardware_layouts,acquired_before_insertion)
+            :get_or_create_native_hardware_layout_00b2f710(actual_key_home,c.hardware_layouts,acquired_before_insertion))
+        :c.bindings.other_renderer_layout_current40(captured_renderer,target.profile,target.target,
+            actual_key_home,acquired_before_insertion);
+    store(section+0x50u,bits(layout));
 }
 } // namespace bsp
