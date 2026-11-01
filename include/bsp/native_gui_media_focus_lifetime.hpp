@@ -7,7 +7,9 @@ struct NativePlatformFocusOwnersContext;
 struct NativeStringRawPoolContext;
 struct NativeSingletonDeletionBindings;
 class NativeTextureAtlasManagerDeleteAttempt;
-namespace game { class GameSingletonHost; class GameNativeGuiManagerApplication; }
+class NativeGuiPageFontRetirementHost;
+namespace game { class GameSingletonHost; class GameNativeGuiManagerApplication;
+class GameNativeGuiPageFontRetirementCut; }
 
 // One operation for each native page virtual call. The provider must dispatch
 // the CURRENT profile of the supplied actual page. D5BE38 selects AA8320 at
@@ -42,6 +44,7 @@ public:
 private:
     friend class game::GameSingletonHost;
     friend class game::GameNativeGuiManagerApplication;
+    friend class game::GameNativeGuiPageFontRetirementCut;
     friend void __fastcall destroy_native_singleton_manager_00bd0400(void*,
         const NativeSingletonDeletionBindings&, NativeGuiSelectedManagerDeleteAttempt&);
     friend void __fastcall destroy_native_singleton_manager_00bd0400(void*,
@@ -55,6 +58,11 @@ private:
     game::GameSingletonHost* const host_;
     NativeGuiMediaFocusLifetimeContext* const context_;
     const NativeSingletonDeletionBindings* const bindings_;
+    NativeGuiPageFontRetirementHost* page_fonts_{};
+    void* page_font_gui_receiver_{};
+    void* page_font_renderer_receiver_{};
+    const game::GameNativeGuiPageFontRetirementCut* page_font_scope_{};
+    bool page_font_bind_entered_{}; // Source denial bookkeeping, never Native readiness
     void* outer_receiver_{}; // bound only from the real shutdown's reached capture
     bool cold_bound_{};
     bool host_entered_{};
