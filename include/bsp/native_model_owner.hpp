@@ -102,6 +102,7 @@ public:
 private:
     friend class NativeModelRawFactsAccess;
     friend class NativeModelReference;
+    friend class NativeGuiTextPageMainGeometryStorageFrame;
     friend class NativePostEffectModelFrame;
     // Only the genuine factory Frame can construct this new Source route.
     explicit NativeModelOwner(NativePostEffectModelFrame&);
@@ -201,6 +202,7 @@ public:
 private:
     friend class NativePostEffectModelFrame;
     friend class NativeRenderObservedZeroAccess;
+    friend class NativeGuiTextPageMainGeometryStorageFrame;
     explicit NativeModelReference(NativePostEffectModelFrame&) noexcept;
     NativePostEffectModelFrame* ordinary_post_effect_{};
     NativePostEffectModelFrame* ordinary_post_effect_frame() noexcept { return ordinary_post_effect_; }

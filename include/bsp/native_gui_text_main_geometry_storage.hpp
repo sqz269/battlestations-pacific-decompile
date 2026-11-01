@@ -5,6 +5,7 @@
 #include "bsp/native_gui_widget_position.hpp"
 #include "bsp/native_model_storage_dispatch.hpp"
 #include "bsp/native_model_storage_geometry.hpp"
+#include "bsp/native_model_owner.hpp"
 #include "bsp/native_node_raw_transform.hpp"
 #include <exception>
 
@@ -143,4 +144,69 @@ private:
 void construct_native_gui_text_main_geometry_storage_00ab7700(
     NativeGuiTextRawModelReference&, NativeGuiTextMainGeometryStorageContext&,
     NativeGuiTextMainGeometryStorageFrame&, NativeGuiTextMainGeometryStorageAcquired&);
+
+// Separate consumer of the ONE primary already constructed/published by Page
+// AAA710. It remains a NativeModelReference with its original private raw
+// constructor facts and lifetime, never another raw481 wrapper or receipt.
+// internal188 is still the SAME distinct raw93/85 record. The actual Page
+// caller authenticates its own client/record before supplying these borrows.
+struct NativeGuiTextPageMainGeometryStorageContext {
+    NativeModelReference& primary;
+    NativeModelRawLifetimeBinding& primary_lifetime;
+    NativeModelEnvironment& primary_environment;
+    NativeModelStorageDispatchContext& internal188;
+    GuiNativeGeometryOwners& geometry;
+    const NativeNodeMappedRawTransformProfiles& transforms;
+    const volatile float& one_00d7a24c;
+    const volatile float& negative_zero_00d7a208;
+    const volatile float& y_scale_00e12fc4;
+    const volatile double& half_00d7a280;
+    const volatile std::uint32_t& unchanged_00d7a260;
+};
+
+class NativeGuiTextPageMainGeometryStorageFrame final : private NativeGuiWidgetTransformDispatch {
+public:
+    NativeGuiTextPageMainGeometryStorageFrame(NativeGuiTextPageMainGeometryStorageContext&,
+        volatile std::uint32_t (&arguments)[4], volatile std::uint32_t (&position)[3],
+        NativeGuiWidgetTransformScratch&, GuiWidgetBounds&) noexcept;
+    ~NativeGuiTextPageMainGeometryStorageFrame() noexcept override;
+    NativeGuiTextPageMainGeometryStorageFrame(const NativeGuiTextPageMainGeometryStorageFrame&) = delete;
+    NativeGuiTextPageMainGeometryStorageFrame& operator=(const NativeGuiTextPageMainGeometryStorageFrame&) = delete;
+    NativeGuiTextMainGeometryStoragePhase phase() const noexcept { return phase_; }
+private:
+    friend void construct_native_gui_text_main_geometry_storage_00ab7700(
+        NativeGuiTextRawModelReference&, NativeGuiTextPageMainGeometryStorageContext&,
+        NativeGuiTextPageMainGeometryStorageFrame&, NativeGuiTextMainGeometryStorageAcquired&);
+    void* require_primary_metadata() const;
+    void preflight(NativeGuiTextRawModelReference&);
+    void call_virtual38(std::uint32_t captured_target, void* current_receiver,
+        const void* actual_matrix) override;
+    NativeGuiTextPageMainGeometryStorageContext& context_;
+    volatile std::uint32_t (&arguments_)[4];
+    volatile std::uint32_t (&position_)[3];
+    NativeGuiWidgetTransformScratch& transform_scratch_;
+    GuiWidgetBounds& bounds_scratch_;
+    NativeModelStorageGeometryFrame association_;
+    NativeGuiWidgetTransformBindings transform_bindings_;
+    NativeGuiTextMainGeometryStorageAcquired* acquired_{};
+    NativeGuiTextMainGeometryStoragePhase phase_{NativeGuiTextMainGeometryStoragePhase::fresh};
+};
+
+// New ordinary C++ overload, not Original ABI or a Page factory/Font/lifetime
+// admission. Constructor/preflight use only Source metadata and addresses;
+// no Native count/profile/pool/slot/import/4C read is a preflight proof.
+// The body captures actual4C at AB771D, constructs the mesh, then uses the
+// SAME Page primary's checked raw B75170 setter with all four live homes.
+// That existing setter still performs its real Native admission at its own
+// stage. The old raw481 overload and all its callers are unchanged.
+//
+// Install and retain Frame/Acquired/operands/whole actual provider graph before
+// entry. All reached Native memory/allocation/target domains are required;
+// callbacks must keep Text/Models/metadata alive through remaining reads.
+// Current unsupported targets and escaped effects stay failed obligations;
+// no cleanup, retry, extra credit, Model/publication/token or standalone Font
+// authority is added. Frame destruction requires no entered/failed operation.
+void construct_native_gui_text_main_geometry_storage_00ab7700(
+    NativeGuiTextRawModelReference&, NativeGuiTextPageMainGeometryStorageContext&,
+    NativeGuiTextPageMainGeometryStorageFrame&, NativeGuiTextMainGeometryStorageAcquired&);
 } // namespace bsp

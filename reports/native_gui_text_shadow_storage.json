@@ -1,0 +1,95 @@
+{
+  "packet": 136,
+  "status": "whole_normal_actual_storage_strict_object_and_existing_build_passed_unregistered_pending_Root_join",
+  "Original": {
+    "entry": "00AB72D0",
+    "exclusive_end": "00AB73A9",
+    "inclusive_end": "00AB73A8",
+    "bytes": 217,
+    "instructions": 40,
+    "ABI": "ECX actual1F4 Text; one preset DWORD; RET4",
+    "callees": [],
+    "x87_instructions": 0
+  },
+  "Source": "ordinary actual Text + mutable ordinary preset DWORD HOME read once + unseeded16B frame + same live constants",
+  "base": "fbd7c3e8acd0db5e3edd6bd7deb6e10af316176c",
+  "scope": "exact four new HCPP/doc/report files; no semantic edits",
+  "new_TU_registered": false,
+  "validation": {
+    "strict_x86_object": {
+      "status": "passed",
+      "seconds": 3.0863587,
+      "flags": "/c /std:c++17 /EHsc /MD /O2 /fp:strict /W4 /WX",
+      "object_bytes": 1093,
+      "object_sha256": "db28e664685e9db60e57a49f8fbad6e49f64a03b19d02d14b90df4e085b50de7"
+    },
+    "existing_registered_build": {
+      "command": "./scripts/build.ps1",
+      "status": "passed",
+      "seconds": 72.2284447,
+      "platform": "Release Win32",
+      "existing_checks": "2/2 passed: reconstructed_math0.27s,tool_tests13.59s",
+      "new_TU_registered": false,
+      "new_body_link_or_runtime_proof": false
+    },
+    "manual_Original_schedule": "all40 starts and complete strict emitted listing inspected; no finding within the ordinary Source contract"
+  },
+  "held": [
+    "Original ABI/FLAGS/private homes",
+    "fault/FH3/SEH/NoThrow/Origin",
+    "unmasked FP",
+    "actual storage/custody/provider/lifecycle",
+    "whole-object/runtime/Game"
+  ],
+  "not_added": [
+    "float arithmetic",
+    "callee/provider callback",
+    "semantic owner cast",
+    "class/profile/count admission",
+    "process role/pool",
+    "cleanup/rollback/termination policy",
+    "ABB630 reader",
+    "production binding/activation"
+  ],
+  "footprints": {
+    "Text_distinct_write_bytes": 29,
+    "Text_offsets": [
+      "1D0 DWORD",
+      "15C BYTE",
+      "168/16C/170/174 DWORD",
+      "160 DWORD",
+      "164 MOVSS"
+    ],
+    "frame": "four ordinary DWORDs16B; written only on captured preset1",
+    "preset_HOME": "one entry DWORD read, no write/reload",
+    "constant_reads": "offset+four interleaved live shadow DWORDs only on changed nonminus1; ONE/alpha only on preset1"
+  },
+  "ownership": "genuine actual Text/lifetimes/cell identity/Source alias domains remain caller proof; no Native retain/release/admission/cleanup",
+  "no_mutation_outside_packet": "No semantic/CMake/ledger/Ghidra/ABB630/Host/Page/provider binding or new test/probe/Game changes",
+  "Root_status": "whole_normal_Source_registered_CoreCode_accepted_reader_unbound",
+  "Root_TU_registered": true,
+  "Root_acceptance": {
+    "source_build_head": "72394f17f9cd4598f0117c788b1354f7b5a25a03",
+    "joined_published_Main": "519e4186c7e7d3659b7de2e2a449bcf630a43aab",
+    "first_build_seconds": 191.1504283,
+    "first_inputs_artifacts": [
+      3837,
+      181
+    ],
+    "combined_build_seconds": 58.0497191,
+    "combined_inputs_artifacts": [
+      3843,
+      184
+    ],
+    "existing_suites": "2/2(.39/15.14s)",
+    "new_tests": 0,
+    "Code_selected_sections": 21,
+    "Code_bytes": 6514,
+    "Code_operations": 1728,
+    "Code_receipt": "local/function_source_batch133/Root_Code_review.json",
+    "default_regression": "same exact executable windowed fullscreen0,Atlas4textures227items/47slotsharedDrain,natural0/0,noForce/survivors,COM0/0,presentedFrames0;newentriesunexecuted",
+    "Original_ABI": "new C++ interfaces; no private-register/stack/EH/fault/runtime equivalence",
+    "activation": false,
+    "admission": "docs/CC16_PAGE_TEXT_SHADOW_OPERATIONS_SOURCE133_136_137_ADMISSION.md"
+  }
+}

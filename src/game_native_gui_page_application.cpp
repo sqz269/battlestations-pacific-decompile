@@ -40,6 +40,7 @@
 #include "bsp/native_gui_widget_position.hpp"
 #include "bsp/native_gui_widget_property_interaction.hpp"
 #include "bsp/native_gui_widget_visibility.hpp"
+#include "bsp/native_gui_widget_child_lookup_storage.hpp"
 #include "bsp/native_lua_reader_fields.hpp"
 #include "bsp/native_lua_reader_queries.hpp"
 #include "bsp/native_node_raw_transform.hpp"
@@ -188,6 +189,21 @@ struct GameNativeGuiPageApplication::Impl {
         AttachmentCall& attachment() { return take(attachments, attachment_used); }
         ParentNullCall& parent() { return take(parents, parent_used); }
         ScalarCall& scalar() { return take(scalars, scalar_used); }
+    };
+    // Ordinary Source histories for separately reached frontend calls. The
+    // receiver/result and caller-home pointer are passive identities; keeping
+    // this record adds no Native reference and never rediscovers a dead child.
+    struct WidgetOperation {
+        enum class Kind { child_lookup, visibility };
+        Kind kind;
+        NativeCalls native_calls;
+        void* receiver{};
+        volatile Word (*lookup_homes)[2]{};
+        std::uint8_t requested{};
+        Word captured_profile{}, captured_target{};
+        void* result{};
+        bool entered{}, complete{}, failed{};
+        explicit WidgetOperation(Kind value) : kind(value) {}
     };
     // The raw Group's distinct current18 is B8EEC0. Its canonical zero terminal
     // may still hold an actual3Ch scene resource; its genuine raw destructor
@@ -865,6 +881,7 @@ struct GameNativeGuiPageApplication::Impl {
     std::optional<NativeGuiIconPropertyReaderLiterals> icon_literals;
     // Entered failures: retained, never destroyed (the host _Exits first).
     std::vector<std::unique_ptr<Construction>> retained_frames;
+    std::vector<std::unique_ptr<WidgetOperation>> widget_operations;
     std::unique_ptr<GameNativeGuiManagerApplication::PageLifetimeBinding> manager_binding;
     PropertyInvocation* current_properties{};
     NativeCalls* current_calls{};
@@ -1410,6 +1427,65 @@ bool GameNativeGuiPageApplication::requires_process_retention() const noexcept {
         impl_->models->requires_process_retention();
 }
 std::uint32_t GameNativeGuiPageApplication::failure_site() const noexcept { return impl_->failed_site; }
+void* GameNativeGuiPageApplication::find_child_00aa7e00(void* actual,
+    volatile std::uint32_t (&homes)[2]) {
+    auto& p = *impl_;
+    p.require_entry();
+    p.authenticate_widget(actual); // SAME private producer/companion history.
+    auto operation = std::make_unique<Impl::WidgetOperation>(Impl::WidgetOperation::Kind::child_lookup);
+    operation->receiver = actual;
+    operation->lookup_homes = &homes; // Take an address without reading either home.
+    p.widget_operations.push_back(std::move(operation));
+    auto& call = *p.widget_operations.back();
+    p.prepare_calls(call.native_calls);
+    p.active = true;
+    p.current_calls = &call.native_calls;
+    try {
+        call.entered = true;
+        call.result = find_native_gui_widget_child_storage_00aa7e00(actual, homes);
+        require(!p.failed && p.active && p.current_calls == &call.native_calls && !call.native_calls.failed,
+            "Page child lookup cannot resume after a caught nested failure");
+        call.complete = true;
+        p.current_calls = nullptr;
+        p.active = false;
+        return call.result; // Existing actual graph owns this unretained borrow.
+    } catch (...) {
+        call.failed = true;
+        call.native_calls.failed = true;
+        p.fail(0x00aa7e00);
+        throw; // Keep entered state, borrowed homes and the whole graph.
+    }
+}
+void GameNativeGuiPageApplication::set_widget_visibility_00aa8530(void* actual,
+    std::uint8_t requested) {
+    auto& p = *impl_;
+    p.require_entry();
+    p.authenticate_widget(actual);
+    auto operation = std::make_unique<Impl::WidgetOperation>(Impl::WidgetOperation::Kind::visibility);
+    operation->receiver = actual;
+    operation->requested = requested;
+    p.widget_operations.push_back(std::move(operation));
+    auto& call = *p.widget_operations.back();
+    p.prepare_calls(call.native_calls);
+    p.active = true;
+    p.current_calls = &call.native_calls;
+    try {
+        call.entered = true;
+        call.captured_profile = read(actual);
+        call.captured_target = p.widgets.current_table(actual, call.captured_profile)[0x34 / 4];
+        p.widgets.call_visible_34(call.captured_target, actual, requested);
+        require(!p.failed && p.active && p.current_calls == &call.native_calls && !call.native_calls.failed,
+            "Page visibility cannot resume after a caught nested failure");
+        call.complete = true;
+        p.current_calls = nullptr;
+        p.active = false;
+    } catch (...) {
+        call.failed = true;
+        call.native_calls.failed = true;
+        p.fail(0x00aa8530);
+        throw;
+    }
+}
 void GameNativeGuiPageApplication::after_native_renderer_drain() {
     require(!requires_process_retention() && impl_->timed.empty(),
         "Page raw graph retains entered failures or independent timed custody after drain");
