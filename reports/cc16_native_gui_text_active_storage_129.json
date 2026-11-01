@@ -1,0 +1,164 @@
+{
+  "packet": "cc16_native_gui_text_active_source129",
+  "base": "57502850405515f60f20e0852ec8eda48f1313c4",
+  "source_implemented": true,
+  "source_ready": false,
+  "status": "complete_normal_actual_storage_candidate_unregistered_pending_Root_independent_review",
+  "accepted_new_Native_body_credit": 0,
+  "candidate_normal_body_count": 1,
+  "Source_old_provider_changes": 0,
+  "functions": [
+    {
+      "address": "00ab87d0",
+      "exclusive_end": "00ab8901",
+      "coverage": "complete_normal_body",
+      "native_bytes": 305,
+      "native_instruction_starts": 103,
+      "last_instruction": "00ab88fe RET4",
+      "name_preserved": "BSP_GuiText_PropagateStateToArrowIcons",
+      "source_name": "propagate_native_gui_text_active_storage_00ab87d0",
+      "source": "src/native_gui_text_active_storage.cpp",
+      "header": "include/bsp/native_gui_text_active_storage.hpp",
+      "original_abi": "ECX captured Text intoESI before allocation; full stackDWORD loaded late after left profile; RET4; no semantic EAX result claimed",
+      "new_Source_ABI": "ordinary explicit receiver, live constvolatile DWORD HOME ref and retained context/frame/acquisition; no Native register/private-stack ABI"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00ab87ff",
+      "native": "0041dd40",
+      "function": "00ab87d0",
+      "kind": "call"
+    },
+    {
+      "address": "00ab881a",
+      "native": "00bf7680",
+      "function": "00ab87d0",
+      "kind": "call"
+    },
+    {
+      "address": "00ab882e",
+      "native": "00aa7e00",
+      "function": "00ab87d0",
+      "kind": "call"
+    },
+    {
+      "address": "00ab8850",
+      "native": "00419cc0",
+      "function": "00ab87d0",
+      "kind": "call"
+    },
+    {
+      "address": "00ab8857",
+      "native": "00bd1510",
+      "function": "00ab87d0",
+      "kind": "call"
+    },
+    {
+      "address": "00ab886c",
+      "native": "0041dd40",
+      "function": "00ab87d0",
+      "kind": "call"
+    },
+    {
+      "address": "00ab8887",
+      "native": "00bf7680",
+      "function": "00ab87d0",
+      "kind": "call"
+    },
+    {
+      "address": "00ab889f",
+      "native": "00aa7e00",
+      "function": "00ab87d0",
+      "kind": "call"
+    },
+    {
+      "address": "00ab88c1",
+      "native": "00419cc0",
+      "function": "00ab87d0",
+      "kind": "call"
+    },
+    {
+      "address": "00ab88c8",
+      "native": "00bd1510",
+      "function": "00ab87d0",
+      "kind": "call"
+    },
+    {
+      "address": "00ab88e1",
+      "native": "captured_child+vtable34",
+      "function": "00ab87d0",
+      "kind": "indirect_call",
+      "qualification": "manual Original register-call window; genuine typed AA8530 Source provider required, other targets unresolved"
+    },
+    {
+      "address": "00ab88eb",
+      "native": "captured_child+vtable34",
+      "function": "00ab87d0",
+      "kind": "indirect_call",
+      "qualification": "manual Original register-call window; genuine typed AA8530 Source provider required, other targets unresolved"
+    }
+  ],
+  "schedule": {
+    "left_profile": "00ab88d5",
+    "full_flag_read": "00ab88d7",
+    "left_slot34": "00ab88db",
+    "left_call": "00ab88e1",
+    "right_profile_after_left_callback": "00ab88e3",
+    "right_slot34": "00ab88e5",
+    "right_call_same_captured_DWORD": "00ab88eb",
+    "names_return_before_calls": true,
+    "no_flag_value_read_when_either_child_missing": true,
+    "lookup_HOME1": "Native zero, unread; not recursion"
+  },
+  "child_provider": {
+    "interface": "NativeGuiTextActiveChild34Bindings",
+    "known_target": "00aa8530",
+    "required": "authenticate SAME actual child factory/record + captured profile + same RO; genuine raw AA8530 with same live visibility/hierarchy/current38/3C context; full DWORD until concrete byte-valued body boundary",
+    "unresolved_targets": "retained Source error before dispatch; no numeric codecall, extra class query, semantic owner or successful fallback",
+    "binding_status": "required future caller; no provider/default/activation invented"
+  },
+  "failure_scope": {
+    "entered_Source_escape": "record current site/state/exception, failed, rethrow; retain entire actual graph and partial headers",
+    "Native_cleanup_actions": "not implemented or inferred; lookup-state0/1 does not authorize header unwind",
+    "destructors": "metadata only; no Native cleanup or new terminate policy",
+    "one_shot": "private phase/frame identity; fresh records per invocation",
+    "Original_FH3_SEH_fault_ABI": "unadmitted"
+  },
+  "build": {
+    "strict_new_TU": {
+      "source_sha256": "244c2e09c0b574093b2514aad2cd74be4745fad0ea32b6572c75be6bdd24a052",
+      "object": "J:\\PROG\\battlestations-pacific-decompile-codex-atlas-startup-caller-20261101\\local\\output\\cc16_native_gui_text_active_source129_20261101\\native_gui_text_active_storage.obj",
+      "exit": 0,
+      "header_sha256": "3b3e83c4764cdff591a66abbd83dc191b4f1af732195ee1025304ef5b180fcde",
+      "command": "@echo off\ncall \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvarsall.bat\" x86 >nul\nif errorlevel 1 exit /b %errorlevel%\ncl.exe /nologo /c /std:c++17 /permissive- /EHsc /W4 /WX /O2 /MD /DWIN32 /D_WINDOWS /DNDEBUG /I\"J:\\PROG\\battlestations-pacific-decompile-codex-atlas-startup-caller-20261101\\include\" /Fo\"J:\\PROG\\battlestations-pacific-decompile-codex-atlas-startup-caller-20261101\\local\\output\\cc16_native_gui_text_active_source129_20261101\\native_gui_text_active_storage.obj\" \"J:\\PROG\\battlestations-pacific-decompile-codex-atlas-startup-caller-20261101\\src\\native_gui_text_active_storage.cpp\"\nexit /b %errorlevel%",
+      "object_sha256": "d1ff6798965bc583cbc8cca1c904b7b2fd1f2b6ad9b980837593b7332c8cfb11",
+      "vcvars": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvarsall.bat",
+      "seconds": 2.358337
+    },
+    "registered_existing_build": {
+      "new_tu_registered": false,
+      "meaning": "Existing registered build and suites only; separate strict MSVC Win32 object compiles Source129",
+      "exit": 0,
+      "seconds": 119.6472776
+    },
+    "new_TU_registered": false,
+    "object_compiled_is_not_Core_or_EXE_acceptance": true
+  },
+  "verification": {
+    "Original_direct_rows": "10 checked,0failed in call_verification.log",
+    "Original_indirect_rows": "2 manual saved-assembly register-call windows; tool deliberately does not validate symbolic indirect target",
+    "standalone_TU": "left profile before full HOME read, same saved DWORD twice, fresh right profile after left Source call; typed provider call is Source virtual, not Original numeric code",
+    "standalone_TU_receipt_sha256": "f6744dba4d3767f80d97ab4b140543a401b1cf70f63fb72c14d5e699a9dd19b3"
+  },
+  "no_new_tests_probes_Game": true,
+  "no_Text_Model_pool_count_selector_host": true,
+  "no_CMake_ledger_Ghidra_mutation": true,
+  "doc": "docs/CC16_NATIVE_GUI_TEXT_ACTIVE_STORAGE_129.md",
+  "limits": [
+    "all GUI/Page/Origin/fault/EH/ABI/runtime gates held",
+    "no Source124/Page/125/frontend/Parent/Material/Section edits",
+    "Root owns Core join/actual emitted review/build/caller admission",
+    "no Native execution claim"
+  ]
+}
