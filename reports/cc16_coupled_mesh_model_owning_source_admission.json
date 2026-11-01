@@ -41,7 +41,7 @@
     "kRawFontWorkQualificationCc16Bound": "false"
   },
   "ordinary_factory_selected": false,
-  "Game_run": false,
+  "Game_run": true,
   "Root_local_evidence": {
     "local/mesh_generation_primary_cc16_20261031/final99_Source_Root/ROOT_SOURCE_GATE.json": "b03afd7ecdbcc00cb747ed746c18d95cfb884d7cfeb95a02dd38c06142054eab",
     "local/mesh_generation_primary_cc16_20261031/final99_Source_Root/ROOT_APPLICATION.json": "27b6d7515a5f894cb2a0098dfc6023c941e2982c746acd937ba21d54d85d7e7f",
@@ -202,5 +202,51 @@
       "path": "local/mesh_generation_primary_cc16_20261031/final99_Source_Root/final_join_691a_Root/retained_link/RESULT.json",
       "sha256": "1f3f6ccbe5305c75f585a8dca2c6ef3c62c20a0290a18216e3aaadde4f86f1c5"
     }
-  }
+  },
+  "published_default_startup_shutdown_smoke": {
+    "decision": "PASS_PUBLISHED43ad_DEFAULT_STARTUP_SHUTDOWN_NATURAL_SMOKE_ONLY",
+    "Source_commit": "43ad5ec10fd17bbfae8e86f233b10e45045b457e",
+    "exe_sha256": "d32baf7dfe5645dca31bae1a235988521503ca33258ae0430c614069eeef89a9",
+    "game_exit": 0,
+    "launcher_exit": 0,
+    "BSP_environment_empty": true,
+    "NoForceStop": true,
+    "Slots": 8,
+    "natural_completed": true,
+    "forced_or_retained_pids": [],
+    "summary_log_lines": [
+      [
+        759,
+        "native GUI Icon process: after_full_drain idle=1 publication=null manager=null deletion_bound=1"
+      ],
+      [
+        767,
+        "host StartupHost::random_threads_shutdown [00bd30d0] concrete"
+      ],
+      [
+        768,
+        "summary window_created=1 device_created=1 device_hr=0x00000000 back_buffer=1600x900 frames_presented=0 presents_skipped=1 loop_finished=1 exit_code=0"
+      ],
+      [
+        779,
+        "host methods 126 concrete, 41 unimplemented"
+      ],
+      [
+        946,
+        "  StartupHost::random_threads_shutdown                     00bd30d0             concrete      calls=1"
+      ],
+      [
+        947,
+        "native GUI Icon process: after_full_drain idle=1 publication=null manager=null deletion_bound=1"
+      ]
+    ],
+    "raw_factory_or_nine_raw_switch_activation": false,
+    "frames_presented": 0,
+    "presents_skipped": 1,
+    "unimplemented_methods": 41,
+    "full_gameplay_Original_ABI_exception_or_strict13_cause_proof": false,
+    "receipt": "local/mesh_generation_primary_cc16_20261031/published43ad_default_host_20261101/ROOT_VALIDATION_RECEIPT.json",
+    "receipt_sha256": "85f80035e7f07f15bed792fd053f86cbcb8cbff0cc5e2cf728c72480ececa173"
+  },
+  "Game_run_scope": "Only canonical published43ad one-frame private-settings startup/shutdown smoke; dormant ordinary/raw factory not executed"
 }
