@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/native_render_zero_frame.hpp"
 #include "bsp/gui_native_geometry.hpp"
 #include "bsp/native_gui_widget_position.hpp"
 #include "bsp/native_model_storage_geometry.hpp"
@@ -71,6 +72,10 @@ private:
     GuiWidgetBounds& bounds_;
     NativeModelStorageGeometryFrame association_;
     NativeGuiIconConstructedStoragePhase phase_{NativeGuiIconConstructedStoragePhase::fresh};
+    // Actual caller-owned C++ hold metadata, never an Acquired authority.
+    // Keep this nonmoving Frame through whole AA7DC0, all returned/health/catch
+    // uses and the real last-use fence; never move/reset its linked hold.
+    NativeRenderObservedZeroFrame cpp_zero_frame_;
 };
 
 // Whole AB2540 NORMAL payload/call schedule, not its private FH3 action. Test

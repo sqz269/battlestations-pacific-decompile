@@ -23,6 +23,7 @@ private:
     friend class NativeGuiFrameBoxConstructedStorageObservedZeroIssuer;
     friend class NativeGuiFrameBoxRecordsObservedZeroIssuer;
     friend class NativeGuiFrameBoxStateStorageObservedZeroIssuer;
+    friend class NativeGuiIconConstructedStorageObservedZeroIssuer;
     friend class NativeGuiModelStorageObservedZeroIssuer;
     friend class NativeGuiSoundStorageObservedZeroIssuer;
     friend class NativeGuiTextCursorStorageObservedZeroIssuer;
