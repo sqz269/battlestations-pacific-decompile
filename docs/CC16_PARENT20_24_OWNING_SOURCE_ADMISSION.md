@@ -1,6 +1,6 @@
 # CC16 parent20/24 owning Source admission
 
-Source and both Core reviews are accepted with qualifications; publication waits for a fresh join with current Main.
+Qualified Source/Core/build/link admission after fresh join with Main `5abb9688e`; compiled Source is `60b489db4`.
 
 The existing six Native providers were available, but genuine private allocation, constructor-completion, canonical, zero-action and end/free custody were missing. Source `fb432204d` adds that transport through stable parent Domain/Frames and the SAME real count/canonical. It does not add Native reconstruction credit or activate the ordinary renderer route.
 
@@ -14,8 +14,12 @@ Actual caller/closure Core review verifies private +4 binding, one genuine decre
 
 All 42 actual public C++ roots link, including 16 new parent APIs. The 28 missing roots were temporarily retained for bsp_game only, then canonical forcing was removed. All 74 objects and the library stayed whole-byte exact through both stages; no new entry or Game was executed during this link check.
 
-One default legacy frame on prior Source5ec7 exited naturally0/0 with NoForceStop, empty BSP environment, real window/device creation and final COM0/0. That is bounded startup/shutdown evidence, not ordinary-parent or gameplay validation. The later Domain metadata catch has separate Source/Core proof.
+A fresh joined canonical build and both suites pass: 79 objects, 3,574 actual CL read inputs, six tools and 73 exact selected Core members in the 106,251,624-byte library. The whole Main83db CMake prefix and all five appended registrations are preserved. All Parent/Material objects transfer whole-byte exact; only the incoming Icon application object changes, with four new Core objects. The final 42-root link/canonical restore preserves all 79 objects and the library.
+
+The exact final joined executable passed one default legacy frame with NoForceStop and empty BSP environment: Game0/launcher0, natural completion, no forced/retained PID, real window/device and final COM0/0. Its SHA is `73f893caaf6155cc4a68163a04c190cc58fff9e0f502ac026280aba0f951ff89`. This is bounded startup/shutdown evidence, not ordinary-parent, strict-pair, visual or gameplay validation.
 
 Material75baf, LogicalVertex92dc and upper414524 remain explicit prerequisites: all eight upper families/B107F0, genuine allocation/creator/zero issuers, retained receiver/Host failure transport, expected-retention drain eligibility and actual worker/Native/caller quiescence. Existing lower noexcept effects remain. Source24 private HOME/Original stack alias, ABI/FH3/SEH/fault/CPU/FP/DF and concurrency qualifications remain. All nine raw GUI switches remain false, and every existing CC16 activation/strict-pair gate remains required. No NoThrow, mode/input, preimage-zeroing or origin-authority substitute is introduced.
+
+The separate [Material member representation admission](CC16_MATERIAL_MEMBER_STORAGE_ADMISSION.md) preserves all Parent object bytes and supplies no Material ownership/failure authority.
 
 Machine-readable evidence and remaining requirements: [report](../reports/cc16_parent20_24_owning_source_admission.json).
