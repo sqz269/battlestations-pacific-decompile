@@ -340,6 +340,7 @@ void* NativeGuiIconDelayedLoads::delete_registered_raw_storage_00ab57c0(
     // Adopt before raw entry; unique_ptr moves keep home/acquisition addresses.
     auto adopted = std::move(context.impl_->pending);
     impl_->operation = std::move(adopted->prepared_operation);
+    impl_->last_prepared_getter_operation = nullptr;
     impl_->retained_raw_scalar_call = std::move(adopted);
     auto& operation = *impl_->operation;
     auto& call = *impl_->retained_raw_scalar_call;
