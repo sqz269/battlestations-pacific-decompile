@@ -1,4 +1,5 @@
 #include "bsp/native_mesh_section_lifetime.hpp"
+#include "bsp/native_mesh_section_layout_storage.hpp"
 #include "bsp/native_mesh_canonical.hpp"
 #include "bsp/native_render_observed_zero.hpp"
 #include <array>
@@ -45,6 +46,21 @@ struct NativeMeshSectionLifetimeDomain::Impl {
         const volatile Word& b,NativeMeshRetentionState& r):environment(e),owners(o),bounds(b),retention(r){}
 };
 struct NativeMeshSectionLifetimeCall::Impl {
+    // Raw storage loops have CURRENT mutable counts, not four fixed slots.
+    // Each reached release owns a separate nonmoving external observation.
+    struct StorageRelease final {
+        StorageRelease* next{};
+        NativeRenderObservedZeroFrame zero_frame;
+        void* actual{};
+        NativeMeshSectionLayoutReferenceOperation decrement{};
+        long result{};
+        Word profile{},target{};
+        bool entered{},decrement_returned{},zero_provider_entered{};
+        bool current_captured{},zero_provider_returned{},returned{};
+        StorageRelease() = default;
+        StorageRelease(const StorageRelease&) = delete;
+        StorageRelease& operator=(const StorageRelease&) = delete;
+    };
     NativeMeshSectionLifetimeFrame& frame;
     NativeMeshSectionLifetimeCall* next{};
     NativeMeshSectionLifetimeCall* source_next{};
@@ -55,7 +71,14 @@ struct NativeMeshSectionLifetimeCall::Impl {
     std::array<NativeRenderActualOwnerReleaseObservation,child_sites> children;
     NativeRenderActualOwnerReleaseObservation reference_drop;
     NativeRenderObservedZeroFrame direct_zero;
+    StorageRelease* storage_releases{};
+    std::atomic<unsigned> active_users{0};
+    const NativeMeshSectionLayoutStorageContext* storage_context{};
+    const NativeMeshSectionLayoutStorageLifetimeCalls* storage_provider{};
     Impl(NativeMeshSectionLifetimeFrame& f,bool t):frame(f),terminal(t){}
+    ~Impl(){
+        while(storage_releases){auto* following=storage_releases->next;delete storage_releases;storage_releases=following;}
+    }
 };
 struct NativeMeshSectionLifetimeFrame::Impl {
     NativeMeshSectionLifetimeDomain& domain;
@@ -226,20 +249,25 @@ void NativeMeshSectionLifetimeFrame::end_outer_call() noexcept {
     impl_->outer_calls.fetch_sub(1,std::memory_order_release);exact_.outer_calls_.fetch_sub(1,std::memory_order_release);
 }
 void NativeMeshSectionLifetimeFrame::begin_call_activity(Call& call) noexcept {
+    call.impl_->active_users.fetch_add(1,std::memory_order_acq_rel);
     for(auto& observation:call.impl_->children)observation.cpp_zero_frame.active_invocations_.fetch_add(1,std::memory_order_acq_rel);
     call.impl_->reference_drop.cpp_zero_frame.active_invocations_.fetch_add(1,std::memory_order_acq_rel);
     call.impl_->direct_zero.active_invocations_.fetch_add(1,std::memory_order_acq_rel);
+    for(auto* row=call.impl_->storage_releases;row;row=row->next)row->zero_frame.active_invocations_.fetch_add(1,std::memory_order_acq_rel);
 }
 void NativeMeshSectionLifetimeFrame::end_call_activity(Call& call) noexcept {
     for(auto& observation:call.impl_->children)observation.cpp_zero_frame.active_invocations_.fetch_sub(1,std::memory_order_release);
     call.impl_->reference_drop.cpp_zero_frame.active_invocations_.fetch_sub(1,std::memory_order_release);
     call.impl_->direct_zero.active_invocations_.fetch_sub(1,std::memory_order_release);
+    for(auto* row=call.impl_->storage_releases;row;row=row->next)row->zero_frame.active_invocations_.fetch_sub(1,std::memory_order_release);
+    call.impl_->active_users.fetch_sub(1,std::memory_order_release);
 }
 void NativeMeshSectionLifetimeFrame::fail_call_owned(Call& call) noexcept {
     call.impl_->failed.store(true,std::memory_order_release);
     for(auto& observation:call.impl_->children)NativeRenderObservedZeroAccess::fail_frame(observation.cpp_zero_frame);
     NativeRenderObservedZeroAccess::fail_frame(call.impl_->reference_drop.cpp_zero_frame);
     NativeRenderObservedZeroAccess::fail_frame(call.impl_->direct_zero);
+    for(auto* row=call.impl_->storage_releases;row;row=row->next)NativeRenderObservedZeroAccess::fail_frame(row->zero_frame);
 }
 NativeMeshSectionLifetimeFrame::Call& NativeMeshSectionLifetimeFrame::prepare_call(SourceScope& source){
     require_healthy();require_owned(!source.ended_&&!source.failed_,"Section Call requires actual live healthy outer Source scope");
@@ -268,6 +296,7 @@ void NativeMeshSectionLifetimeFrame::begin_operation(Call& call,Word operation){
         case Operation::material: case Operation::stream: case Operation::layout:
         case Operation::generator: case Operation::append: case Operation::indexed:
         case Operation::clear_streams: case Operation::clear_resources: case Operation::rebuild:
+        case Operation::clear_storage: case Operation::rebuild_storage:
             require_live_payload_borrow();break;
         default: require_same_canonical(*impl_->reference);break;
         }
@@ -277,6 +306,37 @@ void NativeMeshSectionLifetimeFrame::release_child(Call& call,NativeRenderActual
     require_owned(&call.impl_->frame==this && &owners==&impl_->domain.impl_->environment.retained_owners&&site<child_sites,
         "Section child release requires its authentic call/site and SAME actual registry");
     release_native_render_actual_owner_observed(owners,actual,call.impl_->children[site]);
+}
+void NativeMeshSectionLifetimeFrame::release_storage_child(Call& call,void* actual,
+    const NativeMeshSectionLayoutStorageContext& context,
+    NativeMeshSectionLayoutStorageLifetimeCalls& lifetime_calls){
+    const Word kind=call.impl_->operation.load(std::memory_order_acquire);
+    require_owned(&call.impl_->frame==this&&call.impl_->source_active.load(std::memory_order_acquire)&&
+        call.impl_->storage_context==&context&&call.impl_->storage_provider==&lifetime_calls&&
+        (kind==static_cast<Word>(Operation::clear_storage)||kind==static_cast<Word>(Operation::rebuild_storage)),
+        "Section raw release requires its genuine active owning storage Call");
+    auto pending=std::make_unique<Call::Impl::StorageRelease>();auto* row=pending.get();
+    // Inherit the already-active leaf AND actual outer Source contributions.
+    // End-of-leaf/end-of-Source each withdraw only their own metadata activity.
+    row->zero_frame.active_invocations_.store(call.impl_->active_users.load(std::memory_order_acquire),std::memory_order_release);
+    row->next=call.impl_->storage_releases;call.impl_->storage_releases=row;(void)pending.release();
+    const NativeRenderObservedZeroAccess::Invocation invocation(row->zero_frame);
+    row->actual=actual;row->entered=true;
+    row->decrement=context.decrement_00ce2220; // CURRENT at THIS reached CALL.
+    row->result=row->decrement(reinterpret_cast<volatile long*>(static_cast<std::byte*>(actual)+4));
+    row->decrement_returned=true;
+    if(row->result==0){
+        row->zero_provider_entered=true;
+        row->profile=*static_cast<const volatile Word*>(actual);
+        const auto* const table=context.bindings.current_table(actual,row->profile);
+        row->target=table[0];row->current_captured=true;
+        // Required real whole-provider transport, not generic Common dispatch.
+        // Its normal return is not a Native death/collection/hold receipt.
+        lifetime_calls.call_reference_current00(actual,row->profile,row->target,context,row->zero_frame);
+        row->zero_provider_returned=true;
+    }
+    // No actual payload/companion read after a possible terminal provider.
+    row->returned=true;
 }
 void NativeMeshSectionLifetimeFrame::native_allocation_entered() noexcept {
     if(impl_->allocation_entered.exchange(true))record_source_failure();
@@ -419,6 +479,17 @@ void NativeMeshSectionLifetimeFrame::mutate(Call& call,Word kind,void* operand,s
         kind,operand,index,services,*this,call);
     require_healthy();call.impl_->returned.store(true,std::memory_order_release);
 }
+void NativeMeshSectionLifetimeFrame::mutate_storage(Call& call,Word kind,
+    const volatile Word* mesh_home,void* key_home,const NativeMeshSectionLayoutStorageContext& context,
+    void** acquired,NativeMeshSectionLayoutStorageLifetimeCalls& lifetime_calls){
+    begin_operation(call,kind);const OperationScope operation(*this,call);
+    call.impl_->storage_context=&context;call.impl_->storage_provider=&lifetime_calls;
+    if(kind==static_cast<Word>(Operation::clear_storage))
+        NativeMeshSectionLayoutStorageAccess::clear(*this,call,impl_->actual,context,lifetime_calls);
+    else
+        NativeMeshSectionLayoutStorageAccess::rebuild(*this,call,impl_->actual,*mesh_home,key_home,context,acquired,lifetime_calls);
+    require_healthy();call.impl_->returned.store(true,std::memory_order_release);
+}
 void NativeMeshSectionLifetimeFrame::release_creator(Call& call,long (__stdcall* decrement)(volatile long*)){
     begin_operation(call,static_cast<Word>(Operation::creator));const OperationScope operation(*this,call);
     require_owned(decrement&&impl_->creator_outstanding.load()&&!impl_->creator_release_entered.exchange(true),
@@ -496,7 +567,7 @@ void NativeMeshSectionLifetimeFrame::preflight_close() const {
         impl_->outer_calls.load()==held&&exact_.outer_calls_.load()==held&&exact_.borrows_.load()==0,
         "Section close crossed active operation/count/whole-caller fence");
     for(auto* call=impl_->calls;call;call=call->impl_->next){
-        require_owned(!call->impl_->source_active.load()&&!call->impl_->failed.load()&&
+        require_owned(!call->impl_->source_active.load()&&!call->impl_->failed.load()&&call->impl_->active_users.load()==0&&
             call->impl_->direct_zero.active_invocations_.load()==0,"Section Source/creator caller still active/failed");
         require_owned(call->impl_->operation.load()==0||call->impl_->returned.load(),"Section invocation return/health remains unknown");
         const auto& drop=call->impl_->reference_drop;
@@ -507,6 +578,13 @@ void NativeMeshSectionLifetimeFrame::preflight_close() const {
             require_owned(observation.cpp_zero_frame.active_invocations_.load()==0,"Section child caller still active");
             require_owned(!observation.entered||(observation.decremented&&observation.returned&&
                 (!observation.zero_dispatch_entered||observation.zero_dispatch_returned)),"Section child decrement/zero/return remains unknown");
+        }
+        for(auto* row=call->impl_->storage_releases;row;row=row->next){
+            require_owned(row->zero_frame.active_invocations_.load()==0,
+                "Section raw storage provider/caller still active");
+            require_owned(row->entered&&row->decrement_returned&&row->returned&&
+                (!row->zero_provider_entered||(row->current_captured&&row->zero_provider_returned)),
+                "Section raw storage decrement/current-provider/whole-call return remains unknown");
         }
     }
     require_owned(!impl_->creator_release_entered.load()||impl_->creator_release_returned.load(),"Section creator decrement return unknown");
@@ -532,6 +610,9 @@ void NativeMeshSectionLifetimeFrame::close_after_host_quiescence(){
             for(auto& observation:call->impl_->children)require_owned(NativeRenderObservedZeroAccess::end_frame(observation.cpp_zero_frame,false),
                 "Section child caller did not quiesce");
             require_owned(NativeRenderObservedZeroAccess::end_frame(call->impl_->direct_zero,false),"Section creator caller did not quiesce");
+            for(auto* row=call->impl_->storage_releases;row;row=row->next)
+                require_owned(NativeRenderObservedZeroAccess::end_frame(row->zero_frame,false),
+                    "Section raw storage provider/caller did not quiesce");
         }
         if(caller)require_owned(NativeRenderObservedZeroAccess::end_frame(*caller,false),"Section outer zero caller still active");
         if(caller!=&terminal_zero_frame_)require_owned(NativeRenderObservedZeroAccess::end_frame(terminal_zero_frame_,false),"Section terminal caller still active");
@@ -571,4 +652,15 @@ void set_native_mesh_section_indexed_00b85600(NativeMeshSectionLifetimeFrame& fr
 void clear_native_mesh_section_vertex_streams_00b86550(NativeMeshSectionLifetimeFrame& frame,NativeMeshSectionLifetimeFrame::Call& call){frame.mutate(call,static_cast<Word>(NativeMeshSectionLifetimeFrame::Operation::clear_streams),nullptr,0,nullptr);}
 void clear_native_mesh_section_resources_00b86390(NativeMeshSectionLifetimeFrame& frame,NativeMeshSectionLifetimeFrame::Call& call){frame.mutate(call,static_cast<Word>(NativeMeshSectionLifetimeFrame::Operation::clear_resources),nullptr,0,nullptr);}
 void rebuild_native_mesh_section_vertex_layout_00b865a0(NativeMeshSectionLifetimeFrame& frame,NativeMeshSectionLifetimeFrame::Call& call,void* mesh,NativeMeshSectionLayoutServices& services){frame.mutate(call,static_cast<Word>(NativeMeshSectionLifetimeFrame::Operation::rebuild),mesh,0,&services);}
+void clear_native_mesh_section_vertex_streams_storage_00b86550(NativeMeshSectionLifetimeFrame& frame,
+    NativeMeshSectionLifetimeFrame::Call& call,const NativeMeshSectionLayoutStorageContext& context,
+    NativeMeshSectionLayoutStorageLifetimeCalls& lifetime_calls){
+    frame.mutate_storage(call,static_cast<Word>(NativeMeshSectionLifetimeFrame::Operation::clear_storage),nullptr,nullptr,context,nullptr,lifetime_calls);
+}
+void rebuild_native_mesh_section_vertex_layout_storage_00b865a0(NativeMeshSectionLifetimeFrame& frame,
+    NativeMeshSectionLifetimeFrame::Call& call,const volatile Word& mesh_home,void* key_home,
+    const NativeMeshSectionLayoutStorageContext& context,void** acquired,
+    NativeMeshSectionLayoutStorageLifetimeCalls& lifetime_calls){
+    frame.mutate_storage(call,static_cast<Word>(NativeMeshSectionLifetimeFrame::Operation::rebuild_storage),&mesh_home,key_home,context,acquired,lifetime_calls);
+}
 } // namespace bsp
