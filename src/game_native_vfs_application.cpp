@@ -5,6 +5,7 @@
 #include "bsp/game_hosts_singletons.hpp"
 #include "bsp/game_native_physical_pool.hpp"
 #include "bsp/game_native_readonly_data.hpp"
+#include "bsp/game_native_mutable_crt_data.hpp"
 #include "bsp/game_native_type_storage.hpp"
 #include "bsp/game_native_vfs_constants.hpp"
 #include "bsp/game_native_vfs_runtime.hpp"
@@ -72,6 +73,11 @@ struct GameNativeVfsApplication::Impl {
     std::optional<int> pool_registration_status;
     // Appended so the existing private field offsets remain unchanged.
     bool core_initialization_completed{};
+    // Appended cold Source metadata. One stable context, never replaced/reset.
+    // Its services hold references/library metadata only; default destruction
+    // adds no Native unlock/free/string return or unknown-state cleanup.
+    std::unique_ptr<NativePathCanonicalizerRawContext> atlas_raw_canonicalizer;
+    const GameNativeCanonicalDataOwner* atlas_raw_canonicalizer_owner{};
 
     Impl(GameHostLog& log, GameSingletonHost& host, GameNativeReadOnlyData& mapped,
         const std::filesystem::path& original_executable)
@@ -169,6 +175,31 @@ void* GameNativeVfsApplication::publish_and_borrow_raw_failure_manager() {
 
 NativeStringRawPoolContext& GameNativeVfsApplication::raw_strings() noexcept {
     return impl_->raw_strings;
+}
+
+NativePathCanonicalizerRawContext& GameNativeVfsApplication::raw_canonicalizer_for_atlas(
+    const GameNativeCanonicalDataOwner& canonical_owner) {
+    auto& p = *impl_;
+    if (!p.core_initialization_completed || !p.vfs_runtime)
+        throw std::logic_error("atlas raw canonicalizer requires completed actual VFS startup");
+    if (&canonical_owner.read_only_data() != &p.data)
+        throw std::logic_error("atlas raw canonicalizer requires the same canonical read-only owner");
+    const auto providers = p.vfs_runtime->borrow_raw_canonicalizer_providers();
+    const auto& feature = canonical_owner.mutable_crt_data().feature_word(); // reference, NO value read
+    if (!p.atlas_raw_canonicalizer) {
+        // The existing raw context constructor binds metadata only. A C++
+        // allocation failure adds no Native effect or partial Native owner.
+        p.atlas_raw_canonicalizer.reset(new NativePathCanonicalizerRawContext(
+            p.raw_strings, &providers.actual_null_source_0109db91, feature,
+            providers.current_locale_lowercase_00bf9611));
+        p.atlas_raw_canonicalizer_owner = &canonical_owner;
+    }
+    auto& context = *p.atlas_raw_canonicalizer;
+    if (p.atlas_raw_canonicalizer_owner != &canonical_owner || &context.strings != &p.raw_strings ||
+        context.null_source_0109db91 != &providers.actual_null_source_0109db91 ||
+        &context.actual_feature_word_0109eea4 != &feature)
+        throw std::logic_error("atlas raw canonicalizer cannot replace its exact retained graph");
+    return context; // borrowed SAME object; no operation/retirement authority
 }
 
 bool GameNativeVfsApplication::borrows_graph(const GameSingletonHost& host,

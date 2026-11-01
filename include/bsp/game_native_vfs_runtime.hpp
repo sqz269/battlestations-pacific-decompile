@@ -88,6 +88,14 @@ struct GameNativeVfsRuntimeInputs {
     NativeFileStoreCompletionDispatch* filestore_completions{};
 };
 
+// Narrow borrowed metadata for one raw BEE390 context. These references name
+// the runtime's EXISTING null-source role and current-locale library binding;
+// this view owns no context, raw bytes, string pool or Native operation.
+struct GameNativeVfsRawCanonicalizerProviders final {
+    const char& actual_null_source_0109db91;
+    const NativePathCanonicalizerRuntimeServices::Lowercase& current_locale_lowercase_00bf9611;
+};
+
 // Source composition for one raw VFS manager. The caller drains the SAME
 // 01090AA0 singleton domain while this object and all borrowed inputs live.
 class GameNativeVfsRuntime final {
@@ -105,6 +113,10 @@ public:
     // retain their own actual headers and acquired frames. Borrowing performs
     // no startup, I/O, retry or cleanup and is valid before core registration.
     GameNativeVfsRawServices borrow_raw_services() noexcept;
+    // After actual core registration, before retirement. Admission reads the
+    // CURRENT Native VFS publication cell and compares the retained allocation;
+    // no raw owner-prefix read, getter, callback, write, I/O or cleanup occurs.
+    GameNativeVfsRawCanonicalizerProviders borrow_raw_canonicalizer_providers() const;
     // Borrow the actual scope domain only after the complete archive tail.
     // Checks the current retained manager/registry/lock and cached-load state;
     // performs no allocation, publication, callback, I/O or cleanup. Keep this

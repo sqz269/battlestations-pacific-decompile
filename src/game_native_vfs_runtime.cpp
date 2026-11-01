@@ -467,6 +467,16 @@ GameNativeVfsRawServices GameNativeVfsRuntime::borrow_raw_services() noexcept {
         impl_->enumeration_context, impl_->inputs.invalid_parameters,
         impl_->inputs.actual_empty_name_0109cef0};
 }
+GameNativeVfsRawCanonicalizerProviders GameNativeVfsRuntime::borrow_raw_canonicalizer_providers() const {
+    const auto& p = *impl_;
+    if (!p.core_registered || p.retired || !p.inputs.lowercase_00bf9611)
+        throw std::logic_error("raw canonicalizer requires the completed live VFS core");
+    // A CURRENT Native publication-cell read, NOT a Native owner-prefix read.
+    void* const published = p.inputs.owners.vfs_publication_0109ceec();
+    if (!published || published != p.inputs.actual_vfs_storage_a0)
+        throw std::logic_error("raw canonicalizer publication is not the retained VFS owner");
+    return {p.null_source_0109db91, p.inputs.lowercase_00bf9611};
+}
 NativeVfsFileBlockScopeContext& GameNativeVfsRuntime::borrow_fileblock_scopes() {
     auto& p = *impl_;
     if (!p.core_registered || !p.archive_tail_registered || p.retired)

@@ -15,6 +15,7 @@ namespace bsp::game {
 class GameHostLog;
 class GameSingletonHost;
 class GameNativeReadOnlyData;
+class GameNativeCanonicalDataOwner;
 class GameNativeTypeStorage;
 
 // Retained source owner for one application's raw VFS graph. Borrow the same
@@ -52,6 +53,15 @@ public:
     // this application and GameSingletonHost alive through every consumer and
     // the shared singleton drain.
     NativeStringRawPoolContext& raw_strings() noexcept;
+    // Own/borrow ONE stable raw BEE390 context over this same raw pool, the
+    // runtime's actual null role/current-locale binding and SAME canonical
+    // owner's live feature reference. Cold C++ metadata allocation only.
+    // Runtime admission reads CURRENT Native publication; no feature VALUE,
+    // raw owner-prefix/getter/callback/write/I/O/cleanup is performed here.
+    // Keep this application/runtime/canonical owner through all uses and the
+    // shared drain; actual atlas/caller failure retention remains required.
+    NativePathCanonicalizerRawContext& raw_canonicalizer_for_atlas(
+        const GameNativeCanonicalDataOwner& actual_canonical_owner);
     // Pure identity view over existing retained references; no startup,
     // publication, native payload read or provider construction is performed.
     bool borrows_graph(const GameSingletonHost&,

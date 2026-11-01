@@ -1,0 +1,55 @@
+{
+  "kind": "Source122 VFS-owned actual raw canonicalizer supplier candidate",
+  "base_commit": "c808f8b84bb8ff53c5e40075f2f04392a93fc3dc",
+  "files": [
+    {
+      "path": "include/bsp/game_native_vfs_application.hpp",
+      "preimage_sha256": "afb93e571b81b23ae9f1a422ace53908b785ff3ee3c859348cfacc018663780b",
+      "postimage_sha256": "56db8287d897161f0ca7dcbd9a9ca420d4c744fd2823a59efea41fa69f9806bd",
+      "patch_sha256": "9ac4e81e0fec0ee05bf8f488a366552d4c24b53566e3d91578088369ca8b0da0",
+      "bytes": 3987
+    },
+    {
+      "path": "src/game_native_vfs_application.cpp",
+      "preimage_sha256": "d5f170374607496e31022eae8c33a62d12f458b16b7000e72b45d6da035aaddc",
+      "postimage_sha256": "a2037b21e96b749825bd83838c36823522abc70530f65d58b41c7cc076a5e47e",
+      "patch_sha256": "f51b96f046b47298cc72099aa2b2e249eda021276ed09b316f98d5387728cdf4",
+      "bytes": 10720
+    },
+    {
+      "path": "include/bsp/game_native_vfs_runtime.hpp",
+      "preimage_sha256": "9aac7e73eb21744bf0951ba60c78454ef90c4d2884830a32d35a3d15d886f38b",
+      "postimage_sha256": "9ea472d71ef7ef0bcfefb82130c0a8694a292e110f7f8c73cd12d413dd47ab4a",
+      "patch_sha256": "6a5459c1458cdb6af2b59b0a3b9f140454f9859e7c85cd0febb9c525f1f6d964",
+      "bytes": 10823
+    },
+    {
+      "path": "src/game_native_vfs_runtime.cpp",
+      "preimage_sha256": "4420a276eb28c22c334bad1707c520d15f46b7f129dff34bd70ca27cb63ce893",
+      "postimage_sha256": "6264069dcb712acdefb7408082eb376ece5a0f7d84c6c3c3375b6d2c90d33ed8",
+      "patch_sha256": "a8b930e0a0da6e646bd810ffe97b94ede2da0ec8712a20a84d9b02521251ce32",
+      "bytes": 37556
+    }
+  ],
+  "new_native_body_credit": 0,
+  "tracked_mutation": false,
+  "Source_review": "Root independent review pending",
+  "activation": false,
+  "build_tests_Game": "not run",
+  "native_publication_cell_read": true,
+  "native_owner_prefix_read": false,
+  "exact_inputs": [
+    "Application::Impl::raw_strings",
+    "Runtime::Impl::null_source_0109db91",
+    "Runtime::Impl::inputs.lowercase_00bf9611 (currently &std::tolower)",
+    "actual SAME-RO canonical owner mutable_crt_data().feature_word() live reference"
+  ],
+  "ownership": "one appended application-owned metadata context; actual Root118 holds external graph on atlas escape",
+  "remaining": [
+    "supplier119 imports",
+    "actual Source scratch extent/corpus physical fit",
+    "separate real startup caller and retirement schedule",
+    "all nine gates",
+    "Original ABI/FH3/SEH/fault/NoThrow/Origin/runtime/Game"
+  ]
+}
