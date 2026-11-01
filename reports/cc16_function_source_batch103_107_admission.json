@@ -1,0 +1,633 @@
+{
+  "kind": "Source103\u2013107 reviewed integration admission; no Type6 gameplay credit",
+  "Source": {
+    "103": {
+      "author": "4a7fce16d4b8c6e0e05107b96e4dcf09671eb9f1",
+      "actual_parent": "6c7779a286f251c46578864f62042f7423055be5",
+      "exact_four_additions": true,
+      "raw_postimages_exact": true,
+      "all_other_paths_unchanged": true,
+      "actual_reader": {
+        "checks": 100,
+        "passed": true,
+        "mode": "actual Git",
+        "full_four_path_inverse": true
+      },
+      "findings": 0
+    },
+    "104": {
+      "author": "ba17aaa34128e684c8046c6f4eeef8de20b096d6",
+      "actual_parent": "4a7fce16d4b8c6e0e05107b96e4dcf09671eb9f1",
+      "exact_one_Source_two_evidence_paths": true,
+      "Source_postimage_exact": true,
+      "canonical_before_exact": true,
+      "findings": 0
+    },
+    "105": {
+      "author": "88f7840d79d23c460b51ea72f239fdf8a92a0a30",
+      "parent": "ba17aaa34128e684c8046c6f4eeef8de20b096d6",
+      "exact8M2A": true,
+      "postimages_exact": true,
+      "all_other_paths_unchanged": true,
+      "Source_review": "Root_review.json",
+      "findings": 0,
+      "build_runtime_credit": false
+    },
+    "106": {
+      "author": "ce589bf2be81c17d3d9749960ba571d4f5ab948d",
+      "parent": "c8093a45df97249896c78bac0bf72ec6a25777a8",
+      "exact4additions": true,
+      "HCPP_postimages_exact": true,
+      "metadata_CRLF_to_LF_in_Git_only": [
+        "reports/cc16_native_texture_atlas_item_parameters_storage.json"
+      ],
+      "postimages": {
+        "include/bsp/native_texture_atlas_item_parameters_storage.hpp": {
+          "workspace": {
+            "bytes": 5240,
+            "sha256": "eb539502e5fdf6822079059471fcb40316883a9cf822f83425c789ea7c4c6ff0"
+          },
+          "Git": {
+            "bytes": 5240,
+            "sha256": "eb539502e5fdf6822079059471fcb40316883a9cf822f83425c789ea7c4c6ff0"
+          }
+        },
+        "src/native_texture_atlas_item_parameters_storage.cpp": {
+          "workspace": {
+            "bytes": 12797,
+            "sha256": "d52f483b1fcce025edec78dc697798ab24ff33afbea38fbe5b794bebaaee0d4b"
+          },
+          "Git": {
+            "bytes": 12797,
+            "sha256": "d52f483b1fcce025edec78dc697798ab24ff33afbea38fbe5b794bebaaee0d4b"
+          }
+        },
+        "docs/CC16_NATIVE_TEXTURE_ATLAS_ITEM_PARAMETERS_STORAGE.md": {
+          "workspace": {
+            "bytes": 3778,
+            "sha256": "52f334ccf43f04b494036b5d979c5f517c03567fa25e6450c976ab4d7fc716ff"
+          },
+          "Git": {
+            "bytes": 3778,
+            "sha256": "52f334ccf43f04b494036b5d979c5f517c03567fa25e6450c976ab4d7fc716ff"
+          }
+        },
+        "reports/cc16_native_texture_atlas_item_parameters_storage.json": {
+          "workspace": {
+            "bytes": 9239,
+            "sha256": "a58909b5d392d92f6359fa5a0f2332e7fbb992d6f0aa40e41bc13ec32d168141"
+          },
+          "Git": {
+            "bytes": 9010,
+            "sha256": "4fd7dc4537bcc58e4048003160838dcc9d5901e20701dea12c049a8843b5b1e3"
+          }
+        }
+      },
+      "Root_manual_review": "Whole92H/265CPP and documentation; all81 Source packing instructions and HOME aliases",
+      "Source_findings": 0,
+      "compiler_runtime_activation_credit": false
+    },
+    "107": {
+      "author": "2210099172219206157d3ce12baad94c5c0201e7",
+      "parent": "ce589bf2be81c17d3d9749960ba571d4f5ab948d",
+      "exact4additions": true,
+      "HCPP_postimages_exact": true,
+      "metadata_CRLF_to_LF_in_Git_only": [
+        "reports/cc16_native_texture_atlas_item_storage.json"
+      ],
+      "all_other_paths_unchanged": true,
+      "Root_manual_review": "Whole HCPP and documentation; final81-instruction Source packing for106, actual HOME epochs/helper order for107.",
+      "Source_findings": 0,
+      "Source107_contract_clarification": "Frame disjointness applies to private Source controls/history; explicit dot_header/preserve Native homes are legitimate child-provider write spans.",
+      "compiler_runtime_activation_credit": false
+    }
+  },
+  "Source103_reader_checks": 100,
+  "Source105_reader_checks": 221,
+  "Source105_independent_checks": 273,
+  "Source106_independent_normal_review": "accepted0; all81 packing rows plus22Source/18exports/31historicalcurrent pins",
+  "Source107_independent_normal_review": "89checks/0blockingcodefindings; explicit child-write span clarification",
+  "Source107_compiler_fix": {
+    "author": "6a620df73b4e91ce692e403769f977d7ababb281",
+    "exact_four_identifier_replacements": true,
+    "Original107seal_immutable": true,
+    "HCPP_API_and_behavior_unchanged": true,
+    "failed_build_seconds": 186.8902664,
+    "failed_build_log_sha256": "0388c6442ebdc4ca69c71c70bed3351c3f11e36dc01dc03edfd4b0793c0f3f33",
+    "before_cpp_sha256": "920ba707da735f3ed929a339bad6f1bdca6831d29dd640bbb9ad3b060ad426ae",
+    "after_cpp_sha256": "2ada238ae4e31ac55cf826bf5bb17d30d0807e2752151eba80482e16ea106229",
+    "Source_findings_after_fix": 0
+  },
+  "Source107_contract": "Disjointness excludes expressly writable native child homes such as dot_header/preserve. Source-private controls/history remain outside provider writes and genuine CRT frame exclusions remain.",
+  "joined_Material_Source": "010e881f70ef3c07289612ec0608e09a316d41e7",
+  "CMake": {
+    "author": "2a094149a200654ea7ddf63226483c2a72bcba35",
+    "entries": 3,
+    "whole_existing_prefix_preserved": true
+  },
+  "build": {
+    "status": "PASS joined official MSVC Win32 Release build",
+    "head": "6a620df73b4e91ce692e403769f977d7ababb281",
+    "build_seconds": 72.111184,
+    "inputs": 3726,
+    "artifacts": 123,
+    "existing_checks": {
+      "reconstructed_math": 0.27,
+      "tool_tests": 12.78,
+      "failed": 0
+    },
+    "new_tests": 0,
+    "Source107_compiler_fix": "6a620df73b4e91ce692e403769f977d7ababb281; exact four private identifier substitutions; failedV1 receipt/inputs preserved",
+    "gameplay_Type6_activation": false
+  },
+  "runtime104": {
+    "status": "PASS actual Icon pool startup and natural Host exit",
+    "build_head": "6a620df73b4e91ce692e403769f977d7ababb281",
+    "build_seconds": 72.111184,
+    "exe_sha256": "4ec8ce2e97c1f33ad4db2edf0e34714c04d119e46fd71739808a42f679051075",
+    "Icon_log": "native GUI Icon pool CRT CD7180: atexit=0 storage_bytes=56 before_gui_text_pool=1",
+    "before_Text": true,
+    "exit_game": 0,
+    "exit_launcher": 0,
+    "drain": {
+      "no_force_stop": true,
+      "waited_seconds": 0,
+      "natural_completed": true,
+      "timed_out": false,
+      "forced_stop_requested_pids": [],
+      "retained_pids": []
+    },
+    "env": {},
+    "one_frame_startup_only": true,
+    "frames_presented": 0,
+    "raw_Type6_gameplay_validated": false,
+    "new_tests": 0
+  },
+  "Root103_focused_Core": {
+    "kind": "Root focused emitted-Code review",
+    "object_sha256": "6a20b972ffdfd45637e7c0b803903e93afce5ab134f3474273b055e9922f4ea2",
+    "main_bytes": 6172,
+    "main_ops": 1751,
+    "scope": "Ten ordered Native SSE operations; captured incoming reader beforeAAA710; realLua field/query/enter/pop directcalls; state0 beforeTextureconstructor includingActivation; UVpop before102prepare, four privateDWORDpreimagecopies then currentA4capture; actual100invoke; normalcapturedDATA beforestate-1 and footergetter/return; ordinalincrement afterfooter; real41DD20catch/rethrow. Whole1751-op Code not claimed independently reviewed.",
+    "all10_Native_SSE_ordered": true,
+    "archive_exact_member_once": true,
+    "findings": 0,
+    "Original_ABI_runtime_raw18_credit": false
+  },
+  "Root105_focused_Core": {
+    "kind": "Root focused emitted-Code review",
+    "objects": {
+      "gui_text_native_layout": {
+        "sha256": "bcc51fd5d047be604b8a35d8b0d4460ec2af89a1e55e43c591986971092dbc68",
+        "object_bytes": 120610
+      },
+      "native_hardware_layout_factory": {
+        "sha256": "68544d01f4b3b3e25532251fb2043b901721cff996df8eab91ff3e15fcba5dfd",
+        "object_bytes": 15524
+      },
+      "native_logical_vertex_owner": {
+        "sha256": "b2662d1469f456579b79dacf9c75e083411086d2b43f9922c857f3f10e8a885b",
+        "object_bytes": 43932
+      },
+      "native_mesh_section_layout_storage": {
+        "sha256": "2d88c3f5da4acfafed4125a02fe4e0bdda542a867140c0e13cdfdc30c79eea5b",
+        "object_bytes": 3789
+      }
+    },
+    "inspected": [
+      "whole181-op shared factory: hit afterLOCK INC, constructor success observation, cleanup disarm/output before actual pair insertion",
+      "whole131-op concrete provider: observed realfactory then canonical registrar then completion; actual key/context unchanged",
+      "whole80-op logical raw scalar including real inlined destruction/conditionalpoolreturn before normalretirement; no postcallback companion read",
+      "whole74-op hardware rawscalar: actualB60770 then retirement, numericresult retained separately",
+      "current04 target capture before registry lookup and genuine scalar route",
+      "known rawlayout provider returns before section+50 publication; old absent provider uses original3arg wholefactory",
+      "shared registrar and oldtypedPath reviewed atSource, rather than claiming entire object Code review"
+    ],
+    "remaining": "Caller must retain observation source_result/allocated_slot plus outgoing HOME on insertionfailure; acquired() alone is incomplete.",
+    "findings": 0,
+    "OriginalABI_gameplay_rawprovider_credit": false
+  },
+  "independent_atlas_Core": {
+    "kind": "independent emitted-Code review of Source106 and Source107 ordinary NORMAL leaves",
+    "utc": "2026-11-01T10:39:59.006380+00:00",
+    "reviewer": "agent/codex-atlas-raw-canonicalizer-20261101",
+    "reviewed_head": "6a620df73b4e91ce692e403769f977d7ababb281",
+    "verdict": "PASS qualified emitted-Code correspondence; no blocking compiler-code finding",
+    "blocking_findings": [],
+    "scope": {
+      "106": "all 420 decoded operations in actual section28, actual13-op store_atof helper, inlined atof sites, current/field/pointer/return helpers,60-op cold context",
+      "107": "all295 decoded ctor operations in actual section24, all76 dtor operations in section27, actual word/put/at/pointer helpers and17-op cold context",
+      "original_evidence": "sealed Source_peer6 and5 artifacts;106 all81 raw-byte packing rows independently decoded and compared,107 complete saved constructor/destructor listings; current saved Original pins equal seals",
+      "frozen_artifacts": "common_v2 selected4 HCPP, selected2 COFF objects and exact membership in frozen official library; no broad3726/123 input/output audit",
+      "excluded": "Source13/22 lower providers unchanged and not reaudited, broader PE/vendor bodies/retained link/runtime/startup/Game/activation"
+    },
+    "integrity": {
+      "frozen_head": "6a620df73b4e91ce692e403769f977d7ababb281",
+      "manifest_sha256": "da77a2a6a053347678bbf83ccdc979c07a657336c4c38281a2b17f8b167ad495",
+      "inputs_verified": [
+        {
+          "path": "include/bsp/native_texture_atlas_item_parameters_storage.hpp",
+          "size": 5240,
+          "sha256": "eb539502e5fdf6822079059471fcb40316883a9cf822f83425c789ea7c4c6ff0",
+          "frozen_matches_current_and_git": true
+        },
+        {
+          "path": "src/native_texture_atlas_item_parameters_storage.cpp",
+          "size": 12797,
+          "sha256": "d52f483b1fcce025edec78dc697798ab24ff33afbea38fbe5b794bebaaee0d4b",
+          "frozen_matches_current_and_git": true
+        },
+        {
+          "path": "include/bsp/native_texture_atlas_item_storage.hpp",
+          "size": 5026,
+          "sha256": "f5b8028fd6c7742e163993b3c25e5f010c32f94484a57034a9975dc73bc797ad",
+          "frozen_matches_current_and_git": true
+        },
+        {
+          "path": "src/native_texture_atlas_item_storage.cpp",
+          "size": 7424,
+          "sha256": "2ada238ae4e31ac55cf826bf5bb17d30d0807e2752151eba80482e16ea106229",
+          "frozen_matches_current_and_git": true
+        }
+      ],
+      "objects": {
+        "106": {
+          "path": "build/win32/bsp_core.dir/Release/native_texture_atlas_item_parameters_storage.obj",
+          "bytes": 15959,
+          "sha256": "39c561c389328ebd7f38643badf7420a20d38b3a3c754fba6f63901b5b63aa3d",
+          "root_decode_sha256": "4e1008fb0f01c9b560b55d03179de466977f87f690da16ca54176c91390de1ab",
+          "root_decoded_code_sections_equal": 27,
+          "selected_sections": [
+            {
+              "section": 5,
+              "bytes": 182,
+              "ops": 60,
+              "sha256": "0973777f8aae78a5eb90f0b45bedc2eb738d0ec453bff6d14dcbb254d8da8dfd"
+            },
+            {
+              "section": 24,
+              "bytes": 10,
+              "ops": 6,
+              "sha256": "2246c2c753eab0352c11de33f3694e58f3791bda511313fe11bacdca6b59777d"
+            },
+            {
+              "section": 26,
+              "bytes": 11,
+              "ops": 6,
+              "sha256": "bd938e409fd7adea661f129903b0c423217965673832a58652967e992d90b850"
+            },
+            {
+              "section": 27,
+              "bytes": 8,
+              "ops": 5,
+              "sha256": "d5a2b635b0bbb254914f2641e4508361a0c95686c0422dcebeb3abbcca7f1d2b"
+            },
+            {
+              "section": 28,
+              "bytes": 1341,
+              "ops": 420,
+              "sha256": "90a91c5e323418e270ab636998295cdd6540ba11422aa1999b6b4d69907f3855"
+            },
+            {
+              "section": 30,
+              "bytes": 21,
+              "ops": 10,
+              "sha256": "dc11299ec7359ac314f55558d141bd16f62aa34ba83e4979e8ede2f59c8423f9"
+            },
+            {
+              "section": 31,
+              "bytes": 30,
+              "ops": 13,
+              "sha256": "0fa3e3aeb88a9937ae839fd34506d12ff066bb814ef5ea5212723f0b06e45e1a"
+            }
+          ]
+        },
+        "107": {
+          "path": "build/win32/bsp_core.dir/Release/native_texture_atlas_item_storage.obj",
+          "bytes": 17224,
+          "sha256": "501c1de7cb65353245c874e76581da41c2fc67d474f41ed33e4e9f1b4b838e3c",
+          "root_decode_sha256": "750deefd4b3543e0ae951962960593cd422673f5e881de592f039a8d3093b825",
+          "root_decoded_code_sections_equal": 27,
+          "selected_sections": [
+            {
+              "section": 5,
+              "bytes": 42,
+              "ops": 17,
+              "sha256": "71014cb1b76af079cb81b8ac348ef2c5d99c73d22d598c35a2cbd16e69a8a361"
+            },
+            {
+              "section": 23,
+              "bytes": 11,
+              "ops": 6,
+              "sha256": "bd938e409fd7adea661f129903b0c423217965673832a58652967e992d90b850"
+            },
+            {
+              "section": 24,
+              "bytes": 987,
+              "ops": 295,
+              "sha256": "6e3c0b2f67c788fc76524b25a6fbbfbfe486e684499d0678bd9e7214e2934a9d"
+            },
+            {
+              "section": 27,
+              "bytes": 242,
+              "ops": 76,
+              "sha256": "465b9aecefc03580b56822778a7b2dd4de54cb059b4cd961d2a6fd0dac9fe84c"
+            },
+            {
+              "section": 29,
+              "bytes": 8,
+              "ops": 5,
+              "sha256": "d5a2b635b0bbb254914f2641e4508361a0c95686c0422dcebeb3abbcca7f1d2b"
+            },
+            {
+              "section": 30,
+              "bytes": 17,
+              "ops": 8,
+              "sha256": "f4b2a19cec47920362d7dccea7c6dc9af7cc66e2bf494d6200d1a2fb5c169ad1"
+            },
+            {
+              "section": 33,
+              "bytes": 23,
+              "ops": 11,
+              "sha256": "ca38680ed8ea486864bd82ef8e12d06870286d7205d2439ccf27dbdbe0ae4dc0"
+            }
+          ]
+        }
+      },
+      "library": {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 106653700,
+        "sha256": "45f70f653fe2f957a28740f8aeecad55cbbb8daac508ce4cb23c349b216b0e13",
+        "member_count": 2845,
+        "exact_object_member_matches": {
+          "native_texture_atlas_item_parameters_storage": [
+            {
+              "member_header_offset": 23195588,
+              "name_field": "/1388"
+            }
+          ],
+          "native_texture_atlas_item_storage": [
+            {
+              "member_header_offset": 23178304,
+              "name_field": "/1329"
+            }
+          ]
+        }
+      },
+      "source107_compiler_fix": {
+        "before_sha256": "920ba707da735f3ed929a339bad6f1bdca6831d29dd640bbb9ad3b060ad426ae",
+        "after_sha256": "2ada238ae4e31ac55cf826bf5bb17d30d0807e2752151eba80482e16ea106229",
+        "exact_two_parameter_identifier_and_two_asm_identifier_replacements": true
+      }
+    },
+    "semantic_checks": {
+      "sealed_Source_peer": [
+        {
+          "batch": 106,
+          "manifest_sha256": "fb10a2977dd9dd722ff6af0e6cb1b07174d13552293157fd8ba5d050cad86cf6",
+          "seal_sha256": "4f1e2e959a62dfd68feb4ce3232dcc46fd58268ddd92a4874122852210b9b31d",
+          "artifact_count": 6
+        },
+        {
+          "batch": 107,
+          "manifest_sha256": "1e87fcf38da3e4413b1f03ea5433fd07a0515d2aa2db28bfea85b20ff502c1a6",
+          "seal_sha256": "5ef8e2d0a2fcb8f8877d5b5c8a768bb75d189a6091f79def1ec4fdf0b446fa32",
+          "artifact_count": 5
+        }
+      ],
+      "Original107_current_export_pins_match": [
+        {
+          "address": "00aee4d0",
+          "kind": "assembly.txt",
+          "bytes": 3405,
+          "sha256": "f5d24c1ac86f28c929184bcc3aa7fdf9428553ce27c4359233bdfe1297740baa"
+        },
+        {
+          "address": "00aee4d0",
+          "kind": "decompiled.c",
+          "bytes": 2481,
+          "sha256": "41501649883429230ab012a9a66d6da0e7d930c9c7923e49b03e216b46d55449"
+        },
+        {
+          "address": "00aee220",
+          "kind": "assembly.txt",
+          "bytes": 1041,
+          "sha256": "78c0e25dcefc9d89b2ebf9d7df876f13d950f61230ddf5bf0a37ae2dfb482cb8"
+        },
+        {
+          "address": "00aee220",
+          "kind": "decompiled.c",
+          "bytes": 1029,
+          "sha256": "4d8e2828e44187ae501445d5f5342605bdd999bbd9edf4f1bdccb26da19ee12e"
+        }
+      ],
+      "Original106_current_export_pins_match": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aee620\\assembly.txt",
+          "bytes": 10664,
+          "sha256": "0e10229ac5cad095128282d7790b449204def0c48d11d30f4df25d66c9ec6540"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aee620\\decompiled.c",
+          "bytes": 8040,
+          "sha256": "2cb9351d891e2eda8428f714c36f9e1f47a89700277ec5ef7b9a32055d638cbf"
+        }
+      ],
+      "packing": {
+        "rows": 81,
+        "all_original_bytes_and_both_sealed_maps_equal_after_only_declared_address_substitution": true,
+        "emitted_offsets": [
+          "0x3db",
+          "0x4ab exclusive"
+        ],
+        "emitted_bytes": 208,
+        "fistp": 6,
+        "fnstcw": 6,
+        "cw_load_truncate": 6,
+        "cw_restore_saved": 6,
+        "calls": 0,
+        "fmul_st1_st0": "DC C9",
+        "fsubrp_st2_st0": [
+          "DE E2",
+          "DE E2"
+        ],
+        "fmulp_st1_st0": "DE C9"
+      }
+    },
+    "candidate_identity": {
+      "106_HCPP_exact_original_candidate": true,
+      "107_header_exact_original_candidate": true,
+      "107_CPP_exact_four_identifier_replacements": true,
+      "107_fix_effect": "two private helper parameter identifiers offset->byte_offset and their two inline-asm references only; helper memory operations decoded at intended dynamic byte offset"
+    },
+    "findings_106": [
+      {
+        "id": "106-HOME",
+        "offsets": [
+          "0x60..0x78",
+          "0x98..0xab",
+          "0x39c..0x3b1"
+        ],
+        "result": "Seek reloads the actual incoming DWORD HOME each reached iteration. Immediate second read uses captured EDI from final seek. Later loop reloads current HOME into EDX before args and shares the second static call at+A6. EOF/break paths join packing; no item UV defaults or rewind emitted."
+      },
+      {
+        "id": "106-TOKENS",
+        "offsets": [
+          "0xbc..0x172",
+          "0x17f..0x394"
+        ],
+        "result": "Actual AF5740/AEE3C0/raw pooled-text provider relocations and current CRT stricmp imports remain. Param/U1/V1/U2/V2 chain and first-token release-before-branch match source and sealed schedule. U1/V1/U2 explicit release and clear precede parameter release/clear; V2 and unknown branch use the genuine destructors. No synthesized cleanup for unmatched branches."
+      },
+      {
+        "id": "106-ATOF",
+        "offsets": [
+          "0x1b7->0x1bd",
+          "0x238->0x23e",
+          "0x2bd->0x2c3",
+          "0x363->0x369",
+          "section31+0xf->0x15"
+        ],
+        "result": "Four inlined current-CRT atof calls and out-of-line13-op helper each have only the destination MOV between CALL and immediate FSTP DWORD. Destinations derive from captured actual item+14/18/1C/20. No floating spill, double rounding, extra call, intervening x87 operation or semantic item field is emitted."
+      },
+      {
+        "id": "106-PACK-HOMES",
+        "offsets": [
+          "0x3b6..0x3d8",
+          "0x3db..0x4ab"
+        ],
+        "result": "Conversion EBX is actual Frame+14, the SAME4-byte former U2 token home; no read or zero seeds that representation during active trivial member switch. ESI is the SAME actual incoming buffer DWORD HOME, reused for F32 and CW. EDX is retained live RO-scale reference from context+28, not a copied default. Item is EDI. No U2 token read follows this member switch; no buffer pointer restoration is emitted."
+      },
+      {
+        "id": "106-X87",
+        "offsets": [
+          "0x3e6 DC C9",
+          "0x471 DE E2",
+          "0x490 DE E2",
+          "0x49c DE C9"
+        ],
+        "result": "All81 emitted instructions equal independent decoding of sealed Original raw bytes after ONLY declared buffer/conversion/scale address substitutions. First multiply is ST1*=ST0. Both FSUBRP forms compute previous ST0 minus ST2 before pop; final FMULP multiplies ST1 by ST0 then pops. On the normal preserved x87 stack, final+2C receives trunc((V2-V1)*scale) low16 and+2E trunc((U2-U1)*scale) low16. No C++ intermediate difference/product rounding is added."
+      },
+      {
+        "id": "106-CW",
+        "offsets": [
+          "0x3db..0x4ab"
+        ],
+        "result": "Six FNSTCW saves, six savedCW|0C00 loads, six FISTP DWORD writes to conversion HOME, six low16 WORD stores at item+24/26/28/2A/2C/2E and six saved-CW restores; no call/branch/relocation inside208B block. Multiplication/subtraction order remains Original. The original incoming buffer pointer is not restored: the HOME retains its reached F32 high half/CW low half."
+      },
+      {
+        "id": "106-RETURN",
+        "offsets": [
+          "0x4ab..0x4eb",
+          "0x4ec..0x53d"
+        ],
+        "result": "After packing, reload actual Frame and strings, set source native_state-1, conditionally return current line text without clearing its historical header, mark complete and AL1. Compiler catch records exception_ptr/failure then barethrows; no extra native line/token cleanup is emitted. Compiler EH scaffolding is Source-only and does not establish Original FH3."
+      }
+    ],
+    "findings_107": [
+      {
+        "id": "107-ZERO-HOMES",
+        "offsets": [
+          "0x4c..0xa2",
+          "0x142..0x14a",
+          "0x358..0x36c"
+        ],
+        "result": "Four dynamic actual writes zero descriptor+0/+4 then name+C/+10 before first volatile HOME2 load. Name HOME0 is first loaded after complete descriptor provider sequence. Texture HOME1 is loaded only at+35B after every provider path and written to actual item+8 at+36C. UV/packed item bytes are untouched by direct constructor stores."
+      },
+      {
+        "id": "107-CURRENT-COPY",
+        "offsets": [
+          "0xb1..0x135",
+          "0x155..0x1d6"
+        ],
+        "result": "Descriptor/name aliases retain compare-before-copy. Each path loads request before exact41DD40, then reloads current source LEN for branch; only then reads current destination LEN, current source DATA and destination DATA in Source order. Reached BF7680 remains an external call even for current destination count0. Captured source headers stay stable while their pointed-to fields are current after providers."
+      },
+      {
+        "id": "107-DOT",
+        "offsets": [
+          "0x1de..0x2d3"
+        ],
+        "result": "Actual raw8 Frame dot child zeroed then exact41DD40 request1/preserve HOME1. Actual dot DATA captured before literal copy/reverse-find and retained in Frame+14. Real467CF0 takes name, SAME dot header and7FFFFFFF. After reverse-find, current dot LEN+1 is captured before419CC0 getter; BD1510 receives captured dot DATA and captured post-find bytes, not a replacement DATA reload."
+      },
+      {
+        "id": "107-PROVIDERS",
+        "offsets": [
+          "0xdc",
+          "0x135",
+          "0x17d",
+          "0x1d6",
+          "0x21d",
+          "0x266",
+          "0x27f",
+          "0x2b6",
+          "0x2d3",
+          "0x30c",
+          "0x350"
+        ],
+        "result": "Relocations resolve to four genuine exact41DD40, three BF7680,467CF0,419CC0/BD1510 and BF79F0 calls. The context+4 address is forwarded as SAME actual live feature reference to each resize/copy/fill; raw context AA8/AA0 and AA4 references feed getter/return. No semantic pool or feature-value snapshot occurs."
+      },
+      {
+        "id": "107-FILL",
+        "offsets": [
+          "0x2db..0x350"
+        ],
+        "result": "IndexFFFFFFFF skips resize/fill. Otherwise capture before LEN, invoke exact resize at+30C, then current after LEN. JAE at+328 is unsigned before>=after skip; reached fill uses current name DATA+before, after-before and byte20. Final texture HOME load occurs after fill, not before it."
+      },
+      {
+        "id": "107-DTOR",
+        "offsets": [
+          "section27+0x4d..0x86"
+        ],
+        "result": "Two genuine raw41DD20 exact calls at+61 and+7E receive actual name+C first then descriptor0. Completion history advances only after each normal return. No item/header zero, texture decrement/release or item free is emitted; catch only records Source failure and barethrows. Frozen unchanged lower provider owns current DATA->LEN+1/getter capture order; its implementation was not reaudited."
+      },
+      {
+        "id": "107-HELPERS",
+        "offsets": [
+          "section30+0xc",
+          "section33+0xa",
+          "inlined read/write sites"
+        ],
+        "result": "Corrected put helper stores ECX to[EAX+EDX] after loading byte_offset; word helper loads DWORD from[EAX+EDX] then returns it. Same instructions are inlined at actual sites; no reserved OFFSET interpretation remains. Address arithmetic helpers are plain DWORD add/capture."
+      }
+    ],
+    "inherited_qualifications": [
+      "Ordinary NORMAL Source payload only; source history is not Original FH3/SEH/private-HOME/Origin/ABI/fault/NoThrow/unmasked-FP or runtime proof.",
+      "Sourcepeer107 contract clarification remains: dot_header and preserve HOME are explicit writable child operands; private history/controls and genuine CRT active-frame/argument exclusions require caller custody. Compiler review does not prove that caller contract.",
+      "Retain actual raw item/buffer/header/private HOME/RO/current CRT/pool/manager/live feature/CPU/DF/FP and incomplete helper debt; no outer cleanup or retirement authority is synthesized.",
+      "No production raw atlas, registry/common.ats load, parser, Page/type6, texture-cache acquisition, publication or startup activation follows.",
+      "Root-reported official build duration and startup104 natural0/0 are context only, not independently rerun or credited by this review."
+    ],
+    "mutations": {
+      "owned_ignored_review_artifacts_only": true,
+      "tracked_source": false,
+      "build": false,
+      "tests": false,
+      "Game": false,
+      "Ghidra": false,
+      "ledger": false,
+      "CMake": false,
+      "commit": false,
+      "push": false,
+      "activation": false
+    },
+    "tracked_worktree_clean_at_seal": true
+  },
+  "atlas_Core_receipt_pin": {
+    "bytes": 18342,
+    "sha256": "2514c8d896b0672becbe5bb581aeef615ed34778d1a66d963d959acb08ca882e"
+  },
+  "atlas_Core_manifest_pin": {
+    "bytes": 2359,
+    "sha256": "d0b8279258976796f44f8c5056a203cacdd8cb90623ec6bf1b8c01a52de4d3fe"
+  },
+  "raw_Type6_activated": false,
+  "required_gameplay_runs_authorized": true,
+  "new_tests": 0,
+  "remaining": [
+    "real raw atlas manager registration and deletion",
+    "raw AEEAF0/AEF280/AF0060 and common.ats beforeGUI",
+    "actual shared scratch and renderer/cache/feature/provider graph",
+    "Page type6 production, retained records and all existing lifetime/worker/quiescence gates",
+    "required Type6 rendering and gameplay checks"
+  ],
+  "goal_status": "active"
+}

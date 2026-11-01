@@ -1,0 +1,13 @@
+# Function integration batch 103–107
+
+The batch adds the whole raw Icon property reader AB3310, genuine Icon process-pool startup before GUI Text, a raw mutable-key layout provider, atlas parameter reader AEE620 and atlas item constructor/destructor AEE4D0/AEE220. These use actual raw helper/provider graphs. C++ names and interfaces remain reconstructed Source projections; no new Original/vendor function count or original ABI claim follows.
+
+The Source reviews found no blocking code defects. AB3310 retains the visitor-home alias, real Lua-reader operations, constructor cleanup, actual state invocations and late operand epochs. The layout provider observes the real factory and admits its canonical companion before section publication. Insertion failure retains the whole observation and outgoing HOME; acquired() alone is incomplete. Atlas helpers retain real incoming HOME aliases, same-feature exact helpers and the reached normal order. Atlas AEE620 preserves the final 81-instruction x87 packing sequence.
+
+MSVC initially rejected the private atlas item helper parameter named offset, a reserved inline-assembler token. The separate compiler-only fix changes four identifier occurrences to byte_offset. The original candidate seals, failed build/input receipt and subsequent successful build receipt remain separate. Report metadata alone is CRLF-normalized by Git; actual HCPP postimages are exact except this explicit compiler fix.
+
+The joined official Win32 Release build passed in 72.111184 seconds with both existing checks passing. Its frozen receipt contains 3,726 selected inputs and 123 outputs. Root performed focused emitted-Code review of the Icon reader and raw layout composition; an independent peer reviewed emitted atlas Code. This does not claim whole-object/original ABI or Native EH/fault equivalence.
+
+The actual Icon startup test used the new executable with NoForceStop and a private settings root. It logged Icon pool atexit=0 before Text, then game and launcher both exited naturally with code0, no forced stops or survivors. It presented zero frames and is startup/shutdown evidence, not Type6 rendering or gameplay validation.
+
+Before atlas provider adoption, the item Frame contract distinguishes Source-private controls/history from explicitly writable child homes such as dot_header and preserve storage; actual child writes remain allowed under their helper contracts. Caller backing, custody and partial failure graph remain required. The real atlas manager/parser/common.ats startup, exact renderer/cache/shared-scratch graph, Page Type6 wiring and existing lifetime/worker/quiescence gates still require completion. Required gameplay runs are authorized. The continuing integration goal remains active.
