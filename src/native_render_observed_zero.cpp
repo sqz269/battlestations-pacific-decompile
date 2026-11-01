@@ -73,9 +73,9 @@ NativeRenderObservedZeroAccess::CppCountUse::CppCountUse(RenderCommandReference&
     } else if (auto* frame = reference.ordinary_model_) {
         frame->begin_cpp_count_use(static_cast<NativeModelReference&>(reference));
         model_ = frame;
-    } else if (auto* frame = reference.ordinary_parent_) {
-        frame->begin_cpp_count_use(reference);
-        parent_ = frame;
+    } else if (auto* parent_frame = reference.ordinary_parent_) {
+        parent_frame->begin_cpp_count_use(reference);
+        parent_ = parent_frame;
     }
 }
 NativeRenderObservedZeroAccess::CppCountUse::~CppCountUse() noexcept {
@@ -106,9 +106,9 @@ void NativeRenderObservedZeroAccess::invoke(RenderCommandReference& reference, v
         frame->hold_observed_zero(outer,model);
         frame->invoke_observed_zero(actual, model);
         return;
-    } else if (auto* frame = reference.ordinary_parent_) {
-        frame->hold_observed_zero(outer, reference);
-        frame->invoke_observed_zero(actual, reference);
+    } else if (auto* parent_frame = reference.ordinary_parent_) {
+        parent_frame->hold_observed_zero(outer, reference);
+        parent_frame->invoke_observed_zero(actual, reference);
         return;
     }
     reference.release_zero_references(); // exact legacy virtual policy
