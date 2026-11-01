@@ -26,6 +26,8 @@ struct NativeMaterialFactoryAcquired;
 struct NativeMaterialEffectCacheContext;
 class NativePostEffect20MaterialObservedZeroIssuer;
 class NativePostEffect24MaterialObservedZeroIssuer;
+class NativeBrightPassInitializationBlock;
+class NativePostEffectDustBlock;
 class NativeMeshSectionLifetimeDomain;
 class NativeMeshSectionLifetimeFrame;
 class NativeMeshSectionLifetimeCall;
@@ -60,6 +62,12 @@ public:
     void close_after_host_quiescence(); // a real caller fence, not a counter test
 private:
     friend class NativePostEffectParentFrame;
+    friend class NativeBrightPassInitializationBlock;
+    friend class NativePostEffectDustBlock;
+    NativePostEffectParentFrame& prepare_initializer(NativeBrightPassInitializationBlock&,
+        NativePostEffect20ConstructionContext&, NativeMeshSectionLifetimeSourceScope&);
+    NativePostEffectParentFrame& prepare_initializer(NativePostEffectDustBlock&,
+        NativePostEffectConstructionContext&, NativeMeshSectionLifetimeSourceScope&);
     // Pure all-record validation, including each selected Material loan,
     // before the first receiver drain, child close or Block reset.
     void preflight_close() const;
@@ -85,6 +93,8 @@ private:
     friend class NativePostEffect20Reference;
     friend class NativePostEffectConstructionBlock;
     friend class NativePostEffect20ConstructionBlock;
+    friend class NativeBrightPassInitializationBlock;
+    friend class NativePostEffectDustBlock;
     friend class NativeMeshSectionLifetimeFrame;
     friend class NativeMeshSectionLifetimeSourceScope;
     friend class NativeRenderObservedZeroAccess;
@@ -172,6 +182,22 @@ private:
     void preflight_material_caller_close() const;
     void close_material_caller_after_host_quiescence();
     bool material_caller_closed() const noexcept;
+    // Concrete initializer admission spans the ORIGINAL allocator/name/body/
+    // publication/tail/catch schedule. These private observations grant no
+    // Native action, raw adoption or public receipt.
+    struct InitializerConstruction;
+    void begin_initializer_call(NativeBrightPassInitializationBlock&);
+    void begin_initializer_call(NativePostEffectDustBlock&);
+    void* allocate_initializer_parent();
+    void initializer_constructor_entered();
+    void initializer_constructor_returned(void* actual_returned);
+    void initializer_constructor_escaped() noexcept;
+    void before_initializer_raw_free(void* captured) noexcept;
+    void initializer_raw_free_returned() noexcept;
+    void initializer_source_returned();
+    void finish_initializer_call() noexcept;
+    void detach_initializer_caller(NativeBrightPassInitializationBlock&);
+    void detach_initializer_caller(NativePostEffectDustBlock&);
     // Concrete caller-owned loans over the SAME external Source scope. Neither
     // these histories nor the retained counters replace the real owner's fence:
     // ALL observer targets must survive the ENTIRE Source destructor traversal.

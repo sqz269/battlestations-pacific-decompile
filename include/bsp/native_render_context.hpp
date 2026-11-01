@@ -173,7 +173,9 @@ private:
     void withhold_exact_record_for_live_storage_debt(ExactRecord&) noexcept;
     // Only the selected ctor-exception owner, after actual trivial prefix end
     // and last prefix use, before real raw return. Separately live pool backing:
-    // Material+110 / Section+60. Only the genuine private family issuer proves birth/end.
+    // Material+110 / Section+60, or actual Parent+4 atomic end before its
+    // SAME reached initializer raw free. Only the private family issuer proves
+    // birth/escape/last-use/end; no whole Native return/publication/borrow.
     // Retains node/caller/debt; grants no normal death, refund or physical result.
     void deactivate_exact_record_from_partial_cpp_end(ExactRecord&) noexcept;
     // Genuine selected raw-slot unwind only (Mesh state3 / Model state4):
@@ -181,6 +183,11 @@ private:
     // ctor entry, no canonical/pub, last PAYLOAD borrow ended. The separate
     // BC / Model184 pool word remains live for the unchanged real return.
     void abandon_exact_unborn_record(ExactRecord&) noexcept;
+    // Parent initializer action0 only: SAME captured allocation, before +4/
+    // Owner/canonical/publication birth. Unlike Mesh/Model's seam above, a
+    // genuine caught constructor attempt may have entered but not born +4.
+    // Retains failed membership/debt; no Native death/free/close/refund fact.
+    void abandon_exact_parent_record_before_cpp_birth(ExactRecord&) noexcept;
     // Retire THAT retained record; never erase a replacement or accept a
     // missing arbitrary key. Native physical/flags0 debt stays with the owner.
     void retire_exact_record(ExactRecord&);

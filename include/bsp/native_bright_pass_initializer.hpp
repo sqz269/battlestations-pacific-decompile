@@ -3,6 +3,9 @@
 #include <array>
 
 namespace bsp {
+class NativePostEffectParentFrame;
+class NativePostEffectParentDomain;
+class NativeMeshSectionLifetimeSourceScope;
 struct NativeBrightPassInitializationContext {
     NativePostEffect20ConstructionContext& post_effects;
     NativeRenderTextureSurfaceOwnerContext& holders;
@@ -31,6 +34,8 @@ public:
     NativeBrightPassInitializationBlock(const NativeBrightPassInitializationBlock&)=delete;
     NativeBrightPassInitializationBlock& operator=(const NativeBrightPassInitializationBlock&)=delete;
     void prepare(NativeBrightPassInitializationContext&);
+    void prepare(NativeBrightPassInitializationContext&, NativePostEffectParentDomain&,
+        NativeMeshSectionLifetimeSourceScope&);
     void cancel_preparation() noexcept;
     Phase phase() const noexcept {return phase_;}
     const NativeBrightPassInitializationAcquired& acquired() const noexcept {return acquired_;}
@@ -39,6 +44,8 @@ public:
     // post_effect() to idle before resetting this block.
     void reset_after_host_quiescence() noexcept;
 private:
+    friend class NativePostEffectParentDomain;
+    class ParentCallScope;
     friend void initialize_native_bright_pass_00b54940(void*,std::size_t,
         NativeDepthDownscalePassArguments,NativeBrightPassInitializationBlock&);
     void return_effect_name();
@@ -50,6 +57,7 @@ private:
     Phase phase_{Phase::idle};
     NativeBrightPassInitializationAcquired acquired_;
     NativePostEffect20ConstructionBlock post_effect_;
+    NativePostEffectParentFrame* parent_frame_{}; // genuine retained cold loan
     NativeString effect_name_,parameter_name_,last_parameter_name_;
 };
 
