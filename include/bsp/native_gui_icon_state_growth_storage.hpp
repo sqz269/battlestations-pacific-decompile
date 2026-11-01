@@ -35,8 +35,9 @@ struct NativeGuiIconStateGrowthStorageFrame {
     std::uint32_t assignment_preserve_home;
 };
 
-// Whole NORMAL AB59E0 payload/control schedule:633B/243physical instructions,
-// with25Native landing rows HELD. Actual raw16B vector [proxy,first,last,end],
+// AB59E0 normal payload plus ordinary Source C++ cleanup schedule. The633B/
+// 243physical Native instructions include25 landing rows; Source catches below
+// model their reached cleanup effects, not binary/private-FH3 exception identity. Actual raw16B vector [proxy,first,last,end],
 // incoming four DWORD homes [unused,position,count,prototype]; Original ECX /
 // RET10h become an ordinary four-argument void Source API. No defined EAX.
 // Count0 STILL copies a real40B temp BEFORE count read and destroys it normally.
@@ -57,10 +58,28 @@ struct NativeGuiIconStateGrowthStorageFrame {
 // allocator/module/DF/CPU/FP lifetimes and genuine scratch preimages. UNKNOWN
 // propagates with current/partial/completed/remaining graph/temporary/homes and
 // any unpublished allocation, already-consumed or incomplete callee debt kept
-// alive. Existing lower normal helpers'13landing rows are not reconstructed
-// here; later cleanup suppliers must not be replayed or duplicated. This body
-// has no catch/automatic Native cleanup/retry/rollback/NoThrow/terminal policy.
-// Passive state is not cleanup/ownership/retirement or Native Origin authority.
+// alive until actual specified deallocation. Published lower5400/4C50 catches
+// clean their own completed prefix; this parent never replays those calls.
+// Completed-temp cleanup starts only after whole AB3A70 normal return. An outer
+// Source catch then destroys SAME temp once and barethrows only after that
+// destructor returns. The normal footer stores state-1 BEFORE temp destruction
+// and lies outside this catch. No failed-temp/current-slot dtor is invented.
+// Narrow catch1 covers only new prefix/repeat/suffix construction: CURRENT
+// HOME2 then HOME3 then receiver14; real57 on captured begin/end; free captured
+// HOME3 identity only after57 normal return; barethrow only after free returns.
+// Narrow catch3 covers tail<count repeat: CURRENT receiver14/HOME2/currentlast,
+// wrapped countbytes/end, THEN late HOME1/begin; real57, no free, barethrow.
+// A range-cleanup escape skips later free/rethrow and reaches the outer temp
+// cleanup once. A temp-cleanup escape propagates without replay; existing raw
+// AB3280 name-unwind/secondary-terminate Source policy remains inherited. This
+// ordinary C++ replacement/propagation is not Native FH3/double-fault identity.
+// Every late cleanup interval/free identity needs genuine actual state and
+// allocation custody. Enclosing real free ends trivial C++ record lifetimes;
+// it does NOT prove logical texture/name retirement or discharge external debt.
+// Afterwards retain numeric history plus genuinely independent provider debt,
+// NEVER raw-pointee rescan/replay. Passive state/return/progress grants no such
+// custody or Native Origin/cleanup/retirement permission. No new owner, cause,
+// cursor, phase authority, retry/rollback/NoThrow or terminal wrapper is added.
 // Original private-stack/register/FLAGS/fault/FH3/SEH/hardwareFP and actual
 // caller/Page/current18/current78/current80/disposition/activation remain held.
 // Preserve existing STL/vendor names/tags; zero new Original/vendor/helper/CG/

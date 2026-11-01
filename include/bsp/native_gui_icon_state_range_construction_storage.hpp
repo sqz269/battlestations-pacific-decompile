@@ -43,6 +43,15 @@ static_assert(sizeof(NativeGuiIconStateRangeConstructionStorageFrame) == 20);
 // and providers on escape. Already-returned destructor calls are history,
 // not disposition proof; never rescan their pointees or replay those calls.
 //
+// Containing-backing retention lasts until an explicitly specified genuine
+// enclosing allocation owner's deallocation is reached. That physical free
+// ends trivial state C++ lifetimes; it is not logical texture/name retirement.
+// After free retain numeric history and genuinely independent external
+// resource/provider debt. No raw-pointee rescan or destructor replay is valid.
+// The caller must supply actual allocation custody and independent debt
+// lifetimes; this creates no owner, discharge, Origin or NoThrow guarantee.
+//
+//
 // Private Source parameter/control/spill storage is disjoint from borrowed
 // operand/record and provider-write extents. Declared operand homes in frame
 // and actual_stack_homes are separate from those private controls: callbacks

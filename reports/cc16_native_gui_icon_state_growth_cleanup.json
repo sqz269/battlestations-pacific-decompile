@@ -1,0 +1,652 @@
+{
+  "kind": "IGNORED fourmodifiedSource/twoevidence parentcleanup proposal; no tracked author grant",
+  "base": "2ba99aec9a113912f17b77da075774e0ba14bf5c",
+  "owned_paths": [
+    "include/bsp/native_gui_icon_state_growth_storage.hpp",
+    "src/native_gui_icon_state_growth_storage.cpp",
+    "include/bsp/native_gui_icon_state_repeat_storage.hpp",
+    "include/bsp/native_gui_icon_state_range_construction_storage.hpp",
+    "docs/CC16_NATIVE_GUI_ICON_STATE_GROWTH_CLEANUP.md",
+    "reports/cc16_native_gui_icon_state_growth_cleanup.json"
+  ],
+  "modified_paths": [
+    "include/bsp/native_gui_icon_state_growth_storage.hpp",
+    "src/native_gui_icon_state_growth_storage.cpp",
+    "include/bsp/native_gui_icon_state_repeat_storage.hpp",
+    "include/bsp/native_gui_icon_state_range_construction_storage.hpp"
+  ],
+  "lower_headers": [
+    "include/bsp/native_gui_icon_state_repeat_storage.hpp",
+    "include/bsp/native_gui_icon_state_range_construction_storage.hpp"
+  ],
+  "added_paths": [
+    "docs/CC16_NATIVE_GUI_ICON_STATE_GROWTH_CLEANUP.md",
+    "reports/cc16_native_gui_icon_state_growth_cleanup.json"
+  ],
+  "postimage_pins": {
+    "include/bsp/native_gui_icon_state_growth_storage.hpp": {
+      "bytes": 6088,
+      "sha256": "0fa15e9c70fe756503d566cef17a5d855beb84828e8248dd7589798934ae2281"
+    },
+    "src/native_gui_icon_state_growth_storage.cpp": {
+      "bytes": 10137,
+      "sha256": "681097da283c46cfa5f2d1afec2d6d42ca2b9f469ebd0cd9fade841454d55459"
+    },
+    "include/bsp/native_gui_icon_state_repeat_storage.hpp": {
+      "bytes": 4667,
+      "sha256": "fec45af8ff930aaf76e6201b0ab6a98a929a456b57a62826c8f9bd6bfccaa8f5"
+    },
+    "include/bsp/native_gui_icon_state_range_construction_storage.hpp": {
+      "bytes": 5389,
+      "sha256": "086d60580a7f658dfc02c2fc65b3f534a731e403d61759234d81398eb5d4a587"
+    },
+    "docs/CC16_NATIVE_GUI_ICON_STATE_GROWTH_CLEANUP.md": {
+      "bytes": 4067,
+      "sha256": "9e164c57b1e872b5b325566c64a46841a2ed4620c069c394d79c903e245c990d"
+    }
+  },
+  "preimage_pins": {
+    "include/bsp/native_gui_icon_state_growth_storage.hpp": {
+      "bytes": 4539,
+      "sha256": "b9f5a7fb8a21bb6a8ef0e3eefb97c08fbaf1197cd039d0f0e18689b15c5dc098"
+    },
+    "src/native_gui_icon_state_growth_storage.cpp": {
+      "bytes": 8203,
+      "sha256": "df1e78337f7d00512fda397637f824b5170e5fdf0b719a9f8dbc6041b5fc2e5f"
+    },
+    "include/bsp/native_gui_icon_state_repeat_storage.hpp": {
+      "bytes": 4127,
+      "sha256": "d44eb49ce2ad7bbbff7139bbc8ba2f074c0a18dc27647d3141d626d5097bb675"
+    },
+    "include/bsp/native_gui_icon_state_range_construction_storage.hpp": {
+      "bytes": 4849,
+      "sha256": "aebf7c8ec0067330190607a3546264949e9688ae3871f129e184f934e9e7f3d5"
+    }
+  },
+  "seams": [
+    {
+      "path": "include/bsp/native_gui_icon_state_growth_storage.hpp",
+      "label": "coverage qualification",
+      "before_utf8": "// Whole NORMAL AB59E0 payload/control schedule:633B/243physical instructions,\n// with25Native landing rows HELD.",
+      "after_utf8": "// AB59E0 normal payload plus ordinary Source C++ cleanup schedule. The633B/\n// 243physical Native instructions include25 landing rows; Source catches below\n// model their reached cleanup effects, not binary/private-FH3 exception identity."
+    },
+    {
+      "path": "include/bsp/native_gui_icon_state_growth_storage.hpp",
+      "label": "exact catches and conditional backing contract",
+      "before_utf8": "// alive. Existing lower normal helpers'13landing rows are not reconstructed\n// here; later cleanup suppliers must not be replayed or duplicated. This body\n// has no catch/automatic Native cleanup/retry/rollback/NoThrow/terminal policy.\n// Passive state is not cleanup/ownership/retirement or Native Origin authority.\n",
+      "after_utf8": "// alive until actual specified deallocation. Published lower5400/4C50 catches\n// clean their own completed prefix; this parent never replays those calls.\n// Completed-temp cleanup starts only after whole AB3A70 normal return. An outer\n// Source catch then destroys SAME temp once and barethrows only after that\n// destructor returns. The normal footer stores state-1 BEFORE temp destruction\n// and lies outside this catch. No failed-temp/current-slot dtor is invented.\n// Narrow catch1 covers only new prefix/repeat/suffix construction: CURRENT\n// HOME2 then HOME3 then receiver14; real57 on captured begin/end; free captured\n// HOME3 identity only after57 normal return; barethrow only after free returns.\n// Narrow catch3 covers tail<count repeat: CURRENT receiver14/HOME2/currentlast,\n// wrapped countbytes/end, THEN late HOME1/begin; real57, no free, barethrow.\n// A range-cleanup escape skips later free/rethrow and reaches the outer temp\n// cleanup once. A temp-cleanup escape propagates without replay; existing raw\n// AB3280 name-unwind/secondary-terminate Source policy remains inherited. This\n// ordinary C++ replacement/propagation is not Native FH3/double-fault identity.\n// Every late cleanup interval/free identity needs genuine actual state and\n// allocation custody. Enclosing real free ends trivial C++ record lifetimes;\n// it does NOT prove logical texture/name retirement or discharge external debt.\n// Afterwards retain numeric history plus genuinely independent provider debt,\n// NEVER raw-pointee rescan/replay. Passive state/return/progress grants no such\n// custody or Native Origin/cleanup/retirement permission. No new owner, cause,\n// cursor, phase authority, retry/rollback/NoThrow or terminal wrapper is added.\n"
+    },
+    {
+      "path": "src/native_gui_icon_state_growth_storage.cpp",
+      "label": "narrow state1 construction catch",
+      "before_utf8": "    byte(f.state_04, 1);\n    eax = construct_native_gui_icon_state_range_storage_00ab4c50(\n        pointer(ecx), pointer(edx), f.direct_range_homes, f.direct_range_frame, c.storage);\n    set(f.repeat_outer_homes[2], temp);\n    set(f.repeat_outer_homes[1], edi);\n    set(f.repeat_outer_homes[0], eax);\n    homes[2] = eax;\n    eax = repeat_native_gui_icon_states_wrapper_storage_00ab56c0(vector,\n        f.repeat_outer_homes, f.repeat_tag_home, f.repeat_callee_homes, f.repeat_frame, c.storage);\n    edx = read(pointer(vector), 8); // CURRENT last, not original last.\n    byte(f.scratch_18, 0);\n    ecx = get(f.scratch_18);\n    set(f.direct_range_homes[3], ecx);\n    homes[2] = eax;\n    ecx = homes[2];\n    set(f.direct_range_homes[2], ecx);\n    ecx = homes[1];\n    set(f.direct_range_homes[1], vector);\n    set(f.direct_range_homes[0], eax);\n    eax = construct_native_gui_icon_state_range_storage_00ab4c50(\n        pointer(ecx), pointer(edx), f.direct_range_homes, f.direct_range_frame, c.storage);\n    ecx = read(pointer(vector), 4);\n",
+      "after_utf8": "    try {\n        byte(f.state_04, 1);\n        eax = construct_native_gui_icon_state_range_storage_00ab4c50(\n            pointer(ecx), pointer(edx), f.direct_range_homes, f.direct_range_frame, c.storage);\n        set(f.repeat_outer_homes[2], temp);\n        set(f.repeat_outer_homes[1], edi);\n        set(f.repeat_outer_homes[0], eax);\n        homes[2] = eax;\n        eax = repeat_native_gui_icon_states_wrapper_storage_00ab56c0(vector,\n            f.repeat_outer_homes, f.repeat_tag_home, f.repeat_callee_homes, f.repeat_frame, c.storage);\n        edx = read(pointer(vector), 8); // CURRENT last, not original last.\n        byte(f.scratch_18, 0);\n        ecx = get(f.scratch_18);\n        set(f.direct_range_homes[3], ecx);\n        homes[2] = eax;\n        ecx = homes[2];\n        set(f.direct_range_homes[2], ecx);\n        ecx = homes[1];\n        set(f.direct_range_homes[1], vector);\n        set(f.direct_range_homes[0], eax);\n        eax = construct_native_gui_icon_state_range_storage_00ab4c50(\n            pointer(ecx), pointer(edx), f.direct_range_homes, f.direct_range_frame, c.storage);\n        ecx = read(pointer(vector), 4);\n    } catch (...) {\n        const Word cleanup_end = homes[2];\n        const Word cleanup_allocation = homes[3];\n        (void)get(f.receiver_14); // CURRENT Native ECX operand, unused by whole57.\n        set(f.destroy_homes[1], cleanup_end);\n        set(f.destroy_homes[0], cleanup_allocation);\n        destroy_native_gui_icon_state_range_storage_00ab57e0(f.destroy_homes, c.storage);\n        singleton_lifetime_free(pointer(cleanup_allocation));\n        throw;\n    }\n"
+    },
+    {
+      "path": "src/native_gui_icon_state_growth_storage.cpp",
+      "label": "narrow state3 repeat catch",
+      "before_utf8": "    byte(f.state_04, 3);\n    eax = repeat_native_gui_icon_states_wrapper_storage_00ab56c0(vector,\n        f.repeat_outer_homes, f.repeat_tag_home, f.repeat_callee_homes, f.repeat_frame, c.storage);\n    eax = homes[3];\n    write(pointer(vector), 8, read(pointer(vector), 8) + eax);\n    edi = read(pointer(vector), 8); // Source carrier for Native ESI's late reload.\n    set(f.fill_homes[2], temp);\n    edi -= eax;\n    set(f.fill_homes[1], edi);\n    set(f.fill_homes[0], ebx);\n",
+      "after_utf8": "    try {\n        byte(f.state_04, 3);\n        eax = repeat_native_gui_icon_states_wrapper_storage_00ab56c0(vector,\n            f.repeat_outer_homes, f.repeat_tag_home, f.repeat_callee_homes, f.repeat_frame, c.storage);\n        eax = homes[3];\n        write(pointer(vector), 8, read(pointer(vector), 8) + eax);\n        edi = read(pointer(vector), 8); // Source carrier for Native ESI's late reload.\n        set(f.fill_homes[2], temp);\n        edi -= eax;\n        set(f.fill_homes[1], edi);\n        set(f.fill_homes[0], ebx);\n    } catch (...) {\n        const Word cleanup_receiver = get(f.receiver_14);\n        Word cleanup_offset = homes[2];\n        Word cleanup_end = read(pointer(cleanup_receiver), 8);\n        cleanup_offset <<= 6u;\n        cleanup_end += cleanup_offset;\n        set(f.destroy_homes[1], cleanup_end);\n        const Word cleanup_position = homes[1];\n        cleanup_offset += cleanup_position;\n        set(f.destroy_homes[0], cleanup_offset);\n        destroy_native_gui_icon_state_range_storage_00ab57e0(f.destroy_homes, c.storage);\n        throw;\n    }\n"
+    },
+    {
+      "path": "src/native_gui_icon_state_growth_storage.cpp",
+      "label": "completed temp outer catch excludes normal destructor",
+      "before_utf8": "    ecx = read(pointer(vector), 4);\n    eax = 0;\n    set(f.state_04, 0);\n    if (ecx != 0) ebx = sar6(read(pointer(vector), 0x0c) - ecx);\n    else ebx = 0;\n    edi = homes[2];\n    if (edi == 0) goto normal_end;\n    if (ecx != 0) eax = sar6(read(pointer(vector), 8) - ecx);\n    edx = 0x03ffffffu - eax;\n    if (edx < edi) native_singleton_length_error_00bd0590(); // AB4A70 equivalent accepted service.\n    if (ecx != 0) eax = sar6(read(pointer(vector), 8) - ecx);\n    else eax = 0;\n    eax += edi;\n    if (ebx >= eax) goto inplace;\n\n    eax = ebx >> 1u;\n    edx = 0x03ffffffu - eax;\n    if (edx < ebx) ebx = 0;\n    else ebx += eax;\n    if (ecx != 0) eax = sar6(read(pointer(vector), 8) - ecx);\n    else eax = 0;\n    eax += edi;\n    if (ebx < eax) {\n        if (ecx != 0) eax = sar6(read(pointer(vector), 8) - ecx);\n        else eax = 0;\n        ebx = eax + edi;\n    }\n    eax = bits(allocate_native_gui_icon_state_backing_00ab1520(ebx));\n    ecx = read(pointer(vector), 4); // FRESH after allocator callbacks.\n    byte(f.scratch_18, 0);\n    edx = get(f.scratch_18);\n    set(f.direct_range_homes[3], edx);\n    homes[2] = eax;\n    edx = homes[2];\n    set(f.direct_range_homes[2], edx);\n    edx = homes[1];\n    set(f.direct_range_homes[1], vector);\n    set(f.direct_range_homes[0], eax);\n    homes[3] = eax;\n    try {\n        byte(f.state_04, 1);\n        eax = construct_native_gui_icon_state_range_storage_00ab4c50(\n            pointer(ecx), pointer(edx), f.direct_range_homes, f.direct_range_frame, c.storage);\n        set(f.repeat_outer_homes[2], temp);\n        set(f.repeat_outer_homes[1], edi);\n        set(f.repeat_outer_homes[0], eax);\n        homes[2] = eax;\n        eax = repeat_native_gui_icon_states_wrapper_storage_00ab56c0(vector,\n            f.repeat_outer_homes, f.repeat_tag_home, f.repeat_callee_homes, f.repeat_frame, c.storage);\n        edx = read(pointer(vector), 8); // CURRENT last, not original last.\n        byte(f.scratch_18, 0);\n        ecx = get(f.scratch_18);\n        set(f.direct_range_homes[3], ecx);\n        homes[2] = eax;\n        ecx = homes[2];\n        set(f.direct_range_homes[2], ecx);\n        ecx = homes[1];\n        set(f.direct_range_homes[1], vector);\n        set(f.direct_range_homes[0], eax);\n        eax = construct_native_gui_icon_state_range_storage_00ab4c50(\n            pointer(ecx), pointer(edx), f.direct_range_homes, f.direct_range_frame, c.storage);\n        ecx = read(pointer(vector), 4);\n    } catch (...) {\n        const Word cleanup_end = homes[2];\n        const Word cleanup_allocation = homes[3];\n        (void)get(f.receiver_14); // CURRENT Native ECX operand, unused by whole57.\n        set(f.destroy_homes[1], cleanup_end);\n        set(f.destroy_homes[0], cleanup_allocation);\n        destroy_native_gui_icon_state_range_storage_00ab57e0(f.destroy_homes, c.storage);\n        singleton_lifetime_free(pointer(cleanup_allocation));\n        throw;\n    }\n    set(f.state_04, 0);\n    if (ecx != 0) eax = sar6(read(pointer(vector), 8) - ecx);\n    else eax = 0;\n    edi += eax;\n    if (ecx != 0) {\n        edx = read(pointer(vector), 8);\n        set(f.destroy_homes[1], edx);\n        set(f.destroy_homes[0], ecx);\n        destroy_native_gui_icon_state_range_storage_00ab57e0(f.destroy_homes, c.storage);\n        eax = read(pointer(vector), 4); // CURRENT first after all destructor callbacks.\n        singleton_lifetime_free(pointer(eax));\n    }\n    eax = homes[3];\n    ebx = (ebx << 6u) + eax;\n    edi = (edi << 6u) + eax;\n    write(pointer(vector), 0x0c, ebx);\n    write(pointer(vector), 8, edi);\n    write(pointer(vector), 4, eax);\n    goto normal_end;\n\ninplace:\n    eax = read(pointer(vector), 8);\n    ebx = homes[1];\n    ecx = sar6(eax - ebx);\n    set(f.scratch_18, eax);\n    if (ecx >= edi) goto tail_ge_count;\n    ecx = edi << 6u;\n    homes[3] = ecx;\n    ecx += ebx;\n    set(f.range_outer_homes[2], ecx);\n    set(f.range_outer_homes[1], eax);\n    set(f.range_outer_homes[0], ebx);\n    eax = copy_native_gui_icon_state_range_wrapper_storage_00ab58a0(vector,\n        f.range_outer_homes, f.range_tag_home, f.range_callee_homes, f.wrapped_range_frame, c.storage);\n    eax = read(pointer(vector), 8); // CURRENT after suffix construction/callbacks.\n    ecx = sar6(eax - ebx);\n    set(f.repeat_outer_homes[2], temp);\n    edi -= ecx;\n    set(f.repeat_outer_homes[1], edi);\n    set(f.repeat_outer_homes[0], eax);\n    try {\n        byte(f.state_04, 3);\n        eax = repeat_native_gui_icon_states_wrapper_storage_00ab56c0(vector,\n            f.repeat_outer_homes, f.repeat_tag_home, f.repeat_callee_homes, f.repeat_frame, c.storage);\n        eax = homes[3];\n        write(pointer(vector), 8, read(pointer(vector), 8) + eax);\n        edi = read(pointer(vector), 8); // Source carrier for Native ESI's late reload.\n        set(f.fill_homes[2], temp);\n        edi -= eax;\n        set(f.fill_homes[1], edi);\n        set(f.fill_homes[0], ebx);\n    } catch (...) {\n        const Word cleanup_receiver = get(f.receiver_14);\n        Word cleanup_offset = homes[2];\n        Word cleanup_end = read(pointer(cleanup_receiver), 8);\n        cleanup_offset <<= 6u;\n        cleanup_end += cleanup_offset;\n        set(f.destroy_homes[1], cleanup_end);\n        const Word cleanup_position = homes[1];\n        cleanup_offset += cleanup_position;\n        set(f.destroy_homes[0], cleanup_offset);\n        destroy_native_gui_icon_state_range_storage_00ab57e0(f.destroy_homes, c.storage);\n        throw;\n    }\n    set(f.state_04, 0);\n    fill_native_gui_icon_state_range_storage_00ab4af0(f.fill_homes,\n        f.assignment_preserve_home, c.storage.strings, c.feature_word_0109eea4);\n    goto normal_end;\n\ntail_ge_count:\n    edi <<= 6u;\n    ecx = edi;\n    set(f.range_outer_homes[2], eax);\n    edi = eax - ecx;\n    set(f.range_outer_homes[1], eax);\n    homes[3] = ecx;\n    set(f.range_outer_homes[0], edi);\n    eax = copy_native_gui_icon_state_range_wrapper_storage_00ab58a0(vector,\n        f.range_outer_homes, f.range_tag_home, f.range_callee_homes, f.wrapped_range_frame, c.storage);\n    write(pointer(vector), 8, eax);\n    eax = get(f.scratch_18);\n    set(f.backward_homes[2], eax);\n    set(f.backward_homes[1], edi);\n    set(f.backward_homes[0], ebx);\n    (void)assign_native_gui_icon_state_range_backward_storage_00ab5650(f.backward_homes,\n        f.assignment_preserve_home, c.storage.strings, c.feature_word_0109eea4);\n    edx = homes[3];\n    set(f.fill_homes[2], temp);\n    edx += ebx;\n    set(f.fill_homes[1], edx);\n    set(f.fill_homes[0], ebx);\n    fill_native_gui_icon_state_range_storage_00ab4af0(f.fill_homes,\n        f.assignment_preserve_home, c.storage.strings, c.feature_word_0109eea4);\n\n",
+      "after_utf8": "    try {\n        ecx = read(pointer(vector), 4);\n        eax = 0;\n        set(f.state_04, 0);\n        if (ecx != 0) ebx = sar6(read(pointer(vector), 0x0c) - ecx);\n        else ebx = 0;\n        edi = homes[2];\n        if (edi == 0) goto normal_end;\n        if (ecx != 0) eax = sar6(read(pointer(vector), 8) - ecx);\n        edx = 0x03ffffffu - eax;\n        if (edx < edi) native_singleton_length_error_00bd0590(); // AB4A70 equivalent accepted service.\n        if (ecx != 0) eax = sar6(read(pointer(vector), 8) - ecx);\n        else eax = 0;\n        eax += edi;\n        if (ebx >= eax) goto inplace;\n\n        eax = ebx >> 1u;\n        edx = 0x03ffffffu - eax;\n        if (edx < ebx) ebx = 0;\n        else ebx += eax;\n        if (ecx != 0) eax = sar6(read(pointer(vector), 8) - ecx);\n        else eax = 0;\n        eax += edi;\n        if (ebx < eax) {\n            if (ecx != 0) eax = sar6(read(pointer(vector), 8) - ecx);\n            else eax = 0;\n            ebx = eax + edi;\n        }\n        eax = bits(allocate_native_gui_icon_state_backing_00ab1520(ebx));\n        ecx = read(pointer(vector), 4); // FRESH after allocator callbacks.\n        byte(f.scratch_18, 0);\n        edx = get(f.scratch_18);\n        set(f.direct_range_homes[3], edx);\n        homes[2] = eax;\n        edx = homes[2];\n        set(f.direct_range_homes[2], edx);\n        edx = homes[1];\n        set(f.direct_range_homes[1], vector);\n        set(f.direct_range_homes[0], eax);\n        homes[3] = eax;\n        try {\n            byte(f.state_04, 1);\n            eax = construct_native_gui_icon_state_range_storage_00ab4c50(\n                pointer(ecx), pointer(edx), f.direct_range_homes, f.direct_range_frame, c.storage);\n            set(f.repeat_outer_homes[2], temp);\n            set(f.repeat_outer_homes[1], edi);\n            set(f.repeat_outer_homes[0], eax);\n            homes[2] = eax;\n            eax = repeat_native_gui_icon_states_wrapper_storage_00ab56c0(vector,\n                f.repeat_outer_homes, f.repeat_tag_home, f.repeat_callee_homes, f.repeat_frame, c.storage);\n            edx = read(pointer(vector), 8); // CURRENT last, not original last.\n            byte(f.scratch_18, 0);\n            ecx = get(f.scratch_18);\n            set(f.direct_range_homes[3], ecx);\n            homes[2] = eax;\n            ecx = homes[2];\n            set(f.direct_range_homes[2], ecx);\n            ecx = homes[1];\n            set(f.direct_range_homes[1], vector);\n            set(f.direct_range_homes[0], eax);\n            eax = construct_native_gui_icon_state_range_storage_00ab4c50(\n                pointer(ecx), pointer(edx), f.direct_range_homes, f.direct_range_frame, c.storage);\n            ecx = read(pointer(vector), 4);\n        } catch (...) {\n            const Word cleanup_end = homes[2];\n            const Word cleanup_allocation = homes[3];\n            (void)get(f.receiver_14); // CURRENT Native ECX operand, unused by whole57.\n            set(f.destroy_homes[1], cleanup_end);\n            set(f.destroy_homes[0], cleanup_allocation);\n            destroy_native_gui_icon_state_range_storage_00ab57e0(f.destroy_homes, c.storage);\n            singleton_lifetime_free(pointer(cleanup_allocation));\n            throw;\n        }\n        set(f.state_04, 0);\n        if (ecx != 0) eax = sar6(read(pointer(vector), 8) - ecx);\n        else eax = 0;\n        edi += eax;\n        if (ecx != 0) {\n            edx = read(pointer(vector), 8);\n            set(f.destroy_homes[1], edx);\n            set(f.destroy_homes[0], ecx);\n            destroy_native_gui_icon_state_range_storage_00ab57e0(f.destroy_homes, c.storage);\n            eax = read(pointer(vector), 4); // CURRENT first after all destructor callbacks.\n            singleton_lifetime_free(pointer(eax));\n        }\n        eax = homes[3];\n        ebx = (ebx << 6u) + eax;\n        edi = (edi << 6u) + eax;\n        write(pointer(vector), 0x0c, ebx);\n        write(pointer(vector), 8, edi);\n        write(pointer(vector), 4, eax);\n        goto normal_end;\n\ninplace:\n        eax = read(pointer(vector), 8);\n        ebx = homes[1];\n        ecx = sar6(eax - ebx);\n        set(f.scratch_18, eax);\n        if (ecx >= edi) goto tail_ge_count;\n        ecx = edi << 6u;\n        homes[3] = ecx;\n        ecx += ebx;\n        set(f.range_outer_homes[2], ecx);\n        set(f.range_outer_homes[1], eax);\n        set(f.range_outer_homes[0], ebx);\n        eax = copy_native_gui_icon_state_range_wrapper_storage_00ab58a0(vector,\n            f.range_outer_homes, f.range_tag_home, f.range_callee_homes, f.wrapped_range_frame, c.storage);\n        eax = read(pointer(vector), 8); // CURRENT after suffix construction/callbacks.\n        ecx = sar6(eax - ebx);\n        set(f.repeat_outer_homes[2], temp);\n        edi -= ecx;\n        set(f.repeat_outer_homes[1], edi);\n        set(f.repeat_outer_homes[0], eax);\n        try {\n            byte(f.state_04, 3);\n            eax = repeat_native_gui_icon_states_wrapper_storage_00ab56c0(vector,\n                f.repeat_outer_homes, f.repeat_tag_home, f.repeat_callee_homes, f.repeat_frame, c.storage);\n            eax = homes[3];\n            write(pointer(vector), 8, read(pointer(vector), 8) + eax);\n            edi = read(pointer(vector), 8); // Source carrier for Native ESI's late reload.\n            set(f.fill_homes[2], temp);\n            edi -= eax;\n            set(f.fill_homes[1], edi);\n            set(f.fill_homes[0], ebx);\n        } catch (...) {\n            const Word cleanup_receiver = get(f.receiver_14);\n            Word cleanup_offset = homes[2];\n            Word cleanup_end = read(pointer(cleanup_receiver), 8);\n            cleanup_offset <<= 6u;\n            cleanup_end += cleanup_offset;\n            set(f.destroy_homes[1], cleanup_end);\n            const Word cleanup_position = homes[1];\n            cleanup_offset += cleanup_position;\n            set(f.destroy_homes[0], cleanup_offset);\n            destroy_native_gui_icon_state_range_storage_00ab57e0(f.destroy_homes, c.storage);\n            throw;\n        }\n        set(f.state_04, 0);\n        fill_native_gui_icon_state_range_storage_00ab4af0(f.fill_homes,\n            f.assignment_preserve_home, c.storage.strings, c.feature_word_0109eea4);\n        goto normal_end;\n\ntail_ge_count:\n        edi <<= 6u;\n        ecx = edi;\n        set(f.range_outer_homes[2], eax);\n        edi = eax - ecx;\n        set(f.range_outer_homes[1], eax);\n        homes[3] = ecx;\n        set(f.range_outer_homes[0], edi);\n        eax = copy_native_gui_icon_state_range_wrapper_storage_00ab58a0(vector,\n            f.range_outer_homes, f.range_tag_home, f.range_callee_homes, f.wrapped_range_frame, c.storage);\n        write(pointer(vector), 8, eax);\n        eax = get(f.scratch_18);\n        set(f.backward_homes[2], eax);\n        set(f.backward_homes[1], edi);\n        set(f.backward_homes[0], ebx);\n        (void)assign_native_gui_icon_state_range_backward_storage_00ab5650(f.backward_homes,\n            f.assignment_preserve_home, c.storage.strings, c.feature_word_0109eea4);\n        edx = homes[3];\n        set(f.fill_homes[2], temp);\n        edx += ebx;\n        set(f.fill_homes[1], edx);\n        set(f.fill_homes[0], ebx);\n        fill_native_gui_icon_state_range_storage_00ab4af0(f.fill_homes,\n            f.assignment_preserve_home, c.storage.strings, c.feature_word_0109eea4);\n\n    } catch (...) {\n        destroy_native_gui_icon_state_00ab3280(&f.temporary_58, c.storage);\n        throw;\n    }\n\n"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_state_repeat_storage.hpp",
+      "label": "explicit genuine enclosing deallocation qualification",
+      "before_utf8": "// disposition proof; never rescan their pointees or replay those calls.\n",
+      "after_utf8": "// disposition proof; never rescan their pointees or replay those calls.\n//\n// Containing-backing retention lasts until an explicitly specified genuine\n// enclosing allocation owner's deallocation is reached. That physical free\n// ends trivial state C++ lifetimes; it is not logical texture/name retirement.\n// After free retain numeric history and genuinely independent external\n// resource/provider debt. No raw-pointee rescan or destructor replay is valid.\n// The caller must supply actual allocation custody and independent debt\n// lifetimes; this creates no owner, discharge, Origin or NoThrow guarantee.\n//\n"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_state_range_construction_storage.hpp",
+      "label": "explicit genuine enclosing deallocation qualification",
+      "before_utf8": "// not disposition proof; never rescan their pointees or replay those calls.\n",
+      "after_utf8": "// not disposition proof; never rescan their pointees or replay those calls.\n//\n// Containing-backing retention lasts until an explicitly specified genuine\n// enclosing allocation owner's deallocation is reached. That physical free\n// ends trivial state C++ lifetimes; it is not logical texture/name retirement.\n// After free retain numeric history and genuinely independent external\n// resource/provider debt. No raw-pointee rescan or destructor replay is valid.\n// The caller must supply actual allocation custody and independent debt\n// lifetimes; this creates no owner, discharge, Origin or NoThrow guarantee.\n//\n"
+    }
+  ],
+  "unchanged_provider_pins": {
+    "include/bsp/native_gui_icon_storage.hpp": {
+      "bytes": 8923,
+      "sha256": "36efeb861e01b14348e370d169c9002b8ac436a29b2f9f3be1d5aac8d7976bfc"
+    },
+    "src/native_gui_icon_storage.cpp": {
+      "bytes": 19689,
+      "sha256": "cc847b8f5fb19055a1116376b2d3a8eff181f045695fe73394ba04996728a492"
+    },
+    "include/bsp/native_gui_icon_state_allocation_storage.hpp": {
+      "bytes": 1688,
+      "sha256": "d39f6a350387a10e67578206a4c9e46cfdfca53220ae44a262896ec20e4ecfd5"
+    },
+    "src/native_gui_icon_state_allocation_storage.cpp": {
+      "bytes": 724,
+      "sha256": "eb3186aa17f10573ba7fd88a50f0507f2c9ffbbdcdc3c23f43f7d942a90fd8a3"
+    },
+    "include/bsp/native_gui_icon_state_range_lifetime_storage.hpp": {
+      "bytes": 2239,
+      "sha256": "b1b8a26717810e7cf42cb6c03b60e12ff28ca506a19f6bdef430a8c2ee0a0a1a"
+    },
+    "src/native_gui_icon_state_range_lifetime_storage.cpp": {
+      "bytes": 754,
+      "sha256": "f6633254c8648e78b0c040fb22a8e0714ec733cc00c7afc9858ce47b73a99d16"
+    },
+    "include/bsp/native_gui_icon_state_assignment_storage.hpp": {
+      "bytes": 2583,
+      "sha256": "cf18ec9c1bdee90a23f5cb6818d8445ca1915f5f0c35d69d8185d213b6fb91b5"
+    },
+    "src/native_gui_icon_state_assignment_storage.cpp": {
+      "bytes": 4015,
+      "sha256": "35d262189141f820f1d7e9f9ab87d4847cf8381087e8e02b6b06814421bc1efb"
+    },
+    "include/bsp/native_gui_icon_state_backward_assignment_storage.hpp": {
+      "bytes": 3107,
+      "sha256": "3221622697f91fc470baee208530afd15283c95873d4234cdbb69584ef962d02"
+    },
+    "src/native_gui_icon_state_backward_assignment_storage.cpp": {
+      "bytes": 1748,
+      "sha256": "5149087122c1129226744c3c2abdb49ea849989c5e61da9237d5c9882a3946f9"
+    },
+    "include/bsp/native_gui_icon_state_fill_storage.hpp": {
+      "bytes": 2364,
+      "sha256": "0400330b194281da3b88e4ad0be1ae55aaa860f9fe71a80ddd344d66c8d9d041"
+    },
+    "src/native_gui_icon_state_fill_storage.cpp": {
+      "bytes": 1130,
+      "sha256": "285a70f16b77f5abe57973b34abb208ca653503d2984294612d8de184f11ec05"
+    },
+    "src/native_gui_icon_state_repeat_storage.cpp": {
+      "bytes": 2675,
+      "sha256": "b9e2739e6198fc9282a2c253325cef11c5bce1e5babf6676a6787f82669f04ff"
+    },
+    "src/native_gui_icon_state_range_construction_storage.cpp": {
+      "bytes": 2756,
+      "sha256": "15dce0ed0a74c5e9b09950542e924e90f07e0cdfe4bf675c96e188fa32f0157a"
+    },
+    "include/bsp/native_gui_icon_state_repeat_wrapper_storage.hpp": {
+      "bytes": 2904,
+      "sha256": "24528366d2fa48cfe92cd641232af925c30bc75a1bcac157cb8eac1308bc67de"
+    },
+    "src/native_gui_icon_state_repeat_wrapper_storage.cpp": {
+      "bytes": 1643,
+      "sha256": "476964dddcace812c983c56641010d04cb8fbedec81269d50a0a2eabb26c058b"
+    },
+    "include/bsp/native_gui_icon_state_range_copy_wrapper_storage.hpp": {
+      "bytes": 2922,
+      "sha256": "d2f720d4e1e6bc014c871ec55000b8780240f595c5179ba8d34eac5cda3fa6d1"
+    },
+    "src/native_gui_icon_state_range_copy_wrapper_storage.cpp": {
+      "bytes": 1703,
+      "sha256": "a9ffa72f43ad29b568d5d54a43915c25ac11e3a38e59e52b573636500d4729dd"
+    },
+    "include/bsp/native_singleton_vector_allocation.hpp": {
+      "bytes": 2149,
+      "sha256": "2910d0e12e3ecce6820cc1a083a3bfba9c5478fbbea9cdf9dc4c2926bdb0296a"
+    },
+    "src/native_singleton_vector_allocation.cpp": {
+      "bytes": 1966,
+      "sha256": "4771197c3f1ead7dd635637c849c60f8f525c4d482dcc4a33c8617922362e09e"
+    },
+    "include/bsp/singleton_lifetime.hpp": {
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    "src/singleton_lifetime.cpp": {
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    "include/bsp/native_string_raw_resize_exact.hpp": {
+      "bytes": 1554,
+      "sha256": "a1a3c6be74194e2f5946e13e09bfb26562c3f73d3565b51f96403f0d60b9999c"
+    },
+    "src/native_string_raw_resize_exact.cpp": {
+      "bytes": 3979,
+      "sha256": "74bff613a83abda342b5506ff750f46f5c44e191de506480ced504208c81f210"
+    },
+    "include/bsp/native_crt_memcpy.hpp": {
+      "bytes": 1954,
+      "sha256": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123"
+    },
+    "src/native_crt_memcpy.cpp": {
+      "bytes": 17187,
+      "sha256": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3"
+    }
+  },
+  "sealed_EH_design": {
+    "folder": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-property-consumer-contract\\local\\output\\cc16_native_gui_icon_state_growth_eh_contract_20261031",
+    "receipt": {
+      "bytes": 811,
+      "sha256": "02d8334b4ef2d2bac62913eaf5c169a7809b92730d0a200904111f001acf702c"
+    },
+    "contract": {
+      "bytes": 35307,
+      "sha256": "915909c8b3f8dae2613f9738613738736789ba8038f7af41a4d420e4570a8249"
+    },
+    "Native_and_call_scope": [
+      [
+        "00ab5a0d",
+        "temp copy",
+        "state-1",
+        "No completed-temp action. Entered partial temp/provider debt remains external; do not invent failed-current destruction."
+      ],
+      [
+        "00ab5a4c",
+        "length error",
+        "state0",
+        "Only completed-temp action0; existing Source SDK error policy inherited."
+      ],
+      [
+        "00ab5aad",
+        "allocate",
+        "state0",
+        "Only temp action0. No parent free for allocation escape; no returned allocation identity inferred."
+      ],
+      [
+        "00ab5ad0",
+        "prefix range",
+        "state1",
+        "Lower4C50 cleans its own entered segment completed prefix; parent catch1 interval uses CURRENT HOME3/HOME2, initially same base."
+      ],
+      [
+        "00ab5ae0",
+        "repeat",
+        "state1",
+        "Lower5400 cleans its own entered segment prefix. Parent catch1 owns only earlier returned prefix via late HOME2."
+      ],
+      [
+        "00ab5afc",
+        "suffix range",
+        "state1",
+        "Lower4C50 cleans current suffix prefix. Parent catch1 owns earlier returned prefix+repeat via late HOME2."
+      ],
+      [
+        "00ab5b28",
+        "normal old-range destruction",
+        "state0",
+        "Outside catch1. Escape stops current forward destruction; only temp action0; no automatic free of old or new backing."
+      ],
+      [
+        "00ab5b31",
+        "normal old backing free",
+        "state0",
+        "Outside catch1. Existing free noexcept Source policy inherited; no new Native NoThrow assertion."
+      ],
+      [
+        "00ab5b99",
+        "tail<count suffix range",
+        "state0",
+        "Lower4C50 prefix cleanup; only parent temp action0. No parent catch3 before repeat scope."
+      ],
+      [
+        "00ab5bb6",
+        "tail<count repeat",
+        "state3",
+        "Lower5400 prefix cleanup; parent catch3 destroys earlier completed shifted suffix from its late endpoint schedule; no backing free."
+      ],
+      [
+        "00ab5bd3",
+        "tail<count fill",
+        "state0",
+        "Assignment escapes: temp action only; no failed-current destructor/constructed-range replay."
+      ],
+      [
+        "00ab5c11",
+        "tail>=count suffix range",
+        "state0",
+        "Lower4C50 owns current prefix cleanup; temp action only."
+      ],
+      [
+        "00ab5c1f",
+        "backward assignment",
+        "state0",
+        "Only completed-temp action; no assignment rollback or current dtor."
+      ],
+      [
+        "00ab5c2f",
+        "fill assignment",
+        "state0",
+        "Only completed-temp action; no assignment rollback or current dtor."
+      ],
+      [
+        "00ab5c41",
+        "normal temp destruction",
+        "state-1",
+        "Disarmed BEFORE call. No new surrounding temp cleanup catch or replay on escape."
+      ]
+    ],
+    "unwind_map": [
+      {
+        "state": 0,
+        "parent_signed": -1,
+        "action": "00cb7d00"
+      },
+      {
+        "state": 1,
+        "parent_signed": 0,
+        "action": "00000000"
+      },
+      {
+        "state": 2,
+        "parent_signed": 0,
+        "action": "00000000"
+      },
+      {
+        "state": 3,
+        "parent_signed": 0,
+        "action": "00000000"
+      },
+      {
+        "state": 4,
+        "parent_signed": 0,
+        "action": "00000000"
+      }
+    ],
+    "try_map": [
+      {
+        "tryLow": 1,
+        "tryHigh": 1,
+        "catchHigh": 2,
+        "nCatches": 1,
+        "handler_descriptor": "00deea38",
+        "descriptor": {
+          "adjectives": "00000040",
+          "type": "00000000",
+          "catch_object_displacement": 0,
+          "entry": "00ab5b54"
+        }
+      },
+      {
+        "tryLow": 3,
+        "tryHigh": 3,
+        "catchHigh": 4,
+        "nCatches": 1,
+        "handler_descriptor": "00deea28",
+        "descriptor": {
+          "adjectives": "00000040",
+          "type": "00000000",
+          "catch_object_displacement": 0,
+          "entry": "00ab5bdd"
+        }
+      }
+    ],
+    "landing_instruction_map": [
+      {
+        "address": "00ab5b54",
+        "bytes": "8b4510",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [ebp + 0x10]",
+        "region": "HELD_reallocation_landing",
+        "scope": "HELD_Native_landing",
+        "design_effect": "capture CURRENT actual HOME2 as end"
+      },
+      {
+        "address": "00ab5b57",
+        "bytes": "8b7514",
+        "mnemonic": "mov",
+        "operands": "esi, dword ptr [ebp + 0x14]",
+        "region": "HELD_reallocation_landing",
+        "scope": "HELD_Native_landing",
+        "design_effect": "capture CURRENT actual HOME3 into separate allocation identity ESI"
+      },
+      {
+        "address": "00ab5b5a",
+        "bytes": "8b4dec",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [ebp - 0x14]",
+        "region": "HELD_reallocation_landing",
+        "scope": "HELD_Native_landing",
+        "design_effect": "read CURRENT frame.receiver_14; Native ECX unused by actual whole57, preserve this volatile operand read"
+      },
+      {
+        "address": "00ab5b5d",
+        "bytes": "50",
+        "mnemonic": "push",
+        "operands": "eax",
+        "region": "HELD_reallocation_landing",
+        "scope": "HELD_Native_landing",
+        "design_effect": "stage captured end"
+      },
+      {
+        "address": "00ab5b5e",
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": "esi",
+        "region": "HELD_reallocation_landing",
+        "scope": "HELD_Native_landing",
+        "design_effect": "stage captured begin/allocation"
+      },
+      {
+        "address": "00ab5b5f",
+        "bytes": "e87cfcffff",
+        "mnemonic": "call",
+        "operands": "0xab57e0",
+        "region": "HELD_reallocation_landing",
+        "scope": "HELD_Native_landing",
+        "design_effect": "whole AB57E0 SAME context; no extra failed-current/prefix replay"
+      },
+      {
+        "address": "00ab5b64",
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": "esi",
+        "region": "HELD_reallocation_landing",
+        "scope": "HELD_Native_landing",
+        "design_effect": "stage SAME captured ESI; do not reread HOME3 after callbacks"
+      },
+      {
+        "address": "00ab5b65",
+        "bytes": "e8420a1400",
+        "mnemonic": "call",
+        "operands": "0xbf65ac",
+        "region": "HELD_reallocation_landing",
+        "scope": "HELD_Native_landing",
+        "design_effect": "genuine free captured allocation only AFTER whole range returns"
+      },
+      {
+        "address": "00ab5b6a",
+        "bytes": "83c404",
+        "mnemonic": "add",
+        "operands": "esp, 4",
+        "region": "HELD_reallocation_landing",
+        "scope": "HELD_Native_landing",
+        "design_effect": "private stack adjustment excluded"
+      },
+      {
+        "address": "00ab5b6d",
+        "bytes": "6a00",
+        "mnemonic": "push",
+        "operands": "0",
+        "region": "HELD_reallocation_landing",
+        "scope": "HELD_Native_landing",
+        "design_effect": "Native rethrow argument0"
+      },
+      {
+        "address": "00ab5b6f",
+        "bytes": "6a00",
+        "mnemonic": "push",
+        "operands": "0",
+        "region": "HELD_reallocation_landing",
+        "scope": "HELD_Native_landing",
+        "design_effect": "Native rethrow argument0"
+      },
+      {
+        "address": "00ab5b71",
+        "bytes": "e80f0d1400",
+        "mnemonic": "call",
+        "operands": "0xbf6885",
+        "region": "HELD_reallocation_landing",
+        "scope": "HELD_Native_landing",
+        "design_effect": "Native rethrow supplier; Source barethrow of currently caught exception only after range/free normal return"
+      },
+      {
+        "address": "00ab5bdd",
+        "bytes": "8b4dec",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [ebp - 0x14]",
+        "region": "HELD_inplace_landing",
+        "scope": "HELD_Native_landing",
+        "design_effect": "capture CURRENT frame.receiver_14 as actual vector used below"
+      },
+      {
+        "address": "00ab5be0",
+        "bytes": "8b4510",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [ebp + 0x10]",
+        "region": "HELD_inplace_landing",
+        "scope": "HELD_Native_landing",
+        "design_effect": "capture CURRENT HOME2 full count"
+      },
+      {
+        "address": "00ab5be3",
+        "bytes": "8b5108",
+        "mnemonic": "mov",
+        "operands": "edx, dword ptr [ecx + 8]",
+        "region": "HELD_inplace_landing",
+        "scope": "HELD_Native_landing",
+        "design_effect": "load CURRENT capturedReceiver+8 last BEFORE late position home"
+      },
+      {
+        "address": "00ab5be6",
+        "bytes": "c1e006",
+        "mnemonic": "shl",
+        "operands": "eax, 6",
+        "region": "HELD_inplace_landing",
+        "scope": "HELD_Native_landing",
+        "design_effect": "wrap count SHL6"
+      },
+      {
+        "address": "00ab5be9",
+        "bytes": "03d0",
+        "mnemonic": "add",
+        "operands": "edx, eax",
+        "region": "HELD_inplace_landing",
+        "scope": "HELD_Native_landing",
+        "design_effect": "end=wrap(currentlast+countbytes)"
+      },
+      {
+        "address": "00ab5beb",
+        "bytes": "52",
+        "mnemonic": "push",
+        "operands": "edx",
+        "region": "HELD_inplace_landing",
+        "scope": "HELD_Native_landing",
+        "design_effect": "stage captured end"
+      },
+      {
+        "address": "00ab5bec",
+        "bytes": "8b550c",
+        "mnemonic": "mov",
+        "operands": "edx, dword ptr [ebp + 0xc]",
+        "region": "HELD_inplace_landing",
+        "scope": "HELD_Native_landing",
+        "design_effect": "read CURRENT HOME1 late position"
+      },
+      {
+        "address": "00ab5bef",
+        "bytes": "03c2",
+        "mnemonic": "add",
+        "operands": "eax, edx",
+        "region": "HELD_inplace_landing",
+        "scope": "HELD_Native_landing",
+        "design_effect": "begin=wrap(countbytes+lateposition)"
+      },
+      {
+        "address": "00ab5bf1",
+        "bytes": "50",
+        "mnemonic": "push",
+        "operands": "eax",
+        "region": "HELD_inplace_landing",
+        "scope": "HELD_Native_landing",
+        "design_effect": "stage captured begin"
+      },
+      {
+        "address": "00ab5bf2",
+        "bytes": "e8e9fbffff",
+        "mnemonic": "call",
+        "operands": "0xab57e0",
+        "region": "HELD_inplace_landing",
+        "scope": "HELD_Native_landing",
+        "design_effect": "whole AB57E0 SAME context; no free or header updates"
+      },
+      {
+        "address": "00ab5bf7",
+        "bytes": "6a00",
+        "mnemonic": "push",
+        "operands": "0",
+        "region": "HELD_inplace_landing",
+        "scope": "HELD_Native_landing",
+        "design_effect": "Native rethrow argument0"
+      },
+      {
+        "address": "00ab5bf9",
+        "bytes": "6a00",
+        "mnemonic": "push",
+        "operands": "0",
+        "region": "HELD_inplace_landing",
+        "scope": "HELD_Native_landing",
+        "design_effect": "Native rethrow argument0"
+      },
+      {
+        "address": "00ab5bfb",
+        "bytes": "e8850c1400",
+        "mnemonic": "call",
+        "operands": "0xbf6885",
+        "region": "HELD_inplace_landing",
+        "scope": "HELD_Native_landing",
+        "design_effect": "barethrow caught exception only after whole suffix destruction returns"
+      }
+    ]
+  },
+  "cleanup_operand_probes": [
+    [
+      "catch1 latecurrent andcapturedfree",
+      [
+        "const Word cleanup_end = homes[2];",
+        "const Word cleanup_allocation = homes[3];",
+        "(void)get(f.receiver_14);",
+        "set(f.destroy_homes[1], cleanup_end);",
+        "set(f.destroy_homes[0], cleanup_allocation);",
+        "destroy_native_gui_icon_state_range_storage_00ab57e0(f.destroy_homes, c.storage);",
+        "singleton_lifetime_free(pointer(cleanup_allocation));",
+        "throw;"
+      ]
+    ],
+    [
+      "catch3 lateendpoint epochs",
+      [
+        "const Word cleanup_receiver = get(f.receiver_14);",
+        "Word cleanup_offset = homes[2];",
+        "Word cleanup_end = read(pointer(cleanup_receiver), 8);",
+        "cleanup_offset <<= 6u;",
+        "cleanup_end += cleanup_offset;",
+        "set(f.destroy_homes[1], cleanup_end);",
+        "const Word cleanup_position = homes[1];",
+        "cleanup_offset += cleanup_position;",
+        "set(f.destroy_homes[0], cleanup_offset);",
+        "destroy_native_gui_icon_state_range_storage_00ab57e0(f.destroy_homes, c.storage);",
+        "throw;"
+      ]
+    ]
+  ],
+  "unchanged_normal_guarantee": "Exact ordered inverse removes ONLYnew lexical handlers/indentation; all original normal statements, live homes/currentreloads,3asm/functionsignatures/framefieldbytes preserved. LowerCPPs and all other providers byteexact atbase.",
+  "secondary_exceptions": "No noexcept/newterminate around parent cleanup. Parent57 escape skips parentfree/rethrow and reaches outercompletedtemp once. That tempescape replaces/propagates under ordinary Source C++ with inherited AB3280 internal secondarypolicy; no Original FH3/double-fault identity.",
+  "conditional_backing_domain": "Late cleanup intervals and capturedfree identities must genuinely belong to actual state/allocation custody. Realfree ends trivial C++state storage without logicalresource retirement. Only independently surviving external resource/provider obligations and numeric history may remain afterward; no pointee rescan/replay. No new cause/cursor/phase/publicOrigin/NoThrow or profile/count filter.",
+  "actual_caller_and_activation": "Not supplied here: genuine per-allocation/callbackselected backing identity and surviving external debt, AB6070/63A0/66C0 production homes/context andPage74->18->78/current80/disposition. No independent wholeCRT proof is demanded.",
+  "permissions": {
+    "tracked_Source_author_grant": false,
+    "CMake_Ghidra_ledger_mutation": false,
+    "compiler_tests_Game": false,
+    "Original_EH_FH3_SEH_ABI": false,
+    "Native_Origin": false,
+    "metadata_cleanup_or_retirement_authority": false,
+    "runtime_activation": false,
+    "new_Original_vendor_helper_CG_duplicate_credit": 0
+  },
+  "reader": {
+    "bytes": 5308,
+    "sha256": "f020d4222692993f592f4a5a4ba4e198be366e5da993a0d75bed914c5d9d5881",
+    "utf8": "from pathlib import Path\nimport argparse,hashlib,json,re,subprocess\nap=argparse.ArgumentParser();ap.add_argument('--candidate');ap.add_argument('--commit');ap.add_argument('--repo',default='.');a=ap.parse_args();assert bool(a.candidate)!=bool(a.commit)\nH='include/bsp/native_gui_icon_state_growth_storage.hpp';C='src/native_gui_icon_state_growth_storage.cpp';R='reports/cc16_native_gui_icon_state_growth_cleanup.json'\ndef git(*x):return subprocess.check_output(['git',*x],cwd=a.repo)\ndef read(p):return git('show',a.commit+':'+p) if a.commit else (Path(a.candidate)/p).read_bytes()\ndef sha(b):return hashlib.sha256(b).hexdigest()\ndef meta(b):return {'bytes':len(b),'sha256':sha(b)}\nr=json.loads(read(R));checks=[]\ndef ck(n,v):assert v,n;checks.append(n)\nck('readerfromreportexact',Path(__file__).read_bytes()==r['reader']['utf8'].encode())\nbase=r['base'];before={p:git('show',base+':'+p).decode() for p in r['modified_paths']};after={p:read(p).decode() for p in r['modified_paths']}\nfor p,pin in r['postimage_pins'].items():ck('postimage '+p,meta(read(p))==pin)\nforward=before.copy()\nfor s in r['seams']:\n ck('unique forward '+s['label'],forward[s['path']].count(s['before_utf8'])==1)\n forward[s['path']]=forward[s['path']].replace(s['before_utf8'],s['after_utf8'],1)\nck('fullfourpair forward',forward==after)\nreverse=after.copy()\nfor s in r['seams'][::-1]:\n ck('unique reverse '+s['label'],reverse[s['path']].count(s['after_utf8'])==1)\n reverse[s['path']]=reverse[s['path']].replace(s['after_utf8'],s['before_utf8'],1)\nck('fullfourpair exactinverse',reverse==before)\nnoncomment=lambda s:''.join(line for line in s.splitlines(keepends=True) if not line.lstrip().startswith('//'))\nfor p in r['modified_paths']:\n if p!=C:ck('headernoncomment physical lines exact '+p,noncomment(before[p])==noncomment(after[p]))\nfor p,pin in r['unchanged_provider_pins'].items():ck('provider '+p,meta(git('show',base+':'+p))==pin)\nbc=before[C];ac=after[C]\nck('allthree rawintegerasm exact',len(re.findall(r'__asm\\s*\\{[^}]*\\}',ac))==3 and re.findall(r'__asm\\s*\\{[^}]*\\}',bc)==re.findall(r'__asm\\s*\\{[^}]*\\}',ac))\ncode=re.sub(r'//[^\\n]*','',ac)\nck('exactthree lexicalcatches',code.count('try {')==3 and code.count('catch (...) {')==3 and code.count('throw;')==3)\nck('no new termination/filter/Origin/observer',not any(v in code for v in ['terminate(', 'exception_ptr','current_exception','Origin','if (cleanup','noexcept(false)']))\nck('no cleanup state reads/authority',not re.search(r'get\\(f.state_04\\)|if\\s*\\([^)]*state_04',code))\nck('onlyrealrangeandfreeadded',ac.count('destroy_native_gui_icon_state_range_storage_00ab57e0(')==bc.count('destroy_native_gui_icon_state_range_storage_00ab57e0(')+2 and ac.count('singleton_lifetime_free(')==bc.count('singleton_lifetime_free(')+1)\nck('samecompletedtemp onlyoneextra destructor',ac.count('destroy_native_gui_icon_state_00ab3280(&f.temporary_58, c.storage);')==2)\nck('tempwholecopy precedes outertry',ac.index('copy_native_gui_icon_state_00ab3a70(')<ac.index('    try {'))\nck('normaltempfooter outsideoutercatch',ac.index('normal_end:')>ac.rindex('    } catch (...) {') and ac[ac.index('normal_end:'):]==bc[bc.index('normal_end:'):])\nfor label,fs in r['cleanup_operand_probes']:\n pos=0\n for f in fs:\n  hit=ac.find(f,pos);ck(label+' '+f,hit>=pos);pos=hit+len(f)\nfor s in r['seams']:\n if s['path'] in r['lower_headers']:ck('additivelowercomment '+s['path'],s['after_utf8'].startswith(s['before_utf8']) and 'physical free' in s['after_utf8'])\nck('allnewpermissionszero',all(v is False or v==0 for v in r['permissions'].values()))\n# Full baseline tree plus fourmodified/twoadded paths, without index/worktree writes.\ndef entries(ref):\n d={}\n for row in git('ls-tree','-r','-z',ref).split(b'\\0'):\n  if row:\n   mode,typ,tail=row.split(b' ',2);oid,p=tail.split(b'\\t',1);d[p.decode()]=(mode.decode(),oid.decode())\n return d\ndef obj(k,b):return hashlib.sha1(k.encode()+b' '+str(len(b)).encode()+b'\\0'+b).hexdigest()\ndef tree(flat):\n root={}\n for p,v in flat.items():\n  n=root;parts=p.split('/')\n  for q in parts[:-1]:n=n.setdefault(q,{})\n  n[parts[-1]]=v\n def rec(n):\n  out=[]\n  for name,v in sorted(n.items(),key=lambda kv:(kv[0]+('/' if isinstance(kv[1],dict) else '')).encode()):\n   mode,oid=('40000',rec(v)) if isinstance(v,dict) else v\n   out.append(mode.encode()+b' '+name.encode()+b'\\0'+bytes.fromhex(oid))\n  return obj('tree',b''.join(out))\n return rec(root)\nb=entries(base);t=git('rev-parse',base+'^{tree}').decode().strip();ck('baseline recursive tree',tree(b)==t)\nfor p in r['added_paths']:ck('newpathabsent '+p,p not in b)\nv=b.copy()\nfor p in r['owned_paths']:v[p]=('100644',obj('blob',read(p)))\ninv=v.copy()\nfor p in r['modified_paths']:inv[p]=b[p]\nfor p in r['added_paths']:del inv[p]\nck('fullsixpath recursive inverse',inv==b and tree(inv)==t)\nif a.commit:\n parent=git('rev-parse',a.commit+'^').decode().strip();actual=entries(a.commit)\n ck('actualparenttreeexactbaseline',entries(parent)==b)\n ck('actualwholepostimageexact',actual==v and tree(v)==git('rev-parse',a.commit+'^{tree}').decode().strip())\nprint(json.dumps({'verdict':'PASS ignored ordinary Source C++ cleanup candidate only','checks':len(checks),'names':checks,'base':base,'before_tree':t,'virtual_after_tree':tree(v),'restored_tree':tree(inv),'build_Original_EH_Origin_ABI_runtime_activation':False},indent=2))\n",
+    "scope": "read-only fullfourpair seam inverse/sixpath recursive Git tree/pins/operandepoch proofs, not execution"
+  }
+}

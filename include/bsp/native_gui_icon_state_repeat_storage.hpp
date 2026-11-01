@@ -36,6 +36,15 @@ static_assert(sizeof(NativeGuiIconStateRepeatStorageFrame) == 20);
 // On escape retain partial/current and remaining outstanding obligations
 // and providers. Already-returned destructor calls are history, not
 // disposition proof; never rescan their pointees or replay those calls.
+//
+// Containing-backing retention lasts until an explicitly specified genuine
+// enclosing allocation owner's deallocation is reached. That physical free
+// ends trivial state C++ lifetimes; it is not logical texture/name retirement.
+// After free retain numeric history and genuinely independent external
+// resource/provider debt. No raw-pointee rescan or destructor replay is valid.
+// The caller must supply actual allocation custody and independent debt
+// lifetimes; this creates no owner, discharge, Origin or NoThrow guarantee.
+//
 // Private Source controls/spills are disjoint from operand/record and
 // provider-write extents. Declared frame/incoming operand homes remain
 // live: genuine callback writes are observed at reached epochs; source
