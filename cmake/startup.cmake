@@ -2546,3 +2546,4 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_cor
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_gui_icon_state_assignment_storage.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_gui_icon_native_size_storage.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_gui_icon_state_repeat_storage.cpp)
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_gui_icon_size_comparison_storage.cpp)
