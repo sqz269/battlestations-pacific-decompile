@@ -1,0 +1,133 @@
+{
+  "kind": "Source101 distinct live Icon scale backing admission",
+  "author": "d7038a23eafaa2d078942a1e1d09808abde8c7b8",
+  "actual_parent": "2d9d970ac907de15ddf23e8778c584271a651327",
+  "behavior": "Append a separate FD0 float and live-reference accessor to the existing process GUI state owner, initialized from the independently verified installed3F400000 data word.",
+  "validation": "Three Source seams preserve all existing roles/initializers and invert exactly. The38-check reader and full owned Source review pass. Compiler output preserves old object-write offsets/order/values, adds new field+60 and changes allocation96 to100 bytes. Private stack/XMM/branch scheduling differs; no whole-byte trace equivalence is claimed. Five identified direct FLD reads and no identified direct writer do not exclude arbitrary indirect writes.",
+  "Root_Source": {
+    "artifacts": 26,
+    "reader_checks": 38,
+    "Root_review": "Whole H/CPP/doc/reader reviewed. Three seams append distinct live float/accessor and exact image_float(3F400000) initialization. All old fields, DMIs, accessors, constructor initializer order, singleton retention and white-body remain exact after inverse. InstalledPE word independently verified. Five direct FLD read xrefs/no identified direct writer do not prove arbitrary indirect writes impossible.",
+    "old_source_preimages_exact": true,
+    "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "Native_initial_word": "3f400000",
+    "Source_layout": "Old members precede appended float; compiler check pending. This is a Source owner role, not storage at Original VA.",
+    "findings": 0,
+    "compiler_OriginalABI_Origin_runtime_activation_credit": false
+  },
+  "actual_Git": {
+    "author": "d7038a23eafaa2d078942a1e1d09808abde8c7b8",
+    "actual_parent": "2d9d970ac907de15ddf23e8778c584271a651327",
+    "historical_base": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+    "exact_owned_diff": [
+      [
+        "M",
+        "include/bsp/game_native_gui_text_state.hpp"
+      ],
+      [
+        "M",
+        "src/game_native_gui_text_state.cpp"
+      ],
+      [
+        "A",
+        "docs/CC16_NATIVE_GUI_ICON_VERTICAL_SCALE_STATE.md"
+      ],
+      [
+        "A",
+        "reports/cc16_native_gui_icon_vertical_scale_state.json"
+      ]
+    ],
+    "raw_postimages_exact": true,
+    "all_other_tree_paths_unchanged": true,
+    "inverse": "Restore the two pinned old Source files for101 and remove exact additions; otherwise the full actual parent tree is unchanged.",
+    "findings": 0
+  },
+  "compiled_review": {
+    "object_bytes": 4090,
+    "object_sha256": "b7087755d3c2a7786ed2e9c72f999c8b9213dfb47602c7733085ffe25bf597aa",
+    "Root_Code_review": "All five Code sections inspected. Standalone constructor182B38ops and inlined singleton331B75ops add three seed instructions each and actual allocation100 instead of96. Old object-write offsets/order and values remain unchanged; ctor instruction multiset matches after excluding the new seed. Factory call targets and ordered old object writes match. Compiler private stack-constant/XMM/branch scheduling differs; no full-byte or full-stream equality is claimed. New field+60 is distinct from FC4+58/FD4+4. Singleton retention/threadguard, image_float, white-color and EH preserved.",
+    "old_ctor_bytes": 165,
+    "new_ctor_bytes": 182,
+    "old_member_offsets_unchanged": true,
+    "new_field_offset": "0x60",
+    "old_allocation_bytes": 96,
+    "new_allocation_bytes": 100,
+    "exact_old_functions": [
+      "?image_float@",
+      "?white_color_00ab7060@",
+      "__ehhandler$?game_native_gui_text_state@"
+    ],
+    "findings": 0,
+    "OriginalABI_Origin_runtime_activation_credit": false
+  },
+  "common_build": {
+    "compiled_source": "7647f4104aeeb902b7a4bdede1930dadc67d6f54",
+    "build": {
+      "seconds": 231.4573182,
+      "exit": 0
+    },
+    "selected_inputs": 3698,
+    "artifacts": 112,
+    "existing_suites": 2,
+    "new_tests": 0,
+    "new_Game_runs": 0,
+    "archive_exact_single_members": {
+      "100": true,
+      "101": true,
+      "102": true
+    },
+    "official_log": "local/function_source_batch100/common/artifacts/local/function_source_batch100/common_build.log",
+    "official_result": "local/function_source_batch100/common/artifacts/local/function_source_batch100/build_result.json",
+    "old95_logs": "Historical auxiliary copies inherited in selection; not current official evidence.",
+    "log_selection_amendment": "Initial110artifact manifest preserved; actual100 log/result added as2 explicit artifacts, no Source/object change.",
+    "new_raw_body_activation": false
+  },
+  "incoming_Main": "fca439746d52eb2467f66316880016516575a693",
+  "provider_qualification": "Accepted incoming Parent/Material Source rebuilt together. NativeRenderContext change relevant to these providers is two friend declarations; historical Source101/Raw80 deltas remain explicitly qualified.",
+  "receipts": [
+    {
+      "path": "local/function_source_batch101/Root_review.json",
+      "bytes": 869,
+      "sha256": "774ea8d220b99df43b125fbe8559cf45de57e6c7d38979e7540a73172b411775"
+    },
+    {
+      "path": "local/function_source_batch101/Root_actual_Git.json",
+      "bytes": 787,
+      "sha256": "151884ad5ad2fd918bd980be5446a0b300269a31ec01f0ed09d8135d7b30c1fd"
+    },
+    {
+      "path": "local/function_source_batch101/Root_Core_review.json",
+      "bytes": 1125,
+      "sha256": "4bd534ef0dd17736efe2c012259841993259e278b680a14c1186764573584189"
+    },
+    {
+      "path": "local/function_source_batch100/Root_common_build_review.json",
+      "bytes": 875,
+      "sha256": "071f79fe4e7d9e42fa483287657fe7e84ec66dad54b28c13da9fae8684b5e5af"
+    },
+    {
+      "path": "local/function_source_batch100/common/manifest.json",
+      "bytes": 1131963,
+      "sha256": "5de936784d0e98e80ef098b7d08197f498fd9ff2b9e268e41abdb506ef07f825"
+    },
+    {
+      "path": "local/function_source_batch100/common/manifest_before_official_log_selection.json",
+      "bytes": 1131344,
+      "sha256": "669649fa82d2bf2e3947ab770b79a78c144b5be82e3349e87c673f905cc5069b"
+    },
+    {
+      "path": "local/function_source_batch100/build_result.json",
+      "bytes": 46,
+      "sha256": "ba8d34234ef91b0e6bbe9c09b7e9b8ddd7bc66fb191333684424afb1a2cc785e"
+    },
+    {
+      "path": "local/function_source_batch100/common_build.log",
+      "bytes": 24820,
+      "sha256": "7b1f959e51a424d2b21c03ffcdca197e24761786998f14ade2dd4679035b5034"
+    }
+  ],
+  "OriginalABI_Origin_runtime_gameplay_activation_credit": false,
+  "new_tests": 0,
+  "new_Game_runs": 0,
+  "new_Native_body_credit": 0
+}
