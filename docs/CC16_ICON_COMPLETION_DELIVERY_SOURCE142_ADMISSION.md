@@ -67,6 +67,14 @@ their frozen objects. The delivery object is unchanged; the Runtime change is
 covered by the V2 inspection. Worker strict7.5565416s and registered51.0307175s
 receipts are distinct historical provenance, not the final Root tuple.
 
+The final coupled build at `49c49e16324e58bc900393e9d472cefe3389e230`
+joins published Parent/Section Source3 `28cb70ad997dcfe8ca81c76e884aad5bbea21ab8`.
+It passed in 54.8931063 seconds with 3,878 unchanged inputs/209 artifacts and
+both checks0.32/17.93 seconds. Both complete reviewed Core objects are byte-exact
+to V2; all 45 selected sections and normalized relocations transfer, and each
+whole object occurs once in the current Core archive. Incoming Parent/Section
+admission retains its separate Source/Code qualifications.
+
 The exact V2 executable passed an authorized corrected-guard windowed startup
 and normal shared drain: four atlas textures, 227 items, 47 registered slots,
 process/launcher exits0/0, no forced stops or survivors and renderer COM0/0.
@@ -74,11 +82,15 @@ The isolated settings file contained `Fullscreen 0`; the fresh log proves
 `fullscreen=0`. All 3,875 frozen inputs matched at capture. It presented zero
 frames and did not invoke the new callback/delivery/binder; this is current
 startup/retirement regression evidence only.
+The exact final coupled executable repeated that windowed lifecycle successfully,
+including all 3,878 unchanged input hashes, natural exits0/0, no forced stops or
+survivors and `fullscreen=0`. Its new delivery paths also remained unexecuted.
 
 Existing Ghidra hypothesis names/comments are preserved; qualified evidence is
 appended through the write lock, the project saved and affected exports refreshed.
 The two recovered functions exist with 155/8 instruction starts. Their saved
 undefined prototypes are not ABI proof. No vendor/library bodies gain new credit.
+Saved annotation history is `local/ghidra-annotations-20261101T205227Z.json`.
 
 Actual callback binding, genuine opaque Icon lifetime, cancellation versus
 in-flight apply/rebuild, name/header/stream/OS-pending/OVERLAPPED/buffer/handle,
