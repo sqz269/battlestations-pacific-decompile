@@ -8,20 +8,20 @@
 namespace bsp {
 namespace {
 using Word = std::uint32_t;
-Word word(const void* raw, Word offset=0) noexcept {
+Word word(const void* raw, Word byte_offset=0) noexcept {
     Word result;
     __asm {
         mov eax, raw
-        mov edx, offset
+        mov edx, byte_offset
         mov eax, dword ptr [eax + edx]
         mov result, eax
     }
     return result;
 }
-void put(void* raw, Word offset, Word value) noexcept {
+void put(void* raw, Word byte_offset, Word value) noexcept {
     __asm {
         mov eax, raw
-        mov edx, offset
+        mov edx, byte_offset
         mov ecx, value
         mov dword ptr [eax + edx], ecx
     }
