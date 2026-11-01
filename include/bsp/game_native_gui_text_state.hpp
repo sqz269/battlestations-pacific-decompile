@@ -36,6 +36,9 @@ public:
     // AA7220's live Y translation/pivot multiplier. This is the distinct
     // initialized E12FC4 cell, not Text's E12FD4 vertical scale or a copy of it.
     float& widget_y_scale_00e12fc4() noexcept { return widget_y_scale_; }
+    // Distinct live Icon E12FD0 role; borrowing never copies/resets the cell.
+    // Exact PE3F400000 initialization is owned by this same process object.
+    float& icon_vertical_scale_00e12fd0() noexcept { return icon_vertical_scale_; }
     // AA2490/camera-store null-header fallback: one readable loader-zero
     // byte at F8BC60. A distinct process backing, not an Original extent/VA.
     const char* widget_empty_00f8bc60() const noexcept { return &widget_empty_; }
@@ -63,6 +66,7 @@ private:
     std::uint32_t widget_black_guard_{};
     float widget_y_scale_;
     char widget_empty_{};
+    float icon_vertical_scale_; // Appended; never an alias of FC4 or FD4.
 };
 
 // Intentionally retained process lifetime, including after GUI/font retirement.

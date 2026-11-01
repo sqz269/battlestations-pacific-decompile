@@ -1,0 +1,217 @@
+{
+  "kind": "ignored existing owner FD0 field/accessor proposal;2M2A only",
+  "base": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+  "owned_paths": [
+    "include/bsp/game_native_gui_text_state.hpp",
+    "src/game_native_gui_text_state.cpp",
+    "docs/CC16_NATIVE_GUI_ICON_VERTICAL_SCALE_STATE.md",
+    "reports/cc16_native_gui_icon_vertical_scale_state.json"
+  ],
+  "source_paths": [
+    "include/bsp/game_native_gui_text_state.hpp",
+    "src/game_native_gui_text_state.cpp"
+  ],
+  "preimage_pins": {
+    "include/bsp/game_native_gui_text_state.hpp": {
+      "bytes": 3899,
+      "sha256": "7b544feaa7da8a1a4bab5b5f01546d8e4d8b5621d8da37c6b22e4dfbc9d964e0"
+    },
+    "src/game_native_gui_text_state.cpp": {
+      "bytes": 1821,
+      "sha256": "ff10c4e60079ea23117223b10dc9b64bb61715930fa2c1d1b7fff0b81396dd5f"
+    }
+  },
+  "postimage_pins": {
+    "include/bsp/game_native_gui_text_state.hpp": {
+      "bytes": 4214,
+      "sha256": "c1fa0d8b385149f0c0172544e846a842d01e501d97e99ebd46693672658a0f06"
+    },
+    "src/game_native_gui_text_state.cpp": {
+      "bytes": 1875,
+      "sha256": "59ae74bb54461658a566ac2adef1419c8dd683d1eb589832d5a2df51f5c12106"
+    },
+    "docs/CC16_NATIVE_GUI_ICON_VERTICAL_SCALE_STATE.md": {
+      "bytes": 2794,
+      "sha256": "d02afb94ee000e93073e9bfd0dcfa0fcd0fc9d3dc3a085c1370fdb3728ae83dd"
+    }
+  },
+  "Source_seams": [
+    {
+      "path": "include/bsp/game_native_gui_text_state.hpp",
+      "label": "append real live FD0 accessor",
+      "old": "    float& widget_y_scale_00e12fc4() noexcept { return widget_y_scale_; }\n",
+      "new": "    float& widget_y_scale_00e12fc4() noexcept { return widget_y_scale_; }\n    // Distinct live Icon E12FD0 role; borrowing never copies/resets the cell.\n    // Exact PE3F400000 initialization is owned by this same process object.\n    float& icon_vertical_scale_00e12fd0() noexcept { return icon_vertical_scale_; }\n"
+    },
+    {
+      "path": "include/bsp/game_native_gui_text_state.hpp",
+      "label": "append distinct owner storage after every oldmember",
+      "old": "    char widget_empty_{};\n",
+      "new": "    char widget_empty_{};\n    float icon_vertical_scale_; // Appended; never an alias of FC4 or FD4.\n"
+    },
+    {
+      "path": "src/game_native_gui_text_state.cpp",
+      "label": "initialize newrole from exact installed .data bits",
+      "old": "      widget_y_scale_(image_float(0x3f400000u)) {}\n",
+      "new": "      widget_y_scale_(image_float(0x3f400000u)),\n      icon_vertical_scale_(image_float(0x3f400000u)) {}\n"
+    }
+  ],
+  "states": [
+    {
+      "label": "actual published5abb preimages",
+      "sources": {
+        "include/bsp/game_native_gui_text_state.hpp": {
+          "bytes": 3899,
+          "sha256": "7b544feaa7da8a1a4bab5b5f01546d8e4d8b5621d8da37c6b22e4dfbc9d964e0"
+        },
+        "src/game_native_gui_text_state.cpp": {
+          "bytes": 1821,
+          "sha256": "ff10c4e60079ea23117223b10dc9b64bb61715930fa2c1d1b7fff0b81396dd5f"
+        }
+      }
+    },
+    {
+      "label": "H accessor appended",
+      "sources": {
+        "include/bsp/game_native_gui_text_state.hpp": {
+          "bytes": 4139,
+          "sha256": "017058c07c770af2810ef2b986e0d79be2d71f93a265735002b596b479f6cc8c"
+        },
+        "src/game_native_gui_text_state.cpp": {
+          "bytes": 1821,
+          "sha256": "ff10c4e60079ea23117223b10dc9b64bb61715930fa2c1d1b7fff0b81396dd5f"
+        }
+      }
+    },
+    {
+      "label": "H field appended",
+      "sources": {
+        "include/bsp/game_native_gui_text_state.hpp": {
+          "bytes": 4214,
+          "sha256": "c1fa0d8b385149f0c0172544e846a842d01e501d97e99ebd46693672658a0f06"
+        },
+        "src/game_native_gui_text_state.cpp": {
+          "bytes": 1821,
+          "sha256": "ff10c4e60079ea23117223b10dc9b64bb61715930fa2c1d1b7fff0b81396dd5f"
+        }
+      }
+    },
+    {
+      "label": "CPP exact FD0 initializer appended",
+      "sources": {
+        "include/bsp/game_native_gui_text_state.hpp": {
+          "bytes": 4214,
+          "sha256": "c1fa0d8b385149f0c0172544e846a842d01e501d97e99ebd46693672658a0f06"
+        },
+        "src/game_native_gui_text_state.cpp": {
+          "bytes": 1875,
+          "sha256": "59ae74bb54461658a566ac2adef1419c8dd683d1eb589832d5a2df51f5c12106"
+        }
+      }
+    }
+  ],
+  "providers": [
+    {
+      "path": "include/bsp/native_gui_icon_cropped_quad_storage.hpp",
+      "bytes": 2817,
+      "sha256": "954faca59c59e0249523f83dfc43c41fea5bed313ab7a8ed180134b1f725caa9"
+    },
+    {
+      "path": "src/native_gui_icon_cropped_quad_storage.cpp",
+      "bytes": 26588,
+      "sha256": "df2aad3811eec5d224d5680ee4dc2deef8b79ccab6ac0db1f18fdd851afca8d0"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_rebuild_storage.hpp",
+      "bytes": 7144,
+      "sha256": "83107bd786e79600a674fa05301326030d8375b82aa024799c7a55cd96bc6f2d"
+    },
+    {
+      "path": "include/bsp/game_native_gui_icon_application.hpp",
+      "bytes": 3879,
+      "sha256": "1986292b1374fd31b0b3d0b84d6f86df46a327b1555a6dcad15fbe85c1375fdd"
+    }
+  ],
+  "Native_initial": {
+    "address": "00e12fd0",
+    "section": ".data",
+    "raw_offset": 10563536,
+    "hex": "0000403f",
+    "word": "3f400000",
+    "float": 0.75,
+    "on_disk": true
+  },
+  "installed_executable": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "Native_readers": [
+    {
+      "address": "00ab19c0",
+      "bytes": "d905d02fe100",
+      "mnemonic": "fld",
+      "operands": "dword ptr [0xe12fd0]",
+      "instruction_bytes": 6
+    },
+    {
+      "address": "00ab1ab8",
+      "bytes": "d905d02fe100",
+      "mnemonic": "fld",
+      "operands": "dword ptr [0xe12fd0]",
+      "instruction_bytes": 6
+    },
+    {
+      "address": "00ab1b82",
+      "bytes": "d905d02fe100",
+      "mnemonic": "fld",
+      "operands": "dword ptr [0xe12fd0]",
+      "instruction_bytes": 6
+    },
+    {
+      "address": "00ab1d40",
+      "bytes": "d905d02fe100",
+      "mnemonic": "fld",
+      "operands": "dword ptr [0xe12fd0]",
+      "instruction_bytes": 6
+    },
+    {
+      "address": "00ab1e57",
+      "bytes": "d905d02fe100",
+      "mnemonic": "fld",
+      "operands": "dword ptr [0xe12fd0]",
+      "instruction_bytes": 6
+    }
+  ],
+  "direct_writers_identified": [],
+  "arbitrary_indirect_writes_proved_absent": false,
+  "lifecycle_seal": {
+    "bytes": 677,
+    "sha256": "1d3ea027223d2b13badf918de953cdf96e39eb51ba4949838b1dea143eaf6984"
+  },
+  "Source_layout_qualification": "new separate appended member; old declaration identities/order preserved; no Original layout/VA and no actual compiler layout proof at ignored proposal",
+  "future_required_flow": [
+    "actual same existing process owner FD0 live ref into genuine Raw80Context/Raw7C",
+    "actual Host canonical feature ref forwarded by later Page producer",
+    "preserve callback-current reads; no early scalar snapshot or fallback alias",
+    "later discovered genuine writer must use same actual role; none invented here"
+  ],
+  "remaining_open": [
+    "Page/Type6 factory, pool startup and ownership producer",
+    "raw18/66C0/3310 forwarding",
+    "raw layout/material/context real provider and canonical custody",
+    "OriginalABI/FH3/SEH/Origin/runtime/Game"
+  ],
+  "permissions": {
+    "NativeOrigin": false,
+    "NativeCleanup": false,
+    "OriginalABI": false,
+    "productionCallerSelected": false,
+    "compilerVerified": false,
+    "runtimeGameVerified": false,
+    "newNativeVendorHelperCGBodyCredit": 0
+  },
+  "reader": {
+    "utf8": "from pathlib import Path\nimport argparse,hashlib,json,re,subprocess\nap=argparse.ArgumentParser();ap.add_argument('--candidate',required=True);ap.add_argument('--repo',default='.');a=ap.parse_args()\nroot=Path(a.candidate);R='reports/cc16_native_gui_icon_vertical_scale_state.json';r=json.loads((root/R).read_bytes());checks=[]\ndef meta(b):return {'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()}\ndef ck(n,v):assert v,n;checks.append(n)\ndef git(*v):return subprocess.check_output(['git',*v],cwd=a.repo)\nck('exact embedded reader',Path(__file__).read_bytes()==r['reader']['utf8'].encode())\nfor p,m in r['postimage_pins'].items():ck('postimage '+p,meta((root/p).read_bytes())==m)\ncur={p:git('show',r['base']+':'+p) for p in r['preimage_pins']}\nck('actual initial full source hashes',all(meta(b)==r['preimage_pins'][p] for p,b in cur.items()))\nfor i,s in enumerate(r['Source_seams']):\n p=s['path'];old=s['old'].encode();new=s['new'].encode();ck('unique finite forward '+s['label'],cur[p].count(old)==1);cur[p]=cur[p].replace(old,new);ck('all intermediates '+str(i),{p:meta(b) for p,b in cur.items()}==r['states'][i+1]['sources'])\nck('both exact whole Source forwards',all(b==(root/p).read_bytes() for p,b in cur.items()))\nfor s in reversed(r['Source_seams']):\n p=s['path'];old=s['old'].encode();new=s['new'].encode();ck('unique finite reverse '+s['label'],cur[p].count(new)==1);cur[p]=cur[p].replace(new,old)\nck('both full Source inverses',all(b==git('show',r['base']+':'+p) for p,b in cur.items()))\nfor p in r['providers']:ck('unchanged genuine provider '+p['path'],meta(git('show',r['base']+':'+p['path']))=={k:p[k] for k in ['bytes','sha256']})\nh=(root/r['source_paths'][0]).read_bytes().decode();c=(root/r['source_paths'][1]).read_bytes().decode()\nck('one real distinct newfield',h.count('float icon_vertical_scale_;')==1)\nck('one actual live reference getter','float& icon_vertical_scale_00e12fd0() noexcept { return icon_vertical_scale_; }' in h)\nck('newfield after every old member',h.index('float icon_vertical_scale_;')>h.index('char widget_empty_{};'))\nck('exact new initialized bits',c.count('icon_vertical_scale_(image_float(0x3f400000u))')==1)\nck('FC4_FD4 separate and unchanged','return widget_y_scale_;' in h and 'return vertical_scale_;' in h and 'float widget_y_scale_;' in h and 'float vertical_scale_;' in h)\nck('no new owner/default/reset/cast callback',not re.search(r'icon_vertical_scale_\\s*=|reinterpret_cast|0x00e12fd0',c.lower()))\nck('permanent actual owner factory exact','static auto* const process = new GameNativeGuiTextState;' in c)\nck('literal normal color function unchanged',c[c.index('float (&GameNativeGuiTextState::white_color_00ab7060'):]==cur[r['source_paths'][1]].decode()[cur[r['source_paths'][1]].decode().index('float (&GameNativeGuiTextState::white_color_00ab7060'):])\nck('exact installed loader data word',r['Native_initial']['word']=='3f400000' and r['Native_initial']['hex']=='0000403f' and r['Native_initial']['raw_offset']==10563536 and r['Native_initial']['on_disk'])\nck('five exact actual FLD readers',len(r['Native_readers'])==5 and all(x['mnemonic']=='fld' and x['operands']=='dword ptr [0xe12fd0]' and x['bytes']=='d905d02fe100' for x in r['Native_readers']))\nck('direct-writer scope only',r['direct_writers_identified']==[] and not r['arbitrary_indirect_writes_proved_absent'])\nck('all permission and credit gates held',all(v is False or v==0 for v in r['permissions'].values()))\ndef obj(k,b):return hashlib.sha1(k.encode()+b' '+str(len(b)).encode()+b'\\0'+b).hexdigest()\ndef entries(ref):\n d={}\n for x in git('ls-tree','-r','-z',ref).split(b'\\0'):\n  if x:\n   mode,t,tail=x.split(b' ',2);oid,p=tail.split(b'\\t',1);d[p.decode()]=(mode.decode(),oid.decode())\n return d\ndef tree(flat):\n root={}\n for p,v in flat.items():\n  n=root;parts=p.split('/')\n  for q in parts[:-1]:n=n.setdefault(q,{})\n  n[parts[-1]]=v\n def rec(n):\n  out=[]\n  for k,v in sorted(n.items(),key=lambda kv:(kv[0]+('/' if isinstance(kv[1],dict) else '')).encode()):\n   mode,oid=('40000',rec(v)) if isinstance(v,dict) else v\n   out.append(mode.encode()+b' '+k.encode()+b'\\0'+bytes.fromhex(oid))\n  return obj('tree',b''.join(out))\n return rec(root)\nbefore=entries(r['base']);ck('actual published base tree',tree(before)==git('rev-parse',r['base']+'^{tree}').decode().strip());after=before.copy()\nfor p in r['owned_paths']:\n if p in r['source_paths']:ck('owned Source exists '+p,p in before)\n else:ck('new evidence absent '+p,p not in before)\n after[p]=('100644',obj('blob',(root/p).read_bytes()))\nrev=after.copy()\nfor p in r['owned_paths']:\n if p in before:rev[p]=before[p]\n else:del rev[p]\nck('whole4path2M2A recursiveinverse',rev==before and tree(rev)==tree(before))\nprint(json.dumps({'verdict':'PASS ignored live FD0 Source-role proposal only','checks':len(checks),'names':checks,'base':r['base'],'base_tree':tree(before),'virtual_after_tree':tree(after),'inverse_tree':tree(rev),'Native_Origin_ABI_compiler_Game_credit':False},indent=2))\n",
+    "bytes": 4959,
+    "sha256": "30323c20010ae28df4943025a88ba584afc63d8c9ff602e05106b6ad712ea38a"
+  }
+}

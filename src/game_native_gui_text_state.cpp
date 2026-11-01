@@ -24,7 +24,8 @@ GameNativeGuiTextState::GameNativeGuiTextState() noexcept
     : aspect_ratio_(image_float(0x3faaaaabu)),
       vertical_scale_(image_float(0x3f400000u)),
       shadow_color_{image_float(0), image_float(0), image_float(0), image_float(0x3f400000u)},
-      widget_y_scale_(image_float(0x3f400000u)) {}
+      widget_y_scale_(image_float(0x3f400000u)),
+      icon_vertical_scale_(image_float(0x3f400000u)) {}
 
 float (&GameNativeGuiTextState::white_color_00ab7060(
     const volatile float& one_00d7a24c) noexcept)[4] {
