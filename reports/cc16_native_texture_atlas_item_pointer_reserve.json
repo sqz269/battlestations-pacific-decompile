@@ -1,0 +1,65 @@
+{
+  "base_commit": "2a094149a200654ea7ddf63226483c2a72bcba35",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-atlas-parser-storage-20261101",
+  "branch": "agent/codex-atlas-parser-storage-20261101",
+  "scope": "ignored Source-only candidate; ordinary NORMAL payload",
+  "saved_project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "Source_peer": 0,
+  "verification": {
+    "source_inspection": true,
+    "bounded_source_integrity_checks": true,
+    "independent_peer_review": 0,
+    "compilation": 0,
+    "fixtures": 0,
+    "native_execution": 0,
+    "original_ABI": 0,
+    "gameplay": 0,
+    "startup": 0,
+    "activation": 0
+  },
+  "tracked_source_changes": 0,
+  "cmake_changes": 0,
+  "ledger_changes": 0,
+  "ghidra_mutations": 0,
+  "new_tests": 0,
+  "builds": 0,
+  "Game_runs": 0,
+  "deployments": 0,
+  "commits": 0,
+  "pushes": 0,
+  "gate_changes": [],
+  "frozen_source_pins": "FROZEN_SOURCE_PINS.json",
+  "original_export_pins": "ORIGINAL_EXPORT_PINS.json",
+  "addresses": [
+    "00735f90"
+  ],
+  "original_ABI": "ECX actual12h header; signed capacity DWORD/RET4",
+  "source_interface": "reserve_native_texture_atlas_item_pointers_00735f90(void*,int32)",
+  "instruction_rows": 38,
+  "evidence": [
+    "All38 actual735F90 rows equal735FF0 after+60h local relocation; same external BF55BE/BF6989 calls.",
+    "Signed clamp/capacity gate; current signed count/current table per reached copy; current old-data free; data then capacity publish."
+  ],
+  "provider": "Existing singleton_lifetime_allocate(pointer_slots,wrapped bytes,wrapped bytes) and singleton_lifetime_free, at their accepted actual source physical allocation/CRT boundary.",
+  "uncertainties": [
+    "Original static CRT heap/new-handler/exception identity, FH3/SEH/fault/ABI/runtime remain qualified."
+  ],
+  "candidate_pins": [
+    {
+      "path": "item_pointer_reserve/candidate/docs/CC16_NATIVE_TEXTURE_ATLAS_ITEM_POINTER_RESERVE.md",
+      "bytes": 2144,
+      "sha256": "2a55c17708ed2a07e21e6531d17347e4474fa5249f1648049bd51b8f6d0d57bb"
+    },
+    {
+      "path": "item_pointer_reserve/candidate/include/bsp/native_texture_atlas_item_pointer_reserve.hpp",
+      "bytes": 829,
+      "sha256": "2af0f05536498d47aba09b8dc728a282ad2125bc6c04d355adc4f05070668499"
+    },
+    {
+      "path": "item_pointer_reserve/candidate/src/native_texture_atlas_item_pointer_reserve.cpp",
+      "bytes": 2384,
+      "sha256": "166e8cde2da0e726caa1438f7d2a1d230f0a3b31ec75e630b80cda3032882a5e"
+    }
+  ]
+}
