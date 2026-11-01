@@ -1,5 +1,6 @@
 #include "bsp/native_gui_icon_rebuild_storage.hpp"
 #include "bsp/game_native_readonly_data.hpp"
+#include "bsp/gui_icon_runtime.hpp"
 #include "bsp/gui_text_material.hpp"
 #include "bsp/native_crt_memcpy.hpp"
 #include "bsp/native_invalid_parameter_noinfo_call.hpp"
@@ -202,6 +203,8 @@ void parameter(Frame& f, Context& c, NativeMaterialStorage& material,
     static_cast<volatile Word&>(f.native_state_home) = 0xffffffffu;
     return_name(header, data, f, c, getter_sites[name_index], return_sites[name_index]);
 }
+#pragma warning(push)
+#pragma warning(disable: 4102)
 void* write_white(Frame& f, void* stream, void* initial_section,
     const volatile float& actual_one) {
     void* const rgba = local(f, 0x18);
@@ -414,6 +417,7 @@ void* write_white(Frame& f, void* stream, void* initial_section,
     }
     return final_section;
 }
+#pragma warning(pop)
 } // namespace
 
 NativeGuiIconRebuildStorageFrame::NativeGuiIconRebuildStorageFrame(Context& c,
