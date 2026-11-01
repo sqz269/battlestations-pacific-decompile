@@ -1,0 +1,69 @@
+{
+  "packet": 136,
+  "status": "whole_normal_actual_storage_strict_object_and_existing_build_passed_unregistered_pending_Root_join",
+  "Original": {
+    "entry": "00AB72D0",
+    "exclusive_end": "00AB73A9",
+    "inclusive_end": "00AB73A8",
+    "bytes": 217,
+    "instructions": 40,
+    "ABI": "ECX actual1F4 Text; one preset DWORD; RET4",
+    "callees": [],
+    "x87_instructions": 0
+  },
+  "Source": "ordinary actual Text + mutable ordinary preset DWORD HOME read once + unseeded16B frame + same live constants",
+  "base": "fbd7c3e8acd0db5e3edd6bd7deb6e10af316176c",
+  "scope": "exact four new HCPP/doc/report files; no semantic edits",
+  "new_TU_registered": false,
+  "validation": {
+    "strict_x86_object": {
+      "status": "passed",
+      "seconds": 3.0863587,
+      "flags": "/c /std:c++17 /EHsc /MD /O2 /fp:strict /W4 /WX",
+      "object_bytes": 1093,
+      "object_sha256": "db28e664685e9db60e57a49f8fbad6e49f64a03b19d02d14b90df4e085b50de7"
+    },
+    "existing_registered_build": {
+      "command": "./scripts/build.ps1",
+      "status": "passed",
+      "seconds": 72.2284447,
+      "platform": "Release Win32",
+      "existing_checks": "2/2 passed: reconstructed_math0.27s,tool_tests13.59s",
+      "new_TU_registered": false,
+      "new_body_link_or_runtime_proof": false
+    },
+    "manual_Original_schedule": "all40 starts and complete strict emitted listing inspected; no finding within the ordinary Source contract"
+  },
+  "held": [
+    "Original ABI/FLAGS/private homes",
+    "fault/FH3/SEH/NoThrow/Origin",
+    "unmasked FP",
+    "actual storage/custody/provider/lifecycle",
+    "whole-object/runtime/Game"
+  ],
+  "not_added": [
+    "float arithmetic",
+    "callee/provider callback",
+    "semantic owner cast",
+    "class/profile/count admission",
+    "process role/pool",
+    "cleanup/rollback/termination policy",
+    "ABB630 reader",
+    "production binding/activation"
+  ],
+  "footprints": {
+    "Text_distinct_write_bytes": 29,
+    "Text_offsets": [
+      "1D0 DWORD",
+      "15C BYTE",
+      "168/16C/170/174 DWORD",
+      "160 DWORD",
+      "164 MOVSS"
+    ],
+    "frame": "four ordinary DWORDs16B; written only on captured preset1",
+    "preset_HOME": "one entry DWORD read, no write/reload",
+    "constant_reads": "offset+four interleaved live shadow DWORDs only on changed nonminus1; ONE/alpha only on preset1"
+  },
+  "ownership": "genuine actual Text/lifetimes/cell identity/Source alias domains remain caller proof; no Native retain/release/admission/cleanup",
+  "no_mutation_outside_packet": "No semantic/CMake/ledger/Ghidra/ABB630/Host/Page/provider binding or new test/probe/Game changes"
+}
