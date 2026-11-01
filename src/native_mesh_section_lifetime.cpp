@@ -191,6 +191,18 @@ void NativeMeshSectionLifetimeDomain::require_owned(bool value,const char* messa
     if(!value){NativeMeshSectionLifetimeFrame::record_domain_failure(*const_cast<NativeMeshSectionLifetimeDomain*>(this));
         throw std::logic_error(message);}
 }
+void NativeMeshSectionLifetimeDomain::require_owner_binding(
+    NativeMeshSectionEnvironment& environment,NativeRenderActualOwnerRegistry& owners,
+    const volatile Word& actual_ce4970,NativeMeshRetentionState& retention) const {
+    // Compare C++ role/cell identities only. In particular, taking the address
+    // of the profile MEMBER does not sample its pointer or the Native table.
+    require_owned(&environment == &impl_->environment &&
+        &environment.pool_010901d4 == &impl_->environment.pool_010901d4 &&
+        &environment.retained_owners == &owners && &owners == &impl_->owners &&
+        &environment.vtable_00d63194 == &impl_->environment.vtable_00d63194 &&
+        &actual_ce4970 == &impl_->bounds && &retention == &impl_->retention,
+        "Section owner binding requires SAME environment/pool/registry/profile home/bounds address/retention");
+}
 NativeMeshSectionLifetimeFrame::NativeMeshSectionLifetimeFrame(NativeMeshSectionLifetimeDomain& domain)
     :impl_(std::make_unique<Impl>(domain)),exact_(domain.impl_->owners,this){}
 NativeMeshSectionLifetimeFrame::~NativeMeshSectionLifetimeFrame(){
@@ -625,13 +637,18 @@ void NativeMeshSectionLifetimeFrame::close_after_host_quiescence(){
             impl_->domain.impl_->retained.fetch_sub(1,std::memory_order_release);impl_->counted=false;}
     }catch(...){record_source_failure();throw;}
 }
-void NativeMeshSectionLifetimeDomain::close_after_host_quiescence(){
+void NativeMeshSectionLifetimeDomain::preflight_close_after_host_quiescence(){
     try{
         require_owned(!impl_->failed.load(),"Failed Section graph must remain retained");
         {std::lock_guard<std::mutex> lock(impl_->mutex);impl_->closing.store(true,std::memory_order_release);}
         // Domain-wide first pass BEFORE the first child/caller hold unlink.
         // Actual cross-domain owner quiescence/preflight remains independent.
         for(auto* frame=impl_->first;frame;frame=frame->impl_->next)if(!frame->impl_->closed.load())frame->preflight_close();
+    }catch(...){NativeMeshSectionLifetimeFrame::record_domain_failure(*this);throw;}
+}
+void NativeMeshSectionLifetimeDomain::close_after_host_quiescence(){
+    try{
+        preflight_close_after_host_quiescence();
         for(auto* frame=impl_->first;frame;frame=frame->impl_->next)if(!frame->impl_->closed.load())frame->close_after_host_quiescence();
         require_owned(impl_->retained.load()==0,"Section domain retains actual obligations");
     }catch(...){NativeMeshSectionLifetimeFrame::record_domain_failure(*this);throw;}
