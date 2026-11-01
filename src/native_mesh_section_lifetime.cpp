@@ -2,6 +2,7 @@
 #include "bsp/native_mesh_section_layout_storage.hpp"
 #include "bsp/native_mesh_canonical.hpp"
 #include "bsp/native_render_observed_zero.hpp"
+#include "bsp/native_post_effect_parent_lifetime.hpp"
 #include <array>
 #include <atomic>
 #include <cstring>
@@ -65,6 +66,8 @@ struct NativeMeshSectionLifetimeCall::Impl {
     NativeMeshSectionLifetimeCall* next{};
     NativeMeshSectionLifetimeCall* source_next{};
     NativeMeshSectionLifetimeSourceScope* source{};
+    const NativeMeshSectionLifetimeSourceScope* source_identity{}; // opaque after real end
+    bool source_ended{}, caller_end_entered{}, caller_ended{};
     const bool terminal;
     std::atomic<Word> operation{0};
     std::atomic<bool> source_active{false},leaf_entered{false},returned{false},failed{false};
@@ -86,6 +89,9 @@ struct NativeMeshSectionLifetimeFrame::Impl {
     std::mutex calls_mutex;
     Call* calls{};
     Call* terminal{};
+    NativePostEffectParentFrame* parent_caller{};
+    const NativePostEffectParentFrame* parent_identity{}; // opaque after loan end
+    Call* parent_producer_call{};
     NativeMeshSectionStorage* actual{};
     Counter* count_home{};
     NativeMeshSectionReference* reference{};
@@ -136,6 +142,18 @@ NativeMeshSectionLifetimeSourceScope::~NativeMeshSectionLifetimeSourceScope() no
             frame.end_call_activity(*call);frame.end_outer_call();
         }else frame.record_source_failure();
     }
+    // Withdraw EVERY Call/outer contribution first. Only then record the real
+    // end witness and clear live backlinks; no later helper dereferences source.
+    for(auto* call=first_;call;){
+        auto* next=call->impl_->source_next;
+        call->impl_->source=nullptr;call->impl_->source_next=nullptr;
+        call->impl_->source_ended=true;call=next;
+    }
+    first_=nullptr;
+    auto* parent=parents_;parents_=nullptr;
+    // The real owner must keep ALL Parent/Scope targets alive through this
+    // ENTIRE traversal. An individual ended flag is not a destruction fence.
+    while(parent)parent=parent->section_source_scope_ended(*this,escaped);
 }
 NativeMeshSectionLifetimeCall::NativeMeshSectionLifetimeCall(NativeMeshSectionLifetimeFrame& frame,bool terminal)
     :impl_(std::make_unique<Impl>(frame,terminal)){}
@@ -289,7 +307,8 @@ NativeMeshSectionLifetimeFrame::Call& NativeMeshSectionLifetimeFrame::prepare_ca
             require_owned(!impl_->domain.impl_->closing.load(),"Section Call reservation crossed owning close fence");
             call->impl_->next=impl_->calls;impl_->calls=call;(void)pending.release();}
         begin_outer_call();begin_call_activity(*call);
-        call->impl_->source=&source;call->impl_->source_active.store(true,std::memory_order_release);
+        call->impl_->source=&source;call->impl_->source_identity=&source;
+        call->impl_->source_active.store(true,std::memory_order_release);
         call->impl_->source_next=source.first_;source.first_=call;
         return *call;
     }catch(...){record_source_failure();throw;}
@@ -410,7 +429,91 @@ void NativeMeshSectionLifetimeFrame::publish_after_native_constructor(){
     impl_->reference->validate_ordinary_target();
     domain.owners.publish_exact_record(exact_,*impl_->reference);impl_->published.store(true,std::memory_order_release);
 }
+void NativeMeshSectionLifetimeFrame::bind_parent_caller(NativePostEffectParentFrame& parent){
+    require_healthy();
+    require_owned(impl_->attached&&impl_->counted&&!impl_->parent_caller&&!impl_->parent_identity&&
+        impl_->producer.load()==0&&!impl_->allocation_entered.load()&&!impl_->constructor_entered.load()&&
+        !impl_->prefix_born.load()&&!impl_->published.load(),
+        "Parent Section association requires its exact retained cold attempt, once only");
+    impl_->parent_caller=&parent;impl_->parent_identity=&parent;
+}
+void NativeMeshSectionLifetimeFrame::require_prepared_call(const Call& call) const {
+    require_healthy();
+    require_owned(&call.impl_->frame==this&&!call.impl_->terminal&&call.impl_->source&&
+        call.impl_->source_identity==call.impl_->source&&!call.impl_->source_ended&&
+        call.impl_->source_active.load(std::memory_order_acquire)&&
+        !call.impl_->source->ended_&&!call.impl_->source->failed_&&
+        !call.impl_->failed.load()&&!call.impl_->leaf_entered.load()&&!call.impl_->returned.load()&&
+        call.impl_->operation.load()==0&&!call.impl_->caller_end_entered&&!call.impl_->caller_ended,
+        "Parent Section requires the SAME unused active pre-effect caller");
+    // source is dereferenced ONLY while this actual admitted Source is live.
+}
+NativeMeshSectionStorage* NativeMeshSectionLifetimeFrame::produce_for_parent(Call& call,
+    NativePostEffectParentFrame& parent){
+    require_owned(impl_->parent_caller==&parent&&impl_->parent_identity==&parent&&
+        !impl_->parent_producer_call,"Parent Section producer lost/replayed its exact private binding");
+    require_prepared_call(call);parent.require_section_producer_operation(*this,call);
+    impl_->parent_producer_call=&call;
+    return produce(call,nullptr);
+}
+void NativeMeshSectionLifetimeFrame::preflight_caller_end(const Call& call) const {
+    require_healthy();
+    require_owned(&call.impl_->frame==this&&!call.impl_->terminal&&call.impl_->source_identity&&
+        call.impl_->source_ended&&!call.impl_->source&&!call.impl_->source_next&&
+        !call.impl_->source_active.load()&&!call.impl_->failed.load()&&call.impl_->active_users.load()==0&&
+        !call.impl_->caller_end_entered&&!call.impl_->caller_ended&&
+        call.impl_->direct_zero.active_invocations_.load()==0,
+        "Parent Section caller end requires its real whole-Source withdrawal witness, once only");
+    require_owned(call.impl_->operation.load()==0?
+        (!call.impl_->leaf_entered.load()&&!call.impl_->returned.load()):
+        (call.impl_->leaf_entered.load()&&call.impl_->returned.load()),
+        "Parent Section invocation return/unused history remains unknown");
+    const auto& drop=call.impl_->reference_drop;
+    require_owned(drop.cpp_zero_frame.active_invocations_.load()==0&&(!drop.entered||
+        (drop.decremented&&drop.returned&&(!drop.zero_dispatch_entered||drop.zero_dispatch_returned))),
+        "Parent Section retained-credit decrement/zero/return remains unknown");
+    for(auto& observation:call.impl_->children){
+        require_owned(observation.cpp_zero_frame.active_invocations_.load()==0&&
+            (!observation.entered||(observation.decremented&&observation.returned&&
+             (!observation.zero_dispatch_entered||observation.zero_dispatch_returned))),
+            "Parent Section child decrement/zero/whole-call return remains unknown");
+    }
+    for(auto* row=call.impl_->storage_releases;row;row=row->next){
+        require_owned(row->zero_frame.active_invocations_.load()==0&&row->entered&&
+            row->decrement_returned&&row->returned&&(!row->zero_provider_entered||
+            (row->current_captured&&row->zero_provider_returned)),
+            "Parent Section raw storage decrement/provider/whole-call return remains unknown");
+    }
+    // No live-canonical/count/death test, Frame-wide drain, ancestor walk,
+    // final Domain seal or Native work belongs to this caller-only first pass.
+}
+void NativeMeshSectionLifetimeFrame::end_caller_after_host_quiescence(Call& call){
+    preflight_caller_end(call);call.impl_->caller_end_entered=true;
+    require_owned(NativeRenderObservedZeroAccess::end_frame(call.impl_->reference_drop.cpp_zero_frame,false),
+        "Parent Section retained-credit caller did not quiesce");
+    for(auto& observation:call.impl_->children)
+        require_owned(NativeRenderObservedZeroAccess::end_frame(observation.cpp_zero_frame,false),
+            "Parent Section child caller did not quiesce");
+    require_owned(NativeRenderObservedZeroAccess::end_frame(call.impl_->direct_zero,false),
+        "Parent Section creator caller did not quiesce");
+    for(auto* row=call.impl_->storage_releases;row;row=row->next)
+        require_owned(NativeRenderObservedZeroAccess::end_frame(row->zero_frame,false),
+            "Parent Section raw provider caller did not quiesce");
+    call.impl_->caller_ended=true; // permanent; partial failure cannot replay
+}
+bool NativeMeshSectionLifetimeFrame::detach_unborn_parent_caller(NativePostEffectParentFrame& parent){
+    require_healthy();require_owned(impl_->parent_caller==&parent&&impl_->parent_identity==&parent,
+        "Unborn Section notice detach requires the SAME actual Parent loan");
+    const bool cold=impl_->producer.load()==0&&!impl_->allocation_entered.load()&&
+        !impl_->constructor_entered.load()&&!impl_->prefix_born.load();
+    const bool normal_null=impl_->producer_returned.load()&&impl_->allocation_returned.load()&&!impl_->actual&&
+        !impl_->constructor_entered.load()&&!impl_->prefix_born.load()&&!impl_->ctor_return_captured.load();
+    if(!cold&&!normal_null)return false; // entered/live/flags0/unknown stays retained
+    impl_->parent_caller=nullptr;return true; // no retirement or physical-close fact
+}
 NativeMeshSectionStorage* NativeMeshSectionLifetimeFrame::produce(Call& call,const NativeMeshSectionStorage* source){
+    require_owned(!impl_->parent_caller||impl_->parent_producer_call==&call,
+        "Bound Parent Section producer requires its authentic private caller");
     begin_operation(call,static_cast<Word>(source?Operation::copy:Operation::create));
     const OperationScope operation(*this,call);
     native_allocation_entered();
@@ -427,6 +530,7 @@ NativeMeshSectionStorage* NativeMeshSectionLifetimeFrame::produce(Call& call,con
         // Capture the actual WHOLE constructor return before ANY fallible
         // canonical/profile/registry host publication. No catch loses its debt.
         impl_->constructor_return_value=returned;impl_->ctor_return_captured.store(true,std::memory_order_release);
+        if(impl_->parent_caller)impl_->parent_caller->capture_section_constructor_return(*this,returned);
         require_owned(returned==impl_->actual,"Section whole constructor returned another slot");
         publish_after_native_constructor();
     }else require_owned(!impl_->constructor_entered.load()&&!impl_->prefix_born.load(),"NULL Section cannot issue Native birth");
@@ -565,7 +669,13 @@ NativeMeshSectionStorage* NativeMeshSectionLifetimeFrame::scalar(Call& call,cons
     // Pool+60 is a separate live slab ID. From return onward ONLY captured
     // identities/external metadata are touched; no payload/profile/count read.
     impl_->scalar_body_completed.store(true,std::memory_order_release);
-    if(flags&1u){impl_->domain.impl_->owners.retire_exact_record(exact_);impl_->retired.store(true,std::memory_order_release);}
+    if(flags&1u){
+        impl_->domain.impl_->owners.retire_exact_record(exact_);impl_->retired.store(true,std::memory_order_release);
+        // Real flags1 retirement only, before scalar health/Source return. The
+        // payload has ended: pass external C++ identities, never read it again.
+        auto* parent=impl_->parent_caller;impl_->parent_caller=nullptr;
+        if(parent)parent->section_native_retired(*this,*impl_->reference);
+    }
     require_healthy();impl_->scalar_source_returned.store(true,std::memory_order_release);
     call.impl_->returned.store(true,std::memory_order_release);return original;
 }
@@ -617,6 +727,7 @@ void NativeMeshSectionLifetimeFrame::close_after_host_quiescence(){
     const bool cold=impl_->producer.load()==0;const bool normal_null=impl_->producer_returned.load()&&!impl_->actual;
     try{
         for(auto* call=impl_->calls;call;call=call->impl_->next){
+            if(call->impl_->caller_ended)continue; // Parent already ended ONLY its own heads
             require_owned(NativeRenderObservedZeroAccess::end_frame(call->impl_->reference_drop.cpp_zero_frame,false),
                 "Section retained-credit caller did not quiesce");
             for(auto& observation:call->impl_->children)require_owned(NativeRenderObservedZeroAccess::end_frame(observation.cpp_zero_frame,false),
