@@ -755,3 +755,9 @@ The complete six-body AF0060/AEF280/AEF3C0 plus exact469840/425F40/4CAD40 candid
 Whole AF0060/AEF280/AEF3C0, exact469840/425F40/4CAD40, the ready renderer supplier and permanent explicitly sized process roles with the real CFEAE8 deletion bridge are reviewed and built at818ba5c6c. Official Win32 Release passes in51.09s with both existing checks,3768 inputs/135 artifacts. Root and independent scoped emitted-Code reviews pass. Default renderer startup/drain exits naturally0/0 with no forced stop or survivors; zero frames presented. This does not execute the new atlas path. See [batch admission](CC16_ATLAS_SOURCE_BATCH114_117_ADMISSION.md).
 
 Actual Host/manager failure retention is the next candidate; real caller ownership, scratch fit, common.ats before GUI, Page/Icon production and runtime gates remain. All nine raw GUI switches remain false. Full activation and required gameplay remain the ACTIVE goal.
+
+## Atlas Source118 — actual Host failure retention
+
+The eleven-file actual Root/Host/manager retention route is Source-reviewed and built at a900a7593. Immutable Host capture selects Atlas3 or combined GUI/Atlas4; early Root and WinMain guards preserve the owning graph before legacy cleanup or teardown, with a complete normal after-drain fence. Default/GUI-only core bodies, naked manager and bindings232 remain Source-exact. Official Win32 Release87.64s, both existing checks pass,3773 inputs/137 artifacts; Root and independent scoped emitted-Code reviews pass. Default startup/drain exits natural0/0 with no forced stop or survivors and zero frames presented. See [batch admission](CC16_ATLAS_SOURCE_BATCH118_ADMISSION.md).
+
+The new atlas path remains unbound. Actual provider access and same typed process cells, reached-input scratch fit, common.ats before GUI, Page/Icon production and rendering/gameplay gates continue. All nine raw GUI switches remain false; full activation and required gameplay remain the ACTIVE goal.

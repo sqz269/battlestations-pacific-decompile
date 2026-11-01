@@ -19,6 +19,7 @@ struct NativeResourceRegistryDeleteBindings;
 namespace bsp::game {
 class GameHostLog;
 class GameNativeLocaleManagerProcess;
+class GameNativeTextureAtlasApplication;
 
 // cc15-ob3: the native loading queue, the lazy 20h E18D4C singleton built by
 // 004FDE20 (ctor 004FDBA0, registered through 00BD0C30) on 00737A50's first
@@ -148,10 +149,14 @@ public:
 
 private:
     friend class GameNativeGuiManagerApplication;
+    friend class GameNativeTextureAtlasApplication;
+    NativeTextureAtlasManagerDeleteAttempt& prepare_texture_atlas_delete_attempt(
+        NativeTextureAtlasDeletionLifetime&);
+    void finish_texture_atlas_delete_attempt(NativeTextureAtlasManagerDeleteAttempt&);
     NativeGuiSelectedManagerDeleteAttempt& prepare_gui_manager_delete_attempt(
         NativeGuiMediaFocusLifetimeContext&);
     void finish_gui_manager_delete_attempt(NativeGuiSelectedManagerDeleteAttempt&);
-    void shutdown_selected(NativeGuiSelectedManagerDeleteAttempt&);
+    void shutdown_selected(NativeGuiSelectedManagerDeleteAttempt&, NativeTextureAtlasManagerDeleteAttempt*);
     void retire_vfs_after_drain() noexcept;
     GameHostLog& log_;
     void* volatile& manager_publication_01090aa0_; // canonical process cell
@@ -190,6 +195,10 @@ private:
     // Native custody/normal-disposition authority.
     std::vector<std::unique_ptr<NativeGuiSelectedManagerDeleteAttempt>> selected_gui_attempts_;
     NativeGuiSelectedManagerDeleteAttempt* pending_selected_gui_attempt_{};
+    // One privately born atlas attempt. Host owns this Source record; actual
+    // StartupHost owns this Host and every borrowed provider until full fence.
+    std::unique_ptr<NativeTextureAtlasManagerDeleteAttempt> texture_atlas_attempt_;
+    NativeTextureAtlasManagerDeleteAttempt* pending_texture_atlas_attempt_{};
 
 };
 } // namespace bsp::game

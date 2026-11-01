@@ -1,0 +1,11 @@
+# Actual atlas Host and manager retention
+
+The actual singleton Host owns one private atlas deletion attempt. It captures that attempt before callbacks and passes the same reference to distinct atlas-only or combined GUI/atlas manager overloads. The new overloads invoke the existing complete manager body; an atlas exception records unknown state and escapes directly, before legacy BD0220 cleanup. GUI authority remains separate. Existing default and GUI-only core entry bodies, the naked manager body and the 232-byte deletion-binding struct retain their Source text.
+
+Binding requires the actual owning StartupHost, singleton Host, canonical read-only data, VFS and renderer. StartupHost records selection before throwing admission. Its first destructor guard and the inner WinMain catch retain the live heap Host and borrowed graph before earlier teardown or logging. The selected route uses the existing whole-graph process-exit policy. It adds no Native cleanup, retry, unlock, free or exception-delivery authority.
+
+The private attempt records the actual normal constructor/registration result and full popped scalar flags. Public profile, count and flags do not mint that history. Only complete real Host shutdown, required scalar return, renderer return and caller after-drain work permit the Source fence. Explicit retirement checks the consumed fence before accessing the Host-owned attempt. These records are ordinary C++ lifetime observations; Original ABI, private FH3/SEH, hardware-fault, Native origin and runtime equivalence remain unproved.
+
+The finite candidate changes eleven Source files against Main918d11a4 Host/GUI preimages and exact Source117 process postimages. Root retains the sealed candidate, preimages, bounded independent review and actual Git authors under `local/function_source_batch118/`. Source acceptance, compilation, emitted-code review and runtime results are recorded separately.
+
+This packet does not bind or activate the process application. Activation requires actual same graph providers, explicit scratch extent and every reached normalized-line-plus-NUL fit, common.ats before GUI, real Page/Icon production and the existing activation/runtime gates. All nine raw GUI switches remain false.

@@ -6,6 +6,7 @@
 namespace bsp {
 class NativeLocaleManagerDeletionLifetime;
 class NativeTextureAtlasDeletionLifetime;
+class NativeTextureAtlasManagerDeleteAttempt;
 struct NativeAllocationStatsConstructorContext;
 struct NativeAvoidManagerLifetimeContext;
 struct GlobalConfigContext;
@@ -364,6 +365,18 @@ void __fastcall destroy_native_singleton_manager_00bd0400(
 void __fastcall destroy_native_singleton_manager_00bd0400(void* owner,
     const NativeSingletonDeletionBindings& bindings, NativeGuiSelectedManagerDeleteAttempt&);
 
+
+// Distinct negative-only Atlas caller policy. The real Host passes its SAME
+// privately born attempt by immutable reference captured BEFORE callbacks.
+// No mutable binding-field presence selects this policy. Existing default and
+// GUI-only entries keep their contracts; the combined entry keeps separate
+// records/authority. These are new ordinary Source interfaces, not recovered
+// original caller ABI/FH3/SEH or Native cleanup/NoThrow permission.
+void __fastcall destroy_native_singleton_manager_00bd0400(void* owner,
+    const NativeSingletonDeletionBindings&, NativeTextureAtlasManagerDeleteAttempt&);
+void __fastcall destroy_native_singleton_manager_00bd0400(void* owner,
+    const NativeSingletonDeletionBindings&, NativeGuiSelectedManagerDeleteAttempt&,
+    NativeTextureAtlasManagerDeleteAttempt&);
 
 // Full00412440[31]: test low flags bit0 before rewriting CE3818; optionally
 // free captured owner; EAX captured address bits, RET4. Native ECX owner,

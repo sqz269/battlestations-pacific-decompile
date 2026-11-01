@@ -1,5 +1,7 @@
 #include "bsp/game_native_texture_atlas_application.hpp"
 #include "bsp/game_hosts_singletons.hpp"
+#include "bsp/game_hosts.hpp"
+#include "bsp/native_texture_atlas_manager_delete_attempt.hpp"
 #include "bsp/game_native_readonly_data.hpp"
 #include "bsp/game_native_renderer_application.hpp"
 #include "bsp/game_native_vfs_application.hpp"
@@ -57,6 +59,8 @@ struct GameNativeTextureAtlasApplication::Impl final {
     NativeTextureAtlasParserContext parser;
     NativeTextureAtlasLoaderContext loader;
     NativeSingletonDeletionBindings& deletion;
+    NativeTextureAtlasManagerDeleteAttempt* manager_attempt{};
+    bool source_fence_returned{};
     const void* const common_literal;
 
     NativeTextureAtlasRegistryConstructFrame construction;
@@ -90,10 +94,11 @@ struct GameNativeTextureAtlasApplication::Impl final {
           common_literal(d.data_at(0x00ce81c4u, sizeof("interface/textures/common.ats"))) {}
 
     void require_graph() const {
+        require(!source_fence_returned, "atlas graph cannot be used after its one actual Host fence");
         // Object/reference identities are checked, never reconstructed from a
         // profile, count, phase, name lookup or independently created provider.
         require(binding_installed && deletion.texture_atlas == &process &&
-            &host.native_deletion_bindings() == &deletion,
+            &host.native_deletion_bindings() == &deletion && manager_attempt != nullptr,
             "atlas requires its retained actual singleton deletion binding");
         require(vfs.borrows_graph(host, data) && &vfs.raw_strings() == &strings &&
             &strings.actual_manager_publication_01090aa0 ==
@@ -175,16 +180,19 @@ GameNativeTextureAtlasApplication& GameNativeTextureAtlasApplication::process_ro
     return *slot.actual;
 }
 
-void GameNativeTextureAtlasApplication::bind_graph_once(GameSingletonHost& host,
+void GameNativeTextureAtlasApplication::bind_graph_once(GameStartupHost& startup, GameSingletonHost& host,
     GameNativeReadOnlyData& data, GameNativeVfsApplication& vfs,
     GameNativeRendererApplication& renderer, const volatile Word& feature,
     NativePathCanonicalizerRawContext& canonical,
     NativeTextureAtlasRegistrySectionCall const volatile& enter,
     NativeTextureAtlasRegistrySectionCall const volatile& leave,
     NativeTextureAtlasRegistryDecrement const volatile& decrement) {
-    require(!bind_attempted_, "atlas graph binding is one attempt without graph replacement");
-    bind_attempted_ = true;
     try {
+        // The ACTUAL owning Root records selection before any throwing admission.
+        // Its private identity check proves ownership, not just matching metadata.
+        startup.bind_native_texture_atlas_retention(*this, host, data, vfs, renderer);
+        require(!bind_attempted_, "atlas graph binding is one attempt without graph replacement");
+        bind_attempted_ = true;
         // Cold context constructors perform no Native allocation/acquisition.
         // Once retained, this pointer and its entire frame graph are permanent.
         graph_ = new Impl(*this, host, data, vfs, renderer, feature, canonical,
@@ -193,6 +201,7 @@ void GameNativeTextureAtlasApplication::bind_graph_once(GameSingletonHost& host,
             "atlas graph cannot adopt an existing binding or unknown publication");
         graph_->deletion.texture_atlas = this;
         graph_->binding_installed = true;
+        graph_->manager_attempt = &host.prepare_texture_atlas_delete_attempt(*this);
         graph_->require_graph();
     } catch (...) {
         bind_failure_ = std::current_exception();
@@ -223,6 +232,10 @@ void GameNativeTextureAtlasApplication::construct_normal() {
             "atlas normal constructor returned a different allocation identity");
         p.normal_birth = p.allocation;
         p.require_birth();
+        // Private normal allocation/whole constructor/base registration history;
+        // NEVER inferred from profile, count, CURRENT publication or public flags.
+        p.manager_attempt->registered_receiver_ = p.normal_birth;
+        p.manager_attempt->registered_receiver_bound_ = true;
         p.busy = false;
     } catch (...) { p.poison_current(); throw; }
 }
@@ -314,8 +327,19 @@ void GameNativeTextureAtlasApplication::prepare_normal_retirement() {
 }
 void GameNativeTextureAtlasApplication::retire_normal() {
     require(graph_ != nullptr && !bind_failure_, "atlas requires its complete retained graph binding");
-    if (!graph_->retirement_armed) prepare_normal_retirement();
-    (void)delete_registered_00737f10(graph_->normal_birth, 1u);
+    auto& p = *graph_;
+    try {
+        p.require_graph(); // FIRST rejects the consumed fence before any borrowed attempt access
+        if (!p.retirement_armed) prepare_normal_retirement();
+        // Outside manager wrapper, but retain the SAME actual registered receiver.
+        auto& atlas = *p.manager_attempt;
+        require(!atlas.scalar_entered_, "atlas scalar cannot replay explicit retirement");
+        atlas.scalar_receiver_ = p.normal_birth;
+        atlas.scalar_flags_ = 1u;
+        atlas.scalar_entered_ = true;
+        (void)delete_registered_00737f10(p.normal_birth, 1u);
+        atlas.scalar_returned_ = true;
+    } catch (...) { p.poison_current(); throw; }
 }
 void* GameNativeTextureAtlasApplication::delete_registered_00737f10(
     void* captured, Word flags) {
@@ -347,6 +371,26 @@ void* GameNativeTextureAtlasApplication::delete_registered_00737f10(
         p.poison_current();
         throw;
     }
+}
+
+bool GameNativeTextureAtlasApplication::requires_host_retention() const noexcept {
+    return bind_failure_ || (graph_ && (graph_->failed || graph_->busy ||
+        (graph_->manager_attempt && graph_->manager_attempt->requires_source_retention())));
+}
+void GameNativeTextureAtlasApplication::note_host_exception() noexcept {
+    if (graph_ && !graph_->source_fence_returned) graph_->poison_current();
+    if (!bind_failure_) bind_failure_ = std::current_exception();
+}
+void GameNativeTextureAtlasApplication::after_host_shared_drain(GameSingletonHost& host) {
+    require(graph_ != nullptr && !bind_failure_, "atlas Host fence requires its retained graph");
+    auto& p = *graph_;
+    try {
+        require(&p.host == &host && !p.source_fence_returned && !p.failed && !p.busy &&
+            p.manager_attempt != nullptr,
+            "atlas Host fence requires the same complete actual drain");
+        host.finish_texture_atlas_delete_attempt(*p.manager_attempt);
+        p.source_fence_returned = true; // no more access through borrowed Root references
+    } catch (...) { p.poison_current(); throw; }
 }
 
 const GameNativeTextureAtlasLoadCall*

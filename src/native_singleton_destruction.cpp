@@ -1,6 +1,7 @@
 #include "bsp/native_singleton_destruction.hpp"
 #include "bsp/native_locale_manager_deletion_lifetime.hpp"
 #include "bsp/native_texture_atlas_deletion_lifetime.hpp"
+#include "bsp/native_texture_atlas_manager_delete_attempt.hpp"
 #include "bsp/native_avoid_manager_lifetime.hpp"
 #include "bsp/native_fixed_step_job_waves.hpp"
 #include "bsp/native_allocation_stats_lifecycle.hpp"
@@ -661,15 +662,23 @@ struct SingletonManagerInvocationView {
     const NativeSingletonDeletionBindings& bindings;
     NativeGuiSelectedManagerDeleteAttempt* const selected;
     NativeGuiMediaFocusLifetimeContext* const gui_context;
-    SingletonManagerInvocationView(const NativeSingletonDeletionBindings& actual)
-        : bindings(actual), selected(nullptr), gui_context(nullptr) {}
+    NativeTextureAtlasManagerDeleteAttempt* const atlas;
     SingletonManagerInvocationView(const NativeSingletonDeletionBindings& actual,
-        NativeGuiSelectedManagerDeleteAttempt& attempt, NativeGuiMediaFocusLifetimeContext& context)
-        : bindings(actual), selected(&attempt), gui_context(&context) {}
+        NativeTextureAtlasManagerDeleteAttempt* captured_atlas = nullptr)
+        : bindings(actual), selected(nullptr), gui_context(nullptr), atlas(captured_atlas) {}
+    SingletonManagerInvocationView(const NativeSingletonDeletionBindings& actual,
+        NativeGuiSelectedManagerDeleteAttempt& attempt, NativeGuiMediaFocusLifetimeContext& context,
+        NativeTextureAtlasManagerDeleteAttempt* captured_atlas = nullptr)
+        : bindings(actual), selected(&attempt), gui_context(&context), atlas(captured_atlas) {}
 };
 __declspec(noinline) void __fastcall delete_current_profile(void* owner,
     const SingletonManagerInvocationView& invocation, std::uint32_t profile,
     std::uint32_t flags) {
+    if (invocation.atlas && profile == 0x00cfeae8) {
+        (void)dispatch_native_texture_atlas_selected_scalar(owner, flags,
+            invocation.bindings, *invocation.atlas);
+        return;
+    }
     if (invocation.selected && profile == 0x00d5bfcc) {
         (void)scalar_delete_native_gui_manager_00aa6540_fragment(owner, flags,
             *invocation.gui_context, *invocation.selected);
@@ -777,6 +786,47 @@ void* dispatch_prepared_gui_icon_delayed_scalar(void* owner,
     return result;
 }
 
+void* dispatch_native_texture_atlas_selected_scalar(void* owner, std::uint32_t flags,
+    const NativeSingletonDeletionBindings& bindings, NativeTextureAtlasManagerDeleteAttempt& atlas) {
+    const bool fresh = !atlas.scalar_entered_;
+    atlas.scalar_receiver_ = owner;
+    atlas.scalar_flags_ = flags;
+    atlas.scalar_entered_ = true; // BEFORE every throwing admission and Native effect
+    try {
+        if (!fresh || atlas.unknown_ || !atlas.host_entered_ || !atlas.core_entered_ ||
+            !atlas.registered_receiver_bound_ || atlas.registered_receiver_ != owner ||
+            atlas.bindings_ != &bindings || bindings.texture_atlas != atlas.atlas_)
+            throw std::logic_error("atlas scalar requires the SAME real registered receiver and manager attempt");
+        void* const result = atlas.atlas_->delete_registered_00737f10(owner, flags);
+        atlas.scalar_returned_ = true; // observation, never the outer fence
+        return result; // NO raw receiver dereference after normal deletion
+    } catch (...) {
+        atlas.unknown_ = true;
+        throw;
+    }
+}
+
+__declspec(noinline) void __fastcall destroy_native_singleton_manager_00bd0400(
+    void* owner, const NativeSingletonDeletionBindings& bindings,
+    NativeTextureAtlasManagerDeleteAttempt& atlas) {
+    const bool fresh = !atlas.core_entered_;
+    atlas.core_entered_ = true; // BEFORE every throwing admission and Native effect
+    try {
+        if (!fresh || atlas.unknown_ || !atlas.cold_bound_ || !atlas.host_entered_ ||
+            !atlas.receiver_bound_ || atlas.outer_receiver_ != owner ||
+            atlas.bindings_ != &bindings || bindings.texture_atlas != atlas.atlas_)
+            throw std::logic_error("atlas manager drain requires its actual Host capture and bindings");
+        const SingletonManagerInvocationView invocation{bindings, &atlas};
+        destroy_manager_body(owner, invocation); // SAME complete actual manager body
+        if (atlas.registered_receiver_bound_ && !atlas.scalar_returned_)
+            throw std::logic_error("atlas manager returned without its real registered scalar return");
+        atlas.core_returned_ = true;
+    } catch (...) {
+        atlas.unknown_ = true;
+        throw; // SAME selected unknown Source attempt: NEVER legacy BD0220
+    }
+}
+
 __declspec(noinline) void __fastcall destroy_native_singleton_manager_00bd0400(
     void* owner, const NativeSingletonDeletionBindings& bindings) {
     try {
@@ -810,6 +860,37 @@ __declspec(noinline) void __fastcall destroy_native_singleton_manager_00bd0400(
     } catch (...) {
         selected.unknown_ = true;
         throw; // SAME captured attempt; NEVER the legacy BD0220 catch
+    }
+}
+
+__declspec(noinline) void __fastcall destroy_native_singleton_manager_00bd0400(
+    void* owner, const NativeSingletonDeletionBindings& bindings,
+    NativeGuiSelectedManagerDeleteAttempt& selected,
+    NativeTextureAtlasManagerDeleteAttempt& atlas) {
+    const bool atlas_fresh = !atlas.core_entered_;
+    atlas.core_entered_ = true; // arm BEFORE either policy's throwing admission/effect
+    auto* const captured_context = selected.context_; // immutable address, once before callbacks
+    const bool fresh = !selected.core_entered_;
+    selected.core_entered_ = true; // BEFORE every throwing admission and Native effect
+    try {
+        if (!fresh || !selected.cold_bound_ || !selected.host_entered_ || selected.unknown_ ||
+            selected.bindings_ != &bindings || !selected.receiver_bound_ ||
+            selected.outer_receiver_ != owner || bindings.native_gui != captured_context)
+            throw std::logic_error("selected shared drain requires its actual cold bound invocation");
+        if (!atlas_fresh || atlas.unknown_ || !atlas.cold_bound_ || !atlas.host_entered_ ||
+            !atlas.receiver_bound_ || atlas.outer_receiver_ != owner ||
+            atlas.bindings_ != &bindings || bindings.texture_atlas != atlas.atlas_)
+            throw std::logic_error("atlas manager drain requires its actual Host capture and bindings");
+        const SingletonManagerInvocationView invocation{bindings, selected, *captured_context, &atlas};
+        destroy_manager_body(owner, invocation);
+        selected.core_returned_ = true; // observation only, no fence/discharge
+        if (atlas.registered_receiver_bound_ && !atlas.scalar_returned_)
+            throw std::logic_error("atlas manager returned without its real registered scalar return");
+        atlas.core_returned_ = true;
+    } catch (...) {
+        selected.unknown_ = true;
+        atlas.unknown_ = true;
+        throw; // separate SAME actual attempts; NEVER legacy BD0220
     }
 }
 

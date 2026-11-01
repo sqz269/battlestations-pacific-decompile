@@ -1364,6 +1364,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         try {
             result = bsp::run_win_main(arguments, *host);
         } catch(...) {
+            host->retain_native_texture_atlas_on_exception(); // actual outside-try heap Host FIRST
             host->retain_native_mesh_on_exception(); // metadata FIRST, before old error.what/log/unwind
             throw;
         }
@@ -1371,6 +1372,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         log.notef("startup failed: %s", error.what());
     }
 
+    host->exit_if_native_texture_atlas_interrupted();
     host->exit_if_native_mesh_interrupted();
     host->exit_if_native_vfs_interrupted();
     bsp::game::GameRunSummary summary = host->summary();

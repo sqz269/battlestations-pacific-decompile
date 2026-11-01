@@ -11,6 +11,8 @@
 #include "bsp/bink_runtime_library.hpp"
 #include "bsp/game_movie_factory_owner.hpp"
 #include "bsp/game_native_renderer_application.hpp"
+#include "bsp/game_native_texture_atlas_application.hpp"
+#include "bsp/game_native_vfs_application.hpp"
 #include "bsp/game_native_raw_default_text_owner.hpp"
 #include "bsp/game_native_mission_factories.hpp"
 #include "bsp/native_render_resource_init.hpp"
@@ -2040,6 +2042,44 @@ GameStartupHost::GameStartupHost(GameHostLog& log, HINSTANCE instance,
     singletons_ = singletons.release();
 }
 
+void GameStartupHost::bind_native_texture_atlas_retention(GameNativeTextureAtlasApplication& atlas,
+    GameSingletonHost& host, GameNativeReadOnlyData& data, GameNativeVfsApplication& vfs,
+    GameNativeRendererApplication& renderer) {
+    native_texture_atlas_binding_entered_ = true; // BEFORE all throwing admission
+    try {
+        if (native_texture_atlas_ != nullptr || native_texture_atlas_binding_failed_ ||
+            native_texture_atlas_source_fence_returned_)
+            throw std::logic_error("actual Root atlas graph cannot be rebound or replayed");
+        native_texture_atlas_ = &atlas; // one retained process object, BEFORE admission
+        if (singletons_ != &host || native_data_ != &data || native_renderer_.get() != &renderer ||
+            !canonical_data_owner_ || &canonical_data_owner_->get().read_only_data() != &data ||
+            vfs_ == nullptr || &vfs_->native_owners() != &vfs.owners() ||
+            !vfs.borrows_graph(host, data))
+            throw std::logic_error("atlas requires the actual owning Root host/data/VFS/renderer graph");
+    } catch (...) {
+        native_texture_atlas_binding_failed_ = true;
+        throw;
+    }
+}
+void GameStartupHost::exit_if_native_texture_atlas_interrupted() noexcept {
+    if (!native_texture_atlas_binding_failed_ &&
+        (!native_texture_atlas_ || !native_texture_atlas_->requires_host_retention())) return;
+    // Existing Source whole-graph retention policy, before ANY provider/log or
+    // destructor effect. No CRT exit, unknown cleanup, retry or Native authority.
+    std::_Exit(1);
+}
+void GameStartupHost::retain_native_texture_atlas_on_exception() noexcept {
+    if (!native_texture_atlas_binding_entered_ || native_texture_atlas_source_fence_returned_) return;
+    native_texture_atlas_binding_failed_ = true; // metadata FIRST, before old error.what/log/unwind
+    if (native_texture_atlas_) native_texture_atlas_->note_host_exception();
+    std::_Exit(1); // actual heap Host, its members and canonical process owner stay alive
+}
+void GameStartupHost::acknowledge_native_texture_atlas_after_drain() {
+    if (!native_texture_atlas_ || native_texture_atlas_source_fence_returned_) return;
+    native_texture_atlas_->after_host_shared_drain(*singletons_);
+    native_texture_atlas_source_fence_returned_ = true;
+}
+
 void GameStartupHost::exit_if_native_vfs_interrupted() noexcept {
     if (!vfs_ || !vfs_->requires_process_retention()) return;
     try {
@@ -2216,6 +2256,7 @@ void GameStartupHost::exit_if_native_renderer_incomplete() noexcept {
 }
 
 void GameStartupHost::drain_native_singletons() {
+    exit_if_native_texture_atlas_interrupted();
     exit_if_native_mesh_interrupted();
     exit_if_native_movie_factory_incomplete(true);
     exit_if_native_gui_icon_interrupted();
@@ -2232,6 +2273,7 @@ void GameStartupHost::drain_native_singletons() {
             if constexpr (kGuiManagerCc15Bound) {
                 if (native_gui_manager_) native_gui_manager_->after_singleton_drain();
             }
+            acknowledge_native_texture_atlas_after_drain(); // full renderer/Host closure returned
             return;
         }
         if (startup_factories_phase_ != StartupFactoriesPhase::live)
@@ -2253,7 +2295,9 @@ void GameStartupHost::drain_native_singletons() {
         if constexpr (kGuiManagerCc15Bound) {
             if (native_gui_manager_) native_gui_manager_->after_singleton_drain();
         }
+        acknowledge_native_texture_atlas_after_drain(); // full actual caller closure returned
     } catch (...) {
+        retain_native_texture_atlas_on_exception(); // metadata/whole graph FIRST, before old logging
         startup_factories_phase_ = StartupFactoriesPhase::failed;
         try { log_.note("native singleton/factory drain incomplete; retaining the entire provider graph until exit"); log_.close(); }
         catch (...) { std::fputs("bsp_game: native singleton/factory drain requires process exit\n", stderr); }
@@ -2345,6 +2389,7 @@ void GameStartupHost::exit_if_native_gui_resources_retained() noexcept {
 }
 
 GameStartupHost::~GameStartupHost() {
+    exit_if_native_texture_atlas_interrupted(); // BEFORE frontend/menu and ANY borrowed Root teardown
     exit_if_native_mesh_interrupted();
     exit_if_native_movie_factory_incomplete(true);
     exit_if_native_gui_resources_retained();
@@ -3533,6 +3578,7 @@ void GameStartupHost::release_platform_window() noexcept {
 }
 
 void GameStartupHost::application_shutdown() {
+    exit_if_native_texture_atlas_interrupted(); // BEFORE application/frontend teardown
     exit_if_native_mesh_interrupted();
     exit_if_native_movie_factory_incomplete();
     exit_if_native_fonts_interrupted();
@@ -3654,6 +3700,7 @@ void GameStartupHost::application_shutdown() {
 }
 
 void GameStartupHost::application_destruct() {
+    exit_if_native_texture_atlas_interrupted(); // BEFORE application native retirement
     exit_if_native_mesh_interrupted();
     if constexpr (kApplicationCc15Bound) {
         if (native_application_live_) {
@@ -3675,6 +3722,7 @@ void GameStartupHost::application_destruct() {
 }
 
 void GameStartupHost::destroy_singleton_lifetime_manager() {
+    exit_if_native_texture_atlas_interrupted(); // BEFORE borrowed graph closure
     exit_if_native_mesh_interrupted();
     exit_if_native_gui_resources_retained();
     exit_if_native_fonts_interrupted();
