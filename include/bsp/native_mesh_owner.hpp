@@ -7,6 +7,10 @@
 #include <optional>
 
 namespace bsp {
+class NativeMeshCanonicalDomain;
+class NativeMeshCanonicalRecord;
+class NativeMeshCanonicalAccess;
+class NativeMeshCanonicalBorrow;
 
 struct NativeMeshLodPhaseStorage {
     std::uint32_t minimum_00;
@@ -123,9 +127,19 @@ public:
     ~NativeMeshReference() override;
     NativeMeshReference(const NativeMeshReference&) = delete;
     NativeMeshReference& operator=(const NativeMeshReference&) = delete;
-    NativeMeshStorage& storage() noexcept { return storage_; }
-    void release_zero_references() noexcept override;
+    // Legacy returns its existing view; ordinary raw mode requires a scoped
+    // NativeMeshCanonicalBorrow through every actual payload/count use.
+    NativeMeshStorage& storage();
+    void release_zero_references() override;
 private:
+    friend class NativeMeshCanonicalRecord;
+    friend class NativeMeshCanonicalAccess;
+    friend class NativeMeshCanonicalBorrow;
+    friend class NativeRenderObservedZeroAccess;
+    NativeMeshReference(NativeMeshStorage&, NativeMeshEnvironment&,
+        NativeMeshCanonicalRecord&) noexcept;
+    void release_legacy_zero_references() noexcept;
+    NativeMeshCanonicalRecord* raw_record_{};
     enum class Phase { bound, destroying, retired };
     NativeMeshStorage& storage_;
     NativeMeshEnvironment& environment_;
@@ -144,6 +158,13 @@ class NativeMeshPreparedRecord final {
 public:
     NativeMeshPreparedRecord(void* actual_slot, std::size_t slot_bytes,
         NativeMeshEnvironment&, NativeRenderActualOwnerRegistry&);
+    // Distinct ordinary mode creates its OWN genuine pool allocation; it never
+    // adopts the legacy ctor's external raw address or synthesizes provenance.
+    NativeMeshPreparedRecord(NativeMeshCanonicalDomain&, NativeMeshEnvironment&,
+        NativeRenderActualOwnerRegistry&);
+    NativeMeshStorage* create_ordinary_from_explicit_pool();
+    NativeMeshStorage* create_ordinary_from_static_pool();
+    void close_ordinary_at_quiescence();
     // Abandoned preparation cancels host admission only; caller returns raw.
     // After the transition begins, terminal retirement and explicit disposal
     // are required before destruction. There is no postconstruction rollback.
@@ -159,6 +180,7 @@ public:
     // Contract/profile/count/capability or mutex failure is terminal here.
     NativeMeshStorage& construct_and_publish(NativeMeshConstants) noexcept;
     bool retired() const noexcept { return phase_ == Phase::retired; }
+    bool ordinary_source_retired() const noexcept;
     // Caller proves constructor/terminal/callback/resolved-borrower quiescence;
     // never call within the terminal callback. Independently exclude raw-slot
     // reuse from physical return through removal of the old registry entry.
@@ -166,6 +188,8 @@ public:
     void dispose_retired_at_quiescence() noexcept;
 
 private:
+    struct Ordinary;
+    std::unique_ptr<Ordinary> ordinary_;
     enum class Phase { prepared, publishing, published, retired, disposed };
     NativeMeshEnvironment& environment_;
     NativeRenderActualOwnerRegistry& registry_;

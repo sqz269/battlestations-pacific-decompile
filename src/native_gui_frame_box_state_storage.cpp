@@ -1,3 +1,12 @@
+#include "bsp/native_render_observed_zero.hpp"
+namespace bsp {
+class NativeGuiFrameBoxStateStorageObservedZeroIssuer final {
+public:
+    static void dispatch(NativeRenderActualOwners& owners, void* actual, NativeRenderObservedZeroFrame& outer) {
+        NativeRenderObservedZeroAccess::dispatch(owners, actual, outer);
+    }
+};
+} // namespace bsp
 #include "bsp/native_gui_frame_box_state_storage.hpp"
 #include "bsp/game_native_readonly_data.hpp"
 #include "bsp/game_native_string_process.hpp"
@@ -205,7 +214,7 @@ void release(Resource*& creator, NativeTextureSurfaceReferenceIncrement decremen
     r.decremented = true;
     if (r.result == 0) {
         r.zero_entered = true;
-        dispatch_native_render_actual_owner_zero(c.owners, raw);
+        NativeGuiFrameBoxStateStorageObservedZeroIssuer::dispatch(c.owners, raw, r.cpp_zero_frame);
         r.zero_returned = true;
     }
     r.complete = true; // independent metadata only after possibly ended raw lifetime

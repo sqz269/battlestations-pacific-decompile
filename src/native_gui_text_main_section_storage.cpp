@@ -1,3 +1,13 @@
+#include "bsp/native_mesh_canonical.hpp"
+#include "bsp/native_render_observed_zero.hpp"
+namespace bsp {
+class NativeGuiTextMainSectionStorageObservedZeroIssuer final {
+public:
+    static void dispatch(NativeRenderActualOwners& owners, void* actual, NativeRenderObservedZeroFrame& outer) {
+        NativeRenderObservedZeroAccess::dispatch(owners, actual, outer);
+    }
+};
+} // namespace bsp
 #include "bsp/native_gui_text_main_section_storage.hpp"
 #include "bsp/game_native_readonly_data.hpp"
 #include "bsp/game_native_string_process.hpp"
@@ -151,17 +161,20 @@ void empty_node(void* actual) {
         !read(actual, 0x170) && !read(actual, 0x174),
         "main section parenting excludes reached hierarchy/attachment/scene/retained/point-light state");
 }
-void live_mesh(void* actual, const Context& c) {
+NativeMeshCanonicalBorrow live_mesh(void* actual, const Context& c) {
     const auto& g = c.geometry;
     require(actual && actual == g.captured_mesh && !g.creator_zero_entered && !g.creator_zero_returned &&
         g.creator_result > 0 && g.mesh.companion &&
         c.text.factory_context.publication.owners.find(actual) == g.mesh.companion,
         "main section requires SAME still-owned real379 mesh, not a terminal diagnostic identity");
     auto* const typed = dynamic_cast<NativeMeshReference*>(g.mesh.companion);
-    require(typed && &typed->storage() == actual && static_cast<void*>(&typed->reference_count) == at(actual, 4),
+    require(typed != nullptr, "main section requires its genuine Mesh canonical");
+    NativeMeshCanonicalBorrow pin(*typed);
+    require(&pin.storage() == actual && static_cast<void*>(&typed->reference_count) == at(actual, 4),
         "main section geometry needs its genuine canonical actual Mesh object");
     require(typed->reference_count.load(std::memory_order_relaxed) > 0 && read(actual) == 0x00d62d60,
         "main section geometry cannot be an entered or completed terminal payload");
+    return pin;
 }
 void authenticate(NativeGuiTextRawModelReference& reference, Context& c, void* raw) {
     auto& f = c.text.factory_context; auto& p = c.text.publication;
@@ -284,7 +297,7 @@ void release_creator(Resource*& creator, NativeTextureSurfaceReferenceIncrement 
     a.result = target(static_cast<volatile long*>(at(raw, 4))); a.decremented = true;
     if (a.result == 0) {
         a.zero_entered = true;
-        dispatch_native_render_actual_owner_zero(c.resources.geometry.actual_owners(), raw);
+        NativeGuiTextMainSectionStorageObservedZeroIssuer::dispatch(c.resources.geometry.actual_owners(), raw, a.cpp_zero_frame);
         a.zero_returned = true;
     }
     a.complete = true; // metadata ONLY after actual terminal return
@@ -358,7 +371,8 @@ void ensure_native_gui_text_post_constructor_sections_storage_00ab8530(
         host_require(a.current_primary == primary.actual, "main arm rejects foreign CURRENT4C replacement", __COUNTER__);
         host(__COUNTER__, [&] { live_model(a.current_primary, primary); });
         a.current_geometry = reinterpret_cast<void*>(read(a.current_primary, 0x180)); // B74640
-        host(__COUNTER__, [&] { live_mesh(a.current_geometry, c); });
+        std::optional<NativeMeshCanonicalBorrow> mesh_pin;
+        host(__COUNTER__, [&] { mesh_pin.emplace(live_mesh(a.current_geometry, c)); });
         a.section_count = read(a.current_geometry, 0x58); a.mesh_gate_read = true;
         if (a.section_count == 0) {
             f.created_text_ = raw;

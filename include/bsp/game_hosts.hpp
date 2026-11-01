@@ -717,6 +717,9 @@ public:
     // Terminal policy for an interrupted native VFS operation with unrecovered
     // cleanup. Preserve the host, mapped data and CRT owners until OS exit.
     void exit_if_native_vfs_interrupted() noexcept;
+    // First metadata-only denial before old handlers/provider/log/teardown.
+    void exit_if_native_mesh_interrupted() noexcept;
+    void retain_native_mesh_on_exception() noexcept;
 
     const GameRunSummary& summary() const noexcept { return summary_; }
     // Milestone 2a: the phase-2 provider manager, alive for the whole run, and the settings

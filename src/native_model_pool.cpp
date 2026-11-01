@@ -1,4 +1,5 @@
 #include "bsp/native_model_pool.hpp"
+#include "bsp/native_post_effect_model_lifetime.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -243,5 +244,29 @@ void* allocate_native_model_slot_00b74eb0() {
 }
 void return_native_model_slot_00b748c0(void* slot) {
     require_static_pool().return_raw_slot_00b74750(slot);
+}
+void* allocate_native_model_slot_00b74eb0(NativePostEffectModelFrame& frame) {
+    frame.wrapper_entered();
+    try {
+        auto& receiver = require_static_pool();
+        frame.allocator_entered(receiver);
+        void* const result = receiver.allocate_raw_slot_00b74d00();
+        frame.allocator_returned(receiver, result);
+        return result;
+    } catch (...) {
+        frame.allocator_escaped();
+        throw;
+    }
+}
+void return_native_model_slot_00b748c0(void* slot, NativePostEffectModelFrame& frame) {
+    try {
+        auto& receiver = require_static_pool();
+        frame.return_entered(receiver, slot);
+        receiver.return_raw_slot_00b74750(slot);
+        frame.return_returned();
+    } catch (...) {
+        frame.return_escaped();
+        throw;
+    }
 }
 } // namespace bsp

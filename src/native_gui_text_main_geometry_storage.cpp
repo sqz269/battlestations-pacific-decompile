@@ -1,3 +1,12 @@
+#include "bsp/native_render_observed_zero.hpp"
+namespace bsp {
+class NativeGuiTextMainGeometryStorageObservedZeroIssuer final {
+public:
+    static void dispatch(NativeRenderActualOwners& owners, void* actual, NativeRenderObservedZeroFrame& outer) {
+        NativeRenderObservedZeroAccess::dispatch(owners, actual, outer);
+    }
+};
+} // namespace bsp
 #include "bsp/native_gui_text_main_geometry_storage.hpp"
 #include "bsp/game_native_readonly_data.hpp"
 #include "bsp/native_node_destruction.hpp"
@@ -330,7 +339,7 @@ void construct_native_gui_text_main_geometry_storage_00ab7700(NativeGuiTextRawMo
             require(a.creator_zero_target == 0x00bd30e0 && t.owners.find(mesh) == a.mesh.companion,
                 "Text74 already-zero creator requires its SAME genuine current0 mesh companion");
             a.creator_zero_entered = true;
-            dispatch_native_render_actual_owner_zero(t.owners, mesh);
+            NativeGuiTextMainGeometryStorageObservedZeroIssuer::dispatch(t.owners, mesh, a.cpp_zero_frame);
             a.creator_zero_returned = true;
         }
         a.creator_release_returned = true; // No mesh payload/reference access after terminal.

@@ -1,3 +1,12 @@
+#include "bsp/native_render_observed_zero.hpp"
+namespace bsp {
+class NativeGuiTextShaderStorageObservedZeroIssuer final {
+public:
+    static void dispatch(NativeRenderActualOwners& owners, void* actual, NativeRenderObservedZeroFrame& outer) {
+        NativeRenderObservedZeroAccess::dispatch(owners, actual, outer);
+    }
+};
+} // namespace bsp
 #include "bsp/native_gui_text_shader_storage.hpp"
 #include "bsp/gui_text_resource_names.hpp"
 #include "bsp/game_native_mutable_crt_data.hpp"
@@ -907,7 +916,7 @@ void set_native_gui_text_shader_name_storage_00ab8e70(NativeGuiTextRawModelRefer
                 credit.decrement_returned(result);
                 if (result == 0) {
                     credit.zero_entered();
-                    dispatch_native_render_actual_owner_zero(c.owners, captured);
+                    NativeGuiTextShaderStorageObservedZeroIssuer::dispatch(c.owners, captured, invocation.cpp_zero_frame_);
                     credit.zero_returned();
                 }
                 shader_name_write(raw, 0x1ec, 0); //8EC7 LIVE clear AFTER callback, even a replacement

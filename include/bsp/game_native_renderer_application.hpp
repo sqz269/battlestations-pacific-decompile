@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/native_mesh_canonical.hpp"
 #include "bsp/game_native_mission_units.hpp"
 #include <cstdint>
 #include <functional>
@@ -125,6 +126,12 @@ public:
     // create a platform/window, or admit the complete native message handler.
     GameNativeRendererApplication(GameHostLog&, GameSingletonHost&, GameVfsHost&,
         GameNativeLuaServices&, GameNativeReadOnlyData&, void* const volatile& clock,
+        NativePlatformLoadPublication actual_platform_0109cf04);
+    // New concrete owning graph factory. Existing constructors retain legacy
+    // selection. Production use still needs every genuine caller/upper gate.
+    static std::unique_ptr<GameNativeRendererApplication> create_with_ordinary_mesh_ownership(
+        GameHostLog&, GameSingletonHost&, GameVfsHost&, GameNativeLuaServices&,
+        GameNativeReadOnlyData&, void* const volatile& clock,
         NativePlatformLoadPublication actual_platform_0109cf04);
     ~GameNativeRendererApplication();
     // Borrow the host's sole live BBCB40 domain before renderer construction.
@@ -328,10 +335,21 @@ public:
     // remain unsupported. Failed operation records force process retention.
     NativeShadowDepthTargetContext& shadow_depth_target_context();
     const NativeRenderResourcesConstructionAcquired& render_resources_construction() const noexcept;
+    // Metadata-only early guards; neither reads a Native/provider field.
+    bool ordinary_mesh_failure_pending() const noexcept;
+    bool ordinary_mesh_exception_requires_retention() const noexcept;
     bool requires_process_retention() const noexcept;
     void drain_singletons();
     void after_native_drain();
 private:
+    struct OrdinaryMeshConstruction final {};
+    GameNativeRendererApplication(OrdinaryMeshConstruction, GameHostLog&,
+        GameSingletonHost&, GameVfsHost&, GameNativeLuaServices&,
+        GameNativeReadOnlyData&, void* const volatile& clock,
+        NativePlatformLoadPublication);
+    void close_ordinary_mesh_after_native_drain() noexcept;
+    // First, therefore outlives every Impl/provider/worker member and C++ unwind.
+    NativeMeshRetentionState mesh_retention_;
     struct Impl;
     std::unique_ptr<Impl> impl_;
 };

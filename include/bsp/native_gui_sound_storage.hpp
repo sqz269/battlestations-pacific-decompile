@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/native_render_zero_frame.hpp"
 #include "bsp/native_gui_widget_lifetime.hpp"
 #include "bsp/native_render_context.hpp"
 #include "bsp/native_string.hpp"
@@ -41,6 +42,9 @@ struct NativeGuiSoundReleaseObservation {
     NativeGuiSoundInterlocked captured_decrement{};
     long result{};
     bool entered{}, decremented{}, zero_entered{}, zero_returned{}, complete{};
+    // Separate C++ outer-call custody; public diagnostics never issue an action.
+    // Keep through real postcall/health/catch; no reset as Native HOME reuse.
+    NativeRenderObservedZeroFrame cpp_zero_frame;
 };
 struct NativeGuiSoundAssignmentObservation {
     void* destination_slot{};

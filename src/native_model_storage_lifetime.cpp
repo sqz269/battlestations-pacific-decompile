@@ -1,4 +1,6 @@
 #include "bsp/native_model_storage_lifetime.hpp"
+#include "bsp/native_post_effect_model_lifetime.hpp"
+#include "bsp/native_render_observed_zero.hpp"
 #include "bsp/native_matrix_indexed_model_owner.hpp"
 #include "bsp/native_ref_counted.hpp"
 #include <atomic>
@@ -15,6 +17,34 @@
 #endif
 
 namespace bsp {
+// Only the three real captured-decrement==0 continuations below call this
+// owning-module bridge. No public progress/observed-zero receipt is exposed.
+class NativeModelStorageObservedZeroIssuer final {
+public:
+    static void invoke(RenderCommandReference& canonical, void* captured_actual,
+        NativeRenderObservedZeroFrame& frame) {
+        NativeRenderObservedZeroAccess::invoke(canonical,captured_actual,frame);
+    }
+    static auto invocation(NativeRenderObservedZeroFrame& frame) noexcept {
+        return NativeRenderObservedZeroAccess::Invocation(frame);
+    }
+    static void failed(NativeRenderObservedZeroFrame& frame) noexcept {
+        NativeRenderObservedZeroAccess::fail_frame(frame);
+    }
+};
+// Narrow owning-module issuer. It is not exposed as a receipt/application API.
+class NativePostEffectModelScalarIssuer final {
+public:
+    static auto operands(NativePostEffectModelFrame& f) { return f.scalar_operands(); }
+    static void normal_flags(NativePostEffectModelFrame& f,
+        const volatile std::uint32_t& flags, std::uint8_t low) noexcept {
+        f.normal_payload_and_last_flags(flags, low);
+    }
+    static void pool_entered(NativePostEffectModelFrame& f) noexcept { f.scalar_pool_entered(); }
+    static void pool_returned(NativePostEffectModelFrame& f) noexcept { f.scalar_pool_returned(); }
+    static void body_returned(NativePostEffectModelFrame& f) noexcept { f.scalar_body_returned(); }
+    static void escaped(NativePostEffectModelFrame& f) noexcept { f.scalar_escaped(); }
+};
 namespace {
 using Word = std::uint32_t;
 static_assert(sizeof(void*) == 4);
@@ -72,14 +102,14 @@ void require_target(NativeTextureSurfaceReferenceIncrement target) {
     if (!target) throw std::logic_error("raw Model requires the genuine reached decrement target");
 }
 template<class Context>
-void terminal(void* captured, Context& c) {
+void terminal(void* captured, Context& c, NativeRenderObservedZeroFrame& frame) {
     // The existing owner contract supplies the genuine CURRENT0 family policy.
     // No model/node extent is assumed for an arbitrary retained owner.
     auto& reference = c.node.scenes.owners.resolve_actual(captured);
     if (static_cast<void*>(&reference.reference_count) != at(captured, 4) ||
         reference.reference_count.load(std::memory_order_relaxed) != 0)
         throw std::logic_error("raw Model member terminal requires SAME observed-zero actual count");
-    reference.release_zero_references();
+    NativeModelStorageObservedZeroIssuer::invoke(reference,captured,frame);
 }
 void require_slot(Word profile, NativeModelStorageIdentityContext& c,
     unsigned slot, Word target) {
@@ -241,6 +271,7 @@ void* construct_model_payload(const Allocation& allocation, const void* name, Co
 template<class Allocation>
 void destroy_model_geometry_payload(void* member, const Allocation& allocation,
     NativeModelStorageMemberAcquired& a) {
+    const auto invocation = NativeModelStorageObservedZeroIssuer::invocation(a.observed_zero_frame);
     auto c = payload_context(allocation);
     a.started = true;
     void* const captured = pointer(member, 8);
@@ -254,7 +285,7 @@ void destroy_model_geometry_payload(void* member, const Allocation& allocation,
         a.decrement_completed = true;
         if (count == 0) {
             a.active_call_site = 0x00b74f3f;
-            terminal(captured, c);
+            terminal(captured, c, a.observed_zero_frame);
             a.terminal_completed = true;
         }
         write(member, 8, 0);
@@ -273,6 +304,8 @@ void selected_geometry_cleanup(const MatrixAllocationAdmission& a,
 template<class Allocation>
 void destroy_model_payload(const Allocation& allocation, NativeModelStorageLifetimeFrame& frame,
     NativeModelStorageLifetimeAcquired& a) {
+    const auto invocation = NativeModelStorageObservedZeroIssuer::invocation(frame.observed_zero_frame);
+    const auto selected_invocation = NativeModelStorageObservedZeroIssuer::invocation(a.geometry_unwind.observed_zero_frame);
     void* const owner = allocation.owner;
     auto c = payload_context(allocation);
     require_fresh(a);
@@ -292,7 +325,7 @@ void destroy_model_payload(const Allocation& allocation, NativeModelStorageLifet
             a.retained_decrement_completed = true;
             if (count == 0) {
                 a.active_call_site = 0x00b7510d;
-                terminal(retained, c);
+                terminal(retained, c, frame.observed_zero_frame);
                 a.retained_terminal_completed = true;
             }
             write(owner, 0x174, 0); // AFTER callback, even if it replaced174.
@@ -308,7 +341,7 @@ void destroy_model_payload(const Allocation& allocation, NativeModelStorageLifet
             a.geometry_decrement_completed = true;
             if (count == 0) {
                 a.active_call_site = 0x00b75138;
-                terminal(geometry, c);
+                terminal(geometry, c, frame.observed_zero_frame);
                 a.geometry_terminal_completed = true;
             }
             write(owner, 0x180, 0);
@@ -319,6 +352,8 @@ void destroy_model_payload(const Allocation& allocation, NativeModelStorageLifet
         destroy_native_raw_node_base_00b6f440(owner, frame.node, c.node, a.node);
         a.complete = true;
     } catch (...) {
+        NativeModelStorageObservedZeroIssuer::failed(frame.observed_zero_frame);
+        NativeModelStorageObservedZeroIssuer::failed(a.geometry_unwind.observed_zero_frame);
         a.exception_cleanup_started = true;
         try {
             while (state >= 0) {
@@ -445,6 +480,8 @@ void require_completion(const NativeModelStorageHostCompletion& completion) {
 void destroy_model_completed(void* owner, NativeModelStorageLifetimeFrame& frame,
     NativeModelStorageContext& c, NativeModelStorageLifetimeAcquired& a,
     const NativeModelStorageHostCompletion& completion) {
+    const auto invocation = NativeModelStorageObservedZeroIssuer::invocation(frame.observed_zero_frame);
+    const auto selected_invocation = NativeModelStorageObservedZeroIssuer::invocation(a.geometry_unwind.observed_zero_frame);
     try { destroy_model(owner, frame, c, a); }
     catch (...) {
         // The existing raw body has consumed its normal/unwind cleanup states.
@@ -457,7 +494,10 @@ void destroy_model_completed(void* owner, NativeModelStorageLifetimeFrame& frame
 void* delete_model(void* owner, const volatile Word& flags,
     NativeModelStorageLifetimeFrame& frame, NativeModelStorageContext& c,
     NativeModelStorageLifetimeAcquired& a,
-    const NativeModelStorageHostCompletion* completion) {
+    const NativeModelStorageHostCompletion* completion,
+    NativePostEffectModelFrame* ordinary = nullptr) {
+    const auto invocation = NativeModelStorageObservedZeroIssuer::invocation(frame.observed_zero_frame);
+    const auto selected_invocation = NativeModelStorageObservedZeroIssuer::invocation(a.geometry_unwind.observed_zero_frame);
     require_fresh(a);
     if (a.scalar_started || a.scalar_complete)
         throw std::invalid_argument("raw Model scalar deletion requires fresh persistent diagnostics");
@@ -468,12 +508,16 @@ void* delete_model(void* owner, const volatile Word& flags,
     const auto low_flags = *reinterpret_cast<const volatile unsigned char*>(&flags);
     a.flags_low_byte = low_flags;
     a.flags_read = true;
+    if (ordinary) NativePostEffectModelScalarIssuer::normal_flags(*ordinary, flags, low_flags);
     if ((low_flags & 1u) != 0) {
         a.active_call_site = 0x00b752a5;
+        if (ordinary) NativePostEffectModelScalarIssuer::pool_entered(*ordinary);
         c.pool_01090054.return_raw_slot_00b74750(owner);
         a.pool_returned = true;
+        if (ordinary) NativePostEffectModelScalarIssuer::pool_returned(*ordinary);
     }
     a.scalar_complete = true;
+    if (ordinary) NativePostEffectModelScalarIssuer::body_returned(*ordinary);
     return owner; // numeric identity only after possible pool return.
 }
 } // namespace
@@ -503,6 +547,16 @@ void* delete_native_model_storage_00b75290(void* owner, const volatile Word& fla
     NativeModelStorageLifetimeAcquired& a, const NativeModelStorageHostCompletion& completion) {
     require_completion(completion);
     return delete_model(owner, flags, frame, c, a, &completion);
+}
+void* delete_native_model_storage_00b75290(NativePostEffectModelFrame& ordinary) {
+    try {
+        auto operands = NativePostEffectModelScalarIssuer::operands(ordinary);
+        return delete_model(operands.actual, operands.flags, operands.frame,
+            operands.context, operands.acquired, &operands.completion, &ordinary);
+    } catch (...) {
+        NativePostEffectModelScalarIssuer::escaped(ordinary);
+        throw;
+    }
 }
 
 NativeModelStorageReference::NativeModelStorageReference(void* owner,

@@ -153,6 +153,7 @@ void unregister_native_node_tree_00b6d850(void* actual,
         const auto nested = context.frames.recursive_unregister(ptr(child));
         acquired.active_call_site = 0x00b6d876;
         unregister_native_node_tree_00b6d850(ptr(child), nested.frame, context, nested.acquired);
+        context.frames.native_recursive_returned(ptr(child), nested);
         ++acquired.completed_child_calls;
         child = read(child, 0x3c);
     }

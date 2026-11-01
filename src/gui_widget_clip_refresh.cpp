@@ -1,3 +1,4 @@
+#include "bsp/native_mesh_canonical.hpp"
 #include "bsp/gui_widget_clip_refresh.hpp"
 #include "bsp/gui_material_binding.hpp"
 #include "bsp/native_mesh_owner.hpp"
@@ -34,14 +35,16 @@ NativeModelOwner& captured_model(NativeNodeBinding& node, GuiWidgetClipRefreshSe
         "base GUI clip drawable requires the same captured live Model storage");
     return model;
 }
-NativeMeshStorage& actual_mesh(void* raw, NativeRenderActualOwners& owners) {
+NativeMeshCanonicalBorrow actual_mesh(void* raw, NativeRenderActualOwners& owners) {
     require(raw != nullptr, "base GUI clip mesh is null after its native geometry gate");
     auto* reference = dynamic_cast<NativeMeshReference*>(&owners.resolve_actual(raw));
-    require(reference && &reference->storage() == raw && reference->reference_count.load() > 0,
+    require(reference != nullptr, "clip mesh requires its canonical actual owner");
+    NativeMeshCanonicalBorrow pin(*reference);
+    require(&pin.storage() == raw && reference->reference_count.load() > 0,
         "base GUI clip mesh requires its canonical actual owner");
-    require(reference->storage().draw_sections_54.count_04 >= 0,
+    require(pin.storage().draw_sections_54.count_04 >= 0,
         "base GUI clip mesh has an invalid negative section count");
-    return reference->storage();
+    return pin;
 }
 void refresh_primary(GuiWidgetOwner& widget, GuiWidgetClipRefreshServices& s) {
     //00AAA3E5 captures the primary once, before any material/name callback.
@@ -51,11 +54,13 @@ void refresh_primary(GuiWidgetOwner& widget, GuiWidgetClipRefreshServices& s) {
     if (!gui_model_has_geometry_00b74650(model)) return;
     auto& owners = s.materials.retained_owners;
     void* raw_mesh = gui_model_geometry_00b74640(model.storage.model, 0);
-    actual_mesh(raw_mesh, owners);
+    const auto first_mesh_pin = actual_mesh(raw_mesh, owners);
+    (void)first_mesh_pin;
     if (!gui_mesh_element_count_00b72b40(raw_mesh)) return;
     //00AAA411 reloads geometry on the SAME captured Model before section0.
     raw_mesh = gui_model_geometry_00b74640(model.storage.model, 0);
-    auto& mesh = actual_mesh(raw_mesh, owners);
+    auto mesh_pin = actual_mesh(raw_mesh, owners);
+    auto& mesh = mesh_pin.storage();
     require(mesh.draw_sections_54.data_00 != nullptr && mesh.draw_sections_54.count_04 > 0,
         "base GUI clip mesh requires actual section0 storage");
     void* raw_section = gui_geometry_element_00b732c0(raw_mesh, 0);

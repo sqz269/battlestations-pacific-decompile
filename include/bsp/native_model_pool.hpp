@@ -5,6 +5,7 @@
 #include <cstdlib>
 
 namespace bsp {
+class NativePostEffectModelFrame;
 
 // Caller supplies the one canonical owner representing native 01090054.
 // The critical-section bytes hold an actual Win32 CRITICAL_SECTION initialized
@@ -67,5 +68,10 @@ void* allocate_native_model_slot_00b74eb0();
 // Native 00B748C0 receives the slot in ECX, then calls the pool with a stack
 // argument. This function exposes an ordinary new C++ interface to that action.
 void return_native_model_slot_00b748c0(void* slot);
+
+// Additive genuine-receiver issuers for the private ordinary post-effect
+// factory. Existing wrappers/pool algorithms and their effects are unchanged.
+void* allocate_native_model_slot_00b74eb0(NativePostEffectModelFrame&);
+void return_native_model_slot_00b748c0(void*, NativePostEffectModelFrame&);
 
 } // namespace bsp

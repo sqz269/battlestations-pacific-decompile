@@ -1,3 +1,4 @@
+#include "bsp/native_mesh_canonical.hpp"
 #include "bsp/game_native_gui_icon_application.hpp"
 #include "bsp/game_native_gui_effect_application.hpp"
 #include "bsp/game_native_renderer_application.hpp"
@@ -57,6 +58,7 @@ struct GameNativeGuiIconApplication::Impl {
         GuiNativeDeclarationAcquired declaration;
         NativeStreamCloneAcquired vertex;
         NativeMeshStorage* mesh{};
+        std::optional<NativeMeshCanonicalBorrow> mesh_pin;
         void* stream{};
         void* mapping{};
         NativeStreamCloneMapPhase map_phase{NativeStreamCloneMapPhase::not_called};
@@ -342,10 +344,12 @@ struct GameNativeGuiIconApplication::Impl {
             auto* raw = primary.storage.model.geometry_180;
             auto* mesh_reference = raw ? dynamic_cast<NativeMeshReference*>(
                 &geometry.actual_owners().resolve_actual(raw)) : nullptr;
-            require(mesh_reference && &mesh_reference->storage() == raw &&
+            require(mesh_reference != nullptr, "Native Icon requires its actual mesh canonical");
+            operation.mesh_pin.emplace(*mesh_reference);
+            require(&operation.mesh_pin->storage() == raw &&
                 mesh_reference->reference_count.load() > 0,
                 "Native Icon current74 must publish its SAME actual mesh first");
-            operation.mesh = &mesh_reference->storage();
+            operation.mesh = &operation.mesh_pin->storage();
             ensure_stream(operation);
             site = operation.site = 0x00ab3dae;
             operation.map_phase = NativeStreamCloneMapPhase::call_in_progress;
@@ -420,7 +424,9 @@ struct GameNativeGuiIconApplication::Impl {
             set_gui_color_00aa6870(record.owner, record.owner.layout().color, binding.widget_materials);
             operation.running = false;
             operation.complete = true;
+            operation.mesh_pin.reset(); // last real payload use/normal private fence passed
         } catch (...) {
+            geometry.record_ordinary_source_failure();
             operation.failure = failure = std::current_exception();
             throw; // Preserve the actual map, creators, publications and frames.
         }

@@ -7,6 +7,7 @@
 #include <memory>
 
 namespace bsp {
+class NativeMeshCanonicalDomain;
 struct NativeVertexDeclarationLoadingContext;
 struct GuiNativeSectionAcquired {
     NativeMeshSectionStorage* creator{};
@@ -53,6 +54,13 @@ class GuiNativeGeometryOwners final {
 public:
     GuiNativeGeometryOwners(NativeMeshEnvironment&, NativeMeshConstants,
         NativeMeshSectionEnvironment&, GuiNativeGeometryRegistration);
+    // New immutable ordinary route; SAME actual registry/environment. Metadata
+    // is reserved before Native work; failed/live records remain with this owner.
+    GuiNativeGeometryOwners(NativeMeshEnvironment&, NativeMeshConstants,
+        NativeMeshSectionEnvironment&, GuiNativeGeometryRegistration,
+        NativeMeshCanonicalDomain&);
+    void close_ordinary_mesh_records_at_quiescence();
+    void record_ordinary_source_failure() noexcept; // sticky Source error metadata only
     ~GuiNativeGeometryOwners();
     GuiNativeGeometryOwners(const GuiNativeGeometryOwners&) = delete;
     GuiNativeGeometryOwners& operator=(const GuiNativeGeometryOwners&) = delete;

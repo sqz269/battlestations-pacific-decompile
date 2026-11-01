@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/native_render_zero_frame.hpp"
 #include "bsp/native_gui_widget_copy_storage.hpp"
 #include "bsp/native_gui_widget_lifetime.hpp"
 #include "bsp/native_render_context.hpp"
@@ -63,6 +64,9 @@ struct NativeGuiModelStorageAcquired {
     ~NativeGuiModelStorageAcquired() noexcept;
     NativeGuiModelStorageAcquired(const NativeGuiModelStorageAcquired&) = delete;
     NativeGuiModelStorageAcquired& operator=(const NativeGuiModelStorageAcquired&) = delete;
+    // Separate C++ outer-call custody; public diagnostics never issue an action.
+    // Keep through real postcall/health/catch; no reset as Native HOME reuse.
+    NativeRenderObservedZeroFrame cpp_zero_frame;
 };
 struct NativeGuiModelCopyContext {
     NativeGuiWidgetCopyContext& base;

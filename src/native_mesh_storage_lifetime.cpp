@@ -1,4 +1,5 @@
 #include "bsp/native_mesh_storage_lifetime.hpp"
+#include "bsp/native_mesh_canonical.hpp"
 #include <array>
 #include <memory>
 #include <stdexcept>
@@ -74,6 +75,8 @@ class NativeMeshStorageAccess final {
         f.cpp_payload_live_ = false;
         f.type_ended_ = true;
         f.normal_payload_dead_ = true;
+        if (f.canonical_record_)
+            NativeMeshCanonicalAccess::native_payload_ended(*f.canonical_record_);
     }
 public:
     static void validate_context(const Context& c) {
@@ -117,6 +120,8 @@ public:
             auto* const result = construct_native_mesh_00b73d70(
                 reinterpret_cast<void*>(f.actual_), f.context_.constants_);
             f.constructor_returned_ = true; // actual callee returned, before Source fences
+            if (f.canonical_record_)
+                NativeMeshCanonicalAccess::native_constructor_returned(*f.canonical_record_, result);
             if (address(result) != f.actual_)
                 throw std::logic_error("Mesh constructor returned a different allocation");
             f.live_payload_ = result;

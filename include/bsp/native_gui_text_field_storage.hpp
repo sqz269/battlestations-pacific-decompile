@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/native_render_zero_frame.hpp"
 #include "bsp/native_gui_text_reference.hpp"
 #include "bsp/native_font_resources.hpp"
 #include <cstdint>
@@ -38,6 +39,10 @@ struct NativeGuiTextFieldStorageFrame {
     // Keep a different retained frame for every nested/current callback.
     volatile std::uint32_t rgba[4];
     volatile float shadow_alpha;
+    // Actual caller-owned metadata, separate from trivial diagnostics. Retain
+    // this Frame through all outer postcall/health/catch uses; never reset/move
+    // its linked hold before genuine last use or graph quiescence.
+    NativeRenderObservedZeroFrame cpp_zero_frame;
 };
 struct NativeGuiTextFieldStorageAcquired {
     // Diagnostics only; no count/ownership and no automatic cleanup. One fresh

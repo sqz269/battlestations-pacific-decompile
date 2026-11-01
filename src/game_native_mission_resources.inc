@@ -13,6 +13,15 @@ struct MissionRenderResourcesGraph {
  const volatile U& screen_negative_half;
  const volatile U& screen_one;
  NativeRenderResourceInitArguments arguments;
+ struct ModelProfiles final : NativePostEffectModelProfiles {
+  DestructionGraph& graph;
+  explicit ModelProfiles(DestructionGraph& actual) noexcept : graph(actual) {}
+  const volatile U* resolve_profile(U profile) const override { return graph.profiles(profile); }
+ } model_profiles;
+ // These precede operation: real contexts/binding survive whole Block/Frame
+ // CPP destruction. Default callers remain the literal legacy selection.
+ std::optional<NativePostEffectModelLifetimeContext> ordinary_models;
+ std::optional<NativePostEffectOrdinaryLifetimeBinding> ordinary_post_effects;
  NativeRenderResourceInitialization operation;
  NativeMaterialParameterAccess parameters;
  NativePostEffect20OwnerContext post20_lifetime;
@@ -57,10 +66,12 @@ struct MissionRenderResourcesGraph {
      NativeModelEnvironment& models,NativeTracelineRenderAccess& draw_entries,
      void* const volatile& current_renderer,void* const volatile& configuration,NativeLuaServiceBindings& lua_services,
      NativeShaderBinaryCacheContext& binary_cache,NativeRenderResourceInitArguments args,
-     NativeGuiSceneEnvironment* startup_scenes=nullptr)
+     NativeGuiSceneEnvironment* startup_scenes=nullptr,
+     NativeNodeBaseDestructionContext* ordinary_startup_node=nullptr,
+     NativeMeshCanonicalDomain* ordinary_meshes=nullptr)
   :resources(r),renderer(current_renderer),lua(lua_services),shader_cache(binary_cache),
    screen_negative_half(*g.profiles(0xce69d0)),screen_one(*g.profiles(0xd7a24c)),
-   arguments(args),
+   arguments(args),model_profiles(g),
    parameters{game_native_material_process().parameter_pool_00f8d3e4(),vfs.strings,
        &::_stricmp,g.profiles(0xd61a00)},
    post20_lifetime{owners,g.nodes,g.frame,camera.decrement,g.profiles(0xd61ec0),
@@ -131,7 +142,19 @@ struct MissionRenderResourcesGraph {
        literal(g,0xd5e214),literal(g,0xd5e208),literal(g,0xd5e1fc)},
    tail_names{literal(g,0xd5e1e4),literal(g,0xd5e1d0)},
    initializer{continuation,distortion_entry,passthrough_dust,dof_names,
-       post658_names,post65c_names,post664_names,tail_names} {}
+       post658_names,post65c_names,post664_names,tail_names} {
+    check((ordinary_startup_node==nullptr)==(ordinary_meshes==nullptr),
+        "ordinary post-effect composition requires both actual retained domains");
+    if(ordinary_meshes) {
+     ordinary_models.emplace(models,*ordinary_startup_node,owners,model_profiles,
+         camera.node_constants,*ordinary_meshes);
+     ordinary_post_effects.emplace(NativePostEffectOrdinaryLifetimeBinding{*ordinary_models,*ordinary_meshes});
+     post20_lifetime.ordinary_models=&*ordinary_models;
+     post24_lifetime.ordinary_models=&*ordinary_models;
+     post20.ordinary_lifetime=&*ordinary_post_effects;
+     post24.ordinary_lifetime=&*ordinary_post_effects;
+    }
+   }
 
  void* construct_and_initialize() {
   check(phase==Phase::prepared,"mission render resources cannot replay");
@@ -171,6 +194,9 @@ struct MissionRenderResourcesGraph {
   } catch(...) {phase=Phase::failed;throw;}
  }
  bool requires_process_retention() const noexcept {
+  if(ordinary_models && ordinary_models->requires_process_retention()) return true;
+  if(ordinary_post_effects && (ordinary_post_effects->meshes.requires_process_retention() ||
+      ordinary_post_effects->meshes.has_retained_records())) return true;
   return phase==Phase::constructing || phase==Phase::initializing || phase==Phase::failed ||
       operation.requires_process_retention() || (shader_cache_created && !shader_cache_released);
  }
@@ -262,6 +288,8 @@ struct MissionRenderResourcesGraph {
  }
  void after_native_drain() {
   check(!requires_process_retention(),"mission resource initialization requires process retention");
+  check(!ordinary_post_effects,
+      "ordinary parent allocator/upper-pass close transport remains a separate admission gate");
   check(!resources.publication,"mission resource owner survived native drain");
   operation.close_children_after_host_quiescence();
   phase=Phase::closed;

@@ -4,6 +4,7 @@
 #include "bsp/native_event_owner.hpp"
 #include <cstddef>
 #include <cstdint>
+#include <atomic>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Actual renderer control worker requires MSVC Win32.
@@ -37,6 +38,46 @@ static_assert(offsetof(NativeRendererControlWorkerStorage,callback_context_20)==
 // The actual begin context must carry its existing substantive providers.
 // EndFrame B2F4A0 -> B2D8E0 requires the complete native end-frame provider
 // with the same actual owner domains before that path can execute.
+class NativeMeshRetentionState;
+namespace game { class GameNativeRendererApplication; }
+struct NativeRendererControlWorkerContext;
+
+// Concrete Renderer-owned Source failure transport. No Native ownership,
+// allocation, current-count observation or scalar authority is issued here.
+// The real Renderer constructs it before publishing this SAME context; only
+// the actual worker ctor/entry/dtor below can record the corresponding facts.
+class NativeRendererRawFailureBridge final {
+public:
+    ~NativeRendererRawFailureBridge() = default;
+    NativeRendererRawFailureBridge(const NativeRendererRawFailureBridge&) = delete;
+    NativeRendererRawFailureBridge& operator=(const NativeRendererRawFailureBridge&) = delete;
+    NativeRendererRawFailureBridge(NativeRendererRawFailureBridge&&) = delete;
+    NativeRendererRawFailureBridge& operator=(NativeRendererRawFailureBridge&&) = delete;
+    bool has_native_attempt() const noexcept;
+    bool requires_native_join() const noexcept;
+private:
+    friend class game::GameNativeRendererApplication;
+    friend unsigned long __stdcall native_renderer_control_worker_thread_00b33c20(void*);
+    friend NativeRendererControlWorkerStorage* construct_native_renderer_control_worker_00b33da0(void*);
+    friend void destroy_native_renderer_control_worker_00b33b50(NativeRendererControlWorkerStorage&);
+    // null selects the existing legacy path, not a positive fallback permit.
+    NativeRendererRawFailureBridge(NativeMeshRetentionState* selected_real_state,
+        NativeRendererControlWorkerContext&) noexcept;
+    NativeMeshRetentionState* const retention_;
+    NativeRendererControlWorkerContext* const context_;
+    std::atomic<NativeRendererControlWorkerStorage*> actual_owner_{nullptr};
+    std::atomic<void*> actual_thread_{nullptr};
+    std::atomic<bool> constructor_returned_{false}, worker_entered_{false}, joined_{false};
+    void constructor_entered(void*, NativeRendererControlWorkerContext&) noexcept;
+    void thread_created(void*, NativeRendererControlWorkerContext&, void* actual_CreateThread_result) noexcept;
+    void constructor_returned() noexcept;
+    void worker_entered(void*, NativeRendererControlWorkerContext&) noexcept;
+    void joined(void*, NativeRendererControlWorkerContext&, void* actual_waited_thread,
+        unsigned long actual_wait_result) noexcept;
+    void source_failure() noexcept;
+    [[noreturn]] void fail_and_exit() noexcept;
+};
+
 struct NativeRendererControlWorkerContext {
     void* const volatile& actual_clock_01090ab0;
     void* const volatile& actual_renderer_00f8d394;
@@ -47,6 +88,7 @@ struct NativeRendererControlWorkerContext {
     NativeRendererBeginFrameContext* begin_frame;
     void (*end_frame_00b2f4a0)(void* actual_renderer,void* borrowed_context);
     void* end_frame_context;
+    NativeRendererRawFailureBridge* raw_failure_bridge{}; // Source only; no Native record overlay
 };
 
 // One immutable process binding supports CreateThread(raw owner), without an

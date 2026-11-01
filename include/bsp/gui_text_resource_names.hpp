@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/native_render_zero_frame.hpp"
 #include <cstdint>
 #include "bsp/gui_text_lifetime.hpp"
 #include "bsp/font_registry_startup.hpp"
@@ -127,6 +128,9 @@ private:
     const game::GameNativeCanonicalDataOwner* const canonical_data_;
     const volatile std::uint32_t* const feature_word_0109eea4_;
     std::uint32_t preserve_home_;
+    // Separate C++ outer-call custody; public diagnostics never issue an action.
+    // Keep through real postcall/health/catch; no reset as Native HOME reuse.
+    NativeRenderObservedZeroFrame cpp_zero_frame_;
 };
 // SAME genuine completed raw93/canonical122, reserved credited ShaderFrame,
 // actual input header, raw pool and canonical mutable feature-cell backing.

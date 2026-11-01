@@ -1,3 +1,4 @@
+#include "bsp/native_mesh_canonical.hpp"
 #include "bsp/gui_text_clip_refresh.hpp"
 #include "bsp/native_mesh_owner.hpp"
 #include <stdexcept>
@@ -34,14 +35,16 @@ NativeModelOwner& captured_model(NativeNodeBinding& node, GuiTextBufferServices&
         "Text clip drawable requires the same captured live Model storage");
     return model;
 }
-NativeMeshStorage& actual_mesh(void* raw, NativeRenderActualOwners& owners) {
+NativeMeshCanonicalBorrow actual_mesh(void* raw, NativeRenderActualOwners& owners) {
     require(raw != nullptr, "Text clip mesh is null after the native geometry gate");
     auto* reference = dynamic_cast<NativeMeshReference*>(&owners.resolve_actual(raw));
-    require(reference && &reference->storage() == raw && reference->reference_count.load() > 0,
+    require(reference != nullptr, "clip mesh requires its canonical actual owner");
+    NativeMeshCanonicalBorrow pin(*reference);
+    require(&pin.storage() == raw && reference->reference_count.load() > 0,
         "Text clip mesh requires its canonical actual owner");
-    require(reference->storage().draw_sections_54.count_04 >= 0,
+    require(pin.storage().draw_sections_54.count_04 >= 0,
         "Text clip mesh has an invalid negative section count");
-    return reference->storage();
+    return pin;
 }
 void refresh_drawable(GuiWidgetOwner& widget, NativeNodeBinding* captured,
     GuiTextClipRefreshServices& s) {
@@ -50,11 +53,13 @@ void refresh_drawable(GuiWidgetOwner& widget, NativeNodeBinding* captured,
     if (!gui_model_has_geometry_00b74650(model)) return;
     auto& owners = s.buffers.materials.retained_owners;
     void* raw_mesh = gui_model_geometry_00b74640(model.storage.model, 0);
-    actual_mesh(raw_mesh, owners);
+    const auto first_mesh_pin = actual_mesh(raw_mesh, owners);
+    (void)first_mesh_pin;
     if (!gui_mesh_element_count_00b72b40(raw_mesh)) return;
     //00AB7A71/7AB7 reload geometry on the SAME captured Model, before index0.
     raw_mesh = gui_model_geometry_00b74640(model.storage.model, 0);
-    auto& mesh = actual_mesh(raw_mesh, owners);
+    auto mesh_pin = actual_mesh(raw_mesh, owners);
+    auto& mesh = mesh_pin.storage();
     require(mesh.draw_sections_54.data_00 != nullptr && mesh.draw_sections_54.count_04 > 0,
         "Text clip mesh requires actual section0 storage");
     void* raw_section = gui_geometry_element_00b732c0(raw_mesh, 0);

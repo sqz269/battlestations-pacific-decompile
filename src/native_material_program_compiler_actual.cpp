@@ -1,3 +1,12 @@
+#include "bsp/native_render_observed_zero.hpp"
+namespace bsp {
+class NativeMaterialProgramCompilerActualObservedZeroIssuer final {
+public:
+    static void dispatch(NativeRenderActualOwners& owners, void* actual, NativeRenderObservedZeroFrame& outer) {
+        NativeRenderObservedZeroAccess::dispatch(owners, actual, outer);
+    }
+};
+} // namespace bsp
 #include "bsp/native_material_program_compiler_actual.hpp"
 #include "bsp/native_material_compiler_providers.hpp"
 #include "bsp/native_physical_file_date.hpp"
@@ -317,7 +326,7 @@ void construct_shader_owner(Frame& a, bool pixel) {
         a.sampler_entry.owner_release_previous_count =
             a.shader_owners[index]->references_04.fetch_sub(1, std::memory_order_seq_cst);
         if (a.sampler_entry.owner_release_previous_count == 1)
-            dispatch_native_render_actual_owner_zero(owners, a.shader_owners[index]);
+            NativeMaterialProgramCompilerActualObservedZeroIssuer::dispatch(owners, a.shader_owners[index], a.cpp_zero_frame);
         finish_sampler_entry_release(a, operation);
     } else release_native_render_actual_owner(owners, a.shader_owners[index]);
     if (pixel) a.pixel_owner_released = true; else a.vertex_owner_released = true;

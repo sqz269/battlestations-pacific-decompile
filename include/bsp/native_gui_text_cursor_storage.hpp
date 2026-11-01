@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/native_render_zero_frame.hpp"
 #include "bsp/native_gui_text_storage_construct.hpp"
 #include "bsp/native_gui_text_reference.hpp"
 #include "bsp/native_node_raw_transform.hpp"
@@ -29,6 +30,9 @@ struct NativeGuiTextCursorStorageRelease {
     NativeTextureSurfaceReferenceIncrement captured_decrement{};
     long result{};
     bool entered{}, decremented{}, zero_entered{}, zero_returned{}, complete{};
+    // Separate C++ outer-call custody; public diagnostics never issue an action.
+    // Keep through real postcall/health/catch; no reset as Native HOME reuse.
+    NativeRenderObservedZeroFrame cpp_zero_frame;
 };
 struct NativeGuiTextCursorStorageAcquired {
     // provider_call is a SOURCE provider boundary, not Native exception origin.

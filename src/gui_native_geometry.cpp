@@ -1,4 +1,6 @@
 #include "bsp/gui_native_geometry.hpp"
+#include "bsp/native_mesh_canonical.hpp"
+#include <mutex>
 #include "bsp/native_mesh_clone.hpp"
 #include "bsp/native_vertex_declaration_loading.hpp"
 #include <cstring>
@@ -16,6 +18,29 @@ void require(bool condition, const char* reason) {
 }
 
 struct GuiNativeGeometryOwners::Impl {
+    struct OrdinaryMeshEntry final {
+        OrdinaryMeshEntry* next{};
+        std::optional<NativeMeshCanonicalProducerFrame> frame;
+        bool birth_normal{};
+    };
+    NativeMeshCanonicalDomain* const ordinary_mesh_domain;
+    std::mutex ordinary_mesh_mutex;
+    OrdinaryMeshEntry* ordinary_mesh_head{};
+    OrdinaryMeshEntry& reserve_ordinary_mesh() {
+        // Entry ownership is installed before fallible Frame preparation. No
+        // list allocation/new-handler callback runs under this metadata mutex.
+        auto candidate = std::make_unique<OrdinaryMeshEntry>();
+        OrdinaryMeshEntry* retained;
+        {
+            std::lock_guard<std::mutex> lock(ordinary_mesh_mutex);
+            candidate->next = ordinary_mesh_head;
+            ordinary_mesh_head = candidate.get();
+            retained = candidate.release();
+        }
+        retained->frame.emplace(*ordinary_mesh_domain, retained);
+        return *retained;
+    }
+
     struct MeshEntry {
         explicit MeshEntry(Impl& owner) noexcept : domain(owner) {}
         Impl& domain;
@@ -70,8 +95,9 @@ struct GuiNativeGeometryOwners::Impl {
     std::list<DeclarationEntry> declaration_entries;
 
     Impl(NativeMeshEnvironment& mesh_environment, NativeMeshConstants supplied,
-        NativeMeshSectionEnvironment& section_environment, GuiNativeGeometryRegistration registry)
-        : meshes(mesh_environment), constants(supplied), sections(section_environment),
+        NativeMeshSectionEnvironment& section_environment, GuiNativeGeometryRegistration registry,
+        NativeMeshCanonicalDomain* ordinary = nullptr)
+        : ordinary_mesh_domain(ordinary), meshes(mesh_environment), constants(supplied), sections(section_environment),
           registration(registry) {
         require(registration.bind && registration.unbind,
             "GUI native geometry requires canonical registration and retirement");
@@ -80,6 +106,14 @@ struct GuiNativeGeometryOwners::Impl {
             "GUI native mesh and section must use the same actual owner domain");
     }
     ~Impl() {
+        // Actual ordinary owner guarantees all calls/credits/worker scopes and
+        // exact records are closed before this destructor; failure is retained
+        // by the concrete early Host boundary, never cleanup replayed here.
+        while (ordinary_mesh_head) {
+            auto* const next = ordinary_mesh_head->next;
+            delete ordinary_mesh_head;
+            ordinary_mesh_head = next;
+        }
         if (!mesh_entries.empty() || !section_entries.empty() || !material_entries.empty() ||
             !vertex_entries.empty() || !index_entries.empty() || !declaration_entries.empty())
             std::terminate();
@@ -445,15 +479,122 @@ GuiNativeGeometryOwners::GuiNativeGeometryOwners(NativeMeshEnvironment& meshes,
     NativeMeshConstants constants, NativeMeshSectionEnvironment& sections,
     GuiNativeGeometryRegistration registration)
     : impl_(std::make_unique<Impl>(meshes, constants, sections, registration)) {}
+GuiNativeGeometryOwners::GuiNativeGeometryOwners(NativeMeshEnvironment& meshes,
+    NativeMeshConstants constants, NativeMeshSectionEnvironment& sections,
+    GuiNativeGeometryRegistration registration, NativeMeshCanonicalDomain& ordinary)
+    : impl_(std::make_unique<Impl>(meshes, constants, sections, registration, &ordinary)) {
+    NativeMeshCanonicalAccess::require_domain_identity(ordinary, meshes, registration.owners, constants);
+}
+void GuiNativeGeometryOwners::record_ordinary_source_failure() noexcept {
+    if (impl_->ordinary_mesh_domain)
+        NativeMeshCanonicalAccess::retain_source_graph(*impl_->ordinary_mesh_domain);
+}
+void GuiNativeGeometryOwners::close_ordinary_mesh_records_at_quiescence() {
+    if (!impl_->ordinary_mesh_domain) return;
+    // Real owner proves no producer/borrow/worker entry. No payload or count read.
+    for (auto* entry = impl_->ordinary_mesh_head; entry; entry = entry->next) {
+        if (!entry->frame) continue; // failed C++ preparation, no actual Native entry
+        if (entry->birth_normal)
+            NativeMeshCanonicalAccess::close_producer_link_at_quiescence(*entry->frame);
+        else if (entry->frame->record_)
+            NativeMeshCanonicalAccess::cancel_without_native_payload(*entry->frame);
+        entry->frame.reset(); // exact backlink already severed; metadata only
+    }
+}
 GuiNativeGeometryOwners::~GuiNativeGeometryOwners() = default;
-NativeMeshStorage* GuiNativeGeometryOwners::create_mesh() { return impl_->create_mesh(); }
+NativeMeshStorage* GuiNativeGeometryOwners::create_mesh() {
+    if (!impl_->ordinary_mesh_domain) return impl_->create_mesh();
+    try {
+        auto& entry = impl_->reserve_ordinary_mesh();
+        auto& frame = *entry.frame;
+        auto* const raw = NativeMeshCanonicalAccess::allocate_explicit(frame);
+        if (!raw) {
+            NativeMeshCanonicalAccess::cancel_without_native_payload(frame);
+            throw std::bad_alloc(); // same Source factory NULL policy, no Native object
+        }
+        auto* const result = NativeMeshCanonicalAccess::construct(frame);
+        entry.birth_normal = true;
+        (void)NativeMeshCanonicalAccess::publish(frame);
+        NativeMeshCanonicalAccess::transfer_creator_to_caller(frame);
+        return result;
+    } catch (...) {
+        NativeMeshCanonicalAccess::retain_source_graph(*impl_->ordinary_mesh_domain);
+        throw;
+    }
+}
 NativeMeshSectionStorage* GuiNativeGeometryOwners::create_section() { return impl_->create_section(); }
 NativeMeshSectionStorage* GuiNativeGeometryOwners::create_native_section_00533fa0(
     GuiNativeSectionAcquired& acquired) { return impl_->create_native_section(acquired); }
 NativeMeshStorage* GuiNativeGeometryOwners::create_native_mesh_and_publish(
-    void* pair, GuiNativeMeshAcquired& acquired) { return impl_->create_native_mesh(pair, acquired); }
+    void* pair, GuiNativeMeshAcquired& acquired) {
+    if (!impl_->ordinary_mesh_domain) return impl_->create_native_mesh(pair, acquired);
+    require(!acquired.started && !acquired.raw_slot && !acquired.creator &&
+        !acquired.companion && !acquired.owner_record && !acquired.published && !acquired.registered,
+        "Native mesh admission requires one fresh frame");
+    acquired.started = true;
+    try {
+        auto& entry = impl_->reserve_ordinary_mesh();
+        auto& frame = *entry.frame;
+        acquired.native_site = 0x00b9472f;
+        acquired.raw_slot = NativeMeshCanonicalAccess::allocate_explicit(frame);
+        NativeMeshStorage* creator = nullptr;
+        if (acquired.raw_slot) {
+            acquired.native_site = 0x00b94744;
+            creator = NativeMeshCanonicalAccess::construct(frame);
+            entry.birth_normal = true;
+            acquired.constructor_complete = true;
+            acquired.companion = &NativeMeshCanonicalAccess::publish(frame);
+        }
+        acquired.creator = creator;
+        acquired.raw_slot = nullptr; // actual constructor consumption, not release
+        acquired.native_site = 0x00b9474d;
+        *static_cast<NativeMeshStorage* volatile*>(pair) = creator;
+        acquired.published = true;
+        acquired.native_site = 0x00b94756;
+        if (!creator) { NativeMeshCanonicalAccess::cancel_without_native_payload(frame); return nullptr; }
+        acquired.owner_record = &entry;
+        acquired.registered = true; // observation, never Native-credit authority
+        NativeMeshCanonicalAccess::transfer_creator_to_caller(frame);
+        return creator;
+    } catch (...) {
+        NativeMeshCanonicalAccess::retain_source_graph(*impl_->ordinary_mesh_domain);
+        throw;
+    }
+}
 NativeMeshStorage* GuiNativeGeometryOwners::create_native_mesh_00b73b60(
-    GuiNativeMeshAcquired& acquired) { return impl_->create_native_mesh_00b73b60(acquired); }
+    GuiNativeMeshAcquired& acquired) {
+    if (!impl_->ordinary_mesh_domain) return impl_->create_native_mesh_00b73b60(acquired);
+    require(!acquired.started && !acquired.raw_slot && !acquired.creator &&
+        !acquired.companion && !acquired.owner_record && !acquired.published && !acquired.registered,
+        "Native B4C700 mesh admission requires one fresh acquired frame");
+    acquired.started = true;
+    try {
+        auto& entry = impl_->reserve_ordinary_mesh();
+        auto& frame = *entry.frame;
+        acquired.native_site = 0x00b4c756;
+        acquired.raw_slot = NativeMeshCanonicalAccess::allocate_static(frame);
+        if (!acquired.raw_slot) {
+            acquired.native_site = 0x00b4c789;
+            NativeMeshCanonicalAccess::cancel_without_native_payload(frame);
+            return nullptr;
+        }
+        acquired.native_site = 0x00b4c761;
+        auto* const creator = NativeMeshCanonicalAccess::construct(frame);
+        entry.birth_normal = true;
+        acquired.constructor_complete = true;
+        acquired.companion = &NativeMeshCanonicalAccess::publish(frame);
+        acquired.creator = creator;
+        acquired.raw_slot = nullptr;
+        acquired.native_site = 0x00b4c789;
+        acquired.owner_record = &entry;
+        acquired.registered = true;
+        NativeMeshCanonicalAccess::transfer_creator_to_caller(frame);
+        return creator;
+    } catch (...) {
+        NativeMeshCanonicalAccess::retain_source_graph(*impl_->ordinary_mesh_domain);
+        throw;
+    }
+}
 NativeMeshConstants GuiNativeGeometryOwners::mesh_constants() const noexcept { return impl_->constants; }
 NativeMeshStorage* GuiNativeGeometryOwners::clone_mesh_for_text_00b742a0(
     NativeMeshStorage& source, const volatile std::uint32_t* mesh_profile,
@@ -466,8 +607,10 @@ NativeMeshStorage* GuiNativeGeometryOwners::clone_mesh_for_text_00b742a0(
         "GUI Text mesh clone requires empty acquired creator storage");
     auto* const source_reference = dynamic_cast<NativeMeshReference*>(
         &actual_owners().resolve_actual(&source));
-    require(source.native_vtable_00 == 0x00d62d60 && source_reference &&
-        &source_reference->storage() == &source,
+    require(source_reference != nullptr, "GUI Text clone requires its genuine Mesh canonical");
+    NativeMeshCanonicalBorrow source_pin(*source_reference);
+    require(source.native_vtable_00 == 0x00d62d60 &&
+        &source_pin.storage() == &source,
         "GUI Text mesh clone requires its canonical actual D62D60 mesh");
     require(mesh_profile && mesh_profile[4] == 0x00b742a0,
         "GUI Text mesh has no implementation for its current clone virtual slot");

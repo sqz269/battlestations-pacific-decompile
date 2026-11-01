@@ -1,3 +1,12 @@
+#include "bsp/native_render_observed_zero.hpp"
+namespace bsp {
+class NativeMainSceneSubmissionObservedZeroIssuer final {
+public:
+    static void dispatch(NativeRenderActualOwners& owners, void* actual, NativeRenderObservedZeroFrame& outer) {
+        NativeRenderObservedZeroAccess::dispatch(owners, actual, outer);
+    }
+};
+} // namespace bsp
 #include "bsp/native_main_scene_submission.hpp"
 #include "bsp/native_render_scene_submission.hpp"
 #include "bsp/native_render_batch_preparation_actual.hpp"
@@ -303,7 +312,7 @@ NativeRenderCommandStorage* submit_native_main_scene_00b101c0(void* service,
                 static_cast<std::byte*>(camera_storage) + 4));
             if (previous && c.actual_decrement_00ce2220(reinterpret_cast<volatile long*>(
                     static_cast<std::byte*>(previous) + 4)) == 0)
-                dispatch_native_render_actual_owner_zero(c.submission.commands.owners, previous);
+                NativeMainSceneSubmissionObservedZeroIssuer::dispatch(c.submission.commands.owners, previous, op.cpp_zero_frame);
         }
     }
     op.completed = true;

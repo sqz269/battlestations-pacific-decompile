@@ -5,6 +5,8 @@
 #include <cstdint>
 
 namespace bsp {
+class NativePostEffectModelFrame;
+struct NativeNodeTreeRetirementContext;
 struct NativeNodeTreeRetirementFrame {
     // Actual initialized argument word pushed for B8F4C0, then passed by
     // address to byte-identical B7BED0/B7B620. Private register gaps excluded.
@@ -22,6 +24,12 @@ struct NativeNodeTreeRetirementAcquired {
 struct NativeNodeTreeRetirementInvocation {
     NativeNodeTreeRetirementFrame& frame;
     NativeNodeTreeRetirementAcquired& acquired;
+    NativeNodeTreeRetirementInvocation(NativeNodeTreeRetirementFrame& f,
+        NativeNodeTreeRetirementAcquired& a) noexcept : frame(f), acquired(a) {}
+private:
+    friend class NativePostEffectModelFrame;
+    NativePostEffectModelFrame* model_home_owner_{};
+    std::uint64_t model_home_invocation_{}; // CPP identity only, never Native generation
 };
 class NativeNodeTreeRetirementFrames {
 public:
@@ -31,6 +39,14 @@ public:
     // gets distinct live frame/diagnostics. This is not a native call boundary.
     virtual NativeNodeTreeRetirementInvocation recursive_unregister(
         void* actual_child) = 0;
+private:
+    friend void unregister_native_node_tree_00b6d850(void*,
+        NativeNodeTreeRetirementFrame&, NativeNodeTreeRetirementContext&,
+        NativeNodeTreeRetirementAcquired&);
+    // Authentic Source callsite return only; no public receipt application.
+    // Default suppliers retain their existing prepared backing/policy.
+    virtual void native_recursive_returned(void*,
+        const NativeNodeTreeRetirementInvocation&) noexcept {}
 };
 class NativeNodeTreeRetirementDispatch {
 public:

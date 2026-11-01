@@ -1,3 +1,4 @@
+#include "bsp/native_render_observed_zero.hpp"
 #include "bsp/native_singleton_publication.hpp"
 #include "bsp/native_singleton_removal_reorder.hpp"
 #include "bsp/native_singleton_destruction.hpp"
@@ -16,6 +17,25 @@
 #endif
 
 namespace bsp {
+// Concrete per-outer-operation Source receiver. The original context stays
+// read-only/shareable. Copy ONLY its stable provider bindings: live imports,
+// publication and record services remain references to the SAME actual cells.
+class NativeParticleClockShutdownObservedZeroIssuer final {
+    NativeRenderObservedZeroFrame local_;
+    NativeParticleClockShutdownContext binding_;
+    NativeRenderObservedZeroAccess::Invocation invocation_;
+    static NativeParticleClockShutdownContext binding(
+        NativeParticleClockShutdownContext& actual, NativeRenderObservedZeroFrame& local) noexcept {
+        NativeParticleClockShutdownContext result(actual);
+        if (!result.cpp_zero_frame) result.cpp_zero_frame=&local;
+        return result;
+    }
+public:
+    explicit NativeParticleClockShutdownObservedZeroIssuer(
+        NativeParticleClockShutdownContext& actual) noexcept
+        : binding_(binding(actual,local_)), invocation_(*binding_.cpp_zero_frame) {}
+    NativeParticleClockShutdownContext& context() noexcept { return binding_; }
+};
 namespace {
 using Word = std::uint32_t;
 using Context = NativeParticleClockShutdownContext;
@@ -61,7 +81,7 @@ void release_current_sink(void* secondary, void* captured_sink, Context& context
     if (context.actual_resource_owners) {
         release_native_particle_clock_sink_004ddb40(
             secondary, context.actual_decrement_00ce2220, captured_sink,
-            *context.actual_resource_owners);
+            *context.actual_resource_owners, *context.cpp_zero_frame);
     } else {
         release_native_particle_clock_sink_004ddb40(
             secondary, context.actual_decrement_00ce2220, captured_sink);
@@ -89,8 +109,10 @@ struct BaseCleanup {
 };
 
 __declspec(noinline) void* __cdecl delete_native_particle_clock_impl(
-    void* actual_owner, Context* context, volatile std::uint8_t* original_flags_slot) {
+    void* actual_owner, Context* provided, volatile std::uint8_t* original_flags_slot) {
     void* const retained_owner = actual_owner;
+    NativeParticleClockShutdownObservedZeroIssuer outer(*provided);
+    auto* const context=&outer.context();
     destroy_native_particle_clock_00b1b680(retained_owner, *context);
     if ((*original_flags_slot & 1u) != 0) singleton_lifetime_free(retained_owner);
     return retained_owner;
@@ -98,7 +120,9 @@ __declspec(noinline) void* __cdecl delete_native_particle_clock_impl(
 } // namespace
 
 void __fastcall clear_native_particle_clock_records_004dda40(
-    void* secondary, Context& context) {
+    void* secondary, Context& provided) {
+    NativeParticleClockShutdownObservedZeroIssuer outer(provided);
+    auto& context=outer.context();
     while (load(secondary, 8) != 0) {
         const Word count = load(secondary, 8);
         auto* const data = current_record_data(vector_at(secondary));
@@ -120,13 +144,17 @@ void __fastcall clear_native_particle_clock_records_004dda40(
 }
 
 void __fastcall destroy_native_particle_record_array_004ddaa0(
-    NativeResourceRecordVectorStorage& vector, Context& context) {
+    NativeResourceRecordVectorStorage& vector, Context& provided) {
+    NativeParticleClockShutdownObservedZeroIssuer outer(provided);
+    auto& context=outer.context();
     resize_native_particle_record_array_004dc410(vector, context.records, 0);
     singleton_lifetime_free(current_record_data(vector));
 }
 
 void __fastcall destroy_native_particle_clock_records_004de290(
-    void* secondary, Context& context) {
+    void* secondary, Context& provided) {
+    NativeParticleClockShutdownObservedZeroIssuer outer(provided);
+    auto& context=outer.context();
     store(secondary, 0, 0x00ce7d08u);
     ArrayCleanup cleanup{vector_at(secondary), context};
     clear_native_particle_clock_records_004dda40(secondary, context);
@@ -137,7 +165,9 @@ void __fastcall destroy_native_particle_clock_records_004de290(
 }
 
 void __fastcall destroy_native_particle_clock_00b1b680(
-    void* owner, Context& context) {
+    void* owner, Context& provided) {
+    NativeParticleClockShutdownObservedZeroIssuer outer(provided);
+    auto& context=outer.context();
     store(owner, 0, 0x00ce7d38u);
     store(owner, 4, 0x00ce7d24u);
     BaseCleanup cleanup{owner, context};
@@ -169,10 +199,12 @@ __declspec(naked) void* __fastcall delete_native_particle_clock_secondary_004de3
 }
 void __cdecl destroy_published_native_particle_clock_00736930(
     void* volatile& manager_publication,
-    NativeParticleClockShutdownContext& shutdown,
+    NativeParticleClockShutdownContext& provided,
     const volatile Word* complete_profile,
     const volatile Word* base_profile) {
-    if (!shutdown.actual_publication_00f8d420) return;
+    if (!provided.actual_publication_00f8d420) return; // SAME first actual read
+    NativeParticleClockShutdownObservedZeroIssuer outer(provided);
+    auto& shutdown=outer.context();
     void* const first_manager = get_native_singleton_manager_00415350(manager_publication);
     auto* const captured_section = *reinterpret_cast<CRITICAL_SECTION* volatile*>(
         at(first_manager, 0x10));

@@ -7,6 +7,8 @@
 #include <Windows.h>
 #include <new>
 #include <stdexcept>
+#include <cstdlib>
+#include "bsp/native_mesh_canonical.hpp"
 
 namespace bsp {
 namespace {
@@ -154,7 +156,7 @@ bool native_renderer_worker_interval_00b33c72(const ClockTimestamp& stamp,
     return ready!=0;
 }
 
-unsigned long __stdcall native_renderer_control_worker_thread_00b33c20(void* raw) {
+static unsigned long __stdcall legacy_native_renderer_control_worker_thread_00b33c20(void* raw) {
     auto& owner=*static_cast<NativeRendererControlWorkerStorage*>(raw);
     auto& c=context();
     wait(owner.wake_0c,c);
@@ -186,7 +188,7 @@ unsigned long __stdcall native_renderer_control_worker_thread_00b33c20(void* raw
     ExitThread(0);
 }
 
-NativeRendererControlWorkerStorage* construct_native_renderer_control_worker_00b33da0(void* fresh) {
+static NativeRendererControlWorkerStorage* legacy_construct_native_renderer_control_worker_00b33da0(void* fresh) {
     auto& c=context();
     auto* owner=::new(fresh) NativeRendererControlWorkerStorage;
     owner->profile_00=0x00d5f1f0;
@@ -201,7 +203,7 @@ NativeRendererControlWorkerStorage* construct_native_renderer_control_worker_00b
     return owner;
 }
 
-void destroy_native_renderer_control_worker_00b33b50(NativeRendererControlWorkerStorage& owner) {
+static void legacy_destroy_native_renderer_control_worker_00b33b50(NativeRendererControlWorkerStorage& owner) {
     auto& c=context();
     auto* const wake=owner.wake_0c; // B33B53 captures before profile/shutdown.
     owner.profile_00=0x00d5f1f0;owner.shutdown_05=1;
@@ -218,4 +220,119 @@ NativeRendererControlWorkerStorage* delete_native_renderer_control_worker_00b33c
     if(flags&1)singleton_lifetime_free(owner);
     return owner;
 }
+
+NativeRendererRawFailureBridge::NativeRendererRawFailureBridge(
+    NativeMeshRetentionState* state,NativeRendererControlWorkerContext& context) noexcept
+    : retention_(state),context_(&context) {
+    if(state) context.raw_failure_bridge=this;
+}
+bool NativeRendererRawFailureBridge::has_native_attempt() const noexcept {
+    return actual_owner_.load(std::memory_order_acquire)!=nullptr;
+}
+bool NativeRendererRawFailureBridge::requires_native_join() const noexcept {
+    return has_native_attempt() && !joined_.load(std::memory_order_acquire);
+}
+void NativeRendererRawFailureBridge::source_failure() noexcept {
+    if(retention_) retention_->fail();
+}
+[[noreturn]] void NativeRendererRawFailureBridge::fail_and_exit() noexcept {
+    source_failure();
+    std::_Exit(1);
+}
+void NativeRendererRawFailureBridge::constructor_entered(
+    void* actual,NativeRendererControlWorkerContext& context) noexcept {
+    NativeRendererControlWorkerStorage* expected=nullptr;
+    if(!retention_ || &context!=context_ || context.raw_failure_bridge!=this || !actual ||
+        !actual_owner_.compare_exchange_strong(expected,
+            static_cast<NativeRendererControlWorkerStorage*>(actual),std::memory_order_acq_rel))
+        fail_and_exit();
+    // This is only the actual ctor's opaque input identity/entered fact. It is
+    // NOT an allocation receipt, completed Native birth or deletion authority.
+}
+void NativeRendererRawFailureBridge::thread_created(void* actual,
+    NativeRendererControlWorkerContext& context,void* actual_CreateThread_result) noexcept {
+    if(&context!=context_ || actual_owner_.load(std::memory_order_acquire)!=actual ||
+        !actual_CreateThread_result) fail_and_exit();
+    // Genuine Win32 return, captured before ResumeThread. No Native field
+    // resample, adopted handle, extra OS query, retain or allocation.
+    actual_thread_.store(actual_CreateThread_result,std::memory_order_release);
+}
+void NativeRendererRawFailureBridge::constructor_returned() noexcept {
+    constructor_returned_.store(true,std::memory_order_release);
+}
+void NativeRendererRawFailureBridge::worker_entered(
+    void* actual,NativeRendererControlWorkerContext& context) noexcept {
+    if(&context!=context_ || context.raw_failure_bridge!=this ||
+        actual_owner_.load(std::memory_order_acquire)!=actual ||
+        !actual_thread_.load(std::memory_order_acquire) ||
+        worker_entered_.exchange(true,std::memory_order_acq_rel)) fail_and_exit();
+    // ResumeThread may schedule this before the actual ctor returns. The
+    // genuine CreateThread continuation already followed its Native stores.
+}
+void NativeRendererRawFailureBridge::joined(void* actual,
+    NativeRendererControlWorkerContext& context,void* actual_waited_thread,unsigned long result) noexcept {
+    if(&context!=context_ || actual_owner_.load(std::memory_order_acquire)!=actual ||
+        !actual_waited_thread || actual_thread_.load(std::memory_order_acquire)!=actual_waited_thread ||
+        !constructor_returned_.load(std::memory_order_acquire) || result!=WAIT_OBJECT_0)
+        fail_and_exit();
+    joined_.store(true,std::memory_order_release);
+}
+
+unsigned long __stdcall native_renderer_control_worker_thread_00b33c20(void* raw) {
+    auto* current=static_cast<NativeRendererControlWorkerContext*>(
+        InterlockedCompareExchangePointer(&process_context,nullptr,nullptr));
+    auto* bridge=current?current->raw_failure_bridge:nullptr;
+    if(!bridge) return legacy_native_renderer_control_worker_thread_00b33c20(raw);
+    try {
+        bridge->worker_entered(raw,*current);
+        return legacy_native_renderer_control_worker_thread_00b33c20(raw);
+    } catch(...) {
+        // Atomic metadata only. No logging/current_exception/provider unwind,
+        // idle signal/run repair, allocation or graph destruction is added.
+        bridge->fail_and_exit();
+    }
+}
+NativeRendererControlWorkerStorage* construct_native_renderer_control_worker_00b33da0(void* fresh) {
+    auto* current=static_cast<NativeRendererControlWorkerContext*>(
+        InterlockedCompareExchangePointer(&process_context,nullptr,nullptr));
+    auto* bridge=current?current->raw_failure_bridge:nullptr;
+    if(!bridge) return legacy_construct_native_renderer_control_worker_00b33da0(fresh);
+    bridge->constructor_entered(fresh,*current); // before any original ctor effect/CreateThread
+    try {
+        auto& c=*current;
+        auto* owner=::new(fresh) NativeRendererControlWorkerStorage;
+        owner->profile_00=0x00d5f1f0;
+        owner->run_04=0;owner->shutdown_05=0;owner->thread_08=nullptr;owner->thread_id_14=0;
+        c.actual_time_bits_0108d6e4=0;
+        owner->wake_0c=create_native_event_owner_00bd1970(0);
+        owner->idle_10=create_native_event_owner_00bd1970(0);
+        void* const actual_created_thread=CreateThread(nullptr,0,&native_renderer_control_worker_thread_00b33c20,
+            owner,CREATE_SUSPENDED,reinterpret_cast<DWORD*>(const_cast<std::uint32_t*>(&owner->thread_id_14)));
+        owner->thread_08=actual_created_thread;
+        bridge->thread_created(owner,c,actual_created_thread);
+        SetThreadPriority(owner->thread_08,-2);
+        ResumeThread(owner->thread_08);
+        bridge->constructor_returned();
+        return owner;
+    } catch(...) { bridge->source_failure(); throw; }
+}
+void destroy_native_renderer_control_worker_00b33b50(NativeRendererControlWorkerStorage& owner) {
+    auto& c=context();
+    auto* bridge=c.raw_failure_bridge;
+    if(!bridge) { legacy_destroy_native_renderer_control_worker_00b33b50(owner); return; }
+    if(bridge->actual_owner_.load(std::memory_order_acquire)!=&owner ||
+        !bridge->constructor_returned_.load(std::memory_order_acquire)) bridge->fail_and_exit();
+    try {
+        auto* const wake=owner.wake_0c;
+        owner.profile_00=0x00d5f1f0;owner.shutdown_05=1;
+        signal(wake,c);
+        void* const actual_waited_thread=owner.thread_08;
+        const DWORD actual_wait_result=WaitForSingleObject(actual_waited_thread,INFINITE);
+        bridge->joined(&owner,c,actual_waited_thread,actual_wait_result); // genuine return, no later idle inference
+        CloseHandle(owner.thread_08);owner.thread_08=nullptr;
+        if(auto* current=owner.wake_0c){delete_event(current,c);owner.wake_0c=nullptr;}
+        if(auto* current=owner.idle_10){delete_event(current,c);owner.idle_10=nullptr;}
+    } catch(...) { bridge->source_failure(); throw; }
+}
+
 } // namespace bsp

@@ -2,6 +2,7 @@
 #include "bsp/model_type_bootstrap.hpp"
 #include "bsp/native_ref_counted.hpp"
 #include "bsp/native_model_resource_storage.hpp"
+#include "bsp/native_post_effect_model_lifetime.hpp"
 #include <cstring>
 #include <exception>
 #include <new>
@@ -30,12 +31,20 @@ static_assert(NativeModelPool::slot_bytes == 0x188);
 // Only the real raw continuation and existing end/failure paths call these.
 class NativeModelRawFactsAccess final {
 public:
+    static NativePostEffectModelFrame* ordinary_frame(NativeModelOwner& owner) noexcept {
+        return owner.ordinary_post_effect_;
+    }
+    static void end_ordinary_tail(NativeModelOwner& owner) noexcept {
+        owner.ordinary_post_effect_->tail_ended_after_prefix(owner);
+    }
     static void entered(NativeModelOwner& owner) {
         auto& facts = owner.raw_facts_;
         if (facts.entered || facts.returned || facts.destruction_entered ||
             facts.typed_end_entered || facts.failed)
             throw std::logic_error("raw Model constructor fact cannot replay");
         facts.entered = true;
+        if (owner.ordinary_post_effect_)
+            owner.ordinary_post_effect_->native_constructor_entered(owner);
     }
     static void returned(NativeModelOwner& owner,
         const NativeNodeRawConstants& constants) noexcept {
@@ -48,6 +57,8 @@ public:
         facts.constants = &constants;
         facts.sentinel = &owner.environment.constants.unchanged_00d7a260;
         facts.returned = true;
+        if (owner.ordinary_post_effect_)
+            owner.ordinary_post_effect_->native_constructor_returned(owner);
     }
     static void destroying(NativeModelOwner& owner) noexcept {
         owner.raw_facts_.destruction_entered = true;
@@ -199,11 +210,18 @@ void publish_model_phase(NativeModelOwner& owner) noexcept {
     owner.node.scene_attachment.remove_scene = model_remove_scene;
     owner.node.scene_attachment.world_changed = model_world_changed;
 }
-void end_tail(NativeModelOwner& owner) noexcept {
+void end_tail_legacy(NativeModelOwner& owner) noexcept {
     NativeModelRawFactsAccess::ended(owner);
     owner.storage.model.~NativeModelTailStorage();
     owner.environment.nodes.scenes.forget_destroyed_binding(owner.node.scene_attachment);
     owner.phase = NativeModelOwner::Phase::dead;
+}
+void end_tail(NativeModelOwner& owner) noexcept {
+    if (NativeModelRawFactsAccess::ordinary_frame(owner)) {
+        NativeModelRawFactsAccess::end_ordinary_tail(owner);
+        return;
+    }
+    end_tail_legacy(owner);
 }
 void end_raw_typed_storage(void* context) noexcept {
     auto& owner = *static_cast<NativeModelOwner*>(context);
@@ -273,6 +291,17 @@ bool different_scalar(float value, std::uint32_t sentinel) noexcept {
 
 NativeModelOwner::NativeModelOwner(void* slot, std::size_t bytes, NativeModelEnvironment& access)
     : NativeModelOwner(slot, bytes, access, static_cast<NativeModelRawLifetimeBinding*>(nullptr)) {}
+NativeModelOwner::NativeModelOwner(NativePostEffectModelFrame& frame)
+    : storage(prepare_bound_storage(frame.actual_for_owner(), NativeModelPool::slot_bytes,
+          frame.environment_for_owner(), &frame.lifetime_for_owner())),
+      environment(frame.environment_for_owner()),
+      node(storage.node, NativeNodePreconstructionBinding{}, model_is_type, model_attach_scene, this),
+      raw_lifetime(&frame.lifetime_for_owner()), ordinary_post_effect_(&frame) {
+    node.scene_attachment.world_changed = model_world_changed;
+    node.scene_attachment.remove_scene = model_remove_scene;
+    // No logical Scene/Generated registration on this new private raw route.
+    frame.owner_cpp_returned(*this);
+}
 NativeModelOwner::NativeModelOwner(void* slot, std::size_t bytes, NativeModelEnvironment& access,
     NativeModelRawLifetimeBinding& raw)
     : NativeModelOwner(slot, bytes, access, &raw) {}
@@ -293,6 +322,10 @@ NativeModelOwner::NativeModelOwner(void* slot, std::size_t bytes, NativeModelEnv
     }
 }
 NativeModelOwner::~NativeModelOwner() {
+    if (ordinary_post_effect_) {
+        ordinary_post_effect_->owner_cpp_ending(*this);
+        return;
+    }
     if (phase == Phase::prepared) {
         NativeModelRawFactsAccess::ended(*this);
         environment.nodes.scenes.forget_destroyed_binding(node.scene_attachment);
@@ -385,6 +418,8 @@ void destroy_native_model_geometry_member_00b74f20(
     release_then_clear(model.geometry_180, owners);
 }
 void destroy_native_model_00b750c0(NativeModelOwner& owner) {
+    if (NativeModelRawFactsAccess::ordinary_frame(owner))
+        throw std::logic_error("ordinary post-effect Model uses its genuine canonical scalar action");
     require_live(owner);
     if (auto* raw = owner.raw_lifetime) {
         require_raw_terminal_fresh(*raw);
@@ -426,6 +461,8 @@ void* delete_native_model_00b75290(NativeModelOwner& owner, std::uint32_t flags)
     return slot;
 }
 void* delete_native_model_raw_00b75290(NativeModelOwner& owner, const volatile std::uint32_t& flags) {
+    if (NativeModelRawFactsAccess::ordinary_frame(owner))
+        throw std::logic_error("ordinary post-effect Model uses its genuine canonical scalar action");
     require_live(owner);
     auto* raw = owner.raw_lifetime;
     if (!raw) throw std::logic_error("raw Model scalar requires its immutable raw lifetime binding");
@@ -438,6 +475,8 @@ void* delete_native_model_raw_00b75290(NativeModelOwner& owner, const volatile s
 }
 void set_native_model_geometry_00b75170(NativeModelOwner& owner, std::uint32_t unused,
     void* geometry, float scalar_178, float scalar_17c) {
+    if (NativeModelRawFactsAccess::ordinary_frame(owner))
+        throw std::logic_error("ordinary post-effect Model requires retained S1 argument homes");
     static_cast<void>(unused);
     require_live(owner);
     auto& model = owner.storage.model;
@@ -463,6 +502,13 @@ NativeModelReference::NativeModelReference(NativeModelOwner& owner, NativeModelC
     require_terminal_slot(owner, 0, 0x00bd30e0u);
     require_terminal_slot(owner, 4, 0x00b75290u);
     runtime_.bind(*this);
+}
+NativeModelReference::NativeModelReference(NativePostEffectModelFrame& frame) noexcept
+    : RenderCommandReference(frame.owner()->storage.node.references_04),
+      ordinary_post_effect_(&frame), owner_(*frame.owner()),
+      runtime_(owner_.environment.nodes.attachments), disposal_{} {
+    // Private genuine constructor-return continuation; no count/profile read,
+    // retain, default count or legacy logical registration.
 }
 NativeModelReference::~NativeModelReference() {
     if (phase_ != Phase::retired) std::terminate();
@@ -572,6 +618,10 @@ private:
 };
 
 void NativeModelReference::delete_raw_scalar_00b75290(const volatile std::uint32_t& flags) {
+    if (ordinary_post_effect_) {
+        ordinary_post_effect_->delete_scalar_from_reference(*this, flags);
+        return;
+    }
     if (phase_ != Phase::bound || !owner_.raw_lifetime || owner_.phase != NativeModelOwner::Phase::live)
         throw std::logic_error("canonical raw Model scalar requires its same live bound reference");
     auto& runtime = runtime_;
@@ -587,7 +637,7 @@ void NativeModelReference::delete_raw_scalar_00b75290(const volatile std::uint32
     phase_ = Phase::retired;
     disposal.retire(disposal.context, *this); // flags0 callback retains original physical-slot receipt
 }
-void NativeModelReference::release_zero_references() noexcept {
+void NativeModelReference::release_legacy_zero_noexcept() noexcept {
     if (owner_.raw_lifetime) {
         try {
             auto& raw = require_raw_reference(*this);
@@ -616,6 +666,29 @@ void NativeModelReference::release_zero_references() noexcept {
     runtime.unbind(*this); // host identity only; physical slot is already free
     phase_ = Phase::retired;
     disposal.retire(disposal.context, *this);
+}
+void NativeModelReference::release_zero_references() {
+    if (!ordinary_post_effect_) {
+        release_legacy_zero_noexcept();
+        return;
+    }
+    auto& frame = *ordinary_post_effect_;
+    try {
+        if (!frame.consume_zero_action(*this))
+            throw std::logic_error("ordinary Model zero requires its actual observed-zero issuer");
+        auto& raw = require_raw_reference(*this);
+        if (phase_ != Phase::bound)
+            throw std::logic_error("ordinary Model zero requires its SAME bound canonical");
+        require_raw_terminal_fresh(raw);
+        require_slot(owner_, 0, 0x00bd30e0);
+        RawDeleteCalls calls(*this);
+        invoke_native_ref_counted_delete_00bd30e0(&owner_.storage.node, calls);
+        frame.complete_zero_action();
+    } catch (...) {
+        frame.record_source_failure();
+        record_raw_failure(owner_);
+        throw;
+    }
 }
 NativeModelRawLifetimeBinding& NativeModelReference::require_checked_raw_live() {
     const auto& facts = owner_.raw_facts_;

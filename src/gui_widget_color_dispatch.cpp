@@ -1,3 +1,4 @@
+#include "bsp/native_mesh_canonical.hpp"
 #include "bsp/gui_widget_color_dispatch.hpp"
 #include "bsp/gui_material_binding.hpp"
 #include "bsp/native_mesh_owner.hpp"
@@ -28,7 +29,9 @@ float* material_color(GuiWidgetOwner& widget) {
     auto& actual = owner.environment.retained_owners;
     auto* mesh = gui_model_geometry_00b74640(owner.storage.model, 0);
     auto* mesh_ref = dynamic_cast<NativeMeshReference*>(&actual.resolve_actual(mesh));
-    if (!mesh_ref || &mesh_ref->storage() != mesh || mesh_ref->reference_count.load() <= 0)
+    if (!mesh_ref) throw std::logic_error("GUI color requires actual current mesh ownership");
+    NativeMeshCanonicalBorrow mesh_pin(*mesh_ref);
+    if (&mesh_pin.storage() != mesh || mesh_ref->reference_count.load() <= 0)
         throw std::logic_error("GUI color requires actual current mesh ownership");
     if (gui_mesh_element_count_00b72b40(mesh) == 0) return nullptr;
     mesh = gui_model_geometry_00b74640(owner.storage.model, 0);

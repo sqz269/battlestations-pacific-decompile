@@ -1,3 +1,4 @@
+#include "bsp/native_mesh_canonical.hpp"
 #include "bsp/game_native_gui_line_application.hpp"
 #include "bsp/game_native_gui_effect_application.hpp"
 #include "bsp/game_native_renderer_application.hpp"
@@ -76,6 +77,7 @@ struct GameNativeGuiLineApplication::Impl {
         NativeStreamCloneAcquired vertex, index;
         GuiNativeSectionAcquired acquired_section;
         NativeMeshStorage* mesh{};
+        std::optional<NativeMeshCanonicalBorrow> mesh_pin;
         NativeMeshSectionStorage* section{};
         void* owned_material{};
         void* material{}; // Borrow after section publication/release of creator.
@@ -165,9 +167,11 @@ struct GameNativeGuiLineApplication::Impl {
         void* actual = gui_model_geometry_00b74640(primary.storage.model, 0);
         auto* reference = actual ? dynamic_cast<NativeMeshReference*>(
             &renderer.actual_owners().resolve_actual(actual)) : nullptr;
-        require(reference && &reference->storage() == actual && reference->reference_count.load() > 0,
+        require(reference && record.operation, "native Line requires its actual retained operation/canonical");
+        record.operation->mesh_pin.emplace(*reference);
+        require(&record.operation->mesh_pin->storage() == actual && reference->reference_count.load() > 0,
             "native Line requires its same actual mesh");
-        return reference->storage();
+        return record.operation->mesh_pin->storage();
     }
     NativeMeshSectionStorage& section(NativeMeshStorage& mesh) {
         auto* actual = static_cast<NativeMeshSectionStorage*>(gui_geometry_element_00b732c0(&mesh, 0));
@@ -197,9 +201,13 @@ struct GameNativeGuiLineApplication::Impl {
         }
         ~Entry() { app.active = false; }
         Operation& operation() { return *record.operation; }
-        void complete() { record.operation->complete = true; }
+        void complete() {
+            record.operation->complete = true;
+            record.operation->mesh_pin.reset(); // last actual use before normal private exit
+        }
     };
     void fail(Operation& operation) noexcept {
+        geometry.record_ordinary_source_failure();
         operation.failure = failure = std::current_exception(); failed = true;
     }
     void at(Operation& operation, Word value) noexcept { operation.site = site = value; }

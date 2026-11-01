@@ -6,6 +6,9 @@
 #include "bsp/native_vertex_declaration_cache.hpp"
 #include "bsp/gui_text_native_layout.hpp"
 #include "bsp/native_material_factory.hpp"
+#include "bsp/native_post_effect_ordinary_lifetime.hpp"
+#include "bsp/native_post_effect_model_lifetime.hpp"
+#include "bsp/native_mesh_canonical.hpp"
 #include <array>
 #include <optional>
 
@@ -54,6 +57,7 @@ struct NativePostEffect20ConstructionContext {
     const char* vertex_format_00d61ef8;
     const char* model_name_00d61ee4;
     const char* camera_prefix_00d61ed0;
+    const NativePostEffectOrdinaryLifetimeBinding* ordinary_lifetime = nullptr;
 };
 
 // HOST diagnostics, not a native ownership map. Created identities remain
@@ -112,6 +116,11 @@ public:
     NativePostEffect20ConstructionBlock(NativePostEffect20ConstructionBlock&&) = delete;
     NativePostEffect20ConstructionBlock& operator=(NativePostEffect20ConstructionBlock&&) = delete;
     void prepare(NativePostEffect20ConstructionContext&);
+    void prepare(NativePostEffect20ConstructionContext&, const NativePostEffectOrdinaryLifetimeBinding&);
+    void cancel_ordinary_preparation();
+    void close_ordinary_after_host_quiescence();
+    bool ordinary_lifetime_selected() const noexcept { return ordinary_lifetime_ != nullptr; }
+    bool requires_ordinary_process_retention() const noexcept;
     void cancel_preparation() noexcept;
     Phase phase() const noexcept { return phase_; }
     const NativePostEffect20ConstructionAcquired& acquired() const noexcept { return acquired_; }
@@ -124,6 +133,20 @@ public:
     // not implement its native failure recovery or authorize discarding it.
     void reset_after_host_quiescence() noexcept;
 private:
+    friend class NativePostEffectModelFrame;
+    friend class NativeMeshCanonicalAccess;
+    void prepare_legacy(NativePostEffect20ConstructionContext&);
+    void cancel_preparation_legacy() noexcept;
+    void reset_after_host_quiescence_legacy() noexcept;
+    void model_source_retired(NativePostEffectModelFrame&) noexcept;
+    void mesh_source_retired(NativeMeshCanonicalProducerFrame&) noexcept;
+    void record_ordinary_constructor_failure() noexcept;
+    bool ordinary_mesh_mode() const noexcept;
+    void* allocate_ordinary_mesh();
+    NativeMeshStorage* construct_ordinary_mesh();
+    NativeMeshReference& publish_ordinary_mesh() noexcept;
+    void release_ordinary_mesh_creator(long (__stdcall*)(volatile long*));
+    bool return_ordinary_mesh_raw(void*);
     friend void* construct_native_post_effect20_00b4e470(void*, std::size_t,
         NativeString&, std::uint32_t, const void*, NativePostEffect20ConstructionBlock&);
     friend void* construct_native_post_effect20_00b4e470(void*, std::size_t,
@@ -146,6 +169,9 @@ private:
     NativePostEffect20ConstructionContext* context_{};
     Phase phase_{Phase::idle};
     NativePostEffect20ConstructionAcquired acquired_;
+    const NativePostEffectOrdinaryLifetimeBinding* ordinary_lifetime_{};
+    std::optional<NativePostEffectModelFrame> model_frame_;
+    std::optional<NativeMeshCanonicalProducerFrame> mesh_frame_;
     std::optional<NativeMaterialFactoryAcquired> material_factory_;
     std::array<void*, slot_count> keys_{};
     std::array<RenderCommandReference*, slot_count> references_{};

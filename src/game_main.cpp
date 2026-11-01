@@ -1348,11 +1348,17 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
 
     int result = 1;
     try {
-        result = bsp::run_win_main(arguments, *host);
+        try {
+            result = bsp::run_win_main(arguments, *host);
+        } catch(...) {
+            host->retain_native_mesh_on_exception(); // metadata FIRST, before old error.what/log/unwind
+            throw;
+        }
     } catch (const std::exception& error) {
         log.notef("startup failed: %s", error.what());
     }
 
+    host->exit_if_native_mesh_interrupted();
     host->exit_if_native_vfs_interrupted();
     bsp::game::GameRunSummary summary = host->summary();
     summary.exit_code = result;

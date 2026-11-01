@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/native_render_zero_frame.hpp"
 #include "bsp/native_texture_surface_getter.hpp"
 #include <cstdint>
 
@@ -37,6 +38,9 @@ struct NativeMainSceneSubmissionOperation {
     bool append_started{};
     bool append_returned{};
     bool completed{};
+    // Separate C++ outer-call custody; public diagnostics never issue an action.
+    // Keep through real postcall/health/catch; no reset as Native HOME reuse.
+    NativeRenderObservedZeroFrame cpp_zero_frame;
 };
 
 // Complete ordinary B101C0..B104F2. Original ECX service, scene/camera stack,

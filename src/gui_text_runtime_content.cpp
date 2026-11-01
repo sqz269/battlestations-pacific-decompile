@@ -5,6 +5,12 @@
 
 namespace bsp {
 GuiTextRuntimeContentContinuation::GuiTextRuntimeContentContinuation() = default;
+GuiTextRuntimeContentContinuation::GuiTextRuntimeContentContinuation(
+    GuiTextLifetime& lifetime, GuiTextContentContinuation&& prefix,
+    GuiTextRuntimeContentServices& actual_services)
+    : services(&actual_services),
+      content(prepare_gui_text_nonempty_00aba8d0_fragment(
+          lifetime, std::move(prefix), actual_services.nonempty)) {}
 GuiTextRuntimeContentContinuation::~GuiTextRuntimeContentContinuation() = default;
 namespace {
 class ChildOperation {
@@ -106,10 +112,8 @@ GuiTextRuntimeContentResult build_gui_text_content_00aba8d0(
     if (prefix.branch == GuiTextContentBranch::cleared)
         return {GuiTextRuntimeContentStatus::cleared, {}};
 
-    auto frame = std::make_unique<GuiTextRuntimeContentContinuation>();
-    frame->services = &services;
-    frame->content = prepare_gui_text_nonempty_00aba8d0_fragment(
-        lifetime, std::move(prefix), services.nonempty);
+    auto frame = std::make_unique<GuiTextRuntimeContentContinuation>(
+        lifetime, std::move(prefix), services);
     // The selection, main section/material and native temporary were captured
     // after the last preparation callback. Do not reread multiline here.
     if (frame->content.builder == GuiTextGeometryBuilder::wrapped_00aba270) {

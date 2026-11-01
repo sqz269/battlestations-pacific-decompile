@@ -1,4 +1,6 @@
 #include "bsp/native_mesh_owner.hpp"
+#include "bsp/native_mesh_canonical.hpp"
+#include "bsp/native_mesh_external_producers.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <cstring>
 #include <exception>
@@ -196,14 +198,27 @@ NativeMeshReference::NativeMeshReference(NativeMeshStorage& mesh,
     require_current_profile();
 }
 NativeMeshReference::~NativeMeshReference() {
+    if (raw_record_) return; // record owner controls Source quiescent collection
     if (phase_ != Phase::retired) std::terminate();
+}
+NativeMeshReference::NativeMeshReference(NativeMeshStorage& mesh,
+    NativeMeshEnvironment& environment, NativeMeshCanonicalRecord& record) noexcept
+    : RenderCommandReference(mesh.references_04), raw_record_(&record), storage_(mesh),
+      environment_(environment), disposal_{} { bind_ordinary_mesh(record); }
+NativeMeshStorage& NativeMeshReference::storage() {
+    if (raw_record_) return NativeMeshCanonicalAccess::reject_unscoped_storage(*this);
+    return storage_;
+}
+void NativeMeshReference::release_zero_references() {
+    if (raw_record_) { NativeMeshCanonicalAccess::release_zero(*this); return; }
+    release_legacy_zero_references();
 }
 void NativeMeshReference::require_current_profile() const noexcept {
     const auto* table = environment_.vtable_00d62d60;
     if (storage_.native_vtable_00 != mesh_table || !table ||
         table[0] != 0x00bd30e0 || table[1] != 0x00b74280) std::terminate();
 }
-void NativeMeshReference::release_zero_references() noexcept {
+void NativeMeshReference::release_legacy_zero_references() noexcept {
     if (phase_ != Phase::bound) std::terminate();
     require_current_profile();
     phase_ = Phase::destroying;
@@ -213,6 +228,33 @@ void NativeMeshReference::release_zero_references() noexcept {
     disposal.retire(disposal.context, *this);
 }
 
+struct NativeMeshPreparedRecord::Ordinary final {
+    NativeMeshExternalProducer source;
+    Ordinary(NativeMeshCanonicalDomain& domain, const void* actual_owner) noexcept
+        : source(domain, actual_owner) {}
+};
+NativeMeshPreparedRecord::NativeMeshPreparedRecord(NativeMeshCanonicalDomain& domain,
+    NativeMeshEnvironment& environment, NativeRenderActualOwnerRegistry& registry)
+    : ordinary_(std::make_unique<Ordinary>(domain, this)),
+      environment_(environment), registry_(registry), raw_identity_(nullptr), disposal_{} {
+    NativeMeshCanonicalAccess::require_domain_identity(domain, environment, registry);
+    ordinary_->source.prepare(); // after all other fallible checks; no Native effect
+}
+NativeMeshStorage* NativeMeshPreparedRecord::create_ordinary_from_explicit_pool() {
+    if (!ordinary_) throw std::logic_error("legacy prepared raw key has no ordinary allocation issuer");
+    return ordinary_->source.create_explicit(environment_);
+}
+NativeMeshStorage* NativeMeshPreparedRecord::create_ordinary_from_static_pool() {
+    if (!ordinary_) throw std::logic_error("legacy prepared raw key has no ordinary allocation issuer");
+    return ordinary_->source.create_static(environment_);
+}
+void NativeMeshPreparedRecord::close_ordinary_at_quiescence() {
+    if (!ordinary_) throw std::logic_error("legacy raw-key disposal retains its existing explicit route");
+    ordinary_->source.close_at_quiescence();
+}
+bool NativeMeshPreparedRecord::ordinary_source_retired() const noexcept {
+    return ordinary_ && ordinary_->source.source_retired();
+}
 NativeMeshPreparedRecord::NativeMeshPreparedRecord(void* actual_slot,
     std::size_t slot_bytes, NativeMeshEnvironment& environment,
     NativeRenderActualOwnerRegistry& registry)
@@ -228,6 +270,7 @@ NativeMeshPreparedRecord::NativeMeshPreparedRecord(void* actual_slot,
     registry_admission_ = registry_.prepare_binding(raw_identity_);
 }
 NativeMeshPreparedRecord::~NativeMeshPreparedRecord() noexcept {
+    if (ordinary_) return; // concrete owner retains unresolved ordinary graph
     if (phase_ == Phase::prepared) {
         if (reference_) std::terminate();
         // Admission destruction cancels metadata only; caller owns raw return.

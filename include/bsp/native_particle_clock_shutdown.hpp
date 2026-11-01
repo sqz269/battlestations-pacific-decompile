@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/native_render_zero_frame.hpp"
 
 #include "bsp/native_particle_clock_sink_release.hpp"
 #include "bsp/native_particle_record_resize.hpp"
@@ -14,6 +15,10 @@ struct NativeParticleClockShutdownContext {
     // Optional SAME canonical actual-resource domain. Borrow through drain;
     // null retains the existing raw callable-profile release contract.
     NativeRenderActualOwners* actual_resource_owners{};
+    // Optional borrowed C++ outer-call frame, never ownership/zero authority.
+    // Ordinary entry creates a fresh invocation-local binding when null;
+    // nested wrappers forward it without mutating this shared provider context.
+    NativeRenderObservedZeroFrame* cpp_zero_frame{};
 };
 
 // Actual secondary owner is complete clock+4. The two profile views above

@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/native_render_zero_frame.hpp"
 #include "bsp/native_compiled_shader_reflection.hpp"
 #include "bsp/native_d3d9_shader_construction_actual.hpp"
 #include "bsp/native_material_descriptor_samplers.hpp"
@@ -127,6 +128,9 @@ struct NativeMaterialProgramCompilerActualFrame final : NativeMaterialProgramChi
     std::unique_ptr<NativeMaterialDescriptorSamplersCallScope> sampler_call_scope;
     std::array<std::unique_ptr<NativeMaterialDescriptorSamplersOperation>, 2> samplers;
     std::array<std::unique_ptr<NativeMaterialPassShaderSlotsOperation>, 18> slots;
+    // Separate C++ outer-call custody; public diagnostics never issue an action.
+    // Keep through real postcall/health/catch; no reset as Native HOME reuse.
+    NativeRenderObservedZeroFrame cpp_zero_frame;
 };
 
 // Full B3B3C0 continuation at the two exact prefix handoff addresses. Native

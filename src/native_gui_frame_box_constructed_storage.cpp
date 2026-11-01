@@ -1,3 +1,12 @@
+#include "bsp/native_render_observed_zero.hpp"
+namespace bsp {
+class NativeGuiFrameBoxConstructedStorageObservedZeroIssuer final {
+public:
+    static void dispatch(NativeRenderActualOwners& owners, void* actual, NativeRenderObservedZeroFrame& outer) {
+        NativeRenderObservedZeroAccess::dispatch(owners, actual, outer);
+    }
+};
+} // namespace bsp
 #include "bsp/native_gui_frame_box_constructed_storage.hpp"
 #include "bsp/game_native_readonly_data.hpp"
 #include <exception>
@@ -139,7 +148,7 @@ __declspec(noinline) void zero_position(Frame& f) noexcept {
         movss dword ptr [eax+8], xmm0
     }
 }
-void release_mesh(Context& c, Acquired& a, const Views& views) {
+void release_mesh(Context& c, Frame& f, Acquired& a, const Views& views) {
     // The reached CURRENT cell read is not an entry/preflight snapshot.
     const auto decrement = c.decrement_00ce2220;
     auto& r = a.mesh_release;
@@ -159,7 +168,7 @@ void release_mesh(Context& c, Acquired& a, const Views& views) {
         require(r.captured_target == 0x00bd30e0u, "Raw FrameBox mesh zero requires real current slot00 terminal");
         reached(a, 0x00acf973);
         r.zero_entered = true;
-        dispatch_native_render_actual_owner_zero(c.owners, raw); // no second decrement
+        NativeGuiFrameBoxConstructedStorageObservedZeroIssuer::dispatch(c.owners, raw, f.cpp_zero_frame); // no second decrement
         r.zero_returned = true; // independent metadata only after possible retirement
     }
     r.complete = true;
@@ -214,7 +223,7 @@ void constructed_native_gui_frame_box_storage_00acf8f0(void* widget, Frame& f, C
             // Null still reached the real setter; its later Native null access
             // is an explicit Source boundary, never early successful return.
             reached(a, 0x00acf963);
-            release_mesh(c, a, views);
+            release_mesh(c, f, a, views);
         }
         zero_position(f); // EVEN when current74 skipped geometry.
         reached(a, 0x00acf993);

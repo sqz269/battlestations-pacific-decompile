@@ -4,6 +4,8 @@
 #include <exception>
 
 namespace bsp {
+class NativeMeshCanonicalRecord;
+class NativeMeshCanonicalAccess;
 class NativeMeshStorageAccess;
 
 // Ordinary Source interface, not an Original register-ABI adapter. Bind the
@@ -67,14 +69,21 @@ public:
     bool requires_process_retention() const noexcept;
 private:
     friend class NativeMeshStorageAccess;
+    friend class NativeMeshCanonicalRecord;
+    friend class NativeMeshCanonicalAccess;
     // This additive pool-module overload captures the actual static receiver.
     friend void* allocate_native_mesh_slot_00b73b60(NativeMeshStorageFrame&);
+    friend void return_native_mesh_slot_00b72f70(NativeMeshStorageFrame&, void*);
     void begin_allocation(bool static_wrapper);
     void enter_pool_allocation(NativeMeshPool&);
     void* allocation_normal_return(void*);
     void record_failure() noexcept;
 
     NativeMeshStorageContext& context_;
+    NativeMeshCanonicalRecord* canonical_record_{};
+    NativeMeshPool* raw_unwind_receiver_{};
+    bool raw_unwind_selected_{}, raw_unwind_wrapper_entered_{};
+    bool raw_unwind_getter_returned_{}, raw_unwind_pool_entered_{}, raw_unwind_pool_returned_{};
     Phase phase_{Phase::fresh};
     NativeMeshPool* receiver_{};
     NativeMeshStorage* live_payload_{};

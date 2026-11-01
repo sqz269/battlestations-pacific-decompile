@@ -1,3 +1,12 @@
+#include "bsp/native_render_observed_zero.hpp"
+namespace bsp {
+class NativeGuiCurveStorageObservedZeroIssuer final {
+public:
+    static void dispatch(NativeRenderActualOwners& owners, void* actual, NativeRenderObservedZeroFrame& outer) {
+        NativeRenderObservedZeroAccess::dispatch(owners, actual, outer);
+    }
+};
+} // namespace bsp
 #include "bsp/native_gui_curve_storage.hpp"
 #include "bsp/cc13_front6.hpp"
 #include "bsp/native_animation_registry.hpp"
@@ -166,7 +175,7 @@ void destroy(void* raw, NativeGuiCurveStorageContext& c, NativeGuiCurveStorageAc
             a.material_decremented = true;
             if (!a.material_release_result) {
                 a.active_call_site = 0x00abdede; a.material_zero_entered = true;
-                dispatch_native_render_actual_owner_zero(c.actual_owners, a.captured_material);
+                NativeGuiCurveStorageObservedZeroIssuer::dispatch(c.actual_owners, a.captured_material, a.cpp_zero_frame);
                 a.material_zero_returned = true;
             }
             word(raw, 0x12c) = 0; // only AFTER current terminal callback returns

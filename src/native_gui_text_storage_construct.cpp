@@ -1,3 +1,12 @@
+#include "bsp/native_render_observed_zero.hpp"
+namespace bsp {
+class NativeGuiTextStorageConstructObservedZeroIssuer final {
+public:
+    static void dispatch(NativeRenderActualOwners& owners, void* actual, NativeRenderObservedZeroFrame& outer) {
+        NativeRenderObservedZeroAccess::dispatch(owners, actual, outer);
+    }
+};
+} // namespace bsp
 #include "bsp/native_gui_text_storage_construct.hpp"
 #include "bsp/native_string_raw_domain.hpp"
 #include "bsp/game_native_string_process.hpp"
@@ -356,7 +365,7 @@ void release(Resource*& creator, NativeTextureSurfaceReferenceIncrement decremen
         progress.zero_entered = true;
         // Pure canonical lookup validates the SAME actual+04; its terminal
         // dispatches CURRENT native vtable0/profile to genuine destruction.
-        dispatch_native_render_actual_owner_zero(geometry(c).actual_owners(), raw);
+        NativeGuiTextStorageConstructObservedZeroIssuer::dispatch(geometry(c).actual_owners(), raw, progress.cpp_zero_frame);
         progress.zero_returned = true;
     }
     progress.complete = true; // metadata only; no raw access after terminal

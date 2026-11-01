@@ -1,3 +1,4 @@
+#include "bsp/native_mesh_external_producers.hpp"
 #include "bsp/native_tracer_construction.hpp"
 #include "bsp/native_tracer_lifetime.hpp"
 #include "bsp/native_tracer_update.hpp"
@@ -112,6 +113,7 @@ NativeMaterialStorage* material(void* actual_template, NativeTracerConstructionA
     return result;
 }
 NativeMeshStorage* mesh(NativeTracerConstructionAccess& access) {
+    if (access.ordinary_mesh) return access.ordinary_mesh->create_explicit(access.meshes, access.mesh_constants);
     void* raw = access.meshes.pool_0108fff8.allocate_slot_00b73a10();
     if (!raw) return nullptr;
     NativeMeshStorage* result;
@@ -158,7 +160,7 @@ void resize_native_tracer_points_00bac310(NativeTracerPointArrayStorage& array,
     array.count_04 = count;
 }
 
-RegisteredType4TracerView construct_native_tracer_00bad6f0(
+static RegisteredType4TracerView construct_tracer_body_00bad6f0(
     NativeTracerProfileBindings& profile, void* actual_source, void* unused_second,
     void* texture0, void* texture1, void* actual_template,
     NativeTracerConstructionAccess& access) {
@@ -299,5 +301,18 @@ RegisteredType4TracerView construct_native_tracer_00bad6f0(
         throw;
     }
     return {actual};
+}
+RegisteredType4TracerView construct_native_tracer_00bad6f0(
+    NativeTracerProfileBindings& profile, void* actual_source, void* unused_second,
+    void* texture0, void* texture1, void* actual_template, NativeTracerConstructionAccess& access) {
+    if (!access.ordinary_mesh)
+        return construct_tracer_body_00bad6f0(profile, actual_source, unused_second,
+            texture0, texture1, actual_template, access);
+    try {
+        access.ordinary_mesh->check_prepared_metadata();
+        return construct_tracer_body_00bad6f0(profile, actual_source, unused_second,
+            texture0, texture1, actual_template, access);
+    }
+    catch (...) { access.ordinary_mesh->retain_source_failure(); throw; }
 }
 } // namespace bsp

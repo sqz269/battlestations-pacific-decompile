@@ -25,6 +25,10 @@ struct GuiTextRuntimeContentServices {
 // Destruction does not unlock mappings or finish any native operation.
 struct GuiTextRuntimeContentContinuation {
     GuiTextRuntimeContentContinuation();
+    // Allocate the stable outer frame before nonempty preparation, then
+    // construct its retained content/pin directly; neither is copied/assigned.
+    GuiTextRuntimeContentContinuation(GuiTextLifetime&, GuiTextContentContinuation&&,
+        GuiTextRuntimeContentServices&);
     ~GuiTextRuntimeContentContinuation();
     GuiTextRuntimeContentServices* services{};
     GuiTextNonemptyContinuation content;

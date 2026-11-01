@@ -1,4 +1,5 @@
 #include "bsp/native_matrix_storage_lifetime.hpp"
+#include "bsp/native_render_observed_zero.hpp"
 #include "bsp/native_matrix_indexed_model_owner.hpp"
 #include "bsp/native_resource_instance_bones.hpp"
 #include "bsp/singleton_lifetime.hpp"
@@ -138,6 +139,7 @@ struct NativeMatrixStorageAccess {
     static void geometry(const NativeMatrixStorageContext& c, Frame& f,
         NativeMatrixStorageOwner* receiver, const NativeMatrixStorageGeometryContext& services,
         NativeModelStorageGeometryFrame& arguments, NativeModelStorageGeometryAcquired& acquired) {
+        const NativeRenderObservedZeroAccess::Invocation invocation(arguments.observed_zero_frame_);
         NativeModelGeometryKernelAccess::require_fresh(arguments, acquired);
         (void)live_creator(c, f, receiver);
         if (services.matrix_ != &c || !services.roles_ || f.geometry_depth_ == 0xffffffffu)
@@ -149,6 +151,7 @@ struct NativeMatrixStorageAccess {
                 receiver ? static_cast<const void*>(receiver) : static_cast<const void*>(&f),
                 &c, &services, nullptr);
         } catch (...) {
+            NativeRenderObservedZeroAccess::fail_frame(arguments.observed_zero_frame_);
             --f.geometry_depth_;
             f.poisoned_ = true;
             failed(f);
@@ -157,7 +160,7 @@ struct NativeMatrixStorageAccess {
         --f.geometry_depth_;
         if (f.poisoned_) { // AFTER the whole Native body; retained metadata only
             try { NativeModelGeometryKernelAccess::reject_returned(arguments, acquired); }
-            catch (...) { failed(f); throw; }
+            catch (...) { NativeRenderObservedZeroAccess::fail_frame(arguments.observed_zero_frame_); failed(f); throw; }
         }
     }
     static void release_creator(const NativeMatrixStorageContext& c, Frame& f,

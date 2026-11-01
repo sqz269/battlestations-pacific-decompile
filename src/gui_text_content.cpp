@@ -1,3 +1,4 @@
+#include "bsp/native_mesh_canonical.hpp"
 #include "bsp/gui_text_content.hpp"
 #include "bsp/font_registry.hpp"
 #include "bsp/gui_native_clip_parameters.hpp"
@@ -68,8 +69,11 @@ void require_native_text_domain(std::u16string_view text) {
         throw std::invalid_argument("Text content requires null-free native-length UTF16");
 }
 struct ActualSection {
+    NativeMeshCanonicalBorrow pin;
     NativeMeshStorage* mesh;
     NativeMeshSectionStorage* section;
+    ActualSection(NativeMeshReference& owner, NativeMeshSectionStorage& actual)
+        : pin(owner), mesh(&pin.storage()), section(&actual) {}
 };
 ActualSection section_zero(NativeModelReference& model,
     NativeRenderActualOwners& actual_owners) {
@@ -78,9 +82,11 @@ ActualSection section_zero(NativeModelReference& model,
     void* raw_mesh = gui_model_geometry_00b74640(model.model_owner().storage.model, 0);
     if (!raw_mesh) throw std::logic_error("Text drawable has no actual mesh");
     auto* mesh_owner = dynamic_cast<NativeMeshReference*>(&actual_owners.resolve_actual(raw_mesh));
-    if (!mesh_owner || &mesh_owner->storage() != raw_mesh || mesh_owner->reference_count.load() <= 0)
+    if (!mesh_owner) throw std::logic_error("Text mesh has no matching canonical owner");
+    NativeMeshCanonicalBorrow mesh_pin(*mesh_owner);
+    if (&mesh_pin.storage() != raw_mesh || mesh_owner->reference_count.load() <= 0)
         throw std::logic_error("Text mesh has no matching canonical owner");
-    auto& mesh = mesh_owner->storage();
+    auto& mesh = mesh_pin.storage();
     if (!mesh.draw_sections_54.data_00 || mesh.draw_sections_54.count_04 < 1)
         throw std::logic_error("Text mesh has no actual section0");
     void* raw_section = gui_geometry_element_00b732c0(raw_mesh, 0);
@@ -90,7 +96,7 @@ ActualSection section_zero(NativeModelReference& model,
     if (!section_owner || &section_owner->storage() != raw_section ||
         section_owner->reference_count.load() <= 0)
         throw std::logic_error("Text section has no matching canonical owner");
-    return {&mesh, &section_owner->storage()};
+    return {*mesh_owner, section_owner->storage()};
 }
 void require_nonempty_environment(GuiTextLifetime& text, GuiTextNonemptyEnvironment& e) {
     auto binding = text.content_binding();
@@ -235,11 +241,12 @@ GuiTextContentContinuation prepare_gui_text_content_00aba8d0_fragment(
         main_model->reference_count.load() <= 0)
         throw std::logic_error("Text main drawable lacks its canonical model owner");
     auto& owners = main_model->model_owner().environment.retained_owners;
-    const ActualSection main = section_zero(*main_model, owners); //00ABA96D/00ABA97B
+    ActualSection main = section_zero(*main_model, owners); //00ABA96D/00ABA97B
     text.text = copied; //004C5E20 at00ABA98D: after main section lookup
     if (!copied.empty())
         return {GuiTextContentBranch::needs_nonempty_geometry,
-            std::move(copied), main.section, main.mesh}; //Resume at00ABA9BF.
+            std::move(copied), main.section, main.mesh,
+            std::optional<NativeMeshCanonicalBorrow>{std::in_place, std::move(main.pin)}}; //Resume at00ABA9BF.
 
     //Changed-empty: only native+18 then+10, retaining primitive kind, stream
     //identities/material/layout and stale line/height/origin metrics.
@@ -310,6 +317,8 @@ GuiTextNonemptyContinuation prepare_gui_text_nonempty_00aba8d0_fragment(
     auto binding = lifetime.content_binding();
     auto& buffers = e.shader.buffers;
     auto& owners = buffers.materials.retained_owners;
+    if (pending.main_mesh_pin && &pending.main_mesh_pin->storage() != pending.main_mesh)
+        throw std::logic_error("Text pending pin belongs to another actual mesh");
     auto& main_mesh = *static_cast<NativeMeshStorage*>(pending.main_mesh);
     auto& main_section = *pending.main_section;
     auto& acquired = lifetime.glyph_buffer_operation();
@@ -343,7 +352,7 @@ GuiTextNonemptyContinuation prepare_gui_text_nonempty_00aba8d0_fragment(
     const auto builder = binding.text.multiline ? GuiTextGeometryBuilder::wrapped_00aba270 :
         GuiTextGeometryBuilder::single_00ab9fd0;
     return {&lifetime, std::move(pending.transformed_text), &main_mesh, &main_section,
-        &main_material, attempted, builder};
+        &main_material, attempted, builder, std::move(pending.main_mesh_pin)};
 }
 
 void finish_gui_text_content_after_geometry_00aba8d0_fragment(GuiTextLifetime& lifetime,
@@ -352,6 +361,8 @@ void finish_gui_text_content_after_geometry_00aba8d0_fragment(GuiTextLifetime& l
     if (pending.lifetime != &lifetime || !pending.main_mesh || !pending.main_section ||
         !pending.main_material || pending.transformed_text.empty())
         throw std::logic_error("Text post-builder stage requires its same live continuation");
+    if (pending.main_mesh_pin && &pending.main_mesh_pin->storage() != pending.main_mesh)
+        throw std::logic_error("Text final pin belongs to another actual mesh");
     auto binding = lifetime.content_binding();
     auto& buffers = e.shader.buffers;
     auto& owners = buffers.materials.retained_owners;

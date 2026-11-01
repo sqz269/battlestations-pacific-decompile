@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/native_render_zero_frame.hpp"
 #include "bsp/gui_native_geometry.hpp"
 #include "bsp/native_gui_widget_position.hpp"
 #include "bsp/native_node_raw_transform.hpp"
@@ -39,6 +40,10 @@ struct NativeGuiFrameBoxConstructedStorageFrame {
     float scalar_178, scalar_17c; // one reached x87 FLD/FST/FSTP
     NativeGuiWidgetTransformScratch& transform;
     GuiWidgetBounds& bounds;
+    // Actual caller-owned metadata, separate from trivial diagnostics. Retain
+    // this Frame through all outer postcall/health/catch uses; never reset/move
+    // its linked hold before genuine last use or graph quiescence.
+    NativeRenderObservedZeroFrame cpp_zero_frame;
 };
 struct NativeGuiFrameBoxConstructedStorageRelease {
     void* identity{}; // possibly ended storage; diagnostic, never another owner

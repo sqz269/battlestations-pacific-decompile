@@ -1,3 +1,5 @@
+#include "bsp/native_mesh_canonical.hpp"
+#include "bsp/native_post_effect_ordinary_lifetime.hpp"
 #include "bsp/native_post_effect20_construction.hpp"
 #include "bsp/native_instance_collection.hpp"
 #include "bsp/native_material_factory.hpp"
@@ -101,6 +103,34 @@ Word surface_dimension(const void* actual, Word captured_profile,
 NativePostEffect20ConstructionBlock::~NativePostEffect20ConstructionBlock() noexcept {
     if (phase_ != Phase::idle) std::terminate();
 }
+bool NativePostEffect20ConstructionBlock::ordinary_mesh_mode() const noexcept { return ordinary_lifetime_ != nullptr; }
+void* NativePostEffect20ConstructionBlock::allocate_ordinary_mesh() {
+    if (!ordinary_lifetime_ || !mesh_frame_ || !context_)
+        throw std::logic_error("ordinary Mesh requires its complete cold Block preparation");
+    NativeMeshCanonicalAccess::require_domain_identity(ordinary_lifetime_->meshes,
+        context_->meshes, context_->destruction.actual_owners, context_->mesh_constants);
+    return NativeMeshCanonicalAccess::allocate_static(*mesh_frame_);
+}
+NativeMeshStorage* NativePostEffect20ConstructionBlock::construct_ordinary_mesh() {
+    if (!ordinary_lifetime_ || !mesh_frame_)
+        throw std::logic_error("ordinary Mesh construction lost its exact retained Block Frame");
+    return NativeMeshCanonicalAccess::construct(*mesh_frame_);
+}
+NativeMeshReference& NativePostEffect20ConstructionBlock::publish_ordinary_mesh() noexcept {
+    auto& reference = NativeMeshCanonicalAccess::publish(*mesh_frame_);
+    // Same private constructor continuation; opaque Block bookkeeping only.
+    keys_[mesh] = acquired_.mesh_created;
+    references_[mesh] = &reference;
+    registered_[mesh] = false; // exact central node, never public bind/unbind
+    retired_[mesh] = false;
+    return reference;
+}
+void NativePostEffect20ConstructionBlock::release_ordinary_mesh_creator(long (__stdcall* captured)(volatile long*)) {
+    NativeMeshCanonicalAccess::release_creator(*mesh_frame_, captured);
+}
+bool NativePostEffect20ConstructionBlock::return_ordinary_mesh_raw(void* captured_slot) {
+    return NativeMeshCanonicalAccess::return_unconstructed_static_slot(*mesh_frame_, captured_slot);
+}
 void NativePostEffect20ConstructionBlock::validate() const {
     auto& c = *context_;
     auto& owners = c.destruction.actual_owners;
@@ -143,7 +173,110 @@ void NativePostEffect20ConstructionBlock::validate() const {
         &c.strings == &c.declarations.strings,
         "post-effect providers must borrow the same renderer and string domain");
 }
+
 void NativePostEffect20ConstructionBlock::prepare(NativePostEffect20ConstructionContext& context) {
+    if (context.ordinary_lifetime) { prepare(context,*context.ordinary_lifetime); return; }
+    prepare_legacy(context);
+}
+void NativePostEffect20ConstructionBlock::prepare(NativePostEffect20ConstructionContext& context, const NativePostEffectOrdinaryLifetimeBinding& binding) {
+    require(!ordinary_lifetime_ && (!context.ordinary_lifetime || context.ordinary_lifetime == &binding) &&
+        context.destruction.ordinary_models == &binding.models,
+        "ordinary post-effect preparation requires its immutable actual Model binding");
+    prepare_legacy(context); // unchanged other-family reservation/exception policy
+    ordinary_lifetime_ = &binding;
+    try {
+        model_frame_.emplace(binding.models,this);
+        model_frame_->require_mesh_domain(binding.meshes);
+        auto& raw = model_frame_->lifetime_for_owner().storage;
+        require(&context.models == &model_frame_->environment_for_owner() &&
+            &context.node_constants == &raw.constants && &context.raw_strings == &raw.node.strings &&
+            &context.destruction.actual_owners == static_cast<NativeRenderActualOwners*>(&raw.node.scenes.owners) &&
+            reinterpret_cast<const volatile void*>(&context.destruction.actual_decrement_00ce2220) ==
+                reinterpret_cast<const volatile void*>(&raw.node.scenes.decrement_00ce2220),
+            "ordinary post-effect Model must keep exact environment/constants/import/registry roles");
+        model_frame_->bind_block(*this);
+        mesh_frame_.emplace(binding.meshes,this);
+        NativeMeshCanonicalAccess::bind_block(*mesh_frame_,*this);
+    } catch (...) {
+        try { cancel_ordinary_preparation(); }
+        catch (...) { phase_ = Phase::settled; throw; }
+        throw;
+    }
+}
+void NativePostEffect20ConstructionBlock::cancel_preparation() noexcept {
+    if (ordinary_lifetime_) std::terminate(); // distinct ordinary API required
+    cancel_preparation_legacy();
+}
+void NativePostEffect20ConstructionBlock::cancel_ordinary_preparation() {
+    require(ordinary_lifetime_ && (phase_ == Phase::preparing || phase_ == Phase::prepared),
+        "ordinary cold cancellation cannot recover an entered attempt");
+    try {
+        if (model_frame_) { model_frame_->cancel_without_native_payload(); model_frame_.reset(); }
+        if (mesh_frame_) {
+            NativeMeshCanonicalAccess::cancel_without_native_payload(*mesh_frame_);
+            mesh_frame_.reset();
+        }
+        ordinary_lifetime_ = nullptr;
+        cancel_preparation_legacy();
+    } catch (...) {
+        if (model_frame_) model_frame_->record_source_failure();
+        if (mesh_frame_) NativeMeshCanonicalAccess::record_source_failure(*mesh_frame_);
+        throw;
+    }
+}
+bool NativePostEffect20ConstructionBlock::requires_ordinary_process_retention() const noexcept {
+    return ordinary_lifetime_ &&
+        (phase_ == Phase::preparing || phase_ == Phase::executing ||
+         (model_frame_ && model_frame_->requires_process_retention()) ||
+         ordinary_lifetime_->meshes.requires_process_retention());
+}
+void NativePostEffect20ConstructionBlock::record_ordinary_constructor_failure() noexcept {
+    // Exact trusted Block bridge. Same ordinary catch sequence/receivers;
+    // no public Mesh action, new permit, Native work or extra health sample.
+    model_frame_->record_source_failure();
+    NativeMeshCanonicalAccess::record_source_failure(*mesh_frame_);
+}
+void NativePostEffect20ConstructionBlock::model_source_retired(NativePostEffectModelFrame& frame) noexcept {
+    if (!model_frame_ || &*model_frame_ != &frame || references_[model] != frame.canonical() || retired_[model]) {
+        frame.record_source_failure(); return;
+    }
+    retired_[model] = true; // same exact record already retired; no unbind/reset
+}
+void NativePostEffect20ConstructionBlock::mesh_source_retired(NativeMeshCanonicalProducerFrame& frame) noexcept {
+    if (!mesh_frame_ || &*mesh_frame_ != &frame ||
+        references_[mesh] != NativeMeshCanonicalAccess::canonical(frame) || retired_[mesh]) {
+        NativeMeshCanonicalAccess::record_source_failure(frame); return;
+    }
+    retired_[mesh] = true; // central record/reference stays alive through outer fences
+}
+void NativePostEffect20ConstructionBlock::reset_after_host_quiescence() noexcept {
+    if (ordinary_lifetime_) std::terminate(); // preserves explicit legacy policy
+    reset_after_host_quiescence_legacy();
+}
+void NativePostEffect20ConstructionBlock::close_ordinary_after_host_quiescence() {
+    require(ordinary_lifetime_ && phase_ == Phase::settled,
+        "ordinary post-effect close needs actual completed caller quiescence");
+    try {
+        for (std::size_t i=0;i!=slot_count;++i)
+            require(!references_[i] || retired_[i],"ordinary post-effect still has a live/unknown companion");
+        if (model_frame_) {
+            model_frame_->close_at_quiescence();
+            model_frame_.reset(); references_[model] = nullptr;
+        }
+        if (mesh_frame_) {
+            NativeMeshCanonicalAccess::close_producer_link_at_quiescence(*mesh_frame_);
+            mesh_frame_.reset(); references_[mesh] = nullptr;
+        }
+        ordinary_lifetime_ = nullptr;
+        reset_after_host_quiescence_legacy();
+    } catch (...) {
+        if (model_frame_) model_frame_->record_source_failure();
+        if (mesh_frame_) NativeMeshCanonicalAccess::record_source_failure(*mesh_frame_);
+        throw;
+    }
+}
+
+void NativePostEffect20ConstructionBlock::prepare_legacy(NativePostEffect20ConstructionContext& context) {
     require(phase_ == Phase::idle, "post-effect block requires idle external storage");
     context_ = &context;
     phase_ = Phase::preparing;
@@ -158,7 +291,7 @@ void NativePostEffect20ConstructionBlock::prepare(NativePostEffect20Construction
         phase_ = Phase::prepared;
     } catch (...) { cancel_preparation(); throw; }
 }
-void NativePostEffect20ConstructionBlock::cancel_preparation() noexcept {
+void NativePostEffect20ConstructionBlock::cancel_preparation_legacy() noexcept {
     if (phase_ != Phase::preparing && phase_ != Phase::prepared) std::terminate();
     camera_scene_.cancel(); camera_lifetime_.cancel();
     for (auto& admission : viewport_admissions_) admission.cancel();
@@ -203,7 +336,7 @@ BSP_BR_RETIRE(retire_camera, NativeCameraReference, camera)
 BSP_BR_RETIRE(retire_owner, NativePostEffect20Reference, owner)
 #undef BSP_BR_RETIRE
 
-void NativePostEffect20ConstructionBlock::reset_after_host_quiescence() noexcept {
+void NativePostEffect20ConstructionBlock::reset_after_host_quiescence_legacy() noexcept {
     if (phase_ != Phase::settled) std::terminate();
     // Failed factory/cache frames retain unresolved native obligations. Even a
     // successful factory may precede a failed material companion registration.
@@ -263,11 +396,24 @@ void NativePostEffect20ConstructionBlock::unwind(int& state, void*& frame_raw, v
             case 0: put(acquired_.actual_owner, 0, 0x00ceb130u); break; // BD30F0
             case 1: singleton_lifetime_free(std::exchange(frame_raw, nullptr)); break;
             case 2: string_cleanup(declaration_name_); break;
-            case 3: return_native_mesh_slot_00b72f70(std::exchange(mesh_raw, nullptr)); break;
+            case 3: {
+                void* const captured = std::exchange(mesh_raw, nullptr); // consume before action
+                if (ordinary_mesh_mode()) (void)return_ordinary_mesh_raw(captured);
+                else return_native_mesh_slot_00b72f70(captured);
+                break;
+            }
             case 4: {
                 void* raw = pointer(allocation_argument); // CBFB53: CURRENT [EH EBP+8]
-                model_owner_.reset(); acquired_.model_owner = nullptr;
-                return_native_model_slot_00b748c0(raw); break;
+                if (ordinary_lifetime_) {
+                    if (model_frame_->abandon_before_constructor_return()) {
+                        acquired_.model_owner = nullptr;
+                        return_native_model_slot_00b748c0(raw,*model_frame_);
+                    }
+                } else {
+                    model_owner_.reset(); acquired_.model_owner = nullptr;
+                    return_native_model_slot_00b748c0(raw);
+                }
+                break;
             }
             case 5: case 6:
                 if (mask & 1u) { mask &= ~1u; string_cleanup(model_name_); } break;
@@ -309,6 +455,7 @@ void* construct_native_post_effect20_00b4e470(void* actual, std::size_t allocati
     void* mesh_raw = nullptr;
     auto set_state = [&](int next) noexcept { state = next; acquired.native_state = next; };
     try {
+        if (block.ordinary_lifetime_) block.model_frame_->begin_constructor();
         put(actual, 0, 0x00ceb130u); // B4E493
         new (pointer(bits(actual) + 4u)) std::atomic<std::int32_t>(1); // B4E49E, sole initial count write
         const Word initial_count = arguments.words[1]; // B4E4A5 before derived profile/clears
@@ -352,16 +499,22 @@ void* construct_native_post_effect20_00b4e470(void* actual, std::size_t allocati
         release_registered<NativeVertexDeclarationReference>(declaration, c.destruction.actual_decrement_00ce2220,
             c, 0x00d61d1cu, c.declarations.declarations.declaration_vtable_00d61d1c, 0x00b48ca0u);
 
-        mesh_raw = allocate_native_mesh_slot_00b73b60();
+        mesh_raw = block.ordinary_mesh_mode() ? block.allocate_ordinary_mesh() :
+            allocate_native_mesh_slot_00b73b60();
         set_state(3);
-        NativeMeshStorage* mesh = mesh_raw ? construct_native_mesh_00b73d70(mesh_raw, c.mesh_constants) : nullptr;
+        NativeMeshStorage* mesh = mesh_raw ? (block.ordinary_mesh_mode() ?
+            block.construct_ordinary_mesh() : construct_native_mesh_00b73d70(mesh_raw, c.mesh_constants)) : nullptr;
         set_state(0);
         acquired.mesh_created = mesh;
         if (mesh) {
-            block.mesh_reference_.emplace(*mesh, c.meshes,
-                NativeMeshCompanionDisposal{&block, &NativePostEffect20ConstructionBlock::retire_mesh});
-            acquired.mesh_reference = &*block.mesh_reference_;
-            block.bind(NativePostEffect20ConstructionBlock::mesh, mesh, *block.mesh_reference_);
+            if (block.ordinary_mesh_mode()) {
+                acquired.mesh_reference = &block.publish_ordinary_mesh(); // SAME central canonical; no bind/count
+            } else {
+                block.mesh_reference_.emplace(*mesh, c.meshes,
+                    NativeMeshCompanionDisposal{&block, &NativePostEffect20ConstructionBlock::retire_mesh});
+                acquired.mesh_reference = &*block.mesh_reference_;
+                block.bind(NativePostEffect20ConstructionBlock::mesh, mesh, *block.mesh_reference_);
+            }
         }
         require(mesh != nullptr, "native post-effect mesh dereference requires successful allocation");
         set_native_mesh_vertex_stream_00b73bb0(*mesh, c.destruction.actual_owners, 0, stream);
@@ -399,20 +552,33 @@ void* construct_native_post_effect20_00b4e470(void* actual, std::size_t allocati
         rebuild_native_mesh_section_vertex_layout_00b865a0(*section, c.destruction.actual_owners, mesh, c.layouts);
         append_native_mesh_draw_section_00b73c60(*mesh, section);
 
-        void* const model_raw = allocate_native_model_slot_00b74eb0();
+        void* const model_raw = block.ordinary_lifetime_ ?
+            allocate_native_model_slot_00b74eb0(*block.model_frame_) : allocate_native_model_slot_00b74eb0();
         arguments.words[1] = bits(model_raw); // B4E640; normal callee keeps captured allocation
         set_state(4);
         void* model = nullptr;
         if (model_raw) {
+            if (block.ordinary_lifetime_) acquired.model_owner = &block.model_frame_->prepare_owner();
+            else {
             block.model_owner_.emplace(model_raw, NativeModelPool::slot_bytes, c.models);
             acquired.model_owner = &*block.model_owner_;
+            }
             construct_native_string_cstring_0041e870(&block.model_name_, c.model_name_00d61ee4, c.raw_strings);
             mask |= 1u; set_state(5);
+            if (block.ordinary_lifetime_) {
+                model = construct_native_model_00b75030(*acquired.model_owner, &block.model_name_, c.node_constants);
+                auto& reference = block.model_frame_->publish_constructed_owner();
+                acquired.model_reference = &reference;
+                block.keys_[NativePostEffect20ConstructionBlock::model] = model;
+                block.references_[NativePostEffect20ConstructionBlock::model] = &reference;
+            } else {
             model = construct_native_model_00b75030(*block.model_owner_, &block.model_name_, c.node_constants);
+            }
         }
         put(actual, 0x10, bits(model)); // B4E67D
         set_state(0);
-        if (model) {
+        if (model && block.ordinary_lifetime_) block.model_frame_->parent_field_published();
+        if (model && !block.ordinary_lifetime_) {
             block.model_reference_.emplace(*block.model_owner_,
                 NativeModelCompanionDisposal{&block, &NativePostEffect20ConstructionBlock::retire_model});
             acquired.model_reference = &*block.model_reference_;
@@ -423,6 +589,28 @@ void* construct_native_post_effect20_00b4e470(void* actual, std::size_t allocati
             mask &= ~1u;
             if (data) block.return_captured_string(data, word(&block.model_name_) + 1u);
         }
+        if (block.ordinary_lifetime_) {
+            volatile Word* homes = block.model_frame_->geometry_homes();
+            volatile Word* scalar_17c_home = homes + 3;
+            volatile Word* scalar_178_home = homes + 2;
+            const volatile Word* unchanged = &c.models.constants.unchanged_00d7a260;
+            void* current_model_actual;
+            // B4E6AA..BE: same one-FLD/current+10/FST/FSTP input epoch.
+            __asm {
+                mov eax, unchanged
+                fld dword ptr [eax]
+                mov eax, actual
+                mov eax, dword ptr [eax + 10h]
+                mov current_model_actual, eax
+                mov edx, scalar_17c_home
+                fst dword ptr [edx]
+                mov edx, scalar_178_home
+                fstp dword ptr [edx]
+            }
+            homes[0] = 0;
+            homes[1] = bits(mesh);
+            block.model_frame_->set_geometry_on_captured_model(current_model_actual);
+        } else {
         float scalar_17c, scalar_178;
         const volatile Word* unchanged = &c.models.constants.unchanged_00d7a260;
         void* current_model_actual;
@@ -437,6 +625,7 @@ void* construct_native_post_effect20_00b4e470(void* actual, std::size_t allocati
             fstp dword ptr scalar_178
         }
         set_native_model_geometry_00b75170(current_model(current_model_actual, c), 0, mesh, scalar_178, scalar_17c);
+        }
 
         void* const camera_raw = allocate_native_camera_slot_00b71930();
         arguments.words[1] = bits(camera_raw); // B4E6D4
@@ -525,7 +714,8 @@ void* construct_native_post_effect20_00b4e470(void* actual, std::size_t allocati
         release_registered<NativeMeshSectionReference>(section, decrement, c, 0x00d63194u,
             c.sections.vtable_00d63194, 0x00b86690u);
         acquired.mesh_creator_release_started = true;
-        release_registered<NativeMeshReference>(mesh, decrement, c, 0x00d62d60u,
+        if (block.ordinary_mesh_mode()) block.release_ordinary_mesh_creator(decrement);
+        else release_registered<NativeMeshReference>(mesh, decrement, c, 0x00d62d60u,
             c.meshes.vtable_00d62d60, 0x00b74280u);
 
         acquired.native_completed = true; // HOST-only: original B4E470 has completed.
@@ -538,12 +728,20 @@ void* construct_native_post_effect20_00b4e470(void* actual, std::size_t allocati
         block.keys_[NativePostEffect20ConstructionBlock::owner] = actual;
         block.references_[NativePostEffect20ConstructionBlock::owner] = &*block.owner_reference_;
         // This reference registers/unregisters itself; the block must not do it twice.
+        if (block.ordinary_lifetime_) block.model_frame_->finish_constructor();
         block.settle();
         return actual;
     } catch (...) {
+        if (block.ordinary_lifetime_) {
+            block.record_ordinary_constructor_failure();
+        }
         try {
             if (!acquired.native_completed) block.unwind(state, frame_raw, mesh_raw, arguments.words[1], mask);
-        } catch (...) { block.settle(); throw; }
+        } catch (...) {
+            if (block.ordinary_lifetime_) block.model_frame_->finish_constructor();
+            block.settle(); throw;
+        }
+        if (block.ordinary_lifetime_) block.model_frame_->finish_constructor();
         block.settle();
         throw;
     }

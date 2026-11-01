@@ -7,6 +7,7 @@
 #include "bsp/native_particle_preparation.hpp"
 
 namespace bsp {
+class NativeParticleMeshProducerFrames;
 
 struct NativeParticleModelManagerStorage;
 
@@ -114,6 +115,9 @@ struct NativeParticleModelConstructionAccess {
     const volatile std::uint32_t& one_00d7a24c;
     const volatile std::uint32_t& random_max_00ce3d64;
     const NativeParticlePreparationDispatch& preparation;
+    // Optional typed ordinary source, prepared before this entire Native entry.
+    // Actual Game/derived-parent ordinary issuer remains a separate activation gate.
+    NativeParticleMeshProducerFrames* const ordinary_meshes{};
 };
 
 // Complete AFF5F0..AFF634: ECX raw28h, stack model/definition, RET8, same EAX.

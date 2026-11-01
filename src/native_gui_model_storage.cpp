@@ -1,3 +1,12 @@
+#include "bsp/native_render_observed_zero.hpp"
+namespace bsp {
+class NativeGuiModelStorageObservedZeroIssuer final {
+public:
+    static void dispatch(NativeRenderActualOwners& owners, void* actual, NativeRenderObservedZeroFrame& outer) {
+        NativeRenderObservedZeroAccess::dispatch(owners, actual, outer);
+    }
+};
+} // namespace bsp
 #include "bsp/native_gui_model_storage.hpp"
 #include "bsp/native_gui_widget_base_storage.hpp"
 #include "bsp/native_gui_widget_pools_cc13.hpp"
@@ -114,7 +123,7 @@ void destroy(void* raw, NativeGuiModelStorageContext& c, NativeGuiModelStorageAc
             a.wrapper_decremented = true;
             if (!a.wrapper_release_result) {
                 a.active_call_site = 0x00acc7fa; a.wrapper_zero_entered = true;
-                dispatch_native_render_actual_owner_zero(c.actual_owners, a.captured_wrapper);
+                NativeGuiModelStorageObservedZeroIssuer::dispatch(c.actual_owners, a.captured_wrapper, a.cpp_zero_frame);
                 a.wrapper_zero_returned = true;
             }
             word(raw, 0xf0) = 0; // CURRENT field cleared only after captured terminal returns
