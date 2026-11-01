@@ -1,0 +1,177 @@
+{
+  "kind": "Root Source86 raw Icon range_copy_wrapper admission",
+  "author": "08c91c55bf7f5f2a6a20b12cd73587abb6ae9aff",
+  "actual_parent": "d2eeef16e09c3e5e4158ea125b74106e04f8eb62",
+  "CMake": "489c7c6b45bf302fdbedc238cd3f26a611a0d88a",
+  "static": {
+    "author": "08c91c55bf7f5f2a6a20b12cd73587abb6ae9aff",
+    "actual_parent": "d2eeef16e09c3e5e4158ea125b74106e04f8eb62",
+    "reader_checks": 57,
+    "candidate_checks": 42,
+    "fresh_full_four_path_inverse": true,
+    "current10providers4callee_postimages_exact": true,
+    "Root_full_HCPPdoc_reader7545_Native37B14ops_review": true
+  },
+  "independent_Source": {
+    "own_checks": 56,
+    "actual_readers": [
+      57,
+      45
+    ],
+    "exact_eight_postimages": true,
+    "joined_eight_path_inverse": true,
+    "findings": 0,
+    "scope": "Source only"
+  },
+  "build": {
+    "exit": 0,
+    "seconds": 28.9219191,
+    "Win32": true,
+    "all_targets_two_existing_suites": true,
+    "inputs": 575,
+    "outputs": 46,
+    "new_tests": 0,
+    "new_Game_runs": 0,
+    "prior_whole_objects_unchanged": [
+      "build/win32/bsp_core.dir/Release/native_gui_media_focus_lifetime.obj",
+      "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj",
+      "build/win32/bsp_game.dir/Release/game_native_gui_manager_application.obj",
+      "build/win32/bsp_game.dir/Release/game_hosts_singletons.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_selection_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_getter_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_invalid_parameter_noinfo_call.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_allocation_storage.obj",
+      "build/win32/bsp_core.dir/Release/singleton_lifetime.obj",
+      "build/win32/bsp_game.dir/Release/game_hosts.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_range_lifetime_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_assignment_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_string_raw_resize_exact.obj",
+      "build/win32/bsp_core.dir/Release/native_crt_memcpy.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_native_size_storage.obj",
+      "build/win32/bsp_game.dir/Release/game_native_gui_icon_application.obj",
+      "build/win32/bsp_core.dir/Release/gui_texture.obj",
+      "build/win32/bsp_core.dir/Release/gui_type_dispatch.obj",
+      "build/win32/bsp_core.dir/Release/native_texture_saved_dimensions.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_repeat_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_size_comparison_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_backward_assignment_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_filter_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_constructed_storage.obj",
+      "build/win32/bsp_core.dir/Release/gui_native_geometry.obj",
+      "build/win32/bsp_core.dir/Release/native_model_resource_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_model_storage_geometry.obj",
+      "build/win32/bsp_core.dir/Release/native_mesh_owner.obj",
+      "build/win32/bsp_core.dir/Release/native_mesh_pool.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_widget_position.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_widget_transform.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_widget_bounds.obj",
+      "build/win32/bsp_core.dir/Release/native_render_context.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_fill_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_range_construction_storage.obj"
+    ]
+  },
+  "Core": {
+    "object_bytes": 1679,
+    "sha256": "d1344a6cb0e38a73f1f32b0a8be9091745d7480046c0ee61befa8af8bb356ee4",
+    "local_EH": [],
+    "public": [
+      {
+        "name": "?copy_native_gui_icon_state_range_wrapper_storage_00ab58a0@bsp@@YAIIAAY02$$CDIAAIAAY03$$CCIAAUNativeGuiIconStateRangeConstructionStorageFrame@1@AAUNativeGuiIconStorageContext@1@@Z",
+        "value": 0,
+        "section": 3,
+        "type": 32,
+        "storage": 2,
+        "aux_count": 0,
+        "aux_hex": ""
+      }
+    ],
+    "normal_map": [],
+    "Root_complete_main_instructions_review": true,
+    "observations": [
+      "Fulltagstore18;firstouterHOME2read1A;LOWBYTEzero1D;fulltagreread20;calleeHOME3store22;independentsecondHOME2read25.",
+      "calleeHOME2first28;outerHOME1capture2B;calleeHOME1originalentryECX2F;outerHOME0capture32;calleeHOME0second36.",
+      "RealAB4C50CALL38/type20REL32_39;normalEAXresultretained. ArgumentaddresspushesareprivateSourceABI,notproviderVALUESampling."
+    ]
+  },
+  "code": [
+    {
+      "section": 3,
+      "bytes": 69,
+      "ops": 32,
+      "hex": "558bec8b4510538b5d14568b750c57ff751c8b7d08ff751889388b4e08c600008b0089430c8b4608894b088b560453897b048b0e52518903e80000000083c4145f5e5b5dc3",
+      "relocations": [
+        {
+          "offset": 57,
+          "symbol_index": 9,
+          "target": {
+            "name": "?construct_native_gui_icon_state_range_storage_00ab4c50@bsp@@YAIPBX0AAY03$$CCIAAUNativeGuiIconStateRangeConstructionStorageFrame@1@AAUNativeGuiIconStorageContext@1@@Z",
+            "value": 0,
+            "section": 0,
+            "type": 32,
+            "storage": 2,
+            "aux_count": 0,
+            "aux_hex": ""
+          },
+          "type": 20
+        }
+      ]
+    }
+  ],
+  "archive": {
+    "object_bytes": 1679,
+    "archive_exact_member_offsets": [
+      22944450
+    ]
+  },
+  "inherited_callee_Native_landing_rows_held": 13,
+  "actual_growth_caller_activation": false,
+  "new_Original_vendor_helper_CG_duplicate_credit": 0,
+  "receipts": [
+    {
+      "path": "local/function_source_batch86/common/manifest.json",
+      "bytes": 190214,
+      "sha256": "3a91db01bbe6589261b052523f6a989f977b5281f27ffed76796e676c0f56c29"
+    },
+    {
+      "path": "local/function_source_batch86/build_result.json",
+      "bytes": 45,
+      "sha256": "237ce47e5e47ba9e44109ca19de8bef38cda5ebae2c9c464a5d6b90f9da84538"
+    },
+    {
+      "path": "local/function_source_batch86/Root_actual_Git.json",
+      "bytes": 336,
+      "sha256": "8b10d621717cea3ab3a31a62078f71591c14e69de1bc83a6334b10b4b7b70d1f"
+    },
+    {
+      "path": "local/function_source_batch86/Root_Core.json",
+      "bytes": 5539,
+      "sha256": "8460bb702884bffe6f1e95b0239dbad4388b29db18fe1d1e8deaf006d8846220"
+    },
+    {
+      "path": "local/function_source_batch86/Root_archive.json",
+      "bytes": 87,
+      "sha256": "1f9993e8546e1f14fe26d34589c37afdef0a2792420448300c77abce4f4d851e"
+    },
+    {
+      "path": "local/function_source_batch86/prior_objects_unchanged.json",
+      "bytes": 2642,
+      "sha256": "41373308a3240eabc055c52d7a42e143f66b0f5c04059396934b12a5b741c2d6"
+    },
+    {
+      "path": "local/function_source_batch86/Source_peer/peer_receipt.json",
+      "bytes": 14076,
+      "sha256": "5ab9a76a4352e1330cc5d02fb5740fa60db58c9522262a1ca7f0556ce6145a8a"
+    },
+    {
+      "path": "local/function_source_batch86/Source_peer/peer_manifest.json",
+      "bytes": 3629,
+      "sha256": "52c682cd32a9fc733067b74317b1e291a9c97e8885c1356ee3535597787b3ab7"
+    },
+    {
+      "path": "local/function_source_batch86/Source_peer/sealed_peer.json",
+      "bytes": 537,
+      "sha256": "c54d18b8e56e89cf9f250ae76128e56128e4f5d54fabe3647fa27cf4b18b9060"
+    }
+  ]
+}
