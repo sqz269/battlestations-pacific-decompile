@@ -1786,7 +1786,20 @@
       22941164
     ]
   },
-  "supplemental_independent_Git_Core": "Git108complete;compiledreviewinprogress,notclaimedcomplete",
+  "supplemental_independent_Git_Core": {
+    "status": "completedqualifiedmanualreview,zeroactionablefindings",
+    "selected_bytes": 901,
+    "decoded_ops": 262,
+    "sections": [
+      24,
+      25,
+      31,
+      32
+    ],
+    "artifacts": 15,
+    "mechanical_not_claimed": "dumpbinsection24scoped-rowassertionfailed224versus230;alllaterautomatedassertionsexcluded",
+    "Root_EH_archive_proofs_separate": true
+  },
   "receipts": [
     {
       "path": "local/function_source_batch84/common/manifest.json",
@@ -1832,6 +1845,21 @@
       "path": "local/function_source_batch84/postbuild_evidence_only.json",
       "bytes": 262,
       "sha256": "d4ab4dc989816fc3164bee692923168dc24dd0f065492e1e3559e0633e5aa5bc"
+    },
+    {
+      "path": "local/function_source_batch84/Core_peer/core_inspection_receipt.json",
+      "bytes": 8409,
+      "sha256": "a33c9efeb44f225db21a448542de029218b0a2fb78ae7c6884f034fcf6c5aac1"
+    },
+    {
+      "path": "local/function_source_batch84/Core_peer/manifest.json",
+      "bytes": 5156,
+      "sha256": "2de972d54d81f08ff7ba506049a649aa5b1ece7871d7c24b4751e217051606d4"
+    },
+    {
+      "path": "local/function_source_batch84/Core_peer/sealed_receipt.json",
+      "bytes": 881,
+      "sha256": "047b74671ab52c9ddae56d85f9f82e9211f8d1a9d9e951ffff160fb733b9b91e"
     }
   ],
   "normal_Source_support_only": true,
