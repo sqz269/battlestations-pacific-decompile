@@ -32,6 +32,7 @@ private:
     friend class NativePostEffectModelFrame;
     friend class NativePostEffectParentFrame;
     friend class NativeMaterialFrame;
+    friend class NativeMeshSectionLifetimeFrame;
     friend class game::GameNativeRendererApplication;
     friend class NativeRendererRawFailureBridge;
     std::atomic<bool> failed_{false};

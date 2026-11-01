@@ -68,6 +68,7 @@ public:
         friend class NativePostEffectModelFrame;
         friend class NativePostEffectParentFrame;
     friend class NativeMaterialFrame;
+    friend class NativeMeshSectionLifetimeFrame;
         enum class Availability : std::uint8_t { unavailable, live };
         ExactRecord(NativeRenderActualOwnerRegistry& registry,
             const void* actual_owning_record_identity) noexcept
@@ -150,6 +151,7 @@ private:
     friend class NativePostEffectModelFrame;
     friend class NativePostEffectParentFrame;
     friend class NativeMaterialFrame;
+    friend class NativeMeshSectionLifetimeFrame;
     // Cold attachment counts even an unkeyed allocating/unknown record. Nodes
     // are already allocated; no allocator/callback runs under this mutex.
     std::mutex& exact_metadata_mutex() noexcept;
@@ -166,11 +168,12 @@ private:
     // none by itself invents a physical-return receipt.
     void poison_exact_record(ExactRecord&) noexcept;
     void deactivate_exact_record_from_native_end(ExactRecord&) noexcept;
-    // Authentic Material payload-normal flags0: carrier/physical debt stays live.
+    // Authentic family flags0: Material110h/Section60h carrier and physical debt stay live.
     // Availability only: no poison, Native/partial/unborn end or failure fact.
     void withhold_exact_record_for_live_storage_debt(ExactRecord&) noexcept;
     // Only the selected ctor-exception owner, after actual trivial prefix end
-    // and last prefix use, before real raw return. +110 pool backing stays live.
+    // and last prefix use, before real raw return. Separately live pool backing:
+    // Material+110 / Section+60. Only the genuine private family issuer proves birth/end.
     // Retains node/caller/debt; grants no normal death, refund or physical result.
     void deactivate_exact_record_from_partial_cpp_end(ExactRecord&) noexcept;
     // Genuine selected raw-slot unwind only (Mesh state3 / Model state4):
