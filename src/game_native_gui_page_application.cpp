@@ -8,6 +8,12 @@
 #include "bsp/model_type_bootstrap.hpp"
 #include "bsp/native_gui_group_factory.hpp"
 #include "bsp/native_gui_group_identity.hpp"
+#include "bsp/native_gui_icon_identity.hpp"
+#include "bsp/native_gui_icon_constructed_storage.hpp"
+#include "bsp/native_gui_icon_loaded_storage.hpp"
+#include "bsp/native_gui_icon_property_reader_storage.hpp"
+#include "bsp/native_gui_icon_property_state_invocations.hpp"
+#include "bsp/native_particle_texture_names_raw.hpp"
 #include "bsp/native_gui_widget_load_hooks.hpp"
 #include "bsp/native_node_parenting_storage.hpp"
 #include "bsp/cc13_gui1.hpp"
@@ -331,6 +337,11 @@ struct GameNativeGuiPageApplication::Impl {
         std::optional<NativeGuiWidgetPropertyInteractionContext> interaction_context;
         std::optional<NativeGuiWidgetPropertyChildrenRawContext> children_context;
         std::optional<NativeGuiPageReadPropertiesRawContext> page_context;
+        // Separate user-constructed raw frame: value-initializing the outer
+        // Group/Page metadata must not zero Icon constructor-unwritten homes.
+        std::unique_ptr<NativeGuiIconPropertyReaderStorageFrame> icon_frame;
+        std::optional<NativeGuiIconPropertyReaderStorageContext> icon_context;
+        Word icon_visitor_home; // Ordinary backing, initialized once from the real reader.
         NativeCalls* suspended_calls{};
         NativeLuaReaderStorage* reader{};
         PropertyInvocation* suspended{};
@@ -350,12 +361,41 @@ struct GameNativeGuiPageApplication::Impl {
         void* page{};
         bool scene_released{}, native_retired{};
     };
+    struct IconRecord {
+        struct ConstructedCall {
+            std::unique_ptr<GameNativeGuiPageIconConstructedInvocation> invocation;
+            bool preparation_entered{}, entered{}, returned{};
+            std::exception_ptr failure;
+        };
+        struct LoadedCall {
+            std::unique_ptr<GameNativeGuiPageIconLoadedInvocation> invocation;
+            bool preparation_entered{}, entered{}, returned{};
+            std::exception_ptr failure;
+        };
+        struct VisibilityCall {
+            std::uint8_t visible{};
+            bool entered{}, returned{};
+            std::exception_ptr failure;
+        };
+        std::unique_ptr<NativeGuiIconReference> reference;
+        std::unique_ptr<NativeGuiIconPropertyStateInvocations> states;
+        std::vector<std::unique_ptr<ConstructedCall>> constructed_calls;
+        std::vector<std::unique_ptr<LoadedCall>> loaded_calls;
+        std::vector<std::unique_ptr<VisibilityCall>> visibility_calls;
+    };
     struct WidgetRecord {
         void* actual{};
         bool constructor_returned{}, native_retired{};
         std::unique_ptr<NativeGuiGroupReference> reference;
+        std::unique_ptr<IconRecord> icon;
         std::unique_ptr<PropertyInvocation> properties;
         GuiWidgetBounds loaded_bounds;
+        RenderCommandReference* canonical() const noexcept {
+            return icon ? static_cast<RenderCommandReference*>(icon->reference.get()) : reference.get();
+        }
+        bool reference_retired() const noexcept {
+            return icon ? icon->reference && icon->reference->retired() : reference && reference->retired();
+        }
     };
     struct Construction {
         NativeString suffix, path;
@@ -420,17 +460,33 @@ struct GameNativeGuiPageApplication::Impl {
             native_lua_reader_enumerate_keys_00bd5f50(*f.reader, *output, f.keys, app.crt_sse2_conversion);
         }
         void* create_widget_00aa6560(Word type, const void* source) override {
-            require(app.current_properties, "Group factory requires its retained parent reader");
-            if (type != 2 || source) reject("AA6560 factory outside default GuiGroup", type);
+            require(app.current_properties, "widget factory requires its retained parent reader");
+            if ((type != 2 && type != 6) || source) reject("AA6560 factory outside default Group/Icon", type);
+            // Missing providers reject cold, before AA1410 or an actual Icon
+            // allocation. Presence is not birth, custody or activation proof.
+            if (type == 6) app.require_icon_services();
             // The record exists before AA12F0; constructor-return custody is
             // recorded before canonical allocation/bind can fail.
             app.widget_records.push_back(std::make_unique<WidgetRecord>());
             auto& record = *app.widget_records.back();
-            record.actual = create_native_gui_group_00aa12f0(NativeGuiGroupDefaultInputs{
-                app.renderer.node_constants().one_00d7a24c});
+            if (type == 6) {
+                record.icon = std::make_unique<IconRecord>();
+                record.actual = create_native_gui_icon_default_00aa1410(
+                    app.renderer.node_constants().one_00d7a24c);
+            } else {
+                record.actual = create_native_gui_group_00aa12f0(NativeGuiGroupDefaultInputs{
+                    app.renderer.node_constants().one_00d7a24c});
+            }
             if (!record.actual) return nullptr;
             record.constructor_returned = true;
-            record.reference = std::make_unique<NativeGuiGroupReference>(record.actual, app.widget_identity);
+            if (record.icon) {
+                record.icon->reference = std::make_unique<NativeGuiIconReference>(record.actual, *app.icon_identity);
+                record.icon->reference->prepare_cold_delete_call();
+                record.icon->states = std::make_unique<NativeGuiIconPropertyStateInvocations>(
+                    *record.icon->reference, *app.icon_state_services);
+            } else {
+                record.reference = std::make_unique<NativeGuiGroupReference>(record.actual, app.widget_identity);
+            }
             for (auto* f = app.current_properties; f; f = f->suspended) {
                 app.prepare_calls(f->native_calls);
                 if (f->suspended_calls) app.prepare_calls(*f->suspended_calls);
@@ -438,7 +494,12 @@ struct GameNativeGuiPageApplication::Impl {
             return record.actual;
         }
         void widget_created_74(void* widget, Word target) override {
-            (void)app.live_widget(widget);
+            auto& record = app.live_widget(widget);
+            if (record.icon) {
+                if (target != 0x00ab2540) reject("Icon current74", target);
+                app.construct_icon_geometry(record);
+                return;
+            }
             if (target != 0x00a9ac00) reject("Group current74", target);
             native_gui_widget_base_post_construct_00a9ac00(widget, nullptr);
         }
@@ -448,6 +509,13 @@ struct GameNativeGuiPageApplication::Impl {
             f.reader->enter_key_00bd8e20(f.enter, tag, payload);
         }
         void read_widget_18(void* widget, Word target, void* visitor) override {
+            auto& record = app.live_widget(widget);
+            if (record.icon) {
+                if (target != 0x00ab3310) reject("Icon current18", target);
+                auto& parent = app.reader_invocation(visitor);
+                app.read_icon_properties(record, *parent.reader);
+                return;
+            }
             if (target != 0x00ac6fd0) reject("Group current18", target);
             (void)app.reader_invocation(visitor);
             app.read_group_properties(widget, *static_cast<NativeLuaReaderStorage*>(visitor));
@@ -458,11 +526,20 @@ struct GameNativeGuiPageApplication::Impl {
         }
         void widget_loaded_78(void* widget, Word target) override {
             auto& record = app.live_widget(widget);
+            if (record.icon) {
+                if (target != 0x00ab10f0) reject("Icon current78", target);
+                app.load_icon(record);
+                return;
+            }
             if (target != 0x00aa7170) reject("Group current78", target);
             native_gui_widget_loaded_00aa7170(widget, *this, record.loaded_bounds,
                 scalar<double>(app.data, 0x00d7a280));
         }
-        void call_active_60(Word target, void*, std::uint8_t) override { reject("Group current60", target); }
+        void call_active_60(Word target, void* actual, std::uint8_t active) override {
+            auto& record = app.live_widget(actual);
+            if (!record.icon || target != 0x00aa6a30) reject("Icon current60", target);
+            set_native_gui_widget_active_00aa6a30(actual, nullptr, active);
+        }
     };
     struct RawTimedEntries {
         Impl& app;
@@ -597,8 +674,10 @@ struct GameNativeGuiPageApplication::Impl {
             app.authenticate_widget(actual);
             if (app.is_page_widget(actual)) {
                 if (profile != kPageProfile && profile != 0x00d5c130) reject("Page widget profile", profile);
+            } else if (app.live_widget(actual).icon) {
+                if (profile != 0x00d5c4c0 && profile != 0x00d5c130) reject("Icon widget profile", profile);
             } else if (profile != 0x00d5cb80 && profile != 0x00d5c130) reject("Group widget profile", profile);
-            return table(app.data, profile, 0x80);
+            return table(app.data, profile, profile == 0x00d5c4c0 ? 0xa8 : 0x80);
         }
         Word call_type_5c(Word target, void* actual) override {
             if (target != 0x00a9e110) reject("widget type+5C", target);
@@ -609,10 +688,22 @@ struct GameNativeGuiPageApplication::Impl {
             set_native_gui_widget_visible_00aa8530(actual, requested, app.visibility);
         }
         std::uint8_t call_visibility_38(void* actual, Word target) override {
+            if (!app.is_page_widget(actual) && app.live_widget(actual).icon) {
+                if (target != 0x00a9e0d0) reject("Icon visibility+38", target);
+                return static_cast<std::uint8_t>(native_gui_widget_is_visible_00a9e0d0(
+                    actual, &app.visibility.actual_zero_00d7a218));
+            }
             if (target != 0x00aa38e0) reject("visibility+38", target);
             return *static_cast<const volatile std::uint8_t*>(at(actual, 0xf5));
         }
         void call_visibility_changed_3c(void* actual, Word target, std::uint8_t visible) override {
+            if (!app.is_page_widget(actual) && app.live_widget(actual).icon) {
+                if (target != 0x00ab6120) reject("Icon visibility changed+3C", target);
+                auto& record = app.live_widget(actual);
+                app.require_icon_services();
+                app.icon_visibility_changed(record, visible);
+                return;
+            }
             if (target != 0x00a9e100) reject("visibility changed+3C", target);
             native_gui_widget_visibility_changed_00a9e100(actual, nullptr, visible);
         }
@@ -628,17 +719,27 @@ struct GameNativeGuiPageApplication::Impl {
             if (app.is_page_widget(actual) && target == 0x00aa38b0)
                 return gui_widgets_cc13::native_gui_layer_is_kind_of_00aa38b0(
                     game_native_gui_text_process().layer_lineage_00f8bf88(), descriptor);
-            if (!app.is_page_widget(actual) && target == 0x00ac6f70)
+            if (!app.is_page_widget(actual) && app.live_widget(actual).icon && target == 0x00aa1cc0) {
+                auto& record = app.live_widget(actual);
+                app.require_icon_services();
+                return app.icon_services->class_query_00aa1cc0(*record.icon->reference, descriptor);
+            }
+            if (!app.is_page_widget(actual) && !app.live_widget(actual).icon && target == 0x00ac6f70)
                 return native_gui_group_is_kind_of_00ac6f70(descriptor,
                     game_native_gui_text_process().group_lineage_00f8bfd8());
             reject("Page/Group class+0C", target);
         }
-        void call_child_scene_20(void*, Word target) override { reject("child scene+20", target); }
+        void call_child_scene_20(void* actual, Word target) override {
+            auto& record = app.live_widget(actual);
+            if (!record.icon || target != 0x00aa8320) reject("Icon child scene+20", target);
+            release_native_gui_widget_scene_00aa8320(actual, app.widget_lifetime);
+        }
         void call_child_delete_04(void* actual, Word target, Word flags) override {
             auto& record = app.live_widget(actual);
-            if (target != 0x00ac73e0) reject("Group child delete+04", target);
+            if (target != (record.icon ? 0x00ab6100u : 0x00ac73e0u)) reject("widget child delete+04", target);
             auto& call = app.calls().scalar(); call.flags = flags; call.entered = true;
-            record.reference->delete_scalar_00ac73e0(call.flags);
+            if (record.icon) record.icon->reference->delete_scalar_00ab6100(call.flags);
+            else record.reference->delete_scalar_00ac73e0(call.flags);
             call.complete = true;
             record.native_retired = true; // no read of returned native slot
         }
@@ -757,6 +858,11 @@ struct GameNativeGuiPageApplication::Impl {
     std::vector<std::unique_ptr<Page>> pages;
     std::vector<std::unique_ptr<WidgetRecord>> widget_records;
     NativeGuiGroupIdentityContext widget_identity;
+    GameNativeGuiPageIconServices* icon_services{};
+    std::optional<NativeGuiIconIdentityContext> icon_identity;
+    const NativeGuiIconPropertyStateServices* icon_state_services{};
+    const volatile GameNativeGuiPageIconServices::StatePrivatePreimages* icon_private_preimages{};
+    std::optional<NativeGuiIconPropertyReaderLiterals> icon_literals;
     // Entered failures: retained, never destroyed (the host _Exits first).
     std::vector<std::unique_ptr<Construction>> retained_frames;
     std::unique_ptr<GameNativeGuiManagerApplication::PageLifetimeBinding> manager_binding;
@@ -891,6 +997,11 @@ struct GameNativeGuiPageApplication::Impl {
     void* warm_manager();
     void read_properties(void*, NativeLuaReaderStorage&);
     void read_group_properties(void*, NativeLuaReaderStorage&);
+    void read_icon_properties(WidgetRecord&, NativeLuaReaderStorage&);
+    void construct_icon_geometry(WidgetRecord&);
+    void load_icon(WidgetRecord&);
+    void icon_visibility_changed(WidgetRecord&, std::uint8_t);
+    void require_icon_services() const;
     NativeCalls& calls() { require(current_calls != nullptr, "Page raw call has no retained invocation backing"); return *current_calls; }
     void prepare_calls(NativeCalls&);
     Page* find_root(void*);
@@ -928,12 +1039,13 @@ bool GameNativeGuiPageApplication::Impl::is_page_widget(void* actual) const noex
 GameNativeGuiPageApplication::Impl::WidgetRecord& GameNativeGuiPageApplication::Impl::live_widget(void* actual) {
     for (auto& record : widget_records) {
         if (record->actual != actual || !record->constructor_returned || record->native_retired) continue;
-        require(record->reference && !record->reference->retired() &&
-            renderer.actual_owners().find(actual) == record->reference.get(),
-            "GuiGroup requires its SAME canonical live actual+04 owner");
+        require(record->canonical() && !record->reference_retired() &&
+            (!record->icon || !record->icon->reference->failed()) &&
+            renderer.actual_owners().find(actual) == record->canonical(),
+            "Page widget requires its SAME canonical live actual+04 owner");
         return *record;
     }
-    throw std::logic_error("raw GuiGroup has no same retained completed allocation");
+    throw std::logic_error("raw Page widget has no same retained completed allocation");
 }
 void GameNativeGuiPageApplication::Impl::authenticate_widget(void* actual) {
     if (is_page_widget(actual)) return;
@@ -1043,6 +1155,109 @@ void GameNativeGuiPageApplication::Impl::read_group_properties(void* actual, Nat
     }
 }
 
+void GameNativeGuiPageApplication::Impl::require_icon_services() const {
+    require(icon_services && icon_identity && icon_state_services && icon_private_preimages && icon_literals,
+        "default Page Icon requires its explicit SAME raw provider borrower before AA1410");
+}
+
+void GameNativeGuiPageApplication::Impl::construct_icon_geometry(WidgetRecord& record) {
+    require_icon_services();
+    require(record.icon && record.icon->reference, "Icon74 requires its completed canonical Page record");
+    record.icon->constructed_calls.push_back(std::make_unique<IconRecord::ConstructedCall>());
+    auto& call = *record.icon->constructed_calls.back();
+    try {
+        call.preparation_entered = true;
+        call.invocation = icon_services->prepare_constructed_74(*record.icon->reference);
+        require(call.invocation && &call.invocation->context.owners == &renderer.actual_owners() &&
+            &call.invocation->context.data == &data && &call.invocation->context.transform == &transform,
+            "Icon74 typed frame must borrow this Page's SAME renderer/RO/transform domain");
+        // No early Icon+4C read: whole AB2540 captures CURRENT Model at its
+        // native epoch. The existing suffix supplied the genuine S1 owner.
+        call.entered = true;
+        construct_native_gui_icon_geometry_storage_00ab2540(record.actual, call.invocation->frame,
+            call.invocation->context, call.invocation->acquired);
+        call.returned = true;
+    } catch (...) {
+        call.failure = std::current_exception();
+        fail(0x00ab2540);
+        throw;
+    }
+}
+
+void GameNativeGuiPageApplication::Impl::load_icon(WidgetRecord& record) {
+    require_icon_services();
+    require(record.icon && record.icon->reference, "Icon78 requires its completed canonical Page record");
+    record.icon->loaded_calls.push_back(std::make_unique<IconRecord::LoadedCall>());
+    auto& call = *record.icon->loaded_calls.back();
+    try {
+        call.preparation_entered = true;
+        call.invocation = icon_services->prepare_loaded_78(*record.icon->reference);
+        require(call.invocation != nullptr, "Icon78 requires a genuine retained raw78/raw80 invocation");
+        call.entered = true;
+        native_gui_icon_loaded_storage_00ab10f0(record.actual, call.invocation->frame, call.invocation->context);
+        call.returned = true;
+    } catch (...) {
+        call.failure = std::current_exception();
+        fail(0x00ab10f0);
+        throw;
+    }
+}
+
+void GameNativeGuiPageApplication::Impl::icon_visibility_changed(WidgetRecord& record, std::uint8_t visible) {
+    require_icon_services();
+    require(record.icon && record.icon->reference, "Icon3C requires its completed canonical Page record");
+    record.icon->visibility_calls.push_back(std::make_unique<IconRecord::VisibilityCall>());
+    auto& call = *record.icon->visibility_calls.back();
+    call.visible = visible;
+    try {
+        call.entered = true;
+        // The explicitly missing typed provider must retain its own real
+        // per-reached AB6120 backing; this record grants no body/Origin credit.
+        icon_services->visibility_changed_00ab6120(*record.icon->reference, visible);
+        call.returned = true;
+    } catch (...) {
+        call.failure = std::current_exception();
+        fail(0x00ab6120);
+        throw;
+    }
+}
+
+void GameNativeGuiPageApplication::Impl::read_icon_properties(WidgetRecord& record, NativeLuaReaderStorage& reader) {
+    require_icon_services();
+    require(record.icon && record.icon->reference && record.icon->states && properties_composed &&
+        current_properties && current_properties->reader == &reader && !record.properties &&
+        read(record.actual) == 0x00d5c4c0,
+        "AB3310 requires a fresh genuine Page Icon invocation on SAME suspended reader");
+    record.properties = std::make_unique<PropertyInvocation>();
+    auto& f = *record.properties;
+    prepare_calls(f.native_calls);
+    f.interaction_context.emplace(interaction(f)); f.children_context.emplace(children(f));
+    f.icon_frame = std::make_unique<NativeGuiIconPropertyReaderStorageFrame>();
+    f.icon_context.emplace(NativeGuiIconPropertyReaderStorageContext{reader, field_values, resolvers,
+        *f.interaction_context, *f.children_context, *record.icon->states, *icon_literals, *icon_private_preimages});
+    f.reader = &reader; f.actual_widget = record.actual;
+    f.icon_visitor_home = bits(&reader); // One real mutable ordinary DWORD HOME.
+    f.suspended = current_properties; f.suspended_calls = current_calls;
+    current_properties = &f; current_calls = &f.native_calls;
+    f.acquired.phase = NativeGuiPageReadPropertiesAcquired::Phase::entered;
+    f.acquired.active_call_site = 0x00ab3310;
+    try {
+        read_native_gui_icon_properties_storage_00ab3310(record.actual, f.icon_visitor_home,
+            *f.icon_frame, *f.icon_context);
+        f.acquired.properties_returned = true;
+        f.acquired.phase = NativeGuiPageReadPropertiesAcquired::Phase::complete;
+        // Preserve the actual mutated visitor HOME (PartialDisplayType may
+        // have overwritten it); only suspend/restore the Source reader stack.
+        f.reader = nullptr;
+        current_properties = f.suspended; current_calls = f.suspended_calls;
+    } catch (...) {
+        f.acquired.phase = NativeGuiPageReadPropertiesAcquired::Phase::failed;
+        f.native_calls.failed = true;
+        fail(0x00ab3310);
+        throw;
+    }
+}
+
 void GameNativeGuiPageApplication::Impl::retire_scene(void* actual, Word target) {
     if (target != 0x00bd30e0) reject("outer scene current0", target);
     for (auto& page : pages) {
@@ -1128,7 +1343,7 @@ GameNativeGuiPageApplication::Impl::~Impl() noexcept {
     if (active || failed || retiring_page || current_properties || current_calls ||
         resolvers.requires_process_retention() || !timed.empty() || !models->empty()) std::terminate();
     for (const auto& widget : widget_records)
-        if (widget->actual && (!widget->native_retired || !widget->reference || !widget->reference->retired()))
+        if (widget->actual && (!widget->native_retired || !widget->reference_retired()))
             std::terminate();
     for (const auto& page : pages) {
         if (!page->native_retired || (page->reference && !page->reference->retired())) std::terminate();
@@ -1160,6 +1375,35 @@ GameNativeGuiPageApplication::~GameNativeGuiPageApplication() noexcept {
     if (requires_process_retention()) std::terminate();
 }
 
+void GameNativeGuiPageApplication::bind_default_icon_services(GameNativeGuiPageIconServices& services) {
+    auto& p = *impl_;
+    p.require_entry();
+    require(!p.icon_services && p.pages.empty() && p.widget_records.empty(),
+        "default Icon services bind once before the first actual Page");
+    p.icon_services = &services; // Retain the borrower even if cold preparation throws.
+    try {
+        auto& storage = services.bind_page_storage(p.widget_lifetime, p.renderer.actual_owners(),
+            p.transform, p.child_calls);
+        auto& pool = GameNativeGuiWidgetPoolProcess<GuiIconPoolTraits>::instance().pool();
+        require(&storage.lifetime == &p.widget_lifetime && &storage.actual_owners == &p.renderer.actual_owners() &&
+            &storage.strings == &p.strings && storage.icon_profile_00d5c4c0 == table(p.data, 0x00d5c4c0, 0xa8),
+            "default Icon storage must borrow this Page's SAME lifetime/registry/strings/RO table");
+        const auto& states = services.property_state_services();
+        require(&states.icon == &storage && &states.gui == &p.manager.context() &&
+            &states.widget_state == &p.globals && &states.atlas.strings == &p.strings &&
+            static_cast<const volatile void*>(&states.actual_one_00d7a24c) == p.data.data_at(0x00d7a24c, 4),
+            "default Icon state services must borrow the SAME Page GUI/Icon/strings/RO graph");
+        const auto& preimages = services.property_private_preimages(); // Address borrow only, no DWORD snapshot.
+        p.icon_literals.emplace(p.data);
+        p.icon_identity.emplace(NativeGuiIconIdentityContext{storage, pool});
+        p.icon_state_services = &states;
+        p.icon_private_preimages = &preimages;
+    } catch (...) {
+        p.fail(0x00aa6560);
+        throw;
+    }
+}
+
 bool GameNativeGuiPageApplication::requires_process_retention() const noexcept {
     return impl_->failed != nullptr || impl_->active || impl_->retiring_page ||
         impl_->current_properties || impl_->current_calls || impl_->resolvers.requires_process_retention() ||
@@ -1173,8 +1417,8 @@ void GameNativeGuiPageApplication::after_native_renderer_drain() {
         require(page->native_retired && (!page->reference || page->reference->retired()),
             "Page raw Page/root ownership survived native drain");
     for (const auto& widget : impl_->widget_records)
-        require(!widget->actual || (widget->native_retired && widget->reference && widget->reference->retired()),
-            "Page raw GuiGroup ownership survived native drain");
+        require(!widget->actual || (widget->native_retired && widget->reference_retired()),
+            "Page raw Group/Icon ownership survived native drain");
     impl_->models->after_native_renderer_drain();
 }
 
